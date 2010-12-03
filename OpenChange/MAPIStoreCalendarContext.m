@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <NGExtensions/NSObject+Logs.h>
@@ -200,5 +202,17 @@
         
 //         return rc;
 // }
+
+- (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
+{
+  static NSMutableDictionary *knownProperties = nil;
+
+  if (!knownProperties)
+    {
+      knownProperties = [NSMutableDictionary new];
+    }
+
+  return [knownProperties objectForKey: MAPIPropertyNumber (property)];
+}
 
 @end

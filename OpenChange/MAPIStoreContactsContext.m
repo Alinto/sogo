@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -318,5 +319,59 @@
         
 //   return rc;
 // }
+
+- (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
+{
+  static NSMutableDictionary *knownProperties = nil;
+
+  if (!knownProperties)
+    {
+      knownProperties = [NSMutableDictionary new];
+      [knownProperties setObject: @"c_mail"
+			  forKey: MAPIPropertyNumber (0x81ae001f)];
+      [knownProperties setObject: @"c_mail"
+			  forKey: MAPIPropertyNumber (0x81b3001f)];
+      [knownProperties setObject: @"c_mail"
+			  forKey: MAPIPropertyNumber (PR_EMS_AB_GROUP_BY_ATTR_2_UNICODE)];
+      [knownProperties setObject: @"c_cn"
+			  forKey: MAPIPropertyNumber (PR_DISPLAY_NAME_UNICODE)];
+    }
+
+  return [knownProperties objectForKey: MAPIPropertyNumber (property)];
+}
+
+/* restrictions */
+
+- (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
+				       intoQualifier: (EOQualifier **) qualifier
+{
+  MAPIRestrictionState rc;
+  id value;
+
+  value = NSObjectFromMAPISPropValue (&res->lpProp);
+  switch (res->ulPropTag)
+    {
+    case PR_MESSAGE_CLASS_UNICODE:
+      if ([value isKindOfClass: [NSString class]]
+	  && [value isEqualToString: @"IPM.Contact"])
+	rc = MAPIRestrictionStateAlwaysTrue;
+      else
+	rc = MAPIRestrictionStateAlwaysFalse;
+      break;
+    case PR_EMS_AB_RAS_ACCOUNT_UNICODE:
+    case 0x81b2001f:
+    case PR_EMS_AB_GROUP_BY_ATTR_1_UNICODE:
+      if ([value isEqualToString: @"SMTP"])
+	rc = MAPIRestrictionStateAlwaysTrue;
+      else
+	rc = MAPIRestrictionStateAlwaysFalse;
+      break;
+      
+    default:
+      rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
+    }
+
+  return rc;
+}
 
 @end

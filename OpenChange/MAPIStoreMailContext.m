@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 
@@ -117,7 +118,7 @@
 					 withFID: (uint64_t) fid
 {
   id child;
-  NSCalendarDate *offsetDate;
+  // NSCalendarDate *offsetDate;
   enum MAPISTATUS rc;
 
   rc = MAPI_E_SUCCESS;
@@ -145,10 +146,10 @@
     case PR_LATEST_DELIVERY_TIME: // DOUBT
     case PR_MESSAGE_DELIVERY_TIME:
       child = [self lookupObject: childURL];
-      offsetDate = [[child date] addYear: -1 month: 0 day: 0
-                                    hour: 0 minute: 0 second: 0];
-      *data = [offsetDate asFileTimeInMemCtx: memCtx];
-      // *data = [[child date] asFileTimeInMemCtx: memCtx];
+      // offsetDate = [[child date] addYear: -1 month: 0 day: 0
+      //                               hour: 0 minute: 0 second: 0];
+      // *data = [offsetDate asFileTimeInMemCtx: memCtx];
+      *data = [[child date] asFileTimeInMemCtx: memCtx];
       break;
     case PR_MESSAGE_FLAGS: // TODO
       // NSDictionary *coreInfos;
@@ -530,6 +531,64 @@
     }
   else
     rc = MAPI_E_NOT_FOUND;
+
+  return rc;
+}
+
+- (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
+{
+  static NSMutableDictionary *knownProperties = nil;
+
+  if (!knownProperties)
+    {
+      knownProperties = [NSMutableDictionary new];
+      [knownProperties setObject: @"DATE"
+		       forKey: MAPIPropertyNumber (PR_MESSAGE_DELIVERY_TIME)];
+    }
+
+  return [knownProperties objectForKey: MAPIPropertyNumber (property)];
+}
+
+/* restrictions */
+
+- (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
+				       intoQualifier: (EOQualifier **) qualifier
+{
+  MAPIRestrictionState rc;
+  id value;
+
+  value = NSObjectFromMAPISPropValue (&res->lpProp);
+  switch (res->ulPropTag)
+    {
+    case PR_MESSAGE_CLASS_UNICODE:
+      if ([value isEqualToString: @"IPM.Note"])
+	rc = MAPIRestrictionStateAlwaysTrue;
+      else
+	rc = MAPIRestrictionStateAlwaysFalse;
+      break;
+    default:
+      rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
+    }
+
+  return rc;
+}
+
+- (MAPIRestrictionState) evaluateExistRestriction: (struct mapi_SExistRestriction *) res
+				    intoQualifier: (EOQualifier **) qualifier
+{
+  MAPIRestrictionState rc;
+
+  switch (res->ulPropTag)
+    {
+    case PR_MESSAGE_CLASS_UNICODE:
+      rc = MAPIRestrictionStateAlwaysFalse;
+      break;
+    case PR_MESSAGE_DELIVERY_TIME:
+      rc = MAPIRestrictionStateAlwaysTrue;
+      break;
+    default:
+      rc = [super evaluateExistRestriction: res intoQualifier: qualifier];
+    }
 
   return rc;
 }

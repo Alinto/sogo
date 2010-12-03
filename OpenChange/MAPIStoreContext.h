@@ -37,8 +37,11 @@
 
 @class NSArray;
 @class NSFileHandle;
+@class NSMutableArray;
 @class NSMutableDictionary;
 @class NSString;
+
+@class EOQualifier;
 
 @class WOContext;
 
@@ -47,6 +50,13 @@
 
 @class MAPIStoreAuthenticator;
 @class MAPIStoreMapping;
+
+typedef enum {
+  MAPIRestrictionStateAlwaysFalse = NO,
+  MAPIRestrictionStateAlwaysTrue = YES,
+  MAPIRestrictionStateNeedsEval,    /* needs passing of qualifier to underlying
+				       database */
+} MAPIRestrictionState;
 
 @interface MAPIStoreContext : NSObject
 {
@@ -66,6 +76,9 @@
   NSMutableDictionary *messageCache;
   NSMutableDictionary *subfolderCache;
   id moduleFolder;
+
+  MAPIRestrictionState restrictionState;
+  EOQualifier *restriction;
 }
 
 + (id) contextFromURI: (const char *) newUri
@@ -92,6 +105,11 @@
 - (int) getFID: (uint64_t *) fid
         byName: (const char *) foldername
    inParentFID: (uint64_t) parent_fid;
+
+- (int) setRestrictions: (struct mapi_SRestriction *) res
+	       withFMID: (uint64_t) fmid
+	   andTableType: (uint8_t) type
+	 getTableStatus: (uint8_t *) tableStatus;
 
 - (enum MAPISTATUS) getTableProperty: (void **) data
 			     withTag: (enum MAPITAGS) proptag
@@ -146,6 +164,18 @@
 	    asProperty: (enum MAPITAGS) property
 		forURL: (NSString *) url;
 
+
+/* restrictions */
+
+- (MAPIRestrictionState) evaluateRestriction: (struct mapi_SRestriction *) res
+			       intoQualifier: (EOQualifier **) qualifier;
+- (MAPIRestrictionState) evaluateNotRestriction: (struct mapi_SNotRestriction *) res
+				  intoQualifier: (EOQualifier **) qualifierPtr;
+- (MAPIRestrictionState) evaluateAndRestriction: (struct mapi_SAndRestriction *) res
+				  intoQualifier: (EOQualifier **) qualifierPtr;
+- (MAPIRestrictionState) evaluateOrRestriction: (struct mapi_SOrRestriction *) res
+				 intoQualifier: (EOQualifier **) qualifierPtr;
+
 /* subclass methods */
 + (NSString *) MAPIModuleName;
 + (void) registerFixedMappings: (MAPIStoreMapping *) storeMapping;
@@ -179,6 +209,18 @@
 - (int) getMessageProperties: (struct SPropTagArray *) sPropTagArray
                        inRow: (struct SRow *) aRow
                        atURL: (NSString *) childURL;
+
+- (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property;
+
+/* restrictions */
+- (MAPIRestrictionState) evaluateContentRestriction: (struct mapi_SContentRestriction *) res
+				      intoQualifier: (EOQualifier **) qualifier;
+- (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
+				       intoQualifier: (EOQualifier **) qualifier;
+- (MAPIRestrictionState) evaluateBitmaskRestriction: (struct mapi_SBitmaskRestriction *) res
+				      intoQualifier: (EOQualifier **) qualifier;
+- (MAPIRestrictionState) evaluateExistRestriction: (struct mapi_SExistRestriction *) res
+				    intoQualifier: (EOQualifier **) qualifier;
 
 @end
 

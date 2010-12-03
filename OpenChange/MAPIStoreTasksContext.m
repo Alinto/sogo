@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <NGCards/iCalToDo.h>
@@ -174,6 +176,44 @@
   [newEntry setIsNew: YES];
 
   return newEntry;
+}
+
+- (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
+{
+  static NSMutableDictionary *knownProperties = nil;
+
+  if (!knownProperties)
+    {
+      knownProperties = [NSMutableDictionary new];
+    }
+
+  return [knownProperties objectForKey: MAPIPropertyNumber (property)];
+}
+
+/* restrictions */
+
+- (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
+				       intoQualifier: (EOQualifier **) qualifier
+{
+  MAPIRestrictionState rc;
+  id value;
+
+  value = NSObjectFromMAPISPropValue (&res->lpProp);
+  switch (res->ulPropTag)
+    {
+    case PR_MESSAGE_CLASS_UNICODE:
+      if ([value isKindOfClass: [NSString class]]
+	  && [value isEqualToString: @"IPM.Task"])
+	rc = MAPIRestrictionStateAlwaysTrue;
+      else
+	rc = MAPIRestrictionStateAlwaysFalse;
+      break;
+      
+    default:
+      rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
+    }
+
+  return rc;
 }
 
 @end

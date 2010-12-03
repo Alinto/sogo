@@ -27,6 +27,8 @@
 #import <Foundation/NSThread.h>
 #import <Foundation/NSValue.h>
 
+#import <EOControl/EOQualifier.h>
+
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 
@@ -72,6 +74,202 @@
 - (void) MAPISubmit;
 
 @end
+
+/* restriction helpers */
+static NSString *
+MAPIStringForRestrictionState (MAPIRestrictionState state)
+{
+  NSString *stateStr;
+
+  if (state == MAPIRestrictionStateAlwaysTrue)
+    stateStr = @"true";
+  else if (state == MAPIRestrictionStateAlwaysFalse)
+    stateStr = @"false";
+  else
+    stateStr = @"needs eval";
+
+  return stateStr;
+}
+
+static NSString *
+MAPIStringForRestriction (struct mapi_SRestriction *resPtr);
+
+// static NSString *
+// _MAPIIndentString(int indent)
+// {
+//   NSString *spaces;
+//   char *buffer;
+
+//   if (indent > 0)
+//     {
+//       buffer = malloc (indent + 1);
+//       memset (buffer, 32, indent);
+//       *(buffer+indent) = 0;
+//       spaces = [NSString stringWithFormat: @"%s", buffer];
+//       free (buffer);
+//     }
+//   else
+//     spaces = @"";
+
+//   return spaces;
+// }
+
+static NSString *
+MAPIStringForAndRestriction (struct mapi_SAndRestriction *resAnd)
+{
+  NSMutableArray *restrictions;
+  uint16_t count;
+
+  restrictions = [NSMutableArray arrayWithCapacity: 8];
+  for (count = 0; count < resAnd->cRes; count++)
+    [restrictions addObject: MAPIStringForRestriction ((struct mapi_SRestriction *) resAnd->res + count)];
+
+  return [NSString stringWithFormat: @"(%@)", [restrictions componentsJoinedByString: @" && "]];
+}
+
+static NSString *
+MAPIStringForOrRestriction (struct mapi_SOrRestriction *resOr)
+{
+  NSMutableArray *restrictions;
+  uint16_t count;
+
+  restrictions = [NSMutableArray arrayWithCapacity: 8];
+  for (count = 0; count < resOr->cRes; count++)
+    [restrictions addObject: MAPIStringForRestriction ((struct mapi_SRestriction *) resOr->res + count)];
+
+  return [NSString stringWithFormat: @"(%@)", [restrictions componentsJoinedByString: @" || "]];
+}
+
+static NSString *
+MAPIStringForNotRestriction (struct mapi_SNotRestriction *resNot)
+{
+  return [NSString stringWithFormat: @"!(%@)",
+		   MAPIStringForRestriction ((struct mapi_SRestriction *) &resNot->res)];
+}
+
+static NSString *
+MAPIStringForContentRestriction (struct mapi_SContentRestriction *resContent)
+{
+  NSString *eqMatch, *caseMatch;
+  id value;
+  const char *propName;
+
+  switch (resContent->fuzzy & 0xf)
+    {
+    case 0: eqMatch = @"eq"; break;
+    case 1: eqMatch = @"substring"; break;
+    case 2: eqMatch = @"prefix"; break;
+    default: eqMatch = @"[unknown]";
+    }
+
+  switch (((resContent->fuzzy) >> 16) & 0xf)
+    {
+    case 0: caseMatch = @"fl"; break;
+    case 1: caseMatch = @"nc"; break;
+    case 2: caseMatch = @"ns"; break;
+    case 4: caseMatch = @"lo"; break;
+    default: caseMatch = @"[unknown]";
+    }
+
+  propName = get_proptag_name (resContent->ulPropTag);
+  if (!propName)
+    propName = "<unknown>";
+
+  value = NSObjectFromMAPISPropValue (&resContent->lpProp);
+
+  return [NSString stringWithFormat: @"%s(0x%.8x) %@,%@ %@",
+		   propName, resContent->ulPropTag, eqMatch, caseMatch, value];
+}
+
+static NSString *
+MAPIStringForExistRestriction (struct mapi_SExistRestriction *resExist)
+{
+  const char *propName;
+
+  propName = get_proptag_name (resExist->ulPropTag);
+  if (!propName)
+    propName = "<unknown>";
+
+  return [NSString stringWithFormat: @"%s(0x%.8x) IS NOT NULL", propName, resExist->ulPropTag];
+}
+
+static NSString *
+MAPIStringForPropertyRestriction (struct mapi_SPropertyRestriction *resProperty)
+{
+  static NSString *operators[] = { @"<", @"<=", @">", @">=", @"==", @"!=",
+				   @"=~" };
+  NSString *operator;
+  id value;
+  const char *propName;
+
+  propName = get_proptag_name (resProperty->ulPropTag);
+  if (!propName)
+    propName = "<unknown>";
+
+  if (resProperty->relop > 0 && resProperty->relop < 6)
+    operator = operators[resProperty->relop];
+  else
+    operator = [NSString stringWithFormat: @"<invalid op %d>", resProperty->relop];
+  value = NSObjectFromMAPISPropValue (&resProperty->lpProp);
+
+  return [NSString stringWithFormat: @"%s(0x%.8x) %@ %@",
+		   propName, resProperty->ulPropTag, operator, value];
+}
+
+static NSString *
+MAPIStringForBitmaskRestriction (struct mapi_SBitmaskRestriction *resBitmask)
+{
+  NSString *format;
+  const char *propName;
+
+  propName = get_proptag_name (resBitmask->ulPropTag);
+  if (!propName)
+    propName = "<unknown>";
+
+  if (resBitmask->relMBR == 0)
+    format = @"((%s(0x%.8x) & 0x%.8x))";
+  else
+    format = @"((^%s(0x%.8x) & 0x%.8x))";
+
+  return [NSString stringWithFormat: format,
+		   propName, resBitmask->ulPropTag, resBitmask->ulMask];
+}
+
+static NSString *
+MAPIStringForRestriction (struct mapi_SRestriction *resPtr)
+{
+  NSString *restrictionStr;
+
+  if (resPtr)
+    {
+      switch (resPtr->rt)
+	{
+	  // RES_CONTENT=(int)(0x3),
+	  // RES_BITMASK=(int)(0x6),
+	  // RES_EXIST=(int)(0x8),
+
+	case 0: restrictionStr = MAPIStringForAndRestriction(&resPtr->res.resAnd); break;
+	case 1: restrictionStr = MAPIStringForOrRestriction(&resPtr->res.resOr); break;
+	case 2: restrictionStr = MAPIStringForNotRestriction(&resPtr->res.resNot); break;
+	case 3: restrictionStr = MAPIStringForContentRestriction(&resPtr->res.resContent); break;
+	case 4: restrictionStr = MAPIStringForPropertyRestriction(&resPtr->res.resProperty); break;
+	case 6: restrictionStr = MAPIStringForBitmaskRestriction(&resPtr->res.resBitmask); break;
+	case 8: restrictionStr = MAPIStringForExistRestriction(&resPtr->res.resExist); break;
+	  // case 5: MAPIStringForComparePropsRestriction(&resPtr->res.resCompareProps); break;
+	  // case 7: MAPIStringForPropertyRestriction(&resPtr->res.resProperty); break;
+	  // case 9: MAPIStringForPropertyRestriction(&resPtr->res.resProperty); break;
+	  // case 10: MAPIStringForPropertyRestriction(&resPtr->res.resProperty); break;
+	default:
+	  restrictionStr
+	    = [NSString stringWithFormat: @"[unhandled restriction type: %d]",
+			resPtr->rt];
+	}
+    }
+  else
+    restrictionStr = @"[unrestricted]";
+
+  return restrictionStr;
+}
 
 @implementation MAPIStoreContext : NSObject
 
@@ -212,6 +410,9 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       moduleFolder = nil;
       uri = nil;
       baseContextSet = NO;
+
+      restrictionState = MAPIRestrictionStateAlwaysTrue;
+      restriction = nil;
     }
 
   [self logWithFormat: @"-init"];
@@ -224,6 +425,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   [self logWithFormat: @"-dealloc: %@", self];
 
   [parentFoldersBag release];
+  [restriction release];
 
   [messageCache release];
   [subfolderCache release];
@@ -479,7 +681,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 - (int) openDir: (uint64_t) fid
     inParentFID: (uint64_t) parentFID
 {
-  [self logWithFormat: @"UNIMPLEMENTED METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  [self logWithFormat:
+	  @"UNIMPLEMENTED METHOD '%s' (%d):\n fid=0x%.16x, parentFID=0x%.16x",
+	__FUNCTION__, __LINE__,
+	(unsigned long long) fid,
+	(unsigned long long) parentFID];
 
   return MAPISTORE_ERROR;
 }
@@ -565,36 +771,50 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
-  url = [mapping urlFromID: fid];
-  if (url)
+  [self logWithFormat: @"context restriction state is: %@",
+	MAPIStringForRestrictionState (restrictionState)];
+  if (restriction)
+    [self logWithFormat: @"  active qualifier: %@", restriction];
+
+
+  if (restrictionState == MAPIRestrictionStateAlwaysFalse)
     {
-      switch (tableType)
-        {
-        case MAPISTORE_FOLDER_TABLE:
-          ids = [self _subfolderKeysForFolderURL: url];
-          break;
-        case MAPISTORE_MESSAGE_TABLE:
-          ids = [self _messageKeysForFolderURL: url];
-          break;
-        default:
-          [self errorWithFormat: @"%s: value of tableType not handled: %d",
-                __FUNCTION__, tableType];
-          rc = MAPISTORE_ERR_INVALID_PARAMETER;
-          ids = nil;
-        }
-      
-      if ([ids isKindOfClass: NSArrayK])
-        {
-          rc = MAPI_E_SUCCESS;
-          *rowCount = [ids count];
-        }
-      else
-        rc = MAPISTORE_ERR_NO_DIRECTORY;
+      *rowCount = 0;
+      rc = MAPI_E_SUCCESS;
     }
   else
     {
-      [self errorWithFormat: @"No url found for FID: %lld", fid];
-      rc = MAPISTORE_ERR_NOT_FOUND;
+      url = [mapping urlFromID: fid];
+      if (url)
+	{
+	  switch (tableType)
+	    {
+	    case MAPISTORE_FOLDER_TABLE:
+	      ids = [self _subfolderKeysForFolderURL: url];
+	      break;
+	    case MAPISTORE_MESSAGE_TABLE:
+	      ids = [self _messageKeysForFolderURL: url];
+	      break;
+	    default:
+	      [self errorWithFormat: @"%s: value of tableType not handled: %d",
+		    __FUNCTION__, tableType];
+	      rc = MAPISTORE_ERR_INVALID_PARAMETER;
+	      ids = nil;
+	    }
+	  
+	  if ([ids isKindOfClass: NSArrayK])
+	    {
+	      rc = MAPI_E_SUCCESS;
+	      *rowCount = [ids count];
+	    }
+	  else
+	    rc = MAPISTORE_ERR_NO_DIRECTORY;
+	}
+      else
+	{
+	  [self errorWithFormat: @"No url found for FID: %lld", fid];
+	  rc = MAPISTORE_ERR_NOT_FOUND;
+	}
     }
 
   return rc;
@@ -842,6 +1062,273 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return rc;
 }
 
+- (void) logRestriction: (struct mapi_SRestriction *) res
+	      withState: (MAPIRestrictionState) state
+{
+  NSString *resStr;
+
+  resStr = MAPIStringForRestriction (res);
+
+  [self logWithFormat: @"%@  -->  %@", resStr, MAPIStringForRestrictionState (state)];
+}
+
+- (MAPIRestrictionState) evaluateRestriction: (struct mapi_SRestriction *) res
+			       intoQualifier: (EOQualifier **) qualifier
+{
+  MAPIRestrictionState state;
+
+  switch (res->rt)
+    {
+      /* basic operators */
+    case 0: state = [self evaluateAndRestriction: &res->res.resAnd
+				   intoQualifier: qualifier];
+      break;
+    case 1: state = [self evaluateOrRestriction: &res->res.resOr
+				  intoQualifier: qualifier];
+      break;
+    case 2: state = [self evaluateNotRestriction: &res->res.resNot
+				   intoQualifier: qualifier];
+      break;
+
+      /* content restrictions */
+    case 3: state = [self evaluateContentRestriction: &res->res.resContent
+				       intoQualifier: qualifier];
+      break;
+    case 4: state = [self evaluatePropertyRestriction: &res->res.resProperty
+					intoQualifier: qualifier];
+      break;
+    case 6: state = [self evaluateBitmaskRestriction: &res->res.resBitmask
+				       intoQualifier: qualifier];
+      break;
+    case 8: state = [self evaluateExistRestriction: &res->res.resExist
+				     intoQualifier: qualifier];
+      break;
+    // case 5: MAPIStringForComparePropsRestriction(&resPtr->res.resCompareProps); break;
+    // case 7: MAPIStringForPropertyRestriction(&resPtr->res.resProperty); break;
+    // case 9: MAPIStringForPropertyRestriction(&resPtr->res.resProperty); break;
+    // case 10: MAPIStringForPropertyRestriction(&resPtr->res.resProperty); break;
+    default:
+      [NSException raise: @"MAPIStoreRestrictionException"
+		  format: @"unhandled restriction type"];
+      state = MAPIRestrictionStateAlwaysTrue;
+    }
+
+  [self logRestriction: res withState: state];
+
+  return state;
+}
+
+- (MAPIRestrictionState) evaluateNotRestriction: (struct mapi_SNotRestriction *) res
+				  intoQualifier: (EOQualifier **) qualifierPtr
+{
+  MAPIRestrictionState state, subState;
+  EONotQualifier *qualifier;
+  EOQualifier *subQualifier;
+
+  subState = [self evaluateRestriction: (struct mapi_SRestriction *)&res->res
+			 intoQualifier: &subQualifier];
+  if (subState == MAPIRestrictionStateAlwaysTrue)
+    state = MAPIRestrictionStateAlwaysFalse;
+  else if (subState == MAPIRestrictionStateAlwaysFalse)
+    state = MAPIRestrictionStateAlwaysTrue;
+  else
+    {
+      state = MAPIRestrictionStateNeedsEval;
+      qualifier = [[EONotQualifier alloc] initWithQualifier: subQualifier];
+      [qualifier autorelease];
+      *qualifierPtr = qualifier;
+    }
+
+  return state;
+}
+
+- (MAPIRestrictionState) evaluateAndRestriction: (struct mapi_SAndRestriction *) res
+				  intoQualifier: (EOQualifier **) qualifierPtr
+{
+  MAPIRestrictionState state, subState;
+  EOAndQualifier *qualifier;
+  EOQualifier *subQualifier;
+  NSMutableArray *subQualifiers;
+  uint16_t count;
+
+  state = MAPIRestrictionStateNeedsEval;
+
+  subQualifiers = [NSMutableArray arrayWithCapacity: 8];
+  for (count = 0;
+       state == MAPIRestrictionStateNeedsEval && count < res->cRes;
+       count++)
+    {
+      subState = [self evaluateRestriction: (struct mapi_SRestriction *) res->res + count
+			     intoQualifier: &subQualifier];
+      if (subState == MAPIRestrictionStateNeedsEval)
+	[subQualifiers addObject: subQualifier];
+      else if (subState == MAPIRestrictionStateAlwaysFalse)
+	state = MAPIRestrictionStateAlwaysFalse;
+    }
+
+  if (state == MAPIRestrictionStateNeedsEval)
+    {
+      if ([subQualifiers count] == 0)
+	state = MAPIRestrictionStateAlwaysTrue;
+      else
+	{
+	  qualifier = [[EOAndQualifier alloc]
+			initWithQualifierArray: subQualifiers];
+	  [qualifier autorelease];
+	  *qualifierPtr = qualifier;
+	}
+    }
+
+  return state;
+}
+
+- (MAPIRestrictionState) evaluateOrRestriction: (struct mapi_SOrRestriction *) res
+				 intoQualifier: (EOQualifier **) qualifierPtr
+{
+  MAPIRestrictionState state, subState;
+  EOOrQualifier *qualifier;
+  EOQualifier *subQualifier;
+  NSMutableArray *subQualifiers;
+  uint16_t count, falseCount;
+
+  state = MAPIRestrictionStateNeedsEval;
+
+  falseCount = 0;
+  subQualifiers = [NSMutableArray arrayWithCapacity: 8];
+  for (count = 0;
+       state == MAPIRestrictionStateNeedsEval && count < res->cRes;
+       count++)
+    {
+      subState = [self evaluateRestriction: (struct mapi_SRestriction *) res->res + count
+			     intoQualifier: &subQualifier];
+      if (subState == MAPIRestrictionStateNeedsEval)
+	[subQualifiers addObject: subQualifier];
+      else if (subState == MAPIRestrictionStateAlwaysTrue)
+	state = MAPIRestrictionStateAlwaysTrue;
+      else
+	falseCount++;
+    }
+
+  if (falseCount == res->cRes)
+    state = MAPIRestrictionStateAlwaysFalse;
+  else if ([subQualifiers count] == 0)
+    state = MAPIRestrictionStateAlwaysTrue;
+
+  if (state == MAPIRestrictionStateNeedsEval)
+    {
+      qualifier = [[EOOrQualifier alloc]
+		    initWithQualifierArray: subQualifiers];
+      [qualifier autorelease];
+      *qualifierPtr = qualifier;
+    }
+
+  return state;
+}
+
+- (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (MAPIRestrictionState) evaluateContentRestriction: (struct mapi_SContentRestriction *) res
+				      intoQualifier: (EOQualifier **) qualifier
+{
+  [self subclassResponsibility: _cmd];
+
+  return MAPIRestrictionStateAlwaysTrue;
+}
+
+- (void) _raiseUnhandledPropertyException: (enum MAPITAGS) property
+{
+  const char *propName;
+
+  propName = get_proptag_name (property);
+  if (!propName)
+    propName = "<unknown>";
+  [NSException raise: @"MAPIStoreUnhandledPropertyException"
+	      format: @"property %s (%.8x) has no matching field name (%@)",
+	       propName, property, self];
+}
+
+- (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
+				       intoQualifier: (EOQualifier **) qualifier
+{
+  static SEL operators[] = { EOQualifierOperatorLessThan,
+			     EOQualifierOperatorLessThanOrEqualTo,
+			     EOQualifierOperatorGreaterThan,
+			     EOQualifierOperatorGreaterThanOrEqualTo,
+			     EOQualifierOperatorEqual,
+			     EOQualifierOperatorNotEqual,
+			     EOQualifierOperatorContains };
+  SEL operator;
+  id value;
+  NSString *property;
+
+  property = [self backendIdentifierForProperty: res->ulPropTag];
+  if (!property)
+    [self _raiseUnhandledPropertyException: res->ulPropTag];
+
+  if (res->relop > 0 && res->relop < 6)
+    operator = operators[res->relop];
+  else
+    {
+      operator = NULL;
+      [NSException raise: @"MAPIStoreRestrictionException"
+		   format: @"unhandled operator type"];
+    }
+
+  value = NSObjectFromMAPISPropValue (&res->lpProp);
+  *qualifier = [[EOKeyValueQualifier alloc] initWithKey: property
+				       operatorSelector: operator
+						  value: value];
+  [*qualifier autorelease];
+
+  return MAPIRestrictionStateNeedsEval;
+}
+
+- (MAPIRestrictionState) evaluateBitmaskRestriction: (struct mapi_SBitmaskRestriction *) res
+				      intoQualifier: (EOQualifier **) qualifier
+{
+  [self subclassResponsibility: _cmd];
+
+  return MAPIRestrictionStateAlwaysTrue;
+}
+
+- (MAPIRestrictionState) evaluateExistRestriction: (struct mapi_SExistRestriction *) res
+				    intoQualifier: (EOQualifier **) qualifier
+{
+  [self subclassResponsibility: _cmd];
+
+  return MAPIRestrictionStateAlwaysTrue;
+}
+
+- (int) setRestrictions: (struct mapi_SRestriction *) res
+	       withFMID: (uint64_t) fmid
+	   andTableType: (uint8_t) type
+	 getTableStatus: (uint8_t *) tableStatus
+{
+  NSLog (@"set restriction to (table type: %d): %@",
+	 type, MAPIStringForRestriction (res));
+
+  [restriction release];
+  if (res)
+    restrictionState = [self evaluateRestriction: res
+				   intoQualifier: &restriction];
+  else
+    restrictionState = MAPIRestrictionStateAlwaysTrue;
+
+  if (restrictionState == MAPIRestrictionStateNeedsEval)
+    [restriction retain];
+  else
+    restriction = nil;
+
+  [self logWithFormat: @"  resulting EOQualifier: %@", restriction];
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (enum MAPISTATUS) getTableProperty: (void **) data
 			     withTag: (enum MAPITAGS) proptag
 			  atPosition: (uint32_t) pos
@@ -853,76 +1340,87 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   SOGoFolder *folder;
   int rc;
 
-  // [self logWithFormat: @"METHOD '%s' (%d) -- proptag: 0x%.8x, pos: %ld, tableType: %d, fid: %lld",
-  //       __FUNCTION__, __LINE__, proptag, pos, tableType, fid];
+  [self logWithFormat: @"METHOD '%s' (%d) -- proptag: 0x%.8x, pos: %ld, tableType: %d, fid: %lld",
+	__FUNCTION__, __LINE__, proptag, pos, tableType, fid];
 
-  folderURL = [mapping urlFromID: fid];
-  if (folderURL)
-    {
-      folder = [self lookupObject: folderURL];
-      switch (tableType)
-        {
-        case MAPISTORE_FOLDER_TABLE:
-          children = [self _subfolderKeysForFolderURL: folderURL];
-          break;
-        case MAPISTORE_MESSAGE_TABLE:
-          children = [self _messageKeysForFolderURL: folderURL];
-          break;
-        default:
-          [self errorWithFormat: @"%s: value of tableType not handled: %d",
-                __FUNCTION__, tableType];
-          children = nil;
-          break;
-        }
+  [self logWithFormat: @"context restriction state is: %@",
+	MAPIStringForRestrictionState (restrictionState)];
+  if (restriction)
+    [self logWithFormat: @"  active qualifier: %@", restriction];
 
-      if ([children count] > pos)
-        {
-          childName = [children objectAtIndex: pos];
-          childURL = [folderURL stringByAppendingFormat: @"/%@",
-                                [childName stringByEscapingURL]];
-
-          if (tableType == MAPISTORE_FOLDER_TABLE)
-            {
-              [self logWithFormat: @"  querying child folder at URL: %@", childURL];
-              rc = [self getFolderTableChildproperty: data
-                                               atURL: childURL
-                                             withTag: proptag
-                                            inFolder: folder
-                                             withFID: fid];
-            }
-          else
-            {
-              // [self logWithFormat: @"  querying child message at URL: %@", childURL];
-              rc = [self getMessageTableChildproperty: data
-                                                atURL: childURL
-                                              withTag: proptag
-                                             inFolder: folder
-                                              withFID: fid];
-            }
-          /* Unhandled: */
-          // #define PR_EXPIRY_TIME                                      PROP_TAG(PT_SYSTIME   , 0x0015) /* 0x00150040 */
-          // #define PR_REPLY_TIME                                       PROP_TAG(PT_SYSTIME   , 0x0030) /* 0x00300040 */
-          // #define PR_SENSITIVITY                                      PROP_TAG(PT_LONG      , 0x0036) /* 0x00360003 */
-          // #define PR_MESSAGE_DELIVERY_TIME                            PROP_TAG(PT_SYSTIME   , 0x0e06) /* 0x0e060040 */
-          // #define PR_FOLLOWUP_ICON                                    PROP_TAG(PT_LONG      , 0x1095) /* 0x10950003 */
-          // #define PR_ITEM_TEMPORARY_FLAGS                             PROP_TAG(PT_LONG      , 0x1097) /* 0x10970003 */
-          // #define PR_SEARCH_KEY                                       PROP_TAG(PT_BINARY    , 0x300b) /* 0x300b0102 */
-          // #define PR_CONTENT_COUNT                                    PROP_TAG(PT_LONG      , 0x3602) /* 0x36020003 */
-          // #define PR_CONTENT_UNREAD                                   PROP_TAG(PT_LONG      , 0x3603) /* 0x36030003 */
-          // #define PR_FID                                              PROP_TAG(PT_I8        , 0x6748) /* 0x67480014 */
-          // unknown 36de0003 http://social.msdn.microsoft.com/Forums/en-US/os_exchangeprotocols/thread/17c68add-1f62-4b68-9d83-f9ec7c1c6c9b
-          // unknown 819d0003
-          // unknown 81f80003
-          // unknown 81fa000b
-
-        }
-      else
-        rc = MAPISTORE_ERROR;
-    }
+  if (restrictionState == MAPIRestrictionStateAlwaysFalse 
+      || restrictionState == MAPIRestrictionStateNeedsEval) /* TODO: tmp hack */
+    rc = MAPI_E_NOT_FOUND;
   else
     {
-      [self errorWithFormat: @"No url found for FID: %lld", fid];
-      rc = MAPISTORE_ERR_NOT_FOUND;
+      folderURL = [mapping urlFromID: fid];
+      if (folderURL)
+	{
+	  folder = [self lookupObject: folderURL];
+	  switch (tableType)
+	    {
+	    case MAPISTORE_FOLDER_TABLE:
+	      children = [self _subfolderKeysForFolderURL: folderURL];
+	      break;
+	    case MAPISTORE_MESSAGE_TABLE:
+	      children = [self _messageKeysForFolderURL: folderURL];
+	      break;
+	    default:
+	      [self errorWithFormat: @"%s: value of tableType not handled: %d",
+		    __FUNCTION__, tableType];
+	      children = nil;
+	      break;
+	    }
+
+	  if ([children count] > pos)
+	    {
+	      childName = [children objectAtIndex: pos];
+	      childURL = [folderURL stringByAppendingFormat: @"/%@",
+				    [childName stringByEscapingURL]];
+
+	      if (tableType == MAPISTORE_FOLDER_TABLE)
+		{
+		  [self logWithFormat: @"  querying child folder at URL: %@", childURL];
+		  rc = [self getFolderTableChildproperty: data
+						   atURL: childURL
+						 withTag: proptag
+						inFolder: folder
+						 withFID: fid];
+		}
+	      else
+		{
+		  // [self logWithFormat: @"  querying child message at URL: %@", childURL];
+		  rc = [self getMessageTableChildproperty: data
+						    atURL: childURL
+						  withTag: proptag
+						 inFolder: folder
+						  withFID: fid];
+		}
+	      /* Unhandled: */
+	      // #define PR_EXPIRY_TIME                                      PROP_TAG(PT_SYSTIME   , 0x0015) /* 0x00150040 */
+	      // #define PR_REPLY_TIME                                       PROP_TAG(PT_SYSTIME   , 0x0030) /* 0x00300040 */
+	      // #define PR_SENSITIVITY                                      PROP_TAG(PT_LONG      , 0x0036) /* 0x00360003 */
+	      // #define PR_MESSAGE_DELIVERY_TIME                            PROP_TAG(PT_SYSTIME   , 0x0e06) /* 0x0e060040 */
+	      // #define PR_FOLLOWUP_ICON                                    PROP_TAG(PT_LONG      , 0x1095) /* 0x10950003 */
+	      // #define PR_ITEM_TEMPORARY_FLAGS                             PROP_TAG(PT_LONG      , 0x1097) /* 0x10970003 */
+	      // #define PR_SEARCH_KEY                                       PROP_TAG(PT_BINARY    , 0x300b) /* 0x300b0102 */
+	      // #define PR_CONTENT_COUNT                                    PROP_TAG(PT_LONG      , 0x3602) /* 0x36020003 */
+	      // #define PR_CONTENT_UNREAD                                   PROP_TAG(PT_LONG      , 0x3603) /* 0x36030003 */
+	      // #define PR_FID                                              PROP_TAG(PT_I8        , 0x6748) /* 0x67480014 */
+	      // unknown 36de0003 http://social.msdn.microsoft.com/Forums/en-US/os_exchangeprotocols/thread/17c68add-1f62-4b68-9d83-f9ec7c1c6c9b
+	      // unknown 819d0003
+	      // unknown 81f80003
+	      // unknown 81fa000b
+
+	    }
+	  else
+	    rc = MAPISTORE_ERROR;
+	}
+      else
+	{
+	  [self errorWithFormat: @"No url found for FID: %lld", fid];
+	  rc = MAPISTORE_ERR_NOT_FOUND;
+	}
     }
 
   return rc;
@@ -1023,31 +1521,44 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   NSMutableDictionary *messageProperties;
   NSString *messageURL;
   uint64_t fid;
+  BOOL viewMessage;
 
+  viewMessage = NO;
   messageProperties = [messages objectForKey:
                                   [NSNumber numberWithUnsignedLongLong: mid]];
   if (messageProperties)
     {
-      messageURL = [mapping urlFromID: mid];
-      if (messageURL)
-        message = [self lookupObject: messageURL];
+      if ([[messageProperties
+	    objectForKey: MAPIPropertyNumber (PR_MESSAGE_CLASS_UNICODE)]
+	  isEqualToString: @"IPM.Microsoft.FolderDesign.NamedView"])
+	{
+	  [self logWithFormat: @"ignored message with view data:"];
+	  MAPIStoreDumpMessageProperties (messageProperties);
+	  rc = MAPISTORE_SUCCESS;
+	}
       else
-        {
-          fid = [[messageProperties objectForKey: @"fid"]
-                  unsignedLongLongValue];
-          message = [self _createMessageWithMID: mid inFID: fid];
-        }
-      if (message)
-        {
-          [message setMAPIProperties: messageProperties];
-          if (isSave)
-            [message MAPISave];
-          else
-            [message MAPISubmit];
-          rc = MAPISTORE_SUCCESS;
-        }
-      else
-        rc = MAPISTORE_ERROR;
+	{
+	  messageURL = [mapping urlFromID: mid];
+	  if (messageURL)
+	    message = [self lookupObject: messageURL];
+	  else
+	    {
+	      fid = [[messageProperties objectForKey: @"fid"]
+		      unsignedLongLongValue];
+	      message = [self _createMessageWithMID: mid inFID: fid];
+	    }
+	  if (message)
+	    {
+	      [message setMAPIProperties: messageProperties];
+	      if (isSave)
+		[message MAPISave];
+	      else
+		[message MAPISubmit];
+	      rc = MAPISTORE_SUCCESS;
+	    }
+	  else
+	    rc = MAPISTORE_ERROR;
+	}
     }
   else
     rc = MAPISTORE_ERR_NOT_FOUND;

@@ -1,5 +1,33 @@
 2010-12-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m
+	(-setRestrictions:withFMID:andTableType:getTableStatus:): new
+	backend method that accepts a struct mapi_SRestriction * in order
+	to filter the table rows.
+	(-evaluateRestriction:intoQualifier:)
+	(-evaluateNotRestriction:intoQualifier:)
+	(-evaluateAndRestriction:intoQualifier:)
+	(-evaluateOrRestriction:intoQualifier:): new low-level restriction
+	handlers for converting MAPI restrictions into EOQualifier
+	equivalents.
+	(-evaluateContentRestriction:intoQualifier:)
+	(-evaluatePropertyRestriction:intoQualifier:)
+	(-evaluateBitmaskRestriction:intoQualifier:)
+	(-evaluateExistRestriction:intoQualifier:) new overridable
+	restriction handlers.
+	(-backendIdentifierForProperty:): new overridable restriction
+	helper for converting restriction attributes into database or IMAP
+	fields, depending on the module in use. Used by the topmost
+	version of -evaluatePropertyRestriction:intoQualifier: for
+	handling "needs eval" restriction types.
+	(-saveOrSubmitChangesInMessageWithMID:andFlags:save:) prevent any
+	creation or modification of messages with a type attribute of
+	"IPM.Microsoft.FolderDesign.NamedView", at least for now, because
+	no module is able to handle those view-related messages.
+
+	* OpenChange/MAPIStoreSpoolerContext.m: new experimental subclass
+	of MAPIStoreOutboxContext.
+
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromMAPISPropValue): new
 	helper function, similar in semantics to NSObjectFromSPropValue
 	but taking a struct mapi_SPropValue * as parameter.
