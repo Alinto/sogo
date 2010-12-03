@@ -36,6 +36,15 @@
 	constructor for returning an NSData instance from a struct
 	SBinary_short.
 
+2010-12-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js
+	(deleteSelectedMessagesCallback): must set the value of
+	lastClickedRow and	lastClickedRowId when selecting the next row.
+	
+	* UI/WebServerResources/HTMLElement.js (refreshSelectionByIds):
+	log invalid references to element IDs.
+
 2010-12-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Main/SOGo+DAV.m - we avoid assuming a range is found

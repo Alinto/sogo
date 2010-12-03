@@ -395,6 +395,7 @@ function deleteSelectedMessages(sender) {
     var unseenCount = 0;
 
     if (rowIds && rowIds.length > 0) {
+        messageList.deselectAll();
         for (var i = 0; i < rowIds.length; i++) {
 	    if (unseenCount < 1) {
 		var rows = messageList.select('#' + rowIds[i]);
@@ -408,13 +409,12 @@ function deleteSelectedMessages(sender) {
 		    unseenCount = 1;
 		}
 	    }
-            deleteMessageRequestCount++;
             var uid = rowIds[i].substr(4); // drop "row_"
             var path = Mailer.currentMailbox + "/" + uid;
             uids.push(uid);
             paths.push(path);
+            deleteMessageRequestCount++;
         }
-        messageList.deselectAll();
         updateMessageListCounter(0 - rowIds.length, true);
         if (unseenCount < 0) {
             var node = mailboxTree.getMailboxNode(Mailer.currentMailbox);
@@ -449,8 +449,9 @@ function deleteSelectedMessagesCallback(http) {
                 if (deleteMessageRequestCount == 0) {
                     // Select next message
                     var row = $("row_" + data["id"][i]);
+                    var nextRow = false;
                     if (row) {
-                        var nextRow = row.next("tr");
+                        nextRow = row.next("tr");
                         if (!nextRow.id.startsWith('row_'))
                             nextRow = row.previous("tr");
                         //	row.addClassName("deleted"); // when we'll offer "mark as deleted"
@@ -465,6 +466,11 @@ function deleteSelectedMessagesCallback(http) {
                         div.innerHTML = '';
                     }
                     Mailer.dataTable.remove(data["id"][i]);
+                    if (nextRow) {
+                        // from generic.js
+                        lastClickedRow = nextRow.rowIndex;
+	                lastClickedRowId = nextRow.id;
+                    }
                     Mailer.dataTable.refresh();
                     deleteCachedMailboxByType("trash");
                 }

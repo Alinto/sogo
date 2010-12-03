@@ -249,7 +249,7 @@ Element.addMethods({
         deselectAll: function(element) {
             element = $(element);
             if (element.tagName == 'TABLE') {
-                var tbody = element.down('TBODY');
+                var tbody = element.tBodies[0];
                 if (tbody)
                     element = tbody;
             }
@@ -265,8 +265,16 @@ Element.addMethods({
             if (element.selectedIds) {
                 for (var i = 0; i < element.selectedIds.length; i++) {
                     var e = element.down('#'+element.selectedIds[i]);
-                    if (e && !e.hasClassName('_selected'))
-                        e.addClassName('_selected');
+                    if (e) {
+                        if (!e.hasClassName('_selected'))
+                            e.addClassName('_selected');
+                    }
+                    else {
+                        log ("refreshSelectionByIds Error: " + element.tagName
+                             + " select by ID " + element.selectedIds[i]
+                             + " not found (" + element.childNodes.length + " children)");
+                        element.selectedIds.splice(i,1);
+                    }
                 }
             }
         },
