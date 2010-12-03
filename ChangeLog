@@ -1,3 +1,12 @@
+2010-12-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js
+	(deleteSelectedMessagesCallback): must set the value of
+	lastClickedRow and	lastClickedRowId when selecting the next row.
+	
+	* UI/WebServerResources/HTMLElement.js (refreshSelectionByIds):
+	log invalid references to element IDs.
+
 2010-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContext.m: prevent leaks by adding an
