@@ -34,6 +34,11 @@
   return [NSData dataWithBytes: binData->lpb length: binData->cb];
 }
 
++ (id) dataWithShortBinary: (const struct SBinary_short *) binData
+{
+  return [NSData dataWithBytes: binData->lpb length: binData->cb];
+}
+
 - (struct Binary_r *) asBinaryInMemCtx: (void *) memCtx
 {
   struct Binary_r *binary;

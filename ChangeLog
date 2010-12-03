@@ -1,3 +1,9 @@
+2010-12-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/NSData+MAPIStore.m: (+dataWithShortBinary:): new
+	constructor for returning an NSData instance from a struct
+	SBinary_short.
+
 2010-12-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Main/SOGo+DAV.m - we avoid assuming a range is found
