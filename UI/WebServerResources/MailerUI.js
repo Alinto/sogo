@@ -2236,8 +2236,18 @@ function onMenuEmptyTrash(event) {
 
 function onMenuEmptyTrashCallback(http) {
     if (http.readyState == 4
-        && isHttpStatus204(http.status))
+        && isHttpStatus204(http.status)) {
         deleteCachedMailboxByType('trash');
+        // Reload the folder tree if there was folders in the trash
+        var nodes = $("mailboxTree").select("DIV[datatype=trash]");
+        for (var i = 0; i < nodes.length; i++) {
+            var sibling = nodes[i].next();
+            if (sibling && sibling.hasClassName("clip")) {
+                initMailboxTree();
+                break;
+            }
+        }
+    }
     else
         showAlertDialog(http.callbackData);
 }

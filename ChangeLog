@@ -1,3 +1,8 @@
+2010-12-08  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (onMenuEmptyTrashCallback):
+	refresh the folders tree if there're folders in the trash.
+
 2010-12-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContext.m
