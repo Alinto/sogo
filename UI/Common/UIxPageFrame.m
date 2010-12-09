@@ -458,9 +458,10 @@
   if ([auth respondsToSelector: @selector (cookieNameInContext:)])
     {
       sd = [SOGoSystemDefaults sharedSystemDefaults];
-      canLogoff = (([[sd authenticationType] isEqualToString: @"cas"]
-                    && [sd CASLogoutEnabled])
-                   || [[auth cookieNameInContext: context] length] > 0);
+      if ([[sd authenticationType] isEqualToString: @"cas"])
+	canLogoff = [sd CASLogoutEnabled];
+      else
+	canLogoff = [[auth cookieNameInContext: context] length] > 0;
     }
   else
     canLogoff = NO;
