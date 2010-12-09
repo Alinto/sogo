@@ -1283,8 +1283,8 @@ static NSString    *userAgent      = nil;
 {
   NSString *s, *dateString;
   NGMutableHashMap *map;
-  id from, replyTo;
   NSArray *emails;
+  id from;
   
   map = [[[NGMutableHashMap alloc] initWithCapacity:16] autorelease];
   
@@ -1298,7 +1298,6 @@ static NSString    *userAgent      = nil;
 
   /* add senders */
   from = [headers objectForKey: @"from"];
-  replyTo = [headers objectForKey: @"replyTo"];
   
   if (![self isEmptyValue:from]) {
     if ([from isKindOfClass:[NSArray class]])
@@ -1306,15 +1305,6 @@ static NSString    *userAgent      = nil;
     else
       [map setObject: [self _quoteSpecials: from] forKey: @"from"];
   }
-  
-  if (![self isEmptyValue: replyTo]) {
-    if ([from isKindOfClass:[NSArray class]])
-      [map setObjects: [self _quoteSpecialsInArray: from] forKey: @"reply-to"];
-    else
-      [map setObject: [self _quoteSpecials: from] forKey: @"reply-to"];
-  }
-  else if (![self isEmptyValue:from])
-    [map setObjects: [map objectsForKey: @"from"] forKey: @"reply-to"];
 
   if (inReplyTo)
     [map setObject: inReplyTo forKey: @"in-reply-to"];

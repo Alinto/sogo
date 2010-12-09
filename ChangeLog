@@ -3,6 +3,10 @@
         * SoObject/SOGo/SQLSource.m - added SHA password
 	hash support for SQL authentication sources.
 	* Added patch from bug #1048
+	* SoObjects/Mailer/SOGoDraftObject.m:
+	-mimeHeaderMapWithHeaders:excluding: axed the "replyTo"
+	code as it was always 'empty', leading to Reply-To being
+	always set to the From: address, which is rather stupid.
 
 2010-12-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
