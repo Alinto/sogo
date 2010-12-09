@@ -25,6 +25,7 @@
 
 #include <openssl/evp.h>
 #include <openssl/md5.h>
+#include <openssl/sha.h>
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSObject.h>
@@ -50,7 +51,7 @@
  *
  * c_uid      - will be used for authentication - it's a username or username@domain.tld)
  * c_name     - which can be identical to c_uid - will be used to uniquely identify entries)
- * c_password - password of the user, plain-text or md5 encoded for now
+ * c_password - password of the user, plain-text, md5 or sha encoded for now
  * c_cn       - the user's common name
  * mail       - the user's mail address
  *
@@ -166,6 +167,24 @@
       EVP_Digest((const void *) [plainPassword UTF8String], strlen([plainPassword UTF8String]), md, NULL, EVP_md5(), NULL);
       for (i = 0; i < MD5_DIGEST_LENGTH; i++)
 	sprintf(&(buf[i*2]), "%02x", md[i]);
+
+      s = [NSString stringWithUTF8String: buf];
+      return [s isEqualToString: encryptedPassword];
+    }
+  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"sha"] == NSOrderedSame)
+    {
+      NSString *s;
+
+      unsigned char sha[SHA_DIGEST_LENGTH];
+      char buf[80];
+      int i;
+      
+      memset(sha, 0, SHA_DIGEST_LENGTH);
+      memset(buf, 0, 80);
+
+      SHA1((const void *)[plainPassword UTF8String], strlen([plainPassword UTF8String]), sha);
+      for (i = 0; i < SHA_DIGEST_LENGTH; i++)
+	sprintf(&(buf[i*2]), "%02x", sha[i]);
 
       s = [NSString stringWithUTF8String: buf];
       return [s isEqualToString: encryptedPassword];

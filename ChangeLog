@@ -1,3 +1,8 @@
+2010-12-09  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * SoObject/SOGo/SQLSource.m - added SHA password
+	hash support for SQL authentication sources.
+
 2010-12-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (onMenuEmptyTrashCallback):
