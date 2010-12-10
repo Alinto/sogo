@@ -75,65 +75,60 @@
   qKey = [_q key];
   isCI = NO;
 
-  if ((val = [_q value])) {
-    SEL op = [_q selector];
+  SEL op = [_q selector];
 
-    if ([val isNotNull]) {
-      if (sel_eq(op, EOQualifierOperatorEqual))
-	qOperator = @"=";
-      else if (sel_eq(op, EOQualifierOperatorNotEqual))
-	qOperator = @"!=";
-      else if (sel_eq(op, EOQualifierOperatorLessThan))
-	qOperator = @"<";
-      else if (sel_eq(op, EOQualifierOperatorGreaterThan))
-	qOperator = @">";
-      else if (sel_eq(op, EOQualifierOperatorLessThanOrEqualTo))
-	qOperator = @"<=";
-      else if (sel_eq(op, EOQualifierOperatorGreaterThanOrEqualTo))
-	qOperator = @">=";
-      else if (sel_eq(op, EOQualifierOperatorLike))
-	qOperator = @"LIKE";
-      else if (sel_eq(op, EOQualifierOperatorCaseInsensitiveLike)) {
-	isCI = YES;
-	qOperator = @"LIKE";
-      }
-      else {
-	[self errorWithFormat:@"%s: unsupported operation for null: %@",
-	      __PRETTY_FUNCTION__, NSStringFromSelector(op)];
-	qOperator = @"=";
-      }
-
-      if ([val isKindOfClass:[NSNumber class]])
-	qValue = [val stringValue];
-      else if ([val isKindOfClass:[NSString class]]) {
-	qValue = [NSString stringWithFormat: @"'%@'", val];
-      }
-      else {
-        qValue = @"NULL";
-	[self errorWithFormat:@"%s: unsupported value class: %@",
-	      __PRETTY_FUNCTION__, NSStringFromClass([val class])];
-      }
+  val = [_q value];
+  if (val && [val isNotNull]) {
+    if (sel_eq(op, EOQualifierOperatorEqual))
+      qOperator = @"=";
+    else if (sel_eq(op, EOQualifierOperatorNotEqual))
+      qOperator = @"!=";
+    else if (sel_eq(op, EOQualifierOperatorLessThan))
+      qOperator = @"<";
+    else if (sel_eq(op, EOQualifierOperatorGreaterThan))
+      qOperator = @">";
+    else if (sel_eq(op, EOQualifierOperatorLessThanOrEqualTo))
+      qOperator = @"<=";
+    else if (sel_eq(op, EOQualifierOperatorGreaterThanOrEqualTo))
+      qOperator = @">=";
+    else if (sel_eq(op, EOQualifierOperatorLike))
+      qOperator = @"LIKE";
+    else if (sel_eq(op, EOQualifierOperatorCaseInsensitiveLike)) {
+      isCI = YES;
+      qOperator = @"LIKE";
     }
     else {
-      if (sel_eq(op, EOQualifierOperatorEqual)) {
-	qOperator = @"IS";
-	qValue = @"NULL";
-      }
-      else if (sel_eq(op, EOQualifierOperatorNotEqual)) {
-	qOperator = @"IS NOT";
-	qValue = @"NULL";
-      }
-      else {
-	qOperator = @"IS";
-	qValue = @"NULL";
-	[self errorWithFormat:@"%s: invalid operation for null: %@",
-	      __PRETTY_FUNCTION__, NSStringFromSelector(op)];
-      }
+      [self errorWithFormat:@"%s: unsupported operation for null: %@",
+	    __PRETTY_FUNCTION__, NSStringFromSelector(op)];
+      qOperator = @"=";
+    }
+    
+    if ([val isKindOfClass:[NSNumber class]])
+      qValue = [val stringValue];
+    else if ([val isKindOfClass:[NSString class]]) {
+      qValue = [NSString stringWithFormat: @"'%@'", val];
+    }
+    else {
+      qValue = @"NULL";
+      [self errorWithFormat:@"%s: unsupported value class: %@",
+	    __PRETTY_FUNCTION__, NSStringFromClass([val class])];
     }
   }
   else {
-    qOperator = @"IS";
-    qValue = @"NULL";
+    if (sel_eq(op, EOQualifierOperatorEqual)) {
+      qOperator = @"IS";
+      qValue = @"NULL";
+    }
+    else if (sel_eq(op, EOQualifierOperatorNotEqual)) {
+      qOperator = @"IS NOT";
+      qValue = @"NULL";
+    }
+    else {
+      qOperator = @"IS";
+      qValue = @"NULL";
+      [self errorWithFormat:@"%s: invalid operation for null: %@",
+	    __PRETTY_FUNCTION__, NSStringFromSelector(op)];
+    }
   }
 
   if (isCI)

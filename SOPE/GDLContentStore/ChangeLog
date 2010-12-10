@@ -2,6 +2,7 @@
 
 	* EOQualifier+GCS.m (_appendKeyValueQualifier:toString:): fixed
 	evaluation to handle the "EOQualifierOperatorNotEqual" operator.
+	Fixed code to consider "nil" values as another case for "NULL".
 
 2010-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
