@@ -119,7 +119,7 @@
 	qOperator = @"IS";
 	qValue = @"NULL";
       }
-      else if (sel_eq(op, EOQualifierOperatorEqual)) {
+      else if (sel_eq(op, EOQualifierOperatorNotEqual)) {
 	qOperator = @"IS NOT";
 	qValue = @"NULL";
       }

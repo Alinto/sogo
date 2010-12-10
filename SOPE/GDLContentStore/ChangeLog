@@ -1,3 +1,8 @@
+2010-12-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* EOQualifier+GCS.m (_appendKeyValueQualifier:toString:): fixed
+	evaluation to handle the "EOQualifierOperatorNotEqual" operator.
+
 2010-08-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSSpecialQueries.m (-createEMailAlarmsFolderWithName:): new sql
