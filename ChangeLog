@@ -1,5 +1,9 @@
 2010-12-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFileSystemBaseContext.[hm]: new base
+	MAPIStoreContext class that handles requests for objects based on
+	the SOGoMAPIFSFolder and SOGoMAPIFSMessage classes.
+
 	* MAPIStoreCommonViewsContext.[hm],
 	MAPIStoreDeferredActionsContext.[hm],
 	MAPIStoreDeletedItemsContext.[hm], MAPIStoreDraftsContext.[hm],
