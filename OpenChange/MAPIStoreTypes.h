@@ -6,7 +6,7 @@
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
+ * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -40,12 +40,12 @@ id NSObjectFromMAPISPropValue (const struct mapi_SPropValue *);
 id NSObjectFromStreamData (enum MAPITAGS property, NSData *streamData);
 
 static inline NSNumber *
-MAPIPropertyNumber (enum MAPITAGS propTag)
+MAPIPropertyKey (enum MAPITAGS propTag)
 {
 #if (GS_SIZEOF_LONG == 4)
-  return [NSNumber numberWithUnsignedLong: propTag];
+  return [NSNumber numberWithUnsignedLong: (propTag & 0xffff0000) >> 16];
 #elif (GS_SIZEOF_INT == 4)
-  return [NSNumber numberWithUnsignedInt: propTag];
+  return [NSNumber numberWithUnsignedInt: (propTag & 0xffff0000) >> 16];
 #else
 #error No suitable type for 4 bytes integers
 #endif

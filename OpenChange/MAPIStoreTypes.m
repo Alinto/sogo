@@ -6,7 +6,7 @@
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
+ * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -122,7 +122,8 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
 // #define	PT_SRESTRICT		0xFD
 // #define	PT_ACTIONS		0xFE
       result = [NSNull null];
-      NSLog (@"object type not handled: %d (0x.4x)", valueType, valueType);
+      NSLog (@"%s: object type not handled: %d (0x%.4x)",
+	     __PRETTY_FUNCTION__, valueType, valueType);
     }
 
   return result;
@@ -181,7 +182,8 @@ NSObjectFromSPropValue (const struct SPropValue *value)
 // #define	PT_SRESTRICT		0xFD
 // #define	PT_ACTIONS		0xFE
       result = [NSNull null];
-      NSLog (@"object type not handled: %d (0x.4x)", valueType, valueType);
+      NSLog (@"%s: object type not handled: %d (0x%.4x)",
+	     __PRETTY_FUNCTION__, valueType, valueType);
     }
 
   return result;
@@ -204,7 +206,8 @@ id NSObjectFromStreamData (enum MAPITAGS property, NSData* streamData)
       break;
     case PT_OBJECT:
       result = [NSNull null];
-      NSLog (@"object type not handled: %d (0x.4x)", valueType, valueType);
+      NSLog (@"%s: object type not handled: %d (0x%.4x)",
+	     __PRETTY_FUNCTION__, valueType, valueType);
       break;
     default:
       [NSException raise: @"MAPIStoreStreamTypeException"
