@@ -33,12 +33,26 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreTypes.m \
 	\
 	MAPIStoreCalendarContext.m \
+	MAPIStoreCommonViewsContext.m \
 	MAPIStoreContactsContext.m \
+	MAPIStoreDeferredActionsContext.m \
+	MAPIStoreDeletedItemsContext.m \
+	MAPIStoreDraftsContext.m \
 	MAPIStoreFreebusyContext.m \
+	MAPIStoreFileSystemBaseContext.m \
+	MAPIStoreGCSBaseContext.m \
+	MAPIStoreJournalContext.m \
 	MAPIStoreMailContext.m \
+	MAPIStoreNotesContext.m \
 	MAPIStoreOutboxContext.m \
+	MAPIStoreRemindersContext.m \
+	MAPIStoreScheduleContext.m \
+	MAPIStoreSearchContext.m \
+	MAPIStoreSentItemsContext.m \
+	MAPIStoreShortcutsContext.m \
 	MAPIStoreSpoolerContext.m \
 	MAPIStoreTasksContext.m \
+	MAPIStoreViewsContext.m \
 	\
 	SOGoAppointmentObject+MAPIStore.m \
 	SOGoContentObject+MAPIStore.m \
@@ -47,10 +61,16 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	SOGoGCSFolder+MAPIStore.m \
 	SOGoTaskObject+MAPIStore.m \
 	\
+	SOGoMAPIFSFolder.m \
+	SOGoMAPIFSMessage.m \
+	\
 	NSArray+MAPIStore.m \
 	NSCalendarDate+MAPIStore.m \
 	NSData+MAPIStore.m \
-	NSString+MAPIStore.m
+	NSString+MAPIStore.m \
+	NSValue+MAPIStore.m \
+	\
+	EOQualifier+MAPIFS.m
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
 	product.plist
