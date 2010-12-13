@@ -1,4 +1,4 @@
-/* NSData+MAPIStore.h - this file is part of $PROJECT_NAME_HERE$
+/* NSData+MAPIStore.h - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -28,9 +28,10 @@
 @interface NSData (MAPIStoreDataTypes)
 
 + (id) dataWithBinary: (const struct Binary_r *) binData;
-+ (id) dataWithShortBinary: (const struct SBinary_short *) binData;
-
 - (struct Binary_r *) asBinaryInMemCtx: (void *) memCtx;
+
++ (id) dataWithShortBinary: (const struct SBinary_short *) binData;
+- (struct SBinary_short *) asShortBinaryInMemCtx: (void *) memCtx;
 
 @end
 

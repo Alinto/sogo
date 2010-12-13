@@ -1,4 +1,4 @@
-/* NSData+MAPIStore.m - this file is part of $PROJECT_NAME_HERE$
+/* NSData+MAPIStore.m - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -34,17 +34,31 @@
   return [NSData dataWithBytes: binData->lpb length: binData->cb];
 }
 
-+ (id) dataWithShortBinary: (const struct SBinary_short *) binData
-{
-  return [NSData dataWithBytes: binData->lpb length: binData->cb];
-}
-
 - (struct Binary_r *) asBinaryInMemCtx: (void *) memCtx
 {
   struct Binary_r *binary;
   uint8_t *lpb;
 
   binary = talloc_zero (memCtx, struct Binary_r);
+  binary->cb = [self length];
+  lpb = talloc_array (binary, uint8_t, binary->cb);
+  [self getBytes: lpb];
+  binary->lpb = lpb;
+
+  return binary;
+}
+
++ (id) dataWithShortBinary: (const struct SBinary_short *) binData
+{
+  return [NSData dataWithBytes: binData->lpb length: binData->cb];
+}
+
+- (struct SBinary_short *) asShortBinaryInMemCtx: (void *) memCtx
+{
+  struct SBinary_short *binary;
+  uint8_t *lpb;
+
+  binary = talloc_zero (memCtx, struct SBinary_short);
   binary->cb = [self length];
   lpb = talloc_array (binary, uint8_t, binary->cb);
   [self getBytes: lpb];

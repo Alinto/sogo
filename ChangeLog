@@ -1,5 +1,8 @@
 2010-12-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSData+MAPIStore.m (-asShortBinaryInMemCtx:): new
+	corrolary method to +dataWithShortBinary:.
+
 	* OpenChange/MAPIStoreFileSystemBaseContext.[hm]: new base
 	MAPIStoreContext class that handles requests for objects based on
 	the SOGoMAPIFSFolder and SOGoMAPIFSMessage classes.
@@ -82,8 +85,8 @@
 
 	* UI/WebServerResources/MailerUI.js
 	(deleteSelectedMessagesCallback): must set the value of
-	lastClickedRow and	lastClickedRowId when selecting the next row.
-	
+	lastClickedRow and lastClickedRowId when selecting the next row.
+
 	* UI/WebServerResources/HTMLElement.js (refreshSelectionByIds):
 	log invalid references to element IDs.
 
