@@ -1,12 +1,12 @@
 /* SOGoDraftObject+MAPIStore.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Wolfgang Sourdeau
+ * Copyright (C) 2010 Inverse inc.
  *
- * Author: Wolfgang Sourdeau <root@inverse.ca>
+ * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
+ * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -25,6 +25,8 @@
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
+
+#import <NGExtensions/NSObject+Logs.h>
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
@@ -46,19 +48,22 @@
   NSUInteger count;
   id value;
 
-  // MAPIStoreDumpMessageProperties (properties);
-
   newHeaders = [NSMutableDictionary dictionaryWithCapacity: 6];
   recipients = [properties objectForKey: @"recipients"];
-  for (count = 0; count < 3; count++)
+  if (recipients)
     {
-      recId = recIds[count];
-      list = [recipients objectForKey: recId];
-      if ([list count] > 0)
-	[newHeaders setObject: [list objectsForKey: @"email"
-				     notFoundMarker: nil]
-		    forKey: recId];
+      for (count = 0; count < 3; count++)
+	{
+	  recId = recIds[count];
+	  list = [recipients objectForKey: recId];
+	  if ([list count] > 0)
+	    [newHeaders setObject: [list objectsForKey: @"email"
+					 notFoundMarker: nil]
+			forKey: recId];
+	}
     }
+  else
+    [self errorWithFormat: @"message without recipients"];
 
   /*
     message properties (20):
@@ -70,7 +75,7 @@ e)
     2010-11-24 13:45:38.715 samba[25685]   0x0e62000b (PR_URL_COMP_NAME_SET):
     0 (NSIntNumber) */
 
-  value = [properties objectForKey: MAPIPropertyNumber (PR_SUBJECT_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_SUBJECT_UNICODE)];
   if (value)
     [newHeaders setObject: value forKey: @"subject"];
 
@@ -79,7 +84,7 @@ e)
 	      forKey: @"from"];
   [self setHeaders: newHeaders];
 
-  value = [properties objectForKey: MAPIPropertyNumber (PR_HTML)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_HTML)];
   if (value)
     {
       [self setIsHTML: YES];
@@ -91,7 +96,7 @@ e)
     }
   else
     {
-      value = [properties objectForKey: MAPIPropertyNumber (PR_BODY_UNICODE)];
+      value = [properties objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
       if (value)
 	{
 	  [self setIsHTML: NO];
@@ -102,11 +107,13 @@ e)
 
 - (void) MAPISubmit
 {
+  [self logWithFormat: @"sending message"];
   [self sendMail];
 }
 
 - (void) MAPISave
 {
+  [self logWithFormat: @"saving message"];
   [self save];
 }
 
