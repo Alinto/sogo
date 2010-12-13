@@ -1,4 +1,4 @@
-/* MAPIStoreFreebusyContext.h - this file is part of SOGo
+/* MAPIStoreShortcutsContext.h - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -20,13 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREFREEBUSYCONTEXT_H
-#define MAPISTOREFREEBUSYCONTEXT_H
+#ifndef MAPISTORESHORTCUTSCONTEXT_H
+#define MAPISTORESHORTCUTSCONTEXT_H
 
 #import "MAPIStoreFileSystemBaseContext.h"
 
-@interface MAPIStoreFreebusyContext : MAPIStoreFileSystemBaseContext
+@interface MAPIStoreShortcutsContext : MAPIStoreFileSystemBaseContext
 
 @end
 
-#endif /* MAPISTOREFREEBUSYCONTEXT_H */
+#endif /* MAPISTORESHORTCUTSCONTEXT_H */

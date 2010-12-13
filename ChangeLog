@@ -1,5 +1,15 @@
 2010-12-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* MAPIStoreCommonViewsContext.[hm],
+	MAPIStoreDeferredActionsContext.[hm],
+	MAPIStoreDeletedItemsContext.[hm], MAPIStoreDraftsContext.[hm],
+	MAPIStoreFreebusyContext.[hm], MAPIStoreJournalContext.[hm],
+	MAPIStoreNotesContext.[hm], MAPIStoreRemindersContext.[hm],
+	MAPIStoreScheduleContext.[hm], MAPIStoreSearchContext.[hm],
+	MAPIStoreSentItemsContext.[hm], MAPIStoreShortcutsContext.[hm],
+	MAPIStoreViewsContext.[hm]:
+	new subclasses of MAPIStoreFileSystemBaseContext.
+
 	* OpenChange/NSValue+MAPIStore.[hm]: new category module for
 	returning native MAPI types.
 

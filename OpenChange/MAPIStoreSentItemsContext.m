@@ -1,4 +1,4 @@
-/* MAPIStoreFreebusyContext.h - this file is part of SOGo
+/* MAPIStoreSentItemsContext.m - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -20,13 +20,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREFREEBUSYCONTEXT_H
-#define MAPISTOREFREEBUSYCONTEXT_H
+#import <Foundation/NSString.h>
 
-#import "MAPIStoreFileSystemBaseContext.h"
+#import "MAPIStoreMapping.h"
 
-@interface MAPIStoreFreebusyContext : MAPIStoreFileSystemBaseContext
+#import "MAPIStoreSentItemsContext.h"
+
+@implementation MAPIStoreSentItemsContext
+
++ (NSString *) MAPIModuleName
+{
+  return @"sent-items";
+}
+
++ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
+{
+  [mapping registerURL: @"sogo://openchange:openchange@sent-items/"
+                withID: 0x140001];
+}
 
 @end
-
-#endif /* MAPISTOREFREEBUSYCONTEXT_H */

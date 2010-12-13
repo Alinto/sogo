@@ -1,4 +1,4 @@
-/* MAPIStoreFreebusyContext.h - this file is part of SOGo
+/* MAPIStoreCommonViewsContext.m - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -20,13 +20,28 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREFREEBUSYCONTEXT_H
-#define MAPISTOREFREEBUSYCONTEXT_H
+#import <Foundation/NSString.h>
 
-#import "MAPIStoreFileSystemBaseContext.h"
+#import "MAPIStoreMapping.h"
 
-@interface MAPIStoreFreebusyContext : MAPIStoreFileSystemBaseContext
+#import "MAPIStoreCommonViewsContext.h"
+
+// #undef DEBUG
+// #include <mapistore/mapistore.h>
+// #include <mapistore/mapistore_errors.h>
+// #include <libmapiproxy.h>
+
+@implementation MAPIStoreCommonViewsContext
+
++ (NSString *) MAPIModuleName
+{
+  return @"common-views";
+}
+
++ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
+{
+  [mapping registerURL: @"sogo://openchange:openchange@common-views/"
+                withID: 0xc0001];
+}
 
 @end
-
-#endif /* MAPISTOREFREEBUSYCONTEXT_H */
