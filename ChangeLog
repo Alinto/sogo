@@ -1,5 +1,9 @@
 2010-12-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMapping.m (MAPIStoreMappingInitDictionary):
+	new function used during the instance initialization to fetch
+	pre-existing ids from tdb index.
+
 	* OpenChange/MAPIStoreTypes.h (MAPIPropertyKey): renamed from
 	MAPIPropertyNumber, changed behaviour to only take the 2 msb into
 	account to generate a value key.
