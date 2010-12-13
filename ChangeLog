@@ -1,5 +1,9 @@
 2010-12-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSBaseContext.[hm]: new class module
+	containing all the code common to SOGoGCSFolder-based context
+	classes, in particular with regards to restriction handling.
+
 	* OpenChange/MAPIStoreContext.m (-init): added new
 	"restrictedMessageCache" dictionary to retain the ids matching the
 	active restriction filter.
