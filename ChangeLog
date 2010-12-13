@@ -1,3 +1,13 @@
+2010-12-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/SOGoMAPIFSFolder.[hm]: new class module that
+	implements a SOGoFolder subclass that stores and retrives data
+	to/and from the file system in the form of a plist.
+
+	* OpenChange/SOGoMAPIFSMessage.[hm]: new class module that
+	implements a SOGoObject subclass that stores and retrives data
+	to/and from the file system in the form of a plist.
+
 2010-12-09  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * SoObject/SOGo/SQLSource.m - added SHA password
