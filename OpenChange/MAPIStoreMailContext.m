@@ -25,6 +25,8 @@
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 
+#import <NGExtensions/NSObject+Logs.h>
+
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
 #import <Mailer/SOGoMailFolder.h>
@@ -58,10 +60,8 @@
 
 + (void) registerFixedMappings: (MAPIStoreMapping *) mapping
 {
-  [mapping registerURL: @"sogo://openchange:openchange@mail/folderINBOX"
+  [mapping registerURL: @"sogo://openchange:openchange@mail/folderINBOX/"
                 withID: 0x160001];
-  [mapping registerURL: @"sogo://openchange:openchange@mail/folderxxxc0001"
-                withID: 0x0c0001];
 }
 
 - (void) setupModuleFolder
@@ -86,8 +86,20 @@
 }
 
 - (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder
+		 matchingQualifier: (EOQualifier *) qualifier
 {
-  return [(SOGoMailFolder *) folder toOneRelationshipKeys];
+  NSArray *keys;
+  
+  if (qualifier)
+    {
+      [self errorWithFormat: @"we need to support qualifiers: %@",
+	    qualifier];
+      keys = nil;
+    }
+  else
+    keys = [(SOGoMailFolder *) folder toOneRelationshipKeys];
+
+  return keys;
 }
 
 // - (enum MAPISTATUS) getCommonTableChildproperty: (void **) data
@@ -462,12 +474,12 @@
   NSInteger count, max;
   NGImap4EnvelopeAddress *currentAddress;
   NSString *name;
-  uint32_t tags[] = { PR_SUBJECT_UNICODE, PR_HASATTACH,
-                      PR_MESSAGE_DELIVERY_TIME, PR_MESSAGE_FLAGS,
-                      PR_FLAG_STATUS, PR_SENSITIVITY,
-                      PR_SENT_REPRESENTING_NAME_UNICODE,
-                      PR_INTERNET_MESSAGE_ID_UNICODE,
-                      PR_READ_RECEIPT_REQUESTED };
+  enum MAPITAGS tags[] = { PR_SUBJECT_UNICODE, PR_HASATTACH,
+			   PR_MESSAGE_DELIVERY_TIME, PR_MESSAGE_FLAGS,
+			   PR_FLAG_STATUS, PR_SENSITIVITY,
+			   PR_SENT_REPRESENTING_NAME_UNICODE,
+			   PR_INTERNET_MESSAGE_ID_UNICODE,
+			   PR_READ_RECEIPT_REQUESTED };
   void *propValue;
 
   child = [self lookupObject: childURL];
@@ -543,10 +555,10 @@
     {
       knownProperties = [NSMutableDictionary new];
       [knownProperties setObject: @"DATE"
-		       forKey: MAPIPropertyNumber (PR_MESSAGE_DELIVERY_TIME)];
+		       forKey: MAPIPropertyKey (PR_MESSAGE_DELIVERY_TIME)];
     }
 
-  return [knownProperties objectForKey: MAPIPropertyNumber (property)];
+  return [knownProperties objectForKey: MAPIPropertyKey (property)];
 }
 
 /* restrictions */
