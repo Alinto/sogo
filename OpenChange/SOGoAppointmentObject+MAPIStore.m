@@ -6,7 +6,7 @@
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
+ * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -26,6 +26,8 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSString.h>
+
+#import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
@@ -86,18 +88,21 @@
   iCalTimeZone *tz;
   iCalDateTime *start, *end;
 
+  [self logWithFormat: @"event props:"];
+  MAPIStoreDumpMessageProperties (properties);
+
   vEvent = [self component: YES secure: NO];
   vCalendar = [vEvent parent];
   [vCalendar setProdID: @"-//Inverse inc.//OpenChange+SOGo//EN"];
 
   // summary
   value = [properties
-            objectForKey: MAPIPropertyNumber (PR_NORMALIZED_SUBJECT_UNICODE)];
+            objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
   if (value)
     [vEvent setSummary: value];
 
   // Location
-  value = [properties objectForKey: MAPIPropertyNumber (0x810c001f)];
+  value = [properties objectForKey: MAPIPropertyKey (0x810c001f)];
   if (value)
     [vEvent setLocation: value];
 
@@ -106,7 +111,7 @@
   [vCalendar addTimeZone: tz];
 
   // start
-  value = [properties objectForKey: MAPIPropertyNumber (PR_START_DATE)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_START_DATE)];
   if (value)
     {
       start = (iCalDateTime *) [vEvent uniqueChildWithTag: @"dtstart"];
@@ -115,7 +120,7 @@
     }
 
   // end
-  value = [properties objectForKey: MAPIPropertyNumber (PR_END_DATE)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_END_DATE)];
   if (value)
     {
       end = (iCalDateTime *) [vEvent uniqueChildWithTag: @"dtend"];

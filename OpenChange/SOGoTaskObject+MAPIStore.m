@@ -6,7 +6,7 @@
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
+ * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -115,28 +115,28 @@
 
   // summary
   value = [properties
-            objectForKey: MAPIPropertyNumber (PR_NORMALIZED_SUBJECT_UNICODE)];
+            objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
   if (value)
     [vToDo setSummary: value];
 
   // comment
   value = [properties
-            objectForKey: MAPIPropertyNumber (PR_BODY_UNICODE)];
+            objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
   if (value)
     [vToDo setComment: value];
 
   // Location
-  value = [properties objectForKey: MAPIPropertyNumber (0x810c001f)];
+  value = [properties objectForKey: MAPIPropertyKey (0x810c001f)];
   if (value)
     [vToDo setLocation: value];
 
   /* created */
-  value = [properties objectForKey: MAPIPropertyNumber (PR_CREATION_TIME)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_CREATION_TIME)];
   if (value)
     [vToDo setCreated: value];
 
   /* last-modified + dtstamp */
-  value = [properties objectForKey: MAPIPropertyNumber (PR_LAST_MODIFICATION_TIME)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_LAST_MODIFICATION_TIME)];
   if (value)
     {
       [vToDo setLastModified: value];
@@ -148,7 +148,7 @@
   [vCalendar addTimeZone: tz];
 
   // start
-  value = [properties objectForKey: MAPIPropertyNumber (0x811e0040)];
+  value = [properties objectForKey: MAPIPropertyKey (0x811e0040)];
   if (value)
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"dtstart"];
@@ -157,7 +157,7 @@
     }
 
   // due
-  value = [properties objectForKey: MAPIPropertyNumber (0x811f0040)];
+  value = [properties objectForKey: MAPIPropertyKey (0x811f0040)];
   if (value)
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"due"];
@@ -166,7 +166,7 @@
     }
 
   // status
-  value = [properties objectForKey: MAPIPropertyNumber (0x81200003)];
+  value = [properties objectForKey: MAPIPropertyKey (0x81200003)];
   if (value)
     {
       switch ([value intValue])
@@ -179,7 +179,7 @@
     }
 
   // priority
-  value = [properties objectForKey: MAPIPropertyNumber (PR_IMPORTANCE)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_IMPORTANCE)];
   if (value)
     {
       switch ([value intValue])
@@ -199,7 +199,7 @@
   [vToDo setPriority: priority];
 
   // due
-  // value = [properties objectForKey: MAPIPropertyNumber (PR_DUE_DATE)];
+  // value = [properties objectForKey: MAPIPropertyKey (PR_DUE_DATE)];
   // if (value)
   //   {
   //     due = (iCalDateTime *) [vToDo uniqueChildWithTag: @"due"];

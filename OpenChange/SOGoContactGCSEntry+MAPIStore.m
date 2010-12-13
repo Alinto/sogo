@@ -56,17 +56,11 @@
   [newCard setProfile: @"vCard"];
 
   value = [properties
-            objectForKey: MAPIPropertyNumber (PR_DISPLAY_NAME_UNICODE)];
-  if (!value)
-    value = [properties
-              objectForKey: MAPIPropertyNumber (PR_DISPLAY_NAME)];
-  if (!value)
-    value = [properties
-              objectForKey: MAPIPropertyNumber (PR_DISPLAY_NAME)];
+            objectForKey: MAPIPropertyKey (PR_DISPLAY_NAME_UNICODE)];
   if (value)
     [newCard setFn: value];
 
-  value = [properties objectForKey: MAPIPropertyNumber (0x81b0001f)];
+  value = [properties objectForKey: MAPIPropertyKey (0x81b0001f)];
   if (value)
     [newCard addEmail: value types: nil];
 
