@@ -23,9 +23,9 @@
 #ifndef MAPISTORECONTACTSCONTEXT_H
 #define MAPISTORECONTACTSCONTEXT_H
 
-#import "MAPIStoreContext.h"
+#import "MAPIStoreGCSBaseContext.h"
 
-@interface MAPIStoreContactsContext : MAPIStoreContext
+@interface MAPIStoreContactsContext : MAPIStoreGCSBaseContext
 
 @end
 

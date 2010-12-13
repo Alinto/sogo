@@ -1,4 +1,4 @@
-/* MAPIStoreCalendarContext.h - this file is part of SOGo
+/* MAPIStoreGCSBaseContext.h - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -20,13 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTORECALENDARCONTEXT_H
-#define MAPISTORECALENDARCONTEXT_H
+#ifndef MAPISTOREGCSBASECONTEXT_H
+#define MAPISTOREGCSBASECONTEXT_H
 
-#import "MAPIStoreGCSBaseContext.h"
+#import "MAPIStoreContext.h"
 
-@interface MAPIStoreCalendarContext : MAPIStoreGCSBaseContext
-
+@interface MAPIStoreGCSBaseContext : MAPIStoreContext
 @end
 
-#endif /* MAPISTORECALENDARCONTEXT_H */
+#endif /* MAPISTOREGCSBASECONTEXT_H */

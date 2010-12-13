@@ -25,6 +25,8 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <EOControl/EOQualifier.h>
+
 #import <NGCards/NGVCard.h>
 #import <NGCards/NSArray+NGCards.h>
 
@@ -52,7 +54,7 @@
 
 + (void) registerFixedMappings: (MAPIStoreMapping *) mapping
 {
-  [mapping registerURL: @"sogo://openchange:openchange@contacts/personal"
+  [mapping registerURL: @"sogo://openchange:openchange@contacts/personal/"
                 withID: 0x1a0001];
 }
 
@@ -71,9 +73,32 @@
   [moduleFolder retain];
 }
 
+
 - (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder
+		 matchingQualifier: (EOQualifier *) qualifier
 {
-  return [(SOGoGCSFolder *) folder componentKeysWithType: @"vcard"];
+  EOQualifier *componentQualifier, *contactsQualifier;
+
+  /* TODO: we need to support vlist as well */
+  componentQualifier
+    = [[EOKeyValueQualifier alloc] initWithKey: @"c_component"
+			      operatorSelector: EOQualifierOperatorEqual
+					 value: @"vcard"];
+  [componentQualifier autorelease];
+  if (qualifier)
+    {
+      contactsQualifier = [[EOAndQualifier alloc]
+			    initWithQualifiers:
+			      componentQualifier,
+			    qualifier,
+			    nil];
+      [contactsQualifier autorelease];
+    }
+  else
+    contactsQualifier = componentQualifier;
+
+  return [super getFolderMessageKeys: folder
+		   matchingQualifier: contactsQualifier];
 }
 
 // - (enum MAPISTATUS) getCommonTableChildproperty: (void **) data
@@ -328,16 +353,16 @@
     {
       knownProperties = [NSMutableDictionary new];
       [knownProperties setObject: @"c_mail"
-			  forKey: MAPIPropertyNumber (0x81ae001f)];
+			  forKey: MAPIPropertyKey (0x81ae001f)];
       [knownProperties setObject: @"c_mail"
-			  forKey: MAPIPropertyNumber (0x81b3001f)];
+			  forKey: MAPIPropertyKey (0x81b3001f)];
       [knownProperties setObject: @"c_mail"
-			  forKey: MAPIPropertyNumber (PR_EMS_AB_GROUP_BY_ATTR_2_UNICODE)];
+			  forKey: MAPIPropertyKey (PR_EMS_AB_GROUP_BY_ATTR_2_UNICODE)];
       [knownProperties setObject: @"c_cn"
-			  forKey: MAPIPropertyNumber (PR_DISPLAY_NAME_UNICODE)];
+			  forKey: MAPIPropertyKey (PR_DISPLAY_NAME_UNICODE)];
     }
 
-  return [knownProperties objectForKey: MAPIPropertyNumber (property)];
+  return [knownProperties objectForKey: MAPIPropertyKey (property)];
 }
 
 /* restrictions */
@@ -352,8 +377,7 @@
   switch (res->ulPropTag)
     {
     case PR_MESSAGE_CLASS_UNICODE:
-      if ([value isKindOfClass: [NSString class]]
-	  && [value isEqualToString: @"IPM.Contact"])
+      if ([value isEqualToString: @"IPM.Contact"])
 	rc = MAPIRestrictionStateAlwaysTrue;
       else
 	rc = MAPIRestrictionStateAlwaysFalse;

@@ -24,6 +24,8 @@
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 
+#import <EOControl/EOQualifier.h>
+
 #import <NGCards/iCalToDo.h>
 #import <Appointments/SOGoTaskObject.h>
 
@@ -49,7 +51,7 @@
 
 + (void) registerFixedMappings: (MAPIStoreMapping *) mapping
 {
-  [mapping registerURL: @"sogo://openchange:openchange@tasks/personal"
+  [mapping registerURL: @"sogo://openchange:openchange@tasks/personal/"
                 withID: 0x1d0001];
 }
 
@@ -69,8 +71,29 @@
 }
 
 - (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder
+		 matchingQualifier: (EOQualifier *) qualifier
 {
-  return [(SOGoGCSFolder *) folder componentKeysWithType: @"vtodo"];
+  EOQualifier *componentQualifier, *tasksQualifier;
+
+  componentQualifier
+    = [[EOKeyValueQualifier alloc] initWithKey: @"c_component"
+			      operatorSelector: EOQualifierOperatorEqual
+					 value: @"vtodo"];
+  [componentQualifier autorelease];
+  if (qualifier)
+    {
+      tasksQualifier = [[EOAndQualifier alloc]
+			    initWithQualifiers:
+			      componentQualifier,
+			    qualifier,
+			    nil];
+      [tasksQualifier autorelease];
+    }
+  else
+    tasksQualifier = componentQualifier;
+
+  return [super getFolderMessageKeys: folder
+		   matchingQualifier: tasksQualifier];
 }
 
 - (enum MAPISTATUS) getMessageTableChildproperty: (void **) data
@@ -187,7 +210,7 @@
       knownProperties = [NSMutableDictionary new];
     }
 
-  return [knownProperties objectForKey: MAPIPropertyNumber (property)];
+  return [knownProperties objectForKey: MAPIPropertyKey (property)];
 }
 
 /* restrictions */
@@ -207,6 +230,12 @@
 	rc = MAPIRestrictionStateAlwaysTrue;
       else
 	rc = MAPIRestrictionStateAlwaysFalse;
+      break;
+    case PR_RULE_PROVIDER_UNICODE: // TODO: what's this?
+      rc = MAPIRestrictionStateAlwaysTrue;
+      break;
+    case 0x81200003: // seems to be PR_CE_CHECK_INTERVAL
+      rc = MAPIRestrictionStateAlwaysTrue;
       break;
       
     default:

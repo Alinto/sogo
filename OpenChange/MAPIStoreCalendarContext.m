@@ -26,6 +26,8 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <EOControl/EOQualifier.h>
+
 #import <NGCards/iCalEvent.h>
 #import <Appointments/SOGoAppointmentObject.h>
 
@@ -51,7 +53,7 @@
 
 + (void) registerFixedMappings: (MAPIStoreMapping *) mapping
 {
-  [mapping registerURL: @"sogo://openchange:openchange@calendar/personal"
+  [mapping registerURL: @"sogo://openchange:openchange@calendar/personal/"
                 withID: 0x190001];
 }
 
@@ -71,8 +73,29 @@
 }
 
 - (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder
+		 matchingQualifier: (EOQualifier *) qualifier
 {
-  return [(SOGoGCSFolder *) folder componentKeysWithType: @"vevent"];
+  EOQualifier *componentQualifier, *calendarQualifier;
+
+  componentQualifier
+    = [[EOKeyValueQualifier alloc] initWithKey: @"c_component"
+			      operatorSelector: EOQualifierOperatorEqual
+					 value: @"vevent"];
+  [componentQualifier autorelease];
+  if (qualifier)
+    {
+      calendarQualifier = [[EOAndQualifier alloc]
+			    initWithQualifiers:
+			      componentQualifier,
+			    qualifier,
+			    nil];
+      [calendarQualifier autorelease];
+    }
+  else
+    calendarQualifier = componentQualifier;
+
+  return [super getFolderMessageKeys: folder
+		   matchingQualifier: calendarQualifier];
 }
 
 - (enum MAPISTATUS) getMessageTableChildproperty: (void **) data
@@ -203,6 +226,28 @@
 //         return rc;
 // }
 
+- (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
+				       intoQualifier: (EOQualifier **) qualifier
+{
+  MAPIRestrictionState rc;
+  id value;
+
+  value = NSObjectFromMAPISPropValue (&res->lpProp);
+  switch (res->ulPropTag)
+    {
+    case PR_MESSAGE_CLASS_UNICODE:
+      if ([value isEqualToString: @"IPM.Appointment"])
+	rc = MAPIRestrictionStateAlwaysTrue;
+      else
+	rc = MAPIRestrictionStateAlwaysFalse;
+      break;
+    default:
+      rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
+    }
+
+  return rc;
+}
+
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
 {
   static NSMutableDictionary *knownProperties = nil;
@@ -212,7 +257,7 @@
       knownProperties = [NSMutableDictionary new];
     }
 
-  return [knownProperties objectForKey: MAPIPropertyNumber (property)];
+  return [knownProperties objectForKey: MAPIPropertyKey (property)];
 }
 
 @end

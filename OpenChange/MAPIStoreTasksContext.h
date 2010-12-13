@@ -23,9 +23,9 @@
 #ifndef MAPISTORETASKSCONTEXT_H
 #define MAPISTORETASKSCONTEXT_H
 
-#import "MAPIStoreContext.h"
+#import "MAPIStoreGCSBaseContext.h"
 
-@interface MAPIStoreTasksContext : MAPIStoreContext
+@interface MAPIStoreTasksContext : MAPIStoreGCSBaseContext
 
 @end
 
