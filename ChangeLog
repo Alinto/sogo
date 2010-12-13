@@ -1,5 +1,21 @@
 2010-12-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (-init): added new
+	"restrictedMessageCache" dictionary to retain the ids matching the
+	active restriction filter.
+	(-getCommonTableChildproperty:atURL:withTag:inFolder:withFID:):
+	added handling for PR_SEARCH_KEY.
+	(-evaluateContentRestriction:intoQualifier:)
+	(-evaluateExistRestriction:intoQualifier:) implemented fallback
+	code.
+	(-getTableProperty:withTag:atPosition:withTableType:andQueryType:inFID:):
+	added the new 'query_type' parameter, as required by the upstream
+	changes. Adapted the code to check if the active row matches the
+	filter (live filtering) or to return a pre-filtered set of rows
+	altogether.
+	(-releaseRecordWithFMID:ofTableType:) implementation of
+	op_release_record.
+
 	* OpenChange/MAPIStoreMapping.m (MAPIStoreMappingInitDictionary):
 	new function used during the instance initialization to fetch
 	pre-existing ids from tdb index.

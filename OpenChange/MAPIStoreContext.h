@@ -1,4 +1,4 @@
-/* MAPIStoreContext.h - this file is part of $PROJECT_NAME_HERE$
+/* MAPIStoreContext.h - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc. 
  *
@@ -77,6 +77,7 @@ typedef enum {
   NSMutableDictionary *subfolderCache;
   id moduleFolder;
 
+  NSMutableDictionary *restrictedMessageCache;
   MAPIRestrictionState restrictionState;
   EOQualifier *restriction;
 }
@@ -107,7 +108,7 @@ typedef enum {
    inParentFID: (uint64_t) parent_fid;
 
 - (int) setRestrictions: (struct mapi_SRestriction *) res
-	       withFMID: (uint64_t) fmid
+		withFID: (uint64_t) fid
 	   andTableType: (uint8_t) type
 	 getTableStatus: (uint8_t *) tableStatus;
 
@@ -115,6 +116,7 @@ typedef enum {
 			     withTag: (enum MAPITAGS) proptag
 			  atPosition: (uint32_t) pos
 		       withTableType: (uint8_t) tableType
+			andQueryType: (enum table_query_type) queryType
 			       inFID: (uint64_t) fid;
 
 - (int) mkDir: (struct SRow *) aRow
@@ -157,6 +159,8 @@ typedef enum {
 		      withCount: (NSUInteger) max;
 - (int) deleteMessageWithMID: (uint64_t) mid
                    withFlags: (uint8_t) flags;
+- (int) releaseRecordWithFMID: (uint64_t) fmid
+		  ofTableType: (uint8_t) tableType;
 
 
 /* util methods */
@@ -180,7 +184,8 @@ typedef enum {
 + (NSString *) MAPIModuleName;
 + (void) registerFixedMappings: (MAPIStoreMapping *) storeMapping;
 
-- (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder;
+- (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder
+		 matchingQualifier: (EOQualifier *) qualifier;
 
 - (enum MAPISTATUS) getCommonTableChildproperty: (void **) data
 					  atURL: (NSString *) childURL

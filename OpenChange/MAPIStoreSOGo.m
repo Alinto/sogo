@@ -165,21 +165,25 @@ static int
 sogo_release_record(void *private_data, uint64_t fmid, uint8_t type)
 {
   NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
 
   pool = [NSAutoreleasePool new];
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  switch (type) {
-  case MAPISTORE_FOLDER:
-    break;
-  case MAPISTORE_MESSAGE:
-    break;
-  }
+  cContext = private_data;
+  context = cContext->objcContext;
+  [context setupRequest];
+
+  rc = [context releaseRecordWithFMID: fmid ofTableType: type];
+
+  [context tearDownRequest];
 
   [pool release];
 
-  return MAPISTORE_SUCCESS;
+  return rc;
 }
 
 
@@ -417,6 +421,7 @@ static int
 sogo_op_get_table_property(void *private_data,
 			   uint64_t fid,
 			   uint8_t table_type,
+			   enum table_query_type query_type,
 			   uint32_t pos,
 			   uint32_t proptag,
 			   void **data)
@@ -435,7 +440,8 @@ sogo_op_get_table_property(void *private_data,
   [context setupRequest];
 
   rc = [context getTableProperty: data withTag: proptag atPosition: pos
-		withTableType: table_type inFID: fid];
+		   withTableType: table_type andQueryType: query_type
+			   inFID: fid];
 
   [context tearDownRequest];
   [pool release];
@@ -570,8 +576,8 @@ sogo_op_getprops(void *private_data,
   [context setupRequest];
 
   rc = [context getProperties: SPropTagArray
-		ofTableType: type
-		inRow: aRow withMID: fmid];
+		  ofTableType: type
+			inRow: aRow withMID: fmid];
 
   [context tearDownRequest];
   [pool release];
@@ -751,7 +757,7 @@ sogo_op_get_folders_list(void *private_data,
 }
 
 static int
-sogo_op_set_restrictions (void *private_data, uint64_t fmid, uint8_t type,
+sogo_op_set_restrictions (void *private_data, uint64_t fid, uint8_t type,
 			  struct mapi_SRestriction *res, uint8_t *tableStatus)
 {
   NSAutoreleasePool *pool;
@@ -770,7 +776,7 @@ sogo_op_set_restrictions (void *private_data, uint64_t fmid, uint8_t type,
       [context setupRequest];
 
       rc = [context setRestrictions: res
-		    withFMID: fmid andTableType: type
+		    withFID: fid andTableType: type
 		    getTableStatus: tableStatus];
 
       [context tearDownRequest];
