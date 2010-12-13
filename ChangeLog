@@ -1,5 +1,8 @@
 2010-12-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSValue+MAPIStore.[hm]: new category module for
+	returning native MAPI types.
+
 	* OpenChange/SOGoMAPIFSFolder.[hm]: new class module that
 	implements a SOGoFolder subclass that stores and retrives data
 	to/and from the file system in the form of a plist.
