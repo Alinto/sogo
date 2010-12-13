@@ -6,7 +6,9 @@
 
 	* OpenChange/MAPIStoreContext.m (-init): added new
 	"restrictedMessageCache" dictionary to retain the ids matching the
-	active restriction filter.
+	active restriction filter and "parentFoldersBag" array to retain
+	folder objects that are parents of the module folder.
+
 	(-getCommonTableChildproperty:atURL:withTag:inFolder:withFID:):
 	added handling for PR_SEARCH_KEY.
 	(-evaluateContentRestriction:intoQualifier:)
