@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
@@ -29,8 +30,61 @@
 
 #import "MAPIStoreMapping.h"
 
-// static const uint64_t idIncrement = 0x010000; /* we choose a high enough id to avoid any clash with system folders */
-// static uint64_t idCounter = 0x200001;
+#include <fcntl.h>
+#include <tdb.h>
+#include <talloc.h>
+
+struct tdb_wrap {
+	struct tdb_context *tdb;
+
+	const char *name;
+	struct tdb_wrap *next, *prev;
+};
+
+extern struct tdb_wrap *tdb_wrap_open(TALLOC_CTX *mem_ctx,
+				      const char *name, int hash_size, int tdb_flags,
+				      int open_flags, mode_t mode);
+
+static int
+MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
+			     void *data)
+{
+  NSMutableDictionary *mapping;
+  NSNumber *idNbr;
+  NSString *uri;
+  char *idStr, *uriStr;
+  uint64_t idVal;
+
+  idStr = (char *) data1.dptr;
+  idVal = strtoll (idStr, NULL, 16);
+  idNbr = [NSNumber numberWithUnsignedLongLong: idVal];
+
+  uriStr = strdup ((const char *) data2.dptr);
+  *(uriStr+(data2.dsize)) = 0;
+  uri = [NSString stringWithUTF8String: uriStr];
+  free (uriStr);
+
+  mapping = data;
+  [mapping setObject: uri forKey: idNbr];
+
+  return 0;
+}
+
+static void
+MAPIStoreMappingInitDictionary (NSMutableDictionary *mapping)
+{
+  struct tdb_wrap *wrap;
+  TDB_CONTEXT *context;
+  char *tdb_path;
+  int rc;
+
+  tdb_path  = "/usr/local/samba/private/mapistore/openchange/indexing.tdb";
+  wrap = tdb_wrap_open(NULL, tdb_path, 0, TDB_NOLOCK, O_RDONLY, 0600);
+
+  context = wrap->tdb;
+  rc = tdb_traverse_read(wrap->tdb, MAPIStoreMappingTDBTraverse, mapping);
+
+}
 
 @implementation MAPIStoreMapping
 
@@ -46,10 +100,25 @@
 
 - (id) init
 {
+  NSNumber *idNbr;
+  NSString *uri;
+  NSArray *keys;
+  NSUInteger count, max;
+
   if ((self = [super init]))
     {
       mapping = [NSMutableDictionary new];
+      MAPIStoreMappingInitDictionary (mapping);
       reverseMapping = [NSMutableDictionary new];
+
+      keys = [mapping allKeys];
+      max = [keys count];
+      for (count = 0; count < max; count++)
+	{
+	  idNbr = [keys objectAtIndex: count];
+	  uri = [mapping objectForKey: idNbr];
+	  [reverseMapping setObject: idNbr forKey: uri];
+	}
     }
 
   return self;
@@ -101,6 +170,10 @@
     }
   else
     {
+      if ([urlString hasSuffix: @".plist"])
+	{
+	  [self logWithFormat: @"coucou"];
+	}
       [mapping setObject: urlString forKey: idKey];
       [reverseMapping setObject: idKey forKey: urlString];
       rc = YES;

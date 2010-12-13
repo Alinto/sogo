@@ -1,4 +1,4 @@
-/* MAPIStoreMapping.h - this file is part of $PROJECT_NAME_HERE$
+/* MAPIStoreMapping.h - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
