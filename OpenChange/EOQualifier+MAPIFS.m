@@ -29,6 +29,7 @@
 #import "SOGoMAPIFSMessage.h"
 
 #import "EOQualifier+MAPIFS.h"
+#import "EOBitmaskQualifier.h"
 
 @implementation EOQualifier (MAPIStoreRestrictions)
 
@@ -107,6 +108,30 @@
   propValue = [properties objectForKey: propTag];
 
   return [propValue performSelector: operator withObject: value] != nil;
+}
+
+@end
+
+@implementation EOBitmaskQualifier (MAPIStoreRestrictionsPrivate)
+
+- (BOOL) _evaluateMAPIFSMessageProperties: (NSDictionary *) properties
+{
+  NSNumber *propTag;
+  id propValue;
+  uint32_t intValue;
+  BOOL rc;
+
+  propTag = [NSNumber numberWithInt: [key intValue]];
+  propValue = [properties objectForKey: propTag];
+  intValue = [propValue unsignedIntValue];
+
+  rc = ((isZero && (intValue & mask) == 0)
+	|| (!isZero && (intValue & mask) != 0));
+
+  [self logWithFormat: @"evaluating bitmask qualifier: (%.8x & %.8x) %s 0: %d",
+	intValue, mask, (isZero ? "==" : "!="), rc];
+
+  return rc;
 }
 
 @end

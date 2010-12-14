@@ -1,3 +1,13 @@
+2010-12-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/EOQualifier+MAPIFS.m (-[EOBitmaskQualifier
+	_evaluateMAPIFSMessageProperties:]): new method adapted to the new
+	class below.
+
+	* OpenChange/EOBitmaskQualifier.[hm]: new class module
+	implementing a new EOQualifier subclass that's adapted to the MAPI
+	bitmask restrictions.
+
 2010-12-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Implemented the "bindAsCurrentUser" feature (when
