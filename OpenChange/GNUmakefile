@@ -70,6 +70,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	NSString+MAPIStore.m \
 	NSValue+MAPIStore.m \
 	\
+	EOBitmaskQualifier.m \
 	EOQualifier+MAPIFS.m
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
