@@ -1,5 +1,9 @@
 2010-12-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailContext.m
+	(-evaluateContentRestriction:intoQualifier:): new overriden method
+	handling tests on the PR_MESSAGE_CLASS_UNICODE property.
+
 	* OpenChange/EOQualifier+MAPIFS.m (-[EOBitmaskQualifier
 	_evaluateMAPIFSMessageProperties:]): new method adapted to the new
 	class below.

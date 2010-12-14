@@ -22,6 +22,7 @@
 
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 
@@ -51,7 +52,15 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
+static Class NSDataK, NSStringK;
+
 @implementation MAPIStoreMailContext
+
++ (void) initialize
+{
+  NSDataK = [NSData class];
+  NSStringK = [NSString class];
+}
 
 + (NSString *) MAPIModuleName
 {
@@ -583,6 +592,39 @@
       break;
     default:
       rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
+    }
+
+  return rc;
+}
+
+- (MAPIRestrictionState) evaluateContentRestriction: (struct mapi_SContentRestriction *) res
+				      intoQualifier: (EOQualifier **) qualifier
+{
+  MAPIRestrictionState rc;
+  id value;
+
+  value = NSObjectFromMAPISPropValue (&res->lpProp);
+  if ([value isKindOfClass: NSDataK])
+    {
+      value = [[NSString alloc] initWithData: value
+				    encoding: NSUTF8StringEncoding];
+      [value autorelease];
+    }
+  else if (![value isKindOfClass: NSStringK])
+    [NSException raise: @"MAPIStoreTypeConversionException"
+		format: @"unhandled content restriction for class '%@'",
+		 NSStringFromClass ([value class])];
+
+  switch (res->ulPropTag)
+    {
+    case PR_MESSAGE_CLASS_UNICODE:
+      if ([value isEqualToString: @"IPM.Note"])
+	rc = MAPIRestrictionStateAlwaysTrue;
+      else
+	rc = MAPIRestrictionStateAlwaysFalse;
+      break;
+    default:
+      rc = [super evaluateContentRestriction: res intoQualifier: qualifier];
     }
 
   return rc;
