@@ -71,18 +71,21 @@
   userFolder = [SOGoUserFolder objectWithName: [authenticator username]
                                   inContainer: MAPIApp];
   [parentFoldersBag addObject: userFolder];
+  [self logWithFormat: @"userFolder: %@", userFolder];
   [woContext setClientObject: userFolder];
 
   accountsFolder = [userFolder lookupName: @"Mail"
                                 inContext: woContext
                                   acquire: NO];
   [parentFoldersBag addObject: accountsFolder];
+  [self logWithFormat: @"accountsFolder: %@", accountsFolder];
   [woContext setClientObject: accountsFolder];
 
   moduleFolder = [accountsFolder lookupName: @"0"
                                   inContext: woContext
                                     acquire: NO];
   [moduleFolder retain];
+  [self logWithFormat: @"moduleFolder: %@", moduleFolder];
 }
 
 - (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder
