@@ -416,6 +416,9 @@
   NSMutableDictionary *currentUser;
   BOOL checkOK;
  
+  // We check for cached passwords. If the entry is cached, we 
+  // check this immediately. If not, we'll go directly at the
+  // authentication source and try to validate there, then cache it.
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: _login];
   currentUser = [jsonUser objectFromJSONString];
   dictPassword = [currentUser objectForKey: @"password"];
@@ -446,6 +449,25 @@
   else
     checkOK = NO;
 
+  // We MUST, for all LDAP sources, update the bindDN and bindPassword
+  // to the user's value if bindAsCurrentUser is set to true in the
+  // LDAP source configuration
+  if (checkOK)
+    {
+      NSObject <SOGoDNSource> *currentSource;
+      NSEnumerator *sources;
+      
+      sources = [[_sources allValues] objectEnumerator];
+      while ((currentSource = [sources nextObject]))
+	if ([currentSource conformsToProtocol: @protocol(SOGoDNSource)] &&
+	    [currentSource bindAsCurrentUser] &&
+	    [currentSource lookupDNByLogin: _login])
+	  {
+	    [currentSource setBindDN: [currentSource lookupDNByLogin: _login]];
+	    [currentSource setBindPassword: _pwd];
+	  }
+    }
+	    
   return checkOK;
 }
 

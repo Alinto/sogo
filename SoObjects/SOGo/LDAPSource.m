@@ -1,8 +1,9 @@
 /* LDAPSource.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,6 +40,8 @@
 #import "SOGoSystemDefaults.h"
 
 #import "LDAPSource.h"
+
+#import "../../Main/SOGo.h"
 
 #define SafeLDAPCriteria(x) [[[x stringByReplacingString: @"\\" withString: @"\\\\"] \
                                  stringByReplacingString: @"'" withString: @"\\'"] \
@@ -162,6 +165,8 @@ static NSArray *commonSearchFields;
 
       searchAttributes = nil;
       passwordPolicy = NO;
+
+      _dnCache = [[NSMutableDictionary alloc] init];
     }
 
   return self;
@@ -169,6 +174,7 @@ static NSArray *commonSearchFields;
 
 - (void) dealloc
 {
+  NSLog(@"LDAPSource: -dealloc");
   [bindDN release];
   [hostname release];
   [encryption release];
@@ -186,6 +192,7 @@ static NSArray *commonSearchFields;
   [_scope release];
   [searchAttributes release];
   [domain release];
+  [_dnCache release];
   [super dealloc];
 }
 
@@ -203,7 +210,9 @@ static NSArray *commonSearchFields;
              password: [udSource objectForKey: @"bindPassword"]
              hostname: [udSource objectForKey: @"hostname"]
                  port: [udSource objectForKey: @"port"]
-           encryption: [udSource objectForKey: @"encryption"]];
+           encryption: [udSource objectForKey: @"encryption"]
+    bindAsCurrentUser: [udSource objectForKey: @"bindAsCurrentUser"]];
+
       [self setBaseDN: [udSource objectForKey: @"baseDN"]
               IDField: [udSource objectForKey: @"IDFieldName"]
               CNField: [udSource objectForKey: @"CNFieldName"]
@@ -252,11 +261,27 @@ static NSArray *commonSearchFields;
   return self;
 }
 
+- (void) setBindDN: (NSString *) theDN
+{
+  ASSIGN(bindDN, theDN);
+}
+
+- (void) setBindPassword: (NSString *) thePassword
+{
+  ASSIGN (password, thePassword);
+}
+
+- (BOOL) bindAsCurrentUser
+{
+  return _bindAsCurrentUser;
+}
+
 - (void) setBindDN: (NSString *) newBindDN
 	  password: (NSString *) newBindPassword
 	  hostname: (NSString *) newBindHostname
 	      port: (NSString *) newBindPort
 	encryption: (NSString *) newEncryption
+ bindAsCurrentUser: (NSString *) bindAsCurrentUser
 {
   ASSIGN (bindDN, newBindDN);
   ASSIGN (encryption, [newEncryption uppercaseString]);
@@ -266,6 +291,7 @@ static NSArray *commonSearchFields;
   if (newBindPort)
     port = [newBindPort intValue];
   ASSIGN (password, newBindPassword);
+  _bindAsCurrentUser = [bindAsCurrentUser boolValue];
 }
 
 - (void) setBaseDN: (NSString *) newBaseDN
@@ -337,6 +363,8 @@ static NSArray *commonSearchFields;
 
   NS_DURING
     {
+      //NSLog(@"Creating NGLdapConnection instance for bindDN '%@'", bindDN);
+
       ldapConnection = [[NGLdapConnection alloc] initWithHostName: hostname
 						 port: port];
       [ldapConnection autorelease];
@@ -442,11 +470,21 @@ static NSArray *commonSearchFields;
 	{
 	  if (queryTimeout > 0)
 	    [bindConnection setQueryTimeLimit: queryTimeout];
-	  if (bindFields)
-	    userDN = [self _fetchUserDNForLogin: _login];
-	  else
-	    userDN = [NSString stringWithFormat: @"%@=%@,%@",
-			       IDField, _login, baseDN];
+
+	  userDN = [_dnCache objectForKey: _login];
+
+	  if (!userDN)
+	    {
+	      if (bindFields)
+		userDN = [self _fetchUserDNForLogin: _login];
+	      else
+		userDN = [NSString stringWithFormat: @"%@=%@,%@",
+				   IDField, _login, baseDN];
+	    }
+
+	  // We cache the _login <-> userDN entry to speed up things
+	  [_dnCache setObject: userDN  forKey: _login];
+	  
 	  if (userDN)
 	    {
 	      NS_DURING
@@ -973,6 +1011,11 @@ static NSArray *commonSearchFields;
     login = [[entry attributeWithName: UIDField] stringValueAtIndex: 0];
 
   return login;
+}
+
+- (NSString *) lookupDNByLogin: (NSString *) theLogin
+{
+  return [_dnCache objectForKey: theLogin];
 }
 
 - (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID

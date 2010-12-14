@@ -1,3 +1,10 @@
+2010-12-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Implemented the "bindAsCurrentUser" feature (when
+	set to the LDAP SOGoUserSources, to YES) which forces
+	SOGo to use the DN of the currently "requesting" user
+	to perform all LDAP-related operations
+
 2010-12-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/EOQualifier+MAPIFS.[hm]: new category module for

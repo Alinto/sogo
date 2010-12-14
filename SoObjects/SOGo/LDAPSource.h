@@ -3,6 +3,7 @@
  * Copyright (C) 2007-2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,6 +55,7 @@
   NSArray *mailFields;
   NSString *IMAPHostField;
   NSArray *bindFields;
+  BOOL _bindAsCurrentUser;
 
   NSString *domain;
   NSString *contactInfoAttribute;
@@ -61,15 +63,18 @@
   NSDictionary *modulesConstraints;
 
   NSMutableArray *searchAttributes;
-
+  
   BOOL passwordPolicy;
+
+  NSMutableDictionary *_dnCache;
 }
 
 - (void) setBindDN: (NSString *) newBindDN
 	  password: (NSString *) newBindPassword
 	  hostname: (NSString *) newBindHostname
 	      port: (NSString *) newBindPort
-	encryption: (NSString *) newEncryption;
+	encryption: (NSString *) newEncryption
+ bindAsCurrentUser: (NSString *) bindAsCurrentUser;
 
 - (void) setBaseDN: (NSString *) newBaseDN
 	   IDField: (NSString *) newIDField

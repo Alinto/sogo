@@ -41,6 +41,7 @@
 - (NSString *) domain;
 
 - (BOOL) checkLogin: (NSString *) _login
+
 	   password: (NSString *) _pwd
 	       perr: (SOGoPasswordPolicyError *) _perr
 	     expire: (int *) _expire
@@ -62,7 +63,13 @@
 
 @protocol SOGoDNSource <SOGoSource>
 
+- (void) setBindDN: (NSString *) theDN;
+- (void) setBindPassword: (NSString *) thePassword;
+- (BOOL) bindAsCurrentUser;
+
 - (NSString *) lookupLoginByDN: (NSString *) theDN;
+- (NSString *) lookupDNByLogin: (NSString *) theLogin;
+
 - (NSString *) baseDN;
 
 @end
