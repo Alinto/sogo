@@ -170,10 +170,6 @@ MAPIStoreMappingInitDictionary (NSMutableDictionary *mapping)
     }
   else
     {
-      if ([urlString hasSuffix: @".plist"])
-	{
-	  [self logWithFormat: @"coucou"];
-	}
       [mapping setObject: urlString forKey: idKey];
       [reverseMapping setObject: idKey forKey: urlString];
       rc = YES;
