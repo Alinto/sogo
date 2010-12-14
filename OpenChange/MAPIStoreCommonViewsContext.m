@@ -22,6 +22,8 @@
 
 #import <Foundation/NSString.h>
 
+#import <NGExtensions/NSObject+Logs.h>
+
 #import "MAPIStoreMapping.h"
 
 #import "MAPIStoreCommonViewsContext.h"
