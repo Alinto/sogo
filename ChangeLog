@@ -1,5 +1,10 @@
 2010-12-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m
+	(-evaluateBitmaskRestriction:intoQualifier:): implemented method.
+	(-releaseRecordWithFMID:ofTableType:): return MAPI_E_SUCCESS even
+	when the message passed as parameter was not found.
+
 	* OpenChange/MAPIStoreMailContext.m
 	(-evaluateContentRestriction:intoQualifier:): new overriden method
 	handling tests on the PR_MESSAGE_CLASS_UNICODE property.

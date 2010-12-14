@@ -40,6 +40,8 @@
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailFolder.h>
 
+#import "EOBitmaskQualifier.h"
+
 #import "NSArray+MAPIStore.h"
 #import "NSCalendarDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
@@ -229,9 +231,9 @@ MAPIStringForBitmaskRestriction (struct mapi_SBitmaskRestriction *resBitmask)
     propName = "<unknown>";
 
   if (resBitmask->relMBR == 0)
-    format = @"((%s(0x%.8x) & 0x%.8x))";
+    format = @"((%s(0x%.8x) & 0x%.8x) == 0)";
   else
-    format = @"((^%s(0x%.8x) & 0x%.8x))";
+    format = @"((%s(0x%.8x) & 0x%.8x) != 0)";
 
   return [NSString stringWithFormat: format,
 		   propName, resBitmask->ulPropTag, resBitmask->ulMask];
@@ -736,9 +738,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       else
 	keys = [NSArray array];
       [messageCache setObject: keys forKey: folderURL];
+      [self logWithFormat: @"message keys for '%@': %@", folderURL, keys];
     }
-
-  [self logWithFormat: @"message keys for '%@': %@", folderURL, keys];
 
   return keys;
 }
@@ -758,9 +759,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       else
 	keys = [NSArray array];
       [restrictedMessageCache setObject: keys forKey: folderURL];
+      [self logWithFormat: @"restricted message keys for '%@': %@", folderURL, keys];
     }
-
-  [self logWithFormat: @"restricted message keys for '%@': %@", folderURL, keys];
 
   return keys;
 }
@@ -1380,15 +1380,23 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 - (MAPIRestrictionState) evaluateBitmaskRestriction: (struct mapi_SBitmaskRestriction *) res
 				      intoQualifier: (EOQualifier **) qualifier
 {
-  [self subclassResponsibility: _cmd];
+  NSString *property;
 
-  return MAPIRestrictionStateAlwaysTrue;
+  property = [self backendIdentifierForProperty: res->ulPropTag];
+  if (!property)
+    [self _raiseUnhandledPropertyException: res->ulPropTag];
+
+  *qualifier = [[EOBitmaskQualifier alloc] initWithKey: property
+					   mask: res->ulMask
+					   isZero: (res->relMBR == BMR_EQZ)];
+  [*qualifier autorelease];
+
+  return MAPIRestrictionStateNeedsEval;
 }
 
 - (MAPIRestrictionState) evaluateExistRestriction: (struct mapi_SExistRestriction *) res
 				    intoQualifier: (EOQualifier **) qualifier
 {
-  
   NSString *property;
 
   property = [self backendIdentifierForProperty: res->ulPropTag];
@@ -1455,8 +1463,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	 @" tableType: %d, queryType: %d, fid: %.16x",
 	__FUNCTION__, __LINE__, propName, proptag, pos, tableType, queryType, fid];
 
-  [self logWithFormat: @"context restriction state is: %@",
-  	MAPIStringForRestrictionState (restrictionState)];
+  // [self logWithFormat: @"context restriction state is: %@",
+  // 	MAPIStringForRestrictionState (restrictionState)];
   // if (restriction)
   //   [self logWithFormat: @"  active qualifier: %@", restriction];
 
@@ -1845,11 +1853,13 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
         {
           *path = [[objectURL substringFromIndex: 7]
 		    asUnicodeInMemCtx: memCtx];
+	  [self logWithFormat: @"found path for fmid %.16x: '%s'",
+		fmid, *path];
           rc = MAPISTORE_SUCCESS;
         }
       else
         {
-	  [self logWithFormat: @"fmid 0x%.16x was found that is not"
+	  [self warnWithFormat: @"fmid 0x%.16x was found but is not"
 		@" part of this context (%@, %@)",
 		fmid, objectURL, uri];
           *path = NULL;
@@ -1870,8 +1880,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       *path = NULL;
       rc = MAPI_E_NOT_FOUND;
     }
-
-  [self logWithFormat: @"getPath....  %.16x -> (%s, %d)", fmid, *path, rc];
 
   return rc;
 }
@@ -2148,6 +2156,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   switch (tableType)
     {
     case MAPISTORE_MESSAGE_TABLE:
+      rc = MAPISTORE_SUCCESS;
       midNbr = [NSNumber numberWithUnsignedLongLong: fmid];
       if ([messages objectForKey: midNbr])
 	{
@@ -2155,15 +2164,10 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 		@" from message cache",
 		fmid];
 	  [messages removeObjectForKey: midNbr];
-	  rc = MAPISTORE_SUCCESS;
 	}
       else
-	{
-	  [self errorWithFormat: @"message with mid %.16x not found"
-		@" in message cache",
-		fmid];
-	  rc = MAPISTORE_ERR_NOT_FOUND;
-	}
+	[self warnWithFormat: @"message with mid %.16x not found"
+	      @" in message cache", fmid];
       break;
     case MAPISTORE_FOLDER_TABLE:
     default:
