@@ -431,7 +431,7 @@ sogo_op_get_table_property(void *private_data,
   MAPIStoreContext *context;
   int rc;
 
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+  // DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
   pool = [NSAutoreleasePool new];
 

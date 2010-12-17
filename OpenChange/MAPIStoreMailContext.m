@@ -103,11 +103,8 @@ static Class NSDataK, NSStringK;
   NSArray *keys;
   
   if (qualifier)
-    {
-      [self errorWithFormat: @"we need to support qualifiers: %@",
-	    qualifier];
-      keys = nil;
-    }
+    keys = [(SOGoMailFolder *) folder fetchUIDsMatchingQualifier: qualifier
+			       sortOrdering: @"ARRIVAL"];
   else
     keys = [(SOGoMailFolder *) folder toOneRelationshipKeys];
 
@@ -345,66 +342,66 @@ static Class NSDataK, NSStringK;
       *data = MAPIBoolValue (memCtx, NO);
       break;
 
-      /* BOOL */
-    case PR_ALTERNATE_RECIPIENT_ALLOWED:
-    case PR_AUTO_FORWARDED:
-    case PR_DL_EXPANSION_PROHIBITED:
-    case PR_RESPONSE_REQUESTED:
-    case PR_REPLY_REQUESTED:
-    case PR_DELETE_AFTER_SUBMIT:
-    case PR_PROCESSED:
-    case PR_ORIGINATOR_DELIVERY_REPORT_REQUESTED:
-    case PR_RECIPIENT_REASSIGNMENT_PROHIBITED:
-      rc = MAPI_E_NOT_FOUND;
-      break;
+    //   /* BOOL */
+    // case PR_ALTERNATE_RECIPIENT_ALLOWED:
+    // case PR_AUTO_FORWARDED:
+    // case PR_DL_EXPANSION_PROHIBITED:
+    // case PR_RESPONSE_REQUESTED:
+    // case PR_REPLY_REQUESTED:
+    // case PR_DELETE_AFTER_SUBMIT:
+    // case PR_PROCESSED:
+    // case PR_ORIGINATOR_DELIVERY_REPORT_REQUESTED:
+    // case PR_RECIPIENT_REASSIGNMENT_PROHIBITED:
+    //   rc = MAPI_E_NOT_FOUND;
+    //   break;
 
-      /* PT_SYSTIME */
-    case PR_START_DATE:
-    case PR_END_DATE:
-    case PR_ACTION_DATE:
-    case PR_FLAG_COMPLETE:
-    case PR_DEFERRED_DELIVERY_TIME:
-    case PR_REPORT_TIME:
-    case PR_CLIENT_SUBMIT_TIME:
-    case PR_DEFERRED_SEND_TIME:
-    case PR_ORIGINAL_SUBMIT_TIME:
-      rc = MAPI_E_NOT_FOUND;
-      break;
+    //   /* PT_SYSTIME */
+    // case PR_START_DATE:
+    // case PR_END_DATE:
+    // case PR_ACTION_DATE:
+    // case PR_FLAG_COMPLETE:
+    // case PR_DEFERRED_DELIVERY_TIME:
+    // case PR_REPORT_TIME:
+    // case PR_CLIENT_SUBMIT_TIME:
+    // case PR_DEFERRED_SEND_TIME:
+    // case PR_ORIGINAL_SUBMIT_TIME:
+    //   rc = MAPI_E_NOT_FOUND;
+    //   break;
       
-      /* PT_BINARY */
-    case PR_CONVERSATION_KEY:
-    case PR_ORIGINALLY_INTENDED_RECIPIENT_NAME:
-    case PR_PARENT_KEY:
-    case PR_REPORT_TAG:
-    case PR_SENT_REPRESENTING_SEARCH_KEY:
-    case PR_RECEIVED_BY_ENTRYID:
-    case PR_SENT_REPRESENTING_ENTRYID:
-    case PR_RCVD_REPRESENTING_ENTRYID:
-    case PR_ORIGINAL_AUTHOR_ENTRYID:
-    case PR_REPLY_RECIPIENT_ENTRIES:
-    case PR_RECEIVED_BY_SEARCH_KEY:
-    case PR_RCVD_REPRESENTING_SEARCH_KEY:
-    case PR_SEARCH_KEY:
-    case PR_CHANGE_KEY:
-    case PR_ORIGINAL_AUTHOR_SEARCH_KEY:      
-    case PR_CONVERSATION_INDEX:
-    case PR_SENDER_ENTRYID:
-    case PR_SENDER_SEARCH_KEY:
-      rc = MAPI_E_NOT_FOUND;
-      break;
+    //   /* PT_BINARY */
+    // case PR_CONVERSATION_KEY:
+    // case PR_ORIGINALLY_INTENDED_RECIPIENT_NAME:
+    // case PR_PARENT_KEY:
+    // case PR_REPORT_TAG:
+    // case PR_SENT_REPRESENTING_SEARCH_KEY:
+    // case PR_RECEIVED_BY_ENTRYID:
+    // case PR_SENT_REPRESENTING_ENTRYID:
+    // case PR_RCVD_REPRESENTING_ENTRYID:
+    // case PR_ORIGINAL_AUTHOR_ENTRYID:
+    // case PR_REPLY_RECIPIENT_ENTRIES:
+    // case PR_RECEIVED_BY_SEARCH_KEY:
+    // case PR_RCVD_REPRESENTING_SEARCH_KEY:
+    // case PR_SEARCH_KEY:
+    // case PR_CHANGE_KEY:
+    // case PR_ORIGINAL_AUTHOR_SEARCH_KEY:      
+    // case PR_CONVERSATION_INDEX:
+    // case PR_SENDER_ENTRYID:
+    // case PR_SENDER_SEARCH_KEY:
+    //   rc = MAPI_E_NOT_FOUND;
+    //   break;
 
-      /* PT_SVREID*/
-    case PR_SENT_MAILSVR_EID:
-      rc = MAPI_E_NOT_FOUND;
-      break;
+    //   /* PT_SVREID*/
+    // case PR_SENT_MAILSVR_EID:
+    //   rc = MAPI_E_NOT_FOUND;
+    //   break;
 
-      /* PR_LONG */
-    case PR_OWNER_APPT_ID:
-    case PR_ACTION_FLAG:
-    case PR_INTERNET_CPID:
-    case PR_INET_MAIL_OVERRIDE_FORMAT:
-      rc = MAPI_E_NOT_FOUND;
-      break;
+    //   /* PR_LONG */
+    // case PR_OWNER_APPT_ID:
+    // case PR_ACTION_FLAG:
+    // case PR_INTERNET_CPID:
+    // case PR_INET_MAIL_OVERRIDE_FORMAT:
+    //   rc = MAPI_E_NOT_FOUND;
+    //   break;
 
     case PR_MSG_EDITOR_FORMAT:
       {
@@ -590,6 +587,24 @@ static Class NSDataK, NSStringK;
       else
 	rc = MAPIRestrictionStateAlwaysFalse;
       break;
+
+    case 0x0ff600fb:
+      /*                                 resProperty: struct mapi_SPropertyRestriction
+                                    relop                    : 0x04 (4)
+                                    ulPropTag                : UNKNOWN_ENUM_VALUE (0xFF600FB)
+                                    lpProp: struct mapi_SPropValue
+                                        ulPropTag                : UNKNOWN_ENUM_VALUE (0xFF600FB)
+                                        value                    : union mapi_SPropValue_CTR(case 251)
+                                        bin                      : SBinary_short cb=21
+[0000] 01 01 00 1A 00 00 00 00   00 9C 83 E8 0F 00 00 00   ........ ........
+[0010] 00 00 00 00 00                                    ..... */
+	rc = MAPIRestrictionStateAlwaysFalse;
+      break;
+
+    case PR_CONVERSATION_KEY:
+	rc = MAPIRestrictionStateAlwaysFalse;
+      break;
+      
     default:
       rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
     }
@@ -623,6 +638,9 @@ static Class NSDataK, NSStringK;
       else
 	rc = MAPIRestrictionStateAlwaysFalse;
       break;
+    case PR_CONVERSATION_KEY:
+      rc = MAPIRestrictionStateAlwaysFalse;
+      break;
     default:
       rc = [super evaluateContentRestriction: res intoQualifier: qualifier];
     }
@@ -642,6 +660,9 @@ static Class NSDataK, NSStringK;
       break;
     case PR_MESSAGE_DELIVERY_TIME:
       rc = MAPIRestrictionStateAlwaysTrue;
+      break;
+    case PR_PROCESSED:
+      rc = MAPIRestrictionStateAlwaysFalse;
       break;
     default:
       rc = [super evaluateExistRestriction: res intoQualifier: qualifier];

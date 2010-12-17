@@ -190,6 +190,11 @@
 		}
 	      *data = MAPILongLongValue (memCtx, mappingId);
 	    }
+	  else if (proptag == PR_SUBJECT_UNICODE)
+	    {
+	      rc = MAPI_E_SUCCESS;
+	      *data = [@"No subject" asUnicodeInMemCtx: memCtx];
+	    }
 	  else
 	    rc = [super getMessageTableChildproperty: data
 					       atURL: childURL
@@ -207,25 +212,10 @@
   return rc;
 }
 
-- (MAPIRestrictionState) evaluateBitmaskRestriction: (struct mapi_SBitmaskRestriction *) res
-				      intoQualifier: (EOQualifier **) qualifier
-{
-  [self errorWithFormat: @"%s: UNIMPLEMENTED METHOD, returning true",
-	__PRETTY_FUNCTION__];
-  // ^PR_VIEW_STYLE(0x68340003) & 0x00000001
-
-  return MAPIRestrictionStateAlwaysTrue;
-}
-
 - (int) openMessage: (struct mapistore_message *) msg
               atURL: (NSString *) childURL
 {
-  static enum MAPITAGS tags[] = { PR_SUBJECT_UNICODE, PR_HASATTACH,
-				  PR_MESSAGE_DELIVERY_TIME, PR_MESSAGE_FLAGS,
-				  PR_FLAG_STATUS, PR_SENSITIVITY,
-				  PR_SENT_REPRESENTING_NAME_UNICODE,
-				  PR_INTERNET_MESSAGE_ID_UNICODE,
-				  PR_READ_RECEIPT_REQUESTED };
+  static enum MAPITAGS tags[] = { PR_SUBJECT_UNICODE };
   id child;
   struct SRowSet *recipients;
   struct SRow *properties;
@@ -243,7 +233,7 @@
       recipients->aRow = NULL;
       msg->recipients = recipients;
 
-      max = 9;
+      max = 1;
 
       properties = talloc_zero (memCtx, struct SRow);
       properties->cValues = 0;
@@ -271,6 +261,27 @@
     }
   else
     rc = MAPI_E_NOT_FOUND;
+
+  return rc;
+}
+
+- (enum MAPISTATUS) getTableProperty: (void **) data
+			     withTag: (enum MAPITAGS) proptag
+			  atPosition: (uint32_t) pos
+		       withTableType: (uint8_t) tableType
+			andQueryType: (enum table_query_type) queryType
+			       inFID: (uint64_t) fid
+{
+  enum MAPISTATUS rc;
+
+  rc = [super getTableProperty: data
+		       withTag: proptag
+		    atPosition: pos
+		 withTableType: tableType
+		  andQueryType: queryType
+			 inFID: fid];
+  if (rc)
+    NSLog (@"returning code for prop");
 
   return rc;
 }

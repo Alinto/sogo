@@ -241,6 +241,9 @@
       else
 	rc = MAPIRestrictionStateAlwaysFalse;
       break;
+    case 0x81930003: /* PidLidBusyStatus (named prop) */
+      rc = MAPIRestrictionStateAlwaysTrue; // should be based on c_isopaque
+      break;
     default:
       rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
     }
@@ -255,6 +258,18 @@
   if (!knownProperties)
     {
       knownProperties = [NSMutableDictionary new];
+      // [knownProperties setObject: @"c_startdate"
+      // 		       forKey: MAPIPropertyKey (PidLidAppointmentStartWhole)];
+      [knownProperties setObject: @"c_startdate"
+		       forKey: MAPIPropertyKey (0x818f0040)];
+      // [knownProperties setObject: @"c_enddate"
+      // 		       forKey: MAPIPropertyKey (PidLidAppointmentEndWhole)];
+      [knownProperties setObject: @"c_enddate"
+		       forKey: MAPIPropertyKey (0x818a0040)];
+      // [knownProperties setObject: @"c_iscycle"
+      // 		       forKey: MAPIPropertyKey (PidLidRecurring)];
+      [knownProperties setObject: @"c_iscycle"
+		       forKey: MAPIPropertyKey (0x81e70040)];
     }
 
   return [knownProperties objectForKey: MAPIPropertyKey (property)];

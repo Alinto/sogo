@@ -262,6 +262,12 @@
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
 
+    // case 0x81ad001f: /* PidLidEmail1AddressType */
+    // case 0x81b2001f: /* PidLidEmail2AddressType */
+    // case 0x81b7001f: /* PidLidEmail3AddressType */
+    //   *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
+    //   break;
+
       // case PR_POSTAL_ADDRESS_UNICODE:
       // case PR_INTERNET_MESSAGE_ID_UNICODE:
       // case PR_CAR_TELEPHONE_NUMBER_UNICODE:

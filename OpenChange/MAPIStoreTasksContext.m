@@ -234,12 +234,40 @@
     case PR_RULE_PROVIDER_UNICODE: // TODO: what's this?
       rc = MAPIRestrictionStateAlwaysTrue;
       break;
-    case 0x81200003: // seems to be PR_CE_CHECK_INTERVAL
+    case 0x81200003: // PidLidTaskStatus
+      rc = MAPIRestrictionStateAlwaysTrue;
+      break;
+    case 0x81250040: // PidLidTaskDateCompleted
       rc = MAPIRestrictionStateAlwaysTrue;
       break;
       
     default:
       rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
+    }
+
+  return rc;
+}
+
+- (MAPIRestrictionState) evaluateExistRestriction: (struct mapi_SExistRestriction *) res
+				    intoQualifier: (EOQualifier **) qualifier
+{
+  MAPIRestrictionState rc;
+
+  switch (res->ulPropTag)
+    {
+    case 0x81250040: // PidLidTaskDateCompleted
+      /* since we don't store the completion date in the quick table, we only
+	 checks whether the task has been completed */
+      *qualifier = [[EOKeyValueQualifier alloc]
+		     initWithKey: @"c_status"
+		     operatorSelector: EOQualifierOperatorEqual
+			   value: [NSNumber numberWithInt: 1]];
+      [*qualifier autorelease];
+      rc = MAPIRestrictionStateNeedsEval;
+      break;
+
+    default:
+      rc = [super evaluateExistRestriction: res intoQualifier: qualifier];
     }
 
   return rc;

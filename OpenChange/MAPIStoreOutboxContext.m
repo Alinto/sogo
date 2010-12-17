@@ -35,6 +35,8 @@
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
 
+#import "NSData+MAPIStore.h"
+
 #import "MAPIStoreOutboxContext.h"
 
 @implementation MAPIStoreOutboxContext
@@ -87,6 +89,27 @@
 - (id) createMessageInFolder: (id) parentFolder
 {
   return [moduleFolder newDraft];
+}
+
+- (enum MAPISTATUS) getMessageTableChildproperty: (void **) data
+					   atURL: (NSString *) childURL
+					 withTag: (enum MAPITAGS) proptag
+					inFolder: (SOGoFolder *) folder
+					 withFID: (uint64_t) fid
+{
+  enum MAPISTATUS rc;
+
+  if (proptag == PR_CHANGE_KEY)
+    {
+      *data = [[@"openchangedraft" dataUsingEncoding: NSASCIIStringEncoding]
+		asShortBinaryInMemCtx: memCtx];
+      rc = MAPI_E_SUCCESS;
+    }
+  else
+    rc = [super getMessageTableChildproperty: data atURL: childURL withTag:
+		  proptag inFolder: folder withFID: fid];
+
+  return rc;
 }
 
 @end

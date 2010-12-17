@@ -93,7 +93,7 @@ static NSString *privateDir = nil;
       path = [url path];
       if (![path hasSuffix: @"/"])
 	path = [NSString stringWithFormat: @"%@/", path];
-      directory = [NSString stringWithFormat: @"%@/SOGo/%@/%@%@",
+      directory = [NSString stringWithFormat: @"%@/mapistore/SOGo/%@/%@%@",
 			    privateDir, [url user], [url host], path];
       [self logWithFormat: @"directory: %@", directory];
       [directory retain];

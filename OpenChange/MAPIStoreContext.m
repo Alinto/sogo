@@ -210,7 +210,7 @@ MAPIStringForPropertyRestriction (struct mapi_SPropertyRestriction *resProperty)
   if (!propName)
     propName = "<unknown>";
 
-  if (resProperty->relop > 0 && resProperty->relop < 6)
+  if (resProperty->relop >= 0 && resProperty->relop < 7)
     operator = operators[resProperty->relop];
   else
     operator = [NSString stringWithFormat: @"<invalid op %d>", resProperty->relop];
@@ -775,27 +775,28 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
 - (NSArray *) _subfolderKeysForFolderURL: (NSString *) folderURL
 {
-  NSArray *keys;
-  SOGoFolder *folder;
+  // NSArray *keys;
+  // SOGoFolder *folder;
 
-  keys = [subfolderCache objectForKey: folderURL];
-  if (!keys)
-    {
-      folder = [self lookupObject: folderURL];
-      if (folder)
-        {
-          keys = [folder toManyRelationshipKeys];
-          if (!keys)
-            keys = [NSArray array];
-        }
-      else
-	keys = [NSArray array];
-      [subfolderCache setObject: keys forKey: folderURL];
-    }
+  return [NSArray array];
+  // keys = [subfolderCache objectForKey: folderURL];
+  // if (!keys)
+  //   {
+  //     folder = [self lookupObject: folderURL];
+  //     if (folder)
+  //       {
+  //         keys = [folder toManyRelationshipKeys];
+  //         if (!keys)
+  //           keys = [NSArray array];
+  //       }
+  //     else
+  // 	keys = [NSArray array];
+  //     [subfolderCache setObject: keys forKey: folderURL];
+  //   }
 
-  [self logWithFormat: @"folder keys for '%@': %@", folderURL, keys];
+  // [self logWithFormat: @"folder keys for '%@': %@", folderURL, keys];
 
-  return keys;
+  // return keys;
 }
 
 /**
@@ -1278,6 +1279,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 }
 
 - (void) _raiseUnhandledPropertyException: (enum MAPITAGS) property
+			       inFunction: (const char *) function
 {
   const char *propName;
 
@@ -1285,8 +1287,9 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   if (!propName)
     propName = "<unknown>";
   [NSException raise: @"MAPIStoreUnhandledPropertyException"
-	      format: @"property %s (%.8x) has no matching field name (%@)",
-	       propName, property, self];
+	      format: @"property %s (%.8x) has no matching field name (%@)"
+	       @" in '%s'",
+	       propName, property, self, function];
 }
 
 - (MAPIRestrictionState) evaluateContentRestriction: (struct mapi_SContentRestriction *) res
@@ -1298,7 +1301,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
   property = [self backendIdentifierForProperty: res->ulPropTag];
   if (!property)
-    [self _raiseUnhandledPropertyException: res->ulPropTag];
+    [self _raiseUnhandledPropertyException: res->ulPropTag
+				inFunction: __FUNCTION__];
   
   value = NSObjectFromMAPISPropValue (&res->lpProp);
   if ([value isKindOfClass: NSDataK])
@@ -1357,15 +1361,16 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
   property = [self backendIdentifierForProperty: res->ulPropTag];
   if (!property)
-    [self _raiseUnhandledPropertyException: res->ulPropTag];
+    [self _raiseUnhandledPropertyException: res->ulPropTag
+				inFunction: __FUNCTION__];
 
-  if (res->relop > 0 && res->relop < 6)
+  if (res->relop >= 0 && res->relop < 7)
     operator = operators[res->relop];
   else
     {
       operator = NULL;
       [NSException raise: @"MAPIStoreRestrictionException"
-		   format: @"unhandled operator type"];
+		   format: @"unhandled operator type number %d", res->relop];
     }
 
   value = NSObjectFromMAPISPropValue (&res->lpProp);
@@ -1384,7 +1389,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
   property = [self backendIdentifierForProperty: res->ulPropTag];
   if (!property)
-    [self _raiseUnhandledPropertyException: res->ulPropTag];
+    [self _raiseUnhandledPropertyException: res->ulPropTag
+				inFunction: __FUNCTION__];
 
   *qualifier = [[EOBitmaskQualifier alloc] initWithKey: property
 					   mask: res->ulMask
@@ -1401,7 +1407,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
   property = [self backendIdentifierForProperty: res->ulPropTag];
   if (!property)
-    [self _raiseUnhandledPropertyException: res->ulPropTag];
+    [self _raiseUnhandledPropertyException: res->ulPropTag
+				inFunction: __FUNCTION__];
 
   *qualifier = [[EOKeyValueQualifier alloc] initWithKey: property
 				       operatorSelector: EOQualifierOperatorNotEqual
@@ -1459,9 +1466,9 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   propName = get_proptag_name (proptag);
   if (!propName)
     propName = "<unknown>";
-  [self logWithFormat: @"METHOD '%s' (%d) -- proptag: %s (0x%.8x), pos: %.8x,"
-	 @" tableType: %d, queryType: %d, fid: %.16x",
-	__FUNCTION__, __LINE__, propName, proptag, pos, tableType, queryType, fid];
+  // [self logWithFormat: @"METHOD '%s' (%d) -- proptag: %s (0x%.8x), pos: %.8x,"
+  // 	 @" tableType: %d, queryType: %d, fid: %.16x",
+  // 	__FUNCTION__, __LINE__, propName, proptag, pos, tableType, queryType, fid];
 
   // [self logWithFormat: @"context restriction state is: %@",
   // 	MAPIStringForRestrictionState (restrictionState)];
@@ -1506,7 +1513,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
 	      if (tableType == MAPISTORE_FOLDER_TABLE)
 		{
-		  [self logWithFormat: @"  querying child folder at URL: %@", childURL];
+		  // [self logWithFormat: @"  querying child folder at URL: %@", childURL];
 		  rc = [self getFolderTableChildproperty: data
 						   atURL: childURL
 						 withTag: proptag
@@ -1529,9 +1536,9 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 		    }
 		  else
 		    {
-		      [self logWithFormat:
-			      @"child '%@' does not match active restriction",
-			    childURL];
+		      // [self logWithFormat:
+		      // 	      @"child '%@' does not match active restriction",
+		      // 	    childURL];
 		      rc = MAPI_E_INVALID_OBJECT;
 		    }
 		}
@@ -1545,10 +1552,10 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	    }
 	  else
 	    {
-	      [self errorWithFormat:
-		      @"Invalid row position %d for table type %d"
-			  @" in FID: %lld",
-		    pos, tableType, fid];
+	      // [self errorWithFormat:
+	      // 	      @"Invalid row position %d for table type %d"
+	      // 		  @" in FID: %lld",
+	      // 	    pos, tableType, fid];
 	      rc = MAPI_E_INVALID_OBJECT;
 	    }
 	}
@@ -2036,6 +2043,10 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       // 	}
       // else
     case MAPISTORE_FOLDER:
+      [self errorWithFormat: @"%s: folder properties not handled yet",
+            __FUNCTION__];
+      rc = MAPI_E_NOT_FOUND;
+      break;
     default:
       [self errorWithFormat: @"%s: value of tableType not handled: %d",
             __FUNCTION__, tableType];

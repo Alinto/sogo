@@ -75,6 +75,9 @@ e)
     2010-11-24 13:45:38.715 samba[25685]   0x0e62000b (PR_URL_COMP_NAME_SET):
     0 (NSIntNumber) */
 
+  value = [properties
+	    objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
+  if (!value)
   value = [properties objectForKey: MAPIPropertyKey (PR_SUBJECT_UNICODE)];
   if (value)
     [newHeaders setObject: value forKey: @"subject"];

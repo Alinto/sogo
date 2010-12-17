@@ -1,3 +1,9 @@
+2010-12-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStore*Context.m: added handling of a few more
+	filters and a few more properties, in particular "named
+	properties".
+
 2010-12-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContext.m
