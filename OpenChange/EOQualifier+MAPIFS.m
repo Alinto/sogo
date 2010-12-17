@@ -128,7 +128,8 @@
   rc = ((isZero && (intValue & mask) == 0)
 	|| (!isZero && (intValue & mask) != 0));
 
-  [self logWithFormat: @"evaluating bitmask qualifier: (%.8x & %.8x) %s 0: %d",
+  [self logWithFormat: @"evaluation of bitmask qualifier:"
+	@" (%.8x & %.8x) %s 0: %d",
 	intValue, mask, (isZero ? "==" : "!="), rc];
 
   return rc;
