@@ -1,3 +1,8 @@
+2010-12-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Added the /SOGo/so/<user>/Calendar/reloadWebCalendarsAndRedirect
+	action which is particularly useful for WebAuth users
+
 2010-12-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStore*Context.m: added handling of a few more

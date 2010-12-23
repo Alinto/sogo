@@ -107,4 +107,21 @@
   return [self responseWith204];
 }
 
+//
+// The method below is different than the -reloadWebCalendarsAction as it
+// won't force the reload of all calendars and automatically redirect the
+// user to the /SOGo/so page upon completion.
+//
+// This is particularly useful for WebAuth users and they won't have a
+// precise "entry point" in SOGo - so calendars reload upon login
+// isn't possible for them.
+//
+- (WOResponse *) reloadWebCalendarsAndRedirectAction
+{
+  [[self clientObject] reloadWebCalendars: NO];
+
+  return [self redirectToLocation: @"/SOGo/so"];
+}
+
+
 @end
