@@ -1,3 +1,12 @@
+2010-12-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Implemented secured sessions. We no longer store in the
+	browser's cookie the base64 encoded version of username:password
+	You MUST now set OCSSessionsFolderURL to a value like:
+	postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_sessions_folder
+	and the database table will be created automatically upon
+	next SOGo's startup.
+
 2010-12-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Added the /SOGo/so/<user>/Calendar/reloadWebCalendarsAndRedirect

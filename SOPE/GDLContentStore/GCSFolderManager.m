@@ -1,14 +1,15 @@
 /*
+  Copyright (C) 2006-2011 Inverse inc. 
   Copyright (C) 2004-2007 SKYRIX Software AG
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo.
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -42,6 +43,7 @@
 #import "GCSAlarmsFolder.h"
 #import "GCSFolder.h"
 #import "GCSFolderType.h"
+#import "GCSSessionsFolder.h"
 #import "GCSSpecialQueries.h"
 #import "NSURL+GCS.h"
 
@@ -330,7 +332,12 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   return [GCSAlarmsFolder alarmsFolderWithFolderManager: self];
 }
 
-/* path SQL */
+
+/* sessions */
+- (GCSSessionsFolder *)sessionsFolder
+{
+  return [GCSSessionsFolder sessionsFolderWithFolderManager: self];
+}
 
 - (NSString *)generateSQLWhereForInternalNames:(NSArray *)_names
 				    exactMatch:(BOOL)_beExact orDirectSubfolderMatch:(BOOL)_directSubs

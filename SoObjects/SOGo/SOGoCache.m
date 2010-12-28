@@ -36,7 +36,12 @@
  * <uid>+attributes      value = NSMutableDictionary instance > user's LDAP attributes
  * <object path>+acl     value = NSDictionary instance > ACLs on an object at specified path
  * <groupname>+<domain>  value = NSString instance (array components separated by ",") or group member logins for a specific group in domain
+ * cas-id:< >            value = 
+ * cas-ticket:< >        value =
+ * cas-pgtiou:< >        value =
+ * session:< >           value =
  */
+
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
@@ -437,7 +442,9 @@ static memcached_st *handle = NULL;
   return [self _valuesOfType: @"settings" forKey: theLogin];
 }
 
-/* CAS session support */
+//
+// CAS session support
+//
 - (NSString *) CASTicketFromIdentifier: (NSString *) identifier
 {
   return [self valueForKey: [NSString stringWithFormat: @"cas-id:%@",
@@ -481,7 +488,7 @@ static memcached_st *handle = NULL;
 }
 
 //
-//
+// ACL caching code
 //
 - (void) setACLs: (NSDictionary *) theACLs
 	 forPath: (NSString *) thePath

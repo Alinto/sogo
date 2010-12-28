@@ -105,8 +105,26 @@
   return nil;
 }
 
+- (NSString *) createSessionsFolderWithName: (NSString *) tableName
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (NSDictionary *) sessionsAttributeTypes
+{
+  [self subclassResponsibility: _cmd];
+  
+  return nil;
+}
+
+
 @end
 
+//
+// PostgreSQL database
+//
 @implementation GCSPostgreSQLSpecialQueries
 
 - (NSString *) createEMailAlarmsFolderWithName: (NSString *) tableName
@@ -168,8 +186,39 @@
   return [NSString stringWithFormat: sqlFolderACLFormat, tableName];
 }
 
+- (NSString *) createSessionsFolderWithName: (NSString *) tableName
+{
+  static NSString *sqlFolderFormat
+    = (@"CREATE TABLE %@ (" 
+       @" c_id VARCHAR(255) NOT NULL,"
+       @" c_value VARCHAR(255) NOT NULL,"
+       @" c_creationdate INT4 NOT NULL,"
+       @" c_lastseen INT4 NOT NULL)");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName];
+}
+
+- (NSDictionary *) sessionsAttributeTypes
+{
+  static NSMutableDictionary *types = nil;
+
+  if (!types)
+    {
+      types = [NSMutableDictionary new];
+      [types setObject: @"varchar" forKey: @"c_id"];
+      [types setObject: @"varchar" forKey: @"c_value"];
+      [types setObject: @"int" forKey: @"c_creationdate"];
+      [types setObject: @"int" forKey: @"c_lastseen"];
+    }
+
+  return types;
+}
+
 @end
 
+//
+// MySQL database
+//
 @implementation GCSMySQLSpecialQueries
 
 - (NSString *) createEMailAlarmsFolderWithName: (NSString *) tableName
@@ -231,8 +280,39 @@
   return [NSString stringWithFormat: sqlFolderACLFormat, tableName];
 }
 
+- (NSString *) createSessionsFolderWithName: (NSString *) tableName
+{
+  static NSString *sqlFolderFormat
+    = (@"CREATE TABLE %@ (" 
+       @" c_id VARCHAR(255) NOT NULL,"
+       @" c_value VARCHAR(255) NOT NULL,"
+       @" c_creationdate INT NOT NULL,"
+       @" c_lastseen INT NOT NULL)");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName];
+}
+
+- (NSDictionary *) sessionsAttributeTypes
+{
+  static NSMutableDictionary *types = nil;
+
+  if (!types)
+    {
+      types = [NSMutableDictionary new];
+      [types setObject: @"varchar" forKey: @"c_id"];
+      [types setObject: @"varchar" forKey: @"c_value"];
+      [types setObject: @"int" forKey: @"c_creationdate"];
+      [types setObject: @"int" forKey: @"c_lastseen"];
+    }
+
+  return types;
+}
+
 @end
 
+//
+// Oracle database
+//
 @implementation GCSOracleSpecialQueries
 
 - (NSString *) createEMailAlarmsFolderWithName: (NSString *) tableName
@@ -291,6 +371,34 @@
        @"  c_role VARCHAR (80) NOT NULL\n"
        @")");
   return [NSString stringWithFormat: sqlFolderACLFormat, tableName];
+}
+
+- (NSString *) createSessionsFolderWithName: (NSString *) tableName
+{
+  static NSString *sqlFolderFormat
+    = (@"CREATE TABLE %@ (" 
+       @" c_id VARCHAR2(255) NOT NULL,"
+       @" c_value VARCHAR2(255) NOT NULL,"
+       @" c_creationdate INTEGER NOT NULL,"
+       @" c_lastseen INTEGER NOT NULL)");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName];
+}
+
+- (NSDictionary *) sessionsAttributeTypes
+{
+  static NSMutableDictionary *types = nil;
+
+  if (!types)
+    {
+      types = [NSMutableDictionary new];
+      [types setObject: @"varchar2" forKey: @"c_id"];
+      [types setObject: @"varchar2" forKey: @"c_value"];
+      [types setObject: @"integer" forKey: @"c_creationdate"];
+      [types setObject: @"integer" forKey: @"c_lastseen"];
+    }
+
+  return types;
 }
 
 @end

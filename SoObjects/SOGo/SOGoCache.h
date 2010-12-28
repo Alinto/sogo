@@ -1,6 +1,6 @@
 /* SOGoCache.h - this file is part of SOGo
  *
- * Copyright (C) 2008-2010 Inverse inc.
+ * Copyright (C) 2008-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -92,7 +92,9 @@
                 forLogin: (NSString *) login;
 - (NSString *) userSettingsForLogin: (NSString *) theLogin;
 
-/* CAS support */
+//
+// CAS support
+//
 - (NSString *) CASTicketFromIdentifier: (NSString *) identifier;
 - (NSString *) CASSessionWithTicket: (NSString *) ticket;
 - (void) setCASSession: (NSString *) casSession
@@ -103,9 +105,11 @@
 - (void) setCASPGTId: (NSString *) pgtId
            forPGTIOU: (NSString *) pgtIou;
 
+//
+// ACL caching support
+//
 - (void) setACLs: (NSDictionary *) theACLs
 	 forPath: (NSString *) thePath;
-
 - (NSMutableDictionary *) aclsForPath: (NSString *) thePath;
 
 @end

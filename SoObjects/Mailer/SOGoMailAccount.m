@@ -629,14 +629,16 @@ static NSString *sieveScriptName = @"sogo";
   return [NSMutableString string];
 }
 
+//
+// Extract password from basic authentication.
+//
 - (NSString *) imap4PasswordRenewed: (BOOL) renewed
 {
-  /*
-    Extract password from basic authentication.
-  */
-  NSURL *imapURL;
   NSString *password;
+  NSURL *imapURL;
 
+  // Default account - ie., the account that is provided with a default
+  // SOGo installation. User-added IMAP accounts will have name >= 1.
   if ([nameInContainer isEqualToString: @"0"])
     {
       imapURL = [self imap4URL];

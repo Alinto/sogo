@@ -51,7 +51,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoWebAuthenticator.h>
-
+#import <SOGo/SOGoSession.h>
 #import <SOGo/SOGoConstants.h>
 
 #import "SOGoRootPage.h"
@@ -70,18 +70,37 @@
                   forAuthenticator: (SOGoWebAuthenticator *) auth
 {
   WOCookie *authCookie;
-  NSString *cookieValue, *cookieString, *appName;
+  NSString *cookieValue, *cookieString, *appName, *sessionKey, *userKey, *securedPassword;
 
+  //
+  // We create a new cookie - thus we create a new session
+  // associated to the user. For security, we generate:
+  //
+  // A- a session key
+  // B- a user key
+  //
+  // In memcached, the session key will be associated to the user's password
+  // which will be XOR'ed with the user key.
+  //
+  sessionKey = [SOGoSession generateKeyForLength: 16];
+  userKey = [SOGoSession generateKeyForLength: 64];
+
+  NSString *value = [NSString stringWithFormat: @"%@:%@", username, password];
+  securedPassword = [SOGoSession securedValue: value  usingKey: userKey];
+
+
+  [SOGoSession setValue: securedPassword  forSessionKey: sessionKey];
+
+  //cookieString = [NSString stringWithFormat: @"%@:%@",
+  //                         username, password];
   cookieString = [NSString stringWithFormat: @"%@:%@",
-                           username, password];
+                           userKey, sessionKey];
   cookieValue = [NSString stringWithFormat: @"basic %@",
                           [cookieString stringByEncodingBase64]];
   authCookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
                                   value: cookieValue];
   appName = [[context request] applicationName];
   [authCookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
-  /* enable this when we have code to determine whether request is HTTPS:
-     [authCookie setIsSecure: YES]; */
   
   return authCookie;
 }
@@ -107,7 +126,9 @@
   return locationCookie;
 }
 
-/* actions */
+//
+//
+//
 - (WOResponse *) _responseWithLDAPPolicyError: (int) error
 {
   NSDictionary *jsonError;
@@ -164,8 +185,9 @@
       response = [self responseWithStatus: 200
 		       andJSONRepresentation: json];
       
-      authCookie = [self _cookieWithUsername: username andPassword: password
-                            forAuthenticator: auth];
+      authCookie = [self _cookieWithUsername: username
+			 andPassword: password
+			 forAuthenticator: auth];
       [response addCookie: authCookie];
 
       supportedLanguages = [[SOGoSystemDefaults sharedSystemDefaults]
@@ -369,11 +391,6 @@
   return [[SOGoSystemDefaults sharedSystemDefaults] supportedLanguages];
 }
 
-// - (NSString *) language
-// {
-//   return [SOGoUser language];
-// }
-
 - (NSString *) languageText
 {
   NSString *text;
@@ -397,7 +414,7 @@
 
 - (WOResponse *) changePasswordAction
 {
-  NSString *username, *password, *newPassword;
+  NSString *username, *password, *newPassword, *value;
   SOGoUserManager *um;
   SOGoPasswordPolicyError error;
   WOResponse *response;
@@ -405,11 +422,22 @@
   NSDictionary *message;
   SOGoWebAuthenticator *auth;
   WOCookie *authCookie;
+  NSArray *creds;
 
   request = [context request];
   message = [[request contentAsString] objectFromJSONString];
-  username = [message objectForKey: @"userName"];
-  password = [message objectForKey: @"password"];
+  
+  auth = [[WOApplication application]
+	   authenticatorInContext: context];
+  value = [[context request]
+           cookieValueForKey: [auth cookieNameInContext: context]];
+  creds = [auth parseCredentials: value];
+
+  [SOGoSession decodeValue: [SOGoSession valueForSessionKey: [creds objectAtIndex: 1]]
+	       usingKey: [creds objectAtIndex: 0]
+	       login: &username
+	       password: &password];
+
   newPassword = [message objectForKey: @"newPassword"];
 
   um = [SOGoUserManager sharedUserManager];
@@ -420,9 +448,10 @@
 	  newPassword: newPassword
 	  perr: &error])
     {
+      // We delete the previous session
+      [SOGoSession deleteValueForSessionKey: [creds objectAtIndex: 1]]; 
+
       response = [self responseWith204];
-      auth = [[WOApplication application]
-               authenticatorInContext: context];
       authCookie = [self _cookieWithUsername: username
                                  andPassword: newPassword
                             forAuthenticator: auth];

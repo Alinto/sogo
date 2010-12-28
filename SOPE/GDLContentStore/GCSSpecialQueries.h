@@ -37,6 +37,9 @@
 - (NSString *) createFolderTableWithName: (NSString *) tableName;
 - (NSString *) createFolderACLTableWithName: (NSString *) tableName;
 
+- (NSString *) createSessionsFolderWithName: (NSString *) tableName;
+- (NSDictionary *) sessionsAttributeTypes;
+
 @end
 
 @interface EOAdaptorChannel (GCSSpecialQueries)

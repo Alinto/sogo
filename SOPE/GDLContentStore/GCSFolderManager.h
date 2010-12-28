@@ -32,7 +32,7 @@
 */
 
 @class NSString, NSArray, NSURL, NSDictionary, NSException;
-@class GCSChannelManager, GCSAlarmsFolder, GCSFolder, GCSFolderType;
+@class GCSChannelManager, GCSAlarmsFolder, GCSFolder, GCSFolderType, GCSSessionsFolder;
 
 @interface GCSFolderManager : NSObject
 {
@@ -72,6 +72,9 @@
 
 /* alarms */
 - (GCSAlarmsFolder *)alarmsFolder;
+
+/* sessions */
+- (GCSSessionsFolder *)sessionsFolder;
 
 /* folder types */
 

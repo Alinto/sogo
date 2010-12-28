@@ -402,7 +402,6 @@
 			    grace: grace];
     }
 
-
   return checkOK;
 }
 

@@ -1,6 +1,6 @@
 /* SOGoWebAuthenticator.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -32,13 +32,16 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSNull+misc.h>
 #import <NGLdap/NGLdapConnection.h>
 
 #import <MainUI/SOGoRootPage.h>
 
+#import "SOGoCache.h"
 #import "SOGoCASSession.h"
 #import "SOGoConstants.h"
 #import "SOGoPermissions.h"
+#import "SOGoSession.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
 #import "SOGoUserManager.h"
@@ -59,12 +62,32 @@
 
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
-{
+{ 
+  NSString *username, *password, *value;
   SOGoPasswordPolicyError perr;
   int expire, grace;
+ 
 
-  return [self checkLogin: _login
-	       password: _pwd
+  // We check for the existence of the session in the database/memcache
+  // and we extract the real password from it. Here,
+  //
+  // _login == userKey
+  // _pwd == sessionKey
+  //
+  // If the session isn't present in the database, we fail the login process.
+  //
+  value = [SOGoSession valueForSessionKey: _pwd];
+
+  if (!value)
+    return NO;
+
+  [SOGoSession decodeValue: value
+	       usingKey: _login
+	       login: &username
+	       password: &password];
+
+  return [self checkLogin: username
+	       password: password
 	       perr: &perr
 	       expire: &expire
 	       grace: &grace];
@@ -97,13 +120,16 @@
 					      expire: _expire
 					      grace: _grace];
   
-  //  [self logWithFormat: @"Checked login with ppolicy enabled: %d %d %d", *_perr, *_expire, *_grace];
+  //[self logWithFormat: @"Checked login with ppolicy enabled: %d %d %d", *_perr, *_expire, *_grace];
   
   // It's important to return the real value here. The callee will handle
   // the return code and check for the _perr value.
   return rc;
 }
 
+//
+//
+//
 - (SOGoUser *) userInContext: (WOContext *)_ctx
 {
   static SOGoUser *anonymous = nil;
@@ -124,19 +150,63 @@
 
 - (NSString *) passwordInContext: (WOContext *) context
 {
-  NSArray *creds;
   NSString *auth, *password;
+  NSArray *creds;
 
   auth = [[context request]
            cookieValueForKey: [self cookieNameInContext: context]];
   creds = [self parseCredentials: auth];
   if ([creds count] > 1)
-    password = [creds objectAtIndex: 1];
+    {
+      NSString *login;
+      
+      [SOGoSession decodeValue: [SOGoSession valueForSessionKey: [creds objectAtIndex: 1]]
+		   usingKey: [creds objectAtIndex: 0]
+		   login: &login
+		   password: &password];
+    }
   else
     password = nil;
 
   return password;
 }
+
+//
+// We overwrite SOPE's method in order to proper retrieve
+// the username from the cookie.
+//
+- (NSString *) checkCredentials: (NSString *)_creds
+{
+  NSString *login, *pwd, *userKey, *sessionKey;
+  NSArray *creds;
+
+  SOGoPasswordPolicyError perr;
+  int expire, grace;
+  
+  if (![(creds = [self parseCredentials:_creds]) isNotEmpty])
+    return nil;
+
+  userKey = [creds objectAtIndex:0];
+  if ([userKey isEqualToString:@"anonymous"])
+    return @"anonymous";
+  
+  sessionKey = [creds objectAtIndex:1];
+  
+  [SOGoSession decodeValue: [SOGoSession valueForSessionKey: sessionKey]
+	       usingKey: userKey
+	       login: &login
+	       password: &pwd];
+  
+  if (![self checkLogin: login
+	     password: pwd
+	     perr: &perr
+	     expire: &expire
+	     grace: &grace])
+    return nil;
+  
+  return login;
+}
+
 
 - (NSString *) imapPasswordInContext: (WOContext *) context
                            forServer: (NSString *) imapServer
@@ -176,12 +246,12 @@
   return [SOGoUser userWithLogin: login roles: roles];
 }
 
+//
+// This is called by SoObjectRequestHandler prior doing any significant
+// processing to allow the authenticator to reject invalid requests.
+//
 - (WOResponse *) preprocessCredentialsInContext: (WOContext *) context
 {
-  /*
-    This is called by SoObjectRequestHandler prior doing any significant
-    processing to allow the authenticator to reject invalid requests.
-  */
   WOResponse *response;
   NSString *auth;
 

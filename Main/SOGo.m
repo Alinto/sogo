@@ -232,10 +232,18 @@ static BOOL debugLeaks;
 	}
     }
 
-  if (ok && [defaults enableEMailAlarms])
+  if (ok)
     {
       fm = [GCSFolderManager defaultFolderManager];
-      [[fm alarmsFolder] createFolderIfNotExists];
+
+      // Create the sessions table
+      [[fm sessionsFolder] createFolderIfNotExists];
+      
+      // Create the email alarms table, if required
+      if ([defaults enableEMailAlarms])
+	{
+	  [[fm alarmsFolder] createFolderIfNotExists];
+	}
     }
 
   return ok;

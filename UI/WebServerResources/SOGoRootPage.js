@@ -98,6 +98,7 @@ function onLoginCallback(http) {
         if (http.status == 200) {
             // Make sure browser's cookies are enabled
             var loginCookie = readLoginCookie();
+
             if (!loginCookie) {
                 SetLogMessage("errorMessage", _("cookiesNotEnabled"));
                 submitBtn.disabled = false;

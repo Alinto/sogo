@@ -41,6 +41,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserFolder.h>
+#import <SOGo/SOGoSession.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
@@ -275,11 +276,13 @@
 
 - (id <WOActionResults>) logoffAction
 {
+  SOGoWebAuthenticator *auth;
+  NSString *userName, *value;
   WOResponse *response;
-  WOCookie *cookie;
   NSCalendarDate *date;
-  NSString *userName;
-
+  WOCookie *cookie;
+  NSArray *creds;
+   
   userName = [[context activeUser] login];
   [self logWithFormat: @"user '%@' logged off", userName];
 
@@ -287,6 +290,18 @@
 
   date = [NSCalendarDate calendarDate];
   [date setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"GMT"]];
+
+  // We cleanup the memecached/database session cache. We do this before
+  // invoking _logoutCookieWithDate: in order to obtain its value.
+  auth = [[self clientObject] authenticatorInContext: context];
+  if ([auth respondsToSelector: @selector (cookieNameInContext:)])
+    {
+       value = [[context request] cookieValueForKey: [auth cookieNameInContext: context]];
+       creds = [auth parseCredentials: value];
+       
+       if ([creds count] > 1)
+	 [SOGoSession deleteValueForSessionKey: [creds objectAtIndex: 1]]; 
+    }
 
   cookie = [self _logoutCookieWithDate: date];
   if (cookie)
@@ -297,6 +312,7 @@
             @" max-age=0, post-check=0, pre-check=0"
                forKey: @"Cache-Control"];
   [response setHeader: @"no-cache" forKey: @"Pragma"];
+
 
   return response;
 }

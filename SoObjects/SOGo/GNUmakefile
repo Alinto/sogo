@@ -46,6 +46,7 @@ SOGo_HEADER_FILES = \
 	NSURL+DAV.h			\
 	\
 	SOGoAuthenticator.h		\
+ 	SOGoSession.h			\
 	SOGoCASSession.h		\
 	SOGoDAVAuthenticator.h		\
 	SOGoProxyAuthenticator.h	\
@@ -108,6 +109,7 @@ SOGo_OBJC_FILES = \
 	NSString+Utilities.m		\
 	NSURL+DAV.m	  		\
 	\
+	SOGoSession.m			\
 	SOGoCASSession.m		\
 	SOGoDAVAuthenticator.m		\
 	SOGoProxyAuthenticator.m	\
