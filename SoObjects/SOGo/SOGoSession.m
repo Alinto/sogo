@@ -38,10 +38,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-// Default length in bytes
-static int userKeyLength = 64;
-static int sessionKeyLength = 16;
-
 @implementation SOGoSession
 
 + (NSString *) valueForSessionKey: (NSString *) theSessionKey
