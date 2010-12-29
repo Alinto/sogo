@@ -1,27 +1,26 @@
-class hierarchy:
+class hierarchy (*: end points)
 
 MAPIStoreContext
   MAPIStoreGCSBaseContext
-    MAPIStoreCalendarContext
-    MAPIStoreContactsContext
-    MAPIStoreTasksContext
+    * MAPIStoreCalendarContext
+    * MAPIStoreContactsContext
+    * MAPIStoreTasksContext
+  * MAPIStoreMailContext
+    * MAPIStoreOutboxContext
+      * MAPIStoreSpoolerContext
   MAPIStoreFileSystemBaseContext
-    MAPIStoreCommonViewsContext
-    MAPIStoreDeferredActionsContext
-    MAPIStoreDraftsContext
-    MAPIStoreJournalContext
-    MAPIStoreNotesContext
-    MAPIStoreRemindersContext
-    MAPIStoreSearchContext
-    MAPIStoreSentItemsContext
-    MAPIStoreShortcutsContext
+    * MAPIStoreCommonViewsContext
+    * MAPIStoreDeferredActionsContext
+    * MAPIStoreDraftsContext
+    * MAPIStoreJournalContext
+    * MAPIStoreNotesContext
+    * MAPIStoreRemindersContext
+    * MAPIStoreSearchContext
+    * MAPIStoreSentItemsContext
+    * MAPIStoreShortcutsContext
 
     (undecided:)
     DeletedItems (trash IMAP folder?)
     Freebusy (needs info)
     Schedule (needs info + purpose?)
     Views (needs info + purpose)
-  MAPIStoreMailContext
-    MAPIStoreOutboxContext
-      MAPIStoreSpoolerContext
-
