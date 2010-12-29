@@ -20,13 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#define _XOPEN_SOURCE 1
-#include <unistd.h>
-
-#include <openssl/evp.h>
-#include <openssl/md5.h>
-#include <openssl/sha.h>
-
 #import <Foundation/NSArray.h>
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
@@ -43,6 +36,7 @@
 #import <GDLAccess/EOAttribute.h>
 
 #import "SOGoConstants.h"
+#import "NSString+Utilities.h"
 
 #import "SQLSource.h"
 
@@ -145,49 +139,16 @@
     }
   else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"crypt"] == NSOrderedSame)
     {
-      NSString *s;
-      char *buf;
-      
-      buf = (char *)crypt([plainPassword UTF8String], [encryptedPassword UTF8String]);
-      s = [NSString stringWithUTF8String: buf];
-      
-      return [s isEqualToString: encryptedPassword];
+      return [[plainPassword asCryptString] isEqualToString: encryptedPassword];
     }
   else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"md5"] == NSOrderedSame)
     {
-      NSString *s;
-
-      unsigned char md[MD5_DIGEST_LENGTH];
-      char buf[80];
-      int i;
-
-      memset(md, 0, MD5_DIGEST_LENGTH);
-      memset(buf, 0, 80);
-
-      EVP_Digest((const void *) [plainPassword UTF8String], strlen([plainPassword UTF8String]), md, NULL, EVP_md5(), NULL);
-      for (i = 0; i < MD5_DIGEST_LENGTH; i++)
-	sprintf(&(buf[i*2]), "%02x", md[i]);
-
-      s = [NSString stringWithUTF8String: buf];
-      return [s isEqualToString: encryptedPassword];
+      return [[plainPassword asMD5String] isEqualToString: encryptedPassword];
     }
   else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"sha"] == NSOrderedSame)
     {
-      NSString *s;
 
-      unsigned char sha[SHA_DIGEST_LENGTH];
-      char buf[80];
-      int i;
-      
-      memset(sha, 0, SHA_DIGEST_LENGTH);
-      memset(buf, 0, 80);
-
-      SHA1((const void *)[plainPassword UTF8String], strlen([plainPassword UTF8String]), sha);
-      for (i = 0; i < SHA_DIGEST_LENGTH; i++)
-	sprintf(&(buf[i*2]), "%02x", sha[i]);
-
-      s = [NSString stringWithUTF8String: buf];
-      return [s isEqualToString: encryptedPassword];
+      return [[plainPassword asSHA1String] isEqualToString: encryptedPassword];
     }
 
 

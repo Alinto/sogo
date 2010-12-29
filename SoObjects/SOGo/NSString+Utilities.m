@@ -1,8 +1,9 @@
 /* NSString+Utilities.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2009 Inverse inc.
+ * Copyright (C) 2006-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,6 +39,12 @@
 #import "NSDictionary+URL.h"
 
 #import "NSString+Utilities.h"
+
+#define _XOPEN_SOURCE 1
+#include <unistd.h>
+#include <openssl/evp.h>
+#include <openssl/md5.h>
+#include <openssl/sha.h>
 
 static NSMutableCharacterSet *urlNonEndingChars = nil;
 static NSMutableCharacterSet *urlAfterEndingChars = nil;
@@ -537,5 +544,48 @@ static NSMutableCharacterSet *safeLDIFStartChars = nil;
 
   return object;
 }
+
+- (NSString *) asCryptString
+{
+  char *buf;
+  
+  // The salt is weak here, but who cares anyway, crypt should not
+  // be used anymore
+  buf = (char *)crypt([self UTF8String], [self UTF8String]);
+  return [NSString stringWithUTF8String: buf];
+}
+
+- (NSString *) asMD5String
+{
+  unsigned char md[MD5_DIGEST_LENGTH];
+  char buf[80];
+  int i;
+  
+  memset(md, 0, MD5_DIGEST_LENGTH);
+  memset(buf, 0, 80);
+  
+  EVP_Digest((const void *) [self UTF8String], strlen([self UTF8String]), md, NULL, EVP_md5(), NULL);
+  for (i = 0; i < MD5_DIGEST_LENGTH; i++)
+    sprintf(&(buf[i*2]), "%02x", md[i]);
+  
+  return [NSString stringWithUTF8String: buf];
+}
+
+- (NSString *) asSHA1String
+{
+  unsigned char sha[SHA_DIGEST_LENGTH];
+  char buf[80];
+  int i;
+  
+  memset(sha, 0, SHA_DIGEST_LENGTH);
+  memset(buf, 0, 80);
+  
+  SHA1((const void *)[self UTF8String], strlen([self UTF8String]), sha);
+  for (i = 0; i < SHA_DIGEST_LENGTH; i++)
+    sprintf(&(buf[i*2]), "%02x", sha[i]);
+  
+  return [NSString stringWithUTF8String: buf];
+}
+
 
 @end

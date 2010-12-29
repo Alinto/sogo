@@ -422,7 +422,10 @@
   currentUser = [jsonUser objectFromJSONString];
   dictPassword = [currentUser objectForKey: @"password"];
   if (currentUser && dictPassword)
-    checkOK = ([dictPassword isEqualToString: _pwd]);
+    {
+      checkOK = ([dictPassword isEqualToString: [_pwd asSHA1String]]);
+      //NSLog(@"Password cache hit for user %@", _login);
+    }
   else if ([self _sourceCheckLogin: _login
 		 andPassword: _pwd
 		 perr: _perr
@@ -440,7 +443,7 @@
       // set the password and recache the entry, the password would never be
       // cached for the user unless its entry expires from memcached's
       // internal cache.
-      [currentUser setObject: _pwd forKey: @"password"];
+      [currentUser setObject: [_pwd asSHA1String] forKey: @"password"];
       [[SOGoCache sharedCache]
         setUserAttributes: [currentUser jsonRepresentation]
                  forLogin: _login];
@@ -500,7 +503,7 @@
       // set the password and recache the entry, the password would never be
       // cached for the user unless its entry expires from memcached's
       // internal cache.
-      [currentUser setObject: newPassword forKey: @"password"];
+      [currentUser setObject: [newPassword asSHA1String] forKey: @"password"];
       [[SOGoCache sharedCache]
         setUserAttributes: [currentUser jsonRepresentation]
 	forLogin: login];

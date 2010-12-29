@@ -1,3 +1,10 @@
+2010-12-29  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Moved the string encryption code from SoObjects/SOGo/SQLSource.m
+	to SoObjects/SOGo/NSString+Utilites.m
+	* SoObjects/SOGo/SOGoUserManager.m: We now store the passwords
+	in memcached as a SHA1 encrypted string.
+
 2010-12-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Implemented secured sessions. We no longer store in the
