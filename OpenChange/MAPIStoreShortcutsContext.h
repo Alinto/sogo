@@ -23,9 +23,9 @@
 #ifndef MAPISTORESHORTCUTSCONTEXT_H
 #define MAPISTORESHORTCUTSCONTEXT_H
 
-#import "MAPIStoreFileSystemBaseContext.h"
+#import "MAPIStoreFSBaseContext.h"
 
-@interface MAPIStoreShortcutsContext : MAPIStoreFileSystemBaseContext
+@interface MAPIStoreShortcutsContext : MAPIStoreFSBaseContext
 
 @end
 

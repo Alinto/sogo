@@ -23,9 +23,9 @@
 #ifndef MAPISTOREREMINDERSCONTEXT_H
 #define MAPISTOREREMINDERSCONTEXT_H
 
-#import "MAPIStoreFileSystemBaseContext.h"
+#import "MAPIStoreFSBaseContext.h"
 
-@interface MAPIStoreRemindersContext : MAPIStoreFileSystemBaseContext
+@interface MAPIStoreRemindersContext : MAPIStoreFSBaseContext
 
 @end
 

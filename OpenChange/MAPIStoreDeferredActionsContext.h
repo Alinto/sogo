@@ -23,9 +23,9 @@
 #ifndef MAPISTOREDEFERREDACTIONSCONTEXT_H
 #define MAPISTOREDEFERREDACTIONSCONTEXT_H
 
-#import "MAPIStoreFileSystemBaseContext.h"
+#import "MAPIStoreFSBaseContext.h"
 
-@interface MAPIStoreDeferredActionsContext : MAPIStoreFileSystemBaseContext
+@interface MAPIStoreDeferredActionsContext : MAPIStoreFSBaseContext
 
 @end
 

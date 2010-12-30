@@ -23,9 +23,9 @@
 #ifndef MAPISTOREFREEBUSYCONTEXT_H
 #define MAPISTOREFREEBUSYCONTEXT_H
 
-#import "MAPIStoreFileSystemBaseContext.h"
+#import "MAPIStoreFSBaseContext.h"
 
-@interface MAPIStoreFreebusyContext : MAPIStoreFileSystemBaseContext
+@interface MAPIStoreFreebusyContext : MAPIStoreFSBaseContext
 
 @end
 

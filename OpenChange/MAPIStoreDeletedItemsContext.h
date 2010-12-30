@@ -23,9 +23,9 @@
 #ifndef MAPISTOREDELETEDITEMSCONTEXT_H
 #define MAPISTOREDELETEDITEMSCONTEXT_H
 
-#import "MAPIStoreFileSystemBaseContext.h"
+#import "MAPIStoreFSBaseContext.h"
 
-@interface MAPIStoreDeletedItemsContext : MAPIStoreFileSystemBaseContext
+@interface MAPIStoreDeletedItemsContext : MAPIStoreFSBaseContext
 
 @end
 

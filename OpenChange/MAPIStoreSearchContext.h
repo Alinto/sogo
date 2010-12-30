@@ -23,9 +23,9 @@
 #ifndef MAPISTORESEARCHCONTEXT_H
 #define MAPISTORESEARCHCONTEXT_H
 
-#import "MAPIStoreFileSystemBaseContext.h"
+#import "MAPIStoreFSBaseContext.h"
 
-@interface MAPIStoreSearchContext : MAPIStoreFileSystemBaseContext
+@interface MAPIStoreSearchContext : MAPIStoreFSBaseContext
 
 @end
 

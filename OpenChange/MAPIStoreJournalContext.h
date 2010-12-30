@@ -23,9 +23,9 @@
 #ifndef MAPISTOREJOURNALCONTEXT_H
 #define MAPISTOREJOURNALCONTEXT_H
 
-#import "MAPIStoreFileSystemBaseContext.h"
+#import "MAPIStoreFSBaseContext.h"
 
-@interface MAPIStoreJournalContext : MAPIStoreFileSystemBaseContext
+@interface MAPIStoreJournalContext : MAPIStoreFSBaseContext
 
 @end
 

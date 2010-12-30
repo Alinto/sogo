@@ -23,9 +23,9 @@
 #ifndef MAPISTORESCHEDULECONTEXT_H
 #define MAPISTORESCHEDULECONTEXT_H
 
-#import "MAPIStoreFileSystemBaseContext.h"
+#import "MAPIStoreFSBaseContext.h"
 
-@interface MAPIStoreScheduleContext : MAPIStoreFileSystemBaseContext
+@interface MAPIStoreScheduleContext : MAPIStoreFSBaseContext
 
 @end
 

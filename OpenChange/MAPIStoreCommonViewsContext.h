@@ -23,9 +23,9 @@
 #ifndef MAPISTORECOMMONVIEWSCONTEXT_H
 #define MAPISTORECOMMONVIEWSCONTEXT_H
 
-#import "MAPIStoreFileSystemBaseContext.h"
+#import "MAPIStoreFSBaseContext.h"
 
-@interface MAPIStoreCommonViewsContext : MAPIStoreFileSystemBaseContext
+@interface MAPIStoreCommonViewsContext : MAPIStoreFSBaseContext
 
 @end
 

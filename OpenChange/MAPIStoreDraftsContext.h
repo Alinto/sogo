@@ -23,9 +23,9 @@
 #ifndef MAPISTOREDRAFTSCONTEXT_H
 #define MAPISTOREDRAFTSCONTEXT_H
 
-#import "MAPIStoreFileSystemBaseContext.h"
+#import "MAPIStoreFSBaseContext.h"
 
-@interface MAPIStoreDraftsContext : MAPIStoreFileSystemBaseContext
+@interface MAPIStoreDraftsContext : MAPIStoreFSBaseContext
 
 @end
 
