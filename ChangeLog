@@ -1,3 +1,7 @@
+2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/EOBitmaskQualifier.m (-description): new method.
+
 2010-12-29  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Moved the string encryption code from SoObjects/SOGo/SQLSource.m

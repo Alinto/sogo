@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSString.h>
+
 #import "EOBitmaskQualifier.h"
 
 @implementation EOBitmaskQualifier
@@ -57,6 +59,19 @@
 - (BOOL) isZero
 {
   return isZero;
+}
+
+- (NSString *) description
+{
+  NSMutableString *desc;
+
+  desc = [NSMutableString stringWithCapacity: [key length] + 24];
+
+  if (isZero)
+    [desc appendString: @"!"];
+  [desc appendFormat: @"(%@ & 0x%.8x)", key, mask];
+
+  return desc;
 }
 
 @end
