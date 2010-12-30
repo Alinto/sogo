@@ -42,12 +42,16 @@
 - (BOOL) evaluateMAPIFSMessage: (SOGoMAPIFSMessage *) message
 {
   NSDictionary *properties;
+  BOOL rc;
 
   [self logWithFormat: @"evaluating message '%@'", message];
 
   properties = [message properties];
+  rc = [self _evaluateMAPIFSMessageProperties: properties];
 
-  return [self _evaluateMAPIFSMessageProperties: properties];
+  [self logWithFormat: @"  evaluation result: %d", rc];
+  
+  return rc;
 }
 
 @end
