@@ -1,5 +1,9 @@
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSentItemsContext.[hm]: class is now derived
+	from MAPIStoreMailContext and set up its module folder to the
+	user-configured sentFolder of his/her default account.
+
 	* OpenChange/MAPIStoreMailFolderTable.[hm]: new class module
 	subclassed from MAPIStoreFolderTable, that provides the interface
 	for folders in MAPIStoreMailContext.

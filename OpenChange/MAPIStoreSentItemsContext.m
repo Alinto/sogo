@@ -22,6 +22,15 @@
 
 #import <Foundation/NSString.h>
 
+#import <NGObjWeb/WOContext+SoObjects.h>
+
+#import <NGExtensions/NSObject+Logs.h>
+
+#import <Mailer/SOGoMailAccount.h>
+
+#import "MAPIApplication.h"
+#import "MAPIStoreAuthenticator.h"
+
 #import "MAPIStoreMapping.h"
 
 #import "MAPIStoreSentItemsContext.h"
@@ -37,6 +46,42 @@
 {
   [mapping registerURL: @"sogo://openchange:openchange@sent-items/"
                 withID: 0x140001];
+}
+
+- (void) setupModuleFolder
+{
+  SOGoUserFolder *userFolder;
+  SOGoMailAccounts *accountsFolder;
+  SOGoMailAccount *accountFolder;
+  SOGoFolder *currentContainer;
+
+  userFolder = [SOGoUserFolder objectWithName: [authenticator username]
+                                  inContainer: MAPIApp];
+  [parentFoldersBag addObject: userFolder];
+  // [self logWithFormat: @"userFolder: %@", userFolder];
+  [woContext setClientObject: userFolder];
+
+  accountsFolder = [userFolder lookupName: @"Mail"
+                                inContext: woContext
+                                  acquire: NO];
+  [parentFoldersBag addObject: accountsFolder];
+  // [self logWithFormat: @"accountsFolder: %@", accountsFolder];
+  [woContext setClientObject: accountsFolder];
+
+  accountFolder = [accountsFolder lookupName: @"0"
+				   inContext: woContext
+				     acquire: NO];
+  [parentFoldersBag addObject: accountFolder];
+  [woContext setClientObject: accountFolder];
+
+  moduleFolder = [accountFolder sentFolderInContext: nil];
+  [moduleFolder retain];
+  currentContainer = [moduleFolder container];
+  while (currentContainer != (SOGoFolder *) accountFolder)
+    {
+      [parentFoldersBag addObject: currentContainer];
+      currentContainer = [currentContainer container];
+    }
 }
 
 @end
