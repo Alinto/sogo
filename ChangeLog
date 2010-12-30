@@ -1,5 +1,10 @@
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailContext.m: Old table methods (see
+	below) split into the new "MAPIStoreMailMessageTable" class.
+	(+registerFixedMappings:): changed handled uri to
+	@"sogo://openchange:openchange@inbox/".
+
 	* OpenChange/MAPIStoreGCSBaseContext.m: Old table methods (see
 	below) split into the new "MAPIStoreGCSMessageTable" class.
 
