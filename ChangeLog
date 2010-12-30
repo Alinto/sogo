@@ -1,5 +1,11 @@
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarContext.m: Old table methods (see
+	below) split into the new "MAPIStoreCalendarMessageTable" class.
+	(+registerFixedMappings:): changed handled uri to
+	@"sogo://openchange:openchange@calendar/" as we now consider that
+	the "host" part of the uri names the context that handles it.
+
 	* OpenChange/MAPIStoreFAIMessageTable.[hm]: new class module,
 	subclassed from MAPIStoreFSMessageTable, that provides the
 	interface for FAI messages in MAPIStoreContext.
