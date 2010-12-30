@@ -1,5 +1,10 @@
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTasksContext.m: Old table methods (see
+	below) split into the new "MAPIStoreTasksMessageTable" class.
+	(+registerFixedMappings:): changed handled uri to
+	@"sogo://openchange:openchange@tasks/".
+
 	* OpenChange/MAPIStoreCalendarContext.m: Old table methods (see
 	below) split into the new "MAPIStoreCalendarMessageTable" class.
 	(+registerFixedMappings:): changed handled uri to
