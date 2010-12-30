@@ -71,6 +71,17 @@ MAPILongLongValue (void *memCtx, uint64_t value)
   return llongValue;
 }
 
+double *
+MAPIDoubleValue (void *memCtx, double value)
+{
+  double *doubleValue;
+
+  doubleValue = talloc_zero (memCtx, double);
+  *doubleValue = value;
+
+  return doubleValue;
+}
+
 id
 NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
 {
@@ -105,10 +116,12 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
       result = [NSCalendarDate dateFromFileTime: &(value->value.ft)];
       break;
     case PT_BINARY:
-		// lpProps->value.bin = *((const struct Binary_r *)data);
-
       result = [NSData dataWithShortBinary: &value->value.bin];
       break;
+    case PT_CLSID:
+      result = [NSData dataWithGUID: &value->value.lpguid];
+      break;
+      
     default:
 // #define	PT_UNSPECIFIED		0x0
 // #define	PT_I2			0x2
@@ -117,7 +130,6 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
 // #define	PT_ERROR		0xa
 // #define	PT_OBJECT		0xd
 // #define	PT_I8			0x14
-// #define	PT_CLSID		0x48
 // #define	PT_SVREID		0xFB
 // #define	PT_SRESTRICT		0xFD
 // #define	PT_ACTIONS		0xFE
@@ -169,6 +181,10 @@ NSObjectFromSPropValue (const struct SPropValue *value)
         = [NSData dataWithBinary:
                     (const struct Binary_r *) &(value->value.bin)];
       break;
+    case PT_CLSID:
+      result = [NSData dataWithFlatUID: value->value.lpguid];
+      break;
+
     default:
 // #define	PT_UNSPECIFIED		0x0
 // #define	PT_I2			0x2
@@ -177,7 +193,6 @@ NSObjectFromSPropValue (const struct SPropValue *value)
 // #define	PT_ERROR		0xa
 // #define	PT_OBJECT		0xd
 // #define	PT_I8			0x14
-// #define	PT_CLSID		0x48
 // #define	PT_SVREID		0xFB
 // #define	PT_SRESTRICT		0xFD
 // #define	PT_ACTIONS		0xFE
@@ -224,7 +239,6 @@ MAPIStoreDumpMessageProperties (NSDictionary *properties)
   NSNumber *key;
   NSArray *allKeys;
   NSUInteger keyAsInt, count, max;
-  const char *name;
   id value;
 
   allKeys = [properties allKeys];
@@ -243,12 +257,9 @@ MAPIStoreDumpMessageProperties (NSDictionary *properties)
         {
           keyAsInt = [key intValue];
           value = [properties objectForKey: key];
-          name = get_proptag_name (keyAsInt);
-          if (!name)
-            name = "unknown";
-          NSLog (@"  0x%.8x (%s): %@ (%@)",
-                 keyAsInt, name,
-                 value, NSStringFromClass ([value class]));
+          NSLog (@"  0x%.4x: %@ (%@)",
+                 keyAsInt, value,
+		 NSStringFromClass ([value class]));
         }
     }
 }

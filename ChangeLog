@@ -1,5 +1,13 @@
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTypes.m (MAPIDoubleValue): new wrapper
+	methods for generating data of "double" type.
+	(NSObjectFromMAPISPropValue, NSObjectFromSPropValue): now handle
+	the PT_CLSID mapi type.
+	(
+	(MAPIStoreDumpMessageProperties): enhanced logging of property
+	keys.
+
 	* OpenChange/NSData+MAPIStore.m (+dataWithFlatUID)
 	(-asFlatUIDInMemCtx:, +dataWithGUID:, asGUIDInMemCtx:): new
 	methods for handling the two GUID mapistore types.
