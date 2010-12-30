@@ -22,16 +22,9 @@
 
 #import <Foundation/NSString.h>
 
-#import <NGExtensions/NSObject+Logs.h>
-
 #import "MAPIStoreMapping.h"
 
 #import "MAPIStoreCommonViewsContext.h"
-
-// #undef DEBUG
-// #include <mapistore/mapistore.h>
-// #include <mapistore/mapistore_errors.h>
-// #include <libmapiproxy.h>
 
 @implementation MAPIStoreCommonViewsContext
 

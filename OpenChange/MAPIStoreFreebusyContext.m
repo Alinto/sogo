@@ -45,7 +45,7 @@
 
 - (void) setupModuleFolder
 {
-  id userFolder;
+  SOGoUserFolder *userFolder;
 
   userFolder = [SOGoUserFolder objectWithName: [authenticator username]
                                   inContainer: MAPIApp];
