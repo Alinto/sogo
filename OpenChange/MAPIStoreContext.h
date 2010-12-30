@@ -25,16 +25,6 @@
 
 #import <Foundation/NSObject.h>
 
-#define SENSITIVITY_NONE 0
-#define SENSITIVITY_PERSONAL 1
-#define SENSITIVITY_PRIVATE 2
-#define SENSITIVITY_COMPANY_CONFIDENTIAL 3
-
-#define TBL_LEAF_ROW 0x00000001
-#define TBL_EMPTY_CATEGORY 0x00000002
-#define TBL_EXPANDED_CATEGORY 0x00000003
-#define TBL_COLLAPSED_CATEGORY 0x00000004
-
 @class NSArray;
 @class NSFileHandle;
 @class NSMutableArray;
@@ -46,40 +36,33 @@
 @class WOContext;
 
 @class SOGoFolder;
+@class SOGoMAPIFSFolder;
 @class SOGoObject;
 
 @class MAPIStoreAuthenticator;
 @class MAPIStoreMapping;
-
-typedef enum {
-  MAPIRestrictionStateAlwaysFalse = NO,
-  MAPIRestrictionStateAlwaysTrue = YES,
-  MAPIRestrictionStateNeedsEval,    /* needs passing of qualifier to underlying
-				       database */
-} MAPIRestrictionState;
+@class MAPIStoreTable;
 
 @interface MAPIStoreContext : NSObject
 {
   struct mapistore_context *memCtx;
-  void *ldbCtx;
-
-  BOOL baseContextSet;
 
   NSString *uri;
 
   NSMutableArray *parentFoldersBag;
 
-  NSMutableDictionary *objectCache;
-  NSMutableDictionary *messages;
   MAPIStoreAuthenticator *authenticator;
   WOContext *woContext;
-  NSMutableDictionary *messageCache;
-  NSMutableDictionary *subfolderCache;
-  id moduleFolder;
 
-  NSMutableDictionary *restrictedMessageCache;
-  MAPIRestrictionState restrictionState;
-  EOQualifier *restriction;
+  id moduleFolder;
+  SOGoMAPIFSFolder *faiModuleFolder;
+
+  MAPIStoreTable *folderTable;
+  MAPIStoreTable *messageTable;
+  MAPIStoreTable *faiTable;
+
+  /* for active messages (NSDictionary instances) */
+  NSMutableDictionary *messages;
 }
 
 + (id) contextFromURI: (const char *) newUri
@@ -107,9 +90,9 @@ typedef enum {
         byName: (const char *) foldername
    inParentFID: (uint64_t) parent_fid;
 
-- (int) setRestrictions: (struct mapi_SRestriction *) res
+- (int) setRestrictions: (const struct mapi_SRestriction *) res
 		withFID: (uint64_t) fid
-	   andTableType: (uint8_t) type
+	   andTableType: (uint8_t) tableType
 	 getTableStatus: (uint8_t *) tableStatus;
 
 - (enum MAPISTATUS) getTableProperty: (void **) data
@@ -134,7 +117,8 @@ typedef enum {
             withMID: (uint64_t) mid
               inFID: (uint64_t) fid;
 - (int) createMessagePropertiesWithMID: (uint64_t) mid
-                                 inFID: (uint64_t) fid;
+                                 inFID: (uint64_t) fid
+			  isAssociated: (BOOL) isAssociated;
 - (int) saveChangesInMessageWithMID: (uint64_t) mid
                            andFlags: (uint8_t) flags;
 - (int) submitMessageWithMID: (uint64_t) mid
@@ -161,71 +145,31 @@ typedef enum {
                    withFlags: (uint8_t) flags;
 - (int) releaseRecordWithFMID: (uint64_t) fmid
 		  ofTableType: (uint8_t) tableType;
+- (int) getFoldersList: (struct indexing_folders_list **) folders_list
+              withFMID: (uint64_t) fmid;
 
 
 /* util methods */
+- (NSString *) extractChildNameFromURL: (NSString *) childURL
+			andFolderURLAt: (NSString **) folderURL;
+
 - (void) registerValue: (id) value
 	    asProperty: (enum MAPITAGS) property
 		forURL: (NSString *) url;
-
-
-/* restrictions */
-
-- (MAPIRestrictionState) evaluateRestriction: (struct mapi_SRestriction *) res
-			       intoQualifier: (EOQualifier **) qualifier;
-- (MAPIRestrictionState) evaluateNotRestriction: (struct mapi_SNotRestriction *) res
-				  intoQualifier: (EOQualifier **) qualifierPtr;
-- (MAPIRestrictionState) evaluateAndRestriction: (struct mapi_SAndRestriction *) res
-				  intoQualifier: (EOQualifier **) qualifierPtr;
-- (MAPIRestrictionState) evaluateOrRestriction: (struct mapi_SOrRestriction *) res
-				 intoQualifier: (EOQualifier **) qualifierPtr;
 
 /* subclass methods */
 + (NSString *) MAPIModuleName;
 + (void) registerFixedMappings: (MAPIStoreMapping *) storeMapping;
 
-- (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder
-		 matchingQualifier: (EOQualifier *) qualifier;
+- (Class) messageTableClass;
+- (Class) folderTableClass;
 
-- (enum MAPISTATUS) getCommonTableChildproperty: (void **) data
-					  atURL: (NSString *) childURL
-					withTag: (enum MAPITAGS) proptag
-				       inFolder: (SOGoFolder *) folder
-					withFID: (uint64_t) fid;
-
-- (enum MAPISTATUS) getMessageTableChildproperty: (void **) data
-					   atURL: (NSString *) childURL
-					 withTag: (enum MAPITAGS) proptag
-					inFolder: (SOGoFolder *) folder
-					 withFID: (uint64_t) fid;
-
-- (enum MAPISTATUS) getFolderTableChildproperty: (void **) data
-					  atURL: (NSString *) childURL
-					withTag: (enum MAPITAGS) proptag
-				       inFolder: (SOGoFolder *) folder
-					withFID: (uint64_t) fid;
-
-- (int) getFoldersList: (struct indexing_folders_list **) folders_list
-              withFMID: (uint64_t) fmid;
+- (id) createMessageOfClass: (NSString *) messageClass
+	      inFolderAtURL: (NSString *) folderURL;
 
 - (int) openMessage: (struct mapistore_message *) msg
-              atURL: (NSString *) childURL;
-
-- (int) getMessageProperties: (struct SPropTagArray *) sPropTagArray
-                       inRow: (struct SRow *) aRow
-                       atURL: (NSString *) childURL;
-
-- (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property;
-
-/* restrictions */
-- (MAPIRestrictionState) evaluateContentRestriction: (struct mapi_SContentRestriction *) res
-				      intoQualifier: (EOQualifier **) qualifier;
-- (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
-				       intoQualifier: (EOQualifier **) qualifier;
-- (MAPIRestrictionState) evaluateBitmaskRestriction: (struct mapi_SBitmaskRestriction *) res
-				      intoQualifier: (EOQualifier **) qualifier;
-- (MAPIRestrictionState) evaluateExistRestriction: (struct mapi_SExistRestriction *) res
-				    intoQualifier: (EOQualifier **) qualifier;
+	     forKey: (NSString *) childKey
+	    inTable: (MAPIStoreTable *) table;
 
 @end
 

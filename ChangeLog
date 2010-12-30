@@ -1,5 +1,29 @@
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m: refactored to extract the table
+	handling code into a separate class. This enables the introduction
+	of real classes for contents tables, folder tables and FAI tables,
+	as well as any other type that could be handled later. Changes:
+	- new messageTableClass and folderTableClass methods for
+	determining the class that is appropriate to the current datatype.
+	- new messageTable, folderTable ivars.
+	- new faiTable ivar, always an instance of
+	MAPIStoreFAIMessageTable.
+	- created MAPIStoreTable, subclassed into MAPIStoreMessageTable
+	and MAPIStoreFolderTable from which appropriate subclasses are
+	derived for handling mails, tasks or calendar items.
+	- renamed
+	"getMessageTableChildproperty:atURL:withTag:inFolder:withFID:" and
+	"getFolderTableChildproperty:atURL:withTag:inFolder:withFID:" to
+	the simpler "getChildProperty:forKey:withTag:" form and moved them
+	to the MAPIStoreTable class.
+	- moved "-setRestrictions:" to MAPIStoreTable.
+	- renamed "getFolderMessageKeys:matchingQualifier:" to
+	"cachedChildKeys" and "cachedRestrictedChildKeys" and moved them
+	to MAPIStoreTable.
+	- moved all the "evaluateRestriction:intoQualifier:" methods to
+	MAPIStoreTable.
+
 	* OpenChange/EOBitmaskQualifier.m (-description): new method.
 
 2010-12-29  Ludovic Marcotte  <lmarcotte@inverse.ca>
