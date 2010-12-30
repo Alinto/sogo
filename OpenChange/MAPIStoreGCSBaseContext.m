@@ -20,16 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSValue.h>
-
-#import <EOControl/EOQualifier.h>
-
-#import <GDLContentStore/GCSFolder.h>
-
-#import <SOGo/NSArray+Utilities.h>
-#import <SOGo/SOGoGCSFolder.h>
 
 #import "MAPIStoreGCSBaseContext.h"
 
@@ -38,23 +29,6 @@
 + (NSString *) MAPIModuleName
 {
   return nil;
-}
-
-- (NSArray *) getFolderMessageKeys: (SOGoFolder *) folder
-		 matchingQualifier: (EOQualifier *) qualifier
-{
-  NSArray *records;
-  static NSArray *fields = nil;
-
-  if (!fields)
-    fields = [[NSArray alloc]
-	       initWithObjects: @"c_name", @"c_version", nil];
-
-  records = [[(SOGoGCSFolder *) folder ocsFolder]
-	      fetchFields: fields matchingQualifier: qualifier];
-
-  return [records objectsForKey: @"c_name"
-		 notFoundMarker: nil];
 }
 
 @end

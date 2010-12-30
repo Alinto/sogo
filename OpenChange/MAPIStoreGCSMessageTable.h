@@ -1,6 +1,6 @@
-/* MAPIStoreGCSBaseContext.h - this file is part of SOGo
+/* MAPIStoreGCSMessageTable.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2010 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,15 +20,17 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREGCSBASECONTEXT_H
-#define MAPISTOREGCSBASECONTEXT_H
+#ifndef MAPISTOREGCSMESSAGETABLE_H
+#define MAPISTOREGCSMESSAGETABLE_H
 
-#import "MAPIStoreContext.h"
+#import "MAPIStoreMessageTable.h"
 
 @class EOQualifier;
 
-@interface MAPIStoreGCSBaseContext : MAPIStoreContext
+@interface MAPIStoreGCSMessageTable : MAPIStoreMessageTable
+
+- (EOQualifier *) componentQualifier;
 
 @end
 
-#endif /* MAPISTOREGCSBASECONTEXT_H */
+#endif /* MAPISTOREGCSMESSAGETABLE_H */
