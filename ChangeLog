@@ -1,5 +1,15 @@
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessageTable.m
+	(-getChildProperty:forKey:withTag:): return "NO" for
+	PR_REPLY_REQUESTED and PR_RESPONSE_REQUESTED. Commented out
+	responses for "PidLidHeaderItem" and "PidLidRemoteTransferSize".
+	Return "PR_ORIGINAL_DISPLAY_TO/CC/BCC_UNICODE" based on their
+	non-"ORIGINAL" counterpart and return an empty string when
+	missing.
+	Modified the return code of "PR_RTF_COMPRESSED" to
+	"MAPI_E_NOT_FOUND".
+
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromSPropValue)
 	(NSObjectFromMAPISPropValue): force booleans to be int to avoid
 	creating EOQualifier values where the strings "YES" or "NO" appear

@@ -107,16 +107,18 @@ static Class NSDataK, NSStringK;
       break;
     case PidLidRemoteAttachment: // TODO
     case PR_HASATTACH: // TODO
+    case PR_REPLY_REQUESTED: // TODO
+    case PR_RESPONSE_REQUESTED: // TODO
       *data = MAPIBoolValue (memCtx, NO);
       break;
-    case PidLidHeaderItem:
-      *data = MAPILongValue (memCtx, 0x00000000);
-      break;
-    case PidLidRemoteTransferSize:
-      rc = [self getChildProperty: data
-			   forKey: childKey
-			  withTag: PR_MESSAGE_SIZE];
-      break;
+    // case PidLidHeaderItem:
+    //   *data = MAPILongValue (memCtx, 0x00000001);
+    //   break;
+    // case PidLidRemoteTransferSize:
+    //   rc = [self getChildProperty: data
+    // 			   forKey: childKey
+    // 			  withTag: PR_MESSAGE_SIZE];
+    //   break;
     case PR_CREATION_TIME: // DOUBT
     case PR_LAST_MODIFICATION_TIME: // DOUBT
     case PR_LATEST_DELIVERY_TIME: // DOUBT
@@ -163,18 +165,27 @@ static Class NSDataK, NSStringK;
     case PR_RECEIVED_BY_NAME:
     case PR_DISPLAY_TO:
     case PR_DISPLAY_TO_UNICODE:
+    case PR_ORIGINAL_DISPLAY_TO_UNICODE:
       child = [self lookupChild: childKey];
-      *data = [[child to] asUnicodeInMemCtx: memCtx];
+      stringValue = [child to];
+      if (!stringValue)
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
     case PR_DISPLAY_CC:
     case PR_DISPLAY_CC_UNICODE:
+    case PR_ORIGINAL_DISPLAY_CC_UNICODE:
       child = [self lookupChild: childKey];
-      *data = [[child cc] asUnicodeInMemCtx: memCtx];
+      stringValue = [child cc];
+      if (!stringValue)
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
     case PR_DISPLAY_BCC:
     case PR_DISPLAY_BCC_UNICODE:
-      *data = NULL;
-      rc = MAPI_E_NOT_FOUND;
+    case PR_ORIGINAL_DISPLAY_BCC_UNICODE:
+      stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
 
     case PidNameContentType:
@@ -211,7 +222,7 @@ static Class NSDataK, NSStringK;
               {
                 id result;
                 NSData *content;
-                NSString *key, *stringContent;
+                NSString *key;
                 
                 result = [child fetchParts: [keys objectsForKey: @"key"
                                                  notFoundMarker: nil]];
@@ -229,18 +240,13 @@ static Class NSDataK, NSStringK;
 		  }
 		else
 		  {
-		    stringContent = [[NSString alloc] initWithData: content
+		    stringValue = [[NSString alloc] initWithData: content
 							  encoding: NSISOLatin1StringEncoding];
-                
-		    // *data = NULL;
-		    // rc = MAPI_E_NOT_FOUND;
-		    *data = [stringContent asUnicodeInMemCtx: memCtx];
+		    *data = [stringValue asUnicodeInMemCtx: memCtx];
 		  }
               }
             else
-              {
-                rc = MAPI_E_NOT_FOUND;
-              }
+	      rc = MAPI_E_NOT_FOUND;
           }
       }
       break;
@@ -290,7 +296,7 @@ static Class NSDataK, NSStringK;
 
       /* We don't handle any RTF content. */
     case PR_RTF_COMPRESSED:
-      rc = MAPI_E_NOT_ENOUGH_MEMORY;
+      rc = MAPI_E_NOT_FOUND;
       break;
     case PR_RTF_IN_SYNC:
       *data = MAPIBoolValue (memCtx, NO);
