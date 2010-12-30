@@ -24,18 +24,13 @@
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 
-#import <SOGo/SOGoUserFolder.h>
-
 #import <Mailer/SOGoDraftsFolder.h>
 #import <Mailer/SOGoMailAccount.h>
-#import <Mailer/SOGoMailAccounts.h>
+#import <Mailer/SOGoMailFolder.h>
 
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
 #import "MAPIStoreMapping.h"
-#import "MAPIStoreTypes.h"
-
-#import "NSData+MAPIStore.h"
 
 #import "MAPIStoreOutboxContext.h"
 
@@ -86,30 +81,10 @@
     }
 }
 
-- (id) createMessageInFolder: (id) parentFolder
+- (id) createMessageOfClass: (NSString *) messageClass
+	      inFolderAtURL: (NSString *) folderURL;
 {
   return [moduleFolder newDraft];
-}
-
-- (enum MAPISTATUS) getMessageTableChildproperty: (void **) data
-					   atURL: (NSString *) childURL
-					 withTag: (enum MAPITAGS) proptag
-					inFolder: (SOGoFolder *) folder
-					 withFID: (uint64_t) fid
-{
-  enum MAPISTATUS rc;
-
-  if (proptag == PR_CHANGE_KEY)
-    {
-      *data = [[@"openchangedraft" dataUsingEncoding: NSASCIIStringEncoding]
-		asShortBinaryInMemCtx: memCtx];
-      rc = MAPI_E_SUCCESS;
-    }
-  else
-    rc = [super getMessageTableChildproperty: data atURL: childURL withTag:
-		  proptag inFolder: folder withFID: fid];
-
-  return rc;
 }
 
 @end
