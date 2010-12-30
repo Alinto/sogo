@@ -468,7 +468,11 @@ sogo_op_openmessage(void *private_data,
   context = cContext->objcContext;
   [context setupRequest];
 
+  if (!context)
+    DEBUG (5, ("  context data is empty, failure ahead..."));
   rc = [context openMessage: msg withMID: mid inFID: fid];
+  if (rc)
+    DEBUG (5, ("  failure opening message\n"));
 
   [context tearDownRequest];
   [pool release];
@@ -480,7 +484,8 @@ sogo_op_openmessage(void *private_data,
 static int
 sogo_op_createmessage(void *private_data,
 		      uint64_t fid,
-		      uint64_t mid)
+		      uint64_t mid,
+		      uint8_t associated)
 {
   NSAutoreleasePool *pool;
   sogo_context *cContext;
@@ -495,7 +500,8 @@ sogo_op_createmessage(void *private_data,
   context = cContext->objcContext;
   [context setupRequest];
 
-  rc = [context createMessagePropertiesWithMID: mid inFID: fid];
+  rc = [context createMessagePropertiesWithMID: mid inFID: fid
+				  isAssociated: associated];
 
   [context tearDownRequest];
   [pool release];
@@ -577,7 +583,8 @@ sogo_op_getprops(void *private_data,
 
   rc = [context getProperties: SPropTagArray
 		  ofTableType: type
-			inRow: aRow withMID: fmid];
+			inRow: aRow
+		      withMID: fmid];
 
   [context tearDownRequest];
   [pool release];
