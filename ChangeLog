@@ -1,5 +1,9 @@
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIFSFolder.m (-initWithURL:andTableType:):
+	accepts a new "tableType" parameter to store messages in a
+	different place of the fs folder hierarchy.
+
 	* OpenChange/NSValue+MAPIStore.m (-asDoubleInMemCtx): really
 	returns a double rather than an uint64_t.
 

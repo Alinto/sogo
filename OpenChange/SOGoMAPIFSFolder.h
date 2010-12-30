@@ -35,8 +35,10 @@
   BOOL directoryIsSane;
 }
 
-+ (id) folderWithURL: (NSURL *) url;
-- (id) initWithURL: (NSURL *) url;
++ (id) folderWithURL: (NSURL *) url
+	andTableType: (uint8_t) tableType;
+- (id) initWithURL: (NSURL *) url
+      andTableType: (uint8_t) tableType;
 
 - (NSString *) directory;
 

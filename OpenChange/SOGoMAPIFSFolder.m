@@ -58,10 +58,12 @@ static NSString *privateDir = nil;
 }
 
 + (id) folderWithURL: (NSURL *) url
+	andTableType: (uint8_t) tableType
 {
   SOGoMAPIFSFolder *newFolder;
 
-  newFolder = [[self alloc] initWithURL: url];
+  newFolder = [[self alloc] initWithURL: url
+			    andTableType: tableType];
   [newFolder autorelease];
 
   return newFolder;
@@ -85,16 +87,29 @@ static NSString *privateDir = nil;
 }
 
 - (id) initWithURL: (NSURL *) url
+      andTableType: (uint8_t) tableType
 {
-  NSString *path;
+  NSString *path, *tableParticle;
 
   if ((self = [self init]))
     {
+      if (tableType == MAPISTORE_MESSAGE_TABLE)
+	tableParticle = @"message";
+      else if (tableType == MAPISTORE_FAI_TABLE)
+	tableParticle = @"fai";
+      else
+	{
+	  [NSException raise: @"MAPIStoreIOException"
+		       format: @"unsupported table type: %d", tableType];
+	  tableParticle = nil;
+	}
+
       path = [url path];
       if (![path hasSuffix: @"/"])
 	path = [NSString stringWithFormat: @"%@/", path];
-      directory = [NSString stringWithFormat: @"%@/mapistore/SOGo/%@/%@%@",
-			    privateDir, [url user], [url host], path];
+      directory = [NSString stringWithFormat: @"%@/mapistore/SOGo/%@/%@/%@%@",
+			    privateDir, [url user], tableParticle,
+			    [url host], path];
       [self logWithFormat: @"directory: %@", directory];
       [directory retain];
       ASSIGN (nameInContainer, [path stringByDeletingLastPathComponent]);
