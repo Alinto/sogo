@@ -65,6 +65,15 @@
     if (count > 1) [_ms appendString:@")"];
   }
 }
+
+- (void)_appendNotQualifier:(EONotQualifier *)_q 
+  toString:(NSMutableString *)_ms
+{
+  [_ms appendString:@" NOT ("];
+  [[_q qualifier] _gcsAppendToString:_ms];
+  [_ms appendString:@")"];
+}
+
 - (void)_appendKeyValueQualifier:(EOKeyValueQualifier *)_q 
   toString:(NSMutableString *)_ms
 {
@@ -148,6 +157,8 @@
     [self _appendOrQualifier:(id)_q toString:_ms];
   else if ([_q isKindOfClass:[EOKeyValueQualifier class]])
     [self _appendKeyValueQualifier:(id)_q toString:_ms];
+  else if ([_q isKindOfClass:[EONotQualifier class]])
+    [self _appendNotQualifier:(id)_q toString:_ms];
   else
     [self errorWithFormat:@"unknown qualifier: %@", _q];
 }
