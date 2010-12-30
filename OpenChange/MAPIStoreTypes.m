@@ -101,7 +101,7 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
       result = [NSNumber numberWithLong: value->value.l];
       break;
     case PT_BOOLEAN:
-      result = [NSNumber numberWithBool: value->value.b];
+      result = [NSNumber numberWithInt: (value->value.b ? 1 : 0)];
       break;
     case PT_DOUBLE:
       result = [NSNumber numberWithDouble: value->value.dbl];
@@ -160,7 +160,7 @@ NSObjectFromSPropValue (const struct SPropValue *value)
       result = [NSNumber numberWithLong: value->value.l];
       break;
     case PT_BOOLEAN:
-      result = [NSNumber numberWithBool: value->value.b];
+      result = [NSNumber numberWithInt: (value->value.b ? 1 : 0)];
       break;
     case PT_DOUBLE:
       result = [NSNumber numberWithDouble: value->value.dbl];

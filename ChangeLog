@@ -1,5 +1,10 @@
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromSPropValue)
+	(NSObjectFromMAPISPropValue): force booleans to be int to avoid
+	creating EOQualifier values where the strings "YES" or "NO" appear
+	as a result to "stringValue".
+
 	* OpenChange/SOGoTaskObject+MAPIStore.m
 	(-setMAPIProperties:): same as below.
 
