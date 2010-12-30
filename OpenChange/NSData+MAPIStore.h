@@ -33,6 +33,12 @@
 + (id) dataWithShortBinary: (const struct SBinary_short *) binData;
 - (struct SBinary_short *) asShortBinaryInMemCtx: (void *) memCtx;
 
++ (id) dataWithFlatUID: (const struct FlatUID_r *) flatUID;
+- (struct FlatUID_r *) asFlatUIDInMemCtx: (void *) memCtx;
+
++ (id) dataWithGUID: (const struct GUID *) guid;
+- (struct GUID *) asGUIDInMemCtx: (void *) memCtx;
+
 @end
 
 #endif /* NSDATA_MAPISTORE_H */

@@ -1,5 +1,9 @@
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSData+MAPIStore.m (+dataWithFlatUID)
+	(-asFlatUIDInMemCtx:, +dataWithGUID:, asGUIDInMemCtx:): new
+	methods for handling the two GUID mapistore types.
+
 	* OpenChange/MAPIStoreContext.m
 	(-createMessageOfClass:inFolderAtURL:): renamed from
 	"-createMessageInFolder:", taking an additional message class

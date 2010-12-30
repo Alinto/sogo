@@ -67,4 +67,54 @@
   return binary;
 }
 
++ (id) dataWithFlatUID: (const struct FlatUID_r *) flatUID
+{
+  return [NSData dataWithBytes: flatUID->ab length: 16];
+}
+
+- (struct FlatUID_r *) asFlatUIDInMemCtx: (void *) memCtx
+{
+  struct FlatUID_r *flatUID;
+
+  flatUID = talloc_zero (memCtx, struct FlatUID_r);
+  [self getBytes: flatUID->ab];
+
+  return flatUID;
+}
+
++ (id) dataWithGUID: (const struct GUID *) guid
+{
+  struct FlatUID_r flatUID;
+
+  flatUID.ab[0] = (guid->time_low & 0xFF);
+  flatUID.ab[1] = ((guid->time_low >> 8)  & 0xFF);
+  flatUID.ab[2] = ((guid->time_low >> 16) & 0xFF);
+  flatUID.ab[3] = ((guid->time_low >> 24) & 0xFF);
+  flatUID.ab[4] = (guid->time_mid & 0xFF);
+  flatUID.ab[5] = ((guid->time_mid >> 8)  & 0xFF);
+  flatUID.ab[6] = (guid->time_hi_and_version & 0xFF);
+  flatUID.ab[7] = ((guid->time_hi_and_version >> 8) & 0xFF);
+  memcpy (flatUID.ab + 8,  guid->clock_seq, sizeof (uint8_t) * 2);
+  memcpy (flatUID.ab + 10, guid->node, sizeof (uint8_t) * 6);
+
+  return [self dataWithFlatUID: &flatUID];
+}
+
+- (struct GUID *) asGUIDInMemCtx: (void *) memCtx
+{
+  struct GUID *guid;
+  uint8_t bytes[16];
+
+  [self getBytes: bytes];
+
+  guid = talloc_zero (memCtx, struct GUID);
+  guid->time_low = (bytes[3] << 24 | bytes[2] << 16 | bytes[1] << 8 | bytes[0]);
+  guid->time_mid = (bytes[5] << 8 | bytes[4]);
+  guid->time_hi_and_version = (bytes[7] << 8 | bytes[6]);
+  memcpy (guid->clock_seq, bytes + 8, sizeof (uint8_t) * 2);
+  memcpy (guid->node, bytes + 10, sizeof (uint8_t) * 6);
+
+  return guid;
+}
+
 @end
