@@ -22,6 +22,7 @@
 
 #include <stdbool.h>
 #include <gen_ndr/exchange.h>
+#include <mapistore/mapistore_nameid.h>
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSTimeZone.h>
@@ -40,6 +41,7 @@
 #import "MAPIStoreTypes.h"
 
 #import "SOGoAppointmentObject+MAPIStore.h"
+
 
 @implementation SOGoAppointmentObject (MAPIStoreMessage)
 
@@ -102,7 +104,7 @@
     [vEvent setSummary: value];
 
   // Location
-  value = [properties objectForKey: MAPIPropertyKey (0x810c001f)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidLocation)];
   if (value)
     [vEvent setLocation: value];
 
@@ -112,6 +114,8 @@
 
   // start
   value = [properties objectForKey: MAPIPropertyKey (PR_START_DATE)];
+  if (!value)
+    value = [properties objectForKey: MAPIPropertyKey (PidLidAppointmentStartWhole)];
   if (value)
     {
       start = (iCalDateTime *) [vEvent uniqueChildWithTag: @"dtstart"];
@@ -121,6 +125,8 @@
 
   // end
   value = [properties objectForKey: MAPIPropertyKey (PR_END_DATE)];
+  if (!value)
+    value = [properties objectForKey: MAPIPropertyKey (PidLidAppointmentEndWhole)];
   if (value)
     {
       end = (iCalDateTime *) [vEvent uniqueChildWithTag: @"dtend"];

@@ -22,6 +22,7 @@
 
 #include <stdbool.h>
 #include <gen_ndr/exchange.h>
+#include <mapistore/mapistore_nameid.h>
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSTimeZone.h>
@@ -126,7 +127,7 @@
     [vToDo setComment: value];
 
   // Location
-  value = [properties objectForKey: MAPIPropertyKey (0x810c001f)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidLocation)];
   if (value)
     [vToDo setLocation: value];
 
@@ -148,7 +149,7 @@
   [vCalendar addTimeZone: tz];
 
   // start
-  value = [properties objectForKey: MAPIPropertyKey (0x811e0040)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidTaskStartDate)];
   if (value)
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"dtstart"];
@@ -157,7 +158,7 @@
     }
 
   // due
-  value = [properties objectForKey: MAPIPropertyKey (0x811f0040)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidTaskDueDate)];
   if (value)
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"due"];
@@ -166,7 +167,7 @@
     }
 
   // status
-  value = [properties objectForKey: MAPIPropertyKey (0x81200003)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidTaskStatus)];
   if (value)
     {
       switch ([value intValue])

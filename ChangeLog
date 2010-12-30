@@ -1,5 +1,13 @@
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoTaskObject+MAPIStore.m
+	(-setMAPIProperties:): same as below.
+
+	* OpenChange/SOGoAppointmentObject+MAPIStore.m
+	(-setMAPIProperties:): make use of proper named properties macro
+	symbols rather than their values, now that they are handled better
+	in the openchange core.
+
 	* OpenChange/SOGoMAPIFSFolder.m (-initWithURL:andTableType:):
 	accepts a new "tableType" parameter to store messages in a
 	different place of the fs folder hierarchy.
