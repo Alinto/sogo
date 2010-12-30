@@ -1,5 +1,8 @@
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSValue+MAPIStore.m (-asDoubleInMemCtx): really
+	returns a double rather than an uint64_t.
+
 	* OpenChange/MAPIStoreTypes.m (MAPIDoubleValue): new wrapper
 	methods for generating data of "double" type.
 	(NSObjectFromMAPISPropValue, NSObjectFromSPropValue): now handle

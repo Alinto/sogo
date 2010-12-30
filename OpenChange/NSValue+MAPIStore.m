@@ -56,11 +56,11 @@
   return value;
 }
 
-- (uint64_t *) asDoubleInMemCtx: (void *) memCtx
+- (double *) asDoubleInMemCtx: (void *) memCtx
 {
-  uint64_t *value;
+  double *value;
 
-  value = talloc (memCtx, uint64_t);
+  value = talloc (memCtx, double);
   *value = [self doubleValue];
 
   return value;
