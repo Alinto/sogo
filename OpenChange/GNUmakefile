@@ -39,7 +39,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreDeletedItemsContext.m \
 	MAPIStoreDraftsContext.m \
 	MAPIStoreFreebusyContext.m \
-	MAPIStoreFileSystemBaseContext.m \
+	MAPIStoreFSBaseContext.m \
 	MAPIStoreGCSBaseContext.m \
 	MAPIStoreJournalContext.m \
 	MAPIStoreMailContext.m \
@@ -53,6 +53,18 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreSpoolerContext.m \
 	MAPIStoreTasksContext.m \
 	MAPIStoreViewsContext.m \
+	\
+	MAPIStoreTable.m \
+	MAPIStoreMessageTable.m \
+	MAPIStoreFolderTable.m \
+	MAPIStoreFSMessageTable.m \
+	MAPIStoreGCSMessageTable.m \
+	MAPIStoreFAIMessageTable.m \
+	MAPIStoreCalendarMessageTable.m \
+	MAPIStoreContactsMessageTable.m \
+	MAPIStoreMailMessageTable.m \
+	MAPIStoreMailFolderTable.m \
+	MAPIStoreTasksMessageTable.m \
 	\
 	SOGoAppointmentObject+MAPIStore.m \
 	SOGoContentObject+MAPIStore.m \
