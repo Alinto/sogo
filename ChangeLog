@@ -1,3 +1,10 @@
+2011-01-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContactsMessageTable.m
+	(-getChildProperty:forKey:withTag:): result the same value for
+	"PR_SUBJECT" as for "PR_DISPLAY_NAME_UNICODE" instead of a stub
+	string.
+
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailMessageTable.m

@@ -118,9 +118,6 @@
       // case PR_EMS_AB_DXA_REMOTE_CLIENT_UNICODE: "Home:" ???
       //         *data = talloc_strdup (memCtx, "PR_EMS...");
       //         break;
-    case PR_SUBJECT_UNICODE:
-      *data = talloc_strdup (memCtx, "PR_SUBJECT...");
-      break;
     case PR_OAB_NAME_UNICODE:
       *data = talloc_strdup (memCtx, "PR_OAB_NAME_UNICODE");
       break;
@@ -143,6 +140,7 @@
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
 
+    case PR_SUBJECT_UNICODE:
     case PR_DISPLAY_NAME_UNICODE: // Full Name
     case PidLidFileUnder: // contact block title name
       rc = [super getChildProperty: data
