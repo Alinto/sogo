@@ -1798,7 +1798,7 @@ function createButton(id, caption, action) {
         span.appendChild(document.createTextNode(caption));
     }
     if (action)
-        newButton.observe("click", action);
+        newButton.on("click", action);
 
     return newButton;
 }
@@ -1838,6 +1838,13 @@ function showConfirmDialog(title, label, callbackYes, callbackNo) {
     var dialog = dialogs[title+label];
     if (dialog) {
         $("bgDialogDiv").show();
+
+	// Update callbacks on buttons
+	var buttons = dialog.getElementsByTagName("a");
+	buttons[0].stopObserving();
+	buttons[0].on("click", callbackYes);
+	buttons[1].stopObserving();
+	buttons[1].on("click", callbackNo || disposeDialog);
     }
     else {
         var fields = createElement("p");
