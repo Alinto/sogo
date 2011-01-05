@@ -53,6 +53,7 @@ var SOGoAutoCompletionInterface = {
         }
         else if (event.keyCode == 0
                  || event.keyCode == Event.KEY_BACKSPACE
+                 || event.keyCode == Event.KEY_DELETE
                  || event.keyCode == 32  // Space
                  || event.keyCode > 47) {
             this.confirmedValue = null;

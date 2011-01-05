@@ -1,5 +1,9 @@
 2011-01-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/SOGoAutoCompletion.js (onKeydown): added
+	support for the delete key (confirmed value was not reset and
+	therefore used as the field value when loosing focus).
+
 	* UI/WebServerResources/generic.js (showConfirmDialog): buttons
 	callbacks must be updated when retrieving dialog box from cache.
 
