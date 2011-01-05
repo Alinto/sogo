@@ -1,3 +1,11 @@
+2011-01-05  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * SoObjects/SOGo/SQLSource.m - we now honor the "mail" column
+	and we also support "MailFieldNames" in the SQL source - which
+	is essentially and array of column names holding additonnal email
+	addresses of users (beside the "mail" column). Also updated
+	the documentation to reflect this change.
+
 2011-01-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (showConfirmDialog): buttons

@@ -1,6 +1,6 @@
 /* SQLSource.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2010 Inverse inc.
+ * Copyright (C) 2009-2011 Inverse inc.
  *
  * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
  *
@@ -220,6 +220,26 @@
   return NO;
 }
 
+- (NSString *) _whereClauseFromArray: (NSArray *) theArray
+                               value: (NSString *) theValue
+			       exact: (BOOL) theBOOL
+{
+  NSMutableString *s;
+  int i;
+
+  s = [NSMutableString string];
+
+  for (i = 0; i < [theArray count]; i++)
+    {
+      if (theBOOL)
+	[s appendFormat: @" OR LOWER(%@) = '%@'", [theArray objectAtIndex: i], theValue];
+      else
+	[s appendFormat: @" OR LOWER(%@) LIKE '%%%@%%'", [theArray objectAtIndex: i], theValue];
+    }
+
+  return s;
+}
+
 - (NSDictionary *) _lookupContactEntry: (NSString *) theID
                          considerEmail: (BOOL) b
 {
@@ -242,15 +262,24 @@
                                            @" WHERE c_uid = '%@'"),
                         [_viewURL gcsTableName], theID];
       else
-        sql = [NSString stringWithFormat: (@"SELECT *"
-                                           @" FROM %@"
-                                           @" WHERE c_uid = '%@' OR"
-                                           @" LOWER(mail) = '%@'"),
-                        [_viewURL gcsTableName], theID, [theID lowercaseString]];
-
+	{
+	  sql = [NSString stringWithFormat: (@"SELECT *"
+					     @" FROM %@"
+					     @" WHERE c_uid = '%@' OR"
+					     @" LOWER(mail) = '%@'"),
+			  [_viewURL gcsTableName], theID, [theID lowercaseString]];
+	
+	  if (_mailFields && [_mailFields count] > 0)
+	    {
+	      sql = [sql stringByAppendingString: [self _whereClauseFromArray: _mailFields  value: [theID lowercaseString]  exact: YES]];
+	    }
+	}
+	
       ex = [channel evaluateExpressionX: sql];
       if (!ex)
         {
+	  NSMutableArray *emails;
+
           response = [[channel fetchAttributes: [channel describeResults: NO]
                                       withZone: NULL] mutableCopy];
           [response autorelease];
@@ -260,6 +289,24 @@
           // constraints right now over a SQL backend.
           [response setObject: [NSNumber numberWithBool: YES] forKey: @"CalendarAccess"];
           [response setObject: [NSNumber numberWithBool: YES] forKey: @"MailAccess"];
+
+	  // We populate all mail fields
+	  emails = [NSMutableArray array];
+	  
+	  if ([response objectForKey: @"mail"])
+	    [emails addObject: [response objectForKey: @"mail"]];
+
+	  if (_mailFields && [_mailFields count] > 0)
+	    {
+	      NSString *s;
+	      int i;
+
+	      for (i = 0; i < [_mailFields count]; i++)
+		if ((s = [response objectForKey: [_mailFields objectAtIndex: i]]))
+		  [emails addObject: s];
+	    }
+	  
+	  [response setObject: emails  forKey: @"c_emails"];
         }
       else
         [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
@@ -351,6 +398,11 @@
                                          @"    OR LOWER(mail) LIKE '%%%@%%'"),
                       [_viewURL gcsTableName],
                       lowerFilter, lowerFilter];
+
+      if (_mailFields && [_mailFields count] > 0)
+	{
+	  sql = [sql stringByAppendingString: [self _whereClauseFromArray: _mailFields  value: lowerFilter  exact: NO]];
+	}
 
       ex = [channel evaluateExpressionX: sql];
       if (!ex)
