@@ -84,13 +84,25 @@
       break;
     case PidLidTaskDateCompleted:
       task = [[self lookupChild: childKey] component: NO secure: NO];
-      *data = [[task completed] asFileTimeInMemCtx: memCtx];
+      dateValue = [task completed];
+      if (dateValue)
+	*data = [dateValue asFileTimeInMemCtx: memCtx];
+      else
+	rc = MAPI_E_NOT_FOUND;
       break;
     case PidLidTaskState: // TODO (check)
       *data = MAPILongValue (memCtx, 0x02 | 0x03);
       break;
+    case PidLidTaskMode: // TODO
+      *data = MAPILongValue (memCtx, 0x0);
+      break;
+    case PidLidTaskFRecurring:
     case PidLidTaskAccepted: // TODO
-      *data = MAPIBoolValue (memCtx, YES);
+      *data = MAPIBoolValue (memCtx, NO);
+      break;
+    case PidLidTaskActualEffort: // TODO
+    case PidLidTaskEstimatedEffort: // TODO
+      *data = MAPILongValue (memCtx, 0);
       break;
     case PR_HASATTACH:
       *data = MAPIBoolValue (memCtx, NO);
@@ -141,6 +153,66 @@
     case 0x68410003:
       *data = MAPILongValue (memCtx, 0);
       break;
+
+// #define PidLidFlagRequest                                   0x9027001f
+// #define PidNameContentType                                  0x905a001f
+// #define PidLidBillingInformation                            0x908b001f
+// #define PidLidTaskStartDate                                 0x911e0040
+// #define PidLidTaskOwner                                     0x9122001f
+// #define PidLidTaskDeadOccurrence                            0x9127000b
+// #define PidLidTaskMultipleRecipients                        0x912a0003
+// #define PidLidTaskHistory                                   0x912b0003
+// #define PidLidAcceptanceState                               0x912c0003
+// #define PidLidTaskLastUser                                  0x912d001f
+// #define PidLidTaskLastUpdate                                0x912e0040
+// #define PidLidTaskOwnership                                 0x912f0003
+// #define PidLidTaskNoCompute                                 0x9130000b
+// #define PidLidTaskFFixOffline                               0x9131000b
+// #define PidLidTaskRole                                      0x9132001f
+// #define PidLidTaskVersion                                   0x91330003
+// #define PidLidTaskAssigner                                  0x9134001f
+// #define PidLidTeamTask                                      0x9135000b
+// #define PidLidTaskRecurrence                                0x91360102
+// #define PidLidTaskResetReminder                             0x9137000b
+// #define PidLidTaskOrdinal                                   0x91380003
+// #define PidLidMileage                                       0x914a001f
+// #define PidLidAgingDontAgeMe                                0x9185000b
+// #define PidLidCommonEnd                                     0x91980040
+// #define PidLidCommonStart                                   0x91990040
+// #define PidLidNonSendableBcc                                0x91d7001f
+// #define PidLidNonSendableCc                                 0x91d8001f
+// #define PidLidNonSendtableTo                                0x91d9001f
+// #define PidLidNonSendBccTrackStatus                         0x91da1003
+// #define PidLidNonSendCcTrackStatus                          0x91db1003
+// #define PidLidNonSendToTrackStatus                          0x91dc1003
+// #define PidLidReminderDelta                                 0x91e90003
+// #define PidLidReminderFileParameter                         0x91ea001f
+// #define PidLidReminderSignalTime                            0x91eb0040
+// #define PidLidReminderOverride                              0x91ec000b
+// #define PidLidReminderPlaySound                             0x91ed000b
+// #define PidLidReminderSet                                   0x91ee000b
+// #define PidLidReminderTime                                  0x91ef0040
+// #define PidLidReminderType                                  0x91f20003
+// #define PidLidRemoteStatus                                  0x91f30003
+// #define PidLidSmartNoAttach                                 0x91fa000b
+// #define PidLidTaskGlobalId                                  0x91fe0102
+// #define PidLidVerbResponse                                  0x9203001f
+// #define PidLidVerbStream                                    0x92040102
+// #define PidLidPrivate                                       0x9224000b
+// #define PidLidInternetAccountName                           0x9225001f
+// #define PidLidInternetAccountStamp                          0x9226001f
+// #define PidLidUseTnef                                       0x9227000b
+// #define PidLidContactLinkName                               0x9229001f
+// #define PidLidContactLinkEntry                              0x922a0102
+// #define PidLidContactLinkSearchKey                          0x922b0102
+// #define PidLidSpamOriginalFolder                            0x92370102
+// #define PidLidTaskUpdates                                   0x9345000b
+// #define PidLidTaskStatusOnComplete                          0x9346000b
+// #define PidLidTaskLastDelegate                              0x9347001f
+// #define PidLidTaskAssigners                                 0x934a0102
+// #define PidLidTaskFCreator                                  0x934c000b
+// #define PidLidImapDeleted                                   0x94e50003
+// #define PidLidHeaderItem                                    0x94e60003
 
     default:
       rc = [super getChildProperty: data

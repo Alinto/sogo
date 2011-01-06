@@ -1,5 +1,11 @@
 2011-01-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTasksMessageTable.m
+	(-getChildProperty:forKey:withTag:): silently returns
+	MAPI_E_NOT_FOUND when the completion date is not available. Added
+	stubs for PidLidTaskMode, PidLidTaskFRecurring,
+	PidLidTaskActualEffort and PidLidTaskEstimatedEffort.
+
 	* OpenChange/MAPIStoreFolderTable.m
 	(-backendIdentifierForProperty:): new overriden method to avoid an
 	exception under certain circumstances.
