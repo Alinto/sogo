@@ -27,6 +27,8 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/NGVCard.h>
 
+#include <mapistore/mapistore_nameid.h>
+
 #import "MAPIStoreTypes.h"
 
 #import "SOGoContactGCSEntry+MAPIStore.h"
@@ -60,7 +62,7 @@
   if (value)
     [newCard setFn: value];
 
-  value = [properties objectForKey: MAPIPropertyKey (0x81b0001f)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidEmail1EmailAddress)];
   if (value)
     [newCard addEmail: value types: nil];
 
