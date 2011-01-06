@@ -617,7 +617,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   NSString *url;
   int rc;
 
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  [self logWithFormat: @"METHOD '%s' (%d) -- tableType: %d",
+	__FUNCTION__, __LINE__, tableType];
 
   // [self logWithFormat: @"context restriction state is: %@",
   // 	MAPIStringForRestrictionState (restrictionState)];

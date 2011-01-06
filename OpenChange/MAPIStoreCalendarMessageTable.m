@@ -112,7 +112,7 @@
       event = [[self lookupChild: childKey] component: NO secure: NO];
       *data = [[event location] asUnicodeInMemCtx: memCtx];
       break;
-    case PidLidPrivate: // private (bool), should depend on CLASS
+    case PidLidPrivate: // private (bool), should depend on CLASS and permissions
       *data = MAPIBoolValue (memCtx, NO);
       break;
     case PR_SENSITIVITY: // not implemented, depends on CLASS
