@@ -43,6 +43,7 @@
 - (NSString *) directory;
 
 - (SOGoMAPIFSMessage *) newMessage;
+- (void) ensureDirectory;
 
 @end
 

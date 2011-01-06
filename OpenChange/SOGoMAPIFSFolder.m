@@ -133,7 +133,7 @@ static NSString *privateDir = nil;
   return [SOGoMAPIFSMessage objectWithName: filename inContainer: self];
 }
 
-- (void) _ensureDirectorySanity
+- (void) ensureDirectory
 {
   NSFileManager *fm;
   NSDictionary *attributes;
@@ -169,7 +169,7 @@ static NSString *privateDir = nil;
   BOOL isDir;
 
   if (!directoryIsSane)
-    [self _ensureDirectorySanity];
+    [self ensureDirectory];
 
   fm = [NSFileManager defaultManager];
   contents = [fm directoryContentsAtPath: directory];
@@ -208,7 +208,7 @@ static NSString *privateDir = nil;
   BOOL isDir;
 
   if (!directoryIsSane)
-    [self _ensureDirectorySanity];
+    [self ensureDirectory];
 
   fm = [NSFileManager defaultManager];
   fullName = [directory stringByAppendingPathComponent: fileName];

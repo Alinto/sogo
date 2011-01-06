@@ -74,6 +74,8 @@
 
   [self logWithFormat: @"-MAPISave"];
 
+  [container ensureDirectory];
+
   filePath = [[container directory]
 	       stringByAppendingPathComponent: nameInContainer];
   if (![properties writeToFile: filePath atomically: YES])

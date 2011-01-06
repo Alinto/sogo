@@ -1,5 +1,13 @@
 2011-01-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIFSMessage.m (-MAPISave): make use of
+	"ensureDirectory" on the container folder to avoid errors with
+	NSDictionary failing to save itself to the filesystem.
+
+	* OpenChange/SOGoMAPIFSFolder.m (-ensureDirectory): method made
+	public and which ensures that the directory pointed to by the
+	instances of this class does exist.
+
 	* OpenChange/SOGoContactGCSEntry+MAPIStore.m (-setMAPIProperties):
 	take  "PidLidEmail1EmailAddress" id as key for the contact email
 	address.
