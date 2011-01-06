@@ -1,5 +1,9 @@
 2011-01-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolderTable.m
+	(-backendIdentifierForProperty:): new overriden method to avoid an
+	exception under certain circumstances.
+
 	* OpenChange/SOGoMAPIFSMessage.m (-MAPISave): make use of
 	"ensureDirectory" on the container folder to avoid errors with
 	NSDictionary failing to save itself to the filesystem.

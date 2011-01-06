@@ -126,4 +126,9 @@ static MAPIStoreMapping *mapping;
   return rc;
 }
 
+- (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
+{
+  return nil;
+}
+
 @end
