@@ -48,45 +48,11 @@
 /* TODO: merge with tasks */
 - (void) setMAPIProperties: (NSDictionary *) properties
 {
-  /* --dtstart=2007-06-01\ 22:00:00 --dtend=2007-06-01\ 22:35:00
-     --busystatus=FREE --location=Home --subject=Check\ the\ Junk\ folder
-
-     -> 
-     2010-11-19 14:55:06.504 samba[13652] message properties (31):
-     2010-11-19 14:55:06.504 samba[13652]   0x810c001f (unknown): Home (GSCBufferString)
-     2010-11-19 14:55:06.505 samba[13652]   0x00600040 (PR_START_DATE): 2007-06-01 22:00:00 -0400 (NSGDate)
-     2010-11-19 14:55:06.504 samba[13652]   0x00610040 (PR_END_DATE): 2007-06-01 22:35:00 -0400 (NSGDate)
-     2010-11-19 14:55:06.505 samba[13652]   0x30080040 (PR_LAST_MODIFICATION_TIME): 2010-11-19 14:55:06 -0500 (NSGDate)
-     2010-11-19 14:55:06.504 samba[13652]   0x30070040 (PR_CREATION_TIME): 2010-11-19 14:55:06 -0500 (NSGDate)
-     2010-11-19 14:55:06.504 samba[13652]   0x0e1d001f (PR_NORMALIZED_SUBJECT_UNICODE): Check the Junk folder (GSCBufferString)
-
-     2010-11-19 14:55:06.504 samba[13652]   0x81980040 (unknown): 2007-06-01 22:35:00 -0400 (NSGDate)
-     2010-11-19 14:55:06.504 samba[13652]   0x0e1b000b (PR_HASATTACH): 0 (NSIntNumber)
-     2010-11-19 14:55:06.504 samba[13652]   0x3ff10003 (PR_MESSAGE_LOCALE_ID): 4095 (NSIntNumber)
-     2010-11-19 14:55:06.504 samba[13652]   0x0ff40003 (PR_ACCESS): 3 (NSIntNumber)
-     2010-11-19 14:55:06.504 samba[13652]   0x0070001f (PR_CONVERSATION_TOPIC_UNICODE): Check the Junk folder (GSCBufferString)
-     2010-11-19 14:55:06.504 samba[13652]   0x81e90003 (unknown): 30 (NSIntNumber)
-     2010-11-19 14:55:06.504 samba[13652]   0x10f3001e (PR_URL_COMP_NAME): No Subject.EML (GSCBufferString)
-     2010-11-19 14:55:06.504 samba[13652]   0x0ff70003 (PR_ACCESS_LEVEL): 1 (NSIntNumber)
-     2010-11-19 14:55:06.504 samba[13652]   0x81990040 (unknown): 2007-06-01 22:00:00 -0400 (NSGDate)
-     2010-11-19 14:55:06.504 samba[13652]   0x8224000b (unknown): 0 (NSIntNumber)
-     2010-11-19 14:55:06.504 samba[13652]   0x82410003 (unknown): 0 (NSIntNumber)
-     2010-11-19 14:55:06.504 samba[13652]   0x0e62000b (PR_URL_COMP_NAME_SET): 0 (NSIntNumber)
-     2010-11-19 14:55:06.504 samba[13652]   0x66a10003 (PR_LOCALE_ID): 4095 (NSIntNumber)
-     2010-11-19 14:55:06.504 samba[13652]   0x00170003 (PR_IMPORTANCE): 1 (NSIntNumber)
-     2010-11-19 14:55:06.504 samba[13652]   0x818a0040 (unknown): 2007-06-01 22:35:00 -0400 (NSGDate)
-     2010-11-19 14:55:06.504 samba[13652]   0x81900003 (PR_EMS_AB_INCOMING_MSG_SIZE_LIMIT): 0 (NSIntNumber)
-     2010-11-19 14:55:06.504 samba[13652]   0x0e070003 (PR_MESSAGE_FLAGS): 1 (NSIntNumber)
-     2010-11-19 14:55:06.505 samba[13652]   0x001a001e (PR_MESSAGE_CLASS): IPM.Appointment (GSCBufferString)
-     2010-11-19 14:55:06.505 samba[13652]   0x00360003 (PR_SENSITIVITY): 0 (NSIntNumber)
-     2010-11-19 14:55:06.505 samba[13652]   0x0e790003 (PR_TRUST_SENDER): 1 (NSIntNumber)
-     2010-11-19 14:55:06.505 samba[13652]   0x67090040 (PR_LOCAL_COMMIT_TIME): 2010-11-19 14:55:06 -0500 (NSGDate)
-     2010-11-19 14:55:06.505 samba[13652]   0x818f0040 (unknown): 2007-06-01 22:00:00 -0400 (NSGDate)
-     2010-11-19 14:55:06.505 samba[13652]   0x81930003 (unknown): 0 (NSIntNumber) */
   iCalCalendar *vCalendar;
   iCalEvent *vEvent;
   id value;
   SOGoUserDefaults *ud;
+  NSCalendarDate *now;
   iCalTimeZone *tz;
   iCalDateTime *start, *end;
 
@@ -133,6 +99,13 @@
       [end setTimeZone: tz];
       [end setDateTime: value];
     }
+
+  now = [NSCalendarDate date];
+  if ([self isNew])
+    {
+      [vEvent setCreated: now];
+    }
+  [vEvent setTimeStampAsDate: now];
 
   // MAPIStoreDumpMessageProperties (properties);
   ASSIGN (content, [vCalendar versitString]);

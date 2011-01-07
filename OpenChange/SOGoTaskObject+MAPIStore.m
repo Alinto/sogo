@@ -47,60 +47,7 @@
 /* TODO: merge with events */
 - (void) setMAPIProperties: (NSDictionary *) properties
 {
-  MAPIStoreDumpMessageProperties (properties);
-
-  /* --sendtask --dtstart="2008-11-01 18:00:00" --cardname="openchangeclient"
-     --importance=HIGH --taskstatus=COMPLETED --body="my new task"
-
-     0x0e070003 (PR_MESSAGE_FLAGS): 9 (NSIntNumber)
-     0x0e1d001f (PR_NORMALIZED_SUBJECT_UNICODE): openchangeclient (GSCBufferString)
-     0x1000001f (PR_BODY_UNICODE): my new task (GSCBufferString)
-     0x30070040 (PR_CREATION_TIME): 2010-11-19 16:30:29 -0500 (NSCalendarDate)
-     0x30080040 (PR_LAST_MODIFICATION_TIME): 2010-11-19 16:30:29 -0500 (NSCalendarDate)
-     0x811f0040 (unknown): 2008-11-01 18:00:00 -0400 (NSCalendarDate)
-     0x811e0040 (unknown): 2008-11-01 18:00:00 -0400 (NSCalendarDate)
-
-     0x0e790003 (PR_TRUST_SENDER): 1 (NSIntNumber)
-     0x0ff70003 (PR_ACCESS_LEVEL): 1 (NSIntNumber)
-     0x001a001e (PR_MESSAGE_CLASS): IPM.Task (GSCBufferString)
-     0x00360003 (PR_SENSITIVITY): 0 (NSIntNumber)
-     0x10f3001e (PR_URL_COMP_NAME): No Subject.EML (GSCBufferString)
-     0x81200003 (unknown): 2 (NSIntNumber)
-     0x00170003 (PR_IMPORTANCE): 2 (NSIntNumber)
-     0x66a10003 (PR_LOCALE_ID): 4095 (NSIntNumber)
-     0x0ff40003 (PR_ACCESS): 3 (NSIntNumber)
-     0x3ff10003 (PR_MESSAGE_LOCALE_ID): 4095 (NSIntNumber)
-     0x0e1b000b (PR_HASATTACH): 0 (NSIntNumber)
-     0x67090040 (PR_LOCAL_COMMIT_TIME): 2010-11-19 16:30:29 -0500 (NSCalendarDate)
-     0x0070001f (PR_CONVERSATION_TOPIC_UNICODE): openchangeclient (GSCBufferString)
-     0x0e62000b (PR_URL_COMP_NAME_SET): 0 (NSIntNumber)
-
-     status:
-     0x81200003 (unknown): 0 (NSIntNumber)
-     0x0070001f (PR_CONVERSATION_TOPIC_UNICODE): openchangeclientNOTSTARTED (GSCBufferString)
-
-     0x81200003 (unknown): 1 (NSIntNumber)
-     0x0070001f (PR_CONVERSATION_TOPIC_UNICODE): openchangeclientPROGRESS (GSCBufferString)
-
-     0x81200003 (unknown): 2 (NSIntNumber)
-     0x0070001f (PR_CONVERSATION_TOPIC_UNICODE): openchangeclientCOMPLETED (GSCBufferString)
-
-     0x81200003 (unknown): 3 (NSIntNumber)
-     0x0070001f (PR_CONVERSATION_TOPIC_UNICODE): openchangeclientWAITING (GSCBufferString)
-
-     0x81200003 (unknown): 4 (NSIntNumber)
-     0x0070001f (PR_CONVERSATION_TOPIC_UNICODE): openchangeclientDEFERRED (GSCBufferString)
-
-     importance:
-     0x00170003 (PR_IMPORTANCE): 0 (NSIntNumber)
-     0x0070001f (PR_CONVERSATION_TOPIC_UNICODE): openchangeclientLOW (GSCBufferString)
-
-     0x00170003 (PR_IMPORTANCE): 1 (NSIntNumber)
-     0x0070001f (PR_CONVERSATION_TOPIC_UNICODE): openchangeclientNORMAL (GSCBufferString)
-     
-     0x00170003 (PR_IMPORTANCE): 2 (NSIntNumber)
-     0x0070001f (PR_CONVERSATION_TOPIC_UNICODE): openchangeclientHIGH (GSCBufferString)
-  */
+  // MAPIStoreDumpMessageProperties (properties);
 
   iCalCalendar *vCalendar;
   iCalToDo *vToDo;
@@ -109,6 +56,7 @@
   iCalTimeZone *tz;
   iCalDateTime *date;
   NSString *status, *priority;
+  NSCalendarDate *now;
 
   vToDo = [self component: YES secure: NO];
   vCalendar = [vToDo parent];
@@ -198,6 +146,13 @@
   else
     priority = @"0"; // None
   [vToDo setPriority: priority];
+
+  now = [NSCalendarDate date];
+  if ([self isNew])
+    {
+      [vToDo setCreated: now];
+    }
+  [vToDo setTimeStampAsDate: now];
 
   // due
   // value = [properties objectForKey: MAPIPropertyKey (PR_DUE_DATE)];

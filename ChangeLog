@@ -1,3 +1,10 @@
+2011-01-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/SOGoAppointmentObject+MAPIStore.m: same as below.
+
+	* OpenChange/SOGoTaskObject+MAPIStore.m (-setMAPIProperties:): set
+	a value for CREATED and DTSTAMP
+
 2011-01-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreTasksMessageTable.m
