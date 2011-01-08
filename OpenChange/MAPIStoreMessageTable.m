@@ -189,6 +189,18 @@ static MAPIStoreMapping *mapping;
 		 withTag: PR_NORMALIZED_SUBJECT_UNICODE];
       break;
 
+    case PR_DISPLAY_TO_UNICODE:
+    case PR_DISPLAY_CC_UNICODE:
+    case PR_DISPLAY_BCC_UNICODE:
+    case PR_ORIGINAL_DISPLAY_TO_UNICODE:
+    case PR_ORIGINAL_DISPLAY_CC_UNICODE:
+    case PR_ORIGINAL_DISPLAY_BCC_UNICODE:
+      *data = [@"" asUnicodeInMemCtx: memCtx];
+      break;
+    case PR_LAST_MODIFIER_NAME_UNICODE:
+      *data = [@"openchange" asUnicodeInMemCtx: memCtx];
+      break;
+
     default:
       rc = [super getChildProperty: data
 			    forKey: childKey

@@ -1,5 +1,9 @@
 2011-01-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMessageTable.m
+	(-getChildProperty:forKey:withTag:): added generic values for some
+	standard props.
+
 	* OpenChange/SOGoAppointmentObject+MAPIStore.m: same as below.
 
 	* OpenChange/SOGoTaskObject+MAPIStore.m (-setMAPIProperties:): set
