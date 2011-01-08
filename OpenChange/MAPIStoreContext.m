@@ -1002,6 +1002,22 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
                                                save: NO];
 }
 
+- (enum MAPITAGS) _typeLessTag: (enum MAPITAGS) tag
+{
+  if (tag == 0x300b0000)
+    tag = PR_SEARCH_KEY;
+  else if (tag == 0x30070000)
+    tag = PR_CREATION_TIME;
+  else if (tag == 0x30080000)
+    tag = PR_LAST_MODIFICATION_TIME;
+  else if (tag == 0x0e080000)
+    tag = PR_MESSAGE_SIZE;
+  else
+    [self warnWithFormat: @"unknown typeless tag: 0x%.8x", tag];
+
+  return tag;
+}
+
 - (int) getProperties: (struct SPropTagArray *) sPropTagArray
           ofTableType: (uint8_t) tableType
                 inRow: (struct SRow *) aRow
@@ -1040,6 +1056,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	  for (count = 0; count < sPropTagArray->cValues; count++)
 	    {
 	      tag = sPropTagArray->aulPropTag[count];
+	      if ((tag & 0x0000ffff) == 0)
+		tag = [self _typeLessTag: tag];
 	      
 	      propValue = NULL;
 	      propRc = [table getChildProperty: &propValue

@@ -1,5 +1,10 @@
 2011-01-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (_typeLessTag:): new method
+	designed to return a known value type for typeless tags that were
+	requested via getprops. This abstract the missing type from the
+	call to getChildProperty:...
+
 	* OpenChange/MAPIStoreMessageTable.m
 	(-getChildProperty:forKey:withTag:): added generic values for some
 	standard props.
