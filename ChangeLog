@@ -1,3 +1,8 @@
+2011-01-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContext.m (-typeLessTag:): removed method as
+	types are now determined from openchange core.
+
 2011-01-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContext.m (_typeLessTag:): new method
