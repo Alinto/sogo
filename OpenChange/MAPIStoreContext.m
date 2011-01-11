@@ -803,11 +803,13 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 		    @" returned for proptag %s(0x%.8x)",
 		    propName, tags[count]];
 	    }
-
-	  set_SPropValue_proptag (properties->lpProps + properties->cValues,
-				  tags[count],
-				  propValue);
-	  properties->cValues++;
+	  else
+	    {
+	      set_SPropValue_proptag (properties->lpProps + properties->cValues,
+				      tags[count],
+				      propValue);
+	      properties->cValues++;
+	    }
 	}
     }
   msg->properties = properties;

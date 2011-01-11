@@ -1,5 +1,9 @@
 2011-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (-openMessage:forKey:inTable:):
+	avoid taking NULL values into account when returning the basic
+	properties.
+
 	* OpenChange/SOGoContactGCSEntry+MAPIStore.m
 	(-setMAPIProperties:): added support for work address and its
 	corresponding addresse label. Preliminary support for
