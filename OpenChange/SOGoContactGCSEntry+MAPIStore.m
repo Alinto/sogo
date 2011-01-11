@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
@@ -38,6 +39,8 @@
 - (void) setMAPIProperties: (NSDictionary *) properties
 {
   NGVCard *newCard, *oldCard;
+  NSArray *addresses;
+  CardElement *adr;
   id value;
 
   [self logWithFormat: @"setMAPIProperties: %@", properties];
@@ -65,6 +68,41 @@
   value = [properties objectForKey: MAPIPropertyKey (PidLidEmail1EmailAddress)];
   if (value)
     [newCard addEmail: value types: nil];
+
+  /* Work address */
+  addresses = [newCard childrenWithTag: @"adr"
+			  andAttribute: @"type"
+			   havingValue: @"work"];
+  if ([addresses count] > 0)
+    {
+      adr = [addresses objectAtIndex: 0];
+      [adr setValues: nil];
+    }
+  else
+    {
+      adr = [CardElement elementWithTag: @"adr"];
+      [adr addAttribute: @"type" value: @"work"];
+      [card addChild: adr];
+    }
+
+  value = [properties objectForKey: MAPIPropertyKey (PidLidWorkAddressPostOfficeBox)];
+  if (value)
+    [adr setValue: 0 to: value];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidWorkAddressStreet)];
+  if (value)
+    [adr setValue: 2 to: value];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidWorkAddressCity)];
+  if (value)
+    [adr setValue: 3 to: value];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidWorkAddressState)];
+  if (value)
+    [adr setValue: 4 to: value];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidWorkAddressPostalCode)];
+  if (value)
+    [adr setValue: 5 to: value];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidWorkAddressCountry)];
+  if (value)
+    [adr setValue: 6 to: value];
 
   ASSIGN (content, [newCard versitString]);
 }
