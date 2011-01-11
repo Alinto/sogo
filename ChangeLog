@@ -1,5 +1,19 @@
 2011-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsMessageTable.m
+	(-_element:ofType:excluding:inCard:): new version of the previous
+	-_phoneOfType:excluding:inCard: method, which now returns the
+	requested element rather than it's first value and which enables
+	the specification of the tag.
+	(-getChildProperty:forKey:withTag:): added support for
+	PidLidPostalAddressId, PR_POSTAL_ADDRESS_UNICODE,
+	PR_POST_OFFICE_BOX_UNICODE, PR_STREET_ADDRESS_UNICODE,
+	PR_LOCALITY_UNICODE, PR_STATE_OR_PROVINCE_UNICODE,
+	PR_POSTAL_CODE_UNICODE, PR_COUNTRY_UNICODE, PidLidWorkAddress,
+	PidLidWorkAddressPostOfficeBox, PidLidWorkAddressStreet,
+	PidLidWorkAddressCity, PidLidWorkAddressState,
+	PidLidWorkAddressPostalCode and PidLidWorkAddressCountry.
+
 	* OpenChange/MAPIStoreContext.m (-openMessage:forKey:inTable:):
 	avoid taking NULL values into account when returning the basic
 	properties.
