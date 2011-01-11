@@ -1,10 +1,14 @@
 2011-01-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* OpenChange/MAPIStoreContactsMessageTable.m
-	Added more properties: home/work URL, nickname	
+	Added more properties: home/work URL, nickname
 	and department.
 
 2011-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContext.m (-openMessage:withMID:inFID:):
+	create a message dictionary in the message cache in order to
+	enable modifications.
 
 	* OpenChange/MAPIStoreContactsMessageTable.m
 	(-_element:ofType:excluding:inCard:): new version of the previous

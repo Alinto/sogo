@@ -824,6 +824,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   NSString *childURL, *childKey, *folderURL;
   MAPIStoreTable *table;
   int rc;
+  BOOL isAssociated;
 
   childURL = [mapping urlFromID: mid];
   if (childURL)
@@ -832,9 +833,13 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 				andFolderURLAt: &folderURL];
       table = [self _tableForFID: fid andTableType: MAPISTORE_FAI_TABLE];
       if ([[table cachedChildKeys] containsObject: childKey])
-	rc = [self openMessage: msg forKey: childKey inTable: table];
+	{
+	  isAssociated = YES;
+	  rc = [self openMessage: msg forKey: childKey inTable: table];
+	}
       else
 	{
+	  isAssociated = NO;
 	  table = [self _tableForFID: fid andTableType: MAPISTORE_MESSAGE_TABLE];
 	  if ([[table cachedChildKeys] containsObject: childKey])
 	    rc = [self openMessage: msg forKey: childKey inTable: table];
@@ -844,6 +849,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
     }
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
+
+  if (rc == MAPI_E_SUCCESS)
+    [self createMessagePropertiesWithMID: mid
+				   inFID: fid
+			    isAssociated: isAssociated];
 
   return rc;
 }
@@ -1168,7 +1178,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	  [self logWithFormat: @"fmid 0x%.16x found", fmid];
 	  for (counter = 0; counter < aRow->cValues; counter++)
 	    {
-	      cValue = &(aRow->lpProps[counter]);
+	      cValue = aRow->lpProps + counter;
 	      [message setObject: NSObjectFromSPropValue (cValue)
                           forKey: MAPIPropertyKey (cValue->ulPropTag)];
 	    }
