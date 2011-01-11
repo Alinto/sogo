@@ -1,3 +1,9 @@
+2011-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/SOGoContactGCSEntry+MAPIStore.m (-setMAPIProperties):
+	carefully existing handled fields to avoid removing them during
+	modification.
+
 2011-01-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* OpenChange/MAPIStoreContactsMessageTable.m
