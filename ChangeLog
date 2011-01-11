@@ -1,3 +1,9 @@
+2011-01-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* OpenChange/MAPIStoreContactsMessageTable.m
+	Added more properties: home/work URL, nickname	
+	and department.
+
 2011-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContactsMessageTable.m

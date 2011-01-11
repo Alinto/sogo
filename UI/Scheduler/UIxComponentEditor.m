@@ -1253,9 +1253,9 @@ iRANGE(2);
 	  currentOwnerIdentity = [currentUser defaultIdentity];
 
 	  currentOwnerProfile = [NSMutableDictionary dictionary];
-	  [currentOwnerProfile setObject: [currentOwnerIdentity objectForKey: @"fullName"]
+	  [currentOwnerProfile setObject: ([currentOwnerIdentity objectForKey: @"fullName"] == nil ? @"" : [currentOwnerIdentity objectForKey: @"fullName"])
 				  forKey: @"name"];
-	  [currentOwnerProfile setObject: [currentOwnerIdentity objectForKey: @"email"]
+	  [currentOwnerProfile setObject: ([currentOwnerIdentity objectForKey: @"email"] == nil ? @"" : [currentOwnerIdentity objectForKey: @"email"])
 				  forKey: @"email"];
 	  [currentOwnerProfile setObject: @"accepted"
 				  forKey: @"partstat"];

@@ -121,12 +121,23 @@
       break;
 
     case PR_COMPANY_NAME_UNICODE:
-      child = [self lookupChild: childKey];
-      /* that's buggy but it's for the demo */
-      stringValue = [[[child vCard] org] componentsJoinedByString: @", "];
-      if (!stringValue)
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
+    case PR_DEPARTMENT_NAME_UNICODE:
+      {
+	NSArray *values;
+	
+	child = [self lookupChild: childKey];
+	values = [[child vCard] org];
+	stringValue = nil;
+
+	if (proptag == PR_COMPANY_NAME_UNICODE && [values count] > 0)
+	  stringValue = [values objectAtIndex: 0];
+	else if (proptag == PR_DEPARTMENT_NAME_UNICODE && [values count] > 1)
+	  stringValue = [values objectAtIndex: 1];
+	
+	if (!stringValue)
+	  stringValue = @"";
+	*data = [stringValue asUnicodeInMemCtx: memCtx];
+      }
       break;
 
     case PR_SUBJECT_UNICODE:
@@ -192,6 +203,26 @@
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
 
+    case PR_BUSINESS_HOME_PAGE_UNICODE:
+    case PR_PERSONAL_HOME_PAGE_UNICODE:
+      {
+	NSString *type;
+
+	type = (proptag == PR_BUSINESS_HOME_PAGE_UNICODE ? @"work" : @"home");
+
+	child = [self lookupChild: childKey];
+	
+	element = [self _element: @"url" ofType: type
+			excluding: nil
+			inCard: [child vCard]];
+	if (element)
+	  stringValue = [element value: 0];
+	else
+	  stringValue = @"";
+	*data = [stringValue asUnicodeInMemCtx: memCtx];
+      }
+      break;
+      
     case PidLidEmail1AddressType:
     case PidLidEmail2AddressType:
     case PidLidEmail3AddressType:
@@ -374,6 +405,13 @@
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
 
+      // PidTagNickname
+    case PR_NICKNAME_UNICODE:
+      child = [self lookupChild: childKey];
+      stringValue = [[child vCard] nickname];
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+      
     default:
       rc = [super getChildProperty: data
 			    forKey: childKey
