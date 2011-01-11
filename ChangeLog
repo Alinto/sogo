@@ -6,6 +6,10 @@
 
 2011-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTasksMessageTable.m
+	(-getChildProperty:forKey:withTag:): fixed typo affecting
+	PidLidTaskStatus.
+
 	* OpenChange/MAPIStoreContext.m (-openMessage:withMID:inFID:):
 	create a message dictionary in the message cache in order to
 	enable modifications.

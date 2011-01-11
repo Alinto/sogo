@@ -132,7 +132,7 @@
       task = [[self lookupChild: childKey] component: NO secure: NO];
       status = [task status];
       if (![status length]
-          || [status isEqualToString: @"NEEDS-ACTIONS"])
+          || [status isEqualToString: @"NEEDS-ACTION"])
         statusValue = 0;
       else if ([status isEqualToString: @"IN-PROCESS"])
         statusValue = 1;
