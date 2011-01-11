@@ -39,8 +39,9 @@
 - (void) setMAPIProperties: (NSDictionary *) properties
 {
   NGVCard *newCard, *oldCard;
-  NSArray *addresses;
-  CardElement *adr;
+  NSArray *elements;
+  CardElement *element;
+  int postalAddressId;
   id value;
 
   [self logWithFormat: @"setMAPIProperties: %@", properties];
@@ -69,40 +70,68 @@
   if (value)
     [newCard addEmail: value types: nil];
 
+  postalAddressId = [[properties objectForKey: MAPIPropertyKey (PidLidPostalAddressId)]
+		      intValue];
+
   /* Work address */
-  addresses = [newCard childrenWithTag: @"adr"
+  value = [properties objectForKey: MAPIPropertyKey (PidLidWorkAddress)];
+  if ([value length])
+    {
+      elements = [newCard childrenWithTag: @"label"
+			     andAttribute: @"type"
+			      havingValue: @"work"];
+      if ([elements count] > 0)
+	{
+	  element = [elements objectAtIndex: 0];
+	  [element setValues: nil];
+	}
+      else
+	{
+	  element = [CardElement elementWithTag: @"label"];
+	  [element addAttribute: @"type" value: @"work"];
+	  [card addChild: element];
+	}
+      if (postalAddressId == 2)
+	[element addAttribute: @"type"
+			value: @"pref"];
+      [element setValue: 0 to: value];
+    }
+
+  elements = [newCard childrenWithTag: @"adr"
 			  andAttribute: @"type"
 			   havingValue: @"work"];
-  if ([addresses count] > 0)
+  if ([elements count] > 0)
     {
-      adr = [addresses objectAtIndex: 0];
-      [adr setValues: nil];
+      element = [elements objectAtIndex: 0];
+      [element setValues: nil];
     }
   else
     {
-      adr = [CardElement elementWithTag: @"adr"];
-      [adr addAttribute: @"type" value: @"work"];
-      [card addChild: adr];
+      element = [CardElement elementWithTag: @"adr"];
+      [element addAttribute: @"type" value: @"work"];
+      [card addChild: element];
     }
-
+  if (postalAddressId == 2)
+    [element addAttribute: @"type"
+                value: @"pref"];
   value = [properties objectForKey: MAPIPropertyKey (PidLidWorkAddressPostOfficeBox)];
   if (value)
-    [adr setValue: 0 to: value];
+    [element setValue: 0 to: value];
   value = [properties objectForKey: MAPIPropertyKey (PidLidWorkAddressStreet)];
   if (value)
-    [adr setValue: 2 to: value];
+    [element setValue: 2 to: value];
   value = [properties objectForKey: MAPIPropertyKey (PidLidWorkAddressCity)];
   if (value)
-    [adr setValue: 3 to: value];
+    [element setValue: 3 to: value];
   value = [properties objectForKey: MAPIPropertyKey (PidLidWorkAddressState)];
   if (value)
-    [adr setValue: 4 to: value];
+    [element setValue: 4 to: value];
   value = [properties objectForKey: MAPIPropertyKey (PidLidWorkAddressPostalCode)];
   if (value)
-    [adr setValue: 5 to: value];
+    [element setValue: 5 to: value];
   value = [properties objectForKey: MAPIPropertyKey (PidLidWorkAddressCountry)];
   if (value)
-    [adr setValue: 6 to: value];
+    [element setValue: 6 to: value];
 
   ASSIGN (content, [newCard versitString]);
 }

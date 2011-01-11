@@ -1,7 +1,10 @@
 2011-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/SOGoContactGCSEntry+MAPIStore.m
-	(-setMAPIProperties:): added support for work address.
+	(-setMAPIProperties:): added support for work address and its
+	corresponding addresse label. Preliminary support for
+	"PidLidPostalAddressId" which enables us to set a certain address
+	as preferred.
 
 2011-01-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
