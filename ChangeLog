@@ -6,6 +6,10 @@
 
 2011-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMessageTable.m
+	(-getChildProperty:forKey:withTag:): fixed PR_ACCESS and
+	PR_ACCESS_LEVEL to avoid displaying the "read-only" status.
+
 	* OpenChange/MAPIStoreTable.m (-cleanupCaches): remove lastChild
 	from cache too.
 

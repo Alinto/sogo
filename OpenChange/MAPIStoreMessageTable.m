@@ -87,10 +87,10 @@ static MAPIStoreMapping *mapping;
       *data = MAPILongLongValue (memCtx, 0);
       break;
     case PR_ACCESS: // TODO
-      *data = MAPILongValue (memCtx, 0x02);
+      *data = MAPILongValue (memCtx, 0x03);
       break;
     case PR_ACCESS_LEVEL: // TODO
-      *data = MAPILongValue (memCtx, 0x00000000);
+      *data = MAPILongValue (memCtx, 0x01);
       break;
     case PR_VIEW_STYLE:
     case PR_VIEW_MAJORVERSION:
