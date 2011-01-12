@@ -6,6 +6,13 @@
 
 2011-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m
+	(-createMessagePropertiesWithMID:inFID:isAssociated:): added a
+	retain count handling.
+	(-releaseRecordWithFMID:ofTableType:): same as above.
+	(-_saveOrSubmitChangesInMessageWithMID:andFlags:save:): cleanup
+	table caches even for modifications.
+
 	* OpenChange/MAPIStoreMessageTable.m
 	(-getChildProperty:forKey:withTag:): fixed PR_ACCESS and
 	PR_ACCESS_LEVEL to avoid displaying the "read-only" status.
