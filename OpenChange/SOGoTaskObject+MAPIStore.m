@@ -164,8 +164,12 @@
   //   }
 
   // MAPIStoreDumpMessageProperties (properties);
-
   ASSIGN (content, [vCalendar versitString]);
+
+  [fullCalendar release];
+  fullCalendar = nil;
+  [safeCalendar release];
+  safeCalendar = nil;
 }
 
 @end

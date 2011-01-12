@@ -6,6 +6,13 @@
 
 2011-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoTaskObject+MAPIStore.m (-setMAPIProperties):
+	release fullCalendar and safeCalendar to force a rebuild of
+	the root object when next requested.
+
+	* OpenChange/SOGoAppointmentObject+MAPIStore.m (-setMAPIProperties):
+	idem.
+
 	* OpenChange/MAPIStoreContext.m
 	(-createMessagePropertiesWithMID:inFID:isAssociated:): added a
 	retain count handling.
