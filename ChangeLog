@@ -6,6 +6,9 @@
 
 2011-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTable.m (-cleanupCaches): remove lastChild
+	from cache too.
+
 	* OpenChange/MAPIStoreTasksMessageTable.m
 	(-getChildProperty:forKey:withTag:): fixed typo affecting
 	PidLidTaskStatus.
