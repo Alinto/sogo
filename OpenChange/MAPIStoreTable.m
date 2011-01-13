@@ -339,6 +339,10 @@ static Class NSDataK, NSStringK;
   cachedRestrictedKeys = nil;
   [cachedKeys release];
   cachedKeys = nil;
+  [lastChildKey release];
+  lastChildKey = nil;
+  [lastChild release];
+  lastChild = nil;
 }
 
 - (id) lookupChild: (NSString *) childKey

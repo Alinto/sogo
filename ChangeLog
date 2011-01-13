@@ -1,3 +1,71 @@
+2011-01-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* OpenChange/MAPIStoreContactsMessageTable.m
+	Added more properties: home/work URL, nickname
+	and department.
+
+2011-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/SOGoTaskObject+MAPIStore.m (-setMAPIProperties):
+	release fullCalendar and safeCalendar to force a rebuild of
+	the root object when next requested.
+
+	* OpenChange/SOGoAppointmentObject+MAPIStore.m (-setMAPIProperties):
+	idem.
+
+	* OpenChange/MAPIStoreContext.m
+	(-createMessagePropertiesWithMID:inFID:isAssociated:): added a
+	retain count handling.
+	(-releaseRecordWithFMID:ofTableType:): same as above.
+	(-_saveOrSubmitChangesInMessageWithMID:andFlags:save:): cleanup
+	table caches even for modifications.
+
+	* OpenChange/MAPIStoreMessageTable.m
+	(-getChildProperty:forKey:withTag:): fixed PR_ACCESS and
+	PR_ACCESS_LEVEL to avoid displaying the "read-only" status.
+
+	* OpenChange/MAPIStoreTable.m (-cleanupCaches): remove lastChild
+	from cache too.
+
+	* OpenChange/MAPIStoreTasksMessageTable.m
+	(-getChildProperty:forKey:withTag:): fixed typo affecting
+	PidLidTaskStatus.
+
+	* OpenChange/MAPIStoreContext.m (-openMessage:withMID:inFID:):
+	create a message dictionary in the message cache in order to
+	enable modifications.
+
+	* OpenChange/MAPIStoreContactsMessageTable.m
+	(-_element:ofType:excluding:inCard:): new version of the previous
+	-_phoneOfType:excluding:inCard: method, which now returns the
+	requested element rather than it's first value and which enables
+	the specification of the tag.
+	(-getChildProperty:forKey:withTag:): added support for
+	PidLidPostalAddressId, PR_POSTAL_ADDRESS_UNICODE,
+	PR_POST_OFFICE_BOX_UNICODE, PR_STREET_ADDRESS_UNICODE,
+	PR_LOCALITY_UNICODE, PR_STATE_OR_PROVINCE_UNICODE,
+	PR_POSTAL_CODE_UNICODE, PR_COUNTRY_UNICODE, PidLidWorkAddress,
+	PidLidWorkAddressPostOfficeBox, PidLidWorkAddressStreet,
+	PidLidWorkAddressCity, PidLidWorkAddressState,
+	PidLidWorkAddressPostalCode and PidLidWorkAddressCountry.
+
+	* OpenChange/MAPIStoreContext.m (-openMessage:forKey:inTable:):
+	avoid taking NULL values into account when returning the basic
+	properties.
+
+	* OpenChange/SOGoContactGCSEntry+MAPIStore.m
+	(-setMAPIProperties:): added support for work address and its
+	corresponding addresse label. Preliminary support for
+	"PidLidPostalAddressId" which enables us to set a certain address
+	as preferred.
+	Carefully replace existing handled fields to avoid removing them
+	during modification.
+
+2011-01-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContext.m (-typeLessTag:): removed method as
+	types are now determined from openchange core.
+
 2011-01-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContext.m (_typeLessTag:): new method

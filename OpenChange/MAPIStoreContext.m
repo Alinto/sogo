@@ -803,11 +803,13 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 		    @" returned for proptag %s(0x%.8x)",
 		    propName, tags[count]];
 	    }
-
-	  set_SPropValue_proptag (properties->lpProps + properties->cValues,
-				  tags[count],
-				  propValue);
-	  properties->cValues++;
+	  else
+	    {
+	      set_SPropValue_proptag (properties->lpProps + properties->cValues,
+				      tags[count],
+				      propValue);
+	      properties->cValues++;
+	    }
 	}
     }
   msg->properties = properties;
@@ -821,6 +823,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 {
   NSString *childURL, *childKey, *folderURL;
   MAPIStoreTable *table;
+  BOOL isAssociated;
   int rc;
 
   childURL = [mapping urlFromID: mid];
@@ -830,9 +833,13 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 				andFolderURLAt: &folderURL];
       table = [self _tableForFID: fid andTableType: MAPISTORE_FAI_TABLE];
       if ([[table cachedChildKeys] containsObject: childKey])
-	rc = [self openMessage: msg forKey: childKey inTable: table];
+	{
+	  isAssociated = YES;
+	  rc = [self openMessage: msg forKey: childKey inTable: table];
+	}
       else
 	{
+	  isAssociated = NO;
 	  table = [self _tableForFID: fid andTableType: MAPISTORE_MESSAGE_TABLE];
 	  if ([[table cachedChildKeys] containsObject: childKey])
 	    rc = [self openMessage: msg forKey: childKey inTable: table];
@@ -843,6 +850,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
 
+  if (rc == MAPI_E_SUCCESS)
+    [self createMessagePropertiesWithMID: mid
+				   inFID: fid
+			    isAssociated: isAssociated];
+
   return rc;
 }
 
@@ -850,20 +862,39 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
                                  inFID: (uint64_t) fid
 			  isAssociated: (BOOL) isAssociated
 {
-  NSMutableDictionary *newMessage;
+  NSMutableDictionary *messageProperties;
   NSNumber *midNbr;
+  NSUInteger retainCount;
 
-  [self logWithFormat: @"METHOD '%s' -- mid: 0x%.16x, fid: 0x%.16x",
-	__FUNCTION__, mid, fid];
-  newMessage = [NSMutableDictionary new];
-  [newMessage setObject: [NSNumber numberWithUnsignedLongLong: fid]
-                 forKey: @"fid"];
-  midNbr = [NSNumber numberWithUnsignedLongLong: mid];
-  [newMessage setObject: midNbr forKey: @"mid"];
-  [newMessage setObject: [NSNumber numberWithBool: isAssociated]
-		 forKey: @"associated"];
-  [messages setObject: newMessage forKey: midNbr];
-  [newMessage release];
+  messageProperties = [messages objectForKey:
+				  [NSNumber numberWithUnsignedLongLong: mid]];
+  if (messageProperties)
+    {
+      [self logWithFormat:
+	      @"METHOD '%s' -- mid: 0x%.16x, fid: 0x%.16x; retainCount++",
+	    __FUNCTION__, mid, fid];
+      retainCount = [[messageProperties objectForKey: @"mapiRetainCount"]
+		      unsignedIntValue];
+      [messageProperties
+	    setObject: [NSNumber numberWithUnsignedInt: retainCount + 1]
+	       forKey: @"mapiRetainCount"];
+    }
+  else
+    {
+      [self logWithFormat: @"METHOD '%s' -- mid: 0x%.16x, fid: 0x%.16x",
+	    __FUNCTION__, mid, fid];
+      messageProperties = [NSMutableDictionary new];
+      [messageProperties setObject: [NSNumber numberWithUnsignedLongLong: fid]
+			    forKey: @"fid"];
+      midNbr = [NSNumber numberWithUnsignedLongLong: mid];
+      [messageProperties setObject: midNbr forKey: @"mid"];
+      [messageProperties setObject: [NSNumber numberWithBool: isAssociated]
+			    forKey: @"associated"];
+      [messageProperties setObject: [NSNumber numberWithInt: 1]
+			    forKey: @"mapiRetainCount"];
+      [messages setObject: messageProperties forKey: midNbr];
+      [messageProperties release];
+    }
 
   return MAPISTORE_SUCCESS;
 }
@@ -928,42 +959,36 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   NSMutableDictionary *messageProperties;
   NSString *messageURL;
   uint64_t fid;
-  BOOL viewMessage;
+  BOOL associated;
 
-  viewMessage = NO;
   messageProperties = [messages objectForKey:
                                   [NSNumber numberWithUnsignedLongLong: mid]];
   if (messageProperties)
     {
       messageURL = [mapping urlFromID: mid];
-      if ([[messageProperties objectForKey: @"associated"] boolValue])
+      associated = [[messageProperties objectForKey: @"associated"] boolValue];
+      if (messageURL)
 	{
-	  if (messageURL)
+	  if (associated)
 	    message = [self lookupFAIObject: messageURL];
 	  else
-	    {
-	      fid = [[messageProperties objectForKey: @"fid"]
-		      unsignedLongLongValue];
-	      message = [self _createMessageOfClass: [messageProperties objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)]
-					 associated: YES
-					    withMID: mid inFID: fid];
-	    }
+	    message = [self lookupObject: messageURL];
 	}
       else
 	{
-	  if (messageURL)
-	    message = [self lookupObject: messageURL];
-	  else
-	    {
-	      fid = [[messageProperties objectForKey: @"fid"]
-		      unsignedLongLongValue];
-	      message = [self _createMessageOfClass: [messageProperties objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)]
-					 associated: NO
-					    withMID: mid inFID: fid];
-	    }
+	  fid = [[messageProperties objectForKey: @"fid"]
+		  unsignedLongLongValue];
+	  message = [self _createMessageOfClass: [messageProperties objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)]
+				     associated: associated
+					withMID: mid inFID: fid];
 	}
       if (message)
 	{
+	  if (associated)
+	    [faiTable cleanupCaches];
+	  else
+	    [messageTable cleanupCaches];
+
 	  [message setMAPIProperties: messageProperties];
 	  if (isSave)
 	    [message MAPISave];
@@ -1000,22 +1025,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return [self _saveOrSubmitChangesInMessageWithMID: mid
                                            andFlags: flags
                                                save: NO];
-}
-
-- (enum MAPITAGS) _typeLessTag: (enum MAPITAGS) tag
-{
-  if (tag == 0x300b0000)
-    tag = PR_SEARCH_KEY;
-  else if (tag == 0x30070000)
-    tag = PR_CREATION_TIME;
-  else if (tag == 0x30080000)
-    tag = PR_LAST_MODIFICATION_TIME;
-  else if (tag == 0x0e080000)
-    tag = PR_MESSAGE_SIZE;
-  else
-    [self warnWithFormat: @"unknown typeless tag: 0x%.8x", tag];
-
-  return tag;
 }
 
 - (int) getProperties: (struct SPropTagArray *) sPropTagArray
@@ -1056,8 +1065,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	  for (count = 0; count < sPropTagArray->cValues; count++)
 	    {
 	      tag = sPropTagArray->aulPropTag[count];
-	      if ((tag & 0x0000ffff) == 0)
-		tag = [self _typeLessTag: tag];
 	      
 	      propValue = NULL;
 	      propRc = [table getChildProperty: &propValue
@@ -1184,7 +1191,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	  [self logWithFormat: @"fmid 0x%.16x found", fmid];
 	  for (counter = 0; counter < aRow->cValues; counter++)
 	    {
-	      cValue = &(aRow->lpProps[counter]);
+	      cValue = aRow->lpProps + counter;
 	      [message setObject: NSObjectFromSPropValue (cValue)
                           forKey: MAPIPropertyKey (cValue->ulPropTag)];
 	    }
@@ -1422,20 +1429,32 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 - (int) releaseRecordWithFMID: (uint64_t) fmid
 		  ofTableType: (uint8_t) tableType
 {
-  int rc;
   NSNumber *midNbr;
+  NSMutableDictionary *messageProperties;
+  NSUInteger retainCount;
+  int rc;
 
   switch (tableType)
     {
     case MAPISTORE_MESSAGE_TABLE:
       rc = MAPISTORE_SUCCESS;
       midNbr = [NSNumber numberWithUnsignedLongLong: fmid];
-      if ([messages objectForKey: midNbr])
+      messageProperties = [messages objectForKey: midNbr];
+      if (messageProperties)
 	{
-	  [self logWithFormat: @"message with mid %.16x successfully removed"
-		@" from message cache",
-		fmid];
-	  [messages removeObjectForKey: midNbr];
+	  retainCount = [[messageProperties objectForKey: @"mapiRetainCount"]
+			  unsignedIntValue];
+	  if (retainCount == 1)
+	    {
+	      [self logWithFormat: @"message with mid %.16x successfully removed"
+		    @" from message cache",
+		    fmid];
+	      [messages removeObjectForKey: midNbr];
+	    }
+	  else
+	    [messageProperties
+	      setObject: [NSNumber numberWithUnsignedInt: retainCount - 1]
+		 forKey: @"mapiRetainCount"];
 	}
       else
 	[self warnWithFormat: @"message with mid %.16x not found"

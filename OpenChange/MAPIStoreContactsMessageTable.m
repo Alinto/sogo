@@ -53,45 +53,30 @@
   return componentQualifier;
 }
 
-- (NSString *) _phoneOfType: (NSString *) aType
-                  excluding: (NSString *) aTypeToExclude
-                     inCard: (NGVCard *) card
+- (CardElement *) _element: (NSString *) elementTag
+		    ofType: (NSString *) aType
+		 excluding: (NSString *) aTypeToExclude
+		    inCard: (NGVCard *) card
 {
   NSArray *elements;
-  NSArray *phones;
-  NSString *phone;
+  CardElement *ce, *found;
+  NSUInteger count, max;
 
-  phones = [card childrenWithTag: @"tel"];
+  found = nil;
 
-  elements = [phones cardElementsWithAttribute: @"type"
-                                   havingValue: aType];
-
-  phone = nil;
-
-  if ([elements count] > 0)
+  elements = [[card childrenWithTag: elementTag]
+	       cardElementsWithAttribute: @"type"
+			     havingValue: aType];
+  max = [elements count];
+  for (count = 0; !found && count < max; count++)
     {
-      CardElement *ce;
-      int i;
-
-      for (i = 0; i < [elements count]; i++)
-	{
-	  ce = [elements objectAtIndex: i];
-	  phone = [ce value: 0];
-
-	  if (!aTypeToExclude)
-	    break;
-	  
-	  if (![ce hasAttribute: @"type" havingValue: aTypeToExclude])
-	    break;
-
-	  phone = nil;
-	}
+      ce = [elements objectAtIndex: count];
+      if (!aTypeToExclude
+	  || ![ce hasAttribute: @"type" havingValue: aTypeToExclude])
+	found = ce;
     }
 
-  if (!phone)
-    phone = @"";
-
-  return phone;
+  return found;
 }
 
 - (enum MAPISTATUS) getChildProperty: (void **) data
@@ -100,6 +85,8 @@
 {
   NSString *stringValue;
   SOGoContactGCSEntry *child;
+  CardElement *element;
+  uint32_t longValue;
   enum MAPISTATUS rc;
 
   rc = MAPI_E_SUCCESS;
@@ -134,10 +121,23 @@
       break;
 
     case PR_COMPANY_NAME_UNICODE:
-      child = [self lookupChild: childKey];
-      /* that's buggy but it's for the demo */
-      stringValue = [[[child vCard] org] componentsJoinedByString: @", "];
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
+    case PR_DEPARTMENT_NAME_UNICODE:
+      {
+	NSArray *values;
+	
+	child = [self lookupChild: childKey];
+	values = [[child vCard] org];
+	stringValue = nil;
+
+	if (proptag == PR_COMPANY_NAME_UNICODE && [values count] > 0)
+	  stringValue = [values objectAtIndex: 0];
+	else if (proptag == PR_DEPARTMENT_NAME_UNICODE && [values count] > 1)
+	  stringValue = [values objectAtIndex: 1];
+	
+	if (!stringValue)
+	  stringValue = @"";
+	*data = [stringValue asUnicodeInMemCtx: memCtx];
+      }
       break;
 
     case PR_SUBJECT_UNICODE:
@@ -160,39 +160,258 @@
 
     case PR_OFFICE_TELEPHONE_NUMBER_UNICODE:
       child = [self lookupChild: childKey];
-      stringValue = [self _phoneOfType: @"work"
-                             excluding: @"fax"
-                                inCard: [child vCard]];
+      element = [self _element: @"phone" ofType: @"work"
+		     excluding: @"fax"
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 0];
+      else
+	stringValue = @"";
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
     case PR_HOME_TELEPHONE_NUMBER_UNICODE:
       child = [self lookupChild: childKey];
-      stringValue = [self _phoneOfType: @"home"
-                             excluding: @"fax"
-                                inCard: [child vCard]];
+      element = [self _element: @"phone" ofType: @"home"
+		     excluding: @"fax"
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 0];
+      else
+	stringValue = @"";
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
     case PR_MOBILE_TELEPHONE_NUMBER_UNICODE:
       child = [self lookupChild: childKey];
-      stringValue = [self _phoneOfType: @"cell"
-                             excluding: nil
-                                inCard: [child vCard]];
+      element = [self _element: @"phone" ofType: @"cell"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 0];
+      else
+	stringValue = @"";
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
     case PR_PRIMARY_TELEPHONE_NUMBER_UNICODE:
       child = [self lookupChild: childKey];
-      stringValue = [self _phoneOfType: @"pref"
-                             excluding: nil
-                                inCard: [child vCard]];
+      element = [self _element: @"phone" ofType: @"pref"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 0];
+      else
+	stringValue = @"";
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
 
+    case PR_BUSINESS_HOME_PAGE_UNICODE:
+    case PR_PERSONAL_HOME_PAGE_UNICODE:
+      {
+	NSString *type;
+
+	type = (proptag == PR_BUSINESS_HOME_PAGE_UNICODE ? @"work" : @"home");
+
+	child = [self lookupChild: childKey];
+	
+	element = [self _element: @"url" ofType: type
+			excluding: nil
+			inCard: [child vCard]];
+	if (element)
+	  stringValue = [element value: 0];
+	else
+	  stringValue = @"";
+	*data = [stringValue asUnicodeInMemCtx: memCtx];
+      }
+      break;
+      
     case PidLidEmail1AddressType:
     case PidLidEmail2AddressType:
     case PidLidEmail3AddressType:
       *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
       break;
 
+    case PidLidPostalAddressId:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"adr" ofType: @"pref"
+		     excluding: nil
+			inCard: [child vCard]];
+      if ([element hasAttribute: @"type"
+		    havingValue: @"home"])
+	longValue = 1;
+      else if ([element hasAttribute: @"type"
+			 havingValue: @"work"])
+	longValue = 2;
+      else
+	longValue = 0;
+      *data = MAPILongValue (memCtx, longValue);
+      break;
+
+      /* preferred address */
+    case PR_POSTAL_ADDRESS_UNICODE:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"label" ofType: @"pref"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 0];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+    case PR_POST_OFFICE_BOX_UNICODE:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"adr" ofType: @"pref"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 0];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+    case PR_STREET_ADDRESS_UNICODE:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"adr" ofType: @"pref"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 2];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+    case PR_LOCALITY_UNICODE:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"adr" ofType: @"pref"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 3];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+    case PR_STATE_OR_PROVINCE_UNICODE:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"adr" ofType: @"pref"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 4];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+    case PR_POSTAL_CODE_UNICODE:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"adr" ofType: @"pref"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 5];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+    case PR_COUNTRY_UNICODE:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"adr" ofType: @"pref"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 6];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+
+    // case PidLidAddressCountryCode:
+
+    case PidLidWorkAddress:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"label" ofType: @"work"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 0];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+
+    case PidLidWorkAddressPostOfficeBox:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"adr" ofType: @"work"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 0];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+    case PidLidWorkAddressStreet:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"adr" ofType: @"work"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 2];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+    case PidLidWorkAddressCity:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"adr" ofType: @"work"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 3];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+    case PidLidWorkAddressState:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"adr" ofType: @"work"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 4];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+    case PidLidWorkAddressPostalCode:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"adr" ofType: @"work"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 5];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+    case PidLidWorkAddressCountry:
+      child = [self lookupChild: childKey];
+      element = [self _element: @"adr" ofType: @"work"
+		     excluding: nil
+			inCard: [child vCard]];
+      if (element)
+	stringValue = [element value: 6];
+      else
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+
+      // PidTagNickname
+    case PR_NICKNAME_UNICODE:
+      child = [self lookupChild: childKey];
+      stringValue = [[child vCard] nickname];
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+      
     default:
       rc = [super getChildProperty: data
 			    forKey: childKey
