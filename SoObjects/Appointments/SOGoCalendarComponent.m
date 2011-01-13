@@ -281,7 +281,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
     {
       occurences = [[self calendar: NO secure: NO] allObjects];
       max = [occurences count];
-      count = 1;
+      count = 1; // skip master event
       while (!occurence && count < max)
 	{
 	  currentOccurence = [occurences objectAtIndex: count];
