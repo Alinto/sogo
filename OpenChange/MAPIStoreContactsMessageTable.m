@@ -31,6 +31,7 @@
 #import <Contacts/SOGoContactGCSEntry.h>
 
 #import "MAPIStoreTypes.h"
+#import "NSCalendarDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreContactsMessageTable.h"
@@ -152,6 +153,52 @@
       stringValue = [[child vCard] preferredEMail];
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
+
+    //
+    // TODO - same logic as -secondaryEmail in UI/Contacts/UIxContactView.m
+    // We should eventually merge that in order to not duplicate the code.
+    // We should also eventually handle PidLidEmail3OriginalDisplayName in
+    // SOGo, Thunderbird, etc.
+    //
+    case PidLidEmail2OriginalDisplayName: // Other email
+      {
+	NSMutableArray *emails;
+	NSString *email;
+	NGVCard *card;
+	
+	emails = [NSMutableArray array];
+	stringValue = nil;
+	
+	card = [[self lookupChild: childKey] vCard];
+	[emails addObjectsFromArray: [card childrenWithTag: @"email"]];
+	[emails removeObjectsInArray: [card childrenWithTag: @"email"
+					    andAttribute: @"type"
+					    havingValue: @"pref"]];
+
+	if ([emails count] > 0)
+	  {
+	    int i;
+	    
+	    for (i = 0; i < [emails count]; i++)
+	      {
+		email = [[emails objectAtIndex: i] value: 0];
+		
+		if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
+		  {
+		    stringValue = email;
+		    break;
+		  }
+	      }
+	  }
+	
+	if (!stringValue)
+	  stringValue = @"";
+
+	*data = [stringValue asUnicodeInMemCtx: memCtx];
+      }
+      break;
+      
+    // FIXME: this property does NOT work
     case PR_BODY_UNICODE:
       child = [self lookupChild: childKey];
       stringValue = [[child vCard] note];
@@ -160,7 +207,7 @@
 
     case PR_OFFICE_TELEPHONE_NUMBER_UNICODE:
       child = [self lookupChild: childKey];
-      element = [self _element: @"phone" ofType: @"work"
+      element = [self _element: @"tel" ofType: @"work"
 		     excluding: @"fax"
 			inCard: [child vCard]];
       if (element)
@@ -171,7 +218,7 @@
       break;
     case PR_HOME_TELEPHONE_NUMBER_UNICODE:
       child = [self lookupChild: childKey];
-      element = [self _element: @"phone" ofType: @"home"
+      element = [self _element: @"tel" ofType: @"home"
 		     excluding: @"fax"
 			inCard: [child vCard]];
       if (element)
@@ -182,7 +229,7 @@
       break;
     case PR_MOBILE_TELEPHONE_NUMBER_UNICODE:
       child = [self lookupChild: childKey];
-      element = [self _element: @"phone" ofType: @"cell"
+      element = [self _element: @"tel" ofType: @"cell"
 		     excluding: nil
 			inCard: [child vCard]];
       if (element)
@@ -193,7 +240,7 @@
       break;
     case PR_PRIMARY_TELEPHONE_NUMBER_UNICODE:
       child = [self lookupChild: childKey];
-      element = [self _element: @"phone" ofType: @"pref"
+      element = [self _element: @"tel" ofType: @"pref"
 		     excluding: nil
 			inCard: [child vCard]];
       if (element)
@@ -228,7 +275,20 @@
     case PidLidEmail3AddressType:
       *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
       break;
+      
+    case PidLidInstantMessagingAddress:
+      child = [self lookupChild: childKey];
+      stringValue = [[[child vCard] uniqueChildWithTag: @"x-aim"] value: 0];
+      
+      if (!stringValue)
+	stringValue = @"";
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
 
+    //
+    // We don't handle 0x00000003 - The Other Address is the mailing address.
+    // See: http://msdn.microsoft.com/en-us/library/cc815430.aspx
+    //
     case PidLidPostalAddressId:
       child = [self lookupChild: childKey];
       element = [self _element: @"adr" ofType: @"pref"
@@ -236,12 +296,12 @@
 			inCard: [child vCard]];
       if ([element hasAttribute: @"type"
 		    havingValue: @"home"])
-	longValue = 1;
+	longValue = 1; // The Home Address is the mailing address. 
       else if ([element hasAttribute: @"type"
 			 havingValue: @"work"])
-	longValue = 2;
+	longValue = 2; // The Work Address is the mailing address.
       else
-	longValue = 0;
+	longValue = 0; // No address is selected as the mailing address.
       *data = MAPILongValue (memCtx, longValue);
       break;
 
@@ -405,13 +465,34 @@
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
 
-      // PidTagNickname
+    // PidTagNickname
     case PR_NICKNAME_UNICODE:
       child = [self lookupChild: childKey];
       stringValue = [[child vCard] nickname];
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
       
+    case PR_BIRTHDAY:
+      {
+	NSCalendarDate *dateValue;
+
+	child = [self lookupChild: childKey];
+
+	stringValue = [[child vCard] bday];
+	
+	if (stringValue)
+	  {
+	    dateValue = [NSCalendarDate dateWithString: stringValue
+					calendarFormat: @"%Y-%m-%d"];
+	    // FIXME: We add a day, otherwise Outlook 2003 will display at day earlier
+	    dateValue = [dateValue addYear: 0 month: 0 day: 1 hour: 0 minute: 0 second: 0];
+	    *data = [dateValue asFileTimeInMemCtx: memCtx];
+	  }
+	else
+	  rc = MAPI_E_NOT_FOUND;
+      }
+      break;
+
     default:
       rc = [super getChildProperty: data
 			    forKey: childKey

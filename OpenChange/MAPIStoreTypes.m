@@ -121,7 +121,7 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
     case PT_CLSID:
       result = [NSData dataWithGUID: &value->value.lpguid];
       break;
-      
+
     default:
 // #define	PT_UNSPECIFIED		0x0
 // #define	PT_I2			0x2

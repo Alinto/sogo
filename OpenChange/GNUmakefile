@@ -64,6 +64,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreContactsMessageTable.m \
 	MAPIStoreMailMessageTable.m \
 	MAPIStoreMailFolderTable.m \
+	MAPIStoreNotesMessageTable.m \
 	MAPIStoreTasksMessageTable.m \
 	\
 	SOGoAppointmentObject+MAPIStore.m \

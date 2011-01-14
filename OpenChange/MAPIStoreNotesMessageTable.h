@@ -1,8 +1,8 @@
-/* MAPIStoreNotesContext.m - this file is part of SOGo
+/* MAPIStoreNotesMessageTable.h - this file is part of SOGo
  *
- * Copyright (C) 2010-2011 Inverse inc.
+ * Copyright (C) 2011 Inverse inc
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,29 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
+#ifndef MAPISTORENOTESMESSAGETABLE_H
+#define MAPISTORENOTESMESSAGETABLE_H
 
-#import "MAPIStoreMapping.h"
+#import "MAPIStoreFSMessageTable.h"
 
-#import "MAPIStoreNotesContext.h"
-#import "MAPIStoreNotesMessageTable.h"
-
-@implementation MAPIStoreNotesContext
-
-+ (NSString *) MAPIModuleName
-{
-  return @"notes";
-}
-
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@notes/"
-                withID: 0x1c0001];
-}
-
-- (Class) messageTableClass
-{
-  return [MAPIStoreNotesMessageTable class];
-}
-
+@interface MAPIStoreNotesMessageTable : MAPIStoreFSMessageTable
 @end
+
+#endif /* MAPISTORENOTESMESSAGETABLE_H */

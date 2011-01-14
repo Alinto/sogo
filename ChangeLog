@@ -1,3 +1,17 @@
+2011-01-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * Work on the OpenChange backend: added more property
+	support such as priority for tasks, events and mails,
+	secondary email address support for contacts, nickname
+	and birthday support for contacts and a few more or
+	some fixes there and there.
+	* OpenChange/SOGoMAPIFSMessage.m: -MAPISave added a hack
+	to AVOID saving informations on the fs when dealing
+	with the "inbox" folder - as it'll crash Outlook upon
+	next restarts  
+	* Added OpenChange/MAPIStoreNotesMessageTable.{h,m} to
+	later extend and improve Notes support.
+
 2011-01-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/iCalRepeatableEntityObject+SOGo.m

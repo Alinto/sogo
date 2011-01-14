@@ -133,13 +133,13 @@
     {
       switch ([value intValue])
         {
-        case 0: // Low
+        case 0: // IMPORTANCE_LOW
           priority = @"9";
           break;
-        case 2: // High
+        case 2: // IMPORTANCE_HIGH
           priority = @"1";
           break;
-        default: // Normal
+        default: // IMPORTANCE_NORMAL
           priority = @"5";
         }
     }

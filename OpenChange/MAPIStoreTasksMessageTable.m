@@ -30,6 +30,7 @@
 
 #import "MAPIStoreTypes.h"
 #import "NSCalendarDate+MAPIStore.h"
+#import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreTasksMessageTable.h"
@@ -72,6 +73,28 @@
       task = [[self lookupChild: childKey] component: NO secure: NO];
       *data = [[task summary] asUnicodeInMemCtx: memCtx];
       break;
+
+    //
+    // Not to be confused with PR_PRIORITY 
+    //
+    // IMPORTANCE_LOW = 0x0, IMPORTANCE_NORMAL = 0x1 and IMPORTANCE_HIGH = 0x2
+    //
+    case PR_IMPORTANCE:
+      {
+	unsigned int v;
+
+	task = [[self lookupChild: childKey] component: NO secure: NO];
+
+	if ([[task priority] isEqualToString: @"9"])
+	  v = 0x0;
+	else if ([[task priority] isEqualToString: @"1"])
+	  v = 0x2;
+	else
+	  v = 0x1;
+
+	*data = MAPILongValue (memCtx, v);
+      }
+      break;
     case PidLidTaskComplete:
       task = [[self lookupChild: childKey] component: NO secure: NO];
       *data = MAPIBoolValue (memCtx,
@@ -90,8 +113,12 @@
       else
 	rc = MAPI_E_NOT_FOUND;
       break;
-    case PidLidTaskState: // TODO (check)
-      *data = MAPILongValue (memCtx, 0x02 | 0x03);
+    // http://msdn.microsoft.com/en-us/library/cc765590.aspx
+    // It's important to have a proper value for PidLidTaskState
+    // as it'll affect the UI options of Outlook - making the
+    // task non-editable in some cases.
+    case PidLidTaskState:
+      *data = MAPILongValue (memCtx, 0x1); // not assigned
       break;
     case PidLidTaskMode: // TODO
       *data = MAPILongValue (memCtx, 0x0);
@@ -151,9 +178,19 @@
     case 0x68340003:
     case 0x683a0003:
     case 0x68410003:
-      *data = MAPILongValue (memCtx, 0);
+	*data = MAPILongValue (memCtx, 0);
+	break;
+
+    // FIXME - use the current user
+    case PidLidTaskOwner:
+      *data = [@"openchange@example.com" asUnicodeInMemCtx: memCtx];
       break;
 
+    // See http://msdn.microsoft.com/en-us/library/cc842113.aspx
+    case PidLidTaskOwnership:
+      *data = MAPILongValue (memCtx, 0x0); // not assigned
+      break;
+      
 // #define PidLidFlagRequest                                   0x9027001f
 // #define PidNameContentType                                  0x905a001f
 // #define PidLidBillingInformation                            0x908b001f
