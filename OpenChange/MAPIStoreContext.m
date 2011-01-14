@@ -1127,15 +1127,15 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
         {
           *path = [[objectURL substringFromIndex: 7]
 		    asUnicodeInMemCtx: memCtx];
-	  [self logWithFormat: @"found path for fmid %.16x: '%s'",
-		fmid, *path];
+	  [self logWithFormat: @"found path '%s' for fmid %.16x",
+		*path, fmid];		  
           rc = MAPISTORE_SUCCESS;
         }
       else
         {
-	  [self warnWithFormat: @"fmid 0x%.16x was found but is not"
-		@" part of this context (%@, %@)",
-		fmid, objectURL, uri];
+	  [self logWithFormat: @"context (%@, %@) does not contain"
+		@" found fmid: 0x%.16x",
+		objectURL, uri, fmid];
           *path = NULL;
           rc = MAPI_E_NOT_FOUND;
         }

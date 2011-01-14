@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 
@@ -132,12 +133,22 @@ static Class NSDataK, NSStringK;
       *data = [[child date] asFileTimeInMemCtx: memCtx];
       break;
     case PR_MESSAGE_FLAGS: // TODO
-      // NSDictionary *coreInfos;
-      // NSArray *flags;
-      // child = [self lookupChild: childKey];
-      // coreInfos = [child fetchCoreInfos];
-      // flags = [coreInfos objectForKey: @"flags"];
-      *data = MAPILongValue (memCtx, 0x02 | 0x20); // fromme + unmodified
+      {
+	NSDictionary *coreInfos;
+	NSArray *flags;
+	unsigned int v;
+
+	child = [self lookupChild: childKey];
+	coreInfos = [child fetchCoreInfos];
+
+	flags = [coreInfos objectForKey: @"flags"];
+	v = MSGFLAG_FROMME;
+	
+	if ([flags containsObject: @"seen"])
+	  v |= MSGFLAG_READ;
+
+	*data = MAPILongValue (memCtx, v);
+      }
       break;
 
     case PR_FLAG_STATUS: // TODO
@@ -190,6 +201,30 @@ static Class NSDataK, NSStringK;
 
     case PidNameContentType:
       *data = [@"message/rfc822" asUnicodeInMemCtx: memCtx];
+      break;
+      
+      
+    //
+    // TODO: Merge with the code in UI/MailerUI/UIxMailListActions.m: -messagePriority
+    //       to avoid the duplication of the logic
+    //
+    case PR_IMPORTANCE:
+      {
+	unsigned int v;
+	NSString *s;
+
+	child = [self lookupChild: childKey];
+	s = [[child mailHeaders] objectForKey: @"x-priority"];
+	v = 0x1;
+	
+	
+	if ([s hasPrefix: @"1"]) v = 0x2;
+	else if ([s hasPrefix: @"2"]) v = 0x2;
+	else if ([s hasPrefix: @"4"]) v = 0x0;
+	else if ([s hasPrefix: @"5"]) v = 0x0;
+	
+	*data = MAPILongValue (memCtx, v);
+      }
       break;
 
     case PR_BODY:

@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
@@ -70,6 +71,7 @@
 
 - (void) MAPISave
 {
+  NSArray *pathComponents;
   NSString *filePath;
 
   [self logWithFormat: @"-MAPISave"];
@@ -78,6 +80,18 @@
 
   filePath = [[container directory]
 	       stringByAppendingPathComponent: nameInContainer];
+
+  // FIXME
+  // We do NOT save the FAI data for the Inbox, as upon the 
+  // next Outlook restart, when restoring those saved properties,
+  // Outlook will crash. 
+  pathComponents = [filePath pathComponents];
+  if ([[pathComponents objectAtIndex: [pathComponents count]-2] isEqualToString: @"inbox"])
+    {
+      [self logWithFormat: @"-MAPISave - skipping FAI at path %@", filePath];
+      return;
+    }
+
   if (![properties writeToFile: filePath atomically: YES])
     [NSException raise: @"MAPIStoreIOException"
 		 format: @"could not save message"];

@@ -664,6 +664,7 @@ static Class NSDataK, NSStringK;
 	}
 
       value = NSObjectFromMAPISPropValue (&res->lpProp);
+      
       *qualifier = [[EOKeyValueQualifier alloc] initWithKey: property
 					   operatorSelector: operator
 						      value: value];

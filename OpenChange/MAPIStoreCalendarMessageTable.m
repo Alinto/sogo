@@ -124,9 +124,24 @@
       *data = [[event created] asFileTimeInMemCtx: memCtx];
       break;
 
-    case PidLidTimeZoneStruct:
+    case PR_IMPORTANCE:
+      {
+	unsigned int v;
 
+	event = [[self lookupChild: childKey] component: NO secure: NO];
 
+	if ([[event priority] isEqualToString: @"9"])
+	  v = 0x0;
+	else if ([[event priority] isEqualToString: @"1"])
+	  v = 0x2;
+	else
+	  v = 0x1;
+
+	*data = MAPILongValue (memCtx, v);
+      }
+      break;
+
+      // case PidLidTimeZoneStruct:
       // case PR_VD_NAME_UNICODE:
       //         *data = talloc_strdup(memCtx, "PR_VD_NAME_UNICODE");
       //         break;
