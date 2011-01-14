@@ -256,7 +256,7 @@ static NSArray *tasksFields = nil;
  */
 - (void) _fixDates: (NSMutableDictionary *) theRecord
 {
-  NSCalendarDate *aDate, *aStartDate;
+  NSCalendarDate *aDate;
   NSNumber *aDateValue;
   NSString *aDateField;
   int daylightOffset;
