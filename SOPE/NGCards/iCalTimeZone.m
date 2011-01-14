@@ -209,6 +209,49 @@ static NSMutableDictionary *cache;
 		  second: [[self periodForDate: theDate] secondsOffsetFromGMT]];
 }
 
+/**
+ * Adjust a date with respect to this vTimeZone.
+ * @param theDate the string representing a date.
+ * @return a new GMT date adjusted with the offset of this timezone.
+ */
+- (NSCalendarDate *) computedDateForString: (NSString *) theDate
+{
+  NSCalendarDate *tmpDate;
+  NSTimeZone *utc;
+
+  utc = [NSTimeZone timeZoneWithName: @"GMT"];
+  tmpDate = [theDate asCalendarDate];
+  [tmpDate setTimeZone: utc];
+
+  return [tmpDate addYear: 0 month: 0 day: 0
+		  hour: 0 minute: 0
+		  second: [[self periodForDate: tmpDate] secondsOffsetFromGMT]];
+}
+
+/**
+ * Adjust multiple dates with respect to this vTimeZone.
+ * @param theDates an array of strings representing dates.
+ * @param an array of NSCalendarDate objects.
+ */
+- (NSMutableArray *) computedDatesForStrings: (NSArray *) theDates
+{
+  NSCalendarDate *date;
+  NSMutableArray *dates;
+  NSEnumerator *dateList;
+  NSString *dateString;
+
+  dates = [NSMutableArray array];
+  dateList = [theDates objectEnumerator];
+  
+  while ((dateString = [dateList nextObject]))
+    {
+      date = [self computedDateForString: dateString];
+      [dates addObject: date];
+    }
+
+  return dates;
+}
+
 - (NSString *) dateTimeStringForDate: (NSCalendarDate *) date
 {
   return [[self computedDateForDate: date]

@@ -118,6 +118,7 @@
   NGCalendarDateRange *checkRange, *firstRange;
   NSCalendarDate *startDate, *endDate;
   iCalDateTime *firstStartDate;
+  iCalTimeZone *eventTimeZone;
   BOOL doesOccur;
 
   doesOccur = [self isRecurrent];
@@ -128,7 +129,8 @@
 
       // Set the range to check with respect to the event timezone (extracted from the start date)
       firstStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
-      startDate = [[firstStartDate timeZone] computedDateForDate: theOccurenceDate];
+      eventTimeZone = [firstStartDate timeZone];
+      startDate = [eventTimeZone computedDateForDate: theOccurenceDate];
       endDate = [startDate addTimeInterval: [self occurenceInterval]];
       checkRange = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
 							       endDate: endDate];
@@ -138,7 +140,7 @@
 						  firstInstanceCalendarDateRange: firstRange
 								 recurrenceRules: [self recurrenceRules]
 								  exceptionRules: [self exceptionRules]
-								  exceptionDates: [self exceptionDates]];
+								  exceptionDates: [self exceptionDatesWithEventTimeZone: eventTimeZone]];
       doesOccur = [ranges dateRangeArrayContainsDate: startDate];
     }
 

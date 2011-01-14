@@ -29,6 +29,7 @@
 
 #import "NSCalendarDate+NGCards.h"
 #import "iCalDateTime.h"
+#import "iCalTimeZone.h"
 #import "iCalRecurrenceRule.h"
 #import "iCalRecurrenceCalculator.h"
 #import "iCalRepeatableEntityObject.h"
@@ -130,6 +131,10 @@
   return ([[self childrenWithTag: @"exdate"] count] > 0);
 }
 
+/**
+ * Return the exception dates of the event in GMT.
+ * @return an array of strings.
+ */
 - (NSArray *) exceptionDates
 {
   NSArray *exDates;
@@ -151,6 +156,39 @@
 	  dateString = [NSString stringWithFormat: @"%@Z",
 				 [exDate iCalFormattedDateTimeString]];
 	  [dates addObject: dateString];
+	}
+    }
+
+  return dates;
+}
+
+/**
+ * Returns the exception dates for the event, but adjusted to the event timezone.
+ * Used when calculating a recurrence rule.
+ * @param theTimeZone the timezone of the event.
+ * @see [iCalTimeZone computedDatesForStrings:]
+ * @return the exception dates for the event, adjusted to the event timezone.
+ */
+- (NSArray *) exceptionDatesWithEventTimeZone: (iCalTimeZone *) theTimeZone
+{
+  NSArray *exDates;
+  NSMutableArray *dates;
+  NSEnumerator *dateList;
+  NSCalendarDate *exDate;
+  NSString *dateString;
+  unsigned i;
+
+  dates = [NSMutableArray array];
+  dateList = [[self childrenWithTag: @"exdate"] objectEnumerator];
+  
+  while ((dateString = [dateList nextObject]))
+    {
+      exDates = [(iCalDateTime*) dateString values];
+      for (i = 0; i < [exDates count]; i++)
+	{
+	  dateString = [exDates objectAtIndex: i];
+	  exDate = [theTimeZone computedDateForString: dateString];
+	  [dates addObject: exDate];
 	}
     }
 

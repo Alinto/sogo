@@ -899,7 +899,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	      // Calculate the occurrences for the given range
 	      rules = [cycleinfo objectForKey: @"rules"];
 	      exRules = [cycleinfo objectForKey: @"exRules"];
-	      exDates = [cycleinfo objectForKey: @"exDates"];
+	      exDates = [eventTimeZone computedDatesForStrings: [cycleinfo objectForKey: @"exDates"]];
 	      ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: theRange
 							  firstInstanceCalendarDateRange: firstRange
 									 recurrenceRules: rules

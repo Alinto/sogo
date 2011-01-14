@@ -33,6 +33,7 @@
 */
 
 @class NSCalendarDate, NSMutableArray, NGCalendarDateRange;
+@class iCalTimeZone;
 
 @interface iCalRepeatableEntityObject : iCalEntityObject
 // {
@@ -56,6 +57,7 @@
 - (void)addToExceptionDates:(NSCalendarDate *)_date;
 - (BOOL)hasExceptionDates;
 - (NSArray *)exceptionDates;
+- (NSArray *)exceptionDatesWithEventTimeZone:(iCalTimeZone*)theTimeZone;
 
 - (BOOL)isRecurrent;
 - (BOOL)isWithinCalendarDateRange:(NGCalendarDateRange *)_range

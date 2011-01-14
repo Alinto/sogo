@@ -36,6 +36,8 @@
 - (NSString *) tzId;
 - (iCalTimeZonePeriod *) periodForDate: (NSCalendarDate *) date;
 - (NSCalendarDate *) computedDateForDate: (NSCalendarDate *) theDate;
+- (NSCalendarDate *) computedDateForString: (NSString *) theDate;
+- (NSMutableArray *) computedDatesForStrings: (NSArray *) theDates;
 - (NSString *) dateTimeStringForDate: (NSCalendarDate *) date;
 - (NSString *) dateStringForDate: (NSCalendarDate *) date;
 - (NSCalendarDate *) dateForDateTimeString: (NSString *) string;

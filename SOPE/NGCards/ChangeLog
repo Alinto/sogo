@@ -1,3 +1,13 @@
+2011-01-14  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalTimeZone.m (-computedDateForString:): new method that
+	returns a date adjusted with respect to this vTimeZone.
+	(-computedDatesForStrings:): idem but for multiple dates.
+
+	* iCalRepeatableEntityObject.m
+	(-exceptionDatesWithEventTimeZone:): new method that returns the
+	exception dates for the event, but adjusted to the event's timezone.
+
 2011-01-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalTimeZone.m (-computedDateForDate:): Was
