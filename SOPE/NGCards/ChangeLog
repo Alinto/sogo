@@ -1,3 +1,13 @@
+2011-01-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalTimeZone.m (-computedDateForDate:): Was
+	_computedDateTimeForDate. Adjusts a date with respect to this
+	vTimeZone.
+
+	* iCalDateTime.m (-dateTimes): when there's no timezone defined
+	(which is the case when parsing a vTimeZone!), don't fallback to
+	the system timezone.
+
 2010-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* NGVCard.m (-setVName, vName): removed useless and non-standard

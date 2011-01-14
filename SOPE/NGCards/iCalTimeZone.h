@@ -1,6 +1,6 @@
 /* iCalTimeZone.h - this file is part of SOPE
  *
- * Copyright (C) 2006-2009 Inverse inc.
+ * Copyright (C) 2006-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -28,10 +28,14 @@
 
 #import "CardGroup.h"
 
+@class iCalTimeZonePeriod;
+
 @interface iCalTimeZone : CardGroup
 
 + (iCalTimeZone *) timeZoneForName: (NSString *) theName;
 - (NSString *) tzId;
+- (iCalTimeZonePeriod *) periodForDate: (NSCalendarDate *) date;
+- (NSCalendarDate *) computedDateForDate: (NSCalendarDate *) theDate;
 - (NSString *) dateTimeStringForDate: (NSCalendarDate *) date;
 - (NSString *) dateStringForDate: (NSCalendarDate *) date;
 - (NSCalendarDate *) dateForDateTimeString: (NSString *) string;

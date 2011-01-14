@@ -1,9 +1,10 @@
 /* iCalTimeZone.m - this file is part of SOPE
  *
- * Copyright (C) 2006-2009 Inverse inc.
+ * Copyright (C) 2006-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -185,35 +186,38 @@ static NSMutableDictionary *cache;
         period = (iCalTimeZonePeriod *) [self uniqueChildWithTag: @"daylight"];
     }
 
-  // NSLog (@"chosen period: '%@'", [period tag]);
-
   return period;
 }
 
-- (NSCalendarDate *) _computedDateTimeForDate: (NSCalendarDate *) date
+/**
+ * Adjust a date with respect to this vTimeZone.
+ * @param theDate the date to adjust to the timezone.
+ * @return a new GMT date adjusted with the offset of the timezone.
+ */
+- (NSCalendarDate *) computedDateForDate: (NSCalendarDate *) theDate
 {
   NSCalendarDate *tmpDate;
   NSTimeZone *utc;
 
   utc = [NSTimeZone timeZoneWithName: @"GMT"];
-  tmpDate = [date copy];
+  tmpDate = [theDate copy];
   [tmpDate autorelease];
   [tmpDate setTimeZone: utc];
 
   return [tmpDate addYear: 0 month: 0 day: 0
 		  hour: 0 minute: 0
-		  second: [[self periodForDate: date] secondsOffsetFromGMT]];
+		  second: [[self periodForDate: theDate] secondsOffsetFromGMT]];
 }
 
 - (NSString *) dateTimeStringForDate: (NSCalendarDate *) date
 {
-  return [[self _computedDateTimeForDate: date]
+  return [[self computedDateForDate: date]
 	   iCalFormattedDateTimeString];
 }
 
 - (NSString *) dateStringForDate: (NSCalendarDate *) date
 {
-  return [[self _computedDateTimeForDate: date]
+  return [[self computedDateForDate: date]
 	   iCalFormattedDateString];
 }
 

@@ -1,3 +1,26 @@
+2011-01-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/iCalRepeatableEntityObject+SOGo.m
+	(-doesOccurOnDate:): the date to verify must be adjusted to the
+	event's timezone before performing the calculation of the
+	recurrence rule.
+
+	* SoObjects/Appointments/iCalEvent+SOGo.m (-firstOccurenceRange):
+	extract the original start and end dates from the event, based on
+	the event's timezone.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-fixupCycleRecord:cycleRange:firstInstanceCalendarDateRange:withEventTimeZone:):
+	the event dates must be first be adjusted to the event's timezone
+	before being adjusted to the user's timezone.
+	(-_flattenCycleRecord:forRange:intoArray:): the calculation of the
+	occurrences must be performed with respect to the event's
+	timezone, not the user's timezone.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(-newOccurenceWithID:): new occurrences are now independant of the
+	user's timezone.
+
 2011-01-11  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* OpenChange/MAPIStoreContactsMessageTable.m

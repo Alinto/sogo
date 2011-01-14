@@ -1,8 +1,9 @@
 /* UIxCalListingActions.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2010 Inverse inc.
+ * Copyright (C) 2006-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +35,8 @@
 #import <NGObjWeb/WOResponse.h>
 
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalDateTime.h>
 
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
@@ -246,8 +249,12 @@ static NSArray *tasksFields = nil;
 	     forKey: @"c_title"];
 }
 
-/* TODO: shouldn't this be handled when creating the quick records ? */
-- (void) _fixDates: (NSMutableDictionary *) aRecord
+/*
+ * Adjust the event start and end dates when there's a time change
+ * in the period covering the view for the user's timezone.
+ * @param theRecord the attributes of the event.
+ */
+- (void) _fixDates: (NSMutableDictionary *) theRecord
 {
   NSCalendarDate *aDate, *aStartDate;
   NSNumber *aDateValue;
@@ -272,39 +279,23 @@ static NSArray *tasksFields = nil;
      http://www.sogo.nu/bugs/view.php?id=678
      ...
   */
-  if (dayBasedView || [[aRecord objectForKey: @"c_isallday"] boolValue])
+  
+  if (dayBasedView || [[theRecord objectForKey: @"c_isallday"] boolValue])
     {
       for (count = 0; count < 2; count++)
         {
           aDateField = fields[count * 2];
-          aDate = [aRecord objectForKey: aDateField];
-          daylightOffset = (int) ([userTimeZone secondsFromGMTForDate: aDate]
-                                  - [userTimeZone secondsFromGMTForDate: startDate]);
+          aDate = [theRecord objectForKey: aDateField];
+	  daylightOffset = (int) ([userTimeZone secondsFromGMTForDate: aDate]
+				  - [userTimeZone secondsFromGMTForDate: startDate]);
           if (daylightOffset)
             {
               aDate = [aDate dateByAddingYears: 0 months: 0 days: 0 hours: 0
                                        minutes: 0 seconds: daylightOffset];
-              [aRecord setObject: aDate forKey: aDateField];
+              [theRecord setObject: aDate forKey: aDateField];
               aDateValue = [NSNumber numberWithInt: [aDate timeIntervalSince1970]];
-              [aRecord setObject: aDateValue forKey: fields[count * 2 + 1]];
+              [theRecord setObject: aDateValue forKey: fields[count * 2 + 1]];
             }
-        }
-    }
-
-  aDateValue = [aRecord objectForKey: @"c_recurrence_id"];
-  aDate = [aRecord objectForKey: @"cycleStartDate"];
-  if (aDateValue && aDate)
-    {
-      aStartDate = [aRecord objectForKey: @"startDate"];
-      if ([userTimeZone isDaylightSavingTimeForDate: aStartDate] != 
-          [userTimeZone isDaylightSavingTimeForDate: aDate])
-        {
-          // For the event's recurrence id, compute the daylight saving time
-          // offset with respect to the first occurrence of the recurring event.
-          daylightOffset = (signed int)[userTimeZone secondsFromGMTForDate: aStartDate]
-            - (signed int)[userTimeZone secondsFromGMTForDate: aDate];
-          aDateValue = [NSNumber numberWithInt: [aDateValue intValue] + daylightOffset];
-          [aRecord setObject: aDateValue forKey: @"c_recurrence_id"];
         }
     }
 }
@@ -341,7 +332,6 @@ static NSArray *tasksFields = nil;
                                        component: component] objectEnumerator];
 	  owner = [currentFolder ownerInContext: context];
 	  ownerUser = [SOGoUser userWithLogin: owner];
-          /* TODO: this should be handled per-folder rather than per-event. */
 	  isErasable = ([owner isEqualToString: userLogin]
 			|| [[currentFolder aclsForUser: userLogin] containsObject: SOGoRole_ObjectEraser]);
           while ((newInfo = [currentInfos nextObject]))
@@ -349,10 +339,12 @@ static NSArray *tasksFields = nil;
               if ([fields containsObject: @"editable"])
                 {
                   if (folderIsRemote)
+		    // .ics subscriptions are not editable
                     [newInfo setObject: [NSNumber numberWithInt: 0]
                                 forKey: @"editable"];
                   else
                     {
+		      // Identifies whether the active user can edit the event.
                       role =
                         [currentFolder roleForComponentsWithAccessClass:
                                                  [[newInfo objectForKey: @"c_classification"] intValue]

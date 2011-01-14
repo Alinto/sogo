@@ -1,6 +1,6 @@
-/* iCalRepeatableEntityObject+SOGo.m - this file is part of SOGo
+/*
+  Copyright (C) 2008-2011 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2008 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
@@ -26,8 +26,11 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
+#import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalRecurrenceCalculator.h>
+#import <NGCards/iCalTimeZone.h>
+#import <NGCards/NSString+NGCards.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 
 #import "iCalRepeatableEntityObject+SOGo.h"
@@ -104,25 +107,39 @@
   return 0;
 }
 
-- (BOOL) doesOccurOnDate: (NSCalendarDate *) occurenceDate
+/**
+ * Checks if a date is part of the recurring entity.
+ * @param theOccurrenceDate the date to verify.
+ * @return true if the occurence date is part of the recurring entity.
+ */
+- (BOOL) doesOccurOnDate: (NSCalendarDate *) theOccurenceDate
 {
   NSArray *ranges;
-  NGCalendarDateRange *checkRange;
-  NSCalendarDate *endDate;
+  NGCalendarDateRange *checkRange, *firstRange;
+  NSCalendarDate *startDate, *endDate;
+  iCalDateTime *firstStartDate;
   BOOL doesOccur;
 
   doesOccur = [self isRecurrent];
   if (doesOccur)
     {
-      endDate = [occurenceDate addTimeInterval: [self occurenceInterval]];
-      checkRange = [NGCalendarDateRange calendarDateRangeWithStartDate: occurenceDate
-					endDate: endDate];
+      // Retrieve the range of the first event
+      firstRange = [self firstOccurenceRange];
+
+      // Set the range to check with respect to the event timezone (extracted from the start date)
+      firstStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
+      startDate = [[firstStartDate timeZone] computedDateForDate: theOccurenceDate];
+      endDate = [startDate addTimeInterval: [self occurenceInterval]];
+      checkRange = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
+							       endDate: endDate];
+
+      // Calculate the occurrences for the given date
       ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: checkRange
-					 firstInstanceCalendarDateRange: [self firstOccurenceRange]
-					 recurrenceRules: [self recurrenceRules]
-					 exceptionRules: [self exceptionRules]
-					 exceptionDates: [self exceptionDates]];
-      doesOccur = [ranges dateRangeArrayContainsDate: occurenceDate];
+						  firstInstanceCalendarDateRange: firstRange
+								 recurrenceRules: [self recurrenceRules]
+								  exceptionRules: [self exceptionRules]
+								  exceptionDates: [self exceptionDates]];
+      doesOccur = [ranges dateRangeArrayContainsDate: startDate];
     }
 
   return doesOccur;

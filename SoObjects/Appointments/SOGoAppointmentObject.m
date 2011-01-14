@@ -1,6 +1,6 @@
 /*
+  Copyright (C) 2007-2011 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2007-2009 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
@@ -80,32 +80,27 @@
 	   inContainer: self];
 }
 
-- (iCalRepeatableEntityObject *) newOccurenceWithID: (NSString *) recID
+/**
+ * Return a new exception in a the recurrent event.
+ * @param theRecurrenceID the ID of the occurence.
+ * @return a new occurence.
+ */
+- (iCalRepeatableEntityObject *) newOccurenceWithID: (NSString *) theRecurrenceID
 {
   iCalEvent *newOccurence, *master;
   NSCalendarDate *date, *firstDate;
   unsigned int interval, nbrDays;
   SOGoUserDefaults *ud;
   NSTimeZone *timeZone;
-  int daylightOffset;
 
   ud = [[SOGoUser userWithLogin: owner] userDefaults];
   timeZone = [ud timeZone];
 
-  newOccurence = (iCalEvent *) [super newOccurenceWithID: recID];
+  newOccurence = (iCalEvent *) [super newOccurenceWithID: theRecurrenceID];
   date = [newOccurence recurrenceId];
 
   master = [self component: NO secure: NO];
   firstDate = [master startDate];
-
-  // We are creating a new exception in a recurrent event -- compute the daylight
-  // saving time with respect to the first occurrence of the recurrent event.
-  daylightOffset = (int) ([timeZone secondsFromGMTForDate: firstDate]
-                          - [timeZone secondsFromGMTForDate: date]);
-  if (daylightOffset)
-    date = [date dateByAddingYears: 0 months: 0 days: 0
-                             hours:0 minutes: 0 seconds: daylightOffset];
-  [date setTimeZone: timeZone];
 
   interval = [[master endDate]
                timeIntervalSinceDate: firstDate];

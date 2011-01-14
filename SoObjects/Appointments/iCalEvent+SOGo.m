@@ -1,8 +1,9 @@
 /* iCalEvent+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +31,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalAlarm.h>
+#import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalTrigger.h>
@@ -240,10 +242,22 @@
   return row;
 }
 
+/**
+ * Extract the start and end dates from the event, from which all recurrence
+ * calculations will be based on.
+ * @return the range of the first occurrence.
+ */
 - (NGCalendarDateRange *) firstOccurenceRange
 {
-  return [NGCalendarDateRange calendarDateRangeWithStartDate: [self startDate]
-			      endDate: [self endDate]];
+  iCalDateTime *firstStartDate, *firstEndDate;
+  NGCalendarDateRange *firstRange;
+
+  firstStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
+  firstEndDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtend"];
+  firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: [[[firstStartDate values] lastObject] asCalendarDate]
+							   endDate: [[[firstEndDate values] lastObject] asCalendarDate]];
+
+  return firstRange;
 }
 
 - (unsigned int) occurenceInterval

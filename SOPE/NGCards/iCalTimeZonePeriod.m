@@ -137,6 +137,7 @@
     }
   
   tzStart = [self startDate];
+
   [tzStart setTimeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
   tmpDate = [NSCalendarDate dateWithYear: [refDate yearOfCommonEra]
                                    month: [[rrule namedValue: @"bymonth"] intValue]

@@ -1,6 +1,6 @@
 /* iCalDateTime.m - this file is part of SOPE
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -161,7 +161,7 @@
   NSString *date;
   NSCalendarDate *initialDate, *dateTime;
   NSMutableArray *dates;
-  NSTimeZone *tz;
+  //NSTimeZone *tz;
   unsigned count, i;
 
   count = [[self values] count];
@@ -170,24 +170,28 @@
     {
       date = [self value: i];
       iTZ = [self timeZone];
+
       if (iTZ)
 	dateTime = [iTZ dateForDateTimeString: date];
       else
 	{
 	  initialDate = [date asCalendarDate];
 	  if (initialDate)
+	    dateTime = initialDate;
+	  /*
 	    {
 	      if ([date hasSuffix: @"Z"] || [date hasSuffix: @"z"])
 		dateTime = initialDate;
 	      else
 		{
-		  /* same TODO as above */
+		  // same TODO as above
 		  tz = [NSTimeZone defaultTimeZone];
 		  dateTime = [initialDate addYear: 0 month: 0 day: 0
 					     hour: 0 minute: 0
 					   second: -[tz secondsFromGMTForDate: initialDate]];
 		}
 	    }
+	  */
 	  else
 	    dateTime = nil;
 	}

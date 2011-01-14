@@ -186,6 +186,7 @@
 		  currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
 		  r = [NGCalendarDateRange calendarDateRangeWithStartDate: currentStartDate
 								  endDate: currentEndDate];
+
 		  if ([_r containsDateRange: r])
 		    [ranges addObject: r];
 		}
