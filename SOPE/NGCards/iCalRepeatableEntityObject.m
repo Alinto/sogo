@@ -178,19 +178,24 @@
   NSString *dateString;
   unsigned i;
 
-  dates = [NSMutableArray array];
-  dateList = [[self childrenWithTag: @"exdate"] objectEnumerator];
-  
-  while ((dateString = [dateList nextObject]))
+  if (theTimeZone)
     {
-      exDates = [(iCalDateTime*) dateString values];
-      for (i = 0; i < [exDates count]; i++)
+      dates = [NSMutableArray array];
+      dateList = [[self childrenWithTag: @"exdate"] objectEnumerator];
+      
+      while ((dateString = [dateList nextObject]))
 	{
-	  dateString = [exDates objectAtIndex: i];
-	  exDate = [theTimeZone computedDateForString: dateString];
-	  [dates addObject: exDate];
+	  exDates = [(iCalDateTime*) dateString values];
+	  for (i = 0; i < [exDates count]; i++)
+	    {
+	      dateString = [exDates objectAtIndex: i];
+	      exDate = [theTimeZone computedDateForString: dateString];
+	      [dates addObject: exDate];
+	    }
 	}
     }
+  else
+    dates = [self exceptionDates];
 
   return dates;
 }

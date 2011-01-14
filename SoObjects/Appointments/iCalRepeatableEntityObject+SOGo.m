@@ -130,7 +130,10 @@
       // Set the range to check with respect to the event timezone (extracted from the start date)
       firstStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
       eventTimeZone = [firstStartDate timeZone];
-      startDate = [eventTimeZone computedDateForDate: theOccurenceDate];
+      if (eventTimeZone)
+	startDate = [eventTimeZone computedDateForDate: theOccurenceDate];
+      else
+	startDate = theOccurenceDate;
       endDate = [startDate addTimeInterval: [self occurenceInterval]];
       checkRange = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
 							       endDate: endDate];

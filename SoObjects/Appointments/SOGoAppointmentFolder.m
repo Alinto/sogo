@@ -835,7 +835,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableDictionary *row, *fixedRow;
   NSMutableArray *records;
   NSDictionary *cycleinfo;
-  NSCalendarDate *startDate, *endDate;
   NGCalendarDateRange *firstRange, *oneRange;
   NSArray *rules, *exRules, *exDates, *ranges;
   NSArray *elements, *components;
@@ -864,13 +863,13 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	    theRecord];
       return;
     }
+  rules = [cycleinfo objectForKey: @"rules"];
+  exRules = [cycleinfo objectForKey: @"exRules"];
+  exDates = [cycleinfo objectForKey: @"exDates"];
 
   row = [self fixupRecord: theRecord];
   [row removeObjectForKey: @"c_cycleinfo"];
   [row setObject: sharedYes forKey: @"isRecurrentEvent"];
-
-  startDate = [row objectForKey: @"startDate"];
-  endDate   = [row objectForKey: @"endDate"];
 
   content = [theRecord objectForKey: @"c_content"];
   if ([content length])
@@ -886,20 +885,20 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	      firstStartDate = (iCalDateTime*)[component uniqueChildWithTag: @"dtstart"];
 	      firstEndDate = (iCalDateTime*)[component uniqueChildWithTag: @"dtend"];
 	      eventTimeZone = [firstStartDate timeZone];
-	      startDate = [eventTimeZone computedDateForDate: startDate];
 	      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: [[[firstStartDate values] lastObject] asCalendarDate]
 								       endDate: [[[firstEndDate values] lastObject] asCalendarDate]];
 
-	      // Adjust the range to check with respect to the event timezone (extracted from the start date)
-	      checkStartDate = [eventTimeZone computedDateForDate: [theRange startDate]];
-	      checkEndDate = [eventTimeZone computedDateForDate: [theRange endDate]];
-	      theRange = [NGCalendarDateRange calendarDateRangeWithStartDate: checkStartDate
-								     endDate: checkEndDate];
-
+	      if (eventTimeZone)
+		{
+		  // Adjust the range to check with respect to the event timezone (extracted from the start date)
+		  checkStartDate = [eventTimeZone computedDateForDate: [theRange startDate]];
+		  checkEndDate = [eventTimeZone computedDateForDate: [theRange endDate]];
+		  theRange = [NGCalendarDateRange calendarDateRangeWithStartDate: checkStartDate
+									 endDate: checkEndDate];
+		  exDates = [eventTimeZone computedDatesForStrings: exDates];
+		}
+	      
 	      // Calculate the occurrences for the given range
-	      rules = [cycleinfo objectForKey: @"rules"];
-	      exRules = [cycleinfo objectForKey: @"exRules"];
-	      exDates = [eventTimeZone computedDatesForStrings: [cycleinfo objectForKey: @"exDates"]];
 	      ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: theRange
 							  firstInstanceCalendarDateRange: firstRange
 									 recurrenceRules: rules
