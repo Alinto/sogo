@@ -207,8 +207,9 @@
                                         inCalendar: (iCalCalendar *) calendar
 {
   NSArray *entities;
+  NSCalendarDate *testRecId;
   iCalEntityObject *entity, *testEntity;
-  int count, max, testRecId;
+  int count, max, testRecIdSecs;
 
   entities = [calendar events];
   max = [entities count];
@@ -224,8 +225,9 @@
       for (count = 0; !entity && count < max; count++)
         {
           testEntity = [entities objectAtIndex: count];
-          testRecId = (int) [[testEntity recurrenceId] timeIntervalSince1970];
-          if ([[record objectForKey: @"c_recurrence_id"] intValue] == testRecId)
+	  testRecId = [testEntity recurrenceId];
+          testRecIdSecs = testRecId? [[testEntity recurrenceId] timeIntervalSince1970] : 0;
+          if ([[record objectForKey: @"c_recurrence_id"] intValue] == testRecIdSecs)
             entity = testEntity;
         }
     }

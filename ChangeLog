@@ -1,3 +1,9 @@
+2011-01-17  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoEMailAlarmsManager.m
+	(-_lookupEntityMatchingRecord:inCalendar:): We check if
+	recurrenceId is nil prior calling -timeIntervalSince1970.
+
 2011-01-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/iCalRepeatableEntityObject+SOGo.m
