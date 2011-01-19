@@ -741,7 +741,11 @@ DIV#rightDragHandle
   TD.mailer_fieldname
   { text-align: left; }
 
-  TD.mailer_fieldvalue
+  TD.mailer_fieldname IMG
+  { display: none; }
+
+  TD.mailer_fieldvalue,
+  TD.mailer_fieldvalue SPAN.collapse
   { white-space: normal; }
 
   TD.mailer_fieldvalue A
