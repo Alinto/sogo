@@ -273,7 +273,7 @@ Element.addMethods({
                         log ("refreshSelectionByIds Error: " + element.tagName
                              + " select by ID " + element.selectedIds[i]
                              + " not found (" + element.childNodes.length + " children)");
-                        element.selectedIds.splice(i,1);
+                        //element.selectedIds.splice(i,1);
                     }
                 }
             }
