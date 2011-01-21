@@ -827,6 +827,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
  * @param theRecord the event definition.
  * @param theRange the period to look in.
  * @param theRecords the array into which are copied the resulting occurrences.
+ * @see [iCalRepeatableEntityObject+SOGo doesOccurOnDate:]
  */
 - (void) _flattenCycleRecord: (NSDictionary *) theRecord
                     forRange: (NGCalendarDateRange *) theRange
@@ -840,10 +841,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSArray *elements, *components;
   NSString *content;
   iCalRepeatableEntityObject *component;
-  iCalDateTime *firstStartDate, *firstEndDate;
+  id firstStartDate, firstEndDate;
   NSCalendarDate *checkStartDate, *checkEndDate;
   iCalTimeZone *eventTimeZone;
-  unsigned i, count;
+  unsigned i, count, offset;
 
   records = [NSMutableArray array];
   ranges = nil;
@@ -882,9 +883,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	    {
 	      // Retrieve the range of the first event
 	      component = [components objectAtIndex: 0];
-	      firstStartDate = (iCalDateTime*)[component uniqueChildWithTag: @"dtstart"];
-	      firstEndDate = (iCalDateTime*)[component uniqueChildWithTag: @"dtend"];
-	      eventTimeZone = [firstStartDate timeZone];
+	      firstStartDate = [component uniqueChildWithTag: @"dtstart"];
+	      firstEndDate = [component uniqueChildWithTag: @"dtend"];
+	      eventTimeZone = [(iCalDateTime*)firstStartDate timeZone];
 	      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: [[[firstStartDate values] lastObject] asCalendarDate]
 								       endDate: [[[firstEndDate values] lastObject] asCalendarDate]];
 
@@ -896,6 +897,20 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		  theRange = [NGCalendarDateRange calendarDateRangeWithStartDate: checkStartDate
 									 endDate: checkEndDate];
 		  exDates = [eventTimeZone computedDatesForStrings: exDates];
+		}
+	      else if ([theRecord objectForKey: @"c_isallday"])
+		{
+		  // The event lasts all-day and has no timezone (floating); we convert the range of the first event
+		  // to the user's timezone
+		  offset = [timeZone secondsFromGMTForDate: [firstRange startDate]];
+		  firstStartDate = (NSCalendarDate*)[[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+										      seconds:-offset];
+		  firstEndDate = (NSCalendarDate*)[[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+										   seconds:-offset];
+		  [firstStartDate setTimeZone: timeZone];
+		  [firstEndDate setTimeZone: timeZone];
+		  firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
+									   endDate: firstEndDate];
 		}
 	      
 	      // Calculate the occurrences for the given range
@@ -934,10 +949,17 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   // TODO: is the result supposed to be sorted by date?
   NSMutableArray *ma;
   NSDictionary *row;
+  NSCalendarDate *rangeEndDate;
   unsigned int count, max;
 
   max = [_records count];
   ma = [NSMutableArray arrayWithCapacity: max];
+
+  // Adjust the range so it ends at midnight. This is necessary when calculating
+  // recurrences of all-day events.
+  rangeEndDate = [[_r endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:1];
+  _r = [NGCalendarDateRange calendarDateRangeWithStartDate: [_r startDate]
+						   endDate: rangeEndDate];
 
   for (count = 0; count < max; count++)
     {

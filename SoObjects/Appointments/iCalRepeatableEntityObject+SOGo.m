@@ -110,6 +110,7 @@
 /**
  * Checks if a date is part of the recurring entity.
  * @param theOccurrenceDate the date to verify.
+ * @see [SOGoAppointmentFolder _flattenCycleRecord:forRange:intoArray:]
  * @return true if the occurence date is part of the recurring entity.
  */
 - (BOOL) doesOccurOnDate: (NSCalendarDate *) theOccurenceDate
@@ -117,9 +118,11 @@
   NSArray *ranges;
   NGCalendarDateRange *checkRange, *firstRange;
   NSCalendarDate *startDate, *endDate;
-  iCalDateTime *firstStartDate;
+  NSTimeZone *timeZone;
+  id *firstStartDate, firstEndDate;
   iCalTimeZone *eventTimeZone;
   BOOL doesOccur;
+  int offset;
 
   doesOccur = [self isRecurrent];
   if (doesOccur)
@@ -128,12 +131,29 @@
       firstRange = [self firstOccurenceRange];
 
       // Set the range to check with respect to the event timezone (extracted from the start date)
-      firstStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
-      eventTimeZone = [firstStartDate timeZone];
+      firstStartDate = [self uniqueChildWithTag: @"dtstart"];
+      eventTimeZone = [(iCalDateTime *)firstStartDate timeZone];
       if (eventTimeZone)
 	startDate = [eventTimeZone computedDateForDate: theOccurenceDate];
       else
-	startDate = theOccurenceDate;
+	{
+	  startDate = theOccurenceDate;
+	  if ([self isAllDay])
+	    {
+	      // The event lasts all-day and has no timezone (floating); we convert the range of the first event
+	      // to the occurence's timezone.
+	      timeZone = [theOccurenceDate timeZone];
+	      offset = [timeZone secondsFromGMTForDate: [firstRange startDate]];
+	      firstStartDate = (NSCalendarDate*)[[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+										  seconds:-offset];
+	      firstEndDate = (NSCalendarDate*)[[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+									      seconds:-offset];
+	      [firstStartDate setTimeZone: timeZone];
+	      [firstEndDate setTimeZone: timeZone];
+	      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
+								       endDate: firstEndDate];
+	    }
+	}
       endDate = [startDate addTimeInterval: [self occurenceInterval]];
       checkRange = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
 							       endDate: endDate];

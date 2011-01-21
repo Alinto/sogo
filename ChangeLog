@@ -1,3 +1,19 @@
+2011-01-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/iCalRepeatableEntityObject+SOGo.m
+	(-doesOccurOnDate:): we set the timezone of floating all-day
+	events to the one of the date passed as argument.
+
+	* UI/Scheduler/UIxAppointmentEditor.m (-defaultAction): when
+	dealing with "floating" start dates (no timezone), we convert it to
+	the user's timezone.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(:_flattenCycleRecord:forRange:intoArray:): we must set the
+	timezone of floating all-day events to the user's timezone.
+	(_flattenCycleRecords:fetchRange:): Adjust the range so it ends at
+	midnight. This is necessary when calculating recurrences of all-day events.
+
 2011-01-17  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoEMailAlarmsManager.m
