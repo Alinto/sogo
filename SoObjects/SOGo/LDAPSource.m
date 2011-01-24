@@ -589,9 +589,9 @@ static NSArray *commonSearchFields;
 
 /**
  * Search for contacts matching some string.
- * @param filter The string to search for
+ * @param filter the string to search for
  * @see fetchContactsMatching:
- * @return A EOQualifier matching the filter
+ * @return a EOQualifier matching the filter
  */
 - (EOQualifier *) _qualifierForFilter: (NSString *) filter
 {
