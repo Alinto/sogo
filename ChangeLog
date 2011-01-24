@@ -1,3 +1,11 @@
+2011-01-24  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m (_qualifierForFilter:): added
+	support for the parameter "SearchFieldNames" that can be added to
+	the source defaults to specify which LDAP attributes to use when
+	filtering contacts. It defaults to the previous values, ie sn,
+	displayname, and telephonenumber.
+
 2011-01-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/iCalRepeatableEntityObject+SOGo.m

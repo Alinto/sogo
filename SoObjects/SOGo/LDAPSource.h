@@ -1,6 +1,6 @@
 /* LDAPSource.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -52,7 +52,7 @@
   NSString *IDField; /* the first part of a user DN */
   NSString *CNField;
   NSString *UIDField;
-  NSArray *mailFields;
+  NSArray *mailFields, *searchFields;
   NSString *IMAPHostField;
   NSArray *bindFields;
   BOOL _bindAsCurrentUser;
@@ -81,6 +81,7 @@
 	   CNField: (NSString *) newCNField
 	  UIDField: (NSString *) newUIDField
 	mailFields: (NSArray *) newMailFields
+      searchFields: (NSArray *) newSearchFields
      IMAPHostField: (NSString *) newIMAPHostField
      andBindFields: (id) newBindFields;
 

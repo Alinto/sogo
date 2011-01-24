@@ -1,6 +1,6 @@
 /* SOGoUserManager.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -132,6 +132,9 @@
       value = [udSource objectForKey: @"MailFieldNames"];
       if (value)
         [metadata setObject: value forKey: @"MailFieldNames"];
+      value = [udSource objectForKey: @"SearchFieldNames"];
+      if (value)
+        [metadata setObject: value forKey: @"SearchFieldNames"];
       [_sourcesMetadata setObject: metadata forKey: sourceID];
     }
   else

@@ -1,6 +1,6 @@
 /* LDAPSource.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -158,6 +158,8 @@ static NSArray *commonSearchFields;
       UIDField = @"uid";
       mailFields = [NSArray arrayWithObject: @"mail"];
       [mailFields retain];
+      searchFields = [NSArray arrayWithObjects: @"sn", @"displayname", @"telephonenumber", nil];
+      [searchFields retain];
       IMAPHostField = nil;
       bindFields = nil;
       _scope = @"sub";
@@ -184,6 +186,7 @@ static NSArray *commonSearchFields;
   [CNField release];
   [UIDField release];
   [mailFields release];
+  [searchFields release];
   [IMAPHostField release];
   [bindFields release];
   [_filter release];
@@ -218,6 +221,7 @@ static NSArray *commonSearchFields;
               CNField: [udSource objectForKey: @"CNFieldName"]
              UIDField: [udSource objectForKey: @"UIDFieldName"]
            mailFields: [udSource objectForKey: @"MailFieldNames"]
+	 searchFields: [udSource objectForKey: @"SearchFieldNames"]
 	IMAPHostField: [udSource objectForKey: @"IMAPHostFieldName"]
 	andBindFields: [udSource objectForKey: @"bindFields"]];
 
@@ -299,6 +303,7 @@ static NSArray *commonSearchFields;
 	   CNField: (NSString *) newCNField
 	  UIDField: (NSString *) newUIDField
 	mailFields: (NSArray *) newMailFields
+      searchFields: (NSArray *) newSearchFields
      IMAPHostField: (NSString *) newIMAPHostField
      andBindFields: (id) newBindFields
 {
@@ -313,6 +318,8 @@ static NSArray *commonSearchFields;
     ASSIGN (IMAPHostField, newIMAPHostField);
   if (newMailFields)
     ASSIGN (mailFields, newMailFields);
+  if (newSearchFields)
+    ASSIGN (searchFields, newSearchFields);
   if (newBindFields)
     {
       // Before SOGo v1.2.0, bindFields was a comma-separated list
@@ -580,28 +587,35 @@ static NSArray *commonSearchFields;
 }
 
 
-/* contact management */
+/**
+ * Search for contacts matching some string.
+ * @param filter The string to search for
+ * @see fetchContactsMatching:
+ * @return A EOQualifier matching the filter
+ */
 - (EOQualifier *) _qualifierForFilter: (NSString *) filter
 {
-  NSString *mailFormat, *fieldFormat, *escapedFilter;
+  NSMutableArray *fields;
+  NSString *searchFormat, *fieldFormat, *escapedFilter;
   EOQualifier *qualifier;
   NSMutableString *qs;
 
   escapedFilter = SafeLDAPCriteria(filter);
   if ([escapedFilter length] > 0)
     {
-      fieldFormat = [NSString stringWithFormat: @"(%%@='%@*')", escapedFilter];
-      mailFormat = [[mailFields stringsWithFormat: fieldFormat]
-                     componentsJoinedByString: @" OR "];
-
       qs = [NSMutableString string];
       if ([escapedFilter isEqualToString: @"."])
         [qs appendFormat: @"(%@='*')", CNField];
       else
-        [qs appendFormat: @"(%@='%@*') OR (sn='%@*') OR (displayName='%@*')"
-	    @"OR %@ OR (telephoneNumber='*%@*')",
-	    CNField, escapedFilter, escapedFilter, escapedFilter, mailFormat,
-            escapedFilter];
+	{
+	  fieldFormat = [NSString stringWithFormat: @"(%%@='%@*')", escapedFilter];
+	  fields = [NSMutableArray arrayWithArray: searchFields];
+	  [fields addObjectsFromArray: mailFields];
+	  searchFormat = [[[fields uniqueObjects] stringsWithFormat: fieldFormat]
+				    componentsJoinedByString: @" OR "];
+	  [qs appendFormat: @"(%@='%@*') OR %@",
+	      CNField, escapedFilter, searchFormat];
+	}
 
       if (_filter && [_filter length])
 	[qs appendFormat: @" AND %@", _filter];
