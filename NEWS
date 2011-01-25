@@ -1,3 +1,25 @@
+1.3-20110125 (1.3.5)
+--------------------
+New Features
+- implemented secured sessions
+- added SHA1 password hashing in SQL sources
+- mail aliases columns can be specified for SQL sources through the configuration parameter MailFieldNames
+
+Enhancements
+- updated CKEditor to version 3.4.3
+- removed the Reply-To header in sent messages
+- the event timezone is now considered when computing an event recurrence rule
+- improved printing of a message with multple recipients
+- the new parameter SearchFieldNames allows to specify which LDAP fields to query when filtering contacts
+
+Bug Fixes
+- restored current time shown as a red line in calendar module
+- logout button no longer appears when SOGoCASLogoutEnabled is set to NO
+- fixed error when deleting freshly created addressbooks
+- the mail column in SQL sources is not longer ignored
+- fixed wrapping of long lines in messages with non-ASCII characters
+- fixed a bug that would prevent alarms to be triggered when non-repetitive
+
 1.3-20101117 (1.3.4)
 --------------------
 - updated CKEditor to version 3.4.2
