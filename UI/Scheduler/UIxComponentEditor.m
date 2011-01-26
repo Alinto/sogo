@@ -1,8 +1,9 @@
 /* UIxComponentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2010 Inverse inc.
+ * Copyright (C) 2006-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -589,10 +590,10 @@ iRANGE(2);
    doing this... for example, when the clientObject is set */
 - (void) setComponent: (iCalRepeatableEntityObject *) newComponent
 {
-//   iCalRecurrenceRule *rrule;
   SOGoObject *co;
   SOGoUserManager *um;
   NSString *owner, *ownerEmail;
+  iCalRepeatableEntityObject *masterComponent;
 
   if (!component)
     {
@@ -611,8 +612,16 @@ iRANGE(2);
 	  ASSIGN (status, [component status]);
           ASSIGN (categories,
                   [[component categories] vCardSubvaluesWithSeparator: ',']);
-	  ASSIGN (organizer, [component organizer]);
-	  
+	  if ([[[component organizer] rfc822Email] length])
+	    {
+	      ASSIGN (organizer, [component organizer]);
+	    }
+	  else
+	    {
+	      masterComponent = [[[component parent] allObjects] objectAtIndex: 0];
+	      ASSIGN (organizer, [masterComponent organizer]);
+	    }
+
 	  [self _loadCategories];
           if (!jsonAttendees)
             [self _loadAttendees];

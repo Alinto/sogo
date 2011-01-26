@@ -1,3 +1,9 @@
+2011-01-26  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m (-setComponent:): retrieve the
+	organizer from the master component when not present in the
+	current component.
+
 2011-01-24  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m (_qualifierForFilter:): added
