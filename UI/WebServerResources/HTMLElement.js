@@ -247,12 +247,12 @@ Element.addMethods({
         },
 
         deselectAll: function(element) {
-            element = $(element);
             if (element.tagName == 'TABLE') {
                 var tbody = element.tBodies[0];
                 if (tbody)
                     element = tbody;
             }
+            element = $(element);
             var s = element.select("._selected");
             for (var i = 0; i < s.length; i++)
                 s[i].removeClassName("_selected");
