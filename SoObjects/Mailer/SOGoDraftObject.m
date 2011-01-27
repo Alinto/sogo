@@ -436,7 +436,8 @@ static NSString    *userAgent      = nil;
 
   if (![imap4 doesMailboxExistAtURL: [container imap4URL]])
     {
-      [client create: [container relativeImap4Name]];
+      [[self imap4Connection] createMailbox: [[self imap4Connection] imap4FolderNameForURL: [container imap4URL]]
+				      atURL: [[self mailAccountFolder] imap4URL]];
       [imap4 flushFolderHierarchyCache];
     }
   

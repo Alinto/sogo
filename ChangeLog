@@ -1,3 +1,9 @@
+2011-01-27  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m (-save): we no longer use the
+	relative URL of the draft folder when it must be created. This
+	fixes an issue when using a subfolder as the drafts folder.
+
 2011-01-26  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m (-setComponent:): retrieve the
