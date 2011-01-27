@@ -1,5 +1,9 @@
 2011-01-27  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/SOGo/LDAPSource.m
+	(-checkLogin:password:perr:expire:grace:): the caching of the DN
+	is now performed only if the DN was found.
+
 	* SoObjects/Mailer/SOGoDraftObject.m (-save): we no longer use the
 	relative URL of the draft folder when it must be created. This
 	fixes an issue when using a subfolder as the drafts folder.

@@ -489,11 +489,11 @@ static NSArray *commonSearchFields;
 				   IDField, _login, baseDN];
 	    }
 
-	  // We cache the _login <-> userDN entry to speed up things
-	  [_dnCache setObject: userDN  forKey: _login];
-	  
 	  if (userDN)
 	    {
+	      // We cache the _login <-> userDN entry to speed up things
+	      [_dnCache setObject: userDN  forKey: _login];
+	      
 	      NS_DURING
 		if (!passwordPolicy)
 		  didBind = [bindConnection bindWithMethod: @"simple"
