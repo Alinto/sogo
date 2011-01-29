@@ -118,7 +118,7 @@ function flagMailInWindow (win, msguid, flagged) {
 }
 
 /* Update the messages list when setting the unread/read flag of a message.
- * No AJAX is triggered here. */
+ * No AJAX is triggered here. See mailListToggleMessagesRead */
 function markMailInWindow(win, msguid, markread) {
     var row = win.$("row_" + msguid);
     var unseenCount = 0;
@@ -370,6 +370,9 @@ function onDocumentKeydown(event) {
                     // Select and load the next message
                     nextRow.selectElement();
                     loadMessage(Mailer.currentMessages[Mailer.currentMailbox]);
+                    // from generic.js
+                    lastClickedRow = nextRow.rowIndex;
+	            lastClickedRowId = nextRow.id;
                 }
                 Event.stop(event);
             }
@@ -790,7 +793,6 @@ function openMailbox(mailbox, reload) {
 	// Restore previous selection
         var currentMessage = Mailer.currentMessages[mailbox];
         if (currentMessage) {
-            
             if (!reload) {
                 loadMessage(currentMessage);
             }
@@ -1755,7 +1757,7 @@ function configureMessageListEvents(headerTable, dataTable) {
     if (dataTable) {
         dataTable.multiselect = true;
         // Each body row can load a message
-        dataTable.observe("mousedown", onMessageSelectionChange);
+        dataTable.observe("mouseup", onMessageSelectionChange);
         dataTable.observe("dblclick", onMessageDoubleClick);
         dataTable.observe("selectstart", listRowMouseDownHandler);
         dataTable.observe("contextmenu", onMessageContextMenu);
@@ -2755,12 +2757,12 @@ Mailbox.prototype = {
 
 function configureDraggables () {
     var mainElement = $("dragDropVisual");
-    Draggables.empty ();
+    Draggables.empty();
 
     if (mainElement == null) {
         mainElement = new Element ("div", {id: "dragDropVisual"});
         document.body.appendChild(mainElement);
-        mainElement.absolutize ();
+        mainElement.absolutize();
     }
     mainElement.hide();
 
@@ -2775,7 +2777,7 @@ function configureDraggables () {
 function configureDroppables() {
     var drops = $$("div#mailboxTree div.dTreeNode a.node span.nodeName");
 
-    Droppables.empty ();
+    Droppables.empty();
     drops.each(function (drop) {
                    var dataname = drop.parentNode.parentNode.getAttribute("dataname");
                    var acceptClass = "account";

@@ -1,3 +1,11 @@
+2011-01-28  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (-onDocumentKeydown): set
+	the global variables lastClickedRow and lastClickedRowId to fix
+	the behavior of subsequent selections of multiple messages.
+	(-configureMessageListEvents): set the table listener on mouseup
+	instead of mousedown to improve the drag'n'drop experience.
+
 2011-01-27  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m
