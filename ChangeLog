@@ -1,6 +1,13 @@
 2011-02-01  Francis Lachapelle  <flachapelle@inverse.ca>
 
-	* SoObjects/Mailer/SOGoSieveConverter.m (_extractSieveAction:):
+	* UI/WebServerResources/scriptaculous/dragdrop.js (-updateDrag:):
+	fixed JavaScript error with Offset object. This object is now
+	casted as an array.
+
+	* UI/WebServerResources/MailerUI.js (-startDragging): improved
+	behavior of drag and drop.
+
+	* SoObjects/Mailer/SOGoSieveConverter.m (-_extractSieveAction:):
 	now encodes the mailbox name for IMAP.
 
 2011-01-28  Francis Lachapelle  <flachapelle@inverse.ca>

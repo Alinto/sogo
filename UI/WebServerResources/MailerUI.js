@@ -2801,8 +2801,20 @@ function startDragging (itm, e) {
     if (target.up('TBODY') == undefined)
         return;
 
+    if (target.tagName != 'TD')
+        target = target.up('TD');
+    var row = target.up('TR');
+
     var handle = $("dragDropVisual");
-    var count = $("messageListBody").getSelectedRowsId().length;
+    var selectedIds = $("messageListBody").getSelectedRowsId();
+    var count = selectedIds.length;
+    var rowId = row.id;
+
+    if (count == 0 || selectedIds.indexOf(rowId) < 0) {
+        onRowClick(e, target);
+        selectedIds = $("messageListBody").getSelectedRowsId();
+        count = selectedIds.length;
+    }
 
     handle.update(count);
     if (Mailer.currentMailbox) {
