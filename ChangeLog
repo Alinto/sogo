@@ -1,3 +1,8 @@
+2011-02-01  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Utilities.h,m: Fixed
+	the salt for crypt-based encoding
+
 2011-02-01  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/scriptaculous/dragdrop.js (-updateDrag:):
