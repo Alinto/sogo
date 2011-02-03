@@ -60,6 +60,7 @@
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoWebAuthenticator.h>
 #import <SOGo/WORequest+SOGo.h>
+#import <SOGo/WOResourceManager+SOGo.h>
 #import <SOGo/NSObject+DAV.h>
 
 #import "NSException+Stacktrace.h"
@@ -125,9 +126,6 @@ static BOOL debugLeaks;
       [$(@"SOGoContentObject") soClass];
       [$(@"SOGoFolder") soClass];
 
-      /* setup locale cache */
-      localeLUT = [[NSMutableDictionary alloc] initWithCapacity:2];
-    
       /* load products */
       [[SOGoProductLoader productLoader] loadAllProducts];
     
@@ -138,12 +136,6 @@ static BOOL debugLeaks;
     }
 
   return self;
-}
-
-- (void) dealloc
-{
-  [localeLUT release];
-  [super dealloc];
 }
 
 #warning the following methods should be replaced with helpers in GCSSpecialQueries
@@ -497,83 +489,14 @@ static BOOL debugLeaks;
   lname = [enumerator nextObject];
   while (lname && !locale)
     {
-      locale = [self localeForLanguageNamed: lname];
+      locale = [[self resourceManager] localeForLanguageNamed: lname];
       lname = [enumerator nextObject];
     }
 
   if (!locale)
-    locale = [self localeForLanguageNamed: @"English"];
+    locale = [[self resourceManager] localeForLanguageNamed: @"English"];
 
   /* no appropriate language, fallback to default */
-  return locale;
-}
-
-- (NSString *) pathToLocaleForLanguageNamed: (NSString *) _name
-{
-  static Class MainProduct = Nil;
-  NSString *lpath;
-
-  lpath = [[self resourceManager] pathForResourceNamed: @"Locale"
-				  inFramework: nil
-				  languages: [NSArray arrayWithObject:_name]];
-  if (![lpath length])
-    {
-      if (!MainProduct)
-        {
-          MainProduct = $(@"MainUIProduct");
-          if (!MainProduct)
-            [self errorWithFormat: @"did not find MainUIProduct class!"];
-        }
-
-      lpath = [(id) MainProduct pathToLocaleForLanguageNamed: _name];
-      if (![lpath length])
-        lpath = nil;
-    }
-
-  return lpath;
-}
-
-- (NSDictionary *) localeForLanguageNamed: (NSString *) _name
-{
-  NSString     *lpath;
-  id           data;
-  NSDictionary *locale;
-
-  locale = nil;
-  if ([_name length] > 0)
-    {
-      locale = [localeLUT objectForKey: _name];
-      if (!locale)
-        {
-          lpath = [self pathToLocaleForLanguageNamed:_name];
-          if (lpath)
-            {
-              data = [NSData dataWithContentsOfFile: lpath];
-              if (data)
-                {
-                  data = [[[NSString alloc] initWithData: data
-                                            encoding: NSUTF8StringEncoding] autorelease];
-                  locale = [data propertyList];
-                  if (locale) 
-                    [localeLUT setObject: locale forKey: _name];
-                  else
-                    [self logWithFormat:@"%s couldn't load locale with name:%@",
-                          __PRETTY_FUNCTION__,
-                          _name];
-                }
-              else
-                [self logWithFormat:@"%s didn't find locale with name: %@",
-                      __PRETTY_FUNCTION__,
-                      _name];
-            }
-          else
-            [self errorWithFormat:@"did not find locale for language: %@", _name];
-        }
-    }
-  else
-    [self errorWithFormat:@"%s: name parameter must not be nil!",
-          __PRETTY_FUNCTION__];
-
   return locale;
 }
 

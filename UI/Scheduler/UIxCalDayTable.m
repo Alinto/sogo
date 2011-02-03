@@ -35,8 +35,7 @@
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
-
-#import "../../Main/SOGo.h"
+#import <SOGo/WOResourceManager+SOGo.h>
 
 #import "UIxCalDayTable.h"
 
@@ -57,7 +56,7 @@
       ud = [user userDefaults];
       ASSIGN (timeFormat, [ud timeFormat]);
       language = [ud language];
-      locale = [[WOApplication application] localeForLanguageNamed: language];
+      locale = [[self resourceManager] localeForLanguageNamed: language];
 
       daysToDisplay = nil;
       hoursToDisplay = nil;

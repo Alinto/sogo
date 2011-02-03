@@ -50,8 +50,7 @@
 #import "SOGoUserManager.h"
 #import "SOGoUserProfile.h"
 #import "SOGoUserSettings.h"
-
-#import "../../Main/SOGo.h"
+#import "WOResourceManager+SOGo.h"
 
 #import "SOGoUser.h"
 
@@ -283,12 +282,14 @@
   NSString *format;
   SOGoUserDefaults *ud;
   NSDictionary *locale;
+  WOResourceManager *resMgr;
 
   dateFormatter = [SOGoDateFormatter new];
   [dateFormatter autorelease];
 
   ud = [self userDefaults];
-  locale = [[WOApplication application] localeForLanguageNamed: [ud language]];
+  resMgr = [[WOApplication application] resourceManager];
+  locale = [resMgr localeForLanguageNamed: [ud language]];
   [dateFormatter setLocale: locale];
   format = [ud shortDateFormat];
   if (format)

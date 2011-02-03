@@ -33,12 +33,10 @@
 
 @interface SOGo : SoApplication
 {
-  NSMutableDictionary *localeLUT;
   SOGoCache *cache;
 }
 
 - (NSDictionary *) currentLocaleConsideringLanguages:(NSArray *)_langs;
-- (NSDictionary *) localeForLanguageNamed:(NSString *)_name;
 - (NSString *) davURLAsString;
 
 @end

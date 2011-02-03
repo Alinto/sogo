@@ -46,7 +46,7 @@ SOGo_HEADER_FILES = \
 	NSURL+DAV.h			\
 	\
 	SOGoAuthenticator.h		\
- 	SOGoSession.h			\
+	SOGoSession.h			\
 	SOGoCASSession.h		\
 	SOGoDAVAuthenticator.h		\
 	SOGoProxyAuthenticator.h	\
@@ -60,6 +60,7 @@ SOGo_HEADER_FILES = \
 	DOMNode+SOGo.h			\
 	\
 	WORequest+SOGo.h		\
+	WOResourceManager+SOGo.h	\
 	WOResponse+SOGo.h		\
 	WOContext+SOGo.h
 
@@ -123,6 +124,7 @@ SOGo_OBJC_FILES = \
 	DOMNode+SOGo.m			\
 	\
 	WORequest+SOGo.m		\
+	WOResourceManager+SOGo.m	\
 	WOResponse+SOGo.m		\
 	WOContext+SOGo.m
 

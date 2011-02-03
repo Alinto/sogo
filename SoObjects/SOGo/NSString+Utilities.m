@@ -545,13 +545,13 @@ static NSMutableCharacterSet *safeLDIFStartChars = nil;
   return object;
 }
 
-- (NSString *) asCryptString
+- (NSString *) asCryptStringUsingSalt: (NSString *) theSalt
 {
   char *buf;
   
   // The salt is weak here, but who cares anyway, crypt should not
   // be used anymore
-  buf = (char *)crypt([self UTF8String], [self UTF8String]);
+  buf = (char *)crypt([self UTF8String], [theSalt UTF8String]);
   return [NSString stringWithUTF8String: buf];
 }
 

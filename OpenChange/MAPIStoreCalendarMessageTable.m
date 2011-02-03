@@ -56,7 +56,6 @@
 			      forKey: (NSString *) childKey
 			     withTag: (enum MAPITAGS) propTag
 {
-  // id child;
   NSTimeInterval timeValue;
   id event;
   int rc;

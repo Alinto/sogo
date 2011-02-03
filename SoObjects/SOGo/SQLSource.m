@@ -139,7 +139,7 @@
     }
   else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"crypt"] == NSOrderedSame)
     {
-      return [[plainPassword asCryptString] isEqualToString: encryptedPassword];
+      return [[plainPassword asCryptStringUsingSalt: encryptedPassword] isEqualToString: encryptedPassword];
     }
   else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"md5"] == NSOrderedSame)
     {

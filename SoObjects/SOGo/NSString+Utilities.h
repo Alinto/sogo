@@ -68,7 +68,7 @@
 
 - (id) objectFromJSONString;
 
-- (NSString *) asCryptString;
+- (NSString *) asCryptStringUsingSalt: (NSString *) theSalt;
 - (NSString *) asMD5String;
 - (NSString *) asSHA1String;
 
