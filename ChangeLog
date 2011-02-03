@@ -7,9 +7,6 @@
 	* UI/WebServerResources/MailerUI.js (-startDragging): improved
 	behavior of drag and drop.
 
-	* SoObjects/Mailer/SOGoSieveConverter.m (-_extractSieveAction:):
-	now encodes the mailbox name for IMAP.
-
 2011-01-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (-onDocumentKeydown): set

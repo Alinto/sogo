@@ -25,8 +25,6 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
-#import <NGImap4/NSString+Imap4.h>
-
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
@@ -460,7 +458,7 @@ static NSDictionary *methodRequirements = nil;
                 {
                   dd = [user domainDefaults];
                   mailbox
-                    = [[[argument stringByEncodingImap4FolderName] componentsSeparatedByString: @"/"]
+                    = [[argument componentsSeparatedByString: @"/"]
                           componentsJoinedByString: [dd imapFolderSeparator]];
                   sieveAction = [NSString stringWithFormat: @"%@ %@",
                                           method, [mailbox asSieveQuotedString]];
