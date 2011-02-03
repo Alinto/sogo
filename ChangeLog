@@ -1,3 +1,8 @@
+2011-02-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* OpenChange/MAPIStoreMapping.m (-unregisterURLWithID:): new
+	method for removing entries from the mapping dictionaries.
+
 2011-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/WOResourceManager+SOGo.m: new category module
