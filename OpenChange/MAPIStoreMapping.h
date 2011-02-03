@@ -41,7 +41,7 @@
 - (uint64_t) idFromURL: (NSString *) url;
 - (BOOL) registerURL: (NSString *) urlString
               withID: (uint64_t) idNbr;
-// - (void) registerURL: (NSString *) urlString;
+- (void) unregisterURLWithID: (uint64_t) idNbr;
 
 @end
 

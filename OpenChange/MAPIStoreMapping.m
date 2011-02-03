@@ -180,4 +180,15 @@ MAPIStoreMappingInitDictionary (NSMutableDictionary *mapping)
   return rc;
 }
 
+- (void) unregisterURLWithID: (uint64_t) idNbr
+{
+  NSNumber *idKey;
+  NSString *urlString;
+
+  idKey = [NSNumber numberWithUnsignedLongLong: idNbr];
+  urlString = [mapping objectForKey: idKey];
+  [reverseMapping removeObjectForKey: urlString];
+  [mapping removeObjectForKey: idKey];
+}
+
 @end
