@@ -3,7 +3,15 @@
 	* OpenChange/MAPIStoreMapping.m (-unregisterURLWithID:): new
 	method for removing entries from the mapping dictionaries.
 
+	* OpenChange/MAPIStoreContext.m
+	(-deleteMessageWithMID:inFID:withFlags:): implemented backend method.
+
 2011-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContext.m
+	(_saveOrSubmitChangesInMessageWithMID:andFlags:save:): silently
+	ignore "IPM.Schedule.Meeting.Request" messages from Outlook
+	and return a success code.
 
 	* SoObjects/SOGo/WOResourceManager+SOGo.m: new category module
 	defining methods useful to the vanilla and OpenChange frontends.

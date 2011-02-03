@@ -965,39 +965,50 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
                                   [NSNumber numberWithUnsignedLongLong: mid]];
   if (messageProperties)
     {
-      messageURL = [mapping urlFromID: mid];
-      associated = [[messageProperties objectForKey: @"associated"] boolValue];
-      if (messageURL)
+      if ([[messageProperties
+	     objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)]
+	    isEqualToString: @"IPM.Schedule.Meeting.Request"])
 	{
-	  if (associated)
-	    message = [self lookupFAIObject: messageURL];
-	  else
-	    message = [self lookupObject: messageURL];
-	}
-      else
-	{
-	  fid = [[messageProperties objectForKey: @"fid"]
-		  unsignedLongLongValue];
-	  message = [self _createMessageOfClass: [messageProperties objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)]
-				     associated: associated
-					withMID: mid inFID: fid];
-	}
-      if (message)
-	{
-	  if (associated)
-	    [faiTable cleanupCaches];
-	  else
-	    [messageTable cleanupCaches];
-
-	  [message setMAPIProperties: messageProperties];
-	  if (isSave)
-	    [message MAPISave];
-	  else
-	    [message MAPISubmit];
+	  /* We silently discard invitation emails since this is already
+	     handled internally by SOGo. */
 	  rc = MAPISTORE_SUCCESS;
 	}
       else
-	rc = MAPISTORE_ERROR;
+	{
+	  messageURL = [mapping urlFromID: mid];
+	  associated = [[messageProperties objectForKey: @"associated"] boolValue];
+	  if (messageURL)
+	    {
+	      if (associated)
+		message = [self lookupFAIObject: messageURL];
+	      else
+		message = [self lookupObject: messageURL];
+	    }
+	  else
+	    {
+	      fid = [[messageProperties objectForKey: @"fid"]
+		      unsignedLongLongValue];
+	      message = [self _createMessageOfClass: [messageProperties objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)]
+					 associated: associated
+					    withMID: mid inFID: fid];
+	    }
+	  if (message)
+	    {
+	      if (associated)
+		[faiTable cleanupCaches];
+	      else
+		[messageTable cleanupCaches];
+	      
+	      [message setMAPIProperties: messageProperties];
+	      if (isSave)
+		[message MAPISave];
+	      else
+		[message MAPISubmit];
+	      rc = MAPISTORE_SUCCESS;
+	    }
+	  else
+	    rc = MAPISTORE_ERROR;
+	}
     }
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
@@ -1394,8 +1405,9 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       for (count = 0; count < max; count++)
 	{
 	  currentRow = rows + count;
-	  if (currentRow->RecipClass >= 0
-	      && currentRow->RecipClass < 3)
+
+	  if (currentRow->RecipClass >= MAPI_ORIG
+	      && currentRow->RecipClass < MAPI_BCC)
 	    {
 	      recType = recTypes[currentRow->RecipClass];
 	      list = [recipients objectForKey: recType];
@@ -1418,12 +1430,56 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 }
 
 - (int) deleteMessageWithMID: (uint64_t) mid
+                       inFID: (uint64_t) fid
                    withFlags: (uint8_t) flags
 {
-  [self logWithFormat: @"UNIMPLEMENTED METHOD '%s' (%d)", __FUNCTION__, __LINE__];
-  [self logWithFormat: @"  mid: 0x%.16x  flags: %d", mid, flags];
+  NSString *childURL, *childKey;
+  MAPIStoreTable *table;
+  id message;
+  int rc;
 
-  return MAPISTORE_ERROR;
+  [self logWithFormat: @"-deleteMessageWithMID: mid: 0x%.16x  flags: %d", mid, flags];
+  
+  childURL = [mapping urlFromID: mid];
+  if (childURL)
+    {
+      [self logWithFormat: @"-deleteMessageWithMID: url (%@) found for object", childURL];
+
+      childKey = [self extractChildNameFromURL: childURL
+				andFolderURLAt: NULL];
+      table = [self _tableForFID: fid andTableType: MAPISTORE_FAI_TABLE];
+      if ([[table cachedChildKeys] containsObject: childKey])
+        message = [self lookupFAIObject: childURL];
+      else
+	{
+	  table = [self _tableForFID: fid andTableType: MAPISTORE_MESSAGE_TABLE];
+	  if ([[table cachedChildKeys] containsObject: childKey])
+            message = [self lookupObject: childURL];
+	  else
+            message = nil;
+	}
+
+      if (message)
+        {
+          if ([message delete])
+            {
+              rc = MAPISTORE_ERROR;
+              [self logWithFormat: @"ERROR deleting object at URL: %@", childURL];
+            }
+          else 
+            {
+              [self logWithFormat: @"sucessfully deleted object at URL: %@", childURL];
+              [mapping unregisterURLWithID: mid];
+              rc = MAPISTORE_SUCCESS;
+            }
+        }
+      else
+        rc = MAPI_E_INVALID_OBJECT;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 - (int) releaseRecordWithFMID: (uint64_t) fmid

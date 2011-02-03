@@ -142,6 +142,7 @@
 			 inRows: (struct ModifyRecipientRow *) rows
 		      withCount: (NSUInteger) max;
 - (int) deleteMessageWithMID: (uint64_t) mid
+                       inFID: (uint64_t) fid
                    withFlags: (uint8_t) flags;
 - (int) releaseRecordWithFMID: (uint64_t) fmid
 		  ofTableType: (uint8_t) tableType;

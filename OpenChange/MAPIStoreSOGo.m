@@ -713,6 +713,7 @@ sogo_op_modifyrecipients(void *private_data,
 
 static int
 sogo_op_deletemessage(void *private_data,
+                      uint64_t fid,
 		      uint64_t mid,
 		      uint8_t flags)
 {
@@ -729,7 +730,7 @@ sogo_op_deletemessage(void *private_data,
   context = cContext->objcContext;
   [context setupRequest];
 
-  rc = [context deleteMessageWithMID: mid withFlags: flags];
+  rc = [context deleteMessageWithMID: mid inFID: fid withFlags: flags];
 
   [context tearDownRequest];
   [pool release];
