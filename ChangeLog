@@ -1,3 +1,9 @@
+2011-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/WOResourceManager+SOGo.m: new category module
+	defining methods useful to the vanilla and OpenChange frontends.
+	(-localeForLanguageNamed:): method moved from SOGo.m.
+
 2011-02-01  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.h,m: Fixed

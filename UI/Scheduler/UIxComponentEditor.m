@@ -63,6 +63,7 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSystemDefaults.h>
+#import <SOGo/WOResourceManager+SOGo.h>
 
 #import "../../Main/SOGo.h"
 
@@ -1869,7 +1870,7 @@ RANGE(2);
       NSDictionary *locale;
 
       ud = [[context activeUser] userDefaults];
-      locale = [[WOApplication application]
+      locale = [[self resourceManager]
                  localeForLanguageNamed: [ud language]];
       date = [NSCalendarDate dateWithString: [self range2]
 			     calendarFormat: dateFormat

@@ -47,16 +47,15 @@
 #import <NGMime/NGMimeType.h>
 
 #import <SOGo/SOGoUserDefaults.h>
-#import <SoObjects/Mailer/SOGoDraftObject.h>
-#import <SoObjects/Mailer/SOGoMailFolder.h>
-#import <SoObjects/Mailer/SOGoMailAccount.h>
-#import <SoObjects/Mailer/SOGoMailAccounts.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/NSArray+Utilities.h>
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
+#import <Mailer/SOGoDraftObject.h>
+#import <Mailer/SOGoMailFolder.h>
+#import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailAccounts.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/WOResourceManager+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
-
-#import "../../Main/SOGo.h"
 
 /*
   UIxMailEditor
@@ -210,8 +209,8 @@ static NSArray *infoKeys = nil;
   NSDictionary *locale;
   
   ud = [[context activeUser] userDefaults];
-  locale = [[WOApplication application]
-                 localeForLanguageNamed: [ud language]];
+  locale = [[self resourceManager]
+	     localeForLanguageNamed: [ud language]];
 
   // WARNING : NSLocaleCode is not defined in <Foundation/NSUserDefaults.h>
   return [locale objectForKey: @"NSLocaleCode"];

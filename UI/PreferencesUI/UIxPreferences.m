@@ -40,8 +40,8 @@
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUserFolder.h>
+#import <SOGo/WOResourceManager+SOGo.h>
 #import <Mailer/SOGoMailAccount.h>
-#import "../../Main/SOGo.h"
 
 #import "UIxPreferences.h"
 
@@ -77,7 +77,7 @@
       category = nil;
 
       ASSIGN (locale,
-              [[WOApplication application] localeForLanguageNamed: language]);
+	      [[self resourceManager] localeForLanguageNamed: language]);
       ASSIGN (daysOfWeek, [locale objectForKey: NSWeekDayNameArray]);
 
       dd = [user domainDefaults];

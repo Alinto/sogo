@@ -30,10 +30,9 @@
 #import <SoObjects/SOGo/NSCalendarDate+SOGo.h>
 
 #import <SOGoUI/SOGoAptFormatter.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoUserDefaults.h>
-
-#import "../../Main/SOGo.h"
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/WOResourceManager+SOGo.h>
 
 #import "UIxCalMonthView.h"
 
@@ -52,7 +51,7 @@
 //       dateFormatter = [[SOGoDateFormatter alloc]
 //                         initWithLocale: [self locale]];
       ud = [[context activeUser] userDefaults];
-      locale = [[WOApplication application] localeForLanguageNamed: [ud language]];
+      locale = [[self resourceManager] localeForLanguageNamed: [ud language]];
       dayNames = [locale objectForKey: NSWeekDayNameArray];
       [dayNames retain];
       monthNames = [locale objectForKey: NSMonthNameArray];
