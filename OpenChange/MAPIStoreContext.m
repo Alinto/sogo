@@ -1471,6 +1471,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
             {
               [self logWithFormat: @"sucessfully deleted object at URL: %@", childURL];
               [mapping unregisterURLWithID: mid];
+              [table cleanupCaches];
               rc = MAPISTORE_SUCCESS;
             }
         }

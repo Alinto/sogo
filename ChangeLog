@@ -1,3 +1,10 @@
+2011-02-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContext.m
+	(-deleteMessageWithMID:inFID:withFlags:): we need to invoke
+	-cleanupCaches on the related table to avoid listing deleted
+	elements after this operation.
+
 2011-02-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* OpenChange/SOGoAppointmentObject+MAPIStore.m
