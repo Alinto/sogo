@@ -61,6 +61,8 @@
 		   stringByAppendingPathComponent: nameInContainer];
       properties = [[NSMutableDictionary alloc]
 		     initWithContentsOfFile: filePath];
+      if (!properties)
+        properties = [NSMutableDictionary new];
     }
 
   return properties;

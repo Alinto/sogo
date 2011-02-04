@@ -1,5 +1,9 @@
 2011-02-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIFSMessage.m (-properties): initialize
+	properties to an empty dictionary if the initialization from file
+	failed.
+
 	* OpenChange/MAPIStoreMailMessageTable.m (-childKeys)
 	(-restrictedChildKeys): now only return non-deleted elements.
 
