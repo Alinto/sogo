@@ -775,8 +775,9 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   const char *propName;
   void *propValue;
 
-  [self logWithFormat: @"INCOMPLETE METHOD '%s' (%d): no recipient handling",
-	__FUNCTION__, __LINE__];
+  // [self logWithFormat: @"INCOMPLETE METHOD '%s' (%d): no recipient handling",
+  //       __FUNCTION__, __LINE__];
+
   recipients = talloc_zero (memCtx, struct SRowSet);
   recipients->cRows = 0;
   recipients->aRow = NULL;
