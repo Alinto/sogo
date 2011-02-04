@@ -142,6 +142,7 @@
 - (void) dealloc
 {
   [content release];
+  [MAPIContent release];
   [creationDate release];
   [lastModified release];
   [super dealloc];
@@ -479,5 +480,17 @@
 {
   return @"<default>";
 }
+
+/* MAPI support */
+- (NSString *) MAPIContent
+{
+  return MAPIContent;
+}
+
+- (void) setMAPIContent: (NSString *) theContent
+{
+  ASSIGN(MAPIContent, theContent);
+}
+
 
 @end /* SOGoContentObject */

@@ -35,6 +35,7 @@
 {
   BOOL isNew;
   NSString *content;
+  NSString *MAPIContent;
   unsigned int version;
   NSCalendarDate *creationDate;
   NSCalendarDate *lastModified;
@@ -74,6 +75,10 @@
 - (NSString *) davCreationDate;
 - (NSString *) davLastModified;
 - (NSString *) davContentLength;
+
+/* MAPI support */
+- (NSString *) MAPIContent;
+- (void) setMAPIContent: (NSString *) theContent;
 
 @end
 
