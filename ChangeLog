@@ -1,5 +1,9 @@
 2011-02-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
+	* OpenChange/SOGoAppointmentObject+MAPIStore.m
+	(-setMAPIProperties:): added code to handle attendees. Make use of
+	the new MAPIContent ivar (temp hack).
+
 	* SoObjects/SOGo/SOGoContentObject.m (-MAPIContent)
 	(-setMAPIContent:): new accessors for querying/modifying the new
 	"MAPIContent" ivar, as part of a hack to enable events to be

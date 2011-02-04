@@ -24,19 +24,25 @@
 #include <gen_ndr/exchange.h>
 #include <mapistore/mapistore_nameid.h>
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSString.h>
 
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
+#import <NGCards/iCalPerson.h>
 #import <NGCards/iCalTimeZone.h>
 
+#import <SOGo/SOGoGCSFolder.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+
+#import <GDLContentStore/GCSFolder.h>
 
 #import "MAPIStoreTypes.h"
 
@@ -59,9 +65,26 @@
   [self logWithFormat: @"event props:"];
   MAPIStoreDumpMessageProperties (properties);
 
+#if 1
+  // We *ALWAYS* use the MAPIContent - as we do NOT want
+  // to modify the real object since it'll confuse the
+  // SOGo calendaring scheduling code.
+  if (![self MAPIContent])
+    {
+      vEvent = [self component: YES secure: NO];
+      vCalendar = [vEvent parent];
+      [vCalendar setProdID: @"-//Inverse inc.//OpenChange+SOGo//EN"];
+
+      [self setMAPIContent: [vCalendar versitString]];
+    }
+
+  // FIXME: this will NOT work with recurring events
+  vCalendar = [iCalCalendar parseSingleFromSource: [self MAPIContent]];
+  vEvent = [[vCalendar events] objectAtIndex: 0];
+#else
   vEvent = [self component: YES secure: NO];
   vCalendar = [vEvent parent];
-  [vCalendar setProdID: @"-//Inverse inc.//OpenChange+SOGo//EN"];
+#endif
 
   // summary
   value = [properties
@@ -107,13 +130,84 @@
     }
   [vEvent setTimeStampAsDate: now];
 
-  // MAPIStoreDumpMessageProperties (properties);
-  ASSIGN (content, [vCalendar versitString]);
+  // Organizer and attendees
+  value = [properties objectForKey: @"recipients"];
 
+  if (value)
+    {
+      NSArray *recipients;
+      NSDictionary *dict;
+      iCalPerson *person;
+      int i;
+
+
+      dict = [[context activeUser] primaryIdentity];
+      person = [iCalPerson new];
+      [person setCn: [dict objectForKey: @"fullName"]];
+      [person setEmail: [dict objectForKey: @"email"]];
+      [vEvent setOrganizer: person];
+      [person release];
+
+      recipients = [value objectForKey: @"to"];
+      
+      for (i = 0; i < [recipients count]; i++)
+	{
+	  dict = [recipients objectAtIndex: i];
+	  person = [iCalPerson new];
+
+	  [person setCn: [dict objectForKey: @"fullName"]];
+	  [person setEmail: [dict objectForKey: @"email"]];
+	  [person setParticipationStatus: iCalPersonPartStatNeedsAction];
+	  [person setRsvp: @"TRUE"];
+	  [person setRole: @"REQ-PARTICIPANT"]; 
+
+	  // FIXME: We must NOT always rely on this
+	  if (![dict objectForKey: @"x500dn"]
+              && ![vEvent isAttendee: [person rfc822Email]])
+	    [vEvent addToAttendees: person];
+
+	  [person release];
+	}
+    }
+
+
+  // MAPIStoreDumpMessageProperties (properties);
+
+#if 1
+  // We set the new MAPI content, but we overwrite -MAPISave and reuse the 
+  // MAPI content in order to trigger SOGo's calendar scheduling code.
+  [self setMAPIContent: [vCalendar versitString]];
+#else
+  ASSIGN(content, [vCalendar versitString]);
+  
   [fullCalendar release];
   fullCalendar = nil;
   [safeCalendar release];
   safeCalendar = nil;
+#endif
 }
+
+#if 1
+- (void) MAPISave
+{
+  iCalCalendar *calendar;
+  iCalEvent *event;
+
+  calendar = [iCalCalendar parseSingleFromSource: [self MAPIContent]];
+  event = [[calendar events] objectAtIndex: 0];
+
+  [self logWithFormat: @"-MAPISave in SOGoAppointmentObject+MAPIStore"];
+  
+  [self saveComponent: event];
+
+  /* ideally, this should be performed from saveComponent: */
+  [safeCalendar release];
+  safeCalendar = nil;
+  [fullCalendar release];
+  fullCalendar = nil;
+  [originalCalendar release];
+  originalCalendar = nil;
+}
+#endif
 
 @end
