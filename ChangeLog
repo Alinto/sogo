@@ -1,5 +1,9 @@
 2011-02-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIFSMessage.m (-MAPISave): use an alternative
+	way of producing the property list file as, for some reason,
+	invoking -writeToFile:atomically: can fail on NSDictionary.
+
 	* OpenChange/MAPIStoreContext.m
 	(-deleteMessageWithMID:inFID:withFlags:): we need to invoke
 	-cleanupCaches on the related table to avoid listing deleted

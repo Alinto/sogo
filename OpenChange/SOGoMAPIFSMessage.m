@@ -24,6 +24,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSPropertyList.h>
 #import <Foundation/NSString.h>
 
 #import <NGExtensions/NSObject+Logs.h>
@@ -89,6 +90,7 @@
 {
   NSArray *pathComponents;
   NSString *filePath;
+  NSData *content;
 
   [self logWithFormat: @"-MAPISave"];
 
@@ -108,7 +110,11 @@
       return;
     }
 
-  if (![properties writeToFile: filePath atomically: YES])
+  content = [NSPropertyListSerialization
+              dataFromPropertyList: properties
+                            format: NSPropertyListOpenStepFormat
+                  errorDescription: NULL];
+  if (![content writeToFile: filePath atomically: NO])
     [NSException raise: @"MAPIStoreIOException"
 		 format: @"could not save message"];
 }
