@@ -1,5 +1,8 @@
 2011-02-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessageTable.m (-childKeys)
+	(-restrictedChildKeys): now only return non-deleted elements.
+
 	* OpenChange/SOGoMAPIFSMessage.m (-MAPISave): use an alternative
 	way of producing the property list file as, for some reason,
 	invoking -writeToFile:atomically: can fail on NSDictionary.

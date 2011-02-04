@@ -27,6 +27,8 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <EOControl/EOQualifier.h>
+
 #import <SOGo/NSArray+Utilities.h>
 
 #import <Mailer/SOGoMailFolder.h>
@@ -47,20 +49,34 @@
 
 static Class NSDataK, NSStringK;
 
+static EOQualifier *nonDeletedQualifier = nil;
+
 + (void) initialize
 {
+  EOKeyValueQualifier *deletedQualifier;
+
   NSDataK = [NSData class];
   NSStringK = [NSString class];
+  deletedQualifier = [[EOKeyValueQualifier alloc]
+                            initWithKey: @"FLAGS"
+                       operatorSelector: EOQualifierOperatorContains
+                                  value: [NSArray arrayWithObject: @"DELETED"]];
+  nonDeletedQualifier = [[EONotQualifier alloc]
+                          initWithQualifier: deletedQualifier];
+  [deletedQualifier release];
 }
 
 - (NSArray *) childKeys
 {
-  return [folder toOneRelationshipKeys];
+  return [[folder fetchUIDsMatchingQualifier: nonDeletedQualifier
+                                sortOrdering: @"ARRIVAL"]
+           stringsWithFormat: @"%@.eml"];
 }
 
 - (NSArray *) restrictedChildKeys
 {
   NSArray *keys;
+  EOAndQualifier *andQualifier;
   
   if (restrictionState == MAPIRestrictionStateAlwaysTrue)
     keys = [self cachedChildKeys];
@@ -68,9 +84,12 @@ static Class NSDataK, NSStringK;
     keys = [NSArray array];
   else
     {
-      keys = [[folder fetchUIDsMatchingQualifier: restriction
+      andQualifier = [[EOAndQualifier alloc]
+                       initWithQualifiers: restriction, nonDeletedQualifier, nil];
+      keys = [[folder fetchUIDsMatchingQualifier: andQualifier
 		      sortOrdering: @"ARRIVAL"]
 	       stringsWithFormat: @"%@.eml"];
+      [andQualifier release];
       [self logWithFormat: @"  restricted keys: %@", keys];
     }
 
