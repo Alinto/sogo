@@ -1,5 +1,9 @@
 2011-02-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarContext.m
+	(-openMessage:forKey:inTable:): overriden method to return
+	attendees as recipients.
+
 	* OpenChange/SOGoMAPIFSMessage.m (-delete): implemented method.
 	(-setMAPIProperties:): append the new properties to the existing
 	ones instead of replacing them.
