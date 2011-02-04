@@ -372,7 +372,7 @@ static Class NSDataK, NSStringK;
   // 	type, MAPIStringForRestriction (res)];
 
   oldRestriction = restriction;
-  [restriction release];
+  [restriction autorelease];
   if (res)
     restrictionState = [self evaluateRestriction: res
 				   intoQualifier: &restriction];
@@ -384,6 +384,7 @@ static Class NSDataK, NSStringK;
   else
     restriction = nil;
   
+  // FIXME: we should not flush the caches if the restrictions matches
   [cachedRestrictedKeys release];
   cachedRestrictedKeys = nil;
   
@@ -391,7 +392,7 @@ static Class NSDataK, NSStringK;
     [self logWithFormat: @"restriction set to EOQualifier: %@",
 	  restriction];
   else if (oldRestriction)
-    [self logWithFormat: @"restriction unset"];
+    [self logWithFormat: @"restriction unset (was %@)", oldRestriction];
 }
 
 - (enum MAPISTATUS) getChildProperty: (void **) data

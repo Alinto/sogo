@@ -1,5 +1,8 @@
 2011-02-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
+	* OpenChange/MAPIStoreTable.m (-setRestrictions:): log the old
+	restriction when unset.
+
 	* OpenChange/MAPIStoreMapping.m (-unregisterURLWithID:): new
 	method for removing entries from the mapping dictionaries.
 
