@@ -29,7 +29,7 @@
 
 @interface SOGoMAPIFSMessage : SOGoObject
 {
-  NSDictionary *properties;
+  NSMutableDictionary *properties;
 }
 
 - (NSDictionary *) properties;

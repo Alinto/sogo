@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
@@ -57,7 +58,7 @@
     {
       filePath = [[container directory]
 		   stringByAppendingPathComponent: nameInContainer];
-      properties = [[NSDictionary alloc]
+      properties = [[NSMutableDictionary alloc]
 		     initWithContentsOfFile: filePath];
     }
 
@@ -66,7 +67,22 @@
 
 - (void) setMAPIProperties: (NSDictionary *) newProperties
 {
-  ASSIGN (properties, newProperties);
+  NSArray *keys;
+  NSString *key;
+  int i, count;
+  
+  // We ensure the current properties are loaded
+  [self properties];
+  
+  // We merge the changes
+  keys = [newProperties allKeys];
+  count = [keys count];
+  for (i = 0; i < count; i++)
+    {
+      key = [keys objectAtIndex: i];
+      [properties setObject: [newProperties objectForKey: key]
+                     forKey: key];
+    }
 }
 
 - (void) MAPISave
@@ -110,6 +126,23 @@
   attributes = [fm fileAttributesAtPath: filePath traverseLink: NO];
 
   return [NSString stringWithFormat: @"%p", attributes];
+}
+
+- (NSException *) delete
+{
+  NSFileManager *fm;
+  NSString *filePath;
+  
+  fm = [NSFileManager defaultManager];
+
+  filePath = [[container directory]
+	       stringByAppendingPathComponent: nameInContainer];
+
+  if (![fm removeFileAtPath: filePath  handler: NULL])
+    [NSException raise: @"MAPIStoreIOException"
+		 format: @"could not delete message"];
+
+  return nil;
 }
 
 @end
