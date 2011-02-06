@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <NGExtensions/NSObject+Logs.h>
+
 #import <SOGo/SOGoFolder.h>
 #import <SOGo/SOGoObject.h>
 
@@ -208,6 +210,11 @@ static MAPIStoreMapping *mapping;
     }
 
   return rc;
+}
+
+- (void) setSortOrder: (const struct SSortOrderSet *) set
+{
+  [self logWithFormat: @"unimplemented method: %@", NSStringFromSelector (_cmd)];
 }
 
 @end

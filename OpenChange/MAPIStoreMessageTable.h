@@ -26,6 +26,9 @@
 #import "MAPIStoreTable.h"
 
 @interface MAPIStoreMessageTable : MAPIStoreTable
+
+- (void) setSortOrder: (const struct SSortOrderSet *) set;
+
 @end
 
 #endif /* MAPISTOREMESSAGETABLE_H */

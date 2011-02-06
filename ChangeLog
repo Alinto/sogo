@@ -1,5 +1,12 @@
 2011-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMessageTable.m (-setSortOrder:): implemented
+	stub method.
+
+	* OpenChange/MAPIStoreContext.m
+	(-setSortOrder:withFID:andTableType:getTableStatus:): implemented
+	backend method for sorting messages.
+
 	* OpenChange/SOGoMAPIFSMessage.m (-MAPISave): restored old way of
 	decoding the property dictionary from the property list as the
 	"new method" was working around that was solved elsewhere and was

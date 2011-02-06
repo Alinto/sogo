@@ -674,6 +674,18 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return MAPISTORE_SUCCESS;
 }
 
+- (int) setSortOrder: (const struct SSortOrderSet *) set
+             withFID: (uint64_t) fid andTableType: (uint8_t) type
+      getTableStatus: (uint8_t *) tableStatus
+{
+  MAPIStoreMessageTable *table;
+
+  table = (MAPIStoreMessageTable *) [self _tableForFID: fid andTableType: type];
+  [table setSortOrder: set];
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (enum MAPISTATUS) getTableProperty: (void **) data
 			     withTag: (enum MAPITAGS) propTag
 			  atPosition: (uint32_t) pos

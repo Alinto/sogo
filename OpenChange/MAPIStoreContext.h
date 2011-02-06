@@ -94,6 +94,9 @@
 		withFID: (uint64_t) fid
 	   andTableType: (uint8_t) tableType
 	 getTableStatus: (uint8_t *) tableStatus;
+- (int) setSortOrder: (const struct SSortOrderSet *) set
+             withFID: (uint64_t) fid andTableType: (uint8_t) type
+      getTableStatus: (uint8_t *) tableStatus;
 
 - (enum MAPISTATUS) getTableProperty: (void **) data
 			     withTag: (enum MAPITAGS) proptag
