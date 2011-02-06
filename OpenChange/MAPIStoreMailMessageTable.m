@@ -42,7 +42,8 @@
 
 #import "MAPIStoreMailMessageTable.h"
 
-#include <libmapi/mapidefs.h>
+#undef DEBUG
+#include <mapistore/mapistore.h>
 #include <mapistore/mapistore_nameid.h>
 
 @implementation MAPIStoreMailMessageTable
@@ -66,10 +67,26 @@ static EOQualifier *nonDeletedQualifier = nil;
   [deletedQualifier release];
 }
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      sortOrdering = @"ARRIVAL";
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [sortOrdering release];
+  [super dealloc];
+}
+
 - (NSArray *) childKeys
 {
   return [[folder fetchUIDsMatchingQualifier: nonDeletedQualifier
-                                sortOrdering: @"ARRIVAL"]
+                                sortOrdering: sortOrdering]
            stringsWithFormat: @"%@.eml"];
 }
 
@@ -87,7 +104,7 @@ static EOQualifier *nonDeletedQualifier = nil;
       andQualifier = [[EOAndQualifier alloc]
                        initWithQualifiers: restriction, nonDeletedQualifier, nil];
       keys = [[folder fetchUIDsMatchingQualifier: andQualifier
-		      sortOrdering: @"ARRIVAL"]
+                                    sortOrdering: sortOrdering]
 	       stringsWithFormat: @"%@.eml"];
       [andQualifier release];
       [self logWithFormat: @"  restricted keys: %@", keys];
@@ -451,7 +468,6 @@ static EOQualifier *nonDeletedQualifier = nil;
   return rc;
 }
 
-
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
 {
   static NSMutableDictionary *knownProperties = nil;
@@ -593,6 +609,83 @@ static EOQualifier *nonDeletedQualifier = nil;
     }
 
   return rc;
+}
+
+/* sorting */
+
+- (NSString *) _sortIdentifierForProperty: (enum MAPITAGS) property
+{
+  static NSMutableDictionary *knownProperties = nil;
+
+  if (!knownProperties)
+    {
+      knownProperties = [NSMutableDictionary new];
+      /* ARRIVAL, CC */
+      [knownProperties setObject: @"DATE"
+			  forKey: MAPIPropertyKey (PR_MESSAGE_DELIVERY_TIME)];
+      [knownProperties setObject: @"FROM"
+                          forKey: MAPIPropertyKey (PR_SENT_REPRESENTING_NAME_UNICODE)];
+      [knownProperties setObject: @"SIZE"
+                          forKey: MAPIPropertyKey (PR_MESSAGE_SIZE)];
+      [knownProperties setObject: @"SIZE"
+                          forKey: MAPIPropertyKey (PidLidRemoteTransferSize)];
+      [knownProperties setObject: @"SUBJECT"
+                          forKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
+      [knownProperties setObject: @"TO"
+                          forKey: MAPIPropertyKey (PR_DISPLAY_TO_UNICODE)];
+    }
+
+  return [knownProperties objectForKey: MAPIPropertyKey (property)];
+}
+
+- (void) setSortOrder: (const struct SSortOrderSet *) set
+{
+  NSMutableString *newSortOrdering;
+  struct SSortOrder *sortOrder;
+  NSString *sortIdentifier;
+  const char *propName;
+  uint16_t count;
+
+  if (set)
+    {
+      /* TODO: */
+      if (set->cCategories > 0)
+        [self errorWithFormat: @"we don't handle sort categories yet"];
+
+      newSortOrdering = [NSMutableString string];
+
+      for (count = 0; count < set->cSorts; count++)
+        {
+          sortOrder = set->aSort + count;
+          sortIdentifier
+            = [self _sortIdentifierForProperty: sortOrder->ulPropTag];
+          if (sortIdentifier)
+            {
+              if (sortOrder->ulOrder == TABLE_SORT_DESCEND)
+                [newSortOrdering appendString: @" REVERSE"];
+              else if (sortOrder->ulOrder == TABLE_SORT_MAXIMUM_CATEGORY)
+                [self errorWithFormat: @"TABLE_SORT_MAXIMUM_CATEGORY is not handled"];
+              [newSortOrdering appendFormat: @" %@", sortIdentifier];
+            }
+          else
+            {
+              propName = get_proptag_name (sortOrder->ulPropTag);
+              if (!propName)
+                propName = "<unknown>";
+              [self errorWithFormat:
+                      @"sort unhandled for property: %s (0x%.8x)",
+                    propName, sortOrder->ulPropTag];
+            }
+        }
+      if ([newSortOrdering length] > 0)
+        ASSIGN (sortOrdering, [newSortOrdering substringFromIndex: 1]);
+      else
+        ASSIGN (sortOrdering, @"ARRIVAL");
+      [self cleanupCaches];
+      [self logWithFormat: @"new sort ordering: '%@'", sortOrdering];
+    }
+  else
+    ASSIGN (sortOrdering, @"ARRIVAL");
 }
 
 @end

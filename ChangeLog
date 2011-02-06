@@ -1,5 +1,9 @@
 2011-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessageTable.m (-setSordOrder):
+	overriden method with proper mapping of IMAP sort fields, still
+	lack handling of categories.
+
 	* OpenChange/MAPIStoreMessageTable.m (-setSortOrder:): implemented
 	stub method.
 

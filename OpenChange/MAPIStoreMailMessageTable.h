@@ -26,6 +26,10 @@
 #import "MAPIStoreMessageTable.h"
 
 @interface MAPIStoreMailMessageTable : MAPIStoreMessageTable
+{
+  NSString *sortOrdering;
+}
+
 @end
 
 #endif /* MAPISTOREMAILMESSAGETABLE_H */
