@@ -183,10 +183,6 @@ static MAPIStoreMapping *mapping;
 		asShortBinaryInMemCtx: memCtx];
       break;
 
-      rc = [self getChildProperty: data forKey: childKey
-                          withTag: PR_SUBJECT_UNICODE];
-      break;
-
     case PR_ORIGINAL_SUBJECT_UNICODE:
     case PR_CONVERSATION_TOPIC_UNICODE:
       rc = [self getChildProperty: data forKey: childKey
