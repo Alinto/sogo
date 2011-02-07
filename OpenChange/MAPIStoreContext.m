@@ -775,12 +775,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	     forKey: (NSString *) childKey
 	    inTable: (MAPIStoreTable *) table
 {
-  static enum MAPITAGS tags[] = { PR_SUBJECT_UNICODE, PR_HASATTACH,
-				  PR_MESSAGE_DELIVERY_TIME, PR_MESSAGE_FLAGS,
-				  PR_FLAG_STATUS, PR_SENSITIVITY,
-				  PR_SENT_REPRESENTING_NAME_UNICODE,
-				  PR_INTERNET_MESSAGE_ID_UNICODE,
-				  PR_READ_RECEIPT_REQUESTED };
+  static enum MAPITAGS tags[] = { PR_SUBJECT_PREFIX_UNICODE,
+                                  PR_NORMALIZED_SUBJECT_UNICODE };
   struct SRowSet *recipients;
   struct SRow *properties;
   NSInteger count, max;
@@ -795,7 +791,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   recipients->aRow = NULL;
   msg->recipients = recipients;
 
-  max = 9;
+  max = 2;
   properties = talloc_zero (memCtx, struct SRow);
   properties->cValues = 0;
   properties->ulAdrEntryPad = 0;

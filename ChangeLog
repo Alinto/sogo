@@ -1,5 +1,10 @@
 2011-02-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (-openMessage:forKey:inTable:):
+	only return PR_SUBJECT_PREFIX_UNICODE,
+	PR_NORMALIZED_SUBJECT_UNICODE as those are the only fields
+	required by the doc.
+
 	* OpenChange/MAPIStoreMailMessageTable.m
 	(-getChildProperty:forKey:withTag:): handle PR_FLAG_STATUS and
 	PR_FOLLOWUP_ICON based on the "Flagged" message flag.
