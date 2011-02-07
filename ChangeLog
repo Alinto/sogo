@@ -1,5 +1,12 @@
 2011-02-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessageTable.m
+	(-getChildProperty:forKey:withTag:): handle PR_FLAG_STATUS and
+	PR_FOLLOWUP_ICON based on the "Flagged" message flag.
+
+	* OpenChange/SOGoMailObject+MAPIStore.m: new category module for
+	handling IMAP metadata on messages.
+
 	* OpenChange/MAPIStoreDraftsContext.m
 	(-createMessageOfClass:inFolderAtURL:): implemented method to
 	avoid a crash when "saving" drafts messages in Outlook.

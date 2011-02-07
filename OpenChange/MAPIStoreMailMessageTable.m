@@ -187,10 +187,46 @@ static EOQualifier *nonDeletedQualifier = nil;
       }
       break;
 
-    case PR_FLAG_STATUS: // TODO
+    case PR_FLAG_STATUS:
+      {
+	NSDictionary *coreInfos;
+	NSArray *flags;
+	unsigned int v;
+
+	child = [self lookupChild: childKey];
+	coreInfos = [child fetchCoreInfos];
+
+	flags = [coreInfos objectForKey: @"flags"];
+	if ([flags containsObject: @"flagged"])
+	  v = 2;
+        else
+          v = 0;
+
+	*data = MAPILongValue (memCtx, v);
+      }
+      break;
+
+    case PR_FOLLOWUP_ICON:
+      {
+	NSDictionary *coreInfos;
+	NSArray *flags;
+	unsigned int v;
+
+	child = [self lookupChild: childKey];
+	coreInfos = [child fetchCoreInfos];
+
+	flags = [coreInfos objectForKey: @"flags"];
+	if ([flags containsObject: @"flagged"])
+	  v = 6;
+        else
+          v = 0;
+
+	*data = MAPILongValue (memCtx, v);
+      }
+      break;
+
     case PR_SENSITIVITY: // TODO
     case PR_ORIGINAL_SENSITIVITY: // TODO
-    case PR_FOLLOWUP_ICON: // TODO
       *data = MAPILongValue (memCtx, 0);
       break;
 

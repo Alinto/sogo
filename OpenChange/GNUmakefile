@@ -72,6 +72,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	SOGoContactGCSEntry+MAPIStore.m \
 	SOGoDraftObject+MAPIStore.m \
 	SOGoGCSFolder+MAPIStore.m \
+	SOGoMailObject+MAPIStore.m \
 	SOGoTaskObject+MAPIStore.m \
 	\
 	SOGoMAPIFSFolder.m \
