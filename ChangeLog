@@ -1,5 +1,9 @@
 2011-02-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreNotesMessageTable.m
+	(-getChildProperty:forKey:withTag:): make PR_SUBJECT_UNICODE an
+	alias to PR_NORMALIZED_SUBJECT_UNICODE.
+
 	* OpenChange/MAPIStoreMailMessageTable.m
 	(-getChildProperty:forKey:withTag:): return a proper value for
 	PR_SUBJECT_PREFIX_UNICODE and PR_NORMALIZED_SUBJECT_UNICODE.

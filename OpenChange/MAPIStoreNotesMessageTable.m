@@ -60,6 +60,11 @@
       *data = MAPILongValue (memCtx, 0x00000303);
       break;
 
+    case PR_SUBJECT_UNICODE:
+      rc = [self getChildProperty: data
+                           forKey: childKey
+                          withTag: PR_NORMALIZED_SUBJECT_UNICODE];
+      break;
     default:
       rc = [super getChildProperty: data
 			    forKey: childKey
