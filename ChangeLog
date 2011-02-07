@@ -4,6 +4,10 @@
 	MAPIStoreMailContext and make use of the trash folder as module
 	folder.
 
+	* OpenChange/MAPIStoreDraftsContext.m: now a subclass of
+	MAPIStoreMailContext and make use of the drafts folder as module
+	folder.
+
 2011-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailMessageTable.m (-setSordOrder):
