@@ -1,3 +1,9 @@
+2011-02-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreDraftsContext.m
+	(-createMessageOfClass:inFolderAtURL:): implemented method to
+	avoid a crash when "saving" drafts messages in Outlook.
+
 2011-02-07  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* OpenChange/MAPIStoreDeletedItemsContext.m: now a subclass of

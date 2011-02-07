@@ -26,6 +26,7 @@
 
 #import "MAPIStoreMapping.h"
 
+#import <Mailer/SOGoDraftsFolder.h>
 #import <Mailer/SOGoMailAccount.h>
 
 #import "MAPIApplication.h"
@@ -80,6 +81,12 @@
       [parentFoldersBag addObject: currentContainer];
       currentContainer = [currentContainer container];
     }
+}
+
+- (id) createMessageOfClass: (NSString *) messageClass
+	      inFolderAtURL: (NSString *) folderURL;
+{
+  return [moduleFolder newDraft];
 }
 
 @end
