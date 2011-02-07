@@ -145,8 +145,8 @@
     case PR_DISPLAY_NAME_UNICODE: // Full Name
     case PidLidFileUnder: // contact block title name
       rc = [super getChildProperty: data
-			    forKey: childKey
-			   withTag: PR_DISPLAY_NAME_UNICODE];
+        		    forKey: childKey
+        		   withTag: PR_DISPLAY_NAME_UNICODE];
       break;
     case PidLidEmail1OriginalDisplayName: // E-mail
       child = [self lookupChild: childKey];

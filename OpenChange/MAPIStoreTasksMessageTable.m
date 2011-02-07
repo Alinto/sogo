@@ -68,8 +68,6 @@
       *data = talloc_strdup(memCtx, "IPM.Task");
       break;
     case PR_SUBJECT_UNICODE: // SUMMARY
-    case PR_NORMALIZED_SUBJECT_UNICODE:
-    case PR_CONVERSATION_TOPIC_UNICODE:
       task = [[self lookupChild: childKey] component: NO secure: NO];
       *data = [[task summary] asUnicodeInMemCtx: memCtx];
       break;

@@ -1,5 +1,16 @@
 2011-02-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessageTable.m
+	(-getChildProperty:forKey:withTag:): return a proper value for
+	PR_SUBJECT_PREFIX_UNICODE and PR_NORMALIZED_SUBJECT_UNICODE.
+
+	* OpenChange/MAPIStoreMessageTable.m
+	(-getChildProperty:forKey:withTag:): now return standard values
+	(checked against doc) for PR_ORIGINAL_SUBJECT_UNICODE,
+	PR_CONVERSATION_TOPIC_UNICODE, PR_SUBJECT_PREFIX_UNICODE and
+	PR_NORMALIZED_SUBJECT_UNICODE, the two latter being common to all
+	modules except MAPIStoreMailMessageTable.
+
 	* OpenChange/MAPIStoreContext.m (-openMessage:forKey:inTable:):
 	only return PR_SUBJECT_PREFIX_UNICODE,
 	PR_NORMALIZED_SUBJECT_UNICODE as those are the only fields

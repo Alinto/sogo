@@ -156,9 +156,6 @@ static MAPIStoreMapping *mapping;
     case PR_MSG_STATUS: // TODO
       *data = MAPILongValue (memCtx, 0);
       break;
-    case PR_SUBJECT_PREFIX_UNICODE: // TODO
-      *data = [@"" asUnicodeInMemCtx: memCtx];
-      break;
     case PR_IMPORTANCE: // TODO -> subclass?
       *data = MAPILongValue (memCtx, 1);
       break;
@@ -186,9 +183,22 @@ static MAPIStoreMapping *mapping;
 		asShortBinaryInMemCtx: memCtx];
       break;
 
-    case PR_SUBJECT_UNICODE:
       rc = [self getChildProperty: data forKey: childKey
-		 withTag: PR_NORMALIZED_SUBJECT_UNICODE];
+                          withTag: PR_SUBJECT_UNICODE];
+      break;
+
+    case PR_ORIGINAL_SUBJECT_UNICODE:
+    case PR_CONVERSATION_TOPIC_UNICODE:
+      rc = [self getChildProperty: data forKey: childKey
+                          withTag: PR_NORMALIZED_SUBJECT_UNICODE];
+      break;
+
+    case PR_SUBJECT_PREFIX_UNICODE:
+      *data = [@"" asUnicodeInMemCtx: memCtx];
+      break;
+    case PR_NORMALIZED_SUBJECT_UNICODE:
+      rc = [self getChildProperty: data forKey: childKey
+                          withTag: PR_SUBJECT_UNICODE];
       break;
 
     case PR_DISPLAY_TO_UNICODE:

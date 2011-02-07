@@ -118,7 +118,8 @@ static EOQualifier *nonDeletedQualifier = nil;
 			     withTag: (enum MAPITAGS) propTag
 {
   SOGoMailObject *child;
-  NSString *childURL, *stringValue;
+  NSString *childURL, *subject, *stringValue;
+  NSInteger colIdx;
   enum MAPISTATUS rc;
 
   rc = MAPI_E_SUCCESS;
@@ -128,9 +129,6 @@ static EOQualifier *nonDeletedQualifier = nil;
       /* read mail, see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
       *data = MAPILongValue (memCtx, 0x00000100);
       break;
-    case PR_CONVERSATION_TOPIC:
-    case PR_CONVERSATION_TOPIC_UNICODE:
-    case PR_SUBJECT:
     case PR_SUBJECT_UNICODE:
       child = [self lookupChild: childKey];
       stringValue = [child decodedSubject];
@@ -138,6 +136,33 @@ static EOQualifier *nonDeletedQualifier = nil;
 	stringValue = @"";
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
+    case PR_SUBJECT_PREFIX_UNICODE:
+      child = [self lookupChild: childKey];
+      subject = [child decodedSubject];
+      colIdx = [subject rangeOfString: @":"].location;
+      if (colIdx != NSNotFound && colIdx < 4)
+        stringValue = [NSString stringWithFormat: @"%@: ",
+                                [subject substringToIndex: colIdx]];
+      else
+	stringValue = @"";
+      [self logWithFormat: @"subject prefix: %@", stringValue];
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+    case PR_NORMALIZED_SUBJECT_UNICODE:
+      child = [self lookupChild: childKey];
+      subject = [child decodedSubject];
+      colIdx = [subject rangeOfString: @":"].location;
+      if (colIdx != NSNotFound && colIdx < 4)
+        stringValue = [[subject substringFromIndex: colIdx + 1]
+                        stringByTrimmingLeadSpaces];
+      else
+        stringValue = subject;
+      if (!stringValue)
+	stringValue = @"";
+      [self logWithFormat: @"normalized subject: %@", stringValue];
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      break;
+
     case PR_MESSAGE_CLASS_UNICODE:
     case PR_ORIG_MESSAGE_CLASS_UNICODE:
       *data = talloc_strdup (memCtx, "IPM.Note");
@@ -246,6 +271,9 @@ static EOQualifier *nonDeletedQualifier = nil;
 
       /* TODO: the following are supposed to be display names, separated by a semicolumn */
     case PR_RECEIVED_BY_NAME:
+    case PR_RECEIVED_BY_NAME_UNICODE:
+    case PR_RCVD_REPRESENTING_NAME:
+    case PR_RCVD_REPRESENTING_NAME_UNICODE:
     case PR_DISPLAY_TO:
     case PR_DISPLAY_TO_UNICODE:
     case PR_ORIGINAL_DISPLAY_TO_UNICODE:
@@ -414,6 +442,7 @@ static EOQualifier *nonDeletedQualifier = nil;
       *data = [[child messageId] asUnicodeInMemCtx: memCtx];
       break;
     case PR_READ_RECEIPT_REQUESTED: // TODO
+    case PR_DELETE_AFTER_SUBMIT: // TODO
       *data = MAPIBoolValue (memCtx, NO);
       break;
     case PidLidPrivate:

@@ -102,8 +102,6 @@
     //   *data = MAPILongValue (memCtx, 0);
     //   break;
     case PR_SUBJECT_UNICODE: // SUMMARY
-    case PR_NORMALIZED_SUBJECT_UNICODE:
-    case PR_CONVERSATION_TOPIC_UNICODE:
       event = [[self lookupChild: childKey] component: NO secure: NO];
       *data = [[event summary] asUnicodeInMemCtx: memCtx];
       break;
