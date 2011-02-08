@@ -1,8 +1,9 @@
 /* this file is in UTF-8 format! */
 
 "Contact" = "Контакт";
-"Address" = "Адреса";
+"Address" = "Адреси";
 "Other" = "Інше";
+"Photos" = "Світлини";
 
 "Address Books" = "Адресні книги";
 "Addressbook" = "Адресна книга";
@@ -40,7 +41,7 @@
 
 "Copy To" = "Скопіювати до";
 "Move To" = "Пересунути до";
-"Add To:" = "Додати до:";
+"Add to:" = "Додати до:";
 
 /* Tooltips */
 
@@ -59,7 +60,7 @@
 "Personal Addressbook" = "Особиста адресна книга";
 "Search in Addressbook" = "Шукати в адресній книзі";
 
-"New Card" = "Створити картку";
+"New Card" = "Додати картку";
 "New List" = "Створити список";
 "Properties" = "Властивості";
 "Sharing..." = "Спільний доступ...";
@@ -119,6 +120,7 @@
 "Note:" = "Примітки:";
 "Timezone:" = "Часова зона:";
 "Birthday:" = "День народження:";
+"Birthday (yyyy-mm-dd):" = "Дата народження (рррр-мм-дд):";
 "Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Додати як...";
@@ -153,6 +155,9 @@
 
 "Default Roles" = "Ролі за замовчанням";
 "User rights for:" = "Права доступу користувача до:";
+
+"Any Authenticated User" = "Будь-який авторизований користувач";
+"Public Access" = "Публічний доступ";
 
 "This person can add cards to this addressbook."
 = "Ця особа може додавати картки до цієї адресної книги.";
