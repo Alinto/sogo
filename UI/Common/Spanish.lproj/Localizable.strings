@@ -10,10 +10,10 @@
 "Address Book"	= "Libreta de direcciones";
 "Mail" = "Correo";
 "Preferences" = "Preferencias";
-"Administration" = "Administration";
+"Administration" = "Administración";
 "Disconnect" = "Cerrar sesión";
 "Right Administration" = "Administración de permisos";
-"Log Console (dev.)" = "Consola registro de actividad (dev.)";
+"Log Console (dev.)" = "Consola de registro de actividad (dev.)";
 
 "User" = "Usuario";
 
@@ -22,20 +22,20 @@
 "noJavascriptError" = "SOGo requiere Javascript. Por favor, active Javascript en su navegador.";
 "noJavascriptRetry" = "Reintentar";
 
-"Owner:" = "Owner:";
+"Owner:" = "Propietario:";
 "Publish the Free/Busy information" = "Publicar información de disponibilidad";
 
 "Add..." = "Añadir...";
 "Remove" = "Borrar";
 
-"Subscribe User" = "Subscribe User";
+"Subscribe User" = "Suscribir Usuario";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
-"Any user not listed above" = "Any user not listed above";
-"Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
+"Any Authenticated User" = "Cualquier Usuario Autenticado";
+"Public Access" = "Acceso Público";
+"Any user not listed above" = "Cualquier usuario no listado arriba";
+"Anybody accessing this resource from the public area" = "Cualquiera que acceda a este recurso desde el área pública";
 
-"Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";
+"Sorry, the user rights can not be configured for that object." = "Disculpe, no se pueden configurar permisos de acceso para este objeto.";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -46,30 +46,30 @@
 	= "No es posible desuscribirse de esta carpeta.";
 "You cannot unsubscribe from a folder that you own!"
       	= "No es posible desuscribirse de una carpeta que le pertenece.";
-"Unable to rename that folder!" = "La carpeta no puede ser renombrada.";
+"Unable to rename that folder!" = "No se puede renombrar esta carpeta.";
 "You have already subscribed to that folder!"
-     	= "Ya se ha suscrito a esta carpeta.";
+     	= "Ya está suscrito a esta carpeta.";
 "The user rights cannot be edited for this object!"
         = "No es posible modificar los permisos de acceso a este objeto.";
-"A folder by that name already exists." = "A folder by that name already exists.";
+"A folder by that name already exists." = "Ya existe una carpeta con el mismo nombre.";
 "You cannot create a list in a shared address book." 
-        = "You cannot create a list in a shared address book.";
-"Warning" = "Warning";
+        = "No se puede crear una lista en una libreta de direcciones compartida.";
+"Warning" = "Atención";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "You are not allowed to access this module or this system. Please contact your system administrator.";
+= "No tiene permisos para acceder a este módulo o a este sistema. Por favor, contacte a su administrador de sistemas.";
 "You don't have the required privileges to perform the operation."
-= "You don't have the required privileges to perform the operation.";
+= "No tiene los permisos necesarios para realizar esta operación.";
 
-"noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
-"delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
-"delegate is a participant" = "The delegate is already a participant.";
-"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+"noEmailForDelegation" = "Debe especificar la dirección a la cual quiere delegar su invitación.";
+"delegate is organizer" = "El usuario delegado es el organizador. Por favor especifique otro usuario a quien hacer la delegación.";
+"delegate is a participant" = "El usuario delegado ya es un participante.";
+"delegate is a group" = "La dirección especificada corresponde a un grupo. Solo puede hacer una delegación a una persona.";
 
 /* common buttons */
-"OK" = "OK";
-"Cancel" = "Cancel";
-"Yes" = "Yes";
+"OK" = "Aceptar";
+"Cancel" = "Cancelar";
+"Yes" = "Sí";
 "No" = "No";
 
 /* alarms */

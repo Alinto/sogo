@@ -8,15 +8,15 @@
 "Connect" = "Conectar";
 
 "Wrong username or password." = "Nombre de usuario o contraseña incorrectos.";
-"cookiesNotEnabled" = "You cannot login because your browser's cookies are disabled. Please enable cookies in your browser's settings and try again.";
+"cookiesNotEnabled" = "No puede ingresar porque su navegador tiene las cookies deshabilitadas. Por favor, habilite las cookies en su navegador y vuelva a intentarlo.";
 
 "browserNotCompatible" = "Hemos detectado que este sistema no soporta su versión del navegador. Recomendamos usar Firefox. Haga clic en el siguiente enlace para descargar la versión más reciente de este navegador.";
 "alternativeBrowsers" = "Alternativamente, también puede usar uno se los siguientes navegadores compatibles: ";
 "alternativeBrowserSafari" = "Alternativamente, puede usar Safari.";
 "Download" = "Descarga";
 
-"Language:" = "Language:";
-"choose" = "Choose ...";
+"Language:" = "Idioma:";
+"choose" = "Elegir ...";
 "Catalan" = "Català";
 "Czech" = "Česky";
 "Dutch" = "Nederlands";
@@ -32,38 +32,38 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"About" = "About";
-"AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>
-SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>
-SOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>
-See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"About" = "Acerca de";
+"AboutBox" = "SOGo, Desarrollado por Inverse, es una suite de groupware completamente funcional, enfocada en la simpleza y la escalabilidad.<br/><br/>
+SOGo posee una potente interfaz web basada en la tecnología AJAX y soporta una amplia variedad de clientes nativos a través del uso de protocolos estándar como CalDAV y CarDAV</br></br>
+SOGo se distribuye bajo la licencia <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versión 2 o posterior y algunas partes se distribuyen bajo la licencia GNU LGPL versión 2. SOGo es software libre: Usted tiene la libertad de modificarlo y redistribuirlo. Este software se distribuye SIN NINGUNA GARANTÍA, bajo los alcances permitidos por la ley.<br/><br/>
+Vea <a href=\"http://www.sogo.nu/en/support/community.html\">esta página</a> para conocer varias opciones de soporte.";
 
-"Your account was locked due to too many failed attempts." = "Your account was locked due to too many failed attempts.";
-"Your account was locked due to an expired password." = "Your account was locked due to an expired password.";
-"Login failed due to unhandled error case: " = "Login failed due to unhandled error case: ";
-"Change your Password" = "Change your Password";
-"Your password has expired, please enter a new one below:" = "Your password has expired, please enter a new one below:";
-"Password must not be empty." = "Password must not be empty.";
-"The passwords do not match. Please try again." = "The passwords do not match. Please try again.";
-"Password Grace Period" = "Password Grace Period";
-"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog.";
-"Password about to expire" = "Password about to expire";
-"Your password is going to expire in %{0} %{1}." = "Your password is going to expire in %{0} %{1}.";
-"days" = "days";
-"hours" = "hours";
-"minutes" = "minutes";
-"seconds" = "seconds";
-"Password change failed" = "Password change failed";
-"Password change failed - Permission denied" = "Password change failed - Permission denied";
-"Password change failed - Insufficient password quality" = "Password change failed - Insufficient password quality";
-"Password change failed - Password is too short" = "Password change failed - Password is too short";
-"Password change failed - Password is too young" = "Password change failed - Password is too young";
-"Password change failed - Password is in history" = "Password change failed - Password is in history";
-"Unhandled policy error: %{0}" = "Unhandled policy error: %{0}";
-"Unhandled error response" = "Unhandled error response";
-"Password change is not supported." = "Password change is not supported.";
-"Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
-"New password:" = "New password:";
-"Confirmation:" = "Confirmation:";
-"Cancel" = "Cancel";
-"Please wait..." = "Please wait...";
+"Your account was locked due to too many failed attempts." = "Su cuenta fue bloqueada debido a demasiados intentos fallidos.";
+"Your account was locked due to an expired password." = "Su cuenta fue bloqueada porque su contraseña expiró.";
+"Login failed due to unhandled error case: " = "No se pudo acceder debido a un error desconocidoe: ";
+"Change your Password" = "Cambie su contraseña";
+"Your password has expired, please enter a new one below:" = "Su contraseña ha expirado, por favor ingrese una nueva abajo:";
+"Password must not be empty." = "Su contraseña no puede estar en blanco.";
+"The passwords do not match. Please try again." = "Las contraseñas no coinciden. Por favor, trate de nuevo.";
+"Password Grace Period" = "Período de gracia para la contraseña";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Le quedan %{0} ingresos antes de que su cuenta sea bloqueada. Por favor cambie su contraseña en la sección de preferencias.";
+"Password about to expire" = "Su contraseña está a punto de expirar";
+"Your password is going to expire in %{0} %{1}." = "Su contraseña expira en %{0} %{1}.";
+"days" = "días";
+"hours" = "horas";
+"minutes" = "minutos";
+"seconds" = "segundos";
+"Password change failed" = "Falló el cambio de contraseña";
+"Password change failed - Permission denied" = "Falló el cambio de contraseña - Permiso denegado";
+"Password change failed - Insufficient password quality" = "Falló el cambio de contraseña - La contraseña no es lo suficientemente fuerte";
+"Password change failed - Password is too short" = "Falló el cambio de contraseña - La contraseña es demasiado corta";
+"Password change failed - Password is too young" = "Falló el cambio de contraseña - La contraseña ya se ha usado recientemente";
+"Password change failed - Password is in history" = "Falló el cambio de contraseña - Ya se usó la misma contraseña antes";
+"Unhandled policy error: %{0}" = "Error de políticas no registrado: %{0}";
+"Unhandled error response" = "Mensaje de error no registrado";
+"Password change is not supported." = "El cambio de contraseña no está soportado.";
+"Unhandled HTTP error code: %{0}" = "Código de error HTTP no registrado: %{0}";
+"New password:" = "Nueva contraseña:";
+"Confirmation:" = "Confirmación:";
+"Cancel" = "Cancelar";
+"Please wait..." = "Por favor, espere...";
