@@ -1,5 +1,9 @@
 2011-02-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMessageTable.m
+	(-getChildProperty:forKey:withTag:): removed PR_MESSAGE_CODEPAGE
+	and PR_INTERNET_CPID.
+
 	* OpenChange/MAPIStoreMailMessageTable.m
 	(-getChildProperty:forKey:withTag:): removed non-unicode string
 	proptags. Added support for case
@@ -13,6 +17,8 @@
 	values where larger than 3999 bytes.
 	(_sortIdentifierForProperty:): enabled sorting on
 	PR_CLIENT_SUBMIT_TIME.
+	Added support for PR_INTERNET_CPID, currently returning "utf-8"
+	only (65001).
 
 2011-02-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

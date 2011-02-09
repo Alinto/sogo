@@ -374,6 +374,18 @@ static EOQualifier *nonDeletedQualifier = nil;
       }
       break;
       
+    case PR_INTERNET_CPID:
+      /* ref:
+         http://msdn.microsoft.com/en-us/library/dd317756%28v=vs.85%29.aspx
+
+         minimal list that should be handled:
+         us-ascii: 20127
+         iso-8859-1: 28591
+         iso-8859-15: 28605
+         utf-8: 65001 */
+      *data = MAPILongValue(memCtx, 65001);
+      break;
+      
     case PR_HTML:
       {
         NSMutableArray *keys;
