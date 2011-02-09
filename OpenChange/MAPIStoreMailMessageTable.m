@@ -118,7 +118,7 @@ static EOQualifier *nonDeletedQualifier = nil;
 			     withTag: (enum MAPITAGS) propTag
 {
   SOGoMailObject *child;
-  NSString *childURL, *subject, *stringValue;
+  NSString *subject, *stringValue;
   NSInteger colIdx;
   enum MAPISTATUS rc;
 
@@ -145,7 +145,6 @@ static EOQualifier *nonDeletedQualifier = nil;
                                 [subject substringToIndex: colIdx]];
       else
 	stringValue = @"";
-      [self logWithFormat: @"subject prefix: %@", stringValue];
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
     case PR_NORMALIZED_SUBJECT_UNICODE:
@@ -159,7 +158,6 @@ static EOQualifier *nonDeletedQualifier = nil;
         stringValue = subject;
       if (!stringValue)
 	stringValue = @"";
-      [self logWithFormat: @"normalized subject: %@", stringValue];
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
 
@@ -261,20 +259,25 @@ static EOQualifier *nonDeletedQualifier = nil;
       break;
 
     case PR_SENT_REPRESENTING_ADDRTYPE_UNICODE:
+    case PR_RCVD_REPRESENTING_ADDRTYPE_UNICODE:
+    case PR_RECEIVED_BY_ADDRTYPE_UNICODE:
+    case PR_SENDER_ADDRTYPE_UNICODE:
       *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
       break;
+    case PR_ORIGINAL_AUTHOR_NAME_UNICODE:
+    case PR_SENDER_NAME_UNICODE:
+    case PR_SENDER_EMAIL_ADDRESS_UNICODE:
     case PR_SENT_REPRESENTING_EMAIL_ADDRESS_UNICODE:
     case PR_SENT_REPRESENTING_NAME_UNICODE:
       child = [self lookupChild: childKey];
       *data = [[child from] asUnicodeInMemCtx: memCtx];
       break;
 
-      /* TODO: the following are supposed to be display names, separated by a semicolumn */
-    case PR_RECEIVED_BY_NAME:
+      /* TODO: some of the following are supposed to be display names, separated by a semicolumn */
     case PR_RECEIVED_BY_NAME_UNICODE:
-    case PR_RCVD_REPRESENTING_NAME:
+    case PR_RECEIVED_BY_EMAIL_ADDRESS_UNICODE:
     case PR_RCVD_REPRESENTING_NAME_UNICODE:
-    case PR_DISPLAY_TO:
+    case PR_RCVD_REPRESENTING_EMAIL_ADDRESS_UNICODE:
     case PR_DISPLAY_TO_UNICODE:
     case PR_ORIGINAL_DISPLAY_TO_UNICODE:
       child = [self lookupChild: childKey];
@@ -283,7 +286,6 @@ static EOQualifier *nonDeletedQualifier = nil;
 	stringValue = @"";
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
-    case PR_DISPLAY_CC:
     case PR_DISPLAY_CC_UNICODE:
     case PR_ORIGINAL_DISPLAY_CC_UNICODE:
       child = [self lookupChild: childKey];
@@ -292,7 +294,6 @@ static EOQualifier *nonDeletedQualifier = nil;
 	stringValue = @"";
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
-    case PR_DISPLAY_BCC:
     case PR_DISPLAY_BCC_UNICODE:
     case PR_ORIGINAL_DISPLAY_BCC_UNICODE:
       stringValue = @"";
@@ -327,7 +328,6 @@ static EOQualifier *nonDeletedQualifier = nil;
       }
       break;
 
-    case PR_BODY:
     case PR_BODY_UNICODE:
       {
         NSMutableArray *keys;
@@ -364,26 +364,26 @@ static EOQualifier *nonDeletedQualifier = nil;
                 result = [[result valueForKey: @"RawResponse"] objectForKey: @"fetch"];
                 key = [[keys objectAtIndex: 0] objectForKey: @"key"];
                 content = [[result objectForKey: key] objectForKey: @"data"];
-		if ([content length] > 3999)
-		  {
-		    childURL = [NSString stringWithFormat: @"%@%@", folderURL, childKey];
-		    [context registerValue: content
-				asProperty: propTag
-				    forURL: childURL];
-		    *data = NULL;
-		    rc = MAPI_E_NOT_ENOUGH_MEMORY;
-		  }
-		else
-		  {
-		    stringValue = [[NSString alloc] initWithData: content
-							  encoding: NSISOLatin1StringEncoding];
-		    *data = [stringValue asUnicodeInMemCtx: memCtx];
-		  }
+                stringValue = [[NSString alloc] initWithData: content
+                                                    encoding: NSISOLatin1StringEncoding];
+                *data = [stringValue asUnicodeInMemCtx: memCtx];
               }
             else
 	      rc = MAPI_E_NOT_FOUND;
           }
       }
+      break;
+      
+    case PR_INTERNET_CPID:
+      /* ref:
+         http://msdn.microsoft.com/en-us/library/dd317756%28v=vs.85%29.aspx
+
+         minimal list that should be handled:
+         us-ascii: 20127
+         iso-8859-1: 28591
+         iso-8859-15: 28605
+         utf-8: 65001 */
+      *data = MAPILongValue(memCtx, 65001);
       break;
       
     case PR_HTML:
@@ -409,17 +409,7 @@ static EOQualifier *nonDeletedQualifier = nil;
                                             @"fetch"];
             key = [[keys objectAtIndex: 0] objectForKey: @"key"];
             content = [[result objectForKey: key] objectForKey: @"data"];
-	    if ([content length] > 3999)
-	      {
-		childURL = [NSString stringWithFormat: @"%@%@", folderURL, childKey];
-		[context registerValue: content
-			    asProperty: propTag
-				forURL: childURL];
-		*data = NULL;
-		rc = MAPI_E_NOT_ENOUGH_MEMORY;
-	      }
-	    else
-	      *data = [content asBinaryInMemCtx: memCtx];
+            *data = [content asBinaryInMemCtx: memCtx];
           }
         else
           {
@@ -436,7 +426,6 @@ static EOQualifier *nonDeletedQualifier = nil;
     case PR_RTF_IN_SYNC:
       *data = MAPIBoolValue (memCtx, NO);
       break;
-    case PR_INTERNET_MESSAGE_ID:
     case PR_INTERNET_MESSAGE_ID_UNICODE:
       child = [self lookupChild: childKey];
       *data = [[child messageId] asUnicodeInMemCtx: memCtx];
@@ -686,6 +675,8 @@ static EOQualifier *nonDeletedQualifier = nil;
     {
       knownProperties = [NSMutableDictionary new];
       /* ARRIVAL, CC */
+      [knownProperties setObject: @"DATE"
+                          forKey: MAPIPropertyKey (PR_CLIENT_SUBMIT_TIME)];
       [knownProperties setObject: @"DATE"
 			  forKey: MAPIPropertyKey (PR_MESSAGE_DELIVERY_TIME)];
       [knownProperties setObject: @"FROM"

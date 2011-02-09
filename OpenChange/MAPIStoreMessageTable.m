@@ -138,10 +138,6 @@ static MAPIStoreMapping *mapping;
         }
       *data = MAPILongLongValue (memCtx, mappingId);
       break;
-    case PR_MESSAGE_CODEPAGE:
-    case PR_INTERNET_CPID:
-      *data = MAPILongValue (memCtx, 1200);
-      break;
     case PR_MESSAGE_LOCALE_ID:
       *data = MAPILongValue (memCtx, 0x0409);
       break;
