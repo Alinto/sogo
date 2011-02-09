@@ -268,11 +268,8 @@ static EOQualifier *nonDeletedQualifier = nil;
       break;
 
       /* TODO: the following are supposed to be display names, separated by a semicolumn */
-    case PR_RECEIVED_BY_NAME:
     case PR_RECEIVED_BY_NAME_UNICODE:
-    case PR_RCVD_REPRESENTING_NAME:
     case PR_RCVD_REPRESENTING_NAME_UNICODE:
-    case PR_DISPLAY_TO:
     case PR_DISPLAY_TO_UNICODE:
     case PR_ORIGINAL_DISPLAY_TO_UNICODE:
       child = [self lookupChild: childKey];
@@ -281,7 +278,6 @@ static EOQualifier *nonDeletedQualifier = nil;
 	stringValue = @"";
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
-    case PR_DISPLAY_CC:
     case PR_DISPLAY_CC_UNICODE:
     case PR_ORIGINAL_DISPLAY_CC_UNICODE:
       child = [self lookupChild: childKey];
@@ -290,7 +286,6 @@ static EOQualifier *nonDeletedQualifier = nil;
 	stringValue = @"";
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
-    case PR_DISPLAY_BCC:
     case PR_DISPLAY_BCC_UNICODE:
     case PR_ORIGINAL_DISPLAY_BCC_UNICODE:
       stringValue = @"";
@@ -325,7 +320,6 @@ static EOQualifier *nonDeletedQualifier = nil;
       }
       break;
 
-    case PR_BODY:
     case PR_BODY_UNICODE:
       {
         NSMutableArray *keys;
@@ -434,7 +428,6 @@ static EOQualifier *nonDeletedQualifier = nil;
     case PR_RTF_IN_SYNC:
       *data = MAPIBoolValue (memCtx, NO);
       break;
-    case PR_INTERNET_MESSAGE_ID:
     case PR_INTERNET_MESSAGE_ID_UNICODE:
       child = [self lookupChild: childKey];
       *data = [[child messageId] asUnicodeInMemCtx: memCtx];
