@@ -664,6 +664,8 @@ static EOQualifier *nonDeletedQualifier = nil;
       knownProperties = [NSMutableDictionary new];
       /* ARRIVAL, CC */
       [knownProperties setObject: @"DATE"
+                          forKey: MAPIPropertyKey (PR_CLIENT_SUBMIT_TIME)];
+      [knownProperties setObject: @"DATE"
 			  forKey: MAPIPropertyKey (PR_MESSAGE_DELIVERY_TIME)];
       [knownProperties setObject: @"FROM"
                           forKey: MAPIPropertyKey (PR_SENT_REPRESENTING_NAME_UNICODE)];
