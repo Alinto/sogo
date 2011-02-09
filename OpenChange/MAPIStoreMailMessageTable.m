@@ -145,7 +145,6 @@ static EOQualifier *nonDeletedQualifier = nil;
                                 [subject substringToIndex: colIdx]];
       else
 	stringValue = @"";
-      [self logWithFormat: @"subject prefix: %@", stringValue];
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
     case PR_NORMALIZED_SUBJECT_UNICODE:
@@ -159,7 +158,6 @@ static EOQualifier *nonDeletedQualifier = nil;
         stringValue = subject;
       if (!stringValue)
 	stringValue = @"";
-      [self logWithFormat: @"normalized subject: %@", stringValue];
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
 
