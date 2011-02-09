@@ -118,7 +118,7 @@ static EOQualifier *nonDeletedQualifier = nil;
 			     withTag: (enum MAPITAGS) propTag
 {
   SOGoMailObject *child;
-  NSString *childURL, *subject, *stringValue;
+  NSString *subject, *stringValue;
   NSInteger colIdx;
   enum MAPISTATUS rc;
 
@@ -364,21 +364,9 @@ static EOQualifier *nonDeletedQualifier = nil;
                 result = [[result valueForKey: @"RawResponse"] objectForKey: @"fetch"];
                 key = [[keys objectAtIndex: 0] objectForKey: @"key"];
                 content = [[result objectForKey: key] objectForKey: @"data"];
-		if ([content length] > 3999)
-		  {
-		    childURL = [NSString stringWithFormat: @"%@%@", folderURL, childKey];
-		    [context registerValue: content
-				asProperty: propTag
-				    forURL: childURL];
-		    *data = NULL;
-		    rc = MAPI_E_NOT_ENOUGH_MEMORY;
-		  }
-		else
-		  {
-		    stringValue = [[NSString alloc] initWithData: content
-							  encoding: NSISOLatin1StringEncoding];
-		    *data = [stringValue asUnicodeInMemCtx: memCtx];
-		  }
+                stringValue = [[NSString alloc] initWithData: content
+                                                    encoding: NSISOLatin1StringEncoding];
+                *data = [stringValue asUnicodeInMemCtx: memCtx];
               }
             else
 	      rc = MAPI_E_NOT_FOUND;
@@ -409,17 +397,7 @@ static EOQualifier *nonDeletedQualifier = nil;
                                             @"fetch"];
             key = [[keys objectAtIndex: 0] objectForKey: @"key"];
             content = [[result objectForKey: key] objectForKey: @"data"];
-	    if ([content length] > 3999)
-	      {
-		childURL = [NSString stringWithFormat: @"%@%@", folderURL, childKey];
-		[context registerValue: content
-			    asProperty: propTag
-				forURL: childURL];
-		*data = NULL;
-		rc = MAPI_E_NOT_ENOUGH_MEMORY;
-	      }
-	    else
-	      *data = [content asBinaryInMemCtx: memCtx];
+            *data = [content asBinaryInMemCtx: memCtx];
           }
         else
           {

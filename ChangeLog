@@ -9,6 +9,8 @@
 	PR_SENDER_EMAIL_ADDRESS_UNICODE,
 	PR_RECEIVED_BY_EMAIL_ADDRESS_UNICODE and
 	PR_RCVD_REPRESENTING_EMAIL_ADDRESS_UNICODE.
+	Removed code returning MAPI_E_NOT_ENOUGH_MEMORY when content
+	values where larger than 3999 bytes.
 
 2011-02-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
