@@ -2,7 +2,13 @@
 
 	* OpenChange/MAPIStoreMailMessageTable.m
 	(-getChildProperty:forKey:withTag:): removed non-unicode string
-	proptags.
+	proptags. Added support for case
+	PR_RCVD_REPRESENTING_ADDRTYPE_UNICODE,
+	PR_RECEIVED_BY_ADDRTYPE_UNICODE, PR_SENDER_ADDRTYPE_UNICODE,
+	PR_ORIGINAL_AUTHOR_NAME_UNICODE, PR_SENDER_NAME_UNICODE,
+	PR_SENDER_EMAIL_ADDRESS_UNICODE,
+	PR_RECEIVED_BY_EMAIL_ADDRESS_UNICODE and
+	PR_RCVD_REPRESENTING_EMAIL_ADDRESS_UNICODE.
 
 2011-02-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

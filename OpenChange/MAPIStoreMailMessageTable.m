@@ -259,17 +259,25 @@ static EOQualifier *nonDeletedQualifier = nil;
       break;
 
     case PR_SENT_REPRESENTING_ADDRTYPE_UNICODE:
+    case PR_RCVD_REPRESENTING_ADDRTYPE_UNICODE:
+    case PR_RECEIVED_BY_ADDRTYPE_UNICODE:
+    case PR_SENDER_ADDRTYPE_UNICODE:
       *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
       break;
+    case PR_ORIGINAL_AUTHOR_NAME_UNICODE:
+    case PR_SENDER_NAME_UNICODE:
+    case PR_SENDER_EMAIL_ADDRESS_UNICODE:
     case PR_SENT_REPRESENTING_EMAIL_ADDRESS_UNICODE:
     case PR_SENT_REPRESENTING_NAME_UNICODE:
       child = [self lookupChild: childKey];
       *data = [[child from] asUnicodeInMemCtx: memCtx];
       break;
 
-      /* TODO: the following are supposed to be display names, separated by a semicolumn */
+      /* TODO: some of the following are supposed to be display names, separated by a semicolumn */
     case PR_RECEIVED_BY_NAME_UNICODE:
+    case PR_RECEIVED_BY_EMAIL_ADDRESS_UNICODE:
     case PR_RCVD_REPRESENTING_NAME_UNICODE:
+    case PR_RCVD_REPRESENTING_EMAIL_ADDRESS_UNICODE:
     case PR_DISPLAY_TO_UNICODE:
     case PR_ORIGINAL_DISPLAY_TO_UNICODE:
       child = [self lookupChild: childKey];
