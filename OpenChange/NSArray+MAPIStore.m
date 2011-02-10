@@ -22,6 +22,8 @@
 
 #import <Foundation/NSValue.h>
 
+#import "NSString+MAPIStore.h"
+
 #import "NSArray+MAPIStore.h"
 
 #undef DEBUG
@@ -45,6 +47,23 @@
     *(flist->folderID + count) = [[self objectAtIndex: count] unsignedLongLongValue];
 
   return flist;
+}
+
+- (struct mapi_SPLSTRArrayW *) asArrayOfUnicodeStringsInCtx: (void *) memCtx
+{
+  struct mapi_SPLSTRArrayW *list;
+  NSInteger count, max;
+
+  max = [self count];
+
+  list = talloc_zero(memCtx, struct mapi_SPLSTRArrayW);
+  list->cValues = max;
+  list->strings = talloc_array(memCtx, struct mapi_LPWSTR, max);
+
+  for (count = 0; count < max; count++)
+    (list->strings + count)->lppszW = [[self objectAtIndex: count] asUnicodeInMemCtx: memCtx];
+
+  return list;
 }
 
 @end

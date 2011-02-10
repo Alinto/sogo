@@ -1,3 +1,8 @@
+2011-02-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/NSArray+MAPIStore.m (-asArrayOfUnicodeStringsInCtx:):
+	new method for returning array of "PT_UNICODE" values.
+
 2011-02-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMessageTable.m
