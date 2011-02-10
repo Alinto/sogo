@@ -32,6 +32,8 @@
 
 #import "MAPIStoreTypes.h"
 #import "NSCalendarDate+MAPIStore.h"
+#import "NSArray+MAPIStore.h"
+#import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreContactsMessageTable.h"
@@ -84,10 +86,11 @@
 			      forKey: (NSString *) childKey
 			     withTag: (enum MAPITAGS) proptag
 {
-  NSString *stringValue;
+  NSString *stringValue, *stringValue2;
   SOGoContactGCSEntry *child;
   CardElement *element;
   uint32_t longValue;
+  NGVCard *vCard;
   enum MAPISTATUS rc;
 
   rc = MAPI_E_SUCCESS;
@@ -141,6 +144,10 @@
       }
       break;
 
+    case PR_SEND_INTERNET_ENCODING:
+      *data = MAPILongValue (memCtx, 0x00065001);
+      break;
+
     case PR_SUBJECT_UNICODE:
     case PR_DISPLAY_NAME_UNICODE: // Full Name
     case PidLidFileUnder: // contact block title name
@@ -148,11 +155,52 @@
         		    forKey: childKey
         		   withTag: PR_DISPLAY_NAME_UNICODE];
       break;
-    case PidLidEmail1OriginalDisplayName: // E-mail
+    case PidLidFileUnderId: 
+      *data = MAPILongValue (memCtx, 0xffffffff);
+      break;
+
+    case PidLidEmail1OriginalDisplayName:
+    case PidLidEmail1DisplayName:
+      child = [self lookupChild: childKey];
+      vCard = [child vCard];
+      stringValue = [vCard fn];
+      stringValue2 = [vCard preferredEMail];
+      *data = [[NSString stringWithFormat: @"%@ <%@>",
+                         stringValue, stringValue2]
+                asUnicodeInMemCtx: memCtx];
+      break;
+
+    case PidLidEmail1EmailAddress:
+    case PR_ACCOUNT_UNICODE:
       child = [self lookupChild: childKey];
       stringValue = [[child vCard] preferredEMail];
       *data = [stringValue asUnicodeInMemCtx: memCtx];
       break;
+
+    case PR_CONTACT_EMAIL_ADDRESSES_UNICODE:
+      child = [self lookupChild: childKey];
+      stringValue = [[child vCard] preferredEMail];
+      *data = [[NSArray arrayWithObject: stringValue]
+                asArrayOfUnicodeStringsInCtx: memCtx];
+      break;
+
+    case PR_EMS_AB_TARGET_ADDRESS_UNICODE:
+      child = [self lookupChild: childKey];
+      stringValue = [[child vCard] preferredEMail];
+      *data = [[NSString stringWithFormat: @"SMTP:%@", stringValue]
+                asUnicodeInMemCtx: memCtx];
+      break;
+
+    case PR_SEARCH_KEY: // TODO
+      child = [self lookupChild: childKey];
+      stringValue = [[child vCard] preferredEMail];
+      *data = [[stringValue dataUsingEncoding: NSASCIIStringEncoding]
+		asBinaryInMemCtx: memCtx];
+      break;
+
+    case PR_MAIL_PERMISSION:
+         *data = MAPIBoolValue (memCtx, YES);
+         break;
 
     //
     // TODO - same logic as -secondaryEmail in UI/Contacts/UIxContactView.m
@@ -160,6 +208,7 @@
     // We should also eventually handle PidLidEmail3OriginalDisplayName in
     // SOGo, Thunderbird, etc.
     //
+    case PidLidEmail2EmailAddress:
     case PidLidEmail2OriginalDisplayName: // Other email
       {
 	NSMutableArray *emails;

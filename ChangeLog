@@ -1,5 +1,14 @@
 2011-02-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsMessageTable.m
+	(-getChildProperty:forKey:withTag:): added support for the
+	following props: PR_SEND_INTERNET_ENCODING, PidLidFileUnderId,
+	PidLidEmail1DisplayName, PidLidEmail1EmailAddress,
+	PidLidEmail2EmailAddress, PR_ACCOUNT_UNICODE,
+	PR_CONTACT_EMAIL_ADDRESSES_UNICODE,
+	PR_EMS_AB_TARGET_ADDRESS_UNICODE, PR_SEARCH_KEY,
+	PR_MAIL_PERMISSION
+
 	* OpenChange/MAPIStoreMessageTable.m
 	(-getChildProperty:forKey:withTag:): returns a default value for
 	PR_ORIG_MESSAGE_CLASS_UNICODE based of PR_MESSAGE_CLASS_UNICODE.
