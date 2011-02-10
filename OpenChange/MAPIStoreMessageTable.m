@@ -205,6 +205,11 @@ static MAPIStoreMapping *mapping;
       *data = [@"openchange" asUnicodeInMemCtx: memCtx];
       break;
 
+    case PR_ORIG_MESSAGE_CLASS_UNICODE:
+      rc = [self getChildProperty: data forKey: childKey
+                          withTag: PR_MESSAGE_CLASS_UNICODE];
+      break;
+
     default:
       rc = [super getChildProperty: data
 			    forKey: childKey
