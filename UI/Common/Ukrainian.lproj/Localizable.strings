@@ -51,6 +51,8 @@
 "You cannot create a list in a shared address book." 
         = "Ви не можете створювати перелік у спільній адресній книзі.";
 
+"Warning" = "Увага";
+
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "У Вас відсутні права доступу до цього модуля/системи. Будь ласка, зв’яжіться з адміністратором.";
 "You don't have the required privileges to perform the operation."
