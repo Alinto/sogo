@@ -1,5 +1,8 @@
 2011-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTable.m
+	(-warnUnhandledProperty:inFunction:): renamed and made method public.
+
 	* OpenChange/MAPIStoreGCSMessageTable.m
 	(-evaluatePropertyRestriction:intoQualifier:)
 	took version of method from MAPIStoreTable and modified it to

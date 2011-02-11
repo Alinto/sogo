@@ -86,6 +86,11 @@ typedef enum {
 			      forKey: (NSString *) childKey
 			     withTag: (enum MAPITAGS) proptag;
 
+/* helpers */
+
+- (void) warnUnhandledProperty: (enum MAPITAGS) property
+                    inFunction: (const char *) function;
+
 /* subclasses */
 
 - (NSArray *) childKeys;

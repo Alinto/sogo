@@ -562,8 +562,8 @@ static Class NSDataK, NSStringK;
   return nil;
 }
 
-- (void) _warnUnhandledPropertyException: (enum MAPITAGS) property
-			      inFunction: (const char *) function
+- (void) warnUnhandledProperty: (enum MAPITAGS) property
+                    inFunction: (const char *) function
 {
   const char *propName;
 
@@ -628,8 +628,8 @@ static Class NSDataK, NSStringK;
     }
   else
     {
-      [self _warnUnhandledPropertyException: res->ulPropTag
-				 inFunction: __FUNCTION__];
+      [self warnUnhandledProperty: res->ulPropTag
+                       inFunction: __FUNCTION__];
       
       rc = MAPIRestrictionStateAlwaysFalse;
     }
@@ -675,8 +675,8 @@ static Class NSDataK, NSStringK;
     }
   else
     {
-      [self _warnUnhandledPropertyException: res->ulPropTag
-				 inFunction: __FUNCTION__];
+      [self warnUnhandledProperty: res->ulPropTag
+                       inFunction: __FUNCTION__];
       rc = MAPIRestrictionStateAlwaysFalse;
     }
 
@@ -701,8 +701,8 @@ static Class NSDataK, NSStringK;
     }
   else
     {
-      [self _warnUnhandledPropertyException: res->ulPropTag
-				 inFunction: __FUNCTION__];
+      [self warnUnhandledProperty: res->ulPropTag
+                       inFunction: __FUNCTION__];
       rc = MAPIRestrictionStateAlwaysFalse;
     }
 
@@ -727,8 +727,8 @@ static Class NSDataK, NSStringK;
     }
   else
     {
-      [self _warnUnhandledPropertyException: res->ulPropTag
-				 inFunction: __FUNCTION__];
+      [self warnUnhandledProperty: res->ulPropTag
+                       inFunction: __FUNCTION__];
       rc = MAPIRestrictionStateAlwaysFalse;
     }
 
