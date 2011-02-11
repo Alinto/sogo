@@ -566,6 +566,8 @@
 			  forKey: MAPIPropertyKey (PidLidEmail3EmailAddress)];
       [knownProperties setObject: @"c_cn"
 			  forKey: MAPIPropertyKey (PR_DISPLAY_NAME_UNICODE)];
+      [knownProperties setObject: @"c_cn"
+			  forKey: MAPIPropertyKey (PidLidFileUnder)];
     }
 
   return [knownProperties objectForKey: MAPIPropertyKey (property)];
@@ -602,6 +604,22 @@
     }
 
   return rc;
+}
+
+/* sorting */
+
+- (NSString *) sortIdentifierForProperty: (enum MAPITAGS) property
+{
+  static NSMutableDictionary *knownProperties = nil;
+
+  if (!knownProperties)
+    {
+      knownProperties = [NSMutableDictionary new];
+      [knownProperties setObject: @"c_cn"
+                          forKey: MAPIPropertyKey (PidLidFileUnder)];
+    }
+
+  return [knownProperties objectForKey: MAPIPropertyKey (property)];
 }
 
 @end

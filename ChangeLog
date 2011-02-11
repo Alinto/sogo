@@ -1,5 +1,10 @@
 2011-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsMessageTable.m
+	(-sortIdentifierForProperty:): implemented basic table for
+	supporting the sorting implied by the use of the addressbook label
+	buttons.
+
 	* OpenChange/MAPIStoreTasksMessageTable.m
 	(-sortIdentifierForProperty:): implemented basic table for
 	supporting common header sorts from the OL interface.
