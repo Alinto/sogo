@@ -1,5 +1,8 @@
 2011-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessageTable.m
+	(-sortIdentifierForProperty:): implemented basic table.
+
 	* OpenChange/MAPIStoreGCSMessageTable.m (-setSordOrder:):
 	implemented overriden method, making use of the new
 	"sortIdentifierForProperty:" subclass method for the mapping of

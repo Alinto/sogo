@@ -201,4 +201,20 @@
   return [knownProperties objectForKey: MAPIPropertyKey (property)];
 }
 
+/* sorting */
+
+- (NSString *) sortIdentifierForProperty: (enum MAPITAGS) property
+{
+  static NSMutableDictionary *knownProperties = nil;
+
+  if (!knownProperties)
+    {
+      knownProperties = [NSMutableDictionary new];
+      [knownProperties setObject: @"c_startdate"
+                          forKey: MAPIPropertyKey (PidLidAppointmentStartWhole)];
+    }
+
+  return [knownProperties objectForKey: MAPIPropertyKey (property)];
+}
+
 @end
