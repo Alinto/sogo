@@ -212,6 +212,10 @@
       knownProperties = [NSMutableDictionary new];
       [knownProperties setObject: @"c_startdate"
                           forKey: MAPIPropertyKey (PidLidAppointmentStartWhole)];
+      [knownProperties setObject: @"c_enddate"
+                          forKey: MAPIPropertyKey (PidLidAppointmentEndWhole)];
+      [knownProperties setObject: @"c_iscycle"
+                          forKey: MAPIPropertyKey (PidLidRecurring)];
     }
 
   return [knownProperties objectForKey: MAPIPropertyKey (property)];

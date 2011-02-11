@@ -1,5 +1,9 @@
 2011-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessageTable.m
+	(-sortIdentifierForProperty): added support for
+	PidLidAppointmentEndWhole and PidLidRecurring.
+
 	* OpenChange/MAPIStoreTable.m
 	(-warnUnhandledProperty:inFunction:): renamed and made method public.
 
