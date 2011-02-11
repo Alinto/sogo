@@ -359,4 +359,24 @@
   return rc;
 }
 
+/* sorting */
+
+- (NSString *) sortIdentifierForProperty: (enum MAPITAGS) property
+{
+  static NSMutableDictionary *knownProperties = nil;
+
+  if (!knownProperties)
+    {
+      knownProperties = [NSMutableDictionary new];
+      [knownProperties setObject: @"c_title"
+                          forKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
+      [knownProperties setObject: @"c_enddate"
+                          forKey: MAPIPropertyKey (PidLidTaskDueDate)];
+      [knownProperties setObject: @"c_creationdate"
+                          forKey: MAPIPropertyKey (PidLidTaskOrdinal)];
+    }
+
+  return [knownProperties objectForKey: MAPIPropertyKey (property)];
+}
+
 @end

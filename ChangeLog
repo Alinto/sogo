@@ -1,5 +1,9 @@
 2011-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTasksMessageTable.m
+	(-sortIdentifierForProperty:): implemented basic table for
+	supporting common header sorts from the OL interface.
+
 	* OpenChange/MAPIStoreCalendarMessageTable.m
 	(-sortIdentifierForProperty:): implemented basic table.
 
