@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 
 #import <NGExtensions/NSObject+Logs.h>
@@ -35,6 +36,7 @@
 #import <SOGo/SOGoGCSFolder.h>
 
 #import "MAPIStoreTypes.h"
+#import "NSAutoreleasePool+MAPIStore.h"
 
 #import "MAPIStoreGCSMessageTable.h"
 
@@ -119,34 +121,76 @@
   return [self _childKeysUsingRestrictions: YES];
 }
 
-- (MAPIRestrictionState) evaluateDatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
-					   intoQualifier: (EOQualifier **) qualifier
+- (struct mapi_SPropertyRestriction *) _fixedDatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
 {
-  struct mapi_SPropertyRestriction translatedRes;
+  struct mapi_SPropertyRestriction *translatedRes;
   NSCalendarDate *dateValue;
   int32_t longDate;
 
-  translatedRes.ulPropTag = (res->ulPropTag & 0xffff0000) | PT_LONG;
-  translatedRes.relop = res->relop;
+  translatedRes = talloc (NULL, struct mapi_SPropertyRestriction);
+  translatedRes->ulPropTag = (res->ulPropTag & 0xffff0000) | PT_LONG;
+  translatedRes->relop = res->relop;
   dateValue = NSObjectFromMAPISPropValue (&res->lpProp);
   longDate = (int32_t) [dateValue timeIntervalSince1970];
-  translatedRes.lpProp.ulPropTag = translatedRes.ulPropTag;
-  translatedRes.lpProp.value.l = longDate;
+  translatedRes->lpProp.ulPropTag = translatedRes->ulPropTag;
+  translatedRes->lpProp.value.l = longDate;
 
-  return [super evaluatePropertyRestriction: &translatedRes
-			      intoQualifier: qualifier];
+  return translatedRes;
 }
 
 - (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
 				       intoQualifier: (EOQualifier **) qualifier
 {
+  static SEL operators[] = { EOQualifierOperatorLessThan,
+			     EOQualifierOperatorLessThanOrEqualTo,
+			     EOQualifierOperatorGreaterThan,
+			     EOQualifierOperatorGreaterThanOrEqualTo,
+			     EOQualifierOperatorEqual,
+			     EOQualifierOperatorNotEqual,
+			     EOQualifierOperatorContains };
+  SEL operator;
+  id value;
+  NSString *property;
   MAPIRestrictionState rc;
 
-  if ((res->ulPropTag & 0x0040) == 0x0040) /* is date ? */
-    rc = [self evaluateDatePropertyRestriction: res
-				 intoQualifier: qualifier];
+  property = [self backendIdentifierForProperty: res->ulPropTag];
+  if (property)
+    {
+      if (res->relop >= 0 && res->relop < 7)
+	operator = operators[res->relop];
+      else
+	{
+	  operator = NULL;
+	  [NSException raise: @"MAPIStoreRestrictionException"
+		      format: @"unhandled operator type number %d", res->relop];
+	}
+
+      if ((res->ulPropTag & 0xffff) == PT_SYSTIME)
+        {
+          res = [self _fixedDatePropertyRestriction: res];
+          NSAutoreleaseTallocPointer (res);
+        }
+
+      value = NSObjectFromMAPISPropValue (&res->lpProp);
+      if ((res->ulPropTag & 0xffff) == PT_UNICODE)
+        {
+          property = [NSString stringWithFormat: @"UPPER(%@)", property];
+          value = [value uppercaseString];
+        }
+
+      *qualifier = [[EOKeyValueQualifier alloc] initWithKey: property
+					   operatorSelector: operator
+						      value: value];
+      [*qualifier autorelease];
+      
+      rc = MAPIRestrictionStateNeedsEval;
+    }
   else
-    rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
+    {
+      [self warnUnhandledProperty: res->ulPropTag
+                       inFunction: __FUNCTION__];
+      rc = MAPIRestrictionStateAlwaysFalse;
+    }
 
   return rc;
 }

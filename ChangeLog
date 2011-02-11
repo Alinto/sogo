@@ -1,5 +1,13 @@
 2011-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSMessageTable.m
+	(-evaluatePropertyRestriction:intoQualifier:)
+	took version of method from MAPIStoreTable and modified it to
+	handle all string comparisons with the "UPPER" operator.
+	(-_fixedDatePropertyRestriction:): renamed version of
+	evaluateDatePropertyRestriction:intoQualifier: which now returns a
+	new restriction instead of repassing it to evaluatePropert...
+
 	* OpenChange/NSAutoreleasePool+MAPIStore.m: new utility module
 	that enables the reparenting of a talloc pointer to the current
 	NSAutoreleasePool.
