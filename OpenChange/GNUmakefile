@@ -79,6 +79,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	SOGoMAPIFSMessage.m \
 	\
 	NSArray+MAPIStore.m \
+	NSAutoreleasePool+MAPIStore.m \
 	NSCalendarDate+MAPIStore.m \
 	NSData+MAPIStore.m \
 	NSString+MAPIStore.m \
