@@ -28,8 +28,12 @@
 @class EOQualifier;
 
 @interface MAPIStoreGCSMessageTable : MAPIStoreMessageTable
+{
+  NSMutableArray *sortOrderings;
+}
 
 - (EOQualifier *) componentQualifier;
+- (NSString *) sortIdentifierForProperty: (enum MAPITAGS) property;
 
 @end
 

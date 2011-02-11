@@ -1,3 +1,10 @@
+2011-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreGCSMessageTable.m (-setSordOrder:):
+	implemented overriden method, making use of the new
+	"sortIdentifierForProperty:" subclass method for the mapping of
+	sort fields and SQL fields.
+
 2011-02-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContactsMessageTable.m

@@ -21,9 +21,14 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
+#import <NGExtensions/NSObject+Logs.h>
+
+#import <EOControl/EOFetchSpecification.h>
 #import <EOControl/EOQualifier.h>
+#import <EOControl/EOSortOrdering.h>
 #import <GDLContentStore/GCSFolder.h>
 
 #import <SOGo/NSArray+Utilities.h>
@@ -34,17 +39,33 @@
 #import "MAPIStoreGCSMessageTable.h"
 
 #undef DEBUG
-#include <stdbool.h>
-#include <gen_ndr/exchange.h>
-#include <libmapi/mapidefs.h>
+#include <mapistore/mapistore.h>
 
 @implementation MAPIStoreGCSMessageTable
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      sortOrderings = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [sortOrderings release];
+  [super dealloc];
+}
 
 - (NSArray *) _childKeysUsingRestrictions: (BOOL) useRestrictions
 {
   static NSArray *fields = nil;
   NSArray *records;
   EOQualifier *componentQualifier, *fetchQualifier;
+  GCSFolder *ocsFolder;
+  EOFetchSpecification *fs;
   NSArray *keys;
 
   if (!fields)
@@ -73,8 +94,12 @@
     
   if (fetchQualifier)
     {
-      records = [[folder ocsFolder] fetchFields: fields
-			      matchingQualifier: fetchQualifier];
+      ocsFolder = [folder ocsFolder];
+      fs = [EOFetchSpecification
+             fetchSpecificationWithEntityName: [ocsFolder folderName]
+                                    qualifier: fetchQualifier
+                                sortOrderings: sortOrderings];
+      records = [ocsFolder fetchFields: fields fetchSpecification: fs];
       keys = [records objectsForKey: @"c_name"
 		     notFoundMarker: nil];
     }
@@ -118,7 +143,7 @@
   MAPIRestrictionState rc;
 
   if ((res->ulPropTag & 0x0040) == 0x0040) /* is date ? */
-    rc = [self evaluateDatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
+    rc = [self evaluateDatePropertyRestriction: res
 				 intoQualifier: qualifier];
   else
     rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
@@ -131,6 +156,99 @@
   [self subclassResponsibility: _cmd];
 
   return nil;
+}
+
+/* sorting */
+
+- (NSString *) sortIdentifierForProperty: (enum MAPITAGS) property
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (EOSortOrdering *) _sortOrderingFromSortOrder: (struct SSortOrder *) sortOrder
+{
+  EOSortOrdering *newSortOrdering;
+  NSString *sortIdentifier;
+  SEL orderSelector;
+  const char *propName;
+
+  sortIdentifier = [self sortIdentifierForProperty: sortOrder->ulPropTag];
+  if (sortIdentifier)
+    {
+      if ((sortOrder->ulPropTag & 0xffff) == PT_UNICODE
+          || (sortOrder->ulPropTag & 0xffff) == PT_STRING8)
+        {
+          if (sortOrder->ulOrder == TABLE_SORT_ASCEND)
+            orderSelector = EOCompareCaseInsensitiveAscending;
+          else if (sortOrder->ulOrder == TABLE_SORT_DESCEND)
+            orderSelector = EOCompareCaseInsensitiveDescending;
+          else if (sortOrder->ulOrder == TABLE_SORT_MAXIMUM_CATEGORY)
+            {
+              orderSelector = EOCompareCaseInsensitiveAscending;
+              [self errorWithFormat:
+                      @"TABLE_SORT_MAXIMUM_CATEGORY is not handled"];
+            }
+        }
+      else
+        {
+          if (sortOrder->ulOrder == TABLE_SORT_ASCEND)
+            orderSelector = EOCompareAscending;
+          else if (sortOrder->ulOrder == TABLE_SORT_DESCEND)
+            orderSelector = EOCompareDescending;
+          else if (sortOrder->ulOrder == TABLE_SORT_MAXIMUM_CATEGORY)
+            {
+              orderSelector = EOCompareAscending;
+              [self errorWithFormat:
+                      @"TABLE_SORT_MAXIMUM_CATEGORY is not handled"];
+            }
+        }
+      newSortOrdering = [EOSortOrdering sortOrderingWithKey: sortIdentifier
+                                                   selector: orderSelector];
+    }
+  else
+    {
+      newSortOrdering = nil;
+      propName = get_proptag_name (sortOrder->ulPropTag);
+      if (!propName)
+        propName = "<unknown>";
+      [self errorWithFormat:
+              @"sort unhandled for property: %s (0x%.8x)",
+            propName, sortOrder->ulPropTag];
+    }
+
+  return newSortOrdering;
+}
+
+- (void) setSortOrder: (const struct SSortOrderSet *) set
+{
+  NSMutableArray *newSortOrderings;
+  EOSortOrdering *sortOrdering;
+  uint16_t count;
+
+  if (set)
+    {
+      newSortOrderings = [NSMutableArray arrayWithCapacity: set->cSorts];
+
+      /* TODO: */
+      if (set->cCategories > 0)
+        [self errorWithFormat: @"we don't handle sort categories yet"];
+
+      for (count = 0; count < set->cSorts; count++)
+        {
+          sortOrdering = [self _sortOrderingFromSortOrder: set->aSort + count];
+          if (sortOrdering)
+            [newSortOrderings addObject: sortOrdering];
+        }
+    }
+  else
+    newSortOrderings = nil;
+
+  ASSIGN (sortOrderings, newSortOrderings);
+  [self cleanupCaches];
+
+  [self logWithFormat: @"new sort orderings: %@", sortOrderings];
 }
 
 @end
