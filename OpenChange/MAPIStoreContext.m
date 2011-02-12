@@ -1082,6 +1082,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	{
 	  aRow->lpProps = talloc_array (aRow, struct SPropValue,
 					sPropTagArray->cValues);
+          aRow->cValues = sPropTagArray->cValues;
 	  for (count = 0; count < sPropTagArray->cValues; count++)
 	    {
 	      tag = sPropTagArray->aulPropTag[count];
@@ -1114,9 +1115,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 		  propValue = MAPILongValue (memCtx, propRc);
 		  tag = (tag & 0xffff0000) | 0x000a;
 		}
-	      set_SPropValue_proptag (&(aRow->lpProps[aRow->cValues]),
-				      tag, propValue);
-	      aRow->cValues++;
+	      set_SPropValue_proptag (aRow->lpProps + count, tag, propValue);
 	    }
 	  rc = MAPI_E_SUCCESS;
 	}
@@ -1305,9 +1304,15 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       if (message)
       	{
 	  fileData = [message objectForKey: MAPIPropertyKey (property)];
+          if ([fileData isKindOfClass: NSStringK])
+            fileData = [fileData dataUsingEncoding: NSUTF16LittleEndianStringEncoding];
 	  /* TODO: only NSData is supported right now */
 	  if (fileData)
 	    {
+              if (![fileData isKindOfClass: NSDataK])
+                [self
+                  errorWithFormat: @"data class not handled for streams: %@",
+                  NSStringFromClass ([fileData class])];
 	      [aFile writeData: fileData];
 	      rc = MAPI_E_SUCCESS;
 	    }

@@ -1,5 +1,11 @@
 2011-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m
+	(-getProperties:ofTableType:inRow:withMID:): small code size
+	optimization.
+	(-getProperty:withFMID:ofTableType:intoFile:): added support for
+	NSString values.
+
 	* OpenChange/MAPIStoreMailMessageTable.m
 	(-getChildProperty:forKey:withTag:): return
 	MAPI_E_NOT_ENOUGH_MEMORY for values of PR_HTML or PR_BODY_UNICODE
