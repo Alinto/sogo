@@ -1,5 +1,10 @@
 2011-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessageTable.m
+	(-getChildProperty:forKey:withTag:): return
+	MAPI_E_NOT_ENOUGH_MEMORY for values of PR_HTML or PR_BODY_UNICODE
+	that are larged than 16Kib (arbitrary limit).
+
 	* OpenChange/MAPIStoreCalendarMessageTable.m
 	(-sortIdentifierForProperty): added support for
 	PidLidAppointmentEndWhole and PidLidRecurring.

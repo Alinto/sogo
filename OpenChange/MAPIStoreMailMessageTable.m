@@ -367,6 +367,15 @@ static EOQualifier *nonDeletedQualifier = nil;
                 stringValue = [[NSString alloc] initWithData: content
                                                     encoding: NSISOLatin1StringEncoding];
                 *data = [stringValue asUnicodeInMemCtx: memCtx];
+                if (strlen (*data) > 16384)
+                  {
+                    [context registerValue: stringValue
+                                asProperty: propTag
+                                    forURL: [NSString stringWithFormat: @"%@%@", folderURL, childKey]];
+                    *data = NULL;
+                    rc = MAPI_E_NOT_ENOUGH_MEMORY;
+                    [self logWithFormat: @"PR_BODY data too wide"];
+                  }
               }
             else
 	      rc = MAPI_E_NOT_FOUND;
@@ -409,7 +418,17 @@ static EOQualifier *nonDeletedQualifier = nil;
                                             @"fetch"];
             key = [[keys objectAtIndex: 0] objectForKey: @"key"];
             content = [[result objectForKey: key] objectForKey: @"data"];
-            *data = [content asBinaryInMemCtx: memCtx];
+            if ([content length] > 16384)
+              {
+                [context registerValue: content
+                            asProperty: propTag
+                                forURL: [NSString stringWithFormat: @"%@%@", folderURL, childKey]];
+                *data = NULL;
+                rc = MAPI_E_NOT_ENOUGH_MEMORY;
+                [self logWithFormat: @"PR_HTML data too wide"];
+              }
+            else
+              *data = [content asBinaryInMemCtx: memCtx];
           }
         else
           {
@@ -421,6 +440,7 @@ static EOQualifier *nonDeletedQualifier = nil;
 
       /* We don't handle any RTF content. */
     case PR_RTF_COMPRESSED:
+      *data = NULL;
       rc = MAPI_E_NOT_FOUND;
       break;
     case PR_RTF_IN_SYNC:
