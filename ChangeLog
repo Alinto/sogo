@@ -1,5 +1,9 @@
 2011-02-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject.m (-lookupInfoForBodyPart:):
+	accept "text" as path parameter and return the main bodyStructure
+	in that case.
+
 	* OpenChange/MAPIStoreMailMessageTable.m
 	(-getChildProperty:forKey:withTag:): enhanced treatment of
 	PR_BODY_UNICODE to accept text/plain parts when more than one is

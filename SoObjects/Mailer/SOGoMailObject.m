@@ -349,6 +349,10 @@ static BOOL debugSoParts       = NO;
     return nil;
   }
 
+  if ([_path isEqualToString: @"text"]) {
+    return info;
+  }
+
   /* ensure array argument */
   
   if ([_path isKindOfClass:[NSString class]]) {
