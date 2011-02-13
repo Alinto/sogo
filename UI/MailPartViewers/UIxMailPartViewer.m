@@ -31,13 +31,14 @@
 #import <NGExtensions/NSString+Encoding.h>
 #import <NGExtensions/NSString+misc.h>
 
-#import <SoObjects/SOGo/NSString+Utilities.h>
-#import <SoObjects/Mailer/SOGoMailBodyPart.h>
+#import <SOGo/NSString+Utilities.h>
+#import <Mailer/NSData+Mail.h>
+#import <Mailer/SOGoMailBodyPart.h>
 
-#import "UI/MailerUI/WOContext+UIxMailer.h"
+#import "MailerUI/WOContext+UIxMailer.h"
 #import "UIxMailRenderingContext.h"
 #import "UIxMailSizeFormatter.h"
-#import "UI/SOGoUI/UIxComponent.h"
+#import "SOGoUI/UIxComponent.h"
 
 #import "UIxMailPartViewer.h"
 
@@ -114,28 +115,13 @@
   return flatContent;
 }
 
-#warning we should use NSData+Mail bodyDataFromEncoding: instead
 - (NSData *) decodedFlatContent
 {
   NSString *enc;
   
   enc = [[bodyInfo objectForKey:@"encoding"] lowercaseString];
 
-  if ([enc isEqualToString:@"7bit"])
-    return [self flatContent];
-  
-  if ([enc isEqualToString:@"8bit"]) // TODO: correct?
-    return [self flatContent];
-  
-  if ([enc isEqualToString:@"base64"])
-    return [[self flatContent] dataByDecodingBase64];
-
-  if ([enc isEqualToString:@"quoted-printable"])
-    return [[self flatContent] dataByDecodingQuotedPrintableTransferEncoding];
-  
-  [self errorWithFormat:@"unsupported MIME encoding: %@", enc];
-
-  return [self flatContent];
+  return [[self flatContent] bodyDataFromEncoding: enc];
 }
 
 - (SOGoMailBodyPart *) clientPart
@@ -170,40 +156,7 @@
     {
       charset = [[bodyInfo objectForKey:@"parameterList"]
 		  objectForKey: @"charset"];
-      if ([charset length])
-	charset = [charset lowercaseString];
-      else
-	charset = @"us-ascii";
-      s = [NSString stringWithData: content usingEncodingNamed: charset];
-      if (![s length])
-	{
-	  /* UTF-8 is used as a 8bit fallback charset... */
-	  s = [[NSString alloc] initWithData: content
-				encoding: NSUTF8StringEncoding];
-	  [s autorelease];
-	}
-
-      if (!s)
-	{
-	  /*
-	    iCalendar invitations sent by Outlook 2002 have the annoying bug that the
-	    mail states an UTF-8 content encoding but the actual iCalendar content is
-	    encoding in Latin-1 (or Windows Western?).
-		
-	    As a result the content decoding will fail (TODO: always?). In this case we
-	    try to decode with Latin-1.
- 
-	    Note: we could check for the Outlook x-mailer, but it was considered better
-	    to try Latin-1 as a fallback in any case (be tolerant).
-	  */
-
-	  s = [[NSString alloc] initWithData:content 
-				encoding: NSISOLatin1StringEncoding];
-	  if (!s)
-	    [self errorWithFormat: @"an attempt to use"
-		  @" NSISOLatin1StringEncoding as callback failed"];
-	  [s autorelease];
-	}
+      s = [content bodyStringFromCharset: charset];
     }
   else
     {

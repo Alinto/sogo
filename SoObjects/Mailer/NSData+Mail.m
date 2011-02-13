@@ -26,6 +26,7 @@
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGExtensions/NSString+Encoding.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #import "NSData+Mail.h"
 
@@ -36,22 +37,70 @@
   NSString *realEncoding;
   NSData *decodedData;
 
-  realEncoding = [encoding lowercaseString];
-
-  if ([realEncoding isEqualToString: @"7bit"]
-      || [realEncoding isEqualToString: @"8bit"])
-    decodedData = self;
-  else if ([realEncoding isEqualToString: @"base64"])
-    decodedData = [self dataByDecodingBase64];
-  else if ([realEncoding isEqualToString: @"quoted-printable"])
-    decodedData = [self dataByDecodingQuotedPrintableTransferEncoding];
-  else
+  if ([encoding length] > 0)
     {
-      decodedData = nil;
-      NSLog (@"encoding '%@' unknown, returning nil data", realEncoding);
+      realEncoding = [encoding lowercaseString];
+
+      if ([realEncoding isEqualToString: @"7bit"]
+          || [realEncoding isEqualToString: @"8bit"])
+        decodedData = self;
+      else if ([realEncoding isEqualToString: @"base64"])
+        decodedData = [self dataByDecodingBase64];
+      else if ([realEncoding isEqualToString: @"quoted-printable"])
+        decodedData = [self dataByDecodingQuotedPrintableTransferEncoding];
+      else
+        {
+          decodedData = nil;
+          NSLog (@"encoding '%@' unknown, returning nil data", realEncoding);
+        }
     }
+  else
+    decodedData = self;
 
   return decodedData;
+}
+
+- (NSString *) bodyStringFromCharset: (NSString *) charset
+{
+  NSString *lcCharset, *bodyString;
+
+  if ([charset length])
+    lcCharset = [charset lowercaseString];
+  else
+    lcCharset = @"us-ascii";
+
+  bodyString = [NSString stringWithData: self usingEncodingNamed: lcCharset];
+  if (![bodyString length])
+    {
+      /* UTF-8 is used as a 8bit fallback charset... */
+      bodyString = [[NSString alloc] initWithData: self
+                                         encoding: NSUTF8StringEncoding];
+      [bodyString autorelease];
+    }
+
+  if (!bodyString)
+    {
+      /*
+        iCalendar invitations sent by Outlook 2002 have the annoying bug that the
+        mail states an UTF-8 content encoding but the actual iCalendar content is
+        encoding in Latin-1 (or Windows Western?).
+	
+        As a result the content decoding will fail (TODO: always?). In this case we
+        try to decode with Latin-1.
+        
+        Note: we could check for the Outlook x-mailer, but it was considered better
+        to try Latin-1 as a fallback in any case (be tolerant).
+      */
+      
+      bodyString = [[NSString alloc] initWithData: self
+                                         encoding: NSISOLatin1StringEncoding];
+      if (!bodyString)
+        [self errorWithFormat: @"an attempt to use"
+              @" NSISOLatin1StringEncoding as callback failed"];
+      [bodyString autorelease];
+    }
+
+  return bodyString;
 }
 
 /*
