@@ -17,6 +17,8 @@
 	available, by selecting the first one only. This requires the
 	prior detection of text/html parts in order to exclude the
 	property or not.
+	Make use of the category methods offered in NSData+Mail to
+	properly decode the body data for PR_BODY_UNICODE and PR_HTML.
 
 2011-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

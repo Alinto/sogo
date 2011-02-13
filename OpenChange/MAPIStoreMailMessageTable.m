@@ -24,6 +24,7 @@
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSRange.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 
@@ -31,6 +32,7 @@
 
 #import <SOGo/NSArray+Utilities.h>
 
+#import <Mailer/NSData+Mail.h>
 #import <Mailer/SOGoMailFolder.h>
 #import <Mailer/SOGoMailObject.h>
 
@@ -45,6 +47,33 @@
 #undef DEBUG
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_nameid.h>
+
+@interface NSString (MAPIStoreMIME)
+
+- (NSString *) _strippedBodyKey;
+
+@end
+
+@implementation NSString (MAPIStoreMIME)
+
+- (NSString *) _strippedBodyKey
+{
+  NSRange bodyRange;
+  NSString *strippedKey;
+
+  bodyRange = [self rangeOfString: @"body["];
+  if (bodyRange.length > 0)
+    {
+      strippedKey = [self substringFromIndex: NSMaxRange (bodyRange)];
+      strippedKey = [strippedKey substringToIndex: [strippedKey length] - 1];
+    }
+  else
+    strippedKey = nil;
+
+  return strippedKey;
+}
+
+@end
 
 @implementation MAPIStoreMailMessageTable
 
@@ -355,15 +384,23 @@ static EOQualifier *nonDeletedQualifier = nil;
               {
                 id result;
                 NSData *content;
-                NSString *key;
-                
+                NSDictionary *partHeaderData;
+                NSString *key, *encoding, *charset;
+ 
                 result = [child fetchParts: [keys objectsForKey: @"key"
                                                  notFoundMarker: nil]];
                 result = [[result valueForKey: @"RawResponse"] objectForKey: @"fetch"];
                 key = [[keys objectAtIndex: 0] objectForKey: @"key"];
                 content = [[result objectForKey: key] objectForKey: @"data"];
-                stringValue = [[NSString alloc] initWithData: content
-                                                    encoding: NSISOLatin1StringEncoding];
+
+                partHeaderData
+                  = [child lookupInfoForBodyPart: [key _strippedBodyKey]];
+                encoding = [partHeaderData objectForKey: @"encoding"];
+                charset = [[partHeaderData objectForKey: @"parameterList"]
+                            objectForKey: @"charset"];
+                stringValue = [[content bodyDataFromEncoding: encoding]
+                                bodyStringFromCharset: charset];
+
                 *data = [stringValue asUnicodeInMemCtx: memCtx];
                 if (strlen (*data) > 16384)
                   {
@@ -407,8 +444,9 @@ static EOQualifier *nonDeletedQualifier = nil;
         if ([keys count] > 0)
           {
             id result;
-            NSString *key;
             NSData *content;
+            NSDictionary *partHeaderData;
+            NSString *key, *encoding;
             
             result = [child fetchParts: [keys objectsForKey: @"key"
                                             notFoundMarker: nil]];
@@ -416,6 +454,12 @@ static EOQualifier *nonDeletedQualifier = nil;
                                             @"fetch"];
             key = [[keys objectAtIndex: 0] objectForKey: @"key"];
             content = [[result objectForKey: key] objectForKey: @"data"];
+
+            partHeaderData
+              = [child lookupInfoForBodyPart: [key _strippedBodyKey]];
+            encoding = [partHeaderData objectForKey: @"encoding"];
+            content = [content bodyDataFromEncoding: encoding];
+
             if ([content length] > 16384)
               {
                 [context registerValue: content
