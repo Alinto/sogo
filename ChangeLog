@@ -1,3 +1,12 @@
+2011-02-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailMessageTable.m
+	(-getChildProperty:forKey:withTag:): enhanced treatment of
+	PR_BODY_UNICODE to accept text/plain parts when more than one is
+	available, by selecting the first one only. This requires the
+	prior detection of text/html parts in order to exclude the
+	property or not.
+
 2011-02-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContext.m

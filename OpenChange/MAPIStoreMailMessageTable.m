@@ -331,28 +331,26 @@ static EOQualifier *nonDeletedQualifier = nil;
     case PR_BODY_UNICODE:
       {
         NSMutableArray *keys;
-        NSArray *acceptedTypes;
 
         child = [self lookupChild: childKey];
 
-        acceptedTypes = [NSArray arrayWithObjects: @"text/plain",
-                                 @"text/html", nil];
         keys = [NSMutableArray array];
         [child addRequiredKeysOfStructure: [child bodyStructure]
                                      path: @"" toArray: keys
-                            acceptedTypes: acceptedTypes];
-        if ([keys count] == 0 || [keys count] == 2)
+                            acceptedTypes: [NSArray arrayWithObject:
+                                                      @"text/html"]];
+        if ([keys count] > 0)
           {
             *data = NULL;
             rc = MAPI_E_NOT_FOUND;
           }
         else
           {
-            acceptedTypes = [NSArray arrayWithObject: @"text/plain"];
             [keys removeAllObjects];
             [child addRequiredKeysOfStructure: [child bodyStructure]
                                          path: @"" toArray: keys
-                                acceptedTypes: acceptedTypes];
+                                acceptedTypes: [NSArray arrayWithObject:
+                                                          @"text/plain"]];
             if ([keys count] > 0)
               {
                 id result;
