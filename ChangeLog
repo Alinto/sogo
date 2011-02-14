@@ -1,3 +1,10 @@
+2011-02-14  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxDatePicker.m
+	(-takeValuesFromRequest:inContext:): we now consider the timezone
+	offset with respect to the current date, ie we properly consider daylight
+	saving time offset.
+
 2011-02-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailMessageTable.m (-restrictedChildKeys):

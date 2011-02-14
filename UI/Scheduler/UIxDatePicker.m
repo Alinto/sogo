@@ -149,7 +149,7 @@
   NSString       *dateString;
   NSCalendarDate *d;
   NSInteger dateTZOffset, userTZOffset;
-  NSTimeZone *userTZ;
+  NSTimeZone *systemTZ, *userTZ;
   SOGoUserDefaults *ud;
 
   dateString = [_rq formValueForKey:[self dateID]];
@@ -168,9 +168,10 @@
   /* we must adjust the date timezone because "dateWithString:..." uses the
      system timezone, which can be different from the user's. */
   ud = [[_ctx activeUser] userDefaults];
-  dateTZOffset = [[d timeZone] secondsFromGMT];
+  systemTZ = [d timeZone];
+  dateTZOffset = [systemTZ secondsFromGMTForDate: d];
   userTZ = [ud timeZone];
-  userTZOffset = [userTZ secondsFromGMT];
+  userTZOffset = [userTZ secondsFromGMTForDate: d];
   if (dateTZOffset != userTZOffset)
     d = [d dateByAddingYears: 0 months: 0 days: 0
                        hours: 0 minutes: 0
