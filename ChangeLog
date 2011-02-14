@@ -1,5 +1,10 @@
 2011-02-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailFolderTable.m
+	(-getChildProperty:forKey:withTag:): compute propre response for
+	PR_CONTENT_UNREAD, even though this will work only for subfolders
+	and mapistore v2, neither of which is supported right now...
+
 	* SoObjects/Mailer/SOGoMailObject.m (-isNewMail, -replied)
 	(-forwarded, -deleted): new accessors for the \Recent, \Answered,
 	$Forwarded and \Deleted IMAP flags.
