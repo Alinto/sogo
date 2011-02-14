@@ -27,14 +27,11 @@
 
 #import "EOQualifier+MAPIFS.h"
 #import "MAPIStoreTypes.h"
+#import "NSObject+MAPIStore.h"
 #import "SOGoMAPIFSFolder.h"
 #import "SOGoMAPIFSMessage.h"
 
 #import "MAPIStoreFSMessageTable.h"
-#import "NSCalendarDate+MAPIStore.h"
-#import "NSData+MAPIStore.h"
-#import "NSString+MAPIStore.h"
-#import "NSValue+MAPIStore.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
@@ -47,57 +44,14 @@
 {
   NSDictionary *properties;
   SOGoMAPIFSMessage *child;
-  uint16_t valueType;
   id value;
-  int rc;
-
-  rc = MAPI_E_SUCCESS;
+  enum MAPISTATUS rc;
 
   child = [self lookupChild: childKey];
   properties = [child properties];
   value = [properties objectForKey: MAPIPropertyKey (propTag)];
   if (value)
-    {
-      // [self logWithFormat: @"property %.8x found", propTag];
-      valueType = (propTag & 0xffff);
-      switch (valueType)
-	{
-	case PT_NULL:
-	  *data = NULL;
-	  break;
-	case PT_SHORT:
-	  *data = [value asShortInMemCtx: memCtx];
-	  break;
-	case PT_LONG:
-	  *data = [value asLongInMemCtx: memCtx];
-	  break;
-	case PT_BOOLEAN:
-	  *data = [value asBooleanInMemCtx: memCtx];
-	  break;
-	case PT_DOUBLE:
-	  *data = [value asDoubleInMemCtx: memCtx];
-	  break;
-	case PT_UNICODE:
-	case PT_STRING8:
-	  *data = [value asUnicodeInMemCtx: memCtx];
-	  break;
-	case PT_SYSTIME:
-	  *data = [value asFileTimeInMemCtx: memCtx];
-	  break;
-	case PT_BINARY:
-	  *data = [value asShortBinaryInMemCtx: memCtx];
-	  break;
-	case PT_CLSID:
-	  *data = [value asGUIDInMemCtx: memCtx];
-	  break;
-
-	default:
-	  [self errorWithFormat: @"object type not handled: %d (0x%.4x)",
-		valueType, valueType];
-	  *data = NULL;
-	  rc = MAPI_E_NO_SUPPORT;
-	}
-    }
+    rc = [value getMAPIValue: data forTag: propTag inMemCtx: memCtx];
   else
     rc = [super getChildProperty: data forKey: childKey withTag: propTag];
 

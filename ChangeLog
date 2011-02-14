@@ -7,6 +7,20 @@
 
 2011-02-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFSMessageTable.m
+	(-getChildProperty:forKey:withTag:): move type conversion code
+	into NSObject+MAPIStore.
+
+	* OpenChange/NSObject+MAPIStore.[hm]: new category module that
+	provides type methods common to all NSObject descendants.
+
+	* OpenChange/MAPIStoreContext.m
+	(-createMessagePropertiesWithMID:inFID:isAssociated:): create a
+	fake PR_SEARCH_KEY on new message to make Outlook happy when
+	composing invitations.
+	(-getProperties:ofTableType:inRow:withMID:): perform property
+	searches on "live messages" (unsaved ones) as well.
+
 	* OpenChange/MAPIStoreMailMessageTable.m (-restrictedChildKeys):
 	no longer excluded messages marked with "\Deleted".
 	(-getChildProperty:forKey:withTag:): display the right icon for

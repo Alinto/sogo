@@ -46,6 +46,7 @@
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
 #import "NSArray+MAPIStore.h"
+#import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreContext.h"
@@ -901,7 +902,13 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 			    forKey: @"associated"];
       [messageProperties setObject: [NSNumber numberWithInt: 1]
 			    forKey: @"mapiRetainCount"];
+
+      [messageProperties
+        setObject: [@"No subject" dataUsingEncoding: NSASCIIStringEncoding]
+           forKey: MAPIPropertyKey (PR_SEARCH_KEY)];
+
       [messages setObject: messageProperties forKey: midNbr];
+
       [messageProperties release];
     }
 
@@ -1056,8 +1063,10 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   NSArray *children;
   NSString *childURL, *folderURL, *childKey;
   NSInteger count;
+  NSDictionary *messageProperties;
   void *propValue;
   uint64_t fid;
+  id valueObject;
   const char *propName;
   enum MAPITAGS tag;
   enum MAPISTATUS propRc;
@@ -1124,8 +1133,38 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
     }
   else
     {
-      [self errorWithFormat: @"No url found for FMID: %lld", fmid];
-      rc = MAPI_E_INVALID_OBJECT;
+      messageProperties = [messages objectForKey:
+                                      [NSNumber numberWithUnsignedLongLong: fmid]];
+      if (messageProperties)
+        {
+	  aRow->lpProps = talloc_array (aRow, struct SPropValue,
+					sPropTagArray->cValues);
+          aRow->cValues = sPropTagArray->cValues;
+	  for (count = 0; count < sPropTagArray->cValues; count++)
+	    {
+	      tag = sPropTagArray->aulPropTag[count];
+	      
+	      valueObject
+                = [messageProperties objectForKey: MAPIPropertyKey (tag)];
+              if (valueObject)
+                propRc = [valueObject getMAPIValue: &propValue
+                                            forTag: tag
+                                          inMemCtx: memCtx];
+              else
+                {
+		  propValue = MAPILongValue (memCtx, MAPI_E_NOT_FOUND);
+		  tag = (tag & 0xffff0000) | 0x000a;
+                }
+
+	      set_SPropValue_proptag (aRow->lpProps + count, tag, propValue);
+	    }
+	  rc = MAPI_E_SUCCESS;
+        }
+      else
+        {
+          [self errorWithFormat: @"No url found for FMID: %lld", fmid];
+          rc = MAPI_E_INVALID_OBJECT;
+        }
     }
 
   return rc;
