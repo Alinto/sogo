@@ -79,21 +79,10 @@
 
 static Class NSDataK, NSStringK;
 
-static EOQualifier *nonDeletedQualifier = nil;
-
 + (void) initialize
 {
-  EOKeyValueQualifier *deletedQualifier;
-
   NSDataK = [NSData class];
   NSStringK = [NSString class];
-  deletedQualifier = [[EOKeyValueQualifier alloc]
-                            initWithKey: @"FLAGS"
-                       operatorSelector: EOQualifierOperatorContains
-                                  value: [NSArray arrayWithObject: @"DELETED"]];
-  nonDeletedQualifier = [[EONotQualifier alloc]
-                          initWithQualifier: deletedQualifier];
-  [deletedQualifier release];
 }
 
 - (id) init
@@ -114,7 +103,7 @@ static EOQualifier *nonDeletedQualifier = nil;
 
 - (NSArray *) childKeys
 {
-  return [[folder fetchUIDsMatchingQualifier: nonDeletedQualifier
+  return [[folder fetchUIDsMatchingQualifier: nil
                                 sortOrdering: sortOrdering]
            stringsWithFormat: @"%@.eml"];
 }
@@ -122,7 +111,6 @@ static EOQualifier *nonDeletedQualifier = nil;
 - (NSArray *) restrictedChildKeys
 {
   NSArray *keys;
-  EOAndQualifier *andQualifier;
   
   if (restrictionState == MAPIRestrictionStateAlwaysTrue)
     keys = [self cachedChildKeys];
@@ -130,12 +118,9 @@ static EOQualifier *nonDeletedQualifier = nil;
     keys = [NSArray array];
   else
     {
-      andQualifier = [[EOAndQualifier alloc]
-                       initWithQualifiers: restriction, nonDeletedQualifier, nil];
-      keys = [[folder fetchUIDsMatchingQualifier: andQualifier
+      keys = [[folder fetchUIDsMatchingQualifier: restriction
                                     sortOrdering: sortOrdering]
 	       stringsWithFormat: @"%@.eml"];
-      [andQualifier release];
       [self logWithFormat: @"  restricted keys: %@", keys];
     }
 
@@ -149,14 +134,34 @@ static EOQualifier *nonDeletedQualifier = nil;
   SOGoMailObject *child;
   NSString *subject, *stringValue;
   NSInteger colIdx;
+  uint32_t intValue;
   enum MAPISTATUS rc;
 
   rc = MAPI_E_SUCCESS;
   switch (propTag)
     {
-    case PR_ICON_INDEX: // TODO
-      /* read mail, see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
-      *data = MAPILongValue (memCtx, 0x00000100);
+    case PR_ICON_INDEX:
+      /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
+      child = [self lookupChild: childKey];
+      if ([child isNewMail])
+        intValue = 0xffffffff;
+      else if ([child replied])
+        intValue = 0x105;
+      else if ([child forwarded])
+        intValue = 0x106;
+      else if ([child read])
+        intValue = 0x100;
+      else
+        intValue = 0x101;
+      *data = MAPILongValue (memCtx, intValue);
+      break;
+    case PidLidImapDeleted:
+      child = [self lookupChild: childKey];
+      if ([child deleted])
+        intValue = 1;
+      else
+        intValue = 0;
+      *data = MAPILongValue (memCtx, intValue);
       break;
     case PR_SUBJECT_UNICODE:
       child = [self lookupChild: childKey];
@@ -498,9 +503,6 @@ static EOQualifier *nonDeletedQualifier = nil;
       break;
     case PidLidPrivate:
       *data = MAPIBoolValue (memCtx, NO);
-      break;
-    case PidLidImapDeleted:
-      *data = MAPILongValue (memCtx, 0);
       break;
 
     case PR_MSG_EDITOR_FORMAT:

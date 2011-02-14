@@ -1,5 +1,10 @@
 2011-02-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessageTable.m (-restrictedChildKeys):
+	no longer excluded messages marked with "\Deleted".
+	(-getChildProperty:forKey:withTag:): display the right icon for
+	replied, forwarded, read/unread and deleted messages.
+
 	* OpenChange/MAPIStoreMailFolderTable.m
 	(-getChildProperty:forKey:withTag:): compute propre response for
 	PR_CONTENT_UNREAD, even though this will work only for subfolders
