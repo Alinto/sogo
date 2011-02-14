@@ -105,6 +105,12 @@
 - (NSException *) addFlags:(id)_f;
 - (NSException *) removeFlags:(id)_f;
 
+- (BOOL) isNewMail;  /* \Recent */
+- (BOOL) read;       /* \Unseen */
+- (BOOL) replied;    /* \Answered */
+- (BOOL) forwarded;  /* $forwarded */
+- (BOOL) deleted;    /* \Deleted */
+
 /* deletion */
 
 - (BOOL) isDeletionAllowed;

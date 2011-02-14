@@ -1331,9 +1331,29 @@ static BOOL debugSoParts       = NO;
   return ([[self fetchAttachmentIds] count] > 0);
 }
 
+- (BOOL) isNewMail
+{
+  return [self _hasFlag: @"recent"];
+}
+
 - (BOOL) read
 {
   return [self _hasFlag: @"seen"];
+}
+
+- (BOOL) replied
+{
+  return [self _hasFlag: @"answered"];
+}
+
+- (BOOL) forwarded
+{
+  return [self _hasFlag: @"$forwarded"];
+}
+
+- (BOOL) deleted
+{
+  return [self _hasFlag: @"deleted"];
 }
 
 - (NSString *) textDescription
