@@ -1,5 +1,12 @@
 2011-02-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFSMessageTable.m
+	(-getChildProperty:forKey:withTag:): move type conversion code
+	into NSObject+MAPIStore.
+
+	* OpenChange/NSObject+MAPIStore.[hm]: new category module that
+	provides type methods common to all NSObject descendants.
+
 	* OpenChange/MAPIStoreContext.m
 	(-createMessagePropertiesWithMID:inFID:isAssociated:): create a
 	fake PR_SEARCH_KEY on new message to make Outlook happy when
