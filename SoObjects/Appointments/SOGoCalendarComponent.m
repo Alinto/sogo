@@ -52,6 +52,7 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoWebDAVAclManager.h>
 #import <SOGo/WORequest+SOGo.h>
@@ -591,7 +592,6 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 - (void) saveComponent: (iCalRepeatableEntityObject *) newObject
 {
   NSString *newiCalString, *newUid;
-  SOGoEMailAlarmsManager *eaMgr;
 
   if (!isNew
       && [newObject isRecurrent])
@@ -613,9 +613,14 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
       [newObject setUid: newUid];
     }
 
-  eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
-  [eaMgr handleAlarmsInCalendar: [newObject parent]
-                  fromComponent: self];
+  if ([[SOGoSystemDefaults sharedSystemDefaults] enableEMailAlarms])
+    {
+      SOGoEMailAlarmsManager *eaMgr;
+      
+      eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
+      [eaMgr handleAlarmsInCalendar: [newObject parent]
+	     fromComponent: self];
+    }
 
   newiCalString = [[newObject parent] versitString];
 
@@ -1170,25 +1175,33 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 #warning alarms: we don not handle occurrences
 - (NSException *) prepareDelete
 {
-  SOGoEMailAlarmsManager *eaMgr;
-
-  eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
-  [eaMgr deleteAlarmsFromComponent: self];
+  if ([[SOGoSystemDefaults sharedSystemDefaults] enableEMailAlarms])
+    {
+      SOGoEMailAlarmsManager *eaMgr;
+      
+      eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
+      [eaMgr deleteAlarmsFromComponent: self];
+    }
 
   return nil;
 }
 
 - (id) PUTAction: (WOContext *) localContext
 {
-  SOGoEMailAlarmsManager *eaMgr;
   WORequest *rq;
   iCalCalendar *putCalendar;
 
   rq = [localContext request];
   putCalendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
-  eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
-  [eaMgr handleAlarmsInCalendar: putCalendar
-                  fromComponent: self];
+
+  if ([[SOGoSystemDefaults sharedSystemDefaults] enableEMailAlarms])
+    {
+      SOGoEMailAlarmsManager *eaMgr;
+
+      eaMgr = [SOGoEMailAlarmsManager sharedEMailAlarmsManager];
+      [eaMgr handleAlarmsInCalendar: putCalendar
+	     fromComponent: self];
+    }
 
   return [super PUTAction: localContext];
 }
