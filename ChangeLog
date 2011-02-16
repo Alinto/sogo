@@ -1,3 +1,9 @@
+2011-02-16  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js (-appendSieveFilterRow):
+	fixed a bug with IE8 that would not set the "checked" attribute
+	properly on a checkbox.
+
 2011-02-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxDatePicker.m

@@ -220,9 +220,9 @@ function appendSieveFilterRow(filterTable, number, filter) {
 
     var activeColumn = createElement("td", null, "activeColumn");
     var cb = createElement("input", null, "checkBox",
-                           { checked: filter.active,
-                             type: "checkbox" },
+                           { type: "checkbox" },
                            null, activeColumn);
+    cb.checked = filter.active;
     var bound = onScriptActiveCheck.bindAsEventListener(cb);
     cb.observe("click", bound);
     row.appendChild(activeColumn);
