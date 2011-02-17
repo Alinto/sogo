@@ -40,25 +40,15 @@ main (int argc, char **argv, char **env)
   ud = [NSUserDefaults standardUserDefaults];
   [ud addSuiteNamed: @"sogod"];
 
-  if ([ud objectForKey: @"SOGoUserSources"])
+  if ([ud objectForKey: @"SOGoEnableEMailAlarms"])
     {
-      if ([ud objectForKey: @"SOGoEnableEMailAlarms"])
-        {
-          notifier = [SOGoEAlarmsNotifier new];
-          if (![notifier run])
-            rc = -1;
-          [notifier release];
-        }
-      else
-        NSLog (@"EMail alarms are disabled in the SOGo configuration.");
+      notifier = [SOGoEAlarmsNotifier new];
+      if (![notifier run])
+	rc = -1;
+      [notifier release];
     }
   else
-    {
-      NSLog (@"No LDAP source is configured in the SOGo configuration of this"
-             @" account. Please make sure to use this tool under the same"
-             @" username as SOGo.");
-      rc = -1;
-    }
+    NSLog (@"EMail alarms are disabled in the SOGo configuration.");
 
   [pool release];
 

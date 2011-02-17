@@ -40,23 +40,12 @@ main (int argc, char **argv, char **env)
   ud = [NSUserDefaults standardUserDefaults];
   [ud addSuiteNamed: @"sogod"];
 
-  if ([ud objectForKey: @"SOGoUserSources"])
-    {
-      sockd = [SOGoSockD new];
-      if ([sockd run])
-        rc = 0;
-      else
-        rc = -1;
-      [sockd release];
-    }
+  sockd = [SOGoSockD new];
+  if ([sockd run])
+    rc = 0;
   else
-    {
-      NSLog (@"No LDAP source is configured in the SOGo configuration of this"
-             @" account. Please make sure to use this tool under the same"
-             @" username as SOGo.");
-      rc = -1;
-    }
-
+    rc = -1;
+  [sockd release];
   [pool release];
 
   return rc;
