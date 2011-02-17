@@ -1,6 +1,6 @@
 2011-02-17  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
-        * Modifed all tools to NOT check for SOGoUserSources
+        * Modified all tools to NOT check for SOGoUserSources
 	as it'll break if we are in multi-domain with no
 	master sources defined.
 
