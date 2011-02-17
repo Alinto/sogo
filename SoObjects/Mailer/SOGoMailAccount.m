@@ -645,7 +645,7 @@ static NSString *sieveScriptName = @"sogo";
 
       password = [[self authenticatorInContext: context]
                    imapPasswordInContext: context
-                               forServer: [imapURL host]
+		                  forURL: imapURL
                               forceRenew: renewed];
       if (!password)
         [self errorWithFormat: @"no IMAP4 password available"];

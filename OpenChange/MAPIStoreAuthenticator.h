@@ -1,3 +1,4 @@
+
 /* MAPIStoreAuthenticator.h - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
@@ -26,6 +27,7 @@
 #import <Foundation/NSObject.h>
 
 @class NSString;
+@class NSURL;
 
 @class WOContext;
 
@@ -41,7 +43,7 @@
 - (void) setPassword: (NSString *) newPassword;
 
 - (NSString *) imapPasswordInContext: (WOContext *) context
-                           forServer: (NSString *) imapServer
+                              forURL: (NSURL *) server
                           forceRenew: (BOOL) renew;
 
 @end

@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSURL.h>
 
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoPermissions.h>
@@ -58,7 +59,7 @@
 }
 
 - (NSString *) imapPasswordInContext: (WOContext *) context
-                           forServer: (NSString *) imapServer
+                              forURL: (NSURL *) server
                           forceRenew: (BOOL) renew
 {
         NSString *imapPassword;

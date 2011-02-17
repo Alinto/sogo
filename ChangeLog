@@ -3,6 +3,9 @@
         * Modified all tools to NOT check for SOGoUserSources
 	as it'll break if we are in multi-domain with no
 	master sources defined.
+	* Modified SOGoAuthenticator: -imapPasswordInContext: ...
+	to pass the server URL and not the host particle in order
+	to determine if we are using SSL or not.
 
 2011-02-15  Ludovic Marcotte  <lmarcotte@inverse.ca>
 

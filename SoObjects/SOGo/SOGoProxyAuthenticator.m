@@ -139,7 +139,7 @@
 }
 
 - (NSString *) imapPasswordInContext: (WOContext *) context
-                           forServer: (NSString *) imapServer
+                              forURL: (NSURL *) server
                           forceRenew: (BOOL) renew
 {
   return (renew ? nil : [self passwordInContext: context]);

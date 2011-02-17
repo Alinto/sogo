@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/SoDefaultRenderer.h>
 #import <NGObjWeb/WOApplication.h>
@@ -209,13 +210,13 @@
 
 
 - (NSString *) imapPasswordInContext: (WOContext *) context
-                           forServer: (NSString *) imapServer
+                              forURL: (NSURL *) server
                           forceRenew: (BOOL) renew
 {
-  SOGoSystemDefaults *sd;
+  NSString *password, *service, *scheme;
   SOGoCASSession *session;
-  NSString *password, *service;
-
+  SOGoSystemDefaults *sd;
+ 
   password = [self passwordInContext: context];
   if ([password length])
     {
@@ -224,7 +225,15 @@
         {
           session = [SOGoCASSession CASSessionWithIdentifier: password
                                                    fromProxy: NO];
-          service = [NSString stringWithFormat: @"imap://%@", imapServer];
+
+	  // We must NOT assume the scheme exists
+	  scheme = [server scheme];
+
+	  if (!scheme)
+	    scheme = @"imap";
+
+	  service = [NSString stringWithFormat: @"%@://%@", scheme, [server host]];
+
           if (renew)
             [session invalidateTicketForService: service];
           password = [session ticketForService: service];
