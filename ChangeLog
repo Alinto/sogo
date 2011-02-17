@@ -1,3 +1,9 @@
+2011-02-17  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Contacts/SOGoFolder+CardDAV.m (-parseContactFilter:):
+	we now consider all DOM elements from the text-match element. This
+	fixes problems when the query contains one or more HTML entities.
+
 2011-02-16  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxPreferences.js (-appendSieveFilterRow):

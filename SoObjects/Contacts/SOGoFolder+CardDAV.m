@@ -1,6 +1,6 @@
 /* NSObject+CardDAV.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Ludovic Marcotte <ludovic@inverse.ca>
  *
@@ -30,6 +30,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <DOM/DOMProtocols.h>
+#import <DOM/DOMNode.h>
 #import <SaxObjC/SaxObjC.h>
 #import <SaxObjC/XMLNamespaces.h>
 
@@ -142,8 +143,8 @@
 	  && [(NSArray *) [[ranges objectAtIndex: 0] childNodes] count])
 	{
 	  filterData = [NSMutableDictionary dictionary];
-	  [filterData setObject: [[(NSArray *)[[ranges objectAtIndex: 0] childNodes] lastObject] data]
-		      forKey: [filterElement attribute: @"name"]];
+	  [filterData setObject: [(NGDOMNode *)[ranges objectAtIndex: 0] textValue]
+			 forKey: [filterElement attribute: @"name"]];
 	}
     }
 
