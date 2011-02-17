@@ -1,3 +1,4 @@
+<<<<<<< variant A
 2011-02-15  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoCalendarComponent.m
@@ -6,6 +7,15 @@
 	SOGoEnableEMailAlarms was set to YES prior doing this.
 	This fixes bug #1079.
 
+>>>>>>> variant B
+2011-02-16  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js (-appendSieveFilterRow):
+	fixed a bug with IE8 that would not set the "checked" attribute
+	properly on a checkbox.
+
+####### Ancestor
+======= end
 2011-02-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxDatePicker.m

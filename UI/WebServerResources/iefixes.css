@@ -189,3 +189,10 @@ DIV#uploadResults P
 { margin: 5px;
   padding: 0; }
 
+/* UIxPreferences */
+
+DIV#filtersListWrapper
+{ overflow-x: hidden; }
+
+TABLE#filtersList
+{ width: auto; }
