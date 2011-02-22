@@ -1,3 +1,10 @@
+2011-02-22  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m (
+	-_fillBlocks:withEvent:withNumber:): don't compute the block if
+	the end date is before the start date. This fixes a rare segfault that
+	occurs with recurrent event with multiple exceptions.
+
 2011-02-17  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Contacts/SOGoFolder+CardDAV.m (-parseContactFilter:):

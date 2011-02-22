@@ -728,14 +728,20 @@ _userStateInEvent (NSArray *event)
                   offset++;
                   currentDay = [blocks objectAtIndex: offset];
                 }
-              eventBlock = [self _eventBlockWithStart: currentStart
-                                                  end: eventEnd
-                                               number: number
-                                                onDay: currentDayStart
-                                       recurrenceTime: recurrenceTime
-                                            userState: userState];
-              [currentDay addObject: eventBlock];
-            }
+	      if (eventEnd > currentStart)
+		{
+		  eventBlock = [self _eventBlockWithStart: currentStart
+						      end: eventEnd
+						   number: number
+						    onDay: currentDayStart
+					   recurrenceTime: recurrenceTime
+						userState: userState];
+		  [currentDay addObject: eventBlock];
+		}
+	      else
+		[self warnWithFormat: @"event '%@' has end < start: %d < %d",
+		      [event objectAtIndex: eventNameIndex], eventEnd, currentStart];
+	    }
         }
     }
 }
