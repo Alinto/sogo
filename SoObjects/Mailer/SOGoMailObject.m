@@ -349,14 +349,10 @@ static BOOL debugSoParts       = NO;
     return nil;
   }
 
-  if ([_path isEqualToString: @"text"]) {
-    return info;
-  }
-
   /* ensure array argument */
   
   if ([_path isKindOfClass:[NSString class]]) {
-    if ([_path length] == 0)
+    if ([_path length] == 0 || [_path isEqualToString: @"text"])
       return info;
     
     _path = [_path componentsSeparatedByString: @"."];

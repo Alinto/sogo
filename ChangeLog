@@ -1,5 +1,9 @@
 2011-02-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject.m (-lookupInfoForBodyPart:): we
+	now compare the path with a string only if it is a string (and not
+	an array).
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-fixupCycleRecord:cycleRange:firstInstanceCalendarDateRange:withEventTimeZone:):
 	avoid fixing the timezone if no event timezone is defined.
