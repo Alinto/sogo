@@ -1,3 +1,10 @@
+2011-02-23  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	(-newOccurenceWithID): set the occurrence timezone to the user's
+	timezone. This fixes an issue when accessing occurrences of a
+	recurrent event.
+
 2011-02-22  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m (
