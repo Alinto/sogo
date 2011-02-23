@@ -659,8 +659,11 @@ static NSNumber *sharedYes = nil;
   record = [[theRecord mutableCopy] autorelease];
 
   date = [theCycle startDate];
-  secondsOffsetFromGMT = (int) [[theEventTimeZone periodForDate: date] secondsOffsetFromGMT];
-  date = [date dateByAddingYears: 0 months: 0 days: 0 hours: 0 minutes: 0 seconds: -secondsOffsetFromGMT];
+  if (theEventTimeZone)
+    {
+      secondsOffsetFromGMT = (int) [[theEventTimeZone periodForDate: date] secondsOffsetFromGMT];
+      date = [date dateByAddingYears: 0 months: 0 days: 0 hours: 0 minutes: 0 seconds: -secondsOffsetFromGMT];
+    }
   [date setTimeZone: timeZone];
   [record setObject: date forKey: @"startDate"];
   dateSecs = [NSNumber numberWithInt: [date timeIntervalSince1970]];
@@ -668,8 +671,11 @@ static NSNumber *sharedYes = nil;
   [record setObject: dateSecs forKey: @"c_recurrence_id"];
 
   date = [theCycle endDate];
-  secondsOffsetFromGMT = (int) [[theEventTimeZone periodForDate: date] secondsOffsetFromGMT];
-  date = [date dateByAddingYears: 0 months: 0 days: 0 hours: 0 minutes: 0 seconds: -secondsOffsetFromGMT];
+  if (theEventTimeZone)
+    {
+      secondsOffsetFromGMT = (int) [[theEventTimeZone periodForDate: date] secondsOffsetFromGMT];
+      date = [date dateByAddingYears: 0 months: 0 days: 0 hours: 0 minutes: 0 seconds: -secondsOffsetFromGMT];
+    }
   [date setTimeZone: timeZone];
   [record setObject: date forKey: @"endDate"];
   dateSecs = [NSNumber numberWithInt: [date timeIntervalSince1970]];

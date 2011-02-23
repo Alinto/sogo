@@ -1,5 +1,9 @@
 2011-02-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-fixupCycleRecord:cycleRange:firstInstanceCalendarDateRange:withEventTimeZone:):
+	avoid fixing the timezone if no event timezone is defined.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	(-newOccurenceWithID): set the occurrence timezone to the user's
 	timezone. This fixes an issue when accessing occurrences of a
