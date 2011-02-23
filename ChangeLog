@@ -5,6 +5,10 @@
 	we keep a copy of the message for proper saving in the
 	Sent IMAP folder.
 
+	* Improved the Installation and Configuration Guide regarding
+	the SQL-based authentication sources (required database columns)
+	and also the "id" uniqueness of authentication sources in general
+
 2011-02-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailObject.m (-lookupInfoForBodyPart:): we
