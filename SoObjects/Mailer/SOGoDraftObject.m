@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSProcessInfo.h>
@@ -85,6 +86,87 @@ static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc",
 
 @end
 
+//
+// Useful extension that comes from Pantomime which is also
+// released under the LGPL. We should eventually merge
+// this with the same category found in SOPE's NGSmtpClient.m
+// or simply drop sope-mime in favor of Pantomime
+//
+@interface NSMutableData (DataCleanupExtension)
+
+- (NSRange) rangeOfCString: (const char *) theCString;
+- (NSRange) rangeOfCString: (const char *) theCString
+		  options: (unsigned int) theOptions
+		    range: (NSRange) theRange;
+@end
+
+@implementation NSMutableData (DataCleanupExtension)
+
+- (NSRange) rangeOfCString: (const char *) theCString
+{
+  return [self rangeOfCString: theCString
+	       options: 0
+	       range: NSMakeRange(0,[self length])];
+}
+
+-(NSRange) rangeOfCString: (const char *) theCString
+		  options: (unsigned int) theOptions
+		    range: (NSRange) theRange
+{
+  const char *b, *bytes;
+  int i, len, slen;
+  
+  if (!theCString)
+    {
+      return NSMakeRange(NSNotFound,0);
+    }
+  
+  bytes = [self bytes];
+  len = [self length];
+  slen = strlen(theCString);
+  
+  b = bytes;
+  
+  if (len > theRange.location + theRange.length)
+    {
+      len = theRange.location + theRange.length;
+    }
+
+  if (theOptions == NSCaseInsensitiveSearch)
+    {
+      i = theRange.location;
+      b += i;
+      
+      for (; i <= len-slen; i++, b++)
+	{
+	  if (!strncasecmp(theCString,b,slen))
+	    {
+	      return NSMakeRange(i,slen);
+	    }
+	}
+    }
+  else
+    {
+      i = theRange.location;
+      b += i;
+      
+      for (; i <= len-slen; i++, b++)
+	{
+	  if (!memcmp(theCString,b,slen))
+	    {
+	      return NSMakeRange(i,slen);
+	    }
+	}
+    }
+  
+  return NSMakeRange(NSNotFound,0);
+}
+
+@end
+
+//
+//
+//
 @implementation SOGoDraftObject
 
 static NGMimeType  *MultiMixedType = nil;
@@ -1440,12 +1522,14 @@ static NSString    *userAgent      = nil;
 
 - (NSException *) sendMail
 {
-  NSException *error;
+  NSMutableData *cleaned_message;
   SOGoMailFolder *sentFolder;
-  NSData *message;
-  NSURL *sourceIMAP4URL;
   SOGoDomainDefaults *dd;
-
+  NSURL *sourceIMAP4URL;
+  NSException *error;
+  NSData *message;
+  NSRange r1, r2;
+  
   /* send mail */
   sentFolder = [[self mailAccountFolder] sentFolderInContext: context];
   if ([sentFolder isKindOfClass: [NSException class]])
@@ -1457,11 +1541,34 @@ static NSString    *userAgent      = nil;
 
       generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
       message = [generator generateMimeFromPart: [self mimeMessageWithHeaders: nil 
-						       excluding: [NSArray arrayWithObject: @"bcc"]]];
+						       excluding: nil]];
       
+      //
+      // We now look for the Bcc: header. If it is present, we remove it.
+      // Some servers, like qmail, do not remove it automatically.
+      //
+#warning FIXME - we should fix the case issue when we switch to Pantomime
+      cleaned_message = [NSMutableData dataWithData: message];
+      r1 = [cleaned_message rangeOfCString: "\r\n\r\n"];
+      r1 = [cleaned_message rangeOfCString: "\r\nbcc: "
+			    options: 0
+			    range: NSMakeRange(0,r1.location-1)];
+      
+      if (r1.location != NSNotFound)
+	{
+	  // We search for the first \r\n AFTER the Bcc: header and
+	  // replace the whole thing with \r\n.
+	  r2 = [cleaned_message rangeOfCString: "\r\n"
+				options: 0
+				range: NSMakeRange(NSMaxRange(r1)+1,[cleaned_message length]-NSMaxRange(r1)-1)];
+	  [cleaned_message replaceBytesInRange: NSMakeRange(r1.location, NSMaxRange(r2)-r1.location)
+			   withBytes: "\r\n"
+			   length: 2];
+	}
+
       dd = [[context activeUser] domainDefaults];
       error = [[SOGoMailer mailerWithDomainDefaults: dd]
-                sendMailData: message
+                sendMailData: cleaned_message
                 toRecipients: [self allBareRecipients]
                       sender: [self sender]];
       if (!error)

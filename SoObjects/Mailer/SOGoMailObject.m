@@ -289,6 +289,11 @@ static BOOL debugSoParts       = NO;
   return [[self envelope] cc];
 }
 
+- (NSArray *) bccEnvelopeAddresses
+{
+  return [[self envelope] bcc];
+}
+
 - (NSArray *) replyToEnvelopeAddresses
 {
   return [[self envelope] replyTo];

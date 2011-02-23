@@ -72,6 +72,7 @@
 - (NSArray *) replyToEnvelopeAddresses;
 - (NSArray *) toEnvelopeAddresses;
 - (NSArray *) ccEnvelopeAddresses;
+- (NSArray *) bccEnvelopeAddresses;
 
 - (NSDictionary *) mailHeaders;
 

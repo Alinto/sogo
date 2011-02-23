@@ -64,6 +64,21 @@
           </td>
         </tr>
       </var:if>
+      <var:if condition="hasBCC">
+        <tr class="mailer_fieldrow">
+          <td class="mailer_fieldname"><img rsrc:src="plus.png" class="collapse" style="display: none;" /><var:string label:value="Bcc"/>:</td>
+          <td class="mailer_fieldvalue">
+            <span class="collapse"><var:foreach list="clientObject.bccEnvelopeAddresses" 
+              item="currentAddress">
+              <a var:href="currentAddressLink"
+		><var:string value="currentAddress"
+                  formatter="context.mailEnvelopeFullAddressFormatter"
+                  /></a>
+              <!-- TODO: better to use li+CSS -->
+            </var:foreach></span>
+          </td>
+        </tr>
+      </var:if>
       <var:if condition="hasReplyTo">
         <tr class="mailer_fieldrow">
           <td class="mailer_fieldname"><var:string label:value="Reply-To"/>:</td>
