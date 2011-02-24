@@ -214,7 +214,8 @@ id NSObjectFromStreamData (enum MAPITAGS property, NSData* streamData)
     {
     case PT_UNICODE:
     case PT_STRING8:
-      result = [NSString stringWithUTF8String: [streamData bytes]];
+      result = [NSString stringWithCharacters: (unichar *) [streamData bytes]
+                                       length: [streamData length] / 2];
       break;
     case PT_BINARY:
       result = streamData;

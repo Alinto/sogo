@@ -1,5 +1,8 @@
 2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromStreamData): convert
+	read PT_UNICODE stream data as UTF-16.
+
 	* OpenChange/MAPIStoreContext.m
 	(-setProperty:withFMID:ofTableType:fromFile:): considering the
 	cached message as a MAPIStoreMessage instance instead of NSDictionary.
