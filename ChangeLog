@@ -1,3 +1,9 @@
+2011-02-24  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-_flattenCycleRecord:forRange:intoArray:): fixed the condition
+	that checks if the event lasts all-day.
+
 2011-02-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * We now strip the bcc header in SOGoDraftObject instead

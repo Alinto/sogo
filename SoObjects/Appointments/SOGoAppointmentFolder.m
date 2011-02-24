@@ -904,7 +904,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 									 endDate: checkEndDate];
 		  exDates = [eventTimeZone computedDatesForStrings: exDates];
 		}
-	      else if ([theRecord objectForKey: @"c_isallday"])
+	      else if ([[theRecord objectForKey: @"c_isallday"] boolValue])
 		{
 		  // The event lasts all-day and has no timezone (floating); we convert the range of the first event
 		  // to the user's timezone
@@ -918,7 +918,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		  firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
 									   endDate: firstEndDate];
 		}
-	      
+
 	      // Calculate the occurrences for the given range
 	      ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: theRange
 							  firstInstanceCalendarDateRange: firstRange
@@ -1121,8 +1121,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       else
         ma = nil;
 
-      /* fetch recurrent apts now. we do NOT consider events with no cycle
-         end. */
+      // Fetch recurrent apts now, *excluding* events with no cycle end.
       if (canCycle && _endDate)
         {
           where = [NSString stringWithFormat: @"%@ AND c_iscycle = 1", baseWhere];
