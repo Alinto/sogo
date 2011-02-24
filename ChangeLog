@@ -1,5 +1,9 @@
 2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreObject.m: new super class used as base the
+	MAPI objects counterparts (MAPIStoreMessage, MAPIStoreFolder and
+	MAPIStoreAttachment).
+
 	* SoObjects/Contacts/SOGoContactGCSEntry.m
 	(-saveContentString:baseVersion:): release the "card" ivar to
 	avoid caching issues.
