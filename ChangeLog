@@ -1,5 +1,10 @@
 2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoContentObject.m (-davContentLength): return 0
+	when "content" is nil to avoid a value of "(nil)".
+	(-setMAPIContent:, -MAPIContent): removed obsolete methods (fixed
+	hack).
+
 	* SoObjects/Mailer/SOGoMailObject.m (_hasFlag:): put the flags in
 	a cache to avoid multiple queries.
 

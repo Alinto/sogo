@@ -142,7 +142,6 @@
 - (void) dealloc
 {
   [content release];
-  [MAPIContent release];
   [creationDate release];
   [lastModified release];
   [super dealloc];
@@ -379,7 +378,10 @@
      http://www.sogo.nu/bugs/view.php?id=915:
 
      length = [content lengthOfBytesUsingEncoding: NSUTF8StringEncoding]; */
-  length = strlen ([content UTF8String]);
+  if (content)
+    length = strlen ([content UTF8String]);
+  else
+    length = 0;
 
   return [NSString stringWithFormat: @"%u", length];
 }
@@ -480,17 +482,5 @@
 {
   return @"<default>";
 }
-
-/* MAPI support */
-- (NSString *) MAPIContent
-{
-  return MAPIContent;
-}
-
-- (void) setMAPIContent: (NSString *) theContent
-{
-  ASSIGN(MAPIContent, theContent);
-}
-
 
 @end /* SOGoContentObject */
