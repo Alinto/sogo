@@ -26,6 +26,7 @@
 #import <SOGo/SOGoObject.h>
 
 @class NSDictionary;
+@class NSMutableDictionary;
 
 @interface SOGoMAPIFSMessage : SOGoObject
 {
@@ -33,6 +34,8 @@
 }
 
 - (NSDictionary *) properties;
+- (void) appendProperties: (NSDictionary *) newProperties;
+- (void) save;
 
 @end
 

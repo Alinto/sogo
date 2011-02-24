@@ -67,7 +67,7 @@
   return properties;
 }
 
-- (void) setMAPIProperties: (NSDictionary *) newProperties
+- (void) appendProperties: (NSDictionary *) newProperties
 {
   NSArray *keys;
   NSString *key;
@@ -87,12 +87,12 @@
     }
 }
 
-- (void) MAPISave
+- (void) save
 {
   NSArray *pathComponents;
   NSString *filePath;
 
-  [self logWithFormat: @"-MAPISave"];
+  [self logWithFormat: @"-save"];
 
   [container ensureDirectory];
 

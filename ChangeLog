@@ -1,5 +1,10 @@
 2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIFSMessage.m (-appendProperties:): new name
+	for "setMAPIProperties:"
+	(-save): new name for "MAPISave", since those were methods
+	ususally found in the obsolete category modules.
+
 	* OpenChange/MAPIStoreSOGo.m:
 	(sogo_pocop_get_attachment_table, sogo_pocop_get_attachment)
 	(sogo_pocop_create_attachment, sogo_pocop_set_table_columns)
