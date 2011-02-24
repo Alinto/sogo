@@ -28,55 +28,72 @@ $(SOGOBACKEND)_PRINCIPAL_CLASS = MAPIApplication
 $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIApplication.m \
 	MAPIStoreAuthenticator.m \
-	MAPIStoreContext.m \
 	MAPIStoreMapping.m \
 	MAPIStoreTypes.m \
 	\
-	MAPIStoreCalendarContext.m \
-	MAPIStoreCommonViewsContext.m \
-	MAPIStoreContactsContext.m \
-	MAPIStoreDeferredActionsContext.m \
-	MAPIStoreDeletedItemsContext.m \
-	MAPIStoreDraftsContext.m \
-	MAPIStoreFreebusyContext.m \
-	MAPIStoreFSBaseContext.m \
-	MAPIStoreGCSBaseContext.m \
-	MAPIStoreJournalContext.m \
-	MAPIStoreMailContext.m \
-	MAPIStoreNotesContext.m \
-	MAPIStoreOutboxContext.m \
-	MAPIStoreRemindersContext.m \
-	MAPIStoreScheduleContext.m \
-	MAPIStoreSearchContext.m \
-	MAPIStoreSentItemsContext.m \
-	MAPIStoreShortcutsContext.m \
-	MAPIStoreSpoolerContext.m \
-	MAPIStoreTasksContext.m \
-	MAPIStoreViewsContext.m \
+	SOGoMAPIFSFolder.m \
+	SOGoMAPIFSMessage.m \
 	\
+	MAPIStoreContext.m \
+	MAPIStoreFolder.m \
+	MAPIStoreMessage.m \
+	MAPIStoreObject.m \
 	MAPIStoreTable.m \
 	MAPIStoreMessageTable.m \
 	MAPIStoreFolderTable.m \
+	\
+	MAPIStoreFSBaseContext.m \
+	MAPIStoreFSFolder.m \
+	MAPIStoreFSMessage.m \
 	MAPIStoreFSMessageTable.m \
+	\
+	MAPIStoreGCSBaseContext.m \
+	MAPIStoreGCSFolder.m \
+	MAPIStoreGCSMessage.m \
 	MAPIStoreGCSMessageTable.m \
-	MAPIStoreFAIMessageTable.m \
+	\
+	MAPIStoreCalendarContext.m \
+	MAPIStoreCalendarFolder.m \
+	MAPIStoreCalendarMessage.m \
 	MAPIStoreCalendarMessageTable.m \
+	\
+	MAPIStoreContactsContext.m \
+	MAPIStoreContactsFolder.m \
+	MAPIStoreContactsMessage.m \
 	MAPIStoreContactsMessageTable.m \
-	MAPIStoreMailMessageTable.m \
-	MAPIStoreMailFolderTable.m \
-	MAPIStoreNotesMessageTable.m \
+	\
+	MAPIStoreTasksContext.m \
+	MAPIStoreTasksFolder.m \
+	MAPIStoreTasksMessage.m \
 	MAPIStoreTasksMessageTable.m \
 	\
-	SOGoAppointmentObject+MAPIStore.m \
-	SOGoContentObject+MAPIStore.m \
-	SOGoContactGCSEntry+MAPIStore.m \
-	SOGoDraftObject+MAPIStore.m \
-	SOGoGCSFolder+MAPIStore.m \
-	SOGoMailObject+MAPIStore.m \
-	SOGoTaskObject+MAPIStore.m \
+	MAPIStoreMailBaseContext.m \
+	MAPIStoreMailFolder.m \
+	MAPIStoreMailFolderTable.m \
+	MAPIStoreDraftsMessage.m \
+	MAPIStoreMailMessage.m \
+	MAPIStoreMailMessageTable.m \
 	\
-	SOGoMAPIFSFolder.m \
-	SOGoMAPIFSMessage.m \
+	MAPIStoreInboxContext.m \
+	MAPIStoreDeletedItemsContext.m \
+	MAPIStoreDraftsContext.m \
+	MAPIStoreSentItemsContext.m \
+	MAPIStoreOutboxContext.m \
+	\
+	MAPIStoreNotesContext.m \
+	MAPIStoreNotesFolder.m \
+	MAPIStoreNotesMessage.m \
+	\
+	MAPIStoreCommonViewsContext.m \
+	MAPIStoreDeferredActionsContext.m \
+	MAPIStoreFreebusyContext.m \
+	MAPIStoreJournalContext.m \
+	MAPIStoreRemindersContext.m \
+	MAPIStoreScheduleContext.m \
+	MAPIStoreSearchContext.m \
+	MAPIStoreShortcutsContext.m \
+	MAPIStoreSpoolerContext.m \
+	MAPIStoreViewsContext.m \
 	\
 	NSArray+MAPIStore.m \
 	NSAutoreleasePool+MAPIStore.m \
@@ -87,7 +104,13 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	NSValue+MAPIStore.m \
 	\
 	EOBitmaskQualifier.m \
-	EOQualifier+MAPIFS.m
+	EOQualifier+MAPIFS.m \
+	\
+	MAPIStoreAttachment.m \
+	MAPIStoreAttachmentTable.m \
+	\
+	MAPIStoreDraftsAttachment.m \
+	MAPIStoreMailAttachment.m
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
 	product.plist
