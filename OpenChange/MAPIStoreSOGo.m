@@ -25,20 +25,24 @@
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSFileHandle.h>
 #import <Foundation/NSUserDefaults.h>
-
 #import <NGObjWeb/SoProductRegistry.h>
-
 #import <NGExtensions/NSObject+Logs.h>
-
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoSystemDefaults.h>
 
 #import "MAPIApplication.h"
 #import "MAPIStoreContext.h"
+#import "MAPIStoreObject.h"
+#import "MAPIStoreTable.h"
+
+#import "MAPIStoreSOGo.h"
 
 #undef DEBUG
-
-#include "MAPIStoreSOGo.h"
+#include <stdbool.h>
+#include <talloc.h>
+#include <gen_ndr/exchange.h>
+#include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 /**
    \details Initialize sogo mapistore backend
@@ -500,8 +504,8 @@ sogo_op_createmessage(void *private_data,
   context = cContext->objcContext;
   [context setupRequest];
 
-  rc = [context createMessagePropertiesWithMID: mid inFID: fid
-				  isAssociated: associated];
+  rc = [context createMessageWithMID: mid inFID: fid
+                isAssociated: associated];
 
   [context tearDownRequest];
   [pool release];
@@ -833,6 +837,230 @@ sogo_op_set_sort_order (void *private_data, uint64_t fid, uint8_t type,
 }
 
 /**
+   proof of concept
+*/
+static int
+sogo_pocop_get_attachment_table (void *private_data, uint64_t mid, void **table_object, uint32_t *row_count)
+{
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  pool = [NSAutoreleasePool new];
+
+  cContext = private_data;
+  context = cContext->objcContext;
+  if (context)
+    {
+      [context setupRequest];
+      rc = [context getAttachmentTable: table_object
+                           andRowCount: row_count
+                               withMID: mid];
+      [context tearDownRequest];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
+sogo_pocop_get_attachment (void *private_data, uint64_t mid, uint32_t aid, void **attachment_object)
+{
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  pool = [NSAutoreleasePool new];
+
+  cContext = private_data;
+  context = cContext->objcContext;
+  if (context)
+    {
+      [context setupRequest];
+      rc = [context getAttachment: attachment_object withAID: aid inMID: mid];
+      [context tearDownRequest];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
+sogo_pocop_create_attachment (void *private_data, uint64_t mid, uint32_t *aid, void **attachment_object)
+{
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  pool = [NSAutoreleasePool new];
+
+  cContext = private_data;
+  context = cContext->objcContext;
+  if (context)
+    {
+      [context setupRequest];
+      rc = [context createAttachment: attachment_object inAID: aid withMessage: mid];
+      [context tearDownRequest];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
+sogo_pocop_set_table_columns (void *table_object, uint16_t count, enum MAPITAGS *properties)
+{
+  NSAutoreleasePool *pool;
+  MAPIStoreTable *table;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  table = table_object;
+  if (table)
+    {
+      pool = [NSAutoreleasePool new];
+      rc = [table setColumns: properties
+                   withCount: count];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
+sogo_pocop_get_table_row (void *table_object, enum table_query_type query_type, uint32_t row_id, struct mapistore_property_data *data)
+{
+  NSAutoreleasePool *pool;
+  MAPIStoreTable *table;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  table = table_object;
+  if (table)
+    {
+      pool = [NSAutoreleasePool new];
+      rc = [table getRow: data withRowID: row_id andQueryType: query_type];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
+sogo_pocop_get_properties (void *object,
+                           uint16_t count, enum MAPITAGS *properties,
+                           struct mapistore_property_data *data)
+{
+  NSAutoreleasePool *pool;
+  MAPIStoreObject *propObject;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  propObject = object;
+  if (propObject)
+    {
+      pool = [NSAutoreleasePool new];
+      rc = [propObject getProperties: data withTags: properties andCount: count];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
+sogo_pocop_set_properties (void *object, struct SRow *aRow)
+{
+  NSAutoreleasePool *pool;
+  MAPIStoreObject *propObject;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  propObject = object;
+  if (propObject)
+    {
+      pool = [NSAutoreleasePool new];
+      rc = [propObject setProperties: aRow];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  bad object pointer");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
+sogo_pocop_release (void *object)
+{
+  NSAutoreleasePool *pool;
+  MAPIStoreObject *propObject;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  propObject = object;
+  if (propObject)
+    {
+      pool = [NSAutoreleasePool new];
+      [propObject release];
+      [pool release];
+      rc = MAPI_E_SUCCESS;
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+/**
    \details Entry point for mapistore SOGO backend
 
    \return MAPI_E_SUCCESS on success, otherwise MAPISTORE error
@@ -884,6 +1112,16 @@ int mapistore_init_backend(void)
       backend.op_getprops = sogo_op_getprops;
       backend.op_set_property_from_fd = sogo_op_set_property_from_fd;
       backend.op_get_property_into_fd = sogo_op_get_property_into_fd;
+
+      /* proof of concept */
+      backend.message.get_attachment_table = sogo_pocop_get_attachment_table;
+      backend.message.get_attachment = sogo_pocop_get_attachment;
+      backend.message.create_attachment = sogo_pocop_create_attachment;
+      backend.table.set_columns = sogo_pocop_set_table_columns;
+      backend.table.get_row = sogo_pocop_get_table_row;
+      backend.properties.get_properties = sogo_pocop_get_properties;
+      backend.properties.set_properties = sogo_pocop_set_properties;
+      backend.store.release = sogo_pocop_release;
 
       /* Register ourselves with the MAPISTORE subsystem */
       ret = mapistore_backend_register(&backend);

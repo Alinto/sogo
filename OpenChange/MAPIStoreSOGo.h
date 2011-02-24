@@ -22,9 +22,6 @@
 #ifndef __MAPISTORE_SOGO_H
 #define	__MAPISTORE_SOGO_H
 
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-
 @class MAPIStoreContext;
 
 typedef struct {

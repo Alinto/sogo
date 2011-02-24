@@ -1,5 +1,15 @@
 2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m:
+	(sogo_pocop_get_attachment_table, sogo_pocop_get_attachment)
+	(sogo_pocop_create_attachment, sogo_pocop_set_table_columns)
+	(sogo_pocop_get_table_row, sogo_pocop_get_properties)
+	(sogo_pocop_set_properties, sogo_pocop_release): new backend
+	methods (with counterparts in SOGoContext) that are used as part
+	of the new proof-of-concept API, where objects are accessed
+	directly from memory instead of needed to be resolved via their
+	fid, mid or aid identifiers.
+
 	* OpenChange/MAPIStoreAttachment.m: new super class, derived from
 	MAPIStoreObject and used for MAPI attachment objects.
 
