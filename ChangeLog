@@ -1,5 +1,16 @@
 2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoContactGCSEntry.m
+	(-saveContentString:baseVersion:): release the "card" ivar to
+	avoid caching issues.
+
+	* SoObjects/Appointments/SOGoTaskObject.m
+	(-saveContentString:baseVersion:): same as below.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(-saveComponent:): release fullCalendar, safeCalendar and
+	originalCalendar after modification to avoid caching issues.
+
 	* SoObjects/SOGo/SOGoContentObject.m (-davContentLength): return 0
 	when "content" is nil to avoid a value of "(nil)".
 	(-setMAPIContent:, -MAPIContent): removed obsolete methods (fixed

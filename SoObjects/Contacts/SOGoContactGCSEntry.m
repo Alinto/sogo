@@ -136,4 +136,16 @@
   [self saveContentString: [vcard versitString]];
 }
 
+- (NSException *) saveContentString: (NSString *) newContent
+                        baseVersion: (unsigned int) newVersion
+{
+  NSException *ex;
+
+  ex = [super saveContentString: newContent baseVersion: newVersion];
+  [card release];
+  card = nil;
+
+  return ex;
+}
+
 @end /* SOGoContactGCSEntry */
