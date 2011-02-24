@@ -1,5 +1,8 @@
 2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreAttachment.m: new super class, derived from
+	MAPIStoreObject and used for MAPI attachment objects.
+
 	* OpenChange/MAPIStoreFolder.m: new super class used as wrapper
 	around SOGoFolder objects, by decoupling the code previously found
 	in the SOGo*Context classes and which implement basic and uniform
