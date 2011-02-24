@@ -25,12 +25,12 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
 
-#import <SOGo/SOGoFolder.h>
-
 #import "EOBitmaskQualifier.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
+
+#import "MAPIStoreObject.h"
 
 #import "MAPIStoreTable.h"
 
@@ -249,23 +249,41 @@ static Class NSDataK, NSStringK;
   NSStringK = [NSString class];
 }
 
++ (id) tableForContainer: (MAPIStoreObject *) newContainer
+{
+  MAPIStoreTable *newTable;
+
+  newTable = [[self alloc] initForContainer: newContainer];
+  [newTable autorelease];
+
+  return newTable;
+}
+
 - (id) init
 {
   if ((self = [super init]))
     {
-      context = nil;
-      memCtx = NULL;
+      container = nil;
 
-      folder = nil;
-      folderURL = nil;
+      childKeys = nil;
+      restrictedChildKeys = nil;
 
-      lastChild = nil;
-      lastChildKey = nil;
+      currentRow = (uint32_t) -1;
+      currentChild = nil;
 
-      cachedKeys = nil;
-      cachedRestrictedKeys = nil;
       restriction = nil;
       restrictionState = MAPIRestrictionStateAlwaysTrue;
+      sortOrderings = nil;
+    }
+
+  return self;
+}
+
+- (id) initForContainer: (MAPIStoreObject *) newContainer
+{
+  if ((self = [self init]))
+    {
+      container = newContainer;
     }
 
   return self;
@@ -273,95 +291,57 @@ static Class NSDataK, NSStringK;
 
 - (void) dealloc
 {
-  [folder release];
-  [folderURL release];
-  [lastChildKey release];
-  [lastChild release];
-  [cachedKeys release];
-  [cachedRestrictedKeys release];
+  [currentChild release];
+  [childKeys release];
+  [restrictedChildKeys release];
   [restriction release];
   [super dealloc];
 }
 
-- (void) setContext: (id) newContext
-	 withMemCtx: (struct mapistore_context *) newMemCtx
+- (NSArray *) childKeys
 {
-  struct loadparm_context *lpCtx;
-
-  context = newContext;
-
-  memCtx = newMemCtx;
-  lpCtx = loadparm_init (newMemCtx);
-  ldbCtx = mapiproxy_server_openchange_ldb_init (lpCtx);
-}
-
-- (void) setFolder: (id) newFolder
-	   withURL: (NSString *) newFolderURL
-	    andFID: (uint64_t) newFid
-{
-  ASSIGN (folder, newFolder);
-  ASSIGN (folderURL, newFolderURL);
-  fid = newFid;
-}
-
-- (id) folder
-{
-  if (!folder)
-    [self warnWithFormat: @"returning nil folder"];
-  return folder;
-}
-
-- (NSArray *) cachedChildKeys
-{
-  if (!cachedKeys)
+  if (!childKeys)
     {
-      cachedKeys = [self childKeys];
-      [cachedKeys retain];
+      childKeys = [container childKeysMatchingQualifier: nil
+                                       andSortOrderings: sortOrderings];
+      [childKeys retain];
     }
 
-  return cachedKeys;
+  return childKeys;
 }
 
-- (NSArray *) cachedRestrictedChildKeys
+- (NSArray *) restrictedChildKeys
 {
-  if (!cachedRestrictedKeys)
+  NSArray *keys;
+
+  if (!restrictedChildKeys)
     {
-      cachedRestrictedKeys = [self restrictedChildKeys];
-      [cachedRestrictedKeys retain];
+      if (restrictionState != MAPIRestrictionStateAlwaysTrue)
+        {
+          if (restrictionState == MAPIRestrictionStateNeedsEval)
+            keys = [container childKeysMatchingQualifier: restriction
+                                        andSortOrderings: sortOrderings];
+          else
+            keys = [NSArray array];
+        }
+      else
+        keys = [self childKeys];
+
+      ASSIGN (restrictedChildKeys, keys);
     }
 
-  return cachedRestrictedKeys;
+  return restrictedChildKeys;
 }
 
 - (void) cleanupCaches
 {
-  [cachedRestrictedKeys release];
-  cachedRestrictedKeys = nil;
-  [cachedKeys release];
-  cachedKeys = nil;
-  [lastChildKey release];
-  lastChildKey = nil;
-  [lastChild release];
-  lastChild = nil;
-}
-
-- (id) lookupChild: (NSString *) childKey
-{
-  id newChild;
-
-  if ([lastChildKey isEqualToString: childKey])
-    newChild = lastChild;
-  else
-    {
-      [self logWithFormat: @"child key is now '%@'", childKey];
-      newChild = [folder lookupName: childKey
-			  inContext: nil
-			    acquire: NO];
-      ASSIGN (lastChildKey, childKey);
-      ASSIGN (lastChild, newChild);
-    }
-
-  return newChild;
+  [restrictedChildKeys release];
+  restrictedChildKeys = nil;
+  [childKeys release];
+  childKeys = nil;
+  [currentChild release];
+  currentChild = nil;
+  currentRow = (uint32_t) -1;
 }
 
 - (void) setRestrictions: (const struct mapi_SRestriction *) res
@@ -385,67 +365,13 @@ static Class NSDataK, NSStringK;
     restriction = nil;
   
   // FIXME: we should not flush the caches if the restrictions matches
-  [cachedRestrictedKeys release];
-  cachedRestrictedKeys = nil;
+  [self cleanupCaches];
   
   if (restriction)
     [self logWithFormat: @"restriction set to EOQualifier: %@",
 	  restriction];
   else if (oldRestriction)
     [self logWithFormat: @"restriction unset (was %@)", oldRestriction];
-}
-
-- (enum MAPISTATUS) getChildProperty: (void **) data
-			      forKey: (NSString *) childKey
-			     withTag: (enum MAPITAGS) propTag
-{
-  NSString *stringValue;
-  id child;
-  // uint64_t *llongValue;
-  // uint32_t *longValue;
-  int rc;
-  const char *propName;
-
-  rc = MAPI_E_SUCCESS;
-  switch (propTag)
-    {
-    case PR_DISPLAY_NAME_UNICODE:
-      child = [self lookupChild: childKey];
-      *data = [[child displayName] asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_SEARCH_KEY: // TODO
-      child = [self lookupChild: childKey];
-      stringValue = [child nameInContainer];
-      *data = [[stringValue dataUsingEncoding: NSASCIIStringEncoding]
-		asBinaryInMemCtx: memCtx];
-      break;
-    case PR_GENERATE_EXCHANGE_VIEWS: // TODO
-      *data = MAPIBoolValue (memCtx, NO);
-      break;
-
-    default:
-      propName = get_proptag_name (propTag);
-      if (!propName)
-	propName = "<unknown>";
-      [self warnWithFormat:
-	      @"unhandled or NULL value: %s (0x%.8x), childKey: %@",
-	    propName, propTag, childKey];
-      // if ((propTag & 0x001F) == 0x001F)
-      // 	{
-      // 	  stringValue = [NSString stringWithFormat: @"fake %s (0x.8x) value",
-      // 				  propName, propTag];
-      // 	  *data = [stringValue asUnicodeInMemCtx: memCtx];
-      // 	  rc = MAPI_E_SUCCESS;
-      // 	}
-      // else
-      // 	{
-	  *data = NULL;
-	  rc = MAPI_E_NOT_FOUND;
-	// }
-      break;
-    }
-
-  return rc;
 }
 
 - (MAPIRestrictionState) evaluateNotRestriction: (struct mapi_SNotRestriction *) res
@@ -553,13 +479,6 @@ static Class NSDataK, NSStringK;
     }
 
   return state;
-}
-
-- (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
-{
-  [self subclassResponsibility: _cmd];
-
-  return nil;
 }
 
 - (void) warnUnhandledProperty: (enum MAPITAGS) property
@@ -781,18 +700,97 @@ static Class NSDataK, NSStringK;
   return state;
 }
 
-- (NSArray *) childKeys
+/* proof of concept */
+- (int) setColumns: (enum MAPITAGS *) newColumns
+         withCount: (uint16_t) newColumnsCount
+{
+  NSUInteger count;
+
+  if (columns)
+    NSZoneFree (NULL, columns);
+  columns = NSZoneMalloc (NULL, newColumnsCount * sizeof (enum MAPITAGS));
+  for (count = 0; count < newColumnsCount; count++)
+    columns[count] = newColumns[count];
+  columnsCount = newColumnsCount;
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (id) childAtRowID: (uint32_t) rowId
+       forQueryType: (enum table_query_type) queryType
+{
+  id child;
+  NSArray *children, *restrictedChildren;
+  NSString *childKey;
+
+  if (rowId == currentRow)
+    child = currentChild;
+  else
+    {
+      child = nil;
+
+      if (queryType == MAPISTORE_PREFILTERED_QUERY)
+        {
+          children = [self restrictedChildKeys];
+          restrictedChildren = nil;
+        }
+      else
+        {
+          children = [self childKeys];
+          restrictedChildren = [self restrictedChildKeys];
+        }
+
+      if ([children count] > rowId)
+        {
+          childKey = [children objectAtIndex: rowId];
+          
+          if (queryType == MAPISTORE_PREFILTERED_QUERY
+              || [restrictedChildren containsObject: childKey])
+            child = [container lookupChild: childKey];
+        }
+
+      currentChild = child;
+      [currentChild retain];
+      currentRow = rowId;
+    }
+
+  return child;
+}
+
+- (int) getRow: (struct mapistore_property_data *) data
+     withRowID: (uint32_t) rowId
+  andQueryType: (enum table_query_type) queryType
+{
+  NSUInteger count;
+  MAPIStoreObject *child;
+  enum MAPISTATUS rc;
+
+  child = [self childAtRowID: rowId
+                forQueryType: queryType];
+  if (child)
+    {
+      rc = MAPI_E_SUCCESS;
+      for (count = 0; count < columnsCount; count++)
+        data[count].error = [child getProperty: &data[count].data
+                                       withTag: columns[count]];
+    }
+  else
+    rc = MAPI_E_INVALID_OBJECT;
+
+  return rc;
+}
+
+/* subclasses */
+- (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
 {
   [self subclassResponsibility: _cmd];
 
   return nil;
 }
 
-- (NSArray *) restrictedChildKeys
+- (void) setSortOrder: (const struct SSortOrderSet *) set
 {
   [self subclassResponsibility: _cmd];
-
-  return nil;
 }
 
 @end

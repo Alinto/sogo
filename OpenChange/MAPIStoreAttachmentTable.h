@@ -1,12 +1,12 @@
-/* MAPIStoreNotesMessageTable.h - this file is part of SOGo
+/* MAPIStoreAttachmentTable.h - this file is part of SOGo
  *
  * Copyright (C) 2011 Inverse inc
  *
- * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -20,12 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTORENOTESMESSAGETABLE_H
-#define MAPISTORENOTESMESSAGETABLE_H
+#ifndef MAPISTOREATTACHMENTTABLE_H
+#define MAPISTOREATTACHMENTTABLE_H
 
-#import "MAPIStoreFSMessageTable.h"
+#import "MAPIStoreTable.h"
 
-@interface MAPIStoreNotesMessageTable : MAPIStoreFSMessageTable
+@interface MAPIStoreAttachmentTable : MAPIStoreTable
 @end
 
-#endif /* MAPISTORENOTESMESSAGETABLE_H */
+#endif /* MAPISTOREATTACHMENTTABLE_H */

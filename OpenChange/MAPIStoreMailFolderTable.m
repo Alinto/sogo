@@ -36,38 +36,4 @@
 
 @implementation MAPIStoreMailFolderTable
 
-- (enum MAPISTATUS) getChildProperty: (void **) data
-			      forKey: (NSString *) childKey
-			     withTag: (enum MAPITAGS) propTag
-{
-  enum MAPISTATUS rc;
-  SOGoMailFolder *child;
-  EOQualifier *searchQualifier;
-  uint32_t intValue;
-  
-  rc = MAPI_E_SUCCESS;
-  switch (propTag)
-    {
-    case PR_CONTENT_UNREAD:
-      child = [self lookupChild: childKey];
-      searchQualifier
-        = [EOQualifier qualifierWithQualifierFormat: @"flags = %@ AND not flags = %@",
-                       @"unseen", @"deleted"];
-      intValue = [[child fetchUIDsMatchingQualifier: searchQualifier
-                                       sortOrdering: nil] count];
-      [self logWithFormat: @"unread count for %@: %u\n", childKey, intValue];
-      *data = MAPILongValue (memCtx, intValue);
-      break;
-    case PR_CONTAINER_CLASS_UNICODE:
-      *data = [@"IPF.Note" asUnicodeInMemCtx: memCtx];
-      break;
-    default:
-      rc = [super getChildProperty: data
-			    forKey: childKey
-			   withTag: propTag];
-    }
-  
-  return rc;
-}
-
 @end

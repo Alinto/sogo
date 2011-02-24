@@ -30,11 +30,6 @@
 #define SENSITIVITY_PRIVATE 2
 #define SENSITIVITY_COMPANY_CONFIDENTIAL 3
 
-#define TBL_LEAF_ROW 0x00000001
-#define TBL_EMPTY_CATEGORY 0x00000002
-#define TBL_EXPANDED_CATEGORY 0x00000003
-#define TBL_COLLAPSED_CATEGORY 0x00000004
-
 typedef enum {
   MAPIRestrictionStateAlwaysFalse = NO,
   MAPIRestrictionStateAlwaysTrue = YES,
@@ -43,48 +38,49 @@ typedef enum {
 } MAPIRestrictionState;
 
 @class NSArray;
+@class NSMutableArray;
 @class NSString;
 @class EOQualifier;
 
+@class MAPIStoreObject;
+
 @interface MAPIStoreTable : NSObject
 {
-  id context;
-  struct mapistore_context *memCtx;
-  void *ldbCtx;
+  MAPIStoreObject *container;
 
-  id folder;
-  NSString *folderURL;
-  uint64_t fid;
+  NSArray *childKeys;
+  NSArray *restrictedChildKeys;
 
-  id lastChild;
-  NSString *lastChildKey;
-
-  NSArray *cachedKeys;
-  NSArray *cachedRestrictedKeys;
   EOQualifier *restriction; /* should probably be a dictionary too */
   MAPIRestrictionState restrictionState;
+  NSMutableArray *sortOrderings;
+
+  uint32_t currentRow;
+  MAPIStoreObject *currentChild;
+
+  /* proof of concept */
+  uint16_t columnsCount;
+  enum MAPITAGS *columns;
 }
 
-- (id) folder;
++ (id) tableForContainer: (MAPIStoreObject *) newContainer;
 
-- (void) setContext: (id) newContext
-	 withMemCtx: (struct mapistore_context *) newMemCtx;
-- (void) setFolder: (id) newFolder
-	   withURL: (NSString *) newFolderURL
-	    andFID: (uint64_t) newFid;
+- (id) initForContainer: (MAPIStoreObject *) newContainer;
 
-- (void) setRestrictions: (const struct mapi_SRestriction *) res;
+- (NSArray *) childKeys;
+- (NSArray *) restrictedChildKeys;
 
-- (NSArray *) cachedChildKeys;
-- (NSArray *) cachedRestrictedChildKeys;
-
-- (id) lookupChild: (NSString *) childKey;
+- (id) childAtRowID: (uint32_t) rowId
+       forQueryType: (enum table_query_type) queryType;
 
 - (void) cleanupCaches;
 
-- (enum MAPISTATUS) getChildProperty: (void **) data
-			      forKey: (NSString *) childKey
-			     withTag: (enum MAPITAGS) proptag;
+- (void) setRestrictions: (const struct mapi_SRestriction *) res;
+- (int) setColumns: (enum MAPITAGS *) newColumns
+         withCount: (uint16_t) newColumCount;
+- (int) getRow: (struct mapistore_property_data *) data
+     withRowID: (uint32_t) rowId
+  andQueryType: (enum table_query_type) queryType;
 
 /* helpers */
 
@@ -92,9 +88,7 @@ typedef enum {
                     inFunction: (const char *) function;
 
 /* subclasses */
-
-- (NSArray *) childKeys;
-- (NSArray *) restrictedChildKeys;
+- (void) setSortOrder: (const struct SSortOrderSet *) set;
 
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property;
 - (MAPIRestrictionState) evaluateContentRestriction: (const struct mapi_SContentRestriction *) res

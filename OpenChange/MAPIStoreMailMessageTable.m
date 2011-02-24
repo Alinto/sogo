@@ -25,11 +25,8 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSRange.h>
-
 #import <NGExtensions/NSObject+Logs.h>
-
 #import <EOControl/EOQualifier.h>
-
 #import <SOGo/NSArray+Utilities.h>
 
 #import <Mailer/NSData+Mail.h>
@@ -37,6 +34,7 @@
 #import <Mailer/SOGoMailObject.h>
 
 #import "MAPIStoreContext.h"
+#import "MAPIStoreMailFolder.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSCalendarDate+MAPIStore.h"
@@ -47,33 +45,6 @@
 #undef DEBUG
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_nameid.h>
-
-@interface NSString (MAPIStoreMIME)
-
-- (NSString *) _strippedBodyKey;
-
-@end
-
-@implementation NSString (MAPIStoreMIME)
-
-- (NSString *) _strippedBodyKey
-{
-  NSRange bodyRange;
-  NSString *strippedKey;
-
-  bodyRange = [self rangeOfString: @"body["];
-  if (bodyRange.length > 0)
-    {
-      strippedKey = [self substringFromIndex: NSMaxRange (bodyRange)];
-      strippedKey = [strippedKey substringToIndex: [strippedKey length] - 1];
-    }
-  else
-    strippedKey = nil;
-
-  return strippedKey;
-}
-
-@end
 
 @implementation MAPIStoreMailMessageTable
 
@@ -89,501 +60,10 @@ static Class NSDataK, NSStringK;
 {
   if ((self = [super init]))
     {
-      sortOrdering = @"ARRIVAL";
+      ASSIGN (sortOrderings, [NSArray arrayWithObject: @"ARRIVAL"]);
     }
 
   return self;
-}
-
-- (void) dealloc
-{
-  [sortOrdering release];
-  [super dealloc];
-}
-
-- (NSArray *) childKeys
-{
-  return [[folder fetchUIDsMatchingQualifier: nil
-                                sortOrdering: sortOrdering]
-           stringsWithFormat: @"%@.eml"];
-}
-
-- (NSArray *) restrictedChildKeys
-{
-  NSArray *keys;
-  
-  if (restrictionState == MAPIRestrictionStateAlwaysTrue)
-    keys = [self cachedChildKeys];
-  else if (restrictionState == MAPIRestrictionStateAlwaysFalse)
-    keys = [NSArray array];
-  else
-    {
-      keys = [[folder fetchUIDsMatchingQualifier: restriction
-                                    sortOrdering: sortOrdering]
-	       stringsWithFormat: @"%@.eml"];
-      [self logWithFormat: @"  restricted keys: %@", keys];
-    }
-
-  return keys;
-}
-
-- (enum MAPISTATUS) getChildProperty: (void **) data
-			      forKey: (NSString *) childKey
-			     withTag: (enum MAPITAGS) propTag
-{
-  SOGoMailObject *child;
-  NSString *subject, *stringValue;
-  NSInteger colIdx;
-  uint32_t intValue;
-  enum MAPISTATUS rc;
-
-  rc = MAPI_E_SUCCESS;
-  switch (propTag)
-    {
-    case PR_ICON_INDEX:
-      /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
-      child = [self lookupChild: childKey];
-      if ([child isNewMail])
-        intValue = 0xffffffff;
-      else if ([child replied])
-        intValue = 0x105;
-      else if ([child forwarded])
-        intValue = 0x106;
-      else if ([child read])
-        intValue = 0x100;
-      else
-        intValue = 0x101;
-      *data = MAPILongValue (memCtx, intValue);
-      break;
-    case PidLidImapDeleted:
-      child = [self lookupChild: childKey];
-      if ([child deleted])
-        intValue = 1;
-      else
-        intValue = 0;
-      *data = MAPILongValue (memCtx, intValue);
-      break;
-    case PR_SUBJECT_UNICODE:
-      child = [self lookupChild: childKey];
-      stringValue = [child decodedSubject];
-      if (!stringValue)
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_SUBJECT_PREFIX_UNICODE:
-      child = [self lookupChild: childKey];
-      subject = [child decodedSubject];
-      colIdx = [subject rangeOfString: @":"].location;
-      if (colIdx != NSNotFound && colIdx < 4)
-        stringValue = [NSString stringWithFormat: @"%@: ",
-                                [subject substringToIndex: colIdx]];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_NORMALIZED_SUBJECT_UNICODE:
-      child = [self lookupChild: childKey];
-      subject = [child decodedSubject];
-      colIdx = [subject rangeOfString: @":"].location;
-      if (colIdx != NSNotFound && colIdx < 4)
-        stringValue = [[subject substringFromIndex: colIdx + 1]
-                        stringByTrimmingLeadSpaces];
-      else
-        stringValue = subject;
-      if (!stringValue)
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-
-    case PR_MESSAGE_CLASS_UNICODE:
-    case PR_ORIG_MESSAGE_CLASS_UNICODE:
-      *data = talloc_strdup (memCtx, "IPM.Note");
-      break;
-    case PidLidRemoteAttachment: // TODO
-    case PR_HASATTACH: // TODO
-    case PR_REPLY_REQUESTED: // TODO
-    case PR_RESPONSE_REQUESTED: // TODO
-      *data = MAPIBoolValue (memCtx, NO);
-      break;
-    // case PidLidHeaderItem:
-    //   *data = MAPILongValue (memCtx, 0x00000001);
-    //   break;
-    // case PidLidRemoteTransferSize:
-    //   rc = [self getChildProperty: data
-    // 			   forKey: childKey
-    // 			  withTag: PR_MESSAGE_SIZE];
-    //   break;
-    case PR_CREATION_TIME: // DOUBT
-    case PR_LAST_MODIFICATION_TIME: // DOUBT
-    case PR_LATEST_DELIVERY_TIME: // DOUBT
-    case PR_ORIGINAL_SUBMIT_TIME:
-    case PR_CLIENT_SUBMIT_TIME:
-    case PR_MESSAGE_DELIVERY_TIME:
-      child = [self lookupChild: childKey];
-      // offsetDate = [[child date] addYear: -1 month: 0 day: 0
-      //                               hour: 0 minute: 0 second: 0];
-      // *data = [offsetDate asFileTimeInMemCtx: memCtx];
-      *data = [[child date] asFileTimeInMemCtx: memCtx];
-      break;
-    case PR_MESSAGE_FLAGS: // TODO
-      {
-	NSDictionary *coreInfos;
-	NSArray *flags;
-	unsigned int v;
-
-	child = [self lookupChild: childKey];
-	coreInfos = [child fetchCoreInfos];
-
-	flags = [coreInfos objectForKey: @"flags"];
-	v = MSGFLAG_FROMME;
-	
-	if ([flags containsObject: @"seen"])
-	  v |= MSGFLAG_READ;
-
-	*data = MAPILongValue (memCtx, v);
-      }
-      break;
-
-    case PR_FLAG_STATUS:
-      {
-	NSDictionary *coreInfos;
-	NSArray *flags;
-	unsigned int v;
-
-	child = [self lookupChild: childKey];
-	coreInfos = [child fetchCoreInfos];
-
-	flags = [coreInfos objectForKey: @"flags"];
-	if ([flags containsObject: @"flagged"])
-	  v = 2;
-        else
-          v = 0;
-
-	*data = MAPILongValue (memCtx, v);
-      }
-      break;
-
-    case PR_FOLLOWUP_ICON:
-      {
-	NSDictionary *coreInfos;
-	NSArray *flags;
-	unsigned int v;
-
-	child = [self lookupChild: childKey];
-	coreInfos = [child fetchCoreInfos];
-
-	flags = [coreInfos objectForKey: @"flags"];
-	if ([flags containsObject: @"flagged"])
-	  v = 6;
-        else
-          v = 0;
-
-	*data = MAPILongValue (memCtx, v);
-      }
-      break;
-
-    case PR_SENSITIVITY: // TODO
-    case PR_ORIGINAL_SENSITIVITY: // TODO
-      *data = MAPILongValue (memCtx, 0);
-      break;
-
-    case PR_EXPIRY_TIME: // TODO
-    case PR_REPLY_TIME:
-      *data = [[NSCalendarDate date] asFileTimeInMemCtx: memCtx];
-      break;
-
-    case PR_SENT_REPRESENTING_ADDRTYPE_UNICODE:
-    case PR_RCVD_REPRESENTING_ADDRTYPE_UNICODE:
-    case PR_RECEIVED_BY_ADDRTYPE_UNICODE:
-    case PR_SENDER_ADDRTYPE_UNICODE:
-      *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_ORIGINAL_AUTHOR_NAME_UNICODE:
-    case PR_SENDER_NAME_UNICODE:
-    case PR_SENDER_EMAIL_ADDRESS_UNICODE:
-    case PR_SENT_REPRESENTING_EMAIL_ADDRESS_UNICODE:
-    case PR_SENT_REPRESENTING_NAME_UNICODE:
-      child = [self lookupChild: childKey];
-      *data = [[child from] asUnicodeInMemCtx: memCtx];
-      break;
-
-      /* TODO: some of the following are supposed to be display names, separated by a semicolumn */
-    case PR_RECEIVED_BY_NAME_UNICODE:
-    case PR_RECEIVED_BY_EMAIL_ADDRESS_UNICODE:
-    case PR_RCVD_REPRESENTING_NAME_UNICODE:
-    case PR_RCVD_REPRESENTING_EMAIL_ADDRESS_UNICODE:
-    case PR_DISPLAY_TO_UNICODE:
-    case PR_ORIGINAL_DISPLAY_TO_UNICODE:
-      child = [self lookupChild: childKey];
-      stringValue = [child to];
-      if (!stringValue)
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_DISPLAY_CC_UNICODE:
-    case PR_ORIGINAL_DISPLAY_CC_UNICODE:
-      child = [self lookupChild: childKey];
-      stringValue = [child cc];
-      if (!stringValue)
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_DISPLAY_BCC_UNICODE:
-    case PR_ORIGINAL_DISPLAY_BCC_UNICODE:
-      stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-
-    case PidNameContentType:
-      *data = [@"message/rfc822" asUnicodeInMemCtx: memCtx];
-      break;
-      
-      
-    //
-    // TODO: Merge with the code in UI/MailerUI/UIxMailListActions.m: -messagePriority
-    //       to avoid the duplication of the logic
-    //
-    case PR_IMPORTANCE:
-      {
-	unsigned int v;
-	NSString *s;
-
-	child = [self lookupChild: childKey];
-	s = [[child mailHeaders] objectForKey: @"x-priority"];
-	v = 0x1;
-	
-	
-	if ([s hasPrefix: @"1"]) v = 0x2;
-	else if ([s hasPrefix: @"2"]) v = 0x2;
-	else if ([s hasPrefix: @"4"]) v = 0x0;
-	else if ([s hasPrefix: @"5"]) v = 0x0;
-	
-	*data = MAPILongValue (memCtx, v);
-      }
-      break;
-
-    case PR_BODY_UNICODE:
-      {
-        NSMutableArray *keys;
-
-        child = [self lookupChild: childKey];
-
-        keys = [NSMutableArray array];
-        [child addRequiredKeysOfStructure: [child bodyStructure]
-                                     path: @"" toArray: keys
-                            acceptedTypes: [NSArray arrayWithObject:
-                                                      @"text/html"]];
-        if ([keys count] > 0)
-          {
-            *data = NULL;
-            rc = MAPI_E_NOT_FOUND;
-          }
-        else
-          {
-            [keys removeAllObjects];
-            [child addRequiredKeysOfStructure: [child bodyStructure]
-                                         path: @"" toArray: keys
-                                acceptedTypes: [NSArray arrayWithObject:
-                                                          @"text/plain"]];
-            if ([keys count] > 0)
-              {
-                id result;
-                NSData *content;
-                NSDictionary *partHeaderData;
-                NSString *key, *encoding, *charset;
- 
-                result = [child fetchParts: [keys objectsForKey: @"key"
-                                                 notFoundMarker: nil]];
-                result = [[result valueForKey: @"RawResponse"] objectForKey: @"fetch"];
-                key = [[keys objectAtIndex: 0] objectForKey: @"key"];
-                content = [[result objectForKey: key] objectForKey: @"data"];
-
-                partHeaderData
-                  = [child lookupInfoForBodyPart: [key _strippedBodyKey]];
-                encoding = [partHeaderData objectForKey: @"encoding"];
-                charset = [[partHeaderData objectForKey: @"parameterList"]
-                            objectForKey: @"charset"];
-                stringValue = [[content bodyDataFromEncoding: encoding]
-                                bodyStringFromCharset: charset];
-
-                *data = [stringValue asUnicodeInMemCtx: memCtx];
-                if (strlen (*data) > 16384)
-                  {
-                    [context registerValue: stringValue
-                                asProperty: propTag
-                                    forURL: [NSString stringWithFormat: @"%@%@", folderURL, childKey]];
-                    *data = NULL;
-                    rc = MAPI_E_NOT_ENOUGH_MEMORY;
-                    [self logWithFormat: @"PR_BODY data too wide"];
-                  }
-              }
-            else
-	      rc = MAPI_E_NOT_FOUND;
-          }
-      }
-      break;
-      
-    case PR_INTERNET_CPID:
-      /* ref:
-         http://msdn.microsoft.com/en-us/library/dd317756%28v=vs.85%29.aspx
-
-         minimal list that should be handled:
-         us-ascii: 20127
-         iso-8859-1: 28591
-         iso-8859-15: 28605
-         utf-8: 65001 */
-      *data = MAPILongValue(memCtx, 65001);
-      break;
-      
-    case PR_HTML:
-      {
-        NSMutableArray *keys;
-        NSArray *acceptedTypes;
-
-        child = [self lookupChild: childKey];
-        
-        acceptedTypes = [NSArray arrayWithObject: @"text/html"];
-        keys = [NSMutableArray array];
-        [child addRequiredKeysOfStructure: [child bodyStructure]
-                                    path: @"" toArray: keys acceptedTypes: acceptedTypes];
-        if ([keys count] > 0)
-          {
-            id result;
-            NSData *content;
-            NSDictionary *partHeaderData;
-            NSString *key, *encoding;
-            
-            result = [child fetchParts: [keys objectsForKey: @"key"
-                                            notFoundMarker: nil]];
-            result = [[result valueForKey: @"RawResponse"] objectForKey:
-                                            @"fetch"];
-            key = [[keys objectAtIndex: 0] objectForKey: @"key"];
-            content = [[result objectForKey: key] objectForKey: @"data"];
-
-            partHeaderData
-              = [child lookupInfoForBodyPart: [key _strippedBodyKey]];
-            encoding = [partHeaderData objectForKey: @"encoding"];
-            content = [content bodyDataFromEncoding: encoding];
-
-            if ([content length] > 16384)
-              {
-                [context registerValue: content
-                            asProperty: propTag
-                                forURL: [NSString stringWithFormat: @"%@%@", folderURL, childKey]];
-                *data = NULL;
-                rc = MAPI_E_NOT_ENOUGH_MEMORY;
-                [self logWithFormat: @"PR_HTML data too wide"];
-              }
-            else
-              *data = [content asBinaryInMemCtx: memCtx];
-          }
-        else
-          {
-            *data = NULL;
-            rc = MAPI_E_NOT_FOUND;
-          }
-      }
-      break;
-
-      /* We don't handle any RTF content. */
-    case PR_RTF_COMPRESSED:
-      *data = NULL;
-      rc = MAPI_E_NOT_FOUND;
-      break;
-    case PR_RTF_IN_SYNC:
-      *data = MAPIBoolValue (memCtx, NO);
-      break;
-    case PR_INTERNET_MESSAGE_ID_UNICODE:
-      child = [self lookupChild: childKey];
-      *data = [[child messageId] asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_READ_RECEIPT_REQUESTED: // TODO
-    case PR_DELETE_AFTER_SUBMIT: // TODO
-      *data = MAPIBoolValue (memCtx, NO);
-      break;
-    case PidLidPrivate:
-      *data = MAPIBoolValue (memCtx, NO);
-      break;
-
-    case PR_MSG_EDITOR_FORMAT:
-      {
-        NSMutableArray *keys;
-        NSArray *acceptedTypes;
-        uint32_t format;
-
-        child = [self lookupChild: childKey];
-
-        format = 0; /* EDITOR_FORMAT_DONTKNOW */
-
-        acceptedTypes = [NSArray arrayWithObject: @"text/plain"];
-        keys = [NSMutableArray array];
-        [child addRequiredKeysOfStructure: [child bodyStructure]
-                                     path: @"" toArray: keys
-                            acceptedTypes: acceptedTypes];
-        if ([keys count] == 1)
-          format = EDITOR_FORMAT_PLAINTEXT;
-
-        acceptedTypes = [NSArray arrayWithObject: @"text/html"];
-        [keys removeAllObjects];
-        [child addRequiredKeysOfStructure: [child bodyStructure]
-                                     path: @"" toArray: keys
-                            acceptedTypes: acceptedTypes];
-        if ([keys count] == 1)
-          format = EDITOR_FORMAT_HTML;
-
-        *data = MAPILongValue (memCtx, format);
-      }
-      break;
-
-    case PidLidReminderSet: // TODO
-    case PidLidUseTnef: // TODO
-      *data = MAPIBoolValue (memCtx, NO);
-      break;
-    case PidLidRemoteStatus: // TODO
-      *data = MAPILongValue (memCtx, 0);
-      break;
-    case PidLidSmartNoAttach: // TODO
-    case PidLidAgingDontAgeMe: // TODO
-      *data = MAPIBoolValue (memCtx, YES);
-      break;
-
-// PidLidFlagRequest
-// PidLidBillingInformation
-// PidLidMileage
-// PidLidCommonEnd
-// PidLidCommonStart
-// PidLidNonSendableBcc
-// PidLidNonSendableCc
-// PidLidNonSendtableTo
-// PidLidNonSendBccTrackStatus
-// PidLidNonSendCcTrackStatus
-// PidLidNonSendToTrackStatus
-// PidLidReminderDelta
-// PidLidReminderFileParameter
-// PidLidReminderSignalTime
-// PidLidReminderOverride
-// PidLidReminderPlaySound
-// PidLidReminderTime
-// PidLidReminderType
-// PidLidSmartNoAttach
-// PidLidTaskGlobalId
-// PidLidTaskMode
-// PidLidVerbResponse
-// PidLidVerbStream
-// PidLidInternetAccountName
-// PidLidInternetAccountStamp
-// PidLidContactLinkName
-// PidLidContactLinkEntry
-// PidLidContactLinkSearchKey
-// PidLidSpamOriginalFolder
-
-    default:
-      rc = [super getChildProperty: data
-			    forKey: childKey
-			   withTag: propTag];
-    }
-
-  return rc;
 }
 
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
@@ -605,11 +85,6 @@ static Class NSDataK, NSStringK;
 }
 
 /* restrictions */
-
-- (void) setRestrictions: (const struct mapi_SRestriction *) res
-{
-  [super setRestrictions: res];
-}
 
 - (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
 				       intoQualifier: (EOQualifier **) qualifier
@@ -760,6 +235,7 @@ static Class NSDataK, NSStringK;
 
 - (void) setSortOrder: (const struct SSortOrderSet *) set
 {
+  NSMutableArray *newSortOrderings;
   NSMutableString *newSortOrdering;
   struct SSortOrder *sortOrder;
   NSString *sortIdentifier;
@@ -772,7 +248,7 @@ static Class NSDataK, NSStringK;
       if (set->cCategories > 0)
         [self errorWithFormat: @"we don't handle sort categories yet"];
 
-      newSortOrdering = [NSMutableString string];
+      newSortOrderings = [NSMutableArray array];
 
       for (count = 0; count < set->cSorts; count++)
         {
@@ -781,11 +257,13 @@ static Class NSDataK, NSStringK;
             = [self _sortIdentifierForProperty: sortOrder->ulPropTag];
           if (sortIdentifier)
             {
+              newSortOrdering = [NSMutableString string];
               if (sortOrder->ulOrder == TABLE_SORT_DESCEND)
                 [newSortOrdering appendString: @" REVERSE"];
               else if (sortOrder->ulOrder == TABLE_SORT_MAXIMUM_CATEGORY)
                 [self errorWithFormat: @"TABLE_SORT_MAXIMUM_CATEGORY is not handled"];
               [newSortOrdering appendFormat: @" %@", sortIdentifier];
+              [newSortOrderings addObject: [newSortOrdering substringFromIndex: 1]];
             }
           else
             {
@@ -797,15 +275,16 @@ static Class NSDataK, NSStringK;
                     propName, sortOrder->ulPropTag];
             }
         }
-      if ([newSortOrdering length] > 0)
-        ASSIGN (sortOrdering, [newSortOrdering substringFromIndex: 1]);
+      if ([newSortOrderings count] > 0)
+        ASSIGN (sortOrderings, newSortOrderings);
       else
-        ASSIGN (sortOrdering, @"ARRIVAL");
-      [self cleanupCaches];
-      [self logWithFormat: @"new sort ordering: '%@'", sortOrdering];
+        ASSIGN (sortOrderings, [NSArray arrayWithObject: @"ARRIVAL"]);
+      [self logWithFormat: @"new sort orderings: '%@'", sortOrderings];
     }
   else
-    ASSIGN (sortOrdering, @"ARRIVAL");
+    ASSIGN (sortOrderings, [NSArray arrayWithObject: @"ARRIVAL"]);
+
+  [self cleanupCaches];
 }
 
 @end

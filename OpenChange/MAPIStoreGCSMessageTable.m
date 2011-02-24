@@ -37,6 +37,7 @@
 
 #import "MAPIStoreTypes.h"
 #import "NSAutoreleasePool+MAPIStore.h"
+#import "MAPIStoreFolder.h"
 
 #import "MAPIStoreGCSMessageTable.h"
 
@@ -59,66 +60,6 @@
 {
   [sortOrderings release];
   [super dealloc];
-}
-
-- (NSArray *) _childKeysUsingRestrictions: (BOOL) useRestrictions
-{
-  static NSArray *fields = nil;
-  NSArray *records;
-  EOQualifier *componentQualifier, *fetchQualifier;
-  GCSFolder *ocsFolder;
-  EOFetchSpecification *fs;
-  NSArray *keys;
-
-  if (!fields)
-    fields = [[NSArray alloc]
-	       initWithObjects: @"c_name", @"c_version", nil];
-
-  componentQualifier = [self componentQualifier];
-
-  if (useRestrictions
-      && restrictionState != MAPIRestrictionStateAlwaysTrue)
-    {
-      if (restrictionState == MAPIRestrictionStateNeedsEval)
-	{
-	  fetchQualifier = [[EOAndQualifier alloc]
-			     initWithQualifiers:
-			       componentQualifier,
-			     restriction,
-			     nil];
-	  [fetchQualifier autorelease];
-	}
-      else
-	fetchQualifier = nil;
-    }
-  else
-    fetchQualifier = componentQualifier;
-    
-  if (fetchQualifier)
-    {
-      ocsFolder = [folder ocsFolder];
-      fs = [EOFetchSpecification
-             fetchSpecificationWithEntityName: [ocsFolder folderName]
-                                    qualifier: fetchQualifier
-                                sortOrderings: sortOrderings];
-      records = [ocsFolder fetchFields: fields fetchSpecification: fs];
-      keys = [records objectsForKey: @"c_name"
-		     notFoundMarker: nil];
-    }
-  else
-    keys = [NSArray array];
-
-  return keys;
-}
-
-- (NSArray *) childKeys
-{
-  return [self _childKeysUsingRestrictions: NO];
-}
-
-- (NSArray *) restrictedChildKeys
-{
-  return [self _childKeysUsingRestrictions: YES];
 }
 
 - (struct mapi_SPropertyRestriction *) _fixedDatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
@@ -204,13 +145,6 @@
 
 /* sorting */
 
-- (NSString *) sortIdentifierForProperty: (enum MAPITAGS) property
-{
-  [self subclassResponsibility: _cmd];
-
-  return nil;
-}
-
 - (EOSortOrdering *) _sortOrderingFromSortOrder: (struct SSortOrder *) sortOrder
 {
   EOSortOrdering *newSortOrdering;
@@ -293,6 +227,14 @@
   [self cleanupCaches];
 
   [self logWithFormat: @"new sort orderings: %@", sortOrderings];
+}
+
+/* subclasses */
+- (NSString *) sortIdentifierForProperty: (enum MAPITAGS) property
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
 }
 
 @end

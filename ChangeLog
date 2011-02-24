@@ -1,5 +1,11 @@
 2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTable.m: refactored class to be used as an
+	accessor on MAPIStoreFolder or other MAPIStoreObject derivatives
+	based on a defined set of methods. Now strictly handle the sorting
+	and filtering of folder entries, the getting of properties having
+	been moved to the MAPIStoreMessage classes.
+
 	* OpenChange/SOGoMAPIFSMessage.m (-appendProperties:): new name
 	for "setMAPIProperties:"
 	(-save): new name for "MAPISave", since those were methods

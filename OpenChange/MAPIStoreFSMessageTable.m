@@ -27,6 +27,7 @@
 
 #import "EOQualifier+MAPIFS.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreFSMessage.h"
 #import "NSObject+MAPIStore.h"
 #import "SOGoMAPIFSFolder.h"
 #import "SOGoMAPIFSMessage.h"
@@ -38,69 +39,9 @@
 
 @implementation MAPIStoreFSMessageTable
 
-- (enum MAPISTATUS) getChildProperty: (void **) data
-			      forKey: (NSString *) childKey
-			     withTag: (enum MAPITAGS) propTag
-{
-  NSDictionary *properties;
-  SOGoMAPIFSMessage *child;
-  id value;
-  enum MAPISTATUS rc;
-
-  child = [self lookupChild: childKey];
-  properties = [child properties];
-  value = [properties objectForKey: MAPIPropertyKey (propTag)];
-  if (value)
-    rc = [value getMAPIValue: data forTag: propTag inMemCtx: memCtx];
-  else
-    rc = [super getChildProperty: data forKey: childKey withTag: propTag];
-
-  return rc;
-}
-
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
 {
   return [NSString stringWithFormat: @"%@", MAPIPropertyKey (property)];
-}
-
-- (NSArray *) childKeys
-{
-  return [folder toOneRelationshipKeys];
-}
-
-- (NSArray *) restrictedChildKeys
-{
-  NSMutableArray *keys;
-  NSArray *allKeys;
-  NSUInteger count, max;
-  NSString *messageKey;
-
-  allKeys = [self cachedChildKeys];
-  if (restrictionState == MAPIRestrictionStateAlwaysTrue)
-    keys = (NSMutableArray *) allKeys;
-  else if (restrictionState == MAPIRestrictionStateAlwaysFalse)
-    keys = (NSMutableArray *) [NSArray array];
-  else
-    {
-      [self logWithFormat: @"%s: getting restricted keys", __PRETTY_FUNCTION__];
-      max = [allKeys count];
-      keys = [NSMutableArray arrayWithCapacity: max];
-      if (restrictionState == MAPIRestrictionStateNeedsEval)
-	{
-	  for (count = 0; count < max; count++)
-	    {
-	      messageKey = [allKeys objectAtIndex: count];
-	      if ([restriction evaluateMAPIFSMessage: 
-				 [folder lookupName: messageKey
-					 inContext: nil
-					 acquire: NO]])
-		[keys addObject: messageKey];
-	    }
-	}
-      [self logWithFormat: @"  resulting keys: $$$%@$$$", keys];
-    }
-
-  return keys;
 }
 
 @end
