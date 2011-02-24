@@ -23,9 +23,9 @@
 #ifndef MAPISTOREOUTBOXCONTEXT_H
 #define MAPISTOREOUTBOXCONTEXT_H
 
-#import "MAPIStoreMailContext.h"
+#import "MAPIStoreMailBaseContext.h"
 
-@interface MAPIStoreOutboxContext : MAPIStoreMailContext
+@interface MAPIStoreOutboxContext : MAPIStoreMailBaseContext
 
 @end
 

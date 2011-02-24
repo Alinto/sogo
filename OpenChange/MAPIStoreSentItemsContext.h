@@ -23,9 +23,9 @@
 #ifndef MAPISTORESEARCHCONTEXT_H
 #define MAPISTORESEARCHCONTEXT_H
 
-#import "MAPIStoreMailContext.h"
+#import "MAPIStoreMailBaseContext.h"
 
-@interface MAPIStoreSentItemsContext : MAPIStoreMailContext
+@interface MAPIStoreSentItemsContext : MAPIStoreMailBaseContext
 
 @end
 

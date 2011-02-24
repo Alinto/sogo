@@ -20,32 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
 
-#import <NGObjWeb/WOContext+SoObjects.h>
-
-#import <EOControl/EOQualifier.h>
-
-#import <NGCards/iCalToDo.h>
-#import <Appointments/SOGoAppointmentFolder.h>
-#import <Appointments/SOGoAppointmentFolders.h>
-#import <Appointments/SOGoTaskObject.h>
-
-#import "MAPIApplication.h"
-#import "MAPIStoreAuthenticator.h"
+#import "MAPIStoreTasksFolder.h"
 #import "MAPIStoreMapping.h"
-#import "MAPIStoreTasksMessageTable.h"
-#import "MAPIStoreTypes.h"
-#import "NSCalendarDate+MAPIStore.h"
-#import "NSString+MAPIStore.h"
-#import "SOGoGCSFolder+MAPIStore.h"
 
 #import "MAPIStoreTasksContext.h"
-
-#undef DEBUG
-#include <gen_ndr/exchange.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_nameid.h>
 
 @implementation MAPIStoreTasksContext
 
@@ -60,48 +40,11 @@
                 withID: 0x1d0001];
 }
 
-- (void) setupModuleFolder
+- (void) setupBaseFolder: (NSURL *) newURL
 {
-  SOGoUserFolder *userFolder;
-  SOGoAppointmentFolders *parentFolder;
-
-  userFolder = [SOGoUserFolder objectWithName: [authenticator username]
-                                  inContainer: MAPIApp];
-  [parentFoldersBag addObject: userFolder];
-  [woContext setClientObject: userFolder];
-
-  parentFolder = [userFolder lookupName: @"Calendar"
-			      inContext: woContext
-				acquire: NO];
-  [parentFoldersBag addObject: parentFolder];
-  [woContext setClientObject: parentFolder];
-
-  moduleFolder = [parentFolder lookupName: @"personal"
-				inContext: woContext
-				  acquire: NO];
-  [moduleFolder retain];
-}
-
-- (Class) messageTableClass
-{
-  return [MAPIStoreTasksMessageTable class];
-}
-
-- (id) createMessageOfClass: (NSString *) messageClass
-	      inFolderAtURL: (NSString *) folderURL;
-{
-  SOGoAppointmentFolder *parentFolder;
-  SOGoTaskObject *newEntry;
-  NSString *name;
-
-  parentFolder = [self lookupObject: folderURL];
-  name = [NSString stringWithFormat: @"%@.ics",
-                   [SOGoObject globallyUniqueObjectId]];
-  newEntry = [SOGoTaskObject objectWithName: name
-                                inContainer: parentFolder];
-  [newEntry setIsNew: YES];
-
-  return newEntry;
+  baseFolder = [MAPIStoreTasksFolder baseFolderWithURL: newURL
+                                             inContext: self];
+  [baseFolder retain];
 }
 
 @end

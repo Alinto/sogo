@@ -1,6 +1,11 @@
 2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* OpenChange/MAPIStoreMessage.m: new super class used as for
+	* OpenChange/MAPIStoreFolder.m: new super class used as wrapper
+	around SOGoFolder objects, by decoupling the code previously found
+	in the SOGo*Context classes and which implement basic and uniform
+	content key facilities.
+
+	* OpenChange/MAPIStoreMessage.m: new super class used for
 	wrapper objects replacing the category modules on the SOGoObject.
 
 	* OpenChange/MAPIStoreObject.m: new super class used as base the

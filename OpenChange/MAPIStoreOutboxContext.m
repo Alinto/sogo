@@ -22,14 +22,7 @@
 
 #import <Foundation/NSString.h>
 
-#import <NGObjWeb/WOContext+SoObjects.h>
-
-#import <Mailer/SOGoDraftsFolder.h>
-#import <Mailer/SOGoMailAccount.h>
-#import <Mailer/SOGoMailFolder.h>
-
-#import "MAPIApplication.h"
-#import "MAPIStoreAuthenticator.h"
+#import "MAPIStoreMailFolder.h"
 #import "MAPIStoreMapping.h"
 
 #import "MAPIStoreOutboxContext.h"
@@ -47,44 +40,53 @@
                 withID: 0x150001];
 }
 
-- (void) setupModuleFolder
+- (void) setupBaseFolder: (NSURL *) newURL
 {
-  SOGoUserFolder *userFolder;
-  SOGoMailAccounts *accountsFolder;
-  SOGoMailAccount *accountFolder;
-  id currentContainer;
-
-  userFolder = [SOGoUserFolder objectWithName: [authenticator username]
-                                  inContainer: MAPIApp];
-  [parentFoldersBag addObject: userFolder];
-  [woContext setClientObject: userFolder];
-
-  accountsFolder = [userFolder lookupName: @"Mail"
-                                inContext: woContext
-                                  acquire: NO];
-  [parentFoldersBag addObject: accountsFolder];
-  [woContext setClientObject: accountsFolder];
-
-  accountFolder = [accountsFolder lookupName: @"0"
-                                  inContext: woContext
-                                    acquire: NO];
-  [parentFoldersBag addObject: accountFolder];
-  [woContext setClientObject: accountFolder];
-
-  moduleFolder = [accountFolder draftsFolderInContext: nil];
-  [moduleFolder retain];
-  currentContainer = [moduleFolder container];
-  while (currentContainer != accountFolder)
-    {
-      [parentFoldersBag addObject: currentContainer];
-      currentContainer = [currentContainer container];
-    }
-}
-
-- (id) createMessageOfClass: (NSString *) messageClass
-	      inFolderAtURL: (NSString *) folderURL;
-{
-  return [moduleFolder newDraft];
+  baseFolder = [MAPIStoreOutboxFolder baseFolderWithURL: newURL
+                                              inContext: self];
+  [baseFolder retain];
 }
 
 @end
+
+// - (void) setupModuleFolder
+// {
+//   SOGoUserFolder *userFolder;
+//   SOGoMailAccounts *accountsFolder;
+//   SOGoMailAccount *accountFolder;
+//   id currentContainer;
+
+//   userFolder = [SOGoUserFolder objectWithName: [authenticator username]
+//                                   inContainer: MAPIApp];
+//   [parentFoldersBag addObject: userFolder];
+//   [woContext setClientObject: userFolder];
+
+//   accountsFolder = [userFolder lookupName: @"Mail"
+//                                 inContext: woContext
+//                                   acquire: NO];
+//   [parentFoldersBag addObject: accountsFolder];
+//   [woContext setClientObject: accountsFolder];
+
+//   accountFolder = [accountsFolder lookupName: @"0"
+//                                   inContext: woContext
+//                                     acquire: NO];
+//   [parentFoldersBag addObject: accountFolder];
+//   [woContext setClientObject: accountFolder];
+
+//   moduleFolder = [accountFolder draftsFolderInContext: nil];
+//   [moduleFolder retain];
+//   currentContainer = [moduleFolder container];
+//   while (currentContainer != accountFolder)
+//     {
+//       [parentFoldersBag addObject: currentContainer];
+//       currentContainer = [currentContainer container];
+//     }
+// }
+
+// - (id) createMessageOfClass: (NSString *) messageClass
+// 	      inFolderAtURL: (NSString *) folderURL;
+// {
+//   return [moduleFolder newDraft];
+// }
+
+// @end

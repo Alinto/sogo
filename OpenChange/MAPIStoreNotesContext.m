@@ -22,10 +22,10 @@
 
 #import <Foundation/NSString.h>
 
+#import "MAPIStoreNotesFolder.h"
 #import "MAPIStoreMapping.h"
 
 #import "MAPIStoreNotesContext.h"
-#import "MAPIStoreNotesMessageTable.h"
 
 @implementation MAPIStoreNotesContext
 
@@ -40,9 +40,11 @@
                 withID: 0x1c0001];
 }
 
-- (Class) messageTableClass
+- (void) setupBaseFolder: (NSURL *) newURL
 {
-  return [MAPIStoreNotesMessageTable class];
+  baseFolder = [MAPIStoreNotesFolder baseFolderWithURL: newURL
+                                             inContext: self];
+  [baseFolder retain];
 }
 
 @end

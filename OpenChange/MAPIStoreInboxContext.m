@@ -1,12 +1,12 @@
-/* MAPIStoreContactsContext.m - this file is part of SOGo
+/* MAPIStoreInboxContext.m - this file is part of $PROJECT_NAME_HERE$
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2011 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -22,28 +22,28 @@
 
 #import <Foundation/NSString.h>
 
-#import "MAPIStoreContactsFolder.h"
+#import "MAPIStoreMailFolder.h"
 #import "MAPIStoreMapping.h"
 
-#import "MAPIStoreContactsContext.h"
+#import "MAPIStoreInboxContext.h"
 
-@implementation MAPIStoreContactsContext
+@implementation MAPIStoreInboxContext
 
 + (NSString *) MAPIModuleName
 {
-  return @"contacts";
+  return @"inbox";
 }
 
 + (void) registerFixedMappings: (MAPIStoreMapping *) mapping
 {
-  [mapping registerURL: @"sogo://openchange:openchange@contacts/"
-                withID: 0x1a0001];
+  [mapping registerURL: @"sogo://openchange:openchange@inbox/"
+		withID: 0x160001];
 }
 
 - (void) setupBaseFolder: (NSURL *) newURL
 {
-  baseFolder = [MAPIStoreContactsFolder baseFolderWithURL: newURL
-                                                inContext: self];
+  baseFolder = [MAPIStoreInboxFolder baseFolderWithURL: newURL
+                                             inContext: self];
   [baseFolder retain];
 }
 

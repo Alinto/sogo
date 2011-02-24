@@ -28,7 +28,7 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "MAPIStoreFSMessageTable.h"
+#import "MAPIStoreFSFolder.h"
 #import "MAPIStoreMapping.h"
 #import "SOGoMAPIFSFolder.h"
 
@@ -37,34 +37,26 @@
 #undef DEBUG
 #include <mapistore/mapistore.h>
 
+static Class MAPIStoreFSFolderK;
+
 @implementation MAPIStoreFSBaseContext
+
++ (void) initialize
+{
+  MAPIStoreFSFolderK = [MAPIStoreFSFolder class];
+}
 
 + (NSString *) MAPIModuleName
 {
   return nil;
 }
 
-- (void) setupModuleFolder
+- (void) setupBaseFolder: (NSURL *) newURL
 {
   [self logWithFormat: @"invoked %s", __PRETTY_FUNCTION__];
-  moduleFolder = [SOGoMAPIFSFolder folderWithURL: [NSURL URLWithString: uri]
-				    andTableType: MAPISTORE_MESSAGE_TABLE];
-  [moduleFolder retain];
-}
-
-- (Class) messageTableClass
-{
-  return [MAPIStoreFSMessageTable class];
-}
-
-- (id) createMessageOfClass: (NSString *) messageClass
-	      inFolderAtURL: (NSString *) folderURL;
-{
-  SOGoMAPIFSFolder *parentFolder;
-
-  parentFolder = [self lookupObject: folderURL];
-
-  return [parentFolder newMessage];
+  baseFolder = [MAPIStoreFSFolderK baseFolderWithURL: newURL
+                                           inContext: self];
+  [baseFolder retain];
 }
 
 @end

@@ -30,6 +30,7 @@
 @class NSMutableArray;
 @class NSMutableDictionary;
 @class NSString;
+@class NSURL;
 
 @class EOQualifier;
 
@@ -40,6 +41,7 @@
 @class SOGoObject;
 
 @class MAPIStoreAuthenticator;
+@class MAPIStoreFolder;
 @class MAPIStoreMapping;
 @class MAPIStoreTable;
 
@@ -49,17 +51,10 @@
 
   NSString *uri;
 
-  NSMutableArray *parentFoldersBag;
-
   MAPIStoreAuthenticator *authenticator;
   WOContext *woContext;
 
-  id moduleFolder;
-  SOGoMAPIFSFolder *faiModuleFolder;
-
-  MAPIStoreTable *folderTable;
-  MAPIStoreTable *messageTable;
-  MAPIStoreTable *faiTable;
+  MAPIStoreFolder *baseFolder;
 
   /* for active messages (NSDictionary instances) */
   NSMutableDictionary *messages;
@@ -71,15 +66,15 @@
 - (void) setURI: (NSString *) newUri
       andMemCtx: (struct mapistore_context *) newMemCtx;
 
-- (void) setupModuleFolder;
-
 - (void) setAuthenticator: (MAPIStoreAuthenticator *) newAuthenticator;
 - (MAPIStoreAuthenticator *) authenticator;
+
+- (WOContext *) woContext;
 
 - (void) setupRequest;
 - (void) tearDownRequest;
 
-- (id) lookupObject: (NSString *) objectURLString;
+// - (id) lookupObject: (NSString *) objectURLString;
 
 /* backend methods */
 - (int) getPath: (char **) path
@@ -119,9 +114,9 @@
 - (int) openMessage: (struct mapistore_message *) msg
             withMID: (uint64_t) mid
               inFID: (uint64_t) fid;
-- (int) createMessagePropertiesWithMID: (uint64_t) mid
-                                 inFID: (uint64_t) fid
-			  isAssociated: (BOOL) isAssociated;
+- (int) createMessageWithMID: (uint64_t) mid
+                       inFID: (uint64_t) fid
+                isAssociated: (BOOL) isAssociated;
 - (int) saveChangesInMessageWithMID: (uint64_t) mid
                            andFlags: (uint8_t) flags;
 - (int) submitMessageWithMID: (uint64_t) mid
@@ -152,28 +147,30 @@
 - (int) getFoldersList: (struct indexing_folders_list **) folders_list
               withFMID: (uint64_t) fmid;
 
-
 /* util methods */
 - (NSString *) extractChildNameFromURL: (NSString *) childURL
 			andFolderURLAt: (NSString **) folderURL;
 
-- (void) registerValue: (id) value
-	    asProperty: (enum MAPITAGS) property
-		forURL: (NSString *) url;
+- (uint64_t) idForObjectWithKey: (NSString *) key
+                    inFolderURL: (NSString *) folderURL;
 
 /* subclass methods */
 + (NSString *) MAPIModuleName;
 + (void) registerFixedMappings: (MAPIStoreMapping *) storeMapping;
+- (void) setupBaseFolder: (NSURL *) newURL;
 
-- (Class) messageTableClass;
-- (Class) folderTableClass;
+/* proof of concept */
+- (int) getAttachmentTable: (void **) table
+               andRowCount: (uint32_t *) count
+                   withMID: (uint64_t) mid;
+- (int) getAttachment: (void **) attachment
+              withAID: (uint32_t) aid
+                inMID: (uint64_t) mid;
 
-- (id) createMessageOfClass: (NSString *) messageClass
-	      inFolderAtURL: (NSString *) folderURL;
 
-- (int) openMessage: (struct mapistore_message *) msg
-	     forKey: (NSString *) childKey
-	    inTable: (MAPIStoreTable *) table;
+- (int) createAttachment: (void **) attachmentPtr
+                   inAID: (uint32_t *) aid
+             withMessage: (uint64_t) mid;
 
 @end
 

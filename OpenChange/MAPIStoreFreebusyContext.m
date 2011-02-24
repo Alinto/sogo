@@ -43,19 +43,19 @@
                 withID: 0x70001];
 }
 
-- (void) setupModuleFolder
-{
-  SOGoUserFolder *userFolder;
+// - (void) setupModuleFolder
+// {
+//   SOGoUserFolder *userFolder;
 
-  userFolder = [SOGoUserFolder objectWithName: [authenticator username]
-                                  inContainer: MAPIApp];
-  [parentFoldersBag addObject: userFolder];
-  [woContext setClientObject: userFolder];
+//   userFolder = [SOGoUserFolder objectWithName: [authenticator username]
+//                                   inContainer: MAPIApp];
+//   [parentFoldersBag addObject: userFolder];
+//   [woContext setClientObject: userFolder];
 
-  moduleFolder = [userFolder lookupName: @"Calendar"
-                              inContext: woContext
-                                acquire: NO];
-  [moduleFolder retain];
-}
+//   moduleFolder = [userFolder lookupName: @"Calendar"
+//                               inContext: woContext
+//                                 acquire: NO];
+//   [moduleFolder retain];
+// }
 
 @end

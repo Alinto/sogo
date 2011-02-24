@@ -1,12 +1,12 @@
-/* MAPIStoreDraftsContext.m - this file is part of SOGo
+/* MAPIStoreNotesFolder.m - this file is part of $PROJECT_NAME_HERE$
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2011 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -20,31 +20,24 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
+#import "MAPIStoreNotesFolder.h"
 
-#import "MAPIStoreMailFolder.h"
-#import "MAPIStoreMapping.h"
+#import "MAPIStoreNotesMessage.h"
 
-#import "MAPIStoreDraftsContext.h"
+#import "MAPIStoreNotesFolder.h"
 
-@implementation MAPIStoreDraftsContext
+static Class MAPIStoreNotesMessageK;
 
-+ (NSString *) MAPIModuleName
+@implementation MAPIStoreNotesFolder
+
++ (void) initialize
 {
-  return @"drafts";
+  MAPIStoreNotesMessageK = [MAPIStoreNotesMessage class];
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
+- (Class) messageClass
 {
-  [mapping registerURL: @"sogo://openchange:openchange@inbox/"
-		withID: 0x1e0001];
-}
-
-- (void) setupBaseFolder: (NSURL *) newURL
-{
-  baseFolder = [MAPIStoreDraftsFolder baseFolderWithURL: newURL
-                                              inContext: self];
-  [baseFolder retain];
+  return MAPIStoreNotesMessageK;
 }
 
 @end
