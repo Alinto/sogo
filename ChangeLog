@@ -1,5 +1,9 @@
 2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessage.m
+	(_fetchAttachmentPartsInBodyInfo:withPrefix:): detect attachment
+	parts based on the existence of the "filename" info parameter.
+
 	* OpenChange/MAPIStoreTable.m: refactored class to be used as an
 	accessor on MAPIStoreFolder or other MAPIStoreObject derivatives
 	based on a defined set of methods. Now strictly handle the sorting

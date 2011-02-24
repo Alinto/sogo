@@ -603,12 +603,12 @@ static Class NSExceptionK;
                               withPrefix: (NSString *) keyPrefix
 {
   NSArray *parts;
-  NSString *dispType;
+  NSDictionary *parameters;
   NSUInteger count, max;
 
-  dispType = [[bodyInfo objectForKey: @"disposition"]
-                  objectForKey: @"type"];
-  if ([[dispType lowercaseString] isEqualToString: @"attachment"])
+  parameters = [[bodyInfo objectForKey: @"disposition"]
+                 objectForKey: @"parameterList"];
+  if ([[parameters objectForKey: @"filename"] length] > 0)
     {
       if ([keyPrefix length] == 0)
         keyPrefix = @"0";
