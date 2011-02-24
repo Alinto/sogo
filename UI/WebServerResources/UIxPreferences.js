@@ -94,12 +94,17 @@ function _setupEvents() {
         }
     }
 
+
+    // We check for non-null elements as replyPlacementList and composeMessagesType
+    // might not be present if ModulesConstraints disable those elements
+    if ($("replyPlacementList"))
+    	$("replyPlacementList").observe ("change", onReplyPlacementListChange);
+    
+    if ($("composeMessagesType"))
+    	$("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
+
     // Note: we also monitor changes to the calendar categories.
     // See functions endEditable and onColorPickerChoice.
-
-    $("replyPlacementList").observe ("change", onReplyPlacementListChange);
-    $("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
-
     var valueInputs = [ "calendarCategoriesValue", "calendarCategoriesValue" ];
     for (var i = 0; i < valueInputs.length; i++) {
         var valueInput = $(valueInputs[i]);
@@ -749,14 +754,23 @@ function saveMailAccounts() {
     /* This removal enables us to avoid a few warning from SOPE for the inputs
      that were created dynamically. */
     var editor = $("mailAccountEditor");
-    editor.parentNode.removeChild(editor);
+    
+    // Could be null if ModuleConstraints disables email access
+    if (editor)
+    	editor.parentNode.removeChild(editor);
 
     compactMailAccounts();
     var mailAccountsJSON = $("mailAccountsJSON");
-    mailAccountsJSON.value = Object.toJSON(mailAccounts);
+ 
+    if (mailAccountsJSON)
+        mailAccountsJSON.value = Object.toJSON(mailAccounts);
 }
 
 function compactMailAccounts() {
+
+    if (!mailAccounts)
+        return;
+
     for (var i = 1; i < mailAccounts.length; i++) {
         var account = mailAccounts[i];
         var encryption = account["encryption"];

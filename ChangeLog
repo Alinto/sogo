@@ -9,6 +9,10 @@
 	the SQL-based authentication sources (required database columns)
 	and also the "id" uniqueness of authentication sources in general
 
+	* UI/WebServerResources/UIxPreferences.js 
+	Added many checks in case the Mail module is disabled for
+	proper behavior of the Preferences panel.
+
 2011-02-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailObject.m (-lookupInfoForBodyPart:): we
