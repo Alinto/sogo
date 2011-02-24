@@ -1,3 +1,8 @@
+2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject.m (_hasFlag:): put the flags in
+	a cache to avoid multiple queries.
+
 2011-02-24  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

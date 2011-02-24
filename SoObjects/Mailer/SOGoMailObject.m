@@ -96,6 +96,7 @@ static BOOL debugSoParts       = NO;
   [headers    release];
   [headerPart release];
   [coreInfos  release];
+  [flagsCache release];
   [super dealloc];
 }
 
@@ -804,13 +805,21 @@ static BOOL debugSoParts       = NO;
 
 /* flags */
 
+- (void) _clearFlagsCache
+{
+  [flagsCache release];
+  flagsCache = nil;
+}
+
 - (NSException *) addFlags: (id) _flags
 {
+  [self _clearFlagsCache];
   return [[self imap4Connection] addFlags:_flags toURL: [self imap4URL]];
 }
 
 - (NSException *) removeFlags: (id) _flags
 {
+  [self _clearFlagsCache];
   return [[self imap4Connection] removeFlags:_flags toURL: [self imap4URL]];
 }
 
@@ -1277,16 +1286,19 @@ static BOOL debugSoParts       = NO;
 {
   BOOL rc;
   NSDictionary *values;
-  NSArray *flags;
 
-  rc = NO;
-  values = [self _fetchProperty: @"FLAGS"];
-
-  if (values)
+  if (!flagsCache)
     {
-      flags = [values objectForKey: @"flags"];
-      rc = [flags containsObject: flag];
+      values = [self _fetchProperty: @"FLAGS"];
+      if (values)
+        {
+          flagsCache = [values objectForKey: @"flags"];
+          [flagsCache retain];
+        }
     }
+
+  rc = [flagsCache containsObject: flag];
+
   return rc;
 }
 
