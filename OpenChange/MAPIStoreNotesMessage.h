@@ -1,12 +1,12 @@
-/* SOGoAppointmentObject+MAPIStore.h - this file is part of SOGo
+/* MAPIStoreNotesMessage.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2011 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -20,17 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOAPPOINTMENTOBJECT_MAPISTORE_H
-#define SOGOAPPOINTMENTOBJECT_MAPISTORE_H
+#ifndef MAPISTORENOTESMESSAGE_H
+#define MAPISTORENOTESMESSAGE_H
 
-#import <Appointments/SOGoAppointmentObject.h>
+#import "MAPIStoreFSMessage.h"
 
-@class NSDictionary;
-
-@interface SOGoAppointmentObject (MAPIStoreMessage)
-
-- (void) setMAPIProperties: (NSDictionary *) properties;
-
+@interface MAPIStoreNotesMessage : MAPIStoreFSMessage
 @end
 
-#endif /* SOGOAPPOINTMENTOBJECT_MAPISTORE_H */
+#endif /* MAPISTORENOTESMESSAGE_H */

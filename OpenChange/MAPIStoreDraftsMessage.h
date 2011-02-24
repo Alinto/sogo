@@ -1,4 +1,4 @@
-/* SOGoMailObject+MAPIStore.h - this file is part of SOGo
+/* MAPIStoreDraftsMessage.h - this file is part of SOGo
  *
  * Copyright (C) 2011 Inverse inc
  *
@@ -20,19 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOMAILOBJECT_MAPISTORE_H
-#define SOGOMAILOBJECT_MAPISTORE_H
+#ifndef MAPISTOREDRAFTSMESSAGE_H
+#define MAPISTOREDRAFTSMESSAGE_H
 
-#import <Mailer/SOGoMailObject.h>
+#import "MAPIStoreMailMessage.h"
 
-@class NSDictionary;
+@class NSMutableArray;
 
-@interface SOGoMailObject (MAPIStoreMessage)
-
-- (void) setMAPIProperties: (NSDictionary *) properties;
-
-- (void) MAPISave;
+@interface MAPIStoreDraftsMessage : MAPIStoreMailMessage
 
 @end
 
-#endif /* SOGOMAILOBJECT_MAPISTORE_H */
+#endif /* MAPISTOREDRAFTSMESSAGE_H */

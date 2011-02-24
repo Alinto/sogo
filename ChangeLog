@@ -1,5 +1,8 @@
 2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMessage.m: new super class used as for
+	wrapper objects replacing the category modules on the SOGoObject.
+
 	* OpenChange/MAPIStoreObject.m: new super class used as base the
 	MAPI objects counterparts (MAPIStoreMessage, MAPIStoreFolder and
 	MAPIStoreAttachment).

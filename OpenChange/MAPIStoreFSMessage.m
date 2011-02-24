@@ -1,4 +1,4 @@
-/* SOGoMailObject+MAPIStore.m - this file is part of SOGo
+/* MAPIStoreFSMessage.m - this file is part of SOGo
  *
  * Copyright (C) 2011 Inverse inc
  *
@@ -22,32 +22,33 @@
 
 #import <Foundation/NSDictionary.h>
 
-#import <NGExtensions/NSObject+Logs.h>
-
 #import "MAPIStoreTypes.h"
+#import "NSObject+MAPIStore.h"
+#import "SOGoMAPIFSMessage.h"
 
-#import "SOGoMailObject+MAPIStore.h"
+#import "MAPIStoreFSMessage.h"
 
-@implementation SOGoMailObject (MAPIStoreMessage)
+@implementation MAPIStoreFSMessage
 
-- (void) setMAPIProperties: (NSDictionary *) properties
+- (enum MAPISTATUS) getProperty: (void **) data
+                        withTag: (enum MAPITAGS) propTag
 {
   id value;
+  enum MAPISTATUS rc;
 
-  value = [properties objectForKey: MAPIPropertyKey (PR_FLAG_STATUS)];
+  value = [[sogoObject properties] objectForKey: MAPIPropertyKey (propTag)];
   if (value)
-    {
-      /* We don't handle the concept of "Follow Up" */
-      if ([value intValue] == 2)
-        [self addFlags: @"\\Flagged"];
-      else /* 0: unflagged, 1: follow up complete */
-        [self removeFlags: @"\\Flagged"];
-    }
+    rc = [value getMAPIValue: data forTag: propTag inMemCtx: memCtx];
+  else
+    rc = [super getProperty: data withTag: propTag];
+
+  return rc;
 }
 
-- (void) MAPISave
+- (void) save
 {
-  /* stub */
+  [sogoObject appendProperties: newProperties];
+  [sogoObject save];
 }
 
 @end
