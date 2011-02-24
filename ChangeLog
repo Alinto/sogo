@@ -1,5 +1,9 @@
 2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m
+	(-setProperty:withFMID:ofTableType:fromFile:): considering the
+	cached message as a MAPIStoreMessage instance instead of NSDictionary.
+
 	* OpenChange/MAPIStoreMailMessage.m
 	(_fetchAttachmentPartsInBodyInfo:withPrefix:): detect attachment
 	parts based on the existence of the "filename" info parameter.

@@ -881,7 +881,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	ofTableType: (uint8_t) tableType
 	   fromFile: (NSFileHandle *) aFile
 {
-  NSMutableDictionary *message;
+  MAPIStoreMessage *message;
   NSNumber *midKey;
   NSData *fileData;
   const char *propName;
@@ -901,10 +901,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       message = [messages objectForKey: midKey];
       if (message)
 	{
-	  [message setObject: NSObjectFromStreamData (property, fileData)
-		      forKey: MAPIPropertyKey (property)];
-	  [self logWithFormat: @"(%s) message props after op", __PRETTY_FUNCTION__];
-	  MAPIStoreDumpMessageProperties (message);
+	  [message addNewProperties:
+                     [NSDictionary
+                       dictionaryWithObject: NSObjectFromStreamData (property,
+                                                                     fileData)
+                       forKey: MAPIPropertyKey (property)]];
 	  rc = MAPISTORE_SUCCESS;
 	}
       else
