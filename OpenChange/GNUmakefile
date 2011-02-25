@@ -67,18 +67,12 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreTasksMessage.m \
 	MAPIStoreTasksMessageTable.m \
 	\
-	MAPIStoreMailBaseContext.m \
+	MAPIStoreMailContext.m \
 	MAPIStoreMailFolder.m \
 	MAPIStoreMailFolderTable.m \
 	MAPIStoreDraftsMessage.m \
 	MAPIStoreMailMessage.m \
 	MAPIStoreMailMessageTable.m \
-	\
-	MAPIStoreInboxContext.m \
-	MAPIStoreDeletedItemsContext.m \
-	MAPIStoreDraftsContext.m \
-	MAPIStoreSentItemsContext.m \
-	MAPIStoreOutboxContext.m \
 	\
 	MAPIStoreNotesContext.m \
 	MAPIStoreNotesFolder.m \
@@ -92,7 +86,6 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreScheduleContext.m \
 	MAPIStoreSearchContext.m \
 	MAPIStoreShortcutsContext.m \
-	MAPIStoreSpoolerContext.m \
 	MAPIStoreViewsContext.m \
 	\
 	NSArray+MAPIStore.m \

@@ -1,3 +1,9 @@
+2011-02-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailContext.[hm]: renamed from
+	MAPIStoreMailBaseContext and merged in all subclass modules due to
+	their small size.
+
 2011-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromStreamData): convert

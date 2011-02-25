@@ -1,4 +1,4 @@
-/* MAPIStoreDraftsContext.m - this file is part of SOGo
+/* MAPIStoreMailContext.h - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -20,31 +20,30 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
+#ifndef MAPISTOREMAILCONTEXT_H
+#define MAPISTOREMAILCONTEXT_H
 
-#import "MAPIStoreMailFolder.h"
-#import "MAPIStoreMapping.h"
+#import "MAPIStoreContext.h"
 
-#import "MAPIStoreDraftsContext.h"
-
-@implementation MAPIStoreDraftsContext
-
-+ (NSString *) MAPIModuleName
-{
-  return @"drafts";
-}
-
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@inbox/"
-		withID: 0x1e0001];
-}
-
-- (void) setupBaseFolder: (NSURL *) newURL
-{
-  baseFolder = [MAPIStoreDraftsFolder baseFolderWithURL: newURL
-                                              inContext: self];
-  [baseFolder retain];
-}
-
+@interface MAPIStoreMailContext : MAPIStoreContext
 @end
+
+@interface MAPIStoreInboxContext : MAPIStoreMailContext
+@end
+
+@interface MAPIStoreSentItemsContext : MAPIStoreMailContext
+@end
+
+@interface MAPIStoreDraftsContext : MAPIStoreMailContext
+@end
+
+@interface MAPIStoreDeletedItemsContext : MAPIStoreMailContext
+@end
+
+@interface MAPIStoreOutboxContext : MAPIStoreMailContext
+@end
+
+@interface MAPIStoreSpoolerContext : MAPIStoreOutboxContext
+@end
+
+#endif /* MAPISTOREMAILCONTEXT_H */
