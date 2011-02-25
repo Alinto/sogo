@@ -948,7 +948,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	  fileData = [[message newProperties] objectForKey: MAPIPropertyKey (property)];
           if ([fileData isKindOfClass: NSStringK])
             fileData = [fileData dataUsingEncoding: NSUTF16LittleEndianStringEncoding];
-	  /* TODO: only NSData is supported right now */
 	  if (fileData)
 	    {
               if (![fileData isKindOfClass: NSDataK])
