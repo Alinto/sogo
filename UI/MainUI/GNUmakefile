@@ -6,15 +6,13 @@ BUNDLE_NAME = MainUI
 
 MainUI_PRINCIPAL_CLASS = MainUIProduct
 
-MainUI_LANGUAGES = BrazilianPortuguese Catalan Czech Dutch English French German Hungarian Italian Polish Russian Spanish Swedish Ukrainian Welsh
+MainUI_LANGUAGES = BrazilianPortuguese Catalan Czech Dutch English French German Hungarian Italian Norwegian Polish Russian Spanish Swedish Ukrainian Welsh
 
 MainUI_OBJC_FILES += \
 	MainUIProduct.m		\
 	SOGoRootPage.m		\
 	SOGoUserHomePage.m	\
 	SOGoBrowsersPanel.m	\
-# 	SOGoGroupPage.m		\
-# 	SOGoGroupsPage.m	\
 
 MainUI_RESOURCE_FILES += 	\
 	Version			\

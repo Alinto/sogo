@@ -20,9 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/* TODO:
-   - show usage */
-
 #include <stdio.h>
 
 #import <Foundation/NSArray.h>

@@ -14,7 +14,7 @@ if __name__ == "__main__":
     modules = []
     # Duplicated from UIxPreferences.m
     languages = ["Czech", "Dutch", "English", "French", 
-                 "German", "Hungarian", "Italian", "BrazilianPortuguese", 
+                 "German", "Hungarian", "Italian", "BrazilianPortuguese", "Norwegian", 
                  "Polish", "Russian", "Spanish", "Swedish", "Ukrainian", "Welsh"]
 
     # We can disable testing all languages

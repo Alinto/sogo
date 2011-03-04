@@ -32,8 +32,8 @@
     SOGoLanguage = "English";
     SOGoSupportedLanguages = ( "Catalan", "Czech", "Welsh", "English", "Spanish",
                                "French", "German", "Italian", "Hungarian",
-                               "Dutch", "BrazilianPortuguese", "Polish", "Russian",
-                               "Ukrainian", "Swedish");
+                               "Dutch", "BrazilianPortuguese", "Norwegian", "Polish",
+                               "Russian", "Ukrainian", "Swedish");
 
     SOGoTimeZone = "UTC";
 
