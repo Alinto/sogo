@@ -2577,6 +2577,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 }
 
 - (BOOL) importComponent: (iCalEntityObject *) event
+		timezone: (NSString *) timezone
 {
   SOGoAppointmentObject *object;
   NSString *uid;
@@ -2588,14 +2589,16 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                                     inContainer: self];
   [object setIsNew: YES];
   content = 
-    [NSString stringWithFormat: @"BEGIN:VCALENDAR\n%@\nEND:VCALENDAR", 
-     [event versitString]];
+    [NSString stringWithFormat: @"BEGIN:VCALENDAR\n%@%@\nEND:VCALENDAR", 
+	      timezone, [event versitString]];
   return ([object saveContentString: content] == nil);
 }
 
 - (int) importCalendar: (iCalCalendar *) calendar
 {
   NSMutableArray *components;
+  NSString *tz;
+
   int imported, count, i;
   
   imported = 0;
@@ -2608,9 +2611,16 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [components addObjectsFromArray: [calendar journals]];
       [components addObjectsFromArray: [calendar freeBusys]];
 
+#warning FIXME we might want to eventually support multiple timezone definitions and match the one used by the event
+      if ([[calendar timezones] count])
+	tz = [NSString stringWithFormat: @"%@\n", 
+		       [[[calendar timezones] lastObject] versitString]];
+      else
+	tz = @"";
+
       count = [components count];
       for (i = 0; i < count; i++)
-        if ([self importComponent: [components objectAtIndex: i]])
+        if ([self importComponent: [components objectAtIndex: i] timezone: tz])
           imported++;
     }
 

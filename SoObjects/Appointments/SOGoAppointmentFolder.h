@@ -158,7 +158,9 @@ typedef enum {
 - (BOOL) includeInFreeBusy;
 - (void) setIncludeInFreeBusy: (BOOL) newInclude;
 
-- (BOOL) importComponent: (iCalEntityObject *) event;
+- (BOOL) importComponent: (iCalEntityObject *) event
+		timezone: (NSString *) timezone;
+
 - (int) importCalendar: (iCalCalendar *) calendar;
 
 /* caldav proxy */

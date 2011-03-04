@@ -1,3 +1,9 @@
+2011-03-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.h/m:
+	-importCalendar: we now also import the timezone definition
+	when present
+
 2011-02-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailContext.[hm]: renamed from
