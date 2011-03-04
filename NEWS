@@ -6,6 +6,8 @@ Enhancements
 - updated Ukranian translation
 - updated Spanish translation
 Bug Fixes
+- sogo-tool now works in multi-domain environments
+- various other mutli-domain fixes
 
 1.3-20110125 (1.3.5)
 --------------------
