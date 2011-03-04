@@ -3,7 +3,9 @@
 	* SoObjects/Appointments/SOGoAppointmentFolder.h/m:
 	-importCalendar: we now also import the timezone definition
 	when present
-
+	* SoObjects/SOGo/SQLSource.m 
+	We now consider the domain belonging to the SQLSource instance
+	
 2011-02-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailContext.[hm]: renamed from

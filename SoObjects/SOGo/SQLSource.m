@@ -243,11 +243,11 @@
 - (NSDictionary *) _lookupContactEntry: (NSString *) theID
                          considerEmail: (BOOL) b
 {
+  NSMutableDictionary *response;
   EOAdaptorChannel *channel;
   GCSChannelManager *cm;
+  NSString *sql, *value;
   NSException *ex;
-  NSString *sql;
-  NSMutableDictionary *response;
 
   response = nil;
 
@@ -289,6 +289,13 @@
           // constraints right now over a SQL backend.
           [response setObject: [NSNumber numberWithBool: YES] forKey: @"CalendarAccess"];
           [response setObject: [NSNumber numberWithBool: YES] forKey: @"MailAccess"];
+
+	  // We set the domain, if any
+	  if (_domain)
+	    value = _domain;
+	  else
+	    value = @"";
+	  [response setObject: value forKey: @"c_domain"];
 
 	  // We populate all mail fields
 	  emails = [NSMutableArray array];
