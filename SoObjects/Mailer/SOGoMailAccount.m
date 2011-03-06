@@ -405,8 +405,8 @@ static NSString *sieveScriptName = @"sogo";
   }
   
   if (![[result valueForKey:@"result"] boolValue]) {
-    [self errorWithFormat: @"Could not login '%@' (%@) on Sieve server: %@: %@",
-	  [[self imap4URL] user], password, client, result];
+    [self errorWithFormat: @"Could not login '%@' on Sieve server: %@: %@",
+	  [[self imap4URL] user], client, result];
     [client closeConnection];
     return NO;
   }
