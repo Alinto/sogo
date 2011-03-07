@@ -310,7 +310,6 @@ static Class NSDataK, NSStringK;
 - (void) setHandleId: (uint32_t) newHandleId
 {
   handleId = newHandleId;
-  [self logWithFormat: @"new table handle: %d", handleId];
 }
 
 - (NSArray *) childKeys
@@ -812,8 +811,6 @@ static Class NSDataK, NSStringK;
   notif_parameters.folder_id = [container objectId];
   notif_parameters.object_id = [child objectId];
   notif_parameters.instance_id = 0; /* TODO: always 0 ? */
-
-  [self logWithFormat: @"table notification handle: %d", handleId];
 
   childName = [child nameInContainer];
   list = [self restrictedChildKeys];
