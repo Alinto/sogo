@@ -81,6 +81,8 @@
 - (Class) objectClassForComponentName: (NSString *) componentName;
 - (Class) objectClassForContent: (NSString *) content;
 
+- (void) removeChildRecordWithName: (NSString *) childName;
+
 - (id) createChildComponentWithRecord: (NSDictionary *) record;
 - (id) createChildComponentWithName: (NSString *) newName
                          andContent: (NSString *) newContent;

@@ -712,6 +712,11 @@ static NSArray *childRecordFields = nil;
   return (record != nil);
 }
 
+- (void) removeChildRecordWithName: (NSString *) childName
+{
+  [childRecords removeObjectForKey: childName];
+}
+
 - (Class) objectClassForComponentName: (NSString *) componentName
 {
   [self subclassResponsibility: _cmd];

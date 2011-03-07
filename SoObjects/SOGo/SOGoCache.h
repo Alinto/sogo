@@ -57,6 +57,8 @@
 - (void) registerObject: (id) object
 	       withName: (NSString *) name
 	    inContainer: (SOGoObject *) container;
+- (void) unregisterObjectWithName: (NSString *) name
+                      inContainer: (SOGoObject *) container;
 - (id) objectNamed: (NSString *) name
        inContainer: (SOGoObject *) container;
 

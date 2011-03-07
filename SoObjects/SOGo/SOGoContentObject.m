@@ -33,6 +33,7 @@
 #import <GDLContentStore/GCSFolder.h>
 
 #import "NSCalendarDate+SOGo.h"
+#import "SOGoCache.h"
 #import "SOGoGCSFolder.h"
 #import "SOGoUser.h"
 #import "SOGoPermissions.h"
@@ -199,7 +200,11 @@
     }
   else
     [self errorWithFormat:@"Did not find folder of content object."];
-  
+
+  [container removeChildRecordWithName: nameInContainer];
+  [[SOGoCache sharedCache] unregisterObjectWithName: nameInContainer
+                                        inContainer: container];
+
   return ex;
 }
 
@@ -249,6 +254,11 @@
     [self errorWithFormat:@"delete failed: %@", ex];
     return ex;
   }
+
+  [container removeChildRecordWithName: nameInContainer];
+  [[SOGoCache sharedCache] unregisterObjectWithName: nameInContainer
+                                        inContainer: container];
+
   return nil;
 }
 

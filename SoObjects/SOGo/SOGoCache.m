@@ -209,6 +209,19 @@ static memcached_st *handle = NULL;
     }
 }
 
+- (void) unregisterObjectWithName: (NSString *) name
+                      inContainer: (SOGoObject *) container
+{
+  NSString *fullPath;
+
+  if (name)
+    {
+      fullPath = [self _pathFromObject: container
+                              withName: name];
+      [cache removeObjectForKey: fullPath];
+    }
+}
+
 - (id) objectNamed: (NSString *) name
        inContainer: (SOGoObject *) container
 {
