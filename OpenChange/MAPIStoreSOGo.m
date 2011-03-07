@@ -102,7 +102,8 @@ sogo_init (void)
 */
 
 static int
-sogo_create_context(TALLOC_CTX *mem_ctx, const char *uri, void **private_data)
+sogo_create_context(TALLOC_CTX *mem_ctx, const char *uri, uint64_t fid,
+                    void **private_data)
 {
   NSAutoreleasePool *pool;
   sogo_context *cContext;
@@ -117,8 +118,8 @@ sogo_create_context(TALLOC_CTX *mem_ctx, const char *uri, void **private_data)
   MAPIStoreContextK = NSClassFromString (@"MAPIStoreContext");
   if (MAPIStoreContextK)
     {
-      context = [MAPIStoreContextK contextFromURI: uri
-				   inMemCtx: mem_ctx];
+      context = [MAPIStoreContextK contextFromURI: uri andFID: fid
+                                         inMemCtx: mem_ctx];
       [context retain];
 
       cContext = talloc_zero(mem_ctx, sogo_context);

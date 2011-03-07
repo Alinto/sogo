@@ -33,10 +33,4 @@
   return @"reminders";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@reminders/"
-                withID: 0x180001];
-}
-
 @end

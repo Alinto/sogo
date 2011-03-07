@@ -43,12 +43,6 @@
   return @"inbox";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@inbox/"
-		withID: 0x160001];
-}
-
 - (void) setupBaseFolder: (NSURL *) newURL
 {
   baseFolder = [MAPIStoreInboxFolder baseFolderWithURL: newURL
@@ -63,12 +57,6 @@
 + (NSString *) MAPIModuleName
 {
   return @"sent-items";
-}
-
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@sent-items/"
-                withID: 0x140001];
 }
 
 - (void) setupBaseFolder: (NSURL *) newURL
@@ -87,12 +75,6 @@
   return @"drafts";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@inbox/"
-		withID: 0x1e0001];
-}
-
 - (void) setupBaseFolder: (NSURL *) newURL
 {
   baseFolder = [MAPIStoreDraftsFolder baseFolderWithURL: newURL
@@ -107,12 +89,6 @@
 + (NSString *) MAPIModuleName
 {
   return @"deleted-items";
-}
-
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@deleted-items/"
-                withID: 0x170001];
 }
 
 - (void) setupBaseFolder: (NSURL *) newURL
@@ -131,12 +107,6 @@
   return @"outbox";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@outbox/"
-                withID: 0x150001];
-}
-
 - (void) setupBaseFolder: (NSURL *) newURL
 {
   baseFolder = [MAPIStoreOutboxFolder baseFolderWithURL: newURL
@@ -150,13 +120,7 @@
 
 + (NSString *) MAPIModuleName
 {
-  return @"spooler";
-}
-
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@spooler/"
-                withID: 0x120001];
+  return @"spooler-queue";
 }
 
 @end

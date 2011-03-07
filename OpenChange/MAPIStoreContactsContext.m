@@ -34,12 +34,6 @@
   return @"contacts";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@contacts/"
-                withID: 0x1a0001];
-}
-
 - (void) setupBaseFolder: (NSURL *) newURL
 {
   baseFolder = [MAPIStoreContactsFolder baseFolderWithURL: newURL

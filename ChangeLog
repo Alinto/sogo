@@ -1,5 +1,12 @@
 2011-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (_prepareContextClass): now takes
+	the context fid as argument.
+
+	* OpenChange/MAPIStore*Context.m (+registerFixedMappings): removed
+	method, made obsolete by the fact that we now receive the context
+	fid during initialization.
+
 	* OpenChange/MAPIStoreFAIMessageTable.[hm]: restored class module
 	in order to reenable proper class testing during notifications.
 

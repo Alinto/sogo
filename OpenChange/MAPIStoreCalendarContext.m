@@ -34,25 +34,11 @@
   return @"calendar";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@calendar/"
-                withID: 0x190001];
-}
-
 - (void) setupBaseFolder: (NSURL *) newURL
 {
   baseFolder = [MAPIStoreCalendarFolder baseFolderWithURL: newURL
                                                 inContext: self];
   [baseFolder retain];
-}
-
-
-- (int) readCount: (uint32_t *) rowCount
-      ofTableType: (uint8_t) tableType
-            inFID: (uint64_t) fid
-{
-  return [super readCount: rowCount ofTableType: tableType inFID: fid];
 }
 
 @end

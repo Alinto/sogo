@@ -33,10 +33,4 @@
   return @"journal";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@journal/"
-                withID: 0x1b0001];
-}
-
 @end

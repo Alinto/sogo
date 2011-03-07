@@ -106,7 +106,8 @@ static void *ldbCtx = NULL;
 
 static inline MAPIStoreContext *
 _prepareContextClass (struct mapistore_context *newMemCtx,
-                      Class contextClass, NSURL *url)
+                      Class contextClass,
+                      NSURL *url, uint64_t fid)
 {
   static NSMutableDictionary *registration = nil;
   MAPIStoreContext *context;
@@ -116,14 +117,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
     registration = [NSMutableDictionary new];
 
   if (![registration objectForKey: contextClass])
-    {
-      [contextClass registerFixedMappings: mapping];
-      [registration setObject: [NSNull null]
-                       forKey: contextClass];
-    }
+    [registration setObject: [NSNull null]
+                  forKey: contextClass];
 
-  context = [contextClass new];
-  [context setURI: [url absoluteString] andMemCtx: newMemCtx];
+  context = [[contextClass alloc] initFromURL: url andFID: fid
+                                     inMemCtx: newMemCtx];
   [context autorelease];
 
   authenticator = [MAPIStoreAuthenticator new];
@@ -140,6 +138,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 }
 
 + (id) contextFromURI: (const char *) newUri
+               andFID: (uint64_t) fid
              inMemCtx: (struct mapistore_context *) newMemCtx
 {
   MAPIStoreContext *context;
@@ -167,7 +166,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
               if (contextClass)
                 context = _prepareContextClass (newMemCtx,
                                                 contextClass,
-                                                baseURL);
+                                                baseURL,
+                                                fid);
               else
                 NSLog (@"ERROR: unrecognized module name '%@'", module);
             }
@@ -189,10 +189,39 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       woContext = [WOContext contextWithRequest: nil];
       [woContext retain];
       baseFolder = nil;
-      uri = nil;
+      contextUrl = nil;
     }
 
   [self logWithFormat: @"-init"];
+
+  return self;
+}
+
+- (id) initFromURL: (NSURL *) newUrl
+            andFID: (uint64_t) newFid
+          inMemCtx: (struct mapistore_context *) newMemCtx
+{
+  struct loadparm_context *lpCtx;
+  MAPIStoreMapping *mapping;
+
+  if ((self = [self init]))
+    {
+      if (!ldbCtx)
+        {
+          lpCtx = loadparm_init (newMemCtx);
+          ldbCtx = mapiproxy_server_openchange_ldb_init (lpCtx);
+        }
+
+      ASSIGN (contextUrl, newUrl);
+
+      mapping = [MAPIStoreMapping sharedMapping];
+      if (![mapping urlFromID: newFid])
+        [mapping registerURL: [newUrl absoluteString]
+                      withID: newFid];
+      contextFid = newFid;
+   
+      memCtx = newMemCtx;
+    }
 
   return self;
 }
@@ -207,24 +236,9 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   [woContext release];
   [authenticator release];
 
-  [uri release];
+  [contextUrl release];
 
   [super dealloc];
-}
-
-- (void) setURI: (NSString *) newUri
-      andMemCtx: (struct mapistore_context *) newMemCtx
-{
-  struct loadparm_context *lpCtx;
-
-  if (!ldbCtx)
-    {
-      lpCtx = loadparm_init (newMemCtx);
-      ldbCtx = mapiproxy_server_openchange_ldb_init (lpCtx);
-    }
-
-  ASSIGN (uri, newUri);
-  memCtx = newMemCtx;
 }
 
 - (WOContext *) woContext
@@ -835,13 +849,14 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   withTableType: (uint8_t) tableType
 {
   int rc;
-  NSString *objectURL;
+  NSString *objectURL, *url;
   // TDB_DATA key, dbuf;
 
+  url = [contextUrl absoluteString];
   objectURL = [mapping urlFromID: fmid];
   if (objectURL)
     {
-      if ([objectURL hasPrefix: uri])
+      if ([objectURL hasPrefix: url])
         {
           *path = [[objectURL substringFromIndex: 7]
 		    asUnicodeInMemCtx: memCtx];
@@ -853,7 +868,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
         {
 	  [self logWithFormat: @"context (%@, %@) does not contain"
 		@" found fmid: 0x%.16x",
-		objectURL, uri, fmid];
+		objectURL, url, fmid];
           *path = NULL;
           rc = MAPI_E_NOT_FOUND;
         }
@@ -1295,7 +1310,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
               withFMID: (uint64_t) fmid
 {
   int rc;
-  NSString *currentURL;
+  NSString *currentURL, *url;
   NSMutableArray *nsFolderList;
   uint64_t fid;
 
@@ -1303,15 +1318,16 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
   rc = MAPI_E_SUCCESS;
 
+  url = [contextUrl absoluteString];
   currentURL = [mapping urlFromID: fmid];
-  if (currentURL && ![currentURL isEqualToString: uri]
-      && [currentURL hasPrefix: uri])
+  if (currentURL && ![currentURL isEqualToString: url]
+      && [currentURL hasPrefix: url])
     {
       nsFolderList = [NSMutableArray arrayWithCapacity: 32];
       [self extractChildNameFromURL: currentURL
 		     andFolderURLAt: &currentURL];
       while (currentURL && rc == MAPI_E_SUCCESS
-             && ![currentURL isEqualToString: uri])
+             && ![currentURL isEqualToString: url])
         {
           fid = [mapping idFromURL: currentURL];
           if (fid == NSNotFound)
@@ -1329,7 +1345,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
       if (rc != MAPI_E_NOT_FOUND)
         {
-          fid = [mapping idFromURL: uri];
+          fid = [mapping idFromURL: url];
 	  [nsFolderList addObject: [NSNumber numberWithUnsignedLongLong: fid]];
 	  [self logWithFormat: @"resulting folder list: %@", nsFolderList];
           *folders_list = [nsFolderList asFoldersListInCtx: memCtx];
@@ -1511,10 +1527,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   [self subclassResponsibility: _cmd];
 
   return nil;
-}
-
-+ (void) registerFixedMappings: (MAPIStoreMapping *) storeMapping
-{
 }
 
 - (void) setupBaseFolder: (NSURL *) newURL

@@ -34,12 +34,6 @@
   return @"notes";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@notes/"
-                withID: 0x1c0001];
-}
-
 - (void) setupBaseFolder: (NSURL *) newURL
 {
   baseFolder = [MAPIStoreNotesFolder baseFolderWithURL: newURL

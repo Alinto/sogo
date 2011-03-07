@@ -33,10 +33,4 @@
   return @"schedule";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@schedule/"
-                withID: 0xe0001];
-}
-
 @end

@@ -33,10 +33,4 @@
   return @"search";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@search/"
-                withID: 0xd0001];
-}
-
 @end

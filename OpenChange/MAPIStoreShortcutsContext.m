@@ -33,10 +33,4 @@
   return @"shortcuts";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@shortcuts/"
-                withID: 0xf0001];
-}
-
 @end

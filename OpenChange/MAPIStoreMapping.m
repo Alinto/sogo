@@ -76,14 +76,14 @@ MAPIStoreMappingInitDictionary (NSMutableDictionary *mapping)
   struct tdb_wrap *wrap;
   TDB_CONTEXT *context;
   char *tdb_path;
-  int rc;
 
   tdb_path  = "/usr/local/samba/private/mapistore/openchange/indexing.tdb";
   wrap = tdb_wrap_open(NULL, tdb_path, 0, TDB_NOLOCK, O_RDONLY, 0600);
-
-  context = wrap->tdb;
-  rc = tdb_traverse_read(wrap->tdb, MAPIStoreMappingTDBTraverse, mapping);
-
+  if (wrap)
+    {
+      context = wrap->tdb;
+      tdb_traverse_read(wrap->tdb, MAPIStoreMappingTDBTraverse, mapping);
+    }
 }
 
 @implementation MAPIStoreMapping

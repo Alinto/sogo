@@ -33,10 +33,4 @@
   return @"deferred-actions";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@deferred-actions/"
-                withID: 0xb0001];
-}
-
 @end

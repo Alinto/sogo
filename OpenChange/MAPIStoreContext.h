@@ -49,7 +49,8 @@
 {
   struct mapistore_context *memCtx;
 
-  NSString *uri;
+  NSURL *contextUrl;
+  uint64_t contextFid;
 
   MAPIStoreAuthenticator *authenticator;
   WOContext *woContext;
@@ -61,10 +62,12 @@
 }
 
 + (id) contextFromURI: (const char *) newUri
+               andFID: (uint64_t) fid
              inMemCtx: (struct mapistore_context *) newMemCtx;
 
-- (void) setURI: (NSString *) newUri
-      andMemCtx: (struct mapistore_context *) newMemCtx;
+- (id) initFromURL: (NSURL *) newUri
+            andFID: (uint64_t) fid
+          inMemCtx: (struct mapistore_context *) newMemCtx;
 
 - (void) setAuthenticator: (MAPIStoreAuthenticator *) newAuthenticator;
 - (MAPIStoreAuthenticator *) authenticator;
@@ -156,7 +159,6 @@
 
 /* subclass methods */
 + (NSString *) MAPIModuleName;
-+ (void) registerFixedMappings: (MAPIStoreMapping *) storeMapping;
 - (void) setupBaseFolder: (NSURL *) newURL;
 
 /* proof of concept */

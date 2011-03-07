@@ -34,12 +34,6 @@
   return @"tasks";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@tasks/"
-                withID: 0x1d0001];
-}
-
 - (void) setupBaseFolder: (NSURL *) newURL
 {
   baseFolder = [MAPIStoreTasksFolder baseFolderWithURL: newURL

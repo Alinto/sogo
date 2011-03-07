@@ -33,10 +33,4 @@
   return @"views";
 }
 
-+ (void) registerFixedMappings: (MAPIStoreMapping *) mapping
-{
-  [mapping registerURL: @"sogo://openchange:openchange@views/"
-                withID: 0x110001];
-}
-
 @end
