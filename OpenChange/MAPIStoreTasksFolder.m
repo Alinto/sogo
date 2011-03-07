@@ -83,11 +83,7 @@ static Class MAPIStoreTasksMessageK;
 
 - (MAPIStoreMessageTable *) messageTable
 {
-  if (!messageTable)
-    ASSIGN (messageTable,
-            [MAPIStoreTasksMessageTable tableForContainer: self]);
-
-  return messageTable;
+  return [MAPIStoreTasksMessageTable tableForContainer: self];
 }
 
 - (EOQualifier *) componentQualifier

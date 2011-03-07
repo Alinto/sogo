@@ -44,6 +44,7 @@
 #include <stdbool.h>
 #include <gen_ndr/exchange.h>
 #include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 #include <mapistore/mapistore_nameid.h>
 
 static Class NSExceptionK;
@@ -84,13 +85,7 @@ static Class NSExceptionK;
 
 - (MAPIStoreAttachmentTable *) attachmentTable
 {
-  if (!attachmentTable)
-    {
-      attachmentTable = [MAPIStoreAttachmentTable tableForContainer: self];
-      [attachmentTable retain];
-    }
-
-  return attachmentTable;
+  return [MAPIStoreAttachmentTable tableForContainer: self];
 }
 
 - (enum MAPISTATUS) getProperty: (void **) data
@@ -101,7 +96,7 @@ static Class NSExceptionK;
   uint32_t intValue;
   enum MAPISTATUS rc;
 
-  rc = MAPI_E_SUCCESS;
+  rc = MAPISTORE_SUCCESS;
   switch (propTag)
     {
     case PR_ICON_INDEX:
@@ -330,7 +325,7 @@ static Class NSExceptionK;
         if ([keys count] > 0)
           {
             *data = NULL;
-            rc = MAPI_E_NOT_FOUND;
+            rc = MAPISTORE_ERR_NOT_FOUND;
           }
         else
           {
@@ -373,7 +368,7 @@ static Class NSExceptionK;
                   }
               }
             else
-	      rc = MAPI_E_NOT_FOUND;
+	      rc = MAPISTORE_ERR_NOT_FOUND;
           }
       }
       break;
@@ -457,7 +452,7 @@ static Class NSExceptionK;
         else
           {
             *data = NULL;
-            rc = MAPI_E_NOT_FOUND;
+            rc = MAPISTORE_ERR_NOT_FOUND;
           }
       }
       break;
@@ -465,7 +460,7 @@ static Class NSExceptionK;
       /* We don't handle any RTF content. */
     case PR_RTF_COMPRESSED:
       *data = NULL;
-      rc = MAPI_E_NOT_FOUND;
+      rc = MAPISTORE_ERR_NOT_FOUND;
       break;
     case PR_RTF_IN_SYNC:
       *data = MAPIBoolValue (memCtx, NO);

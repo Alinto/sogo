@@ -54,7 +54,7 @@
       mapiRetainCount = 0;
       attachmentKeys = nil;
       attachmentParts = nil;
-      attachmentTable = nil;
+      activeTables = [NSMutableArray new];
     }
 
   return self;
@@ -64,7 +64,7 @@
 {
   [attachmentKeys release];
   [attachmentParts release];
-  [attachmentTable release];
+  [activeTables release];
   [super dealloc];
 }
 
@@ -283,6 +283,16 @@
   [self subclassResponsibility: _cmd];
 
   return nil;
+}
+
+- (void) addActiveTable: (MAPIStoreTable *) activeTable
+{
+  [activeTables addObject: activeTable];
+}
+
+- (void) removeActiveTable: (MAPIStoreTable *) activeTable
+{
+  [activeTables removeObject: activeTable];
 }
 
 @end

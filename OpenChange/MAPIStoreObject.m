@@ -69,6 +69,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
       sogoObject = nil;
       newProperties = [NSMutableDictionary new];
       memCtx =  talloc_size (NULL, 0);
+      isNew = NO;
     }
 
   return self;
@@ -94,6 +95,16 @@ static Class NSExceptionK, MAPIStoreFolderK;
   [newProperties dealloc];
   talloc_free (memCtx);
   [super dealloc];
+}
+
+- (void) setIsNew: (BOOL) newIsNew
+{
+  isNew = newIsNew;
+}
+
+- (BOOL) isNew
+{
+  return isNew;
 }
 
 - (id) sogoObject
@@ -151,6 +162,16 @@ static Class NSExceptionK, MAPIStoreFolderK;
                     containerURL, [sogoObject nameInContainer]];
 }
 
+- (void) addActiveTable: (MAPIStoreTable *) activeTable
+{
+  [self subclassResponsibility: _cmd];
+}
+
+- (void) removeActiveTable: (MAPIStoreTable *) activeTable
+{
+  [self subclassResponsibility: _cmd];
+}
+
 - (void) addNewProperties: (NSDictionary *) newNewProperties
 {
   [newProperties addEntriesFromDictionary: newNewProperties];
@@ -159,6 +180,11 @@ static Class NSExceptionK, MAPIStoreFolderK;
 - (NSDictionary *) newProperties
 {
   return newProperties;
+}
+
+- (void) resetNewProperties
+{
+  [newProperties removeAllObjects];
 }
 
 - (int) getProperty: (void **) data

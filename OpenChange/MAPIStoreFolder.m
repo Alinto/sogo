@@ -30,8 +30,8 @@
 #import <SOGo/SOGoFolder.h>
 
 #import "MAPIStoreContext.h"
-#import "MAPIStoreFSMessage.h"
-#import "MAPIStoreFSMessageTable.h"
+#import "MAPIStoreFAIMessage.h"
+#import "MAPIStoreFAIMessageTable.h"
 #import "MAPIStoreFolder.h"
 #import "MAPIStoreMessage.h"
 #import "MAPIStoreTypes.h"
@@ -46,13 +46,16 @@
 #include <mapistore/mapistore_nameid.h>
 // #include <mapistore/mapistore_errors.h>
 
-Class NSExceptionK;
+Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStoreFolderTableK;
 
 @implementation MAPIStoreFolder
 
 + (void) initialize
 {
   NSExceptionK = [NSException class];
+  MAPIStoreMessageTableK = [MAPIStoreMessageTable class];
+  MAPIStoreFAIMessageTableK = [MAPIStoreFAIMessageTable class];
+  MAPIStoreFolderTableK = [MAPIStoreFolderTable class];
 }
 
 + (id) baseFolderWithURL: (NSURL *) newURL
@@ -70,15 +73,16 @@ Class NSExceptionK;
 {
   if ((self = [super init]))
     {
-      messageTable = nil;
       messageKeys = nil;
-      faiMessageTable = nil;
       faiMessageKeys = nil;
-      folderTable = nil;
       folderKeys = nil;
       faiFolder = nil;
       folderURL = nil;
       context = nil;
+
+      activeMessageTables = [NSMutableArray new];
+      activeFAIMessageTables  = [NSMutableArray new];
+      activeFolderTables = [NSMutableArray new];
     }
 
   return self;
@@ -102,13 +106,14 @@ Class NSExceptionK;
 - (void) dealloc
 {
   [folderURL release];
-  [messageTable release];
   [messageKeys release];
-  [faiMessageTable release];
   [faiMessageKeys release];
-  [folderTable release];
   [folderKeys release];
   [faiFolder release];
+  [activeMessageTables release];
+  [activeFAIMessageTables release];
+  [activeFolderTables release];
+
   [super dealloc];
 }
 
@@ -132,15 +137,9 @@ Class NSExceptionK;
   return messageKeys;
 }
 
-- (MAPIStoreFSMessageTable *) faiMessageTable
+- (MAPIStoreFAIMessageTable *) faiMessageTable
 {
-  if (!faiMessageTable)
-    {
-      faiMessageTable = [MAPIStoreFSMessageTable tableForContainer: self];
-      [faiMessageTable retain];
-    }
-
-  return faiMessageTable;
+  return [MAPIStoreFAIMessageTable tableForContainer: self];
 }
 
 - (NSArray *) faiMessageKeys
@@ -161,21 +160,68 @@ Class NSExceptionK;
 
 - (NSArray *) folderKeys
 {
-  if (!faiMessageKeys)
-    faiMessageKeys = [NSArray new];
+  return nil;
+}
 
-  return faiMessageKeys;
+- (NSArray *) activeMessageTables
+{
+  return activeMessageTables;
+}
+
+- (NSArray *) activeFAIMessageTables
+{
+  return activeFAIMessageTables;
+}
+
+- (NSArray *) activeFolderTables
+{
+  return activeFolderTables;
+}
+
+- (NSMutableArray *) _arrayForActiveTable: (MAPIStoreTable *) activeTable
+{
+  NSMutableArray *tablesArray;
+
+  if ([activeTable isKindOfClass: MAPIStoreFAIMessageTableK])
+    tablesArray = activeMessageTables;
+  else if ([activeTable isKindOfClass: MAPIStoreMessageTableK])
+    tablesArray = activeMessageTables;
+  else if ([activeTable isKindOfClass: MAPIStoreFolderTableK])
+    tablesArray = activeMessageTables;
+  else
+    tablesArray = nil;
+
+  return tablesArray;
+}
+
+- (void) addActiveTable: (MAPIStoreTable *) activeTable
+{
+  [[self _arrayForActiveTable: activeTable] addObject: activeTable];
+}
+
+- (void) removeActiveTable: (MAPIStoreTable *) activeTable
+{
+  [[self _arrayForActiveTable: activeTable] removeObject: activeTable];
+}
+
+- (void) _cleanupTableCaches: (NSArray *) activeTables
+{
+  NSUInteger count, max;
+
+  max = [activeTables count];
+  for (count = 0; count < max; count++)
+    [[activeTables objectAtIndex: count] cleanupCaches];
 }
 
 - (void) cleanupCaches
 {
-  [faiMessageTable cleanupCaches];
+  [self _cleanupTableCaches: activeMessageTables];
+  [self _cleanupTableCaches: activeFAIMessageTables];
+  [self _cleanupTableCaches: activeFolderTables];
   [faiMessageKeys release];
   faiMessageKeys = nil;
-  [messageTable cleanupCaches];
   [messageKeys release];
   messageKeys = nil;
-  [folderTable cleanupCaches];
   [folderKeys release];
   folderKeys = nil;
 }
@@ -194,8 +240,8 @@ Class NSExceptionK;
                                  inContext: nil
                                  acquire: NO];
           newChild
-            = [MAPIStoreFSMessage mapiStoreObjectWithSOGoObject: msgObject
-                                                    inContainer: self];
+            = [MAPIStoreFAIMessage mapiStoreObjectWithSOGoObject: msgObject
+                                                     inContainer: self];
         }
       else
         {
@@ -274,8 +320,8 @@ Class NSExceptionK;
   newKey = [NSString stringWithFormat: @"%@.plist",
                      [SOGoObject globallyUniqueObjectId]];
   fsObject = [SOGoMAPIFSMessage objectWithName: newKey inContainer: faiFolder];
-  newMessage = [MAPIStoreFSMessage mapiStoreObjectWithSOGoObject: fsObject
-                                                     inContainer: self];
+  newMessage = [MAPIStoreFAIMessage mapiStoreObjectWithSOGoObject: fsObject
+                                                      inContainer: self];
 
   
   return newMessage;
@@ -289,6 +335,7 @@ Class NSExceptionK;
     newMessage = [self _createAssociatedMessage];
   else
     newMessage = [self createMessage];
+  [newMessage setIsNew: YES];
 
   return newMessage;
 }

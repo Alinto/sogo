@@ -38,7 +38,7 @@
 {
   NSMutableArray *attachmentKeys;
   NSMutableDictionary *attachmentParts;
-  MAPIStoreAttachmentTable *attachmentTable;
+  NSMutableArray *activeTables;
   uint32_t mapiRetainCount;
 }
 

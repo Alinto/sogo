@@ -83,11 +83,7 @@ static Class MAPIStoreCalendarMessageK;
 
 - (MAPIStoreMessageTable *) messageTable
 {
-  if (!messageTable)
-    ASSIGN (messageTable,
-            [MAPIStoreCalendarMessageTable tableForContainer: self]);
-
-  return messageTable;
+  return [MAPIStoreCalendarMessageTable tableForContainer: self];
 }
 
 - (EOQualifier *) componentQualifier

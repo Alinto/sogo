@@ -34,7 +34,7 @@
 
 @class MAPIStoreContext;
 @class MAPIStoreMessage;
-@class MAPIStoreFSMessageTable;
+@class MAPIStoreFAIMessageTable;
 @class MAPIStoreFolderTable;
 @class MAPIStoreMessageTable;
 @class SOGoMAPIFSFolder;
@@ -45,14 +45,15 @@
 {
   NSURL *folderURL;
   MAPIStoreContext *context;
-  MAPIStoreMessageTable *messageTable;
   NSArray *messageKeys;
-  MAPIStoreFSMessageTable *faiMessageTable;
   NSArray *faiMessageKeys;
-  MAPIStoreFolderTable *folderTable;
   NSMutableArray *folderKeys;
 
   SOGoMAPIFSFolder *faiFolder;
+
+  NSMutableArray *activeMessageTables;
+  NSMutableArray *activeFAIMessageTables;
+  NSMutableArray *activeFolderTables;
 }
 
 + (id) baseFolderWithURL: (NSURL *) newURL
@@ -60,10 +61,14 @@
 - (id) initWithURL: (NSURL *) newURL
          inContext: (MAPIStoreContext *) newContext;
 
+- (NSArray *) activeMessageTables;
+- (NSArray *) activeFAIMessageTables;
+- (NSArray *) activeFolderTables;
+
 - (MAPIStoreMessageTable *) messageTable;
 - (NSArray *) messageKeys;
 
-- (MAPIStoreFSMessageTable *) faiMessageTable;
+- (MAPIStoreFAIMessageTable *) faiMessageTable;
 - (NSArray *) faiMessageKeys;
 
 - (MAPIStoreFolderTable *) folderTable;

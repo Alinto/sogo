@@ -1,5 +1,47 @@
 2011-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFAIMessageTable.[hm]: restored class module
+	in order to reenable proper class testing during notifications.
+
+	* OpenChange/MAPIStoreTypes.h (MAPIPropertyKey): we now make use
+	of the full property tag again since the modified properties need
+	to be reported during notifications.
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_pocop_open_table)
+	(sogo_pocop_set_table_restrictions)
+	(sogo_pocop_set_table_sort_order): new poc methods.
+	(sogo_pocop_release): invoke -deactivate on the released object if
+	it responds to it.
+
+	* OpenChange/MAPIStoreContext.m (-setRestrictions:withFID:andTableType:getTableStatus:):
+	(-setSortOrder:withFID:andTableType:getTableStatus:):
+	(-getTableProperty:withTag:atPosition:withTableType:andQueryType:inFID:):
+	adversise methods as obsolete in the log for debugging purposes.
+	(_saveOrSubmitChangesInMessageWithMID:andFlags:save:): added code
+	to push the relevant folder, message and table notifications.
+	(-deleteMessageWithMID:inFID:withFlags:): same as above.
+	(-getTable:andRowCount:withFID:tableType:andHandleId:): new pocop
+	helper method to instantiate tables.
+
+	* OpenChange/MAPIStoreTable.m (-notifyChangesForChild:): new
+	method that pushes an appropriate table notification with regards
+	to the child passed as parameters.
+	(-deactivate): new helper method that enables the table to
+	unregister itself from its container prior to be released.
+	(-setHandleId): new helper accessor enabling reporting the table
+	handle during notifications.
+
+	* OpenChange/MAPIStoreObject.m (-addActiveTable:)
+	(-removeActiveTable:): new methods to add or remove tables from
+	the active table arrays, used later for notifications.
+	(-resetNewProperties): new method to empty the "newProperties"
+	dictionary once a "save changes" or a "submit" happened.
+
+	* OpenChange/MAPIStore*Folder.m (-messageTable, -messageFAITable,
+	-folderTable)
+	* OpenChange/MAPIStore*Message.m (-attachmentTable): no longer
+	cache the resulting table.
+
 	* SoObjects/SOGo/SOGoCache.m
 	(-unregisterObjectWithName:inContainer:): same as below.
 

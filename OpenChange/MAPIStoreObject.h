@@ -32,6 +32,7 @@
 @class EOQualifier;
 
 @class MAPIStoreFolder;
+@class MAPIStoreTable;
 
 @interface MAPIStoreObject : NSObject
 {
@@ -40,6 +41,7 @@
   id sogoObject;
   NSMutableDictionary *newProperties;
   void *memCtx;
+  BOOL isNew;
 }
 
 + (id) mapiStoreObjectWithSOGoObject: (id) newSOGoObject
@@ -47,6 +49,8 @@
 - (id) initWithSOGoObject: (id) newSOGoObject
               inContainer: (MAPIStoreObject *) newFolder;
 
+- (void) setIsNew: (BOOL) newIsNew;
+- (BOOL) isNew;
 
 - (NSString *) nameInContainer;
 
@@ -60,10 +64,14 @@
 - (uint64_t) objectId;
 - (NSString *) url;
 
+- (void) addActiveTable: (MAPIStoreTable *) activeTable;
+- (void) removeActiveTable: (MAPIStoreTable *) activeTable;
+
 /* properties */
 
 - (void) addNewProperties: (NSDictionary *) newNewProperties;
 - (NSDictionary *) newProperties;
+- (void) resetNewProperties;
 
 /* ops */
 - (int) getProperties: (struct mapistore_property_data *) data

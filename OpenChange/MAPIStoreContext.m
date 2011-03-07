@@ -43,7 +43,8 @@
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreMessage.h"
 #import "MAPIStoreMessageTable.h"
-#import "MAPIStoreFSMessageTable.h"
+#import "MAPIStoreFAIMessage.h"
+#import "MAPIStoreFAIMessageTable.h"
 #import "MAPIStoreTypes.h"
 #import "NSArray+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
@@ -66,7 +67,7 @@
 
 /* sogo://username:password@{contacts,calendar,tasks,journal,notes,mail}/dossier/id */
 
-static Class NSDataK, NSStringK;
+static Class NSDataK, NSStringK, MAPIStoreFAIMessageK;
 
 static MAPIStoreMapping *mapping;
 static NSMutableDictionary *contextClassMapping;
@@ -82,6 +83,7 @@ static void *ldbCtx = NULL;
 
   NSDataK = [NSData class];
   NSStringK = [NSString class];
+  MAPIStoreFAIMessageK = [MAPIStoreFAIMessage class];
 
   mapping = [MAPIStoreMapping sharedMapping];
 
@@ -405,21 +407,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   MAPIStoreFolder *folder;
   int rc;
 
+  /* WARNING: make sure this method is no longer invoked for counting
+     table elements */
   [self logWithFormat: @"METHOD '%s' (%d) -- tableType: %d",
 	__FUNCTION__, __LINE__, tableType];
 
-  // [self logWithFormat: @"context restriction state is: %@",
-  // 	MAPIStringForRestrictionState (restrictionState)];
-  // if (restriction)
-  //   [self logWithFormat: @"  active qualifier: %@", restriction];
-
-  // if (restrictionState == MAPIRestrictionStateAlwaysFalse)
-  //   {
-  //     *rowCount = 0;
-  //     rc = MAPI_E_SUCCESS;
-  //   }
-  // else
-  //   {
   url = [mapping urlFromID: fid];
   if (url)
     {
@@ -469,6 +461,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 {
   MAPIStoreTable *table;
 
+  [self errorWithFormat: @"%s: obsolete method", __FUNCTION__];
+
   table = [self _tableForFID: fid andTableType: tableType];
   [table setRestrictions: res];
   // FIXME: we should not flush the caches if the restrictions matches
@@ -482,6 +476,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       getTableStatus: (uint8_t *) tableStatus
 {
   MAPIStoreTable *table;
+
+  [self errorWithFormat: @"%s: obsolete method", __FUNCTION__];
 
   table = [self _tableForFID: fid andTableType: type];
   [table setSortOrder: set];
@@ -502,6 +498,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   MAPIStoreMessage *message;
   const char *propName;
   int rc;
+
+  [self errorWithFormat: @"%s: obsolete method", __FUNCTION__];
 
   // [self logWithFormat: @"METHOD '%s' (%d) -- proptag: %s (0x%.8x), pos: %.8x,"
   // 	 @" tableType: %d, queryType: %d, fid: %.16x",
@@ -577,7 +575,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
           if (message)
             {
               [message openMessage: msg];
-              [message setMAPIRetainCount: [message mapiRetainCount] + 1];
               [messages setObject: message forKey: midKey];
               rc = MAPISTORE_SUCCESS;
             }
@@ -646,18 +643,83 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 {
   int rc;
   MAPIStoreMessage *message;
+  MAPIStoreFolder *folder;
   NSNumber *midKey;
+  NSArray *activeTables;
+  NSUInteger count, max;
+  // NSArray *propKeys;
+  struct mapistore_object_notification_parameters *notif_parameters;
+  // uint16_t count, max;
+  uint64_t folderId;
 
   midKey = [NSNumber numberWithUnsignedLongLong: mid];
   message = [messages objectForKey: midKey];
   if (message)
     {
       rc = MAPISTORE_SUCCESS;
+      folder = (MAPIStoreFolder *) [message container];
       if (isSave)
-        [message save];
+        {
+          /* notifications */
+          folderId = [folder objectId];
+
+          /* folder modified */
+          notif_parameters
+            = talloc_zero(memCtx,
+                          struct mapistore_object_notification_parameters);
+          notif_parameters->object_id = folderId;
+          if ([message isNew])
+            {
+              notif_parameters->tag_count = 3;
+              notif_parameters->tags = talloc_array (notif_parameters,
+                                                     enum MAPITAGS, 3);
+              notif_parameters->tags[0] = PR_CONTENT_COUNT;
+              notif_parameters->tags[1] = PR_MESSAGE_SIZE;
+              notif_parameters->tags[2] = PR_NORMAL_MESSAGE_SIZE;
+              notif_parameters->new_message_count = true;
+              notif_parameters->message_count = [[folder messageKeys] count] + 1;
+            }
+          mapistore_push_notification (MAPISTORE_FOLDER,
+                                       MAPISTORE_OBJECT_MODIFIED,
+                                       notif_parameters);
+
+          /* message created */
+          if ([message isNew])
+            {
+              notif_parameters
+                = talloc_zero(memCtx,
+                              struct mapistore_object_notification_parameters);
+              notif_parameters->object_id = [message objectId];
+              notif_parameters->folder_id = folderId;
+
+              notif_parameters->tag_count = 0xffff;
+              mapistore_push_notification (MAPISTORE_MESSAGE,
+                                           MAPISTORE_OBJECT_CREATED,
+                                           notif_parameters);
+              talloc_free (notif_parameters);
+            }
+
+          /* we ensure the table caches are loaded so that old and new state
+             can be compared */
+          activeTables = ([message isKindOfClass: MAPIStoreFAIMessageK]
+                          ? [folder activeFAIMessageTables]
+                          : [folder activeMessageTables]);
+          max = [activeTables count];
+          for (count = 0; count < max; count++)
+            [[activeTables objectAtIndex: count] restrictedChildKeys];
+
+          [message save];
+ 
+          /* table modified */
+          for (count = 0; count < max; count++)
+            [[activeTables objectAtIndex: count]
+              notifyChangesForChild: message];
+       }
       else
         [message submit];
-      [[message container] cleanupCaches];
+      [message setIsNew: NO];
+      [message resetNewProperties];
+      [folder cleanupCaches];
     }
   else
     rc = MAPISTORE_ERROR;
@@ -1095,6 +1157,9 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   NSString *childURL, *folderURL, *childKey;
   MAPIStoreFolder *folder;
   MAPIStoreMessage *message;
+  NSArray *activeTables;
+  NSUInteger count, max;
+  struct mapistore_object_notification_parameters *notif_parameters;
   int rc;
 
   [self logWithFormat: @"-deleteMessageWithMID: mid: 0x%.16x  flags: %d", mid, flags];
@@ -1110,15 +1175,67 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       message = [folder lookupChild: childKey];
       if (message)
         {
+          /* we ensure the table caches are loaded so that old and new state
+             can be compared */
+          /* we ensure the table caches are loaded so that old and new state
+             can be compared */
+          activeTables = ([message isKindOfClass: MAPIStoreFAIMessageK]
+                          ? [folder activeFAIMessageTables]
+                          : [folder activeMessageTables]);
+          max = [activeTables count];
+          for (count = 0; count < max; count++)
+            [[activeTables objectAtIndex: count] restrictedChildKeys];
+
           if ([[message sogoObject] delete])
             {
               rc = MAPISTORE_ERROR;
               [self logWithFormat: @"ERROR deleting object at URL: %@", childURL];
             }
-          else 
+          else
             {
+              if (![message isNew])
+                {
+                  /* folder notification */
+                  notif_parameters
+                    = talloc_zero(memCtx,
+                                  struct mapistore_object_notification_parameters);
+                  notif_parameters->object_id = fid;
+                  notif_parameters->tag_count = 5;
+                  notif_parameters->tags = talloc_array (notif_parameters,
+                                                         enum MAPITAGS, 5);
+                  notif_parameters->tags[0] = PR_CONTENT_COUNT;
+                  notif_parameters->tags[1] = PR_DELETED_COUNT_TOTAL;
+                  notif_parameters->tags[2] = PR_MESSAGE_SIZE;
+                  notif_parameters->tags[3] = PR_NORMAL_MESSAGE_SIZE;
+                  notif_parameters->tags[4] = PR_DELETED_MSG_COUNT;
+                  notif_parameters->new_message_count = true;
+                  notif_parameters->message_count = [[folder messageKeys]
+                                                      count] - 1;
+                  mapistore_push_notification (MAPISTORE_FOLDER,
+                                               MAPISTORE_OBJECT_MODIFIED,
+                                               notif_parameters);
+                  talloc_free(notif_parameters);
+
+                  /* message notification */
+                  notif_parameters
+                    = talloc_zero(memCtx,
+                                  struct mapistore_object_notification_parameters);
+                  notif_parameters->object_id = mid;
+                  notif_parameters->folder_id = fid;
+                  /* Exchange sends a fnevObjectCreated!! */
+                  mapistore_push_notification (MAPISTORE_MESSAGE,
+                                               MAPISTORE_OBJECT_CREATED,
+                                               notif_parameters);
+                  talloc_free(notif_parameters);
+
+                  /* table notification */
+                  for (count = 0; count < max; count++)
+                    [[activeTables objectAtIndex: count]
+                      notifyChangesForChild: message];
+                }
               [self logWithFormat: @"sucessfully deleted object at URL: %@", childURL];
               [mapping unregisterURLWithID: mid];
+              [folder cleanupCaches];
               rc = MAPISTORE_SUCCESS;
             }
         }
@@ -1280,6 +1397,23 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 }
 
 /* proof of concept */
+- (int) getTable: (void **) tablePtr
+     andRowCount: (uint32_t *) countPtr
+         withFID: (uint64_t) fid
+       tableType: (uint8_t) tableType
+     andHandleId: (uint32_t) handleId
+{
+  MAPIStoreTable *table;
+
+  table = [self _tableForFID: fid andTableType: tableType];
+  [table retain];
+  [table setHandleId: handleId];
+  *countPtr = [[table childKeys] count];
+  *tablePtr = table;
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (int) getAttachmentTable: (void **) tablePtr
                andRowCount: (uint32_t *) count
                    withMID: (uint64_t) mid

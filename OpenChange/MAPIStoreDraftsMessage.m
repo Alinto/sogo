@@ -167,13 +167,7 @@ e)
 
 - (MAPIStoreAttachmentTable *) attachmentTable
 {
-  if (!attachmentTable)
-    {
-      attachmentTable = [MAPIStoreAttachmentTable tableForContainer: self];
-      [attachmentTable retain];
-    }
-
-  return attachmentTable;
+  return [MAPIStoreAttachmentTable tableForContainer: self];
 }
 
 - (MAPIStoreAttachment *) createAttachment

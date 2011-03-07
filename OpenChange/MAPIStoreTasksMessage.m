@@ -44,6 +44,7 @@
 #include <stdbool.h>
 #include <gen_ndr/exchange.h>
 #include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 #include <mapistore/mapistore_nameid.h>
 
 @implementation MAPIStoreTasksMessage
@@ -116,7 +117,7 @@
       if (dateValue)
 	*data = [dateValue asFileTimeInMemCtx: memCtx];
       else
-	rc = MAPI_E_NOT_FOUND;
+	rc = MAPISTORE_ERR_NOT_FOUND;
       break;
     // http://msdn.microsoft.com/en-us/library/cc765590.aspx
     // It's important to have a proper value for PidLidTaskState
@@ -146,7 +147,7 @@
       if (dateValue)
 	*data = [dateValue asFileTimeInMemCtx: memCtx];
       else
-	rc = MAPI_E_NOT_FOUND;
+	rc = MAPISTORE_ERR_NOT_FOUND;
       break;
 
     case PR_CREATION_TIME:

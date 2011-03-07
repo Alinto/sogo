@@ -44,6 +44,12 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
+@interface MAPIStoreObject (MAPIStoreObjectProtocol)
+
+- (void) deactivate;
+
+@end
+
 /**
    \details Initialize sogo mapistore backend
 
@@ -840,6 +846,42 @@ sogo_op_set_sort_order (void *private_data, uint64_t fid, uint8_t type,
    proof of concept
 */
 static int
+sogo_pocop_open_table(void *private_data, uint64_t fid, uint8_t table_type,
+                      uint32_t handle_id,
+                      void **table_object, uint32_t *row_count)
+{
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  pool = [NSAutoreleasePool new];
+
+  cContext = private_data;
+  context = cContext->objcContext;
+  if (context)
+    {
+      [context setupRequest];
+      rc = [context getTable: table_object
+                 andRowCount: row_count
+                     withFID: fid
+                   tableType: table_type
+                 andHandleId: handle_id];
+      [context tearDownRequest];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
 sogo_pocop_get_attachment_table (void *private_data, uint64_t mid, void **table_object, uint32_t *row_count)
 {
   NSAutoreleasePool *pool;
@@ -958,6 +1000,62 @@ sogo_pocop_set_table_columns (void *table_object, uint16_t count, enum MAPITAGS 
 }
 
 static int
+sogo_pocop_set_table_restrictions (void *table_object, struct mapi_SRestriction *restrictions, uint8_t *table_status)
+{
+  NSAutoreleasePool *pool;
+  MAPIStoreTable *table;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  table = table_object;
+  if (table)
+    {
+      pool = [NSAutoreleasePool new];
+      [table setRestrictions: restrictions];
+      [table cleanupCaches];
+      rc = MAPISTORE_SUCCESS;
+      *table_status = TBLSTAT_COMPLETE;
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
+sogo_pocop_set_table_sort_order (void *table_object, struct SSortOrderSet *sort_order, uint8_t *table_status)
+{
+  NSAutoreleasePool *pool;
+  MAPIStoreTable *table;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  table = table_object;
+  if (table)
+    {
+      pool = [NSAutoreleasePool new];
+      [table setSortOrder: sort_order];
+      [table cleanupCaches];
+      rc = MAPISTORE_SUCCESS;
+      *table_status = TBLSTAT_COMPLETE;
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
 sogo_pocop_get_table_row (void *table_object, enum table_query_type query_type, uint32_t row_id, struct mapistore_property_data *data)
 {
   NSAutoreleasePool *pool;
@@ -1047,6 +1145,8 @@ sogo_pocop_release (void *object)
   if (propObject)
     {
       pool = [NSAutoreleasePool new];
+      if ([propObject respondsToSelector: @selector (deactivate)])
+        [propObject deactivate];
       [propObject release];
       [pool release];
       rc = MAPI_E_SUCCESS;
@@ -1114,9 +1214,12 @@ int mapistore_init_backend(void)
       backend.op_get_property_into_fd = sogo_op_get_property_into_fd;
 
       /* proof of concept */
+      backend.folder.open_table = sogo_pocop_open_table;
       backend.message.get_attachment_table = sogo_pocop_get_attachment_table;
       backend.message.get_attachment = sogo_pocop_get_attachment;
       backend.message.create_attachment = sogo_pocop_create_attachment;
+      backend.table.set_restrictions = sogo_pocop_set_table_restrictions;
+      backend.table.set_sort_order = sogo_pocop_set_table_sort_order;
       backend.table.set_columns = sogo_pocop_set_table_columns;
       backend.table.get_row = sogo_pocop_get_table_row;
       backend.properties.get_properties = sogo_pocop_get_properties;

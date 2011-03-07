@@ -47,6 +47,9 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreFSMessage.m \
 	MAPIStoreFSMessageTable.m \
 	\
+	MAPIStoreFAIMessage.m \
+	MAPIStoreFAIMessageTable.m \
+	\
 	MAPIStoreGCSBaseContext.m \
 	MAPIStoreGCSFolder.m \
 	MAPIStoreGCSMessage.m \

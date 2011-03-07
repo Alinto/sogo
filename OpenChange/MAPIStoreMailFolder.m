@@ -111,11 +111,7 @@ static Class MAPIStoreMailMessageK;
 
 - (MAPIStoreMessageTable *) messageTable
 {
-  if (!messageTable)
-    ASSIGN (messageTable,
-            [MAPIStoreMailMessageTable tableForContainer: self]);
-
-  return messageTable;
+  return [MAPIStoreMailMessageTable tableForContainer: self];
 }
 
 - (Class) messageClass

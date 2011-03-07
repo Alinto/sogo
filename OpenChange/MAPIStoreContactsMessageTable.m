@@ -108,6 +108,8 @@
       knownProperties = [NSMutableDictionary new];
       [knownProperties setObject: @"c_cn"
                           forKey: MAPIPropertyKey (PidLidFileUnder)];
+      [knownProperties setObject: @"c_cn"
+                          forKey: MAPIPropertyKey (PR_DISPLAY_NAME_UNICODE)];
     }
 
   return [knownProperties objectForKey: MAPIPropertyKey (property)];

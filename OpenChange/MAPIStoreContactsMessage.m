@@ -41,6 +41,7 @@
 #include <stdbool.h>
 #include <gen_ndr/exchange.h>
 #include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 #include <mapistore/mapistore_nameid.h>
 
 @implementation MAPIStoreContactsMessage
@@ -80,7 +81,7 @@
   NGVCard *vCard;
   enum MAPISTATUS rc;
 
-  rc = MAPI_E_SUCCESS;
+  rc = MAPISTORE_SUCCESS;
   switch (proptag)
     {
     case PR_ICON_INDEX: // TODO
@@ -161,6 +162,8 @@
 
     case PR_CONTACT_EMAIL_ADDRESSES_UNICODE:
       stringValue = [[sogoObject vCard] preferredEMail];
+      if (!stringValue)
+        stringValue = @"";
       *data = [[NSArray arrayWithObject: stringValue]
                 asArrayOfUnicodeStringsInCtx: memCtx];
       break;
@@ -490,7 +493,7 @@
 	    *data = [dateValue asFileTimeInMemCtx: memCtx];
 	  }
 	else
-	  rc = MAPI_E_NOT_FOUND;
+	  rc = MAPISTORE_ERR_NOT_FOUND;
       }
       break;
 

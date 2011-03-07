@@ -160,6 +160,12 @@
 - (void) setupBaseFolder: (NSURL *) newURL;
 
 /* proof of concept */
+- (int) getTable: (void **) table
+     andRowCount: (uint32_t *) count
+         withFID: (uint64_t) fid
+       tableType: (uint8_t) tableType
+     andHandleId: (uint32_t) handleId;
+
 - (int) getAttachmentTable: (void **) table
                andRowCount: (uint32_t *) count
                    withMID: (uint64_t) mid;

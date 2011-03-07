@@ -263,6 +263,9 @@ static Class NSDataK, NSStringK;
 {
   if ((self = [super init]))
     {
+      tableType = MAPISTORE_MESSAGE_TABLE;
+      handleId = -1;
+
       container = nil;
 
       childKeys = nil;
@@ -284,9 +287,15 @@ static Class NSDataK, NSStringK;
   if ((self = [self init]))
     {
       container = newContainer;
+      [container addActiveTable: self];
     }
 
   return self;
+}
+
+- (void) deactivate
+{
+  [container removeActiveTable: self];
 }
 
 - (void) dealloc
@@ -296,6 +305,12 @@ static Class NSDataK, NSStringK;
   [restrictedChildKeys release];
   [restriction release];
   [super dealloc];
+}
+
+- (void) setHandleId: (uint32_t) newHandleId
+{
+  handleId = newHandleId;
+  [self logWithFormat: @"new table handle: %d", handleId];
 }
 
 - (NSArray *) childKeys
@@ -727,6 +742,7 @@ static Class NSDataK, NSStringK;
     child = currentChild;
   else
     {
+      [currentChild release];
       child = nil;
 
       if (queryType == MAPISTORE_PREFILTERED_QUERY)
@@ -751,7 +767,11 @@ static Class NSDataK, NSStringK;
 
       currentChild = child;
       [currentChild retain];
-      currentRow = rowId;
+
+      if (child)
+        currentRow = rowId;
+      else
+        currentRow = (uint32_t) -1;
     }
 
   return child;
@@ -778,6 +798,57 @@ static Class NSDataK, NSStringK;
     rc = MAPI_E_INVALID_OBJECT;
 
   return rc;
+}
+
+- (void) notifyChangesForChild: (MAPIStoreObject *) child
+{
+  NSUInteger currentChildRow, newChildRow;
+  NSArray *list;
+  NSString *childName;
+  struct mapistore_table_notification_parameters notif_parameters;
+
+  notif_parameters.table_type = tableType;
+  notif_parameters.handle = handleId;
+  notif_parameters.folder_id = [container objectId];
+  notif_parameters.object_id = [child objectId];
+  notif_parameters.instance_id = 0; /* TODO: always 0 ? */
+
+  [self logWithFormat: @"table notification handle: %d", handleId];
+
+  childName = [child nameInContainer];
+  list = [self restrictedChildKeys];
+  currentChildRow = [list indexOfObject: childName];
+  notif_parameters.row_id = currentChildRow;
+
+  [self cleanupCaches];
+  list = [self restrictedChildKeys];
+  newChildRow = [list indexOfObject: childName];
+
+  if (currentChildRow == NSNotFound)
+    {
+      if (newChildRow != NSNotFound)
+        {
+          notif_parameters.row_id = newChildRow;
+          mapistore_push_notification (MAPISTORE_TABLE,
+                                       MAPISTORE_OBJECT_CREATED,
+                                       &notif_parameters);
+        }
+    }
+  else
+    {
+      if (newChildRow == NSNotFound)
+        mapistore_push_notification (MAPISTORE_TABLE,
+                                     MAPISTORE_OBJECT_DELETED,
+                                     &notif_parameters);
+      else
+        {
+          /* the fact that the row order has changed has no impact here */
+          notif_parameters.row_id = newChildRow;
+          mapistore_push_notification (MAPISTORE_TABLE,
+                                       MAPISTORE_OBJECT_MODIFIED,
+                                       &notif_parameters);
+        }
+    }
 }
 
 /* subclasses */

@@ -48,6 +48,8 @@ typedef enum {
 {
   MAPIStoreObject *container;
 
+  uint32_t handleId; /* hack for identifying tables during notifications */
+
   NSArray *childKeys;
   NSArray *restrictedChildKeys;
 
@@ -58,6 +60,8 @@ typedef enum {
   uint32_t currentRow;
   MAPIStoreObject *currentChild;
 
+  uint16_t tableType; /* mapistore */
+
   /* proof of concept */
   uint16_t columnsCount;
   enum MAPITAGS *columns;
@@ -66,6 +70,8 @@ typedef enum {
 + (id) tableForContainer: (MAPIStoreObject *) newContainer;
 
 - (id) initForContainer: (MAPIStoreObject *) newContainer;
+
+- (void) setHandleId: (uint32_t) newHandleId;
 
 - (NSArray *) childKeys;
 - (NSArray *) restrictedChildKeys;
@@ -81,6 +87,8 @@ typedef enum {
 - (int) getRow: (struct mapistore_property_data *) data
      withRowID: (uint32_t) rowId
   andQueryType: (enum table_query_type) queryType;
+
+- (void) notifyChangesForChild: (MAPIStoreObject *) child;
 
 /* helpers */
 

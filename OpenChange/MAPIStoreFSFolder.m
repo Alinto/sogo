@@ -26,6 +26,7 @@
 
 #import "EOQualifier+MAPIFS.h"
 #import "MAPIStoreFSMessage.h"
+#import "MAPIStoreFSMessageTable.h"
 #import "SOGoMAPIFSFolder.h"
 #import "SOGoMAPIFSMessage.h"
 
@@ -62,11 +63,7 @@ static Class MAPIStoreFSMessageK;
 
 - (MAPIStoreMessageTable *) messageTable
 {
-  if (!messageTable)
-    ASSIGN (messageTable,
-            [MAPIStoreFSMessageTable tableForContainer: self]);
-
-  return messageTable;
+  return [MAPIStoreFSMessageTable tableForContainer: self];
 }
 
 - (Class) messageClass

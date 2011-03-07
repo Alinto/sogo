@@ -85,11 +85,7 @@ static Class MAPIStoreContactsMessageK;
 
 - (MAPIStoreMessageTable *) messageTable
 {
-  if (!messageTable)
-    ASSIGN (messageTable,
-            [MAPIStoreContactsMessageTable tableForContainer: self]);
-
-  return messageTable;
+  return [MAPIStoreContactsMessageTable tableForContainer: self];
 }
 
 - (EOQualifier *) componentQualifier

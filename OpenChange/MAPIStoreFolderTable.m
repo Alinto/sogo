@@ -42,6 +42,16 @@ static MAPIStoreMapping *mapping;
   mapping = [MAPIStoreMapping sharedMapping];
 }
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      tableType = MAPISTORE_FOLDER_TABLE;
+    }
+
+  return self;
+}
+
 - (NSArray *) childKeys
 {
   return [(MAPIStoreFolder *) container folderKeys];
