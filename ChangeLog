@@ -1,5 +1,8 @@
 2011-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFSFolder.m (-createMessage): fixed typo that
+	was making contents messages saved in the FAI folder.
+
 	* OpenChange/MAPIStoreContext.m (_prepareContextClass): now takes
 	the context fid as argument.
 

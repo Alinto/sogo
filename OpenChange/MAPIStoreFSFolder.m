@@ -79,7 +79,7 @@ static Class MAPIStoreFSMessageK;
 
   newKey = [NSString stringWithFormat: @"%@.plist",
                      [SOGoObject globallyUniqueObjectId]];
-  fsObject = [SOGoMAPIFSMessage objectWithName: newKey inContainer: faiFolder];
+  fsObject = [SOGoMAPIFSMessage objectWithName: newKey inContainer: sogoObject];
   newMessage = [MAPIStoreFSMessage mapiStoreObjectWithSOGoObject: fsObject
                                                      inContainer: self];
 
