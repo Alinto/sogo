@@ -308,8 +308,7 @@
 	  [person setRole: @"REQ-PARTICIPANT"]; 
 
 	  // FIXME: We must NOT always rely on this
-	  if (![dict objectForKey: @"x500dn"]
-              && ![vEvent isAttendee: [person rfc822Email]])
+	  if (![vEvent isAttendee: [person rfc822Email]])
 	    [vEvent addToAttendees: person];
 
 	  [person release];

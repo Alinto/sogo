@@ -1,3 +1,11 @@
+2011-03-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): accept entries
+	with an "x500dn" record since they are now properly converted.
+
+	* OpenChange/MAPIStoreContext.m (_convertRecipientFromRow:):
+	properly find out the coordinates of internal users.
+
 2011-03-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFSFolder.m (-createMessage): fixed typo that

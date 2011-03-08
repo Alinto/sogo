@@ -31,6 +31,8 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <SOGo/SOGoUser.h>
+
 #import "SOGoMAPIFSFolder.h"
 #import "SOGoMAPIFSMessage.h"
 
@@ -1071,6 +1073,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 {
   NSMutableDictionary *recipient;
   NSString *value;
+  SOGoUser *recipientUser;
 
   recipient = [NSMutableDictionary dictionaryWithCapacity: 5];
 
@@ -1078,37 +1081,50 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
     {
       value = [NSString stringWithUTF8String: row->X500DN.recipient_x500name];
       [recipient setObject: value forKey: @"x500dn"];
-    }
 
-  switch ((row->RecipientFlags & 0x208))
-    {
-    case 0x08:
-      // TODO: we cheat
-      value = [NSString stringWithUTF8String: row->EmailAddress.lpszA];
-      break;
-    case 0x208:
-      value = [NSString stringWithUTF8String: row->EmailAddress.lpszW];
-      break;
-    default:
-      value = nil;
+      recipientUser = [SOGoUser userWithLogin: [value lowercaseString]];
+      if (recipientUser)
+        {
+          value = [recipientUser cn];
+          if ([value length] > 0)
+            [recipient setObject: value forKey: @"fullName"];
+          value = [[recipientUser allEmails] objectAtIndex: 0];
+          if ([value length] > 0)
+            [recipient setObject: value forKey: @"email"];
+        }
     }
-  if (value)
-    [recipient setObject: value forKey: @"email"];
-
-  switch ((row->RecipientFlags & 0x210))
+  else
     {
-    case 0x10:
-      // TODO: we cheat
-      value = [NSString stringWithUTF8String: row->DisplayName.lpszA];
-      break;
-    case 0x210:
-      value = [NSString stringWithUTF8String: row->DisplayName.lpszW];
-      break;
-    default:
-      value = nil;
+      switch ((row->RecipientFlags & 0x208))
+        {
+        case 0x08:
+          // TODO: we cheat
+          value = [NSString stringWithUTF8String: row->EmailAddress.lpszA];
+          break;
+        case 0x208:
+          value = [NSString stringWithUTF8String: row->EmailAddress.lpszW];
+          break;
+        default:
+          value = nil;
+        }
+      if (value)
+        [recipient setObject: value forKey: @"email"];
+      
+      switch ((row->RecipientFlags & 0x210))
+        {
+        case 0x10:
+          // TODO: we cheat
+          value = [NSString stringWithUTF8String: row->DisplayName.lpszA];
+          break;
+        case 0x210:
+          value = [NSString stringWithUTF8String: row->DisplayName.lpszW];
+          break;
+        default:
+          value = nil;
+        }
+      if (value)
+        [recipient setObject: value forKey: @"fullName"];
     }
-  if (value)
-    [recipient setObject: value forKey: @"fullName"];
 
   return recipient;
 }
