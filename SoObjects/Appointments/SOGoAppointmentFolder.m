@@ -579,7 +579,7 @@ static NSNumber *sharedYes = nil;
 
 /**
  * Set the timezone of the event start and end dates to the user's timezone.
- * @param theRecord an dictionnary with the attributes of the event.
+ * @param theRecord a dictionnary with the attributes of the event.
  * @return a copy of theRecord with adjusted dates.
  */
 - (NSMutableDictionary *) fixupRecord: (NSDictionary *) theRecord
@@ -590,6 +590,7 @@ static NSNumber *sharedYes = nil;
   unsigned int count;
   NSCalendarDate *date;
   NSNumber *dateValue;
+  unsigned int offset;
 
   record = [[theRecord mutableCopy] autorelease];
   for (count = 0; count < 2; count++)
@@ -601,6 +602,15 @@ static NSNumber *sharedYes = nil;
 	  if (date)
 	    {
 	      [date setTimeZone: timeZone];
+	      if ([[theRecord objectForKey: @"c_isallday"] boolValue])
+		{
+		  // Since there's no timezone associated to all-day events,
+		  // their time must be adjusted for the user's timezone.
+		  offset = [timeZone secondsFromGMTForDate: date];
+		  date = (NSCalendarDate*)[date dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+							  seconds:-offset];
+		  [record setObject: [NSNumber numberWithInt: [dateValue intValue] - offset] forKey: fields[count * 2]];
+		}
 	      [record setObject: date forKey: fields[count * 2 + 1]];
 	    }
 	}

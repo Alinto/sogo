@@ -1,5 +1,8 @@
 2011-03-10  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (-fixupRecord):
+	the time of all-day events must be adjusted for the user's timezone.
+
 	* UI/WebServerResources/UIxContactEditor.js (initEditorForm):
 	the input category field doesn't appear if the card is
 	read-only. Adjusted the code accordingly.
