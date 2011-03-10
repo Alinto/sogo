@@ -1342,7 +1342,7 @@ function onCategoriesMenuItemClick() {
         for (var i = 0; i < rowIds.length; i++) {
             var url = (URLForFolderID(Contact.currentAddressBook)
                        + "/" + rowIds[i] + "/" + method);
-            url += "?category=" + escape(this.category);
+            url += "?category=" + encodeURIComponent(this.category);
             triggerAjaxRequest(url);
             if (set) {
                 setCategoryOnNode($(rowIds[i]), this.category);

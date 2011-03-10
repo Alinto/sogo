@@ -1,3 +1,10 @@
+2011-03-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js (onCategoriesMenuItemClick):
+	makes use of "encodeURIComponent" rather than "escape" to encode
+	URL parameters, because for some reason the former takes the
+	encoding into account and not the latter.
+
 2011-03-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarMessage.m (-save): accept entries
