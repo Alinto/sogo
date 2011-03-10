@@ -296,8 +296,10 @@ function initEditorForm() {
     }
 
     var emptyCategory = $("emptyCategory");
-    emptyCategory.tabIndex = 10000;
-    emptyCategory.observe("click", onEmptyCategoryClick);
-}
+    if (emptyCategory) {
+        emptyCategory.tabIndex = 10000;
+        emptyCategory.observe("click", onEmptyCategoryClick);
+    }
+}   
 
 document.observe("dom:loaded", initEditorForm);

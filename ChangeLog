@@ -1,5 +1,9 @@
 2011-03-10  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxContactEditor.js (initEditorForm):
+	the input category field doesn't appear if the card is
+	read-only. Adjusted the code accordingly.
+
 	* UI/WebServerResources/ContactsUI.js
 	(onCategoriesMenuItemCallback): new callback that refreshes the
 	displayed card when a category is added or removed.
