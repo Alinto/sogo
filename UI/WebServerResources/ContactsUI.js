@@ -1338,12 +1338,12 @@ function onCategoriesMenuItemClick() {
     var contactsList = $("contactsList");
     var rowIds = contactsList.getSelectedRowsId();
     if (rowIds.length > 0) {
-        log("coucou...");
         for (var i = 0; i < rowIds.length; i++) {
             var url = (URLForFolderID(Contact.currentAddressBook)
                        + "/" + rowIds[i] + "/" + method);
             url += "?category=" + encodeURIComponent(this.category);
-            triggerAjaxRequest(url);
+            triggerAjaxRequest(url, onCategoriesMenuItemCallback,
+                               { 'addressBook' : Contact.currentAddressBook, 'id' : rowIds[i] });
             if (set) {
                 setCategoryOnNode($(rowIds[i]), this.category);
             }
@@ -1352,6 +1352,21 @@ function onCategoriesMenuItemClick() {
             }
         }
     }
+}
+
+function onCategoriesMenuItemCallback(http) {
+    if (http.readyState == 4)
+        if (isHttpStatus204(http.status)) {
+            var contact = http.callbackData;
+            if (cachedContacts[contact.addressBook + "/" + contact.id])
+                delete cachedContacts[contact.addressBook + "/" + contact.id];
+            if (contact.addressBook == Contact.currentAddressBook
+                && contact.id == Contact.currentContact)
+                loadContact(Contact.currentContact);
+        }
+        else {
+            log("onCategoriesMenuItemCallback failed: error " + http.status + " (" + http.responseText + ")");
+        }
 }
 
 function setCategoryOnNode(contactNode, category) {
