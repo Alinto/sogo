@@ -1258,6 +1258,8 @@ function initContacts(event) {
         table.observe("mousedown", onContactSelectionChange);
         configureSortableTableHeaders(table);
         TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
+
+        resetCategoriesMenu();
     }
         
     onWindowResize.defer();
@@ -1266,8 +1268,6 @@ function initContacts(event) {
     // Default sort options
     sorting["attribute"] = "c_cn";
     sorting["ascending"] = true;
-
-    resetCategoriesMenu();
 }
 
 function resetCategoriesMenu() {
