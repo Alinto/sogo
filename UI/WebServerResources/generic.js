@@ -688,9 +688,8 @@ function getParentMenu(node) {
 }
 
 function onBodyClickMenuHandler(event) {
+    this.stopObserving(event.type);
     hideMenu(document.currentPopupMenu);
-    document.body.stopObserving("click", onBodyClickMenuHandler);
-    document.body.stopObserving("mouseup", onBodyClickMenuHandler);
     document.currentPopupMenu = null;
 
     if (event)
@@ -1355,7 +1354,7 @@ function initMenu(menuDIV, callbacks) {
         var lis = $(uls[i]).childNodesWithTag("li");
         for (var j = 0; j < lis.length; j++) {
             var node = $(lis[j]);
-            node.observe("mousedown", listRowMouseDownHandler, false);
+            node.on("mousedown", listRowMouseDownHandler);
             var callback;
             if (i > 0)
                 callback = callbacks[i+j+1];
@@ -1368,13 +1367,12 @@ function initMenu(menuDIV, callbacks) {
                     else {
                         node.submenu = callback;
                         node.addClassName("submenu");
-                        node.observe("mouseover", popupSubmenu);
+                        node.on("mouseover", popupSubmenu);
                     }
                 }
                 else {
-                    node.observe("mouseup", onBodyClickMenuHandler);
                     node.menuCallback = callback;
-                    node.observe("click", onMenuClickHandler);
+		    node.on("mousedown", onMenuClickHandler);
                 }
             }
             else

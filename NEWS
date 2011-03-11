@@ -5,6 +5,7 @@ New Features
 Enhancements
 - updated Ukranian translation
 - updated Spanish translation
+- "check while typing" is no longer enabled by default in HTML editor
 Bug Fixes
 - sogo-tool now works in multi-domain environments
 - various other mutli-domain fixes

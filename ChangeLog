@@ -1,5 +1,15 @@
 2011-03-11  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/HTMLElement.js (onContextMenu): hide the
+	menu on a mousedown, not a click. This fixes a problem on Webkit browsers.
+
+	* UI/WebServerResources/generic.js: cleanup some event observers
+	related to contextual menus.
+
+	* UI/WebServerResources/UIxMailEditor.js (initMailEditor): added
+	the SpellChecker button in the HTML editor toolbar, and disabled
+	the "check while typing" option (scayt).
+
 	* UI/WebServerResources/ContactsUI.js (initContacts): don't define
 	the categories contextual menu if the contacts list doesn't
 	exist. This fixes a problem when adding categories to a contact
