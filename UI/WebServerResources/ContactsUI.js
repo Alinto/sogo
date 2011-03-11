@@ -107,6 +107,7 @@ function contactsListCallback(http) {
                 configureSortableTableHeaders(table);
                 TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
                 configureDraggables();
+                resetCategoriesMenu();
             }
             var rows = table.tBodies[0].rows;
             for (var i = 0; i < rows.length; i++) {
