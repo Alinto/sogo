@@ -115,7 +115,7 @@
 {
   SOGoUser *ownerUser;
   NSMutableArray *categories;
-  DOMElement *documentElement, *catNode, *textNode;
+  DOMElement *documentElement, *catNode;
   id <DOMDocument> document;
   id <DOMNodeList> catNodes;
   NSUInteger count, max;
@@ -133,14 +133,11 @@
         {
           catNode = [catNodes objectAtIndex: count];
           if ([catNode hasChildNodes])
-            {
-              textNode = [[catNode childNodes] objectAtIndex: 0];
-              [categories addObject: [textNode nodeValue]];
-            }
+            [categories addObject: [catNode textValue]];
         }
     }
 
-  NSLog (@"setting categories to : %@", categories);
+  // NSLog (@"setting categories to : %@", categories);
   ownerUser = [SOGoUser userWithLogin: owner];
   ud = [ownerUser userDefaults];
   [ud setContactsCategories: categories];

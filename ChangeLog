@@ -1,3 +1,10 @@
+2011-03-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactFolders.m
+	(-setDavContactsCategories:): we need to handle the case where the
+	"category" element has more than one subnode, in particular when
+	xml entities are used.
+
 2011-03-11  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js (initContacts): don't define
