@@ -240,7 +240,7 @@ function createAttachment(node, list) {
     var attachment = createElement("li", null, null, { node: node }, null, list);
     createElement("img", null, null, { src: ResourcesURL + "/attachment.gif" },
                   null, attachment);
-    attachment.observe("click", onRowClick);
+    attachment.on("click", onRowClick);
 
     var filename = node.value;
     var separator;
@@ -362,16 +362,15 @@ function initMailEditor() {
 
     var list = $("attachments");
     if (!list) return;
-    $(list).attachMenu("attachmentsMenu");
+    list.attachMenu("attachmentsMenu");
     var elements = $(list).childNodesWithTag("li");
     for (var i = 0; i < elements.length; i++)
-        elements[i].observe("click", onRowClick);
+        elements[i].on("click", onRowClick);
 
-    var listContent = $("attachments").childNodesWithTag("li");
-    if (listContent.length > 0)
+    if (elements.length > 0)
         $("attachmentsArea").setStyle({ display: "block" });
 
-     var textarea = $("text");
+    var textarea = $("text");
   
     var textContent = textarea.getValue();
     if (hasSignature()) {
@@ -409,7 +408,7 @@ function initMailEditor() {
                                'BulletedList', '-', 'Link', 'Unlink', 'Image', 
                                'JustifyLeft','JustifyCenter','JustifyRight',
                                'JustifyBlock','Font','FontSize','-','TextColor',
-                               'BGColor']
+                               'BGColor','-','SpellChecker']
                              ],
                              language : localeCode,
 			     scayt_sLang : localeCode

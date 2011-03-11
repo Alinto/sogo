@@ -139,7 +139,6 @@ Element.addMethods({
 
         onContextMenu: function(element, event) {
             element = $(element);
-            Event.stop(event);
             if (document.currentPopupMenu)
                 hideMenu(document.currentPopupMenu);
     
@@ -160,13 +159,14 @@ Element.addMethods({
             if (popup.prepareVisibility)
                 isVisible = popup.prepareVisibility();
 
+            Event.stop(event);
+
             if (isVisible) {
                 popup.setStyle( { top: menuTop + "px",
                             left: menuLeft + "px",
-                            visibility: "visible" } );
-				
+                            visibility: "visible" } );                
                 document.currentPopupMenu = popup;
-                document.body.observe("click", onBodyClickMenuHandler);
+                $(document.body).on("mousedown", onBodyClickMenuHandler);
             }
             else
                 log ("Warning: not showing the contextual menu " + element.id);
@@ -175,8 +175,7 @@ Element.addMethods({
         attachMenu: function(element, menuName) {
             element = $(element);
             element.sogoContextMenu = $(menuName);
-            element.observe("contextmenu",
-                            element.onContextMenu.bindAsEventListener(element));
+            element.on("contextmenu", element.onContextMenu);
         },
 
         selectElement: function(element) {
