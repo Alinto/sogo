@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2006-2010 Inverse inc.
+  Copyright (C) 2006-2011 Inverse inc.
 
   This file is part of SOGo
 
@@ -512,28 +512,6 @@
 
 /* actions */
 
-- (id) getMailAction 
-{
-  // TODO: we might want to flush the caches?
-  id client;
-
-  if ((client = [self clientObject]) == nil) {
-    return [NSException exceptionWithHTTPStatus:404 /* Not Found */
-			reason:@"did not find mail folder"];
-  }
-
-  if (![client respondsToSelector:@selector(flushMailCaches) ]) 
-    {
-      return [NSException exceptionWithHTTPStatus: 500 /* Server Error */
-                          reason:
-                            @"invalid client object (does not support flush)"];
-    }
-
-  [client flushMailCaches];
-
-  return [self redirectToLocation:@"view"];
-}
-
 - (NSDictionary *) getUIDsAndHeadersInFolder: (SOGoMailFolder *) mailFolder
 {
   NSArray *uids, *headers;
@@ -569,6 +547,9 @@
   [response setHeader: @"text/plain; charset=utf-8"
 	       forKey: @"content-type"];
   folder = [self clientObject];
+  // TODO: we might want to flush the caches?
+  //[folder flushMailCaches];
+  [folder expungeLastMarkedFolder];
   noHeaders = [request formValueForKey: @"no_headers"];
   if ([noHeaders length])
     data = [self getSortedUIDsInFolder: folder];
@@ -576,7 +557,7 @@
     data = [self getUIDsAndHeadersInFolder: folder];
   
   [response appendContentString: [data jsonRepresentation]];
-  
+
   return response;
 }
 

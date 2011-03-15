@@ -1,3 +1,11 @@
+2011-03-15  francis  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailListActions.m (-getMailAction): removed this
+	method that is no longer used since live-loading.
+	(-getSortedUIDsAction): restored the call to
+	expungeLastMarkedFolder so that the last visited folder is
+	expunged when switching folder.
+
 2011-03-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactFolders.m

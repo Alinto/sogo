@@ -77,11 +77,6 @@
         };
       };
       methods = {
-        getMail = {
-          protectedBy = "View";
-          actionClass = "UIxMailListActions";
-          actionName  = "getMail";
-        };
         uids = {
           protectedBy = "<public>";
           actionClass = "UIxMailListActions";
@@ -406,27 +401,6 @@
           protectedBy = "View";
           actionClass = "UIxMailAccountActions";
           actionName = "removeDelegate";
-        };
-      };
-    };
-
-    SOGoDraftsFolder = {
-      slots = {
-        toolbar = {
-          protectedBy = "View";
-          value = ( /* the toolbar groups */
-                   ( /* first group */
-            { link  = "getMail";
-              image = "tb-mail-getmail-flat-24x24.png";
-              cssClass = "tbicon_getmail"; label = "Get Mail"; },
-            {
-              link     = "#"; // "compose"; // target = "_blank";
-              isSafe = NO;
-              onclick  = "return openMessageWindow(null, 'compose');";
-              image = "tb-mail-write-flat-24x24.png";
-              cssClass = "tbicon_compose"; label = "Write"; },
-                     )
-                    );
         };
       };
     };
