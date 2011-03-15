@@ -32,15 +32,7 @@
 
 #import "NSString+NGCards.h"
 
-static NSString *commaSeparator = nil;
-
 @implementation NSString (NGCardsExtensions)
-
-- (void) _initCommaSeparator
-{
-  commaSeparator = [NSMutableString stringWithFormat: @"%c", 255];
-  [commaSeparator retain];
-}
 
 - (NSString *) foldedForVersitCards
 {
@@ -76,24 +68,84 @@ static NSString *commaSeparator = nil;
 - (NSArray *) asCardAttributeValues
 {
   NSMutableArray *values;
-  NSEnumerator *rawValues;
-  NSString *tmpString, *rawValue, *newString;
+  NSString *newString;
+  unichar *characters, *currentChar, *lastChar, *newPart, *newCurrentChar;
+  NSUInteger max;
+  BOOL isEscaped, isQuoted;
 
   values = [NSMutableArray array];
 
-  if (!commaSeparator)
-    [self _initCommaSeparator];
+  max = [self length];
+  characters = NSZoneMalloc (NULL, max * sizeof (unichar));
+  [self getCharacters: characters];
+  currentChar = characters;
+  lastChar = characters + max;
 
-  tmpString = [self stringByReplacingString: @"\\,"
-                    withString: commaSeparator];
-  rawValues = [[tmpString componentsSeparatedByString: @","]
-                objectEnumerator];
-  while ((rawValue = [rawValues nextObject]))
+  newPart = NSZoneMalloc (NULL, max * sizeof (unichar));
+  newCurrentChar = newPart;
+
+  isEscaped = NO;
+  isQuoted = NO;
+
+  while (currentChar < lastChar)
     {
-      newString = [rawValue stringByReplacingString: commaSeparator
-                            withString: @","];
-      [values addObject: [newString stringByTrimmingSpaces]];
+      if (isQuoted)
+        {
+          if (*currentChar == '"')
+            isQuoted = NO;
+          else
+            {
+              *newCurrentChar = *currentChar;
+              newCurrentChar++;
+            }
+        }
+      else if (isEscaped)
+        {
+          if (*currentChar == 'n' || *currentChar == 'N')
+            *newCurrentChar = '\n';
+          else if (*currentChar == 'r' || *currentChar == 'R')
+            *newCurrentChar = '\r';
+          else if (*currentChar == 't' || *currentChar == 'T')
+            *newCurrentChar = '\t';
+          else if (*currentChar == 'b' || *currentChar == 'B')
+            *newCurrentChar = '\b';
+          else
+            *newCurrentChar = *currentChar;
+          newCurrentChar++;
+          isEscaped = NO;
+        }
+      else
+        {
+          if (*currentChar == '"')
+            isQuoted = YES;
+          else if (*currentChar == '\\')
+            isEscaped = YES;
+          else if (*currentChar == ',')
+            {
+              newString = [[NSString alloc]
+                            initWithCharactersNoCopy: newPart
+                                              length: (newCurrentChar - newPart)
+                                        freeWhenDone: YES];
+              [values addObject: newString];
+              [newString release];
+              newPart = NSZoneMalloc (NULL, max * sizeof (unichar));
+              newCurrentChar = newPart;
+            }
+          else
+            {
+              *newCurrentChar = *currentChar;
+              newCurrentChar++;
+            }
+        }
+      currentChar++;
     }
+
+  newString = [[NSString alloc]
+                initWithCharactersNoCopy: newPart
+                                  length: (newCurrentChar - newPart)
+                            freeWhenDone: YES];
+  [values addObject: newString];
+  [newString release];
 
   return values;
 }

@@ -320,7 +320,6 @@ static NSCharacterSet *whitespaceCharSet = nil;
 }
 
 - (void) _parseAttr: (NSString *) _attr 
-             forTag: (NSString *) _tagName
            intoAttr: (NSString **) attr_
           intoValue: (NSString **) value_
 {
@@ -330,33 +329,8 @@ static NSCharacterSet *whitespaceCharSet = nil;
   r = [_attr rangeOfCharacterFromSet: equalSignCharSet];
   if (r.length > 0)
     {
-      unsigned left, right;
-
       attrName = [[_attr substringToIndex: r.location] uppercaseString];
-      left = NSMaxRange(r);
-      right = [_attr length] - 1;
-      if (left < right)
-        {
-          if (([_attr characterAtIndex: left]  == '"') &&
-              ([_attr characterAtIndex: right] == '"'))
-            {
-              left += 1;
-              r = NSMakeRange(left, right - left);
-              attrValue = [_attr substringWithRange: r];
-            }
-          else
-            {
-              attrValue = [_attr substringFromIndex: left];
-            }
-        }
-      else if (left == right)
-        {
-          attrValue = [_attr substringFromIndex: left];
-        }
-      else
-        {
-          attrValue = @"";
-        }
+      attrValue = [_attr substringFromIndex: NSMaxRange(r)];
     }
   else
     {
@@ -411,9 +385,7 @@ static NSCharacterSet *whitespaceCharSet = nil;
       while (curAttr)
         {
           [self _parseAttr: curAttr
-                forTag: _tagName
-                intoAttr: &mappedAttr
-                intoValue: &mappedValue];
+                  intoAttr: &mappedAttr intoValue: &mappedValue];
           values = [[mappedValue asCardAttributeValues] objectEnumerator];
           curValue = [values nextObject];
           while (curValue)

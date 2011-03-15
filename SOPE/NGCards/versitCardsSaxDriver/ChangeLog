@@ -1,3 +1,9 @@
+2011-03-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* VSSaxDriver.m (-_parseAttr:intoAttr:intoValue:): removed useless
+	"tag" parameter. Removed code handling the quoted values, as it's
+	now done from -[NSString asCardAttributeValues].
+
 2010-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* VSSaxDriver.m (_parseAttr:forTag:intoAttr:intoValue:): when no
