@@ -1,3 +1,9 @@
+2011-03-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NSString+NGCards.m (-asCardAttributeValues): rewritten method
+	properly in order to parse the values string by properly taking
+	quoted, escaping and special characters into account.
+
 2011-01-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalTimeZone.m (-computedDateForString:): new method that
