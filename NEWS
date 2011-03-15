@@ -7,6 +7,7 @@ Enhancements
 - updated Spanish translation
 - "check while typing" is no longer enabled by default in HTML editor
 Bug Fixes
+- restored the automatic expunge of IMAP folders
 - sogo-tool now works in multi-domain environments
 - various other mutli-domain fixes
 
