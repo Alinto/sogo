@@ -50,7 +50,6 @@
 		       inFolder: (SOGoMailFolder *) mailFolder;
 - (NSDictionary *) getUIDsAndHeadersInFolder: (SOGoMailFolder *) mailFolder;
 
-- (id) getMailAction;
 - (id <WOActionResults>) getSortedUIDsAction;
 - (id <WOActionResults>) getHeadersAction;
 
