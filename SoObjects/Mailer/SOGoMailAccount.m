@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2007-2009 Inverse inc.
+  Copyright (C) 2007-2011 Inverse inc.
 
   This file is part of SOGo.
 
@@ -225,6 +225,39 @@ static NSString *sieveScriptName = @"sogo";
   capability = [[imapClient capability] objectForKey: @"capability"];
 
   return [capability containsObject: @"quota"];
+}
+
+- (id) getInboxQuota
+{
+  SOGoMailFolder *inbox;
+  NGImap4Client *client;
+  NSString *inboxName;
+  SOGoDomainDefaults *dd;
+  id inboxQuota, infos;
+  float quota;
+  
+  inboxQuota = nil;
+  if ([self supportsQuotas])
+    {
+      dd = [[context activeUser] domainDefaults];
+      quota = [dd softQuotaRatio];
+      inbox = [self inboxFolderInContext: context];
+      inboxName = [NSString stringWithFormat: @"/%@", [inbox relativeImap4Name]];
+      client = [[inbox imap4Connection] client];
+      infos = [[client getQuotaRoot: [inbox relativeImap4Name]] objectForKey: @"quotas"];
+      inboxQuota = [infos objectForKey: inboxName];
+      if (quota != 0 && inboxQuota != nil)
+	{
+	  // A soft quota ratio is imposed for all users
+	  quota = quota * [(NSNumber*)[inboxQuota objectForKey: @"maxQuota"] intValue];
+	  inboxQuota = [NSDictionary dictionaryWithObjectsAndKeys:
+					[NSNumber numberWithLong: (long)(quota+0.5)], @"maxQuota",
+					[inboxQuota objectForKey: @"usedSpace"], @"usedSpace",
+				     nil];
+	}
+    }
+
+  return inboxQuota;
 }
 
 - (BOOL) updateFilters

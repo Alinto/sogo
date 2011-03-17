@@ -1,3 +1,21 @@
+2011-03-17  francis  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailAccountActions.m (-listMailboxesAction):
+	moved code that fetches the inbox quota to [SOGoMailAccount getInboxQuota].
+
+	* SoObjects/Mailer/SOGoMailAccount.m (-getInboxQuota): new method
+	created partially from the method [UIxMailAccountActions listMailboxesAction].
+
+	* UI/MailerUI/UIxMailFolderActions.m (-deleteAction)
+	(-copyMessagesAction, -expungeAction, -emptyTrashAction): we now
+	return a JSON representation of the inbox quota when these actions
+	succeeds.
+	(-quotasAction): removed this method which was no longer used.
+
+	* UI/WebServerResources/MailerUI.js (updateQuotas): new function
+	extracted from updateMailboxTreeInPage. It is called when a folder
+	operation returns the inbox quota.
+
 2011-03-15  francis  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailListActions.m (-getMailAction): removed this

@@ -1962,7 +1962,17 @@ function updateMailboxTreeInPage() {
             inboxFound = true;
         }
     }
+
+    updateQuotas();
+}
+
+function updateQuotas(quotas) {
+    if (quotas)
+        Mailer.quotas = quotas;
     if (Mailer.quotas && parseInt(Mailer.quotas.maxQuota) > 0) {
+        log ("updating quotas");
+        var treeContent = $("folderTreeContent");
+        var tree = $("mailboxTree");
         var quotaDiv = $("quotaIndicator");
         if (quotaDiv) {
             treeContent.removeChild(quotaDiv);
@@ -2100,7 +2110,7 @@ function buildMailboxes(accountIdx, encoded) {
     var mailboxes = data.mailboxes;
     var unseen = (data.status? data.status.unseen : 0);
 
-    if (data.quotas)
+    if (accountIdx == 0 && data.quotas)
         Mailer.quotas = data.quotas;
 
     for (var i = 0; i < mailboxes.length; i++) {
@@ -2225,8 +2235,7 @@ function onMenuExpungeFolder(event) {
 function onMenuEmptyTrash(event) {
     var folderID = document.menuTarget.getAttribute("dataname");
     var urlstr = URLForFolderID(folderID) + "/emptyTrash";
-    var errorLabel = _("The trash could not be emptied.");
-    triggerAjaxRequest(urlstr, onMenuEmptyTrashCallback, errorLabel);
+    triggerAjaxRequest(urlstr, onMenuEmptyTrashCallback, { "mailbox" : folderID });
 
     if (folderID == Mailer.currentMailbox) {
         $('messageContent').innerHTML = '';
@@ -2238,20 +2247,28 @@ function onMenuEmptyTrash(event) {
 
 function onMenuEmptyTrashCallback(http) {
     if (http.readyState == 4
-        && isHttpStatus204(http.status)) {
+        && http.status == 200)   {
         deleteCachedMailboxByType('trash');
         // Reload the folder tree if there was folders in the trash
+        var reloaded = false;
         var nodes = $("mailboxTree").select("DIV[datatype=trash]");
         for (var i = 0; i < nodes.length; i++) {
             var sibling = nodes[i].next();
             if (sibling && sibling.hasClassName("clip")) {
                 initMailboxTree();
+                reloaded = true;
                 break;
             }
         }
+        if (!reloaded) {
+            var data = http.responseText.evalJSON(true);
+            // We currently only show the quota for the first account (0).
+            if (data.quotas && http.callbackData.mailbox.startsWith('/0/'))
+                updateQuotas(data.quotas);
+        }
     }
     else
-        showAlertDialog(http.callbackData);
+        showAlertDialog(_("The trash could not be emptied."));
 }
 
 function _onMenuChangeToXXXFolder(event, folder) {
@@ -2372,7 +2389,7 @@ function folderOperationCallback(http) {
 
 function folderRefreshCallback(http) {
     if (http.readyState == 4
-        && isHttpStatus204(http.status)) {
+        && (http.status == 200 || isHttpStatus204(http.status))) {
         var oldMailbox = http.callbackData.mailbox;
         if (http.callbackData.refresh
             && oldMailbox == Mailer.currentMailbox) {
@@ -2386,6 +2403,11 @@ function folderRefreshCallback(http) {
             }
             else
                 refreshCurrentFolder();
+        }
+        if (http.status == 200) {
+            var data = http.responseText.evalJSON(true);
+            if (data.quotas && http.callbackData.mailbox.startsWith('/0/'))
+                updateQuotas(data.quotas);
         }
     }
     else {

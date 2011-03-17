@@ -38,7 +38,6 @@
 - (WOResponse *) emptyTrashAction;
 - (WOResponse *) subscribeAction;
 - (WOResponse *) unsubscribeAction;
-- (WOResponse *) quotasAction;
 
 @end
 

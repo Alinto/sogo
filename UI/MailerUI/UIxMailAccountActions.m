@@ -1,6 +1,6 @@
 /* UIxMailAccountActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007, 2008 Inverse inc.
+ * Copyright (C) 2007, 2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -137,38 +137,10 @@
   folders = [self _jsonFolders: rawFolders];
   inboxQuota = nil;
 
-  // Retrieve INBOX quota
-  if ([co supportsQuotas])
-    {
-      SOGoMailFolder *inbox;
-      NGImap4Client *client;
-      NSString *inboxName;
-      SOGoDomainDefaults *dd;
-      id infos;
-      float quota;
-
-      dd = [[context activeUser] domainDefaults];
-      quota = [dd softQuotaRatio];
-      inbox = [co inboxFolderInContext: context];
-      inboxName = [NSString stringWithFormat: @"/%@", [inbox relativeImap4Name]];
-      client = [[inbox imap4Connection] client];
-      infos = [[client getQuotaRoot: [inbox relativeImap4Name]] objectForKey: @"quotas"];
-      inboxQuota = [infos objectForKey: inboxName];
-      if (quota != 0 && inboxQuota != nil)
-	{
-	  // A soft quota ration is imposed for all users
-	  quota = quota * [(NSNumber*)[inboxQuota objectForKey: @"maxQuota"] intValue];
-	  inboxQuota = [NSDictionary dictionaryWithObjectsAndKeys:
-				       [NSNumber numberWithFloat: (long)(quota+0.5)], @"maxQuota",
-				     [inboxQuota objectForKey: @"usedSpace"], @"usedSpace",
-				     nil];
-	} 
-    }
-
-  // The parameter order is important here, as if the server doesn't support
+  // The parameters order is important here, as if the server doesn't support
   // quota, inboxQuota will be nil and it'll terminate the list of objects/keys.
   data = [NSDictionary dictionaryWithObjectsAndKeys: folders, @"mailboxes",
-		       inboxQuota, @"quotas",
+		       [co getInboxQuota], @"quotas",
 		       nil];
   response = [self responseWithStatus: 200
                             andString: [data jsonRepresentation]];

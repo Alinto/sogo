@@ -1,8 +1,9 @@
 /* UIxMailFolderActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -295,9 +296,11 @@
 - (WOResponse *) copyMessagesAction
 {
   SOGoMailFolder *co;
+  SOGoMailAccount *account;
   WOResponse *response;
   NSArray *uids;
   NSString *value, *destinationFolder;
+  NSDictionary *data;
 
   co = [self clientObject];
   value = [[context request] formValueForKey: @"uid"];
@@ -309,7 +312,13 @@
     uids = [value componentsSeparatedByString: @","];
     response = [co copyUIDs: uids  toFolder: destinationFolder inContext: context];
     if (!response)
-      response = [self responseWith204];
+      {
+	// We return the inbox quota
+	account = [co container];
+	data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
+	response = [self responseWithStatus: 200
+				  andString: [data jsonRepresentation]];
+      }
   }
   else
   {
@@ -466,6 +475,8 @@
 {
   NSException *error;
   SOGoTrashFolder *co;
+  SOGoMailAccount *account;
+  NSDictionary *data;
   WOResponse *response;
 
   co = [self clientObject];
@@ -479,20 +490,27 @@
   else
     {
       [co flushMailCaches];
-      response = [self responseWith204];
+
+      // We return the inbox quota
+      account = [co container];
+      data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
+      response = [self responseWithStatus: 200
+				andString: [data jsonRepresentation]];
     }
 
   return response;
 }
 
-- (WOResponse *) emptyTrashAction 
+- (WOResponse *) emptyTrashAction
 {
   NSException *error;
   SOGoTrashFolder *co;
+  SOGoMailAccount *account;
   NSEnumerator *subfolders;
   WOResponse *response;
   NGImap4Connection *connection;
   NSURL *currentURL;
+  NSDictionary *data;
 
   co = [self clientObject];
 
@@ -513,7 +531,13 @@
       [response appendContentString: @"Unable to empty the trash folder."];
     }
   else
-    response = [self responseWith204];
+    {
+      // We return the inbox quota
+      account = [co container];
+      data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
+      response = [self responseWithStatus: 200
+				andString: [data jsonRepresentation]];
+    }
 
   return response;
 }
@@ -554,30 +578,6 @@
 - (WOResponse *) unsubscribeAction
 {
   return [self _subscriptionStubAction];
-}
-
-- (WOResponse *) quotasAction
-{
-  SOGoMailFolder *folder;
-  NSURL *folderURL;
-  id infos;
-  WOResponse *response;
-  NGImap4Client *client;
-  NSString *responseString;
-
-  response = [self responseWithStatus: 200];
-  [response setHeader: @"text/plain; charset=UTF-8"
-	    forKey: @"content-type"];
-
-  folder = [self clientObject];
-  folderURL = [folder imap4URL];
-  
-  client = [[folder imap4Connection] client];
-  infos = [client getQuotaRoot: [folder relativeImap4Name]];
-  responseString = [[infos objectForKey: @"quotas"] jsonRepresentation];
-  [response appendContentString: responseString];
-
-  return response;
 }
 
 - (NSDictionary *) _unseenCount
