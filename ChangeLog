@@ -1,4 +1,12 @@
-2011-03-17  francis  <flachapelle@inverse.ca>
+2011-03-18  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (initCalendars): we must
+	set "showCompletedTasks" earlier in order to properly fetch the
+	tasks upon the first refresh.
+
+2011-03-17  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/iCalEvent+SOGo.m (-quickRecord): 
 
 	* UI/MailerUI/UIxMailAccountActions.m (-listMailboxesAction):
 	moved code that fetches the inbox quota to [SOGoMailAccount getInboxQuota].
@@ -16,7 +24,7 @@
 	extracted from updateMailboxTreeInPage. It is called when a folder
 	operation returns the inbox quota.
 
-2011-03-15  francis  <flachapelle@inverse.ca>
+2011-03-15  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailListActions.m (-getMailAction): removed this
 	method that is no longer used since live-loading.

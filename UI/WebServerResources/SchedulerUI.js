@@ -2917,10 +2917,10 @@ function initCalendars() {
         var controller = new SOGoTabsController();
         controller.attachToTabsContainer(tabsContainer);
 
+        showCompletedTasks = parseInt(UserSettings['ShowCompletedTasks']);
         initDateSelectorEvents();
         initCalendarSelector();
         configureSearchField();
-        showCompletedTasks = parseInt(UserSettings['ShowCompletedTasks']);
         configureLists();
         $("calendarList").attachMenu("calendarsMenu");
         $(document.body).observe("click", onBodyClickHandler);
