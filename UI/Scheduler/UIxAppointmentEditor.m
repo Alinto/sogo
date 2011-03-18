@@ -531,12 +531,16 @@
     {
       iCalTimeZone *tz;
 
-      ud = [[context activeUser] userDefaults];
+      // Don't add a vTimeZone to all-day events
+      if (!isAllDay)
+      {
+	  ud = [[context activeUser] userDefaults];
       
-      tz = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
-      [[event parent] addTimeZone: tz];
-      [(iCalDateTime *)[event uniqueChildWithTag: @"dtstart"] setTimeZone: tz];
-      [(iCalDateTime *)[event uniqueChildWithTag: @"dtend"] setTimeZone: tz];
+	  tz = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
+	  [[event parent] addTimeZone: tz];
+	  [(iCalDateTime *)[event uniqueChildWithTag: @"dtstart"] setTimeZone: tz];
+	  [(iCalDateTime *)[event uniqueChildWithTag: @"dtend"] setTimeZone: tz];
+      }
     }
 
   [event setTransparency: (isTransparent? @"TRANSPARENT" : @"OPAQUE")];

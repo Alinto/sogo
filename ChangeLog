@@ -4,6 +4,10 @@
 	set "showCompletedTasks" earlier in order to properly fetch the
 	tasks upon the first refresh.
 
+	* UI/Scheduler/UIxAppointmentEditor.m
+	(-takeValuesFromRequest:inContext:): we no longer associate a
+	vTimeZone to start/end dates of an all-day vEvent.
+
 2011-03-17  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/iCalEvent+SOGo.m (-quickRecord): 
