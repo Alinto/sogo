@@ -50,7 +50,7 @@
 - (void) setIsTransparent: (BOOL) newIsOpaque;
 - (BOOL) isTransparent;
 
-- (void) setAptStartDate: (NSCalendarDate *) newAptEndDate;
+- (void) setAptStartDate: (NSCalendarDate *) newAptStartDate;
 - (NSCalendarDate *) aptStartDate;
 
 - (void) setAptEndDate: (NSCalendarDate *) newAptEndDate;
