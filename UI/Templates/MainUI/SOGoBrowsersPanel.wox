@@ -18,12 +18,12 @@
 	  <p class="browser"><a href="http://www.getfirefox.com/"><var:string label:value="Download"/> Firefox</a> <img const:alt="*" rsrc:src="browser_firefox.gif" /></p>
 	  <var:if condition="isIE7Compatible">
 	    <p><var:string label:value="alternativeBrowsers"/></p>
-	    <p class="browser"><a href="http://www.microsoft.com/ie/download/"><var:string label:value="Download"/> Internet Explorer 8</a> <img const:alt="*" rsrc:src="browser_ie.gif" valign="middle" /></p>
-	    <p class="browser"><a href="http://www.apple.com/safari/download/"><var:string label:value="Download"/> Safari 4</a> <img const:alt="*" rsrc:src="browser_safari.gif" valign="middle" /></p>
+	    <p class="browser"><a href="http://www.microsoft.com/ie/download/"><var:string label:value="Download"/> Internet Explorer</a> <img const:alt="*" rsrc:src="browser_ie.gif" valign="middle" /></p>
+	    <p class="browser"><a href="http://www.apple.com/safari/download/"><var:string label:value="Download"/> Safari</a> <img const:alt="*" rsrc:src="browser_safari.gif" valign="middle" /></p>
 	  </var:if>
 	  <var:if condition="isMac">
 	    <p><var:string label:value="alternativeBrowserSafari"/></p>
-	    <p class="browser"><a href="http://www.apple.com/safari/download/"><var:string label:value="Download"/> Safari 4</a> <img const:alt="*" rsrc:src="browser_safari.gif" valign="middle" /></p>
+	    <p class="browser"><a href="http://www.apple.com/safari/download/"><var:string label:value="Download"/> Safari</a> <img const:alt="*" rsrc:src="browser_safari.gif" valign="middle" /></p>
 	  </var:if>
 	</td>
       </tr>
