@@ -32,6 +32,7 @@
 
 #import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalTrigger.h>
@@ -74,6 +75,8 @@
   unsigned int i, count, boolTmp;
   BOOL isAllDay;
   iCalAccessClass accessClass;
+  iCalDateTime *date;
+  iCalTimeZone *timeZone;
 
   /* extract values */
 
@@ -124,18 +127,36 @@
 
   if ([startDate isNotNull])
     {
-//      if (isAllDay)
-//	NSLog (@"start date...");
+      if (isAllDay)
+	{
+	  // An all-day event usually doesn't have a timezone associated to its
+	  // start date; however, if it does, we convert it to GMT.
+	  date = (iCalDateTime*) [self uniqueChildWithTag: @"dtstart"];
+	  timeZone = [(iCalDateTime*) date timeZone];
+	  if (timeZone)
+	    startDate = [timeZone computedDateForDate: startDate];
+	}
       [row setObject: [self quickRecordDateAsNumber: startDate
-			    withOffset: 0 forAllDay: isAllDay]
-	   forKey: @"c_startdate"];
+					 withOffset: 0
+					  forAllDay: isAllDay]
+	      forKey: @"c_startdate"];
     }
   if ([endDate isNotNull])
-    [row setObject: [self quickRecordDateAsNumber: endDate
-			  withOffset: ((isAllDay) ? -1 : 0)
-			  forAllDay: isAllDay]
-	 forKey: @"c_enddate"];
-
+    {
+      if (isAllDay)
+	{
+	  // An all-day event usually doesn't have a timezone associated to its
+	  // end date; however, if it does, we convert it to GMT.
+	  date = (iCalDateTime*) [self uniqueChildWithTag: @"dtend"];
+	  timeZone = [(iCalDateTime*) date timeZone];
+	  if (timeZone)
+	    endDate = [timeZone computedDateForDate: endDate];
+	}
+      [row setObject: [self quickRecordDateAsNumber: endDate
+					 withOffset: ((isAllDay) ? -1 : 0)
+					  forAllDay: isAllDay]
+	      forKey: @"c_enddate"];
+    }
   if ([self isRecurrent])
     {
       NSCalendarDate *date;

@@ -8,9 +8,17 @@
 	(-takeValuesFromRequest:inContext:): we no longer associate a
 	vTimeZone to start/end dates of an all-day vEvent.
 
-2011-03-17  Francis Lachapelle  <flachapelle@inverse.ca>
+	* UI/Scheduler/UIxCalListingActions.m
+	(-_fetchFields:forComponentOfType:): we don't add components
+	outside the covered period. This could happen with all-day events,
+	since their dates are always GMT.
 
-	* SoObjects/Appointments/iCalEvent+SOGo.m (-quickRecord): 
+	* SoObjects/Appointments/iCalEvent+SOGo.m (-quickRecord): an all-day
+	event usually doesn't have a timezone. However, if it does, we must
+	convert its dates to GMT. All-day events are "floating", in the
+	sense that are timezone-independant.
+
+2011-03-17  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailAccountActions.m (-listMailboxesAction):
 	moved code that fetches the inbox quota to [SOGoMailAccount getInboxQuota].
