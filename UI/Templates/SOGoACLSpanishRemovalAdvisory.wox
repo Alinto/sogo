@@ -17,7 +17,7 @@ El usuario <var:string value="currentUserName" const:escapeHTML="NO"/> le ha qui
 Puede desuscribirse directamente de esta carpeta activando el siguiente enlace:
     <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>unsubscribe?mail-invitation=YES
 
-O, si desea, puede desuscribirse de esta carpeta más tarde usando la interfaz Web de SOGo.
+O, si desea, puede desuscribirse de ésta carpeta más tarde usando la interfaz Web de SOGo.
 
 Ya no puede acceder a este recurso usando la siguiente URL:
 

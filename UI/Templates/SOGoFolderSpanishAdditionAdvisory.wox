@@ -14,7 +14,7 @@
 <var:if condition="isBody">
 La carpeta <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> ha sido creada. 
 <!--
-Puede acceder a este recurso usando la siguiente URL:  
+Puede acceder a éste recurso usando la siguiente URL:  
 
 <var:string value="httpFolderURL" const:escapeHTML="NO"/>
 -->
