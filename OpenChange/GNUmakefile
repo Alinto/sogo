@@ -112,25 +112,29 @@ $(SOGOBACKEND)_RESOURCE_FILES += \
 	product.plist
 
 ### cflags and libs
-LIBMAPI_CFLAGS = $(shell pkg-config libmapistore --cflags)
+LIBMAPI_CFLAGS = $(shell pkg-config libmapi --cflags)
+LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags)
 
-ifeq ($(LIBMAPI_CFLAGS),)
+ifeq ($(LIBMAPISTORE_CFLAGS),)
 all install::
 	@echo "Cannot build the OpenChange SOGo backend (empty CFLAGS for libmapistore)"
 else
 
-LIBMAPI_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy
+LIBMAPI_LIBS = $(shell pkg-config libmapi --libs)
+LIBMAPISTORE_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-Werror -Wall \
 	$(LIBMAPI_CFLAGS) \
+	$(LIBMAPISTORE_CFLAGS) \
 	-I../SoObjects -I../SOPE \
 	-DBACKEND_BUNDLE_NAME="@\"$(BUNDLE_NAME)$(BUNDLE_EXTENSION)\"" \
 	-DSOGO_BUNDLES_DIR="@\"$(BUNDLE_INSTALL_DIR)\""
 ADDITIONAL_LIB_DIRS += -Wl,--as-needed \
 	-L../SOGo/SOGo.framework/ -lSOGo \
 	-L../../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore \
-	 $(LIBMAPI_LIBS)
+	 $(LIBMAPI_LIBS) \
+	 $(LIBMAPISTORE_LIBS)
 
 SAMBA_LIB_DIR = $(shell pkg-config libmapistore --variable=libdir)
 

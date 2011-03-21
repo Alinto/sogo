@@ -1,5 +1,10 @@
 2011-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m
+	(-_setupRecurrenceInCalendar:withMasterEvent:fromData:): new
+	method for setting recurrence info from "PidLidAppointmentRecur"
+	(no exdate, exrule or modified occurrence for now).
+
 	* OpenChange/NSCalendarDate+MAPIStore.m
 	(+dateFromMinutesSince1601): new constructor, helpful for MAPI
 	recurrence structures.

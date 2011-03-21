@@ -20,16 +20,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* TODO:
+   - merge common code with tasks
+   - take the tz definitions from Outlook */
+
 #import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalByDayMask.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalRecurrenceRule.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <Appointments/SOGoAppointmentObject.h>
@@ -37,6 +44,7 @@
 #import "MAPIStoreContext.h"
 #import "MAPIStoreTypes.h"
 #import "NSCalendarDate+MAPIStore.h"
+#import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreCalendarMessage.h"
@@ -44,10 +52,188 @@
 #undef DEBUG
 #include <stdbool.h>
 #include <gen_ndr/exchange.h>
+#include <gen_ndr/property.h>
+#include <libmapi/libmapi.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_nameid.h>
 
 @implementation MAPIStoreCalendarMessage
+
+- (void) _setupRecurrenceInCalendar: (iCalCalendar *) calendar
+                    withMasterEvent: (iCalEvent *) vEvent
+                           fromData: (NSData *) mapiRecurrenceData
+{
+  struct Binary_r *blob;
+  struct AppointmentRecurrencePattern *pattern;
+  iCalRecurrenceRule *rule;
+  iCalByDayMask *byDayMask;
+  iCalWeekOccurrence weekOccurrence;
+  iCalWeekOccurrences dayMaskDays;
+  NSString *monthDay, *month;
+  NSCalendarDate *startDate, *olEndDate, *endDate;
+  NSUInteger count;
+  NSInteger bySetPos;
+  unsigned char maskValue;
+  NSMutableArray *otherEvents;
+
+  /* cleanup */
+  [vEvent removeAllRecurrenceRules];
+  [vEvent removeAllExceptionRules];
+  [vEvent removeAllExceptionDates];
+  otherEvents = [[calendar events] mutableCopy];
+  [otherEvents removeObject: vEvent];
+  [calendar removeChildren: otherEvents];
+  [otherEvents release];
+
+  startDate = [vEvent startDate];
+
+  rule = [iCalRecurrenceRule elementWithTag: @"rrule"];
+  [vEvent addToRecurrenceRules: rule];
+
+  blob = [mapiRecurrenceData asBinaryInMemCtx: memCtx];
+  pattern = get_AppointmentRecurrencePattern (memCtx, blob);
+
+  memset (&dayMaskDays, 0, sizeof (iCalWeekOccurrences));
+  if (pattern->RecurrencePattern.PatternType == PatternType_Day)
+    {
+      [rule setFrequency: iCalRecurrenceFrequenceDaily];
+      [rule setRepeatInterval: pattern->RecurrencePattern.Period / minutesPerDay];
+    }
+  else if (pattern->RecurrencePattern.PatternType == PatternType_Week)
+    {
+      [rule setFrequency: iCalRecurrenceFrequenceWeekly];
+      [rule setRepeatInterval: pattern->RecurrencePattern.Period];
+      /* MAPI values for days are the same as in NGCards */
+      for (count = 0; count < 7; count++)
+        {
+          maskValue = 1 << count;
+          if ((pattern->RecurrencePattern.PatternTypeSpecific.WeekRecurrencePattern & maskValue))
+            dayMaskDays[count] = iCalWeekOccurrenceAll;
+        }
+      byDayMask = [iCalByDayMask byDayMaskWithDays: dayMaskDays];
+      [rule setByDayMask: byDayMask];
+    }
+  else
+    {
+      if (pattern->RecurrencePattern.RecurFrequency
+          == RecurFrequency_Monthly)
+        {
+          [rule setFrequency: iCalRecurrenceFrequenceMonthly];
+          [rule setRepeatInterval: pattern->RecurrencePattern.Period];
+        }
+      else if (pattern->RecurrencePattern.RecurFrequency
+               == RecurFrequency_Yearly)
+        {
+          [rule setFrequency: iCalRecurrenceFrequenceYearly];
+          [rule setRepeatInterval: pattern->RecurrencePattern.Period / 12];
+          month = [NSString stringWithFormat: @"%d", [startDate monthOfYear]];
+          [rule setNamedValue: @"bymonth" to: month];
+        }
+      else
+        [self errorWithFormat:
+                @"unhandled frequency case for Month pattern type: %d",
+              pattern->RecurrencePattern.RecurFrequency];
+
+      if ((pattern->RecurrencePattern.PatternType & 3) == 3)
+        {
+          /* HjMonthNth and MonthNth */
+          if (pattern->RecurrencePattern.PatternTypeSpecific.MonthRecurrencePattern.WeekRecurrencePattern
+              == 0x7f)
+            {
+              /* firsts or last day of month */
+              if (pattern->RecurrencePattern.PatternTypeSpecific.MonthRecurrencePattern.N
+                  == RecurrenceN_Last)
+                monthDay = @"-1";
+              else
+                monthDay = [NSString stringWithFormat: @"%d",
+                                     pattern->RecurrencePattern.PatternTypeSpecific.MonthRecurrencePattern.N];
+              [rule setNamedValue: @"bymonthday" to: monthDay];
+            }
+          else if ((pattern->RecurrencePattern.PatternTypeSpecific.MonthRecurrencePattern.WeekRecurrencePattern
+                    == 0x3e) /* Nth week day */
+                   || (pattern->RecurrencePattern.PatternTypeSpecific.MonthRecurrencePattern.WeekRecurrencePattern
+                       == 0x41)) /* Nth week-end day */
+            {
+              for (count = 0; count < 7; count++)
+                {
+                  maskValue = 1 << count;
+                  if ((pattern->RecurrencePattern.PatternTypeSpecific.MonthRecurrencePattern.WeekRecurrencePattern
+                       & maskValue))
+                    dayMaskDays[count] = iCalWeekOccurrenceAll;
+                }
+              byDayMask = [iCalByDayMask byDayMaskWithDays: dayMaskDays];
+              [rule setByDayMask: byDayMask];
+
+              if (pattern->RecurrencePattern.PatternTypeSpecific.MonthRecurrencePattern.N
+                  == RecurrenceN_Last)
+                bySetPos = -1;
+              else
+                bySetPos = pattern->RecurrencePattern.PatternTypeSpecific.MonthRecurrencePattern.N;
+              
+              [rule setNamedValue: @"bysetpos"
+                               to: [NSString stringWithFormat: @"%d", bySetPos]];
+            }
+          else 
+            {
+              if (pattern->RecurrencePattern.PatternTypeSpecific.MonthRecurrencePattern.N
+                  < RecurrenceN_Last)
+                weekOccurrence = (1
+                                  << (pattern->RecurrencePattern.PatternTypeSpecific.MonthRecurrencePattern.N
+                                      - 1));
+              else
+                weekOccurrence = iCalWeekOccurrenceLast;
+              
+              for (count = 0; count < 7; count++)
+                {
+                  maskValue = 1 << count;
+                  if ((pattern->RecurrencePattern.PatternTypeSpecific.MonthRecurrencePattern.WeekRecurrencePattern
+                       & maskValue))
+                    dayMaskDays[count] = weekOccurrence;
+                }
+              byDayMask = [iCalByDayMask byDayMaskWithDays: dayMaskDays];
+              [rule setByDayMask: byDayMask];
+            }
+        }
+      else if ((pattern->RecurrencePattern.PatternType & 2) == 2
+               || (pattern->RecurrencePattern.PatternType & 4) == 4)
+        {
+          /* MonthEnd, HjMonth and HjMonthEnd */
+          [rule setNamedValue: @"bymonthday"
+                           to: [NSString stringWithFormat: @"%d",
+                                         pattern->RecurrencePattern.PatternTypeSpecific.Day]];
+        }
+      else
+        [self errorWithFormat: @"invalid value for PatternType: %.4x",
+              pattern->RecurrencePattern.PatternType];
+    }
+
+  switch (pattern->RecurrencePattern.EndType)
+    {
+    case END_NEVER_END:
+    case NEVER_END:
+      break;
+    case END_AFTER_N_OCCURRENCES:
+      [rule setRepeatCount: pattern->RecurrencePattern.OccurrenceCount];
+      break;
+    case END_AFTER_DATE:
+      olEndDate = [NSCalendarDate dateFromMinutesSince1601: pattern->RecurrencePattern.EndDate];
+      endDate = [NSCalendarDate dateWithYear: [olEndDate yearOfCommonEra]
+                                       month: [olEndDate monthOfYear]
+                                         day: [olEndDate dayOfMonth]
+                                        hour: [startDate hourOfDay]
+                                      minute: [startDate minuteOfHour]
+                                      second: [startDate secondOfMinute]
+                                    timeZone: [startDate timeZone]];
+      [rule setUntilDate: endDate];
+      break;
+    default:
+      [self errorWithFormat: @"invalid value for EndType: %.4x",
+            pattern->RecurrencePattern.EndType];
+    }
+
+  talloc_free (pattern);
+  talloc_free (blob);
+}
 
 - (enum MAPISTATUS) getProperty: (void **) data
                         withTag: (enum MAPITAGS) propTag
@@ -57,7 +243,7 @@
   int rc;
 
   rc = MAPI_E_SUCCESS;
-  switch (propTag)
+  switch ((uint32_t) propTag)
     {
     case PR_ICON_INDEX: // TODO
       /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
@@ -203,7 +389,6 @@
     }
 }
 
-/* TODO: merge with tasks */
 - (void) save
 {
   iCalCalendar *vCalendar;
@@ -314,6 +499,13 @@
 	  [person release];
 	}
     }
+
+  /* recurrence */
+  value = [newProperties
+            objectForKey: MAPIPropertyKey (PidLidAppointmentRecur)];
+  [self _setupRecurrenceInCalendar: vCalendar
+                   withMasterEvent: vEvent
+                          fromData: value];
 
   // [sogoObject saveContentString: [vCalendar versitString]];
   [sogoObject saveComponent: vEvent];
