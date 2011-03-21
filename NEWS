@@ -6,10 +6,12 @@ Enhancements
 - updated Ukranian translation
 - updated Spanish translation
 - "check while typing" is no longer enabled by default in HTML editor
+- updated CKEditor to version 3.5.2
 Bug Fixes
 - restored the automatic expunge of IMAP folders
 - sogo-tool now works in multi-domain environments
 - various other mutli-domain fixes
+- sogo-tool now retrieves list of users from the folder info table
 
 1.3-20110125 (1.3.5)
 --------------------
