@@ -13,6 +13,10 @@
 	(displayAccountSignature): strips the tags and unescape the HTML
 	to improve readability.
 
+	* UI/WebServerResources/MailerUI.js (updateWindowTitle): new
+	function used to update the window title with respect to the
+	currently selected mailbox.
+
 2011-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarMessage.m
