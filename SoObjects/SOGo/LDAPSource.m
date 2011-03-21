@@ -596,7 +596,7 @@ static NSArray *commonSearchFields;
 - (EOQualifier *) _qualifierForFilter: (NSString *) filter
 {
   NSMutableArray *fields;
-  NSString *searchFormat, *fieldFormat, *escapedFilter;
+  NSString *fieldFormat, *searchFormat, *escapedFilter;
   EOQualifier *qualifier;
   NSMutableString *qs;
 
@@ -611,10 +611,10 @@ static NSArray *commonSearchFields;
 	  fieldFormat = [NSString stringWithFormat: @"(%%@='%@*')", escapedFilter];
 	  fields = [NSMutableArray arrayWithArray: searchFields];
 	  [fields addObjectsFromArray: mailFields];
+	  [fields addObject: CNField];
 	  searchFormat = [[[fields uniqueObjects] stringsWithFormat: fieldFormat]
 				    componentsJoinedByString: @" OR "];
-	  [qs appendFormat: @"(%@='%@*') OR %@",
-	      CNField, escapedFilter, searchFormat];
+	  [qs appendString: searchFormat];
 	}
 
       if (_filter && [_filter length])

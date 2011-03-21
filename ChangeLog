@@ -6,6 +6,9 @@
 	retrieve the users from LDAP sources that limit the number
 	of results.
 
+	* SoObjects/SOGo/LDAPSource.m (:_qualifierForFilter): avoid
+	duplicated filters on the CN attribute.
+
 2011-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarMessage.m
