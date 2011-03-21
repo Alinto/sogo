@@ -2150,38 +2150,48 @@ RANGE(2);
       }
       else {
 	// Custom alarm
-        [anAlarm setAction: [reminderAction uppercaseString]];
-        if ([reminderAction isEqualToString: @"email"])
+        if ([reminderAction length] > 0 && [reminderUnit length] > 0)
           {
-            [anAlarm removeAllAttendees];
-            if (reminderEmailAttendees)
-              [self _appendAttendees: [component attendees]
+            [anAlarm setAction: [reminderAction uppercaseString]];
+            if ([reminderAction isEqualToString: @"email"])
+              {
+                [anAlarm removeAllAttendees];
+                if (reminderEmailAttendees)
+                  [self _appendAttendees: [component attendees]
                         toEmailAlarm: anAlarm];
-            if (reminderEmailOrganizer)
-              [self _appendOrganizerToEmailAlarm: anAlarm];
-            [anAlarm setSummary: [component summary]];
-            [anAlarm setComment: [component comment]];
+                if (reminderEmailOrganizer)
+                  [self _appendOrganizerToEmailAlarm: anAlarm];
+                [anAlarm setSummary: [component summary]];
+                [anAlarm setComment: [component comment]];
+              }
+            
+            if ([reminderReference caseInsensitiveCompare: @"BEFORE"] == NSOrderedSame)
+              aValue = [NSString stringWithString: @"-P"];
+            else
+              aValue = [NSString stringWithString: @"P"];
+            
+            if ([reminderUnit caseInsensitiveCompare: @"MINUTES"] == NSOrderedSame ||
+                [reminderUnit caseInsensitiveCompare: @"HOURS"] == NSOrderedSame)
+              aValue = [aValue stringByAppendingString: @"T"];
+            
+            aValue = [aValue stringByAppendingFormat: @"%i%@",			 
+                             [reminderQuantity intValue],
+                             [reminderUnit substringToIndex: 1]];
+            [aTrigger setValue: aValue];
+            [aTrigger setRelationType: reminderRelation];
           }
-
-	if ([reminderReference caseInsensitiveCompare: @"BEFORE"] == NSOrderedSame)
-	  aValue = [NSString stringWithString: @"-P"];
-	else
-	  aValue = [NSString stringWithString: @"P"];
-	
-	if ([reminderUnit caseInsensitiveCompare: @"MINUTES"] == NSOrderedSame ||
-	    [reminderUnit caseInsensitiveCompare: @"HOURS"] == NSOrderedSame)
-	  aValue = [aValue stringByAppendingString: @"T"];
-	
-	aValue = [aValue stringByAppendingFormat: @"%i%@",			 
-			 [reminderQuantity intValue],
-			 [reminderUnit substringToIndex: 1]];
-	[aTrigger setValue: aValue];
-	[aTrigger setRelationType: reminderRelation];
+        else
+          {
+            [anAlarm release];
+            anAlarm = nil;
+          }
       }
-      [component removeAllAlarms];
-      [component addToAlarms: anAlarm];
-      
-      [anAlarm release];
+      if (anAlarm)
+        {
+          [component removeAllAlarms];
+          [component addToAlarms: anAlarm];
+          [anAlarm release];
+        }
     }
   
   if (![self isChildOccurence])

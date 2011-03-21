@@ -1,3 +1,9 @@
+2011-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m
+	(-takeValuesFromRequest:inContext:): added some sanity checks to
+	avoid crashes when alarm data is not properly entered.
+
 2011-03-18  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (initCalendars): we must
