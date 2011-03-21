@@ -54,7 +54,7 @@
 
 - (void) removeAllRecurrenceRules
 {
-  [children removeObjectsInArray: [self childrenWithTag: @"rrule"]];
+  [self removeChildren: [self recurrenceRules]];
 }
 
 - (void) addToRecurrenceRules: (id) _rrule
@@ -80,7 +80,7 @@
 
 - (void) removeAllExceptionRules
 {
-  [children removeObjectsInArray: [self childrenWithTag: @"exrule"]];
+  [self removeChildren: [self exceptionRules]];
 }
 
 - (void) addToExceptionRules: (id) _rrule
@@ -106,7 +106,7 @@
 
 - (void) removeAllExceptionDates
 {
-  [children removeObjectsInArray: [self childrenWithTag: @"exdate"]];
+  [self removeChildren: [self exceptionDates]];
 }
 
 - (void) addToExceptionDates: (NSCalendarDate *) _rdate
@@ -171,8 +171,7 @@
  */
 - (NSArray *) exceptionDatesWithEventTimeZone: (iCalTimeZone *) theTimeZone
 {
-  NSArray *exDates;
-  NSMutableArray *dates;
+  NSArray *dates, *exDates;
   NSEnumerator *dateList;
   NSCalendarDate *exDate;
   NSString *dateString;
@@ -190,7 +189,7 @@
 	    {
 	      dateString = [exDates objectAtIndex: i];
 	      exDate = [theTimeZone computedDateForString: dateString];
-	      [dates addObject: exDate];
+	      [(NSMutableArray *) dates addObject: exDate];
 	    }
 	}
     }

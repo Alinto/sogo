@@ -253,6 +253,22 @@ static NGCardsSaxHandler *sax = nil;
     [self addChild: currentChild];
 }
 
+- (void) removeChild: (CardElement *) aChild
+{
+  [aChild setParent: nil];
+  [children removeObject: aChild];
+}
+
+- (void) removeChildren: (NSArray *) someChildren
+{
+  CardElement *currentChild;
+  NSEnumerator *newChildren;
+
+  newChildren = [someChildren objectEnumerator];
+  while ((currentChild = [newChildren nextObject]))
+    [self removeChild: currentChild];
+}
+
 - (NSMutableArray *) children
 {
   return children;
