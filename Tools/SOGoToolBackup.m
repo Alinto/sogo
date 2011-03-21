@@ -1,8 +1,9 @@
 /* SOGoToolBackup.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2010 Inverse inc.
+ * Copyright (C) 2009-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -139,28 +140,58 @@
   max = [users count];
   user = [users objectAtIndex: 0];
   if (max == 1 && [user isEqualToString: @"ALL"])
-    allUsers = [lm fetchUsersMatching: @"." inDomain: nil];
-  else
     {
-      allUsers = [NSMutableArray new];
-      for (count = 0; count < max; count++)
-        {
-	  if (count > 0 && count%100 == 0)
-	    {
-	      DESTROY(pool);
-	      pool = [[NSAutoreleasePool alloc] init];
-	    }
+      GCSFolderManager *fm;
+      GCSChannelManager *cm;
+      NSURL *folderLocation;
+      EOAdaptorChannel *fc;
+      NSArray *attrs;
+      NSMutableArray *allSqlUsers;
+      NSString *sql;
 
-          user = [users objectAtIndex: count];
-          infos = [lm contactInfosForUserWithUIDorEmail: user];
-          if (infos)
-            [allUsers addObject: infos];
-          else
-            NSLog (@"user '%@' unknown", user);
-        }
-      [allUsers autorelease];
+      fm = [GCSFolderManager defaultFolderManager];
+      cm = [fm channelManager];
+      folderLocation = [fm folderInfoLocation];
+      fc = [cm acquireOpenChannelForURL: folderLocation];
+      if (fc)
+	{
+	  allSqlUsers = [NSMutableArray new];
+	  sql
+	    = [NSString stringWithFormat: @"SELECT DISTINCT c_path2 FROM %@",
+			[folderLocation gcsTableName]];
+	  [fc evaluateExpressionX: sql];
+	  attrs = [fc describeResults: NO];
+	  while ((infos = [fc fetchAttributes: attrs withZone: NULL]))
+	    {
+	      user = [infos objectForKey: @"c_path2"];
+	      if (user)
+		[allSqlUsers addObject: user];
+	    }
+	  [cm releaseChannel: fc];
+
+	  users = allSqlUsers;
+	  max = [users count];
+	}
     }
 
+  allUsers = [NSMutableArray new];
+  for (count = 0; count < max; count++)
+    {
+      if (count > 0 && count%100 == 0)
+	{
+	  DESTROY(pool);
+	  pool = [[NSAutoreleasePool alloc] init];
+	}
+      
+      user = [users objectAtIndex: count];
+      infos = [lm contactInfosForUserWithUIDorEmail: user];
+      if (infos)
+	[allUsers addObject: infos];
+      else
+	NSLog (@"user '%@' unknown", user);
+    }
+  [allUsers autorelease];
+  
   ASSIGN (userIDs, [allUsers objectsForKey: @"c_uid" notFoundMarker: nil]);
   DESTROY(pool);
 

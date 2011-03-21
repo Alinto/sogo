@@ -1,3 +1,11 @@
+2011-03-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* Tools/SOGoToolBackup.m (-fetchUserIDs:): when choosing to backup
+	all users, fetch the users list from the folder info table instead
+	of the configured sources. This fixes an issue when trying to
+	retrieve the users from LDAP sources that limit the number
+	of results.
+
 2011-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarMessage.m
