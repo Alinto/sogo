@@ -46,6 +46,19 @@ _setupRefDate()
   [refDate retain];
 }
 
++ (id) dateFromMinutesSince1601: (uint32_t) minutes
+{
+  NSCalendarDate *result;
+
+  if (!refDate)
+    _setupRefDate ();
+
+  result = [refDate dateByAddingYears: 0 months: 0 days: 0 hours: 0
+			      minutes: minutes seconds: 0];
+
+  return result;
+}
+
 + (id) dateFromFileTime: (const struct FILETIME *) timeValue
 {
   NSCalendarDate *result;

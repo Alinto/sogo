@@ -1,5 +1,9 @@
 2011-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSCalendarDate+MAPIStore.m
+	(+dateFromMinutesSince1601): new constructor, helpful for MAPI
+	recurrence structures.
+
 	* OpenChange/MAPIStoreCalendarMessageTable.m,
 	OpenChange/MAPIStoreTasksMessageTable.m,
 	OpenChange/MAPIStoreContactsMessageTable.m,
