@@ -97,7 +97,7 @@ static Class NSExceptionK;
   enum MAPISTATUS rc;
 
   rc = MAPISTORE_SUCCESS;
-  switch (propTag)
+  switch ((uint32_t) propTag)
     {
     case PR_ICON_INDEX:
       /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */

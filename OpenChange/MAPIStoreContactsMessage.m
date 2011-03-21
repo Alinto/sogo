@@ -82,7 +82,7 @@
   enum MAPISTATUS rc;
 
   rc = MAPISTORE_SUCCESS;
-  switch (proptag)
+  switch ((uint32_t) proptag)
     {
     case PR_ICON_INDEX: // TODO
       /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */

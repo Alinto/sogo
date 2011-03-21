@@ -62,7 +62,7 @@
   id value;
 
   value = NSObjectFromMAPISPropValue (&res->lpProp);
-  switch (res->ulPropTag)
+  switch ((uint32_t) res->ulPropTag)
     {
     case PR_MESSAGE_CLASS_UNICODE:
       if ([value isKindOfClass: [NSString class]]
@@ -106,7 +106,7 @@
 {
   MAPIRestrictionState rc;
 
-  switch (res->ulPropTag)
+  switch ((uint32_t) res->ulPropTag)
     {
     case PidLidTaskDateCompleted:
       /* since we don't store the completion date in the quick table, we only

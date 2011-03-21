@@ -93,7 +93,7 @@ static Class NSDataK, NSStringK;
   id value;
 
   value = NSObjectFromMAPISPropValue (&res->lpProp);
-  switch (res->ulPropTag)
+  switch ((uint32_t) res->ulPropTag)
     {
     case PR_MESSAGE_CLASS_UNICODE:
       if ([value isEqualToString: @"IPM.Note"])

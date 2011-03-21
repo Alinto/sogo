@@ -60,7 +60,7 @@
   double doubleValue;
 
   rc = MAPI_E_SUCCESS;
-  switch (propTag)
+  switch ((uint32_t) propTag)
     {
     case PR_ICON_INDEX: // TODO
       /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */

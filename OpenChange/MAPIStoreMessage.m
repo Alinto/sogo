@@ -135,7 +135,7 @@
   NSUInteger length;
 
   rc = MAPI_E_SUCCESS;
-  switch (propTag)
+  switch ((uint32_t) propTag)
     {
     case PR_INST_ID: // TODO: DOUBT
       /* we return a unique id based on the key */

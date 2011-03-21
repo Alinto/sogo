@@ -1,5 +1,15 @@
 2011-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessageTable.m,
+	OpenChange/MAPIStoreTasksMessageTable.m,
+	OpenChange/MAPIStoreContactsMessageTable.m,
+	OpenChange/MAPIStoreMailMessageTable.m,
+	OpenChange/MAPIStoreTasksMessage.m, OpenChange/MAPIStoreMessage.m,
+	OpenChange/MAPIStoreMailMessage.m,
+	OpenChange/MAPIStoreContactsMessage.m: cast property tags to
+	uint32_t in switch statements to avoid fatal warnings about
+	uncovered cases.
+
 	* UI/Scheduler/UIxComponentEditor.m
 	(-takeValuesFromRequest:inContext:): added some sanity checks to
 	avoid crashes when alarm data is not properly entered.
