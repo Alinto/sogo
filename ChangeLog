@@ -17,6 +17,12 @@
 	function used to update the window title with respect to the
 	currently selected mailbox.
 
+	* UI/WebServerResources/MailerUI.js (openMailbox): exchanged sort
+	arrows to match Thunderbird's GUI.
+
+	* UI/MailerUI/UIxMailListActions.m (-imap4SortOrdering): when the
+	sort is not specified in the request, retrieve the user's previous sort.
+
 2011-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarMessage.m

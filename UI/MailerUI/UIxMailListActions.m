@@ -335,9 +335,6 @@
   
   sort = [[context request] formValueForKey: @"sort"];
 
-  if (![sort length])
-    sort = [self defaultSortKey];
-
   return [sort uppercaseString];
 }
 
@@ -357,31 +354,42 @@
 
   activeUser = [context activeUser];
   clientObject = [self clientObject];
-  module = [[[clientObject container] container] nameInContainer];
+  module = @"Mail";
   us = [activeUser userSettings];
   moduleSettings = [us objectForKey: module];
 
-  if ([sort isEqualToString: [self defaultSortKey]] && !asc)
-      {
-	if (moduleSettings)
-	  {
-	    [moduleSettings removeObjectForKey: @"SortingState"];
-	    [us synchronize];
-	  }
-      }
-  else
+  if ([sort length])
     {
-	// Save the sorting state in the user settings
-	if (!moduleSettings)
-	  {
-	    moduleSettings = [NSMutableDictionary dictionary];
-	    [us setObject: moduleSettings forKey: module];
-	  }
-	[moduleSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (asc?1:0)], nil]
-			   forKey: @"SortingState"];
-	[us synchronize];
-      }
-
+      if ([sort isEqualToString: [self defaultSortKey]] && !asc)
+	{
+	  if (moduleSettings)
+	    {
+	      [moduleSettings removeObjectForKey: @"SortingState"];
+	      [us synchronize];
+	    }
+	}
+      else
+	{
+	  // Save the sorting state in the user settings
+	  if (!moduleSettings)
+	    {
+	      moduleSettings = [NSMutableDictionary dictionary];
+	      [us setObject: moduleSettings forKey: module];
+	    }
+	  [moduleSettings setObject: [NSArray arrayWithObjects: [sort lowercaseString], [NSString stringWithFormat: @"%d", (asc?1:0)], nil]
+			     forKey: @"SortingState"];
+	  [us synchronize];
+	}
+    }
+  else if (moduleSettings)
+    {
+      NSArray *sortState = [moduleSettings objectForKey: @"SortingState"];
+      sort = [[sortState objectAtIndex: 0] uppercaseString];
+      asc = [[sortState objectAtIndex: 1] boolValue];
+    }
+  else
+    sort = [self defaultSortKey];
+  
   // Construct and return the final IMAP ordering constraint
   if (!asc)
     sort = [@"REVERSE " stringByAppendingString: sort];

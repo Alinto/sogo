@@ -735,9 +735,9 @@ function openMailbox(mailbox, reload) {
                 var sortImage = createElement("img", "messageSortImage", "sortImage");
                 sortHeader.insertBefore(sortImage, sortHeader.firstChild);
                 if (sorting["ascending"])
-                    sortImage.src = ResourcesURL + "/arrow-down.png";
-                else
                     sortImage.src = ResourcesURL + "/arrow-up.png";
+                else
+                    sortImage.src = ResourcesURL + "/arrow-down.png";
             }
         }
 
