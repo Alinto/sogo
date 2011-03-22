@@ -1462,7 +1462,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   if (message)
     {
       *count = [[message childKeysMatchingQualifier: nil
-                        andSortOrderings: nil] count];
+                                   andSortOrderings: nil] count];
       attTable = [message attachmentTable];
       *tablePtr = attTable;
       if (attTable)
