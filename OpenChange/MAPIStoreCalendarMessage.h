@@ -25,12 +25,11 @@
 
 #import "MAPIStoreGCSMessage.h"
 
-#define minutesPerHour 60
-#define hoursPerDay 24
-#define minutesPerDay (minutesPerHour * hoursPerDay)
+#define SOGoMinutesPerHour 60
+#define SOGoHoursPerDay 24
+#define SOGoMinutesPerDay (SOGoMinutesPerHour * SOGoHoursPerDay)
 
 @interface MAPIStoreCalendarMessage : MAPIStoreGCSMessage
-
 @end
 
 #endif /* MAPISTORECALENDARMESSAGE_H */

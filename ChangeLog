@@ -1,5 +1,16 @@
 2011-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m (-init): new method to
+	initialize the attachment ivars.
+	(-ownerTimeZone): new method with common code.
+	(-getProperty:withTag): (PR_ICON_INDEX) return a more precise icon depending on
+	the recurring nature of the event as well on its number of
+	attendees. (PidLidAppointmentStartWhole,
+	PidLidAppointmentEndWhole) removed properties. (PidLidRecurring,
+	PidLidIsRecurring), returns YES when recurring.
+	(PidLidAppointmentRecur) property handles property, by using
+	-_computeAppointmentRecur and other submethods.
+
 	* OpenChange/NSCalendarDate+MAPIStore.m (-asMinutesSince1601):
 	corollary to +dateFromMinutesSince1601.
 
