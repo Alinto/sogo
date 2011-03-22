@@ -5,6 +5,7 @@ var accounts = [];
 var mailboxTree;
 
 var Mailer = {
+    defaultWindowTitle: null,
     currentMailbox: null,
     currentMailboxType: "",
     currentMessages: {},
@@ -564,6 +565,7 @@ function onMailboxTreeItemClick(event) {
         $("messageContent").innerHTML = '';
         $("messageCountHeader").childNodes[0].innerHTML = '&nbsp;';
         Mailer.dataTable._emptyTable();
+        updateWindowTitle();
     }
     else {
         var datatype = this.parentNode.getAttribute("datatype");
@@ -572,6 +574,7 @@ function onMailboxTreeItemClick(event) {
         else
             toggleAddressColumn("to", "from");
 
+        updateWindowTitle(this.childNodesWithTag("span")[0]);
         openMailbox(mailbox);
     }
 
@@ -732,9 +735,9 @@ function openMailbox(mailbox, reload) {
                 var sortImage = createElement("img", "messageSortImage", "sortImage");
                 sortHeader.insertBefore(sortImage, sortHeader.firstChild);
                 if (sorting["ascending"])
-                    sortImage.src = ResourcesURL + "/arrow-down.png";
-                else
                     sortImage.src = ResourcesURL + "/arrow-up.png";
+                else
+                    sortImage.src = ResourcesURL + "/arrow-down.png";
             }
         }
 
@@ -900,6 +903,8 @@ function updateUnseenCount(node, count, isDelta) {
             counterSpan.addClassName("hidden");
             unseenSpan.removeClassName("unseen");
         }
+        if (node.getAttribute("dataname") == Mailer.currentMailbox)
+            updateWindowTitle(unseenSpan);
     }
 }
 
@@ -915,6 +920,21 @@ function updateMessageListCounter(count, isDelta) {
         cell.update(count + " " + _("messages"));
     else
         cell.update(_("No message"));
+}
+
+function updateWindowTitle(span) {
+    if (!Mailer.defaultWindowTitle)
+        Mailer.defaultWindowTitle = document.title || "SOGo";
+    else if (!span)
+        document.title = Mailer.defaultWindowTitle;
+    if (span) {
+        var title = Mailer.defaultWindowTitle + " - ";
+        if (span.hasClassName("unseen"))
+            title += span.innerHTML.stripTags();
+        else
+            title += span.childNodes[0].nodeValue;
+        document.title = title;
+    }
 }
 
 /* Function is called when the event datatable:rendered is fired from SOGoDataTable. */

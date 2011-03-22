@@ -670,7 +670,9 @@ function displayAccountSignature(mailAccount) {
     var identity = (mailAccount["identities"]
                     ? mailAccount["identities"][0]
                     : {} );
-    var value = identity["signature"];
+    var value = identity["signature"].replace(/^[ \n\r]*$/, "");
+    if (CKEDITOR.instances["signature"])
+	value = value.stripTags().unescapeHTML();
     if (value && value.length > 0) {
         if (value.length < 30) {
             actSignatureValue = value;
@@ -685,7 +687,7 @@ function displayAccountSignature(mailAccount) {
     while (actSignature.firstChild) {
         actSignature.removeChild(actSignature.firstChild);
     }
-    actSignature.appendChild(document.createTextNode(actSignatureValue));
+    actSignature.update(actSignatureValue);
 }
 
 function createMailAccount() {

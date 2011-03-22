@@ -14,6 +14,31 @@
 	* OpenChange/NSCalendarDate+MAPIStore.m (-asMinutesSince1601):
 	corollary to +dateFromMinutesSince1601.
 
+2011-03-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* Tools/SOGoToolBackup.m (-fetchUserIDs:): when choosing to backup
+	all users, fetch the users list from the folder info table instead
+	of the configured sources. This fixes an issue when trying to
+	retrieve the users from LDAP sources that limit the number
+	of results.
+
+	* SoObjects/SOGo/LDAPSource.m (:_qualifierForFilter): avoid
+	duplicated filters on the CN attribute.
+
+	* UI/WebServerResources/UIxPreferences.js
+	(displayAccountSignature): strips the tags and unescape the HTML
+	to improve readability.
+
+	* UI/WebServerResources/MailerUI.js (updateWindowTitle): new
+	function used to update the window title with respect to the
+	currently selected mailbox.
+
+	* UI/WebServerResources/MailerUI.js (openMailbox): exchanged sort
+	arrows to match Thunderbird's GUI.
+
+	* UI/MailerUI/UIxMailListActions.m (-imap4SortOrdering): when the
+	sort is not specified in the request, retrieve the user's previous sort.
+
 2011-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarMessage.m
