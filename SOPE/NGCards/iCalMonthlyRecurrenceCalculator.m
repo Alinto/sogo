@@ -379,11 +379,9 @@ static inline unsigned iCalDoWForNSDoW (int dow)
 	    {
 	      // When dealing with the month of the first occurence, remove days
 	      // that occur before the first occurrence.
-	      int i;
-	      for (i = 1; i < eventDayOfMonth; i++)
-		monthDays[i] = NO;
+              memset (monthDays, NO, sizeof (BOOL) * eventDayOfMonth);
 	      // The first occurrence must always be included.
-	      monthDays[i] = YES;
+	      monthDays[eventDayOfMonth] = YES;
 	    }
 	}
       else
