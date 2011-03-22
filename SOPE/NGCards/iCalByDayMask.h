@@ -67,6 +67,8 @@ typedef iCalWeekOccurrence iCalWeekOccurrences[7];
 - (iCalWeekDay) firstDay;
 - (int) firstOccurrence;
 
+- (iCalWeekOccurrences *) weekDayOccurrences;
+
 - (NSString *) asRuleString;
 - (NSString *) asRuleStringWithIntegers;
 

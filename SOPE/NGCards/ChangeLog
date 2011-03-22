@@ -1,3 +1,10 @@
+2011-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalByDayMask.m (-occursOnDay:withWeekOccurrence:): fixed method
+	to return true only when it is valid to do so...
+	(-weekDayOccurrences): new method that returns a reference to the
+	days ivar.
+
 2011-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* CardGroup.m (-removeChild:, -removeChildren:): new

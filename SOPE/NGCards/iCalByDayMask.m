@@ -207,7 +207,7 @@
 - (BOOL) occursOnDay: (iCalWeekDay) weekDay
   withWeekOccurrence: (iCalWeekOccurrence) occurrence
 {
-  return (days[weekDay] | occurrence) > 0;
+  return (days[weekDay] & occurrence) > 0;
 }
 
 - (BOOL) occursOnDay: (iCalWeekDay) weekDay
@@ -244,13 +244,10 @@
   iCalWeekDay day;
 
   day = -1;
-  for (i = 0; i < 7; i++)
+  for (i = 0; day == -1 && i < 7; i++)
     {
       if (days[i])
-	{
-	  day = i;
-	  break;
-	}
+        day = i;
     }
   
   return day;
@@ -268,6 +265,11 @@
     occurrence = [self _iCalWeekOccurrenceIntValue: days[day]];
   
   return occurrence;
+}
+
+- (iCalWeekOccurrences *) weekDayOccurrences
+{
+  return &days;
 }
 
 - (int) _iCalWeekOccurrenceIntValue: (iCalWeekOccurrence) weekOccurrence
