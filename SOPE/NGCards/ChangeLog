@@ -1,5 +1,12 @@
 2011-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalEvent.m (-firstRecurrenceStartDate): new method that makes
+	use of the new one below.
+
+	* iCalRepeatableEntityObject.m
+	(-firstRecurrenceStartDateWithEndDate:): new method that returns
+	the first occurrence of a recurring entity.
+
 	* iCalByDayMask.m (-occursOnDay:withWeekOccurrence:): fixed method
 	to return true only when it is valid to do so...
 	(-weekDayOccurrences): new method that returns a reference to the

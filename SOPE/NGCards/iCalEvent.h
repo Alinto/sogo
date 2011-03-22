@@ -50,7 +50,6 @@
 - (NSCalendarDate *) endDate;
 - (BOOL) hasEndDate;
 
-- (void) setDuration: (NSString *) _value;
 - (NSString *) duration;
 - (BOOL) hasDuration;
 - (NSTimeInterval) durationAsTimeInterval;
@@ -73,6 +72,8 @@
 - (iCalEventChanges *) getChangesRelativeToEvent: (iCalEvent *) _event;
 
 - (id) propertyValue: (NSString *) property;
+
+- (NSCalendarDate *) firstRecurrenceStartDate;
 
 @end 
 

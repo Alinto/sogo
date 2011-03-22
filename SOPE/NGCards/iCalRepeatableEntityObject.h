@@ -68,6 +68,8 @@
 /* this is the outmost bound possible, not necessarily the real last date */
 - (NSCalendarDate *)lastPossibleRecurrenceStartDateUsingFirstInstanceCalendarDateRange:(NGCalendarDateRange *)_r;
 
+- (NSCalendarDate *) firstRecurrenceStartDateWithEndDate: (NSCalendarDate *) endDate;
+
 @end
 
 #endif	/* __NGCards_iCalRepeatableEntityObject_H_ */

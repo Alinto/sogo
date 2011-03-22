@@ -29,6 +29,8 @@
 
 #import "iCalEventChanges.h"
 #import "iCalDateTime.h"
+#import "iCalRecurrenceRule.h"
+#import "iCalRecurrenceCalculator.h"
 
 #import "iCalEvent.h"
 
@@ -287,5 +289,11 @@
 
   return [self performSelector: NSSelectorFromString (method)];
 }
+
+- (NSCalendarDate *) firstRecurrenceStartDate
+{
+  return [self firstRecurrenceStartDateWithEndDate: [self endDate]];
+}
+
 
 @end /* iCalEvent */

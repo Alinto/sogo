@@ -259,4 +259,74 @@ lastPossibleRecurrenceStartDateUsingFirstInstanceCalendarDateRange: (NGCalendarD
   return date;
 }
 
+- (NSCalendarDate *) firstRecurrenceStartDateWithEndDate: (NSCalendarDate *) endDate
+{
+  NSCalendarDate *startDate, *firstOccurrenceStartDate, *endOfFirstRange;
+  NGCalendarDateRange *range, *firstInstanceRange;
+  iCalRecurrenceFrequency frequency;
+  iCalRecurrenceRule *rule;
+  NSArray *rules, *recurrences;
+  uint32_t units;
+
+  firstOccurrenceStartDate = nil;
+
+  rules = [self recurrenceRules];
+  if ([rules count] > 0)
+    {
+      rule = [rules objectAtIndex: 0];
+      frequency = [rule frequency];
+      units = [rule repeatInterval];
+
+      startDate = [self startDate];
+      switch (frequency)
+        {
+          /* second-based units */
+        case iCalRecurrenceFrequenceWeekly:
+          units *= 7;
+        case iCalRecurrenceFrequenceDaily:
+          units *= 24;
+        case iCalRecurrenceFrequenceHourly:
+          units *= 60;
+        case iCalRecurrenceFrequenceMinutely:
+          units *= 60;
+        case iCalRecurrenceFrequenceSecondly:
+          endOfFirstRange = [startDate dateByAddingYears: 0 months: 0 days: 0
+                                                   hours: 0 minutes: 0
+                                                 seconds: units];
+          break;
+
+          /* month-based units */
+        case iCalRecurrenceFrequenceYearly:
+          units *= 12;
+        case iCalRecurrenceFrequenceMonthly:
+          endOfFirstRange = [startDate dateByAddingYears: 0 months: (units + 1)
+                                                    days: 0
+                                                   hours: 0 minutes: 0
+                                                 seconds: 0];
+          break;
+
+        default:
+          endOfFirstRange = nil;
+        }
+
+      if (endOfFirstRange)
+        {
+          range = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
+                                                              endDate: endOfFirstRange];
+          firstInstanceRange = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
+                                                                           endDate: endDate];
+          recurrences = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: range
+                                                           firstInstanceCalendarDateRange: firstInstanceRange
+                                                                          recurrenceRules: rules
+                                                                           exceptionRules: nil
+                                                                           exceptionDates: nil];
+          if ([recurrences count] > 0)
+            firstOccurrenceStartDate = [[recurrences objectAtIndex: 0]
+                                         startDate];
+        }
+    }
+
+  return firstOccurrenceStartDate;
+}
+
 @end
