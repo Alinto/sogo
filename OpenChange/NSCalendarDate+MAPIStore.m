@@ -35,15 +35,12 @@ static NSCalendarDate *refDate = nil;
 @implementation NSCalendarDate (MAPIStoreDataTypes)
 
 static void
-_setupRefDate()
+_setupRefDate ()
 {
-  NSTimeZone *utc;
-
-  utc = [NSTimeZone timeZoneWithName: @"UTC"];
-  refDate = [NSCalendarDate dateWithYear: 1601 month: 1 day: 1
-                                    hour: 0 minute: 0 second: 0
-                                timeZone: utc];
-  [refDate retain];
+  refDate = [[NSCalendarDate alloc]
+              initWithYear: 1601 month: 1 day: 1
+                      hour: 0 minute: 0 second: 0
+                  timeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
 }
 
 + (id) dateFromMinutesSince1601: (uint32_t) minutes
@@ -57,6 +54,21 @@ _setupRefDate()
 			      minutes: minutes seconds: 0];
 
   return result;
+}
+
+- (uint32_t) asMinutesSince1601
+{
+  uint32_t minutes;
+  NSInteger offset;
+
+  if (!refDate)
+    _setupRefDate ();
+
+  minutes = (uint32_t) ([self timeIntervalSinceDate: refDate] / 60);
+  offset = [[self timeZone] secondsFromGMT];
+  minutes += (offset / 60);
+
+  return minutes;
 }
 
 + (id) dateFromFileTime: (const struct FILETIME *) timeValue

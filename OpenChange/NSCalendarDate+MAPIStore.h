@@ -27,9 +27,10 @@
 
 @interface NSCalendarDate (MAPIStoreDataTypes)
 
-+ (id) dateFromFileTime: (const struct FILETIME *) timeValue;
 + (id) dateFromMinutesSince1601: (uint32_t) minutes;
+- (uint32_t) asMinutesSince1601;
 
++ (id) dateFromFileTime: (const struct FILETIME *) timeValue;
 - (struct FILETIME *) asFileTimeInMemCtx: (void *) memCtx;
 
 @end
