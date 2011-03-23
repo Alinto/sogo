@@ -1,8 +1,9 @@
 /* UIxPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +34,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalTimeZonePeriod.h>
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
@@ -156,7 +158,47 @@
 
 - (NSString *) userTimeZone
 {
-  return [userDefaults timeZoneName];
+  NSString *name;
+  iCalTimeZone *tz;
+
+  name = [userDefaults timeZoneName];
+  tz = [iCalTimeZone timeZoneForName: name];
+
+  if (!tz)
+    {
+      // The specified timezone is not in our Olson database.
+      // Look for a known timezone with the same GMT offset.
+      NSString *current;
+      NSCalendarDate *now;
+      NSEnumerator *zones;
+      BOOL found;
+      unsigned int offset;
+      
+      found = NO;
+      now = [NSCalendarDate calendarDate];
+      offset = [[userDefaults timeZone] secondsFromGMTForDate: now];
+      zones = [[iCalTimeZone knownTimeZoneNames] objectEnumerator];
+
+      while ((current = [zones nextObject]))
+	{
+	  tz = [iCalTimeZone timeZoneForName: current];
+	  if ([[tz periodForDate: now] secondsOffsetFromGMT] == offset)
+	    {
+	      found = YES;
+	      break;
+	    }
+	}
+
+      if (found)
+	{
+	  [self warnWithFormat: @"User %@ has an unknown timezone (%@) -- replaced by %@", [user login], name, current];
+	  name = current;
+	}
+      else
+	[self errorWithFormat: @"User %@ has an unknown timezone (%@)", [user login], name];
+    }
+
+  return name;
 }
 
 - (void) setUserTimeZone: (NSString *) newUserTimeZone

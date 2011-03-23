@@ -12,6 +12,11 @@
 	of the new method [iCalTimeZone knownTimeZoneNames] instead of
 	[NSTimeZone knownTimeZoneNames] to avoid listing tons of useless timezones.
 
+	* UI/PreferencesUI/UIxPreferences.m (-userTimeZone): since we now
+	offer a limited number of timezones, the user timezone could be
+	unrecognized. In this case, try to find a timezone with the same
+	GMT offset.
+
 2011-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarMessage.m (-init): new method to
