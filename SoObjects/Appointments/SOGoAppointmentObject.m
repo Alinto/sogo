@@ -169,6 +169,9 @@
   return object;
 }
 
+//
+//
+//
 - (void) _addOrUpdateEvent: (iCalEvent *) theEvent
 		    forUID: (NSString *) theUID
 		     owner: (NSString *) theOwner
@@ -244,6 +247,9 @@
     }
 }
 
+//
+//
+//
 - (void) _removeEventFromUID: (NSString *) theUID
                        owner: (NSString *) theOwner
 	    withRecurrenceId: (NSCalendarDate *) recurrenceId
@@ -306,6 +312,9 @@
     }
 }
 
+//
+//
+//
 - (void) _handleRemovedUsers: (NSArray *) attendees
             withRecurrenceId: (NSCalendarDate *) recurrenceId
 {
@@ -324,6 +333,9 @@
     }
 }
 
+//
+//
+//
 - (void) _removeDelegationChain: (iCalPerson *) delegate
                         inEvent: (iCalEvent *) event
 {
@@ -347,8 +359,10 @@
     }
 }
 
-/* This method returns YES when any attendee has been removed and NO
-   otherwise. */
+//
+// This method returns YES when any attendee has been removed
+// and NO otherwise.
+//
 - (BOOL) _requireResponseFromAttendees: (iCalEvent *) event
 {
   NSArray *attendees;
@@ -376,6 +390,9 @@
   return listHasChanged;
 }
 
+//
+//
+//
 - (void) _handleSequenceUpdateInEvent: (iCalEvent *) newEvent
 		    ignoringAttendees: (NSArray *) attendees
 		         fromOldEvent: (iCalEvent *) oldEvent
@@ -407,6 +424,9 @@
                                  forObject: newEvent to: updateAttendees];
 }
 
+//
+//
+//
 - (void) _handleAddedUsers: (NSArray *) attendees
 		 fromEvent: (iCalEvent *) newEvent
 {
@@ -917,8 +937,8 @@
 	  
 	  organizerUID = [[event organizer] uid];
 
+	  // Event is an exception to a recurring event; retrieve organizer from master event
 	  if (!organizerUID)
-	    // event is an recurrence; retrieve organizer from master event
 	    organizerUID = [[(iCalEntityObject*)[[event parent] firstChildWithTag: [self componentTag]] organizer] uid];
 
 	  if (organizerUID)
@@ -1056,6 +1076,9 @@
                          forRecurrenceId: nil];
 }
 
+//
+//
+//
 - (NSException *) changeParticipationStatus: (NSString *) _status
                                withDelegate: (iCalPerson *) delegate
                             forRecurrenceId: (NSCalendarDate *) _recurrenceId
@@ -1604,7 +1627,15 @@
       // 
       if ([[newEvent attendees] count] || [[oldEvent attendees] count])
 	{
-	  if ([[[newEvent organizer] uid] caseInsensitiveCompare: owner] == NSOrderedSame)
+	  NSString *uid;
+	  
+	  if (master)
+	    uid = [[newEvent organizer] uid];
+	  else
+	    uid = [[[[[newEvent parent] events] objectAtIndex: 0] organizer] uid];
+	  
+	  
+	  if ([uid caseInsensitiveCompare: owner] == NSOrderedSame)
 	    {
 	      [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent];
 
@@ -1649,23 +1680,13 @@
 	      if ([[changes updatedProperties] containsObject: @"exdate"])
 	      	{
 	      	  [self changeParticipationStatus: @"DECLINED"
-			withDelegate: nil // (specify delegate?)
+			withDelegate: nil // FIXME (specify delegate?)
 			forRecurrenceId: [self _addedExDate: oldEvent  newEvent: newEvent]];
 	      }
 	      else
 		[self changeParticipationStatus: [attendee partStat]
 		      withDelegate: delegate
 		      forRecurrenceId: recurrenceId];
-
-	      // A RECURRENCE-ID was removed so there has to be a change in the master event
-	      // We could also have an EXDATE added in the master component of the attendees
-	      // so we always compare the MASTER event.
-	      if (!master)
-		{
-		  newEvent = [newEvents objectAtIndex: 0];
-		  oldEvent = [oldEvents objectAtIndex: 0];
-		  [self changeParticipationStatus: [attendee partStat]  withDelegate: delegate];
-		}
 	    }
 	}
     }

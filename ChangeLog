@@ -1,3 +1,11 @@
+2011-03-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m (-PUTAction:):
+	Fix for bug #1092. We were incorrectly looking up
+	the organizer of an exception to a recurrence and
+	we were also incorrectly always updating the master
+	event with the part-state.
+
 2011-03-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/PreferencesUI/UIxPreferences.m (-timeZonesList): we make use
