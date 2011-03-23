@@ -41,6 +41,7 @@
 #import "iCalTimeZone.h"
 
 static NSMutableDictionary *cache;
+static NSArray *knownTimeZones;
 
 
 @implementation iCalTimeZone
@@ -104,6 +105,62 @@ static NSMutableDictionary *cache;
     }
 
   return o;
+}
+
+/**
+ * Fetch the names of the available timezones for which we have a
+ * vTimeZone definition (.ics).
+ * @return an array of timezones names.
+ * @see [NSTimeZone knownTimeZoneNames]
+ */
++ (NSArray *) knownTimeZoneNames
+{
+  NSFileManager *fm;
+  NSEnumerator *e;
+  NSDirectoryEnumerator *zones;
+  NSArray *paths;
+  NSMutableArray *timeZoneNames;
+  NSString *path, *zone, *zonePath;
+  NSRange ext;
+  BOOL b;
+
+  timeZoneNames = knownTimeZones;
+
+  if (!timeZoneNames)
+    {
+      timeZoneNames = [NSMutableArray new];
+
+      paths = NSSearchPathForDirectoriesInDomains(NSAllLibrariesDirectory,
+						  NSAllDomainsMask,
+						  YES);
+      fm = [NSFileManager defaultManager];
+      
+      if ([paths count] > 0)
+	{
+	  e = [paths objectEnumerator];
+	  while ((path = [e nextObject]))
+	    {
+	      path = [NSString stringWithFormat: @"%@/Libraries/Resources/NGCards/TimeZones", path];
+	      if ([fm fileExistsAtPath: path isDirectory: &b] && b)
+		{
+		  zones = [fm enumeratorAtPath: path];
+		  while ((zone = [zones nextObject])) {
+		    zonePath = [NSString stringWithFormat: @"%@/%@", path, zone];
+		    if ([fm fileExistsAtPath: zonePath isDirectory: &b] && !b)
+		      {
+			ext = [zone rangeOfString: @".ics"];
+			zone = [zone substringToIndex: ext.location];
+			[timeZoneNames addObject: zone];
+		      }
+		  }
+		}
+	    }
+	}
+      knownTimeZones = [timeZoneNames sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+      [knownTimeZones retain];
+    }
+
+  return timeZoneNames;
 }
 
 - (Class) classForTag: (NSString *) classTag

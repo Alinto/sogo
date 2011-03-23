@@ -33,6 +33,7 @@
 @interface iCalTimeZone : CardGroup
 
 + (iCalTimeZone *) timeZoneForName: (NSString *) theName;
++ (NSArray *) knownTimeZoneNames;
 - (NSString *) tzId;
 - (iCalTimeZonePeriod *) periodForDate: (NSCalendarDate *) date;
 - (NSCalendarDate *) computedDateForDate: (NSCalendarDate *) theDate;

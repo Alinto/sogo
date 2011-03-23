@@ -1,8 +1,14 @@
+2011-03-23  francis  <flachapelle@inverse.ca>
+
 2011-03-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalRepeatableEntityObject.m (-removeAllExceptionDates): don't
 	use the method "exceptionDates" since it returns an array of
 	strings and not CardElement instances.
+
+	* iCalTimeZone.m (+knownTimeZoneNames): new class method to
+	retrieve the timezone names. Used in replacement of the same
+	method in NSTimeZone.
 
 2011-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

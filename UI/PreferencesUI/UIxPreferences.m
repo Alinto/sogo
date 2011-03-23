@@ -32,6 +32,8 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <NGCards/iCalTimeZone.h>
+
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -149,8 +151,7 @@
 
 - (NSArray *) timeZonesList
 {
-  return [[NSTimeZone knownTimeZoneNames]
-           sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+  return [iCalTimeZone knownTimeZoneNames];
 }
 
 - (NSString *) userTimeZone

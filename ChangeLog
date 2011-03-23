@@ -1,3 +1,9 @@
+2011-03-23  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m (-timeZonesList): we make use
+	of the new method [iCalTimeZone knownTimeZoneNames] instead of
+	[NSTimeZone knownTimeZoneNames] to avoid listing tons of useless timezones.
+
 2011-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarMessage.m (-init): new method to
