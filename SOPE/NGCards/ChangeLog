@@ -1,3 +1,9 @@
+2011-03-23  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalRepeatableEntityObject.m (-removeAllExceptionDates): don't
+	use the method "exceptionDates" since it returns an array of
+	strings and not CardElement instances.
+
 2011-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* CardGroup.m (-removeChild:, -removeChildren:): new
