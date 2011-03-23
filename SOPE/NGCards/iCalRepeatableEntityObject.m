@@ -106,7 +106,7 @@
 
 - (void) removeAllExceptionDates
 {
-  [self removeChildren: [self exceptionDates]];
+  [self removeChildren: [self childrenWithTag: @"exdate"]];
 }
 
 - (void) addToExceptionDates: (NSCalendarDate *) _rdate
