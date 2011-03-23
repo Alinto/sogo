@@ -384,10 +384,13 @@
   else if (moduleSettings)
     {
       NSArray *sortState = [moduleSettings objectForKey: @"SortingState"];
-      sort = [[sortState objectAtIndex: 0] uppercaseString];
-      asc = [[sortState objectAtIndex: 1] boolValue];
+      if ([sortState count])
+	{
+	  sort = [[sortState objectAtIndex: 0] uppercaseString];
+	  asc = [[sortState objectAtIndex: 1] boolValue];
+	}
     }
-  else
+  if (![sort length])
     sort = [self defaultSortKey];
   
   // Construct and return the final IMAP ordering constraint
