@@ -121,6 +121,11 @@
   return contactInfos;
 }
 
+- (NSString *) currentContactClasses
+{
+  return [[currentContact objectForKey: @"c_component"] lowercaseString];
+}
+
 - (id <WOActionResults>) contactSearchAction
 {
   id <WOActionResults> result;

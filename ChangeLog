@@ -1,3 +1,9 @@
+2011-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Contacts/UIxContactsListView.m (-currentContactClasses): new
+	method that returns the classes associated to the current contact.
+	For now, only the c_component.
+
 2011-03-24  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailListActions.m (-imap4SortOrdering): verify

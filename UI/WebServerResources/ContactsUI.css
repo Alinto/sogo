@@ -199,12 +199,6 @@ TABLE#contactsList
   -khtml-user-select: none;
   width: 100%; }
 
-TABLE#contactsList TBODY TD.displayName
-{ background-repeat: no-repeat;
-  background-image: url('abcard.png');
-  background-position: 4px 1px;
-  padding-left: 24px; }
-
 TABLE#contactsList TD,
 TABLE#contactsList TH
 { overflow: hidden;
@@ -215,16 +209,24 @@ TABLE#contactsList TH
 TABLE#contactsList TH
 { white-space: pre; }
 
-TABLE#contactsList TD IMG
-{
-  vertical-align: middle;
-  margin-left: 1em;
-  margin-right: .2em;
-}
-
 TABLE#contactsList TR._deleted TD
 { 
   text-decoration: line-through;
+}
+
+TABLE#contactsList TD.displayName
+{ background-repeat: no-repeat;
+  background-position: 4px 1px;
+  padding-left: 24px; }
+
+TABLE#contactsList TR.vcard TD.displayName
+{
+  background-image: url('abcard.png');
+}
+
+TABLE#contactsList TR.vlist TD.displayName
+{
+  background-image: url('ablist.png');
 }
 
 DIV#contactView

@@ -26,7 +26,7 @@
     </thead>
     <tbody id="contactsListTbody">
       <var:foreach list="contactInfos" item="currentContact">
-        <tr class="tableview"
+        <tr var:class="currentContactClasses"
           var:categories="currentContact.c_categories"
           var:id="currentContact.c_name"
           var:contactname="currentContact.c_cn">
