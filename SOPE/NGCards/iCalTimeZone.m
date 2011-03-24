@@ -49,6 +49,7 @@ static NSArray *knownTimeZones;
 + (void) initialize
 {
   cache = [[NSMutableDictionary alloc] init];
+  knownTimeZones = nil;
 }
 
 + (iCalTimeZone *) timeZoneForName: (NSString *) theName
@@ -124,9 +125,7 @@ static NSArray *knownTimeZones;
   NSRange ext;
   BOOL b;
 
-  timeZoneNames = knownTimeZones;
-
-  if (!timeZoneNames)
+  if (!knownTimeZones)
     {
       timeZoneNames = [NSMutableArray new];
 
@@ -156,11 +155,11 @@ static NSArray *knownTimeZones;
 		}
 	    }
 	}
-      knownTimeZones = [timeZoneNames sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
+      knownTimeZones = [NSArray arrayWithArray: timeZoneNames];
       [knownTimeZones retain];
     }
 
-  return timeZoneNames;
+  return knownTimeZones;
 }
 
 - (Class) classForTag: (NSString *) classTag

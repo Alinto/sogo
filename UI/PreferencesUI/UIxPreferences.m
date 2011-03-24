@@ -153,7 +153,7 @@
 
 - (NSArray *) timeZonesList
 {
-  return [iCalTimeZone knownTimeZoneNames];
+  return [[iCalTimeZone knownTimeZoneNames] sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
 }
 
 - (NSString *) userTimeZone
