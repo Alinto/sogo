@@ -3,6 +3,11 @@
 	* UI/MailerUI/UIxMailListActions.m (-imap4SortOrdering): verify
 	that the sort is defined when rollbacking to the user's settings.
 
+	* SoObjects/SOGo/SQLSource.m (_encryptPassword:): new method to
+	encrypt a user's password according to the configured algorithm.
+	(-changePasswordForLogin:oldPassword:newPassword:perr:):
+	now implemented (thanks to Martin Rabl).
+
 2011-03-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m (-PUTAction:):

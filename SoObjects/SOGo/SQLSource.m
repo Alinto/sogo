@@ -157,6 +157,36 @@
   return NO;
 }
 
+/**
+ * Encrypts a string using this source password algorithm.
+ * @param plainPassword the unencrypted password.
+ * @return a new encrypted string.
+ * @see _isPassword:equalTo:
+ */
+- (NSString *) _encryptPassword: (NSString *) plainPassword
+{
+  if ([_userPasswordAlgorithm caseInsensitiveCompare: @"none"] == NSOrderedSame)
+    {
+      return plainPassword;
+    }
+  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"crypt"] == NSOrderedSame)
+    {
+      return [plainPassword asCryptStringUsingSalt: [plainPassword asMD5String]];
+    }
+  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"md5"] == NSOrderedSame)
+    {
+      return [plainPassword asMD5String];
+    }
+  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"sha"] == NSOrderedSame)
+    {
+      return [plainPassword asSHA1String];
+    }
+  
+  [self errorWithFormat: @"Unsupported user-password algorithm: %@", _userPasswordAlgorithm];
+  
+  return plainPassword;
+}
+
 //
 // SQL sources don't support right now all the password policy
 // stuff supported by OpenLDAP (and others). If we want to support
@@ -212,12 +242,62 @@
   return rc;
 }
 
+/**
+ * Change a user's password.
+ * @param login the user's login name.
+ * @param oldPassword the previous password.
+ * @param newPassword the new password.
+ * @param perr is not used.
+ * @return YES if the password was successfully changed.
+ */
 - (BOOL) changePasswordForLogin: (NSString *) login
 		    oldPassword: (NSString *) oldPassword
 		    newPassword: (NSString *) newPassword
 			   perr: (SOGoPasswordPolicyError *) perr
 {
-  return NO;
+  EOAdaptorChannel *channel;
+  GCSChannelManager *cm;
+  NSException *ex;
+  NSString *sqlstr;
+  BOOL didChange;
+  BOOL isOldPwdOk;
+  
+  isOldPwdOk = NO;
+  didChange = NO;
+  
+  // Verify current password
+  isOldPwdOk = [self checkLogin:login password:oldPassword perr:perr expire:0 grace:0];
+  
+  if (isOldPwdOk)
+    {
+      // Encrypt new password
+      NSString *encryptedPassword = [self _encryptPassword: newPassword];
+      
+      // Save new password
+      login = [login stringByReplacingString: @"'"  withString: @"''"];
+      cm = [GCSChannelManager defaultChannelManager];
+      channel = [cm acquireOpenChannelForURL: _viewURL];
+      if (channel)
+	{
+	  sqlstr = [NSString stringWithFormat: (@"UPDATE %@"
+						@" SET c_password = '%@'"
+						@" WHERE c_uid = '%@'"),
+			     [_viewURL gcsTableName], encryptedPassword, login];
+	  
+	  ex = [channel evaluateExpressionX: sqlstr];
+	  if (!ex)
+	    {
+	      didChange = YES;
+	    }
+	  else
+	    {
+	      [self errorWithFormat: @"could not run SQL '%@': %@", sqlstr, ex];
+	    }
+	  [cm releaseChannel: channel];
+	}
+    }
+  
+  return didChange;
 }
 
 - (NSString *) _whereClauseFromArray: (NSArray *) theArray
