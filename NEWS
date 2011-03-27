@@ -7,6 +7,7 @@ Enhancements
 - updated Spanish translation
 - "check while typing" is no longer enabled by default in HTML editor
 - updated CKEditor to version 3.5.2
+- now possible to set a per-instance database storage using the SOGoLocalStorageURL preference
 Bug Fixes
 - restored the automatic expunge of IMAP folders
 - sogo-tool now works in multi-domain environments

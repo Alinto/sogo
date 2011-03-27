@@ -1,7 +1,7 @@
 /* SOGoGCSFolder.m - this file is part of SOGo
  *
  * Copyright (C) 2004-2005 SKYRIX Software AG
- * Copyright (C) 2006-2010 Inverse inc.
+ * Copyright (C) 2006-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -70,6 +70,7 @@
 #import "SOGoParentFolder.h"
 #import "SOGoPermissions.h"
 #import "SOGoUser.h"
+#import "SOGoSystemDefaults.h"
 #import "SOGoUserDefaults.h"
 #import "SOGoUserSettings.h"
 #import "SOGoUserManager.h"
@@ -525,12 +526,34 @@ static NSArray *childRecordFields = nil;
     }
 }
 
+//
+// This method honors the SOGoLocalStorageURL preference in order
+// to create the database tables at the preferred location instead of
+// creating them in the same database as the one specified in the
+// OCSFolderInfoURL preference. This is particularly useful for
+// multi-sites deployments.
+//
 - (BOOL) create
 {
+  GCSFolderManager *folderManager;
+  EOAdaptorChannel *channel;
   NSException *result;
-  result = [[self folderManager] createFolderOfType: [self folderType]
-				 withName: displayName
-                                 atPath: ocsPath];
+  NSString *s;
+  NSURL *url;
+  
+  folderManager = [self folderManager];
+  channel = nil;
+  
+  s = [[SOGoSystemDefaults sharedSystemDefaults] stringForKey: @"SOGoLocalStorageURL"];
+  url = nil;
+
+  if (s)
+    url = [NSURL URLWithString: s];
+					     
+  result = [folderManager createFolderOfType: [self folderType]
+			  withName: displayName
+			  atPath: ocsPath
+			  andURL: url];
 
   if (!result
       && [[context request] handledByDefaultHandler])

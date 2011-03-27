@@ -725,32 +725,46 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 - (NSException *) _reallyCreateFolderWithName: (NSString *) folderName
 				andFolderType: (NSString *) folderType
 				      andType: (GCSFolderType *) ftype
-				   andChannel: (EOAdaptorChannel *) channel
+			     andFolderChannel: (EOAdaptorChannel *) folderChannel
+		    	 andFolderInfoChannel: (EOAdaptorChannel *) folderInfoChannel
 				       atPath: (NSString *) path
+				       andURL: (NSURL *) url
 {
-  NSException *error;
-  NSString *baseURL, *tableName, *quickTableName, *aclTableName, *createQuery,
-    *sql;
-  EOAdaptorContext *aContext;
-  NSMutableArray *paths;
+  NSString *baseURL, *tableName, *quickTableName, *aclTableName, *createQuery, *sql;
+  EOAdaptorContext *folderChannelContext, *folderInfoChannelContext; 
   GCSSpecialQueries *specialQuery;
+  NSMutableArray *paths;
+  NSException *error;
+  BOOL b;
 
   paths
     = [NSMutableArray arrayWithArray: [path componentsSeparatedByString: @"/"]];
   while ([paths count] < 5)
     [paths addObject: @"NULL"];
   
-  aContext = [channel adaptorContext];
-  [aContext beginTransaction];
+  // start a transaction to modify sogo_folder_info
+  folderInfoChannelContext = [folderInfoChannel adaptorContext];
+  [folderInfoChannelContext beginTransaction];
+
+  // if we use a different database for resource tables, we also start a transaction
+  if (folderChannel != folderInfoChannel)
+    {
+      folderChannelContext = [folderChannel adaptorContext];
+      [folderChannelContext beginTransaction];
+      b = YES;
+    }
 
   tableName = [self baseTableNameWithUID: [paths objectAtIndex: 2]];
   quickTableName = [tableName stringByAppendingString: @"_quick"];
   aclTableName = [tableName stringByAppendingString: @"_acl"];
 
-  // TBD: fix SQL injection issues
-  baseURL
-    = [[folderInfoLocation absoluteString] stringByDeletingLastPathComponent];
-  
+  // holds the path to the database
+  baseURL = [url absoluteString];
+
+  if (!url)
+    baseURL = [[folderInfoLocation absoluteString] stringByDeletingLastPathComponent];
+
+  // TBD: fix SQL injection issues  
   sql = [NSString stringWithFormat: @"INSERT INTO %@"
 		  @"        (c_path, c_path1, c_path2, c_path3, c_path4,"
 		  @"         c_foldername, c_location, c_quick_location,"
@@ -765,29 +779,36 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 		  baseURL, quickTableName,
 		  baseURL, aclTableName,
 		  folderType];
-  error = [channel evaluateExpressionX: sql];
+  error = [folderInfoChannel evaluateExpressionX: sql];
   if (!error)
     {
-      specialQuery = [channel specialQueries];
+      specialQuery = [folderChannel specialQueries];
       createQuery = [specialQuery createFolderTableWithName: tableName];
-      error = [channel evaluateExpressionX: createQuery];
+      error = [folderChannel evaluateExpressionX: createQuery];
       if (!error)
 	{
 	  sql = [ftype sqlQuickCreateWithTableName: quickTableName];
-	  error = [channel evaluateExpressionX: sql];
+	  error = [folderChannel evaluateExpressionX: sql];
 	  if (!error)
             {
-              createQuery = [specialQuery
-                              createFolderACLTableWithName: aclTableName];
-              error = [channel evaluateExpressionX: createQuery];
+              createQuery = [specialQuery createFolderACLTableWithName: aclTableName];
+              error = [folderChannel evaluateExpressionX: createQuery];
             }
 	}
     }
 
   if (error)
-    [aContext rollbackTransaction];
+    {
+      [folderInfoChannelContext rollbackTransaction];
+      if (b)
+	[folderChannelContext rollbackTransaction];
+    }
   else
-    [aContext commitTransaction];
+    {
+      [folderInfoChannelContext commitTransaction];
+      if (b)
+	[folderChannelContext commitTransaction];
+    }
 
   return error;
 }
@@ -795,11 +816,12 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 - (NSException *) createFolderOfType: (NSString *) _type
 			    withName: (NSString*) _name
 			      atPath: (NSString *) _path
+			      andURL: (NSURL *) _url
 {
   // TBD: would be best to perform all operations as a single SQL statement.
-  GCSFolderType    *ftype;
-  EOAdaptorChannel *channel;
-  NSException      *error;
+  EOAdaptorChannel *folderChannel, *folderInfoChannel;
+  GCSFolderType *ftype;
+  NSException *error;
 
   // TBD: fix SQL injection issue!
   if ([self folderExistsAtPath: _path])
@@ -811,17 +833,34 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
       ftype = [self folderTypeWithName:_type];
       if (ftype)
 	{
-	  channel = [self acquireOpenChannel];
-	  if (channel)
+	  folderInfoChannel = [self acquireOpenChannel];
+	  folderChannel = nil;
+
+	  // We use the provided alternate database, if any. The content,
+	  // quick and acl tables will be created in there.
+	  if (_url)
+	    folderChannel = [[self channelManager] acquireOpenChannelForURL: _url];
+	  
+	  // Otherwise we use the same database used by sogo_folder_info
+	  if (!folderChannel)
+	    folderChannel = folderInfoChannel;
+
+	  if (folderChannel)
 	    {
 	      error = [self _reallyCreateFolderWithName: _name
 			    andFolderType: _type
-			    andType: ftype andChannel: channel
-			    atPath: _path];
+			    andType: ftype
+			    andFolderChannel: folderChannel
+			    andFolderInfoChannel: folderInfoChannel
+			    atPath: _path
+			    andURL: _url];
 	      if (error && [self folderExistsAtPath: _path])
 		error = nil;
 
-	      [self releaseChannel: channel];
+	      if (folderChannel != folderInfoChannel)
+		[self releaseChannel: folderChannel];
+
+	      [self releaseChannel: folderInfoChannel];
 	    }
 	  else
 	    error = [NSException exceptionWithName: @"GCSNoChannel"
