@@ -1,3 +1,9 @@
+2011-03-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tools/SOGoToolRemoveDoubles.m
+	(-detectDoublesFromRecords:withQuickField:): added a quick field
+	parameter to enable the use of other fields than just c_mail.
+
 2011-03-27  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Added the SOGoLocalStorageURL preference that allows

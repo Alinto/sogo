@@ -86,14 +86,15 @@
   return @"remove duplicate contacts from the specified user addressbook";
 }
 
-- (void) feedDoubleEmails: (NSMutableDictionary *) doubleEmails
-	       withRecord: (NSDictionary *) record
+- (void) feedDoubles: (NSMutableDictionary *) doubleEmails
+          withRecord: (NSDictionary *) record
+       andQuickField: (NSString *) field
 {
   NSString *recordEmail;
   NSMutableArray *recordList;
 
-  /* we want to match c_mail case-insensitively */
-  recordEmail = [[record objectForKey: @"c_mail"] uppercaseString];
+  /* we want to match the field value case-insensitively */
+  recordEmail = [[record objectForKey: field] uppercaseString];
   if ([recordEmail length])
     {
       recordList = [doubleEmails objectForKey: recordEmail];
@@ -117,19 +118,21 @@
       [doubleEmails removeObjectForKey: currentKey];
 }
 
-- (NSDictionary *) detectDoubleEmailsFromRecords: (NSArray *) records
+- (NSDictionary *) detectDoublesFromRecords: (NSArray *) records
+                             withQuickField: (NSString *) quickField
 {
-  NSMutableDictionary *doubleEmails;
+  NSMutableDictionary *doubles;
   unsigned int count, max;
 
-  doubleEmails = [NSMutableDictionary dictionaryWithCapacity: [records count]];
+  doubles = [NSMutableDictionary dictionaryWithCapacity: [records count]];
   max = [records count];
   for (count = 0; count < max; count++)
-    [self feedDoubleEmails: doubleEmails
-	  withRecord: [records objectAtIndex: count]];
-  [self cleanupSingleRecords: doubleEmails];
+    [self feedDoubles: doubles
+           withRecord: [records objectAtIndex: count]
+        andQuickField: quickField];
+  [self cleanupSingleRecords: doubles];
 
-  return doubleEmails;
+  return doubles;
 }
 
 - (NSArray *) fetchCardsInListsFromFolder: (GCSFolder *) folder
@@ -164,13 +167,19 @@
 	 usingChannel: (EOAdaptorChannel *) channel
 {
   NSString *delSql;
+  NSCalendarDate *now;
 
   /* We remove the records without regards to c_deleted because we really want
      to recover table space. */
 
-  delSql = [NSString stringWithFormat: @"DELETE FROM %@"
+  now = [NSCalendarDate date];
+  delSql = [NSString stringWithFormat: @"UPDATE %@"
+                     @" SET c_deleted = 1, c_lastmodified = %d,"
+                     @" c_content = ''"
 		     @" WHERE c_name = '%@'",
-		     tableName, recordName];
+		     tableName,
+                     (NSUInteger) [now timeIntervalSince1970],
+                     recordName];
   [channel evaluateExpressionX: delSql];
   delSql = [NSString stringWithFormat: @"DELETE FROM %@"
 		     @" WHERE c_name = '%@'",
@@ -451,6 +460,7 @@
 - (BOOL) removeDoublesFromFolder: (GCSFolder *) folder
 {
   NSArray *fields, *records, *recordsToRemove;
+  NSMutableDictionary *doubles;
   EOQualifier *qualifier;
   BOOL rc;
 
@@ -465,8 +475,14 @@
   if (records)
     {
       rc = YES;
-      recordsToRemove = [self detectRecordsToRemove:
-                                [self detectDoubleEmailsFromRecords: records]
+      doubles = [NSMutableDictionary dictionary];
+      [doubles addEntriesFromDictionary:
+                 [self detectDoublesFromRecords: records
+                                 withQuickField: @"c_mail"]];
+      [doubles addEntriesFromDictionary:
+                 [self detectDoublesFromRecords: records
+                                 withQuickField: @"c_cn"]];
+      recordsToRemove = [self detectRecordsToRemove: doubles
                                    withCardsInLists:
                                 [self fetchCardsInListsFromFolder: folder]];
       if ([recordsToRemove count])
