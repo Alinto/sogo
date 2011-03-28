@@ -1,6 +1,6 @@
 /* SOGoToolRestore.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2010 Inverse inc.
+ * Copyright (C) 2009-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -36,6 +36,7 @@
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoProductLoader.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserManager.h>
@@ -382,9 +383,10 @@ typedef enum SOGoToolRestoreMode {
 - (BOOL) createFolder: (NSString *) folder
                withFM: (GCSFolderManager *) fm
 {
+  NSString *folderType, *s;
   NSArray *pathElements;
   NSException *error;
-  NSString *folderType;
+  NSURL *url;
   BOOL rc;
 
   pathElements = [folder componentsSeparatedByString: @"/"];
@@ -393,9 +395,16 @@ typedef enum SOGoToolRestoreMode {
   else
     folderType = @"Appointment";
 
+  s = [[SOGoSystemDefaults sharedSystemDefaults] stringForKey: @"SOGoLocalStorageURL"];
+  url = nil;
+
+  if (s)
+    url = [NSURL URLWithString: s];
+
   error = [fm createFolderOfType: folderType
-                        withName: [pathElements objectAtIndex: 4]
-                          atPath: folder];
+	      withName: [pathElements objectAtIndex: 4]
+	      atPath: folder
+	      andURL: url];
   if (error)
     {
       rc = NO;
