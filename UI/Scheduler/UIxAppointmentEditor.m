@@ -1,8 +1,9 @@
 /* UIxAppointmentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -356,10 +357,10 @@
       untilDate = [rule untilDate];
       if (untilDate)
 	{
-	  // The until date must match the time of the start date
+	  // The until date must match the time of the end date
 	  NSCalendarDate *date;
 
-	  date = [[event startDate] copy];
+	  date = [[event endDate] copy];
 	  [date setTimeZone: timeZone];
 	  untilDate = [untilDate dateByAddingYears:0
 				 months:0

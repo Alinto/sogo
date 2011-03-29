@@ -1,6 +1,6 @@
 /* UIxAppointmentActions.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -35,6 +35,7 @@
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <Appointments/iCalEvent+SOGo.h>
 #import <Appointments/SOGoAppointmentObject.h>
 
 #import <Common/WODirectAction+SOGo.h>
@@ -98,6 +99,10 @@
           [event setStartDate: newStart];
           [event setEndDate: newEnd];
         }
+
+      if ([event hasRecurrenceRules])
+	[event updateRecurrenceRulesUntilDate: end];
+
       [co saveComponent: event];
 
       response = [self responseWith204];

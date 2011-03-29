@@ -1,4 +1,4 @@
-2011-03-29  francis  <flachapelle@inverse.ca>
+2011-03-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/iCalEvent+SOGo.m
 	(-updateRecurrenceRulesUntilDate:): shifts the "until dates" of
@@ -15,6 +15,13 @@
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-_flattenCycleRecord:forRange:intoArray:): when the event has a
 	timezone, the "until dates" of recurrence rules must be adjusted.
+
+	* UI/Scheduler/UIxAppointmentActions.m (-adjustAction): when
+	modifying an event, also modify the "until dates" of recurrence rules.
+
+	* UI/Scheduler/UIxAppointmentEditor.m (-_adjustRecurrentRules):
+	the "until date" of finite recurrence rules must be based on the
+	event end date, not the start date.
 
 2011-03-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
