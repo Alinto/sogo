@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2010 Inverse inc.
+  Copyright (C) 2011 Inverse inc.
 
   This file is part of SOPE.
 
@@ -78,6 +78,14 @@
   return [self childrenWithTag: @"rrule"];
 }
 
+- (NSArray *) recurrenceRulesWithTimeZone: (iCalTimeZone *) timezone
+{
+  NSArray *rules;
+
+  rules = [self recurrenceRules];
+  return [self rules: rules withTimeZone: timezone];
+}
+
 - (void) removeAllExceptionRules
 {
   [self removeChildren: [self exceptionRules]];
@@ -102,6 +110,57 @@
 - (NSArray *) exceptionRules
 {
   return [self childrenWithTag: @"exrule"];
+}
+
+- (NSArray *) exceptionRulesWithTimeZone: (iCalTimeZone *) timezone
+{
+  NSArray *rules;
+
+  rules = [self exceptionRules];
+  return [self rules: rules withTimeZone: timezone];
+}
+
+/**
+ * Returns a new set of rules, but with "until dates" adjusted to the 
+ * specified timezone.
+ * Used when calculating a recurrence/exception rule.
+ * @param theRules the iCalRecurrenceRule instances
+ * @param theTimeZone the timezone of the entity.
+ * @see recurrenceRulesWithTimeZone:
+ * @see exceptionRulesWithTimeZone:
+ * @return a new array of iCalRecurrenceRule instances, adjusted for the timezone.
+ */
+- (NSArray *) rules: (NSArray *) theRules withTimeZone: (iCalTimeZone *) theTimeZone
+{
+  NSArray *rules;
+  NSCalendarDate *untilDate;
+  NSMutableArray *fixedRules;
+  iCalRecurrenceRule *currentRule;
+  unsigned int max, count;
+
+  rules = theRules;
+  if (theTimeZone)
+    {
+      max = [rules count];
+      if (max)
+	{
+	  fixedRules = [NSMutableArray arrayWithCapacity: max];
+	  for (count = 0; count < max; count++)
+	    {
+	      currentRule = [rules objectAtIndex: count];
+	      untilDate = [currentRule untilDate];
+	      if (untilDate)
+		{
+		  untilDate = [theTimeZone computedDateForDate: untilDate];
+		  [currentRule setUntilDate: untilDate];
+		}
+	      [fixedRules addObject: currentRule];
+	    }
+	  rules = fixedRules;
+	}
+    }
+
+  return rules;
 }
 
 - (void) removeAllExceptionDates
@@ -163,13 +222,13 @@
 }
 
 /**
- * Returns the exception dates for the event, but adjusted to the event timezone.
+ * Returns the exception dates for the entity, but adjusted to the entity timezone.
  * Used when calculating a recurrence rule.
- * @param theTimeZone the timezone of the event.
+ * @param theTimeZone the timezone of the entity.
  * @see [iCalTimeZone computedDatesForStrings:]
- * @return the exception dates for the event, adjusted to the event timezone.
+ * @return the exception dates, adjusted to the timezone.
  */
-- (NSArray *) exceptionDatesWithEventTimeZone: (iCalTimeZone *) theTimeZone
+- (NSArray *) exceptionDatesWithTimeZone: (iCalTimeZone *) theTimeZone
 {
   NSArray *dates, *exDates;
   NSEnumerator *dateList;

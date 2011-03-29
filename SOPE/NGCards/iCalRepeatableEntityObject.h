@@ -47,17 +47,21 @@
 - (void)setRecurrenceRules:(NSArray *)_rrule;
 - (BOOL)hasRecurrenceRules;
 - (NSArray *)recurrenceRules;
+- (NSArray *)recurrenceRulesWithTimeZone: (iCalTimeZone *) timezone;
 
 - (void)removeAllExceptionRules;
 - (void)addToExceptionRules:(id)_rrule;
 - (BOOL)hasExceptionRules;
 - (NSArray *)exceptionRules;
+- (NSArray *)exceptionRulesWithTimeZone: (iCalTimeZone *) timezone;
 
 - (void)removeAllExceptionDates;
 - (void)addToExceptionDates:(NSCalendarDate *)_date;
 - (BOOL)hasExceptionDates;
 - (NSArray *)exceptionDates;
-- (NSArray *)exceptionDatesWithEventTimeZone:(iCalTimeZone*)theTimeZone;
+- (NSArray *)exceptionDatesWithTimeZone: (iCalTimeZone*) theTimeZone;
+
+- (NSArray *) rules: (NSArray *) theRules withTimeZone: (iCalTimeZone *) theTimeZone;
 
 - (BOOL)isRecurrent;
 - (BOOL)isWithinCalendarDateRange:(NGCalendarDateRange *)_range

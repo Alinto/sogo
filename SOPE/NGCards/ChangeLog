@@ -1,3 +1,13 @@
+2011-03-29  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalRepeatableEntityObject.m (-rules:withEventTimeZone:): new
+	method that returns a new set of rules with their "untill dates"
+	adjusted to the specified timezone.
+	(-recurrenceRulesWithTimeZone:): new method that returns the
+	recurrence rules adjusted to the specified timezone.
+	(-exceptionRulesWithTimeZone:): new method that returns the
+	exception rules adjusted to the specified timezone.
+
 2011-03-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalRepeatableEntityObject.m (-removeAllExceptionDates): don't
