@@ -133,6 +133,9 @@
 - (BOOL) _isPassword: (NSString *) plainPassword
              equalTo: (NSString *) encryptedPassword
 {
+  if (!plainPassword || !encryptedPassword)
+    return NO;
+
   if ([_userPasswordAlgorithm caseInsensitiveCompare: @"none"] == NSOrderedSame)
     {
       return [plainPassword isEqualToString: encryptedPassword];
