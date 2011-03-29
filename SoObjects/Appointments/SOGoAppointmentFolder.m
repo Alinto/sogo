@@ -45,6 +45,7 @@
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRecurrenceCalculator.h>
+#import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalTimeZonePeriod.h>
 #import <NGCards/NSString+NGCards.h>
@@ -748,24 +749,14 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSDictionary *oldRecord;
   NGCalendarDateRange *newRecordRange;
   int recordIndex;
-  signed int daylightOffset;
 
   newRecord = nil;
   recurrenceId = [component recurrenceId];
   
-  if ([timeZone isDaylightSavingTimeForDate: recurrenceId] != [timeZone isDaylightSavingTimeForDate: [fir startDate]])
-    {
-      // For the event's recurrence id, compute the daylight saving time
-      // offset with respect to the first occurrence of the recurring event.
-      daylightOffset = (signed int)[timeZone secondsFromGMTForDate: [fir startDate]]
-	- (signed int)[timeZone secondsFromGMTForDate: recurrenceId];
-      recurrenceId = [recurrenceId dateByAddingYears:0 months:0 days:0 hours:0 minutes:0 seconds:daylightOffset];
-    }
-
   if ([dateRange containsDate: recurrenceId])
     {
       recordIndex = [self _indexOfRecordMatchingDate: recurrenceId
-			  inArray: ma];
+					     inArray: ma];
       if (recordIndex > -1)
 	{
 	  startDate = [component startDate];
@@ -793,8 +784,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	}
       else
 	[self errorWithFormat:
-		@"missing exception record for recurrence-id: %@",
-	      recurrenceId];
+		@"missing exception record for recurrence-id %@ (uid %@)",
+	      recurrenceId, [component uid]];
     }
   else
     {
@@ -822,6 +813,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   content = [row objectForKey: @"c_content"];
   if ([content length])
     {
+      // TODO : c_content could have already been parsed.
+      // @see _flattenCycleRecord:forRange:intoArray:
       elements = [iCalCalendar parseFromSource: content];
       if ([elements count])
 	{
@@ -830,9 +823,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	  for (count = 1; count < max; count++)
 	    [self _appendCycleException: [components objectAtIndex: count]
 		  firstInstanceCalendarDateRange: fir
-		  fromRow: row
-		  forRange: dateRange
-		  toArray: ma];
+				fromRow: row
+			       forRange: dateRange
+				toArray: ma];
 	}
     }
 }
@@ -852,7 +845,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableDictionary *row, *fixedRow;
   NSMutableArray *records;
   NSDictionary *cycleinfo;
-  NGCalendarDateRange *firstRange, *oneRange;
+  NGCalendarDateRange *firstRange, *recurrenceRange, *oneRange;
   NSArray *rules, *exRules, *exDates, *ranges;
   NSArray *elements, *components;
   NSString *content;
@@ -860,7 +853,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   id firstStartDate, firstEndDate;
   NSCalendarDate *checkStartDate, *checkEndDate;
   iCalTimeZone *eventTimeZone;
-  unsigned i, count, offset;
+  unsigned count, max, offset;
 
   records = [NSMutableArray array];
   ranges = nil;
@@ -883,7 +876,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   rules = [cycleinfo objectForKey: @"rules"];
   exRules = [cycleinfo objectForKey: @"exRules"];
   exDates = [cycleinfo objectForKey: @"exDates"];
-
+  
   row = [self fixupRecord: theRecord];
   [row removeObjectForKey: @"c_cycleinfo"];
   [row setObject: sharedYes forKey: @"isRecurrentEvent"];
@@ -897,7 +890,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	  components = [[elements objectAtIndex: 0] events];
 	  if ([components count])
 	    {
-	      // Retrieve the range of the first event
+	      // Retrieve the range of the first/master event
 	      component = [components objectAtIndex: 0];
 	      firstStartDate = [component uniqueChildWithTag: @"dtstart"];
 	      firstEndDate = [component uniqueChildWithTag: @"dtend"];
@@ -910,27 +903,37 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		  // Adjust the range to check with respect to the event timezone (extracted from the start date)
 		  checkStartDate = [eventTimeZone computedDateForDate: [theRange startDate]];
 		  checkEndDate = [eventTimeZone computedDateForDate: [theRange endDate]];
-		  theRange = [NGCalendarDateRange calendarDateRangeWithStartDate: checkStartDate
-									 endDate: checkEndDate];
+		  recurrenceRange = [NGCalendarDateRange calendarDateRangeWithStartDate: checkStartDate
+										endDate: checkEndDate];
+
+		  // Adjust the exception dates
 		  exDates = [eventTimeZone computedDatesForStrings: exDates];
+		  
+		  // Adjust the recurrence rules "until" dates
+		  rules = [component recurrenceRulesWithTimeZone: eventTimeZone];
+		  exRules = [component exceptionRulesWithTimeZone: eventTimeZone];
 		}
-	      else if ([[theRecord objectForKey: @"c_isallday"] boolValue])
+	      else 
 		{
-		  // The event lasts all-day and has no timezone (floating); we convert the range of the first event
-		  // to the user's timezone
-		  offset = [timeZone secondsFromGMTForDate: [firstRange startDate]];
-		  firstStartDate = (NSCalendarDate*)[[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+		  recurrenceRange = theRange;
+		  if ([[theRecord objectForKey: @"c_isallday"] boolValue])
+		    {
+		      // The event lasts all-day and has no timezone (floating); we convert the range of the first event
+		      // to the user's timezone
+		      offset = [timeZone secondsFromGMTForDate: [firstRange startDate]];
+		      firstStartDate = (NSCalendarDate*)[[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+											  seconds:-offset];
+		      firstEndDate = (NSCalendarDate*)[[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
 										      seconds:-offset];
-		  firstEndDate = (NSCalendarDate*)[[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-										   seconds:-offset];
-		  [firstStartDate setTimeZone: timeZone];
-		  [firstEndDate setTimeZone: timeZone];
-		  firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
-									   endDate: firstEndDate];
+		      [firstStartDate setTimeZone: timeZone];
+		      [firstEndDate setTimeZone: timeZone];
+		      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
+									       endDate: firstEndDate];
+		    }
 		}
 
 	      // Calculate the occurrences for the given range
-	      ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: theRange
+	      ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: recurrenceRange
 							  firstInstanceCalendarDateRange: firstRange
 									 recurrenceRules: rules
 									  exceptionRules: exRules
@@ -939,10 +942,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	}
     }
 
-  count = [ranges count];
-  for (i = 0; i < count; i++)
+  max = [ranges count];
+  for (count = 0; count < max; count++)
     {
-      oneRange = [ranges objectAtIndex: i];
+      oneRange = [ranges objectAtIndex: count];
       fixedRow = [self fixupCycleRecord: row
 			     cycleRange: oneRange
 		       firstInstanceCalendarDateRange: firstRange

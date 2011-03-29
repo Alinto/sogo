@@ -161,9 +161,9 @@
       // Calculate the occurrences for the given date
       ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: checkRange
 						  firstInstanceCalendarDateRange: firstRange
-								 recurrenceRules: [self recurrenceRules]
-								  exceptionRules: [self exceptionRules]
-								  exceptionDates: [self exceptionDatesWithEventTimeZone: eventTimeZone]];
+								 recurrenceRules: [self recurrenceRulesWithTimeZone: eventTimeZone]
+								  exceptionRules: [self exceptionRulesWithTimeZone: eventTimeZone]
+								  exceptionDates: [self exceptionDatesWithTimeZone: eventTimeZone]];
       doesOccur = [ranges dateRangeArrayContainsDate: startDate];
     }
 

@@ -593,9 +593,9 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
     }
 }
 
-- (void) saveComponent: (iCalRepeatableEntityObject *) newObject
+- (void) updateComponent: (iCalRepeatableEntityObject *) newObject
 {
-  NSString *newiCalString, *newUid;
+  NSString *newUid;
 
   if (!isNew
       && [newObject isRecurrent])
@@ -625,6 +625,11 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
       [eaMgr handleAlarmsInCalendar: [newObject parent]
 	     fromComponent: self];
     }
+}
+
+- (void) saveComponent: (iCalRepeatableEntityObject *) newObject
+{
+  NSString *newiCalString;
 
   newiCalString = [[newObject parent] versitString];
 

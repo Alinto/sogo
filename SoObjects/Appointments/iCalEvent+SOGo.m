@@ -24,6 +24,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValue.h>
 
 #import <NGExtensions/NGCalendarDateRange.h>
@@ -35,6 +36,7 @@
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalTrigger.h>
 #import <NGCards/NSString+NGCards.h>
 
@@ -286,4 +288,55 @@
   return [[self endDate] timeIntervalSinceDate: [self startDate]];
 }
 
+/**
+ * Shift the "until dates" of the recurrence rules of the event 
+ * with respect to the previous end date of the event.
+ * @param previousEndDate the previous end date of the event
+ */
+- (void) updateRecurrenceRulesUntilDate: (NSCalendarDate *) previousEndDate
+{
+  iCalRecurrenceRule *rule;
+  NSEnumerator *rules;
+  NSCalendarDate *untilDate;
+  int offset;
+
+  // Recurrence rules
+  rules = [[self recurrenceRules] objectEnumerator];
+  while ((rule = [rules nextObject]))
+    {
+      untilDate = [rule untilDate];
+      if (untilDate)
+	{
+	  // The until date must match the time of the end date
+	  offset = [[self endDate] timeIntervalSinceDate: previousEndDate];
+	  untilDate = [untilDate dateByAddingYears:0
+					    months:0
+					      days:0
+					     hours:0
+					   minutes:0
+					   seconds:offset];
+	  [rule setUntilDate: untilDate];
+	}
+    }
+
+  // Exception rules
+  rules = [[self exceptionRules] objectEnumerator];
+  while ((rule = [rules nextObject]))
+    {
+      untilDate = [rule untilDate];
+      if (untilDate)
+	{
+	  // The until date must match the time of the end date
+	  offset = [[self endDate] timeIntervalSinceDate: previousEndDate];
+	  untilDate = [untilDate dateByAddingYears:0
+					    months:0
+					      days:0
+					     hours:0
+					   minutes:0
+					   seconds:offset];
+	  [rule setUntilDate: untilDate];
+	}
+    }
+}
+  
 @end

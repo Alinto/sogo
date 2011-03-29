@@ -1,8 +1,9 @@
 /* iCalEvent+SOGo.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +32,7 @@
 
 - (BOOL) isStillRelevant;
 - (NSMutableDictionary *) quickRecord;
+- (void) updateRecurrenceRulesUntilDate: (NSCalendarDate *) previousEndDate;
 
 @end
 

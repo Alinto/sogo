@@ -564,9 +564,9 @@
 
   [self expandGroupsInEvent: newEvent];
 
-  // We first save the event. It is important to this initially
-  // as the event's UID might get modified in SOGoCalendarComponent: -saveComponent:
-  [super saveComponent: newEvent];
+  // We first update the event. It is important to this initially
+  // as the event's UID might get modified.
+  [super updateComponent: newEvent];
 
   if ([self isNew])
     {
@@ -606,14 +606,11 @@
       hasOrganizer = [[[oldMasterEvent organizer] email] length];
 
       if (!hasOrganizer || [oldMasterEvent userIsOrganizer: ownerUser])
-	{
-	  // The owner is the organizer of the event; handle the modifications
-	  [self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent];
-	  
-	  // The sequence has possibly been increased -- resave the event.
-	  [super saveComponent: newEvent];
-	}
+	// The owner is the organizer of the event; handle the modifications
+	[self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent];
     }
+
+  [super saveComponent: newEvent];
 
   [fullCalendar release];
   fullCalendar = nil;

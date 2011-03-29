@@ -1,3 +1,21 @@
+2011-03-29  francis  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/iCalEvent+SOGo.m
+	(-updateRecurrenceRulesUntilDate:): shifts the "until dates" of
+	the recurrence rules of the event with respect to the previous end
+	date of the event.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	(-updateComponent: ): splitted method "saveComponent:" to avoid
+	saving the component multiple times during the same session.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m (-saveComponent):
+	make use of the new "updateComponent" method mentioned above.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-_flattenCycleRecord:forRange:intoArray:): when the event has a
+	timezone, the "until dates" of recurrence rules must be adjusted.
+
 2011-03-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tools/SOGoToolRemoveDoubles.m
@@ -134,7 +152,7 @@
 	* SoObjects/Appointments/iCalEvent+SOGo.m (-quickRecord): an all-day
 	event usually doesn't have a timezone. However, if it does, we must
 	convert its dates to GMT. All-day events are "floating", in the
-	sense that are timezone-independant.
+	sense that they are timezone-independant.
 
 2011-03-17  Francis Lachapelle  <flachapelle@inverse.ca>
 
