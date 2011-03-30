@@ -219,7 +219,9 @@ genConfigMake() {
 
   cfgwrite "TOPDIR:=$TOPDIR"
   cfgwrite ""
-  
+
+  cfgwrite "NEEDS_GUI=no"
+
   #cfgwrite "# print on the cmdline that this file is being used"
   #cfgwrite "all :: "
   #cfgwrite "	@echo Local GNUstep config.make is active"
