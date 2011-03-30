@@ -32,6 +32,7 @@
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalTimeZone.h>
 
+#import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 
@@ -220,7 +221,9 @@ static NSArray *contentFields = nil;
   calendar = [iCalCalendar groupWithTag: @"vcalendar"];
   [calendar setMethod: @"PUBLISH"];
   [calendar setVersion: @"2.0"];
-  [calendar setProdID: @"-//Inverse inc./SOGo 1.0//EN"];
+  [calendar setProdID: [NSString stringWithFormat:
+                                   @"-//Inverse inc./SOGo %@//EN",
+                                 SOGoVersion]];
   [calendar addChildren: [timeZones allValues]];
   [calendar addChildren: components];
 

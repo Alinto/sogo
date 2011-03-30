@@ -31,6 +31,7 @@
 #import <NGCards/iCalFreeBusy.h>
 #import <NGCards/iCalPerson.h>
 
+#import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -106,7 +107,9 @@
   user = [SOGoUser userWithLogin: login];
 
   calendar = [iCalCalendar groupWithTag: @"vcalendar"];
-  [calendar setProdID: @"//Inverse inc./SOGo 1.0//EN"];
+  [calendar setProdID: [NSString stringWithFormat:
+                                   @"-//Inverse inc./SOGo %@//EN",
+                                 SOGoVersion]];
   [calendar setVersion: @"2.0"];
   if (method)
     [calendar setMethod: method];

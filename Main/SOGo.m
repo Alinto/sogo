@@ -106,9 +106,8 @@ static BOOL debugLeaks;
   SoClassSecurityInfo *sInfo;
   NSArray *basicRoles;
 
-  [self logWithFormat: @"version %d.%d.%d (build %@) -- starting",
-        SOGO_MAJOR_VERSION, SOGO_MINOR_VERSION, SOGO_SUBMINOR_VERSION,
-        SOGoBuildDate];
+  [self logWithFormat: @"version %@ (build %@) -- starting",
+        SOGoVersion, SOGoBuildDate];
 
   defaults = [SOGoSystemDefaults sharedSystemDefaults];
   doCrashOnSessionCreate = [defaults crashOnSessionCreate];

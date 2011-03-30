@@ -24,5 +24,6 @@
 #define BUILD_H
 
 extern NSString *SOGoBuildDate;
+extern NSString *SOGoVersion;
 
 #endif /* BUILD_H */

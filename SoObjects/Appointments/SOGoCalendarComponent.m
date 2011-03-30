@@ -47,6 +47,7 @@
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoGroup.h>
@@ -428,7 +429,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 {
   iCalRepeatableEntityObject *newComponent;
   iCalCalendar **calendar, *returnedCopy;
-  NSString *iCalString, *tag;
+  NSString *iCalString, *tag, *prodID;
 
   if (secure)
     calendar = &safeCalendar;
@@ -454,7 +455,10 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 	    {
 	      ASSIGN (*calendar, [iCalCalendar groupWithTag: @"vcalendar"]);
 	      [*calendar setVersion: @"2.0"];
-	      [*calendar setProdID: @"-//Inverse inc./SOGo 1.0//EN"];
+              prodID = [NSString stringWithFormat:
+                                   @"-//Inverse inc./SOGo %@//EN",
+                                 SOGoVersion];
+              [*calendar setProdID: prodID];
 	      tag = [[self componentTag] uppercaseString];
 	      newComponent = [[*calendar classForTag: tag]
 			       groupWithTag: tag];

@@ -38,6 +38,7 @@
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
@@ -399,10 +400,7 @@ static NSString *mailETag = nil;
   [map release];
 
   mdnPartMessage = [[NSMutableString alloc] initWithCapacity: 100];
-  [mdnPartMessage appendFormat: @"Reporting-UA: SOGoMail %d.%d.%d\n",
-                  SOGO_MAJOR_VERSION,
-                  SOGO_MINOR_VERSION,
-                  SOGO_SUBMINOR_VERSION];
+  [mdnPartMessage appendFormat: @"Reporting-UA: SOGoMail %@\n", SOGoVersion];
   [mdnPartMessage appendFormat: @"Final-Recipient: rfc822;%@\n",
                   [self _matchingIdentityEMail]];
   messageId = [[self clientObject] messageId];

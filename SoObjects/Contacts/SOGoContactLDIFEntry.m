@@ -28,6 +28,8 @@
 #import <NGCards/NGVCard.h>
 #import <NGCards/CardVersitRenderer.h>
 
+#import <SOGo/SOGoBuild.h>
+
 #import "SOGoContactGCSEntry.h"
 #import "SOGoContactLDIFEntry.h"
 
@@ -115,7 +117,9 @@
     {
       vcard = [[NGVCard alloc] initWithUid: [self nameInContainer]];
       [vcard setVClass: @"PUBLIC"];
-      [vcard setProdID: @"-//Inverse inc./SOGo 1.0//EN"];
+      [vcard setProdID: [NSString
+                          stringWithFormat: @"-//Inverse inc./SOGo %@//EN",
+                          SOGoVersion]];
       [vcard setProfile: @"VCARD"];
       info = [ldifEntry objectForKey: @"c_cn"];
       if (![info length])

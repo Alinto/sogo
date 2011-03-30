@@ -1,5 +1,7 @@
 2011-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoBuild.m: export new SOGoVersion NSString.
+
 	* Main/SOGo.m (+initialize): moved most initialization code from
 	-init and -run here since this method is invoked before forking
 	and data memory is in "copy-on-write" mode, slightly reducing
