@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2005-2010 Inverse inc.
+  Copyright (C) 2005-2011 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo
@@ -40,6 +40,8 @@
 #import <NGObjWeb/WOResponse.h>
 
 #import <NGExtensions/NGBundleManager.h>
+#import <NGExtensions/NGLogger.h>
+#import <NGExtensions/NGLoggerManager.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSProcessInfo+misc.h>
@@ -82,26 +84,49 @@ static BOOL trustProxyAuthentication;
 static BOOL debugLeaks;
 #endif
 
++ (void) logWithFormat: (NSString *) format, ...
+{
+  static NGLogger *sogoLogger = nil;
+  NGLoggerManager *lmgr;
+  va_list ap;
+  
+  if (!sogoLogger)
+    {
+      lmgr = [NGLoggerManager defaultLoggerManager];
+      sogoLogger = [lmgr loggerForClass: [self class]];
+    }
+  va_start (ap, format);
+  [sogoLogger logWithFormat: format arguments:ap];
+  va_end (ap);
+}
+
 + (void) initialize
 {
   SOGoSystemDefaults *defaults;
   SoClassSecurityInfo *sInfo;
   NSArray *basicRoles;
 
+  [self logWithFormat: @"version %d.%d.%d (build %@) -- starting",
+        SOGO_MAJOR_VERSION, SOGO_MINOR_VERSION, SOGO_SUBMINOR_VERSION,
+        SOGoBuildDate];
+
   defaults = [SOGoSystemDefaults sharedSystemDefaults];
   doCrashOnSessionCreate = [defaults crashOnSessionCreate];
   debugRequests = [defaults debugRequests];
 #ifdef GNUSTEP_BASE_LIBRARY
   debugLeaks = [defaults debugLeaks];
+  if (debugLeaks)
+    [self logWithFormat: @"activating leak debugging"];
 #endif
 
   /* vMem size check - default is 384MB */
   vMemSizeLimit = [defaults vmemLimit];
-  
+  if (vMemSizeLimit > 0)
+    [self logWithFormat: @"vmem size check enabled: shutting down app when "
+          @"vmem > %d MB", vMemSizeLimit];
+
   /* SoClass security declarations */
   sInfo = [self soClassSecurityInfo];
-  /* require View permission to access the root (bound to authenticated ...) */
-//   [sInfo declareObjectProtected: SoPerm_View];
 
   /* to allow public access to all contained objects (subkeys) */
   [sInfo setDefaultAccess: @"allow"];
@@ -113,6 +138,14 @@ static BOOL debugLeaks;
 
   trustProxyAuthentication = [defaults trustProxyAuthentication];
   useRelativeURLs = [defaults useRelativeURLs];
+
+  /* ensure core SoClass'es are setup */
+  [$(@"SOGoObject") soClass];
+  [$(@"SOGoContentObject") soClass];
+  [$(@"SOGoFolder") soClass];
+
+  /* load products */
+  [[SOGoProductLoader productLoader] loadAllProducts];
 }
 
 - (id) init
@@ -121,14 +154,6 @@ static BOOL debugLeaks;
     {
       WOResourceManager *rm;
 
-      /* ensure core SoClass'es are setup */
-      [$(@"SOGoObject") soClass];
-      [$(@"SOGoContentObject") soClass];
-      [$(@"SOGoFolder") soClass];
-
-      /* load products */
-      [[SOGoProductLoader productLoader] loadAllProducts];
-    
       /* setup resource manager */
       rm = [[WEResourceManager alloc] init];
       [self setResourceManager:rm];
@@ -243,15 +268,6 @@ static BOOL debugLeaks;
 
 - (void) run
 {
-  [self logWithFormat: @"version %d.%d.%d (build %@) -- starting",
-        SOGO_MAJOR_VERSION, SOGO_MINOR_VERSION, SOGO_SUBMINOR_VERSION,
-        SOGoBuildDate];
-  if (debugLeaks)
-    [self logWithFormat: @"activating leak debugging"];
-  if (vMemSizeLimit > 0)
-    [self logWithFormat: @"vmem size check enabled: shutting down app when "
-          @"vmem > %d MB", vMemSizeLimit];
-
   if (!hasCheckedTables)
     {
       hasCheckedTables = YES;
