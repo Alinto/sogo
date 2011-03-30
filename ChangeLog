@@ -1,3 +1,9 @@
+2011-03-30  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-fetchFreeBusyInfosFrom:to:): we must fetch the c_content in
+	order to flatten cyclic events.
+
 2011-03-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/iCalEvent+SOGo.m

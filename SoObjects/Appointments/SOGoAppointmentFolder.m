@@ -882,7 +882,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [row setObject: sharedYes forKey: @"isRecurrentEvent"];
 
   content = [theRecord objectForKey: @"c_content"];
-  if ([content length])
+  if ([content isNotNull])
     {
       elements = [iCalCalendar parseFromSource: content];
       if ([elements count])
@@ -941,7 +941,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	    }
 	}
     }
-
+  else
+    [self errorWithFormat:@"cyclic record doesn't have content -> %@", theRecord];
+  
   max = [ranges count];
   for (count = 0; count < max; count++)
     {
@@ -1125,6 +1127,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       qualifier = [EOQualifier qualifierWithQualifierFormat:
                                   [where substringFromIndex: 4]];
       records = [folder fetchFields: fields matchingQualifier: qualifier];
+
       if (records)
         {
           if (r)
@@ -1144,7 +1147,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
             {
               if (r)
                 records = [self _flattenCycleRecords: records fetchRange: r];
-              if (ma)
+	      if (ma)
                 [ma addObjectsFromArray: records];
               else
                 ma = [NSMutableArray arrayWithArray: records];
@@ -2226,7 +2229,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   static NSArray *infos = nil; // TODO: move to a plist file
   
   if (!infos)
-    infos = [[NSArray alloc] initWithObjects: @"c_partmails", @"c_partstates",
+    infos = [[NSArray alloc] initWithObjects: @"c_content", @"c_partmails", @"c_partstates",
                              @"c_isopaque", @"c_status", @"c_cycleinfo", @"c_orgmail", nil];
 
   // We MUST include the protected information when checking for freebusy info as
