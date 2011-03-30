@@ -13,7 +13,8 @@ Enhancements
 - contact lists now have their own icons in the contacts web module
 Bug Fixes
 - restored the automatic expunge of IMAP folders
-- various other mutli-domain fixes
+- various mutli-domain fixes
+- various timezone fixes
 - fixed various issues occurring with non-ascii strings received from DAV
   clients
 - sogo-tool: now works in multi-domain environments
