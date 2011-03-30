@@ -314,7 +314,7 @@
     if (!response)
       {
 	// We return the inbox quota
-	account = [co container];
+	account = [co mailAccountFolder];
 	data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
 	response = [self responseWithStatus: 200
 				  andString: [data jsonRepresentation]];
@@ -492,7 +492,7 @@
       [co flushMailCaches];
 
       // We return the inbox quota
-      account = [co container];
+      account = [co mailAccountFolder];
       data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
       response = [self responseWithStatus: 200
 				andString: [data jsonRepresentation]];
@@ -533,7 +533,7 @@
   else
     {
       // We return the inbox quota
-      account = [co container];
+      account = [co mailAccountFolder];
       data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
       response = [self responseWithStatus: 200
 				andString: [data jsonRepresentation]];

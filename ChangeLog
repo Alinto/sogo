@@ -1,5 +1,10 @@
 2011-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m (-copyMessagesAction)
+	(-expungeAction, -emptyTrashAction): use "-mailAccountFolder" in
+	order to retrieve the account folder as the clientObject may
+	actually be a nested folder...
+
 	* UI/WebServerResources/UIxTaskEditor.js (initializeStatusLine):
 	bind onStatusListChange as callback to "change" rather than
 	"mouseup" as it otherwise fails to be invoked on Chrome.
