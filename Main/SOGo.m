@@ -100,7 +100,7 @@ static BOOL debugLeaks;
   va_end (ap);
 }
 
-+ (void) initialize
++ (void) applicationWillStart
 {
   SOGoSystemDefaults *defaults;
   SoClassSecurityInfo *sInfo;

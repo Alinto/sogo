@@ -15,6 +15,7 @@
 	-init and -run here since this method is invoked before forking
 	and data memory is in "copy-on-write" mode, slightly reducing
 	memory usage of combined SOGo processes.
+	(+applicationWillStart): new method replacing +initialize.
 
 2011-03-30  Francis Lachapelle  <flachapelle@inverse.ca>
 
