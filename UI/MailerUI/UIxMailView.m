@@ -66,9 +66,9 @@ static NSString *mailETag = nil;
 + (void) initialize
 {
   mailETag = [[NSString alloc] initWithFormat:@"\"imap4url_%d_%d_%03d\"",
-                               UIX_MAILER_MAJOR_VERSION,
-                               UIX_MAILER_MINOR_VERSION,
-                               UIX_MAILER_SUBMINOR_VERSION];
+                               SOGO_MAJOR_VERSION,
+                               SOGO_MINOR_VERSION,
+                               SOGO_SUBMINOR_VERSION];
   NSLog (@"Note: using constant etag for mail viewer: '%@'", mailETag);
 }
 
@@ -400,9 +400,9 @@ static NSString *mailETag = nil;
 
   mdnPartMessage = [[NSMutableString alloc] initWithCapacity: 100];
   [mdnPartMessage appendFormat: @"Reporting-UA: SOGoMail %d.%d.%d\n",
-                  UIX_MAILER_MAJOR_VERSION,
-                  UIX_MAILER_MINOR_VERSION,
-                  UIX_MAILER_SUBMINOR_VERSION];
+                  SOGO_MAJOR_VERSION,
+                  SOGO_MINOR_VERSION,
+                  SOGO_SUBMINOR_VERSION];
   [mdnPartMessage appendFormat: @"Final-Recipient: rfc822;%@\n",
                   [self _matchingIdentityEMail]];
   messageId = [[self clientObject] messageId];
