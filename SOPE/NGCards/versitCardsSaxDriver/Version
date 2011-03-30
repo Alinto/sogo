@@ -1,7 +1,0 @@
-# Version file
-
-# SOPE version:
-MAJOR_VERSION=4
-MINOR_VERSION=7
-
-SUBMINOR_VERSION:=24

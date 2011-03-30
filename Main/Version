@@ -1,7 +1,0 @@
-# Version file
-
-SUBMINOR_VERSION:=5
-
-# v0.9.32 requires libSOGo         v0.9.57
-# v0.9.24 requires libWEExtensions v4.5.67
-# v0.9.16 requires libNGExtensions v4.5.136
