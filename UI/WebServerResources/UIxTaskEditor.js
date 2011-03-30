@@ -296,8 +296,9 @@ function onStatusListChange(event) {
 
 function initializeStatusLine() {
   var statusList = $("statusList");
-  if (statusList)
-      statusList.observe("mouseup", onStatusListChange, false);
+  if (statusList) {
+      statusList.observe("change", onStatusListChange);
+  }
 }
 
 function onTaskEditorLoad() {

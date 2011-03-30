@@ -1,5 +1,9 @@
 2011-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxTaskEditor.js (initializeStatusLine):
+	bind onStatusListChange as callback to "change" rather than
+	"mouseup" as it otherwise fails to be invoked on Chrome.
+
 	* SoObjects/SOGo/SOGoBuild.m: export new SOGoVersion NSString.
 
 	* Main/SOGo.m (+initialize): moved most initialization code from
