@@ -18,7 +18,6 @@ PreferencesUI_OBJC_FILES =		\
 	UIxAdditionalPreferences.m
 
 PreferencesUI_RESOURCE_FILES += \
-	Version		\
 	product.plist	
 
 PreferencesUI_RESOURCE_FILES += \

@@ -48,7 +48,6 @@ SchedulerUI_OBJC_FILES =		\
 	UIxOccurenceDialog.m
 
 SchedulerUI_RESOURCE_FILES += \
-	Version		\
 	product.plist	
 
 SchedulerUI_RESOURCE_FILES += \

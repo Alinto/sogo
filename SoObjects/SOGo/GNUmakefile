@@ -2,14 +2,13 @@
 
 include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
--include ../../Version
--include ./Version
+include ../../Version
 
 FRAMEWORK_NAME = SOGo
 
 SOGo_INSTALL_DIR = $(SOGO_LIBDIR)
 
-SOGo_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+SOGo_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
 
 SOGo_HEADER_FILES = \
 	SOGoBuild.h \

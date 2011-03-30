@@ -15,7 +15,6 @@ AdministrationUI_OBJC_FILES =		\
 	UIxAdministrationFilterPanel.m
 
 AdministrationUI_RESOURCE_FILES += \
-	Version		\
 	product.plist	
 
 AdministrationUI_RESOURCE_FILES += \

@@ -4,7 +4,6 @@ include ../common.make
 -include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../../Version
-include ./Version 
 
 LIBRARY_NAME = libSOGoUI
 

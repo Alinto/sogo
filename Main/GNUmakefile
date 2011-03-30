@@ -3,7 +3,6 @@
 include ../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
-include ./Version
 
 ADDITIONAL_INCLUDE_DIRS += 
 ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj/

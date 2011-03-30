@@ -39,7 +39,6 @@ MailerUI_OBJC_FILES += \
 # 	UIxFilterList.m			\
 
 MailerUI_RESOURCE_FILES += \
-	Version		\
 	product.plist	\
 	Toolbars/*.toolbar
 

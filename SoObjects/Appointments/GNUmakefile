@@ -45,7 +45,6 @@ Appointments_OBJC_FILES = \
 	SOGoEMailAlarmsManager.m
 
 Appointments_RESOURCE_FILES +=		\
-	Version				\
 	product.plist			\
 
 Appointments_LANGUAGES = BrazilianPortuguese Catalan Czech Dutch English French German Hungarian Italian Norwegian Polish Russian Spanish Swedish Ukrainian Welsh

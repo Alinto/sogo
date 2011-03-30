@@ -41,7 +41,6 @@ Mailer_OBJC_FILES += \
 	SOGoUser+Mailer.m
 
 Mailer_RESOURCE_FILES += \
-	Version		\
 	product.plist	\
 
 Mailer_RESOURCE_FILES += \

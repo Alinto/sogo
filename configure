@@ -225,12 +225,6 @@ genConfigMake() {
   #cfgwrite "	@echo Local GNUstep config.make is active"
   #cfgwrite ""
 
-  cfgwrite "SOGO_MAJOR_VERSION=0"
-  cfgwrite "SOGO_MINOR_VERSION=9"
-  cfgwrite "SOPE_MAJOR_VERSION=4"
-  cfgwrite "SOPE_MINOR_VERSION=9"
-  cfgwrite ""
-  
   if test $ARG_WITH_DEBUG = 1; then
     cfgwrite "# configured to produce debugging code";
     cfgwrite "debug:=yes"

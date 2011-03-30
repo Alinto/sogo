@@ -22,7 +22,6 @@ Contacts_OBJC_FILES =			\
 	SOGoContactEntryPhoto.m		\
 
 Contacts_RESOURCE_FILES +=		\
-	Version				\
 	product.plist			\
 
 Contacts_LANGUAGES = BrazilianPortuguese Catalan Czech Dutch English French German Hungarian Italian Norwegian Polish Russian Spanish Swedish Ukrainian Welsh

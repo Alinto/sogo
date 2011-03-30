@@ -28,7 +28,6 @@ MailPartViewers_OBJC_FILES += \
 	UIxMailPartICalActions.m	\
 
 MailPartViewers_RESOURCE_FILES += \
-	Version			\
 	product.plist		\
 
 MailPartViewers_LOCALIZED_RESOURCE_FILES += \

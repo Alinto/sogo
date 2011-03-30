@@ -23,7 +23,6 @@ CommonUI_OBJC_FILES +=		\
 	WODirectAction+SOGo.m \
 
 CommonUI_RESOURCE_FILES += \
-	Version			\
 	product.plist
 
 

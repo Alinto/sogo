@@ -3,7 +3,6 @@
 include ../../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../../Version
-include ./Version
 
 NEEDS_GUI=no
 BUNDLE_EXTENSION     = .SOGo

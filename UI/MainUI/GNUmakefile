@@ -15,7 +15,6 @@ MainUI_OBJC_FILES += \
 	SOGoBrowsersPanel.m	\
 
 MainUI_RESOURCE_FILES += 	\
-	Version			\
 	product.plist		\
 	SOGoProfile.sql \
 	SOGoProfile-oracle.sql \

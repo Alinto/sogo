@@ -25,7 +25,6 @@ ContactsUI_OBJC_FILES =			\
 	UIxContactFolderActions.m 
 
 ContactsUI_RESOURCE_FILES +=		\
-	Version				\
 	product.plist			\
 
 ContactsUI_RESOURCE_FILES +=		\
