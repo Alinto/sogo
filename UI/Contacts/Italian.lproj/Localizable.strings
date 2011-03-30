@@ -42,7 +42,7 @@
 
 "Move To" = "Sposta in ";
 "Copy To" = "Copia in ";
-"Add to:" = "Add to:";
+"Add to:" = "Aggiungi a:";
 
 /* Tooltips */
 
@@ -58,7 +58,7 @@
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Nome o indirizzo Email";
-"Category" = "Category";
+"Category" = "Categoria";
 "Personal Addressbook" = "Rubrica personale";
 "Search in Addressbook" = "Cerca nella rubrica";
 
@@ -85,7 +85,7 @@
 "Phone Number:" = "Numero di telefono:";
 "Prefers to receive messages formatted as:" = "Formato preferito per i messaggi di posta:";
 "Screen Name:" = "Nome Instant Messenger:";
-"Categories:" = "Categories:";
+"Categories:" = "Categorie:";
 
 "First:" = "Nome:";
 "Last:" = "Cognome";
@@ -99,9 +99,9 @@
 "Pager:" = "Cerca Persone:";
 
 /* categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
-"Categories" = "Categories";
-"New category" = "New category";
+"contacts_category_labels" = "Collega, Concorrente, Cliente, Amico, Famiglia, Socio, Provider, Stampa, VIP";
+"Categories" = "Categorie";
+"New category" = "Nuova categoria";
 
 /* adresses */
 "Title:" = "Titolo:";
