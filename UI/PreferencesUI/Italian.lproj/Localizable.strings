@@ -19,7 +19,7 @@
 "Delete" = "Cancella";
 
 /* contacts categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
+"contacts_category_labels" = "Collega, Concorrente, Cliente, Amico, Famiglia, Socio, Provider, Stampa, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Abilita il risponditore automatico";
@@ -133,7 +133,7 @@
 "signatureplacement_below" = "sotto il testo a cui si risponde";
 "Compose messages in" = "Componi il messaggio in";
 "composemessagestype_html" = "HTML";
-"composemessagestype_text" = "Plain text";
+"composemessagestype_text" = "Testo normale";
 
 "composeMessageChanged" = "Cambiare la modalità di composizione dei messaggio richiede di salvare le preferenze immediatamente. Continuare?";
 

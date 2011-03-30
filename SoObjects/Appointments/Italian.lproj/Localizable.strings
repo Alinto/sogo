@@ -35,12 +35,12 @@ vtodo_class2 = "(Attività confidenziale)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Invito Evento: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(inviato da %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}ti ha invitato al %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}ti ha invitato al %{Summary}.\n\nInizio: %{StartDate} alle %{StartTime}\nFine: %{EndDate} alle %{EndTime}\nDescrizione: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Evento cancellato: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}ha cancellato questo evento: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+= "%{Organizer} %{SentByText}ha cancellato questo evento: %{Summary}.\n\nInizio: %{StartDate} alle %{StartTime}\nFine: %{EndDate} alle %{EndTime}\nDescrizione: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"

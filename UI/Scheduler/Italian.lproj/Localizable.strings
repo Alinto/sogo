@@ -108,7 +108,7 @@
 "Export Calendar..." = "Esporta calendario...";
 "Import Events..." = "Importa gli eventi...";
 "Import Events" = "Importa gli eventi";
-"Select an iCalendar file (.ics)." = "Select an iCalendar file (.ics).";
+"Select an iCalendar file (.ics)." = "Seleziona un file iCalendar (.ics).";
 "Upload" = "Upload";
 "Publish Calendar..." = "Pubblica calendario...";
 "Reload Remote Calendars" = "Aggiorna calendari remoti";
@@ -558,4 +558,4 @@ vtodo_class2 = "(Attività confidenziale)";
 "URL of the Calendar" = "URL del calendario";
 "Web Calendar" = "Calendario remoto";
 "Reload on login" = "Ricarica al login";
-"Invalid number." = "Invalid number.";
+"Invalid number." = "Numero non valido.";
