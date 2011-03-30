@@ -8,11 +8,23 @@ Enhancements
 - "check while typing" is no longer enabled by default in HTML editor
 - updated CKEditor to version 3.5.2
 - now possible to set a per-instance database storage using the SOGoLocalStorageURL preference
+- sogo-tool: the remove-doubles command now makes use of the card complete
+             names
+- contact lists now have their own icons in the contacts web module
 Bug Fixes
 - restored the automatic expunge of IMAP folders
-- sogo-tool now works in multi-domain environments
 - various other mutli-domain fixes
-- sogo-tool now retrieves list of users from the folder info table
+- fixed various issues occurring with non-ascii strings received from DAV
+  clients
+- sogo-tool: now works in multi-domain environments
+- sogo-tool: now retrieves list of users from the folder info table
+- sogo-tool: the remove-doubles command is now compatible with the
+             synchronization mechanisms
+- sope-mime: fixed some parsing problems occurring with dbmail
+- sope-mime: fixed the fetching of mail body parts when other untagged
+             responses are received
+- sope-appserver: fixed a bug leaving child processes performing the watchdog
+                  safety belt cleanup
 
 1.3-20110125 (1.3.5)
 --------------------
