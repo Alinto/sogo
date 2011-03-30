@@ -78,10 +78,20 @@
 
 - (NSString *) title
 {
-  if ([self isUIxDebugEnabled])
-    return title;
+  NSString *pageTitle;
+  SOGoSystemDefaults *sd;
 
-  return [self labelForKey: @"SOGo"];
+  if ([self isUIxDebugEnabled])
+    pageTitle = title;
+  else
+    {
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      pageTitle = [sd pageTitle];
+      if (pageTitle == nil || ![pageTitle length])
+	pageTitle = [self labelForKey: @"SOGo"];
+    }
+
+  return pageTitle;
 }
 
 - (void) setItem: (id) _item

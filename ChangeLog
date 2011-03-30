@@ -13,6 +13,12 @@
 	(-fetchFreeBusyInfosFrom:to:): we must fetch the c_content in
 	order to flatten cyclic events.
 
+	* SoObjects/SOGo/SOGoSystemDefaults.m (-pageTitle): new method to
+	retrieve the Web page title from the new system defaults "SOGoPageTitle".
+
+	* UI/Common/UIxPageFrame.m (-title): consider the new system
+	default attribute "SOGoPageTitle".
+
 2011-03-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/iCalEvent+SOGo.m

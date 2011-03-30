@@ -271,6 +271,11 @@ BootstrapNSUserDefaults ()
   return [self boolForKey: @"SOGoUIxDebugEnabled"];
 }
 
+- (NSString *) pageTitle
+{
+  return [self stringForKey: @"SOGoPageTitle"];
+}
+
 - (NSArray *) supportedLanguages
 {
   return [self stringArrayForKey: @"SOGoSupportedLanguages"];

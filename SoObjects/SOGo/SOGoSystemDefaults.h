@@ -58,6 +58,7 @@
 - (BOOL) uixAdditionalPreferences;
 
 - (BOOL) uixDebugEnabled;
+- (NSString *) pageTitle;
 
 - (NSArray *) supportedLanguages;
 - (NSString *) loginSuffix;
