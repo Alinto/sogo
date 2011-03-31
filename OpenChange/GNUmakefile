@@ -34,7 +34,10 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	SOGoMAPIFSFolder.m \
 	SOGoMAPIFSMessage.m \
 	\
+	MAPIStoreAttachment.m \
+	MAPIStoreAttachmentTable.m \
 	MAPIStoreContext.m \
+	MAPIStoreEmbeddedMessage.m \
 	MAPIStoreFolder.m \
 	MAPIStoreMessage.m \
 	MAPIStoreObject.m \
@@ -55,10 +58,12 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreGCSMessage.m \
 	MAPIStoreGCSMessageTable.m \
 	\
+	MAPIStoreCalendarAttachment.m \
 	MAPIStoreCalendarContext.m \
 	MAPIStoreCalendarFolder.m \
 	MAPIStoreCalendarMessage.m \
 	MAPIStoreCalendarMessageTable.m \
+	MAPIStoreRecurrenceUtils.m \
 	\
 	MAPIStoreContactsContext.m \
 	MAPIStoreContactsFolder.m \
@@ -70,9 +75,11 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreTasksMessage.m \
 	MAPIStoreTasksMessageTable.m \
 	\
+	MAPIStoreMailAttachment.m \
 	MAPIStoreMailContext.m \
 	MAPIStoreMailFolder.m \
 	MAPIStoreMailFolderTable.m \
+	MAPIStoreDraftsAttachment.m \
 	MAPIStoreDraftsMessage.m \
 	MAPIStoreMailMessage.m \
 	MAPIStoreMailMessageTable.m \
@@ -101,12 +108,6 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	EOBitmaskQualifier.m \
 	EOQualifier+MAPIFS.m \
-	\
-	MAPIStoreAttachment.m \
-	MAPIStoreAttachmentTable.m \
-	\
-	MAPIStoreDraftsAttachment.m \
-	MAPIStoreMailAttachment.m
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
 	product.plist
