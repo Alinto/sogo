@@ -1039,7 +1039,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	  else
 	    {
 	      [self errorWithFormat: @"no data for property %s(%.8x)"
-		    @" in mid %.16x", propName, fmid];
+		    @" in mid %.16x", propName, property, fmid];
 	      rc = MAPI_E_NOT_FOUND;
 	    }
 	}
