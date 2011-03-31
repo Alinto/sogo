@@ -1,5 +1,8 @@
 2011-03-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m: added new
+	"sogo_pocop_open_embedded_message" backend method.
+
 	* OpenChange/MAPIStoreCalendarAttachment.[hm]: new class module
 	for handling event attachments or "exceptions".
 

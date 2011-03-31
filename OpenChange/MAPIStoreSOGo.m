@@ -31,6 +31,7 @@
 #import <SOGo/SOGoSystemDefaults.h>
 
 #import "MAPIApplication.h"
+#import "MAPIStoreAttachment.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreObject.h"
 #import "MAPIStoreTable.h"
@@ -975,6 +976,37 @@ sogo_pocop_create_attachment (void *private_data, uint64_t mid, uint32_t *aid, v
 }
 
 static int
+sogo_pocop_open_embedded_message (void *attachment_object,
+                                  uint64_t *mid, enum OpenEmbeddedMessage_OpenModeFlags flags,
+                                  struct mapistore_message *msg, void **message_object)
+{
+  NSAutoreleasePool *pool;
+  MAPIStoreAttachment *attachment;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  pool = [NSAutoreleasePool new];
+
+  if (attachment_object)
+    {
+      attachment = attachment_object;
+      pool = [NSAutoreleasePool new];
+      rc = [attachment openEmbeddedMessage: message_object
+                                   withMID: mid
+                          withMAPIStoreMsg: msg andFlags: flags];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
 sogo_pocop_set_table_columns (void *table_object, uint16_t count, enum MAPITAGS *properties)
 {
   NSAutoreleasePool *pool;
@@ -1219,6 +1251,7 @@ int mapistore_init_backend(void)
       backend.message.get_attachment_table = sogo_pocop_get_attachment_table;
       backend.message.get_attachment = sogo_pocop_get_attachment;
       backend.message.create_attachment = sogo_pocop_create_attachment;
+      backend.message.open_embedded_message = sogo_pocop_open_embedded_message;
       backend.table.set_restrictions = sogo_pocop_set_table_restrictions;
       backend.table.set_sort_order = sogo_pocop_set_table_sort_order;
       backend.table.set_columns = sogo_pocop_set_table_columns;
