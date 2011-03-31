@@ -1,5 +1,8 @@
 2011-03-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarAttachment.[hm]: new class module
+	for handling event attachments or "exceptions".
+
 	* OpenChange/MAPIStoreMessage.m (-getProperty:withTag:):
 	handles PR_HASATTACH, previously found in MAPIStoreMailMessage.
 
