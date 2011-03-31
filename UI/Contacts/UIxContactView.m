@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004 SKYRIX Software AG
-  Copyright (C) 2005-2010 Inverse inc.
+  Copyright (C) 2005-2011 Inverse inc.
 
   This file is part of SOGo.
  
@@ -64,6 +64,7 @@
   NSMutableString *cardString;
 
   cardString = [NSMutableString stringWithCapacity: 80];
+  value = [value stringByReplacingString: @"\r" withString: @""];
   if ([value length] > 0)
     {
       if (label)
