@@ -25,6 +25,8 @@
 
 #import "MAPIStoreObject.h"
 
+@class MAPIStoreAttachmentMessage;
+
 @interface MAPIStoreAttachment : MAPIStoreObject
 {
   uint32_t aid;
@@ -32,6 +34,18 @@
 
 - (void) setAID: (uint32_t) newAID;
 - (uint32_t) AID;
+
+- (int) openEmbeddedMessage: (void **) message
+                    withMID: (uint64_t *) mid
+           withMAPIStoreMsg: (struct mapistore_message *) mapistoreMsg
+                   andFlags: (enum OpenEmbeddedMessage_OpenModeFlags) flags;
+
+/* helpers */
+- (NSData *) mimeAttachTag;
+
+/* subclasses */
+- (MAPIStoreAttachmentMessage *) openEmbeddedMessage;
+- (MAPIStoreAttachmentMessage *) createEmbeddedMessage;
 
 @end
 

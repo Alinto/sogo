@@ -1,5 +1,17 @@
 2011-03-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreAttachment.m (-nameInContainer): overriden
+	method to return "aid" in the form of a NSString.
+	(-mimeAttachTag): new helper method derived from old code in
+	getProperty:withTag: for subclasses.
+	(-getProperty:withTag:): handles PR_MID, PR_ATTACH_NUM and
+	PR_RENDERING_POSITION, previously found in
+	MAPIStoreMailAttachment.
+	(-openEmbeddedMessage:withMID:withMAPIStoreMsg:andFlags:): new
+	backend method.
+	(-openEmbeddedMessage, -createEmbeddedMessage): new overridable
+	methods.
+
 	* OpenChange/MAPIStoreEmbeddedMessage.[hm]: new class module for
 	attachment embedded messages.
 

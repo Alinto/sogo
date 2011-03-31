@@ -20,13 +20,27 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import "MAPIStoreAttachment.h"
+#import <Foundation/NSData.h>
 
+#import "MAPIStoreAttachment.h"
+#import "MAPIStoreMapping.h"
+#import "MAPIStoreMessage.h"
+#import "MAPIStoreTypes.h"
+
+#undef DEBUG
 #include <stdbool.h>
 #include <gen_ndr/exchange.h>
+#include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
+static MAPIStoreMapping *mapping;
+
 @implementation MAPIStoreAttachment
+
++ (void) initialize
+{
+  mapping = [MAPIStoreMapping sharedMapping];
+}
 
 - (void) setAID: (uint32_t) newAID
 {
@@ -38,10 +52,88 @@
   return aid;
 }
 
+- (NSString *) nameInContainer
+{
+  return [NSString stringWithFormat: @"%d", aid];
+}
+
+- (NSData *) mimeAttachTag
+{
+  static NSData *mimeAttachTag = nil;
+  char tagBytes[] = {0x2a, 0x86, 0x48, 0x86, 0xf7, 0x14, 0x03, 0x0a, 0x04};
+
+  if (!mimeAttachTag)
+    {
+      mimeAttachTag = [NSData dataWithBytes: tagBytes length: 9];
+      [mimeAttachTag retain];
+    }
+
+  return mimeAttachTag;
+}
+
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag
 {
-  return  MAPISTORE_ERR_NOT_FOUND;
+  int rc;
+
+  rc = MAPISTORE_SUCCESS;
+  switch (propTag)
+    {
+    case PR_MID:
+      *data = MAPILongLongValue (memCtx, [container objectId]);
+      break;
+    case PR_ATTACH_NUM:
+      *data = MAPILongValue (memCtx, aid);
+      break;
+    case PR_RENDERING_POSITION:
+      *data = MAPILongValue (memCtx, 0xffffffff);
+      break;
+
+    default:
+      rc = MAPISTORE_ERR_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+- (int) openEmbeddedMessage: (void **) message
+                    withMID: (uint64_t *) mid
+           withMAPIStoreMsg: (struct mapistore_message *) mapistoreMsg
+                   andFlags: (enum OpenEmbeddedMessage_OpenModeFlags) flags
+{
+  MAPIStoreAttachmentMessage *attMessage;
+
+  memset (mapistoreMsg, 0, sizeof (struct mapistore_message));
+
+  attMessage = [self openEmbeddedMessage];
+  if (attMessage)
+    *mid = [mapping idFromURL: [attMessage url]];
+  else if (flags == MAPI_CREATE)
+    {
+      attMessage = [self createEmbeddedMessage];
+      if (attMessage)
+        [mapping registerURL: [attMessage url]
+                      withID: *mid];
+    }
+  *message = attMessage;
+  [attMessage retain];
+
+  return (attMessage ? MAPISTORE_SUCCESS : MAPISTORE_ERROR);
+}
+
+/* subclasses */
+- (MAPIStoreAttachmentMessage *) openEmbeddedMessage
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (MAPIStoreAttachmentMessage *) createEmbeddedMessage
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
 }
 
 @end
