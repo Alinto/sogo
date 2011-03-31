@@ -1,5 +1,10 @@
 2011-03-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreObject.m (-url): make use of
+	-[MAPIStoreObject nameInContainer] rather than the equivalent on
+	SOGoObject to make that code reusable for objects that are not
+	based on SOGoObject instances.
+
 	* OpenChange/MAPIStoreRecurrenceUtils.m: new module implementing
 	methods useful for handling recurrences in events and tasks.
 

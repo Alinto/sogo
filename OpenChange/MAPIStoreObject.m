@@ -159,7 +159,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
     format = @"%@/%@";
 
   return  [NSString stringWithFormat: format,
-                    containerURL, [sogoObject nameInContainer]];
+                    containerURL, [self nameInContainer]];
 }
 
 - (void) addActiveTable: (MAPIStoreTable *) activeTable
