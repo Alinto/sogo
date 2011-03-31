@@ -222,6 +222,10 @@ genConfigMake() {
 
   cfgwrite "NEEDS_GUI=no"
 
+  # SOPE version
+  cfgwrite "SOPE_MAJOR_VERSION=4"
+  cfgwrite "SOPE_MINOR_VERSION=9"
+
   #cfgwrite "# print on the cmdline that this file is being used"
   #cfgwrite "all :: "
   #cfgwrite "	@echo Local GNUstep config.make is active"
