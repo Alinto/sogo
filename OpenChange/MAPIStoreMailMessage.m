@@ -231,12 +231,6 @@ static Class NSExceptionK;
       }
       break;
 
-    case PR_HASATTACH:
-      *data = MAPIBoolValue (memCtx,
-                             [[self childKeysMatchingQualifier: nil
-                                    andSortOrderings: nil] count] > 0);
-      break;
-
     case PR_SENSITIVITY: // TODO
     case PR_ORIGINAL_SENSITIVITY: // TODO
       *data = MAPILongValue (memCtx, 0);

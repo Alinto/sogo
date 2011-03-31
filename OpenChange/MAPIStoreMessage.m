@@ -254,6 +254,12 @@
       rc = [self getProperty: data withTag: PR_MESSAGE_CLASS_UNICODE];
       break;
 
+    case PR_HASATTACH:
+      *data = MAPIBoolValue (memCtx,
+                             [[self childKeysMatchingQualifier: nil
+                                    andSortOrderings: nil] count] > 0);
+      break;
+
     default:
       rc = [super getProperty: data withTag: propTag];
     }
