@@ -1,5 +1,17 @@
 2011-03-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m
+	(_setupRecurrenceInCalendar:withMasterEvent:fromData:): moved the
+	code pertaining to the handling of struct RecurrencePattern into
+	the new module below, in the -[iCalCalendar setupRecurrenceWithMasterEntity:
+        fromRecurrencePattern:) category method.
+	(_fillAppointmentRecurrencePattern): moved the
+	code pertaining to the handling of struct RecurrencePattern into
+	the new module below, in the -[iCalRecurrenceRule
+	fillRecurrencePattern:withStartDate:andEndDate:] category method.
+	(-createAttachment): instantiate a MAPIStoreCalendarAttachment
+	object.
+
 	* OpenChange/MAPIStoreSOGo.m: added new
 	"sogo_pocop_open_embedded_message" backend method.
 
