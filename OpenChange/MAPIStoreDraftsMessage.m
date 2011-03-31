@@ -178,13 +178,15 @@ e)
 
   newAid = [attachmentKeys count];
 
-  newAttachment = [MAPIStoreDraftsAttachment new];
+  newAttachment = [MAPIStoreDraftsAttachment
+                    mapiStoreObjectWithSOGoObject: nil
+                                      inContainer: self];
+  [newAttachment setIsNew: YES];
   [newAttachment setAID: newAid];
   newKey = [NSString stringWithFormat: @"%ul", newAid];
   [attachmentParts setObject: newAttachment
                       forKey: newKey];
   [attachmentKeys addObject: newKey];
-  [newAttachment release];
 
   return newAttachment;
 }
