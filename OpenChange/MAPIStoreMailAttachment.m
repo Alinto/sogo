@@ -70,8 +70,6 @@
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag
 {
-  static char tagBytes[] = {0x2a, 0x86, 0x48, 0x86, 0xf7, 0x14, 0x03, 0x0a,
-                            0x04}; /* MIME */
   static char recordBytes[] = {0xd9, 0xd8, 0x11, 0xa3, 0xe2, 0x90, 0x18, 0x41,
                                0x9e, 0x04, 0x58, 0x46, 0x9d, 0x6d, 0x1b, 0x68};
   uint32_t longValue;
@@ -83,26 +81,16 @@
   rc = MAPISTORE_SUCCESS;
   switch (propTag)
     {
-    case PR_MID:
-      *data = MAPILongLongValue (memCtx, [container objectId]);
-      break;
-    case PR_ATTACH_NUM:
-      *data = MAPILongValue (memCtx, aid);
-      break;
     case PR_ATTACH_METHOD:
-      *data = MAPILongValue (memCtx, 1);
+      *data = MAPILongValue (memCtx, 0x00000001); // afByValue
       break;
     case PR_ATTACH_TAG:
-      *data = [[NSData dataWithBytes: tagBytes length: 9]
+      *data = [[self mimeAttachTag]
 		asShortBinaryInMemCtx: memCtx];
       break;
     case PR_ATTACH_SIZE:
       longValue = [[bodyInfo objectForKey: @"size"] longValue];
       *data = MAPILongValue (memCtx, longValue);
-      break;
-
-    case PR_RENDERING_POSITION:
-      *data = MAPILongValue (memCtx, 0xffffffff);
       break;
 
     case PR_RECORD_KEY:
