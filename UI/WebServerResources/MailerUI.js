@@ -828,7 +828,7 @@ function messageListCallback(row, data, isNew) {
         var cellType = columnsOrder[j];
 
         if (data[cellType]) cell.innerHTML = data[cellType];
-        else if (Prototype.Browser.IE) cell.innerHTML = '&nbsp;';
+        else cell.innerHTML = '&nbsp;';
     }
 }
 

@@ -1,5 +1,8 @@
 2011-03-31  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js (messageListCallback): put an
+	non-breaking space in empty cells, not only for IE.
+
 	* UI/Contacts/UIxContactView.m (_cardStringWithLabel:value:):
 	remove useless carriage returns to avoid JavaScript errors in IE7.
 
