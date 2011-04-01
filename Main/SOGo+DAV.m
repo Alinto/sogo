@@ -24,6 +24,7 @@
 #import <Foundation/NSEnumerator.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
+#import <NGObjWeb/SoObject+SoDAV.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -37,6 +38,7 @@
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+DAV.h>
+#import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
@@ -540,18 +542,46 @@
 
 - (NSArray *) davComplianceClassesInContext: (WOContext *) localContext
 {
-  static NSArray *classes = nil;
+  static NSMutableArray *newClasses = nil;
+  NSArray *selfClasses;
 
-  if (!classes)
+  if (!newClasses)
     {
-      classes = [NSArray arrayWithObjects: @"access-control",
-                         @"calendar-access", @"calendar-schedule",
-                         @"calendar-proxy", @"addressbook",
-                         nil];
-      [classes retain];
+      newClasses
+        = [[super davComplianceClassesInContext: localContext] mutableCopy];
+      selfClasses = [NSArray arrayWithObjects: @"access-control", @"addressbook",
+                         @"calendar-access", @"calendar-auto-schedule",
+                         @"calendar-schedule", nil];
+      [newClasses addObjectsFromArray: selfClasses];
     }
 
-  return classes;
+  return newClasses;
+}
+
+- (SOGoWebDAVValue *) davPrincipalCollectionSet
+{
+  NSString *davURL;
+  NSDictionary *collectionHREF;
+  NSString *classes;
+  WOContext *context;
+
+  context = [self context];
+  if ([[context request] isICal4])
+    {
+      classes = [[self davComplianceClassesInContext: context]
+                  componentsJoinedByString: @", "];
+      [[context response] setHeader: classes forKey: @"dav"];
+    }
+
+  /* WOApplication has no support for the DAV methods we define here so we
+     use the user's principal object as a reference */
+  davURL = [self davURLAsString];
+  collectionHREF = davElementWithContent (@"href", XMLNS_WEBDAV, davURL);
+
+  return [davElementWithContent (@"principal-collection-set",
+				 XMLNS_WEBDAV,
+				 [NSArray arrayWithObject: collectionHREF])
+				asWebDAVValue];
 }
 
 @end

@@ -1115,7 +1115,7 @@
         = [[super davComplianceClassesInContext: localContext] mutableCopy];
       selfClasses = [NSArray arrayWithObjects: @"access-control",
                              @"calendar-access", @"calendar-schedule",
-                             @"calendar-proxy", nil];
+                             @"calendar-auto-schedule", nil];
       [newClasses addObjectsFromArray: selfClasses];
     }
 
