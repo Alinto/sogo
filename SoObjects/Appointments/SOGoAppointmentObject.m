@@ -599,7 +599,7 @@
 	  oldEvent = (iCalEvent*)[self lookupOccurence: recurrenceTime];
 	  if (oldEvent == nil)
 	    // If no occurence found, create one
-	    oldEvent = (iCalEvent*)[self newOccurenceWithID: recurrenceTime];
+	    oldEvent = (iCalEvent *)[self newOccurenceWithID: recurrenceTime];
 	}
 
       oldMasterEvent = (iCalEvent *) [[oldEvent parent] firstChildWithTag: [self componentTag]];
@@ -1563,6 +1563,13 @@
 	      // If not present, we assume it was created before the PUT
 	      oldEvent = [self _eventFromRecurrenceId: [newEvent recurrenceId]
 			       events: oldEvents];
+
+	      if (oldEvent == nil)
+		{
+		  NSString *recurrenceTime;
+		  recurrenceTime = [NSString stringWithFormat: @"%f", [[newEvent recurrenceId] timeIntervalSince1970]];
+		  oldEvent = (iCalEvent *)[self newOccurenceWithID: recurrenceTime];
+		}
 	
 	      // If present, we look for changes
 	      changes = [iCalEventChanges changesFromEvent: oldEvent  toEvent: newEvent];
@@ -1630,8 +1637,7 @@
 	    uid = [[newEvent organizer] uid];
 	  else
 	    uid = [[[[[newEvent parent] events] objectAtIndex: 0] organizer] uid];
-	  
-	  
+	  	  
 	  if ([uid caseInsensitiveCompare: owner] == NSOrderedSame)
 	    {
 	      [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent];
@@ -1676,14 +1682,14 @@
 	      // the user has declined this occurence.
 	      if ([[changes updatedProperties] containsObject: @"exdate"])
 	      	{
-	      	  [self changeParticipationStatus: @"DECLINED"
+		  [self changeParticipationStatus: @"DECLINED"
 			withDelegate: nil // FIXME (specify delegate?)
 			forRecurrenceId: [self _addedExDate: oldEvent  newEvent: newEvent]];
 	      }
 	      else
 		[self changeParticipationStatus: [attendee partStat]
-		      withDelegate: delegate
-		      forRecurrenceId: recurrenceId];
+				   withDelegate: delegate
+				forRecurrenceId: recurrenceId];
 	    }
 	}
     }
