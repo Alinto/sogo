@@ -4,7 +4,7 @@ SRCS=teststrings.m
 OBJS=$(SRCS:.m=.o)
 
 teststrings: $(OBJS)
-	$(CC) -o $@ $< $(GNUSTEP_LIBRARIES_FLAGS) -lgnustep-base -L../../SoObjects/SOGo/SOGo.framework -lSOGo
+	$(CC) -o $@ $< $(GNUSTEP_LIBRARIES_FLAGS) -lgnustep-base -L../../SoObjects/SOGo/SOGo.framework -lSOGo -lobjc
 
 include $(GNUSTEP_MAKEFILES)/common.make
 
