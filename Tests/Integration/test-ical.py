@@ -35,7 +35,8 @@ class iCalTest(unittest.TestCase):
                         "DAV header must be returned when user-agent is iCal 4")
 
         expectedDAVClasses = ["1", "2", "access-control", "calendar-access",
-                              "calendar-schedule", "calendar-proxy"]
+                              "calendar-schedule", "calendar-auto-schedule",
+                              "calendar-proxy"]
         davClasses = [x.strip() for x in headers["dav"].split(",")]
         for davClass in expectedDAVClasses:
             self.assertTrue(davClass in davClasses,
