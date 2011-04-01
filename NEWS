@@ -9,9 +9,13 @@ Enhancements
 - updated CKEditor to version 3.5.2
 - now possible to set a per-instance database storage using the
   SOGoLocalStorageURL preference
+- contact lists now have their own icons in the contacts web module
+- added the ability to invite people and to answer invitations from the iOS
+  Calendar
+- alarms are no longer exported to DAV clients for calendars where the alarms
+  are configured to be disabled
 - sogo-tool: the remove-doubles command now makes use of the card complete
              names
-- contact lists now have their own icons in the contacts web module
 - sope-appserver: added the ability to configure the minutes timeout per
                   request after which child processes are killed, via
                   WOWatchDogRequestTimeout (default: 10)
