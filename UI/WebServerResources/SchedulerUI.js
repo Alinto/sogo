@@ -2917,7 +2917,12 @@ function initCalendars() {
         var controller = new SOGoTabsController();
         controller.attachToTabsContainer(tabsContainer);
 
-        showCompletedTasks = parseInt(UserSettings['ShowCompletedTasks']);
+        if (UserSettings['ShowCompletedTasks']) {
+            showCompletedTasks = parseInt(UserSettings['ShowCompletedTasks']);
+        }
+        else {
+            showCompletedTasks = 0;
+        }
         initDateSelectorEvents();
         initCalendarSelector();
         configureSearchField();

@@ -1,5 +1,9 @@
 2011-04-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js (initCalendars): initialize
+	"showCompletedTaskls" to 0 when the ShowCompletedTasks settings
+	variable is not available.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	(-contentAsString): strip alarms from component if the alarms are
 	disabled on the containing calendar.
