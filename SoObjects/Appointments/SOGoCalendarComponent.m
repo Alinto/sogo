@@ -408,12 +408,36 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
   return obj;
 }
 
+- (NSString *) _secureContentWithoutAlarms
+{
+  iCalCalendar *calendar;
+  NSArray *allComponents;
+  iCalEntityObject *currentComponent;
+  NSUInteger count, max;
+
+  calendar = [self calendar: NO secure: YES];
+  allComponents = [calendar childrenWithTag: [self componentTag]];
+  max = [allComponents count];
+  for (count = 0; count < max; count++)
+    {
+      currentComponent = [allComponents objectAtIndex: count];
+      [currentComponent removeAllAlarms];
+    }
+
+  return [calendar versitString];
+}
+
 - (NSString *) contentAsString
 {
   NSString *secureContent;
 
   if ([[context request] isSoWebDAVRequest])
-    secureContent = [self secureContentAsString];
+    {
+      if ([container showCalendarAlarms])
+        secureContent = [self secureContentAsString];
+      else
+        secureContent = [self _secureContentWithoutAlarms];
+    }
   else
     secureContent = [super contentAsString];
 

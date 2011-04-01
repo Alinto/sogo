@@ -1,5 +1,9 @@
 2011-04-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	(-contentAsString): strip alarms from component if the alarms are
+	disabled on the containing calendar.
+
 	* SoObjects/SOGo/SOGoObject.m (-davComplianceClassesInContext:):
 	added "calendar-auto-schedule", "calendar-proxy" and "calenderserver-principal-property
 
