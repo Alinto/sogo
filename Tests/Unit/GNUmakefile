@@ -27,7 +27,7 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-D_GNU_SOURCE -I../SOPE/ -I../SoObjects/ -I../UI/
 
 ADDITIONAL_LIB_DIRS += \
-	-L../SoObjects/SOGo -lSOGo -lNGMime -lNGCards -lGDLContentStore
+	-L../SoObjects/SOGo -lSOGo -lNGMime -lNGCards -lGDLContentStore -lNGExtensions -lSBJson -lobjc
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/tool.make
