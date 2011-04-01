@@ -42,6 +42,8 @@
 
 @implementation TestiCalTimeZonePeriod
 
+/* TODO: this test fails for obscure reasons, but test__occurenceForDate_byRRule_ does not, which
+   is a good sign */
 - (void) test_occurenceForDate_
 {
   NSString *periods[] = { (@"BEGIN:DAYLIGHT\r\n"

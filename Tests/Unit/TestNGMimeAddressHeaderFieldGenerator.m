@@ -33,6 +33,7 @@
    objc compiler */
 - (void) test_generateDataForHeaderFieldNamed_value_
 {
+  /* TODO: The 2 last ones fail but are actually minor issues in NGMimeBlabla. */
   NSString *rawAddresses[]
     = { @"wolfgang@test.com",    // email alone
         @"<wolfgang@test.com>",  // email between brackets
