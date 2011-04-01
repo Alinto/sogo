@@ -4,6 +4,12 @@ import urllib
 import base64
 import simplejson
 
+import sogoLogin
+
+SOGoSupportedLanguages = [ "Catalan", "Czech", "Welsh", "English", "Spanish",
+                           "French", "German", "Italian", "Hungarian",
+                           "Dutch", "BrazilianPortuguese", "Norwegian", "Polish",
+                           "Russian", "Ukrainian", "Swedish" ]
 
 class HTTPPreferencesPOST (webdavlib.HTTPPOST):
   cookie = None
@@ -32,19 +38,17 @@ class preferences:
       self.login = otherLogin
       self.passw = otherPassword
 
-    self.client = webdavlib.WebDAVClient(hostname, port,
-                                         self.login, self.passw)
+    self.client = webdavlib.WebDAVClient(hostname, port)
 
-    authString = \
-        base64.urlsafe_b64encode (username+":"+password).replace("=", "%3D")
-    self.cookie = \
-        "0xHIGHFLYxSOGo=basic%%20%s;%%20SOGo=6C0F6C0F014AC60ED5" % authString
+    authCookie = sogoLogin.getAuthCookie(hostname, port, username, password)
+    self.cookie = authCookie
 
-    self.preferencesMap = {"language": "2.1.0.3.0.1.3.1.1.3.1.2"}
+    self.preferencesMap = {"SOGoLanguage": "2.1.0.3.0.1.4.3.1.3.1.1.2"}
+    # Duplicated from SOGoDefaults.plist
 
   def set(self, preference, value):
     formKey = self.preferencesMap[preference]
-    content = "%s=%s" % (formKey, value)
+    content = "%s=%s&hasChanged=1" % (formKey, value)
     url = "/SOGo/so/%s/preferences" % self.login
 
     post = HTTPPreferencesPOST (url, content)
@@ -74,4 +78,4 @@ class preferences:
 # Simple main to test this class
 if __name__ == "__main__":
   p = preferences ()
-  p.set ("language", 6)
+  p.set ("SOGoLanguage", SOGoSupportedLanguages.index("French"))

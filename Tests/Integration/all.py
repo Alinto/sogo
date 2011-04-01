@@ -12,10 +12,8 @@ if __name__ == "__main__":
 
     loader = unittest.TestLoader()
     modules = []
-    # Duplicated from UIxPreferences.m
-    languages = ["Czech", "Dutch", "English", "French", 
-                 "German", "Hungarian", "Italian", "BrazilianPortuguese", "Norwegian", 
-                 "Polish", "Russian", "Spanish", "Swedish", "Ukrainian", "Welsh"]
+
+    languages = preferences.SOGoSupportedLanguages
 
     # We can disable testing all languages
     testLanguages = False
@@ -39,15 +37,15 @@ if __name__ == "__main__":
         if testLanguages:
             prefs = preferences.preferences()
             # Get the current language
-            userLanguageString = prefs.get ("Language")
+            userLanguageString = prefs.get ("SOGoLanguage")
             if userLanguageString:
                 userLanguage = languages.index (userLanguageString)
             else:
-                userLanguage = 2
+                userLanguage = languages.index ("English")
 
             for i in range (0, len (languages)):
                 try:
-                    prefs.set ("language", i)
+                    prefs.set ("SOGoLanguage", i)
                 except Exception, inst:
                     print '-' * 60
                     traceback.print_exc ()
@@ -58,7 +56,7 @@ if __name__ == "__main__":
                 runner.verbosity = 2
                 runner.run(suite)
             # Revert to the original language
-            prefs.set ("language", userLanguage)
+            prefs.set ("SOGoLanguage", userLanguage)
         else:
             runner.run(suite)
 
