@@ -10,7 +10,7 @@
 	"SOGoLanguage" defaults key rather than the old "Language" one.
 
 	* Tests/Integration/sogoLogin.py: (from Jean Raby) new
-	authentication module, required to the new session-based code.
+	authentication module, required by the new session-based code.
 
 	* Tests/Integration/preferences.py: (from Jean Raby) derive
 	authentication cookie from the new sogoLogin module.
