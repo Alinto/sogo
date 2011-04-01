@@ -1,3 +1,9 @@
+2011-04-01  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m (-PUTAction:):
+	when adding a new occurrence, instantiate an occurrence from the
+	previous calendar in order to perform a proper changes comparison.
+
 2011-04-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/Integration/all.py: (from Jean Raby) make use of the
