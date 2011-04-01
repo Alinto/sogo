@@ -38,7 +38,8 @@
 - (void) test_parseJSONString
 {
   SBJsonParser *parser;
-  NSString *currentString, *expected, *error;
+  NSString *currentString, *error;
+  NSArray *expected;
   NSObject *resultObject;
   int count;
   NSString *testStrings[] = { @"\"\\\\\"", @"\\",
@@ -52,8 +53,10 @@
   count = 0;
   while ((currentString = testStrings[count * 2]))
     {
-      resultObject = [parser objectWithString: currentString];
-      expected = testStrings[count * 2 + 1];
+      resultObject = [parser objectWithString: [NSString stringWithFormat:
+                                                           @"[%@]",
+                                                         currentString]];
+      expected = [NSArray arrayWithObject: testStrings[count * 2 + 1]];
       error = [NSString stringWithFormat:
                           @"objects '%@' and '%@' differs (count: %d)",
                         expected, resultObject, count];
@@ -73,17 +76,17 @@
   result = [parser objectWithString: @""];
   testEquals (result, nil);
 
-  result = [parser objectWithString: @"0"];
-  testEquals (result, [NSNumber numberWithInt: 0]);
+  result = [parser objectWithString: @"[ 0 ]"];
+  testEquals (result, [NSArray arrayWithObject: [NSNumber numberWithInt: 0]]);
                               
-  result = [parser objectWithString: @"-1"];
-  testEquals (result, [NSNumber numberWithInt: -1]);
+  result = [parser objectWithString: @"[ -1 ]"];
+  testEquals (result, [NSArray arrayWithObject: [NSNumber numberWithInt: -1]]);
                               
-  result = [parser objectWithString: @"12.3456"];
-  testEquals (result, [NSNumber numberWithDouble: 12.3456]);
+  result = [parser objectWithString: @"[ 12.3456 ]"];
+  testEquals (result, [NSArray arrayWithObject: [NSNumber numberWithDouble: 12.3456]]);
 
-  result = [parser objectWithString: @"-312.3456"];
-  testEquals (result, [NSNumber numberWithDouble: -312.3456]);
+  result = [parser objectWithString: @"[ -312.3456 ]"];
+  testEquals (result, [NSArray arrayWithObject: [NSNumber numberWithDouble: -312.3456]]);
 }
 
 @end
