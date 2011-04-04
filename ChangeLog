@@ -4,17 +4,6 @@
 	(-detectDoublesFromRecords:withQuickField:): added a quick field
 	parameter to enable the use of other fields than just c_mail.
 
-2011-03-27  Ludovic Marcotte  <lmarcotte@inverse.ca>
-
-        * Added the SOGoLocalStorageURL preference that allows
-	one to set a different database where resource tables will
-	be created. If not set, it'll default to the database
-	specified in OCSFolderInfoURL. This is particularly useful
-	for multi-sites deployments where the sogo_folder_info and
-	sogo_user_profile are shared across sites but resources
-	tables are located at each sites, to minimize bandwitdh
-	requirements.
-
 2011-03-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactsListView.m (-currentContactClasses): new
