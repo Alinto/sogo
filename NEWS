@@ -7,8 +7,6 @@ Enhancements
 - updated Spanish translation
 - "check while typing" is no longer enabled by default in HTML editor
 - updated CKEditor to version 3.5.2
-- now possible to set a per-instance database storage using the
-  SOGoLocalStorageURL preference
 - contact lists now have their own icons in the contacts web module
 - added the ability to invite people and to answer invitations from the iOS
   Calendar

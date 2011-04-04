@@ -67,7 +67,7 @@
 
 - (GCSFolder *)folderAtPath:(NSString *)_path;
 
-- (NSException *)createFolderOfType:(NSString *)_type withName:(NSString *)_name atPath:(NSString *)_path andURL:(NSURL *) _url;
+- (NSException *)createFolderOfType:(NSString *)_type withName:(NSString *)_name atPath:(NSString *)_path;
 - (NSException *)deleteFolderAtPath:(NSString *)_path;
 
 /* alarms */
