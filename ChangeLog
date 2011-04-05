@@ -5,13 +5,6 @@
 	char * and NSString * that could cause a crash under certain
 	circumstances.
 
-2011-04-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
-
-	* Tests/Unit/TestSBJsonParser.m (-test_parseJSONString): input and
-	expected result are embedded in an array since SBJsonParser needs
-	a "container" class.
-	(-test_parseJSONNumber): same as above.
-
 2011-04-01  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m (-PUTAction:):
@@ -19,6 +12,11 @@
 	previous calendar in order to perform a proper changes comparison.
 
 2011-04-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Unit/TestSBJsonParser.m (-test_parseJSONString): input and
+	expected result are embedded in an array since SBJsonParser needs
+	a "container" class.
+	(-test_parseJSONNumber): same as above.
 
 	* Tests/Integration/all.py: (from Jean Raby) make use of the
 	"SOGoLanguage" defaults key rather than the old "Language" one.
