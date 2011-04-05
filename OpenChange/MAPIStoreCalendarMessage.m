@@ -190,6 +190,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   NSTimeInterval timeValue;
   id event;
   uint32_t longValue;
+  NSCalendarDate *dateValue;
   int rc;
 
   rc = MAPI_E_SUCCESS;
@@ -213,6 +214,32 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
       break;
     case PR_MESSAGE_CLASS_UNICODE:
       *data = talloc_strdup(memCtx, "IPM.Appointment");
+      break;
+    case PR_START_DATE:
+    case PidLidAppointmentStartWhole:
+    case PidLidCommonStart:
+      event = [sogoObject component: NO secure: NO];
+      if ([event isRecurrent])
+        dateValue = [event firstRecurrenceStartDate];
+      else
+        dateValue = [event startDate];
+      [dateValue setTimeZone: utcTZ];
+      *data = [dateValue asFileTimeInMemCtx: memCtx];
+      break;
+    case PR_END_DATE:
+    case PidLidAppointmentEndWhole:
+    case PidLidCommonEnd:
+      event = [sogoObject component: NO secure: NO];
+      if ([event isRecurrent])
+        dateValue = [event firstRecurrenceStartDate];
+      else
+        dateValue = [event startDate];
+      dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                         hours: 0 minutes: 0
+                                       seconds:
+                               (NSInteger) [event durationAsTimeInterval]];
+      [dateValue setTimeZone: utcTZ];
+      *data = [dateValue asFileTimeInMemCtx: memCtx];
       break;
     case PidLidAppointmentDuration:
       event = [sogoObject component: NO secure: NO];

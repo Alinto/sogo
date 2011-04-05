@@ -1,5 +1,9 @@
 2011-04-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m (-getProperty:withTag):
+	restored/implemented PR_START_DATE, PidLidAppointmentStartWhole,
+	PidLidCommonStart and their "end" equivalent.
+
 	* OpenChange/MAPIStoreMailFolder.m (-createFolder:): implemented
 	method by adapting old code that was still commented out.
 	(-folderKeys): implemented method.
