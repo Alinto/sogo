@@ -275,7 +275,11 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
       *data = MAPIBoolValue (memCtx, [event isRecurrent]);
       break;
     case PidLidAppointmentRecur:
-      *data = [self _computeAppointmentRecur];
+      event = [sogoObject component: NO secure: NO];
+      if ([event isRecurrent])
+        *data = [self _computeAppointmentRecur];
+      else
+        rc = MAPISTORE_ERR_NOT_FOUND;
       break;
 
       // case PidLidTimeZoneStruct:
