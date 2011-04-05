@@ -12,6 +12,8 @@ Enhancements
   Calendar
 - alarms are no longer exported to DAV clients for calendars where the alarms
   are configured to be disabled
+- IMAP connection pooling is disabled by default to avoid flooding the IMAP
+  servers in multi-process environments
 - sogo-tool: the remove-doubles command now makes use of the card complete
              names
 - sope-appserver: added the ability to configure the minutes timeout per
