@@ -13,7 +13,7 @@
 "Reload all calendars" = "Reload all calendars";
 
 /* Tabs */
-"Date" = "Date";
+"Date" = "Datum";
 "Calendars" = "Agenda's";
 
 /* Day */
@@ -375,7 +375,7 @@
 
 "repeat_NEVER" = "herhaalt zich niet";
 "repeat_DAILY" = "dagelijks";
-"repeat_WEEKLY" = "wekelijst";
+"repeat_WEEKLY" = "wekelijks";
 "repeat_BI-WEEKLY" = "tweewekelijks";
 "repeat_EVERY WEEKDAY" = "op werkdagen";
 "repeat_MONTHLY" = "maandelijks";

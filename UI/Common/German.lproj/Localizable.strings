@@ -68,7 +68,7 @@
 
 /* common buttons */
 "OK" = "OK";
-"Cancel" = "Cancel";
+"Cancel" = "Abbrechen";
 "Yes" = "Ja";
 "No" = "Nein";
 
