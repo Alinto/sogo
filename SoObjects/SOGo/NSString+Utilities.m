@@ -21,6 +21,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <crypt.h>
+
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSData.h>
@@ -551,7 +553,7 @@ static NSMutableCharacterSet *safeLDIFStartChars = nil;
   
   // The salt is weak here, but who cares anyway, crypt should not
   // be used anymore
-  buf = (char *)crypt([self UTF8String], [theSalt UTF8String]);
+  buf = crypt([self UTF8String], [theSalt UTF8String]);
   return [NSString stringWithUTF8String: buf];
 }
 
