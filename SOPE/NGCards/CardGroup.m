@@ -75,9 +75,10 @@ static NGCardsSaxHandler *sax = nil;
 
   if (source)
     {
-      [sax setTopElementClass: [self class]];
-
       cardParser = [self cardParser];
+
+      [sax setTopElementClass: self];
+
       [cardParser parseFromSource: source];
 
       cardGroups = [sax cards];
