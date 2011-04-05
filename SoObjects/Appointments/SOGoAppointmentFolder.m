@@ -855,9 +855,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   iCalTimeZone *eventTimeZone;
   unsigned count, max, offset;
 
-  records = [NSMutableArray array];
-  ranges = nil;
-
   content = [theRecord objectForKey: @"c_cycleinfo"];
   if (![content isNotNull])
     {
@@ -933,35 +930,35 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		}
 
 	      // Calculate the occurrences for the given range
+              records = [NSMutableArray array];
 	      ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: recurrenceRange
 							  firstInstanceCalendarDateRange: firstRange
 									 recurrenceRules: rules
 									  exceptionRules: exRules
 									  exceptionDates: exDates];
+              max = [ranges count];
+              for (count = 0; count < max; count++)
+                {
+                  oneRange = [ranges objectAtIndex: count];
+                  fixedRow = [self fixupCycleRecord: row
+                                         cycleRange: oneRange
+                                   firstInstanceCalendarDateRange: firstRange
+                                  withEventTimeZone: eventTimeZone];
+                  if (fixedRow)
+                    [records addObject: fixedRow];
+                }
+
+              [self _appendCycleExceptionsFromRow: row
+                   firstInstanceCalendarDateRange: firstRange
+                                         forRange: theRange
+                                          toArray: records];
+  
+              [theRecords addObjectsFromArray: records];
 	    }
 	}
     }
   else
     [self errorWithFormat:@"cyclic record doesn't have content -> %@", theRecord];
-  
-  max = [ranges count];
-  for (count = 0; count < max; count++)
-    {
-      oneRange = [ranges objectAtIndex: count];
-      fixedRow = [self fixupCycleRecord: row
-			     cycleRange: oneRange
-		       firstInstanceCalendarDateRange: firstRange
-		      withEventTimeZone: eventTimeZone];
-      if (fixedRow)
-	[records addObject: fixedRow];
-    }
-
-  [self _appendCycleExceptionsFromRow: row
-       firstInstanceCalendarDateRange: firstRange
-			     forRange: theRange
-			      toArray: records];
-
-  [theRecords addObjectsFromArray: records];
 }
 
 - (NSArray *) _flattenCycleRecords: (NSArray *) _records

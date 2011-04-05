@@ -139,8 +139,10 @@ static SoSecurityManager *sm = nil;
   SOGoWebAppointmentFolder *webCalendar;
   NSString *name;
 
-  if (![self newFolderWithName: folderDisplayName
+  if ([self newFolderWithName: folderDisplayName
                nameInContainer: &name])
+    webCalendar = nil;
+  else
     {
       aptFolder = [subFolders objectForKey: name];
       [aptFolder setFolderPropertyValue: url

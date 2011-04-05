@@ -211,6 +211,8 @@
   iCalEntityObject *entity, *testEntity;
   int count, max, testRecIdSecs;
 
+  entity = nil;
+
   entities = [calendar events];
   max = [entities count];
   if (max == 0)
@@ -221,7 +223,6 @@
 
   if (max > 0)
     {
-      entity = nil;
       for (count = 0; !entity && count < max; count++)
         {
           testEntity = [entities objectAtIndex: count];
