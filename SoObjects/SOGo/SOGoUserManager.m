@@ -63,8 +63,11 @@
       else if ([type isEqualToString: @"sql"])
         sourceClass = @"SQLSource";
       else
-        [NSException raise: @"SOGoUserManagerRegistryException"
-                    format: @"No class known for type '%@'", type];
+        {
+          [NSException raise: @"SOGoUserManagerRegistryException"
+                      format: @"No class known for type '%@'", type];
+          sourceClass = nil;
+        }
     }
   else
     sourceClass = @"LDAPSource";
