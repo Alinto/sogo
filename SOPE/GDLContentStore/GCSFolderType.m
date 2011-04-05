@@ -197,7 +197,7 @@
   else
     quickExtractor = nil;
  
-  return extractor;
+  return quickExtractor;
 }
 
 - (NSArray *) fields

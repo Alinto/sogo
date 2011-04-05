@@ -210,14 +210,11 @@ static NSString *sessionsFolderURLString = nil;
 {
   EOAdaptorChannel *tc;
   EOAdaptorContext *context;
-  NSString *tableName;
   NSException *error;
   NSArray *attrs;
   NSDictionary *record;
   EOEntity *entity;
   EOSQLQualifier *qualifier;
-
-  tableName = [self _storeTableName];
 
   record = nil;
 
