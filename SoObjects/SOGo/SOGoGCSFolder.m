@@ -156,14 +156,13 @@ static NSArray *childRecordFields = nil;
 {
   id newFolder;
   NSArray *elements, *pathElements;
-  NSString *path, *objectPath, *login, *currentUser, *ocsName, *folderName;
+  NSString *path, *objectPath, *login, *ocsName, *folderName;
   WOContext *localContext;
   BOOL localIsSubscription;
 
   elements = [reference componentsSeparatedByString: @":"];
   login = [elements objectAtIndex: 0];
   localContext = [[WOApplication application] context];
-  currentUser = [[localContext activeUser] login];
   objectPath = [elements objectAtIndex: 1];
   pathElements = [objectPath componentsSeparatedByString: @"/"];
   if ([pathElements count] > 1)
@@ -605,13 +604,10 @@ static NSArray *childRecordFields = nil;
 
 - (void) renameTo: (NSString *) newName
 {
-  SOGoUser *activeUser;
-
 #warning SOGoFolder should have the corresponding method
   [displayName release];
   displayName = nil;
 
-  activeUser = [context activeUser];
   if (activeUserIsOwner)
     [self _ownerRenameTo: newName];
   else
@@ -1808,7 +1804,6 @@ static NSArray *childRecordFields = nil;
   NSString *url, *currentURL, *componentURLPath, *cName, *baseURLString;
   NSMutableDictionary *cNames;
   NSURL *componentURL, *baseURL;
-  NSArray *urlComponents;
 
   max = [urls count];
   cNames = [NSMutableDictionary dictionaryWithCapacity: max];
@@ -1829,7 +1824,6 @@ static NSArray *childRecordFields = nil;
       if ([componentURLPath rangeOfString: baseURLString].location
 	  != NSNotFound)
 	{
-	  urlComponents = [componentURLPath componentsSeparatedByString: @"/"];
 	  cName = [[urls objectAtIndex: count] lastPathComponent];
 	  [cNames setObject: [urls objectAtIndex: count]  forKey: cName];
 	}
@@ -2075,7 +2069,8 @@ static NSArray *childRecordFields = nil;
   buffer = [NSMutableString stringWithCapacity: max*512];
   for (count = 0; count < max; count++)
     {
-      currentComponent = [components objectForKey: [urls objectAtIndex: count]];
+      currentURL = [urls objectAtIndex: count];
+      currentComponent = [components objectForKey: currentURL];
       if (currentComponent)
         [self appendObject: currentComponent
                 properties: propertiesArray

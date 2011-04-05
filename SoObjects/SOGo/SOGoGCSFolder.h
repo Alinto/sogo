@@ -36,6 +36,8 @@
 
 @class DOMElement;
 
+@class SOGoUser;
+
 /*
   SOGoGCSFolder
   
@@ -72,6 +74,8 @@
 - (void) setFolderPropertyValue: (id) theValue
                      inCategory: (NSString *) theKey;
 - (id) folderPropertyValueInCategory: (NSString *) theKey;
+- (id) folderPropertyValueInCategory: (NSString *) theKey
+			     forUser: (SOGoUser *) theUser;
 
 /* lower level fetches */
 - (BOOL) nameExistsInFolder: (NSString *) objectName;
