@@ -168,6 +168,10 @@
 	  else
 	    result = [self _sendMailData: mailData withClient: client];
 	}
+      else
+        result = [NSException
+                   exceptionWithHTTPStatus: 500
+                                    reason: @"cannot send message: (smtp) originator not accepted"];
       [client quit];
       [client disconnect];
     }
