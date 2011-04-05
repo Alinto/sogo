@@ -1,3 +1,10 @@
+2011-04-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxCalListingActions.m
+	(-_fillBlocks:withEvent:withNumber:): fixed type confusion between
+	char * and NSString * that could cause a crash under certain
+	circumstances.
+
 2011-04-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/Unit/TestSBJsonParser.m (-test_parseJSONString): input and

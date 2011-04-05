@@ -702,7 +702,7 @@ _userStateInEvent (NSArray *event)
             offset = ((currentStart - startSecs)
                       / dayLength);
           if (offset >= [blocks count])
-            [self errorWithFormat: "event '%@' has a computed offset that"
+            [self errorWithFormat: @"event '%@' has a computed offset that"
                   @" overflows the amount of blocks (skipped)",
                   [event objectAtIndex: eventNameIndex]];
           else
