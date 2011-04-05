@@ -126,10 +126,6 @@
       // The interval must be ignored as well since it refers to the years.
       [rrule setRepeatCount: 0];
       [rrule setInterval: @"1"];
-      monthlyCalc = [[iCalMonthlyRecurrenceCalculator alloc]
-				      initWithRecurrenceRule: rrule
-                              firstInstanceCalendarDateRange: firstRange];
-      [monthlyCalc autorelease];
       
       // There's a bug in GNUstep in [NSCalendarDate dateByAddingYears:months:days:]
       // that causes errors when adding subsequently a month. For this reason,
@@ -161,15 +157,18 @@
   currentMonth = [referenceDate monthOfYear];
   for (yearIdxInRange = 0 ; yearIdxInRange < numberOfYearsInRange; yearIdxInRange++)
     {
-      int k, test, year;
+      int k, test;
 
       test = diff + yearIdxInRange;
       if ((test >= 0) && (test % interval) == 0)
 	{
-	  year = yearIdxInRange + [referenceDate yearOfCommonEra];
-
 	  if (byMonth)
 	    {
+              monthlyCalc = [[iCalMonthlyRecurrenceCalculator alloc]
+                                        initWithRecurrenceRule: rrule
+                                firstInstanceCalendarDateRange: firstRange];
+              [monthlyCalc autorelease];
+
 	      // When there's a BYMONTH constraint, evaluate each month of the constraint using
 	      // the monthly calculator.
 	      for (j = 0; currentMonth < 13 && j <= 12; j++, currentMonth++, monthDiff++)

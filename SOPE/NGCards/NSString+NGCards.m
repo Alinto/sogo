@@ -189,7 +189,7 @@
   */
   unsigned       i, len;
   NSTimeInterval ti;
-  BOOL           isNegative, isTime;
+  BOOL           isNegative;
   int            val;
   unichar c;
   
@@ -213,14 +213,12 @@
       val = 0;
 
       len = [self length];
-      isTime = NO;
 
       for (i++; i < len; i++)
 	{
 	  c = [self characterAtIndex: i];
 	  if (c == 't' || c == 'T')
 	    {
-	      isTime = YES;
 	      val = 0;
 	    }
 	  else if (isdigit (c))

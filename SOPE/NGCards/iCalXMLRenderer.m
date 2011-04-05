@@ -135,19 +135,15 @@
 - (NSString *) _xmlRenderParameters
 {
   NSArray *keys;
-  NSMutableArray *renderedValues;
   NSMutableString *rendering;
   NSString *currentValue;
   int count, max;
-  BOOL displayed;
 
   keys = [attributes allKeys];
   max = [keys count];
   if (max > 0)
     {
       rendering = [NSMutableString stringWithCapacity: 64];
-      renderedValues = [NSMutableArray arrayWithCapacity: max];
-      displayed = NO;
       for (count = 0; count < max; count++)
         {
           currentValue
