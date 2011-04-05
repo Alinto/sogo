@@ -132,6 +132,7 @@
       // NSLog(@"Search all contacts: %@", searchText);
       excludeGroups = [[self queryParameterForKey: @"excludeGroups"] boolValue];
       excludeLists = [[self queryParameterForKey: @"excludeLists"] boolValue];
+      folders = nil;
       NS_DURING
         folders = [[self clientObject] subFolders];
       NS_HANDLER

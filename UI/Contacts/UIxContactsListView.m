@@ -140,6 +140,7 @@
   searchText = [self queryParameterForKey: @"search"];
   if ([searchText length] > 0)
     {
+      folder = nil;
       NS_DURING
         folder = [self clientObject];
       NS_HANDLER
