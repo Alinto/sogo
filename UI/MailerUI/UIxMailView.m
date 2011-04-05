@@ -211,6 +211,7 @@ static NSString *mailETag = nil;
   account = [[self clientObject] mailAccountFolder];
   identities = [account identities];
   max = [identities count];
+  rc = NO;
   for (count = 0; !rc && count < max; count++)
     {
       identityEmail = [[identities objectAtIndex: count]
