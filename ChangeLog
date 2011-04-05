@@ -1,5 +1,11 @@
 2011-04-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailFolder.m (-createFolder:): implemented
+	method by adapting old code that was still commented out.
+	(-folderKeys): implemented method.
+	(-lookupChild:): overriden method to return a folder object when
+	the child key is contained in the folder keys.
+
 	* OpenChange/MAPIStoreContext.m (_tableForFID:andTableType:): make
 	use of lookupFolder: to retrieve the right folder based on the FID.
 	(-setPropertiesWithFMID:ofTableType:inRow:): silently discard by

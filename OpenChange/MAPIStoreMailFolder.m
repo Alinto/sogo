@@ -26,6 +26,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <EOControl/EOQualifier.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
 #import <Mailer/SOGoDraftsFolder.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
@@ -33,6 +34,7 @@
 #import <Mailer/SOGoSentFolder.h>
 #import <Mailer/SOGoTrashFolder.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 
 #import "MAPIApplication.h"
 #import "MAPIStoreContext.h"
@@ -47,12 +49,17 @@
 
 static Class MAPIStoreDraftsMessageK;
 static Class MAPIStoreMailMessageK;
+static Class SOGoMailFolderK;
+
+#undef DEBUG
+#include <libmapi/libmapi.h>
 
 @implementation MAPIStoreMailFolder
 
 + (void) initialize
 {
   MAPIStoreMailMessageK = [MAPIStoreMailMessage class];
+  SOGoMailFolderK = [SOGoMailFolder class];
 }
 
 - (id) initWithURL: (NSURL *) newURL
@@ -121,44 +128,32 @@ static Class MAPIStoreMailMessageK;
 
 - (NSString *) createFolder: (struct SRow *) aRow
 {
-  return nil;
-  // NSString *newFolderURL;
-  // NSString *folderName, *nameInContainer;
-  // SOGoFolder *parentFolder, *newFolder;
-  // int i;
+  NSString *folderName, *nameInContainer;
+  SOGoMailFolder *newFolder;
+  int i;
 
-  // newFolderURL = nil;
+  nameInContainer = nil;
 
-  // folderName = nil;
-  // for (i = 0; !folderName && i < aRow->cValues; i++)
-  //   {
-  //     if (aRow->lpProps[i].ulPropTag == PR_DISPLAY_NAME_UNICODE)
-  //       folderName = [NSString stringWithUTF8String: aRow->lpProps[i].value.lpszW];
-  //     else if (aRow->lpProps[i].ulPropTag == PR_DISPLAY_NAME)
-  //       folderName = [NSString stringWithUTF8String: aRow->lpProps[i].value.lpszA];
-  //   }
+  folderName = nil;
+  for (i = 0; !folderName && i < aRow->cValues; i++)
+    {
+      if (aRow->lpProps[i].ulPropTag == PR_DISPLAY_NAME_UNICODE)
+        folderName = [NSString stringWithUTF8String: aRow->lpProps[i].value.lpszW];
+      else if (aRow->lpProps[i].ulPropTag == PR_DISPLAY_NAME)
+        folderName = [NSString stringWithUTF8String: aRow->lpProps[i].value.lpszA];
+    }
 
-  // if (folderName)
-  //   {
-  //     parentFolder = [self lookupObject: parentFolderURL];
-  //     if (parentFolder)
-  //       {
-  //         if ([parentFolder isKindOfClass: SOGoMailAccountK]
-  //             || [parentFolder isKindOfClass: SOGoMailFolderK])
-  //           {
-  //             nameInContainer = [NSString stringWithFormat: @"folder%@",
-  //                                         [folderName asCSSIdentifier]];
-  //             newFolder = [SOGoMailFolderK objectWithName: nameInContainer
-  //                                             inContainer: parentFolder];
-  //             if ([newFolder create])
-  //               newFolderURL = [NSString stringWithFormat: @"%@/%@",
-  //                                        parentFolderURL,
-  //                                        [nameInContainer stringByEscapingURL]];
-  //           }
-  //       }
-  //   }
+  if (folderName)
+    {
+      nameInContainer = [NSString stringWithFormat: @"folder%@",
+                                  [folderName asCSSIdentifier]];
+      newFolder = [SOGoMailFolderK objectWithName: nameInContainer
+                                      inContainer: sogoObject];
+      if (![newFolder create])
+        nameInContainer = nil;
+    }
 
-  // return newFolderURL;
+  return nameInContainer;
 }
 
 - (enum MAPISTATUS) getProperty: (void **) data
@@ -182,6 +177,17 @@ static Class MAPIStoreMailMessageK;
       *data = [@"IPF.Note" asUnicodeInMemCtx: memCtx];
       break;
     default:
+      {
+        const char *propName;
+
+        propName = get_proptag_name (propTag);
+        if (!propName)
+          propName = "<unknown>";
+        [self warnWithFormat: @"get folder tag: %s (0x%.8x)", propName,
+        propTag];
+      }
+
+
       rc = [super getProperty: data withTag: propTag];
     }
   
@@ -223,6 +229,38 @@ static Class MAPIStoreMailMessageK;
   uidKeys = [sogoObject fetchUIDsMatchingQualifier: fetchQualifier
                                       sortOrdering: sortOrderings];
   return [uidKeys stringsWithFormat: @"%@.eml"];
+}
+
+- (NSArray *) folderKeys
+{
+  if (!folderKeys)
+    folderKeys = [[sogoObject toManyRelationshipKeys] mutableCopy];
+
+  return folderKeys;
+}
+
+- (MAPIStoreFAIMessageTable *) folderTable
+{
+  return [MAPIStoreMailFolderTable tableForContainer: self];
+}
+
+- (id) lookupChild: (NSString *) childKey
+{
+  id childObject;
+  SOGoMailFolder *childFolder;
+
+  [self folderKeys];
+  if ([folderKeys containsObject: childKey])
+    {
+      childFolder = [sogoObject lookupName: childKey inContext: nil
+                                   acquire: NO];
+      childObject = [MAPIStoreMailFolder mapiStoreObjectWithSOGoObject: childFolder
+                                                           inContainer: self];
+    }
+  else
+    childObject = [super lookupChild: childKey];
+
+  return childObject;
 }
 
 @end
