@@ -312,7 +312,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
           folderKey = [parentFolder createFolder: aRow];
           if (folderKey)
             {
-              folderURL = [NSString stringWithFormat: @"%@%@",
+              folderURL = [NSString stringWithFormat: @"%@%@/",
                                     parentFolderURL, folderKey];
               [mapping registerURL: folderURL withID: fid];
               rc = MAPISTORE_SUCCESS;
@@ -387,21 +387,39 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 {
   MAPIStoreFolder *folder;
   MAPIStoreTable *table;
+  NSString *folderURL;
 
 /* TODO: should handle folder hierarchies */
-  folder = baseFolder;
-
-  if (tableType == MAPISTORE_MESSAGE_TABLE)
-    table = [folder messageTable];
-  else if (tableType == MAPISTORE_FAI_TABLE)
-    table = [folder faiMessageTable];
-  else if (tableType == MAPISTORE_FOLDER_TABLE)
-    table = [folder folderTable];
+  folderURL = [mapping urlFromID: fid];
+  if (folderURL)
+    {
+      folder = [self lookupFolder: folderURL];
+      if (folder)
+        {
+          if (tableType == MAPISTORE_MESSAGE_TABLE)
+            table = [folder messageTable];
+          else if (tableType == MAPISTORE_FAI_TABLE)
+            table = [folder faiMessageTable];
+          else if (tableType == MAPISTORE_FOLDER_TABLE)
+            table = [folder folderTable];
+          else
+            {
+              table = nil;
+              [NSException raise: @"MAPIStoreIOException"
+                           format: @"unsupported table type: %d", tableType];
+            }
+        }
+      else
+        {
+          table = nil;
+          [self errorWithFormat: @"folder with url '%@' not found", folderURL];
+        }
+    }
   else
     {
       table = nil;
-      [NSException raise: @"MAPIStoreIOException"
-		   format: @"unsupported table type: %d", tableType];
+      [self errorWithFormat: @"folder with fid %Lu not found",
+            (unsigned long long) fid];
     }
 
   return table;
@@ -511,7 +529,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 {
   NSString *folderURL;
   MAPIStoreTable *table;
-  MAPIStoreMessage *message;
+  MAPIStoreObject *object;
   const char *propName;
   int rc;
 
@@ -531,10 +549,10 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
     {
       table = [self _tableForFID: fid andTableType: tableType];
       *data = NULL;
-      message = [table childAtRowID: pos forQueryType: queryType];
-      if (message)
+      object = [table childAtRowID: pos forQueryType: queryType];
+      if (object)
         {
-          rc = [message getProperty: data withTag: propTag];
+          rc = [object getProperty: data withTag: propTag];
           if (rc == MAPISTORE_ERR_NOT_FOUND)
             rc = MAPI_E_NOT_FOUND;
           else if (rc == MAPISTORE_ERR_NO_MEMORY)
@@ -946,6 +964,10 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	}
       break;
     case MAPISTORE_FOLDER:
+      [self logWithFormat: @"%s: ignored setting of props on folders",
+            __FUNCTION__];
+      rc = MAPISTORE_SUCCESS;
+      break;
     default:
       [self errorWithFormat: @"%s: value of tableType not handled: %d",
             __FUNCTION__, tableType];

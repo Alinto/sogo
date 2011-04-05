@@ -1,3 +1,10 @@
+2011-04-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContext.m (_tableForFID:andTableType:): make
+	use of lookupFolder: to retrieve the right folder based on the FID.
+	(-setPropertiesWithFMID:ofTableType:inRow:): silently discard by
+	log the settings of properties on folders.
+
 2011-04-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxCalListingActions.m
