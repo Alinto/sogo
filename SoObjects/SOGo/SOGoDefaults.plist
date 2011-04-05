@@ -5,6 +5,7 @@
     WOPidFile = "/var/run/sogo/sogo.pid";
 
     NGImap4ConnectionStringSeparator = "/";
+    NGImap4DisableIMAP4Pooling = YES;
 
     SOGoZipPath = "/usr/bin/zip";
 
