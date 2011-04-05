@@ -176,7 +176,7 @@ static SoSecurityManager *sm = nil;
   NSArray *attrs;
   NSDictionary *row;
   SOGoGCSFolder *folder;
-  NSString *key, *login;
+  NSString *key;
   NSException *error;
   SOGoUser *currentUser;
 
@@ -187,7 +187,6 @@ static SoSecurityManager *sm = nil;
   if (!error)
     {
       currentUser = [context activeUser];
-      login = [currentUser login];
 
       attrs = [fc describeResults: NO];
       while ((row = [fc fetchAttributes: attrs withZone: NULL]))
@@ -470,7 +469,6 @@ static SoSecurityManager *sm = nil;
 - (BOOL) hasLocalSubFolderNamed: (NSString *) name
 {
   NSArray *subs;
-  NSException *error;
   NSString *currentDisplayName;
   int i, count;
   BOOL rc;
@@ -478,7 +476,7 @@ static SoSecurityManager *sm = nil;
   rc = NO;
 
 #warning check error here
-  error = [self initSubFolders];
+  [self initSubFolders];
 
   subs = [subFolders allValues];
   count = [subs count];

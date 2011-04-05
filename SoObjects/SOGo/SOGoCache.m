@@ -104,8 +104,6 @@ static memcached_st *handle = NULL;
 
   if ((self = [super init]))
     {
-      memcached_return error;
-      
       cache = [[NSMutableDictionary alloc] init];
       users = [[NSMutableDictionary alloc] init];
       groups = [[NSMutableDictionary alloc] init];
@@ -140,7 +138,7 @@ static memcached_st *handle = NULL;
                 servers
 		  = memcached_servers_parse([memcachedServerName UTF8String]);
 
-              error = memcached_server_push(handle, servers);
+              memcached_server_push(handle, servers);
             }
         }
     }
