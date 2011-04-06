@@ -1,3 +1,11 @@
+2011-04-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailMessageTable.m
+	(-evaluateExistRestriction:intoQualifier:): declare that
+	PR_CLIENT_SUBMIT_TIME always exists on messages, which prevents
+	Outlook from looping on a search request that always returns the
+	same unexpected result...
+
 2011-04-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarMessage.m (-getProperty:withTag):

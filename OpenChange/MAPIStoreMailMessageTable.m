@@ -194,6 +194,9 @@ static Class NSDataK, NSStringK;
     case PR_MESSAGE_DELIVERY_TIME:
       rc = MAPIRestrictionStateAlwaysTrue;
       break;
+    case PR_CLIENT_SUBMIT_TIME:
+      rc = MAPIRestrictionStateAlwaysTrue;
+      break;
     case PR_PROCESSED:
       rc = MAPIRestrictionStateAlwaysFalse;
       break;
