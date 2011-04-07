@@ -2224,7 +2224,7 @@ function onMenuRenameFolderConfirm() {
     var name = this.value;
     if (name && name.length > 0) {
         var folderID = document.menuTarget.getAttribute("dataname");
-        var urlstr = URLForFolderID(folderID) + "/renameFolder?name=" + name;
+        var urlstr = URLForFolderID(folderID) + "/renameFolder?name=" + encodeURIComponent(name);
         var errorLabel = labels["This folder could not be renamed to \"%{0}\"."];
         triggerAjaxRequest(urlstr, folderOperationCallback,
                            errorLabel.formatted(name));
