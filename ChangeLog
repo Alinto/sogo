@@ -1,3 +1,12 @@
+2011-04-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Unit/TestNSString+URLEscaping.m: new test module.
+	(-test_stringByEscapingURL): new test method for -[NSString
+	stringByEscapingURL].
+
+	* Tests/Unit/sogo-tests.m (main): added volatile user defaults for
+	utf8 url encoding.
+
 2011-04-07  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (onMenuRenameFolderConfirm):

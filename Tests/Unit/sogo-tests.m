@@ -28,8 +28,20 @@ int main()
 {
   NSAutoreleasePool *pool;
   int rc;
+  NSDictionary *defaults;
+  NSUserDefaults *ud;
 
   pool = [NSAutoreleasePool new];
+
+  defaults = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithBool: YES],
+                           @"NGUseUTF8AsURLEncoding",
+                           nil];
+  ud = [NSUserDefaults standardUserDefaults];
+  [ud setVolatileDomain: defaults
+                forName: @"sogo-tests-volatile"];
+  [ud addSuiteNamed: @"sogo-tests-volatile"];
+
   rc = [[SOGoTestRunner testRunner] run];
   [pool release];
 
