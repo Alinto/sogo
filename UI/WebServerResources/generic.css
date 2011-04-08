@@ -254,6 +254,9 @@ UL.choiceMenu LI._chosen:hover
 { background-color: #9ABCD8;
   color: #fff; }
 
+.menu LI.disabled:hover
+{ background-color: inherit; }
+
 .menu LI.separator,
 .menu LI.separator:hover
 { padding: 0px;
@@ -262,7 +265,8 @@ UL.choiceMenu LI._chosen:hover
   border-top: 1px solid #aaa;
   border-bottom: 1px solid #fff; }
 
-.menu LI.submenu, .menu LI.submenu-selected
+.menu LI.submenu,
+.menu LI.submenu-selected
 { padding-right: 2em;
   background-position: 98% 50%;
   background-repeat: no-repeat; }
