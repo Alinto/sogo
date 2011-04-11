@@ -140,7 +140,7 @@ function addressFieldGotFocus(event) {
 function addressFieldLostFocus(event) {
     lastIndex = getIndexFromIdentifier(this.id);
     
-    var addresses = this.value.split(',');
+    var addresses = this.value.split(/[,;]/);
     if (addresses.length > 0) {
         var first = true;
         for (var i = 0; i < addresses.length; i++) {

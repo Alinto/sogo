@@ -1,3 +1,9 @@
+2011-04-11  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxMailToSelection.js
+	(addressFieldLostFocus): split content separated by commas
+	or semi-colons.
+
 2011-04-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/Unit/TestNSString+URLEscaping.m: new test module.
