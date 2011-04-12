@@ -1,3 +1,10 @@
+2011-04-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m
+	(-bodyPartForAttachmentWithName:): don't choose "quoted-printable"
+	if the mimetype is anything else than "text/plain" or "text/html",
+	to avoid issues with filenames attached with a wrong mime type.
+
 2011-04-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
