@@ -2609,8 +2609,13 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 - (int) importCalendar: (iCalCalendar *) calendar
 {
+  NSArray *vtimezones;
   NSMutableArray *components;
+  NSMutableDictionary *timezones;
   NSString *tz;
+  iCalEntityObject *element;
+  iCalDateTime *startDate;
+  iCalTimeZone *timezone;
 
   int imported, count, i;
   
@@ -2618,25 +2623,41 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   if (calendar)
     {
+      // Build a hash with the timezones includes in the calendar
+      vtimezones = [calendar timezones];
+      count = [vtimezones count];
+      timezones = [NSMutableDictionary dictionaryWithCapacity: count];
+      for (i = 0; i < count; i++)
+        {
+          timezone = (iCalTimeZone *)[vtimezones objectAtIndex: i];
+          [timezones setValue: [NSString stringWithFormat: @"%@\n", [timezone versitString]]
+                       forKey: [timezone tzId]];
+        }
+
+      // Parse events/todos/journals and import them
       components = [[calendar events] mutableCopy];
       [components autorelease];
       [components addObjectsFromArray: [calendar todos]];
       [components addObjectsFromArray: [calendar journals]];
       [components addObjectsFromArray: [calendar freeBusys]];
-
-#warning FIXME we might want to eventually support multiple timezone definitions and match the one used by the event
-      if ([[calendar timezones] count])
-	tz = [NSString stringWithFormat: @"%@\n", 
-		       [[[calendar timezones] lastObject] versitString]];
-      else
-	tz = @"";
-
       count = [components count];
       for (i = 0; i < count; i++)
-        if ([self importComponent: [components objectAtIndex: i] timezone: tz])
-          imported++;
+        {
+          tz = nil;
+          element = [components objectAtIndex: i];
+          // Use the timezone of the start date.
+          startDate = (iCalDateTime *)[element uniqueChildWithTag: @"dtstart"];
+          if (startDate)
+            {
+              timezone = [startDate timeZone];
+              tz = [timezones valueForKey: [timezone tzId]];
+            }
+          if ([self importComponent: element
+                           timezone: (tz == nil? @"" : tz)])
+            imported++;
+        }
     }
-
+  
   return imported;
 }
 

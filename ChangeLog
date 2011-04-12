@@ -1,3 +1,9 @@
+2011-04-12  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-importCalendar:): we now associate the proper vtimezone to each
+	event found in the calendar.
+
 2011-04-11  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxMailToSelection.js
