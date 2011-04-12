@@ -316,8 +316,23 @@
 
 - (id) defaultAction
 {
+  // NSString *check;
+  // WOResponse *response;
+  // static NSString *etag = @"\"contacts-ui\"";
+
   [self checkDefaultModulePreference];
 
+  // check = [[context request] headerForKey: @"if-none-match"];
+  // if ([check length] > 0 && [check rangeOfString: etag].location != NSNotFound) /* not perfectly correct */
+  //   response = [self responseWithStatus: 304];
+  // else
+  //   {
+  //     response = [context response];
+  //     [response setHeader: etag forKey: @"etag"];
+  //     response = (WOResponse *) [super defaultAction];
+  //   }
+  
+  // return response;
   return [super defaultAction];
 }
 
