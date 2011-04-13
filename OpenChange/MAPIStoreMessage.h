@@ -48,6 +48,9 @@
 
 - (void) openMessage: (struct mapistore_message *) msg;
 
+/* helper getters */
+- (int) getSMTPAddrType: (void **) data;
+
 /* subclasses */
 - (void) submit;
 - (void) save;

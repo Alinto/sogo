@@ -36,6 +36,8 @@
 
 @interface MAPIStoreObject : NSObject
 {
+  const IMP *classGetters;
+
   NSMutableArray *parentContainersBag;
   MAPIStoreObject *container;
   id sogoObject;
@@ -82,6 +84,12 @@
 
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag;
+
+/* helper getters */
+- (int) getEmptyString: (void **) data;
+- (int) getLongZero: (void **) data;
+- (int) getYes: (void **) data;
+- (int) getNo: (void **) data;
 
 /* subclasses */
 - (id) lookupChild: (NSString *) childKey;

@@ -1,5 +1,11 @@
 2011-04-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreObject.m: make use of the IMP cache methods
+	available in MAPIStorePropertySelectors to query object
+	properties.
+	* OpenChange/*{Message,Folder}.m: replaced the implementations of
+	-getProperty:withTag: with equivalent property getter methods.
+
 	* OpenChange/MAPIStoreContext.m (-url): new method that returns
 	the context url.
 

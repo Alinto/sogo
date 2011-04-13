@@ -25,7 +25,12 @@
 
 #import "MAPIStoreGCSMessage.h"
 
+@class iCalToDo;
+
 @interface MAPIStoreTasksMessage : MAPIStoreGCSMessage
+{
+  iCalToDo *task;
+}
 
 @end
 
