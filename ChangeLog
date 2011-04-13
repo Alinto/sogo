@@ -1,3 +1,10 @@
+2011-04-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/gen-property-selectors.py: new generator script that
+	outputs MAPIStorePropertySelectors.[hm], which is a helper
+	module that provides methods for handling of cached
+	property method IMPs.
+
 2011-04-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m
