@@ -1,5 +1,8 @@
 2011-04-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (-url): new method that returns
+	the context url.
+
 	* OpenChange/gen-property-selectors.py: new generator script that
 	outputs MAPIStorePropertySelectors.[hm], which is a helper
 	module that provides methods for handling of cached

@@ -258,6 +258,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return authenticator;
 }
 
+- (NSURL *) url
+{
+  return contextUrl;
+}
+
 - (void) setupRequest
 {
   NSMutableDictionary *info;

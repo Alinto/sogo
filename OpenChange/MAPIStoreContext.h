@@ -72,6 +72,8 @@
 - (void) setAuthenticator: (MAPIStoreAuthenticator *) newAuthenticator;
 - (MAPIStoreAuthenticator *) authenticator;
 
+- (NSURL *) url;
+
 - (WOContext *) woContext;
 
 - (void) setupRequest;
