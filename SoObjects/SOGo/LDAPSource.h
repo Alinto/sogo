@@ -4,6 +4,7 @@
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +54,7 @@
   NSString *CNField;
   NSString *UIDField;
   NSArray *mailFields, *searchFields;
-  NSString *IMAPHostField;
+  NSString *IMAPHostField, *IMAPLoginField;
   NSArray *bindFields;
   BOOL _bindAsCurrentUser;
 
@@ -83,6 +84,7 @@
 	mailFields: (NSArray *) newMailFields
       searchFields: (NSArray *) newSearchFields
      IMAPHostField: (NSString *) newIMAPHostField
+    IMAPLoginField: (NSString *) newIMAPLoginField
      andBindFields: (id) newBindFields;
 
 - (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID;

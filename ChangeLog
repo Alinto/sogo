@@ -1,5 +1,28 @@
 2011-04-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserManager.m (-getImapLoginForUID:): we now
+	consider the source parameter IMAPLoginFieldName. We continue to support
+	SOGoForceIMAPLoginWithEmail at the domain/system level.
+
+	* SoObjects/SOGo/LDAPSource.m: we can now define a new parameter
+	named IMAPLoginFieldName to specify which field to use for IMAP
+	authentication. By default, we use the value of the UIDFieldName.
+
+	* SoObjects/SOGo/SQLSource.m
+	(-checkLogin:password:perr:expire:grace:): if the defaults parameter
+	authenticationFilter is defined, we add it to the SQL where clause.
+	(_lookupContactEntry:considerEmail:): we add a new key
+	 (canAuthenticate) to the returned dictionary that specifies if the
+	user can authenticate or not. We also add c_imaplogin when the
+	user must authenticate with a different username to the IMAP server.
+
+	* SoObjects/SOGo/SOGoUser.m (-canAuthenticate): new method that
+	returns true if the user can authenticate, based on the
+	authentication filter associated to the source.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-ocsFolder): don't automatically
+	create the folder if the user can't authenticate.
+
 	* UI/Contacts/UIxContactsListActions.m: was
 	UIxContactsListView.m. The new method contactsListAction now
 	returns a JSON representation of the addressbook.

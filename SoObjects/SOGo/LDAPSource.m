@@ -4,6 +4,7 @@
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -161,6 +162,7 @@ static NSArray *commonSearchFields;
       searchFields = [NSArray arrayWithObjects: @"sn", @"displayname", @"telephonenumber", nil];
       [searchFields retain];
       IMAPHostField = nil;
+      IMAPLoginField = nil;
       bindFields = nil;
       _scope = @"sub";
       _filter = nil;
@@ -188,6 +190,7 @@ static NSArray *commonSearchFields;
   [mailFields release];
   [searchFields release];
   [IMAPHostField release];
+  [IMAPLoginField release];
   [bindFields release];
   [_filter release];
   [sourceID release];
@@ -223,6 +226,7 @@ static NSArray *commonSearchFields;
            mailFields: [udSource objectForKey: @"MailFieldNames"]
 	 searchFields: [udSource objectForKey: @"SearchFieldNames"]
 	IMAPHostField: [udSource objectForKey: @"IMAPHostFieldName"]
+       IMAPLoginField: [udSource objectForKey: @"IMAPLoginFieldName"]
 	andBindFields: [udSource objectForKey: @"bindFields"]];
 
       if ([sourceDomain length])
@@ -305,6 +309,7 @@ static NSArray *commonSearchFields;
 	mailFields: (NSArray *) newMailFields
       searchFields: (NSArray *) newSearchFields
      IMAPHostField: (NSString *) newIMAPHostField
+    IMAPLoginField: (NSString *) newIMAPLoginField
      andBindFields: (id) newBindFields
 {
   ASSIGN (baseDN, [newBaseDN lowercaseString]);
@@ -316,6 +321,8 @@ static NSArray *commonSearchFields;
     ASSIGN (UIDField, newUIDField);
   if (newIMAPHostField)
     ASSIGN (IMAPHostField, newIMAPHostField);
+  if (newIMAPLoginField)
+    ASSIGN (IMAPLoginField, newIMAPLoginField);
   if (newMailFields)
     ASSIGN (mailFields, newMailFields);
   if (newSearchFields)
@@ -694,6 +701,10 @@ static NSArray *commonSearchFields;
       // Add IMAP hostname from user defaults
       if ([IMAPHostField length])
         [searchAttributes addObjectUniquely: IMAPHostField];
+
+      // Add IMAP login from user defaults
+      if ([IMAPLoginField length])
+        [searchAttributes addObjectUniquely: IMAPLoginField];
     }
 
   return searchAttributes;
@@ -760,6 +771,13 @@ static NSArray *commonSearchFields;
       ldapValue = [[ldapEntry attributeWithName: IMAPHostField] stringValueAtIndex: 0];
       if ([ldapValue length] > 0)
 	[contactEntry setObject: ldapValue forKey: @"c_imaphostname"];
+    }
+
+  if (IMAPLoginField)
+    {
+      ldapValue = [[ldapEntry attributeWithName: IMAPLoginField] stringValueAtIndex: 0];
+      if ([ldapValue length] > 0)
+	[contactEntry setObject: ldapValue forKey: @"c_imaplogin"];
     }
 }
 

@@ -757,6 +757,15 @@
   return [[_domainDefaults superUsernames] containsObject: login];
 }
 
+- (BOOL) canAuthenticate
+{
+  id authValue;
+
+  authValue = [self _fetchFieldForUser: @"canAuthenticate"];
+  
+  return [authValue boolValue];
+}
+
 /* module access */
 - (BOOL) canAccessModule: (NSString *) module
 {

@@ -112,6 +112,7 @@
 - (NSMutableDictionary *) defaultIdentity;
 
 - (BOOL) isSuperUser;
+- (BOOL) canAuthenticate;
 
 /* module access */
 - (BOOL) canAccessModule: (NSString *) module;

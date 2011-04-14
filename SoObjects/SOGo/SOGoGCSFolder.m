@@ -480,14 +480,17 @@ static NSArray *childRecordFields = nil;
 - (GCSFolder *) ocsFolder
 {
   GCSFolder *folder;
+  SOGoUser *user;
   NSString *userLogin;
 
   if (!ocsFolder)
     {
       ocsFolder = [self ocsFolderForPath: [self ocsPath]];
-      userLogin = [[context activeUser] login];
+      user = [context activeUser];
+      userLogin = [user login];
       if (!ocsFolder
 	  && [userLogin isEqualToString: [self ownerInContext: context]]
+          && [user canAuthenticate]
 	  && [self folderIsMandatory]
 	  && [self create])
 	ocsFolder = [self ocsFolderForPath: [self ocsPath]];
