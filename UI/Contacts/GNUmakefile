@@ -9,7 +9,7 @@ ContactsUI_PRINCIPAL_CLASS = ContactsUIProduct
 ContactsUI_LANGUAGES = BrazilianPortuguese Catalan Czech Dutch English French German Hungarian Italian Norwegian Polish Russian Spanish Swedish Ukrainian Welsh
 
 ContactsUI_OBJC_FILES =			\
-	UIxContactsUserFolders.m \
+	UIxContactsUserFolders.m	\
 	UIxContactsMailerSelection.m	\
 	UIxContactsUserRightsEditor.m	\
 	\
@@ -18,10 +18,10 @@ ContactsUI_OBJC_FILES =			\
 	UIxContactActions.m		\
 	UIxContactView.m		\
 	UIxContactEditor.m		\
-	UIxListView.m		\
-	UIxListEditor.m		\
-	UIxContactsListView.m		\
-	UIxContactFoldersView.m \
+	UIxListView.m			\
+	UIxListEditor.m			\
+	UIxContactsListActions.m	\
+	UIxContactFoldersView.m		\
 	UIxContactFolderActions.m 
 
 ContactsUI_RESOURCE_FILES +=		\

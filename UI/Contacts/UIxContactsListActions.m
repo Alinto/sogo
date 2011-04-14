@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2010 Inverse inc.
+  Copyright (C) 2006-2011 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
@@ -32,6 +32,8 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSNull+misc.h>
 
+#import <Common/WODirectAction+SOGo.h>
+
 #import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactFolders.h>
@@ -44,9 +46,9 @@
 #import <SoObjects/Contacts/SOGoContactGCSFolder.h>
 #import <GDLContentStore/GCSFolder.h>
 
-#import "UIxContactsListView.h"
+#import "UIxContactsListActions.h"
 
-@implementation UIxContactsListView
+@implementation UIxContactsListActions
 
 - (id) init
 {
@@ -64,16 +66,6 @@
 
 /* accessors */
 
-- (void) setCurrentContact: (NSDictionary *) _contact
-{
-  currentContact = _contact;
-}
-
-- (NSDictionary *) currentContact
-{
-  return currentContact;
-}
-
 - (NSString *) defaultSortKey
 {
   return @"c_cn";
@@ -82,8 +74,10 @@
 - (NSString *) sortKey
 {
   NSString *s;
+  WORequest *rq;
   
-  s = [self queryParameterForKey: @"sort"];
+  rq = [context request];
+  s = [rq formValueForKey: @"sort"];
   if (![s length])
     s = [self defaultSortKey];
 
@@ -95,18 +89,20 @@
   id <SOGoContactFolder> folder;
   NSString *ascending, *searchText, *valueText;
   NSComparisonResult ordering;
+  WORequest *rq;
 
   if (!contactInfos)
     {
       folder = [self clientObject];
+      rq = [context request];
 
-      ascending = [self queryParameterForKey: @"asc"];
+      ascending = [rq formValueForKey: @"asc"];
       ordering = ((![ascending length] || [ascending boolValue])
 		  ? NSOrderedAscending : NSOrderedDescending);
 
-      searchText = [self queryParameterForKey: @"search"];
+      searchText = [rq formValueForKey: @"search"];
       if ([searchText length] > 0)
-	valueText = [self queryParameterForKey: @"value"];
+	valueText = [rq formValueForKey: @"value"];
       else
 	valueText = nil;
 
@@ -121,9 +117,21 @@
   return contactInfos;
 }
 
-- (NSString *) currentContactClasses
+/**
+ * Retrieve the addressbook contacts with respect to the sort and
+ * search criteria.
+ * @return a JSON array of dictionaries representing the contacts.
+ */
+- (id <WOActionResults>) contactsListAction
 {
-  return [[currentContact objectForKey: @"c_component"] lowercaseString];
+  id <WOActionResults> result;
+  NSArray *contactsList;
+
+  contactsList = [self contactInfos];
+  result = [self responseWithStatus: 200
+			  andString: [contactsList jsonRepresentation]];
+
+  return result;
 }
 
 - (id <WOActionResults>) contactSearchAction
@@ -136,11 +144,12 @@
   NSMutableDictionary *uniqueContacts;
   unsigned int i;
   NSSortDescriptor *commonNameDescriptor;
+  WORequest *rq;
 
-  searchText = [self queryParameterForKey: @"search"];
+  rq = [context request];
+  searchText = [rq formValueForKey: @"search"];
   if ([searchText length] > 0)
     {
-      folder = nil;
       NS_DURING
         folder = [self clientObject];
       NS_HANDLER
@@ -176,9 +185,8 @@
 
       data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
            sortedContacts, @"contacts", nil];
-      result = [self responseWithStatus: 200];
-
-      [(WOResponse*)result appendContentString: [data jsonRepresentation]];
+      result = [self responseWithStatus: 200
+			      andString: [data jsonRepresentation]];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400
@@ -187,13 +195,4 @@
   return result;
 }
 
-
-/* actions */
-
-- (BOOL) shouldTakeValuesFromRequest: (WORequest *) _rq
-                           inContext: (WOContext*) _c
-{
-  return YES;
-}
-
-@end /* UIxContactsListView */
+@end /* UIxContactsListActions */

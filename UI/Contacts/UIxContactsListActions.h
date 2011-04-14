@@ -19,17 +19,17 @@
  02111-1307, USA.
 */
 
-#ifndef __UIxContactsListView_H__
-#define __UIxContactsListView_H__
+#ifndef __UIxContactsListActions_H__
+#define __UIxContactsListActions_H__
 
-#import <SOGoUI/UIxComponent.h>
+#import <NGObjWeb/WODirectAction.h>
 
 @class NSDictionary;
 @class NSString;
 
 @protocol SOGoContactObject;
 
-@interface UIxContactsListView : UIxComponent
+@interface UIxContactsListActions : WODirectAction
 {
   NSDictionary *currentContact;
   NSArray *contactInfos;
@@ -37,4 +37,4 @@
 
 @end
 
-#endif /* __UIxContactsListView_H__ */
+#endif /* __UIxContactsListActions_H__ */

@@ -1,3 +1,20 @@
+2011-04-14  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactsListActions.m: was
+	UIxContactsListView.m. The new method contactsListAction now
+	returns a JSON representation of the addressbook.
+
+	* UI/Contacts/UIxContactFoldersView.m (-personalContactInfos): new
+	method used to populate the wox template with the personal
+	addressbook. The addressbook module is now pre-loaded with it,
+	eliminating an Ajax query.
+
+	* UI/WebServerResources/ContactsUI.js (initContacts): delegate
+	all events to the table instead of each row.
+	(contactsListCallback): we now receive a JSON representation of
+	the contacts and reuse the existing table rows instead of
+	overwriting the table.
+
 2011-04-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreObject.m: make use of the IMP cache methods

@@ -7,7 +7,7 @@ var usersRightsWindowHeight = 179;
 var usersRightsWindowWidth = 450;
 
 var Contact = {
-    currentAddressBook: null,
+    currentAddressBook: "/personal",
     currentContact: null,
     deleteContactsRequestCount: null
 };
@@ -55,8 +55,6 @@ function openContactsFolder(contactsFolder, reload, idx) {
             var contactsList = $("contactsList");
             if (contactsList)
                 selection = contactsList.getSelectedRowsId();
-            //        else
-            //           window.alert("no contactsList");
         }
         else
             selection = null;
@@ -70,18 +68,6 @@ function openContactsFolder(contactsFolder, reload, idx) {
     }
 }
 
-function openContactsFolderAtIndex(element) {
-    var idx = element.getAttribute("idx");
-    var url = URLForFolderID(Contact.currentAddressBook) + "/view?noframe=1&idx=" + idx;
-
-    if (document.contactsListAjaxRequest) {
-        document.contactsListAjaxRequest.aborted = true;
-        document.contactsListAjaxRequest.abort();
-    }
-    document.contactsListAjaxRequest
-        = triggerAjaxRequest(url, contactsListCallback);
-}
-
 function contactsListCallback(http) {
     if (http.readyState == 4) {
         if (http.status == 200) {
@@ -89,33 +75,76 @@ function contactsListCallback(http) {
             
             var div = $("contactsListContent");
             var table = $("contactsList");
-            if (table) {
-                // Update table
-                var data = http.responseText;
-                var html = data.replace(/^(.*\n)*.*(<table(.*\n)*)$/, "$2");
-                var tbody = table.tBodies[0];
-                var tmp = document.createElement('div');
-                $(tmp).update(html);
-                table.replaceChild($(tmp).select("table tbody")[0], tbody);
+            var tbody = table.tBodies[0];
+            var rows = tbody.getElementsByTagName("TR");
+            var data = [];
+            if (http.responseText.length > 0)
+                data = http.responseText.evalJSON(true);
+
+            tbody.deselectAll();
+
+            div.scrollTop = 0;            
+            if (data.length > 0) {
+                // Replace existing rows
+                for (var i = 0; i < data.length && i < rows.length; i++) {
+                    var contact = data[i];
+                    var row = rows[i];
+                    row.className = contact["c_component"];
+                    row.setAttribute("id", contact["c_name"]);
+                    row.setAttribute("categories", contact["c_categories"]);
+                    row.setAttribute("contactname", contact["c_cn"]);
+                    var cells = row.getElementsByTagName("TD");
+                    $(cells[0]).update(contact["c_cn"]);
+                    $(cells[1]).update(contact["c_mail"]);
+                    $(cells[2]).update(contact["c_screenname"]);
+                    $(cells[3]).update(contact["c_o"]);
+                    $(cells[4]).update(contact["c_telephonenumber"]);
+                }
+
+                // Add extra rows
+                for (var j = i; j < data.length; j++) {
+                    var contact = data[j];
+                    var row = createElement("tr",
+                                            contact["c_name"],
+                                            contact["c_component"],
+                                            null,
+                                            { categories: contact["c_categories"],
+                                              contactname: contact["c_cn"] },
+                                            tbody);
+                    
+                    var cell = createElement("td",
+                                             null,
+                                             ( "displayName" ),
+                                             null,
+                                             null,
+                                             row);
+                    cell.appendChild(document.createTextNode(contact["c_cn"]));
+
+                    cell = document.createElement("td");
+                    row.appendChild(cell);
+                    if (contact["c_mail"])
+                        cell.appendChild(document.createTextNode(contact["c_mail"]));
+
+                    cell = document.createElement("td");
+                    row.appendChild(cell);
+                    if (contact["c_screenname"])
+                        cell.appendChild(document.createTextNode(contact["c_screenname"]));
+
+                    cell = document.createElement("td");
+                    row.appendChild(cell);
+                    if (contact["c_o"])
+                        cell.appendChild(document.createTextNode(contact["c_o"]));
+
+                    cell = document.createElement("td");
+                    row.appendChild(cell);
+                    if (contact["c_telephonenumber"])
+                        cell.appendChild(document.createTextNode(contact["c_telephonenumber"]));
+                }
             }
-            else {
-                // Add table
-                div.update(http.responseText);
-                table = $("contactsList");
-                table.multiselect = true;
-                table.observe("mousedown", onContactSelectionChange);
-                configureSortableTableHeaders(table);
-                TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
-                configureDraggables();
-                resetCategoriesMenu();
-            }
-            var rows = table.tBodies[0].rows;
-            for (var i = 0; i < rows.length; i++) {
-                var row = $(rows[i]);
-                row.observe("mousedown", onRowClick);
-                row.observe("dblclick", onContactRowDblClick);
-                row.observe("selectstart", listRowMouseDownHandler);
-                row.observe("contextmenu", onContactContextMenu);
+
+            // Remove unnecessary rows
+            for (i = rows.length - 1; i >= data.length; i--) {
+                tbody.removeChild(rows[i]);
             }
             
             if (sorting["attribute"] && sorting["attribute"].length > 0) {
@@ -142,26 +171,30 @@ function contactsListCallback(http) {
                     var sortImage = createElement("img", "messageSortImage", "sortImage");
                     sortHeader.insertBefore(sortImage, sortHeader.firstChild);
                     if (sorting["ascending"])
-                        sortImage.src = ResourcesURL + "/arrow-down.png";
-                    else
                         sortImage.src = ResourcesURL + "/arrow-up.png";
+                    else
+                        sortImage.src = ResourcesURL + "/arrow-down.png";
                 }
             }
-            
-            var selected = http.callbackData;
-            if (selected) {
-                for (var i = 0; i < selected.length; i++) {
-                    var row = $(selected[i]);
+
+            // Restore selection and scroll to first selected node
+            tbody.refreshSelectionByIds();
+            var selection = http.callbackData;
+            if (selection) {
+                for (var i = 0; i < selection.length; i++) {
+                    var row = $(selection[i]);
                     if (row) {
                         var rowPosition = row.rowIndex * row.getHeight();
                         if (div.getHeight() < rowPosition)
                             div.scrollTop = rowPosition; // scroll to selected contact
-                        row.selectElement();
+                        break;
                     }
                 }
             }
+            
         }
         else {
+            // No more access to this address book; empty the list
             var table = $("contactsList");
             if (table) {
                 var sortImages = $(table.tHead).select(".sortImage");
@@ -349,7 +382,8 @@ function moveTo(uri) {
 
 /* contact menu entries */
 function onContactRowDblClick(event) {
-    var cname = this.getAttribute('id');
+    var t = getTarget(event);
+    var cname = t.parentNode.getAttribute('id');
 
     openContactWindow(URLForFolderID(Contact.currentAddressBook)
                       + "/" + cname + "/edit", cname);
@@ -358,7 +392,13 @@ function onContactRowDblClick(event) {
 }
 
 function onContactSelectionChange(event) {
-    var rows = this.getSelectedRowsId();
+    if (event) {
+        // Update rows selection
+        var t = getTarget(event);
+        onRowClick(event, t);
+    }
+
+    var rows = this.parentNode.getSelectedRowsId();
   
     if (rows.length == 1) {
         var node = $(rows[0]);
@@ -446,8 +486,9 @@ function onToolbarDeleteSelectedContactsConfirm(dialogId) {
     var contactsList = $('contactsList');
     var rows = contactsList.getSelectedRowsId();
     for (var i = 0; i < rows.length; i++) {
-        // hide row?
-        $(rows[i]).hide();
+        var row = $(rows[i]);
+        row.deselect();
+        row.hide();
         delete cachedContacts[Contact.currentAddressBook + "/" + rows[i]];
         var urlstr = (URLForFolderID(Contact.currentAddressBook) + "/"
                       + rows[i] + "/delete");
@@ -478,7 +519,6 @@ function onContactDeleteEventCallback(http) {
                     loadContact(Contact.currentContact);
                 }
             }
-            row.deselect();
             row.parentNode.removeChild(row);
         }
         else if (parseInt(http.status) == 403) {
@@ -587,7 +627,7 @@ function onConfirmContactSelection(event) {
                              currentAddressBookName, cid);
         }
         else {
-          var cname = '' + rows[i].getAttribute("contactname");
+          var cname = '' + rows[i].readAttribute("contactname");
           var email = '' + rows[i].cells[1].innerHTML;
 		
           window.opener.addContact(tag, currentAddressBookName + '/' + cname,
@@ -901,9 +941,8 @@ function configureAddressBooks() {
         lookupDeniedFolders();
         configureDroppables();
 
-        var personalFolder = $("/personal");
-        personalFolder.selectElement();
-        openContactsFolder("/personal");
+        // Select initial addressbook
+        $(Contact.currentAddressBook).selectElement();
     }
 }
 
@@ -1207,7 +1246,7 @@ function onDocumentKeydown(event) {
                         viewPort.scrollTop += rowBottom - divBottom;
                     else if (rowScrollOffset.top > rowPosition.top)
                         viewPort.scrollTop -= rowScrollOffset.top - rowPosition.top;
-					
+                    
                     // Select and load the next message
                     nextRow.selectElement();
                     loadContact(nextRow.readAttribute("id"));
@@ -1254,15 +1293,19 @@ function initContacts(event) {
 
     var table = $("contactsList");
     if (table) {
-        // Initialize contacts table
+        // Initialize event delegation on contacts table
         table.multiselect = true;
-        table.observe("mousedown", onContactSelectionChange);
+        var tbody = table.tBodies[0];
+        tbody.on("mousedown", onContactSelectionChange);
+        tbody.on("dblclick", onContactRowDblClick);
+        tbody.on("selectstart", listRowMouseDownHandler);
+        tbody.on("contextmenu", onContactContextMenu);
         configureSortableTableHeaders(table);
         TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
-
+    
         resetCategoriesMenu();
     }
-        
+    
     onWindowResize.defer();
     Event.observe(window, "resize", onWindowResize);
     
@@ -1287,8 +1330,7 @@ function resetCategoriesMenu() {
             var catName = UserDefaults["SOGoContactsCategories"][i];
             if (catName.length > 0) {
                 var menuLI = createElement("li");
-                var bound = onCategoriesMenuItemClick.bindAsEventListener(menuLI);
-                menuLI.observe("click", bound);
+                menuLI.observe("click", onCategoriesMenuItemClick);
                 menuLI.category = catName;
                 menuLI.appendChild(document.createTextNode(catName));
                 menuUL.appendChild(menuLI);
@@ -1307,7 +1349,7 @@ function onCategoriesMenuPrepareVisibility() {
     if (contactsList) {
         var rows = contactsList.getSelectedRows();
         if (rows.length > 0) {
-            var catList = rows[0].getAttribute("categories");
+            var catList = rows[0].readAttribute("categories");
             var catsArray;
             if (catList && catList.length > 0) {
                 catsArray = catList.split(",");
@@ -1315,7 +1357,6 @@ function onCategoriesMenuPrepareVisibility() {
             else {
                 catsArray = [];
             }
-
             var menu = $("categoriesMenu");
             var ul = menu.down("ul");
             var listElements = ul.select("li");
@@ -1365,7 +1406,7 @@ function onCategoriesMenuItemCallback(http) {
                 && contact.id == Contact.currentContact)
                 loadContact(Contact.currentContact);
         }
-        else {
+        else if (parseInt(http.status) == 403) {
             log("onCategoriesMenuItemCallback failed: error " + http.status + " (" + http.responseText + ")");
         }
 }

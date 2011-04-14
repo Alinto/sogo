@@ -87,6 +87,38 @@
     }
 }
 
+- (void) setCurrentContact: (NSDictionary *) _contact
+{
+  currentContact = _contact;
+}
+
+- (NSDictionary *) currentContact
+{
+  return currentContact;
+}
+
+- (NSString *) currentContactClasses
+{
+  return [[currentContact objectForKey: @"c_component"] lowercaseString];
+}
+
+- (NSArray *) personalContactInfos
+{
+  SOGoContactFolders *folders;
+  id <SOGoContactFolder> folder;
+  NSArray *contactInfos;
+
+  folders = [self clientObject];
+  folder = [folders lookupPersonalFolder: @"personal" ignoringRights: YES];
+
+  contactInfos = [folder lookupContactsWithFilter: nil
+				       onCriteria: nil
+					   sortBy: @"c_cn"
+					 ordering: NSOrderedAscending];
+  
+  return contactInfos;
+}
+
 - (id <WOActionResults>) mailerContactsAction
 {
   selectorComponentClass = @"UIxContactsMailerSelection";

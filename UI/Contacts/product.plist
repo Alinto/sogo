@@ -71,11 +71,12 @@
       methods = {
         view = {
           protectedBy = "View";
-          pageName    = "UIxContactsListView";
+          actionClass = "UIxContactsListActions";
+          actionName  = "contactsList";
         };
         contactSearch = {
           protectedBy = "<public>";
-          pageName    = "UIxContactsListView";
+          actionClass = "UIxContactsListActions";
           actionName  = "contactSearch";
         };
         newcontact = {
@@ -90,7 +91,7 @@
         };
         mailer-contacts = {
           protectedBy = "View";
-          pageName    = "UIxContactsListView";
+          pageName    = "UIxContactFoldersView";
           actionName  = "mailerContacts";
         };
         export = {
@@ -130,7 +131,8 @@
       methods = {
         view = {
           protectedBy = "<public>";
-          pageName    = "UIxContactsListView";
+          actionClass = "UIxContactsListActions";
+          actionName  = "contactsList";
         };
         newcontact = {
           protectedBy = "<public>";
@@ -139,7 +141,7 @@
         };
         mailer-contacts = {
           protectedBy = "<public>";
-          pageName    = "UIxContactsListView";
+          pageName    = "UIxContactFoldersView";
           actionName = "mailerContacts";
         };
         canAccessContent = {
