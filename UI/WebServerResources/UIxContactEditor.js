@@ -2,7 +2,7 @@
 
 /*
 	Copyright (C) 2005 SKYRIX Software AG
-	Copyright (C) 2006-2010 Inverse
+	Copyright (C) 2006-2011 Inverse
 
 	This file is part of OpenGroupware.org.
 
@@ -22,11 +22,6 @@
 	02111-1307, USA.
 */
 
-var uixEmailUsr =
-    "([a-zA-Z0-9][a-zA-Z0-9_.-]*|\"([^\\\\\x80-\xff\015\012\"]|\\\\[^\x80-\xff])+\")";
-var uixEmailDomain =
-    "([a-zA-Z0-9][a-zA-Z0-9._-]*\\.)*[a-zA-Z0-9][a-zA-Z0-9._-]*\\.[a-zA-Z]{2,6}";
-var uixEmailRegex = new RegExp("^"+uixEmailUsr+"\@"+uixEmailDomain+"$");
 var dateRegex = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
 
 var displayNameChanged = false;
@@ -88,14 +83,14 @@ function validateContactEditor() {
 
     var e = $('workMail');
     if (e.value.length > 0
-        && !uixEmailRegex.test(e.value)) {
+        && !emailRE.test(e.value)) {
         alert(_("invalidemailwarn"));
         rc = false;
     }
 
     e = $('homeMail');
     if (e.value.length > 0
-        && !uixEmailRegex.test(e.value)) {
+        && !emailRE.test(e.value)) {
         alert(_("invalidemailwarn"));
         rc = false;
     }

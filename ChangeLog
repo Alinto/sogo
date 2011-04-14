@@ -1,5 +1,10 @@
 2011-04-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxContactEditor.js
+	(validateContactEditor): now uses the regexp defined in generic.js
+	 (emailRE) to validate the email addresses. This fixes an issue
+	with valid addresses starting with an underscore (bug #1246).
+
 	* UI/MailerUI/UIxMailAccountActions.m (-composeAction): properly decode
 	submitted recipients and subjects (URL-encoded).
 
