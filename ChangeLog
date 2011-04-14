@@ -1,5 +1,8 @@
 2011-04-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/MailerUI/UIxMailAccountActions.m (-composeAction): properly decode
+	submitted recipients and subjects (URL-encoded).
+
 	* SoObjects/SOGo/SOGoUserManager.m (-getImapLoginForUID:): we now
 	consider the source parameter IMAPLoginFieldName. We continue to support
 	SOGoForceIMAPLoginWithEmail at the domain/system level.

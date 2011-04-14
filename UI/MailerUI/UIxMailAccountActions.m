@@ -30,6 +30,7 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
+#import <NGExtensions/NSString+misc.h>
 
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoDraftObject.h>
@@ -170,7 +171,7 @@
   value = [[self request] formValueForKey: @"mailto"];
   if ([value length] > 0)
     {
-      mailTo = [value componentsSeparatedByString: @","];
+      mailTo = [[value stringByUnescapingURL] componentsSeparatedByString: @","];
       [headers setObject: mailTo forKey: @"to"];
       save = YES;
     }
@@ -178,7 +179,7 @@
   value = [[self request] formValueForKey: @"subject"];
   if ([value length] > 0)
     {
-      [headers setObject: value forKey: @"subject"];
+      [headers setObject: [value stringByUnescapingURL] forKey: @"subject"];
       save = YES;
     }
 
