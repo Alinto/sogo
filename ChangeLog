@@ -1,3 +1,8 @@
+2011-04-15  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/ckeditor/config.js: Changed the default
+	enter mode to use BR instead of P. This matches the behavior of Thunderbird.
+
 2011-04-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxContactEditor.js
