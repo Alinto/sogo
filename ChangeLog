@@ -1,5 +1,19 @@
 2011-04-15  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/Appointments/iCalEvent+SOGo.m (-firstOccurenceRange):
+	we now compute the end date by looking at the occurrence
+	interval. This way, we support events with an end date or a duration.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-_flattenCycleRecord:forRange:intoArray:): also compute the end
+	date by looking at the occurrence interval.
+	(-importCalendar:): added a duration to events with no end date nor duration.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(-_adjustEventsInRequest:): new method to verify the vCalendar for
+	any inconsistency or missing attributes. Currently, it only adds a
+	duration if no end date nor duration is found.
+
 	* UI/WebServerResources/ckeditor/config.js: Changed the default
 	enter mode to use BR instead of P. This matches the behavior of Thunderbird.
 

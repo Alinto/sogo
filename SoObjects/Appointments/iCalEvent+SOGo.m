@@ -272,14 +272,22 @@
  */
 - (NGCalendarDateRange *) firstOccurenceRange
 {
-  iCalDateTime *firstStartDate, *firstEndDate;
+  iCalDateTime *firstStartDate;
+  NSCalendarDate *start, *end;
   NGCalendarDateRange *firstRange;
 
-  firstStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
-  firstEndDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtend"];
-  firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: [[[firstStartDate values] lastObject] asCalendarDate]
-							   endDate: [[[firstEndDate values] lastObject] asCalendarDate]];
+  firstRange = nil;
 
+  firstStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
+  if ([[firstStartDate values] count] > 0)
+    {
+      start = [[[firstStartDate values] lastObject] asCalendarDate];
+      end = [start addTimeInterval: [self occurenceInterval]];
+
+      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: start
+                                                               endDate: end];
+    }
+  
   return firstRange;
 }
 
