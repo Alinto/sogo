@@ -1,5 +1,12 @@
 2011-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailAttachment.m (-): binary properties are
+	represented by a struct Binary_r.
+
+	* OpenChange/NSObject+MAPIStore.m
+	(-getMAPIValue:forTag:inMemCtx:): binary properties are
+	represented by a struct Binary_r.
+
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromMAPISPropValue)
 	(NSObjectFromSPropValue): we now support PT_SVREID and handle it
 	exactly as PT_BINARY.

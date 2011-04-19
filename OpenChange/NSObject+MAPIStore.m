@@ -70,7 +70,7 @@
       *data = [(NSCalendarDate * ) self asFileTimeInMemCtx: memCtx];
       break;
     case PT_BINARY:
-      *data = [(NSData *) self asShortBinaryInMemCtx: memCtx];
+      *data = [(NSData *) self asBinaryInMemCtx: memCtx];
       break;
     case PT_CLSID:
       *data = [(NSData *) self asGUIDInMemCtx: memCtx];
