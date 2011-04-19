@@ -59,7 +59,7 @@ static MAPIStoreMapping *mapping;
 
 - (NSArray *) restrictedChildKeys
 {
-  [self errorWithFormat: @"restrictions are ignored on folder tables"];
+  /* FIXME: restrictions are ignored on folder tables */
   return [self childKeys];
 }
 
