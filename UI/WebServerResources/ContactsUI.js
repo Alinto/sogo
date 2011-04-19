@@ -1295,7 +1295,7 @@ function initContacts(event) {
     if (table) {
         // Initialize event delegation on contacts table
         table.multiselect = true;
-        var tbody = table.tBodies[0];
+        var tbody = $(table.tBodies[0]);
         tbody.on("mousedown", onContactSelectionChange);
         tbody.on("dblclick", onContactRowDblClick);
         tbody.on("selectstart", listRowMouseDownHandler);

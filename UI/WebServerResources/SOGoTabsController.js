@@ -141,7 +141,7 @@ SOGoTabsController.prototype = {
             this.activeTab = $(clickedTab);
             this.activeTab.addClassName("active"); // current LI
             content.addClassName("active");
-            event.stop();
+
             // Prototype alternative
         
             //oldContent.removeClassName("active");

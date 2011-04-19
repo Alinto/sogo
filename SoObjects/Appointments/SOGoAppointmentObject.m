@@ -1336,6 +1336,44 @@
     [rq setContent: [[calendar versitString] dataUsingEncoding: [rq contentEncoding]]];
 }
 
+/**
+ * Verify vCalendar for any inconsistency or missing attributes.
+ * Currently only check if the events have an end date or a duration.
+ * @param rq the HTTP PUT request
+ */
+- (void) _adjustEventsInRequest: (WORequest *) rq
+{
+  iCalCalendar *calendar;
+  NSArray *allEvents;
+  iCalEvent *event;
+  NSUInteger i;
+  BOOL modified;
+
+  calendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
+  allEvents = [calendar events];
+  modified = NO;
+
+  for (i = 0; i < [allEvents count]; i++)
+    {
+      event = [allEvents objectAtIndex: i];
+
+      if (![event hasEndDate] && ![event hasDuration])
+        {
+          // No end date, no duration
+          if ([event isAllDay])
+            [event setDuration: @"P1D"];
+          else
+            [event setDuration: @"PT1H"];
+          
+          modified = YES;
+          [self errorWithFormat: @"Invalid event: no end date; setting duration to %@", [event duration]];
+        }
+    }
+  
+  if (modified)
+    [rq setContent: [[calendar versitString] dataUsingEncoding: [rq contentEncoding]]];
+}
+
 - (void) _decomposeGroupsInRequest: (WORequest *) rq
 {
   iCalCalendar *calendar;
@@ -1471,6 +1509,8 @@
 	{
 	  [self _adjustTransparencyInRequest: rq];
 	}
+
+      [self _adjustEventsInRequest: rq];
     }
 
   //

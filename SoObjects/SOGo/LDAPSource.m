@@ -178,7 +178,6 @@ static NSArray *commonSearchFields;
 
 - (void) dealloc
 {
-  NSLog(@"LDAPSource: -dealloc");
   [bindDN release];
   [hostname release];
   [encryption release];

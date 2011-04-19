@@ -195,8 +195,8 @@ rm -fr ${RPM_BUILD_ROOT}
 %{prefix}/Library/OCSTypeModels/contact-oracle.ocs
 %{prefix}/Library/WOxElemBuilders-%{sope_version}/SOGoElements.wox
 
-%config %{_sysconfdir}/httpd/conf.d/SOGo.conf
-%config %{_sysconfdir}/sysconfig/sogo
+%config(noreplace) %{_sysconfdir}/httpd/conf.d/SOGo.conf
+%config(noreplace) %{_sysconfdir}/sysconfig/sogo
 %doc ChangeLog NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh Scripts/sql-update-101_to_102.sh Scripts/sql-update-1.2.2_to_1.3.0.sh Scripts/sql-update-1.2.2_to_1.3.0-mysql.sh Scripts/sql-update-1.3.3_to_1.3.4.sh Scripts/sql-update-1.3.3_to_1.3.4-mysql.sh
 
 %files -n sogo-tool
