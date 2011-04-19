@@ -1,5 +1,9 @@
 2011-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/code-MAPIStorePropertySelectors.m
+	(MAPIStorePropertyGettersForClass): use the
+	"MAPIStoreProeprtyGetter" type rather than IMP as result type.
+
 	* OpenChange/MAPIStoreFolderTable.m (-restrictedChildKeys): no
 	longer a mandatory method, returns [self childKeys] when not
 	overriden and issue an error message.

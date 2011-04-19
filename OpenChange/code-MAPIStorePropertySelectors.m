@@ -23,12 +23,12 @@
 #import <Foundation/NSMapTable.h>
 #import <NGExtensions/NGLogger.h>
 
-const IMP *
+const MAPIStorePropertyGetter *
 MAPIStorePropertyGettersForClass (Class klass)
 {
   static NSMapTable *classesTable = nil;
-  IMP *getters;
-  IMP getter;
+  MAPIStorePropertyGetter *getters;
+  MAPIStorePropertyGetter getter;
   uint16_t count, idx;
   SEL currentSel;
   
@@ -40,7 +40,7 @@ MAPIStorePropertyGettersForClass (Class klass)
   getters = NSMapGet (classesTable, klass);
   if (!getters)
     {
-      getters = NSZoneCalloc (NULL, 65536, sizeof (IMP));
+      getters = NSZoneCalloc (NULL, 65536, sizeof (MAPIStorePropertyGetter));
       for (count = 0; count < 65535; count++)
         {
           idx = MAPIStorePropertyGettersIdx[count];
@@ -49,7 +49,8 @@ MAPIStorePropertyGettersForClass (Class klass)
               currentSel = MAPIStorePropertyGetterSelectors[idx];
               if ([klass instancesRespondToSelector: currentSel])
                 {
-                  getter = [klass instanceMethodForSelector: currentSel];
+                  getter = (MAPIStorePropertyGetter)
+                    [klass instanceMethodForSelector: currentSel];
                   if (getter)
                     getters[count] = getter;
                 }

@@ -22,5 +22,5 @@
 
 typedef int (*MAPIStorePropertyGetter) (id inst, SEL _cmd, void **data);
 
-const IMP *MAPIStorePropertyGettersForClass (Class klass);
-SEL MAPIStoreSelectorForPropertyGetter (register uint16_t propertyId);
+const MAPIStorePropertyGetter *MAPIStorePropertyGettersForClass (Class klass);
+SEL MAPIStoreSelectorForPropertyGetter (uint16_t propertyId);
