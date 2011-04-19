@@ -850,8 +850,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSArray *rules, *exRules, *exDates, *ranges;
   NSArray *elements, *components;
   NSString *content;
-  id firstStartDate, firstEndDate;
-  NSCalendarDate *checkStartDate, *checkEndDate;
+  iCalDateTime *dtstart;
+  NSCalendarDate *checkStartDate, *checkEndDate, *firstStartDate, *firstEndDate;
   iCalEvent *component;
   iCalTimeZone *eventTimeZone;
   unsigned count, max, offset;
@@ -890,14 +890,14 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	    {
 	      // Retrieve the range of the first/master event
 	      component = [components objectAtIndex: 0];
-	      firstStartDate = [component uniqueChildWithTag: @"dtstart"];
-              firstStartDate = [[[firstStartDate values] lastObject] asCalendarDate];
+	      dtstart = (iCalDateTime *)[component uniqueChildWithTag: @"dtstart"];
+              firstStartDate = [[[dtstart values] lastObject] asCalendarDate];
               firstEndDate = [firstStartDate addTimeInterval: [component occurenceInterval]];
               
               firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
                                                                        endDate: firstEndDate];
-              
-              eventTimeZone = [(iCalDateTime*)firstStartDate timeZone];
+
+              eventTimeZone = [dtstart timeZone];
               if (eventTimeZone)
                 {
                   // Adjust the range to check with respect to the event timezone (extracted from the start date)
@@ -921,10 +921,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                       // The event lasts all-day and has no timezone (floating); we convert the range of the first event
                       // to the user's timezone
                       offset = [timeZone secondsFromGMTForDate: [firstRange startDate]];
-                      firstStartDate = (NSCalendarDate*)[[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-                                                                                          seconds:-offset];
-                      firstEndDate = (NSCalendarDate*)[[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-                                                                                      seconds:-offset];
+                      firstStartDate = [[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                                         seconds:-offset];
+                      firstEndDate = [[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                                     seconds:-offset];
                       [firstStartDate setTimeZone: timeZone];
                       [firstEndDate setTimeZone: timeZone];
                       firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
