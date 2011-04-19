@@ -86,11 +86,6 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   MAPIStoreDraftsFolderK = [MAPIStoreDraftsFolder class];
 }
 
-- (MAPIStoreAttachmentTable *) attachmentTable
-{
-  return [MAPIStoreAttachmentTable tableForContainer: self];
-}
-
 - (int) getPrIconIndex: (void **) data
 {
   uint32_t longValue;

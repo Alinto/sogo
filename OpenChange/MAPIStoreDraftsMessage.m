@@ -29,7 +29,6 @@
 #import <Mailer/SOGoDraftObject.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 
-#import "MAPIStoreAttachmentTable.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreDraftsAttachment.h"
 #import "MAPIStoreTypes.h"
@@ -163,11 +162,6 @@ e)
   max = [attachmentKeys count];
   for (count = 0; count < max; count++)
     [self _saveAttachment: [attachmentKeys objectAtIndex: count]];
-}
-
-- (MAPIStoreAttachmentTable *) attachmentTable
-{
-  return [MAPIStoreAttachmentTable tableForContainer: self];
 }
 
 - (MAPIStoreAttachment *) createAttachment

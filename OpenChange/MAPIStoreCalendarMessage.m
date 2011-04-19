@@ -40,7 +40,6 @@
 #import <SOGo/SOGoUserDefaults.h>
 #import <Appointments/SOGoAppointmentObject.h>
 
-#import "MAPIStoreAttachmentTable.h"
 #import "MAPIStoreCalendarAttachment.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreRecurrenceUtils.h"
@@ -564,11 +563,6 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 - (id) lookupChild: (NSString *) childKey
 {
   return [attachmentParts objectForKey: childKey];
-}
-
-- (MAPIStoreAttachmentTable *) attachmentTable
-{
-  return [MAPIStoreAttachmentTable tableForContainer: self];
 }
 
 - (MAPIStoreAttachment *) createAttachment

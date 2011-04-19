@@ -1,5 +1,10 @@
 2011-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMessage.m (-attachmentTable): as all the
+	subclasses were using the same MAPIStoreAttachmentTable
+	implementation, this method now performs the same operation and
+	thereby no longer requires subclasssing.
+
 	* OpenChange/MAPIStoreObject.m (-getProperty:withTag:): compute
 	the method selector and pass it as argument to the IMP of the
 	property getter, as would be with any regular method invocation.

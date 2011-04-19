@@ -26,6 +26,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoObject.h>
 
+#import "MAPIStoreAttachmentTable.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
@@ -301,7 +302,7 @@
       stringValue = [NSString stringWithFormat: @"SOGo%@%@%@",
                               stringValue, stringValue, stringValue];
       *data = [[stringValue dataUsingEncoding: NSASCIIStringEncoding]
-                asShortBinaryInMemCtx: memCtx];
+                asBinaryInMemCtx: memCtx];
     }
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
@@ -416,9 +417,7 @@
 
 - (MAPIStoreAttachmentTable *) attachmentTable
 {
-  [self subclassResponsibility: _cmd];
-
-  return nil;
+  return [MAPIStoreAttachmentTable tableForContainer: self];
 }
 
 - (void) addActiveTable: (MAPIStoreTable *) activeTable
