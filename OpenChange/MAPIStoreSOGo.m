@@ -1006,6 +1006,30 @@ sogo_pocop_open_embedded_message (void *attachment_object,
   return rc;
 }
 
+static int sogo_pocop_get_available_table_properties(void *table_object, struct SPropTagArray *properties)
+{
+  NSAutoreleasePool *pool;
+  MAPIStoreTable *table;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  table = table_object;
+  if (table)
+    {
+      pool = [NSAutoreleasePool new];
+      rc = [table getAvailableProperties: properties];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
 static int
 sogo_pocop_set_table_columns (void *table_object, uint16_t count, enum MAPITAGS *properties)
 {
@@ -1102,6 +1126,30 @@ sogo_pocop_get_table_row (void *table_object, enum table_query_type query_type, 
     {
       pool = [NSAutoreleasePool new];
       rc = [table getRow: data withRowID: row_id andQueryType: query_type];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int sogo_pocop_get_available_properties(void *object, struct SPropTagArray *properties)
+{
+  NSAutoreleasePool *pool;
+  MAPIStoreObject *propObject;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  propObject = object;
+  if (propObject)
+    {
+      pool = [NSAutoreleasePool new];
+      rc = [propObject getAvailableProperties: properties];
       [pool release];
     }
   else
@@ -1252,10 +1300,12 @@ int mapistore_init_backend(void)
       backend.message.get_attachment = sogo_pocop_get_attachment;
       backend.message.create_attachment = sogo_pocop_create_attachment;
       backend.message.open_embedded_message = sogo_pocop_open_embedded_message;
+      backend.table.get_available_properties = sogo_pocop_get_available_table_properties;
       backend.table.set_restrictions = sogo_pocop_set_table_restrictions;
       backend.table.set_sort_order = sogo_pocop_set_table_sort_order;
       backend.table.set_columns = sogo_pocop_set_table_columns;
       backend.table.get_row = sogo_pocop_get_table_row;
+      backend.properties.get_available_properties = sogo_pocop_get_available_properties;
       backend.properties.get_properties = sogo_pocop_get_properties;
       backend.properties.set_properties = sogo_pocop_set_properties;
       backend.store.release = sogo_pocop_release;

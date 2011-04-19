@@ -68,6 +68,7 @@ typedef enum {
 }
 
 + (id) tableForContainer: (MAPIStoreObject *) newContainer;
++ (Class) childObjectClass;
 
 - (id) initForContainer: (MAPIStoreObject *) newContainer;
 
@@ -81,6 +82,7 @@ typedef enum {
 
 - (void) cleanupCaches;
 
+- (int) getAvailableProperties: (struct SPropTagArray *) properties;
 - (void) setRestrictions: (const struct mapi_SRestriction *) res;
 - (int) setColumns: (enum MAPITAGS *) newColumns
          withCount: (uint16_t) newColumCount;

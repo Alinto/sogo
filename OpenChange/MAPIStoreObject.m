@@ -61,6 +61,30 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return newObject;
 }
 
++ (int) getAvailableProperties: (struct SPropTagArray *) properties
+{
+  const MAPIStorePropertyGetter *classGetters;
+  NSUInteger count;
+  enum MAPITAGS propTag;
+  uint16_t propValue;
+
+  properties->aulPropTag = talloc_array (properties, enum MAPITAGS,
+                                         MAPIStoreSupportedPropertiesCount);
+  classGetters = MAPIStorePropertyGettersForClass (self);
+  for (count = 0; count < MAPIStoreSupportedPropertiesCount; count++)
+    {
+      propTag = MAPIStoreSupportedProperties[count];
+      propValue = (propTag & 0xffff0000) >> 16;
+      if (classGetters[propValue])
+        {
+          properties->aulPropTag[properties->cValues] = propTag;
+          properties->cValues++;
+        }
+    }
+
+  return 0;
+}
+
 - (id) init
 {
   if ((self = [super init]))
@@ -269,7 +293,11 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return [self getNo: data];
 }
 
-/* MAPIStoreProperty protocol */
+- (int) getAvailableProperties: (struct SPropTagArray *) properties
+{
+  return [isa getAvailableProperties: properties];
+}
+
 - (int) getProperties: (struct mapistore_property_data *) data
              withTags: (enum MAPITAGS *) tags
              andCount: (uint16_t) columnCount

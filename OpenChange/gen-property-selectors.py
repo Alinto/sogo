@@ -36,6 +36,11 @@ m_template = """/* %(filename)s (auto-generated) - this file is part of SOGo
 
 const NSUInteger MAPIStorePropertyGettersCount = %(nbr_getters)d;
 const NSUInteger MAPIStoreLastPropertyIdx = %(last_property)d;
+const NSUInteger MAPIStoreSupportedPropertiesCount = %(nbr_supported_properties)d;
+
+const enum MAPITAGS MAPIStoreSupportedProperties[] = {
+%(supported_properties)s
+};
 
 static const uint16_t MAPIStorePropertyGettersIdx[] = {
 %(getters_idx)s
@@ -73,10 +78,18 @@ h_template = """/* %(filename)s (auto-generated) - this file is part of SOGo
 #ifndef %(h_exclusion)s
 #define %(h_exclusion)s 1
 
-#import "MAPIStoreObject.h"
+#import <Foundation/NSObjCRuntime.h>
+
+#include <stdbool.h>
+#include <gen_ndr/exchange.h>
 
 extern const NSUInteger MAPIStorePropertyGettersCount;
 extern const NSUInteger MAPIStoreLastPropertyIdx;
+
+extern const NSUInteger MAPIStoreSupportedPropertiesCount;
+extern const enum MAPITAGS MAPIStoreSupportedProperties[];
+
+#import "MAPIStoreObject.h"
 
 @interface MAPIStoreObject (MAPIStorePropertySelectors)
 
@@ -213,11 +226,13 @@ if __name__ == "__main__":
             or name.endswith("Unicode")):
             del names[name]
 
+    supported_properties = []
     all_keys = names.keys()
     current_getter_idx = 0
     highest_prop_idx = 0
     for name in all_keys:
         prop_tag = names[name]
+        supported_properties.append("  0x%.8x" % prop_tag);
         prop_idx = (prop_tag & 0xffff0000) >> 16
         getters_idx[prop_idx] = "  %d" % current_getter_idx
         if prop_idx > highest_prop_idx:
@@ -237,6 +252,8 @@ if __name__ == "__main__":
                               "getters": ",\n".join(getters),
                               "nbr_getters": len(getters),
                               "last_property": highest_prop_idx,
+                              "nbr_supported_properties": len(supported_properties),
+                              "supported_properties": ",\n".join(supported_properties),
                               "filename": filename,
                               "h_filename": h_filename })
     outf.close()

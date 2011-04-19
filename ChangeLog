@@ -1,5 +1,30 @@
 2011-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/gen-property-selectors.py: added code to generate
+	MAPIStoreSupportedProperties as the array of properties that are
+	handled by OpenChange and MAPIStoreSupportedPropertiesCount as the
+	count of those properties.
+
+	* OpenChange/MAPIStoreObject.m (+getAvailableProperties): ObjC
+	corollary of the "sogo_pocop_get_available_properties" backend
+	method.
+	(-getAvailableProperties): proxy to the class method of the same
+	name.
+
+	* OpenChange/MAPIStoreTable.m (+childObjectClass): new mandatory
+	method that returns the Class of the objects represented in the
+	rows of the table.
+	(-getAvailableProperties:): ObjC corollary of the
+	"sogo_pocop_get_available_table_properties" backend method.
+
+	* OpenChange/MAPIStoreSOGo.m
+	(sogo_pocop_get_available_table_properties): new backend getter
+	that returns the list of properties that can be queried on the
+	table rows.
+	(sogo_pocop_get_available_properties): new backend getter
+	that returns the list of properties that can be queried on the
+	discrete object passed as parameter.
+
 	* OpenChange/code-MAPIStorePropertySelectors.m
 	(MAPIStorePropertyGettersForClass): use the
 	"MAPIStoreProeprtyGetter" type rather than IMP as result type.
