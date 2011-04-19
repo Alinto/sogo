@@ -116,6 +116,7 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
       result = [NSCalendarDate dateFromFileTime: &(value->value.ft)];
       break;
     case PT_BINARY:
+    case PT_SVREID:
       result = [NSData dataWithShortBinary: &value->value.bin];
       break;
     case PT_CLSID:
@@ -175,6 +176,7 @@ NSObjectFromSPropValue (const struct SPropValue *value)
       result = [NSCalendarDate dateFromFileTime: &(value->value.ft)];
       break;
     case PT_BINARY:
+    case PT_SVREID:
 		// lpProps->value.bin = *((const struct Binary_r *)data);
 
       result

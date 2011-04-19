@@ -1,5 +1,9 @@
 2011-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromMAPISPropValue)
+	(NSObjectFromSPropValue): we now support PT_SVREID and handle it
+	exactly as PT_BINARY.
+
 	* OpenChange/MAPIStoreMessage.m (-attachmentTable): as all the
 	subclasses were using the same MAPIStoreAttachmentTable
 	implementation, this method now performs the same operation and
