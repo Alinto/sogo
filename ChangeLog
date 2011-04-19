@@ -1,5 +1,18 @@
 2011-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessage.m (-getPrBody:): no longer check
+	the size of the returned content, as streams are now handled
+	internally by OpenChange.
+	(-getPrHtml): same as above.
+
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromStreamData): removed
+	helper function as it's no longer used.
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_op_set_property_from_fd)
+	(sogo_op_get_property_into_fd): those backend methods are no
+	longer used, as OpenChange handles the property streams internally
+	now.
+
 	* OpenChange/gen-property-selectors.py: added code to generate
 	MAPIStoreSupportedProperties as the array of properties that are
 	handled by OpenChange and MAPIStoreSupportedPropertiesCount as the

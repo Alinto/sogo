@@ -512,16 +512,6 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
                           bodyStringFromCharset: charset];
           
           *data = [stringValue asUnicodeInMemCtx: memCtx];
-          if (strlen (*data) > 16384)
-            {
-              /* TODO: currently a hack to transfer properties as
-                 streams */
-              [newProperties setObject: stringValue
-                            forKey: MAPIPropertyKey (PR_BODY_UNICODE)];
-              *data = NULL;
-              rc = MAPI_E_NOT_ENOUGH_MEMORY;
-              [self logWithFormat: @"PR_BODY data too wide"];
-            }
         }
       else
         rc = MAPISTORE_ERR_NOT_FOUND;
@@ -581,19 +571,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
         = [sogoObject lookupInfoForBodyPart: [key _strippedBodyKey]];
       encoding = [partHeaderData objectForKey: @"encoding"];
       content = [content bodyDataFromEncoding: encoding];
-      
-      if ([content length] > 16384)
-        {
-          /* TODO: currently a hack to transfer properties as
-             streams */
-          [newProperties setObject: content
-                            forKey: MAPIPropertyKey (PR_HTML)];
-          *data = NULL;
-          rc = MAPI_E_NOT_ENOUGH_MEMORY;
-          [self logWithFormat: @"PR_HTML data too wide"];
-        }
-      else
-        *data = [content asBinaryInMemCtx: memCtx];
+      *data = [content asBinaryInMemCtx: memCtx];
     }
   else
     {
