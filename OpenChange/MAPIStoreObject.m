@@ -218,23 +218,31 @@ static Class NSExceptionK, MAPIStoreFolderK;
 {
   MAPIStorePropertyGetter method = NULL;
   uint16_t propValue;
+  SEL methodSel;
   const char *propName;
   int rc = MAPISTORE_ERR_NOT_FOUND;
- 
+
   propValue = (propTag & 0xffff0000) >> 16;
+  methodSel = MAPIStoreSelectorForPropertyGetter (propValue);
+
   method = (MAPIStorePropertyGetter) classGetters[propValue];
   if (method)
-    rc = method (self, NULL, data);
+    rc = method (self, methodSel, data);
   else
     {
-      propName = get_proptag_name (propTag);
-      if (!propName)
-        propName = "<unknown>";
       *data = NULL;
       
-      [self warnWithFormat:
-              @"unimplemented property: %s (0x%.8x) in class '%@'",
-            propName, propTag, NSStringFromClass (isa)];
+      if (methodSel)
+        {
+          propName = get_proptag_name (propTag);
+          if (!propName)
+            propName = "<unknown>";
+          [self warnWithFormat:
+                  @"unimplemented selector (%@) for %s (0x%.8x)",
+                NSStringFromSelector (methodSel), propName, propTag];
+        }
+      else
+        [self warnWithFormat: @"unsupported property tag: 0x%.8x", propTag];
     }
 
   return rc;

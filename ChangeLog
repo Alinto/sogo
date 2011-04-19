@@ -1,5 +1,9 @@
 2011-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreObject.m (-getProperty:withTag:): compute
+	the method selector and pass it as argument to the IMP of the
+	property getter, as would be with any regular method invocation.
+
 	* OpenChange/MAPIStoreMailMessage.m (-getPrBody:): no longer check
 	the size of the returned content, as streams are now handled
 	internally by OpenChange.
