@@ -1,3 +1,8 @@
+2011-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreFolder.m (-createMessage): no longer a
+	mandatory method. Returns nil when not overriden.
+
 2011-04-15  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/ckeditor/config.js: Changed the default
