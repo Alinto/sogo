@@ -165,6 +165,8 @@
 "InboxFolderName"  = "Inkorgen";
 "DraftsFolderName" = "Utkast";
 "SieveFolderName"  = "Filter";
+"OtherUsersFolderName"   = "Other Users";
+"SharedFoldersName" = "Shared Folders";
 "Folders"          = "Mappar"; /* title line */
 
 /* MailMoveToPopUp */

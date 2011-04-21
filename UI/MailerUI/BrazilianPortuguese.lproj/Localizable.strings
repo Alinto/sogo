@@ -165,6 +165,8 @@
 "InboxFolderName"  = "Entrada";
 "DraftsFolderName" = "Rascunhos";
 "SieveFolderName"  = "Filtros";
+"OtherUsersFolderName"   = "Other Users";
+"SharedFoldersName" = "Shared Folders";
 "Folders"          = "Pastas"; /* title line */
 
 /* MailMoveToPopUp */

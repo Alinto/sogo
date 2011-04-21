@@ -165,6 +165,8 @@
 "InboxFolderName"  = "Posta in arrivo";
 "DraftsFolderName" = "Bozze";
 "SieveFolderName"  = "Filtri";
+"OtherUsersFolderName"   = "Altri Utenti";
+"SharedFoldersName" = "Cartelle Condivise";
 "Folders"          = "Cartelle"; /* title line */
 
 /* MailMoveToPopUp */

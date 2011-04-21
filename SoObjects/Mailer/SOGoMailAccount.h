@@ -57,6 +57,8 @@ typedef enum {
   SOGoTrashFolder *trashFolder;
   SOGoIMAPAclStyle imapAclStyle;
   NSMutableArray *identities;
+  NSString *otherUsersFolderName;
+  NSString *sharedFoldersName;
 }
 
 - (SOGoIMAPAclStyle) imapAclStyle;
@@ -81,6 +83,8 @@ typedef enum {
 - (NSString *) draftsFolderNameInContext: (id)_ctx;
 - (NSString *) sentFolderNameInContext: (id)_ctx;
 - (NSString *) trashFolderNameInContext: (id)_ctx;
+- (NSString *) otherUsersFolderNameInContext: (id)_ctx;
+- (NSString *) sharedFoldersNameInContext: (id)_ctx;
 
 - (SOGoMailFolder *) inboxFolderInContext: (id)_ctx;
 - (SOGoDraftsFolder *) draftsFolderInContext: (id)_ctx;

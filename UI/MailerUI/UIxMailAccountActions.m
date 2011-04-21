@@ -1,6 +1,6 @@
 /* UIxMailAccountActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007, 2011 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -40,6 +40,7 @@
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserManager.h>
 
 #import "../Common/WODirectAction+SOGo.h"
 
@@ -55,6 +56,8 @@
       draftsFolderName = nil;
       sentFolderName = nil;
       trashFolderName = nil;
+      otherUsersFolderName = nil;
+      sharedFoldersName = nil;
     }
 
   return self;
@@ -66,6 +69,8 @@
   [draftsFolderName release];
   [sentFolderName release];
   [trashFolderName release];
+  [otherUsersFolderName release];
+  [sharedFoldersName release];
   [super dealloc];
 }
 
@@ -83,11 +88,15 @@
 				 [co draftsFolderNameInContext: context],
 				 [co sentFolderNameInContext: context],
 				 [co trashFolderNameInContext: context],
+				 [co otherUsersFolderNameInContext: context],
+				 [co sharedFoldersNameInContext: context],
 				 nil] stringsWithFormat: @"/%@"];
-      ASSIGN (inboxFolderName, [specialFolders objectAtIndex: 0]);
-      ASSIGN (draftsFolderName, [specialFolders objectAtIndex: 1]);
-      ASSIGN (sentFolderName, [specialFolders objectAtIndex: 2]);
-      ASSIGN (trashFolderName, [specialFolders objectAtIndex: 3]);
+      ASSIGN(inboxFolderName, [specialFolders objectAtIndex: 0]);
+      ASSIGN(draftsFolderName, [specialFolders objectAtIndex: 1]);
+      ASSIGN(sentFolderName, [specialFolders objectAtIndex: 2]);
+      ASSIGN(trashFolderName, [specialFolders objectAtIndex: 3]);
+      ASSIGN(otherUsersFolderName, [specialFolders objectAtIndex: 4]);
+      ASSIGN(sharedFoldersName, [specialFolders objectAtIndex: 5]);
     }
 
   if ([folderName isEqualToString: inboxFolderName])
@@ -106,17 +115,45 @@
 
 - (NSArray *) _jsonFolders: (NSEnumerator *) rawFolders
 {
-  NSMutableArray *folders;
-  NSString *currentFolder;
+  NSString *currentFolder, *currentDisplayName, *currentFolderType, *login;
+  NSMutableArray *pathComponents;
+  SOGoUserManager *userManager;
   NSDictionary *folderData;
+  NSMutableArray *folders;
 
   folders = [NSMutableArray array];
   while ((currentFolder = [rawFolders nextObject]))
     {
+      currentFolderType = [self _folderType: currentFolder];
+
+      // We translate the "Other Users" and "Shared Folders" namespaces.
+      // While we're at it, we also translate the user's mailbox names
+      // to the full name of the person.
+      if ([currentFolder hasPrefix: otherUsersFolderName])
+	{
+	  // We have a string like /Other Users/lmarcotte/...
+	  pathComponents = [NSMutableArray arrayWithArray: [currentFolder pathComponents]];
+	  login = [pathComponents objectAtIndex: 2];
+	  userManager = [SOGoUserManager sharedUserManager];
+	  [pathComponents removeObjectsInRange: NSMakeRange(0,1)];
+	  
+	  currentDisplayName = [NSString stringWithFormat: @"/%@/%@/%@", 
+					 [self labelForKey: @"OtherUsersFolderName"],
+					 [userManager getCNForUID: login],
+					 [pathComponents componentsJoinedByString: @"/"]];
+				    
+	}
+      else if ([currentFolder hasPrefix: sharedFoldersName])
+	currentDisplayName = [NSString stringWithFormat: @"/%@%@", [self labelForKey: @"SharedFoldersName"],
+				       [currentFolder substringFromIndex: [sharedFoldersName length]]];
+      else
+	currentDisplayName = currentFolder;
+      
       folderData = [NSDictionary dictionaryWithObjectsAndKeys:
 				   currentFolder, @"path",
-				 [self _folderType: currentFolder], @"type",
-				 nil];
+				 currentFolderType, @"type",
+				 currentDisplayName, @"displayName",
+	nil];
       [folders addObject: folderData];
     }
 

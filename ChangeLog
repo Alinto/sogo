@@ -1,3 +1,9 @@
+2011-04-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Added the possibility of translating IMAP namespaces
+	and we now extract the full name the mailbox owner under
+	the "Other Users" namespace.
+
 2011-04-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (deleteEvent): we now show

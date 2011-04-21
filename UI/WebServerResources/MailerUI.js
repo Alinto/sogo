@@ -2136,11 +2136,13 @@ function buildMailboxes(accountIdx, encoded) {
     for (var i = 0; i < mailboxes.length; i++) {
         var currentNode = account;
         var names = mailboxes[i].path.split("/");
+        var displayNames = mailboxes[i].displayName.split("/");
+
         for (var j = 1; j < (names.length - 1); j++) {
             var name = names[j];
             var node = currentNode.findMailboxByName(name);
             if (!node) {
-                node = new Mailbox("additional", name);
+                node = new Mailbox("additional", name, 0, displayNames[j]);
                 currentNode.addMailbox(node);
             }
             currentNode = node;
@@ -2151,9 +2153,9 @@ function buildMailboxes(accountIdx, encoded) {
             leaf.type = mailboxes[i].type;
         else {
             if (mailboxes[i].type == 'inbox')
-                leaf = new Mailbox(mailboxes[i].type, basename, unseen);
+                leaf = new Mailbox(mailboxes[i].type, basename, unseen, displayNames[names.length-1]);
             else
-                leaf = new Mailbox(mailboxes[i].type, basename);
+                leaf = new Mailbox(mailboxes[i].type, basename, 0, displayNames[names.length-1]);
             currentNode.addMailbox(leaf);
         }
     }

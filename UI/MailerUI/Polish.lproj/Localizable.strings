@@ -165,6 +165,8 @@
 "InboxFolderName"  = "Odebrane";
 "DraftsFolderName" = "Szkice";
 "SieveFolderName"  = "Filtry";
+"OtherUsersFolderName"   = "Other Users";
+"SharedFoldersName" = "Shared Folders";
 "Folders"          = "Foldery"; /* title line */
 
 /* MailMoveToPopUp */
