@@ -115,7 +115,7 @@
 
 - (NSArray *) _jsonFolders: (NSEnumerator *) rawFolders
 {
-  NSString *currentFolder, *currentDisplayName, *currentFolderType, *login;
+  NSString *currentFolder, *currentDisplayName, *currentFolderType, *login, *fullName;
   NSMutableArray *pathComponents;
   SOGoUserManager *userManager;
   NSDictionary *folderData;
@@ -135,11 +135,12 @@
 	  pathComponents = [NSMutableArray arrayWithArray: [currentFolder pathComponents]];
 	  login = [pathComponents objectAtIndex: 2];
 	  userManager = [SOGoUserManager sharedUserManager];
-	  [pathComponents removeObjectsInRange: NSMakeRange(0,1)];
+	  fullName = [userManager getCNForUID: login];
+	  [pathComponents removeObjectsInRange: NSMakeRange(0,3)];
 	  
 	  currentDisplayName = [NSString stringWithFormat: @"/%@/%@/%@", 
 					 [self labelForKey: @"OtherUsersFolderName"],
-					 [userManager getCNForUID: login],
+					 (fullName != nil ? fullName : login),
 					 [pathComponents componentsJoinedByString: @"/"]];
 				    
 	}
