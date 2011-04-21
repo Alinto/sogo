@@ -1,3 +1,21 @@
+2011-04-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (deleteEvent): we now show
+	in the confirmation dialog box which events will be deleted.
+
+	* UI/WebServerResources/generic.js (createDialog): the legend
+	argument can now be a string or an element.
+	(isWebKit): was isSafari; now consider all WebKit-based browsers together.
+
+	* UI/WebServerResources/UIxMailToSelection.js: various
+	improvements to behave like in Thunderbird.
+
+	* UI/WebServerResources/SOGoAutoCompletion.js: idem.
+
+	* UI/WebServerResources/UIxMailEditor.js (initAddresses): was
+	initTabIndex. We were not handling the tab indexes properly which
+	was causing incorrect behavior in IE.
+
 2011-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailAttachment.m (-): binary properties are

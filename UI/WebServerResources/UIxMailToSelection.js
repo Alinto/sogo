@@ -83,15 +83,15 @@ function fancyAddRow(text, type) {
     input.id = 'addr_' + currentIndex;
     input.value = text;
     input.stopObserving();
-
     input.addInterface(SOGoAutoCompletionInterface);
-    input.focus();
-    input.select();
+    addressList.insertBefore(row, lastChild);
     input.observe("focus", addressFieldGotFocus.bind(input));
     input.observe("blur", addressFieldLostFocus.bind(input));
     input.observe("autocompletion:changedlist", expandContactList);
+    input.on("autocompletion:changed", addressFieldChanged.bind(input));
+    input.focus();
 
-    addressList.insertBefore(row, lastChild);
+    return input;
 }
 
 function expandContactList (e) {
@@ -132,6 +132,8 @@ function addressFieldGotFocus(event) {
     idx = getIndexFromIdentifier(this.id);
     if (lastIndex == idx) return;
     removeLastEditedRowIfEmpty();
+    if (Prototype.Browser.IE && this.value.length == 0)
+        $(this).setCaretTo(0); // IE hack
     onWindowResize(null);
 
     return false;
@@ -139,7 +141,9 @@ function addressFieldGotFocus(event) {
 
 function addressFieldLostFocus(event) {
     lastIndex = getIndexFromIdentifier(this.id);
-    
+}
+
+function addressFieldChanged(event) {
     var addresses = this.value.split(/[,;]/);
     if (addresses.length > 0) {
         var first = true;
@@ -177,9 +181,18 @@ function addressFieldLostFocus(event) {
             }
         }
     }
-    onWindowResize(null);
 
-    return false;
+    // Verify if a new row should be created
+    var keyCode = event.memo;
+    if (keyCode == Event.KEY_RETURN) {
+        var input = fancyAddRow("");
+        if (Prototype.Browser.IE)
+            $(input.id).focus();
+        else
+            input.focus();
+    }
+    
+    onWindowResize(null);
 }
 
 function removeLastEditedRowIfEmpty() {

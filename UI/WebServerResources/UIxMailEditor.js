@@ -339,21 +339,20 @@ function onTextMouseDown(event) {
     }
 }
 
-function initTabIndex(addressList, subjectField, msgArea) {
+function initAddresses() {
+    var addressList = $("addressList");
     var i = 1;
     addressList.select("input.textField").each(function (input) {
             if (!input.readAttribute("readonly")) {
-                input.writeAttribute("tabindex", i++);
                 input.addInterface(SOGoAutoCompletionInterface);
                 input.uidField = "c_name";
-                input.observe("focus", addressFieldGotFocus.bind(input));
-                input.observe("blur", addressFieldLostFocus.bind(input));
-                input.observe("autocompletion:changedlist", expandContactList);
+                input.on("focus", addressFieldGotFocus.bind(input));
+                input.on("blur", addressFieldLostFocus.bind(input));
+                input.on("autocompletion:changedlist", expandContactList);
+                input.on("autocompletion:changed", addressFieldChanged.bind(input));
                 //input.onListAdded = expandContactList;
             }
         });
-    subjectField.writeAttribute("tabindex", i++);
-    msgArea.writeAttribute("tabindex", i);
 }
 
 function initMailEditor() {
@@ -391,8 +390,7 @@ function initMailEditor() {
             textarea.observe(ieEvents[i], onTextIEUpdateCursorPos, false);
     }
 
-    var subjectField = $$("div#subjectRow input").first();
-    initTabIndex($("addressList"), subjectField, textarea);
+    initAddresses();
 
     var focusField = (mailIsReply ? textarea : $("addr_0"));
     focusField.focus();
@@ -559,7 +557,7 @@ function onSelectAllAttachments() {
 }
 
 function onSelectOptions(event) {
-    if (event.button == 0 || (isSafari() && event.button == 1)) {
+    if (event.button == 0 || (isWebKit() && event.button == 1)) {
         var node = getTarget(event);
         if (node.tagName != 'A')
             node = $(node).up("A");
