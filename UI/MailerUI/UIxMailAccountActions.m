@@ -136,7 +136,7 @@
 	  login = [pathComponents objectAtIndex: 2];
 	  userManager = [SOGoUserManager sharedUserManager];
 	  fullName = [userManager getCNForUID: login];
-	  [pathComponents removeObjectsInRange: NSMakeRange(0,1)];
+	  [pathComponents removeObjectsInRange: NSMakeRange(0,2)];
 	  
 	  currentDisplayName = [NSString stringWithFormat: @"/%@/%@/%@", 
 					 [self labelForKey: @"OtherUsersFolderName"],
