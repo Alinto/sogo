@@ -226,7 +226,10 @@ function deleteEvent() {
                         }
                         if (sortedNodes[calendar].indexOf(nodes[i].cname) < 0) {
                             sortedNodes[calendar].push(nodes[i].cname);
-                            events.push(nodes[i].down('td').allTextContent());
+                            if (nodes[i].tagName == 'TR')
+                                events.push(nodes[i].down('td').allTextContent()); // extract the first column only
+                            else
+                                events.push(nodes[i].allTextContent());
                         }
                     }
                 }
@@ -294,17 +297,13 @@ function deleteEvent() {
             }
             if (i > 0) {
                 var p = createElement("p");
-                var str = "";
+                var label = _("eventDeleteConfirmation");
                 if (Prototype.Browser.IE)
-                    str = label.formatted('<br><br> - <b>' + events.join('</b><br> - <b>') + '</b><br><br>');
+                    label = label.formatted('<br><br> - <b>' + events.join('</b><br> - <b>') + '</b><br><br>');
                 else
-                    str = label.formatted('<ul><li>' + events.join('<li>') + '</ul>');
-                p.innerHTML = str;
-                showConfirmDialog(_("Warning"), p, deleteEventFromListConfirm);
-                
-                var p = new Element("p").update(_("eventDeleteConfirmation").formatted('<ul><li>' + events.join("<li>") + '</ul>'));
-                showConfirmDialog(_("Warning"), p,
-                                  deleteEventFromViewConfirm, deleteEventCancel);
+                    label = label.formatted('<ul><li>' + events.join('<li>') + '</ul>');
+                p.innerHTML = label;
+                showConfirmDialog(_("Warning"), p, deleteEventFromListConfirm, deleteEventCancel);
             }
             else
                 showAlertDialog(_("You don't have the required privileges to perform the operation."));
