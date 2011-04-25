@@ -2752,8 +2752,11 @@ function onFolderSubscribeCB(folderData) {
 
 function onFolderUnsubscribeCB(folderId) {
     var node = $(folderId);
-    node.parentNode.removeChild(node);
+    var list = $(node.parentNode);
+    node.deselect();
+    list.removeChild(node);
     if (removeFolderRequestCount == 0) {
+        list.down("li").selectElement(); // personal calendar
         refreshEvents();
         refreshTasks();
         changeCalendarDisplay();

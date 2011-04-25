@@ -1,3 +1,9 @@
+2011-04-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (onFolderUnsubscribeCB):
+	select the personal calendar to avoid trying creating an event or
+	a task in the calendar to which the user has just unsubscribed.
+
 2011-04-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Added the concept of "resources" in SOGo in order
