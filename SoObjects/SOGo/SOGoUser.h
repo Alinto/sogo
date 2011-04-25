@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2010 Inverse inc.
+  Copyright (C) 2006-2011 Inverse inc.
   Copyright (C) 2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -114,16 +114,17 @@
 - (BOOL) isSuperUser;
 - (BOOL) canAuthenticate;
 
+/* resource */
+- (BOOL) isResource;
+- (int) numberOfSimultaneousBookings;
+
 /* module access */
 - (BOOL) canAccessModule: (NSString *) module;
 
 /* folders */
-
 - (SOGoUserFolder *) homeFolderInContext: (id) context;
-
 - (SOGoAppointmentFolders *) calendarsFolderInContext: (WOContext *) context;
-- (SOGoAppointmentFolder *)
- personalCalendarFolderInContext: (WOContext *) context;
+- (SOGoAppointmentFolder *) personalCalendarFolderInContext: (WOContext *) context;
 
 @end
 

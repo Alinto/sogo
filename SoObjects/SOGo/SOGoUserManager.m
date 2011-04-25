@@ -548,6 +548,9 @@
   [contact setObject: [emails objectAtIndex: 0] forKey: @"c_email"];
 }
 
+//
+//
+//
 - (void) _fillContactInfosForUser: (NSMutableDictionary *) currentUser
 		   withUIDorEmail: (NSString *) uid
 {
@@ -600,6 +603,15 @@
 	  if (!access)
 	    [currentUser setObject: [NSNumber numberWithBool: NO]
 			 forKey: @"MailAccess"];
+
+	  // We also fill the resource attributes, if any
+	  if ([userEntry objectForKey: @"isResource"])
+	    [currentUser setObject: [userEntry objectForKey: @"isResource"]
+			 forKey: @"isResource"];
+	  if ([userEntry objectForKey: @"numberOfSimultaneousBookings"])
+	    [currentUser setObject: [userEntry objectForKey: @"numberOfSimultaneousBookings"]
+			 forKey: @"numberOfSimultaneousBookings"];
+	  
 	}
     }
 
@@ -614,6 +626,7 @@
     [currentUser setObject: c_imaphostname forKey: @"c_imaphostname"];
   if (c_imaplogin)
     [currentUser setObject: c_imaplogin forKey: @"c_imaplogin"];
+
   [currentUser setObject: emails forKey: @"emails"];
   [currentUser setObject: cn forKey: @"cn"];
   [currentUser setObject: c_uid forKey: @"c_uid"];

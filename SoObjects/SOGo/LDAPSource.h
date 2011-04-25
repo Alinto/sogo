@@ -68,6 +68,10 @@
   BOOL passwordPolicy;
 
   NSMutableDictionary *_dnCache;
+
+  /* resources handling */
+  NSString *kindField;
+  NSString *multipleBookingsField;
 }
 
 - (void) setBindDN: (NSString *) newBindDN
@@ -85,7 +89,9 @@
       searchFields: (NSArray *) newSearchFields
      IMAPHostField: (NSString *) newIMAPHostField
     IMAPLoginField: (NSString *) newIMAPLoginField
-     andBindFields: (id) newBindFields;
+        bindFields: (id) newBindFields
+	 kindField: (NSString *) newKindField
+andMultipleBookingsField: (NSString *) newMultipleBookingsField;
 
 - (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID;
 - (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail;

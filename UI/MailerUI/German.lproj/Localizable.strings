@@ -165,8 +165,8 @@
 "InboxFolderName"  = "Posteingang";
 "DraftsFolderName" = "Entwürfe";
 "SieveFolderName"  = "Filter";
-"OtherUsersFolderName"   = "Other Users";
-"SharedFoldersName" = "Shared Folders";
+"Other Users" = "Andere Benutzer";
+"Shared Folders" = "Gemeinsame Ordner";
 "Folders"          = "Ordner"; /* title line */
 
 /* MailMoveToPopUp */

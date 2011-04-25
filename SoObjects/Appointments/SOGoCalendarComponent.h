@@ -60,7 +60,7 @@
 		       toFolder: (SOGoGCSFolder *) newFolder;
 
 - (void) updateComponent: (iCalRepeatableEntityObject *) newObject;
-- (void) saveComponent: (iCalRepeatableEntityObject *) newObject;
+- (NSException *) saveComponent: (iCalRepeatableEntityObject *) newObject;
 
 /* mail notifications */
 - (void) sendEMailUsingTemplateNamed: (NSString *) pageName
