@@ -95,8 +95,10 @@
       ASSIGN(draftsFolderName, [specialFolders objectAtIndex: 1]);
       ASSIGN(sentFolderName, [specialFolders objectAtIndex: 2]);
       ASSIGN(trashFolderName, [specialFolders objectAtIndex: 3]);
-      ASSIGN(otherUsersFolderName, [specialFolders objectAtIndex: 4]);
-      ASSIGN(sharedFoldersName, [specialFolders objectAtIndex: 5]);
+      if ([specialFolders count] == 5)
+	ASSIGN(otherUsersFolderName, [specialFolders objectAtIndex: 4]);
+      if ([specialFolders count] == 6)
+	ASSIGN(sharedFoldersName, [specialFolders objectAtIndex: 5]);
     }
 
   if ([folderName isEqualToString: inboxFolderName])
@@ -129,7 +131,7 @@
       // We translate the "Other Users" and "Shared Folders" namespaces.
       // While we're at it, we also translate the user's mailbox names
       // to the full name of the person.
-      if ([currentFolder hasPrefix: otherUsersFolderName])
+      if (otherUsersFolderName && [currentFolder hasPrefix: otherUsersFolderName])
 	{
 	  // We have a string like /Other Users/lmarcotte/...
 	  pathComponents = [NSMutableArray arrayWithArray: [currentFolder pathComponents]];
@@ -144,7 +146,7 @@
 					 [pathComponents componentsJoinedByString: @"/"]];
 				    
 	}
-      else if ([currentFolder hasPrefix: sharedFoldersName])
+      else if (sharedFoldersName && [currentFolder hasPrefix: sharedFoldersName])
 	currentDisplayName = [NSString stringWithFormat: @"/%@%@", [self labelForKey: @"SharedFoldersName"],
 				       [currentFolder substringFromIndex: [sharedFoldersName length]]];
       else
