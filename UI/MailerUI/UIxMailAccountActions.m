@@ -95,9 +95,9 @@
       ASSIGN(draftsFolderName, [specialFolders objectAtIndex: 1]);
       ASSIGN(sentFolderName, [specialFolders objectAtIndex: 2]);
       ASSIGN(trashFolderName, [specialFolders objectAtIndex: 3]);
-      if ([specialFolders count] == 5)
+      if ([specialFolders count] > 4)
 	ASSIGN(otherUsersFolderName, [specialFolders objectAtIndex: 4]);
-      if ([specialFolders count] == 6)
+      if ([specialFolders count] > 5)
 	ASSIGN(sharedFoldersName, [specialFolders objectAtIndex: 5]);
     }
 
