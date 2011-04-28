@@ -60,3 +60,6 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 = "%{Attendee} %{SentByText}hat die Einladung delegiert an %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}hat noch nicht über Ihre Termineinladung entschieden.";
+
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximale Zahl simultaner Buchungen (%{NumberOfSimultaneousBookings}) erreicht für Ressource \"%{Cn} %{SystemEmail}\".";
+

@@ -165,8 +165,8 @@
 "InboxFolderName"  = "Safata d'entrada";
 "DraftsFolderName" = "Esborranys";
 "SieveFolderName"  = "Filtres";
-"OtherUsersFolderName"   = "Other Users";
-"SharedFoldersName" = "Shared Folders";
+"OtherUsersFolderName"   = "Altres usuaris"; 
+"SharedFoldersName" = "Carpetes compartides";
 "Folders"          = "Carpetes"; /* title line */
 
 /* MailMoveToPopUp */
