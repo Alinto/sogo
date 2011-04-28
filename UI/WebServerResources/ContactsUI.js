@@ -668,7 +668,7 @@ function refreshContacts(cname) {
 }
 
 function onAddressBookNew(event) {
-    showPromptDialog(_("New addressbook..."), _("Name of the Address Book"), onAddressBookNewConfirm);
+    showPromptDialog(_("New Addressbook..."), _("Name of the Address Book"), onAddressBookNewConfirm);
     preventDefault(event);
 }
 
