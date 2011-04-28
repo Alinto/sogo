@@ -42,6 +42,10 @@
   NSString *_imapLoginField;
   NSString *_userPasswordAlgorithm;
   NSURL *_viewURL;
+
+  /* resources handling */
+  NSString *_kindField;
+  NSString *_multipleBookingsField;
 }
 
 @end

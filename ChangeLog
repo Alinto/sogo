@@ -1,3 +1,11 @@
+2011-04-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/SQLSource.{h,m}: Added resources support,
+	just like for LDAP-based sources.
+	* SoObjects/SOGo/SOGoParentFolder.m (_createPersonalFolder):
+	We now also autocreate database tables if the "user"
+	is a resource.
+
 2011-04-25  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (onFolderUnsubscribeCB):

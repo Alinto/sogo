@@ -83,6 +83,8 @@
       _mailFields = nil;
       _userPasswordAlgorithm = nil;
       _viewURL = nil;
+      _kindField = nil;
+      _multipleBookingsField = nil;
     }
 
   return self;
@@ -95,6 +97,8 @@
   [_mailFields release];
   [_userPasswordAlgorithm release];
   [_viewURL release];
+  [_kindField release];
+  [_multipleBookingsField release];
    
   [super dealloc];
 }
@@ -109,7 +113,9 @@
   ASSIGN(_mailFields, [udSource objectForKey: @"MailFieldNames"]);
   ASSIGN(_userPasswordAlgorithm, [udSource objectForKey: @"userPasswordAlgorithm"]);
   ASSIGN(_imapLoginField, [udSource objectForKey: @"IMAPLoginFieldName"]);
-
+  ASSIGN(_kindField, [udSource objectForKey: @"KindFieldName"]);
+  ASSIGN(_multipleBookingsField, [udSource objectForKey: @"MultipleBookingsFieldName"]);
+  
   if (!_userPasswordAlgorithm)
     _userPasswordAlgorithm = @"none";
 
@@ -462,6 +468,29 @@
                 [response setObject: [response objectForKey: _imapLoginField] forKey: @"c_imaplogin"];
             }
 
+	  // We check if it's a resource of not
+	  if (_kindField)
+	    {	      
+	      if ((value = [response objectForKey: _kindField]))
+		{
+		  if ([value caseInsensitiveCompare: @"location"] == NSOrderedSame ||
+		      [value caseInsensitiveCompare: @"thing"] == NSOrderedSame ||
+		      [value caseInsensitiveCompare: @"group"] == NSOrderedSame) 
+		    {
+		      [response setObject: [NSNumber numberWithInt: 1]
+				forKey: @"isResource"];
+		    }
+		}
+	    }
+
+	  if (_multipleBookingsField)
+	    {
+	      if ((value = [response objectForKey: _multipleBookingsField]))
+		{
+		  [response setObject: [NSNumber numberWithInt: [value intValue]]
+			    forKey: @"numberOfSimultaneousBookings"];
+		}
+	    }
         }
       else
         [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
