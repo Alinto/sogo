@@ -453,7 +453,7 @@ validate_endbeforestart    = "La data finale specificata è precedente alla data
 "Workweek days only" = "Solo giorni lavorativi";
 "Tasks in View" = "Attività in elenco";
 
-"eventDeleteConfirmation" = "Stai per cancellare in maniera permanente l'evento.\nVuoi procedere?";
+"eventDeleteConfirmation" = "Il seguente evento(i) sarà cancellato: \n%{0}\nVuoi continuare?";
 "taskDeleteConfirmation" = "Stai per cancellare in maniera permanente il l'attività.\nVuoi procedere?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
