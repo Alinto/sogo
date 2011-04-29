@@ -1513,7 +1513,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   order = [[container subFolders] indexOfObject: self];
 
-  return [NSString stringWithFormat: @"%d", order];
+  return [NSString stringWithFormat: @"%d", order+1];
 }
 
 - (NSException *) setDavCalendarOrder: (NSString *) newColor
