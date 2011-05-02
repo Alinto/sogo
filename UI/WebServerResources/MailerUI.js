@@ -929,8 +929,12 @@ function updateWindowTitle(span) {
         document.title = Mailer.defaultWindowTitle;
     if (span) {
         var title = Mailer.defaultWindowTitle + " - ";
-        if (span.hasClassName("unseen"))
-            title += span.innerHTML.stripTags();
+        if (span.hasClassName("unseen")) {
+            var subtitle = span.innerHTML.stripTags();
+            var idx = subtitle.lastIndexOf("(");
+            var len = subtitle.length-idx-2;
+            title += "(" +  subtitle.substr(idx+1, len)  + ") " + subtitle.substring(0, idx);
+        }
         else
             title += span.childNodes[0].nodeValue;
         document.title = title;
