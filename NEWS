@@ -11,9 +11,10 @@ New Features
 
 Enhancements
  - the personal calendar in iCal is now placed at the very top
- - the recepients selection works more like Thunderbird when
+ - the recipients selection works more like Thunderbird when
    composing emails
- 
+ - improved the documentation regarding groups in LDAP
+
 Bug Fixes
  - selection problems with Chrome under OS X in the webmail interface
  - crash when some events had no end date
