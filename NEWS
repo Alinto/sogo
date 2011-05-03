@@ -1,10 +1,12 @@
-1.3-201104XX (1.3.7)
+1.3-20110503 (1.3.7)
 ---------------------
 New Features
  - IMAP namespaces are now translated and the full name of the
    mailbox owner is extracted under "Other Users" 
  - added the "authenticationFilter" parameter for SQL-based
    sources to limit who can authenticate to a local SOGo instance
+ - added the "IMAPLoginFieldName" parameter in authentication sources to
+   specify a different value for IMAP authentication
  - added support for resources like projectors, conference rooms
    and more which allows SOGo to avoid double-booking of them
    and also allows SOGo to automatically accept invitations for them
@@ -14,6 +16,8 @@ Enhancements
  - the recipients selection works more like Thunderbird when
    composing emails
  - improved the documentation regarding groups in LDAP
+ - minor improvements to the webmail module
+ - minor improvements to the contacts web module
 
 Bug Fixes
  - selection problems with Chrome under OS X in the webmail interface
