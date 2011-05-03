@@ -1,5 +1,8 @@
 2011-05-03  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxMailEditor.js (createAttachment): show
+	the attachment name as the list entry's title.
+
 	* UI/WebServerResources/generic.js (onRowClick): in some cases
 	under ID,	the event is trigger on the dragging identifier
 	and must be ignored.

@@ -251,6 +251,7 @@ function createAttachment(node, list) {
     var fileArray = filename.split(separator);
     var attachmentName = document.createTextNode(fileArray[fileArray.length-1]);
     attachment.appendChild(attachmentName);
+    attachment.writeAttribute("title", fileArray[fileArray.length-1]);
 }
 
 function clickedEditorSave() {
