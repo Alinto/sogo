@@ -1,3 +1,13 @@
+2011-05-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/generic.js (onRowClick): in some cases
+	under ID,	the event is trigger on the dragging identifier
+	and must be ignored.
+
+	* UI/WebServerResources/MailerUI.js (deleteSelectedMessages): we no
+	longer wait for the callback before invalidating the caches.
+	(mailListToggleMessagesRead): idem.
+
 2011-04-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/SQLSource.{h,m}: Added resources support,

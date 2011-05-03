@@ -577,7 +577,10 @@ function onRowClick(event, target) {
             // No parent; stop here
             return true;
     }
-
+    else
+        // Not a list; stop here
+        return true;
+    
     var initialSelection = $(node.parentNode).getSelectedNodesId();
     if (initialSelection && initialSelection.length > 0
         && initialSelection.indexOf(node.id) >= 0
@@ -1885,7 +1888,7 @@ function showPromptDialog(title, label, callback, defaultValue) {
                                         _("OK"),
                                         callback.bind(input)));
 	fields.appendChild(createButton(null,
-                                        "Cancel",
+                                        _("Cancel"),
                                         disposeDialog));
         dialog = createDialog(null,
                               title,

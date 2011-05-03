@@ -203,7 +203,8 @@ function openMessageWindowsForSelection(action, firstOnly) {
     return false;
 }
 
-/* Triggered when clicking on the read/unread dot of a message row */
+/* Triggered when clicking on the read/unread dot of a message row or
+ * through the contextual menu. */
 function mailListToggleMessagesRead(row) {
     var selectedRowsId = [];
     if (row) {
@@ -233,6 +234,9 @@ function mailListToggleMessagesRead(row) {
             var msguid = selectedRowsId[i].split('_')[1];
             markMailInWindow(window, msguid, markread);
 
+            // Assume ajax request will succeed and invalidate data cache now.
+	    Mailer.dataTable.invalidate(msguid, true);
+
             var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
                 + msguid + "/" + action;
 
@@ -242,6 +246,7 @@ function mailListToggleMessagesRead(row) {
     }
 }
 
+/*
 function mailListMarkMessage(event) {
     mailListToggleMessagesRead();
 
@@ -249,15 +254,11 @@ function mailListMarkMessage(event) {
 
     return false;
 }
+*/
 
 function mailListMarkMessageCallback(http) {
     var data = http.callbackData;
-    if (isHttpStatus204(http.status)
-        || http.status == 304) {  // In some cases, Safari returns a 304 even
-                                  // though SOGo returns a 204!
-	Mailer.dataTable.invalidate(data["msguid"], true);
-    }
-    else {
+    if (!isHttpStatus204(http.status)) {
         log("Message Mark Failed (" + http.status + "): " + http.statusText);
 	Mailer.dataTable.invalidate(data["msguid"], false);
     }
@@ -318,8 +319,8 @@ function onUnload(event) {
 
     new Ajax.Request(url, {
             asynchronous: false,
-                method: 'get',
-                onFailure: function(transport) {
+            method: 'get',
+            onFailure: function(transport) {
                 log("Can't expunge current folder: " + transport.status);
             }
     });
@@ -393,6 +394,7 @@ function deleteSelectedMessages(sender) {
         return false;
 
     var messageList = $("messageListBody").down("TBODY");
+    var messageContent = $("messageContent");
     var rowIds = messageList.getSelectedNodesId();
     var uids = new Array(); // message IDs
     var paths = new Array(); // row IDs
@@ -418,6 +420,44 @@ function deleteSelectedMessages(sender) {
             uids.push(uid);
             paths.push(path);
             deleteMessageRequestCount++;
+
+            deleteCachedMessage(path);
+            if (Mailer.currentMessages[Mailer.currentMailbox] == uid) {
+                messageContent.innerHTML = '';
+                Mailer.currentMessages[Mailer.currentMailbox] = null;
+            }
+
+            if (i+1 == rowIds.length) {
+                // Select next message
+                var row = $("row_" + uid);
+                var nextRow = false;
+                if (row) {
+                    nextRow = row.next("tr");
+                    if (!nextRow.id.startsWith('row_'))
+                        nextRow = row.previous("tr");
+                    //	row.addClassName("deleted"); // when we'll offer "mark as deleted"
+                    if (nextRow.id.startsWith('row_')) {
+                        Mailer.currentMessages[Mailer.currentMailbox] = nextRow.id.substr(4);
+                        nextRow.selectElement();
+                        if (loadMessage(Mailer.currentMessages[Mailer.currentMailbox]))
+                            Mailer.dataTable.invalidate(Mailer.currentMessages[Mailer.currentMailbox], true);
+                    }
+                }
+                else {
+                    messageContent.innerHTML = '';
+                }
+                Mailer.dataTable.remove(uid);
+                if (nextRow) {
+                    // from generic.js
+                    lastClickedRow = nextRow.rowIndex;
+	            lastClickedRowId = nextRow.id;
+                }
+                Mailer.dataTable.refresh();
+                deleteCachedMailboxByType("trash");
+            }
+            else {
+                Mailer.dataTable.remove(uid);
+            }
         }
         updateMessageListCounter(0 - rowIds.length, true);
         if (unseenCount < 0) {
@@ -441,49 +481,9 @@ function deleteSelectedMessages(sender) {
 function deleteSelectedMessagesCallback(http) {
     if (isHttpStatus204(http.status)) {
         var data = http.callbackData;
-        for (var i = 0; i < data["path"].length; i++) {
-            deleteCachedMessage(data["path"][i]);
-            deleteMessageRequestCount--;
-            if (Mailer.currentMailbox == data["mailbox"]) {
-                var div = $('messageContent');
-                if (Mailer.currentMessages[Mailer.currentMailbox] == data["id"][i]) {
-                    div.innerHTML = '';
-                    Mailer.currentMessages[Mailer.currentMailbox] = null;
-                }
-                if (deleteMessageRequestCount == 0) {
-                    // Select next message
-                    var row = $("row_" + data["id"][i]);
-                    var nextRow = false;
-                    if (row) {
-                        nextRow = row.next("tr");
-                        if (!nextRow.id.startsWith('row_'))
-                            nextRow = row.previous("tr");
-                        //	row.addClassName("deleted"); // when we'll offer "mark as deleted"
-                        if (nextRow.id.startsWith('row_')) {
-                            Mailer.currentMessages[Mailer.currentMailbox] = nextRow.id.substr(4);
-                            nextRow.selectElement();
-                            if (loadMessage(Mailer.currentMessages[Mailer.currentMailbox]))
-                                Mailer.dataTable.invalidate(Mailer.currentMessages[Mailer.currentMailbox], true);
-                        }
-                    }
-                    else {
-                        div.innerHTML = '';
-                    }
-                    Mailer.dataTable.remove(data["id"][i]);
-                    if (nextRow) {
-                        // from generic.js
-                        lastClickedRow = nextRow.rowIndex;
-	                lastClickedRowId = nextRow.id;
-                    }
-                    Mailer.dataTable.refresh();
-                    deleteCachedMailboxByType("trash");
-                }
-                else {
-                    Mailer.dataTable.remove(data["id"][i]);
-                }
-            }
-        }
 	if (data["refreshUnseenCount"])
+            // TODO : the unseen count should be returned when calling the batchDelete remote action,
+            // in order to avoid this extra AJAX call.
 	    getUnseenCountForFolder(data["mailbox"]);
     }
     else if (!http.callbackData["withoutTrash"]) {
@@ -493,7 +493,9 @@ function deleteSelectedMessagesCallback(http) {
                           function() { refreshCurrentFolder(); disposeDialog(); });
     }
     else {
-        log ("deleteSelectedMessagesCallback: problem during ajax request " + http.status + " : " + http.responseText);
+        var html = new Element('div').update(http.responseText);
+        log ("Messages deletion failed (" + http.status + ") : " + html.down('p').innerHTML);
+        showAlertDialog(_("Operation failed"));
         refreshCurrentFolder();
     }
 }
@@ -1155,7 +1157,9 @@ function loadMessage(msguid) {
         div.innerHTML = '';
         document.messageAjaxRequest = triggerAjaxRequest(url,
 							 loadMessageCallback,
-							 { 'msguid': msguid, 'seenStateHasChanged': seenStateHasChanged });
+							 { 'mailbox': Mailer.currentMailbox,
+                                                           'msguid': msguid,
+                                                           'seenStateHasChanged': seenStateHasChanged });
 	// Warning: We assume the user can set the read/unread flag of the message.
         markMailInWindow(window, msguid, true);
     }
@@ -1562,20 +1566,24 @@ function loadMessageCallback(http) {
     var div = $('messageContent');
 
     if (http.status == 200) {
-        document.messageAjaxRequest = null;
-        div.innerHTML = http.responseText;
-        configureLinksInMessage();
-        resizeMailContent();
-        configureLoadImagesButton();
-        configureSignatureFlagImage();
-        handleReturnReceipt();
         if (http.callbackData) {
-            var cachedMessage = new Array();
+            document.messageAjaxRequest = null;
 	    var msguid = http.callbackData.msguid;
-	    // Warning: If the user can't set the read/unread flag, it won't
-	    // be reflected in the view unless we force the refresh.
-            if (http.callbackData.seenStateHasChanged)
-	        Mailer.dataTable.invalidate(msguid, true);
+            var mailbox = http.callbackData.mailbox;
+            if (Mailer.currentMailbox == mailbox && 
+                Mailer.currentMessages[Mailer.currentMailbox] == msguid) {
+                div.innerHTML = http.responseText;
+                configureLinksInMessage();
+                resizeMailContent();
+                configureLoadImagesButton();
+                configureSignatureFlagImage();
+                handleReturnReceipt();
+	        // Warning: If the user can't set the read/unread flag, it won't
+	        // be reflected in the view unless we force the refresh.
+                if (http.callbackData.seenStateHasChanged)
+	            Mailer.dataTable.invalidate(msguid, true);
+            }
+            var cachedMessage = new Array();
             cachedMessage['idx'] = Mailer.currentMailbox + '/' + msguid;
             cachedMessage['time'] = (new Date()).getTime();
             cachedMessage['text'] = http.responseText;
