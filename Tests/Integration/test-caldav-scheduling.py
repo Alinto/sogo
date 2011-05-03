@@ -3,12 +3,15 @@
 # setup: username must be super-user or have read-access to PUBLIC events in
 #        both attendee and delegate's personal calendar
 
-from config import hostname, port, username, password, attendee1, attendee1_delegate
+from config import hostname, port, username, password, \
+                   attendee1, attendee1_delegate,      \
+		   resource_no_overbook, resource_can_overbook
 
 import datetime
 import sogotests
 import sys
 import time
+import pytz
 import unittest
 import utilities
 import vobject
@@ -103,30 +106,13 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
         (self.user_name, self.user_email) = utility.fetchUserInfo(username)
         (self.attendee1_name, self.attendee1_email) = utility.fetchUserInfo(attendee1)
         (self.attendee1_delegate_name, self.attendee1_delegate_email) = utility.fetchUserInfo(attendee1_delegate)
+        (self.res_no_ob_name, self.res_no_ob_email) = utility.fetchUserInfo(resource_no_overbook)
+        (self.res_can_ob_name, self.res_can_ob_email) = utility.fetchUserInfo(resource_can_overbook)
 
         self.user_calendar = "/SOGo/dav/%s/Calendar/personal/" % username
         self.attendee1_calendar = "/SOGo/dav/%s/Calendar/personal/" % attendee1
         self.attendee1_delegate_calendar = "/SOGo/dav/%s/Calendar/personal/" % attendee1_delegate
 
-    def _newEvent(self):
-        newCal = vobject.iCalendar()
-        vevent = newCal.add('vevent')
-        vevent.add('summary').value = "test event"
-        vevent.add('transp').value = "OPAQUE"
-
-        now = datetime.datetime.now()
-        startdate = vevent.add('dtstart')
-        startdate.value = now
-        enddate = vevent.add('dtend')
-        enddate.value = now + datetime.timedelta(0, 3600)
-        vevent.add('uid').value = "test-delegation"
-        vevent.add('dtstamp').value = now
-        vevent.add('last-modified').value = now
-        vevent.add('created').value = now
-        
-        vevent.add('sequence').value = "0"
-
-        return newCal
 
     def tearDown(self):
         self._deleteEvent(self.client,
@@ -136,6 +122,40 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
         self._deleteEvent(self.client,
                           "%stest-delegation.ics" % self.attendee1_delegate_calendar,
                           None)
+        self._deleteEvent(self.client,
+                          "%stest-add-attendee.ics" % self.user_calendar, None)
+        self._deleteEvent(self.client,
+                          "%stest-add-attendee.ics" % self.attendee1_calendar, None)
+        self._deleteEvent(self.client,
+                          "%stest-no-overbook.ics" % self.user_calendar, None)
+        self._deleteEvent(self.client,
+                          "%stest-no-overbook-overlap.ics" % self.user_calendar, None)
+        self._deleteEvent(self.client,
+                          "%stest-can-overbook.ics" % self.user_calendar, None)
+        self._deleteEvent(self.client,
+                          "%stest-can-overbook-overlap.ics" % self.user_calendar, None)
+
+    def _newEvent(self, summary="test event", uid="test", transp=0):
+        transparency = ("OPAQUE", "TRANSPARENT")
+
+        newCal = vobject.iCalendar()
+        vevent = newCal.add('vevent')
+        vevent.add('summary').value = summary
+        vevent.add('transp').value = transparency[transp]
+
+        now = datetime.datetime.now(pytz.timezone("America/Montreal"))
+        startdate = vevent.add('dtstart')
+        startdate.value = now
+        enddate = vevent.add('dtend')
+        enddate.value = now + datetime.timedelta(0, 3600)
+        vevent.add('uid').value = uid
+        vevent.add('dtstamp').value = now
+        vevent.add('last-modified').value = now
+        vevent.add('created').value = now
+        
+        vevent.add('sequence').value = "0"
+
+        return newCal
 
     def _putEvent(self, client, filename, event, exp_status = 201):
         put = webdavlib.HTTPPUT(filename, event.serialize())
@@ -217,6 +237,118 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
                               " (actual: '%s', expected: '%s')"
                               % (email,
                                  compared_attendees[email], attendees[email]))
+
+    def testAddAttendee(self):
+	""" add attendee after event creation """
+
+	# make sure the event doesn't exist
+	ics_name = "test-add-attendee.ics"
+        self._deleteEvent(self.client,
+                          "%s%s" % (self.user_calendar,ics_name), None)
+        self._deleteEvent(self.client,
+                          "%s%s" % (self.attendee1_calendar,ics_name), None)
+
+        # 1. create an event in the organiser's calendar
+	event = self._newEvent(summary="Test add attendee", uid="Test add attendee")
+        organizer = event.vevent.add('organizer')
+        organizer.cn_param = self.user_name
+        organizer.value = self.user_email
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
+
+	# 2. add an attendee
+        event.add("method").value = "REQUEST"
+        attendee = event.vevent.add('attendee')
+        attendee.cn_param = self.attendee1_name
+        attendee.rsvp_param = "TRUE"
+        attendee.partstat_param = "NEEDS-ACTION"
+        attendee.value = self.attendee1_email
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event,
+			exp_status=204)
+
+
+	# 3. verify that the attendee has the event
+        attendee_event = self._getEvent(self.client, "%s%s" % (self.attendee1_calendar, ics_name))
+
+	# 4. make sure the received event match the original one
+	# XXX is this enough?
+	self.assertEquals(event.vevent.uid, attendee_event.vevent.uid)
+
+    def testResourceNoOverbook(self):
+	""" try to overbook a resource """
+
+	# make sure the event doesn't exist
+	ics_name = "test-no-overbook.ics"
+        self._deleteEvent(self.client,
+                          "%s%s" % (self.user_calendar,ics_name), None)
+
+	ob_ics_name = "test-no-overbook-overlap.ics"
+        self._deleteEvent(self.client,
+                          "%s%s" % (self.user_calendar,ics_name), None)
+
+        # 1. create an event in the organiser's calendar
+	event = self._newEvent(summary="Test no overbook", uid="test no overbook")
+        organizer = event.vevent.add('organizer')
+        organizer.cn_param = self.user_name
+        organizer.value = self.user_email
+        attendee = event.vevent.add('attendee')
+        attendee.cn_param = self.res_no_ob_name
+        attendee.rsvp_param = "TRUE"
+        attendee.partstat_param = "NEEDS-ACTION"
+        attendee.value = self.res_no_ob_email
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
+
+        # 2. create a second event overlapping the first one
+	event = self._newEvent(summary="Test no overbook - overlap", uid="test no overbook - overlap")
+        organizer = event.vevent.add('organizer')
+        organizer.cn_param = self.user_name
+        organizer.value = self.user_email
+        attendee = event.vevent.add('attendee')
+        attendee.cn_param = self.res_no_ob_name
+        attendee.rsvp_param = "TRUE"
+        attendee.partstat_param = "NEEDS-ACTION"
+        attendee.value = self.res_no_ob_email
+
+	# put the event - should trigger a 403
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ob_ics_name), event, exp_status=403)
+
+    def testResourceCanOverbook(self):
+	""" try to overbook a resource - multiplebookings=0"""
+
+	# make sure the event doesn't exist
+	ics_name = "test-can-overbook.ics"
+        self._deleteEvent(self.client,
+                          "%s%s" % (self.user_calendar,ics_name), None)
+
+	ob_ics_name = "test-can-overbook-overlap.ics"
+        self._deleteEvent(self.client,
+                          "%s%s" % (self.user_calendar,ob_ics_name), None)
+
+        # 1. create an event in the organiser's calendar
+	event = self._newEvent(summary="Test can overbook", uid="test can overbook")
+        organizer = event.vevent.add('organizer')
+        organizer.cn_param = self.user_name
+        organizer.value = self.user_email
+        attendee = event.vevent.add('attendee')
+        attendee.cn_param = self.res_can_ob_name
+        attendee.rsvp_param = "TRUE"
+        attendee.partstat_param = "NEEDS-ACTION"
+        attendee.value = self.res_can_ob_email
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
+
+        # 2. create a second event overlapping the first one
+	event = self._newEvent(summary="Test can overbook - overlap", uid="test can overbook - overlap")
+        organizer = event.vevent.add('organizer')
+        organizer.cn_param = self.user_name
+        organizer.value = self.user_email
+        attendee = event.vevent.add('attendee')
+        attendee.cn_param = self.res_can_ob_name
+        attendee.rsvp_param = "TRUE"
+        attendee.partstat_param = "NEEDS-ACTION"
+        attendee.value = self.res_can_ob_email
+
+	# put the event - should be fine since we can overbook this one
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ob_ics_name), event)
+
 
     def testInvitationDelegation(self):
         """ invitation delegation """

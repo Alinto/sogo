@@ -10,6 +10,7 @@ SOGoSupportedLanguages = [ "Catalan", "Czech", "Welsh", "English", "Spanish",
                            "French", "German", "Italian", "Hungarian",
                            "Dutch", "BrazilianPortuguese", "Norwegian", "Polish",
                            "Russian", "Ukrainian", "Swedish" ]
+daysBetweenResponseList=[1,2,3,5,7,14,21,30]
 
 class HTTPPreferencesPOST (webdavlib.HTTPPOST):
   cookie = None
@@ -43,12 +44,35 @@ class preferences:
     authCookie = sogoLogin.getAuthCookie(hostname, port, username, password)
     self.cookie = authCookie
 
-    self.preferencesMap = {"SOGoLanguage": "2.1.0.3.0.1.4.3.1.3.1.1.2"}
-    # Duplicated from SOGoDefaults.plist
+    self.preferencesMap = {
+                           "SOGoLanguage": "2.1.0.3.0.1.4.3.1.3.1.1.2",
+                           "SOGoSieveFilters": "sieveFilters",
 
-  def set(self, preference, value):
-    formKey = self.preferencesMap[preference]
-    content = "%s=%s&hasChanged=1" % (formKey, value)
+			   # Vacation stuff
+			   "Vacation": "enableVacation", # to disable, don't specify it
+			   "autoReplyText": "autoReplyText", # string
+			   "autoReplyEmailAddresses":  "autoReplyEmailAddresses", # LIST
+			   "daysBetweenResponse":  "2.1.0.3.0.1.4.3.1.3.7.1.5.1.1.3.7.2", # see daysBetweenResponseList
+			   "ignoreLists":  "ignoreLists", #bool
+
+			   # forward stuff
+                           "Forward": "enableForward", # to disable, don't specify it
+                           "forwardAddress": "forwardAddress",
+                           "keepCopy": "forwardKeepCopy",
+                          }
+
+  def set(self, preference, value=None):
+    # if preference is a dict, set all prefs found in the dict
+    content=""
+    try:
+      for k,v in preference.items():
+        content+="%s=%s&" % (self.preferencesMap[k], v)
+    except AttributeError:
+      # preference wasn't a dict
+      formKey = self.preferencesMap[preference]
+      content = "%s=%s&hasChanged=1" % (formKey, value)
+
+
     url = "/SOGo/so/%s/preferences" % self.login
 
     post = HTTPPreferencesPOST (url, content)
@@ -79,3 +103,4 @@ class preferences:
 if __name__ == "__main__":
   p = preferences ()
   p.set ("SOGoLanguage", SOGoSupportedLanguages.index("French"))
+  print p.get ("SOGoLanguage")

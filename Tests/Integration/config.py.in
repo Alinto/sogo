@@ -12,6 +12,12 @@ subscriber_password = "otherpass"
 attendee1 = "user@domain.com"
 attendee1_delegate = "otheruser@domain.com"
 
+resource_no_overbook = "res"
+resource_can_overbook = "res-nolimit"
+
 mailserver = "imaphost"
 
 testput_nbrdays = 30
+
+sieve_server = "localhost"
+sieve_port = 2000
