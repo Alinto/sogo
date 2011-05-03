@@ -9,4 +9,5 @@ CKEDITOR.editorConfig = function( config )
     config.skin = 'kama';
     config.removePlugins = "elementspath,maximize,resize";
     config.scayt_autoStartup = false;
+    config.enterMode = CKEDITOR.ENTER_BR;
 };

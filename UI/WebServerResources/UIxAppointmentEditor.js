@@ -96,6 +96,8 @@ function validateAptEditor() {
         }
     }
 
+    AIM.submit($(document.editform), {'onComplete' : onEventPostComplete});
+
     return true;
 }
 
@@ -174,6 +176,21 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
         }
 
     return false;
+}
+
+function onEventPostComplete(response) {
+    if (response && response.length > 0) {
+        var jsonResponse = response.evalJSON();
+        if (jsonResponse["status"] == "success") {
+            if (window.opener)
+                window.opener.refreshEventsAndDisplay();
+            window.close();
+        }
+        else {
+            var message = jsonResponse["message"];
+            alert(jsonResponse["message"]);
+        }
+    }
 }
 
 function saveEvent(sender) {

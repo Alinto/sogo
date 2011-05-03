@@ -2,7 +2,8 @@
  *
  * Copyright (C) 2009-2011 Inverse inc.
  *
- * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Authors: Ludovic Marcotte <lmarcotte@inverse.ca>
+ *          Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,9 +32,8 @@
 
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/NSURL+GCS.h>
+#import <GDLContentStore/EOQualifier+GCS.h>
 #import <GDLAccess/EOAdaptorChannel.h>
-#import <GDLAccess/EOAdaptorContext.h>
-#import <GDLAccess/EOAttribute.h>
 
 #import "SOGoConstants.h"
 #import "NSString+Utilities.h"
@@ -79,9 +79,12 @@
   if ((self = [super init]))
     {
       _sourceID = nil;
+      _authenticationFilter = nil;
       _mailFields = nil;
       _userPasswordAlgorithm = nil;
       _viewURL = nil;
+      _kindField = nil;
+      _multipleBookingsField = nil;
     }
 
   return self;
@@ -90,9 +93,12 @@
 - (void) dealloc
 {
   [_sourceID release];
+  [_authenticationFilter release];
   [_mailFields release];
   [_userPasswordAlgorithm release];
   [_viewURL release];
+  [_kindField release];
+  [_multipleBookingsField release];
    
   [super dealloc];
 }
@@ -103,9 +109,13 @@
   self = [self init];
 
   ASSIGN(_sourceID, [udSource objectForKey: @"id"]);
+  ASSIGN(_authenticationFilter, [udSource objectForKey: @"authenticationFilter"]);
   ASSIGN(_mailFields, [udSource objectForKey: @"MailFieldNames"]);
   ASSIGN(_userPasswordAlgorithm, [udSource objectForKey: @"userPasswordAlgorithm"]);
-
+  ASSIGN(_imapLoginField, [udSource objectForKey: @"IMAPLoginFieldName"]);
+  ASSIGN(_kindField, [udSource objectForKey: @"KindFieldName"]);
+  ASSIGN(_multipleBookingsField, [udSource objectForKey: @"MultipleBookingsFieldName"]);
+  
   if (!_userPasswordAlgorithm)
     _userPasswordAlgorithm = @"none";
 
@@ -203,9 +213,10 @@
 	      grace: (int *) _grace
 {
   EOAdaptorChannel *channel;
+  EOQualifier *qualifier;
   GCSChannelManager *cm;
   NSException *ex;
-  NSString *sql;
+  NSMutableString *sql;
   BOOL rc;
 
   rc = NO;
@@ -214,12 +225,25 @@
   cm = [GCSChannelManager defaultChannelManager];
   channel = [cm acquireOpenChannelForURL: _viewURL];
   if (channel)
-    {  
-      sql = [NSString stringWithFormat: (@"SELECT c_password"
-                                         @" FROM %@"
-                                         @" WHERE c_uid = '%@'"),
-                      [_viewURL gcsTableName], _login];
-
+    {
+      qualifier = [[EOKeyValueQualifier alloc] initWithKey: @"c_uid"
+                                          operatorSelector: EOQualifierOperatorEqual
+                                                     value: _login];
+      [qualifier autorelease];
+      sql = [NSMutableString stringWithFormat: @"SELECT c_password"
+                             @" FROM %@"
+                             @" WHERE ",
+                             [_viewURL gcsTableName]];
+      if (_authenticationFilter)
+        {          
+          qualifier = [[EOAndQualifier alloc] initWithQualifiers:
+                                                qualifier,
+                       [EOQualifier qualifierWithQualifierFormat: _authenticationFilter],
+                                              nil];
+          [qualifier autorelease];
+        }
+      [qualifier _gcsAppendToString: sql];
+      
       ex = [channel evaluateExpressionX: sql];
       if (!ex)
         {
@@ -235,7 +259,8 @@
 	  [channel cancelFetch];
         }
       else
-        [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+        [self errorWithFormat: @"could not run SQL '%@': %@", qualifier, ex];
+
       [cm releaseChannel: channel];
     }
   else
@@ -328,8 +353,10 @@
 {
   NSMutableDictionary *response;
   EOAdaptorChannel *channel;
+  EOQualifier *qualifier;
   GCSChannelManager *cm;
-  NSString *sql, *value;
+  NSMutableString *sql;
+  NSString *value;
   NSException *ex;
 
   response = nil;
@@ -340,21 +367,21 @@
   if (channel)
     {
       if (!b)
-        sql = [NSString stringWithFormat: (@"SELECT *"
-                                           @" FROM %@"
-                                           @" WHERE c_uid = '%@'"),
-                        [_viewURL gcsTableName], theID];
+        sql = [NSMutableString stringWithFormat: (@"SELECT *"
+                                                  @" FROM %@"
+                                                  @" WHERE c_uid = '%@'"),
+                               [_viewURL gcsTableName], theID];
       else
 	{
-	  sql = [NSString stringWithFormat: (@"SELECT *"
-					     @" FROM %@"
-					     @" WHERE c_uid = '%@' OR"
-					     @" LOWER(mail) = '%@'"),
-			  [_viewURL gcsTableName], theID, [theID lowercaseString]];
-	
+	  sql = [NSMutableString stringWithFormat: (@"SELECT *"
+                                                    @" FROM %@"
+                                                    @" WHERE c_uid = '%@' OR"
+                                                    @" LOWER(mail) = '%@'"),
+                                 [_viewURL gcsTableName], theID, [theID lowercaseString]];
+          
 	  if (_mailFields && [_mailFields count] > 0)
 	    {
-	      sql = [sql stringByAppendingString: [self _whereClauseFromArray: _mailFields  value: [theID lowercaseString]  exact: YES]];
+	      [sql appendString: [self _whereClauseFromArray: _mailFields  value: [theID lowercaseString]  exact: YES]];
 	    }
 	}
 	
@@ -397,6 +424,73 @@
 	    }
 	  
 	  [response setObject: emails  forKey: @"c_emails"];
+
+          // We check if the user can authenticate
+          if (_authenticationFilter)
+            {
+              EOQualifier *q_uid, *q_auth;
+
+              sql = [NSMutableString stringWithFormat: @"SELECT c_uid"
+                                     @" FROM %@"
+                                     @" WHERE ",
+                                     [_viewURL gcsTableName]];
+
+              q_auth = [EOQualifier qualifierWithQualifierFormat: _authenticationFilter];
+
+              q_uid = [[EOKeyValueQualifier alloc] initWithKey: @"c_uid"
+                                              operatorSelector: EOQualifierOperatorEqual
+                                                         value: theID];
+              [q_uid autorelease];
+
+              qualifier = [[EOAndQualifier alloc] initWithQualifiers: q_uid, q_auth, nil];
+              [qualifier autorelease];
+              [qualifier _gcsAppendToString: sql];
+
+              ex = [channel evaluateExpressionX: sql];
+              if (!ex)
+                {
+                  NSDictionary *authResponse;
+
+                  authResponse = [channel fetchAttributes: [channel describeResults: NO]  withZone: NULL];
+                  [response setObject: [NSNumber numberWithBool: [authResponse count] > 0] forKey: @"canAuthenticate"];
+                  [channel cancelFetch];
+                }
+              else
+                [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
+            }
+          else
+            [response setObject: [NSNumber numberWithBool: YES] forKey: @"canAuthenticate"];
+        
+          // We check if we should use a different login for IMAP
+          if (_imapLoginField)
+            {
+              if ([response objectForKey: _imapLoginField])
+                [response setObject: [response objectForKey: _imapLoginField] forKey: @"c_imaplogin"];
+            }
+
+	  // We check if it's a resource of not
+	  if (_kindField)
+	    {	      
+	      if ((value = [response objectForKey: _kindField]))
+		{
+		  if ([value caseInsensitiveCompare: @"location"] == NSOrderedSame ||
+		      [value caseInsensitiveCompare: @"thing"] == NSOrderedSame ||
+		      [value caseInsensitiveCompare: @"group"] == NSOrderedSame) 
+		    {
+		      [response setObject: [NSNumber numberWithInt: 1]
+				forKey: @"isResource"];
+		    }
+		}
+	    }
+
+	  if (_multipleBookingsField)
+	    {
+	      if ((value = [response objectForKey: _multipleBookingsField]))
+		{
+		  [response setObject: [NSNumber numberWithInt: [value intValue]]
+			    forKey: @"numberOfSimultaneousBookings"];
+		}
+	    }
         }
       else
         [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];

@@ -215,6 +215,7 @@ function deleteEvent() {
                 var canDelete;
                 var sortedNodes = [];
                 var calendars = [];
+                var events = [];
                 for (var i = 0; i < nodes.length; i++) {
                     canDelete = nodes[i].erasable;
                     if (canDelete) {
@@ -223,15 +224,29 @@ function deleteEvent() {
                             sortedNodes[calendar] = [];
                             calendars.push(calendar);
                         }
-                        sortedNodes[calendar].push(nodes[i].cname);
+                        if (sortedNodes[calendar].indexOf(nodes[i].cname) < 0) {
+                            sortedNodes[calendar].push(nodes[i].cname);
+                            if (nodes[i].tagName == 'TR')
+                                events.push(nodes[i].down('td').allTextContent()); // extract the first column only
+                            else
+                                events.push(nodes[i].allTextContent());
+                        }
                     }
                 }
                 for (i = 0; i < calendars.length; i++) {
                     calendarsOfEventsToDelete.push(calendars[i]);
                     eventsToDelete.push(sortedNodes[calendars[i]]);
                 }
-                if (i > 0)
-                    showConfirmDialog(_("Warning"), label, deleteEventFromListConfirm);
+                if (i > 0) {
+                    var p = createElement("p");
+                    var str = "";
+                    if (Prototype.Browser.IE)
+                        str = label.formatted('<br><br> - <b>' + events.join('</b><br> - <b>') + '</b><br><br>');
+                    else
+                        str = label.formatted('<ul><li>' + events.join('<li>') + '</ul>');
+                    p.innerHTML = str;
+                    showConfirmDialog(_("Warning"), p, deleteEventFromListConfirm, deleteEventCancel);
+                }
                 else
                     showAlertDialog(_("You don't have the required privileges to perform the operation."));
             }
@@ -251,6 +266,7 @@ function deleteEvent() {
             var canDelete;
             var sortedNodes = [];
             var calendars = [];
+            var events = [];
             for (var i = 0; i < selectedCalendarCell.length; i++) {
                 canDelete = selectedCalendarCell[i].erasable;
                 if (canDelete) {
@@ -259,7 +275,19 @@ function deleteEvent() {
                         sortedNodes[calendar] = [];
                         calendars.push(calendar);
                     }
-                    sortedNodes[calendar].push(selectedCalendarCell[i].cname);
+                    if (sortedNodes[calendar].indexOf(selectedCalendarCell[i].cname) < 0) {
+                        // Extract event name for confirmation dialog
+                        var content = "";
+                        var event = $(selectedCalendarCell[i]).down("DIV.text");
+                        for (var j = 0; j < event.childNodes.length; j++) {
+                            var node = event.childNodes[j];
+                            if (node.nodeType == Node.TEXT_NODE) {
+                                content += node.nodeValue;
+                            }
+                        }
+                        events.push(content);
+                        sortedNodes[calendar].push(selectedCalendarCell[i].cname);
+                    }
                 }
             }
             
@@ -267,9 +295,16 @@ function deleteEvent() {
                 calendarsOfEventsToDelete.push(calendars[i]);
                 eventsToDelete.push(sortedNodes[calendars[i]]);
             }
-            if (i > 0)
-                showConfirmDialog(_("Warning"), _("eventDeleteConfirmation"),
-                                  deleteEventFromViewConfirm, deleteEventFromViewCancel);
+            if (i > 0) {
+                var p = createElement("p");
+                var label = _("eventDeleteConfirmation");
+                if (Prototype.Browser.IE)
+                    label = label.formatted('<br><br> - <b>' + events.join('</b><br> - <b>') + '</b><br><br>');
+                else
+                    label = label.formatted('<ul><li>' + events.join('<li>') + '</ul>');
+                p.innerHTML = label;
+                showConfirmDialog(_("Warning"), p, deleteEventFromListConfirm, deleteEventCancel);
+            }
             else
                 showAlertDialog(_("You don't have the required privileges to perform the operation."));
         }
@@ -301,7 +336,7 @@ function deleteEventFromViewConfirm() {
     disposeDialog();
 }
 
-function deleteEventFromViewCancel(event) {
+function deleteEventCancel(event) {
     calendarsOfEventsToDelete = [];
     eventsToDelete = [];
     disposeDialog();
@@ -1181,23 +1216,25 @@ function scrollDayView(scrollEvent) {
         if (scrollEvent) {
             var contentView;
             var eventRow = $(scrollEvent);
-            var eventBlocks = selectCalendarEvent(eventRow.calendar, eventRow.cname, eventRow.recurrenceTime);
-            if (eventBlocks) {
-                var firstEvent = eventBlocks.first();
-
-                if (currentView == "monthview")
-                    contentView = firstEvent.up("DIV.day");
-                else
-                    contentView = $("daysView");
-                
-                // Don't scroll to an all-day event
-                if (typeof eventRow.hour != "undefined") {
-                    var top = firstEvent.cumulativeOffset()[1] - contentView.scrollTop;
-                    // Don't scroll if the event is visible to the user
-                    if (top < contentView.cumulativeOffset()[1])
-                        contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
-                    else if (top > contentView.cumulativeOffset()[1] + contentView.getHeight() - firstEvent.getHeight())
-                        contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
+            if (eventRow) {
+                var eventBlocks = selectCalendarEvent(eventRow.calendar, eventRow.cname, eventRow.recurrenceTime);
+                if (eventBlocks) {
+                    var firstEvent = eventBlocks.first();
+                    
+                    if (currentView == "monthview")
+                        contentView = firstEvent.up("DIV.day");
+                    else
+                        contentView = $("daysView");
+                    
+                    // Don't scroll to an all-day event
+                    if (typeof eventRow.hour != "undefined") {
+                        var top = firstEvent.cumulativeOffset()[1] - contentView.scrollTop;
+                        // Don't scroll if the event is visible to the user
+                        if (top < contentView.cumulativeOffset()[1])
+                            contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
+                        else if (top > contentView.cumulativeOffset()[1] + contentView.getHeight() - firstEvent.getHeight())
+                            contentView.scrollTop = firstEvent.cumulativeOffset()[1] - contentView.cumulativeOffset()[1];
+                    }
                 }
             }
         }
@@ -2163,7 +2200,7 @@ function onShowCompletedTasks(event) {
 function updateTaskStatus(event) {
     var newStatus = (this.checked ? 1 : 0);
 
-    if (isSafari() && !isSafari3()) {
+    if (isWebKit() && !isSafari3()) {
         newStatus = (newStatus ? 0 : 1);
     }
     _updateTaskCompletion (this.parentNode, newStatus);
@@ -2174,7 +2211,7 @@ function updateCalendarStatus(event) {
     var list = [];
     var newStatus = (this.checked ? 1 : 0);
 
-    if (isSafari() && !isSafari3()) {
+    if (isWebKit() && !isSafari3()) {
         newStatus = (newStatus ? 0 : 1);
         this.checked = newStatus;
     }
@@ -2714,8 +2751,11 @@ function onFolderSubscribeCB(folderData) {
 
 function onFolderUnsubscribeCB(folderId) {
     var node = $(folderId);
-    node.parentNode.removeChild(node);
+    var list = $(node.parentNode);
+    node.deselect();
+    list.removeChild(node);
     if (removeFolderRequestCount == 0) {
+        list.down("li").selectElement(); // personal calendar
         refreshEvents();
         refreshTasks();
         changeCalendarDisplay();

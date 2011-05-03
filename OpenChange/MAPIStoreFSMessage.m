@@ -35,7 +35,7 @@
 {
   id value;
   enum MAPISTATUS rc;
-
+ 
   value = [[sogoObject properties] objectForKey: MAPIPropertyKey (propTag)];
   if (value)
     rc = [value getMAPIValue: data forTag: propTag inMemCtx: memCtx];

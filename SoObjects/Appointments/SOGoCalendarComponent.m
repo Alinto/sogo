@@ -655,13 +655,15 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
     }
 }
 
-- (void) saveComponent: (iCalRepeatableEntityObject *) newObject
+- (NSException *) saveComponent: (iCalRepeatableEntityObject *) newObject
 {
   NSString *newiCalString;
 
   newiCalString = [[newObject parent] versitString];
 
   [self saveContentString: newiCalString];
+
+  return nil;
 }
 
 /* raw saving */

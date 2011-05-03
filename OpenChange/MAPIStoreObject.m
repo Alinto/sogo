@@ -25,6 +25,7 @@
 #import <SOGo/SOGoObject.h>
 
 #import "MAPIStoreFolder.h"
+#import "MAPIStorePropertySelectors.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -60,10 +61,35 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return newObject;
 }
 
++ (int) getAvailableProperties: (struct SPropTagArray *) properties
+{
+  const MAPIStorePropertyGetter *classGetters;
+  NSUInteger count;
+  enum MAPITAGS propTag;
+  uint16_t propValue;
+
+  properties->aulPropTag = talloc_array (properties, enum MAPITAGS,
+                                         MAPIStoreSupportedPropertiesCount);
+  classGetters = MAPIStorePropertyGettersForClass (self);
+  for (count = 0; count < MAPIStoreSupportedPropertiesCount; count++)
+    {
+      propTag = MAPIStoreSupportedProperties[count];
+      propValue = (propTag & 0xffff0000) >> 16;
+      if (classGetters[propValue])
+        {
+          properties->aulPropTag[properties->cValues] = propTag;
+          properties->cValues++;
+        }
+    }
+
+  return 0;
+}
+
 - (id) init
 {
   if ((self = [super init]))
     {
+      classGetters = (IMP *) MAPIStorePropertyGettersForClass (isa);
       parentContainersBag = [NSMutableArray new];
       container = nil;
       sogoObject = nil;
@@ -190,53 +216,96 @@ static Class NSExceptionK, MAPIStoreFolderK;
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag
 {
-  NSString *stringValue;
-  int rc;
+  MAPIStorePropertyGetter method = NULL;
+  uint16_t propValue;
+  SEL methodSel;
   const char *propName;
+  int rc = MAPISTORE_ERR_NOT_FOUND;
 
-  /* TODO: handle unsaved properties */
+  propValue = (propTag & 0xffff0000) >> 16;
+  methodSel = MAPIStoreSelectorForPropertyGetter (propValue);
 
-  rc = MAPISTORE_SUCCESS;
-  switch (propTag)
+  method = (MAPIStorePropertyGetter) classGetters[propValue];
+  if (method)
+    rc = method (self, methodSel, data);
+  else
     {
-    case PR_DISPLAY_NAME_UNICODE:
-      *data = [[sogoObject displayName] asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_SEARCH_KEY: // TODO
-      stringValue = [sogoObject nameInContainer];
-      *data = [[stringValue dataUsingEncoding: NSASCIIStringEncoding]
-		asBinaryInMemCtx: memCtx];
-      break;
-    case PR_GENERATE_EXCHANGE_VIEWS: // TODO
-      *data = MAPIBoolValue (memCtx, NO);
-      break;
-
-    default:
-      propName = get_proptag_name (propTag);
-      if (!propName)
-	propName = "<unknown>";
-      [self warnWithFormat:
-	      @"unhandled or NULL value: %s (0x%.8x), childKey: %@",
-	    propName, propTag, [sogoObject nameInContainer]];
-      // if ((propTag & 0x001F) == 0x001F)
-      // 	{
-      // 	  stringValue = [NSString stringWithFormat: @"fake %s (0x.8x) value",
-      // 				  propName, propTag];
-      // 	  *data = [stringValue asUnicodeInMemCtx: memCtx];
-      // 	  rc = MAPISTORE_SUCCESS;
-      // 	}
-      // else
-      // 	{
-	  *data = NULL;
-	  rc = MAPISTORE_ERR_NOT_FOUND;
-	// }
-      break;
+      *data = NULL;
+      
+      if (methodSel)
+        {
+          propName = get_proptag_name (propTag);
+          if (!propName)
+            propName = "<unknown>";
+          [self warnWithFormat:
+                  @"unimplemented selector (%@) for %s (0x%.8x)",
+                NSStringFromSelector (methodSel), propName, propTag];
+        }
+      else
+        [self warnWithFormat: @"unsupported property tag: 0x%.8x", propTag];
     }
 
   return rc;
 }
 
-/* MAPIStoreProperty protocol */
+/* helper getters */
+- (int) getEmptyString: (void **) data
+{
+  *data = [@"" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getLongZero: (void **) data
+{
+  *data = MAPILongValue (memCtx, 0);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getYes: (void **) data
+{
+  *data = MAPIBoolValue (memCtx, YES);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getNo: (void **) data
+{
+  *data = MAPIBoolValue (memCtx, NO);
+
+  return MAPISTORE_SUCCESS;
+}
+
+/* getters */
+ - (int) getPrDisplayName: (void **) data
+{
+  *data = [[sogoObject displayName] asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrSearchKey: (void **) data
+{
+  NSString *stringValue;
+
+  stringValue = [sogoObject nameInContainer];
+  *data = [[stringValue dataUsingEncoding: NSASCIIStringEncoding]
+            asBinaryInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrGenerateExchangeViews: (void **) data
+{
+  return [self getNo: data];
+}
+
+- (int) getAvailableProperties: (struct SPropTagArray *) properties
+{
+  return [isa getAvailableProperties: properties];
+}
+
 - (int) getProperties: (struct mapistore_property_data *) data
              withTags: (enum MAPITAGS *) tags
              andCount: (uint16_t) columnCount
@@ -277,8 +346,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
 - (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
                         andSortOrderings: (NSArray *) sortOrderings
 {
-  [self subclassResponsibility: _cmd];
-
   return nil;
 }
 

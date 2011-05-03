@@ -1,6 +1,6 @@
 /* SOGoFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *

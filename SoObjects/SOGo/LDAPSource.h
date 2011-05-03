@@ -4,6 +4,7 @@
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +54,7 @@
   NSString *CNField;
   NSString *UIDField;
   NSArray *mailFields, *searchFields;
-  NSString *IMAPHostField;
+  NSString *IMAPHostField, *IMAPLoginField;
   NSArray *bindFields;
   BOOL _bindAsCurrentUser;
 
@@ -67,6 +68,10 @@
   BOOL passwordPolicy;
 
   NSMutableDictionary *_dnCache;
+
+  /* resources handling */
+  NSString *kindField;
+  NSString *multipleBookingsField;
 }
 
 - (void) setBindDN: (NSString *) newBindDN
@@ -83,7 +88,10 @@
 	mailFields: (NSArray *) newMailFields
       searchFields: (NSArray *) newSearchFields
      IMAPHostField: (NSString *) newIMAPHostField
-     andBindFields: (id) newBindFields;
+    IMAPLoginField: (NSString *) newIMAPLoginField
+        bindFields: (id) newBindFields
+	 kindField: (NSString *) newKindField
+andMultipleBookingsField: (NSString *) newMultipleBookingsField;
 
 - (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID;
 - (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail;

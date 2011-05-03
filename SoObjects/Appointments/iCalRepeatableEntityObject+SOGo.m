@@ -131,8 +131,8 @@
       firstRange = [self firstOccurenceRange];
 
       // Set the range to check with respect to the event timezone (extracted from the start date)
-      firstStartDate = (iCalDateTime*) [self uniqueChildWithTag: @"dtstart"];
-      eventTimeZone = [(iCalDateTime*) firstStartDate timeZone];
+      firstStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
+      eventTimeZone = [(iCalDateTime *)firstStartDate timeZone];
       if (eventTimeZone)
 	startDate = [eventTimeZone computedDateForDate: theOccurenceDate];
       else
@@ -144,12 +144,12 @@
 	      // to the occurence's timezone.
 	      timeZone = [theOccurenceDate timeZone];
 	      offset = [timeZone secondsFromGMTForDate: [firstRange startDate]];
-	      firstStartDate = (NSCalendarDate*) [[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+	      firstStartDate = (NSCalendarDate *)[[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
 										   seconds:-offset];
-	      firstEndDate = (NSCalendarDate*) [[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+	      firstEndDate = (NSCalendarDate *)[[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
 									       seconds:-offset];
-	      [(NSCalendarDate*) firstStartDate setTimeZone: timeZone];
-	      [(NSCalendarDate*) firstEndDate setTimeZone: timeZone];
+	      [(NSCalendarDate *)firstStartDate setTimeZone: timeZone];
+	      [(NSCalendarDate *)firstEndDate setTimeZone: timeZone];
 	      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
 								       endDate: firstEndDate];
 	    }

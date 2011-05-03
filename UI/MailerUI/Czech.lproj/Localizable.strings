@@ -165,6 +165,8 @@
 "InboxFolderName"  = "Doručená pošta";
 "DraftsFolderName" = "Koncepty";
 "SieveFolderName"  = "Filtry";
+"OtherUsersFolderName"   = "Ostatní uživatelé";
+"SharedFoldersName" = "Sdílené složky";
 "Folders"          = "Složky"; /* title line */
 
 /* MailMoveToPopUp */

@@ -29,6 +29,7 @@
 #import <SOGo/SOGoUserDefaults.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 
+#import "MAPIStorePropertySelectors.h"
 #import "MAPIStoreTypes.h"
 #import "NSArray+MAPIStore.h"
 #import "NSCalendarDate+MAPIStore.h"
@@ -46,461 +47,466 @@
 
 @implementation MAPIStoreContactsMessage
 
-- (CardElement *) _element: (NSString *) elementTag
-		    ofType: (NSString *) aType
-		 excluding: (NSString *) aTypeToExclude
-		    inCard: (NGVCard *) card
+- (int) getPrIconIndex: (void **) data // TODO
+{
+  /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
+  *data = MAPILongValue (memCtx, 0x00000200);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrMessageClass: (void **) data
+{
+  *data = talloc_strdup (memCtx, "IPM.Contact");
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrOabName: (void **) data
+{
+  *data = talloc_strdup (memCtx, "PR_OAB_NAME_UNICODE");
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrOabLangid: (void **) data
+{
+  /* see http://msdn.microsoft.com/en-us/goglobal/bb895996.asxp */
+  /* English US */
+  *data = MAPILongValue (memCtx, 0x0409);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrTitle: (void **) data
+{
+  NSString *stringValue;
+
+  stringValue = [[sogoObject vCard] title];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrCompanyName: (void **) data
+{
+  NSArray *values;
+  NSString *stringValue;
+  
+  values = [[sogoObject vCard] org];
+  stringValue = nil;
+    
+  if ([values count] > 0)
+    stringValue = [values objectAtIndex: 0];
+  else
+    stringValue = @"";
+
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrDepartmentName: (void **) data
+{
+  NSArray *values;
+  NSString *stringValue;
+  
+  values = [[sogoObject vCard] org];
+  stringValue = nil;
+
+  if ([values count] > 1)
+    stringValue = [values objectAtIndex: 1];
+  else
+    stringValue = @"";
+
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrSendInternetEncoding: (void **) data
+{
+  *data = MAPILongValue (memCtx, 0x00065001);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrSubject: (void **) data
+{
+  return [self getPrDisplayName: data];
+}
+
+- (int) getPidLidFileUnder: (void **) data
+{
+  return [self getPrDisplayName: data];
+}
+
+- (int) getPidLidFileUnderId: (void **) data
+{
+  *data = MAPILongValue (memCtx, 0xffffffff);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidEmail1DisplayName: (void **) data
+{
+  NGVCard *vCard;
+  NSString *fn, *email;
+
+  vCard = [sogoObject vCard];
+  fn = [vCard fn];
+  email = [vCard preferredEMail];
+  *data = [[NSString stringWithFormat: @"%@ <%@>", fn, email]
+            asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidEmail1OriginalDisplayName: (void **) data
+{
+  return [self getPidLidEmail1DisplayName: data];
+}
+
+- (int) getPidLidEmail1EmailAddress: (void **) data
+{
+  NSString *stringValue;
+
+  stringValue = [[sogoObject vCard] preferredEMail];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAccount: (void **) data
+{
+  return [self getPidLidEmail1EmailAddress: data];
+}
+
+- (int) getPrContactEmailAddresses: (void **) data
+{
+  NSString *stringValue;
+
+  stringValue = [[sogoObject vCard] preferredEMail];
+  if (!stringValue)
+    stringValue = @"";
+  *data = [[NSArray arrayWithObject: stringValue]
+            asArrayOfUnicodeStringsInCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrEmsAbTargetAddress: (void **) data
+{
+  NSString *stringValue;
+
+  stringValue = [[sogoObject vCard] preferredEMail];
+  *data = [[NSString stringWithFormat: @"SMTP:%@", stringValue]
+            asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrSearchKey: (void **) data // TODO
+{
+  NSString *stringValue;
+
+  stringValue = [[sogoObject vCard] preferredEMail];
+  *data = [[stringValue dataUsingEncoding: NSASCIIStringEncoding]
+            asBinaryInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrMailPermission: (void **) data
+{
+  return [self getYes: data];
+}
+
+- (int) getPidLidEmail2EmailAddress: (void **) data
+{
+  NSMutableArray *emails;
+  NSString *email, *stringValue;
+  NGVCard *card;
+  NSUInteger count, max;
+    
+  emails = [NSMutableArray array];
+  stringValue = nil;
+    
+  card = [sogoObject vCard];
+  [emails addObjectsFromArray: [card childrenWithTag: @"email"]];
+  [emails removeObjectsInArray: [card childrenWithTag: @"email"
+                                         andAttribute: @"type"
+                                          havingValue: @"pref"]];
+
+  max = [emails count];
+  for (count = 0; !stringValue && count < max; count++)
+    {
+      email = [[emails objectAtIndex: count] value: 0];
+      
+      if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
+        stringValue = email;
+    }
+
+  if (!stringValue)
+    stringValue = @"";
+
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidEmail2OriginalDisplayName: (void **) data // Other email
+{
+  return [self getPidLidEmail2EmailAddress: data];
+}
+    
+- (int) getPrBody: (void **) data
+{
+  NSString *stringValue;
+
+  stringValue = [[sogoObject vCard] note];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) _getElement: (NSString *) elementTag
+             ofType: (NSString *) aType
+          excluding: (NSString *) aTypeToExclude
+              atPos: (NSUInteger) pos
+             inData: (void **) data
 {
   NSArray *elements;
-  CardElement *ce, *found;
+  CardElement *ce;
   NSUInteger count, max;
+  NGVCard *vCard;
+  NSString *stringValue;
 
-  found = nil;
+  stringValue = nil;
 
-  elements = [[card childrenWithTag: elementTag]
+  vCard = [sogoObject vCard];
+  elements = [[vCard childrenWithTag: elementTag]
 	       cardElementsWithAttribute: @"type"
 			     havingValue: aType];
   max = [elements count];
-  for (count = 0; !found && count < max; count++)
+  for (count = 0; !stringValue && count < max; count++)
     {
       ce = [elements objectAtIndex: count];
       if (!aTypeToExclude
 	  || ![ce hasAttribute: @"type" havingValue: aTypeToExclude])
-	found = ce;
+        stringValue = [ce value: pos];
     }
 
-  return found;
+  if (!stringValue)
+    stringValue = @"";
+
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
 }
 
-- (enum MAPISTATUS) getProperty: (void **) data
-                        withTag: (enum MAPITAGS) proptag
+- (int) getPrOfficeTelephoneNumber: (void **) data
 {
-  NSString *stringValue, *stringValue2;
+  return [self _getElement: @"tel" ofType: @"work" excluding: @"fax"
+                     atPos: 0 inData: data];
+}
+
+- (int) getPrHomeTelephoneNumber: (void **) data
+{
+  return [self _getElement: @"tel" ofType: @"home" excluding: @"fax"
+                     atPos: 0 inData: data];
+}
+
+- (int) getPrMobileTelephoneNumber: (void **) data
+{
+  return [self _getElement: @"tel" ofType: @"cell" excluding: nil
+                     atPos: 0 inData: data];
+}
+
+- (int) getPrPrimaryTelephoneNumber: (void **) data
+{
+  return [self _getElement: @"tel" ofType: @"pref" excluding: nil
+                     atPos: 0 inData: data];
+}
+
+- (int) getPrBusinessHomePage: (void **) data
+{
+  return [self _getElement: @"url" ofType: @"work" excluding: nil
+                     atPos: 0 inData: data];
+}
+
+- (int) getPrPersonalHomePage: (void **) data
+{
+  return [self _getElement: @"url" ofType: @"home" excluding: nil
+                     atPos: 0 inData: data];
+}
+
+- (int) getPidLidEmail1AddressType: (void **) data
+{
+  return [self getSMTPAddrType: data];
+}
+
+- (int) getPidLidEmail2AddressType: (void **) data
+{
+  return [self getSMTPAddrType: data];
+}
+
+- (int) getPidLidEmail3AddressType: (void **) data
+{
+  return [self getSMTPAddrType: data];
+}
+
+- (int) getPidLidInstantMessagingAddress: (void **) data
+{
+  NSString *stringValue;
+
+  stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-aim"]
+                  value: 0];
+  if (!stringValue)
+    stringValue = @"";
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidPostalAddressId: (void **) data
+{
+  NSArray *elements;
   CardElement *element;
-  uint32_t longValue;
+  uint32_t longValue = 0;
   NGVCard *vCard;
-  enum MAPISTATUS rc;
 
-  rc = MAPISTORE_SUCCESS;
-  switch ((uint32_t) proptag)
+  vCard = [sogoObject vCard];
+  elements = [[vCard childrenWithTag: @"adr"]
+	       cardElementsWithAttribute: @"type"
+			     havingValue: @"pref"];
+  if ([elements count] > 0)
     {
-    case PR_ICON_INDEX: // TODO
-      /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
-      *data = MAPILongValue (memCtx, 0x00000200);
-      break;
-    case PR_MESSAGE_CLASS_UNICODE:
-      *data = talloc_strdup (memCtx, "IPM.Contact");
-      break;
-      // case PR_VD_NAME_UNICODE:
-      //         *data = talloc_strdup (memCtx, "PR_VD_NAME_UNICODE");
-      //         break;
-      // case PR_EMS_AB_DXA_REMOTE_CLIENT_UNICODE: "Home:" ???
-      //         *data = talloc_strdup (memCtx, "PR_EMS...");
-      //         break;
-    case PR_OAB_NAME_UNICODE:
-      *data = talloc_strdup (memCtx, "PR_OAB_NAME_UNICODE");
-      break;
-    case PR_OAB_LANGID:
-      /* see http://msdn.microsoft.com/en-us/goglobal/bb895996.asxp */
-      /* English US */
-      *data = MAPILongValue (memCtx, 0x0409);
-      break;
-
-    case PR_TITLE_UNICODE:
-      stringValue = [[sogoObject vCard] title];
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-
-    case PR_COMPANY_NAME_UNICODE:
-    case PR_DEPARTMENT_NAME_UNICODE:
-      {
-	NSArray *values;
-	
-	values = [[sogoObject vCard] org];
-	stringValue = nil;
-
-	if (proptag == PR_COMPANY_NAME_UNICODE && [values count] > 0)
-	  stringValue = [values objectAtIndex: 0];
-	else if (proptag == PR_DEPARTMENT_NAME_UNICODE && [values count] > 1)
-	  stringValue = [values objectAtIndex: 1];
-	
-	if (!stringValue)
-	  stringValue = @"";
-	*data = [stringValue asUnicodeInMemCtx: memCtx];
-      }
-      break;
-
-    case PR_SEND_INTERNET_ENCODING:
-      *data = MAPILongValue (memCtx, 0x00065001);
-      break;
-
-    case PR_SUBJECT_UNICODE:
-    case PR_DISPLAY_NAME_UNICODE: // Full Name
-    case PidLidFileUnder: // contact block title name
-      rc = [super getProperty: data
-                      withTag: PR_DISPLAY_NAME_UNICODE];
-      break;
-    case PidLidFileUnderId: 
-      *data = MAPILongValue (memCtx, 0xffffffff);
-      break;
-
-    case PidLidEmail1OriginalDisplayName:
-    case PidLidEmail1DisplayName:
-      vCard = [sogoObject vCard];
-      stringValue = [vCard fn];
-      stringValue2 = [vCard preferredEMail];
-      *data = [[NSString stringWithFormat: @"%@ <%@>",
-                         stringValue, stringValue2]
-                asUnicodeInMemCtx: memCtx];
-      break;
-
-    case PidLidEmail1EmailAddress:
-    case PR_ACCOUNT_UNICODE:
-      stringValue = [[sogoObject vCard] preferredEMail];
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-
-    case PR_CONTACT_EMAIL_ADDRESSES_UNICODE:
-      stringValue = [[sogoObject vCard] preferredEMail];
-      if (!stringValue)
-        stringValue = @"";
-      *data = [[NSArray arrayWithObject: stringValue]
-                asArrayOfUnicodeStringsInCtx: memCtx];
-      break;
-
-    case PR_EMS_AB_TARGET_ADDRESS_UNICODE:
-      stringValue = [[sogoObject vCard] preferredEMail];
-      *data = [[NSString stringWithFormat: @"SMTP:%@", stringValue]
-                asUnicodeInMemCtx: memCtx];
-      break;
-
-    case PR_SEARCH_KEY: // TODO
-      stringValue = [[sogoObject vCard] preferredEMail];
-      *data = [[stringValue dataUsingEncoding: NSASCIIStringEncoding]
-		asBinaryInMemCtx: memCtx];
-      break;
-
-    case PR_MAIL_PERMISSION:
-         *data = MAPIBoolValue (memCtx, YES);
-         break;
-
-    //
-    // TODO - same logic as -secondaryEmail in UI/Contacts/UIxContactView.m
-    // We should eventually merge that in order to not duplicate the code.
-    // We should also eventually handle PidLidEmail3OriginalDisplayName in
-    // SOGo, Thunderbird, etc.
-    //
-    case PidLidEmail2EmailAddress:
-    case PidLidEmail2OriginalDisplayName: // Other email
-      {
-	NSMutableArray *emails;
-	NSString *email;
-	NGVCard *card;
-	
-	emails = [NSMutableArray array];
-	stringValue = nil;
-	
-	card = [sogoObject vCard];
-	[emails addObjectsFromArray: [card childrenWithTag: @"email"]];
-	[emails removeObjectsInArray: [card childrenWithTag: @"email"
-					    andAttribute: @"type"
-					    havingValue: @"pref"]];
-
-	if ([emails count] > 0)
-	  {
-	    int i;
-	    
-	    for (i = 0; i < [emails count]; i++)
-	      {
-		email = [[emails objectAtIndex: i] value: 0];
-		
-		if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
-		  {
-		    stringValue = email;
-		    break;
-		  }
-	      }
-	  }
-	
-	if (!stringValue)
-	  stringValue = @"";
-
-	*data = [stringValue asUnicodeInMemCtx: memCtx];
-      }
-      break;
-      
-    // FIXME: this property does NOT work
-    case PR_BODY_UNICODE:
-      stringValue = [[sogoObject vCard] note];
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-
-    case PR_OFFICE_TELEPHONE_NUMBER_UNICODE:
-      element = [self _element: @"tel" ofType: @"work"
-		     excluding: @"fax"
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 0];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_HOME_TELEPHONE_NUMBER_UNICODE:
-      element = [self _element: @"tel" ofType: @"home"
-		     excluding: @"fax"
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 0];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_MOBILE_TELEPHONE_NUMBER_UNICODE:
-      element = [self _element: @"tel" ofType: @"cell"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 0];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_PRIMARY_TELEPHONE_NUMBER_UNICODE:
-      element = [self _element: @"tel" ofType: @"pref"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 0];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-
-    case PR_BUSINESS_HOME_PAGE_UNICODE:
-    case PR_PERSONAL_HOME_PAGE_UNICODE:
-      {
-	NSString *type;
-
-	type = (proptag == PR_BUSINESS_HOME_PAGE_UNICODE ? @"work" : @"home");
-	element = [self _element: @"url" ofType: type
-			excluding: nil
-			inCard: [sogoObject vCard]];
-	if (element)
-	  stringValue = [element value: 0];
-	else
-	  stringValue = @"";
-	*data = [stringValue asUnicodeInMemCtx: memCtx];
-      }
-      break;
-      
-    case PidLidEmail1AddressType:
-    case PidLidEmail2AddressType:
-    case PidLidEmail3AddressType:
-      *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
-      break;
-      
-    case PidLidInstantMessagingAddress:
-      stringValue = [[[sogoObject vCard] uniqueChildWithTag: @"x-aim"] value: 0];
-      
-      if (!stringValue)
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-
-    //
-    // We don't handle 0x00000003 - The Other Address is the mailing address.
-    // See: http://msdn.microsoft.com/en-us/library/cc815430.aspx
-    //
-    case PidLidPostalAddressId:
-      element = [self _element: @"adr" ofType: @"pref"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
+      element = [elements objectAtIndex: 0];
       if ([element hasAttribute: @"type"
-		    havingValue: @"home"])
-	longValue = 1; // The Home Address is the mailing address. 
+                    havingValue: @"home"])
+        longValue = 1; // The Home Address is the mailing address.
       else if ([element hasAttribute: @"type"
-			 havingValue: @"work"])
-	longValue = 2; // The Work Address is the mailing address.
-      else
-	longValue = 0; // No address is selected as the mailing address.
-      *data = MAPILongValue (memCtx, longValue);
-      break;
-
-      /* preferred address */
-    case PR_POSTAL_ADDRESS_UNICODE:
-      element = [self _element: @"label" ofType: @"pref"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 0];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_POST_OFFICE_BOX_UNICODE:
-      element = [self _element: @"adr" ofType: @"pref"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 0];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_STREET_ADDRESS_UNICODE:
-      element = [self _element: @"adr" ofType: @"pref"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 2];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_LOCALITY_UNICODE:
-      element = [self _element: @"adr" ofType: @"pref"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 3];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_STATE_OR_PROVINCE_UNICODE:
-      element = [self _element: @"adr" ofType: @"pref"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 4];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_POSTAL_CODE_UNICODE:
-      element = [self _element: @"adr" ofType: @"pref"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 5];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_COUNTRY_UNICODE:
-      element = [self _element: @"adr" ofType: @"pref"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 6];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-
-    // case PidLidAddressCountryCode:
-
-    case PidLidWorkAddress:
-      element = [self _element: @"label" ofType: @"work"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 0];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-
-    case PidLidWorkAddressPostOfficeBox:
-      element = [self _element: @"adr" ofType: @"work"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 0];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PidLidWorkAddressStreet:
-      element = [self _element: @"adr" ofType: @"work"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 2];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PidLidWorkAddressCity:
-      element = [self _element: @"adr" ofType: @"work"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 3];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PidLidWorkAddressState:
-      element = [self _element: @"adr" ofType: @"work"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 4];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PidLidWorkAddressPostalCode:
-      element = [self _element: @"adr" ofType: @"work"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 5];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-    case PidLidWorkAddressCountry:
-      element = [self _element: @"adr" ofType: @"work"
-		     excluding: nil
-			inCard: [sogoObject vCard]];
-      if (element)
-	stringValue = [element value: 6];
-      else
-	stringValue = @"";
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-
-    // PidTagNickname
-    case PR_NICKNAME_UNICODE:
-      stringValue = [[sogoObject vCard] nickname];
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-      break;
-      
-    case PR_BIRTHDAY:
-      {
-	NSCalendarDate *dateValue;
-
-	stringValue = [[sogoObject vCard] bday];
-	
-	if (stringValue)
-	  {
-	    dateValue = [NSCalendarDate dateWithString: stringValue
-					calendarFormat: @"%Y-%m-%d"];
-	    // FIXME: We add a day, otherwise Outlook 2003 will display at day earlier
-	    dateValue = [dateValue addYear: 0 month: 0 day: 1 hour: 0 minute: 0 second: 0];
-	    *data = [dateValue asFileTimeInMemCtx: memCtx];
-	  }
-	else
-	  rc = MAPISTORE_ERR_NOT_FOUND;
-      }
-      break;
-
-    default:
-      rc = [super getProperty: data withTag: proptag];
+                         havingValue: @"work"])
+        longValue = 2; // The Work Address is the mailing address.
     }
-        
+  *data = MAPILongValue (memCtx, longValue);
+  
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrPostalAddress: (void **) data
+{
+  return [self _getElement: @"label" ofType: @"pref" excluding: nil
+                     atPos: 0 inData: data];
+}
+
+- (int) getPrPostOfficeBox: (void **) data
+{
+  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
+                     atPos: 0 inData: data];
+}
+
+- (int) getPrStreetAddress: (void **) data
+{
+  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
+                     atPos: 2 inData: data];
+}
+
+- (int) getPrLocality: (void **) data
+{
+  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
+                     atPos: 3 inData: data];
+}
+
+- (int) getPrStateOrProvince: (void **) data
+{
+  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
+                     atPos: 4 inData: data];
+}
+
+- (int) getPrPostalCode: (void **) data
+{
+  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
+                     atPos: 5 inData: data];
+}
+
+- (int) getPrCountry: (void **) data
+{
+  return [self _getElement: @"adr" ofType: @"pref" excluding: nil
+                     atPos: 6 inData: data];
+}
+
+- (int) getPidLidWorkAddress: (void **) data
+{
+  return [self _getElement: @"label" ofType: @"work" excluding: nil
+                     atPos: 0 inData: data];
+}
+
+- (int) getPidLidWorkAddressPostOfficeBox: (void **) data
+{
+  return [self _getElement: @"adr" ofType: @"work" excluding: nil
+                     atPos: 0 inData: data];
+}
+
+- (int) getPidLidWorkAddressStreet: (void **) data
+{
+  return [self _getElement: @"adr" ofType: @"work" excluding: nil
+                     atPos: 2 inData: data];
+}
+
+- (int) getPidLidWorkAddressCity: (void **) data
+{
+  return [self _getElement: @"adr" ofType: @"work" excluding: nil
+                     atPos: 3 inData: data];
+}
+
+- (int) getPidLidWorkAddressState: (void **) data
+{
+  return [self _getElement: @"adr" ofType: @"work" excluding: nil
+                     atPos: 4 inData: data];
+}
+
+- (int) getPidLidWorkAddressPostalCode: (void **) data
+{
+  return [self _getElement: @"adr" ofType: @"work" excluding: nil
+                     atPos: 5 inData: data];
+}
+
+- (int) getPidLidWorkAddressCountry: (void **) data
+{
+  return [self _getElement: @"adr" ofType: @"work" excluding: nil
+                     atPos: 6 inData: data];
+}
+
+- (int) getPrNickname: (void **) data
+{
+  NSString *stringValue;
+
+  stringValue = [[sogoObject vCard] nickname];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrBirthday: (void **) data
+{
+  NSCalendarDate *dateValue;
+  NSString *stringValue;
+  int rc = MAPISTORE_SUCCESS;
+    
+  stringValue = [[sogoObject vCard] bday];
+  if (stringValue)
+    {
+      dateValue = [NSCalendarDate dateWithString: stringValue
+                                  calendarFormat: @"%Y-%m-%d"];
+      // FIXME: We add a day, otherwise Outlook 2003 will display at day earlier
+      dateValue = [dateValue addYear: 0 month: 0 day: 1 hour: 0 minute: 0 second: 0];
+      *data = [dateValue asFileTimeInMemCtx: memCtx];
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+  
   return rc;
 }
 

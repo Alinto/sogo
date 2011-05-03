@@ -87,6 +87,38 @@
     }
 }
 
+- (void) setCurrentContact: (NSDictionary *) _contact
+{
+  currentContact = _contact;
+}
+
+- (NSDictionary *) currentContact
+{
+  return currentContact;
+}
+
+- (NSString *) currentContactClasses
+{
+  return [[currentContact objectForKey: @"c_component"] lowercaseString];
+}
+
+- (NSArray *) personalContactInfos
+{
+  SOGoContactFolders *folders;
+  id <SOGoContactFolder> folder;
+  NSArray *contactInfos;
+
+  folders = [self clientObject];
+  folder = [folders lookupPersonalFolder: @"personal" ignoringRights: YES];
+
+  contactInfos = [folder lookupContactsWithFilter: nil
+				       onCriteria: nil
+					   sortBy: @"c_cn"
+					 ordering: NSOrderedAscending];
+  
+  return contactInfos;
+}
+
 - (id <WOActionResults>) mailerContactsAction
 {
   selectorComponentClass = @"UIxContactsMailerSelection";
@@ -316,8 +348,23 @@
 
 - (id) defaultAction
 {
+  // NSString *check;
+  // WOResponse *response;
+  // static NSString *etag = @"\"contacts-ui\"";
+
   [self checkDefaultModulePreference];
 
+  // check = [[context request] headerForKey: @"if-none-match"];
+  // if ([check length] > 0 && [check rangeOfString: etag].location != NSNotFound) /* not perfectly correct */
+  //   response = [self responseWithStatus: 304];
+  // else
+  //   {
+  //     response = [context response];
+  //     [response setHeader: etag forKey: @"etag"];
+  //     response = (WOResponse *) [super defaultAction];
+  //   }
+  
+  // return response;
   return [super defaultAction];
 }
 

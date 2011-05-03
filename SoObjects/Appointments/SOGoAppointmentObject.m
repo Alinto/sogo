@@ -2,7 +2,7 @@
   Copyright (C) 2007-2011 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo
 
   SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
@@ -42,6 +42,7 @@
 
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/SOGoObject.h>
 #import <SOGo/SOGoPermissions.h>
@@ -198,7 +199,6 @@
 	  // We check if the attendee that was added to a single occurence is
 	  // present in the master component. If not, we add it with a participation
 	  // status set to "DECLINED".
-
 	  user = [SOGoUser userWithLogin: theUID];
 	  person = [iCalPerson elementWithTag: @"attendee"];
 	  [person setCn: [user cn]];
@@ -425,14 +425,117 @@
 }
 
 //
+// This methods scans the list of attendees. If they are
+// considered as resource, it checks for conflicting
+// dates for the event.
+//
+// We check for between startDate + 1 second and
+// endDate - 1 second
 //
 //
-- (void) _handleAddedUsers: (NSArray *) attendees
-		 fromEvent: (iCalEvent *) newEvent
+// It also CHANGES the participation status of resources
+// depending on constraints defined on them.
+//
+// Note that it doesn't matter if it changes the participation
+// status since in case of an error, nothing will get saved.
+//
+- (NSException *) _handleResourcesConflicts: (NSArray *) theAttendees
+                                   forEvent: (iCalEvent *) theEvent
 {
-  NSEnumerator *enumerator;
   iCalPerson *currentAttendee;
+  NSEnumerator *enumerator;
   NSString *currentUID;
+  SOGoUser *user;
+ 
+  enumerator = [theAttendees objectEnumerator];
+  
+  while ((currentAttendee = [enumerator nextObject]))
+    {
+      currentUID = [currentAttendee uid];
+
+      if (currentUID)
+	{
+	  user = [SOGoUser userWithLogin: currentUID];
+	  
+	  if ([user isResource])
+	    {
+	      SOGoAppointmentFolder *folder;
+	      NSCalendarDate *start, *end;
+	      NSMutableArray *fbInfo;
+	      int i;
+
+	      start = [[theEvent startDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: 1];
+	      end = [[theEvent endDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -1];
+
+	      folder = [[SOGoUser userWithLogin: currentUID]
+			 personalCalendarFolderInContext: context];
+
+	      
+	      fbInfo = [NSMutableArray arrayWithArray: [folder fetchFreeBusyInfosFrom: start
+							       to: end]];
+
+	      // We first remove any occurences in the freebusy that corresponds to the
+	      // current event. We do this to avoid raising a conflict if we move a 1 hour
+	      // meeting from 12:00-13:00 to 12:15-13:15. We would overlap on ourself otherwise.
+	      for (i = [fbInfo count]-1; i >= 0; i--)
+		{
+		  if ([[[fbInfo objectAtIndex: i] objectForKey: @"c_uid"] compare: [theEvent uid]] == NSOrderedSame)
+		    [fbInfo removeObjectAtIndex: i];
+		}
+
+	      if ([fbInfo count])
+		{
+		  // If we always force the auto-accept if numberOfSimultaneousBookings == 0 (ie., no limit
+		  // is imposed) or if numberOfSimultaneousBookings is greater than the number of
+		  // overlapping events
+		  if ([user numberOfSimultaneousBookings] == 0 ||
+		      [user numberOfSimultaneousBookings] > [fbInfo count])
+		    [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+		  else
+		    {
+		      NSDictionary *values;
+		      NSString *reason;
+		      
+		      values = [NSDictionary dictionaryWithObjectsAndKeys: 
+					       [NSString stringWithFormat: @"%d", [user numberOfSimultaneousBookings]], @"NumberOfSimultaneousBookings",
+					     [user cn], @"Cn",
+					     [user systemEmail], @"SystemEmail",
+					     nil];
+
+		      reason = [values keysWithFormat: [self labelForKey: @"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"."]];
+
+		      return [NSException exceptionWithHTTPStatus:403
+					  reason: reason];
+		    }
+		}
+	      else
+		{
+		  // No conflict, we auto-accept. We do this for resources automatically if no
+		  // double-booking is observed. If it's not the desired behavior, just don't
+		  // set the resource as one!
+		  [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+		}
+  	    }
+	}
+    }
+
+  return nil;
+}
+
+//
+//
+//
+- (NSException *) _handleAddedUsers: (NSArray *) attendees
+		          fromEvent: (iCalEvent *) newEvent
+{
+  iCalPerson *currentAttendee;
+  NSEnumerator *enumerator;
+  NSString *currentUID;
+  NSException *e;
+
+  // We check for conflicts
+  if ((e = [self _handleResourcesConflicts: attendees  forEvent: newEvent]))
+    return e;
 
   enumerator = [attendees objectEnumerator];
   while ((currentAttendee = [enumerator nextObject]))
@@ -443,25 +546,31 @@
 			 forUID: currentUID
 			  owner: owner];
     }
+
+  return nil;
 }
 
 //
 //
 //
-- (void) _handleUpdatedEvent: (iCalEvent *) newEvent
-		fromOldEvent: (iCalEvent *) oldEvent
+- (NSException *) _handleUpdatedEvent: (iCalEvent *) newEvent
+		         fromOldEvent: (iCalEvent *) oldEvent
 {
-  NSArray *attendees;
   iCalEventChanges *changes;
+  NSArray *attendees;
+  NSException *ex;
 
   changes = [newEvent getChangesRelativeToEvent: oldEvent];
   if ([changes sequenceShouldBeIncreased])
     {
       // Set new attendees status to "needs action" and recompute changes when
-      // the list of attendees has changed.
+      // the list of attendees has changed. The list might have changed since
+      // by changing a major property of the event, we remove all the delegation
+      // chains to "other" attendees
       if ([self _requireResponseFromAttendees: newEvent])
         changes = [newEvent getChangesRelativeToEvent: oldEvent];
     }
+
   attendees = [changes deletedAttendees];
   if ([attendees count])
     {
@@ -474,6 +583,10 @@
       [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
                                      forObject: newEvent to: attendees];
     }
+
+  if ((ex = [self _handleResourcesConflicts: [newEvent attendees]
+		 forEvent: newEvent]))
+    return ex;
 
   attendees = [changes insertedAttendees];
   if ([changes sequenceShouldBeIncreased])
@@ -516,7 +629,9 @@
   if ([attendees count])
     {
       // Send an invitation to new attendees
-      [self _handleAddedUsers: attendees fromEvent: newEvent];
+      if ((ex = [self _handleAddedUsers: attendees fromEvent: newEvent]))
+	return ex;
+      
       [self sendEMailUsingTemplateNamed: @"Invitation"
 	    forObject: [newEvent itipEntryWithMethod: @"request"]
 	    previousObject: oldEvent
@@ -524,6 +639,8 @@
       [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
                                      forObject: newEvent to: attendees];
     }
+
+  return nil;
 }
 
 //
@@ -551,14 +668,15 @@
 //  _updateAttendee:withDelegate:ownerUser:forEventUID:withRecurrenceId:withSequence:forUID:shouldAddSentBy:      
 //
 //
-- (void) saveComponent: (iCalEvent *) newEvent
+- (NSException *) saveComponent: (iCalEvent *) newEvent
 {
   iCalEvent *oldEvent, *oldMasterEvent;
-  NSArray *attendees;
   NSCalendarDate *recurrenceId;
   NSString *recurrenceTime;
   SOGoUser *ownerUser;
-
+  NSArray *attendees;
+  NSException *ex;
+  
   [[newEvent parent] setMethod: @""];
   ownerUser = [SOGoUser userWithLogin: owner];
 
@@ -574,7 +692,11 @@
       attendees = [newEvent attendeesWithoutUser: ownerUser];
       if ([attendees count])
 	{
-	  [self _handleAddedUsers: attendees fromEvent: newEvent];
+	  // We catch conflicts and abort the save process immediately
+	  // in case of one with resources
+	  if ((ex = [self _handleAddedUsers: attendees fromEvent: newEvent]))
+	    return ex;
+
 	  [self sendEMailUsingTemplateNamed: @"Invitation"
 				  forObject: [newEvent itipEntryWithMethod: @"request"]
 			     previousObject: nil
@@ -586,6 +708,7 @@
   else
     {
       BOOL hasOrganizer;
+
       // Event is modified -- sent update status to all attendees
       // and modify their calendars.
       recurrenceId = [newEvent recurrenceId];
@@ -606,8 +729,10 @@
       hasOrganizer = [[[oldMasterEvent organizer] email] length];
 
       if (!hasOrganizer || [oldMasterEvent userIsOrganizer: ownerUser])
-	// The owner is the organizer of the event; handle the modifications
-	[self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent];
+	// The owner is the organizer of the event; handle the modifications. We aslo
+	// catch conflicts just like when the events are created
+	if ((ex = [self _handleUpdatedEvent: newEvent fromOldEvent: oldEvent]))
+	  return ex;
     }
 
   [super saveComponent: newEvent];
@@ -618,6 +743,8 @@
   safeCalendar = nil;
   [originalCalendar release];
   originalCalendar = nil;
+
+  return nil;
 }
 
 //
@@ -1336,6 +1463,44 @@
     [rq setContent: [[calendar versitString] dataUsingEncoding: [rq contentEncoding]]];
 }
 
+/**
+ * Verify vCalendar for any inconsistency or missing attributes.
+ * Currently only check if the events have an end date or a duration.
+ * @param rq the HTTP PUT request
+ */
+- (void) _adjustEventsInRequest: (WORequest *) rq
+{
+  iCalCalendar *calendar;
+  NSArray *allEvents;
+  iCalEvent *event;
+  NSUInteger i;
+  BOOL modified;
+
+  calendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
+  allEvents = [calendar events];
+  modified = NO;
+
+  for (i = 0; i < [allEvents count]; i++)
+    {
+      event = [allEvents objectAtIndex: i];
+
+      if (![event hasEndDate] && ![event hasDuration])
+        {
+          // No end date, no duration
+          if ([event isAllDay])
+            [event setDuration: @"P1D"];
+          else
+            [event setDuration: @"PT1H"];
+          
+          modified = YES;
+          [self errorWithFormat: @"Invalid event: no end date; setting duration to %@", [event duration]];
+        }
+    }
+  
+  if (modified)
+    [rq setContent: [[calendar versitString] dataUsingEncoding: [rq contentEncoding]]];
+}
+
 - (void) _decomposeGroupsInRequest: (WORequest *) rq
 {
   iCalCalendar *calendar;
@@ -1441,6 +1606,7 @@
 //
 - (id) PUTAction: (WOContext *) _ctx
 {
+  NSException *ex;
   NSArray *roles;
   WORequest *rq;
   id response;
@@ -1471,6 +1637,8 @@
 	{
 	  [self _adjustTransparencyInRequest: rq];
 	}
+
+      [self _adjustEventsInRequest: rq];
     }
 
   //
@@ -1500,7 +1668,9 @@
 	  attendees = [event attendeesWithoutUser: ownerUser];
 	  if ([attendees count])
 	    {
-	      [self _handleAddedUsers: attendees fromEvent: event];
+	      if ((ex = [self _handleAddedUsers: attendees fromEvent: event]))
+		return ex;
+
 	      [self sendEMailUsingTemplateNamed: @"Invitation"
 		    forObject: [event itipEntryWithMethod: @"request"]
 		    previousObject: nil
@@ -1640,8 +1810,9 @@
 	  	  
 	  if ([uid caseInsensitiveCompare: owner] == NSOrderedSame)
 	    {
-	      [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent];
-
+	      if ((ex = [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent]))
+		return ex;
+	      
 	      // A RECURRENCE-ID was removed so there has to be a change in the master event
 	      // We could also have an EXDATE added in the master component of the attendees
 	      // so we always compare the MASTER event.

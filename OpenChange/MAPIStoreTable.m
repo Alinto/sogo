@@ -26,6 +26,7 @@
 #import <EOControl/EOQualifier.h>
 
 #import "EOBitmaskQualifier.h"
+#import "MAPIStoreObject.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -259,6 +260,13 @@ static Class NSDataK, NSStringK;
   return newTable;
 }
 
++ (Class) childObjectClass
+{
+  [self subclassResponsibility: _cmd];
+
+  return Nil;
+}
+
 - (id) init
 {
   if ((self = [super init]))
@@ -356,6 +364,11 @@ static Class NSDataK, NSStringK;
   [currentChild release];
   currentChild = nil;
   currentRow = (uint32_t) -1;
+}
+
+- (int) getAvailableProperties: (struct SPropTagArray *) properties
+{
+  return [[isa childObjectClass] getAvailableProperties: properties];
 }
 
 - (void) setRestrictions: (const struct mapi_SRestriction *) res

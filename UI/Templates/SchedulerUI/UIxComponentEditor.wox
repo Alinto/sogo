@@ -37,7 +37,7 @@
     </ul>
   </div>
 
-  <form var:href="saveURL" name="editform" onsubmit="return validateAptEditor();">
+  <form var:href="saveURL" name="editform">
     <div id="eventView">
       <label><var:string label:value="Title:" /><span class="content"
           ><input type="text" name="summary" id="summary"

@@ -42,7 +42,7 @@ function onPopupAttendeesWindow(event) {
 }
 
 function onSelectPrivacy(event) {
-    if (event.button == 0 || (isSafari() && event.button == 1)) {
+    if (event.button == 0 || (isWebKit() && event.button == 1)) {
         var node = getTarget(event);
         if (node.tagName != 'A')
             node = $(node).up("A");

@@ -337,17 +337,23 @@
 - (NSString *) getImapLoginForUID: (NSString *) uid
 {
   NSDictionary *contactInfos;
-  NSString *domain;
+  NSString *domain, *login;
   SOGoDomainDefaults *dd;
 
   contactInfos = [self contactInfosForUserWithUIDorEmail: uid];
+  login = [contactInfos objectForKey: @"c_imaplogin"];
   domain = [contactInfos objectForKey: @"c_domain"];
-  if ([domain length])
-    dd = [SOGoDomainDefaults defaultsForDomain: domain];
-  else
-    dd = [SOGoSystemDefaults sharedSystemDefaults];
-
-  return ([dd forceIMAPLoginWithEmail] ? [self getEmailForUID: uid] : uid);
+  if (login == nil)
+    {
+      if ([domain length])
+        dd = [SOGoDomainDefaults defaultsForDomain: domain];
+      else
+        dd = [SOGoSystemDefaults sharedSystemDefaults];
+      
+      login = [dd forceIMAPLoginWithEmail] ? [self getEmailForUID: uid] : uid;
+    }
+  
+  return login;
 }
 
 - (NSString *) getUIDForEmail: (NSString *) email
@@ -542,6 +548,9 @@
   [contact setObject: [emails objectAtIndex: 0] forKey: @"c_email"];
 }
 
+//
+//
+//
 - (void) _fillContactInfosForUser: (NSMutableDictionary *) currentUser
 		   withUIDorEmail: (NSString *) uid
 {
@@ -549,7 +558,7 @@
   NSDictionary *userEntry;
   NSEnumerator *sogoSources;
   NSObject <SOGoDNSource> *currentSource;
-  NSString *sourceID, *cn, *c_domain, *c_uid, *c_imaphostname;
+  NSString *sourceID, *cn, *c_domain, *c_uid, *c_imaphostname, *c_imaplogin;
   NSArray *c_emails;
   BOOL access;
 
@@ -558,6 +567,7 @@
   c_uid = nil;
   c_domain = nil;
   c_imaphostname = nil;
+  c_imaplogin = nil;
 
   [currentUser setObject: [NSNumber numberWithBool: YES]
 	       forKey: @"CalendarAccess"];
@@ -583,6 +593,8 @@
 	    [emails addObjectsFromArray: c_emails];
 	  if (!c_imaphostname)
 	    c_imaphostname = [userEntry objectForKey: @"c_imaphostname"];
+          if (!c_imaplogin)
+            c_imaplogin = [userEntry objectForKey: @"c_imaplogin"];
 	  access = [[userEntry objectForKey: @"CalendarAccess"] boolValue];
 	  if (!access)
 	    [currentUser setObject: [NSNumber numberWithBool: NO]
@@ -591,6 +603,15 @@
 	  if (!access)
 	    [currentUser setObject: [NSNumber numberWithBool: NO]
 			 forKey: @"MailAccess"];
+
+	  // We also fill the resource attributes, if any
+	  if ([userEntry objectForKey: @"isResource"])
+	    [currentUser setObject: [userEntry objectForKey: @"isResource"]
+			 forKey: @"isResource"];
+	  if ([userEntry objectForKey: @"numberOfSimultaneousBookings"])
+	    [currentUser setObject: [userEntry objectForKey: @"numberOfSimultaneousBookings"]
+			 forKey: @"numberOfSimultaneousBookings"];
+	  
 	}
     }
 
@@ -603,6 +624,9 @@
   
   if (c_imaphostname)
     [currentUser setObject: c_imaphostname forKey: @"c_imaphostname"];
+  if (c_imaplogin)
+    [currentUser setObject: c_imaplogin forKey: @"c_imaplogin"];
+
   [currentUser setObject: emails forKey: @"emails"];
   [currentUser setObject: cn forKey: @"cn"];
   [currentUser setObject: c_uid forKey: @"c_uid"];

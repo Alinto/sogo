@@ -757,6 +757,37 @@
   return [[_domainDefaults superUsernames] containsObject: login];
 }
 
+- (BOOL) canAuthenticate
+{
+  id authValue;
+
+  authValue = [self _fetchFieldForUser: @"canAuthenticate"];
+  
+  return [authValue boolValue];
+}
+
+/* resource */
+- (BOOL) isResource
+{
+  NSNumber *v;
+
+  v = [self _fetchFieldForUser: @"isResource"];
+
+  return (v && [v intValue]);
+}
+
+- (int) numberOfSimultaneousBookings
+{
+  NSNumber *v;
+  
+  v = [self _fetchFieldForUser: @"numberOfSimultaneousBookings"];
+  
+  if (v)
+    return [v intValue];
+
+  return 0;
+}
+
 /* module access */
 - (BOOL) canAccessModule: (NSString *) module
 {

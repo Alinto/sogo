@@ -22,9 +22,12 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoObject.h>
 
+#import "MAPIStoreAttachmentTable.h"
+#import "MAPIStoreContext.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -127,144 +130,272 @@
   msg->properties = properties;
 }
 
-- (int) getProperty: (void **) data
-            withTag: (enum MAPITAGS) propTag
+/* helper getters */
+- (int) getSMTPAddrType: (void **) data
 {
-  int rc;
+  *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+/* getters */
+- (int) getPrInstId: (void **) data // TODO: DOUBT
+{
+  /* we return a unique id based on the key */
+  *data = MAPILongLongValue (memCtx, [[sogoObject nameInContainer] hash]);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrInstanceNum: (void **) data // TODO: DOUBT
+{
+  return [self getLongZero: data];
+}
+
+- (int) getPrRowType: (void **) data // TODO: DOUBT
+{
+  *data = MAPILongValue (memCtx, TBL_LEAF_ROW);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrDepth: (void **) data // TODO: DOUBT
+{
+  *data = MAPILongLongValue (memCtx, 0);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAccess: (void **) data // TODO
+{
+  *data = MAPILongValue (memCtx, 0x03);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAccessLevel: (void **) data // TODO
+{
+  *data = MAPILongValue (memCtx, 0x01);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrViewStyle: (void **) data
+{
+  return [self getLongZero: data];
+}
+
+- (int) getPrViewMajorversion: (void **) data
+{
+  return [self getLongZero: data];
+}
+
+- (int) getPidLidSideEffects: (void **) data // TODO
+{
+  return [self getLongZero: data];
+}
+
+- (int) getPidLidCurrentVersion: (void **) data
+{
+  *data = MAPILongValue (memCtx, 115608); // Outlook 11.5608
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidCurrentVersionName: (void **) data
+{
+  *data = [@"11.0" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidAutoProcessState: (void **) data
+{
+  *data = MAPILongValue (memCtx, 0x00000000);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidNameContentClass: (void **) data
+{
+  *data = [@"Sharing" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrFid: (void **) data
+{
+  *data = MAPILongLongValue (memCtx, [container objectId]);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrMid: (void **) data
+{
+  *data = MAPILongLongValue (memCtx, [self objectId]);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrMessageLocaleId: (void **) data
+{
+  *data = MAPILongValue (memCtx, 0x0409);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrMessageFlags: (void **) data // TODO
+{
+  *data = MAPILongValue (memCtx, MSGFLAG_FROMME | MSGFLAG_READ | MSGFLAG_UNMODIFIED);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrMessageSize: (void **) data // TODO
+{
+  /* TODO: choose another name in SOGo for that method */
+  *data = MAPILongValue (memCtx, [[sogoObject davContentLength] intValue]);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrMsgStatus: (void **) data // TODO
+{
+  return [self getLongZero: data];
+}
+
+- (int) getPrImportance: (void **) data // TODO -> subclass?
+{
+  *data = MAPILongValue (memCtx, 1);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrPriority: (void **) data // TODO -> subclass?
+{
+  return [self getLongZero: data];
+}
+
+- (int) getPrSensitivity: (void **) data // TODO -> subclass in calendar
+{
+  return [self getLongZero: data];
+}
+
+// TODO: PR_CHANGE_KEY is a GID based on the ReplGUID
+- (int) getPrChangeKey: (void **) data
+{
+  int rc = MAPISTORE_SUCCESS;
   NSString *stringValue;
   NSUInteger length;
 
-  rc = MAPI_E_SUCCESS;
-  switch ((uint32_t) propTag)
+  stringValue = [sogoObject davEntityTag];
+  if (stringValue)
     {
-    case PR_INST_ID: // TODO: DOUBT
-      /* we return a unique id based on the key */
-      *data = MAPILongLongValue (memCtx, [[sogoObject nameInContainer] hash]);
-      break;
-    case PR_INSTANCE_NUM: // TODO: DOUBT
-      *data = MAPILongValue (memCtx, 0);
-      break;
-    case PR_ROW_TYPE: // TODO: DOUBT
-      *data = MAPILongValue (memCtx, TBL_LEAF_ROW);
-      break;
-    case PR_DEPTH: // TODO: DOUBT
-      *data = MAPILongLongValue (memCtx, 0);
-      break;
-    case PR_ACCESS: // TODO
-      *data = MAPILongValue (memCtx, 0x03);
-      break;
-    case PR_ACCESS_LEVEL: // TODO
-      *data = MAPILongValue (memCtx, 0x01);
-      break;
-    case PR_VIEW_STYLE:
-    case PR_VIEW_MAJORVERSION:
-      *data = MAPILongValue (memCtx, 0);
-      break;
-    case PidLidSideEffects: // TODO
-      *data = MAPILongValue (memCtx, 0x00000000);
-      break;
-    case PidLidCurrentVersion:
-      *data = MAPILongValue (memCtx, 115608); // Outlook 11.5608
-      break;
-    case PidLidCurrentVersionName:
-      *data = [@"11.0" asUnicodeInMemCtx: memCtx];
-      break;
-    case PidLidAutoProcessState:
-      *data = MAPILongValue (memCtx, 0x00000000);
-      break;
-    case PidNameContentClass:
-      *data = [@"Sharing" asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_FID:
-      *data = MAPILongLongValue (memCtx, [container objectId]);
-      break;
-    case PR_MID:
-      *data = MAPILongLongValue (memCtx, [self objectId]);
-      break;
-    case PR_MESSAGE_LOCALE_ID:
-      *data = MAPILongValue (memCtx, 0x0409);
-      break;
-    case PR_MESSAGE_FLAGS: // TODO
-      *data = MAPILongValue (memCtx, MSGFLAG_FROMME | MSGFLAG_READ | MSGFLAG_UNMODIFIED);
-      break;
-    case PR_MESSAGE_SIZE: // TODO
-      /* TODO: choose another name in SOGo for that method */
-      *data = MAPILongValue (memCtx, [[sogoObject davContentLength] intValue]);
-      break;
-    case PR_MSG_STATUS: // TODO
-      *data = MAPILongValue (memCtx, 0);
-      break;
-    case PR_IMPORTANCE: // TODO -> subclass?
-      *data = MAPILongValue (memCtx, 1);
-      break;
-    case PR_PRIORITY: // TODO -> subclass?
-      *data = MAPILongValue (memCtx, 0);
-      break;
-    case PR_SENSITIVITY: // TODO -> subclass in calendar
-      *data = MAPILongValue (memCtx, 0);
-      break;
-    case PR_CHANGE_KEY:
-      stringValue = [sogoObject davEntityTag];
-      if (stringValue)
-        {
-          stringValue = @"-1";
-          length = [stringValue length];
-          if (length < 6) /* guid = 16 bytes */
-            {
-              length += 6;
-              stringValue = [NSString stringWithFormat: @"000000%@",
-                                      stringValue];
-            }
-          if (length > 6)
-            stringValue = [stringValue substringFromIndex: length - 6];
-          stringValue = [NSString stringWithFormat: @"SOGo%@%@%@",
-                                  stringValue, stringValue, stringValue];
-          *data = [[stringValue dataUsingEncoding: NSASCIIStringEncoding]
-                    asShortBinaryInMemCtx: memCtx];
-        }
-      else
-        rc = MAPISTORE_ERR_NOT_FOUND;
-      break;
-
-    case PR_ORIGINAL_SUBJECT_UNICODE:
-    case PR_CONVERSATION_TOPIC_UNICODE:
-      rc = [self getProperty: data withTag: PR_NORMALIZED_SUBJECT_UNICODE];
-      break;
-
-    case PR_SUBJECT_PREFIX_UNICODE:
-      *data = [@"" asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_NORMALIZED_SUBJECT_UNICODE:
-      rc = [self getProperty: data withTag: PR_SUBJECT_UNICODE];
-      break;
-
-    case PR_DISPLAY_TO_UNICODE:
-    case PR_DISPLAY_CC_UNICODE:
-    case PR_DISPLAY_BCC_UNICODE:
-    case PR_ORIGINAL_DISPLAY_TO_UNICODE:
-    case PR_ORIGINAL_DISPLAY_CC_UNICODE:
-    case PR_ORIGINAL_DISPLAY_BCC_UNICODE:
-      *data = [@"" asUnicodeInMemCtx: memCtx];
-      break;
-    case PR_LAST_MODIFIER_NAME_UNICODE:
-      *data = [@"openchange" asUnicodeInMemCtx: memCtx];
-      break;
-
-    case PR_ORIG_MESSAGE_CLASS_UNICODE:
-      rc = [self getProperty: data withTag: PR_MESSAGE_CLASS_UNICODE];
-      break;
-
-    case PR_HASATTACH:
-      *data = MAPIBoolValue (memCtx,
-                             [[self childKeysMatchingQualifier: nil
-                                    andSortOrderings: nil] count] > 0);
-      break;
-
-    default:
-      rc = [super getProperty: data withTag: propTag];
+      stringValue = @"-1";
+      length = [stringValue length];
+      if (length < 6) /* guid = 16 bytes */
+        length += 6;
+      stringValue = [NSString stringWithFormat: @"000000%@",
+                              stringValue];
+      if (length > 6)
+        stringValue = [stringValue substringFromIndex: length - 6];
+      stringValue = [NSString stringWithFormat: @"SOGo%@%@%@",
+                              stringValue, stringValue, stringValue];
+      *data = [[stringValue dataUsingEncoding: NSASCIIStringEncoding]
+                asBinaryInMemCtx: memCtx];
     }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
 
   return rc;
+}
+
+- (int) getPrSubject: (void **) data
+{
+  [self subclassResponsibility: _cmd];
+
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPrNormalizedSubject: (void **) data
+{
+  return [self getPrSubject: data];
+}
+
+- (int) getPrOriginalSubject: (void **) data
+{
+  return [self getPrNormalizedSubject: data];
+}
+
+- (int) getPrConversationTopic: (void **) data
+{
+  return [self getPrNormalizedSubject: data];
+}
+
+- (int) getPrSubjectPrefix: (void **) data
+{
+  return [self getEmptyString: data];
+}
+
+- (int) getPrDisplayTo: (void **) data
+{
+  return [self getEmptyString: data];
+}
+
+- (int) getPrDisplayCc: (void **) data
+{
+  return [self getEmptyString: data];
+}
+
+- (int) getPrDisplayBcc: (void **) data
+{
+  return [self getEmptyString: data];
+}
+
+- (int) getPrOriginalDisplayTo: (void **) data
+{
+  return [self getPrDisplayTo: data];
+}
+
+- (int) getPrOriginalDisplayCc: (void **) data
+{
+  return [self getPrDisplayCc: data];
+}
+
+- (int) getPrOriginalDisplayBcc: (void **) data
+{
+  return [self getPrDisplayBcc: data];
+}
+
+- (int) getPrLastModifierName: (void **) data
+{
+  NSURL *contextUrl;
+
+  contextUrl = [[self context] url];
+  *data = [[contextUrl user] asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrMessageClass: (void **) data
+{
+  [self subclassResponsibility: _cmd];
+
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPrOrigMessageClass: (void **) data
+{
+  return [self getPrMessageClass: data];
+}
+
+- (int) getPrHasattach: (void **) data
+{
+  *data = MAPIBoolValue (memCtx,
+                         [[self childKeysMatchingQualifier: nil
+                                          andSortOrderings: nil] count] > 0);
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (void) save
@@ -286,9 +417,7 @@
 
 - (MAPIStoreAttachmentTable *) attachmentTable
 {
-  [self subclassResponsibility: _cmd];
-
-  return nil;
+  return [MAPIStoreAttachmentTable tableForContainer: self];
 }
 
 - (void) addActiveTable: (MAPIStoreTable *) activeTable

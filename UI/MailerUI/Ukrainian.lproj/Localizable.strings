@@ -165,6 +165,8 @@
 "InboxFolderName"  = "Вхідні";
 "DraftsFolderName" = "Чернетки";
 "SieveFolderName"  = "Теки";
+"OtherUsersFolderName"   = "Інші користувачі";
+"SharedFoldersName" = "Спільні теки";
 "Folders"          = "Всі теки"; /* title line */
 
 /* MailMoveToPopUp */

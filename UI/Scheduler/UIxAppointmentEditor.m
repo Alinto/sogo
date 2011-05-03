@@ -378,6 +378,7 @@
 {
   SOGoAppointmentFolder *previousCalendar;
   SOGoAppointmentObject *co;
+  NSString *jsonResponse;
   SoSecurityManager *sm;
   NSException *ex;
 
@@ -386,6 +387,7 @@
     co = [co container];
   previousCalendar = [co container];
   sm = [SoSecurityManager sharedSecurityManager];
+  ex = nil;
 
   if ([event hasRecurrenceRules])
     [self _adjustRecurrentRules];
@@ -409,12 +411,12 @@
 	}
       
       // Save the event.
-      [co saveComponent: event];
+      ex = [co saveComponent: event];
     }
   else
     {
       // The event was modified -- save it.
-      [co saveComponent: event];
+      ex = [co saveComponent: event];
 
       if (componentCalendar
           && ![[componentCalendar ocsPath]
@@ -432,8 +434,19 @@
 	    }
 	}
     }
+
+  if (ex)
+    jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+				   @"failure", @"status",
+				 [ex reason],
+				 @"message",
+				 nil];
+  else
+    jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+				   @"success", @"status", nil];
   
-  return [self jsCloseWithRefreshMethod: @"refreshEventsAndDisplay()"];
+  return [self responseWithStatus: 200
+	       andString: [jsonResponse jsonRepresentation]];
 }
 
 - (id <WOActionResults>) viewAction

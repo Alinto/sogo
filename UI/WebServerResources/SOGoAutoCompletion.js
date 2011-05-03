@@ -44,12 +44,6 @@ var SOGoAutoCompletionInterface = {
                 this.writeAttribute("uid", null);
              if (document.currentPopupMenu)
                 hideMenu(document.currentPopupMenu);
-            if (this.readAttribute("container")) {
-                this.confirmedValue = null;
-                this.fire("autocompletion:changedlist", this.readAttribute("container"));
-            }
-            else
-                this.fire("autocompletion:changed");
         }
         else if (event.keyCode == 0
                  || event.keyCode == Event.KEY_BACKSPACE
@@ -68,7 +62,6 @@ var SOGoAutoCompletionInterface = {
                 this.value = this.confirmedValue;
             else
                 this.writeAttribute("uid", null);
-            $(this).select();
             if (document.currentPopupMenu)
                 hideMenu(document.currentPopupMenu);
             this.selectedIndex = -1;
@@ -77,7 +70,7 @@ var SOGoAutoCompletionInterface = {
                 this.fire("autocompletion:changedlist", this.readAttribute("container"));
             }
             else
-                this.fire("autocompletion:changed");
+                this.fire("autocompletion:changed", event.keyCode);
         }
         else if (this.menu.getStyle('visibility') == 'visible') {
             if (event.keyCode == Event.KEY_UP) { // Up arrow
@@ -118,6 +111,8 @@ var SOGoAutoCompletionInterface = {
             this.value = this.confirmedValue;
             if (this.readAttribute("container"))
                 this.fire("autocompletion:changedlist", this.readAttribute("container"));
+            else
+                this.fire("autocompletion:changed", event.keyCode);
         }
         else
             this.writeAttribute("uid", null);
@@ -264,13 +259,14 @@ var SOGoAutoCompletionInterface = {
         if (e.tagName != 'LI')
             e = e.up('LI');
         if (e) {
+            preventDefault(event);
             this.value = e.readAttribute("address");
             this.writeAttribute("uid", e.readAttribute("uid"));
             if (e.readAttribute("container"))
                 this.fire("autocompletion:changedlist", e.readAttribute("container"));
             else {
                 this.confirmedValue = this.value;
-                this.fire("autocompletion:changed");
+                this.fire("autocompletion:changed", Event.KEY_RETURN);
             }
         }
     }

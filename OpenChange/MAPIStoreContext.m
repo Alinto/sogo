@@ -21,7 +21,6 @@
  */
 
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSFileHandle.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSThread.h>
@@ -256,6 +255,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 - (MAPIStoreAuthenticator *) authenticator
 {
   return authenticator;
+}
+
+- (NSURL *) url
+{
+  return contextUrl;
 }
 
 - (void) setupRequest
@@ -843,14 +847,14 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 		{
                   if (propRc == MAPISTORE_ERR_NOT_FOUND)
                     propRc = MAPI_E_NOT_FOUND;
-                  else if (propRc == MAPISTORE_ERR_NO_MEMORY)
-                    propRc = MAPI_E_NOT_ENOUGH_MEMORY;
+                  // else if (propRc == MAPISTORE_ERR_NO_MEMORY)
+                  //   propRc = MAPI_E_NOT_ENOUGH_MEMORY;
 		  if (propValue)
 		    talloc_free (propValue);
 		  propValue = MAPILongValue (memCtx, propRc);
 		  tag = (tag & 0xffff0000) | 0x000a;
 		}
-	      set_SPropValue_proptag (aRow->lpProps + count, tag, propValue);
+              set_SPropValue_proptag (aRow->lpProps + count, tag, propValue);
 	    }
 	}
       talloc_free (data);
@@ -972,120 +976,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       [self errorWithFormat: @"%s: value of tableType not handled: %d",
             __FUNCTION__, tableType];
       rc = MAPISTORE_ERROR;
-    }
-
-  return rc;
-}
-
-- (int) setProperty: (enum MAPITAGS) property
-	   withFMID: (uint64_t) fmid
-	ofTableType: (uint8_t) tableType
-	   fromFile: (NSFileHandle *) aFile
-{
-  MAPIStoreMessage *message;
-  NSNumber *midKey;
-  NSData *fileData;
-  const char *propName;
-  int rc;
-
-  propName = get_proptag_name (property);
-  if (!propName)
-    propName = "<unknown>";
-  [self logWithFormat: @"METHOD '%s' -- property: %s(%.8x), fmid: 0x%.16x, tableType: %d",
-	__FUNCTION__, propName, property, fmid, tableType];
-
-  fileData = [aFile readDataToEndOfFile];
-  switch (tableType)
-    {
-    case MAPISTORE_MESSAGE:
-      midKey = [NSNumber numberWithUnsignedLongLong: fmid];
-      message = [messages objectForKey: midKey];
-      if (message)
-	{
-	  [message addNewProperties:
-                     [NSDictionary
-                       dictionaryWithObject: NSObjectFromStreamData (property,
-                                                                     fileData)
-                       forKey: MAPIPropertyKey (property)]];
-	  rc = MAPISTORE_SUCCESS;
-	}
-      else
-        rc = MAPISTORE_ERR_NOT_FOUND;
-      break;
-    case MAPISTORE_FOLDER:
-    default:
-      [self errorWithFormat: @"%s: value of tableType not handled: %d",
-            __FUNCTION__, tableType];
-      rc = MAPISTORE_ERROR;
-    }
-
-  return rc;
-}
-
-- (int) getProperty: (enum MAPITAGS) property
-	   withFMID: (uint64_t) fmid
-	ofTableType: (uint8_t) tableType
-	   intoFile: (NSFileHandle *) aFile
-{
-  MAPIStoreMessage *message;
-  NSNumber *midKey;
-  NSData *fileData;
-  const char *propName;
-  enum MAPISTATUS rc;
-
-  propName = get_proptag_name (property);
-  if (!propName)
-    propName = "<unknown>";
-  [self logWithFormat: @"METHOD '%s' -- property: %s(%.8x), fmid: 0x%.16x, tableType: %d",
-	__FUNCTION__, propName, property, fmid, tableType];
-
-  switch (tableType)
-    {
-    case MAPISTORE_MESSAGE:
-      midKey = [NSNumber numberWithUnsignedLongLong: fmid];
-      message = [messages objectForKey: midKey];
-      if (message)
-      	{
-	  fileData = [[message newProperties] objectForKey: MAPIPropertyKey (property)];
-          if ([fileData isKindOfClass: NSStringK])
-            fileData = [fileData dataUsingEncoding: NSUTF16LittleEndianStringEncoding];
-	  if (fileData)
-	    {
-              if (![fileData isKindOfClass: NSDataK])
-                [self
-                  errorWithFormat: @"data class not handled for streams: %@",
-                  NSStringFromClass ([fileData class])];
-	      [aFile writeData: fileData];
-	      rc = MAPI_E_SUCCESS;
-	    }
-	  else
-	    {
-	      [self errorWithFormat: @"no data for property %s(%.8x)"
-		    @" in mid %.16x", propName, property, fmid];
-	      rc = MAPI_E_NOT_FOUND;
-	    }
-	}
-      else
-	{
-	  [self errorWithFormat: @"no message found with mid %.16x", fmid];
-	  rc = MAPI_E_INVALID_OBJECT;
-	}
-      break;
-	
-      // 	  [message setObject: NSObjectFromStreamData (property, fileData)
-      // 		   forKey: MAPIPropertyNumber (property)];
-      // 	  rc = MAPISTORE_SUCCESS;
-      // 	}
-      // else
-    case MAPISTORE_FOLDER:
-      [self errorWithFormat: @"%s: folder properties not handled yet",
-            __FUNCTION__];
-      rc = MAPI_E_NOT_FOUND;
-      break;
-    default:
-      [self errorWithFormat: @"%s: value of tableType not handled: %d",
-            __FUNCTION__, tableType];
-      rc = MAPI_E_INVALID_OBJECT;
     }
 
   return rc;

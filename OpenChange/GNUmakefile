@@ -30,6 +30,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreAuthenticator.m \
 	MAPIStoreMapping.m \
 	MAPIStoreTypes.m \
+	MAPIStorePropertySelectors.m \
 	\
 	SOGoMAPIFSFolder.m \
 	SOGoMAPIFSMessage.m \

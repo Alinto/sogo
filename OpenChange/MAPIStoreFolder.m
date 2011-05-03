@@ -395,8 +395,7 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 
 - (MAPIStoreMessage *) createMessage
 {
-  [self subclassResponsibility: _cmd];
-
+  [self logWithFormat: @"ignored method: %s", __PRETTY_FUNCTION__];
   return nil;
 }
 

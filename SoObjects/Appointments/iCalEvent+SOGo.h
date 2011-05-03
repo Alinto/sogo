@@ -31,6 +31,7 @@
 @interface iCalEvent (SOGoExtensions)
 
 - (BOOL) isStillRelevant;
+- (unsigned int) occurenceInterval;
 - (NSMutableDictionary *) quickRecord;
 - (void) updateRecurrenceRulesUntilDate: (NSCalendarDate *) previousEndDate;
 

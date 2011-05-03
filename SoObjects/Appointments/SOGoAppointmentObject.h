@@ -1,15 +1,14 @@
 /*
-  Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2007-2010 Inverse inc.
+  Copyright (C) 2007-2011 Inverse inc.
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -24,17 +23,6 @@
 #define __Appointments_SOGoAppointmentObject_H__
 
 #import <SOGo/SOGoContentObject.h>
-
-/*
-  SOGoAppointmentObject
-  
-  Represents a single appointment. This SOPE controller object manages all the
-  attendee storages (that is, it might store into multiple folders for meeting
-  appointments!).
-
-  Note: SOGoAppointmentObject do not need to exist yet. They can also be "new"
-        appointments with an externally generated unique key.
-*/
 
 @class NSArray;
 @class NSException;
@@ -60,13 +48,6 @@
 - (NSArray *) postCalDAVEventRequestTo: (NSArray *) recipients  from: (NSString *) originator;
 - (NSArray *) postCalDAVEventReplyTo: (NSArray *) recipients  from: (NSString *) originator;
 - (NSArray *) postCalDAVEventCancelTo: (NSArray *) recipients  from: (NSString *) originator;
-
-/* "iCal multifolder saves" */
-
-// - (NSException *) saveContentString: (NSString *) _iCal
-//                        baseSequence: (int) _v;
-// - (NSException *) deleteWithBaseSequence: (int) _v;
-// - (NSException *) saveContentString: (NSString *) _iCalString;
 
 @end
 

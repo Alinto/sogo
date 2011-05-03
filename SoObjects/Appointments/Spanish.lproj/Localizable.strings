@@ -60,3 +60,6 @@ vtodo_class2 = "(Tarea confidencial)";
 = "%{Attendee} %{SentByText}has delegado la invitación para %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}no ha tomado tadavia una decision sobre esta cita.";
+
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Número máximo de reservas simultáneas (%{NumberOfSimultaneousBookings}) alcanzado para recurso \"%{Cn} %{SystemEmail}\".";
+

@@ -459,7 +459,7 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 "Workweek days only" = "Pouze pracovní dny";
 "Tasks in View" = "Zobrazené úkoly";
 
-"eventDeleteConfirmation" = "Smazání této události je permanentní.\nChcete pokračovat?";
+"eventDeleteConfirmation" = "Tato událost(i) bude smazána:\n%{0}\nChcete pokračovat?";
 "taskDeleteConfirmation" = "Smazání tohoto úkolu je permanentní.\nChcete pokračovat?";
 
 "You cannot remove nor unsubscribe from your personal calendar."

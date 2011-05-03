@@ -1,7 +1,24 @@
-1.3-2011MMDD (1.3.6)
+1.3-201004XX (1.3.7)
+---------------------
+New Features
+ - IMAP namespaces are now translated and the full name of the
+   mailbox owner is extracted under "Other Users" 
+ - added the "authenticationFilter" parameter for SQL-based
+   sources to limit who can authenticate to a local SOGo instance
+ - added support for resources like projectors, conference rooms
+   and more which allows SOGo to avoid double-booking of them
+   and also allows SOGo to automatically accept invitations for them
+
+Enhancements
+
+Bug Fixes
+
+
+1.3-20110408 (1.3.6)
 --------------------
 New Features
 - added Norwegian translation - thanks to Altibox
+
 Enhancements
 - updated Italian translation
 - updated Ukranian translation
@@ -14,12 +31,14 @@ Enhancements
 - alarms are no longer exported to DAV clients for calendars where the alarms
   are configured to be disabled
 - IMAP connection pooling is disabled by default to avoid flooding the IMAP
-  servers in multi-process environments
+  servers in multi-process environments (NGImap4DisableIMAP4Pooling now set
+  to "YES" by default)
 - sogo-tool: the remove-doubles command now makes use of the card complete
-             names
+  names
 - sope-appserver: added the ability to configure the minutes timeout per
-                  request after which child processes are killed, via
-                  WOWatchDogRequestTimeout (default: 10)
+  request after which child processes are killed, via
+   WOWatchDogRequestTimeout (default: 10)
+
 Bug Fixes
 - restored the automatic expunge of IMAP folders
 - various mutli-domain fixes
@@ -29,12 +48,12 @@ Bug Fixes
 - sogo-tool: now works in multi-domain environments
 - sogo-tool: now retrieves list of users from the folder info table
 - sogo-tool: the remove-doubles command is now compatible with the
-             synchronization mechanisms
+  synchronization mechanisms
 - sope-mime: fixed some parsing problems occurring with dbmail
 - sope-mime: fixed the fetching of mail body parts when other untagged
-             responses are received
+  responses are received
 - sope-appserver: fixed a bug leaving child processes performing the watchdog
-                  safety belt cleanup
+  safety belt cleanup
 
 1.3-20110125 (1.3.5)
 --------------------

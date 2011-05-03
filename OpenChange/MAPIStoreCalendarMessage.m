@@ -40,7 +40,6 @@
 #import <SOGo/SOGoUserDefaults.h>
 #import <Appointments/SOGoAppointmentObject.h>
 
-#import "MAPIStoreAttachmentTable.h"
 #import "MAPIStoreCalendarAttachment.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreRecurrenceUtils.h"
@@ -73,15 +72,34 @@ static NSTimeZone *utcTZ;
   [utcTZ retain];
 }
 
+- (id) initWithSOGoObject: (id) newSOGoObject
+              inContainer: (MAPIStoreObject *) newContainer
+{
+  if ((self = [super initWithSOGoObject: newSOGoObject
+                     inContainer: newContainer]))
+    {
+      ASSIGN (event, [newSOGoObject component: NO secure: NO]);
+    }
+
+  return self;
+}
+
 - (id) init
 {
   if ((self = [super init]))
     {
       attachmentKeys = [NSMutableArray new];
       attachmentParts = [NSMutableDictionary new];
+      event = nil;
     }
 
   return self;
+}
+
+- (void) dealloc
+{
+  [event release];
+  [super dealloc];
 }
 
 - (NSTimeZone *) ownerTimeZone
@@ -100,7 +118,6 @@ static NSTimeZone *utcTZ;
 }
 
 - (void) _setupRecurrenceInCalendar: (iCalCalendar *) calendar
-                    withMasterEvent: (iCalEvent *) vEvent
                            fromData: (NSData *) mapiRecurrenceData
 {
   struct Binary_r *blob;
@@ -109,13 +126,13 @@ static NSTimeZone *utcTZ;
 
   /* cleanup */
   otherEvents = [[calendar events] mutableCopy];
-  [otherEvents removeObject: vEvent];
+  [otherEvents removeObject: event];
   [calendar removeChildren: otherEvents];
   [otherEvents release];
 
   blob = [mapiRecurrenceData asBinaryInMemCtx: memCtx];
   pattern = get_AppointmentRecurrencePattern (memCtx, blob);
-  [calendar setupRecurrenceWithMasterEntity: vEvent
+  [calendar setupRecurrenceWithMasterEntity: event
                       fromRecurrencePattern: &pattern->RecurrencePattern];
   talloc_free (pattern);
   talloc_free (blob);
@@ -150,21 +167,19 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   struct Binary_r *bin;
   struct SBinary_short *sBin;
   NSCalendarDate *firstStartDate;
-  iCalEvent *vEvent;
   iCalRecurrenceRule *rule;
 
-  vEvent = [sogoObject component: NO secure: NO];
-  rule = [[vEvent recurrenceRules] objectAtIndex: 0];
+  rule = [[event recurrenceRules] objectAtIndex: 0];
 
-  firstStartDate = [vEvent firstRecurrenceStartDate];
+  firstStartDate = [event firstRecurrenceStartDate];
   if (firstStartDate)
     {
       [firstStartDate setTimeZone: [self ownerTimeZone]];
 
       arp = talloc_zero (memCtx, struct AppointmentRecurrencePattern);
       _fillAppointmentRecurrencePattern (arp, firstStartDate,
-                                         [vEvent durationAsTimeInterval],
-                                         [vEvent lastPossibleRecurrenceStartDate],
+                                         [event durationAsTimeInterval],
+                                         [event lastPossibleRecurrenceStartDate],
                                          rule);
       sBin = talloc_zero (memCtx, struct SBinary_short);
       bin = set_AppointmentRecurrencePattern (sBin, arp);
@@ -184,146 +199,182 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   return sBin;
 }
 
-- (enum MAPISTATUS) getProperty: (void **) data
-                        withTag: (enum MAPITAGS) propTag
+/* getters */
+- (int) getPrIconIndex: (void **) data // TODO
+{
+  uint32_t longValue;
+
+  /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
+  // *longValue = 0x00000401 for recurring event
+  // *longValue = 0x00000402 for meeting
+  // *longValue = 0x00000403 for recurring meeting
+  // *longValue = 0x00000404 for invitation
+  
+  longValue = 0x0400;
+  if ([event isRecurrent])
+    longValue |= 0x0001;
+  if ([[event attendees] count] > 0)
+    longValue |= 0x0002;
+  
+  *data = MAPILongValue (memCtx, longValue);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrMessageClass: (void **) data
+{
+  *data = talloc_strdup(memCtx, "IPM.Appointment");
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrStartDate: (void **) data
+{
+  NSCalendarDate *dateValue;
+
+  if ([event isRecurrent])
+    dateValue = [event firstRecurrenceStartDate];
+  else
+    dateValue = [event startDate];
+  [dateValue setTimeZone: utcTZ];
+  *data = [dateValue asFileTimeInMemCtx: memCtx];
+  
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidAppointmentStartWhole: (void **) data
+{
+  return [self getPrStartDate: data];
+}
+
+- (int) getPidLidCommonStart: (void **) data
+{
+  return [self getPrStartDate: data];
+}
+
+- (int) getPrEndDate: (void **) data
+{
+  NSCalendarDate *dateValue;
+
+  if ([event isRecurrent])
+    dateValue = [event firstRecurrenceStartDate];
+  else
+    dateValue = [event startDate];
+  dateValue
+    = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                             hours: 0 minutes: 0
+                           seconds: (NSInteger) [event
+                                                  durationAsTimeInterval]];
+  [dateValue setTimeZone: utcTZ];
+  *data = [dateValue asFileTimeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidAppointmentEndWhole: (void **) data
+{
+  return [self getPrEndDate: data];
+}
+
+- (int) getPidLidCommonEnd: (void **) data
+{
+  return [self getPrEndDate: data];
+}
+
+- (int) getPidLidAppointmentDuration: (void **) data
 {
   NSTimeInterval timeValue;
-  id event;
-  uint32_t longValue;
-  NSCalendarDate *dateValue;
-  int rc;
 
-  rc = MAPI_E_SUCCESS;
-  switch ((uint32_t) propTag)
-    {
-    case PR_ICON_INDEX: // TODO
-      /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
-      // *longValue = 0x00000401 for recurring event
-      // *longValue = 0x00000402 for meeting
-      // *longValue = 0x00000403 for recurring meeting
-      // *longValue = 0x00000404 for invitation
+  timeValue = [[event endDate] timeIntervalSinceDate: [event startDate]];
+  *data = MAPILongValue (memCtx, (uint32_t) (timeValue / 60));
 
-      event = [sogoObject component: NO secure: NO];
-      longValue = 0x0400;
-      if ([event isRecurrent])
-        longValue |= 0x0001;
-      if ([[event attendees] count] > 0)
-        longValue |= 0x0002;
+  return MAPISTORE_SUCCESS;
+}
 
-      *data = MAPILongValue (memCtx, longValue);
-      break;
-    case PR_MESSAGE_CLASS_UNICODE:
-      *data = talloc_strdup(memCtx, "IPM.Appointment");
-      break;
-    case PR_START_DATE:
-    case PidLidAppointmentStartWhole:
-    case PidLidCommonStart:
-      event = [sogoObject component: NO secure: NO];
-      if ([event isRecurrent])
-        dateValue = [event firstRecurrenceStartDate];
-      else
-        dateValue = [event startDate];
-      [dateValue setTimeZone: utcTZ];
-      *data = [dateValue asFileTimeInMemCtx: memCtx];
-      break;
-    case PR_END_DATE:
-    case PidLidAppointmentEndWhole:
-    case PidLidCommonEnd:
-      event = [sogoObject component: NO secure: NO];
-      if ([event isRecurrent])
-        dateValue = [event firstRecurrenceStartDate];
-      else
-        dateValue = [event startDate];
-      dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
-                                         hours: 0 minutes: 0
-                                       seconds:
-                               (NSInteger) [event durationAsTimeInterval]];
-      [dateValue setTimeZone: utcTZ];
-      *data = [dateValue asFileTimeInMemCtx: memCtx];
-      break;
-    case PidLidAppointmentDuration:
-      event = [sogoObject component: NO secure: NO];
-      timeValue = [[event endDate] timeIntervalSinceDate: [event startDate]];
-      *data = MAPILongValue (memCtx, (uint32_t) (timeValue / 60));
-      break;
-    case PidLidAppointmentSubType:
-      event = [sogoObject component: NO secure: NO];
-      *data = MAPIBoolValue (memCtx, [event isAllDay]);
-      break;
-    case PidLidBusyStatus: // TODO
-      *data = MAPILongValue (memCtx, 0x02);
-      break;
+- (int) getPidLidAppointmentSubType: (void **) data
+{
+  *data = MAPIBoolValue (memCtx, [event isAllDay]);
 
-    // case 0x82410003: // TODO
-    //   *data = MAPILongValue (memCtx, 0);
-    //   break;
-    case PR_SUBJECT_UNICODE: // SUMMARY
-      event = [sogoObject component: NO secure: NO];
-      *data = [[event summary] asUnicodeInMemCtx: memCtx];
-      break;
-    case PidLidLocation: // LOCATION
-      event = [sogoObject component: NO secure: NO];
-      *data = [[event location] asUnicodeInMemCtx: memCtx];
-      break;
-    case PidLidPrivate: // private (bool), should depend on CLASS and permissions
-      *data = MAPIBoolValue (memCtx, NO);
-      break;
-    case PR_SENSITIVITY: // not implemented, depends on CLASS
-      // normal = 0, personal?? = 1, private = 2, confidential = 3
-      *data = MAPILongValue (memCtx, 0);
-      break;
-    case PR_CREATION_TIME:
-      event = [sogoObject component: NO secure: NO];
-      *data = [[event created] asFileTimeInMemCtx: memCtx];
-      break;
+  return MAPISTORE_SUCCESS;
+}
 
-    case PR_IMPORTANCE:
-      {
-	unsigned int v;
+- (int) getPidLidBusyStatus: (void **) data // TODO
+{
+  *data = MAPILongValue (memCtx, 0x02);
 
-	event = [sogoObject component: NO secure: NO];
+  return MAPISTORE_SUCCESS;
+}
 
-	if ([[event priority] isEqualToString: @"9"])
-	  v = 0x0;
-	else if ([[event priority] isEqualToString: @"1"])
-	  v = 0x2;
-	else
-	  v = 0x1;
+- (int) getPrSubject: (void **) data // SUMMARY
+{
+  *data = [[event summary] asUnicodeInMemCtx: memCtx];
 
-	*data = MAPILongValue (memCtx, v);
-      }
-      break;
+  return MAPISTORE_SUCCESS;
+}
 
+- (int) getPidLidLocation: (void **) data // LOCATION
+{
+  *data = [[event location] asUnicodeInMemCtx: memCtx];
 
-      /* Recurrence */
-    case PidLidIsRecurring:
-    case PidLidRecurring:
-      event = [sogoObject component: NO secure: NO];
-      *data = MAPIBoolValue (memCtx, [event isRecurrent]);
-      break;
-    case PidLidAppointmentRecur:
-      event = [sogoObject component: NO secure: NO];
-      if ([event isRecurrent])
-        *data = [self _computeAppointmentRecur];
-      else
-        rc = MAPISTORE_ERR_NOT_FOUND;
-      break;
+  return MAPISTORE_SUCCESS;
+}
 
-      // case PidLidTimeZoneStruct:
-      // case PR_VD_NAME_UNICODE:
-      //         *data = talloc_strdup(memCtx, "PR_VD_NAME_UNICODE");
-      //         break;
-      // case PR_EMS_AB_DXA_REMOTE_CLIENT_UNICODE: "Home:" ???
-      //         *data = talloc_strdup(memCtx, "PR_EMS...");
-      //         break;
-    default:
-      rc = [super getProperty: data
-                      withTag: propTag];
-    }
+- (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
+{
+  return [self getNo: data];
+}
 
-  // #define PR_REPLY_TIME                                       PROP_TAG(PT_SYSTIME   , 0x0030) /* 0x00300040 */
-  // #define PR_INTERNET_MESSAGE_ID_UNICODE                      PROP_TAG(PT_UNICODE   , 0x1035) /* 0x1035001f */
-  // #define PR_FLAG_STATUS                                      PROP_TAG(PT_LONG      , 0x1090) /* 0x10900003 */
+- (int) getPrSensitivity: (void **) data // not implemented, depends on CLASS
+{
+  // normal = 0, personal?? = 1, private = 2, confidential = 3
+  return [self getLongZero: data];
+}
+
+- (int) getPrCreationTime: (void **) data
+{
+  *data = [[event created] asFileTimeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrImportance: (void **) data
+{
+  uint32_t v;
+
+  if ([[event priority] isEqualToString: @"9"])
+    v = 0x0;
+  else if ([[event priority] isEqualToString: @"1"])
+    v = 0x2;
+  else
+    v = 0x1;
+    
+  *data = MAPILongValue (memCtx, v);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidIsRecurring: (void **) data
+{
+  *data = MAPIBoolValue (memCtx, [event isRecurrent]);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidRecurring: (void **) data
+{
+  *data = MAPIBoolValue (memCtx, [event isRecurrent]);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidAppointmentRecur: (void **) data
+{
+  int rc = MAPISTORE_SUCCESS;
+
+  if ([event isRecurrent])
+    *data = [self _computeAppointmentRecur];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
 
   return rc;
 }
@@ -333,12 +384,10 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   NSString *name, *email;
   NSArray *attendees;
   iCalPerson *person;
-  id event;
   struct SRowSet *recipients;
   int count, max;
 
   [super openMessage: msg];
-  event = [sogoObject component: NO secure: NO];
   attendees = [event attendees];
   max = [attendees count];
 
@@ -382,11 +431,11 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 {
   WOContext *woContext;
   iCalCalendar *vCalendar;
-  iCalEvent *vEvent;
   iCalDateTime *start, *end;
   iCalTimeZone *tz;
   NSCalendarDate *now;
   NSString *content, *tzName;
+  iCalEvent *newEvent;
   id value;
 
   [self logWithFormat: @"-save, event props:"];
@@ -395,25 +444,29 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   content = [sogoObject contentAsString];
   if (![content length])
     {
-      vEvent = [sogoObject component: YES secure: NO];
-      vCalendar = [vEvent parent];
+      newEvent = [sogoObject component: YES secure: NO];
+      if (newEvent != event)
+        ASSIGN (event, newEvent);
+      vCalendar = [event parent];
       [vCalendar setProdID: @"-//Inverse inc.//OpenChange+SOGo//EN"];
       content = [vCalendar versitString];
     }
 
   vCalendar = [iCalCalendar parseSingleFromSource: content];
-  vEvent = [[vCalendar events] objectAtIndex: 0];
+  newEvent = [[vCalendar events] objectAtIndex: 0];
+  if (newEvent != event)
+    ASSIGN (event, newEvent);
 
   // summary
   value = [newProperties
             objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
   if (value)
-    [vEvent setSummary: value];
+    [event setSummary: value];
 
   // Location
   value = [newProperties objectForKey: MAPIPropertyKey (PidLidLocation)];
   if (value)
-    [vEvent setLocation: value];
+    [event setLocation: value];
 
   tzName = [[self ownerTimeZone] name];
   tz = [iCalTimeZone timeZoneForName: tzName];
@@ -425,7 +478,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
     value = [newProperties objectForKey: MAPIPropertyKey (PidLidAppointmentStartWhole)];
   if (value)
     {
-      start = (iCalDateTime *) [vEvent uniqueChildWithTag: @"dtstart"];
+      start = (iCalDateTime *) [event uniqueChildWithTag: @"dtstart"];
       [start setTimeZone: tz];
       [start setDateTime: value];
     }
@@ -436,7 +489,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
     value = [newProperties objectForKey: MAPIPropertyKey (PidLidAppointmentEndWhole)];
   if (value)
     {
-      end = (iCalDateTime *) [vEvent uniqueChildWithTag: @"dtend"];
+      end = (iCalDateTime *) [event uniqueChildWithTag: @"dtend"];
       [end setTimeZone: tz];
       [end setDateTime: value];
     }
@@ -444,9 +497,9 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   now = [NSCalendarDate date];
   if ([sogoObject isNew])
     {
-      [vEvent setCreated: now];
+      [event setCreated: now];
     }
-  [vEvent setTimeStampAsDate: now];
+  [event setTimeStampAsDate: now];
 
   // Organizer and attendees
   value = [newProperties objectForKey: @"recipients"];
@@ -463,7 +516,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
       person = [iCalPerson new];
       [person setCn: [dict objectForKey: @"fullName"]];
       [person setEmail: [dict objectForKey: @"email"]];
-      [vEvent setOrganizer: person];
+      [event setOrganizer: person];
       [person release];
 
       recipients = [value objectForKey: @"to"];
@@ -480,8 +533,8 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 	  [person setRole: @"REQ-PARTICIPANT"]; 
 
 	  // FIXME: We must NOT always rely on this
-	  if (![vEvent isAttendee: [person rfc822Email]])
-	    [vEvent addToAttendees: person];
+	  if (![event isAttendee: [person rfc822Email]])
+	    [event addToAttendees: person];
 
 	  [person release];
 	}
@@ -492,11 +545,10 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
             objectForKey: MAPIPropertyKey (PidLidAppointmentRecur)];
   if (value)
     [self _setupRecurrenceInCalendar: vCalendar
-                     withMasterEvent: vEvent
                             fromData: value];
 
   // [sogoObject saveContentString: [vCalendar versitString]];
-  [sogoObject saveComponent: vEvent];
+  [sogoObject saveComponent: event];
 }
 
 /* TODO: those are stubs meant to prevent OpenChange from crashing when a
@@ -511,11 +563,6 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 - (id) lookupChild: (NSString *) childKey
 {
   return [attachmentParts objectForKey: childKey];
-}
-
-- (MAPIStoreAttachmentTable *) attachmentTable
-{
-  return [MAPIStoreAttachmentTable tableForContainer: self];
 }
 
 - (MAPIStoreAttachment *) createAttachment

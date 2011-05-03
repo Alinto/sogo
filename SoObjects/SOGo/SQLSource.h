@@ -2,7 +2,8 @@
  *
  * Copyright (C) 2009-2011 Inverse inc.
  *
- * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Authors: Ludovic Marcotte <lmarcotte@inverse.ca>
+ *          Francis Lachapelle <flachapelle@invers.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,9 +37,15 @@
 {
   NSString *_sourceID;
   NSString *_domain;
+  NSString *_authenticationFilter;
   NSArray *_mailFields;
+  NSString *_imapLoginField;
   NSString *_userPasswordAlgorithm;
   NSURL *_viewURL;
+
+  /* resources handling */
+  NSString *_kindField;
+  NSString *_multipleBookingsField;
 }
 
 @end

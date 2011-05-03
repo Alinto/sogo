@@ -24,35 +24,27 @@
 
 #import "MAPIStoreNotesMessage.h"
 
+#include <mapistore/mapistore_errors.h>
+
 @implementation MAPIStoreNotesMessage
 
-- (enum MAPISTATUS) getProperty: (void **) data
-                        withTag: (enum MAPITAGS) propTag
+- (int) getPrIconIndex: (void **) data // TODO
 {
-  int rc;
+  /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
+  // *longValue = 0x00000300 for blue
+  // *longValue = 0x00000301 for green
+  // *longValue = 0x00000302 for pink
+  // *longValue = 0x00000303 for yellow
+  // *longValue = 0x00000304 for white
+  *data = MAPILongValue (memCtx, 0x00000303);
+  
+  return MAPISTORE_SUCCESS;
+}
 
-  rc = MAPI_E_SUCCESS;
-  switch (propTag)
-    {
-    case PR_ICON_INDEX: // TODO
-      /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
-      // *longValue = 0x00000300 for blue
-      // *longValue = 0x00000301 for green
-      // *longValue = 0x00000302 for pink
-      // *longValue = 0x00000303 for yellow
-      // *longValue = 0x00000304 for white
-      *data = MAPILongValue (memCtx, 0x00000303);
-      break;
-
-    case PR_SUBJECT_UNICODE:
-      rc = [super getProperty: data
-                      withTag: PR_NORMALIZED_SUBJECT_UNICODE];
-      break;
-    default:
-      rc = [super getProperty: data withTag: propTag];
-    }
-
-  return rc;
+- (int) getPrSubject: (void **) data
+{
+  return [self getProperty: data
+                   withTag: PR_NORMALIZED_SUBJECT_UNICODE];
 }
 
 @end

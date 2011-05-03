@@ -2,14 +2,14 @@
   Copyright (C) 2007-2011 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo.
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -73,6 +73,7 @@
 #import <SOGo/WOResponse+SOGo.h>
 
 #import "iCalRepeatableEntityObject+SOGo.h"
+#import "iCalEvent+SOGo.h"
 #import "iCalPerson+SOGo.h"
 #import "SOGoAppointmentObject.h"
 #import "SOGoAppointmentFolders.h"
@@ -622,6 +623,9 @@ static NSNumber *sharedYes = nil;
   return record;
 }
 
+//
+//
+//
 - (NSArray *) fixupRecords: (NSArray *) theRecords
 {
   // TODO: is the result supposed to be sorted by date?
@@ -801,6 +805,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     [self _fixExceptionRecord: newRecord fromRow: row];
 }
 
+//
+//
+//
 - (void) _appendCycleExceptionsFromRow: (NSDictionary *) row
         firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 			      forRange: (NGCalendarDateRange *) dateRange
@@ -849,9 +856,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSArray *rules, *exRules, *exDates, *ranges;
   NSArray *elements, *components;
   NSString *content;
-  iCalRepeatableEntityObject *component;
-  id firstStartDate, firstEndDate;
-  NSCalendarDate *checkStartDate, *checkEndDate;
+  iCalDateTime *dtstart;
+  NSCalendarDate *checkStartDate, *checkEndDate, *firstStartDate, *firstEndDate;
+  iCalEvent *component;
   iCalTimeZone *eventTimeZone;
   unsigned count, max, offset;
 
@@ -889,53 +896,55 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	    {
 	      // Retrieve the range of the first/master event
 	      component = [components objectAtIndex: 0];
-	      firstStartDate = [component uniqueChildWithTag: @"dtstart"];
-	      firstEndDate = [component uniqueChildWithTag: @"dtend"];
-	      eventTimeZone = [(iCalDateTime*)firstStartDate timeZone];
-	      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: [[[firstStartDate values] lastObject] asCalendarDate]
-								       endDate: [[[firstEndDate values] lastObject] asCalendarDate]];
+	      dtstart = (iCalDateTime *)[component uniqueChildWithTag: @"dtstart"];
+              firstStartDate = [[[dtstart values] lastObject] asCalendarDate];
+              firstEndDate = [firstStartDate addTimeInterval: [component occurenceInterval]];
+              
+              firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
+                                                                       endDate: firstEndDate];
 
-	      if (eventTimeZone)
-		{
-		  // Adjust the range to check with respect to the event timezone (extracted from the start date)
-		  checkStartDate = [eventTimeZone computedDateForDate: [theRange startDate]];
-		  checkEndDate = [eventTimeZone computedDateForDate: [theRange endDate]];
-		  recurrenceRange = [NGCalendarDateRange calendarDateRangeWithStartDate: checkStartDate
-										endDate: checkEndDate];
-
-		  // Adjust the exception dates
-		  exDates = [eventTimeZone computedDatesForStrings: exDates];
-		  
-		  // Adjust the recurrence rules "until" dates
-		  rules = [component recurrenceRulesWithTimeZone: eventTimeZone];
-		  exRules = [component exceptionRulesWithTimeZone: eventTimeZone];
-		}
-	      else 
-		{
-		  recurrenceRange = theRange;
-		  if ([[theRecord objectForKey: @"c_isallday"] boolValue])
-		    {
-		      // The event lasts all-day and has no timezone (floating); we convert the range of the first event
-		      // to the user's timezone
-		      offset = [timeZone secondsFromGMTForDate: [firstRange startDate]];
-		      firstStartDate = (NSCalendarDate*)[[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-											  seconds:-offset];
-		      firstEndDate = (NSCalendarDate*)[[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-										      seconds:-offset];
-		      [firstStartDate setTimeZone: timeZone];
-		      [firstEndDate setTimeZone: timeZone];
-		      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
-									       endDate: firstEndDate];
-		    }
-		}
-
-	      // Calculate the occurrences for the given range
+              eventTimeZone = [dtstart timeZone];
+              if (eventTimeZone)
+                {
+                  // Adjust the range to check with respect to the event timezone (extracted from the start date)
+                  checkStartDate = [eventTimeZone computedDateForDate: [theRange startDate]];
+                  checkEndDate = [eventTimeZone computedDateForDate: [theRange endDate]];
+                  recurrenceRange = [NGCalendarDateRange calendarDateRangeWithStartDate: checkStartDate
+                                                                                endDate: checkEndDate];
+                  
+                  // Adjust the exception dates
+                  exDates = [eventTimeZone computedDatesForStrings: exDates];
+                  
+                  // Adjust the recurrence rules "until" dates
+                  rules = [component recurrenceRulesWithTimeZone: eventTimeZone];
+                  exRules = [component exceptionRulesWithTimeZone: eventTimeZone];
+                }
+              else 
+                {
+                  recurrenceRange = theRange;
+                  if ([[theRecord objectForKey: @"c_isallday"] boolValue])
+                    {
+                      // The event lasts all-day and has no timezone (floating); we convert the range of the first event
+                      // to the user's timezone
+                      offset = [timeZone secondsFromGMTForDate: [firstRange startDate]];
+                      firstStartDate = [[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                                         seconds:-offset];
+                      firstEndDate = [[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                                     seconds:-offset];
+                      [firstStartDate setTimeZone: timeZone];
+                      [firstEndDate setTimeZone: timeZone];
+                      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
+                                                                               endDate: firstEndDate];
+                    }
+                }
+              
+              // Calculate the occurrences for the given range
               records = [NSMutableArray array];
-	      ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: recurrenceRange
-							  firstInstanceCalendarDateRange: firstRange
+              ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: recurrenceRange
+                                                          firstInstanceCalendarDateRange: firstRange
 									 recurrenceRules: rules
-									  exceptionRules: exRules
-									  exceptionDates: exDates];
+                                                                          exceptionRules: exRules
+                                                                          exceptionDates: exDates];
               max = [ranges count];
               for (count = 0; count < max; count++)
                 {
@@ -947,15 +956,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                   if (fixedRow)
                     [records addObject: fixedRow];
                 }
-
+              
               [self _appendCycleExceptionsFromRow: row
                    firstInstanceCalendarDateRange: firstRange
                                          forRange: theRange
                                           toArray: records];
-  
+              
               [theRecords addObjectsFromArray: records];
-	    }
-	}
+            }
+        }
     }
   else
     [self errorWithFormat:@"cyclic record doesn't have content -> %@", theRecord];
@@ -1504,7 +1513,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   order = [[container subFolders] indexOfObject: self];
 
-  return [NSString stringWithFormat: @"%d", order];
+  return [NSString stringWithFormat: @"%d", order+1];
 }
 
 - (NSException *) setDavCalendarOrder: (NSString *) newColor
@@ -2607,10 +2616,21 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return ([object saveContentString: content] == nil);
 }
 
+/**
+ * Import all components of a vCalendar.
+ * @param calendar the calendar to import
+ * @return the number of components imported
+ */
 - (int) importCalendar: (iCalCalendar *) calendar
 {
+  NSArray *vtimezones;
   NSMutableArray *components;
+  NSMutableDictionary *timezones;
   NSString *tz;
+  iCalEntityObject *element;
+  iCalDateTime *startDate;
+  iCalTimeZone *timezone;
+  iCalEvent *event;
 
   int imported, count, i;
   
@@ -2618,25 +2638,55 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   if (calendar)
     {
+      // Build a hash with the timezones includes in the calendar
+      vtimezones = [calendar timezones];
+      count = [vtimezones count];
+      timezones = [NSMutableDictionary dictionaryWithCapacity: count];
+      for (i = 0; i < count; i++)
+        {
+          timezone = (iCalTimeZone *)[vtimezones objectAtIndex: i];
+          [timezones setValue: [NSString stringWithFormat: @"%@\n", [timezone versitString]]
+                       forKey: [timezone tzId]];
+        }
+
+      // Parse events/todos/journals and import them
       components = [[calendar events] mutableCopy];
       [components autorelease];
       [components addObjectsFromArray: [calendar todos]];
       [components addObjectsFromArray: [calendar journals]];
       [components addObjectsFromArray: [calendar freeBusys]];
-
-#warning FIXME we might want to eventually support multiple timezone definitions and match the one used by the event
-      if ([[calendar timezones] count])
-	tz = [NSString stringWithFormat: @"%@\n", 
-		       [[[calendar timezones] lastObject] versitString]];
-      else
-	tz = @"";
-
       count = [components count];
       for (i = 0; i < count; i++)
-        if ([self importComponent: [components objectAtIndex: i] timezone: tz])
-          imported++;
+        {
+          tz = nil;
+          element = [components objectAtIndex: i];
+          // Use the timezone of the start date.
+          startDate = (iCalDateTime *)[element uniqueChildWithTag: @"dtstart"];
+          if (startDate)
+            {
+              timezone = [startDate timeZone];
+              tz = [timezones valueForKey: [timezone tzId]];
+              if ([element isKindOfClass: [iCalEvent class]])
+                {
+                  event = (iCalEvent *)element;
+                  if (![event hasEndDate] && ![event hasDuration])
+                    {
+                      // No end date, no duration
+                      if ([event isAllDay])
+                        [event setDuration: @"P1D"];
+                      else
+                        [event setDuration: @"PT1H"];
+                      
+                      [self errorWithFormat: @"Importing event with no end date; setting duration to %@", [event duration]];
+                    }
+                }
+            }
+          if ([self importComponent: element
+                           timezone: (tz == nil? @"" : tz)])
+            imported++;
+        }
     }
-
+  
   return imported;
 }
 

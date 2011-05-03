@@ -165,6 +165,8 @@
 "InboxFolderName"  = "Innboks";
 "DraftsFolderName" = "Kladder";
 "SieveFolderName"  = "Filter";
+"OtherUsersFolderName"   = "Other Users";
+"SharedFoldersName" = "Shared Folders";
 "Folders"          = "Mapper"; /* title line */
 
 /* MailMoveToPopUp */

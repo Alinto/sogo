@@ -36,6 +36,8 @@
 
 @interface MAPIStoreObject : NSObject
 {
+  const IMP *classGetters;
+
   NSMutableArray *parentContainersBag;
   MAPIStoreObject *container;
   id sogoObject;
@@ -46,6 +48,8 @@
 
 + (id) mapiStoreObjectWithSOGoObject: (id) newSOGoObject
                          inContainer: (MAPIStoreObject *) newContainer;
++ (int) getAvailableProperties: (struct SPropTagArray *) properties;
+
 - (id) initWithSOGoObject: (id) newSOGoObject
               inContainer: (MAPIStoreObject *) newFolder;
 
@@ -74,6 +78,7 @@
 - (void) resetNewProperties;
 
 /* ops */
+- (int) getAvailableProperties: (struct SPropTagArray *) properties;
 - (int) getProperties: (struct mapistore_property_data *) data
              withTags: (enum MAPITAGS *) tags
              andCount: (uint16_t) columnCount;
@@ -82,6 +87,12 @@
 
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag;
+
+/* helper getters */
+- (int) getEmptyString: (void **) data;
+- (int) getLongZero: (void **) data;
+- (int) getYes: (void **) data;
+- (int) getNo: (void **) data;
 
 /* subclasses */
 - (id) lookupChild: (NSString *) childKey;

@@ -60,3 +60,5 @@ vtodo_class2 = "(Confidential task)";
 = "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}не определился с желанием участвовать в запланированном мероприятии.";
+
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Уже подано максимальное количество заявок (%{NumberOfSimultaneousBookings}) на ресурс \"%{Cn} %{SystemEmail}\".";

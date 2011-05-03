@@ -449,16 +449,17 @@ function isSafari3() {
     return (navigator.appVersion.indexOf("Version") > -1);
 }
 
-function isSafari() {
+function isWebKit() {
     //var agt = navigator.userAgent.toLowerCase();
     //var is_safari = ((agt.indexOf('safari')!=-1)&&(agt.indexOf('mac')!=-1))?true:false;
-
-    return (navigator.vendor == "Apple Computer, Inc.") || (navigator.userAgent.toLowerCase().indexOf('konqueror') != -1);
+    return (navigator.vendor == "Apple Computer, Inc.") ||
+        (navigator.userAgent.toLowerCase().indexOf('konqueror') != -1) ||
+        (navigator.userAgent.indexOf('AppleWebKit') != -1);
 }
 
 function isHttpStatus204(status) {
     return (status == 204 ||                                  // Firefox
-            (isSafari() && typeof(status) == 'undefined') ||  // Safari
+            (isWebKit() && typeof(status) == 'undefined') ||  // Safari
             status == 1223);                                  // IE
 }
 
@@ -498,7 +499,7 @@ function refreshOpener() {
 
 function eventIsLeftClick(event) {
     var isLeftClick = true;
-    if (isMac() && isSafari()) {
+    if (isMac() && isWebKit()) {
         if (event.ctrlKey == 1) {
             // Control-click is equivalent to right-click under Mac OS X
             isLeftClick = false;
@@ -1778,9 +1779,13 @@ function createDialog(id, title, legend, content, positionClass) {
         var titleh3 = createElement("h3", null, null, null, null, subdiv);
         titleh3.appendChild(document.createTextNode(title));
     }
-    if (legend && legend.length > 0) {
-        var legendP = createElement("p", null, null, null, null, subdiv);
-        legendP.appendChild(document.createTextNode(legend));
+    if (legend) {
+        if (Object.isElement(legend))
+            subdiv.appendChild(legend);
+        else if (legend.length > 0) {
+            var legendP = createElement("p", null, null, null, null, subdiv);
+            legendP.appendChild(document.createTextNode(legend));
+        }
     }
     if (content)
         subdiv.appendChild(content);
@@ -1833,7 +1838,10 @@ function _showAlertDialog(label) {
 }
 
 function showConfirmDialog(title, label, callbackYes, callbackNo) {
-    var dialog = dialogs[title+label];
+    var key = title;
+    if (Object.isElement(label)) key += label.allTextContent();
+    else key += label;
+    var dialog = dialogs[key];
     if (dialog) {
         $("bgDialogDiv").show();
 
@@ -1854,7 +1862,7 @@ function showConfirmDialog(title, label, callbackYes, callbackNo) {
                               fields,
                               "none");
         document.body.appendChild(dialog);
-        dialogs[title+label] = dialog;
+        dialogs[key] = dialog;
     }
     dialog.show();
 }

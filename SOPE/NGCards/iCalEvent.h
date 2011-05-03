@@ -51,6 +51,7 @@
 - (BOOL) hasEndDate;
 
 - (NSString *) duration;
+- (void) setDuration: (NSString *) _value;
 - (BOOL) hasDuration;
 - (NSTimeInterval) durationAsTimeInterval;
 

@@ -86,7 +86,7 @@
       break;
     case PR_ATTACH_TAG:
       *data = [[self mimeAttachTag]
-		asShortBinaryInMemCtx: memCtx];
+		asBinaryInMemCtx: memCtx];
       break;
     case PR_ATTACH_SIZE:
       longValue = [[bodyInfo objectForKey: @"size"] longValue];
@@ -95,7 +95,7 @@
 
     case PR_RECORD_KEY:
       *data = [[NSData dataWithBytes: recordBytes length: 16]
-		asShortBinaryInMemCtx: memCtx];
+		asBinaryInMemCtx: memCtx];
       break;
       
       // PR_RECORD_KEY (0xFF90102)                             D9 D8 11 A3 E2 90 18 41 9E 04 58 46 9D 6D 1B 68
@@ -152,7 +152,7 @@
       break;
 
     case PR_ATTACH_DATA_BIN:
-      *data = [[sogoObject fetchBLOB] asShortBinaryInMemCtx: memCtx];
+      *data = [[sogoObject fetchBLOB] asBinaryInMemCtx: memCtx];
       break;
 
     default:

@@ -4,6 +4,7 @@
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -161,12 +162,16 @@ static NSArray *commonSearchFields;
       searchFields = [NSArray arrayWithObjects: @"sn", @"displayname", @"telephonenumber", nil];
       [searchFields retain];
       IMAPHostField = nil;
+      IMAPLoginField = nil;
       bindFields = nil;
       _scope = @"sub";
       _filter = nil;
 
       searchAttributes = nil;
       passwordPolicy = NO;
+
+      kindField = nil;
+      multipleBookingsField = nil;
 
       _dnCache = [[NSMutableDictionary alloc] init];
     }
@@ -176,7 +181,6 @@ static NSArray *commonSearchFields;
 
 - (void) dealloc
 {
-  NSLog(@"LDAPSource: -dealloc");
   [bindDN release];
   [hostname release];
   [encryption release];
@@ -188,6 +192,7 @@ static NSArray *commonSearchFields;
   [mailFields release];
   [searchFields release];
   [IMAPHostField release];
+  [IMAPLoginField release];
   [bindFields release];
   [_filter release];
   [sourceID release];
@@ -196,6 +201,8 @@ static NSArray *commonSearchFields;
   [searchAttributes release];
   [domain release];
   [_dnCache release];
+  [kindField release];
+  [multipleBookingsField release];
   [super dealloc];
 }
 
@@ -223,7 +230,10 @@ static NSArray *commonSearchFields;
            mailFields: [udSource objectForKey: @"MailFieldNames"]
 	 searchFields: [udSource objectForKey: @"SearchFieldNames"]
 	IMAPHostField: [udSource objectForKey: @"IMAPHostFieldName"]
-	andBindFields: [udSource objectForKey: @"bindFields"]];
+       IMAPLoginField: [udSource objectForKey: @"IMAPLoginFieldName"]
+	   bindFields: [udSource objectForKey: @"bindFields"]
+	    kindField: [udSource objectForKey: @"KindFieldName"]
+	    andMultipleBookingsField: [udSource objectForKey: @"MultipleBookingsFieldName"]];
 
       if ([sourceDomain length])
         {
@@ -305,7 +315,10 @@ static NSArray *commonSearchFields;
 	mailFields: (NSArray *) newMailFields
       searchFields: (NSArray *) newSearchFields
      IMAPHostField: (NSString *) newIMAPHostField
-     andBindFields: (id) newBindFields
+    IMAPLoginField: (NSString *) newIMAPLoginField
+	bindFields: (id) newBindFields
+	 kindField: (NSString *) newKindField
+andMultipleBookingsField: (NSString *) newMultipleBookingsField
 {
   ASSIGN (baseDN, [newBaseDN lowercaseString]);
   if (newIDField)
@@ -316,6 +329,8 @@ static NSArray *commonSearchFields;
     ASSIGN (UIDField, newUIDField);
   if (newIMAPHostField)
     ASSIGN (IMAPHostField, newIMAPHostField);
+  if (newIMAPLoginField)
+    ASSIGN (IMAPLoginField, newIMAPLoginField);
   if (newMailFields)
     ASSIGN (mailFields, newMailFields);
   if (newSearchFields)
@@ -343,6 +358,10 @@ static NSArray *commonSearchFields;
 	  ASSIGN(bindFields, [newBindFields componentsSeparatedByString: @","]);
 	}
     }
+  if (newKindField)
+    ASSIGN(kindField, newKindField);
+  if (newMultipleBookingsField)
+    ASSIGN(multipleBookingsField, newMultipleBookingsField);
 }
 
 - (BOOL) _setupEncryption: (NGLdapConnection *) encryptedConn
@@ -694,6 +713,17 @@ static NSArray *commonSearchFields;
       // Add IMAP hostname from user defaults
       if ([IMAPHostField length])
         [searchAttributes addObjectUniquely: IMAPHostField];
+
+      // Add IMAP login from user defaults
+      if ([IMAPLoginField length])
+        [searchAttributes addObjectUniquely: IMAPLoginField];
+
+      // Add the resources handling attributes
+      if ([kindField length])
+	[searchAttributes addObjectUniquely: kindField];
+
+      if ([multipleBookingsField length])
+	[searchAttributes addObjectUniquely: multipleBookingsField];
     }
 
   return searchAttributes;
@@ -760,6 +790,13 @@ static NSArray *commonSearchFields;
       ldapValue = [[ldapEntry attributeWithName: IMAPHostField] stringValueAtIndex: 0];
       if ([ldapValue length] > 0)
 	[contactEntry setObject: ldapValue forKey: @"c_imaphostname"];
+    }
+
+  if (IMAPLoginField)
+    {
+      ldapValue = [[ldapEntry attributeWithName: IMAPLoginField] stringValueAtIndex: 0];
+      if ([ldapValue length] > 0)
+	[contactEntry setObject: ldapValue forKey: @"c_imaplogin"];
     }
 }
 
@@ -838,6 +875,14 @@ static NSArray *commonSearchFields;
 	  [contactEntry setObject: [NSNumber numberWithInt: 1]
 			   forKey: @"isGroup"];
 	}
+      // We check if our entry is a resource. We also support
+      // determining resources based on the KindFieldName attribute
+      // value - see below.
+      else if ([classes containsObject: @"calendarresource"])
+	{
+	  [contactEntry setObject: [NSNumber numberWithInt: 1]
+			forKey: @"isResource"];
+	}
     }
 
   while ((currentAttribute = [attributes nextObject]))
@@ -847,7 +892,37 @@ static NSArray *commonSearchFields;
 
       // It's important here to set our attributes' key in lowercase.
       if (value)
-	[contactEntry setObject: value forKey: [currentAttribute lowercaseString]];
+	{
+	  currentAttribute = [currentAttribute lowercaseString];
+	  [contactEntry setObject: value forKey: currentAttribute];
+
+	  // We check if that entry corresponds to a resource. For this,
+	  // kindField must be defined and it must hold one of those values
+	  //				       
+	  // location
+	  // thing
+	  // group
+	  //
+	  if (kindField &&
+	      [kindField caseInsensitiveCompare: currentAttribute] == NSOrderedSame)
+	    {
+	      if ([value caseInsensitiveCompare: @"location"] == NSOrderedSame ||
+		  [value caseInsensitiveCompare: @"thing"] == NSOrderedSame ||
+		  [value caseInsensitiveCompare: @"group"] == NSOrderedSame) 
+		{
+		  [contactEntry setObject: [NSNumber numberWithInt: 1]
+				forKey: @"isResource"];
+		}
+	    }
+	  // We check for the number of simultanous bookings that is allowed.
+	  // A value of 0 means that there's no limit.
+	  if (multipleBookingsField &&
+	      [multipleBookingsField caseInsensitiveCompare: currentAttribute] == NSOrderedSame)
+	    {
+	      [contactEntry setObject: [NSNumber numberWithInt: [value intValue]]
+			    forKey: @"numberOfSimultaneousBookings"];
+	    }
+	}
     }
 
   value = [[ldapEntry attributeWithName: IDField] stringValueAtIndex: 0];

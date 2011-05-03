@@ -1,3 +1,236 @@
+2011-04-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/SQLSource.{h,m}: Added resources support,
+	just like for LDAP-based sources.
+	* SoObjects/SOGo/SOGoParentFolder.m (_createPersonalFolder):
+	We now also autocreate database tables if the "user"
+	is a resource.
+
+2011-04-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (onFolderUnsubscribeCB):
+	select the personal calendar to avoid trying creating an event or
+	a task in the calendar to which the user has just unsubscribed.
+
+2011-04-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Added the concept of "resources" in SOGo in order
+	to avoid double-bookings (if not more) and also, handle
+	auto-accepts. This works for the web interface and
+	over DAV - generating 403 errors in case of a conflict.
+
+2011-04-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Added the possibility of translating IMAP namespaces
+	and we now extract the full name the mailbox owner under
+	the "Other Users" namespace.
+
+2011-04-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (deleteEvent): we now show
+	in the confirmation dialog box which events will be deleted.
+
+	* UI/WebServerResources/generic.js (createDialog): the legend
+	argument can now be a string or an element.
+	(isWebKit): was isSafari; now consider all WebKit-based browsers together.
+
+	* UI/WebServerResources/UIxMailToSelection.js: various
+	improvements to behave like in Thunderbird.
+
+	* UI/WebServerResources/SOGoAutoCompletion.js: idem.
+
+	* UI/WebServerResources/UIxMailEditor.js (initAddresses): was
+	initTabIndex. We were not handling the tab indexes properly which
+	was causing incorrect behavior in IE.
+
+2011-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailAttachment.m (-): binary properties are
+	represented by a struct Binary_r.
+
+	* OpenChange/NSObject+MAPIStore.m
+	(-getMAPIValue:forTag:inMemCtx:): binary properties are
+	represented by a struct Binary_r.
+
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromMAPISPropValue)
+	(NSObjectFromSPropValue): we now support PT_SVREID and handle it
+	exactly as PT_BINARY.
+
+	* OpenChange/MAPIStoreMessage.m (-attachmentTable): as all the
+	subclasses were using the same MAPIStoreAttachmentTable
+	implementation, this method now performs the same operation and
+	thereby no longer requires subclasssing.
+
+	* OpenChange/MAPIStoreObject.m (-getProperty:withTag:): compute
+	the method selector and pass it as argument to the IMP of the
+	property getter, as would be with any regular method invocation.
+
+	* OpenChange/MAPIStoreMailMessage.m (-getPrBody:): no longer check
+	the size of the returned content, as streams are now handled
+	internally by OpenChange.
+	(-getPrHtml): same as above.
+
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromStreamData): removed
+	helper function as it's no longer used.
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_op_set_property_from_fd)
+	(sogo_op_get_property_into_fd): those backend methods are no
+	longer used, as OpenChange handles the property streams internally
+	now.
+
+	* OpenChange/gen-property-selectors.py: added code to generate
+	MAPIStoreSupportedProperties as the array of properties that are
+	handled by OpenChange and MAPIStoreSupportedPropertiesCount as the
+	count of those properties.
+
+	* OpenChange/MAPIStoreObject.m (+getAvailableProperties): ObjC
+	corollary of the "sogo_pocop_get_available_properties" backend
+	method.
+	(-getAvailableProperties): proxy to the class method of the same
+	name.
+
+	* OpenChange/MAPIStoreTable.m (+childObjectClass): new mandatory
+	method that returns the Class of the objects represented in the
+	rows of the table.
+	(-getAvailableProperties:): ObjC corollary of the
+	"sogo_pocop_get_available_table_properties" backend method.
+
+	* OpenChange/MAPIStoreSOGo.m
+	(sogo_pocop_get_available_table_properties): new backend getter
+	that returns the list of properties that can be queried on the
+	table rows.
+	(sogo_pocop_get_available_properties): new backend getter
+	that returns the list of properties that can be queried on the
+	discrete object passed as parameter.
+
+	* OpenChange/code-MAPIStorePropertySelectors.m
+	(MAPIStorePropertyGettersForClass): use the
+	"MAPIStoreProeprtyGetter" type rather than IMP as result type.
+
+	* OpenChange/MAPIStoreFolderTable.m (-restrictedChildKeys): no
+	longer a mandatory method, returns [self childKeys] when not
+	overriden and issue an error message.
+
+	* OpenChange/MAPIStoreFolder.m (-createMessage): no longer a
+	mandatory method. Returns nil when not overriden.
+
+2011-04-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-_flattenCycleRecord:forRange:intoArray:): fixed the
+	verification of the event's timezone.
+
+2011-04-15  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/iCalEvent+SOGo.m (-firstOccurenceRange):
+	we now compute the end date by looking at the occurrence
+	interval. This way, we support events with an end date or a duration.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-_flattenCycleRecord:forRange:intoArray:): also compute the end
+	date by looking at the occurrence interval.
+	(-importCalendar:): added a duration to events with no end date nor duration.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(-_adjustEventsInRequest:): new method to verify the vCalendar for
+	any inconsistency or missing attributes. Currently, it only adds a
+	duration if no end date nor duration is found.
+
+	* UI/WebServerResources/ckeditor/config.js: Changed the default
+	enter mode to use BR instead of P. This matches the behavior of Thunderbird.
+
+2011-04-14  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxContactEditor.js
+	(validateContactEditor): now uses the regexp defined in generic.js
+	 (emailRE) to validate the email addresses. This fixes an issue
+	with valid addresses starting with an underscore (bug #1246).
+
+	* UI/MailerUI/UIxMailAccountActions.m (-composeAction): properly decode
+	submitted recipients and subjects (URL-encoded).
+
+	* SoObjects/SOGo/SOGoUserManager.m (-getImapLoginForUID:): we now
+	consider the source parameter IMAPLoginFieldName. We continue to support
+	SOGoForceIMAPLoginWithEmail at the domain/system level.
+
+	* SoObjects/SOGo/LDAPSource.m: we can now define a new parameter
+	named IMAPLoginFieldName to specify which field to use for IMAP
+	authentication. By default, we use the value of the UIDFieldName.
+
+	* SoObjects/SOGo/SQLSource.m
+	(-checkLogin:password:perr:expire:grace:): if the defaults parameter
+	authenticationFilter is defined, we add it to the SQL where clause.
+	(_lookupContactEntry:considerEmail:): we add a new key
+	 (canAuthenticate) to the returned dictionary that specifies if the
+	user can authenticate or not. We also add c_imaplogin when the
+	user must authenticate with a different username to the IMAP server.
+
+	* SoObjects/SOGo/SOGoUser.m (-canAuthenticate): new method that
+	returns true if the user can authenticate, based on the
+	authentication filter associated to the source.
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (-ocsFolder): don't automatically
+	create the folder if the user can't authenticate.
+
+	* UI/Contacts/UIxContactsListActions.m: was
+	UIxContactsListView.m. The new method contactsListAction now
+	returns a JSON representation of the addressbook.
+
+	* UI/Contacts/UIxContactFoldersView.m (-personalContactInfos): new
+	method used to populate the wox template with the personal
+	addressbook. The addressbook module is now pre-loaded with it,
+	eliminating an Ajax query.
+
+	* UI/WebServerResources/ContactsUI.js (initContacts): delegate
+	all events to the table instead of each row.
+	(contactsListCallback): we now receive a JSON representation of
+	the contacts and reuse the existing table rows instead of
+	overwriting the table.
+
+2011-04-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreObject.m: make use of the IMP cache methods
+	available in MAPIStorePropertySelectors to query object
+	properties.
+	* OpenChange/*{Message,Folder}.m: replaced the implementations of
+	-getProperty:withTag: with equivalent property getter methods.
+
+	* OpenChange/MAPIStoreContext.m (-url): new method that returns
+	the context url.
+
+	* OpenChange/gen-property-selectors.py: new generator script that
+	outputs MAPIStorePropertySelectors.[hm], which is a helper
+	module that provides methods for handling of cached
+	property method IMPs.
+
+2011-04-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m
+	(-bodyPartForAttachmentWithName:): don't choose "quoted-printable"
+	if the mimetype is anything else than "text/plain" or "text/html",
+	to avoid issues with filenames attached with a wrong mime type.
+
+2011-04-12  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-importCalendar:): we now associate the proper vtimezone to each
+	event found in the calendar.
+
+2011-04-11  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxMailToSelection.js
+	(addressFieldLostFocus): split content separated by commas
+	or semi-colons.
+
+2011-04-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Unit/TestNSString+URLEscaping.m: new test module.
+	(-test_stringByEscapingURL): new test method for -[NSString
+	stringByEscapingURL].
+
+	* Tests/Unit/sogo-tests.m (main): added volatile user defaults for
+	utf8 url encoding.
+
 2011-04-07  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (onMenuRenameFolderConfirm):

@@ -1141,7 +1141,7 @@ static NSString    *userAgent      = nil;
 
   if ((s = [self contentTypeForAttachmentWithName:_name]) != nil) {
     [map setObject:s forKey: @"content-type"];
-    if ([s hasPrefix: @"text/"])
+    if ([s hasPrefix: @"text/plain"] || [s hasPrefix: @"text/html"])
       attachAsString = YES;
     else if ([s hasPrefix: @"message/rfc822"])
       is7bit = YES;

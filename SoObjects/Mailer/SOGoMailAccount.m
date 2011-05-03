@@ -72,6 +72,8 @@ static NSString *sieveScriptName = @"sogo";
       trashFolder = nil;
       imapAclStyle = undefined;
       identities = nil;
+      otherUsersFolderName = nil;
+      sharedFoldersName = nil;
     }
 
   return self;
@@ -84,6 +86,8 @@ static NSString *sieveScriptName = @"sogo";
   [sentFolder release];
   [trashFolder release];
   [identities release];
+  [otherUsersFolderName release];
+  [sharedFoldersName release];
   [super dealloc];  
 }
 
@@ -120,17 +124,33 @@ static NSString *sieveScriptName = @"sogo";
   NSArray *namespace;
   NGImap4Client *client;
 
+  SOGoUser *user;
+  NSArray *accounts;
+  NSDictionary *account;
+
+  user = [SOGoUser userWithLogin: [self ownerInContext: nil]];
+  accounts = [user mailAccounts];
+  account = [accounts objectAtIndex: [nameInContainer intValue]];
   client = [[self imap4Connection] client];
   namespaceDict = [client namespace];
+
   namespace = [namespaceDict objectForKey: @"personal"];
   if (namespace)
     [self _appendNamespace: namespace toFolders: folders];
+
   namespace = [namespaceDict objectForKey: @"other users"];
   if (namespace)
-    [self _appendNamespace: namespace toFolders: folders];
+    {
+      [self _appendNamespace: namespace toFolders: folders];
+      ASSIGN(otherUsersFolderName, [folders lastObject]);     
+    }
+
   namespace = [namespaceDict objectForKey: @"shared"];
   if (namespace)
-    [self _appendNamespace: namespace toFolders: folders];
+    {
+      [self _appendNamespace: namespace toFolders: folders];
+      ASSIGN(sharedFoldersName, [folders lastObject]);
+    }
 }
 
 - (NSArray *) _namespacesWithKey: (NSString *) nsKey
@@ -786,6 +806,16 @@ static NSString *sieveScriptName = @"sogo";
 - (NSString *) trashFolderNameInContext: (id)_ctx
 {
   return [self _userFolderNameWithPurpose: @"Trash"];
+}
+
+- (NSString *) otherUsersFolderNameInContext: (id)_ctx
+{
+  return otherUsersFolderName;
+}
+
+- (NSString *) sharedFoldersNameInContext: (id)_ctx
+{
+  return sharedFoldersName;
 }
 
 - (id) folderWithTraversal: (NSString *) traversal

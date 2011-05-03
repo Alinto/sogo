@@ -1,6 +1,6 @@
 /* UIxMailAccountActions.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -33,6 +33,8 @@
   NSString *draftsFolderName;
   NSString *sentFolderName;
   NSString *trashFolderName;
+  NSString *otherUsersFolderName;
+  NSString *sharedFoldersName;
 }
 
 - (WOResponse *) listMailboxesAction;
