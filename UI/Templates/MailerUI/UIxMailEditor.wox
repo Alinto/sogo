@@ -58,7 +58,7 @@
       <var:string label:value="Attachments:" />
       <ul id="attachments">
 	<var:foreach list="attachmentNames" item="attachmentName"
-	  ><li><img rsrc:src="attachment.gif"
+	  ><li var:title="attachmentName"><img rsrc:src="attachment.gif"
 	      /><var:string value="attachmentName"
 	      /></li></var:foreach>
       </ul>
