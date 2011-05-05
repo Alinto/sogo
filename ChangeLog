@@ -1,3 +1,10 @@
+2011-05-05  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/MailerUI/UIxMailAccountActions.m - fixed an issue
+	with namespace handling in Dovecot. We do not try
+	to swap the mailbox name, which can correspond to an
+	username if we are dealing with the top-level mailbox.
+
 2011-05-03  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (onRowClick): in some cases

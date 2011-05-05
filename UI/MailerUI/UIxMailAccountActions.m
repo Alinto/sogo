@@ -133,18 +133,29 @@
       // to the full name of the person.
       if (otherUsersFolderName && [currentFolder hasPrefix: otherUsersFolderName])
 	{
-	  // We have a string like /Other Users/lmarcotte/...
+	  // We have a string like /Other Users/lmarcotte/... under Cyrus, but we could
+	  // also have something like /shared under Dovecot. So we swap the username only
+	  // if we have one, of course.
 	  pathComponents = [NSMutableArray arrayWithArray: [currentFolder pathComponents]];
-	  login = [pathComponents objectAtIndex: 2];
-	  userManager = [SOGoUserManager sharedUserManager];
-	  fullName = [userManager getCNForUID: login];
-	  [pathComponents removeObjectsInRange: NSMakeRange(0,3)];
 	  
-	  currentDisplayName = [NSString stringWithFormat: @"/%@/%@/%@", 
-					 [self labelForKey: @"OtherUsersFolderName"],
-					 (fullName != nil ? fullName : login),
-					 [pathComponents componentsJoinedByString: @"/"]];
-				    
+	  if ([pathComponents count] > 2) 
+	    {
+	      login = [pathComponents objectAtIndex: 2];
+	      userManager = [SOGoUserManager sharedUserManager];
+	      fullName = [userManager getCNForUID: login];
+	      [pathComponents removeObjectsInRange: NSMakeRange(0,3)];
+	  
+	      currentDisplayName = [NSString stringWithFormat: @"/%@/%@/%@", 
+					     [self labelForKey: @"OtherUsersFolderName"],
+					     (fullName != nil ? fullName : login),
+					     [pathComponents componentsJoinedByString: @"/"]];
+	      
+	    }
+	  else
+	    {
+	      currentDisplayName = [NSString stringWithFormat: @"/%@%@", [self labelForKey: @"OtherUsersFolderName"],
+					     [currentFolder substringFromIndex: [otherUsersFolderName length]]];
+	    }
 	}
       else if (sharedFoldersName && [currentFolder hasPrefix: sharedFoldersName])
 	currentDisplayName = [NSString stringWithFormat: @"/%@%@", [self labelForKey: @"SharedFoldersName"],
