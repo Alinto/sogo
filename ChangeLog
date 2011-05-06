@@ -1,3 +1,9 @@
+2011-05-06  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js
+	(displayAccountSignature): fixed an issue with an HTML signature
+	that start with a paragraph tag.
+
 2011-05-05  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/MailerUI/UIxMailAccountActions.m - fixed an issue

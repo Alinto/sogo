@@ -670,9 +670,7 @@ function displayAccountSignature(mailAccount) {
     var identity = (mailAccount["identities"]
                     ? mailAccount["identities"][0]
                     : {} );
-    var value = identity["signature"].replace(/^[ \n\r]*$/, "");
-    if (CKEDITOR.instances["signature"])
-	value = value.stripTags().unescapeHTML();
+    var value = identity["signature"].stripTags().unescapeHTML().replace(/^[ \n\r]*/, "");
     if (value && value.length > 0) {
         if (value.length < 30) {
             actSignatureValue = value;
