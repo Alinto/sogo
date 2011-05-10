@@ -1,3 +1,8 @@
+2011-05-10  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	*  NSDictionary+Utilities.m (userRecordAsLDIFEntry):
+	Fix to avoid a crash when backing up resources' LDIF entries
+
 2011-05-06  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxPreferences.js

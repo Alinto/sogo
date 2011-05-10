@@ -1,6 +1,6 @@
 /* NSDictionary+Utilities.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -172,7 +172,9 @@
             || [currentKey hasPrefix: @"objectClass"]
             || [currentKey hasPrefix: @"c_"]
             || [currentKey isEqualToString: @"dn"]
-	    || [currentKey isEqualToString: @"isGroup"]))
+	    || [currentKey isEqualToString: @"isGroup"]
+	    || [currentKey isEqualToString: @"isResource"]
+	    || [currentKey isEqualToString: @"numberOfSimultaneousBookings"]))
         [self _appendLDIFKey: currentKey toString: ldifString];
     }
 
