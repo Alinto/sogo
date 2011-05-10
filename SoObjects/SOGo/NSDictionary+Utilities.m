@@ -114,11 +114,14 @@
                   value: (NSString *) value
                toString: (NSMutableString *) ldifString
 {
-  if ([value _isLDIFSafe])
-    [ldifString appendFormat: @"%@: %@\n", key, value];
-  else
-    [ldifString appendFormat: @"%@:: %@\n",
-                key, [value stringByEncodingBase64]];
+  if ([value isKindOfClass: [NSString class]])
+    {
+      if ([value _isLDIFSafe])
+	[ldifString appendFormat: @"%@: %@\n", key, value];
+      else
+	[ldifString appendFormat: @"%@:: %@\n",
+		    key, [value stringByEncodingBase64]];
+    }
 }
 
 - (void) _appendLDIFKey: (NSString *) key
@@ -174,7 +177,8 @@
             || [currentKey isEqualToString: @"dn"]
 	    || [currentKey isEqualToString: @"isGroup"]
 	    || [currentKey isEqualToString: @"isResource"]
-	    || [currentKey isEqualToString: @"numberOfSimultaneousBookings"]))
+	    || [currentKey isEqualToString: @"numberOfSimultaneousBookings"]
+	    || [currentKey isEqualToString: @"canAuthenticate"]))
         [self _appendLDIFKey: currentKey toString: ldifString];
     }
 
