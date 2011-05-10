@@ -110,6 +110,7 @@
 }
 
 // LDIF Methods
+#warning We might want to support more than just strings here
 - (void) _appendLDIFKey: (NSString *) key
                   value: (NSString *) value
                toString: (NSMutableString *) ldifString
