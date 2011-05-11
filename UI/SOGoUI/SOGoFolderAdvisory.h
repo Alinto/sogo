@@ -95,6 +95,12 @@
 @interface SOGoFolderHungarianRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderIcelandicAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderIcelandicRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 @interface SOGoFolderItalianAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 

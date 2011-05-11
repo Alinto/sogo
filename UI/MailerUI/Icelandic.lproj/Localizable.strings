@@ -1,0 +1,291 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "Búðu til";
+"Empty Trash" = "Tæma rusl";
+"Delete"      = "Eyða";
+"Expunge"     = "Þurrka út";
+"Forward"     = "Áfram";
+"Get Mail"    = "Ná í póst";
+"Junk"        = "Ruslpóstur";
+"Reply"       = "Svara";
+"Reply All"   = "Svara öllum";
+"Print"       = "Prenta";
+"Stop"        = "Stöðva";
+"Write"       = "Skrifa";
+
+"Send" = "Senda";
+"Contacts" = "Tengiliðir";
+"Attach" = "Setja inn";
+"Save" = "Vista";
+"Options" = "Valkostir";
+"Size" = "Stærð";
+
+/* Tooltips */
+
+"Send this message now" = "Senda þennan póst núna";
+"Select a recipient from an Address Book" = "Veldu viðtakanda úr nafnaskránni";
+"Include an attachment" = "Bæta við viðhengi";
+"Save this message" = "Vista þennan póst";
+"Get new messages" = "Ná í nýjan póst";
+"Create a new message" = "Búa til nýjan póst";
+"Go to address book" = "Fara í nafnaskrá";
+"Reply to the message" = "Svara pósti";
+"Reply to sender and all recipients" = "Svara sendanda og öllum viðtakendum";
+"Forward selected message" = "Áframsenda völdum pósti";
+"Delete selected message or folder" = "Eyða völdum pósti eða möppu";
+"Mark the selected messages as junk" = "Merkja valinn póst sem ruslpóst";
+"Print this message" = "Prenta þennan póst";
+"Stop the current transfer" = "Stöðva núverandi sendingu";
+"Attachment" = "Viðhengi";
+"Unread" = "Ólesin";
+"Flagged" = "Tilkynnt";
+
+/* Main Frame  */
+
+"Home"                 = "Heima"; 
+"Calendar"             = "Dagatal";
+"Addressbook"          = "Nafnaskrá";
+"Mail"                 = "Póstur";
+"Right Administration" = "Umsjón réttinda";
+
+"Help" = "Hjálp";
+
+/* Mail account main windows */
+
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Velkomin(n) í SOGo Póstsendandann. Notaðu möpputréð vinstra megin til að skoða pósthólfin þín!";
+
+"Read messages"       = "Lesinn póstur";
+"Write a new message" = "Skrifa nýjan póst";
+
+"Share: " = "Samnýta: ";
+"Account: " = "Stillingar: ";
+"Shared Account: " = "Samnýttar stillingar: ";
+
+/* acls */
+"Default Roles" = "Sjálfgefin hlutverk";
+"User rights for:" = "Notandanréttindi fyrir:";
+
+"List and see this folder" = "Sýna og skoða þessa möppu";
+"Read mails from this folder" = "Lesa tölvubréf úr þessari möppu";
+"Mark mails read and unread" = "Merkja póst sem lesinn eða ólesinn";
+"Modify the flags of the mails in this folder" = "Breyta merkjum á tölvupósti í þessari möppu";
+"Insert, copy and move mails into this folder" = "Setja inn, afrita og flytja tölvubréf inn í þessa möppu";
+"Post mails" = "Senda tölvupóst";
+"Add subfolders to this folder" = "Bæta undirmöppum við þessa möppu";
+"Remove this folder" = "Fjarlægja þessa möppu";
+"Erase mails from this folder" = "Eyða bréfum úr þessari möppu";
+"Expunge this folder" = "Afmá allt í þessari möppu";
+"Archive This Folder" = "Setja þessa möppu í geymslu";
+"Modify the acl of this folder" = "Breyta aðgangsstýringum fyrir þessa möppu";
+
+"Saved Messages.zip" = "Vistud_Skilabod.zip";
+
+"Update" = "Uppfæra";
+"Cancel" = "Hætta við";
+
+/* Mail edition */
+
+"From"          = "Frá";
+"Subject"       = "Viðfangsefni";
+"To"            = "Til";
+"Cc"            = "Afrit";
+"Bcc"           = "Falið afrit";
+"Reply-To"	= "Reply-To";
+"Add address"   = "Bæta við viðtakanda";
+
+"Attachments:" = "Viðhengi:";
+"Open" = "Opna";
+"Select All" = "Velja allt";
+"Attach Web Page..." = "Hengja vefsðiðu við ...";
+"Attach File(s)..." = "Hengja skrá(r) við...";
+
+"to"            = "Til";
+"cc"            = "Afrit";
+"bcc"           = "Falið afrit";
+
+"Addressbook"   = "Nafnaskrá";
+
+"Edit Draft..." = "Sýsla með uppkast...";
+"Load Images" = "Sækja myndir";
+
+"Return Receipt" = "Staðfesting á lestri";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Sendandi þessa bréfs hefur beðið um að fá skilaboð þegar þú lest það. Viltu láta sendandann vita?";
+"Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+
+"Priority" = "Forgangur";
+"highest" = "Hæst";
+"high" = "Hátt";
+"normal" = "Venjulegur";
+"low" = "Lágt";
+"lowest" = "Lægst";
+
+"This mail is being sent from an unsecure network!" = "This mail is being sent from an unsecure network!";
+
+/* Popup "show" */
+
+"all"     = "öll";
+"read"    = "lesin";
+"unread"  = "ólesin";
+"deleted" = "eytt";
+"flagged" = "tilkynnt";
+
+/* MailListView */
+
+"Sender" = "Sendandi";
+"Subject or Sender" = "Efni eða viðtakandi";
+"To or Cc" = "Til eða afrit";
+"Entire Message" = "Allur pósturinn";
+
+"Date"          = "Dagsetning";
+"View"          = "Skoða";
+"All"           = "Allar";
+"Unread"        = "Ólesin";
+"No message"    = "Engin skilaboð";
+"messages"      = "bréfum";
+
+"first"         = "Fyrsta";
+"previous"      = "Fyrra";
+"next"          = "Næsta";
+"last"          = "Síðasta";
+
+"msgnumber_to"  = "til";
+"msgnumber_of"  = "af";
+
+"Mark Unread" = "Merkja sem ólesið";
+"Mark Read"   = "Merkja sem lesið";
+
+"Untitled" = "ónefnt";
+
+/* Tree */
+
+"SentFolderName"   = "Sent";
+"TrashFolderName"  = "Rusl";
+"InboxFolderName"  = "Innhólf";
+"DraftsFolderName" = "Drög";
+"SieveFolderName"  = "Síur";
+"OtherUsersFolderName"   = "Other Users";
+"SharedFoldersName" = "Shared Folders";
+"Folders"          = "Folders"; /* title line */
+
+/* MailMoveToPopUp */
+
+"MoveTo"        = "Færa = "Move &hellip;"hellip;";
+
+/* Address Popup menu */
+"Add to Address Book..." = "Bæta við nafnaskrá...";
+"Compose Mail To" = "Skrifa bréf til";
+"Create Filter From Message..." = "Búa til síu eftir bréfi...";
+
+/* Image Popup menu */
+"Save Image" = "Vista mynd";
+"Save Attachment" = "Vista viðhengi";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "Opna í nýjum glugga fyrir póst";
+"Copy Folder Location" = "Afrita staðsetningu möppu";
+"Subscribe..." = "Fá áskrift...";
+"Mark Folder Read..." = "Merkja möppu sem lesna...";
+"New Folder..." = "Ný mappa...";
+"Compact This Folder" = "Þjappa þessari möppu";
+"Search Messages..." = "Leita í Skilaboðum...";
+"Sharing..." = "Samnýting...";
+"New Subfolder..." = "Ný undirmappa...";
+"Rename Folder..." = "Endurnefna möppu...";
+"Delete Folder" = "Eyða möppu";
+"Use This Folder For" = "Nota þessa möppu fyrir";
+"Get Messages for Account" = "Sækja tölvubréf fyrir þetta pósthólf";
+"Properties..." = "Eiginleikar...";
+"Delegation..." = "Skipun fulltrúa...";
+
+/* Use This Folder menu */
+"Sent Messages" = "Send Tölvubréf";
+"Drafts" = "Drög";
+"Deleted Messages" = "Eydd bréf";
+
+/* Message list popup menu */
+"Open Message In New Window" = "Opna bréf í nýjum glugga";
+"Reply to Sender Only" = "Svara aðeins sendanda";
+"Reply to All" = "Svara öllum";
+"Forward" = "Áfram";
+"Edit As New..." = "Sýsla með sem nýtt væri...";
+"Move To" = "Færa í";
+"Copy To" = "Afrita í";
+"Label" = "Merki";
+"Mark" = "Merkja";
+"Save As..." = "Vista sem...";
+"Print Preview" = "Prentskoðun";
+"View Message Source" = "Skoða kóðann í skilaboðunum";
+"Print..." = "Prenta...";
+"Delete Message" = "Eyða pósti";
+"Delete Selected Messages" = "Eyða völdum póstum";
+
+"This Folder" = "Þessi mappa";
+
+/* Label popup menu */
+"None" = "Engin";
+"Important" = "Mikilvægt";
+"Work" = "Vinna";
+"Personal" = "Persónulegt";
+"To Do" = "Verkþáttur";
+"Later" = "Seinna";
+
+/* Mark popup menu */
+"As Read" = "Sem lesið";
+"Thread As Read" = "Umræðu sem lesna";
+"As Read By Date..." = "As Read By Date...";
+"All Read" = "Alla sem lesna";
+"Flag" = "Tilkynna";
+"As Junk" = "Sem ruslpóst";
+"As Not Junk" = "Ekki sem ruslpóst";
+"Run Junk Mail Controls" = "Keyra ruslpóstsaðgerðir";
+
+/* Folder operations */
+"Name :" = "Nafn :";
+"Enter the new name of your folder :"
+ = "Enter the new name of your folder :";
+"Do you really want to move this folder into the trash ?"
+ = "Do you really want to move this folder into the trash ?";
+"Operation failed" = "Aðgerðin mistókst";
+
+"Quota" = "Kvóti:";
+"quotasFormat" = "%{0}% notað af %{1} MB";
+
+"Please select a message." = "Velja þarf tölvubréf.";
+"Please select a message to print." = "Velja þarf tölvubréf til að prenta.";
+"Please select only one message to print." = "Aðeins má velja eitt tölvubréf til að prenta.";
+"The message you have selected doesn't exist anymore." = "Bréfið sem þú hefur valið er ekki lengur til.";
+
+
+"The folder with name \"%{0}\" could not be created."
+= "Ekki var hægt að búa til möppu með nafninu \"%{0}\" .";
+"This folder could not be renamed to \"%{0}\"."
+= "Ekki var hægt að breyta nafni möppunnar í \"%{0}\" .";
+"The folder could not be deleted."
+= "Ekki var hægt að eyða möppunni.";
+"The trash could not be emptied."
+= "Ekki var hægt að tæma ruslið.";
+"The folder functionality could not be changed."
+= "Ekki var hægt að breyta virkni möppunnar.";
+
+"You need to choose a non-virtual folder!" = "You need to choose a non-virtual folder!";
+
+"Moving a message into its own folder is impossible!"
+= "Ekki er hægt að færa tölvubréf í sömu möppu og það er í núna.";
+"Copying a message into its own folder is impossible!"
+= "Ekki er hægt að afrita tölvubréf í sömu möppu og það er í núna.";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "Ekki var hægt að færa tölvubréfin í ruslið. Viltu kannski eyða þeim samstundis?";
+
+/* Message editing */
+"error_validationfailed" = "Staðfesting tókst ekki";
+"error_missingsubject" = "Efni vantar";
+"error_missingrecipients" = "Engir viðtakendur tilgreindir";
+
+/* Message sending */
+"cannot send message: (smtp) all recipients discarded" = "Ekki var hægt að senda tölvubréfið: enginn gildur móttakandi.";
+"cannot send message (smtp) - recipients discarded:" = "Ekki var hægt að senda tölvubréfið: Eftirfarandi móttakendur eru ógildir:";
+"cannot send message: (smtp) error when connecting" = "Ekki var hægt að senda tölvubréfið: ekki tókst að tengjast SMTP póstþjóni.";

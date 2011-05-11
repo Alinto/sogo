@@ -1,0 +1,571 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+
+"Create a new event" = "Búa til nýjan viðburð";
+"Create a new task" = "Búa til nýtt verkefni";
+"Edit this event or task" = "Breyta þessum viðburði eða verkefni";
+"Delete this event or task" = "Eyða þessum viðburði eða verkefni";
+"Go to today" = "Skoða daginn í dag";
+"Switch to day view" = "Skifta í dagasýn";
+"Switch to week view" = "Skifta í vikusýn<";
+"Switch to month view" = "Skifta í mánaðarsýn";
+"Reload all calendars" = "Sækja öll dagatöl aftur";
+
+/* Tabs */
+"Date" = "Dagsetning";
+"Calendars" = "Dagatöl";
+
+/* Day */
+
+"Sunday" = "Sunnudagur";
+"Monday" = "Mánudagur";
+"Tuesday" = "Þriðjudagur";
+"Wednesday" = "Miðvikudagur";
+"Thursday" = "Fimmtudagur";
+"Friday" = "Föstudagur";
+"Saturday" = "Laugardagur";
+"DayOfTheMonth" = "Dagur mánaðarins";
+
+"Sun" = "Sun";
+"Mon" = "Mán";
+"Tue" = "Þri";
+"Wed" = "Mið";
+"Thu" = "Fim";
+"Fri" = "Fös";
+"Sat" = "Lau";
+
+"a2_Sunday" = "Su";
+"a2_Monday" = "Má";
+"a2_Tuesday" = "Þr";
+"a2_Wednesday" = "Mi";
+"a2_Thursday" = "Fi";
+"a2_Friday" = "Fö";
+"a2_Saturday" = "La";
+
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "Í dag";
+
+"Previous Day" = "Fyrri dagur";
+"Next Day" = "Næsti dagur";
+
+/* Week */
+
+"Week" = "Vika";
+"this week" = "þessi vika";
+
+"Week %d" = "Vika %d";
+
+"Previous Week" = "Fyrri vika";
+"Next Week" = "Næsta vika";
+
+/* Month */
+
+"this month" = "þessi mánuður";
+
+"January" = "Janúar";
+"February" = "Febrúar";
+"March" = "Mars";
+"April" = "Apríl";
+"May" = "Maí";
+"June" = "Júní";
+"July" = "Júlí";
+"August" = "Ágúst";
+"September" = "September";
+"October" = "Október";
+"November" = "Nóvember";
+"December" = "Desember";
+
+"a3_January" = "Janúar";
+"a3_February" = "Febrúar";
+"a3_March" = "Mars";
+"a3_April" = "Apríl";
+"a3_May" = "Maí";
+"a3_June" = "Júní";
+"a3_July" = "Júlí";
+"a3_August" = "Ágúst";
+"a3_September" = "September";
+"a3_October" = "Október";
+"a3_November" = "Nóvember";
+"a3_December" = "Desember";
+
+"Previous Month" = "Fyrri mánuður";
+"Next Month" = "Næsti mánuður";
+
+/* Year */
+
+"this year" = "þetta ár";
+
+/* Menu */
+
+"Calendar" = "Dagatal";
+"Contacts" = "Tengiliðir";
+
+"New Calendar..." = "Nýtt dagatal...";
+"Delete Calendar" = "Eyða dagatali...";
+"Unsubscribe Calendar" = "Segja upp áskrift að dagatali";
+"Sharing..." = "Samnýting...";
+"Export Calendar..." = "Flytja dagatal út...";
+"Import Events..." = "Flytja inn viðburði...";
+"Import Events" = "Flytja inn viðburði";
+"Select an iCalendar file (.ics)." = "Velja iCalendar skrá (.ics).";
+"Upload" = "Hala upp";
+"Publish Calendar..." = "Gefa dagatal út...";
+"Reload Remote Calendars" = "Reload Remote Calendars";
+"Properties" = "Eiginleikar";
+"Done" = "Ljúka";
+"An error occured while importing calendar." = "Villa kom upp þegar dagatalið var flutt inn.";
+"No event was imported." = "Enginn viðburður var fluttur inn.";
+"A total of %{0} events were imported in the calendar." = "Alls voru %{0} viðburðir fluttir inn í dagatalið.";
+
+"Compose E-Mail to All Attendees" = "Skrifa tölvubréf til allra þáttakenda";
+"Compose E-Mail to Undecided Attendees" = "Skrifa tölvubréf til þáttakenda sem ekki hafa ákveðið sig";
+
+/* Folders */
+"Personal calendar" = "Einkadagatal";
+
+/* Misc */
+
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Bannað";
+
+/* acls */
+
+"User rights for:" = "Notandanréttindi fyrir:";
+
+"Any Authenticated User" = "Sérhvern innskráðan notanda";
+"Public Access" = "Opinber aðgangur";
+
+"label_Public" = "Almennt";
+"label_Private" = "Heima";
+"label_Confidential" = "Leynilegt";
+
+"label_Viewer" = "Skoða allt";
+"label_DAndTViewer" = "Skoða dagsetninguna og tímann";
+"label_Modifier" = "Breyta";
+"label_Responder" = "Svara til";
+"label_None" = "Engin";
+
+"View All" = "Skoða allt";
+"View the Date & Time" = "Skoða dagsetninguna og tímann";
+"Modify" = "Breyta";
+"Respond To" = "Svara til";
+"None" = "Engin";
+
+"This person can create objects in my calendar."
+= "Þessi manneskja getur búið til viðföng í dagatalinu mínu.";
+"This person can erase objects from my calendar."
+= "Þessi manneskja getur eytt viðföngum úr dagatalinu mínu.";
+
+/* Button Titles */
+
+"New Calendar..." = "Nýtt dagatal...";
+"Subscribe to a Calendar..." = "Gerast áskrifandi að dagatali...";
+"Remove the selected Calendar" = "Fjarlægja valið dagatal";
+
+"Name of the Calendar" = "Heiti dagatalsins";
+
+"new" = "Nýtt";
+"printview" = "Prenta sýn";
+"edit" = "Breyta";
+"delete" = "Eyða";
+"proposal" = "Tillaga";
+"Save and Close" = "Vista og loka";
+"Close" = "Loka";
+"Invite Attendees" = "Bjóða þáttakendum";
+"Attach" = "Setja inn";
+"Update" = "Uppfæra";
+"Cancel" = "Hætta við";
+"show_rejected_apts" = "Sýna tímapantanir sem hefur verið hafnað";
+"hide_rejected_apts" = "Fela tímapantanir sem hefur verið hafnað";
+
+
+/* Schedule */
+
+"Schedule" = "Skipulag/Dagbók";
+"No appointments found" = "Engar tímapantanir fundust";
+"Meetings proposed by you" = "Tillögur um fundi sem þú hefur lagt fram";
+"Meetings proposed to you" = "Tillögur um fundi sem þú hefur fengið";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Aðgerð";
+"accept" = "Samþykkja";
+"decline" = "Hafna";
+"more attendees" = "Fleiri þáttakendur";
+"Hide already accepted and rejected appointments" = "Fela tímapantanir sem þegar eru samþykktar eða hefur verið hafnað";
+"Show already accepted and rejected appointments" = "Sýna tímapantanir sem þegar eru samþykktar eða hefur verið hafnað";
+
+
+/* Appointments */
+
+"Appointment viewer" = "Skoða tímapantanir";
+"Appointment editor" = "Sýsla með tímapantanir";
+"Appointment proposal" = "Tillaga um tímapöntun";
+"Appointment on" = "Tímapöntun á";
+"Start:" = "Byrjun:";
+"End:" = "Endir:";
+"Due Date:" = "Lokadagur:";
+"Title:" = "Titill:";
+"Calendar:" = "Dagatal:";
+"Name" = "Nafn";
+"Email" = "Tölvupóstur";
+"Status:" = "Staða:";
+"% complete" = "% lokið";
+"Location:" = "Staðsetning:";
+"Priority:" = "Mikilvægi:";
+"Privacy" = "Friðhelgi";
+"Cycle" = "Cycle";
+"Cycle End" = "Cycle End";
+"Categories" = "Flokkar";
+"Classification" = "Classification";
+"Duration" = "Tímalengd";
+"Attendees:" = "Þáttakendur:";
+"Resources" = "Tilföng";
+"Organizer:" = "Skipuleggjandi:";
+"Description:" = "Lýsing:";
+"Document:" = "Skjal:";
+"Category:" = "Flokkun:";
+"Repeat:" = "Endurtaka:";
+"Reminder:" = "Áminning:";
+"General:" = "Almennt:";
+"Reply:" = "Reply:";
+
+"Target:" = "Target:";
+
+"attributes" = "attributes";
+"attendees" = "þáttakendur";
+"delegated from" = "Skipaður fulltrúi var";
+
+/* checkbox title */
+"is private" = "er í einkaeigu";
+/* classification */
+"Public" = "Almennt";
+"Private" = "Heima";
+/* text used in overviews and tooltips */
+"empty title" = "Án titils";
+"private appointment" = "Stefnumót";
+
+"Change..." = "Breyta...";
+
+/* Appointments (participation state) */
+
+"partStat_NEEDS-ACTION" = "Ég staðfesti seinna";
+"partStat_ACCEPTED" = "Ég tek þátt";
+"partStat_DECLINED" = "Ég tek ekki þátt";
+"partStat_TENTATIVE" = "Ég tek kannski þátt";
+"partStat_DELEGATED" = "Ég skipa fulltrúa";
+"partStat_OTHER" = "Annað";
+
+/* Appointments (error messages) */
+
+"Conflicts found!" = "Conflicts found!";
+"Invalid iCal data!" = "Ógild ICal gögn!";
+"Could not create iCal data!" = "Ekki tókst að búa til iCal gögn!";
+
+/* Searching */
+
+"view_all" = "Allar";
+"view_today" = "Í dag";
+"view_next7" = "Næstu 7 dagar";
+"view_next14" = "Næstu 14 dagar";
+"view_next31" = "Næsti 31 dagur";
+"view_thismonth" = "Þessi mánuður";
+"view_future" = "Allir framtíðarviðburðir";
+"view_selectedday" = "Valinn Dagur";
+
+"View:" = "Sýn:";
+"Title or Description" = "Titill eða Lýsing";
+
+"Search" = "Leita";
+"Search attendees" = "Leita að þáttakendum";
+"Search resources" = "Leita í tilföngum:";
+"Search appointments" = "Leita í tímapöntunum";
+
+"All day Event" = "Heilsdagsviðburður";
+"check for conflicts" = "Athuga með árekstra";
+
+"Browse URL" = "Browse URL";
+
+"newAttendee" = "Bæta þáttakanda við";
+
+/* calendar modes */
+
+"Overview" = "Yfirlit";
+"Chart" = "Línurit";
+"List" = "Listi";
+"Columns" = "Dálkar";
+
+/* Priorities */
+
+"prio_0" = "Ótilgreint";
+"prio_1" = "Hátt";
+"prio_2" = "Hátt";
+"prio_3" = "Hátt";
+"prio_4" = "Hátt";
+"prio_5" = "Venjulegur";
+"prio_6" = "Lágt";
+"prio_7" = "Lágt";
+"prio_8" = "Lágt";
+"prio_9" = "Lágt";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Almennur viðburður";
+"CONFIDENTIAL_vevent" = "Einkaviðburður";
+"PRIVATE_vevent" = "Viðburður er trúnaðarmál";
+"PUBLIC_vtodo" = "Almennt verkefni";
+"CONFIDENTIAL_vtodo" = "Verkefni er trúnaðarmál";
+"PRIVATE_vtodo" = "Einkaverkefni";
+
+/* status type */
+"status_" = "Ótilgreint";
+"status_NOT-SPECIFIED" = "Ótilgreint";
+"status_TENTATIVE" = "Til bráðabirgða";
+"status_CONFIRMED" = "Staðfest";
+"status_CANCELLED" = "Aflýst";
+"status_NEEDS-ACTION" = "nauðsynlegt að aðhafast";
+"status_IN-PROCESS" = "Í vinnslu";
+"status_COMPLETED" = "Lokið á";
+
+/* Cycles */
+
+"cycle_once" = "cycle_once";
+"cycle_daily" = "cycle_daily";
+"cycle_weekly" = "cycle_weekly";
+"cycle_2weeks" = "cycle_2weeks";
+"cycle_4weeks" = "cycle_4weeks";
+"cycle_monthly" = "cycle_monthly";
+"cycle_weekday" = "cycle_weekday";
+"cycle_yearly" = "cycle_yearly";
+
+"cycle_end_never" = "cycle_end_never";
+"cycle_end_until" = "cycle_end_until";
+
+"Recurrence pattern" = "Endurtekningarmynstur";
+"Range of recurrence" = "Endurtekningartímabil";
+
+"Repeat" = "Endurtaka";
+"Daily" = "Daglega";
+"Weekly" = "Vikulega";
+"Monthly" = "Mánaðalega";
+"Yearly" = "Árlega";
+"Every" = "Hverjar";
+"Days" = "Dagar";
+"Week(s)" = "Vika/Vikur";
+"On" = "á";
+"Month(s)" = "Mánuður(ir)";
+"The" = "þann";
+"Recur on day(s)" = "Endurtekið á degi/dögum";
+"Year(s)" = "Ár";
+"cycle_of" = "af";
+"No end date" = "Engin lokadagsetning";
+"Create" = "Búðu til";
+"appointment(s)" = "tímapöntun/tímapantanir";
+"Repeat until" = "Endurtaka þar til";
+
+"First" = "Fyrsta";
+"Second" = "Næsta";
+"Third" = "Þriðja";
+"Fourth" = "Fjórða";
+"Fift" = "Fimmta";
+"Last" = "Síðasta";
+
+/* Appointment categories */
+
+"category_none" = "Engin";
+"category_labels" = "Árdagur,Afmælisdagur,Viðskipti,Símtöl,Skjólstæðingar,Samkeppni,Viðskiptavinur,Uppáhald,Eftirfylgni,Gjafir,Helgidagar,Hugmyndir,Fundur,Úrlausnarefni,Ýmislegt,Persónulegt,Verkefni,Almenn Frí,Staða,Birgjar,Ferðalög,Frí";
+
+"repeat_NEVER" = "Ekki endurtekið";
+"repeat_DAILY" = "Daglega";
+"repeat_WEEKLY" = "Vikulega";
+"repeat_BI-WEEKLY" = "Aðra hverja viku";
+"repeat_EVERY WEEKDAY" = "Hvern vikudag";
+"repeat_MONTHLY" = "Mánaðalega";
+"repeat_YEARLY" = "Árlega";
+"repeat_CUSTOM" = "Sérsniðið...";
+
+"reminder_NONE" = "Engin áminning";
+"reminder_5_MINUTES_BEFORE" = "5 mínútum áður";
+"reminder_10_MINUTES_BEFORE" = "10 mmínútum áður";
+"reminder_15_MINUTES_BEFORE" = "15 mmínútum áður";
+"reminder_30_MINUTES_BEFORE" = "30 mínútum áður";
+"reminder_45_MINUTES_BEFORE" = "45 mínútum áður";
+"reminder_1_HOUR_BEFORE" = "1 klukkustund áður";
+"reminder_2_HOURS_BEFORE" = "2 klukkustundum áður";
+"reminder_5_HOURS_BEFORE" = "5 klukkustundum áður";
+"reminder_15_HOURS_BEFORE" = "15 klukkustundum áður";
+"reminder_1_DAY_BEFORE" = "1 degi áður";
+"reminder_2_DAYS_BEFORE" = "2 dögum áður";
+"reminder_1_WEEK_BEFORE" = "1 viku áður";
+"reminder_CUSTOM" = "Sérsniðið...";
+
+"reminder_MINUTES" = "mínútur";
+"reminder_HOURS" = "klst.";
+"reminder_DAYS" = "daga";
+"reminder_BEFORE" = "áður";
+"reminder_AFTER" = "eftir";
+"reminder_START" = "viðburðurinn byrjar";
+"reminder_END" = "viðburðurinn endar";
+"Reminder Details" = "Reminder Details";
+
+"Choose a Reminder Action" = "Velja aðgerð við áminningu";
+"Show an Alert" = "Sýna viðvörun";
+"Send an E-mail" = "Senda tölvubréf";
+"Email Organizer" = "Senda til skipuleggjanda";
+"Email Attendees" = "Senda þáttakendum";
+
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* transparency */
+
+"Show Time as Free" = "Sýna sem lausan tíma";
+
+/* validation errors */
+
+validate_notitle           = "Enginn titill gefinn, halda áfram?";
+validate_invalid_startdate = "Byrjunardagsetning er ekki rétt!";
+validate_invalid_enddate   = "Lokadagsetning er ekki rétt!";
+validate_endbeforestart    = "Lokadagurinn sem er tilgreindur, er fyrr en byrjunardagurinn.";
+
+"Tasks" = "Verkefni";
+"Show completed tasks" = "Sýna verkefni sem hefur verið lokið";
+
+/* tabs */
+"Task" = "Verkefni";
+"Event" = "Atburður";
+"Recurrence" = "Endurtekning";
+
+/* toolbar */
+"New Event" = "Nýr viðburður";
+"New Task" = "Nýtt verkefni";
+"Edit" = "Breyta";
+"Delete" = "Eyða";
+"Go to Today" = "Skoða daginn í dag";
+"Day View" = "Dagasýn";
+"Week View" = "Vikusýn";
+"Month View" = "Mánaðarsýn";
+"Reload" = "Endurnýja";
+
+"eventPartStatModificationError" = "Ekki var hægt að breyta þáttökustöðu þinni.";
+
+/* menu */
+"New Event..." = "Nýr viðburður...";
+"New Task..." = "Nýtt verkefni...";
+"Edit Selected Event..." = "Sýsla með valinn Viðburð...";
+"Delete Selected Event" = "Eyða völdum viðburði";
+"Select All" = "Velja allt";
+"Workweek days only" = "Aðeins vinnudagar";
+"Tasks in View" = "Sýnd verkefni";
+
+"eventDeleteConfirmation" = "The following event(s) will be erased: \n%{0}\nWould you like to continue?";
+"taskDeleteConfirmation" = "The following task(s) will be erased: \n%{0}\nWould you like to continue?";
+
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Ekki er hægt að fjarlægja eða segja upp áskrift að sínu eigin persónulega dagatali.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "Ertu viss um að þú viljir eyða dagatalinu \"%{0}\"?";
+
+/* Legend */
+"Participant" = "Þáttakandi";
+"Optional Participant" = "viðstaddur/viðstödd";
+"Non Participant" = "Engir þáttakendur";
+"Chair" = "Stjórnandi";
+
+"Needs action" = "nauðsynlegt að aðhafast";
+"Accepted" = "Samþykkt";
+"Declined" = "Hafnað";
+"Tentative" = "Til bráðabirgða";
+
+"Free" = "Laust";
+"Busy" = "Upptekið";
+"Maybe busy" = "Kannski upptekið";
+"No free-busy information" = "Engar upplýsingar um lausan og upptekinn tíma";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot:" = "Stinga upp á tímabili";
+"Zoom:" = "Stækkun:";
+"Previous slot" = "Fyrra tímabil";
+"Next slot" = "Næsta tímabil";
+"Previous hour" = "Fyrri klst.";
+"Next hour" = "Næsta klst.";
+"Work days only" = "Aðeins vinnudagar";
+"The whole day" = "Allan daginn";
+"Between" = "Milli";
+"and" = "og";
+
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?";
+
+/* apt list */
+"Title" = "Titill";
+"Start" = "Byrjun";
+"End" = "Endir";
+"Location" = "Staðsetning";
+"(Private Event)" = "(Einkaviðburður)";
+
+vevent_class0 = "(Almennur viðburður)";
+vevent_class1 = "(Einkaviðburður)";
+vevent_class2 = "(Viðburður er trúnaðarmál)";
+
+vtodo_class0 = "(Almennt verkefni)";
+vtodo_class1 = "(Einkaverkefni)";
+vtodo_class2 = "(Verkefni er trúnaðarmál)";
+
+"closeThisWindowMessage" = "Takk fyrir! Þú getur nú lokað þessum glugga og skoðan annann glugga ";
+"Multicolumn Day View" = "Dagsýn í fleiri dálkum";
+
+"Please select an event or a task." = "Hér þarf að velja viðburð eða verkefni.";
+
+"editRepeatingItem" = "Viðburðurinn eða verkefnið sem verið er að breyta, endurtekur sig reglulega. Á að breyta öllum endurtekningum eða bara þessu eina atviki?";
+"button_thisOccurrenceOnly" = "Einungis þessu atviki";
+"button_allOccurrences" = "Öllum atvikum";
+
+/* Properties dialog */
+"Name:" = "Nafn:";
+"Color:" = "Litur:";
+
+"Include in free-busy" = "Taka með í upplýsingum um lausan og upptekin tíma";
+
+"Synchronization" = "Samstilling";
+"Synchronize" = "Samstilla";
+"Tag:" = "Tag:";
+
+"Display" = "Sýna";
+"Show alarms" = "Sýna vekjara";
+"Show tasks" = "Sýna verkefni";
+
+"Links to this Calendar" = "Tenglar í þetta dagatal";
+"Authenticated User Access" = "Aðgangur fyrir sannvottaðan notanda";
+"CalDAV URL" = "CalDAV URL";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
+
+/* Error messages */
+"dayFieldInvalid" = "Hér þarf að tilgreina fyrir Dagana, tölugildi sem er 1 eða stærra.";
+"weekFieldInvalid" = "Hér þarf að tilgreina fyrir vikuna/vikurnar tölugildi sem er 1 eða stærra.";
+"monthFieldInvalid" = "Hér þarf að tilgreina fyrir mánuðinn/mánuðina, tölugildi sem er 1 eða stærra.";
+"monthDayFieldInvalid" = "Hér þarf að tilgreina fyrir mánaðardag tölugildi sem er 1 eða stærra.";
+"yearFieldInvalid" = "Hér þarf að tilgreina fyrir árið/árin, tölugildi sem er 1 eða stærra.";
+"appointmentFieldInvalid" = "Hér þarf að tilgreina fyrir tímapantanir, tölugildi sem er 1 eða stærra.";
+"recurrenceUnsupported" = "Þessa tegund endurtekningar er ekki hægt að styðja enn sem komið er.";
+"tagNotDefined" = "Þú þarft að tilgreina merki ef þú vilt samhæfa þetta dagatal.";
+"tagAlreadyExists" = "Merkið sem þú tilgreindir er nú þegar bendlað við annað dagatal.";
+"tagHasChanged" = "If you change your calendar's tag, you'll need to reload the data on your mobile device.\nContinue?";
+"tagWasAdded" = "If you want to synchronize this calendar, you'll need to reload the data on your mobile device.\nContinue?";
+"tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
+"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
+"EventCopyError" = "Afritun mistókst. Það væri reynandi að afrita í annað dagatal.";
+
+"Open Task..." = "Opna Verkefni...";
+"Mark Completed" = "Merkja sem lokið";
+"Delete Task" = "Eyða verkefni";
+"Delete Event" = "Eyða viðburði";
+"Copy event to my calendar" = "Afrita viðburð í mitt dagatal";
+
+"Subscribe to a web calendar..." = "Gerast áskrifandi að vefdagatali";
+"URL of the Calendar" = "URL dagatalsins";
+"Web Calendar" = "Vefdagatal";
+"Reload on login" = "Sækja allt aftur við innskráningu";
+"Invalid number." = "Ógild tala.";

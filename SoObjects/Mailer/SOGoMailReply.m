@@ -125,6 +125,9 @@
 @implementation SOGoMailHungarianReply
 @end
 
+@implementation SOGoMailIcelandicReply
+@end
+
 @implementation SOGoMailItalianReply
 @end
 

@@ -1,0 +1,79 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Vista";
+"Close" = "Loka";
+"Edit User Rights" = "Sýsla með notendaréttindi";
+
+"Home" = "Heima";
+"Calendar" = "Dagatal";
+"Address Book"	= "Nafnaskrá";
+"Mail" = "Póstur";
+"Preferences" = "Valkostir";
+"Administration" = "Umsjón";
+"Disconnect" = "Aftengjast";
+"Right Administration" = "Umsjón réttinda";
+"Log Console (dev.)" = "Log Console (dev.)";
+
+"User" = "Notandi";
+
+"Help" = "Hjálp";
+
+"noJavascriptError" = "SOGo þarf Javaskrift til að virka. Tryggja þarf að þessi möguleiki sé til og virkur í stillingum vafrans.";
+"noJavascriptRetry" = "Reyna aftur";
+
+"Owner:" = "Eigandi:";
+"Publish the Free/Busy information" = "Gefa út upplýsingar um Laust/Upptekið";
+
+"Add..." = "Bæta við...";
+"Remove" = "Fjarlægja";
+
+"Subscribe User" = "Setja notanda í áskrift";
+
+"Any Authenticated User" = "Sérhvern innskráðan notanda";
+"Public Access" = "Opinber aðgangur";
+"Any user not listed above" = "Sérhvern notanda sem ekki er tilgreindur að ofan";
+"Anybody accessing this resource from the public area" = "Hver sem er sem hefur almennan aðgang að þessu tilfangi";
+
+"Sorry, the user rights can not be configured for that object." = "Því miður, ekki er hægt að breyta notendaréttindum fyrir það viðfang.";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+	= "Ekki var hægt að gerast áskrifandi að þeirri möppu.";
+"You cannot subscribe to a folder that you own!"
+      	= "Ekki er hægt að gerast áskrifandi að sínum eigin möppum.";
+"Unable to unsubscribe from that folder!"
+	= "Unable to unsubscribe from that folder!";
+"You cannot unsubscribe from a folder that you own!"
+      	= "You cannot unsubscribe from a folder that you own!";
+"Unable to rename that folder!" = "Ekki var hægt að breyta nafninu á þeirri möppu!";
+"You have already subscribed to that folder!"
+     	= "You have already subscribed to that folder!";
+"The user rights cannot be edited for this object!"
+        = "The user rights cannot be edited for this object!";
+"A folder by that name already exists." = "Nú þegar er til mappa með því nafni.";
+"You cannot create a list in a shared address book." 
+        = "You cannot create a list in a shared address book.";
+"Warning" = "Aðvörun";
+
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Þú hefur ekki aðgang að þessari einingu á þessu kerfi. Til þess þarftu að hafa samband við kerfisstjóra Reiknistofnunar HÍ.";
+"You don't have the required privileges to perform the operation."
+= "Þú hefur ekki nauðsynleg réttindi til að framkvæma þessa aðgerð.";
+
+"noEmailForDelegation" = "Skrá þarf netfangið hjá þeim sem á að bjóða að gerast fulltrúi.";
+"delegate is organizer" = "Ekki gengur að fulltrúinn sé sá sami og skipuleggjandinn. Tilgreina þarf annan annan fulltrúa.";
+"delegate is a participant" = "Fulltrúinn er nú þegar þáttakandi.";
+"delegate is a group" = "Uppgefna netfangið er fyrir hóp, en aðeins er hægt að bjóða manneskjum að gerast fulltrúar.";
+
+/* common buttons */
+"OK" = "Í lagi";
+"Cancel" = "Hætta við";
+"Yes" = "Já";
+"No" = "Nei";
+
+/* alarms */
+"Reminder:" = "Áminning:";
+"Start:" = "Byrjun:";
+"Due Date:" = "Lokadagur:";
+"Location:" = "Staðsetning:";

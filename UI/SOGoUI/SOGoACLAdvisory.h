@@ -128,6 +128,15 @@
 @interface SOGoACLHungarianRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
+@interface SOGoACLIcelandicAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLIcelandicModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLIcelandicRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
 @interface SOGoACLItalianAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 

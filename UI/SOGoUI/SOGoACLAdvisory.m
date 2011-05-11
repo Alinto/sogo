@@ -322,6 +322,15 @@
 @implementation SOGoACLHungarianRemovalAdvisory
 @end
 
+@implementation SOGoACLIcelandicModificationAdvisory
+@end
+
+@implementation SOGoACLIcelandicAdditionAdvisory
+@end
+
+@implementation SOGoACLIcelandicRemovalAdvisory
+@end
+
 @implementation SOGoACLItalianModificationAdvisory
 @end
 

@@ -1,0 +1,34 @@
+/* Swedish */
+{
+  NSLanguageName = "Icelandic";
+  NSFormalName = "Íslenska";
+  NSLocaleCode = "is"; /* ISO 639-1 */
+  NSLanguageCode = "ice"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSCurrencySymbol = " kr";
+  NSDateFormatString = "%A %e %B %Y";
+  NSDateTimeOrdering = YMDH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ",";
+  NSEarlierTimeDesignations = ("áður", "seinasti", "fyrri");
+  NSHourNameDesignations = ((0, "miðnætti"), (10, "morgunn"), (12, "hádegi"), (14, "síðdegi"), (19, "kvöld"));
+  NSInternationalCurrencyString = ISK; /* ISO 4217 */
+  NSLaterTimeDesignations = ("næsti");
+  NSMonthNameArray = ("Januar", "Febrúar", "Mars", "Apríl", "Maí", "Júní", "Júlí", "Augúst", "September", "Október", "Nóvember", "Desember");
+  NSNextDayDesignations = ("á morgunn", "komandi", "næsti");
+  NSNextNextDayDesignations = ("hinn");
+  NSPriorDayDesignations = ("í gær");
+  NSShortDateFormatString = "%Y-%m-%d";
+  NSShortMonthNameArray = ("Jan", "Feb", "Mar", "Apr", "Maí", "Jún", "Júl", "Ágú", "Sep", "Okt", "Nóv","Des");
+  NSShortTimeDateFormatString = "%Y-%m-%d %H:%M";
+  NSShortWeekDayNameArray = ("sun", "mán", "þri", "mið", "fim", "fös", "lau");
+  NSThisDayDesignations = ("í dag", "nú");
+  NSThousandsSeparator = " ";
+  NSTimeDateFormatString = "%A %e %B %Y %H:%M:%S %Z";
+  NSTimeFormatString = "%H:%M:%S";
+  NSWeekDayNameArray = ("sunnudagur", "mánudagur", "þriðjudagur", "miðvikudagur", "fimmtudagur", "föstudagur", "laugardagur");
+  NSYearMonthWeekDesignations = ("ár", "mánuður", "vika");
+  NSPositiveCurrencyFormatString = "9,999.00 $";
+  NSNegativeCurrencyFormatString = "-9,999.00 $";
+}
