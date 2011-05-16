@@ -1,6 +1,16 @@
+2011-05-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: Added a 
+	workaround for a libxml's issue where the charset
+	specified in meta tags have precedence over the one
+	we "force" when creating the parser. This "bug" has
+	just been fixed in libxml but it'll take years before
+	all distributions get that fix. For now, we strip
+	that tag, unconditionnaly.
+
 2011-05-10  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
-	*  NSDictionary+Utilities.m (userRecordAsLDIFEntry):
+	* NSDictionary+Utilities.m (userRecordAsLDIFEntry):
 	Fix to avoid a crash when backing up resources' LDIF entries
 
 2011-05-06  Francis Lachapelle  <flachapelle@inverse.ca>

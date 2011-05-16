@@ -1,8 +1,9 @@
 /* UIxMailPartHTMLViewer.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +22,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSKeyValueCoding.h>
@@ -100,6 +102,106 @@ _xmlCharsetForCharset (NSString *charset)
     encoding = XML_CHAR_ENCODING_8859_1;
 
   return encoding;
+}
+
+//
+// In order to avoid a libxml bug/limitation, we strip the charset= parameter
+// to avoid libxml to consider the charset= parameter while it works in UTF-8
+// internally, all the time.
+//
+// A fix was commited by Daniel Veillard following discussions Inverse had
+// with him on the issue:
+//
+// commit a1bc2f2ba4b5317885205d4f71c7c4b1c99ec870
+// Author: Daniel Veillard <veillard redhat com>
+// Date:   Mon May 16 16:03:50 2011 +0800
+//
+//     Add options to ignore the internal encoding
+//  
+//     For both XML and HTML, the document can provide an encoding
+//     either in XMLDecl in XML, or as a meta element in HTML head.
+//     This adds options to ignore those encodings if the encoding
+//     is known in advace for example if the content had been converted
+//     before being passed to the parser.
+//  
+//     * parser.c include/libxml/parser.h: add XML_PARSE_IGNORE_ENC option
+//       for XML parsing
+//     * include/libxml/HTMLparser.h HTMLparser.c: adds the
+//       HTML_PARSE_IGNORE_ENC for HTML parsing
+//     * HTMLtree.c: fix the handling of saving when an unknown encoding is
+//       defined in meta document header
+//     * xmllint.c: add a --noenc option to activate the new parser options
+//
+// 
+static NSData* _sanitizeContent(NSData *theData)
+{
+  NSMutableData *d;
+  const char *bytes;
+  int i, j, len;
+  BOOL seen_head;
+
+  d = [NSMutableData dataWithData: theData];
+  bytes = [d bytes];
+  len = [d length];
+  seen_head = NO;
+  i = 0;
+
+  while (i < len)
+    {
+      // We check if we see </head> in which case, we don't do any kind
+      // of substitution there after.
+      if (i < len-5)
+	{
+	  if ((*bytes == '<') &&
+	      (*(bytes+1) == '/') &&
+	      (*(bytes+1) == 'h' || *(bytes+1) == 'H') &&
+	      (*(bytes+2) == 'e' || *(bytes+2) == 'E') &&
+	      (*(bytes+3) == 'a' || *(bytes+3) == 'A') &&
+	      (*(bytes+4) == 'd' || *(bytes+4) == 'D') &&
+	      (*(bytes+7) == '>'))
+	    seen_head = YES;
+	}
+      
+      // We search for something like :
+      // 
+      // <meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+      //
+      if (!seen_head && i < len-9)
+	{
+	  if ((*bytes == 'c' || *bytes == 'C') &&
+	      (*(bytes+1) == 'h' || *(bytes+1) == 'H') &&
+	      (*(bytes+2) == 'a' || *(bytes+2) == 'A') &&
+	      (*(bytes+3) == 'r' || *(bytes+3) == 'R') &&
+	      (*(bytes+4) == 's' || *(bytes+4) == 'S') &&
+	      (*(bytes+5) == 'e' || *(bytes+5) == 'E') &&
+	      (*(bytes+6) == 't' || *(bytes+6) == 'T') &&
+	      (*(bytes+7) == '='))
+	    {
+	      // We search until we find a '"' or a space
+	      j = 8;
+
+	      //while (*(bytes+j) != ' ' || *(bytes+j) != '"')
+	      while (*(bytes+j) != '"')
+		{
+		  j++;
+		  
+		  // We haven't found anything, let's return the data untouched
+		  if ((i+j) >= len)
+		    return theData;
+		}
+	      
+	      [d replaceBytesInRange: NSMakeRange(i, j)
+		 withBytes: NULL
+		 length: 0];
+	      break;
+	    }
+	}
+
+      bytes++;
+      i++;
+    }
+  
+  return d;
 }
 
 @interface _UIxHTMLMailContentHandler : NSObject <SaxContentHandler, SaxLexicalHandler>
@@ -591,7 +693,7 @@ _xmlCharsetForCharset (NSString *charset)
 
   mail = [self clientObject];
 
-  preparsedContent = [super decodedFlatContent];
+  preparsedContent = _sanitizeContent([super decodedFlatContent]);
   parser = [[SaxXMLReaderFactory standardXMLReaderFactory]
              createXMLReaderForMimeType: @"text/html"];
 
@@ -696,7 +798,7 @@ _xmlCharsetForCharset (NSString *charset)
   part = [self clientObject];
   mail = [part mailObject];
 
-  preparsedContent = [part fetchBLOB];
+  preparsedContent = _sanitizeContent([part fetchBLOB]);
   parser = [[SaxXMLReaderFactory standardXMLReaderFactory]
              createXMLReaderForMimeType: @"text/html"];
   encoding = [[part partInfo] valueForKey: @"encoding"];
