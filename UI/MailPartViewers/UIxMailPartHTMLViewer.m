@@ -180,8 +180,7 @@ static NSData* _sanitizeContent(NSData *theData)
 	      // We search until we find a '"' or a space
 	      j = 8;
 
-	      //while (*(bytes+j) != ' ' || *(bytes+j) != '"')
-	      while (*(bytes+j) != '"')
+	      while (*(bytes+j) != ' ' && *(bytes+j) != '"')
 		{
 		  j++;
 		  
