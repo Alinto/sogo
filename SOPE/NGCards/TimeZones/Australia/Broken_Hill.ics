@@ -2,7 +2,7 @@ BEGIN:VCALENDAR
 PRODID:-//Inverse inc.//NONSGML SOGo//EN
 VERSION:2.0
 BEGIN:VTIMEZONE
-TZID:/inverse.ca/20101018_1/Australia/Broken_Hill
+TZID:Australia/Broken_Hill
 X-LIC-LOCATION:Australia/Broken_Hill
 BEGIN:STANDARD
 TZOFFSETFROM:+1030

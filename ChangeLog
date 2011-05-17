@@ -1,3 +1,8 @@
+2011-05-17  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * We now remove the /inverse.ca/20101018_1/ identifier
+	from all NGCards' timezone files.
+
 2011-05-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: Added a 

@@ -2,7 +2,7 @@ BEGIN:VCALENDAR
 PRODID:-//Inverse inc.//NONSGML SOGo//EN
 VERSION:2.0
 BEGIN:VTIMEZONE
-TZID:/inverse.ca/20101018_1/America/Indiana/Tell_City
+TZID:America/Indiana/Tell_City
 X-LIC-LOCATION:America/Indiana/Tell_City
 BEGIN:DAYLIGHT
 TZOFFSETFROM:-0600

@@ -2,7 +2,7 @@ BEGIN:VCALENDAR
 PRODID:-//Inverse inc.//NONSGML SOGo//EN
 VERSION:2.0
 BEGIN:VTIMEZONE
-TZID:/inverse.ca/20101018_1/America/Argentina/Tucuman
+TZID:America/Argentina/Tucuman
 X-LIC-LOCATION:America/Argentina/Tucuman
 BEGIN:STANDARD
 TZOFFSETFROM:-0300

@@ -2,7 +2,7 @@ BEGIN:VCALENDAR
 PRODID:-//Inverse inc.//NONSGML SOGo//EN
 VERSION:2.0
 BEGIN:VTIMEZONE
-TZID:/inverse.ca/20101018_1/Antarctica/South_Pole
+TZID:Antarctica/South_Pole
 X-LIC-LOCATION:Antarctica/South_Pole
 BEGIN:DAYLIGHT
 TZOFFSETFROM:+1200

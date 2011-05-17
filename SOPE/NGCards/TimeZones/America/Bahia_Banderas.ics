@@ -2,7 +2,7 @@ BEGIN:VCALENDAR
 PRODID:-//Inverse inc.//NONSGML SOGo//EN
 VERSION:2.0
 BEGIN:VTIMEZONE
-TZID:/inverse.ca/20101018_1/America/Bahia_Banderas
+TZID:America/Bahia_Banderas
 X-LIC-LOCATION:America/Bahia_Banderas
 BEGIN:STANDARD
 TZOFFSETFROM:-0500
