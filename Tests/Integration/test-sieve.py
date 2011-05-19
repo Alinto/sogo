@@ -48,7 +48,7 @@ class sieveTest(unittest.TestCase):
 
     def _getSogoSieveScript(self):
       sieveFoundsogo=0
-      createSieveScript=""
+      createdSieveScript=""
       (ret, sieveScriptList) = self.ms.listscripts()
       self.assertEqual(ret, "OK", "Couldn't get sieve script list")
 
