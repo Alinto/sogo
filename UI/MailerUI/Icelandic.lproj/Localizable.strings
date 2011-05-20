@@ -79,7 +79,7 @@
 "Archive This Folder" = "Setja þessa möppu í geymslu";
 "Modify the acl of this folder" = "Breyta aðgangsstýringum fyrir þessa möppu";
 
-"Saved Messages.zip" = "Vistud_Skilabod.zip";
+"Saved Messages.zip" = "vistud_skilabod.zip";
 
 "Update" = "Uppfæra";
 "Cancel" = "Hætta við";
@@ -112,7 +112,7 @@
 "Return Receipt" = "Staðfesting á lestri";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Sendandi þessa bréfs hefur beðið um að fá skilaboð þegar þú lest það. Viltu láta sendandann vita?";
 "Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Þetta er móttökukvittun fyrir tölvupóstihn sem þú sendir til %@.\n\nAth: Þessi móttökukvittun staðfestir aðeins að tölvubréfið hafi verið sýnt á tölvu móttakandans. Það er engin trygging fyrir því að móttakandinn hafi lesið eða skilið innihald tölvubréfsins.";
 
 "Priority" = "Forgangur";
 "highest" = "Hæst";
@@ -121,7 +121,7 @@
 "low" = "Lágt";
 "lowest" = "Lægst";
 
-"This mail is being sent from an unsecure network!" = "This mail is being sent from an unsecure network!";
+"This mail is being sent from an unsecure network!" = "Þessi póstur er sendur frá óöruggu netkerfi!";
 
 /* Popup "show" */
 
@@ -165,9 +165,9 @@
 "InboxFolderName"  = "Innhólf";
 "DraftsFolderName" = "Drög";
 "SieveFolderName"  = "Síur";
-"OtherUsersFolderName"   = "Other Users";
-"SharedFoldersName" = "Shared Folders";
-"Folders"          = "Folders"; /* title line */
+"OtherUsersFolderName"   = "Aðrir Notendur";
+"SharedFoldersName" = "Samnýttar Möppur";
+"Folders"          = "Möppur"; /* title line */
 
 /* MailMoveToPopUp */
 
@@ -269,7 +269,7 @@
 "The folder functionality could not be changed."
 = "Ekki var hægt að breyta virkni möppunnar.";
 
-"You need to choose a non-virtual folder!" = "You need to choose a non-virtual folder!";
+"You need to choose a non-virtual folder!" = "Velja þarf möppu sem er ekki sýndarmappa!";
 
 "Moving a message into its own folder is impossible!"
 = "Ekki er hægt að færa tölvubréf í sömu möppu og það er í núna.";
