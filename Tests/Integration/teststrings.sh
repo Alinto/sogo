@@ -1,6 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 
 TOPDIR=../..
+RC=0
 
 if [ ! -f teststrings ]
 then
@@ -15,6 +16,9 @@ do
     then
         echo "$stringfile: passed";
     else
-        echo "$stringfile: failed (code: $code)";
+        echo "$stringfile: FAILED (code: $code)";
+	RC=$(($RC+$code))
     fi
 done
+
+exit $RC
