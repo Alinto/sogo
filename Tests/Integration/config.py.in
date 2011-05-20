@@ -21,3 +21,6 @@ testput_nbrdays = 30
 
 sieve_server = "localhost"
 sieve_port = 2000
+
+sogo_user = "sogo"
+sogo_tool_path = "/usr/local/sbin/sogo-tool"
