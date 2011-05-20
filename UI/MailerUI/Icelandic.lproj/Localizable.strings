@@ -171,7 +171,7 @@
 
 /* MailMoveToPopUp */
 
-"MoveTo"        = "Færa = "Move &hellip;"hellip;";
+"MoveTo"        = "Færa &hellip;";
 
 /* Address Popup menu */
 "Add to Address Book..." = "Bæta við nafnaskrá...";
