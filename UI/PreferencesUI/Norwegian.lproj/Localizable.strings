@@ -32,7 +32,6 @@
 
 /* forward messages */
 "Forward incoming messages" = "Videresend innkommende e-post";
-"Forward to address :" = "Videresend til adresse:";
 "Keep a copy" = "Behold en kopi";
 "Please specify an address to which you want to forward your messages."
 = "Angi adressen du vil videresende dine meldinger til.";

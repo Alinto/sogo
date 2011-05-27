@@ -32,7 +32,6 @@
 
 /* forward messages */
 "Forward incoming messages" = "Vidarebefordra inkommande meddelanden";
-"Forward to address :" = "Vidarebefordra till adress:";
 "Keep a copy" = "Spara en kopia";
 "Please specify an address to which you want to forward your messages."
 = "Ange adressen du vill vidarebefordra dina meddelanden till.";

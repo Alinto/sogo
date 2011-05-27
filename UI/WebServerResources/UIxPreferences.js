@@ -37,10 +37,12 @@ function savePreferences(sender) {
     }
 
     if ($("enableForward") && $("enableForward").checked) {
-        if (!emailRE.test($("forwardAddress").value)) {
-            alert(_("Please specify an address to which you want to forward your messages."));
-            sendForm = false;
-        }
+        var addresses = $("forwardAddress").value.split(",");
+        for (var i = 0; i < addresses.length && sendForm; i++)
+            if (!emailRE.test(addresses[i].strip())) {
+                alert(_("Please specify an address to which you want to forward your messages."));
+                sendForm = false;
+            }
     }
 
     if (isSieveScriptsEnabled) {

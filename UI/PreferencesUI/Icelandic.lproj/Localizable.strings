@@ -32,7 +32,6 @@
 
 /* forward messages */
 "Forward incoming messages" = "Áframsenda skilaboð sem berast";
-"Forward to address :" = "Áframsenda á netfangið :";
 "Keep a copy" = "Halda afriti eftir";
 "Please specify an address to which you want to forward your messages."
 = "Hér þarf að skrá netfangið sem ný skilaboð eiga að áframsendast á";

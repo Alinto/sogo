@@ -32,7 +32,6 @@
 
 /* forward messages */
 "Forward incoming messages" = "Transférer les messages entrant";
-"Forward to address :" = "Adresse de destination :";
 "Keep a copy" = "Garder une copie";
 "Please specify an address to which you want to forward your messages."
 = "Veuillez définir une adresse à laquelle vous désirez transférer automatiquement vos nouveaux messages.";

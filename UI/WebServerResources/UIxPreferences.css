@@ -66,16 +66,18 @@ DIV.listWrapper
   border-left: 1px solid #9b9b9b;
   background: #ccddec; }
 
-/* vacation */
+/* vacation, forward */
 #vacation, #forward
 { padding-left: 2.5em; }
 #vacation LABEL
 { margin-left: 0; }
-#vacation TEXTAREA
+#vacation TEXTAREA,
+#forward TEXTAREA
 { width: 100%; }
 #vacation TEXTAREA#autoReplyText
 { height: 100px; }
-#vacation TEXTAREA#autoReplyEmailAddresses
+#vacation TEXTAREA#autoReplyEmailAddresses,
+#forward TEXTAREA
 { height: 50px; }
 #vacation SPAN
 { float: right; }
@@ -87,7 +89,7 @@ DIV.listWrapper
 DIV#filtersListWrapper
 { bottom: 30px;
   right: 2em;
-  top: 154px;
+  top: 164px;
   left: 2em; }
 
 TABLE#filtersList

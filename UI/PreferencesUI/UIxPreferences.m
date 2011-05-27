@@ -859,13 +859,23 @@
 
 - (void) setForwardAddress: (NSString *) forwardAddress
 {
-  [forwardOptions setObject: forwardAddress
+  NSArray *addresses;
+
+  addresses = [[forwardAddress componentsSeparatedByString: @","]
+                trimmedComponents];
+  [forwardOptions setObject: addresses
 		     forKey: @"forwardAddress"];
 }
 
 - (NSString *) forwardAddress
 {
-  return [forwardOptions objectForKey: @"forwardAddress"];
+  id addresses;
+
+  addresses = [forwardOptions objectForKey: @"forwardAddress"];
+
+  return ([addresses respondsToSelector: @selector(componentsJoinedByString:)]
+          ? [(NSArray *)addresses componentsJoinedByString: @", "]
+          : (NSString *)addresses);
 }
 
 - (void) setForwardKeepCopy: (BOOL) keepCopy
