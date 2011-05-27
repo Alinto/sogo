@@ -148,7 +148,7 @@
 "Please enter your signature below:" = "Setja má undirritun hér að neðan:";
 
 /* Additional Parameters */
-"Additional Parameters" = "Additional Parameters";
+"Additional Parameters" = "Fleiri færibreytur";
 
 /* password */
 "New password:" = "Nýtt lykilorð:";
@@ -175,6 +175,7 @@
 "French" = "Français";
 "German" = "Deutsch";
 "Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
 "Italian" = "Italiano";
 "Norwegian" = "Norsk";
 "BrazilianPortuguese" = "Português brasileiro";
