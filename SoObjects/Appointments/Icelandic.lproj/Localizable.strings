@@ -35,12 +35,13 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Boð á viðburð: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(%{SentBy} sendi þetta) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = 
+"%{Organizer} %{SentByText}hefur boðið þér á þennan viðburð: %{Summary}.\n\nByrjun: %{StartDate} at %{StartTime}\nEndir: %{EndDate} at %{EndTime}\nLýsing: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Viðburði aflýst: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+= "%{Organizer} %{SentByText}hefur aflýst þessum viðburði: %{Summary}.\n\nByrjun: %{StartDate} kl. %{StartTime}\nEndir: %{EndDate} kl. %{EndTime}\nLýsing: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
@@ -62,4 +63,4 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 = "%{Attendee} %{SentByText}hefur ekki enn tekið ákvörðun varðandi boð þitt.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Hámarksfjöldi samtímabókana (%{NumberOfSimultaneousBookings}) hefur verið náð varðandi aðfangið \"%{Cn} %{SystemEmail}\".";

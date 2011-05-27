@@ -43,18 +43,18 @@
 "You cannot subscribe to a folder that you own!"
       	= "Ekki er hægt að gerast áskrifandi að sínum eigin möppum.";
 "Unable to unsubscribe from that folder!"
-	= "Unable to unsubscribe from that folder!";
+	= "Ekki var hægt að segja upp áskrift að þeirri möppu!";
 "You cannot unsubscribe from a folder that you own!"
-      	= "You cannot unsubscribe from a folder that you own!";
+      	= "Ekki er hægt að segja upp möppu sem þú átt!";
 "Unable to rename that folder!" = "Ekki var hægt að breyta nafninu á þeirri möppu!";
 "You have already subscribed to that folder!"
-     	= "You have already subscribed to that folder!";
+     	= "Áskrift er nú þegar að þeirri möppu!";
 "The user rights cannot be edited for this object!"
-        = "The user rights cannot be edited for this object!";
+        = "Ekki er hægt að breyta notandaréttindum fyrir þetta viðfang!";
 "A folder by that name already exists." = "Nú þegar er til mappa með því nafni.";
 "You cannot create a list in a shared address book." 
-        = "You cannot create a list in a shared address book.";
-"Warning" = "Aðvörun";
+        = "Ekki er hægt að búa til lista í samnýttri nafnaskrá.";
+"Warning" = "Viðvörun";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Þú hefur ekki aðgang að þessari einingu á þessu kerfi. Til þess þarftu að hafa samband við kerfisstjóra Reiknistofnunar HÍ.";
