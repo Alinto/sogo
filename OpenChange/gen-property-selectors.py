@@ -102,6 +102,10 @@ extern const enum MAPITAGS MAPIStoreSupportedProperties[];
 #endif /* %(h_exclusion)s */
 """
 
+# hack: some properties have multiple and incompatible types. Sometimes those
+# props are not related at all...
+bannedProps = { "PrBodyHtml": True }
+
 def ParseExchangeH(names, lines):
     state = 0
     maxlines = len(lines)
@@ -135,13 +139,13 @@ def ParseExchangeHDefinition(names, line):
     if eqIdx == -1:
         raise Exception, "line does not contain a '='"
     propName = GenExchangeHName(stripped[0:eqIdx])
-    if not propName.endswith("_ERROR") and not propName.endswith("_UNICODE"):
+    if not propName.endswith("Error") and not propName.endswith("Unicode") and not bannedProps.has_key(propName):
         intIdx = stripped.find("(int", eqIdx)
         valueIdx = stripped.find("0x", intIdx + 1)
         endIdx = stripped.find(")", valueIdx)
         value = int(stripped[valueIdx:endIdx], 16)
-
-        names[propName] = value
+        if value < 0x80000000:
+            names[propName] = value
 
 def ParseMapistoreNameIDH(names, lines):
     for line in lines:
@@ -216,15 +220,27 @@ if __name__ == "__main__":
         getters_idx.append("  0xffff")
         # setters.append("  NULL")
 
+    prop_types = {}
+    # sanitization: only take unicode version of text properties
     all_keys = names.keys()
     for name in all_keys:
         prop_tag = names[name]
-        if (prop_tag & 0x001e):
-            prop_tag = (prop_tag & 0xffff0000) | 0x001f
-            names[name] = prop_tag
-        if (name.endswith("Error")
-            or name.endswith("Unicode")):
-            del names[name]
+        prop_id = prop_tag >> 16
+        prop_type = prop_tag & 0xffff
+        if not prop_types.has_key(prop_id):
+            prop_types[prop_id] = []
+        prop_types[prop_id].append(prop_type)
+        if (prop_type & 0xfff) == 0x001e:
+            prop_tag = (prop_tag & 0xfffff000) | 0x001f
+        names[name] = prop_tag
+
+    #sanitization: report multiple types for the same keynames
+    all_keys = prop_types.keys()
+    for prop_id in all_keys:
+        xtypes = prop_types[prop_id]
+        cnt = len(xtypes)
+        if cnt > 1:
+            print "%d types available for prop id 0x%.4x: %s" % (cnt, prop_id, ", ".join(["%.4x" % x for x in xtypes]))
 
     supported_properties = []
     all_keys = names.keys()
@@ -234,7 +250,7 @@ if __name__ == "__main__":
         prop_tag = names[name]
         supported_properties.append("  0x%.8x" % prop_tag);
         prop_idx = (prop_tag & 0xffff0000) >> 16
-        getters_idx[prop_idx] = "  %d" % current_getter_idx
+        getters_idx[prop_idx] = "  0x%.4x" % current_getter_idx
         if prop_idx > highest_prop_idx:
             highest_prop_idx = prop_idx
         getters.append("  @selector (get%s:)" % name)

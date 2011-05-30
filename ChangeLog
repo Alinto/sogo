@@ -1,3 +1,14 @@
+2011-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/gen-property-selectors.py (ParseExchangeHDefinition):
+	Fixed exclusion of records ending with "Error" and "Unicode".
+	Also, we now exclude PidTag properties with a value > 0x80000000
+	since they may overlap with named properties.
+	(__main__): replace multi-string with multi-unicode identifiers
+	too.
+	(__main__): we output getter indexes as 16 bit hex values, for
+	consistency.
+
 2011-05-17  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * We now remove the /inverse.ca/20101018_1/ identifier
