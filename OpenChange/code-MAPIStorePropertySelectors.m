@@ -23,6 +23,9 @@
 #import <Foundation/NSMapTable.h>
 #import <NGExtensions/NGLogger.h>
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
 const MAPIStorePropertyGetter *
 MAPIStorePropertyGettersForClass (Class klass)
 {
@@ -41,6 +44,7 @@ MAPIStorePropertyGettersForClass (Class klass)
   if (!getters)
     {
       getters = NSZoneCalloc (NULL, 65536, sizeof (MAPIStorePropertyGetter));
+      NSMapInsert (classesTable, klass, getters);
       for (count = 0; count < 65535; count++)
         {
           idx = MAPIStorePropertyGettersIdx[count];

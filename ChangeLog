@@ -1,5 +1,10 @@
 2011-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/code-MAPIStorePropertySelectors.m
+	(MAPIStorePropertyGettersForClass): insert the newly created table
+	in the hash in order to avoid a leak... and to enable it to be
+	found during the next search.
+
 	* SoObjects/SOGo/SOGoContentObject.m (-version, -createDate)
 	(-lastModified): new accessors that return the value of the
 	corresponding ivar.
