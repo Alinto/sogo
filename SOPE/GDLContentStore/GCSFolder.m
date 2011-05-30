@@ -1368,6 +1368,36 @@ static NSArray *contentFieldNames = nil;
   return count;
 }
 
+- (NSCalendarDate *) lastModificationDate
+{
+  NSArray *records;
+  EOFetchSpecification *lmSpec;
+  EOSortOrdering *ordering;
+  NSNumber *lastModified;
+  NSCalendarDate *lastModificationDate = nil;
+
+  ordering = [EOSortOrdering sortOrderingWithKey: @"c_lastmodified"
+                                        selector: EOCompareDescending];
+  lmSpec = [EOFetchSpecification
+                   fetchSpecificationWithEntityName: [self folderName]
+                                          qualifier: nil
+                                      sortOrderings: [NSArray arrayWithObject: ordering]];
+
+  records = [self        fetchFields: [NSArray arrayWithObject: @"c_lastmodified"]
+                  fetchSpecification: lmSpec
+                       ignoreDeleted: NO];
+  if ([records count])
+    {
+      lastModified
+        = [[records objectAtIndex: 0] objectForKey: @"c_lastmodified"];
+      lastModificationDate
+        = [NSCalendarDate dateWithTimeIntervalSince1970:
+                            (NSTimeInterval) [lastModified intValue]];
+    }
+
+  return lastModificationDate;
+}
+
 /* description */
 
 - (NSString *)description {

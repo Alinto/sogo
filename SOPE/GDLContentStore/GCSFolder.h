@@ -140,6 +140,8 @@
 
 - (unsigned int) recordsCountByExcludingDeleted: (BOOL) includeDeleted;
 
+- (NSCalendarDate *) lastModificationDate;
+
 @end
 
 #endif /* __GDLContentStore_GCSFolder_H__ */

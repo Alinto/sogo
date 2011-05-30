@@ -1,3 +1,9 @@
+2011-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolder.m (-lastModificationDate): new method that returns the
+	last modification date based on the higher value of the
+	"c_lastmodified" column.
+
 2010-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* EOQualifier+GCS.m (_appendNotQualifier:toString:): new method
