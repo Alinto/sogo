@@ -29,7 +29,7 @@
 #import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalByDayMask.h>
 
-#import "NSCalendarDate+MAPIStore.h"
+#import "NSDate+MAPIStore.h"
 #import "MAPIStoreRecurrenceUtils.h"
 
 @implementation iCalCalendar (MAPIStoreRecurrence)

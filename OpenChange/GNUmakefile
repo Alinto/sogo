@@ -101,8 +101,8 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	NSArray+MAPIStore.m \
 	NSAutoreleasePool+MAPIStore.m \
-	NSCalendarDate+MAPIStore.m \
 	NSData+MAPIStore.m \
+	NSDate+MAPIStore.m \
 	NSObject+MAPIStore.m \
 	NSString+MAPIStore.m \
 	NSValue+MAPIStore.m \

@@ -1,4 +1,4 @@
-/* NSCalendarDate+MAPIStore.h - this file is part of SOGo
+/* NSDate+MAPIStore.h - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -23,9 +23,9 @@
 #ifndef NSCALENDARDATE_MAPISTORE_H
 #define NSCALENDARDATE_MAPISTORE_H
 
-#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDate.h>
 
-@interface NSCalendarDate (MAPIStoreDataTypes)
+@interface NSDate (MAPIStoreDataTypes)
 
 + (id) dateFromMinutesSince1601: (uint32_t) minutes;
 - (uint32_t) asMinutesSince1601;

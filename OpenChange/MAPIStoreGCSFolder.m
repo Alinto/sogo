@@ -21,11 +21,14 @@
  */
 
 #import <Foundation/NSString.h>
+#import <Foundation/NSCalendarDate.h>
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOFetchSpecification.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoGCSFolder.h>
+
+#import "NSDate+MAPIStore.h"
 
 #import "MAPIStoreGCSFolder.h"
 

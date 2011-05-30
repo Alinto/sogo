@@ -29,8 +29,8 @@
 #import <Appointments/SOGoTaskObject.h>
 
 #import "MAPIStoreTypes.h"
-#import "NSCalendarDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
+#import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreTasksMessageTable.h"

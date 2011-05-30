@@ -34,7 +34,7 @@
 #import <Foundation/NSString.h>
 
 #import "NSData+MAPIStore.h"
-#import "NSCalendarDate+MAPIStore.h"
+#import "NSDate+MAPIStore.h"
 
 #import "MAPIStoreTypes.h"
 

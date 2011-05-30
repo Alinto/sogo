@@ -25,6 +25,7 @@
    - take the tz definitions from Outlook */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
@@ -44,7 +45,7 @@
 #import "MAPIStoreContext.h"
 #import "MAPIStoreRecurrenceUtils.h"
 #import "MAPIStoreTypes.h"
-#import "NSCalendarDate+MAPIStore.h"
+#import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "NSValue+MAPIStore.h"

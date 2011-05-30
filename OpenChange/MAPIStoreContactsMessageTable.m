@@ -31,7 +31,7 @@
 #import <Contacts/SOGoContactGCSEntry.h>
 
 #import "MAPIStoreTypes.h"
-#import "NSCalendarDate+MAPIStore.h"
+#import "NSDate+MAPIStore.h"
 #import "NSArray+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"

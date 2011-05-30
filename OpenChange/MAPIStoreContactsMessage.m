@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -32,7 +33,7 @@
 #import "MAPIStorePropertySelectors.h"
 #import "MAPIStoreTypes.h"
 #import "NSArray+MAPIStore.h"
-#import "NSCalendarDate+MAPIStore.h"
+#import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 

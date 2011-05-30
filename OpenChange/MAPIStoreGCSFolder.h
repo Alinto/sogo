@@ -25,6 +25,8 @@
 
 #import "MAPIStoreFolder.h"
 
+@class NSCalendarDate;
+
 @interface MAPIStoreGCSFolder : MAPIStoreFolder
 
 /* subclasses */

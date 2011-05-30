@@ -1,5 +1,9 @@
 2011-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSDate+MAPIStore.[hm]: renamed from
+	NSCalendarDate+MAPIStore.[hm]. Provides the same methods as
+	before but on NSDate rather than NSCalendarDate.
+
 	* OpenChange/gen-property-selectors.py (ParseExchangeHDefinition):
 	Fixed exclusion of records ending with "Error" and "Unicode".
 	Also, we now exclude PidTag properties with a value > 0x80000000

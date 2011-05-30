@@ -1,4 +1,4 @@
-/* NSCalendarDate+MAPIStore.m - this file is part of SOGo
+/* NSDate+MAPIStore.m - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -24,7 +24,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
-#import "NSCalendarDate+MAPIStore.h"
+#import "NSDate+MAPIStore.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
@@ -32,7 +32,13 @@
 
 static NSCalendarDate *refDate = nil;
 
-@implementation NSCalendarDate (MAPIStoreDataTypes)
+@interface NSDate (MAPIStorePossibleMethods)
+
+- (NSTimeZone *) timeZone;
+
+@end
+
+@implementation NSDate (MAPIStoreDataTypes)
 
 static void
 _setupRefDate ()
@@ -64,9 +70,11 @@ _setupRefDate ()
   if (!refDate)
     _setupRefDate ();
 
-  minutes = (uint32_t) ([self timeIntervalSinceDate: refDate] / 60);
-  offset = [[self timeZone] secondsFromGMT];
-  minutes += (offset / 60);
+  if ([self respondsToSelector: @selector (timeZone)])
+    offset = [[self timeZone] secondsFromGMT];
+  else
+    offset = 0;
+  minutes = (uint32_t) (([self timeIntervalSinceDate: refDate] + offset) / 60);
 
   return minutes;
 }

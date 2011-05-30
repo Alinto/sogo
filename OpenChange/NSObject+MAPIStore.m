@@ -23,7 +23,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "NSData+MAPIStore.h"
-#import "NSCalendarDate+MAPIStore.h"
+#import "NSDate+MAPIStore.h"
 #import "NSValue+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
