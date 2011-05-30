@@ -56,6 +56,11 @@
 - (BOOL) isNew;
 - (void) setIsNew: (BOOL) newIsNew;
 
+- (unsigned int) version;
+
+- (NSCalendarDate *) creationDate;
+- (NSCalendarDate *) lastModified;
+
 - (NSString *) contentAsString;
 - (NSException *) saveContentString: (NSString *) _str
                         baseVersion: (unsigned int) _baseVersion;

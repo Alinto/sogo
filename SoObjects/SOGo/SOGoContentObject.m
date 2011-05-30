@@ -167,6 +167,21 @@
   isNew = newIsNew;
 }
 
+- (unsigned int) version
+{
+  return version;
+}
+
+- (NSCalendarDate *) creationDate
+{
+  return creationDate;
+}
+
+- (NSCalendarDate *) lastModified
+{
+  return lastModified;
+}
+
 - (NSString *) contentAsString
 {
   return content;

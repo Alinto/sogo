@@ -1,5 +1,9 @@
 2011-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoContentObject.m (-version, -createDate)
+	(-lastModified): new accessors that return the value of the
+	corresponding ivar.
+
 	* SoObjects/SOGo/SOGoGCSFolder.m (-davCollectionTag): base the
 	return value on the new -[GCSFolder lastModificationDate] method.
 	(_isValidSyncToken): same as above.
