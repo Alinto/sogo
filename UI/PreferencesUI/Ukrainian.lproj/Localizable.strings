@@ -35,7 +35,6 @@
 
 /* forward messages */
 "Forward incoming messages" = "Перенаправляти вхідні повідомлення";
-"Forward to address :" = "Перенаправляти на адреси :";
 "Keep a copy" = "Зберігати копію";
 "Please specify an address to which you want to forward your messages."
 = "Будь ласка, зазначте адресу, на яку потрібно перенаправляти повідомлення, адресовані Вам.";

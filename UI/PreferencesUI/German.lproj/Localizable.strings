@@ -32,7 +32,6 @@
 
 /* forward messages */
 "Forward incoming messages" = "Ankommende Nachrichten weiterleiten";
-"Forward to address :" = "Weiterleiten an :";
 "Keep a copy" = "Kopie behalten";
 "Please specify an address to which you want to forward your messages."
 = "Bitte Adresse angeben, an die Nachrichten weitergeleitet werden sollen.";

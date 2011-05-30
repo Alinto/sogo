@@ -33,7 +33,6 @@
 
 /* forward messages */
 "Forward incoming messages" = "Przekaż przychodzące wiadomości";
-"Forward to address :" = "Przekaż na adres :";
 "Keep a copy" = "Zatrzymaj kopię";
 "Please specify an address to which you want to forward your messages."
 = "Podaj adres, na który chcesz przekazywać wiadomości.";

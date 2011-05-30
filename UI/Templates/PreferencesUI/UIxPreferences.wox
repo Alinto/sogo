@@ -376,12 +376,11 @@
                 <var:string label:value="Forward incoming messages"/></label><br/>
               
               <div id="forward">
-                <label><var:string label:value="Forward to address :"/> 
-                  <input type="text" 
-                    const:id="forwardAddress" 
-                    const:name="forwardAddress"
-                    var:value="forwardAddress"
-                    size="30" /></label><br/>
+                <label><var:string label:value="Email addresses (separated by commas) :"/><br/>
+                  <textarea const:name="forwardAddress"
+                    const:id="forwardAddress"
+                    var:value="forwardAddress" />
+                </label><br/>
 
                 <label><input type="checkbox" 
                     const:name="forwardKeepCopy"

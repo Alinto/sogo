@@ -8,7 +8,7 @@
 "Delete this event or task" = "Eyða þessum viðburði eða verkefni";
 "Go to today" = "Skoða daginn í dag";
 "Switch to day view" = "Skifta í dagasýn";
-"Switch to week view" = "Skifta í vikusýn<";
+"Switch to week view" = "Skifta í vikusýn";
 "Switch to month view" = "Skifta í mánaðarsýn";
 "Reload all calendars" = "Sækja öll dagatöl aftur";
 
@@ -43,7 +43,7 @@
 "a2_Friday" = "Fö";
 "a2_Saturday" = "La";
 
-"dayLabelFormat" = "%m/%d/%Y";
+"dayLabelFormat" = "%d/%m/%Y";
 "today" = "Í dag";
 
 "Previous Day" = "Fyrri dagur";
@@ -459,8 +459,8 @@ validate_endbeforestart    = "Lokadagurinn sem er tilgreindur, er fyrr en byrjun
 "Workweek days only" = "Aðeins vinnudagar";
 "Tasks in View" = "Sýnd verkefni";
 
-"eventDeleteConfirmation" = "The following event(s) will be erased: \n%{0}\nWould you like to continue?";
-"taskDeleteConfirmation" = "The following task(s) will be erased: \n%{0}\nWould you like to continue?";
+"eventDeleteConfirmation" = "Eftirfarandi viðburði/viðburðum verður eytt: \n%{0}\nViltu halda áfram?";
+"taskDeleteConfirmation" = "Eftirfarandi verkefni/verkefnum verður eytt: \n%{0}\nViltu halda áfram?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Ekki er hægt að fjarlægja eða segja upp áskrift að sínu eigin persónulega dagatali.";
@@ -496,7 +496,7 @@ validate_endbeforestart    = "Lokadagurinn sem er tilgreindur, er fyrr en byrjun
 "and" = "og";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?";
+= "Árekstur við tíma hjá einum eða fleiri þáttakendum.\nEiga núverandi stillingar vera óbreyttar?";
 
 /* apt list */
 "Title" = "Titill";
@@ -552,10 +552,10 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 "recurrenceUnsupported" = "Þessa tegund endurtekningar er ekki hægt að styðja enn sem komið er.";
 "tagNotDefined" = "Þú þarft að tilgreina merki ef þú vilt samhæfa þetta dagatal.";
 "tagAlreadyExists" = "Merkið sem þú tilgreindir er nú þegar bendlað við annað dagatal.";
-"tagHasChanged" = "If you change your calendar's tag, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasAdded" = "If you want to synchronize this calendar, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
-"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
+"tagHasChanged" = "Ef þú breytir merkingunni á dagatalinu þínu, þarftu að endurhlaða gögnum inn á farsíman þinn.\nHalda áfram?";
+"tagWasAdded" = "Ef þú vilt samhæfa þetta dagatal, þarftu að endurhlaða gögnum inn á farsíman þinn.\nHalda áfram?";
+"tagWasRemoved" = "Ef þú tekur þetta dagatali úr samhæfingu, þarftu að endurhlaða gögnum inn á farsíman þinn.\nHalda áfram?";
+"DestinationCalendarError" = "Upphafið og ákvörðunarstaðurinn á dagatölunum er sá sami. Betra væri að afrita gögn yfir í annað dagatal.";
 "EventCopyError" = "Afritun mistókst. Það væri reynandi að afrita í annað dagatal.";
 
 "Open Task..." = "Opna Verkefni...";

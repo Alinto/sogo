@@ -32,7 +32,6 @@
 
 /* forward messages */
 "Forward incoming messages" = "Áframsenda skilaboð sem berast";
-"Forward to address :" = "Áframsenda á netfangið :";
 "Keep a copy" = "Halda afriti eftir";
 "Please specify an address to which you want to forward your messages."
 = "Hér þarf að skrá netfangið sem ný skilaboð eiga að áframsendast á";
@@ -148,7 +147,7 @@
 "Please enter your signature below:" = "Setja má undirritun hér að neðan:";
 
 /* Additional Parameters */
-"Additional Parameters" = "Additional Parameters";
+"Additional Parameters" = "Fleiri færibreytur";
 
 /* password */
 "New password:" = "Nýtt lykilorð:";
@@ -175,6 +174,7 @@
 "French" = "Français";
 "German" = "Deutsch";
 "Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
 "Italian" = "Italiano";
 "Norwegian" = "Norsk";
 "BrazilianPortuguese" = "Português brasileiro";

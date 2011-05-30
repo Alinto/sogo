@@ -32,7 +32,6 @@
 
 /* forward messages */
 "Forward incoming messages" = "Redirigir missatges entrants";
-"Forward to address :" = "Redirigir a l'adreça :";
 "Keep a copy" = "Desar-ne una còpia";
 "Please specify an address to which you want to forward your messages."
 = "Especifiqueu l'adreça a la qual voleu redirigir els missatges.";

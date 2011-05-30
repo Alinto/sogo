@@ -32,7 +32,6 @@
 
 /* forward messages */
 "Forward incoming messages" = "Forward incoming messages";
-"Forward to address :" = "Forward to address :";
 "Keep a copy" = "Keep a copy";
 "Please specify an address to which you want to forward your messages."
 = "Please specify an address to which you want to forward your messages.";
@@ -108,6 +107,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
+"Sort messages by threads" = "Sort messages by threads";
 "Check for new mail:" = "Check for new mail:";
 "messagecheck_manually" = "Manually";
 "messagecheck_every_minute" = "Every minute";
