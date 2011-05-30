@@ -820,41 +820,15 @@ static NSArray *childRecordFields = nil;
     }
 }
 
-- (int) _lastModified
-{
-  NSArray *records;
-  GCSFolder *folder;
-  EOFetchSpecification *cTagSpec;
-  EOSortOrdering *ordering;
-  NSNumber *lastModified;
-  int value;
-
-  folder = [self ocsFolder];
-  ordering = [EOSortOrdering sortOrderingWithKey: @"c_lastmodified"
-                                        selector: EOCompareDescending];
-  cTagSpec = [EOFetchSpecification
-                   fetchSpecificationWithEntityName: [folder folderName]
-                                          qualifier: nil
-                                      sortOrderings: [NSArray arrayWithObject: ordering]];
-
-  records = [folder fetchFields: [NSArray arrayWithObject: @"c_lastmodified"]
-		    fetchSpecification: cTagSpec
-		    ignoreDeleted: NO];
-  if ([records count])
-    {
-      lastModified = [[records objectAtIndex: 0]
-                       objectForKey: @"c_lastmodified"];
-      value = [lastModified intValue];
-    }
-  else
-    value = -1;
-
-  return value;
-}
-
 - (NSString *) davCollectionTag
 {
-  return [NSString stringWithFormat: @"%d", [self _lastModified]];
+  NSCalendarDate *lmDate;
+
+  lmDate = [[self ocsFolder] lastModificationDate];
+
+  return [NSString stringWithFormat: @"%d",
+                   (lmDate ? [lmDate timeIntervalSince1970]
+                    : -1)];
 }
 
 - (BOOL) userIsSubscriber: (NSString *) subscribingUser
@@ -1303,6 +1277,7 @@ static NSArray *childRecordFields = nil;
   unichar *characters;
   int count, max, value;
   BOOL valid;
+  NSCalendarDate *lmDate;
 
   max = [syncToken length];
   if (max > 0)
@@ -1315,6 +1290,8 @@ static NSArray *childRecordFields = nil;
         valid = YES;
       else
         {
+          lmDate = [[self ocsFolder] lastModificationDate];
+
           valid = YES;
           value = 0;
           for (count = 0; valid && count < max; count++)
@@ -1325,7 +1302,7 @@ static NSArray *childRecordFields = nil;
               else
                 value = value * 10 + characters[count] - '0'; 
             }
-          valid |= (value <= [self _lastModified]);
+          valid |= (value <= (int) [lmDate timeIntervalSince1970]);
         }
       NSZoneFree (NULL, characters);
     }
