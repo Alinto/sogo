@@ -140,6 +140,8 @@ function contactsListCallback(http) {
                     if (contact["c_telephonenumber"])
                         cell.appendChild(document.createTextNode(contact["c_telephonenumber"]));
                 }
+
+                configureDraggables();
             }
 
             // Remove unnecessary rows
@@ -259,7 +261,7 @@ function _onContactMenuAction(folderItem, action, refresh) {
 
         for (var i = 0; i < contactIds.length; i++) {
             if (contactIds[i].endsWith ("vlf")) {
-                alert (_("Lists can't be moved or copied."));
+                showAlertDialog(_("Lists can't be moved or copied."));
                 return false;
             }
         }
@@ -575,7 +577,7 @@ function newContact(sender) {
 function newList(sender) {
     var li = $(Contact.currentAddressBook);
     if (li.hasClassName("remote"))
-      alert(_("You cannot create a list in a shared address book."));
+      showAlertDialog(_("You cannot create a list in a shared address book."));
     else
       openContactWindow(URLForFolderID(Contact.currentAddressBook) + "/newlist");
 
@@ -584,14 +586,16 @@ function newList(sender) {
 
 function onFolderSelectionChange(event) {
     var folderList = $("contactFolders");
-    var nodes = folderList.getSelectedNodes();
 
     if (event) {
         var node = getTarget(event);
         if (node.tagName == 'UL')
             return;
+        // Update rows selection
+        onRowClick(event, node);
     }
 
+    var nodes = folderList.getSelectedNodes();
     $("contactView").update();
     Contact.currentContact = null;
 
@@ -713,7 +717,6 @@ function appendAddressBook(name, folder) {
         li.appendChild(document.createTextNode(name
                                                .replace("&lt;", "<", "g")
                                                .replace("&gt;", ">", "g")));
-        setEventsOnAddressBook(li);
         updateAddressBooksMenus();
         configureDroppables();
     }
@@ -931,12 +934,9 @@ function configureAbToolbar() {
 function configureAddressBooks() {
     var contactFolders = $("contactFolders");
     if (contactFolders) {
-        contactFolders.observe("mousedown", listRowMouseDownHandler);
-        contactFolders.observe("click", onFolderSelectionChange);
+        contactFolders.on("mousedown", onFolderSelectionChange);
+        contactFolders.on("dblclick", onAddressBookModify);
         contactFolders.attachMenu("contactFoldersMenu");
-        var lis = contactFolders.childNodesWithTag("li");
-        for (var i = 0; i < lis.length; i++)
-            setEventsOnAddressBook(lis[i]);
     
         lookupDeniedFolders();
         configureDroppables();
@@ -1003,23 +1003,10 @@ function updateAddressBooksMenus() {
     }
 }
   
-function setEventsOnAddressBook(folder) {
-    var node = $(folder);
-
-    node.observe("mousedown", listRowMouseDownHandler);
-    node.observe("click", onRowClick);
-    if (node.readAttribute("owner") != "nobody") {
-        node.observe("dblclick", onAddressBookModify);
-    }
-}
-
 function onAddressBookModify(event) {
     var folders = $("contactFolders");
     var selected = folders.getSelectedNodes()[0];
-    if (selected.getAttribute("owner") == "nobody") {
-        showAlertDialog(_("Unable to rename that folder!"));
-    }
-    else {
+    if (selected.getAttribute("owner") != "nobody") {
         var currentName = selected.innerHTML.unescapeHTML();
         showPromptDialog(_("Properties"),
                          _("Address Book Name"),
@@ -1289,6 +1276,7 @@ function initContacts(event) {
     Event.observe(document, "keydown", onDocumentKeydown);
     
     configureAddressBooks();
+    configureDraggables();
     updateAddressBooksMenus();
 
     var table = $("contactsList");
@@ -1519,7 +1507,7 @@ function dropSelectedContacts (action, toId) {
         var contactIds = $('contactsList').getSelectedRowsId();
         for (var i = 0; i < contactIds.length; i++) {
             if (contactIds[i].endsWith ("vlf")) {
-                alert (_("Lists can't be moved or copied."));
+                showAlertDialog(_("Lists can't be moved or copied."));
                 return false;
             }
         }

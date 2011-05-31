@@ -990,9 +990,7 @@ function tasksListCallback(http) {
             for (var i = 0; i < data.length; i++) {
                 var listItem = createElement("li");
                 list.appendChild(listItem);
-                listItem.observe("mousedown", listRowMouseDownHandler);
-                listItem.observe("click", onRowClick);
-                listItem.observe("dblclick", editDoubleClickedEvent);
+                listItem.on("dblclick", editDoubleClickedEvent);
 
                 var calendar = escape(data[i][1]);
                 var cname = escape(data[i][0]);
@@ -1020,8 +1018,6 @@ function tasksListCallback(http) {
                 var t = new Element ("span");
                 t.update(data[i][3]);
                 listItem.appendChild (t);
-
-                listItem.attachMenu("tasksListMenu");
             }
 
             list.scrollTop = list.previousScroll;
@@ -1809,12 +1805,19 @@ function onEventsSelectionChange() {
     }
 }
 
-function onTasksSelectionChange() {
+function onTasksSelectionChange(event) {
     listOfSelection = this;
     this.removeClassName("_unfocused");
+
+    var target = Event.element(event);
+    if (target.tagName == 'SPAN')
+        target = target.parentNode;
+    // Update selection
+    onRowClick(event, target);
+
     var eventsList = $("eventsList");
     eventsList.addClassName("_unfocused");
-    deselectAll(eventsList);
+    eventsList.deselectAll();
 }
 
 function _loadEventHref(href) {
@@ -2831,8 +2834,9 @@ function deletePersonalCalendarCallback(http) {
 function configureLists() {
     var list = $("tasksList");
     list.multiselect = true;
-    list.observe("mousedown", onTasksSelectionChange);
-    list.observe("selectstart", listRowMouseDownHandler);
+    list.on("mousedown", onTasksSelectionChange);
+    list.on("selectstart", listRowMouseDownHandler);
+    list.attachMenu("tasksListMenu");
 
     var input = $("showHideCompletedTasks");
     input.observe("click", onShowCompletedTasks);
@@ -2945,7 +2949,7 @@ function onDocumentKeydown(event) {
     }
 }
 
-function initCalendars() {
+function initScheduler() {
     sorting["attribute"] = "start";
     sorting["ascending"] = true;
 
@@ -2980,4 +2984,4 @@ function initCalendars() {
     Event.observe(window, "resize", onWindowResize);
 }
 
-document.observe("dom:loaded", initCalendars);
+document.observe("dom:loaded", initScheduler);

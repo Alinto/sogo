@@ -181,7 +181,6 @@ Element.addMethods({
         selectElement: function(element) {
             element = $(element);
             element.addClassName('_selected');
-			
             var parent = element.up();
             if (!parent.selectedElements || !parent.selectedIds) {
                 // Selected nodes are kept in a array at the
@@ -191,10 +190,12 @@ Element.addMethods({
             }
             for (var i = 0; i < parent.selectedElements.length; i++)
                 if (parent.selectedElements[i] == element) return;
-            for (var i = 0; i < parent.selectedIds.length; i++)
-                if (parent.selectedIds[i] == element.id) return;
             parent.selectedElements.push(element); // use index instead ?
-            parent.selectedIds.push(element.id);
+            if (element.id) {
+                for (var i = 0; i < parent.selectedIds.length; i++)
+                    if (parent.selectedIds[i] == element.id) return;
+                parent.selectedIds.push(element.id);
+            }
         },
             
         selectRange: function(element, startIndex, endIndex) {
@@ -228,9 +229,10 @@ Element.addMethods({
                 rows = element.getElementsByTagName('LI');
             else
                 rows = element.select('TBODY TR');
-            for (var i = 0; i < rows.length; i++)
+            for (var i = 0; i < rows.length; i++) {
                 if (rows[i].nodeType == 1)
                     $(rows[i]).selectElement();
+            }
         },
 
         deselect: function(element) {

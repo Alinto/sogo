@@ -240,7 +240,6 @@ function createAttachment(node, list) {
     var attachment = createElement("li", null, null, { node: node }, null, list);
     createElement("img", null, null, { src: ResourcesURL + "/attachment.gif" },
                   null, attachment);
-    attachment.on("click", onRowClick);
 
     var filename = node.value;
     var separator;
@@ -362,11 +361,9 @@ function initMailEditor() {
 
     var list = $("attachments");
     if (!list) return;
+    list.on("click", onRowClick);
     list.attachMenu("attachmentsMenu");
     var elements = $(list).childNodesWithTag("li");
-    for (var i = 0; i < elements.length; i++)
-        elements[i].on("click", onRowClick);
-
     if (elements.length > 0)
         $("attachmentsArea").setStyle({ display: "block" });
 
@@ -551,10 +548,7 @@ function onMenuSetPriority(event) {
 }
 
 function onSelectAllAttachments() {
-    var list = $("attachments");
-    var nodes = list.childNodesWithTag("li");
-    for (var i = 0; i < nodes.length; i++)
-        nodes[i].selectElement();
+    $("attachments").selectAll();
 }
 
 function onSelectOptions(event) {

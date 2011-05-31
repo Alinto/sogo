@@ -58,7 +58,9 @@ UL#tasksList, UL#calendarList
   list-style-type: none;
   list-style-image: none;
   overflow: hidden;
-  overflow-y: auto; }
+  overflow-y: auto;
+  -moz-user-select: none;
+  -khtml-user-select: none; }
 
 UL#calendarList
 { clear: left;
@@ -147,6 +149,7 @@ DIV#calendarView
   width: 100%;
   border-top: 1px solid #aaa;
   border-left: 1px solid #aaa;
+  -moz-user-select: none;
   -khtml-user-select: none; }
 
 DIV#calendarView A

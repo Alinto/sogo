@@ -118,13 +118,12 @@
 {
   NSComparisonResult result;
   unsigned int selfTime, otherTime;
-  Class nullClass;
 
   result = [self _compareCompletionWithStatus1: [self objectAtIndex: 2]
-		 andStatus2: [otherTask objectAtIndex: 2]];
+                                    andStatus2: [otherTask objectAtIndex: 2]];
   if (result == NSOrderedSame)
     {
-      nullClass = [NSNull class];
+      // End date
       selfTime = [[self objectAtIndex: 4] intValue];
       otherTime = [[otherTask objectAtIndex: 4] intValue];
       if (selfTime && !otherTime)
@@ -138,8 +137,16 @@
 	  else if (selfTime < otherTime)
 	    result = NSOrderedAscending;
 	  else
-	    result = [[self objectAtIndex: 1]
-		       compare: [otherTask objectAtIndex: 1]];
+            {
+              // Calendar ID
+              result = [[self objectAtIndex: 1]
+                         compare: [otherTask objectAtIndex: 1]];
+              if (result == NSOrderedSame)
+                // Task name
+                result = [[self objectAtIndex: 3]
+                           compare: [otherTask objectAtIndex: 3]
+                           options: NSCaseInsensitiveSearch];
+            }
 	}
     }
 

@@ -485,7 +485,7 @@ LI._selected,
 TR._selected > TD,
 TD._selected
 {
-  background: #9ABCD8;
+  background-color: #9ABCD8 !important;
   color: #fff;
 }
 
@@ -534,22 +534,6 @@ DIV.resize-handle
   top: 0px;
   left: 0px; }
 
-@media print
-{
-  BODY
-  { position: static;
-    font-size: 10pt;
-    height: auto;
-    overflow: visible; }
-
-  DIV#logConsole,
-  DIV#linkBanner,
-  DIV#toolbar,
-  DIV.menu,
-  DIV.tabsContainer
-  { display: none; }
-}
-
 .genericHoverClass
 {
   background-color: #9ABCD8 !important;
@@ -559,7 +543,7 @@ DIV.resize-handle
 DIV.dialog
 { position: absolute;
   width: 350px;
-  z-index: 3; }
+  z-index: 50; }
 
 DIV.dialog > DIV
 { border: 1px solid #444;
@@ -1010,3 +994,19 @@ DIV.bottomToolbar A.bottomButton SPAN:active
 /* row editing */
 .editing > INPUT[type="text"]
 { width: 98%; }
+
+@media print
+{
+  BODY
+  { position: static;
+    font-size: 10pt;
+    height: auto;
+    overflow: visible; }
+
+  DIV#logConsole,
+  DIV#linkBanner,
+  DIV#toolbar,
+  DIV.menu,
+  DIV.tabsContainer
+  { display: none; }
+}

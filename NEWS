@@ -34,6 +34,7 @@ Enhancements
 - updated Ukranian translation
 - updated Spanish translation
 - "check while typing" is no longer enabled by default in HTML editor
+- show unread messages count in window title in the webmail interface
 - updated CKEditor to version 3.5.2
 - contact lists now have their own icons in the contacts web module
 - added the ability to invite people and to answer invitations from the iOS

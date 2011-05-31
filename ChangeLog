@@ -1,3 +1,15 @@
+2011-05-31  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/HTMLElement.js (selectElement): if element
+	has no ID, keep track of it anyway. This fixes an issue when
+	deleting attachments in the mail composition window.
+
+	* UI/WebServerResources/UIxMailEditor.js (initMailEditor): use
+	events delegation in the attachments list.
+
+	* UI/Scheduler/NSArray+Scheduler.m (-compareTasksAscending): sort
+	the tasks by their name if they are from the same calendar.
+
 2011-05-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromMAPISPropValue)
@@ -61,6 +73,23 @@
 	too.
 	(__main__): we output getter indexes as 16 bit hex values, for
 	consistency.
+
+2011-05-30  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js (contactsListCallback):
+	restored activation of drag'n'drop.
+	(configureAddressBooks, onFolderSelectionChange)
+	(appendAddressBook): delegated rows events to the table.
+	(setEventsOnAddressBook): this function removed following the new event
+	delegation model.
+
+2011-05-27  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m (-forwardAddress)
+	(-setForwardAddress): allow to define multiple forwarding addresses.
+
+	* UI/WebServerResources/UIxPreferences.js (savePreferences): test
+	each specified forwarding address.
 
 2011-05-17  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
