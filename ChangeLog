@@ -1,5 +1,9 @@
 2011-05-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSObject+MAPIStore.m
+	(-getMAPIValue:forTag:inMemCtx:): added case to handle PT_I8
+	properties via the new method below.
+
 	* OpenChange/NSValue+MAPIStore.m (-asI8InMemCtx:): new method that
 	extracts an uint64_t from an NSNumber.
 

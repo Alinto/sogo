@@ -56,6 +56,9 @@
     case PT_LONG:
       *data = [(NSNumber *) self asLongInMemCtx: memCtx];
       break;
+    case PT_I8:
+      *data = [(NSNumber *) self asI8InMemCtx: memCtx];
+      break;
     case PT_BOOLEAN:
       *data = [(NSNumber *) self asBooleanInMemCtx: memCtx];
       break;
