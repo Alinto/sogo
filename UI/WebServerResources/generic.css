@@ -781,7 +781,9 @@ SPAN.caption
 
 DIV.tabsContainer
 { overflow: hidden;
-  padding: 0px 5px; }
+  padding: 0px 5px;
+  -moz-user-select: none;
+  -khtml-user-select: none; }
 
 DIV.tabsContainer > DIV.scrollToolbar
 { position: absolute;

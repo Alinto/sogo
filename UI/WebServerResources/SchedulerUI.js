@@ -2478,15 +2478,15 @@ function initCalendarSelector() {
     selector.changeNotification = updateCalendarsList;
 
     var list = $("calendarList");
-    list.multiselect = true;
+    list.on("mousedown", onCalendarSelectionChange);
+    list.on("dblclick", onCalendarModify);
+    list.on("selectstart", listRowMouseDownHandler);
+    list.attachMenu("calendarsMenu");
+
     var items = list.childNodesWithTag("li");
     for (var i = 0; i < items.length; i++) {
         var input = items[i].childNodesWithTag("input")[0];
         $(input).observe("click", updateCalendarStatus);
-        items[i].observe("mousedown", listRowMouseDownHandler);
-        items[i].observe("selectstart", listRowMouseDownHandler);
-        items[i].observe("click", onRowClick);
-        items[i].observe("dblclick", onCalendarModify);
     }
 
     var links = $("calendarSelectorButtons").childNodesWithTag("a");
@@ -2494,6 +2494,14 @@ function initCalendarSelector() {
     $(links[1]).observe("click", onCalendarWebAdd);
     $(links[2]).observe("click", onCalendarAdd);
     $(links[3]).observe("click", onCalendarRemove);
+}
+
+function onCalendarSelectionChange(event) {
+    var target = Event.element(event);
+    if (target.tagName == 'SPAN')
+        target = target.parentNode;
+
+    onRowClick(event, target);
 }
 
 function onCalendarModify(event) {
@@ -2650,14 +2658,6 @@ function uploadCompleted(response) {
     $("uploadResults").show();
 }
 
-function setEventsOnCalendar(checkBox, li) {
-    li.observe("mousedown", listRowMouseDownHandler);
-    li.observe("selectstart", listRowMouseDownHandler);
-    li.observe("click", onRowClick);
-    li.observe("dblclick", onCalendarModify);
-    checkBox.observe("click", updateCalendarStatus);
-}
-
 function appendCalendar(folderName, folderPath) {
     var owner;
 
@@ -2707,8 +2707,8 @@ function appendCalendar(folderName, folderPath) {
         // Check the checkbox (required for IE)
         li.getElementsByTagName("input")[0].checked = true;
 
-        // Register events (doesn't work with Safari)
-        setEventsOnCalendar($(checkBox), $(li));
+        // Register event on checkbox
+        $(checkBox).on("click", updateCalendarStatus);
 
         var url = URLForFolderID(folderPath) + "/canAccessContent";
         triggerAjaxRequest(url, calendarEntryCallback, folderPath);
@@ -2971,7 +2971,6 @@ function initScheduler() {
         initCalendarSelector();
         configureSearchField();
         configureLists();
-        $("calendarList").attachMenu("calendarsMenu");
         $(document.body).observe("click", onBodyClickHandler);
         // Calendar import form
         $("uploadCancel").observe("click", hideCalendarImport);

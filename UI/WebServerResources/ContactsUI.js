@@ -936,6 +936,7 @@ function configureAddressBooks() {
     if (contactFolders) {
         contactFolders.on("mousedown", onFolderSelectionChange);
         contactFolders.on("dblclick", onAddressBookModify);
+        contactFolders.on("selectstart", listRowMouseDownHandler);
         contactFolders.attachMenu("contactFoldersMenu");
     
         lookupDeniedFolders();

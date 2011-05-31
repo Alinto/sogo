@@ -1,5 +1,8 @@
 2011-05-31  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js (initCalendarSelector): use
+	events delegation in the calendars list.
+
 	* UI/WebServerResources/HTMLElement.js (selectElement): if element
 	has no ID, keep track of it anyway. This fixes an issue when
 	deleting attachments in the mail composition window.
