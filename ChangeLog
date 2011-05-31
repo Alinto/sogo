@@ -1,5 +1,8 @@
 2011-05-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromMAPISPropValue)
+	(NSObjectFromSPropValue): handle PT_I8 properties.
+
 	* OpenChange/NSObject+MAPIStore.m
 	(-getMAPIValue:forTag:inMemCtx:): added case to handle PT_I8
 	properties via the new method below.

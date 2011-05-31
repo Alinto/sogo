@@ -95,13 +95,16 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
       result = [NSNull null];
       break;
     case PT_SHORT:
-      result = [NSNumber numberWithShort: value->value.i];
+      result = [NSNumber numberWithUnsignedShort: value->value.i];
       break;
     case PT_LONG:
-      result = [NSNumber numberWithLong: value->value.l];
+      result = [NSNumber numberWithUnsignedLong: value->value.l];
+      break;
+    case PT_I8:
+      result = [NSNumber numberWithUnsignedLongLong: value->value.d];
       break;
     case PT_BOOLEAN:
-      result = [NSNumber numberWithInt: (value->value.b ? 1 : 0)];
+      result = [NSNumber numberWithBool: (value->value.b ? YES : NO)];
       break;
     case PT_DOUBLE:
       result = [NSNumber numberWithDouble: value->value.dbl];
@@ -160,8 +163,11 @@ NSObjectFromSPropValue (const struct SPropValue *value)
     case PT_LONG:
       result = [NSNumber numberWithLong: value->value.l];
       break;
+    case PT_I8:
+      result = [NSNumber numberWithUnsignedLongLong: value->value.d];
+      break;
     case PT_BOOLEAN:
-      result = [NSNumber numberWithInt: (value->value.b ? 1 : 0)];
+      result = [NSNumber numberWithBool: (value->value.b ? YES : NO)];
       break;
     case PT_DOUBLE:
       result = [NSNumber numberWithDouble: value->value.dbl];
