@@ -97,7 +97,9 @@ sogo_init (void)
 */
 
 static int
-sogo_create_context(TALLOC_CTX *mem_ctx, const char *uri, uint64_t fid,
+sogo_create_context(TALLOC_CTX *mem_ctx,
+                    struct mapistore_connection_info *conn_info,
+                    const char *uri, uint64_t fid,
                     void **private_data)
 {
   NSAutoreleasePool *pool;
@@ -113,7 +115,9 @@ sogo_create_context(TALLOC_CTX *mem_ctx, const char *uri, uint64_t fid,
   MAPIStoreContextK = NSClassFromString (@"MAPIStoreContext");
   if (MAPIStoreContextK)
     {
-      context = [MAPIStoreContextK contextFromURI: uri andFID: fid
+      context = [MAPIStoreContextK contextFromURI: uri
+                               withConnectionInfo: conn_info
+                                           andFID: fid
                                          inMemCtx: mem_ctx];
       [context retain];
 

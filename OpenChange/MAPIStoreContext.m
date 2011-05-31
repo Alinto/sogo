@@ -108,6 +108,7 @@ static void *ldbCtx = NULL;
 static inline MAPIStoreContext *
 _prepareContextClass (struct mapistore_context *newMemCtx,
                       Class contextClass,
+                      struct mapistore_connection_info *connInfo,
                       NSURL *url, uint64_t fid)
 {
   static NSMutableDictionary *registration = nil;
@@ -121,7 +122,9 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
     [registration setObject: [NSNull null]
                   forKey: contextClass];
 
-  context = [[contextClass alloc] initFromURL: url andFID: fid
+  context = [[contextClass alloc] initFromURL: url
+                           withConnectionInfo: connInfo
+                                       andFID: fid
                                      inMemCtx: newMemCtx];
   [context autorelease];
 
@@ -139,6 +142,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 }
 
 + (id) contextFromURI: (const char *) newUri
+   withConnectionInfo: (struct mapistore_connection_info *) connInfo
                andFID: (uint64_t) fid
              inMemCtx: (struct mapistore_context *) newMemCtx
 {
@@ -167,6 +171,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
               if (contextClass)
                 context = _prepareContextClass (newMemCtx,
                                                 contextClass,
+                                                connInfo,
                                                 baseURL,
                                                 fid);
               else
@@ -198,9 +203,10 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return self;
 }
 
-- (id) initFromURL: (NSURL *) newUrl
-            andFID: (uint64_t) newFid
-          inMemCtx: (struct mapistore_context *) newMemCtx
+- (id)   initFromURL: (NSURL *) newUrl
+  withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
+              andFID: (uint64_t) newFid
+            inMemCtx: (struct mapistore_context *) newMemCtx
 {
   struct loadparm_context *lpCtx;
   MAPIStoreMapping *mapping;
@@ -222,6 +228,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       contextFid = newFid;
    
       memCtx = newMemCtx;
+      connInfo = newConnInfo;
     }
 
   return self;
@@ -260,6 +267,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 - (NSURL *) url
 {
   return contextUrl;
+}
+
+- (struct mapistore_connection_info *) connectionInfo
+{
+  return connInfo;
 }
 
 - (void) setupRequest

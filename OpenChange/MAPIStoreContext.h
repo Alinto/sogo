@@ -48,6 +48,7 @@
 @interface MAPIStoreContext : NSObject
 {
   struct mapistore_context *memCtx;
+  struct mapistore_connection_info *connInfo;
 
   NSURL *contextUrl;
   uint64_t contextFid;
@@ -62,17 +63,20 @@
 }
 
 + (id) contextFromURI: (const char *) newUri
+   withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
                andFID: (uint64_t) fid
              inMemCtx: (struct mapistore_context *) newMemCtx;
 
-- (id) initFromURL: (NSURL *) newUri
-            andFID: (uint64_t) fid
-          inMemCtx: (struct mapistore_context *) newMemCtx;
+- (id)   initFromURL: (NSURL *) newUri
+  withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
+              andFID: (uint64_t) fid
+            inMemCtx: (struct mapistore_context *) newMemCtx;
 
 - (void) setAuthenticator: (MAPIStoreAuthenticator *) newAuthenticator;
 - (MAPIStoreAuthenticator *) authenticator;
 
 - (NSURL *) url;
+- (struct mapistore_connection_info *) connectionInfo;
 
 - (WOContext *) woContext;
 
