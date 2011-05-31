@@ -1,5 +1,9 @@
 2011-05-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFallbackContext.[hm]: new class module for
+	the "fallback" context, used by the OpenChange core to create
+	contexts that are not specifically handled.
+
 	* OpenChange/MAPIStoreSOGo.m (sogo_create_context): a new struct
 	mapistore_connection_info * is now passed as parameter, which
 	contains useful data about the current connection.
