@@ -29,6 +29,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoFolder.h>
 
+#import "MAPIStoreActiveTables.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreFAIMessage.h"
 #import "MAPIStoreFAIMessageTable.h"
@@ -80,9 +81,6 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
       folderURL = nil;
       context = nil;
 
-      activeMessageTables = [NSMutableArray new];
-      activeFAIMessageTables  = [NSMutableArray new];
-      activeFolderTables = [NSMutableArray new];
     }
 
   return self;
@@ -110,9 +108,6 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
   [faiMessageKeys release];
   [folderKeys release];
   [faiFolder release];
-  [activeMessageTables release];
-  [activeFAIMessageTables release];
-  [activeFolderTables release];
 
   [super dealloc];
 }
@@ -165,59 +160,36 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 
 - (NSArray *) activeMessageTables
 {
-  return activeMessageTables;
+  return [[MAPIStoreActiveTables activeTables]
+             activeTablesForFMID: [self objectId]
+                         andType: MAPISTORE_MESSAGE_TABLE];
 }
 
 - (NSArray *) activeFAIMessageTables
 {
-  return activeFAIMessageTables;
+  return [[MAPIStoreActiveTables activeTables]
+             activeTablesForFMID: [self objectId]
+                         andType: MAPISTORE_FAI_TABLE];
 }
 
-- (NSArray *) activeFolderTables
+- (void) _cleanupTableCaches: (uint8_t) tableType
 {
-  return activeFolderTables;
-}
-
-- (NSMutableArray *) _arrayForActiveTable: (MAPIStoreTable *) activeTable
-{
-  NSMutableArray *tablesArray;
-
-  if ([activeTable isKindOfClass: MAPIStoreFAIMessageTableK])
-    tablesArray = activeMessageTables;
-  else if ([activeTable isKindOfClass: MAPIStoreMessageTableK])
-    tablesArray = activeMessageTables;
-  else if ([activeTable isKindOfClass: MAPIStoreFolderTableK])
-    tablesArray = activeMessageTables;
-  else
-    tablesArray = nil;
-
-  return tablesArray;
-}
-
-- (void) addActiveTable: (MAPIStoreTable *) activeTable
-{
-  [[self _arrayForActiveTable: activeTable] addObject: activeTable];
-}
-
-- (void) removeActiveTable: (MAPIStoreTable *) activeTable
-{
-  [[self _arrayForActiveTable: activeTable] removeObject: activeTable];
-}
-
-- (void) _cleanupTableCaches: (NSArray *) activeTables
-{
+  NSArray *tables;
   NSUInteger count, max;
 
-  max = [activeTables count];
+  tables = [[MAPIStoreActiveTables activeTables]
+               activeTablesForFMID: [self objectId]
+                           andType: tableType];
+  max = [tables count];
   for (count = 0; count < max; count++)
-    [[activeTables objectAtIndex: count] cleanupCaches];
+    [[tables objectAtIndex: count] cleanupCaches];
 }
 
 - (void) cleanupCaches
 {
-  [self _cleanupTableCaches: activeMessageTables];
-  [self _cleanupTableCaches: activeFAIMessageTables];
-  [self _cleanupTableCaches: activeFolderTables];
+  [self _cleanupTableCaches: MAPISTORE_MESSAGE_TABLE];
+  [self _cleanupTableCaches: MAPISTORE_FAI_TABLE];
+  [self _cleanupTableCaches: MAPISTORE_FOLDER_TABLE];
   [faiMessageKeys release];
   faiMessageKeys = nil;
   [messageKeys release];

@@ -1,3 +1,21 @@
+2011-05-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreTable.m: (-deactivate): removed obsolete
+	method, which was part of a hack anyway.
+
+	* OpenChange/MAPIStoreObject.m: (-addActiveTable:)
+	(-removeActiveTable:) removed obsolete methods.
+
+	* OpenChange/MAPIStoreFolder.m: (-init) removed obsolete ivars
+	"activeMessageTables", "activeFAIMessageTables" and "activeFolderTables".
+	(-activeMessageTables, -activeFAIMessageTables)
+	(-activeFolderTables, _cleanupTableCaches): make use of the new
+	MAPIStoreActiveTables class.
+
+	* OpenChange/MAPIStoreActiveTables.[hm]: new class module that
+	provides a facility for keeping track of all the instantiated
+	tables.
+
 2011-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/code-MAPIStorePropertySelectors.m

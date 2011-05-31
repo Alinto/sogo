@@ -45,12 +45,6 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
-@interface MAPIStoreObject (MAPIStoreObjectProtocol)
-
-- (void) deactivate;
-
-@end
-
 /**
    \details Initialize sogo mapistore backend
 
@@ -1164,8 +1158,6 @@ sogo_pocop_release (void *object)
   if (propObject)
     {
       pool = [NSAutoreleasePool new];
-      if ([propObject respondsToSelector: @selector (deactivate)])
-        [propObject deactivate];
       [propObject release];
       [pool release];
       rc = MAPI_E_SUCCESS;

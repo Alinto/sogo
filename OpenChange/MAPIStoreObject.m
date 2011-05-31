@@ -188,15 +188,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
                     containerURL, [self nameInContainer]];
 }
 
-- (void) addActiveTable: (MAPIStoreTable *) activeTable
-{
-  [self subclassResponsibility: _cmd];
-}
 
-- (void) removeActiveTable: (MAPIStoreTable *) activeTable
-{
-  [self subclassResponsibility: _cmd];
-}
 
 - (void) addNewProperties: (NSDictionary *) newNewProperties
 {

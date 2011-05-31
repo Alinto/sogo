@@ -60,7 +60,7 @@ typedef enum {
   uint32_t currentRow;
   MAPIStoreObject *currentChild;
 
-  uint16_t tableType; /* mapistore */
+  uint8_t tableType; /* mapistore */
 
   /* proof of concept */
   uint16_t columnsCount;
@@ -71,6 +71,9 @@ typedef enum {
 + (Class) childObjectClass;
 
 - (id) initForContainer: (MAPIStoreObject *) newContainer;
+
+- (id) container;
+- (uint8_t) tableType;
 
 - (void) setHandleId: (uint32_t) newHandleId;
 

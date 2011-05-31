@@ -26,6 +26,7 @@
 #import <EOControl/EOQualifier.h>
 
 #import "EOBitmaskQualifier.h"
+#import "MAPIStoreActiveTables.h"
 #import "MAPIStoreObject.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
@@ -295,24 +296,31 @@ static Class NSDataK, NSStringK;
   if ((self = [self init]))
     {
       container = newContainer;
-      [container addActiveTable: self];
+      [[MAPIStoreActiveTables activeTables] registerTable: self];
     }
 
   return self;
 }
 
-- (void) deactivate
-{
-  [container removeActiveTable: self];
-}
-
 - (void) dealloc
 {
+  if (container)
+    [[MAPIStoreActiveTables activeTables] unregisterTable: self];
   [currentChild release];
   [childKeys release];
   [restrictedChildKeys release];
   [restriction release];
   [super dealloc];
+}
+
+- (id) container
+{
+  return container;
+}
+
+- (uint8_t) tableType
+{
+  return tableType;
 }
 
 - (void) setHandleId: (uint32_t) newHandleId

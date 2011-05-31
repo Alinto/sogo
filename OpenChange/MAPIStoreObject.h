@@ -69,8 +69,6 @@
 - (uint64_t) objectId;
 - (NSString *) url;
 
-- (void) addActiveTable: (MAPIStoreTable *) activeTable;
-- (void) removeActiveTable: (MAPIStoreTable *) activeTable;
 
 /* properties */
 

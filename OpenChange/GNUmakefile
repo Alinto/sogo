@@ -27,6 +27,7 @@ $(SOGOBACKEND)_PRINCIPAL_CLASS = MAPIApplication
 
 $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIApplication.m \
+	MAPIStoreActiveTables.m \
 	MAPIStoreAuthenticator.m \
 	MAPIStoreMapping.m \
 	MAPIStoreTypes.m \
