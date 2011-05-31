@@ -31,7 +31,7 @@
   uint8_t *value;
 
   value = talloc (memCtx, uint8_t);
-  *value = [self boolValue];
+  *value = ([self boolValue] ? 1 : 0);
 
   return value;
 }
@@ -52,6 +52,16 @@
 
   value = talloc (memCtx, uint32_t);
   *value = [self longValue];
+
+  return value;
+}
+
+- (uint64_t *) asI8InMemCtx: (void *) memCtx
+{
+  uint64_t *value;
+
+  value = talloc (memCtx, uint64_t);
+  *value = [self unsignedLongLongValue];
 
   return value;
 }

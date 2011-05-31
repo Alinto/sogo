@@ -30,6 +30,7 @@
 - (uint8_t *) asBooleanInMemCtx: (void *) memCtx;
 - (uint16_t *) asShortInMemCtx: (void *) memCtx;
 - (uint32_t *) asLongInMemCtx: (void *) memCtx;
+- (uint64_t *) asI8InMemCtx: (void *) memCtx;
 - (double *) asDoubleInMemCtx: (void *) memCtx;
 
 @end

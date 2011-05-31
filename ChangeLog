@@ -1,5 +1,8 @@
 2011-05-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSValue+MAPIStore.m (-asI8InMemCtx:): new method that
+	extracts an uint64_t from an NSNumber.
+
 	* OpenChange/MAPIStoreFallbackContext.[hm]: new class module for
 	the "fallback" context, used by the OpenChange core to create
 	contexts that are not specifically handled.
