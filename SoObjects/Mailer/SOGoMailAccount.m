@@ -358,13 +358,22 @@ static NSString *sieveScriptName = @"sogo";
 
   if (values && [[values objectForKey: @"enabled"] boolValue])
     {
+      id addresses;
+      int i;
+
       b = YES;
       
-      v = [values objectForKey: @"forwardAddress"];
+      addresses = [values objectForKey: @"forwardAddress"];
+      if ([addresses isKindOfClass: [NSString class]])
+        addresses = [NSArray arrayWithObject: addresses];
 
-      if (v && [v length] > 0)
-	[script appendFormat: @"redirect \"%@\";\r\n", v];
-
+      for (i = 0; i < [addresses count]; i++)
+	{
+          v = [addresses objectAtIndex: i];
+          if (v && [v length] > 0)
+            [script appendFormat: @"redirect \"%@\";\r\n", v];
+        }
+      
       if ([[values objectForKey: @"keepCopy"] boolValue])
 	[script appendString: @"keep;\r\n"];
     }
