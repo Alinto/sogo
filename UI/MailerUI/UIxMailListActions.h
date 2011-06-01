@@ -35,6 +35,7 @@
   id message;
   SOGoDateFormatter *dateFormatter;
   NSTimeZone *userTimeZone;
+  BOOL sortByThread;
   int folderType;
   int specificMessageNumber;
 }

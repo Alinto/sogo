@@ -8,6 +8,7 @@ SOGoMailDataSource = Class.create({
             this.url = url;
             
             this.uids = new Array();
+            this.threaded = false;
             this.cache = new Hash();
             
             this.loaded = false;
@@ -27,7 +28,7 @@ SOGoMailDataSource = Class.create({
 
         invalidate: function(uid) {
             this.cache.unset(uid);
-            var index = this.uids.indexOf(parseInt(uid));
+            var index = this.indexOf(uid);
 //            log ("MailDataSource.invalidate(" + uid + ") at index " + index);
 
             return index;
@@ -41,10 +42,16 @@ SOGoMailDataSource = Class.create({
 
             return index;
         },
-        
-        init: function(uids, headers) {
+
+        init: function(uids, threaded, headers) {
             this.uids = uids;
-            
+            if (typeof threaded != "undefined") {
+                this.threaded = threaded;
+                if (threaded)
+                    this.uids.shift(); // drop key fields
+            }
+//            log ("MailDataSource.init() " + this.uids.length + " uids loaded");
+
             if (headers) {
                 var keys = headers[0];
                 for (var i = 1; i < headers.length; i++) {
@@ -53,6 +60,7 @@ SOGoMailDataSource = Class.create({
                         header[keys[j]] = headers[i][j];
                     this.cache.set(header["uid"], header);
                 }
+//                log ("MailDataSource.init() " + this.cache.keys().length + " headers loaded");
             }
 
             this.loaded = true;
@@ -81,7 +89,7 @@ SOGoMailDataSource = Class.create({
                 if (http.responseText.length > 0) {
                     var data = http.responseText.evalJSON(true);
                     if (data.uids)
-                        this.init(data.uids, data.headers);
+                        this.init(data.uids, data.threaded, data.headers);
                     else
                         this.init(data);
                     if (this.delayedGetData) {
@@ -136,8 +144,9 @@ SOGoMailDataSource = Class.create({
 //            log ("MailDataSource._getData() from " + index + " to " + (index + count) + " boosted from " + start + " to " + end);
 
             for (i = 0, j = start; j < end; j++) {
-                if (!this.cache.get(this.uids[j])) {
-                     missingUids[i] = this.uids[j];
+                var uid = this.threaded? this.uids[j][0] : this.uids[j];
+                if (!this.cache.get(uid)) {
+                     missingUids[i] = uid;
                     i++;
                 }
             }
@@ -196,12 +205,45 @@ SOGoMailDataSource = Class.create({
             var i, j;
             var data = new Array();
             for (i = start, j = 0; i < end; i++, j++) {
-                data[j] = this.cache.get(this.uids[i]);
+                if (this.threaded) {
+                    data[j] = this.cache.get(this.uids[i][0]);
+
+                    // Add thread-related data
+                    if (parseInt(this.uids[i][2]) > 0)
+                        data[j]['Thread'] = '&nbsp;'; //'<img class="messageThread" src="' + ResourcesURL + '/arrow-down.png">';
+                    else
+                        delete data[j]['Thread'];
+                    if (parseInt(this.uids[i][1]) > -1)
+                        data[j]['ThreadLevel'] = this.uids[i][1];
+                    else
+                        delete data[j]['ThreadLevel'];
+                }
+                else {
+                    data[j] = this.cache.get(this.uids[i]);
+                }
             }
             callbackFunction(id, start, this.uids.length, data);
         },
 
         indexOf: function(uid) {
-            return this.uids.indexOf(parseInt(uid));
+            var index = -1;
+            if (this.threaded) {
+                for (var i = 0; i < this.uids.length; i++)
+                    if (this.uids[i][0] == uid) {
+                        index = i;
+                        break;
+                    }
+            }
+            else
+                index = this.uids.indexOf(parseInt(uid));
+
+            return index;
+        },
+
+        uidAtIndex: function(index) {
+            if (this.threaded)
+                return this.uids[index][0];
+            else
+                return this.uids[index];
         }
 });

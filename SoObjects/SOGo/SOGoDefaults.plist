@@ -53,7 +53,7 @@
     SOGoMailSignaturePlacement = "below";
     SOGoMailPollingIntervals = ( 1, 2, 5, 10, 20, 30, 60 );
     SOGoMailComposeMessageType = "text";
-    SOGoMailListViewColumnsOrder = ( "Flagged", "Attachment", "Subject",
+    SOGoMailListViewColumnsOrder = ( "Thread", "Flagged", "Attachment", "Subject",
                                      "From", "Unread", "Date", "Priority",
                                      "Size" );
 

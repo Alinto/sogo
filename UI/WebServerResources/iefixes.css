@@ -50,7 +50,15 @@ TABLE.messageList TD
 { white-space: pre; }
 
 TABLE.messageList TR._selected TD
-{ border-right: 1px solid #9ABCD8; }
+{ border-right: 1px solid #9ABCD8 !important; }
+
+TABLE.messageList TR.openedThread TD,
+TABLE.messageList TR.closedThread TD,
+TABLE.messageList TR.thread .messageThreadColumn
+{ border-right: 1px solid #DDD; }
+
+TABLE.messageList TR.thread TD
+{ border-right: 1px solid #EEE; }
 
 /* ContactsUI */
 

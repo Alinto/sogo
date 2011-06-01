@@ -57,9 +57,9 @@ var SOGoDataTableInterface = {
                 s = startIndex;
                 e = endIndex;
             }
-	    
+
             while (s <= e) {
-		uid = "row_" + div.dataSource.uids[s];
+		uid = "row_" + div.dataSource.uidAtIndex(s);
 		if (this.selectedIds.indexOf(uid) < 0)
 		    this.selectedIds.push(uid);
                 s++;
@@ -71,7 +71,7 @@ var SOGoDataTableInterface = {
 	    var div = this.up('div');
 	    this.selectedIds = new Array();
 	    for (var i = 0; i < div.dataSource.uids.length; i++)
-		this.selectedIds.push("row_" + div.dataSource.uids[i]);
+		this.selectedIds.push("row_" + div.dataSource.uidAtIndex(i));
 	    this.refreshSelectionByIds();
         },
 

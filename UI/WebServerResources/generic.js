@@ -605,14 +605,6 @@ function onRowClick(event, target) {
         // Single line selection
         $(node.parentNode).deselectAll();
         $(node).selectElement();
-
-        if (initialSelection != $(node.parentNode).getSelectedNodesId()) {
-            // Selection has changed; fire mousedown event
-            var parentNode = node.parentNode;
-            if (parentNode.tagName == 'TBODY')
-                parentNode = parentNode.parentNode;
-            parentNode.fire("mousedown");
-        }
     }
     if (rowIndex != null) {
 	lastClickedRow = rowIndex;
@@ -735,8 +727,6 @@ function hideMenu(menuNode) {
         menuNode.parentMenu.submenu = null;
         menuNode.parentMenu = null;
     }
-
-    $(menuNode).fire("mousedown");
 }
 
 function onMenuEntryClick(event) {

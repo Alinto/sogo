@@ -17,7 +17,10 @@ var Mailer = {
     quotas: null,
 
     dataTable: null,
-    dataSources: new Hash()
+    dataSources: new Hash(),
+
+    columnsOrder: null,
+    sortByThread: false
 };
 
 var usersRightsWindowHeight = 320;
@@ -169,8 +172,10 @@ function markMailInWindow(win, msguid, markread) {
     return (unseenCount != 0);
 }
 
+/**
+ * This is called by UIxMailView with window.opener.
+ */
 function markMailReadInWindow(win, msguid) {
-    /* this is called by UIxMailView with window.opener */
     return markMailInWindow(win, msguid, true);
 }
 
@@ -202,6 +207,31 @@ function openMessageWindowsForSelection(action, firstOnly) {
 
     return false;
 }
+
+/*
+function mailListToggleMessageThread(row, cell) {
+    var show = row.hasClassName('closedThread');
+    $(cell).down('img').remove();
+    if (show) {
+        row.removeClassName('closedThread');
+        row.addClassName('openedThread');
+        var img = createElement("img", null, null, { src: ResourcesURL + '/arrow-down.png' });
+        cell.insertBefore(img, cell.firstChild);
+    }
+    else {
+        row.removeClassName('openedThread');
+        row.addClassName('closedThread');
+        var img = createElement("img", null, null, { src: ResourcesURL + '/arrow-right.png' });
+        cell.insertBefore(img, cell.firstChild);
+    }
+    while ((row = row.next()) && row.hasClassName('thread')) {
+        if (show)
+            row.show();
+        else
+            row.hide();
+    }
+}
+*/
 
 /* Triggered when clicking on the read/unread dot of a message row or
  * through the contextual menu. */
@@ -399,6 +429,7 @@ function deleteSelectedMessages(sender) {
     var uids = new Array(); // message IDs
     var paths = new Array(); // row IDs
     var unseenCount = 0;
+    var refreshFolder = false;
 
     if (rowIds && rowIds.length > 0) {
         messageList.deselectAll();
@@ -432,15 +463,26 @@ function deleteSelectedMessages(sender) {
                 var row = $("row_" + uid);
                 var nextRow = false;
                 if (row) {
+                    //row.addClassName("deleted"); // when we'll offer "mark as deleted"
                     nextRow = row.next("tr");
                     if (!nextRow.id.startsWith('row_'))
                         nextRow = row.previous("tr");
-                    //	row.addClassName("deleted"); // when we'll offer "mark as deleted"
+                    else if (row.hasClassName('openedThread') || row.hasClassName('closedThread')) {
+                        // Thread root deleted -- must refresh folder
+                        refreshFolder = true;
+                        // New row will be the new thread root -- mark it as first mail of the thread
+                        var nextUid = nextRow.id.substr(4);
+                        var nextIndex = Mailer.dataTable.dataSource.indexOf(nextUid);
+                        Mailer.dataTable.dataSource.uids[nextIndex][2] = 1; // mark it as "first"
+                        Mailer.dataTable.invalidate(nextUid, true);
+                    }
                     if (nextRow.id.startsWith('row_')) {
                         Mailer.currentMessages[Mailer.currentMailbox] = nextRow.id.substr(4);
                         nextRow.selectElement();
-                        if (loadMessage(Mailer.currentMessages[Mailer.currentMailbox]))
+                        if (loadMessage(Mailer.currentMessages[Mailer.currentMailbox]) && !refreshFolder)
+                            // Seen state has changed
                             Mailer.dataTable.invalidate(Mailer.currentMessages[Mailer.currentMailbox], true);
+                            refreshFolder = true;
                     }
                 }
                 else {
@@ -452,7 +494,6 @@ function deleteSelectedMessages(sender) {
                     lastClickedRow = nextRow.rowIndex;
 	            lastClickedRowId = nextRow.id;
                 }
-                Mailer.dataTable.refresh();
                 deleteCachedMailboxByType("trash");
             }
             else {
@@ -468,7 +509,7 @@ function deleteSelectedMessages(sender) {
         }
         var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/batchDelete";
         var parameters = "uid=" + uids.join(",");
-        var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths, "refreshUnseenCount": (unseenCount > 0) };
+        var data = { "id": uids, "mailbox": Mailer.currentMailbox, "path": paths, "refreshUnseenCount": (unseenCount > 0), "refreshFolder": refreshFolder };
         triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
                            { "Content-type": "application/x-www-form-urlencoded" });
     }
@@ -485,6 +526,8 @@ function deleteSelectedMessagesCallback(http) {
             // TODO : the unseen count should be returned when calling the batchDelete remote action,
             // in order to avoid this extra AJAX call.
 	    getUnseenCountForFolder(data["mailbox"]);
+        if (data["refreshFolder"])
+            Mailer.dataTable.refresh();
     }
     else if (!http.callbackData["withoutTrash"]) {
         showConfirmDialog(_("Warning"),
@@ -514,16 +557,11 @@ function onMenuDeleteMessage(event) {
     preventDefault(event);
 }
 
-function deleteMessage(url, id, mailbox, messageId) {
-    var data = { "id": new Array(id), "mailbox": mailbox, "path": new Array(messageId) };
-    var parameters = "uid=" + id;
-    deleteMessageRequestCount++;
-    triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
-                       { "Content-type": "application/x-www-form-urlencoded" });
-}
-
+/**
+ * The following two functions are called from UIxMailPopupView
+ * with window.opener.
+ */
 function deleteMessageWithDelay(url, id, mailbox, messageId) {
-    /* this is called by UIxMailPopupView with window.opener */
     var row = $("row_" + id);
     if (row) row.hide();
     setTimeout("deleteMessage('" +
@@ -532,6 +570,14 @@ function deleteMessageWithDelay(url, id, mailbox, messageId) {
                mailbox + "', '" +
                messageId + "')",
                50);
+}
+
+function deleteMessage(url, id, mailbox, messageId) {
+    var data = { "id": new Array(id), "mailbox": mailbox, "path": new Array(messageId) };
+    var parameters = "uid=" + id;
+    deleteMessageRequestCount++;
+    triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
+                       { "Content-type": "application/x-www-form-urlencoded" });
 }
 
 function onPrintCurrentMessage(event) {
@@ -588,9 +634,9 @@ function toggleAddressColumn(search, replace) {
     if (header) {
         header.id = replace + "Header";
         header.update(_(replace.capitalize()));
-        var i = UserDefaults["SOGoMailListViewColumnsOrder"].indexOf(search.capitalize());
+        var i = Mailer.columnsOrder.indexOf(search.capitalize());
         if (i >= 0)
-            UserDefaults["SOGoMailListViewColumnsOrder"][i] = replace.capitalize();
+            Mailer.columnsOrder[i] = replace.capitalize();
     }
     if (sorting["attribute"] == search)
         sorting["attribute"] = replace;
@@ -767,7 +813,7 @@ function openMailbox(mailbox, reload) {
                 if (inboxData) {
                     // Use UIDs and headers from the WOX template; this only
                     // happens once and only with the inbox
-                    dataSource.init(inboxData['uids'], inboxData['headers']);
+                    dataSource.init(inboxData['uids'], inboxData['threaded'], inboxData['headers']);
                     inboxData = null; // invalidate this initial lookup
                 }
                 else
@@ -813,12 +859,20 @@ function messageListCallback(row, data, isNew) {
     row.id = data['rowID'];
     row.writeAttribute('labels', (data['labels']?data['labels']:""));
     row.className = data['rowClasses'];
+    row.show(); // make sure the row is visible
 
     // Restore previous selection
     if (data['uid'] == currentMessage)
 	row.addClassName('_selected');
 
-    var columnsOrder = UserDefaults["SOGoMailListViewColumnsOrder"];
+    if (data['Thread'])
+        row.addClassName('openedThread');
+    else if (data['ThreadLevel'] > 0) {
+        if (data['ThreadLevel'] > 10) data['ThreadLevel'] = 10;
+        row.addClassName('thread');
+        row.addClassName('thread' + data['ThreadLevel']);
+    }
+
     var cells;
     if (Prototype.Browser.IE)
         cells = row.childNodes;
@@ -827,7 +881,7 @@ function messageListCallback(row, data, isNew) {
 
     for (var j = 0; j < cells.length; j++) {
         var cell = $(cells[j]);
-        var cellType = columnsOrder[j];
+        var cellType = Mailer.columnsOrder[j];
 
         if (data[cellType]) cell.innerHTML = data[cellType];
         else cell.innerHTML = '&nbsp;';
@@ -957,21 +1011,26 @@ function onMessageListRender(event) {
 }
 
 function onMessageContextMenu(event) {
-    var row = getTarget(event);
+    var target = Event.element(event);
     var menu = $('messageListMenu');
     var topNode = $('messageListBody');
-    var selectedNodes = topNode.getSelectedRows();
-    if (row.tagName != 'TR')
-        row = row.parentNode;
-    if (row.tagName != 'TR')
-        row = row.parentNode;
+    var selectedNodes = topNode.getSelectedRowsId();
+    var row = target.up('TR');
 
+    if (selectedNodes.indexOf(row.id) < 0) {
+        if (target.tagName != 'TD')
+            target = target.up('TD');
+        onRowClick(event, target);
+        selectedNodes = topNode.getSelectedRowsId();
+    }
+    
     menu.observe("hideMenu", onMessageContextMenuHide);
-
     if (selectedNodes.length > 1)
         popupMenu(event, "messagesListMenu", selectedNodes);
-    else
+    else if (selectedNodes.length == 1)
         popupMenu(event, "messageListMenu", row);
+
+    return false;
 }
 
 function onMessageContextMenuHide(event) {
@@ -1110,7 +1169,10 @@ function onMessageSelectionChange(event) {
     if (t.tagName == 'IMG') {
         t = t.parentNode;
         if (t.tagName == 'TD') {
-            if (t.className == 'messageUnreadColumn') {
+            if (t.className == 'messageThreadColumn') {
+                //mailListToggleMessageThread(t.parentNode, t); Disable thread collapsing
+            }
+            else if (t.className == 'messageUnreadColumn') {
                 mailListToggleMessagesRead(t.parentNode);
                 return true;
             }
@@ -1781,15 +1843,17 @@ function refreshMessage(mailbox, messageUID) {
     }
 }
 
-function configureMessageListEvents(headerTable, dataTable) {
+function configureMessageListEvents() {
+    var headerTable = $("messageListHeader");
+    var dataTable = $("messageListBody");
+
     if (headerTable)
         // Sortable columns
         configureSortableTableHeaders(headerTable);
 
     if (dataTable) {
         dataTable.multiselect = true;
-        // Each body row can load a message
-        dataTable.observe("mouseup", onMessageSelectionChange);
+        dataTable.observe("click", onMessageSelectionChange);
         dataTable.observe("dblclick", onMessageDoubleClick);
         dataTable.observe("selectstart", listRowMouseDownHandler);
         dataTable.observe("contextmenu", onMessageContextMenu);
@@ -1844,6 +1908,11 @@ function openInbox(node) {
 
 function initMailer(event) {
     if (!$(document.body).hasClassName("popup")) {
+        Mailer.columnsOrder = UserDefaults["SOGoMailListViewColumnsOrder"];
+        Mailer.sortByThread = UserDefaults["SOGoMailSortByThreads"] != null && parseInt(UserDefaults["SOGoMailSortByThreads"]) > 0;
+        if (!Mailer.sortByThread && Mailer.columnsOrder[0] == "Thread")
+            Mailer.columnsOrder.shift(); // drop the thread column
+
         // Restore sorting from user settings
         if (UserSettings && UserSettings["Mail"] && UserSettings["Mail"]["SortingState"]) {
             sorting["attribute"] = UserSettings["Mail"]["SortingState"][0];
@@ -1866,7 +1935,7 @@ function initMailer(event) {
             messageListHeader.restore($H(UserSettings["Mail"]["ColumnsState"]));
         }
 
-        configureMessageListEvents($("messageListHeader"), $("messageListBody"));
+        configureMessageListEvents();
 
         initMailboxTree();
         initMessageCheckTimer();
@@ -2589,15 +2658,16 @@ function onLabelMenuPrepareVisibility() {
 function onMarkMenuPrepareVisibility() {
     var messageList = $("messageListBody");
     if (messageList) {
-        var nodes = messageList.down("TBODY").getSelectedNodes();
+        var nodes = messageList.down("TBODY").getSelectedNodesId();
 
         var isRead = false;
         var isFlagged = false;
 
         if (nodes.length > 0) {
-            var row = nodes[0];
-            var firstTd = row.childElements().first();
-            var img = firstTd.childElements().first();
+            var row = null;
+            for (var i = 0; row == null && i < nodes.length; i++)
+                row = $(nodes[i]);
+            var img = row.down('img');
             isFlagged = img.hasClassName ("messageIsFlagged");
             isRead = !row.hasClassName("mailer_unreadmail");
         }
@@ -2685,7 +2755,7 @@ function getMenus() {
                             "-", "moveMailboxMenu",
                             "copyMailboxMenu", "label-menu",
                             "mark-menu", "-",
-                            saveAs, null,
+                            saveAs, null, null,
                             onMenuDeleteMessage ],
         imageMenu: [ saveImage ],
         attachmentMenu: [ saveAttachment ],
@@ -2857,16 +2927,15 @@ function startDragging (itm, e) {
     if (target.up('TBODY') == undefined)
         return;
 
-    if (target.tagName != 'TD')
-        target = target.up('TD');
     var row = target.up('TR');
-
     var handle = $("dragDropVisual");
     var selectedIds = $("messageListBody").getSelectedRowsId();
     var count = selectedIds.length;
     var rowId = row.id;
 
     if (count == 0 || selectedIds.indexOf(rowId) < 0) {
+        if (target.tagName != 'TD')
+            target = target.up('TD');
         onRowClick(e, target);
         selectedIds = $("messageListBody").getSelectedRowsId();
         count = selectedIds.length;

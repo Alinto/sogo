@@ -361,6 +361,7 @@ function initMailEditor() {
 
     var list = $("attachments");
     if (!list) return;
+    list.multiselect = true;
     list.on("click", onRowClick);
     list.attachMenu("attachmentsMenu");
     var elements = $(list).childNodesWithTag("li");

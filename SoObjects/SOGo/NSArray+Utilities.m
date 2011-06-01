@@ -1,6 +1,6 @@
 /* NSArray+Utilities.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2009 Inverse inc.
+ * Copyright (C) 2006-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -129,7 +129,10 @@
   flattenedArray = [NSMutableArray array];
   objects = [self objectEnumerator];
   while ((currentObject = [objects nextObject]))
-    [flattenedArray addObjectsFromArray: currentObject];
+    if ([currentObject isKindOfClass: [NSArray class]])
+      [flattenedArray addObjectsFromArray: [(NSArray *)currentObject flattenedArray]];
+    else
+      [flattenedArray addObject: currentObject];
 
   return flattenedArray;
 }

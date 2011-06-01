@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009-2010 Inverse inc.
+  Copyright (C) 2009-2011 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
@@ -60,7 +60,8 @@
                    inContext: (id) context;
 - (WOResponse *) archiveAllMessagesInContext: (id) localContext;
 
-- (NSArray *) fetchUIDsMatchingQualifier: (id)_q sortOrdering: (id) _so;
+- (NSArray *) fetchUIDsMatchingQualifier: (id) _q sortOrdering: (id) _so;
+- (NSArray *) fetchUIDsMatchingQualifier: (id) _q sortOrdering: (id) _so threaded: (BOOL) _threaded;
 - (NSArray *) fetchUIDs: (NSArray *) _uids parts: (NSArray *) _parts;
 
 - (WOResponse *) copyUIDs: (NSArray *) uids

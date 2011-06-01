@@ -256,6 +256,7 @@ TR#messageCountHeader TH
 TABLE.messageList TD
 { border-right: 1px solid transparent; }
 
+TABLE.messageList .messageThreadColumn,
 TABLE.messageList .messageFlagColumn,
 TABLE.messageList .messageAttachmentColumn,
 TABLE.messageList .messageUnreadColumn
@@ -269,6 +270,45 @@ TABLE.messageList .messageSubjectColumn
 
 TABLE.messageList .messageSubjectColumn SPAN
 { padding-left: 20px; }
+
+TABLE.messageList TR.openedThread TD,
+TABLE.messageList TR.closedThread TD,
+TABLE.messageList TR.thread .messageThreadColumn
+{ background-color: #DDD; }
+
+TABLE.messageList TR.thread TD
+{ background-color: #EEE; }
+
+TABLE.messageList TR.thread1 .messageSubjectColumn
+{ background-position: 20px 0px !important;
+  padding-left: 20px; }
+TABLE.messageList TR.thread2 .messageSubjectColumn
+{ background-position: 40px 0px !important;
+  padding-left: 40px; }
+TABLE.messageList TR.thread3 .messageSubjectColumn
+{ background-position: 60px 0px !important;
+  padding-left: 60px; }
+TABLE.messageList TR.thread4 .messageSubjectColumn
+{ background-position: 80px 0px !important;
+  padding-left: 80px; }
+TABLE.messageList TR.thread5 .messageSubjectColumn
+{ background-position: 100px 0px !important;
+  padding-left: 100px; }
+TABLE.messageList TR.thread6 .messageSubjectColumn
+{ background-position: 120px 0px !important;
+  padding-left: 120px; }
+TABLE.messageList TR.thread7 .messageSubjectColumn
+{ background-position: 140px 0px !important;
+  padding-left: 140px; }
+TABLE.messageList TR.thread8 .messageSubjectColumn
+{ background-position: 160px 0px !important;
+  padding-left: 160px; }
+TABLE.messageList TR.thread9 .messageSubjectColumn
+{ background-position: 180px 0px !important;
+  padding-left: 180px; }
+TABLE.messageList TR.thread10 .messageSubjectColumn
+{ background-position: 200px 0px !important;
+  padding-left: 200px; }
 
 TABLE.messageList .messageAddressColumn
 { max-width: 18%;

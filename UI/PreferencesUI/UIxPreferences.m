@@ -547,6 +547,16 @@
   return [userDefaults mailShowSubscribedFoldersOnly];
 }
 
+- (void) setSortByThreads: (BOOL) sortByThreads
+{
+  [userDefaults setMailSortByThreads: sortByThreads];
+}
+
+- (BOOL) sortByThreads
+{
+  return [userDefaults mailSortByThreads];
+}
+
 - (NSArray *) messageCheckList
 {
   NSArray *intervalsList;

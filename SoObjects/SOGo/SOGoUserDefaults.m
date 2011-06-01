@@ -372,6 +372,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self boolForKey: @"SOGoMailShowSubscribedFoldersOnly"];
 }
 
+- (void) setMailSortByThreads: (BOOL) newValue
+{
+  [self setBool: newValue forKey: @"SOGoMailSortByThreads"];
+}
+
+- (BOOL) mailSortByThreads
+{
+  return [self boolForKey: @"SOGoMailSortByThreads"];
+}
+
 - (void) setDraftsFolderName: (NSString *) newValue
 {
   [self setObject: newValue forKey: @"SOGoDraftsFolderName"];

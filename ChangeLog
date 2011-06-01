@@ -1,8 +1,44 @@
 2011-06-01  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserDefaults.m (-setMailSortByThreads)
+	(-mailSortByThreads): new accessors for the "SOGoMailSortByThreads"
+	user defaults.
+
+	* UI/PreferencesUI/UIxPreferences.m (-setSortByThreads)
+	(sortByThreads): idem.
+
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-fetchUIDsMatchingQualifier:sortOrdering:threaded:): new method
+	to fetch a threaded-view of the folder.
+
+	* SoObjects/SOGo/NSArray+Utilities.m (-flattenedArray): added
+	recurrence to flatten interleaved arrays.
+
 	* SoObjects/Mailer/SOGoMailAccount.m (-updateFilters): write
 	multiple 'redirect' directives when forwarding to multiple email
 	addresses.
+
+	* UI/MailerUI/UIxMailListActions.m (-threadedUIDs): new method
+	that returns a flatten representation of messages threads.
+
+	* UI/MailerUI/UIxMailMainFrame.m (-columnsMetaData): added CSS
+	classnames for the thread column.
+	(-columnsDisplayOrder): add or remove the thread column depending
+	on the user's defaults.
+
+	* UI/MailerUI/UIxMailListActions.m (-getUIDsAndHeadersInFolder)
+	(-getSortedUIDsAction): added support for threads.
+
+	* UI/WebServerResources/ContactsUI.js (onContactContextMenu):
+	select row at pointer position when not already selected.
+
+	* UI/WebServerResources/MailerUI.js: added support for the
+	threaded view.
+	(onMessageContextMenu): select row at pointer position when not
+	already selected.
+
+	* UI/WebServerResources/SOGoMailDataSource.js: added support for
+	the threaded view.
 
 2011-05-31  Francis Lachapelle  <flachapelle@inverse.ca>
 

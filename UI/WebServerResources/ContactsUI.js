@@ -215,11 +215,20 @@ function contactsListCallback(http) {
 }
 
 function onContactContextMenu(event) {
+    var target = Event.element(event);
+    var contact = target.up('TR');
     var contactsList = $("contactsList");
+    var contacts = contactsList.getSelectedRows();
+
+    if (contacts.indexOf(contact) < 0) {
+        onRowClick(event, target);
+        contacts = contactsList.getSelectedRows();
+    }
+
     var menu = $("contactMenu");
     menu.observe("hideMenu", onContactContextMenuHide);
     if (contactsList)
-        popupMenu(event, "contactMenu", contactsList.getSelectedRows());
+        popupMenu(event, "contactMenu", contacts);
 }
 
 function onContactContextMenuHide(event) {
@@ -1285,7 +1294,7 @@ function initContacts(event) {
         // Initialize event delegation on contacts table
         table.multiselect = true;
         var tbody = $(table.tBodies[0]);
-        tbody.on("mousedown", onContactSelectionChange);
+        tbody.on("click", onContactSelectionChange);
         tbody.on("dblclick", onContactRowDblClick);
         tbody.on("selectstart", listRowMouseDownHandler);
         tbody.on("contextmenu", onContactContextMenu);
@@ -1470,12 +1479,19 @@ function startDragging (itm, e) {
     var handle = $("dragDropVisual");
     var contacts = $('contactsList').getSelectedRowsId();
     var count = contacts.length;
+    var row = target.up('TR');
     
-    handle.show();
-    handle.update (count);
-    if (e.shiftKey || currentFolderIsRemote ()) {
-      handle.addClassName ("copy");
+    if (count == 0 || contacts.indexOf(row.id) < 0) {
+        onRowClick(e, target);
+        contacts = $("contactsList").getSelectedRowsId();
+        count = contacts.length;
     }
+
+    handle.update (count);
+    if (e.shiftKey || currentFolderIsRemote()) {
+      handle.addClassName("copy");
+    }
+    handle.show();
 }
 
 function whileDragging (itm, e) {

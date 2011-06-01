@@ -93,7 +93,7 @@ div#headerArea div.addressList
 div#attachmentsArea
 { display: none;
   float: right;
-  width: 120px;
+  width: 200px;
   padding: 2px 5px 0;
   margin: auto;
   border-left: 1px solid #888; }
@@ -144,7 +144,9 @@ UL#attachments
   list-style-type: none;
   list-style-image: none;
   overflow: auto;
-  overflow-x: hidden; }
+  overflow-x: hidden; 
+  -moz-user-select: none;
+  -khtml-user-select: none; }
 
 UL#attachments LI
 { white-space: nowrap;

@@ -78,6 +78,7 @@
       user = [[self context] activeUser];
       ASSIGN (dateFormatter, [user dateFormatterInContext: context]);
       ASSIGN (userTimeZone, [[user userDefaults] timeZone]);
+      sortByThread = [[user userDefaults] mailSortByThreads];
       folderType = 0;
       specificMessageNumber = 0;
     }
@@ -458,11 +459,113 @@
 
       sortedUIDs
         = [mailFolder fetchUIDsMatchingQualifier: fetchQualifier
-				    sortOrdering: [self imap4SortOrdering]];
+				    sortOrdering: [self imap4SortOrdering]
+                                        threaded: sortByThread];
+
       [sortedUIDs retain];
     }
 
   return sortedUIDs;
+}
+
+/**
+ * Returns a flatten representation of the messages threads as triples of 
+ * metadata, including the message UID, thread level and root position.
+ * @param _sortedUIDs the interleaved arrays representation of the messages UIDs
+ * @return an flatten array representation of the messages UIDs
+ */
+- (NSArray *) threadedUIDs: (NSArray *) _sortedUIDs
+{
+  NSMutableArray *threads;
+  NSMutableArray *currentThreads;
+  NSEnumerator *rootThreads;
+  id thread;
+  int count;
+  int i;
+  BOOL first;
+  BOOL expected;
+  int previousLevel;
+
+  count = 0;
+  i = 0;
+  previousLevel = 0;
+  expected = YES;
+  threads = [NSMutableArray arrayWithObject: [NSArray arrayWithObjects: @"uid", @"level", @"first", nil]];
+  rootThreads  = [_sortedUIDs objectEnumerator];
+  thread = [rootThreads nextObject];
+
+  // Make sure rootThreads starts with an NSArray
+  if (![thread respondsToSelector: @selector(objectEnumerator)])
+    return nil;
+
+  first = [thread count] > 1;
+  thread = [thread objectEnumerator];
+
+  currentThreads = [NSMutableArray array];
+
+  while (thread)
+    {
+      unsigned int ecount = 0;
+      id t;
+
+      if ([thread isKindOfClass: [NSEnumerator class]])
+        {
+          t = [thread nextObject];
+        }
+      else
+        t = thread; // never happen?
+      while (t && ![t isKindOfClass: [NSArray class]])
+        {
+          BOOL currentFirst;
+          int currentLevel;
+          NSArray *currentThread;
+
+          currentFirst = (first && ecount == 0) || (i == 0  && count > 0) || (count > 0 && previousLevel < 0);
+          currentLevel = (first && ecount == 0)? 0 : (count > 0? count : -1);
+          currentThread = [NSArray arrayWithObjects: t,
+                            [NSNumber numberWithInt: currentLevel],
+                            [NSNumber numberWithInt: currentFirst], nil];
+          [threads addObject: currentThread];
+          i++;
+          count++;
+          ecount++;
+          expected = NO;
+          previousLevel = currentLevel;
+          t = [thread nextObject];
+        }
+      if (t)
+        {
+          // If t is defined, it has to be an NSArray
+          if (expected)
+            {
+              count++;
+              expected = NO;
+            }
+          thread = [thread allObjects];
+          if ([thread count] > 0)
+            [currentThreads addObject: [thread objectEnumerator]];
+          thread = [t objectEnumerator];
+        }
+      else if ([currentThreads count] > 0)
+        {
+          thread = [currentThreads objectAtIndex: 0];
+          [currentThreads removeObjectAtIndex: 0];
+          count -= ecount;
+        }
+      else
+        {
+          thread = [[rootThreads nextObject] objectEnumerator]; // assume all objects of rootThreads are NSArrays
+          count = 0;
+          expected = YES;
+        }
+
+      // Prepare next iteration
+      thread = [thread allObjects];
+      first = !first && (thread != nil) && [thread count] > 1;
+      thread = [thread objectEnumerator];
+    }
+
+  return threads;
 }
 
 - (int) indexOfMessageUID: (int) messageNbr
@@ -521,11 +624,9 @@
 }
 */
 
-/* actions */
-
 - (NSDictionary *) getUIDsAndHeadersInFolder: (SOGoMailFolder *) mailFolder
 {
-  NSArray *uids, *headers;
+  NSArray *uids, *threadedUids, *headers;
   NSDictionary *data;
   NSRange r;
   int count;
@@ -536,18 +637,31 @@
   count = [uids count];
   if (count > headersPrefetchMaxSize) count = headersPrefetchMaxSize;
   r = NSMakeRange(0, count);
-  headers = [self getHeadersForUIDs: [uids subarrayWithRange: r]
+  headers = [self getHeadersForUIDs: [[uids flattenedArray] subarrayWithRange: r]
 			   inFolder: mailFolder];
   
+  if (sortByThread)
+    {
+      threadedUids = [self threadedUIDs: uids];
+      if (threadedUids != nil)
+        uids = threadedUids;
+      else
+        sortByThread = NO;
+    }
+  
   data = [NSDictionary dictionaryWithObjectsAndKeys: uids, @"uids",
-		       headers, @"headers", nil];
+		       headers, @"headers",
+                       [NSNumber numberWithBool: sortByThread], @"threaded", nil];
 
   return data;
 }
 
+/* Module actions */
+
 - (id <WOActionResults>) getSortedUIDsAction
 {
-  id data;
+  NSDictionary *data;
+  NSArray *uids, *threadedUids;
   NSString *noHeaders;
   SOGoMailFolder *folder;
   WORequest *request;
@@ -563,10 +677,22 @@
   [folder expungeLastMarkedFolder];
   noHeaders = [request formValueForKey: @"no_headers"];
   if ([noHeaders length])
-    data = [self getSortedUIDsInFolder: folder];
+    {
+      uids = [self getSortedUIDsInFolder: folder];
+      if (sortByThread)
+        {
+          threadedUids = [self threadedUIDs: uids];
+          if (threadedUids != nil)
+            uids = threadedUids;
+          else
+            sortByThread = NO;
+        }
+      data = [NSDictionary dictionaryWithObjectsAndKeys: uids, @"uids",
+                           [NSNumber numberWithBool: sortByThread], @"threaded", nil];
+    }
   else
     data = [self getUIDsAndHeadersInFolder: folder];
-  
+
   [response appendContentString: [data jsonRepresentation]];
 
   return response;

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009-2010 Inverse inc.
+  Copyright (C) 2009-2011 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
@@ -315,8 +315,8 @@ static NSString *defaultUserID =  @"anyone";
 	    }
 	}
       else
-	error = [NSException exceptionWithHTTPStatus: 500
-					      reason: @"Did not find Trash folder!"];
+        error = [NSException exceptionWithHTTPStatus: 500
+ 					      reason: @"Did not find Trash folder!"];
     }
   
   if (b)
@@ -544,9 +544,27 @@ static NSString *defaultUserID =  @"anyone";
 - (NSArray *) fetchUIDsMatchingQualifier: (id) _q
 			    sortOrdering: (id) _so
 {
-  /* seems to return an NSArray of NSNumber's */
-  return [[self imap4Connection] fetchUIDsInURL: [self imap4URL]
-				 qualifier: _q sortOrdering: _so];
+  return [self fetchUIDsMatchingQualifier: _q
+                             sortOrdering: _so
+                                 threaded: NO];
+}
+
+- (NSArray *) fetchUIDsMatchingQualifier: (id) _q
+			    sortOrdering: (id) _so
+                                threaded: (BOOL) _threaded
+{
+  if (_threaded)
+    {
+      return [[self imap4Connection] fetchThreadedUIDsInURL: [self imap4URL]
+                                                  qualifier: _q
+                                               sortOrdering: _so];
+    }
+  else
+    {
+      return [[self imap4Connection] fetchUIDsInURL: [self imap4URL]
+                                          qualifier: _q
+                                       sortOrdering: _so];      
+    }
 }
 
 - (NSArray *) fetchUIDs: (NSArray *) _uids

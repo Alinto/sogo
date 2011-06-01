@@ -7,7 +7,7 @@
   xmlns:label="OGo:label"
   className="UIxPageFrame"
   title="title"
-  const:userDefaultsKeys="SOGoMailMessageCheck,SOGoMailListViewColumnsOrder"
+  const:userDefaultsKeys="SOGoMailMessageCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder"
   const:userSettingsKeys="Mail"
   const:jsFiles="dtree.js,MailerUIdTree.js,SOGoAutoCompletion.js,SOGoResizableTable.js,SOGoMailDataSource.js,SOGoDataTable.js">
   <script type="text/javascript">
@@ -222,6 +222,9 @@
     <tr class="tableview"
       ><var:foreach list="columnsDisplayOrder" item="currentColumn">
         <th var:class="currentColumn.headerClass" var:id="currentColumn.headerId">
+          <var:if condition="currentColumn.value" const:value="Thread">
+            <entity name="nbsp"/>
+          </var:if>
           <var:if condition="currentColumn.value" const:value="Flagged">
             <entity name="nbsp"/>
           </var:if>
@@ -232,10 +235,12 @@
           <var:if condition="currentColumn.value" const:value="Unread">
             <img rsrc:src="title_read_14x14.png" label:title="$currentColumn.value" />
           </var:if>
-          <var:if condition="currentColumn.value" const:value="Flagged" const:negate="YES">
-            <var:if condition="currentColumn.value" const:value="Attachment" const:negate="YES">
-              <var:if condition="currentColumn.value" const:value="Unread" const:negate="YES">
-                <var:string var:value="columnTitle" />
+          <var:if condition="currentColumn.value" const:value="Thread" const:negate="YES">
+            <var:if condition="currentColumn.value" const:value="Flagged" const:negate="YES">
+              <var:if condition="currentColumn.value" const:value="Attachment" const:negate="YES">
+                <var:if condition="currentColumn.value" const:value="Unread" const:negate="YES">
+                  <var:string var:value="columnTitle" />
+                </var:if>
               </var:if>
             </var:if>
           </var:if>
@@ -255,6 +260,10 @@
     <tbody>
       <tr const:style="display: none;"
         ><var:foreach list="columnsDisplayOrder" item="currentColumn"
+          ><var:if condition="currentColumn.value" const:value="Thread"
+            ><td class="messageThreadColumn"
+              ><!-- thread --></td
+          ></var:if
           ><var:if condition="currentColumn.value" const:value="Flagged"
             ><td class="messageFlagColumn"
               ><!-- flagged --></td

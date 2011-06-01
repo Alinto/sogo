@@ -471,13 +471,20 @@
   columnsMetaData = [NSMutableDictionary dictionaryWithCapacity: 8];
   
   tmpKeys = [NSArray arrayWithObjects: @"headerClass", @"headerId", @"value",
-             nil];
+                     nil];
   tmpColumns
     = [NSArray arrayWithObjects: @"messageSubjectColumn tbtv_headercell sortableTableHeader resizable",
-       @"subjectHeader", @"Subject", nil];
+               @"subjectHeader", @"Subject", nil];
   [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
                                                           forKeys: tmpKeys]
                       forKey: @"Subject"];
+  
+  tmpColumns
+    = [NSArray arrayWithObjects: @"messageThreadColumn tbtv_headercell",
+               @"invisibleHeader", @"Thread", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
+                                                          forKeys: tmpKeys]
+                      forKey: @"Thread"];
 
   tmpColumns
     = [NSArray arrayWithObjects: @"messageFlagColumn tbtv_headercell",
@@ -566,6 +573,16 @@
 
       finalOrder = [columnsOrder mutableCopy];
       [finalOrder autorelease];
+
+      if (![ud mailSortByThreads])
+        [finalOrder removeObject: @"Thread"];
+      else
+        {
+          i = [finalOrder indexOfObject: @"Thread"];
+          if (i == NSNotFound)
+            [finalOrder insertObject: @"Thread" atIndex: 0];
+        }
+      
       if ([self showToAddress])
         {
           i = [finalOrder indexOfObject: @"From"];
