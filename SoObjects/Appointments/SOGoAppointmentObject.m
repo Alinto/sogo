@@ -82,7 +82,7 @@
 }
 
 /**
- * Return a new exception in a the recurrent event.
+ * Return a new exception in the recurrent event.
  * @param theRecurrenceID the ID of the occurence.
  * @return a new occurence.
  */
@@ -575,17 +575,17 @@
   if ([attendees count])
     {
       [self _handleRemovedUsers: attendees
-	    withRecurrenceId: [newEvent recurrenceId]];
+               withRecurrenceId: [newEvent recurrenceId]];
       [self sendEMailUsingTemplateNamed: @"Deletion"
-	    forObject: [newEvent itipEntryWithMethod: @"cancel"]
-	    previousObject: oldEvent
-	    toAttendees: attendees];
+                              forObject: [newEvent itipEntryWithMethod: @"cancel"]
+                         previousObject: oldEvent
+                            toAttendees: attendees];
       [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
                                      forObject: newEvent to: attendees];
     }
-
+  
   if ((ex = [self _handleResourcesConflicts: [newEvent attendees]
-		 forEvent: newEvent]))
+                                   forEvent: newEvent]))
     return ex;
 
   attendees = [changes insertedAttendees];
@@ -595,8 +595,8 @@
       // Update attendees calendars and send them an update
       // notification by email
       [self _handleSequenceUpdateInEvent: newEvent
-	    ignoringAttendees: attendees
-	    fromOldEvent: oldEvent];
+                       ignoringAttendees: attendees
+                            fromOldEvent: oldEvent];
     }
   else
     {
@@ -725,7 +725,7 @@
 	    oldEvent = (iCalEvent *)[self newOccurenceWithID: recurrenceTime];
 	}
 
-      oldMasterEvent = (iCalEvent *) [[oldEvent parent] firstChildWithTag: [self componentTag]];
+      oldMasterEvent = (iCalEvent *)[[oldEvent parent] firstChildWithTag: [self componentTag]];
       hasOrganizer = [[[oldMasterEvent organizer] email] length];
 
       if (!hasOrganizer || [oldMasterEvent userIsOrganizer: ownerUser])
