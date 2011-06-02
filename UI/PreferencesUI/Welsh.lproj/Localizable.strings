@@ -107,6 +107,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
+"Sort messages by threads" = "Sort messages by threads";
 "Check for new mail:" = "Chwilio am ebost newydd:";
 "messagecheck_manually" = "Corfforol";
 "messagecheck_every_minute" = "Pob munud";
@@ -259,3 +260,18 @@
 "Label 3" = "Label 3";
 "Label 4" = "Label 4";
 "Label 5" = "Label 5";
+
+"Password must not be empty." = "Le mot de passe ne doit pas être vide.";
+"The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
+"Password change failed" = "Échec au changement";
+"Password change failed - Permission denied" = "Échec au changement - mauvaises permissions";
+"Password change failed - Insufficient password quality" = "Échec au changement - qualité insuffisante";
+"Password change failed - Password is too short" = "Échec au changement - mot de passe trop court";
+"Password change failed - Password is too young" = "Échec au changement - mot de passe trop récent";
+"Password change failed - Password is in history" = "Échec au changement - mot de passe dans l'historique";
+"Unhandled policy error: %{0}" = "Erreur inconnue pour le ppolicy: %{0}";
+"Unhandled error response" = "Erreur inconnue";
+"Password change is not supported." = "Changement de mot de passe non-supporté.";
+"Unhandled HTTP error code: %{0}" = "Code HTTP non-géré: %{0}";
+"New password:" = "New password:";
+"Confirmation:" = "Confirmation:";

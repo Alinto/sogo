@@ -66,7 +66,7 @@
 "shortDateFmt_14" = "%Y.%m.%d";
 
 "shortDateFmt_15" = "";
-
+   
 "longDateFmt_0" = "%A, %B %d, %Y";
 "longDateFmt_1" = "%B %d, %Y";
 "longDateFmt_2" = "%A, %d %B, %Y";
@@ -107,6 +107,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Vis bare abonnerte postbokser";
+"Sort messages by threads" = "Sort messages by threads";
 "Check for new mail:" = "Hent ny post:";
 "messagecheck_manually" = "Manuelt";
 "messagecheck_every_minute" = "Hvert minutt";
@@ -195,6 +196,18 @@
 "Always send" = "Send alltid";
 "Ask me" = "Spør meg";
 
+/* Return receipts */
+"When I receive a request for a return receipt:" = "Når jeg mottar anmodning om en returkvittering:";
+"Never send a return receipt" = "Send aldri en returkvittering";
+"Allow return receipts for some messages" = "Tillat returkvittering for noen meldinger";
+"If I'm not in the To or Cc of the message:" = "Hvis jeg ikke er i Til eller Cc feltet i meldingen:";
+"If the sender is outside my domain:" = "Hvis senderen er utenfor mitt domene:";
+"In all other cases:" = "I alle andre tilfeller:";
+
+"Never send" = "Send aldri";
+"Always send" = "Send alltid";
+"Ask me" = "Spør meg";
+
 /* Filters - UIxPreferences */
 "Filters" = "Filtre";
 "Active" = "Aktiv";
@@ -247,3 +260,18 @@
 "Label 3" = "Etikett 3";
 "Label 4" = "Etikett 4";
 "Label 5" = "Etikett 5";
+
+"Password must not be empty." = "Le mot de passe ne doit pas être vide.";
+"The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
+"Password change failed" = "Échec au changement";
+"Password change failed - Permission denied" = "Échec au changement - mauvaises permissions";
+"Password change failed - Insufficient password quality" = "Échec au changement - qualité insuffisante";
+"Password change failed - Password is too short" = "Échec au changement - mot de passe trop court";
+"Password change failed - Password is too young" = "Échec au changement - mot de passe trop récent";
+"Password change failed - Password is in history" = "Échec au changement - mot de passe dans l'historique";
+"Unhandled policy error: %{0}" = "Erreur inconnue pour le ppolicy: %{0}";
+"Unhandled error response" = "Erreur inconnue";
+"Password change is not supported." = "Changement de mot de passe non-supporté.";
+"Unhandled HTTP error code: %{0}" = "Code HTTP non-géré: %{0}";
+"New password:" = "Nytt passord:";
+"Confirmation:" = "Bekreft:";

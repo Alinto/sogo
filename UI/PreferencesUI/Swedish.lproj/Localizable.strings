@@ -107,6 +107,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Visa endast prenumrerade postlådor";
+"Sort messages by threads" = "Sort messages by threads";
 "Check for new mail:" = "Hämta ny post:";
 "messagecheck_manually" = "Manuellt";
 "messagecheck_every_minute" = "Varje minut";
@@ -197,6 +198,18 @@ Servernamn:";
 "Always send" = "Skicka alltid";
 "Ask me" = "Fråga mig";
 
+/* Return receipts */
+"When I receive a request for a return receipt:" = "När jag får en begäran om mottagningskvitto:";
+"Never send a return receipt" = "Skicka aldrig mottagningskvitto";
+"Allow return receipts for some messages" = "Tillåt mottagningskvitto för vissa meddelanden";
+"If I'm not in the To or Cc of the message:" = "Om jag inte finns i meddelandets Till-fält eller Kopia-fält:";
+"If the sender is outside my domain:" = "Om avsändaren finns utanför min domän:";
+"In all other cases:" = "I alla andra fall:";
+
+"Never send" = "Skicka aldrig";
+"Always send" = "Skicka alltid";
+"Ask me" = "Fråga mig";
+
 /* Filters - UIxPreferences */
 "Filters" = "Filter";
 "Active" = "Aktiv";
@@ -249,3 +262,18 @@ Servernamn:";
 "Label 3" = "Etikett 3";
 "Label 4" = "Etikett 4";
 "Label 5" = "Etikett 5";
+
+"Password must not be empty." = "Le mot de passe ne doit pas être vide.";
+"The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
+"Password change failed" = "Échec au changement";
+"Password change failed - Permission denied" = "Échec au changement - mauvaises permissions";
+"Password change failed - Insufficient password quality" = "Échec au changement - qualité insuffisante";
+"Password change failed - Password is too short" = "Échec au changement - mot de passe trop court";
+"Password change failed - Password is too young" = "Échec au changement - mot de passe trop récent";
+"Password change failed - Password is in history" = "Échec au changement - mot de passe dans l'historique";
+"Unhandled policy error: %{0}" = "Erreur inconnue pour le ppolicy: %{0}";
+"Unhandled error response" = "Erreur inconnue";
+"Password change is not supported." = "Changement de mot de passe non-supporté.";
+"Unhandled HTTP error code: %{0}" = "Code HTTP non-géré: %{0}";
+"New password:" = "Nytt lösenord:";
+"Confirmation:" = "Bekräfta:";

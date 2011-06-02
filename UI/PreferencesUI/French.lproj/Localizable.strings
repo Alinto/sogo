@@ -107,6 +107,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Afficher seulement les abonnements";
+"Sort messages by threads" = "Grouper les discussions";
 "Check for new mail:" = "Vérifier l'arrivée de messages:";
 "messagecheck_manually" = "Manuellement";
 "messagecheck_every_minute" = "Chaque minute";
