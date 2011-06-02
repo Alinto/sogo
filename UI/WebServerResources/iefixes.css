@@ -26,6 +26,9 @@ INPUT.button
   border-right: 1px solid #666;
   border-bottom: 1px solid #666; }
 
+.menu LI.disabled:hover
+{ background-color: #E6E7E6; }
+
 UL#userList
 { top: 35px; }
 

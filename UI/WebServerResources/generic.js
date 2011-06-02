@@ -661,7 +661,7 @@ function popupMenu(event, menuId, target) {
 
         document.currentPopupMenu = popup;
 
-        $(document.body).observe("click", onBodyClickMenuHandler);
+        $(document.body).observe("mousedown", onBodyClickMenuHandler);
     }
 }
 
@@ -727,6 +727,8 @@ function hideMenu(menuNode) {
         menuNode.parentMenu.submenu = null;
         menuNode.parentMenu = null;
     }
+
+    Event.fire(menuNode, "contextmenu:hide");
 }
 
 function onMenuEntryClick(event) {

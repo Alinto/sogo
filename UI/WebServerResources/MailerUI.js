@@ -1024,28 +1024,12 @@ function onMessageContextMenu(event) {
         selectedNodes = topNode.getSelectedRowsId();
     }
     
-    menu.observe("hideMenu", onMessageContextMenuHide);
     if (selectedNodes.length > 1)
         popupMenu(event, "messagesListMenu", selectedNodes);
     else if (selectedNodes.length == 1)
         popupMenu(event, "messageListMenu", row);
 
     return false;
-}
-
-function onMessageContextMenuHide(event) {
-    var topNode = $('messageList');
-
-    if (topNode.menuSelectedEntry) {
-        topNode.menuSelectedEntry.deselect();
-        topNode.menuSelectedEntry = null;
-    }
-    if (topNode.menuSelectedRows) {
-        var nodes = topNode.menuSelectedRows;
-        for (var i = 0; i < nodes.length; i++)
-            nodes[i].selectElement();
-        topNode.menuSelectedRows = null;
-    }
 }
 
 function onFolderMenuClick(event) {
@@ -1067,7 +1051,7 @@ function onFolderMenuClick(event) {
     }
 
     var menu = $(menuName);
-    menu.observe("hideMenu", onFolderMenuHide);
+    menu.on("contextmenu:hide", onFolderMenuHide);
     popupMenu(event, menuName, this.parentNode);
 
     var topNode = $("mailboxTree");
@@ -1090,6 +1074,8 @@ function onFolderMenuHide(event) {
     }
     if (topNode.selectedEntry)
         topNode.selectedEntry.selectElement();
+
+    this.stopObserving("contextmenu:hide", onFolderMenuHide);
 }
 
 function deleteCachedMailboxByType(type) {

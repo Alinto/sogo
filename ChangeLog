@@ -1,5 +1,16 @@
 2011-06-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/generic.js (hideMenu): now fires a custom
+	event (contextmenu:hide) to properly define a callback function
+	when a contextual menu is hidden.
+
+	* UI/WebServerResources/MailerUI.js (onFolderMenuClick):
+	registered the function onFolderMenuHide on the new event
+	"contextmenu:hide". This function was never called since it was
+	relying on an event never triggered ("hideMenu").
+
+	* UI/WebServerResources/ContactsUI.js (onContactContextMenu): idem.
+
 	* UI/WebServerResources/UIxPreferences.js (_setupEvents): reload
 	main page when enabling or disabling mail threads.
 

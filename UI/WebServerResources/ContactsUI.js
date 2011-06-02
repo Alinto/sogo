@@ -225,10 +225,11 @@ function onContactContextMenu(event) {
         contacts = contactsList.getSelectedRows();
     }
 
-    var menu = $("contactMenu");
-    menu.observe("hideMenu", onContactContextMenuHide);
-    if (contactsList)
+    if (contactsList) {
+        var menu = $("contactMenu");
+        menu.observe("contextmenu:hide", onContactContextMenuHide);
         popupMenu(event, "contactMenu", contacts);
+    }
 }
 
 function onContactContextMenuHide(event) {
@@ -244,6 +245,8 @@ function onContactContextMenuHide(event) {
             $(nodes[i]).selectElement();
         topNode.menuSelectedRows = null;
     }
+
+    this.stopObserving("contextmenu:hide", onContactContextMenuHide);
 }
 
 function onFolderMenuHide(event) {
