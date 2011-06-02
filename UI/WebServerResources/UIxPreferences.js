@@ -87,8 +87,8 @@ function prototypeIfyFilters() {
 function _setupEvents() {
     var widgets = [ "timezone", "shortDateFormat", "longDateFormat",
                     "timeFormat", "weekStartDay", "dayStartTime", "dayEndTime",
-                    "firstWeek", "messageCheck", "subscribedFoldersOnly",
-                    "language" ];
+                    "firstWeek", "messageCheck", "sortByThreads", 
+                    "subscribedFoldersOnly", "language" ];
     for (var i = 0; i < widgets.length; i++) {
         var widget = $(widgets[i]);
         if (widget) {
