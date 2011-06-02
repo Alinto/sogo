@@ -165,7 +165,7 @@
 "InboxFolderName"  = "Safata d'entrada";
 "DraftsFolderName" = "Esborranys";
 "SieveFolderName"  = "Filtres";
-"OtherUsersFolderName"   = "Altres usuaris"; 
+"OtherUsersFolderName"   = "Altres usuaris";
 "SharedFoldersName" = "Carpetes compartides";
 "Folders"          = "Carpetes"; /* title line */
 

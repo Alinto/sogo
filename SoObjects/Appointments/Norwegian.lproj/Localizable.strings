@@ -16,10 +16,6 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "You have invited the following attendees(s):" = "Du har invitert følende deltagere:";
 "... to attend the following event:" = "... til å delta i følgende hendelse:";
 
-"Receipt: invitation updated" = "Kvittering: invitasjon er oppdatert";
-"The following attendees(s):" = "Følgende deltager(e):";
-"... have been notified of the changes to the following event:" = "... har blitt informert om endringer i følgende hendelse:";
-
 "Receipt: invitation updated" = "Kvittering: invitasjon oppdatert";
 "The following attendees(s):" = "Følgende deltager(e):";
 "... have been notified of the changes to the following event:" = "... har blitt informert om endringene i følgende hendelse:";
@@ -64,3 +60,6 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 = "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}has not yet decided upon your event invitation.";
+
+/* Resources */
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";

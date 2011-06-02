@@ -5,7 +5,7 @@
 "Empty Trash" = "Tøm papirkurven";
 "Delete"      = "Slett";
 "Expunge"     = "Slett";
-"Forward"     = "Videresende";
+"Forward"     = "Videresend";
 "Get Mail"    = "Hent e-post";
 "Junk"        = "Søppelpost";
 "Reply"       = "Svar";
@@ -43,7 +43,7 @@
 
 /* Main Frame  */
 
-"Home"                 = "Hjem";
+"Home"                 = "Hjem"; 
 "Calendar"             = "Kalender";
 "Addressbook"          = "Adressebok";
 "Mail"                 = "E-post";
@@ -91,7 +91,7 @@
 "To"            = "Til";
 "Cc"            = "Kopi";
 "Bcc"           = "Blindkopi";
-"Reply-To"      = "Svar-til";
+"Reply-To"	= "Svar-til";
 "Add address"   = "Legg til adresse";
 
 "Attachments:" = "Vedlegg:";
@@ -289,4 +289,3 @@
 "cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
 "cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
 "cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";
-

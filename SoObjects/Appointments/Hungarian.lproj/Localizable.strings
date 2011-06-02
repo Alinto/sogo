@@ -61,4 +61,5 @@ vtodo_class2 = "(Bizalmas feladat)";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}még meggondolja a meghívását.";
 
+/* Resources */
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Az egyidejű foglalások száma (%{NumberOfSimultaneousBookings}) elérte a maximumot \"%{Cn} %{SystemEmail}\".";

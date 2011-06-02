@@ -60,3 +60,6 @@ vtodo_class2 = "(Zadanie poufne)";
 = "%{Attendee} %{SentByText}oddelegował(a) %{Delegate} na twoje wydarzenie.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}jeszcze nie zdecydował(a) o obecności na twoim wydarzeniu.";
+
+/* Resources */
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";

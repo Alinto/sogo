@@ -60,3 +60,6 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 = "%{Attendee} %{SentByText}har delegerat din inbjudan till %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}har inte än bestämt sig om din mötesinbjudan.";
+
+/* Resources */
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";

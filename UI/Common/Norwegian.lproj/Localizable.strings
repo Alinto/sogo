@@ -7,7 +7,7 @@
 
 "Home" = "Hjem";
 "Calendar" = "Kalender";
-"Address Book"  = "Adressebok";
+"Address Book"	= "Adressebok";
 "Mail" = "E-post";
 "Preferences" = "Innstillinger";
 "Administration" = "Administrasjon";
@@ -39,22 +39,21 @@
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-        = "Du kan ikke abonnere på den mappen!";
+	= "Du kan ikke abonnere på den mappen!";
 "You cannot subscribe to a folder that you own!"
-        = "Du kan ikke abonnere på en mappe som du selv eier!";
+      	= "Du kan ikke abonnere på en mappe som du selv eier!";
 "Unable to unsubscribe from that folder!"
-        = "Du kan ikke avslutte abonnement på mappen!";
+	= "Du kan ikke avslutte abonnement på mappen!";
 "You cannot unsubscribe from a folder that you own!"
-        = "Du kan ikke avslutte abonnement på en mappe som du selv eier!";
+      	= "Du kan ikke avslutte abonnement på en mappe som du selv eier!";
 "Unable to rename that folder!" = "Du kan ikke bytte navn på mappen!";
 "You have already subscribed to that folder!"
-        = "Du abonnerer allerede på mappen!";
+     	= "Du abonnerer allerede på mappen!";
 "The user rights cannot be edited for this object!"
         = "Brukerrettighetene kan ikke endres på objektet!";
-"A folder by that name already exists." 
-	= "En mappe med det navnet finnes fra før.";
-"You cannot create a list in a shared address book."
-	= "Du kan ikke opprette en liste i en delt adressebok.";
+"A folder by that name already exists." = "En mappe med det navnet finnes fra før.";
+"You cannot create a list in a shared address book." 
+        = "Du kan ikke opprette en liste i en delt adressebok.";
 "Warning" = "Advarsel";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
@@ -64,6 +63,8 @@
 
 "noEmailForDelegation" = "Du må angi adressen til personen du delegerer din invitasjon.";
 "delegate is organizer" = "Personen du delegerer til er arrangør. Vennligst deleger til en annen person.";
+"delegate is a participant" = "The delegate is already a participant.";
+"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
 
 /* common buttons */
 "OK" = "OK";
@@ -76,6 +77,3 @@
 "Start:" = "Start:";
 "Due Date:" = "Forfallsdato:";
 "Location:" = "Lokasjon:";
-
-
-

@@ -60,3 +60,6 @@ vtodo_class2 = "(Skrytý úkol)";
 = "%{Attendee} %{SentByText}delegoval/a Vaši pozvánku na %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}dosud o Vaší pozvánce k události nerozhodl/a.";
+
+/* Resources */
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";
