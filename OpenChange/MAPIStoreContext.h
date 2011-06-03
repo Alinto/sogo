@@ -117,8 +117,7 @@
   inParentFID: (uint64_t) parentFID;
 - (int) rmDirWithFID: (uint64_t) fid
          inParentFID: (uint64_t) parentFid;
-- (int) openDir: (uint64_t) fid
-    inParentFID: (uint64_t) parentFID;
+- (int) openDir: (uint64_t) fid;
 - (int) closeDir;
 - (int) readCount: (uint32_t *) rowCount
       ofTableType: (uint8_t) tableType

@@ -1,5 +1,8 @@
 2011-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_op_opendir): op_opendir no
+	longer takes the parent fid as parameter.
+
 	* OpenChange/MAPIStoreCalendarMessageTable.m
 	(-sortIdentifierForProperty:): c_isallday and c_creationdate as
 	mappings for PidLidAppointmentSubType and PR_CREATION_TIME.

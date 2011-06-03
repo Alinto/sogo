@@ -385,17 +385,14 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
 */
 - (int) openDir: (uint64_t) fid
-    inParentFID: (uint64_t) parentFID
 {
   [self logWithFormat:
-	  @"UNIMPLEMENTED METHOD '%s' (%d):\n fid=0x%.16x, parentFID=0x%.16x",
+	  @"UNIMPLEMENTED METHOD '%s' (%d):\n fid=0x%.16x",
 	__FUNCTION__, __LINE__,
-	(unsigned long long) fid,
-	(unsigned long long) parentFID];
+	(unsigned long long) fid];
 
-  return MAPISTORE_ERROR;
+  return MAPISTORE_SUCCESS;
 }
-
 
 /**
    \details Close a folder from the sogo backend
