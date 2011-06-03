@@ -99,6 +99,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreScheduleContext.m \
 	MAPIStoreSearchContext.m \
 	MAPIStoreShortcutsContext.m \
+	MAPIStoreSpoolerContext.m \
 	MAPIStoreViewsContext.m \
 	\
 	NSArray+MAPIStore.m \

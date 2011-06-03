@@ -1,3 +1,9 @@
+2011-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreSpoolerContext.[hm]: new context module,
+	which subclasses MAPIStoreSpoolerContext from
+	MAPIStoreFSBaseContext rather than MAPIStoreOutboxContext.
+
 2011-05-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromMAPISPropValue)

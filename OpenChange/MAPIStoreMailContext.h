@@ -43,7 +43,4 @@
 @interface MAPIStoreOutboxContext : MAPIStoreMailContext
 @end
 
-@interface MAPIStoreSpoolerContext : MAPIStoreOutboxContext
-@end
-
 #endif /* MAPISTOREMAILCONTEXT_H */
