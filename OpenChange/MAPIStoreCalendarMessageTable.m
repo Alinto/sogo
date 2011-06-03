@@ -95,6 +95,10 @@
                           forKey: MAPIPropertyKey (PidLidAppointmentEndWhole)];
       [knownProperties setObject: @"c_iscycle"
                           forKey: MAPIPropertyKey (PidLidRecurring)];
+      [knownProperties setObject: @"c_isallday"
+                          forKey: MAPIPropertyKey (PidLidAppointmentSubType)];
+      [knownProperties setObject: @"c_creationdate"
+                          forKey: MAPIPropertyKey (PR_CREATION_TIME)];
     }
 
   return [knownProperties objectForKey: MAPIPropertyKey (property)];
