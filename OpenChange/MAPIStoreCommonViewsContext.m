@@ -22,8 +22,6 @@
 
 #import <Foundation/NSString.h>
 
-#import "MAPIStoreMapping.h"
-
 #import "MAPIStoreCommonViewsContext.h"
 
 @implementation MAPIStoreCommonViewsContext
