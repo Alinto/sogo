@@ -2147,6 +2147,7 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
     var newNode;
     for (var i = 0; i < mailbox.children.length; i++) {
         if (menu.offsetHeight > windowHeight-offset) {
+            // Split menu to fit screen
             var menuWidth = (parseInt(menu.offsetWidth) + 15) + "px";
             menu.style.width = menuWidth;
             menu = document.createElement("ul");

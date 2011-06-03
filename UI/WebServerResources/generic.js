@@ -889,10 +889,13 @@ function popupSubmenu(event) {
                 menuTop = 0;
         }
 
-        var menuLeft = (parentNode.offsetLeft + parentNode.offsetWidth - 3);
-        if (window.width()
-            < (menuLeft + submenuNode.offsetWidth))
-            menuLeft = parentNode.offsetLeft - submenuNode.offsetWidth + 3;
+        var menuLeft = this.offsetLeft + this.offsetWidth;
+        menuLeft = $(this.parentNode.parentNode).positionedOffset()[0]
+            + $(this.parentNode).positionedOffset()[0]
+            + $(this).getWidth();
+        if (menuLeft + submenuNode.getWidth() > window.width())
+            // Keep the submenu inside the viewport
+            menuLeft = window.width() - submenuNode.getWidth();
 
         this.mouseInside = true;
         this.observe("mouseover", onMouseEnteredSubmenu);
@@ -1346,16 +1349,12 @@ function initMenus() {
 
 function initMenu(menuDIV, callbacks) {
     var uls = menuDIV.childNodesWithTag("ul");
-    for (var i = 0; i < uls.length; i++) {
+    for (var i = 0, j = 0; i < uls.length; i++) {
         var lis = $(uls[i]).childNodesWithTag("li");
-        for (var j = 0; j < lis.length; j++) {
-            var node = $(lis[j]);
+        for (var k = 0; k < lis.length; k++, j++) {
+            var node = $(lis[k]);
             node.on("mousedown", listRowMouseDownHandler);
-            var callback;
-            if (i > 0)
-                callback = callbacks[i+j+1];
-            else
-                callback = callbacks[i+j];
+            var callback = callback = callbacks[j];
             if (callback) {
                 if (typeof(callback) == "string") {
                     if (callback == "-")
