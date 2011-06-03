@@ -53,6 +53,8 @@
   NSURL *contextUrl;
   uint64_t contextFid;
 
+  MAPIStoreMapping *mapping;
+
   MAPIStoreAuthenticator *authenticator;
   WOContext *woContext;
 
@@ -79,6 +81,7 @@
 - (struct mapistore_connection_info *) connectionInfo;
 
 - (WOContext *) woContext;
+- (MAPIStoreMapping *) mapping;
 
 - (void) setupRequest;
 - (void) tearDownRequest;

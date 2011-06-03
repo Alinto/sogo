@@ -1,5 +1,12 @@
 2011-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m: MAPIStoreMapping instances are
+	now per-user instances rather than class singletons.
+
+	* OpenChange/MAPIStoreMapping.m: now makes use of the records
+	already present in indexing.tdb for building the initial mapping
+	dictionary.
+
 	* OpenChange/MAPIStoreSpoolerContext.[hm]: new context module,
 	which subclasses MAPIStoreSpoolerContext from
 	MAPIStoreFSBaseContext rather than MAPIStoreOutboxContext.

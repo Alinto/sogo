@@ -28,22 +28,15 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
+#import "MAPIStoreTypes.h"
+
 #import "MAPIStoreMapping.h"
 
-#include <fcntl.h>
-#include <tdb.h>
 #include <talloc.h>
+#include <tdb.h>
+#include <tdb_wrap.h>
 
-struct tdb_wrap {
-	struct tdb_context *tdb;
-
-	const char *name;
-	struct tdb_wrap *next, *prev;
-};
-
-extern struct tdb_wrap *tdb_wrap_open(TALLOC_CTX *mem_ctx,
-				      const char *name, int hash_size, int tdb_flags,
-				      int open_flags, mode_t mode);
+@implementation MAPIStoreMapping
 
 static int
 MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
@@ -59,7 +52,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   idVal = strtoll (idStr, NULL, 16);
   idNbr = [NSNumber numberWithUnsignedLongLong: idVal];
 
-  uriStr = strdup ((const char *) data2.dptr);
+  uriStr = strndup ((const char *) data2.dptr, data2.dsize);
   *(uriStr+(data2.dsize)) = 0;
   uri = [NSString stringWithUTF8String: uriStr];
   free (uriStr);
@@ -70,47 +63,39 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   return 0;
 }
 
-static void
-MAPIStoreMappingInitDictionary (NSMutableDictionary *mapping)
++ (id) mappingWithIndexing: (struct tdb_wrap *) indexing
 {
-  struct tdb_wrap *wrap;
-  TDB_CONTEXT *context;
-  char *tdb_path;
+  id newMapping;
 
-  tdb_path  = "/usr/local/samba/private/mapistore/openchange/indexing.tdb";
-  wrap = tdb_wrap_open(NULL, tdb_path, 0, TDB_NOLOCK, O_RDONLY, 0600);
-  if (wrap)
-    {
-      context = wrap->tdb;
-      tdb_traverse_read(wrap->tdb, MAPIStoreMappingTDBTraverse, mapping);
-    }
-}
+  newMapping = [[self alloc] initWithIndexing: indexing];
+  [newMapping autorelease];
 
-@implementation MAPIStoreMapping
-
-+ (id) sharedMapping
-{
-  static id sharedMapping = nil;
-
-  if (!sharedMapping)
-    sharedMapping = [self new];
-
-  return sharedMapping;
+  return newMapping;
 }
 
 - (id) init
+{
+  if ((self = [super init]))
+    {
+      mapping = [NSMutableDictionary new];
+      reverseMapping = [NSMutableDictionary new];
+      indexing = NULL;
+    }
+
+  return self;
+}
+
+- (id) initWithIndexing: (struct tdb_wrap *) newIndexing
 {
   NSNumber *idNbr;
   NSString *uri;
   NSArray *keys;
   NSUInteger count, max;
 
-  if ((self = [super init]))
+  if ((self = [self init]))
     {
-      mapping = [NSMutableDictionary new];
-      MAPIStoreMappingInitDictionary (mapping);
-      reverseMapping = [NSMutableDictionary new];
-
+      indexing = newIndexing;
+      tdb_traverse_read (indexing->tdb, MAPIStoreMappingTDBTraverse, mapping);
       keys = [mapping allKeys];
       max = [keys count];
       for (count = 0; count < max; count++)
@@ -144,7 +129,7 @@ MAPIStoreMappingInitDictionary (NSMutableDictionary *mapping)
 {
   NSNumber *idKey;
   uint64_t idNbr;
-  
+
   idKey = [reverseMapping objectForKey: url];
   if (idKey)
     idNbr = [idKey unsignedLongLongValue];
@@ -159,13 +144,16 @@ MAPIStoreMappingInitDictionary (NSMutableDictionary *mapping)
 {
   NSNumber *idKey;
   BOOL rc;
+  TDB_DATA key, dbuf;
 
   idKey = [NSNumber numberWithUnsignedLongLong: idNbr];
   if ([mapping objectForKey: idKey]
       || [reverseMapping objectForKey: urlString])
     {
-      [self errorWithFormat: @"attempt to double register an entry ('%@', %lld)",
-            urlString, idNbr];
+      [self errorWithFormat:
+              @"attempt to double register an entry ('%@', %lld,"
+            @" 0x%.16"PRIx64")",
+            urlString, idNbr, idNbr];
       rc = NO;
     }
   else
@@ -173,8 +161,18 @@ MAPIStoreMappingInitDictionary (NSMutableDictionary *mapping)
       [mapping setObject: urlString forKey: idKey];
       [reverseMapping setObject: idKey forKey: urlString];
       rc = YES;
-      [self logWithFormat: @"registered url '%@' with id %lld (0x%.8x)",
-            urlString, idNbr, (uint32_t) idNbr];
+      [self logWithFormat: @"registered url '%@' with id %lld (0x%.16"PRIx64")",
+            urlString, idNbr, idNbr];
+
+      /* Add the record given its fid and mapistore_uri */
+      key.dptr = (unsigned char *) talloc_asprintf(NULL, "0x%.16"PRIx64, idNbr);
+      key.dsize = strlen((const char *) key.dptr);
+
+      dbuf.dptr = (unsigned char *) talloc_strdup(NULL, [urlString UTF8String]);
+      dbuf.dsize = strlen((const char *) dbuf.dptr);
+      tdb_store (indexing->tdb, key, dbuf, TDB_INSERT);
+      talloc_free (key.dptr);
+      talloc_free (dbuf.dptr);
     }
 
   return rc;

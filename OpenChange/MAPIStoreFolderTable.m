@@ -23,7 +23,6 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "MAPIStoreFolder.h"
-#import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
 
 #import "MAPIStoreFolderTable.h"
@@ -34,13 +33,6 @@
 #include <libmapiproxy.h>
 
 @implementation MAPIStoreFolderTable
-
-static MAPIStoreMapping *mapping;
-
-+ (void) initialize
-{
-  mapping = [MAPIStoreMapping sharedMapping];
-}
 
 - (id) init
 {

@@ -26,7 +26,6 @@
 #import <SOGo/SOGoObject.h>
 
 #import "MAPIStoreFolder.h"
-#import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -34,13 +33,6 @@
 #import "MAPIStoreMessageTable.h"
 
 @implementation MAPIStoreMessageTable
-
-static MAPIStoreMapping *mapping;
-
-+ (void) initialize
-{
-  mapping = [MAPIStoreMapping sharedMapping];
-}
 
 - (void) setSortOrder: (const struct SSortOrderSet *) set
 {

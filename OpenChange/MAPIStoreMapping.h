@@ -32,9 +32,12 @@
 {
   NSMutableDictionary *mapping; /* FID/MID -> url */
   NSMutableDictionary *reverseMapping; /* url -> FID/MID */
+  struct tdb_wrap *indexing;
 }
 
-+ (id) sharedMapping;
++ (id) mappingWithIndexing: (struct tdb_wrap *) indexing;
+
+- (id) initWithIndexing: (struct tdb_wrap *) indexing;
 
 - (NSString *) urlFromID: (uint64_t) idKey;
 
