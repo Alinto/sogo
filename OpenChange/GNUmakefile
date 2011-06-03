@@ -92,6 +92,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	MAPIStoreCommonViewsContext.m \
 	MAPIStoreDeferredActionsContext.m \
+	MAPIStoreFallbackContext.m \
 	MAPIStoreFreebusyContext.m \
 	MAPIStoreJournalContext.m \
 	MAPIStoreRemindersContext.m \
