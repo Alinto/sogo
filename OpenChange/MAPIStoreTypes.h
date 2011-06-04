@@ -39,6 +39,22 @@ double *MAPIDoubleValue (void *memCtx, double value);
 id NSObjectFromSPropValue (const struct SPropValue *);
 id NSObjectFromMAPISPropValue (const struct mapi_SPropValue *);
 
+#ifndef PRIx64
+#if __WORDSIZE == 64
+  #define PRIx64        "lx"
+#else
+  #define PRIx64        "llx"
+#endif
+#endif
+
+#ifndef PRIX64
+#if __WORDSIZE == 64
+  #define PRIX64        "lX"
+#else
+  #define PRIX64        "llX"
+#endif
+#endif
+
 static inline NSNumber *
 MAPIPropertyKey (enum MAPITAGS propTag)
 {
