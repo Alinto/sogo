@@ -1,5 +1,12 @@
 2011-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIFSMessage.m (-completeFilename): new method
+	that returns the full filename for the property list file.
+	(-appendProperties:) simplified method.
+	(-save) removed obsolete hack.
+	(-creationTime, -lastModificationTime): new self-explicit
+	accessors.
+
 	* OpenChange/MAPIStoreSOGo.m (sogo_op_opendir): op_opendir no
 	longer takes the parent fid as parameter.
 

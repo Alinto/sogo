@@ -39,6 +39,7 @@
   if ((self = [super init]))
     {
       properties = nil;
+      completeFilename = nil;
     }
 
   return self;
@@ -47,19 +48,28 @@
 - (void) dealloc
 {
   [properties release];
+  [completeFilename release];
   [super dealloc];
+}
+
+- (NSString *) completeFilename
+{
+  if (!completeFilename)
+    {
+      completeFilename = [[container directory]
+                           stringByAppendingPathComponent: nameInContainer];
+      [completeFilename retain];
+    }
+
+  return completeFilename;
 }
 
 - (NSDictionary *) properties
 {
-  NSString *filePath;
-
   if (!properties)
     {
-      filePath = [[container directory]
-		   stringByAppendingPathComponent: nameInContainer];
       properties = [[NSMutableDictionary alloc]
-		     initWithContentsOfFile: filePath];
+		     initWithContentsOfFile: [self completeFilename]];
       if (!properties)
         properties = [NSMutableDictionary new];
     }
@@ -69,82 +79,63 @@
 
 - (void) appendProperties: (NSDictionary *) newProperties
 {
-  NSArray *keys;
-  NSString *key;
-  int i, count;
-  
   // We ensure the current properties are loaded
   [self properties];
   
   // We merge the changes
-  keys = [newProperties allKeys];
-  count = [keys count];
-  for (i = 0; i < count; i++)
-    {
-      key = [keys objectAtIndex: i];
-      [properties setObject: [newProperties objectForKey: key]
-                     forKey: key];
-    }
+  [properties addEntriesFromDictionary: newProperties];
 }
 
 - (void) save
 {
-  NSArray *pathComponents;
-  NSString *filePath;
-
-  [self logWithFormat: @"-save"];
-
   [container ensureDirectory];
 
-  filePath = [[container directory]
-	       stringByAppendingPathComponent: nameInContainer];
-
-  // FIXME
-  // We do NOT save the FAI data for the Inbox, as upon the 
-  // next Outlook restart, when restoring those saved properties,
-  // Outlook will crash. 
-  pathComponents = [filePath pathComponents];
-  if ([[pathComponents objectAtIndex: [pathComponents count]-2] isEqualToString: @"inbox"])
-    {
-      [self logWithFormat: @"-MAPISave - skipping FAI at path %@", filePath];
-      return;
-    }
-
-  if (![properties writeToFile: filePath atomically: YES])
+  if (![properties writeToFile: [self completeFilename] atomically: YES])
     [NSException raise: @"MAPIStoreIOException"
 		 format: @"could not save message"];
 }
 
 - (NSString *) davEntityTag
 {
-  NSDictionary *attributes;
-  NSFileManager *fm;
-  NSString *filePath;
+  NSCalendarDate *lm;
 
-  fm = [NSFileManager defaultManager];
+  lm = [self lastModificationTime];
 
-  filePath = [[container directory]
-	       stringByAppendingPathComponent: nameInContainer];
-  attributes = [fm fileAttributesAtPath: filePath traverseLink: NO];
-
-  return [NSString stringWithFormat: @"%p", attributes];
+  return [NSString stringWithFormat: @"%d", (int) [lm timeIntervalSince1970]];
 }
 
 - (NSException *) delete
 {
   NSFileManager *fm;
-  NSString *filePath;
   
   fm = [NSFileManager defaultManager];
 
-  filePath = [[container directory]
-	       stringByAppendingPathComponent: nameInContainer];
-
-  if (![fm removeFileAtPath: filePath  handler: NULL])
+  if (![fm removeFileAtPath: [self completeFilename] handler: NULL])
     [NSException raise: @"MAPIStoreIOException"
 		 format: @"could not delete message"];
 
   return nil;
+}
+
+- (id) _fileAttributeForKey: (NSString *) key
+{
+  NSDictionary *attributes;
+
+  attributes = [[NSFileManager defaultManager]
+               fileAttributesAtPath: [self completeFilename]
+                       traverseLink: NO];
+
+  return [attributes objectForKey: key];
+}
+
+- (NSCalendarDate *) creationTime
+{
+  return [self _fileAttributeForKey: NSFileCreationDate];
+}
+
+- (NSCalendarDate *) lastModificationTime
+{
+  return [self _fileAttributeForKey: NSFileModificationDate];
 }
 
 @end

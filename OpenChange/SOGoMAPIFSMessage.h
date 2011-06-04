@@ -31,11 +31,17 @@
 @interface SOGoMAPIFSMessage : SOGoObject
 {
   NSMutableDictionary *properties;
+  NSString *completeFilename;
 }
 
 - (NSDictionary *) properties;
 - (void) appendProperties: (NSDictionary *) newProperties;
 - (void) save;
+
+- (NSString *) completeFilename;
+
+- (NSCalendarDate *) creationTime;
+- (NSCalendarDate *) lastModificationTime;
 
 @end
 
