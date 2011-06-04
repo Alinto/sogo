@@ -45,6 +45,9 @@
 - (SOGoMAPIFSMessage *) newMessage;
 - (void) ensureDirectory;
 
+- (NSCalendarDate *) creationTime;
+- (NSCalendarDate *) lastModificationTime;
+
 @end
 
 #endif /* SOGOMAPIFSFOLDER_H */

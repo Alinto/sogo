@@ -97,6 +97,8 @@ static NSString *privateDir = nil;
 	tableParticle = @"message";
       else if (tableType == MAPISTORE_FAI_TABLE)
 	tableParticle = @"fai";
+      else if (tableType == MAPISTORE_FOLDER_TABLE)
+	tableParticle = @"folder";
       else
 	{
 	  [NSException raise: @"MAPIStoreIOException"
@@ -226,6 +228,27 @@ static NSString *privateDir = nil;
     object = nil;
 
   return object;
+}
+
+- (id) _fileAttributeForKey: (NSString *) key
+{
+  NSDictionary *attributes;
+
+  attributes = [[NSFileManager defaultManager]
+                   fileAttributesAtPath: directory
+                           traverseLink: NO];
+  
+  return [attributes objectForKey: key];
+}
+
+- (NSCalendarDate *) creationTime
+{
+  return [self _fileAttributeForKey: NSFileCreationDate];
+}
+
+- (NSCalendarDate *) lastModificationTime
+{
+  return [self _fileAttributeForKey: NSFileModificationDate];
 }
 
 @end

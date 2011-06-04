@@ -1,5 +1,10 @@
 2011-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIFSFolder.m (-creationTime)
+	(-lastModificationTime): new self-explicit accessors.
+	(-initWithURL:andTableType:): accept the "MAPISTORE_FOLDER_TABLE",
+	for storing folder properties.
+
 	* OpenChange/SOGoMAPIFSMessage.m (-completeFilename): new method
 	that returns the full filename for the property list file.
 	(-appendProperties:) simplified method.
