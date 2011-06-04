@@ -336,7 +336,7 @@ sogo_op_rmdir(void *private_data, uint64_t parent_fid, uint64_t fid)
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
 */
 static int
-sogo_op_opendir(void *private_data, uint64_t parent_fid, uint64_t fid)
+sogo_op_opendir(void *private_data, uint64_t fid)
 {
   NSAutoreleasePool *pool;
   sogo_context *cContext;
@@ -351,7 +351,7 @@ sogo_op_opendir(void *private_data, uint64_t parent_fid, uint64_t fid)
   context = cContext->objcContext;
   [context setupRequest];
 
-  rc = [context openDir: fid inParentFID: parent_fid];
+  rc = [context openDir: fid];
 
   [context tearDownRequest];
   [pool release];

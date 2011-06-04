@@ -115,12 +115,3 @@
 }
 
 @end
-
-@implementation MAPIStoreSpoolerContext
-
-+ (NSString *) MAPIModuleName
-{
-  return @"spooler-queue";
-}
-
-@end

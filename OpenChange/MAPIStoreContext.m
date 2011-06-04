@@ -70,8 +70,8 @@
 
 static Class NSDataK, NSStringK, MAPIStoreFAIMessageK;
 
-static MAPIStoreMapping *mapping;
 static NSMutableDictionary *contextClassMapping;
+static NSMutableDictionary *userMAPIStoreMapping;
 
 static void *ldbCtx = NULL;
 
@@ -85,8 +85,6 @@ static void *ldbCtx = NULL;
   NSDataK = [NSData class];
   NSStringK = [NSString class];
   MAPIStoreFAIMessageK = [MAPIStoreFAIMessage class];
-
-  mapping = [MAPIStoreMapping sharedMapping];
 
   contextClassMapping = [NSMutableDictionary new];
   classes = GSObjCAllSubclassesOfClass (self);
@@ -103,6 +101,8 @@ static void *ldbCtx = NULL;
 		 NSStringFromClass (currentClass), moduleName);
 	}
     }
+
+  userMAPIStoreMapping = [NSMutableDictionary new];
 }
 
 static inline MAPIStoreContext *
@@ -209,7 +209,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
             inMemCtx: (struct mapistore_context *) newMemCtx
 {
   struct loadparm_context *lpCtx;
-  MAPIStoreMapping *mapping;
+  NSString *username;
 
   if ((self = [self init]))
     {
@@ -221,7 +221,15 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
       ASSIGN (contextUrl, newUrl);
 
-      mapping = [MAPIStoreMapping sharedMapping];
+      username = [NSString stringWithUTF8String: newConnInfo->username];
+      mapping = [userMAPIStoreMapping objectForKey: username];
+      if (!mapping)
+        {
+          [self logWithFormat: @"generating mapping of ids for user '%@'",
+                username];
+          mapping = [MAPIStoreMapping mappingWithIndexing: newConnInfo->indexing];
+          [userMAPIStoreMapping setObject: mapping forKey: username];
+        }
       if (![mapping urlFromID: newFid])
         [mapping registerURL: [newUrl absoluteString]
                       withID: newFid];
@@ -252,6 +260,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 - (WOContext *) woContext
 {
   return woContext;
+}
+
+- (MAPIStoreMapping *) mapping
+{
+  return mapping;
 }
 
 - (void) setAuthenticator: (MAPIStoreAuthenticator *) newAuthenticator
@@ -372,17 +385,14 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
 */
 - (int) openDir: (uint64_t) fid
-    inParentFID: (uint64_t) parentFID
 {
   [self logWithFormat:
-	  @"UNIMPLEMENTED METHOD '%s' (%d):\n fid=0x%.16x, parentFID=0x%.16x",
+	  @"UNIMPLEMENTED METHOD '%s' (%d):\n fid=0x%.16x",
 	__FUNCTION__, __LINE__,
-	(unsigned long long) fid,
-	(unsigned long long) parentFID];
+	(unsigned long long) fid];
 
-  return MAPISTORE_ERROR;
+  return MAPISTORE_SUCCESS;
 }
-
 
 /**
    \details Close a folder from the sogo backend
@@ -1331,8 +1341,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   NSString *childURL;
   uint64_t mappingId;
   uint32_t contextId;
-
-  mapping = [MAPIStoreMapping sharedMapping];
 
   if (key)
     childURL = [NSString stringWithFormat: @"%@%@", folderURL, key];

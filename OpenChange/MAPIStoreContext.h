@@ -53,6 +53,8 @@
   NSURL *contextUrl;
   uint64_t contextFid;
 
+  MAPIStoreMapping *mapping;
+
   MAPIStoreAuthenticator *authenticator;
   WOContext *woContext;
 
@@ -79,6 +81,7 @@
 - (struct mapistore_connection_info *) connectionInfo;
 
 - (WOContext *) woContext;
+- (MAPIStoreMapping *) mapping;
 
 - (void) setupRequest;
 - (void) tearDownRequest;
@@ -114,8 +117,7 @@
   inParentFID: (uint64_t) parentFID;
 - (int) rmDirWithFID: (uint64_t) fid
          inParentFID: (uint64_t) parentFid;
-- (int) openDir: (uint64_t) fid
-    inParentFID: (uint64_t) parentFID;
+- (int) openDir: (uint64_t) fid;
 - (int) closeDir;
 - (int) readCount: (uint32_t *) rowCount
       ofTableType: (uint8_t) tableType

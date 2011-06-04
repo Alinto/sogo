@@ -23,6 +23,7 @@
 #import <Foundation/NSData.h>
 
 #import "MAPIStoreAttachment.h"
+#import "MAPIStoreContext.h"
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreMessage.h"
 #import "MAPIStoreTypes.h"
@@ -33,14 +34,7 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
-static MAPIStoreMapping *mapping;
-
 @implementation MAPIStoreAttachment
-
-+ (void) initialize
-{
-  mapping = [MAPIStoreMapping sharedMapping];
-}
 
 - (void) setAID: (uint32_t) newAID
 {
@@ -102,8 +96,11 @@ static MAPIStoreMapping *mapping;
                    andFlags: (enum OpenEmbeddedMessage_OpenModeFlags) flags
 {
   MAPIStoreAttachmentMessage *attMessage;
+  MAPIStoreMapping *mapping;
 
   memset (mapistoreMsg, 0, sizeof (struct mapistore_message));
+
+  mapping = [[self context] mapping];
 
   attMessage = [self openEmbeddedMessage];
   if (attMessage)

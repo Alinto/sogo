@@ -92,12 +92,14 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	MAPIStoreCommonViewsContext.m \
 	MAPIStoreDeferredActionsContext.m \
+	MAPIStoreFallbackContext.m \
 	MAPIStoreFreebusyContext.m \
 	MAPIStoreJournalContext.m \
 	MAPIStoreRemindersContext.m \
 	MAPIStoreScheduleContext.m \
 	MAPIStoreSearchContext.m \
 	MAPIStoreShortcutsContext.m \
+	MAPIStoreSpoolerContext.m \
 	MAPIStoreViewsContext.m \
 	\
 	NSArray+MAPIStore.m \
