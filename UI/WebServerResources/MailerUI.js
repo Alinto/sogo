@@ -1319,13 +1319,21 @@ function configureLinksInMessage() {
         mailContentDiv.observe("contextmenu", onMessageContentMenu);
 
     var anchors = messageDiv.getElementsByTagName('a');
-    for (var i = 0; i < anchors.length; i++)
-        if (anchors[i].href.substring(0,7) == "mailto:") {
-            $(anchors[i]).observe("click", onEmailTo);
-            $(anchors[i]).observe("contextmenu", onEmailAddressClick);
+    for (var i = 0; i < anchors.length; i++) {
+        var anchor = $(anchors[i]);
+        if (!anchor.href && anchor.readAttribute("moz-do-not-send")) {
+            anchor.writeAttribute("moz-do-not-send", false);
+            anchor.removeClassName("moz-txt-link-abbreviated");
+            anchor.href = "mailto:" + anchors[i].innerHTML;
+        }
+        if (anchor.href.substring(0,7) == "mailto:") {
+            anchor.observe("click", onEmailTo);
+            anchor.observe("contextmenu", onEmailAddressClick);
+            anchor.writeAttribute("moz-do-not-send", false);
         }
         else
-            $(anchors[i]).observe("click", onMessageAnchorClick);
+            anchor.observe("click", onMessageAnchorClick);
+    }
 
     var attachments = messageDiv.select ("DIV.linked_attachment_body");
     for (var i = 0; i < attachments.length; i++)
@@ -1565,7 +1573,8 @@ function onEmailAddressClick(event) {
 }
 
 function onMessageAnchorClick(event) {
-    window.open(this.href);
+    if (this.href)
+        window.open(this.href);
     preventDefault(event);
 }
 
