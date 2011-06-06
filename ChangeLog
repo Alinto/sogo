@@ -1,3 +1,13 @@
+2011-06-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreTable.m (-notifyChangesForChild:): same as below.
+
+	* OpenChange/MAPIStoreContext.m
+	(_saveOrSubmitChangesInMessageWithMID:andFlags:save:):
+	mapistore_push_notification now takes a struct mapistore_context *
+	as parameter.
+	(-deleteMessageWithMID:inFID:withFlags:): same as above.
+
 2011-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/SOGoMAPIFSFolder.m (-creationTime)

@@ -739,7 +739,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
               notif_parameters->new_message_count = true;
               notif_parameters->message_count = [[folder messageKeys] count] + 1;
             }
-          mapistore_push_notification (MAPISTORE_FOLDER,
+          mapistore_push_notification (connInfo->mstore_ctx,
+                                       MAPISTORE_FOLDER,
                                        MAPISTORE_OBJECT_MODIFIED,
                                        notif_parameters);
 
@@ -753,7 +754,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
               notif_parameters->folder_id = folderId;
 
               notif_parameters->tag_count = 0xffff;
-              mapistore_push_notification (MAPISTORE_MESSAGE,
+              mapistore_push_notification (connInfo->mstore_ctx,
+                                           MAPISTORE_MESSAGE,
                                            MAPISTORE_OBJECT_CREATED,
                                            notif_parameters);
               talloc_free (notif_parameters);
@@ -908,7 +910,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 		    asUnicodeInMemCtx: memCtx];
 	  [self logWithFormat: @"found path '%s' for fmid %.16x",
 		*path, fmid];		  
-          rc = MAPISTORE_SUCCESS;
+          rc = MAPI_E_SUCCESS;
         }
       else
         {
@@ -1176,7 +1178,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
                   notif_parameters->new_message_count = true;
                   notif_parameters->message_count = [[folder messageKeys]
                                                       count] - 1;
-                  mapistore_push_notification (MAPISTORE_FOLDER,
+                  mapistore_push_notification (connInfo->mstore_ctx,
+                                               MAPISTORE_FOLDER,
                                                MAPISTORE_OBJECT_MODIFIED,
                                                notif_parameters);
                   talloc_free(notif_parameters);
@@ -1188,7 +1191,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
                   notif_parameters->object_id = mid;
                   notif_parameters->folder_id = fid;
                   /* Exchange sends a fnevObjectCreated!! */
-                  mapistore_push_notification (MAPISTORE_MESSAGE,
+                  mapistore_push_notification (connInfo->mstore_ctx,
+                                               MAPISTORE_MESSAGE,
                                                MAPISTORE_OBJECT_CREATED,
                                                notif_parameters);
                   talloc_free(notif_parameters);
