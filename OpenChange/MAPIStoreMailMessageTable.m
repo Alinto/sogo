@@ -37,7 +37,6 @@
 #import "MAPIStoreMailFolder.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
-#import "NSCalendarDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreMailMessageTable.h"

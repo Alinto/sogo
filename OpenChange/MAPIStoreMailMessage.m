@@ -30,7 +30,6 @@
 #import <Mailer/SOGoMailBodyPart.h>
 #import <Mailer/SOGoMailObject.h>
 
-#import "NSCalendarDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "MAPIStoreContext.h"
