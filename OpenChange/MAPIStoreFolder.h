@@ -53,7 +53,6 @@
 
   NSMutableArray *activeMessageTables;
   NSMutableArray *activeFAIMessageTables;
-  NSMutableArray *activeFolderTables;
 }
 
 + (id) baseFolderWithURL: (NSURL *) newURL
@@ -63,7 +62,6 @@
 
 - (NSArray *) activeMessageTables;
 - (NSArray *) activeFAIMessageTables;
-- (NSArray *) activeFolderTables;
 
 - (MAPIStoreMessageTable *) messageTable;
 - (NSArray *) messageKeys;
