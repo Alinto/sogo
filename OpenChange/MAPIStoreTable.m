@@ -32,6 +32,7 @@
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
+#import "MAPIStoreContext.h"
 #import "MAPIStoreObject.h"
 
 #import "MAPIStoreTable.h"
@@ -826,6 +827,9 @@ static Class NSDataK, NSStringK;
   NSArray *list;
   NSString *childName;
   struct mapistore_table_notification_parameters notif_parameters;
+  struct mapistore_context *mstoreCtx;
+
+  mstoreCtx = [[container context] connectionInfo]->mstore_ctx;
 
   notif_parameters.table_type = tableType;
   notif_parameters.handle = handleId;
@@ -847,7 +851,8 @@ static Class NSDataK, NSStringK;
       if (newChildRow != NSNotFound)
         {
           notif_parameters.row_id = newChildRow;
-          mapistore_push_notification (MAPISTORE_TABLE,
+          mapistore_push_notification (mstoreCtx,
+                                       MAPISTORE_TABLE,
                                        MAPISTORE_OBJECT_CREATED,
                                        &notif_parameters);
         }
@@ -855,14 +860,16 @@ static Class NSDataK, NSStringK;
   else
     {
       if (newChildRow == NSNotFound)
-        mapistore_push_notification (MAPISTORE_TABLE,
+        mapistore_push_notification (mstoreCtx,
+                                     MAPISTORE_TABLE,
                                      MAPISTORE_OBJECT_DELETED,
                                      &notif_parameters);
       else
         {
           /* the fact that the row order has changed has no impact here */
           notif_parameters.row_id = newChildRow;
-          mapistore_push_notification (MAPISTORE_TABLE,
+          mapistore_push_notification (mstoreCtx,
+                                       MAPISTORE_TABLE,
                                        MAPISTORE_OBJECT_MODIFIED,
                                        &notif_parameters);
         }
