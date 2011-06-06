@@ -61,13 +61,15 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return newObject;
 }
 
-+ (int) getAvailableProperties: (struct SPropTagArray *) properties
++ (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
 {
+  struct SPropTagArray *properties;
   const MAPIStorePropertyGetter *classGetters;
   NSUInteger count;
   enum MAPITAGS propTag;
   uint16_t propValue;
 
+  properties = talloc_zero(NULL, struct SPropTagArray);
   properties->aulPropTag = talloc_array (properties, enum MAPITAGS,
                                          MAPIStoreSupportedPropertiesCount);
   classGetters = MAPIStorePropertyGettersForClass (self);
@@ -82,7 +84,9 @@ static Class NSExceptionK, MAPIStoreFolderK;
         }
     }
 
-  return 0;
+  *propertiesP = properties;
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (id) init
@@ -293,9 +297,9 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return [self getNo: data];
 }
 
-- (int) getAvailableProperties: (struct SPropTagArray *) properties
+- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
 {
-  return [isa getAvailableProperties: properties];
+  return [isa getAvailableProperties: propertiesP];
 }
 
 - (int) getProperties: (struct mapistore_property_data *) data

@@ -1,5 +1,10 @@
 2011-06-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m
+	(sogo_pocop_get_available_table_properties): now takes a
+	SPropTagArray ** argument.
+	(sogo_pocop_get_available_properties): same as above.
+
 	* OpenChange/MAPIStoreTable.m (-notifyChangesForChild:): same as below.
 
 	* OpenChange/MAPIStoreContext.m

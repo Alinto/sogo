@@ -942,7 +942,7 @@ sogo_pocop_open_embedded_message (void *attachment_object,
   return rc;
 }
 
-static int sogo_pocop_get_available_table_properties(void *table_object, struct SPropTagArray *properties)
+static int sogo_pocop_get_available_table_properties(void *table_object, struct SPropTagArray **propertiesP)
 {
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
@@ -954,7 +954,7 @@ static int sogo_pocop_get_available_table_properties(void *table_object, struct 
   if (table)
     {
       pool = [NSAutoreleasePool new];
-      rc = [table getAvailableProperties: properties];
+      rc = [table getAvailableProperties: propertiesP];
       [pool release];
     }
   else
@@ -1073,7 +1073,7 @@ sogo_pocop_get_table_row (void *table_object, enum table_query_type query_type, 
   return rc;
 }
 
-static int sogo_pocop_get_available_properties(void *object, struct SPropTagArray *properties)
+static int sogo_pocop_get_available_properties(void *object, struct SPropTagArray **propertiesP)
 {
   NSAutoreleasePool *pool;
   MAPIStoreObject *propObject;
@@ -1085,7 +1085,7 @@ static int sogo_pocop_get_available_properties(void *object, struct SPropTagArra
   if (propObject)
     {
       pool = [NSAutoreleasePool new];
-      rc = [propObject getAvailableProperties: properties];
+      rc = [propObject getAvailableProperties: propertiesP];
       [pool release];
     }
   else

@@ -375,9 +375,9 @@ static Class NSDataK, NSStringK;
   currentRow = (uint32_t) -1;
 }
 
-- (int) getAvailableProperties: (struct SPropTagArray *) properties
+- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
 {
-  return [[isa childObjectClass] getAvailableProperties: properties];
+  return [[isa childObjectClass] getAvailableProperties: propertiesP];
 }
 
 - (void) setRestrictions: (const struct mapi_SRestriction *) res

@@ -85,7 +85,7 @@ typedef enum {
 
 - (void) cleanupCaches;
 
-- (int) getAvailableProperties: (struct SPropTagArray *) properties;
+- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP;
 - (void) setRestrictions: (const struct mapi_SRestriction *) res;
 - (int) setColumns: (enum MAPITAGS *) newColumns
          withCount: (uint16_t) newColumCount;
