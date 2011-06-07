@@ -607,6 +607,37 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return rc;
 }
 
+- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                   ofTableType: (uint8_t) type
+{
+  int rc = MAPISTORE_SUCCESS;
+
+  switch (type)
+    {
+    case MAPISTORE_FOLDER_TABLE:
+      [[baseFolder class] getAvailableProperties: propertiesP];
+      break;
+    case MAPISTORE_MESSAGE_TABLE:
+      [[baseFolder messageClass] getAvailableProperties: propertiesP];
+      break;
+    case MAPISTORE_FAI_TABLE:
+      [MAPIStoreFAIMessage getAvailableProperties: propertiesP];
+      break;
+    case MAPISTORE_RULE_TABLE:
+      [self errorWithFormat: @"%s: rules not handled yet",
+            __PRETTY_FUNCTION__];
+      rc = MAPISTORE_ERROR;
+      break;
+    case MAPISTORE_ATTACHMENT_TABLE:
+      [self errorWithFormat: @"%s: attachments not handled yet",
+            __PRETTY_FUNCTION__];
+      rc = MAPISTORE_ERROR;
+      break;
+    }
+
+  return rc;
+}
+
 - (int) openMessage: (struct mapistore_message *) msg
             withMID: (uint64_t) mid
               inFID: (uint64_t) fid

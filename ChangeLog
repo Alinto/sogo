@@ -4,6 +4,8 @@
 	(sogo_pocop_get_available_table_properties): now takes a
 	SPropTagArray ** argument.
 	(sogo_pocop_get_available_properties): same as above.
+	(sogo_op_get_available_table_properties): new, non-poc operation,
+	to retrieve the list of available properties from a table.
 
 	* OpenChange/MAPIStoreTable.m (-notifyChangesForChild:): same as below.
 

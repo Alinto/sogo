@@ -136,6 +136,8 @@
           ofTableType: (uint8_t) tableType
                 inRow: (struct SRow *) aRow
               withMID: (uint64_t) fmid;
+- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                   ofTableType: (uint8_t) type;
 - (int) setPropertiesWithFMID: (uint64_t) fmid
                   ofTableType: (uint8_t) tableType
                         inRow: (struct SRow *) aRow;
