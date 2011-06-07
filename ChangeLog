@@ -1,5 +1,9 @@
 2011-06-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessage.m: (-getPrExpiryTime:) removed
+	method as we don't want the message to appear as "expired".
+	(-getPrOriginalSensitivity:): uppercased the "o" in "getPrOriginal..."
+
 	* OpenChange/MAPIStoreSOGo.m
 	(sogo_pocop_get_available_table_properties): now takes a
 	SPropTagArray ** argument.

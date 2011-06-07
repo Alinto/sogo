@@ -285,24 +285,10 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   return [self getLongZero: data];
 }
 
-- (int) getProriginalSensitivity: (void **) data // TODO
+- (int) getPrOriginalSensitivity: (void **) data // TODO
 {
   return [self getPrSensitivity: data];
 }
-
-- (int) getPrExpiryTime: (void **) data // TODO
-{
-  *data = [[NSCalendarDate date] asFileTimeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-// - (int) getPrReplyTime: (void **) data // TODO
-// {
-//   *data = [[NSCalendarDate date] asFileTimeInMemCtx: memCtx];
-
-//   return MAPISTORE_SUCCESS;
-// }
 
 - (int) getPrSentRepresentingAddrtype: (void **) data
 {
