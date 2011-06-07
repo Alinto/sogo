@@ -30,6 +30,12 @@
 	as parameter.
 	(-deleteMessageWithMID:inFID:withFlags:): same as above.
 
+2011-06-06  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (configureLinksInMessage):
+	when a link has the attribute moz-do-not-send set to true, remove
+	it and force a new mailto href.
+
 2011-06-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/SOGoMAPIFSFolder.m (-creationTime)
