@@ -56,7 +56,6 @@ sogo_init (void)
   NSAutoreleasePool *pool;
   SOGoProductLoader *loader;
   Class MAPIApplicationK;
-  SOGoSystemDefaults *sd;
   NSUserDefaults *ud;
   SoProductRegistry *registry;
 
@@ -67,7 +66,7 @@ sogo_init (void)
      the encoding specified in the file. */
   putenv ("GNUSTEP_STRING_ENCODING=NSUTF8StringEncoding");
 
-  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  [SOGoSystemDefaults sharedSystemDefaults];
 
   // /* We force the plugin to base its configuration on the SOGo tree. */
   ud = [NSUserDefaults standardUserDefaults];
