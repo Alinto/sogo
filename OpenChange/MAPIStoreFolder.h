@@ -38,6 +38,7 @@
 @class MAPIStoreFolderTable;
 @class MAPIStoreMessageTable;
 @class SOGoMAPIFSFolder;
+@class SOGoMAPIFSMessage;
 
 #import "MAPIStoreObject.h"
 
@@ -49,10 +50,11 @@
   NSArray *faiMessageKeys;
   NSMutableArray *folderKeys;
 
-  SOGoMAPIFSFolder *faiFolder;
+  NSDictionary *properties;
 
-  NSMutableArray *activeMessageTables;
-  NSMutableArray *activeFAIMessageTables;
+  SOGoMAPIFSFolder *faiFolder;
+  SOGoMAPIFSFolder *propsFolder;
+  SOGoMAPIFSMessage *propsMessage;
 }
 
 + (id) baseFolderWithURL: (NSURL *) newURL
@@ -73,7 +75,8 @@
 - (NSArray *) folderKeys;
 
 - (MAPIStoreMessage *) createMessage: (BOOL) isAssociated;
-- (NSString *) createFolder: (struct SRow *) aRow;
+- (NSString *) createFolder: (struct SRow *) aRow
+                    withFID: (uint64_t) newFID;
 
 /* helpers */
 - (uint64_t) idForObjectWithKey: (NSString *) childKey;
@@ -81,6 +84,8 @@
 /* subclasses */
 - (Class) messageClass;
 - (MAPIStoreMessage *) createMessage;
+
+- (NSCalendarDate *) lastMessageModificationTime;
 
 @end
 

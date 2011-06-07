@@ -23,6 +23,7 @@
 /* TODO: main key arrays must be initialized */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
@@ -36,7 +37,9 @@
 #import "MAPIStoreFolder.h"
 #import "MAPIStoreMessage.h"
 #import "MAPIStoreTypes.h"
+#import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
+#import "NSObject+MAPIStore.h"
 #import "SOGoMAPIFSFolder.h"
 #import "SOGoMAPIFSMessage.h"
 
@@ -45,7 +48,7 @@
 #undef DEBUG
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_nameid.h>
-// #include <mapistore/mapistore_errors.h>
+#include <mapistore/mapistore_errors.h>
 
 Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStoreFolderTableK;
 
@@ -81,11 +84,14 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
       folderURL = nil;
       context = nil;
 
+      propsFolder = nil;
+      propsMessage = nil;
     }
 
   return self;
 }
 
+/* from context */
 - (id) initWithURL: (NSURL *) newURL
          inContext: (MAPIStoreContext *) newContext
 {
@@ -96,13 +102,71 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
       ASSIGN (faiFolder,
               [SOGoMAPIFSFolder folderWithURL: newURL
                                  andTableType: MAPISTORE_FAI_TABLE]);
+      ASSIGN (propsFolder,
+              [SOGoMAPIFSFolder folderWithURL: newURL
+                                andTableType: MAPISTORE_FOLDER_TABLE]);
+      ASSIGN (propsMessage,
+              [SOGoMAPIFSMessage objectWithName: @"properties.plist"
+                                 inContainer: propsFolder]);
     }
 
   return self;
 }
 
+/* from parent folder */
+- (id) initWithSOGoObject: (id) newSOGoObject
+              inContainer: (MAPIStoreObject *) newContainer
+{
+  NSURL *propsURL;
+
+  if ((self = [super initWithSOGoObject: newSOGoObject inContainer: newContainer]))
+    {
+      propsURL = [NSURL URLWithString: [self url]];
+      ASSIGN (propsFolder,
+              [SOGoMAPIFSFolder folderWithURL: propsURL
+                                andTableType: MAPISTORE_FOLDER_TABLE]);
+      ASSIGN (propsMessage,
+              [SOGoMAPIFSMessage objectWithName: @"properties.plist"
+                                 inContainer: propsFolder]);
+    }
+
+  return self;
+}
+
+- (int) setProperties: (struct SRow *) aRow
+{
+  static enum MAPITAGS bannedProps[] = { PR_MID, PR_FID, PR_PARENT_FID,
+                                         PR_SOURCE_KEY, PR_PARENT_SOURCE_KEY,
+                                         PR_CHANGE_NUM, PR_CHANGE_KEY,
+                                         0x00000000 };
+  enum MAPITAGS *currentProp;
+  int rc;
+
+  rc = [super setProperties: aRow];
+
+  /* TODO: this should no longer be required once mapistore v2 API is in
+     place, when we can then do this from -dealloc below */
+  if ([newProperties count] > 0)
+    {
+      currentProp = bannedProps;
+      while (*currentProp)
+        {
+          [newProperties removeObjectForKey: MAPIPropertyKey (*currentProp)];
+          currentProp++;
+        }
+
+      [propsMessage appendProperties: newProperties];
+      [propsMessage save];
+      [self resetNewProperties];
+    }
+
+  return rc;
+}
+
 - (void) dealloc
 {
+  [propsMessage release];
+  [propsFolder release];
   [folderURL release];
   [messageKeys release];
   [faiMessageKeys release];
@@ -209,8 +273,8 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
       if ([faiMessageKeys containsObject: childKey])
         {
           msgObject = [faiFolder lookupName: childKey
-                                 inContext: nil
-                                 acquire: NO];
+                                  inContext: nil
+                                    acquire: NO];
           newChild
             = [MAPIStoreFAIMessage mapiStoreObjectWithSOGoObject: msgObject
                                                      inContainer: self];
@@ -218,8 +282,8 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
       else
         {
           msgObject = [sogoObject lookupName: childKey
-                                  inContext: nil
-                                  acquire: NO];
+                                   inContext: nil
+                                     acquire: NO];
           if ([msgObject isKindOfClass: NSExceptionK])
             msgObject = nil;
           
@@ -237,48 +301,111 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
   return newChild;
 }
 
-- (enum MAPISTATUS) getProperty: (void **) data
-                        withTag: (enum MAPITAGS) propTag
+- (int) getPrParentFid: (void **) data
+{
+  *data = MAPILongLongValue (memCtx, [container objectId]);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrFid: (void **) data
+{
+  *data = MAPILongLongValue (memCtx, [self objectId]);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAccess: (void **) data
+{
+  *data = MAPILongValue (memCtx, 0x63);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAccessLevel: (void **) data
+{
+  *data = MAPILongValue (memCtx, 0x01);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAttrHidden: (void **) data
+{
+  return [self getNo: data];
+}
+
+- (int) getPrAttrSystem: (void **) data
+{
+  return [self getNo: data];
+}
+
+- (int) getPrAttrReadOnly: (void **) data
+{
+  return [self getNo: data];
+}
+
+- (int) getPrSubfolders: (void **) data
+{
+  *data = MAPIBoolValue (memCtx, [folderKeys count] > 0);
+  
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrFolderChildCount: (void **) data;
+{
+  *data = MAPILongValue (memCtx, [[self folderKeys] count]);
+  
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrContentCount: (void **) data
+{
+  *data = MAPILongValue (memCtx, [[self messageKeys] count]);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrContentUnread: (void **) data
+{
+  *data = MAPILongValue (memCtx, 0);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAssocContentCount: (void **) data
+{
+  *data = MAPILongValue (memCtx, [[self faiMessageKeys] count]);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrDeletedCountTotal: (void **) data
+{
+  /* TODO */
+  *data = MAPILongValue (memCtx, 0);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrLocalCommitTimeMax: (void **) data
+{
+  *data = [[self lastMessageModificationTime] asFileTimeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getProperty: (void **) data
+            withTag: (enum MAPITAGS) propTag
 {
   int rc;
+  id value;
 
-  rc = MAPI_E_SUCCESS;
-  switch (propTag)
-    {
-    case PR_FID:
-      /* TODO: incomplete */
-      *data = MAPILongValue (memCtx, [self objectId]);
-      break;
-    case PR_ACCESS: // TODO
-      *data = MAPILongValue (memCtx, 0x63);
-      break;
-    case PR_ACCESS_LEVEL: // TODO
-      *data = MAPILongValue (memCtx, 0x01);
-      break;
-    case PR_PARENT_FID:
-      *data = MAPILongLongValue (memCtx, [container objectId]);
-      break;
-    case PR_ATTR_HIDDEN:
-    case PR_ATTR_SYSTEM:
-    case PR_ATTR_READONLY:
-      *data = MAPIBoolValue (memCtx, NO);
-      break;
-    case PR_SUBFOLDERS:
-      *data = MAPIBoolValue (memCtx, [folderKeys count]);
-                             // [[child toManyRelationshipKeys] count] > 0);
-      break;
-    case PR_CONTENT_COUNT:
-      *data = MAPILongValue (memCtx, [messageKeys count]);
-      break;
-    // case PR_EXTENDED_FOLDER_FLAGS: // TODO: DOUBT: how to indicate the
-    //   // number of subresponses ?
-    //   binaryValue = talloc_zero(memCtx, struct Binary_r);
-    //   *data = binaryValue;
-    //   break;
-    default:
-      rc = [super getProperty: data
-                      withTag: propTag];
-    }
+  value = [[propsMessage properties]
+            objectForKey: MAPIPropertyKey (propTag)];
+  if (value)
+    rc = [value getMAPIValue: data forTag: propTag inMemCtx: memCtx];
+  else
+    rc = [super getProperty: data withTag: propTag];
 
   return rc;
 }
@@ -313,6 +440,7 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 }
 
 - (NSString *) createFolder: (struct SRow *) aRow
+                    withFID: (uint64_t) newFID
 {
   [self errorWithFormat: @"new folders cannot be created in this context"];
 
@@ -351,6 +479,16 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
                                 inFolderURL: [self url]];
 }
 
+- (NSCalendarDate *) creationTime
+{
+  return [propsMessage creationTime];
+}
+
+- (NSCalendarDate *) lastModificationTime
+{
+  return [propsMessage lastModificationTime];
+}
+
 /* subclasses */
 
 - (MAPIStoreMessageTable *) messageTable
@@ -368,6 +506,13 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 - (MAPIStoreMessage *) createMessage
 {
   [self logWithFormat: @"ignored method: %s", __PRETTY_FUNCTION__];
+  return nil;
+}
+
+- (NSCalendarDate *) lastMessageModificationTime
+{
+  [self subclassResponsibility: _cmd];
+
   return nil;
 }
 

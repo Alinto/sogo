@@ -22,11 +22,14 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "EOQualifier+MAPIFS.h"
 #import "MAPIStoreFSMessage.h"
 #import "MAPIStoreFSMessageTable.h"
+#import "MAPIStoreFolderTable.h"
+#import "MAPIStoreTypes.h"
 #import "SOGoMAPIFSFolder.h"
 #import "SOGoMAPIFSMessage.h"
 
@@ -69,6 +72,22 @@ static Class MAPIStoreFSMessageK;
 - (Class) messageClass
 {
   return MAPIStoreFSMessageK;
+}
+
+- (NSString *) createFolder: (struct SRow *) aRow
+                    withFID: (uint64_t) newFID
+{
+  NSString *newKey, *urlString;
+  SOGoMAPIFSFolder *childFolder;
+
+  newKey = [NSString stringWithFormat: @"0x%.16"PRIx64, (unsigned long long) newFID];
+
+  urlString = [NSString stringWithFormat: @"%@/%@", [self url], newKey];
+  childFolder = [SOGoMAPIFSFolder folderWithURL: [NSURL URLWithString: urlString]
+                                   andTableType: MAPISTORE_MESSAGE_TABLE];
+  [childFolder ensureDirectory];
+
+  return newKey;
 }
 
 - (MAPIStoreMessage *) createMessage
@@ -120,6 +139,65 @@ static Class MAPIStoreFSMessageK;
     keys = (NSMutableArray *) allKeys;
 
   return keys;
+}
+
+- (NSArray *) folderKeys
+{
+  if (!folderKeys)
+    ASSIGN (folderKeys, [sogoObject toManyRelationshipKeys]);
+
+  return folderKeys;
+}
+
+- (id) lookupChild: (NSString *) childKey
+{
+  id childObject;
+  SOGoMAPIFSFolder *childFolder;
+
+  [self folderKeys];
+  if ([folderKeys containsObject: childKey])
+    {
+      childFolder = [sogoObject lookupName: childKey inContext: nil
+                                   acquire: NO];
+      childObject = [MAPIStoreFSFolder mapiStoreObjectWithSOGoObject: childFolder
+                                                         inContainer: self];
+    }
+  else
+    childObject = [super lookupChild: childKey];
+
+  return childObject;
+}
+
+- (MAPIStoreFAIMessageTable *) folderTable
+{
+  return [MAPIStoreFolderTable tableForContainer: self];
+}
+
+- (NSDate *) lastMessageModificationTime
+{
+  NSUInteger count, max;
+  NSDate *date, *fileDate;
+  MAPIStoreFSMessage *msg;
+
+  [self messageKeys];
+
+  date = [NSCalendarDate date];
+  [self logWithFormat: @"current date: %@", date];
+
+  max = [messageKeys count];
+  for (count = 0; count < max; count++)
+    {
+      msg = [self lookupChild: [messageKeys objectAtIndex: count]];
+      fileDate = [msg lastModificationTime];
+      if ([date laterDate: fileDate] == fileDate)
+        {
+          [self logWithFormat: @"current date: %@", date];
+          
+          date = fileDate;
+        }
+    }
+
+  return date;
 }
 
 @end

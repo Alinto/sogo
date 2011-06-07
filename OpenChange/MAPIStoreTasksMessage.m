@@ -49,24 +49,6 @@
 
 @implementation MAPIStoreTasksMessage
 
-- (id) initWithSOGoObject: (id) newSOGoObject
-              inContainer: (MAPIStoreObject *) newContainer
-{
-  if ((self = [super initWithSOGoObject: newSOGoObject
-                     inContainer: newContainer]))
-    {
-      ASSIGN (task, [newSOGoObject component: NO secure: NO]);
-    }
-
-  return self;
-}
-
-- (void) dealloc
-{
-  [task release];
-  [super dealloc];
-}
-
 - (int) getPrIconIndex: (void **) data // TODO
 {
   /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
@@ -90,6 +72,9 @@
 
 - (int) getPrSubject: (void **) data // SUMMARY
 {
+  iCalToDo *task;
+
+  task = [sogoObject component: NO secure: NO];
   *data = [[task summary] asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
@@ -98,7 +83,9 @@
 - (int) getPrImportance: (void **) data
 {
   uint32_t v;
-      
+  iCalToDo *task;
+
+  task = [sogoObject component: NO secure: NO];
   if ([[task priority] isEqualToString: @"9"])
     v = 0x0;
   else if ([[task priority] isEqualToString: @"1"])
@@ -113,6 +100,9 @@
 
 - (int) getPidLidTaskComplete: (void **) data
 {
+  iCalToDo *task;
+
+  task = [sogoObject component: NO secure: NO];
   *data = MAPIBoolValue (memCtx,
                          [[task status] isEqualToString: @"COMPLETED"]);
 
@@ -122,6 +112,9 @@
 - (int) getPidLidPercentComplete: (void **) data
 {
   double doubleValue;
+  iCalToDo *task;
+
+  task = [sogoObject component: NO secure: NO];
 
   doubleValue = ((double) [[task percentComplete] intValue] / 100);
   *data = MAPIDoubleValue (memCtx, doubleValue);
@@ -131,8 +124,11 @@
 
 - (int) getPidLidTaskDateCompleted: (void **) data
 {
-  NSCalendarDate *dateValue;
   int rc = MAPISTORE_SUCCESS;
+  NSCalendarDate *dateValue;
+  iCalToDo *task;
+
+  task = [sogoObject component: NO secure: NO];
 
   dateValue = [task completed];
   if (dateValue)
@@ -182,52 +178,42 @@
 
 - (int) getPidLidTaskDueDate: (void **) data
 {
-  NSCalendarDate *dateValue;
   int rc = MAPISTORE_SUCCESS;
+  NSCalendarDate *dateValue;
+  iCalToDo *task;
 
+  task = [sogoObject component: NO secure: NO];
   dateValue = [task due];
   if (dateValue)
     *data = [dateValue asFileTimeInMemCtx: memCtx];
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
 
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPrCreationTime: (void **) data
-{
-  *data = [[task created] asFileTimeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
+  return rc;
 }
 
 - (int) getPrMessageDeliveryTime: (void **) data
 {
-  *data = [[task lastModified] asFileTimeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
+  return [self getPrLastModificationTime: data];
 }
 
 - (int) getClientSubmitTime: (void **) data
 {
-  return [self getPrMessageDeliveryTime: data];
+  return [self getPrLastModificationTime: data];
 }
 
 - (int) getLocalCommitTime: (void **) data
 {
-  return [self getPrMessageDeliveryTime: data];
-}
-
-- (int) getLastModificationTime: (void **) data
-{
-  return [self getPrMessageDeliveryTime: data];
+  return [self getPrLastModificationTime: data];
 }
 
 - (int) getPidLidTaskStatus: (void **) data // status
 {
   NSString *status;
   uint32_t longValue;
+  iCalToDo *task;
 
+  task = [sogoObject component: NO secure: NO];
   status = [task status];
   if (![status length]
       || [status isEqualToString: @"NEEDS-ACTION"])

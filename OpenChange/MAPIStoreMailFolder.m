@@ -53,6 +53,7 @@ static Class SOGoMailFolderK;
 
 #undef DEBUG
 #include <libmapi/libmapi.h>
+#include <mapistore/mapistore.h>
 
 @implementation MAPIStoreMailFolder
 
@@ -108,6 +109,12 @@ static Class SOGoMailFolderK;
   return self;
 }
 
+- (void) dealloc
+{
+  [messageTable release];
+  [super dealloc];
+}
+
 - (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) accountFolder
                                     inContext: (WOContext *) woContext
 {
@@ -118,7 +125,13 @@ static Class SOGoMailFolderK;
 
 - (MAPIStoreMessageTable *) messageTable
 {
-  return [MAPIStoreMailMessageTable tableForContainer: self];
+  if (!messageTable)
+    {
+      ASSIGN (messageTable, [MAPIStoreMailMessageTable tableForContainer: self]);
+      [self logWithFormat: @"new message table"];
+    }
+
+  return messageTable;
 }
 
 - (Class) messageClass
@@ -127,6 +140,7 @@ static Class SOGoMailFolderK;
 }
 
 - (NSString *) createFolder: (struct SRow *) aRow
+                    withFID: (uint64_t) newFID
 {
   NSString *folderName, *nameInContainer;
   SOGoMailFolder *newFolder;
@@ -156,42 +170,33 @@ static Class SOGoMailFolderK;
   return nameInContainer;
 }
 
-- (enum MAPISTATUS) getProperty: (void **) data
-                        withTag: (enum MAPITAGS) propTag
+- (int) getPrContentUnread: (void **) data
 {
-  enum MAPISTATUS rc;
   EOQualifier *searchQualifier;
-  uint32_t intValue;
+  uint32_t longValue;
+
+  searchQualifier
+    = [EOQualifier qualifierWithQualifierFormat: @"flags = %@", @"unseen"];
+  longValue = [[sogoObject fetchUIDsMatchingQualifier: searchQualifier
+                                         sortOrdering: nil]
+                count];
+  *data = MAPILongValue (memCtx, longValue);
   
-  rc = MAPI_E_SUCCESS;
-  switch (propTag)
-    {
-    case PR_CONTENT_UNREAD:
-      searchQualifier
-        = [EOQualifier qualifierWithQualifierFormat: @"flags = %@", @"unseen"];
-      intValue = [[sogoObject fetchUIDsMatchingQualifier: searchQualifier
-                                            sortOrdering: nil] count];
-      *data = MAPILongValue (memCtx, intValue);
-      break;
-    case PR_CONTAINER_CLASS_UNICODE:
-      *data = [@"IPF.Note" asUnicodeInMemCtx: memCtx];
-      break;
-    default:
-      {
-        const char *propName;
+  return MAPISTORE_SUCCESS;
+}
 
-        propName = get_proptag_name (propTag);
-        if (!propName)
-          propName = "<unknown>";
-        [self warnWithFormat: @"get folder tag: %s (0x%.8x)", propName,
-        propTag];
-      }
-
-
-      rc = [super getProperty: data withTag: propTag];
-    }
+- (int) getPrContainerClass: (void **) data
+{
+  *data = [@"IPF.Note" asUnicodeInMemCtx: memCtx];
   
-  return rc;
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrMessageClass: (void **) data
+{
+  *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];
+  
+  return MAPISTORE_SUCCESS;
 }
 
 - (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
@@ -261,6 +266,16 @@ static Class SOGoMailFolderK;
     childObject = [super lookupChild: childKey];
 
   return childObject;
+}
+
+- (NSCalendarDate *) creationTime
+{
+  return [NSCalendarDate dateWithTimeIntervalSince1970: 0x4dbb2dbe]; /* oc_version_time */
+}
+
+- (NSCalendarDate *) lastModificationTime
+{
+  return [NSCalendarDate date];
 }
 
 @end

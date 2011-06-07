@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import "MAPIStoreFolder.h"
+
 #import "MAPIStoreFAIMessageTable.h"
 
 #undef DEBUG
@@ -35,6 +37,11 @@
     }
 
   return self;
+}
+
+- (NSArray *) childKeys
+{
+  return [(MAPIStoreFolder *) container faiMessageKeys];
 }
 
 @end

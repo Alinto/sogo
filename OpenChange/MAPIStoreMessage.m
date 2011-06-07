@@ -180,15 +180,15 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrViewStyle: (void **) data
-{
-  return [self getLongZero: data];
-}
+// - (int) getPrViewStyle: (void **) data
+// {
+//   return [self getLongZero: data];
+// }
 
-- (int) getPrViewMajorversion: (void **) data
-{
-  return [self getLongZero: data];
-}
+// - (int) getPrViewMajorversion: (void **) data
+// {
+//   return [self getLongZero: data];
+// }
 
 - (int) getPidLidSideEffects: (void **) data // TODO
 {
@@ -281,35 +281,6 @@
   return [self getLongZero: data];
 }
 
-// TODO: PR_CHANGE_KEY is a GID based on the ReplGUID
-- (int) getPrChangeKey: (void **) data
-{
-  int rc = MAPISTORE_SUCCESS;
-  NSString *stringValue;
-  NSUInteger length;
-
-  stringValue = [sogoObject davEntityTag];
-  if (stringValue)
-    {
-      stringValue = @"-1";
-      length = [stringValue length];
-      if (length < 6) /* guid = 16 bytes */
-        length += 6;
-      stringValue = [NSString stringWithFormat: @"000000%@",
-                              stringValue];
-      if (length > 6)
-        stringValue = [stringValue substringFromIndex: length - 6];
-      stringValue = [NSString stringWithFormat: @"SOGo%@%@%@",
-                              stringValue, stringValue, stringValue];
-      *data = [[stringValue dataUsingEncoding: NSASCIIStringEncoding]
-                asBinaryInMemCtx: memCtx];
-    }
-  else
-    rc = MAPISTORE_ERR_NOT_FOUND;
-
-  return rc;
-}
-
 - (int) getPrSubject: (void **) data
 {
   [self subclassResponsibility: _cmd];
@@ -352,20 +323,20 @@
   return [self getEmptyString: data];
 }
 
-- (int) getPrOriginalDisplayTo: (void **) data
-{
-  return [self getPrDisplayTo: data];
-}
+// - (int) getPrOriginalDisplayTo: (void **) data
+// {
+//   return [self getPrDisplayTo: data];
+// }
 
-- (int) getPrOriginalDisplayCc: (void **) data
-{
-  return [self getPrDisplayCc: data];
-}
+// - (int) getPrOriginalDisplayCc: (void **) data
+// {
+//   return [self getPrDisplayCc: data];
+// }
 
-- (int) getPrOriginalDisplayBcc: (void **) data
-{
-  return [self getPrDisplayBcc: data];
-}
+// - (int) getPrOriginalDisplayBcc: (void **) data
+// {
+//   return [self getPrDisplayBcc: data];
+// }
 
 - (int) getPrLastModifierName: (void **) data
 {
@@ -396,6 +367,11 @@
                                           andSortOrderings: nil] count] > 0);
 
   return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAssociated: (void **) data
+{
+  return [self getNo: data];
 }
 
 - (void) save

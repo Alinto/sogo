@@ -85,6 +85,11 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   MAPIStoreDraftsFolderK = [MAPIStoreDraftsFolder class];
 }
 
++ (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
+{
+  return [super getAvailableProperties: propertiesP];
+}
+
 - (int) getPrIconIndex: (void **) data
 {
   uint32_t longValue;
@@ -187,16 +192,14 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrCreationTime: (void **) data // DOUBT
+- (NSCalendarDate *) creationTime
 {
-  *data = [[sogoObject date] asFileTimeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
+  return [sogoObject date];
 }
 
-- (int) getPrLastModificationTime: (void **) data // DOUBT
+- (NSCalendarDate *) lastModificationTime
 {
-  return [self getPrCreationTime: data];
+  return [sogoObject date];
 }
 
 - (int) getPrLatestDeliveryTime: (void **) data // DOUBT
@@ -651,7 +654,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   NSArray *to;
   NSInteger count, max;
   NGImap4EnvelopeAddress *currentAddress;
-  NSString *name;
+  NSString *text;
 
   [super openMessage: msg];
   /* Retrieve recipients from the message */
@@ -663,25 +666,38 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   for (count = 0; count < max; count++)
     {
       recipients->aRow[count].ulAdrEntryPad = 0;
-      recipients->aRow[count].cValues = 2;
+      recipients->aRow[count].cValues = 3;
       recipients->aRow[count].lpProps = talloc_array (recipients->aRow,
                                                       struct SPropValue,
-                                                      2);
+                                                      4);
 
       // TODO (0x01 = primary recipient)
-      set_SPropValue_proptag (&(recipients->aRow[count].lpProps[0]),
+      set_SPropValue_proptag (recipients->aRow[count].lpProps + 0,
                               PR_RECIPIENT_TYPE,
-                              MAPILongValue (memCtx, 0x01));
-      
+                              MAPILongValue (recipients->aRow, 0x01));
+     
+      set_SPropValue_proptag (recipients->aRow[count].lpProps + 1,
+                              PR_ADDRTYPE_UNICODE,
+                              [@"SMTP" asUnicodeInMemCtx: recipients->aRow]);
+
       currentAddress = [to objectAtIndex: count];
-      // name = [currentAddress personalName];
-      // if (![name length])
-      name = [currentAddress baseEMail];
-      if (!name)
-        name = @"";
-      set_SPropValue_proptag (&(recipients->aRow[count].lpProps[1]),
-                              PR_DISPLAY_NAME,
-                              [name asUnicodeInMemCtx: recipients->aRow[count].lpProps]);
+      // text = [currentAddress personalName];
+      // if (![text length])
+      text = [currentAddress baseEMail];
+      if (!text)
+        text = @"";
+      set_SPropValue_proptag (recipients->aRow[count].lpProps + 2,
+                              PR_EMAIL_ADDRESS_UNICODE,
+                              [text asUnicodeInMemCtx: recipients->aRow]);
+
+      text = [currentAddress personalName];
+      if ([text length] > 0)
+        {
+          recipients->aRow[count].cValues++;
+          set_SPropValue_proptag (recipients->aRow[count].lpProps + 3,
+                                  PR_DISPLAY_NAME_UNICODE,
+                                  [text asUnicodeInMemCtx: recipients->aRow]);
+        }
     }
   msg->recipients = recipients;
 }

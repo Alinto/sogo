@@ -37,6 +37,7 @@
 
 #include <stdbool.h>
 #include <gen_ndr/exchange.h>
+#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreDraftsMessage
 
@@ -49,6 +50,19 @@
     }
 
   return self;
+}
+
+- (int) getPrMessageFlags: (void **) data
+{
+  unsigned int v = MSGFLAG_FROMME;
+
+  if ([[self childKeysMatchingQualifier: nil
+                       andSortOrderings: nil] count] > 0)
+    v |= MSGFLAG_HASATTACH;
+    
+  *data = MAPILongValue (memCtx, v);
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (void) _saveAttachment: (NSString *) attachmentKey
@@ -231,6 +245,16 @@ e)
     }
   else
     [self logWithFormat: @"ignored scheduling message"];
+}
+
+- (NSCalendarDate *) creationTime
+{
+  return [newProperties objectForKey: MAPIPropertyKey (PR_CREATION_TIME)];
+}
+
+- (NSCalendarDate *) lastModificationTime
+{
+  return [newProperties objectForKey: MAPIPropertyKey (PR_LAST_MODIFICATION_TIME)];
 }
 
 @end

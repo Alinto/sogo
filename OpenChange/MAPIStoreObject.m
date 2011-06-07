@@ -24,9 +24,11 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoObject.h>
 
+#import "MAPIStoreContext.h"
 #import "MAPIStoreFolder.h"
 #import "MAPIStorePropertySelectors.h"
 #import "MAPIStoreTypes.h"
+#import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
@@ -119,10 +121,10 @@ static Class NSExceptionK, MAPIStoreFolderK;
 
 - (void) dealloc
 {
+  [sogoObject release];
+  [newProperties release];
   [parentContainersBag release];
   [container release];
-  [sogoObject release];
-  [newProperties dealloc];
   talloc_free (memCtx);
   [super dealloc];
 }
@@ -192,8 +194,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
                     containerURL, [self nameInContainer]];
 }
 
-
-
 - (void) addNewProperties: (NSDictionary *) newNewProperties
 {
   [newProperties addEntriesFromDictionary: newNewProperties];
@@ -233,12 +233,12 @@ static Class NSExceptionK, MAPIStoreFolderK;
           propName = get_proptag_name (propTag);
           if (!propName)
             propName = "<unknown>";
-          [self warnWithFormat:
-                  @"unimplemented selector (%@) for %s (0x%.8x)",
-                NSStringFromSelector (methodSel), propName, propTag];
+          // [self warnWithFormat:
+          //         @"unimplemented selector (%@) for %s (0x%.8x)",
+          //       NSStringFromSelector (methodSel), propName, propTag];
         }
-      else
-        [self warnWithFormat: @"unsupported property tag: 0x%.8x", propTag];
+      // else
+      //   [self warnWithFormat: @"unsupported property tag: 0x%.8x", propTag];
     }
 
   return rc;
@@ -273,8 +273,34 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getReplicaKey: (void **) data
+          fromGlobCnt: (uint64_t) objectCnt
+{
+  struct mapistore_connection_info *connInfo;
+  NSMutableData *replicaKey;
+  char buffer[6];
+  NSUInteger count;
+
+  connInfo = [[self context] connectionInfo];
+
+  for (count = 0; count < 6; count++)
+    {
+      buffer[count] = objectCnt & 0xff;
+      objectCnt >>= 8;
+    }
+
+  replicaKey = [NSMutableData dataWithCapacity: 22];
+  [replicaKey appendBytes: &connInfo->replica_guid
+                   length: sizeof (struct GUID)];
+  [replicaKey appendBytes: buffer
+                   length: 6];
+  *data = [replicaKey asBinaryInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
 /* getters */
- - (int) getPrDisplayName: (void **) data
+- (int) getPrDisplayName: (void **) data
 {
   *data = [[sogoObject displayName] asUnicodeInMemCtx: memCtx];
 
@@ -295,6 +321,54 @@ static Class NSExceptionK, MAPIStoreFolderK;
 - (int) getPrGenerateExchangeViews: (void **) data
 {
   return [self getNo: data];
+}
+
+- (int) getPrParentSourceKey: (void **) data
+{
+  return [self getReplicaKey: data fromGlobCnt: [container objectId] >> 16];
+}
+
+- (int) getPrSourceKey: (void **) data
+{
+  return [self getReplicaKey: data fromGlobCnt: [self objectId] >> 16];
+}
+
+- (uint64_t) objectVersion
+{
+  uint32_t lmTime;
+
+  lmTime = (uint32_t) [[self lastModificationTime] timeIntervalSince1970];
+  if (lmTime < 0x4dbb2dbe) /* oc_version_time */
+    lmTime = 0x4dbb2dbe;
+
+  return ((([self objectId] & 0xffff000000000000LL) >> 16)
+          | (exchange_globcnt((uint64_t) lmTime - 0x4dbb2dbe) >> 16));
+}
+
+- (int) getPrChangeKey: (void **) data
+{
+  return [self getReplicaKey: data fromGlobCnt: [self objectVersion]];
+}
+
+- (int) getPrChangeNum: (void **) data
+{
+  *data = MAPILongLongValue (memCtx, ([self objectVersion] << 16) | 0x0001);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrCreationTime: (void **) data
+{
+  *data = [[self creationTime] asFileTimeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrLastModificationTime: (void **) data
+{
+  *data = [[self lastModificationTime] asFileTimeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
@@ -332,6 +406,20 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 /* subclasses */
+- (NSDate *) creationTime
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (NSDate *) lastModificationTime
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
 - (id) lookupChild: (NSString *) childKey
 {
   [self subclassResponsibility: _cmd];

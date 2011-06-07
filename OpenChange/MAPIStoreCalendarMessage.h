@@ -25,12 +25,7 @@
 
 #import "MAPIStoreGCSMessage.h"
 
-@class iCalEvent;
-
 @interface MAPIStoreCalendarMessage : MAPIStoreGCSMessage
-{
-  iCalEvent *event;
-}
 
 @end
 

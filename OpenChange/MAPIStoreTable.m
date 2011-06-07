@@ -718,6 +718,9 @@ static Class NSDataK, NSStringK;
     case 6: state = [self evaluateBitmaskRestriction: &res->res.resBitmask
 				       intoQualifier: qualifier];
       break;
+
+    case 7: state = MAPIRestrictionStateAlwaysTrue; /* let's cheat a little */
+      break;
     case 8: state = [self evaluateExistRestriction: &res->res.resExist
 				     intoQualifier: qualifier];
       break;
@@ -727,7 +730,7 @@ static Class NSDataK, NSStringK;
     // case 10: MAPIStringForPropertyRestriction(&resPtr->res.resProperty); break;
     default:
       [NSException raise: @"MAPIStoreRestrictionException"
-		  format: @"unhandled restriction type"];
+                   format: @"unhandled restriction type: %.2x", res->rt];
       state = MAPIRestrictionStateAlwaysTrue;
     }
 

@@ -1,5 +1,16 @@
 2011-06-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/*:
+	- (context) cached last requested folder and table
+	- (context) open folders are now cached in an nsdictionary
+	- getPrLastModificationTime and getPrCreationTime are now
+	centralized in MAPIStoreObject and rely on mandator lastModificationTime
+	and creationTime methods on individual subclasses.
+	- openMessage now takes a "struct mapistore_message **" argument.
+	- MAPIStoreFSFolder can now create subfolders
+	- converted MAPIStoreFolder to the new property API, by
+	implementing one method per property.
+
 	* OpenChange/MAPIStoreMailMessage.m: (-getPrExpiryTime:) removed
 	method as we don't want the message to appear as "expired".
 	(-getPrOriginalSensitivity:): uppercased the "o" in "getPrOriginal..."

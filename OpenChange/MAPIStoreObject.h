@@ -49,7 +49,7 @@
 
 + (id) mapiStoreObjectWithSOGoObject: (id) newSOGoObject
                          inContainer: (MAPIStoreObject *) newContainer;
-+ (int) getAvailableProperties: (struct SPropTagArray **) properties;
++ (int) getAvailableProperties: (struct SPropTagArray **) propertiesP;
 
 - (id) initWithSOGoObject: (id) newSOGoObject
               inContainer: (MAPIStoreObject *) newFolder;
@@ -69,7 +69,6 @@
 - (uint64_t) objectId;
 - (NSString *) url;
 
-
 /* properties */
 
 - (void) addNewProperties: (NSDictionary *) newNewProperties;
@@ -77,7 +76,7 @@
 - (void) resetNewProperties;
 
 /* ops */
-- (int) getAvailableProperties: (struct SPropTagArray **) properties;
+- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP;
 - (int) getProperties: (struct mapistore_property_data *) data
              withTags: (enum MAPITAGS *) tags
              andCount: (uint16_t) columnCount;
@@ -92,8 +91,23 @@
 - (int) getLongZero: (void **) data;
 - (int) getYes: (void **) data;
 - (int) getNo: (void **) data;
+- (int) getReplicaKey: (void **) data
+          fromGlobCnt: (uint64_t) objectCnt;
+
+/* implemented getters */
+- (int) getPrDisplayName: (void **) data;
+- (int) getPrSearchKey: (void **) data;
+- (int) getPrGenerateExchangeViews: (void **) data;
+- (int) getPrParentSourceKey: (void **) data;
+- (int) getPrSourceKey: (void **) data;
+- (int) getPrChangeKey: (void **) data;
+- (int) getPrCreationTime: (void **) data;
+- (int) getPrLastModificationTime: (void **) data;
 
 /* subclasses */
+- (NSDate *) creationTime;
+- (NSDate *) lastModificationTime;
+
 - (id) lookupChild: (NSString *) childKey;
 - (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
                         andSortOrderings: (NSArray *) sortOrderings;

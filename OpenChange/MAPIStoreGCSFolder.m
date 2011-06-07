@@ -31,6 +31,10 @@
 #import "NSDate+MAPIStore.h"
 
 #import "MAPIStoreGCSFolder.h"
+#import "MAPIStoreTypes.h"
+
+#undef DEBUG
+#include <mapistore/mapistore.h>
 
 @implementation MAPIStoreGCSFolder
 
@@ -60,7 +64,7 @@
     }
   else
     fetchQualifier = componentQualifier;
-    
+
   ocsFolder = [sogoObject ocsFolder];
   fs = [EOFetchSpecification
          fetchSpecificationWithEntityName: [ocsFolder folderName]
@@ -71,6 +75,11 @@
                  notFoundMarker: nil];
 
   return keys;
+}
+
+- (NSDate *) lastMessageModificationTime
+{
+  return [[sogoObject ocsFolder] lastModificationDate];
 }
 
 /* subclasses */

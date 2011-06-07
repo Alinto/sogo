@@ -24,4 +24,9 @@
 
 @implementation MAPIStoreFAIMessage
 
+- (int) getPrAssociated: (void **) data
+{
+  return [self getYes: data];
+}
+
 @end

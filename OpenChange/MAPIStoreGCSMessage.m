@@ -20,8 +20,25 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <SOGo/SOGoContentObject.h>
+
+#import "MAPIStoreTypes.h"
+
 #import "MAPIStoreGCSMessage.h"
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
 @implementation MAPIStoreGCSMessage
+
+- (NSCalendarDate *) creationTime
+{
+  return [sogoObject creationDate];
+}
+
+- (NSCalendarDate *) lastModificationTime
+{
+  return [sogoObject lastModified];
+}
 
 @end

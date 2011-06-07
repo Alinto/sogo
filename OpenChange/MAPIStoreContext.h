@@ -62,6 +62,15 @@
 
   /* for active messages (NSDictionary instances) */
   NSMutableDictionary *messages;
+
+  /* for active folders (NSDictionary instances) */
+  NSMutableDictionary *folders;
+
+  /* hackish table cache */
+  MAPIStoreTable *cachedTable;
+  MAPIStoreFolder *cachedFolder;
+  uint64_t cachedTableFID;
+  uint8_t cachedTableType;
 }
 
 + (id) contextFromURI: (const char *) newUri

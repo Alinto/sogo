@@ -30,7 +30,12 @@
 @class SOGoMailAccount;
 @class SOGoMailFolder;
 
+@class MAPIStoreMailMessageTable;
+
 @interface MAPIStoreMailFolder : MAPIStoreFolder
+{
+  MAPIStoreMailMessageTable *messageTable;
+}
 
 /* subclasses */
 - (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) account
