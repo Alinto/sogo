@@ -1905,7 +1905,9 @@ function initMailer(event) {
     if (!$(document.body).hasClassName("popup")) {
         Mailer.columnsOrder = UserDefaults["SOGoMailListViewColumnsOrder"];
         Mailer.sortByThread = UserDefaults["SOGoMailSortByThreads"] != null && parseInt(UserDefaults["SOGoMailSortByThreads"]) > 0;
-        if (!Mailer.sortByThread && Mailer.columnsOrder[0] == "Thread")
+        if (Mailer.sortByThread && Mailer.columnsOrder[0] != "Thread")
+            Mailer.columnsOrder = ["Thread"].concat(Mailer.columnsOrder);
+        else if (!Mailer.sortByThread && Mailer.columnsOrder[0] == "Thread")
             Mailer.columnsOrder.shift(); // drop the thread column
 
         // Restore sorting from user settings

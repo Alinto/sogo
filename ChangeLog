@@ -1,3 +1,8 @@
+2011-06-08  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (initMailer): added the Thread
+	column if missing from the columnsOrder user's defaults.
+
 2011-06-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/*:
