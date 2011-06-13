@@ -207,3 +207,8 @@ DIV#filtersListWrapper
 
 TABLE#filtersList
 { width: auto; }
+
+/* UIxComponentEditor */
+
+.SOGoTimePickerMenu > DIV
+{ width: 310px; }

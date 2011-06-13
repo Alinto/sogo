@@ -210,7 +210,7 @@
   NSCalendarDate *newStartDate, *now;
   NSTimeZone *timeZone;
   SOGoUserDefaults *ud;
-  int hour;
+  int hour, minute;
   unsigned int uStart, uEnd;
 
   newStartDate = [self selectedDate];
@@ -226,12 +226,15 @@
         {
 	  uEnd = [ud dayEndHour];
           hour = [now hourOfDay];
+          minute = [now minuteOfHour];
+          if (minute % 15)
+            minute += 15 - (minute % 15);
           if (hour < uStart)
             newStartDate = [now hour: uStart minute: 0];
           else if (hour > uEnd)
             newStartDate = [[now tomorrow] hour: uStart minute: 0];
           else
-            newStartDate = now;
+            newStartDate = [now hour: [now hourOfDay] minute: minute];
         }
       else
         newStartDate = [newStartDate hour: uStart minute: 0];

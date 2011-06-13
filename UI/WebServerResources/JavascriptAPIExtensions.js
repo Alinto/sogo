@@ -178,11 +178,11 @@ Date.prototype.getHourString = function() {
 };
 
 Date.prototype.getDisplayHoursString = function() {
-    var hoursString = "" + this.getUTCHours();
+    var hoursString = "" + this.getHours();
     if (hoursString.length == 1)
         hoursString = '0' + hoursString;
 
-    var minutesString = "" + this.getUTCMinutes();
+    var minutesString = "" + this.getMinutes();
     if (minutesString.length == 1)
         minutesString = '0' + minutesString;
 

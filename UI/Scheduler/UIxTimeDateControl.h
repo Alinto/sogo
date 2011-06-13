@@ -33,22 +33,13 @@
   NSString *controlID;
   NSString *label;
   NSCalendarDate *date;
-  id       hour;
-  id       minute;
-  id       second;
+  NSString *time;
   id       day;
   id       month;
   id       year;
   BOOL     displayTimeControl;
-  unsigned int startHour;
-  unsigned int endHour;
-  NSNumber *currentHour;
-  NSNumber *currentMinute;
   BOOL isDisabled;
 }
-
-- (void) setDayStartHour: (unsigned int) hour;
-- (void) setDayEndHour: (unsigned int) hour;
 
 - (void)setControlID:(NSString *)_controlID;
 - (NSString *)controlID;
@@ -56,13 +47,9 @@
 - (NSString *)label;
 - (void)setDate:(NSCalendarDate *)_date;
 - (NSCalendarDate *)date;
+- (void)setTime:(NSString *)_time;
+- (NSString *)time;
 
-- (void)setHour:(id)_hour;
-- (id)hour;
-- (void)setMinute:(id)_minute;
-- (id)minute;
-- (void)setSecond:(id)_second;
-- (id)second;
 - (void)setDay:(id)_day;
 - (id)day;
 - (void)setMonth:(id)_month;

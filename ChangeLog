@@ -1,3 +1,20 @@
+2011-06-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SOGoTimePicker.js: new interface to add a
+	time picker widget to an input field.
+
+	* UI/Scheduler/UIxTimeDateControl.m: replaced hours and minutes
+	popup menu by one input field.
+
+	* UI/WebServerResources/UIxAppointmentEditor.js: idem.
+
+	* UI/WebServerResources/UIxTaskEditor.js: idem.
+
+	* UI/Scheduler/UIxAppointmentEditor.m (-newStartDate): round
+	minutes to the nearest 15-minute.
+
+	* UI/Scheduler/UIxTaskEditor.m (-newStartDate): idem.
+
 2011-06-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (initMailer): added the Thread

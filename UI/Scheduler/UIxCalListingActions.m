@@ -280,6 +280,7 @@ static NSArray *tasksFields = nil;
      ...
   */
   
+  //NSLog(@"***[UIxCalListingActions _fixDates:] %@", [theRecord objectForKey: @"c_title"]);
   if (dayBasedView || [[theRecord objectForKey: @"c_isallday"] boolValue])
     {
       for (count = 0; count < 2; count++)
@@ -288,6 +289,7 @@ static NSArray *tasksFields = nil;
           aDate = [theRecord objectForKey: aDateField];
 	  daylightOffset = (int) ([userTimeZone secondsFromGMTForDate: aDate]
 				  - [userTimeZone secondsFromGMTForDate: startDate]);
+	  //NSLog(@"***[UIxCalListingActions _fixDates:] %@ = %@ (%i)", aDateField, aDate, daylightOffset);
           if (daylightOffset)
             {
               aDate = [aDate dateByAddingYears: 0 months: 0 days: 0 hours: 0
@@ -413,6 +415,7 @@ static NSArray *tasksFields = nil;
 
   date = [NSCalendarDate dateWithTimeIntervalSince1970: seconds];
   // Adjust for daylight saving time? (wrt to startDate)
+  //NSLog(@"***[UIxCalListingActions _formattedDateForSeconds] user timezone is %@", userTimeZone);
   [date setTimeZone: userTimeZone];
   if (forAllDay)
     formattedDate = [dateFormatter formattedDate: date];
@@ -975,6 +978,11 @@ _computeBlocksPosition (NSArray *blocks)
   for (count = 0; count < max; count++)
     {
       event = [events objectAtIndex: count];
+//      NSLog(@"***[UIxCalListingActions eventsBlocksAction] %i = %@ : %@ / %@ / %@", count,
+//	    [event objectAtIndex: eventTitleIndex],
+//	    [event objectAtIndex: eventStartDateIndex],
+//	    [event objectAtIndex: eventEndDateIndex],
+//	    [event objectAtIndex: eventRecurrenceIdIndex]);
       eventNbr = [NSNumber numberWithUnsignedInt: count];
       isAllDay = [[event objectAtIndex: eventIsAllDayIndex] boolValue];
       if (dayBasedView && isAllDay)

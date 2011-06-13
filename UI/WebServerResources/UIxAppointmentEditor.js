@@ -77,22 +77,37 @@ function validateAptEditor() {
     }
     else if (tmpdate == null /* means: same date */) {
         // TODO: check time
-        var start, end;
+        var startHour, startMinute, endHour, endMinute;
+        var matches;
     
-        start = parseInt(document.forms[0]['startTime_time_hour'].value);
-        end = parseInt(document.forms[0]['endTime_time_hour'].value);
+        matches = document.forms[0]['startTime_time'].value.match(/([0-9]+):([0-9]+)/);
+        if (matches) {
+            startHour = parseInt(matches[1]);
+            startMinute = parseInt(matches[2]);
+            matches = document.forms[0]['endTime_time'].value.match(/([0-9]+):([0-9]+)/);
+            if (matches) {
+                endHour = parseInt(matches[1]);
+                endMinute = parseInt(matches[2]);
 
-        if (start > end) {
-            alert(labels.validate_endbeforestart);
-            return false;
-        }
-        else if (start == end) {
-            start = parseInt(document.forms[0]['startTime_time_minute'].value);
-            end = parseInt(document.forms[0]['endTime_time_minute'].value);
-            if (start > end) {
-                alert(labels.validate_endbeforestart);
+                if (startHour > endHour) {
+                    alert(labels.validate_endbeforestart);
+                    return false;
+                }
+                else if (startHour == endHour) {
+                    if (startMinute > endMinute) {
+                        alert(labels.validate_endbeforestart);
+                        return false;
+                    }
+                }
+            }
+            else {
+                alert(labels.validate_invalid_enddate);
                 return false;
             }
+        }
+        else {
+            alert(labels.validate_invalid_startdate);
+            return false;
         }
     }
 
@@ -212,18 +227,18 @@ function endDayAsShortString() {
 
 function _getDate(which) {
     var date = window.timeWidgets[which]['date'].inputAsDate();
-    date.setHours( window.timeWidgets[which]['hour'].value );
-    date.setMinutes( window.timeWidgets[which]['minute'].value );
+    var time = window.timeWidgets[which]['time'].value.split(":");
+    date.setHours(time[0]);
+    date.setMinutes(time[1]);
 
     return date;
 }
 
 function _getShadowDate(which) {
     var date = window.timeWidgets[which]['date'].getAttribute("shadow-value").asDate();
-    var intValue = parseInt(window.timeWidgets[which]['hour'].getAttribute("shadow-value"));
-    date.setHours(intValue);
-    intValue = parseInt(window.timeWidgets[which]['minute'].getAttribute("shadow-value"));
-    date.setMinutes(intValue);
+    var time = window.timeWidgets[which]['time'].getAttribute("shadow-value").split(":");
+    date.setHours(time[0]);
+    date.setMinutes(time[1]);
 
     return date;
 }
@@ -246,11 +261,7 @@ function getShadowEndDate() {
 
 function _setDate(which, newDate) {
     window.timeWidgets[which]['date'].setInputAsDate(newDate);
-    window.timeWidgets[which]['hour'].value = newDate.getHours();
-    var minutes = newDate.getMinutes();
-    if (minutes % 15)
-        minutes += (15 - minutes % 15);
-    window.timeWidgets[which]['minute'].value = minutes;
+    window.timeWidgets[which]['time'].value = newDate.getDisplayHoursString();
 }
 
 function setStartDate(newStartDate) {
@@ -273,11 +284,9 @@ function onAdjustTime(event) {
         window.setEndDate(newEndDate);
     
         window.timeWidgets['end']['date'].updateShadowValue();
-        window.timeWidgets['end']['hour'].updateShadowValue();
-        window.timeWidgets['end']['minute'].updateShadowValue();
+        window.timeWidgets['end']['time'].updateShadowValue();
         window.timeWidgets['start']['date'].updateShadowValue();
-        window.timeWidgets['start']['hour'].updateShadowValue();
-        window.timeWidgets['start']['minute'].updateShadowValue();
+        window.timeWidgets['start']['time'].updateShadowValue();
     }
     else {
         // End date was changed
@@ -288,17 +297,15 @@ function onAdjustTime(event) {
             window.setEndDate(oldEndDate);
 
             window.timeWidgets['end']['date'].updateShadowValue();
-            window.timeWidgets['end']['hour'].updateShadowValue();
-            window.timeWidgets['end']['minute'].updateShadowValue();
+            window.timeWidgets['end']['time'].updateShadowValue();
+            window.timeWidgets['end']['time'].onChange(); // method from SOGoTimePicker
         }
     }
 }
 
 function onAllDayChanged(event) {
-    for (var type in window.timeWidgets) {
-        window.timeWidgets[type]['hour'].disabled = this.checked;
-        window.timeWidgets[type]['minute'].disabled = this.checked;
-    }
+    for (var type in window.timeWidgets)
+        window.timeWidgets[type]['time'].disabled = this.checked;
 }
 
 function initTimeWidgets(widgets) {
@@ -306,14 +313,14 @@ function initTimeWidgets(widgets) {
 
     if (widgets['start']['date']) {
         widgets['start']['date'].observe("change", this.onAdjustTime, false);
-        widgets['start']['hour'].observe("change", this.onAdjustTime, false);
-        widgets['start']['minute'].observe("change", this.onAdjustTime, false);
+        widgets['start']['time'].observe("time:change", this.onAdjustTime, false);
+        widgets['start']['time'].addInterface(SOGoTimePickerInterface);
     }
 
     if (widgets['end']['date']) {
         widgets['end']['date'].observe("change", this.onAdjustTime, false);
-        widgets['end']['hour'].observe("change", this.onAdjustTime, false);
-        widgets['end']['minute'].observe("change", this.onAdjustTime, false);
+        widgets['end']['time'].observe("time:change", this.onAdjustTime, false);
+        widgets['end']['time'].addInterface(SOGoTimePickerInterface);
     }
 
     var allDayLabel = $("allDay");
@@ -321,10 +328,8 @@ function initTimeWidgets(widgets) {
         var input = $(allDayLabel).childNodesWithTag("input")[0];
         input.observe("change", onAllDayChanged.bindAsEventListener(input));
         if (input.checked) {
-            for (var type in widgets) {
-                widgets[type]['hour'].disabled = true;
-                widgets[type]['minute'].disabled = true;
-            }
+            for (var type in widgets)
+                widgets[type]['time'].disabled = true;
         }
     }
 }
@@ -375,15 +380,15 @@ function refreshAttendees(newAttendees) {
 
      if (attendees.keys().length > 0) {
         // Update attendees link and show label
-        var names = new Array();
+         var names = new Array();
         attendees.values().each(function(attendee) {
             attendee = $H(attendee);
             var name = attendee.get('name') || attendee.get('email');
-            if (!attendee.get('delegated-to'))
+            var delegatedTo = attendee.get('delegated-to');
+            if (!delegatedTo)
                 names.push(name);
 
             if (attendeesMenu) {
-                var delegatedTo = attendee.get('delegated-to');
                 if (!attendee.get('delegated-from') || delegatedTo) {
                     var node = createElement("li");
                     attendeesMenu.appendChild(node);
@@ -475,11 +480,9 @@ function onAppointmentEditorLoad() {
         assignCalendar('endTime_date');
         
         var widgets = {'start': {'date': $("startTime_date"),
-                                 'hour': $("startTime_time_hour"),
-                                 'minute': $("startTime_time_minute")},
+                                 'time': $("startTime_time")},
                        'end': {'date': $("endTime_date"),
-                               'hour': $("endTime_time_hour"),
-                               'minute': $("endTime_time_minute")}};
+                               'time': $("endTime_time")}};
         initTimeWidgets(widgets);
     }
 

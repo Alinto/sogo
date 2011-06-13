@@ -4,16 +4,13 @@ var contactSelectorAction = 'calendars-contacts';
 
 function uixEarlierDate(date1, date2) {
   // can this be done in a sane way?
-  //   cuicui = 'year';
   if (date1 && date2) {
     if (date1.getYear()  < date2.getYear()) return date1;
     if (date1.getYear()  > date2.getYear()) return date2;
     // same year
-    //   cuicui += '/month';
     if (date1.getMonth() < date2.getMonth()) return date1;
     if (date1.getMonth() > date2.getMonth()) return date2;
-    //   // same month
-    //   cuicui += '/date';
+    // same month
     if (date1.getDate() < date2.getDate()) return date1;
     if (date1.getDate() > date2.getDate()) return date2;
   }
@@ -65,23 +62,39 @@ function validateTaskEditor() {
     }
     else if (tmpdate == null /* means: same date */) {
       // TODO: check time
-      var start, end;
-      
-      start = parseInt(document.forms[0]['startTime_time_hour'].value);
-      end = parseInt(document.forms[0]['dueTime_time_hour'].value);
-      
-      if (start > end) {
-        alert(labels.validate_endbeforestart);
-        return false;
-      }
-      else if (start == end) {
-        start = parseInt(document.forms[0]['startTime_time_minute'].value);
-        end = parseInt(document.forms[0]['dueTime_time_minute'].value);
-        if (start > end) {
-          alert(labels.validate_endbeforestart);
-          return false;
+
+        var startHour, startMinute, endHour, endMinute;
+        var matches;
+    
+        matches = document.forms[0]['startTime_time'].value.match(/([0-9]+):([0-9]+)/);
+        if (matches) {
+            startHour = parseInt(matches[1]);
+            startMinute = parseInt(matches[2]);
+            matches = document.forms[0]['dueTime_time'].value.match(/([0-9]+):([0-9]+)/);
+            if (matches) {
+                endHour = parseInt(matches[1]);
+                endMinute = parseInt(matches[2]);
+
+                if (startHour > endHour) {
+                    alert(labels.validate_endbeforestart);
+                    return false;
+                }
+                else if (startHour == endHour) {
+                    if (startMinute > endMinute) {
+                        alert(labels.validate_endbeforestart);
+                        return false;
+                    }
+                }
+            }
+            else {
+                alert(labels.validate_invalid_enddate);
+                return false;
+            }
         }
-      }
+        else {
+            alert(labels.validate_invalid_startdate);
+            return false;
+        }
     }
   }
 
@@ -187,19 +200,18 @@ function dueDayAsShortString() {
 
 this._getDate = function(which) {
 	var date = window.timeWidgets[which]['date'].inputAsDate();
-	date.setHours( window.timeWidgets[which]['hour'].value );
-	date.setMinutes( window.timeWidgets[which]['minute'].value );
-   
+        var time = window.timeWidgets[which]['time'].value.split(":");
+        date.setHours(time[0]);
+        date.setMinutes(time[1]);
+
 	return date;
 };
 
 this._getShadowDate = function(which) {
 	var date = window.timeWidgets[which]['date'].getAttribute("shadow-value").asDate();
-	var intValue = parseInt(window.timeWidgets[which]['hour'].getAttribute("shadow-value"));
-	date.setHours(intValue);
-	intValue = parseInt(window.timeWidgets[which]['minute'].getAttribute("shadow-value"));
-	date.setMinutes(intValue);
-	//   window.alert("shadow: " + date);
+        var time = window.timeWidgets[which]['time'].getAttribute("shadow-value").split(":");
+        date.setHours(time[0]);
+        date.setMinutes(time[1]);
    
 	return date;
 };
@@ -222,11 +234,7 @@ this.getShadowDueDate = function() {
 
 this._setDate = function(which, newDate) {
 	window.timeWidgets[which]['date'].setInputAsDate(newDate);
-	window.timeWidgets[which]['hour'].value = newDate.getHours();
-	var minutes = newDate.getMinutes();
-	if (minutes % 15)
-		minutes += (15 - minutes % 15);
-	window.timeWidgets[which]['minute'].value = minutes;
+        window.timeWidgets[which]['time'].value = newDate.getDisplayHoursString();
 };
 
 this.setStartDate = function(newStartDate) {
@@ -250,16 +258,16 @@ this.onAdjustDueTime = function(event) {
 		window.setDueDate(newDueDate);
 	}
 	window.timeWidgets['start']['date'].updateShadowValue();
-	window.timeWidgets['start']['hour'].updateShadowValue();
-	window.timeWidgets['start']['minute'].updateShadowValue();
+	window.timeWidgets['start']['time'].updateShadowValue();
 };
    
 this.initTimeWidgets = function (widgets) {
 	this.timeWidgets = widgets;
    
 	widgets['start']['date'].observe("change", this.onAdjustDueTime, false);
-	widgets['start']['hour'].observe("change", this.onAdjustDueTime, false);
-	widgets['start']['minute'].observe("change", this.onAdjustDueTime, false);
+	widgets['start']['time'].observe("time:change", this.onAdjustDueTime, false);
+        widgets['start']['time'].addInterface(SOGoTimePickerInterface);
+        widgets['due']['time'].addInterface(SOGoTimePickerInterface);
 };
    
 function onStatusListChange(event) {
@@ -308,11 +316,9 @@ function onTaskEditorLoad() {
     
     if (readOnly == false) {
         var widgets = {'start': {'date': $("startTime_date"),
-                                 'hour': $("startTime_time_hour"),
-                                 'minute': $("startTime_time_minute")},
+                                 'time': $("startTime_time")},
                        'due':   {'date': $("dueTime_date"),
-                                 'hour': $("dueTime_time_hour"),
-                                 'minute': $("dueTime_time_minute")}};
+                                 'time': $("dueTime_time")}};
         initTimeWidgets(widgets);
     }
 

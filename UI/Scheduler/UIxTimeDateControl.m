@@ -45,9 +45,7 @@
   [controlID release];
   [label     release];
   [date      release];
-  [hour      release];
-  [minute    release];
-  [second    release];
+  [time      release];
   [day       release];
   [month     release];
   [year      release];
@@ -56,23 +54,28 @@
 
 /* accessors */
 
-- (void)setControlID:(NSString *)_controlID {
+- (void)setControlID:(NSString *)_controlID
+{
   ASSIGNCOPY(controlID, _controlID);
 }
-- (NSString *)controlID {
+
+- (NSString *)controlID
+{
   return controlID;
 }
-- (void)setLabel:(NSString *)_label {
+
+- (void)setLabel:(NSString *)_label
+{
   ASSIGNCOPY(label, _label);
 }
-- (NSString *)label {
+- (NSString *)label
+{
   return label;
 }
 
 - (void) setDate: (NSCalendarDate *) _date
 {
   SOGoUserDefaults *ud;
-  int minuteValue;
 
   if (!_date)
     _date = [NSCalendarDate date];
@@ -81,146 +84,61 @@
   [_date setTimeZone: [ud timeZone]];
 
   [self _setDate: _date];
+  [self setTime: [_date descriptionWithCalendarFormat: @"%H:%M"]];
 
-  minuteValue = [_date minuteOfHour];
-  if (minuteValue % 15)
-    minuteValue += 15 - (minuteValue % 15);
-  [self setHour: [NSNumber numberWithInt: [_date hourOfDay]]];
-  [self setMinute: [NSNumber numberWithInt: minuteValue]];
   [self setYear: [NSNumber numberWithInt: [_date yearOfCommonEra]]];
   [self setMonth: [NSNumber numberWithInt: [_date monthOfYear]]];
   [self setDay: [NSNumber numberWithInt: [_date dayOfMonth]]];
 }
 
-- (void)_setDate:(NSCalendarDate *)_date {
+- (void)_setDate:(NSCalendarDate *)_date
+{
   ASSIGN(date, _date);
 }
 
-- (NSCalendarDate *)date {
+- (NSCalendarDate *)date
+{
   return date;
 }
 
-- (void)setHour:(id)_hour {
-  ASSIGN(hour, _hour);
+- (void) setTime: (NSString *)_time
+{
+  ASSIGN(time, _time);
 }
 
-- (id)hour {
-  return hour;
-}
-- (void)setMinute:(id)_minute {
-  ASSIGN(minute, _minute);
-}
-- (id)minute {
-  return minute;
-}
-- (void)setSecond:(id)_second {
-  ASSIGN(second, _second);
-}
-- (id)second {
-  return second;
+- (NSString *) time
+{
+  return time;
 }
 
-- (void)setDay:(id)_day {
+- (void)setDay:(id)_day
+{
   ASSIGN(day, _day);
 }
-- (id)day {
+
+- (id)day
+{
   return day;
 }
-- (void)setMonth:(id)_month {
+
+- (void)setMonth:(id)_month
+{
   ASSIGN(month, _month);
 }
-- (id)month {
+
+- (id)month
+{
   return month;
 }
-- (void)setYear:(id)_year {
+
+- (void)setYear:(id)_year
+{
   ASSIGN(year, _year);
 }
-- (id)year {
+
+- (id)year
+{
   return year;
-}
-
-- (void) setDayStartHour: (unsigned int) aStartHour
-{
-  startHour = aStartHour;
-}
-
-- (void) setDayEndHour: (unsigned int) anEndHour
-{
-  endHour = anEndHour;
-}
-
-- (void) setHourOption: (NSNumber *) option
-{
-  currentHour = option;
-}
-
-- (BOOL) isCurrentHour
-{
-  return [currentHour isEqual: hour];
-}
-
-- (BOOL) isCurrentMinute
-{
-  return [currentMinute isEqual: minute];
-}
-
-- (int) hourValue
-{
-  return [currentHour intValue];
-}
-
-- (NSString *) hourLabel
-{
-  return [NSString stringWithFormat: @"%.2d", [currentHour intValue]];
-}
-
-- (NSArray *) selectableHours
-{
-  NSMutableArray *hours;
-  unsigned int h;
-
-  hours = [NSMutableArray array];
-  for (h = startHour; h < (endHour + 1); h++)
-    [hours addObject: [NSNumber numberWithInt: h]];
-
-  return hours;
-}
-
-- (NSString *) hourSelectId
-{
-  return [[self controlID] stringByAppendingString:@"_time_hour"];
-}
-
-- (void) setMinuteOption: (NSNumber *) option
-{
-  currentMinute = option;
-}
-
-- (int) minuteValue
-{
-  return [currentMinute intValue];
-}
-
-- (NSString *) minuteLabel
-{
-  return [NSString stringWithFormat: @"%.2d", [currentMinute intValue]];
-}
-
-- (NSArray *) selectableMinutes
-{
-  NSMutableArray *minutes;
-  unsigned int m;
-
-  minutes = [NSMutableArray array];
-  for (m = 0; m < 60; m += 15)
-    [minutes addObject: [NSNumber numberWithInt: m]];
-
-  return minutes;
-}
-
-- (NSString *) minuteSelectId
-{
-  return [[self controlID] stringByAppendingString:@"_time_minute"];
 }
 
 - (NSString *) timeID
@@ -249,8 +167,9 @@
                      inContext: (WOContext *) _ctx
 {
   NSCalendarDate *d;
-  unsigned _year, _month, _day, _hour, _minute, _second;
+  unsigned _year, _month, _day, _hour, _minute;//, _second;
   SOGoUserDefaults *ud;
+  NSArray *_time;
 
   /* call super, so that the form values are applied on the popups */
   [super takeValuesFromRequest:_rq inContext:_ctx];
@@ -258,18 +177,18 @@
   _year  = [[self year] intValue];
   if (_year > 0)
     {
-      [self setHour: [_rq formValueForKey: [self hourSelectId]]];
-      [self setMinute: [_rq formValueForKey: [self minuteSelectId]]];
+      [self setTime: [_rq formValueForKey: [self timeID]]];
 
       _month  = [[self month] intValue];
       _day    = [[self day] intValue];
-      _hour   = [[self hour] intValue];
-      _minute = [[self minute] intValue];
-      _second = [[self second] intValue];
+      _time = [[self time] componentsSeparatedByString: @":"];
+      _hour = [[_time objectAtIndex: 0] intValue];
+      _minute = [[_time objectAtIndex: 1] intValue];
+//      _second = [[self second] intValue];
       
       ud = [[context activeUser] userDefaults];
       d = [NSCalendarDate dateWithYear: _year month: _month day: _day
-                                  hour: _hour minute: _minute second: _second
+                                  hour: _hour minute: _minute second: 0
                               timeZone: [ud timeZone]];
       [self _setDate: d];
     }
