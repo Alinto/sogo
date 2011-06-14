@@ -1,3 +1,8 @@
+2011-06-14  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxAttendeesEditor.js: adjustments for the
+	new SOGoTimePicker.
+
 2011-06-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SOGoTimePicker.js: new interface to add a

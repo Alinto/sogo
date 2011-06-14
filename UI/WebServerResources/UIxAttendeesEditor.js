@@ -363,15 +363,23 @@ function redisplayEventSpans() {
 
     var table = $("freeBusyHeader");
     var row = table.rows[2];
-    var stDay = $("startTime_date").inputAsDate();
-    var etDay = $("endTime_date").inputAsDate();
+    var stDay = window.getStartDate();
+    var etDay = window.getEndDate();
 
     var days = stDay.daysUpTo(etDay);
     var addDays = days.length - 1;
-    var stHour = parseInt($("startTime_time_hour").value);
-    var stMinute = parseInt($("startTime_time_minute").value) / 15;
-    var etHour = parseInt($("endTime_time_hour").value);
-    var etMinute = parseInt($("endTime_time_minute").value) / 15;
+    var stHour = stDay.getHours();
+    var stMinute = Math.round(stDay.getMinutes() / 15);
+    if (stMinute == 4) {
+        stMinute = 0;        
+        stHour++;
+    }
+    var etHour = etDay.getHours();
+    var etMinute = Math.round(etDay.getMinutes() / 15);
+    if (etMinute == 4) {
+        etMinute = 0;
+        etHour++;
+    }
 
     if (stHour < displayStartHour) {
         stHour = displayStartHour;
@@ -812,9 +820,11 @@ availabilityController.prototype = {
           }
       }
 
-      var start = window.timeWidgets['start']['date'].inputAsDate();
-      var end = window.timeWidgets['end']['date'].inputAsDate();
+      var start;
+      var end;
       if (isAllDay) {
+          start = window.timeWidgets['start']['date'].inputAsDate();
+          end = window.timeWidgets['end']['date'].inputAsDate();
           start.setHours(dayStartHour);
           start.setMinutes(0);
           start.setSeconds(0);
@@ -823,10 +833,8 @@ availabilityController.prototype = {
           end.setSeconds(0);
       }
       else {
-          start.setHours(window.timeWidgets['start']['hour'].value);
-          start.setMinutes(window.timeWidgets['start']['minute'].value);
-          end.setHours(window.timeWidgets['end']['hour'].value);
-          end.setMinutes(window.timeWidgets['end']['minute'].value);
+          start = window.getStartDate();
+          end = window.getEndDate();
       }
       var session = new availabilitySession(uids, direction,
                                             start, end,
@@ -844,13 +852,8 @@ availabilityController.prototype = {
       session.start();
   },
   onRequestComplete: function aC_onRequestComplete(session, start, end) {
-      window.timeWidgets['start']['date'].setInputAsDate(start);
-      window.timeWidgets['start']['hour'].value = start.getHours();
-      window.timeWidgets['start']['minute'].value = start.getMinutes();
-
-      window.timeWidgets['end']['date'].setInputAsDate(end);
-      window.timeWidgets['end']['hour'].value = end.getHours();
-      window.timeWidgets['end']['minute'].value = end.getMinutes();
+      window.setStartDate(start);
+      window.setEndDate(end);
 
       if (start.getDay() != session.mStart.getDay()) {
           onTimeDateWidgetChange();
@@ -1217,12 +1220,12 @@ function initializeTimeSlotWidgets() {
             minuteWidget.appendChild(option);
         }
     }
-    var limitWidget = $("timeSlotStartLimitMinute");
-    limitWidget.value = Math.floor(parseInt($("startTime_time_minute").value)
-                                   / 15);
-    limitWidget = $("timeSlotEndLimitMinute");
-    limitWidget.value = Math.floor(parseInt($("endTime_time_minute").value)
-                                   / 15);
+//    var limitWidget = $("timeSlotStartLimitMinute");
+//    limitWidget.value = Math.floor(parseInt($("startTime_time_minute").value)
+//                                   / 15);
+//    limitWidget = $("timeSlotEndLimitMinute");
+//    limitWidget.value = Math.floor(parseInt($("endTime_time_minute").value)
+//                                   / 15);
 }
 
 function initializeWindowButtons() {
@@ -1258,34 +1261,34 @@ function scrollToEvent () {
     dataDiv.scrollLeft = headerDiv.scrollLeft;
 }
 
-function updateSlotDisplayCallback(http) {
-    var data = http.responseText.evalJSON(true);
-    var start = new Date();
-    var end = new Date();
-    var cb = redisplayEventSpans;
-
-    start.setFullYear(parseInt (data[0]['startDate'].substr(0, 4)),
-                      parseInt (data[0]['startDate'].substr(4, 2)) - 1,
-                      parseInt (data[0]['startDate'].substr(6, 2)));
-    end.setFullYear(parseInt (data[0]['endDate'].substr(0, 4)),
-                    parseInt (data[0]['endDate'].substr(4, 2)) - 1,
-                    parseInt (data[0]['endDate'].substr(6, 2)));
-    
-    window.timeWidgets['end']['date'].setInputAsDate(end);
-    window.timeWidgets['end']['hour'].value = cleanInt(data[0]['endHour']);
-    window.timeWidgets['end']['minute'].value = cleanInt(data[0]['endMinute']);
-
-    if (window.timeWidgets['start']['date'].valueAsShortDateString() !=
-        data[0]['startDate']) {
-        cb = onTimeDateWidgetChange;
-    }
-
-    window.timeWidgets['start']['date'].setInputAsDate(start);
-    window.timeWidgets['start']['hour'].value = cleanInt(data[0]['startHour']);
-    window.timeWidgets['start']['minute'].value = cleanInt(data[0]['startMinute']);
-
-    cb();
-}
+//function updateSlotDisplayCallback(http) {
+//    var data = http.responseText.evalJSON(true);
+//    var start = new Date();
+//    var end = new Date();
+//    var cb = redisplayEventSpans;
+//
+//    start.setFullYear(parseInt (data[0]['startDate'].substr(0, 4)),
+//                      parseInt (data[0]['startDate'].substr(4, 2)) - 1,
+//                      parseInt (data[0]['startDate'].substr(6, 2)));
+//    end.setFullYear(parseInt (data[0]['endDate'].substr(0, 4)),
+//                    parseInt (data[0]['endDate'].substr(4, 2)) - 1,
+//                    parseInt (data[0]['endDate'].substr(6, 2)));
+//    
+//    window.timeWidgets['end']['date'].setInputAsDate(end);
+//    window.timeWidgets['end']['hour'].value = cleanInt(data[0]['endHour']);
+//    window.timeWidgets['end']['minute'].value = cleanInt(data[0]['endMinute']);
+//
+//    if (window.timeWidgets['start']['date'].valueAsShortDateString() !=
+//        data[0]['startDate']) {
+//        cb = onTimeDateWidgetChange;
+//    }
+//
+//    window.timeWidgets['start']['date'].setInputAsDate(start);
+//    window.timeWidgets['start']['hour'].value = cleanInt(data[0]['startHour']);
+//    window.timeWidgets['start']['minute'].value = cleanInt(data[0]['startMinute']);
+//
+//    cb();
+//}
 
 function onEditorOkClick(event) {
     preventDefault(event);
@@ -1299,12 +1302,8 @@ function onEditorOkClick(event) {
         }
     }
 
-    var startDate = $("startTime_date").inputAsDate();
-    startDate.setHours(parseInt($("startTime_time_hour").value));
-    startDate.setMinutes(parseInt($("startTime_time_minute").value));
-    var endDate = $("endTime_date").inputAsDate();
-    endDate.setHours(parseInt($("endTime_time_hour").value));
-    endDate.setMinutes(parseInt($("endTime_time_minute").value));
+    var startDate = getStartDate();
+    var endDate = getEndDate();
 
     var listener = {
       onRequestComplete: function eCH_l_onRequestComplete(handlers, code) {
@@ -1374,15 +1373,10 @@ function synchronizeWithParent(srcWidgetName, dstWidgetName) {
     dstDate.value = srcDate.value;
     dstDate.updateShadowValue(srcDate);
 
-    var srcHour = parent$(srcWidgetName + "_time_hour");
-    var dstHour = $(dstWidgetName + "_time_hour");
-    dstHour.value = srcHour.value;
-    dstHour.updateShadowValue(srcHour);
-
-    var srcMinute = parent$(srcWidgetName + "_time_minute");
-    var dstMinute = $(dstWidgetName + "_time_minute");
-    dstMinute.value = srcMinute.value;
-    dstMinute.updateShadowValue(dstMinute);
+    var srcTime = parent$(srcWidgetName + "_time");
+    var dstTime = $(dstWidgetName + "_time");
+    dstTime.value = srcTime.value;
+    dstTime.updateShadowValue(srcTime);
 }
 
 function updateParentDateFields(srcWidgetName, dstWidgetName) {
@@ -1390,13 +1384,9 @@ function updateParentDateFields(srcWidgetName, dstWidgetName) {
     var dstDate = parent$(dstWidgetName + "_date");
     dstDate.value = srcDate.value;
 
-    var srcHour = $(srcWidgetName + "_time_hour");
-    var dstHour = parent$(dstWidgetName + "_time_hour");
-    dstHour.value = srcHour.value;
-
-    var srcMinute = $(srcWidgetName + "_time_minute");
-    var dstMinute = parent$(dstWidgetName + "_time_minute");
-    dstMinute.value = srcMinute.value;
+    var srcTime = $(srcWidgetName + "_time");
+    var dstTime = parent$(dstWidgetName + "_time");
+    dstTime.value = srcTime.value;
 }
 
 function onTimeWidgetChange() {
@@ -1614,11 +1604,9 @@ function onFreeBusyLoadHandler() {
     OwnerLogin = window.opener.getOwnerLogin();
 
     var widgets = {'start': {'date': $("startTime_date"),
-                             'hour': $("startTime_time_hour"),
-                             'minute': $("startTime_time_minute")},
+                             'time': $("startTime_time")},
                    'end': {'date': $("endTime_date"),
-                           'hour': $("endTime_time_hour"),
-                           'minute': $("endTime_time_minute")}};
+                           'time': $("endTime_time")}};
     synchronizeWithParent("startTime", "startTime");
     synchronizeWithParent("endTime", "endTime");
 
@@ -1646,34 +1634,26 @@ function initTimeWidgets(widgets) {
     assignCalendar('startTime_date');
     assignCalendar('endTime_date');
 
-    widgets['start']['date'].observe("change",
-                                     this.onAdjustTime, false);
-    widgets['start']['hour'].observe("change",
-                                     this.onAdjustTime, false);
-    widgets['start']['minute'].observe("change",
-                                       this.onAdjustTime, false);
+    widgets['start']['date'].observe("change", this.onAdjustTime, false);
+    widgets['start']['time'].observe("time:change", this.onAdjustTime, false);
+    widgets['start']['time'].addInterface(SOGoTimePickerInterface);
 
-    widgets['end']['date'].observe("change",
-                                   this.onAdjustTime, false);
-    widgets['end']['hour'].observe("change",
-                                   this.onAdjustTime, false);
-    widgets['end']['minute'].observe("change",
-                                     this.onAdjustTime, false);
+    widgets['end']['date'].observe("change", this.onAdjustTime, false);
+    widgets['end']['time'].observe("time:change", this.onAdjustTime, false);
+    widgets['end']['time'].addInterface(SOGoTimePickerInterface);
 
     var allDayLabel = $("allDay");
     if (allDayLabel) {
         var input = $(allDayLabel).childNodesWithTag("input")[0];
         input.observe("change", onAllDayChanged.bindAsEventListener(input));
         if (input.checked) {
-            for (var type in widgets) {
-                widgets[type]['hour'].disabled = true;
-                widgets[type]['minute'].disabled = true;
-            }
+            for (var type in widgets)
+                widgets[type]['time'].disabled = true;
         }
     }
 
     if (isAllDay)
-        handleAllDay ();
+        handleAllDay();
 }
 
 function onAdjustTime(event) {
@@ -1686,11 +1666,9 @@ function onAdjustTime(event) {
         var newEndDate = new Date(endDate.valueOf() - delta);
         window.setEndDate(newEndDate);
         window.timeWidgets['end']['date'].updateShadowValue();
-        window.timeWidgets['end']['hour'].updateShadowValue();
-        window.timeWidgets['end']['minute'].updateShadowValue();
+        window.timeWidgets['end']['time'].updateShadowValue();
         window.timeWidgets['start']['date'].updateShadowValue();
-        window.timeWidgets['start']['hour'].updateShadowValue();
-        window.timeWidgets['start']['minute'].updateShadowValue();
+        window.timeWidgets['start']['time'].updateShadowValue();
     }
     else {
         // End date was changed
@@ -1701,8 +1679,8 @@ function onAdjustTime(event) {
             window.setEndDate(oldEndDate);
 
             window.timeWidgets['end']['date'].updateShadowValue();
-            window.timeWidgets['end']['hour'].updateShadowValue();
-            window.timeWidgets['end']['minute'].updateShadowValue();
+            window.timeWidgets['end']['time'].updateShadowValue();
+            window.timeWidgets['end']['time'].onChange(); // method from SOGoTimePicker
         }
     }
 
@@ -1712,8 +1690,9 @@ function onAdjustTime(event) {
 
 function _getDate(which) {
     var date = window.timeWidgets[which]['date'].inputAsDate();
-    date.setHours( window.timeWidgets[which]['hour'].value );
-    date.setMinutes( window.timeWidgets[which]['minute'].value );
+    var time = window.timeWidgets[which]['time'].value.split(":");
+    date.setHours(time[0]);
+    date.setMinutes(time[1]);
 
     return date;
 }
@@ -1728,10 +1707,9 @@ function getEndDate() {
 
 function _getShadowDate(which) {
     var date = window.timeWidgets[which]['date'].getAttribute("shadow-value").asDate();
-    var intValue = parseInt(window.timeWidgets[which]['hour'].getAttribute("shadow-value"));
-    date.setHours(intValue);
-    intValue = parseInt(window.timeWidgets[which]['minute'].getAttribute("shadow-value"));
-    date.setMinutes(intValue);
+    var time = window.timeWidgets[which]['time'].getAttribute("shadow-value").split(":");
+    date.setHours(time[0]);
+    date.setMinutes(time[1]);
 
     return date;
 }
@@ -1746,11 +1724,8 @@ function getShadowEndDate() {
 
 function _setDate(which, newDate) {
     window.timeWidgets[which]['date'].setInputAsDate(newDate);
-    window.timeWidgets[which]['hour'].value = newDate.getHours();
-    var minutes = newDate.getMinutes();
-    if (minutes % 15)
-        minutes += (15 - minutes % 15);
-    window.timeWidgets[which]['minute'].value = minutes;
+    window.timeWidgets[which]['time'].value = newDate.getDisplayHoursString();
+    window.timeWidgets[which]['time'].onChange(); // method from SOGoTimePicker
 }
 
 function setStartDate(newStartDate) {
