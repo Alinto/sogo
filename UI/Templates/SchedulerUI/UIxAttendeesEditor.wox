@@ -10,7 +10,7 @@
   className="UIxPageFrame"
   const:toolbar="none"
   const:popup="YES"
-  const:jsFiles="skycalendar.js">
+  const:jsFiles="skycalendar.js,SOGoTimePicker.js">
   <div class="popupMenu" id="attendeesMenu">
     <ul><!-- space --></ul>
   </div>
