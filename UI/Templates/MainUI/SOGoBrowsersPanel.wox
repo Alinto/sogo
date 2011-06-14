@@ -22,7 +22,6 @@
 	  <var:if condition="isIE7Compatible">
 	    <p class="browser"><a href="http://www.microsoft.com/ie/download/"><var:string label:value="Download"/> Internet Explorer</a> <img const:alt="*" rsrc:src="browser_ie.gif" valign="middle" /></p>
 	  </var:if>
-	  </var:if>
 	</td>
       </tr>
     </table>
