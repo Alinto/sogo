@@ -94,7 +94,6 @@ var SOGoTimePickerInterface = {
             left = windowWidth - divWidth - 2;
             arrow += (inputPosition[0] - left);
         }
-        //var top = inputPosition[1] + parseInt(inputDimensions['height']/2);
         var top = inputPosition[1] + 12;
         this.div.setStyle({ top: top+"px",
                             left: left+"px",
@@ -157,10 +156,10 @@ var SOGoTimePickerInterface = {
         this.div.down('.SOGoTimePickerHour_' + this.hours).removeClassName("selected");
         this.div.select('.SOGoTimePickerMinute_' + this.minutes).each(function(e) { e.removeClassName("selected") });
 
-        var matches = this.value.match(/([0-9]+):([0-9]+)/);
+        var matches = this.value.match(/([0-9]{1,2}):?([0-9]{2})/);
         if (matches) {
             this.hours = matches[1];
-            this.minutes = matches[2];
+            this.minutes = matches[2] || '0';
             if (parseInt(this.hours) > 23) this.hours = 23;
             if (parseInt(this.minutes) > 59) this.minutes = 59;
             if (this.minutes % 5 == 0) {
@@ -176,20 +175,19 @@ var SOGoTimePickerInterface = {
             this.div.select('.SOGoTimePickerMinute_' + this.minutes).each(function(e) { e.addClassName("selected") });
         }
          
-        this._updateValue();
+        this._updateValue(true);
     },
 
     onKeydown: function (event) {
         this.div.hide();
         this.disposeHandler.stop();
         if (event.metaKey == 1 || event.ctrlKey == 1 ||
-            event.keyCode == Event.KEY_TAB)
+            event.keyCode == Event.KEY_TAB ||
+            event.keyCode == Event.KEY_BACKSPACE)
             return true;
-        if (event.keyCode > 57 && event.keyCode != 186 ||
-            event.keyCode == 186 && this.value.indexOf(":") >= 0 ||
-            event.keyCode != Event.KEY_BACKSPACE && this.value.length > 4) {
+        if (event.keyCode > 57 && event.keyCode != 186 || // 186 not recognized in FF
+            event.keyCode == 186 && this.value.indexOf(":") >= 0)
             Event.stop(event);
-        }
     },
 
     onEnter: function (event) {
@@ -210,9 +208,9 @@ var SOGoTimePickerInterface = {
         }
     },
 
-    _updateValue: function () {
+    _updateValue: function (force) {
         var value = this.hours + ':' + this.minutes;
-        if (value != this.value) {
+        if (force || value != this.value) {
             this.value = value;
             this.fire("time:change");
         }

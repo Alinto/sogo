@@ -1,5 +1,9 @@
 2011-06-17  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/SOGoTimePicker.js (onChange): the
+	semi-colon is no longer necessary. Also fixed the update the
+	widget when manually entering a time.
+
 	* UI/WebServerResources/MailerUI.js (configureDraggables): added
 	delay of 100ms before dragging starts.
 

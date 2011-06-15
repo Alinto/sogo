@@ -287,6 +287,7 @@ function onAdjustTime(event) {
         window.timeWidgets['end']['time'].updateShadowValue();
         window.timeWidgets['start']['date'].updateShadowValue();
         window.timeWidgets['start']['time'].updateShadowValue();
+        window.timeWidgets['end']['time'].onChange(); // method from SOGoTimePicker
     }
     else {
         // End date was changed
