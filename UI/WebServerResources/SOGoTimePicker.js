@@ -185,8 +185,8 @@ var SOGoTimePickerInterface = {
             event.keyCode == Event.KEY_TAB ||
             event.keyCode == Event.KEY_BACKSPACE)
             return true;
-        if (event.keyCode > 57 && event.keyCode != 186 || // 186 not recognized in FF
-            event.keyCode == 186 && this.value.indexOf(":") >= 0)
+        if (event.keyCode > 57 && event.keyCode != 186 && event.keyCode != 59 ||
+            (event.keyCode == 186 || event.keyCode == 59) && this.value.indexOf(":") >= 0)
             Event.stop(event);
     },
 
