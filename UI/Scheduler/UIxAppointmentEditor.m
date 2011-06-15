@@ -45,6 +45,7 @@
 #import <NGCards/iCalDateTime.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoContentObject.h>
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoPermissions.h>
