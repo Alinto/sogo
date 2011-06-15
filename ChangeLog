@@ -1,3 +1,8 @@
+2011-06-17  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (configureDraggables): added
+	delay of 100ms before dragging starts.
+
 2011-06-17  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * SOPE/NGCards/iCalEvent.m (setAllDayWithStartDate:duration:):
