@@ -21,9 +21,15 @@ SOGo_LIBRARIES_DEPEND_UPON += \
 	-lNGCards		\
 	-lNGMime		\
 	-lNGStreams -lNGExtensions -lEOControl \
-	-lXmlRpc -lDOM -lSaxObjC -lcrypt \
+	-lXmlRpc -lDOM -lSaxObjC \
 	-lNGLdap -lSBJson \
         -lGDLContentStore
+
+ifeq ($(findstring openbsd, $(GNUSTEP_HOST_OS)), openbsd)
+SOGo_LIBRARIES_DEPEND_UPON += -lcrypto
+else
+SOGo_LIBRARIES_DEPEND_UPON += -lcrypt
+endif
 
 ADDITIONAL_TOOL_LIBS += \
         -L$(GNUSTEP_OBJ_DIR)/ \
