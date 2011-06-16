@@ -2355,18 +2355,22 @@ function onMenuEmptyTrashCallback(http) {
         var reloaded = false;
         var nodes = $("mailboxTree").select("DIV[datatype=trash]");
         for (var i = 0; i < nodes.length; i++) {
-            var sibling = nodes[i].next();
-            if (sibling && sibling.hasClassName("clip")) {
-                initMailboxTree();
-                reloaded = true;
-                break;
+            if (http.callbackData.mailbox == nodes[i].readAttribute('dataname')) {
+                // Reset the unread message count
+                updateUnseenCount(nodes[i], 0);
+                var sibling = nodes[i].next();
+                if (sibling && sibling.hasClassName("clip")) {
+                    initMailboxTree();
+                    reloaded = true;
+                    break;
+                }
             }
         }
         if (!reloaded) {
             var data = http.responseText.evalJSON(true);
             // We currently only show the quota for the first account (0).
             if (data.quotas && http.callbackData.mailbox.startsWith('/0/'))
-                updateQuotas(data.quotas);
+                updateQuotas(data.quotas);            
         }
     }
     else
