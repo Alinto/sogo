@@ -912,9 +912,8 @@ function unseenCountCallback(http) {
         document.unseenCountAjaxRequest = null;
         var data = http.responseText.evalJSON(true);
         var node = mailboxTree.getMailboxNode(http.callbackData);
-        if (node) {
+        if (node)
             updateUnseenCount(node, data.unseen, false);
-        }
     }
 }
 
@@ -2343,8 +2342,10 @@ function onMenuEmptyTrash(event) {
         $('messageContent').innerHTML = '';
     }
     var msgID = Mailer.currentMessages[folderID];
-    if (msgID)
+    if (msgID) {
+        delete Mailer.currentMessages[folderID];
         deleteCachedMessage(folderID + "/" + msgID);
+    }
 }
 
 function onMenuEmptyTrashCallback(http) {

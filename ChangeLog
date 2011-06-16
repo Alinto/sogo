@@ -1,7 +1,8 @@
 2011-06-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (onMenuEmptyTrashCallback):
-	reset the unseen count when emptying the trash folder.
+	when emptying the trash folder, reset the unseen count and reset
+	the reference to the last selected message.
 
 2011-06-17  Francis Lachapelle  <flachapelle@inverse.ca>
 
