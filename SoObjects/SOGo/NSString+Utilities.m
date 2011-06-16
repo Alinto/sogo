@@ -589,5 +589,10 @@ static NSMutableCharacterSet *safeLDIFStartChars = nil;
   return [NSString stringWithUTF8String: buf];
 }
 
+- (NSString *) asSafeSQLString
+{
+  return [[self stringByReplacingString: @"\\" withString: @"\\\\"]
+           stringByReplacingString: @"'" withString: @"\\'"];
+}
 
 @end
