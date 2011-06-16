@@ -255,7 +255,7 @@ static BOOL debugSoParts       = NO;
 
 - (NSString *) displayName
 {
-  return [self subject];
+  return [self decodedSubject];
 }
 
 - (NSString *) decodedSubject

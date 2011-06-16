@@ -1,5 +1,8 @@
 2011-06-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailObject.m (-displayName): make use of
+	the decoded subject.
+
 	* Tools/SOGoToolRenameUser.m: new sogo-tool module that updates
 	the references after a change of user id for a specific user.
 
