@@ -1210,12 +1210,10 @@ int mapistore_init_backend(void)
 {
   struct mapistore_backend	backend;
   int				ret;
-  static BOOL registered = NO;
+  static BOOL                   registered = NO;
 
   if (registered)
-    {
-      ret = MAPISTORE_ERROR;
-    }
+    ret = MAPISTORE_SUCCESS;
   else
     {
       registered = YES;
