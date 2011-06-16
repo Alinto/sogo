@@ -1,5 +1,8 @@
 2011-06-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tools/SOGoToolRenameUser.m: new sogo-tool module that updates
+	the references after a change of user id for a specific user.
+
 	* SoObjects/SOGo/NSString+Utilities.m (-asSafeSQLString): new
 	method that properly escape strings passed as values in SQL
 	queries.
