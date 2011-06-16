@@ -30,6 +30,7 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NGBase64Coding.h>
 
 #import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactFolder.h>
@@ -154,30 +155,69 @@
   for (i = 0; i < count; i++)
     {
       SOGoContactLDIFEntry *ldifEntry;
-      entry = [NSMutableDictionary dictionary];
+      NSEnumerator *keyEnumerator;
+      NSMutableDictionary *encodedEntry;
+      encodedEntry = [NSMutableDictionary dictionary];
       lines = [[ldifContacts objectAtIndex: i] 
                componentsSeparatedByString: @"\n"];
 
+      key = NULL;
       linesCount = [lines count];
       for (j = 0; j < linesCount; j++)
         {
-          components = [[lines objectAtIndex: j] 
-                 componentsSeparatedByString: @": "];
+          NSString *line;
+          line = [lines objectAtIndex: j];
+
+          /* skip embedded comment lines */
+          if ([line hasPrefix: @"#"])
+            {
+              key = NULL;
+              continue;
+            }
+
+          /* handle continuation lines */
+          if ([line hasPrefix: @" "])
+            {
+              if (key != NULL)
+                {
+                  value = [[encodedEntry valueForKey: key]
+                           stringByAppendingString: [line substringFromIndex: 1]];
+                  [encodedEntry setValue: value forKey: key];
+                }
+              continue;
+            }
+
+          components = [line componentsSeparatedByString: @": "];
           if ([components count] == 2)
             {
-              key = [components objectAtIndex: 0];
+              key = [[components objectAtIndex: 0] lowercaseString];
               value = [components objectAtIndex: 1];
 
               if ([key length] == 0)
                 key = @"dn";
 
-              [entry setObject: value forKey: [key lowercaseString]];
+              [encodedEntry setValue: value forKey: key];
             }
           else
             {
               break;
             }
         }
+
+      /* decode Base64-encoded attributes */
+      entry = [NSMutableDictionary dictionary];
+      keyEnumerator = [encodedEntry keyEnumerator];
+      while ((key = [keyEnumerator nextObject]))
+        {
+          value = [encodedEntry valueForKey: key];
+          if ([key hasSuffix: @":"])
+            {
+              key = [key substringToIndex: [key length] - 1];
+              value = [value stringByDecodingBase64];
+            }
+          [entry setValue: value forKey: key];
+        }
+
       uid = [folder globallyUniqueObjectId];
       ldifEntry = [SOGoContactLDIFEntry contactEntryWithName: uid
                                                withLDIFEntry: entry
