@@ -37,6 +37,15 @@ else
   MAKE=gmake
 fi
 
+# hostname(1) on some systems may not know the -f parameter
+hostname -f 2>/dev/null >/dev/null
+if [ $? -eq 0 ];then
+  HOSTNAME=`hostname -f`
+else
+  HOSTNAME=`hostname`
+fi
+
+
 NGSTREAMS_DIR="./sope-core/NGStreams"
 LINK_SYSLIBDIRS="-L/usr/local/pgsql/lib -L/usr/local/lib -L/usr/lib"
 
@@ -251,6 +260,7 @@ genConfigMake() {
     cfgwrite "CGS_LIBDIR_NAME:=lib"
   fi
 
+  cfgwrite "HOSTNAME=${HOSTNAME}"
   cfgwrite "SOGO_SYSLIBDIR=\${GNUSTEP_LIBRARIES}"
   cfgwrite "SOGO_LIBDIR=\${GNUSTEP_LIBRARY}/SOGo"
   cfgwrite "SOGO_TEMPLATESDIR=\${SOGO_LIBDIR}/Templates"
