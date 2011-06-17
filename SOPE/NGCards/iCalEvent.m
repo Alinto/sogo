@@ -56,6 +56,7 @@
 		       duration: (unsigned int) days
 {
   NSCalendarDate *endDate;
+  CardElement *c;
 
   [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"]
 		    setDate: newStartDate];
@@ -65,6 +66,10 @@
   [endDate setTimeZone: [newStartDate timeZone]];
   [(iCalDateTime *) [self uniqueChildWithTag: @"dtend"]
 		    setDate: endDate];
+
+  c = [self uniqueChildWithTag: @"duration"];
+  if (c)
+    [self removeChild: c];
 }
 
 - (void) setEndDate: (NSCalendarDate *) newEndDate

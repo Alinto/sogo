@@ -1,3 +1,10 @@
+2011-06-17  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+        * SOPE/NGCards/iCalEvent.m (setAllDayWithStartDate:duration:):
+	We now correctly remove the duration value in case we're
+	"converting" the event to an all-day one. This fixes
+	bug #1312.
+
 2011-06-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/Contacts/UIxContactFolderActions.m (importLdifData:):
