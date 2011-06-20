@@ -227,9 +227,11 @@ function endDayAsShortString() {
 
 function _getDate(which) {
     var date = window.timeWidgets[which]['date'].inputAsDate();
-    var time = window.timeWidgets[which]['time'].value.split(":");
-    date.setHours(time[0]);
-    date.setMinutes(time[1]);
+    var time = window.timeWidgets[which]['time'].value.match(/([0-9]{1,2}):?([0-9]{2})/);
+    if (time) {
+        date.setHours(time[1]);
+        date.setMinutes(time[2]);
+    }
 
     return date;
 }
@@ -287,7 +289,6 @@ function onAdjustTime(event) {
         window.timeWidgets['end']['time'].updateShadowValue();
         window.timeWidgets['start']['date'].updateShadowValue();
         window.timeWidgets['start']['time'].updateShadowValue();
-        log ("end " + window.timeWidgets['end']['time'].value);
         if (window.timeWidgets['end']['time'].onChange) window.timeWidgets['end']['time'].onChange(); // method from SOGoTimePicker
     }
     else {

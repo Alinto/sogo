@@ -1,5 +1,8 @@
 2011-06-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxAppointmentEditor.js (_getDate):
+	retrieve the time using a regexp to insure a valid entry.
+
 	* UI/WebServerResources/MailerUI.js (onMenuEmptyTrashCallback):
 	when emptying the trash folder, reset the unseen count and reset
 	the reference to the last selected message.
