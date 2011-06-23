@@ -488,7 +488,7 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 
   didBind = NO;
 
-  if ([_login length] > 0)
+  if ([_login length] > 0 && [_pwd length] > 0)
     {
       bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
 						 port: port];
