@@ -1,3 +1,8 @@
+2011-06-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreTypes.h: removed PRIx64 definitions, that
+	can be found in the libc inttypes.h.
+
 2011-06-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxAppointmentEditor.js (_getDate):
