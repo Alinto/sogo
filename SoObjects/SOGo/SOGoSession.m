@@ -3,6 +3,8 @@
  * Copyright (C) 2010-2011 Inverse inc.
  *
  * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
+
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +26,7 @@
 
 #include "SOGoCache.h"
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 
@@ -37,6 +40,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+
+#import "SOGoSystemDefaults.h"
 
 @implementation SOGoSession
 
@@ -221,16 +226,24 @@
   return s;
 }
 
-//
-//
-//
+/**
+ *
+ * @param theValue
+ * @param theKey
+ * @param theLogin
+ * @param theDomain
+ * @param thePassword
+ * @see [SOGoUser initWithLogin:roles:trust:]
+ */
 + (void) decodeValue: (NSString *) theValue
 	    usingKey: (NSString *) theKey
                login: (NSString **) theLogin
+              domain: (NSString **) theDomain
             password: (NSString **) thePassword
 {
   NSString *decodedValue;
   NSRange r;
+  SOGoSystemDefaults *sd;
    
   decodedValue = [SOGoSession valueFromSecuredValue: theValue
 			      usingKey: theKey];
@@ -238,6 +251,21 @@
   r = [decodedValue rangeOfString: @":"];
   *theLogin = [decodedValue substringToIndex: r.location];
   *thePassword = [decodedValue substringFromIndex: r.location+1];
+
+  r = [*theLogin rangeOfString: @"@" options: NSBackwardsSearch];
+  if (r.location != NSNotFound)
+    {
+      // The domain is probably appended to the username;
+      // make sure it is defined as a login domain in the configuration.
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      *theDomain = [*theLogin substringFromIndex: (r.location + r.length)];
+      if ([[sd loginDomains] containsObject: *theDomain])
+        *theLogin = [*theLogin substringToIndex: r.location];
+      else
+        *theDomain = nil;
+    }
+  else
+    *theDomain = nil;
 }
 
 @end

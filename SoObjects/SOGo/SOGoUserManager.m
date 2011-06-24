@@ -3,6 +3,7 @@
  * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +28,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimer.h>
 #import <Foundation/NSValue.h>
+#import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "NSArray+Utilities.h"
@@ -335,14 +337,15 @@
 }
 
 - (NSString *) getImapLoginForUID: (NSString *) uid
+                         inDomain: (NSString *) domain
 {
   NSDictionary *contactInfos;
-  NSString *domain, *login;
+  NSString *login;
   SOGoDomainDefaults *dd;
 
-  contactInfos = [self contactInfosForUserWithUIDorEmail: uid];
+  contactInfos = [self contactInfosForUserWithUIDorEmail: uid
+                                                inDomain: domain];
   login = [contactInfos objectForKey: @"c_imaplogin"];
-  domain = [contactInfos objectForKey: @"c_domain"];
   if (login == nil)
     {
       if ([domain length])
@@ -366,6 +369,7 @@
 }
 
 - (BOOL) _sourceChangePasswordForLogin: (NSString *) login
+                              inDomain: (NSString *) domain
                            oldPassword: (NSString *) oldPassword
 			   newPassword: (NSString *) newPassword
 			   perr: (SOGoPasswordPolicyError *) perr
@@ -377,14 +381,14 @@
   
   didChange = NO;
   
-  authIDs = [[self authenticationSourceIDsInDomain: nil] objectEnumerator];
+  authIDs = [[self authenticationSourceIDsInDomain: domain] objectEnumerator];
   while (!didChange && (currentID = [authIDs nextObject]))
     {
       sogoSource = [_sources objectForKey: currentID];
       didChange = [sogoSource changePasswordForLogin: login
-			      oldPassword: oldPassword
-			      newPassword: newPassword
-			      perr: perr];
+                                         oldPassword: oldPassword
+                                         newPassword: newPassword
+                                                perr: perr];
     }
 
   return didChange;
@@ -392,9 +396,10 @@
 
 - (BOOL) _sourceCheckLogin: (NSString *) login
                andPassword: (NSString *) password
-	       perr: (SOGoPasswordPolicyError *) perr
-	       expire: (int *) expire
-	       grace: (int *) grace
+                    domain: (NSString *) domain
+                      perr: (SOGoPasswordPolicyError *) perr
+                    expire: (int *) expire
+                     grace: (int *) grace
 {
   NSObject <SOGoSource> *sogoSource;
   NSEnumerator *authIDs;
@@ -403,7 +408,7 @@
   
   checkOK = NO;
   
-  authIDs = [[self authenticationSourceIDsInDomain: nil] objectEnumerator];
+  authIDs = [[self authenticationSourceIDsInDomain: domain] objectEnumerator];
   while (!checkOK && (currentID = [authIDs nextObject]))
     {
       sogoSource = [_sources objectForKey: currentID];
@@ -419,18 +424,23 @@
 
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
+             domain: (NSString *) _domain
 	       perr: (SOGoPasswordPolicyError *) _perr
 	     expire: (int *) _expire
 	      grace: (int *) _grace
 {
-  NSString *dictPassword, *jsonUser;
+  NSString *dictPassword, *username, *jsonUser;
   NSMutableDictionary *currentUser;
   BOOL checkOK;
  
   // We check for cached passwords. If the entry is cached, we 
   // check this immediately. If not, we'll go directly at the
   // authentication source and try to validate there, then cache it.
-  jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: _login];
+  if (_domain)
+    username = [NSString stringWithFormat: @"%@@%@", _login, _domain];
+  else
+    username = _login;
+  jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: username];
   currentUser = [jsonUser objectFromJSONString];
   dictPassword = [currentUser objectForKey: @"password"];
   if (currentUser && dictPassword)
@@ -439,10 +449,11 @@
       //NSLog(@"Password cache hit for user %@", _login);
     }
   else if ([self _sourceCheckLogin: _login
-		 andPassword: _pwd
-		 perr: _perr
-		 expire: _expire
-		 grace: _grace])
+                       andPassword: _pwd
+                            domain: _domain
+                              perr: _perr
+                            expire: _expire
+                             grace: _grace])
     {
       checkOK = YES;
       if (!currentUser)
@@ -458,7 +469,7 @@
       [currentUser setObject: [_pwd asSHA1String] forKey: @"password"];
       [[SOGoCache sharedCache]
         setUserAttributes: [currentUser jsonRepresentation]
-                 forLogin: _login];
+                 forLogin: username];
     }
   else
     checkOK = NO;
@@ -473,19 +484,20 @@
       
       sources = [[_sources allValues] objectEnumerator];
       while ((currentSource = [sources nextObject]))
-	if ([currentSource conformsToProtocol: @protocol(SOGoDNSource)] &&
-	    [currentSource bindAsCurrentUser] &&
-	    [currentSource lookupDNByLogin: _login])
-	  {
-	    [currentSource setBindDN: [currentSource lookupDNByLogin: _login]];
-	    [currentSource setBindPassword: _pwd];
-	  }
+        if ([currentSource conformsToProtocol: @protocol(SOGoDNSource)] &&
+            [currentSource bindAsCurrentUser] &&
+            [currentSource lookupDNByLogin: _login])
+          {
+            [currentSource setBindDN: [currentSource lookupDNByLogin: _login]];
+            [currentSource setBindPassword: _pwd];
+          }
     }
 	    
   return checkOK;
 }
 
 - (BOOL) changePasswordForLogin: (NSString *) login
+                       inDomain: (NSString *) domain
 		    oldPassword: (NSString *) oldPassword
 		    newPassword: (NSString *) newPassword
 			   perr: (SOGoPasswordPolicyError *) perr
@@ -499,9 +511,10 @@
   dictPassword = [currentUser objectForKey: @"password"];
 
   if ([self _sourceChangePasswordForLogin: login
-	    oldPassword: oldPassword
-	    newPassword: newPassword
-	    perr: perr])
+                                 inDomain: domain
+                              oldPassword: oldPassword
+                              newPassword: newPassword
+                                     perr: perr])
     {
       didChange = YES;
 
@@ -553,6 +566,7 @@
 //
 - (void) _fillContactInfosForUser: (NSMutableDictionary *) currentUser
 		   withUIDorEmail: (NSString *) uid
+                         inDomain: (NSString *) domain
 {
   NSMutableArray *emails;
   NSDictionary *userEntry;
@@ -574,7 +588,7 @@
   [currentUser setObject: [NSNumber numberWithBool: YES]
 	       forKey: @"MailAccess"];
 
-  sogoSources = [[self authenticationSourceIDsInDomain: nil]
+  sogoSources = [[self authenticationSourceIDsInDomain: domain]
                   objectEnumerator];
   while ((sourceID = [sogoSources nextObject]))
     {
@@ -642,12 +656,17 @@
 // associated with email addresses.
 //
 - (void) _retainUser: (NSDictionary *) newUser
+           withLogin: (NSString *) login
 {
   NSEnumerator *emails;
   NSString *key;
   
+  [[SOGoCache sharedCache]
+        setUserAttributes: [newUser jsonRepresentation]
+                 forLogin: login];
+  
   key = [newUser objectForKey: @"c_uid"];
-  if (key)
+  if (key && ![key isEqualToString: login])
     [[SOGoCache sharedCache]
         setUserAttributes: [newUser jsonRepresentation]
                  forLogin: key];
@@ -680,10 +699,49 @@
   return user;
 }
 
+/**
+ *
+ * @see [SOGoUser initWithLogin:roles:trust:]
+ */
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid
 {
+  NSRange r;
+  NSString *username, *domain;
+  NSDictionary *infos;
+  SOGoSystemDefaults *sd;
+
+  domain = nil;
+  infos = nil;
+
+  r = [uid rangeOfString: @"@" options: NSBackwardsSearch];
+  if (r.location != NSNotFound)
+    {
+      // The domain is probably appended to the username;
+      // make sure it is a defined domain in the configuration.
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      domain = [uid substringFromIndex: (r.location + r.length)];
+      if ([[sd domainIds] containsObject: domain])
+        username = [uid substringToIndex: r.location];
+      else
+        domain = nil;
+    }
+  if (domain != nil)
+    infos = [self contactInfosForUserWithUIDorEmail: username
+                                           inDomain: domain];
+  if (infos == nil)
+    // If the user was not found using the domain or if no domain was detected,
+    // search using the original uid.
+    infos = [self contactInfosForUserWithUIDorEmail: uid
+                                           inDomain: nil];
+
+  return infos;
+}
+
+- (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid
+                                            inDomain: (NSString *) domain
+{
   NSMutableDictionary *currentUser;
-  NSString *aUID, *jsonUser;
+  NSString *aUID, *cacheUid, *jsonUser;
   BOOL newUser;
 
   if ([uid isEqualToString: @"anonymous"])
@@ -692,7 +750,11 @@
     {
       // Remove the "@" prefix used to identified groups in the ACL tables.
       aUID = [uid hasPrefix: @"@"] ? [uid substringFromIndex: 1] : uid;
-      jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: aUID];
+      if (domain)
+        cacheUid = [NSString stringWithFormat: @"%@@%@", aUID, domain];
+      else
+        cacheUid = aUID;
+      jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: cacheUid];
       currentUser = [jsonUser objectFromJSONString]; 
       if (!([currentUser objectForKey: @"emails"]
 	    && [currentUser objectForKey: @"cn"]))
@@ -711,11 +773,13 @@
 	  else
 	    newUser = NO;
 	  [self _fillContactInfosForUser: currentUser
-		withUIDorEmail: aUID];
+                          withUIDorEmail: aUID
+                                inDomain: domain];
 	  if (newUser)
 	    {
 	      if ([[currentUser objectForKey: @"c_uid"] length] > 0)
-		[self _retainUser: currentUser];
+		[self _retainUser: currentUser
+                        withLogin: cacheUid];
 	      else
 		currentUser = nil;
 	    }

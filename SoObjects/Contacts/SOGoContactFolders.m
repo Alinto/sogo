@@ -40,6 +40,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserManager.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/WORequest+SOGo.h>
 
 #import "SOGoContactGCSFolder.h"
@@ -62,7 +63,8 @@
 - (NSException *) appendSystemSources
 {
   SOGoUserManager *um;
-  NSEnumerator *sourceIDs;
+  SOGoSystemDefaults *sd;
+  NSEnumerator *sourceIDs, *domains;
   NSString *currentSourceID, *srcDisplayName, *domain;
   SOGoContactSourceFolder *currentFolder;
   SOGoUser *currentUser;
@@ -75,18 +77,24 @@
         {
           domain = [currentUser domain];
           um = [SOGoUserManager sharedUserManager];
-          sourceIDs = [[um addressBookSourceIDsInDomain: domain]
-                        objectEnumerator];
-          while ((currentSourceID = [sourceIDs nextObject]))
+          sd = [SOGoSystemDefaults sharedSystemDefaults];
+          domains = [[sd visibleDomainsForDomain: domain] objectEnumerator];
+          while (domain)
             {
-              srcDisplayName
-                = [um displayNameForSourceWithID: currentSourceID];
-              currentFolder = [SOGoContactSourceFolder
-                                folderWithName: currentSourceID
-                                andDisplayName: srcDisplayName
-                                   inContainer: self];
-              [currentFolder setSource: [um sourceWithID: currentSourceID]];
-              [subFolders setObject: currentFolder forKey: currentSourceID];
+              sourceIDs = [[um addressBookSourceIDsInDomain: domain]
+                            objectEnumerator];
+              while ((currentSourceID = [sourceIDs nextObject]))
+                {
+                  srcDisplayName
+                    = [um displayNameForSourceWithID: currentSourceID];
+                  currentFolder = [SOGoContactSourceFolder
+                                    folderWithName: currentSourceID
+                                    andDisplayName: srcDisplayName
+                                       inContainer: self];
+                  [currentFolder setSource: [um sourceWithID: currentSourceID]];
+                  [subFolders setObject: currentFolder forKey: currentSourceID];
+                }
+              domain = [domains nextObject];
             }
         }
     }

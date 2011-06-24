@@ -1,3 +1,50 @@
+2011-06-24  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoSystemDefaults.m (-loginDomains): new method
+	that returns the content of the defaults key SOGoLoginDomains, which
+	is a list of domains that should be selectable from the Web login page.
+	(-visibleDomainsForDomain:): new method that returns a list of
+	domains visible from the specified domain and defined by the
+	defaults key SOGoDomainsVisibility, which is a list of lists of domains.
+
+	* SoObjects/SOGo/SQLSource.m
+	(-_lookupContactEntry:considerEmail:): when an IMAP login field is
+	defined, only consider the value from the table if it's not null.
+
+	* SoObjects/SOGo/SOGoSession.m
+	(+decodeValue:usingKey:login:domain:password:): now accepts the
+	form login@domain. The domain must be part of the SOGoLoginDomains.
+
+	* SoObjects/SOGo/SOGoUserManager.m
+	(-getImapLoginForUID:inDomain:): the method now accepts the
+	user's domain.
+	(_sourceCheckLogin:andPassword:domain:perr:expire:grace:): idem.
+	(checkLogin:password:domain:perr:expire:grace:): idem.
+	(_fillContactInfosForUser:withUIDorEmail:inDomain:): idem.
+	(-contactInfosForUserWithUIDorEmail:inDomain:): idem.
+	(-contactInfosForUserWithUIDorEmail:): now accepts the form login@domain.
+
+	* SoObjects/SOGo/SOGoWebAuthenticator.m (-checkCredentials:):
+	perform the authentication in a domain when specified in the
+	web session.
+
+	* SoObjects/Contacts/SOGoContactFolders.m (-appendSystemSources):
+	when using domains, append addressbooks from visible domains.
+
+	* SoObjects/SOGo/SOGoUser.m (-initWithLogin:roles:trust:): now
+	accepts the form login@domain.
+	(-loginInDomain): new method. When bound to a domain, it returns
+	the username part of the login.
+
+	* UI/MainUI/SOGoUserHomePage.m (-_usersForResults:inDomain:): was
+	_usersResponseForResults:. Now returns only an array
+	containing the matching users.
+	(-usersSearchAction): added the results from the visible domains,
+	if the defaults key SOGoDomainsVisibility is defined.
+
+	* UI/MainUI/SOGoRootPage.m (-connectAction): a domain from the
+	defaults key SOGoLoginDomains can now be received.
+
 2011-06-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreTypes.h: removed PRIx64 definitions, that

@@ -28,6 +28,7 @@
 #import <Foundation/NSValue.h>
 #import <Foundation/NSURL.h>
 
+#import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <GDLContentStore/GCSChannelManager.h>
@@ -464,7 +465,7 @@
           // We check if we should use a different login for IMAP
           if (_imapLoginField)
             {
-              if ([response objectForKey: _imapLoginField])
+              if ([[response objectForKey: _imapLoginField] isNotNull])
                 [response setObject: [response objectForKey: _imapLoginField] forKey: @"c_imaplogin"];
             }
 

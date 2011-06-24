@@ -3,6 +3,7 @@
  * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,7 +65,7 @@
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
 { 
-  NSString *username, *password, *value;
+  NSString *username, *domain, *password, *value;
   SOGoPasswordPolicyError perr;
   int expire, grace;
  
@@ -83,19 +84,22 @@
     return NO;
 
   [SOGoSession decodeValue: value
-	       usingKey: _login
-	       login: &username
-	       password: &password];
+                  usingKey: _login
+                     login: &username
+                    domain: &domain
+                  password: &password];
 
   return [self checkLogin: username
-	       password: password
-	       perr: &perr
-	       expire: &expire
-	       grace: &grace];
+                 password: password
+                   domain: domain
+                     perr: &perr
+                   expire: &expire
+                    grace: &grace];
 }
 
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
+             domain: (NSString *) _domain
 	       perr: (SOGoPasswordPolicyError *) _perr
 	     expire: (int *) _expire
 	      grace: (int *) _grace
@@ -116,10 +120,11 @@
     }
   else
     rc = [[SOGoUserManager sharedUserManager] checkLogin: _login
-					      password: _pwd
-					      perr: _perr
-					      expire: _expire
-					      grace: _grace];
+                                                password: _pwd
+                                                  domain: _domain
+                                                    perr: _perr
+                                                  expire: _expire
+                                                   grace: _grace];
   
   //[self logWithFormat: @"Checked login with ppolicy enabled: %d %d %d", *_perr, *_expire, *_grace];
   
@@ -159,12 +164,13 @@
   creds = [self parseCredentials: auth];
   if ([creds count] > 1)
     {
-      NSString *login;
+      NSString *login, *domain;
       
       [SOGoSession decodeValue: [SOGoSession valueForSessionKey: [creds objectAtIndex: 1]]
-		   usingKey: [creds objectAtIndex: 0]
-		   login: &login
-		   password: &password];
+                      usingKey: [creds objectAtIndex: 0]
+                         login: &login
+                        domain: &domain
+                      password: &password];
     }
   else
     password = nil;
@@ -178,7 +184,7 @@
 //
 - (NSString *) checkCredentials: (NSString *)_creds
 {
-  NSString *login, *pwd, *userKey, *sessionKey;
+  NSString *login, *domain, *pwd, *userKey, *sessionKey;
   NSArray *creds;
 
   SOGoPasswordPolicyError perr;
@@ -194,17 +200,22 @@
   sessionKey = [creds objectAtIndex:1];
   
   [SOGoSession decodeValue: [SOGoSession valueForSessionKey: sessionKey]
-	       usingKey: userKey
-	       login: &login
-	       password: &pwd];
+                  usingKey: userKey
+                     login: &login
+                    domain: &domain
+                  password: &pwd];
   
   if (![self checkLogin: login
-	     password: pwd
-	     perr: &perr
-	     expire: &expire
-	     grace: &grace])
+               password: pwd
+                 domain: domain
+                   perr: &perr
+                 expire: &expire
+                  grace: &grace])
     return nil;
   
+  if (domain)
+    login = [NSString stringWithFormat: @"%@@%@", login, domain];
+
   return login;
 }
 

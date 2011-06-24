@@ -122,21 +122,49 @@
   return user;
 }
 
+/**
+ * Return a new instance for the login name, which can be appended by a
+ * domain name.
+ *
+ * @param newLogin a login name optionally follow by @domain
+ * @param newRoles
+ * @param b is set to YES if newLogin can be trust
+ * @see loginInDomain
+ * @see [SOGoSession decodeValue:usingKey:login:domain:password:]
+ */
 - (id) initWithLogin: (NSString *) newLogin
 	       roles: (NSArray *) newRoles
 	       trust: (BOOL) b
 {
   SOGoUserManager *um;
-  NSString *realUID;
+  SOGoSystemDefaults *sd;
+  NSString *realUID, *uid, *domain;
+  NSRange r;
 
   _defaults = nil;
   _settings = nil;
   
+  uid = nil;
+  domain = nil;
+
   if ([newLogin isEqualToString: @"anonymous"]
       || [newLogin isEqualToString: @"freebusy"])
     realUID = newLogin;
   else
     {
+      r = [newLogin rangeOfString: @"@" options: NSBackwardsSearch];
+      if (r.location != NSNotFound)
+        {
+          // The domain is probably appended to the username;
+          // make sure it is a defined domain in the configuration.
+          sd = [SOGoSystemDefaults sharedSystemDefaults];
+          domain = [newLogin substringFromIndex: (r.location + r.length)];
+          if ([[sd domainIds] containsObject: domain])
+            newLogin = [newLogin substringToIndex: r.location];
+          else
+            domain = nil;
+        }
+      
       newLogin = [newLogin stringByReplacingString: @"%40"
                                         withString: @"@"];
       if (b)
@@ -144,9 +172,19 @@
       else
 	{
 	  um = [SOGoUserManager sharedUserManager];
-	  realUID = [[um contactInfosForUserWithUIDorEmail: newLogin]
+	  realUID = [[um contactInfosForUserWithUIDorEmail: newLogin
+                                                  inDomain: domain]
 		      objectForKey: @"c_uid"];
 	}
+
+      if (domain)
+        {
+          // When the user is associated to a domain, the [SOGoUser login]
+          // method returns the combination login@domain while
+          // [SOGoUser loginInDomain] only returns the login.
+          uid = [NSString stringWithString: realUID];
+          realUID = [NSString stringWithFormat: @"%@@%@", realUID, domain];
+        }
     }
 
   if ([realUID length])
@@ -156,6 +194,7 @@
 	  allEmails = nil;
 	  currentPassword = nil;
 	  cn = nil;
+          ASSIGN (loginInDomain, (uid ? uid : realUID));
           _defaults = nil;
           _domainDefaults = nil;
           _settings = nil;
@@ -180,6 +219,7 @@
   [mailAccounts release];
   [currentPassword release];
   [cn release];
+  [loginInDomain release];
   [language release];
   [super dealloc];
 }
@@ -197,6 +237,11 @@
 - (NSString *) currentPassword
 {
   return currentPassword;
+}
+
+- (NSString *) loginInDomain
+{
+  return loginInDomain;
 }
 
 - (id) _fetchFieldForUser: (NSString *) field
@@ -518,7 +563,8 @@
 
   // 1. login
   imapLogin = [[SOGoUserManager sharedUserManager]
-                     getImapLoginForUID: login];
+                     getImapLoginForUID: [self loginInDomain]
+                               inDomain: [self domain]];
   [mailAccount setObject: imapLogin forKey: @"userName"];
 
   // 2. server

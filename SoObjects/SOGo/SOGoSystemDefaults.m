@@ -1,8 +1,9 @@
 /* SOGoSystemDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2010 Inverse inc.
+ * Copyright (C) 2009-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,13 +24,15 @@
 #import <dlfcn.h>
 #import <unistd.h>
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSFileManager.h>
-#import <Foundation/NSString.h>
+#import <Foundation/NSFileManager.h>
 #import <Foundation/NSUserDefaults.h>
 
 #import <NGExtensions/NSObject+Logs.h>
 
+#import "NSArray+Utilities.h"
 #import "NSDictionary+Utilities.h"
 #import "SOGoStartupLogger.h"
 
@@ -152,6 +155,22 @@ BootstrapNSUserDefaults ()
   return sharedSystemDefaults;
 }
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      loginDomains = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [loginDomains release];
+  [super dealloc];
+}
+
 - (BOOL) migrate
 {
   static NSDictionary *migratedKeys = nil;
@@ -172,6 +191,61 @@ BootstrapNSUserDefaults ()
 - (NSArray *) domainIds
 {
   return [[self dictionaryForKey: @"domains"] allKeys];
+}
+
+- (NSArray *) loginDomains
+{
+  NSMutableArray *filteredLoginDomains;
+  NSArray *domains;
+  NSEnumerator *objects;
+  id currentObject;
+  
+  if (self->loginDomains == nil)
+    {
+      filteredLoginDomains = [NSMutableArray arrayWithArray: [self stringArrayForKey: @"SOGoLoginDomains"]];
+      domains = [self domainIds];
+      objects = [filteredLoginDomains objectEnumerator];
+      while ((currentObject = [objects nextObject]))
+        {
+          if (![domains containsObject: currentObject])
+            {
+              [filteredLoginDomains removeObject: currentObject];
+              [self warnWithFormat: @"SOGoLoginDomains contains an invalid domain : %@", currentObject];
+            }
+        }
+
+      ASSIGN (self->loginDomains, filteredLoginDomains);
+    }
+  
+  return self->loginDomains;
+}
+
+- (NSArray *) visibleDomainsForDomain: (NSString *) domain
+{
+  NSMutableArray *domains;
+  NSArray *definedDomains, *visibleDomains, *currentGroup;
+  NSEnumerator *groups;
+  NSString *currentDomain;
+
+  definedDomains = [self domainIds];
+  visibleDomains = [self arrayForKey: @"SOGoDomainsVisibility"];
+  domains = [NSMutableArray array];
+  groups = [visibleDomains objectEnumerator];
+  while ((currentGroup = (NSArray *)[groups nextObject]))
+    {
+      if ([currentGroup containsObject: domain])
+        [domains addObjectsFromArray: currentGroup];
+    }
+  
+  // Remove lookup domain from list
+  groups = [domains objectEnumerator];
+  while ((currentDomain = [groups nextObject]))
+    {
+      if ([currentDomain isEqualToString: domain])
+        [domains removeObject: currentDomain];
+    }
+  
+  return [domains uniqueObjects];
 }
 
 /* System-level only */

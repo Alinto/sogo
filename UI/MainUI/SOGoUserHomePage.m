@@ -317,7 +317,8 @@
   return response;
 }
 
-- (WOResponse *) _usersResponseForResults: (NSArray *) users
+- (NSMutableArray *) _usersForResults: (NSArray *) users
+                             inDomain: (NSString *) domain
 {
   NSString *uid;
   NSDictionary *contact;
@@ -325,8 +326,10 @@
   NSMutableArray *jsonResponse, *jsonLine;
   NSArray *allUsers;
   int count, max;
+  BOOL activeUserIsInDomain;
 
   login = [[context activeUser] login];
+  activeUserIsInDomain = (domain == nil || [[[context activeUser] domain] isEqualToString: domain]);
 
   // We sort our array - this is pretty useful for the Web
   // interface of SOGo.
@@ -341,9 +344,11 @@
       uid = [contact objectForKey: @"c_uid"];
 
       // We do NOT return the current authenticated user
-      if (![uid isEqualToString: login])
+      if (!activeUserIsInDomain || ![uid isEqualToString: login])
         {
           jsonLine = [NSMutableArray arrayWithCapacity: 4];
+          if (domain)
+            uid = [NSString stringWithFormat: @"%@@%@", uid, domain];
           [jsonLine addObject: uid];
           [jsonLine addObject: [contact objectForKey: @"cn"]];
           [jsonLine addObject: [contact objectForKey: @"c_email"]];
@@ -354,24 +359,41 @@
         }
     }
 
-  return [self responseWithStatus: 200
-            andJSONRepresentation: jsonResponse];
+  return jsonResponse;
 }
 
 - (id <WOActionResults>) usersSearchAction
 {
+  NSMutableArray *users;
+  NSArray *currentUsers;
   NSString *contact, *domain;
+  NSEnumerator *visibleDomains;
   id <WOActionResults> result;
   SOGoUserManager *um;
+  SOGoSystemDefaults *sd;
 
   um = [SOGoUserManager sharedUserManager];
   contact = [self queryParameterForKey: @"search"];
   if ([contact length])
     {
       domain = [[context activeUser] domain];
-      result
-        = [self _usersResponseForResults: [um fetchUsersMatching: contact
-                                                        inDomain: domain]];
+      users = [self _usersForResults: [um fetchUsersMatching: contact
+                                                    inDomain: domain]
+                            inDomain: domain];
+      if (domain)
+        {
+          // Add results from visible domains
+          sd = [SOGoSystemDefaults sharedSystemDefaults];
+          visibleDomains = [[sd visibleDomainsForDomain: domain] objectEnumerator];
+          while ((domain = [visibleDomains nextObject]))
+            {
+              currentUsers = [self _usersForResults: [um fetchUsersMatching: contact
+                                                                   inDomain: domain]
+                                         inDomain: domain];
+              [users addObjectsFromArray: currentUsers];
+            }
+        }
+      result = [self responseWithStatus: 200 andJSONRepresentation: users];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 400

@@ -3,6 +3,7 @@
  * Copyright (C) 2010-2011 Inverse inc.
  *
  * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,6 +41,7 @@
 + (void) decodeValue: (NSString *) theValue
 	    usingKey: (NSString *) theKey
                login: (NSString **) theLogin
+              domain: (NSString **) theDomain
             password: (NSString **) thePassword;
 @end
 

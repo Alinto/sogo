@@ -1,6 +1,6 @@
 /*
 
-  Copyright (C) 2006-2010 Inverse inc. 
+  Copyright (C) 2006-2011 Inverse inc. 
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -149,7 +149,7 @@
   SOGoAppointmentFolders *calendars;
   SOGoUserDefaults *ud;
   SOGoUser *loggedInUser;
-  NSString *username, *password, *language;
+  NSString *username, *password, *language, *domain;
   NSArray *supportedLanguages;
   
   SOGoPasswordPolicyError err;
@@ -165,8 +165,9 @@
   username = [request formValueForKey: @"userName"];
   password = [request formValueForKey: @"password"];
   language = [request formValueForKey: @"language"];
+  domain = [request formValueForKey: @"domain"];
   
-  if ((b = [auth checkLogin: username password: password
+  if ((b = [auth checkLogin: username password: password domain: domain
 		 perr: &err expire: &expire grace: &grace])
       && (err == PolicyNoError)  
       // no password policy
@@ -178,16 +179,18 @@
 
       [self logWithFormat: @"successful login for user '%@' - expire = %d  grace = %d", username, expire, grace];
       
-      
       json = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithInt: expire], @"expire",
-			   [NSNumber numberWithInt: grace], @"grace", nil];
+                                [NSNumber numberWithInt: grace], @"grace", nil];
       
       response = [self responseWithStatus: 200
 		       andJSONRepresentation: json];
       
+      if ([domain isNotNull])
+        username = [NSString stringWithFormat: @"%@@%@", username, domain];
+
       authCookie = [self _cookieWithUsername: username
-			 andPassword: password
-			 forAuthenticator: auth];
+                                 andPassword: password
+                            forAuthenticator: auth];
       [response addCookie: authCookie];
 
       supportedLanguages = [[SOGoSystemDefaults sharedSystemDefaults]
@@ -376,6 +379,16 @@
   return ([[self loginSuffix] length]);
 }
 
+- (NSArray *) loginDomains
+{
+  return [[SOGoSystemDefaults sharedSystemDefaults] loginDomains];
+}
+
+- (BOOL) hasLoginDomains
+{
+  return ([[self loginDomains] count] > 0);
+}
+
 - (void) setItem: (id) _item
 {
   ASSIGN (item, _item);
@@ -414,7 +427,7 @@
 
 - (WOResponse *) changePasswordAction
 {
-  NSString *username, *password, *newPassword, *value;
+  NSString *username, *domain, *password, *newPassword, *value;
   SOGoUserManager *um;
   SOGoPasswordPolicyError error;
   WOResponse *response;
@@ -434,9 +447,10 @@
   creds = [auth parseCredentials: value];
 
   [SOGoSession decodeValue: [SOGoSession valueForSessionKey: [creds objectAtIndex: 1]]
-	       usingKey: [creds objectAtIndex: 0]
-	       login: &username
-	       password: &password];
+                  usingKey: [creds objectAtIndex: 0]
+                     login: &username
+                    domain: &domain
+                  password: &password];
 
   newPassword = [message objectForKey: @"newPassword"];
 
@@ -444,12 +458,16 @@
 
   // This will also update the cached password in memcached.
   if ([um changePasswordForLogin: username
-	  oldPassword: password
-	  newPassword: newPassword
-	  perr: &error])
+                        inDomain: domain
+                     oldPassword: password
+                     newPassword: newPassword
+                            perr: &error])
     {
       // We delete the previous session
       [SOGoSession deleteValueForSessionKey: [creds objectAtIndex: 1]]; 
+
+      if ([domain isNotNull])
+        username = [NSString stringWithFormat: @"%@@%@", username, domain];
 
       response = [self responseWith204];
       authCookie = [self _cookieWithUsername: username

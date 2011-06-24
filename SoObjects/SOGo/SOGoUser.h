@@ -59,7 +59,7 @@
   SOGoUserSettings *_settings;
   SOGoUserFolder *homeFolder;
   NSString *currentPassword;
-  NSString *domainId;
+  NSString *loginInDomain;
   NSString *language;
   NSArray *allEmails;
   NSMutableArray *mailAccounts;
@@ -83,6 +83,8 @@
 
 - (void) setCurrentPassword: (NSString *) newPassword;
 - (NSString *) currentPassword;
+
+- (NSString *) loginInDomain;
 
 /* properties */
 - (NSString *) domain;

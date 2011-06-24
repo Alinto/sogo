@@ -1,8 +1,9 @@
 /* SOGoUserManager.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,6 +66,8 @@
 - (NSDictionary *) metadataForSourceID: (NSString *) sourceID;
 - (NSString *) displayNameForSourceWithID: (NSString *) sourceID;
 - (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid;
+- (NSDictionary *) contactInfosForUserWithUIDorEmail: (NSString *) uid
+                                            inDomain: (NSString *) domain;
 - (NSArray *) fetchContactsMatching: (NSString *) match
                            inDomain: (NSString *) domain;
 - (NSArray *) fetchUsersMatching: (NSString *) filter
@@ -73,17 +76,20 @@
 - (NSString *) getCNForUID: (NSString *) uid;
 - (NSString *) getEmailForUID: (NSString *) uid;
 - (NSString *) getFullEmailForUID: (NSString *) uid;
-- (NSString *) getImapLoginForUID: (NSString *) uid;
+- (NSString *) getImapLoginForUID: (NSString *) uid
+                         inDomain: (NSString *) domain;
 - (NSString *) getUIDForEmail: (NSString *) email;
 - (NSString *) getLoginForDN: (NSString *) theDN;
 
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
+             domain: (NSString *) _domain
 	       perr: (SOGoPasswordPolicyError *) _perr
 	     expire: (int *) _expire
 	      grace: (int *) _grace;
 
 - (BOOL) changePasswordForLogin: (NSString *) login
+                       inDomain: (NSString *) domain
 		    oldPassword: (NSString *) oldPassword
 		    newPassword: (NSString *) newPassword
 			   perr: (SOGoPasswordPolicyError *) perr;

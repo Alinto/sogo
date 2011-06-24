@@ -1,8 +1,9 @@
 /* SOGoSystemDefaults.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2010 Inverse inc.
+ * Copyright (C) 2009-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,10 +27,15 @@
 #import <SOGo/SOGoDomainDefaults.h>
 
 @interface SOGoSystemDefaults : SOGoDomainDefaults
+{
+  NSArray *loginDomains;
+}
 
 + (SOGoSystemDefaults *) sharedSystemDefaults;
 
 - (NSArray *) domainIds;
+- (NSArray *) loginDomains;
+- (NSArray *) visibleDomainsForDomain: (NSString *) domain;
 
 - (BOOL) crashOnSessionCreate;
 - (BOOL) debugRequests;

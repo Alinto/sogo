@@ -51,6 +51,16 @@
 		       string="languageText"
 		       label:noSelectionString="choose"
 		       /></label>
+            <var:if condition="hasLoginDomains">
+	    <label><var:string label:value="Domain:"/><br/>
+	    <var:popup const:id="domain" const:name="domain"
+		       list="loginDomains"
+		       item="item"
+		       var:selection="item"
+		       var:value="item"
+		       string="item"
+		       /></label>
+            </var:if>
 	    <label>
 	      <a href="#" class="button" id="submit" name="submit">
 	      <span><var:string label:value="Connect" /></span></a>

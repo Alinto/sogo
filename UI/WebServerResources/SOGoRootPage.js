@@ -46,7 +46,7 @@ function onFieldKeyDown(event) {
     if (event.keyCode == Event.KEY_RETURN) {
         if ($("password").value.length > 0
             && $("userName").value.length > 0)
-            return onLoginClick (event);
+            return onLoginClick(event);
         else
             Event.stop(event);
     } else if (IsCharacterKey(event.keyCode)
@@ -60,6 +60,7 @@ function onLoginClick(event) {
     var userName = userNameField.value;
     var password = $("password").value;
     var language = $("language");
+    var domain = $("domain");
 
     if (userName.length > 0 && password.length > 0) {
         this.disabled = true;
@@ -77,6 +78,8 @@ function onLoginClick(event) {
             parameters += ((language.value == "WONoSelectionString")
                            ? ""
                            : ("&language=" + language.value));
+        if (domain)
+            parameters += "&domain=" + domain.value;
         /// Discarded as it seems to create a cookie for nothing. To discard
         //  a cookie in JS, have a look here: http://www.quirksmode.org/js/cookies.html
         //document.cookie = "";\
@@ -138,7 +141,10 @@ function onLoginCallback(http) {
 function redirectToUserPage() {
     // Redirect to proper page
     var userName = $("userName").value;
-    if (typeof(loginSuffix) != "undefined"
+    var domain = $("domain");
+    if (domain)
+        userName += '@' + domain.value;
+    else if (typeof(loginSuffix) != "undefined"
         && loginSuffix.length > 0
         && !userName.endsWith(loginSuffix))
         userName += loginSuffix;
