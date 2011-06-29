@@ -41,7 +41,6 @@
 - (NSString *) domain;
 
 - (BOOL) checkLogin: (NSString *) _login
-
 	   password: (NSString *) _pwd
 	       perr: (SOGoPasswordPolicyError *) _perr
 	     expire: (int *) _expire

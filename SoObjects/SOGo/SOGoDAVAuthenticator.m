@@ -64,6 +64,7 @@
           checkLogin: [_login stringByReplacingString: @"%40"
                                            withString: @"@"]
             password: _pwd
+	      domain: nil
                 perr: &perr
               expire: &expire
                grace: &grace]
