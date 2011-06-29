@@ -169,20 +169,27 @@ typedef enum
 	      authpwd = @"";
 	      value = @"";
  
-	      if (max > 4)
+	      if (max > 5)
 		{
 		  r = [[arguments objectAtIndex: 3] rangeOfString: @":"];
 		  authname = [[arguments objectAtIndex: 3] substringToIndex: r.location];
 		  authpwd = [[arguments objectAtIndex: 3] substringFromIndex: r.location+1];
 		  key = [arguments objectAtIndex: 4];
 		  
-		  if (max > 5)
+		  if (max > 6)
 		    value = [arguments objectAtIndex: 5];
 		}
 	      else
 		{
-		  key = [arguments objectAtIndex: 3];
-		  value = [arguments objectAtIndex: 4];
+		  if (cmd == UserPreferencesUnset)
+		    {
+		      key = [arguments objectAtIndex: 3];
+		    }
+		  else
+		    {
+		      key = [arguments objectAtIndex: 3];
+		      value = [arguments objectAtIndex: 4];
+		    }
 		}
 	      
 	      if (cmd == UserPreferencesUnset)
