@@ -1,8 +1,9 @@
-/* SOGoSieveConverter.h - this file is part of SOGo
+/* SOGoSieveManager.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Wolfgang Sourdeau
+ * Copyright (C) 2010-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,30 +21,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOSIEVECONVERTER_H
-#define SOGOSIEVECONVERTER_H
+#ifndef SOGOSIEVEMANAGER_H
+#define SOGOSIEVEMANAGER_H
 
 #import <Foundation/NSObject.h>
 
 @class NSDictionary;
 @class NSMutableArray;
 @class NSString;
-
+@class SOGoMailAccount;
 @class SOGoUser;
 
-@interface SOGoSieveConverter : NSObject
+@interface SOGoSieveManager : NSObject
 {
   SOGoUser *user;
   NSMutableArray *requirements;
   NSString *scriptError;
 }
 
-+ (id) sieveConverterForUser: (SOGoUser *) user;
++ (id) sieveManagerForUser: (SOGoUser *) user;
 - (id) initForUser: (SOGoUser *) newUser;
 
 - (NSString *) sieveScriptWithRequirements: (NSMutableArray *) newRequirements;
 - (NSString *) lastScriptError;
 
+- (BOOL) updateFiltersForLogin: (NSString *) theLogin
+		      authname: (NSString *) theAuthName
+		      password: (NSString *) thePassword
+		       account: (SOGoMailAccount *) theAccount;
+
 @end
 
-#endif /* SOGOSIEVECONVERTER_H */
+#endif /* SOGOSIEVEMANAGER_H */

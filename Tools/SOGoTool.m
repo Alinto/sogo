@@ -1,6 +1,6 @@
 /* SOGoTool.m - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
+ * Copyright (C) 2009-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *

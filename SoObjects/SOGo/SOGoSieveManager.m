@@ -1,8 +1,9 @@
-/* SOGoSieveConverter.m - this file is part of SOGo
+/* SOGoSieveManager.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Wolfgang Sourdeau
+ * Copyright (C) 2010-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +24,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
 #import <SOGo/NSArray+Utilities.h>
@@ -30,9 +32,12 @@
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 
-#import "SOGoMailAccounts.h"
+#import <NGStreams/NGInternetSocketAddress.h>
+#import <NGImap4/NGSieveClient.h>
 
-#import "SOGoSieveConverter.h"
+#import "../Mailer/SOGoMailAccount.h"
+
+#import "SOGoSieveManager.h"
 
 typedef enum {
   UIxFilterFieldTypeAddress,
@@ -47,6 +52,8 @@ static NSDictionary *sieveFields = nil;
 static NSDictionary *sieveFlags = nil;
 static NSDictionary *operatorRequirements = nil;
 static NSDictionary *methodRequirements = nil;
+static NSString *sieveScriptName = @"sogo";
+
 
 @interface NSString (SOGoSieveExtension)
 
@@ -106,7 +113,7 @@ static NSDictionary *methodRequirements = nil;
 
 @end
 
-@implementation SOGoSieveConverter
+@implementation SOGoSieveManager
 
 + (void) initialize
 {
@@ -195,14 +202,14 @@ static NSDictionary *methodRequirements = nil;
     }
 }
 
-+ (id) sieveConverterForUser: (SOGoUser *) newUser
++ (id) sieveManagerForUser: (SOGoUser *) newUser
 {
-  SOGoSieveConverter *newConverter;
+  SOGoSieveManager *newManager;
 
-  newConverter = [[self alloc] initForUser: newUser];
-  [newConverter autorelease];
+  newManager = [[self alloc] initForUser: newUser];
+  [newManager autorelease];
 
-  return newConverter;
+  return newManager;
 }
 
 - (id) init
@@ -603,6 +610,234 @@ static NSDictionary *methodRequirements = nil;
 - (NSString *) lastScriptError
 {
   return scriptError;
+}
+
+//
+//
+//
+- (BOOL) updateFiltersForLogin: (NSString *) theLogin
+		      authname: (NSString *) theAuthName
+		      password: (NSString *) thePassword
+		       account: (SOGoMailAccount *) theAccount
+{
+  NSMutableArray *req;
+  NSMutableString *script, *header;
+  NGInternetSocketAddress *address;
+  NSDictionary *result, *values;
+  SOGoUserDefaults *ud;
+  SOGoDomainDefaults *dd;
+  NGSieveClient *client;
+  NSString *filterScript, *v, *sieveServer;
+  int sievePort;
+  BOOL b;
+
+  dd = [user domainDefaults];
+  if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled]))
+    return YES;
+
+  req = [NSMutableArray arrayWithCapacity: 15];
+  ud = [user userDefaults];
+  b = NO;
+
+  script = [NSMutableString string];
+
+  // Right now, we handle Sieve filters here and only for vacation
+  // and forwards. Traditional filters support (for fileinto, for
+  // example) will be added later.
+  values = [ud vacationOptions];
+
+  // We handle vacation messages.
+  // See http://ietfreport.isoc.org/idref/draft-ietf-sieve-vacation/
+  if (values && [[values objectForKey: @"enabled"] boolValue])
+    {
+      NSArray *addresses;
+      NSString *text;
+      BOOL ignore;
+      int days, i;
+            
+      days = [[values objectForKey: @"daysBetweenResponse"] intValue];
+      addresses = [values objectForKey: @"autoReplyEmailAddresses"];
+      ignore = [[values objectForKey: @"ignoreLists"] boolValue];
+      text = [values objectForKey: @"autoReplyText"];
+      b = YES;
+
+      if (days == 0)
+	days = 7;
+
+      [req addObjectUniquely: @"vacation"];
+
+      // Skip mailing lists
+      if (ignore)
+	[script appendString: @"if allof ( not exists [\"list-help\", \"list-unsubscribe\", \"list-subscribe\", \"list-owner\", \"list-post\", \"list-archive\", \"list-id\", \"Mailing-List\"], not header :comparator \"i;ascii-casemap\" :is \"Precedence\" [\"list\", \"bulk\", \"junk\"], not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\" ) {"];
+      
+      [script appendFormat: @"vacation :days %d :addresses [", days];
+
+      for (i = 0; i < [addresses count]; i++)
+	{
+	  [script appendFormat: @"\"%@\"", [addresses objectAtIndex: i]];
+	  
+	  if (i == [addresses count]-1)
+	    [script appendString: @"] "];
+	  else
+	    [script appendString: @", "];
+	}
+      
+      [script appendFormat: @"text:\r\n%@\r\n.\r\n;\r\n", text];
+      
+      if (ignore)
+	[script appendString: @"}\r\n"];
+    }
+
+
+  // We handle mail forward
+  values = [ud forwardOptions];
+
+  if (values && [[values objectForKey: @"enabled"] boolValue])
+    {
+      id addresses;
+      int i;
+
+      b = YES;
+      
+      addresses = [values objectForKey: @"forwardAddress"];
+      if ([addresses isKindOfClass: [NSString class]])
+        addresses = [NSArray arrayWithObject: addresses];
+
+      for (i = 0; i < [addresses count]; i++)
+	{
+          v = [addresses objectAtIndex: i];
+          if (v && [v length] > 0)
+            [script appendFormat: @"redirect \"%@\";\r\n", v];
+        }
+      
+      if ([[values objectForKey: @"keepCopy"] boolValue])
+	[script appendString: @"keep;\r\n"];
+    }
+  
+  filterScript = [self sieveScriptWithRequirements: req];
+  if (filterScript)
+    {
+      if ([filterScript length])
+        {
+          b = YES;
+          [script appendString: filterScript];
+        }
+    }
+  else
+    {
+      NSLog(@"Sieve generation failure: %@", [self lastScriptError]);
+      return NO;
+    }
+
+  if ([req count])
+    {
+      header = [NSString stringWithFormat: @"require [\"%@\"];\r\n",
+                         [req componentsJoinedByString: @"\",\""]];
+      [script insertString: header  atIndex: 0];
+    }
+
+  // We connect to our Sieve server and upload the script.
+  //
+  // sieveServer might have the following format:
+  //
+  // sieve://localhost
+  // sieve://localhost:2000
+  //
+  // Values such as "localhost" or "localhost:2000" are NOT supported.
+  //
+  sieveServer = [dd sieveServer];
+  sievePort = 2000;
+      
+  if (!sieveServer)
+    {
+      NSString *s;
+
+      sieveServer = @"localhost";
+      s = [dd imapServer];
+
+      if (s)
+	{
+	  NSURL *url;
+	  
+	  url = [NSURL URLWithString: s];
+
+	  if ([url host])
+	    sieveServer = [url host];
+	  else
+	    sieveServer = s;
+	}
+    }
+  else
+    {
+      NSURL *url;
+
+      url = [NSURL URLWithString: sieveServer];
+      
+      if ([url host])
+	sieveServer = [url host];
+      
+      if ([[url port] intValue] != 0)
+	sievePort = [[url port] intValue];
+    }
+
+  address =  [NGInternetSocketAddress addressWithPort: sievePort  onHost: sieveServer];
+
+  client = [NGSieveClient clientWithAddress: address];
+  
+  if (!client) {
+    NSLog(@"Sieve connection failed on %@", [address description]);
+    return NO;
+  }
+  
+  if (!thePassword) {
+    [client closeConnection];
+    return NO;
+  }
+  result = [client login: theLogin  authname: theAuthName  password: thePassword];
+  if (![[result valueForKey:@"result"] boolValue]) {
+    NSLog(@"failure. Attempting with a renewed password (no authname supported)");
+    thePassword = [theAccount imap4PasswordRenewed: YES];
+    result = [client login: theLogin  password: thePassword];
+  }
+  
+  if (![[result valueForKey:@"result"] boolValue]) {
+    NSLog(@"Could not login '%@' on Sieve server: %@: %@",
+	  theLogin, client, result);
+    [client closeConnection];
+    return NO;
+  }
+
+  /* We ensure to deactive the current active script since it could prevent
+     its deletion from the server. */
+  result = [client setActiveScript: @""];
+  // We delete the existing Sieve script
+  result = [client deleteScript: sieveScriptName];
+  
+  if (![[result valueForKey:@"result"] boolValue]) {
+    NSLog(@"WARNING: Could not delete Sieve script - continuing...: %@", result);
+  }
+
+  // We put and activate the script only if we actually have a script
+  // that does something...
+  if (b)
+    {
+      result = [client putScript: sieveScriptName  script: script];
+      
+      if (![[result valueForKey:@"result"] boolValue]) {
+	NSLog(@"Could not upload Sieve script: %@", result);
+	[client closeConnection];	
+	return NO;
+      }
+      
+      result = [client setActiveScript: sieveScriptName];
+      if (![[result valueForKey:@"result"] boolValue]) {
+	NSLog(@"Could not enable Sieve script: %@", result);
+	[client closeConnection];
+	return NO;
+      }
+  }
+
+  return YES;
 }
 
 @end

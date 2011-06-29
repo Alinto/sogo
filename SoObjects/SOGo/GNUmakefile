@@ -23,6 +23,8 @@ SOGo_HEADER_FILES = \
 	SOGoParentFolder.h		\
 	SOGoUserFolder.h		\
 	\
+	SOGoSieveManager.h		\
+	\
 	SOGoUserManager.h		\
 	LDAPSource.h			\
 	SQLSource.h			\
@@ -80,6 +82,8 @@ SOGo_OBJC_FILES = \
 	SOGoParentFolder.m		\
 	SOGoPublicBaseFolder.m		\
 	SOGoUserFolder.m		\
+	\
+	SOGoSieveManager.m		\
 	\
 	SOGoDefaultsSource.m		\
 	SOGoSystemDefaults.m		\
