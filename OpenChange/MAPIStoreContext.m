@@ -73,8 +73,6 @@ static Class NSDataK, NSStringK, MAPIStoreFAIMessageK;
 static NSMutableDictionary *contextClassMapping;
 static NSMutableDictionary *userMAPIStoreMapping;
 
-static void *ldbCtx = NULL;
-
 + (void) initialize
 {
   NSArray *classes;
@@ -211,17 +209,10 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
               andFID: (uint64_t) newFid
             inMemCtx: (struct mapistore_context *) newMemCtx
 {
-  struct loadparm_context *lpCtx;
   NSString *username;
 
   if ((self = [self init]))
     {
-      if (!ldbCtx)
-        {
-          lpCtx = loadparm_init (newMemCtx);
-          ldbCtx = mapiproxy_server_openchange_ldb_init (lpCtx);
-        }
-
       ASSIGN (contextUrl, newUrl);
 
       username = [NSString stringWithUTF8String: newConnInfo->username];
@@ -1018,7 +1009,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
           *path = [[objectURL substringFromIndex: 7]
 		    asUnicodeInMemCtx: memCtx];
 	  [self logWithFormat: @"found path '%s' for fmid %.16x",
-		*path, fmid];		  
+		*path, fmid];
           rc = MAPI_E_SUCCESS;
         }
       else
@@ -1466,7 +1457,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   mappingId = [mapping idFromURL: childURL];
   if (mappingId == NSNotFound)
     {
-      openchangedb_get_new_folderID (ldbCtx, &mappingId);
+      openchangedb_get_new_folderID (connInfo->oc_ctx, &mappingId);
       [mapping registerURL: childURL withID: mappingId];
       contextId = 0;
       mapistore_search_context_by_uri (memCtx, [folderURL UTF8String] + 7,

@@ -1,3 +1,8 @@
+2011-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContext.m: the ldb connection handle to
+	openchange.ldb is now passed via struct mapistore_connection_info.
+
 2011-06-29  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * Added get/set/unset capabilities to sogo-tool to set
