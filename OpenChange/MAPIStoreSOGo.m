@@ -713,32 +713,6 @@ sogo_op_deletemessage(void *private_data,
 }
 
 static int
-sogo_op_get_folders_list(void *private_data,
-			 uint64_t fmid,
-			 struct indexing_folders_list **folders_list)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context getFoldersList: folders_list withFMID: fmid];
-
-  [context tearDownRequest];
-  [pool release];
-
-  return rc;
-}
-
-static int
 sogo_op_set_restrictions (void *private_data, uint64_t fid, uint8_t type,
 			  struct mapi_SRestriction *res, uint8_t *tableStatus)
 {
@@ -1238,7 +1212,6 @@ int mapistore_init_backend(void)
       backend.op_readdir_count = sogo_op_readdir_count;
       backend.op_get_table_property = sogo_op_get_table_property;
       backend.op_get_available_table_properties = sogo_op_get_available_table_properties;
-      backend.op_get_folders_list = sogo_op_get_folders_list;
       backend.op_set_restrictions = sogo_op_set_restrictions;
       backend.op_set_sort_order = sogo_op_set_sort_order;
       backend.op_openmessage = sogo_op_openmessage;

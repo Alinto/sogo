@@ -1364,57 +1364,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return rc;
 }
 
-- (int) getFoldersList: (struct indexing_folders_list **) folders_list
-              withFMID: (uint64_t) fmid
-{
-  int rc;
-  NSString *currentURL, *url;
-  NSMutableArray *nsFolderList;
-  uint64_t fid;
-
-  [self logWithFormat: @"METHOD '%s' -- fmid: 0x%.16x", __FUNCTION__, fmid];
-
-  rc = MAPI_E_SUCCESS;
-
-  url = [contextUrl absoluteString];
-  currentURL = [mapping urlFromID: fmid];
-  if (currentURL && ![currentURL isEqualToString: url]
-      && [currentURL hasPrefix: url])
-    {
-      nsFolderList = [NSMutableArray arrayWithCapacity: 32];
-      [self extractChildNameFromURL: currentURL
-		     andFolderURLAt: &currentURL];
-      while (currentURL && rc == MAPI_E_SUCCESS
-             && ![currentURL isEqualToString: url])
-        {
-          fid = [mapping idFromURL: currentURL];
-          if (fid == NSNotFound)
-	    {
-	      [self logWithFormat: @"no fid found for url '%@'", currentURL];
-	      rc = MAPI_E_NOT_FOUND;
-	    }
-          else
-            {
-              [nsFolderList addObject: [NSNumber numberWithUnsignedLongLong: fid]];
-	      [self extractChildNameFromURL: currentURL
-			     andFolderURLAt: &currentURL];
-            }
-        }
-
-      if (rc != MAPI_E_NOT_FOUND)
-        {
-          fid = [mapping idFromURL: url];
-	  [nsFolderList addObject: [NSNumber numberWithUnsignedLongLong: fid]];
-	  [self logWithFormat: @"resulting folder list: %@", nsFolderList];
-          *folders_list = [nsFolderList asFoldersListInCtx: memCtx];
-        }
-    }
-  else
-    rc = MAPI_E_NOT_FOUND;
-
-  return rc;
-}
-
 /* utils */
 
 - (NSString *) extractChildNameFromURL: (NSString *) objectURL

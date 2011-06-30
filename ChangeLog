@@ -1,5 +1,8 @@
 2011-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_op_get_folders_list): method
+	removed from struct mapistore_backend.
+
 	* OpenChange/MAPIStoreContext.m: the ldb connection handle to
 	openchange.ldb is now passed via struct mapistore_connection_info.
 
