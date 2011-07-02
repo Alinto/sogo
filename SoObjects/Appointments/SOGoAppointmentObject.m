@@ -1670,6 +1670,13 @@
 	    {
 	      if ((ex = [self _handleAddedUsers: attendees fromEvent: event]))
 		return ex;
+	      else
+		{
+		  // We might have auto-accepted resources here. If that's the
+		  // case, let's regerate the versitstring and replace the
+		  // one from the request.
+		  [rq setContent: [[[event parent] versitString] dataUsingEncoding: [rq contentEncoding]]];
+		}
 
 	      [self sendEMailUsingTemplateNamed: @"Invitation"
 		    forObject: [event itipEntryWithMethod: @"request"]
