@@ -1809,7 +1809,7 @@
 	  else
 	    uid = [[[[[newEvent parent] events] objectAtIndex: 0] organizer] uid];
 	  	  
-	  if ([uid caseInsensitiveCompare: owner] == NSOrderedSame)
+	  if (uid && [uid caseInsensitiveCompare: owner] == NSOrderedSame)
 	    {
 	      if ((ex = [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent]))
 		return ex;

@@ -5,6 +5,9 @@
 	update the right event in the database in order to
 	update major properties coming from external invitations
 	during updates.
+	* SoObjects/Appointments/SOGoAppointmentObject.m (-PUTAction:)
+	We check if uid is not nil prior comparing it to the
+	owner. This fixes bug #1323
 
 2011-07-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
