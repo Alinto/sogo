@@ -10,6 +10,9 @@
 	owner. This fixes bug #1323
 	* Added patches included in bug #1348 - which now allows
 	group-based ACLs for IMAP.
+	* SoObjects/SOGo/SOGoSieveManager.m: Added patch from
+	bug #1344 - which fixes Sieve script generation errors
+	for reject filters.
 
 2011-07-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
 

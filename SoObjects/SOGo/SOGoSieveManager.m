@@ -94,7 +94,7 @@ static NSString *sieveScriptName = @"sogo";
         [newLines addObject: line];
     }
 
-  newText = [NSString stringWithFormat: @"\r\n%@\r\n.\r\n",
+  newText = [NSString stringWithFormat: @"text:\r\n%@\r\n.\r\n",
                       [newLines componentsJoinedByString: @"\n"]];
 
   return newText;
@@ -474,8 +474,8 @@ static NSString *sieveScriptName = @"sogo";
                 sieveAction = [NSString stringWithFormat: @"%@ %@",
                                         method, [argument asSieveQuotedString]];
               else if ([method isEqualToString: @"reject"])
-                sieveAction = [NSString stringWithFormat: @"%@ text: %@",
-                                        method, [argument asSieveQuotedString]];
+		sieveAction = [NSString stringWithFormat: @"%@ %@",
+					method, [argument asSieveQuotedString]];
               else
                 scriptError
                   = [NSString stringWithFormat: @"Action has unknown method '%@'",
