@@ -158,8 +158,6 @@
                    withFlags: (uint8_t) flags;
 - (int) releaseRecordWithFMID: (uint64_t) fmid
 		  ofTableType: (uint8_t) tableType;
-- (int) getFoldersList: (struct indexing_folders_list **) folders_list
-              withFMID: (uint64_t) fmid;
 
 /* util methods */
 - (NSString *) extractChildNameFromURL: (NSString *) childURL
