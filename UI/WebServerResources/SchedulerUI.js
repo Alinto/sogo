@@ -2202,10 +2202,6 @@ function onShowCompletedTasks(event) {
 
 function updateTaskStatus(event) {
     var newStatus = (this.checked ? 1 : 0);
-
-    if (isWebKit() && !isSafari3()) {
-        newStatus = (newStatus ? 0 : 1);
-    }
     _updateTaskCompletion (this.parentNode, newStatus);
     return false;
 }
@@ -2213,11 +2209,6 @@ function updateTaskStatus(event) {
 function updateCalendarStatus(event) {
     var list = [];
     var newStatus = (this.checked ? 1 : 0);
-
-    if (isWebKit() && !isSafari3()) {
-        newStatus = (newStatus ? 0 : 1);
-        this.checked = newStatus;
-    }
 
     var nodes = $("calendarList").childNodesWithTag("li");
     for (var i = 0; i < nodes.length; i++) {

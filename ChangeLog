@@ -1,3 +1,9 @@
+2011-07-06  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (onShowCompletedTasks)
+	(updateCalendarStatus): removed exception for Safari version prior
+	to 3.
+
 2011-07-05  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalActions.m
