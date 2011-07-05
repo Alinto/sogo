@@ -1,20 +1,20 @@
 /* this file is in UTF-8 format! */
 
-"Contact" = "Contact";
-"Address" = "Address";
-"Photos" = "Photos";
-"Other" = "Other";
+"Contact" = "Контакт";
+"Address" = "Адрес";
+"Photos" = "Фото";
+"Other" = "Другое";
 
 "Addressbook" = "Адресная книга";
 "Addresses" = "Адреса";
 "Update" = "Обновить";
-"Cancel" = "Cancel";
-"Common" = "Common";
-"Contact editor" = "Contact editor";
-"Contact viewer" = "Contact viewer";
+"Cancel" = "Отмена";
+"Common" = "Общие";
+"Contact editor" = "Редактор контактов";
+"Contact viewer" = "Просмотр контактов";
 "Email" = "Email";
-"Screen Name" = "Screen Name";
-"Extended" = "Extended";
+"Screen Name" = "Экранное имя";
+"Extended" = "Расширенное";
 "Fax" = "Факс";
 "Firstname" = "Имя";
 "Home" = "Home";
@@ -40,156 +40,156 @@
 
 /* Tooltips */
 
-"Create a new address book card" = "Create a new address book card";
-"Create a new list" = "Create a new list";
-"Edit the selected card" = "Edit the selected card";
-"Send a mail message" = "Send a mail message";
-"Delete selected card or address book" = "Delete selected card or address book";
-"Reload all contacts" = "Reload all contacts";
+"Create a new address book card" = "Создать новую запись в адресной книге";
+"Create a new list" = "Cоздать новый список";
+"Edit the selected card" = "Редактировать выбранную карту";
+"Send a mail message" = "Послать почтовое сообщение";
+"Delete selected card or address book" = "Удалить выбранную карту или адресную книгу";
+"Reload all contacts" = "Перезагрузить все контакты";
 
 "htmlMailFormat_UNKNOWN" = "Unknown";
 "htmlMailFormat_FALSE" = "Plain Text";
 "htmlMailFormat_TRUE" = "HTML";
 
-"Name or Email" = "Name or Email";
-"Category" = "Category";
-"Personal Addressbook" = "Personal Addressbook";
-"Search in Addressbook" = "Search in Addressbook";
+"Name or Email" = "Имя или Email";
+"Category" = "Категория";
+"Personal Addressbook" = "Личная адресная книга";
+"Search in Addressbook" = "Поиск в адресной книге";
 
-"New Card" = "New Card";
-"New List" = "New List";
-"Properties" = "Properties";
-"Sharing..." = "Sharing...";
-"Write" = "Write";
-"Delete" = "Delete";
-"Instant Message" = "Instant Message";
-"Add..." = "Add...";
-"Remove" = "Remove";
+"New Card" = "Новый контакт";
+"New List" = "Новый список";
+"Properties" = "Свойства";
+"Sharing..." = "Общий доступ...";
+"Write" = "Записать";
+"Delete" = "Удалить";
+"Instant Message" = "Быстрое сообщение";
+"Add..." = "Добавить...";
+"Remove" = "Удалить";
 
 "Please wait..." = "Подождите пожалуйста...";
 "No possible subscription" = "Нет возможных подписок";
 
-"Preferred" = "Preferred";
-"Card for %@" = "Card for %@";
-"Display Name: " = "Display Name: ";
+"Preferred" = "Избранные";
+"Card for %@" = "Запись для %@";
+"Display Name: " = "Показываемое имя: ";
 "Email Address: " = "Email Address: ";
 
-"Categories:" = "Categories:";
+"Categories:" = "Категории:";
 
-"Firstname: " = "Firstname: ";
-"Lastname: " = "Lastname: ";
-"Nickname: " = "Nickname: ";
+"Firstname: " = "Имя: ";
+"Lastname: " = "Фамилия: ";
+"Nickname: " = "Псевдоним: ";
 
-"Telephone" = "Telephone";
-"Work: " = "Work: ";
-"Home: " = "Home: ";
-"Fax: " = "Fax: ";
-"Mobile: " = "Mobile: ";
-"Pager: " = "Pager: ";
+"Telephone" = "Телефон";
+"Work: " = "Рабочий: ";
+"Home: " = "Домашний: ";
+"Fax: " = "Факс: ";
+"Mobile: " = "Мобильный: ";
+"Pager: " = "Пейджер: ";
 
 /* categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
-"Categories" = "Categories";
-"New category" = "New category";
+"contacts_category_labels" = "Коллеги, Конкуренты, Потребители, Друзья, Семья, Партнеры по бизнеск, Провайдеры, Пресса, VIP";
+"Categories" = "Категории";
+"New category" = "Новые категории";
 
 /* adresses */
-"Title: " = "Title: ";
-"Service: " = "Service: ";
-"Company: " = "Company: ";
-"Street Address: " = "Street Address: ";
-"City: " = "City: ";
-"State_Province:" = "State/Province:";
+"Title: " = "Обращение: ";
+"Service: " = "Должность: ";
+"Company: " = "Компания: ";
+"Street Address: " = "Адрес: ";
+"City: " = "Город: ";
+"State_Province:" = "Область/штат:";
 "ZIP_Postal Code:" = "ZIP/Postal Code:";
-"Country: " = "Country: ";
+"Country: " = "Страна: ";
 "Web: " = "Web: ";
 
-"Work" = "Work";
-"Other Infos" = "Other Infos";
+"Work" = "Работа";
+"Other Infos" = "Другая информация";
 
-"Note: " = "Note: ";
+"Note: " = "Замечание: ";
 "Timezone: " = "Timezone: ";
-"Birthday:" = "Birthday:";
-"Birthday (yyyy-mm-dd):" = "Birthday (yyyy-mm-dd):";
+"Birthday:" = "День рождения";
+"Birthday (yyyy-mm-dd):" = "День рождения (yyyy-mm-dd):";
 "Freebusy URL: " = "Freebusy URL: ";
 
-"Add as..." = "Add as...";
-"Recipient" = "Recipient";
-"Carbon Copy" = "Carbon Copy";
-"Blind Carbon Copy" = "Blind Carbon Copy";
+"Add as..." = "Добавить как...";
+"Recipient" = "Получатель";
+"Carbon Copy" = "Копии";
+"Blind Carbon Copy" = "Bcc";
 
-"New Addressbook..." = "New Addressbook...";
-"Subscribe to an Addressbook..." = "Subscribe to an Addressbook...";
-"Remove the selected Addressbook" = "Remove the selected Addressbook";
+"New Addressbook..." = "Новая адресная книга...";
+"Subscribe to an Addressbook..." = "Подписаться на адресную книгу...";
+"Remove the selected Addressbook" = "Удалить выбранную адресную книгу";
 
-"Name of the Address Book" = "Name of the Address Book";
+"Name of the Address Book" = "Имя адресной книги";
 "Are you sure you want to delete the selected address book?"
-= "Are you sure you want to delete the selected address book?";
+= "Вы уверены, что хотите удалить выбранную адресную книгу?";
 "You cannot remove nor unsubscribe from a public addressbook."
-= "You cannot remove nor unsubscribe from a public addressbook.";
+= "Вы не можете ни удалить, ни отписаться от выбранной адресной книги.";
 "You cannot remove nor unsubscribe from your personal addressbook."
-= "You cannot remove nor unsubscribe from your personal addressbook.";
+= "Вы не можете ни удалить, ни отписатся от личной адресной книги.";
 
 "Are you sure you want to delete the selected contacts?"
-= "Are you sure you want to delete the selected contacts?";
+= "Вы уверены, что вы хотите удалить выбранные контакты?";
 
 "You don't have the required privileges to perform the operation."
-= "You don't have the required privileges to perform the operation.";
+= "У вас нет требуемых привилегий для выполнения этой операции.";
 "You cannot delete the card of \"%{0}\"."
-= "You cannot delete the card of \"%{0}\".";
+= "Вы не можете удалить запись \"%{0}\".";
 
-"Address Book Name" = "Address Book Name";
+"Address Book Name" = "Имя адресной книги";
 
 "You cannot subscribe to a folder that you own!"
-= "You cannot subscribe to a folder that you own.";
+= "Вы не можете подписаться на папку, которой Вы владеете.";
 "Unable to subscribe to that folder!"
-= "Unable to subscribe to that folder.";
+= "Невозможно подписаться на эту папку.";
 
-"User rights for:" = "User rights for:";
+"User rights for:" = "Пользовательские права для:";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
+"Any Authenticated User" = "Любой аутентифицированный пользователь";
+"Public Access" = "Публичный доступ";
 
 "This person can add cards to this addressbook."
-= "This person can add cards to this addressbook.";
+= "Этот человек может добавлять записи в эту адресную книгу";
 "This person can edit the cards of this addressbook."
-= "This person can edit the cards of this addressbook.";
+= "Этот человек может редактировать записи в этой адресной книге";
 "This person can list the content of this addressbook."
-= "This person can list the content of this addressbook.";
+= "Этот человек может просматривать эту адресную книгу";
 "This person can read the cards of this addressbook."
-= "This person can read the cards of this addressbook.";
+= "Этот человек может читать записи в этой адресной книге";
 "This person can erase cards from this addressbook."
-= "This person can erase cards from this addressbook.";
+= "Этот человек может удалять записи из этой адресной книги";
 
 "The selected contact has no email address."
-= "The selected contact has no email address.";
+= "Выбранный контакт не имеет адреса электронной почты.";
 
-"Please select a contact." = "Please select a contact.";
+"Please select a contact." = "Пожалуйста, выберите контакт.";
 
 /* Error messages for move and copy */
 
-"SoAccessDeniedException" = "You cannot write to this address book.";
-"Forbidden" = "You cannot write to this address book.";
-"Invalid Contact" = "The selected contact no longer exists.";
-"Unknown Destination Folder" = "The chosen destination address book no longer exists.";
+"SoAccessDeniedException" = "Вы не можете писать в эту адресную книгу.";
+"Forbidden" = "Вы не можете писать в эту адресную книгу.";
+"Invalid Contact" = "Выбранный контакт более не существует.";
+"Unknown Destination Folder" = "Выбранная адресная книга более не существует.";
 
 /* Lists */
-"List details" = "List details";
-"List name:" = "List name:";
-"List nickname:" = "List nickname:";
-"List description:" = "List description:";
-"Members" = "Members";
-"Contacts" = "Contacts";
-"Add" = "Add";
-"Lists can't be moved or copied." = "Lists can't be moved or copied.";
+"List details" = "Подробности списка";
+"List name:" = "Имя списка:";
+"List nickname:" = "Псевдоним списка:";
+"List description:" = "Описание списка:";
+"Members" = "Члены";
+"Contacts" = "Контакты";
+"Add" = "Добавить";
+"Lists can't be moved or copied." = "Списки не могут быть перемещены или скопированы.";
 
-"Export" = "Export";
-"Export Address Book..." = "Export Address Book...";
-"Import Cards" = "Import Cards";
-"Select a vCard or LDIF file." = "Select a vCard or LDIF file.";
-"Upload" = "Upload";
-"Done" = "Done";
-"An error occured while importing contacts." = "An error occured while importing contacts.";
-"No card was imported." = "No card was imported.";
-"A total of %{0} cards were imported in the addressbook." = "A total of %{0} cards were imported in the addressbook.";
+"Export" = "Экспорт";
+"Export Address Book..." = "Экспорт адресной книги...";
+"Import Cards" = "Импорт записей";
+"Select a vCard or LDIF file." = "Выберите vCard or LDIF файл.";
+"Upload" = "Загрузить";
+"Done" = "Готово";
+"An error occured while importing contacts." = "Произошла ошибка при импорте контактов.";
+"No card was imported." = "Записи не были импортированы.";
+"A total of %{0} cards were imported in the addressbook." = "Всего %{0} записей было импортировано в адресную книгу.";
 
-"Reload" = "Reload";
+"Reload" = "Перезагрузить";

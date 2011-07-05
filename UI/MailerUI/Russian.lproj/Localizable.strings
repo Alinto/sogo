@@ -278,7 +278,7 @@
 
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
-= "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
+= "Сообщения не могут быть помещены в корзину. Хотите ли вы уничтожить их немедленно?";
 
 /* Message editing */
 "error_validationfailed" = "Проверка завершилась неудачей";

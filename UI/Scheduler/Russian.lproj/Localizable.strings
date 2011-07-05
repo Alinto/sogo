@@ -56,8 +56,8 @@
 
 "Week %d" = "Неделя %d";
 
-"Previous Week" = "Previous Week";
-"Next Week" = "Next Week";
+"Previous Week" = "Предыдущая неделя";
+"Next Week" = "Следующая неделя";
 
 /* Month */
 
@@ -89,8 +89,8 @@
 "a3_November" = "Ноября";
 "a3_December" = "Декабря";
 
-"Previous Month" = "Previous Month";
-"Next Month" = "Next Month";
+"Previous Month" = "Предыдущий месяц";
+"Next Month" = "Следующий месяц";
 
 /* Year */
 
@@ -103,20 +103,20 @@
 
 "New Calendar..." = "Новый календарь...";
 "Delete Calendar" = "Удалить календарь";
-"Unsubscribe Calendar" = "Unsubscribe Calendar";
-"Sharing..." = "Sharing...";
+"Unsubscribe Calendar" = "Удалить подписку на календарь";
+"Sharing..." = "Общий доступ...";
 "Export Calendar..." = "Экспортировать календарь...";
-"Import Events..." = "Import Events...";
-"Import Events" = "Import Events";
-"Select an iCalendar file (.ics)." = "Select an iCalendar file (.ics).";
-"Upload" = "Upload";
+"Import Events..." = "Импорт событий...";
+"Import Events" = "Импорт событий";
+"Select an iCalendar file (.ics)." = "Выберите iCalendar файл (.ics).";
+"Upload" = "Загрузить";
 "Publish Calendar..." = "Опубликовать календарь...";
 "Reload Remote Calendars" = "Обновить удаленные календари";
 "Properties" = "Свойства";
-"Done" = "Done";
-"An error occured while importing calendar." = "An error occured while importing calendar.";
-"No event was imported." = "No event was imported.";
-"A total of %{0} events were imported in the calendar." = "A total of %{0} events were imported in the calendar.";
+"Done" = "Готово";
+"An error occured while importing calendar." = "Ошибка при импорте календаря.";
+"No event was imported." = "События не были импортированы.";
+"A total of %{0} events were imported in the calendar." = " Всего %{0} событий было импортировано в календарь.";
 
 "Compose E-Mail to All Attendees" = "Составить сообщение ко всем приглашенным";
 "Compose E-Mail to Undecided Attendees" = "Составить сообщение ко всем не решившим приглашенным";
@@ -133,8 +133,8 @@
 
 "User rights for:" = "Права пользователя для:";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
+"Any Authenticated User" = "Любой аутентифицированный пользователь";
+"Public Access" = "Публичный доступ";
 
 "label_Public" = "Публичное событие";
 "label_Private" = "Личное событие";
@@ -197,205 +197,205 @@
 
 /* Appointments */
 
-"Appointment viewer" = "Appointment Viewer";
-"Appointment editor" = "Appointment Editor";
-"Appointment proposal" = "Appointment Proposal";
-"Appointment on" = "Appointment on";
-"Start:" = "Start:";
-"End:" = "End:";
-"Due Date:" = "Due Date:";
-"Title:" = "Title:";
-"Calendar:" = "Calendar:";
-"Name" = "Name";
+"Appointment viewer" = "Просмотр встреч";
+"Appointment editor" = "Редактор встреч";
+"Appointment proposal" = "Предложение встреч";
+"Appointment on" = "Встреча ";
+"Start:" = "Начало:";
+"End:" = "Конец:";
+"Due Date:" = "К дате:";
+"Title:" = "Заголовок:";
+"Calendar:" = "Календарь:";
+"Name" = "Имя";
 "Email" = "Email";
-"Status:" = "Status:";
-"% complete" = "% complete";
-"Location:" = "Location:";
-"Priority:" = "Priority:";
-"Privacy" = "Privacy";
-"Cycle" = "Cycle";
-"Cycle End" = "Cycle End";
-"Categories" = "Categories";
-"Classification" = "Classification";
-"Duration" = "Duration";
-"Attendees:" = "Attendees:";
-"Resources" = "Resources";
-"Organizer:" = "Organizer:";
-"Description:" = "Description:";
-"Document:" = "Document:";
-"Category:" = "Category:";
-"Repeat:" = "Repeat:";
-"Reminder:" = "Reminder:";
-"General:" = "General:";
-"Reply:" = "Reply:";
+"Status:" = "Статус:";
+"% complete" = "% выполнено";
+"Location:" = "Место:";
+"Priority:" = "Приоритет:";
+"Privacy" = "Приватность";
+"Cycle" = "Цикл";
+"Cycle End" = "Конец цикла";
+"Categories" = "Категории";
+"Classification" = "Классификация";
+"Duration" = "Продолжительность";
+"Attendees:" = "Участники:";
+"Resources" = "Ресурсы";
+"Organizer:" = "Организатор:";
+"Description:" = "Описание:";
+"Document:" = "Документ:";
+"Category:" = "Категория:";
+"Repeat:" = "Повторять:";
+"Reminder:" = "Напоминание:";
+"General:" = "Общее:";
+"Reply:" = "Ответ:";
 
-"Target:" = "Target:";
+"Target:" = "Цель:";
 
-"attributes" = "attributes";
-"attendees" = "attendees";
-"delegated from" = "delegated from";
+"attributes" = "атрибуты";
+"attendees" = "участники";
+"delegated from" = "делегировано от";
 
 /* checkbox title */
-"is private" = "is private";
+"is private" = "личное";
 /* classification */
-"Public" = "Public";
-"Private" = "Private";
+"Public" = "Публичное";
+"Private" = "Личное";
 /* text used in overviews and tooltips */
-"empty title" = "Empty title";
-"private appointment" = "Private appointment";
+"empty title" = "Пустой заголовок";
+"private appointment" = "Личная встреча";
 
-"Change..." = "Change...";
+"Change..." = "Изменить...";
 
 /* Appointments (participation state) */
 
-"partStat_NEEDS-ACTION" = "Needs action";
+"partStat_NEEDS-ACTION" = "Требует действия";
 "partStat_ACCEPTED" = "Я буду участвовать";
 "partStat_DECLINED" = "Я не буду участвовать";
 "partStat_TENTATIVE" = "Я подтвержу позже";
-"partStat_DELEGATED" = "I delegate";
-"partStat_OTHER" = "Other";
+"partStat_DELEGATED" = "Я делегирую";
+"partStat_OTHER" = "Другое";
 
 /* Appointments (error messages) */
 
-"Conflicts found!" = "Conflicts found!";
-"Invalid iCal data!" = "Invalid iCal data!";
-"Could not create iCal data!" = "Could not create iCal data!";
+"Conflicts found!" = "Выявлены конфликты!";
+"Invalid iCal data!" = "Неверные данные iCal !";
+"Could not create iCal data!" = "Не могу создать iCal data!";
 
 /* Searching */
 
-"view_all" = "All";
-"view_today" = "Today";
-"view_next7" = "Next 7 days";
-"view_next14" = "Next 14 days";
-"view_next31" = "Next 31 days";
-"view_thismonth" = "This Month";
-"view_future" = "All Future Events";
-"view_selectedday" = "Selected Day";
+"view_all" = "Все";
+"view_today" = "Сегодня";
+"view_next7" = "Следующие 7 дней";
+"view_next14" = "Следующие 14 дней";
+"view_next31" = "Следующие 31 дней";
+"view_thismonth" = "Этот месяц";
+"view_future" = "Все будущие мероприятия";
+"view_selectedday" = "Выбранный день";
 
-"View:" = "View:";
-"Title or Description" = "Title or Description";
+"View:" = "Вид:";
+"Title or Description" = "Заголовок или описание";
 
-"Search" = "Search";
-"Search attendees" = "Search attendees";
-"Search resources" = "Search resources";
-"Search appointments" = "Search appointments";
+"Search" = "Поиск";
+"Search attendees" = "Поиск участников";
+"Search resources" = "Поиск ресурсов";
+"Search appointments" = "Поиск встреч";
 
-"All day Event" = "All day Event";
-"check for conflicts" = "Check for conflicts";
+"All day Event" = "Мероприятие на целый день";
+"check for conflicts" = "Проверить на конфликты";
 
-"Browse URL" = "Browse URL";
+"Browse URL" = "Просмотреть URL";
 
-"newAttendee" = "Add attendee";
+"newAttendee" = "Добавить участника";
 
 /* calendar modes */
 
-"Overview" = "Overview";
-"Chart" = "Chart";
-"List" = "List";
-"Columns" = "Columns";
+"Overview" = "Обзор";
+"Chart" = "Карта";
+"List" = "Список";
+"Columns" = "Колонки";
 
 /* Priorities */
 
-"prio_0" = "Not specified";
-"prio_1" = "High";
-"prio_2" = "High";
-"prio_3" = "High";
-"prio_4" = "High";
-"prio_5" = "Normal";
-"prio_6" = "Low";
-"prio_7" = "Low";
-"prio_8" = "Low";
-"prio_9" = "Low";
+"prio_0" = "Не указано";
+"prio_1" = "Высший";
+"prio_2" = "Высокий";
+"prio_3" = "Высокий";
+"prio_4" = "Высокий";
+"prio_5" = "Нормальный";
+"prio_6" = "Низкий";
+"prio_7" = "Низкий";
+"prio_8" = "Низкий";
+"prio_9" = "Низший";
 
 /* access classes (privacy) */
-"PUBLIC_vevent" = "Public Event";
-"CONFIDENTIAL_vevent" = "Confidential Event";
-"PRIVATE_vevent" = "Private Event";
-"PUBLIC_vtodo" = "Public Task";
-"CONFIDENTIAL_vtodo" = "Confidential Task";
-"PRIVATE_vtodo" = "Private Task";
+"PUBLIC_vevent" = "Публичное событие";
+"CONFIDENTIAL_vevent" = "Конфиденциальное событие";
+"PRIVATE_vevent" = "Приватное событие";
+"PUBLIC_vtodo" = "Публичное задание";
+"CONFIDENTIAL_vtodo" = "Конфиденциальное задание";
+"PRIVATE_vtodo" = "Частное задание";
 
 /* status type */
-"status_" = "Not specified";
-"status_NOT-SPECIFIED" = "Not specified";
-"status_TENTATIVE" = "Tentative";
-"status_CONFIRMED" = "Confirmed";
-"status_CANCELLED" = "Cancelled";
-"status_NEEDS-ACTION" = "Needs Action";
-"status_IN-PROCESS" = "In Process";
-"status_COMPLETED" = "Completed on";
+"status_" = "не указан";
+"status_NOT-SPECIFIED" = "Не указан";
+"status_TENTATIVE" = "Предварительный";
+"status_CONFIRMED" = "Подтвержденный";
+"status_CANCELLED" = "Отмененный";
+"status_NEEDS-ACTION" = "Требует действий";
+"status_IN-PROCESS" = "В процессе";
+"status_COMPLETED" = "Завершено ";
 
 /* Cycles */
 
-"cycle_once" = "cycle_once";
-"cycle_daily" = "cycle_daily";
-"cycle_weekly" = "cycle_weekly";
-"cycle_2weeks" = "cycle_2weeks";
-"cycle_4weeks" = "cycle_4weeks";
-"cycle_monthly" = "cycle_monthly";
-"cycle_weekday" = "cycle_weekday";
-"cycle_yearly" = "cycle_yearly";
+"cycle_once" = "цикл_однажды";
+"cycle_daily" = "цикл_ежедневно";
+"cycle_weekly" = "цикл_еженедельно";
+"cycle_2weeks" = "цикл_каждые_2_недели";
+"cycle_4weeks" = "цикл_каждые_4_ недели";
+"cycle_monthly" = "цикл_помесячно";
+"cycle_weekday" = "цикл_по_рабочим_дням";
+"cycle_yearly" = "цикл_ежегодно";
 
-"cycle_end_never" = "cycle_end_never";
-"cycle_end_until" = "cycle_end_until";
+"cycle_end_never" = "цикл_не_завершается_никогда";
+"cycle_end_until" = "цикл_завершается_до";
 
-"Recurrence pattern" = "Recurrence pattern";
-"Range of recurrence" = "Range of recurrence";
+"Recurrence pattern" = "Шаблон повторений";
+"Range of recurrence" = "Диапазон повторений";
 
-"Repeat" = "Repeat";
-"Daily" = "Daily";
-"Weekly" = "Weekly";
-"Monthly" = "Monthly";
-"Yearly" = "Yearly";
-"Every" = "Every";
-"Days" = "Days";
-"Week(s)" = "Week(s)";
-"On" = "On";
-"Month(s)" = "Month(s)";
-"The" = "The";
-"Recur on day(s)" = "Recur on day(s)";
-"Year(s)" = "Year(s)";
-"cycle_of" = "of";
-"No end date" = "No end date";
-"Create" = "Create";
+"Repeat" = "Повторять";
+"Daily" = "Ежедневно";
+"Weekly" = "Еженедельно";
+"Monthly" = "Ежемесячно";
+"Yearly" = "Ежегодно";
+"Every" = "Каждые ";
+"Days" = "Дней";
+"Week(s)" = "Недель(и)";
+"On" = "На";
+"Month(s)" = "Месяца(цев)";
+"The" = "";
+"Recur on day(s)" = "Повторяется в дни";
+"Year(s)" = "Год(года)";
+"cycle_of" = "";
+"No end date" = "Нет даты завершения";
+"Create" = "Создать";
 "appointment(s)" = "appointment(s)";
-"Repeat until" = "Repeat until";
+"Repeat until" = "Повторять до";
 
-"First" = "First";
-"Second" = "Second";
-"Third" = "Third";
-"Fourth" = "Fourth";
-"Fift" = "Fift";
-"Last" = "Last";
+"First" = "Первый";
+"Second" = "Второй";
+"Third" = "Третий";
+"Fourth" = "Четвертый";
+"Fift" = "Пятый";
+"Last" = "Последний";
 
 /* Appointment categories */
 
-"category_none" = "None";
-"category_labels" = "Anniversary,Birthday,Business,Calls,Clients,Competition,Customer,Favorites,Follow up,Gifts,Holidays,Ideas,Meeting,Issues,Miscellaneous,Personal,Projects,Public Holiday,Status,Suppliers,Travel,Vacation";
+"category_none" = "Никаих";
+"category_labels" = "Годовщина,День рождения,Дела,Звонки,Клиенты,Конкуренты,Потребители,Избранное,В след событию,Подарки,Праздники,Идеи,Встречи,Темы,Разное,Персонально,Проекты,Публичные праздники,Статус,Поставщики,Путешествия,Каникулы";
 
-"repeat_NEVER" = "Does not repeat";
-"repeat_DAILY" = "Daily";
-"repeat_WEEKLY" = "Weekly";
-"repeat_BI-WEEKLY" = "Bi-weekly";
-"repeat_EVERY WEEKDAY" = "Every Weekday";
-"repeat_MONTHLY" = "Monthly";
-"repeat_YEARLY" = "Yearly";
-"repeat_CUSTOM" = "Custom...";
+"repeat_NEVER" = "Не повторяется";
+"repeat_DAILY" = "Ежедневно";
+"repeat_WEEKLY" = "Еженедельно";
+"repeat_BI-WEEKLY" = "Каждые две недели";
+"repeat_EVERY WEEKDAY" = "Каждый рабочий день недели";
+"repeat_MONTHLY" = "Ежемесячно";
+"repeat_YEARLY" = "Ежегодно";
+"repeat_CUSTOM" = "По-другому...";
 
-"reminder_NONE" = "No reminder";
-"reminder_5_MINUTES_BEFORE" = "5 minutes before";
-"reminder_10_MINUTES_BEFORE" = "10 minutes before";
-"reminder_15_MINUTES_BEFORE" = "15 minutes before";
-"reminder_30_MINUTES_BEFORE" = "30 minutes before";
-"reminder_45_MINUTES_BEFORE" = "45 minutes before";
-"reminder_1_HOUR_BEFORE" = "1 hour before";
-"reminder_2_HOURS_BEFORE" = "2 hours before";
-"reminder_5_HOURS_BEFORE" = "5 hours before";
-"reminder_15_HOURS_BEFORE" = "15 hours before";
-"reminder_1_DAY_BEFORE" = "1 day before";
-"reminder_2_DAYS_BEFORE" = "2 days before";
-"reminder_1_WEEK_BEFORE" = "1 week before";
-"reminder_CUSTOM" = "Custom...";
+"reminder_NONE" = "Нет напоминания";
+"reminder_5_MINUTES_BEFORE" = "за 5 минут";
+"reminder_10_MINUTES_BEFORE" = "за 10 минут";
+"reminder_15_MINUTES_BEFORE" = "за 15 минут";
+"reminder_30_MINUTES_BEFORE" = "за 30 минут;
+"reminder_45_MINUTES_BEFORE" = "за 45 минут";
+"reminder_1_HOUR_BEFORE" = "за 1 час";
+"reminder_2_HOURS_BEFORE" = "за 2 часа";
+"reminder_5_HOURS_BEFORE" = "за 5 часов";
+"reminder_15_HOURS_BEFORE" = "за 15 часов";
+"reminder_1_DAY_BEFORE" = "за 1 день";
+"reminder_2_DAYS_BEFORE" = "за 2 дня";
+"reminder_1_WEEK_BEFORE" = "за 1 неделю";
+"reminder_CUSTOM" = "По-другому...";
 
 "reminder_MINUTES" = "минут";
 "reminder_HOURS" = "часов";
@@ -404,13 +404,13 @@
 "reminder_AFTER" = "после";
 "reminder_START" = "начала события";
 "reminder_END" = "конца события";
-"Reminder Details" = "Reminder Details";
+"Reminder Details" = "Подробности напоминания";
 
-"Choose a Reminder Action" = "Choose a Reminder Action";
-"Show an Alert" = "Show an Alert";
-"Send an E-mail" = "Send an E-mail";
-"Email Organizer" = "Email Organizer";
-"Email Attendees" = "Email Attendees";
+"Choose a Reminder Action" = "Укажите действие напоминания";
+"Show an Alert" = "Показать Alert";
+"Send an E-mail" = "Послать сообщение e-mail";
+"Email Organizer" = "Email организатору";
+"Email Attendees" = "Email участникам";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -424,10 +424,10 @@
 
 /* validation errors */
 
-validate_notitle           = "No title is set, continue?";
-validate_invalid_startdate = "Incorrect startdate field!";
-validate_invalid_enddate   = "Incorrect enddate field!";
-validate_endbeforestart    = "The end date that you entered occurs before the start date.";
+validate_notitle           = "Нет заголовка, продолжить?";
+validate_invalid_startdate = "Неверное дата начала!";
+validate_invalid_enddate   = "Неверная дата конца!";
+validate_endbeforestart    = "Дата начала позже даты конца";
 
 "Tasks" = "Задачи";
 "Show completed tasks" = "Показать выполненные задачи";
@@ -451,16 +451,16 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "eventPartStatModificationError" = "Невозможно изменить статус Вашего участия.";
 
 /* menu */
-"New Event..." = "New Event...";
-"New Task..." = "New Task...";
-"Edit Selected Event..." = "Edit Selected Event...";
-"Delete Selected Event" = "Delete Selected Event";
-"Select All" = "Select All";
-"Workweek days only" = "Workweek days only";
-"Tasks in View" = "Tasks in View";
+"New Event..." = "Новое событие...";
+"New Task..." = "Новое задание...";
+"Edit Selected Event..." = "Редактировать выбранное задание...";
+"Delete Selected Event" = "Удалить выбранное задание";
+"Select All" = "Выбрать все";
+"Workweek days only" = "Только рабочие дни недели";
+"Tasks in View" = "Задания в виде";
 
 "eventDeleteConfirmation" = "Следующие события будут удалены: \n%{0}\nПродолжить удаление?";
-"taskDeleteConfirmation" = "Erasing this task will be permanent.\nWould you like to continue?";
+"taskDeleteConfirmation" = "Насовсем удалить событие.\nПродолжить?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Вы не можете удалить персональный календарь, равно как и выключить подписку на него.";
@@ -468,53 +468,53 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 = "Вы уверены что хотите удалить календарь \"%{0}\"?";
 
 /* Legend */
-"Participant" = "Participant";
-"Optional Participant" = "Optional Participant";
-"Non Participant" = "Non Participant";
-"Chair" = "Chair";
+"Participant" = "Участник";
+"Optional Participant" = "Возможный участник";
+"Non Participant" = "Не участник";
+"Chair" = "Оргкомитет";
 
-"Needs action" = "Needs action";
-"Accepted" = "Accepted";
-"Declined" = "Declined";
-"Tentative" = "Tentative";
+"Needs action" = "Требует действия";
+"Accepted" = "Принято";
+"Declined" = "Отклонено";
+"Tentative" = "Предварительно";
 
-"Free" = "Free";
-"Busy" = "Busy";
-"Maybe busy" = "Maybe busy";
-"No free-busy information" = "No free-busy information";
+"Free" = "Свободно";
+"Busy" = "Занято";
+"Maybe busy" = "Возможно занято";
+"No free-busy information" = "Нет информации о занятости";
 
 /* FreeBusy panel buttons and labels */
-"Suggest time slot:" = "Suggest time slot:";
-"Zoom:" = "Zoom:";
-"Previous slot" = "Previous slot";
-"Next slot" = "Next slot";
-"Previous hour" = "Previous hour";
-"Next hour" = "Next hour";
-"Work days only" = "Work days only";
-"The whole day" = "The whole day";
-"Between" = "Between";
-"and" = "and";
+"Suggest time slot:" = "Предложите временной интервал:";
+"Zoom:" = "Увеличить:";
+"Previous slot" = "Предыдущий интервал";
+"Next slot" = "Следующий интервал";
+"Previous hour" = "Предыдущий час";
+"Next hour" = "Следующий час";
+"Work days only" = "Только рабочии дни";
+"The whole day" = "Полный день";
+"Between" = "Между";
+"and" = "и";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?";
+= "Между приглашенными существует конфликт по времени.\nВы хотите сохранить текущие настройки несмотря на конфликт?";
 
 /* apt list */
-"Title" = "Title";
-"Start" = "Start";
-"End" = "End";
-"Location" = "Location";
-"(Private Event)" = "(Private Event)";
+"Title" = "Заголовок";
+"Start" = "Начало";
+"End" = "Конец";
+"Location" = "Место";
+"(Private Event)" = "(Приватное событие)";
 
-vevent_class0 = "(Public event)";
-vevent_class1 = "(Private event)";
-vevent_class2 = "(Confidential event)";
+vevent_class0 = "(Публичное событие)";
+vevent_class1 = "(Приватное событие)";
+vevent_class2 = "(Конфиденциальное событие)";
 
-vtodo_class0 = "(Public task)";
-vtodo_class1 = "(Private task)";
-vtodo_class2 = "(Confidential task)";
+vtodo_class0 = "(Публичное задание)";
+vtodo_class1 = "(Приватное задание)";
+vtodo_class2 = "(Конфиденциальное задание)";
 
-"closeThisWindowMessage" = "Thank you! You may now close this window or view your ";
-"Multicolumn Day View" = "Multicolumn Day View";
+"closeThisWindowMessage" = "Спасибо! Вы можете закрыть это окно или вид ";
+"Multicolumn Day View" = "Многоколоночный вид дня";
 
 "Please select an event or a task." = "Пожалуйста выберите событие или задачу.";
 
@@ -526,44 +526,44 @@ vtodo_class2 = "(Confidential task)";
 "Name:" = "Название:";
 "Color:" = "Цвет:";
 
-"Include in free-busy" = "Include in free-busy";
+"Include in free-busy" = "Включить в free-busy";
 
-"Synchronization" = "Synchronization";
-"Synchronize" = "Synchronize";
-"Tag:" = "Tag:";
+"Synchronization" = "Синхронизация";
+"Synchronize" = "Синхронизировать";
+"Tag:" = "Метка:";
 
-"Display" = "Display";
-"Show alarms" = "Show alarms";
-"Show tasks" = "Show tasks";
+"Display" = "Вид";
+"Show alarms" = "Показать сигналы";
+"Show tasks" = "Показать задания";
 
-"Links to this Calendar" = "Links to this Calendar";
+"Links to this Calendar" = "Ссылки на этот календарь";
 "CalDAV url" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 
 /* Error messages */
-"dayFieldInvalid" = "Please specify a numerical value in the Days field greater or equal to 1.";
-"weekFieldInvalid" = "Please specify a numerical value in the Week(s) field greater or equal to 1.";
-"monthFieldInvalid" = "Please specify a numerical value in the Month(s) field greater or equal to 1.";
-"monthDayFieldInvalid" = "Please specify a numerical value in the month day field greater or equal to 1.";
-"yearFieldInvalid" = "Please specify a numerical value in the Year(s) field greater or equal to 1.";
-"appointmentFieldInvalid" = "Please specify a numerical value in the Appointment(s) field  greater or equal to 1.";
-"recurrenceUnsupported" = "This type of recurrence is currently unsupported.";
-"tagNotDefined" = "You must specify a tag if you want to synchronize this calendar.";
-"tagAlreadyExists" = "The tag you specified is already associated to another calendar.";
-"tagHasChanged" = "If you change your calendar's tag, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasAdded" = "If you want to synchronize this calendar, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
-"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
-"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
+"dayFieldInvalid" = "Пожалуйста, укажите числовое значение в поле дней, большее или равное 1.";
+"weekFieldInvalid" = "Пожалуйста, укажите числовое значение в поле неделей, большее или равное 1.";
+"monthFieldInvalid" = "Пожалуйста, укажите числовое значение в поле месяцев, большее или равное 1.";
+"monthDayFieldInvalid" = "Пожалуйста, укажите числовое значение в поле месяцев, большее или равное 1.";
+"yearFieldInvalid" = "Пожалуйста, укажите числовое значение в поле лет, большее или равное 1.";
+"appointmentFieldInvalid" = "Пожалуйста, укажите числовое значение в поле встреч, большее или равное 1.";
+"recurrenceUnsupported" = "Этот тип повторений пока не поддерживается.";
+"tagNotDefined" = "Вы должны указать метку(tag) если вы хотите синхронизировать этот календарь.";
+"tagAlreadyExists" = "Указанная Вами метка уже используется в другом календаре.";
+"tagHasChanged" = "Если Вы смените метку в Вашем календаре, вам надо будет перезагрузить данные на Вашем мобильном устройстве. \nПродолжить?";
+"tagWasAdded" = "Если Вы хотите синхронизировать этот календарь, If you want to synchronize this calendar,вам надо будет перезагрузить данные на Вашем мобильном устройстве. \nПродолжить?";
+"tagWasRemoved" = "Если вы удалите этот календарь, вам надо будет перезагрузить данные на Вашем мобильном устройстве.\n Продолжить?";
+"DestinationCalendarError" = "Исходный и результирующий календари совпадают. Пожалуйста, попытайтесь скопировать в другой календарь.";
+"EventCopyError" = "Копирование не удалось.Пожалуйста, попытайтесь скопировать в другой календарь.";
 
-"Open Task..." = "Open Task...";
-"Mark Completed" = "Mark Completed";
-"Delete Task" = "Delete Task";
-"Delete Event" = "Delete Event";
+"Open Task..." = "Открыть задание...";
+"Mark Completed" = "Помечено";
+"Delete Task" = "Удалить задачу";
+"Delete Event" = "Удалить событие";
 
-"Subscribe to a web calendar..." = "Subscribe to a web calendar...";
+"Subscribe to a web calendar..." = "Подписаться на  web calendar...";
 "URL of the Calendar" = "URL of the Calendar";
 "Web Calendar" = "Web Calendar";
-"Reload on login" = "Reload on login";
-"Invalid number." = "Invalid number.";
+"Reload on login" = "Перезагрузить по входу";
+"Invalid number." = "Число неверно.";

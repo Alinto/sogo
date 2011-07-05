@@ -1,54 +1,54 @@
-"Personal Calendar" = "Personal Calendar";
-vevent_class0 = "(Public event)";
-vevent_class1 = "(Private event)";
-vevent_class2 = "(Confidential event)";
+"Personal Calendar" = "Персональный календарь";
+vevent_class0 = "(Публичное событие)";
+vevent_class1 = "(Личное событие)";
+vevent_class2 = "(Конфиденциальное событие)";
 
-vtodo_class0 = "(Public task)";
-vtodo_class1 = "(Private task)";
-vtodo_class2 = "(Confidential task)";
+vtodo_class0 = "(Публичная задача)";
+vtodo_class1 = "(Личная задача)";
+vtodo_class2 = "(Конфиденциальная задача)";
 
 /* Receipts */
-"Title:" = "Title:";
-"Start:" = "Start:";
-"End:" = "End:";
+"Title:" = "Заглавие:";
+"Start:" = "Начало:";
+"End:" = "Конец:";
 
-"Receipt: users invited to a meeting" = "Receipt: users invited to a meeting";
-"You have invited the following attendees(s):" = "You have invited the following attendees(s):";
-"... to attend the following event:" = "... to attend the following event:";
+"Receipt: users invited to a meeting" = "Подтверждение: пользователей пригласили на встречу";
+"You have invited the following attendees(s):" = "Вы пригласили следующих участников:";
+"... to attend the following event:" = "... участвовать в следующем мероприятии:";
 
-"Receipt: invitation updated" = "Receipt: invitation updated";
-"The following attendees(s):" = "The following attendees(s):";
-"... have been notified of the changes to the following event:" = "... have been notified of the changes to the following event:";
+"Receipt: invitation updated" = "Подтверждение: приглашение обновлено";
+"The following attendees(s):" = "Следующие участники:";
+"... have been notified of the changes to the following event:" = "... были уведомлены о изменениях следующего мероприятия:";
 
-"Receipt: attendees removed from an event" = "Receipt: attendees removed from an event";
-"You have removed the following attendees(s):" = "You have removed the following attendees(s):";
-"... from the following event:" = "... from the following event:";
+"Receipt: attendees removed from an event" = "Подтверждение: участники удалены из мероприятия";
+"You have removed the following attendees(s):" = "Вы удалили следующих участников:";
+"... from the following event:" = "... из участия в следующем мероприятии:";
 
 /* IMIP messages */
-"startDate_label" = "Start:";
-"endDate_label" = "End:";
-"due_label" = "Due Date:";
-"location_label" = "Location:";
-"summary_label" = "Summary:";
-"comment_label" = "Comment:";
+"startDate_label" = "Начало:";
+"endDate_label" = "Конец:";
+"due_label" = "Должно быть готово к:";
+"location_label" = "Местонахождение:";
+"summary_label" = "Краткое содержание:";
+"comment_label" = "Комментарий:";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Event Invitation: \"%{Summary}\"";
+"Event Invitation: \"%{Summary}\"" = "Приглашение на мероприятие: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(послал %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+"%{Organizer} %{SentByText} пригласил вас на %{Summary}.\n\начало: %{StartDate} в %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}" = "%{Organizer} %{SentByText}пригласил вас на  %{Summary}.\n\nНачало: %{StartDate} в %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}";
 
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Event Cancelled: \"%{Summary}\"";
-"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+"Event Cancelled: \"%{Summary}\"" = "Мероприятие отменено: \"%{Summary}\"";
+"%{Organizer} %{SentByText} отменил(а) это мероприятие: %{Summary}.\n\nНачало: %{StartDate} в %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}"
+= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed";
+= "Мероприятие \"%{Summary}\"  %{OldStartDate} в %{OldStartTime} изменено";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "The following parameters have changed in the \"%{Summary}\" meeting:";
+= "в мероприятии \"%{Summary}\" изменены следующие параметры:";
 "Please accept or decline those changes."
-= "Please accept or decline those changes.";
+= "Пожалуйста подтвердите или отмените эти изменения.";
 
 /* Reply */
 "Reply to invitation: \"%{Summary}\"" = "Ответ на приглашение: \"%{Summary}\"";

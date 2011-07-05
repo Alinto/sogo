@@ -22,18 +22,18 @@
 "noJavascriptError" = "SOGo requires Javascript to run. Please make sure this option is available and activated within your browser preferences.";
 "noJavascriptRetry" = "Повторить попытку";
 
-"Owner:" = "Owner:";
+"Owner:" = "Владелец:";
 "Publish the Free/Busy information" = "Публиковать информацию о занятом/свободном времени";
 
-"Add..." = "Add...";
-"Remove" = "Remove";
+"Add..." = "Добавить...";
+"Remove" = "Удалить";
 
-"Subscribe User" = "Subscribe User";
+"Subscribe User" = "Подписать пользователя;
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
-"Any user not listed above" = "Any user not listed above";
-"Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
+"Any Authenticated User" = "Любой аутентифицированный пользователь";
+"Public Access" = "Публичный доступ";
+"Any user not listed above" = "Любой пользователь не указанный выше";
+"Anybody accessing this resource from the public area" = "Любой, использующий этот ресурс из публичного места";
 
 "Sorry, the user rights can not be configured for that object." = "Извините, для данного объекта невозможно настроить права доступа.";
 
@@ -46,31 +46,31 @@
 	= "Невозможно прекратить подписку на эту папку!";
 "You cannot unsubscribe from a folder that you own!"
       	= "Вы не можете прекратить подписку на собственную папку!";
-"Unable to rename that folder!" = "Unable to rename that folder!";
+"Unable to rename that folder!" = "Невозможно переименовать эту папку!";
 "You have already subscribed to that folder!"
      	= "Вы уже подписались на эту папку!";
 "The user rights cannot be edited for this object!"
         = "Извините, для данного объекта невозможно настроить права доступа!";
-"A folder by that name already exists." = "A folder by that name already exists.";
+"A folder by that name already exists." = "Папка с этим именем уже существует.";
 "You cannot create a list in a shared address book." 
-        = "You cannot create a list in a shared address book.";
-"Warning" = "Warning";
+        = "Вы не можете создать список в разделяемой адресной книге.";
+"Warning" = "Предупреждение";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Вам не предоставлено право доступа к этому модулю/системе. Пожалуйста, свяжитесь с администратором.";
 "You don't have the required privileges to perform the operation."
 = "У Вас нет права производить эту операцию.";
 
-"noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
-"delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
-"delegate is a participant" = "The delegate is already a participant.";
-"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+"noEmailForDelegation" = "Вы должны указать адрес e-mail, на который вы хотите делегировать приглашение";
+"delegate is organizer" = "Это организатор. Выберите другого приглашаемого";
+"delegate is a participant" = "Приглашаемый уже участник.";
+"delegate is a group" = "Указанный адрес - адрес группы. Вы можете делегировать лишь отдельным людям";
 
 /* common buttons */
 "OK" = "OK";
-"Cancel" = "Cancel";
-"Yes" = "Yes";
-"No" = "No";
+"Cancel" = "Отмена";
+"Yes" = "Да";
+"No" = "Нет";
 
 /* alarms */
 "Reminder:" = "Напоминание:";

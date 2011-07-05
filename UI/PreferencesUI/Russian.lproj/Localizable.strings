@@ -8,33 +8,33 @@
 "Contacts Options" = "Contacts Options";
 "Mail Options" = "Почта";
 "IMAP Accounts" = "IMAP Accounts";
-"Vacation" = "Vacation";
-"Forward" = "Forward";
+"Vacation" = "Отпуск";
+"Forward" = "Переслать";
 "Password" = "Пароль";
-"Categories" = "Categories";
-"Name" = "Name";
-"Color" = "Color";
-"Add" = "Add";
-"Delete" = "Delete";
+"Categories" = "Категории";
+"Name" = "Имя";
+"Color" = "Цвет";
+"Add" = "Добавить";
+"Delete" = "Удалить";
 
 /* contacts categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
+"contacts_category_labels" = "Коллега, Конкурент, Потребитель, Друг, Член семьи, Партнер по бизнесу, Провайдер, Пресса, VIP";
 
 /* vacation (auto-reply) */
-"Enable vacation auto reply" = "Enable vacation auto reply";
+"Enable vacation auto reply" = "Включить автоматическое отправление сообщения об отпуске";
 "Auto reply message :" = "Автоматически посылать этот текст каждому отправителю один раз :";
-"Email addresses (separated by commas) :" = "Email addresses (separated by commas) :";
-"Add default email addresses" = "Add default email addresses";
-"Days between responses :" = "Days between responses :";
-"Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Email addresses (separated by commas) :" = "Email addresses (разделенные запятыми) :";
+"Add default email addresses" = "Добавить e-mail адреса по умолчанию";
+"Days between responses :" = "Дни между ответами :";
+"Do not send responses to mailing lists" = "Не отправлять ответы на почтовые списки рассылки";
 "Please specify your message and your email addresses for which you want to enable auto reply."
-= "Please specify your message and your email addresses for which you want to enable auto reply.";
+= "Пожалуйста, укажите Ваше сообщение и адреса электронной почты для которых Вы хотите включить автоматический ответ.";
 
 /* forward messages */
-"Forward incoming messages" = "Forward incoming messages";
-"Keep a copy" = "Keep a copy";
+"Forward incoming messages" = "Переслать входящие сообщения";
+"Keep a copy" = "Оставлять копию";
 "Please specify an address to which you want to forward your messages."
-= "Please specify an address to which you want to forward your messages.";
+= "Пожалуйста укажите адрес, на который вы хотите переадресовать ваши сообщения.";
 
 /* d & t */
 "Current Time Zone :" = "Текущая временная зона :";
@@ -161,14 +161,14 @@
 
 /* Event+task categories */
 "category_none" = "None";
-"calendar_category_labels" = "Anniversary,Birthday,Business,Calls,Clients,Competition,Customer,Favorites,Follow up,Gifts,Holidays,Ideas,Meeting,Issues,Miscellaneous,Personal,Projects,Public Holiday,Status,Suppliers,Travel,Vacation";
+"calendar_category_labels" = "Годовщина,Дни рождения,Деловые,Звонки,Клиенты,Конкуренты,Потребители,Избранное,Вслед за,Подарки,Праздники,Идеи,Собрания,Темы,Разное,Персональное,Проекты,Публичные праздники,Статус,Поставщики,Путешествия,Отпуск";
 
 /* Default module */
-"Calendar" = "Calendar";
-"Contacts" = "Address Book";
-"Mail" = "Mail";
-"Last" = "Last used";
-"Default module :" = "Default module :";
+"Calendar" = "Календарь";
+"Contacts" = "Адресная книга";
+"Mail" = "Почта";
+"Last" = "Последнее использованне";
+"Default module :" = "Модуль по умолчанию :";
 
 "Language :" = "Язык :";
 "choose" = "Выбрать ...";
@@ -189,30 +189,30 @@
 "Welsh" = "Cymraeg";
 
 /* Return receipts */
-"When I receive a request for a return receipt:" = "When I receive a request for a return receipt:";
-"Never send a return receipt" = "Never send a return receipt";
-"Allow return receipts for some messages" = "Allow return receipts for some messages";
-"If I'm not in the To or Cc of the message:" = "If I'm not in the To or Cc of the message:";
-"If the sender is outside my domain:" = "If the sender is outside my domain:";
-"In all other cases:" = "In all other cases:";
+"When I receive a request for a return receipt:" = "Когда я получаю запрос об уведомлении о доставке:";
+"Never send a return receipt" = "Никогда не посылать уведомления о доставке";
+"Allow return receipts for some messages" = "Разрешить уведомления о доставке для некоторых сообщений";
+"If I'm not in the To or Cc of the message:" = "Если я не в To: или Cc: для этого сообщения:";
+"If the sender is outside my domain:" = "Если отправитель вне моего домена:";
+"In all other cases:" = "Во всех остальных случаях:";
 
-"Never send" = "Never send";
-"Always send" = "Always send";
-"Ask me" = "Ask me";
+"Never send" = "Никогда не посылать";
+"Always send" = "Всегда посылать";
+"Ask me" = "Спросить меня";
 
 /* Filters - UIxPreferences */
-"Filters" = "Filters";
-"Active" = "Active";
-"Move Up" = "Move Up";
-"Move Down" = "Move Down";
+"Filters" = "Фильтры";
+"Active" = "Активные";
+"Move Up" = "Передвинуть вверх";
+"Move Down" = "Передвинуть вниз";
 
 /* Filters - UIxFilterEditor */
-"Filter name:" = "Filter name:";
-"For incoming messages that" = "For incoming messages that";
-"match all of the following rules:" = "match all of the following rules:";
-"match any of the following rules:" = "match any of the following rules:";
-"match all messages" = "match all messages";
-"Perform these actions:" = "Perform these actions:";
+"Filter name:" = "Имя фильтра:";
+"For incoming messages that" = "Для входящих сообщений которые";
+"match all of the following rules:" = "отвечают всем из следующих правил:";
+"match any of the following rules:" = "отвечают любому из следующих правил:";
+"match all messages" = "отвечают всем сообщениям";
+"Perform these actions:" = "Произвести следующие действия:";
 
 "Subject" = "Subject";
 "From" = "From";
@@ -221,32 +221,32 @@
 "To or Cc" = "To or Cc";
 "Size (Kb)" = "Size (Kb)";
 "Header" = "Header";
-"Flag the message with:" = "Flag the message with:";
-"Discard the message" = "Discard the message";
-"File the message in:" = "File the message in:";
-"Keep the message" = "Keep the message";
-"Forward the message to:" = "Forward the message to:";
-"Send a reject message:" = "Send a reject message:";
-"Send a vacation message" = "Send a vacation message";
-"Stop processing filter rules" = "Stop processing filter rules";
+"Flag the message with:" = "Пометить сообщение с:";
+"Discard the message" = "Уничтожить сообщение";
+"File the message in:" = "Сохранить сообщение в:";
+"Keep the message" = "Держать сообщение";
+"Forward the message to:" = "Переслать сообщение к:";
+"Send a reject message:" = "Послать сообщение об отказе:";
+"Send a vacation message" = "Послать сообщение об отпуске";
+"Stop processing filter rules" = "Остановить правила фильтра";
 
-"is under" = "is under";
-"is over" = "is over";
-"is" = "is";
-"is not" = "is not";
-"contains" = "contains";
-"does not contain" = "does not contain";
-"matches" = "matches";
-"does not match" = "does not match";
-"matches regex" = "matches regex";
-"does not match regex" = "does not match regex";
+"is under" = "менее";
+"is over" = "более";
+"is" = "есть";
+"is not" = "не есть";
+"contains" = "содержит";
+"does not contain" = "не содержит";
+"matches" = "сопоставлено";
+"does not match" = "не сопоставлено";
+"matches regex" = "сопоставлено регулярному выражению";
+"does not match regex" = "не сопоставлено регулярному выражению";
 
-"Seen" = "Seen";
-"Deleted" = "Deleted";
-"Answered" = "Answered";
-"Flagged" = "Flagged";
-"Junk" = "Junk";
-"Not Junk" = "Not Junk";
+"Seen" = "Просмотрено";
+"Deleted" = "Удалено";
+"Answered" = "Отвечено";
+"Flagged" = "Помечено флагом";
+"Junk" = "Спам";
+"Not Junk" = "Не спам";
 "Label 1" = "Label 1";
 "Label 2" = "Label 2";
 "Label 3" = "Label 3";

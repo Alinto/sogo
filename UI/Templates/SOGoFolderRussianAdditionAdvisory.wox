@@ -8,11 +8,11 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> has been created
+    <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> создано
 </var:if>
 
 <var:if condition="isBody">
-The <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> folder has been created. 
+The <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> папка была создана. 
 <!--
 You can access this resource remotely by using the following URL:  
 
