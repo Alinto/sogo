@@ -1,6 +1,6 @@
 /* UIxMailPartICalActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -73,6 +73,9 @@
   return (iCalEvent *) [emailCalendar firstChildWithTag: @"vevent"];
 }
 
+//
+//
+//
 - (SOGoAppointmentObject *) _eventObjectWithUID: (NSString *) uid
 					forUser: (SOGoUser *) user
 {
@@ -114,12 +117,18 @@
   return eventObject;
 }
 
+//
+//
+//
 - (SOGoAppointmentObject *) _eventObjectWithUID: (NSString *) uid
 {
 #warning this will not work if Bob reads emails of Alice and accepts events for her
   return [self _eventObjectWithUID: uid forUser: [context activeUser]];
 }
 
+//
+//
+//						 
 - (void) _fixOrganizerInEvent: (iCalEvent *) brokenEvent
 {
   iCalPerson *organizer;
@@ -155,8 +164,10 @@
 	  @" if the user replies"];
 }
 
-- (iCalEvent *)
-  _setupChosenEventAndEventObject: (SOGoAppointmentObject **) eventObject
+//
+//
+//
+- (iCalEvent *) _setupChosenEventAndEventObject: (SOGoAppointmentObject **) eventObject
 {
   iCalEvent *emailEvent, *calendarEvent, *chosenEvent;
   iCalPerson *organizer;
@@ -183,15 +194,25 @@
 	      calendarEvent = (iCalEvent *)[*eventObject lookupOccurence: recurrenceTime];
 	    }
 	  else
-	    calendarEvent = (iCalEvent *) [*eventObject component: NO
-							secure: NO];
+	    calendarEvent = (iCalEvent *) [*eventObject component: NO  secure: NO];
 	  
 	  if (calendarEvent != nil)
 	    {
 	      // Calendar event still exists -- verify which of the calendar
-	      // and email events is the most recent.
+	      // and email events is the most recent. We must also update
+	      // the event (or recurrence-id) with the email's content, otherwise
+	      // we would never get major properties updates
 	      if ([calendarEvent compare: emailEvent] == NSOrderedAscending)
-		chosenEvent = emailEvent;
+		{
+		  iCalCalendar *parent;
+		  
+		  parent = [calendarEvent parent];
+		  [parent removeChild: calendarEvent];
+		  [parent addChild: emailEvent];
+		  [*eventObject saveContentString: [parent versitString]];
+		  [*eventObject flush];
+		  chosenEvent = emailEvent;
+		}
 	      else
 		{
 		  chosenEvent = calendarEvent;
@@ -213,6 +234,9 @@
   return chosenEvent;
 }
 
+//
+//
+//
 - (WOResponse *) _changePartStatusAction: (NSString *) newStatus
                             withDelegate: (iCalPerson *) delegate
 {
@@ -241,12 +265,6 @@
   
   return response;
 }
-
-//- (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
-//			   inContext: (WOContext*) localContext
-//{
-//  return YES;
-//}
 
 - (WOResponse *) acceptAction
 {
@@ -439,20 +457,5 @@
 
   return response;
 }
-
-// - (WOResponse *) markTentativeAction
-// {
-//   return [self _changePartStatusAction: @"TENTATIVE"];
-// }
-
-// - (WOResponse *) addToCalendarAction
-// {
-//   return [self responseWithStatus: 404];
-// }
-
-// - (WOResponse *) deleteFromCalendarAction
-// {
-//   return [self responseWithStatus: 404];
-// }
 
 @end

@@ -736,13 +736,7 @@
     }
 
   [super saveComponent: newEvent];
-
-  [fullCalendar release];
-  fullCalendar = nil;
-  [safeCalendar release];
-  safeCalendar = nil;
-  [originalCalendar release];
-  originalCalendar = nil;
+  [self flush];
 
   return nil;
 }

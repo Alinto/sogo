@@ -47,6 +47,7 @@
   NSString *componentTag;
 }
 
+- (void) flush;
 - (NSString *) componentTag;
 - (void) setComponentTag: (NSString *) theTag;
 

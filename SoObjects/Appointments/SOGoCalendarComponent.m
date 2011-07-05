@@ -160,6 +160,13 @@
   [super dealloc];
 }
 
+- (void) flush
+{
+  DESTROY(fullCalendar);
+  DESTROY(safeCalendar);
+  DESTROY(originalCalendar);
+}
+
 - (NSString *) davContentType
 {
   return @"text/calendar";
