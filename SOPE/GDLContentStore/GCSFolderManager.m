@@ -728,15 +728,15 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
 				   andChannel: (EOAdaptorChannel *) channel
 				       atPath: (NSString *) path
 {
-  NSException *error;
-  NSString *baseURL, *tableName, *quickTableName, *aclTableName, *createQuery,
-    *sql;
+  NSString *baseURL, *tableName, *quickTableName, *aclTableName, *createQuery, *sql;
+  GCSSpecialQueries *specialQuery;
   EOAdaptorContext *aContext;
   NSMutableArray *paths;
-  GCSSpecialQueries *specialQuery;
+  NSException *error;
+  NSRange range;
+  
+  paths = [NSMutableArray arrayWithArray: [path componentsSeparatedByString: @"/"]];
 
-  paths
-    = [NSMutableArray arrayWithArray: [path componentsSeparatedByString: @"/"]];
   while ([paths count] < 5)
     [paths addObject: @"NULL"];
   
@@ -747,9 +747,14 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   quickTableName = [tableName stringByAppendingString: @"_quick"];
   aclTableName = [tableName stringByAppendingString: @"_acl"];
 
-  // TBD: fix SQL injection issues
-  baseURL
-    = [[folderInfoLocation absoluteString] stringByDeletingLastPathComponent];
+  // TBD: fix SQL injection issues.
+  // We no longer call stringByDeletingLastPathComponent since, since GNUstep 1.22,
+  // it'll replace // characters in the URL with /, so mysql:// becomes mysql:/
+  // This is to conform with recent Apple changes.
+  baseURL = [folderInfoLocation absoluteString];
+  range = [baseURL rangeOfString: @"/" options: NSBackwardsSearch];
+  if (range.location != NSNotFound)
+    baseURL = [baseURL substringToIndex: range.location];
   
   sql = [NSString stringWithFormat: @"INSERT INTO %@"
 		  @"        (c_path, c_path1, c_path2, c_path3, c_path4,"

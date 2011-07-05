@@ -13,6 +13,10 @@
 	* SoObjects/SOGo/SOGoSieveManager.m: Added patch from
 	bug #1344 - which fixes Sieve script generation errors
 	for reject filters.
+	* SOPE/GDLContentStore/GCSFolderManager.m (
+	_reallyCreateFolderWithName:andFolderType:...): Fix
+	path handling for recent GNUstep base versions. This
+	fixes bug #1327.
 
 2011-07-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
