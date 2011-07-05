@@ -41,16 +41,18 @@
   int queryTimeout;
 
   NSString *sourceID;
-  NSString *bindDN;
+  NSString *bindDN;       // The bindDN/password could be either the source's one
+  NSString *password;     // or the current user if _bindAsCurrentUser is set to YES
+  NSString *sourceBindDN; // while sourceBindDN/sourceBindPassword always belong to the source
+  NSString *sourceBindPassword;
   NSString *hostname;
   unsigned int port;
-  NSString *password;
   NSString *encryption;
   NSString *_filter;
   NSString *_scope;
 
   NSString *baseDN;
-  NSString *IDField; /* the first part of a user DN */
+  NSString *IDField;     // the first part of a user DN
   NSString *CNField;
   NSString *UIDField;
   NSArray *mailFields, *searchFields;

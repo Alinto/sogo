@@ -1,7 +1,7 @@
 2011-07-05  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartICalActions.m
-	(_setupChosenEventAndEventObject:) we now correctly
+	(-_setupChosenEventAndEventObject:) we now correctly
 	update the right event in the database in order to
 	update major properties coming from external invitations
 	during updates.
@@ -14,9 +14,13 @@
 	bug #1344 - which fixes Sieve script generation errors
 	for reject filters.
 	* SOPE/GDLContentStore/GCSFolderManager.m (
-	_reallyCreateFolderWithName:andFolderType:...): Fix
+	-_reallyCreateFolderWithName:andFolderType:...): Fix
 	path handling for recent GNUstep base versions. This
 	fixes bug #1327.
+	* SoObjects/SOGo/LDAPSource.m (-checkLogin:password:...)
+	We now make sure to use the original source's bindDN/password
+	when looking up the user's DN for indirect binds. This should
+	fix bug #1342.
 
 2011-07-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
 

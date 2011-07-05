@@ -129,6 +129,9 @@ static NSArray *commonSearchFields;
     }
 }
 
+//
+//
+//
 + (id) sourceFromUDSource: (NSDictionary *) udSource
                  inDomain: (NSString *) sourceDomain
 {
@@ -141,15 +144,20 @@ static NSArray *commonSearchFields;
   return newSource;
 }
 
+//
+//
+//
 - (id) init
 {
   if ((self = [super init]))
     {
       bindDN = nil;
+      password = nil;
+      sourceBindDN = nil;
+      sourceBindPassword = nil;
       hostname = nil;
       port = 389;
       encryption = nil;
-      password = nil;
       sourceID = nil;
       domain = nil;
 
@@ -179,12 +187,17 @@ static NSArray *commonSearchFields;
   return self;
 }
 
+//
+//
+//
 - (void) dealloc
 {
   [bindDN release];
+  [password release];
+  [sourceBindDN release];
+  [sourceBindPassword release];
   [hostname release];
   [encryption release];
-  [password release];
   [baseDN release];
   [IDField release];
   [CNField release];
@@ -206,6 +219,9 @@ static NSArray *commonSearchFields;
   [super dealloc];
 }
 
+//
+//
+//
 - (id) initFromUDSource: (NSDictionary *) udSource
                inDomain: (NSString *) sourceDomain
 {
@@ -214,7 +230,7 @@ static NSArray *commonSearchFields;
 
   if ((self = [self init]))
     {
-      ASSIGN (sourceID, [udSource objectForKey: @"id"]);
+      ASSIGN(sourceID, [udSource objectForKey: @"id"]);
 
       [self setBindDN: [udSource objectForKey: @"bindDN"]
              password: [udSource objectForKey: @"bindPassword"]
@@ -261,10 +277,10 @@ static NSArray *commonSearchFields;
       else
         queryTimeout = [dd ldapQueryTimeout];
 
-      ASSIGN (modulesConstraints,
-              [udSource objectForKey: @"ModulesConstraints"]);
-      ASSIGN (_filter, [udSource objectForKey: @"filter"]);
-      ASSIGN (_scope, ([udSource objectForKey: @"scope"]
+      ASSIGN(modulesConstraints,
+	     [udSource objectForKey: @"ModulesConstraints"]);
+      ASSIGN(_filter, [udSource objectForKey: @"filter"]);
+      ASSIGN(_scope, ([udSource objectForKey: @"scope"]
                        ? [udSource objectForKey: @"scope"]
                        : (id)@"sub"));
 
@@ -277,6 +293,7 @@ static NSArray *commonSearchFields;
 
 - (void) setBindDN: (NSString *) theDN
 {
+  //NSLog(@"Setting bind DN to %@", theDN);
   ASSIGN(bindDN, theDN);
 }
 
@@ -297,17 +314,23 @@ static NSArray *commonSearchFields;
 	encryption: (NSString *) newEncryption
  bindAsCurrentUser: (NSString *) bindAsCurrentUser
 {
-  ASSIGN (bindDN, newBindDN);
-  ASSIGN (encryption, [newEncryption uppercaseString]);
+  ASSIGN(bindDN, newBindDN);
+  ASSIGN(password, newBindPassword);
+  ASSIGN(sourceBindDN, newBindDN);
+  ASSIGN(sourceBindPassword, newBindPassword);
+
+  ASSIGN(encryption, [newEncryption uppercaseString]);
   if ([encryption isEqualToString: @"SSL"])
     port = 636;
-  ASSIGN (hostname, newBindHostname);
+  ASSIGN(hostname, newBindHostname);
   if (newBindPort)
     port = [newBindPort intValue];
-  ASSIGN (password, newBindPassword);
   _bindAsCurrentUser = [bindAsCurrentUser boolValue];
 }
 
+//
+//
+//
 - (void) setBaseDN: (NSString *) newBaseDN
 	   IDField: (NSString *) newIDField
 	   CNField: (NSString *) newCNField
@@ -320,21 +343,21 @@ static NSArray *commonSearchFields;
 	 kindField: (NSString *) newKindField
 andMultipleBookingsField: (NSString *) newMultipleBookingsField
 {
-  ASSIGN (baseDN, [newBaseDN lowercaseString]);
+  ASSIGN(baseDN, [newBaseDN lowercaseString]);
   if (newIDField)
-    ASSIGN (IDField, newIDField);
+    ASSIGN(IDField, newIDField);
   if (newCNField)
-    ASSIGN (CNField, newCNField);
+    ASSIGN(CNField, newCNField);
   if (newUIDField)
-    ASSIGN (UIDField, newUIDField);
+    ASSIGN(UIDField, newUIDField);
   if (newIMAPHostField)
-    ASSIGN (IMAPHostField, newIMAPHostField);
+    ASSIGN(IMAPHostField, newIMAPHostField);
   if (newIMAPLoginField)
-    ASSIGN (IMAPLoginField, newIMAPLoginField);
+    ASSIGN(IMAPLoginField, newIMAPLoginField);
   if (newMailFields)
-    ASSIGN (mailFields, newMailFields);
+    ASSIGN(mailFields, newMailFields);
   if (newSearchFields)
-    ASSIGN (searchFields, newSearchFields);
+    ASSIGN(searchFields, newSearchFields);
   if (newBindFields)
     {
       // Before SOGo v1.2.0, bindFields was a comma-separated list
@@ -364,6 +387,9 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
     ASSIGN(multipleBookingsField, newMultipleBookingsField);
 }
 
+//
+//
+//
 - (BOOL) _setupEncryption: (NGLdapConnection *) encryptedConn
 {
   BOOL rc;
@@ -383,6 +409,9 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   return rc;
 }
 
+//
+//
+//
 - (NGLdapConnection *) _ldapConnection
 {
   NGLdapConnection *ldapConnection;
@@ -417,6 +446,9 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   return ldapConnection;
 }
 
+//
+//
+//
 - (NSString *) domain
 {
   return domain;
@@ -476,6 +508,9 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   return userDN;
 }
 
+//
+//
+//
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
 	       perr: (SOGoPasswordPolicyError *) _perr
@@ -502,7 +537,16 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 	  if (!userDN)
 	    {
 	      if (bindFields)
-		userDN = [self _fetchUserDNForLogin: _login];
+		{
+		  // We MUST always use the source's bindDN/password in
+		  // order to lookup the user's DN. This is important since
+		  // if we use bindAsCurrentUser, we could stay bound and
+		  // lookup the user's DN (for an other user that is trying
+		  // to log in) but not be able to do so due to ACLs in LDAP.
+		  [self setBindDN: sourceBindDN];
+		  [self setBindPassword: sourceBindPassword];
+		  userDN = [self _fetchUserDNForLogin: _login];
+		}
 	      else
 		userDN = [NSString stringWithFormat: @"%@=%@,%@",
 				   IDField, _login, baseDN];
@@ -537,6 +581,9 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   return didBind;
 }
 
+//
+//
+//
 - (BOOL) changePasswordForLogin: (NSString *) login
 		    oldPassword: (NSString *) oldPassword
 		    newPassword: (NSString *) newPassword
