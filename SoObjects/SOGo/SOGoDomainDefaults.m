@@ -124,6 +124,11 @@
   return [self stringForKey: @"SOGoIMAPAclStyle"];
 }
 
+- (NSString *) imapAclGroupIdPrefix
+{
+  return [self stringForKey: @"NGImap4ConnectionGroupIdPrefix"];
+}
+
 - (NSString *) imapFolderSeparator
 {
   return [self stringForKey: @"NGImap4ConnectionStringSeparator"];

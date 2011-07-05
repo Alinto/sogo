@@ -43,6 +43,7 @@
 - (NSString *) imapServer;
 - (NSString *) sieveServer;
 - (NSString *) imapAclStyle;
+- (NSString *) imapAclGroupIdPrefix;
 - (NSString *) imapFolderSeparator;
 - (BOOL) imapAclConformsToIMAPExt;
 - (BOOL) forceIMAPLoginWithEmail;

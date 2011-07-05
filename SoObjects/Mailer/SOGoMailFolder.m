@@ -898,7 +898,7 @@ static NSString *defaultUserID =  @"anyone";
   return character;
 }
 
-- (NSString *) _sogoAclsToImapAcls: (NSArray *) sogoAcls
+- (NSString *) _sogoACLsToIMAPACLs: (NSArray *) sogoAcls
 {
   NSMutableString *imapAcls;
   NSEnumerator *acls;
@@ -943,6 +943,15 @@ static NSString *defaultUserID =  @"anyone";
   return imapAcls;
 }
 
+- (NSString *) _sogoACLUIDToIMAPUID: (NSString *) uid
+{
+  if ([uid hasPrefix: @"@"])
+    return [[[[context activeUser] domainDefaults] imapAclGroupIdPrefix]
+             stringByAppendingString: [uid substringFromIndex: 1]];
+  else
+    return uid;
+}
+
 - (void) _removeIMAPExtUsernames
 {
   NSMutableDictionary *newIMAPAcls;
@@ -963,6 +972,32 @@ static NSString *defaultUserID =  @"anyone";
   mailboxACL = newIMAPAcls;
 }
 
+- (void) _convertIMAPGroupnames
+{
+  NSMutableDictionary *newIMAPAcls;
+  NSEnumerator *usernames;
+  NSString *username;
+  NSString *newUsername;
+  NSString *imapPrefix;
+
+  imapPrefix = [[[context activeUser] domainDefaults] imapAclGroupIdPrefix];
+  
+  newIMAPAcls = [[NSMutableDictionary alloc] init];
+  
+  usernames = [[mailboxACL allKeys] objectEnumerator];
+  while ((username = [usernames nextObject]))
+    {
+      if ([username hasPrefix: imapPrefix])
+        newUsername = [@"@" stringByAppendingString: [username substringFromIndex: [imapPrefix length]]];
+      else
+        newUsername = username;
+      [newIMAPAcls setObject: [mailboxACL objectForKey: username]
+		   forKey: newUsername];
+    }
+  [mailboxACL release];
+  mailboxACL = newIMAPAcls;
+}
+
 - (void) _readMailboxACL
 {
   [mailboxACL release];
@@ -970,6 +1005,7 @@ static NSString *defaultUserID =  @"anyone";
   mailboxACL = [[self imap4Connection] aclForMailboxAtURL: [self imap4URL]];
   [mailboxACL retain];
 
+  [self _convertIMAPGroupnames];
   if ([[self mailAccountFolder] imapAclConformsToIMAPExt])
     [self _removeIMAPExtUsernames];
 }
@@ -1061,7 +1097,7 @@ static NSString *defaultUserID =  @"anyone";
 
   uids = [users objectEnumerator];
   while ((currentUID = [uids nextObject]))
-    [client deleteACL: folderName uid: currentUID];
+    [client deleteACL: folderName uid: [self _sogoACLUIDToIMAPUID: currentUID]];
   [mailboxACL release];
   mailboxACL = nil;
 }
@@ -1071,9 +1107,9 @@ static NSString *defaultUserID =  @"anyone";
 {
   NSString *acls, *folderName;
 
-  acls = [self _sogoAclsToImapAcls: roles];
+  acls = [self _sogoACLsToIMAPACLs: roles];
   folderName = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
-  [[imap4 client] setACL: folderName rights: acls uid: uid];
+  [[imap4 client] setACL: folderName rights: acls uid: [self _sogoACLUIDToIMAPUID: uid]];
 
   [mailboxACL release];
   mailboxACL = nil;

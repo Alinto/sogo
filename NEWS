@@ -4,6 +4,7 @@ New Features
 - initial support for threaded-view in the webmail interface
 - sogo-tool: new "rename-user" command that automatically updates all the
   references in the database after modifying a user id
+- groups support for IMAP ACLs
 
 Enhancements
  - improved list selection and contextual menu behavior in all web modules

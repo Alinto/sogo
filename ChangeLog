@@ -8,6 +8,8 @@
 	* SoObjects/Appointments/SOGoAppointmentObject.m (-PUTAction:)
 	We check if uid is not nil prior comparing it to the
 	owner. This fixes bug #1323
+	* Added patches included in bug #1348 - which now allows
+	group-based ACLs for IMAP.
 
 2011-07-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
