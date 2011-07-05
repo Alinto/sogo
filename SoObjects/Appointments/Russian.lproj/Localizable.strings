@@ -8,7 +8,7 @@ vtodo_class1 = "(Личная задача)";
 vtodo_class2 = "(Конфиденциальная задача)";
 
 /* Receipts */
-"Title:" = "Заглавие:";
+"Title:" = "Название:";
 "Start:" = "Начало:";
 "End:" = "Конец:";
 
@@ -18,11 +18,11 @@ vtodo_class2 = "(Конфиденциальная задача)";
 
 "Receipt: invitation updated" = "Подтверждение: приглашение обновлено";
 "The following attendees(s):" = "Следующие участники:";
-"... have been notified of the changes to the following event:" = "... были уведомлены о изменениях следующего мероприятия:";
+"... have been notified of the changes to the following event:" = "... были уведомлены об изменениях следующего мероприятия:";
 
 "Receipt: attendees removed from an event" = "Подтверждение: участники удалены из мероприятия";
-"You have removed the following attendees(s):" = "Вы удалили следующих участников:";
-"... from the following event:" = "... из участия в следующем мероприятии:";
+"You have removed the following attendees(s):" = "Вы удалили следующих приглашенных:";
+"... from the following event:" = "... из списка участников в следующем мероприятии:";
 
 /* IMIP messages */
 "startDate_label" = "Начало:";
@@ -35,16 +35,16 @@ vtodo_class2 = "(Конфиденциальная задача)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Приглашение на мероприятие: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(послал %{SentBy}) ";
-"%{Organizer} %{SentByText} пригласил вас на %{Summary}.\n\начало: %{StartDate} в %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}" = "%{Organizer} %{SentByText}пригласил вас на  %{Summary}.\n\nНачало: %{StartDate} в %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} пригласил вас на %{Summary}.\n\Начало: %{StartDate} в %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Мероприятие отменено: \"%{Summary}\"";
-"%{Organizer} %{SentByText} отменил(а) это мероприятие: %{Summary}.\n\nНачало: %{StartDate} в %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}"
-= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} отменил это мероприятие: %{Summary}.\n\nНачало: %{StartDate} в %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "Мероприятие \"%{Summary}\"  %{OldStartDate} в %{OldStartTime} изменено";
+= "Изменено мероприятие \"%{Summary}\", назначенное на %{OldStartDate} в %{OldStartTime}.";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
 = "в мероприятии \"%{Summary}\" изменены следующие параметры:";
 "Please accept or decline those changes."

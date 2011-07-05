@@ -13,7 +13,7 @@
 "Contact editor" = "Редактор контактов";
 "Contact viewer" = "Просмотр контактов";
 "Email" = "Email";
-"Screen Name" = "Экранное имя";
+"Screen Name" = "Отображаемое имя";
 "Extended" = "Расширенное";
 "Fax" = "Факс";
 "Firstname" = "Имя";
@@ -42,9 +42,9 @@
 
 "Create a new address book card" = "Создать новую запись в адресной книге";
 "Create a new list" = "Cоздать новый список";
-"Edit the selected card" = "Редактировать выбранную карту";
+"Edit the selected card" = "Редактировать выбранную карточку";
 "Send a mail message" = "Послать почтовое сообщение";
-"Delete selected card or address book" = "Удалить выбранную карту или адресную книгу";
+"Delete selected card or address book" = "Удалить выбранную карточку или адресную книгу";
 "Reload all contacts" = "Перезагрузить все контакты";
 
 "htmlMailFormat_UNKNOWN" = "Unknown";
@@ -88,7 +88,7 @@
 "Pager: " = "Пейджер: ";
 
 /* categories */
-"contacts_category_labels" = "Коллеги, Конкуренты, Потребители, Друзья, Семья, Партнеры по бизнеск, Провайдеры, Пресса, VIP";
+"contacts_category_labels" = "Коллега, Конкурент, Клиент, Друг, Семья, Партнер по бизнесу, Поставщик, Пресса, VIP";
 "Categories" = "Категории";
 "New category" = "Новые категории";
 
@@ -106,16 +106,16 @@
 "Work" = "Работа";
 "Other Infos" = "Другая информация";
 
-"Note: " = "Замечание: ";
+"Note: " = "Заметка: ";
 "Timezone: " = "Timezone: ";
 "Birthday:" = "День рождения";
-"Birthday (yyyy-mm-dd):" = "День рождения (yyyy-mm-dd):";
+"Birthday (yyyy-mm-dd):" = "День рождения (ГГГГ-ММ-ДД):";
 "Freebusy URL: " = "Freebusy URL: ";
 
 "Add as..." = "Добавить как...";
 "Recipient" = "Получатель";
-"Carbon Copy" = "Копии";
-"Blind Carbon Copy" = "Bcc";
+"Carbon Copy" = "Копия";
+"Blind Carbon Copy" = "Скрытая копия";
 
 "New Addressbook..." = "Новая адресная книга...";
 "Subscribe to an Addressbook..." = "Подписаться на адресную книгу...";
@@ -133,18 +133,18 @@
 = "Вы уверены, что вы хотите удалить выбранные контакты?";
 
 "You don't have the required privileges to perform the operation."
-= "У вас нет требуемых привилегий для выполнения этой операции.";
+= "Нет достаточных привилегий для выполнения этой операции.";
 "You cannot delete the card of \"%{0}\"."
 = "Вы не можете удалить запись \"%{0}\".";
 
-"Address Book Name" = "Имя адресной книги";
+"Address Book Name" = "Название адресной книги";
 
 "You cannot subscribe to a folder that you own!"
-= "Вы не можете подписаться на папку, которой Вы владеете.";
+= "Вы не можете подписаться на папку, которой владеете.";
 "Unable to subscribe to that folder!"
 = "Невозможно подписаться на эту папку.";
 
-"User rights for:" = "Пользовательские права для:";
+"User rights for:" = "Права пользователя на:";
 
 "Any Authenticated User" = "Любой аутентифицированный пользователь";
 "Public Access" = "Публичный доступ";
@@ -154,7 +154,7 @@
 "This person can edit the cards of this addressbook."
 = "Этот человек может редактировать записи в этой адресной книге";
 "This person can list the content of this addressbook."
-= "Этот человек может просматривать эту адресную книгу";
+= "Этот человек может просматривать список карточек в этой адресной книге";
 "This person can read the cards of this addressbook."
 = "Этот человек может читать записи в этой адресной книге";
 "This person can erase cards from this addressbook."
@@ -185,7 +185,7 @@
 "Export" = "Экспорт";
 "Export Address Book..." = "Экспорт адресной книги...";
 "Import Cards" = "Импорт записей";
-"Select a vCard or LDIF file." = "Выберите vCard or LDIF файл.";
+"Select a vCard or LDIF file." = "Выберите файл vCard или LDIF.";
 "Upload" = "Загрузить";
 "Done" = "Готово";
 "An error occured while importing contacts." = "Произошла ошибка при импорте контактов.";

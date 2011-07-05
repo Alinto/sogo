@@ -12,7 +12,7 @@
 </var:if>
 
 <var:if condition="isBody">
-The <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> папка была удалена.
+Папка <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> была удалена.
 <!--
 The following URL is now no longer active:
 

@@ -18,12 +18,12 @@
 "Delete" = "Удалить";
 
 /* contacts categories */
-"contacts_category_labels" = "Коллега, Конкурент, Потребитель, Друг, Член семьи, Партнер по бизнесу, Провайдер, Пресса, VIP";
+"contacts_category_labels" = "Коллега, Конкурент, Клиент, Друг, Член семьи, Партнер по бизнесу, Поставщик, Пресса, VIP";
 
 /* vacation (auto-reply) */
-"Enable vacation auto reply" = "Включить автоматическое отправление сообщения об отпуске";
+"Enable vacation auto reply" = "Включить автоматическую отправку сообщения об отпуске";
 "Auto reply message :" = "Автоматически посылать этот текст каждому отправителю один раз :";
-"Email addresses (separated by commas) :" = "Email addresses (разделенные запятыми) :";
+"Email addresses (separated by commas) :" = "Email адреса (разделенные запятыми) :";
 "Add default email addresses" = "Добавить e-mail адреса по умолчанию";
 "Days between responses :" = "Дни между ответами :";
 "Do not send responses to mailing lists" = "Не отправлять ответы на почтовые списки рассылки";
@@ -31,7 +31,7 @@
 = "Пожалуйста, укажите Ваше сообщение и адреса электронной почты для которых Вы хотите включить автоматический ответ.";
 
 /* forward messages */
-"Forward incoming messages" = "Переслать входящие сообщения";
+"Forward incoming messages" = "Пересылать входящие сообщения";
 "Keep a copy" = "Оставлять копию";
 "Please specify an address to which you want to forward your messages."
 = "Пожалуйста укажите адрес, на который вы хотите переадресовать ваши сообщения.";
@@ -161,13 +161,13 @@
 
 /* Event+task categories */
 "category_none" = "None";
-"calendar_category_labels" = "Годовщина,Дни рождения,Деловые,Звонки,Клиенты,Конкуренты,Потребители,Избранное,Вслед за,Подарки,Праздники,Идеи,Собрания,Темы,Разное,Персональное,Проекты,Публичные праздники,Статус,Поставщики,Путешествия,Отпуск";
+"calendar_category_labels" = "Годовщина,День рождения,Деловые,Звонки,Клиенты,Конкуренты,Потребители,Избранное,Вслед за,Подарки,Праздники,Идеи,Встречи,Проблемы,Разное,Персональное,Проекты,Государственный праздник,Статус,Поставщики,Путешествия,Отпуск";
 
 /* Default module */
 "Calendar" = "Календарь";
 "Contacts" = "Адресная книга";
 "Mail" = "Почта";
-"Last" = "Последнее использованне";
+"Last" = "Последнее использование";
 "Default module :" = "Модуль по умолчанию :";
 
 "Language :" = "Язык :";
@@ -192,7 +192,7 @@
 "When I receive a request for a return receipt:" = "Когда я получаю запрос об уведомлении о доставке:";
 "Never send a return receipt" = "Никогда не посылать уведомления о доставке";
 "Allow return receipts for some messages" = "Разрешить уведомления о доставке для некоторых сообщений";
-"If I'm not in the To or Cc of the message:" = "Если я не в To: или Cc: для этого сообщения:";
+"If I'm not in the To or Cc of the message:" = "Если я не в поле Кому: или Копия: для этого сообщения:";
 "If the sender is outside my domain:" = "Если отправитель вне моего домена:";
 "In all other cases:" = "Во всех остальных случаях:";
 
@@ -211,7 +211,7 @@
 "For incoming messages that" = "Для входящих сообщений которые";
 "match all of the following rules:" = "отвечают всем из следующих правил:";
 "match any of the following rules:" = "отвечают любому из следующих правил:";
-"match all messages" = "отвечают всем сообщениям";
+"match all messages" = "все сообщения";
 "Perform these actions:" = "Произвести следующие действия:";
 
 "Subject" = "Subject";
@@ -224,22 +224,22 @@
 "Flag the message with:" = "Пометить сообщение с:";
 "Discard the message" = "Уничтожить сообщение";
 "File the message in:" = "Сохранить сообщение в:";
-"Keep the message" = "Держать сообщение";
+"Keep the message" = "Сохранить сообщение";
 "Forward the message to:" = "Переслать сообщение к:";
 "Send a reject message:" = "Послать сообщение об отказе:";
 "Send a vacation message" = "Послать сообщение об отпуске";
-"Stop processing filter rules" = "Остановить правила фильтра";
+"Stop processing filter rules" = "Остановить правила фильтрации";
 
 "is under" = "менее";
 "is over" = "более";
-"is" = "есть";
-"is not" = "не есть";
+"is" = "равно";
+"is not" = "не равно";
 "contains" = "содержит";
 "does not contain" = "не содержит";
-"matches" = "сопоставлено";
-"does not match" = "не сопоставлено";
-"matches regex" = "сопоставлено регулярному выражению";
-"does not match regex" = "не сопоставлено регулярному выражению";
+"matches" = "совпадает";
+"does not match" = "не совпадает";
+"matches regex" = "сопоставимо по регулярному выражению";
+"does not match regex" = "не сопоставимо регулярному выражению";
 
 "Seen" = "Просмотрено";
 "Deleted" = "Удалено";
