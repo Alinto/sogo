@@ -169,14 +169,14 @@ typedef enum
 	      authpwd = @"";
 	      value = @"";
  
-	      if (max > 5)
+	      if (max > 4)
 		{
 		  r = [[arguments objectAtIndex: 3] rangeOfString: @":"];
 		  authname = [[arguments objectAtIndex: 3] substringToIndex: r.location];
 		  authpwd = [[arguments objectAtIndex: 3] substringFromIndex: r.location+1];
 		  key = [arguments objectAtIndex: 4];
 		  
-		  if (max > 6)
+		  if (max > 5)
 		    value = [arguments objectAtIndex: 5];
 		}
 	      else
@@ -223,7 +223,7 @@ typedef enum
 		      [source setObject: o  forKey: key];
 		    }
 		  else
-		    NSLog(@"Invalid JSON input - no changes performed in the database.");
+		    NSLog(@"Invalid JSON input - no changes performed in the database. The supplied value was: %@", value);
 		}
 		  
 	      [source synchronize];
