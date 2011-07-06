@@ -7,6 +7,7 @@ New Features
 - sogo-tool: new "user-preferences {get,set,unset} command to manipulate
   user's defaults/settings.
 - groups support for IMAP ACLs
+- now possible to define to-the-minute events/tasks
 
 Enhancements
  - improved list selection and contextual menu behavior in all web modules
