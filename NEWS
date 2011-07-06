@@ -11,6 +11,7 @@ New Features
 
 Enhancements
  - improved list selection and contextual menu behavior in all web modules
+ - updated Russian translation
 
 Bug Fixes
  - submenus in contextual menus splitted in multiple lists are now displayed correctly
