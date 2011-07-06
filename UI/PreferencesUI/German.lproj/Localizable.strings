@@ -230,8 +230,8 @@
 "is not" = "ist nicht";
 "contains" = "enthält";
 "does not contain" = "enthält nicht";
-"matches" = "ist gleich";
-"does not match" = "ist nicht gleich";
+"matches" = "stimmt überein mit";
+"does not match" = "stimmt nicht überein mit";
 "matches regex" = "entspricht regulären Ausdrücken";
 "does not match regex" = "entspricht nicht regulären Ausdrücken";
 
