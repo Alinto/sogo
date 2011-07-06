@@ -30,16 +30,16 @@ function endEditable(event, textField) {
     cell.addClassName("referenceListCell");
     textField.hide();
 
-    if (uid) {
-        var tmp = textField.value;
-        tmp = tmp.replace (/</, "&lt;");
-        tmp = tmp.replace (/>/, "&gt;");
+    var tmp = textField.value;
+    tmp = tmp.replace (/</, "&lt;");
+    tmp = tmp.replace (/>/, "&gt;");
+    if (!uid)
+        cell.up("TR").addClassName("notfound");
+    if (tmp)
         textSpan.update(tmp);
-    }
-    else {
+    else
         cell.up("TR").remove();
-    }
-
+    
     if (event)
         Event.stop(event);
     
@@ -108,8 +108,20 @@ function serializeReferences(e) {
         var uid = $(r[i]).readAttribute("uid");
         if (uid)
             cards.push(uid);
+        else {
+            var addresses = r[i].value.split(/[,;]/);
+            for (var j = 0; j < addresses.length; j++) {
+                var mailto = addresses[j].strip();
+                var email = extractEmailAddress(mailto);
+                var c_name = extractEmailName(mailto);
+                if (!email && !c_name)
+                    c_name = mailto;
+                cards.push(email + '|' + c_name);
+            }
+        }
     }
     $("referencesValue").value = cards.join(",");
+
     return true;
 }
 

@@ -21,9 +21,6 @@ TD.referenceListCell
   background: #CCDDEC;
   text-align: left;}
 
-TABLE#referenceList TD INPUT
-{ width: 97%; }
-
 DIV#referenceListWrapper
 { background: #CCDDEC;
   overflow: auto;
@@ -40,12 +37,24 @@ TR.referenceListRow
 { background: #CCDDEC;
   line-height: 2em; }
 
-TD.referenceListCell
-{ -moz-user-select: none; }
+TD.referenceListCell,
+TD.editing
+{ background-repeat: no-repeat;
+  background-position: 4px 50%;
+  background-image: url('abcard.png');
+  text-align: left;
+  -moz-user-select: none; }
 
 TD.referenceListCell SPAN,
-TD.referenceListCell INPUT
-{ margin-left: 3px; }
+TD.editing INPUT
+{ margin-left: 24px; }
+
+TD.editing INPUT,
+TABLE#referenceList TD INPUT
+{ width: 90%; }
+
+TR.notfound TD.referenceListCell
+{ color: #f00 !important; }
 
 DIV#windowButtons
 { position: fixed;
@@ -71,10 +80,9 @@ DIV#buttons
   vertical-align: middle;
   text-align: right; }
 
-td {color: #535D6D;}
+TD
+{ color: #535D6D; }
 
 DIV#listEditor
 { padding: 5px; }
 
-TD.editing
-{ text-align: left; }

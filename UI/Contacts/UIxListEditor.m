@@ -1,8 +1,9 @@
 /* UIxListEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2009 Inverse inc.
+ * Copyright (C) 2008-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +32,7 @@
 #import <NGCards/NGVCardReference.h>
 #import <NGCards/NGVList.h>
 
+#import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactGCSFolder.h>
 #import <Contacts/SOGoContactGCSList.h>
 
@@ -159,6 +161,46 @@
 		  
 		  [list addCardReference: cardReference];
 		}
+              else
+                {
+                  // Not a valid UID; expect a string formatted as :  "email|fullname"
+                  NSString *workMail, *fn, *newUID;
+                  NSArray *contactInfo;
+                  NGVCard *newCard;
+                  CardElement *newWorkMail;
+                  SOGoContactGCSEntry *newContact;
+                  
+                  contactInfo = [currentReference componentsSeparatedByString: @"|"];
+                  if ([contactInfo count] > 1)
+                    {
+                      workMail = [contactInfo objectAtIndex: 0];
+                      fn = [contactInfo objectAtIndex: 1];
+
+                      // Create a new vCard
+                      newUID = [NSString stringWithFormat: @"%@.vcf", [co globallyUniqueObjectId]];
+                      newCard = [NGVCard cardWithUid: newUID];
+                      newWorkMail = [CardElement new];
+                      [newWorkMail autorelease];
+                      [newWorkMail setTag: @"email"];
+                      [newWorkMail addType: @"work"];
+                      [newCard addChild: newWorkMail];
+                      [newWorkMail setValue: 0 to: workMail];
+                      [newCard setFn: fn];
+
+                      // Add vCard to current folder
+                      newContact = [SOGoContactGCSEntry objectWithName: newUID
+                                                           inContainer: folder];
+                      [newContact saveContentString: [newCard versitString]];
+
+                      // Create card reference for the list
+                      cardReference = [NGVCardReference elementWithTag: @"card"];
+                      [cardReference setFn: fn];
+                      [cardReference setEmail: workMail];
+                      [cardReference setReference: newUID];
+                      
+                      [list addCardReference: cardReference];
+                    }
+                }
 	    }
 	}
     }  

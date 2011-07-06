@@ -1,5 +1,15 @@
 2011-07-07  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxListEditor.js (endEditable): when a
+	string doesn't match an existing card, keep the entry but
+	highlight it in red.
+	(serializeReferences): when an entry is not associated to a card,
+	extract the email and fullname from the string to create a new card.
+
+	* UI/Contacts/UIxListEditor.m (-setReferencesValue:): if a card
+	reference doesn't match a known vCard UID, create a new vCard
+	like Thunderbird does.
+
 	* UI/MainUI/SOGoUserHomePage.m (-_usersForResults:inDomain:):
 	fixed bug when the domain was empty.
 	(-usersSearchAction): idem.
