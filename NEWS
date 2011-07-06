@@ -11,6 +11,7 @@ New Features
 
 Enhancements
  - improved list selection and contextual menu behavior in all web modules
+ - automatically create new cards when populating a contacts list with unknown entries
  - updated Russian translation
 
 Bug Fixes
