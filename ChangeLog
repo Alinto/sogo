@@ -1,3 +1,8 @@
+2011-07-06  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Mailer/NSData+Mail.m (bodyDataFromEncoding:)
+	Consider "binary" just like 7 or 8bit.
+
 2011-07-06  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (onShowCompletedTasks)

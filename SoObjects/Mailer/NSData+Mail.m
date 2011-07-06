@@ -42,7 +42,8 @@
       realEncoding = [encoding lowercaseString];
 
       if ([realEncoding isEqualToString: @"7bit"]
-          || [realEncoding isEqualToString: @"8bit"])
+          || [realEncoding isEqualToString: @"8bit"]
+	  || [realEncoding isEqualToString: @"binary"])
         decodedData = self;
       else if ([realEncoding isEqualToString: @"base64"])
         decodedData = [self dataByDecodingBase64];
