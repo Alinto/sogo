@@ -1,3 +1,9 @@
+2011-07-07  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MainUI/SOGoUserHomePage.m (-_usersForResults:inDomain:):
+	fixed bug when the domain was empty.
+	(-usersSearchAction): idem.
+
 2011-07-06  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Mailer/NSData+Mail.m (bodyDataFromEncoding:)

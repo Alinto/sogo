@@ -329,7 +329,7 @@
   BOOL activeUserIsInDomain;
 
   login = [[context activeUser] login];
-  activeUserIsInDomain = (domain == nil || [[[context activeUser] domain] isEqualToString: domain]);
+  activeUserIsInDomain = ([domain length] == 0 || [[[context activeUser] domain] isEqualToString: domain]);
 
   // We sort our array - this is pretty useful for the Web
   // interface of SOGo.
@@ -347,7 +347,7 @@
       if (!activeUserIsInDomain || ![uid isEqualToString: login])
         {
           jsonLine = [NSMutableArray arrayWithCapacity: 4];
-          if (domain)
+          if ([domain length])
             uid = [NSString stringWithFormat: @"%@@%@", uid, domain];
           [jsonLine addObject: uid];
           [jsonLine addObject: [contact objectForKey: @"cn"]];
@@ -380,7 +380,7 @@
       users = [self _usersForResults: [um fetchUsersMatching: contact
                                                     inDomain: domain]
                             inDomain: domain];
-      if (domain)
+      if ([domain length])
         {
           // Add results from visible domains
           sd = [SOGoSystemDefaults sharedSystemDefaults];
