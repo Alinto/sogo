@@ -181,13 +181,11 @@
   NSArray *folders;
   NSDictionary *data;
   WOResponse *response;
-  id inboxQuota;
 
   co = [self clientObject];
 
   rawFolders = [[co allFolderPaths] objectEnumerator];
   folders = [self _jsonFolders: rawFolders];
-  inboxQuota = nil;
 
   // The parameters order is important here, as if the server doesn't support
   // quota, inboxQuota will be nil and it'll terminate the list of objects/keys.

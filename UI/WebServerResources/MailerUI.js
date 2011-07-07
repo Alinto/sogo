@@ -315,8 +315,8 @@ function mailListToggleMessagesFlagged(row) {
         }
     }
     if (selectedRowsId.length > 0) {
-        var firstTd = row.childElements().first();
-        var img = firstTd.childElements().first();
+        var td = row.down("td.messageFlagColumn");
+        var img = td.childElements().first();
         
         var action = "markMessageFlagged";
         var flagged = true;
@@ -476,15 +476,16 @@ function deleteSelectedMessages(sender) {
                         var nextUid = nextRow.id.substr(4);
                         var nextIndex = Mailer.dataTable.dataSource.indexOf(nextUid);
                         Mailer.dataTable.dataSource.uids[nextIndex][2] = 1; // mark it as "first"
-                        Mailer.dataTable.invalidate(nextUid, true);
+                        Mailer.dataTable.dataSource.invalidate(nextUid); // next refresh will reload headers for row
                     }
                     if (nextRow.id.startsWith('row_')) {
                         Mailer.currentMessages[Mailer.currentMailbox] = nextRow.id.substr(4);
                         nextRow.selectElement();
-                        if (loadMessage(Mailer.currentMessages[Mailer.currentMailbox]) && !refreshFolder)
+                        if (loadMessage(Mailer.currentMessages[Mailer.currentMailbox]) && !refreshFolder) {
                             // Seen state has changed
-                            Mailer.dataTable.invalidate(Mailer.currentMessages[Mailer.currentMailbox], true);
+                            Mailer.dataTable.dataSource.invalidate(Mailer.currentMessages[Mailer.currentMailbox]);
                             refreshFolder = true;
+                        }
                     }
                 }
                 else {
@@ -496,7 +497,8 @@ function deleteSelectedMessages(sender) {
                     lastClickedRow = nextRow.rowIndex;
 	            lastClickedRowId = nextRow.id;
                 }
-                deleteCachedMailboxByType("trash");
+                if (Mailer.currentMailboxType != "trash")
+                    deleteCachedMailboxByType("trash");
             }
             else {
                 Mailer.dataTable.remove(uid);
@@ -522,8 +524,11 @@ function deleteSelectedMessages(sender) {
 }
 
 function deleteSelectedMessagesCallback(http) {
-    if (isHttpStatus204(http.status)) {
+    if (http.status == 200) {
         var data = http.callbackData;
+        var rdata = http.responseText.evalJSON(true);
+        if (rdata.quotas && data["mailbox"].startsWith('/0/'))      
+            updateQuotas(rdata.quotas);
 	if (data["refreshUnseenCount"])
             // TODO : the unseen count should be returned when calling the batchDelete remote action,
             // in order to avoid this extra AJAX call.
@@ -539,7 +544,8 @@ function deleteSelectedMessagesCallback(http) {
     }
     else {
         var html = new Element('div').update(http.responseText);
-        log ("Messages deletion failed (" + http.status + ") : " + html.down('p').innerHTML);
+        log ("Messages deletion failed (" + http.status + ") : ");
+        log (html.down('p').innerHTML);
         showAlertDialog(_("Operation failed"));
         refreshCurrentFolder();
     }
@@ -1637,7 +1643,7 @@ function loadMessageCallback(http) {
 	        // Warning: If the user can't set the read/unread flag, it won't
 	        // be reflected in the view unless we force the refresh.
                 if (http.callbackData.seenStateHasChanged)
-	            Mailer.dataTable.invalidate(msguid, true);
+                    Mailer.dataTable.dataSource.invalidate(msguid);
             }
             var cachedMessage = new Array();
             cachedMessage['idx'] = Mailer.currentMailbox + '/' + msguid;
@@ -2068,7 +2074,7 @@ function updateQuotas(quotas) {
     if (quotas)
         Mailer.quotas = quotas;
     if (Mailer.quotas && parseInt(Mailer.quotas.maxQuota) > 0) {
-        log ("updating quotas");
+        log ("updating quotas " + Mailer.quotas.usedSpace + "/" + Mailer.quotas.maxQuota);
         var treeContent = $("folderTreeContent");
         var tree = $("mailboxTree");
         var quotaDiv = $("quotaIndicator");

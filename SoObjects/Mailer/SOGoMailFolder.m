@@ -296,8 +296,12 @@ static NSString *defaultUserID =  @"anyone";
 	      
 	      // If we are deleting messages within the Trash folder itself, we
 	      // do not, of course, try to move messages to the Trash folder.
-	      if (![folderName isEqualToString: [self relativeImap4Name]])
-		{
+	      if ([folderName isEqualToString: [self relativeImap4Name]])
+                {
+                  withTrash = NO;
+                }
+              else
+                {
 		  // If our Trash folder doesn't exist when we try to copy messages
 		  // to it, we create it.
 		  result = [[client status: folderName  flags: [NSArray arrayWithObject: @"UIDVALIDITY"]]
@@ -331,11 +335,20 @@ static NSString *defaultUserID =  @"anyone";
                           objectForKey: @"result"];
       if ([result boolValue])
 	{
-	  [self markForExpunge];
-	  if (trashFolder)
-	    [trashFolder flushMailCaches];
-	  error = nil;
-	}
+          if (withTrash)
+            {
+              [self markForExpunge];
+              if (trashFolder)
+                [trashFolder flushMailCaches];
+              error = nil;
+            }
+          else
+            {
+              // When not using a trash folder, expunge the current folder
+              // immediately
+              error = [self expunge];
+            }
+        }
       else
 	error
 	  = [NSException exceptionWithHTTPStatus:500

@@ -48,6 +48,7 @@
 
 #import <Mailer/NSString+Mail.h>
 #import <Mailer/SOGoDraftsFolder.h>
+#import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailFolder.h>
 #import <Mailer/SOGoMailObject.h>
 #import <Mailer/SOGoSentFolder.h>
@@ -347,14 +348,12 @@
   BOOL asc;
   SOGoUser *activeUser;
   SOGoUserSettings *us;
-  SOGoMailAccounts *clientObject;
 
   sort = [self imap4SortKey];
   ascending = [[context request] formValueForKey: @"asc"];
   asc = [ascending boolValue];
 
   activeUser = [context activeUser];
-  clientObject = [self clientObject];
   module = @"Mail";
   us = [activeUser userSettings];
   moduleSettings = [us objectForKey: module];
@@ -630,6 +629,8 @@
   NSDictionary *data;
   NSRange r;
   int count;
+  SOGoMailAccount *account;
+  id quota;
   
   uids = [self getSortedUIDsInFolder: mailFolder]; // retrieves the form parameters "sort" and "asc"
 
@@ -649,9 +650,14 @@
         sortByThread = NO;
     }
   
+  // We also return the inbox quota
+  account = [mailFolder mailAccountFolder];
+  quota = [account getInboxQuota];
+
   data = [NSDictionary dictionaryWithObjectsAndKeys: uids, @"uids",
 		       headers, @"headers",
-                       [NSNumber numberWithBool: sortByThread], @"threaded", nil];
+                       [NSNumber numberWithBool: sortByThread], @"threaded", 
+                       quota, @"quotas", nil];
 
   return data;
 }
@@ -663,7 +669,9 @@
   NSDictionary *data;
   NSArray *uids, *threadedUids;
   NSString *noHeaders;
+  SOGoMailAccount *account;
   SOGoMailFolder *folder;
+  id quota;
   WORequest *request;
   WOResponse *response;
 
@@ -672,9 +680,11 @@
   [response setHeader: @"text/plain; charset=utf-8"
 	       forKey: @"content-type"];
   folder = [self clientObject];
+  
   // TODO: we might want to flush the caches?
   //[folder flushMailCaches];
   [folder expungeLastMarkedFolder];
+
   noHeaders = [request formValueForKey: @"no_headers"];
   if ([noHeaders length])
     {
@@ -687,8 +697,14 @@
           else
             sortByThread = NO;
         }
+
+      // We also return the inbox quota
+      account = [folder mailAccountFolder];
+      quota = [account getInboxQuota];
+
       data = [NSDictionary dictionaryWithObjectsAndKeys: uids, @"uids",
-                           [NSNumber numberWithBool: sortByThread], @"threaded", nil];
+                           [NSNumber numberWithBool: sortByThread], @"threaded", 
+                           quota, @"quotas", nil];
     }
   else
     data = [self getUIDsAndHeadersInFolder: folder];

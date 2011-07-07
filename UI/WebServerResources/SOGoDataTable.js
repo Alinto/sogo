@@ -292,6 +292,7 @@ var SOGoDataTableInterface = {
     invalidate: function(uid, withoutRefresh) {
         // Refetch the data for uid. Only refresh the data table if
         // necessary.
+//        log ("DataTable.invalidate(" + uid + ", with" + (withoutRefresh?"out":"") + " refresh)");
         var index = this.dataSource.invalidate(uid);
         this.currentRenderID = index + "-" + 1;
         this.dataSource.getData(this.currentRenderID,

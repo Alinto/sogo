@@ -229,9 +229,11 @@
 - (WOResponse *) batchDeleteAction
 {
   SOGoMailFolder *co;
+  SOGoMailAccount *account;
   WOResponse *response;
   NSArray *uids;
   NSString *value;
+  NSDictionary *data;
   BOOL withoutTrash;
 
   co = [self clientObject];
@@ -244,7 +246,12 @@
       uids = [value componentsSeparatedByString: @","];
       response = (WOResponse *) [co deleteUIDs: uids useTrashFolder: !withoutTrash inContext: context];
       if (!response)
-	response = [self responseWith204];
+        {
+          account = [co mailAccountFolder];
+          data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
+          response = [self responseWithStatus: 200
+                                    andString: [data jsonRepresentation]];
+        }
     }
   else
     {
@@ -520,6 +527,8 @@
   if (!error)
     {
       [co flushMailCaches];
+
+      // Delete folders within the trash
       connection = [co imap4Connection];
       subfolders = [[co allFolderURLs] objectEnumerator];
       while ((currentURL = [subfolders nextObject]))
@@ -585,6 +594,7 @@
   EOQualifier *searchQualifier;
   NSArray *searchResult;
   NSDictionary *imapResult;
+//  NSMutableDictionary *data;
   NGImap4Connection *connection;
   NGImap4Client *client;
   int unseen;
@@ -606,7 +616,7 @@
     }
   else
     unseen = 0;
- 
+
   return [NSDictionary
            dictionaryWithObject: [NSNumber numberWithInt: unseen]
                          forKey: @"unseen"];

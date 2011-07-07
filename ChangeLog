@@ -1,3 +1,21 @@
+2011-07-08  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailListActions.m (-getUIDsAndHeadersInFolder)
+	(-getSortedUIDsAction): both methods now return the inbox quota
+	along with the other data.
+
+	* UI/MailerUI/UIxMailFolderActions.m (-batchDeleteAction): return
+	the inbox quota when the messages were successfully deleted.
+
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-deleteUIDs:useTrashFolder:inContext:): when not using the trash folder
+	or when deleting a message within the trash folder, we now expunge the
+	folder immediately.
+
+	* UI/WebServerResources/SOGoMailDataSource.js (init): quotas
+	information can now be passed as argument. It will be passed back
+	to the method "updateQuotas" from MailerUI.js.
+
 2011-07-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContext.m (-openDir:): implemented.

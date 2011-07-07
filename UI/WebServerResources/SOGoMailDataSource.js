@@ -35,6 +35,7 @@ SOGoMailDataSource = Class.create({
         },
 
         remove: function(uid) {
+//            log ("MailDataSource.remove(" + uid + ")");
             var index = this.invalidate(uid);
             if (index >= 0) {
                 this.uids.splice(index, 1);
@@ -43,7 +44,7 @@ SOGoMailDataSource = Class.create({
             return index;
         },
 
-        init: function(uids, threaded, headers) {
+        init: function(uids, threaded, headers, quotas) {
             this.uids = uids;
             if (typeof threaded != "undefined") {
                 this.threaded = threaded;
@@ -51,6 +52,9 @@ SOGoMailDataSource = Class.create({
                     this.uids.shift(); // drop key fields
             }
 //            log ("MailDataSource.init() " + this.uids.length + " uids loaded");
+
+            if (quotas && Object.isFunction(updateQuotas))
+                updateQuotas(quotas);
 
             if (headers) {
                 var keys = headers[0];
@@ -89,7 +93,7 @@ SOGoMailDataSource = Class.create({
                 if (http.responseText.length > 0) {
                     var data = http.responseText.evalJSON(true);
                     if (data.uids)
-                        this.init(data.uids, data.threaded, data.headers);
+                        this.init(data.uids, data.threaded, data.headers, data.quotas);
                     else
                         this.init(data);
                     if (this.delayedGetData) {
@@ -146,7 +150,8 @@ SOGoMailDataSource = Class.create({
             for (i = 0, j = start; j < end; j++) {
                 var uid = this.threaded? this.uids[j][0] : this.uids[j];
                 if (!this.cache.get(uid)) {
-                     missingUids[i] = uid;
+//                    log ("MailDataSource._getData missing headers of uid " + uid + " at index " + j + (this.threaded? " (":" (non-") + "threaded)");
+                    missingUids[i] = uid;
                     i++;
                 }
             }
@@ -168,9 +173,9 @@ SOGoMailDataSource = Class.create({
             if (this.ajaxGetData) {
                 this.ajaxGetData.aborted = true;
                 this.ajaxGetData.abort();
-//                 log ("MailDataSource._getData() aborted previous AJAX request");
+//                 log ("MailDataSource._getRemoteData() aborted previous AJAX request");
             }
-//            log ("MailDataSource._getData() fetching headers of " + urlParams);
+//            log ("MailDataSource._getRemoteData() fetching headers of " + urlParams);
             this.ajaxGetData = triggerAjaxRequest(this.url + "/headers",
                                                   this._getRemoteDataCallback.bind(this),
                                                   callbackData,
@@ -191,7 +196,7 @@ SOGoMailDataSource = Class.create({
                             header[keys[j]] = headers[i][j];
                         this.cache.set(header["uid"], header);
                     }
-                    
+
                     if (data["callbackFunction"])
                         this._returnData(data["callbackFunction"], data["id"], data["start"], data["end"]);
                 }
@@ -211,7 +216,7 @@ SOGoMailDataSource = Class.create({
                     // Add thread-related data
                     if (parseInt(this.uids[i][2]) > 0)
                         data[j]['Thread'] = '&nbsp;'; //'<img class="messageThread" src="' + ResourcesURL + '/arrow-down.png">';
-                    else
+                    else if (data[j]['Thread'])
                         delete data[j]['Thread'];
                     if (parseInt(this.uids[i][1]) > -1)
                         data[j]['ThreadLevel'] = this.uids[i][1];

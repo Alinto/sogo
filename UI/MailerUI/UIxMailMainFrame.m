@@ -162,14 +162,12 @@
   SOGoMailAccount *account;
   SOGoMailFolder *inbox;
   NSDictionary *data;
-  SOGoUser *activeUser;
   UIxMailListActions *actions;
 
   [self _setupContext];
   
 #warning this code is dirty: we should not invoke UIxMailListActions from here!
   actions = [[[UIxMailListActions new] initWithRequest: [context request]] autorelease];
-  activeUser = [context activeUser];
   accounts = [self clientObject];
   
   account = [accounts lookupName: @"0" inContext: context acquire: NO];
@@ -473,19 +471,19 @@
   tmpKeys = [NSArray arrayWithObjects: @"headerClass", @"headerId", @"value",
                      nil];
   tmpColumns
-    = [NSArray arrayWithObjects: @"messageSubjectColumn tbtv_headercell sortableTableHeader resizable",
-               @"subjectHeader", @"Subject", nil];
-  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
-                                                          forKeys: tmpKeys]
-                      forKey: @"Subject"];
-  
-  tmpColumns
     = [NSArray arrayWithObjects: @"messageThreadColumn tbtv_headercell",
                @"invisibleHeader", @"Thread", nil];
   [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
                                                           forKeys: tmpKeys]
                       forKey: @"Thread"];
 
+  tmpColumns
+    = [NSArray arrayWithObjects: @"messageSubjectColumn tbtv_headercell sortableTableHeader resizable",
+               @"subjectHeader", @"Subject", nil];
+  [columnsMetaData setObject: [NSDictionary dictionaryWithObjects: tmpColumns
+                                                          forKeys: tmpKeys]
+                      forKey: @"Subject"];
+  
   tmpColumns
     = [NSArray arrayWithObjects: @"messageFlagColumn tbtv_headercell",
 	       @"invisibleHeader", @"Flagged", nil];
@@ -582,7 +580,6 @@
           if (i == NSNotFound)
             [finalOrder insertObject: @"Thread" atIndex: 0];
         }
-      
       if ([self showToAddress])
         {
           i = [finalOrder indexOfObject: @"From"];
