@@ -1,3 +1,19 @@
+2011-07-11  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m
+	(-takeValuesFromRequest:inContext:): when switching from an
+	all-day event to a non-all-day event, we must add the vTimeZone
+	definition. The opposite is also fixed.
+
+	* SoObjects/Appointments/SOGoComponentOccurence.m
+	(-prepareDelete): when deleting an occurrence of a floating
+	all-day event, we must adjust the exception date to the user's timezone.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-_flattenCycleRecord:forRange:intoArray:): when computing
+	occurrences of a floating all-day event, we must also ajdust the
+	exception dates to the user's timezone.
+
 2011-07-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailListActions.m (-getUIDsAndHeadersInFolder)

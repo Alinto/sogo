@@ -91,11 +91,6 @@
   iCalEvent *newOccurence, *master;
   NSCalendarDate *date, *firstDate;
   unsigned int interval, nbrDays;
-  SOGoUserDefaults *ud;
-  NSTimeZone *timeZone;
-
-  ud = [[SOGoUser userWithLogin: owner] userDefaults];
-  timeZone = [ud timeZone];
 
   newOccurence = (iCalEvent *) [super newOccurenceWithID: theRecurrenceID];
   date = [newOccurence recurrenceId];
@@ -109,7 +104,7 @@
     {
       nbrDays = ((float) abs (interval) / 86400) + 1;
       [newOccurence setAllDayWithStartDate: date
-		    duration: nbrDays];
+                                  duration: nbrDays];
     }
   else
     {
@@ -121,7 +116,7 @@
                                        minute: 0
                                        second: interval]];
     }
-
+  
   return newOccurence;
 }
 

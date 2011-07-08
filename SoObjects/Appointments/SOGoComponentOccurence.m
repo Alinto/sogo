@@ -1,8 +1,9 @@
 /* SOGoComponentOccurence.m - this file is part of SOGo
  * 
- * Copyright (C) 2008-2010 Inverse inc.
+ * Copyright (C) 2008-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +26,14 @@
 #import <Foundation/NSString.h>
 
 #import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
+
+#import <NGObjWeb/WOContext+SoObjects.h>
+
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoDomainDefaults.h>
 
 #import "SOGoAppointmentObject.h"
 #import "SOGoCalendarComponent.h"
@@ -144,8 +152,10 @@
   NSCalendarDate *recurrenceId, *currentId;
   NSException *error;
   NSString *newContent;
+  NSTimeZone *timeZone;
   iCalCalendar *calendar;
   iCalEntityObject *currentOccurence;
+  SOGoUserDefaults *ud;
   int max, count;
 
   if (component == master)
@@ -155,10 +165,7 @@
       if ([container respondsToSelector: @selector (prepareDeleteOccurence:)])
 	[container prepareDeleteOccurence: component];
 
-      // Add an date exception
       recurrenceId = [component recurrenceId];
-      [master addToExceptionDates: recurrenceId];
-      [master increaseSequence];
 
       // Remove the specified occurence within the repeating vEvent.
       calendar = [master parent];      
@@ -177,6 +184,18 @@
 	  count++;
 	}
       
+      // Add an date exception
+      if ([master respondsToSelector: @selector (isAllDay)] && [(iCalEvent *)master isAllDay])
+        {
+          // We're deleting an occurrence of an all-day event; adjust the recurrence id
+          // to the user's timezone.
+          ud = [[context activeUser] userDefaults];
+          timeZone = [ud timeZone];
+          [recurrenceId setTimeZone: timeZone];
+        }      
+      [master addToExceptionDates: recurrenceId];
+      [master increaseSequence];
+
       // We generate the updated iCalendar file and we save it
       // in the database.
       newContent = [calendar versitString];
@@ -186,9 +205,9 @@
   return error;
 }
 
-- (void) saveComponent: (iCalRepeatableEntityObject *) newEvent
+- (NSException *) saveComponent: (iCalRepeatableEntityObject *) newObject
 {
-  [container saveComponent: newEvent];
+  return [container saveComponent: newObject];
 }
 
 #warning most of SOGoCalendarComponent and SOGoComponentOccurence share the same external interface... \

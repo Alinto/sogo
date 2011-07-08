@@ -525,19 +525,19 @@
                      inContext: (WOContext *) _ctx
 {
   int nbrDays;
+  iCalDateTime *startDate;
+  iCalTimeZone *tz;
   SOGoUserDefaults *ud;
   
-  [self event];
-  
+  [self event];  
   [super takeValuesFromRequest: _rq inContext: _ctx];
-
 
   if (isAllDay)
     {
       nbrDays = ((float) abs ([aptEndDate timeIntervalSinceDate: aptStartDate])
 		 / 86400) + 1;
       [event setAllDayWithStartDate: aptStartDate
-	     duration: nbrDays];
+                           duration: nbrDays];
     }
   else
     {
@@ -545,20 +545,33 @@
       [event setEndDate: aptEndDate];
     }
   
-  if ([[self clientObject] isNew])
+  if (!isAllDay)
     {
-      iCalTimeZone *tz;
-
-      // Don't add a vTimeZone to all-day events
-      if (!isAllDay)
-      {
-	  ud = [[context activeUser] userDefaults];
-      
-	  tz = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
-	  [[event parent] addTimeZone: tz];
-	  [(iCalDateTime *)[event uniqueChildWithTag: @"dtstart"] setTimeZone: tz];
-	  [(iCalDateTime *)[event uniqueChildWithTag: @"dtend"] setTimeZone: tz];
-      }
+      // Make sure there's a vTimeZone associated to the event unless it
+      // is an all-day event.
+      startDate = (iCalDateTime *)[event uniqueChildWithTag: @"dtstart"];
+      if (![startDate timeZone])
+        {
+          ud = [[context activeUser] userDefaults];
+          tz = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
+          if ([[event parent] addTimeZone: tz])
+            {
+              [startDate setTimeZone: tz];
+              [(iCalDateTime *)[event uniqueChildWithTag: @"dtend"] setTimeZone: tz];
+            }
+        }
+    }
+  else if (![[self clientObject] isNew])
+    {
+      // Remove the vTimeZone when dealing with an all-day event.
+      startDate = (iCalDateTime *)[event uniqueChildWithTag: @"dtstart"];
+      tz = [startDate timeZone];
+      if (tz)
+        {
+          [startDate setTimeZone: nil];
+          [(iCalDateTime *)[event uniqueChildWithTag: @"dtend"] setTimeZone: nil];
+          [[event parent] removeChild: tz];
+        }
     }
 
   [event setTransparency: (isTransparent? @"TRANSPARENT" : @"OPAQUE")];

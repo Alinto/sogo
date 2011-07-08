@@ -1218,7 +1218,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
   return [self component: YES secure: NO];
 }
 
-#warning alarms: we don not handle occurrences
+#warning alarms: we do not handle occurrences
 - (NSException *) prepareDelete
 {
   if ([[SOGoSystemDefaults sharedSystemDefaults] enableEMailAlarms])

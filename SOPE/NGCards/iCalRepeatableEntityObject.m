@@ -29,6 +29,7 @@
 
 #import "NSCalendarDate+NGCards.h"
 #import "iCalDateTime.h"
+#import "iCalEvent.h"
 #import "iCalTimeZone.h"
 #import "iCalRecurrenceRule.h"
 #import "iCalRecurrenceCalculator.h"
@@ -174,7 +175,10 @@
 
   dateTime = [iCalDateTime new];
   [dateTime setTag: @"exdate"];
-  [dateTime setDateTime: _rdate];
+  if ([self isKindOfClass: [iCalEvent class]] && [(iCalEvent *)self isAllDay])
+    [dateTime setDate: _rdate];
+  else
+    [dateTime setDateTime: _rdate];
   [self addChild: dateTime];
   [dateTime release];
 }
@@ -191,7 +195,7 @@
 }
 
 /**
- * Return the exception dates of the event in GMT.
+ * Return the exception dates of the entity in GMT.
  * @return an array of strings.
  */
 - (NSArray *) exceptionDates

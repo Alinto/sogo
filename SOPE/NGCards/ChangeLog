@@ -1,3 +1,8 @@
+2011-07-11  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalRepeatableEntityObject.m (-addToExceptionDates:): drop the
+	time part when dealing with an all-day event.
+
 2011-03-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalRepeatableEntityObject.m (-rules:withEventTimeZone:): new

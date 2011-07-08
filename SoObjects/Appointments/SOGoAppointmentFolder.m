@@ -850,8 +850,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                    intoArray: (NSMutableArray *) theRecords
 {
   NSMutableDictionary *row, *fixedRow;
-  NSMutableArray *records;
+  NSMutableArray *records, *newExDates;
   NSDictionary *cycleinfo;
+  NSEnumerator *exDatesList;
   NGCalendarDateRange *firstRange, *recurrenceRange, *oneRange;
   NSArray *rules, *exRules, *exDates, *ranges;
   NSArray *elements, *components;
@@ -861,6 +862,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   iCalEvent *component;
   iCalTimeZone *eventTimeZone;
   unsigned count, max, offset;
+  id exDate;
 
   content = [theRecord objectForKey: @"c_cycleinfo"];
   if (![content isNotNull])
@@ -935,6 +937,17 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                       [firstEndDate setTimeZone: timeZone];
                       firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
                                                                                endDate: firstEndDate];
+        
+                      // Adjust the exception dates
+                      exDatesList = [exDates objectEnumerator];
+                      newExDates = [NSMutableArray arrayWithCapacity: [exDates count]];
+                      while ((exDate = [exDatesList nextObject]))
+                        {
+                          exDate = [[exDate asCalendarDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                                      seconds:-offset];
+                          [newExDates addObject: exDate];
+                        }
+                      exDates = newExDates;
                     }
                 }
               
