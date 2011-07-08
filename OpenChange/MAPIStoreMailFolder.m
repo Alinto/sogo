@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -273,9 +274,9 @@ static Class SOGoMailFolderK;
   return [NSCalendarDate dateWithTimeIntervalSince1970: 0x4dbb2dbe]; /* oc_version_time */
 }
 
-- (NSCalendarDate *) lastModificationTime
+- (NSDate *) lastMessageModificationTime
 {
-  return [NSCalendarDate date];
+  return [sogoObject mostRecentMessageDate];
 }
 
 @end
@@ -310,15 +311,15 @@ static Class SOGoMailFolderK;
 
 @end
 
-@implementation MAPIStoreDeletedItemsFolder : MAPIStoreMailFolder
+// @implementation MAPIStoreDeletedItemsFolder : MAPIStoreMailFolder
 
-- (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) accountFolder
-                                    inContext: (WOContext *) woContext
-{
-  return [accountFolder trashFolderInContext: woContext];
-}
+// - (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) accountFolder
+//                                     inContext: (WOContext *) woContext
+// {
+//   return [accountFolder trashFolderInContext: woContext];
+// }
 
-@end
+// @end
 
 @implementation MAPIStoreOutboxFolder : MAPIStoreMailFolder
 

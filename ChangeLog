@@ -1,5 +1,11 @@
 2011-07-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailFolder.m (-lastMessageModificationTime):
+	implemented method by making use of the new -[SOGoMailFolder
+	mostRecentMessageDate] message, which is currently a more or less
+	precise way to obtain the mailbox's last modification date.
+	(-lastModificationTime): removed method.
+
 	* OpenChange/MAPIStoreObject.m (-setMAPIRetainCount:)
 	(-mapiRetainCount:): moved methods from MAPIStoreMessage.
 

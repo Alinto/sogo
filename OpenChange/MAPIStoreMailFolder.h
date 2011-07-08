@@ -53,8 +53,8 @@
 @interface MAPIStoreDraftsFolder : MAPIStoreMailFolder
 @end
 
-@interface MAPIStoreDeletedItemsFolder : MAPIStoreMailFolder
-@end
+// @interface MAPIStoreDeletedItemsFolder : MAPIStoreFFolder
+// @end
 
 @interface MAPIStoreOutboxFolder : MAPIStoreMailFolder
 @end
