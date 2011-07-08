@@ -1,5 +1,9 @@
 2011-07-11  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* iCalDailyRecurrenceCalculator.m
+	(-recurrenceRangesWithinCalendarDateRange:): we must return all
+	ranges that intersect with the lookup period.
+
 	* iCalRepeatableEntityObject.m (-addToExceptionDates:): drop the
 	time part when dealing with an all-day event.
 
