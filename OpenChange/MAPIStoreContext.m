@@ -229,7 +229,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
                       withID: newFid];
       contextFid = newFid;
    
-      memCtx = newMemCtx;
+      memCtx = newConnInfo->mstore_ctx;
       connInfo = newConnInfo;
     }
 
@@ -370,8 +370,27 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       else
         [self errorWithFormat: @"folder with url '%@' not found", folderURL];
     }
+  [folder setMAPIRetainCount: [folder mapiRetainCount] + 1];
 
   return folder;
+}
+
+- (void) releaseFolderWithFID: (uint64_t) fid
+{
+  MAPIStoreFolder *folder;
+  NSNumber *fidKey;
+  uint32_t retainCount;
+
+  fidKey = [NSNumber numberWithUnsignedLongLong: fid];
+  folder = [folders objectForKey: fidKey];
+  if (folder)
+    {
+      retainCount = [folder mapiRetainCount];
+      if (retainCount == 1)
+        [folders removeObjectForKey: fidKey];
+      else
+        [folder setMAPIRetainCount: retainCount - 1];
+    }
 }
 
 /**
@@ -388,6 +407,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 {
   NSString *folderURL, *folderKey;
   MAPIStoreFolder *parentFolder, *newFolder;
+  NSNumber *fidKey;
   int rc;
 
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
@@ -397,7 +417,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
     rc = MAPISTORE_ERR_EXIST;
   else
     {
-      parentFolder = [self lookupFolderWithFID: parentFID];
+      fidKey = [NSNumber numberWithUnsignedLongLong: parentFID];
+      parentFolder = [folders objectForKey: fidKey];
       if (parentFolder)
         {
           folderKey = [parentFolder createFolder: aRow withFID: fid];
@@ -455,12 +476,16 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 */
 - (int) openDir: (uint64_t) fid
 {
-  [self logWithFormat:
-	  @"UNIMPLEMENTED METHOD '%s' (%d):\n fid=0x%.16x",
-	__FUNCTION__, __LINE__,
-	(unsigned long long) fid];
+  MAPIStoreFolder *folder;
+  int rc;
 
-  return MAPISTORE_SUCCESS;
+  folder = [self lookupFolderWithFID: fid];
+  if (folder)
+    rc = MAPISTORE_SUCCESS;
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 /**
@@ -472,7 +497,30 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 */
 - (int) closeDir
 {
-  [self logWithFormat: @"UNIMNPLEMENTED METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  // MAPIStoreFolder *folder;
+  // NSNumber *fidKey;
+  // uint32_t retainCount;
+
+  // fidKey = [NSNumber numberWithUnsignedLongLong: fid];
+  // folder = [folders objectForKey: fidKey];
+  // if (folder)
+  //   {
+  //     rc = MAPISTORE_SUCCESS;
+  //     retainCount = [folder mapiRetainCount];
+  //     if (retainCount == 0)
+  //       {
+  //         [self logWithFormat: @"folder with fid %.16x successfully removed"
+  //               @" from folder cache",
+  //               fmid];
+  //         [folders removeObjectForKey: midKey];
+  //       }
+  //     else
+  //       [folder setMAPIRetainCount: retainCount - 1];
+  //   }
+  // else
+  //   rc = MAPISTORE_ERR_NOT_FOUND;
+
+  [self logWithFormat: @"UNIMNPLEMENTED METHOD '%s' -- leak ahead (%d)", __FUNCTION__, __LINE__];
 
   return MAPISTORE_SUCCESS;
 }
@@ -482,6 +530,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 {
   MAPIStoreFolder *folder;
   MAPIStoreTable *table;
+  NSNumber *fidKey;
 
   if (fid == cachedTableFID && tableType == cachedTableType)
     table = cachedTable;
@@ -494,7 +543,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       cachedTableFID = 0;
       cachedTableType = 0;
 
-      folder = [self lookupFolderWithFID: fid];
+      fidKey = [NSNumber numberWithUnsignedLongLong: fid];
+      folder = [folders objectForKey: fidKey];
       if (folder)
         {
           if (tableType == MAPISTORE_MESSAGE_TABLE)
@@ -542,6 +592,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 {
   NSArray *keys;
   NSString *url;
+  NSNumber *fidKey;
   MAPIStoreFolder *folder;
   int rc;
 
@@ -553,7 +604,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   url = [mapping urlFromID: fid];
   if (url)
     {
-      folder = [self lookupFolderWithFID: fid];
+      fidKey = [NSNumber numberWithUnsignedLongLong: fid];
+      folder = [folders objectForKey: fidKey];
       if (folder)
         {
           if (tableType == MAPISTORE_MESSAGE_TABLE)
@@ -714,7 +766,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   NSString *messageKey, *messageURL;
   MAPIStoreMessage *message;
   MAPIStoreFolder *folder;
-  NSNumber *midKey;
+  NSNumber *midKey, *fidKey;
   int rc;
 
   midKey = [NSNumber numberWithUnsignedLongLong: mid];
@@ -728,7 +780,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       messageURL = [mapping urlFromID: mid];
       if (messageURL)
         {
-          folder = [self lookupFolderWithFID: fid];
+          fidKey = [NSNumber numberWithUnsignedLongLong: fid];
+          folder = [folders objectForKey: fidKey];
           messageKey = [self extractChildNameFromURL: messageURL
                                       andFolderURLAt: NULL];
           message = [folder lookupChild: messageKey];
@@ -749,7 +802,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
                        inFID: (uint64_t) fid
                 isAssociated: (BOOL) isAssociated
 {
-  NSNumber *midKey;
+  NSNumber *midKey, *fidKey;
   NSString *childURL;
   MAPIStoreMessage *message;
   MAPIStoreFolder *folder;
@@ -764,7 +817,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
     rc = MAPISTORE_ERR_EXIST;
   else
     {
-      folder = [self lookupFolderWithFID: fid];
+      fidKey = [NSNumber numberWithUnsignedLongLong: fid];
+      folder = [folders objectForKey: fidKey];
       if (folder)
         {
           message = [folder createMessage: isAssociated];
@@ -931,6 +985,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
   midKey = [NSNumber numberWithUnsignedLongLong: fmid];
   child = [messages objectForKey: midKey];
+  if (!child)
+    child = [folders objectForKey: midKey];
   if (child)
     {
       data = talloc_array (memCtx, struct mapistore_property_data,
@@ -1056,7 +1112,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   MAPIStoreMessage *message;
   MAPIStoreFolder *folder;
   NSMutableDictionary *properties;
-  NSNumber *midKey;
+  NSNumber *fmidKey;
   struct SPropValue *cValue;
   NSUInteger counter;
   int rc;
@@ -1064,11 +1120,11 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   [self logWithFormat: @"METHOD '%s' -- fmid: 0x%.16x, tableType: %d",
 	__FUNCTION__, fmid, tableType];
 
+  fmidKey = [NSNumber numberWithUnsignedLongLong: fmid];
   switch (tableType)
     {
     case MAPISTORE_MESSAGE:
-      midKey = [NSNumber numberWithUnsignedLongLong: fmid];
-      message = [messages objectForKey: midKey];
+      message = [messages objectForKey: fmidKey];
       if (message)
 	{
           properties
@@ -1093,7 +1149,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	}
       break;
     case MAPISTORE_FOLDER:
-      folder = [self lookupFolderWithFID: fmid];
+      folder = [folders objectForKey: fmidKey];
       if (folder)
         rc = [folder setProperties: aRow];
       else
@@ -1225,6 +1281,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
                    withFlags: (uint8_t) flags
 {
   NSString *childURL, *childKey;
+  NSNumber *fidKey;
   MAPIStoreFolder *folder;
   MAPIStoreMessage *message;
   NSArray *activeTables;
@@ -1239,10 +1296,12 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
     {
       [self logWithFormat: @"-deleteMessageWithMID: url (%@) found for object", childURL];
 
-      folder = [self lookupFolderWithFID: fid];
-      
       childKey = [self extractChildNameFromURL: childURL
                                 andFolderURLAt: NULL];
+
+      fidKey = [NSNumber numberWithUnsignedLongLong: fid];
+      folder = [folders objectForKey: fidKey];
+
       message = [folder lookupChild: childKey];
       if (message)
         {
@@ -1324,41 +1383,51 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 - (int) releaseRecordWithFMID: (uint64_t) fmid
 		  ofTableType: (uint8_t) tableType
 {
-  NSNumber *midKey;
-  MAPIStoreMessage *message;
+  NSNumber *fmidKey;
+  MAPIStoreObject *child;
   NSUInteger retainCount;
-  int rc;
+  NSMutableDictionary *childCache;
+  int rc = MAPISTORE_SUCCESS;
 
   switch (tableType)
     {
     case MAPISTORE_MESSAGE_TABLE:
-      rc = MAPISTORE_SUCCESS;
-      midKey = [NSNumber numberWithUnsignedLongLong: fmid];
-      message = [messages objectForKey: midKey];
-      if (message)
-	{
-	  retainCount = [message mapiRetainCount];
-	  if (retainCount == 0)
-	    {
-	      [self logWithFormat: @"message with mid %.16x successfully removed"
-		    @" from message cache",
-		    fmid];
-	      [messages removeObjectForKey: midKey];
-	    }
-	  else
-            [message setMAPIRetainCount: retainCount - 1];
-	}
-      else
-	[self warnWithFormat: @"message with mid %.16x not found"
-	      @" in message cache", fmid];
+      childCache = messages;
       break;
     case MAPISTORE_FOLDER_TABLE:
+      childCache = folders;
+      break;
     default:
       [self errorWithFormat: @"%s: value of tableType not handled: %d",
 	    __FUNCTION__, tableType];
       [self logWithFormat: @"  fmid: 0x%.16x  tableType: %d", fmid, tableType];
       
       rc = MAPISTORE_ERR_INVALID_PARAMETER;
+    }
+
+  if (rc == MAPISTORE_SUCCESS)
+    {
+      fmidKey = [NSNumber numberWithUnsignedLongLong: fmid];
+      child = [childCache objectForKey: fmidKey];
+      if (child)
+	{
+	  retainCount = [child mapiRetainCount];
+	  if (retainCount == 0)
+	    {
+	      [self logWithFormat: @"child with mid %.16x successfully removed"
+		    @" from child cache",
+		    fmid];
+	      [childCache removeObjectForKey: fmidKey];
+	    }
+	  else
+            [child setMAPIRetainCount: retainCount - 1];
+	}
+      else
+        {
+          [self warnWithFormat: @"child with mid %.16x not found"
+                @" in child cache", fmid];
+          rc = MAPISTORE_ERR_NOT_FOUND;
+        }
     }
 
   return rc;
@@ -1406,6 +1475,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   mappingId = [mapping idFromURL: childURL];
   if (mappingId == NSNotFound)
     {
+      [self warnWithFormat: @"no id exist yet, requesting one..."];
       openchangedb_get_new_folderID (connInfo->oc_ctx, &mappingId);
       [mapping registerURL: childURL withID: mappingId];
       contextId = 0;

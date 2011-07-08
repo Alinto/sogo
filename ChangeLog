@@ -1,5 +1,16 @@
 2011-07-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (-openDir:): implemented.
+	(-closeDir): added useful comments.
+	(-_tableForFID:andTableType:, -openMessage:withMID:inFID:)
+	(-createMessageWithMID:inFID:isAssociated:):
+	(-getProperties:ofTableType:inRow:withMID:):
+	(-setPropertiesWithFMID:ofTableType:inRow:):
+	(-deleteMessageWithMID:inFID:withFlags:): make use of the new
+	folder cache instead of using lookupFolderWithFID:, especially
+	since the last ones now instantiates, caches and keep a usage
+	count of the folders.
+
 	* OpenChange/MAPIStoreMailFolder.m (-lastMessageModificationTime):
 	implemented method by making use of the new -[SOGoMailFolder
 	mostRecentMessageDate] message, which is currently a more or less
