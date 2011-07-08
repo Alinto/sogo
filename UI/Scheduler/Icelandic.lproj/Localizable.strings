@@ -550,6 +550,7 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 "yearFieldInvalid" = "Hér þarf að tilgreina fyrir árið/árin, tölugildi sem er 1 eða stærra.";
 "appointmentFieldInvalid" = "Hér þarf að tilgreina fyrir tímapantanir, tölugildi sem er 1 eða stærra.";
 "recurrenceUnsupported" = "Þessa tegund endurtekningar er ekki hægt að styðja enn sem komið er.";
+"Please specify a calendar name." = "Please specify a calendar name.";
 "tagNotDefined" = "Þú þarft að tilgreina merki ef þú vilt samhæfa þetta dagatal.";
 "tagAlreadyExists" = "Merkið sem þú tilgreindir er nú þegar bendlað við annað dagatal.";
 "tagHasChanged" = "Ef þú breytir merkingunni á dagatalinu þínu, þarftu að endurhlaða gögnum inn á farsíman þinn.\nHalda áfram?";

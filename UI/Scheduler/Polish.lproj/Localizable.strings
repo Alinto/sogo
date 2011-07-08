@@ -550,6 +550,7 @@ vtodo_class2 = "(Zadanie poufne)";
 "yearFieldInvalid" = "W polu Lata wprowadź liczbę równą lub większą od 1.";
 "appointmentFieldInvalid" = "W polu Spotkania wprowadź liczbę równą lub większą od 1.";
 "recurrenceUnsupported" = "Ten typ powtórzeń obecnie nie jest obsługiwany.";
+"Please specify a calendar name." = "Please specify a calendar name.";
 "tagNotDefined" = "Musisz podać znacznik, jeśli chcesz synchronizować ten kalendarz.";
 "tagAlreadyExists" = "Podany znacznik jest już skojarzony z innym kalendarzem.";
 "tagHasChanged" = "Jeśli zmienisz znacznik kalendarza, musisz przeładować dane na swoim urządzeniu mobilnym.\nKontynuować?";

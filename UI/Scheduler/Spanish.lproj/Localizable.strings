@@ -538,7 +538,7 @@ vtodo_class2 = "(Tarea confidencial)";
 
 "Links to this Calendar" = "Vínculos a éste calendario";
 "Authenticated User Access" = "Acceso a usuario autenticado";
-"CalDAV url" = "CalDAV url";
+"CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

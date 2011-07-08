@@ -538,7 +538,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 
 "Links to this Calendar" = "Odkazy na tento kalendář";
 "Authenticated User Access" = "Přístup pro ověřené uživatele";
-"CalDAV url" = "CalDAV url";
+"CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 
@@ -550,6 +550,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 "yearFieldInvalid" = "V políčku Rok zadejte číselnou hodnotu větší nebo rovnu 1.";
 "appointmentFieldInvalid" = "V políčku Připomenutí zadejte číselnou hodnotu větší nebo rovnu 1.";
 "recurrenceUnsupported" = "Tento typ opakování není podporován.";
+"Please specify a calendar name." = "Please specify a calendar name.";
 "tagNotDefined" = "Chcete-li synchronizovat tento kalendář, musíte zadat jeho Štítek.";
 "tagAlreadyExists" = "Zadaný štítek je již přiřazen jinému kalendáři.";
 "tagHasChanged" = "Změníte-li štítek svého kalendáře, budete muset znovu načíst data do svého mobilního zařízení.\nPokračovat?";
@@ -562,6 +563,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Mark Completed" = "Označit jako dokončené";
 "Delete Task" = "Smazat úkol";
 "Delete Event" = "Smazat událost";
+"Copy event to my calendar" = "Copy event to my calendar";
 
 "Subscribe to a web calendar..." = "Odebírat vzdálený kalendář na webu";
 "URL of the Calendar" = "Adresa vzdáleného kalendáře na webu";

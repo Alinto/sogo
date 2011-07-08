@@ -537,7 +537,8 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "Show tasks" = "Visa uppgifter";
 
 "Links to this Calendar" = "Länkar till denna kalender";
-"CalDAV url" = "CalDAV url";
+"Authenticated User Access" = "Authenticated User Access";
+"CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 
@@ -549,6 +550,7 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "yearFieldInvalid" = "Ange ett numeriskt värde in årsfältet större än eller lika med 1.";
 "appointmentFieldInvalid" = "Ange ett numeriskt värde in mötesfältet större än eller lika med 1.";
 "recurrenceUnsupported" = "Denna upprepningstyp stöds för närvarande inte.";
+"Please specify a calendar name." = "Please specify a calendar name.";
 "tagNotDefined" = "Du måste ange en etikett om du vill synkronisera kalendern.";
 "tagAlreadyExists" = "Etiketten du angett är redan associerad till en annan kalender.";
 "tagHasChanged" = "Om du ändrar etiketten på din kalender, behöver du ladda om datat i din mobiltelefon.\nFortsätta?";
@@ -561,6 +563,7 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "Mark Completed" = "Märk utförd";
 "Delete Task" = "Ta bort uppgift";
 "Delete Event" = "Ta bort händelse";
+"Copy event to my calendar" = "Copy event to my calendar";
 
 "Subscribe to a web calendar..." = "Prenumrera på en webbkalender...";
 "URL of the Calendar" = "URL till kalendern";

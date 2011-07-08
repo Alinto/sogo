@@ -4,6 +4,7 @@
 
 "Username:" = "Brukernavn:";
 "Password:" = "Passord:";
+"Domain:" = "Domain:";
 
 "Connect" = "Logg inn";
 

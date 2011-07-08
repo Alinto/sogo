@@ -537,7 +537,7 @@ vtodo_class2 = "(Tasca confidencial)";
 "Show tasks" = "Mostra les tasques";
 
 "Links to this Calendar" = "Enllaços a aquest calendari";
-"CalDAV url" = "url CalDAV";
+"CalDAV URL" = "url CalDAV";
 "WebDAV ICS URL" = "url WebDAV ICS";
 "WebDAV XML URL" = "url WebDAV XML";
 
