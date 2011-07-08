@@ -1,5 +1,9 @@
 2011-07-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIFSFolder.m (-initWithName:inContainer:):
+	added method to properly initialize the "directory" ivar when
+	initialized as a subfolder.
+
 	* OpenChange/MAPIStoreMailContext.m: MAPIStoreDeletedItemsContext
 	is now temporarily a fs-based context.
 

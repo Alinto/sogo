@@ -120,6 +120,19 @@ static NSString *privateDir = nil;
   return self;
 }
 
+- (id) initWithName: (NSString *) newName
+	inContainer: (id) newContainer
+{
+  if ((self = [super initWithName: newName inContainer: newContainer]))
+    {
+      directory = [[newContainer directory]
+                    stringByAppendingPathComponent: newName];
+      [directory retain];
+    }
+
+  return self;
+}
+
 - (NSString *) directory
 {
   return directory;
@@ -140,6 +153,10 @@ static NSString *privateDir = nil;
   NSFileManager *fm;
   NSDictionary *attributes;
   BOOL isDir;
+
+  if (!directory)
+    [NSException raise: @"MAPIStoreIOException"
+                 format: @"directory is nil"];
 
   fm = [NSFileManager defaultManager];
   if ([fm fileExistsAtPath: directory isDirectory: &isDir])
@@ -218,8 +235,8 @@ static NSString *privateDir = nil;
 	       isDirectory: &isDir])
     {
       if (isDir)
-	object = [SOGoMAPIFSFolder objectWithName: fileName
-				      inContainer: self];
+	object = [isa objectWithName: fileName
+                         inContainer: self];
       else
 	object = [SOGoMAPIFSMessage objectWithName: fileName
 				       inContainer: self];
