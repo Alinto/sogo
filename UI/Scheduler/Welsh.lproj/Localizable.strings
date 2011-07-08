@@ -537,7 +537,7 @@ vtodo_class2 = "(Tasg gyhoeddus)";
 "Show tasks" = "Show tasks";
 
 "Links to this Calendar" = "Links to this Calendar";
-"CalDAV url" = "CalDAV url";
+"CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 

@@ -406,6 +406,12 @@
 "reminder_END" = "l'evento termina";
 "Reminder Details" = "Dettagli promemoria";
 
+"Choose a Reminder Action" = "Choose a Reminder Action";
+"Show an Alert" = "Show an Alert";
+"Send an E-mail" = "Send an E-mail";
+"Email Organizer" = "Email Organizer";
+"Email Attendees" = "Email Attendees";
+
 "zoom_400" = "400%";
 "zoom_200" = "200%";
 "zoom_100" = "100%";
@@ -531,7 +537,8 @@ vtodo_class2 = "(Attività confidenziale)";
 "Show tasks" = "Mostra attività";
 
 "Links to this Calendar" = "Link a questo Calendario";
-"CalDAV url" = "CalDAV url";
+"Authenticated User Access" = "Authenticated User Access";
+"CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 
@@ -543,16 +550,20 @@ vtodo_class2 = "(Attività confidenziale)";
 "yearFieldInvalid" = "Prego specificare nel campo Anno(i) un valore numerico maggiore o uguale a 1.";
 "appointmentFieldInvalid" = "Prego specificare nel campo Appuntamento(i) un valore numerico maggiore o uguale a 1.";
 "recurrenceUnsupported" = "Questo tipo di ricorrenza non è attualmente supportata.";
+"Please specify a calendar name." = "Please specify a calendar name.";
 "tagNotDefined" = "E' necessario specificare un etichetta se si vuole sincronizzare questo calendario.";
 "tagAlreadyExists" = "L'etichetta specificata è già associata ad un altro calendario.";
 "tagHasChanged" = "Cambiando l'etichetta del calendario è necessario ricaricare tutti i dati sul dispositivo mobile.\nContinuare?";
 "tagWasAdded" = "Sincronizzando questo calendario sarà necessario ricaricare i dati sul dispositivo mobile.\nContinuare?";
 "tagWasRemoved" = "Rimuovendo questo calendario dalla sincronizzazione, sarà necessario ricaricare i dati sul dispositivo mobile.\nCotinuare?";
+"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
+"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
 
 "Open Task..." = "Apri attività...";
 "Mark Completed" = "Segna come completata";
 "Delete Task" = "Elimina attività";
 "Delete Event" = "Elimina evento";
+"Copy event to my calendar" = "Copy event to my calendar";
 
 "Subscribe to a web calendar..." = "Sottoscrivi un calendario remoto...";
 "URL of the Calendar" = "URL del calendario";
