@@ -1,5 +1,10 @@
 2011-07-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTable.m
+	(-evaluateContentRestriction:intoQualifier:): temporarily
+	commented out code initializing "operator" as this local var is
+	never used.
+
 	* OpenChange/MAPIStoreFolder.m (-initWithSOstringByAddingPercentEscapesUsingEncodinGoObject:inContainer:):
 	make use of -[NSString stringByAddingPercentEscapesUsingEncoding:]
 	to properly escape folder names with non-ascii characters.

@@ -534,7 +534,7 @@ static Class NSDataK, NSStringK;
 				      intoQualifier: (EOQualifier **) qualifier
 {
   NSString *property;
-  SEL operator;
+  // SEL operator;
   id value;
   MAPIRestrictionState rc;
 
@@ -553,23 +553,23 @@ static Class NSDataK, NSStringK;
 		    format: @"unhandled content restriction for class '%@'",
 		     NSStringFromClass ([value class])];
 
-      switch (res->fuzzy & 0xf)
-	{
-	case 0:
-	  operator = EOQualifierOperatorEqual;
-	  break;
-	case 1:
-	  operator = EOQualifierOperatorLike;
-	  value = [NSString stringWithFormat: @"%%%@%%", value];
-	  break;
-	case 2:
-	  operator = EOQualifierOperatorEqual;
-	  value = [NSString stringWithFormat: @"%@%%", value];
-	  break;
-	default: [NSException raise: @"MAPIStoreInvalidOperatorException"
-			     format: @"fuzzy operator value '%.4x' is invalid",
-			      res->fuzzy];
-	}
+      // switch (res->fuzzy & 0xf)
+      //   {
+      //   case 0:
+      //     operator = EOQualifierOperatorEqual;
+      //     break;
+      //   case 1:
+      //     operator = EOQualifierOperatorLike;
+      //     value = [NSString stringWithFormat: @"%%%@%%", value];
+      //     break;
+      //   case 2:
+      //     operator = EOQualifierOperatorEqual;
+      //     value = [NSString stringWithFormat: @"%@%%", value];
+      //     break;
+      //   default: [NSException raise: @"MAPIStoreInvalidOperatorException"
+      //   		     format: @"fuzzy operator value '%.4x' is invalid",
+      //   		      res->fuzzy];
+      //   }
       
       *qualifier = [[EOKeyValueQualifier alloc] initWithKey: property
 					   operatorSelector: EOQualifierOperatorCaseInsensitiveLike
