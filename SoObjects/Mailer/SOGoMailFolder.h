@@ -80,6 +80,8 @@
 
 - (NSException *) expunge;
 
+- (NSCalendarDate *) mostRecentMessageDate;
+
 /* flags */
 
 - (NSException *) addFlagsToAllMessages: (id) _f;

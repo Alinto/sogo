@@ -1330,13 +1330,13 @@ static NSString *defaultUserID =  @"anyone";
   return sortOrderings;
 }
 
-- (NSArray *) _fetchMessageProperties: (NSDictionary *) properties
+- (NSArray *) _fetchMessageProperties: (NSArray *) properties
                     matchingQualifier: (EOQualifier *) searchQualifier
                      andSortOrderings: (NSArray *) sortOrderings
 {
   NGImap4Client *client;
   NSDictionary *response;
-  NSArray *messages;
+  NSArray *messages, *values = nil;
   NSString *resultKey;
 
   client = [[self imap4Connection] client];
@@ -1355,11 +1355,16 @@ static NSString *defaultUserID =  @"anyone";
     }
 
    if ([[response objectForKey: @"result"] boolValue])
-     messages = [response objectForKey: resultKey];
-   else
-     messages = nil;
+     {
+       messages = [response objectForKey: resultKey];
+       if ([messages count] > 0)
+         {
+           response = [client fetchUids: messages parts: properties];
+           values = [response objectForKey: @"fetch"];
+         }
+     }
 
-  return messages;
+  return values;
 }
 
 - (NSArray *) _davPropstatsWithProperties: (NSArray *) davProperties
@@ -1524,7 +1529,7 @@ static NSString *defaultUserID =  @"anyone";
                                          inNamespace: XMLNS_INVERSEDAV];
   sortOrderings = [self _sortOrderingsFromSortElement: sortElement];
 
-  messages = [self _fetchMessageProperties: properties
+  messages = [self _fetchMessageProperties: [properties allKeys]
                          matchingQualifier: searchQualifier
                           andSortOrderings: sortOrderings];
   [self _appendProperties: [properties allKeys]
@@ -1601,6 +1606,20 @@ static NSString *defaultUserID =  @"anyone";
     }
 
   return response;
+}
+
+- (NSCalendarDate *) mostRecentMessageDate
+{
+  NSArray *values;
+  NSCalendarDate *date = nil;
+
+  values = [self _fetchMessageProperties: [NSArray arrayWithObject: @"ENVELOPE"]
+                       matchingQualifier: nil
+                        andSortOrderings: [NSArray arrayWithObject: @"REVERSE DATE"]];
+  if ([values count] > 0)
+    date = [[[values objectAtIndex: 0] objectForKey: @"envelope"] date];
+
+  return date;
 }
 
 @end /* SOGoMailFolder */
