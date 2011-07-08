@@ -49,9 +49,10 @@
 - (NSArray *) getSortedUIDsInFolder: (SOGoMailFolder *) mailFolder;
 - (NSArray *) getHeadersForUIDs: (NSArray *) uids
 		       inFolder: (SOGoMailFolder *) mailFolder;
-- (NSDictionary *) getUIDsAndHeadersInFolder: (SOGoMailFolder *) mailFolder;
+- (NSDictionary *) getUIDsInFolder: (SOGoMailFolder *) folder
+                       withHeaders: (BOOL) includeHeaders;
 
-- (id <WOActionResults>) getSortedUIDsAction;
+- (id <WOActionResults>) getUIDsAction;
 - (id <WOActionResults>) getHeadersAction;
 
 @end

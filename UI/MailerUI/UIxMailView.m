@@ -590,9 +590,6 @@ static NSString *mailETag = nil;
 		inContext: (WOContext *) _ctx
 {
   UIxMailRenderingContext *mctx;
-  WORequest *request;
-
-  request = [_ctx request];
  
   [[_ctx response] setHeader:mailETag forKey:@"etag"];
 

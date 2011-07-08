@@ -173,7 +173,7 @@
   account = [accounts lookupName: @"0" inContext: context acquire: NO];
   inbox = [account inboxFolderInContext: context];
 
-  data = [actions getUIDsAndHeadersInFolder: inbox];
+  data = [actions getUIDsInFolder: inbox withHeaders: YES];
 
   return [data jsonRepresentation];
 }

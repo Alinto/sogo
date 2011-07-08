@@ -80,7 +80,7 @@
         uids = {
           protectedBy = "<public>";
           actionClass = "UIxMailListActions";
-          actionName  = "getSortedUIDs";
+          actionName  = "getUIDs";
         };
         headers = {
           protectedBy = "<public>";

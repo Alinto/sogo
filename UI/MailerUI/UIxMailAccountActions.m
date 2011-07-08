@@ -187,11 +187,7 @@
   rawFolders = [[co allFolderPaths] objectEnumerator];
   folders = [self _jsonFolders: rawFolders];
 
-  // The parameters order is important here, as if the server doesn't support
-  // quota, inboxQuota will be nil and it'll terminate the list of objects/keys.
-  data = [NSDictionary dictionaryWithObjectsAndKeys: folders, @"mailboxes",
-		       [co getInboxQuota], @"quotas",
-		       nil];
+  data = [NSDictionary dictionaryWithObjectsAndKeys: folders, @"mailboxes", nil];
   response = [self responseWithStatus: 200
                             andString: [data jsonRepresentation]];
   [response setHeader: @"application/json"

@@ -623,55 +623,64 @@
 }
 */
 
-- (NSDictionary *) getUIDsAndHeadersInFolder: (SOGoMailFolder *) mailFolder
+- (NSDictionary *) getUIDsInFolder: (SOGoMailFolder *) folder
+                       withHeaders: (BOOL) includeHeaders
 {
+  NSMutableDictionary *data;
   NSArray *uids, *threadedUids, *headers;
-  NSDictionary *data;
   NSRange r;
-  int count;
   SOGoMailAccount *account;
   id quota;
-  
-  uids = [self getSortedUIDsInFolder: mailFolder]; // retrieves the form parameters "sort" and "asc"
+  int count;
 
-  // Also retrieve the first headers, up to 'headersPrefetchMaxSize'
-  count = [uids count];
-  if (count > headersPrefetchMaxSize) count = headersPrefetchMaxSize;
-  r = NSMakeRange(0, count);
-  headers = [self getHeadersForUIDs: [[uids flattenedArray] subarrayWithRange: r]
-			   inFolder: mailFolder];
+  data = [NSMutableDictionary dictionary];
   
+  // TODO: we might want to flush the caches?
+  //[folder flushMailCaches];
+  [folder expungeLastMarkedFolder];
+
+  // Retrieve messages UIDs using form parameters "sort" and "asc"
+  uids = [self getSortedUIDsInFolder: folder];
+
+  if (includeHeaders)
+    {
+      // Also retrieve the first headers, up to 'headersPrefetchMaxSize'
+      count = [uids count];
+      if (count > headersPrefetchMaxSize) count = headersPrefetchMaxSize;
+      r = NSMakeRange(0, count);
+      headers = [self getHeadersForUIDs: [[uids flattenedArray] subarrayWithRange: r]
+                               inFolder: folder];
+
+      [data setObject: headers forKey: @"headers"];
+    }
+
   if (sortByThread)
     {
+      // Add threads information
       threadedUids = [self threadedUIDs: uids];
       if (threadedUids != nil)
         uids = threadedUids;
       else
         sortByThread = NO;
     }
-  
-  // We also return the inbox quota
-  account = [mailFolder mailAccountFolder];
-  quota = [account getInboxQuota];
+  [data setObject: uids forKey: @"uids"];
+  [data setObject: [NSNumber numberWithBool: sortByThread] forKey: @"threaded"];
 
-  data = [NSDictionary dictionaryWithObjectsAndKeys: uids, @"uids",
-		       headers, @"headers",
-                       [NSNumber numberWithBool: sortByThread], @"threaded", 
-                       quota, @"quotas", nil];
+  // We also return the inbox quota
+  account = [folder mailAccountFolder];
+  quota = [account getInboxQuota];
+  [data setObject: quota forKey: @"quotas"];
 
   return data;
 }
 
 /* Module actions */
 
-- (id <WOActionResults>) getSortedUIDsAction
+- (id <WOActionResults>) getUIDsAction
 {
   NSDictionary *data;
-  NSArray *uids, *threadedUids;
   NSString *noHeaders;
-  SOGoMailAccount *account;
   SOGoMailFolder *folder;
-  id quota;
   WORequest *request;
   WOResponse *response;
 
@@ -681,33 +690,9 @@
 	       forKey: @"content-type"];
   folder = [self clientObject];
   
-  // TODO: we might want to flush the caches?
-  //[folder flushMailCaches];
-  [folder expungeLastMarkedFolder];
-
   noHeaders = [request formValueForKey: @"no_headers"];
-  if ([noHeaders length])
-    {
-      uids = [self getSortedUIDsInFolder: folder];
-      if (sortByThread)
-        {
-          threadedUids = [self threadedUIDs: uids];
-          if (threadedUids != nil)
-            uids = threadedUids;
-          else
-            sortByThread = NO;
-        }
-
-      // We also return the inbox quota
-      account = [folder mailAccountFolder];
-      quota = [account getInboxQuota];
-
-      data = [NSDictionary dictionaryWithObjectsAndKeys: uids, @"uids",
-                           [NSNumber numberWithBool: sortByThread], @"threaded", 
-                           quota, @"quotas", nil];
-    }
-  else
-    data = [self getUIDsAndHeadersInFolder: folder];
+  data = [self getUIDsInFolder: folder
+                   withHeaders: ([noHeaders length] == 0)];
 
   [response appendContentString: [data jsonRepresentation]];
 

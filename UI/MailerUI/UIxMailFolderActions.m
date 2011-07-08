@@ -247,10 +247,16 @@
       response = (WOResponse *) [co deleteUIDs: uids useTrashFolder: !withoutTrash inContext: context];
       if (!response)
         {
-          account = [co mailAccountFolder];
-          data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
-          response = [self responseWithStatus: 200
-                                    andString: [data jsonRepresentation]];
+          if (withoutTrash)
+            {
+              // When not using a trash folder, return the quota
+              account = [co mailAccountFolder];
+              data = [NSDictionary dictionaryWithObjectsAndKeys: [account getInboxQuota], @"quotas", nil];
+              response = [self responseWithStatus: 200
+                                        andString: [data jsonRepresentation]];
+            }
+          else
+            response = [self responseWith204];
         }
     }
   else

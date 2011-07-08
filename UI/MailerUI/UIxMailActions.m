@@ -94,30 +94,22 @@
 - (id) markMessageUnflaggedAction 
 {
   id response;
-  SOGoMailFolder *mailFolder;
 
   response = [[self clientObject] removeFlags: @"\\Flagged"];
   if (!response)
-    {
-      mailFolder = [[self clientObject] container];
-      response = [self responseWith204];
-    }
-    
+    response = [self responseWith204];
+  
   return response;
 }
 
 - (id) markMessageFlaggedAction 
 {
   id response;
-  SOGoMailFolder *mailFolder;
 
   response = [[self clientObject] addFlags: @"\\Flagged"];
   if (!response)
-    {
-      mailFolder = [[self clientObject] container];
-      response = [self responseWith204];
-    }
-
+    response = [self responseWith204];
+  
   return response;
 }
 
@@ -125,30 +117,22 @@
 - (id) markMessageUnreadAction 
 {
   id response;
-  SOGoMailFolder *mailFolder;
-
+ 
   response = [[self clientObject] removeFlags: @"seen"];
   if (!response)
-    {
-      mailFolder = [[self clientObject] container];
-      response = [self responseWith204];
-    }
-    
+    response = [self responseWith204];
+        
   return response;
 }
 
 - (id) markMessageReadAction 
 {
   id response;
-  SOGoMailFolder *mailFolder;
 
   response = [[self clientObject] addFlags: @"seen"];
   if (!response)
-    {
-      mailFolder = [[self clientObject] container];
-      response = [self responseWith204];
-    }
-
+    response = [self responseWith204];
+  
   return response;
 }
 
