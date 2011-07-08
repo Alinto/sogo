@@ -312,7 +312,7 @@ static NSArray *tasksFields = nil;
   NSNull *marker;
   SOGoAppointmentFolders *clientObject;
   SOGoUser *ownerUser;
-  NSString *owner, *role;
+  NSString *owner, *role, *calendarName;
   BOOL isErasable, folderIsRemote;
 
   infos = [NSMutableArray array];
@@ -381,7 +381,10 @@ static NSArray *tasksFields = nil;
                           forKey: @"c_folder"];
               [newInfo setObject: [currentFolder ownerInContext: context]
                           forKey: @"c_owner"];
-              [newInfo setObject: [currentFolder displayName]
+              calendarName = [currentFolder displayName];
+              if (calendarName == nil)
+                calendarName = @"";
+              [newInfo setObject: calendarName
                           forKey: @"calendarName"];
               if (![[newInfo objectForKey: @"c_title"] length])
                 [self _fixComponentTitle: newInfo withType: component];

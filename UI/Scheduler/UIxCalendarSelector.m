@@ -1,6 +1,6 @@
 /* UIxCalendarSelector.m - this file is part of SOGo
  *
- * Copyright (C) 2007, 2008 Inverse inc.
+ * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -107,6 +107,8 @@ _intValueFromHex (NSString *hexString)
 	  calendar = [NSMutableDictionary dictionary];
 	  folderName = [folder nameInContainer];
 	  fDisplayName = [folder displayName];
+          if (fDisplayName == nil)
+            fDisplayName = @"";
 	  if ([fDisplayName isEqualToString: [co defaultFolderName]])
 	    fDisplayName = [self labelForKey: fDisplayName];
 	  [calendar setObject: [NSString stringWithFormat: @"/%@", folderName]

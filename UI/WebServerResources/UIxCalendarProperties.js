@@ -30,10 +30,17 @@ function onOKClick(event) {
   var originalTag = $("originalCalendarSyncTag");
   var allTags = $("allCalendarSyncTags");
 
-  if (allTags)
+  if (calendarName.value.blank()) {
+      alert(_("Please specify a calendar name."));
+      save = false;
+  }
+
+  if (save
+      && allTags)
       allTags = allTags.value.split(",");
   
-  if (tag
+  if (save
+      && tag
       && $("synchronizeCalendar").checked) {
       if (tag.value.blank()) {
           alert(_("tagNotDefined"));
@@ -52,7 +59,8 @@ function onOKClick(event) {
       else
           save = confirm(_("tagWasAdded"));
   }
-  else if (originalTag
+  else if (save
+           && originalTag
            && !originalTag.value.blank())
       save = confirm(_("tagWasRemoved"));
   

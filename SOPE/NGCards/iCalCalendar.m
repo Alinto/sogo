@@ -160,13 +160,15 @@
   return [self childrenWithTag: @"vfreebusy"];
 }
 
-- (void) addTimeZone: (iCalTimeZone *) iTZ
+- (BOOL) addTimeZone: (iCalTimeZone *) iTZ
 {
   iCalTimeZone *possibleTz;
 
   possibleTz = [self timeZoneWithId: [iTZ tzId]];
   if (!possibleTz)
     [self addChild: iTZ];
+
+  return (!possibleTz);
 }
 
 - (iCalTimeZone *) timeZoneWithId: (NSString *) tzId

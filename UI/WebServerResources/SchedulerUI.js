@@ -2542,7 +2542,11 @@ function updateCalendarProperties(calendarID, calendarName, calendarColor) {
 	//   log("nodeID: " + nodeID);
     var calendarNode = $(nodeID);
     var childNodes = calendarNode.childNodes;
-    childNodes[childNodes.length-1].nodeValue = calendarName;
+    var textNode = childNodes[childNodes.length-1];
+    if (textNode.tagName == 'DIV')
+        calendarNode.appendChild(document.createTextNode(calendarName));
+    else
+        childNodes[childNodes.length-1].nodeValue = calendarName;
 
     appendStyleElement(nodeID, calendarColor);
 }

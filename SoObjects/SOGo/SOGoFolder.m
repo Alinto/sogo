@@ -232,9 +232,14 @@
     {
       comparison = [self _compareByNameInContainer: otherFolder];
       if (comparison == NSOrderedSame)
-	comparison
-	  = [[self displayName]
-	      localizedCaseInsensitiveCompare: [otherFolder displayName]];
+        if ([self displayName] == nil)
+          comparison = NSOrderedAscending;
+        else if ([otherFolder displayName] == nil)
+          comparison = NSOrderedDescending;
+        else
+          comparison
+            = [[self displayName]
+                localizedCaseInsensitiveCompare: [otherFolder displayName]];
     }
 
   return comparison;

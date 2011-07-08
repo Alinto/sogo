@@ -1,3 +1,20 @@
+2011-07-12  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoFolder.m (-compare:): handle the case when
+	the display name is not defined.
+
+	* UI/Scheduler/UIxCalListingActions.m
+	(-_fetchFields:forComponentOfType:): test the calendar name and
+	set it to an empty string if it's not defined.
+
+	* UI/Scheduler/UIxCalendarSelector.m (-calendars): idem.
+
+	* UI/WebServerResources/UIxCalendarProperties.js (onOKClick):
+	refuses to save the properties if the calendar name is empty.
+
+	* UI/WebServerResources/SchedulerUI.js (updateCalendarProperties):
+	Create a new text node in case the calendar has no name.
+
 2011-07-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreTable.m

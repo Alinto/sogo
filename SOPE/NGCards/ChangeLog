@@ -1,3 +1,8 @@
+2011-07-12  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalCalendar.m (-addTimeZone:): now returns true if the timezone
+	was already defined in the calendar.
+
 2011-07-11  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalDailyRecurrenceCalculator.m
