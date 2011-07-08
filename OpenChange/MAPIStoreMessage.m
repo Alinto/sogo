@@ -54,7 +54,6 @@
 {
   if ((self = [super init]))
     {
-      mapiRetainCount = 0;
       attachmentKeys = nil;
       attachmentParts = nil;
       activeTables = [NSMutableArray new];
@@ -69,16 +68,6 @@
   [attachmentParts release];
   [activeTables release];
   [super dealloc];
-}
-
-- (void) setMAPIRetainCount: (uint32_t) newCount
-{
-  mapiRetainCount = newCount;
-}
-
-- (uint32_t) mapiRetainCount
-{
-  return mapiRetainCount;
 }
 
 - (void) openMessage: (struct mapistore_message *) msg

@@ -39,12 +39,7 @@
   NSMutableArray *attachmentKeys;
   NSMutableDictionary *attachmentParts;
   NSMutableArray *activeTables;
-  uint32_t mapiRetainCount;
 }
-
-/* HACK: MAPI retain count */
-- (void) setMAPIRetainCount: (uint32_t) newCount;
-- (uint32_t) mapiRetainCount;
 
 - (void) openMessage: (struct mapistore_message *) msg;
 

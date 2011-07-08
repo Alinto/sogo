@@ -1,5 +1,8 @@
 2011-07-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreObject.m (-setMAPIRetainCount:)
+	(-mapiRetainCount:): moved methods from MAPIStoreMessage.
+
 	* OpenChange/MAPIStoreTable.m
 	(-evaluateContentRestriction:intoQualifier:): temporarily
 	commented out code initializing "operator" as this local var is
