@@ -84,19 +84,26 @@
 
 @end
 
+#import "MAPIStoreFSFolder.h"
+
 @implementation MAPIStoreDeletedItemsContext
 
 + (NSString *) MAPIModuleName
 {
   return @"deleted-items";
 }
-
 - (void) setupBaseFolder: (NSURL *) newURL
 {
-  baseFolder = [MAPIStoreDeletedItemsFolder baseFolderWithURL: newURL
-                                                    inContext: self];
+  baseFolder = [MAPIStoreFSFolder baseFolderWithURL: newURL inContext: self];
   [baseFolder retain];
 }
+
+// - (void) setupBaseFolder: (NSURL *) newURL
+// {
+//   baseFolder = [MAPIStoreDeletedItemsFolder baseFolderWithURL: newURL
+//                                                     inContext: self];
+//   [baseFolder retain];
+// }
 
 @end
 

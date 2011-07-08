@@ -1,5 +1,8 @@
 2011-07-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailContext.m: MAPIStoreDeletedItemsContext
+	is now temporarily a fs-based context.
+
 	* SoObjects/Mailer/SOGoMailFolder.m
 	(_fetchMessageProperties:matchingQualifier:andSortOrderings::):
 	properly implement this method, as properties should be an array
