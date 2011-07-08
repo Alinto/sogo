@@ -161,7 +161,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       completeURLString = [@"sogo://" stringByAppendingString: urlString];
       if (![completeURLString hasSuffix: @"/"])
 	completeURLString = [completeURLString stringByAppendingString: @"/"];
-      baseURL = [NSURL URLWithString: completeURLString];
+      baseURL = [NSURL URLWithString: [completeURLString stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
       if (baseURL)
         {
           module = [baseURL host];

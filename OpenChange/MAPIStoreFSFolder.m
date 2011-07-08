@@ -80,12 +80,14 @@ static Class MAPIStoreFSMessageK;
                     withFID: (uint64_t) newFID
 {
   NSString *newKey, *urlString;
+  NSURL *childURL;
   SOGoMAPIFSFolder *childFolder;
 
   newKey = [NSString stringWithFormat: @"0x%.16"PRIx64, (unsigned long long) newFID];
 
   urlString = [NSString stringWithFormat: @"%@/%@", [self url], newKey];
-  childFolder = [SOGoMAPIFSFolder folderWithURL: [NSURL URLWithString: urlString]
+  childURL = [NSURL URLWithString: [urlString stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+  childFolder = [SOGoMAPIFSFolder folderWithURL: childURL
                                    andTableType: MAPISTORE_MESSAGE_TABLE];
   [childFolder ensureDirectory];
 

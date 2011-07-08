@@ -1,5 +1,16 @@
 2011-07-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m (-initWithSOstringByAddingPercentEscapesUsingEncodinGoObject:inContainer:):
+	make use of -[NSString stringByAddingPercentEscapesUsingEncoding:]
+	to properly escape folder names with non-ascii characters.
+
+	* OpenChange/MAPIStoreFSFolder.m (-createFolder:withFID:): same as
+	above.
+
+	* OpenChange/MAPIStoreContext.m
+	(+contextFromURI:withConnectionInfo:andFID:inMemCtx:): same as
+	above.
+
 	* OpenChange/SOGoMAPIFSFolder.m (-initWithName:inContainer:):
 	added method to properly initialize the "directory" ivar when
 	initialized as a subfolder.

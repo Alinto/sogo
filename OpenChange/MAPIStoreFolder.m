@@ -118,10 +118,12 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
               inContainer: (MAPIStoreObject *) newContainer
 {
   NSURL *propsURL;
+  NSString *urlString;
 
   if ((self = [super initWithSOGoObject: newSOGoObject inContainer: newContainer]))
     {
-      propsURL = [NSURL URLWithString: [self url]];
+      urlString = [[self url] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+      propsURL = [NSURL URLWithString: urlString];
       ASSIGN (propsFolder,
               [SOGoMAPIFSFolder folderWithURL: propsURL
                                 andTableType: MAPISTORE_FOLDER_TABLE]);
