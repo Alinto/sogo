@@ -37,7 +37,7 @@ static unsigned int newCount;
 
 - (NSString *) generateNameForNewDraft
 {
-  NSString *newName, *login;
+  NSString *newName;
   unsigned int currentTime;
 
   currentTime = [[NSDate date] timeIntervalSince1970];
@@ -49,7 +49,6 @@ static unsigned int newCount;
       newCount = 1;
     }
 
-  login = [[context activeUser] login];
   newName = [NSString stringWithFormat: @"newDraft%u-%u",
 		      currentTime, newCount];
 

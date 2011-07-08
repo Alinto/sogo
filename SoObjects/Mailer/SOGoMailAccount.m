@@ -121,13 +121,6 @@ static NSString *inboxFolderName = @"INBOX";
   NSArray *namespace;
   NGImap4Client *client;
 
-  SOGoUser *user;
-  NSArray *accounts;
-  NSDictionary *account;
-
-  user = [SOGoUser userWithLogin: [self ownerInContext: nil]];
-  accounts = [user mailAccounts];
-  account = [accounts objectAtIndex: [nameInContainer intValue]];
   client = [[self imap4Connection] client];
   namespaceDict = [client namespace];
 
@@ -285,10 +278,9 @@ static NSString *inboxFolderName = @"INBOX";
   manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
 
   return [manager updateFiltersForLogin: [[self imap4URL] user]
-		  authname: [[self imap4URL] user]
-		  password: [self imap4PasswordRenewed: NO]
-		  account: self];
- 
+                               authname: [[self imap4URL] user]
+                               password: [self imap4PasswordRenewed: NO]
+                                account: self];
 }
 
 

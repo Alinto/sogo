@@ -981,9 +981,6 @@ static NSString    *userAgent      = nil;
   */
   NGMutableHashMap *map;
   NGMimeBodyPart   *bodyPart;
-  SOGoUserDefaults *ud;
-
-  ud = [[context activeUser] userDefaults];
   
   /* prepare header of body part */
 
@@ -1014,11 +1011,8 @@ static NSString    *userAgent      = nil;
 - (NGMimeMessage *) mimeMessageForContentWithHeaderMap: (NGMutableHashMap *) map
 {
   NGMimeMessage *message;  
-  SOGoUserDefaults *ud;
 //   BOOL     addSuffix;
   id       body;
-
-  ud = [[context activeUser] userDefaults];
 
   [map setObject: @"text/plain" forKey: @"content-type"];
   body = text;
