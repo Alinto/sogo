@@ -35,6 +35,7 @@
 
 #import "MAPIStoreContext.h"
 #import "MAPIStoreMailFolder.h"
+#import "MAPIStoreMailMessage.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -47,12 +48,18 @@
 
 @implementation MAPIStoreMailMessageTable
 
-static Class NSDataK, NSStringK;
+static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
 
 + (void) initialize
 {
+  MAPIStoreMailMessageK = [MAPIStoreMailMessage class];
   NSDataK = [NSData class];
   NSStringK = [NSString class];
+}
+
++ (Class) childObjectClass
+{
+  return MAPIStoreMailMessageK;
 }
 
 - (id) init

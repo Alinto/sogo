@@ -37,7 +37,19 @@
 #undef DEBUG
 #include <mapistore/mapistore.h>
 
+static Class MAPIStoreFSMessageK = Nil;
+
 @implementation MAPIStoreFSMessageTable
+
++ (void) initialize
+{
+  MAPIStoreFSMessageK = [MAPIStoreFSMessage class];
+}
+
++ (Class) childObjectClass
+{
+  return MAPIStoreFSMessageK;
+}
 
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
 {

@@ -30,6 +30,7 @@
 
 #import <Contacts/SOGoContactGCSEntry.h>
 
+#import "MAPIStoreContactsMessage.h"
 #import "MAPIStoreTypes.h"
 #import "NSDate+MAPIStore.h"
 #import "NSArray+MAPIStore.h"
@@ -40,7 +41,19 @@
 
 #include <mapistore/mapistore_nameid.h>
 
+static Class MAPIStoreContactsMessageK;
+
 @implementation MAPIStoreContactsMessageTable
+
++ (void) initialize
+{
+  MAPIStoreContactsMessageK = [MAPIStoreContactsMessage class];
+}
+
++ (Class) childObjectClass
+{
+  return MAPIStoreContactsMessageK;
+}
 
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
 {

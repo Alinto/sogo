@@ -28,6 +28,7 @@
 
 #import <Appointments/SOGoTaskObject.h>
 
+#import "MAPIStoreTasksMessage.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
@@ -37,7 +38,19 @@
 
 #include <mapistore/mapistore_nameid.h>
 
+static Class MAPIStoreTasksMessageK = Nil;
+
 @implementation MAPIStoreTasksMessageTable
+
++ (void) initialize
+{
+  MAPIStoreTasksMessageK = [MAPIStoreTasksMessage class];
+}
+
++ (Class) childObjectClass
+{
+  return MAPIStoreTasksMessageK;
+}
 
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
 {

@@ -27,6 +27,7 @@
 
 #import <NGCards/iCalEvent.h>
 
+#import "MAPIStoreCalendarMessage.h"
 #import "MAPIStoreTypes.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -35,7 +36,19 @@
 
 #include <mapistore/mapistore_nameid.h>
 
+static Class MAPIStoreCalendarMessageK = Nil;
+
 @implementation MAPIStoreCalendarMessageTable
+
++ (void) initialize
+{
+  MAPIStoreCalendarMessageK = [MAPIStoreCalendarMessage class];
+}
+
++ (Class) childObjectClass
+{
+  return MAPIStoreCalendarMessageK;
+}
 
 - (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
 				       intoQualifier: (EOQualifier **) qualifier
