@@ -1,5 +1,8 @@
 2011-07-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m (-batchDeleteAction): we
+	only return the quota when not using the trash folder.
+
 	* SoObjects/SOGo/SOGoFolder.m (-compare:): handle the case when
 	the display name is not defined.
 

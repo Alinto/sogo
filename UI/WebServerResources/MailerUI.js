@@ -14,7 +14,6 @@ var Mailer = {
     cachedMessages: new Array(),
     foldersStateTimer: false,
     popups: new Array(),
-    quotas: null,
 
     dataTable: null,
     dataSources: new Hash(),
@@ -524,11 +523,14 @@ function deleteSelectedMessages(sender) {
 }
 
 function deleteSelectedMessagesCallback(http) {
-    if (http.status == 200) {
+    if (isHttpStatus204(http.status) || http.status == 200) {
         var data = http.callbackData;
-        var rdata = http.responseText.evalJSON(true);
-        if (rdata.quotas && data["mailbox"].startsWith('/0/'))      
-            updateQuotas(rdata.quotas);
+        if (http.status == 200) {
+            // The answer contains quota information
+            var rdata = http.responseText.evalJSON(true);
+            if (rdata.quotas && data["mailbox"].startsWith('/0/'))      
+                updateQuotas(rdata.quotas);
+        }
 	if (data["refreshUnseenCount"])
             // TODO : the unseen count should be returned when calling the batchDelete remote action,
             // in order to avoid this extra AJAX call.
@@ -821,7 +823,7 @@ function openMailbox(mailbox, reload) {
                 if (inboxData) {
                     // Use UIDs and headers from the WOX template; this only
                     // happens once and only with the inbox
-                    dataSource.init(inboxData['uids'], inboxData['threaded'], inboxData['headers']);
+                    dataSource.init(inboxData['uids'], inboxData['threaded'], inboxData['headers'], inboxData['quotas']);
                     inboxData = null; // invalidate this initial lookup
                 }
                 else
@@ -2067,14 +2069,12 @@ function updateMailboxTreeInPage() {
         }
     }
 
-    updateQuotas();
+    //updateQuotas();
 }
 
 function updateQuotas(quotas) {
-    if (quotas)
-        Mailer.quotas = quotas;
-    if (Mailer.quotas && parseInt(Mailer.quotas.maxQuota) > 0) {
-        log ("updating quotas " + Mailer.quotas.usedSpace + "/" + Mailer.quotas.maxQuota);
+    if (quotas && parseInt(quotas.maxQuota) > 0) {
+        log ("updating quotas " + quotas.usedSpace + "/" + quotas.maxQuota);
         var treeContent = $("folderTreeContent");
         var tree = $("mailboxTree");
         var quotaDiv = $("quotaIndicator");
@@ -2082,13 +2082,13 @@ function updateQuotas(quotas) {
             treeContent.removeChild(quotaDiv);
         }
         // Build quota indicator, show values in MB
-        var percents = (Math.round(Mailer.quotas.usedSpace * 10000
-                                   / Mailer.quotas.maxQuota)
+        var percents = (Math.round(quotas.usedSpace * 10000
+                                   / quotas.maxQuota)
                         / 100);
         var level = (percents > 85)? "alert" : (percents > 70)? "warn" : "ok";
         var format = _("quotasFormat");
         var text = format.formatted(percents,
-                                    Math.round(Mailer.quotas.maxQuota/10.24)/100);
+                                    Math.round(quotas.maxQuota/10.24)/100);
         quotaDiv = new Element('div', { 'id': 'quotaIndicator',
                                         'class': 'quota',
                                         'info': text });
@@ -2214,9 +2214,6 @@ function buildMailboxes(accountIdx, encoded) {
     var data = encoded.evalJSON(true);
     var mailboxes = data.mailboxes;
     var unseen = (data.status? data.status.unseen : 0);
-
-    if (accountIdx == 0 && data.quotas)
-        Mailer.quotas = data.quotas;
 
     for (var i = 0; i < mailboxes.length; i++) {
         var currentNode = account;

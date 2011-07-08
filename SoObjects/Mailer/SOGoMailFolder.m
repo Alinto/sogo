@@ -1167,17 +1167,11 @@ static NSString *defaultUserID =  @"anyone";
 
 - (NSString *) httpURLForAdvisoryToUser: (NSString *) uid
 {
-  SOGoUser *user;
   NSString *otherUsersPath, *url;
-  SOGoMailAccount *thisAccount;
-  NSDictionary *mailAccount;
 
-  user = [SOGoUser userWithLogin: uid roles: nil];
   otherUsersPath = [self otherUsersPathToFolder];
   if (otherUsersPath)
     {
-      thisAccount = [self mailAccountFolder];
-      mailAccount = [[user mailAccounts] objectAtIndex: 0];
       url = [NSString stringWithFormat: @"%@/0%@",
 		      [self soURLToBaseContainerForUser: uid],
 		      otherUsersPath];
