@@ -27,6 +27,17 @@
 
 #include <talloc.h>
 
+struct MAPIStoreTallocWrapper
+{
+  id MAPIStoreSOGoObject;
+};
+
+@interface NSObject (MAPIStoreTallocHelpers)
+
+- (struct MAPIStoreTallocWrapper *) tallocWrapper: (TALLOC_CTX *) tallocCtx;
+
+@end
+
 @interface NSObject (MAPIStoreDataTypes)
 
 - (enum MAPISTATUS) getMAPIValue: (void **) data

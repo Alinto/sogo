@@ -1,3 +1,9 @@
+2011-07-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/NSObject+MAPIStore.m (-tallocWrapper:): new method
+	enabling the wrapping of obj-c objects into talloc structures, in
+	order to ease memory management.
+
 2011-07-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailListActions.m (-getUIDsAndHeadersInFolder)
