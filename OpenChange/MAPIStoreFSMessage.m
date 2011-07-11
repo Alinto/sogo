@@ -65,6 +65,7 @@
 
 - (enum MAPISTATUS) getProperty: (void **) data
                         withTag: (enum MAPITAGS) propTag
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   id value;
   enum MAPISTATUS rc;
@@ -73,19 +74,19 @@
   if (value)
     rc = [value getMAPIValue: data forTag: propTag inMemCtx: memCtx];
   else
-    rc = [super getProperty: data withTag: propTag];
+    rc = [super getProperty: data withTag: propTag inMemCtx: memCtx];
 
   return rc;
 }
 
-- (int) getPrSubject: (void **) data
+- (int) getPrSubject: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* if we get here, it means that the properties file didn't contain a
      relevant value */
-  return [self getEmptyString: data];
+  return [self getEmptyString: data inMemCtx: memCtx];
 }
 
-- (int) getPrMessageClass: (void **) data
+- (int) getPrMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* if we get here, it means that the properties file didn't contain a
      relevant value */
@@ -96,6 +97,7 @@
 }
 
 - (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSArray *keys;
   NSUInteger count, max;

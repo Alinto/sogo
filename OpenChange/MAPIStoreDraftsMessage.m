@@ -53,6 +53,7 @@
 }
 
 - (int) getPrMessageFlags: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   unsigned int v = MSGFLAG_FROMME;
 

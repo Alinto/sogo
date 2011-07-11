@@ -85,12 +85,8 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   MAPIStoreDraftsFolderK = [MAPIStoreDraftsFolder class];
 }
 
-+ (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-{
-  return [super getAvailableProperties: propertiesP];
-}
-
 - (int) getPrIconIndex: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t longValue;
 
@@ -111,6 +107,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPidLidImapDeleted: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t longValue;
 
@@ -124,6 +121,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrSubject: (void **) data
+            inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -136,6 +134,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrSubjectPrefix: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *subject;
   NSUInteger colIdx;
@@ -154,6 +153,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrNormalizedSubject: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *subject;
   NSUInteger colIdx;
@@ -174,6 +174,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrMessageClass: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup (memCtx, "IPM.Note");
 
@@ -181,11 +182,13 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrReplyRequested: (void **) data // TODO
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPrResponseRequested: (void **) data // TODO
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx, NO);
 
@@ -203,26 +206,31 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrLatestDeliveryTime: (void **) data // DOUBT
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrCreationTime: data];
+  return [self getPrCreationTime: data inMemCtx: memCtx];
 }
 
 - (int) getPrOriginalSubmitTime: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrCreationTime: data];
+  return [self getPrCreationTime: data inMemCtx: memCtx];
 }
 
 - (int) getPrClientSubmitTime: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrCreationTime: data];
+  return [self getPrCreationTime: data inMemCtx: memCtx];
 }
 
 - (int) getPrMessageDeliveryTime: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrCreationTime: data];
+  return [self getPrCreationTime: data inMemCtx: memCtx];
 }
 
 - (int) getPrMessageFlags: (void **) data // TODO
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSDictionary *coreInfos;
   NSArray *flags;
@@ -246,6 +254,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrFlagStatus: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSDictionary *coreInfos;
   NSArray *flags;
@@ -265,6 +274,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrFollowupIcon: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSDictionary *coreInfos;
   NSArray *flags;
@@ -284,36 +294,43 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrSensitivity: (void **) data // TODO
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getLongZero: data];
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) getPrOriginalSensitivity: (void **) data // TODO
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSensitivity: data];
+  return [self getPrSensitivity: data inMemCtx: memCtx];
 }
 
 - (int) getPrSentRepresentingAddrtype: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getSMTPAddrType: data];
+  return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
 - (int) getPrRcvdRepresentingAddrtype: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getSMTPAddrType: data];
+  return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
 - (int) getPrReceivedByAddrtype: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getSMTPAddrType: data];
+  return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
 - (int) getPrSenderAddrtype: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getSMTPAddrType: data];
+  return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
 - (int) getPrSenderEmailAddress: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -327,26 +344,31 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrSenderName: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSenderEmailAddress: data];
+  return [self getPrSenderEmailAddress: data inMemCtx: memCtx];
 }
 
 - (int) getPrOriginalAuthorName: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSenderEmailAddress: data];
+  return [self getPrSenderEmailAddress: data inMemCtx: memCtx];
 }
 
 - (int) getPrSentRepresentingEmailAddress: (void **) data
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSenderEmailAddress: data];
+  return [self getPrSenderEmailAddress: data inMemCtx: memCtx];
 }
 
 - (int) getPrSentRepresentingName: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSenderEmailAddress: data];
+  return [self getPrSenderEmailAddress: data inMemCtx: memCtx];
 }
 
 - (int) getPrReceivedByEmailAddress: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -360,31 +382,37 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrReceivedByName: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrReceivedByEmailAddress: data];
+  return [self getPrReceivedByEmailAddress: data inMemCtx: memCtx];
 }
 
 - (int) getPrRcvdRepresentingName: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrReceivedByEmailAddress: data];
+  return [self getPrReceivedByEmailAddress: data inMemCtx: memCtx];
 }
 
 - (int) getPrRcvdRepresentingEmailAddress: (void **) data
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrReceivedByEmailAddress: data];
+  return [self getPrReceivedByEmailAddress: data inMemCtx: memCtx];
 }
 
 - (int) getPrDisplayTo: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrReceivedByEmailAddress: data];
+  return [self getPrReceivedByEmailAddress: data inMemCtx: memCtx];
 }
 
 - (int) getPrOriginalDisplayTo: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrDisplayTo: data];
+  return [self getPrDisplayTo: data inMemCtx: memCtx];
 }
 
 - (int) getPrDisplayCc: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -398,21 +426,25 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrOriginalDisplayCc: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrDisplayCc: data];
+  return [self getPrDisplayCc: data inMemCtx: memCtx];
 }
 
 - (int) getPrDisplayBcc: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getEmptyString: data];
+  return [self getEmptyString: data inMemCtx: memCtx];
 }
 
 - (int) getPrOriginalDisplayBcc: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrDisplayBcc: data];
+  return [self getPrDisplayBcc: data inMemCtx: memCtx];
 }
 
 - (int) getPidNameContentType: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"message/rfc822" asUnicodeInMemCtx: memCtx];
 
@@ -420,6 +452,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrImportance: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t v;
   NSString *s;
@@ -438,6 +471,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrInternetCpid: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* ref:
   http://msdn.microsoft.com/en-us/library/dd317756%28v=vs.85%29.aspx
@@ -453,6 +487,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrBody: (void **) data
+         inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSMutableArray *keys;
   id result;
@@ -504,6 +539,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrHtml: (void **) data
+         inMemCtx: (TALLOC_CTX *) memCtx
 {
   id result;
   NSData *content;
@@ -566,6 +602,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrRtfCompressed: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = NULL;
 
@@ -573,11 +610,13 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrRtfInSync: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPrInternetMessageId: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[sogoObject messageId] asUnicodeInMemCtx: memCtx];
 
@@ -585,21 +624,25 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPrReadReceiptRequested: (void **) data // TODO
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPrDeleteAfterSubmit: (void **) data // TODO
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidPrivate: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPrMsgEditorFormat: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSMutableArray *keys;
   NSArray *acceptedTypes;
@@ -629,26 +672,31 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 }
 
 - (int) getPidLidReminderSet: (void **) data // TODO
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidUseTnef: (void **) data // TODO
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidRemoteStatus: (void **) data // TODO
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getLongZero: data];
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidAgingDontAgeMe: (void **) data // TODO
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getYes: data];
+  return [self getYes: data inMemCtx: memCtx];
 }
 
 - (void) openMessage: (struct mapistore_message *) msg
+            inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct SRowSet *recipients;
   NSArray *to;
@@ -656,7 +704,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   NGImap4EnvelopeAddress *currentAddress;
   NSString *text;
 
-  [super openMessage: msg];
+  [super openMessage: msg inMemCtx: memCtx];
   /* Retrieve recipients from the message */
   to = [sogoObject toEnvelopeAddresses];
   max = [to count];

@@ -23,6 +23,8 @@
 #ifndef MAPISTORETABLE_H
 #define MAPISTORETABLE_H
 
+#include <talloc.h>
+
 #import <Foundation/NSObject.h>
 
 #define SENSITIVITY_NONE 0
@@ -85,13 +87,15 @@ typedef enum {
 
 - (void) cleanupCaches;
 
-- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP;
+- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                      inMemCtx: (TALLOC_CTX *) localMemCtx;
 - (void) setRestrictions: (const struct mapi_SRestriction *) res;
 - (int) setColumns: (enum MAPITAGS *) newColumns
          withCount: (uint16_t) newColumCount;
 - (int) getRow: (struct mapistore_property_data *) data
      withRowID: (uint32_t) rowId
-  andQueryType: (enum table_query_type) queryType;
+  andQueryType: (enum table_query_type) queryType
+      inMemCtx: (TALLOC_CTX *) memCtx;
 
 - (void) notifyChangesForChild: (MAPIStoreObject *) child;
 

@@ -376,8 +376,10 @@ static Class NSDataK, NSStringK;
 }
 
 - (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[isa childObjectClass] getAvailableProperties: propertiesP];
+  return [[isa childObjectClass] getAvailableProperties: propertiesP
+                                               inMemCtx: memCtx];
 }
 
 - (void) setRestrictions: (const struct mapi_SRestriction *) res
@@ -804,6 +806,7 @@ static Class NSDataK, NSStringK;
 - (int) getRow: (struct mapistore_property_data *) data
      withRowID: (uint32_t) rowId
   andQueryType: (enum table_query_type) queryType
+      inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSUInteger count;
   MAPIStoreObject *child;
@@ -816,7 +819,8 @@ static Class NSDataK, NSStringK;
       rc = MAPI_E_SUCCESS;
       for (count = 0; count < columnsCount; count++)
         data[count].error = [child getProperty: &data[count].data
-                                       withTag: columns[count]];
+                                       withTag: columns[count]
+                                      inMemCtx: memCtx];
     }
   else
     rc = MAPI_E_INVALID_OBJECT;

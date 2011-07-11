@@ -229,7 +229,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
                       withID: newFid];
       contextFid = newFid;
    
-      memCtx = newConnInfo->mstore_ctx;
+      mstoreCtx = newConnInfo->mstore_ctx;
       connInfo = newConnInfo;
     }
 
@@ -682,6 +682,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 		       withTableType: (uint8_t) tableType
 			andQueryType: (enum table_query_type) queryType
 			       inFID: (uint64_t) fid
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *folderURL;
   MAPIStoreTable *table;
@@ -699,7 +700,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       object = [table childAtRowID: pos forQueryType: queryType];
       if (object)
         {
-          rc = [object getProperty: data withTag: propTag];
+          rc = [object getProperty: data withTag: propTag inMemCtx: memCtx];
           if (rc == MAPISTORE_ERR_NOT_FOUND)
             rc = MAPI_E_NOT_FOUND;
           else if (rc == MAPISTORE_ERR_NO_MEMORY)
@@ -730,19 +731,20 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
 - (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
                    ofTableType: (uint8_t) type
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc = MAPISTORE_SUCCESS;
 
   switch (type)
     {
     case MAPISTORE_FOLDER_TABLE:
-      [[baseFolder class] getAvailableProperties: propertiesP];
+      [[baseFolder class] getAvailableProperties: propertiesP inMemCtx: memCtx];
       break;
     case MAPISTORE_MESSAGE_TABLE:
-      [[baseFolder messageClass] getAvailableProperties: propertiesP];
+      [[baseFolder messageClass] getAvailableProperties: propertiesP inMemCtx: memCtx];
       break;
     case MAPISTORE_FAI_TABLE:
-      [MAPIStoreFAIMessage getAvailableProperties: propertiesP];
+      [MAPIStoreFAIMessage getAvailableProperties: propertiesP inMemCtx: memCtx];
       break;
     case MAPISTORE_RULE_TABLE:
       [self errorWithFormat: @"%s: rules not handled yet",
@@ -762,6 +764,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 - (int) openMessage: (struct mapistore_message *) msg
             withMID: (uint64_t) mid
               inFID: (uint64_t) fid
+           inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *messageKey, *messageURL;
   MAPIStoreMessage *message;
@@ -787,7 +790,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
           message = [folder lookupChild: messageKey];
           if (message)
             {
-              [message openMessage: msg];
+              [message openMessage: msg inMemCtx: memCtx];
               [messages setObject: message forKey: midKey];
               rc = MAPISTORE_SUCCESS;
             }
@@ -879,7 +882,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
           /* folder modified */
           notif_parameters
-            = talloc_zero(memCtx,
+            = talloc_zero(NULL,
                           struct mapistore_object_notification_parameters);
           notif_parameters->object_id = folderId;
           if ([message isNew])
@@ -897,12 +900,13 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
                                        MAPISTORE_FOLDER,
                                        MAPISTORE_OBJECT_MODIFIED,
                                        notif_parameters);
+          talloc_free (notif_parameters);
 
           /* message created */
           if ([message isNew])
             {
               notif_parameters
-                = talloc_zero(memCtx,
+                = talloc_zero(NULL,
                               struct mapistore_object_notification_parameters);
               notif_parameters->object_id = [message objectId];
               notif_parameters->folder_id = folderId;
@@ -969,6 +973,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
           ofTableType: (uint8_t) tableType
                 inRow: (struct SRow *) aRow
               withMID: (uint64_t) fmid
+             inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSNumber *midKey;
   MAPIStoreObject *child;
@@ -995,7 +1000,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
               sizeof (struct mapistore_property_data) * sPropTagArray->cValues);
       rc = [child getProperties: data
                        withTags: sPropTagArray->aulPropTag
-                       andCount: sPropTagArray->cValues];
+                       andCount: sPropTagArray->cValues
+                       inMemCtx: memCtx];
       if (rc == MAPISTORE_SUCCESS)
         {
 	  aRow->lpProps = talloc_array (aRow, struct SPropValue,
@@ -1051,6 +1057,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 - (int) getPath: (char **) path
          ofFMID: (uint64_t) fmid
   withTableType: (uint8_t) tableType
+       inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc;
   NSString *objectURL, *url;
@@ -1327,7 +1334,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
                 {
                   /* folder notification */
                   notif_parameters
-                    = talloc_zero(memCtx,
+                    = talloc_zero(NULL,
                                   struct mapistore_object_notification_parameters);
                   notif_parameters->object_id = fid;
                   notif_parameters->tag_count = 5;
@@ -1349,7 +1356,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
                   /* message notification */
                   notif_parameters
-                    = talloc_zero(memCtx,
+                    = talloc_zero(NULL,
                                   struct mapistore_object_notification_parameters);
                   notif_parameters->object_id = mid;
                   notif_parameters->folder_id = fid;
@@ -1479,16 +1486,16 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       openchangedb_get_new_folderID (connInfo->oc_ctx, &mappingId);
       [mapping registerURL: childURL withID: mappingId];
       contextId = 0;
-      mapistore_search_context_by_uri (memCtx, [folderURL UTF8String] + 7,
+      mapistore_search_context_by_uri (mstoreCtx, [folderURL UTF8String] + 7,
                                        &contextId);
-      mapistore_indexing_record_add_mid (memCtx, contextId, mappingId);
+      mapistore_indexing_record_add_mid (mstoreCtx, contextId, mappingId);
     }
 
   return mappingId;
 }
 
 /* proof of concept */
-- (int) getTable: (void **) tablePtr
+- (int) getTable: (MAPIStoreTable **) tablePtr
      andRowCount: (uint32_t *) countPtr
          withFID: (uint64_t) fid
        tableType: (uint8_t) tableType
@@ -1497,7 +1504,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   MAPIStoreTable *table;
 
   table = [self _tableForFID: fid andTableType: tableType];
-  [table retain];
   [table setHandleId: handleId];
   *countPtr = [[table childKeys] count];
   *tablePtr = table;
@@ -1505,7 +1511,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getAttachmentTable: (void **) tablePtr
+- (int) getAttachmentTable: (MAPIStoreAttachmentTable **) tablePtr
                andRowCount: (uint32_t *) count
                    withMID: (uint64_t) mid
 {
@@ -1525,7 +1531,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       attTable = [message attachmentTable];
       if (attTable)
         {
-          [attTable retain];
           *tablePtr = attTable;
           rc = MAPISTORE_SUCCESS;
         }
@@ -1534,7 +1539,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return rc;
 }
 
-- (int) getAttachment: (void **) attachmentPtr
+- (int) getAttachment: (MAPIStoreAttachment **) attachmentPtr
               withAID: (uint32_t) aid
                 inMID: (uint64_t) mid
 {
@@ -1557,7 +1562,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
           attachment = [message lookupChild: [keys objectAtIndex: aid]];
           if (attachment)
             {
-              [attachment retain];
               *attachmentPtr = attachment;
               rc = MAPISTORE_SUCCESS;
             }
@@ -1567,7 +1571,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return rc;
 }
 
-- (int) createAttachment: (void **) attachmentPtr
+- (int) createAttachment: (MAPIStoreAttachment **) attachmentPtr
                    inAID: (uint32_t *) aid
              withMessage: (uint64_t) mid
 {
@@ -1585,7 +1589,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
       attachment = [message createAttachment];
       if (attachment)
         {
-          [attachment retain];
           *attachmentPtr = attachment;
           *aid = [attachment AID];
           rc = MAPISTORE_SUCCESS;

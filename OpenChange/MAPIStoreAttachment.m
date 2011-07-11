@@ -67,6 +67,7 @@
 
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag
+           inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc;
 
@@ -90,7 +91,7 @@
   return rc;
 }
 
-- (int) openEmbeddedMessage: (void **) message
+- (int) openEmbeddedMessage: (MAPIStoreAttachmentMessage **) message
                     withMID: (uint64_t *) mid
            withMAPIStoreMsg: (struct mapistore_message *) mapistoreMsg
                    andFlags: (enum OpenEmbeddedMessage_OpenModeFlags) flags
@@ -113,7 +114,6 @@
                       withID: *mid];
     }
   *message = attMessage;
-  [attMessage retain];
 
   return (attMessage ? MAPISTORE_SUCCESS : MAPISTORE_ERROR);
 }

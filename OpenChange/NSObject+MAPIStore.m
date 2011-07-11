@@ -32,6 +32,34 @@
 #undef DEBUG
 #include <mapistore/mapistore.h>
 
+@implementation NSObject (MAPIStoreTallocHelpers)
+
+static int MAPIStoreTallocWrapperDestroy (void *data)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+
+  wrapper = data;
+  NSLog (@"destroying wrapped object (wrapper: %p; object: %p...\n", wrapper, wrapper->MAPIStoreSOGoObject);
+  [wrapper->MAPIStoreSOGoObject release];
+
+  return 0;
+}
+
+- (struct MAPIStoreTallocWrapper *) tallocWrapper: (TALLOC_CTX *) tallocCtx
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+
+  wrapper = talloc_zero (tallocCtx, struct MAPIStoreTallocWrapper);
+  wrapper->MAPIStoreSOGoObject = self;
+  [wrapper->MAPIStoreSOGoObject retain];
+  talloc_set_destructor ((void *) wrapper, MAPIStoreTallocWrapperDestroy);
+  NSLog (@"returning wrapper: %p; object: %p", wrapper, self);
+
+  return wrapper;
+}
+
+@end
+
 @implementation NSObject (MAPIStoreDataTypes)
 
 - (enum MAPISTATUS) getMAPIValue: (void **) data

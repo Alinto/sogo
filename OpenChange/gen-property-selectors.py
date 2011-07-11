@@ -253,9 +253,9 @@ if __name__ == "__main__":
         getters_idx[prop_idx] = "  0x%.4x" % current_getter_idx
         if prop_idx > highest_prop_idx:
             highest_prop_idx = prop_idx
-        getters.append("  @selector (get%s:)" % name)
+        getters.append("  @selector (get%s:inMemCtx:)" % name)
         # preferred_types.append("  0x%.4x" % (prop_tag & 0xffff))
-        prototypes.append("- (int) get%s: (void **) data;" % name)
+        prototypes.append("- (int) get%s: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;" % name)
         current_getter_idx = current_getter_idx + 1
         # setters[prop_idx] = "  @selector (set%s:)" % name
         # prototypes.append("- (int) set%s: (void **) data;" % name)

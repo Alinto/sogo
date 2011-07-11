@@ -35,7 +35,7 @@
 - (void) setAID: (uint32_t) newAID;
 - (uint32_t) AID;
 
-- (int) openEmbeddedMessage: (void **) message
+- (int) openEmbeddedMessage: (MAPIStoreAttachmentMessage **) message
                     withMID: (uint64_t *) mid
            withMAPIStoreMsg: (struct mapistore_message *) mapistoreMsg
                    andFlags: (enum OpenEmbeddedMessage_OpenModeFlags) flags;

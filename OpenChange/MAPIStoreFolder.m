@@ -304,6 +304,7 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 }
 
 - (int) getPrParentFid: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, [container objectId]);
 
@@ -311,6 +312,7 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 }
 
 - (int) getPrFid: (void **) data
+        inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, [self objectId]);
 
@@ -318,6 +320,7 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 }
 
 - (int) getPrAccess: (void **) data
+           inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x63);
 
@@ -325,6 +328,7 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 }
 
 - (int) getPrAccessLevel: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x01);
 
@@ -332,28 +336,33 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 }
 
 - (int) getPrAttrHidden: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPrAttrSystem: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPrAttrReadOnly: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPrSubfolders: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx, [folderKeys count] > 0);
   
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrFolderChildCount: (void **) data;
+- (int) getPrFolderChildCount: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, [[self folderKeys] count]);
   
@@ -361,6 +370,7 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 }
 
 - (int) getPrContentCount: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, [[self messageKeys] count]);
 
@@ -368,6 +378,7 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 }
 
 - (int) getPrContentUnread: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0);
 
@@ -375,6 +386,7 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 }
 
 - (int) getPrAssocContentCount: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, [[self faiMessageKeys] count]);
 
@@ -382,6 +394,7 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 }
 
 - (int) getPrDeletedCountTotal: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* TODO */
   *data = MAPILongValue (memCtx, 0);
@@ -390,6 +403,7 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 }
 
 - (int) getPrLocalCommitTimeMax: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self lastMessageModificationTime] asFileTimeInMemCtx: memCtx];
 
@@ -398,6 +412,7 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
 
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag
+           inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc;
   id value;
@@ -407,7 +422,7 @@ Class NSExceptionK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStore
   if (value)
     rc = [value getMAPIValue: data forTag: propTag inMemCtx: memCtx];
   else
-    rc = [super getProperty: data withTag: propTag];
+    rc = [super getProperty: data withTag: propTag inMemCtx: memCtx];
 
   return rc;
 }

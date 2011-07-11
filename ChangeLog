@@ -14,6 +14,15 @@
 	occurrences of a floating all-day event, we must also ajdust the
 	exception dates to the user's timezone.
 
+2011-07-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/*: made backend ops consistent with the talloc API,
+	where resources are allocated in a tree of "talloc contexts".
+
+	* OpenChange/NSObject+MAPIStore.m (-tallocWrapper:): new method
+	enabling the wrapping of obj-c objects into talloc structures, in
+	order to ease memory management.
+
 2011-07-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailListActions.m (-getUIDsAndHeadersInFolder)

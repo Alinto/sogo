@@ -29,6 +29,7 @@
 @implementation MAPIStoreNotesMessage
 
 - (int) getPrIconIndex: (void **) data // TODO
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
   // *longValue = 0x00000300 for blue
@@ -42,9 +43,11 @@
 }
 
 - (int) getPrSubject: (void **) data
+            inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getProperty: data
-                   withTag: PR_NORMALIZED_SUBJECT_UNICODE];
+                   withTag: PR_NORMALIZED_SUBJECT_UNICODE
+                  inMemCtx: memCtx];
 }
 
 @end

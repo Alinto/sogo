@@ -71,6 +71,7 @@
 }
 
 - (void) openMessage: (struct mapistore_message *) msg
+            inMemCtx: (TALLOC_CTX *) memCtx
 {
   static enum MAPITAGS tags[] = { PR_SUBJECT_PREFIX_UNICODE,
                                   PR_NORMALIZED_SUBJECT_UNICODE };
@@ -95,7 +96,7 @@
   properties->lpProps = talloc_array (properties, struct SPropValue, max);
   for (count = 0; count < max; count++)
     {
-      if ([self getProperty: &propValue withTag: tags[count]]
+      if ([self getProperty: &propValue withTag: tags[count] inMemCtx: memCtx]
           == MAPI_E_SUCCESS)
 	{
 	  if (propValue == NULL)
@@ -120,7 +121,7 @@
 }
 
 /* helper getters */
-- (int) getSMTPAddrType: (void **) data
+- (int) getSMTPAddrType: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
 
@@ -129,6 +130,7 @@
 
 /* getters */
 - (int) getPrInstId: (void **) data // TODO: DOUBT
+           inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* we return a unique id based on the key */
   *data = MAPILongLongValue (memCtx, [[sogoObject nameInContainer] hash]);
@@ -137,11 +139,13 @@
 }
 
 - (int) getPrInstanceNum: (void **) data // TODO: DOUBT
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getLongZero: data];
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) getPrRowType: (void **) data // TODO: DOUBT
+            inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, TBL_LEAF_ROW);
 
@@ -149,6 +153,7 @@
 }
 
 - (int) getPrDepth: (void **) data // TODO: DOUBT
+          inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, 0);
 
@@ -156,6 +161,7 @@
 }
 
 - (int) getPrAccess: (void **) data // TODO
+           inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x03);
 
@@ -163,6 +169,7 @@
 }
 
 - (int) getPrAccessLevel: (void **) data // TODO
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x01);
 
@@ -171,20 +178,22 @@
 
 // - (int) getPrViewStyle: (void **) data
 // {
-//   return [self getLongZero: data];
+//   return [self getLongZero: data inMemCtx: memCtx];
 // }
 
 // - (int) getPrViewMajorversion: (void **) data
 // {
-//   return [self getLongZero: data];
+//   return [self getLongZero: data inMemCtx: memCtx];
 // }
 
 - (int) getPidLidSideEffects: (void **) data // TODO
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getLongZero: data];
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidCurrentVersion: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 115608); // Outlook 11.5608
 
@@ -192,6 +201,7 @@
 }
 
 - (int) getPidLidCurrentVersionName: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"11.0" asUnicodeInMemCtx: memCtx];
 
@@ -199,6 +209,7 @@
 }
 
 - (int) getPidLidAutoProcessState: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x00000000);
 
@@ -206,6 +217,7 @@
 }
 
 - (int) getPidNameContentClass: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"Sharing" asUnicodeInMemCtx: memCtx];
 
@@ -213,6 +225,7 @@
 }
 
 - (int) getPrFid: (void **) data
+        inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, [container objectId]);
 
@@ -220,6 +233,7 @@
 }
 
 - (int) getPrMid: (void **) data
+        inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, [self objectId]);
 
@@ -227,6 +241,7 @@
 }
 
 - (int) getPrMessageLocaleId: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x0409);
 
@@ -234,6 +249,7 @@
 }
 
 - (int) getPrMessageFlags: (void **) data // TODO
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, MSGFLAG_FROMME | MSGFLAG_READ | MSGFLAG_UNMODIFIED);
 
@@ -241,6 +257,7 @@
 }
 
 - (int) getPrMessageSize: (void **) data // TODO
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* TODO: choose another name in SOGo for that method */
   *data = MAPILongValue (memCtx, [[sogoObject davContentLength] intValue]);
@@ -249,11 +266,13 @@
 }
 
 - (int) getPrMsgStatus: (void **) data // TODO
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getLongZero: data];
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) getPrImportance: (void **) data // TODO -> subclass?
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 1);
 
@@ -261,16 +280,19 @@
 }
 
 - (int) getPrPriority: (void **) data // TODO -> subclass?
+             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getLongZero: data];
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) getPrSensitivity: (void **) data // TODO -> subclass in calendar
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getLongZero: data];
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) getPrSubject: (void **) data
+            inMemCtx: (TALLOC_CTX *) memCtx
 {
   [self subclassResponsibility: _cmd];
 
@@ -278,38 +300,45 @@
 }
 
 - (int) getPrNormalizedSubject: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSubject: data];
+  return [self getPrSubject: data inMemCtx: memCtx];
 }
 
 - (int) getPrOriginalSubject: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrNormalizedSubject: data];
+  return [self getPrNormalizedSubject: data inMemCtx: memCtx];
 }
 
 - (int) getPrConversationTopic: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrNormalizedSubject: data];
+  return [self getPrNormalizedSubject: data inMemCtx: memCtx];
 }
 
 - (int) getPrSubjectPrefix: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getEmptyString: data];
+  return [self getEmptyString: data inMemCtx: memCtx];
 }
 
 - (int) getPrDisplayTo: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getEmptyString: data];
+  return [self getEmptyString: data inMemCtx: memCtx];
 }
 
 - (int) getPrDisplayCc: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getEmptyString: data];
+  return [self getEmptyString: data inMemCtx: memCtx];
 }
 
 - (int) getPrDisplayBcc: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getEmptyString: data];
+  return [self getEmptyString: data inMemCtx: memCtx];
 }
 
 // - (int) getPrOriginalDisplayTo: (void **) data
@@ -328,6 +357,7 @@
 // }
 
 - (int) getPrLastModifierName: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSURL *contextUrl;
 
@@ -338,6 +368,7 @@
 }
 
 - (int) getPrMessageClass: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   [self subclassResponsibility: _cmd];
 
@@ -345,11 +376,13 @@
 }
 
 - (int) getPrOrigMessageClass: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrMessageClass: data];
+  return [self getPrMessageClass: data inMemCtx: memCtx];
 }
 
 - (int) getPrHasattach: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx,
                          [[self childKeysMatchingQualifier: nil
@@ -359,8 +392,9 @@
 }
 
 - (int) getPrAssociated: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];;
 }
 
 - (void) save

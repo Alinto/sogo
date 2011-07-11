@@ -172,6 +172,7 @@ static Class SOGoMailFolderK;
 }
 
 - (int) getPrContentUnread: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   EOQualifier *searchQualifier;
   uint32_t longValue;
@@ -187,6 +188,7 @@ static Class SOGoMailFolderK;
 }
 
 - (int) getPrContainerClass: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPF.Note" asUnicodeInMemCtx: memCtx];
   
@@ -194,6 +196,7 @@ static Class SOGoMailFolderK;
 }
 
 - (int) getPrMessageClass: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];
   

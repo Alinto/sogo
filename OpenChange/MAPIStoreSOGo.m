@@ -35,6 +35,7 @@
 #import "MAPIStoreContext.h"
 #import "MAPIStoreObject.h"
 #import "MAPIStoreTable.h"
+#import "NSObject+MAPIStore.h"
 
 #import "MAPIStoreSOGo.h"
 
@@ -208,8 +209,8 @@ sogo_release_record(void *private_data, uint64_t fmid, uint8_t type)
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE error
 */
 static int
-sogo_get_path(void *private_data, uint64_t fmid,
-	      uint8_t type, char **path)
+sogo_get_path(void *private_data, TALLOC_CTX *mem_ctx,
+              uint64_t fmid, uint8_t type, char **path)
 {
   NSAutoreleasePool *pool;
   sogo_context *cContext;
@@ -224,7 +225,7 @@ sogo_get_path(void *private_data, uint64_t fmid,
   context = cContext->objcContext;
   [context setupRequest];
 
-  rc = [context getPath: path ofFMID: fmid withTableType: type];
+  rc = [context getPath: path ofFMID: fmid withTableType: type inMemCtx: mem_ctx];
 
   [context tearDownRequest];
 
@@ -428,6 +429,7 @@ sogo_op_readdir_count(void *private_data,
 
 static int
 sogo_op_get_table_property(void *private_data,
+                           TALLOC_CTX *mem_ctx,
 			   uint64_t fid,
 			   uint8_t table_type,
 			   enum table_query_type query_type,
@@ -450,7 +452,7 @@ sogo_op_get_table_property(void *private_data,
 
   rc = [context getTableProperty: data withTag: proptag atPosition: pos
 		   withTableType: table_type andQueryType: query_type
-			   inFID: fid];
+			   inFID: fid inMemCtx: mem_ctx];
 
   [context tearDownRequest];
   [pool release];
@@ -459,7 +461,7 @@ sogo_op_get_table_property(void *private_data,
 }
 
 static int
-sogo_op_get_available_table_properties(void *private_data, 
+sogo_op_get_available_table_properties(void *private_data, TALLOC_CTX *mem_ctx,
                                        uint8_t type,
                                        struct SPropTagArray **propertiesP)
 {
@@ -477,7 +479,8 @@ sogo_op_get_available_table_properties(void *private_data,
   [context setupRequest];
 
   rc = [context getAvailableProperties: propertiesP
-                           ofTableType: type];
+                           ofTableType: type
+                              inMemCtx: mem_ctx];
 
   [context tearDownRequest];
   [pool release];
@@ -487,6 +490,7 @@ sogo_op_get_available_table_properties(void *private_data,
 
 static int
 sogo_op_openmessage(void *private_data,
+                    TALLOC_CTX *mem_ctx,
 		    uint64_t fid,
 		    uint64_t mid,
 		    struct mapistore_message *msg)
@@ -506,7 +510,7 @@ sogo_op_openmessage(void *private_data,
 
   if (!context)
     DEBUG (5, ("  context data is empty, failure ahead..."));
-  rc = [context openMessage: msg withMID: mid inFID: fid];
+  rc = [context openMessage: msg withMID: mid inFID: fid inMemCtx: mem_ctx];
   if (rc)
     DEBUG (5, ("  failure opening message\n"));
 
@@ -598,7 +602,8 @@ sogo_op_submitmessage(void *private_data,
 }
 
 static int
-sogo_op_getprops(void *private_data, 
+sogo_op_getprops(void *private_data,
+                 TALLOC_CTX *mem_ctx,
 		 uint64_t fmid, 
 		 uint8_t type, 
 		 struct SPropTagArray *SPropTagArray,
@@ -620,7 +625,8 @@ sogo_op_getprops(void *private_data,
   rc = [context getProperties: SPropTagArray
 		  ofTableType: type
 			inRow: aRow
-		      withMID: fmid];
+		      withMID: fmid
+                     inMemCtx: mem_ctx];
 
   [context tearDownRequest];
   [pool release];
@@ -784,13 +790,15 @@ sogo_op_set_sort_order (void *private_data, uint64_t fid, uint8_t type,
    proof of concept
 */
 static int
-sogo_pocop_open_table(void *private_data, uint64_t fid, uint8_t table_type,
+sogo_pocop_open_table(void *private_data, TALLOC_CTX *mem_ctx,
+                      uint64_t fid, uint8_t table_type,
                       uint32_t handle_id,
                       void **table_object, uint32_t *row_count)
 {
   NSAutoreleasePool *pool;
   sogo_context *cContext;
   MAPIStoreContext *context;
+  MAPIStoreTable *table;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
@@ -802,11 +810,13 @@ sogo_pocop_open_table(void *private_data, uint64_t fid, uint8_t table_type,
   if (context)
     {
       [context setupRequest];
-      rc = [context getTable: table_object
+      rc = [context getTable: &table
                  andRowCount: row_count
                      withFID: fid
                    tableType: table_type
                  andHandleId: handle_id];
+      if (rc == MAPISTORE_SUCCESS)
+        *table_object = [table tallocWrapper: mem_ctx];
       [context tearDownRequest];
       [pool release];
     }
@@ -820,11 +830,12 @@ sogo_pocop_open_table(void *private_data, uint64_t fid, uint8_t table_type,
 }
 
 static int
-sogo_pocop_get_attachment_table (void *private_data, uint64_t mid, void **table_object, uint32_t *row_count)
+sogo_pocop_get_attachment_table (void *private_data, TALLOC_CTX *mem_ctx, uint64_t mid, void **table_object, uint32_t *row_count)
 {
   NSAutoreleasePool *pool;
   sogo_context *cContext;
   MAPIStoreContext *context;
+  MAPIStoreAttachmentTable *table;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
@@ -836,9 +847,44 @@ sogo_pocop_get_attachment_table (void *private_data, uint64_t mid, void **table_
   if (context)
     {
       [context setupRequest];
-      rc = [context getAttachmentTable: table_object
+      rc = [context getAttachmentTable: &table
                            andRowCount: row_count
                                withMID: mid];
+      *table_object = [table tallocWrapper: mem_ctx];
+      [context tearDownRequest];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  [pool release];
+
+  return rc;
+}
+
+static int
+sogo_pocop_get_attachment (void *private_data, TALLOC_CTX *mem_ctx, uint64_t mid, uint32_t aid, void **attachment_object)
+{
+  NSAutoreleasePool *pool;
+  sogo_context *cContext;
+  MAPIStoreContext *context;
+  MAPIStoreAttachment *attachment;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  pool = [NSAutoreleasePool new];
+
+  cContext = private_data;
+  context = cContext->objcContext;
+  if (context)
+    {
+      [context setupRequest];
+      rc = [context getAttachment: &attachment withAID: aid inMID: mid];
+      if (rc == MAPISTORE_SUCCESS)
+        *attachment_object = [attachment tallocWrapper: mem_ctx];
       [context tearDownRequest];
       [pool release];
     }
@@ -852,11 +898,12 @@ sogo_pocop_get_attachment_table (void *private_data, uint64_t mid, void **table_
 }
 
 static int
-sogo_pocop_get_attachment (void *private_data, uint64_t mid, uint32_t aid, void **attachment_object)
+sogo_pocop_create_attachment (void *private_data, TALLOC_CTX *mem_ctx, uint64_t mid, uint32_t *aid, void **attachment_object)
 {
   NSAutoreleasePool *pool;
   sogo_context *cContext;
   MAPIStoreContext *context;
+  MAPIStoreAttachment *attachment;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
@@ -868,37 +915,10 @@ sogo_pocop_get_attachment (void *private_data, uint64_t mid, uint32_t aid, void 
   if (context)
     {
       [context setupRequest];
-      rc = [context getAttachment: attachment_object withAID: aid inMID: mid];
-      [context tearDownRequest];
-      [pool release];
-    }
-  else
-    {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
-      rc = MAPI_E_NOT_FOUND;
-    }
-
-  return rc;
-}
-
-static int
-sogo_pocop_create_attachment (void *private_data, uint64_t mid, uint32_t *aid, void **attachment_object)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  if (context)
-    {
-      [context setupRequest];
-      rc = [context createAttachment: attachment_object inAID: aid withMessage: mid];
+      rc = [context createAttachment: &attachment inAID: aid
+                         withMessage: mid];
+      if (rc == MAPISTORE_SUCCESS)
+        *attachment_object = [attachment tallocWrapper: mem_ctx];
       [context tearDownRequest];
       [pool release];
     }
@@ -913,11 +933,14 @@ sogo_pocop_create_attachment (void *private_data, uint64_t mid, uint32_t *aid, v
 
 static int
 sogo_pocop_open_embedded_message (void *attachment_object,
+                                  TALLOC_CTX *mem_ctx,
                                   uint64_t *mid, enum OpenEmbeddedMessage_OpenModeFlags flags,
                                   struct mapistore_message *msg, void **message_object)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreAttachment *attachment;
+  MAPIStoreAttachmentMessage *message;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
@@ -926,11 +949,14 @@ sogo_pocop_open_embedded_message (void *attachment_object,
 
   if (attachment_object)
     {
-      attachment = attachment_object;
+      wrapper = attachment_object;
+      attachment = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
-      rc = [attachment openEmbeddedMessage: message_object
+      rc = [attachment openEmbeddedMessage: &message
                                    withMID: mid
                           withMAPIStoreMsg: msg andFlags: flags];
+      if (rc == MAPISTORE_SUCCESS)
+        *message_object = [message tallocWrapper: mem_ctx];
       [pool release];
     }
   else
@@ -942,19 +968,22 @@ sogo_pocop_open_embedded_message (void *attachment_object,
   return rc;
 }
 
-static int sogo_pocop_get_available_table_properties(void *table_object, struct SPropTagArray **propertiesP)
+static int sogo_pocop_get_available_table_properties(void *table_object,
+                                                     TALLOC_CTX *mem_ctx, struct SPropTagArray **propertiesP)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  table = table_object;
-  if (table)
+  if (table_object)
     {
+      wrapper = table_object;
+      table = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
-      rc = [table getAvailableProperties: propertiesP];
+      rc = [table getAvailableProperties: propertiesP inMemCtx: mem_ctx];
       [pool release];
     }
   else
@@ -969,15 +998,17 @@ static int sogo_pocop_get_available_table_properties(void *table_object, struct 
 static int
 sogo_pocop_set_table_columns (void *table_object, uint16_t count, enum MAPITAGS *properties)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  table = table_object;
-  if (table)
+  if (table_object)
     {
+      wrapper = table_object;
+      table = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
       rc = [table setColumns: properties
                    withCount: count];
@@ -995,15 +1026,17 @@ sogo_pocop_set_table_columns (void *table_object, uint16_t count, enum MAPITAGS 
 static int
 sogo_pocop_set_table_restrictions (void *table_object, struct mapi_SRestriction *restrictions, uint8_t *table_status)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  table = table_object;
-  if (table)
+  if (table_object)
     {
+      wrapper = table_object;
+      table = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
       [table setRestrictions: restrictions];
       [table cleanupCaches];
@@ -1023,15 +1056,17 @@ sogo_pocop_set_table_restrictions (void *table_object, struct mapi_SRestriction 
 static int
 sogo_pocop_set_table_sort_order (void *table_object, struct SSortOrderSet *sort_order, uint8_t *table_status)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  table = table_object;
-  if (table)
+  if (table_object)
     {
+      wrapper = table_object;
+      table = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
       [table setSortOrder: sort_order];
       [table cleanupCaches];
@@ -1049,19 +1084,24 @@ sogo_pocop_set_table_sort_order (void *table_object, struct SSortOrderSet *sort_
 }
 
 static int
-sogo_pocop_get_table_row (void *table_object, enum table_query_type query_type, uint32_t row_id, struct mapistore_property_data *data)
+sogo_pocop_get_table_row (void *table_object, TALLOC_CTX *mem_ctx,
+                          enum table_query_type query_type, uint32_t row_id,
+                          struct mapistore_property_data *data)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  table = table_object;
-  if (table)
+  if (table_object)
     {
+      wrapper = table_object;
+      table = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
-      rc = [table getRow: data withRowID: row_id andQueryType: query_type];
+      rc = [table getRow: data withRowID: row_id andQueryType: query_type
+                inMemCtx: mem_ctx];
       [pool release];
     }
   else
@@ -1073,19 +1113,23 @@ sogo_pocop_get_table_row (void *table_object, enum table_query_type query_type, 
   return rc;
 }
 
-static int sogo_pocop_get_available_properties(void *object, struct SPropTagArray **propertiesP)
+static int sogo_pocop_get_available_properties(void *object,
+                                               TALLOC_CTX *mem_ctx,
+                                               struct SPropTagArray **propertiesP)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreObject *propObject;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  propObject = object;
-  if (propObject)
+  if (object)
     {
+      wrapper = object;
+      propObject = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
-      rc = [propObject getAvailableProperties: propertiesP];
+      rc = [propObject getAvailableProperties: propertiesP inMemCtx: mem_ctx];
       [pool release];
     }
   else
@@ -1099,20 +1143,25 @@ static int sogo_pocop_get_available_properties(void *object, struct SPropTagArra
 
 static int
 sogo_pocop_get_properties (void *object,
+                           TALLOC_CTX *mem_ctx,
                            uint16_t count, enum MAPITAGS *properties,
                            struct mapistore_property_data *data)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreObject *propObject;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  propObject = object;
-  if (propObject)
+  if (object)
     {
+      wrapper = object;
+      propObject = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
-      rc = [propObject getProperties: data withTags: properties andCount: count];
+      rc = [propObject getProperties: data withTags: properties
+                            andCount: count
+                            inMemCtx: mem_ctx];
       [pool release];
     }
   else
@@ -1127,15 +1176,17 @@ sogo_pocop_get_properties (void *object,
 static int
 sogo_pocop_set_properties (void *object, struct SRow *aRow)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreObject *propObject;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  propObject = object;
-  if (propObject)
+  if (object)
     {
+      wrapper = object;
+      propObject = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
       rc = [propObject setProperties: aRow];
       [pool release];
@@ -1143,32 +1194,6 @@ sogo_pocop_set_properties (void *object, struct SRow *aRow)
   else
     {
       NSLog (@"  bad object pointer");
-      rc = MAPI_E_NOT_FOUND;
-    }
-
-  return rc;
-}
-
-static int
-sogo_pocop_release (void *object)
-{
-  NSAutoreleasePool *pool;
-  MAPIStoreObject *propObject;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  propObject = object;
-  if (propObject)
-    {
-      pool = [NSAutoreleasePool new];
-      [propObject release];
-      [pool release];
-      rc = MAPI_E_SUCCESS;
-    }
-  else
-    {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
       rc = MAPI_E_NOT_FOUND;
     }
 
@@ -1238,7 +1263,6 @@ int mapistore_init_backend(void)
       backend.properties.get_available_properties = sogo_pocop_get_available_properties;
       backend.properties.get_properties = sogo_pocop_get_properties;
       backend.properties.set_properties = sogo_pocop_set_properties;
-      backend.store.release = sogo_pocop_release;
 
       /* Register ourselves with the MAPISTORE subsystem */
       ret = mapistore_backend_register(&backend);
