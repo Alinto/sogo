@@ -69,6 +69,7 @@
 
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag
+           inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   static char recordBytes[] = {0xd9, 0xd8, 0x11, 0xa3, 0xe2, 0x90, 0x18, 0x41,
                                0x9e, 0x04, 0x58, 0x46, 0x9d, 0x6d, 0x1b, 0x68};
@@ -82,20 +83,20 @@
   switch (propTag)
     {
     case PR_ATTACH_METHOD:
-      *data = MAPILongValue (memCtx, 0x00000001); // afByValue
+      *data = MAPILongValue (localMemCtx, 0x00000001); // afByValue
       break;
     case PR_ATTACH_TAG:
       *data = [[self mimeAttachTag]
-		asBinaryInMemCtx: memCtx];
+		asBinaryInMemCtx: localMemCtx];
       break;
     case PR_ATTACH_SIZE:
       longValue = [[bodyInfo objectForKey: @"size"] longValue];
-      *data = MAPILongValue (memCtx, longValue);
+      *data = MAPILongValue (localMemCtx, longValue);
       break;
 
     case PR_RECORD_KEY:
       *data = [[NSData dataWithBytes: recordBytes length: 16]
-		asBinaryInMemCtx: memCtx];
+		asBinaryInMemCtx: localMemCtx];
       break;
       
       // PR_RECORD_KEY (0xFF90102)                             D9 D8 11 A3 E2 90 18 41 9E 04 58 46 9D 6D 1B 68
@@ -125,38 +126,38 @@
           stringValue = [NSString stringWithFormat: @"%@.%@", baseName, ext];
         }
 
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      *data = [stringValue asUnicodeInMemCtx: localMemCtx];
       break;
 
     case PR_DISPLAY_NAME_UNICODE: /* TODO: check if description ? */
       stringValue = [bodyInfo objectForKey: @"description"];
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      *data = [stringValue asUnicodeInMemCtx: localMemCtx];
       break;
 
     case PR_ATTACH_CONTENT_ID_UNICODE:
       stringValue = [bodyInfo objectForKey: @"bodyId"];
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
+      *data = [stringValue asUnicodeInMemCtx: localMemCtx];
       break;
 
     case PR_ATTACH_MIME_TAG_UNICODE:
       stringValue = [NSString stringWithFormat: @"%@/%@",
                               [bodyInfo objectForKey: @"type"],
                               [bodyInfo objectForKey: @"subtype"]];
-      *data = [[stringValue lowercaseString] asUnicodeInMemCtx: memCtx];
+      *data = [[stringValue lowercaseString] asUnicodeInMemCtx: localMemCtx];
       break;
 
     case PR_CREATION_TIME:
     case PR_LAST_MODIFICATION_TIME:
       date = [[container sogoObject] date];
-      *data = [date asFileTimeInMemCtx: memCtx];
+      *data = [date asFileTimeInMemCtx: localMemCtx];
       break;
 
     case PR_ATTACH_DATA_BIN:
-      *data = [[sogoObject fetchBLOB] asBinaryInMemCtx: memCtx];
+      *data = [[sogoObject fetchBLOB] asBinaryInMemCtx: localMemCtx];
       break;
 
     default:
-      rc = [super getProperty: data withTag: propTag];
+      rc = [super getProperty: data withTag: propTag inMemCtx: localMemCtx];
     }
 
   return rc;

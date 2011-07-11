@@ -23,6 +23,8 @@
 #ifndef MAPISTOREOBJECT_H
 #define MAPISTOREOBJECT_H
 
+#include <talloc.h>
+
 #import <Foundation/NSObject.h>
 
 @class NSCalendarDate;
@@ -45,13 +47,13 @@
   MAPIStoreObject *container;
   id sogoObject;
   NSMutableDictionary *newProperties;
-  void *memCtx;
   BOOL isNew;
 }
 
 + (id) mapiStoreObjectWithSOGoObject: (id) newSOGoObject
                          inContainer: (MAPIStoreObject *) newContainer;
-+ (int) getAvailableProperties: (struct SPropTagArray **) propertiesP;
++ (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                      inMemCtx: (TALLOC_CTX *) memCtx;
 
 - (id) initWithSOGoObject: (id) newSOGoObject
               inContainer: (MAPIStoreObject *) newFolder;
@@ -82,33 +84,45 @@
 - (void) resetNewProperties;
 
 /* ops */
-- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP;
+- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                      inMemCtx: (TALLOC_CTX *) localMemCtx;
 - (int) getProperties: (struct mapistore_property_data *) data
              withTags: (enum MAPITAGS *) tags
-             andCount: (uint16_t) columnCount;
+             andCount: (uint16_t) columnCount
+             inMemCtx: (TALLOC_CTX *) localMemCtx;
 
 - (int) setProperties: (struct SRow *) aRow;
 
 - (int) getProperty: (void **) data
-            withTag: (enum MAPITAGS) propTag;
+            withTag: (enum MAPITAGS) propTag
+           inMemCtx: (TALLOC_CTX *) localMemCtx;
 
 /* helper getters */
-- (int) getEmptyString: (void **) data;
-- (int) getLongZero: (void **) data;
-- (int) getYes: (void **) data;
-- (int) getNo: (void **) data;
+- (int) getEmptyString: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getLongZero: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getYes: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getNo: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getReplicaKey: (void **) data
-          fromGlobCnt: (uint64_t) objectCnt;
+          fromGlobCnt: (uint64_t) objectCnt
+             inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* implemented getters */
-- (int) getPrDisplayName: (void **) data;
-- (int) getPrSearchKey: (void **) data;
-- (int) getPrGenerateExchangeViews: (void **) data;
-- (int) getPrParentSourceKey: (void **) data;
-- (int) getPrSourceKey: (void **) data;
-- (int) getPrChangeKey: (void **) data;
-- (int) getPrCreationTime: (void **) data;
-- (int) getPrLastModificationTime: (void **) data;
+- (int) getPrDisplayName: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrSearchKey: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrGenerateExchangeViews: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrParentSourceKey: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrSourceKey: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrChangeKey: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrCreationTime: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrLastModificationTime: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* subclasses */
 - (NSDate *) creationTime;

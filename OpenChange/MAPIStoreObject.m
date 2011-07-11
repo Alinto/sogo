@@ -64,6 +64,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 + (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct SPropTagArray *properties;
   const MAPIStorePropertyGetter *classGetters;
@@ -71,7 +72,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   enum MAPITAGS propTag;
   uint16_t propValue;
 
-  properties = talloc_zero(NULL, struct SPropTagArray);
+  properties = talloc_zero(memCtx, struct SPropTagArray);
   properties->aulPropTag = talloc_array (properties, enum MAPITAGS,
                                          MAPIStoreSupportedPropertiesCount);
   classGetters = MAPIStorePropertyGettersForClass (self);
@@ -101,7 +102,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
       container = nil;
       sogoObject = nil;
       newProperties = [NSMutableDictionary new];
-      memCtx =  talloc_size (NULL, 0);
       isNew = NO;
     }
 
@@ -126,7 +126,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
   [newProperties release];
   [parentContainersBag release];
   [container release];
-  talloc_free (memCtx);
   [super dealloc];
 }
 
@@ -222,6 +221,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag
+           inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStorePropertyGetter method = NULL;
   uint16_t propValue;
@@ -234,7 +234,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 
   method = (MAPIStorePropertyGetter) classGetters[propValue];
   if (method)
-    rc = method (self, methodSel, data);
+    rc = method (self, methodSel, data, memCtx);
   else
     {
       *data = NULL;
@@ -256,28 +256,28 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 /* helper getters */
-- (int) getEmptyString: (void **) data
+- (int) getEmptyString: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"" asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getLongZero: (void **) data
+- (int) getLongZero: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getYes: (void **) data
+- (int) getYes: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx, YES);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getNo: (void **) data
+- (int) getNo: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx, NO);
 
@@ -286,6 +286,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 
 - (int) getReplicaKey: (void **) data
           fromGlobCnt: (uint64_t) objectCnt
+             inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_connection_info *connInfo;
   NSMutableData *replicaKey;
@@ -312,6 +313,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 
 /* getters */
 - (int) getPrDisplayName: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[sogoObject displayName] asUnicodeInMemCtx: memCtx];
 
@@ -319,6 +321,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 - (int) getPrSearchKey: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -330,18 +333,23 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 - (int) getPrGenerateExchangeViews: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPrParentSourceKey: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getReplicaKey: data fromGlobCnt: [container objectId] >> 16];
+  return [self getReplicaKey: data fromGlobCnt: [container objectId] >> 16
+                    inMemCtx: memCtx];
 }
 
 - (int) getPrSourceKey: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getReplicaKey: data fromGlobCnt: [self objectId] >> 16];
+  return [self getReplicaKey: data fromGlobCnt: [self objectId] >> 16
+                    inMemCtx: memCtx];
 }
 
 - (uint64_t) objectVersion
@@ -357,11 +365,14 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 - (int) getPrChangeKey: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getReplicaKey: data fromGlobCnt: [self objectVersion]];
+  return [self getReplicaKey: data fromGlobCnt: [self objectVersion]
+                    inMemCtx: memCtx];
 }
 
 - (int) getPrChangeNum: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, ([self objectVersion] << 16) | 0x0001);
 
@@ -369,6 +380,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 - (int) getPrCreationTime: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self creationTime] asFileTimeInMemCtx: memCtx];
 
@@ -376,6 +388,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 - (int) getPrLastModificationTime: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self lastModificationTime] asFileTimeInMemCtx: memCtx];
 
@@ -383,19 +396,22 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 - (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [isa getAvailableProperties: propertiesP];
+  return [isa getAvailableProperties: propertiesP inMemCtx: memCtx];
 }
 
 - (int) getProperties: (struct mapistore_property_data *) data
              withTags: (enum MAPITAGS *) tags
              andCount: (uint16_t) columnCount
+             inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint16_t count;
 
   for (count = 0; count < columnCount; count++)
     data[count].error = [self getProperty: &data[count].data
-                                  withTag: tags[count]];
+                                  withTag: tags[count]
+                                 inMemCtx: memCtx];
 
 
   return MAPISTORE_SUCCESS;

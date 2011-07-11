@@ -23,6 +23,8 @@
 #ifndef MAPISTORECONTEXT_H
 #define MAPISTORECONTEXT_H
 
+#include <talloc.h>
+
 #import <Foundation/NSObject.h>
 
 @class NSArray;
@@ -41,13 +43,15 @@
 @class SOGoObject;
 
 @class MAPIStoreAuthenticator;
+@class MAPIStoreAttachment;
+@class MAPIStoreAttachmentTable;
 @class MAPIStoreFolder;
 @class MAPIStoreMapping;
 @class MAPIStoreTable;
 
 @interface MAPIStoreContext : NSObject
 {
-  struct mapistore_context *memCtx;
+  struct mapistore_context *mstoreCtx;
   struct mapistore_connection_info *connInfo;
 
   NSURL *contextUrl;
@@ -100,7 +104,8 @@
 /* backend methods */
 - (int) getPath: (char **) path
          ofFMID: (uint64_t) fmid
-  withTableType: (uint8_t) tableType;
+  withTableType: (uint8_t) tableType
+       inMemCtx: (TALLOC_CTX *) memCtx;
 
 - (int) getFID: (uint64_t *) fid
         byName: (const char *) foldername
@@ -119,7 +124,8 @@
 			  atPosition: (uint32_t) pos
 		       withTableType: (uint8_t) tableType
 			andQueryType: (enum table_query_type) queryType
-			       inFID: (uint64_t) fid;
+			       inFID: (uint64_t) fid
+                            inMemCtx: (TALLOC_CTX *) memCtx;
 
 - (int) mkDir: (struct SRow *) aRow
       withFID: (uint64_t) fid
@@ -133,7 +139,8 @@
             inFID: (uint64_t) fid;
 - (int) openMessage: (struct mapistore_message *) msg
             withMID: (uint64_t) mid
-              inFID: (uint64_t) fid;
+              inFID: (uint64_t) fid
+           inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) createMessageWithMID: (uint64_t) mid
                        inFID: (uint64_t) fid
                 isAssociated: (BOOL) isAssociated;
@@ -144,9 +151,11 @@
 - (int) getProperties: (struct SPropTagArray *) SPropTagArray
           ofTableType: (uint8_t) tableType
                 inRow: (struct SRow *) aRow
-              withMID: (uint64_t) fmid;
+              withMID: (uint64_t) fmid
+             inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-                   ofTableType: (uint8_t) type;
+                   ofTableType: (uint8_t) type
+                      inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) setPropertiesWithFMID: (uint64_t) fmid
                   ofTableType: (uint8_t) tableType
                         inRow: (struct SRow *) aRow;
@@ -171,21 +180,21 @@
 - (void) setupBaseFolder: (NSURL *) newURL;
 
 /* proof of concept */
-- (int) getTable: (void **) table
+- (int) getTable: (MAPIStoreTable **) tablePtr
      andRowCount: (uint32_t *) count
          withFID: (uint64_t) fid
        tableType: (uint8_t) tableType
      andHandleId: (uint32_t) handleId;
 
-- (int) getAttachmentTable: (void **) table
+- (int) getAttachmentTable: (MAPIStoreAttachmentTable **) tablePtr
                andRowCount: (uint32_t *) count
                    withMID: (uint64_t) mid;
-- (int) getAttachment: (void **) attachment
+- (int) getAttachment: (MAPIStoreAttachment **) attachmentPr
               withAID: (uint32_t) aid
                 inMID: (uint64_t) mid;
 
 
-- (int) createAttachment: (void **) attachmentPtr
+- (int) createAttachment: (MAPIStoreAttachment **) attachmentPtr
                    inAID: (uint32_t *) aid
              withMessage: (uint64_t) mid;
 

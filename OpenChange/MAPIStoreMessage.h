@@ -41,10 +41,12 @@
   NSMutableArray *activeTables;
 }
 
-- (void) openMessage: (struct mapistore_message *) msg;
+- (void) openMessage: (struct mapistore_message *) msg
+            inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* helper getters */
-- (int) getSMTPAddrType: (void **) data;
+- (int) getSMTPAddrType: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* subclasses */
 - (void) submit;

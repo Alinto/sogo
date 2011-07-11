@@ -115,11 +115,10 @@ static NSTimeZone *utcTZ;
   [calendar removeChildren: otherEvents];
   [otherEvents release];
 
-  blob = [mapiRecurrenceData asBinaryInMemCtx: memCtx];
-  pattern = get_AppointmentRecurrencePattern (memCtx, blob);
+  blob = [mapiRecurrenceData asBinaryInMemCtx: NULL];
+  pattern = get_AppointmentRecurrencePattern (blob, blob);
   [calendar setupRecurrenceWithMasterEntity: event
                       fromRecurrencePattern: &pattern->RecurrencePattern];
-  talloc_free (pattern);
   talloc_free (blob);
 }
 
@@ -146,7 +145,8 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
      arp->ReservedBlock2Size = 0; */
 }
 
-- (struct SBinary_short *) _computeAppointmentRecur
+- (struct SBinary_short *) _computeAppointmentRecurInMemCtx: (TALLOC_CTX *) memCtx
+
 {
   struct AppointmentRecurrencePattern *arp;
   struct Binary_r *bin;
@@ -188,6 +188,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 
 /* getters */
 - (int) getPrIconIndex: (void **) data // TODO
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t longValue;
   iCalEvent *event;
@@ -212,6 +213,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 }
 
 - (int) getPrMessageClass: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup(memCtx, "IPM.Appointment");
 
@@ -219,6 +221,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 }
 
 - (int) getPrStartDate: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
   iCalEvent *event;
@@ -236,16 +239,19 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 }
 
 - (int) getPidLidAppointmentStartWhole: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrStartDate: data];
+  return [self getPrStartDate: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidCommonStart: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrStartDate: data];
+  return [self getPrStartDate: data inMemCtx: memCtx];
 }
 
 - (int) getPrEndDate: (void **) data
+            inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
   iCalEvent *event;
@@ -268,16 +274,19 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 }
 
 - (int) getPidLidAppointmentEndWhole: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrEndDate: data];
+  return [self getPrEndDate: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidCommonEnd: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrEndDate: data];
+  return [self getPrEndDate: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidAppointmentDuration: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSTimeInterval timeValue;
   iCalEvent *event;
@@ -291,6 +300,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 }
 
 - (int) getPidLidAppointmentSubType: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalEvent *event;
 
@@ -301,6 +311,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 }
 
 - (int) getPidLidBusyStatus: (void **) data // TODO
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x02);
 
@@ -308,6 +319,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 }
 
 - (int) getPrSubject: (void **) data // SUMMARY
+            inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalEvent *event;
 
@@ -318,6 +330,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 }
 
 - (int) getPidLidLocation: (void **) data // LOCATION
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalEvent *event;
 
@@ -328,17 +341,20 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 }
 
 - (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPrSensitivity: (void **) data // not implemented, depends on CLASS
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
   // normal = 0, personal?? = 1, private = 2, confidential = 3
-  return [self getLongZero: data];
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) getPrImportance: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t v;
   iCalEvent *event;
@@ -357,6 +373,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 }
 
 - (int) getPidLidIsRecurring: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalEvent *event;
 
@@ -367,6 +384,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 }
 
 - (int) getPidLidRecurring: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalEvent *event;
 
@@ -377,6 +395,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 }
 
 - (int) getPidLidAppointmentRecur: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc = MAPISTORE_SUCCESS;
   iCalEvent *event;
@@ -384,7 +403,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   event = [sogoObject component: NO secure: NO];
 
   if ([event isRecurrent])
-    *data = [self _computeAppointmentRecur];
+    *data = [self _computeAppointmentRecurInMemCtx: memCtx];
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
 
@@ -392,6 +411,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
 }
 
 - (void) openMessage: (struct mapistore_message *) msg
+            inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *text;
   NSArray *attendees;
@@ -400,7 +420,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   int count, max;
   iCalEvent *event;
 
-  [super openMessage: msg];
+  [super openMessage: msg inMemCtx: memCtx];
 
   event = [sogoObject component: NO secure: NO];
   attendees = [event attendees];

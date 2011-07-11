@@ -25,8 +25,9 @@
 @implementation MAPIStoreFAIMessage
 
 - (int) getPrAssociated: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getYes: data];
+  return [self getYes: data inMemCtx: memCtx];
 }
 
 @end

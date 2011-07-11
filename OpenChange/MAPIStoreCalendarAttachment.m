@@ -36,6 +36,7 @@
 
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag
+           inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   int rc;
 
@@ -43,13 +44,13 @@
   switch (propTag)
     {
     case PR_ATTACHMENT_HIDDEN:
-      *data = MAPIBoolValue (memCtx, YES);
+      *data = MAPIBoolValue (localMemCtx, YES);
       break;
     case PR_ATTACHMENT_FLAGS:
-      *data = MAPILongValue (memCtx, 0x00000002); /* afException */
+      *data = MAPILongValue (localMemCtx, 0x00000002); /* afException */
       break;
     case PR_ATTACH_METHOD:
-      *data = MAPILongValue (memCtx, 0x00000005); /* afEmbeddedMessage */
+      *data = MAPILongValue (localMemCtx, 0x00000005); /* afEmbeddedMessage */
       break;
 
     // case PidTagExceptionStartTime:
@@ -57,7 +58,7 @@
     // case PidTagExceptionReplaceTime:
 
     default:
-      rc = [super getProperty: data withTag: propTag];
+      rc = [super getProperty: data withTag: propTag inMemCtx: localMemCtx];
     }
 
   return rc;

@@ -50,6 +50,7 @@
 @implementation MAPIStoreTasksMessage
 
 - (int) getPrIconIndex: (void **) data // TODO
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
   // Unassigned recurring task 0x00000501
@@ -64,6 +65,7 @@
 }
 
 - (int) getPrMessageClass: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup(memCtx, "IPM.Task");
 
@@ -71,6 +73,7 @@
 }
 
 - (int) getPrSubject: (void **) data // SUMMARY
+            inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalToDo *task;
 
@@ -81,6 +84,7 @@
 }
 
 - (int) getPrImportance: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t v;
   iCalToDo *task;
@@ -99,6 +103,7 @@
 }
 
 - (int) getPidLidTaskComplete: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalToDo *task;
 
@@ -110,6 +115,7 @@
 }
 
 - (int) getPidLidPercentComplete: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   double doubleValue;
   iCalToDo *task;
@@ -123,6 +129,7 @@
 }
 
 - (int) getPidLidTaskDateCompleted: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc = MAPISTORE_SUCCESS;
   NSCalendarDate *dateValue;
@@ -140,6 +147,7 @@
 }
 
 - (int) getPidLidTaskState: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x1); // not assigned
 
@@ -147,36 +155,43 @@
 }
 
 - (int) getPidLidTaskMode: (void **) data // TODO
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getLongZero: data];
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidTaskFRecurring: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidTaskAccepted: (void **) data // TODO
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidTaskActualEffort: (void **) data // TODO
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getLongZero: data];
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidTaskEstimatedEffort: (void **) data // TODO
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getLongZero: data];
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) getPrHasattach: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data];
+  return [self getNo: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidTaskDueDate: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc = MAPISTORE_SUCCESS;
   NSCalendarDate *dateValue;
@@ -193,21 +208,25 @@
 }
 
 - (int) getPrMessageDeliveryTime: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrLastModificationTime: data];
+  return [self getPrLastModificationTime: data inMemCtx: memCtx];
 }
 
 - (int) getClientSubmitTime: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrLastModificationTime: data];
+  return [self getPrLastModificationTime: data inMemCtx: memCtx];
 }
 
 - (int) getLocalCommitTime: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrLastModificationTime: data];
+  return [self getPrLastModificationTime: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidTaskStatus: (void **) data // status
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *status;
   uint32_t longValue;
@@ -230,6 +249,7 @@
 }
 
 - (int) getPidLidTaskOwner: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"openchange@example.com" asUnicodeInMemCtx: memCtx];
 
@@ -237,8 +257,9 @@
 }
 
 - (int) getPidLidTaskOwnership: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getLongZero: data];
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (void) save

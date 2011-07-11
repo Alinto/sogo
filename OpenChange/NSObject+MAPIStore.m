@@ -36,10 +36,11 @@
 
 static int MAPIStoreTallocWrapperDestroy (void *data)
 {
-  id wrappedObject;
+  struct MAPIStoreTallocWrapper *wrapper;
 
-  wrappedObject = data;
-  [wrappedObject release];
+  wrapper = data;
+  NSLog (@"destroying wrapped object (wrapper: %p; object: %p...\n", wrapper, wrapper->MAPIStoreSOGoObject);
+  [wrapper->MAPIStoreSOGoObject release];
 
   return 0;
 }
@@ -50,8 +51,9 @@ static int MAPIStoreTallocWrapperDestroy (void *data)
 
   wrapper = talloc_zero (tallocCtx, struct MAPIStoreTallocWrapper);
   wrapper->MAPIStoreSOGoObject = self;
+  [wrapper->MAPIStoreSOGoObject retain];
   talloc_set_destructor ((void *) wrapper, MAPIStoreTallocWrapperDestroy);
-  [self retain];
+  NSLog (@"returning wrapper: %p; object: %p", wrapper, self);
 
   return wrapper;
 }
