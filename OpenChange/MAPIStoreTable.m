@@ -822,7 +822,7 @@ static Class NSDataK, NSStringK;
         rowData[count].error = [child getProperty: &rowData[count].data
                                           withTag: columns[count]
                                          inMemCtx: memCtx];
-      *datap = rowData;
+      *dataP = rowData;
       rc = MAPI_E_SUCCESS;
     }
   else
