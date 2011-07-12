@@ -644,38 +644,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 //   [self logWithFormat: @"%@  -->  %@", resStr, MAPIStringForRestrictionState (state)];
 // }
 
-- (int) setRestrictions: (const struct mapi_SRestriction *) res
-		withFID: (uint64_t) fid
-	   andTableType: (uint8_t) tableType
-	 getTableStatus: (uint8_t *) tableStatus
-{
-  MAPIStoreTable *table;
-
-  [self errorWithFormat: @"%s: obsolete method", __FUNCTION__];
-
-  table = [self _tableForFID: fid andTableType: tableType];
-  [table setRestrictions: res];
-  // FIXME: we should not flush the caches if the restrictions matches
-  [table cleanupCaches];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) setSortOrder: (const struct SSortOrderSet *) set
-             withFID: (uint64_t) fid andTableType: (uint8_t) type
-      getTableStatus: (uint8_t *) tableStatus
-{
-  MAPIStoreTable *table;
-
-  [self errorWithFormat: @"%s: obsolete method", __FUNCTION__];
-
-  table = [self _tableForFID: fid andTableType: type];
-  [table setSortOrder: set];
-  [table cleanupCaches];
-
-  return MAPISTORE_SUCCESS;
-}
-
 - (int) openMessage: (struct mapistore_message *) msg
             withMID: (uint64_t) mid
               inFID: (uint64_t) fid

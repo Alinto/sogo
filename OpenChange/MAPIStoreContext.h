@@ -111,14 +111,6 @@
         byName: (const char *) foldername
    inParentFID: (uint64_t) parent_fid;
 
-- (int) setRestrictions: (const struct mapi_SRestriction *) res
-		withFID: (uint64_t) fid
-	   andTableType: (uint8_t) tableType
-	 getTableStatus: (uint8_t *) tableStatus;
-- (int) setSortOrder: (const struct SSortOrderSet *) set
-             withFID: (uint64_t) fid andTableType: (uint8_t) type
-      getTableStatus: (uint8_t *) tableStatus;
-
 - (int) mkDir: (struct SRow *) aRow
       withFID: (uint64_t) fid
   inParentFID: (uint64_t) parentFID;

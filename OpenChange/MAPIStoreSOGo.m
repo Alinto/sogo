@@ -656,74 +656,6 @@ sogo_op_deletemessage(void *private_data,
   return rc;
 }
 
-static int
-sogo_op_set_restrictions (void *private_data, uint64_t fid, uint8_t type,
-			  struct mapi_SRestriction *res, uint8_t *tableStatus)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  if (context)
-    {
-      [context setupRequest];
-
-      rc = [context setRestrictions: res
-		    withFID: fid andTableType: type
-		    getTableStatus: tableStatus];
-
-      [context tearDownRequest];
-      [pool release];
-    }
-  else
-    {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
-      rc = MAPI_E_NOT_FOUND;
-    }
-
-  return rc;
-}
-
-static int
-sogo_op_set_sort_order (void *private_data, uint64_t fid, uint8_t type,
-                        struct SSortOrderSet *set, uint8_t *tableStatus)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  if (context)
-    {
-      [context setupRequest];
-      rc = [context setSortOrder: set
-                         withFID: fid andTableType: type
-                  getTableStatus: tableStatus];
-      [context tearDownRequest];
-      [pool release];
-    }
-  else
-    {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
-      rc = MAPI_E_NOT_FOUND;
-    }
-
-  return rc;
-}
-
 /**
    proof of concept
 */
@@ -1173,8 +1105,6 @@ int mapistore_init_backend(void)
       backend.op_opendir = sogo_op_opendir;
       backend.op_closedir = sogo_op_closedir;
       backend.op_readdir_count = sogo_op_readdir_count;
-      backend.op_set_restrictions = sogo_op_set_restrictions;
-      backend.op_set_sort_order = sogo_op_set_sort_order;
       backend.op_openmessage = sogo_op_openmessage;
       backend.op_createmessage = sogo_op_createmessage;
       backend.op_modifyrecipients = sogo_op_modifyrecipients;
