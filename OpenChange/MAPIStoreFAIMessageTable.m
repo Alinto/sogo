@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import "MAPIStoreFAIMessage.h"
 #import "MAPIStoreFolder.h"
 
 #import "MAPIStoreFAIMessageTable.h"
@@ -27,7 +28,19 @@
 #undef DEBUG
 #include <mapistore/mapistore.h>
 
+static Class MAPIStoreFAIMessageK = Nil;
+
 @implementation MAPIStoreFAIMessageTable
+
++ (void) initialize
+{
+  MAPIStoreFAIMessageK = [MAPIStoreFAIMessage class];
+}
+
++ (Class) childObjectClass
+{
+  return MAPIStoreFAIMessageK;
+}
 
 - (id) init
 {

@@ -17,6 +17,15 @@
 
 2011-07-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessageTable.m,
+	OpenChange/MAPIStoreContactsMessageTable.m,
+	OpenChange/MAPIStoreFAIMessageTable.m,
+	OpenChange/MAPIStoreFSMessageTable.m,
+	OpenChange/MAPIStoreMailMessageTable.m,
+	OpenChange/MAPIStoreTasksMessageTable.m: overriden
+	"+childObjectClass" to enable "getAvailableProperties:inMemCtx:"
+	to work properly.
+
 	* OpenChange/MAPIStoreTable.m
 	(-getRow:withRowID:andQueryType:inMemCtx:): slight change of
 	prototype in order to leave the structure initialization to the
