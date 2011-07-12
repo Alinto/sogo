@@ -119,14 +119,6 @@
              withFID: (uint64_t) fid andTableType: (uint8_t) type
       getTableStatus: (uint8_t *) tableStatus;
 
-- (enum MAPISTATUS) getTableProperty: (void **) data
-			     withTag: (enum MAPITAGS) proptag
-			  atPosition: (uint32_t) pos
-		       withTableType: (uint8_t) tableType
-			andQueryType: (enum table_query_type) queryType
-			       inFID: (uint64_t) fid
-                            inMemCtx: (TALLOC_CTX *) memCtx;
-
 - (int) mkDir: (struct SRow *) aRow
       withFID: (uint64_t) fid
   inParentFID: (uint64_t) parentFID;
@@ -153,9 +145,6 @@
                 inRow: (struct SRow *) aRow
               withMID: (uint64_t) fmid
              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-                   ofTableType: (uint8_t) type
-                      inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) setPropertiesWithFMID: (uint64_t) fmid
                   ofTableType: (uint8_t) tableType
                         inRow: (struct SRow *) aRow;
