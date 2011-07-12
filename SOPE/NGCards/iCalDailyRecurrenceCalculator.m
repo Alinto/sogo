@@ -160,9 +160,8 @@
 	    {
 	      currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
 	      r = [NGCalendarDateRange calendarDateRangeWithStartDate: currentStartDate
-				       endDate: currentEndDate];
-
-	      if ([_r containsDateRange: r])
+                                                              endDate: currentEndDate];
+	      if ([_r containsDateRange: r] || [_r doesIntersectWithDateRange: r])
 		[ranges addObject: r];
 	    }
 	}
@@ -178,6 +177,7 @@
       
       i++;
     }
+  
   return ranges;
 }
 
