@@ -803,7 +803,7 @@ static Class NSDataK, NSStringK;
   return child;
 }
 
-- (int) getRow: (struct mapistore_property_data *) data
+- (int) getRow: (struct mapistore_property_data **) dataP
      withRowID: (uint32_t) rowId
   andQueryType: (enum table_query_type) queryType
       inMemCtx: (TALLOC_CTX *) memCtx
@@ -811,16 +811,19 @@ static Class NSDataK, NSStringK;
   NSUInteger count;
   MAPIStoreObject *child;
   enum MAPISTATUS rc;
+  struct mapistore_property_data *rowData;
 
   child = [self childAtRowID: rowId
                 forQueryType: queryType];
   if (child)
     {
-      rc = MAPI_E_SUCCESS;
+      rowData = talloc_array(memCtx, struct mapistore_property_data, columnsCount);
       for (count = 0; count < columnsCount; count++)
-        data[count].error = [child getProperty: &data[count].data
-                                       withTag: columns[count]
-                                      inMemCtx: memCtx];
+        rowData[count].error = [child getProperty: &rowData[count].data
+                                          withTag: columns[count]
+                                         inMemCtx: memCtx];
+      *datap = rowData;
+      rc = MAPI_E_SUCCESS;
     }
   else
     rc = MAPI_E_INVALID_OBJECT;

@@ -92,7 +92,7 @@ typedef enum {
 - (void) setRestrictions: (const struct mapi_SRestriction *) res;
 - (int) setColumns: (enum MAPITAGS *) newColumns
          withCount: (uint16_t) newColumCount;
-- (int) getRow: (struct mapistore_property_data *) data
+- (int) getRow: (struct mapistore_property_data **) dataP
      withRowID: (uint32_t) rowId
   andQueryType: (enum table_query_type) queryType
       inMemCtx: (TALLOC_CTX *) memCtx;

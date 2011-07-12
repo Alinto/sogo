@@ -1,3 +1,10 @@
+2011-07-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreTable.m
+	(-getRow:withRowID:andQueryType:inMemCtx:): slight change of
+	prototype in order to leave the structure initialization to the
+	backend.
+
 2011-07-11  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxAppointmentEditor.m

@@ -1086,7 +1086,7 @@ sogo_pocop_set_table_sort_order (void *table_object, struct SSortOrderSet *sort_
 static int
 sogo_pocop_get_table_row (void *table_object, TALLOC_CTX *mem_ctx,
                           enum table_query_type query_type, uint32_t row_id,
-                          struct mapistore_property_data *data)
+                          struct mapistore_property_data **data)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
