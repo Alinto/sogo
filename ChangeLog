@@ -1,3 +1,8 @@
+2011-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_op_get_fid_by_name): removed
+	obsolete method.
+
 2011-07-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailFolderActions.m (-batchDeleteAction): we

@@ -107,10 +107,6 @@
   withTableType: (uint8_t) tableType
        inMemCtx: (TALLOC_CTX *) memCtx;
 
-- (int) getFID: (uint64_t *) fid
-        byName: (const char *) foldername
-   inParentFID: (uint64_t) parent_fid;
-
 - (int) mkDir: (struct SRow *) aRow
       withFID: (uint64_t) fid
   inParentFID: (uint64_t) parentFID;

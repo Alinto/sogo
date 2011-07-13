@@ -985,16 +985,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return rc;
 }
 
-- (int) getFID: (uint64_t *) fid
-        byName: (const char *) foldername
-   inParentFID: (uint64_t) parent_fid
-{
-  [self logWithFormat: @"METHOD '%s' (%d) -- foldername: %s, parent_fid: %lld",
-        __FUNCTION__, __LINE__, foldername, parent_fid];
-
-  return MAPISTORE_ERROR;
-}
-
 - (int) setPropertiesWithFMID: (uint64_t) fmid
                   ofTableType: (uint8_t) tableType
                         inRow: (struct SRow *) aRow

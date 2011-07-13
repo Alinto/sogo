@@ -234,31 +234,6 @@ sogo_get_path(void *private_data, TALLOC_CTX *mem_ctx,
   return rc;
 }
 
-static int
-sogo_op_get_fid_by_name(void *private_data, uint64_t parent_fid, const char* foldername, uint64_t *fid)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context getFID: fid byName: foldername inParentFID: parent_fid];
-
-  [context tearDownRequest];
-  [pool release];
-
-  return rc;
-}
-
-
 /**
    \details Create a folder in the sogo backend
    
@@ -1098,7 +1073,6 @@ int mapistore_init_backend(void)
       backend.release_record = sogo_release_record;
 
       backend.get_path = sogo_get_path;
-      backend.op_get_fid_by_name = sogo_op_get_fid_by_name;
 
       backend.op_mkdir = sogo_op_mkdir;
       backend.op_rmdir = sogo_op_rmdir;
