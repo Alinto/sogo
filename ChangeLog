@@ -1,5 +1,8 @@
 2011-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tools/sogo-tool.m (main): instantiate SOGoSystemDefaults in
+	order to properly inject the entries from SOGoDefaults.plist.
+
 	* OpenChange/MAPIStoreSOGo.m (sogo_op_get_fid_by_name): removed
 	obsolete method.
 
