@@ -982,53 +982,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return rc;
 }
 
-- (int) releaseRecordWithFMID: (uint64_t) fmid
-		  ofTableType: (uint8_t) tableType
-{
-  NSNumber *fidKey;
-  MAPIStoreObject *child;
-  NSUInteger retainCount;
-  int rc = MAPISTORE_SUCCESS;
-
-  if (tableType != MAPISTORE_FOLDER_TABLE)
-    {
-      [self errorWithFormat: @"%s: value of tableType not handled: %d",
-	    __FUNCTION__, tableType];
-      [self logWithFormat: @"  fmid: 0x%.16x  tableType: %d", fmid, tableType];
-      [NSException raise: @"MAPIStoreAPIException"
-                  format: @"unsupported object type"];
-      
-      rc = MAPISTORE_ERR_INVALID_PARAMETER;
-    }
-
-  if (rc == MAPISTORE_SUCCESS)
-    {
-      fidKey = [NSNumber numberWithUnsignedLongLong: fmid];
-      child = [folders objectForKey: fidKey];
-      if (child)
-	{
-	  retainCount = [child mapiRetainCount];
-	  if (retainCount == 0)
-	    {
-	      [self logWithFormat: @"child with mid %.16x successfully removed"
-		    @" from child cache",
-		    fmid];
-	      [folders removeObjectForKey: fidKey];
-	    }
-	  else
-            [child setMAPIRetainCount: retainCount - 1];
-	}
-      else
-        {
-          [self warnWithFormat: @"child with mid %.16x not found"
-                @" in child cache", fmid];
-          rc = MAPISTORE_ERR_NOT_FOUND;
-        }
-    }
-
-  return rc;
-}
-
 /* utils */
 
 - (NSString *) extractChildNameFromURL: (NSString *) objectURL

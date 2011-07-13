@@ -28,15 +28,14 @@
 	(sogo_op_modifyrecipients): replaced methods with pocop
 	implementations.
 	(sogo_op_*attach*): methods to their final form'
+	(sogo_op_get_fid_by_name): removed obsolete method.
+	(sogo_op_release_record): removed obsolete method.
 
 	* OpenChange/NSObject+MAPIStore.m (MAPIStoreTallocWrapperDestroy):
 	the object release now occurs within an NSAutoreleasePool.
 
 	* Tools/sogo-tool.m (main): instantiate SOGoSystemDefaults in
 	order to properly inject the entries from SOGoDefaults.plist.
-
-	* OpenChange/MAPIStoreSOGo.m (sogo_op_get_fid_by_name): removed
-	obsolete method.
 
 2011-07-12  Francis Lachapelle  <flachapelle@inverse.ca>
 

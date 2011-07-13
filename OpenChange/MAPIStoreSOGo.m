@@ -167,39 +167,6 @@ sogo_delete_context(void *private_data)
 }
 
 /**
-   \details Delete data associated to a given folder or message
-
-   \param private_data pointer to the current sogo context
-
-   \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
-*/
-static int
-sogo_release_record(void *private_data, uint64_t fmid, uint8_t type)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  pool = [NSAutoreleasePool new];
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context releaseRecordWithFMID: fmid ofTableType: type];
-
-  [context tearDownRequest];
-
-  [pool release];
-
-  return rc;
-}
-
-
-/**
    \details return the mapistore path associated to a given message or
    folder ID
 
@@ -1079,7 +1046,6 @@ int mapistore_init_backend(void)
       backend.init = sogo_init;
       backend.create_context = sogo_create_context;
       backend.delete_context = sogo_delete_context;
-      backend.release_record = sogo_release_record;
 
       backend.get_path = sogo_get_path;
 
