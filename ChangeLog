@@ -20,6 +20,14 @@
 
 2011-07-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFSMessage.m
+	(+getAvailableProperties:inMemCtx:): added memCtx parameter.
+
+	* OpenChange/MAPIStoreSOGo.m: (sogo_op_get_table_property)
+	(sogo_op_get_available_table_properties)
+	(sogo_op_set_restrictions,sogo_op_set_sort_order): removed
+	obsolete methods.
+
 	* OpenChange/MAPIStoreCalendarMessageTable.m,
 	OpenChange/MAPIStoreContactsMessageTable.m,
 	OpenChange/MAPIStoreFAIMessageTable.m,

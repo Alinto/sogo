@@ -426,68 +426,6 @@ sogo_op_readdir_count(void *private_data,
   return rc;
 }
 
-
-static int
-sogo_op_get_table_property(void *private_data,
-                           TALLOC_CTX *mem_ctx,
-			   uint64_t fid,
-			   uint8_t table_type,
-			   enum table_query_type query_type,
-			   uint32_t pos,
-			   uint32_t proptag,
-			   void **data)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  // DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context getTableProperty: data withTag: proptag atPosition: pos
-		   withTableType: table_type andQueryType: query_type
-			   inFID: fid inMemCtx: mem_ctx];
-
-  [context tearDownRequest];
-  [pool release];
-
-  return rc;
-}
-
-static int
-sogo_op_get_available_table_properties(void *private_data, TALLOC_CTX *mem_ctx,
-                                       uint8_t type,
-                                       struct SPropTagArray **propertiesP)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context getAvailableProperties: propertiesP
-                           ofTableType: type
-                              inMemCtx: mem_ctx];
-
-  [context tearDownRequest];
-  [pool release];
-
-  return rc;
-}
-
 static int
 sogo_op_openmessage(void *private_data,
                     TALLOC_CTX *mem_ctx,
@@ -714,74 +652,6 @@ sogo_op_deletemessage(void *private_data,
 
   [context tearDownRequest];
   [pool release];
-
-  return rc;
-}
-
-static int
-sogo_op_set_restrictions (void *private_data, uint64_t fid, uint8_t type,
-			  struct mapi_SRestriction *res, uint8_t *tableStatus)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  if (context)
-    {
-      [context setupRequest];
-
-      rc = [context setRestrictions: res
-		    withFID: fid andTableType: type
-		    getTableStatus: tableStatus];
-
-      [context tearDownRequest];
-      [pool release];
-    }
-  else
-    {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
-      rc = MAPI_E_NOT_FOUND;
-    }
-
-  return rc;
-}
-
-static int
-sogo_op_set_sort_order (void *private_data, uint64_t fid, uint8_t type,
-                        struct SSortOrderSet *set, uint8_t *tableStatus)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  if (context)
-    {
-      [context setupRequest];
-      rc = [context setSortOrder: set
-                         withFID: fid andTableType: type
-                  getTableStatus: tableStatus];
-      [context tearDownRequest];
-      [pool release];
-    }
-  else
-    {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
-      rc = MAPI_E_NOT_FOUND;
-    }
 
   return rc;
 }
@@ -1235,10 +1105,6 @@ int mapistore_init_backend(void)
       backend.op_opendir = sogo_op_opendir;
       backend.op_closedir = sogo_op_closedir;
       backend.op_readdir_count = sogo_op_readdir_count;
-      backend.op_get_table_property = sogo_op_get_table_property;
-      backend.op_get_available_table_properties = sogo_op_get_available_table_properties;
-      backend.op_set_restrictions = sogo_op_set_restrictions;
-      backend.op_set_sort_order = sogo_op_set_sort_order;
       backend.op_openmessage = sogo_op_openmessage;
       backend.op_createmessage = sogo_op_createmessage;
       backend.op_modifyrecipients = sogo_op_modifyrecipients;
