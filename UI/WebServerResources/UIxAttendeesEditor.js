@@ -20,15 +20,11 @@ var attendeesEditor = {
 };
 
 function handleAllDay() {
-    window.timeWidgets['start']['hour'].value = dayStartHour;
-    window.timeWidgets['start']['minute'].value = 0;
-    window.timeWidgets['end']['hour'].value = dayEndHour;
-    window.timeWidgets['end']['minute'].value = 0;
+    window.timeWidgets['start']['time'].value = dayStartHour + ":00";
+    window.timeWidgets['end']['time'].value = dayEndHour + ":00";
 
-    $("startTime_time_hour").disabled = true;
-    $("startTime_time_minute").disabled = true;
-    $("endTime_time_hour").disabled = true;
-    $("endTime_time_minute").disabled = true;
+    $("startTime_time").disabled = true;
+    $("endTime_time").disabled = true;
 
     $("freeBusyTimeRange").addClassName("hidden");
 }
@@ -1724,8 +1720,10 @@ function getShadowEndDate() {
 
 function _setDate(which, newDate) {
     window.timeWidgets[which]['date'].setInputAsDate(newDate);
-    window.timeWidgets[which]['time'].value = newDate.getDisplayHoursString();
-    window.timeWidgets[which]['time'].onChange(); // method from SOGoTimePicker
+    if (!isAllDay) {
+        window.timeWidgets[which]['time'].value = newDate.getDisplayHoursString();
+        window.timeWidgets[which]['time'].onChange(); // method from SOGoTimePicker
+    }
 }
 
 function setStartDate(newStartDate) {
