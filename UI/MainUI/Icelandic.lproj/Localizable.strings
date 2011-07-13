@@ -4,6 +4,7 @@
 
 "Username:" = "Notandanafn:";
 "Password:" = "Lykilorð:";
+"Domain:" = "Domain:";
 
 "Connect" = "Tengjast";
 
@@ -24,9 +25,10 @@
 "French" = "Français";
 "German" = "Deutsch";
 "Hungarian" = "Magyar";
-"Italian" = "Italiano";
 "Icelandic" = "Íslenska";
+"Italian" = "Italiano";
 "Norwegian" = "Norsk";
+"Polish" = "Polski";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Spanish" = "Español";
