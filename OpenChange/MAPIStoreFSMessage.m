@@ -38,6 +38,7 @@
 @implementation MAPIStoreFSMessage
 
 + (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct SPropTagArray *properties;
   NSUInteger count;
@@ -45,7 +46,7 @@
                                     0x683f0102, 0x68410003, 0x68420102,
                                     0x68450102, 0x68460003 };
 
-  properties = talloc_zero (NULL, struct SPropTagArray);
+  properties = talloc_zero (memCtx, struct SPropTagArray);
   properties->cValues = MAPIStoreSupportedPropertiesCount + 8;
   properties->aulPropTag = talloc_array (NULL, enum MAPITAGS,
                                          MAPIStoreSupportedPropertiesCount + 8);
