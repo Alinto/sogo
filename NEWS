@@ -1,21 +1,35 @@
 1.3-2011MMDD (1.3.8)
 ---------------------
 New Features
-- initial support for threaded-view in the webmail interface
-- sogo-tool: new "rename-user" command that automatically updates all the
-  references in the database after modifying a user id
-- sogo-tool: new "user-preferences {get,set,unset} command to manipulate
-  user's defaults/settings.
-- groups support for IMAP ACLs
-- now possible to define to-the-minute events/tasks
+ - initial support for threaded-view in the webmail interface
+ - sogo-tool: new "rename-user" command that automatically updates all the
+   references in the database after modifying a user id
+ - sogo-tool: new "user-preferences {get,set,unset} command to manipulate
+   user's defaults/settings.
+ - groups support for IMAP ACLs
+ - now possible to define multiple forwarding addresses
+ - now possible to define to-the-minute events/tasks
+ - the domain can be selected from the login page when using multiple domains
+   (SOGoLoginDomains)
+ - sources from one domain can be access from another domain when using
+   multiple domains (SOGoDomainsVisibility)
 
 Enhancements
  - improved list selection and contextual menu behavior in all web modules
+ - the quota status bar is now updated more frequently n the webmail module
  - automatically create new cards when populating a contacts list with unknown entries
+ - added fade effect when displaying and hidding dialog boxes in Web interface
+ - updated CKEditor to version 3.6.1
  - updated Russian translation
 
 Bug Fixes
  - submenus in contextual menus splitted in multiple lists are now displayed correctly
+ - fixed display of cards/lists icons in public addressbooks
+ - no longer accept an empty string when renaming a calendar
+ - fixed display of daily events that cover two days
+ - fixed time shift issue when editing an event title on iOS
+ - fixed bug when using indirect LDAP binds and bindAsCurrentUser
+ - fixed bugs when converting an event to an all-day one
  - many small fixes related to CalDAV scheduling
  - many OpenBSD-related fixes
  
