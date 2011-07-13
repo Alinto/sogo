@@ -9,6 +9,9 @@
 
 2011-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSObject+MAPIStore.m (MAPIStoreTallocWrapperDestroy):
+	the object release now occurs within an NSAutoreleasePool.
+
 	* Tools/sogo-tool.m (main): instantiate SOGoSystemDefaults in
 	order to properly inject the entries from SOGoDefaults.plist.
 
