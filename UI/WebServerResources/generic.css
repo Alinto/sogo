@@ -841,7 +841,7 @@ DIV.tabsContainer > UL LI.active SPAN
 { background: transparent url('tab_span_active_bg.png') no-repeat !important; }
 DIV.tabsContainer > UL LI.first
 { margin-left: -1px;
-  padding-left: -1px; }
+  padding-left: -1px; } /* Firefox will complain */
 
 DIV.tabsContainer > DIV.tabs
 { position: absolute;

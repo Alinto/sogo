@@ -497,6 +497,7 @@ function onToolbarDeleteSelectedContacts(event) {
 }
 
 function onToolbarDeleteSelectedContactsConfirm(dialogId) {
+    disposeDialog();
     var contactsList = $('contactsList');
     var rows = contactsList.getSelectedRowsId();
     for (var i = 0; i < rows.length; i++) {
@@ -510,8 +511,6 @@ function onToolbarDeleteSelectedContactsConfirm(dialogId) {
         triggerAjaxRequest(urlstr, onContactDeleteEventCallback,
                            rows[i]);
     }
-
-    disposeDialog();
 }
 
 function onContactDeleteEventCallback(http) {

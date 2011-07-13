@@ -1,3 +1,12 @@
+2011-07-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactSourceFolder.m
+	(-_flattenedRecord:): added c_component key so the proper icon
+	appears beside entries in the Web interface.
+
+	* UI/WebServerResources/generic.js (_showAlertDialog): added fade
+	effect when showing or hiding a dialog box.
+
 2011-07-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailFolderActions.m (-batchDeleteAction): we

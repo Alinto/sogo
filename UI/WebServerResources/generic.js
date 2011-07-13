@@ -555,6 +555,7 @@ function onRowClick(event, target) {
     if (node.tagName == 'TD') {
         node = node.parentNode; // select TR
     }
+
     if (node.tagName == 'TR') {
         var head = $(node).up('table').down('thead');
         rowIndex = node.rowIndex;
@@ -955,15 +956,14 @@ function setSearchCriteria(event) {
     var searchValue = $("searchValue");
     var searchCriteria = $("searchCriteria");
 
-    if (searchValue.ghostPhrase == searchValue.value)
-        searchValue.value = this.innerHTML;
-
     searchValue.ghostPhrase = this.innerHTML;
     searchCriteria.value = this.getAttribute('id');
 
     if (this.parentNode.chosenNode)
         this.parentNode.chosenNode.removeClassName("_chosen");
     this.addClassName("_chosen");
+
+    searchValue.focus();
 
     if (this.parentNode.chosenNode != this) {
         searchValue.lastSearch = "";
@@ -1009,8 +1009,7 @@ function onSearchFocus(event) {
     } else {
         this.selectElement();
     }
-
-    this.setStyle({ color: "#535D6D" });
+    this.setStyle({ color: "#262B33" });
 }
 
 function onSearchBlur(event) {
@@ -1030,7 +1029,7 @@ function onSearchBlur(event) {
         this.setStyle({ color: "#909090" });
     } else {
         this.setAttribute("modified", "yes");
-        this.setStyle({ color: "#535D6D" });
+        this.setStyle({ color: "#262B33" });
     }
 }
 
@@ -1802,12 +1801,11 @@ function createButton(id, caption, action) {
 
 function showAlertDialog(label) {
     var div = $("bgDialogDiv");
-    if (div && div.visible()) {
+    if (div && div.visible() && div.getOpacity() > 0) {
         dialogsStack.push(label);
     }
-    else {
+    else
         _showAlertDialog(label);
-    }
 }
 
 function _showAlertDialog(label) {
@@ -1828,7 +1826,7 @@ function _showAlertDialog(label) {
         document.body.appendChild(dialog);
         dialogs[label] = dialog;
     }
-    dialog.show();
+    dialog.appear({ duration: 0.2 });
 }
 
 function showConfirmDialog(title, label, callbackYes, callbackNo) {
@@ -1858,7 +1856,7 @@ function showConfirmDialog(title, label, callbackYes, callbackNo) {
         document.body.appendChild(dialog);
         dialogs[key] = dialog;
     }
-    dialog.show();
+    dialog.appear({ duration: 0.2 });
 }
 
 function showPromptDialog(title, label, callback, defaultValue) {
@@ -1889,23 +1887,39 @@ function showPromptDialog(title, label, callback, defaultValue) {
         document.body.appendChild(dialog);
         dialogs[title+label] = dialog;
     }
-    dialog.show();
+    dialog.appear({ duration: 0.2 });
     dialog.down("input").focus();
 }
 
 function disposeDialog() {
     $$("DIV.dialog").each(function(div) {
-                              if (div.visible())
-                                  div.hide();
-                          });
-
+        if (div.visible() && div.getOpacity() == 1)
+            div.fade({ duration: 0.2 });
+    });
     if (dialogsStack.length > 0) {
+        // Show the next dialog box
         var label = dialogsStack.first();
         dialogsStack.splice(0, 1);
-        _showAlertDialog.delay(0.1, label);
+        _showAlertDialog.delay(0.2, label);
     }
-    else
-        $("bgDialogDiv").hide();
+    else {
+        var bgFade = Effect.Fade('bgDialogDiv', { duration: 0.2 });
+        // By the end the background fade out, a new dialog
+        // may need to be displayed.
+        _disposeDialog.delay(0.1, bgFade);
+    }
+}
+
+function _disposeDialog(bgEffect) {
+    if (dialogsStack.length) {
+        var div = $("bgDialogDiv");
+        bgEffect.cancel();
+        div.show();
+        div.appear({ duration: 0.2, to: 0.3 });
+        var label = dialogsStack.first();
+        dialogsStack.splice(0, 1);
+        _showAlertDialog(label);
+    }
 }
 
 function readCookie(name) {

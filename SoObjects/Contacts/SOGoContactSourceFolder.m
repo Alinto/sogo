@@ -204,8 +204,16 @@
   // it's set.
   data = [oldRecord objectForKey: @"isGroup"];
   if (data)
-    [newRecord setObject: data forKey: @"isGroup"];
-
+    {
+      [newRecord setObject: data forKey: @"isGroup"];
+      [newRecord setObject: @"vlist" forKey: @"c_component"];
+    }
+#warning TODO: create a custom icon for resources
+  else
+    {
+      [newRecord setObject: @"vcard" forKey: @"c_component"];
+    }
+  
   data = [oldRecord objectForKey: @"c_info"];
   if ([data length] > 0)
     [newRecord setObject: data forKey: @"contactInfo"];
