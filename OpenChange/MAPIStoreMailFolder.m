@@ -127,10 +127,7 @@ static Class SOGoMailFolderK;
 - (MAPIStoreMessageTable *) messageTable
 {
   if (!messageTable)
-    {
-      ASSIGN (messageTable, [MAPIStoreMailMessageTable tableForContainer: self]);
-      [self logWithFormat: @"new message table"];
-    }
+    ASSIGN (messageTable, [MAPIStoreMailMessageTable tableForContainer: self]);
 
   return messageTable;
 }

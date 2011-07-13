@@ -20,9 +20,21 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import "MAPIStoreActiveTables.h"
+
 #import "MAPIStoreFAIMessage.h"
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
 @implementation MAPIStoreFAIMessage
+
+- (NSArray *) activeContainerMessageTables
+{
+  return [[MAPIStoreActiveTables activeTables]
+             activeTablesForFMID: [container objectId]
+                         andType: MAPISTORE_FAI_TABLE];
+}
 
 - (int) getPrAssociated: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx

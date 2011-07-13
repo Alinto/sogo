@@ -695,20 +695,21 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (void) openMessage: (struct mapistore_message *) msg
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (void) getMessageData: (struct mapistore_message **) dataPtr
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct SRowSet *recipients;
   NSArray *to;
   NSInteger count, max;
   NGImap4EnvelopeAddress *currentAddress;
   NSString *text;
+  struct mapistore_message *msgData;
 
-  [super openMessage: msg inMemCtx: memCtx];
+  [super getMessageData: &msgData inMemCtx: memCtx];
   /* Retrieve recipients from the message */
   to = [sogoObject toEnvelopeAddresses];
   max = [to count];
-  recipients = talloc_zero (memCtx, struct SRowSet);
+  recipients = talloc_zero (msgData, struct SRowSet);
   recipients->cRows = max;
   recipients->aRow = talloc_array (recipients, struct SRow, max);
   for (count = 0; count < max; count++)
@@ -747,7 +748,8 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
                                   [text asUnicodeInMemCtx: recipients->aRow]);
         }
     }
-  msg->recipients = recipients;
+  msgData->recipients = recipients;
+  *dataPtr = msgData;
 }
 
 - (void) _fetchAttachmentPartsInBodyInfo: (NSDictionary *) bodyInfo

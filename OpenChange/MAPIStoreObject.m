@@ -105,6 +105,8 @@ static Class NSExceptionK, MAPIStoreFolderK;
       isNew = NO;
     }
 
+  [self logWithFormat: @"-init"];
+
   return self;
 }
 
@@ -122,6 +124,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 
 - (void) dealloc
 {
+  [self logWithFormat: @"-dealloc"];
   [sogoObject release];
   [newProperties release];
   [parentContainersBag release];

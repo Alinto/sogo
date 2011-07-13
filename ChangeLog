@@ -17,6 +17,18 @@
 
 2011-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (-init): removed the messages
+	cache dictionary, as its purpose has been superseeded by the
+	features of the "POC api".
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_op_openmessage)
+	(sogo_op_createmessage): now return a "poc api"-compatible
+	object.
+	(sogo_op_savechangesmessage, sogo_op_submitmessage)
+	(sogo_op_modifyrecipients): replaced methods with pocop
+	implementations.
+	(sogo_op_*attach*): methods to their final form'
+
 	* OpenChange/NSObject+MAPIStore.m (MAPIStoreTallocWrapperDestroy):
 	the object release now occurs within an NSAutoreleasePool.
 

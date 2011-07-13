@@ -29,6 +29,8 @@
 
 @interface MAPIStoreDraftsMessage : MAPIStoreMailMessage
 
+- (int) submitWithFlags: (enum SubmitFlags) flags;
+
 @end
 
 #endif /* MAPISTOREDRAFTSMESSAGE_H */

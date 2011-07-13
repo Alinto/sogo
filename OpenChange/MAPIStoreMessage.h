@@ -41,15 +41,26 @@
   NSMutableArray *activeTables;
 }
 
-- (void) openMessage: (struct mapistore_message *) msg
-            inMemCtx: (TALLOC_CTX *) memCtx;
+- (void) getMessageData: (struct mapistore_message **) dataPtr
+               inMemCtx: (TALLOC_CTX *) memCtx;
+
+- (int) modifyRecipientsWithRows: (struct ModifyRecipientRow *) rows
+                        andCount: (NSUInteger) max;
+
+- (int) createAttachment: (MAPIStoreAttachment **) attachmentPtr
+                   inAID: (uint32_t *) aidPtr;
+- (int) getAttachment: (MAPIStoreAttachment **) attachmentPtr
+              withAID: (uint32_t) aid;
+- (int) getAttachmentTable: (MAPIStoreAttachmentTable **) tablePtr
+               andRowCount: (uint32_t *) countPtr;
+- (int) saveMessage;
 
 /* helper getters */
 - (int) getSMTPAddrType: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx;
+- (NSArray *) activeContainerMessageTables;
 
 /* subclasses */
-- (void) submit;
 - (void) save;
 
 /* attachments (subclasses) */

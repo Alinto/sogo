@@ -232,6 +232,16 @@ e)
     [self logWithFormat: @"ignored scheduling message"];
 }
 
+- (int) submitWithFlags: (enum SubmitFlags) flags
+{
+  [self submit];
+  [self setIsNew: NO];
+  [self resetNewProperties];
+  [[self container] cleanupCaches];
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (void) save
 {
   NSString *msgClass;
