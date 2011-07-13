@@ -30,6 +30,8 @@
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 
+#import <SOGo/SOGoSystemDefaults.h>
+
 #import "SOGoTool.h"
 
 /* TODO:
@@ -241,6 +243,8 @@ main (int argc, char **argv, char **env)
   rc = 0;
 
   pool = [NSAutoreleasePool new];
+
+  [SOGoSystemDefaults sharedSystemDefaults];
 
   ud = [NSUserDefaults standardUserDefaults];
   setupUserDefaults (ud);
