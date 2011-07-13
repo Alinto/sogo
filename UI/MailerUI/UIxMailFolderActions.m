@@ -234,20 +234,20 @@
   NSArray *uids;
   NSString *value;
   NSDictionary *data;
-  BOOL withoutTrash;
+  BOOL withTrash;
 
   co = [self clientObject];
   value = [[context request] formValueForKey: @"uid"];
-  withoutTrash = [[[context request] formValueForKey: @"withoutTrash"] boolValue];
+  withTrash = ![[[context request] formValueForKey: @"withoutTrash"] boolValue];
   response = nil;
 
   if ([value length] > 0)
     {
       uids = [value componentsSeparatedByString: @","];
-      response = (WOResponse *) [co deleteUIDs: uids useTrashFolder: !withoutTrash inContext: context];
+      response = (WOResponse *) [co deleteUIDs: uids useTrashFolder: &withTrash inContext: context];
       if (!response)
         {
-          if (withoutTrash)
+          if (!withTrash)
             {
               // When not using a trash folder, return the quota
               account = [co mailAccountFolder];

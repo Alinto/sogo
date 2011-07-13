@@ -1,5 +1,10 @@
 2011-07-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-deleteUIDs:useTrashFolder:inContext:): the withTrash argument is
+	now a pointer since the method can modify it when the current
+	folder is the trash folder.
+
 	* SoObjects/Contacts/SOGoContactSourceFolder.m
 	(-_flattenedRecord:): added c_component key so the proper icon
 	appears beside entries in the Web interface.

@@ -53,7 +53,7 @@
 - (NSArray *) toManyRelationshipKeys;
 
 - (NSException *) deleteUIDs: (NSArray *) uids
-	      useTrashFolder: (BOOL) withTrash
+	      useTrashFolder: (BOOL *) withTrash
 		   inContext: (id) context;
 - (WOResponse *) archiveUIDs: (NSArray *) uids
               inArchiveNamed: (NSString *) archiveName

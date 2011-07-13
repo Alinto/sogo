@@ -265,8 +265,9 @@ static NSString *defaultUserID =  @"anyone";
 }
 
 /* messages */
+
 - (NSException *) deleteUIDs: (NSArray *) uids
-	      useTrashFolder: (BOOL) withTrash
+	      useTrashFolder: (BOOL *) withTrash
 		   inContext: (id) localContext
 {
   SOGoMailFolder *trashFolder;
@@ -279,7 +280,7 @@ static NSString *defaultUserID =  @"anyone";
   client = nil;
   trashFolder = nil;
   b = YES;
-  if (withTrash)
+  if (*withTrash)
     {
       trashFolder = [[self mailAccountFolder] trashFolderInContext: localContext];
       b = NO;
@@ -298,7 +299,7 @@ static NSString *defaultUserID =  @"anyone";
 	      // do not, of course, try to move messages to the Trash folder.
 	      if ([folderName isEqualToString: [self relativeImap4Name]])
                 {
-                  withTrash = NO;
+                  *withTrash = NO;
                 }
               else
                 {
@@ -335,7 +336,7 @@ static NSString *defaultUserID =  @"anyone";
                           objectForKey: @"result"];
       if ([result boolValue])
 	{
-          if (withTrash)
+          if (*withTrash)
             {
               [self markForExpunge];
               if (trashFolder)
