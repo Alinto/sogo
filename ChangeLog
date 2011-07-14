@@ -1,5 +1,10 @@
 2011-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSArray+MAPIStore.m (-asFoldersListInCtx:) removed
+	useless method.
+	(-asArrayOfUnicodeStringsInCtx:) properly connect the talloc
+	hierarchy nodes.
+
 	* OpenChange/MAPIStoreSOGo.m: adapted to latest mapistore_backend
 	nomenclature.
 
