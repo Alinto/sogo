@@ -1,3 +1,8 @@
+2011-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreSOGo.m: adapted to latest mapistore_backend
+	nomenclature.
+
 2011-07-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailListActions.m
