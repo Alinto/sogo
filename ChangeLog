@@ -1,5 +1,7 @@
 2011-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTable.m: added memory debugging output.
+
 	* OpenChange/NSArray+MAPIStore.m (-asFoldersListInCtx:) removed
 	useless method.
 	(-asArrayOfUnicodeStringsInCtx:) properly connect the talloc

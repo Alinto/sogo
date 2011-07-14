@@ -273,6 +273,7 @@ static Class NSDataK, NSStringK;
 {
   if ((self = [super init]))
     {
+      [self logWithFormat: @"-init"];
       tableType = MAPISTORE_MESSAGE_TABLE;
       handleId = -1;
 
@@ -309,8 +310,15 @@ static Class NSDataK, NSStringK;
   return [super retain];
 }
 
+- (void) release
+{
+  [self logWithFormat: @"-release"];
+  [super release];
+}
+
 - (void) dealloc
 {
+  [self logWithFormat: @"-dealloc"];
   if (container)
     [[MAPIStoreActiveTables activeTables] unregisterTable: self];
   [currentChild release];
