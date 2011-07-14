@@ -160,8 +160,8 @@ var SOGoTimePickerInterface = {
         if (matches) {
             this.hours = matches[1];
             this.minutes = matches[2] || '0';
-            if (parseInt(this.hours) > 23) this.hours = 23;
-            if (parseInt(this.minutes) > 59) this.minutes = 59;
+            if (parseInt(this.hours, 10) > 23) this.hours = 23;
+            if (parseInt(this.minutes, 10) > 59) this.minutes = 59;
             if (this.minutes % 5 == 0) {
                 if (this.extended)
                     this.toggleExtendedView();

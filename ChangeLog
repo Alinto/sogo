@@ -1,3 +1,20 @@
+2011-07-14  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailListActions.m
+	(-getUIDsInFolder:withHeaders:): don't add the quota if there's no
+	quota for the mail account.
+
+	* UI/WebServerResources/UIxAttendeesEditor.js (onContactKeydown):
+	fixed glitch when pressing the tab key from an empty input field.
+	(onFreeBusyLoadHandler): removed redundant calls that were causing
+	errors when retrieving the attendees freebusy information.
+
+	* UI/WebServerResources/SOGoTimePicker.js (onChange): specified
+	the radix when calling parseInt since a string starting with 0
+	would be parsed as an octal number.
+
+	* UI/WebServerResources/UIxAppointmentEditor.js (validateAptEditor): idem.
+
 2011-07-14  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (davCollectionTag)

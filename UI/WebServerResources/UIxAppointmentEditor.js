@@ -23,7 +23,8 @@
 
 var contactSelectorAction = 'calendars-contacts';
 var AppointmentEditor = {
-    attendeesMenu: null
+    attendeesMenu: null,
+    timeRE: /(\d{1,2}):?(\d{1,2})/
 };
 
 function uixEarlierDate(date1, date2) {
@@ -76,18 +77,17 @@ function validateAptEditor() {
         return false;
     }
     else if (tmpdate == null /* means: same date */) {
-        // TODO: check time
         var startHour, startMinute, endHour, endMinute;
         var matches;
     
-        matches = document.forms[0]['startTime_time'].value.match(/([0-9]+):([0-9]+)/);
+        matches = AppointmentEditor.timeRE.exec(window.timeWidgets['start']['time'].value);
         if (matches) {
-            startHour = parseInt(matches[1]);
-            startMinute = parseInt(matches[2]);
-            matches = document.forms[0]['endTime_time'].value.match(/([0-9]+):([0-9]+)/);
+            startHour = parseInt(matches[1], 10);
+            startMinute = parseInt(matches[2], 10);
+            matches = AppointmentEditor.timeRE.exec(window.timeWidgets['end']['time'].value);
             if (matches) {
-                endHour = parseInt(matches[1]);
-                endMinute = parseInt(matches[2]);
+                endHour = parseInt(matches[1], 10);
+                endMinute = parseInt(matches[2], 10);
 
                 if (startHour > endHour) {
                     alert(labels.validate_endbeforestart);
@@ -227,7 +227,7 @@ function endDayAsShortString() {
 
 function _getDate(which) {
     var date = window.timeWidgets[which]['date'].inputAsDate();
-    var time = window.timeWidgets[which]['time'].value.match(/([0-9]{1,2}):?([0-9]{2})/);
+    var time = AppointmentEditor.timeRE.exec(window.timeWidgets[which]['time'].value);
     if (time) {
         date.setHours(time[1]);
         date.setMinutes(time[2]);
@@ -238,9 +238,11 @@ function _getDate(which) {
 
 function _getShadowDate(which) {
     var date = window.timeWidgets[which]['date'].getAttribute("shadow-value").asDate();
-    var time = window.timeWidgets[which]['time'].getAttribute("shadow-value").split(":");
-    date.setHours(time[0]);
-    date.setMinutes(time[1]);
+    var time = AppointmentEditor.timeRE.exec(window.timeWidgets[which]['time'].getAttribute("shadow-value"));
+    if (time) {
+        date.setHours(time[1]);
+        date.setMinutes(time[2]);
+    }
 
     return date;
 }
@@ -280,8 +282,7 @@ function onAdjustTime(event) {
   
     if ($(this).readAttribute("id").startsWith("start")) {
         // Start date was changed
-        var delta = window.getShadowStartDate().valueOf() -
-            startDate.valueOf();
+        var delta = window.getShadowStartDate().valueOf() - startDate.valueOf();
         var newEndDate = new Date(endDate.valueOf() - delta);
         window.setEndDate(newEndDate);
     
@@ -293,7 +294,7 @@ function onAdjustTime(event) {
     }
     else {
         // End date was changed
-        var delta = endDate.valueOf() - startDate.valueOf();  
+        var delta = endDate.valueOf() - startDate.valueOf();
         if (delta < 0) {
             alert(labels.validate_endbeforestart);
             var oldEndDate = window.getShadowEndDate();

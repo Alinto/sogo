@@ -669,7 +669,8 @@
   // We also return the inbox quota
   account = [folder mailAccountFolder];
   quota = [account getInboxQuota];
-  [data setObject: quota forKey: @"quotas"];
+  if (quota != nil)
+    [data setObject: quota forKey: @"quotas"];
 
   return data;
 }

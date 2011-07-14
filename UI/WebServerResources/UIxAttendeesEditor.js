@@ -99,18 +99,18 @@ function onContactKeydown(event) {
         if (this.confirmedValue)
             this.value = this.confirmedValue;
         this.hasfreebusy = false;
-        var row = $(this).up("tr").next();
         if (this.isList) {
             resolveListAttendees(this, true);
             event.stop();
         } else {
             this.focussed = false;
+            var row = $(this).up("tr").next();
             var input = row.down("input");
             if (input) {
                 input.focussed = true;
                 input.activate();
             }
-            else
+            else if (!this.value.blank())
                 newAttendee();
         }
     }
@@ -173,7 +173,7 @@ function onContactKeydown(event) {
 
 function performSearch(input) {
     // Perform address completion
-    if (input.value.trim().length > 0) {
+    if (!input.value.blank()) {
         var urlstr = (UserFolderURL
                       + "Contacts/allContactSearch?excludeGroups=1&search="
                       + encodeURIComponent(input.value));
@@ -509,7 +509,7 @@ function newAttendee(previousAttendee) {
 function checkAttendee(input) {
     var row = $(input.parentNode.parentNode);
     var tbody = row.parentNode;
-    if (tbody && input.value.trim().length == 0) {
+    if (tbody && input.value.blank()) {
         var dataTable = $("freeBusyData").tBodies[0];
         var dataRow = dataTable.rows[row.sectionRowIndex];
         tbody.removeChild(row);
@@ -1114,6 +1114,7 @@ function displayFreeBusyForNode(input) {
               }
           }
         };
+
         var rq = new freeBusyRequest(sd, ed, input.uid, listener);
         rq.start();
     } else {
@@ -1413,15 +1414,14 @@ function onTimeDateWidgetChange() {
 function prepareTableHeaders() {
     var startTimeDate = $("startTime_date");
     var startDate = startTimeDate.inputAsDate();
-    //var startDate = $F('startTime_date').asDate();
 
     var endTimeDate = $("endTime_date");
     var endDate = endTimeDate.inputAsDate();
-    //var endDate = endTimeDate.getValue().asDate();
     endDate.setTime(endDate.getTime());
 
     var rows = $("freeBusyHeader").rows;
     var days = startDate.daysUpTo(endDate);
+
     for (var i = 0; i < days.length; i++) {
         var header1 = document.createElement("th");
         header1.colSpan = ((displayEndHour - displayStartHour) + 1)/2;
@@ -1610,9 +1610,6 @@ function onFreeBusyLoadHandler() {
     initializeTimeSlotWidgets();
 
     initializeWindowButtons();
-    prepareTableHeaders();
-    prepareTableRows();
-    redisplayEventSpans();
     prepareAttendees();
     onWindowResize(null);
     Event.observe(window, "resize", onWindowResize);
@@ -1722,7 +1719,7 @@ function _setDate(which, newDate) {
     window.timeWidgets[which]['date'].setInputAsDate(newDate);
     if (!isAllDay) {
         window.timeWidgets[which]['time'].value = newDate.getDisplayHoursString();
-        window.timeWidgets[which]['time'].onChange(); // method from SOGoTimePicker
+        if (window.timeWidgets[which]['time'].onChange) window.timeWidgets[which]['time'].onChange(); // method from SOGoTimePicker
     }
 }
 
