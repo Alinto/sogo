@@ -32,23 +32,6 @@
 
 @implementation NSArray (MAPIStoreFolders)
 
-- (struct indexing_folders_list *) asFoldersListInCtx: (void *) memCtx
-{
-  struct indexing_folders_list *flist;
-  NSInteger count, max;
-
-  max = [self count];
-
-  flist = talloc_zero(memCtx, struct indexing_folders_list);
-  flist->folderID = talloc_array(flist, uint64_t, max);
-  flist->count = max;
-
-  for (count = 0; count < max; count++)
-    *(flist->folderID + count) = [[self objectAtIndex: count] unsignedLongLongValue];
-
-  return flist;
-}
-
 - (struct mapi_SPLSTRArrayW *) asArrayOfUnicodeStringsInCtx: (void *) memCtx
 {
   struct mapi_SPLSTRArrayW *list;
@@ -58,10 +41,10 @@
 
   list = talloc_zero(memCtx, struct mapi_SPLSTRArrayW);
   list->cValues = max;
-  list->strings = talloc_array(memCtx, struct mapi_LPWSTR, max);
+  list->strings = talloc_array(list, struct mapi_LPWSTR, max);
 
   for (count = 0; count < max; count++)
-    (list->strings + count)->lppszW = [[self objectAtIndex: count] asUnicodeInMemCtx: memCtx];
+    (list->strings + count)->lppszW = [[self objectAtIndex: count] asUnicodeInMemCtx: list->strings];
 
   return list;
 }

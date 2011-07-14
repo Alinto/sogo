@@ -27,7 +27,6 @@
 
 @interface NSArray (MAPIStoreFolders)
 
-- (struct indexing_folders_list *) asFoldersListInCtx: (void *) memCtx;
 - (struct mapi_SPLSTRArrayW *) asArrayOfUnicodeStringsInCtx: (void *) memCtx;
 
 @end
