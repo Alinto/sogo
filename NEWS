@@ -1,4 +1,4 @@
-1.3-2011MMDD (1.3.8)
+1.3-20110714 (1.3.8)
 ---------------------
 New Features
  - initial support for threaded-view in the webmail interface
@@ -13,10 +13,11 @@ New Features
    (SOGoLoginDomains)
  - sources from one domain can be access from another domain when using
    multiple domains (SOGoDomainsVisibility)
+- added Icelandic translation - thanks to Anna Jonna Armannsdottir
 
 Enhancements
  - improved list selection and contextual menu behavior in all web modules
- - the quota status bar is now updated more frequently n the webmail module
+ - the quota status bar is now updated more frequently in the webmail module
  - automatically create new cards when populating a contacts list with unknown entries
  - added fade effect when displaying and hidding dialog boxes in Web interface
  - updated CKEditor to version 3.6.1
