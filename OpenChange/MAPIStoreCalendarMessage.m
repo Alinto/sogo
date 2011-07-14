@@ -410,8 +410,8 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   return rc;
 }
 
-- (void) openMessage: (struct mapistore_message *) msg
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (void) getMessageData: (struct mapistore_message **) dataPtr
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *text;
   NSArray *attendees;
@@ -419,14 +419,15 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   struct SRowSet *recipients;
   int count, max;
   iCalEvent *event;
+  struct mapistore_message *msgData;
 
-  [super openMessage: msg inMemCtx: memCtx];
+  [super getMessageData: &msgData inMemCtx: memCtx];
 
   event = [sogoObject component: NO secure: NO];
   attendees = [event attendees];
   max = [attendees count];
 
-  recipients = talloc_zero (memCtx, struct SRowSet);
+  recipients = talloc_zero (msgData, struct SRowSet);
   recipients->cRows = max;
   recipients->aRow = talloc_array (recipients, struct SRow, max);
   for (count = 0; count < max; count++)
@@ -463,7 +464,8 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
                                   [text asUnicodeInMemCtx: recipients->aRow]);
         }
     }
-  msg->recipients = recipients;
+  msgData->recipients = recipients;
+  *dataPtr = msgData;
 }
 
 - (void) save

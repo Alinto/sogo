@@ -47,6 +47,7 @@
 @class MAPIStoreAttachmentTable;
 @class MAPIStoreFolder;
 @class MAPIStoreMapping;
+@class MAPIStoreMessage;
 @class MAPIStoreTable;
 
 @interface MAPIStoreContext : NSObject
@@ -63,9 +64,6 @@
   WOContext *woContext;
 
   MAPIStoreFolder *baseFolder;
-
-  /* for active messages (NSDictionary instances) */
-  NSMutableDictionary *messages;
 
   /* for active folders (NSDictionary instances) */
   NSMutableDictionary *folders;
@@ -117,17 +115,15 @@
 - (int) readCount: (uint32_t *) rowCount
       ofTableType: (uint8_t) tableType
             inFID: (uint64_t) fid;
-- (int) openMessage: (struct mapistore_message *) msg
+- (int) openMessage: (MAPIStoreMessage **) messagePtr
+     andMessageData: (struct mapistore_message **) dataPtr
             withMID: (uint64_t) mid
               inFID: (uint64_t) fid
            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) createMessageWithMID: (uint64_t) mid
-                       inFID: (uint64_t) fid
-                isAssociated: (BOOL) isAssociated;
-- (int) saveChangesInMessageWithMID: (uint64_t) mid
-                           andFlags: (uint8_t) flags;
-- (int) submitMessageWithMID: (uint64_t) mid
-                    andFlags: (uint8_t) flags;
+- (int) createMessage: (MAPIStoreMessage **) messagePtr
+              withMID: (uint64_t) mid
+                inFID: (uint64_t) fid
+         isAssociated: (BOOL) isAssociated;
 - (int) getProperties: (struct SPropTagArray *) SPropTagArray
           ofTableType: (uint8_t) tableType
                 inRow: (struct SRow *) aRow
@@ -136,9 +132,6 @@
 - (int) setPropertiesWithFMID: (uint64_t) fmid
                   ofTableType: (uint8_t) tableType
                         inRow: (struct SRow *) aRow;
-- (int) modifyRecipientsWithMID: (uint64_t) mid
-			 inRows: (struct ModifyRecipientRow *) rows
-		      withCount: (NSUInteger) max;
 - (int) deleteMessageWithMID: (uint64_t) mid
                        inFID: (uint64_t) fid
                    withFlags: (uint8_t) flags;
@@ -162,18 +155,6 @@
          withFID: (uint64_t) fid
        tableType: (uint8_t) tableType
      andHandleId: (uint32_t) handleId;
-
-- (int) getAttachmentTable: (MAPIStoreAttachmentTable **) tablePtr
-               andRowCount: (uint32_t *) count
-                   withMID: (uint64_t) mid;
-- (int) getAttachment: (MAPIStoreAttachment **) attachmentPr
-              withAID: (uint32_t) aid
-                inMID: (uint64_t) mid;
-
-
-- (int) createAttachment: (MAPIStoreAttachment **) attachmentPtr
-                   inAID: (uint32_t *) aid
-             withMessage: (uint64_t) mid;
 
 @end
 

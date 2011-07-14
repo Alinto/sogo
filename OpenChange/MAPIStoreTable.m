@@ -303,6 +303,12 @@ static Class NSDataK, NSStringK;
   return self;
 }
 
+- (id) retain
+{
+  [self logWithFormat: @"-retain"];
+  return [super retain];
+}
+
 - (void) dealloc
 {
   if (container)

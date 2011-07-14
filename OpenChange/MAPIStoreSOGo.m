@@ -33,6 +33,8 @@
 #import "MAPIApplication.h"
 #import "MAPIStoreAttachment.h"
 #import "MAPIStoreContext.h"
+#import "MAPIStoreDraftsMessage.h"
+#import "MAPIStoreMessage.h"
 #import "MAPIStoreObject.h"
 #import "MAPIStoreTable.h"
 #import "NSObject+MAPIStore.h"
@@ -406,11 +408,13 @@ sogo_op_openmessage(void *private_data,
                     TALLOC_CTX *mem_ctx,
 		    uint64_t fid,
 		    uint64_t mid,
-		    struct mapistore_message *msg)
+                    void **message_object,
+		    struct mapistore_message **msgp)
 {
   NSAutoreleasePool *pool;
   sogo_context *cContext;
   MAPIStoreContext *context;
+  MAPIStoreMessage *message;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
@@ -423,26 +427,30 @@ sogo_op_openmessage(void *private_data,
 
   if (!context)
     DEBUG (5, ("  context data is empty, failure ahead..."));
-  rc = [context openMessage: msg withMID: mid inFID: fid inMemCtx: mem_ctx];
+  rc = [context openMessage: &message andMessageData: msgp withMID: mid inFID: fid inMemCtx: mem_ctx];
   if (rc)
     DEBUG (5, ("  failure opening message\n"));
+  else
+    *message_object = [message tallocWrapper: mem_ctx];
 
   [context tearDownRequest];
   [pool release];
 
   return rc;
 }
-
 
 static int
 sogo_op_createmessage(void *private_data,
+                      TALLOC_CTX *mem_ctx,
 		      uint64_t fid,
 		      uint64_t mid,
-		      uint8_t associated)
+		      uint8_t associated,
+                      void **message_object)
 {
   NSAutoreleasePool *pool;
   sogo_context *cContext;
   MAPIStoreContext *context;
+  MAPIStoreMessage *message;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
@@ -453,60 +461,11 @@ sogo_op_createmessage(void *private_data,
   context = cContext->objcContext;
   [context setupRequest];
 
-  rc = [context createMessageWithMID: mid inFID: fid
-                isAssociated: associated];
-
-  [context tearDownRequest];
-  [pool release];
-
-  return rc;
-}
-
-static int
-sogo_op_savechangesmessage(void *private_data,
-			   uint64_t mid,
-			   uint8_t flags)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context saveChangesInMessageWithMID: mid andFlags: flags];
-
-  [context tearDownRequest];
-  [pool release];
-
-  return rc;
-}
-
-static int
-sogo_op_submitmessage(void *private_data,
-		      uint64_t mid,
-		      uint8_t flags)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context submitMessageWithMID: mid andFlags: flags];
+  rc = [context createMessage: &message
+                      withMID: mid inFID: fid
+                 isAssociated: associated];
+  if (!rc)
+    *message_object = [message tallocWrapper: mem_ctx];
 
   [context tearDownRequest];
   [pool release];
@@ -568,35 +527,6 @@ sogo_op_setprops(void *private_data,
   [context setupRequest];
 
   rc = [context setPropertiesWithFMID: fmid ofTableType: type inRow: aRow];
-
-  [context tearDownRequest];
-  [pool release];
-
-  return rc;
-}
-
-static int
-sogo_op_modifyrecipients(void *private_data,
-			 uint64_t mid,
-			 struct ModifyRecipientRow *rows,
-			 uint16_t count)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context modifyRecipientsWithMID: mid
-		inRows: rows
-		withCount: count];
 
   [context tearDownRequest];
   [pool release];
@@ -675,67 +605,93 @@ sogo_pocop_open_table(void *private_data, TALLOC_CTX *mem_ctx,
 }
 
 static int
-sogo_pocop_get_attachment_table (void *private_data, TALLOC_CTX *mem_ctx, uint64_t mid, void **table_object, uint32_t *row_count)
+sogo_pocop_create_attachment (void *message_object, TALLOC_CTX *mem_ctx, void **attachment_object, uint32_t *aidp)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
+  MAPIStoreMessage *message;
+  MAPIStoreAttachment *attachment;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (message_object)
+    {
+      wrapper = message_object;
+      message = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [message createAttachment: &attachment inAID: aidp];
+      if (rc == MAPISTORE_SUCCESS)
+        *attachment_object = [attachment tallocWrapper: mem_ctx];
+      // [context tearDownRequest];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
+sogo_pocop_get_attachment (void *message_object, TALLOC_CTX *mem_ctx, uint32_t aid, void **attachment_object)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreMessage *message;
+  MAPIStoreAttachment *attachment;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (message_object)
+    {
+      wrapper = message_object;
+      message = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [message getAttachment: &attachment withAID: aid];
+      if (rc == MAPISTORE_SUCCESS)
+        *attachment_object = [attachment tallocWrapper: mem_ctx];
+      // [context tearDownRequest];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
+sogo_pocop_get_attachment_table (void *message_object, TALLOC_CTX *mem_ctx, void **table_object, uint32_t *row_count)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreMessage *message;
   MAPIStoreAttachmentTable *table;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  if (context)
+  if (message_object)
     {
-      [context setupRequest];
-      rc = [context getAttachmentTable: &table
-                           andRowCount: row_count
-                               withMID: mid];
-      *table_object = [table tallocWrapper: mem_ctx];
-      [context tearDownRequest];
-    }
-  else
-    {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
-      rc = MAPI_E_NOT_FOUND;
-    }
-
-  [pool release];
-
-  return rc;
-}
-
-static int
-sogo_pocop_get_attachment (void *private_data, TALLOC_CTX *mem_ctx, uint64_t mid, uint32_t aid, void **attachment_object)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  MAPIStoreAttachment *attachment;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  if (context)
-    {
-      [context setupRequest];
-      rc = [context getAttachment: &attachment withAID: aid inMID: mid];
+      wrapper = message_object;
+      message = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [message getAttachmentTable: &table
+                           andRowCount: row_count];
       if (rc == MAPISTORE_SUCCESS)
-        *attachment_object = [attachment tallocWrapper: mem_ctx];
-      [context tearDownRequest];
+        *table_object = [table tallocWrapper: mem_ctx];
+      // [context tearDownRequest];
       [pool release];
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
       rc = MAPI_E_NOT_FOUND;
     }
 
@@ -743,33 +699,85 @@ sogo_pocop_get_attachment (void *private_data, TALLOC_CTX *mem_ctx, uint64_t mid
 }
 
 static int
-sogo_pocop_create_attachment (void *private_data, TALLOC_CTX *mem_ctx, uint64_t mid, uint32_t *aid, void **attachment_object)
+sogo_pocop_message_modify_recipients (void *message_object,
+                                      struct ModifyRecipientRow *recipients,
+                                      uint16_t count)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  MAPIStoreAttachment *attachment;
+  MAPIStoreMessage *message;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  if (context)
+  if (message_object)
     {
-      [context setupRequest];
-      rc = [context createAttachment: &attachment inAID: aid
-                         withMessage: mid];
-      if (rc == MAPISTORE_SUCCESS)
-        *attachment_object = [attachment tallocWrapper: mem_ctx];
-      [context tearDownRequest];
+      wrapper = message_object;
+      message = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [message modifyRecipientsWithRows: recipients andCount: count];
+      // [context tearDownRequest];
       [pool release];
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
+sogo_pocop_message_save (void *message_object)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreMessage *message;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (message_object)
+    {
+      wrapper = message_object;
+      message = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [message saveMessage];
+      // [context tearDownRequest];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
+sogo_pocop_message_submit (void *message_object, enum SubmitFlags flags)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreDraftsMessage *message;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (message_object)
+    {
+      wrapper = message_object;
+      message = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [message submitWithFlags: flags];
+      // [context tearDownRequest];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
       rc = MAPI_E_NOT_FOUND;
     }
 
@@ -778,9 +786,9 @@ sogo_pocop_create_attachment (void *private_data, TALLOC_CTX *mem_ctx, uint64_t 
 
 static int
 sogo_pocop_open_embedded_message (void *attachment_object,
-                                  TALLOC_CTX *mem_ctx,
-                                  uint64_t *mid, enum OpenEmbeddedMessage_OpenModeFlags flags,
-                                  struct mapistore_message *msg, void **message_object)
+                                  TALLOC_CTX *mem_ctx, void **message_object,
+                                  uint64_t *midP,
+                                  struct mapistore_message **msg)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
@@ -798,8 +806,9 @@ sogo_pocop_open_embedded_message (void *attachment_object,
       attachment = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
       rc = [attachment openEmbeddedMessage: &message
-                                   withMID: mid
-                          withMAPIStoreMsg: msg andFlags: flags];
+                                   withMID: midP
+                          withMAPIStoreMsg: msg
+                                  inMemCtx: mem_ctx];
       if (rc == MAPISTORE_SUCCESS)
         *message_object = [message tallocWrapper: mem_ctx];
       [pool release];
@@ -1081,9 +1090,6 @@ int mapistore_init_backend(void)
       backend.op_readdir_count = sogo_op_readdir_count;
       backend.op_openmessage = sogo_op_openmessage;
       backend.op_createmessage = sogo_op_createmessage;
-      backend.op_modifyrecipients = sogo_op_modifyrecipients;
-      backend.op_savechangesmessage = sogo_op_savechangesmessage;
-      backend.op_submitmessage = sogo_op_submitmessage;
       backend.op_deletemessage = sogo_op_deletemessage;
 
       backend.op_setprops = sogo_op_setprops;
@@ -1091,10 +1097,13 @@ int mapistore_init_backend(void)
 
       /* proof of concept */
       backend.folder.open_table = sogo_pocop_open_table;
+      backend.message.create_attachment = sogo_pocop_create_attachment;
       backend.message.get_attachment_table = sogo_pocop_get_attachment_table;
       backend.message.get_attachment = sogo_pocop_get_attachment;
-      backend.message.create_attachment = sogo_pocop_create_attachment;
       backend.message.open_embedded_message = sogo_pocop_open_embedded_message;
+      backend.message.modify_recipients = sogo_pocop_message_modify_recipients;
+      backend.message.save = sogo_pocop_message_save;
+      backend.message.submit = sogo_pocop_message_submit;
       backend.table.get_available_properties = sogo_pocop_get_available_table_properties;
       backend.table.set_restrictions = sogo_pocop_set_table_restrictions;
       backend.table.set_sort_order = sogo_pocop_set_table_sort_order;

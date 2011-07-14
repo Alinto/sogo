@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSAutoreleasePool.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "NSData+MAPIStore.h"
@@ -37,10 +38,13 @@
 static int MAPIStoreTallocWrapperDestroy (void *data)
 {
   struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
 
+  pool = [NSAutoreleasePool new];
   wrapper = data;
-  NSLog (@"destroying wrapped object (wrapper: %p; object: %p...\n", wrapper, wrapper->MAPIStoreSOGoObject);
+  NSLog (@"destroying wrapped object (wrapper: %p; object: %p)...\n", wrapper, wrapper->MAPIStoreSOGoObject);
   [wrapper->MAPIStoreSOGoObject release];
+  [pool release];
 
   return 0;
 }

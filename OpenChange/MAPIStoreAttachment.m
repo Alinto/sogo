@@ -91,29 +91,33 @@
   return rc;
 }
 
-- (int) openEmbeddedMessage: (MAPIStoreAttachmentMessage **) message
+- (int) openEmbeddedMessage: (MAPIStoreAttachmentMessage **) messagePtr
                     withMID: (uint64_t *) mid
-           withMAPIStoreMsg: (struct mapistore_message *) mapistoreMsg
-                   andFlags: (enum OpenEmbeddedMessage_OpenModeFlags) flags
+           withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStoreAttachmentMessage *attMessage;
   MAPIStoreMapping *mapping;
-
-  memset (mapistoreMsg, 0, sizeof (struct mapistore_message));
+  struct mapistore_message *mapistoreMsg;
+  
+  mapistoreMsg = talloc_zero (memCtx, struct mapistore_message);
 
   mapping = [[self context] mapping];
 
   attMessage = [self openEmbeddedMessage];
   if (attMessage)
-    *mid = [mapping idFromURL: [attMessage url]];
-  else if (flags == MAPI_CREATE)
     {
-      attMessage = [self createEmbeddedMessage];
-      if (attMessage)
-        [mapping registerURL: [attMessage url]
-                      withID: *mid];
+      *mid = [mapping idFromURL: [attMessage url]];
+      *messagePtr = attMessage;
+      *mapistoreMsgPtr = mapistoreMsg;
     }
-  *message = attMessage;
+  // else if (flags == MAPI_CREATE)
+  //   {
+  //     attMessage = [self createEmbeddedMessage];
+  //     if (attMessage)
+  //       [mapping registerURL: [attMessage url]
+  //                     withID: *mid];
+  //   }
 
   return (attMessage ? MAPISTORE_SUCCESS : MAPISTORE_ERROR);
 }

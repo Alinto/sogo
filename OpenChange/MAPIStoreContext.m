@@ -191,7 +191,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 {
   if ((self = [super init]))
     {
-      messages = [NSMutableDictionary new];
       folders = [NSMutableDictionary new];
       woContext = [WOContext contextWithRequest: nil];
       [woContext retain];
@@ -238,7 +237,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 
 - (void) dealloc
 {
-  [messages release];
   [folders release];
   [cachedTable release];
   [cachedFolder release];
@@ -644,51 +642,43 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 //   [self logWithFormat: @"%@  -->  %@", resStr, MAPIStringForRestrictionState (state)];
 // }
 
-- (int) openMessage: (struct mapistore_message *) msg
+- (int) openMessage: (MAPIStoreMessage **) messagePtr
+     andMessageData: (struct mapistore_message **) dataPtr
             withMID: (uint64_t) mid
               inFID: (uint64_t) fid
-           inMemCtx: (TALLOC_CTX *) memCtx
+           inMemCtx: (TALLOC_CTX *) memCtx;
 {
   NSString *messageKey, *messageURL;
   MAPIStoreMessage *message;
   MAPIStoreFolder *folder;
-  NSNumber *midKey, *fidKey;
-  int rc;
+  NSNumber *fidKey;
+  int rc = MAPISTORE_ERR_NOT_FOUND;
 
-  midKey = [NSNumber numberWithUnsignedLongLong: mid];
-  message = [messages objectForKey: midKey];
-  if (message)
-    rc = MAPISTORE_SUCCESS;
-  else
+  messageURL = [mapping urlFromID: mid];
+  if (messageURL)
     {
-      rc = MAPISTORE_ERR_NOT_FOUND;
-
-      messageURL = [mapping urlFromID: mid];
-      if (messageURL)
+      fidKey = [NSNumber numberWithUnsignedLongLong: fid];
+      folder = [folders objectForKey: fidKey];
+      messageKey = [self extractChildNameFromURL: messageURL
+                                  andFolderURLAt: NULL];
+      message = [folder lookupChild: messageKey];
+      if (message)
         {
-          fidKey = [NSNumber numberWithUnsignedLongLong: fid];
-          folder = [folders objectForKey: fidKey];
-          messageKey = [self extractChildNameFromURL: messageURL
-                                      andFolderURLAt: NULL];
-          message = [folder lookupChild: messageKey];
-          if (message)
-            {
-              [message openMessage: msg inMemCtx: memCtx];
-              [messages setObject: message forKey: midKey];
-              rc = MAPISTORE_SUCCESS;
-            }
+          [message getMessageData: dataPtr inMemCtx: memCtx];
+          *messagePtr = message;
+          rc = MAPISTORE_SUCCESS;
         }
     }
-  [message setMAPIRetainCount: [message mapiRetainCount] + 1];
 
   return rc;
 }
 
-- (int) createMessageWithMID: (uint64_t) mid
-                       inFID: (uint64_t) fid
-                isAssociated: (BOOL) isAssociated
+- (int) createMessage: (MAPIStoreMessage **) messagePtr
+              withMID: (uint64_t) mid
+                inFID: (uint64_t) fid
+         isAssociated: (BOOL) isAssociated
 {
-  NSNumber *midKey, *fidKey;
+  NSNumber *fidKey;
   NSString *childURL;
   MAPIStoreMessage *message;
   MAPIStoreFolder *folder;
@@ -697,9 +687,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   [self logWithFormat: @"METHOD '%s' -- mid: 0x%.16x, fid: 0x%.16x, associated: %d",
 	__FUNCTION__, mid, fid, isAssociated];
 
-  midKey = [NSNumber numberWithUnsignedLongLong: mid];
-  message = [messages objectForKey: midKey];
-  if (message)
+  if ([mapping urlFromID: mid])
     rc = MAPISTORE_ERR_EXIST;
   else
     {
@@ -710,24 +698,14 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
           message = [folder createMessage: isAssociated];
           if (message)
             {
-              [messages setObject: message forKey: midKey];
-              [message setMAPIRetainCount: [message mapiRetainCount] + 1];
               childURL = [NSString stringWithFormat: @"%@%@",
                                    [folder url], [message nameInContainer]];
               [mapping registerURL: childURL withID: mid];
+              *messagePtr = message;
               rc = MAPISTORE_SUCCESS;
             }
           else
             rc = MAPISTORE_ERROR;
-
-	// {
-	//   if (![folderURL hasSuffix: @"/"])
-	//     folderURL = [NSString stringWithFormat: @"%@/", folderURL];
-	//   messageURL = [NSString stringWithFormat: @"%@%@", folderURL,
-	// 			 [message nameInContainer]];
-	//   [mapping registerURL: messageURL withID: mid];
-
-
         }
       else
         rc = MAPISTORE_ERR_NOT_FOUND;
@@ -736,129 +714,13 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   return rc;
 }
 
-- (int) _saveOrSubmitChangesInMessageWithMID: (uint64_t) mid
-                                    andFlags: (uint8_t) flags
-                                        save: (BOOL) isSave
-{
-  int rc;
-  MAPIStoreMessage *message;
-  MAPIStoreFolder *folder;
-  NSNumber *midKey;
-  NSArray *activeTables;
-  NSUInteger count, max;
-  // NSArray *propKeys;
-  struct mapistore_object_notification_parameters *notif_parameters;
-  // uint16_t count, max;
-  uint64_t folderId;
-
-  midKey = [NSNumber numberWithUnsignedLongLong: mid];
-  message = [messages objectForKey: midKey];
-  if (message)
-    {
-      rc = MAPISTORE_SUCCESS;
-      folder = (MAPIStoreFolder *) [message container];
-      [self logWithFormat: @"folder for message is: %p", folder];
-      if (isSave)
-        {
-          /* notifications */
-          folderId = [folder objectId];
-
-          /* folder modified */
-          notif_parameters
-            = talloc_zero(NULL,
-                          struct mapistore_object_notification_parameters);
-          notif_parameters->object_id = folderId;
-          if ([message isNew])
-            {
-              notif_parameters->tag_count = 3;
-              notif_parameters->tags = talloc_array (notif_parameters,
-                                                     enum MAPITAGS, 3);
-              notif_parameters->tags[0] = PR_CONTENT_COUNT;
-              notif_parameters->tags[1] = PR_MESSAGE_SIZE;
-              notif_parameters->tags[2] = PR_NORMAL_MESSAGE_SIZE;
-              notif_parameters->new_message_count = true;
-              notif_parameters->message_count = [[folder messageKeys] count] + 1;
-            }
-          mapistore_push_notification (connInfo->mstore_ctx,
-                                       MAPISTORE_FOLDER,
-                                       MAPISTORE_OBJECT_MODIFIED,
-                                       notif_parameters);
-          talloc_free (notif_parameters);
-
-          /* message created */
-          if ([message isNew])
-            {
-              notif_parameters
-                = talloc_zero(NULL,
-                              struct mapistore_object_notification_parameters);
-              notif_parameters->object_id = [message objectId];
-              notif_parameters->folder_id = folderId;
-
-              notif_parameters->tag_count = 0xffff;
-              mapistore_push_notification (connInfo->mstore_ctx,
-                                           MAPISTORE_MESSAGE,
-                                           MAPISTORE_OBJECT_CREATED,
-                                           notif_parameters);
-              talloc_free (notif_parameters);
-            }
-
-          /* we ensure the table caches are loaded so that old and new state
-             can be compared */
-          activeTables = ([message isKindOfClass: MAPIStoreFAIMessageK]
-                          ? [folder activeFAIMessageTables]
-                          : [folder activeMessageTables]);
-          max = [activeTables count];
-          for (count = 0; count < max; count++)
-            [[activeTables objectAtIndex: count] restrictedChildKeys];
-
-          [message save];
- 
-          /* table modified */
-          for (count = 0; count < max; count++)
-            [[activeTables objectAtIndex: count]
-              notifyChangesForChild: message];
-       }
-      else
-        [message submit];
-      [message setIsNew: NO];
-      [message resetNewProperties];
-      [folder cleanupCaches];
-    }
-  else
-    rc = MAPISTORE_ERROR;
-
-  return rc;
-}
-
-- (int) saveChangesInMessageWithMID: (uint64_t) mid
-                           andFlags: (uint8_t) flags
-{
-  [self logWithFormat: @"METHOD '%s' -- mid: 0x%.16x, flags: 0x%x",
-	__FUNCTION__, mid, flags];
-
-  return [self _saveOrSubmitChangesInMessageWithMID: mid
-                                           andFlags: flags
-                                               save: YES];
-}
-
-- (int) submitMessageWithMID: (uint64_t) mid
-                    andFlags: (uint8_t) flags
-{
-  [self logWithFormat: @"METHOD '%s' -- mid: 0x%.16x, flags: 0x%x",
-	__FUNCTION__, mid, flags];
-
-  return [self _saveOrSubmitChangesInMessageWithMID: mid
-                                           andFlags: flags
-                                               save: NO];
-}
-
 - (int) getProperties: (struct SPropTagArray *) sPropTagArray
           ofTableType: (uint8_t) tableType
                 inRow: (struct SRow *) aRow
               withMID: (uint64_t) fmid
              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  NSNumber *midKey;
+  NSNumber *fidKey;
   MAPIStoreObject *child;
   NSInteger count;
   void *propValue;
@@ -871,10 +733,8 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   [self logWithFormat: @"METHOD '%s' -- fmid: 0x%.16x, tableType: %d",
 	__FUNCTION__, fmid, tableType];
 
-  midKey = [NSNumber numberWithUnsignedLongLong: fmid];
-  child = [messages objectForKey: midKey];
-  if (!child)
-    child = [folders objectForKey: midKey];
+  fidKey = [NSNumber numberWithUnsignedLongLong: fmid];
+  child = [folders objectForKey: fidKey];
   if (child)
     {
       data = talloc_array (memCtx, struct mapistore_property_data,
@@ -931,6 +791,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   else
     {
       [self errorWithFormat: @"no message/folder found for fmid %lld", fmid];
+      abort();
       rc = MAPI_E_INVALID_OBJECT;
     }
 
@@ -989,47 +850,18 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
                   ofTableType: (uint8_t) tableType
                         inRow: (struct SRow *) aRow
 {
-  MAPIStoreMessage *message;
   MAPIStoreFolder *folder;
-  NSMutableDictionary *properties;
-  NSNumber *fmidKey;
-  struct SPropValue *cValue;
-  NSUInteger counter;
+  NSNumber *fidKey;
   int rc;
 
-  [self logWithFormat: @"METHOD '%s' -- fmid: 0x%.16x, tableType: %d",
+  [self logWithFormat: @"METHOD '%s' -- fid: 0x%.16x, tableType: %d",
 	__FUNCTION__, fmid, tableType];
 
-  fmidKey = [NSNumber numberWithUnsignedLongLong: fmid];
+  fidKey = [NSNumber numberWithUnsignedLongLong: fmid];
   switch (tableType)
     {
-    case MAPISTORE_MESSAGE:
-      message = [messages objectForKey: fmidKey];
-      if (message)
-	{
-          properties
-            = [NSMutableDictionary dictionaryWithCapacity: aRow->cValues];
-	  [self logWithFormat: @"fmid 0x%.16x found", fmid];
-	  for (counter = 0; counter < aRow->cValues; counter++)
-	    {
-	      cValue = aRow->lpProps + counter;
-	      [properties setObject: NSObjectFromSPropValue (cValue)
-                             forKey: MAPIPropertyKey (cValue->ulPropTag)];
-	    }
-          [message addNewProperties: properties];
-	  [self logWithFormat: @"(%s) message props after op", __PRETTY_FUNCTION__];
-	  MAPIStoreDumpMessageProperties (properties);
-	  rc = MAPISTORE_SUCCESS;
-	}
-      else
-	{
-	  [self errorWithFormat: @"fmid 0x%.16x *not* found (faking success)",
-		fmid];
-	  rc = MAPISTORE_SUCCESS;
-	}
-      break;
     case MAPISTORE_FOLDER:
-      folder = [folders objectForKey: fmidKey];
+      folder = [folders objectForKey: fidKey];
       if (folder)
         rc = [folder setProperties: aRow];
       else
@@ -1038,120 +870,10 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
     default:
       [self errorWithFormat: @"%s: value of tableType not handled: %d",
             __FUNCTION__, tableType];
+      [NSException raise: @"MAPIStoreIOException"
+                  format: @"unsupported object type"];
       rc = MAPISTORE_ERROR;
     }
-
-  return rc;
-}
-
-- (NSDictionary *) _convertRecipientFromRow: (struct RecipientRow *) row
-{
-  NSMutableDictionary *recipient;
-  NSString *value;
-  SOGoUser *recipientUser;
-
-  recipient = [NSMutableDictionary dictionaryWithCapacity: 5];
-
-  if ((row->RecipientFlags & 0x07) == 1)
-    {
-      value = [NSString stringWithUTF8String: row->X500DN.recipient_x500name];
-      [recipient setObject: value forKey: @"x500dn"];
-
-      recipientUser = [SOGoUser userWithLogin: [value lowercaseString]];
-      if (recipientUser)
-        {
-          value = [recipientUser cn];
-          if ([value length] > 0)
-            [recipient setObject: value forKey: @"fullName"];
-          value = [[recipientUser allEmails] objectAtIndex: 0];
-          if ([value length] > 0)
-            [recipient setObject: value forKey: @"email"];
-        }
-    }
-  else
-    {
-      switch ((row->RecipientFlags & 0x208))
-        {
-        case 0x08:
-          // TODO: we cheat
-          value = [NSString stringWithUTF8String: row->EmailAddress.lpszA];
-          break;
-        case 0x208:
-          value = [NSString stringWithUTF8String: row->EmailAddress.lpszW];
-          break;
-        default:
-          value = nil;
-        }
-      if (value)
-        [recipient setObject: value forKey: @"email"];
-      
-      switch ((row->RecipientFlags & 0x210))
-        {
-        case 0x10:
-          // TODO: we cheat
-          value = [NSString stringWithUTF8String: row->DisplayName.lpszA];
-          break;
-        case 0x210:
-          value = [NSString stringWithUTF8String: row->DisplayName.lpszW];
-          break;
-        default:
-          value = nil;
-        }
-      if (value)
-        [recipient setObject: value forKey: @"fullName"];
-    }
-
-  return recipient;
-}
-
-- (int) modifyRecipientsWithMID: (uint64_t) mid
-			 inRows: (struct ModifyRecipientRow *) rows
-		      withCount: (NSUInteger) max
-{
-  static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
-  MAPIStoreMessage *message;
-  NSDictionary *newProperties;
-  NSMutableDictionary *recipients;
-  NSMutableArray *list;
-  NSString *recType;
-  struct ModifyRecipientRow *currentRow;
-  NSUInteger count;
-  int rc;
-
-  [self logWithFormat: @"METHOD '%s' -- mid: 0x%.16x", __FUNCTION__, mid];
-
-  message = [messages
-	      objectForKey: [NSNumber numberWithUnsignedLongLong: mid]];
-  if (message)
-    {
-      recipients = [NSMutableDictionary new];
-      newProperties = [NSDictionary dictionaryWithObject: recipients
-                                                  forKey: @"recipients"];
-      [recipients release];
-      for (count = 0; count < max; count++)
-	{
-	  currentRow = rows + count;
-
-	  if (currentRow->RecipClass >= MAPI_ORIG
-	      && currentRow->RecipClass < MAPI_BCC)
-	    {
-	      recType = recTypes[currentRow->RecipClass];
-	      list = [recipients objectForKey: recType];
-	      if (!list)
-		{
-		  list = [NSMutableArray new];
-		  [recipients setObject: list forKey: recType];
-		  [list release];
-		}
-	      [list addObject: [self _convertRecipientFromRow:
-				       &(currentRow->RecipientRow)]];
-	    }
-	}
-      [message addNewProperties: newProperties];
-      rc = MAPISTORE_SUCCESS;
-    }
-  else
-    rc = MAPISTORE_ERR_NOT_FOUND;
 
   return rc;
 }
@@ -1263,32 +985,26 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 - (int) releaseRecordWithFMID: (uint64_t) fmid
 		  ofTableType: (uint8_t) tableType
 {
-  NSNumber *fmidKey;
+  NSNumber *fidKey;
   MAPIStoreObject *child;
   NSUInteger retainCount;
-  NSMutableDictionary *childCache;
   int rc = MAPISTORE_SUCCESS;
 
-  switch (tableType)
+  if (tableType != MAPISTORE_FOLDER_TABLE)
     {
-    case MAPISTORE_MESSAGE_TABLE:
-      childCache = messages;
-      break;
-    case MAPISTORE_FOLDER_TABLE:
-      childCache = folders;
-      break;
-    default:
       [self errorWithFormat: @"%s: value of tableType not handled: %d",
 	    __FUNCTION__, tableType];
       [self logWithFormat: @"  fmid: 0x%.16x  tableType: %d", fmid, tableType];
+      [NSException raise: @"MAPIStoreAPIException"
+                  format: @"unsupported object type"];
       
       rc = MAPISTORE_ERR_INVALID_PARAMETER;
     }
 
   if (rc == MAPISTORE_SUCCESS)
     {
-      fmidKey = [NSNumber numberWithUnsignedLongLong: fmid];
-      child = [childCache objectForKey: fmidKey];
+      fidKey = [NSNumber numberWithUnsignedLongLong: fmid];
+      child = [folders objectForKey: fidKey];
       if (child)
 	{
 	  retainCount = [child mapiRetainCount];
@@ -1297,7 +1013,7 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
 	      [self logWithFormat: @"child with mid %.16x successfully removed"
 		    @" from child cache",
 		    fmid];
-	      [childCache removeObjectForKey: fmidKey];
+	      [folders removeObjectForKey: fidKey];
 	    }
 	  else
             [child setMAPIRetainCount: retainCount - 1];
@@ -1382,93 +1098,6 @@ _prepareContextClass (struct mapistore_context *newMemCtx,
   *tablePtr = table;
 
   return MAPISTORE_SUCCESS;
-}
-
-- (int) getAttachmentTable: (MAPIStoreAttachmentTable **) tablePtr
-               andRowCount: (uint32_t *) count
-                   withMID: (uint64_t) mid
-{
-  MAPIStoreAttachmentTable *attTable;
-  MAPIStoreMessage *message;
-  NSNumber *midKey;
-  int rc;
-
-  rc = MAPISTORE_ERR_NOT_FOUND;
-
-  midKey = [NSNumber numberWithUnsignedLongLong: mid];
-  message = [messages objectForKey: midKey];
-  if (message)
-    {
-      *count = [[message childKeysMatchingQualifier: nil
-                                   andSortOrderings: nil] count];
-      attTable = [message attachmentTable];
-      if (attTable)
-        {
-          *tablePtr = attTable;
-          rc = MAPISTORE_SUCCESS;
-        }
-    }
-
-  return rc;
-}
-
-- (int) getAttachment: (MAPIStoreAttachment **) attachmentPtr
-              withAID: (uint32_t) aid
-                inMID: (uint64_t) mid
-{
-  MAPIStoreMessage *message;
-  MAPIStoreAttachment *attachment;
-  NSNumber *midKey;
-  NSArray *keys;
-  int rc;
-
-  rc = MAPISTORE_ERR_NOT_FOUND;
-
-  midKey = [NSNumber numberWithUnsignedLongLong: mid];
-  message = [messages objectForKey: midKey];
-  if (message)
-    {
-      keys = [message childKeysMatchingQualifier: nil
-                                andSortOrderings: nil];
-      if (aid < [keys count])
-        {
-          attachment = [message lookupChild: [keys objectAtIndex: aid]];
-          if (attachment)
-            {
-              *attachmentPtr = attachment;
-              rc = MAPISTORE_SUCCESS;
-            }
-        }
-    }
-
-  return rc;
-}
-
-- (int) createAttachment: (MAPIStoreAttachment **) attachmentPtr
-                   inAID: (uint32_t *) aid
-             withMessage: (uint64_t) mid
-{
-  MAPIStoreMessage *message;
-  MAPIStoreAttachment *attachment;
-  NSNumber *midKey;
-  int rc;
-
-  rc = MAPISTORE_ERR_NOT_FOUND;
-
-  midKey = [NSNumber numberWithUnsignedLongLong: mid];
-  message = [messages objectForKey: midKey];
-  if (message)
-    {
-      attachment = [message createAttachment];
-      if (attachment)
-        {
-          *attachmentPtr = attachment;
-          *aid = [attachment AID];
-          rc = MAPISTORE_SUCCESS;
-        }
-    }
-
-  return rc;
 }
 
 /* subclasses */
