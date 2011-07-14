@@ -827,7 +827,7 @@ static NSArray *childRecordFields = nil;
   lmDate = [[self ocsFolder] lastModificationDate];
 
   return [NSString stringWithFormat: @"%d",
-                   (lmDate ? [lmDate timeIntervalSince1970]
+                   (lmDate ? (int)[lmDate timeIntervalSince1970]
                     : -1)];
 }
 

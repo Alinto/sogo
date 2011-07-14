@@ -1,3 +1,8 @@
+2011-07-14  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (davCollectionTag)
+	We now correctly cast the sync tag value.
+
 2011-07-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxAppointmentEditor.js (handleAllDay)
