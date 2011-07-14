@@ -62,6 +62,11 @@
 - (id) initWithURL: (NSURL *) newURL
          inContext: (MAPIStoreContext *) newContext;
 
+- (id) lookupFolder: (NSString *) folderKey;
+- (id) lookupFolderByURL: (NSString *) folderURL;
+- (id) lookupMessage: (NSString *) messageKey;
+- (id) lookupMessageByURL: (NSString *) messageURL;
+
 - (NSArray *) activeMessageTables;
 - (NSArray *) activeFAIMessageTables;
 
@@ -77,6 +82,32 @@
 - (MAPIStoreMessage *) createMessage: (BOOL) isAssociated;
 - (NSString *) createFolder: (struct SRow *) aRow
                     withFID: (uint64_t) newFID;
+
+/* backend interface */
+
+- (int) openFolder: (MAPIStoreFolder **) childFolderPtr
+           withFID: (uint64_t) fid;
+- (int) createFolder: (MAPIStoreFolder **) childFolderPtr
+             withRow: (struct SRow *) aRow
+              andFID: (uint64_t) fid;
+- (int) deleteFolderWithFID: (uint64_t) fid;
+- (int) getChildCount: (uint32_t *) rowCount
+          ofTableType: (uint8_t) tableType;
+
+- (int) createMessage: (MAPIStoreMessage **) messagePtr
+              withMID: (uint64_t) mid
+         isAssociated: (BOOL) isAssociated;
+- (int) openMessage: (MAPIStoreMessage **) messagePtr
+     andMessageData: (struct mapistore_message **) dataPtr
+            withMID: (uint64_t) mid
+           inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) deleteMessageWithMID: (uint64_t) mid
+                    andFlags: (uint8_t) flags;
+
+- (int) getTable: (MAPIStoreTable **) tablePtr
+     andRowCount: (uint32_t *) count
+       tableType: (uint8_t) tableType
+     andHandleId: (uint32_t) handleId;
 
 /* helpers */
 - (uint64_t) idForObjectWithKey: (NSString *) childKey;

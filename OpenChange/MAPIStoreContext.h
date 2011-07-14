@@ -56,7 +56,6 @@
   struct mapistore_connection_info *connInfo;
 
   NSURL *contextUrl;
-  uint64_t contextFid;
 
   MAPIStoreMapping *mapping;
 
@@ -64,26 +63,14 @@
   WOContext *woContext;
 
   MAPIStoreFolder *baseFolder;
-
-  /* for active folders (NSDictionary instances) */
-  NSMutableDictionary *folders;
-
-  /* hackish table cache */
-  MAPIStoreTable *cachedTable;
-  MAPIStoreFolder *cachedFolder;
-  uint64_t cachedTableFID;
-  uint8_t cachedTableType;
 }
 
-+ (id) contextFromURI: (const char *) newUri
-   withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
-               andFID: (uint64_t) fid
-             inMemCtx: (struct mapistore_context *) newMemCtx;
++ (int) openContext: (MAPIStoreContext **) contextPtr
+            withURI: (const char *) newUri
+  andConnectionInfo: (struct mapistore_connection_info *) newConnInfo;
 
 - (id)   initFromURL: (NSURL *) newUri
-  withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
-              andFID: (uint64_t) fid
-            inMemCtx: (struct mapistore_context *) newMemCtx;
+  withConnectionInfo: (struct mapistore_connection_info *) newConnInfo;
 
 - (void) setAuthenticator: (MAPIStoreAuthenticator *) newAuthenticator;
 - (MAPIStoreAuthenticator *) authenticator;
@@ -102,39 +89,9 @@
 /* backend methods */
 - (int) getPath: (char **) path
          ofFMID: (uint64_t) fmid
-  withTableType: (uint8_t) tableType
        inMemCtx: (TALLOC_CTX *) memCtx;
-
-- (int) mkDir: (struct SRow *) aRow
-      withFID: (uint64_t) fid
-  inParentFID: (uint64_t) parentFID;
-- (int) rmDirWithFID: (uint64_t) fid
-         inParentFID: (uint64_t) parentFid;
-- (int) openDir: (uint64_t) fid;
-- (int) closeDir;
-- (int) readCount: (uint32_t *) rowCount
-      ofTableType: (uint8_t) tableType
-            inFID: (uint64_t) fid;
-- (int) openMessage: (MAPIStoreMessage **) messagePtr
-     andMessageData: (struct mapistore_message **) dataPtr
-            withMID: (uint64_t) mid
-              inFID: (uint64_t) fid
-           inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) createMessage: (MAPIStoreMessage **) messagePtr
-              withMID: (uint64_t) mid
-                inFID: (uint64_t) fid
-         isAssociated: (BOOL) isAssociated;
-- (int) getProperties: (struct SPropTagArray *) SPropTagArray
-          ofTableType: (uint8_t) tableType
-                inRow: (struct SRow *) aRow
-              withMID: (uint64_t) fmid
-             inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) setPropertiesWithFMID: (uint64_t) fmid
-                  ofTableType: (uint8_t) tableType
-                        inRow: (struct SRow *) aRow;
-- (int) deleteMessageWithMID: (uint64_t) mid
-                       inFID: (uint64_t) fid
-                   withFlags: (uint8_t) flags;
+- (int) getRootFolder: (MAPIStoreFolder **) folderPtr
+              withFID: (uint64_t) fmid;
 
 /* util methods */
 - (NSString *) extractChildNameFromURL: (NSString *) childURL
@@ -146,13 +103,6 @@
 /* subclass methods */
 + (NSString *) MAPIModuleName;
 - (void) setupBaseFolder: (NSURL *) newURL;
-
-/* proof of concept */
-- (int) getTable: (MAPIStoreTable **) tablePtr
-     andRowCount: (uint32_t *) count
-         withFID: (uint64_t) fid
-       tableType: (uint8_t) tableType
-     andHandleId: (uint32_t) handleId;
 
 @end
 

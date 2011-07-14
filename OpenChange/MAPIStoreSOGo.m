@@ -34,12 +34,11 @@
 #import "MAPIStoreAttachment.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreDraftsMessage.h"
+#import "MAPIStoreFolder.h"
 #import "MAPIStoreMessage.h"
 #import "MAPIStoreObject.h"
 #import "MAPIStoreTable.h"
 #import "NSObject+MAPIStore.h"
-
-#import "MAPIStoreSOGo.h"
 
 #undef DEBUG
 #include <stdbool.h>
@@ -101,13 +100,11 @@ sogo_backend_init (void)
 static int
 sogo_backend_create_context(TALLOC_CTX *mem_ctx,
                             struct mapistore_connection_info *conn_info,
-                            const char *uri, uint64_t fid,
-                            void **private_data)
+                            const char *uri, void **context_object)
 {
   NSAutoreleasePool *pool;
-  sogo_context *cContext;
   Class MAPIStoreContextK;
-  id context;
+  MAPIStoreContext *context;
   int rc;
 
   DEBUG(0, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
@@ -117,18 +114,11 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
   MAPIStoreContextK = NSClassFromString (@"MAPIStoreContext");
   if (MAPIStoreContextK)
     {
-      context = [MAPIStoreContextK contextFromURI: uri
-                               withConnectionInfo: conn_info
-                                           andFID: fid
-                                         inMemCtx: mem_ctx];
-      [context retain];
-
-      cContext = talloc_zero(mem_ctx, sogo_context);
-      cContext->objcContext = context;
-
-      *private_data = cContext;
-
-      rc = MAPISTORE_SUCCESS;
+      rc = [MAPIStoreContextK openContext: &context
+                                  withURI: uri
+                        andConnectionInfo: conn_info];
+      if (rc == MAPISTORE_SUCCESS)
+        *context_object = [context tallocWrapper: mem_ctx];
     }
   else
     rc = MAPISTORE_ERROR;
@@ -137,6 +127,10 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
 
   return rc;
 }
+
+// andFID: fid
+// uint64_t fid,
+//   void **private_data)
 
 /**
    \details return the mapistore path associated to a given message or
@@ -150,27 +144,60 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE error
 */
 static int
-sogo_backend_get_path(void *private_data, TALLOC_CTX *mem_ctx,
-                      uint64_t fmid, uint8_t type, char **path)
+sogo_context_get_path(void *backend_object, TALLOC_CTX *mem_ctx,
+                      uint64_t fmid, char **path)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
-  sogo_context *cContext;
   MAPIStoreContext *context;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  pool = [NSAutoreleasePool new];
+  if (backend_object)
+    {
+      wrapper = backend_object;
+      context = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [context getPath: path ofFMID: fmid inMemCtx: mem_ctx];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPI_E_NOT_FOUND;
+    }
 
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
+  return rc;
+}
 
-  rc = [context getPath: path ofFMID: fmid withTableType: type inMemCtx: mem_ctx];
+static int
+sogo_context_get_root_folder(void *backend_object, TALLOC_CTX *mem_ctx,
+                             uint64_t fid, void **folder_object)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreContext *context;
+  MAPIStoreFolder *folder;
+  int rc;
 
-  [context tearDownRequest];
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  [pool release];
+  if (backend_object)
+    {
+      wrapper = backend_object;
+      context = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [context getRootFolder: &folder withFID: fid];
+      if (rc == MAPISTORE_SUCCESS)
+        *folder_object = [folder tallocWrapper: mem_ctx];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPI_E_NOT_FOUND;
+    }
 
   return rc;
 }
@@ -185,25 +212,31 @@ sogo_backend_get_path(void *private_data, TALLOC_CTX *mem_ctx,
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
 */
 static int
-sogo_folder_open_folder(void *private_data, uint64_t fid)
+sogo_folder_open_folder(void *folder_object, TALLOC_CTX *mem_ctx, uint64_t fid, void **childfolder_object)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
+  MAPIStoreFolder *folder, *childFolder;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context openDir: fid];
-
-  [context tearDownRequest];
-  [pool release];
+  if (folder_object)
+    {
+      wrapper = folder_object;
+      folder = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [folder openFolder: &childFolder withFID: fid];
+      if (rc == MAPISTORE_SUCCESS)
+        *childfolder_object = [childFolder tallocWrapper: mem_ctx];
+      // [context tearDownRequest];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPI_E_NOT_FOUND;
+    }
 
   return rc;
 }
@@ -216,26 +249,32 @@ sogo_folder_open_folder(void *private_data, uint64_t fid)
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
 */
 static int
-sogo_folder_create_folder(void *private_data, uint64_t parent_fid, uint64_t fid,
-                          struct SRow *aRow)
+sogo_folder_create_folder(void *folder_object, TALLOC_CTX *mem_ctx,
+                          uint64_t fid, struct SRow *aRow,
+                          void **childfolder_object)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
+  MAPIStoreFolder *folder, *childFolder;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context mkDir: aRow withFID: fid inParentFID: parent_fid];
-
-  [context tearDownRequest];
-  [pool release];
+  if (folder_object)
+    {
+      wrapper = folder_object;
+      folder = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [folder createFolder: &childFolder withRow: aRow andFID: fid];
+      if (rc == MAPISTORE_SUCCESS)
+        *childfolder_object = [childFolder tallocWrapper: mem_ctx];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPI_E_NOT_FOUND;
+    }
 
   return rc;
 }
@@ -250,194 +289,184 @@ sogo_folder_create_folder(void *private_data, uint64_t parent_fid, uint64_t fid,
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
 */
 static int
-sogo_folder_delete_folder(void *private_data, uint64_t parent_fid, uint64_t fid)
+sogo_folder_delete_folder(void *folder_object, uint64_t fid)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
+  MAPIStoreFolder *folder;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context rmDirWithFID: fid inParentFID: parent_fid];
-
-  [context tearDownRequest];
-  [pool release];
-
-  return rc;
-}
-
-/**
-   \details Read directory content from the sogo backend
-
-   \param private_data pointer to the current sogo context
-
-   \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
-*/
-static int
-sogo_folder_get_child_count(void *private_data, 
-                            uint64_t fid,
-                            uint8_t table_type,
-                            uint32_t *RowCount)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context readCount: RowCount ofTableType: table_type inFID: fid];
-
-  [context tearDownRequest];
-  [pool release];
+  if (folder_object)
+    {
+      wrapper = folder_object;
+      folder = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [folder deleteFolderWithFID: fid];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPI_E_NOT_FOUND;
+    }
 
   return rc;
 }
 
 static int
-sogo_folder_create_message(void *private_data,
-                           TALLOC_CTX *mem_ctx,
-                           uint64_t fid,
-                           uint64_t mid,
-                           uint8_t associated,
-                           void **message_object)
+sogo_folder_get_child_count(void *folder_object, uint8_t table_type, uint32_t *child_count)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  MAPIStoreMessage *message;
+  MAPIStoreFolder *folder;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context createMessage: &message
-                      withMID: mid inFID: fid
-                 isAssociated: associated];
-  if (!rc)
-    *message_object = [message tallocWrapper: mem_ctx];
-
-  [context tearDownRequest];
-  [pool release];
+  if (folder_object)
+    {
+      wrapper = folder_object;
+      folder = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [folder getChildCount: child_count ofTableType: table_type];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPI_E_NOT_FOUND;
+    }
 
   return rc;
 }
 
 static int
-sogo_folder_open_message(void *private_data,
+sogo_folder_open_message(void *folder_object,
                          TALLOC_CTX *mem_ctx,
-                         uint64_t fid,
                          uint64_t mid,
                          void **message_object,
                          struct mapistore_message **msgp)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
+  MAPIStoreFolder *folder;
   MAPIStoreMessage *message;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  if (!context)
-    DEBUG (5, ("  context data is empty, failure ahead..."));
-  rc = [context openMessage: &message andMessageData: msgp withMID: mid inFID: fid inMemCtx: mem_ctx];
-  if (rc)
-    DEBUG (5, ("  failure opening message\n"));
+  if (folder_object)
+    {
+      wrapper = folder_object;
+      folder = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [folder openMessage: &message andMessageData: msgp withMID: mid inMemCtx: mem_ctx];
+      if (rc == MAPISTORE_SUCCESS)
+        *message_object = [message tallocWrapper: mem_ctx];
+      [pool release];
+    }
   else
-    *message_object = [message tallocWrapper: mem_ctx];
-
-  [context tearDownRequest];
-  [pool release];
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPI_E_NOT_FOUND;
+    }
 
   return rc;
 }
 
 static int
-sogo_folder_delete_message(void *private_data,
-                           uint64_t fid,
+sogo_folder_create_message(void *folder_object,
+                           TALLOC_CTX *mem_ctx,
                            uint64_t mid,
-                           uint8_t flags)
+                           uint8_t associated,
+                           void **message_object)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
+  MAPIStoreFolder *folder;
+  MAPIStoreMessage *message;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context deleteMessageWithMID: mid inFID: fid withFlags: flags];
-
-  [context tearDownRequest];
-  [pool release];
+  if (folder_object)
+    {
+      wrapper = folder_object;
+      folder = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [folder createMessage: &message
+                         withMID: mid isAssociated: associated];
+      if (rc == MAPISTORE_SUCCESS)
+        *message_object = [message tallocWrapper: mem_ctx];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPI_E_NOT_FOUND;
+    }
 
   return rc;
 }
 
 static int
-sogo_folder_open_table(void *private_data, TALLOC_CTX *mem_ctx,
-                       uint64_t fid, uint8_t table_type,
-                       uint32_t handle_id,
+sogo_folder_delete_message(void *folder_object, uint64_t mid, uint8_t flags)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreFolder *folder;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (folder_object)
+    {
+      wrapper = folder_object;
+      folder = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [folder deleteMessageWithMID: mid andFlags: flags];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPI_E_NOT_FOUND;
+    }
+
+  return rc;
+}
+
+static int
+sogo_folder_open_table(void *folder_object, TALLOC_CTX *mem_ctx,
+                       uint8_t table_type, uint32_t handle_id,
                        void **table_object, uint32_t *row_count)
 {
+  struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
+  MAPIStoreFolder *folder;
   MAPIStoreTable *table;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  if (context)
+  if (folder_object)
     {
-      [context setupRequest];
-      rc = [context getTable: &table
-                 andRowCount: row_count
-                     withFID: fid
-                   tableType: table_type
-                 andHandleId: handle_id];
+      wrapper = folder_object;
+      folder = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [folder getTable: &table
+                andRowCount: row_count
+                  tableType: table_type
+                andHandleId: handle_id];
       if (rc == MAPISTORE_SUCCESS)
         *table_object = [table tallocWrapper: mem_ctx];
-      [context tearDownRequest];
       [pool release];
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
       rc = MAPI_E_NOT_FOUND;
     }
 
@@ -896,68 +925,6 @@ sogo_properties_set_properties (void *object, struct SRow *aRow)
   return rc;
 }
 
-/* obsolete */
-static int
-sogo_getprops(void *private_data,
-              TALLOC_CTX *mem_ctx,
-              uint64_t fmid, 
-              uint8_t type, 
-              struct SPropTagArray *SPropTagArray,
-              struct SRow *aRow)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context getProperties: SPropTagArray
-		  ofTableType: type
-			inRow: aRow
-		      withMID: fmid
-                     inMemCtx: mem_ctx];
-
-  [context tearDownRequest];
-  [pool release];
-
-  return rc;
-}
-
-
-static int
-sogo_setprops(void *private_data,
-              uint64_t fmid,
-              uint8_t type,
-              struct SRow *aRow)
-{
-  NSAutoreleasePool *pool;
-  sogo_context *cContext;
-  MAPIStoreContext *context;
-  int rc;
-
-  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
-
-  pool = [NSAutoreleasePool new];
-
-  cContext = private_data;
-  context = cContext->objcContext;
-  [context setupRequest];
-
-  rc = [context setPropertiesWithFMID: fmid ofTableType: type inRow: aRow];
-
-  [context tearDownRequest];
-  [pool release];
-
-  return rc;
-}
-
 /**
    \details Entry point for mapistore SOGO backend
 
@@ -975,16 +942,14 @@ int mapistore_init_backend(void)
     {
       registered = YES;
 
-      backend.setprops = sogo_setprops;
-      backend.getprops = sogo_getprops;
-      
       /* Fill in our name */
       backend.backend.name = "SOGo";
       backend.backend.description = "mapistore SOGo backend";
       backend.backend.namespace = "sogo://";
       backend.backend.init = sogo_backend_init;
       backend.backend.create_context = sogo_backend_create_context;
-      backend.backend.get_path = sogo_backend_get_path;
+      backend.context.get_path = sogo_context_get_path;
+      backend.context.get_root_folder = sogo_context_get_root_folder;
       backend.folder.open_folder = sogo_folder_open_folder;
       backend.folder.create_folder = sogo_folder_create_folder;
       backend.folder.delete_folder = sogo_folder_delete_folder;
