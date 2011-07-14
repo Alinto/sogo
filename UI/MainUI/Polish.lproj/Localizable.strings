@@ -4,6 +4,7 @@
 
 "Username:" = "Nazwa użytkownika:";
 "Password:" = "Hasło:";
+"Domain:" = "Domain:";
 
 "Connect" = "Zaloguj";
 
@@ -24,15 +25,16 @@
 "French" = "Français";
 "German" = "Deutsch";
 "Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
 "Italian" = "Italiano";
 "Norwegian" = "Norsk";
+"Polish" = "Polski";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Spanish" = "Español";
 "Swedish" = "Svenska";
+"Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-"Polish" = "Polski";
-
 
 "About" = "O programie";
 "AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>
