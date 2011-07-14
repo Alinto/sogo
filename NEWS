@@ -11,21 +11,21 @@ New Features
  - now possible to define to-the-minute events/tasks
  - the domain can be selected from the login page when using multiple domains
    (SOGoLoginDomains)
- - sources from one domain can be access from another domain when using
+ - sources from one domain can be accessed from another domain when using
    multiple domains (SOGoDomainsVisibility)
 - added Icelandic translation - thanks to Anna Jonna Armannsdottir
 
 Enhancements
  - improved list selection and contextual menu behavior in all web modules
  - the quota status bar is now updated more frequently in the webmail module
- - automatically create new cards when populating a contacts list with unknown entries
- - added fade effect when displaying and hidding dialog boxes in Web interface
+ - automatically create new cards when populating a list of contacts with unknown entries
+ - added fade effect when displaying and hiding dialog boxes in Web interface
  - updated CKEditor to version 3.6.1
  - updated Russian translation
 
 Bug Fixes
  - submenus in contextual menus splitted in multiple lists are now displayed correctly
- - fixed display of cards/lists icons in public addressbooks
+ - fixed display of cards/lists icons in public address books
  - no longer accept an empty string when renaming a calendar
  - fixed display of daily events that cover two days
  - fixed time shift issue when editing an event title on iOS
