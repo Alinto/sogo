@@ -30,7 +30,6 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #import "MAPIStoreContext.h"
-#import "MAPIStoreDraftsAttachment.h"
 #import "MAPIStoreTypes.h"
 
 #import "MAPIStoreDraftsMessage.h"
@@ -40,17 +39,6 @@
 #include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreDraftsMessage
-
-- (id) init
-{
-  if ((self = [super init]))
-    {
-      attachmentKeys = [NSMutableArray new];
-      attachmentParts = [NSMutableDictionary new];
-    }
-
-  return self;
-}
 
 - (int) getPrMessageFlags: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
@@ -177,38 +165,6 @@ e)
   max = [attachmentKeys count];
   for (count = 0; count < max; count++)
     [self _saveAttachment: [attachmentKeys objectAtIndex: count]];
-}
-
-- (MAPIStoreAttachment *) createAttachment
-{
-  MAPIStoreDraftsAttachment *newAttachment;
-  uint32_t newAid;
-  NSString *newKey;
-
-  newAid = [attachmentKeys count];
-
-  newAttachment = [MAPIStoreDraftsAttachment
-                    mapiStoreObjectWithSOGoObject: nil
-                                      inContainer: self];
-  [newAttachment setIsNew: YES];
-  [newAttachment setAID: newAid];
-  newKey = [NSString stringWithFormat: @"%ul", newAid];
-  [attachmentParts setObject: newAttachment
-                      forKey: newKey];
-  [attachmentKeys addObject: newKey];
-
-  return newAttachment;
-}
-
-- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
-                        andSortOrderings: (NSArray *) sortOrderings
-{
-  if (qualifier)
-    [self errorWithFormat: @"qualifier is not used for attachments"];
-  if (sortOrderings)
-    [self errorWithFormat: @"sort orderings are not used for attachments"];
-  
-  return attachmentKeys;
 }
 
 - (id) lookupChild: (NSString *) childKey

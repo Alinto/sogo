@@ -6,6 +6,12 @@
 
 2011-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreDraftsAttachment.m: removed useless class.
+
+	* OpenChange/MAPIStoreMessage.m (-createAttachment): moved method
+	from MAPIStoreDraftsMessage
+	(-childKeysMatchingQualifier:andSortOrderings:): same as above.
+
 	* OpenChange/*.m: make use of mapistore error code rather than
 	MAPI ones.
 

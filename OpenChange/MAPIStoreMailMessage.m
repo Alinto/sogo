@@ -85,6 +85,14 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   MAPIStoreDraftsFolderK = [MAPIStoreDraftsFolder class];
 }
 
+- (id) init
+{
+  if ((self = [super init]))
+    fetchedAttachments = NO;
+
+  return self;
+}
+
 - (int) getPrIconIndex: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -786,15 +794,15 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 - (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
                         andSortOrderings: (NSArray *) sortOrderings
 {
-  if (!attachmentKeys)
+  if (!fetchedAttachments)
     {
-      attachmentKeys = [NSMutableArray new];
-      attachmentParts = [NSMutableDictionary new];
       [self _fetchAttachmentPartsInBodyInfo: [sogoObject bodyStructure]
                                  withPrefix: @""];
+      fetchedAttachments = YES;
     }
 
-  return attachmentKeys;
+  return [super childKeysMatchingQualifier: qualifier
+                          andSortOrderings: sortOrderings];
 }
 
 - (id) lookupChild: (NSString *) childKey

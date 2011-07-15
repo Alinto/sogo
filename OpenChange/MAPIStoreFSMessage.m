@@ -64,6 +64,14 @@
   return MAPISTORE_SUCCESS;
 }
 
+- (id) init
+{
+  if ((self = [super init]))
+    fetchedAttachments = NO;
+
+  return self;
+}
+
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag
            inMemCtx: (TALLOC_CTX *) memCtx
@@ -102,6 +110,7 @@
 {
   NSArray *keys;
   NSUInteger count, max;
+  NSString *key;
   struct SPropTagArray *properties;
 
   keys = [[sogoObject properties] allKeys];
@@ -117,12 +126,15 @@
 // #elif (GS_SIZEOF_INT == 4)
 //   return [NSNumber numberWithUnsignedInt: propTag];
 // #else
-
+      key = [keys objectAtIndex: count];
+      if (![key isEqualToString: @"attachments"])
+        {
 #if (GS_SIZEOF_LONG == 4)
-      properties->aulPropTag[count] = [[keys objectAtIndex: count] unsignedLongValue];
+          properties->aulPropTag[count] = [[keys objectAtIndex: count] unsignedLongValue];
 #elif (GS_SIZEOF_INT == 4)
-      properties->aulPropTag[count] = [[keys objectAtIndex: count] unsignedIntValue];
+          properties->aulPropTag[count] = [[keys objectAtIndex: count] unsignedIntValue];
 #endif
+        }
     }
 
   *propertiesP = properties;
@@ -130,8 +142,42 @@
   return MAPISTORE_SUCCESS;  
 }
 
+- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
+                        andSortOrderings: (NSArray *) sortOrderings
+{
+  NSDictionary *attachments;
+  NSArray *keys;
+  NSString *key, *newKey;
+  NSUInteger count, max, aid;
+  MAPIStoreAttachment *attachment;
+
+  if (!fetchedAttachments)
+    {
+      attachments = [[sogoObject properties] objectForKey: @"attachments"];
+      keys = [attachments allKeys];
+      max = [keys count];
+      if (max > 0)
+        {
+          aid = [keys count];
+          for (count = 0; count < max; count++)
+            {
+              key = [keys objectAtIndex: count];
+              attachment = [attachments objectForKey: key];
+              newKey = [NSString stringWithFormat: @"%ul", (aid + count)];
+              [attachmentParts setObject: attachment forKey: newKey];
+            }
+        }
+      fetchedAttachments = YES;
+    }
+
+  return [super childKeysMatchingQualifier: qualifier
+                          andSortOrderings: sortOrderings];
+}
+
 - (void) save
 {
+  if ([attachmentKeys count] > 0)
+    [newProperties setObject: attachmentParts forKey: @"attachments"];
   [sogoObject appendProperties: newProperties];
   [sogoObject save];
   [self resetNewProperties];

@@ -81,7 +81,6 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreMailContext.m \
 	MAPIStoreMailFolder.m \
 	MAPIStoreMailFolderTable.m \
-	MAPIStoreDraftsAttachment.m \
 	MAPIStoreDraftsMessage.m \
 	MAPIStoreMailMessage.m \
 	MAPIStoreMailMessageTable.m \

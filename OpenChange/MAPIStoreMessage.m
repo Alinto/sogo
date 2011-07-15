@@ -59,8 +59,8 @@
 {
   if ((self = [super init]))
     {
-      attachmentKeys = nil;
-      attachmentParts = nil;
+      attachmentKeys = [NSMutableArray new];
+      attachmentParts = [NSMutableDictionary new];
       activeTables = [NSMutableArray new];
     }
 
@@ -229,6 +229,27 @@
   [self addNewProperties: recipientProperties];
 
   return MAPISTORE_SUCCESS;
+}
+
+- (MAPIStoreAttachment *) createAttachment
+{
+  MAPIStoreAttachment *newAttachment;
+  uint32_t newAid;
+  NSString *newKey;
+
+  newAid = [attachmentKeys count];
+
+  newAttachment = [MAPIStoreAttachment
+                    mapiStoreObjectWithSOGoObject: nil
+                                      inContainer: self];
+  [newAttachment setIsNew: YES];
+  [newAttachment setAID: newAid];
+  newKey = [NSString stringWithFormat: @"%ul", newAid];
+  [attachmentParts setObject: newAttachment
+                      forKey: newKey];
+  [attachmentKeys addObject: newKey];
+
+  return newAttachment;
 }
 
 - (int) createAttachment: (MAPIStoreAttachment **) attachmentPtr
@@ -649,11 +670,15 @@
   [self subclassResponsibility: _cmd];
 }
 
-- (MAPIStoreAttachment *) createAttachment
+- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
+                        andSortOrderings: (NSArray *) sortOrderings
 {
-  [self subclassResponsibility: _cmd];
-
-  return nil;
+  if (qualifier)
+    [self errorWithFormat: @"qualifier is not used for attachments"];
+  if (sortOrderings)
+    [self errorWithFormat: @"sort orderings are not used for attachments"];
+  
+  return attachmentKeys;
 }
 
 - (MAPIStoreAttachmentTable *) attachmentTable

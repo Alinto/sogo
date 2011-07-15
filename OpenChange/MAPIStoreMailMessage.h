@@ -26,6 +26,9 @@
 #import "MAPIStoreMessage.h"
 
 @interface MAPIStoreMailMessage : MAPIStoreMessage
+{
+  BOOL fetchedAttachments;
+}
 
 @end
 
