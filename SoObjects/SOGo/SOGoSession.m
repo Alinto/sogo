@@ -251,21 +251,23 @@
   r = [decodedValue rangeOfString: @":"];
   *theLogin = [decodedValue substringToIndex: r.location];
   *thePassword = [decodedValue substringFromIndex: r.location+1];
-
-  r = [*theLogin rangeOfString: @"@" options: NSBackwardsSearch];
-  if (r.location != NSNotFound)
+  *theDomain = nil;
+  
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if ([sd addDomainToUID])
     {
-      // The domain is probably appended to the username;
-      // make sure it is defined as a login domain in the configuration.
-      sd = [SOGoSystemDefaults sharedSystemDefaults];
-      *theDomain = [*theLogin substringFromIndex: (r.location + r.length)];
-      if ([[sd loginDomains] containsObject: *theDomain])
-        *theLogin = [*theLogin substringToIndex: r.location];
-      else
-        *theDomain = nil;
+      r = [*theLogin rangeOfString: @"@" options: NSBackwardsSearch];
+      if (r.location != NSNotFound)
+        {
+          // The domain is probably appended to the username;
+          // make sure it is defined as a domain in the configuration.
+          *theDomain = [*theLogin substringFromIndex: (r.location + r.length)];
+          if ([[sd domainIds] containsObject: *theDomain])
+            *theLogin = [*theLogin substringToIndex: r.location];
+          else
+            *theDomain = nil;
+        }
     }
-  else
-    *theDomain = nil;
 }
 
 @end

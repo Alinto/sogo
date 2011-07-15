@@ -53,18 +53,20 @@
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
 {
+  NSString *domain;
   SOGoSystemDefaults *sd;
   SOGoCASSession *session;
   SOGoPasswordPolicyError perr;
   int expire, grace;
   BOOL rc;
 
+  domain = nil;
   perr = PolicyNoError;
   rc = ([[SOGoUserManager sharedUserManager]
           checkLogin: [_login stringByReplacingString: @"%40"
                                            withString: @"@"]
             password: _pwd
-	      domain: nil
+	      domain: &domain
                 perr: &perr
               expire: &expire
                grace: &grace]

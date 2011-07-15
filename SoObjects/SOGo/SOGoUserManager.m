@@ -396,7 +396,7 @@
 
 - (BOOL) _sourceCheckLogin: (NSString *) login
                andPassword: (NSString *) password
-                    domain: (NSString *) domain
+                    domain: (NSString **) domain
                       perr: (SOGoPasswordPolicyError *) perr
                     expire: (int *) expire
                      grace: (int *) grace
@@ -408,23 +408,26 @@
   
   checkOK = NO;
   
-  authIDs = [[self authenticationSourceIDsInDomain: domain] objectEnumerator];
+  authIDs = [[self authenticationSourceIDsInDomain: *domain] objectEnumerator];
   while (!checkOK && (currentID = [authIDs nextObject]))
     {
       sogoSource = [_sources objectForKey: currentID];
       checkOK = [sogoSource checkLogin: login
-			    password: password
-			    perr: perr
-			    expire: expire
-			    grace: grace];
+                              password: password
+                                  perr: perr
+                                expire: expire
+                                 grace: grace];
     }
+
+  if (checkOK && *domain == nil)
+    *domain = [sogoSource domain];
 
   return checkOK;
 }
 
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
-             domain: (NSString *) _domain
+             domain: (NSString **) _domain
 	       perr: (SOGoPasswordPolicyError *) _perr
 	     expire: (int *) _expire
 	      grace: (int *) _grace
@@ -436,8 +439,8 @@
   // We check for cached passwords. If the entry is cached, we 
   // check this immediately. If not, we'll go directly at the
   // authentication source and try to validate there, then cache it.
-  if (_domain)
-    username = [NSString stringWithFormat: @"%@@%@", _login, _domain];
+  if (*_domain != nil)
+    username = [NSString stringWithFormat: @"%@@%@", _login, *_domain];
   else
     username = _login;
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: username];
@@ -502,13 +505,12 @@
 		    newPassword: (NSString *) newPassword
 			   perr: (SOGoPasswordPolicyError *) perr
 {
-  NSString *dictPassword, *jsonUser;
+  NSString *jsonUser;
   NSMutableDictionary *currentUser;
   BOOL didChange;
  
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: login];
   currentUser = [jsonUser objectFromJSONString];
-  dictPassword = [currentUser objectForKey: @"password"];
 
   if ([self _sourceChangePasswordForLogin: login
                                  inDomain: domain
@@ -713,27 +715,31 @@
   domain = nil;
   infos = nil;
 
-  r = [uid rangeOfString: @"@" options: NSBackwardsSearch];
-  if (r.location != NSNotFound)
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  if ([sd addDomainToUID])
     {
-      // The domain is probably appended to the username;
-      // make sure it is a defined domain in the configuration.
-      sd = [SOGoSystemDefaults sharedSystemDefaults];
-      domain = [uid substringFromIndex: (r.location + r.length)];
-      if ([[sd domainIds] containsObject: domain])
-        username = [uid substringToIndex: r.location];
-      else
-        domain = nil;
+      r = [uid rangeOfString: @"@" options: NSBackwardsSearch];
+      if (r.location != NSNotFound)
+        {
+          // The domain is probably appended to the username;
+          // make sure it is a defined domain in the configuration.
+          domain = [uid substringFromIndex: (r.location + r.length)];
+          if ([[sd domainIds] containsObject: domain])
+            username = [uid substringToIndex: r.location];
+          else
+            domain = nil;
+        }
+      if (domain != nil)
+        infos = [self contactInfosForUserWithUIDorEmail: username
+                                               inDomain: domain];
     }
-  if (domain != nil)
-    infos = [self contactInfosForUserWithUIDorEmail: username
-                                           inDomain: domain];
+
   if (infos == nil)
     // If the user was not found using the domain or if no domain was detected,
     // search using the original uid.
     infos = [self contactInfosForUserWithUIDorEmail: uid
                                            inDomain: nil];
-
+  
   return infos;
 }
 

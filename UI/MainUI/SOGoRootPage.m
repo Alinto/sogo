@@ -167,7 +167,7 @@
   language = [request formValueForKey: @"language"];
   domain = [request formValueForKey: @"domain"];
   
-  if ((b = [auth checkLogin: username password: password domain: domain
+  if ((b = [auth checkLogin: username password: password domain: &domain
 		 perr: &err expire: &expire grace: &grace])
       && (err == PolicyNoError)  
       // no password policy

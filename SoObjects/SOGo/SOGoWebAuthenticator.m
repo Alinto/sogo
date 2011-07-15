@@ -65,7 +65,7 @@
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
 { 
-  NSString *username, *domain, *password, *value;
+  NSString *username, *password, *domain, *value;
   SOGoPasswordPolicyError perr;
   int expire, grace;
  
@@ -83,6 +83,7 @@
   if (!value)
     return NO;
 
+  domain = nil;
   [SOGoSession decodeValue: value
                   usingKey: _login
                      login: &username
@@ -91,7 +92,7 @@
 
   return [self checkLogin: username
                  password: password
-                   domain: domain
+                   domain: &domain
                      perr: &perr
                    expire: &expire
                     grace: &grace];
@@ -99,7 +100,7 @@
 
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
-             domain: (NSString *) _domain
+             domain: (NSString **) _domain
 	       perr: (SOGoPasswordPolicyError *) _perr
 	     expire: (int *) _expire
 	      grace: (int *) _grace
@@ -207,7 +208,7 @@
   
   if (![self checkLogin: login
                password: pwd
-                 domain: domain
+                 domain: &domain
                    perr: &perr
                  expire: &expire
                   grace: &grace])

@@ -29,6 +29,7 @@
     SOGoWebAccessEnabled = YES;
     SOGoCalendarDAVAccessEnabled = YES;
     SOGoAddressBookDAVAccessEnabled = YES;
+    SOGoAddDomainToUID = NO;
 
     SOGoLoginModule = "Mail";
     SOGoLanguage = "English";
@@ -38,15 +39,13 @@
                                "Russian", "Ukrainian", "Swedish");
 
     SOGoTimeZone = "UTC";
-
     SOGoDayStartTime = "8";
     SOGoDayEndTime = "18";
     SOGoTimeFormat = "%H:%M";
-
-    SOGoIMAPServer = "localhost";
     SOGoFirstDayOfWeek = 0;
     SOGoFirstWeekOfYear = "January1";
 
+    SOGoIMAPServer = "localhost";
     SOGoMailDomain = "localhost";
     SOGoMailMessageCheck = "manually";
     SOGoMailMessageForwarding = "inline";
@@ -57,7 +56,6 @@
     SOGoMailListViewColumnsOrder = ( "Thread", "Flagged", "Attachment", "Subject",
                                      "From", "Unread", "Date", "Priority",
                                      "Size" );
-
     SOGoSentFolderName = "Sent";
     SOGoDraftsFolderName = "Drafts";
     SOGoTrashFolderName = "Trash";

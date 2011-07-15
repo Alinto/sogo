@@ -124,7 +124,8 @@
 
 /**
  * Return a new instance for the login name, which can be appended by a
- * domain name.
+ * domain name. The domain is extracted only if the system defaults
+ * SOGoAddDomainToUID is enabled.
  *
  * @param newLogin a login name optionally follow by @domain
  * @param newRoles
@@ -152,17 +153,20 @@
     realUID = newLogin;
   else
     {
-      r = [newLogin rangeOfString: @"@" options: NSBackwardsSearch];
-      if (r.location != NSNotFound)
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      if ([sd addDomainToUID])
         {
-          // The domain is probably appended to the username;
-          // make sure it is defined as a login domain in the configuration.
-          sd = [SOGoSystemDefaults sharedSystemDefaults];
-          domain = [newLogin substringFromIndex: (r.location + r.length)];
-          if ([[sd loginDomains] containsObject: domain])
-            newLogin = [newLogin substringToIndex: r.location];
-          else
-            domain = nil;
+          r = [newLogin rangeOfString: @"@" options: NSBackwardsSearch];
+          if (r.location != NSNotFound)
+            {
+              // The domain is probably appended to the username;
+              // make sure it is defined as a domain in the configuration.
+              domain = [newLogin substringFromIndex: (r.location + r.length)];
+              if ([[sd domainIds] containsObject: domain])
+                newLogin = [newLogin substringToIndex: r.location];
+              else
+                domain = nil;
+            }
         }
       
       newLogin = [newLogin stringByReplacingString: @"%40"

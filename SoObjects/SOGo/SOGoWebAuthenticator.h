@@ -40,7 +40,7 @@
 
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
-             domain: (NSString *) _domain
+             domain: (NSString **) _domain
 	       perr: (SOGoPasswordPolicyError *) _perr
 	     expire: (int *) _expire
 	      grace: (int *) _grace;

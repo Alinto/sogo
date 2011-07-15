@@ -193,6 +193,11 @@ BootstrapNSUserDefaults ()
   return [[self dictionaryForKey: @"domains"] allKeys];
 }
 
+- (BOOL) addDomainToUID
+{
+  return ([[self domainIds] count] > 0 && [self boolForKey: @"SOGoAddDomainToUID"]);
+}
+
 - (NSArray *) loginDomains
 {
   NSMutableArray *filteredLoginDomains;
@@ -237,11 +242,11 @@ BootstrapNSUserDefaults ()
         [domains addObjectsFromArray: currentGroup];
     }
   
-  // Remove lookup domain from list
+  // Remove lookup domain and invalid domains
   groups = [domains objectEnumerator];
   while ((currentDomain = [groups nextObject]))
     {
-      if ([currentDomain isEqualToString: domain])
+      if ([currentDomain isEqualToString: domain] || ![definedDomains containsObject: currentDomain])
         [domains removeObject: currentDomain];
     }
   

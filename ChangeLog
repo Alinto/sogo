@@ -1,8 +1,27 @@
-2011-07-15  Francis Lachapelle  <flachapelle@inverse.ca>
+2011-07-18  Francis Lachapelle  <flachapelle@inverse.ca>
 
-	* SoObjects/SOGo/SOGoUser.m (-initWithLogin:roles:trust:): when
-	the login contains a @ character, compare the right part with only the
-	defined login domains (SOGoLoginDomains) -- don't consider all domains.
+	* SoObjects/SOGo/SOGoSystemDefaults.m (-addDomainToUID): new
+	method that returns the boolean value of the new system defaults
+	SOGoAddDomainToUID if at least one domain is defined.
+
+	* SoObjects/SOGo/SOGoUser.m (-initWithLogin:roles:trust:): we now
+	try to extract the domain part of the login name only if the new
+	system defaults SOGoAddDomainToUID is set to YES.
+
+	* SoObjects/SOGo/SOGoUserManager.m
+	(-contactInfosForUserWithUIDorEmail): idem.
+
+	* SoObjects/SOGo/SOGoSession.m
+	(+decodeValue:usingKey:login:domain:password:): idem.
+
+	* SoObjects/SOGo/SOGoUserManager.m
+	(-_sourceCheckLogin:andPassword:domain:perr:expire:grace:): the
+	domain argument is now a pointer so it will be set according to
+	the matching authentication source.
+
+	* UI/MainUI/SOGoUserHomePage.m (-usersSearchAction): only append
+	the domain to the user's login if the new system defaults
+	SOGoAddToDomainToUID is set to YES.
 
 2011-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

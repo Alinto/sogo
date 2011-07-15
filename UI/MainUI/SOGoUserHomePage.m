@@ -366,30 +366,31 @@
 {
   NSMutableArray *users;
   NSArray *currentUsers;
-  NSString *contact, *domain;
+  NSString *contact, *domain, *uidDomain;
   NSEnumerator *visibleDomains;
   id <WOActionResults> result;
   SOGoUserManager *um;
   SOGoSystemDefaults *sd;
 
-  um = [SOGoUserManager sharedUserManager];
   contact = [self queryParameterForKey: @"search"];
   if ([contact length])
     {
+      um = [SOGoUserManager sharedUserManager];
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
       domain = [[context activeUser] domain];
+      uidDomain = [sd addDomainToUID]? domain : nil;
       users = [self _usersForResults: [um fetchUsersMatching: contact
                                                     inDomain: domain]
-                            inDomain: domain];
+                            inDomain: uidDomain];
       if ([domain length])
         {
           // Add results from visible domains
-          sd = [SOGoSystemDefaults sharedSystemDefaults];
           visibleDomains = [[sd visibleDomainsForDomain: domain] objectEnumerator];
           while ((domain = [visibleDomains nextObject]))
             {
               currentUsers = [self _usersForResults: [um fetchUsersMatching: contact
                                                                    inDomain: domain]
-                                         inDomain: domain];
+                                         inDomain: uidDomain];
               [users addObjectsFromArray: currentUsers];
             }
         }
