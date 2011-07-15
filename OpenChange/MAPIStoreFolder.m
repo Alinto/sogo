@@ -502,6 +502,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
        tableType: (uint8_t) tableType
      andHandleId: (uint32_t) handleId
 {
+  int rc = MAPISTORE_SUCCESS;
   MAPIStoreTable *table;
 
   if (tableType == MAPISTORE_MESSAGE_TABLE)
@@ -516,11 +517,16 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       [NSException raise: @"MAPIStoreIOException"
                   format: @"unsupported table type: %d", tableType];
     }
-  [table setHandleId: handleId];
-  *tablePtr = table;
-  *countPtr = [[table childKeys] count];
+  if (table)
+    {
+      [table setHandleId: handleId];
+      *tablePtr = table;
+      *countPtr = [[table childKeys] count];
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
 
-  return MAPISTORE_SUCCESS;
+  return rc;
 }
 
 - (int) setProperties: (struct SRow *) aRow

@@ -3,6 +3,9 @@
 	* OpenChange/MAPIStoreFolder.m (-createFolder:withRow:andFID:):
 	fixed referencing of resulting folder.
 	(+initialize): fixed initialization of MAPIStoreFAIMessageK.
+	(-getTable:andRowCount:tableType:andHandleId:): properly return
+	MAPISTORE_ERR_NOT_FOUND for tables that are not handled by the
+	folder.
 
 2011-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
