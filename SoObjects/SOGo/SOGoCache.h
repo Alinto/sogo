@@ -44,6 +44,7 @@
   NSMutableDictionary *localCache;
   NSMutableDictionary *imap4Connections;
   NSMutableDictionary *cache;
+  BOOL requestsCacheEnabled;
   NSMutableDictionary *users;
   NSMutableDictionary *groups;
   float cleanupInterval;
@@ -51,6 +52,8 @@
 }
 
 + (SOGoCache *) sharedCache;
+
+- (void) disableRequestsCache;
 
 - (void) killCache;
 

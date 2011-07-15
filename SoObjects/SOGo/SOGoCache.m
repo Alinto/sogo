@@ -86,18 +86,6 @@ static memcached_st *handle = NULL;
   return sharedCache;
 }
 
-- (void) killCache
-{
-  [cache removeAllObjects];
-  [imap4Connections removeAllObjects];
-
-  // This is essential for refetching the cached values in case something has changed
-  // accross various sogod processes
-  [users removeAllObjects];
-  [groups removeAllObjects];
-  [localCache removeAllObjects];
-}
-
 - (id) init
 {
   SOGoSystemDefaults *sd;
@@ -105,6 +93,7 @@ static memcached_st *handle = NULL;
   if ((self = [super init]))
     {
       cache = [[NSMutableDictionary alloc] init];
+      requestsCacheEnabled = YES;
       users = [[NSMutableDictionary alloc] init];
       groups = [[NSMutableDictionary alloc] init];
       imap4Connections = [[NSMutableDictionary alloc] init];
@@ -160,6 +149,23 @@ static memcached_st *handle = NULL;
   [super dealloc];
 }
 
+- (void) disableRequestsCache
+{
+  requestsCacheEnabled = NO;  
+}
+
+- (void) killCache
+{
+  [cache removeAllObjects];
+  [imap4Connections removeAllObjects];
+
+  // This is essential for refetching the cached values in case something has changed
+  // accross various sogod processes
+  [users removeAllObjects];
+  [groups removeAllObjects];
+  [localCache removeAllObjects];
+}
+
 - (NSString *) _pathFromObject: (SOGoObject *) container
                       withName: (NSString *) name
 {
@@ -193,7 +199,7 @@ static memcached_st *handle = NULL;
 {
   NSString *fullPath;
 
-  if (object && name)
+  if (requestsCacheEnabled && object && name)
     {
       [self registerObject: container
 	    withName: [container nameInContainer]
@@ -212,7 +218,7 @@ static memcached_st *handle = NULL;
 {
   NSString *fullPath;
 
-  if (name)
+  if (requestsCacheEnabled && name)
     {
       fullPath = [self _pathFromObject: container
                               withName: name];
@@ -224,11 +230,18 @@ static memcached_st *handle = NULL;
        inContainer: (SOGoObject *) container
 {
   NSString *fullPath;
+  id cacheObject;
 
-  fullPath = [self _pathFromObject: container
-		   withName: name];
+  if (requestsCacheEnabled)
+    {
+      fullPath = [self _pathFromObject: container
+                              withName: name];
+      cacheObject = [cache objectForKey: fullPath];
+    }
+  else
+    cacheObject = nil;
 
-  return [cache objectForKey: fullPath];
+  return cacheObject;
 }
 
 - (void) registerUser: (SOGoUser *) user
