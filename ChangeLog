@@ -1,5 +1,8 @@
 2011-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessage.m (-getPrHtml:inMemCtx:): fixed
+	leak.
+
 	* OpenChange/MAPIStoreFolder.m (-createFolder:withRow:andFID:):
 	fixed referencing of resulting folder.
 	(+initialize): fixed initialization of MAPIStoreFAIMessageK.

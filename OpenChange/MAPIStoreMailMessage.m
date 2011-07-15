@@ -585,6 +585,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
       content = [[NSData alloc] initWithBytesNoCopy: newBytes
                                              length: newMax];;
       [content autorelease];
+      free(oldBytes);
       
       partHeaderData
         = [sogoObject lookupInfoForBodyPart: [key _strippedBodyKey]];
