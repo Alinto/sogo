@@ -64,12 +64,12 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (enum MAPISTATUS) getProperty: (void **) data
-                        withTag: (enum MAPITAGS) propTag
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getProperty: (void **) data
+            withTag: (enum MAPITAGS) propTag
+           inMemCtx: (TALLOC_CTX *) memCtx
 {
   id value;
-  enum MAPISTATUS rc;
+  int rc;
  
   value = [[sogoObject properties] objectForKey: MAPIPropertyKey (propTag)];
   if (value)

@@ -32,6 +32,7 @@
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 @implementation NSObject (MAPIStoreTallocHelpers)
 
@@ -66,14 +67,12 @@ static int MAPIStoreTallocWrapperDestroy (void *data)
 
 @implementation NSObject (MAPIStoreDataTypes)
 
-- (enum MAPISTATUS) getMAPIValue: (void **) data
-                          forTag: (enum MAPITAGS) propTag
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getMAPIValue: (void **) data
+              forTag: (enum MAPITAGS) propTag
+            inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint16_t valueType;
-  enum MAPISTATUS rc;
-
-  rc = MAPI_E_SUCCESS;
+  int rc = MAPISTORE_SUCCESS;
 
   // [self logWithFormat: @"property %.8x found", propTag];
   valueType = (propTag & 0xffff);
@@ -115,7 +114,7 @@ static int MAPIStoreTallocWrapperDestroy (void *data)
       [self errorWithFormat: @"object type not handled: %d (0x%.4x)",
             valueType, valueType];
       *data = NULL;
-      rc = MAPI_E_NO_SUPPORT;
+      rc = MAPISTORE_ERR_NOT_FOUND;
     }
 
   return rc;

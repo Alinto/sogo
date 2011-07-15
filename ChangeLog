@@ -1,5 +1,8 @@
 2011-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/*.m: make use of mapistore error code rather than
+	MAPI ones.
+
 	* OpenChange/MAPIStoreMailMessage.m (-getPrHtml:inMemCtx:): fixed
 	leak.
 

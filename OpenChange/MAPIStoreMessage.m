@@ -105,7 +105,7 @@
   for (count = 0; count < max; count++)
     {
       if ([self getProperty: &propValue withTag: tags[count] inMemCtx: msgData]
-          == MAPI_E_SUCCESS)
+          == MAPISTORE_SUCCESS)
 	{
 	  if (propValue == NULL)
 	    {

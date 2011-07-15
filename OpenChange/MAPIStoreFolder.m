@@ -321,7 +321,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
           ofTableType: (uint8_t) tableType
 {
   NSArray *keys;
-  int rc;
+  int rc = MAPISTORE_SUCCESS;
 
   [self logWithFormat: @"METHOD '%s' (%d) -- tableType: %d",
 	__FUNCTION__, __LINE__, tableType];
@@ -333,7 +333,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   else if (tableType == MAPISTORE_FAI_TABLE)
     keys = [self faiMessageKeys];
   *rowCount = [keys count];
-  rc = MAPI_E_SUCCESS;
 
   return rc;
 }
@@ -489,7 +488,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
             }
         }
       else
-        rc = MAPI_E_INVALID_OBJECT;
+        rc = MAPISTORE_ERR_NOT_FOUND;
     }
   else
     rc = MAPISTORE_ERR_NOT_FOUND;

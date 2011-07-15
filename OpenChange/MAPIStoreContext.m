@@ -312,7 +312,7 @@ _prepareContextClass (Class contextClass,
 		    asUnicodeInMemCtx: memCtx];
 	  [self logWithFormat: @"found path '%s' for fmid %.16x",
 		*path, fmid];
-          rc = MAPI_E_SUCCESS;
+          rc = MAPISTORE_SUCCESS;
         }
       else
         {
@@ -320,7 +320,7 @@ _prepareContextClass (Class contextClass,
 		@" found fmid: 0x%.16x",
 		objectURL, url, fmid];
           *path = NULL;
-          rc = MAPI_E_NOT_FOUND;
+          rc = MAPISTORE_SUCCESS;
         }
     }
   else
@@ -335,7 +335,7 @@ _prepareContextClass (Class contextClass,
       // talloc_free (key.dptr);
       // uri = talloc_strndup (memCtx, (const char *)dbuf.dptr, dbuf.dsize);
       *path = NULL;
-      rc = MAPI_E_NOT_FOUND;
+      rc = MAPISTORE_SUCCESS;
     }
 
   return rc;

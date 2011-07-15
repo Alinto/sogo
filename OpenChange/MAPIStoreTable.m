@@ -39,6 +39,7 @@
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 #include <libmapiproxy.h>
 
 @interface MAPIStoreTable (Private)
@@ -824,8 +825,8 @@ static Class NSDataK, NSStringK;
 {
   NSUInteger count;
   MAPIStoreObject *child;
-  enum MAPISTATUS rc;
   struct mapistore_property_data *rowData;
+  int rc;
 
   child = [self childAtRowID: rowId
                 forQueryType: queryType];
@@ -837,10 +838,10 @@ static Class NSDataK, NSStringK;
                                           withTag: columns[count]
                                          inMemCtx: memCtx];
       *dataP = rowData;
-      rc = MAPI_E_SUCCESS;
+      rc = MAPISTORE_SUCCESS;
     }
   else
-    rc = MAPI_E_INVALID_OBJECT;
+    rc = MAPISTORE_ERR_NOT_FOUND;
 
   return rc;
 }
