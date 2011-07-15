@@ -6,6 +6,10 @@
 
 2011-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_backend_init): disable the use
+	of the requests cache as objects are retained by the mapistore as
+	needed.
+
 	* SoObjects/SOGo/SOGoCache.m (-disableRequestsCache): new method
 	that adds the ability to not put requests object in the cache.
 

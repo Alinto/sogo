@@ -27,6 +27,7 @@
 #import <Foundation/NSUserDefaults.h>
 #import <NGObjWeb/SoProductRegistry.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoSystemDefaults.h>
 
@@ -83,6 +84,8 @@ sogo_backend_init (void)
   MAPIApplicationK = NSClassFromString (@"MAPIApplication");
   if (MAPIApplicationK)
     [MAPIApplicationK new];
+
+  [[SOGoCache sharedCache] disableRequestsCache];
 
   [pool release];
 
