@@ -2,6 +2,7 @@
 
 	* OpenChange/MAPIStoreFolder.m (-createFolder:withRow:andFID:):
 	fixed referencing of resulting folder.
+	(+initialize): fixed initialization of MAPIStoreFAIMessageK.
 
 2011-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

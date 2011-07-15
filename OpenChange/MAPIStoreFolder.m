@@ -59,7 +59,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 + (void) initialize
 {
   NSExceptionK = [NSException class];
-  MAPIStoreFAIMessageTableK = [MAPIStoreFAIMessage class];
+  MAPIStoreFAIMessageK = [MAPIStoreFAIMessage class];
   MAPIStoreMessageTableK = [MAPIStoreMessageTable class];
   MAPIStoreFAIMessageTableK = [MAPIStoreFAIMessageTable class];
   MAPIStoreFolderTableK = [MAPIStoreFolderTable class];
