@@ -1,3 +1,8 @@
+2011-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreFolder.m (-createFolder:withRow:andFID:):
+	fixed referencing of resulting folder.
+
 2011-07-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreSOGo.m: finalized the new API.

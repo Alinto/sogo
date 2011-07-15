@@ -294,11 +294,14 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
           [mapping registerURL: childURL withID: fid];
           childFolder = [self lookupFolder: folderKey];
           if (childFolder)
-            [childFolder setProperties: aRow];
+            {
+              [childFolder setProperties: aRow];
+              *childFolderPtr = childFolder;
+              rc = MAPISTORE_SUCCESS;
+            }
           else
             [NSException raise: @"MAPIStoreIOException"
                         format: @"unable to fetch created folder"];
-          rc = MAPISTORE_SUCCESS;
         }
       else
         rc = MAPISTORE_ERROR;
