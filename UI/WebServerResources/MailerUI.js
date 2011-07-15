@@ -2068,8 +2068,6 @@ function updateMailboxTreeInPage() {
             inboxFound = true;
         }
     }
-
-    //updateQuotas();
 }
 
 function updateQuotas(quotas) {
