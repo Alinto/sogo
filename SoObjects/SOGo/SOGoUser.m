@@ -156,10 +156,10 @@
       if (r.location != NSNotFound)
         {
           // The domain is probably appended to the username;
-          // make sure it is a defined domain in the configuration.
+          // make sure it is defined as a login domain in the configuration.
           sd = [SOGoSystemDefaults sharedSystemDefaults];
           domain = [newLogin substringFromIndex: (r.location + r.length)];
-          if ([[sd domainIds] containsObject: domain])
+          if ([[sd loginDomains] containsObject: domain])
             newLogin = [newLogin substringToIndex: r.location];
           else
             domain = nil;
