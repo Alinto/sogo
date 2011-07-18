@@ -22,6 +22,8 @@
 
 #include <talloc.h>
 
+#import <Foundation/NSData.h>
+
 #import "NSString+MAPIStore.h"
 
 @implementation NSString (MAPIStoreDataTypes)
@@ -29,8 +31,10 @@
 - (char *) asUnicodeInMemCtx: (void *) memCtx
 {
   char *unicode;
+  NSData *encoded;
 
-  unicode = talloc_strdup (memCtx, [self UTF8String]);
+  encoded = [self dataUsingEncoding: NSUTF8StringEncoding];
+  unicode = talloc_strndup (memCtx, [encoded bytes], [encoded length]);
 
   return unicode;
 }
