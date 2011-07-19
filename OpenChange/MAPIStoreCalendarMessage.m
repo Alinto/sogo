@@ -99,93 +99,6 @@ static NSTimeZone *utcTZ;
   return tz;
 }
 
-- (void) _setupRecurrenceInCalendar: (iCalCalendar *) calendar
-                           fromData: (NSData *) mapiRecurrenceData
-{
-  struct Binary_r *blob;
-  struct AppointmentRecurrencePattern *pattern;
-  NSMutableArray *otherEvents;
-  iCalEvent *event;
-
-  event = [sogoObject component: NO secure: NO];
-
-  /* cleanup */
-  otherEvents = [[calendar events] mutableCopy];
-  [otherEvents removeObject: event];
-  [calendar removeChildren: otherEvents];
-  [otherEvents release];
-
-  blob = [mapiRecurrenceData asBinaryInMemCtx: NULL];
-  pattern = get_AppointmentRecurrencePattern (blob, blob);
-  [calendar setupRecurrenceWithMasterEntity: event
-                      fromRecurrencePattern: &pattern->RecurrencePattern];
-  talloc_free (blob);
-}
-
-static void
-_fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
-                                   NSCalendarDate *startDate, NSTimeInterval duration,
-                                   NSCalendarDate * endDate, iCalRecurrenceRule * rule)
-{
-  uint32_t startMinutes;
-
-  [rule fillRecurrencePattern: &arp->RecurrencePattern
-                withStartDate: startDate andEndDate: endDate];
-  arp->ReaderVersion2 = 0x00003006;
-  arp->WriterVersion2 = 0x00003009;
-
-  startMinutes = ([startDate hourOfDay] * 60 + [startDate minuteOfHour]);
-  arp->StartTimeOffset = startMinutes;
-  arp->EndTimeOffset = startMinutes + (uint32_t) (duration / 60);
-
-  arp->ExceptionCount = 0;
-  arp->ReservedBlock1Size = 0;
-
-  /* Currently ignored in property.idl: 
-     arp->ReservedBlock2Size = 0; */
-}
-
-- (struct SBinary_short *) _computeAppointmentRecurInMemCtx: (TALLOC_CTX *) memCtx
-
-{
-  struct AppointmentRecurrencePattern *arp;
-  struct Binary_r *bin;
-  struct SBinary_short *sBin;
-  NSCalendarDate *firstStartDate;
-  iCalRecurrenceRule *rule;
-  iCalEvent *event;
-
-  event = [sogoObject component: NO secure: NO];
-  rule = [[event recurrenceRules] objectAtIndex: 0];
-
-  firstStartDate = [event firstRecurrenceStartDate];
-  if (firstStartDate)
-    {
-      [firstStartDate setTimeZone: [self ownerTimeZone]];
-
-      arp = talloc_zero (memCtx, struct AppointmentRecurrencePattern);
-      _fillAppointmentRecurrencePattern (arp, firstStartDate,
-                                         [event durationAsTimeInterval],
-                                         [event lastPossibleRecurrenceStartDate],
-                                         rule);
-      sBin = talloc_zero (memCtx, struct SBinary_short);
-      bin = set_AppointmentRecurrencePattern (sBin, arp);
-      sBin->cb = bin->cb;
-      sBin->lpb = bin->lpb;
-      talloc_free (arp);
-
-      // DEBUG(5, ("To client:\n"));
-      // NDR_PRINT_DEBUG (AppointmentRecurrencePattern, arp);
-    }
-  else
-    {
-      [self errorWithFormat: @"no first occurrence found in rule: %@", rule];
-      sBin = NULL;
-    }
-
-  return sBin;
-}
-
 /* getters */
 - (int) getPrIconIndex: (void **) data // TODO
               inMemCtx: (TALLOC_CTX *) memCtx
@@ -394,6 +307,70 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   return MAPISTORE_SUCCESS;
 }
 
+static void
+_fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
+                                   NSCalendarDate *startDate, NSTimeInterval duration,
+                                   NSCalendarDate * endDate, iCalRecurrenceRule * rule)
+{
+  uint32_t startMinutes;
+
+  [rule fillRecurrencePattern: &arp->RecurrencePattern
+                withStartDate: startDate andEndDate: endDate];
+  arp->ReaderVersion2 = 0x00003006;
+  arp->WriterVersion2 = 0x00003009;
+
+  startMinutes = ([startDate hourOfDay] * 60 + [startDate minuteOfHour]);
+  arp->StartTimeOffset = startMinutes;
+  arp->EndTimeOffset = startMinutes + (uint32_t) (duration / 60);
+
+  arp->ExceptionCount = 0;
+  arp->ReservedBlock1Size = 0;
+
+  /* Currently ignored in property.idl: 
+     arp->ReservedBlock2Size = 0; */
+}
+
+- (struct SBinary_short *) _computeAppointmentRecurInMemCtx: (TALLOC_CTX *) memCtx
+
+{
+  struct AppointmentRecurrencePattern *arp;
+  struct Binary_r *bin;
+  struct SBinary_short *sBin;
+  NSCalendarDate *firstStartDate;
+  iCalRecurrenceRule *rule;
+  iCalEvent *event;
+
+  event = [sogoObject component: NO secure: NO];
+  rule = [[event recurrenceRules] objectAtIndex: 0];
+
+  firstStartDate = [event firstRecurrenceStartDate];
+  if (firstStartDate)
+    {
+      [firstStartDate setTimeZone: [self ownerTimeZone]];
+
+      arp = talloc_zero (memCtx, struct AppointmentRecurrencePattern);
+      _fillAppointmentRecurrencePattern (arp, firstStartDate,
+                                         [event durationAsTimeInterval],
+                                         [event lastPossibleRecurrenceStartDate],
+                                         rule);
+      sBin = talloc_zero (memCtx, struct SBinary_short);
+      bin = set_AppointmentRecurrencePattern (sBin, arp);
+      sBin->cb = bin->cb;
+      sBin->lpb = bin->lpb;
+      talloc_free (arp);
+
+      // DEBUG(5, ("To client:\n"));
+      // NDR_PRINT_DEBUG (AppointmentRecurrencePattern, arp);
+    }
+  else
+    {
+      [self errorWithFormat: @"no first occurrence found in rule: %@", rule];
+      sBin = NULL;
+    }
+
+  return sBin;
+}
+
 - (int) getPidLidAppointmentRecur: (void **) data
                          inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -466,6 +443,29 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
     }
   msgData->recipients = recipients;
   *dataPtr = msgData;
+}
+
+- (void) _setupRecurrenceInCalendar: (iCalCalendar *) calendar
+                           fromData: (NSData *) mapiRecurrenceData
+{
+  struct Binary_r *blob;
+  struct AppointmentRecurrencePattern *pattern;
+  NSMutableArray *otherEvents;
+  iCalEvent *event;
+
+  event = [sogoObject component: NO secure: NO];
+
+  /* cleanup */
+  otherEvents = [[calendar events] mutableCopy];
+  [otherEvents removeObject: event];
+  [calendar removeChildren: otherEvents];
+  [otherEvents release];
+
+  blob = [mapiRecurrenceData asBinaryInMemCtx: NULL];
+  pattern = get_AppointmentRecurrencePattern (blob, blob);
+  [calendar setupRecurrenceWithMasterEntity: event
+                      fromRecurrencePattern: &pattern->RecurrencePattern];
+  talloc_free (blob);
 }
 
 - (void) save

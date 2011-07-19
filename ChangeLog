@@ -1,5 +1,8 @@
 2011-07-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m: reordered certain private
+	methods.
+
 	* OpenChange/MAPIStoreMailMessage.m (-_setupBodyData): new
 	centralized method that performs the common operations required to
 	fetch the message body.
