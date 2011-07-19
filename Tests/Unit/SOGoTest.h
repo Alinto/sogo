@@ -54,7 +54,7 @@
 @end
 
 #define test(c) { \
-    [self test: (c) message: @"assertion failure" \
+    [self test: (c) message: @"assertion failure"     \
           file: __FILE__ line: __LINE__]; \
   }
 
@@ -63,13 +63,13 @@
           file: __FILE__ line: __LINE__]; \
   }
 
-#define failIf(c) test(!c)
+#define failIf(c) test(!(c))
 
 #define testEquals(a,b) \
-  testWithMessage(((a == b) || ([a isEqual: b])), \
+  testWithMessage((((a) == (b)) || ([(a) isEqual: (b)])),               \
                   ([NSString stringWithFormat: @"objects '%@' and '%@' differs", (a), (b)]))
 
 #define testEqualsWithMessage(a,b,m) \
-  testWithMessage(([a isEqual: b]), (m))
+  testWithMessage(([(a) isEqual: (b)]), (m))
 
 #endif /* SOGOTEST_H */

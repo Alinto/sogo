@@ -74,6 +74,8 @@
 
 - (NSString *) asSafeSQLString;
 
+- (NSUInteger) countOccurrencesOfString: (NSString *) substring;
+
 @end
 
 #endif /* NSSTRING_URL_H */

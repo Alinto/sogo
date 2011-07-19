@@ -597,4 +597,33 @@ static NSMutableCharacterSet *safeLDIFStartChars = nil;
            stringByReplacingString: @"'" withString: @"\\'"];
 }
 
+- (NSUInteger) countOccurrencesOfString: (NSString *) substring
+{
+  NSRange matchRange, substrRange;
+  BOOL done = NO;
+  NSUInteger selfLen, substrLen, count = 0;
+
+  selfLen = [self length];
+  substrLen = [substring length];
+
+  matchRange = NSMakeRange (0, selfLen);
+  while (!done)
+    {
+      substrRange = [self rangeOfString: substring options: 0 range: matchRange];
+      if (substrRange.location == NSNotFound)
+        done = YES;
+      else
+        {
+          count++;
+          matchRange.location = substrRange.location + 1;
+          if (matchRange.location + substrLen > selfLen)
+            done = YES;
+          else
+            matchRange.length = selfLen - matchRange.location;
+        }
+    }
+
+  return count;
+}
+
 @end

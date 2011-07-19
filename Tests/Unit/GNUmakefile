@@ -20,7 +20,8 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestSBJsonParser.m \
 	\
 	TestNGMimeAddressHeaderFieldGenerator.m \
-	TestNSString+URLEscaping.m
+	TestNSString+URLEscaping.m \
+	TestNSString+Utilities.m
 
 TEST_TOOL_NAME = $(TEST_TOOL)
 
