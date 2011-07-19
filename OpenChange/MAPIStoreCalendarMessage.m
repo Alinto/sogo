@@ -38,7 +38,6 @@
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalPerson.h>
 #import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <Appointments/SOGoAppointmentObject.h>
 
 #import "MAPIStoreCalendarAttachment.h"
@@ -82,21 +81,6 @@ static NSTimeZone *utcTZ;
     }
 
   return self;
-}
-
-- (NSTimeZone *) ownerTimeZone
-{
-  NSString *owner;
-  SOGoUserDefaults *ud;
-  NSTimeZone *tz;
-  WOContext *woContext;
-
-  woContext = [[self context] woContext];
-  owner = [sogoObject ownerInContext: woContext];
-  ud = [[SOGoUser userWithLogin: owner] userDefaults];
-  tz = [ud timeZone];
-
-  return tz;
 }
 
 /* getters */

@@ -77,6 +77,8 @@
 - (uint64_t) objectId;
 - (NSString *) url;
 
+- (NSTimeZone *) ownerTimeZone;
+
 /* properties */
 
 - (void) addNewProperties: (NSDictionary *) newNewProperties;

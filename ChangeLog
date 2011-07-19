@@ -2,6 +2,7 @@
 
 	* OpenChange/MAPIStoreCalendarMessage.m: reordered certain private
 	methods.
+	(-ownerTimeZone): moved into MAPIStoreObject.
 
 	* OpenChange/MAPIStoreMailMessage.m (-_setupBodyData): new
 	centralized method that performs the common operations required to

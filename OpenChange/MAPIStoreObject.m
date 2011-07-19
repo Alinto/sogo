@@ -23,6 +23,8 @@
 #import <Foundation/NSDictionary.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoObject.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "MAPIStoreContext.h"
 #import "MAPIStoreFolder.h"
@@ -205,6 +207,21 @@ static Class NSExceptionK, MAPIStoreFolderK;
 
   return  [NSString stringWithFormat: format,
                     containerURL, [self nameInContainer]];
+}
+
+- (NSTimeZone *) ownerTimeZone
+{
+  NSString *owner;
+  SOGoUserDefaults *ud;
+  NSTimeZone *tz;
+  WOContext *woContext;
+
+  woContext = [[self context] woContext];
+  owner = [sogoObject ownerInContext: woContext];
+  ud = [[SOGoUser userWithLogin: owner] userDefaults];
+  tz = [ud timeZone];
+
+  return tz;
 }
 
 - (void) addNewProperties: (NSDictionary *) newNewProperties
