@@ -46,6 +46,7 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Your account was locked due to an expired password." = "Twoje konto zostało zblokowane z powodu wygaśnięcia ważności hasła.";
 "Login failed due to unhandled error case: " = "Logowanie nie powiodło się z powodu niezidentyfikowanego błędu: ";
 "Change your Password" = "Zmień swoje hasło";
+"The password was changed successfully." = "The password was changed successfully.";
 "Your password has expired, please enter a new one below:" = "Ważność twojego hasła wygasła, wprowadź niżej nowe hasło:";
 "Password must not be empty." = "Hasło nie może być puste.";
 "The passwords do not match. Please try again." = "Hasła nie są zgodne. Spróbuj jeszcze raz.";

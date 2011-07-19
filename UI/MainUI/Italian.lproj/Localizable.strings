@@ -46,6 +46,7 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Your account was locked due to an expired password." = "Account bloccato per password scaduta.";
 "Login failed due to unhandled error case: " = "Login fallito a causa di un errore non gestito: ";
 "Change your Password" = "Cambia la tua password";
+"The password was changed successfully." = "The password was changed successfully.";
 "Your password has expired, please enter a new one below:" = "La tua password è scaduta, prego inserire la nuova password qui sotto:";
 "Password must not be empty." = "La password non può essere vuota.";
 "The passwords do not match. Please try again." = "Le password non coincidono. Prego riprovare.";

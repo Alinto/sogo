@@ -46,6 +46,7 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Your account was locked due to an expired password." = "Your account was locked due to an expired password.";
 "Login failed due to unhandled error case: " = "Login failed due to unhandled error case: ";
 "Change your Password" = "Change your Password";
+"The password was changed successfully." = "The password was changed successfully.";
 "Your password has expired, please enter a new one below:" = "Your password has expired, please enter a new one below:";
 "Password must not be empty." = "Password must not be empty.";
 "The passwords do not match. Please try again." = "The passwords do not match. Please try again.";
