@@ -4,6 +4,7 @@
 
 "Username:" = "Benutzername:";
 "Password:" = "Passwort:";
+"Domain:" = "Domain:";
 
 "Connect" = "Anmelden";
 
@@ -24,8 +25,10 @@
 "French" = "Français";
 "German" = "Deutsch";
 "Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
 "Italian" = "Italiano";
 "Norwegian" = "Norsk";
+"Polish" = "Polski";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "Spanish" = "Español";
@@ -43,6 +46,7 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Your account was locked due to an expired password." = "Ihr Konto wurde wegen eines abgelaufenen Passworts gesperrt.";
 "Login failed due to unhandled error case: " = "Die Anmeldung ist aufgrund eines unbehandelten Fehlers fehlgeschlagen: ";
 "Change your Password" = "Passwort ändern";
+"The password was changed successfully." = "The password was changed successfully.";
 "Your password has expired, please enter a new one below:" = "Ihr Passwort ist abgelaufen. Bitte geben Sie ein neues an:";
 "Password must not be empty." = "Passwort darf nicht leer sein.";
 "The passwords do not match. Please try again." = "Die Passwörter stimmen nicht überein. Bitte noch einmal eingeben.";

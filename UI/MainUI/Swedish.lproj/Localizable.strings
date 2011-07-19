@@ -46,6 +46,7 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Your account was locked due to an expired password." = "Ditt konto är spärrat pga att lösenordet har slutat gälla.";
 "Login failed due to unhandled error case: " = "Inloggningen misslyckades pga ett okänt fel: ";
 "Change your Password" = "Ändra ditt lösenord";
+"The password was changed successfully." = "The password was changed successfully.";
 "Your password has expired, please enter a new one below:" = "Ditt lösenord har slutat gälla, mata in ett nytt lösenord nedan:";
 "Password must not be empty." = "Lösenordet får inte vara tomt.";
 "The passwords do not match. Please try again." = "Felaktigt lösenord. Försök igen.";

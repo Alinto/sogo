@@ -91,7 +91,7 @@
 "To"            = "Para";
 "Cc"            = "Cc";
 "Bcc"           = "CCo";
-"Reply-To"		= "Responder A";
+"Reply-To"	= "Responder A";
 "Add address"   = "Añadir dirección";
 
 "Attachments:" = "Adjuntos:";
@@ -166,7 +166,7 @@
 "DraftsFolderName" = "Borradores";
 "SieveFolderName"  = "Filtros";
 "OtherUsersFolderName"   = "Otros usuarios";
-"SharedFoldersName" = "Carpetas compartidas"; 
+"SharedFoldersName" = "Carpetas compartidas";
 "Folders"          = "Carpetas"; /* title line */
 
 /* MailMoveToPopUp */

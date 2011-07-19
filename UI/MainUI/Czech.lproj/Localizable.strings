@@ -46,6 +46,7 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Your account was locked due to an expired password." = "Váš účet byl zablokován z důvodu expirovaného hesla.";
 "Login failed due to unhandled error case: " = "Přihlášení selhalo z důvodu chyby: ";
 "Change your Password" = "Změňte své heslo";
+"The password was changed successfully." = "The password was changed successfully.";
 "Your password has expired, please enter a new one below:" = "Vaše heslo expirovalo, prosím zadejte nové:";
 "Password must not be empty." = "Heslo nesmí být prázdné.";
 "The passwords do not match. Please try again." = "Hesla se neshodují. Prosím zadejte znovu.";

@@ -537,6 +537,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Show tasks" = "Показать задания";
 
 "Links to this Calendar" = "Ссылки на этот календарь";
+"Authenticated User Access" = "Authenticated User Access";
 "CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
@@ -549,6 +550,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "yearFieldInvalid" = "Пожалуйста, укажите числовое значение в поле лет, большее или равное 1.";
 "appointmentFieldInvalid" = "Пожалуйста, укажите числовое значение в поле встреч, большее или равное 1.";
 "recurrenceUnsupported" = "Этот тип повторений пока не поддерживается.";
+"Please specify a calendar name." = "Please specify a calendar name.";
 "tagNotDefined" = "Вы должны указать метку (tag) если хотите синхронизировать этот календарь.";
 "tagAlreadyExists" = "Указанная метка уже используется в другом календаре.";
 "tagHasChanged" = "Если Вы смените метку в этом календаре, то будет необходимо заново синхронизировать данные на Вашем мобильном устройстве. \nПродолжить?";
@@ -561,6 +563,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Mark Completed" = "Пометить как завершенное";
 "Delete Task" = "Удалить задачу";
 "Delete Event" = "Удалить событие";
+"Copy event to my calendar" = "Copy event to my calendar";
 
 "Subscribe to a web calendar..." = "Подписаться на калентарь в сети...";
 "URL of the Calendar" = "URL of the Calendar";

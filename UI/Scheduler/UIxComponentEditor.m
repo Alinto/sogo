@@ -2280,12 +2280,7 @@ RANGE(2);
 				     <SOGoComponentOccurence> *) clientObject
 {
   SoSecurityManager *sm;
-  NSString *toolbarFilename, *adminToolbar;
-
-  if ([clientObject isKindOfClass: [SOGoAppointmentObject class]])
-    adminToolbar = @"SOGoAppointmentObject.toolbar";
-  else
-    adminToolbar = @"SOGoTaskObject.toolbar";
+  NSString *toolbarFilename;
 
   sm = [SoSecurityManager sharedSecurityManager];
 

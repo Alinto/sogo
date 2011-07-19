@@ -46,6 +46,7 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Your account was locked due to an expired password." = "Din konto har blitt låst fordi ditt passord er utløpt.";
 "Login failed due to unhandled error case: " = "Login failed due to unhandled error case: ";
 "Change your Password" = "Endre ditt passord";
+"The password was changed successfully." = "The password was changed successfully.";
 "Your password has expired, please enter a new one below:" = "Ditt passord har utløpt, vennligst fyll ut et nytt under:";
 "Password must not be empty." = "Passordet må ikke være tomt.";
 "The passwords do not match. Please try again." = "Passordene stemmer ikke overens. Vennligst prøv igjen.";
