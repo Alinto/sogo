@@ -29,7 +29,7 @@
     SOGoWebAccessEnabled = YES;
     SOGoCalendarDAVAccessEnabled = YES;
     SOGoAddressBookDAVAccessEnabled = YES;
-    SOGoEnableDomainWithUID = NO;
+    SOGoEnableDomainBasedUID = NO;
 
     SOGoLoginModule = "Mail";
     SOGoLanguage = "English";

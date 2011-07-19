@@ -125,7 +125,7 @@
 /**
  * Return a new instance for the login name, which can be appended by a
  * domain name. The domain is extracted only if the system defaults
- * SOGoEnableDomainWithUID is enabled.
+ * SOGoEnableDomainBasedUID is enabled.
  *
  * @param newLogin a login name optionally follow by @domain
  * @param newRoles
@@ -155,7 +155,7 @@
   else
     {
       sd = [SOGoSystemDefaults sharedSystemDefaults];
-      if ([sd enableDomainWithUID])
+      if ([sd enableDomainBasedUID])
         {
           r = [newLogin rangeOfString: @"@" options: NSBackwardsSearch];
           if (r.location != NSNotFound)
@@ -180,7 +180,7 @@
           contactInfos = [um contactInfosForUserWithUIDorEmail: newLogin
                                                       inDomain: domain];
 	  realUID = [contactInfos objectForKey: @"c_uid"];
-          if (domain == nil && [sd enableDomainWithUID])
+          if (domain == nil && [sd enableDomainBasedUID])
             domain = [contactInfos objectForKey: @"c_domain"];
 	}
 

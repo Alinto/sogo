@@ -716,7 +716,7 @@
   infos = nil;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
-  if ([sd enableDomainWithUID])
+  if ([sd enableDomainBasedUID])
     {
       r = [uid rangeOfString: @"@" options: NSBackwardsSearch];
       if (r.location != NSNotFound)

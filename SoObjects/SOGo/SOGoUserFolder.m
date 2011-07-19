@@ -397,7 +397,7 @@
   NSString *field, *login, *domain;
   NSArray *users;
   int i;
-  BOOL enableDomainWithUID;
+  BOOL enableDomainBasedUID;
 
 #warning the attributes returned here should match the one requested in the query
   fetch = [NSMutableString string];
@@ -405,7 +405,7 @@
   login = [[context activeUser] login];
   um = [SOGoUserManager sharedUserManager];
   sd = [SOGoSystemDefaults sharedSystemDefaults];
-  enableDomainWithUID = [sd enableDomainWithUID];
+  enableDomainBasedUID = [sd enableDomainBasedUID];
   domain = [[context activeUser] domain];
   domains = [[sd visibleDomainsForDomain: domain] objectEnumerator];
   while (domain)
@@ -418,7 +418,7 @@
         {
           currentUser = [users objectAtIndex: i];
           field = [currentUser objectForKey: @"c_uid"];
-          if (enableDomainWithUID)
+          if (enableDomainBasedUID)
             field = [NSString stringWithFormat: @"%@@%@", field, domain];
           if (![field isEqualToString: login])
             {

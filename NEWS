@@ -1,8 +1,8 @@
 1.3-20110719 (1.3.8a)
 ---------------------
 New Features
- - new system setting SOGoEnableDomainWithUID to enable user identification
-    by domain
+ - new system setting SOGoEnableDomainBasedUID to enable user identification
+     by domain
 
 Bug Fixes
  - fixed a buffer overflow in SOPE (mainly affecting OpenBSD)

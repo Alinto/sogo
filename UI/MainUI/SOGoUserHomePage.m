@@ -378,7 +378,7 @@
       um = [SOGoUserManager sharedUserManager];
       sd = [SOGoSystemDefaults sharedSystemDefaults];
       domain = [[context activeUser] domain];
-      uidDomain = [sd enableDomainWithUID]? domain : nil;
+      uidDomain = [sd enableDomainBasedUID]? domain : nil;
       users = [self _usersForResults: [um fetchUsersMatching: contact
                                                     inDomain: domain]
                             inDomain: uidDomain];

@@ -193,9 +193,9 @@ BootstrapNSUserDefaults ()
   return [[self dictionaryForKey: @"domains"] allKeys];
 }
 
-- (BOOL) enableDomainWithUID
+- (BOOL) enableDomainBasedUID
 {
-  return ([[self domainIds] count] > 0 && [self boolForKey: @"SOGoEnableDomainWithUID"]);
+  return ([[self domainIds] count] > 0 && [self boolForKey: @"SOGoEnableDomainBasedUID"]);
 }
 
 - (NSArray *) loginDomains
