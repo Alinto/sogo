@@ -22,7 +22,7 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestNGMimeAddressHeaderFieldGenerator.m \
 	TestNSString+URLEscaping.m
 
-TOOL_NAME = $(TEST_TOOL)
+TEST_TOOL_NAME = $(TEST_TOOL)
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-D_GNU_SOURCE -I../SOPE/ -I../SoObjects/ -I../UI/
@@ -31,6 +31,6 @@ ADDITIONAL_LIB_DIRS += \
 	-L../SoObjects/SOGo -lSOGo -lNGMime -lNGCards -lGDLContentStore -lNGExtensions -lSBJson -lobjc
 
 -include GNUmakefile.preamble
-include $(GNUSTEP_MAKEFILES)/tool.make
+include $(GNUSTEP_MAKEFILES)/test-tool.make
 -include GNUmakefile.postamble
 
