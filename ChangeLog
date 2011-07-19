@@ -1,5 +1,11 @@
 2011-07-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessage.m (-_setupBodyData): new
+	centralized method that performs the common operations required to
+	fetch the message body.
+	(-getPrHtml:inMemCtx,-getPrBody:inMemCtx:): make use of the above
+	method.
+
 	* SoObjects/SOGo/NSString+Utilities.m
 	(-countOccurrencesOfString:): new self-explicit method.
 

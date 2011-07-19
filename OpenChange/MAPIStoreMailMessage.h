@@ -25,9 +25,16 @@
 
 #import "MAPIStoreMessage.h"
 
+@class NSData;
+@class NSString;
+
 @interface MAPIStoreMailMessage : MAPIStoreMessage
 {
   BOOL fetchedAttachments;
+  BOOL bodySetup;
+  NSData *bodyContent;
+  NSString *bodyMimeType;
+  NSString *bodyCharset;
 }
 
 @end

@@ -25,6 +25,7 @@
 #import <Foundation/NSException.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <Mailer/NSData+Mail.h>
 #import <Mailer/SOGoMailBodyPart.h>
@@ -88,9 +89,23 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 - (id) init
 {
   if ((self = [super init]))
-    fetchedAttachments = NO;
+    {
+      bodySetup = NO;
+      bodyContent = nil;
+      bodyMimeType = nil;
+      bodyCharset = nil;
+      fetchedAttachments = NO;
+    }
 
   return self;
+}
+
+- (void) dealloc
+{
+  [bodyContent release];
+  [bodyMimeType release];
+  [bodyCharset release];
+  [super dealloc];
 }
 
 - (int) getPrIconIndex: (void **) data
@@ -494,53 +509,108 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   return MAPISTORE_SUCCESS;
 }
 
+static NSComparisonResult
+_compareBodyKeysByPriority (id entry1, id entry2, void *data)
+{
+  NSComparisonResult result;
+  NSArray *keys;
+  NSString *data1, *data2;
+  NSUInteger count1, count2;
+
+  keys = data;
+
+  data1 = [entry1 objectForKey: @"mimeType"];
+  count1 = [keys indexOfObject: data1];
+  data2 = [entry2 objectForKey: @"mimeType"];
+  count2 = [keys indexOfObject: data2];
+  
+  if (count1 == count2)
+    {
+      data1 = [entry1 objectForKey: @"key"];
+      count1 = [data1 countOccurrencesOfString: @"."];
+      data2 = [entry2 objectForKey: @"key"];
+      count2 = [data2 countOccurrencesOfString: @"."];
+      if (count1 == count2)
+        {
+          data1 = [data1 _strippedBodyKey];
+          count1 = [data1 intValue];
+          data2 = [data2 _strippedBodyKey];
+          count2 = [data2 intValue];
+          if (count1 == count2)
+            result = NSOrderedSame;
+          else if (count1 < count2)
+            result = NSOrderedAscending;
+          else
+            result = NSOrderedDescending;
+        }
+      else if (count1 < count2)
+        result = NSOrderedAscending;
+      else
+        result = NSOrderedDescending;
+    }
+  else if (count1 < count2)
+    result = NSOrderedAscending;
+  else
+    result = NSOrderedDescending;
+
+  return result;
+}
+
+- (void) _setupBodyData
+{
+  NSMutableArray *keys;
+  NSArray *acceptedTypes;
+  NSDictionary *messageData, *partHeaderData;
+  NSString *messageKey, *encoding;
+  NSData *rawContent;
+  id result;
+
+  acceptedTypes = [NSArray arrayWithObjects: // @"text/calendar",
+                           // @"application/ics",
+                           @"text/html",
+                           @"text/plain", nil];
+  keys = [NSMutableArray array];
+  [sogoObject addRequiredKeysOfStructure: [sogoObject bodyStructure]
+                                    path: @"" toArray: keys
+                           acceptedTypes: acceptedTypes];
+  [keys sortUsingFunction: _compareBodyKeysByPriority context: acceptedTypes];
+  if ([keys count] > 0)
+    {
+      messageData = [keys objectAtIndex: 0];
+      ASSIGN (bodyMimeType, [messageData objectForKey: @"mimeType"]);
+      messageKey = [messageData objectForKey: @"key"];
+      result = [sogoObject fetchParts: [NSArray arrayWithObject: messageKey]];
+      result = [[result valueForKey: @"RawResponse"] objectForKey: @"fetch"];
+      rawContent = [[result objectForKey: messageKey] objectForKey: @"data"];
+      partHeaderData = [sogoObject
+                         lookupInfoForBodyPart: [messageKey _strippedBodyKey]];
+      encoding = [partHeaderData objectForKey: @"encoding"];
+      ASSIGN (bodyContent, [rawContent bodyDataFromEncoding: encoding]);
+      ASSIGN (bodyCharset, [[partHeaderData objectForKey: @"parameterList"]
+                             objectForKey: @"charset"]);
+    }
+
+  bodySetup = YES;
+}
+
 - (int) getPrBody: (void **) data
          inMemCtx: (TALLOC_CTX *) memCtx
 {
-  NSMutableArray *keys;
-  id result;
-  NSData *content;
-  NSDictionary *partHeaderData;
-  NSString *partKey, *encoding, *charset, *stringValue;
+  NSString *stringValue;
   int rc = MAPISTORE_SUCCESS;
 
-  keys = [NSMutableArray array];
-  [sogoObject addRequiredKeysOfStructure: [sogoObject bodyStructure]
-              path: @"" toArray: keys
-              acceptedTypes: [NSArray arrayWithObject:
-                                        @"text/html"]];
-  if ([keys count] > 0)
+  if (!bodySetup)
+    [self _setupBodyData];
+
+  if ([bodyMimeType isEqualToString: @"text/plain"])
     {
-      *data = NULL;
-      rc = MAPISTORE_ERR_NOT_FOUND;
+      stringValue = [bodyContent bodyStringFromCharset: bodyCharset];
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
     }
   else
     {
-      [keys removeAllObjects];
-      [sogoObject addRequiredKeysOfStructure: [sogoObject bodyStructure]
-                                        path: @"" toArray: keys
-                               acceptedTypes: [NSArray arrayWithObject:
-                                                         @"text/plain"]];
-      if ([keys count] > 0)
-        {
-          result = [sogoObject fetchParts: [keys objectsForKey: @"key"
-                                                notFoundMarker: nil]];
-          result = [[result valueForKey: @"RawResponse"] objectForKey: @"fetch"];
-          partKey = [[keys objectAtIndex: 0] objectForKey: @"key"];
-          content = [[result objectForKey: partKey] objectForKey: @"data"];
-          
-          partHeaderData
-            = [sogoObject lookupInfoForBodyPart: [partKey _strippedBodyKey]];
-          encoding = [partHeaderData objectForKey: @"encoding"];
-          charset = [[partHeaderData objectForKey: @"parameterList"]
-                      objectForKey: @"charset"];
-          stringValue = [[content bodyDataFromEncoding: encoding]
-                          bodyStringFromCharset: charset];
-          
-          *data = [stringValue asUnicodeInMemCtx: memCtx];
-        }
-      else
-        rc = MAPISTORE_ERR_NOT_FOUND;
+      *data = NULL;
+      rc = MAPISTORE_ERR_NOT_FOUND;
     }
 
   return rc;
@@ -549,64 +619,19 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 - (int) getPrHtml: (void **) data
          inMemCtx: (TALLOC_CTX *) memCtx
 {
-  id result;
-  NSData *content;
-  NSDictionary *partHeaderData;
-  NSString *key, *encoding;
-  char *oldBytes, *newBytes;
-  NSUInteger c, newC, max, newMax;
-  NSMutableArray *keys;
-  NSArray *acceptedTypes;
   int rc = MAPISTORE_SUCCESS;
 
-  acceptedTypes = [NSArray arrayWithObject: @"text/html"];
-  keys = [NSMutableArray array];
-  [sogoObject addRequiredKeysOfStructure: [sogoObject bodyStructure]
-                                    path: @"" toArray: keys
-                           acceptedTypes: acceptedTypes];
-  if ([keys count] > 0)
-    {
-      result = [sogoObject fetchParts: [keys objectsForKey: @"key"
-                                            notFoundMarker: nil]];
-      result = [[result valueForKey: @"RawResponse"] objectForKey:
-                                                       @"fetch"];
-      key = [[keys objectAtIndex: 0] objectForKey: @"key"];
-      content = [[result objectForKey: key] objectForKey: @"data"];
-      
-      max = [content length];
-      newMax = max;
-      oldBytes = malloc (max);
-      newBytes = malloc (max * 2);
-      [content getBytes: oldBytes];
-      newC = 0;
-      for (c = 0; c < max; c++)
-        {
-          if (*(oldBytes + c) == '\n')
-            {
-              *(newBytes + newC) = '\r';
-              newC++;
-              newMax++;
-            }
-          *(newBytes + newC) = *(oldBytes + c);
-          newC++;
-        }
-      content = [[NSData alloc] initWithBytesNoCopy: newBytes
-                                             length: newMax];;
-      [content autorelease];
-      free(oldBytes);
-      
-      partHeaderData
-        = [sogoObject lookupInfoForBodyPart: [key _strippedBodyKey]];
-      encoding = [partHeaderData objectForKey: @"encoding"];
-      content = [content bodyDataFromEncoding: encoding];
-      *data = [content asBinaryInMemCtx: memCtx];
-    }
+  if (!bodySetup)
+    [self _setupBodyData];
+
+  if ([bodyMimeType isEqualToString: @"text/html"])
+    *data = [bodyContent asBinaryInMemCtx: memCtx];
   else
     {
       *data = NULL;
       rc = MAPISTORE_ERR_NOT_FOUND;
     }
-          
+
   return rc;
 }
 
