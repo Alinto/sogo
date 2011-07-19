@@ -1,3 +1,10 @@
+2011-07-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserFolder.m (-_davFetchUsersMatching:):
+	append the domain to the username when SOGoEnableDomainWithUID is
+	set to YES. When using domains, fetch matching users from visible
+	domains.
+
 2011-07-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/NSString+MAPIStore.m (-asUnicodeInMemCtx:): use an
@@ -6,16 +13,20 @@
 
 2011-07-18  Francis Lachapelle  <flachapelle@inverse.ca>
 
-	* SoObjects/SOGo/SOGoSystemDefaults.m (-addDomainToUID): new
+	* SoObjects/SOGo/SOGoSystemDefaults.m (-enableDomainWithUID): new
 	method that returns the boolean value of the new system defaults
-	SOGoAddDomainToUID if at least one domain is defined.
+	SOGoEnableDomainWithUID if at least one domain is defined.
 
-	* SoObjects/SOGo/SOGoUser.m (-initWithLogin:roles:trust:): we now
-	try to extract the domain part of the login name only if the new
-	system defaults SOGoAddDomainToUID is set to YES.
+	* SoObjects/SOGo/SOGoUser.m (-initWithLogin:roles:trust:): try to
+	extract the domain part of the login name only if the new system
+	defaults SOGoEnableDomainWithUID is set to YES. If the domain is not
+	specified but SOGoEnableDomainWithUID is enabled, add the domain to the
+	login name.
 
 	* SoObjects/SOGo/SOGoUserManager.m
-	(-contactInfosForUserWithUIDorEmail): idem.
+	(-contactInfosForUserWithUIDorEmail): try to extract the domain
+	part of the login name only if the new system defaults
+	SOGoEnableDomainWithUID is set to YES..
 
 	* SoObjects/SOGo/SOGoSession.m
 	(+decodeValue:usingKey:login:domain:password:): idem.
@@ -27,7 +38,7 @@
 
 	* UI/MainUI/SOGoUserHomePage.m (-usersSearchAction): only append
 	the domain to the user's login if the new system defaults
-	SOGoAddToDomainToUID is set to YES.
+	SOGoEnableDomainWithUID is set to YES.
 
 2011-07-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

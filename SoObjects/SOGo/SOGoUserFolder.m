@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2007-2009 Inverse inc.
+  Copyright (C) 2007-2011 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
@@ -390,45 +390,56 @@
 - (NSString *) _davFetchUsersMatching: (NSString *) user
 {
   SOGoUserManager *um;
+  SOGoSystemDefaults *sd;
   NSMutableString *fetch;
+  NSEnumerator *domains;
   NSDictionary *currentUser;
   NSString *field, *login, *domain;
   NSArray *users;
   int i;
+  BOOL enableDomainWithUID;
 
 #warning the attributes returned here should match the one requested in the query
   fetch = [NSMutableString string];
 
   login = [[context activeUser] login];
   um = [SOGoUserManager sharedUserManager];
-
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  enableDomainWithUID = [sd enableDomainWithUID];
   domain = [[context activeUser] domain];
-  // We sort our array - this is pretty useful for the
-  // SOGo Integrator extension, among other things.
-  users = [[um fetchUsersMatching: user inDomain: domain]
-	    sortedArrayUsingSelector: @selector (caseInsensitiveDisplayNameCompare:)];
-  for (i = 0; i < [users count]; i++)
+  domains = [[sd visibleDomainsForDomain: domain] objectEnumerator];
+  while (domain)
     {
-      currentUser = [users objectAtIndex: i];
-      field = [currentUser objectForKey: @"c_uid"];
-      if (![field isEqualToString: login])
+      // We sort our array - this is pretty useful for the
+      // SOGo Integrator extension, among other things.
+      users = [[um fetchUsersMatching: user inDomain: domain]
+                sortedArrayUsingSelector: @selector (caseInsensitiveDisplayNameCompare:)];
+      for (i = 0; i < [users count]; i++)
         {
-          [fetch appendFormat: @"<user><id>%@</id>",
-                 [field stringByEscapingXMLString]];
-          field = [currentUser objectForKey: @"cn"];
-          [fetch appendFormat: @"<displayName>%@</displayName>",
-                 [field stringByEscapingXMLString]];
-          field = [currentUser objectForKey: @"c_email"];
-          [fetch appendFormat: @"<email>%@</email>",
-                 [field stringByEscapingXMLString]];
-          field = [currentUser objectForKey: @"c_info"];
-          if ([field length])
-            [fetch appendFormat: @"<info>%@</info>",
-                   [field stringByEscapingXMLString]];
-          [fetch appendString: @"</user>"];
+          currentUser = [users objectAtIndex: i];
+          field = [currentUser objectForKey: @"c_uid"];
+          if (enableDomainWithUID)
+            field = [NSString stringWithFormat: @"%@@%@", field, domain];
+          if (![field isEqualToString: login])
+            {
+              [fetch appendFormat: @"<user><id>%@</id>",
+                     [field stringByEscapingXMLString]];
+              field = [currentUser objectForKey: @"cn"];
+              [fetch appendFormat: @"<displayName>%@</displayName>",
+                     [field stringByEscapingXMLString]];
+              field = [currentUser objectForKey: @"c_email"];
+              [fetch appendFormat: @"<email>%@</email>",
+                     [field stringByEscapingXMLString]];
+              field = [currentUser objectForKey: @"c_info"];
+              if ([field length])
+                [fetch appendFormat: @"<info>%@</info>",
+                       [field stringByEscapingXMLString]];
+              [fetch appendString: @"</user>"];
+            }
         }
+      domain = [domains nextObject];
     }
-
+  
   return fetch;
 }
 

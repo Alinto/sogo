@@ -254,7 +254,7 @@
   *theDomain = nil;
   
   sd = [SOGoSystemDefaults sharedSystemDefaults];
-  if ([sd addDomainToUID])
+  if ([sd enableDomainWithUID])
     {
       r = [*theLogin rangeOfString: @"@" options: NSBackwardsSearch];
       if (r.location != NSNotFound)

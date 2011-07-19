@@ -34,7 +34,7 @@
 + (SOGoSystemDefaults *) sharedSystemDefaults;
 
 - (NSArray *) domainIds;
-- (BOOL) addDomainToUID;
+- (BOOL) enableDomainWithUID;
 - (NSArray *) loginDomains;
 - (NSArray *) visibleDomainsForDomain: (NSString *) domain;
 
