@@ -35,6 +35,7 @@
 #import "NSArray+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
+#import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreContactsMessage.h"

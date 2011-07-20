@@ -1,5 +1,9 @@
 2011-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreObject.m: moved "-getEmptyString:inMemCtx:",
+	"-getLongZero:inMemCtx:", "-getYes:inMemCtx:", "-getNo:inMemCtx:"
+	into NSObject+MAPIStore.m
+
 	* OpenChange/MAPIStoreFolder.m (-lookupFolder:, -createMessage:):
 	assign the parent context woContext to the newly created
 	SOGoObject to enable access to "activeUser".

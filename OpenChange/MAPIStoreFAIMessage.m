@@ -21,6 +21,7 @@
  */
 
 #import "MAPIStoreActiveTables.h"
+#import "NSObject+MAPIStore.h"
 
 #import "MAPIStoreFAIMessage.h"
 

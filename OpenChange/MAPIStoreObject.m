@@ -32,6 +32,7 @@
 #import "MAPIStoreTypes.h"
 #import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
+#import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreObject.h"
@@ -276,34 +277,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 /* helper getters */
-- (int) getEmptyString: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
-{
-  *data = [@"" asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getLongZero: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
-{
-  *data = MAPILongValue (memCtx, 0);
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getYes: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
-{
-  *data = MAPIBoolValue (memCtx, YES);
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getNo: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
-{
-  *data = MAPIBoolValue (memCtx, NO);
-
-  return MAPISTORE_SUCCESS;
-}
-
 - (int) getReplicaKey: (void **) data
           fromGlobCnt: (uint64_t) objectCnt
              inMemCtx: (TALLOC_CTX *) memCtx

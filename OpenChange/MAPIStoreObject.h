@@ -100,10 +100,6 @@
            inMemCtx: (TALLOC_CTX *) localMemCtx;
 
 /* helper getters */
-- (int) getEmptyString: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getLongZero: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getYes: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getNo: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getReplicaKey: (void **) data
           fromGlobCnt: (uint64_t) objectCnt
              inMemCtx: (TALLOC_CTX *) memCtx;

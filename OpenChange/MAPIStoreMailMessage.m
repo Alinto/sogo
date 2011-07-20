@@ -32,6 +32,7 @@
 #import <Mailer/SOGoMailObject.h>
 
 #import "NSData+MAPIStore.h"
+#import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreFolder.h"

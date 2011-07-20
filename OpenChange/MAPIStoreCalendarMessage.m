@@ -46,6 +46,7 @@
 #import "MAPIStoreTypes.h"
 #import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
+#import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "NSValue+MAPIStore.h"
 

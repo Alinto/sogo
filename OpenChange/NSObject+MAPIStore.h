@@ -44,6 +44,12 @@ struct MAPIStoreTallocWrapper
               forTag: (enum MAPITAGS) propTag
             inMemCtx: (TALLOC_CTX *) memCtx;
 
+/* getter helpers */
+- (int) getEmptyString: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getLongZero: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getYes: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getNo: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+
 @end
 
 #endif /* NSOBJECT_MAPISTORE_H */
