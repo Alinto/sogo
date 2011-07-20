@@ -144,12 +144,17 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   return MAPISTORE_SUCCESS;
 }
 
+- (NSString *) subject
+{
+  return [sogoObject decodedSubject];
+}
+
 - (int) getPrSubject: (void **) data
             inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
-  stringValue = [sogoObject decodedSubject];
+  stringValue = [self subject];
   if (!stringValue)
     stringValue = @"";
   *data = [stringValue asUnicodeInMemCtx: memCtx];
@@ -164,7 +169,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   NSUInteger colIdx;
   NSString *stringValue;
 
-  subject = [sogoObject decodedSubject];
+  subject = [self subject];
   colIdx = [subject rangeOfString: @":"].location;
   if (colIdx != NSNotFound && colIdx < 4)
     stringValue = [NSString stringWithFormat: @"%@: ",
@@ -183,7 +188,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   NSUInteger colIdx;
   NSString *stringValue;
 
-  subject = [sogoObject decodedSubject];
+  subject = [self subject];
   colIdx = [subject rangeOfString: @":"].location;
   if (colIdx != NSNotFound && colIdx < 4)
     stringValue = [[subject substringFromIndex: colIdx + 1]

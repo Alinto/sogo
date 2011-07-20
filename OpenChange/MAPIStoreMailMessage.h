@@ -37,6 +37,8 @@
   NSString *bodyCharset;
 }
 
+- (NSString *) subject;
+
 @end
 
 #endif /* MAPISTOREMAILMESSAGE_H */

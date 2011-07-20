@@ -214,6 +214,11 @@ e)
     [self logWithFormat: @"ignored scheduling message"];
 }
 
+- (NSString *) subject
+{
+  return [[sogoObject headers] objectForKey: @"subject"];
+}
+
 - (NSCalendarDate *) creationTime
 {
   return [newProperties objectForKey: MAPIPropertyKey (PR_CREATION_TIME)];
