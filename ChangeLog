@@ -1,3 +1,9 @@
+2011-07-20  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxMailToSelection.js
+	(addressFieldLostFocus): call addressFieldChanged to validate the
+	entry and split recipients in multiple fields.
+
 2011-07-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarMessage.m: reordered certain private

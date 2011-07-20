@@ -141,6 +141,7 @@ function addressFieldGotFocus(event) {
 
 function addressFieldLostFocus(event) {
     lastIndex = getIndexFromIdentifier(this.id);
+    addressFieldChanged.bind(this, event)();
 }
 
 function addressFieldChanged(event) {
