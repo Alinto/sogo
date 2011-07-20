@@ -1,5 +1,9 @@
 2011-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m (-lookupFolder:, -createMessage:):
+	assign the parent context woContext to the newly created
+	SOGoObject to enable access to "activeUser".
+
 	* SoObjects/SOGo/SOGoObject.m (-setContext, -context): new
 	accessors for the "context" ivar.
 

@@ -143,12 +143,14 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   MAPIStoreFolder *childFolder = nil;
   SOGoFolder *sogoFolder;
+  WOContext *woContext;
 
   if ([[self folderKeys] containsObject: folderKey])
     {
+      woContext = [[self context] woContext];
       sogoFolder = [sogoObject lookupName: folderKey
-                               inContext: nil
-                               acquire: NO];
+                                inContext: woContext
+                                  acquire: NO];
       if (sogoFolder && ![sogoFolder isKindOfClass: NSExceptionK])
         childFolder = [isa mapiStoreObjectWithSOGoObject: sogoFolder
                                              inContainer: self];
@@ -805,12 +807,15 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (MAPIStoreMessage *) createMessage: (BOOL) isAssociated
 {
   MAPIStoreMessage *newMessage;
+  WOContext *woContext;
 
   if (isAssociated)
     newMessage = [self _createAssociatedMessage];
   else
     newMessage = [self createMessage];
   [newMessage setIsNew: YES];
+  woContext = [[self context] woContext];
+  [[newMessage sogoObject] setContext: woContext];
 
   return newMessage;
 }
