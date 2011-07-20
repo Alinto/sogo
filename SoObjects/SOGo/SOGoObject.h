@@ -84,6 +84,9 @@
 
 /* accessors */
 
+- (void) setContext: (WOContext *) newContext;
+- (WOContext *) context;
+
 - (NSString *) nameInContainer;
 - (NSString *) displayName;
 - (id) container;

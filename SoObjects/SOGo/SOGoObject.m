@@ -199,6 +199,16 @@
 
 /* accessors */
 
+- (void) setContext: (WOContext *) newContext
+{
+  context = newContext;
+}
+
+- (WOContext *) context
+{
+  return context;
+}
+
 - (NSString *) nameInContainer
 {
   return nameInContainer;

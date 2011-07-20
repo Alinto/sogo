@@ -1,3 +1,8 @@
+2011-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m (-setContext, -context): new
+	accessors for the "context" ivar.
+
 2011-07-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxMailToSelection.js
