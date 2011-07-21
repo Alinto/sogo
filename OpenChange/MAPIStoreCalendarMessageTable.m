@@ -65,6 +65,9 @@ static Class MAPIStoreCalendarMessageK = Nil;
       else
 	rc = MAPIRestrictionStateAlwaysFalse;
       break;
+    case PR_OWNER_APPT_ID:
+      rc = MAPIRestrictionStateAlwaysFalse;
+      break;
     case PidLidBusyStatus:
       rc = MAPIRestrictionStateAlwaysTrue; // should be based on c_isopaque
       break;

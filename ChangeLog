@@ -1,3 +1,15 @@
+2011-07-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailMessage.m: make use of the new class
+	below for calendar contents.
+
+	* OpenChange/MAPIStoreCalendarMessage.m: make use of the new class
+	below.
+	(-save): handle invitation replies.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m: new wrapper class
+	module that implements the getters for iCalEvent objects.
+
 2011-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailMessage.m (-subject): new overridable

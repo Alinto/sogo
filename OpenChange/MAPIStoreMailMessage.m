@@ -24,9 +24,10 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGImap4/NGImap4EnvelopeAddress.h>
+#import <NGCards/iCalCalendar.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
-#import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <Mailer/NSData+Mail.h>
 #import <Mailer/SOGoMailBodyPart.h>
 #import <Mailer/SOGoMailObject.h>
@@ -34,11 +35,12 @@
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
+#import "MAPIStoreAppointmentWrapper.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreFolder.h"
+#import "MAPIStoreMailAttachment.h"
 #import "MAPIStoreMailFolder.h"
 #import "MAPIStoreTypes.h"
-#import "MAPIStoreMailAttachment.h"
 
 #import "MAPIStoreMailMessage.h"
 
@@ -48,6 +50,8 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 #include <mapistore/mapistore_nameid.h>
+
+@class iCalCalendar, iCalEvent;
 
 static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 
@@ -91,11 +95,17 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 {
   if ((self = [super init]))
     {
-      bodySetup = NO;
+      mimeKey = nil;
+      mailIsEvent = NO;
+      headerCharset = nil;
+      headerEncoding = nil;
+      headerMethod = nil;
+      headerMimeType = nil;
+      headerSetup = NO;
       bodyContent = nil;
-      bodyMimeType = nil;
-      bodyCharset = nil;
+      bodySetup = NO;
       fetchedAttachments = NO;
+      appointmentWrapper = nil;
     }
 
   return self;
@@ -103,10 +113,158 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 
 - (void) dealloc
 {
+  [mimeKey release];
   [bodyContent release];
-  [bodyMimeType release];
-  [bodyCharset release];
+  [headerMimeType release];
+  [headerCharset release];
+  [headerMethod release];
+  [appointmentWrapper release];
   [super dealloc];
+}
+
+- (NSString *) subject
+{
+  return [sogoObject decodedSubject];
+}
+
+- (NSCalendarDate *) creationTime
+{
+  return [sogoObject date];
+}
+
+- (NSCalendarDate *) lastModificationTime
+{
+  return [sogoObject date];
+}
+
+static NSComparisonResult
+_compareBodyKeysByPriority (id entry1, id entry2, void *data)
+{
+  NSComparisonResult result;
+  NSArray *keys;
+  NSString *data1, *data2;
+  NSUInteger count1, count2;
+
+  keys = data;
+
+  data1 = [entry1 objectForKey: @"mimeType"];
+  count1 = [keys indexOfObject: data1];
+  data2 = [entry2 objectForKey: @"mimeType"];
+  count2 = [keys indexOfObject: data2];
+  
+  if (count1 == count2)
+    {
+      data1 = [entry1 objectForKey: @"key"];
+      count1 = [data1 countOccurrencesOfString: @"."];
+      data2 = [entry2 objectForKey: @"key"];
+      count2 = [data2 countOccurrencesOfString: @"."];
+      if (count1 == count2)
+        {
+          data1 = [data1 _strippedBodyKey];
+          count1 = [data1 intValue];
+          data2 = [data2 _strippedBodyKey];
+          count2 = [data2 intValue];
+          if (count1 == count2)
+            result = NSOrderedSame;
+          else if (count1 < count2)
+            result = NSOrderedAscending;
+          else
+            result = NSOrderedDescending;
+        }
+      else if (count1 < count2)
+        result = NSOrderedAscending;
+      else
+        result = NSOrderedDescending;
+    }
+  else if (count1 < count2)
+    result = NSOrderedAscending;
+  else
+    result = NSOrderedDescending;
+
+  return result;
+}
+
+- (void) _fetchHeaderData
+{
+  NSMutableArray *keys;
+  NSArray *acceptedTypes;
+  NSDictionary *messageData, *partHeaderData, *parameters;
+
+  acceptedTypes = [NSArray arrayWithObjects: @"text/calendar",
+                           @"application/ics",
+                           @"text/html",
+                           @"text/plain", nil];
+  keys = [NSMutableArray array];
+  [sogoObject addRequiredKeysOfStructure: [sogoObject bodyStructure]
+                                    path: @"" toArray: keys
+                           acceptedTypes: acceptedTypes];
+  [keys sortUsingFunction: _compareBodyKeysByPriority context: acceptedTypes];
+  if ([keys count] > 0)
+    {
+      messageData = [keys objectAtIndex: 0];
+      ASSIGN (mimeKey, [messageData objectForKey: @"key"]);
+      ASSIGN (headerMimeType, [messageData objectForKey: @"mimeType"]);
+      partHeaderData
+        = [sogoObject lookupInfoForBodyPart: [mimeKey _strippedBodyKey]];
+      ASSIGN (headerEncoding, [partHeaderData objectForKey: @"encoding"]);
+      parameters = [partHeaderData objectForKey: @"parameterList"];
+      ASSIGN (headerCharset, [parameters objectForKey: @"charset"]);
+      if ([headerMimeType isEqualToString: @"text/calendar"]
+          || [headerMimeType isEqualToString: @"application/ics"])
+        {
+          mailIsEvent = YES;
+          ASSIGN (headerMethod, [parameters objectForKey: @"method"]);
+        }
+    }
+
+  headerSetup = YES;
+}
+
+- (void) _fetchBodyData
+{
+  NSData *rawContent;
+  id result;
+
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  if (mimeKey)
+    {
+      result = [sogoObject fetchParts: [NSArray arrayWithObject: mimeKey]];
+      result = [[result valueForKey: @"RawResponse"] objectForKey: @"fetch"];
+      rawContent = [[result objectForKey: mimeKey] objectForKey: @"data"];
+      ASSIGN (bodyContent, [rawContent bodyDataFromEncoding: headerEncoding]);
+    }
+
+  bodySetup = YES;
+}
+
+- (MAPIStoreAppointmentWrapper *) _appointmentWrapper
+{
+  NSArray *events;
+  iCalCalendar *calendar;
+  iCalEvent *event;
+  NSString *stringValue;
+
+  if (!appointmentWrapper)
+    {
+      if (!bodySetup)
+        [self _fetchBodyData];
+
+      stringValue = [bodyContent bodyStringFromCharset: headerCharset];
+      calendar = [iCalCalendar parseSingleFromSource: stringValue];
+      events = [calendar events];
+      if ([events count] > 0)
+        {
+          event = [events objectAtIndex: 0];
+          appointmentWrapper = [MAPIStoreAppointmentWrapper
+                                 wrapperWithICalEvent: event
+                                           inTimeZone: [self ownerTimeZone]];
+          [appointmentWrapper retain];
+        }
+    }
+
+  return appointmentWrapper;
 }
 
 - (int) getPrIconIndex: (void **) data
@@ -114,9 +272,19 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 {
   uint32_t longValue;
 
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
   /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
   if ([sogoObject isNewMail])
     longValue = 0xffffffff;
+  else if (mailIsEvent)
+    {
+      if ([headerMethod isEqualToString: @"REQUEST"])
+        longValue = 0x0404;
+      else
+        longValue = 0x0400;
+    }
   else if ([sogoObject replied])
     longValue = 0x105;
   else if ([sogoObject forwarded])
@@ -142,11 +310,6 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   *data = MAPILongValue (memCtx, longValue);
 
   return MAPISTORE_SUCCESS;
-}
-
-- (NSString *) subject
-{
-  return [sogoObject decodedSubject];
 }
 
 - (int) getPrSubject: (void **) data
@@ -205,7 +368,22 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 - (int) getPrMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = talloc_strdup (memCtx, "IPM.Note");
+  const char *className;
+
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  if (mailIsEvent)
+    {
+      if ([headerMethod isEqualToString: @"REQUEST"])
+        className = "IPM.Schedule.Meeting.Request";
+      else
+        className = "IPM.Appointment";
+    }
+  else
+    className = "IPM.Note";
+
+  *data = talloc_strdup (memCtx, className);
 
   return MAPISTORE_SUCCESS;
 }
@@ -213,25 +391,18 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 - (int) getPrReplyRequested: (void **) data // TODO
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data inMemCtx: memCtx];
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [self getYes: data inMemCtx: memCtx]
+          : [self getNo: data inMemCtx: memCtx]);
 }
 
 - (int) getPrResponseRequested: (void **) data // TODO
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPIBoolValue (memCtx, NO);
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (NSCalendarDate *) creationTime
-{
-  return [sogoObject date];
-}
-
-- (NSCalendarDate *) lastModificationTime
-{
-  return [sogoObject date];
+  return [self getPrReplyRequested: data inMemCtx: memCtx];
 }
 
 - (int) getPrLatestDeliveryTime: (void **) data // DOUBT
@@ -515,90 +686,6 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-static NSComparisonResult
-_compareBodyKeysByPriority (id entry1, id entry2, void *data)
-{
-  NSComparisonResult result;
-  NSArray *keys;
-  NSString *data1, *data2;
-  NSUInteger count1, count2;
-
-  keys = data;
-
-  data1 = [entry1 objectForKey: @"mimeType"];
-  count1 = [keys indexOfObject: data1];
-  data2 = [entry2 objectForKey: @"mimeType"];
-  count2 = [keys indexOfObject: data2];
-  
-  if (count1 == count2)
-    {
-      data1 = [entry1 objectForKey: @"key"];
-      count1 = [data1 countOccurrencesOfString: @"."];
-      data2 = [entry2 objectForKey: @"key"];
-      count2 = [data2 countOccurrencesOfString: @"."];
-      if (count1 == count2)
-        {
-          data1 = [data1 _strippedBodyKey];
-          count1 = [data1 intValue];
-          data2 = [data2 _strippedBodyKey];
-          count2 = [data2 intValue];
-          if (count1 == count2)
-            result = NSOrderedSame;
-          else if (count1 < count2)
-            result = NSOrderedAscending;
-          else
-            result = NSOrderedDescending;
-        }
-      else if (count1 < count2)
-        result = NSOrderedAscending;
-      else
-        result = NSOrderedDescending;
-    }
-  else if (count1 < count2)
-    result = NSOrderedAscending;
-  else
-    result = NSOrderedDescending;
-
-  return result;
-}
-
-- (void) _setupBodyData
-{
-  NSMutableArray *keys;
-  NSArray *acceptedTypes;
-  NSDictionary *messageData, *partHeaderData;
-  NSString *messageKey, *encoding;
-  NSData *rawContent;
-  id result;
-
-  acceptedTypes = [NSArray arrayWithObjects: // @"text/calendar",
-                           // @"application/ics",
-                           @"text/html",
-                           @"text/plain", nil];
-  keys = [NSMutableArray array];
-  [sogoObject addRequiredKeysOfStructure: [sogoObject bodyStructure]
-                                    path: @"" toArray: keys
-                           acceptedTypes: acceptedTypes];
-  [keys sortUsingFunction: _compareBodyKeysByPriority context: acceptedTypes];
-  if ([keys count] > 0)
-    {
-      messageData = [keys objectAtIndex: 0];
-      ASSIGN (bodyMimeType, [messageData objectForKey: @"mimeType"]);
-      messageKey = [messageData objectForKey: @"key"];
-      result = [sogoObject fetchParts: [NSArray arrayWithObject: messageKey]];
-      result = [[result valueForKey: @"RawResponse"] objectForKey: @"fetch"];
-      rawContent = [[result objectForKey: messageKey] objectForKey: @"data"];
-      partHeaderData = [sogoObject
-                         lookupInfoForBodyPart: [messageKey _strippedBodyKey]];
-      encoding = [partHeaderData objectForKey: @"encoding"];
-      ASSIGN (bodyContent, [rawContent bodyDataFromEncoding: encoding]);
-      ASSIGN (bodyCharset, [[partHeaderData objectForKey: @"parameterList"]
-                             objectForKey: @"charset"]);
-    }
-
-  bodySetup = YES;
-}
-
 - (int) getPrBody: (void **) data
          inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -606,13 +693,16 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   int rc = MAPISTORE_SUCCESS;
 
   if (!bodySetup)
-    [self _setupBodyData];
+    [self _fetchBodyData];
 
-  if ([bodyMimeType isEqualToString: @"text/plain"])
+  if ([headerMimeType isEqualToString: @"text/plain"])
     {
-      stringValue = [bodyContent bodyStringFromCharset: bodyCharset];
+      stringValue = [bodyContent bodyStringFromCharset: headerCharset];
       *data = [stringValue asUnicodeInMemCtx: memCtx];
     }
+  else if (mailIsEvent)
+    rc = [[self _appointmentWrapper] getPrBody: data
+                                     inMemCtx: memCtx];
   else
     {
       *data = NULL;
@@ -628,9 +718,9 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   int rc = MAPISTORE_SUCCESS;
 
   if (!bodySetup)
-    [self _setupBodyData];
+    [self _fetchBodyData];
 
-  if ([bodyMimeType isEqualToString: @"text/html"])
+  if ([headerMimeType isEqualToString: @"text/html"])
     *data = [bodyContent asBinaryInMemCtx: memCtx];
   else
     {
@@ -675,37 +765,75 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return [self getNo: data inMemCtx: memCtx];
 }
 
+- (int) getPidLidGlobalObjectId: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidGlobalObjectId: data
+                                                       inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidCleanGlobalObjectId: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidCleanGlobalObjectId: data
+                                                            inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidServerProcessed: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidServerProcessed: data
+                                                        inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
 - (int) getPidLidPrivate: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data inMemCtx: memCtx];
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidPrivate: data
+                                                inMemCtx: memCtx]
+          :  [self getNo: data inMemCtx: memCtx]);
+}
+
+- (int) getPidLidMeetingType: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) getPrMsgEditorFormat: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  NSMutableArray *keys;
-  NSArray *acceptedTypes;
   uint32_t format;
+
+  if (!headerSetup)
+    [self _fetchHeaderData];
     
-  format = 0; /* EDITOR_FORMAT_DONTKNOW */
-    
-  acceptedTypes = [NSArray arrayWithObject: @"text/plain"];
-  keys = [NSMutableArray array];
-  [sogoObject addRequiredKeysOfStructure: [sogoObject bodyStructure]
-                                    path: @"" toArray: keys
-                           acceptedTypes: acceptedTypes];
-  if ([keys count] == 1)
+  if ([headerMimeType isEqualToString: @"text/plain"])
     format = EDITOR_FORMAT_PLAINTEXT;
-  
-  acceptedTypes = [NSArray arrayWithObject: @"text/html"];
-  [keys removeAllObjects];
-  [sogoObject addRequiredKeysOfStructure: [sogoObject bodyStructure]
-                                    path: @"" toArray: keys
-                           acceptedTypes: acceptedTypes];
-  if ([keys count] == 1)
+  else if ([headerMimeType isEqualToString: @"text/html"])
     format = EDITOR_FORMAT_HTML;
-  
+  else
+    format = 0; /* EDITOR_FORMAT_DONTKNOW */
+    
   *data = MAPILongValue (memCtx, format);
 
   return MAPISTORE_SUCCESS;
@@ -733,6 +861,193 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
+}
+
+/* event getters */
+- (int) getPrStartDate: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPrStartDate: data inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidAppointmentMessageClass: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  if (mailIsEvent)
+    *data = talloc_strdup (memCtx, "IPM.Appointment");
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidLidAppointmentStartWhole: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidAppointmentStartWhole: data
+                                                              inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidCommonStart: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidCommonStart: data
+                                                    inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPrEndDate: (void **) data
+            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPrEndDate: data inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidAppointmentEndWhole: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidAppointmentEndWhole: data
+                                                            inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidCommonEnd: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidCommonEnd: data
+                                                  inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidAppointmentDuration: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidAppointmentDuration: data
+                                                            inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidAppointmentSubType: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidAppointmentSubType: data
+                                                           inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidBusyStatus: (void **) data // TODO
+                   inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidBusyStatus: data
+                                                   inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidLocation: (void **) data // LOCATION
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidLocation: data
+                                                 inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidIsRecurring: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidIsRecurring: data
+                                                    inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidRecurring: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidRecurring: data
+                                                  inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidAppointmentRecur: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidAppointmentRecur: data
+                                                         inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPrOwnerApptId: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  if (mailIsEvent)
+    *data = MAPILongValue (memCtx, 0xabcd1234);
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 - (void) getMessageData: (struct mapistore_message **) dataPtr

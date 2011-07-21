@@ -36,6 +36,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	SOGoMAPIFSFolder.m \
 	SOGoMAPIFSMessage.m \
 	\
+	MAPIStoreAppointmentWrapper.m \
 	MAPIStoreAttachment.m \
 	MAPIStoreAttachmentTable.m \
 	MAPIStoreContext.m \

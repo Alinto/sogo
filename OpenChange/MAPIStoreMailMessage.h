@@ -28,13 +28,22 @@
 @class NSData;
 @class NSString;
 
+@class MAPIStoreAppointmentWrapper;
+
 @interface MAPIStoreMailMessage : MAPIStoreMessage
 {
-  BOOL fetchedAttachments;
+  BOOL headerSetup;
+  BOOL mailIsEvent;
+  NSString *mimeKey;
+  NSString *headerCharset;
+  NSString *headerEncoding;
+  NSString *headerMethod;
+  NSString *headerMimeType;
   BOOL bodySetup;
   NSData *bodyContent;
-  NSString *bodyMimeType;
-  NSString *bodyCharset;
+  BOOL fetchedAttachments;
+
+  MAPIStoreAppointmentWrapper *appointmentWrapper;
 }
 
 - (NSString *) subject;
