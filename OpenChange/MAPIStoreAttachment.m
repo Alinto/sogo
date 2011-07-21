@@ -125,7 +125,7 @@
 /* subclasses */
 - (MAPIStoreAttachmentMessage *) openEmbeddedMessage
 {
-  [self subclassResponsibility: _cmd];
+  // [self subclassResponsibility: _cmd];
 
   return nil;
 }
