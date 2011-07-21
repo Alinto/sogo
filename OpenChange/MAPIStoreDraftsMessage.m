@@ -172,6 +172,17 @@ e)
   return [attachmentParts objectForKey: childKey];
 }
 
+- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
+                        andSortOrderings: (NSArray *) sortOrderings
+{
+  if (qualifier)
+    [self errorWithFormat: @"qualifier is not used for attachments"];
+  if (sortOrderings)
+    [self errorWithFormat: @"sort orderings are not used for attachments"];
+  
+  return attachmentKeys;
+}
+
 - (void) submit
 {
   NSString *msgClass;
