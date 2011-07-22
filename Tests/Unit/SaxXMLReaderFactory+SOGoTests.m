@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSFileManager.h>
 #import <Foundation/NSProcessInfo.h>
 
 #import <SaxObjC/SaxXMLReaderFactory.h>
@@ -37,18 +38,14 @@
 - (NSArray *) saxReaderSearchPathes
 {
   NSArray *pathes, *args;
-  NSDictionary *env;
-  NSString *pwd, *exedir;
+  NSString *cwd, *exedir;
 
   args = [[NSProcessInfo processInfo] arguments];
-  env = [[NSProcessInfo processInfo] environment];
-  pwd = [env objectForKey: @"PWD"];
-  if (!pwd)
-    pwd = @"";
+  cwd = [[NSFileManager defaultManager] currentDirectoryPath];
   exedir = [[args objectAtIndex: 0] stringByDeletingLastPathComponent];
   pathes = [NSArray arrayWithObject:
                       [NSString stringWithFormat: @"%@/%@/%@",
-                                pwd, exedir,
+                                cwd, exedir,
                                 @"../../../SOPE/NGCards/versitCardsSaxDriver/"]];
 
   return pathes;
