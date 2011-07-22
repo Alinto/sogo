@@ -13,6 +13,7 @@ $(TEST_TOOL)_OBJC_FILES += \
 	\
 	SOGoTest.m \
 	SOGoTestRunner.m \
+	SaxXMLReaderFactory+SOGoTests.m \
 	\
 	TestiCalTimeZonePeriod.m \
 	TestiCalRecurrenceCalculator.m \
@@ -29,7 +30,7 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-D_GNU_SOURCE -I../SOPE/ -I../SoObjects/ -I../UI/
 
 ADDITIONAL_LIB_DIRS += \
-	-L../SoObjects/SOGo -lSOGo -lNGMime -lNGCards -lGDLContentStore -lNGExtensions -lSBJson -lobjc
+	-L../SoObjects/SOGo -lSOGo -lNGMime -lNGCards -lGDLContentStore -lNGExtensions -lSBJson -lobjc -L/usr/local/lib  -lSaxObjC
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/test-tool.make

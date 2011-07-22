@@ -1,3 +1,9 @@
+2011-07-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Unit/SaxXMLReaderFactory+SOGoTests.m: new module offering
+	a category on SaxXMLReaderFactory that enables finding our NGCards
+	SAX driver in our source directories.
+
 2011-07-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailMessage.m: make use of the new class
