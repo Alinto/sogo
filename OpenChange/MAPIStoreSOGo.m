@@ -841,6 +841,36 @@ sogo_table_get_row (void *table_object, TALLOC_CTX *mem_ctx,
   return rc;
 }
 
+static int
+sogo_table_get_row_count (void *table_object,
+                          enum table_query_type query_type,
+                          uint32_t *row_countp)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreTable *table;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (table_object)
+    {
+      wrapper = table_object;
+      table = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [table getRowCount: row_countp
+                withQueryType: query_type];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
+      rc = MAPISTORE_SUCCESS;
+    }
+
+  return rc;
+}
+
 static int sogo_properties_get_available_properties(void *object,
                                                     TALLOC_CTX *mem_ctx,
                                                     struct SPropTagArray **propertiesP)
@@ -973,6 +1003,7 @@ int mapistore_init_backend(void)
       backend.table.set_sort_order = sogo_table_set_sort_order;
       backend.table.set_columns = sogo_table_set_columns;
       backend.table.get_row = sogo_table_get_row;
+      backend.table.get_row_count = sogo_table_get_row_count;
       backend.properties.get_available_properties = sogo_properties_get_available_properties;
       backend.properties.get_properties = sogo_properties_get_properties;
       backend.properties.set_properties = sogo_properties_set_properties;

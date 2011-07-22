@@ -846,6 +846,21 @@ static Class NSDataK, NSStringK;
   return rc;
 }
 
+- (int) getRowCount: (uint32_t *) countP
+      withQueryType: (enum table_query_type) queryType
+{
+  NSArray *children;
+
+  if (queryType == MAPISTORE_PREFILTERED_QUERY)
+    children = [self restrictedChildKeys];
+  else
+    children = [self childKeys];
+
+  *countP = [children count];
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (void) notifyChangesForChild: (MAPIStoreObject *) child
 {
   NSUInteger currentChildRow, newChildRow;

@@ -96,6 +96,8 @@ typedef enum {
      withRowID: (uint32_t) rowId
   andQueryType: (enum table_query_type) queryType
       inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getRowCount: (uint32_t *) countP
+      withQueryType: (enum table_query_type) queryType;
 
 - (void) notifyChangesForChild: (MAPIStoreObject *) child;
 

@@ -1,5 +1,8 @@
 2011-07-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_table_get_row_count): added new
+	backend operation.
+
 	* Tests/Unit/SaxXMLReaderFactory+SOGoTests.m: new module offering
 	a category on SaxXMLReaderFactory that enables finding our NGCards
 	SAX driver in our source directories.
