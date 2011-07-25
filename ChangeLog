@@ -1,3 +1,13 @@
+2011-07-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MainUI/SOGoRootPage.m (-connectAction): don't add the domain
+	if domain-based UIDs are not enabled.
+	(-changePasswordAction): idem.
+
+	* SoObjects/SOGo/SOGoUser.m (-initWithLogin:roles:trust:): added
+	test for the ivar "realUID" since it can be undefined if the
+	corresponding source is down.
+
 2011-07-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreSOGo.m (sogo_table_get_row_count): added new

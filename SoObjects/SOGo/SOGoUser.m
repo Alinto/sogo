@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2009 Inverse inc.
+  Copyright (C) 2006-2011 Inverse inc.
   Copyright (C) 2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
@@ -147,6 +147,7 @@
   _settings = nil;
   
   uid = nil;
+  realUID = nil;
   domain = nil;
 
   if ([newLogin isEqualToString: @"anonymous"]
@@ -184,7 +185,7 @@
             domain = [contactInfos objectForKey: @"c_domain"];
 	}
 
-      if (domain)
+      if ([realUID length] && [domain length])
         {
           // When the user is associated to a domain, the [SOGoUser login]
           // method returns the combination login@domain while
