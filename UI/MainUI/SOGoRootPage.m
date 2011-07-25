@@ -148,6 +148,7 @@
   SOGoWebAuthenticator *auth;
   SOGoAppointmentFolders *calendars;
   SOGoUserDefaults *ud;
+  SOGoSystemDefaults *sd;
   SOGoUser *loggedInUser;
   NSString *username, *password, *language, *domain;
   NSArray *supportedLanguages;
@@ -186,7 +187,11 @@
 		       andJSONRepresentation: json];
       
       if ([domain isNotNull])
-        username = [NSString stringWithFormat: @"%@@%@", username, domain];
+        {
+          sd = [SOGoSystemDefaults sharedSystemDefaults];
+          if ([sd enableDomainBasedUID])
+            username = [NSString stringWithFormat: @"%@@%@", username, domain];
+        }
 
       authCookie = [self _cookieWithUsername: username
                                  andPassword: password
@@ -428,14 +433,15 @@
 - (WOResponse *) changePasswordAction
 {
   NSString *username, *domain, *password, *newPassword, *value;
-  SOGoUserManager *um;
-  SOGoPasswordPolicyError error;
-  WOResponse *response;
-  WORequest *request;
   NSDictionary *message;
-  SOGoWebAuthenticator *auth;
   WOCookie *authCookie;
   NSArray *creds;
+  SOGoUserManager *um;
+  SOGoPasswordPolicyError error;
+  SOGoSystemDefaults *sd;
+  SOGoWebAuthenticator *auth;
+  WOResponse *response;
+  WORequest *request;
 
   request = [context request];
   message = [[request contentAsString] objectFromJSONString];
@@ -467,8 +473,12 @@
       [SOGoSession deleteValueForSessionKey: [creds objectAtIndex: 1]]; 
 
       if ([domain isNotNull])
-        username = [NSString stringWithFormat: @"%@@%@", username, domain];
-
+        {
+          sd = [SOGoSystemDefaults sharedSystemDefaults];
+          if ([sd enableDomainBasedUID])
+            username = [NSString stringWithFormat: @"%@@%@", username, domain];
+        }
+      
       response = [self responseWith204];
       authCookie = [self _cookieWithUsername: username
                                  andPassword: newPassword
