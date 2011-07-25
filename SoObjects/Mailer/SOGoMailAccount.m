@@ -244,6 +244,11 @@ static NSString *inboxFolderName = @"INBOX";
   return [self hasCapability: @"quota"];
 }
 
+- (BOOL) supportsQResync
+{
+  return [self hasCapability: @"qresync"];
+}
+
 - (id) getInboxQuota
 {
   SOGoMailFolder *inbox;

@@ -3,6 +3,8 @@
 	* SoObjects/Mailer/SOGoMailAccount.m (-hasCapability): new proxy
 	method that determines whether an IMAP capability is present on
 	the server.
+	(-supportsQResync): new method that returns whether the server
+	supports the "QRESYNC" capability.
 
 2011-07-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
