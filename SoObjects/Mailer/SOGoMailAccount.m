@@ -227,15 +227,21 @@ static NSString *inboxFolderName = @"INBOX";
   return conforms;
 }
 
-- (BOOL) supportsQuotas
+/* capabilities */
+- (BOOL) hasCapability: (NSString *) capability
 {
   NGImap4Client *imapClient;
-  NSArray *capability;
+  NSArray *capabilities;
 
   imapClient = [[self imap4Connection] client];
-  capability = [[imapClient capability] objectForKey: @"capability"];
+  capabilities = [[imapClient capability] objectForKey: @"capability"];
 
-  return [capability containsObject: @"quota"];
+  return [capabilities containsObject: capability];
+}
+
+- (BOOL) supportsQuotas
+{
+  return [self hasCapability: @"quota"];
 }
 
 - (id) getInboxQuota

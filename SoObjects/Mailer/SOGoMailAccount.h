@@ -64,7 +64,10 @@ typedef enum {
 - (SOGoIMAPAclStyle) imapAclStyle;
 - (BOOL) imapAclConformsToIMAPExt;
 
+/* capabilities */
+- (BOOL) hasCapability: (NSString *) capability;
 - (BOOL) supportsQuotas;
+
 - (id) getInboxQuota;
 - (BOOL) updateFilters;
 
