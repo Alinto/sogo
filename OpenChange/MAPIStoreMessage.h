@@ -46,7 +46,9 @@
 
 - (int) modifyRecipientsWithRows: (struct ModifyRecipientRow *) rows
                         andCount: (NSUInteger) max;
+- (id) lookupAttachment: (NSString *) childKey;
 
+/* backend methods */
 - (int) createAttachment: (MAPIStoreAttachment **) attachmentPtr
                    inAID: (uint32_t *) aidPtr;
 - (int) getAttachment: (MAPIStoreAttachment **) attachmentPtr

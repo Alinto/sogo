@@ -271,6 +271,13 @@
   return rc;
 }
 
+- (id) lookupAttachment: (NSString *) childKey
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
 - (int) getAttachment: (MAPIStoreAttachment **) attachmentPtr
               withAID: (uint32_t) aid
 {
@@ -282,7 +289,7 @@
                          andSortOrderings: nil];
   if (aid < [keys count])
     {
-      attachment = [self lookupChild: [keys objectAtIndex: aid]];
+      attachment = [self lookupAttachment: [keys objectAtIndex: aid]];
       if (attachment)
         {
           *attachmentPtr = attachment;

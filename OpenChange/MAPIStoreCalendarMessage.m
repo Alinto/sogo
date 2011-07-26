@@ -475,7 +475,7 @@
   return attachmentKeys;
 }
 
-- (id) lookupChild: (NSString *) childKey
+- (id) lookupAttachment: (NSString *) childKey
 {
   return [attachmentParts objectForKey: childKey];
 }

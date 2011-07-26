@@ -153,9 +153,9 @@ static Class MAPIStoreFSMessageK;
   return folderKeys;
 }
 
-- (id) lookupChild: (NSString *) childKey
+- (id) lookupFolder: (NSString *) childKey
 {
-  id childObject;
+  id childObject = nil;
   SOGoMAPIFSFolder *childFolder;
 
   [self folderKeys];
@@ -166,8 +166,6 @@ static Class MAPIStoreFSMessageK;
       childObject = [MAPIStoreFSFolder mapiStoreObjectWithSOGoObject: childFolder
                                                          inContainer: self];
     }
-  else
-    childObject = [super lookupChild: childKey];
 
   return childObject;
 }
@@ -191,7 +189,7 @@ static Class MAPIStoreFSMessageK;
   max = [messageKeys count];
   for (count = 0; count < max; count++)
     {
-      msg = [self lookupChild: [messageKeys objectAtIndex: count]];
+      msg = [self lookupMessage: [messageKeys objectAtIndex: count]];
       fileDate = [msg lastModificationTime];
       if ([date laterDate: fileDate] == fileDate)
         {

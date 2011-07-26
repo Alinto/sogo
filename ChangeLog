@@ -1,3 +1,16 @@
+2011-07-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreObject.m (-lookupChild:): removed method as
+	it was too generic. Each subclass has now its own set of
+	specialized methods.
+
+	* OpenChange/MAPIStoreMessage.m (-lookupAttachment:): new method,
+	replacing -[MAPIStoreObject lookupChild:].
+
+	* OpenChange/MAPIStoreFolder.m (-lookupFolder:, -lookupMessage:)
+	(-lookupFAIMessage:): new methods, replacing -[MAPIStoreObject
+	lookupChild:].
+
 2011-07-26  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailListActions.m

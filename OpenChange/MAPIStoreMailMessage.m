@@ -1151,7 +1151,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                           andSortOrderings: sortOrderings];
 }
 
-- (id) lookupChild: (NSString *) childKey
+- (id) lookupAttachment: (NSString *) childKey
 {
   MAPIStoreMailAttachment *attachment;
   SOGoMailBodyPart *currentPart;

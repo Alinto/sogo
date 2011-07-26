@@ -126,7 +126,6 @@
 - (NSDate *) creationTime;
 - (NSDate *) lastModificationTime;
 
-- (id) lookupChild: (NSString *) childKey;
 - (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
                         andSortOrderings: (NSArray *) sortOrderings;
 

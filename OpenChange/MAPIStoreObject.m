@@ -440,13 +440,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return nil;
 }
 
-- (id) lookupChild: (NSString *) childKey
-{
-  [self subclassResponsibility: _cmd];
-
-  return nil;
-}
-
 - (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
                         andSortOrderings: (NSArray *) sortOrderings
 {

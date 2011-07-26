@@ -250,9 +250,9 @@ static Class SOGoMailFolderK;
   return [MAPIStoreMailFolderTable tableForContainer: self];
 }
 
-- (id) lookupChild: (NSString *) childKey
+- (id) lookupFolder: (NSString *) childKey
 {
-  id childObject;
+  id childObject = nil;
   SOGoMailFolder *childFolder;
 
   [self folderKeys];
@@ -263,8 +263,6 @@ static Class SOGoMailFolderK;
       childObject = [MAPIStoreMailFolder mapiStoreObjectWithSOGoObject: childFolder
                                                            inContainer: self];
     }
-  else
-    childObject = [super lookupChild: childKey];
 
   return childObject;
 }

@@ -192,6 +192,25 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   if (messageKey)
     {
+      msgObject = [sogoObject lookupName: messageKey
+                               inContext: nil
+                                 acquire: NO];
+      if (msgObject && ![msgObject isKindOfClass: NSExceptionK])
+        childMessage
+          = [[self messageClass] mapiStoreObjectWithSOGoObject: msgObject
+                                                   inContainer: self];
+    }
+
+  return childMessage;
+}
+
+- (id) lookupFAIMessage: (NSString *) messageKey
+{
+  MAPIStoreObject *childMessage = nil;
+  SOGoObject *msgObject;
+
+  if (messageKey)
+    {
       [self faiMessageKeys];
       if ([faiMessageKeys containsObject: messageKey])
         {
@@ -202,16 +221,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
             = [MAPIStoreFAIMessageK mapiStoreObjectWithSOGoObject: msgObject
                                                       inContainer: self];
         }
-      else
-        {
-          msgObject = [sogoObject lookupName: messageKey
-                                   inContext: nil
-                                     acquire: NO];
-          if (msgObject && ![msgObject isKindOfClass: NSExceptionK])
-            childMessage
-              = [[self messageClass] mapiStoreObjectWithSOGoObject: msgObject
-                                                       inContainer: self];
-        }
     }
 
   return childMessage;
@@ -220,7 +229,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (id) lookupMessageByURL: (NSString *) childURL
 {
   MAPIStoreObject *foundObject = nil;
-  NSString *baseURL, *subURL;
+  NSString *baseURL, *subURL, *key;
   NSArray *parts;
   NSUInteger partsCount;
 
@@ -235,7 +244,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
           parts = [subURL componentsSeparatedByString: @"/"];
           partsCount = [parts count];
           if (partsCount == 1)
-            foundObject = [self lookupMessage: [parts objectAtIndex: 0]];
+            {
+              key = [parts objectAtIndex: 0];
+              foundObject = [self lookupFAIMessage: key];
+              if (!foundObject)
+                foundObject = [self lookupMessage: key];
+            }
         }
     }
 
@@ -657,11 +671,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   messageKeys = nil;
   [folderKeys release];
   folderKeys = nil;
-}
-
-- (id) lookupChild: (NSString *) childKey
-{
-  return [self lookupMessage: childKey];
 }
 
 - (int) getPrParentFid: (void **) data

@@ -167,7 +167,7 @@ e)
     [self _saveAttachment: [attachmentKeys objectAtIndex: count]];
 }
 
-- (id) lookupChild: (NSString *) childKey
+- (id) lookupAttachment: (NSString *) childKey
 {
   return [attachmentParts objectForKey: childKey];
 }

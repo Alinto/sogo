@@ -65,6 +65,7 @@
 - (id) lookupFolder: (NSString *) folderKey;
 - (id) lookupFolderByURL: (NSString *) folderURL;
 - (id) lookupMessage: (NSString *) messageKey;
+- (id) lookupFAIMessage: (NSString *) messageKey;
 - (id) lookupMessageByURL: (NSString *) messageURL;
 
 - (NSArray *) activeMessageTables;
