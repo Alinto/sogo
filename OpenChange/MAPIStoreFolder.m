@@ -127,6 +127,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     {
       urlString = [[self url] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
       propsURL = [NSURL URLWithString: urlString];
+      ASSIGN (faiFolder,
+              [SOGoMAPIFSFolder folderWithURL: propsURL
+                                 andTableType: MAPISTORE_FAI_TABLE]);
       ASSIGN (propsFolder,
               [SOGoMAPIFSFolder folderWithURL: propsURL
                                 andTableType: MAPISTORE_FOLDER_TABLE]);
@@ -599,8 +602,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   if (!messageKeys)
     {
-      messageKeys = [self childKeysMatchingQualifier: nil
-                                    andSortOrderings: nil];
+      messageKeys = [self messageKeysMatchingQualifier: nil
+                                      andSortOrderings: nil];
       [messageKeys retain];
     }
 
@@ -612,11 +615,23 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return [MAPIStoreFAIMessageTable tableForContainer: self];
 }
 
+- (NSArray *) faiMessageKeysMatchingQualifier: (EOQualifier *) qualifier
+                             andSortOrderings: (NSArray *) sortOrderings
+{
+  if (qualifier)
+    [self errorWithFormat: @"qualifier is not used for FAI messages"];
+  if (sortOrderings)
+    [self errorWithFormat: @"sort orderings are not used for FAI messages"];
+
+  return [faiFolder toOneRelationshipKeys];
+}
+
 - (NSArray *) faiMessageKeys
 {
   if (!faiMessageKeys)
     {
-      faiMessageKeys = [faiFolder toOneRelationshipKeys];
+      faiMessageKeys = [self faiMessageKeysMatchingQualifier: nil
+                                            andSortOrderings: nil];
       [faiMessageKeys retain];
     }
 
@@ -625,12 +640,30 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (MAPIStoreFolderTable *) folderTable
 {
-  return nil;
+  return [MAPIStoreFolderTable tableForContainer: self];
 }
 
 - (NSArray *) folderKeys
 {
-  return nil;
+  if (!folderKeys)
+    {
+      folderKeys = [self folderKeysMatchingQualifier: nil
+                                    andSortOrderings: nil];
+      [folderKeys retain];
+    }
+
+  return folderKeys;
+}
+
+- (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
+                         andSortOrderings: (NSArray *) sortOrderings
+{
+  if (qualifier)
+    [self errorWithFormat: @"qualifier is not used for folders"];
+  if (sortOrderings)
+    [self errorWithFormat: @"sort orderings are not used for folders"];
+
+  return [sogoObject toManyRelationshipKeys];
 }
 
 - (NSArray *) activeMessageTables
@@ -884,6 +917,14 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (MAPIStoreMessageTable *) messageTable
 {
   return nil;
+}
+
+- (NSArray *) messageKeysMatchingQualifier: (EOQualifier *) qualifier
+                          andSortOrderings: (NSArray *) sortOrderings
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;  
 }
 
 - (Class) messageClass

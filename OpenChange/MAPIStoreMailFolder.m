@@ -199,12 +199,10 @@ static Class SOGoMailFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
-                        andSortOrderings: (NSArray *) sortOrderings
+- (EOQualifier *) nonDeletedQualifier
 {
-  NSArray *uidKeys;
-  EOQualifier *fetchQualifier, *deletedQualifier;
   static EOQualifier *nonDeletedQualifier = nil;
+  EOQualifier *deletedQualifier;
 
   if (!nonDeletedQualifier)
     {
@@ -218,18 +216,28 @@ static Class SOGoMailFolderK;
       [deletedQualifier release];
     }
 
+  return nonDeletedQualifier;
+}
+
+- (NSArray *) messageKeysMatchingQualifier: (EOQualifier *) qualifier
+                          andSortOrderings: (NSArray *) sortOrderings
+{
+  NSArray *uidKeys;
+  EOQualifier *fetchQualifier;
+
   if (!sortOrderings)
     sortOrderings = [NSArray arrayWithObject: @"ARRIVAL"];
 
   if (qualifier)
     {
-      fetchQualifier = [[EOAndQualifier alloc]
-                         initWithQualifiers: nonDeletedQualifier, qualifier,
-                         nil];
+      fetchQualifier
+        = [[EOAndQualifier alloc] initWithQualifiers:
+                                    [self nonDeletedQualifier], qualifier,
+                                  nil];
       [fetchQualifier autorelease];
     }
   else
-    fetchQualifier = nonDeletedQualifier;
+    fetchQualifier = [self nonDeletedQualifier];
 
   uidKeys = [sogoObject fetchUIDsMatchingQualifier: fetchQualifier
                                       sortOrdering: sortOrderings];
@@ -242,11 +250,6 @@ static Class SOGoMailFolderK;
     folderKeys = [[sogoObject toManyRelationshipKeys] mutableCopy];
 
   return folderKeys;
-}
-
-- (MAPIStoreFAIMessageTable *) folderTable
-{
-  return [MAPIStoreMailFolderTable tableForContainer: self];
 }
 
 - (id) lookupFolder: (NSString *) childKey

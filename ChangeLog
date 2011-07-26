@@ -9,13 +9,26 @@
 	* OpenChange/MAPIStoreObject.m (-lookupChild:): removed method as
 	it was too generic. Each subclass has now its own set of
 	specialized methods.
+	(-childKeysMatchingQualiflier:andSortOrderings:) same as above.
 
 	* OpenChange/MAPIStoreMessage.m (-lookupAttachment:): new method,
 	replacing -[MAPIStoreObject lookupChild:].
+	(-attachmentKeysMatchingQualiflier:andSortOrderings:) same as
+	above, replacing (-[MAPIStoreObject
+	childKeysMatchingQualiflier:andSortOrderings:]).
 
 	* OpenChange/MAPIStoreFolder.m (-lookupFolder:, -lookupMessage:)
 	(-lookupFAIMessage:): new methods, replacing -[MAPIStoreObject
 	lookupChild:].
+	(-messageKeysMatchingQualiflier:andSortOrderings:) same as
+	above, replacing (-[MAPIStoreObject
+	childKeysMatchingQualiflier:andSortOrderings:]).
+	(-faiMessageKeysMatchingQualiflier:andSortOrderings:) same as
+	above, replacing (-[MAPIStoreObject
+	childKeysMatchingQualiflier:andSortOrderings:]).
+	(-folderKeysMatchingQualiflier:andSortOrderings:) same as
+	above, replacing (-[MAPIStoreObject
+	childKeysMatchingQualiflier:andSortOrderings:]).
 
 2011-07-26  Francis Lachapelle  <flachapelle@inverse.ca>
 

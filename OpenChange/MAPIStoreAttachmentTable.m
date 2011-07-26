@@ -20,11 +20,50 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+
 #import "MAPIStoreMessage.h"
 
 #import "MAPIStoreAttachmentTable.h"
 
 @implementation MAPIStoreAttachmentTable
+
+- (NSArray *) childKeys
+{
+  if (!childKeys)
+    {
+      childKeys = [(MAPIStoreMessage *)
+                    container attachmentKeysMatchingQualifier: nil
+                                             andSortOrderings: sortOrderings];
+      [childKeys retain];
+    }
+
+  return childKeys;
+}
+
+- (NSArray *) restrictedChildKeys
+{
+  NSArray *keys;
+
+  if (!restrictedChildKeys)
+    {
+      if (restrictionState != MAPIRestrictionStateAlwaysTrue)
+        {
+          if (restrictionState == MAPIRestrictionStateNeedsEval)
+            keys = [(MAPIStoreMessage *)
+                     container attachmentKeysMatchingQualifier: restriction
+                                              andSortOrderings: sortOrderings];
+          else
+            keys = [NSArray array];
+        }
+      else
+        keys = [self childKeys];
+
+      ASSIGN (restrictedChildKeys, keys);
+    }
+
+  return restrictedChildKeys;
+}
 
 - (id) lookupChild: (NSString *) childKey
 {

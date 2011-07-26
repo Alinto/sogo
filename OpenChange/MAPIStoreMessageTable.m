@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <SOGo/SOGoFolder.h>
@@ -37,6 +39,43 @@
 - (void) setSortOrder: (const struct SSortOrderSet *) set
 {
   [self logWithFormat: @"unimplemented method: %@", NSStringFromSelector (_cmd)];
+}
+
+- (NSArray *) childKeys
+{
+  if (!childKeys)
+    {
+      childKeys = [(MAPIStoreFolder *)
+                    container messageKeysMatchingQualifier: nil
+                                          andSortOrderings: sortOrderings];
+      [childKeys retain];
+    }
+
+  return childKeys;
+}
+
+- (NSArray *) restrictedChildKeys
+{
+  NSArray *keys;
+
+  if (!restrictedChildKeys)
+    {
+      if (restrictionState != MAPIRestrictionStateAlwaysTrue)
+        {
+          if (restrictionState == MAPIRestrictionStateNeedsEval)
+            keys = [(MAPIStoreFolder *)
+                     container messageKeysMatchingQualifier: restriction
+                                           andSortOrderings: sortOrderings];
+          else
+            keys = [NSArray array];
+        }
+      else
+        keys = [self childKeys];
+
+      ASSIGN (restrictedChildKeys, keys);
+    }
+
+  return restrictedChildKeys;
 }
 
 - (id) lookupChild: (NSString *) childKey

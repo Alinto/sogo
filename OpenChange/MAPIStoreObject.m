@@ -440,10 +440,4 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return nil;
 }
 
-- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
-                        andSortOrderings: (NSArray *) sortOrderings
-{
-  return nil;
-}
-
 @end

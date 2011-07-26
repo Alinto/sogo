@@ -45,8 +45,9 @@
 {
   unsigned int v = MSGFLAG_FROMME;
 
-  if ([[self childKeysMatchingQualifier: nil
-                       andSortOrderings: nil] count] > 0)
+  if ([[self attachmentKeysMatchingQualifier: nil
+                            andSortOrderings: nil]
+        count] > 0)
     v |= MSGFLAG_HASATTACH;
     
   *data = MAPILongValue (memCtx, v);
@@ -170,17 +171,6 @@ e)
 - (id) lookupAttachment: (NSString *) childKey
 {
   return [attachmentParts objectForKey: childKey];
-}
-
-- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
-                        andSortOrderings: (NSArray *) sortOrderings
-{
-  if (qualifier)
-    [self errorWithFormat: @"qualifier is not used for attachments"];
-  if (sortOrderings)
-    [self errorWithFormat: @"sort orderings are not used for attachments"];
-  
-  return attachmentKeys;
 }
 
 - (void) submit

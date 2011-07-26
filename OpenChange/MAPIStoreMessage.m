@@ -60,7 +60,6 @@
 {
   if ((self = [super init]))
     {
-      attachmentKeys = [NSMutableArray new];
       attachmentParts = [NSMutableDictionary new];
       activeTables = [NSMutableArray new];
     }
@@ -238,7 +237,7 @@
   uint32_t newAid;
   NSString *newKey;
 
-  newAid = [attachmentKeys count];
+  newAid = [[self attachmentKeys] count];
 
   newAttachment = [MAPIStoreAttachment
                     mapiStoreObjectWithSOGoObject: nil
@@ -248,7 +247,8 @@
   newKey = [NSString stringWithFormat: @"%ul", newAid];
   [attachmentParts setObject: newAttachment
                       forKey: newKey];
-  [attachmentKeys addObject: newKey];
+  [attachmentKeys release];
+  attachmentKeys = nil;
 
   return newAttachment;
 }
@@ -285,8 +285,7 @@
   NSArray *keys;
   int rc = MAPISTORE_ERR_NOT_FOUND;
 
-  keys = [self childKeysMatchingQualifier: nil
-                         andSortOrderings: nil];
+  keys = [self attachmentKeys];
   if (aid < [keys count])
     {
       attachment = [self lookupAttachment: [keys objectAtIndex: aid]];
@@ -310,9 +309,7 @@
   if (attTable)
     {
       *tablePtr = attTable;
-      *countPtr = [[self childKeysMatchingQualifier: nil
-                         andSortOrderings: nil]
-                    count];
+      *countPtr = [[attTable childKeys] count];
     }
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
@@ -661,8 +658,7 @@
               inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx,
-                         [[self childKeysMatchingQualifier: nil
-                                          andSortOrderings: nil] count] > 0);
+                         [[self attachmentKeys] count] > 0);
 
   return MAPISTORE_SUCCESS;
 }
@@ -678,15 +674,27 @@
   [self subclassResponsibility: _cmd];
 }
 
-- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
-                        andSortOrderings: (NSArray *) sortOrderings
+- (NSArray *) attachmentKeys
+{
+  if (!attachmentKeys)
+    {
+      attachmentKeys = [self attachmentKeysMatchingQualifier: nil
+                                            andSortOrderings: nil];
+      [attachmentKeys retain];
+    }
+
+  return attachmentKeys;
+}
+
+- (NSArray *) attachmentKeysMatchingQualifier: (EOQualifier *) qualifier
+                             andSortOrderings: (NSArray *) sortOrderings
 {
   if (qualifier)
     [self errorWithFormat: @"qualifier is not used for attachments"];
   if (sortOrderings)
     [self errorWithFormat: @"sort orderings are not used for attachments"];
   
-  return attachmentKeys;
+  return [attachmentParts allKeys];
 }
 
 - (MAPIStoreAttachmentTable *) attachmentTable

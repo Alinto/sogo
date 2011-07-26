@@ -27,6 +27,7 @@
 
 #import "MAPIStoreTable.h"
 
+@class NSArray;
 @class NSMutableArray;
 @class NSURL;
 
@@ -48,7 +49,7 @@
   MAPIStoreContext *context;
   NSArray *messageKeys;
   NSArray *faiMessageKeys;
-  NSMutableArray *folderKeys;
+  NSArray *folderKeys;
 
   NSDictionary *properties;
 
@@ -62,27 +63,31 @@
 - (id) initWithURL: (NSURL *) newURL
          inContext: (MAPIStoreContext *) newContext;
 
-- (id) lookupFolder: (NSString *) folderKey;
-- (id) lookupFolderByURL: (NSString *) folderURL;
-- (id) lookupMessage: (NSString *) messageKey;
-- (id) lookupFAIMessage: (NSString *) messageKey;
-- (id) lookupMessageByURL: (NSString *) messageURL;
-
 - (NSArray *) activeMessageTables;
 - (NSArray *) activeFAIMessageTables;
 
-- (MAPIStoreMessageTable *) messageTable;
+- (id) lookupMessageByURL: (NSString *) messageURL;
+- (id) lookupFolderByURL: (NSString *) folderURL;
+
+/* message objects and tables */
+- (id) lookupMessage: (NSString *) messageKey;
 - (NSArray *) messageKeys;
 
+/* FAI message objects and tables */
+- (id) lookupFAIMessage: (NSString *) messageKey;
 - (MAPIStoreFAIMessageTable *) faiMessageTable;
 - (NSArray *) faiMessageKeys;
+- (NSArray *) faiMessageKeysMatchingQualifier: (EOQualifier *) qualifier
+                             andSortOrderings: (NSArray *) sortOrderings;
 
+/* folder objects and tables */
+- (id) lookupFolder: (NSString *) folderKey;
 - (MAPIStoreFolderTable *) folderTable;
 - (NSArray *) folderKeys;
+- (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
+                         andSortOrderings: (NSArray *) sortOrderings;
 
 - (MAPIStoreMessage *) createMessage: (BOOL) isAssociated;
-- (NSString *) createFolder: (struct SRow *) aRow
-                    withFID: (uint64_t) newFID;
 
 /* backend interface */
 
@@ -116,6 +121,12 @@
 /* subclasses */
 - (Class) messageClass;
 - (MAPIStoreMessage *) createMessage;
+- (MAPIStoreMessageTable *) messageTable;
+- (NSArray *) messageKeysMatchingQualifier: (EOQualifier *) qualifier
+                          andSortOrderings: (NSArray *) sortOrderings;
+
+- (NSString *) createFolder: (struct SRow *) aRow
+                    withFID: (uint64_t) newFID;
 
 - (NSCalendarDate *) lastMessageModificationTime;
 

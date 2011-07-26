@@ -25,8 +25,11 @@
 
 #import <Foundation/NSObject.h>
 
+@class NSArray;
 @class NSMutableArray;
 @class NSMutableDictionary;
+
+@class EOQualifier;
 
 @class MAPIStoreAttachment;
 @class MAPIStoreAttachmentTable;
@@ -36,7 +39,7 @@
 
 @interface MAPIStoreMessage : MAPIStoreObject
 {
-  NSMutableArray *attachmentKeys;
+  NSArray *attachmentKeys;
   NSMutableDictionary *attachmentParts;
   NSMutableArray *activeTables;
 }
@@ -46,6 +49,9 @@
 
 - (int) modifyRecipientsWithRows: (struct ModifyRecipientRow *) rows
                         andCount: (NSUInteger) max;
+- (NSArray *) attachmentKeys;
+- (NSArray *) attachmentKeysMatchingQualifier: (EOQualifier *) qualifier
+                             andSortOrderings: (NSArray *) sortOrderings;
 - (id) lookupAttachment: (NSString *) childKey;
 
 /* backend methods */

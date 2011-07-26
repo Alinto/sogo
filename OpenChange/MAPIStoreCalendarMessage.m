@@ -466,15 +466,6 @@
   [sogoObject saveComponent: newEvent];
 }
 
-/* TODO: those are stubs meant to prevent OpenChange from crashing when a
-   recurring event is open */
-- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
-                        andSortOrderings: (NSArray *) sortOrderings
-{
-  /* TODO: Here we should return recurrence exceptions */
-  return attachmentKeys;
-}
-
 - (id) lookupAttachment: (NSString *) childKey
 {
   return [attachmentParts objectForKey: childKey];
@@ -486,7 +477,7 @@
   uint32_t newAid;
   NSString *newKey;
 
-  newAid = [attachmentKeys count];
+  newAid = [[self attachmentKeys] count];
 
   newAttachment = [MAPIStoreCalendarAttachment
                     mapiStoreObjectWithSOGoObject: nil
@@ -496,7 +487,8 @@
   newKey = [NSString stringWithFormat: @"%ul", newAid];
   [attachmentParts setObject: newAttachment
                       forKey: newKey];
-  [attachmentKeys addObject: newKey];
+  [attachmentKeys release];
+  attachmentKeys = nil;
 
   return newAttachment;
 }

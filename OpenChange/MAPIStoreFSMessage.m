@@ -142,8 +142,8 @@
   return MAPISTORE_SUCCESS;  
 }
 
-- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
-                        andSortOrderings: (NSArray *) sortOrderings
+- (NSArray *) attachmentsKeysMatchingQualifier: (EOQualifier *) qualifier
+                              andSortOrderings: (NSArray *) sortOrderings
 {
   NSDictionary *attachments;
   NSArray *keys;
@@ -170,8 +170,8 @@
       fetchedAttachments = YES;
     }
 
-  return [super childKeysMatchingQualifier: qualifier
-                          andSortOrderings: sortOrderings];
+  return [super attachmentKeysMatchingQualifier: qualifier
+                               andSortOrderings: sortOrderings];
 }
 
 - (void) save

@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "MAPIStoreFolder.h"
@@ -46,18 +48,46 @@
 
 - (NSArray *) childKeys
 {
-  return [(MAPIStoreFolder *) container folderKeys];
+  if (!childKeys)
+    {
+      childKeys = [(MAPIStoreFolder *)
+                    container folderKeysMatchingQualifier: nil
+                                         andSortOrderings: sortOrderings];
+      [childKeys retain];
+    }
+
+  return childKeys;
 }
 
 - (NSArray *) restrictedChildKeys
 {
+  NSArray *keys;
+
   /* FIXME: restrictions are ignored on folder tables */
-  return [self childKeys];
+
+  if (!restrictedChildKeys)
+    {
+      if (restrictionState != MAPIRestrictionStateAlwaysTrue)
+        {
+          if (restrictionState == MAPIRestrictionStateNeedsEval)
+            keys = [(MAPIStoreFolder *)
+                     container folderKeysMatchingQualifier: restriction
+                                          andSortOrderings: sortOrderings];
+          else
+            keys = [NSArray array];
+        }
+      else
+        keys = [self childKeys];
+
+      ASSIGN (restrictedChildKeys, keys);
+    }
+
+  return restrictedChildKeys;
 }
 
 - (id) lookupChild: (NSString *) childKey
 {
-  return [(MAPIStoreMessage *) container lookupFolder: childKey];
+  return [(MAPIStoreFolder *) container lookupFolder: childKey];
 }
 
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property

@@ -344,41 +344,6 @@ static Class NSDataK, NSStringK;
   handleId = newHandleId;
 }
 
-- (NSArray *) childKeys
-{
-  if (!childKeys)
-    {
-      childKeys = [container childKeysMatchingQualifier: nil
-                                       andSortOrderings: sortOrderings];
-      [childKeys retain];
-    }
-
-  return childKeys;
-}
-
-- (NSArray *) restrictedChildKeys
-{
-  NSArray *keys;
-
-  if (!restrictedChildKeys)
-    {
-      if (restrictionState != MAPIRestrictionStateAlwaysTrue)
-        {
-          if (restrictionState == MAPIRestrictionStateNeedsEval)
-            keys = [container childKeysMatchingQualifier: restriction
-                                        andSortOrderings: sortOrderings];
-          else
-            keys = [NSArray array];
-        }
-      else
-        keys = [self childKeys];
-
-      ASSIGN (restrictedChildKeys, keys);
-    }
-
-  return restrictedChildKeys;
-}
-
 - (void) cleanupCaches
 {
   [restrictedChildKeys release];
@@ -816,6 +781,20 @@ static Class NSDataK, NSStringK;
     }
 
   return child;
+}
+
+- (NSArray *) childKeys
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (NSArray *) restrictedChildKeys
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
 }
 
 - (id) lookupChild: (NSString *) childKey

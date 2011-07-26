@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+
 #import "MAPIStoreFAIMessage.h"
 #import "MAPIStoreFolder.h"
 
@@ -54,7 +56,39 @@ static Class MAPIStoreFAIMessageK = Nil;
 
 - (NSArray *) childKeys
 {
-  return [(MAPIStoreFolder *) container faiMessageKeys];
+  if (!childKeys)
+    {
+      childKeys = [(MAPIStoreFolder *)
+                    container faiMessageKeysMatchingQualifier: nil
+                                             andSortOrderings: sortOrderings];
+      [childKeys retain];
+    }
+
+  return childKeys;
+}
+
+- (NSArray *) restrictedChildKeys
+{
+  NSArray *keys;
+
+  if (!restrictedChildKeys)
+    {
+      if (restrictionState != MAPIRestrictionStateAlwaysTrue)
+        {
+          if (restrictionState == MAPIRestrictionStateNeedsEval)
+            keys = [(MAPIStoreFolder *)
+                     container faiMessageKeysMatchingQualifier: restriction
+                                              andSortOrderings: sortOrderings];
+          else
+            keys = [NSArray array];
+        }
+      else
+        keys = [self childKeys];
+
+      ASSIGN (restrictedChildKeys, keys);
+    }
+
+  return restrictedChildKeys;
 }
 
 - (id) lookupChild: (NSString *) childKey

@@ -110,8 +110,8 @@ static Class MAPIStoreFSMessageK;
   return newMessage;
 }
 
-- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
-                        andSortOrderings: (NSArray *) sortOrderings
+- (NSArray *) messageKeysMatchingQualifier: (EOQualifier *) qualifier
+                          andSortOrderings: (NSArray *) sortOrderings
 {
   NSArray *allKeys;
   NSMutableArray *keys;
@@ -145,14 +145,6 @@ static Class MAPIStoreFSMessageK;
   return keys;
 }
 
-- (NSArray *) folderKeys
-{
-  if (!folderKeys)
-    ASSIGN (folderKeys, [sogoObject toManyRelationshipKeys]);
-
-  return folderKeys;
-}
-
 - (id) lookupFolder: (NSString *) childKey
 {
   id childObject = nil;
@@ -168,11 +160,6 @@ static Class MAPIStoreFSMessageK;
     }
 
   return childObject;
-}
-
-- (MAPIStoreFAIMessageTable *) folderTable
-{
-  return [MAPIStoreFolderTable tableForContainer: self];
 }
 
 - (NSDate *) lastMessageModificationTime

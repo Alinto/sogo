@@ -104,7 +104,6 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
       headerSetup = NO;
       bodyContent = nil;
       bodySetup = NO;
-      fetchedAttachments = NO;
       appointmentWrapper = nil;
     }
 
@@ -444,8 +443,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
     v |= MSGFLAG_FROMME;
   if ([flags containsObject: @"seen"])
     v |= MSGFLAG_READ;
-  if ([[self childKeysMatchingQualifier: nil
-                       andSortOrderings: nil] count] > 0)
+  if ([[self attachmentKeys]
+        count] > 0)
     v |= MSGFLAG_HASATTACH;
     
   *data = MAPILongValue (memCtx, v);
@@ -1122,7 +1121,6 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
         keyPrefix = @"0";
       [attachmentParts setObject: bodyInfo
                           forKey: keyPrefix];
-      [attachmentKeys addObject: keyPrefix];
     }
   else
     {
@@ -1137,18 +1135,14 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
     }
 }
 
-- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
-                        andSortOrderings: (NSArray *) sortOrderings
+- (NSArray *) attachmentsKeysMatchingQualifier: (EOQualifier *) qualifier
+                              andSortOrderings: (NSArray *) sortOrderings
 {
-  if (!fetchedAttachments)
-    {
-      [self _fetchAttachmentPartsInBodyInfo: [sogoObject bodyStructure]
-                                 withPrefix: @""];
-      fetchedAttachments = YES;
-    }
+  [self _fetchAttachmentPartsInBodyInfo: [sogoObject bodyStructure]
+                             withPrefix: @""];
 
-  return [super childKeysMatchingQualifier: qualifier
-                          andSortOrderings: sortOrderings];
+  return [super attachmentKeysMatchingQualifier: qualifier
+                               andSortOrderings: sortOrderings];
 }
 
 - (id) lookupAttachment: (NSString *) childKey
@@ -1186,7 +1180,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                          mapiStoreObjectWithSOGoObject: currentPart
                                            inContainer: self];
           [attachment setBodyInfo: [attachmentParts objectForKey: childKey]];
-          [attachment setAID: [attachmentKeys indexOfObject: childKey]];
+          [attachment setAID: [[self attachmentKeys] indexOfObject: childKey]];
         }
     }
 

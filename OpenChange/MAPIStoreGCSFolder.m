@@ -38,8 +38,8 @@
 
 @implementation MAPIStoreGCSFolder
 
-- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
-                        andSortOrderings: (NSArray *) sortOrderings
+- (NSArray *) messageKeysMatchingQualifier: (EOQualifier *) qualifier
+                          andSortOrderings: (NSArray *) sortOrderings
 {
   static NSArray *fields = nil;
   NSArray *records;

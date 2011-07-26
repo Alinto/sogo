@@ -126,9 +126,6 @@
 - (NSDate *) creationTime;
 - (NSDate *) lastModificationTime;
 
-- (NSArray *) childKeysMatchingQualifier: (EOQualifier *) qualifier
-                        andSortOrderings: (NSArray *) sortOrderings;
-
 @end
 
 #endif /* MAPISTOREOBJECT_H */
