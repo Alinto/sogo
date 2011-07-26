@@ -663,7 +663,8 @@
       else
         sortByThread = NO;
     }
-  [data setObject: uids forKey: @"uids"];
+  if (uids != nil)
+    [data setObject: uids forKey: @"uids"];
   [data setObject: [NSNumber numberWithBool: sortByThread] forKey: @"threaded"];
 
   // We also return the inbox quota
