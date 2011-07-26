@@ -42,7 +42,6 @@
 #import "MAPIStoreDraftsMessage.h"
 #import "MAPIStoreMailMessage.h"
 #import "MAPIStoreMailMessageTable.h"
-#import "MAPIStoreMailFolderTable.h"
 #import "MAPIStoreTypes.h"
 #import "NSString+MAPIStore.h"
 
