@@ -39,24 +39,9 @@
   [self logWithFormat: @"unimplemented method: %@", NSStringFromSelector (_cmd)];
 }
 
-- (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
-				       intoQualifier: (EOQualifier **) qualifier
+- (id) lookupChild: (NSString *) childKey
 {
-  MAPIRestrictionState rc;
-  id value;
-
-  value = NSObjectFromMAPISPropValue (&res->lpProp);
-  switch ((uint32_t) res->ulPropTag)
-    {
-    case PR_CHANGE_NUM:
-      [self warnWithFormat: @"!!!hack pending synchronisation enhancement"];
-      rc = MAPIRestrictionStateAlwaysTrue;
-      break;
-    default:
-      rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
-    }
-
-  return rc;
+  return [(MAPIStoreFolder *) container lookupMessage: childKey];
 }
 
 @end

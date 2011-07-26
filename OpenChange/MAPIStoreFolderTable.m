@@ -55,6 +55,11 @@
   return [self childKeys];
 }
 
+- (id) lookupChild: (NSString *) childKey
+{
+  return [(MAPIStoreMessage *) container lookupFolder: childKey];
+}
+
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
 {
   return nil;

@@ -84,6 +84,7 @@ typedef enum {
 
 - (id) childAtRowID: (uint32_t) rowId
        forQueryType: (enum table_query_type) queryType;
+- (id) lookupChild: (NSString *) childKey;
 
 - (void) cleanupCaches;
 

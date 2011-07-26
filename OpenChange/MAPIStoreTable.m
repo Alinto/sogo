@@ -803,7 +803,7 @@ static Class NSDataK, NSStringK;
           
           if (queryType == MAPISTORE_PREFILTERED_QUERY
               || [restrictedChildren containsObject: childKey])
-            child = [container lookupChild: childKey];
+            child = [self lookupChild: childKey];
         }
 
       currentChild = child;
@@ -816,6 +816,13 @@ static Class NSDataK, NSStringK;
     }
 
   return child;
+}
+
+- (id) lookupChild: (NSString *) childKey
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
 }
 
 - (int) getRow: (struct mapistore_property_data **) dataP

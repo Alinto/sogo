@@ -20,8 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import "MAPIStoreMessage.h"
+
 #import "MAPIStoreAttachmentTable.h"
 
 @implementation MAPIStoreAttachmentTable
+
+- (id) lookupChild: (NSString *) childKey
+{
+  return [(MAPIStoreMessage *) container lookupAttachment: childKey];
+}
 
 @end

@@ -1,5 +1,9 @@
 2011-07-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTable.m (-lookupChild:)): new method that
+	subclasses must override and that a child object matching the
+	table type.
+
 	* OpenChange/MAPIStoreObject.m (-lookupChild:): removed method as
 	it was too generic. Each subclass has now its own set of
 	specialized methods.

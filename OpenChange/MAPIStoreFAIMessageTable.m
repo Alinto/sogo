@@ -57,4 +57,9 @@ static Class MAPIStoreFAIMessageK = Nil;
   return [(MAPIStoreFolder *) container faiMessageKeys];
 }
 
+- (id) lookupChild: (NSString *) childKey
+{
+  return [(MAPIStoreFolder *) container lookupFAIMessage: childKey];
+}
+
 @end
