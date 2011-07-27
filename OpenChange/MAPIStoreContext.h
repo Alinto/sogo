@@ -99,6 +99,7 @@
 
 - (uint64_t) idForObjectWithKey: (NSString *) key
                     inFolderURL: (NSString *) folderURL;
+- (uint64_t) getNewChangeNumber;
 
 /* subclass methods */
 + (NSString *) MAPIModuleName;

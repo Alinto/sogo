@@ -1,5 +1,9 @@
 2011-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (-getNewChangeNumber): new
+	utility method that returns a change number from the mapistore db
+	via the openchangedb API.
+
 	* OpenChange/SOGoMAPIFSMessage.m (-save): serialize the properties
 	dictionary in binary plist format to avoid GNUstep bugs where
 	high unsigned long long values are not parsed properly.

@@ -407,6 +407,17 @@ _prepareContextClass (Class contextClass,
   return mappingId;
 }
 
+- (uint64_t) getNewChangeNumber
+{
+  uint64_t newVersionNumber;
+
+  if (openchangedb_get_new_changeNumber (connInfo->oc_ctx, &newVersionNumber)
+      != MAPISTORE_SUCCESS)
+    abort ();
+
+  return newVersionNumber;
+}
+
 /* subclasses */
 
 + (NSString *) MAPIModuleName
