@@ -115,6 +115,13 @@ $(SOGOBACKEND)_OBJC_FILES += \
 $(SOGOBACKEND)_RESOURCE_FILES += \
 	product.plist
 
+### pl reader
+PLREADER_TOOL = plreader
+$(PLREADER_TOOL)_OBJC_FILES += \
+	plreader.m \
+
+TEST_TOOL_NAME += $(PLREADER_TOOL)
+
 ### cflags and libs
 LIBMAPI_CFLAGS = $(shell pkg-config libmapi --cflags)
 LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags)
@@ -145,6 +152,7 @@ SAMBA_LIB_DIR = $(shell pkg-config libmapistore --variable=libdir)
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
 include $(GNUSTEP_MAKEFILES)/library.make
+include $(GNUSTEP_MAKEFILES)/test-tool.make
 -include GNUmakefile.postamble
 
 endif
