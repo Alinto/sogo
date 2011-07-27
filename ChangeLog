@@ -1,5 +1,15 @@
 2011-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFSMessageTable.m
+	(-evaluatePropertyRestriction:intoQualifier:): overriden method to
+	handle PR_CHANGE_NUM, based on the messages version number.
+
+	* OpenChange/MAPIStoreFSMessage.m (-objectVersion): overriden
+	method to retrieve the object version from the "version" attribute
+	in the properties list.
+	(-save): update the "version" attribute in the saved property list
+	from openchangedb.
+
 	* OpenChange/MAPIStoreAppointmentWrapper.m
 	(-getPidLidGlobalObjectId:inMemCtx:): work-around certain buggy
 	events which might now have a "CREATED" element.

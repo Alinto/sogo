@@ -20,17 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSArray.h>
-#import <Foundation/NSDictionary.h>
-
+#import <Foundation/NSString.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <EOControl/EOQualifier.h>
 
-#import "EOQualifier+MAPIFS.h"
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreFSMessage.h"
-#import "NSObject+MAPIStore.h"
-#import "SOGoMAPIFSFolder.h"
-#import "SOGoMAPIFSMessage.h"
 
 #import "MAPIStoreFSMessageTable.h"
 
@@ -54,6 +49,33 @@ static Class MAPIStoreFSMessageK = Nil;
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
 {
   return [NSString stringWithFormat: @"%@", MAPIPropertyKey (property)];
+}
+
+- (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
+				       intoQualifier: (EOQualifier **) qualifier
+{
+  MAPIRestrictionState rc;
+  id value;
+  NSNumber *version;
+  uint64_t cVersion;
+
+  if ((uint32_t) res->ulPropTag == PR_CHANGE_NUM)
+    {
+      value = NSObjectFromMAPISPropValue (&res->lpProp);
+      cVersion = exchange_globcnt ([value unsignedLongLongValue] >> 16);
+      version = [NSNumber numberWithUnsignedLongLong: cVersion];
+      [self logWithFormat: @"change number from oxcfxics: %.16lx", [value unsignedLongLongValue]];
+      [self logWithFormat: @"  version: %.16lx", cVersion];
+      *qualifier = [[EOKeyValueQualifier alloc] initWithKey: @"version"
+                                           operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
+                                                      value: version];
+      [*qualifier autorelease];
+      rc = MAPIRestrictionStateNeedsEval;
+    }
+  else
+    rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
+
+  return rc;
 }
 
 @end

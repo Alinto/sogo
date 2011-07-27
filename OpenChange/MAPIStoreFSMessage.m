@@ -24,6 +24,7 @@
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 
+#import "MAPIStoreContext.h"
 #import "MAPIStorePropertySelectors.h"
 #import "MAPIStoreTypes.h"
 #import "NSObject+MAPIStore.h"
@@ -33,6 +34,7 @@
 #import "MAPIStoreFSMessage.h"
 
 #undef DEBUG
+#include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreFSMessage
@@ -70,6 +72,15 @@
     fetchedAttachments = NO;
 
   return self;
+}
+
+- (uint64_t) objectVersion
+{
+  NSNumber *version;
+
+  version = [[sogoObject properties] objectForKey: @"version"];
+
+  return exchange_globcnt ([version unsignedLongLongValue]);
 }
 
 - (int) getProperty: (void **) data
@@ -176,8 +187,14 @@
 
 - (void) save
 {
+  uint64_t newVersion;
+
   if ([attachmentKeys count] > 0)
     [newProperties setObject: attachmentParts forKey: @"attachments"];
+
+  newVersion = exchange_globcnt ([[self context] getNewChangeNumber] >> 16);
+  [newProperties setObject: [NSNumber numberWithUnsignedLongLong: newVersion]
+                    forKey: @"version"];
   [sogoObject appendProperties: newProperties];
   [sogoObject save];
   [self resetNewProperties];
