@@ -1,5 +1,8 @@
 2011-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSArray+MAPIStore.m (-asArrayOfUnicodeStringsInCtx:):
+	the return type is now "struct WStringArray_r *".
+
 	* OpenChange/NSString+MAPIStore.m (-asUnicodeInMemCtx): return an
 	empty string when length == 0, otherwise the resulting pointer
 	will be NULL.

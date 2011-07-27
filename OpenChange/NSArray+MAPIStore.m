@@ -32,19 +32,19 @@
 
 @implementation NSArray (MAPIStoreFolders)
 
-- (struct mapi_SPLSTRArrayW *) asArrayOfUnicodeStringsInCtx: (void *) memCtx
+- (struct WStringArray_r *) asArrayOfUnicodeStringsInCtx: (void *) memCtx
 {
-  struct mapi_SPLSTRArrayW *list;
+  struct WStringArray_r *list;
   NSInteger count, max;
 
   max = [self count];
 
-  list = talloc_zero(memCtx, struct mapi_SPLSTRArrayW);
+  list = talloc_zero(memCtx, struct WStringArray_r);
   list->cValues = max;
-  list->strings = talloc_array(list, struct mapi_LPWSTR, max);
+  list->lppszW = talloc_array(list, const char *, max);
 
   for (count = 0; count < max; count++)
-    (list->strings + count)->lppszW = [[self objectAtIndex: count] asUnicodeInMemCtx: list->strings];
+    list->lppszW[count] = [[self objectAtIndex: count] asUnicodeInMemCtx: list->lppszW];
 
   return list;
 }

@@ -27,7 +27,8 @@
 
 @interface NSArray (MAPIStoreFolders)
 
-- (struct mapi_SPLSTRArrayW *) asArrayOfUnicodeStringsInCtx: (void *) memCtx;
+- (struct WStringArray_r *) asArrayOfUnicodeStringsInCtx: (void *) memCtx;
+// - (struct mapi_SPLSTRArrayW *) asArrayOfUnicodeStringsInCtx: (void *) memCtx;
 
 @end
 
