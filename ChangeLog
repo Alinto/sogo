@@ -1,5 +1,9 @@
 2011-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSString+MAPIStore.m (-asUnicodeInMemCtx): return an
+	empty string when length == 0, otherwise the resulting pointer
+	will be NULL.
+
 	* OpenChange/plreader.m: new test tool to dump property lists
 	independently from their serialization format.
 

@@ -33,8 +33,13 @@
   char *unicode;
   NSData *encoded;
 
-  encoded = [self dataUsingEncoding: NSUTF8StringEncoding];
-  unicode = talloc_strndup (memCtx, [encoded bytes], [encoded length]);
+  if ([self length] > 0)
+    {
+      encoded = [self dataUsingEncoding: NSUTF8StringEncoding];
+      unicode = talloc_strndup (memCtx, [encoded bytes], [encoded length]);
+    }
+  else
+    unicode = talloc_memdup (memCtx, "", 1);
 
   return unicode;
 }
