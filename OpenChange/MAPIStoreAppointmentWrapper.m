@@ -396,6 +396,13 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   /* /FIXME */
 
   creationTime = [event created];
+  if (!creationTime)
+    {
+      [self logWithFormat: @"" __location__ ": event has no 'CREATED' tag -> inventing one"];
+      creationTime = [event lastModified];
+      if (!creationTime)
+        creationTime = [NSCalendarDate date];
+    }
   creationFileTime = [creationTime asFileTimeInMemCtx: NULL];
   [nsData appendBytes: &creationFileTime->dwLowDateTime length: 4];
   [nsData appendBytes: &creationFileTime->dwHighDateTime length: 4];

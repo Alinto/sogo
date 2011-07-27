@@ -1,5 +1,9 @@
 2011-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreAppointmentWrapper.m
+	(-getPidLidGlobalObjectId:inMemCtx:): work-around certain buggy
+	events which might now have a "CREATED" element.
+
 	* OpenChange/MAPIStoreContactsMessage.m: commented out
 	"-getPrOabName:inMemCtx:" and "-getPrOabLangid:inMemCtx:" as they
 	seem to be useful only for contact lists.
