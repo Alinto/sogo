@@ -29,6 +29,7 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
+#import "EOQualifier+MAPIFS.h"
 #import "SOGoMAPIFSMessage.h"
 
 #import "SOGoMAPIFSFolder.h"
@@ -215,6 +216,40 @@ static NSString *privateDir = nil;
 - (NSArray *) toOneRelationshipKeys
 {
   return [self _objectsInDirectory: NO];
+}
+
+- (NSArray *) toOneRelationshipKeysMatchingQualifier: (EOQualifier *) qualifier
+                                    andSortOrderings: (NSArray *) sortOrderings
+{
+  NSArray *allKeys;
+  NSMutableArray *keys;
+  NSUInteger count, max;
+  NSString *messageKey;
+  SOGoMAPIFSMessage *message;
+
+  if (sortOrderings)
+    [self warnWithFormat: @"sorting is not handled yet"];
+
+  allKeys = [self toOneRelationshipKeys];
+  if (qualifier)
+    {
+      [self logWithFormat: @"%s: getting restricted FAI keys", __PRETTY_FUNCTION__];
+      max = [allKeys count];
+      keys = [NSMutableArray arrayWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          messageKey = [allKeys objectAtIndex: count];
+          message = [self lookupName: messageKey
+                           inContext: nil
+                             acquire: NO];
+          if ([qualifier evaluateMAPIFSMessage: message])
+            [keys addObject: messageKey];
+	}
+    }
+  else
+    keys = (NSMutableArray *) allKeys;
+
+  return keys;
 }
 
 - (id) lookupName: (NSString *) fileName

@@ -1,5 +1,15 @@
 2011-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m
+	(-faiMessageKeysMatchingQualifier:andSortOrderings:):
+	reimplemented method to make use of the new method below.
+
+	* OpenChange/SOGoMAPIFSFolder.m
+	(-toOneRelationshipKeysMatchingQualifier:andSortOrderings:): moved
+	method from -[MAPIStoreFSFolder
+	messageKeysMatchingQualifier:andSortOrderings:] in order to make
+	it available to all the SOGoMAPIFSFolder clients.
+
 	* OpenChange/MAPIStoreContext.m (-getNewChangeNumber): new
 	utility method that returns a change number from the mapistore db
 	via the openchangedb API.

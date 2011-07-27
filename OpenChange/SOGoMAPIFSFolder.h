@@ -25,7 +25,11 @@
 
 #import <SOGo/SOGoFolder.h>
 
+@class NSArray;
+@class NSString;
 @class NSURL;
+
+@class EOQualifier;
 
 @class SOGoMAPIFSMessage;
 
@@ -47,6 +51,9 @@
 
 - (NSCalendarDate *) creationTime;
 - (NSCalendarDate *) lastModificationTime;
+
+- (NSArray *) toOneRelationshipKeysMatchingQualifier: (EOQualifier *) qualifier
+                                    andSortOrderings: (NSArray *) sortOrderings;
 
 @end
 

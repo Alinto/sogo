@@ -618,12 +618,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (NSArray *) faiMessageKeysMatchingQualifier: (EOQualifier *) qualifier
                              andSortOrderings: (NSArray *) sortOrderings
 {
-  if (qualifier)
-    [self errorWithFormat: @"qualifier is not used for FAI messages"];
-  if (sortOrderings)
-    [self errorWithFormat: @"sort orderings are not used for FAI messages"];
-
-  return [faiFolder toOneRelationshipKeys];
+  return [faiFolder
+           toOneRelationshipKeysMatchingQualifier: qualifier
+                                 andSortOrderings: sortOrderings];
 }
 
 - (NSArray *) faiMessageKeys

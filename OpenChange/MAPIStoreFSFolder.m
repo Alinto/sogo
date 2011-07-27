@@ -27,7 +27,6 @@
 #import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "EOQualifier+MAPIFS.h"
 #import "MAPIStoreFSMessage.h"
 #import "MAPIStoreFSMessageTable.h"
 #import "MAPIStoreFolderTable.h"
@@ -113,36 +112,9 @@ static Class MAPIStoreFSMessageK;
 - (NSArray *) messageKeysMatchingQualifier: (EOQualifier *) qualifier
                           andSortOrderings: (NSArray *) sortOrderings
 {
-  NSArray *allKeys;
-  NSMutableArray *keys;
-  NSUInteger count, max;
-  NSString *messageKey;
-  SOGoMAPIFSMessage *message;
-
-  if (sortOrderings)
-    [self warnWithFormat: @"sorting is not handled yet"];
-
-  allKeys = [sogoObject toOneRelationshipKeys];
-  if (qualifier)
-    {
-      [self logWithFormat: @"%s: getting restricted keys", __PRETTY_FUNCTION__];
-      max = [allKeys count];
-      keys = [NSMutableArray arrayWithCapacity: max];
-      for (count = 0; count < max; count++)
-        {
-          messageKey = [allKeys objectAtIndex: count];
-          message = [sogoObject lookupName: messageKey
-                                inContext: nil
-                                acquire: NO];
-          if ([qualifier evaluateMAPIFSMessage: message])
-            [keys addObject: messageKey];
-	}
-      [self logWithFormat: @"  resulting keys: $$$%@$$$", keys];
-    }
-  else
-    keys = (NSMutableArray *) allKeys;
-
-  return keys;
+  return [(SOGoMAPIFSFolder *) sogoObject
+           toOneRelationshipKeysMatchingQualifier: qualifier
+                                 andSortOrderings: sortOrderings];
 }
 
 - (id) lookupFolder: (NSString *) childKey
