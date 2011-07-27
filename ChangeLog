@@ -1,5 +1,9 @@
 2011-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsMessage.m: commented out
+	"-getPrOabName:inMemCtx:" and "-getPrOabLangid:inMemCtx:" as they
+	seem to be useful only for contact lists.
+
 	* OpenChange/MAPIStoreFolder.m
 	(-faiMessageKeysMatchingQualifier:andSortOrderings:):
 	reimplemented method to make use of the new method below.
