@@ -103,12 +103,20 @@
 
 - (NSString *) ownerInContext: (WOContext *) _ctx
 {
+  NSString *login;
   SOGoUser *ownerUser;
 
   if (!owner)
     {
       ownerUser = [SOGoUser userWithLogin: nameInContainer roles: nil];
-      [self setOwner: [ownerUser login]];
+      login = [ownerUser login];
+      [self setOwner: login];
+      if (![nameInContainer isEqualToString: login])
+        // In case the user domain is specified in the URL but not in the user
+        // login name, we remove it (user@domain => user).
+        // This happens when SOGoLoginDomains is defined but
+        // SOGoEnableDomainBasedUID is disabled.
+        ASSIGN(nameInContainer, login);
     }
 
   return owner;

@@ -1,3 +1,13 @@
+2011-07-27  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserFolder.m (-ownerInContext:): in case the
+	user domain is specified in the URL but not in the user login
+	name, we remove it (user@domain => user).
+
+	* SoObjects/SOGo/SOGoUser.m (-initWithLogin:roles:trust:): drop
+	the domain from the login name when loginDomains are enabled but
+	domain-based UID is disabled.
+
 2011-07-26  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailListActions.m

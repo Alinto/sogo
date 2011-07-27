@@ -156,7 +156,7 @@
   else
     {
       sd = [SOGoSystemDefaults sharedSystemDefaults];
-      if ([sd enableDomainBasedUID])
+      if ([sd enableDomainBasedUID] || [[sd loginDomains] count] > 0)
         {
           r = [newLogin rangeOfString: @"@" options: NSBackwardsSearch];
           if (r.location != NSNotFound)
@@ -167,6 +167,12 @@
               if ([[sd domainIds] containsObject: domain])
                 newLogin = [newLogin substringToIndex: r.location];
               else
+                domain = nil;
+
+              if (domain != nil && ![sd enableDomainBasedUID])
+                // Login domains are enabled (SOGoLoginDomains) but not
+                // domain-based UID (SOGoEnableDomainBasedUID).
+                // Drop the domain from the login name.
                 domain = nil;
             }
         }
