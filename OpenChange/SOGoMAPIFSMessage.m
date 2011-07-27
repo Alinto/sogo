@@ -21,9 +21,11 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSPropertyList.h>
 #import <Foundation/NSString.h>
 
 #import <NGExtensions/NSObject+Logs.h>
@@ -66,10 +68,26 @@
 
 - (NSDictionary *) properties
 {
+  NSData *content;
+  NSString *error;
+  NSPropertyListFormat format;
+
   if (!properties)
     {
-      properties = [[NSMutableDictionary alloc]
-		     initWithContentsOfFile: [self completeFilename]];
+      content = [NSData dataWithContentsOfFile: [self completeFilename]];
+      if (content)
+        {
+          properties = [NSPropertyListSerialization propertyListFromData: content
+                                                        mutabilityOption: NSPropertyListMutableContainers
+                                                                  format: &format
+                                                        errorDescription: &error];
+          [properties retain];
+          if (!properties)
+            [self logWithFormat: @"an error occurred during deserialization"
+                  @" of message: '%@'", error];
+        }
+      else
+        properties = nil;
       if (!properties)
         properties = [NSMutableDictionary new];
     }
@@ -88,9 +106,14 @@
 
 - (void) save
 {
+  NSData *content;
+
   [container ensureDirectory];
 
-  if (![properties writeToFile: [self completeFilename] atomically: YES])
+  content = [NSPropertyListSerialization dataFromPropertyList: properties
+                                                       format: NSPropertyListBinaryFormat_v1_0
+                                             errorDescription: NULL];
+  if (![content writeToFile: [self completeFilename] atomically: NO])
     [NSException raise: @"MAPIStoreIOException"
 		 format: @"could not save message"];
 }

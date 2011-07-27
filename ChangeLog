@@ -1,5 +1,10 @@
 2011-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIFSMessage.m (-save): serialize the properties
+	dictionary in binary plist format to avoid GNUstep bugs where
+	high unsigned long long values are not parsed properly.
+	(-properties): corrolary to the above change.
+
 	* OpenChange/NSArray+MAPIStore.m (-asArrayOfUnicodeStringsInCtx:):
 	the return type is now "struct WStringArray_r *".
 
