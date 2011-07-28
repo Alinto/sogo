@@ -349,6 +349,8 @@ static Class NSExceptionK, MAPIStoreFolderK;
 {
   uint32_t lmTime;
 
+  [self logWithFormat: @"[" __location__ "] objectVersion computed from timestamp"];
+
   lmTime = (uint32_t) [[self lastModificationTime] timeIntervalSince1970];
   if (lmTime < 0x4dbb2dbe) /* oc_version_time */
     lmTime = 0x4dbb2dbe;
@@ -438,6 +440,13 @@ static Class NSExceptionK, MAPIStoreFolderK;
   [self subclassResponsibility: _cmd];
 
   return nil;
+}
+
+/* logging */
+- (NSString *) loggingPrefix
+{
+  return [NSString stringWithFormat:@"<%@:%p:%@>",
+                   NSStringFromClass(isa), self, [self nameInContainer]];
 }
 
 @end

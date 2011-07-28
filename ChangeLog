@@ -1,5 +1,11 @@
 2011-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTable.m (-loggingPrefix): overriden method
+	in order to get more useful informations.
+
+	* OpenChange/MAPIStoreObject.m (-loggingPrefix): overriden method
+	in order to get more useful informations.
+
 	* OpenChange/MAPIStoreFSMessageTable.m
 	(-evaluatePropertyRestriction:intoQualifier:): overriden method to
 	handle PR_CHANGE_NUM, based on the messages version number.

@@ -325,6 +325,7 @@ static Class NSDataK, NSStringK;
   [currentChild release];
   [childKeys release];
   [restrictedChildKeys release];
+  [sortOrderings release];
   [restriction release];
   [super dealloc];
 }
@@ -913,6 +914,14 @@ static Class NSDataK, NSStringK;
 - (void) setSortOrder: (const struct SSortOrderSet *) set
 {
   [self subclassResponsibility: _cmd];
+}
+
+/* logging */
+- (NSString *) loggingPrefix
+{
+  return [NSString stringWithFormat:@"<%@:%p:%@>",
+                   NSStringFromClass (isa), self,
+                   [container nameInContainer]];
 }
 
 @end
