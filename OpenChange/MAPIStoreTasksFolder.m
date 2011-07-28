@@ -83,6 +83,7 @@ static Class MAPIStoreTasksMessageK;
 
 - (MAPIStoreMessageTable *) messageTable
 {
+  [self synchroniseCache];
   return [MAPIStoreTasksMessageTable tableForContainer: self];
 }
 
@@ -90,7 +91,6 @@ static Class MAPIStoreTasksMessageK;
 {
   static EOQualifier *componentQualifier = nil;
 
-  /* TODO: we need to support vlist as well */
   if (!componentQualifier)
     componentQualifier
       = [[EOKeyValueQualifier alloc] initWithKey: @"c_component"

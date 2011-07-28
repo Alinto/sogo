@@ -20,8 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSValue.h>
 #import <SOGo/SOGoContentObject.h>
 
+#import "MAPIStoreGCSFolder.h"
 #import "MAPIStoreTypes.h"
 
 #import "MAPIStoreGCSMessage.h"
@@ -39,6 +41,21 @@
 - (NSCalendarDate *) lastModificationTime
 {
   return [sogoObject lastModified];
+}
+
+- (uint64_t) objectVersion
+{
+  uint64_t version = 0xffffffffffffffffLL;
+  NSNumber *changeNumber;
+
+  changeNumber = [(MAPIStoreGCSFolder *) container
+                   changeNumberForMessageWithKey: [self nameInContainer]];
+  if (changeNumber)
+    version = [changeNumber unsignedLongLongValue] >> 16;
+  else
+    abort ();
+
+  return version;
 }
 
 @end

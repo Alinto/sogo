@@ -85,6 +85,7 @@ static Class MAPIStoreContactsMessageK;
 
 - (MAPIStoreMessageTable *) messageTable
 {
+  [self synchroniseCache];
   return [MAPIStoreContactsMessageTable tableForContainer: self];
 }
 

@@ -36,8 +36,8 @@
 #import <SOGo/SOGoGCSFolder.h>
 
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreGCSFolder.h"
 #import "NSAutoreleasePool+MAPIStore.h"
-#import "MAPIStoreFolder.h"
 
 #import "MAPIStoreGCSMessageTable.h"
 
@@ -46,20 +46,10 @@
 
 @implementation MAPIStoreGCSMessageTable
 
-- (id) init
+- (void) cleanupCaches
 {
-  if ((self = [super init]))
-    {
-      sortOrderings = nil;
-    }
-
-  return self;
-}
-
-- (void) dealloc
-{
-  [sortOrderings release];
-  [super dealloc];
+  [(MAPIStoreGCSFolder *) container synchroniseCache];
+  [super cleanupCaches];
 }
 
 - (struct mapi_SPropertyRestriction *) _fixedDatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
@@ -92,45 +82,67 @@
   SEL operator;
   id value;
   NSString *property;
+  NSNumber *lastModified;
   MAPIRestrictionState rc;
 
-  property = [self backendIdentifierForProperty: res->ulPropTag];
-  if (property)
+  if (res->ulPropTag == PR_CHANGE_NUM)
     {
-      if (res->relop >= 0 && res->relop < 7)
-	operator = operators[res->relop];
-      else
-	{
-	  operator = NULL;
-	  [NSException raise: @"MAPIStoreRestrictionException"
-		      format: @"unhandled operator type number %d", res->relop];
-	}
-
-      if ((res->ulPropTag & 0xffff) == PT_SYSTIME)
-        {
-          res = [self _fixedDatePropertyRestriction: res];
-          NSAutoreleaseTallocPointer (res);
-        }
-
       value = NSObjectFromMAPISPropValue (&res->lpProp);
-      if ((res->ulPropTag & 0xffff) == PT_UNICODE)
+      lastModified = [(MAPIStoreGCSFolder *)
+                       container lastModifiedFromMessageChangeNumber: value];
+      [self logWithFormat: @"change number from oxcfxics: %.16lx", [value unsignedLongLongValue]];
+      [self logWithFormat: @"  c_lastmodified: %@", lastModified];
+      if (lastModified)
         {
-          property = [NSString stringWithFormat: @"UPPER(%@)", property];
-          value = [value uppercaseString];
+          *qualifier = [[EOKeyValueQualifier alloc] initWithKey: @"c_lastmodified"
+                                               operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
+                                                          value: lastModified];
+          [*qualifier autorelease];
+          rc = MAPIRestrictionStateNeedsEval;
         }
-
-      *qualifier = [[EOKeyValueQualifier alloc] initWithKey: property
-					   operatorSelector: operator
-						      value: value];
-      [*qualifier autorelease];
-      
-      rc = MAPIRestrictionStateNeedsEval;
+      else
+        rc = MAPIRestrictionStateAlwaysTrue;
     }
   else
     {
-      [self warnUnhandledProperty: res->ulPropTag
-                       inFunction: __FUNCTION__];
-      rc = MAPIRestrictionStateAlwaysFalse;
+      property = [self backendIdentifierForProperty: res->ulPropTag];
+      if (property)
+        {
+          if (res->relop >= 0 && res->relop < 7)
+            operator = operators[res->relop];
+          else
+            {
+              operator = NULL;
+              [NSException raise: @"MAPIStoreRestrictionException"
+                          format: @"unhandled operator type number %d", res->relop];
+            }
+
+          if ((res->ulPropTag & 0xffff) == PT_SYSTIME)
+            {
+              res = [self _fixedDatePropertyRestriction: res];
+              NSAutoreleaseTallocPointer (res);
+            }
+
+          value = NSObjectFromMAPISPropValue (&res->lpProp);
+          if ((res->ulPropTag & 0xffff) == PT_UNICODE)
+            {
+              property = [NSString stringWithFormat: @"UPPER(%@)", property];
+              value = [value uppercaseString];
+            }
+
+          *qualifier = [[EOKeyValueQualifier alloc] initWithKey: property
+                                               operatorSelector: operator
+                                                          value: value];
+          [*qualifier autorelease];
+          
+          rc = MAPIRestrictionStateNeedsEval;
+        }
+      else
+        {
+          [self warnUnhandledProperty: res->ulPropTag
+                           inFunction: __FUNCTION__];
+          rc = MAPIRestrictionStateAlwaysFalse;
+        }
     }
 
   return rc;
@@ -147,9 +159,9 @@
 
 - (EOSortOrdering *) _sortOrderingFromSortOrder: (struct SSortOrder *) sortOrder
 {
-  EOSortOrdering *newSortOrdering;
+  EOSortOrdering *newSortOrdering = nil;
   NSString *sortIdentifier;
-  SEL orderSelector;
+  SEL orderSelector = NULL;
   const char *propName;
 
   sortIdentifier = [self sortIdentifierForProperty: sortOrder->ulPropTag];
@@ -182,12 +194,12 @@
                       @"TABLE_SORT_MAXIMUM_CATEGORY is not handled"];
             }
         }
-      newSortOrdering = [EOSortOrdering sortOrderingWithKey: sortIdentifier
-                                                   selector: orderSelector];
+      if (orderSelector)
+        newSortOrdering = [EOSortOrdering sortOrderingWithKey: sortIdentifier
+                                                     selector: orderSelector];
     }
   else
     {
-      newSortOrdering = nil;
       propName = get_proptag_name (sortOrder->ulPropTag);
       if (!propName)
         propName = "<unknown>";

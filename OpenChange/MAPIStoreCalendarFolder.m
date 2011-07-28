@@ -83,6 +83,7 @@ static Class MAPIStoreCalendarMessageK;
 
 - (MAPIStoreMessageTable *) messageTable
 {
+  [self synchroniseCache];
   return [MAPIStoreCalendarMessageTable tableForContainer: self];
 }
 

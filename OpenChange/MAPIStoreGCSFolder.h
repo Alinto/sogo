@@ -26,8 +26,18 @@
 #import "MAPIStoreFolder.h"
 
 @class NSCalendarDate;
+@class NSNumber;
+@class NSString;
 
 @interface MAPIStoreGCSFolder : MAPIStoreFolder
+{
+  SOGoMAPIFSMessage *versionsMessage;
+}
+
+/* synchronisation */
+- (BOOL) synchroniseCache;
+- (NSNumber *) lastModifiedFromMessageChangeNumber: (NSNumber *) changeNum;
+- (NSNumber *) changeNumberForMessageWithKey: (NSString *) messageKey;
 
 /* subclasses */
 - (EOQualifier *) componentQualifier;

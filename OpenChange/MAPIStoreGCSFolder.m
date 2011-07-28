@@ -20,23 +20,60 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOFetchSpecification.h>
+#import <EOControl/EOSortOrdering.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoGCSFolder.h>
 
+#import "MAPIStoreContext.h"
+#import "MAPIStoreTypes.h"
 #import "NSDate+MAPIStore.h"
+#import "SOGoMAPIFSMessage.h"
 
 #import "MAPIStoreGCSFolder.h"
-#import "MAPIStoreTypes.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
 
 @implementation MAPIStoreGCSFolder
+
+- (id) initWithURL: (NSURL *) newURL
+         inContext: (MAPIStoreContext *) newContext
+{
+  if ((self = [super initWithURL: newURL
+                       inContext: newContext]))
+    {
+      ASSIGN (versionsMessage,
+              [SOGoMAPIFSMessage objectWithName: @"versions.plist"
+                                    inContainer: propsFolder]);
+    }
+
+  return self;
+}
+
+- (id) initWithSOGoObject: (id) newSOGoObject
+              inContainer: (MAPIStoreObject *) newContainer
+{
+  if ((self = [super initWithSOGoObject: newSOGoObject inContainer: newContainer]))
+    {
+      ASSIGN (versionsMessage,
+              [SOGoMAPIFSMessage objectWithName: @"versions.plist"
+                                    inContainer: propsFolder]);
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [versionsMessage release];
+  [super dealloc];
+}
 
 - (NSArray *) messageKeysMatchingQualifier: (EOQualifier *) qualifier
                           andSortOrderings: (NSArray *) sortOrderings
@@ -79,7 +116,187 @@
 
 - (NSDate *) lastMessageModificationTime
 {
-  return [[sogoObject ocsFolder] lastModificationDate];
+  NSNumber *ti;
+  NSDate *value = nil;
+
+  ti = [[versionsMessage properties]
+         objectForKey: @"SyncLastSynchronisationDate"];
+  if (ti)
+    value = [NSDate dateWithTimeIntervalSince1970: [ti doubleValue]];
+  else
+    value = [NSDate date];
+
+  [self logWithFormat: @"lastMessageModificationTime: %@", value];
+
+  return value;
+}
+
+/* synchronisation */
+
+/* Tree:
+{
+  SyncLastModseq = x;
+  SyncLastSynchronisationDate = x; ** not updated until something changed
+  Messages = {
+    MessageKey = {
+      Version = x;
+      Modseq = x;
+      Deleted = b;
+    };
+    ...
+  };
+  VersionMapping = {
+    Version = MessageKey;
+    ...
+  }
+}
+*/
+
+- (BOOL) synchroniseCache
+{
+  BOOL rc = YES, foundChange = NO;
+  uint64_t newChangeNum;
+  NSNumber *ti, *changeNumber, *lastModificationDate, *cName, *cVersion, *cLastModified;
+  EOFetchSpecification *fs;
+  EOQualifier *searchQualifier, *fetchQualifier;
+  NSUInteger count, max;
+  NSArray *fetchResults;
+  NSDictionary *result;
+  NSMutableDictionary *currentProperties, *messages, *mapping, *messageEntry;
+  NSCalendarDate *now;
+  GCSFolder *ocsFolder;
+  static NSArray *fields = nil;
+  static EOSortOrdering *sortOrdering = nil;
+
+  if (!fields)
+    fields = [[NSArray alloc]
+	       initWithObjects: @"c_name", @"c_version", @"c_lastmodified",
+               nil];
+
+  if (!sortOrdering)
+    {
+      sortOrdering = [EOSortOrdering sortOrderingWithKey: @"c_lastmodified"
+                                                selector: EOCompareAscending];
+      [sortOrdering retain];
+    }
+
+  now = [NSCalendarDate date];
+
+  currentProperties = [[versionsMessage properties] mutableCopy];
+  if (!currentProperties)
+    currentProperties = [NSMutableDictionary new];
+  [currentProperties autorelease];
+  messages = [currentProperties objectForKey: @"Messages"];
+  if (!messages)
+    {
+      messages = [NSMutableDictionary new];
+      [currentProperties setObject: messages forKey: @"Messages"];
+      [messages release];
+    }
+  mapping = [currentProperties objectForKey: @"VersionMapping"];
+  if (!mapping)
+    {
+      mapping = [NSMutableDictionary new];
+      [currentProperties setObject: mapping forKey: @"VersionMapping"];
+      [mapping release];
+    }
+
+  lastModificationDate = [currentProperties objectForKey: @"SyncLastModificationDate"];
+  if (lastModificationDate)
+    {
+      searchQualifier = [[EOKeyValueQualifier alloc]
+                                initWithKey: @"c_lastmodified"
+                           operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
+                                      value: lastModificationDate];
+      fetchQualifier = [[EOAndQualifier alloc]
+                         initWithQualifiers:
+                           searchQualifier, [self componentQualifier], nil];
+      [fetchQualifier autorelease];
+      [searchQualifier release];
+    }
+  else
+    fetchQualifier = [self componentQualifier];
+
+  ocsFolder = [sogoObject ocsFolder];
+  fs = [EOFetchSpecification
+             fetchSpecificationWithEntityName: [ocsFolder folderName]
+                                    qualifier: fetchQualifier
+                                sortOrderings: [NSArray arrayWithObject: sortOrdering]];
+  fetchResults = [ocsFolder fetchFields: fields fetchSpecification: fs];
+  max = [fetchResults count];
+  if (max > 0)
+    {
+      for (count = 0; count < max; count++)
+        {
+          result = [fetchResults objectAtIndex: count];
+          cName = [result objectForKey: @"c_name"];
+          cVersion = [result objectForKey: @"c_version"];
+          cLastModified = [result objectForKey: @"c_lastmodified"];
+
+          messageEntry = [messages objectForKey: cName];
+          if (!messageEntry)
+            {
+              messageEntry = [NSMutableDictionary new];
+              [messages setObject: messageEntry forKey: cName];
+              [messageEntry release];
+            }
+          if (![[messageEntry objectForKey: @"c_version"]
+                 isEqual: cVersion])
+            {
+              foundChange = YES;
+
+              newChangeNum = [[self context] getNewChangeNumber];
+              changeNumber = [NSNumber numberWithUnsignedLongLong: newChangeNum];
+
+              [messageEntry setObject: cLastModified forKey: @"c_lastmodified"];
+              [messageEntry setObject: cVersion forKey: @"c_version"];
+              [messageEntry setObject: changeNumber forKey: @"version"];
+
+              [mapping setObject: cLastModified forKey: changeNumber];
+
+              if (!lastModificationDate
+                  || ([lastModificationDate compare: cLastModified]
+                      == NSOrderedAscending))
+                lastModificationDate = cLastModified;
+            }
+        }
+
+      if (foundChange)
+        {
+          ti = [NSNumber numberWithDouble: [now timeIntervalSince1970]];
+          [currentProperties setObject: ti
+                                forKey: @"SyncLastSynchronisationDate"];
+          [currentProperties setObject: lastModificationDate
+                                forKey: @"SyncLastModificationDate"];
+          [versionsMessage appendProperties: currentProperties];
+          [versionsMessage save];
+        }
+    }
+
+  return rc;
+}
+ 
+- (NSNumber *) lastModifiedFromMessageChangeNumber: (NSNumber *) changeNum
+{
+  NSDictionary *mapping;
+  NSNumber *modseq;
+
+  mapping = [[versionsMessage properties] objectForKey: @"VersionMapping"];
+  modseq = [mapping objectForKey: changeNum];
+
+  return modseq;
+}
+
+- (NSNumber *) changeNumberForMessageWithKey: (NSString *) messageKey
+{
+  NSDictionary *messages;
+  NSNumber *changeNumber;
+
+  messages = [[versionsMessage properties] objectForKey: @"Messages"];
+  changeNumber = [[messages objectForKey: messageKey]
+                   objectForKey: @"version"];
+
+  return changeNumber;
 }
 
 /* subclasses */
