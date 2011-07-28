@@ -25,6 +25,8 @@
 
 #import "MAPIStoreFolder.h"
 
+@class NSNumber;
+
 @class WOContext;
 
 @class SOGoMailAccount;
@@ -35,12 +37,19 @@
 @interface MAPIStoreMailFolder : MAPIStoreFolder
 {
   MAPIStoreMailMessageTable *messageTable;
+  SOGoMAPIFSMessage *versionsMessage;
 }
 
 /* subclasses */
 - (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) account
                                     inContext: (WOContext *) woContext;
 
+
+/* synchronisation & versioning */
+- (BOOL) synchroniseCache;
+- (NSNumber *) modseqFromMessageChangeNumber: (NSNumber *) changeNum;
+- (NSNumber *) messageUIDFromMessageKey: (NSString *) messageKey;
+- (NSNumber *) changeNumberForMessageUID: (NSNumber *) messageUid;
 
 @end
 

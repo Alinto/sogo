@@ -1,5 +1,27 @@
 2011-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessageTable.m
+	(-evaluatePropertyRestriction:intoQualifier:): now handles
+	PR_CHANGE_NUM using the new methods below.
+
+	* OpenChange/MAPIStoreMailMessage.m (-objectVersion): overriden
+	method to make use of -[MAPIStoreMailFolder
+	changeNumberForMessageUID:].
+
+	* OpenChange/MAPIStoreMailFolder.m (-initWithURL:inContext:)
+	(initWithSOGoObject:inContainer:): initialise the new
+	"versionsMessage" ivar, pointing to a SOGoMAPIFSMessage object
+	that includes versioning information.
+	(-lastMessageModificationTime): return the date value stored in
+	"versionsMessage".
+	(-synchroniseCache): new method that updates "versionsMessage"
+	differentually with versioning data from the server.
+	(-modseqFromMessageChangeNumber:): new helper method that returns
+	the corresponding IMAP "modseq" from a MAPI change number.
+	(-messageUIDFromMessageKey:): new helper method.
+	(-changeNumberForMessageUID:): new helper method that returns the
+	version number associated with a message.
+
 	* OpenChange/MAPIStoreTable.m (-loggingPrefix): overriden method
 	in order to get more useful informations.
 

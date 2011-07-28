@@ -20,12 +20,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <talloc.h>
+
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <EOControl/EOQualifier.h>
+#import <EOControl/EOSortOrdering.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <Mailer/SOGoDraftsFolder.h>
@@ -38,12 +42,14 @@
 #import <SOGo/NSString+Utilities.h>
 
 #import "MAPIApplication.h"
+#import "MAPIStoreAppointmentWrapper.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreDraftsMessage.h"
 #import "MAPIStoreMailMessage.h"
 #import "MAPIStoreMailMessageTable.h"
 #import "MAPIStoreTypes.h"
 #import "NSString+MAPIStore.h"
+#import "SOGoMAPIFSMessage.h"
 
 #import "MAPIStoreMailFolder.h"
 
@@ -61,6 +67,7 @@ static Class SOGoMailFolderK;
 {
   MAPIStoreMailMessageK = [MAPIStoreMailMessage class];
   SOGoMailFolderK = [SOGoMailFolder class];
+  [MAPIStoreAppointmentWrapper class];
 }
 
 - (id) initWithURL: (NSURL *) newURL
@@ -103,7 +110,27 @@ static Class SOGoMailFolderK;
           currentContainer = [currentContainer container];
         }
 
-      [self logWithFormat: @"sogoObject: %@", sogoObject];
+      ASSIGN (versionsMessage,
+              [SOGoMAPIFSMessage objectWithName: @"versions.plist"
+                                    inContainer: propsFolder]);
+    }
+
+  return self;
+}
+
+- (id) initWithSOGoObject: (id) newSOGoObject
+              inContainer: (MAPIStoreObject *) newContainer
+{
+  NSURL *propsURL;
+  NSString *urlString;
+
+  if ((self = [super initWithSOGoObject: newSOGoObject inContainer: newContainer]))
+    {
+      urlString = [[self url] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+      propsURL = [NSURL URLWithString: urlString];
+      ASSIGN (versionsMessage,
+              [SOGoMAPIFSMessage objectWithName: @"versions.plist"
+                                 inContainer: propsFolder]);
     }
 
   return self;
@@ -111,6 +138,7 @@ static Class SOGoMailFolderK;
 
 - (void) dealloc
 {
+  [versionsMessage release];
   [messageTable release];
   [super dealloc];
 }
@@ -126,7 +154,10 @@ static Class SOGoMailFolderK;
 - (MAPIStoreMessageTable *) messageTable
 {
   if (!messageTable)
-    ASSIGN (messageTable, [MAPIStoreMailMessageTable tableForContainer: self]);
+    {
+      [self synchroniseCache];
+      ASSIGN (messageTable, [MAPIStoreMailMessageTable tableForContainer: self]);
+    }
 
   return messageTable;
 }
@@ -276,7 +307,198 @@ static Class SOGoMailFolderK;
 
 - (NSDate *) lastMessageModificationTime
 {
-  return [sogoObject mostRecentMessageDate];
+  NSNumber *ti;
+  NSDate *value = nil;
+
+  ti = [[versionsMessage properties]
+         objectForKey: @"SyncLastSynchronisationDate"];
+  if (ti)
+    value = [NSDate dateWithTimeIntervalSince1970: [ti doubleValue]];
+  else
+    value = [NSDate date];
+
+  [self logWithFormat: @"lastMessageModificationTime: %@", value];
+
+  return value;
+}
+
+/* synchronisation */
+
+/* Tree:
+{
+  SyncLastModseq = x;
+  SyncLastSynchronisationDate = x; ** not updated until something changed
+  Messages = {
+    MessageKey = {
+      Version = x;
+      Modseq = x;
+      Deleted = b;
+    };
+    ...
+  };
+  VersionMapping = {
+    Version = MessageKey;
+    ...
+  }
+}
+*/
+
+static NSComparisonResult
+_compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
+{
+  static NSNumber *zeroNumber = nil;
+  NSNumber *modseq1, *modseq2;
+
+  if (!zeroNumber)
+    zeroNumber = [NSNumber numberWithUnsignedLongLong: 0];
+
+  modseq1 = [entry1 objectForKey: @"modseq"];
+  if (!modseq1)
+    modseq1 = zeroNumber;
+  modseq2 = [entry2 objectForKey: @"modseq"];
+  if (!modseq2)
+    modseq2 = zeroNumber;
+
+  return [modseq1 compare: modseq2];
+}
+
+- (BOOL) synchroniseCache
+{
+  BOOL rc = YES;
+  uint64_t newChangeNum;
+  NSNumber *ti, *changeNumber, *modseq, *lastModseq, *nextModseq, *uid;
+  EOQualifier *searchQualifier;
+  NSArray *uids;
+  NSUInteger count, max;
+  NSArray *fetchResults;
+  NSDictionary *result;
+  NSMutableDictionary *currentProperties, *messages, *mapping, *messageEntry;
+  NSCalendarDate *now;
+
+  now = [NSCalendarDate date];
+  [now setTimeZone: utcTZ];
+
+  currentProperties = [[versionsMessage properties] mutableCopy];
+  if (!currentProperties)
+    currentProperties = [NSMutableDictionary new];
+  [currentProperties autorelease];
+  messages = [currentProperties objectForKey: @"Messages"];
+  if (!messages)
+    {
+      messages = [NSMutableDictionary new];
+      [currentProperties setObject: messages forKey: @"Messages"];
+      [messages release];
+    }
+  mapping = [currentProperties objectForKey: @"VersionMapping"];
+  if (!mapping)
+    {
+      mapping = [NSMutableDictionary new];
+      [currentProperties setObject: mapping forKey: @"VersionMapping"];
+      [mapping release];
+    }
+
+  lastModseq = [currentProperties objectForKey: @"SyncLastModseq"];
+  if (lastModseq)
+    {
+      nextModseq = [NSNumber numberWithUnsignedLongLong:
+                               [lastModseq unsignedLongLongValue] + 1];
+      searchQualifier = [[EOKeyValueQualifier alloc]
+                                initWithKey: @"modseq"
+                           operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
+                                      value: nextModseq];
+      [searchQualifier autorelease];
+    }
+  else
+    searchQualifier = [self nonDeletedQualifier];
+
+  uids = [sogoObject fetchUIDsMatchingQualifier: searchQualifier
+                                   sortOrdering: nil];
+  max = [uids count];
+  if (max > 0)
+    {
+      fetchResults
+        = [(NSDictionary *) [sogoObject fetchUIDs: uids
+                                            parts: [NSArray arrayWithObject: @"modseq"]]
+                          objectForKey: @"fetch"];
+
+      /* NOTE: we sort items manually because Cyrus does not properly sort
+         entries with a MODSEQ of 0 */
+      fetchResults
+        = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByMODSEQ
+                                         context: NULL];
+      for (count = 0; count < max; count++)
+        {
+          result = [fetchResults objectAtIndex: count];
+          uid = [result objectForKey: @"uid"];
+          modseq = [result objectForKey: @"modseq"];
+          [self logWithFormat: @"uid '%@' has modseq '%@'", uid, modseq];
+          newChangeNum = [[self context] getNewChangeNumber];
+          changeNumber = [NSNumber numberWithUnsignedLongLong: newChangeNum];
+
+          messageEntry = [NSMutableDictionary new];
+          [messages setObject: messageEntry forKey: uid];
+          [messageEntry release];
+
+          [messageEntry setObject: modseq forKey: @"modseq"];
+          [messageEntry setObject: changeNumber forKey: @"version"];
+
+          [mapping setObject: modseq forKey: changeNumber];
+
+          if (!lastModseq
+              || ([lastModseq compare: modseq] == NSOrderedAscending))
+            lastModseq = modseq;
+        }
+
+      ti = [NSNumber numberWithDouble: [now timeIntervalSince1970]];
+      [currentProperties setObject: ti
+                            forKey: @"SyncLastSynchronisationDate"];
+      [currentProperties setObject: lastModseq forKey: @"SyncLastModseq"];
+      [versionsMessage appendProperties: currentProperties];
+      [versionsMessage save];
+    }
+
+  return rc;
+}
+ 
+- (NSNumber *) modseqFromMessageChangeNumber: (NSNumber *) changeNum
+{
+  NSDictionary *mapping;
+  NSNumber *modseq;
+
+  mapping = [[versionsMessage properties] objectForKey: @"VersionMapping"];
+  modseq = [mapping objectForKey: changeNum];
+
+  return modseq;
+}
+
+- (NSNumber *) messageUIDFromMessageKey: (NSString *) messageKey
+{
+  NSNumber *messageUid;
+  NSString *uidString;
+  NSRange dotRange;
+
+  dotRange = [messageKey rangeOfString: @".eml"];
+  if (dotRange.location != NSNotFound)
+    {
+      uidString = [messageKey substringToIndex: dotRange.location];
+      messageUid = [NSNumber numberWithInt: [uidString intValue]];
+    }
+  else
+    messageUid = nil;
+
+  return messageUid;
+}
+
+- (NSNumber *) changeNumberForMessageUID: (NSNumber *) messageUid
+{
+  NSDictionary *messages;
+  NSNumber *changeNumber;
+
+  messages = [[versionsMessage properties] objectForKey: @"Messages"];
+  changeNumber = [[messages objectForKey: messageUid]
+                   objectForKey: @"version"];
+
+  return changeNumber;
 }
 
 @end

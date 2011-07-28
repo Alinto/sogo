@@ -72,6 +72,12 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
   return self;
 }
 
+- (void) cleanupCaches
+{
+  [(MAPIStoreMailFolder *) container synchroniseCache];
+  [super cleanupCaches];
+}
+
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
 {
   static NSMutableDictionary *knownProperties = nil;
@@ -97,6 +103,7 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
 {
   MAPIRestrictionState rc;
   id value;
+  NSNumber *modseq;
 
   value = NSObjectFromMAPISPropValue (&res->lpProp);
   switch ((uint32_t) res->ulPropTag)
@@ -142,6 +149,25 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
 
     case PR_CONVERSATION_KEY:
 	rc = MAPIRestrictionStateAlwaysFalse;
+      break;
+
+    case PR_CHANGE_NUM:
+      {
+        modseq = [(MAPIStoreMailFolder *)
+                   container modseqFromMessageChangeNumber: value];
+        [self logWithFormat: @"change number from oxcfxics: %.16lx", [value unsignedLongLongValue]];
+        [self logWithFormat: @"  modseq: %.16lx", [modseq unsignedLongLongValue]];
+        if (modseq)
+          modseq = [NSNumber numberWithUnsignedLongLong:
+                               [modseq unsignedLongLongValue] + 1];
+        else
+          modseq = [NSNumber numberWithUnsignedLongLong: 0];
+        *qualifier = [[EOKeyValueQualifier alloc] initWithKey: @"MODSEQ"
+                                                  operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
+                                                  value: modseq];
+        [*qualifier autorelease];
+        rc = MAPIRestrictionStateNeedsEval;
+      }
       break;
       
     default:

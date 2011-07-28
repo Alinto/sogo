@@ -266,6 +266,28 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return appointmentWrapper;
 }
 
+- (uint64_t) objectVersion
+{
+  uint64_t version = 0xffffffffffffffffLL;
+  NSNumber *uid, *changeNumber;
+
+  uid = [(MAPIStoreMailFolder *)
+          container messageUIDFromMessageKey: [self nameInContainer]];
+  if (uid)
+    {
+      changeNumber = [(MAPIStoreMailFolder *)
+                       container changeNumberForMessageUID: uid];
+      if (changeNumber)
+        version = [changeNumber unsignedLongLongValue] >> 16;
+      else
+        abort ();
+    }
+  else
+    abort ();
+
+  return version;
+}
+
 - (int) getPrIconIndex: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -1135,8 +1157,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
     }
 }
 
-- (NSArray *) attachmentsKeysMatchingQualifier: (EOQualifier *) qualifier
-                              andSortOrderings: (NSArray *) sortOrderings
+- (NSArray *) attachmentKeysMatchingQualifier: (EOQualifier *) qualifier
+                             andSortOrderings: (NSArray *) sortOrderings
 {
   [self _fetchAttachmentPartsInBodyInfo: [sogoObject bodyStructure]
                              withPrefix: @""];
