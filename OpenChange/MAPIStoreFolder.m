@@ -288,7 +288,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
              withRow: (struct SRow *) aRow
               andFID: (uint64_t) fid
 {
-  int rc;
+  int rc = MAPISTORE_SUCCESS;
   MAPIStoreMapping *mapping;
   NSString *baseURL, *childURL, *folderKey;
   MAPIStoreFolder *childFolder;
@@ -316,7 +316,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
             {
               [childFolder setProperties: aRow];
               *childFolderPtr = childFolder;
-              rc = MAPISTORE_SUCCESS;
             }
           else
             [NSException raise: @"MAPIStoreIOException"
@@ -351,6 +350,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     keys = [self folderKeys];
   else if (tableType == MAPISTORE_FAI_TABLE)
     keys = [self faiMessageKeys];
+  else
+    {
+      keys = nil;
+      rc = MAPISTORE_ERR_NOT_FOUND;
+    }
   *rowCount = [keys count];
 
   return rc;
