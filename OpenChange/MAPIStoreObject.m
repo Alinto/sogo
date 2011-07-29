@@ -366,7 +366,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   uint64_t obVersion;
 
   obVersion = [self objectVersion];
-  if (obVersion = 0xffffffffffffffffLL)
+  if (obVersion == 0xffffffffffffffffLL)
     rc = MAPISTORE_ERR_NOT_FOUND;
   else
     rc = [self getReplicaKey: data fromGlobCnt: obVersion
@@ -382,7 +382,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   uint64_t obVersion;
 
   obVersion = [self objectVersion];
-  if (obVersion = 0xffffffffffffffffLL)
+  if (obVersion == 0xffffffffffffffffLL)
     rc = MAPISTORE_ERR_NOT_FOUND;
   else
     {
