@@ -52,6 +52,8 @@
 - (NSArray *) toOneRelationshipKeys;
 - (NSArray *) toManyRelationshipKeys;
 
+- (NSDictionary *) statusForFlags: (NSArray *) flags;
+
 - (NSException *) deleteUIDs: (NSArray *) uids
 	      useTrashFolder: (BOOL *) withTrash
 		   inContext: (id) context;
@@ -63,6 +65,7 @@
 - (NSArray *) fetchUIDsMatchingQualifier: (id) _q sortOrdering: (id) _so;
 - (NSArray *) fetchUIDsMatchingQualifier: (id) _q sortOrdering: (id) _so threaded: (BOOL) _threaded;
 - (NSArray *) fetchUIDs: (NSArray *) _uids parts: (NSArray *) _parts;
+- (NSArray *) fetchUIDsOfVanishedItems: (uint64_t) modseq;
 
 - (WOResponse *) copyUIDs: (NSArray *) uids
 		 toFolder: (NSString *) destinationFolder

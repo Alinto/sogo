@@ -1,3 +1,16 @@
+2011-07-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_folder_get_deleted_fmids):
+	implemented new backend method.
+
+	* OpenChange/MAPIStoreTable.m (-loggingPrefix): removed method as
+	it was causing crashes when the parent object was deallocated.
+
+	* SoObjects/Mailer/SOGoMailFolder.m (-statusForFlags:): new method
+	that returns the values of flags passed as parameters.
+	(-fetchUIDsOfVanishedItems:): new method that returns the list of
+	UID that are reported to have vanished since the specified modseq.
+
 2011-07-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreGCSMessageTable.m

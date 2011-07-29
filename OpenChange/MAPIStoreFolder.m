@@ -519,6 +519,64 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
+- (int) getDeletedFMIDs: (struct I8Array_r **) fmidsPtr
+                  andCN: (uint64_t *) cnPtr
+       fromChangeNumber: (uint64_t) changeNum
+            inTableType: (uint8_t) tableType
+               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc;
+  NSString *baseURL, *format, *url;
+  NSArray *keys;
+  NSNumber *cnNbr;
+  NSUInteger count, max;
+  MAPIStoreMapping *mapping;
+  struct I8Array_r *fmids;
+  uint64_t fmid;
+
+  keys = [self getDeletedKeysFromChangeNumber: changeNum andCN: &cnNbr
+                                  inTableType: tableType];
+  if (keys)
+    {
+      mapping = [[self context] mapping];
+
+      max = [keys count];
+
+      fmids = talloc_zero (memCtx, struct I8Array_r);
+      fmids->cValues = 0;
+      fmids->lpi8 = talloc_array (fmids, int64_t, max);
+      *fmidsPtr = fmids;
+      if (max > 0)
+        *cnPtr = [cnNbr unsignedLongLongValue];
+
+      baseURL = [self url];
+      if ([baseURL hasSuffix: @"/"])
+        format = @"%@%@";
+      else
+        format = @"%@/%@";
+
+      for (count = 0; count < max; count++)
+        {
+          url = [NSString stringWithFormat: format,
+                          baseURL, [keys objectAtIndex: count]];
+          fmid = [mapping idFromURL: url];
+          if (fmid != NSNotFound) /* if no fmid is returned, then the object
+                                     "never existed" in the OpenChange
+                                     databases */
+            {
+              fmids->lpi8[fmids->cValues] = fmid;
+              fmids->cValues++;
+            }
+        }
+
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
 - (int) getTable: (MAPIStoreTable **) tablePtr
      andRowCount: (uint32_t *) countPtr
        tableType: (uint8_t) tableType
@@ -926,6 +984,13 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [self subclassResponsibility: _cmd];
 
   return nil;  
+}
+
+- (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum
+                                       andCN: (NSNumber **) cnNbrs
+                                 inTableType: (uint8_t) tableType
+{
+  return nil;
 }
 
 - (Class) messageClass
