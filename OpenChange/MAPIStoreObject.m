@@ -362,16 +362,36 @@ static Class NSExceptionK, MAPIStoreFolderK;
 - (int) getPrChangeKey: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getReplicaKey: data fromGlobCnt: [self objectVersion]
+  int rc;
+  uint64_t obVersion;
+
+  obVersion = [self objectVersion];
+  if (obVersion = 0xffffffffffffffffLL)
+    rc = MAPISTORE_ERR_NOT_FOUND;
+  else
+    rc = [self getReplicaKey: data fromGlobCnt: obVersion
                     inMemCtx: memCtx];
+
+  return rc;
 }
 
 - (int) getPrChangeNum: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPILongLongValue (memCtx, ([self objectVersion] << 16) | 0x0001);
+  int rc;
+  uint64_t obVersion;
 
-  return MAPISTORE_SUCCESS;
+  obVersion = [self objectVersion];
+  if (obVersion = 0xffffffffffffffffLL)
+    rc = MAPISTORE_ERR_NOT_FOUND;
+  else
+    {
+      *data = MAPILongLongValue (memCtx, ((obVersion << 16)
+                                          | 0x0001));
+      rc = MAPISTORE_SUCCESS;
+    }
+
+  return rc;
 }
 
 - (int) getPrCreationTime: (void **) data

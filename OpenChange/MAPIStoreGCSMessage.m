@@ -52,7 +52,7 @@
                    changeNumberForMessageWithKey: [self nameInContainer]];
   if (changeNumber)
     version = [changeNumber unsignedLongLongValue] >> 16;
-  else
+  else if (![sogoObject isNew])
     abort ();
 
   return version;
