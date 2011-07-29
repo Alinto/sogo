@@ -81,7 +81,7 @@ const char *indentationStep = "  ";
   max = [keys count];
 
   [self _outputIndentation: anInt];
-  printf ("{ (%ld) items\n", max);
+  printf ("{ (%ld) items\n", (long) max);
 
   subIndent = anInt + 1;
 
@@ -104,7 +104,7 @@ const char *indentationStep = "  ";
       withIndentation: (NSInteger) anInt
 {
   [self _outputIndentation: anInt];
-  printf ("%lu =\n", count);
+  printf ("%lu =\n", (unsigned long) count);
 }
 
 - (void) displayWithIndentation: (NSInteger) anInt
@@ -115,7 +115,7 @@ const char *indentationStep = "  ";
   max = [self count];
 
   [self _outputIndentation: anInt];
-  printf ("[ (%ld) items\n", max);
+  printf ("[ (%ld) items\n", (long) max);
 
   subIndent = anInt + 1;
 
