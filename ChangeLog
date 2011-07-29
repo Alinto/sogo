@@ -1,3 +1,8 @@
+2011-07-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreTable.m (-dealloc): free the list of
+	columns, otherwise the last list set is leaked.
+
 2011-07-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreSOGo.m (sogo_folder_get_deleted_fmids):

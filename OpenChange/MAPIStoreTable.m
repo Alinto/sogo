@@ -289,6 +289,9 @@ static Class NSDataK, NSStringK;
       restriction = nil;
       restrictionState = MAPIRestrictionStateAlwaysTrue;
       sortOrderings = nil;
+
+      columns = NULL;
+      columnsCount = 0;
     }
 
   return self;
@@ -320,6 +323,8 @@ static Class NSDataK, NSStringK;
 - (void) dealloc
 {
   [self logWithFormat: @"-dealloc"];
+  if (columns)
+    NSZoneFree (NULL, columns);
   if (container)
     [[MAPIStoreActiveTables activeTables] unregisterTable: self];
   [currentChild release];
