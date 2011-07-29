@@ -40,6 +40,11 @@
 
 @implementation MAPIStoreDraftsMessage
 
+- (uint64_t) objectVersion
+{
+  return 0xffffffffffffffffLL;
+}
+
 - (int) getPrMessageFlags: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
