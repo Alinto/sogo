@@ -168,6 +168,18 @@ e)
     [self _saveAttachment: [attachmentKeys objectAtIndex: count]];
 }
 
+
+- (NSArray *) attachmentKeysMatchingQualifier: (EOQualifier *) qualifier
+                             andSortOrderings: (NSArray *) sortOrderings
+{
+  if (qualifier)
+    [self errorWithFormat: @"qualifier is not used for attachments"];
+  if (sortOrderings)
+    [self errorWithFormat: @"sort orderings are not used for attachments"];
+  
+  return [attachmentParts allKeys];
+}
+
 - (id) lookupAttachment: (NSString *) childKey
 {
   return [attachmentParts objectForKey: childKey];
