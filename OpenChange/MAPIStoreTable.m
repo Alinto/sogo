@@ -916,12 +916,4 @@ static Class NSDataK, NSStringK;
   [self subclassResponsibility: _cmd];
 }
 
-/* logging */
-- (NSString *) loggingPrefix
-{
-  return [NSString stringWithFormat:@"<%@:%p:%@>",
-                   NSStringFromClass (isa), self,
-                   [container nameInContainer]];
-}
-
 @end

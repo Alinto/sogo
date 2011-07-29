@@ -1,5 +1,8 @@
 2011-07-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTable.m (-loggingPrefix): removed method as
+	it was causing crashes when the parent object was deallocated.
+
 	* SoObjects/Mailer/SOGoMailFolder.m (-statusForFlags:): new method
 	that returns the values of flags passed as parameters.
 	(-fetchUIDsOfVanishedItems:): new method that returns the list of
