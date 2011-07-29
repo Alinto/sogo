@@ -32,6 +32,7 @@
 #import <EOControl/EOSortOrdering.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
+#import <NGImap4/NGImap4Connection.h>
 #import <Mailer/SOGoDraftsFolder.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
@@ -97,6 +98,9 @@ static Class SOGoMailFolderK;
       accountFolder = [accountsFolder lookupName: @"0"
                                        inContext: woContext
                                          acquire: NO];
+      [[accountFolder imap4Connection]
+        enableExtension: @"QRESYNC"];
+
       [parentContainersBag addObject: accountFolder];
       [woContext setClientObject: accountFolder];
 
@@ -499,6 +503,61 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                    objectForKey: @"version"];
 
   return changeNumber;
+}
+
+- (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum
+                                       andCN: (NSNumber **) cnNbr
+                                 inTableType: (uint8_t) tableType
+{
+  NSArray *deletedKeys, *deletedUIDs;
+  NSNumber *changeNumNbr;
+  uint64_t modseq;
+  NSDictionary *versionProperties, *status;
+  NSMutableDictionary *messages, *mapping;
+  NSNumber *newChangeNumNbr, *highestModseq;
+  uint64_t newChangeNum;
+  NSUInteger count, max;
+
+  if (tableType == MAPISTORE_MESSAGE_TABLE)
+    {
+      changeNumNbr = [NSNumber numberWithUnsignedLongLong: changeNum];
+      modseq = [[self modseqFromMessageChangeNumber: changeNumNbr]
+                 unsignedLongLongValue];
+      if (modseq > 0)
+        {
+          status
+            = [sogoObject
+                statusForFlags: [NSArray arrayWithObject: @"HIGHESTMODSEQ"]];
+          highestModseq = [status objectForKey: @"highestmodseq"];
+
+          versionProperties = [versionsMessage properties];
+          messages = [versionProperties objectForKey: @"Messages"];
+          deletedUIDs = [(SOGoMailFolder *) sogoObject
+                        fetchUIDsOfVanishedItems: modseq];
+          deletedKeys = [deletedUIDs stringsWithFormat: @"%@.eml"];
+          max = [deletedUIDs count];
+          if (max > 0)
+            {
+              [messages removeObjectsForKeys: deletedUIDs];
+
+              mapping = [versionProperties objectForKey: @"VersionsMapping"];
+              for (count = 0; count < max; count++)
+                newChangeNum = [[self context] getNewChangeNumber];
+              newChangeNumNbr = [NSNumber numberWithUnsignedLongLong: newChangeNum];
+              *cnNbr = newChangeNumNbr;
+              [mapping setObject: newChangeNumNbr forKey: @"SyncLastModseq"];
+              [versionsMessage save];
+            }
+        }
+      else
+        deletedKeys = [NSArray array];
+    }
+  else
+    deletedKeys = [super getDeletedKeysFromChangeNumber: changeNum
+                                                  andCN: cnNbr
+                                            inTableType: tableType];
+
+  return deletedKeys;
 }
 
 @end

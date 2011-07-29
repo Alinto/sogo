@@ -29,6 +29,7 @@
 
 @class NSArray;
 @class NSMutableArray;
+@class NSNumber;
 @class NSURL;
 
 @class EOQualifier;
@@ -109,6 +110,11 @@
            inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) deleteMessageWithMID: (uint64_t) mid
                     andFlags: (uint8_t) flags;
+- (int) getDeletedFMIDs: (struct I8Array_r **) fmidsPtr
+                  andCN: (uint64_t *) cnPtr
+       fromChangeNumber: (uint64_t) changeNum
+            inTableType: (uint8_t) tableType
+               inMemCtx: (TALLOC_CTX *) mem_ctx;
 
 - (int) getTable: (MAPIStoreTable **) tablePtr
      andRowCount: (uint32_t *) count
@@ -124,6 +130,9 @@
 - (MAPIStoreMessageTable *) messageTable;
 - (NSArray *) messageKeysMatchingQualifier: (EOQualifier *) qualifier
                           andSortOrderings: (NSArray *) sortOrderings;
+- (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum
+                                       andCN: (NSNumber **) cnNbr
+                                 inTableType: (uint8_t) tableType;
 
 - (NSString *) createFolder: (struct SRow *) aRow
                     withFID: (uint64_t) newFID;

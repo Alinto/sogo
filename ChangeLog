@@ -1,5 +1,8 @@
 2011-07-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_folder_get_deleted_fmids):
+	implemented new backend method.
+
 	* OpenChange/MAPIStoreTable.m (-loggingPrefix): removed method as
 	it was causing crashes when the parent object was deallocated.
 

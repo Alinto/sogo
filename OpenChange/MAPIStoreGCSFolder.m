@@ -299,6 +299,92 @@
   return changeNumber;
 }
 
+- (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum
+                                       andCN: (NSNumber **) cnNbr
+                                 inTableType: (uint8_t) tableType
+{
+  NSArray *deletedKeys, *deletedCNames, *records;
+  NSNumber *changeNumNbr, *lastModified;
+  NSString *cName;
+  NSDictionary *versionProperties;
+  NSMutableDictionary *messages, *mapping;
+  uint64_t newChangeNum = 0;
+  EOAndQualifier *fetchQualifier;
+  EOKeyValueQualifier *cDeletedQualifier, *cLastModifiedQualifier;
+  EOFetchSpecification *fs;
+  GCSFolder *ocsFolder;
+  NSUInteger count, max;
+
+  if (tableType == MAPISTORE_MESSAGE_TABLE)
+    {
+      deletedKeys = [NSMutableArray array];
+
+      changeNumNbr = [NSNumber numberWithUnsignedLongLong: changeNum];
+      lastModified = [self lastModifiedFromMessageChangeNumber: changeNumNbr];
+      if (lastModified)
+        {
+          versionProperties = [versionsMessage properties];
+          messages = [versionProperties objectForKey: @"Messages"];
+
+          ocsFolder = [sogoObject ocsFolder];
+          cLastModifiedQualifier = [[EOKeyValueQualifier alloc]
+                                           initWithKey: @"c_lastmodified"
+                                      operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
+                                                 value: lastModified];
+          cDeletedQualifier = [[EOKeyValueQualifier alloc]
+                                           initWithKey: @"c_deleted"
+                                      operatorSelector: EOQualifierOperatorEqual
+                                                 value: [NSNumber numberWithInt: 1]];
+          fetchQualifier = [[EOAndQualifier alloc] initWithQualifiers:
+                                                     cLastModifiedQualifier,
+                                                   cDeletedQualifier,
+                                                   nil];
+          [fetchQualifier autorelease];
+          [cLastModifiedQualifier release];
+          [cDeletedQualifier release];
+
+          fs = [EOFetchSpecification
+                 fetchSpecificationWithEntityName: [ocsFolder folderName]
+                                        qualifier: fetchQualifier
+                                    sortOrderings: nil];
+          records = [ocsFolder
+                               fetchFields: [NSArray arrayWithObject: @"c_name"]
+                        fetchSpecification: fs
+                             ignoreDeleted: NO];
+          deletedCNames = [records objectsForKey: @"c_name" notFoundMarker: nil];
+          max = [deletedCNames count];
+          if (max > 0)
+            {
+              mapping = [versionProperties objectForKey: @"VersionsMapping"];
+              for (count = 0; count < max; count++)
+                {
+                  cName = [deletedCNames objectAtIndex: count];
+                  if ([messages objectForKey: cName])
+                    {
+                      [messages removeObjectForKey: cName];
+                      [(NSMutableArray *) deletedKeys addObject: cName];
+                      newChangeNum = [[self context] getNewChangeNumber];
+                    }
+                }
+              if (newChangeNum)
+                {
+                  changeNumNbr
+                    = [NSNumber numberWithUnsignedLongLong: newChangeNum];
+                  [mapping setObject: lastModified forKey: changeNumNbr];
+                  *cnNbr = changeNumNbr;
+                  [versionsMessage save];
+                }
+            }
+        }
+    }
+  else
+    deletedKeys = [super getDeletedKeysFromChangeNumber: changeNum
+                                                  andCN: cnNbr
+                                            inTableType: tableType];
+
+  return deletedKeys;
+}
+
 /* subclasses */
 
 - (EOQualifier *) componentQualifier

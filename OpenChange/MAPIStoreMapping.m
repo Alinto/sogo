@@ -62,6 +62,8 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   mapping = data;
   [mapping setObject: uri forKey: idNbr];
 
+  NSLog (@"preregistered url '%@' for id '%@'", uri, idNbr);
+
   return 0;
 }
 
@@ -104,6 +106,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 	{
 	  idNbr = [keys objectAtIndex: count];
 	  uri = [mapping objectForKey: idNbr];
+          [self logWithFormat: @"preregistered id '%@' for url '%@'", idNbr, uri];
 	  [reverseMapping setObject: idNbr forKey: uri];
 	}
     }

@@ -442,6 +442,39 @@ sogo_folder_delete_message(void *folder_object, uint64_t mid, uint8_t flags)
 }
 
 static int
+sogo_folder_get_deleted_fmids(void *folder_object, TALLOC_CTX *mem_ctx,
+                              uint8_t table_type, uint64_t change_num,
+                              struct I8Array_r **fmidsp, uint64_t *cnp)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreFolder *folder;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (folder_object)
+    {
+      wrapper = folder_object;
+      folder = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [folder getDeletedFMIDs: fmidsp
+                             andCN: cnp
+                  fromChangeNumber: change_num
+                       inTableType: table_type
+                          inMemCtx: mem_ctx];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+      rc = MAPISTORE_SUCCESS;
+    }
+
+  return rc;
+}
+
+static int
 sogo_folder_open_table(void *folder_object, TALLOC_CTX *mem_ctx,
                        uint8_t table_type, uint32_t handle_id,
                        void **table_object, uint32_t *row_count)
@@ -989,6 +1022,7 @@ int mapistore_init_backend(void)
       backend.folder.open_message = sogo_folder_open_message;
       backend.folder.create_message = sogo_folder_create_message;
       backend.folder.delete_message = sogo_folder_delete_message;
+      backend.folder.get_deleted_fmids = sogo_folder_get_deleted_fmids;
       backend.folder.get_child_count = sogo_folder_get_child_count;
       backend.folder.open_table = sogo_folder_open_table;
       backend.message.create_attachment = sogo_message_create_attachment;
