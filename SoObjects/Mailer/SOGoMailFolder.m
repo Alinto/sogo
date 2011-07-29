@@ -555,6 +555,24 @@ static NSString *defaultUserID =  @"anyone";
   return result;
 }
 
+- (NSDictionary *) statusForFlags: (NSArray *) flags
+{
+  NGImap4Client *client;
+  NSString *folderName;
+  NSDictionary *result, *status;
+
+  client = [[self imap4Connection] client];
+  folderName = [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]];
+  result = [client status: folderName flags: flags];
+  if ([[result objectForKey: @"result"] boolValue])
+    status = [[[result objectForKey: @"RawResponse"] objectForKey: @"status"]
+               objectForKey: @"flags"];
+  else
+    status = nil;
+
+  return status;
+}
+
 - (NSArray *) fetchUIDsMatchingQualifier: (id) _q
 			    sortOrdering: (id) _so
 {
@@ -586,6 +604,17 @@ static NSString *defaultUserID =  @"anyone";
 {
   return [[self imap4Connection] fetchUIDs: _uids inURL: [self imap4URL]
 				 parts: _parts];
+}
+
+- (NSArray *) fetchUIDsOfVanishedItems: (uint64_t) modseq
+{
+  NGImap4Client *client;
+  NSDictionary *result;
+
+  client = [[self imap4Connection] client];
+  result = [client fetchVanished: modseq];
+
+  return [result objectForKey: @"vanished"];
 }
 
 - (NSException *) postData: (NSData *) _data
