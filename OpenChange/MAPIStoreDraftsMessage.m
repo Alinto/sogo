@@ -50,8 +50,7 @@
 {
   unsigned int v = MSGFLAG_FROMME;
 
-  if ([[self attachmentKeysMatchingQualifier: nil
-                            andSortOrderings: nil]
+  if ([[self attachmentKeys]
         count] > 0)
     v |= MSGFLAG_HASATTACH;
     
@@ -168,7 +167,7 @@ e)
 	}
     }
 
-  max = [attachmentKeys count];
+  max = [[self attachmentKeys] count];
   for (count = 0; count < max; count++)
     [self _saveAttachment: [attachmentKeys objectAtIndex: count]];
 }
