@@ -1,3 +1,9 @@
+2011-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreFSMessage.m
+	(-getAvailableProperties:inMemCtx:): take only NSNumber keys into
+	account.
+
 2011-07-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreTable.m (-dealloc): free the list of

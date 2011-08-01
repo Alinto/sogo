@@ -23,6 +23,8 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 
 #import "MAPIStoreContext.h"
 #import "MAPIStorePropertySelectors.h"
@@ -37,7 +39,14 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
+Class NSNumberK;
+
 @implementation MAPIStoreFSMessage
+
++ (void) initialize
+{
+  NSNumberK = [NSNumber class];
+}
 
 + (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
                       inMemCtx: (TALLOC_CTX *) memCtx
@@ -138,7 +147,7 @@
 //   return [NSNumber numberWithUnsignedInt: propTag];
 // #else
       key = [keys objectAtIndex: count];
-      if (![key isEqualToString: @"attachments"])
+      if ([key isKindOfClass: NSNumberK])
         {
 #if (GS_SIZEOF_LONG == 4)
           properties->aulPropTag[count] = [[keys objectAtIndex: count] unsignedLongValue];
