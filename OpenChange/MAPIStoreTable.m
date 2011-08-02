@@ -580,8 +580,7 @@ static Class NSDataK, NSStringK;
   return rc;
 }
 
-- (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
-				       intoQualifier: (EOQualifier **) qualifier
+- (SEL) operatorFromRestrictionOperator: (uint32_t) resOp
 {
   static SEL operators[] = { EOQualifierOperatorLessThan,
 			     EOQualifierOperatorLessThanOrEqualTo,
@@ -591,6 +590,23 @@ static Class NSDataK, NSStringK;
 			     EOQualifierOperatorNotEqual,
 			     EOQualifierOperatorContains };
   SEL operator;
+
+  if (resOp < 7)
+    operator = operators[resOp];
+  else
+    {
+      operator = NULL;
+      [NSException raise: @"MAPIStoreRestrictionException"
+                  format: @"unhandled operator type number %d", resOp];
+    }
+
+  return operator;
+}
+
+- (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
+				       intoQualifier: (EOQualifier **) qualifier
+{
+  SEL operator;
   id value;
   NSString *property;
   MAPIRestrictionState rc;
@@ -598,17 +614,8 @@ static Class NSDataK, NSStringK;
   property = [self backendIdentifierForProperty: res->ulPropTag];
   if (property)
     {
-      if (res->relop >= 0 && res->relop < 7)
-	operator = operators[res->relop];
-      else
-	{
-	  operator = NULL;
-	  [NSException raise: @"MAPIStoreRestrictionException"
-		      format: @"unhandled operator type number %d", res->relop];
-	}
-
+      operator = [self operatorFromRestrictionOperator: res->relop];
       value = NSObjectFromMAPISPropValue (&res->lpProp);
-      
       *qualifier = [[EOKeyValueQualifier alloc] initWithKey: property
 					   operatorSelector: operator
 						      value: value];
@@ -711,6 +718,14 @@ static Class NSDataK, NSStringK;
       break;
     case RES_EXIST: state = [self evaluateExistRestriction: &res->res.resExist
                                              intoQualifier: qualifier];
+      break;
+
+    case RES_COMMENT:
+      if (res->res.resComment.RestrictionPresent)
+        state = [self evaluateRestriction: (struct mapi_SRestriction *) res->res.resComment.Restriction.res
+                            intoQualifier: qualifier];
+      else
+        state = MAPIRestrictionStateAlwaysTrue;
       break;
 
     // case 5: MAPIStringForComparePropsRestriction(&resPtr->res.resCompareProps); break;
