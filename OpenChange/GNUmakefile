@@ -47,6 +47,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreTable.m \
 	MAPIStoreMessageTable.m \
 	MAPIStoreFolderTable.m \
+	MAPIStorePermissionsTable.m \
 	\
 	MAPIStoreFSBaseContext.m \
 	MAPIStoreFSFolder.m \
