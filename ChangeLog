@@ -1,3 +1,11 @@
+2011-08-02  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (_onMenuLabelFlagX): fixed a
+	bug when changing the flag of multiple messages.
+
+	* UI/WebServerResources/SOGoRootPage.js (onLoginClick): reset
+	error message (if any) when login in.
+
 2011-08-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFSMessage.m

@@ -62,6 +62,8 @@ function onLoginClick(event) {
     var language = $("language");
     var domain = $("domain");
 
+    SetLogMessage("errorMessage");
+
     if (userName.length > 0 && password.length > 0) {
         this.disabled = true;
         startAnimation($("animation"));

@@ -2439,8 +2439,10 @@ function _onMenuLabelFlagX(flag) {
                      $('row_' + Mailer.currentMessages[Mailer.currentMailbox]).getAttribute("labels"));
     else if (Object.isArray(document.menuTarget))
         // Menu called from multiple selection in messages list view
-        $(document.menuTarget).collect(function(row) {
-                messages.set(row.getAttribute("id").substr(4),
+        $(document.menuTarget).collect(function(rowID) {
+            var row = $(rowID);
+            if (row)
+                messages.set(rowID.substr(4),
                              row.getAttribute("labels"));
             });
     else
