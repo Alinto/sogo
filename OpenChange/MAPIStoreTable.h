@@ -79,12 +79,8 @@ typedef enum {
 
 - (void) setHandleId: (uint32_t) newHandleId;
 
-- (NSArray *) childKeys;
-- (NSArray *) restrictedChildKeys;
-
 - (id) childAtRowID: (uint32_t) rowId
        forQueryType: (enum table_query_type) queryType;
-- (id) lookupChild: (NSString *) childKey;
 
 - (void) cleanupCaches;
 
@@ -104,10 +100,16 @@ typedef enum {
 
 /* helpers */
 
+- (SEL) operatorFromRestrictionOperator: (uint32_t) resOp;
 - (void) warnUnhandledProperty: (enum MAPITAGS) property
                     inFunction: (const char *) function;
 
 /* subclasses */
+- (NSArray *) childKeys;
+- (NSArray *) restrictedChildKeys;
+
+- (id) lookupChild: (NSString *) childKey;
+
 - (void) setSortOrder: (const struct SSortOrderSet *) set;
 
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property;

@@ -1,3 +1,17 @@
+2011-08-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContactsMessageTable.m
+	(-evaluateContentRestriction:intoQualifier:): overriden method in
+	order to evaluate PR_MESSAGE_CLASS_UNICODE.
+	(-evaluatePropertyRestriction:intoQualifier:): added stub support for
+	PidLidAddressBookProviderArrayType,
+	PidLidAddressBookProviderEmailList and real support for
+	PidLidEmail[123]OriginalDisplayName.
+
+	* OpenChange/MAPIStoreTable.m (-operatorFromRestrictionOperator):
+	code split from -evaluatePropertyRestriction:intoQualifier: and
+	exposed for external use.
+
 2011-08-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (_onMenuLabelFlagX): fixed a
