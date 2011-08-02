@@ -686,32 +686,33 @@ static Class NSDataK, NSStringK;
   switch (res->rt)
     {
       /* basic operators */
-    case 0: state = [self evaluateAndRestriction: &res->res.resAnd
-				   intoQualifier: qualifier];
+    case RES_AND: state = [self evaluateAndRestriction: &res->res.resAnd
+                                         intoQualifier: qualifier];
       break;
-    case 1: state = [self evaluateOrRestriction: &res->res.resOr
-				  intoQualifier: qualifier];
+    case RES_OR: state = [self evaluateOrRestriction: &res->res.resOr
+                                       intoQualifier: qualifier];
       break;
-    case 2: state = [self evaluateNotRestriction: &res->res.resNot
-				   intoQualifier: qualifier];
+    case RES_NOT: state = [self evaluateNotRestriction: &res->res.resNot
+                                         intoQualifier: qualifier];
       break;
 
       /* content restrictions */
-    case 3: state = [self evaluateContentRestriction: &res->res.resContent
-				       intoQualifier: qualifier];
+    case RES_CONTENT: state = [self evaluateContentRestriction: &res->res.resContent
+                                                 intoQualifier: qualifier];
       break;
-    case 4: state = [self evaluatePropertyRestriction: &res->res.resProperty
-					intoQualifier: qualifier];
+    case RES_PROPERTY: state = [self evaluatePropertyRestriction: &res->res.resProperty
+                                                   intoQualifier: qualifier];
       break;
-    case 6: state = [self evaluateBitmaskRestriction: &res->res.resBitmask
-				       intoQualifier: qualifier];
+    case RES_BITMASK: state = [self evaluateBitmaskRestriction: &res->res.resBitmask
+                                                 intoQualifier: qualifier];
       break;
 
-    case 7: state = MAPIRestrictionStateAlwaysTrue; /* let's cheat a little */
+    case RES_SIZE: state = MAPIRestrictionStateAlwaysTrue; /* let's cheat a little */
       break;
-    case 8: state = [self evaluateExistRestriction: &res->res.resExist
-				     intoQualifier: qualifier];
+    case RES_EXIST: state = [self evaluateExistRestriction: &res->res.resExist
+                                             intoQualifier: qualifier];
       break;
+
     // case 5: MAPIStringForComparePropsRestriction(&resPtr->res.resCompareProps); break;
     // case 7: MAPIStringForPropertyRestriction(&resPtr->res.resProperty); break;
     // case 9: MAPIStringForPropertyRestriction(&resPtr->res.resProperty); break;
