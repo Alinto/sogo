@@ -20,11 +20,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 
 #import <EOControl/EOQualifier.h>
-
+#import <NGMail/NGMailAddress.h>
+#import <NGMail/NGMailAddressParser.h>
 #import <NGCards/NSArray+NGCards.h>
 #import <NGCards/NGVCard.h>
 
@@ -41,13 +44,16 @@
 
 #include <mapistore/mapistore_nameid.h>
 
-static Class MAPIStoreContactsMessageK;
+static Class MAPIStoreContactsMessageK, NGMailAddressK, NSDataK, NSStringK;
 
 @implementation MAPIStoreContactsMessageTable
 
 + (void) initialize
 {
   MAPIStoreContactsMessageK = [MAPIStoreContactsMessage class];
+  NSDataK = [NSData class];
+  NSStringK = [NSString class];
+  NGMailAddressK = [NGMailAddress class];
 }
 
 + (Class) childObjectClass
@@ -83,7 +89,11 @@ static Class MAPIStoreContactsMessageK;
 				       intoQualifier: (EOQualifier **) qualifier
 {
   MAPIRestrictionState rc;
-  id value;
+  EOAndQualifier *andQualifier;
+  EOKeyValueQualifier *fullNameQualifier, *emailQualifier;
+  NSString *fullName, *email;
+  SEL operator;
+  id value, ngAddress;
 
   value = NSObjectFromMAPISPropValue (&res->lpProp);
   switch ((uint32_t) res->ulPropTag)
@@ -93,6 +103,51 @@ static Class MAPIStoreContactsMessageK;
 	rc = MAPIRestrictionStateAlwaysTrue;
       else
 	rc = MAPIRestrictionStateAlwaysFalse;
+      break;
+
+    case PidLidAddressBookProviderArrayType:
+    case PidLidAddressBookProviderEmailList:
+      /* FIXME: this is a hack. We should return a real qualifier here */
+      rc = MAPIRestrictionStateAlwaysTrue;
+      break;
+
+    case PidLidEmail1OriginalDisplayName:
+    case PidLidEmail2OriginalDisplayName:
+    case PidLidEmail3OriginalDisplayName:
+      rc = MAPIRestrictionStateAlwaysFalse;
+      value = NSObjectFromMAPISPropValue (&res->lpProp);
+      if (value && [value isKindOfClass: NSStringK])
+        {
+          rc = MAPIRestrictionStateNeedsEval;
+          ngAddress = [[NGMailAddressParser mailAddressParserWithString: value]
+                      parse];
+          if ([ngAddress isKindOfClass: NGMailAddressK])
+            {
+              operator = [self operatorFromRestrictionOperator: res->relop];
+              fullName = [ngAddress displayName];
+              email = [ngAddress address];
+              emailQualifier = [[EOKeyValueQualifier alloc]
+                                       initWithKey: @"c_mail"
+                                  operatorSelector: operator
+                                             value: email];
+              if ([fullName length] > 0)
+                {
+                  fullNameQualifier = [[EOKeyValueQualifier alloc]
+                                              initWithKey: @"c_cn"
+                                         operatorSelector: operator
+                                                    value: fullName];
+                  andQualifier = [[EOAndQualifier alloc]
+                                              initWithQualifiers:
+                                     emailQualifier, fullNameQualifier, nil];
+                  [fullNameQualifier release];
+                  [emailQualifier release];
+                  *qualifier = andQualifier;
+                }
+              else
+                *qualifier = emailQualifier;
+              [*qualifier autorelease];
+            }
+        }
       break;
     case PidLidEmail1AddressType:
     case PidLidEmail2AddressType:
@@ -105,6 +160,39 @@ static Class MAPIStoreContactsMessageK;
       
     default:
       rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
+    }
+
+  return rc;
+}
+
+- (MAPIRestrictionState) evaluateContentRestriction: (struct mapi_SContentRestriction *) res
+				      intoQualifier: (EOQualifier **) qualifier
+{
+  MAPIRestrictionState rc;
+  id value;
+
+  value = NSObjectFromMAPISPropValue (&res->lpProp);
+  if ([value isKindOfClass: NSDataK])
+    {
+      value = [[NSString alloc] initWithData: value
+				    encoding: NSUTF8StringEncoding];
+      [value autorelease];
+    }
+  else if (![value isKindOfClass: NSStringK])
+    [NSException raise: @"MAPIStoreTypeConversionException"
+		format: @"unhandled content restriction for class '%@'",
+		 NSStringFromClass ([value class])];
+
+  switch (res->ulPropTag)
+    {
+    case PR_MESSAGE_CLASS_UNICODE: /* FIXME: should make use of c_component here */
+      if ([value isEqualToString: @"IPM.Contact"])
+	rc = MAPIRestrictionStateAlwaysTrue;
+      else
+	rc = MAPIRestrictionStateAlwaysFalse;
+      break;
+    default:
+      rc = [super evaluateContentRestriction: res intoQualifier: qualifier];
     }
 
   return rc;
