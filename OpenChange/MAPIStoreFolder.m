@@ -38,6 +38,7 @@
 #import "MAPIStoreFolderTable.h"
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreMessage.h"
+#import "MAPIStorePermissionsTable.h"
 #import "MAPIStoreTypes.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -591,6 +592,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     table = [self faiMessageTable];
   else if (tableType == MAPISTORE_FOLDER_TABLE)
     table = [self folderTable];
+  else if (tableType == MAPISTORE_PERMISSIONS_TABLE)
+    table = [self permissionsTable];
   else
     {
       table = nil;
@@ -941,6 +944,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     url = [NSString stringWithFormat: @"%@/", [super url]];
 
   return url;
+}
+
+- (MAPIStorePermissionsTable *) permissionsTable
+{
+  return [MAPIStorePermissionsTable tableForContainer: self];
 }
 
 - (uint64_t) objectId

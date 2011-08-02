@@ -39,6 +39,7 @@
 @class MAPIStoreFAIMessageTable;
 @class MAPIStoreFolderTable;
 @class MAPIStoreMessageTable;
+@class MAPIStorePermissionsTable;
 @class SOGoMAPIFSFolder;
 @class SOGoMAPIFSMessage;
 
@@ -69,6 +70,9 @@
 
 - (id) lookupMessageByURL: (NSString *) messageURL;
 - (id) lookupFolderByURL: (NSString *) folderURL;
+
+/* permissions */
+- (MAPIStorePermissionsTable *) permissionsTable;
 
 /* message objects and tables */
 - (id) lookupMessage: (NSString *) messageKey;

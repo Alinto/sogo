@@ -1,5 +1,8 @@
 2011-08-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m (-permissionsTable): new method
+	that returns a permissions table for the current folder.
+
 	* OpenChange/MAPIStorePermissionsTable.[hm]: new class module for
 	handling permission objects. Currently only provide stub entries
 	for the "anonymous" and "default" users.
