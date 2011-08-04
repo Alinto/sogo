@@ -55,6 +55,8 @@
 
 - (int) getPrMessageFlags: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrFollowupIcon: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrImportance: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrReceivedByEmailAddress: (void **) data

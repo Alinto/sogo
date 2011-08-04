@@ -222,6 +222,14 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
           : [super getPrFlagStatus: data inMemCtx: memCtx]);
 }
 
+- (int) getPrFollowupIcon: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return ([sogoObject isKindOfClass: SOGoDraftObjectK]
+          ? [self getLongZero: data inMemCtx: memCtx]
+          : [super getPrFollowupIcon: data inMemCtx: memCtx]);
+}
+
 - (void) _saveAttachment: (NSString *) attachmentKey
 {
   NSDictionary *properties, *metadata;
