@@ -67,10 +67,12 @@
 
 + (int) openContext: (MAPIStoreContext **) contextPtr
             withURI: (const char *) newUri
-  andConnectionInfo: (struct mapistore_connection_info *) newConnInfo;
+     connectionInfo: (struct mapistore_connection_info *) newConnInfo
+     andTDBIndexing: (struct tdb_wrap *) indexingTdb;
 
 - (id)   initFromURL: (NSURL *) newUri
-  withConnectionInfo: (struct mapistore_connection_info *) newConnInfo;
+  withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
+      andTDBIndexing: (struct tdb_wrap *) indexingTdb;
 
 - (void) setAuthenticator: (MAPIStoreAuthenticator *) newAuthenticator;
 - (MAPIStoreAuthenticator *) authenticator;

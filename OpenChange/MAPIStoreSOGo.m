@@ -103,6 +103,7 @@ sogo_backend_init (void)
 static int
 sogo_backend_create_context(TALLOC_CTX *mem_ctx,
                             struct mapistore_connection_info *conn_info,
+                            struct tdb_wrap *indexingTdb,
                             const char *uri, void **context_object)
 {
   NSAutoreleasePool *pool;
@@ -119,7 +120,8 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
     {
       rc = [MAPIStoreContextK openContext: &context
                                   withURI: uri
-                        andConnectionInfo: conn_info];
+                           connectionInfo: conn_info
+                           andTDBIndexing: indexingTdb];
       if (rc == MAPISTORE_SUCCESS)
         *context_object = [context tallocWrapper: mem_ctx];
     }

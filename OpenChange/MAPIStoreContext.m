@@ -71,7 +71,6 @@
 static Class NSDataK, NSStringK, MAPIStoreFAIMessageK;
 
 static NSMutableDictionary *contextClassMapping;
-static NSMutableDictionary *userMAPIStoreMapping;
 
 + (void) initialize
 {
@@ -99,13 +98,12 @@ static NSMutableDictionary *userMAPIStoreMapping;
 		 NSStringFromClass (currentClass), moduleName);
 	}
     }
-
-  userMAPIStoreMapping = [NSMutableDictionary new];
 }
 
 static inline MAPIStoreContext *
 _prepareContextClass (Class contextClass,
-                      struct mapistore_connection_info *connInfo, NSURL *url)
+                      struct mapistore_connection_info *connInfo,
+                      struct tdb_wrap *indexingTdb, NSURL *url)
 {
   static NSMutableDictionary *registration = nil;
   MAPIStoreContext *context;
@@ -119,7 +117,8 @@ _prepareContextClass (Class contextClass,
                   forKey: contextClass];
 
   context = [[contextClass alloc] initFromURL: url
-                           withConnectionInfo: connInfo];
+                           withConnectionInfo: connInfo
+                               andTDBIndexing: indexingTdb];
   [context autorelease];
 
   authenticator = [MAPIStoreAuthenticator new];
@@ -137,7 +136,8 @@ _prepareContextClass (Class contextClass,
 
 + (int) openContext: (MAPIStoreContext **) contextPtr
             withURI: (const char *) newUri
-  andConnectionInfo: (struct mapistore_connection_info *) newConnInfo
+     connectionInfo: (struct mapistore_connection_info *) newConnInfo
+     andTDBIndexing: (struct tdb_wrap *) indexingTdb
 {
   MAPIStoreContext *context;
   Class contextClass;
@@ -165,7 +165,7 @@ _prepareContextClass (Class contextClass,
               if (contextClass)
                 {
                   context = _prepareContextClass (contextClass,
-                                                  newConnInfo,
+                                                  newConnInfo, indexingTdb, 
                                                   baseURL);
                   if (context)
                     {
@@ -201,23 +201,12 @@ _prepareContextClass (Class contextClass,
 
 - (id)   initFromURL: (NSURL *) newUrl
   withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
+      andTDBIndexing: (struct tdb_wrap *) indexingTdb
 {
-  NSString *username;
-
   if ((self = [self init]))
     {
       ASSIGN (contextUrl, newUrl);
-
-      username = [NSString stringWithUTF8String: newConnInfo->username];
-      mapping = [userMAPIStoreMapping objectForKey: username];
-      if (!mapping)
-        {
-          [self logWithFormat: @"generating mapping of ids for user '%@'",
-                username];
-          mapping = [MAPIStoreMapping mappingWithIndexing: newConnInfo->indexing];
-          [userMAPIStoreMapping setObject: mapping forKey: username];
-        }
-   
+      ASSIGN (mapping, [MAPIStoreMapping mappingWithIndexing: indexingTdb]);
       mstoreCtx = newConnInfo->mstore_ctx;
       connInfo = newConnInfo;
     }
@@ -230,7 +219,7 @@ _prepareContextClass (Class contextClass,
   [baseFolder release];
   [woContext release];
   [authenticator release];
-
+  [mapping release];
   [contextUrl release];
 
   [super dealloc];
