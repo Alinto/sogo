@@ -371,6 +371,16 @@ e)
           : [super getPrReceivedByEmailAddress: data inMemCtx: memCtx]);
 }
 
+- (int) getPrDisplayCc: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return ([sogoObject isKindOfClass: SOGoDraftObjectK]
+          ? [self _getAddressHeader: data
+                         addressKey: @"cc"
+                           inMemCtx: memCtx]
+          : [super getPrDisplayCc: data inMemCtx: memCtx]);
+}
+
 - (NSArray *) attachmentKeysMatchingQualifier: (EOQualifier *) qualifier
                              andSortOrderings: (NSArray *) sortOrderings
 {

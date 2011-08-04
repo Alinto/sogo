@@ -7,6 +7,7 @@
 	(-getPrImportance:inMemCtx:): overriden method.
 	(-getPrReceivedByEmailAddress:inMemCtx:): overriden method.
 	(-getPrSenderEmailAddress:inMemCtx:): overriden method.
+	(-getPrDisplayCc:inMemCtx:): overriden method.
 
 	* OpenChange/MAPIApplication.m (+isCachingEnabled): new overriden
 	method that returns "NO" in order to avoid leaking dictionaries

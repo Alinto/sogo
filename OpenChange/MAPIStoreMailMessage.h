@@ -56,6 +56,8 @@
                            inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrSenderEmailAddress: (void **) data
                        inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrDisplayCc: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx;
 
 @end
 
