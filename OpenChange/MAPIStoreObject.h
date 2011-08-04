@@ -123,6 +123,7 @@
                          inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* subclasses */
+- (uint64_t) objectVersion;
 - (NSDate *) creationTime;
 - (NSDate *) lastModificationTime;
 

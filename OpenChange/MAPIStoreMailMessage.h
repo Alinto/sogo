@@ -48,6 +48,9 @@
 
 - (NSString *) subject;
 
+- (int) getPrMessageFlags: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx;
+
 @end
 
 #endif /* MAPISTOREMAILMESSAGE_H */

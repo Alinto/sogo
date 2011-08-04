@@ -2,6 +2,8 @@
 
 	* OpenChange/MAPIStoreDraftsMessage.m (-getMessageData:inMemCtx:):
 	overriden method.
+	Made module able to handle SOGoMailObject as well, since we can
+	possibly have such objects as value for sogoObject.
 
 	* OpenChange/MAPIApplication.m (+isCachingEnabled): new overriden
 	method that returns "NO" in order to avoid leaking dictionaries

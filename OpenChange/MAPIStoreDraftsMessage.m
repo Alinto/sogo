@@ -39,19 +39,27 @@
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
-static Class NGMailAddressK;
+static Class NGMailAddressK, SOGoDraftObjectK;
+
+typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
+                                          struct mapistore_message **,
+                                          TALLOC_CTX *);
 
 @implementation MAPIStoreDraftsMessage
 
 + (void) initialize
 {
   NGMailAddressK = [NGMailAddress class];
+  SOGoDraftObjectK = [SOGoDraftObject class];
 }
 
 - (uint64_t) objectVersion
 {
-  return 0xffffffffffffffffLL;
+  return ([sogoObject isKindOfClass: SOGoDraftObjectK]
+          ? 0xffffffffffffffffLL
+          : [super objectVersion]);
 }
 
 - (void) getMessageData: (struct mapistore_message **) dataPtr
@@ -65,85 +73,98 @@ static Class NGMailAddressK;
   NGMailAddress *currentAddress;
   NGMailAddressParser *parser;
   struct mapistore_message *msgData;
-  IMP superMethod;
+  getMessageData_inMemCtx_ superMethod;
 
-  /* FIXME: this is a hack designed to work-around a hierarchy issue between
-     SOGoMailObject and SOGoDraftObject */
-  superMethod = [MAPIStoreMessage instanceMethodForSelector: _cmd];
-  superMethod (self, _cmd, &msgData, memCtx);
-
-  /* Retrieve recipients from the message */
-  if (!headerSetup)
+  if ([sogoObject isKindOfClass: SOGoDraftObjectK])
     {
-      [sogoObject fetchInfo];
-      headerSetup = YES;
-    }
-  headers = [sogoObject headers];
+      /* FIXME: this is a hack designed to work-around a hierarchy issue between
+         SOGoMailObject and SOGoDraftObject */
+      superMethod = (getMessageData_inMemCtx_)
+        [MAPIStoreMessage instanceMethodForSelector: _cmd];
+      superMethod (self, _cmd, &msgData, memCtx);
 
-  to = [headers objectForKey: @"to"];
-  max = [to count];
-  recipients = talloc_zero (msgData, struct SRowSet);
-  recipients->cRows = max;
-  recipients->aRow = talloc_array (recipients, struct SRow, max);
-  for (count = 0; count < max; count++)
-    {
-      recipients->aRow[count].ulAdrEntryPad = 0;
-      recipients->aRow[count].cValues = 3;
-      recipients->aRow[count].lpProps = talloc_array (recipients->aRow,
-                                                      struct SPropValue,
-                                                      4);
-
-      // TODO (0x01 = primary recipient)
-      set_SPropValue_proptag (recipients->aRow[count].lpProps + 0,
-                              PR_RECIPIENT_TYPE,
-                              MAPILongValue (recipients->aRow, 0x01));
-     
-      set_SPropValue_proptag (recipients->aRow[count].lpProps + 1,
-                              PR_ADDRTYPE_UNICODE,
-                              [@"SMTP" asUnicodeInMemCtx: recipients->aRow]);
-
-      parser = [NGMailAddressParser
-                 mailAddressParserWithString: [to objectAtIndex: count]];
-      currentAddress = [parser parse];
-      if ([currentAddress isKindOfClass: NGMailAddressK])
+      /* Retrieve recipients from the message */
+      if (!headerSetup)
         {
-          // text = [currentAddress personalName];
-          // if (![text length])
-          text = [currentAddress address];
-          if (!text)
-            text = @"";
-          set_SPropValue_proptag (recipients->aRow[count].lpProps + 2,
-                                  PR_EMAIL_ADDRESS_UNICODE,
-                                  [text asUnicodeInMemCtx: recipients->aRow]);
-
-          text = [currentAddress displayName];
-          if ([text length] > 0)
-            {
-              recipients->aRow[count].cValues++;
-              set_SPropValue_proptag (recipients->aRow[count].lpProps + 3,
-                                      PR_DISPLAY_NAME_UNICODE,
-                                      [text asUnicodeInMemCtx: recipients->aRow]);
-            }
+          [sogoObject fetchInfo];
+          headerSetup = YES;
         }
-      else
-        [self warnWithFormat: @"address could not be parsed properly (ignored)"];
+      headers = [sogoObject headers];
+
+      to = [headers objectForKey: @"to"];
+      max = [to count];
+      recipients = talloc_zero (msgData, struct SRowSet);
+      recipients->cRows = max;
+      recipients->aRow = talloc_array (recipients, struct SRow, max);
+      for (count = 0; count < max; count++)
+        {
+          recipients->aRow[count].ulAdrEntryPad = 0;
+          recipients->aRow[count].cValues = 3;
+          recipients->aRow[count].lpProps = talloc_array (recipients->aRow,
+                                                          struct SPropValue,
+                                                          4);
+
+          // TODO (0x01 = primary recipient)
+          set_SPropValue_proptag (recipients->aRow[count].lpProps + 0,
+                                  PR_RECIPIENT_TYPE,
+                                  MAPILongValue (recipients->aRow, 0x01));
+     
+          set_SPropValue_proptag (recipients->aRow[count].lpProps + 1,
+                                  PR_ADDRTYPE_UNICODE,
+                                  [@"SMTP" asUnicodeInMemCtx: recipients->aRow]);
+
+          parser = [NGMailAddressParser
+                     mailAddressParserWithString: [to objectAtIndex: count]];
+          currentAddress = [parser parse];
+          if ([currentAddress isKindOfClass: NGMailAddressK])
+            {
+              // text = [currentAddress personalName];
+              // if (![text length])
+              text = [currentAddress address];
+              if (!text)
+                text = @"";
+              set_SPropValue_proptag (recipients->aRow[count].lpProps + 2,
+                                      PR_EMAIL_ADDRESS_UNICODE,
+                                      [text asUnicodeInMemCtx: recipients->aRow]);
+              
+              text = [currentAddress displayName];
+              if ([text length] > 0)
+                {
+                  recipients->aRow[count].cValues++;
+                  set_SPropValue_proptag (recipients->aRow[count].lpProps + 3,
+                                          PR_DISPLAY_NAME_UNICODE,
+                                          [text asUnicodeInMemCtx: recipients->aRow]);
+                }
+            }
+          else
+            [self warnWithFormat: @"address could not be parsed properly (ignored)"];
+        }
+      msgData->recipients = recipients;
+      *dataPtr = msgData;
     }
-  msgData->recipients = recipients;
-  *dataPtr = msgData;
+  else
+    [super getMessageData: dataPtr inMemCtx: memCtx];
 }
 
 - (int) getPrMessageFlags: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   unsigned int v = MSGFLAG_FROMME;
+  int rc;
 
-  if ([[self attachmentKeys]
+  if ([sogoObject isKindOfClass: SOGoDraftObjectK])
+    {
+      if ([[self attachmentKeys]
         count] > 0)
-    v |= MSGFLAG_HASATTACH;
-    
-  *data = MAPILongValue (memCtx, v);
+        v |= MSGFLAG_HASATTACH;
+      
+      *data = MAPILongValue (memCtx, v);
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = [super getPrMessageFlags: data inMemCtx: memCtx];
 
-  return MAPISTORE_SUCCESS;
+  return rc;
 }
 
 - (void) _saveAttachment: (NSString *) attachmentKey
@@ -263,17 +284,29 @@ e)
 - (NSArray *) attachmentKeysMatchingQualifier: (EOQualifier *) qualifier
                              andSortOrderings: (NSArray *) sortOrderings
 {
-  if (qualifier)
-    [self errorWithFormat: @"qualifier is not used for attachments"];
-  if (sortOrderings)
-    [self errorWithFormat: @"sort orderings are not used for attachments"];
+  NSArray *keys;
+
+  if ([sogoObject isKindOfClass: SOGoDraftObjectK])
+    {
+      if (qualifier)
+        [self errorWithFormat: @"qualifier is not used for attachments"];
+      if (sortOrderings)
+        [self errorWithFormat: @"sort orderings are not used for attachments"];
   
-  return [attachmentParts allKeys];
+      keys = [attachmentParts allKeys];
+    }
+  else
+    keys = [super attachmentKeysMatchingQualifier: qualifier
+                                 andSortOrderings: sortOrderings];
+
+  return keys;
 }
 
 - (id) lookupAttachment: (NSString *) childKey
 {
-  return [attachmentParts objectForKey: childKey];
+  return ([sogoObject isKindOfClass: SOGoDraftObjectK]
+          ? [attachmentParts objectForKey: childKey]
+          : [super lookupAttachment: childKey]);
 }
 
 - (void) submit
@@ -281,7 +314,7 @@ e)
   NSString *msgClass;
 
   msgClass = [newProperties
-               objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)];
+                   objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)];
   if (![msgClass isEqualToString: @"IPM.Schedule.Meeting.Request"])
     {
       [self logWithFormat: @"sending message"];
@@ -294,43 +327,68 @@ e)
 
 - (int) submitWithFlags: (enum SubmitFlags) flags
 {
-  [self submit];
-  [self setIsNew: NO];
-  [self resetNewProperties];
-  [[self container] cleanupCaches];
+  int rc;
 
-  return MAPISTORE_SUCCESS;
+  if ([sogoObject isKindOfClass: SOGoDraftObjectK])
+    {
+      [self submit];
+      [self setIsNew: NO];
+      [self resetNewProperties];
+      [[self container] cleanupCaches];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    {
+      [self errorWithFormat: @"'submit' cannot be invoked on instances of '%@'",
+            NSStringFromClass ([sogoObject class])];
+      rc = MAPISTORE_ERROR;
+    }
+
+  return rc;
 }
 
 - (void) save
 {
   NSString *msgClass;
 
-  msgClass = [newProperties
-               objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)];
-  if (![msgClass isEqualToString: @"IPM.Schedule.Meeting.Request"])
+  if ([sogoObject isKindOfClass: SOGoDraftObjectK])
     {
-      [self logWithFormat: @"saving message"];
-      [self _commitProperties];
-      [(SOGoDraftObject *) sogoObject save];
+      msgClass = [newProperties
+                   objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)];
+      if (![msgClass isEqualToString: @"IPM.Schedule.Meeting.Request"])
+        {
+          [self logWithFormat: @"saving message"];
+          [self _commitProperties];
+          [(SOGoDraftObject *) sogoObject save];
+        }
+      else
+        [self logWithFormat: @"ignored scheduling message"];
     }
   else
-    [self logWithFormat: @"ignored scheduling message"];
+    [self errorWithFormat: @"'save' cannot be invoked on instances of '%@'",
+          NSStringFromClass ([sogoObject class])];
 }
 
 - (NSString *) subject
 {
-  return [[sogoObject headers] objectForKey: @"subject"];
+  return ([sogoObject isKindOfClass: SOGoDraftObjectK]
+          ? [[sogoObject headers] objectForKey: @"subject"]
+          : [super subject]);
 }
 
 - (NSCalendarDate *) creationTime
 {
-  return [newProperties objectForKey: MAPIPropertyKey (PR_CREATION_TIME)];
+  return ([sogoObject isKindOfClass: SOGoDraftObjectK]
+          ? [newProperties objectForKey: MAPIPropertyKey (PR_CREATION_TIME)]
+          : [super creationTime]);
 }
 
 - (NSCalendarDate *) lastModificationTime
 {
-  return [newProperties objectForKey: MAPIPropertyKey (PR_LAST_MODIFICATION_TIME)];
+  return ([sogoObject isKindOfClass: SOGoDraftObjectK]
+          ? [newProperties
+              objectForKey: MAPIPropertyKey (PR_LAST_MODIFICATION_TIME)]
+          : [super lastModificationTime]);
 }
 
 @end
