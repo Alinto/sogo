@@ -43,6 +43,11 @@ MAPIApplication *MAPIApp = nil;
 
 @implementation MAPIApplication
 
++ (BOOL) isCachingEnabled;
+{
+  return NO;
+}
+
 - (id) init
 {
   if (!MAPIApp)
