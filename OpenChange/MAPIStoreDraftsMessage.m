@@ -167,6 +167,7 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
 - (int) getPrImportance: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx
 {
+  int rc;
   uint32_t v;
   NSString *s;
 
@@ -186,11 +187,13 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
       else if ([s hasPrefix: @"5"]) v = 0x0;
     
       *data = MAPILongValue (memCtx, v);
+
+      rc = MAPISTORE_SUCCESS;
     }
   else
-    [super getPrImportance: data inMemCtx: memCtx];
+    rc = [super getPrImportance: data inMemCtx: memCtx];
 
-  return MAPISTORE_SUCCESS;
+  return rc;
 }
 
 - (int) getPrMessageFlags: (void **) data
@@ -201,8 +204,7 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
 
   if ([sogoObject isKindOfClass: SOGoDraftObjectK])
     {
-      if ([[self attachmentKeys]
-        count] > 0)
+      if ([[self attachmentKeys] count] > 0)
         v |= MSGFLAG_HASATTACH;
       
       *data = MAPILongValue (memCtx, v);
@@ -504,9 +506,25 @@ e)
 
 - (NSString *) subject
 {
-  return ([sogoObject isKindOfClass: SOGoDraftObjectK]
-          ? [[sogoObject headers] objectForKey: @"subject"]
-          : [super subject]);
+  NSString *subject;
+
+  if ([sogoObject isKindOfClass: SOGoDraftObjectK])
+    {
+      subject = [newProperties objectForKey: MAPIPropertyKey (PR_SUBJECT_UNICODE)];
+      if (!subject)
+        {
+          if (!headerSetup)
+            {
+              [sogoObject fetchInfo];
+              headerSetup = YES;
+            }
+          subject = [[sogoObject headers] objectForKey: @"subject"];
+        }
+    }
+  else
+    subject = [super subject];
+
+  return subject;
 }
 
 - (NSCalendarDate *) creationTime
