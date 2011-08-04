@@ -62,7 +62,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   mapping = data;
   [mapping setObject: uri forKey: idNbr];
 
-  NSLog (@"preregistered url '%@' for id '%@'", uri, idNbr);
+  // NSLog (@"preregistered url '%@' for id '%@'", uri, idNbr);
 
   return 0;
 }
@@ -106,7 +106,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 	{
 	  idNbr = [keys objectAtIndex: count];
 	  uri = [mapping objectForKey: idNbr];
-          [self logWithFormat: @"preregistered id '%@' for url '%@'", idNbr, uri];
+          // [self logWithFormat: @"preregistered id '%@' for url '%@'", idNbr, uri];
 	  [reverseMapping setObject: idNbr forKey: uri];
 	}
     }
@@ -166,8 +166,8 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
       [mapping setObject: urlString forKey: idKey];
       [reverseMapping setObject: idKey forKey: urlString];
       rc = YES;
-      [self logWithFormat: @"registered url '%@' with id %lld (0x%.16"PRIx64")",
-            urlString, idNbr, idNbr];
+      // [self logWithFormat: @"registered url '%@' with id %lld (0x%.16"PRIx64")",
+      //       urlString, idNbr, idNbr];
 
       /* Add the record given its fid and mapistore_uri */
       key.dptr = (unsigned char *) talloc_asprintf(NULL, "0x%.16"PRIx64, idNbr);

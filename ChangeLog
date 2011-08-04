@@ -1,5 +1,8 @@
 2011-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMapping.m (-initWithIndexing:)
+	(-registerURL:withID:): removed noisy warnings.
+
 	* OpenChange/MAPIStoreSOGo.m (sogo_backend_create_context):
 	adaoted to new prototype.
 
