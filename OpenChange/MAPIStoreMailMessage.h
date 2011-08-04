@@ -52,6 +52,8 @@
                  inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrImportance: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrReceivedByEmailAddress: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx;
 
 @end
 

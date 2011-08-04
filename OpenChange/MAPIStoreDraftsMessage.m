@@ -309,6 +309,44 @@ e)
     [self _saveAttachment: [attachmentKeys objectAtIndex: count]];
 }
 
+- (int) getPrReceivedByEmailAddress: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+  NGMailAddress *currentAddress;
+  NGMailAddressParser *parser;
+  NSArray *to;
+
+  if ([sogoObject isKindOfClass: SOGoDraftObjectK])
+    {
+      stringValue = @"";
+
+      if (!headerSetup)
+        {
+          [sogoObject fetchInfo];
+          headerSetup = YES;
+        }
+
+      to = [[sogoObject headers] objectForKey: @"to"];
+      if ([to count] > 0)
+        {
+          parser = [NGMailAddressParser
+                     mailAddressParserWithString: [to objectAtIndex: 0]];
+          currentAddress = [parser parse];
+          if ([currentAddress isKindOfClass: NGMailAddressK])
+            {
+              stringValue = [currentAddress address];
+              if (!stringValue)
+                stringValue = @"";
+            }
+        }
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+    }
+  else
+    [super getPrReceivedByEmailAddress: data inMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
 
 - (NSArray *) attachmentKeysMatchingQualifier: (EOQualifier *) qualifier
                              andSortOrderings: (NSArray *) sortOrderings
