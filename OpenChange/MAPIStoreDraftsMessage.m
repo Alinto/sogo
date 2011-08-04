@@ -146,6 +146,35 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
     [super getMessageData: dataPtr inMemCtx: memCtx];
 }
 
+- (int) getPrImportance: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  uint32_t v;
+  NSString *s;
+
+  if ([sogoObject isKindOfClass: SOGoDraftObjectK])
+    {
+      if (!headerSetup)
+        {
+          [sogoObject fetchInfo];
+          headerSetup = YES;
+        }
+      s = [[sogoObject headers] objectForKey: @"X-Priority"];
+      v = 0x1;
+    
+      if ([s hasPrefix: @"1"]) v = 0x2;
+      else if ([s hasPrefix: @"2"]) v = 0x2;
+      else if ([s hasPrefix: @"4"]) v = 0x0;
+      else if ([s hasPrefix: @"5"]) v = 0x0;
+    
+      *data = MAPILongValue (memCtx, v);
+    }
+  else
+    [super getPrImportance: data inMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (int) getPrMessageFlags: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {

@@ -50,6 +50,8 @@
 
 - (int) getPrMessageFlags: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrImportance: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx;
 
 @end
 
