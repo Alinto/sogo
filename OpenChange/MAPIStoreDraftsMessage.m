@@ -327,7 +327,7 @@ e)
 
   stringValue = @"";
 
-  to = [[sogoObject headers] objectForKey: @"to"];
+  to = [[sogoObject headers] objectForKey: key];
   if ([to isKindOfClass: NSArrayK])
     {
       if ([to count] > 0)
