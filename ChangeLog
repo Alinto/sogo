@@ -1,5 +1,8 @@
 2011-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreDraftsMessage.m (-getMessageData:inMemCtx:):
+	overriden method.
+
 	* OpenChange/MAPIApplication.m (+isCachingEnabled): new overriden
 	method that returns "NO" in order to avoid leaking dictionaries
 	that we don't use since we are not WO-based.

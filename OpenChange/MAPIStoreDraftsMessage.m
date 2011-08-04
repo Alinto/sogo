@@ -23,6 +23,8 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGMail/NGMailAddress.h>
+#import <NGMail/NGMailAddressParser.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoUser.h>
@@ -31,18 +33,103 @@
 
 #import "MAPIStoreContext.h"
 #import "MAPIStoreTypes.h"
+#import "NSString+MAPIStore.h"
 
 #import "MAPIStoreDraftsMessage.h"
 
-#include <stdbool.h>
-#include <gen_ndr/exchange.h>
-#include <mapistore/mapistore_errors.h>
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
+static Class NGMailAddressK;
 
 @implementation MAPIStoreDraftsMessage
+
++ (void) initialize
+{
+  NGMailAddressK = [NGMailAddress class];
+}
 
 - (uint64_t) objectVersion
 {
   return 0xffffffffffffffffLL;
+}
+
+- (void) getMessageData: (struct mapistore_message **) dataPtr
+               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  struct SRowSet *recipients;
+  NSArray *to;
+  NSInteger count, max;
+  NSString *text;
+  NSDictionary *headers;
+  NGMailAddress *currentAddress;
+  NGMailAddressParser *parser;
+  struct mapistore_message *msgData;
+  IMP superMethod;
+
+  /* FIXME: this is a hack designed to work-around a hierarchy issue between
+     SOGoMailObject and SOGoDraftObject */
+  superMethod = [MAPIStoreMessage instanceMethodForSelector: _cmd];
+  superMethod (self, _cmd, &msgData, memCtx);
+
+  /* Retrieve recipients from the message */
+  if (!headerSetup)
+    {
+      [sogoObject fetchInfo];
+      headerSetup = YES;
+    }
+  headers = [sogoObject headers];
+
+  to = [headers objectForKey: @"to"];
+  max = [to count];
+  recipients = talloc_zero (msgData, struct SRowSet);
+  recipients->cRows = max;
+  recipients->aRow = talloc_array (recipients, struct SRow, max);
+  for (count = 0; count < max; count++)
+    {
+      recipients->aRow[count].ulAdrEntryPad = 0;
+      recipients->aRow[count].cValues = 3;
+      recipients->aRow[count].lpProps = talloc_array (recipients->aRow,
+                                                      struct SPropValue,
+                                                      4);
+
+      // TODO (0x01 = primary recipient)
+      set_SPropValue_proptag (recipients->aRow[count].lpProps + 0,
+                              PR_RECIPIENT_TYPE,
+                              MAPILongValue (recipients->aRow, 0x01));
+     
+      set_SPropValue_proptag (recipients->aRow[count].lpProps + 1,
+                              PR_ADDRTYPE_UNICODE,
+                              [@"SMTP" asUnicodeInMemCtx: recipients->aRow]);
+
+      parser = [NGMailAddressParser
+                 mailAddressParserWithString: [to objectAtIndex: count]];
+      currentAddress = [parser parse];
+      if ([currentAddress isKindOfClass: NGMailAddressK])
+        {
+          // text = [currentAddress personalName];
+          // if (![text length])
+          text = [currentAddress address];
+          if (!text)
+            text = @"";
+          set_SPropValue_proptag (recipients->aRow[count].lpProps + 2,
+                                  PR_EMAIL_ADDRESS_UNICODE,
+                                  [text asUnicodeInMemCtx: recipients->aRow]);
+
+          text = [currentAddress displayName];
+          if ([text length] > 0)
+            {
+              recipients->aRow[count].cValues++;
+              set_SPropValue_proptag (recipients->aRow[count].lpProps + 3,
+                                      PR_DISPLAY_NAME_UNICODE,
+                                      [text asUnicodeInMemCtx: recipients->aRow]);
+            }
+        }
+      else
+        [self warnWithFormat: @"address could not be parsed properly (ignored)"];
+    }
+  msgData->recipients = recipients;
+  *dataPtr = msgData;
 }
 
 - (int) getPrMessageFlags: (void **) data
