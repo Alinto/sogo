@@ -6,6 +6,7 @@
 	possibly have such objects as value for sogoObject.
 	(-getPrImportance:inMemCtx:): overriden method.
 	(-getPrReceivedByEmailAddress:inMemCtx:): overriden method.
+	(-getPrSenderEmailAddress:inMemCtx:): overriden method.
 
 	* OpenChange/MAPIApplication.m (+isCachingEnabled): new overriden
 	method that returns "NO" in order to avoid leaking dictionaries

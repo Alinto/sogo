@@ -41,7 +41,7 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
-static Class NGMailAddressK, SOGoDraftObjectK;
+static Class NGMailAddressK, NSArrayK, SOGoDraftObjectK;
 
 typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
                                           struct mapistore_message **,
@@ -52,6 +52,7 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
 + (void) initialize
 {
   NGMailAddressK = [NGMailAddress class];
+  NSArrayK = [NSArray class];
   SOGoDraftObjectK = [SOGoDraftObject class];
 }
 
@@ -309,43 +310,65 @@ e)
     [self _saveAttachment: [attachmentKeys objectAtIndex: count]];
 }
 
+- (int) _getAddressHeader: (void **) data
+               addressKey: (NSString *) key
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue, *address;
+  NGMailAddress *currentAddress;
+  NGMailAddressParser *parser;
+  id to;
+
+  if (!headerSetup)
+    {
+      [sogoObject fetchInfo];
+      headerSetup = YES;
+    }
+
+  stringValue = @"";
+
+  to = [[sogoObject headers] objectForKey: @"to"];
+  if ([to isKindOfClass: NSArrayK])
+    {
+      if ([to count] > 0)
+        address = [to objectAtIndex: 0];
+      else
+        address = @"";
+    }
+  else
+    address = to;
+
+  parser = [NGMailAddressParser mailAddressParserWithString: address];
+  currentAddress = [parser parse];
+  if ([currentAddress isKindOfClass: NGMailAddressK])
+    {
+      stringValue = [currentAddress address];
+      if (!stringValue)
+        stringValue = @"";
+    }
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrSenderEmailAddress: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return ([sogoObject isKindOfClass: SOGoDraftObjectK]
+          ? [self _getAddressHeader: data
+                         addressKey: @"from"
+                           inMemCtx: memCtx]
+          : [super getPrSenderEmailAddress: data inMemCtx: memCtx]);
+}
+
 - (int) getPrReceivedByEmailAddress: (void **) data
                            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  NSString *stringValue;
-  NGMailAddress *currentAddress;
-  NGMailAddressParser *parser;
-  NSArray *to;
-
-  if ([sogoObject isKindOfClass: SOGoDraftObjectK])
-    {
-      stringValue = @"";
-
-      if (!headerSetup)
-        {
-          [sogoObject fetchInfo];
-          headerSetup = YES;
-        }
-
-      to = [[sogoObject headers] objectForKey: @"to"];
-      if ([to count] > 0)
-        {
-          parser = [NGMailAddressParser
-                     mailAddressParserWithString: [to objectAtIndex: 0]];
-          currentAddress = [parser parse];
-          if ([currentAddress isKindOfClass: NGMailAddressK])
-            {
-              stringValue = [currentAddress address];
-              if (!stringValue)
-                stringValue = @"";
-            }
-        }
-      *data = [stringValue asUnicodeInMemCtx: memCtx];
-    }
-  else
-    [super getPrReceivedByEmailAddress: data inMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
+  return ([sogoObject isKindOfClass: SOGoDraftObjectK]
+          ? [self _getAddressHeader: data
+                         addressKey: @"to"
+                           inMemCtx: memCtx]
+          : [super getPrReceivedByEmailAddress: data inMemCtx: memCtx]);
 }
 
 - (NSArray *) attachmentKeysMatchingQualifier: (EOQualifier *) qualifier
