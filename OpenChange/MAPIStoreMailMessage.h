@@ -48,6 +48,11 @@
 
 - (NSString *) subject;
 
+- (int) getPrIconIndex: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrFlagStatus: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx;
+
 - (int) getPrMessageFlags: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrImportance: (void **) data

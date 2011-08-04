@@ -33,6 +33,7 @@
 
 #import "MAPIStoreContext.h"
 #import "MAPIStoreTypes.h"
+#import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreDraftsMessage.h"
@@ -147,6 +148,22 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
     [super getMessageData: dataPtr inMemCtx: memCtx];
 }
 
+- (int) getPrIconIndex: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc;
+
+  if ([sogoObject isKindOfClass: SOGoDraftObjectK])
+    {
+      *data = MAPILongValue (memCtx, 0xffffffff);
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = [super getPrIconIndex: data inMemCtx: memCtx];
+
+  return rc;
+}
+
 - (int) getPrImportance: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -195,6 +212,14 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
     rc = [super getPrMessageFlags: data inMemCtx: memCtx];
 
   return rc;
+}
+
+- (int) getPrFlagStatus: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return ([sogoObject isKindOfClass: SOGoDraftObjectK]
+          ? [self getLongZero: data inMemCtx: memCtx]
+          : [super getPrFlagStatus: data inMemCtx: memCtx]);
 }
 
 - (void) _saveAttachment: (NSString *) attachmentKey
