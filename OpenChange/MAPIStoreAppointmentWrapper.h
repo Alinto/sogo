@@ -37,6 +37,8 @@ extern NSTimeZone *utcTZ;
   iCalCalendar *calendar;
   iCalEvent *event;
   NSTimeZone *timeZone;
+  NSData *globalObjectId;
+  NSData *cleanGlobalObjectId;
 }
 
 + (id) wrapperWithICalEvent: (iCalEvent *) newEvent
