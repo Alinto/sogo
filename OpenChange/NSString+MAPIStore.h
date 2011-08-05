@@ -29,6 +29,8 @@
 
 - (char *) asUnicodeInMemCtx: (void *) memCtx;
 
+- (NSData *) convertHexStringToBytes;
+
 @end
 
 #endif /* NSSTRING+MAPISTORE_H */

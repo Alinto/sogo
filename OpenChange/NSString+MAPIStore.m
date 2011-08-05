@@ -44,4 +44,69 @@
   return unicode;
 }
 
+- (BOOL) _decodeHexByte: (uint8_t *) byte
+                  atPos: (NSUInteger) pos
+{
+  BOOL error = NO;
+  unichar byteChar;
+
+  byteChar = [self characterAtIndex: pos];
+  if (byteChar >= 48 && byteChar <= 57)
+    *byte = (uint8_t) byteChar - 48;
+  else if (byteChar >= 65 && byteChar <= 70)
+    *byte = (uint8_t) byteChar - 55;
+  else if (byteChar >= 97 && byteChar <= 102)
+    *byte = (uint8_t) byteChar - 87;
+  else
+    error = YES;
+
+  return error;
+}
+
+- (BOOL) _decodeHexPair: (uint8_t *) byte
+                  atPos: (NSUInteger) pos
+{
+  BOOL error;
+  uint8_t lowValue, highValue;
+
+  error = [self _decodeHexByte: &highValue atPos: pos];
+  if (!error)
+    {
+      error = [self _decodeHexByte: &lowValue atPos: pos + 1];
+      if (!error)
+        *byte = highValue << 4 | lowValue;
+    }
+
+  return error;
+}
+
+- (NSData *) convertHexStringToBytes
+{
+  NSUInteger count, strLen, bytesLen;
+  uint8_t *bytes, *currentByte;
+  NSData *decoded = nil;
+  BOOL error = NO;
+
+  strLen = [self length];
+  if ((strLen % 2) == 0)
+    {
+      bytesLen = strLen / 2;
+      bytes = NSZoneCalloc (NULL, bytesLen, sizeof (uint8_t));
+      currentByte = bytes;
+      for (count = 0; !error && count < strLen; count += 2)
+        {
+          error = [self _decodeHexPair: currentByte atPos: count];
+          currentByte++;
+        }
+      if (error)
+        NSZoneFree (NULL, bytes);
+      else
+        decoded = [NSData dataWithBytesNoCopy: bytes
+                                       length: bytesLen
+                                 freeWhenDone: YES];
+    }
+
+  return decoded;
+}
+
 @end

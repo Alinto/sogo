@@ -1,3 +1,9 @@
+2011-08-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/NSString+MAPIStore.m (-convertHexStringToBytes): new
+	method that returns an NSData from a string of hex values
+	represented as text.
+
 2011-08-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreDraftsMessage.m (-getMessageData:inMemCtx:):
