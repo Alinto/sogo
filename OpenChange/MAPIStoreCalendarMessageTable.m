@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
 
 #import <EOControl/EOQualifier.h>
@@ -50,11 +51,49 @@ static Class MAPIStoreCalendarMessageK = Nil;
   return MAPIStoreCalendarMessageK;
 }
 
+- (EOQualifier *) _orgMailNotNullQualifier
+{
+  static EOQualifier *orgMailQualifier = nil;
+  EOQualifier *notNullQualifier, *nullQualifier, *notEmptyQualifier, *emptyQualifier;
+
+  if (!orgMailQualifier)
+    {
+      nullQualifier = [[EOKeyValueQualifier alloc]
+                                initWithKey: @"c_orgmail"
+                           operatorSelector: EOQualifierOperatorEqual
+                                      value: [NSNull null]];
+      notNullQualifier = [[EONotQualifier alloc]
+                           initWithQualifier: nullQualifier];
+      emptyQualifier = [[EOKeyValueQualifier alloc]
+                                initWithKey: @"c_orgmail"
+                           operatorSelector: EOQualifierOperatorEqual
+                                      value: @""];
+      notEmptyQualifier = [[EONotQualifier alloc]
+                           initWithQualifier: emptyQualifier];
+      orgMailQualifier = [[EOAndQualifier alloc]
+                           initWithQualifiers: notNullQualifier,
+                           notEmptyQualifier, nil];
+      [nullQualifier release];
+      [notNullQualifier release];
+      [emptyQualifier release];
+      [notEmptyQualifier release];
+    }
+
+  return orgMailQualifier;
+}
+
 - (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
 				       intoQualifier: (EOQualifier **) qualifier
 {
   MAPIRestrictionState rc;
   id value;
+  NSMutableString *likeString;
+  NSString *likePartString;
+  EOAndQualifier *andQualifier, *stringQualifier;
+  union {
+    uint32_t longValue;
+    char charValue[4];
+  } apptIdValue;
 
   value = NSObjectFromMAPISPropValue (&res->lpProp);
   switch ((uint32_t) res->ulPropTag)
@@ -66,7 +105,33 @@ static Class MAPIStoreCalendarMessageK = Nil;
 	rc = MAPIRestrictionStateAlwaysFalse;
       break;
     case PR_OWNER_APPT_ID:
-      rc = MAPIRestrictionStateAlwaysFalse;
+      // c_orgmail != NULL && c_orgmail != '' && c_uid like 'ab%89';
+      apptIdValue.longValue = [value unsignedLongValue];
+      likeString = [NSMutableString string];
+      likePartString = [[NSString alloc]
+                         initWithBytes: apptIdValue.charValue
+                                length: 2
+                              encoding: NSISOLatin1StringEncoding];
+      [likeString appendString: likePartString];
+      [likePartString release];
+      [likeString appendString: @"%%"];
+      likePartString = [[NSString alloc]
+                         initWithBytes: apptIdValue.charValue + 2
+                                length: 2
+                              encoding: NSISOLatin1StringEncoding];
+      [likeString appendString: likePartString];
+      [likePartString release];
+      stringQualifier = [[EOKeyValueQualifier alloc]
+                                initWithKey: @"c_uid"
+                           operatorSelector: EOQualifierOperatorLike
+                                      value: likeString];
+      andQualifier = [[EOAndQualifier alloc]
+                       initWithQualifiers: [self _orgMailNotNullQualifier],
+                       stringQualifier, nil];
+      [andQualifier autorelease];
+      [stringQualifier release];
+      *qualifier = andQualifier;
+      rc = MAPIRestrictionStateNeedsEval;
       break;
     case PidLidBusyStatus:
       rc = MAPIRestrictionStateAlwaysTrue; // should be based on c_isopaque
@@ -115,6 +180,8 @@ static Class MAPIStoreCalendarMessageK = Nil;
                           forKey: MAPIPropertyKey (PidLidAppointmentSubType)];
       [knownProperties setObject: @"c_creationdate"
                           forKey: MAPIPropertyKey (PR_CREATION_TIME)];
+      [knownProperties setObject: @"c_uid"
+                          forKey: MAPIPropertyKey (PR_OWNER_APPT_ID)];
     }
 
   return [knownProperties objectForKey: MAPIPropertyKey (property)];
