@@ -61,12 +61,24 @@
 - (NSString *) _cardStringWithLabel: (NSString *) label
                               value: (NSString *) value
 {
+  return [self _cardStringWithLabel: label
+                              value: value
+                                url: nil];
+}
+
+- (NSString *) _cardStringWithLabel: (NSString *) label
+                              value: (NSString *) value
+                                url: (NSString *) url
+{
   NSMutableString *cardString;
 
   cardString = [NSMutableString stringWithCapacity: 80];
   value = [value stringByReplacingString: @"\r" withString: @""];
   if ([value length] > 0)
     {
+      if ([url length] > 0)
+        value = [NSString stringWithFormat: @"<a href=\"%@://%@\">%@</a>", url, value, value];
+
       if (label)
         [cardString appendFormat: @"%@&nbsp;%@<br />\n",
                     [self labelForKey: label], value];
@@ -75,13 +87,6 @@
     }
 
   return cardString;
-}
-
-- (NSString *) contactCardTitle
-{
-  return [NSString stringWithFormat:
-                     [self labelForKey: @"Card for %@"],
-		   [self fullName]];
 }
 
 - (NSString *) displayName
@@ -200,7 +205,7 @@
 - (NSString *) preferredTel
 {
   return [self _cardStringWithLabel: @"Phone Number:"
-               value: [card preferredTel]];
+                              value: [card preferredTel] url: @"tel"];
 }
 
 - (NSString *) preferredAddress
@@ -257,7 +262,7 @@
 	}
     }
 
-  return [self _cardStringWithLabel: aLabel value: phone];
+  return [self _cardStringWithLabel: aLabel value: phone url: @"tel"];
 }
 
 - (NSString *) workPhone

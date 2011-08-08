@@ -1,3 +1,12 @@
+2011-08-05  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactView.m (-contactCardTitle): removed this
+	method since we no longer prefix the contact name by a label
+	("Card For").
+	(-_cardStringWithLabel:value:url:): new method that wraps the
+	value with an <A> link with the specified URL type. Used for
+	telephone numbers.
+
 2011-08-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreAppointmentWrapper.m

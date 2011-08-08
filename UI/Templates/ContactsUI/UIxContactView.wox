@@ -7,7 +7,7 @@
     xmlns:label="OGo:label"
     xmlns:uix="OGo:uix">
     
-    <h3 class="contactCardTitle"><var:string value="contactCardTitle" /></h3
+    <h3 class="contactCardTitle"><var:string value="fullName" /></h3
       
       ><div id="leftContactColumn" class="contactColumn"
       ><div id="primaryInfos"
