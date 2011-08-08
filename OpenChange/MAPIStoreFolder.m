@@ -200,9 +200,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                                inContext: nil
                                  acquire: NO];
       if (msgObject && ![msgObject isKindOfClass: NSExceptionK])
-        childMessage
-          = [[self messageClass] mapiStoreObjectWithSOGoObject: msgObject
-                                                   inContainer: self];
+        {
+          [msgObject setContext: [[self context] woContext]];
+          childMessage
+            = [[self messageClass] mapiStoreObjectWithSOGoObject: msgObject
+                                                     inContainer: self];
+        }
     }
 
   return childMessage;

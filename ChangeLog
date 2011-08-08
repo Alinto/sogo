@@ -1,5 +1,9 @@
 2011-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m (-lookupMessage:): set the WOContext
+	of the resulting SOGoObject to the value attached to the current
+	MAPIStoreContext.
+
 	* OpenChange/MAPIStoreCalendarMessageTable.m
 	(-evaluatePropertyRestriction:intoQualifier:): implemented
 	searches on PR_OWNER_APPT_ID in order to enable the retrieval of
