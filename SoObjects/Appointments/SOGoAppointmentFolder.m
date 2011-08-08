@@ -2442,22 +2442,20 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (NSArray *) lookupCalendarFoldersForUID: (NSString *) theUID
 {
   NSArray *aFolders;
+  SOGoUser *theUser;
   NSEnumerator *e;
   NSMutableArray *aUserFolders;
   SOGoAppointmentFolders *aParent;
-  SOGoFolder *aContainer, *aFolder;
+  SOGoFolder *aFolder;
 
   aUserFolders = [NSMutableArray arrayWithCapacity: 16];
-  aContainer = [[container container] container];
-  aContainer = [aContainer lookupName: theUID
-			   inContext: context
-			   acquire: NO];
-  aParent = [aContainer lookupName: @"Calendar" 
-			inContext: context
-			acquire: NO];
+
+  theUser = [SOGoUser userWithLogin: theUID];
+  aParent = [theUser calendarsFolderInContext: context];
+  
   aFolders = [aParent subFolders];
   e = [aFolders objectEnumerator];
-  while ( (aFolder = [e nextObject]) )
+  while ((aFolder = [e nextObject]))
     {
       if (![aFolder isSubscription])
 	[aUserFolders addObject: aFolder];

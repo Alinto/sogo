@@ -1,5 +1,9 @@
 2011-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-lookupCalendarFoldersForUID:): make use of -[SOGoUser
+	lookupCalendarFoldersForUID:].
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	(_handleAttendee:withDelegate:ownerUser:statusChange:inEvent:):
 	enable updating the attendee's calendar when a WORequest is not
