@@ -41,6 +41,7 @@
 @class SOGoFolder;
 @class SOGoMAPIFSFolder;
 @class SOGoObject;
+@class SOGoUser;
 
 @class MAPIStoreAuthenticator;
 @class MAPIStoreAttachment;
@@ -85,6 +86,8 @@
 
 - (void) setupRequest;
 - (void) tearDownRequest;
+
+- (SOGoUser *) activeUser;
 
 // - (id) lookupObject: (NSString *) objectURLString;
 

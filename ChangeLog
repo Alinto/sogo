@@ -1,5 +1,7 @@
 2011-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (-activeUser): new helper method.
+
 	* OpenChange/MAPIStoreSOGo.m (sogo_backend_init): invoke
 	-activateApplication on the new app in order to make it accessible
 	via [WOApplication application].

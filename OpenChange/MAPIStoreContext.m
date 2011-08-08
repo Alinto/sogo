@@ -273,6 +273,22 @@ _prepareContextClass (Class contextClass,
   [MAPIApp setMAPIStoreContext: nil];
 }
 
+- (SOGoUser *) activeUser
+{
+  SOGoUser *activeUser;
+  NSString *userName;
+
+  if (connInfo && connInfo->username)
+    {
+      userName = [NSString stringWithUTF8String: connInfo->username];
+      activeUser = [SOGoUser userWithLogin: userName];
+    }
+  else
+    activeUser = nil;
+
+  return activeUser;
+}
+
 // - (void) logRestriction: (struct mapi_SRestriction *) res
 // 	      withState: (MAPIRestrictionState) state
 // {
