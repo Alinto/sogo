@@ -140,6 +140,85 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPrOwnerApptId: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc;
+  const char *utf8UID;
+  union {
+    uint32_t longValue;
+    char charValue[4];
+  } value;
+  NSUInteger max, length;
+
+  if ([[event attendees] count] > 0)
+    {
+      utf8UID = [[event uid] UTF8String];
+      length = strlen (utf8UID);
+      max = 2;
+      if (length < max)
+        max = length;
+      memcpy (value.charValue, utf8UID, max);
+      memcpy (value.charValue + 2, utf8UID + length - 2, max);
+
+      *data = MAPILongValue (memCtx, value.longValue);
+
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidLidMeetingType: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  /* TODO
+     See 2.2.6.5 PidLidMeetingType (OXOCAL) */
+  *data = MAPILongValue (memCtx, 0x00000001);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidOwnerCriticalChange: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_ERR_NOT_FOUND;
+  NSCalendarDate *lastModified;
+
+  if ([[event attendees] count] > 0)
+    {
+      lastModified = [event lastModified];
+      if (lastModified)
+        {
+          *data = [lastModified asFileTimeInMemCtx: memCtx];
+          rc = MAPISTORE_SUCCESS;
+        }
+    }
+
+  return rc;
+}
+
+- (int) getPidLidAttendeeCriticalChange: (void **) data
+                               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_ERR_NOT_FOUND;
+  NSCalendarDate *lastModified;
+
+  if ([[event attendees] count] > 0)
+    {
+      lastModified = [event lastModified];
+      if (lastModified)
+        {
+          *data = [lastModified asFileTimeInMemCtx: memCtx];
+          rc = MAPISTORE_SUCCESS;
+        }
+    }
+
+  return rc;
+}
+
 - (int) getPrMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -174,6 +253,19 @@ static NSCharacterSet *hexCharacterSet = nil;
   [dateValue setTimeZone: utcTZ];
   *data = [dateValue asFileTimeInMemCtx: memCtx];
   
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidAppointmentStateFlags: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  uint32_t flags = 0x00;
+
+  if ([[event attendees] count] > 0)
+    flags |= 0x01; /* asfMeeting */
+
+  *data = MAPILongValue (memCtx, flags);
+
   return MAPISTORE_SUCCESS;
 }
 
@@ -279,7 +371,10 @@ static NSCharacterSet *hexCharacterSet = nil;
 - (int) getPidLidServerProcessed: (void **) data
                         inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data inMemCtx: memCtx];
+  /* TODO: we need to check whether the event has been processed internally by
+     SOGo or if it was received only by mail. We only assume the SOGo case
+     here. */
+  return [self getYes: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions

@@ -49,12 +49,18 @@ extern NSTimeZone *utcTZ;
 /* getters */
 - (int) getPrIconIndex: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrOwnerApptId: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidLidMeetingType: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrBody: (void **) data
          inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrStartDate: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidLidAppointmentStateFlags: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidAppointmentStartWhole: (void **) data
                               inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidCommonStart: (void **) data

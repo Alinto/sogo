@@ -409,21 +409,26 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrReplyRequested: (void **) data // TODO
-                   inMemCtx: (TALLOC_CTX *) memCtx
+// - (int) getPrReplyRequested: (void **) data // TODO
+//                    inMemCtx: (TALLOC_CTX *) memCtx
+// {
+//   if (!headerSetup)
+//     [self _fetchHeaderData];
+
+//   return (mailIsEvent
+//           ? [self getYes: data inMemCtx: memCtx]
+//           : [self getNo: data inMemCtx: memCtx]);
+// }
+
+- (int) getPrResponseRequested: (void **) data // TODO
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!headerSetup)
     [self _fetchHeaderData];
 
   return (mailIsEvent
-          ? [self getYes: data inMemCtx: memCtx]
-          : [self getNo: data inMemCtx: memCtx]);
-}
-
-- (int) getPrResponseRequested: (void **) data // TODO
-                      inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPrReplyRequested: data inMemCtx: memCtx];
+          ? [self getNo: data inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
 }
 
 - (int) getPrLatestDeliveryTime: (void **) data // DOUBT
@@ -834,12 +839,6 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           :  [self getNo: data inMemCtx: memCtx]);
 }
 
-- (int) getPidLidMeetingType: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getLongZero: data inMemCtx: memCtx];
-}
-
 - (int) getPrMsgEditorFormat: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -1058,17 +1057,25 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 - (int) getPrOwnerApptId: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
-
   if (!headerSetup)
     [self _fetchHeaderData];
 
-  if (mailIsEvent)
-    *data = MAPILongValue (memCtx, 0xabcd1234);
-  else
-    rc = MAPISTORE_ERR_NOT_FOUND;
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPrOwnerApptId: data
+                                                inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
 
-  return rc;
+- (int) getPidLidMeetingType: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidMeetingType: data
+                                                    inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
 }
 
 - (void) getMessageData: (struct mapistore_message **) dataPtr

@@ -1,5 +1,20 @@
 2011-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreAppointmentWrapper.m
+	(-getPrOwnerApptId:inMemCtx:): properly reimplemented the method
+	following the spec.
+	(-getPidLidServerProcessed:inMemCtx:): now returns yes in order to
+	prevent the client from uselessly updating the event.
+
+	* OpenChange/MAPIStoreMailMessage.m
+	(-getPrReplyRequested:inMemCtx:): commented out method.
+	(-getPrResponseRequested:inMemCtx:): returns NO when the message
+	is an invitation, as the mail handling is performed internally by
+	SOGo.
+	(-getPrOwnerApptId:inMemCtx:): properly forwards the call to
+	MAPIStoreAppointmentWrapper when required.
+	(-getPidLidMeetingType:inMemCtx:): new method.
+
 	* OpenChange/MAPIStoreContext.m (-activeUser): new helper method.
 
 	* OpenChange/MAPIStoreSOGo.m (sogo_backend_init): invoke
