@@ -1031,7 +1031,7 @@
       // We generate the updated iCalendar file and we save it in the database.
       // We do this ONLY when using SOGo from the Web interface. Over DAV, it'll
       // be handled directly in PUTAction:
-      if ([[context request] handledByDefaultHandler])
+      if (![context request] || [[context request] handledByDefaultHandler])
 	{
 	  newContent = [[event parent] versitString];
 	  ex = [self saveContentString: newContent];
