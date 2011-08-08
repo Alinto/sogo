@@ -83,7 +83,7 @@ sogo_backend_init (void)
 
   MAPIApplicationK = NSClassFromString (@"MAPIApplication");
   if (MAPIApplicationK)
-    [MAPIApplicationK new];
+    [[MAPIApplicationK new] activateApplication];
 
   [[SOGoCache sharedCache] disableRequestsCache];
 

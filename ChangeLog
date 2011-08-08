@@ -1,5 +1,9 @@
 2011-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_backend_init): invoke
+	-activateApplication on the new app in order to make it accessible
+	via [WOApplication application].
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-lookupCalendarFoldersForUID:): make use of -[SOGoUser
 	lookupCalendarFoldersForUID:].
