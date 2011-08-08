@@ -113,10 +113,22 @@
   return [[self appointmentWrapper] getPrMessageClass: data inMemCtx: memCtx];
 }
 
+- (int) getPrOwnerApptId: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPrOwnerApptId: data inMemCtx: memCtx];
+}
+
 - (int) getPrStartDate: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [[self appointmentWrapper] getPrStartDate: data inMemCtx: memCtx];
+}
+
+- (int) getPidLidAppointmentStateFlags: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidLidAppointmentStateFlags: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidAppointmentStartWhole: (void **) data
@@ -313,18 +325,21 @@
 
 - (void) save
 {
-  WOContext *woContext;
   iCalCalendar *vCalendar;
   iCalDateTime *start, *end;
   iCalTimeZone *tz;
   NSCalendarDate *now;
   NSString *content, *tzName;
   iCalEvent *newEvent;
+  iCalPerson *userPerson;
   NSUInteger responseStatus = 0;
+  SOGoUser *activeUser;
   id value;
 
   [self logWithFormat: @"-save, event props:"];
   // MAPIStoreDumpMessageProperties (newProperties);
+
+  now = [NSCalendarDate date];
 
   content = [sogoObject contentAsString];
   if (![content length])
@@ -333,64 +348,108 @@
       vCalendar = [newEvent parent];
       [vCalendar setProdID: @"-//Inverse inc.//OpenChange+SOGo//EN"];
       content = [vCalendar versitString];
+      [newEvent setCreated: now];
     }
 
   vCalendar = [iCalCalendar parseSingleFromSource: content];
   newEvent = [[vCalendar events] objectAtIndex: 0];
 
-  // summary
-  value = [newProperties
-            objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
-  if (value)
-    [newEvent setSummary: value];
-
-  // Location
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidLocation)];
-  if (value)
-    [newEvent setLocation: value];
-
-  tzName = [[self ownerTimeZone] name];
-  tz = [iCalTimeZone timeZoneForName: tzName];
-  [vCalendar addTimeZone: tz];
-
-  // start
-  value = [newProperties objectForKey: MAPIPropertyKey (PR_START_DATE)];
-  if (!value)
-    value = [newProperties objectForKey: MAPIPropertyKey (PidLidAppointmentStartWhole)];
-  if (value)
-    {
-      start = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtstart"];
-      [start setTimeZone: tz];
-      [start setDateTime: value];
-    }
-
-  // end
-  value = [newProperties objectForKey: MAPIPropertyKey (PR_END_DATE)];
-  if (!value)
-    value = [newProperties objectForKey: MAPIPropertyKey (PidLidAppointmentEndWhole)];
-  if (value)
-    {
-      end = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtend"];
-      [end setTimeZone: tz];
-      [end setDateTime: value];
-    }
-
-  now = [NSCalendarDate date];
-  if ([sogoObject isNew])
-    {
-      [newEvent setCreated: now];
-    }
+  activeUser = [[self context] activeUser];
+  userPerson = [newEvent userAsAttendee: activeUser];
   [newEvent setTimeStampAsDate: now];
 
-  // Organizer and attendees
-  value
-    = [newProperties objectForKey: MAPIPropertyKey (PidLidResponseStatus)];
-  if (value)
-    responseStatus = [value unsignedLongValue];
-
-  woContext = [[self context] woContext];
-  if (responseStatus == 0)
+  if (userPerson)
     {
+      // iCalPersonPartStat newPartStat;
+      NSString *newPartStat;
+
+      value
+        = [newProperties objectForKey: MAPIPropertyKey (PidLidResponseStatus)];
+      if (value)
+        responseStatus = [value unsignedLongValue];
+
+      switch (responseStatus)
+        {
+        case 0x02: /* respTentative */
+          // newPartStat = iCalPersonPartStatTentative;
+          newPartStat = @"TENTATIVE";
+          break;
+        case 0x03: /* respAccepted */
+          // newPartStat = iCalPersonPartStatAccepted;
+          newPartStat = @"ACCEPTED";
+          break;
+        case 0x04: /* respDeclined */
+          // newPartStat = iCalPersonPartStatDeclined;
+          newPartStat = @"DECLINED";
+          break;
+        default:
+          newPartStat = nil;
+        }
+
+      if (newPartStat // != iCalPersonPartStatUndefined
+          )
+        {
+          // iCalPerson *participant;
+
+          // participant = [newEvent userAsAttendee: activeUser];
+          // [participant setParticipationStatus: newPartStat];
+          // [sogoObject saveComponent: newEvent];
+
+          [sogoObject changeParticipationStatus: newPartStat
+                                   withDelegate: nil];
+          // [[self context] tearDownRequest];
+        }
+    }
+  else
+    {
+      [newEvent setLastModified: now];
+
+      // summary
+      value = [newProperties
+                objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
+      if (value)
+        [newEvent setSummary: value];
+
+      // Location
+      value = [newProperties objectForKey: MAPIPropertyKey (PidLidLocation)];
+      if (value)
+        [newEvent setLocation: value];
+
+      tzName = [[self ownerTimeZone] name];
+      tz = [iCalTimeZone timeZoneForName: tzName];
+      [vCalendar addTimeZone: tz];
+
+      // start
+      value = [newProperties objectForKey: MAPIPropertyKey (PR_START_DATE)];
+      if (!value)
+        value = [newProperties
+                  objectForKey: MAPIPropertyKey (PidLidAppointmentStartWhole)];
+      if (value)
+        {
+          start = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtstart"];
+          [start setTimeZone: tz];
+          [start setDateTime: value];
+        }
+
+      // end
+      value = [newProperties objectForKey: MAPIPropertyKey (PR_END_DATE)];
+      if (!value)
+        value = [newProperties objectForKey: MAPIPropertyKey (PidLidAppointmentEndWhole)];
+      if (value)
+        {
+          end = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtend"];
+          [end setTimeZone: tz];
+          [end setDateTime: value];
+        }
+
+      /* recurrence */
+      value = [newProperties
+                objectForKey: MAPIPropertyKey (PidLidAppointmentRecur)];
+      if (value)
+        [self _setupRecurrenceInCalendar: vCalendar
+                                fromData: value];
+
+      // Organizer
       value = [newProperties objectForKey: @"recipients"];
       if (value)
         {
@@ -399,7 +458,7 @@
           iCalPerson *person;
           int i;
 
-          dict = [[woContext activeUser] primaryIdentity];
+          dict = [activeUser primaryIdentity];
           person = [iCalPerson new];
           [person setCn: [dict objectForKey: @"fullName"]];
           [person setEmail: [dict objectForKey: @"email"]];
@@ -422,48 +481,13 @@
               // FIXME: We must NOT always rely on this
               if (![newEvent isAttendee: [person rfc822Email]])
                 [newEvent addToAttendees: person];
-
+              
               [person release];
             }
         }
+
+      [sogoObject saveComponent: newEvent];
     }
-  else
-    {
-      iCalPersonPartStat newPartStat;
-
-      switch (responseStatus)
-        {
-        case 0x02: /* respTentative */
-          newPartStat = iCalPersonPartStatTentative;
-          break;
-        case 0x03: /* respAccepted */
-          newPartStat = iCalPersonPartStatAccepted;
-          break;
-        case 0x04: /* respDeclined */
-          newPartStat = iCalPersonPartStatDeclined;
-          break;
-        default:
-          newPartStat = iCalPersonPartStatUndefined;
-        }
-
-      if (newPartStat != iCalPersonPartStatUndefined)
-        {
-          iCalPerson *participant;
-
-          participant = [newEvent userAsAttendee: [woContext activeUser]];
-          [participant setParticipationStatus: newPartStat];
-        }
-    }
-
-  /* recurrence */
-  value = [newProperties
-            objectForKey: MAPIPropertyKey (PidLidAppointmentRecur)];
-  if (value)
-    [self _setupRecurrenceInCalendar: vCalendar
-                            fromData: value];
-
-  // [sogoObject saveContentString: [vCalendar versitString]];
-  [sogoObject saveComponent: newEvent];
 }
 
 - (id) lookupAttachment: (NSString *) childKey

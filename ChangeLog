@@ -1,5 +1,9 @@
 2011-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): fixed attendees
+	handling (only change the attendee partstat) and avoid saving the
+	event when the newpartstat is "undefined".
+
 	* OpenChange/MAPIStoreAppointmentWrapper.m
 	(-getPrOwnerApptId:inMemCtx:): properly reimplemented the method
 	following the spec.
