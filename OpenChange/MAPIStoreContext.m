@@ -203,10 +203,15 @@ _prepareContextClass (Class contextClass,
   withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
       andTDBIndexing: (struct tdb_wrap *) indexingTdb
 {
+  NSString *username;
+
   if ((self = [self init]))
     {
       ASSIGN (contextUrl, newUrl);
-      ASSIGN (mapping, [MAPIStoreMapping mappingWithIndexing: indexingTdb]);
+      username = [NSString stringWithUTF8String: newConnInfo->username];
+      ASSIGN (mapping, [MAPIStoreMapping mappingForUsername: username
+                                         withIndexing: indexingTdb]);
+      [mapping increaseUseCount];
       mstoreCtx = newConnInfo->mstore_ctx;
       connInfo = newConnInfo;
     }
@@ -219,6 +224,7 @@ _prepareContextClass (Class contextClass,
   [baseFolder release];
   [woContext release];
   [authenticator release];
+  [mapping decreaseUseCount];
   [mapping release];
   [contextUrl release];
 
