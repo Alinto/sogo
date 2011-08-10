@@ -1,3 +1,12 @@
+2011-08-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMapping.m
+	(+mappingForUsername:withIndexing:): modified contrusctor to make
+	use of a "username" parameter that enable per-user "singletons".
+	(-increateUseCount, -decreaseUseCount): new accessors that enable
+	the registration/unregistration of the mapping object from the
+	singleton registry.
+
 2011-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFolder.m (-lookupMessage:): set the WOContext

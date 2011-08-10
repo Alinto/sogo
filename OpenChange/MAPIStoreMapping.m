@@ -38,7 +38,14 @@
 #include <tdb.h>
 #include <tdb_wrap.h>
 
+static NSMutableDictionary *mappingRegistry = nil;
+
 @implementation MAPIStoreMapping
+
++ (void) initialize
+{
+  mappingRegistry = [NSMutableDictionary new];
+}
 
 static int
 MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
@@ -67,14 +74,20 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   return 0;
 }
 
-+ (id) mappingWithIndexing: (struct tdb_wrap *) indexing
++ (id) mappingForUsername: (NSString *) username
+             withIndexing: (struct tdb_wrap *) indexing
 {
-  id newMapping;
+  id mapping;
 
-  newMapping = [[self alloc] initWithIndexing: indexing];
-  [newMapping autorelease];
+  mapping = [mappingRegistry objectForKey: username];
+  if (!mapping)
+    {
+      mapping = [[self alloc] initForUsername: username
+                                 withIndexing: indexing];
+      [mapping autorelease];
+    }
 
-  return newMapping;
+  return mapping;
 }
 
 - (id) init
@@ -84,12 +97,34 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
       mapping = [NSMutableDictionary new];
       reverseMapping = [NSMutableDictionary new];
       indexing = NULL;
+      useCount = 0;
     }
 
   return self;
 }
 
-- (id) initWithIndexing: (struct tdb_wrap *) newIndexing
+- (void) increaseUseCount
+{
+  if (useCount == 0)
+    {
+      [mappingRegistry setObject: self forKey: username];
+      [self logWithFormat: @"mapping registered (%@)", username];
+    }
+  useCount++;
+}
+
+- (void) decreaseUseCount
+{
+  useCount--;
+  if (useCount == 0)
+    {
+      [mappingRegistry removeObjectForKey: username];
+      [self logWithFormat: @"mapping deregistered (%@)", username];
+    }
+}
+
+- (id) initForUsername: (NSString *) newUsername
+          withIndexing: (struct tdb_wrap *) newIndexing
 {
   NSNumber *idNbr;
   NSString *uri;
@@ -98,6 +133,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 
   if ((self = [self init]))
     {
+      ASSIGN (username, newUsername);
       indexing = newIndexing;
       tdb_traverse_read (indexing->tdb, MAPIStoreMappingTDBTraverse, mapping);
       keys = [mapping allKeys];
@@ -116,6 +152,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 
 - (void) dealloc
 {
+  [username release];
   [mapping release];
   [reverseMapping release];
   [super dealloc];

@@ -30,14 +30,22 @@
 
 @interface MAPIStoreMapping : NSObject
 {
+  NSString *username;
+  struct tdb_wrap *indexing;
   NSMutableDictionary *mapping; /* FID/MID -> url */
   NSMutableDictionary *reverseMapping; /* url -> FID/MID */
-  struct tdb_wrap *indexing;
+  NSUInteger useCount;
 }
 
-+ (id) mappingWithIndexing: (struct tdb_wrap *) indexing;
++ (id) mappingForUsername: (NSString *) username
+             withIndexing: (struct tdb_wrap *) indexing;
 
-- (id) initWithIndexing: (struct tdb_wrap *) indexing;
+- (id) initForUsername: (NSString *) username
+          withIndexing: (struct tdb_wrap *) indexing;
+
+
+- (void) increaseUseCount;
+- (void) decreaseUseCount;
 
 - (NSString *) urlFromID: (uint64_t) idKey;
 
