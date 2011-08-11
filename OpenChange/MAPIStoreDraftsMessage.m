@@ -447,6 +447,7 @@ e)
 - (void) submit
 {
   NSString *msgClass;
+  NSException *error;
 
   msgClass = [newProperties
                    objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)];
@@ -454,7 +455,8 @@ e)
     {
       [self logWithFormat: @"sending message"];
       [self _commitProperties];
-      [(SOGoDraftObject *) sogoObject sendMail];
+      error = [(SOGoDraftObject *) sogoObject sendMail];
+      [self errorWithFormat: @"an exception occurred: %@", error];
     }
   else
     [self logWithFormat: @"ignored scheduling message"];
