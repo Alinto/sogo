@@ -77,7 +77,7 @@
   if ([value length] > 0)
     {
       if ([url length] > 0)
-        value = [NSString stringWithFormat: @"<a href=\"%@://%@\">%@</a>", url, value, value];
+        value = [NSString stringWithFormat: @"<a href=\"%@:%@\">%@</a>", url, value, value];
 
       if (label)
         [cardString appendFormat: @"%@&nbsp;%@<br />\n",
