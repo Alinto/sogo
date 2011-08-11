@@ -21,7 +21,9 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSObject+Logs.h>
@@ -103,15 +105,28 @@
 
 @implementation EOKeyValueQualifier (MAPIStoreRestrictionsPrivate)
 
+typedef BOOL (*EOComparator) (id, SEL, id);
+
 - (BOOL) _evaluateMAPIFSMessageProperties: (NSDictionary *) properties
 {
-  NSNumber *propTag;
+  id finalKey;
   id propValue;
+  EOComparator comparator;
 
-  propTag = [NSNumber numberWithInt: [key intValue]];
-  propValue = [properties objectForKey: propTag];
+  if ([key isKindOfClass: [NSNumber class]])
+    finalKey = key;
+  else if ([key isKindOfClass: [NSString class]])
+    {
+      finalKey = [key stringByTrimmingCharactersInSet: [NSCharacterSet decimalDigitCharacterSet]];
+      if ([finalKey length] > 0)
+        finalKey = key;
+      else
+        finalKey = [NSNumber numberWithInt: [key intValue]];
+    }
+  propValue = [properties objectForKey: finalKey];
+  comparator = (EOComparator) [propValue methodForSelector: operator];
 
-  return [propValue performSelector: operator withObject: value] != nil;
+  return (comparator ? comparator (propValue, operator, value) : NO);
 }
 
 @end

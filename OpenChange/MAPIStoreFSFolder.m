@@ -26,10 +26,11 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
-
+#import <EOControl/EOQualifier.h>
+#import "EOQualifier+MAPIFS.h"
+#import "MAPIStoreFSFolderTable.h"
 #import "MAPIStoreFSMessage.h"
 #import "MAPIStoreFSMessageTable.h"
-#import "MAPIStoreFolderTable.h"
 #import "MAPIStoreTypes.h"
 #import "SOGoMAPIFSFolder.h"
 #import "SOGoMAPIFSMessage.h"
@@ -42,12 +43,13 @@
 // #include <libmapiproxy.h>
 // #include <param.h>
 
-static Class MAPIStoreFSMessageK;
+static Class EOKeyValueQualifierK, MAPIStoreFSMessageK;
 
 @implementation MAPIStoreFSFolder
 
 + (void) initialize
 {
+  EOKeyValueQualifierK = [EOKeyValueQualifier class];
   MAPIStoreFSMessageK = [MAPIStoreFSMessage class];
 }
 
@@ -73,6 +75,11 @@ static Class MAPIStoreFSMessageK;
 - (Class) messageClass
 {
   return MAPIStoreFSMessageK;
+}
+
+- (MAPIStoreFolderTable *) folderTable
+{
+  return [MAPIStoreFSFolderTable tableForContainer: self];
 }
 
 - (NSString *) createFolder: (struct SRow *) aRow
@@ -115,6 +122,37 @@ static Class MAPIStoreFSMessageK;
   return [(SOGoMAPIFSFolder *) sogoObject
            toOneRelationshipKeysMatchingQualifier: qualifier
                                  andSortOrderings: sortOrderings];
+}
+
+- (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
+                         andSortOrderings: (NSArray *) sortOrderings
+{
+  NSArray *entries;
+  NSMutableArray *filteredEntries;
+  NSUInteger count, max;
+  MAPIStoreFSFolder *subfolder;
+  SOGoMAPIFSMessage *propertiesMessage;
+  NSString *subfolderKey;
+
+  entries = [(SOGoMAPIFSFolder *) sogoObject toManyRelationshipKeys];
+  if (qualifier)
+    {
+      max = [entries count];
+      filteredEntries = [NSMutableArray arrayWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          subfolderKey = [entries objectAtIndex: count];
+          subfolder = [self lookupFolder: subfolderKey];
+          propertiesMessage = [subfolder propertiesMessage];
+          if ([qualifier evaluateMAPIFSMessage: propertiesMessage])
+            [filteredEntries addObject: subfolderKey];
+        }
+      entries = filteredEntries;
+    }
+  if (sortOrderings)
+    [self errorWithFormat: @"sort orderings are not used for folders"];
+
+  return entries;
 }
 
 - (id) lookupFolder: (NSString *) childKey

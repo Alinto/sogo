@@ -51,6 +51,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	MAPIStoreFSBaseContext.m \
 	MAPIStoreFSFolder.m \
+	MAPIStoreFSFolderTable.m \
 	MAPIStoreFSMessage.m \
 	MAPIStoreFSMessageTable.m \
 	\

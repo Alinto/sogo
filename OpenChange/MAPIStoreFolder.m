@@ -109,7 +109,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                                  andTableType: MAPISTORE_FAI_TABLE]);
       ASSIGN (propsFolder,
               [SOGoMAPIFSFolder folderWithURL: newURL
-                                andTableType: MAPISTORE_FOLDER_TABLE]);
+                                 andTableType: MAPISTORE_FOLDER_TABLE]);
       ASSIGN (propsMessage,
               [SOGoMAPIFSMessage objectWithName: @"properties.plist"
                                  inContainer: propsFolder]);
@@ -144,6 +144,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 }
 
 /* backend interface */
+- (SOGoMAPIFSMessage *) propertiesMessage
+{
+  return propsMessage;
+}
+
 - (uint64_t) objectVersion
 {
   NSNumber *value;

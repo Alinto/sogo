@@ -1,7 +1,16 @@
 2011-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFSFolderTable.[hm]: new module.
+
+	* OpenChange/MAPIStoreFSFolder.m (-folderTable): overriden method
+	to return a "MAPIStoreFSFolderTable" instance.
+	(-folderKeysMatchingQualifier:andSortOrderings:): overriden method
+	in order to evaluate folders by applying the received qualifer to
+	the properties message.
+
 	* OpenChange/MAPIStoreFolder.m (-objectVersion): implemented
 	method based on the value provided in the folder props dictionary.
+	(-propertiesMessage): new getter.
 
 	* OpenChange/MAPIStoreObject.m (-objectVersion): now a mandatory
 	method for subclasses.

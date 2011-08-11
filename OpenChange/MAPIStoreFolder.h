@@ -68,6 +68,8 @@
 - (NSArray *) activeMessageTables;
 - (NSArray *) activeFAIMessageTables;
 
+- (SOGoMAPIFSMessage *) propertiesMessage;
+
 - (id) lookupMessageByURL: (NSString *) messageURL;
 - (id) lookupFolderByURL: (NSString *) folderURL;
 
