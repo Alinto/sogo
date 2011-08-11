@@ -1,5 +1,8 @@
 2011-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m (-objectVersion): implemented
+	method based on the value provided in the folder props dictionary.
+
 	* OpenChange/MAPIStoreObject.m (-objectVersion): now a mandatory
 	method for subclasses.
 

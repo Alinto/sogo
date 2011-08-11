@@ -49,6 +49,7 @@
 #include <gen_ndr/exchange.h>
 
 #undef DEBUG
+#include <libmapiproxy.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_nameid.h>
 #include <mapistore/mapistore_errors.h>
@@ -143,6 +144,30 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 }
 
 /* backend interface */
+- (uint64_t) objectVersion
+{
+  NSNumber *value;
+  NSDictionary *props;
+  uint64_t cn;
+
+  props = [propsMessage properties];
+  value = [props objectForKey: MAPIPropertyKey (PR_CHANGE_NUM)];
+  if (value)
+    cn = [value unsignedLongLongValue];
+  else
+    {
+      [self logWithFormat: @"no value for PR_CHANGE_NUM, adding one now"];
+      cn = [[self context] getNewChangeNumber];
+      value = [NSNumber numberWithUnsignedLongLong: cn];
+      props = [NSDictionary dictionaryWithObject: value
+                                          forKey: MAPIPropertyKey (PR_CHANGE_NUM)];
+      [propsMessage appendProperties: props];
+      [propsMessage save];
+    }
+
+  return cn >> 16;
+}
+
 - (id) lookupFolder: (NSString *) folderKey
 {
   MAPIStoreFolder *childFolder = nil;
@@ -619,8 +644,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   static enum MAPITAGS bannedProps[] = { PR_MID, PR_FID, PR_PARENT_FID,
                                          PR_SOURCE_KEY, PR_PARENT_SOURCE_KEY,
-                                         PR_CHANGE_NUM, PR_CHANGE_KEY,
-                                         0x00000000 };
+                                         PR_CHANGE_KEY, 0x00000000 };
   enum MAPITAGS *currentProp;
   int rc;
 
