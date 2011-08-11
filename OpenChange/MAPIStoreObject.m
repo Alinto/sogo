@@ -347,16 +347,9 @@ static Class NSExceptionK, MAPIStoreFolderK;
 
 - (uint64_t) objectVersion
 {
-  uint32_t lmTime;
+  [self subclassResponsibility: _cmd];
 
-  [self logWithFormat: @"[" __location__ "] objectVersion computed from timestamp"];
-
-  lmTime = (uint32_t) [[self lastModificationTime] timeIntervalSince1970];
-  if (lmTime < 0x4dbb2dbe) /* oc_version_time */
-    lmTime = 0x4dbb2dbe;
-
-  return ((([self objectId] & 0xffff000000000000LL) >> 16)
-          | (exchange_globcnt((uint64_t) lmTime - 0x4dbb2dbe) >> 16));
+  return 0xffffffffffffffffLL;
 }
 
 - (int) getPrChangeKey: (void **) data

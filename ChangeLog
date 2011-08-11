@@ -1,3 +1,8 @@
+2011-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreObject.m (-objectVersion): now a mandatory
+	method for subclasses.
+
 2011-08-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMapping.m
