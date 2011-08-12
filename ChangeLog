@@ -1,3 +1,10 @@
+2011-08-12  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/HTMLElement.js (refreshSelectionByIds):
+	replaced the call to the Prototype method "down" in favor to a
+	global access with the element ID. This fixes a multiple-message
+	selection issue with IE.
+
 2011-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailObject.m: (addFlags:, removeFlags:)

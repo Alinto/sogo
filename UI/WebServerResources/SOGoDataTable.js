@@ -38,7 +38,6 @@ var SOGoDataTableInterface = {
 	 * Handle selection based on rows ID.
 	 */
 	this.body.selectRange = function(startIndex, endIndex) {
-	    var element = $(this);
             var s;
             var e;
             var rows;

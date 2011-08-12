@@ -265,7 +265,8 @@ Element.addMethods({
             element = $(element);
             if (element.selectedIds) {
                 for (var i = 0; i < element.selectedIds.length; i++) {
-                    var e = element.down('#'+element.selectedIds[i]);
+                    //var e = element.down('#'+element.selectedIds[i]); // buggy with IE
+                    var e = $(element.selectedIds[i]);
                     if (e) {
                         if (!e.hasClassName('_selected'))
                             e.addClassName('_selected');
@@ -274,7 +275,6 @@ Element.addMethods({
                         log ("refreshSelectionByIds Error: " + element.tagName
                              + " select by ID " + element.selectedIds[i]
                              + " not found (" + element.childNodes.length + " children)");
-                        //element.selectedIds.splice(i,1);
                     }
                 }
             }
