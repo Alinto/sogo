@@ -1,3 +1,8 @@
+2011-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/plreader.m (-displayKey:withIndentation:): display
+	alternative hex representation of the keys.
+
 2011-08-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFSFolderTable.[hm]: new module.

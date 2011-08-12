@@ -66,8 +66,8 @@ const char *indentationStep = "  ";
     withIndentation: (NSInteger) anInt
 {
   [self _outputIndentation: anInt];
-  printf ("%s =\n",
-          [[key description] UTF8String]);
+
+  printf ("%s (0x%.8x) =\n", [[key description] UTF8String], [key intValue]);
 }
 
 - (void) displayWithIndentation: (NSInteger) anInt
