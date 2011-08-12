@@ -30,6 +30,7 @@
 #import <SOGo/SOGoUserDefaults.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 
+#import "MAPIStoreContactsFolder.h"
 #import "MAPIStorePropertySelectors.h"
 #import "MAPIStoreTypes.h"
 #import "NSArray+MAPIStore.h"
@@ -671,6 +672,7 @@
     [element setValue: 6 to: value];
 
   [sogoObject saveContentString: [newCard versitString]];
+  [(MAPIStoreContactsFolder *) container synchroniseCache];
 }
 
 @end

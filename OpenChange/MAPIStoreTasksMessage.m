@@ -34,6 +34,7 @@
 #import <SOGo/SOGoUserDefaults.h>
 #import <Appointments/SOGoAppointmentObject.h>
 
+#import "MAPIStoreTasksFolder.h"
 #import "MAPIStoreTypes.h"
 #import "NSDate+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
@@ -372,6 +373,7 @@
   [vToDo setTimeStampAsDate: now];
 
   [sogoObject saveContentString: [vCalendar versitString]];
+  [(MAPIStoreTasksFolder *) container synchroniseCache];
 }
 
 @end

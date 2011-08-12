@@ -1,5 +1,14 @@
 2011-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): resynchronise the
+	container cache after the operation.
+
+	* OpenChange/MAPIStoreTasksMessage.m (-save): resynchronise the
+	container cache after the operation.
+
+	* OpenChange/MAPIStoreContactsMessage.m (-save): resynchronise the
+	container cache after the operation.
+
 	* OpenChange/MAPIStoreGCSMessage.m (-objectVersion): ensure that a
 	change number is available when the message is "not new", but
 	resynchronise the cache in doing so.

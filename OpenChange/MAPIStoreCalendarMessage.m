@@ -45,6 +45,7 @@
 
 #import "MAPIStoreAppointmentWrapper.h"
 #import "MAPIStoreCalendarAttachment.h"
+#import "MAPIStoreCalendarFolder.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreRecurrenceUtils.h"
 #import "MAPIStoreTypes.h"
@@ -488,6 +489,7 @@
 
       [sogoObject saveComponent: newEvent];
     }
+  [(MAPIStoreCalendarFolder *) container synchroniseCache];
 }
 
 - (id) lookupAttachment: (NSString *) childKey
