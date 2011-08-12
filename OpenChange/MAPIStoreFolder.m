@@ -468,7 +468,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   struct mapistore_object_notification_parameters *notif_parameters;
   int rc;
 
-  [self logWithFormat: @"-deleteMessageWithMID: mid: 0x%.16x  flags: %d", mid, flags];
+  [self logWithFormat: @"-deleteMessageWithMID: mid: 0x%.16llx  flags: %d", mid, flags];
   
   mapping = [[self context] mapping];
   childURL = [mapping urlFromID: mid];
@@ -477,8 +477,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       message = [self lookupMessageByURL: childURL];
       if (message)
         {
-          /* we ensure the table caches are loaded so that old and new state
-             can be compared */
           /* we ensure the table caches are loaded so that old and new state
              can be compared */
           activeTables = ([message isKindOfClass: MAPIStoreFAIMessageK]
