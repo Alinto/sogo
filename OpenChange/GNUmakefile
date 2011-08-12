@@ -104,7 +104,6 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreViewsContext.m \
 	\
 	NSArray+MAPIStore.m \
-	NSAutoreleasePool+MAPIStore.m \
 	NSData+MAPIStore.m \
 	NSDate+MAPIStore.m \
 	NSObject+MAPIStore.m \
