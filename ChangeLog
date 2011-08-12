@@ -1,5 +1,9 @@
 2011-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTable.m (-setHandleId:): only register the
+	table in the notification cache if the provided handle id is not
+	null.
+
 	* OpenChange/MAPIStoreCalendarMessage.m (-save): resynchronise the
 	container cache after the operation.
 

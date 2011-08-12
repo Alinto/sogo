@@ -302,7 +302,6 @@ static Class NSDataK, NSStringK;
   if ((self = [self init]))
     {
       container = newContainer;
-      [[MAPIStoreActiveTables activeTables] registerTable: self];
     }
 
   return self;
@@ -346,6 +345,8 @@ static Class NSDataK, NSStringK;
 - (void) setHandleId: (uint32_t) newHandleId
 {
   handleId = newHandleId;
+  if (newHandleId)
+    [[MAPIStoreActiveTables activeTables] registerTable: self];
 }
 
 - (void) destroyHandle: (uint32_t) tableHandleId
