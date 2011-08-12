@@ -1,5 +1,9 @@
 2011-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSMessage.m (-objectVersion): ensure that a
+	change number is available when the message is "not new", but
+	resynchronise the cache in doing so.
+
 	* OpenChange/MAPIStoreSOGo.m (sogo_table_handle_destructor): added
 	new backend operation.
 

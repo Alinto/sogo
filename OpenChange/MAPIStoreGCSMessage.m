@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSValue.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoContentObject.h>
 
 #import "MAPIStoreGCSFolder.h"
@@ -48,12 +49,28 @@
   uint64_t version = 0xffffffffffffffffLL;
   NSNumber *changeNumber;
 
-  changeNumber = [(MAPIStoreGCSFolder *) container
-                   changeNumberForMessageWithKey: [self nameInContainer]];
-  if (changeNumber)
-    version = [changeNumber unsignedLongLongValue] >> 16;
-  else if (![sogoObject isNew])
-    abort ();
+  if (![sogoObject isNew])
+    {
+      changeNumber = [(MAPIStoreGCSFolder *) container
+                        changeNumberForMessageWithKey: [self nameInContainer]];
+      if (!changeNumber)
+        {
+          [self warnWithFormat: @"attempting to get change number"
+                @" by synchronising folder..."];
+          [(MAPIStoreGCSFolder *) container synchroniseCache];
+          changeNumber = [(MAPIStoreGCSFolder *) container
+                            changeNumberForMessageWithKey: [self nameInContainer]];
+          
+          if (changeNumber)
+            [self logWithFormat: @"got one"];
+          else
+            {
+              [self errorWithFormat: @"still nothing. We crash!"];
+              abort ();
+            }
+        }
+      version = [changeNumber unsignedLongLongValue] >> 16;
+    }
 
   return version;
 }
