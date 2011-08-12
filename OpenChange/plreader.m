@@ -27,9 +27,10 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSPropertyList.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 #import <NGExtensions/NSNull+misc.h>
 
 const char *indentationStep = "  ";
@@ -52,8 +53,7 @@ const char *indentationStep = "  ";
 
 - (void) displayWithIndentation: (NSInteger) anInt
 {
-  [self _outputIndentation: anInt];
-  printf ("(%s) %s\n",
+  printf ("(%s) %s",
           [NSStringFromClass (isa) UTF8String],
           [[self description] UTF8String]);
 }
@@ -67,7 +67,11 @@ const char *indentationStep = "  ";
 {
   [self _outputIndentation: anInt];
 
-  printf ("%s (0x%.8x) =\n", [[key description] UTF8String], [key intValue]);
+  printf ("%s ", [[key description] UTF8String]);
+  if ([key isKindOfClass: [NSValue class]])
+    printf ("(%s: 0x%.8x) ", [(NSValue *) key objCType], [key intValue]);
+
+  printf ("= ");
 }
 
 - (void) displayWithIndentation: (NSInteger) anInt
@@ -80,7 +84,6 @@ const char *indentationStep = "  ";
   keys = [self allKeys];
   max = [keys count];
 
-  [self _outputIndentation: anInt];
   printf ("{ (%ld) items\n", (long) max);
 
   subIndent = anInt + 1;
@@ -89,11 +92,14 @@ const char *indentationStep = "  ";
     {
       key = [keys objectAtIndex: i];
       [self displayKey: key withIndentation: subIndent];
-      [[self objectForKey: key] displayWithIndentation: subIndent + 1];
+      [[self objectForKey: key] displayWithIndentation: subIndent];
+      if (i < (max - 1))
+        printf (",");
+      printf ("\n");
     }
 
   [self _outputIndentation: anInt];
-  printf ("}\n");
+  printf ("}");
 }
 
 @end
@@ -104,7 +110,7 @@ const char *indentationStep = "  ";
       withIndentation: (NSInteger) anInt
 {
   [self _outputIndentation: anInt];
-  printf ("%lu =\n", (unsigned long) count);
+  printf ("%lu = ", (unsigned long) count);
 }
 
 - (void) displayWithIndentation: (NSInteger) anInt
@@ -114,7 +120,6 @@ const char *indentationStep = "  ";
 
   max = [self count];
 
-  [self _outputIndentation: anInt];
   printf ("[ (%ld) items\n", (long) max);
 
   subIndent = anInt + 1;
@@ -122,11 +127,14 @@ const char *indentationStep = "  ";
   for (i = 0; i < max; i++)
     {
       [self displayCount: i withIndentation: subIndent];
-      [[self objectAtIndex: i] displayWithIndentation: subIndent + 1];
+      [[self objectAtIndex: i] displayWithIndentation: subIndent];
+      if (i < (max - 1))
+        printf (",");
+      printf ("\n");
     }
 
   [self _outputIndentation: anInt];
-  printf ("]\n");
+  printf ("]");
 }
 
 @end
@@ -171,6 +179,7 @@ PLReaderDumpPListFile (NSString *filename)
 
       printf ("File format is: %s\n", formatName);
       [d displayWithIndentation: 0];
+      printf ("\n");
     }
 }
 
