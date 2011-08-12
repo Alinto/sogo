@@ -1,5 +1,10 @@
 2011-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSMessageTable.m
+	(-evaluatePropertyRestriction:intoQualifier:): create a local
+	talloc context and free it at the end when generating a new date
+	restriction.
+
 	* OpenChange/plreader.m (-displayKey:withIndentation:): display
 	alternative hex representation of the keys.
 

@@ -37,7 +37,6 @@
 
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreGCSFolder.h"
-#import "NSAutoreleasePool+MAPIStore.h"
 
 #import "MAPIStoreGCSMessageTable.h"
 
@@ -53,6 +52,7 @@
 }
 
 - (struct mapi_SPropertyRestriction *) _fixedDatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
+                                                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapi_SPropertyRestriction *translatedRes;
   NSCalendarDate *dateValue;
@@ -84,6 +84,7 @@
   NSString *property;
   NSNumber *lastModified;
   MAPIRestrictionState rc;
+  TALLOC_CTX *memCtx = NULL;
 
   if (res->ulPropTag == PR_CHANGE_NUM)
     {
@@ -119,8 +120,9 @@
 
           if ((res->ulPropTag & 0xffff) == PT_SYSTIME)
             {
-              res = [self _fixedDatePropertyRestriction: res];
-              NSAutoreleaseTallocPointer (res);
+              memCtx = talloc_zero (NULL, TALLOC_CTX);
+              res = [self _fixedDatePropertyRestriction: res
+                                               inMemCtx: memCtx];
             }
 
           value = NSObjectFromMAPISPropValue (&res->lpProp);
@@ -134,7 +136,9 @@
                                                operatorSelector: operator
                                                           value: value];
           [*qualifier autorelease];
-          
+          if (memCtx)
+            talloc_free (memCtx);
+
           rc = MAPIRestrictionStateNeedsEval;
         }
       else
