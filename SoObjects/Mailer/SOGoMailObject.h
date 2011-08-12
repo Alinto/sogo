@@ -53,7 +53,6 @@
   id coreInfos;
   id headerPart;
   NSDictionary *headers;
-  NSArray *flagsCache;
 }
 
 /* message */
