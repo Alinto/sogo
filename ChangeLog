@@ -1,11 +1,21 @@
 2011-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-prefetchCoreInfosForMessageKeys:): new method that enables the
+	prefetching and caching of "core infos" for messages.
+	(-lookupName:inContext:acquire:): looked up messages are now fed
+	with their cached core infos, if present.
+
 	* SoObjects/Mailer/SOGoMailObject.m: (addFlags:, removeFlags:)
 	release "coreInfos" rather than flagsCache, which has been
 	obsoleted.
 	(_hasFlag:): make use of "coreInfos" to fetch the flags since most
 	of the time the other infos will be fetch for the same object,
 	bringing a 30ms speedup per message.
+	(-setCoreInfos): new accessor that enables setting coreInfos from
+	an external object.
+	(+initialize): coreInfoKeys was renamed to SOGoMailCoreInfoKeys
+	and has now been published.
 
 	* OpenChange/MAPIStoreTable.m (-setHandleId:): only register the
 	table in the notification cache if the provided handle id is not

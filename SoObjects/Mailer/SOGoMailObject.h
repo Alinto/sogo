@@ -48,6 +48,8 @@
 @class NGImap4Envelope;
 @class NGImap4EnvelopeAddress;
 
+NSArray *SOGoMailCoreInfoKeys;
+
 @interface SOGoMailObject : SOGoMailBaseObject
 {
   id coreInfos;
@@ -63,6 +65,7 @@
 
 - (BOOL) doesMailExist;
 - (id) fetchCoreInfos; // TODO: what does it do?
+- (void) setCoreInfos: (NSDictionary *) newCoreInfos;
 
 - (NGImap4Envelope *) envelope;
 - (NSString *) subject;
