@@ -906,6 +906,31 @@ sogo_table_get_row_count (void *table_object,
   return rc;
 }
 
+static int
+sogo_table_handle_destructor (void *table_object, uint32_t handle_id)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreTable *table;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (table_object)
+    {
+      wrapper = table_object;
+      table = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      [table destroyHandle: handle_id];
+      [pool release];
+    }
+  else
+    {
+      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
+    }
+
+  return MAPISTORE_SUCCESS;
+}
+
 static int sogo_properties_get_available_properties(void *object,
                                                     TALLOC_CTX *mem_ctx,
                                                     struct SPropTagArray **propertiesP)
@@ -1040,6 +1065,7 @@ int mapistore_init_backend(void)
       backend.table.set_columns = sogo_table_set_columns;
       backend.table.get_row = sogo_table_get_row;
       backend.table.get_row_count = sogo_table_get_row_count;
+      backend.table.handle_destructor = sogo_table_handle_destructor;
       backend.properties.get_available_properties = sogo_properties_get_available_properties;
       backend.properties.get_properties = sogo_properties_get_properties;
       backend.properties.set_properties = sogo_properties_set_properties;

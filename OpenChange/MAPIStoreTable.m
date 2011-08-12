@@ -325,8 +325,6 @@ static Class NSDataK, NSStringK;
   [self logWithFormat: @"-dealloc"];
   if (columns)
     NSZoneFree (NULL, columns);
-  if (container)
-    [[MAPIStoreActiveTables activeTables] unregisterTable: self];
   [currentChild release];
   [childKeys release];
   [restrictedChildKeys release];
@@ -348,6 +346,12 @@ static Class NSDataK, NSStringK;
 - (void) setHandleId: (uint32_t) newHandleId
 {
   handleId = newHandleId;
+}
+
+- (void) destroyHandle: (uint32_t) tableHandleId
+{
+  if (handleId == tableHandleId)
+    [[MAPIStoreActiveTables activeTables] unregisterTable: self];
 }
 
 - (void) cleanupCaches

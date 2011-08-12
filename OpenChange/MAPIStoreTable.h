@@ -78,6 +78,7 @@ typedef enum {
 - (uint8_t) tableType;
 
 - (void) setHandleId: (uint32_t) newHandleId;
+- (void) destroyHandle: (uint32_t) handleId;
 
 - (id) childAtRowID: (uint32_t) rowId
        forQueryType: (enum table_query_type) queryType;
