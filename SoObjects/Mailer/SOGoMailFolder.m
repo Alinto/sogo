@@ -46,6 +46,7 @@
 
 #import <SOGo/DOMNode+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/NSString+DAV.h>
 #import <SOGo/NSArray+DAV.h>
@@ -123,6 +124,7 @@ static NSString *defaultUserID =  @"anyone";
     {
       [self _adjustOwner];
       mailboxACL = nil;
+      prefetchedInfos = nil;
     }
 
   return self;
@@ -133,6 +135,7 @@ static NSString *defaultUserID =  @"anyone";
   [filenames release];
   [folderType release];
   [mailboxACL release];
+  [prefetchedInfos release];
   [super dealloc];
 }
 
@@ -265,6 +268,43 @@ static NSString *defaultUserID =  @"anyone";
 }
 
 /* messages */
+- (void) prefetchCoreInfosForMessageKeys: (NSArray *) keys
+{
+  NSDictionary *infos;
+  NSMutableArray *uids;
+  NSUInteger count, max, keyLength;
+  NSString *key;
+
+  if (!SOGoMailCoreInfoKeys)
+    {
+      /* ensure SOGoMailCoreInfoKeys is initialized */
+      [SOGoMailObject class];
+    }
+
+  [prefetchedInfos release];
+
+  max = [keys count];
+  if (max > 0)
+    {
+      uids = [NSMutableArray arrayWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          key = [keys objectAtIndex: count];
+          if ([key hasSuffix: @".eml"])
+            {
+              keyLength = [key length];
+              [uids addObject: [key substringToIndex: keyLength - 4]];
+            }
+        }
+      infos = (NSDictionary *) [self fetchUIDs: uids parts: SOGoMailCoreInfoKeys];
+
+      prefetchedInfos = [[NSMutableDictionary alloc] initWithCapacity: max];
+      [prefetchedInfos setObjects: [infos objectForKey: @"fetch"]
+                          forKeys: uids];
+    }
+  else
+    prefetchedInfos = nil;
+}
 
 - (NSException *) deleteUIDs: (NSArray *) uids
 	      useTrashFolder: (BOOL *) withTrash
@@ -700,7 +740,7 @@ static NSString *defaultUserID =  @"anyone";
 	inContext: (id)_ctx
 	  acquire: (BOOL) _acquire
 {
-  NSString *folderName, *fullFolderName, *className;
+  NSString *folderName, *fullFolderName, *className, *uid;
   SOGoMailAccount *mailAccount;
   id obj;
 
@@ -736,7 +776,11 @@ static NSString *defaultUserID =  @"anyone";
         }
       else if (isdigit ([_key characterAtIndex: 0])
                && [[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
-        obj = [SOGoMailObject objectWithName: _key inContainer: self];
+        {
+          obj = [SOGoMailObject objectWithName: _key inContainer: self];
+          uid = [_key substringToIndex: [_key length] - 4];
+          [obj setCoreInfos: [prefetchedInfos objectForKey: uid]];
+        }
     }
 
   if (!obj && _acquire)

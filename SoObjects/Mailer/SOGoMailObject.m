@@ -62,7 +62,7 @@
 
 @implementation SOGoMailObject
 
-static NSArray  *coreInfoKeys = nil;
+NSArray *SOGoMailCoreInfoKeys = nil;
 static NSString *mailETag = nil;
 static BOOL heavyDebug         = NO;
 static BOOL debugOn            = NO;
@@ -71,15 +71,16 @@ static BOOL debugSoParts       = NO;
 
 + (void) initialize
 {
-  if (!coreInfoKeys)
+  if (!SOGoMailCoreInfoKeys)
     {
       /* Note: see SOGoMailManager.m for allowed IMAP4 keys */
-      coreInfoKeys = [[NSArray alloc] initWithObjects:
-                                        @"FLAGS", @"ENVELOPE", @"BODYSTRUCTURE",
-                                      @"RFC822.SIZE",
-                                      @"RFC822.HEADER",
-                                 // not yet supported: @"INTERNALDATE",
-                                      nil];
+      SOGoMailCoreInfoKeys
+        = [[NSArray alloc] initWithObjects:
+                             @"FLAGS", @"ENVELOPE", @"BODYSTRUCTURE",
+                           @"RFC822.SIZE",
+                           @"RFC822.HEADER",
+                           // not yet supported: @"INTERNALDATE",
+                           nil];
 
       /* The following disabled code should not be needed, except if we use
          annotations (see davEntityTag below) */
@@ -219,7 +220,7 @@ static BOOL debugSoParts       = NO;
 
   if (!coreInfos)
     {
-      msgs = [self fetchParts: coreInfoKeys]; // returns dict
+      msgs = [self fetchParts: SOGoMailCoreInfoKeys]; // returns dict
       if (heavyDebug)
 	[self logWithFormat: @"M: %@", msgs];
       msgs = [msgs valueForKey: @"fetch"];
@@ -229,6 +230,11 @@ static BOOL debugSoParts       = NO;
     }
 
   return coreInfos;
+}
+
+- (void) setCoreInfos: (NSDictionary *) newCoreInfos
+{
+  ASSIGN (coreInfos, newCoreInfos);
 }
 
 - (id) bodyStructure

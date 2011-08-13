@@ -35,7 +35,7 @@
   The SOGoMailFolder maps to an IMAP4 folder from NGImap4.
 */
 
-@class NSData, NSArray, NSException, NSMutableArray;
+@class NSData, NSArray, NSException, NSMutableArray, NSMutableDictionary;
 @class NGImap4MailboxInfo;
 @class WOResponse;
 
@@ -44,11 +44,14 @@
   NSMutableArray *filenames;
   NSString *folderType;
   NSDictionary *mailboxACL;
+  NSMutableDictionary *prefetchedInfos;
 }
 
 - (NSString *) absoluteImap4Name;
 
 /* messages */
+- (void) prefetchCoreInfosForMessageKeys: (NSArray *) keys;
+
 - (NSArray *) toOneRelationshipKeys;
 - (NSArray *) toManyRelationshipKeys;
 
