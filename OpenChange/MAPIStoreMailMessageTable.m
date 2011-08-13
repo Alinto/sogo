@@ -67,6 +67,7 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
   if ((self = [super init]))
     {
       ASSIGN (sortOrderings, [NSArray arrayWithObject: @"ARRIVAL"]);
+      fetchedCoreInfos = NO;
     }
 
   return self;
@@ -75,6 +76,7 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
 - (void) cleanupCaches
 {
   [(MAPIStoreMailFolder *) container synchroniseCache];
+  fetchedCoreInfos = NO;
   [super cleanupCaches];
 }
 
@@ -320,6 +322,22 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
     ASSIGN (sortOrderings, [NSArray arrayWithObject: @"ARRIVAL"]);
 
   [self cleanupCaches];
+}
+
+- (int) getRow: (struct mapistore_property_data **) dataP
+     withRowID: (uint32_t) rowId
+  andQueryType: (enum table_query_type) queryType
+      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!fetchedCoreInfos)
+    {
+      fetchedCoreInfos = YES;
+      [(SOGoMailFolder *) [container sogoObject]
+         prefetchCoreInfosForMessageKeys: [self restrictedChildKeys]];
+    }
+
+ return [super   getRow: dataP withRowID: rowId
+           andQueryType: queryType inMemCtx: memCtx];
 }
 
 @end

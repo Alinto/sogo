@@ -26,6 +26,9 @@
 #import "MAPIStoreMessageTable.h"
 
 @interface MAPIStoreMailMessageTable : MAPIStoreMessageTable
+{
+  BOOL fetchedCoreInfos;
+}
 
 @end
 

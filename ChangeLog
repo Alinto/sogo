@@ -1,3 +1,10 @@
+2011-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailMessageTable.m
+	(-getRow:withRowID:andQueryType:inMemCtx:): overriden method to
+	prefetch the "core infos" of messages that are going to be
+	fetched.
+
 2011-08-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/HTMLElement.js (refreshSelectionByIds):
