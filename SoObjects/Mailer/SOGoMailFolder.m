@@ -295,6 +295,8 @@ static NSString *defaultUserID =  @"anyone";
               keyLength = [key length];
               [uids addObject: [key substringToIndex: keyLength - 4]];
             }
+          else
+            [uids addObject: key];
         }
       infos = (NSDictionary *) [self fetchUIDs: uids parts: SOGoMailCoreInfoKeys];
 
@@ -740,7 +742,7 @@ static NSString *defaultUserID =  @"anyone";
 	inContext: (id)_ctx
 	  acquire: (BOOL) _acquire
 {
-  NSString *folderName, *fullFolderName, *className, *uid;
+  NSString *folderName, *fullFolderName, *className;
   SOGoMailAccount *mailAccount;
   id obj;
 
@@ -778,8 +780,9 @@ static NSString *defaultUserID =  @"anyone";
                && [[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
         {
           obj = [SOGoMailObject objectWithName: _key inContainer: self];
-          uid = [_key substringToIndex: [_key length] - 4];
-          [obj setCoreInfos: [prefetchedInfos objectForKey: uid]];
+          if ([_key hasSuffix: @".eml"])
+            _key = [_key substringToIndex: [_key length] - 4];
+          [obj setCoreInfos: [prefetchedInfos objectForKey: _key]];
         }
     }
 

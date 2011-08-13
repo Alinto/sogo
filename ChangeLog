@@ -1,3 +1,9 @@
+2011-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-lookupName:inContext:acquire:): fixed a crash occurring when the
+	key didn't end with ".eml".
+
 2011-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailMessageTable.m
