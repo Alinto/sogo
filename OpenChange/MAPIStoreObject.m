@@ -75,7 +75,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   enum MAPITAGS propTag;
   uint16_t propValue;
 
-  properties = talloc_zero(memCtx, struct SPropTagArray);
+  properties = talloc_zero (memCtx, struct SPropTagArray);
   properties->aulPropTag = talloc_array (properties, enum MAPITAGS,
                                          MAPIStoreSupportedPropertiesCount);
   classGetters = MAPIStorePropertyGettersForClass (self);
