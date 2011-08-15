@@ -92,6 +92,7 @@
 {
   return @"deleted-items";
 }
+
 - (void) setupBaseFolder: (NSURL *) newURL
 {
   baseFolder = [MAPIStoreFSFolder baseFolderWithURL: newURL inContext: self];
