@@ -325,7 +325,7 @@ static Class SOGoMailFolderK;
   for (count = 0; count < max; count++)
     {
       subfolderKey = [subfolderKeys  objectAtIndex: count];
-      cmpString = [self _imapFolderNameepresentation: subfolderKey];
+      cmpString = [self _imapFolderNameRepresentation: subfolderKey];
       if ([cmpString isEqualToString: draftsFolderName]
           || [cmpString isEqualToString: sentFolderName]
           || [cmpString isEqualToString: trashFolderName])
