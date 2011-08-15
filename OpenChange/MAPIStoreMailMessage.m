@@ -275,12 +275,24 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           container messageUIDFromMessageKey: [self nameInContainer]];
   if (uid)
     {
-      changeNumber = [(MAPIStoreMailFolder *)
-                       container changeNumberForMessageUID: uid];
-      if (changeNumber)
-        version = [changeNumber unsignedLongLongValue] >> 16;
-      else
-        abort ();
+      changeNumber = [(MAPIStoreMailFolder *) container
+                       changeNumberForMessageUID: uid];
+      if (!changeNumber)
+        {
+          [self warnWithFormat: @"attempting to get change number"
+                @" by synchronising folder..."];
+          [(MAPIStoreMailFolder *) container synchroniseCache];
+          changeNumber = [(MAPIStoreMailFolder *) container
+                           changeNumberForMessageUID: uid];
+          if (changeNumber)
+            [self logWithFormat: @"got one"];
+          else
+            {
+              [self errorWithFormat: @"still nothing. We crash!"];
+              abort ();
+            }
+        }
+      version = [changeNumber unsignedLongLongValue] >> 16;
     }
   else
     abort ();

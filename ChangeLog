@@ -1,5 +1,8 @@
 2011-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessage.m (-objectVersion): updated code
+	as in MAPIStoreGCSMessage's version.
+
 	* OpenChange/MAPIStoreMailFolder.m (-messageTable): we no longer
 	cache the table object as we don't want to assign different
 	handles to the same memory object, causing inconsistencies with
