@@ -1,5 +1,10 @@
 2011-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccount.m
+	(-toManyRelationshipKeysWithNamespaces:): new method, superseding
+	"toManyRelationshipKeys" that enables the returning of namespaces
+	"folders" or not.
+
 	* OpenChange/MAPIStoreMailMessage.m (-objectVersion): updated code
 	as in MAPIStoreGCSMessage's version.
 

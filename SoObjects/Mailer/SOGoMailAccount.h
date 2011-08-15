@@ -77,6 +77,7 @@ typedef enum {
 - (NSString *) encryption;
 
 /* folder pathes */
+- (NSArray *) toManyRelationshipKeysWithNamespaces: (BOOL) withNSs;
 
 - (NSArray *) allFolderPaths;
 - (BOOL) isInDraftsFolder;

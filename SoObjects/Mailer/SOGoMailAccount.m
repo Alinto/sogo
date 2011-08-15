@@ -174,19 +174,35 @@ static NSString *inboxFolderName = @"INBOX";
   return [self _namespacesWithKey: @"shared"];
 }
 
-- (NSArray *) toManyRelationshipKeys
+- (NSArray *) toManyRelationshipKeysWithNamespaces: (BOOL) withNSs
 {
   NSMutableArray *folders;
-  NSArray *imapFolders;
+  NSArray *imapFolders, *nss;
 
   imapFolders = [[self imap4Connection] subfoldersForURL: [self imap4URL]];
   folders = [imapFolders mutableCopy];
   [folders autorelease];
   [folders addObjectUniquely: [self draftsFolderNameInContext: nil]];
-  [self _appendNamespaces: folders];
+  if (withNSs)
+    [self _appendNamespaces: folders];
+  else
+    { /* some implementation insist on returning NSs in the list of
+         folders... */
+      nss = [self otherUsersFolderNamespaces];
+      if (nss)
+          [folders removeObjectsInArray: nss];
+      nss = [self sharedFolderNamespaces];
+      if (nss)
+        [folders removeObjectsInArray: nss];
+    }
 
   return [[folders stringsWithFormat: @"folder%@"]
            resultsOfSelector: @selector (asCSSIdentifier)];
+}
+
+- (NSArray *) toManyRelationshipKeys
+{
+  return [self toManyRelationshipKeysWithNamespaces: YES];
 }
 
 - (SOGoIMAPAclStyle) imapAclStyle
