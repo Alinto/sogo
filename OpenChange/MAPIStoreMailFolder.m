@@ -143,7 +143,6 @@ static Class SOGoMailFolderK;
 - (void) dealloc
 {
   [versionsMessage release];
-  [messageTable release];
   [super dealloc];
 }
 
@@ -157,13 +156,8 @@ static Class SOGoMailFolderK;
 
 - (MAPIStoreMessageTable *) messageTable
 {
-  if (!messageTable)
-    {
-      [self synchroniseCache];
-      ASSIGN (messageTable, [MAPIStoreMailMessageTable tableForContainer: self]);
-    }
-
-  return messageTable;
+  [self synchroniseCache];
+  return [MAPIStoreMailMessageTable tableForContainer: self];
 }
 
 - (Class) messageClass

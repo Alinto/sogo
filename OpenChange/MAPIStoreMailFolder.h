@@ -36,7 +36,6 @@
 
 @interface MAPIStoreMailFolder : MAPIStoreFolder
 {
-  MAPIStoreMailMessageTable *messageTable;
   SOGoMAPIFSMessage *versionsMessage;
 }
 
