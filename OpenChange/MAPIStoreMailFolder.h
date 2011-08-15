@@ -53,6 +53,10 @@
 @end
 
 @interface MAPIStoreInboxFolder : MAPIStoreMailFolder
+{
+  BOOL usesAltNameSpace;
+}
+
 @end
 
 @interface MAPIStoreSentItemsFolder : MAPIStoreMailFolder

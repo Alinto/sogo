@@ -33,6 +33,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGImap4/NGImap4Connection.h>
+#import <NGImap4/NGImap4Client.h>
 #import <Mailer/SOGoDraftsFolder.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
@@ -167,6 +168,7 @@ static Class SOGoMailFolderK;
 
 - (NSString *) createFolder: (struct SRow *) aRow
                     withFID: (uint64_t) newFID
+                inContainer: (id) subfolderParent
 {
   NSString *folderName, *nameInContainer;
   SOGoMailFolder *newFolder;
@@ -188,12 +190,19 @@ static Class SOGoMailFolderK;
       nameInContainer = [NSString stringWithFormat: @"folder%@",
                                   [folderName asCSSIdentifier]];
       newFolder = [SOGoMailFolderK objectWithName: nameInContainer
-                                      inContainer: sogoObject];
+                                      inContainer: subfolderParent];
       if (![newFolder create])
         nameInContainer = nil;
     }
 
   return nameInContainer;
+}
+
+- (NSString *) createFolder: (struct SRow *) aRow
+                    withFID: (uint64_t) newFID
+{
+  return [self createFolder: aRow withFID: newFID
+                inContainer: sogoObject];
 }
 
 - (int) getPrContentUnread: (void **) data
@@ -273,12 +282,15 @@ static Class SOGoMailFolderK;
   return [uidKeys stringsWithFormat: @"%@.eml"];
 }
 
-- (NSArray *) folderKeys
+- (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
+                         andSortOrderings: (NSArray *) sortOrderings
 {
-  if (!folderKeys)
-    folderKeys = [[sogoObject toManyRelationshipKeys] mutableCopy];
+  if (qualifier)
+    [self errorWithFormat: @"qualifier is not used for folders"];
+  if (sortOrderings)
+    [self errorWithFormat: @"sort orderings are not used for folders"];
 
-  return folderKeys;
+  return [sogoObject toManyRelationshipKeys];
 }
 
 - (id) lookupFolder: (NSString *) childKey
@@ -558,10 +570,97 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
 @implementation MAPIStoreInboxFolder : MAPIStoreMailFolder
 
+- (id) initWithURL: (NSURL *) newURL
+         inContext: (MAPIStoreContext *) newContext
+{
+  NSDictionary *list, *response;
+  NGImap4Client *client;
+
+  if ((self = [super initWithURL: newURL
+                       inContext: newContext]))
+    {
+      client = [[(SOGoMailFolder *) sogoObject imap4Connection] client];
+      list = [client list: @"" pattern: @"INBOX"];
+      response = [[list objectForKey: @"RawResponse"] objectForKey: @"list"];
+      usesAltNameSpace = [[response objectForKey: @"flags"] containsObject: @"noinferiors"];
+    }
+
+  return self;
+}
+
 - (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) accountFolder
                                     inContext: (WOContext *) woContext
 {
   return [accountFolder inboxFolderInContext: woContext];
+}
+
+- (NSString *) createFolder: (struct SRow *) aRow
+                    withFID: (uint64_t) newFID
+{
+  id subfolderParent;
+
+  if (usesAltNameSpace)
+    subfolderParent = [(SOGoMailFolder *) sogoObject mailAccountFolder];
+  else
+    subfolderParent = sogoObject;
+
+  return [self createFolder: aRow withFID: newFID
+                inContainer: subfolderParent];
+}
+
+- (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
+                         andSortOrderings: (NSArray *) sortOrderings
+{
+  NSMutableArray *subfolderKeys;
+  SOGoMailAccount *account;
+
+  if (usesAltNameSpace)
+    {
+      if (qualifier)
+        [self errorWithFormat: @"qualifier is not used for folders"];
+      if (sortOrderings)
+        [self errorWithFormat: @"sort orderings are not used for folders"];
+
+      account = [(SOGoMailFolder *) sogoObject mailAccountFolder];
+      subfolderKeys
+        = [[account toManyRelationshipKeysWithNamespaces: NO]
+            mutableCopy];
+      [subfolderKeys removeObject: @"folderINBOX"];
+    }
+  else
+    subfolderKeys = [[super folderKeysMatchingQualifier: qualifier
+                                       andSortOrderings: sortOrderings]
+                      mutableCopy];
+
+  /* TODO: remove special folders */
+
+  [subfolderKeys autorelease];
+
+  return subfolderKeys;
+}
+
+- (id) lookupFolder: (NSString *) childKey
+{
+  id childObject = nil;
+  SOGoMailAccount *account;
+  SOGoMailFolder *childFolder;
+
+  if (usesAltNameSpace)
+    {
+      [self folderKeys];
+      if ([folderKeys containsObject: childKey])
+        {
+          account = [(SOGoMailFolder *) sogoObject mailAccountFolder];
+          childFolder = [account lookupName: childKey inContext: nil
+                                    acquire: NO];
+          childObject = [MAPIStoreMailFolder mapiStoreObjectWithSOGoObject: childFolder
+                                                               inContainer: self];
+        }
+    }
+  else
+    childObject = [super lookupFolder: childKey];
+
+  return childObject;
 }
 
 @end

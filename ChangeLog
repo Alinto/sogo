@@ -1,5 +1,21 @@
 2011-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailFolder.m
+	(-[MAPIStoreMailFolder createFolder:withFID:inContainer:): new method
+	that enables the specification of a SOGo object container.
+	(-[MAPIStoreMailFolder createFolder:withFID:): rewritten method to make
+	use of the above.
+	(-[MAPIStoreInboxFolder createFolder:withFID:): rewritten method to make
+	use of the above, with the choice container depending on the
+	"usesAltNamespace" ivar.
+	(-[MAPIStoreInboxFolder initWithURL:inContext:): overriden method
+	to initialize the "usesAltNamespace" ivar based on the flags set
+	on the "INBOX" folder.
+	(-[MAPIStoreInboxFolder
+	folderKeysMatchingQualifier:andSortOrderings:])
+	(-[MAPIStoreInboxFolder lookupFolder:]):
+	overriden methods to make use of "usesAltNamespace".
+
 	* SoObjects/Mailer/SOGoMailAccount.m
 	(-toManyRelationshipKeysWithNamespaces:): new method, superseding
 	"toManyRelationshipKeys" that enables the returning of namespaces
