@@ -282,15 +282,75 @@ static Class SOGoMailFolderK;
   return [uidKeys stringsWithFormat: @"%@.eml"];
 }
 
+- (NSMutableString *) _imapFolderNameRepresentation: (NSString *) subfolderName
+{
+  NSMutableString *representation;
+  NSString *nameInContainer, *strippedName;
+
+  nameInContainer = [self nameInContainer];
+  if (container)
+    representation = [(MAPIStoreMailFolder *) container
+                       _imapFolderNameRepresentation: nameInContainer];
+  else
+    {
+      if (![nameInContainer hasPrefix: @"folder"])
+        abort ();
+      strippedName = [nameInContainer substringFromIndex: 6];
+      representation = [NSMutableString stringWithString: strippedName];
+    }
+
+  if (![subfolderName hasPrefix: @"folder"])
+    abort ();
+  strippedName = [subfolderName substringFromIndex: 6];
+  [representation appendFormat: @"/%@", strippedName];
+
+  return representation;
+}
+
+- (void) _cleanupSubfolderKeys: (NSMutableArray *) subfolderKeys
+{
+  SOGoMailAccount *account;
+  NSString *draftsFolderName, *sentFolderName, *trashFolderName;
+  NSString *subfolderKey, *cmpString;
+  NSUInteger count, max;
+  NSMutableArray *keysToRemove;
+
+  account = [(SOGoMailFolder *) sogoObject mailAccountFolder];
+  draftsFolderName = [account draftsFolderNameInContext: nil];
+  sentFolderName = [account sentFolderNameInContext: nil];
+  trashFolderName = [account trashFolderNameInContext: nil];
+
+  max = [subfolderKeys count];
+  keysToRemove = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      subfolderKey = [subfolderKeys  objectAtIndex: count];
+      cmpString = [self _imapFolderNameepresentation: subfolderKey];
+      if ([cmpString isEqualToString: draftsFolderName]
+          || [cmpString isEqualToString: sentFolderName]
+          || [cmpString isEqualToString: trashFolderName])
+        [keysToRemove addObject: subfolderKey];
+    }
+
+  [subfolderKeys removeObjectsInArray: keysToRemove];
+}
+
 - (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
                          andSortOrderings: (NSArray *) sortOrderings
 {
+  NSMutableArray *subfolderKeys;
+
   if (qualifier)
     [self errorWithFormat: @"qualifier is not used for folders"];
   if (sortOrderings)
     [self errorWithFormat: @"sort orderings are not used for folders"];
 
-  return [sogoObject toManyRelationshipKeys];
+  subfolderKeys = [[sogoObject toManyRelationshipKeys] mutableCopy];
+  [subfolderKeys autorelease];
+
+  [self _cleanupSubfolderKeys: subfolderKeys];
+
+  return subfolderKeys;
 }
 
 - (id) lookupFolder: (NSString *) childKey
@@ -608,6 +668,25 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                 inContainer: subfolderParent];
 }
 
+- (NSMutableString *) _imapFolderNameRepresentation: (NSString *) subfolderName
+{
+  NSMutableString *representation;
+
+  if (usesAltNameSpace)
+    {
+      /* with "altnamespace", the subfolders are NEVER subfolders of INBOX... */;
+      if (![subfolderName hasPrefix: @"folder"])
+        abort ();
+      representation
+        = [NSMutableString stringWithString:
+          [subfolderName substringFromIndex: 6]];
+    }
+  else
+    representation = [super _imapFolderNameRepresentation: subfolderName];
+
+  return representation;
+}
+
 - (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
                          andSortOrderings: (NSArray *) sortOrderings
 {
@@ -626,6 +705,8 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
         = [[account toManyRelationshipKeysWithNamespaces: NO]
             mutableCopy];
       [subfolderKeys removeObject: @"folderINBOX"];
+
+      [self _cleanupSubfolderKeys: subfolderKeys];
     }
   else
     subfolderKeys = [[super folderKeysMatchingQualifier: qualifier

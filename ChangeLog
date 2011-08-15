@@ -15,6 +15,16 @@
 	folderKeysMatchingQualifier:andSortOrderings:])
 	(-[MAPIStoreInboxFolder lookupFolder:]):
 	overriden methods to make use of "usesAltNamespace".
+	(-[MAPIStoreMailFolder _imapFolderNameRepresentation:): new
+	private method that combines the SOGo representation of an IMAP
+	folder leaf, without the "folder" prefix, with the current folder
+	as parent.
+	(-[MAPIStoreMailFolder _cleanupSubfolderKeys:): new private method
+	that tests the list of children keys passed as parameter and
+	compare each one of them with the special folders: trash, sent and
+	drafts and those that are found.
+	(-[MAPIStoreInboxFolder _imapFolderNameRepresentation:): overriden
+	method by taking the "altnamespace" ivar into account.
 
 	* SoObjects/Mailer/SOGoMailAccount.m
 	(-toManyRelationshipKeysWithNamespaces:): new method, superseding
