@@ -243,7 +243,7 @@ function regenerateCategoriesMenu() {
             var entry = createElement("li");
             entry.label = label;
             entry.menuCallback = onCategoryMenuEntryClick;
-            entry.observe("click", onMenuClickHandler);
+            entry.on("mousedown", onMenuClickHandler);
             entry.appendChild(document.createTextNode(label));
             list.appendChild(entry);
         }

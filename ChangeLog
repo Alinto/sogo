@@ -1,3 +1,12 @@
+2011-08-18  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxContactEditor.js
+	(regenerateCategoriesMenu): register the onMenuClickHandler
+	function on the mouse down event instead of the click event, since
+	the contextual menu is hidden on the mouse down event. This fixes
+	the bug where a predefined category could never be selected from
+	the combo box.
+
 2011-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailFolder.m
