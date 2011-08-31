@@ -496,6 +496,9 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       fetchResults
         = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByMODSEQ
                                          context: NULL];
+      
+      ldb_transaction_start([[self context] connectionInfo]->oc_ctx);
+
       for (count = 0; count < max; count++)
         {
           result = [fetchResults objectAtIndex: count];
@@ -519,6 +522,8 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
             lastModseq = modseq;
         }
 
+      ldb_transaction_commit([[self context] connectionInfo]->oc_ctx);
+      
       ti = [NSNumber numberWithDouble: [now timeIntervalSince1970]];
       [currentProperties setObject: ti
                             forKey: @"SyncLastSynchronisationDate"];

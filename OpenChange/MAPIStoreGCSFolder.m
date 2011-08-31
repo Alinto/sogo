@@ -226,6 +226,8 @@
   max = [fetchResults count];
   if (max > 0)
     {
+      ldb_transaction_start([[self context] connectionInfo]->oc_ctx);
+
       for (count = 0; count < max; count++)
         {
           result = [fetchResults objectAtIndex: count];
@@ -260,7 +262,9 @@
                 lastModificationDate = cLastModified;
             }
         }
-
+      
+      ldb_transaction_commit([[self context] connectionInfo]->oc_ctx);
+      
       if (foundChange)
         {
           ti = [NSNumber numberWithDouble: [now timeIntervalSince1970]];
