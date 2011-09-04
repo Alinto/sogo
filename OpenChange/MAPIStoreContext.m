@@ -410,6 +410,8 @@ _prepareContextClass (Class contextClass,
       openchangedb_get_new_folderID (connInfo->oc_ctx, &mappingId);
       [mapping registerURL: childURL withID: mappingId];
       contextId = 0;
+
+      // FIXME: + 7 to skip the BOM or what?
       mapistore_search_context_by_uri (mstoreCtx, [folderURL UTF8String] + 7,
                                        &contextId, &rootObject);
       mapistore_indexing_record_add_mid (mstoreCtx, contextId, mappingId);

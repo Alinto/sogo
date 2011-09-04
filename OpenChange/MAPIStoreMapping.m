@@ -55,21 +55,36 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   NSNumber *idNbr;
   NSString *uri;
   char *idStr, *uriStr;
-  uint64_t idVal;
+  long long unsigned int idVal;
 
+  // get the key
+  // key examples : key(18) = "0x6900000000000001"
+  //                key(31) = "SOFT_DELETED:0xb100020000000001"
+  //
   idStr = (char *) data1.dptr;
-  idVal = strtoll (idStr, NULL, 16);
-  idNbr = [NSNumber numberWithUnsignedLongLong: idVal];
+  idNbr = nil;
 
-  uriStr = strndup ((const char *) data2.dptr, data2.dsize);
-  *(uriStr+(data2.dsize)) = 0;
+  if (strncmp(idStr, "SOFT_DELETED:", 13) != 0)
+    { 
+      // It's very important here to use strtoull and NOT strtoll as
+      // the latter will overflow a long long with typical key values.
+      idVal = strtoull(idStr, NULL, 0);
+      idNbr = [NSNumber numberWithUnsignedLongLong: idVal];
+    }
+  
+  // get the value and null-terminate it
+  uriStr = (char *)malloc(sizeof(char *) * data2.dsize+1);
+  memset(uriStr, 0, data2.dsize+1);
+  memcpy(uriStr, (const char *) data2.dptr, data2.dsize);
   uri = [NSString stringWithUTF8String: uriStr];
   free (uriStr);
 
   mapping = data;
-  [mapping setObject: uri forKey: idNbr];
 
-  // NSLog (@"preregistered url '%@' for id '%@'", uri, idNbr);
+  if (uri && idNbr)
+    {
+      [mapping setObject: uri forKey: idNbr];
+    }
 
   return 0;
 }
@@ -142,9 +157,11 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 	{
 	  idNbr = [keys objectAtIndex: count];
 	  uri = [mapping objectForKey: idNbr];
-          // [self logWithFormat: @"preregistered id '%@' for url '%@'", idNbr, uri];
+          //[self logWithFormat: @"preregistered id '%@' for url '%@'", idNbr, uri];
 	  [reverseMapping setObject: idNbr forKey: uri];
 	}
+      
+      //[self logWithFormat: @"Complete mapping: %@ \nComplete reverse mapping: %@", mapping, reverseMapping];
     }
 
   return self;

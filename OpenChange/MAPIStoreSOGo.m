@@ -48,6 +48,13 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
+static int
+sogo_backend_unexpected_error()
+{
+  NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+  return MAPISTORE_SUCCESS;
+}
+
 /**
    \details Initialize sogo mapistore backend
 
@@ -169,8 +176,7 @@ sogo_context_get_path(void *backend_object, TALLOC_CTX *mem_ctx,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -200,8 +206,7 @@ sogo_context_get_root_folder(void *backend_object, TALLOC_CTX *mem_ctx,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -239,8 +244,7 @@ sogo_folder_open_folder(void *folder_object, TALLOC_CTX *mem_ctx, uint64_t fid, 
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -277,8 +281,7 @@ sogo_folder_create_folder(void *folder_object, TALLOC_CTX *mem_ctx,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -313,8 +316,7 @@ sogo_folder_delete_folder(void *folder_object, uint64_t fid)
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+       rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -340,8 +342,7 @@ sogo_folder_get_child_count(void *folder_object, uint8_t table_type, uint32_t *c
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -374,8 +375,7 @@ sogo_folder_open_message(void *folder_object,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -409,8 +409,7 @@ sogo_folder_create_message(void *folder_object,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -436,8 +435,7 @@ sogo_folder_delete_message(void *folder_object, uint64_t mid, uint8_t flags)
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -469,8 +467,7 @@ sogo_folder_get_deleted_fmids(void *folder_object, TALLOC_CTX *mem_ctx,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -504,8 +501,7 @@ sogo_folder_open_table(void *folder_object, TALLOC_CTX *mem_ctx,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -535,8 +531,7 @@ sogo_message_create_attachment (void *message_object, TALLOC_CTX *mem_ctx, void 
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+       rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -567,8 +562,7 @@ sogo_message_open_attachment (void *message_object, TALLOC_CTX *mem_ctx,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -599,8 +593,7 @@ sogo_message_get_attachment_table (void *message_object, TALLOC_CTX *mem_ctx, vo
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -629,8 +622,7 @@ sogo_message_modify_recipients (void *message_object,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -657,8 +649,7 @@ sogo_message_save (void *message_object)
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -685,8 +676,7 @@ sogo_message_submit (void *message_object, enum SubmitFlags flags)
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -724,8 +714,7 @@ sogo_message_attachment_open_embedded_message
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO CONTEXT");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -751,8 +740,7 @@ static int sogo_table_get_available_properties(void *table_object,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -779,8 +767,7 @@ sogo_table_set_columns (void *table_object, uint16_t count, enum MAPITAGS *prope
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -809,8 +796,7 @@ sogo_table_set_restrictions (void *table_object, struct mapi_SRestriction *restr
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -839,8 +825,7 @@ sogo_table_set_sort_order (void *table_object, struct SSortOrderSet *sort_order,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -869,8 +854,7 @@ sogo_table_get_row (void *table_object, TALLOC_CTX *mem_ctx,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -899,8 +883,7 @@ sogo_table_get_row_count (void *table_object,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -912,6 +895,7 @@ sogo_table_handle_destructor (void *table_object, uint32_t handle_id)
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreTable *table;
+  int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
 
@@ -922,13 +906,14 @@ sogo_table_handle_destructor (void *table_object, uint32_t handle_id)
       pool = [NSAutoreleasePool new];
       [table destroyHandle: handle_id];
       [pool release];
+      rc = MAPISTORE_SUCCESS;
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
+      rc = sogo_backend_unexpected_error();
     }
 
-  return MAPISTORE_SUCCESS;
+  return rc;
 }
 
 static int sogo_properties_get_available_properties(void *object,
@@ -952,8 +937,7 @@ static int sogo_properties_get_available_properties(void *object,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -984,8 +968,7 @@ sogo_properties_get_properties (void *object,
     }
   else
     {
-      NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO DATA");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;
@@ -1011,8 +994,7 @@ sogo_properties_set_properties (void *object, struct SRow *aRow)
     }
   else
     {
-      NSLog (@"  bad object pointer");
-      rc = MAPISTORE_SUCCESS;
+      rc = sogo_backend_unexpected_error();
     }
 
   return rc;

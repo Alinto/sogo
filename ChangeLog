@@ -1,3 +1,14 @@
+2011-09-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* OpenChange/MAPIStoreMapping.m: (MAPIStoreMappingTDBTraverse())
+	Fixed a major issue regarding the use of strtoll. It was overflowing
+	keys as they are unsigned long long int. We now make use of strtoull
+	which fixes the problem and avoids major cache corruption of the
+	indexing.tdb database (per user).
+
+	* OpenChange/MAPIStoreSOGo.m: Some cleanups to ease current and
+	future debugging 
+
 2011-08-18  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxContactEditor.js
