@@ -3,6 +3,7 @@
  * Copyright (C) 2011 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +25,8 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGImap4/NGImap4Client.h>
+#import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGCards/iCalCalendar.h>
 #import <SOGo/NSArray+Utilities.h>
@@ -40,6 +43,7 @@
 #import "MAPIStoreFolder.h"
 #import "MAPIStoreMailAttachment.h"
 #import "MAPIStoreMailFolder.h"
+#import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
 
 #import "MAPIStoreMailMessage.h"
@@ -289,13 +293,13 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           else
             {
               [self errorWithFormat: @"still nothing. We crash!"];
-              abort ();
+              abort();
             }
         }
       version = [changeNumber unsignedLongLongValue] >> 16;
     }
   else
-    abort ();
+    abort();
 
   return version;
 }

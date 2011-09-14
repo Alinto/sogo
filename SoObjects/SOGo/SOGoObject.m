@@ -209,6 +209,11 @@
   return context;
 }
 
+- (void) setNameInContainer: (NSString *) theName
+{
+  ASSIGN(nameInContainer, theName);
+}
+
 - (NSString *) nameInContainer
 {
   return nameInContainer;

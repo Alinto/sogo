@@ -1,3 +1,26 @@
+2011-09-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailBaseObject.m: (imap4Connection):
+	Cache "corruption" bug fix that could lead us to using the
+	wrong IMAP connection for OpenChange users
+
+	* OpenChange/MAPIStoreMapping.m: (unregisterURLWithID:)
+	We also remove the keys/values from the indexing database
+
+	*  OpenChange/MAPIStoreSOGo.m
+	RopMoveCopyMessages, RopCopyTo and messages move/copy
+	notifications support for messages
+
+	* OpenChange/MAPIStoreContactsMessage.m: massive improvements
+	to support many new properties
+
+	* OpenChange/MAPIStoreTasksMessage.m: massive improvements
+	to support many new properties
+
+	* OpenChange/MAPIStoreFolder.m: (getPrAccess:inMemCtx:) fixed
+	permissions issue - we were returning a wrong value leading to
+	IMAP subfolders not being "writable"
+	
 2011-09-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* OpenChange/MAPIStoreMapping.m: (MAPIStoreMappingTDBTraverse())

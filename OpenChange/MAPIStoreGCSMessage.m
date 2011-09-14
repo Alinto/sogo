@@ -24,6 +24,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoContentObject.h>
 
+#import "MAPIStoreContext.h"
 #import "MAPIStoreGCSFolder.h"
 #import "MAPIStoreTypes.h"
 
@@ -33,6 +34,16 @@
 #include <mapistore/mapistore.h>
 
 @implementation MAPIStoreGCSMessage
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      _version = 0xffffffffffffffffLL;
+    }
+
+  return self;
+}
 
 - (NSCalendarDate *) creationTime
 {
@@ -48,8 +59,20 @@
 {
   uint64_t version = 0xffffffffffffffffLL;
   NSNumber *changeNumber;
-
-  if (![sogoObject isNew])
+ 
+  if ([sogoObject isNew])
+    {
+#if 0
+      if  (_version == 0xffffffffffffffffLL)
+	{
+	  _version = [[self context] getNewChangeNumber];
+	  [(MAPIStoreGCSFolder *)[self container] setInitialVersion: _version
+				 forMessage: [self nameInContainer]];
+	}
+      version = _version;
+#endif
+    }
+  else
     {
       changeNumber = [(MAPIStoreGCSFolder *) container
                         changeNumberForMessageWithKey: [self nameInContainer]];
@@ -66,7 +89,7 @@
           else
             {
               [self errorWithFormat: @"still nothing. We crash!"];
-              abort ();
+              abort();
             }
         }
       version = [changeNumber unsignedLongLongValue] >> 16;

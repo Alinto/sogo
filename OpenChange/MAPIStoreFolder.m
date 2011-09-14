@@ -437,7 +437,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     rc = MAPISTORE_ERR_EXIST;
   else
     {
-      message = [self createMessage: isAssociated];
+      message = [self createMessageWithMID: mid
+		      isAssociated: isAssociated];
       if (message)
         {
           baseURL = [self url];
@@ -547,6 +548,18 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     }
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) moveCopyMessageWithMID: (uint64_t) mid
+		      toFolder: (MAPIStoreFolder *) targetFolder
+		     inMessage: (MAPIStoreMessage *) targetMessage
+		      wantCopy: (uint8_t) want_copy
+{
+  int rc;
+
+  rc = MAPISTORE_SUCCESS;
 
   return rc;
 }
@@ -814,14 +827,30 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return MAPISTORE_SUCCESS;
 }
 
+/*
+  Possible values are:
+  
+  0x00000001 Modify
+  0x00000002 Read
+  0x00000004 Delete
+  0x00000008 Create Hierarchy Table
+  0x00000010 Create Contents Table
+  0x00000020 Create Associated Contents Table
+*/
 - (int) getPrAccess: (void **) data
            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPILongValue (memCtx, 0x63);
+  *data = MAPILongValue (memCtx, 0x1|0x2|0x4|0x8|0x10|0x20);
 
   return MAPISTORE_SUCCESS;
 }
 
+/*
+  Possible values are:
+
+  0x00000000 Read-Only
+  0x00000001 Modify
+*/
 - (int) getPrAccessLevel: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -938,7 +967,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return newMessage;
 }
 
-- (MAPIStoreMessage *) createMessage: (BOOL) isAssociated
+- (MAPIStoreMessage *) createMessageWithMID: (uint64_t) mid
+			       isAssociated: (BOOL) isAssociated
 {
   MAPIStoreMessage *newMessage;
   WOContext *woContext;
@@ -946,7 +976,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   if (isAssociated)
     newMessage = [self _createAssociatedMessage];
   else
-    newMessage = [self createMessage];
+    newMessage = [self createMessageWithMID: mid];
   [newMessage setIsNew: YES];
   woContext = [[self context] woContext];
   [[newMessage sogoObject] setContext: woContext];
@@ -1038,7 +1068,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return Nil;
 }
 
-- (MAPIStoreMessage *) createMessage
+- (MAPIStoreMessage *) createMessageWithMID: (uint64_t) mid
 {
   [self logWithFormat: @"ignored method: %s", __PRETTY_FUNCTION__];
   return nil;

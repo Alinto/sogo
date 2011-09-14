@@ -3,6 +3,7 @@
  * Copyright (C) 2011 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,6 +50,31 @@
 #include <mapistore/mapistore_nameid.h>
 
 @implementation MAPIStoreContactsMessage
+
+// TODO: this should be combined with the version found
+//       in UIxContactEditor.m
+- (CardElement *) _elementWithTag: (NSString *) tag
+                           ofType: (NSString *) type
+                          forCard: (NGVCard *) card
+{
+  NSArray *elements;
+  CardElement *element;
+
+  elements = [card childrenWithTag: tag
+                   andAttribute: @"type" havingValue: type];
+  if ([elements count] > 0)
+    element = [elements objectAtIndex: 0];
+  else
+    {
+      element = [CardElement new];
+      [element autorelease];
+      [element setTag: tag];
+      [element addType: type];
+      [card addChild: element];
+    }
+
+  return element;
+}
 
 - (int) getPrIconIndex: (void **) data // TODO
               inMemCtx: (TALLOC_CTX *) memCtx
@@ -352,10 +378,24 @@
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
+- (int) getPrPagerTelephoneNumber: (void **) data
+			 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"tel" ofType: @"pager" excluding: nil
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
 - (int) getPrPrimaryTelephoneNumber: (void **) data
                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"tel" ofType: @"pref" excluding: nil
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPrBusinessFaxNumber: (void **) data
+		      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"tel" ofType: @"fax" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
@@ -432,6 +472,10 @@
   return MAPISTORE_SUCCESS;
 }
 
+
+//
+// getters when no address is selected as the Mailing Address
+//
 - (int) getPrPostalAddress: (void **) data
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -481,6 +525,60 @@
                      atPos: 6 inData: data inMemCtx: memCtx];
 }
 
+//
+// home address getters
+//
+- (int) getPidLidHomeAddress: (void **) data
+		    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"label" ofType: @"home" excluding: nil
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPrHomeAddressPostOfficeBox: (void **) data
+			     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"adr" ofType: @"home" excluding: nil
+                     atPos: 0 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPrHomeAddressStreet: (void **) data
+		      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"adr" ofType: @"home" excluding: nil
+                     atPos: 2 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPrHomeAddressCity: (void **) data
+		    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"adr" ofType: @"home" excluding: nil
+                     atPos: 3 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPrHomeAddressStateOrProvince: (void **) data
+			       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"adr" ofType: @"home" excluding: nil
+                     atPos: 4 inData: data inMemCtx: memCtx];
+}
+
+- (int) getPrHomeAddressPostalCode: (void **) data
+			  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"adr" ofType: @"home" excluding: nil
+                     atPos: 5 inData: data inMemCtx: memCtx];
+}
+- (int) getPrHomeAddressCountry: (void **) data
+		       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getElement: @"adr" ofType: @"home" excluding: nil
+                     atPos: 6 inData: data inMemCtx: memCtx];
+}
+
+//
+// Work addresss
+//
 - (int) getPidLidWorkAddress: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -530,6 +628,9 @@
                      atPos: 6 inData: data inMemCtx: memCtx];
 }
 
+//
+//
+//
 - (int) getPrNickname: (void **) data
              inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -565,9 +666,10 @@
 
 - (void) save
 {
-  NGVCard *newCard;
-  NSArray *elements;
+  NSArray *elements, *units;
   CardElement *element;
+  NGVCard *newCard;
+  
   int postalAddressId;
   id value;
 
@@ -578,14 +680,26 @@
   [newCard setVersion: @"3.0"];
   [newCard setProdID: @"-//Inverse inc.//OpenChange+SOGo//EN"];
   [newCard setProfile: @"vCard"];
+  
+  // Decomposed fullname
+  [newCard setNWithFamily: [newProperties objectForKey: MAPIPropertyKey(PR_SURNAME_UNICODE)]
+	   given: [newProperties objectForKey: MAPIPropertyKey(PR_GIVEN_NAME_UNICODE)]
+	   additional: [newProperties objectForKey: MAPIPropertyKey(PR_MIDDLE_NAME_UNICODE)]
+	   prefixes: [newProperties objectForKey: MAPIPropertyKey(PR_DISPLAY_NAME_PREFIX_UNICODE)]
+	   suffixes: [newProperties objectForKey: MAPIPropertyKey(PR_GENERATION_UNICODE)]];
 
-  value = [newProperties
-            objectForKey: MAPIPropertyKey (PR_DISPLAY_NAME_UNICODE)];
+  //
+  // display name
+  //
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_DISPLAY_NAME_UNICODE)];
   if (value)
     [newCard setFn: value];
 
+  //
+  // email addresses handling
+  //
   elements = [newCard childrenWithTag: @"email"];
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidEmail1EmailAddress)];
+  value = [newProperties objectForKey: MAPIPropertyKey(PidLidEmail1EmailAddress)];
   if (value)
     {
       if ([elements count] > 0)
@@ -611,11 +725,21 @@
 	[newCard addEmail: value types: nil];
     }
 
+  //
+  // work postal addresses handling
+  //
+  // Possible values for PidLidPostalAddressId are:
+  //
+  // 0x00000000 - No address is selected as the Mailing Address.
+  // 0x00000001 - The Home Address is the Mailing Address.
+  // 0x00000002 - The Work Address is the Mailing Address
+  // 0x00000003 - The Other Address is the Mailing Address. 
+  //
+  //
   postalAddressId = [[newProperties objectForKey: MAPIPropertyKey (PidLidPostalAddressId)]
 		      intValue];
-
-  /* Work address */
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidWorkAddress)];
+  
+  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddress)];
   if ([value length])
     {
       elements = [newCard childrenWithTag: @"label"
@@ -652,25 +776,154 @@
     }
   if (postalAddressId == 2)
     [element addAttribute: @"type" value: @"pref"];
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidWorkAddressPostOfficeBox)];
+  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddressPostOfficeBox)];
   if (value)
     [element setValue: 0 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidWorkAddressStreet)];
+  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddressStreet)];
   if (value)
     [element setValue: 2 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidWorkAddressCity)];
+  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddressCity)];
   if (value)
     [element setValue: 3 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidWorkAddressState)];
+  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddressState)];
   if (value)
     [element setValue: 4 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidWorkAddressPostalCode)];
+  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddressPostalCode)];
   if (value)
     [element setValue: 5 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidWorkAddressCountry)];
+  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddressCountry)];
+  if (value)
+    [element setValue: 6 to: value];
+  
+  //
+  // home postal addresses handling
+  //
+  value = [newProperties objectForKey: MAPIPropertyKey(PidLidHomeAddress)];
+  if ([value length])
+    {
+      elements = [newCard childrenWithTag: @"label"
+			     andAttribute: @"type"
+			      havingValue: @"home"];
+      if ([elements count] > 0)
+	element = [elements objectAtIndex: 0];
+      else
+	{
+	  element = [CardElement elementWithTag: @"label"];
+	  [element addAttribute: @"type" value: @"home"];
+	  [newCard addChild: element];
+	}
+      if (postalAddressId == 1)
+	{
+	  [element removeValue: @"pref"
+		 fromAttribute: @"type"];
+	  [element addAttribute: @"type"
+			  value: @"pref"];
+	}
+      [element setValue: 0 to: value];
+    }
+  
+  elements = [newCard childrenWithTag: @"adr"
+			 andAttribute: @"type"
+			  havingValue: @"home"];
+  if ([elements count] > 0)
+    element = [elements objectAtIndex: 0];
+  else
+    {
+      element = [CardElement elementWithTag: @"adr"];
+      [element addAttribute: @"type" value: @"home"];
+      [newCard addChild: element];
+    }
+  if (postalAddressId == 1)
+    [element addAttribute: @"type" value: @"pref"];
+
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_POST_OFFICE_BOX_UNICODE)];
+  if (value)
+    [element setValue: 0 to: value];
+  value = [newProperties objectForKey: MAPIPropertyKey( PR_HOME_ADDRESS_STREET_UNICODE)];
+  if (value)
+    [element setValue: 2 to: value];
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_CITY_UNICODE)];
+  if (value)
+    [element setValue: 3 to: value];
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_STATE_OR_PROVINCE_UNICODE)];
+  if (value)
+    [element setValue: 4 to: value];
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_POSTAL_CODE_UNICODE)];
+  if (value)
+    [element setValue: 5 to: value];
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_COUNTRY_UNICODE)];
   if (value)
     [element setValue: 6 to: value];
 
+
+  //
+  // telephone numbers: work, home, fax, pager and mobile
+  //
+  element = [self _elementWithTag: @"tel"  ofType: @"work"  forCard: newCard];								      
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_OFFICE_TELEPHONE_NUMBER_UNICODE)];
+  if (value)
+    [element setValue: 0 to: value];
+
+  element = [self _elementWithTag: @"tel"  ofType: @"home"  forCard: newCard];								      
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_HOME_TELEPHONE_NUMBER_UNICODE)];
+  if (value)
+    [element setValue: 0 to: value];
+
+  element = [self _elementWithTag: @"tel"  ofType: @"fax"  forCard: newCard];								      
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_BUSINESS_FAX_NUMBER_UNICODE)];
+  if (value)
+    [element setValue: 0 to: value];
+  
+  element = [self _elementWithTag: @"tel"  ofType: @"pager"  forCard: newCard];								      
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_PAGER_TELEPHONE_NUMBER_UNICODE)];
+  if (value)
+    [element setValue: 0 to: value];
+
+  element = [self _elementWithTag: @"tel"  ofType: @"cell"  forCard: newCard];								      
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_MOBILE_TELEPHONE_NUMBER_UNICODE)];
+  if (value)
+    [element setValue: 0 to: value];
+
+
+  //
+  // job title, nickname, company name, deparment, work url, im address/screen name
+  //
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_TITLE_UNICODE)];
+  if (value)
+    [newCard setTitle: value];
+
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_NICKNAME_UNICODE)];
+  if (value)
+    [newCard setNickname: value];
+  
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_DEPARTMENT_NAME_UNICODE)];
+  if (value)
+    units = [NSArray arrayWithObject: value];
+  else
+    units = nil;
+
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_COMPANY_NAME_UNICODE)];
+  if (value)
+    [newCard setOrg: value  units: units];
+  
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_BUSINESS_HOME_PAGE_UNICODE)];
+  if (value)
+    {
+      [[self _elementWithTag: @"url"  ofType: @"work"  forCard: newCard]
+	setValue: 0 to: value];
+    }
+
+  value = [newProperties objectForKey: MAPIPropertyKey(PidLidInstantMessagingAddress)];
+  if (value)
+    {
+      [[newCard uniqueChildWithTag: @"x-aim"]
+	setValue: 0
+	to: value];
+      }
+
+  //
+  // we save the new/modified card
+  //
   [sogoObject saveContentString: [newCard versitString]];
   [(MAPIStoreContactsFolder *) container synchroniseCache];
 }

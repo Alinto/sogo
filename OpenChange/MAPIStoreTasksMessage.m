@@ -3,6 +3,7 @@
  * Copyright (C) 2011 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -209,6 +210,24 @@
   return rc;
 }
 
+- (int) getPidLidTaskStartDate: (void **) data
+		      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+  NSCalendarDate *dateValue;
+  iCalToDo *task;
+
+  task = [sogoObject component: NO secure: NO];
+  dateValue = [task startDate];
+  if (dateValue)
+    *data = [dateValue asFileTimeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+
 - (int) getPrMessageDeliveryTime: (void **) data
                         inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -253,7 +272,11 @@
 - (int) getPidLidTaskOwner: (void **) data
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = [@"openchange@example.com" asUnicodeInMemCtx: memCtx];
+  NSString *owner;
+
+  owner = [sogoObject ownerInContext: nil];
+
+  *data = [owner asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
@@ -292,17 +315,17 @@
   if (value)
     [vToDo setComment: value];
 
-  // Location
+  // location
   value = [newProperties objectForKey: MAPIPropertyKey (PidLidLocation)];
   if (value)
     [vToDo setLocation: value];
 
-  /* created */
+  // created
   value = [newProperties objectForKey: MAPIPropertyKey (PR_CREATION_TIME)];
   if (value)
     [vToDo setCreated: value];
 
-  /* last-modified + dtstamp */
+  // last-modified + dtstamp
   value = [newProperties objectForKey: MAPIPropertyKey (PR_LAST_MODIFICATION_TIME)];
   if (value)
     {
@@ -322,6 +345,10 @@
       [date setTimeZone: tz];
       [date setDateTime: value];
     }
+  else
+    {
+      [vToDo setStartDate: nil]; 
+    }
 
   // due
   value = [newProperties objectForKey: MAPIPropertyKey (PidLidTaskDueDate)];
@@ -330,6 +357,23 @@
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"due"];
       [date setTimeZone: tz];
       [date setDateTime: value];
+    }
+  else
+    {
+      [vToDo setDue: nil];
+    }
+
+  // completed
+  value = [newProperties objectForKey: MAPIPropertyKey (PidLidTaskDateCompleted)];
+  if (value)
+    {
+      date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"completed"];
+      [date setTimeZone: tz];
+      [date setDateTime: value];
+    }
+  else
+    {
+      [vToDo setCompleted: nil];
     }
 
   // status
@@ -364,6 +408,13 @@
   else
     priority = @"0"; // None
   [vToDo setPriority: priority];
+
+  // percent complete
+  // NOTE: this does not seem to work on Outlook 2003. PidLidPercentComplete's value
+  //       is always set to 0, no matter what value is set in Outlook
+  value = [newProperties objectForKey: MAPIPropertyKey(PidLidPercentComplete)];
+  if (value)
+    [vToDo setPercentComplete: [value stringValue]];
 
   now = [NSCalendarDate date];
   if ([sogoObject isNew])

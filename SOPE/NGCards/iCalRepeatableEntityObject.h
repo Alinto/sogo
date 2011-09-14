@@ -36,11 +36,6 @@
 @class iCalTimeZone;
 
 @interface iCalRepeatableEntityObject : iCalEntityObject
-// {
-//   NSMutableArray *rRules;
-//   NSMutableArray *exRules;
-//   NSMutableArray *exDates;
-// }
 
 - (void)removeAllRecurrenceRules;
 - (void)addToRecurrenceRules:(id)_rrule;

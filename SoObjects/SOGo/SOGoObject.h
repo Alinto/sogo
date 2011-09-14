@@ -87,7 +87,9 @@
 - (void) setContext: (WOContext *) newContext;
 - (WOContext *) context;
 
+- (void) setNameInContainer: (NSString *) theName;
 - (NSString *) nameInContainer;
+
 - (NSString *) displayName;
 - (id) container;
 

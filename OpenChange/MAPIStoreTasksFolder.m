@@ -100,7 +100,7 @@ static Class MAPIStoreTasksMessageK;
   return componentQualifier;
 }
 
-- (MAPIStoreMessage *) createMessage
+- (MAPIStoreMessage *) createMessageWithMID: (uint64_t) mid
 {
   MAPIStoreMessage *newMessage;
   SOGoTaskObject *newEntry;

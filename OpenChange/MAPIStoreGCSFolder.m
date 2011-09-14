@@ -50,7 +50,9 @@
     {
       ASSIGN (versionsMessage,
               [SOGoMAPIFSMessage objectWithName: @"versions.plist"
-                                    inContainer: propsFolder]);
+				 inContainer: propsFolder]);
+
+      initialVersions = [[NSMutableDictionary alloc] init];
     }
 
   return self;
@@ -64,6 +66,8 @@
       ASSIGN (versionsMessage,
               [SOGoMAPIFSMessage objectWithName: @"versions.plist"
                                     inContainer: propsFolder]);
+
+      initialVersions = [[NSMutableDictionary alloc] init];
     }
 
   return self;
@@ -72,6 +76,7 @@
 - (void) dealloc
 {
   [versionsMessage release];
+  [initialVersions release];
   [super dealloc];
 }
 
@@ -247,7 +252,14 @@
             {
               foundChange = YES;
 
-              newChangeNum = [[self context] getNewChangeNumber];
+	      //if ([[messageEntry objectForKey: @"c_version"] intValue] == 0)
+	      //	newChangeNum = [[initialVersions objectForKey: cName] unsignedLongLongValue];
+	      //else
+		{
+		  newChangeNum = [[self context] getNewChangeNumber];
+		  [initialVersions removeObjectForKey: cName];
+		}
+	    
               changeNumber = [NSNumber numberWithUnsignedLongLong: newChangeNum];
 
               [messageEntry setObject: cLastModified forKey: @"c_lastmodified"];
@@ -396,6 +408,13 @@
   [self subclassResponsibility: _cmd];
 
   return nil;
+}
+
+- (void) setInitialVersion: (uint64_t) version
+		forMessage: (NSString *) theMessage
+{
+  [initialVersions setObject: [NSNumber numberWithUnsignedLongLong: version]
+		   forKey: theMessage];
 }
 
 @end

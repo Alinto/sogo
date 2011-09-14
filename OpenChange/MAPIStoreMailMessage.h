@@ -29,6 +29,7 @@
 @class NSString;
 
 @class MAPIStoreAppointmentWrapper;
+@class MAPIStoreMailFolder;
 
 @interface MAPIStoreMailMessage : MAPIStoreMessage
 {

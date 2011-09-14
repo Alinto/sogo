@@ -100,7 +100,7 @@ static Class EOKeyValueQualifierK, MAPIStoreFSMessageK;
   return newKey;
 }
 
-- (MAPIStoreMessage *) createMessage
+- (MAPIStoreMessage *) createMessageWithMID: (uint64_t) mid
 {
   MAPIStoreMessage *newMessage;
   SOGoMAPIFSMessage *fsObject;

@@ -103,7 +103,7 @@ static Class MAPIStoreContactsMessageK;
   return componentQualifier;
 }
 
-- (MAPIStoreMessage *) createMessage
+- (MAPIStoreMessage *) createMessageWithMID: (uint64_t) mid
 {
   MAPIStoreMessage *newMessage;
   SOGoContactGCSEntry *newEntry;

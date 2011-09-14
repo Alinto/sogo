@@ -55,7 +55,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   NSNumber *idNbr;
   NSString *uri;
   char *idStr, *uriStr;
-  long long unsigned int idVal;
+  uint64_t idVal;
 
   // get the key
   // key examples : key(18) = "0x6900000000000001"
@@ -239,13 +239,21 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 
 - (void) unregisterURLWithID: (uint64_t) idNbr
 {
-  NSNumber *idKey;
   NSString *urlString;
+  NSNumber *idKey;
+  TDB_DATA key;
 
   idKey = [NSNumber numberWithUnsignedLongLong: idNbr];
   urlString = [mapping objectForKey: idKey];
   [reverseMapping removeObjectForKey: urlString];
   [mapping removeObjectForKey: idKey];
+
+  /* We hard-delete the entry from the indexing database */
+  key.dptr = (unsigned char *) talloc_asprintf(NULL, "0x%.16"PRIx64, idNbr);
+  key.dsize = strlen((const char *) key.dptr);
+  
+  tdb_delete(indexing->tdb, key);
+  talloc_free(key.dptr);
 }
 
 @end

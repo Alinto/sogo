@@ -43,6 +43,7 @@
 @class SOGoMAPIFSFolder;
 @class SOGoMAPIFSMessage;
 
+
 #import "MAPIStoreObject.h"
 
 @interface MAPIStoreFolder : MAPIStoreObject
@@ -94,7 +95,8 @@
 - (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
                          andSortOrderings: (NSArray *) sortOrderings;
 
-- (MAPIStoreMessage *) createMessage: (BOOL) isAssociated;
+- (MAPIStoreMessage *) createMessageWithMID: (uint64_t) mid
+			       isAssociated: (BOOL) isAssociated;
 
 /* backend interface */
 
@@ -110,12 +112,18 @@
 - (int) createMessage: (MAPIStoreMessage **) messagePtr
               withMID: (uint64_t) mid
          isAssociated: (BOOL) isAssociated;
+
+
 - (int) openMessage: (MAPIStoreMessage **) messagePtr
      andMessageData: (struct mapistore_message **) dataPtr
             withMID: (uint64_t) mid
            inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) deleteMessageWithMID: (uint64_t) mid
                     andFlags: (uint8_t) flags;
+- (int) moveCopyMessageWithMID: (uint64_t) mid
+		      toFolder: (MAPIStoreFolder *) targetFolder
+		     inMessage: (MAPIStoreMessage *) targetMessage
+		      wantCopy: (uint8_t) want_copy;
 - (int) getDeletedFMIDs: (struct I8Array_r **) fmidsPtr
                   andCN: (uint64_t *) cnPtr
        fromChangeNumber: (uint64_t) changeNum
@@ -132,7 +140,7 @@
 
 /* subclasses */
 - (Class) messageClass;
-- (MAPIStoreMessage *) createMessage;
+- (MAPIStoreMessage *) createMessageWithMID: (uint64_t) mid;
 - (MAPIStoreMessageTable *) messageTable;
 - (NSArray *) messageKeysMatchingQualifier: (EOQualifier *) qualifier
                           andSortOrderings: (NSArray *) sortOrderings;

@@ -160,7 +160,13 @@ static BOOL debugOn = YES;
   if (!imap4)
     {
       sogoCache = [SOGoCache sharedCache];
-      cacheKey = [[self mailAccountFolder] nameInContainer];
+      // The cacheKey *MUST* be prefixed by the username here as
+      // the cache is shared across OpenChange users and not necessarily
+      // flushed between requests. This could lead us to using the wrong
+      // IMAP connection.
+      cacheKey = [NSString stringWithFormat: @"%@+%@",
+			   [[[self context] activeUser] login],
+			   [[self mailAccountFolder] nameInContainer]];
       imap4 = [sogoCache imap4ConnectionForKey: cacheKey];
       if (!imap4)
         {
