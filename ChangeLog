@@ -20,7 +20,11 @@
 	* OpenChange/MAPIStoreFolder.m: (getPrAccess:inMemCtx:) fixed
 	permissions issue - we were returning a wrong value leading to
 	IMAP subfolders not being "writable"
-	
+
+	* SoObject/Mailer/SOGoMailFolder.m (prefetchCoreInfosForMessageKeys:)
+	Fixed a MAJOR issue regarding keys handling. We should NEVER assume
+	the untagged IMAP response's order will be the same as the FETCH's one!
+		
 2011-09-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* OpenChange/MAPIStoreMapping.m: (MAPIStoreMappingTDBTraverse())

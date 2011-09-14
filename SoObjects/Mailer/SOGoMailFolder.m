@@ -270,9 +270,10 @@ static NSString *defaultUserID =  @"anyone";
 /* messages */
 - (void) prefetchCoreInfosForMessageKeys: (NSArray *) keys
 {
-  NSDictionary *infos;
-  NSMutableArray *uids;
   NSUInteger count, max, keyLength;
+  NSMutableArray *uids;
+  NSDictionary *infos;
+  NSArray *allValues;
   NSString *key;
 
   if (!SOGoMailCoreInfoKeys)
@@ -301,8 +302,18 @@ static NSString *defaultUserID =  @"anyone";
       infos = (NSDictionary *) [self fetchUIDs: uids parts: SOGoMailCoreInfoKeys];
 
       prefetchedInfos = [[NSMutableDictionary alloc] initWithCapacity: max];
-      [prefetchedInfos setObjects: [infos objectForKey: @"fetch"]
-                          forKeys: uids];
+
+      // We MUST NOT use setObjects:forKeys here as the fetch's array does NOT
+      // necessarily have the same order!
+      allValues = [infos objectForKey: @"fetch"];
+      max = [allValues count];
+
+      for (count = 0; count < max ; count++)
+	{
+	  infos = [allValues objectAtIndex: count];
+	  [prefetchedInfos setObject: infos
+			   forKey: [infos objectForKey: @"uid"]];
+	}
     }
   else
     prefetchedInfos = nil;
