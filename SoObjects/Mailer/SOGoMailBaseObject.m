@@ -154,8 +154,10 @@ static BOOL debugOn = YES;
 
 - (NGImap4Connection *) imap4Connection
 {
-  NSString *cacheKey;
+  NSString *cacheKey, *login;
+  
   SOGoCache *sogoCache;
+  
 
   if (!imap4)
     {
@@ -164,8 +166,17 @@ static BOOL debugOn = YES;
       // the cache is shared across OpenChange users and not necessarily
       // flushed between requests. This could lead us to using the wrong
       // IMAP connection.
+      //
+      // We also have a HACK in case self's context doesn't exist, we
+      // use the container's one.
+      //
+      login = [[[self context] activeUser] login];
+      
+      if (!login)
+	login = [[[[self container] context] activeUser] login];
+
       cacheKey = [NSString stringWithFormat: @"%@+%@",
-			   [[[self context] activeUser] login],
+			   login,
 			   [[self mailAccountFolder] nameInContainer]];
       imap4 = [sogoCache imap4ConnectionForKey: cacheKey];
       if (!imap4)
