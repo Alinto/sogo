@@ -280,7 +280,9 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
   WOContext *woContext;
   id value;
 
-  newHeaders = [NSMutableDictionary dictionaryWithCapacity: 6];
+  newHeaders = [NSMutableDictionary dictionaryWithCapacity: 7];
+
+  /* save the recipients */
   recipients = [newProperties objectForKey: @"recipients"];
   if (recipients)
     {
@@ -307,6 +309,7 @@ e)
     2010-11-24 13:45:38.715 samba[25685]   0x0e62000b (PR_URL_COMP_NAME_SET):
     0 (NSIntNumber) */
 
+  /* save the subject */
   value = [newProperties
 	    objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
   if (!value)
@@ -314,10 +317,27 @@ e)
   if (value)
     [newHeaders setObject: value forKey: @"subject"];
 
+  /* generate a valid from */
   woContext = [[self context] woContext];
   identity = [[woContext activeUser] primaryIdentity];
   [newHeaders setObject: [identity keysWithFormat: @"%{fullName} <%{email}>"]
 	      forKey: @"from"];
+
+  /* set the proper priority:
+     0x00000000 == Low importance
+     0x00000001 == Normal importance
+     0x00000002 == High importance */
+  value = [newProperties objectForKey: MAPIPropertyKey (PR_IMPORTANCE)];
+  if (value && [value intValue] == 0x0)
+    {
+      [newHeaders setObject: @"LOW"  forKey: @"priority"];
+    }
+  else if (value && [value intValue] == 0x2)
+    {
+      [newHeaders setObject: @"HIGH"  forKey: @"priority"];
+    }   
+  
+  /* save the newly generated headers */
   [sogoObject setHeaders: newHeaders];
 
   value = [newProperties objectForKey: MAPIPropertyKey (PR_HTML)];
@@ -340,6 +360,7 @@ e)
 	}
     }
 
+  /* save attachments */
   max = [[self attachmentKeys] count];
   for (count = 0; count < max; count++)
     [self _saveAttachment: [attachmentKeys objectAtIndex: count]];

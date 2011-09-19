@@ -1,3 +1,8 @@
+2011-09-19  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* OpenChange/MAPIStoreDraftsMessage.m: (_commitProperties)
+	We now correctly handle the "importance" property
+
 2011-09-14  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailBaseObject.m: (imap4Connection):
