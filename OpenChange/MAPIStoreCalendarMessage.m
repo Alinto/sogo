@@ -330,7 +330,7 @@
   iCalDateTime *start, *end;
   iCalTimeZone *tz;
   NSCalendarDate *now;
-  NSString *content, *tzName;
+  NSString *content, *tzName, *priority;
   iCalEvent *newEvent;
   iCalPerson *userPerson;
   NSUInteger responseStatus = 0;
@@ -432,10 +432,10 @@
           [start setDateTime: value];
         }
 
-      // end
-      value = [newProperties objectForKey: MAPIPropertyKey (PR_END_DATE)];
+      /* end */
+      value = [newProperties objectForKey: MAPIPropertyKey(PR_END_DATE)];
       if (!value)
-        value = [newProperties objectForKey: MAPIPropertyKey (PidLidAppointmentEndWhole)];
+        value = [newProperties objectForKey: MAPIPropertyKey(PidLidAppointmentEndWhole)];
       if (value)
         {
           end = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtend"];
@@ -443,6 +443,47 @@
           [end setDateTime: value];
         }
 
+      /* priority */
+      value = [newProperties objectForKey: MAPIPropertyKey(PR_IMPORTANCE)];
+      if (value)
+	{
+	  switch ([value intValue])
+	    {
+	    case 0: // IMPORTANCE_LOW
+	      priority = @"9";
+	      break;
+	    case 2: // IMPORTANCE_HIGH
+	      priority = @"1";
+	      break;
+	    default: // IMPORTANCE_NORMAL
+	      priority = @"5";
+	    }
+	}
+      else
+	priority = @"0"; // None
+      [newEvent setPriority: priority];
+
+      /* show time as free/busy/tentative/out of office. Possible values are:
+	 0x00000000 - olFree
+	 0x00000001 - olTentative
+	 0x00000002 - olBusy
+	 0x00000003 - olOutOfOffice */
+      value = [newProperties objectForKey: MAPIPropertyKey(PidLidBusyStatus)];
+      if (value)
+	{
+	  switch ([value intValue])
+	    {
+	    case 0:
+	      [newEvent setTransparency: @"TRANSPARENT"];
+	      break;
+	    case 1:
+	    case 2:
+	    case 3:
+	    default:
+	      [newEvent setTransparency: @"OPAQUE"];
+	    }
+	}
+      
       /* recurrence */
       value = [newProperties
                 objectForKey: MAPIPropertyKey (PidLidAppointmentRecur)];

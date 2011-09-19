@@ -332,10 +332,17 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidBusyStatus: (void **) data // TODO
+- (int) getPidLidBusyStatus: (void **) data
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPILongValue (memCtx, 0x02);
+  uint8_t value;
+  
+  value = 0x2;  // olBusy
+
+  if (![event isOpaque])
+    value = 0x0; // olFree
+  
+  *data = MAPILongValue (memCtx, value);
 
   return MAPISTORE_SUCCESS;
 }
