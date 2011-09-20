@@ -27,8 +27,6 @@
 
 @interface MAPIStoreGCSMessage : MAPIStoreMessage
 {
-  @private
-    uint64_t _version;
 }
 
 @end

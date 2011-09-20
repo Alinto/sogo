@@ -1,5 +1,10 @@
 2011-09-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreObject.m (-getReplicaKeyFromGlobCnt:): new
+	method that returns the same result as
+	getReplicaKey:fromGlobCnt:inMemCtx: in the form of an NSData
+	instance.
+
 	* OpenChange/MAPIStoreContactsMessage.m (-save): same as below.
 
 	* OpenChange/MAPIStoreTasksMessage.m (-save): same as below.

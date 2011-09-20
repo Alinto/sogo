@@ -27,23 +27,15 @@
 #import "MAPIStoreContext.h"
 #import "MAPIStoreGCSFolder.h"
 #import "MAPIStoreTypes.h"
+#import "NSData+MAPIStore.h"
 
 #import "MAPIStoreGCSMessage.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreGCSMessage
-
-- (id) init
-{
-  if ((self = [super init]))
-    {
-      _version = 0xffffffffffffffffLL;
-    }
-
-  return self;
-}
 
 - (NSCalendarDate *) creationTime
 {
@@ -55,24 +47,52 @@
   return [sogoObject lastModified];
 }
 
+- (int) getPrChangeKey: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+  NSData *changeKey;
+
+  if (isNew)
+    rc = MAPISTORE_ERR_NOT_FOUND;
+  else
+    {
+      changeKey = [(MAPIStoreGCSFolder *)[self container]
+                      changeKeyForMessageWithKey: [self nameInContainer]];
+      if (!changeKey)
+        abort ();
+      *data = [changeKey asBinaryInMemCtx: memCtx];
+    }
+
+  return rc;
+}
+
+- (int) getPrPredecessorChangeList: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+  NSData *changeList;
+
+  if (isNew)
+    rc = MAPISTORE_ERR_NOT_FOUND;
+  else
+    {
+      changeList = [(MAPIStoreGCSFolder *)[self container]
+                                          predecessorChangeListForMessageWithKey: [self nameInContainer]];
+      if (!changeList)
+        abort ();
+      *data = [changeList asBinaryInMemCtx: memCtx];
+    }
+
+  return rc;
+}
+
 - (uint64_t) objectVersion
 {
   uint64_t version = 0xffffffffffffffffLL;
   NSNumber *changeNumber;
  
-  if ([sogoObject isNew])
-    {
-#if 0
-      if  (_version == 0xffffffffffffffffLL)
-	{
-	  _version = [[self context] getNewChangeNumber];
-	  [(MAPIStoreGCSFolder *)[self container] setInitialVersion: _version
-				 forMessage: [self nameInContainer]];
-	}
-      version = _version;
-#endif
-    }
-  else
+  if (!isNew)
     {
       changeNumber = [(MAPIStoreGCSFolder *) container
                         changeNumberForMessageWithKey: [self nameInContainer]];
