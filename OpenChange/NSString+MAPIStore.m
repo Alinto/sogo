@@ -21,12 +21,33 @@
  */
 
 #include <talloc.h>
+#include <stdbool.h>
 
 #import <Foundation/NSData.h>
 
 #import "NSString+MAPIStore.h"
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
 @implementation NSString (MAPIStoreDataTypes)
+
++ (id) stringWithGUID: (const struct GUID *) guid
+{
+  char *guidString;
+  NSString *newString;
+
+  guidString = GUID_string (NULL, guid);
+  newString = [self stringWithUTF8String: guidString];
+  talloc_free (guidString);
+
+  return newString;
+}
+
+- (void) extractGUID: (struct GUID *) guid
+{
+  GUID_from_string ([self UTF8String], guid);
+}
 
 - (char *) asUnicodeInMemCtx: (void *) memCtx
 {

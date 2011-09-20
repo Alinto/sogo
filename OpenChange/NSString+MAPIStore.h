@@ -27,6 +27,9 @@
 
 @interface NSString (MAPIStoreDataTypes)
 
++ (id) stringWithGUID: (const struct GUID *) guid;
+- (void) extractGUID: (struct GUID *) guid;
+
 - (char *) asUnicodeInMemCtx: (void *) memCtx;
 
 - (NSData *) convertHexStringToBytes;

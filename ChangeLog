@@ -1,5 +1,9 @@
 2011-09-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSString+MAPIStore.m (+stringWithGUID:)
+	(-extractGUID:): new wrapper methods around the GUID utility
+	functions in libndr.
+
 	* OpenChange/NSData+MAPIStore.m (+dataWithXID: asXIDInMemCtx:):
 	new method to handle XID structs.
 	(-appendUInt8, -appendUInt32): new methods to easily append
