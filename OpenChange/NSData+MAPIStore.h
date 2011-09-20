@@ -39,6 +39,16 @@
 + (id) dataWithGUID: (const struct GUID *) guid;
 - (struct GUID *) asGUIDInMemCtx: (void *) memCtx;
 
++ (id) dataWithXID: (const struct XID *) xid;
+- (struct XID *) asXIDInMemCtx: (void *) memCtx;
+
+@end
+
+@interface NSMutableData (MAPIStoreDataTypes)
+
+- (void) appendUInt8: (uint8_t) value;
+- (void) appendUInt32: (uint32_t) value;
+
 @end
 
 #endif /* NSDATA_MAPISTORE_H */

@@ -82,39 +82,112 @@
   return flatUID;
 }
 
+static void _fillFlatUIDWithGUID (struct FlatUID_r *flatUID, const struct GUID *guid)
+{
+  flatUID->ab[0] = (guid->time_low & 0xFF);
+  flatUID->ab[1] = ((guid->time_low >> 8)  & 0xFF);
+  flatUID->ab[2] = ((guid->time_low >> 16) & 0xFF);
+  flatUID->ab[3] = ((guid->time_low >> 24) & 0xFF);
+  flatUID->ab[4] = (guid->time_mid & 0xFF);
+  flatUID->ab[5] = ((guid->time_mid >> 8)  & 0xFF);
+  flatUID->ab[6] = (guid->time_hi_and_version & 0xFF);
+  flatUID->ab[7] = ((guid->time_hi_and_version >> 8) & 0xFF);
+  memcpy (flatUID->ab + 8,  guid->clock_seq, sizeof (uint8_t) * 2);
+  memcpy (flatUID->ab + 10, guid->node, sizeof (uint8_t) * 6);
+}
+
 + (id) dataWithGUID: (const struct GUID *) guid
 {
   struct FlatUID_r flatUID;
 
-  flatUID.ab[0] = (guid->time_low & 0xFF);
-  flatUID.ab[1] = ((guid->time_low >> 8)  & 0xFF);
-  flatUID.ab[2] = ((guid->time_low >> 16) & 0xFF);
-  flatUID.ab[3] = ((guid->time_low >> 24) & 0xFF);
-  flatUID.ab[4] = (guid->time_mid & 0xFF);
-  flatUID.ab[5] = ((guid->time_mid >> 8)  & 0xFF);
-  flatUID.ab[6] = (guid->time_hi_and_version & 0xFF);
-  flatUID.ab[7] = ((guid->time_hi_and_version >> 8) & 0xFF);
-  memcpy (flatUID.ab + 8,  guid->clock_seq, sizeof (uint8_t) * 2);
-  memcpy (flatUID.ab + 10, guid->node, sizeof (uint8_t) * 6);
+  _fillFlatUIDWithGUID (&flatUID, guid);
 
   return [self dataWithFlatUID: &flatUID];
+}
+
+- (void) _extractGUID: (struct GUID *) guid
+{
+  uint8_t *bytes;
+
+  bytes = (uint8_t *) [self bytes];
+
+  guid->time_low = (bytes[3] << 24 | bytes[2] << 16
+                    | bytes[1] << 8 | bytes[0]);
+  guid->time_mid = (bytes[5] << 8 | bytes[4]);
+  guid->time_hi_and_version = (bytes[7] << 8 | bytes[6]);
+  memcpy (guid->clock_seq, bytes + 8, sizeof (uint8_t) * 2);
+  memcpy (guid->node, bytes + 10, sizeof (uint8_t) * 6);
 }
 
 - (struct GUID *) asGUIDInMemCtx: (void *) memCtx
 {
   struct GUID *guid;
-  uint8_t bytes[16];
-
-  [self getBytes: bytes];
 
   guid = talloc_zero (memCtx, struct GUID);
-  guid->time_low = (bytes[3] << 24 | bytes[2] << 16 | bytes[1] << 8 | bytes[0]);
-  guid->time_mid = (bytes[5] << 8 | bytes[4]);
-  guid->time_hi_and_version = (bytes[7] << 8 | bytes[6]);
-  memcpy (guid->clock_seq, bytes + 8, sizeof (uint8_t) * 2);
-  memcpy (guid->node, bytes + 10, sizeof (uint8_t) * 6);
+  [self _extractGUID: guid];
 
   return guid;
+}
+
++ (id) dataWithXID: (const struct XID *) xid
+{
+  NSMutableData *xidData;
+  struct FlatUID_r flatUID;
+
+  _fillFlatUIDWithGUID (&flatUID, &xid->GUID);
+
+  xidData = [NSMutableData dataWithCapacity: 16 + xid->Size];
+  [xidData appendBytes: flatUID.ab length: 16];
+  [xidData appendBytes: xid->Data length: xid->Size];
+
+  return xidData;
+}
+
+- (struct XID *) asXIDInMemCtx: (void *) memCtx
+{
+  struct XID *xid;
+  NSUInteger max;
+
+  max = [self length];
+  if (max > 16)
+    {
+      xid = talloc_zero (memCtx, struct XID);
+
+      [self _extractGUID: &xid->GUID];
+
+      xid->Size = max - 16;
+      xid->Data = talloc_memdup (xid, [self bytes] + 16, xid->Size);
+    }
+  else
+    {
+      xid = NULL;
+      abort ();
+    }
+
+  return xid;
+}
+
+@end
+
+@implementation NSMutableData (MAPIStoreDataTypes)
+
+- (void) appendUInt8: (uint8_t) value
+{
+  [self appendBytes: (char *) &value length: 1];
+}
+
+- (void) appendUInt32: (uint32_t) value
+{
+  NSUInteger count;
+  char bytes[4];
+
+  for (count = 0; count < 4; count++)
+    {
+      bytes[count] = value & 0xff;
+      value >>= 8;
+    }
+
+  [self appendBytes: bytes length: 4];
 }
 
 @end

@@ -1,3 +1,10 @@
+2011-09-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/NSData+MAPIStore.m (+dataWithXID: asXIDInMemCtx:):
+	new method to handle XID structs.
+	(-appendUInt8, -appendUInt32): new methods to easily append
+	integer values.
+
 2011-09-19  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* OpenChange/MAPIStoreDraftsMessage.m: (_commitProperties)
