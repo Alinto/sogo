@@ -277,9 +277,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 /* helper getters */
-- (int) getReplicaKey: (void **) data
-          fromGlobCnt: (uint64_t) objectCnt
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (NSData *) getReplicaKeyFromGlobCnt: (uint64_t) objectCnt
 {
   struct mapistore_connection_info *connInfo;
   NSMutableData *replicaKey;
@@ -297,9 +295,16 @@ static Class NSExceptionK, MAPIStoreFolderK;
   replicaKey = [NSMutableData dataWithCapacity: 22];
   [replicaKey appendBytes: &connInfo->replica_guid
                    length: sizeof (struct GUID)];
-  [replicaKey appendBytes: buffer
-                   length: 6];
-  *data = [replicaKey asBinaryInMemCtx: memCtx];
+  [replicaKey appendBytes: buffer length: 6];
+
+  return replicaKey;
+}
+
+- (int) getReplicaKey: (void **) data
+          fromGlobCnt: (uint64_t) objectCnt
+             inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [[self getReplicaKeyFromGlobCnt: objectCnt] asBinaryInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }

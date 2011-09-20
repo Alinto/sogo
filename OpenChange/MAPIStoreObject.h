@@ -28,6 +28,7 @@
 #import <Foundation/NSObject.h>
 
 @class NSCalendarDate;
+@class NSData;
 @class NSString;
 @class NSMutableArray;
 @class NSMutableDictionary;
@@ -100,6 +101,7 @@
            inMemCtx: (TALLOC_CTX *) localMemCtx;
 
 /* helper getters */
+- (NSData *) getReplicaKeyFromGlobCnt: (uint64_t) objectCnt;
 - (int) getReplicaKey: (void **) data
           fromGlobCnt: (uint64_t) objectCnt
              inMemCtx: (TALLOC_CTX *) memCtx;
