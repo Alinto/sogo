@@ -49,6 +49,10 @@
 - (NSNumber *) modseqFromMessageChangeNumber: (NSNumber *) changeNum;
 - (NSNumber *) messageUIDFromMessageKey: (NSString *) messageKey;
 - (NSNumber *) changeNumberForMessageUID: (NSNumber *) messageUid;
+- (void) setChangeKey: (NSData *) changeKey
+    forMessageWithKey: (NSString *) messageKey;
+- (NSData *) changeKeyForMessageWithKey: (NSString *) messageKey;
+- (NSData *) predecessorChangeListForMessageWithKey: (NSString *) messageKey;
 
 @end
 

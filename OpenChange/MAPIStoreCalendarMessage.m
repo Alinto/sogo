@@ -518,7 +518,7 @@
               [person setEmail: [dict objectForKey: @"email"]];
               [person setParticipationStatus: iCalPersonPartStatNeedsAction];
               [person setRsvp: @"TRUE"];
-              [person setRole: @"REQ-PARTICIPANT"]; 
+              [person setRole: @"REQ-PARTICIPANT"];
 
               // FIXME: We must NOT always rely on this
               if (![newEvent isAttendee: [person rfc822Email]])
@@ -531,6 +531,10 @@
       [sogoObject saveComponent: newEvent];
     }
   [(MAPIStoreCalendarFolder *) container synchroniseCache];
+  value = [newProperties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
+  if (value)
+    [(MAPIStoreCalendarFolder *) container
+        setChangeKey: value forMessageWithKey: [self nameInContainer]];
 }
 
 - (id) lookupAttachment: (NSString *) childKey

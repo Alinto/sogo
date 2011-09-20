@@ -919,13 +919,17 @@
       [[newCard uniqueChildWithTag: @"x-aim"]
 	setValue: 0
 	to: value];
-      }
+    }
 
   //
   // we save the new/modified card
   //
   [sogoObject saveContentString: [newCard versitString]];
   [(MAPIStoreContactsFolder *) container synchroniseCache];
+  value = [newProperties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
+  if (value)
+    [(MAPIStoreContactsFolder *) container
+        setChangeKey: value forMessageWithKey: [self nameInContainer]];
 }
 
 @end

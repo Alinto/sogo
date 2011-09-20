@@ -1,5 +1,31 @@
 2011-09-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsMessage.m (-save): same as below.
+
+	* OpenChange/MAPIStoreTasksMessage.m (-save): same as below.
+
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): set the
+	PR_CHANGE_KEY to the value passed by the client after the version
+	cache has been updated a first time.
+
+	* OpenChange/MAPIStoreMailMessage.m (-getPrChangeKey:inMemCtx:,
+	(-getPrPredecessorChangeList:inMemCtx:): same as below.
+
+	* OpenChange/MAPIStoreGCSMessage.m (-getPrChangeKey:inMemCtx:,
+	(-getPrPredecessorChangeList:inMemCtx:): wrapper accessors around
+	the getters defined in MAPIStoreGCSFolder below.
+
+	* OpenChange/MAPIStoreMailFolder.m
+	(-setChangeKey:forMessageWithKey:, -changeKeyForMessageWithKey:)
+	(-predecessorChangeListForMessageWithKey:): same as below.
+
+	* OpenChange/MAPIStoreGCSFolder.m (-changeKeyForMessageWithKey:)
+	(-predecessorChangeListForMessageWithKey:)
+	(-setChangeKey:forMessageWithKey: (NSString *) messageKey): new
+	methods for retrieving or setting the PR_CHANGE_KEY for the
+	specified record. The PR_PREDECESSOR_CHANGE_LIST is also handled,
+	albeit set automatically.
+
 	* OpenChange/NSString+MAPIStore.m (+stringWithGUID:)
 	(-extractGUID:): new wrapper methods around the GUID utility
 	functions in libndr.

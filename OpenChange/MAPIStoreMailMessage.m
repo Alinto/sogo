@@ -270,6 +270,46 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return appointmentWrapper;
 }
 
+- (int) getPrChangeKey: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+  NSData *changeKey;
+
+  if (isNew)
+    rc = MAPISTORE_ERR_NOT_FOUND;
+  else
+    {
+      changeKey = [(MAPIStoreMailFolder *)[self container]
+                      changeKeyForMessageWithKey: [self nameInContainer]];
+      if (!changeKey)
+        abort ();
+      *data = [changeKey asBinaryInMemCtx: memCtx];
+    }
+
+  return rc;
+}
+
+- (int) getPrPredecessorChangeList: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+  NSData *changeList;
+
+  if (isNew)
+    rc = MAPISTORE_ERR_NOT_FOUND;
+  else
+    {
+      changeList = [(MAPIStoreMailFolder *)[self container]
+                       predecessorChangeListForMessageWithKey: [self nameInContainer]];
+      if (!changeList)
+        abort ();
+      *data = [changeList asBinaryInMemCtx: memCtx];
+    }
+
+  return rc;
+}
+
 - (uint64_t) objectVersion
 {
   uint64_t version = 0xffffffffffffffffLL;

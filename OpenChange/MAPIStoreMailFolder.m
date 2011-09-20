@@ -53,6 +53,7 @@
 #import "MAPIStoreMailMessageTable.h"
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
+#import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "SOGoMAPIFSMessage.h"
 
@@ -436,6 +437,40 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   return [modseq1 compare: modseq2];
 }
 
+- (void) _setChangeKey: (NSData *) changeKey
+       forMessageEntry: (NSMutableDictionary *) messageEntry
+{
+  struct XID *xid;
+  NSString *guid;
+  NSData *globCnt;
+  NSDictionary *changeKeyDict;
+  NSMutableDictionary *changeList;
+
+  xid = [changeKey asXIDInMemCtx: NULL];
+  guid = [NSString stringWithGUID: &xid->GUID];
+  globCnt = [NSData dataWithBytes: xid->Data length: xid->Size];
+  talloc_free (xid);
+
+  changeKeyDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  guid, @"GUID",
+                                globCnt, @"LocalId",
+                                nil];
+
+  /* 1. set change key association */
+  [messageEntry setObject: changeKeyDict forKey: @"ChangeKey"];
+
+  /* 2. append/update predecessor change list */
+  changeList = [messageEntry objectForKey: @"PredecessorChangeList"];
+  if (!changeList)
+    {
+      changeList = [NSMutableDictionary new];
+      [messageEntry setObject: changeList
+                    forKey: @"PredecessorChangeList"];
+      [changeList release];
+    }
+  [changeList setObject: globCnt forKey: guid];
+}
+
 - (BOOL) synchroniseCache
 {
   BOOL rc = YES;
@@ -446,6 +481,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSUInteger count, max;
   NSArray *fetchResults;
   NSDictionary *result;
+  NSData *changeKey;
   NSMutableDictionary *currentProperties, *messages, *mapping, *messageEntry;
   NSCalendarDate *now;
 
@@ -519,6 +555,9 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
           [messageEntry setObject: modseq forKey: @"modseq"];
           [messageEntry setObject: changeNumber forKey: @"version"];
 
+          changeKey = [self getReplicaKeyFromGlobCnt: newChangeNum >> 16];
+          [self _setChangeKey: changeKey forMessageEntry: messageEntry];
+
           [mapping setObject: modseq forKey: changeNumber];
 
           if (!lastModseq
@@ -578,6 +617,93 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                    objectForKey: @"version"];
 
   return changeNumber;
+}
+
+- (void) setChangeKey: (NSData *) changeKey
+    forMessageWithKey: (NSString *) messageKey
+{
+  NSMutableDictionary *messages;
+  NSMutableDictionary *messageEntry;
+  NSNumber *messageUid;
+
+  messageUid = [self messageUIDFromMessageKey: messageKey];
+  messages = [[versionsMessage properties] objectForKey: @"Messages"];
+  messageEntry = [messages objectForKey: messageUid];
+  if (!messageEntry)
+    abort ();
+  [self _setChangeKey: changeKey forMessageEntry: messageEntry];
+  
+  [versionsMessage save];
+}
+
+- (NSData *) _dataFromChangeKeyGUID: (NSString *) guidString
+                             andCnt: (NSData *) globCnt
+{
+  NSMutableData *changeKey;
+  struct GUID guid;
+
+  changeKey = [NSMutableData dataWithCapacity: 16 + [globCnt length]];
+
+  [guidString extractGUID: &guid];
+  [changeKey appendData: [NSData dataWithGUID: &guid]];
+  [changeKey appendData: globCnt];
+
+  return changeKey;
+}
+
+- (NSData *) changeKeyForMessageWithKey: (NSString *) messageKey
+{
+  NSDictionary *messages, *changeKeyDict;
+  NSString *guid;
+  NSNumber *messageUid;
+  NSData *globCnt, *changeKey = nil;
+
+  messageUid = [self messageUIDFromMessageKey: messageKey];
+  messages = [[versionsMessage properties] objectForKey: @"Messages"];
+  changeKeyDict = [[messages objectForKey: messageUid]
+                    objectForKey: @"ChangeKey"];
+  if (changeKeyDict)
+    {
+      guid = [changeKeyDict objectForKey: @"GUID"];
+      globCnt = [changeKeyDict objectForKey: @"LocalId"];
+      changeKey = [self _dataFromChangeKeyGUID: guid andCnt: globCnt];
+    }
+
+  return changeKey;
+}
+
+- (NSData *) predecessorChangeListForMessageWithKey: (NSString *) messageKey
+{
+  NSMutableData *changeKeys = nil;
+  NSDictionary *messages, *changeListDict;
+  NSArray *keys;
+  NSUInteger count, max;
+  NSData *changeKey;
+  NSString *guid;
+  NSNumber *messageUid;
+  NSData *globCnt;
+
+  messageUid = [self messageUIDFromMessageKey: messageKey];
+  messages = [[versionsMessage properties] objectForKey: @"Messages"];
+  changeListDict = [[messages objectForKey: messageUid]
+                     objectForKey: @"PredecessorChangeList"];
+  if (changeListDict)
+    {
+      changeKeys = [NSMutableData data];
+      keys = [changeListDict allKeys];
+      max = [keys count];
+
+      for (count = 0; count < max; count++)
+        {
+          guid = [keys objectAtIndex: count];
+          globCnt = [changeListDict objectForKey: guid];
+          changeKey = [self _dataFromChangeKeyGUID: guid andCnt: globCnt];
+          [changeKeys appendUInt8: [changeKey length]];
+          [changeKeys appendData: changeKey];
+        }
+    }
+
+  return changeKeys;
 }
 
 - (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum
