@@ -254,6 +254,9 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   
   tdb_delete(indexing->tdb, key);
   talloc_free(key.dptr);
+
+  // [self logWithFormat: @"unregistered url '%@' with id %lld (0x%.16"PRIx64")",
+  //       urlString, idNbr, idNbr];
 }
 
 @end
