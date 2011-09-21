@@ -100,7 +100,7 @@ static Class MAPIStoreCalendarMessageK;
   return componentQualifier;
 }
 
-- (MAPIStoreMessage *) createMessageWithMID: (uint64_t) mid
+- (MAPIStoreMessage *) createMessage
 {
   MAPIStoreMessage *newMessage;
   SOGoAppointmentObject *newEntry;

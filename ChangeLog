@@ -1,3 +1,18 @@
+2011-09-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailFolder.m
+	(-moveCopyMessagesWithMIDs:andCount:toFolder:withMIDs:wantCopy:):
+	improved by acting directly on source and dest MIDs, by handling
+	multiple messages at once and by accepting proper UID ranges in
+	the COPYUID response.
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_folder_move_copy_messages):
+	adapted to new backend prototype.
+
+	* OpenChange/MAPIStoreFolder.m (-createMessage): reverse the
+	specification of the "mid" parameter as the copy/move hack in
+	MAPIStoreMailFolder is no longer needed.
+
 2011-09-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreObject.m (-getReplicaKeyFromGlobCnt:): new

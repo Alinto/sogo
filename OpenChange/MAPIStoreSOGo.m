@@ -443,12 +443,13 @@ sogo_folder_delete_message(void *folder_object, uint64_t mid, uint8_t flags)
 }
 
 static int
-sogo_folder_move_copy_message(void *folder_object, uint64_t mid, void *target_folder, void *target_message, uint8_t want_copy)
+sogo_folder_move_copy_messages(void *folder_object,
+                               uint32_t mid_count, uint64_t *src_mids,
+                               void *target_folder_object, uint64_t *t_mids,
+                               uint8_t want_copy)
 {
   MAPIStoreFolder *sourceFolder, *targetFolder;
-  MAPIStoreMessage *targetMessage;
   NSAutoreleasePool *pool;
-
   struct MAPIStoreTallocWrapper *wrapper;
   int rc;
 
@@ -458,18 +459,16 @@ sogo_folder_move_copy_message(void *folder_object, uint64_t mid, void *target_fo
     {
       wrapper = folder_object;
       sourceFolder = wrapper->MAPIStoreSOGoObject;
-      
-      wrapper = target_folder;
+
+      wrapper = target_folder_object;
       targetFolder = wrapper->MAPIStoreSOGoObject;
 
-      wrapper = target_message;
-      targetMessage = wrapper->MAPIStoreSOGoObject;
-
       pool = [NSAutoreleasePool new];
-      rc = [sourceFolder moveCopyMessageWithMID: mid
-			 toFolder: targetFolder
-			 inMessage: targetMessage
-			 wantCopy: want_copy];
+      rc = [sourceFolder moveCopyMessagesWithMIDs: src_mids
+                                         andCount: mid_count
+                                         toFolder: targetFolder
+                                         withMIDs: t_mids
+                                         wantCopy: want_copy];
       [pool release];
     }
   else
@@ -1070,7 +1069,7 @@ int mapistore_init_backend(void)
       backend.folder.open_message = sogo_folder_open_message;
       backend.folder.create_message = sogo_folder_create_message;
       backend.folder.delete_message = sogo_folder_delete_message;
-      backend.folder.move_copy_message = sogo_folder_move_copy_message;
+      backend.folder.move_copy_messages = sogo_folder_move_copy_messages;
       backend.folder.get_deleted_fmids = sogo_folder_get_deleted_fmids;
       backend.folder.get_child_count = sogo_folder_get_child_count;
       backend.folder.open_table = sogo_folder_open_table;

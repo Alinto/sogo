@@ -437,8 +437,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     rc = MAPISTORE_ERR_EXIST;
   else
     {
-      message = [self createMessageWithMID: mid
-		      isAssociated: isAssociated];
+      message = [self createMessage: isAssociated];
       if (message)
         {
           baseURL = [self url];
@@ -552,10 +551,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) moveCopyMessageWithMID: (uint64_t) mid
-		      toFolder: (MAPIStoreFolder *) targetFolder
-		     inMessage: (MAPIStoreMessage *) targetMessage
-		      wantCopy: (uint8_t) want_copy
+- (int) moveCopyMessagesWithMIDs: (uint64_t *) srcMids
+                        andCount: (uint32_t) count
+                        toFolder: (MAPIStoreFolder *) targetFolder
+                        withMIDs: (uint64_t *) targetMids
+                        wantCopy: (uint8_t) want_copy
 {
   int rc;
 
@@ -962,13 +962,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   fsObject = [SOGoMAPIFSMessage objectWithName: newKey inContainer: faiFolder];
   newMessage = [MAPIStoreFAIMessageK mapiStoreObjectWithSOGoObject: fsObject
                                                        inContainer: self];
-
   
   return newMessage;
 }
 
-- (MAPIStoreMessage *) createMessageWithMID: (uint64_t) mid
-			       isAssociated: (BOOL) isAssociated
+- (MAPIStoreMessage *) createMessage: (BOOL) isAssociated
 {
   MAPIStoreMessage *newMessage;
   WOContext *woContext;
@@ -976,7 +974,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   if (isAssociated)
     newMessage = [self _createAssociatedMessage];
   else
-    newMessage = [self createMessageWithMID: mid];
+    newMessage = [self createMessage];
   [newMessage setIsNew: YES];
   woContext = [[self context] woContext];
   [[newMessage sogoObject] setContext: woContext];
@@ -1068,7 +1066,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return Nil;
 }
 
-- (MAPIStoreMessage *) createMessageWithMID: (uint64_t) mid
+- (MAPIStoreMessage *) createMessage
 {
   [self logWithFormat: @"ignored method: %s", __PRETTY_FUNCTION__];
   return nil;
