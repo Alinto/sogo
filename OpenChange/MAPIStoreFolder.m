@@ -429,7 +429,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSString *baseURL, *childURL;
   MAPIStoreMapping *mapping;
 
-  [self logWithFormat: @"METHOD '%s' -- mid: 0x%.16x, associated: %d",
+  [self logWithFormat: @"METHOD '%s' -- mid: 0x%.16llx  associated: %d",
 	__FUNCTION__, mid, isAssociated];
 
   mapping = [[self context] mapping];
