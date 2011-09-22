@@ -1,5 +1,14 @@
 2011-09-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreDraftsMessage.m (-getPrChangeKey)
+	(-getPrPredecessorChangeList:inMemCtx:): return
+	MAPISTORE_ERR_NOT_FOUND.
+	(-getPidLidImapDeleted:inMemCtx:, -getPrInternetMessageId:inMemCtx:): same
+	as above.
+
+	* OpenChange/MAPIStoreMailFolder.m (-[MAPIStoreDraftsFolder
+	messageClass, createMessage]): restore methods.
+
 	* OpenChange/MAPIStoreFolder.m
 	(-moveCopyMessagesWithMIDs:andCount:fromFolder:withMIDs:wantCopy:):
 	adapted to be invoked from the target folder.

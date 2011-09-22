@@ -64,6 +64,22 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
           : [super objectVersion]);
 }
 
+- (void) _fetchHeaderData
+{
+  [sogoObject fetchInfo];
+  ASSIGN (headerMimeType, [sogoObject isHTML] ? @"text/html" : @"text/plain");
+  ASSIGN (headerEncoding, @"8bit");
+  ASSIGN (headerCharset, @"utf-8");
+  headerSetup = YES;
+}
+
+- (void) _fetchBodyData
+{
+  ASSIGN (bodyContent,
+          [[sogoObject text] dataUsingEncoding: NSUTF8StringEncoding]);
+  bodySetup = YES;
+}
+
 - (void) getMessageData: (struct mapistore_message **) dataPtr
                inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -87,10 +103,7 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
 
       /* Retrieve recipients from the message */
       if (!headerSetup)
-        {
-          [sogoObject fetchInfo];
-          headerSetup = YES;
-        }
+        [self _fetchHeaderData];
       headers = [sogoObject headers];
 
       to = [headers objectForKey: @"to"];
@@ -174,10 +187,7 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
   if ([sogoObject isKindOfClass: SOGoDraftObjectK])
     {
       if (!headerSetup)
-        {
-          [sogoObject fetchInfo];
-          headerSetup = YES;
-        }
+        [self _fetchHeaderData];
       s = [[sogoObject headers] objectForKey: @"X-Priority"];
       v = 0x1;
     
@@ -230,6 +240,30 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
   return ([sogoObject isKindOfClass: SOGoDraftObjectK]
           ? [self getLongZero: data inMemCtx: memCtx]
           : [super getPrFollowupIcon: data inMemCtx: memCtx]);
+}
+
+- (int) getPrChangeKey: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPrPredecessorChangeList: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidLidImapDeleted: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPrInternetMessageId: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
 }
 
 - (void) _saveAttachment: (NSString *) attachmentKey
@@ -376,10 +410,7 @@ e)
   id to;
 
   if (!headerSetup)
-    {
-      [sogoObject fetchInfo];
-      headerSetup = YES;
-    }
+    [self _fetchHeaderData];
 
   stringValue = @"";
 
@@ -537,10 +568,7 @@ e)
       if (!subject)
         {
           if (!headerSetup)
-            {
-              [sogoObject fetchInfo];
-              headerSetup = YES;
-            }
+            [self _fetchHeaderData];
           subject = [[sogoObject headers] objectForKey: @"subject"];
         }
     }

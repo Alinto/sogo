@@ -1105,6 +1105,24 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   return [accountFolder draftsFolderInContext: woContext];
 }
 
+- (Class) messageClass
+{
+  return MAPIStoreDraftsMessageK;
+}
+
+- (MAPIStoreMessage *) createMessage
+{
+  MAPIStoreDraftsMessage *newMessage;
+  SOGoDraftObject *newDraft;
+
+  newDraft = [sogoObject newDraft];
+  newMessage
+    = [MAPIStoreDraftsMessage mapiStoreObjectWithSOGoObject: newDraft
+                                                inContainer: self];
+  
+  return newMessage;
+}
+
 @end
 
 // @implementation MAPIStoreDeletedItemsFolder : MAPIStoreMailFolder
