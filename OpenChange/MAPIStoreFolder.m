@@ -551,15 +551,101 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) moveCopyMessagesWithMIDs: (uint64_t *) srcMids
-                        andCount: (uint32_t) count
-                      fromFolder: (MAPIStoreFolder *) sourceFolder
-                        withMIDs: (uint64_t *) targetMids
-                        wantCopy: (uint8_t) want_copy
+- (int) moveCopyMessagesWithMID: (uint64_t) srcMid
+                     fromFolder: (MAPIStoreFolder *) sourceFolder
+                        withMID: (uint64_t) targetMid
+                       wantCopy: (uint8_t) wantCopy
 {
   int rc;
+  MAPIStoreMessage *sourceMsg, *destMsg;
+  struct mapistore_message *sourceMSMsg;
+  TALLOC_CTX *memCtx;
+  struct SPropTagArray *availableProps;
+  bool *exclusions;
+  NSUInteger count;
+  enum MAPITAGS propTag;
+  struct SRow *aRow;
+  int error;
+  void *data;
 
-  rc = MAPISTORE_SUCCESS;
+  memCtx = talloc_zero (NULL, TALLOC_CTX);
+  rc = [sourceFolder openMessage: &sourceMsg
+                  andMessageData: &sourceMSMsg
+                         withMID: srcMid
+                        inMemCtx: memCtx];
+  if (rc != MAPISTORE_SUCCESS)
+    goto end;
+
+  rc = [sourceMsg getAvailableProperties: &availableProps
+                                inMemCtx: memCtx];
+  if (rc != MAPISTORE_SUCCESS)
+    goto end;
+
+  exclusions = talloc_array(NULL, bool, 65536);
+  exclusions[PR_ROW_TYPE >> 16] = true;
+  exclusions[PR_INSTANCE_KEY >> 16] = true;
+  exclusions[PR_INSTANCE_NUM >> 16] = true;
+  exclusions[PR_INST_ID >> 16] = true;
+  exclusions[PR_FID >> 16] = true;
+  exclusions[PR_MID >> 16] = true;
+  exclusions[PR_SOURCE_KEY >> 16] = true;
+  exclusions[PR_PARENT_SOURCE_KEY >> 16] = true;
+  exclusions[PR_PARENT_FID >> 16] = true;
+
+  aRow = talloc_zero (memCtx, struct SRow);
+  aRow->lpProps = talloc_array (aRow, struct SPropValue, 65535);
+      
+  for (count = 0; count < availableProps->cValues; count++)
+    {
+      propTag = availableProps->aulPropTag[count];
+      if (!exclusions[propTag >> 16])
+        {
+          error = [sourceMsg getProperty: &data
+                                 withTag: propTag
+                                inMemCtx: aRow];
+          if (error == MAPISTORE_SUCCESS)
+            {
+              set_SPropValue_proptag(&aRow->lpProps[aRow->cValues], propTag, data);
+              aRow->cValues++;
+            }
+        }
+    }
+
+  rc = [self createMessage: &destMsg withMID: targetMid
+              isAssociated: [sourceMsg isKindOfClass: MAPIStoreFAIMessageK]];
+  if (rc != MAPISTORE_SUCCESS)
+    goto end;
+  rc = [destMsg setProperties: aRow];
+  if (rc != MAPISTORE_SUCCESS)
+    goto end;
+  [destMsg save];
+  if (!wantCopy)
+    rc = [sourceFolder deleteMessageWithMID: srcMid andFlags: 0];
+
+ end:
+  talloc_free (memCtx);
+
+  return rc;
+}
+
+- (int) moveCopyMessagesWithMIDs: (uint64_t *) srcMids
+                        andCount: (uint32_t) midCount
+                      fromFolder: (MAPIStoreFolder *) sourceFolder
+                        withMIDs: (uint64_t *) targetMids
+                        wantCopy: (uint8_t) wantCopy
+{
+  int rc = MAPISTORE_SUCCESS;
+  NSUInteger count;
+
+  if ([sourceFolder isKindOfClass: isa]
+      || [self isKindOfClass: [sourceFolder class]])
+    [self logWithFormat: @"%s: this class could probably implement"
+          @" a specialized/optimized version", __FUNCTION__];
+  for (count = 0; rc == MAPISTORE_SUCCESS && count < midCount; count++)
+    rc = [self moveCopyMessagesWithMID: srcMids[count]
+                            fromFolder: sourceFolder
+                               withMID: targetMids[count]
+                              wantCopy: wantCopy];
 
   return rc;
 }

@@ -3,6 +3,9 @@
 	* OpenChange/MAPIStoreFolder.m
 	(-moveCopyMessagesWithMIDs:andCount:fromFolder:withMIDs:wantCopy:):
 	adapted to be invoked from the target folder.
+	Implemented generic version for specialized folders lacking an
+	implementation and for copying/moving items across folders of
+	different types.
 
 	* OpenChange/MAPIStoreSOGo.m (sogo_folder_move_copy_messages):
 	adapted to last backend changes.
