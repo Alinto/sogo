@@ -155,6 +155,14 @@
 
 - (NSCalendarDate *) lastMessageModificationTime;
 
+/* subclass helpers */
+- (void) postNotificationsForMoveCopyMessagesWithMIDs: (uint64_t *) srcMids
+                                       andMessageURLs: (NSArray *) oldMessageURLs
+                                             andCount: (uint32_t) midCount
+                                           fromFolder: (MAPIStoreFolder *) sourceFolder
+                                             withMIDs: (uint64_t *) targetMids
+                                             wantCopy: (uint8_t) wantCopy;
+
 @end
 
 #endif /* MAPISTOREFOLDER_H */

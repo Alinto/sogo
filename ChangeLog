@@ -6,6 +6,9 @@
 	Implemented generic version for specialized folders lacking an
 	implementation and for copying/moving items across folders of
 	different types.
+	(-postNotificationsForMoveCopyMessagesWithMIDs:andMessageURLs:andCount:fromFolder:withMIDs:wantCopy:):
+	new helper method that performs the whole notification magic for
+	message moves.
 
 	* OpenChange/MAPIStoreSOGo.m (sogo_folder_move_copy_messages):
 	adapted to last backend changes.

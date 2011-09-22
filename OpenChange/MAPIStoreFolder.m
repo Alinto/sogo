@@ -636,18 +636,146 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   int rc = MAPISTORE_SUCCESS;
   NSUInteger count;
+  NSMutableArray *oldMessageURLs;
+  MAPIStoreMapping *mapping;
 
   if ([sourceFolder isKindOfClass: isa]
       || [self isKindOfClass: [sourceFolder class]])
     [self logWithFormat: @"%s: this class could probably implement"
           @" a specialized/optimized version", __FUNCTION__];
+  oldMessageURLs = [NSMutableArray arrayWithCapacity: midCount];
+  mapping = [[self context] mapping];
   for (count = 0; rc == MAPISTORE_SUCCESS && count < midCount; count++)
-    rc = [self moveCopyMessagesWithMID: srcMids[count]
-                            fromFolder: sourceFolder
-                               withMID: targetMids[count]
-                              wantCopy: wantCopy];
+    {
+      [oldMessageURLs addObject: [mapping urlFromID: srcMids[count]]];
+      rc = [self moveCopyMessagesWithMID: srcMids[count]
+                              fromFolder: sourceFolder
+                                 withMID: targetMids[count]
+                                wantCopy: wantCopy];
+    }
+
+  /* Notifications */
+  if (rc == MAPISTORE_SUCCESS)
+    {
+      [self postNotificationsForMoveCopyMessagesWithMIDs: srcMids
+                                          andMessageURLs: oldMessageURLs
+                                                andCount: midCount
+                                              fromFolder: sourceFolder
+                                                withMIDs: targetMids
+                                                wantCopy: wantCopy];
+
+      // We cleanup cache of our source and destination folders
+      [self cleanupCaches];
+      [sourceFolder cleanupCaches];
+    }
 
   return rc;
+}
+
+- (void) postNotificationsForMoveCopyMessagesWithMIDs: (uint64_t *) srcMids
+                                       andMessageURLs: (NSArray *) oldMessageURLs
+                                             andCount: (uint32_t) midCount
+                                           fromFolder: (MAPIStoreFolder *) sourceFolder
+                                             withMIDs: (uint64_t *) targetMids
+                                             wantCopy: (uint8_t) wantCopy
+{
+  NSArray *activeTables;
+  NSUInteger count, tableCount, max;
+  MAPIStoreMessage *message;
+  NSString *messageURL;
+  MAPIStoreMapping *mapping;
+  struct mapistore_object_notification_parameters *notif_parameters;
+  struct mapistore_connection_info *connInfo;
+  
+  // For the "source folder, we ensure the table caches are loaded so
+  // that old and new state can be compared
+  activeTables = [sourceFolder activeMessageTables];
+  max = [activeTables count];
+  for (count = 0; count < max; count++)
+    [[activeTables objectAtIndex: count] restrictedChildKeys];
+ 
+  if (!wantCopy)
+    {
+      // We notify the client. We start with the source folder.
+      notif_parameters = talloc_zero(NULL, struct mapistore_object_notification_parameters);
+      notif_parameters->object_id = [sourceFolder objectId];
+      notif_parameters->tag_count = 5;
+      notif_parameters->tags = talloc_array (notif_parameters, enum MAPITAGS, 5);
+      notif_parameters->tags[0] = PR_CONTENT_COUNT;
+      notif_parameters->tags[1] = PR_DELETED_COUNT_TOTAL;
+      notif_parameters->tags[2] = PR_MESSAGE_SIZE;
+      notif_parameters->tags[3] = PR_NORMAL_MESSAGE_SIZE;
+      notif_parameters->tags[4] = PR_RECIPIENT_ON_NORMAL_MSG_COUNT;
+      notif_parameters->new_message_count = true;
+      notif_parameters->message_count = [[sourceFolder messageKeys] count] - midCount;
+      connInfo = [[self context] connectionInfo];
+      mapistore_push_notification (connInfo->mstore_ctx,
+                                   MAPISTORE_FOLDER,
+                                   MAPISTORE_OBJECT_MODIFIED,
+                                   notif_parameters);
+      talloc_free(notif_parameters);
+    }
+
+  // move/copy notification of the copied/moved message
+  for (count = 0; count < midCount; count++)
+    {
+      notif_parameters = talloc_zero (NULL, struct mapistore_object_notification_parameters);
+      notif_parameters->tag_count = 0;
+      notif_parameters->new_message_count = true;
+      notif_parameters->message_count = 0;
+      notif_parameters->object_id = targetMids[count];
+      notif_parameters->folder_id = [self objectId];
+      notif_parameters->old_object_id = srcMids[count];
+      notif_parameters->old_folder_id = [sourceFolder objectId];
+
+      mapistore_push_notification (connInfo->mstore_ctx,
+                                   MAPISTORE_MESSAGE,
+                                   (wantCopy ? MAPISTORE_OBJECT_COPIED : MAPISTORE_OBJECT_MOVED),
+                                   notif_parameters);
+      talloc_free (notif_parameters);
+
+      message = [sourceFolder lookupMessageByURL: [oldMessageURLs objectAtIndex: count]];
+      // table notification 
+      for (tableCount = 0; tableCount < max; tableCount++)
+        [[activeTables objectAtIndex: tableCount]
+          notifyChangesForChild: message];
+    }
+
+  // For the "destination folder, we ensure the table caches are loaded so
+  // that old and new state can be compared
+  activeTables = [self activeMessageTables];
+  max = [activeTables count];
+  for (count = 0; count < max; count++)
+    [[activeTables objectAtIndex: count] restrictedChildKeys];
+
+  notif_parameters = talloc_zero(NULL, struct mapistore_object_notification_parameters);
+  notif_parameters->object_id = [self objectId];
+  notif_parameters->tag_count = 5;
+  notif_parameters->tags = talloc_array (notif_parameters, enum MAPITAGS, 5);
+  notif_parameters->tags[0] = PR_CONTENT_COUNT;
+  notif_parameters->tags[1] = PR_DELETED_COUNT_TOTAL;
+  notif_parameters->tags[2] = PR_MESSAGE_SIZE;
+  notif_parameters->tags[3] = PR_NORMAL_MESSAGE_SIZE;
+  notif_parameters->tags[4] = PR_RECIPIENT_ON_NORMAL_MSG_COUNT;
+  notif_parameters->new_message_count = true;
+  notif_parameters->message_count = [[self messageKeys] count] + midCount;
+  connInfo = [[self context] connectionInfo];
+  mapistore_push_notification (connInfo->mstore_ctx,
+                               MAPISTORE_FOLDER,
+                               MAPISTORE_OBJECT_MODIFIED,
+                               notif_parameters);
+  talloc_free(notif_parameters);
+
+  // table notification 
+  mapping = [[self context] mapping];
+   for (count = 0; count < midCount; count++)
+    {
+      messageURL = [mapping urlFromID: targetMids[count]];
+      message = [self lookupMessageByURL: messageURL];
+      for (tableCount = 0; tableCount < max; tableCount++)
+        [[activeTables objectAtIndex: tableCount]
+          notifyChangesForChild: message];
+    }
 }
 
 - (int) getDeletedFMIDs: (struct I8Array_r **) fmidsPtr
