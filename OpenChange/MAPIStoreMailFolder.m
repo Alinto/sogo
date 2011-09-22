@@ -451,12 +451,11 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   globCnt = [NSData dataWithBytes: xid->Data length: xid->Size];
   talloc_free (xid);
 
+  /* 1. set change key association */
   changeKeyDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                   guid, @"GUID",
                                 globCnt, @"LocalId",
                                 nil];
-
-  /* 1. set change key association */
   [messageEntry setObject: changeKeyDict forKey: @"ChangeKey"];
 
   /* 2. append/update predecessor change list */
@@ -856,15 +855,14 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 }
 
 //
-// Move (or eventually copy) the mail identified by
-// "mid" within this current folder. The message is
-// of course coming from an other folder
+// Move (or eventually copy) the mails identified by
+// "srcMids" from the source folder into this folder.
 //
 - (int) moveCopyMessagesWithMIDs: (uint64_t *) srcMids
                         andCount: (uint32_t) midCount
-                        toFolder: (MAPIStoreFolder *) targetFolder
+                      fromFolder: (MAPIStoreFolder *) sourceFolder
                         withMIDs: (uint64_t *) targetMids
-                        wantCopy: (uint8_t) want_copy
+                        wantCopy: (uint8_t) wantCopy
 {
   NGImap4Connection *connection;
   NGImap4Client *client;
@@ -884,7 +882,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   // FIXME
   // We only support IMAP-to-IMAP copy operations for now.
   // Otherwise we silently fail (for now, at least!)
-  if (![targetFolder isKindOfClass: [MAPIStoreMailFolder class]])
+  if (![sourceFolder isKindOfClass: [MAPIStoreMailFolder class]])
     return MAPISTORE_SUCCESS;
 
   /* Conversion of mids to IMAP uids */
@@ -896,8 +894,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
       messageURL = [mapping urlFromID: srcMids[count]];
       if (messageURL)
         {
-          uid = [self
-                  messageUIDFromMessageKey: [messageURL lastPathComponent]];
+          uid = [self messageUIDFromMessageKey: [messageURL lastPathComponent]];
           [uids addObject: uid];
 
           [oldMessageURLs addObject: messageURL];
@@ -909,9 +906,9 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   /* IMAP COPY */
   connection = [sogoObject imap4Connection];
   sourceFolderName = [connection
-                       imap4FolderNameForURL: [sogoObject imap4URL]];
+                       imap4FolderNameForURL: [[sourceFolder sogoObject] imap4URL]];
   targetFolderName = [connection
-                       imap4FolderNameForURL: [[targetFolder sogoObject] imap4URL]];
+                       imap4FolderNameForURL: [sogoObject imap4URL]];
 
   client = [connection client];
   [client select: sourceFolderName];
@@ -920,7 +917,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
     return MAPISTORE_ERROR;
 
   /* "Move" treatment: Store \Deleted and unregister urls */
-  if (!want_copy)
+  if (!wantCopy)
     {
       [client storeFlags: [NSArray arrayWithObject: @"Deleted"] forUIDs: uids
              addOrRemove: YES];
@@ -952,19 +949,72 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   for (count = 0; count < midCount; count++)
     {
       messageURL = [NSString stringWithFormat: @"%@%@.eml",
-                             [targetFolder url],
+                             [self url],
                              [destUIDs objectAtIndex: count]];
       [mapping registerURL: messageURL withID: targetMids[count]];
     }
 
   // For the "source folder, we ensure the table caches are loaded so
   // that old and new state can be compared
-  activeTables = [self activeMessageTables];
+  activeTables = [sourceFolder activeMessageTables];
   max = [activeTables count];
   for (count = 0; count < max; count++)
     [[activeTables objectAtIndex: count] restrictedChildKeys];
  
-  // We notify the client. We start with the source folder.
+  if (!wantCopy)
+    {
+      // We notify the client. We start with the source folder.
+      notif_parameters = talloc_zero(NULL, struct mapistore_object_notification_parameters);
+      notif_parameters->object_id = [sourceFolder objectId];
+      notif_parameters->tag_count = 5;
+      notif_parameters->tags = talloc_array (notif_parameters, enum MAPITAGS, 5);
+      notif_parameters->tags[0] = PR_CONTENT_COUNT;
+      notif_parameters->tags[1] = PR_DELETED_COUNT_TOTAL;
+      notif_parameters->tags[2] = PR_MESSAGE_SIZE;
+      notif_parameters->tags[3] = PR_NORMAL_MESSAGE_SIZE;
+      notif_parameters->tags[4] = PR_RECIPIENT_ON_NORMAL_MSG_COUNT;
+      notif_parameters->new_message_count = true;
+      notif_parameters->message_count = [[sourceFolder messageKeys] count] - midCount;
+      connInfo = [[self context] connectionInfo];
+      mapistore_push_notification (connInfo->mstore_ctx,
+                                   MAPISTORE_FOLDER,
+                                   MAPISTORE_OBJECT_MODIFIED,
+                                   notif_parameters);
+      talloc_free(notif_parameters);
+    }
+
+  // move/copy notification of the copied/moved message
+  for (count = 0; count < midCount; count++)
+    {
+      notif_parameters = talloc_zero (NULL, struct mapistore_object_notification_parameters);
+      notif_parameters->tag_count = 0;
+      notif_parameters->new_message_count = true;
+      notif_parameters->message_count = 0;
+      notif_parameters->object_id = targetMids[count];
+      notif_parameters->folder_id = [self objectId];
+      notif_parameters->old_object_id = srcMids[count];
+      notif_parameters->old_folder_id = [sourceFolder objectId];
+
+      mapistore_push_notification (connInfo->mstore_ctx,
+                                   MAPISTORE_MESSAGE,
+                                   (wantCopy ? MAPISTORE_OBJECT_COPIED : MAPISTORE_OBJECT_MOVED),
+                                   notif_parameters);
+      talloc_free (notif_parameters);
+
+      message = [sourceFolder lookupMessageByURL: [oldMessageURLs objectAtIndex: count]];
+      // table notification 
+      for (tableCount = 0; tableCount < max; tableCount++)
+        [[activeTables objectAtIndex: tableCount]
+          notifyChangesForChild: message];
+    }
+
+  // For the "destination folder, we ensure the table caches are loaded so
+  // that old and new state can be compared
+  activeTables = [self activeMessageTables];
+  max = [activeTables count];
+  for (count = 0; count < max; count++)
+    [[activeTables objectAtIndex: count] restrictedChildKeys];
+
   notif_parameters = talloc_zero(NULL, struct mapistore_object_notification_parameters);
   notif_parameters->object_id = [self objectId];
   notif_parameters->tag_count = 5;
@@ -975,58 +1025,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   notif_parameters->tags[3] = PR_NORMAL_MESSAGE_SIZE;
   notif_parameters->tags[4] = PR_RECIPIENT_ON_NORMAL_MSG_COUNT;
   notif_parameters->new_message_count = true;
-  notif_parameters->message_count = [[self messageKeys] count] - midCount;
-  connInfo = [[self context] connectionInfo];
-  mapistore_push_notification (connInfo->mstore_ctx,
-                               MAPISTORE_FOLDER,
-                               MAPISTORE_OBJECT_MODIFIED,
-                               notif_parameters);
-  talloc_free(notif_parameters);
-
-  // move/copy notification of the copied/moved message
-  for (count = 0; count < midCount; count++)
-    {
-      notif_parameters = talloc_zero (NULL, struct mapistore_object_notification_parameters);
-      notif_parameters->tag_count = 0;
-      notif_parameters->new_message_count = true;
-      notif_parameters->message_count = 0;
-      notif_parameters->object_id = targetMids[count];
-      notif_parameters->folder_id = [targetFolder objectId];
-      notif_parameters->old_object_id = srcMids[count];
-      notif_parameters->old_folder_id = [self objectId];
-
-      mapistore_push_notification (connInfo->mstore_ctx,
-                                   MAPISTORE_MESSAGE,
-                                   (want_copy ? MAPISTORE_OBJECT_COPIED : MAPISTORE_OBJECT_MOVED),
-                                   notif_parameters);
-      talloc_free (notif_parameters);
-
-      message = [self lookupMessageByURL: [oldMessageURLs objectAtIndex: count]];
-      // table notification 
-      for (tableCount = 0; tableCount < max; tableCount++)
-        [[activeTables objectAtIndex: tableCount]
-          notifyChangesForChild: message];
-    }
-
-  // For the "destination folder, we ensure the table caches are loaded so
-  // that old and new state can be compared
-  // message = targetMessage;
-  activeTables = [targetFolder activeMessageTables];
-  max = [activeTables count];
-  for (count = 0; count < max; count++)
-    [[activeTables objectAtIndex: count] restrictedChildKeys];
-	  
-  notif_parameters = talloc_zero(NULL, struct mapistore_object_notification_parameters);
-  notif_parameters->object_id = [targetFolder objectId];
-  notif_parameters->tag_count = 5;
-  notif_parameters->tags = talloc_array (notif_parameters, enum MAPITAGS, 5);
-  notif_parameters->tags[0] = PR_CONTENT_COUNT;
-  notif_parameters->tags[1] = PR_DELETED_COUNT_TOTAL;
-  notif_parameters->tags[2] = PR_MESSAGE_SIZE;
-  notif_parameters->tags[3] = PR_NORMAL_MESSAGE_SIZE;
-  notif_parameters->tags[4] = PR_RECIPIENT_ON_NORMAL_MSG_COUNT;
-  notif_parameters->new_message_count = true;
-  notif_parameters->message_count = [[targetFolder messageKeys] count] + midCount;
+  notif_parameters->message_count = [[self messageKeys] count] + midCount;
   connInfo = [[self context] connectionInfo];
   mapistore_push_notification (connInfo->mstore_ctx,
                                MAPISTORE_FOLDER,
@@ -1046,7 +1045,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 
   // We cleanup cache of our source and destination folders
   [self cleanupCaches];
-  [targetFolder cleanupCaches];
+  [sourceFolder cleanupCaches];
 
   return MAPISTORE_SUCCESS;
 }

@@ -553,7 +553,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (int) moveCopyMessagesWithMIDs: (uint64_t *) srcMids
                         andCount: (uint32_t) count
-                        toFolder: (MAPIStoreFolder *) targetFolder
+                      fromFolder: (MAPIStoreFolder *) sourceFolder
                         withMIDs: (uint64_t *) targetMids
                         wantCopy: (uint8_t) want_copy
 {

@@ -444,8 +444,9 @@ sogo_folder_delete_message(void *folder_object, uint64_t mid, uint8_t flags)
 
 static int
 sogo_folder_move_copy_messages(void *folder_object,
-                               uint32_t mid_count, uint64_t *src_mids,
-                               void *target_folder_object, uint64_t *t_mids,
+                               void *source_folder_object,
+                               uint32_t mid_count,
+                               uint64_t *src_mids, uint64_t *t_mids,
                                uint8_t want_copy)
 {
   MAPIStoreFolder *sourceFolder, *targetFolder;
@@ -458,15 +459,15 @@ sogo_folder_move_copy_messages(void *folder_object,
   if (folder_object)
     {
       wrapper = folder_object;
-      sourceFolder = wrapper->MAPIStoreSOGoObject;
-
-      wrapper = target_folder_object;
       targetFolder = wrapper->MAPIStoreSOGoObject;
 
+      wrapper = source_folder_object;
+      sourceFolder = wrapper->MAPIStoreSOGoObject;
+
       pool = [NSAutoreleasePool new];
-      rc = [sourceFolder moveCopyMessagesWithMIDs: src_mids
+      rc = [targetFolder moveCopyMessagesWithMIDs: src_mids
                                          andCount: mid_count
-                                         toFolder: targetFolder
+                                       fromFolder: sourceFolder
                                          withMIDs: t_mids
                                          wantCopy: want_copy];
       [pool release];
