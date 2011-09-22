@@ -768,7 +768,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   // table notification 
   mapping = [[self context] mapping];
-   for (count = 0; count < midCount; count++)
+  for (count = 0; count < midCount; count++)
     {
       messageURL = [mapping urlFromID: targetMids[count]];
       message = [self lookupMessageByURL: messageURL];
