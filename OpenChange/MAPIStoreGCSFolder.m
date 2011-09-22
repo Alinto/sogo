@@ -170,12 +170,11 @@
   globCnt = [NSData dataWithBytes: xid->Data length: xid->Size];
   talloc_free (xid);
 
+  /* 1. set change key association */
   changeKeyDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                   guid, @"GUID",
                                 globCnt, @"LocalId",
                                 nil];
-
-  /* 1. set change key association */
   [messageEntry setObject: changeKeyDict forKey: @"ChangeKey"];
 
   /* 2. append/update predecessor change list */
