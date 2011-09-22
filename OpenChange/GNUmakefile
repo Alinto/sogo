@@ -112,6 +112,10 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	EOBitmaskQualifier.m \
 	EOQualifier+MAPIFS.m \
+	\
+	SOGoMemMessage.m \
+	MAPIStoreMemMailMessage.m \
+
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
 	product.plist
