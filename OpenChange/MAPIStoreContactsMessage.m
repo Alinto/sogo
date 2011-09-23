@@ -111,6 +111,7 @@
 //   return MAPISTORE_SUCCESS;
 // }
 
+
 - (int) getPrTitle: (void **) data
           inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -664,6 +665,67 @@
   return rc;
 }
 
+//
+// Decomposed fullname getters
+//
+- (int) getPrSurname: (void **) data
+	    inMemCtx: (TALLOC_CTX *) memCtx
+{  
+  NSString *stringValue;
+  
+  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"] value: 0];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrGivenName: (void **) data
+	      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+  
+  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"] value: 1];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrMiddleName: (void **) data
+	       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+  
+  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"] value: 2];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+  
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrDisplayNamePrefix: (void **) data
+		      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+  
+  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"] value: 3];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+  
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrGeneration: (void **) data
+	       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *stringValue;
+  
+  stringValue = [[[sogoObject vCard] firstChildWithTag: @"n"] value: 4];
+  *data = [stringValue asUnicodeInMemCtx: memCtx];
+  
+  return MAPISTORE_SUCCESS;
+}
+
+//
+//
+//
 - (void) save
 {
   NSArray *elements, *units;
