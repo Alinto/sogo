@@ -381,6 +381,7 @@ static Class SOGoMailFolderK;
   NSNumber *ti;
   NSDate *value = nil;
 
+  [self synchroniseCache];
   ti = [[versionsMessage properties]
          objectForKey: @"SyncLastSynchronisationDate"];
   if (ti)
@@ -471,6 +472,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   BOOL rc = YES;
   uint64_t newChangeNum;
   NSNumber *ti, *changeNumber, *modseq, *lastModseq, *nextModseq, *uid;
+  uint64_t lastModseqNbr;
   EOQualifier *searchQualifier;
   NSArray *uids;
   NSUInteger count, max;
@@ -479,6 +481,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSData *changeKey;
   NSMutableDictionary *currentProperties, *messages, *mapping, *messageEntry;
   NSCalendarDate *now;
+  BOOL folderWasModified = NO;
 
   now = [NSCalendarDate date];
   [now setTimeZone: utcTZ];
@@ -505,8 +508,8 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   lastModseq = [currentProperties objectForKey: @"SyncLastModseq"];
   if (lastModseq)
     {
-      nextModseq = [NSNumber numberWithUnsignedLongLong:
-                               [lastModseq unsignedLongLongValue] + 1];
+      lastModseqNbr = [lastModseq unsignedLongLongValue];
+      nextModseq = [NSNumber numberWithUnsignedLongLong: lastModseqNbr + 1];
       searchQualifier = [[EOKeyValueQualifier alloc]
                                 initWithKey: @"modseq"
                            operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
@@ -561,7 +564,21 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
         }
 
       ldb_transaction_commit([[self context] connectionInfo]->oc_ctx);
-      
+      folderWasModified = YES;
+    }
+
+  if (lastModseq)
+    {
+      /* FIXME: the problem here is that if a delete is the last operation
+      performed on a folder, the SyncLastSynchronisationDate will continuously
+      get updated until a new modseq shows up */
+      folderWasModified = [[(SOGoMailFolder *) sogoObject
+                              fetchUIDsOfVanishedItems: lastModseqNbr]
+                            count] > 0;
+    }
+
+  if (folderWasModified)
+    {
       ti = [NSNumber numberWithDouble: [now timeIntervalSince1970]];
       [currentProperties setObject: ti
                             forKey: @"SyncLastSynchronisationDate"];
