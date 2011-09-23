@@ -46,6 +46,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setRememberLastModule: (BOOL) rememberLastModule;
 - (BOOL) rememberLastModule;
 
+- (void) setDefaultCalendar: (NSString *) newDefaultCalendar;
+- (NSString *) defaultCalendar;
+
 - (void) setAppointmentSendEMailReceipts: (BOOL) newPoil;
 - (BOOL) appointmentSendEMailReceipts;
 

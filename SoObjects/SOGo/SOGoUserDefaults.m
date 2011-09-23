@@ -233,6 +233,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self boolForKey: @"SOGoRememberLastModule"];
 }
 
+- (void) setDefaultCalendar: (NSString *) newDefaultCalendar
+{
+  [self setObject: newDefaultCalendar forKey: @"SOGoDefaultCalendar"];
+}
+
+- (NSString *) defaultCalendar
+{
+  return [self stringForKey: @"SOGoDefaultCalendar"];
+}
+
 - (void) setAppointmentSendEMailReceipts: (BOOL) newValue
 {
   [self setBool: newValue forKey: @"SOGoAppointmentSendEMailReceipts"];
