@@ -284,13 +284,21 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 {
   int rc = MAPISTORE_SUCCESS;
   NSData *changeKey;
+  MAPIStoreMailFolder *parentFolder;
+  NSString *nameInContainer;
 
   if (isNew)
     rc = MAPISTORE_ERR_NOT_FOUND;
   else
     {
-      changeKey = [(MAPIStoreMailFolder *)[self container]
-                      changeKeyForMessageWithKey: [self nameInContainer]];
+      parentFolder = (MAPIStoreMailFolder *)[self container];
+      nameInContainer = [self nameInContainer];
+      changeKey = [parentFolder changeKeyForMessageWithKey: nameInContainer];
+      if (!changeKey)
+        {
+          [parentFolder synchroniseCache];
+          changeKey = [parentFolder changeKeyForMessageWithKey: nameInContainer];
+        }
       if (!changeKey)
         abort ();
       *data = [changeKey asBinaryInMemCtx: memCtx];
