@@ -1,3 +1,15 @@
+2011-09-23  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/PreferencesUI/UIxPreferences.m (-defaultCalendarList, -itemCalendarText,
+	-userDefaultCalendar, -setUserDefaultCalendar:): new methods to
+	show a popup menu for the new defaults SOGoDefaultCalendar. This
+	option sets which calendar is used when creating an event or a
+	task (selected, personal, first enabled).
+
+	* UI/WebServerResources/SchedulerUI.js (eventsListCallback):
+	events are always editable and erasable for superusers.
+	(newEvent): added supported for the new defaults SOGoDefaultCalendar.
+
 2011-09-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreGCSMessage.m (-getPrChangeKey:inMemCtx:):

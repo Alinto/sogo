@@ -102,6 +102,11 @@
                 const:id="firstWeek"
                 string="itemFirstWeekText" selection="userFirstWeek"
                 /></label><br/>
+            <label><var:string label:value="Default calendar :"/>
+              <var:popup list="defaultCalendarList" item="item"
+                const:id="defaultCalendar"
+                string="itemCalendarText" selection="userDefaultCalendar"
+                /></label><br/>
             <label><var:string label:value="Categories"/></label>
             <div id="calendarCategoriesListWrapper" class="listWrapper"
               ><table class="categoriesList" cellspacing="0">

@@ -92,6 +92,12 @@
 "firstWeekOfYear_First4DayWeek" = "Första 4-dagarsveckan på året";
 "firstWeekOfYear_FirstFullWeek" = "Första hela veckan på året";
 
+/* Default Calendar */
+"Default calendar :" = "Default calendar";
+"selectedCalendar" = "Selected calendar";
+"personalCalendar" = "Personal calendar";
+"firstCalendar" = "First enabled calendar";
+
 "reminderTime_0000" = "0 minuter";
 "reminderTime_0005" = "5 minuter";
 "reminderTime_0010" = "10 minuter";

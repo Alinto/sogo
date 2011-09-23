@@ -421,6 +421,30 @@
   [userDefaults setFirstDayOfWeek: [newDay intValue]];
 }
 
+- (NSArray *) defaultCalendarList
+{
+  NSMutableArray *options;
+
+  options = [NSArray arrayWithObjects: @"selected", @"personal", @"first", nil];
+
+  return options;
+}
+
+- (NSString *) itemCalendarText
+{
+  return [self labelForKey: [NSString stringWithFormat: @"%@Calendar", item]];
+}
+
+- (NSString *) userDefaultCalendar
+{
+  return [userDefaults defaultCalendar];
+}
+
+- (void) setUserDefaultCalendar: (NSString *) newValue
+{
+  [userDefaults setDefaultCalendar: newValue];
+}
+
 - (NSArray *) hoursList
 {
   static NSMutableArray *hours = nil;
