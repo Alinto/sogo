@@ -52,13 +52,21 @@
 {
   int rc = MAPISTORE_SUCCESS;
   NSData *changeKey;
+  MAPIStoreGCSFolder *parentFolder;
+  NSString *nameInContainer;
 
   if (isNew)
     rc = MAPISTORE_ERR_NOT_FOUND;
   else
     {
-      changeKey = [(MAPIStoreGCSFolder *)[self container]
-                      changeKeyForMessageWithKey: [self nameInContainer]];
+      parentFolder = (MAPIStoreGCSFolder *)[self container];
+      nameInContainer = [self nameInContainer];
+      changeKey = [parentFolder changeKeyForMessageWithKey: nameInContainer];
+      if (!changeKey)
+        {
+          [parentFolder synchroniseCache];
+          changeKey = [parentFolder changeKeyForMessageWithKey: nameInContainer];
+        }
       if (!changeKey)
         abort ();
       *data = [changeKey asBinaryInMemCtx: memCtx];
