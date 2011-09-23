@@ -48,6 +48,15 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
                                           struct mapistore_message **,
                                           TALLOC_CTX *);
 
+@implementation SOGoDraftObject (MAPIStoreExtension)
+
+- (Class) mapistoreMessageClass
+{
+  return [MAPIStoreDraftsMessage class];
+}
+
+@end
+
 @implementation MAPIStoreDraftsMessage
 
 + (void) initialize

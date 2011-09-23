@@ -33,7 +33,7 @@
 #import <NGCards/iCalPerson.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
-#import <Appointments/SOGoAppointmentObject.h>
+#import <Appointments/SOGoTaskObject.h>
 
 #import "MAPIStoreTasksFolder.h"
 #import "MAPIStoreTypes.h"
@@ -49,6 +49,15 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 #include <mapistore/mapistore_nameid.h>
+
+@implementation SOGoTaskObject (MAPIStoreExtension)
+
+- (Class) mapistoreMessageClass
+{
+  return [MAPIStoreTasksMessage class];
+}
+
+@end
 
 @implementation MAPIStoreTasksMessage
 

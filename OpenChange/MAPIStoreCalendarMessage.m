@@ -68,6 +68,15 @@
 
 // extern void ndr_print_AppointmentRecurrencePattern(struct ndr_print *ndr, const char *name, const struct AppointmentRecurrencePattern *r);
 
+@implementation SOGoAppointmentObject (MAPIStoreExtension)
+
+- (Class) mapistoreMessageClass
+{
+  return [MAPIStoreCalendarMessage class];
+}
+
+@end
+
 @implementation MAPIStoreCalendarMessage
 
 - (id) init

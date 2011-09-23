@@ -222,6 +222,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (id) lookupMessage: (NSString *) messageKey
 {
   MAPIStoreObject *childMessage = nil;
+  Class messageClass;
   SOGoObject *msgObject;
 
   if (messageKey)
@@ -232,9 +233,10 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       if (msgObject && ![msgObject isKindOfClass: NSExceptionK])
         {
           [msgObject setContext: [[self context] woContext]];
+          messageClass = [msgObject mapistoreMessageClass];
           childMessage
-            = [[self messageClass] mapiStoreObjectWithSOGoObject: msgObject
-                                                     inContainer: self];
+            = [messageClass mapiStoreObjectWithSOGoObject: msgObject
+                                              inContainer: self];
         }
     }
 
@@ -1271,13 +1273,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                                  inTableType: (uint8_t) tableType
 {
   return nil;
-}
-
-- (Class) messageClass
-{
-  [self subclassResponsibility: _cmd];
-
-  return Nil;
 }
 
 - (MAPIStoreMessage *) createMessage

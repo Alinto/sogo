@@ -141,7 +141,6 @@
 - (uint64_t) idForObjectWithKey: (NSString *) childKey;
 
 /* subclasses */
-- (Class) messageClass;
 - (MAPIStoreMessage *) createMessage;
 - (MAPIStoreMessageTable *) messageTable;
 - (NSArray *) messageKeysMatchingQualifier: (EOQualifier *) qualifier

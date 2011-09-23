@@ -86,6 +86,15 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 
 @end
 
+@implementation SOGoMailObject (MAPIStoreExtension)
+
+- (Class) mapistoreMessageClass
+{
+  return [MAPIStoreMailMessage class];
+}
+
+@end
+
 @implementation MAPIStoreMailMessage
 
 + (void) initialize

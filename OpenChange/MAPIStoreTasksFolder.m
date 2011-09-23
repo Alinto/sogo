@@ -36,14 +36,7 @@
 
 #import "MAPIStoreTasksFolder.h"
 
-static Class MAPIStoreTasksMessageK;
-
 @implementation MAPIStoreTasksFolder
-
-+ (void) initialize
-{
-  MAPIStoreTasksMessageK = [MAPIStoreTasksMessage class];
-}
 
 - (id) initWithURL: (NSURL *) newURL
          inContext: (MAPIStoreContext *) newContext
@@ -74,11 +67,6 @@ static Class MAPIStoreTasksMessageK;
     }
 
   return self;
-}
-
-- (Class) messageClass
-{
-  return MAPIStoreTasksMessageK;
 }
 
 - (MAPIStoreMessageTable *) messageTable

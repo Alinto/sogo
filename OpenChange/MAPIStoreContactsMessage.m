@@ -49,6 +49,15 @@
 #include <mapistore/mapistore_errors.h>
 #include <mapistore/mapistore_nameid.h>
 
+@implementation SOGoContactGCSEntry (MAPIStoreExtension)
+
+- (Class) mapistoreMessageClass
+{
+  return [MAPIStoreContactsMessage class];
+}
+
+@end
+
 @implementation MAPIStoreContactsMessage
 
 // TODO: this should be combined with the version found

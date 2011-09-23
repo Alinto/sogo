@@ -52,4 +52,10 @@ struct MAPIStoreTallocWrapper
 
 @end
 
+@interface NSObject (MAPIStoreExtension)
+
+- (Class) mapistoreMessageClass;
+
+@end
+
 #endif /* NSOBJECT_MAPISTORE_H */

@@ -54,6 +54,25 @@
   [super dealloc];
 }
 
+- (Class) mapistoreMessageClass
+{
+  NSArray *dirMembers;
+  NSString *className;
+
+  /* FIXME: this method is a bit dirty */
+  dirMembers = [[container directory] componentsSeparatedByString: @"/"];
+  if ([dirMembers containsObject: @"fai"]) /* should not occur as FAI message
+                                              are instantiated directly in
+                                              MAPIStoreFolder */
+    className = @"MAPIStoreFAIMessage";
+  else if ([dirMembers containsObject: @"notes"])
+    className = @"MAPIStoreNotesMessage";
+  else
+    className = @"MAPIStoreFSMessage";
+
+  return NSClassFromString (className);
+}
+
 - (NSString *) completeFilename
 {
   if (!completeFilename)

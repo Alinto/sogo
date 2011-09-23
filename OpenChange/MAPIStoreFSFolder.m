@@ -43,14 +43,13 @@
 // #include <libmapiproxy.h>
 // #include <param.h>
 
-static Class EOKeyValueQualifierK, MAPIStoreFSMessageK;
+static Class EOKeyValueQualifierK;
 
 @implementation MAPIStoreFSFolder
 
 + (void) initialize
 {
   EOKeyValueQualifierK = [EOKeyValueQualifier class];
-  MAPIStoreFSMessageK = [MAPIStoreFSMessage class];
 }
 
 - (id) initWithURL: (NSURL *) newURL
@@ -70,11 +69,6 @@ static Class EOKeyValueQualifierK, MAPIStoreFSMessageK;
 - (MAPIStoreMessageTable *) messageTable
 {
   return [MAPIStoreFSMessageTable tableForContainer: self];
-}
-
-- (Class) messageClass
-{
-  return MAPIStoreFSMessageK;
 }
 
 - (MAPIStoreFolderTable *) folderTable

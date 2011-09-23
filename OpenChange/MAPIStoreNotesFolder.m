@@ -26,18 +26,6 @@
 
 #import "MAPIStoreNotesFolder.h"
 
-static Class MAPIStoreNotesMessageK;
-
 @implementation MAPIStoreNotesFolder
-
-+ (void) initialize
-{
-  MAPIStoreNotesMessageK = [MAPIStoreNotesMessage class];
-}
-
-- (Class) messageClass
-{
-  return MAPIStoreNotesMessageK;
-}
 
 @end

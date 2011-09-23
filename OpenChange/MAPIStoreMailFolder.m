@@ -49,7 +49,6 @@
 #import "MAPIStoreContext.h"
 #import "MAPIStoreDraftsMessage.h"
 #import "MAPIStoreFAIMessage.h"
-#import "MAPIStoreMailMessage.h"
 #import "MAPIStoreMailMessageTable.h"
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
@@ -64,8 +63,6 @@
 
 #import "MAPIStoreMailFolder.h"
 
-static Class MAPIStoreDraftsMessageK;
-static Class MAPIStoreMailMessageK;
 static Class SOGoMailFolderK;
 
 #undef DEBUG
@@ -77,7 +74,6 @@ static Class SOGoMailFolderK;
 
 + (void) initialize
 {
-  MAPIStoreMailMessageK = [MAPIStoreMailMessage class];
   SOGoMailFolderK = [SOGoMailFolder class];
   [MAPIStoreAppointmentWrapper class];
 }
@@ -169,11 +165,6 @@ static Class SOGoMailFolderK;
 {
   [self synchroniseCache];
   return [MAPIStoreMailMessageTable tableForContainer: self];
-}
-
-- (Class) messageClass
-{
-  return MAPIStoreMailMessageK;
 }
 
 - (NSString *) createFolder: (struct SRow *) aRow
@@ -1125,11 +1116,6 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   return [accountFolder draftsFolderInContext: woContext];
 }
 
-- (Class) messageClass
-{
-  return MAPIStoreDraftsMessageK;
-}
-
 - (MAPIStoreMessage *) createMessage
 {
   MAPIStoreDraftsMessage *newMessage;
@@ -1161,20 +1147,10 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 //
 @implementation MAPIStoreOutboxFolder : MAPIStoreMailFolder
 
-+ (void) initialize
-{
-  MAPIStoreDraftsMessageK = [MAPIStoreDraftsMessage class];
-}
-
 - (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) accountFolder
                                     inContext: (WOContext *) woContext
 {
   return [accountFolder draftsFolderInContext: woContext];
-}
-
-- (Class) messageClass
-{
-  return MAPIStoreDraftsMessageK;
 }
 
 - (MAPIStoreMessage *) createMessage

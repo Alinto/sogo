@@ -1,3 +1,17 @@
+2011-09-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/SOGoMAPIFSMessage.m (-mapistoreMessageClass): method
+	implemented poorly (but work for now) and that differentiates
+	between the MAPIStoreMessage classes based on certain elements in
+	their folder path.
+
+	* OpenChange/MAPIStoreFolder.m (-messageClass): removed method,
+	replaced with the new mechanism below.
+
+	* OpenChange/NSObject+MAPIStore.h (-mapistoreMessageClass): new
+	category method that returns the proper MAPIStoreMessage wrapper
+	class from instances of SOGoObject and children classes.
+
 2011-09-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* OpenChange/MAPIStoreContactsMessage.m

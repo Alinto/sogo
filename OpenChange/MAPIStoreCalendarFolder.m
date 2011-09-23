@@ -36,14 +36,7 @@
 
 #import "MAPIStoreCalendarFolder.h"
 
-static Class MAPIStoreCalendarMessageK;
-
 @implementation MAPIStoreCalendarFolder
-
-+ (void) initialize
-{
-  MAPIStoreCalendarMessageK = [MAPIStoreCalendarMessage class];
-}
 
 - (id) initWithURL: (NSURL *) newURL
          inContext: (MAPIStoreContext *) newContext
@@ -74,11 +67,6 @@ static Class MAPIStoreCalendarMessageK;
     }
 
   return self;
-}
-
-- (Class) messageClass
-{
-  return MAPIStoreCalendarMessageK;
 }
 
 - (MAPIStoreMessageTable *) messageTable

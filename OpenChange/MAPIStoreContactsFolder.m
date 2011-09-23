@@ -33,19 +33,7 @@
 
 #import "MAPIStoreContactsFolder.h"
 
-static Class MAPIStoreContactsMessageK;
-
 @implementation MAPIStoreContactsFolder
-
-+ (void) initialize
-{
-  MAPIStoreContactsMessageK = [MAPIStoreContactsMessage class];
-}
-
-- (void) dealloc
-{
-  [super dealloc];
-}
 
 - (id) initWithURL: (NSURL *) newURL
          inContext: (MAPIStoreContext *) newContext
@@ -76,11 +64,6 @@ static Class MAPIStoreContactsMessageK;
     }
 
   return self;
-}
-
-- (Class) messageClass
-{
-  return MAPIStoreContactsMessageK;
 }
 
 - (MAPIStoreMessageTable *) messageTable
