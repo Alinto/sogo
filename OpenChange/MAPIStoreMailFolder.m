@@ -871,9 +871,6 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   NSUInteger count;
   NSArray *a;
 
-  // FIXME
-  // We only support IMAP-to-IMAP copy operations for now.
-  // Otherwise we silently fail (for now, at least!)
   if (![sourceFolder isKindOfClass: [MAPIStoreMailFolder class]])
     return [super moveCopyMessagesWithMIDs: srcMids andCount: midCount
                                 fromFolder: sourceFolder withMIDs: targetMids
