@@ -92,6 +92,12 @@
 "firstWeekOfYear_First4DayWeek" = "Első 4 napos héttől";
 "firstWeekOfYear_FirstFullWeek" = "Első teljes héttől";
 
+/* Default Calendar */
+"Default calendar :" = "Default calendar";
+"selectedCalendar" = "Selected calendar";
+"personalCalendar" = "Personal calendar";
+"firstCalendar" = "First enabled calendar";
+
 "reminderTime_0000" = "0 perc";
 "reminderTime_0005" = "5 perc";
 "reminderTime_0010" = "10 perc";

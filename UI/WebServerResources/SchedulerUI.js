@@ -36,7 +36,24 @@ var clipboard = null;
 var eventsToCopy = [];
 
 function newEvent(type, day, hour, duration) {
-    var folder = getSelectedFolder();
+    var folder = null;
+    if (UserDefaults['SOGoDefaultCalendar'] == 'personal')
+        folder = $("calendarList").down("li");
+    else if (UserDefaults['SOGoDefaultCalendar'] == 'first') {
+        var list = $("calendarList");
+        var inputs = list.select("input");
+        for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            if (input.checked) {
+                folder = input.up();
+                break;
+            }
+        }
+        if (!folder)
+            folder = list.down("li");
+    }
+    else
+        folder = getSelectedFolder();
     var folderID = folder.readAttribute("id");
     var urlstr = ApplicationBaseURL + folderID + "/new" + type;
     var params = [];
@@ -908,7 +925,7 @@ function eventsListCallback(http) {
                 if (rTime)
                     row.recurrenceTime = escape(rTime);
                 row.isException = data[i][17];
-                row.editable = data[i][18];
+                row.editable = data[i][18] || IsSuperUser;
                 row.erasable = data[i][19] || IsSuperUser;
                 var startDate = new Date();
                 startDate.setTime(data[i][5] * 1000);

@@ -92,6 +92,12 @@
 "firstWeekOfYear_First4DayWeek" = "First 4-day week";
 "firstWeekOfYear_FirstFullWeek" = "First full week";
 
+/* Default Calendar */
+"Default calendar :" = "Default calendar";
+"selectedCalendar" = "Selected calendar";
+"personalCalendar" = "Personal calendar";
+"firstCalendar" = "First enabled calendar";
+
 "reminderTime_0000" = "0 minutes";
 "reminderTime_0005" = "5 minutes";
 "reminderTime_0010" = "10 minutes";
