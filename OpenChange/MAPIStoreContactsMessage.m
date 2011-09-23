@@ -664,8 +664,7 @@
     {
       dateValue = [NSCalendarDate dateWithString: stringValue
                                   calendarFormat: @"%Y-%m-%d"];
-      // FIXME: We add a day, otherwise Outlook 2003 will display at day earlier
-      dateValue = [dateValue addYear: 0 month: 0 day: 1 hour: 0 minute: 0 second: 0];
+      //dateValue = [dateValue addYear: 0 month: 0 day: 1 hour: 0 minute: 0 second: 0];
       *data = [dateValue asFileTimeInMemCtx: memCtx];
     }
   else
@@ -957,7 +956,7 @@
 
 
   //
-  // job title, nickname, company name, deparment, work url, im address/screen name
+  // job title, nickname, company name, deparment, work url, im address/screen name and birthday
   //
   value = [newProperties objectForKey: MAPIPropertyKey(PR_TITLE_UNICODE)];
   if (value)
@@ -991,6 +990,13 @@
 	setValue: 0
 	to: value];
     }
+
+  value = [newProperties objectForKey: MAPIPropertyKey(PR_BIRTHDAY)];
+  if (value)
+    {
+      [newCard setBday: [value descriptionWithCalendarFormat: @"%Y-%m-%d"]];
+    }
+
 
   //
   // we save the new/modified card

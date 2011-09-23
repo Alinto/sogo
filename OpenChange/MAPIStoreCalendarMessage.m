@@ -311,14 +311,12 @@
 }
 
 - (void) _setupRecurrenceInCalendar: (iCalCalendar *) calendar
+                          withEvent: (iCalEvent *) event
                            fromData: (NSData *) mapiRecurrenceData
 {
   struct Binary_r *blob;
   struct AppointmentRecurrencePattern *pattern;
   NSMutableArray *otherEvents;
-  iCalEvent *event;
-
-  event = [sogoObject component: NO secure: NO];
 
   /* cleanup */
   otherEvents = [[calendar events] mutableCopy];
@@ -498,6 +496,7 @@
                 objectForKey: MAPIPropertyKey (PidLidAppointmentRecur)];
       if (value)
         [self _setupRecurrenceInCalendar: vCalendar
+	                       withEvent: newEvent
                                 fromData: value];
 
       // Organizer
