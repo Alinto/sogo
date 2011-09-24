@@ -481,7 +481,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSData *changeKey;
   NSMutableDictionary *currentProperties, *messages, *mapping, *messageEntry;
   NSCalendarDate *now;
-  BOOL folderWasModified = NO;
+  BOOL foundChange = NO;
 
   now = [NSCalendarDate date];
   [now setTimeZone: utcTZ];
@@ -564,7 +564,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
         }
 
       ldb_transaction_commit([[self context] connectionInfo]->oc_ctx);
-      folderWasModified = YES;
+      foundChange = YES;
     }
 
   if (lastModseq)
@@ -572,12 +572,12 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       /* FIXME: the problem here is that if a delete is the last operation
       performed on a folder, the SyncLastSynchronisationDate will continuously
       get updated until a new modseq shows up */
-      folderWasModified = [[(SOGoMailFolder *) sogoObject
-                              fetchUIDsOfVanishedItems: lastModseqNbr]
-                            count] > 0;
+      foundChange |= [[(SOGoMailFolder *) sogoObject
+                          fetchUIDsOfVanishedItems: lastModseqNbr]
+                       count] > 0;
     }
 
-  if (folderWasModified)
+  if (foundChange)
     {
       ti = [NSNumber numberWithDouble: [now timeIntervalSince1970]];
       [currentProperties setObject: ti
