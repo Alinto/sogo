@@ -296,11 +296,19 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       changeKey = [parentFolder changeKeyForMessageWithKey: nameInContainer];
       if (!changeKey)
         {
+          [self warnWithFormat: @"attempting to get change key"
+                @" by synchronising folder..."];
+          [(MAPIStoreMailFolder *) container synchroniseCache];
           [parentFolder synchroniseCache];
           changeKey = [parentFolder changeKeyForMessageWithKey: nameInContainer];
+          if (changeKey)
+            [self logWithFormat: @"got one"];
+          else
+            {
+              [self errorWithFormat: @"still nothing. We crash!"];
+              abort ();
+            }
         }
-      if (!changeKey)
-        abort ();
       *data = [changeKey asBinaryInMemCtx: memCtx];
     }
 
@@ -320,7 +328,20 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       changeList = [(MAPIStoreMailFolder *)[self container]
                        predecessorChangeListForMessageWithKey: [self nameInContainer]];
       if (!changeList)
-        abort ();
+        {
+          [self warnWithFormat: @"attempting to get predecessor change list"
+                @" by synchronising folder..."];
+          [(MAPIStoreMailFolder *) container synchroniseCache];
+          changeList = [(MAPIStoreMailFolder *)[self container]
+                           predecessorChangeListForMessageWithKey: [self nameInContainer]];
+          if (changeList)
+            [self logWithFormat: @"got one"];
+          else
+            {
+              [self errorWithFormat: @"still nothing. We crash!"];
+              abort ();
+            }
+        }
       *data = [changeList asBinaryInMemCtx: memCtx];
     }
 
