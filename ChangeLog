@@ -1,5 +1,11 @@
 2011-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m
+	(-moveCopyMessagesWithMID:fromFolder:withMID:wantCopy:): ensure
+	that "data" is not NULL before passing it to
+	set_SPropValue_proptag as it might be converted to a PT_ERROR
+	value.
+
 	* SoObjects/Mailer/SOGoDraftObject.m (-sendMailAndCopyToSent:):
 	renamed "sendMail" and made copying the messsage to the sent
 	folder opetional.

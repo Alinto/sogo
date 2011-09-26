@@ -605,7 +605,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
           error = [sourceMsg getProperty: &data
                                  withTag: propTag
                                 inMemCtx: aRow];
-          if (error == MAPISTORE_SUCCESS)
+          if (error == MAPISTORE_SUCCESS && data)
             {
               set_SPropValue_proptag(&aRow->lpProps[aRow->cValues], propTag, data);
               aRow->cValues++;
