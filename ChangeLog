@@ -1,5 +1,9 @@
 2011-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreDraftsMessage.m (-_commitProperties): make
+	use of "PR_SUBJECT_PREFIX_UNICODE" and
+	"PR_NORMALIZED_SUBJECT_UNICODE" to construct the "subject" header.
+
 	* OpenChange/MAPIStoreMailMessage.m (-getPrChangeKey:inMemCtx)
 	(-getPrPredecessorChangeList:inMemCtx): when a record is not
 	returned, invoke the container's synchroniseCache method, as was

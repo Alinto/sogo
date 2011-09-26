@@ -319,6 +319,7 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
   NSDictionary *recipients, *identity;
   NSMutableDictionary *newHeaders;
   NSString *recId, *body;
+  NSMutableString *subject;
   NSUInteger count, max;
   WOContext *woContext;
   id value;
@@ -353,12 +354,23 @@ e)
     0 (NSIntNumber) */
 
   /* save the subject */
-  value = [newProperties
-	    objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
-  if (!value)
+  subject = [NSMutableString stringWithCapacity: 128];
   value = [newProperties objectForKey: MAPIPropertyKey (PR_SUBJECT_UNICODE)];
   if (value)
-    [newHeaders setObject: value forKey: @"subject"];
+    [subject appendString: value];
+  else
+    {
+      value = [newProperties
+                objectForKey: MAPIPropertyKey (PR_SUBJECT_PREFIX_UNICODE)];
+      if (value)
+        [subject appendString: value];
+      value = [newProperties
+                objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
+      if (value)
+        [subject appendString: value];
+    }
+  if (subject)
+    [newHeaders setObject: subject forKey: @"subject"];
 
   /* generate a valid from */
   woContext = [[self context] woContext];
