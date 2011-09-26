@@ -13,6 +13,8 @@
 	* OpenChange/MAPIStoreDraftsMessage.m (-_commitProperties): make
 	use of "PR_SUBJECT_PREFIX_UNICODE" and
 	"PR_NORMALIZED_SUBJECT_UNICODE" to construct the "subject" header.
+	(-submit): invoke the new "-sendMailAndCopyToSent:" method with
+	"NO".
 
 	* OpenChange/MAPIStoreMailMessage.m (-getPrChangeKey:inMemCtx)
 	(-getPrPredecessorChangeList:inMemCtx): when a record is not

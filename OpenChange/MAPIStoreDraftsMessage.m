@@ -528,7 +528,7 @@ e)
     {
       [self logWithFormat: @"sending message"];
       [self _commitProperties];
-      error = [(SOGoDraftObject *) sogoObject sendMail];
+      error = [(SOGoDraftObject *) sogoObject sendMailAndCopyToSent: NO];
       [self errorWithFormat: @"an exception occurred: %@", error];
     }
   else
