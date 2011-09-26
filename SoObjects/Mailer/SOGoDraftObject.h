@@ -102,6 +102,7 @@
 
 - (NSException *) delete;
 - (NSException *) sendMail;
+- (NSException *) sendMailAndCopyToSent: (BOOL) copyToSent; /* default: YES */
 - (NSException *) save;
 
 // /* fake being a SOGoMailObject */

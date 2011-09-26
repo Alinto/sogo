@@ -1516,6 +1516,11 @@ static NSString    *userAgent      = nil;
 
 - (NSException *) sendMail
 {
+  return [self sendMailAndCopyToSent: YES];
+}
+
+- (NSException *) sendMailAndCopyToSent: (BOOL) copyToSent
+{
   NSMutableData *cleaned_message;
   SOGoMailFolder *sentFolder;
   SOGoDomainDefaults *dd;
@@ -1525,64 +1530,66 @@ static NSString    *userAgent      = nil;
   NSRange r1, r2;
   
   /* send mail */
-  sentFolder = [[self mailAccountFolder] sentFolderInContext: context];
-  if ([sentFolder isKindOfClass: [NSException class]])
-    error = (NSException *) sentFolder;
-  else
-    {
-      // We strip the BCC fields prior sending any mails
-      NGMimeMessageGenerator *generator;
 
-      generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
-      message = [generator generateMimeFromPart: [self mimeMessageWithHeaders: nil 
-						       excluding: nil]];
+  // We strip the BCC fields prior sending any mails
+  NGMimeMessageGenerator *generator;
+
+  generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
+  message = [generator generateMimeFromPart: [self mimeMessageWithHeaders: nil 
+                                                                excluding: nil]];
       
-      //
-      // We now look for the Bcc: header. If it is present, we remove it.
-      // Some servers, like qmail, do not remove it automatically.
-      //
+  //
+  // We now look for the Bcc: header. If it is present, we remove it.
+  // Some servers, like qmail, do not remove it automatically.
+  //
 #warning FIXME - we should fix the case issue when we switch to Pantomime
-      cleaned_message = [NSMutableData dataWithData: message];
-      r1 = [cleaned_message rangeOfCString: "\r\n\r\n"];
-      r1 = [cleaned_message rangeOfCString: "\r\nbcc: "
-			    options: 0
-			    range: NSMakeRange(0,r1.location-1)];
+  cleaned_message = [NSMutableData dataWithData: message];
+  r1 = [cleaned_message rangeOfCString: "\r\n\r\n"];
+  r1 = [cleaned_message rangeOfCString: "\r\nbcc: "
+                               options: 0
+                                 range: NSMakeRange(0,r1.location-1)];
       
-      if (r1.location != NSNotFound)
-	{
-	  // We search for the first \r\n AFTER the Bcc: header and
-	  // replace the whole thing with \r\n.
-	  r2 = [cleaned_message rangeOfCString: "\r\n"
-				options: 0
-				range: NSMakeRange(NSMaxRange(r1)+1,[cleaned_message length]-NSMaxRange(r1)-1)];
-	  [cleaned_message replaceBytesInRange: NSMakeRange(r1.location, NSMaxRange(r2)-r1.location)
-			   withBytes: "\r\n"
-			   length: 2];
-	}
+  if (r1.location != NSNotFound)
+    {
+      // We search for the first \r\n AFTER the Bcc: header and
+      // replace the whole thing with \r\n.
+      r2 = [cleaned_message rangeOfCString: "\r\n"
+                                   options: 0
+                                     range: NSMakeRange(NSMaxRange(r1)+1,[cleaned_message length]-NSMaxRange(r1)-1)];
+      [cleaned_message replaceBytesInRange: NSMakeRange(r1.location, NSMaxRange(r2)-r1.location)
+                                 withBytes: "\r\n"
+                                    length: 2];
+    }
 
-      dd = [[context activeUser] domainDefaults];
-      error = [[SOGoMailer mailerWithDomainDefaults: dd]
+  dd = [[context activeUser] domainDefaults];
+  error = [[SOGoMailer mailerWithDomainDefaults: dd]
                 sendMailData: cleaned_message
                 toRecipients: [self allBareRecipients]
                       sender: [self sender]];
-      if (!error)
-	{
-	  error = [sentFolder postData: message flags: @"seen"];
-	  if (!error)
-	    {
-	      [self imap4Connection];
-	      if (IMAP4ID > -1)
-		[imap4 markURLDeleted: [self imap4URL]];
-	      if (sourceURL && sourceFlag)
-		{
-		  sourceIMAP4URL = [NSURL URLWithString: sourceURL];
-		  [imap4 addFlags: sourceFlag toURL: sourceIMAP4URL];
-		}
-	      if (![dd mailKeepDraftsAfterSend])
-		error = [self delete];
-	    }
-	}
+  if (!error && copyToSent)
+    {
+      sentFolder = [[self mailAccountFolder] sentFolderInContext: context];
+      if ([sentFolder isKindOfClass: [NSException class]])
+        error = (NSException *) sentFolder;
+      else
+        {
+          error = [sentFolder postData: message flags: @"seen"];
+          if (!error)
+            {
+              [self imap4Connection];
+              if (IMAP4ID > -1)
+                [imap4 markURLDeleted: [self imap4URL]];
+              if (sourceURL && sourceFlag)
+                {
+                  sourceIMAP4URL = [NSURL URLWithString: sourceURL];
+                  [imap4 addFlags: sourceFlag toURL: sourceIMAP4URL];
+                }
+            }
+        }
     }
+
+  if (!error && ![dd mailKeepDraftsAfterSend])
+    [self delete];
 
   return error;
 }

@@ -1,5 +1,10 @@
 2011-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoDraftObject.m (-sendMailAndCopyToSent:):
+	renamed "sendMail" and made copying the messsage to the sent
+	folder opetional.
+	(-sendMail): new method that invokes the above one with "yes".
+
 	* OpenChange/MAPIStoreMemMailMessage.m (-save): fixed "subject"
 	header, "to" and other recipients. Fixed "content-type", that was
 	deduced after "message" was generated. Take the client-provided
