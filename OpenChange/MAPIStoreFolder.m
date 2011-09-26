@@ -553,10 +553,10 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) moveCopyMessagesWithMID: (uint64_t) srcMid
-                     fromFolder: (MAPIStoreFolder *) sourceFolder
-                        withMID: (uint64_t) targetMid
-                       wantCopy: (uint8_t) wantCopy
+- (int) moveCopyMessageWithMID: (uint64_t) srcMid
+                    fromFolder: (MAPIStoreFolder *) sourceFolder
+                       withMID: (uint64_t) targetMid
+                      wantCopy: (uint8_t) wantCopy
 {
   int rc;
   MAPIStoreMessage *sourceMsg, *destMsg;
@@ -593,6 +593,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   exclusions[PR_SOURCE_KEY >> 16] = true;
   exclusions[PR_PARENT_SOURCE_KEY >> 16] = true;
   exclusions[PR_PARENT_FID >> 16] = true;
+  exclusions[PR_CHANGE_KEY >> 16] = true;
+  exclusions[PR_PREDECESSOR_CHANGE_LIST >> 16] = true;
 
   aRow = talloc_zero (memCtx, struct SRow);
   aRow->lpProps = talloc_array (aRow, struct SPropValue, 65535);
@@ -650,10 +652,10 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   for (count = 0; rc == MAPISTORE_SUCCESS && count < midCount; count++)
     {
       [oldMessageURLs addObject: [mapping urlFromID: srcMids[count]]];
-      rc = [self moveCopyMessagesWithMID: srcMids[count]
-                              fromFolder: sourceFolder
-                                 withMID: targetMids[count]
-                                wantCopy: wantCopy];
+      rc = [self moveCopyMessageWithMID: srcMids[count]
+                             fromFolder: sourceFolder
+                                withMID: targetMids[count]
+                               wantCopy: wantCopy];
     }
 
   /* Notifications */

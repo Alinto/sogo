@@ -5,6 +5,9 @@
 	that "data" is not NULL before passing it to
 	set_SPropValue_proptag as it might be converted to a PT_ERROR
 	value.
+	(-moveCopyMessageWithMID:fromFolder:withMID:wantCopy:): fixed
+	method name. Added PR_CHANGE_KEY and PR_PREDECESSOR_CHANGE_LIST to
+	list of excluded properties.
 
 	* SoObjects/Mailer/SOGoDraftObject.m (-sendMailAndCopyToSent:):
 	renamed "sendMail" and made copying the messsage to the sent
