@@ -1,5 +1,10 @@
 2011-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMemMailMessage.m (-save): fixed "subject"
+	header, "to" and other recipients. Fixed "content-type", that was
+	deduced after "message" was generated. Take the client-provided
+	PR_CHANGE_KEY into account to avoid synchronisation errors.
+
 	* OpenChange/MAPIStoreDraftsMessage.m (-_commitProperties): make
 	use of "PR_SUBJECT_PREFIX_UNICODE" and
 	"PR_NORMALIZED_SUBJECT_UNICODE" to construct the "subject" header.

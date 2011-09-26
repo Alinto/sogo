@@ -24,19 +24,22 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
-#import <NGExtensions/NSString+Encoding.h>
 #import <NGExtensions/NGHashMap.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+Encoding.h>
 #import <NGMail/NGMimeMessage.h>
 #import <NGMail/NGMimeMessageGenerator.h>
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGImap4Connection.h>
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSString+Utilities.h>
 #import <Mailer/SOGoMailFolder.h>
 #import <Mailer/NSString+Mail.h>
 
-#import "MAPIStoreMapping.h"
 #import "MAPIStoreContext.h"
+#import "MAPIStoreMailFolder.h"
+#import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -206,48 +209,70 @@ Class NSNumberK;
 
 - (void) save
 {
+  static NSString *recIds[] = { @"to", @"cc", @"bcc" };
   NSDictionary *properties;
-  NSString *from, *to, *messageId, *subject, *body, *folderName, *flag,
+  NSMutableString *subject;
+  NSString *from, *recId, *messageId, *subjectData, *body, *folderName, *flag,
     *newIdString, *charset;
+  NSData *changeKey, *htmlData, *messageData;
+  NSArray *list;
   NSNumber *codePage;
   NSCalendarDate *date;
+  NSDictionary *recipients;
   NGMimeMessage *message;  
   NGMutableHashMap *map;
   NGMimeMessageGenerator *generator;
-  NSData *htmlData, *messageData;
   NGImap4Connection *connection;
   NGImap4Client *client;
   SOGoMailFolder *containerFolder;
   NSDictionary *result, *responseResult;
   MAPIStoreMapping *mapping;
   uint64_t mid;
+  NSUInteger count;
 
   properties = [sogoObject properties];
 
   /* headers */
-  from = [self _quoteSpecials: [properties objectForKey: MAPIPropertyKey (PR_SENT_REPRESENTING_EMAIL_ADDRESS_UNICODE)]];
-  to = [self _quoteSpecials: [properties objectForKey: MAPIPropertyKey (PR_DISPLAY_TO_UNICODE)]];
-  subject = [properties objectForKey: MAPIPropertyKey (PR_SUBJECT_UNICODE)];
-  date = [properties objectForKey: MAPIPropertyKey (PR_CLIENT_SUBMIT_TIME)];
-  messageId = [properties objectForKey: MAPIPropertyKey (PR_INTERNET_MESSAGE_ID_UNICODE)];
-
   map = [[[NGMutableHashMap alloc] initWithCapacity:16] autorelease];
-  if ([to length])
-    [map setObject: to forKey: @"to"];
+
+  from = [self _quoteSpecials: [properties objectForKey: MAPIPropertyKey (PR_ORIGINAL_AUTHOR_NAME_UNICODE)]];
   if ([from length])
     [map setObject: from forKey: @"from"];
-  if ([subject length])
-    [map setObject: [subject asQPSubjectString: @"utf-8"]
-            forKey: @"subject"];
+
+  /* save the recipients */
+  recipients = [properties objectForKey: @"recipients"];
+  if (recipients)
+    {
+      for (count = 0; count < 3; count++)
+	{
+	  recId = recIds[count];
+	  list = [recipients objectForKey: recId];
+	  if ([list count] > 0)
+	    [map setObjects: [list keysWithFormat: @"%{fullName} <%{email}>"]
+                     forKey: recId];
+	}
+    }
+  else
+    [self errorWithFormat: @"message without recipients"];
+
+  subject = [NSMutableString stringWithCapacity: 128];
+  subjectData = [properties objectForKey: MAPIPropertyKey (PR_SUBJECT_PREFIX_UNICODE)];
+  if (subjectData)
+    [subject appendString: subjectData];
+  subjectData = [properties objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
+  if (subjectData)
+    [subject appendString: subjectData];
+  [map setObject: [subject asQPSubjectString: @"utf-8"] forKey: @"subject"];
+
+  messageId = [properties objectForKey: MAPIPropertyKey (PR_INTERNET_MESSAGE_ID_UNICODE)];
   if ([messageId length])
     [map setObject: messageId forKey: @"message-id"];
+
+  date = [properties objectForKey: MAPIPropertyKey (PR_CLIENT_SUBMIT_TIME)];
   if (date)
     [map addObject: [date rfc822DateString] forKey: @"date"];
   [map addObject: @"1.0" forKey: @"MIME-Version"];
 
-  message = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
-
-  /* body */
   htmlData = [properties objectForKey: MAPIPropertyKey (PR_HTML)];
   if (htmlData)
     {
@@ -269,23 +294,28 @@ Class NSNumberK;
         default:
           charset = @"iso-8859-1";
         }
-
-      body = [NSString stringWithData: htmlData
-                   usingEncodingNamed: charset];
       [map setObject: [NSString stringWithFormat: @"text/html; charset=%@",
                                 charset]
               forKey: @"content-type"];
+    }
+  else
+    [map setObject: @"text/plain; charset=utf-8"
+            forKey: @"content-type"];
+
+  message = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
+
+  /* body */
+  if (htmlData)
+    {
+      body = [NSString stringWithData: htmlData
+                   usingEncodingNamed: charset];
       [message setBody: body];
     }
   else
     {
       body = [properties objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
       if (body)
-        {
-          [map setObject: @"text/plain; charset=utf-8"
-               forKey: @"content-type"];
-          [message setBody: body];
-        }
+        [message setBody: body];
     }
 
   /* mime message generation */
@@ -314,6 +344,14 @@ Class NSNumberK;
       [sogoObject setNameInContainer: [NSString stringWithFormat: @"%@.eml", newIdString]];
       [mapping registerURL: [self url] withID: mid];
     }
+
+  /* synchronise the cache and update the change key with the one provided by
+     the client */
+  [(MAPIStoreMailFolder *) container synchroniseCache];
+  changeKey = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
+  if (changeKey)
+    [(MAPIStoreMailFolder *) container
+        setChangeKey: changeKey forMessageWithKey: [self nameInContainer]];
 }
 
 @end
