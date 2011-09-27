@@ -124,6 +124,7 @@
                         andCount: (uint32_t) count
                       fromFolder: (MAPIStoreFolder *) sourceFolder
                         withMIDs: (uint64_t *) targetMids
+                   andChangeKeys: (struct Binary_r **) targetChangeKeys
                         wantCopy: (uint8_t) want_copy;
 
 - (int) getDeletedFMIDs: (struct I8Array_r **) fmidsPtr

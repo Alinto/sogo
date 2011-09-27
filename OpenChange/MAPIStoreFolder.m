@@ -599,7 +599,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   aRow = talloc_zero (memCtx, struct SRow);
   aRow->lpProps = talloc_array (aRow, struct SPropValue, 65535);
-      
+
   for (count = 0; count < availableProps->cValues; count++)
     {
       propTag = availableProps->aulPropTag[count];
@@ -614,6 +614,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
               aRow->cValues++;
             }
         }
+    }
+
+  if (targetChangeKey)
+    {
+      set_SPropValue_proptag(&aRow->lpProps[aRow->cValues], PR_CHANGE_KEY, targetChangeKey);
+      aRow->cValues++;
     }
 
   rc = [self createMessage: &destMsg withMID: targetMid

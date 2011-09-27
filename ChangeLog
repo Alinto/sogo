@@ -1,3 +1,17 @@
+2011-09-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_folder_move_copy_messages):
+	added the "target_change_keys" parameter.
+
+	* OpenChange/MAPIStoreFolder.m
+	(-moveCopyMessagesWithMID:fromFolder:withMID:wantCopy:): ensure
+	the message URL exists in the MAPIStoreMapping, otherwise fail
+	with MAPISTORE_ERR_NOT_FOUND, to avoid a crash. Passe the target
+	changeKey as property to the new message.
+
+	* OpenChange/MAPIStoreFSMessage.m (-objectVersion): return
+	0xff...fff when "version" does not exist in the object properties.
+
 2011-09-27  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserDefaults.m (-setBusyOffHours): new setter
@@ -12,19 +26,6 @@
 	* SoObjects/Appointments/SOGoFreeBusyObject.m
 	(-fetchFreeBusyInfosFrom:to:): add off-hours if defaults
 	SOGoBusyOffHours is true.
-
-2011-09-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
-
-	* OpenChange/MAPIStoreSOGo.m (sogo_folder_move_copy_messages):
-	added the "target_change_keys" parameter.
-
-	* OpenChange/MAPIStoreFolder.m
-	(-moveCopyMessagesWithMID:fromFolder:withMID:wantCopy:): ensure
-	the message URL exists in the MAPIStoreMapping, otherwise fail
-	with MAPISTORE_ERR_NOT_FOUND, to avoid a crash.
-
-	* OpenChange/MAPIStoreFSMessage.m (-objectVersion): return
-	0xff...fff when "version" does not exist in the object properties.
 
 2011-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
