@@ -89,7 +89,9 @@ Class NSNumberK;
 
   version = [[sogoObject properties] objectForKey: @"version"];
 
-  return exchange_globcnt ([version unsignedLongLongValue]);
+  return (version
+          ? exchange_globcnt ([version unsignedLongLongValue])
+          : 0xffffffffffffffff);
 }
 
 - (int) getProperty: (void **) data
