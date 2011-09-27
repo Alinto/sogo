@@ -76,7 +76,7 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
 - (void) _fetchHeaderData
 {
   [sogoObject fetchInfo];
-  ASSIGN (headerMimeType, [sogoObject isHTML] ? @"text/html" : @"text/plain");
+  ASSIGN (headerMimeType, ([sogoObject isHTML] ? @"text/html" : @"text/plain"));
   ASSIGN (headerEncoding, @"8bit");
   ASSIGN (headerCharset, @"utf-8");
   headerSetup = YES;
