@@ -15,6 +15,9 @@
 
 2011-09-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_folder_move_copy_messages):
+	added the "target_change_keys" parameter.
+
 	* OpenChange/MAPIStoreFolder.m
 	(-moveCopyMessagesWithMID:fromFolder:withMID:wantCopy:): ensure
 	the message URL exists in the MAPIStoreMapping, otherwise fail

@@ -556,6 +556,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (int) moveCopyMessageWithMID: (uint64_t) srcMid
                     fromFolder: (MAPIStoreFolder *) sourceFolder
                        withMID: (uint64_t) targetMid
+                  andChangeKey: (struct Binary_r *) targetChangeKey
                       wantCopy: (uint8_t) wantCopy
 {
   int rc;
@@ -636,6 +637,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                         andCount: (uint32_t) midCount
                       fromFolder: (MAPIStoreFolder *) sourceFolder
                         withMIDs: (uint64_t *) targetMids
+                   andChangeKeys: (struct Binary_r **) targetChangeKeys
                         wantCopy: (uint8_t) wantCopy
 {
   int rc = MAPISTORE_SUCCESS;
@@ -643,6 +645,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSMutableArray *oldMessageURLs;
   NSString *oldMessageURL;
   MAPIStoreMapping *mapping;
+  struct Binary_r *targetChangeKey;
 
   if ([sourceFolder isKindOfClass: isa]
       || [self isKindOfClass: [sourceFolder class]])
@@ -656,9 +659,14 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       if (oldMessageURL)
         {
           [oldMessageURLs addObject: oldMessageURL];
+          if (targetChangeKeys)
+            targetChangeKey = targetChangeKeys[count];
+          else
+            targetChangeKey = NULL;
           rc = [self moveCopyMessageWithMID: srcMids[count]
                                  fromFolder: sourceFolder
                                     withMID: targetMids[count]
+                               andChangeKey: targetChangeKey
                                    wantCopy: wantCopy];
         }
       else

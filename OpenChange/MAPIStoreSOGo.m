@@ -447,6 +447,7 @@ sogo_folder_move_copy_messages(void *folder_object,
                                void *source_folder_object,
                                uint32_t mid_count,
                                uint64_t *src_mids, uint64_t *t_mids,
+                               struct Binary_r **target_change_keys,
                                uint8_t want_copy)
 {
   MAPIStoreFolder *sourceFolder, *targetFolder;
@@ -469,6 +470,7 @@ sogo_folder_move_copy_messages(void *folder_object,
                                          andCount: mid_count
                                        fromFolder: sourceFolder
                                          withMIDs: t_mids
+                                    andChangeKeys: target_change_keys
                                          wantCopy: want_copy];
       [pool release];
     }
