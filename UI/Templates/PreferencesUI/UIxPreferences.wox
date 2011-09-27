@@ -97,6 +97,11 @@
                 const:id="dayEndTime"
                 string="item" selection="userDayEndTime"
                 /></label><br/>
+            <label><input type="checkbox" 
+                const:name="busyOffHours"
+                const:id="busyOffHours"
+                var:checked="busyOffHours" />
+              <var:string label:value="Show time as busy outside working hours"/></label><br/>
             <label><var:string label:value="First week of year :"/>
               <var:popup list="firstWeekList" item="item"
                 const:id="firstWeek"

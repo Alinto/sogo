@@ -1,3 +1,18 @@
+2011-09-27  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserDefaults.m (-setBusyOffHours): new setter
+	for the new defaults SOGoBusyOffHours, which defines if periods
+	outside business hours should be opaque (busy).
+	(-busyOffHours): getter corollary to the new method above.
+
+	* UI/PreferencesUI/UIxPreferences.m (-setBusyOffHours:): new
+	setter for the new defaults SOGoBusyOffHours.
+	(-busyOffHours): getter corollary to the new method above.
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m
+	(-fetchFreeBusyInfosFrom:to:): add off-hours if defaults
+	SOGoBusyOffHours is true.
+
 2011-09-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFolder.m

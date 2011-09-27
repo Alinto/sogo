@@ -483,6 +483,16 @@
   [userDefaults setDayEndTime: newTime];
 }
 
+- (void) setBusyOffHours: (BOOL) busyOffHours
+{
+  [userDefaults setBusyOffHours: busyOffHours];
+}
+
+- (BOOL) busyOffHours
+{
+  return [userDefaults busyOffHours];
+}
+
 - (NSArray *) firstWeekList
 {
   return [NSArray arrayWithObjects:

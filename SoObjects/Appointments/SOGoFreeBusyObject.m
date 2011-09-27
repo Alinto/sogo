@@ -244,9 +244,11 @@
                                   to: (NSCalendarDate *) endDate
 {
   SOGoAppointmentFolder *calFolder;
-//   SoSecurityManager *sm;
+  SOGoUser *user;
+  SOGoUserDefaults *ud;
   NSArray *folders;
   NSMutableArray *infos;
+  NSString *login;
   unsigned int count, max;
 
   infos = [NSMutableArray array];
@@ -263,6 +265,75 @@
                                                                    to: endDate]];
     }
 
+  login = [container ownerInContext: context];
+  user = [SOGoUser userWithLogin: login];
+  ud = [user userDefaults];
+
+  if ([ud busyOffHours])
+    {
+      NSCalendarDate *currentStartDate, *currentEndDate, *weekendStartDate, *weekendEndDate;
+      NSTimeZone *timeZone;
+      unsigned int dayStartHour, dayEndHour, intervalHours;
+      BOOL firstRange;
+
+      dayStartHour = [ud dayStartHour];
+      dayEndHour = [ud dayEndHour];
+      intervalHours = dayStartHour + 24 - dayEndHour;
+      timeZone = [ud timeZone];
+      firstRange = YES;
+
+      currentStartDate = [NSCalendarDate dateWithYear: [startDate yearOfCommonEra]
+                                                month: [startDate monthOfYear]
+                                                  day: [startDate dayOfMonth]
+                                                 hour: 0
+                                               minute: 0
+                                               second: 0
+                                             timeZone: timeZone];
+      currentEndDate = [NSCalendarDate dateWithYear: [startDate yearOfCommonEra]
+                                              month: [startDate monthOfYear]
+                                                day: [startDate dayOfMonth]
+                                               hour: dayStartHour
+                                             minute: 0
+                                             second: 0
+                                           timeZone: timeZone];
+
+      while ([currentStartDate compare: endDate] == NSOrderedAscending ||
+             [currentStartDate compare: endDate] == NSOrderedSame)
+        {
+          if ([endDate compare: currentEndDate] == NSOrderedAscending)
+            currentEndDate = endDate;
+
+          [infos addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+                                              [NSNumber numberWithBool: YES], @"c_isopaque",
+                                            ([currentStartDate compare: startDate] == NSOrderedAscending)? startDate : currentStartDate, @"startDate",
+                                          currentEndDate, @"endDate", nil]];
+
+          if (!firstRange
+              && currentEndDate != endDate
+              && ([currentEndDate dayOfWeek] == 6 || [currentEndDate dayOfWeek] == 0))
+            {
+              // Fill weekend days
+              weekendStartDate = currentEndDate;
+              weekendEndDate = [weekendStartDate addYear:0 month:0 day:0 hour:(-[weekendStartDate hourOfDay] + dayEndHour) minute:0 second:0];
+              [infos addObject: [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool: YES], @"c_isopaque",
+                                              weekendStartDate, @"startDate",
+                                              weekendEndDate, @"endDate", nil]];
+            }
+
+          // Compute next range
+          if (firstRange)
+            {
+              currentStartDate = [currentStartDate addYear:0 month:0 day:0 hour:dayEndHour minute:0 second:0];
+              firstRange = NO;
+            }
+          else
+            {
+              currentStartDate = [currentStartDate addYear:0 month:0 day:1 hour:0 minute:0 second:0];
+            }      
+          currentEndDate = [currentStartDate addYear:0 month:0 day:0 hour:intervalHours minute:0 second:0];
+        }
+    }
+  
   return infos;
 }
 

@@ -283,6 +283,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [[self dayEndTime] timeValue];
 }
 
+- (void) setBusyOffHours: (BOOL) newValue
+{
+  [self setBool: newValue forKey: @"SOGoBusyOffHours"];
+}
+
+- (BOOL) busyOffHours
+{
+  return [self boolForKey: @"SOGoBusyOffHours"];
+}
+
 - (void) setTimeZoneName: (NSString *) newValue
 {
   [self setObject: newValue forKey: @"SOGoTimeZone"];

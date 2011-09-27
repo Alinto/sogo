@@ -72,6 +72,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (NSString *) dayEndTime;
 - (unsigned int) dayEndHour;
 
+- (void) setBusyOffHours: (BOOL) busyOffHours;
+- (BOOL) busyOffHours;
+
 - (void) setTimeZoneName: (NSString *) newValue;
 - (NSString *) timeZoneName;
 
