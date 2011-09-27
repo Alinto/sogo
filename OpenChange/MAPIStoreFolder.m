@@ -641,6 +641,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   int rc = MAPISTORE_SUCCESS;
   NSUInteger count;
   NSMutableArray *oldMessageURLs;
+  NSString *oldMessageURL;
   MAPIStoreMapping *mapping;
 
   if ([sourceFolder isKindOfClass: isa]
@@ -651,11 +652,17 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   mapping = [[self context] mapping];
   for (count = 0; rc == MAPISTORE_SUCCESS && count < midCount; count++)
     {
-      [oldMessageURLs addObject: [mapping urlFromID: srcMids[count]]];
-      rc = [self moveCopyMessageWithMID: srcMids[count]
-                             fromFolder: sourceFolder
-                                withMID: targetMids[count]
-                               wantCopy: wantCopy];
+      oldMessageURL = [mapping urlFromID: srcMids[count]];
+      if (oldMessageURL)
+        {
+          [oldMessageURLs addObject: oldMessageURL];
+          rc = [self moveCopyMessageWithMID: srcMids[count]
+                                 fromFolder: sourceFolder
+                                    withMID: targetMids[count]
+                                   wantCopy: wantCopy];
+        }
+      else
+        rc = MAPISTORE_ERR_NOT_FOUND;
     }
 
   /* Notifications */

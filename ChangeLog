@@ -1,5 +1,10 @@
 2011-09-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m
+	(-moveCopyMessagesWithMID:fromFolder:withMID:wantCopy:): ensure
+	the message URL exists in the MAPIStoreMapping, otherwise fail
+	with MAPISTORE_ERR_NOT_FOUND, to avoid a crash.
+
 	* OpenChange/MAPIStoreFSMessage.m (-objectVersion): return
 	0xff...fff when "version" does not exist in the object properties.
 
