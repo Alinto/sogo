@@ -1,5 +1,9 @@
 2011-09-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFSMessage.m (-getPrChangeKey:inMemCtx:):
+	first return the value stored in the plist, if present. Otherwise
+	fallback to the method making use of objectVersion.
+
 	* OpenChange/MAPIStoreSOGo.m (sogo_folder_move_copy_messages):
 	added the "target_change_keys" parameter.
 

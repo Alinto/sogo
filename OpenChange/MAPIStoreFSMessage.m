@@ -25,10 +25,12 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
+#import <NGExtensions/NSObject+Logs.h>
 
 #import "MAPIStoreContext.h"
 #import "MAPIStorePropertySelectors.h"
 #import "MAPIStoreTypes.h"
+#import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "SOGoMAPIFSMessage.h"
@@ -127,6 +129,24 @@ Class NSNumberK;
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPrChangeKey: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSData *changeKey;
+  int rc;
+
+  changeKey = [[sogoObject properties]
+                objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
+  if (changeKey)
+    {
+      *data = [changeKey asBinaryInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = [super getPrChangeKey: data inMemCtx: memCtx];
+
+  return rc;
+}
+
 - (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -206,6 +226,9 @@ Class NSNumberK;
   newVersion = exchange_globcnt ([[self context] getNewChangeNumber] >> 16);
   [newProperties setObject: [NSNumber numberWithUnsignedLongLong: newVersion]
                     forKey: @"version"];
+
+  [self logWithFormat: @"%d props in dict", [newProperties count]];
+
   [sogoObject appendProperties: newProperties];
   [sogoObject save];
   [self resetNewProperties];
