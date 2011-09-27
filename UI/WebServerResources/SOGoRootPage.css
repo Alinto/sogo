@@ -6,6 +6,11 @@ IMG#preparedAnimation
 { width: 0px;
   height: 0px; }
 
+DIV.linkbanner A#about
+{ float: right;
+  margin: 0px;
+  padding: 0px .5em; }
+
 DIV#aboutBox
 { position: absolute;
   z-index: 1000;

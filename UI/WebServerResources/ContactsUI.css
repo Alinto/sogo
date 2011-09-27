@@ -21,7 +21,7 @@
 
 DIV#rightPanel
 { position: absolute;
-  top: 65px;
+  top: 80px;
   left: 15em;
   margin-left: 5px;
   right: 0px;
@@ -106,7 +106,7 @@ TABLE.titletable TD.titlecell SELECT
 
 DIV#contactFoldersList
 { position: absolute;
-  top: 69px;
+  top: 84px;
   left: 0px;
   width: 15em;
   bottom: 0px;

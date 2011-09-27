@@ -506,6 +506,15 @@
   return [ud language];
 }
 
+- (BOOL) userHasVacationEnabled
+{
+  NSDictionary *vacationOptions;
+
+  vacationOptions = [[[context activeUser] userDefaults] vacationOptions];
+
+  return (vacationOptions && [[vacationOptions objectForKey: @"enabled"] boolValue]);
+}
+
 /* UserDefaults, UserSettings */
 - (NSString *) _dictionaryWithKeys: (NSArray *) keys
                         fromSource: (SOGoDefaultsSource *) source

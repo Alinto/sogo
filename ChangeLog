@@ -18,6 +18,9 @@
 
 2011-09-27  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/Common/UIxPageFrame.m (-userHasVacationEnabled): new method
+	that returns whether the user has an automatic vacation message enabled.
+
 	* SoObjects/SOGo/SOGoUserDefaults.m (-setBusyOffHours): new setter
 	for the new defaults SOGoBusyOffHours, which defines if periods
 	outside business hours should be opaque (busy).
@@ -249,7 +252,7 @@
 	* OpenChange/MAPIStoreMailFolder.m: (moveCopy...) Cleaned up some
 	code and we now also correctly send notification updates for the
 	destination folder
-		
+
 2011-09-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* OpenChange/MAPIStoreMapping.m: (MAPIStoreMappingTDBTraverse())
@@ -259,7 +262,7 @@
 	indexing.tdb database (per user).
 
 	* OpenChange/MAPIStoreSOGo.m: Some cleanups to ease current and
-	future debugging 
+	future debugging
 
 2011-08-18  Francis Lachapelle  <flachapelle@inverse.ca>
 

@@ -61,7 +61,8 @@
                 ><a id="logoff" var:href="logoffPath"
                   ><var:string label:value="Disconnect"/> </a
                   ><span id="userIdentificationDisplay">
-                  <var:string var:value="userIdentification"/> | </span
+                  <var:if condition="userHasVacationEnabled"><img rsrc:src="mail_light_right.png" label:title="Vacation message is enabled" /></var:if>
+                  <var:string var:value="userIdentification"/></span
                   ></var:if>
 	      <var:if condition="userHasCalendarAccess">
 		<var:if condition="isCalendar">
@@ -73,7 +74,7 @@
 		    var:href="relativeCalendarPath"
 		    ><var:string label:value="Calendar" /></a>
 		</var:if>
-		|
+		
 	      </var:if>
 	      <var:if condition="isContacts">
 		<span class="active"><var:string label:value="Address Book"
@@ -84,7 +85,7 @@
 		  var:href="relativeContactsPath"
 		  ><var:string label:value="Address Book" /></a>
 	      </var:if>
-	      |
+	      
 	      <var:if condition="userHasMailAccess">
 		<var:if condition="isMail">
 		    <span class="active"><var:string label:value="Mail"
@@ -94,13 +95,13 @@
 		  <a id="mailBannerLink" var:href="relativeMailPath"
 		    ><var:string label:value="Mail" /></a>
 		</var:if>
-		|
+		
 	      </var:if>
 	      <a id="preferencesBannerLink"
 		var:href="relativePreferencesPath"
 		><var:string label:value="Preferences" /></a>
 	      <var:if condition="isSuperUser">
-		|
+		
 		<var:if condition="isAdministration">
 		    <span class="active"><var:string label:value="Administration"
 		      /></span>
@@ -111,7 +112,7 @@
 		</var:if>
 	      </var:if>
 	      <var:if condition="isUIxDebugEnabled"
-		>| <a id="consoleBannerLink"
+		> <a id="consoleBannerLink"
 		  href="#"><var:string
 		    label:value="Log Console (dev.)" /></a
 		  ></var:if>

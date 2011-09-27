@@ -1,6 +1,6 @@
 DIV#leftPanel
 { position: absolute;
-  top: 65px;
+  top: 80px;
   left: 0px;
   width: 19.25em;
   bottom: 0px;
@@ -83,17 +83,17 @@ UL#tasksList LI
   white-space: nowrap; }
 
 UL#tasksList LI.overdue
-{ color: #f00; }
+{ color: #f00 !important; }
 
 UL#tasksList LI.duetoday
-{ color: #00f; }
+{ color: #00f !important; }
 
 UL#tasksList LI.completed
 { text-decoration: line-through;
   color: #000; }
 
 UL#tasksList LI.duelater
-{ color: #999; }
+{ color: #999 !important; }
 
 UL#tasksList LI.important SPAN
 { color: #f00 !important;
@@ -120,7 +120,7 @@ UL#tasksList LI[class~="_selected"].completed
 
 DIV#rightPanel
 { position: absolute;
-  top: 65px;
+  top: 80px;
   left: 19.25em;
   right: 0px;
   bottom: 0px;

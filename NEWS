@@ -2,10 +2,13 @@
 ---------------------
 New Features
  - new user defaults SOGoDefaultCalendar to specify which calendar is used when
-   creating an event or a task (selected, personal, first enabled).
+   creating an event or a task (selected, personal, first enabled)
+ - new user defaults SOGoBusyOffHours to specify if off-hours should be
+   automatically added to the free-busy information
 
 Enhancements
- - phone numbers in the contacts web module are now links (tel:).
+ - phone numbers in the contacts web module are now links (tel:)
+ - revamp of the modules link banner (15-pixel taller)
 
 Bug Fixes
  - 

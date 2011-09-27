@@ -121,32 +121,49 @@ DIV.linkbanner
   width: 100%;
   top: 0px;
   left: 0px;
+  height: 30px;
   z-index: 100;
+  font-size: 12px;
+  line-height: 26px;
   color: #aaa; }
 
 DIV.linkbanner A,
 DIV.linkbanner SPAN
-{ cursor: default;
+{ float: left;
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
   color: #ddd;
   text-decoration: none;
   top: 0px;
   left: 0px;
-  padding: 2px 5px; }
+  padding: 0px 0.5em; }
+
+DIV.linkbanner A
+{ cursor: pointer; }
 
 DIV.linkbanner SPAN
-{ color: #afafff; }
+{ border-top: 2px solid #afafff;
+  border-bottom: 2px solid #000;
+  color: #afafff;
+  color: #fff;
+  font-weight: bold; }
 
 DIV.linkbanner A:hover
-{ color: #dd5; }
+{ background-color: #666;
+  border-top: 2px solid #666;
+  border-bottom: 2px solid #666; }
 
 DIV.linkbanner A#logoff, DIV.linkbanner SPAN#userIdentificationDisplay
 { float: right;
   margin: 0px;
-  padding: 0px;
-  padding-right: .5em; }
+  padding: 0px .5em; }
 
 DIV.linkbanner SPAN#userIdentificationDisplay
-{ color: #DDDDDD; }
+{ border-top: 2px solid #000;
+  color: #DDDDDD; }
+
+DIV.linkbanner IMG
+{ padding: 0px 4px; }
 
 .linkbannerlinks
 { vertical-align: bottom;
@@ -297,7 +314,7 @@ DIV#logConsole
   background-color: #fff;
   overflow-y: scroll;
   color: #222;
-  top: 1em;
+  top: 30px;
   left: 0px;
   right: 0px;
   height: 15em; }
@@ -839,6 +856,8 @@ DIV.tabsContainer > UL LI.active
 { background: transparent url('tab_a_active_bg.png') no-repeat scroll top right !important; }
 DIV.tabsContainer > UL LI.active SPAN
 { background: transparent url('tab_span_active_bg.png') no-repeat !important; }
+DIV.tabsContainer > UL LI SPAN:hover
+{ cursor: pointer; }
 DIV.tabsContainer > UL LI.first
 { margin-left: -1px;
   padding-left: -1px; } /* Firefox will complain */
