@@ -132,13 +132,11 @@ static Class SOGoMailFolderK;
 - (id) initWithSOGoObject: (id) newSOGoObject
               inContainer: (MAPIStoreObject *) newContainer
 {
-  NSURL *propsURL;
   NSString *urlString;
 
   if ((self = [super initWithSOGoObject: newSOGoObject inContainer: newContainer]))
     {
       urlString = [[self url] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-      propsURL = [NSURL URLWithString: urlString];
       ASSIGN (versionsMessage,
               [SOGoMAPIFSMessage objectWithName: @"versions.plist"
                                  inContainer: propsFolder]);
@@ -727,7 +725,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   uint64_t modseq;
   NSDictionary *versionProperties, *status;
   NSMutableDictionary *messages, *mapping;
-  NSNumber *newChangeNumNbr, *highestModseq;
+  NSNumber *newChangeNumNbr; // , *highestModseq;
   uint64_t newChangeNum;
   NSUInteger count, max;
 
@@ -741,7 +739,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
           status
             = [sogoObject
                 statusForFlags: [NSArray arrayWithObject: @"HIGHESTMODSEQ"]];
-          highestModseq = [status objectForKey: @"highestmodseq"];
+          // highestModseq = [status objectForKey: @"highestmodseq"];
 
           versionProperties = [versionsMessage properties];
           messages = [versionProperties objectForKey: @"Messages"];
