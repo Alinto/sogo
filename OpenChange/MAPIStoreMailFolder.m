@@ -132,11 +132,11 @@ static Class SOGoMailFolderK;
 - (id) initWithSOGoObject: (id) newSOGoObject
               inContainer: (MAPIStoreObject *) newContainer
 {
-  NSString *urlString;
+  // NSString *urlString;
 
   if ((self = [super initWithSOGoObject: newSOGoObject inContainer: newContainer]))
     {
-      urlString = [[self url] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+      // urlString = [[self url] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
       ASSIGN (versionsMessage,
               [SOGoMAPIFSMessage objectWithName: @"versions.plist"
                                  inContainer: propsFolder]);
@@ -515,7 +515,10 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       [searchQualifier autorelease];
     }
   else
-    searchQualifier = [self nonDeletedQualifier];
+    {
+      lastModseqNbr = 0;
+      searchQualifier = [self nonDeletedQualifier];
+    }
 
   uids = [sogoObject fetchUIDsMatchingQualifier: searchQualifier
                                    sortOrdering: nil];
@@ -723,7 +726,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSArray *deletedKeys, *deletedUIDs;
   NSNumber *changeNumNbr;
   uint64_t modseq;
-  NSDictionary *versionProperties, *status;
+  NSDictionary *versionProperties; // , *status;
   NSMutableDictionary *messages, *mapping;
   NSNumber *newChangeNumNbr; // , *highestModseq;
   uint64_t newChangeNum;
@@ -736,9 +739,9 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                  unsignedLongLongValue];
       if (modseq > 0)
         {
-          status
-            = [sogoObject
-                statusForFlags: [NSArray arrayWithObject: @"HIGHESTMODSEQ"]];
+          // status
+          //   = [sogoObject
+          //       statusForFlags: [NSArray arrayWithObject: @"HIGHESTMODSEQ"]];
           // highestModseq = [status objectForKey: @"highestmodseq"];
 
           versionProperties = [versionsMessage properties];
@@ -943,7 +946,10 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   //
   v = [[[result objectForKey: @"RawResponse"] objectForKey: @"ResponseResult"] objectForKey: @"flag"];
   if (v)
-    _parseCOPYUID (v, &destUIDs);
+    {
+      destUIDs = nil;
+      _parseCOPYUID (v, &destUIDs);
+    }
   else
     {
       /* FIXME: this may fail if new messages are appended to the folder
