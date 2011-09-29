@@ -61,7 +61,7 @@
                 ><a id="logoff" var:href="logoffPath"
                   ><var:string label:value="Disconnect"/> </a
                   ><span id="userIdentificationDisplay">
-                  <var:if condition="userHasVacationEnabled"><img rsrc:src="mail_light_right.png" label:title="Vacation message is enabled" /></var:if>
+                  <var:if condition="userHasVacationEnabled"><img rsrc:src="status.vacation-msg.png" label:title="Vacation message is enabled" /></var:if>
                   <var:string var:value="userIdentification"/></span
                   ></var:if>
 	      <var:if condition="userHasCalendarAccess">
