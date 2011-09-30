@@ -176,6 +176,20 @@ static void _fillFlatUIDWithGUID (struct FlatUID_r *flatUID, const struct GUID *
   [self appendBytes: (char *) &value length: 1];
 }
 
+- (void) appendUInt16: (uint16_t) value
+{
+  NSUInteger count;
+  char bytes[2];
+
+  for (count = 0; count < 2; count++)
+    {
+      bytes[count] = value & 0xff;
+      value >>= 8;
+    }
+
+  [self appendBytes: bytes length: 2];
+}
+
 - (void) appendUInt32: (uint32_t) value
 {
   NSUInteger count;

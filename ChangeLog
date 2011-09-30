@@ -1,5 +1,7 @@
 2011-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSData+MAPIStore.m (-appendUInt16): new method.
+
 	* OpenChange/EOQualifier+MAPIFS.m (-[EOKeyValueQUalifier
 	_evaluateMAPIFSMessageProperties:): ensure finalKey is never nil
 	nor undefined.

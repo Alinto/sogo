@@ -47,6 +47,7 @@
 @interface NSMutableData (MAPIStoreDataTypes)
 
 - (void) appendUInt8: (uint8_t) value;
+- (void) appendUInt16: (uint16_t) value;
 - (void) appendUInt32: (uint32_t) value;
 
 @end
