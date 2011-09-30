@@ -123,6 +123,9 @@ typedef BOOL (*EOComparator) (id, SEL, id);
       else
         finalKey = [NSNumber numberWithInt: [key intValue]];
     }
+  else
+    finalKey = @"";
+
   propValue = [properties objectForKey: finalKey];
   comparator = (EOComparator) [propValue methodForSelector: operator];
 
