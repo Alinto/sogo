@@ -190,7 +190,7 @@
 		  clazz];
 	}
       else
-	[self logWithFormat:@"ERROR: did not find field extractor class!"];
+	[self logWithFormat:@"ERROR: did not find field extractor class (%@)", extractorClassName];
     }
   if ([extractor isNotNull])
     quickExtractor = extractor;

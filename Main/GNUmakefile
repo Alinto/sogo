@@ -6,6 +6,7 @@ include ../Version
 
 ADDITIONAL_INCLUDE_DIRS += 
 ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj/
+ADDITIONAL_LDFLAGS += -Wl,--no-as-needed
 
 SOGOD     = sogod
 TOOL_NAME = $(SOGOD)
