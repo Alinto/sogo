@@ -31,6 +31,7 @@
 #import <NGCards/iCalCalendar.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoUserManager.h>
 #import <Mailer/NSData+Mail.h>
 #import <Mailer/SOGoMailBodyPart.h>
 #import <Mailer/SOGoMailObject.h>
@@ -1175,57 +1176,113 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 - (void) getMessageData: (struct mapistore_message **) dataPtr
                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  struct SRowSet *recipients;
   NSArray *to;
-  NSInteger count, max;
+  NSInteger count, max, p;
   NGImap4EnvelopeAddress *currentAddress;
-  NSString *text;
+  NSString *username, *cn, *email;
+  NSData *entryId;
+  NSDictionary *contactInfos;
+  SOGoUserManager *mgr;
   struct mapistore_message *msgData;
+  struct mapistore_message_recipient *recipient;
 
   [super getMessageData: &msgData inMemCtx: memCtx];
-  /* Retrieve recipients from the message */
-  to = [sogoObject toEnvelopeAddresses];
-  max = [to count];
-  recipients = talloc_zero (msgData, struct SRowSet);
-  recipients->cRows = max;
-  recipients->aRow = talloc_array (recipients, struct SRow, max);
-  for (count = 0; count < max; count++)
+
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  if (mailIsEvent)
+    [[self _appointmentWrapper] fillMessageData: msgData
+                                       inMemCtx: memCtx];
+  else
     {
-      recipients->aRow[count].ulAdrEntryPad = 0;
-      recipients->aRow[count].cValues = 3;
-      recipients->aRow[count].lpProps = talloc_array (recipients->aRow,
-                                                      struct SPropValue,
-                                                      4);
+      /* Retrieve recipients from the message */
+      to = [sogoObject toEnvelopeAddresses];
+      max = [to count];
 
-      // TODO (0x01 = primary recipient)
-      set_SPropValue_proptag (recipients->aRow[count].lpProps + 0,
-                              PR_RECIPIENT_TYPE,
-                              MAPILongValue (recipients->aRow, 0x01));
-     
-      set_SPropValue_proptag (recipients->aRow[count].lpProps + 1,
-                              PR_ADDRTYPE_UNICODE,
-                              [@"SMTP" asUnicodeInMemCtx: recipients->aRow]);
+      msgData->columns = set_SPropTagArray (msgData, 9,
+                                            PR_OBJECT_TYPE,
+                                            PR_DISPLAY_TYPE,
+                                            PR_7BIT_DISPLAY_NAME_UNICODE,
+                                            PR_SMTP_ADDRESS_UNICODE,
+                                            PR_SEND_INTERNET_ENCODING,
+                                            PR_RECIPIENT_DISPLAY_NAME_UNICODE,
+                                            PR_RECIPIENT_FLAGS,
+                                            PR_RECIPIENT_ENTRYID,
+                                            PR_RECIPIENT_TRACKSTATUS);
 
-      currentAddress = [to objectAtIndex: count];
-      // text = [currentAddress personalName];
-      // if (![text length])
-      text = [currentAddress baseEMail];
-      if (!text)
-        text = @"";
-      set_SPropValue_proptag (recipients->aRow[count].lpProps + 2,
-                              PR_EMAIL_ADDRESS_UNICODE,
-                              [text asUnicodeInMemCtx: recipients->aRow]);
-
-      text = [currentAddress personalName];
-      if ([text length] > 0)
+      if (max > 0)
         {
-          recipients->aRow[count].cValues++;
-          set_SPropValue_proptag (recipients->aRow[count].lpProps + 3,
-                                  PR_DISPLAY_NAME_UNICODE,
-                                  [text asUnicodeInMemCtx: recipients->aRow]);
+          mgr = [SOGoUserManager sharedUserManager];
+          msgData->recipients_count = max;
+          msgData->recipients = talloc_array (msgData, struct mapistore_message_recipient *, max);
+          for (count = 0; count < max; count++)
+            {
+              msgData->recipients[count]
+                = talloc_zero (msgData, struct mapistore_message_recipient);
+              recipient = msgData->recipients[count];
+
+              currentAddress = [to objectAtIndex: count];
+              cn = [currentAddress personalName];
+              email = [currentAddress baseEMail];
+              if ([cn length] == 0)
+                cn = email;
+              contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
+
+              if (contactInfos)
+                {
+                  username = [contactInfos objectForKey: @"c_uid"];
+                  // recipient->username = [username asUnicodeInMemCtx: msgData];
+                  // entryId = MAPIStoreInternalEntryId (username);
+                  entryId = MAPIStoreExternalEntryId (cn, email);
+                }
+              else
+                entryId = MAPIStoreExternalEntryId (cn, email);
+              recipient->type = MAPI_TO;
+
+              /* properties */
+              p = 0;
+              recipient->data = talloc_array (msgData, void *, msgData->columns->cValues);
+              memset (recipient->data, 0, msgData->columns->cValues * sizeof (void *));
+
+              // PR_OBJECT_TYPE = MAPI_MAILUSER (see MAPI_OBJTYPE)
+              recipient->data[p] = MAPILongValue (msgData, MAPI_MAILUSER);
+              p++;
+
+              // PR_DISPLAY_TYPE = DT_MAILUSER (see MS-NSPI)
+              recipient->data[p] = MAPILongValue (msgData, 0);
+              p++;
+              
+              // PR_7BIT_DISPLAY_NAME_UNICODE
+              recipient->data[p] = [cn asUnicodeInMemCtx: msgData];
+              p++;
+
+              // PR_SMTP_ADDRESS_UNICODE
+              recipient->data[p] = [email asUnicodeInMemCtx: msgData];
+              p++;
+              
+              // PR_SEND_INTERNET_ENCODING = 0x00060000 (plain text, see OXCMAIL)
+              recipient->data[p] = MAPILongValue (msgData, 0x00060000);
+              p++;
+
+              // PR_RECIPIENT_DISPLAY_NAME_UNICODE
+              recipient->data[p] = [cn asUnicodeInMemCtx: msgData];
+              p++;
+
+              // PR_RECIPIENT_FLAGS
+              recipient->data[p] = MAPILongValue (msgData, 0x01);
+              p++;
+
+              // PR_RECIPIENT_ENTRYID
+              recipient->data[p] = [entryId asBinaryInMemCtx: msgData];
+              p++;
+
+              // PR_RECIPIENT_TRACKSTATUS
+              recipient->data[p] = MAPILongValue (msgData, 0x00);
+              p++;
+            }
         }
     }
-  msgData->recipients = recipients;
   *dataPtr = msgData;
 }
 

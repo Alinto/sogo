@@ -24,6 +24,7 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSData.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSTimeZone.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalDateTime.h>
@@ -31,7 +32,9 @@
 #import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalPerson.h>
+#import <SOGo/SOGoUserManager.h>
 
+#import "MAPIStoreMessage.h"
 #import "MAPIStoreRecurrenceUtils.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
@@ -116,6 +119,229 @@ static NSCharacterSet *hexCharacterSet = nil;
   [globalObjectId release];
   [cleanGlobalObjectId release];
   [super dealloc];
+}
+
+- (void) fillMessageData: (struct mapistore_message *) msgData
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *username, *cn, *email;
+  NSData *entryId;
+  NSArray *attendees;
+  iCalPerson *person;
+  iCalPersonPartStat partStat;
+  uint32_t partStatValue;
+  SOGoUserManager *mgr;
+  NSDictionary *contactInfos;
+  struct mapistore_message_recipient *recipient;
+  int count, max, p;
+
+  msgData->columns = set_SPropTagArray (msgData, 9,
+                                        PR_OBJECT_TYPE,
+                                        PR_DISPLAY_TYPE,
+                                        PR_7BIT_DISPLAY_NAME_UNICODE,
+                                        PR_SMTP_ADDRESS_UNICODE,
+                                        PR_SEND_INTERNET_ENCODING,
+                                        PR_RECIPIENT_DISPLAY_NAME_UNICODE,
+                                        PR_RECIPIENT_FLAGS,
+                                        PR_RECIPIENT_ENTRYID,
+                                        PR_RECIPIENT_TRACKSTATUS);
+// ,
+//                                         PR_RECORD_KEY);
+
+  attendees = [event attendees];
+  max = [attendees count];
+
+  if (max > 0)
+    {
+      mgr = [SOGoUserManager sharedUserManager];
+      msgData->recipients_count = max + 1;
+      msgData->recipients = talloc_array (msgData, struct mapistore_message_recipient *, max + 1);
+      for (count = 0; count < max; count++)
+        {
+          msgData->recipients[count]
+            = talloc_zero (msgData, struct mapistore_message_recipient);
+          recipient = msgData->recipients[count];
+
+          person = [attendees objectAtIndex: count];
+          cn = [person cn];
+          email = [person rfc822Email];
+          if ([cn length] == 0)
+            cn = email;
+          contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
+
+          if (contactInfos)
+            {
+              username = [contactInfos objectForKey: @"c_uid"];
+              recipient->username = [username asUnicodeInMemCtx: msgData];
+              entryId = MAPIStoreInternalEntryId (username);
+            }
+          else
+            entryId = MAPIStoreExternalEntryId (cn, email);
+          recipient->type = MAPI_TO;
+
+          /* properties */
+          p = 0;
+          recipient->data = talloc_array (msgData, void *, msgData->columns->cValues);
+          memset (recipient->data, 0, msgData->columns->cValues * sizeof (void *));
+
+          // PR_OBJECT_TYPE = MAPI_MAILUSER (see MAPI_OBJTYPE)
+          recipient->data[p] = MAPILongValue (msgData, MAPI_MAILUSER);
+          p++;
+          
+          // PR_DISPLAY_TYPE = DT_MAILUSER (see MS-NSPI)
+          recipient->data[p] = MAPILongValue (msgData, 0);
+          p++;
+
+          // PR_7BIT_DISPLAY_NAME_UNICODE
+          recipient->data[p] = [cn asUnicodeInMemCtx: msgData];
+          p++;
+
+          // PR_SMTP_ADDRESS_UNICODE
+          recipient->data[p] = [email asUnicodeInMemCtx: msgData];
+          p++;
+
+          // PR_SEND_INTERNET_ENCODING = 0x00060000 (plain text, see OXCMAIL)
+          recipient->data[p] = MAPILongValue (msgData, 0x00060000);
+          p++;
+
+          // PR_RECIPIENT_DISPLAY_NAME_UNICODE
+          recipient->data[p] = [cn asUnicodeInMemCtx: msgData];
+          p++;
+
+          // PR_RECIPIENT_FLAGS
+          recipient->data[p] = MAPILongValue (msgData, 1);
+          p++;
+
+          // PR_RECIPIENT_ENTRYID
+          recipient->data[p] = [entryId asBinaryInMemCtx: msgData];
+          p++;
+
+          // PR_RECIPIENT_TRACKSTATUS
+          /*
+            respNone 0x00000000
+            No response is required for this object. This is the case for Appointment objects and Meeting Response objects.
+            respOrganized 0x00000001
+            This Meeting object belongs to the organizer.
+            respTentative 0x00000002
+            This value on the attendee's Meeting object indicates that the
+            attendee has tentatively accepted the Meeting Request object.
+            respAccepted 0x00000003
+            This value on the attendee's Meeting object indicates that the
+            attendee has accepted the Meeting Request object.
+            respDeclined 0x00000004
+            This value on the attendee's Meeting object indicates that the attendee has declined the Meeting Request
+            object.
+            respNotResponded 0x00000005
+            This value on the attendee's Meeting object indicates that the attendee has
+            not yet responded. This value is on the Meet
+          */
+          partStat = [person participationStatus];
+          switch (partStat)
+            {
+            case iCalPersonPartStatAccepted:
+              partStatValue = 3;
+              break;
+            case iCalPersonPartStatDeclined:
+              partStatValue = 4;
+              break;
+            case iCalPersonPartStatTentative:
+              partStatValue = 2;
+              break;
+            default:
+              partStatValue = 5;
+            }
+          recipient->data[p] = MAPILongValue (msgData, partStatValue);
+          p++;
+
+          // // PR_RECORD_KEY
+          // recipient->data[p] = [entryId asBinaryInMemCtx: msgData];
+          // p++;
+        }
+
+      /* On with the organizer: */
+      {
+        msgData->recipients[max]
+          = talloc_zero (msgData, struct mapistore_message_recipient);
+        recipient = msgData->recipients[max];
+
+        person = [event organizer];
+        cn = [person cn];
+        email = [person rfc822Email];
+        contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
+
+        if (contactInfos)
+          {
+            username = [contactInfos objectForKey: @"c_uid"];
+            recipient->username = [username asUnicodeInMemCtx: msgData];
+            entryId = MAPIStoreInternalEntryId (username);
+          }
+        else
+          entryId = MAPIStoreExternalEntryId (cn, email);
+        recipient->type = MAPI_TO;
+
+        p = 0;
+        recipient->data = talloc_array (msgData, void *, msgData->columns->cValues);
+        memset (recipient->data, 0, msgData->columns->cValues * sizeof (void *));
+
+        // PR_OBJECT_TYPE = MAPI_MAILUSER (see MAPI_OBJTYPE)
+        recipient->data[p] = MAPILongValue (msgData, MAPI_MAILUSER);
+        p++;
+          
+        // PR_DISPLAY_TYPE = DT_MAILUSER (see MS-NSPI)
+        recipient->data[p] = MAPILongValue (msgData, 0);
+        p++;
+
+        // PR_7BIT_DISPLAY_NAME_UNICODE
+        recipient->data[p] = [cn asUnicodeInMemCtx: msgData];
+        p++;
+
+        // PR_SMTP_ADDRESS_UNICODE
+        recipient->data[p] = [email asUnicodeInMemCtx: msgData];
+        p++;
+
+        // PR_SEND_INTERNET_ENCODING = 0x00060000 (plain text, see OXCMAIL)
+        recipient->data[p] = MAPILongValue (msgData, 0x00060000);
+        p++;
+
+        // PR_RECIPIENT_DISPLAY_NAME_UNICODE
+        recipient->data[p] = [cn asUnicodeInMemCtx: msgData];
+        p++;
+
+        // PR_RECIPIENT_FLAGS
+        recipient->data[p] = MAPILongValue (msgData, 3);
+        p++;
+
+        // PR_RECIPIENT_ENTRYID = NULL
+        recipient->data[p] = [entryId asBinaryInMemCtx: msgData];
+        p++;
+
+        // PR_RECIPIENT_TRACKSTATUS
+        /*
+          respNone 0x00000000
+          No response is required for this object. This is the case for Appointment objects and Meeting Response objects.
+          respOrganized 0x00000001
+          This Meeting object belongs to the organizer.
+          respTentative 0x00000002
+          This value on the attendee's Meeting object indicates that the
+          attendee has tentatively accepted the Meeting Request object.
+          respAccepted 0x00000003
+          This value on the attendee's Meeting object indicates that the
+          attendee has accepted the Meeting Request object.
+          respDeclined 0x00000004
+          This value on the attendee's Meeting object indicates that the attendee has declined the Meeting Request
+          object.
+          respNotResponded 0x00000005
+          This value on the attendee's Meeting object indicates that the attendee has
+          not yet responded. This value is on the Meet
+        */
+        recipient->data[p] = MAPILongValue (msgData, 1);
+        p++;
+
+        // // PR_RECORD_KEY
+        // recipient->data[p] = [entryId asBinaryInMemCtx: msgData];
+        // p++;
+      }
+    }
 }
 
 - (int) getPrIconIndex: (void **) data // TODO

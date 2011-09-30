@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
@@ -33,7 +34,9 @@
 #import "MAPIStoreAttachmentTable.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreFolder.h"
+#import "MAPIStorePropertySelectors.h"
 #import "MAPIStoreTypes.h"
+#import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
@@ -45,6 +48,102 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 #include <mapistore/mapistore_nameid.h>
+
+NSData *MAPIStoreInternalEntryId (NSString *username)
+{
+  NSMutableData *entryId;
+  static uint8_t providerUid[] = { 0xdc, 0xa7, 0x40, 0xc8,
+                                   0xc0, 0x42, 0x10, 0x1a,
+                                   0xb4, 0xb9, 0x08, 0x00,
+                                   0x2b, 0x2f, 0xe1, 0x82 };
+  NSString *x500dn;
+
+  /* structure:
+     flags: 32
+     provideruid: 32 * 4
+     version: 32
+     type: 32
+     X500DN: variable */
+
+  entryId = [NSMutableData dataWithCapacity: 256];
+  [entryId appendUInt32: 0]; // flags
+  [entryId appendBytes: providerUid length: 16]; // provideruid
+  [entryId appendUInt32: 1]; // version
+  [entryId appendUInt32: 0]; // type (local mail user)
+
+  /* X500DN */
+  /* FIXME: the DN will likely work on DEMO installations for now but we
+     really should get the dn prefix from the server */
+  x500dn = [NSString stringWithFormat: @"/O=FIRST ORGANIZATION"
+                     @"/OU=FIRST ADMINISTRATIVE GROUP"
+                     @"/CN=RECIPIENTS/CN=%@", username];
+  [entryId appendData: [x500dn dataUsingEncoding: NSISOLatin1StringEncoding]];
+  [entryId appendUInt8: 0];
+
+  return entryId;
+}
+
+NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
+{
+  NSMutableData *entryId;
+  static uint8_t providerUid[] = { 0x81, 0x2b, 0x1f, 0xa4,
+                                   0xbe, 0xa3, 0x10, 0x19,
+                                   0x9d, 0x6e, 0x00, 0xdd,
+                                   0x01, 0x0f, 0x54, 0x02 };
+  uint8_t flags21, flags22;
+
+  /* structure:
+     flags: 32
+     provideruid: 32 * 4
+     version: 16
+     {
+       PaD: 1
+       MAE: 2
+       Format: 4
+       M: 1
+       U: 1
+       R: 2
+       L: 1
+       Pad: 4
+     }
+     DisplayName: variable
+     AddressType: variable
+     EmailAddress: variable */
+
+  entryId = [NSMutableData dataWithCapacity: 256];
+  [entryId appendUInt32: 0]; // flags
+  [entryId appendBytes: providerUid length: 16]; // provideruid
+  [entryId appendUInt16: 0]; // version
+
+  flags21 = 0;          /* PaD, MAE, R, Pad = 0 */
+  flags21 |= 0x16;      /* Format: text and HTML */
+  flags21 |= 0x01;     /* M: mime format */
+
+  flags22 = 0x90;      /* U: unicode, L: no lookup */
+  [entryId appendUInt8: flags21];
+  [entryId appendUInt8: flags22];
+
+  /* DisplayName */
+  if (!cn)
+    cn = @"";
+  [entryId
+    appendData: [cn dataUsingEncoding: NSUTF16LittleEndianStringEncoding]];
+  [entryId appendUInt16: 0];
+
+  /* AddressType */
+  [entryId
+    appendData: [@"SMTP" dataUsingEncoding: NSUTF16LittleEndianStringEncoding]];
+  [entryId appendUInt16: 0];
+
+  /* EMailAddress */
+  if (!email)
+    email = @"";
+  [entryId
+    appendData: [email dataUsingEncoding: NSUTF16LittleEndianStringEncoding]];
+  [entryId appendUInt16: 0];
+
+  return entryId;
+}
 
 @interface SOGoObject (MAPIStoreProtocol)
 
@@ -77,12 +176,6 @@
 - (void) getMessageData: (struct mapistore_message **) dataPtr
                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  static enum MAPITAGS tags[] = { PR_SUBJECT_PREFIX_UNICODE,
-                                  PR_NORMALIZED_SUBJECT_UNICODE };
-  struct SRowSet *recipients;
-  struct SRow *properties;
-  NSInteger count, max;
-  const char *propName;
   void *propValue;
   struct mapistore_message *msgData;
 
@@ -91,40 +184,22 @@
 
   msgData = talloc_zero (memCtx, struct mapistore_message);
 
-  recipients = talloc_zero (msgData, struct SRowSet);
-  recipients->cRows = 0;
-  recipients->aRow = NULL;
-  msgData->recipients = recipients;
+  if ([self getPrSubjectPrefix: &propValue
+                      inMemCtx: msgData] == MAPISTORE_SUCCESS
+      && propValue)
+    msgData->subject_prefix = propValue;
+  else
+    msgData->subject_prefix = "";
 
-  max = 2;
-  properties = talloc_zero (msgData, struct SRow);
-  properties->cValues = 0;
-  properties->ulAdrEntryPad = 0;
-  properties->lpProps = talloc_array (properties, struct SPropValue, max);
-  for (count = 0; count < max; count++)
-    {
-      if ([self getProperty: &propValue withTag: tags[count] inMemCtx: msgData]
-          == MAPISTORE_SUCCESS)
-	{
-	  if (propValue == NULL)
-	    {
-	      propName = get_proptag_name (tags[count]);
-	      if (!propName)
-		propName = "<unknown>";
-	      [self errorWithFormat: @"both 'success' and NULL data"
-		    @" returned for proptag %s(0x%.8x)",
-		    propName, tags[count]];
-	    }
-	  else
-	    {
-	      set_SPropValue_proptag (properties->lpProps + properties->cValues,
-				      tags[count],
-				      propValue);
-	      properties->cValues++;
-	    }
-	}
-    }
-  msgData->properties = properties;
+  if ([self getPrNormalizedSubject: &propValue
+                          inMemCtx: msgData] == MAPISTORE_SUCCESS
+      && propValue)
+    msgData->normalized_subject = propValue;
+  else
+    msgData->normalized_subject = "";
+
+  msgData->columns = talloc_zero(msgData, struct SPropTagArray);
+  msgData->recipients_count = 0;
   *dataPtr = msgData;
 }
 

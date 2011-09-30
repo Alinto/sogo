@@ -47,6 +47,9 @@ extern NSTimeZone *utcTZ;
               inTimeZone: (NSTimeZone *) newTimeZone;
 
 /* getters */
+- (void) fillMessageData: (struct mapistore_message *) dataPtr
+                inMemCtx: (TALLOC_CTX *) memCtx;
+
 - (int) getPrIconIndex: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrOwnerApptId: (void **) data

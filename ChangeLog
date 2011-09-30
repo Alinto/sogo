@@ -1,5 +1,19 @@
 2011-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessage.m (-getMessageData:inMemCtx:):
+	same as below.
+
+	* OpenChange/MAPIStoreCalendarMessage.m
+	(-getMessageData:inMemCtx:): delegated code to
+	MAPIStoreAppointmentWrapper so that organizers and invitees are
+	properly reported both in invitation emails and events.
+
+	* OpenChange/MAPIStoreMessage.m (MAPIStoreInternalEntryId)
+	(MAPIStoreExternalEntryId): new helper functions that return an
+	NSData with the entry id for the requested user or contact.
+	(-getMessageData:inMemCtx:): adapted to the new mapistore_message
+	struct and column handling.
+
 	* OpenChange/NSData+MAPIStore.m (-appendUInt16): new method.
 
 	* OpenChange/EOQualifier+MAPIFS.m (-[EOKeyValueQUalifier

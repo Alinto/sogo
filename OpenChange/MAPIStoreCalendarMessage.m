@@ -255,58 +255,11 @@
 - (void) getMessageData: (struct mapistore_message **) dataPtr
                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  NSString *text;
-  NSArray *attendees;
-  iCalPerson *person;
-  struct SRowSet *recipients;
-  int count, max;
-  iCalEvent *event;
   struct mapistore_message *msgData;
 
   [super getMessageData: &msgData inMemCtx: memCtx];
-
-  event = [sogoObject component: NO secure: NO];
-  attendees = [event attendees];
-  max = [attendees count];
-
-  recipients = talloc_zero (msgData, struct SRowSet);
-  recipients->cRows = max;
-  recipients->aRow = talloc_array (recipients, struct SRow, max);
-  for (count = 0; count < max; count++)
-    {
-      recipients->aRow[count].ulAdrEntryPad = 0;
-      recipients->aRow[count].cValues = 3;
-      recipients->aRow[count].lpProps = talloc_array (recipients->aRow,
-                                                      struct SPropValue,
-                                                      4);
-      
-      // TODO (0x01 = primary recipient)
-      set_SPropValue_proptag (recipients->aRow[count].lpProps,
-                              PR_RECIPIENT_TYPE,
-                              MAPILongValue (recipients->aRow[count].lpProps, 0x01));
-
-      set_SPropValue_proptag (recipients->aRow[count].lpProps + 1,
-                              PR_ADDRTYPE_UNICODE,
-                              [@"SMTP" asUnicodeInMemCtx: recipients->aRow]);
-
-      person = [attendees objectAtIndex: count];
-      text = [person rfc822Email];
-      if (!text)
-        text = @"";
-      set_SPropValue_proptag (recipients->aRow[count].lpProps + 2,
-                              PR_EMAIL_ADDRESS_UNICODE,
-                              [text asUnicodeInMemCtx: recipients->aRow]);
-
-      text = [person cn];
-      if ([text length] > 0)
-        {
-          recipients->aRow[count].cValues++;
-          set_SPropValue_proptag (recipients->aRow[count].lpProps + 3,
-                                  PR_DISPLAY_NAME_UNICODE,
-                                  [text asUnicodeInMemCtx: recipients->aRow]);
-        }
-    }
-  msgData->recipients = recipients;
+  [[self appointmentWrapper] fillMessageData: msgData
+                                    inMemCtx: memCtx];
   *dataPtr = msgData;
 }
 
