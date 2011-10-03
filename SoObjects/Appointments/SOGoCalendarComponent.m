@@ -24,6 +24,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoSecurityManager.h>
@@ -41,6 +42,7 @@
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMail/NGMimeMessage.h>
+#import <GDLContentStore/GCSFolder.h>
 
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSDictionary+Utilities.h>
@@ -1209,6 +1211,29 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
     }
 
   return roles;
+}
+
+- (void) snoozeAlarm: (unsigned int) minutes
+{
+  NSDictionary *quickFields;
+  GCSFolder *folder;
+  unsigned int nextAlarm;
+
+  folder = [[self container] ocsFolder];
+  if (!folder)
+    {
+      [self errorWithFormat:@"(%s): missing folder for fetch!",
+            __PRETTY_FUNCTION__];
+      return;
+    }
+
+  nextAlarm = [[NSCalendarDate calendarDate] timeIntervalSince1970]  + minutes * 60;
+  quickFields = [NSDictionary dictionaryWithObject: [NSNumber numberWithInt: nextAlarm]
+                                            forKey: @"c_nextalarm"];
+
+  [folder updateQuickFields: quickFields
+                whereColumn: @"c_name"
+                  isEqualTo: nameInContainer];
 }
 
 /* SOGoComponentOccurence protocol */

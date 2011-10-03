@@ -5,6 +5,8 @@ New Features
    creating an event or a task (selected, personal, first enabled)
  - new user defaults SOGoBusyOffHours to specify if off-hours should be
    automatically added to the free-busy information
+ - new indicator in the link banner when a vacation message (auto-reply) is active
+ - new snooze function for events alarms in Web interface
 
 Enhancements
  - phone numbers in the contacts web module are now links (tel:)
