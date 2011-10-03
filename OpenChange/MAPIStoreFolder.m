@@ -28,6 +28,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <SOGo/SOGoContentObject.h>
 #import <SOGo/SOGoFolder.h>
 
 #import "MAPIStoreActiveTables.h"
@@ -466,6 +467,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   MAPIStoreMessage *message;
   NSArray *activeTables;
   NSUInteger count, max;
+  id msgObject;
   struct mapistore_connection_info *connInfo;
   struct mapistore_object_notification_parameters *notif_parameters;
   int rc;
@@ -488,7 +490,10 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
           for (count = 0; count < max; count++)
             [[activeTables objectAtIndex: count] restrictedChildKeys];
 
-          if ([[message sogoObject] delete])
+          msgObject = [message sogoObject];
+          if (([msgObject respondsToSelector: @selector (prepareDelete)]
+               && [msgObject prepareDelete])
+              || [msgObject delete])
             {
               rc = MAPISTORE_ERROR;
               [self logWithFormat: @"ERROR deleting object at URL: %@", childURL];

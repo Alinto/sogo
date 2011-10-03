@@ -1,3 +1,8 @@
+2011-10-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreFolder.m (-deleteMessageWithMID:andFlags:):
+	invoke "prepareDelete" on the message object when available.
+
 2011-10-03  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (snoozeAlarm): new function to
