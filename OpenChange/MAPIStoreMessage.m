@@ -204,10 +204,14 @@ NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
 }
 
 - (NSDictionary *) _convertRecipientFromRow: (struct RecipientRow *) row
+                                 andColumns: (struct SPropTagArray *) columns
 {
-  NSMutableDictionary *recipient;
-  NSString *value;
+  NSMutableDictionary *recipient, *properties;
   SOGoUser *recipientUser;
+  NSUInteger count, dataPos;
+  struct mapi_SPropValue mapiValue;
+  id value;
+  TALLOC_CTX *memCtx;
 
   recipient = [NSMutableDictionary dictionaryWithCapacity: 5];
 
@@ -260,11 +264,39 @@ NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
         [recipient setObject: value forKey: @"fullName"];
     }
 
+  properties = [NSMutableDictionary new];
+  [recipient setObject: properties forKey: @"properties"];
+  dataPos = 0;
+
+  memCtx = talloc_zero (NULL, TALLOC_CTX);
+  for (count = 0; count < columns->cValues; count++)
+    {
+      mapiValue.ulPropTag = columns->aulPropTag[count];
+      if (row->layout)
+        {
+          if (row->prop_values.data[dataPos])
+            {
+              dataPos += 5;
+              continue;
+            }
+          else
+            dataPos++;
+        }
+      set_mapi_SPropValue (memCtx, &mapiValue, row->prop_values.data + dataPos);
+      value = NSObjectFromMAPISPropValue (&mapiValue);
+      dataPos += get_mapi_property_size (&mapiValue);
+      if (value)
+        [properties setObject: value forKey: MAPIPropertyKey (columns->aulPropTag[count])];
+    }
+  [properties release];
+  talloc_free (memCtx);
+
   return recipient;
 }
 
 - (int) modifyRecipientsWithRows: (struct ModifyRecipientRow *) rows
                         andCount: (NSUInteger) max
+                      andColumns: (struct SPropTagArray *) columns
 {
   static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   NSDictionary *recipientProperties;
@@ -296,8 +328,9 @@ NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
               [recipients setObject: list forKey: recType];
               [list release];
             }
-          [list addObject: [self _convertRecipientFromRow:
-                                   &(currentRow->RecipientRow)]];
+          [list addObject:
+                  [self _convertRecipientFromRow: &(currentRow->RecipientRow)
+                                      andColumns: columns]];
         }
     }
   [self addNewProperties: recipientProperties];

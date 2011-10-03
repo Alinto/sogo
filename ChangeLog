@@ -1,3 +1,9 @@
+2011-10-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_message_modify_recipients):
+	this backend op now has a "columns" arguments for the dynamic data
+	records.
+
 2011-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailMessage.m (-getMessageData:inMemCtx:):
