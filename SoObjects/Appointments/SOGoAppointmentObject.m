@@ -1833,6 +1833,13 @@
 	      
 	      attendee = [newEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
 	      
+	      // We first check of the sequences are alright. We don't accept attendees
+	      // accepting "old" invitations. If that's the case, we return a 403
+              if ([[newEvent sequence] intValue] < [[oldEvent sequence] intValue])
+		return [NSException exceptionWithHTTPStatus:403
+				    reason: @"sequences don't match"];
+	      
+
 	      delegate = nil;
 	      delegateEmail = [attendee delegatedTo];
 	      
