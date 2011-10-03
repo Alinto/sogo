@@ -478,24 +478,23 @@
   existingCName = [[container sogoObject] resourceNameForEventUID: uid];
   if (existingCName)
     {
-      /* Steps:
-         unregister self'url mapping
-         unregister old object's url mapping to discard further delete operation
-         set new object nameInContainer
-         register new url mapping */
-
       mapping = [[self context] mapping];
 
+      /* dissociate the object url from the old object's id */
       existingURL = [NSString stringWithFormat: @"%@%@",
                               [container url], existingCName];
       objectId = [mapping idFromURL: existingURL];
       [mapping unregisterURLWithID: objectId];
 
+      /* dissociate the object url associated with this object, as we want to
+         discard it */
       objectId = [self objectId];
       [mapping unregisterURLWithID: objectId];
-
+      
+      /* associate the object url with this object id */
       [mapping registerURL: existingURL withID: objectId];
 
+      /* reinstantiate the old sogo object and attach it to self */
       woContext = [[self context] woContext];
       existingObject = [[container sogoObject] lookupName: existingCName
                                                 inContext: woContext
@@ -521,12 +520,11 @@
 
   if (isNew)
     {
-      /* big response hack:
-         - if isNew:
-         - deduce UID from GlobalObjectId
-         - if UID already exist in db:
-           - invoke setNameInContainer on sogoObject with proper cname */
-
+      /* Hack required because of what's explained in oxocal 3.1.4.7.1:
+         basically, Outlook creates a copy of the event and then removes the
+         old instance. We perform a trickery to avoid performing those
+         operations in the backend, in a way that enables us to recover the
+         initial instance and act solely on it. */
       [self _fixupEventWithExistingUID];
     }
 
