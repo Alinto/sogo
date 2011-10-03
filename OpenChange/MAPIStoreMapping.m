@@ -220,8 +220,8 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
       [mapping setObject: urlString forKey: idKey];
       [reverseMapping setObject: idKey forKey: urlString];
       rc = YES;
-      // [self logWithFormat: @"registered url '%@' with id %lld (0x%.16"PRIx64")",
-      //       urlString, idNbr, idNbr];
+      [self logWithFormat: @"registered url '%@' with id %lld (0x%.16"PRIx64")",
+            urlString, idNbr, idNbr];
 
       /* Add the record given its fid and mapistore_uri */
       key.dptr = (unsigned char *) talloc_asprintf(NULL, "0x%.16"PRIx64, idNbr);
@@ -245,18 +245,20 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 
   idKey = [NSNumber numberWithUnsignedLongLong: idNbr];
   urlString = [mapping objectForKey: idKey];
-  [reverseMapping removeObjectForKey: urlString];
-  [mapping removeObjectForKey: idKey];
+  if (urlString)
+    {
+      [self logWithFormat: @"unregistering url '%@' with id %lld (0x%.16"PRIx64")",
+            urlString, idNbr, idNbr];
+      [reverseMapping removeObjectForKey: urlString];
+      [mapping removeObjectForKey: idKey];
 
-  /* We hard-delete the entry from the indexing database */
-  key.dptr = (unsigned char *) talloc_asprintf(NULL, "0x%.16"PRIx64, idNbr);
-  key.dsize = strlen((const char *) key.dptr);
+      /* We hard-delete the entry from the indexing database */
+      key.dptr = (unsigned char *) talloc_asprintf(NULL, "0x%.16"PRIx64, idNbr);
+      key.dsize = strlen((const char *) key.dptr);
   
-  tdb_delete(indexing->tdb, key);
-  talloc_free(key.dptr);
-
-  // [self logWithFormat: @"unregistered url '%@' with id %lld (0x%.16"PRIx64")",
-  //       urlString, idNbr, idNbr];
+      tdb_delete(indexing->tdb, key);
+      talloc_free(key.dptr);
+    }
 }
 
 @end

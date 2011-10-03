@@ -28,6 +28,8 @@
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
+#import <NGMail/NGMailAddress.h>
+#import <NGMail/NGMailAddressParser.h>
 #import <NGCards/iCalCalendar.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -272,6 +274,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           event = [events objectAtIndex: 0];
           appointmentWrapper = [MAPIStoreAppointmentWrapper
                                  wrapperWithICalEvent: event
+                                              andUser: [[self context] activeUser]
                                            inTimeZone: [self ownerTimeZone]];
           [appointmentWrapper retain];
         }
@@ -414,6 +417,14 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPidLidResponseStatus: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPILongValue (memCtx, 0);
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (int) getPidLidImapDeleted: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -481,6 +492,12 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPidLidFInvited: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getYes: data inMemCtx: memCtx];
+}
+
 - (int) getPrMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -504,6 +521,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
+/* Note: this applies to regular mails... */
 // - (int) getPrReplyRequested: (void **) data // TODO
 //                    inMemCtx: (TALLOC_CTX *) memCtx
 // {
@@ -515,6 +533,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 //           : [self getNo: data inMemCtx: memCtx]);
 // }
 
+/* ... while this applies to invitations. */
 - (int) getPrResponseRequested: (void **) data // TODO
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -650,24 +669,117 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
+- (int) _getEmailAddressFromEmail: (NSString *) fullMail
+                           inData: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NGMailAddress *ngAddress;
+  NSString *email;
+
+  if (!fullMail)
+    fullMail = @"";
+
+  ngAddress = [[NGMailAddressParser mailAddressParserWithString: fullMail]
+                parse];
+  if ([ngAddress isKindOfClass: [NGMailAddress class]])
+    email = [ngAddress address];
+  else
+    email = @"";
+
+  *data = [email asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) _getCNFromEmail: (NSString *) fullMail
+                 inData: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NGMailAddress *ngAddress;
+  NSString *cn;
+
+  if (!fullMail)
+    fullMail = @"";
+
+  ngAddress = [[NGMailAddressParser mailAddressParserWithString: fullMail]
+                parse];
+  if ([ngAddress isKindOfClass: [NGMailAddress class]])
+    cn = [ngAddress address];
+  else
+    cn = @"";
+
+  *data = [cn asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) _getEntryIdFromEmail: (NSString *) fullMail
+                      inData: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *username, *cn, *email;
+  SOGoUserManager *mgr;
+  NSDictionary *contactInfos;
+  NGMailAddress *ngAddress;
+  NSData *entryId;
+  int rc;
+
+  if (fullMail)
+    {
+      ngAddress = [[NGMailAddressParser mailAddressParserWithString: fullMail]
+                    parse];
+      if ([ngAddress isKindOfClass: [NGMailAddress class]])
+        {
+          email = [ngAddress address];
+          cn = [ngAddress displayName];
+        }
+      else
+        {
+          email = fullMail;
+          cn = @"";
+        }
+
+      mgr = [SOGoUserManager sharedUserManager];
+      contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
+      if (contactInfos)
+        {
+          username = [contactInfos objectForKey: @"c_uid"];
+          entryId = MAPIStoreInternalEntryId (username);
+        }
+      else
+        entryId = MAPIStoreExternalEntryId (cn, email);
+
+      *data = [entryId asBinaryInMemCtx: memCtx];
+      
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
 - (int) getPrSenderEmailAddress: (void **) data
                        inMemCtx: (TALLOC_CTX *) memCtx
 {
-  NSString *stringValue;
-
-  stringValue = [sogoObject from];
-  if (!stringValue)
-    stringValue = @"";
-
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
+  return [self _getEmailAddressFromEmail: [sogoObject from]
+                                  inData: data
+                                inMemCtx: memCtx];
 }
 
 - (int) getPrSenderName: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSenderEmailAddress: data inMemCtx: memCtx];
+  return [self _getCNFromEmail: [sogoObject from]
+                        inData: data
+                      inMemCtx: memCtx];
+}
+
+- (int) getPrSenderEntryid: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getEntryIdFromEmail: [sogoObject from]
+                             inData: data
+                           inMemCtx: memCtx];
 }
 
 - (int) getPrOriginalAuthorName: (void **) data
@@ -685,33 +797,43 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 - (int) getPrSentRepresentingName: (void **) data
                          inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSenderEmailAddress: data inMemCtx: memCtx];
+  return [self getPrSenderName: data inMemCtx: memCtx];
+}
+
+- (int) getPrSentRepresentingEntryid: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPrSenderEntryid: data inMemCtx: memCtx];
 }
 
 - (int) getPrReceivedByEmailAddress: (void **) data
                            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  NSString *stringValue;
-
-  stringValue = [sogoObject to];
-  if (!stringValue)
-    stringValue = @"";
-
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
+  return [self _getEmailAddressFromEmail: [sogoObject to]
+                                  inData: data
+                                inMemCtx: memCtx];
 }
 
 - (int) getPrReceivedByName: (void **) data
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrReceivedByEmailAddress: data inMemCtx: memCtx];
+  return [self _getCNFromEmail: [sogoObject to]
+                        inData: data
+                      inMemCtx: memCtx];
+}
+
+- (int) getPrReceivedByEntryid: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getEntryIdFromEmail: [sogoObject to]
+                             inData: data
+                           inMemCtx: memCtx];
 }
 
 - (int) getPrRcvdRepresentingName: (void **) data
                          inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrReceivedByEmailAddress: data inMemCtx: memCtx];
+  return [self getPrReceivedByName: data inMemCtx: memCtx];
 }
 
 - (int) getPrRcvdRepresentingEmailAddress: (void **) data
@@ -720,10 +842,18 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return [self getPrReceivedByEmailAddress: data inMemCtx: memCtx];
 }
 
+- (int) getPrRcvdRepresentingEntryid: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPrReceivedByEntryid: data inMemCtx: memCtx];
+}
+
 - (int) getPrDisplayTo: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrReceivedByEmailAddress: data inMemCtx: memCtx];
+  *data = [[sogoObject to] asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) getPrOriginalDisplayTo: (void **) data
@@ -910,8 +1040,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           : MAPISTORE_ERR_NOT_FOUND);
 }
 
-- (int) getPidLidServerProcessed: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidLidServerProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!headerSetup)
     [self _fetchHeaderData];
@@ -921,6 +1050,44 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                                                         inMemCtx: memCtx]
           : MAPISTORE_ERR_NOT_FOUND);
 }
+
+- (int) getPidLidServerProcessingActions: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  return (mailIsEvent
+          ? [[self _appointmentWrapper] getPidLidServerProcessingActions: data
+                                                                inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPrProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc;
+
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  if (mailIsEvent)
+    rc = [self getYes: data inMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+// - (int) getPidLidServerProcessed: (void **) data
+//                         inMemCtx: (TALLOC_CTX *) memCtx
+// {
+//   if (!headerSetup)
+//     [self _fetchHeaderData];
+
+//   return (mailIsEvent
+//           ? [[self _appointmentWrapper] getPidLidServerProcessed: data
+//                                                         inMemCtx: memCtx]
+//           : MAPISTORE_ERR_NOT_FOUND);
+// }
 
 - (int) getPidLidPrivate: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
@@ -1232,9 +1399,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
               if (contactInfos)
                 {
                   username = [contactInfos objectForKey: @"c_uid"];
-                  // recipient->username = [username asUnicodeInMemCtx: msgData];
-                  // entryId = MAPIStoreInternalEntryId (username);
-                  entryId = MAPIStoreExternalEntryId (cn, email);
+                  recipient->username = [username asUnicodeInMemCtx: msgData];
+                  entryId = MAPIStoreInternalEntryId (username);
                 }
               else
                 entryId = MAPIStoreExternalEntryId (cn, email);

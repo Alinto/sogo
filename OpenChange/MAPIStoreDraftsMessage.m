@@ -33,6 +33,7 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #import "MAPIStoreContext.h"
+#import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
@@ -572,6 +573,7 @@ e)
 {
   NSString *msgClass;
   NSException *error;
+  MAPIStoreMapping *mapping;
 
   msgClass = [newProperties
                    objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)];
@@ -584,6 +586,9 @@ e)
     }
   else
     [self logWithFormat: @"ignored scheduling message"];
+
+  mapping = [[self context] mapping];
+  [mapping unregisterURLWithID: [self objectId]];
 }
 
 - (int) submitWithFlags: (enum SubmitFlags) flags

@@ -51,7 +51,8 @@ extern NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email);
                inMemCtx: (TALLOC_CTX *) memCtx;
 
 - (int) modifyRecipientsWithRows: (struct ModifyRecipientRow *) rows
-                        andCount: (NSUInteger) max;
+                        andCount: (NSUInteger) max
+                      andColumns: (struct SPropTagArray *) columns;
 - (NSArray *) attachmentKeys;
 - (NSArray *) attachmentKeysMatchingQualifier: (EOQualifier *) qualifier
                              andSortOrderings: (NSArray *) sortOrderings;
