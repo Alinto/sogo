@@ -1,3 +1,10 @@
+2011-10-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* GCSFolder.m (-updateQuickFields:whereColumn:isEqualTo:): new
+	method to update some fields of the quick table matching the
+	single specified condition.
+	(-_quickTableEntity): the method was not returning all the fields.
+
 2011-05-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolder.m (-lastModificationDate): new method that returns the

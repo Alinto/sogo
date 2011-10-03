@@ -88,6 +88,8 @@
 - (SOGoComponentOccurence *) occurence: (iCalRepeatableEntityObject *) component;
 - (iCalRepeatableEntityObject *) newOccurenceWithID: (NSString *) recID;
 
+- (void) snoozeAlarm: (unsigned int) minutes;
+
 @end
 
 #endif /* SOGOCALENDARCOMPONENT_H */

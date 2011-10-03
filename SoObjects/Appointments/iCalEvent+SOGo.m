@@ -242,8 +242,7 @@
       NSString *webstatus;
 
       anAlarm = [[self alarms] objectAtIndex: 0];
-      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"]
-          == NSOrderedSame)
+      if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
         {
           webstatus = [[anAlarm trigger] value: 0 ofAttribute: @"x-webstatus"];
           if (!webstatus

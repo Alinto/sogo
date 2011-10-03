@@ -126,6 +126,10 @@
 
 - (NSException *) deleteFolder;
 
+- (NSException *) updateQuickFields: (NSDictionary *) _fields
+                        whereColumn: (NSString *) _colname
+                          isEqualTo: (id) _value;
+
 - (NSArray *) fetchFields: (NSArray *) _flds 
        fetchSpecification: (EOFetchSpecification *) _fs;
 - (NSArray *) fetchFields: (NSArray *) fields

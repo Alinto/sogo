@@ -139,10 +139,13 @@ static NSArray *contentFieldNames = nil;
 	       folderManager:nil];
 }
 
-- (id)initWithPath:(NSString *)_path primaryKey:(id)_folderId
-  folderTypeName:(NSString *)_ftname folderType:(GCSFolderType *)_ftype
-  location:(NSURL *)_loc quickLocation:(NSURL *)_qloc
-  folderManager:(GCSFolderManager *)_fm
+- (id)initWithPath:(NSString *)_path
+        primaryKey:(id)_folderId
+    folderTypeName:(NSString *)_ftname
+        folderType:(GCSFolderType *)_ftype
+          location:(NSURL *)_loc
+     quickLocation:(NSURL *)_qloc
+     folderManager:(GCSFolderManager *)_fm
 {
   return [self initWithPath:_path primaryKey:_folderId folderTypeName:_ftname
 	       folderType:_ftype location:_loc quickLocation:_qloc
@@ -664,9 +667,9 @@ static NSArray *contentFieldNames = nil;
 }
 
 - (NSString *)_generateUpdateStatementForRow:(NSDictionary *)_row
-  tableName:(NSString *)_table
-  whereColumn:(NSString *)_colname isEqualTo:(id)_value
-  andColumn:(NSString *)_colname2  isEqualTo:(id)_value2
+                                   tableName:(NSString *)_table
+                                 whereColumn:(NSString *)_colname isEqualTo:(id)_value
+                                   andColumn:(NSString *)_colname2  isEqualTo:(id)_value2
 {
   // TODO: move to NSDictionary category?
   NSMutableString *sql;
@@ -744,7 +747,23 @@ static NSArray *contentFieldNames = nil;
 
 - (EOEntity *) _quickTableEntity
 {
-  return [self _entityWithName: [self quickTableName]];
+  EOEntity *entity;
+  EOAttribute *attribute;
+  GCSFieldInfo *field;
+  NSEnumerator *fields;
+  NSString *fieldName;
+
+  entity = [self _entityWithName: [self quickTableName]];
+  fields = [quickFieldNames objectEnumerator];
+  while ((fieldName = [fields nextObject]))
+    {
+      attribute = AUTORELEASE([[EOAttribute alloc] init]);
+      [attribute setName: fieldName];
+      [attribute setColumnName: fieldName];
+      [entity addAttribute: attribute];
+    }
+
+  return entity;
 }
 
 - (EOSQLQualifier *) _qualifierUsingWhereColumn:(NSString *)_colname
@@ -1169,6 +1188,36 @@ static NSArray *contentFieldNames = nil;
   [self releaseChannel:channel];
 
   return nil;
+}
+
+- (NSException *) updateQuickFields: (NSDictionary *) _fields
+                        whereColumn: (NSString *) _colname
+                          isEqualTo: (id) _value
+{
+  EOAdaptorChannel *quickChannel;
+  NSException *error;
+  
+  quickChannel = [self acquireQuickChannel];
+  [[quickChannel adaptorContext] beginTransaction];
+  error = [quickChannel updateRowX: _fields
+              describedByQualifier: [self _qualifierUsingWhereColumn: _colname
+                                                           isEqualTo: _value andColumn: nil isEqualTo: nil
+                                                              entity: [self _quickTableEntity]]];
+
+  if (error)
+    {
+      [[quickChannel adaptorContext] rollbackTransaction];
+      [self logWithFormat:
+              @"ERROR(%s): cannot update content : %@", __PRETTY_FUNCTION__, error];
+    }
+  else
+    {
+      [[quickChannel adaptorContext] commitTransaction];
+    }
+
+  [self releaseChannel: quickChannel];
+
+  return error;
 }
 
 /* SQL generation */
