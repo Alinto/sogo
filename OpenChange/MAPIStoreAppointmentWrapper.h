@@ -25,10 +25,14 @@
 
 #import <Foundation/NSObject.h>
 
+#import <Appointments/iCalEntityObject+SOGo.h>
+
 @class NSTimeZone;
 
 @class iCalCalendar;
 @class iCalEvent;
+
+@class SOGoUser;
 
 extern NSTimeZone *utcTZ;
 
@@ -39,16 +43,37 @@ extern NSTimeZone *utcTZ;
   NSTimeZone *timeZone;
   NSData *globalObjectId;
   NSData *cleanGlobalObjectId;
+  SOGoUser *user;
 }
 
 + (id) wrapperWithICalEvent: (iCalEvent *) newEvent
+                    andUser: (SOGoUser *) newUser
                  inTimeZone: (NSTimeZone *) newTimeZone;
 - (id) initWithICalEvent: (iCalEvent *) newEvent
+                 andUser: (SOGoUser *) newUser
               inTimeZone: (NSTimeZone *) newTimeZone;
 
 /* getters */
 - (void) fillMessageData: (struct mapistore_message *) dataPtr
                 inMemCtx: (TALLOC_CTX *) memCtx;
+
+- (int) getPrSenderEmailAddress: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrSenderAddrtype: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrSenderName: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrSenderEntryid: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx;
+
+- (int) getPrReceivedByAddrtype: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrReceivedByEmailAddress: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrReceivedByName: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrReceivedByEntryid: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx;
 
 - (int) getPrIconIndex: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx;
@@ -64,6 +89,9 @@ extern NSTimeZone *utcTZ;
               inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidAppointmentStateFlags: (void **) data
                               inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidLidResponseStatus: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx;
+
 - (int) getPidLidAppointmentStartWhole: (void **) data
                               inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidCommonStart: (void **) data
@@ -104,6 +132,10 @@ extern NSTimeZone *utcTZ;
                             inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidServerProcessed: (void **) data
                         inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidLidServerProcessingActions: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidLidAppointmentReplyTime: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx;
 
 @end
 

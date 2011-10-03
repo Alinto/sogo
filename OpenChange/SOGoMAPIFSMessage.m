@@ -129,12 +129,15 @@
 
   [container ensureDirectory];
 
+  [self logWithFormat: @"%d props in whole dict", [properties count]];
+
   content = [NSPropertyListSerialization dataFromPropertyList: properties
                                                        format: NSPropertyListBinaryFormat_v1_0
                                              errorDescription: NULL];
   if (![content writeToFile: [self completeFilename] atomically: NO])
     [NSException raise: @"MAPIStoreIOException"
 		 format: @"could not save message"];
+  [self logWithFormat: @"fs message written to '%@'", [self completeFilename]];
 }
 
 - (NSString *) davEntityTag

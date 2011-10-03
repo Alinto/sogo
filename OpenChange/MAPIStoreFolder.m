@@ -711,6 +711,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   MAPIStoreMapping *mapping;
   struct mapistore_object_notification_parameters *notif_parameters;
   struct mapistore_connection_info *connInfo;
+
+  connInfo = [[self context] connectionInfo];
   
   // For the "source folder, we ensure the table caches are loaded so
   // that old and new state can be compared
@@ -733,7 +735,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       notif_parameters->tags[4] = PR_RECIPIENT_ON_NORMAL_MSG_COUNT;
       notif_parameters->new_message_count = true;
       notif_parameters->message_count = [[sourceFolder messageKeys] count] - midCount;
-      connInfo = [[self context] connectionInfo];
       mapistore_push_notification (connInfo->mstore_ctx,
                                    MAPISTORE_FOLDER,
                                    MAPISTORE_OBJECT_MODIFIED,

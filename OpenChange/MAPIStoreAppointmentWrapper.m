@@ -73,11 +73,13 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 + (id) wrapperWithICalEvent: (iCalEvent *) newEvent
+                    andUser: (SOGoUser *) newUser
                  inTimeZone: (NSTimeZone *) newTimeZone
 {
   MAPIStoreAppointmentWrapper *wrapper;
 
   wrapper = [[self alloc] initWithICalEvent: newEvent
+                                    andUser: newUser
                                  inTimeZone: newTimeZone];
   [wrapper autorelease];
 
@@ -93,12 +95,14 @@ static NSCharacterSet *hexCharacterSet = nil;
       timeZone = nil;
       globalObjectId = nil;
       cleanGlobalObjectId = nil;
+      user = nil;
     }
 
   return self;
 }
 
 - (id) initWithICalEvent: (iCalEvent *) newEvent
+                 andUser: (SOGoUser *) newUser
               inTimeZone: (NSTimeZone *) newTimeZone
 {
   if ((self = [self init]))
@@ -106,6 +110,7 @@ static NSCharacterSet *hexCharacterSet = nil;
       ASSIGN (event, newEvent);
       ASSIGN (calendar, [event parent]);
       ASSIGN (timeZone, newTimeZone);
+      ASSIGN (user, newUser);
     }
 
   return self;
@@ -118,6 +123,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   [timeZone release];
   [globalObjectId release];
   [cleanGlobalObjectId release];
+  [user release];
   [super dealloc];
 }
 
@@ -448,9 +454,21 @@ static NSCharacterSet *hexCharacterSet = nil;
 - (int) getPrMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = talloc_strdup(memCtx, "IPM.Appointment");
+  const char *className;
+
+  if ([[event attendees] count] > 0)
+    className = "IPM.Schedule.Meeting.Request";
+  else
+    className = "IPM.Appointment";
+  *data = talloc_strdup(memCtx, className);
 
   return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidFInvited: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getYes: data inMemCtx: memCtx];
 }
 
 - (int) getPrBody: (void **) data
@@ -488,9 +506,52 @@ static NSCharacterSet *hexCharacterSet = nil;
   uint32_t flags = 0x00;
 
   if ([[event attendees] count] > 0)
-    flags |= 0x01; /* asfMeeting */
+    {
+      flags |= 0x01; /* asfMeeting */
+      if ([event userAsAttendee: user])
+        flags |= 0x02; /* asfReceived */
+      /* TODO: asfCancelled */
+    }
 
   *data = MAPILongValue (memCtx, flags);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidResponseStatus: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  uint32_t status = 0x00;
+  iCalPerson *person;
+
+  if ([[event attendees] count] > 0)
+    {
+      if ([event userIsOrganizer: user])
+        status = 1;
+      else
+        {
+          person = [event userAsAttendee: user];
+          if (person)
+            {
+              switch ([person participationStatus])
+                {
+                case iCalPersonPartStatTentative:
+                  status = 2;
+                  break;
+                case iCalPersonPartStatAccepted:
+                  status = 3;
+                  break;
+                case iCalPersonPartStatDeclined:
+                  status = 4;
+                  break;
+                default:
+                  status = 5;
+                }
+            }
+        }
+    }
+
+  *data = MAPILongValue (memCtx, status);
 
   return MAPISTORE_SUCCESS;
 }
@@ -506,6 +567,167 @@ static NSCharacterSet *hexCharacterSet = nil;
 {
   return [self getPidLidAppointmentStartWhole: data inMemCtx: memCtx];
 }
+
+- (int) _getEntryIdFromCN: (NSString *) cn
+                 andEmail: (NSString *) email
+                   inData: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *username;
+  SOGoUserManager *mgr;
+  NSDictionary *contactInfos;
+  NSData *entryId;
+
+  mgr = [SOGoUserManager sharedUserManager];
+  contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
+  if (contactInfos)
+    {
+      username = [contactInfos objectForKey: @"c_uid"];
+      entryId = MAPIStoreInternalEntryId (username);
+    }
+  else
+    entryId = MAPIStoreExternalEntryId (cn, email);
+
+  *data = [entryId asBinaryInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) _getEmailAddress: (void **) data
+           forICalPerson: (iCalPerson *) person
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc;
+  NSString *email;
+
+  email = [person rfc822Email];
+  if ([email length] > 0)
+    {
+      *data = [email asUnicodeInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) _getAddrType: (void **) data
+       forICalPerson: (iCalPerson *) person
+            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) _getName: (void **) data
+   forICalPerson: (iCalPerson *) person
+        inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc;
+  NSString *cn;
+
+  cn = [person cn];
+  if ([cn length] > 0)
+    {
+      *data = [cn asUnicodeInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) _getEntryid: (void **) data
+      forICalPerson: (iCalPerson *) person
+           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_ERR_NOT_FOUND;
+  NSString *email, *cn;
+
+  if (person)
+    {
+      email = [person rfc822Email];
+      if ([email length] > 0)
+        {
+          cn = [person cn];
+          rc = [self _getEntryIdFromCN: cn andEmail: email
+                                inData: data
+                              inMemCtx: memCtx];
+        }
+    }
+
+  return rc;
+}
+
+/* sender (organizer) */
+- (int) getPrSenderEmailAddress: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getEmailAddress: data
+                  forICalPerson: [event organizer]
+                       inMemCtx: memCtx];
+}
+
+- (int) getPrSenderAddrtype: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getAddrType: data
+              forICalPerson: [event organizer]
+                   inMemCtx: memCtx];
+}
+
+- (int) getPrSenderName: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getName: data
+          forICalPerson: [event organizer]
+               inMemCtx: memCtx];
+}
+
+- (int) getPrSenderEntryid: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getEntryid: data
+             forICalPerson: [event organizer]
+                  inMemCtx: memCtx];
+}
+
+/* attendee */
+- (int) getPrReceivedByEmailAddress: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getEmailAddress: data
+                  forICalPerson: [event userAsAttendee: user]
+                       inMemCtx: memCtx];
+}
+
+- (int) getPrReceivedByAddrtype: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getAddrType: data
+              forICalPerson: [event userAsAttendee: user]
+                   inMemCtx: memCtx];
+}
+
+- (int) getPrReceivedByName: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getName: data
+          forICalPerson: [event userAsAttendee: user]
+               inMemCtx: memCtx];
+}
+
+- (int) getPrReceivedByEntryid: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self _getEntryid: data
+             forICalPerson: [event userAsAttendee: user]
+                  inMemCtx: memCtx];
+}
+/* /attendee */
 
 - (int) getPrEndDate: (void **) data
             inMemCtx: (TALLOC_CTX *) memCtx
@@ -601,13 +823,22 @@ static NSCharacterSet *hexCharacterSet = nil;
   return [self getPidLidLocation: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidServerProcessed: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidLidServerProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* TODO: we need to check whether the event has been processed internally by
      SOGo or if it was received only by mail. We only assume the SOGo case
      here. */
   return [self getYes: data inMemCtx: memCtx];
+}
+
+- (int) getPidLidServerProcessingActions: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPILongValue (memCtx,
+                         0x00000010 /* cpsCreatedOnPrincipal */
+                         | 0x00000080 /* cpsUpdatedCalItem */
+                         | 0x00000100 /* cpsCopiedOldProperties */);
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
@@ -920,6 +1151,28 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   else
     abort ();
   
+  return rc;
+}
+
+- (int) getPidLidAppointmentReplyTime: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
+{
+  /* We always return LAST-MODIFIED, which is a hack, but one that works
+     because: the user is either (NOT recipient OR (is recipient AND its
+     status is N/A), where this value should not be taken into account by the
+     client OR the user is recipient and its status is defined, where this
+     value is thus correct because the recipient status is the only property
+     that can be changed. */
+  int rc = MAPISTORE_ERR_NOT_FOUND;
+  NSCalendarDate *lastModified;
+
+  lastModified = [event lastModified];
+  if (lastModified)
+    {
+      *data = [lastModified asFileTimeInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+
   return rc;
 }
 
