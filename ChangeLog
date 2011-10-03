@@ -1,8 +1,11 @@
 2011-10-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreDraftsMessage.m (-submit): unregister id
+	from mapping after operation.
+
 	* OpenChange/MAPIStoreSOGo.m (sogo_message_modify_recipients):
-	this backend op now has a "columns" arguments for the dynamic data
-	records.
+	this backend op now has a "columns" arguments for the user data
+	row.
 
 2011-09-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
