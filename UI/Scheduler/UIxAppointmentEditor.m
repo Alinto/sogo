@@ -461,7 +461,8 @@
   NSTimeZone *timeZone;
   SOGoUserDefaults *ud;
   SOGoCalendarComponent *co;
-   BOOL resetAlarm;
+  BOOL resetAlarm;
+  unsigned int snoozeAlarm;
 
   [self event];
 
@@ -480,17 +481,27 @@
       [componentCalendar retain];
     }
   
-  resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
-  if (resetAlarm && [event hasAlarms] && ![event hasRecurrenceRules])
+  if ([event hasAlarms] && ![event hasRecurrenceRules])
     {
       iCalAlarm *anAlarm;
-      iCalTrigger *aTrigger;
-
-      anAlarm = [[event alarms] objectAtIndex: 0];
-      aTrigger = [anAlarm trigger];
-      [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];
-
-      [co saveComponent: event];
+      resetAlarm = [[[context request] formValueForKey: @"resetAlarm"] boolValue];
+      snoozeAlarm = [[[context request] formValueForKey: @"snoozeAlarm"] intValue];
+      if (resetAlarm)
+        {
+          iCalTrigger *aTrigger;
+          
+          anAlarm = [[event alarms] objectAtIndex: 0];
+          aTrigger = [anAlarm trigger];
+          [aTrigger setValue: 0 ofAttribute: @"x-webstatus" to: @"triggered"];
+          
+          [co saveComponent: event];
+        }
+      else if (snoozeAlarm)
+        {
+          anAlarm = [[event alarms] objectAtIndex: 0];
+          if ([[anAlarm action] caseInsensitiveCompare: @"DISPLAY"] == NSOrderedSame)
+            [co snoozeAlarm: snoozeAlarm];
+        }
     }
 
   data = [NSDictionary dictionaryWithObjectsAndKeys:

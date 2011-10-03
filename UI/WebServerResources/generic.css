@@ -291,11 +291,12 @@ UL.choiceMenu LI._chosen:hover
 .menu LI.submenu
 { background-image: url('arrow-right.png'); }
 
-.menu LI[class~="disabled"].submenu
-{ background-image: url('submenu-disabled.gif') !important; }
-
 .menu LI.submenu:hover, .menu LI.submenu-selected
 { background-image: url('arrow-right.png') !important; }
+
+.menu LI[class~="disabled"].submenu,
+.menu LI[class~="disabled"].submenu:hover
+{ background-image: url('submenu-disabled.gif') !important; }
 
 DIV#logConsole
 { position: absolute;

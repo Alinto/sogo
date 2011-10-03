@@ -1,3 +1,20 @@
+2011-10-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/generic.js (snoozeAlarm): new function to
+	snooze an alarm for a specific number of minutes.
+	(showAlarmCallback): offer the user to snooze the alarm right
+	after triggering the browser-native alert.
+	(showSelectDialog): new function that construct a dialog box with
+	a popup menu.
+
+	* UI/Scheduler/UIxAppointmentEditor.m (-viewAction): accepts the
+	new form parameter snoozeAlarm, which delays the alarm to the
+	specified number of minutes.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m (-snoozeAlarm:):
+	new method to set the next alarm of the event in a specified
+	number of minutes. Only affect the quick table, not the original vCalendar.
+
 2011-10-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m (-PUTAction:)

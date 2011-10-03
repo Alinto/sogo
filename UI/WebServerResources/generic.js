@@ -28,7 +28,6 @@ var menus = new Array();
 var search = {};
 var sorting = {};
 var dialogs = {};
-var dialogActive = false;
 var dialogsStack = new Array();
 
 var lastClickedRow = -1;
@@ -1291,19 +1290,33 @@ function triggerNextAlarm() {
     }
 }
 
+function snoozeAlarm(url) {
+    url += "?snoozeAlarm=" + this.value;
+    triggerAjaxRequest(url, snoozeAlarmCallback);
+    disposeDialog();
+}
+
+function snoozeAlarmCallback(http) {
+    if (http.readyState == 4
+        && http.status == 200) {
+        refreshAlarms();
+    }
+}
+
 function showAlarm(url) {
-    url = UserFolderURL + "Calendar/" + url + "/view?resetAlarm=yes";
+    url = UserFolderURL + "Calendar/" + url + "/view";
     if (document.viewAlarmAjaxRequest) {
         document.viewAlarmAjaxRequest.aborted = true;
         document.viewAlarmAjaxRequest.abort();
     }
-    document.viewAlarmAjaxRequest = triggerAjaxRequest(url, showAlarmCallback);
+    document.viewAlarmAjaxRequest = triggerAjaxRequest(url + "?resetAlarm=yes", showAlarmCallback, url);
 }
 
 function showAlarmCallback(http) {
     if (http.readyState == 4
         && http.status == 200) {
         if (http.responseText.length) {
+            var url = http.callbackData;
             var data = http.responseText.evalJSON(true);
             var msg = _("Reminder:") + " " + data["summary"] + "\n";
             if (data["startDate"]) {
@@ -1324,6 +1337,15 @@ function showAlarmCallback(http) {
                 msg += "\n\n" + data["description"];
 
             window.alert(msg);
+            showSelectDialog(data["summary"], _('Snooze for '),
+                             { '5': _('5 minutes'),
+                               '10': _('10 minutes'),
+                               '15': _('15 minutes'),
+                               '30': _('30 minutes'),
+                               '45': _('45 minutes'),
+                               '60': _('1 hour') }, _('OK'),
+                             snoozeAlarm, url,
+                             '10');
         }
         else
             log("showAlarmCallback ajax error: no data received");
@@ -1801,9 +1823,8 @@ function createButton(id, caption, action) {
 
 function showAlertDialog(label) {
     var div = $("bgDialogDiv");
-    if (div && div.visible() && div.getOpacity() > 0) {
-        dialogsStack.push(label);
-    }
+    if (div && div.visible() && div.getOpacity() > 0)
+        dialogsStack.push(_showAlertDialog.bind(this, label));
     else
         _showAlertDialog(label);
 }
@@ -1830,6 +1851,14 @@ function _showAlertDialog(label) {
 }
 
 function showConfirmDialog(title, label, callbackYes, callbackNo) {
+    var div = $("bgDialogDiv");
+    if (div && div.visible() && div.getOpacity() > 0)
+        dialogsStack.push(_showConfirmDialog.bind(this, title, label, callbackYes, callbackNo));
+    else
+        _showConfirmDialog(title, label, callbackYes, callbackNo);
+}
+
+function _showConfirmDialog(title, label, callbackYes, callbackNo) {
     var key = title;
     if (Object.isElement(label)) key += label.allTextContent();
     else key += label;
@@ -1860,6 +1889,14 @@ function showConfirmDialog(title, label, callbackYes, callbackNo) {
 }
 
 function showPromptDialog(title, label, callback, defaultValue) {
+    var div = $("bgDialogDiv");
+    if (div && div.visible() && div.getOpacity() > 0)
+        dialogsStack.push(_showPromptDialog.bind(this, title, label, callback, defaultValue));
+    else
+        _showPromptDialog(title, label, callback, defaultValue);
+}
+
+function _showPromptDialog(title, label, callback, defaultValue) {
     var dialog = dialogs[title+label];
     v = defaultValue?defaultValue:"";
     if (dialog) {
@@ -1887,8 +1924,54 @@ function showPromptDialog(title, label, callback, defaultValue) {
         document.body.appendChild(dialog);
         dialogs[title+label] = dialog;
     }
+    dialog.appear({ duration: 0.2,
+                    afterFinish: function () { dialog.down("input").focus(); } });
+}
+
+function showSelectDialog(title, label, options, button, callbackFcn, callbackArg, defaultValue) {
+    var div = $("bgDialogDiv");
+    if (div && div.visible() && div.getOpacity() > 0) {
+        dialogsStack.push(_showSelectDialog.bind(this, title, label, options, button, callbackFcn, callbackArg, defaultValue));
+    }
+    else
+        _showSelectDialog(title, label, options, button, callbackFcn, callbackArg, defaultValue);
+}
+
+function _showSelectDialog(title, label, options, button, callbackFcn, callbackArg, defaultValue) {
+    var dialog = dialogs[title+label];
+    if (dialog) {
+        $("bgDialogDiv").show();
+    }
+    else {
+        var fields = createElement("p", null, []);
+	fields.appendChild(document.createTextNode(label));
+        var select = createElement("select"); //, null, null, { cname: name } );
+	fields.appendChild(select);
+        var values = $H(options).keys();
+        for (var i = 0; i < values.length; i++) {
+            var option = createElement("option", null, null,
+                                       { value: values[i] }, null, select);
+            option.appendChild(document.createTextNode(options[values[i]]));
+        }
+        fields.appendChild(createElement("br"));
+
+        fields.appendChild(createButton(null,
+                                        button,
+                                        callbackFcn.bind(select, callbackArg)));
+	fields.appendChild(createButton(null,
+                                        _("Cancel"),
+                                        disposeDialog));
+        dialog = createDialog(null,
+                              title,
+                              null,
+                              fields,
+                              "none");
+        document.body.appendChild(dialog);
+        dialogs[title+label] = dialog;
+    }
+    if (defaultValue)
+	defaultOption = dialog.down('option[value="'+defaultValue+'"]').selected = true;
     dialog.appear({ duration: 0.2 });
-    dialog.down("input").focus();
 }
 
 function disposeDialog() {
@@ -1898,9 +1981,9 @@ function disposeDialog() {
     });
     if (dialogsStack.length > 0) {
         // Show the next dialog box
-        var label = dialogsStack.first();
+        var dialogFcn = dialogsStack.first();
         dialogsStack.splice(0, 1);
-        _showAlertDialog.delay(0.2, label);
+        dialogFcn.delay(0.2);
     }
     else {
         var bgFade = Effect.Fade('bgDialogDiv', { duration: 0.2 });
@@ -1916,9 +1999,9 @@ function _disposeDialog(bgEffect) {
         bgEffect.cancel();
         div.show();
         div.appear({ duration: 0.2, to: 0.3 });
-        var label = dialogsStack.first();
+        var dialogFcn = dialogsStack.first();
         dialogsStack.splice(0, 1);
-        _showAlertDialog(label);
+        dialogFcn();
     }
 }
 
