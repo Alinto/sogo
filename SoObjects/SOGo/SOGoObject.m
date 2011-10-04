@@ -1121,21 +1121,102 @@
 
 - (NSArray *) davComplianceClassesInContext: (WOContext *) localContext
 {
-  static NSMutableArray *newClasses = nil;
-  NSArray *selfClasses;
+  NSMutableArray *classes;
+  static NSArray *calendarClasses = nil, *contactsClasses = nil,
+    *upperClasses = nil;
+  NSArray *caldavClasses;
+  BOOL found = NO, needCalDAVClasses = NO, needCardDAVClasses = NO;
+  NSUInteger count, max;
 
-  if (!newClasses)
+  /* popuplate static arrays */
+  if (!upperClasses)
     {
-      newClasses
-        = [[super davComplianceClassesInContext: localContext] mutableCopy];
-      selfClasses = [NSArray arrayWithObjects: @"access-control",
-                             @"calendar-access", @"calendar-schedule",
-                             @"calendar-auto-schedule", @"calendar-proxy",
-                             nil];
-      [newClasses addObjectsFromArray: selfClasses];
+      upperClasses = [NSArray arrayWithObjects:
+                                NSClassFromString (@"SOGoPublicBaseFolder"),
+                              NSClassFromString (@"SOGoUserFolder"),
+                              nil];
+      [upperClasses retain];
     }
 
-  return newClasses;
+  if (!calendarClasses)
+    {
+      calendarClasses
+        = [NSArray arrayWithObjects:
+                     NSClassFromString (@"SOGoAppointmentFolders"),
+                   NSClassFromString (@"SOGoAppointmentFolder"),
+                   nil];
+      [calendarClasses retain];
+    }
+
+  if (!contactsClasses)
+    {
+      contactsClasses
+        = [NSArray arrayWithObjects:
+                     NSClassFromString (@"SOGoContactFolders"),
+                   NSClassFromString (@"SOGoContacGCSFolder"),
+                   NSClassFromString (@"SOGoContactSourceFolder"),
+                   nil];
+      [contactsClasses retain];
+    }
+
+  /* determine which kind of object we are dealing with */
+  if ([self isFolderish])
+    {
+      max = [upperClasses count];
+      for (count = 0; !found && count < max; count++)
+        {
+          if ([self isKindOfClass: [upperClasses objectAtIndex: count]])
+            {
+              found = YES;
+              needCalDAVClasses = YES;
+              needCardDAVClasses = YES;
+            }
+        }
+
+      max = [calendarClasses count];
+      for (count = 0; !found && count < max; count++)
+        {
+          if ([self isKindOfClass: [calendarClasses objectAtIndex: count]])
+            {
+              found = YES;
+              needCalDAVClasses = YES;
+            }
+        }
+
+      max = [contactsClasses count];
+      for (count = 0; !found && count < max; count++)
+        {
+          if ([self isKindOfClass: [contactsClasses objectAtIndex: count]])
+            {
+              found = YES;
+              needCardDAVClasses = YES;
+            }
+        }
+    }
+
+  /* prepare the array */
+  classes = [[super davComplianceClassesInContext: localContext]
+                     mutableCopy];
+  if (!classes)
+    classes = [NSMutableArray new];
+  [classes autorelease];
+
+  /* generic */
+  [classes addObject: @"access-control"];
+
+  /* CardDAV */
+  if (needCardDAVClasses)
+    [classes addObject: @"addressbook"];
+
+  /* CalDAV */
+  if (needCalDAVClasses)
+    {
+      caldavClasses = [NSArray arrayWithObjects: @"calendar-access", @"calendar-schedule",
+                                 @"calendar-auto-schedule", @"calendar-proxy", nil];
+      [classes addObjectsFromArray: caldavClasses];
+    }
+
+  return classes;
 }
 
 /* dav acls */

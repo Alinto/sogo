@@ -1964,23 +1964,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return obj;
 }
 
-- (NSArray *) davComplianceClassesInContext: (id)_ctx
-{
-  NSMutableArray *classes;
-  NSArray *primaryClasses;
-
-  classes = [NSMutableArray array];
-
-  primaryClasses = [super davComplianceClassesInContext: _ctx];
-  if (primaryClasses)
-    [classes addObjectsFromArray: primaryClasses];
-  [classes addObject: @"calendar-access"];
-  //[classes addObject: @"calendar-schedule"];
-  [classes addObject: @"calendar-auto-schedule"];
-
-  return classes;
-}
-
 - (NSArray *) groupDavResourceType
 {
   return [NSArray arrayWithObjects: @"vevent-collection",

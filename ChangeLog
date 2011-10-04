@@ -1,4 +1,8 @@
-2011-10-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+2011-10-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m (-davComplianceClassesInContext:):
+	take all the supported DAV object classes in charge, in order to
+	simplify the handling of those on topmost folders.
 
 	* OpenChange/MAPIStoreFolder.m (-deleteMessageWithMID:andFlags:):
 	invoke "prepareDelete" on the message object when available.

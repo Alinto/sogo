@@ -321,23 +321,6 @@ static NSArray *folderListingFields = nil;
   return davSQLFieldsTable;
 }
 
-- (NSArray *) davComplianceClassesInContext: (id)_ctx
-{
-  NSMutableArray *classes;
-  NSArray *primaryClasses;
-
-  classes = [NSMutableArray new];
-  [classes autorelease];
-
-  primaryClasses = [super davComplianceClassesInContext: _ctx];
-  if (primaryClasses)
-    [classes addObjectsFromArray: primaryClasses];
-  [classes addObject: @"access-control"];
-  [classes addObject: @"addressbook-access"];
-
-  return classes;
-}
-
 - (NSString *) groupDavResourceType
 {
   return @"vcard-collection";
