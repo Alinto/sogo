@@ -740,7 +740,8 @@ DIV#quotaDialog P
 /* drag handles */
 DIV#verticalDragHandle
 { cursor: e-resize;
-  top: 7.5em;
+  border: 0px;
+  top: 81px;
   left: 15em;
   width: 5px;
   bottom: 0px; }

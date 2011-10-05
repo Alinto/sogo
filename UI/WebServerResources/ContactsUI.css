@@ -285,7 +285,8 @@ DIV.contactColumn H4
 /* drag handles */
 DIV#dragHandle
 { cursor: e-resize;
-  top: 8em;
+  border: 0px;
+  top: 81px;
   left: 15em;
   width: 5px;
   bottom: 0px; }

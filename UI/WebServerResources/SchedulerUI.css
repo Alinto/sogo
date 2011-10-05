@@ -159,10 +159,11 @@ DIV#calendarView A
 
 #verticalDragHandle
 { cursor: e-resize;
-  top: 7.5em;
+  border: 0px;
+  top: 81px;
+  bottom: 0px;
   left: 19.25em;
-  width: 5px;
-  bottom: 0px; }
+  width: 5px; }
 
 #rightDragHandle
 { cursor: n-resize;
