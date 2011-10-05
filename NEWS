@@ -1,4 +1,4 @@
-2.0-2011MMDD (2.0.0beta - branched from upcoming v1.3.9)
+2.0-20111004 (2.0.0beta1 - branched from upcoming v1.3.9)
 ---------------------
 New Features
  - new user defaults SOGoDefaultCalendar to specify which calendar is used when
@@ -11,9 +11,6 @@ New Features
 Enhancements
  - phone numbers in the contacts web module are now links (tel:)
  - revamp of the modules link banner (15-pixel taller)
-
-Bug Fixes
- - 
 
 1.3-20110726 (1.3.8b)
 ---------------------
