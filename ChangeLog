@@ -1,3 +1,8 @@
+2011-10-06  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/generic.js (getListIndexForFolder): the
+	personal folder now stays on top, as returned by the server.
+
 2011-10-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m (-davComplianceClassesInContext:):
