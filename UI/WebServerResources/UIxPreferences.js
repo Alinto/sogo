@@ -533,7 +533,10 @@ function onMailIdentitySignatureClick(event) {
         }
         var identity = this.mailAccount["identities"][0];
         var area = $("signature");
-        area.value = identity["signature"];
+        if (typeof(identity["signature"]) != "undefined")
+            area.value = identity["signature"];
+        else
+            area.value = "";
         dialog.show();
         $("bgDialogDiv").show();
         if (!CKEDITOR.instances["signature"])
@@ -673,7 +676,9 @@ function displayAccountSignature(mailAccount) {
     var identity = (mailAccount["identities"]
                     ? mailAccount["identities"][0]
                     : {} );
-    var value = identity["signature"].stripTags().unescapeHTML().replace(/^[ \n\r]*/, "");
+    var value = identity["signature"];
+    if (value && value.length > 0)
+        value = value.stripTags().unescapeHTML().replace(/^[ \n\r]*/, "");
     if (value && value.length > 0) {
         if (value.length < 30) {
             actSignatureValue = value;

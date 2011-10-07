@@ -1,3 +1,9 @@
+2011-10-07  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js
+	(displayAccountSignature): fixed the link to edit the signature
+	when no signature was defined.
+
 2011-10-06  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (getListIndexForFolder): the
