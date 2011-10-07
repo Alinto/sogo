@@ -354,7 +354,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 
 - (uint64_t) objectVersion
 {
-  uint64_t version = 0xffffffffffffffffLL;
+  uint64_t version = ULLONG_MAX;
   NSNumber *uid, *changeNumber;
 
   uid = [(MAPIStoreMailFolder *)

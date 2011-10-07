@@ -354,7 +354,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 {
   [self subclassResponsibility: _cmd];
 
-  return 0xffffffffffffffffLL;
+  return ULLONG_MAX;
 }
 
 - (int) getPrChangeKey: (void **) data
@@ -364,7 +364,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   uint64_t obVersion;
 
   obVersion = [self objectVersion];
-  if (obVersion == 0xffffffffffffffffLL)
+  if (obVersion == ULLONG_MAX)
     rc = MAPISTORE_ERR_NOT_FOUND;
   else
     rc = [self getReplicaKey: data fromGlobCnt: obVersion
@@ -380,7 +380,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   uint64_t obVersion;
 
   obVersion = [self objectVersion];
-  if (obVersion == 0xffffffffffffffffLL)
+  if (obVersion == ULLONG_MAX)
     rc = MAPISTORE_ERR_NOT_FOUND;
   else
     {

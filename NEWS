@@ -11,6 +11,7 @@ New Features
 Enhancements
  - phone numbers in the contacts web module are now links (tel:)
  - revamp of the modules link banner (15-pixel taller)
+ - updated CKEditor to version 3.6.2
 
 1.3-20110726 (1.3.8b)
 ---------------------

@@ -72,7 +72,7 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
 - (uint64_t) objectVersion
 {
   return ([sogoObject isKindOfClass: SOGoDraftObjectK]
-          ? 0xffffffffffffffffLL
+          ? ULLONG_MAX 
           : [super objectVersion]);
 }
 
