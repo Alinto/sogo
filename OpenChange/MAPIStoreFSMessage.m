@@ -93,7 +93,7 @@ Class NSNumberK;
 
   return (version
           ? exchange_globcnt ([version unsignedLongLongValue])
-          : 0xffffffffffffffff);
+          : ULLONG_MAX);
 }
 
 - (int) getProperty: (void **) data

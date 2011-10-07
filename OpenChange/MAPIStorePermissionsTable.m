@@ -76,7 +76,7 @@
   uint64_t value = 0;
 
   if ([userId isEqualToString: @"anonymous"])
-    value = 0xffffffffffffffff;
+    value = ULLONG_MAX;
 
   *data = MAPILongLongValue (memCtx, value);
 

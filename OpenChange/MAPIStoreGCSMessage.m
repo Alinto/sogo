@@ -97,7 +97,7 @@
 
 - (uint64_t) objectVersion
 {
-  uint64_t version = 0xffffffffffffffffLL;
+  uint64_t version = ULLONG_MAX;
   NSNumber *changeNumber;
  
   if (!isNew)
