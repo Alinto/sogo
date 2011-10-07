@@ -469,7 +469,8 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 {
   BOOL rc = YES;
   uint64_t newChangeNum;
-  NSNumber *ti, *changeNumber, *modseq, *lastModseq, *nextModseq, *uid;
+  NSNumber *ti, *changeNumber, *modseq, *lastModseq, *nextModseq,
+    *lastDeletedModseq, *uid;
   uint64_t lastModseqNbr;
   EOQualifier *searchQualifier;
   NSArray *uids;
@@ -566,16 +567,22 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
       ldb_transaction_commit([[self context] connectionInfo]->oc_ctx);
       foundChange = YES;
+      [currentProperties setObject: lastModseq forKey: @"SyncLastModseq"];
     }
 
-  if (lastModseq)
+  lastDeletedModseq
+    = [currentProperties objectForKey: @"SyncLastDeletedModseq"];
+  if (lastDeletedModseq)
     {
-      /* FIXME: the problem here is that if a delete is the last operation
-      performed on a folder, the SyncLastSynchronisationDate will continuously
-      get updated until a new modseq shows up */
-      foundChange |= [[(SOGoMailFolder *) sogoObject
-                          fetchUIDsOfVanishedItems: lastModseqNbr]
-                       count] > 0;
+      lastModseqNbr = [lastDeletedModseq unsignedLongLongValue];
+      uids = [(SOGoMailFolder *) sogoObject
+                 fetchUIDsOfVanishedItems: lastModseqNbr];
+      if ([uids count] > 0)
+        {
+          foundChange = YES;
+          [currentProperties setObject: uids
+                                forKey: @"SyncLastDeletedUIDs"];
+        }
     }
 
   if (foundChange)
@@ -583,7 +590,6 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       ti = [NSNumber numberWithDouble: [now timeIntervalSince1970]];
       [currentProperties setObject: ti
                             forKey: @"SyncLastSynchronisationDate"];
-      [currentProperties setObject: lastModseq forKey: @"SyncLastModseq"];
       [versionsMessage appendProperties: currentProperties];
       [versionsMessage save];
     }
@@ -726,8 +732,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSArray *deletedKeys, *deletedUIDs;
   NSNumber *changeNumNbr;
   uint64_t modseq;
-  NSDictionary *versionProperties; // , *status;
-  NSMutableDictionary *messages, *mapping;
+  NSMutableDictionary *currentProperties, *messages;
   NSNumber *newChangeNumNbr; // , *highestModseq;
   uint64_t newChangeNum;
   NSUInteger count, max;
@@ -739,28 +744,25 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                  unsignedLongLongValue];
       if (modseq > 0)
         {
-          // status
-          //   = [sogoObject
-          //       statusForFlags: [NSArray arrayWithObject: @"HIGHESTMODSEQ"]];
-          // highestModseq = [status objectForKey: @"highestmodseq"];
-
-          versionProperties = [versionsMessage properties];
-          messages = [versionProperties objectForKey: @"Messages"];
-          deletedUIDs = [(SOGoMailFolder *) sogoObject
-                        fetchUIDsOfVanishedItems: modseq];
-          deletedKeys = [deletedUIDs stringsWithFormat: @"%@.eml"];
-          max = [deletedUIDs count];
-          if (max > 0)
+          currentProperties = [[versionsMessage properties] mutableCopy];
+          deletedUIDs = [currentProperties objectForKey: @"SyncLastDeletedUIDs"];
+          if ([deletedUIDs count] > 0)
             {
+              [currentProperties removeObjectForKey: @"SyncLastDeletedUIDs"];
+              [currentProperties setObject: changeNumNbr
+                                    forKey: @"SyncLastDeletedModseq"];
+              messages = [currentProperties objectForKey: @"Messages"];
               [messages removeObjectsForKeys: deletedUIDs];
 
-              mapping = [versionProperties objectForKey: @"VersionsMapping"];
+              [versionsMessage appendProperties: currentProperties];
+              [versionsMessage save];
+
+              deletedKeys = [deletedUIDs stringsWithFormat: @"%@.eml"];
+              max = [deletedKeys count];
               for (count = 0; count < max; count++)
                 newChangeNum = [[self context] getNewChangeNumber];
               newChangeNumNbr = [NSNumber numberWithUnsignedLongLong: newChangeNum];
               *cnNbr = newChangeNumNbr;
-              [mapping setObject: newChangeNumNbr forKey: @"SyncLastModseq"];
-              [versionsMessage save];
             }
         }
       else

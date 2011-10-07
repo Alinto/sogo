@@ -1,3 +1,9 @@
+2011-10-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailFolder.m (-synchroniseCache)
+	(-getDeletedKeysFromChangeNumber:andCN:inTableType:): attempt to
+	fix the leak of version numbers.
+
 2011-10-06  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (getListIndexForFolder): the

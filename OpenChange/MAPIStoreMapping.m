@@ -223,8 +223,8 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
       [mapping setObject: urlString forKey: idKey];
       [reverseMapping setObject: idKey forKey: urlString];
       rc = YES;
-      // [self logWithFormat: @"registered url '%@' with id %lld (0x%.16"PRIx64")",
-      //       urlString, idNbr, idNbr];
+      [self logWithFormat: @"registered url '%@' with id %lld (0x%.16"PRIx64")",
+            urlString, idNbr, idNbr];
 
       /* Add the record given its fid and mapistore_uri */
       key.dptr = (unsigned char *) talloc_asprintf(NULL, "0x%.16"PRIx64, idNbr);
@@ -250,8 +250,8 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   urlString = [mapping objectForKey: idKey];
   if (urlString)
     {
-      // [self logWithFormat: @"unregistering url '%@' with id %lld (0x%.16"PRIx64")",
-      //       urlString, idNbr, idNbr];
+      [self logWithFormat: @"unregistering url '%@' with id %lld (0x%.16"PRIx64")",
+            urlString, idNbr, idNbr];
       [reverseMapping removeObjectForKey: urlString];
       [mapping removeObjectForKey: idKey];
 
