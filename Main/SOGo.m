@@ -25,6 +25,8 @@
 #import <Foundation/NSData.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSFileManager.h>
+#import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSRunLoop.h>
 #import <Foundation/NSURL.h>
@@ -64,6 +66,8 @@
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <SOGo/NSObject+DAV.h>
+
+#include <Python.h>
 
 #import "NSException+Stacktrace.h"
 
@@ -147,6 +151,116 @@ static BOOL debugLeaks;
   [[SOGoProductLoader productLoader] loadAllProducts];
 }
 
+- (void) _loadBundles
+{
+  NSFileManager *aFileManager;
+  NSMutableArray *allPaths;
+  NSArray *allFiles;
+  NSString *aPath;
+  int i, j;
+  
+  bundles = [[NSMutableArray alloc] init];
+
+  aFileManager = [NSFileManager defaultManager];
+  allPaths =  [[NSMutableArray alloc] initWithArray: NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
+                                                                                         NSLocalDomainMask|
+                                                                                         NSNetworkDomainMask|
+                                                                                         NSSystemDomainMask|
+                                                                                         NSUserDomainMask,
+                                                                                         YES)];
+  for (i = 0; i < [allPaths count]; i++)
+    {
+      // We remove any potential duplicate paths in our allPaths array.
+      [allPaths removeObject: [allPaths objectAtIndex: i] inRange: NSMakeRange(i+1, [allPaths count]-i-1)];
+      
+      aPath = [NSString stringWithFormat: @"%@/SOGo", [allPaths objectAtIndex: i]];
+      allFiles = [aFileManager directoryContentsAtPath: aPath];
+
+      for (j = 0; j < [allFiles count]; j++)
+        {
+          NSString *aString;
+	  
+          aString = [allFiles objectAtIndex: j];
+  
+          // If we found a bundle, let's load it!
+          if ([[aString pathExtension] isEqualToString: @"bundle"])
+            {
+              NSBundle *aBundle;
+              NSString *path;
+              
+              path = [NSString stringWithFormat: @"%@/%@", aPath, aString];
+	      aBundle = [NSBundle bundleWithPath: path];
+
+              if (aBundle)
+                {
+		  PyObject *pName, *pModule;
+		  NSString *ppath;
+
+		  NSLog(@"Loaded bundle at path %@ successfully...", path);
+
+		  // We add that path to the PYTHONPATH environment
+		  ppath = [NSString stringWithFormat: @"%@/Resources/:%s", path, getenv("PYTHONPATH")];
+		  NSLog(@"Setting environment to %@", ppath);
+		  setenv("PYTHONPATH", [ppath UTF8String], 1);
+		  NSLog(@"New environment: %s", getenv("PYTHONPATH"));
+
+		  Py_Initialize();
+		  pName = PyString_FromString("main");
+
+		  if (pName)
+		    {
+		      NSLog(@"Trying to initialize module...");
+		      pModule = PyImport_Import(pName);
+		      Py_DECREF(pName);
+		      
+		      if (pModule != NULL)
+			{
+			  id aModule;
+			  Class c;
+			  int len;
+
+			  NSLog(@"Loaded main Python file at path %@", path);
+				
+			  len = [aString length];
+			  
+			  c = NSClassFromString([aString substringToIndex: (len-7)]);
+			  aModule = [c new];
+			  
+			  if (aModule)
+			    {
+			      [bundles addObject: aModule];
+			      RELEASE(aModule);
+
+			      NSLog(@"Successfully instanciated Sample");
+			      
+			      if ([aModule respondsToSelector: @selector(userWasCreated:atDate:)])
+				{
+				  [aModule userWasCreated: @"foo" atDate: @"bar"];
+				}
+			    }
+			  else
+			    {
+			      NSLog(@"Failed to instanciate Sample");
+			    }
+			}
+		      else
+			{
+			  NSLog(@"Failed to load module.");
+			}
+		    }
+		  else
+		    {
+		      NSLog(@"Failed to load module. You MUST have main.py in your SOGo Python bundle.");
+		    }
+		}
+	    }
+	}
+    }
+}
+
+//
+//
+//
 - (id) init
 {
   if ((self = [super init]))
@@ -157,6 +271,9 @@ static BOOL debugLeaks;
       rm = [[WEResourceManager alloc] init];
       [self setResourceManager:rm];
       [rm release];
+
+      /* load all bundles */
+      [self _loadBundles];
     }
 
   return self;
