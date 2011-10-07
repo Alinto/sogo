@@ -938,7 +938,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 
   /* Registration of target messages */
   //
-  // We use the UIDPLUS IMAP extension here in order to speedup UID retreival
+  // We use the UIDPLUS IMAP extension here in order to speedup UID retrieval
   // If supported by the server, we'll get something like: COPYUID 1315425789 1 8
   //
   // Sometimes COPYUID isn't returned at all by Cyrus or in case the server doesn't
