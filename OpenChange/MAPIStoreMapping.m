@@ -36,7 +36,10 @@
 
 #include <talloc.h>
 #include <tdb.h>
-#include <tdb_wrap.h>
+ 
+struct tdb_wrap {
+        struct tdb_context *tdb;
+};
 
 static NSMutableDictionary *mappingRegistry = nil;
 
