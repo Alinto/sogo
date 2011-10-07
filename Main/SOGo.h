@@ -33,7 +33,6 @@
 
 @interface SOGo : SoApplication
 {
-  NSMutableArray *bundles;
   SOGoCache *cache;
 }
 
