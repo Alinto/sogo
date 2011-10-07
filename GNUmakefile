@@ -10,7 +10,6 @@ SUBPROJECTS = \
 	SoObjects	\
 	Main		\
 	UI		\
-	Tools \
-	Bundles/Sample
+	Tools
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make
