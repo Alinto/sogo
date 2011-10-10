@@ -1,3 +1,18 @@
+2011-10-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailFolder.m (-synchroniseCache): improved
+	method to only fetch non-deleted messages in part 1, and to
+	automatically remove message records in part 2, so that we know
+	when a delete message has already been taken into account with
+	regards to version numbers. The version number generation having
+	been moved from getDeletedKeysFromChangeNumber:andCN:inTableType:.
+	This also fixes the case where the last modification date was
+	increased when any deleted message was found, because "known
+	deleted messages" are now ignored.
+	(-getDeletedKeysFromChangeNumber:andCN:inTableType:) Simplified
+	method by moving most of it into -synchroniseCache and by
+	returning the highest deleted modseq reported by the latter.
+
 2011-10-07  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxPreferences.js
