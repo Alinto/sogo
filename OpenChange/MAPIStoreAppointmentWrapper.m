@@ -100,10 +100,57 @@ static NSCharacterSet *hexCharacterSet = nil;
       cleanGlobalObjectId = nil;
       user = nil;
       alarmSet = NO;
+      itipSetup = NO;
       alarm = nil;
+      method = nil;
     }
 
   return self;
+}
+
+- (void) _setupITIPContextFromAttendees
+{
+  iCalPerson *attendee;
+
+  attendee = [event userAsAttendee: user];
+  if (attendee)
+    {
+      method = @"REPLY";
+      partstat = [attendee participationStatus];
+    }
+  else if ([event userIsOrganizer: user])
+    method = @"REQUEST";
+  else
+    method = nil;
+
+  [method retain];
+}
+
+- (void) _setupITIPContext
+{
+  NSArray *attendees;
+  NSUInteger max;
+
+  /* Here we attempt to determine the type of message from the ITIP method
+     contained in the event. It it fails, we attempt to determine this by
+     checking the identity of the organizer and of the attendees. */
+  itipSetup = YES;
+  method = [[event parent] method];
+  if ([method length] > 0)
+    {
+      [method retain];
+      if ([method isEqualToString: @"REPLY"])
+        {
+          attendees = [event attendees];
+          max = [attendees count];
+          if (max == 1)
+            partstat = [[attendees objectAtIndex: 0] participationStatus];
+          else if (max > 1)
+            [self _setupITIPContextFromAttendees];
+        }
+    }
+  else
+    [self _setupITIPContextFromAttendees];
 }
 
 - (id) initWithICalEvent: (iCalEvent *) newEvent
@@ -116,6 +163,7 @@ static NSCharacterSet *hexCharacterSet = nil;
       ASSIGN (calendar, [event parent]);
       ASSIGN (timeZone, newTimeZone);
       ASSIGN (user, newUser);
+      [self _setupITIPContext];
     }
 
   return self;
@@ -130,6 +178,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   [cleanGlobalObjectId release];
   [user release];
   [alarm release];
+  [method release];
   [super dealloc];
 }
 
@@ -360,8 +409,6 @@ static NSCharacterSet *hexCharacterSet = nil;
               inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t longValue;
-  NSString *method;
-  NSArray *attendees;
 
   /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx:
      Single instance appointment: 0x00000400
@@ -380,37 +427,33 @@ static NSCharacterSet *hexCharacterSet = nil;
       // else
       //   longValue = 0x0400;
 
+  if (!itipSetup)
+    [self _setupITIPContext];
+
   longValue = 0x0400;
   
-  method = [[event parent] method];
   if (method)
     {
       if ([method isEqualToString: @"REQUEST"])
         longValue |= 0x0004;
       else if ([method isEqualToString: @"REPLY"])
         {
-          attendees = [event attendees];
-          if ([attendees count] == 1)
+          longValue |= 0x0004;
+          switch (partstat)
             {
-              longValue |= 0x0004;
-              switch ([[attendees objectAtIndex: 0] participationStatus])
-                {
-                case iCalPersonPartStatAccepted:
-                  longValue |= 0x0001;
-                  break;
-                case iCalPersonPartStatDeclined:
-                  longValue |= 0x0002;
-                  break;
-                case iCalPersonPartStatTentative:
-                  longValue |= 0x0003;
-                  break;
-                default:
-                  longValue = 0x0400;
-                  [self logWithFormat: @"unhandled part stat"];
-                }
+            case iCalPersonPartStatAccepted:
+              longValue |= 0x0001;
+              break;
+            case iCalPersonPartStatDeclined:
+              longValue |= 0x0002;
+              break;
+            case iCalPersonPartStatTentative:
+              longValue |= 0x0003;
+              break;
+            default:
+              longValue = 0x0400;
+              [self logWithFormat: @"unhandled part stat"];
             }
-          else
-            [self logWithFormat: @"unexpected number of attendees for a REPLY"];
         }
       else if ([method isEqualToString: @"CANCEL"])
         longValue |= 0x0008;
@@ -510,38 +553,32 @@ static NSCharacterSet *hexCharacterSet = nil;
 - (int) getPrMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  NSString *method;
-  NSArray *attendees;
   const char *className;
 
-  method = [[event parent] method];
+  if (!itipSetup)
+    [self _setupITIPContext];
+
   if (method)
     {
       if ([method isEqualToString: @"REQUEST"])
         className = "IPM.Schedule.Meeting.Request";
       else if ([method isEqualToString: @"REPLY"])
         {
-          attendees = [event attendees];
-          if ([attendees count] == 1)
+          switch (partstat)
             {
-              switch ([[attendees objectAtIndex: 0] participationStatus])
-                {
-                case iCalPersonPartStatAccepted:
-                  className = "IPM.Schedule.Meeting.Resp.Pos";
-                  break;
-                case iCalPersonPartStatDeclined:
-                  className = "IPM.Schedule.Meeting.Resp.Neg";
-                  break;
-                case iCalPersonPartStatTentative:
-                  className = "IPM.Schedule.Meeting.Resp.Tent";
-                  break;
-                default:
-                  className = "IPM.Appointment";
-                  [self logWithFormat: @"unhandled part stat"];
-                }
+            case iCalPersonPartStatAccepted:
+              className = "IPM.Schedule.Meeting.Resp.Pos";
+              break;
+            case iCalPersonPartStatDeclined:
+              className = "IPM.Schedule.Meeting.Resp.Neg";
+              break;
+            case iCalPersonPartStatTentative:
+              className = "IPM.Schedule.Meeting.Resp.Tent";
+              break;
+            default:
+              className = "IPM.Appointment";
+              [self logWithFormat: @"unhandled part stat"];
             }
-          else
-            [self logWithFormat: @"unexpected number of attendees for a REPLY"];
         }
       else if ([method isEqualToString: @"COUNTER"])
         className = "IPM.Schedule.Meeting.Resp.Tent";
@@ -907,9 +944,16 @@ static NSCharacterSet *hexCharacterSet = nil;
 - (int) getPidLidLocation: (void **) data // LOCATION
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = [[event location] asUnicodeInMemCtx: memCtx];
+  int rc = MAPISTORE_SUCCESS;
+  NSString *location;
 
-  return MAPISTORE_SUCCESS;
+  location = [event location];
+  if (location)
+    *data = [location asUnicodeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 - (int) getPidLidWhere: (void **) data

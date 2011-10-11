@@ -1,5 +1,9 @@
 2011-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreAppointmentWrapper.m (-_setupITIPContext):
+	new method that contains the common code for determining the ITIP
+	status of the event and of the attendees.
+
 	* OpenChange/MAPIStoreMailMessage.m (-init): "headerMethod" has
 	become obsolete.
 	(-getPrIconIndex:inMemCtx:, -getPrMessageClass:inMemCtx:): when

@@ -24,7 +24,7 @@
 #define MAPISTORECALENDARWRAPPER_H
 
 #import <Foundation/NSObject.h>
-
+#import <NGCards/iCalPerson.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 
 @class NSTimeZone;
@@ -47,6 +47,9 @@ extern NSTimeZone *utcTZ;
   SOGoUser *user;
   BOOL alarmSet;
   iCalAlarm *alarm;
+  BOOL itipSetup;
+  NSString *method;
+  iCalPersonPartStat partstat;
 }
 
 + (id) wrapperWithICalEvent: (iCalEvent *) newEvent
