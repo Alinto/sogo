@@ -29,6 +29,7 @@
 
 @class NSTimeZone;
 
+@class iCalAlarm;
 @class iCalCalendar;
 @class iCalEvent;
 
@@ -44,6 +45,8 @@ extern NSTimeZone *utcTZ;
   NSData *globalObjectId;
   NSData *cleanGlobalObjectId;
   SOGoUser *user;
+  BOOL alarmSet;
+  iCalAlarm *alarm;
 }
 
 + (id) wrapperWithICalEvent: (iCalEvent *) newEvent
@@ -136,6 +139,24 @@ extern NSTimeZone *utcTZ;
                                 inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidAppointmentReplyTime: (void **) data
                              inMemCtx: (TALLOC_CTX *) memCtx;
+
+/* reminders */
+- (int) getPidLidReminderSet: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidLidReminderDelta: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidLidReminderTime: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidLidReminderSignalTime: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidLidReminderOverride: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidLidReminderType: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidLidReminderPlaySound: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidLidReminderFileParameter: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx;
 
 @end
 
