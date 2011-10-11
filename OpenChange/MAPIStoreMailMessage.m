@@ -115,7 +115,6 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
       mailIsEvent = NO;
       headerCharset = nil;
       headerEncoding = nil;
-      headerMethod = nil;
       headerMimeType = nil;
       headerSetup = NO;
       bodyContent = nil;
@@ -132,7 +131,6 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   [bodyContent release];
   [headerMimeType release];
   [headerCharset release];
-  [headerMethod release];
   [appointmentWrapper release];
   [super dealloc];
 }
@@ -226,10 +224,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       ASSIGN (headerCharset, [parameters objectForKey: @"charset"]);
       if ([headerMimeType isEqualToString: @"text/calendar"]
           || [headerMimeType isEqualToString: @"application/ics"])
-        {
-          mailIsEvent = YES;
-          ASSIGN (headerMethod, [parameters objectForKey: @"method"]);
-        }
+        mailIsEvent = YES;
     }
 
   headerSetup = YES;
@@ -394,25 +389,23 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   if (!headerSetup)
     [self _fetchHeaderData];
 
-  /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
-  if ([sogoObject isNewMail])
-    longValue = 0xffffffff;
-  else if (mailIsEvent)
-    {
-      if ([headerMethod isEqualToString: @"REQUEST"])
-        longValue = 0x0404;
-      else
-        longValue = 0x0400;
-    }
-  else if ([sogoObject replied])
-    longValue = 0x105;
-  else if ([sogoObject forwarded])
-    longValue = 0x106;
-  else if ([sogoObject read])
-    longValue = 0x100;
+  if (mailIsEvent)
+    [[self _appointmentWrapper] getPrIconIndex: data inMemCtx: memCtx];
   else
-    longValue = 0x101;
-  *data = MAPILongValue (memCtx, longValue);
+    {
+      /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
+      if ([sogoObject isNewMail])
+        longValue = 0xffffffff;
+      else if ([sogoObject replied])
+        longValue = 0x105;
+      else if ([sogoObject forwarded])
+        longValue = 0x106;
+      else if ([sogoObject read])
+        longValue = 0x100;
+      else
+        longValue = 0x101;
+      *data = MAPILongValue (memCtx, longValue);
+    }
 
   return MAPISTORE_SUCCESS;
 }
@@ -501,22 +494,14 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 - (int) getPrMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  const char *className;
-
   if (!headerSetup)
     [self _fetchHeaderData];
 
   if (mailIsEvent)
-    {
-      if ([headerMethod isEqualToString: @"REQUEST"])
-        className = "IPM.Schedule.Meeting.Request";
-      else
-        className = "IPM.Appointment";
-    }
+    [[self _appointmentWrapper] getPrMessageClass: data
+                                         inMemCtx: memCtx];
   else
-    className = "IPM.Note";
-
-  *data = talloc_strdup (memCtx, className);
+    *data = talloc_strdup (memCtx, "IPM.Note");
 
   return MAPISTORE_SUCCESS;
 }

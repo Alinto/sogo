@@ -360,18 +360,68 @@ static NSCharacterSet *hexCharacterSet = nil;
               inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t longValue;
+  NSString *method;
+  NSArray *attendees;
 
-  /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
-  // *longValue = 0x00000401 for recurring event
-  // *longValue = 0x00000402 for meeting
-  // *longValue = 0x00000403 for recurring meeting
-  // *longValue = 0x00000404 for invitation
-  
+  /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx:
+     Single instance appointment: 0x00000400
+     Recurring appointment: 0x00000401
+     Single instance meeting: 0x00000402
+     Recurring meeting: 0x00000403
+     Meeting request: 0x00000404
+     Accept: 0x00000405
+     Decline: 0x00000406
+     Tentativly: 0x00000407
+     Cancellation: 0x00000408
+     Informational update: 0x00000409 */
+
+      // if ([headerMethod isEqualToString: @"REQUEST"])
+      //   longValue = 0x0404;
+      // else
+      //   longValue = 0x0400;
+
   longValue = 0x0400;
-  if ([event isRecurrent])
-    longValue |= 0x0001;
-  if ([[event attendees] count] > 0)
-    longValue |= 0x0002;
+  
+  method = [[event parent] method];
+  if (method)
+    {
+      if ([method isEqualToString: @"REQUEST"])
+        longValue |= 0x0004;
+      else if ([method isEqualToString: @"REPLY"])
+        {
+          attendees = [event attendees];
+          if ([attendees count] == 1)
+            {
+              longValue |= 0x0004;
+              switch ([[attendees objectAtIndex: 0] participationStatus])
+                {
+                case iCalPersonPartStatAccepted:
+                  longValue |= 0x0001;
+                  break;
+                case iCalPersonPartStatDeclined:
+                  longValue |= 0x0002;
+                  break;
+                case iCalPersonPartStatTentative:
+                  longValue |= 0x0003;
+                  break;
+                default:
+                  longValue = 0x0400;
+                  [self logWithFormat: @"unhandled part stat"];
+                }
+            }
+          else
+            [self logWithFormat: @"unexpected number of attendees for a REPLY"];
+        }
+      else if ([method isEqualToString: @"CANCEL"])
+        longValue |= 0x0008;
+    }
+  else
+    {
+      if ([event isRecurrent])
+        longValue |= 0x0001;
+      if ([[event attendees] count] > 0)
+        longValue |= 0x0002;
+    }
   
   *data = MAPILongValue (memCtx, longValue);
 
@@ -460,10 +510,49 @@ static NSCharacterSet *hexCharacterSet = nil;
 - (int) getPrMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
+  NSString *method;
+  NSArray *attendees;
   const char *className;
 
-  if ([[event attendees] count] > 0)
-    className = "IPM.Schedule.Meeting.Request";
+  method = [[event parent] method];
+  if (method)
+    {
+      if ([method isEqualToString: @"REQUEST"])
+        className = "IPM.Schedule.Meeting.Request";
+      else if ([method isEqualToString: @"REPLY"])
+        {
+          attendees = [event attendees];
+          if ([attendees count] == 1)
+            {
+              switch ([[attendees objectAtIndex: 0] participationStatus])
+                {
+                case iCalPersonPartStatAccepted:
+                  className = "IPM.Schedule.Meeting.Resp.Pos";
+                  break;
+                case iCalPersonPartStatDeclined:
+                  className = "IPM.Schedule.Meeting.Resp.Neg";
+                  break;
+                case iCalPersonPartStatTentative:
+                  className = "IPM.Schedule.Meeting.Resp.Tent";
+                  break;
+                default:
+                  className = "IPM.Appointment";
+                  [self logWithFormat: @"unhandled part stat"];
+                }
+            }
+          else
+            [self logWithFormat: @"unexpected number of attendees for a REPLY"];
+        }
+      else if ([method isEqualToString: @"COUNTER"])
+        className = "IPM.Schedule.Meeting.Resp.Tent";
+      else if ([method isEqualToString: @"CANCEL"])
+        className = "IPM.Schedule.Meeting.Cancelled";
+      else
+        {
+          className = "IPM.Appointment";
+          [self logWithFormat: @"unhandled method: %@", method];
+        }
+    }
   else
     className = "IPM.Appointment";
   *data = talloc_strdup(memCtx, className);

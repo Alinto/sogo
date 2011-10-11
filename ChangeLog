@@ -1,5 +1,11 @@
 2011-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessage.m (-init): "headerMethod" has
+	become obsolete.
+	(-getPrIconIndex:inMemCtx:, -getPrMessageClass:inMemCtx:): when
+	mail is event, forward the invocation to the
+	MAPIStoreAppointmentWrapper equivalent.
+
 	* OpenChange/MAPIStoreAppointmentWrapper.m
 	(-getPidLidReminderSet:inMemCtx:)
 	(-getPidLidReminderDelta:inMemCtx:)
@@ -10,6 +16,9 @@
 	(-getPidLidReminderPlaySound:inMemCtx:)
 	(-getPidLidReminderFileParameter:inMemCtx:): implemented those
 	alarm-related getters (see OXORMDR).
+	(-getPrIconIndex:inMemCtx:, -getPrMessageClass:inMemCtx:): updated
+	code to handle REQUEST, REPLY (positive, negative and tentative)
+	as well as "COUNTER" and "CANCEL".
 
 	* OpenChange/MAPIStoreCalendarMessage.m (_setupAlarmDataInEvent:):
 	new method invoked from -save that sets VALARM elements on the

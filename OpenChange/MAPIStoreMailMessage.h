@@ -38,7 +38,6 @@
   NSString *mimeKey;
   NSString *headerCharset;
   NSString *headerEncoding;
-  NSString *headerMethod;
   NSString *headerMimeType;
   BOOL bodySetup;
   NSData *bodyContent;
