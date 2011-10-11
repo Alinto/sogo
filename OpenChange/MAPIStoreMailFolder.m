@@ -469,9 +469,10 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 {
   BOOL rc = YES;
   uint64_t newChangeNum;
-  NSNumber *ti, *changeNumber, *modseq, *lastModseq, *nextModseq, *uid;
+  NSNumber *ti, *changeNumber, *modseq, *initialLastModseq, *lastModseq,
+    *nextModseq, *uid;
   uint64_t lastModseqNbr;
-  EOQualifier *searchQualifier;
+  EOQualifier *kvQualifier, *searchQualifier;
   NSArray *uids;
   NSUInteger count, max;
   NSArray *fetchResults;
@@ -504,14 +505,19 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
     }
 
   lastModseq = [currentProperties objectForKey: @"SyncLastModseq"];
+  initialLastModseq = lastModseq;
   if (lastModseq)
     {
       lastModseqNbr = [lastModseq unsignedLongLongValue];
       nextModseq = [NSNumber numberWithUnsignedLongLong: lastModseqNbr + 1];
-      searchQualifier = [[EOKeyValueQualifier alloc]
+      kvQualifier = [[EOKeyValueQualifier alloc]
                                 initWithKey: @"modseq"
                            operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
                                       value: nextModseq];
+      searchQualifier = [[EOAndQualifier alloc]
+                          initWithQualifiers:
+                            kvQualifier, [self nonDeletedQualifier], nil];
+      [kvQualifier release];
       [searchQualifier autorelease];
     }
   else
@@ -520,6 +526,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       searchQualifier = [self nonDeletedQualifier];
     }
 
+  /* 1. we fetch modified or added uids */
   uids = [sogoObject fetchUIDsMatchingQualifier: searchQualifier
                                    sortOrdering: nil];
   max = [uids count];
@@ -543,7 +550,6 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
           result = [fetchResults objectAtIndex: count];
           uid = [result objectForKey: @"uid"];
           modseq = [result objectForKey: @"modseq"];
-          [self logWithFormat: @"uid '%@' has modseq '%@'", uid, modseq];
           newChangeNum = [[self context] getNewChangeNumber];
           changeNumber = [NSNumber numberWithUnsignedLongLong: newChangeNum];
 
@@ -553,6 +559,9 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
           [messageEntry setObject: modseq forKey: @"modseq"];
           [messageEntry setObject: changeNumber forKey: @"version"];
+
+          [self logWithFormat: @"added message entry for uid %@, modseq %@,"
+                @" version %@", uid, modseq, changeNumber];
 
           changeKey = [self getReplicaKeyFromGlobCnt: newChangeNum >> 16];
           [self _setChangeKey: changeKey forMessageEntry: messageEntry];
@@ -565,17 +574,34 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
         }
 
       ldb_transaction_commit([[self context] connectionInfo]->oc_ctx);
+      [currentProperties setObject: lastModseq forKey: @"SyncLastModseq"];
       foundChange = YES;
     }
 
-  if (lastModseq)
+  /* 2. we synchronise deleted UIDs */
+  if (initialLastModseq)
     {
-      /* FIXME: the problem here is that if a delete is the last operation
-      performed on a folder, the SyncLastSynchronisationDate will continuously
-      get updated until a new modseq shows up */
-      foundChange |= [[(SOGoMailFolder *) sogoObject
-                          fetchUIDsOfVanishedItems: lastModseqNbr]
-                       count] > 0;
+      fetchResults = [(SOGoMailFolder *) sogoObject
+                         fetchUIDsOfVanishedItems: lastModseqNbr];
+      max = [fetchResults count];
+      changeNumber = nil;
+      for (count = 0; count < max; count++)
+        {
+          uid = [fetchResults objectAtIndex: count];
+          if ([messages objectForKey: uid])
+            {
+              newChangeNum = [[self context] getNewChangeNumber];
+              changeNumber = [NSNumber numberWithUnsignedLongLong: newChangeNum];
+              [messages removeObjectForKey: uid];
+              [self logWithFormat: @"removed message entry for uid %@", uid];
+            }
+        }
+      if (changeNumber)
+        {
+          [currentProperties setObject: changeNumber
+                                forKey: @"SyncLastDeleteChangeNumber"];
+          foundChange = YES;
+        }
     }
 
   if (foundChange)
@@ -583,7 +609,6 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       ti = [NSNumber numberWithDouble: [now timeIntervalSince1970]];
       [currentProperties setObject: ti
                             forKey: @"SyncLastSynchronisationDate"];
-      [currentProperties setObject: lastModseq forKey: @"SyncLastModseq"];
       [versionsMessage appendProperties: currentProperties];
       [versionsMessage save];
     }
@@ -724,42 +749,26 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                                  inTableType: (uint8_t) tableType
 {
   NSArray *deletedKeys, *deletedUIDs;
-  NSNumber *changeNumNbr;
+  NSNumber *changeNumber;
   uint64_t modseq;
-  NSDictionary *versionProperties; // , *status;
-  NSMutableDictionary *messages, *mapping;
-  NSNumber *newChangeNumNbr; // , *highestModseq;
-  uint64_t newChangeNum;
-  NSUInteger count, max;
+  NSDictionary *versionProperties;
 
   if (tableType == MAPISTORE_MESSAGE_TABLE)
     {
-      changeNumNbr = [NSNumber numberWithUnsignedLongLong: changeNum];
-      modseq = [[self modseqFromMessageChangeNumber: changeNumNbr]
+      changeNumber = [NSNumber numberWithUnsignedLongLong: changeNum];
+      modseq = [[self modseqFromMessageChangeNumber: changeNumber]
                  unsignedLongLongValue];
       if (modseq > 0)
         {
-          // status
-          //   = [sogoObject
-          //       statusForFlags: [NSArray arrayWithObject: @"HIGHESTMODSEQ"]];
-          // highestModseq = [status objectForKey: @"highestmodseq"];
-
-          versionProperties = [versionsMessage properties];
-          messages = [versionProperties objectForKey: @"Messages"];
           deletedUIDs = [(SOGoMailFolder *) sogoObject
-                        fetchUIDsOfVanishedItems: modseq];
+                            fetchUIDsOfVanishedItems: modseq];
           deletedKeys = [deletedUIDs stringsWithFormat: @"%@.eml"];
-          max = [deletedUIDs count];
-          if (max > 0)
+          if ([deletedUIDs count] > 0)
             {
-              [messages removeObjectsForKeys: deletedUIDs];
-
-              mapping = [versionProperties objectForKey: @"VersionsMapping"];
-              for (count = 0; count < max; count++)
-                newChangeNum = [[self context] getNewChangeNumber];
-              newChangeNumNbr = [NSNumber numberWithUnsignedLongLong: newChangeNum];
-              *cnNbr = newChangeNumNbr;
-              [mapping setObject: newChangeNumNbr forKey: @"SyncLastModseq"];
+              versionProperties = [versionsMessage properties];
+              changeNumber = [versionProperties
+                                  objectForKey: @"SyncLastDeleteChangeNumber"];
+              *cnNbr = changeNumber;
               [versionsMessage save];
             }
         }
@@ -938,7 +947,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 
   /* Registration of target messages */
   //
-  // We use the UIDPLUS IMAP extension here in order to speedup UID retreival
+  // We use the UIDPLUS IMAP extension here in order to speedup UID retrieval
   // If supported by the server, we'll get something like: COPYUID 1315425789 1 8
   //
   // Sometimes COPYUID isn't returned at all by Cyrus or in case the server doesn't
