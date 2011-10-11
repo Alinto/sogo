@@ -34,11 +34,13 @@
 #import <Foundation/NSTimeZone.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalTimeZone.h>
+#import <NGCards/iCalTrigger.h>
 #import <SOGo/SOGoUser.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
@@ -417,6 +419,63 @@
   return [self getYes: data inMemCtx: memCtx];
 }
 
+/* alarms */
+- (int) getPidLidReminderSet: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidLidReminderSet: data
+                                                inMemCtx: memCtx];
+}
+
+- (int) getPidLidReminderDelta: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidLidReminderDelta: data
+                                                  inMemCtx: memCtx];
+}
+
+- (int) getPidLidReminderTime: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidLidReminderTime: data
+                                                 inMemCtx: memCtx];
+}
+
+- (int) getPidLidReminderSignalTime: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidLidReminderSignalTime: data
+                                                       inMemCtx: memCtx];
+}
+
+- (int) getPidLidReminderOverride: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidLidReminderOverride: data
+                                                     inMemCtx: memCtx];
+}
+
+- (int) getPidLidReminderType: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidLidReminderType: data
+                                                 inMemCtx: memCtx];
+}
+
+- (int) getPidLidReminderPlaySound: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidLidReminderPlaySound: data
+                                                      inMemCtx: memCtx];
+}
+
+- (int) getPidLidReminderFileParameter: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidLidReminderFileParameter: data
+                                                          inMemCtx: memCtx];
+}
+
 /* attendee */
 - (void) _setupRecurrenceInCalendar: (iCalCalendar *) calendar
                           withEvent: (iCalEvent *) event
@@ -502,6 +561,48 @@
       [existingObject setContext: woContext];
       ASSIGN (sogoObject, existingObject);
       isNew = NO;
+    }
+}
+
+- (void) _setupAlarmDataInEvent: (iCalEvent *) newEvent
+{
+  NSArray *alarms;
+  iCalAlarm *currentAlarm, *alarm = nil;
+  iCalTrigger *trigger;
+  NSNumber *delta;
+  NSString *action;
+  NSUInteger count, max;
+
+  /* find and remove first display alarm */
+  alarms = [newEvent alarms];
+  max = [alarms count];
+  for (count = 0; !alarm && count < max; count++)
+    {
+      currentAlarm = [alarms objectAtIndex: count];
+      action = [[currentAlarm action] lowercaseString];
+      if (!action || [action isEqualToString: @"display"])
+        alarm =  currentAlarm;
+    }
+
+  if (alarm)
+    [newEvent removeChild: alarm];
+
+  if ([[newProperties objectForKey: MAPIPropertyKey (PidLidReminderSet)]
+        boolValue])
+    {
+      delta = [newProperties
+                objectForKey: MAPIPropertyKey (PidLidReminderDelta)];
+      if (delta)
+        {
+          alarm = [iCalAlarm new];
+          [alarm setAction: @"DISPLAY"];
+          trigger = [iCalTrigger elementWithTag: @"trigger"];
+          [trigger setValueType: @"DURATION"];
+          [trigger setValue: [NSString stringWithFormat: @"-PT%@M", delta]];
+          [alarm setTrigger: trigger];
+          [newEvent addToAlarms: alarm];
+          [alarm release];
+        }
     }
 }
 
@@ -687,6 +788,9 @@
 
       [newEvent setOrganizer: nil];
       [newEvent removeAllAttendees];
+
+      /* alarm */
+      [self _setupAlarmDataInEvent: newEvent];
 
       // Organizer
       value = [newProperties objectForKey: @"recipients"];

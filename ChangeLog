@@ -1,4 +1,28 @@
-2011-10-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+2011-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m
+	(-getPidLidReminderSet:inMemCtx:)
+	(-getPidLidReminderDelta:inMemCtx:)
+	(-getPidLidReminderTime:inMemCtx:)
+	(-getPidLidReminderSignalTime:inMemCtx:)
+	(-getPidLidReminderOverride:inMemCtx:)
+	(-getPidLidReminderType:inMemCtx:)
+	(-getPidLidReminderPlaySound:inMemCtx:)
+	(-getPidLidReminderFileParameter:inMemCtx:): implemented those
+	alarm-related getters (see OXORMDR).
+
+	* OpenChange/MAPIStoreCalendarMessage.m (_setupAlarmDataInEvent:):
+	new method invoked from -save that sets VALARM elements on the
+	current event based on the PidLidReminder* properties.
+	(-getPidLidReminderSet:inMemCtx:)
+	(-getPidLidReminderDelta:inMemCtx:)
+	(-getPidLidReminderTime:inMemCtx:)
+	(-getPidLidReminderSignalTime:inMemCtx:)
+	(-getPidLidReminderOverride:inMemCtx:)
+	(-getPidLidReminderType:inMemCtx:)
+	(-getPidLidReminderPlaySound:inMemCtx:)
+	(-getPidLidReminderFileParameter:inMemCtx:): new alarm-related
+	forwarders to homonymous methods in MAPIStoreAppointmentWrapper.
 
 	* OpenChange/MAPIStoreMailFolder.m (-synchroniseCache): improved
 	method to only fetch non-deleted messages in part 1, and to

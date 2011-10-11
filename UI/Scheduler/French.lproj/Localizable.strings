@@ -402,7 +402,7 @@
 "reminder_DAYS" = "jours";
 "reminder_BEFORE" = "avant";
 "reminder_AFTER" = "après";
-"reminder_START" = "le début de 'événement";
+"reminder_START" = "le début de l'événement";
 "reminder_END" = "la fin de l'événement";
 "Reminder Details" = "Détails du rappel";
 

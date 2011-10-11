@@ -27,11 +27,14 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSTimeZone.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
+#import <NGCards/iCalPerson.h>
 #import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalTimeZone.h>
-#import <NGCards/iCalPerson.h>
+#import <NGCards/iCalTrigger.h>
+#import <NGCards/NSString+NGCards.h>
 #import <SOGo/SOGoUserManager.h>
 
 #import "MAPIStoreMessage.h"
@@ -96,6 +99,8 @@ static NSCharacterSet *hexCharacterSet = nil;
       globalObjectId = nil;
       cleanGlobalObjectId = nil;
       user = nil;
+      alarmSet = NO;
+      alarm = nil;
     }
 
   return self;
@@ -124,6 +129,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   [globalObjectId release];
   [cleanGlobalObjectId release];
   [user release];
+  [alarm release];
   [super dealloc];
 }
 
@@ -1174,6 +1180,156 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
     }
 
   return rc;
+}
+
+/* reminders */
+- (void) _setupAlarm
+{
+  NSArray *alarms;
+  NSUInteger count, max;
+  iCalAlarm *currentAlarm;
+  NSString *action;
+
+  alarms = [event alarms];
+  max = [alarms count];
+  for (count = 0; !alarm && count < max; count++)
+    {
+      currentAlarm = [alarms objectAtIndex: count];
+      action = [[currentAlarm action] lowercaseString];
+      if (!action || [action isEqualToString: @"display"])
+        ASSIGN (alarm, currentAlarm);
+    }
+
+  alarmSet = YES;
+}
+
+- (int) getPidLidReminderSet: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!alarmSet)
+    [self _setupAlarm];
+
+  *data = MAPIBoolValue (memCtx, (alarm != nil));
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidReminderTime: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!alarmSet)
+    [self _setupAlarm];
+
+  return (alarm
+          ? [self getPrStartDate: data inMemCtx: memCtx]
+          : MAPISTORE_ERR_NOT_FOUND);
+}
+
+- (int) getPidLidReminderDelta: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_ERR_NOT_FOUND;
+  iCalTrigger *trigger;
+  NSCalendarDate *startDate, *relationDate, *alarmDate;
+  NSTimeInterval interval;
+  NSString *relation;
+
+  if (!alarmSet)
+    [self _setupAlarm];
+
+  if (alarm)
+    {
+      trigger = [alarm trigger];
+      if ([[trigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
+        {
+          startDate = [event startDate];
+          relation = [[trigger relationType] lowercaseString];
+          interval = [[trigger value] durationAsTimeInterval];
+          if ([relation isEqualToString: @"end"])
+            relationDate = [event endDate];
+          else
+            relationDate = startDate;
+
+          // Compute the next alarm date with respect to the reference date
+          if (relationDate)
+            {
+              alarmDate = [relationDate addTimeInterval: interval];
+              interval = [startDate timeIntervalSinceDate: alarmDate];
+              *data = MAPILongValue (memCtx, (int) (interval / 60));
+              rc = MAPISTORE_SUCCESS;
+            }
+        }
+    }
+
+  return rc;
+}
+
+- (int) getPidLidReminderSignalTime: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+  NSCalendarDate *alarmDate;
+
+  if (!alarmSet)
+    [self _setupAlarm];
+
+  if (alarm)
+    {
+      alarmDate = [alarm nextAlarmDate];
+      [alarmDate setTimeZone: utcTZ];
+      *data = [alarmDate asFileTimeInMemCtx: memCtx];
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidLidReminderOverride: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+
+  if (!alarmSet)
+    [self _setupAlarm];
+
+  if (alarm)
+    *data = MAPIBoolValue (memCtx, YES);
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidLidReminderPlaySound: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+
+  if (!alarmSet)
+    [self _setupAlarm];
+
+  if (alarm)
+    *data = MAPIBoolValue (memCtx, YES);
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidLidReminderFileParameter: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  // if (!alarmSet)
+  //   [self _setupAlarm];
+
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidLidReminderType: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
 }
 
 @end
