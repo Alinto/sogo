@@ -42,9 +42,10 @@ extern NSTimeZone *utcTZ;
   iCalCalendar *calendar;
   iCalEvent *event;
   NSTimeZone *timeZone;
+  SOGoUser *user;
+  NSString *senderEmail;
   NSData *globalObjectId;
   NSData *cleanGlobalObjectId;
-  SOGoUser *user;
   BOOL alarmSet;
   iCalAlarm *alarm;
   BOOL itipSetup;
@@ -54,9 +55,11 @@ extern NSTimeZone *utcTZ;
 
 + (id) wrapperWithICalEvent: (iCalEvent *) newEvent
                     andUser: (SOGoUser *) newUser
+             andSenderEmail: (NSString *) newSenderEmail
                  inTimeZone: (NSTimeZone *) newTimeZone;
 - (id) initWithICalEvent: (iCalEvent *) newEvent
                  andUser: (SOGoUser *) newUser
+          andSenderEmail: (NSString *) newSenderEmail
               inTimeZone: (NSTimeZone *) newTimeZone;
 
 /* getters */

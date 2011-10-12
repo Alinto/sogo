@@ -77,12 +77,14 @@ static NSCharacterSet *hexCharacterSet = nil;
 
 + (id) wrapperWithICalEvent: (iCalEvent *) newEvent
                     andUser: (SOGoUser *) newUser
+             andSenderEmail: (NSString *) newSenderEmail
                  inTimeZone: (NSTimeZone *) newTimeZone
 {
   MAPIStoreAppointmentWrapper *wrapper;
 
   wrapper = [[self alloc] initWithICalEvent: newEvent
                                     andUser: newUser
+                             andSenderEmail: newSenderEmail
                                  inTimeZone: newTimeZone];
   [wrapper autorelease];
 
@@ -96,6 +98,7 @@ static NSCharacterSet *hexCharacterSet = nil;
       calendar = nil;
       event = nil;
       timeZone = nil;
+      senderEmail = nil;
       globalObjectId = nil;
       cleanGlobalObjectId = nil;
       user = nil;
@@ -110,16 +113,33 @@ static NSCharacterSet *hexCharacterSet = nil;
 
 - (void) _setupITIPContextFromAttendees
 {
-  iCalPerson *attendee;
+  iCalPerson *attendee = nil;
+  NSArray *attendees;
 
   attendee = [event userAsAttendee: user];
   if (attendee)
-    {
-      method = @"REPLY";
-      partstat = [attendee participationStatus];
-    }
-  else if ([event userIsOrganizer: user])
     method = @"REQUEST";
+  else if ([event userIsOrganizer: user])
+    {
+      if (senderEmail)
+        attendee = [event findAttendeeWithEmail: senderEmail];
+      if (!attendee)
+        {
+          attendees = [event attendees];
+          if ([attendees count] == 1)
+            attendee = [attendees objectAtIndex: 0];
+        }
+      if (attendee)
+        {
+          method = @"REPLY";
+          partstat = [attendee participationStatus];
+        }
+      else
+        {
+          [self logWithFormat: @"no attendee matching sender found"];
+          method = nil;
+        }
+    }
   else
     method = nil;
 
@@ -155,6 +175,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 
 - (id) initWithICalEvent: (iCalEvent *) newEvent
                  andUser: (SOGoUser *) newUser
+          andSenderEmail: (NSString *) newSenderEmail
               inTimeZone: (NSTimeZone *) newTimeZone
 {
   if ((self = [self init]))
@@ -163,6 +184,7 @@ static NSCharacterSet *hexCharacterSet = nil;
       ASSIGN (calendar, [event parent]);
       ASSIGN (timeZone, newTimeZone);
       ASSIGN (user, newUser);
+      ASSIGN (senderEmail, newSenderEmail);
       [self _setupITIPContext];
     }
 
@@ -174,9 +196,10 @@ static NSCharacterSet *hexCharacterSet = nil;
   [calendar release];
   [event release];
   [timeZone release];
+  [user release];
+  [senderEmail release];
   [globalObjectId release];
   [cleanGlobalObjectId release];
-  [user release];
   [alarm release];
   [method release];
   [super dealloc];

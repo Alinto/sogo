@@ -109,6 +109,7 @@
       ASSIGN (appointmentWrapper,
               [MAPIStoreAppointmentWrapper wrapperWithICalEvent: event
                                                         andUser: [[self context] activeUser]
+                                                 andSenderEmail: nil
                                                      inTimeZone: [self ownerTimeZone]]);
     }
 

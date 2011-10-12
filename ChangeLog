@@ -1,3 +1,14 @@
+2011-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m
+	(-initWithICalEvent:andUser:andSenderEmail:inTimeZone:): take a
+	new "senderEmail" parameter in order to help the process of
+	deducting the attendee in an invitation message not including a
+	"METHOD".
+	(-_setupITIPContextFromAttendees): fixed method to set the method
+	as "REPLY" when the user is organizer rather than the other way
+	around.
+
 2011-10-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreAppointmentWrapper.m (-_setupITIPContext):

@@ -251,10 +251,10 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 
 - (MAPIStoreAppointmentWrapper *) _appointmentWrapper
 {
-  NSArray *events;
+  NSArray *events, *from;
   iCalCalendar *calendar;
   iCalEvent *event;
-  NSString *stringValue;
+  NSString *stringValue, *senderEmail;
 
   if (!appointmentWrapper)
     {
@@ -267,9 +267,15 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       if ([events count] > 0)
         {
           event = [events objectAtIndex: 0];
+          from = [sogoObject fromEnvelopeAddresses];
+          if ([from count] > 0)
+            senderEmail = [[from objectAtIndex: 0] email];
+          else
+            senderEmail = nil;
           appointmentWrapper = [MAPIStoreAppointmentWrapper
                                  wrapperWithICalEvent: event
                                               andUser: [[self context] activeUser]
+                                       andSenderEmail: senderEmail
                                            inTimeZone: [self ownerTimeZone]];
           [appointmentWrapper retain];
         }
