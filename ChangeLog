@@ -1,3 +1,11 @@
+2011-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* Tools/SOGoToolUserPreferences.m (-run): added possibility to
+	specify a file (-f filename) when setting a user
+	default/setting. Removed the constraint of specifying
+	administrative credentials of the SIeve server when not setting a
+	parameter related to Sieve.
+
 2011-10-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailFolder.m (-synchroniseCache): improved
