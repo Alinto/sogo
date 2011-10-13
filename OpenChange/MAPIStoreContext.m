@@ -170,6 +170,9 @@ _prepareContextClass (Class contextClass,
                   if (context)
                     {
                       *contextPtr = context;
+		      mapistore_mgmt_backend_register_user (newConnInfo,
+                                                            "SOGo",
+                                                            [[[context authenticator] username] UTF8String]);
                       rc = MAPISTORE_SUCCESS;
                     }
                 }
@@ -221,6 +224,9 @@ _prepareContextClass (Class contextClass,
 
 - (void) dealloc
 {
+  mapistore_mgmt_backend_unregister_user ([self connectionInfo], "SOGo", 
+                                          [[[self authenticator] username]
+                                            UTF8String]);
   [baseFolder release];
   [woContext release];
   [authenticator release];

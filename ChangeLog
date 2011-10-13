@@ -1,5 +1,8 @@
 2011-10-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_manager_generate_uri): new
+	backend op. Code from j.kerihuel@openchange.org.
+
 	* OpenChange/MAPIStoreAppointmentWrapper.m
 	(-initWithICalEvent:andUser:andSenderEmail:inTimeZone:): take a
 	new "senderEmail" parameter in order to help the process of

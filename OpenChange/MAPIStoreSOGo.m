@@ -25,6 +25,7 @@
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSFileHandle.h>
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSThread.h>
 #import <NGObjWeb/SoProductRegistry.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoCache.h>
@@ -1044,6 +1045,54 @@ sogo_properties_set_properties (void *object, struct SRow *aRow)
   return rc;
 }
 
+static int
+sogo_manager_generate_uri (TALLOC_CTX *mem_ctx, 
+                           const char *user, 
+                           const char *folder, 
+                           const char *message, 
+                           const char *rootURI,
+                           char **uri)
+{
+  NSAutoreleasePool *pool;
+  NSString *partialURLString, *username, *directory;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (uri == NULL) return MAPISTORE_ERR_INVALID_PARAMETER;
+
+  /* This fixes a crash occurring during the instantiation of the
+     NSAutoreleasePool below. */
+  GSRegisterCurrentThread ();
+
+  pool = [NSAutoreleasePool new];
+
+  // printf("rootURI = %s\n", rootURI);
+  if (rootURI)
+    partialURLString = [NSString stringWithUTF8String: rootURI];
+  else
+    {
+      /* sogo uri are of type: sogo://[username]:[password]@[folder type]/folder/id */
+      username = [NSString stringWithUTF8String: (user ? user : "*")];
+      /* Do proper directory lookup here */
+      directory = [NSString stringWithUTF8String: (folder ? folder : "*")];
+      partialURLString = [NSString stringWithFormat: @"sogo://%@:*@%@", username, directory];
+    }
+  if (![partialURLString hasSuffix: @"/"])
+    partialURLString = [partialURLString stringByAppendingString: @"/"];
+
+  if (message)
+    partialURLString = [partialURLString stringByAppendingFormat: @"%s.eml", message];
+
+  // printf("uri = %s\n", [partialURLString UTF8String]);
+  *uri = talloc_strdup (mem_ctx, [partialURLString UTF8String]);
+
+  [pool release];
+
+  GSUnregisterCurrentThread ();
+
+  return MAPISTORE_SUCCESS;
+}
+
 /**
    \details Entry point for mapistore SOGO backend
 
@@ -1061,7 +1110,6 @@ int mapistore_init_backend(void)
     {
       registered = YES;
 
-      /* Fill in our name */
       backend.backend.name = "SOGo";
       backend.backend.description = "mapistore SOGo backend";
       backend.backend.namespace = "sogo://";
@@ -1096,12 +1144,12 @@ int mapistore_init_backend(void)
       backend.properties.get_available_properties = sogo_properties_get_available_properties;
       backend.properties.get_properties = sogo_properties_get_properties;
       backend.properties.set_properties = sogo_properties_set_properties;
+      backend.manager.generate_uri = sogo_manager_generate_uri;
 
       /* Register ourselves with the MAPISTORE subsystem */
-      ret = mapistore_backend_register(&backend);
-      if (ret != MAPISTORE_SUCCESS) {
+      ret = mapistore_backend_register (&backend);
+      if (ret != MAPISTORE_SUCCESS)
         DEBUG(0, ("Failed to register the '%s' mapistore backend!\n", backend.backend.name));
-      }
     }
 
   return ret;
