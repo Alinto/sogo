@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
@@ -61,8 +62,13 @@ typedef enum
 
 - (void) usage
 {
-  fprintf (stderr, "user-preferences get|set|unset defaults|settings user [authname:authpassword] key value\n\n"
-	   "         user       the user of whom to set the defaults/settings key/value\n");
+  fprintf (stderr, "user-preferences get|set|unset defaults|settings user [authname:authpassword] key [value|-f filename]\n\n"
+	   "       user       the user of whom to set the defaults/settings key/value\n"
+	   "       value      the JSON-formatted value of the key\n\n"
+	   "  Examples:\n"
+           "       sogo-tool user-preferences get defaults janedoe SOGoLanguage\n"
+           "       sogo-tool user-preferences unset settings janedoe Mail\n"
+           "       sogo-tool user-preferences set defaults janedoe SOGoTimeFormat '{\"SOGoTimeFormat\":\"%%I:%%M %%p\"}'\n");
 }
 
 //
@@ -164,7 +170,9 @@ typedef enum
 	  else
 	    {
 	      NSString *authname, *authpwd, *value;
-	     
+              NSData *data;
+              int i;
+              
 	      authname = @"";
 	      authpwd = @"";
 	      value = @"";
@@ -172,12 +180,34 @@ typedef enum
 	      if (max > 4)
 		{
 		  r = [[arguments objectAtIndex: 3] rangeOfString: @":"];
-		  authname = [[arguments objectAtIndex: 3] substringToIndex: r.location];
-		  authpwd = [[arguments objectAtIndex: 3] substringFromIndex: r.location+1];
-		  key = [arguments objectAtIndex: 4];
-		  
-		  if (max > 5)
-		    value = [arguments objectAtIndex: 5];
+                  if (r.location == NSNotFound)
+                    {
+                      i = 3;
+                    }
+                  else
+                    {
+                      authname = [[arguments objectAtIndex: 3] substringToIndex: r.location];
+                      authpwd = [[arguments objectAtIndex: 3] substringFromIndex: r.location+1];
+                      i = 4;
+                    }
+
+                  key = [arguments objectAtIndex: i++];
+                  value = [arguments objectAtIndex: i++];
+
+		  if (max > i)
+                    {
+                      if ([value caseInsensitiveCompare: @"-f"] == NSOrderedSame)
+                        {
+                          if (max > i)
+                            {
+                              data = [NSData dataWithContentsOfFile: [arguments objectAtIndex: i]];
+                              value = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                              [value autorelease];
+                            }
+                        }
+                      else
+                        value = [arguments objectAtIndex: i];
+                    }
 		}
 	      else
 		{
