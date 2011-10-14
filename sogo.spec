@@ -229,7 +229,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/libNGCards.so.*
 %{_libdir}/GNUstep/SaxDrivers-*
 %{_libdir}/GNUstep/SaxMappings
-%{_libdir}/Resources/NGCards
+%{_libdir}/GNUstep/Libraries/Resources/NGCards
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-cards-devel
 %{_includedir}/NGCards
