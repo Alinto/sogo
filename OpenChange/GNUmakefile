@@ -148,7 +148,7 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-DSOGO_BUNDLES_DIR="@\"$(BUNDLE_INSTALL_DIR)\""
 ADDITIONAL_LIB_DIRS += -Wl,--no-as-needed \
 	-L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
-	-L../../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore \
+	-L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore \
 	 $(LIBMAPI_LIBS) \
 	 $(LIBMAPISTORE_LIBS)
 
