@@ -6,6 +6,10 @@
 
 2011-10-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxMailToSelection.js
+	(addressFieldChanged): we now split on commas only if no email
+	address is detected.
+
 	* UI/WebServerResources/SOGoMailDataSource.js (load): associated a
 	unique id to the source using the url and its parameters.
 
