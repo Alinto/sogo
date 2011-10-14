@@ -1,5 +1,12 @@
 2011-10-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/SOGoMailDataSource.js (load): associated a
+	unique id to the source using the url and its parameters.
+
+	* UI/WebServerResources/SOGoDataTable.js (render): add the new
+	source id to the current render id. This should solve incorrect
+	messages appearing when fast-switching between folders or sort order.
+
 	* SoObjects/SOGo/NSString+Utilities.m (-_rangeOfURLInRange:):
 	fixed handling of brackets (inequality signs <>).
 
