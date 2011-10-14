@@ -27,7 +27,7 @@
 
 #import <Foundation/NSObject.h>
 
-@class NSCalendarDate;
+@class NSDate;
 @class NSData;
 @class NSString;
 @class NSMutableArray;

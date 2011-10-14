@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -658,14 +659,14 @@ e)
 - (NSDate *) creationTime
 {
   return ([sogoObject isKindOfClass: SOGoDraftObjectK]
-          ? [newProperties objectForKey: MAPIPropertyKey (PR_CREATION_TIME)]
+          ? (NSDate *) [newProperties objectForKey: MAPIPropertyKey (PR_CREATION_TIME)]
           : [super creationTime]);
 }
 
 - (NSDate *) lastModificationTime
 {
   return ([sogoObject isKindOfClass: SOGoDraftObjectK]
-          ? [newProperties
+          ? (NSDate *) [newProperties
               objectForKey: MAPIPropertyKey (PR_LAST_MODIFICATION_TIME)]
           : [super lastModificationTime]);
 }
