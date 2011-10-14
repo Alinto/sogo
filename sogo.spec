@@ -134,6 +134,10 @@ ppc64-*)
 esac
 
 make CC="$cc" LDFLAGS="$ldflags" messages=yes
+# OpenChange
+(cd OpenChange; \
+ LD_LIBRARY_PATH=../SOPE/NGCards/obj:../SOPE/GDLContentStore/obj \
+ make GNUSTEP_INSTALLATION_DOMAIN=SYSTEM )
 
 # ****************************** install ******************************
 %install
@@ -173,6 +177,7 @@ rm -rf ${RPM_BUILD_ROOT}%{_bindir}/test_quick_extract
 
 # OpenChange
 (cd OpenChange; \
+ LD_LIBRARY_PATH=${RPM_BUILD_ROOT}%{_libdir} \
  make DESTDIR=${RPM_BUILD_ROOT} \
      GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
       CC="$cc" LDFLAGS="$ldflags" \
