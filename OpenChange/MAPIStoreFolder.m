@@ -23,6 +23,7 @@
 /* TODO: main key arrays must be initialized */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
@@ -1272,12 +1273,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                                 inFolderURL: [self url]];
 }
 
-- (NSCalendarDate *) creationTime
+- (NSDate *) creationTime
 {
   return [propsMessage creationTime];
 }
 
-- (NSCalendarDate *) lastModificationTime
+- (NSDate *) lastModificationTime
 {
   return [propsMessage lastModificationTime];
 }

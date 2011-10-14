@@ -369,7 +369,7 @@ static Class SOGoMailFolderK;
   return childObject;
 }
 
-- (NSCalendarDate *) creationTime
+- (NSDate *) creationTime
 {
   return [NSCalendarDate dateWithTimeIntervalSince1970: 0x4dbb2dbe]; /* oc_version_time */
 }

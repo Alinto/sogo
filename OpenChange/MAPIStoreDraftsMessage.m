@@ -655,14 +655,14 @@ e)
   return subject;
 }
 
-- (NSCalendarDate *) creationTime
+- (NSDate *) creationTime
 {
   return ([sogoObject isKindOfClass: SOGoDraftObjectK]
           ? [newProperties objectForKey: MAPIPropertyKey (PR_CREATION_TIME)]
           : [super creationTime]);
 }
 
-- (NSCalendarDate *) lastModificationTime
+- (NSDate *) lastModificationTime
 {
   return ([sogoObject isKindOfClass: SOGoDraftObjectK]
           ? [newProperties

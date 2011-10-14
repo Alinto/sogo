@@ -22,6 +22,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -140,12 +141,12 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   return [sogoObject decodedSubject];
 }
 
-- (NSCalendarDate *) creationTime
+- (NSDate *) creationTime
 {
   return [sogoObject date];
 }
 
-- (NSCalendarDate *) lastModificationTime
+- (NSDate *) lastModificationTime
 {
   return [sogoObject date];
 }

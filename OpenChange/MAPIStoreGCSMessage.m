@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSValue.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoContentObject.h>
@@ -37,12 +38,12 @@
 
 @implementation MAPIStoreGCSMessage
 
-- (NSCalendarDate *) creationTime
+- (NSDate *) creationTime
 {
   return [sogoObject creationDate];
 }
 
-- (NSCalendarDate *) lastModificationTime
+- (NSDate *) lastModificationTime
 {
   return [sogoObject lastModified];
 }
