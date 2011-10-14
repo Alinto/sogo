@@ -2,6 +2,8 @@
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (setRoles:forUser:..)
 	We now even cache "None" roles.
+	* SoObjects/Mailer/SOGoMailObject.m (fetchCoreInfos)
+	We now handle correctly untagged responses.
 
 2011-10-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
