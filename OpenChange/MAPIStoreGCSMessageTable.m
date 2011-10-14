@@ -109,7 +109,7 @@
       property = [self backendIdentifierForProperty: res->ulPropTag];
       if (property)
         {
-          if (res->relop >= 0 && res->relop < 7)
+          if (res->relop < 7)
             operator = operators[res->relop];
           else
             {

@@ -1,3 +1,9 @@
+2011-10-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreGCSMessageTable.m
+	(-evaluatePropertyRestriction:intoQualifier:): removed useless
+	condition to avoid warnings with certain versions of gcc.
+
 2011-10-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SOGoMailDataSource.js (load): associated a
