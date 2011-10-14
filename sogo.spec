@@ -12,7 +12,7 @@ Prefix:       /usr
 AutoReqProv:  off
 Requires:     gnustep-base, sope%{sope_major_version}%{sope_minor_version}-core, httpd, sope%{sope_major_version}%{sope_minor_version}-core, sope%{sope_major_version}%{sope_minor_version}-appserver, sope%{sope_major_version}%{sope_minor_version}-ldap, sope%{sope_major_version}%{sope_minor_version}-cards >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-sbjson, memcached, libmemcached
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}
-BuildPreReq:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel sope%{sope_major_version}%{sope_minor_version}-sbjson-devel libmemcached-devel
+BuildPreReq:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel sope%{sope_major_version}%{sope_minor_version}-sbjson-devel libmemcached-devel samba openchange
 
 %description
 SOGo is a groupware server built around OpenGroupware.org (OGo) and
@@ -106,6 +106,14 @@ AutoReqProv:  off
 %description -n sope%{sope_major_version}%{sope_minor_version}-cards-devel
 SOPE versit parsing library for iCal and VCard formats
 
+%package openchange-backend
+Summary:      SOGo backend for OpenChange
+Group:        Productivity/Groupware
+AutoReqProv:  off
+
+%description openchange-backend
+SOGo backend for OpenChange
+
 ########################################
 %prep
 rm -fr ${RPM_BUILD_ROOT}
@@ -162,6 +170,13 @@ cp Scripts/sogod-wrapper ${RPM_BUILD_ROOT}/usr/sbin/sogod-wrapper
 chmod 755 ${RPM_BUILD_ROOT}/usr/sbin/sogod-wrapper
 cp Scripts/sogo-default ${RPM_BUILD_ROOT}/etc/sysconfig/sogo
 rm -rf ${RPM_BUILD_ROOT}%{_bindir}/test_quick_extract
+
+# OpenChange
+(cd OpenChange; \
+ make DESTDIR=${RPM_BUILD_ROOT} \
+     GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
+      CC="$cc" LDFLAGS="$ldflags" \
+   install)
 
 # ****************************** clean ********************************
 %clean
@@ -236,6 +251,11 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_includedir}/NGCards
 %{_libdir}/libNGCards.so
 
+%files openchange-backend
+%defattr(-,root,root,-)
+%{_libdir}/GNUstep/SOGo/*.MAPIStore
+%{_libdir}/mapistore_backends/*
+
 # **************************** pkgscripts *****************************
 %post
 if ! id sogo >& /dev/null; then /usr/sbin/adduser sogo > /dev/null 2>&1; fi
@@ -263,6 +283,10 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Fri Oct 14 2011 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+- adapted to gnustep-make 2.6
+- added sogo-openchange-backend
+
 * Tue Sep 28 2010 Wolfgang Sourdeau <wsourdeau@inverse.ca>
 - removed "README" from documentation
 
