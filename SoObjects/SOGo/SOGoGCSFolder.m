@@ -1637,10 +1637,12 @@ static NSArray *childRecordFields = nil;
   [newRoles removeObject: SOGoRole_AuthorizedSubscriber];
   [newRoles removeObject: SOGoRole_None];
   objectPath = [objectPathArray componentsJoinedByString: @"/"];
-  [self _cacheRoles: newRoles forUser: uid
-    forObjectAtPath: objectPath];
+  
   if (![newRoles count])
     [newRoles addObject: SOGoRole_None];
+
+  [self _cacheRoles: newRoles forUser: uid
+	      forObjectAtPath: objectPath];
 
   [self _commitRoles: newRoles forUID: aUID forObject: objectPath];
 }

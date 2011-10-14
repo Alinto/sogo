@@ -217,6 +217,7 @@ static BOOL debugSoParts       = NO;
 - (id) fetchCoreInfos
 {
   id msgs;
+  int i;
 
   if (!coreInfos)
     {
@@ -224,8 +225,21 @@ static BOOL debugSoParts       = NO;
       if (heavyDebug)
 	[self logWithFormat: @"M: %@", msgs];
       msgs = [msgs valueForKey: @"fetch"];
+      
+      // We MUST honor untagged IMAP responses here otherwise we could
+      // return really borken and nasty results.
       if ([msgs count] > 0)
-	coreInfos = [msgs objectAtIndex: 0];
+	{
+	  for (i = 0; i < [msgs count]; i++)
+	    {
+	      coreInfos = [msgs objectAtIndex: i];
+	      
+	      if ([[coreInfos objectForKey: @"uid"] intValue] == [[self nameInContainer] intValue])
+		break;
+
+	      coreInfos = nil;
+	    }
+	}
       [coreInfos retain];
     }
 
