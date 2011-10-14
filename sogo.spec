@@ -8,7 +8,7 @@ License:      GPL
 URL:          http://www.inverse.ca/contributions/sogo.html
 Group:        Productivity/Groupware
 Source:       SOGo-%{sogo_version}.tar.gz
-Prefix:       %{sogo_prefix}
+Prefix:       /usr
 AutoReqProv:  off
 Requires:     gnustep-base, sope%{sope_major_version}%{sope_minor_version}-core, httpd, sope%{sope_major_version}%{sope_minor_version}-core, sope%{sope_major_version}%{sope_minor_version}-appserver, sope%{sope_major_version}%{sope_minor_version}-ldap, sope%{sope_major_version}%{sope_minor_version}-cards >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-sbjson, memcached, libmemcached
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}
@@ -113,7 +113,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # ****************************** build ********************************
 %build
-. /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
+. /usr/share/GNUstep/Makefiles/GNUstep.sh
 ./configure
 
 case %{_target_platform} in
@@ -161,7 +161,7 @@ chmod 755 ${RPM_BUILD_ROOT}/etc/init.d/sogod
 cp Scripts/sogod-wrapper ${RPM_BUILD_ROOT}/usr/sbin/sogod-wrapper
 chmod 755 ${RPM_BUILD_ROOT}/usr/sbin/sogod-wrapper
 cp Scripts/sogo-default ${RPM_BUILD_ROOT}/etc/sysconfig/sogo
-rm -rf ${RPM_BUILD_ROOT}%{prefix}/Tools/test_quick_extract
+rm -rf ${RPM_BUILD_ROOT}%{_bindir}/test_quick_extract
 
 # ****************************** clean ********************************
 %clean
@@ -178,65 +178,62 @@ rm -fr ${RPM_BUILD_ROOT}
 /var/run/sogo
 /var/log/sogo
 /var/spool/sogo
-%{prefix}/Tools/Admin/sogod
-%{prefix}/Library/Libraries/libSOGo.so.*
-%{prefix}/Library/Libraries/libSOGoUI.so.*
-%{prefix}/Library/Libraries/libOGoContentStore.so*
-%{prefix}/Library/SOGo/*.SOGo
-%{prefix}/Library/SOGo/SOGo.framework/Resources
-%{prefix}/Library/SOGo/SOGo.framework/Versions/2/libSOGo.so.*
-%{prefix}/Library/SOGo/SOGo.framework/Versions/2/Resources
-%{prefix}/Library/SOGo/SOGo.framework/Versions/Current
-%{prefix}/Library/SOGo/Templates
-%{prefix}/Library/SOGo/WebServerResources
-%{prefix}/Library/OCSTypeModels/appointment.ocs
-%{prefix}/Library/OCSTypeModels/contact.ocs
-%{prefix}/Library/OCSTypeModels/appointment-oracle.ocs
-%{prefix}/Library/OCSTypeModels/contact-oracle.ocs
-%{prefix}/Library/WOxElemBuilders-%{sope_version}/SOGoElements.wox
+%{_sbindir}/sogod
+%{_libdir}/libSOGo.so.*
+%{_libdir}/libSOGoUI.so.*
+%{_libdir}/libOGoContentStore.so*
+%{_libdir}/GNUstep/SOGo/*.SOGo
+%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Resources
+%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Versions/2/libSOGo.so.*
+%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Versions/2/Resources
+%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Versions/Current
+%{_libdir}/GNUstep/SOGo/Templates
+%{_libdir}/GNUstep/SOGo/WebServerResources
+%{_libdir}/GNUstep/OCSTypeModels
+%{_libdir}/GNUstep/WOxElemBuilders-*
 
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/SOGo.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/sogo
 %doc ChangeLog NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh Scripts/sql-update-101_to_102.sh Scripts/sql-update-1.2.2_to_1.3.0.sh Scripts/sql-update-1.2.2_to_1.3.0-mysql.sh Scripts/sql-update-1.3.3_to_1.3.4.sh Scripts/sql-update-1.3.3_to_1.3.4-mysql.sh
 
 %files -n sogo-tool
-%{prefix}/Tools/Admin/sogo-tool
+%{_sbindir}/sogo-tool
 
 %files -n sogo-ealarms-notify
-%{prefix}/Tools/Admin/sogo-ealarms-notify
+%{_sbindir}/sogo-ealarms-notify
 
 %files -n sogo-slapd-sockd
-%{prefix}/Tools/Admin/sogo-slapd-sockd
+%{_sbindir}/sogo-slapd-sockd
 
 %files -n sogo-devel
-%{prefix}/Library/Headers/SOGo
-%{prefix}/Library/Headers/SOGoUI
-%{prefix}/Library/Libraries/libSOGo.so
-%{prefix}/Library/Libraries/libSOGoUI.so
-%{prefix}/Library/SOGo/SOGo.framework/Headers
-%{prefix}/Library/SOGo/SOGo.framework/libSOGo.so
-%{prefix}/Library/SOGo/SOGo.framework/SOGo
-%{prefix}/Library/SOGo/SOGo.framework/Versions/2/Headers
-%{prefix}/Library/SOGo/SOGo.framework/Versions/2/libSOGo.so
-%{prefix}/Library/SOGo/SOGo.framework/Versions/2/SOGo
+%{_includedir}/SOGo
+%{_includedir}/SOGoUI
+%{_libdir}/libSOGo.so
+%{_libdir}/libSOGoUI.so
+%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Headers
+%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/libSOGo.so
+%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/SOGo
+%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Versions/2/Headers
+%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Versions/2/libSOGo.so
+%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Versions/2/SOGo
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore
 %defattr(-,root,root,-)
-%{prefix}/Library/Libraries/libGDLContentStore*.so.%{sope_version}*
+%{_libdir}/libGDLContentStore*.so.*
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore-devel
-%{prefix}/Library/Headers/GDLContentStore
-%{prefix}/Library/Libraries/libGDLContentStore*.so
+%{_includedir}/GDLContentStore
+%{_libdir}/libGDLContentStore*.so
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-cards
-%{prefix}/Library/Libraries/libNGCards.so.*
-%{prefix}/Library/SaxDrivers-%{sope_major_version}.%{sope_minor_version}/*.sax
-%{prefix}/Library/SaxMappings
-%{prefix}/Library/Libraries/Resources/NGCards
+%{_libdir}/libNGCards.so.*
+%{_libdir}/GNUstep/SaxDrivers-*
+%{_libdir}/GNUstep/SaxMappings
+%{_libdir}/Resources/NGCards
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-cards-devel
-%{prefix}/Library/Headers/NGCards
-%{prefix}/Library/Libraries/libNGCards.so
+%{_includedir}/NGCards
+%{_libdir}/libNGCards.so
 
 # **************************** pkgscripts *****************************
 %post
