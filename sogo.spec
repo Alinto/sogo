@@ -183,10 +183,11 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/libSOGoUI.so.*
 %{_libdir}/libOGoContentStore.so*
 %{_libdir}/GNUstep/SOGo/*.SOGo
-%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Resources
-%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Versions/2/libSOGo.so.*
-%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Versions/2/Resources
-%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Versions/Current
+
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Resources
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/2/libSOGo.so.*
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/2/Resources
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/Current
 %{_libdir}/GNUstep/SOGo/Templates
 %{_libdir}/GNUstep/SOGo/WebServerResources
 %{_libdir}/GNUstep/OCSTypeModels
@@ -210,12 +211,12 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_includedir}/SOGoUI
 %{_libdir}/libSOGo.so
 %{_libdir}/libSOGoUI.so
-%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Headers
-%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/libSOGo.so
-%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/SOGo
-%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Versions/2/Headers
-%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Versions/2/libSOGo.so
-%{_libdir}/GNUstep/Library/Frameworks/SOGo.framework/Versions/2/SOGo
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Headers
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/libSOGo.so
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/SOGo
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/2/Headers
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/2/libSOGo.so
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/2/SOGo
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore
 %defattr(-,root,root,-)
