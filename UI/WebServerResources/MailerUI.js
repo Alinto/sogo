@@ -156,7 +156,7 @@ function markMailInWindow(win, msguid, markread) {
                         img.setAttribute("title", title);
                 }
                 else {
-                    log ("No IMG found for " + msguid);
+                    log ("No IMG found for message " + msguid);
                 }
                 unseenCount = 1;
             }
@@ -168,6 +168,9 @@ function markMailInWindow(win, msguid, markread) {
                 updateUnseenCount(node, unseenCount, true);
             }
         }
+    }
+    else {
+        log ("No row found for message " + msguid);
     }
 
     return (unseenCount != 0);
@@ -1658,6 +1661,7 @@ function loadMessageCallback(http) {
     else if (http.status == 404) {
         showAlertDialog (_("The message you have selected doesn't exist anymore."));
 	Mailer.dataTable.remove(http.callbackData.msguid);
+	Mailer.currentMessages[Mailer.currentMailbox] = null;
     }
     else
         log("messageCallback: problem during ajax request: " + http.status);

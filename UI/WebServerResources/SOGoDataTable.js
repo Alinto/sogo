@@ -157,7 +157,7 @@ var SOGoDataTableInterface = {
         index = start;
         count = end - start;
 
-        this.currentRenderID = index + "-" + count;
+        this.currentRenderID = this.dataSource.id + "/" + index + "-" + count;
 
         // Query the data source only if at least one row is not loaded
         if (refresh === true ||

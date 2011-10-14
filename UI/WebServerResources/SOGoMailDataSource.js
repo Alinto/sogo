@@ -5,6 +5,7 @@ SOGoMailDataSource = Class.create({
         initialize: function(dataTable, url) {
             // Instance variables
             this.dataTable = dataTable;
+            this.id = url;
             this.url = url;
             
             this.uids = new Array();
@@ -79,6 +80,7 @@ SOGoMailDataSource = Class.create({
             }
             else
                 params = "";
+            this.id = this.url + "?" + params;
 
 //            log ("MailDataSource.load() " + params);
             triggerAjaxRequest(this.url + "/uids",
