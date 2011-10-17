@@ -145,7 +145,13 @@ function addressFieldLostFocus(event) {
 }
 
 function addressFieldChanged(event) {
-    var addresses = this.value.split(/[,;]/);
+    // We first split by semi-colon and then by comma only if there's no
+    // email address detected.
+    // Examples: 
+    //   "dude, buddy dude@domain.com; bro" => "dude, buddy <dude@domain.com>" + "bro"
+    //   "dude, buddy, bro <bro@domain.com>" => "dude, buddy, bro <bro@domain.com>"
+    //   "dude, buddy, bro" => "dude" + "buddy" + "bro"
+    var addresses = this.value.split(';');
     if (addresses.length > 0) {
         var first = true;
         for (var i = 0; i < addresses.length; i++) {
@@ -171,12 +177,16 @@ function addressFieldChanged(event) {
                 }
             }
             if (phrase.length > 0) {
-                if (first) {
-                    this.value = phrase.join(' ');
-                    first = false;
+                words = phrase.join(' ').split(',');
+                for (var j = 0; j < words.length; j++) {
+                    word = words[j];
+                    if (first) {
+                        this.value = word;
+                        first = false;
+                    }
+                    else
+                        fancyAddRow(word, $(this).up("tr").down("select").value);
                 }
-                else
-                    fancyAddRow(phrase.join(' '), $(this).up("tr").down("select").value);
                 
                 phrase = new Array();
             }
