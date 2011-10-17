@@ -77,6 +77,10 @@ sogo_backend_init (void)
      the encoding specified in the file. */
   putenv ("GNUSTEP_STRING_ENCODING=NSUTF8StringEncoding");
 
+  [NSProcessInfo initializeWithArguments: NULL
+                                   count: 0
+                             environment: environ];
+
   [SOGoSystemDefaults sharedSystemDefaults];
 
   // /* We force the plugin to base its configuration on the SOGo tree. */
