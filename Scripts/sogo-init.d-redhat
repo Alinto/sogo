@@ -30,7 +30,7 @@
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 NAME=sogo
-DAEMON=/usr/GNUstep/System/Tools/Admin/sogod
+DAEMON=/usr/sbin/sogod
 DESC="SOGo"
 
 USER=$NAME

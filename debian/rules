@@ -43,7 +43,7 @@ install-arch: build-arch
 	mkdir -p debian/tmp/usr/share/lintian/overrides
 	cp debian/sogo.overrides debian/tmp/usr/share/lintian/overrides/sogo
 	mkdir -p debian/tmp/etc/apache2/conf.d
-	cp Apache/SOGo-debian.conf debian/tmp/etc/apache2/conf.d/SOGo.conf
+	cp Apache/SOGo.conf debian/tmp/etc/apache2/conf.d/SOGo.conf
 
 # Build architecture dependant packages using the common target.
 binary-arch: build-arch install-arch
