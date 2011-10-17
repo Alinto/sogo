@@ -164,14 +164,12 @@ mkdir -p ${RPM_BUILD_ROOT}/usr/sbin
 mkdir -p ${RPM_BUILD_ROOT}/var/run/sogo
 mkdir -p ${RPM_BUILD_ROOT}/var/log/sogo
 mkdir -p ${RPM_BUILD_ROOT}/var/spool/sogo
-cp Apache/SOGo.conf ${RPM_BUILD_ROOT}/etc/httpd/conf.d/
+cat Apache/SOGo.conf | sed -e "s@/lib/@/%{_lib}/@g' > ${RPM_BUILD_ROOT}/etc/httpd/conf.d/SOGo.conf
 cp Scripts/tmpwatch ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
 chmod 755 ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
 cp Scripts/logrotate ${RPM_BUILD_ROOT}/etc/logrotate.d/sogo
 cp Scripts/sogo-init.d-redhat ${RPM_BUILD_ROOT}/etc/init.d/sogod
 chmod 755 ${RPM_BUILD_ROOT}/etc/init.d/sogod
-cp Scripts/sogod-wrapper ${RPM_BUILD_ROOT}/usr/sbin/sogod-wrapper
-chmod 755 ${RPM_BUILD_ROOT}/usr/sbin/sogod-wrapper
 cp Scripts/sogo-default ${RPM_BUILD_ROOT}/etc/sysconfig/sogo
 rm -rf ${RPM_BUILD_ROOT}%{_bindir}/test_quick_extract
 
@@ -194,7 +192,6 @@ rm -fr ${RPM_BUILD_ROOT}
 /etc/init.d/sogod
 /etc/cron.daily/sogo-tmpwatch
 /etc/logrotate.d/sogo
-/usr/sbin/sogod-wrapper
 /var/run/sogo
 /var/log/sogo
 /var/spool/sogo
