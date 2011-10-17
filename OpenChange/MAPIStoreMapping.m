@@ -112,6 +112,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 {
   if ((self = [super init]))
     {
+      memCtx = talloc_zero (NULL, TALLOC_CTX);
       mapping = [NSMutableDictionary new];
       reverseMapping = [NSMutableDictionary new];
       indexing = NULL;
@@ -153,6 +154,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
     {
       ASSIGN (username, newUsername);
       indexing = newIndexing;
+      (void) talloc_reference (memCtx, newIndexing);
       tdb_traverse_read (indexing->tdb, MAPIStoreMappingTDBTraverse, mapping);
       keys = [mapping allKeys];
       max = [keys count];
@@ -175,6 +177,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   [username release];
   [mapping release];
   [reverseMapping release];
+  talloc_free (memCtx);
   [super dealloc];
 }
 

@@ -30,6 +30,7 @@
 
 @interface MAPIStoreMapping : NSObject
 {
+  void *memCtx;
   NSString *username;
   struct tdb_wrap *indexing;
   NSMutableDictionary *mapping; /* FID/MID -> url */

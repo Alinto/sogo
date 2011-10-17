@@ -1,3 +1,10 @@
+2011-10-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMapping.m (-initForUsername:withIndexing:):
+	attach the struct tdb_wrap *indexing to a new memCtx ivar, in
+	order to make sure its value is retained until the release of the
+	mapping instance.
+
 2011-10-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreGCSMessageTable.m
