@@ -125,7 +125,8 @@
 
 - (BOOL) isIPhone
 {
-  return [self isAppleDAVWithSubstring: @"iPhone/"];
+  return [self isAppleDAVWithSubstring: @"iPhone/"]
+	 || [self isAppleDAVWithSubstring: @"iOS/"];
 }
 
 - (BOOL) isICal
