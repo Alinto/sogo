@@ -24,6 +24,7 @@
 
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSFileHandle.h>
+#import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSThread.h>
 #import <NGObjWeb/SoProductRegistry.h>
