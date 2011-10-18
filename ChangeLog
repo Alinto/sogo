@@ -1,5 +1,8 @@
 2011-10-18  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/generic.js (log): fixed an issue with
+	Firefox and IE when SOGo was opened using a targeted link.
+
 	* SoObjects/Mailer/SOGoMailFolder.m
 	(-copyUIDs:toFolder:inContext:): now returns the raw IMAP response
 	when the copy operation failed (most probably something like "Over quota").

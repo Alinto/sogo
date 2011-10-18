@@ -804,8 +804,11 @@ function toggleLogConsole(event) {
 function log(message) {
     if (!logWindow) {
         logWindow = window;
-        while (logWindow.opener)
-            logWindow = logWindow.opener;
+        try {
+            while (logWindow.opener && logWindow.opener_logMessage)
+                logWindow = logWindow.opener;
+        }
+        catch(e) {}
     }
     if (logWindow && logWindow._logMessage) {
         var logMessage = message;
