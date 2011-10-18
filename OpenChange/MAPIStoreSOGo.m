@@ -70,7 +70,7 @@ sogo_backend_init (void)
   Class MAPIApplicationK;
   NSUserDefaults *ud;
   SoProductRegistry *registry;
-  char *argv0 = "openchange";
+  char *argv[] = { SAMBA_PREFIX "/sbin/samba", NULL };
 
   pool = [NSAutoreleasePool new];
 
@@ -79,7 +79,7 @@ sogo_backend_init (void)
      the encoding specified in the file. */
   putenv ("GNUSTEP_STRING_ENCODING=NSUTF8StringEncoding");
 
-  [NSProcessInfo initializeWithArguments: &argv0
+  [NSProcessInfo initializeWithArguments: argv
                                    count: 1
                              environment: environ];
 

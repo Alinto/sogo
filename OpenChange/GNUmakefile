@@ -129,7 +129,7 @@ TEST_TOOL_NAME += $(PLREADER_TOOL)
 
 ### cflags and libs
 LIBMAPI_CFLAGS = $(shell pkg-config libmapi --cflags)
-LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags)
+LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags) -DSAMBA_PREFIX="\"$(shell pkg-config libmapistore --variable=prefix)\""
 
 ifeq ($(LIBMAPISTORE_CFLAGS),)
 all install::
