@@ -12,7 +12,7 @@
 	* OpenChange/MAPIStoreSOGo.m (sogo_backend_init): invoke
 	-[NSProcessInfo initializeWithArguments:count:environment:] in
 	order to avoid an infinite loop with GNUstep occurring under
-	strange circumstances.
+	strange circumstances. Make use of "samba" as process name.
 
 	* OpenChange/MAPIStoreMapping.m (-initForUsername:withIndexing:):
 	attach the struct tdb_wrap *indexing to a new memCtx ivar, in
