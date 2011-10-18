@@ -24,6 +24,7 @@
 
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSFileHandle.h>
+#import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSThread.h>
 #import <NGObjWeb/SoProductRegistry.h>
@@ -76,6 +77,10 @@ sogo_backend_init (void)
      defaults using the system encoding rather than honouring
      the encoding specified in the file. */
   putenv ("GNUSTEP_STRING_ENCODING=NSUTF8StringEncoding");
+
+  [NSProcessInfo initializeWithArguments: NULL
+                                   count: 0
+                             environment: environ];
 
   [SOGoSystemDefaults sharedSystemDefaults];
 
