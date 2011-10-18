@@ -1,3 +1,9 @@
+2011-10-18  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-copyUIDs:toFolder:inContext:): now returns the raw IMAP response
+	when the copy operation failed (most probably something like "Over quota").
+
 2011-10-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreGCSMessageTable.m

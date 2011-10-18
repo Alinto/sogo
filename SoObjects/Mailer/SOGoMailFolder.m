@@ -571,7 +571,7 @@ static NSString *defaultUserID =  @"anyone";
             result = nil;
           else
             result = [NSException exceptionWithHTTPStatus: 500
-                                                   reason: @"Couldn't copy UIDs."];
+                                                   reason: [[[result objectForKey: @"RawResponse"] objectForKey: @"ResponseResult"] objectForKey: @"description"]];
         }
       else
         result = [NSException exceptionWithHTTPStatus: 500
