@@ -411,11 +411,6 @@
   return [NSString stringWithFormat: @"%u", length];
 }
 
-// - (NSString *) davResourceType
-// {
-//   return @"";
-// }
-
 - (NSException *) davMoveToTargetObject: (id) _target
 				newName: (NSString *) _name
 			      inContext: (id) _ctx
@@ -424,11 +419,7 @@
     Note: even for new objects we won't get a new name but a preinstantiated
           object representing the new one.
   */
-  [self logWithFormat:
-	  @"TODO: move not implemented:\n  target:  %@\n  new name: %@",
-	  _target, _name];
-  return [NSException exceptionWithHTTPStatus:405 /* not allowed */
-                      reason:@"this object cannot be copied via WebDAV"];
+  return [self moveToFolder: _target];
 }
 
 - (NSException *) davCopyToTargetObject: (id)_target
