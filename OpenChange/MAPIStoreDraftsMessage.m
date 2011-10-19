@@ -532,6 +532,16 @@ e)
           : [super getPrReceivedByEmailAddress: data inMemCtx: memCtx]);
 }
 
+- (int) getPrDisplayTo: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return ([sogoObject isKindOfClass: SOGoDraftObjectK]
+          ? [self _getAddressHeader: data
+                         addressKey: @"to"
+                           inMemCtx: memCtx]
+          : [super getPrDisplayTo: data inMemCtx: memCtx]);
+}
+
 - (int) getPrDisplayCc: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -540,6 +550,16 @@ e)
                          addressKey: @"cc"
                            inMemCtx: memCtx]
           : [super getPrDisplayCc: data inMemCtx: memCtx]);
+}
+
+- (int) getPrDisplayBcc: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return ([sogoObject isKindOfClass: SOGoDraftObjectK]
+          ? [self _getAddressHeader: data
+                         addressKey: @"cc"
+                           inMemCtx: memCtx]
+          : [super getPrDisplayBcc: data inMemCtx: memCtx]);
 }
 
 - (NSArray *) attachmentKeysMatchingQualifier: (EOQualifier *) qualifier
