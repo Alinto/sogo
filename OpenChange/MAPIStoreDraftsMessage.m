@@ -522,6 +522,17 @@ e)
           : [super getPrSenderEmailAddress: data inMemCtx: memCtx]);
 }
 
+- (int) getPrSenderName: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPrSenderEntryid: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
 - (int) getPrReceivedByEmailAddress: (void **) data
                            inMemCtx: (TALLOC_CTX *) memCtx
 {
