@@ -45,10 +45,10 @@
 
 @interface GCSFolderType : NSObject
 {
-  NSString     *blobTablePattern;  // eg 'SOGo_$folderId$_blob
-  NSString     *quickTablePattern; // eg 'SOGo_$folderId$_quick
-  NSArray      *fields;            // GCSFieldInfo objects
-  EOQualifier  *folderQualifier;   // to further limit the table set
+  NSString     *blobTablePattern;      // eg 'SOGo_$folderId$_blob
+  NSString     *quickTablePattern;     // eg 'SOGo_$folderId$_quick
+  NSArray      *fields, *quickFields;  // GCSFieldInfo objects
+  EOQualifier  *folderQualifier;       // to further limit the table set
   NSString     *extractorClassName;
   GCSFieldExtractor *extractor;
 }
@@ -76,6 +76,7 @@
 + (NGResourceLocator *)resourceLocator;
 
 - (NSArray *) fields;
+- (NSArray *) quickFields;
 @end
 
 #endif /* __GDLContentStore_GCSFolderType_H__ */

@@ -11,6 +11,45 @@
       isPrimaryKey = YES;
     },
     {
+      columnName = c_content;
+      sqlType    = "VARCHAR(100000)";
+      allowsNull = NO;
+      isPrimaryKey = NO;
+    },
+    {
+      columnName = c_creationdate;
+      sqlType    = "INT4";
+      allowsNull = NO;
+      isPrimaryKey = NO;
+    },
+    {
+      columnName = c_lastmodified;
+      sqlType    = "INT4";
+      allowsNull = NO;
+      isPrimaryKey = NO;
+    },
+    {
+      columnName = c_version;
+      sqlType    = "INT4";
+      allowsNull = NO;
+      isPrimaryKey = NO;
+    },
+    {
+      columnName = c_deleted;
+      sqlType    = "INT4";
+      allowsNull = YES;
+      isPrimaryKey = NO;
+    }
+   );
+
+  quickFields = (
+    {
+      columnName = c_name;
+      sqlType    = "VARCHAR(255)";
+      allowsNull = NO;
+      isPrimaryKey = YES;
+    },
+    {
       columnName = c_uid;
       sqlType    = "VARCHAR(255)";
       allowsNull = NO;
@@ -114,6 +153,6 @@
       columnName = c_nextalarm;
       sqlType    = "INT";
       allowsNull = YES;
-    },
+    }
   );
 }

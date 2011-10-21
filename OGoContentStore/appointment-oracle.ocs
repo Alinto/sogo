@@ -11,6 +11,45 @@
       isPrimaryKey = YES;
     },
     {
+      columnName = c_content;
+      sqlType    = "CLOB";
+      allowsNull = NO;
+      isPrimaryKey = NO;
+    },
+    {
+      columnName = c_creationdate;
+      sqlType    = "INTEGER";
+      allowsNull = NO;
+      isPrimaryKey = NO;
+    },
+    {
+      columnName = c_lastmodified;
+      sqlType    = "INTEGER";
+      allowsNull = NO;
+      isPrimaryKey = NO;
+    },
+    {
+      columnName = c_version;
+      sqlType    = "INTEGER";
+      allowsNull = NO;
+      isPrimaryKey = NO;
+    },
+    {
+      columnName = c_deleted;
+      sqlType    = "INTEGER";
+      allowsNull = YES;
+      isPrimaryKey = NO;
+    }
+   );
+
+  quickFields = (
+    {
+      columnName = c_name;
+      sqlType    = "VARCHAR2(255)";
+      allowsNull = NO;
+      isPrimaryKey = YES;
+    },
+    {
       columnName = c_uid;
       sqlType    = "VARCHAR2(255)";
       allowsNull = NO;

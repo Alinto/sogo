@@ -78,6 +78,8 @@
  
       fields = [[GCSFieldInfo fieldsForPropertyList:
 				[plist objectForKey:@"fields"]] retain];
+      quickFields = [[GCSFieldInfo fieldsForPropertyList:
+                                     [plist objectForKey:@"quickFields"]] retain];
     }
 
   return self;
@@ -119,6 +121,7 @@
   [blobTablePattern release];
   [quickTablePattern release];
   [fields release];
+  [quickFields release];
   [folderQualifier release];
   [super dealloc];
 }
@@ -159,11 +162,11 @@
   unsigned i, count;
  
   sql = [NSMutableString stringWithFormat: @"CREATE TABLE %@ (", _tabName];
-  count = [fields count];
+  count = [quickFields count];
   for (i = 0; i < count; i++)
     {
       if (i > 0) [sql appendString:@", "];
-      [sql appendFormat: @" %@", [[fields objectAtIndex:i] sqlCreateSection]];
+      [sql appendFormat: @" %@", [[quickFields objectAtIndex:i] sqlCreateSection]];
     }
   [sql appendString:@"\n)"];
  
@@ -200,6 +203,11 @@
   return quickExtractor;
 }
 
+- (NSArray *) quickFields
+{
+  return quickFields;
+}
+
 - (NSArray *) fields
 {
   return fields;
@@ -217,6 +225,7 @@
   [ms appendFormat:@" blobtable='%@'", blobTablePattern];
   [ms appendFormat:@" quicktable='%@'", quickTablePattern];
   [ms appendFormat:@" fields=%@", fields];
+  [ms appendFormat:@" quickFields=%@", fields];
   [ms appendFormat:@" extractor=%@", extractorClassName];
  
   if (folderQualifier)

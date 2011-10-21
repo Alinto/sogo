@@ -66,7 +66,7 @@
   NSURL *quickLocation;
   NSURL *aclLocation;
   NSString *folderTypeName;
-  NSMutableArray *quickFieldNames;
+  NSMutableArray *quickFieldNames, *contentFieldNames;
 
   struct {
     int requiresFolderSelect:1;

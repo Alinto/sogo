@@ -1,7 +1,7 @@
 /*
   Copyright (C) 2004-2007 SKYRIX Software AG
   Copyright (C) 2007      Helge Hess
-  Copyright (c) 2008-2009 Inverse inc.
+  Copyright (c) 2008-2011 Inverse inc.
 
   This file is part of OpenGroupware.org.
 
@@ -30,6 +30,7 @@
 #import <GDLAccess/EOEntity.h>
 #import <GDLAccess/EOAttribute.h>
 #import <GDLAccess/EOSQLQualifier.h>
+#import <GDLAccess/EOAdaptor.h>
 #import <GDLAccess/EOAdaptorContext.h>
 
 #import "GCSFieldInfo.h"
@@ -60,7 +61,6 @@ static Class NSNumberClass       = Nil;
 static Class NSCalendarDateClass = Nil;
 
 static GCSStringFormatter *stringFormatter = nil;
-static NSArray *contentFieldNames = nil;
 
 + (void) initialize
 {
@@ -72,13 +72,6 @@ static NSArray *contentFieldNames = nil;
   NSStringClass       = [NSString class];
   NSNumberClass       = [NSNumber class];
   NSCalendarDateClass = [NSCalendarDate class];
-  if (!contentFieldNames)
-    {
-      contentFieldNames = [NSArray arrayWithObjects: @"c_content",
-				    @"c_creationdate", @"c_lastmodified",
-				    @"c_version", @"c_deleted", nil];
-      [contentFieldNames retain];
-    }
 
   stringFormatter = [GCSStringFormatter sharedFormatter];
 }
@@ -106,13 +99,21 @@ static NSArray *contentFieldNames = nil;
   if ((self = [super init])) {
     folderManager  = [_fm    retain];
     folderInfo     = [_ftype retain];
-    fields = [[_ftype fields] objectEnumerator];
+    fields = [[_ftype quickFields] objectEnumerator];
     quickFieldNames = [NSMutableArray new];
     while ((field = [fields nextObject]))
       {
 	fieldName = [field columnName];
 	if (![fieldName isEqualToString: @"c_name"])
 	  [quickFieldNames addObject: fieldName];
+      }
+
+    fields = [[_ftype fields] objectEnumerator];
+    contentFieldNames = [NSMutableArray new];
+    while ((field = [fields nextObject]))
+      {
+	fieldName = [field columnName];
+        [contentFieldNames addObject: fieldName];
       }
     
     folderId       = [_folderId copy];
@@ -163,6 +164,7 @@ static NSArray *contentFieldNames = nil;
   [location       release];
   [quickLocation  release];
   [quickFieldNames release];
+  [contentFieldNames release];
   [aclLocation    release];
   [folderTypeName release];
   [super dealloc];
@@ -667,15 +669,20 @@ static NSArray *contentFieldNames = nil;
 }
 
 - (NSString *)_generateUpdateStatementForRow:(NSDictionary *)_row
-                                   tableName:(NSString *)_table
-                                 whereColumn:(NSString *)_colname isEqualTo:(id)_value
-                                   andColumn:(NSString *)_colname2  isEqualTo:(id)_value2
+                                     adaptor:(EOAdaptor *)_adaptor
+                                     fields:(NSArray *)_fields
+                                     tableName:(NSString *)_table
+                                     whereColumn:(NSString *)_colname isEqualTo:(id)_value
+                                     andColumn:(NSString *)_colname2  isEqualTo:(id)_value2
 {
   // TODO: move to NSDictionary category?
   NSMutableString *sql;
   NSArray  *keys;
+  NSString *fieldName, *sqlType;
+  EOAttribute *attribute;
+  id value;
   unsigned i, count;
-
+  
   if (_row == nil || _table == nil)
     return nil;
 
@@ -684,18 +691,30 @@ static NSArray *contentFieldNames = nil;
   sql = [NSMutableString stringWithCapacity:512];
   [sql appendString:@"UPDATE "];
   [sql appendString:_table];
-
   [sql appendString:@" SET "];
+  
   for (i = 0, count = [keys count]; i < count; i++) {
-    id value;
+    fieldName = [keys objectAtIndex:i];
+    sqlType = [self _sqlTypeForColumn: fieldName withFieldInfos: _fields];
 
-    value = [_row objectForKey:[keys objectAtIndex:i]];
-    value = [self _formatRowValue:value];
-
-    if (i != 0) [sql appendString:@", "];
-    [sql appendString:[keys objectAtIndex:i]];
-    [sql appendString:@" = "];
-    [sql appendString:value];
+    if (sqlType)
+      {
+        value = [_row objectForKey: fieldName];
+        attribute = AUTORELEASE([[EOAttribute alloc] init]);
+        [attribute setName: fieldName];
+        [attribute setColumnName: fieldName];
+        [attribute setExternalType: sqlType];
+    
+        if (i != 0) [sql appendString:@", "];
+        [sql appendString:fieldName];
+        [sql appendString:@" = "];
+        [sql appendString:[_adaptor formatValue: value forAttribute: attribute]];
+      }
+    else
+      {
+        [self errorWithFormat:@"%s: no type found for column name %@",
+              __PRETTY_FUNCTION__, fieldName];
+      }
   }
 
   [sql appendString:@" WHERE "];
@@ -711,6 +730,26 @@ static NSArray *contentFieldNames = nil;
   }
 
   return sql;
+}
+
+- (NSString *) _sqlTypeForColumn: (NSString *) _field withFieldInfos: (NSArray *) _fields
+{
+  NSString *sqlType;
+  NSEnumerator *fields;
+  GCSFieldInfo *fieldInfo;
+
+  sqlType = nil;
+  fields = [_fields objectEnumerator];
+  while ((fieldInfo = [fields nextObject]))
+    {
+      if ([[fieldInfo columnName] caseInsensitiveCompare: _field] == NSOrderedSame)
+        {
+          sqlType = [fieldInfo sqlType];
+          break;
+        }
+    }
+
+  return sqlType;
 }
 
 - (EOEntity *) _entityWithName: (NSString *) _name
@@ -749,7 +788,6 @@ static NSArray *contentFieldNames = nil;
 {
   EOEntity *entity;
   EOAttribute *attribute;
-  GCSFieldInfo *field;
   NSEnumerator *fields;
   NSString *fieldName;
 
@@ -956,6 +994,8 @@ static NSArray *contentFieldNames = nil;
 										 isEqualTo: _name  andColumn: nil  isEqualTo: nil
 										 entity: quickTableEntity]]
 				     : [quickChannel evaluateExpressionX: [self _generateUpdateStatementForRow: quickRow
+                                                                                adaptor: [[quickChannel adaptorContext] adaptor]
+                                                                                fields: [folderInfo quickFields]
 										tableName: [self quickTableName]
 										whereColumn: @"c_name" isEqualTo: _name
 										andColumn: nil isEqualTo: nil]]);
@@ -966,7 +1006,10 @@ static NSArray *contentFieldNames = nil;
 										 andColumn: (_baseVersion != 0 ? (id)@"c_version" : (id)nil)
 										 isEqualTo: (_baseVersion != 0 ? [NSNumber numberWithUnsignedInt:_baseVersion] : (NSNumber *)nil)
 										 entity: storeTableEntity]]
-				     : [storeChannel evaluateExpressionX: [self _generateUpdateStatementForRow: contentRow  tableName:[self storeTableName]
+				     : [storeChannel evaluateExpressionX: [self _generateUpdateStatementForRow: contentRow
+                                                                                adaptor: [[storeChannel adaptorContext] adaptor]
+                                                                                fields: [folderInfo fields]
+                                                                                tableName:[self storeTableName]
 										whereColumn: @"c_name"  isEqualTo: _name
 										andColumn: (_baseVersion != 0 ? (id)@"c_version" : (id)nil)
 										isEqualTo: (_baseVersion != 0 ? [NSNumber numberWithUnsignedInt: _baseVersion] : (NSNumber *)nil)]]);

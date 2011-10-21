@@ -1,3 +1,16 @@
+2011-10-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* GCSFolder.m
+	(_generateUpdateStatementForRow:adaptor:fields:tableName:whereColumn:isEqualTo:andColumn:isEqualTo:):
+	this method now uses the formatValue:forAttribute: method from the
+	database adaptor to benefit from the proper formatting depending
+	on the column type.
+	(-initWithPath:primaryKey:folderTypeName:folderType:location:quickLocation:aclLocation:folderManager:):
+	load the content field names from the GCSFolderType object.
+
+	* GCSFolderType.m (-initWithPropertyList:): the content table
+	structure is now part of the plist (.ocs) file.
+
 2011-10-03  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* GCSFolder.m (-updateQuickFields:whereColumn:isEqualTo:): new
