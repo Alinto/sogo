@@ -96,9 +96,6 @@
       aclsEnum = [[self aclsForObject] objectEnumerator];
       while ((currentUID = [aclsEnum nextObject]))
         {
-          if ([currentUID hasPrefix: @"@"])
-            // NOTE: don't remove the prefix if we want to identify the lists visually
-            currentUID = [currentUID substringFromIndex: 1];
           if (!([currentUID isEqualToString: ownerLogin]
                 || [currentUID isEqualToString: defaultUserID]
                 || [currentUID isEqualToString: @"anonymous"]))
@@ -117,20 +114,25 @@
 
 - (NSString *) currentUser
 {
-  return currentUser;
+  return ([currentUser hasPrefix: @"@"]
+          ? [currentUser substringFromIndex: 1]
+          : currentUser);
+}
+
+- (NSString *) currentUserClass
+{
+  return ([currentUser hasPrefix: @"@"]
+          ? @"normal-group"
+          : @"normal-user");
 }
 
 - (NSString *) currentUserDisplayName
 {
   SOGoUserManager *um;
-  NSString *s;
 
   um = [SOGoUserManager sharedUserManager];
-  s = ([currentUser hasPrefix: @"@"]
-       ? [currentUser substringFromIndex: 1]
-       : currentUser);
 
-  return [um getFullEmailForUID: s];
+  return [um getFullEmailForUID: [self currentUser]];
 }
 
 - (BOOL) canSubscribeUsers

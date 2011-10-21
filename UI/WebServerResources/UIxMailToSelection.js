@@ -107,6 +107,9 @@ function expandContactListCallback (http) {
         if (http.status == 200) {
             var data = http.responseText.evalJSON(true);
             // TODO: Should check for duplicated entries
+            for (var i = data.length - 1; i >= 0; i--)
+                // Remove contacts with no email address
+                if (data[i][2].length == 0) data.splice(i, 1);
             if (data.length >= 1) {
                 var text = data[0][2];
                 if (data[0][1].length)

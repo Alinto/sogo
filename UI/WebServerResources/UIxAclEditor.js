@@ -9,18 +9,18 @@ var AclEditor = {
 
 var usersToSubscribe = [];
 
-function addUser(userName, userID) {
+function addUser(userName, userID, type) {
     var result = false;
     if (!$(userID)) {
         var ul = $("userList");
         var lis = ul.childNodesWithTag("li");
         var newNode = nodeForUser(userName, userID, canSubscribeUsers);
-        newNode.addClassName("normal-user");
+        newNode.addClassName("normal-" + type);
 
         var count = lis.length - 1;
         var nextLi = null;
         while (count > -1 && !nextLi) {
-            if ($(lis[count]).hasClassName("normal-user")) {
+            if ($(lis[count]).hasClassName("normal-person")) {
                 nextLi = lis[count+1];
             }
             else {
@@ -142,7 +142,8 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
     var result = true;
     if (UserLogin != refreshCallbackData["folder"]) {
         result = addUser(refreshCallbackData["folderName"],
-                         refreshCallbackData["folder"]);
+                         refreshCallbackData["folder"],
+                         refreshCallbackData["type"]);
     }
     else
         refreshCallbackData["window"].alert(_("You cannot subscribe to a folder that you own!"));
@@ -223,9 +224,9 @@ function onAclCloseHandler(event) {
                    + "/subscribeUsers?uids=" + usersToSubscribe.join(","));
         new Ajax.Request(url, {
             asynchronous: false,
-                    method: 'get',
-                    onFailure: function(transport) {
-                    log("Can't expunge current folder: " + transport.status);
+            method: 'get',
+            onFailure: function(transport) {
+                    log("Can't subscribe users: " + transport.status);
                 }
         });
     }

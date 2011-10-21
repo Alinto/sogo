@@ -1,3 +1,26 @@
+2011-10-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserManager.m
+	(-_compactAndCompleteContacts:): add the key "isGroup" when defined.
+
+	* UI/MainUI/SOGoUserHomePage.m (:_usersForResults:inDomain:):
+	add a boolean value in the returning array that identifies if the
+	user is actually a group.
+
+	* UI/Common/UIxAclEditor.m (-currentUserClass): return the CSS
+	class that identifies the user as a single contact or list of contacts.
+
+	* UI/WebServerResources/UIxContactsUserFolders.js
+	(addUserLineToTree): extract the new field that is set to 1 when
+	the user is actually a group.
+
+	* UI/WebServerResources/UIxAclEditor.js (addUser): new argument to
+	to identify the type of user (person or group).
+
+	* UI/WebServerResources/UIxMailToSelection.js
+	(expandContactListCallback): don't expand contacts without an
+	email address.
+
 2011-10-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreDraftsMessage.m (-getPrDisplayTo:inMemCtx:)

@@ -51,8 +51,12 @@ UL#userList LI
   background-repeat: no-repeat;
   background-position: 4px center; }
 
-UL#userList LI.normal-user
+UL#userList LI.normal-user,
+UL#userList LI.normal-person
 { background-image: url("abcard.png"); }
+
+UL#userList LI.normal-group
+{ background-image: url("ablist.png"); }
 
 UL#userList LI.any-user
 { background-image: url("abcard-anyone.png");

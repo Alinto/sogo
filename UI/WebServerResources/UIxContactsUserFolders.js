@@ -37,15 +37,26 @@ function usersSearchCallback(http) {
 }
 
 function addUserLineToTree(tree, parent, line) {
+    // line[0] = uid
+    // line[1] = cn
+    // line[2] = email
+    // line[3] = 1 if it's a group
+    // line[4] = contact info
     var icon = ResourcesURL + '/busy.gif';
 
     var email = line[1] + " &lt;" + line[2] + "&gt;";
-    if (line[3] && !line[3].empty())
-        email += ", " + line[3].split("\n").join("; "); // extra contact info
-    tree.add(parent, 0, email, 0, '#', line[0], 'person',
+    if (line[4] && !line[4].empty())
+        email += ", " + line[4].split("\n").join("; "); // extra contact info
+    var icon_card = 'abcard.png';
+    var datatype = 'person';
+    if (line[3]) {
+        icon_card = 'ablist.png';
+        datatype = 'group';
+    }
+    tree.add(parent, 0, email, 0, '#', line[0], datatype,
              '', '',
-             ResourcesURL + '/abcard.png',
-             ResourcesURL + '/abcard.png');
+             ResourcesURL + '/' + icon_card,
+             ResourcesURL + '/' + icon_card);
     if (window.opener.userFolderType != "user") {
         tree.add(parent + 1, parent, _("Please wait..."), 0, '#', null,
                  null, '', '', icon, icon);
@@ -198,6 +209,7 @@ function onConfirmFolderSelection(event) {
         if (topNode && topNode.selectedEntry) {
             var node = topNode.selectedEntry.parentNode;
             var folder = node.getAttribute("dataname");
+            var type = node.getAttribute("datatype");
 
             var folderName;
             if (window.opener.userFolderType == "user") {
@@ -217,7 +229,7 @@ function onConfirmFolderSelection(event) {
                 folderName = folderName.replace(/>,.*(\))?$/, ">)$1", "g");
             }
 
-            var data = { folderName: folderName, folder: folder, window: window };
+            var data = { folderName: folderName, folder: folder, type: type, window: window };
             if (parent$(accessToSubscribedFolder(folder)))
                 window.alert(_("You have already subscribed to that folder!"));
             else

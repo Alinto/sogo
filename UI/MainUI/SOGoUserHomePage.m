@@ -326,7 +326,7 @@
   NSMutableArray *jsonResponse, *jsonLine;
   NSArray *allUsers;
   int count, max;
-  BOOL activeUserIsInDomain;
+  BOOL activeUserIsInDomain, isGroup;
 
   login = [[context activeUser] login];
   activeUserIsInDomain = ([domain length] == 0 || [[[context activeUser] domain] isEqualToString: domain]);
@@ -352,6 +352,7 @@
           [jsonLine addObject: uid];
           [jsonLine addObject: [contact objectForKey: @"cn"]];
           [jsonLine addObject: [contact objectForKey: @"c_email"]];
+          [jsonLine addObject: [NSNumber numberWithBool: [[contact objectForKey: @"isGroup"] boolValue]]];
           contactInfo = [contact objectForKey: @"c_info"];
           if (contactInfo)
             [jsonLine addObject: contactInfo];

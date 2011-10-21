@@ -804,6 +804,7 @@
   NSArray *newContacts;
   NSMutableArray *emails;
   NSString *uid, *email, *info;
+  NSNumber *isGroup;
 
   compactContacts = [NSMutableDictionary dictionary];
   while ((userEntry = [contacts nextObject]))
@@ -844,6 +845,9 @@
               && ![[returnContact objectForKey: @"c_info"] length])
             [returnContact setObject: info forKey: @"c_info"];
 	  [self _fillContactMailRecords: returnContact];
+          isGroup = [userEntry objectForKey: @"isGroup"];
+          if (isGroup)
+            [returnContact setObject: isGroup forKey: @"isGroup"];
 	}
     }
 
