@@ -153,9 +153,7 @@ PLReaderDumpPListFile (NSString *filename)
                                        mutabilityOption: NSPropertyListImmutable
                                                  format: &format
                                        errorDescription: &error];
-  if (error)
-    printf ("an error occurred: %s\n", [error UTF8String]);
-  else
+  if (d)
     {
       switch (format)
         {
@@ -181,6 +179,8 @@ PLReaderDumpPListFile (NSString *filename)
       [d displayWithIndentation: 0];
       printf ("\n");
     }
+  else
+    printf ("an error occurred: %s\n", [error UTF8String]);
 }
 
 int main()

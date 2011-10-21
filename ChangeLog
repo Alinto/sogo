@@ -1,3 +1,9 @@
+2011-10-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/plreader.m (PLReaderDumpPListFile): ignore "error" if
+	the returned property list object is not nil, since "error" might
+	still be set with GNUstep.
+
 2011-10-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreDraftsMessage.m (-getPrDisplayTo:inMemCtx:)
