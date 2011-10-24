@@ -26,6 +26,9 @@
 #import "MAPIStoreGCSMessage.h"
 
 @interface MAPIStoreContactsMessage : MAPIStoreGCSMessage
+{
+  BOOL fetchedAttachments;
+}
 
 @end
 
