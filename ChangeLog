@@ -1,5 +1,8 @@
 2011-10-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsAttachment.[hm]: new class module
+	for handling contact "attachments", that is, contact pictures.
+
 	* OpenChange/plreader.m (PLReaderDumpPListFile): ignore "error" if
 	the returned property list object is not nil, since "error" might
 	still be set with GNUstep.

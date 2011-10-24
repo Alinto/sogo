@@ -70,6 +70,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreCalendarMessageTable.m \
 	MAPIStoreRecurrenceUtils.m \
 	\
+	MAPIStoreContactsAttachment.m \
 	MAPIStoreContactsContext.m \
 	MAPIStoreContactsFolder.m \
 	MAPIStoreContactsMessage.m \
