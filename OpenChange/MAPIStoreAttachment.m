@@ -85,7 +85,7 @@
       break;
 
     default:
-      rc = MAPISTORE_ERR_NOT_FOUND;
+      rc = [super getProperty: data withTag: propTag inMemCtx: memCtx];
     }
 
   return rc;

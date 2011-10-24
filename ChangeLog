@@ -1,5 +1,9 @@
 2011-10-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreAttachment.m
+	(-getProperty:withTag:inMemCtx:): fallback on super's
+	implementation to benefit from the property getters methods.
+
 	* OpenChange/MAPIStoreContactsMessage.m (-getPrBody:inMemCtx:): if
 	the attribute length is 0, return MAPISTORE_ERR_NOT_FOUND.
 	(-_fetchAttachmentParts, -getPidLidHasPicture:inMemCtx:)
