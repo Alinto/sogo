@@ -25,12 +25,15 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGCards/NGVCard.h>
 #import <NGCards/NSArray+NGCards.h>
+#import <NGCards/NGVCard.h>
+#import <NGCards/NGVCardPhoto.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 
+#import "MAPIStoreContactsAttachment.h"
 #import "MAPIStoreContactsFolder.h"
 #import "MAPIStorePropertySelectors.h"
 #import "MAPIStoreTypes.h"
@@ -59,6 +62,16 @@
 @end
 
 @implementation MAPIStoreContactsMessage
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      fetchedAttachments = NO;
+    }
+
+  return self;
+}
 
 // TODO: this should be combined with the version found
 //       in UIxContactEditor.m
@@ -323,12 +336,16 @@
 - (int) getPrBody: (void **) data
          inMemCtx: (TALLOC_CTX *) memCtx
 {
+  int rc = MAPISTORE_SUCCESS;
   NSString *stringValue;
 
   stringValue = [[sogoObject vCard] note];
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
+  if ([stringValue length] > 0)
+    *data = [stringValue asUnicodeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
 
-  return MAPISTORE_SUCCESS;
+  return rc;
 }
 
 - (int) _getElement: (NSString *) elementTag
@@ -731,6 +748,102 @@
   return MAPISTORE_SUCCESS;
 }
 
+/* attachments (photos) */
+- (void) _fetchAttachmentParts
+{
+  NGVCardPhoto *photo;
+  MAPIStoreContactsAttachment *attachment;
+  NSString *encoding;
+
+  photo = (NGVCardPhoto *) [[sogoObject vCard] firstChildWithTag: @"photo"];
+  if (photo)
+    {
+      encoding = [[photo value: 0 ofAttribute: @"encoding"] uppercaseString];
+      if ([encoding isEqualToString: @"B"]
+          || [encoding isEqualToString: @"BASE64"])
+        {
+          attachment = [MAPIStoreContactsAttachment
+                         mapiStoreObjectWithSOGoObject: nil
+                                           inContainer: self];
+          [attachment setAID: 0];
+          [attachment setPhoto: photo];
+          [attachmentParts setObject: attachment forKey: @"photo"];
+        }
+    }
+
+  fetchedAttachments = YES;
+}
+
+- (int) getPidLidHasPicture: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!fetchedAttachments)
+    [self _fetchAttachmentParts];
+
+  *data = MAPIBoolValue (memCtx, ([attachmentParts count] > 0));
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (NSArray *) attachmentKeysMatchingQualifier: (EOQualifier *) qualifier
+                             andSortOrderings: (NSArray *) sortOrderings
+{
+  if (!fetchedAttachments)
+    [self _fetchAttachmentParts];
+
+  return [super attachmentKeysMatchingQualifier: qualifier
+                               andSortOrderings: sortOrderings];
+}
+
+- (id) lookupAttachment: (NSString *) childKey
+{
+  if (!fetchedAttachments)
+    [self _fetchAttachmentParts];
+
+  return [attachmentParts objectForKey: childKey];
+}
+
+- (void) _updatePhotoInVCard: (NGVCard *) card
+              fromProperties: (NSDictionary *) attachmentProps
+{
+  NSString *photoExt, *photoType, *content;
+  CardElement *photo;
+
+  if ([[attachmentProps
+             objectForKey: MAPIPropertyKey (PR_ATTACHMENT_CONTACTPHOTO)]
+        boolValue])
+    {
+      photoExt = [[attachmentProps
+                        objectForKey: MAPIPropertyKey (PR_ATTACH_EXTENSION_UNICODE)]
+                   uppercaseString];
+      if ([photoExt isEqualToString: @".JPG"])
+        photoType = @"JPEG";
+      else if ([photoExt isEqualToString: @".PNG"])
+        photoType = @"PNG";
+      else if ([photoExt isEqualToString: @".BMP"])
+        photoType = @"BMP";
+      else if ([photoExt isEqualToString: @".GIF"])
+        photoType = @"GIF";
+      else
+        photoType = nil;
+
+      content = [[attachmentProps
+                    objectForKey: MAPIPropertyKey (PR_ATTACH_DATA_BIN)]
+                  stringByEncodingBase64];
+      if (photoType && content)
+        {
+          photo = [card uniqueChildWithTag: @"photo"];
+          [photo setValue: 0 ofAttribute: @"type"
+                       to: photoType];
+          [photo setValue: 0 ofAttribute: @"encoding"
+                       to: @"b"];
+          [photo setValue: 0
+                       to: [content stringByReplacingString: @"\n"
+                                                 withString: @""]];
+        }
+    }
+}
+
 //
 //
 //
@@ -739,7 +852,7 @@
   NSArray *elements, *units;
   CardElement *element;
   NGVCard *newCard;
-  
+  MAPIStoreAttachment *attachment;
   int postalAddressId;
   id value;
 
@@ -997,6 +1110,13 @@
       [newCard setBday: [value descriptionWithCalendarFormat: @"%Y-%m-%d"]];
     }
 
+  /* photo */
+  if ([attachmentParts count] > 0)
+    {
+      attachment = [[attachmentParts allValues] objectAtIndex: 0];
+      [self _updatePhotoInVCard: newCard
+                 fromProperties: [attachment newProperties]];
+    }
 
   //
   // we save the new/modified card

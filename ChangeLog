@@ -1,5 +1,15 @@
 2011-10-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsMessage.m (-getPrBody:inMemCtx:): if
+	the attribute length is 0, return MAPISTORE_ERR_NOT_FOUND.
+	(-_fetchAttachmentParts, -getPidLidHasPicture:inMemCtx:)
+	(-attachmentKeysMatchingQualifier:andSortOrderings:)
+	(-lookupAttachment:): new methods for retrieving contact pictures
+	in the VCARD.
+	(_updatePhotoInVCard:fromProperties:): new method that inserts a
+	"PHOTO" element in the VCARD depending on the PR_ATTACH_*
+	properties.
+
 	* OpenChange/MAPIStoreContactsAttachment.[hm]: new class module
 	for handling contact "attachments", that is, contact pictures.
 
