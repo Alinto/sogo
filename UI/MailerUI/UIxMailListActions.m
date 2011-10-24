@@ -786,7 +786,7 @@
       if ([self isMessageRead])
 	msgIconStatus = @"dot.png";
       else
-	msgIconStatus = @"icon_unread.gif";
+	msgIconStatus = @"unread.png";
       
       [msg addObject: [NSString stringWithFormat: @"<img src=\"%@\" class=\"mailerReadIcon\" title=\"%@\" title-markread=\"%@\" title-markunread=\"%@\" id=\"%@\"/>",
 				[self urlForResourceFilename: msgIconStatus],

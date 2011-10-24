@@ -373,14 +373,9 @@ TABLE.messageList TR[labels~="label1"]._selected TD
 { color: #fff;
   background-color: #f00; }
 
-TABLE.messageList TR.mailer_unreadmail TD 
-{ font-weight: bold !important; }
-
+TABLE.messageList TR.mailer_unreadmail TD,
 TR.mailer_unreadmail TD.messageSubjectColumn
-{ background-image: url(icon-new.png);
-  background-repeat: no-repeat !important;
-  background-position: 0px 3px !important;
-  font-weight: bold !important; }
+{ font-weight: bold !important; }
 
 TR.mailer_repliedmailsubject TD.messageSubjectColumn
 { background-image: url(icon-replied.png) !important;

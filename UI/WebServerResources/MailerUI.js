@@ -150,7 +150,7 @@ function markMailInWindow(win, msguid, markread) {
                 row.addClassName("mailer_unreadmail");
                 var img = win.$("readdiv_" + msguid);
                 if (img) {
-                    img.setAttribute("src", ResourcesURL + "/icon_unread.gif");
+                    img.setAttribute("src", ResourcesURL + "/unread.png");
                     var title = img.getAttribute("title-markread");
                     if (title)
                         img.setAttribute("title", title);
