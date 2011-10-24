@@ -2536,7 +2536,8 @@ function folderRefreshCallback(http) {
 		    row.show();
             }
         }
-        showAlertDialog(_("Operation failed"));
+        var msg = /<p>(.*)<\/p>/m.exec(http.responseText);
+        showAlertDialog(_("Operation failed") + ": " + msg[1]);
     }
 }
 
