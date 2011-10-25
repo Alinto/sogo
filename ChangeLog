@@ -1,5 +1,11 @@
 2011-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/EOQualifier+MAPIFS.[hm]: now evaluates
+	SOGoMAPIMemMessage.
+
+	* OpenChange/SOGoMAPIFSMessage.[hm]: now a subclass of
+	SOGoMAPIMemMessage.
+
 	* OpenChange/MAPIStoreDraftsMessage.m (_saveAttachment:): make use
 	of MAPIStoreMIME.
 

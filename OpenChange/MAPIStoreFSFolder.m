@@ -27,7 +27,7 @@
 #import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
-#import "EOQualifier+MAPIFS.h"
+#import "EOQualifier+MAPIMem.h"
 #import "MAPIStoreFSFolderTable.h"
 #import "MAPIStoreFSMessage.h"
 #import "MAPIStoreFSMessageTable.h"
@@ -138,7 +138,7 @@ static Class EOKeyValueQualifierK;
           subfolderKey = [entries objectAtIndex: count];
           subfolder = [self lookupFolder: subfolderKey];
           propertiesMessage = [subfolder propertiesMessage];
-          if ([qualifier evaluateMAPIFSMessage: propertiesMessage])
+          if ([qualifier evaluateMAPIMemMessage: propertiesMessage])
             [filteredEntries addObject: subfolderKey];
         }
       entries = filteredEntries;

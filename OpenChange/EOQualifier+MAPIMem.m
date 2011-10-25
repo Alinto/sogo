@@ -1,4 +1,4 @@
-/* EOQualifier+MAPIFS.m - this file is part of SOGo
+/* EOQualifier+MAPIMem.m - this file is part of SOGo
  *
  * Copyright (C) 2010 Inverse inc.
  *
@@ -28,20 +28,20 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "SOGoMAPIFSMessage.h"
+#import "SOGoMAPIMemMessage.h"
 
-#import "EOQualifier+MAPIFS.h"
+#import "EOQualifier+MAPIMem.h"
 #import "EOBitmaskQualifier.h"
 
 @implementation EOQualifier (MAPIStoreRestrictions)
 
-- (BOOL) _evaluateMAPIFSMessageProperties: (NSDictionary *) properties
+- (BOOL) _evaluateMAPIMemMessageProperties: (NSDictionary *) properties
 {
   [self subclassResponsibility: _cmd];
   return NO;
 }
 
-- (BOOL) evaluateMAPIFSMessage: (SOGoMAPIFSMessage *) message
+- (BOOL) evaluateMAPIMemMessage: (SOGoMAPIMemMessage *) message
 {
   NSDictionary *properties;
   BOOL rc;
@@ -49,7 +49,7 @@
   [self logWithFormat: @"evaluating message '%@'", message];
 
   properties = [message properties];
-  rc = [self _evaluateMAPIFSMessageProperties: properties];
+  rc = [self _evaluateMAPIMemMessageProperties: properties];
 
   [self logWithFormat: @"  evaluation result: %d", rc];
   
@@ -60,7 +60,7 @@
 
 @implementation EOAndQualifier (MAPIStoreRestrictionsPrivate)
 
-- (BOOL) _evaluateMAPIFSMessageProperties: (NSDictionary *) properties
+- (BOOL) _evaluateMAPIMemMessageProperties: (NSDictionary *) properties
 {
   NSUInteger i;
   BOOL rc;
@@ -69,7 +69,7 @@
 
   for (i = 0; rc && i < count; i++)
     rc = [[qualifiers objectAtIndex: i]
-	   _evaluateMAPIFSMessageProperties: properties];
+	   _evaluateMAPIMemMessageProperties: properties];
  
   return rc;
 }
@@ -78,7 +78,7 @@
 
 @implementation EOOrQualifier (MAPIStoreRestrictionsPrivate)
 
-- (BOOL) _evaluateMAPIFSMessageProperties: (NSDictionary *) properties
+- (BOOL) _evaluateMAPIMemMessageProperties: (NSDictionary *) properties
 {
   NSUInteger i;
   BOOL rc;
@@ -87,7 +87,7 @@
 
   for (i = 0; !rc && i < count; i++)
     rc = [[qualifiers objectAtIndex: i]
-	   _evaluateMAPIFSMessageProperties: properties];
+	   _evaluateMAPIMemMessageProperties: properties];
  
   return rc;
 }
@@ -96,9 +96,9 @@
 
 @implementation EONotQualifier (MAPIStoreRestrictionsPrivate)
 
-- (BOOL) _evaluateMAPIFSMessageProperties: (NSDictionary *) properties
+- (BOOL) _evaluateMAPIMemMessageProperties: (NSDictionary *) properties
 {
-  return ![qualifier _evaluateMAPIFSMessageProperties: properties];
+  return ![qualifier _evaluateMAPIMemMessageProperties: properties];
 }
 
 @end
@@ -107,7 +107,7 @@
 
 typedef BOOL (*EOComparator) (id, SEL, id);
 
-- (BOOL) _evaluateMAPIFSMessageProperties: (NSDictionary *) properties
+- (BOOL) _evaluateMAPIMemMessageProperties: (NSDictionary *) properties
 {
   id finalKey;
   id propValue;
@@ -136,7 +136,7 @@ typedef BOOL (*EOComparator) (id, SEL, id);
 
 @implementation EOBitmaskQualifier (MAPIStoreRestrictionsPrivate)
 
-- (BOOL) _evaluateMAPIFSMessageProperties: (NSDictionary *) properties
+- (BOOL) _evaluateMAPIMemMessageProperties: (NSDictionary *) properties
 {
   NSNumber *propTag;
   id propValue;

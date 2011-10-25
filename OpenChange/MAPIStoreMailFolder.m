@@ -58,7 +58,7 @@
 
 /* Those are parts of a hack that enables creating mails to IMAP folders from
    Exchange properties */
-#import "SOGoMemMessage.h"
+#import "SOGoMAPIMemMessage.h"
 #import "MAPIStoreMemMailMessage.h"
 
 #import "MAPIStoreMailFolder.h"
@@ -995,9 +995,9 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 - (MAPIStoreMessage *) createMessage
 {
   MAPIStoreDraftsMessage *newMessage;
-  SOGoMemMessage *newObject;
+  SOGoMAPIMemMessage *newObject;
 
-  newObject = [SOGoMemMessage
+  newObject = [SOGoMAPIMemMessage
                 objectWithName: [SOGoObject globallyUniqueObjectId]
                    inContainer: sogoObject];
   newMessage

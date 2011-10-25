@@ -1,4 +1,4 @@
-/* SOGoMemMessage.m - this file is part of SOGo
+/* SOGoMAPIMemMessage.m - this file is part of SOGo
  *
  * Copyright (C) 2011 Inverse inc
  *
@@ -22,15 +22,15 @@
 
 #import <Foundation/NSDictionary.h>
 
-#import "SOGoMemMessage.h"
+#import "SOGoMAPIMemMessage.h"
 
-@implementation SOGoMemMessage
+@implementation SOGoMAPIMemMessage
 
 - (id) init
 {
   if ((self = [super init]))
     {
-      properties = [NSMutableDictionary new];
+      properties = nil;
     }
 
   return self;
@@ -42,15 +42,17 @@
   [super dealloc];
 }
 
-- (NSDictionary *) properties
+- (NSMutableDictionary *) properties
 {
+  if (!properties)
+    properties = [NSMutableDictionary new];
+
   return properties;
 }
 
 - (void) appendProperties: (NSDictionary *) newProperties
 {
-  [properties addEntriesFromDictionary: newProperties];
+  [[self properties] addEntriesFromDictionary: newProperties];
 }
-
 
 @end

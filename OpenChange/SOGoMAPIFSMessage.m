@@ -40,7 +40,7 @@
 {
   if ((self = [super init]))
     {
-      properties = nil;
+      propertiesLoaded = NO;
       completeFilename = nil;
     }
 
@@ -49,7 +49,6 @@
 
 - (void) dealloc
 {
-  [properties release];
   [completeFilename release];
   [super dealloc];
 }
@@ -85,13 +84,13 @@
   return completeFilename;
 }
 
-- (NSDictionary *) properties
+- (NSMutableDictionary *) properties
 {
   NSData *content;
   NSString *error;
   NSPropertyListFormat format;
 
-  if (!properties)
+  if (!propertiesLoaded)
     {
       content = [NSData dataWithContentsOfFile: [self completeFilename]];
       if (content)
@@ -105,22 +104,11 @@
             [self logWithFormat: @"an error occurred during deserialization"
                   @" of message: '%@'", error];
         }
-      else
-        properties = nil;
-      if (!properties)
-        properties = [NSMutableDictionary new];
+
+      propertiesLoaded = YES;
     }
 
-  return properties;
-}
-
-- (void) appendProperties: (NSDictionary *) newProperties
-{
-  // We ensure the current properties are loaded
-  [self properties];
-  
-  // We merge the changes
-  [properties addEntriesFromDictionary: newProperties];
+  return [super properties];
 }
 
 - (void) save
@@ -129,15 +117,16 @@
 
   [container ensureDirectory];
 
-  [self logWithFormat: @"%d props in whole dict", [properties count]];
+  // [self logWithFormat: @"%d props in whole dict", [properties count]];
 
-  content = [NSPropertyListSerialization dataFromPropertyList: properties
-                                                       format: NSPropertyListBinaryFormat_v1_0
-                                             errorDescription: NULL];
+  content = [NSPropertyListSerialization
+              dataFromPropertyList: [self properties]
+                            format: NSPropertyListBinaryFormat_v1_0
+                  errorDescription: NULL];
   if (![content writeToFile: [self completeFilename] atomically: NO])
     [NSException raise: @"MAPIStoreIOException"
 		 format: @"could not save message"];
-  [self logWithFormat: @"fs message written to '%@'", [self completeFilename]];
+  // [self logWithFormat: @"fs message written to '%@'", [self completeFilename]];
 }
 
 - (NSString *) davEntityTag
@@ -167,8 +156,8 @@
   NSDictionary *attributes;
 
   attributes = [[NSFileManager defaultManager]
-               fileAttributesAtPath: [self completeFilename]
-                       traverseLink: NO];
+                   fileAttributesAtPath: [self completeFilename]
+                           traverseLink: NO];
 
   return [attributes objectForKey: key];
 }

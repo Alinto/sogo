@@ -1,6 +1,6 @@
-/* EOQualifier+MAPIFS.h - this file is part of SOGo
+/* SOGoMAPIMemMessage.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2011 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,17 +20,22 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef EOQUALIFIER_MAPIFS_H
-#define EOQUALIFIER_MAPIFS_H
+#ifndef SOGOMAPIMEMMESSAGE_H
+#define SOGOMAPIMEMMESSAGE_H
 
-#import <EOControl/EOQualifier.h>
+#import <SOGo/SOGoObject.h>
 
-@class SOGoMAPIFSMessage;
+@class NSDictionary;
+@class NSMutableDictionary;
 
-@interface EOQualifier (MAPIStoreRestrictions)
+@interface SOGoMAPIMemMessage : SOGoObject
+{
+  NSMutableDictionary *properties;
+}
 
-- (BOOL) evaluateMAPIFSMessage: (SOGoMAPIFSMessage *) message;
+- (NSMutableDictionary *) properties;
+- (void) appendProperties: (NSDictionary *) newProperties;
 
 @end
 
-#endif /* EOQUALIFIER_MAPIFS_H */
+#endif /* SOGOMAPIMEMMESSAGE_H */

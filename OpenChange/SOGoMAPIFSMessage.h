@@ -23,19 +23,17 @@
 #ifndef SOGOMAPIFSMESSAGE_H
 #define SOGOMAPIFSMESSAGE_H
 
-#import <SOGo/SOGoObject.h>
+#import "SOGoMAPIMemMessage.h"
 
-@class NSDictionary;
-@class NSMutableDictionary;
+@class NSCalendarDate;
+@class NSString;
 
-@interface SOGoMAPIFSMessage : SOGoObject
+@interface SOGoMAPIFSMessage : SOGoMAPIMemMessage
 {
-  NSMutableDictionary *properties;
+  BOOL propertiesLoaded;
   NSString *completeFilename;
 }
 
-- (NSDictionary *) properties;
-- (void) appendProperties: (NSDictionary *) newProperties;
 - (void) save;
 
 - (NSString *) completeFilename;

@@ -43,7 +43,7 @@
 #import "MAPIStoreTypes.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
-#import "SOGoMemMessage.h"
+#import "SOGoMAPIMemMessage.h"
 
 #import "MAPIStoreMemMailMessage.h"
 
