@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
@@ -67,100 +68,138 @@
   ASSIGN (bodyInfo, newBodyInfo);
 }
 
-- (int) getProperty: (void **) data
-            withTag: (enum MAPITAGS) propTag
-           inMemCtx: (TALLOC_CTX *) localMemCtx
+- (int) getPrAttachMethod: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPILongValue (memCtx, 0x00000001); // afByValue
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAttachTag: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [[self mimeAttachTag] asBinaryInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAttachSize: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  uint32_t longValue;
+
+  longValue = [[bodyInfo objectForKey: @"size"] longValue];
+  *data = MAPILongValue (memCtx, longValue);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrRecordKey: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
   static char recordBytes[] = {0xd9, 0xd8, 0x11, 0xa3, 0xe2, 0x90, 0x18, 0x41,
-                               0x9e, 0x04, 0x58, 0x46, 0x9d, 0x6d, 0x1b, 0x68};
-  uint32_t longValue;
-  NSString *stringValue;
-  NSCalendarDate *date;
+                               0x9e, 0x04, 0x58, 0x46, 0x9d, 0x6d, 0x1b,
+                               0x68};
+  
+  *data = [[NSData dataWithBytes: recordBytes length: 16]
+            asBinaryInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (NSString *) _fileName
+{
+  NSString *fileName;
   NSDictionary *parameters;
-  int rc;
 
-  rc = MAPISTORE_SUCCESS;
-  switch (propTag)
+  fileName = [[bodyInfo objectForKey: @"parameterList"]
+               objectForKey: @"name"];
+  if (!fileName)
     {
-    case PR_ATTACH_METHOD:
-      *data = MAPILongValue (localMemCtx, 0x00000001); // afByValue
-      break;
-    case PR_ATTACH_TAG:
-      *data = [[self mimeAttachTag]
-		asBinaryInMemCtx: localMemCtx];
-      break;
-    case PR_ATTACH_SIZE:
-      longValue = [[bodyInfo objectForKey: @"size"] longValue];
-      *data = MAPILongValue (localMemCtx, longValue);
-      break;
-
-    case PR_RECORD_KEY:
-      *data = [[NSData dataWithBytes: recordBytes length: 16]
-		asBinaryInMemCtx: localMemCtx];
-      break;
-      
-      // PR_RECORD_KEY (0xFF90102)                             D9 D8 11 A3 E2 90 18 41 9E 04 58 46 9D 6D 1B 68
-
-    case PR_ATTACH_LONG_FILENAME_UNICODE:
-    case PR_ATTACH_FILENAME_UNICODE:
-      stringValue = [[bodyInfo objectForKey: @"parameterList"]
-                      objectForKey: @"name"];
-      if (!stringValue)
-        {
-          parameters = [[bodyInfo objectForKey: @"disposition"]
-                         objectForKey: @"parameterList"];
-          stringValue = [parameters objectForKey: @"filename"];
-        }
-
-      if (propTag == PR_ATTACH_FILENAME_UNICODE)
-        {
-          NSString *baseName, *ext;
-
-          baseName = [stringValue stringByDeletingPathExtension];
-          if ([baseName length] > 8)
-            baseName = [baseName substringToIndex: 8];
-
-          ext = [stringValue pathExtension];
-          if ([ext length] > 3)
-            ext = [ext substringToIndex: 3];
-          stringValue = [NSString stringWithFormat: @"%@.%@", baseName, ext];
-        }
-
-      *data = [stringValue asUnicodeInMemCtx: localMemCtx];
-      break;
-
-    case PR_DISPLAY_NAME_UNICODE: /* TODO: check if description ? */
-      stringValue = [bodyInfo objectForKey: @"description"];
-      *data = [stringValue asUnicodeInMemCtx: localMemCtx];
-      break;
-
-    case PR_ATTACH_CONTENT_ID_UNICODE:
-      stringValue = [bodyInfo objectForKey: @"bodyId"];
-      *data = [stringValue asUnicodeInMemCtx: localMemCtx];
-      break;
-
-    case PR_ATTACH_MIME_TAG_UNICODE:
-      stringValue = [NSString stringWithFormat: @"%@/%@",
-                              [bodyInfo objectForKey: @"type"],
-                              [bodyInfo objectForKey: @"subtype"]];
-      *data = [[stringValue lowercaseString] asUnicodeInMemCtx: localMemCtx];
-      break;
-
-    case PR_CREATION_TIME:
-    case PR_LAST_MODIFICATION_TIME:
-      date = [[container sogoObject] date];
-      *data = [date asFileTimeInMemCtx: localMemCtx];
-      break;
-
-    case PR_ATTACH_DATA_BIN:
-      *data = [[sogoObject fetchBLOB] asBinaryInMemCtx: localMemCtx];
-      break;
-
-    default:
-      rc = [super getProperty: data withTag: propTag inMemCtx: localMemCtx];
+      parameters = [[bodyInfo objectForKey: @"disposition"]
+                     objectForKey: @"parameterList"];
+      fileName = [parameters objectForKey: @"filename"];
     }
 
-  return rc;
+  return fileName;
+}
+
+- (int) getPrAttachLongFilename: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [[self _fileName] asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAttachFilename: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *fileName, *baseName, *ext;
+
+  fileName = [self _fileName];
+  baseName = [fileName stringByDeletingPathExtension];
+  if ([baseName length] > 8)
+    baseName = [baseName substringToIndex: 8];
+
+  ext = [fileName pathExtension];
+  if ([ext length] > 3)
+    ext = [ext substringToIndex: 3];
+  fileName = [NSString stringWithFormat: @"%@.%@", baseName, ext];
+
+  *data = [fileName asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrDisplayName: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [[bodyInfo objectForKey: @"description"]
+            asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAttachContentId: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{ 
+  *data = [[bodyInfo objectForKey: @"bodyId"]
+            asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAttachMimeTag: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *mimeTag;
+
+  mimeTag = [NSString stringWithFormat: @"%@/%@",
+                          [bodyInfo objectForKey: @"type"],
+                          [bodyInfo objectForKey: @"subtype"]];
+  *data = [[mimeTag lowercaseString] asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAttachDataBin: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [[sogoObject fetchBLOB] asBinaryInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (NSDate *) creationTime
+{
+  return [[container sogoObject] date];
+}
+
+- (NSDate *) lastModificationTime
+{
+  return [[container sogoObject] date];
 }
 
 @end

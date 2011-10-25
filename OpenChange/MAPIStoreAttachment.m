@@ -65,30 +65,28 @@
   return mimeAttachTag;
 }
 
-- (int) getProperty: (void **) data
-            withTag: (enum MAPITAGS) propTag
-           inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPrMid: (void **) data
+        inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc;
+  *data = MAPILongLongValue (memCtx, [container objectId]);
 
-  rc = MAPISTORE_SUCCESS;
-  switch (propTag)
-    {
-    case PR_MID:
-      *data = MAPILongLongValue (memCtx, [container objectId]);
-      break;
-    case PR_ATTACH_NUM:
-      *data = MAPILongValue (memCtx, aid);
-      break;
-    case PR_RENDERING_POSITION:
-      *data = MAPILongValue (memCtx, 0xffffffff);
-      break;
+  return MAPISTORE_SUCCESS;
+}
 
-    default:
-      rc = [super getProperty: data withTag: propTag inMemCtx: memCtx];
-    }
+- (int) getPrAttachNum: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPILongValue (memCtx, aid);
 
-  return rc;
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrRenderingPosition: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPILongValue (memCtx, 0xffffffff);
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) openEmbeddedMessage: (MAPIStoreAttachmentMessage **) messagePtr

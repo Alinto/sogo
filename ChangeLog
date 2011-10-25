@@ -1,5 +1,11 @@
 2011-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreAttachment.m,
+	OpenChange/MAPIStoreCalendarAttachment.m,
+	OpenChange/MAPIStoreMailAttachment.m: replaced the
+	getProperty:withTag:inMemCtx: method with its switch case to make
+	use of the more recent dynamic property getters API.
+
 	* OpenChange/gen-property-selectors.py: added a few exclusions,
 	which are either undocumented or unused.
 

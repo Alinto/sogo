@@ -34,35 +34,33 @@
 
 @implementation MAPIStoreCalendarAttachment
 
-- (int) getProperty: (void **) data
-            withTag: (enum MAPITAGS) propTag
-           inMemCtx: (TALLOC_CTX *) localMemCtx
+- (int) getPrAttachmentHidden: (void **) data
+                     inMemCtx: (TALLOC_CTX *) localMemCtx
 {
-  int rc;
+  *data = MAPIBoolValue (localMemCtx, YES);
 
-  rc = MAPISTORE_SUCCESS;
-  switch (propTag)
-    {
-    case PR_ATTACHMENT_HIDDEN:
-      *data = MAPIBoolValue (localMemCtx, YES);
-      break;
-    case PR_ATTACHMENT_FLAGS:
-      *data = MAPILongValue (localMemCtx, 0x00000002); /* afException */
-      break;
-    case PR_ATTACH_METHOD:
-      *data = MAPILongValue (localMemCtx, 0x00000005); /* afEmbeddedMessage */
-      break;
-
-    // case PidTagExceptionStartTime:
-    // case PidTagExceptionEndTime:
-    // case PidTagExceptionReplaceTime:
-
-    default:
-      rc = [super getProperty: data withTag: propTag inMemCtx: localMemCtx];
-    }
-
-  return rc;
+  return MAPISTORE_SUCCESS;
 }
+
+- (int) getPrAttachmentFlags: (void **) data
+                    inMemCtx: (TALLOC_CTX *) localMemCtx
+{
+  *data = MAPILongValue (localMemCtx, 0x00000002); /* afException */
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAttachmMethod: (void **) data
+                  inMemCtx: (TALLOC_CTX *) localMemCtx
+{
+  *data = MAPILongValue (localMemCtx, 0x00000005); /* afEmbeddedMessage */
+
+  return MAPISTORE_SUCCESS;
+}
+
+// case PidTagExceptionStartTime:
+// case PidTagExceptionEndTime:
+// case PidTagExceptionReplaceTime:
 
 /* subclasses */
 - (MAPIStoreEmbeddedMessage *) openEmbeddedMessage
