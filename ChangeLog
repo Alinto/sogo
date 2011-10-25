@@ -1,3 +1,10 @@
+2011-10-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MainUI/SOGoRootPage.m (-cookieUsername)
+	(-cookieWithUsername:): getter/setter for the new SOGoLogin
+	cookie. This is used for the new "Remember username" checkbox that
+	appears on the login page.
+
 2011-10-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreAttachment.m

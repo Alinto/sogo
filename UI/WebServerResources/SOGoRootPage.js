@@ -29,7 +29,6 @@ function initLogin() {
     submit.observe("click", onLoginClick);
 
     var userName = $("userName");
-    userName.focus();
     userName.observe("keydown", onFieldKeyDown);
 
     var passw = $("password");
@@ -40,6 +39,11 @@ function initLogin() {
 
     var submitBtn = $("submit");
     submitBtn.disabled = false;
+
+    if (userName.value.empty())
+        userName.focus();
+    else
+        passw.focus();
 }
 
 function onFieldKeyDown(event) {
@@ -82,6 +86,9 @@ function onLoginClick(event) {
                            : ("&language=" + language.value));
         if (domain)
             parameters += "&domain=" + domain.value;
+        if ($("rememberLogin").checked)
+            parameters += "&rememberLogin=1";
+
         /// Discarded as it seems to create a cookie for nothing. To discard
         //  a cookie in JS, have a look here: http://www.quirksmode.org/js/cookies.html
         //document.cookie = "";\
