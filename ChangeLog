@@ -1,3 +1,8 @@
+2011-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/gen-property-selectors.py: added a few exclusions,
+	which are either undocumented or unused.
+
 2011-10-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreAttachment.m
