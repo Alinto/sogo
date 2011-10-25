@@ -1,5 +1,12 @@
 2011-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreDraftsMessage.m (_saveAttachment:): make use
+	of MAPIStoreMIME.
+
+	* OpenChange/MAPIStoreMIME.[hm]: new class module implementing a
+	singleton helper that deduces mime types from file extensions,
+	based on the content of /etc/mime.types.
+
 	* OpenChange/MAPIStoreAttachment.m,
 	OpenChange/MAPIStoreCalendarAttachment.m,
 	OpenChange/MAPIStoreMailAttachment.m: replaced the

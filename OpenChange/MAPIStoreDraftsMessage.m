@@ -35,6 +35,7 @@
 
 #import "MAPIStoreContext.h"
 #import "MAPIStoreMapping.h"
+#import "MAPIStoreMIME.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
@@ -337,10 +338,6 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
 
   attachment = [attachmentParts objectForKey: attachmentKey];
   properties = [attachment newProperties];
-  mimeType = [properties
-               objectForKey: MAPIPropertyKey (PR_ATTACH_MIME_TAG_UNICODE)];
-  if (!mimeType)
-    mimeType = @"application/octet-stream";
   filename
     = [properties
         objectForKey: MAPIPropertyKey (PR_ATTACH_LONG_FILENAME_UNICODE)];
@@ -352,6 +349,14 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
       if (![filename length])
         filename = @"untitled.bin";
     }
+
+  mimeType = [properties
+               objectForKey: MAPIPropertyKey (PR_ATTACH_MIME_TAG_UNICODE)];
+  if (!mimeType)
+    mimeType = [[MAPIStoreMIME sharedMAPIStoreMIME]
+                 mimeTypeForExtension: [filename pathExtension]];
+  if (!mimeType)
+    mimeType = @"application/octet-stream";
 
   content = [properties objectForKey: MAPIPropertyKey (PR_ATTACH_DATA_BIN)];
   if (content)
@@ -614,7 +619,8 @@ e)
       [self logWithFormat: @"sending message"];
       [self _commitProperties];
       error = [(SOGoDraftObject *) sogoObject sendMailAndCopyToSent: NO];
-      [self errorWithFormat: @"an exception occurred: %@", error];
+      if (error)
+        [self errorWithFormat: @"an exception occurred: %@", error];
     }
   else
     [self logWithFormat: @"ignored scheduling message"];
