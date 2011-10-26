@@ -8,6 +8,14 @@
 
 2011-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFSMessage.m,
+	OpenChange/MAPIStoreMailVolatileMessage.m: new descendants of
+	MAPIStoreMemMessage.
+
+	* OpenChange/MAPIStoreDraftsMessage: replaced class with
+	MAPIStoreMemMessage, enabling the creation of mails from any mail
+	folder.
+
 	* OpenChange/MAPIStoreMessage.m
 	(-modifyRecipientsWithRows:andCount:andColumns:): take BCC
 	recipients into account.

@@ -36,9 +36,9 @@
 #import "MAPIApplication.h"
 #import "MAPIStoreAttachment.h"
 #import "MAPIStoreContext.h"
-#import "MAPIStoreDraftsMessage.h"
 #import "MAPIStoreFolder.h"
 #import "MAPIStoreMessage.h"
+#import "MAPIStoreMailVolatileMessage.h"
 #import "MAPIStoreObject.h"
 #import "MAPIStoreTable.h"
 #import "NSObject+MAPIStore.h"
@@ -740,7 +740,7 @@ sogo_message_submit (void *message_object, enum SubmitFlags flags)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
-  MAPIStoreDraftsMessage *message;
+  MAPIStoreMailVolatileMessage *message;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));

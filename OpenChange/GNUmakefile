@@ -51,6 +51,8 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreFolderTable.m \
 	MAPIStorePermissionsTable.m \
 	\
+	MAPIStoreMemMessage.m \
+	\
 	MAPIStoreFSBaseContext.m \
 	MAPIStoreFSFolder.m \
 	MAPIStoreFSFolderTable.m \
@@ -86,8 +88,8 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreMailAttachment.m \
 	MAPIStoreMailContext.m \
 	MAPIStoreMailFolder.m \
-	MAPIStoreDraftsMessage.m \
 	MAPIStoreMailMessage.m \
+	MAPIStoreMailVolatileMessage.m \
 	MAPIStoreMailMessageTable.m \
 	\
 	MAPIStoreNotesContext.m \
@@ -115,8 +117,6 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	EOBitmaskQualifier.m \
 	EOQualifier+MAPIMem.m \
-	\
-	MAPIStoreMemMailMessage.m \
 
 
 $(SOGOBACKEND)_RESOURCE_FILES += \

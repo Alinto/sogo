@@ -47,7 +47,7 @@
 #import "MAPIApplication.h"
 #import "MAPIStoreAppointmentWrapper.h"
 #import "MAPIStoreContext.h"
-#import "MAPIStoreDraftsMessage.h"
+// #import "MAPIStoreDraftsMessage.h"
 #import "MAPIStoreFAIMessage.h"
 #import "MAPIStoreMailMessageTable.h"
 #import "MAPIStoreMapping.h"
@@ -59,7 +59,7 @@
 /* Those are parts of a hack that enables creating mails to IMAP folders from
    Exchange properties */
 #import "SOGoMAPIMemMessage.h"
-#import "MAPIStoreMemMailMessage.h"
+#import "MAPIStoreMailVolatileMessage.h"
 
 #import "MAPIStoreMailFolder.h"
 
@@ -991,18 +991,17 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   return MAPISTORE_SUCCESS;
 }
 
-/* FIXME: this method makes use of the hacky MAPIStoreMemMailMessage */
 - (MAPIStoreMessage *) createMessage
 {
-  MAPIStoreDraftsMessage *newMessage;
+  MAPIStoreMailVolatileMessage *newMessage;
   SOGoMAPIMemMessage *newObject;
 
   newObject = [SOGoMAPIMemMessage
                 objectWithName: [SOGoObject globallyUniqueObjectId]
                    inContainer: sogoObject];
   newMessage
-    = [MAPIStoreMemMailMessage mapiStoreObjectWithSOGoObject: newObject
-                                                 inContainer: self];
+    = [MAPIStoreMailVolatileMessage mapiStoreObjectWithSOGoObject: newObject
+                                                      inContainer: self];
   
   return newMessage;
 }
@@ -1145,19 +1144,6 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   return [accountFolder draftsFolderInContext: woContext];
 }
 
-- (MAPIStoreMessage *) createMessage
-{
-  MAPIStoreDraftsMessage *newMessage;
-  SOGoDraftObject *newDraft;
-
-  newDraft = [sogoObject newDraft];
-  newMessage
-    = [MAPIStoreDraftsMessage mapiStoreObjectWithSOGoObject: newDraft
-                                                inContainer: self];
-  
-  return newMessage;
-}
-
 @end
 
 // @implementation MAPIStoreDeletedItemsFolder : MAPIStoreMailFolder
@@ -1180,19 +1166,6 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                                     inContext: (WOContext *) woContext
 {
   return [accountFolder draftsFolderInContext: woContext];
-}
-
-- (MAPIStoreMessage *) createMessage
-{
-  MAPIStoreDraftsMessage *newMessage;
-  SOGoDraftObject *newDraft;
-
-  newDraft = [sogoObject newDraft];
-  newMessage
-    = [MAPIStoreDraftsMessage mapiStoreObjectWithSOGoObject: newDraft
-                                                inContainer: self];
-  
-  return newMessage;
 }
 
 @end

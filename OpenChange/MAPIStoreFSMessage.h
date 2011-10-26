@@ -23,13 +23,9 @@
 #ifndef MAPISTOREFSMESSAGE_H
 #define MAPISTOREFSMESSAGE_H
 
-#import "MAPIStoreMessage.h"
+#import "MAPIStoreMemMessage.h"
 
-@interface MAPIStoreFSMessage : MAPIStoreMessage
-{
-  BOOL fetchedAttachments;
-}
-
+@interface MAPIStoreFSMessage : MAPIStoreMemMessage
 @end
 
 #endif /* MAPISTOREFSMESSAGE_H */

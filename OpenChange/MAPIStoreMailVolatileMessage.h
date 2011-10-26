@@ -1,4 +1,4 @@
-/* MAPIStoreMemMailMessage.h - this file is part of SOGo
+/* MAPIStoreMailVolatileMessage.h - this file is part of SOGo
  *
  * Copyright (C) 2011 Inverse inc
  *
@@ -20,13 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREMEMMAILMESSAGE_H
-#define MAPISTOREMEMMAILMESSAGE_H
+#ifndef MAPISTOREMAILVOLATILEMESSAGE_H
+#define MAPISTOREMAILVOLATILEMESSAGE_H
 
-#import "MAPIStoreMessage.h"
+#import "MAPIStoreMemMessage.h"
 
-@interface MAPIStoreMemMailMessage : MAPIStoreMessage
+@interface MAPIStoreMailVolatileMessage : MAPIStoreMemMessage
+
+- (int) submitWithFlags: (enum SubmitFlags) flags;
 
 @end
 
-#endif /* MAPISTOREMEMMAILMESSAGE_H */
+#endif /* MAPISTOREMAILVOLATILEMESSAGE_H */

@@ -30,7 +30,6 @@
 #import <NGCards/NSArray+NGCards.h>
 #import <NGCards/NGVCard.h>
 #import <NGCards/NGVCardPhoto.h>
-#import <SOGo/SOGoUserDefaults.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 
 #import "MAPIStoreContactsAttachment.h"
