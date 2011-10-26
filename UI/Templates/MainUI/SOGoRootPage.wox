@@ -38,7 +38,7 @@
 	  <td id="loginCell" width="230">
 	    <label><var:string label:value="Username:"/><br/>
 	    <input class="textField" id="userName" name="userName"
-		   type="text" var:value="userName" /></label>
+		   type="text" var:value="cookieUsername" /></label>
 	    <label><var:string label:value="Password:"/><br/>
 	    <input class="textField" id="password"
 		   name="password" type="password" var:value="password" /></label>
@@ -61,6 +61,7 @@
 		       string="item"
 		       /></label>
             </var:if>
+	    <label><input id="rememberLogin" type="checkbox" class="checkBox" var:checked="rememberLogin"/> <var:string label:value="Remember username"/></label>
 	    <label>
 	      <a href="#" class="button" id="submit" name="submit">
 	      <span><var:string label:value="Connect" /></span></a>

@@ -94,7 +94,7 @@ DIV#administrationModules UL LI
 DIV#rightPanel
 {
     position: absolute;
-    top: 6em;
+    top: 80px;
     left: 15em;
     margin-left: 5px;
     right: 0px;

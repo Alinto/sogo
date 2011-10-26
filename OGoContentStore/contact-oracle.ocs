@@ -90,7 +90,7 @@
       allowsNull = YES;
     },
     {
-      columnName = c_telephoneNumber;
+      columnName = c_telephonenumber;
       sqlType    = "VARCHAR2(255)";
       allowsNull = YES;
     },

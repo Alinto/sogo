@@ -28,6 +28,7 @@
 @interface SOGoRootPage : UIxComponent
 {
   id item;
+  NSString *cookieLogin;
 }
 
 @end

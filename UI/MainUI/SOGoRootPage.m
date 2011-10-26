@@ -58,11 +58,46 @@
 
 @implementation SOGoRootPage
 
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      cookieLogin = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [cookieLogin release];
+  [super dealloc];
+}
+
 /* accessors */
 
 - (NSString *) connectURL
 {
   return [NSString stringWithFormat: @"%@/connect", [self applicationPath]];
+}
+
+- (NSString *) cookieUsername
+{
+  NSString *value;
+
+  if (cookieLogin == nil)
+    {
+      value = [[context request] cookieValueForKey: @"SOGoLogin"];
+      cookieLogin = [value isNotNull]? [value stringByDecodingBase64] : @"";
+      [cookieLogin retain];
+    }
+
+  return cookieLogin;
+}
+
+- (BOOL) rememberLogin
+{
+  return ([[self cookieUsername] length]);
 }
 
 - (WOCookie *) _cookieWithUsername: (NSString *) username
@@ -103,6 +138,32 @@
   [authCookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
   
   return authCookie;
+}
+
+- (WOCookie *) _cookieWithUsername: (NSString *) username
+{
+  WOCookie *loginCookie;
+  NSString *appName;
+  NSCalendarDate *date;
+
+  appName = [[context request] applicationName];
+  if (username)
+    {
+      loginCookie = [WOCookie cookieWithName: @"SOGoLogin"
+                                       value: [username stringByEncodingBase64]];
+    }
+  else
+    {
+      loginCookie = [WOCookie cookieWithName: @"SOGoLogin"
+                                       value: nil];
+      date = [NSCalendarDate calendarDate];
+      [date setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"GMT"]];
+      [loginCookie setExpires: [date yesterday]];
+    }
+
+  [loginCookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
+  
+  return loginCookie;
 }
 
 - (WOCookie *) _casLocationCookie: (BOOL) cookieReset
@@ -155,7 +216,7 @@
   
   SOGoPasswordPolicyError err;
   int expire, grace;
-  BOOL b;
+  BOOL rememberLogin, b;
   
   err = PolicyNoError;
   expire = grace = -1;
@@ -166,6 +227,7 @@
   username = [request formValueForKey: @"userName"];
   password = [request formValueForKey: @"password"];
   language = [request formValueForKey: @"language"];
+  rememberLogin = [[request formValueForKey: @"rememberLogin"] boolValue];
   domain = [request formValueForKey: @"domain"];
   
   if ((b = [auth checkLogin: username password: password domain: &domain
@@ -219,6 +281,11 @@
 
       response = [self _responseWithLDAPPolicyError: err];
     }
+
+  if (rememberLogin)
+    [response addCookie: [self _cookieWithUsername: username]];
+  else
+    [response addCookie: [self _cookieWithUsername: nil]];
 
   return response;
 }
