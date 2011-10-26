@@ -1,4 +1,4 @@
-/* SOGoMAPIMemMessage.h - this file is part of SOGo
+/* MAPIStoreVolatileMessage.h - this file is part of SOGo
  *
  * Copyright (C) 2011 Inverse inc
  *
@@ -20,22 +20,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOMAPIMEMMESSAGE_H
-#define SOGOMAPIMEMMESSAGE_H
+#ifndef MAPISTOREVOLATILEMESSAGE_H
+#define MAPISTOREVOLATILEMESSAGE_H
 
-#import <SOGo/SOGoObject.h>
+#import "MAPIStoreMessage.h"
 
-@class NSDictionary;
-@class NSMutableDictionary;
-
-@interface SOGoMAPIMemMessage : SOGoObject
+@interface MAPIStoreVolatileMessage : MAPIStoreMessage
 {
-  NSMutableDictionary *properties;
+  BOOL fetchedAttachments;
 }
-
-- (NSMutableDictionary *) properties;
-- (void) appendProperties: (NSDictionary *) newProperties;
 
 @end
 
-#endif /* SOGOMAPIMEMMESSAGE_H */
+#endif /* MAPISTOREVOLATILEMESSAGE_H */

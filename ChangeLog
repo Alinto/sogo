@@ -1,3 +1,11 @@
+2011-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreVolatileMessage.m: MAPIStoreMemMessage renamed
+	to MAPIStoreVolatileMessage.
+
+	* OpenChange/SOGoMAPIVolatileMessage.m: SOGoMAPIMemMessage renamed
+	to SOGoMAPIVolatileMessage.
+
 2011-10-26  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/SQLSource.m

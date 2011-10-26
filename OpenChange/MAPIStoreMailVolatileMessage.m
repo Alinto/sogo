@@ -57,7 +57,7 @@
 #import "MAPIStoreTypes.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
-#import "SOGoMAPIMemMessage.h"
+#import "SOGoMAPIVolatileMessage.h"
 
 #import "MAPIStoreMailVolatileMessage.h"
 

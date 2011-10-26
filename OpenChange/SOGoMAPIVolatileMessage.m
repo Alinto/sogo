@@ -1,6 +1,6 @@
-/* EOQualifier+MAPIMem.h - this file is part of SOGo
+/* SOGoMAPIVolatileMessage.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2011 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,17 +20,39 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef EOQUALIFIER_MAPIMEM_H
-#define EOQUALIFIER_MAPIMEM_H
+#import <Foundation/NSDictionary.h>
 
-#import <EOControl/EOQualifier.h>
+#import "SOGoMAPIVolatileMessage.h"
 
-@class SOGoMAPIMemMessage;
+@implementation SOGoMAPIVolatileMessage
 
-@interface EOQualifier (MAPIStoreRestrictions)
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      properties = nil;
+    }
 
-- (BOOL) evaluateMAPIMemMessage: (SOGoMAPIMemMessage *) message;
+  return self;
+}
+
+- (void) dealloc
+{
+  [properties release];
+  [super dealloc];
+}
+
+- (NSMutableDictionary *) properties
+{
+  if (!properties)
+    properties = [NSMutableDictionary new];
+
+  return properties;
+}
+
+- (void) appendProperties: (NSDictionary *) newProperties
+{
+  [[self properties] addEntriesFromDictionary: newProperties];
+}
 
 @end
-
-#endif /* EOQUALIFIER_MAPIMEM_H */

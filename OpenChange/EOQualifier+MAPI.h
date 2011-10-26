@@ -1,12 +1,12 @@
-/* MAPIStoreFSMessage.h - this file is part of SOGo
+/* EOQualifier+MAPI.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2010 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
+ * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -20,12 +20,17 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREFSMESSAGE_H
-#define MAPISTOREFSMESSAGE_H
+#ifndef EOQUALIFIER_MAPI_H
+#define EOQUALIFIER_MAPI_H
 
-#import "MAPIStoreVolatileMessage.h"
+#import <EOControl/EOQualifier.h>
 
-@interface MAPIStoreFSMessage : MAPIStoreVolatileMessage
+@class SOGoMAPIVolatileMessage;
+
+@interface EOQualifier (MAPIStoreRestrictions)
+
+- (BOOL) evaluateMAPIVolatileMessage: (SOGoMAPIVolatileMessage *) message;
+
 @end
 
-#endif /* MAPISTOREFSMESSAGE_H */
+#endif /* EOQUALIFIER_MAPI_H */

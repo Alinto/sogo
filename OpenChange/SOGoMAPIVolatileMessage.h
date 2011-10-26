@@ -1,4 +1,4 @@
-/* SOGoMAPIMemMessage.m - this file is part of SOGo
+/* SOGoMAPIVolatileMessage.h - this file is part of SOGo
  *
  * Copyright (C) 2011 Inverse inc
  *
@@ -20,39 +20,22 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSDictionary.h>
+#ifndef SOGOMAPIVOLATILEMESSAGE_H
+#define SOGOMAPIVOLATILEMESSAGE_H
 
-#import "SOGoMAPIMemMessage.h"
+#import <SOGo/SOGoObject.h>
 
-@implementation SOGoMAPIMemMessage
+@class NSDictionary;
+@class NSMutableDictionary;
 
-- (id) init
+@interface SOGoMAPIVolatileMessage : SOGoObject
 {
-  if ((self = [super init]))
-    {
-      properties = nil;
-    }
-
-  return self;
+  NSMutableDictionary *properties;
 }
 
-- (void) dealloc
-{
-  [properties release];
-  [super dealloc];
-}
-
-- (NSMutableDictionary *) properties
-{
-  if (!properties)
-    properties = [NSMutableDictionary new];
-
-  return properties;
-}
-
-- (void) appendProperties: (NSDictionary *) newProperties
-{
-  [[self properties] addEntriesFromDictionary: newProperties];
-}
+- (NSMutableDictionary *) properties;
+- (void) appendProperties: (NSDictionary *) newProperties;
 
 @end
+
+#endif /* SOGOMAPIVOLATILEMESSAGE_H */

@@ -29,7 +29,7 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
-#import "EOQualifier+MAPIMem.h"
+#import "EOQualifier+MAPI.h"
 #import "SOGoMAPIFSMessage.h"
 
 #import "SOGoMAPIFSFolder.h"
@@ -242,7 +242,7 @@ static NSString *privateDir = nil;
           message = [self lookupName: messageKey
                            inContext: nil
                              acquire: NO];
-          if ([qualifier evaluateMAPIMemMessage: message])
+          if ([qualifier evaluateMAPIVolatileMessage: message])
             [keys addObject: messageKey];
 	}
     }

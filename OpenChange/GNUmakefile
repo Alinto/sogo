@@ -34,7 +34,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreTypes.m \
 	MAPIStorePropertySelectors.m \
 	\
-	SOGoMAPIMemMessage.m \
+	SOGoMAPIVolatileMessage.m \
 	SOGoMAPIFSFolder.m \
 	SOGoMAPIFSMessage.m \
 	\
@@ -51,7 +51,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreFolderTable.m \
 	MAPIStorePermissionsTable.m \
 	\
-	MAPIStoreMemMessage.m \
+	MAPIStoreVolatileMessage.m \
 	\
 	MAPIStoreFSBaseContext.m \
 	MAPIStoreFSFolder.m \
@@ -116,7 +116,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	NSValue+MAPIStore.m \
 	\
 	EOBitmaskQualifier.m \
-	EOQualifier+MAPIMem.m \
+	EOQualifier+MAPI.m \
 
 
 $(SOGOBACKEND)_RESOURCE_FILES += \

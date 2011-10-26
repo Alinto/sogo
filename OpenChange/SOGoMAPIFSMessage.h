@@ -23,12 +23,12 @@
 #ifndef SOGOMAPIFSMESSAGE_H
 #define SOGOMAPIFSMESSAGE_H
 
-#import "SOGoMAPIMemMessage.h"
+#import "SOGoMAPIVolatileMessage.h"
 
 @class NSCalendarDate;
 @class NSString;
 
-@interface SOGoMAPIFSMessage : SOGoMAPIMemMessage
+@interface SOGoMAPIFSMessage : SOGoMAPIVolatileMessage
 {
   BOOL propertiesLoaded;
   NSString *completeFilename;
