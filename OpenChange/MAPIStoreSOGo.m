@@ -1069,7 +1069,7 @@ sogo_properties_set_properties (void *object, struct SRow *aRow)
       wrapper = object;
       propObject = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
-      rc = [propObject setProperties: aRow];
+      rc = [propObject addPropertiesFromRow: aRow];
       [pool release];
     }
   else

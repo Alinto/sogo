@@ -60,15 +60,15 @@ Class NSNumberK;
   NSNumberK = [NSNumber class];
 }
 
-- (int) setProperties: (struct SRow *) aRow
+- (int) addPropertiesFromRow: (struct SRow *) aRow
 {
   int rc;
 
-  rc = [super setProperties: aRow];
+  rc = [super addPropertiesFromRow: aRow];
   if (rc == MAPISTORE_SUCCESS)
     {
-      [sogoObject appendProperties: newProperties];
-      [newProperties removeAllObjects];
+      [sogoObject appendProperties: properties];
+      [properties removeAllObjects];
     }
 
  return rc;
@@ -103,28 +103,28 @@ Class NSNumberK;
   NSArray *keys;
   NSUInteger count, max;
   NSString *key;
-  struct SPropTagArray *properties;
+  struct SPropTagArray *availableProps;
 
   keys = [[sogoObject properties] allKeys];
   max = [keys count];
 
-  properties = talloc_zero (NULL, struct SPropTagArray);
-  properties->cValues = max;
-  properties->aulPropTag = talloc_array (properties, enum MAPITAGS, max);
+  availableProps = talloc_zero (NULL, struct SPropTagArray);
+  availableProps->cValues = max;
+  availableProps->aulPropTag = talloc_array (availableProps, enum MAPITAGS, max);
   for (count = 0; count < max; count++)
     {
       key = [keys objectAtIndex: count];
       if ([key isKindOfClass: NSNumberK])
         {
 #if (GS_SIZEOF_LONG == 4)
-          properties->aulPropTag[count] = [[keys objectAtIndex: count] unsignedLongValue];
+          availableProps->aulPropTag[count] = [[keys objectAtIndex: count] unsignedLongValue];
 #elif (GS_SIZEOF_INT == 4)
-          properties->aulPropTag[count] = [[keys objectAtIndex: count] unsignedIntValue];
+          availableProps->aulPropTag[count] = [[keys objectAtIndex: count] unsignedIntValue];
 #endif
         }
     }
 
-  *propertiesP = properties;
+  *propertiesP = availableProps;
 
   return MAPISTORE_SUCCESS;  
 }
@@ -206,11 +206,10 @@ Class NSNumberK;
   return result;
 }
 
-
 - (void) save
 {
   static NSString *recIds[] = { @"to", @"cc", @"bcc" };
-  NSDictionary *properties;
+  NSDictionary *mailProperties;
   NSMutableString *subject;
   NSString *from, *recId, *messageId, *subjectData, *body, *folderName, *flag,
     *newIdString, *charset;
@@ -230,17 +229,17 @@ Class NSNumberK;
   uint64_t mid;
   NSUInteger count;
 
-  properties = [sogoObject properties];
+  mailProperties = [sogoObject properties];
 
   /* headers */
   map = [[[NGMutableHashMap alloc] initWithCapacity:16] autorelease];
 
-  from = [self _quoteSpecials: [properties objectForKey: MAPIPropertyKey (PR_ORIGINAL_AUTHOR_NAME_UNICODE)]];
+  from = [self _quoteSpecials: [mailProperties objectForKey: MAPIPropertyKey (PR_ORIGINAL_AUTHOR_NAME_UNICODE)]];
   if ([from length])
     [map setObject: from forKey: @"from"];
 
   /* save the recipients */
-  recipients = [properties objectForKey: @"recipients"];
+  recipients = [mailProperties objectForKey: @"recipients"];
   if (recipients)
     {
       for (count = 0; count < 3; count++)
@@ -256,29 +255,29 @@ Class NSNumberK;
     [self errorWithFormat: @"message without recipients"];
 
   subject = [NSMutableString stringWithCapacity: 128];
-  subjectData = [properties objectForKey: MAPIPropertyKey (PR_SUBJECT_PREFIX_UNICODE)];
+  subjectData = [mailProperties objectForKey: MAPIPropertyKey (PR_SUBJECT_PREFIX_UNICODE)];
   if (subjectData)
     [subject appendString: subjectData];
-  subjectData = [properties objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
+  subjectData = [mailProperties objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
   if (subjectData)
     [subject appendString: subjectData];
   [map setObject: [subject asQPSubjectString: @"utf-8"] forKey: @"subject"];
 
-  messageId = [properties objectForKey: MAPIPropertyKey (PR_INTERNET_MESSAGE_ID_UNICODE)];
+  messageId = [mailProperties objectForKey: MAPIPropertyKey (PR_INTERNET_MESSAGE_ID_UNICODE)];
   if ([messageId length])
     [map setObject: messageId forKey: @"message-id"];
 
-  date = [properties objectForKey: MAPIPropertyKey (PR_CLIENT_SUBMIT_TIME)];
+  date = [mailProperties objectForKey: MAPIPropertyKey (PR_CLIENT_SUBMIT_TIME)];
   if (date)
     [map addObject: [date rfc822DateString] forKey: @"date"];
   [map addObject: @"1.0" forKey: @"MIME-Version"];
 
-  htmlData = [properties objectForKey: MAPIPropertyKey (PR_HTML)];
+  htmlData = [mailProperties objectForKey: MAPIPropertyKey (PR_HTML)];
   if (htmlData)
     {
       /* charset */
       charset = @"us-ascii";
-      codePage = [properties objectForKey: MAPIPropertyKey (PR_INTERNET_CPID)];
+      codePage = [mailProperties objectForKey: MAPIPropertyKey (PR_INTERNET_CPID)];
       switch ([codePage intValue])
         {
         case 20127:
@@ -313,7 +312,7 @@ Class NSNumberK;
     }
   else
     {
-      body = [properties objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
+      body = [mailProperties objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
       if (body)
         [message setBody: body];
     }
@@ -348,7 +347,7 @@ Class NSNumberK;
   /* synchronise the cache and update the change key with the one provided by
      the client */
   [(MAPIStoreMailFolder *) container synchroniseCache];
-  changeKey = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
+  changeKey = [mailProperties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
   if (changeKey)
     [(MAPIStoreMailFolder *) container
         setChangeKey: changeKey forMessageWithKey: [self nameInContainer]];

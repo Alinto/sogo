@@ -1529,7 +1529,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 {
   NSNumber *value;
 
-  value = [newProperties objectForKey: MAPIPropertyKey (PR_FLAG_STATUS)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_FLAG_STATUS)];
   if (value)
     {
       /* We don't handle the concept of "Follow Up" */

@@ -206,7 +206,7 @@ NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
 - (NSDictionary *) _convertRecipientFromRow: (struct RecipientRow *) row
                                  andColumns: (struct SPropTagArray *) columns
 {
-  NSMutableDictionary *recipient, *properties;
+  NSMutableDictionary *recipient, *recipientProperties;
   SOGoUser *recipientUser;
   NSUInteger count, dataPos;
   struct mapi_SPropValue mapiValue;
@@ -264,8 +264,8 @@ NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
         [recipient setObject: value forKey: @"fullName"];
     }
 
-  properties = [NSMutableDictionary new];
-  [recipient setObject: properties forKey: @"properties"];
+  recipientProperties = [NSMutableDictionary new];
+  [recipient setObject: recipientProperties forKey: @"properties"];
   dataPos = 0;
 
   memCtx = talloc_zero (NULL, TALLOC_CTX);
@@ -286,9 +286,9 @@ NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
       value = NSObjectFromMAPISPropValue (&mapiValue);
       dataPos += get_mapi_property_size (&mapiValue);
       if (value)
-        [properties setObject: value forKey: MAPIPropertyKey (columns->aulPropTag[count])];
+        [recipientProperties setObject: value forKey: MAPIPropertyKey (columns->aulPropTag[count])];
     }
-  [properties release];
+  [recipientProperties release];
   talloc_free (memCtx);
 
   return recipient;
@@ -333,7 +333,7 @@ NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
                                       andColumns: columns]];
         }
     }
-  [self addNewProperties: recipientProperties];
+  [self addProperties: recipientProperties];
 
   return MAPISTORE_SUCCESS;
 }
@@ -494,7 +494,7 @@ NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
     [[containerTables objectAtIndex: count]
               notifyChangesForChild: self];
   [self setIsNew: NO];
-  [self resetNewProperties];
+  [self resetProperties];
   [container cleanupCaches];
 
   return MAPISTORE_SUCCESS;

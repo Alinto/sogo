@@ -352,7 +352,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
           childFolder = [self lookupFolder: folderKey];
           if (childFolder)
             {
-              [childFolder setProperties: aRow];
+              [childFolder addPropertiesFromRow: aRow];
               *childFolderPtr = childFolder;
             }
           else
@@ -628,7 +628,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
               isAssociated: [sourceMsg isKindOfClass: MAPIStoreFAIMessageK]];
   if (rc != MAPISTORE_SUCCESS)
     goto end;
-  rc = [destMsg setProperties: aRow];
+  rc = [destMsg addPropertiesFromRow: aRow];
   if (rc != MAPISTORE_SUCCESS)
     goto end;
   [destMsg save];
@@ -898,7 +898,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) setProperties: (struct SRow *) aRow
+- (int) addPropertiesFromRow: (struct SRow *) aRow
 {
   static enum MAPITAGS bannedProps[] = { PR_MID, PR_FID, PR_PARENT_FID,
                                          PR_SOURCE_KEY, PR_PARENT_SOURCE_KEY,
@@ -906,22 +906,22 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   enum MAPITAGS *currentProp;
   int rc;
 
-  rc = [super setProperties: aRow];
+  rc = [super addPropertiesFromRow: aRow];
 
   /* TODO: this should no longer be required once mapistore v2 API is in
      place, when we can then do this from -dealloc below */
-  if ([newProperties count] > 0)
+  if ([properties count] > 0)
     {
       currentProp = bannedProps;
       while (*currentProp)
         {
-          [newProperties removeObjectForKey: MAPIPropertyKey (*currentProp)];
+          [properties removeObjectForKey: MAPIPropertyKey (*currentProp)];
           currentProp++;
         }
 
-      [propsMessage appendProperties: newProperties];
+      [propsMessage appendProperties: properties];
       [propsMessage save];
-      [self resetNewProperties];
+      [self resetProperties];
     }
 
   return rc;

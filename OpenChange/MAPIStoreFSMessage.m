@@ -153,14 +153,14 @@ Class NSNumberK;
   NSArray *keys;
   NSUInteger count, max;
   NSString *key;
-  struct SPropTagArray *properties;
+  struct SPropTagArray *availableProps;
 
   keys = [[sogoObject properties] allKeys];
   max = [keys count];
 
-  properties = talloc_zero (NULL, struct SPropTagArray);
-  properties->cValues = max;
-  properties->aulPropTag = talloc_array (properties, enum MAPITAGS, max);
+  availableProps = talloc_zero (NULL, struct SPropTagArray);
+  availableProps->cValues = max;
+  availableProps->aulPropTag = talloc_array (availableProps, enum MAPITAGS, max);
   for (count = 0; count < max; count++)
     {
 // #if (GS_SIZEOF_LONG == 4)
@@ -172,14 +172,14 @@ Class NSNumberK;
       if ([key isKindOfClass: NSNumberK])
         {
 #if (GS_SIZEOF_LONG == 4)
-          properties->aulPropTag[count] = [[keys objectAtIndex: count] unsignedLongValue];
+          availableProps->aulPropTag[count] = [[keys objectAtIndex: count] unsignedLongValue];
 #elif (GS_SIZEOF_INT == 4)
-          properties->aulPropTag[count] = [[keys objectAtIndex: count] unsignedIntValue];
+          availableProps->aulPropTag[count] = [[keys objectAtIndex: count] unsignedIntValue];
 #endif
         }
     }
 
-  *propertiesP = properties;
+  *propertiesP = availableProps;
 
   return MAPISTORE_SUCCESS;  
 }
@@ -221,17 +221,17 @@ Class NSNumberK;
   uint64_t newVersion;
 
   if ([attachmentKeys count] > 0)
-    [newProperties setObject: attachmentParts forKey: @"attachments"];
+    [properties setObject: attachmentParts forKey: @"attachments"];
 
   newVersion = exchange_globcnt ([[self context] getNewChangeNumber] >> 16);
-  [newProperties setObject: [NSNumber numberWithUnsignedLongLong: newVersion]
+  [properties setObject: [NSNumber numberWithUnsignedLongLong: newVersion]
                     forKey: @"version"];
 
-  [self logWithFormat: @"%d props in dict", [newProperties count]];
+  [self logWithFormat: @"%d props in dict", [properties count]];
 
-  [sogoObject appendProperties: newProperties];
+  [sogoObject appendProperties: properties];
   [sogoObject save];
-  [self resetNewProperties];
+  [self resetProperties];
 }
 
 - (NSDate *) creationTime

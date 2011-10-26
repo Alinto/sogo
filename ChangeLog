@@ -1,5 +1,11 @@
 2011-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreObject.m (-init): renamed "newProperties"
+	ivar to "properties".
+	(-addNewProperties:): renamed to "-addProperties:"
+	(-resetNewProperties:): renamed to "-resetProperties:"
+	(-setProperties:): renamed to "-addPropertiesFromRow:"
+
 	* OpenChange/MAPIStoreSOGo.m (sogo_message_create_attachment):
 	implemented new backend method.
 

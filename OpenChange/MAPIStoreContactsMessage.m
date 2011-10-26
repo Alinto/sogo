@@ -856,7 +856,7 @@
   int postalAddressId;
   id value;
 
-  [self logWithFormat: @"setMAPIProperties: %@", newProperties];
+  [self logWithFormat: @"setMAPIProperties: %@", properties];
 
   newCard = [sogoObject vCard];
   [newCard setTag: @"vcard"];
@@ -865,16 +865,16 @@
   [newCard setProfile: @"vCard"];
   
   // Decomposed fullname
-  [newCard setNWithFamily: [newProperties objectForKey: MAPIPropertyKey(PR_SURNAME_UNICODE)]
-	   given: [newProperties objectForKey: MAPIPropertyKey(PR_GIVEN_NAME_UNICODE)]
-	   additional: [newProperties objectForKey: MAPIPropertyKey(PR_MIDDLE_NAME_UNICODE)]
-	   prefixes: [newProperties objectForKey: MAPIPropertyKey(PR_DISPLAY_NAME_PREFIX_UNICODE)]
-	   suffixes: [newProperties objectForKey: MAPIPropertyKey(PR_GENERATION_UNICODE)]];
+  [newCard setNWithFamily: [properties objectForKey: MAPIPropertyKey(PR_SURNAME_UNICODE)]
+	   given: [properties objectForKey: MAPIPropertyKey(PR_GIVEN_NAME_UNICODE)]
+	   additional: [properties objectForKey: MAPIPropertyKey(PR_MIDDLE_NAME_UNICODE)]
+	   prefixes: [properties objectForKey: MAPIPropertyKey(PR_DISPLAY_NAME_PREFIX_UNICODE)]
+	   suffixes: [properties objectForKey: MAPIPropertyKey(PR_GENERATION_UNICODE)]];
 
   //
   // display name
   //
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_DISPLAY_NAME_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_DISPLAY_NAME_UNICODE)];
   if (value)
     [newCard setFn: value];
 
@@ -882,7 +882,7 @@
   // email addresses handling
   //
   elements = [newCard childrenWithTag: @"email"];
-  value = [newProperties objectForKey: MAPIPropertyKey(PidLidEmail1EmailAddress)];
+  value = [properties objectForKey: MAPIPropertyKey(PidLidEmail1EmailAddress)];
   if (value)
     {
       if ([elements count] > 0)
@@ -891,7 +891,7 @@
 	[newCard addEmail: value
 		    types: [NSArray arrayWithObject: @"pref"]];
     }
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidEmail2EmailAddress)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidEmail2EmailAddress)];
   if (value)
     {
       if ([elements count] > 1)
@@ -899,7 +899,7 @@
       else
 	[newCard addEmail: value types: nil];
     }
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidEmail3EmailAddress)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidEmail3EmailAddress)];
   if (value)
     {
       if ([elements count] > 2)
@@ -919,10 +919,10 @@
   // 0x00000003 - The Other Address is the Mailing Address. 
   //
   //
-  postalAddressId = [[newProperties objectForKey: MAPIPropertyKey (PidLidPostalAddressId)]
+  postalAddressId = [[properties objectForKey: MAPIPropertyKey (PidLidPostalAddressId)]
 		      intValue];
   
-  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddress)];
+  value = [properties objectForKey: MAPIPropertyKey(PidLidWorkAddress)];
   if ([value length])
     {
       elements = [newCard childrenWithTag: @"label"
@@ -959,29 +959,29 @@
     }
   if (postalAddressId == 2)
     [element addAttribute: @"type" value: @"pref"];
-  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddressPostOfficeBox)];
+  value = [properties objectForKey: MAPIPropertyKey(PidLidWorkAddressPostOfficeBox)];
   if (value)
     [element setValue: 0 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddressStreet)];
+  value = [properties objectForKey: MAPIPropertyKey(PidLidWorkAddressStreet)];
   if (value)
     [element setValue: 2 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddressCity)];
+  value = [properties objectForKey: MAPIPropertyKey(PidLidWorkAddressCity)];
   if (value)
     [element setValue: 3 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddressState)];
+  value = [properties objectForKey: MAPIPropertyKey(PidLidWorkAddressState)];
   if (value)
     [element setValue: 4 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddressPostalCode)];
+  value = [properties objectForKey: MAPIPropertyKey(PidLidWorkAddressPostalCode)];
   if (value)
     [element setValue: 5 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey(PidLidWorkAddressCountry)];
+  value = [properties objectForKey: MAPIPropertyKey(PidLidWorkAddressCountry)];
   if (value)
     [element setValue: 6 to: value];
   
   //
   // home postal addresses handling
   //
-  value = [newProperties objectForKey: MAPIPropertyKey(PidLidHomeAddress)];
+  value = [properties objectForKey: MAPIPropertyKey(PidLidHomeAddress)];
   if ([value length])
     {
       elements = [newCard childrenWithTag: @"label"
@@ -1019,22 +1019,22 @@
   if (postalAddressId == 1)
     [element addAttribute: @"type" value: @"pref"];
 
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_POST_OFFICE_BOX_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_POST_OFFICE_BOX_UNICODE)];
   if (value)
     [element setValue: 0 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey( PR_HOME_ADDRESS_STREET_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey( PR_HOME_ADDRESS_STREET_UNICODE)];
   if (value)
     [element setValue: 2 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_CITY_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_CITY_UNICODE)];
   if (value)
     [element setValue: 3 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_STATE_OR_PROVINCE_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_STATE_OR_PROVINCE_UNICODE)];
   if (value)
     [element setValue: 4 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_POSTAL_CODE_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_POSTAL_CODE_UNICODE)];
   if (value)
     [element setValue: 5 to: value];
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_COUNTRY_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_HOME_ADDRESS_COUNTRY_UNICODE)];
   if (value)
     [element setValue: 6 to: value];
 
@@ -1043,27 +1043,27 @@
   // telephone numbers: work, home, fax, pager and mobile
   //
   element = [self _elementWithTag: @"tel"  ofType: @"work"  forCard: newCard];								      
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_OFFICE_TELEPHONE_NUMBER_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_OFFICE_TELEPHONE_NUMBER_UNICODE)];
   if (value)
     [element setValue: 0 to: value];
 
   element = [self _elementWithTag: @"tel"  ofType: @"home"  forCard: newCard];								      
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_HOME_TELEPHONE_NUMBER_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_HOME_TELEPHONE_NUMBER_UNICODE)];
   if (value)
     [element setValue: 0 to: value];
 
   element = [self _elementWithTag: @"tel"  ofType: @"fax"  forCard: newCard];								      
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_BUSINESS_FAX_NUMBER_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_BUSINESS_FAX_NUMBER_UNICODE)];
   if (value)
     [element setValue: 0 to: value];
   
   element = [self _elementWithTag: @"tel"  ofType: @"pager"  forCard: newCard];								      
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_PAGER_TELEPHONE_NUMBER_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_PAGER_TELEPHONE_NUMBER_UNICODE)];
   if (value)
     [element setValue: 0 to: value];
 
   element = [self _elementWithTag: @"tel"  ofType: @"cell"  forCard: newCard];								      
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_MOBILE_TELEPHONE_NUMBER_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_MOBILE_TELEPHONE_NUMBER_UNICODE)];
   if (value)
     [element setValue: 0 to: value];
 
@@ -1071,32 +1071,32 @@
   //
   // job title, nickname, company name, deparment, work url, im address/screen name and birthday
   //
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_TITLE_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_TITLE_UNICODE)];
   if (value)
     [newCard setTitle: value];
 
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_NICKNAME_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_NICKNAME_UNICODE)];
   if (value)
     [newCard setNickname: value];
   
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_DEPARTMENT_NAME_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_DEPARTMENT_NAME_UNICODE)];
   if (value)
     units = [NSArray arrayWithObject: value];
   else
     units = nil;
 
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_COMPANY_NAME_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_COMPANY_NAME_UNICODE)];
   if (value)
     [newCard setOrg: value  units: units];
   
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_BUSINESS_HOME_PAGE_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_BUSINESS_HOME_PAGE_UNICODE)];
   if (value)
     {
       [[self _elementWithTag: @"url"  ofType: @"work"  forCard: newCard]
 	setValue: 0 to: value];
     }
 
-  value = [newProperties objectForKey: MAPIPropertyKey(PidLidInstantMessagingAddress)];
+  value = [properties objectForKey: MAPIPropertyKey(PidLidInstantMessagingAddress)];
   if (value)
     {
       [[newCard uniqueChildWithTag: @"x-aim"]
@@ -1104,7 +1104,7 @@
 	to: value];
     }
 
-  value = [newProperties objectForKey: MAPIPropertyKey(PR_BIRTHDAY)];
+  value = [properties objectForKey: MAPIPropertyKey(PR_BIRTHDAY)];
   if (value)
     {
       [newCard setBday: [value descriptionWithCalendarFormat: @"%Y-%m-%d"]];
@@ -1115,7 +1115,7 @@
     {
       attachment = [[attachmentParts allValues] objectAtIndex: 0];
       [self _updatePhotoInVCard: newCard
-                 fromProperties: [attachment newProperties]];
+                 fromProperties: [attachment properties]];
     }
 
   //
@@ -1123,7 +1123,7 @@
   //
   [sogoObject saveContentString: [newCard versitString]];
   [(MAPIStoreContactsFolder *) container synchroniseCache];
-  value = [newProperties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
   if (value)
     [(MAPIStoreContactsFolder *) container
         setChangeKey: value forMessageWithKey: [self nameInContainer]];

@@ -104,7 +104,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
       parentContainersBag = [NSMutableArray new];
       container = nil;
       sogoObject = nil;
-      newProperties = [NSMutableDictionary new];
+      properties = [NSMutableDictionary new];
       isNew = NO;
     }
 
@@ -129,7 +129,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 {
   [self logWithFormat: @"-dealloc"];
   [sogoObject release];
-  [newProperties release];
+  [properties release];
   [parentContainersBag release];
   [container release];
   [super dealloc];
@@ -225,19 +225,19 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return tz;
 }
 
-- (void) addNewProperties: (NSDictionary *) newNewProperties
+- (void) addProperties: (NSDictionary *) newNewProperties
 {
-  [newProperties addEntriesFromDictionary: newNewProperties];
+  [properties addEntriesFromDictionary: newNewProperties];
 }
 
-- (NSDictionary *) newProperties
+- (NSDictionary *) properties
 {
-  return newProperties;
+  return properties;
 }
 
-- (void) resetNewProperties
+- (void) resetProperties
 {
-  [newProperties removeAllObjects];
+  [properties removeAllObjects];
 }
 
 - (int) getProperty: (void **) data
@@ -430,7 +430,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) setProperties: (struct SRow *) aRow
+- (int) addPropertiesFromRow: (struct SRow *) aRow
 {
   struct SPropValue *cValue;
   NSUInteger counter;
@@ -438,8 +438,8 @@ static Class NSExceptionK, MAPIStoreFolderK;
   for (counter = 0; counter < aRow->cValues; counter++)
     {
       cValue = aRow->lpProps + counter;
-      [newProperties setObject: NSObjectFromSPropValue (cValue)
-                        forKey: MAPIPropertyKey (cValue->ulPropTag)];
+      [properties setObject: NSObjectFromSPropValue (cValue)
+                  forKey: MAPIPropertyKey (cValue->ulPropTag)];
     }
 
   return MAPISTORE_SUCCESS;

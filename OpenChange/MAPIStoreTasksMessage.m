@@ -313,29 +313,29 @@
   [vCalendar setProdID: @"-//Inverse inc.//OpenChange+SOGo//EN"];
 
   // summary
-  value = [newProperties
+  value = [properties
             objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
   if (value)
     [vToDo setSummary: value];
 
   // comment
-  value = [newProperties
+  value = [properties
             objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
   if (value)
     [vToDo setComment: value];
 
   // location
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidLocation)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidLocation)];
   if (value)
     [vToDo setLocation: value];
 
   // created
-  value = [newProperties objectForKey: MAPIPropertyKey (PR_CREATION_TIME)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_CREATION_TIME)];
   if (value)
     [vToDo setCreated: value];
 
   // last-modified + dtstamp
-  value = [newProperties objectForKey: MAPIPropertyKey (PR_LAST_MODIFICATION_TIME)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_LAST_MODIFICATION_TIME)];
   if (value)
     {
       [vToDo setLastModified: value];
@@ -347,7 +347,7 @@
   [vCalendar addTimeZone: tz];
 
   // start
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidTaskStartDate)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidTaskStartDate)];
   if (value)
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"dtstart"];
@@ -360,7 +360,7 @@
     }
 
   // due
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidTaskDueDate)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidTaskDueDate)];
   if (value)
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"due"];
@@ -373,7 +373,7 @@
     }
 
   // completed
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidTaskDateCompleted)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidTaskDateCompleted)];
   if (value)
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"completed"];
@@ -386,7 +386,7 @@
     }
 
   // status
-  value = [newProperties objectForKey: MAPIPropertyKey (PidLidTaskStatus)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidTaskStatus)];
   if (value)
     {
       switch ([value intValue])
@@ -399,7 +399,7 @@
     }
 
   // priority
-  value = [newProperties objectForKey: MAPIPropertyKey (PR_IMPORTANCE)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_IMPORTANCE)];
   if (value)
     {
       switch ([value intValue])
@@ -421,7 +421,7 @@
   // percent complete
   // NOTE: this does not seem to work on Outlook 2003. PidLidPercentComplete's value
   //       is always set to 0, no matter what value is set in Outlook
-  value = [newProperties objectForKey: MAPIPropertyKey(PidLidPercentComplete)];
+  value = [properties objectForKey: MAPIPropertyKey(PidLidPercentComplete)];
   if (value)
     [vToDo setPercentComplete: [value stringValue]];
 
@@ -434,7 +434,7 @@
 
   [sogoObject saveContentString: [vCalendar versitString]];
   [(MAPIStoreTasksFolder *) container synchroniseCache];
-  value = [newProperties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
   if (value)
     [(MAPIStoreTasksFolder *) container
         setChangeKey: value forMessageWithKey: [self nameInContainer]];

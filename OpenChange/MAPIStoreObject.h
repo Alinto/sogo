@@ -47,7 +47,7 @@
   NSMutableArray *parentContainersBag;
   MAPIStoreObject *container;
   id sogoObject;
-  NSMutableDictionary *newProperties;
+  NSMutableDictionary *properties;
   BOOL isNew;
 }
 
@@ -82,9 +82,9 @@
 
 /* properties */
 
-- (void) addNewProperties: (NSDictionary *) newNewProperties;
-- (NSDictionary *) newProperties;
-- (void) resetNewProperties;
+- (void) addProperties: (NSDictionary *) newProperties;
+- (NSDictionary *) properties;
+- (void) resetProperties;
 
 /* ops */
 - (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
@@ -94,7 +94,7 @@
              andCount: (uint16_t) columnCount
              inMemCtx: (TALLOC_CTX *) localMemCtx;
 
-- (int) setProperties: (struct SRow *) aRow;
+- (int) addPropertiesFromRow: (struct SRow *) aRow;
 
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag

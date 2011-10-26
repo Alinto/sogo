@@ -508,7 +508,7 @@
 
   /* NOTE: we only handle the generic case at the moment, see
      MAPIStoreAppointmentWrapper */
-  objectId = [newProperties objectForKey: MAPIPropertyKey (PidLidGlobalObjectId)];
+  objectId = [properties objectForKey: MAPIPropertyKey (PidLidGlobalObjectId)];
   if (objectId)
     {
       length = [objectId length];
@@ -588,11 +588,11 @@
   if (alarm)
     [newEvent removeChild: alarm];
 
-  if ([[newProperties objectForKey: MAPIPropertyKey (PidLidReminderSet)]
+  if ([[properties objectForKey: MAPIPropertyKey (PidLidReminderSet)]
         boolValue])
     {
-      delta = [newProperties
-                objectForKey: MAPIPropertyKey (PidLidReminderDelta)];
+      delta
+        = [properties objectForKey: MAPIPropertyKey (PidLidReminderDelta)];
       if (delta)
         {
           alarm = [iCalAlarm new];
@@ -658,7 +658,7 @@
       NSString *newPartStat;
 
       value
-        = [newProperties objectForKey: MAPIPropertyKey (PidLidResponseStatus)];
+        = [properties objectForKey: MAPIPropertyKey (PidLidResponseStatus)];
       if (value)
         responseStatus = [value unsignedLongValue];
 
@@ -701,13 +701,13 @@
       [newEvent setLastModified: now];
 
       // summary
-      value = [newProperties
+      value = [properties
                 objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
       if (value)
         [newEvent setSummary: value];
 
       // Location
-      value = [newProperties objectForKey: MAPIPropertyKey (PidLidLocation)];
+      value = [properties objectForKey: MAPIPropertyKey (PidLidLocation)];
       if (value)
         [newEvent setLocation: value];
 
@@ -716,9 +716,9 @@
       [vCalendar addTimeZone: tz];
 
       // start
-      value = [newProperties objectForKey: MAPIPropertyKey (PR_START_DATE)];
+      value = [properties objectForKey: MAPIPropertyKey (PR_START_DATE)];
       if (!value)
-        value = [newProperties
+        value = [properties
                   objectForKey: MAPIPropertyKey (PidLidAppointmentStartWhole)];
       if (value)
         {
@@ -728,9 +728,9 @@
         }
 
       /* end */
-      value = [newProperties objectForKey: MAPIPropertyKey(PR_END_DATE)];
+      value = [properties objectForKey: MAPIPropertyKey(PR_END_DATE)];
       if (!value)
-        value = [newProperties objectForKey: MAPIPropertyKey(PidLidAppointmentEndWhole)];
+        value = [properties objectForKey: MAPIPropertyKey(PidLidAppointmentEndWhole)];
       if (value)
         {
           end = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtend"];
@@ -739,7 +739,7 @@
         }
 
       /* priority */
-      value = [newProperties objectForKey: MAPIPropertyKey(PR_IMPORTANCE)];
+      value = [properties objectForKey: MAPIPropertyKey(PR_IMPORTANCE)];
       if (value)
 	{
 	  switch ([value intValue])
@@ -763,7 +763,7 @@
 	 0x00000001 - olTentative
 	 0x00000002 - olBusy
 	 0x00000003 - olOutOfOffice */
-      value = [newProperties objectForKey: MAPIPropertyKey(PidLidBusyStatus)];
+      value = [properties objectForKey: MAPIPropertyKey(PidLidBusyStatus)];
       if (value)
 	{
 	  switch ([value intValue])
@@ -780,7 +780,7 @@
 	}
       
       /* recurrence */
-      value = [newProperties
+      value = [properties
                 objectForKey: MAPIPropertyKey (PidLidAppointmentRecur)];
       if (value)
         [self _setupRecurrenceInCalendar: vCalendar
@@ -794,11 +794,11 @@
       [self _setupAlarmDataInEvent: newEvent];
 
       // Organizer
-      value = [newProperties objectForKey: @"recipients"];
+      value = [properties objectForKey: @"recipients"];
       if (value)
         {
           NSArray *recipients;
-          NSDictionary *dict, *properties;
+          NSDictionary *dict, *recipientProperties;
           iCalPerson *person;
           iCalPersonPartStat newPartStat;
           NSNumber *flags, *trackStatus;
@@ -819,8 +819,8 @@
           for (i = 0; i < [recipients count]; i++)
             {
               dict = [recipients objectAtIndex: i];
-              properties = [dict objectForKey: @"properties"];
-              flags = [properties
+              recipientProperties = [dict objectForKey: @"properties"];
+              flags = [recipientProperties
                         objectForKey: MAPIPropertyKey (PR_RECIPIENT_FLAGS)];
               if (!flags)
                 {
@@ -837,7 +837,7 @@
               else
                 {
                   trackStatus
-                    = [properties
+                    = [recipientProperties
                         objectForKey: MAPIPropertyKey (PR_RECIPIENT_TRACKSTATUS)];
 
                   /* FIXME: we should provide a data converter between OL
@@ -870,7 +870,7 @@
       [sogoObject saveComponent: newEvent];
     }
   [(MAPIStoreCalendarFolder *) container synchroniseCache];
-  value = [newProperties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
   if (value)
     [(MAPIStoreCalendarFolder *) container
         setChangeKey: value forMessageWithKey: [self nameInContainer]];

@@ -331,26 +331,26 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
 
 - (void) _saveAttachment: (NSString *) attachmentKey
 {
-  NSDictionary *properties, *metadata;
+  NSDictionary *attProperties, *metadata;
   NSString *filename, *mimeType;
   NSData *content;
   MAPIStoreAttachment *attachment;
 
   attachment = [attachmentParts objectForKey: attachmentKey];
-  properties = [attachment newProperties];
+  attProperties = [attachment properties];
   filename
-    = [properties
+    = [attProperties
         objectForKey: MAPIPropertyKey (PR_ATTACH_LONG_FILENAME_UNICODE)];
   if (![filename length])
     {
       filename
-        = [properties
+        = [attProperties
             objectForKey: MAPIPropertyKey (PR_ATTACH_FILENAME_UNICODE)];
       if (![filename length])
         filename = @"untitled.bin";
     }
 
-  mimeType = [properties
+  mimeType = [attProperties
                objectForKey: MAPIPropertyKey (PR_ATTACH_MIME_TAG_UNICODE)];
   if (!mimeType)
     mimeType = [[MAPIStoreMIME sharedMAPIStoreMIME]
@@ -358,7 +358,7 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
   if (!mimeType)
     mimeType = @"application/octet-stream";
 
-  content = [properties objectForKey: MAPIPropertyKey (PR_ATTACH_DATA_BIN)];
+  content = [attProperties objectForKey: MAPIPropertyKey (PR_ATTACH_DATA_BIN)];
   if (content)
     {
       metadata = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -385,7 +385,7 @@ typedef void (*getMessageData_inMemCtx_) (MAPIStoreMessage *, SEL,
   newHeaders = [NSMutableDictionary dictionaryWithCapacity: 7];
 
   /* save the recipients */
-  recipients = [newProperties objectForKey: @"recipients"];
+  recipients = [properties objectForKey: @"recipients"];
   if (recipients)
     {
       for (count = 0; count < 3; count++)
@@ -413,16 +413,16 @@ e)
 
   /* save the subject */
   subject = [NSMutableString stringWithCapacity: 128];
-  value = [newProperties objectForKey: MAPIPropertyKey (PR_SUBJECT_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_SUBJECT_UNICODE)];
   if (value)
     [subject appendString: value];
   else
     {
-      value = [newProperties
+      value = [properties
                 objectForKey: MAPIPropertyKey (PR_SUBJECT_PREFIX_UNICODE)];
       if (value)
         [subject appendString: value];
-      value = [newProperties
+      value = [properties
                 objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
       if (value)
         [subject appendString: value];
@@ -440,7 +440,7 @@ e)
      0x00000000 == Low importance
      0x00000001 == Normal importance
      0x00000002 == High importance */
-  value = [newProperties objectForKey: MAPIPropertyKey (PR_IMPORTANCE)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_IMPORTANCE)];
   if (value && [value intValue] == 0x0)
     {
       [newHeaders setObject: @"LOW"  forKey: @"priority"];
@@ -453,7 +453,7 @@ e)
   /* save the newly generated headers */
   [sogoObject setHeaders: newHeaders];
 
-  value = [newProperties objectForKey: MAPIPropertyKey (PR_HTML)];
+  value = [properties objectForKey: MAPIPropertyKey (PR_HTML)];
   if (value)
     {
       [sogoObject setIsHTML: YES];
@@ -465,7 +465,7 @@ e)
     }
   else
     {
-      value = [newProperties objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
+      value = [properties objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
       if (value)
 	{
 	  [sogoObject setIsHTML: NO];
@@ -612,7 +612,7 @@ e)
   NSException *error;
   MAPIStoreMapping *mapping;
 
-  msgClass = [newProperties
+  msgClass = [properties
                    objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)];
   if (![msgClass isEqualToString: @"IPM.Schedule.Meeting.Request"])
     {
@@ -637,7 +637,7 @@ e)
     {
       [self submit];
       [self setIsNew: NO];
-      [self resetNewProperties];
+      [self resetProperties];
       [[self container] cleanupCaches];
       rc = MAPISTORE_SUCCESS;
     }
@@ -657,7 +657,7 @@ e)
 
   if ([sogoObject isKindOfClass: SOGoDraftObjectK])
     {
-      msgClass = [newProperties
+      msgClass = [properties
                    objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)];
       if (![msgClass isEqualToString: @"IPM.Schedule.Meeting.Request"])
         {
@@ -679,7 +679,7 @@ e)
 
   if ([sogoObject isKindOfClass: SOGoDraftObjectK])
     {
-      subject = [newProperties objectForKey: MAPIPropertyKey (PR_SUBJECT_UNICODE)];
+      subject = [properties objectForKey: MAPIPropertyKey (PR_SUBJECT_UNICODE)];
       if (!subject)
         {
           if (!headerSetup)
@@ -696,14 +696,14 @@ e)
 - (NSDate *) creationTime
 {
   return ([sogoObject isKindOfClass: SOGoDraftObjectK]
-          ? (NSDate *) [newProperties objectForKey: MAPIPropertyKey (PR_CREATION_TIME)]
+          ? (NSDate *) [properties objectForKey: MAPIPropertyKey (PR_CREATION_TIME)]
           : [super creationTime]);
 }
 
 - (NSDate *) lastModificationTime
 {
   return ([sogoObject isKindOfClass: SOGoDraftObjectK]
-          ? (NSDate *) [newProperties
+          ? (NSDate *) [properties
               objectForKey: MAPIPropertyKey (PR_LAST_MODIFICATION_TIME)]
           : [super lastModificationTime]);
 }
