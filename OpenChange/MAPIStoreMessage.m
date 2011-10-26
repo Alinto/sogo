@@ -318,7 +318,7 @@ NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
       currentRow = rows + count;
 
       if (currentRow->RecipClass >= MAPI_ORIG
-          && currentRow->RecipClass < MAPI_BCC)
+          && currentRow->RecipClass <= MAPI_BCC)
         {
           recType = recTypes[currentRow->RecipClass];
           list = [recipients objectForKey: recType];
