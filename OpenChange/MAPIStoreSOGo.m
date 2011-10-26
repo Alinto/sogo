@@ -359,8 +359,7 @@ static int
 sogo_folder_open_message(void *folder_object,
                          TALLOC_CTX *mem_ctx,
                          uint64_t mid,
-                         void **message_object,
-                         struct mapistore_message **msgp)
+                         void **message_object)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
@@ -375,7 +374,7 @@ sogo_folder_open_message(void *folder_object,
       wrapper = folder_object;
       folder = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
-      rc = [folder openMessage: &message andMessageData: msgp withMID: mid inMemCtx: mem_ctx];
+      rc = [folder openMessage: &message withMID: mid inMemCtx: mem_ctx];
       if (rc == MAPISTORE_SUCCESS)
         *message_object = [message tallocWrapper: mem_ctx];
       [pool release];
@@ -546,6 +545,36 @@ sogo_folder_open_table(void *folder_object, TALLOC_CTX *mem_ctx,
       if (rc == MAPISTORE_SUCCESS)
         *table_object = [table tallocWrapper: mem_ctx];
       [pool release];
+    }
+  else
+    {
+      rc = sogo_backend_unexpected_error();
+    }
+
+  return rc;
+}
+
+static int
+sogo_message_get_message_data(void *message_object,
+                              TALLOC_CTX *mem_ctx,
+                              struct mapistore_message **msg_dataP)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreMessage *message;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (message_object)
+    {
+      wrapper = message_object;
+      message = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      [message getMessageData: msg_dataP
+                     inMemCtx: mem_ctx];
+      [pool release];
+      rc = MAPISTORE_SUCCESS;
     }
   else
     {
@@ -1137,6 +1166,7 @@ int mapistore_init_backend(void)
       backend.message.get_attachment_table = sogo_message_get_attachment_table;
       backend.message.open_attachment = sogo_message_open_attachment;
       backend.message.open_embedded_message = sogo_message_attachment_open_embedded_message;
+      backend.message.get_message_data = sogo_message_get_message_data;
       backend.message.modify_recipients = sogo_message_modify_recipients;
       backend.message.save = sogo_message_save;
       backend.message.submit = sogo_message_submit;

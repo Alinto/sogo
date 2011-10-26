@@ -399,7 +399,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 }
 
 - (int) openMessage: (MAPIStoreMessage **) messagePtr
-     andMessageData: (struct mapistore_message **) dataPtr
             withMID: (uint64_t) mid
            inMemCtx: (TALLOC_CTX *) memCtx;
 {
@@ -415,7 +414,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       message = [self lookupMessageByURL: messageURL];
       if (message)
         {
-          [message getMessageData: dataPtr inMemCtx: memCtx];
           *messagePtr = message;
           rc = MAPISTORE_SUCCESS;
         }
@@ -567,7 +565,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   int rc;
   MAPIStoreMessage *sourceMsg, *destMsg;
-  struct mapistore_message *sourceMSMsg;
   TALLOC_CTX *memCtx;
   struct SPropTagArray *availableProps;
   bool *exclusions;
@@ -579,7 +576,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   memCtx = talloc_zero (NULL, TALLOC_CTX);
   rc = [sourceFolder openMessage: &sourceMsg
-                  andMessageData: &sourceMSMsg
                          withMID: srcMid
                         inMemCtx: memCtx];
   if (rc != MAPISTORE_SUCCESS)

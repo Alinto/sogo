@@ -54,8 +54,6 @@
   NSArray *faiMessageKeys;
   NSArray *folderKeys;
 
-  NSDictionary *properties;
-
   SOGoMAPIFSFolder *faiFolder;
   SOGoMAPIFSFolder *propsFolder;
   SOGoMAPIFSMessage *propsMessage;
@@ -114,7 +112,6 @@
 
 
 - (int) openMessage: (MAPIStoreMessage **) messagePtr
-     andMessageData: (struct mapistore_message **) dataPtr
             withMID: (uint64_t) mid
            inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) deleteMessageWithMID: (uint64_t) mid
