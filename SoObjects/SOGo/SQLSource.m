@@ -81,6 +81,7 @@
     {
       _sourceID = nil;
       _authenticationFilter = nil;
+      _loginFields = nil;
       _mailFields = nil;
       _userPasswordAlgorithm = nil;
       _viewURL = nil;
@@ -95,6 +96,7 @@
 {
   [_sourceID release];
   [_authenticationFilter release];
+  [_loginFields release];
   [_mailFields release];
   [_userPasswordAlgorithm release];
   [_viewURL release];
@@ -111,6 +113,7 @@
 
   ASSIGN(_sourceID, [udSource objectForKey: @"id"]);
   ASSIGN(_authenticationFilter, [udSource objectForKey: @"authenticationFilter"]);
+  ASSIGN(_loginFields, [udSource objectForKey: @"LoginFieldNames"]);
   ASSIGN(_mailFields, [udSource objectForKey: @"MailFieldNames"]);
   ASSIGN(_userPasswordAlgorithm, [udSource objectForKey: @"userPasswordAlgorithm"]);
   ASSIGN(_imapLoginField, [udSource objectForKey: @"IMAPLoginFieldName"]);
@@ -227,9 +230,31 @@
   channel = [cm acquireOpenChannelForURL: _viewURL];
   if (channel)
     {
-      qualifier = [[EOKeyValueQualifier alloc] initWithKey: @"c_uid"
-                                          operatorSelector: EOQualifierOperatorEqual
-                                                     value: _login];
+      if (_loginFields)
+        {
+          NSMutableArray *qualifiers;
+          NSString *field;
+          EOQualifier *loginQualifier;
+          int i;
+
+          qualifiers = [NSMutableArray arrayWithCapacity: [_loginFields count]];
+          for (i = 0; i < [_loginFields count]; i++)
+            {
+              field = [_loginFields objectAtIndex: i];
+              loginQualifier = [[EOKeyValueQualifier alloc] initWithKey: field
+                                              operatorSelector: EOQualifierOperatorEqual
+                                                         value: _login];
+              [loginQualifier autorelease];
+              [qualifiers addObject: loginQualifier];
+            }
+          qualifier = [[EOOrQualifier alloc] initWithQualifierArray: qualifiers];
+        }
+      else
+        {
+          qualifier = [[EOKeyValueQualifier alloc] initWithKey: @"c_uid"
+                                              operatorSelector: EOQualifierOperatorEqual
+                                                         value: _login];
+        }
       [qualifier autorelease];
       sql = [NSMutableString stringWithFormat: @"SELECT c_password"
                              @" FROM %@"
@@ -353,12 +378,14 @@
                          considerEmail: (BOOL) b
 {
   NSMutableDictionary *response;
+  NSMutableArray *qualifiers;
   EOAdaptorChannel *channel;
-  EOQualifier *qualifier;
+  EOQualifier *loginQualifier, *qualifier;
   GCSChannelManager *cm;
   NSMutableString *sql;
-  NSString *value;
+  NSString *value, *field;
   NSException *ex;
+  int i;
 
   response = nil;
 
@@ -367,25 +394,65 @@
   channel = [cm acquireOpenChannelForURL: _viewURL];
   if (channel)
     {
-      if (!b)
-        sql = [NSMutableString stringWithFormat: (@"SELECT *"
-                                                  @" FROM %@"
-                                                  @" WHERE c_uid = '%@'"),
-                               [_viewURL gcsTableName], theID];
-      else
-	{
-	  sql = [NSMutableString stringWithFormat: (@"SELECT *"
-                                                    @" FROM %@"
-                                                    @" WHERE c_uid = '%@' OR"
-                                                    @" LOWER(mail) = '%@'"),
-                                 [_viewURL gcsTableName], theID, [theID lowercaseString]];
+      qualifiers = [NSMutableArray arrayWithCapacity: [_loginFields count] + 1];
+
+      // Always compare against the c_uid field
+      loginQualifier = [[EOKeyValueQualifier alloc] initWithKey: @"c_uid"
+                                               operatorSelector: EOQualifierOperatorEqual
+                                                          value: theID];
+      [loginQualifier autorelease];
+      [qualifiers addObject: loginQualifier];
+
+      if (_loginFields)
+        {
+          for (i = 0; i < [_loginFields count]; i++)
+            {
+              field = [_loginFields objectAtIndex: i];
+              if ([field caseInsensitiveCompare: @"c_uid"] != NSOrderedSame)
+                {
+                  loginQualifier = [[EOKeyValueQualifier alloc] initWithKey: field
+                                                           operatorSelector: EOQualifierOperatorEqual
+                                                                      value: theID];
+                  [loginQualifier autorelease];
+                  [qualifiers addObject: loginQualifier];
+                }
+            }
+        }
+      
+      if (b)
+        {
+          // Always compare againts the mail field
+          loginQualifier = [[EOKeyValueQualifier alloc] initWithKey: @"mail"
+                                                   operatorSelector: EOQualifierOperatorEqual
+                                                              value: [theID lowercaseString]];
+          [loginQualifier autorelease];
+          [qualifiers addObject: loginQualifier];
           
-	  if (_mailFields && [_mailFields count] > 0)
+	  if (_mailFields)
 	    {
-	      [sql appendString: [self _whereClauseFromArray: _mailFields  value: [theID lowercaseString]  exact: YES]];
-	    }
+              for (i = 0; i < [_mailFields count]; i++)
+                {
+                  field = [_mailFields objectAtIndex: i];
+                  if ([field caseInsensitiveCompare: @"mail"] != NSOrderedSame
+                      && ![_loginFields containsObject: field])
+                    {
+                      loginQualifier = [[EOKeyValueQualifier alloc] initWithKey: field
+                                                               operatorSelector: EOQualifierOperatorEqual
+                                                                          value: [theID lowercaseString]];
+                      [loginQualifier autorelease];
+                      [qualifiers addObject: loginQualifier];
+                    }
+                }
+            }
 	}
-	
+      
+      sql = [NSMutableString stringWithFormat: @"SELECT *"
+                             @" FROM %@"
+                             @" WHERE ",
+                             [_viewURL gcsTableName]];
+      qualifier = [[EOOrQualifier alloc] initWithQualifierArray: qualifiers];
+      [qualifier _gcsAppendToString: sql];
+
       ex = [channel evaluateExpressionX: sql];
       if (!ex)
         {

@@ -38,6 +38,7 @@
   NSString *_sourceID;
   NSString *_domain;
   NSString *_authenticationFilter;
+  NSArray *_loginFields;
   NSArray *_mailFields;
   NSString *_imapLoginField;
   NSString *_userPasswordAlgorithm;
