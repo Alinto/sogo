@@ -17,6 +17,7 @@ Enhancements
  - revamp of the modules link banner (15-pixel taller)
  - updated CKEditor to version 3.6.2
  - updated unread and flagged icons in Webmail module
+ - new dependency on GNUstep 1.23
 
 Bug Fixes
  - fixed support for Apple iOS 5
