@@ -761,7 +761,7 @@
       else
         cacheUid = aUID;
       jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: cacheUid];
-      currentUser = [jsonUser objectFromJSONString]; 
+      currentUser = [jsonUser objectFromJSONString];
       if (!([currentUser objectForKey: @"emails"]
 	    && [currentUser objectForKey: @"cn"]))
 	{

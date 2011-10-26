@@ -1,3 +1,11 @@
+2011-10-26  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SQLSource.m
+	(-checkLogin:password:perr:expire:grace:): authentication can be
+	performed against any database column defined in the new
+	LoginFieldNames defaults parameter.
+	(-_lookupContactEntry:considerEmail:): idem.
+
 2011-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMessage.m
@@ -13,6 +21,13 @@
 
 	* OpenChange/MAPIStoreSOGo.m (sogo_message_create_attachment):
 	implemented new backend method.
+
+2011-10-25  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MainUI/SOGoRootPage.m (-cookieUsername)
+	(-cookieWithUsername:): getter/setter for the new SOGoLogin
+	cookie. This is used for the new "Remember username" checkbox that
+	appears on the login page.
 
 2011-10-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

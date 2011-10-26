@@ -1,4 +1,4 @@
-2.0-20111004 (2.0.0beta1 - branched from upcoming v1.3.9)
+1.3-201110DD (1.3.9)
 ---------------------
 New Features
  - new user defaults SOGoDefaultCalendar to specify which calendar is used when
@@ -7,11 +7,26 @@ New Features
    automatically added to the free-busy information
  - new indicator in the link banner when a vacation message (auto-reply) is active
  - new snooze function for events alarms in Web interface
+ - new "Remember login" checkbox on the login page
+ - authentication with SQL sources can now be performed on any database column
+   using the new LoginFieldNames parameter
 
 Enhancements
+ - added support for the CalDAV move operation
  - phone numbers in the contacts web module are now links (tel:)
  - revamp of the modules link banner (15-pixel taller)
  - updated CKEditor to version 3.6.2
+ - updated unread and flagged icons in Webmail module
+ - new dependency on GNUstep 1.23
+
+Bug Fixes
+ - fixed support for Apple iOS 5
+ - fixed handling of untagged IMAP responses
+ - fixed handling of commas in email addresses when composing a message
+ - fixed creation of clickable links for URLs surrounded by square brackets
+ - fixed behaviour of combo box for contacts categories
+ - fixed Swedish translation classes
+ - fixed bug when setting no ACL on a calendar
 
 1.3-20110726 (1.3.8b)
 ---------------------
