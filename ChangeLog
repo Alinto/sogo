@@ -1,5 +1,10 @@
 2011-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMessage.m
+	(_convertRecipientFromRow:andColumns:): temp hack: make use of
+	set_mapi_SPropValue_sogo instead of set_mapi_SPropValue, which was
+	reversed in openchange to the old behaviour.
+
 	* OpenChange/MAPIStoreObject.m (-init): renamed "newProperties"
 	ivar to "properties".
 	(-addNewProperties:): renamed to "-addProperties:"

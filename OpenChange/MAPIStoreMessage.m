@@ -282,7 +282,7 @@ NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
           else
             dataPos++;
         }
-      set_mapi_SPropValue (memCtx, &mapiValue, row->prop_values.data + dataPos);
+      set_mapi_SPropValue_sogo (memCtx, &mapiValue, row->prop_values.data + dataPos);
       value = NSObjectFromMAPISPropValue (&mapiValue);
       dataPos += get_mapi_property_size (&mapiValue);
       if (value)
