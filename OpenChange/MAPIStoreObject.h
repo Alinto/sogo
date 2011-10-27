@@ -82,6 +82,8 @@
 
 /* properties */
 
+- (BOOL) canGetProperty: (enum MAPITAGS) propTag;
+
 - (void) addProperties: (NSDictionary *) newProperties;
 - (NSDictionary *) properties;
 - (void) resetProperties;

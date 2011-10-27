@@ -247,30 +247,19 @@ static Class NSExceptionK, MAPIStoreFolderK;
   MAPIStorePropertyGetter method = NULL;
   uint16_t propValue;
   SEL methodSel;
-  const char *propName;
+  id value;
   int rc = MAPISTORE_ERR_NOT_FOUND;
 
-  propValue = (propTag & 0xffff0000) >> 16;
-  methodSel = MAPIStoreSelectorForPropertyGetter (propValue);
-
-  method = (MAPIStorePropertyGetter) classGetters[propValue];
-  if (method)
-    rc = method (self, methodSel, data, memCtx);
+  value = [properties objectForKey: MAPIPropertyKey (propTag)];
+  if (value)
+    rc = [value getMAPIValue: data forTag: propTag inMemCtx: memCtx];
   else
     {
-      *data = NULL;
-      
-      if (methodSel)
-        {
-          propName = get_proptag_name (propTag);
-          if (!propName)
-            propName = "<unknown>";
-          // [self warnWithFormat:
-          //         @"unimplemented selector (%@) for %s (0x%.8x)",
-          //       NSStringFromSelector (methodSel), propName, propTag];
-        }
-      // else
-      //   [self warnWithFormat: @"unsupported property tag: 0x%.8x", propTag];
+      propValue = (propTag & 0xffff0000) >> 16;
+      methodSel = MAPIStoreSelectorForPropertyGetter (propValue);
+      method = (MAPIStorePropertyGetter) classGetters[propValue];
+      if (method)
+        rc = method (self, methodSel, data, memCtx);
     }
 
   return rc;
@@ -411,7 +400,36 @@ static Class NSExceptionK, MAPIStoreFolderK;
 - (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [isa getAvailableProperties: propertiesP inMemCtx: memCtx];
+  NSUInteger count;
+  struct SPropTagArray *availableProps;
+  enum MAPITAGS propTag;
+
+  availableProps = talloc_zero (memCtx, struct SPropTagArray);
+  availableProps->aulPropTag = talloc_array (availableProps, enum MAPITAGS,
+                                             MAPIStoreSupportedPropertiesCount);
+  for (count = 0; count < MAPIStoreSupportedPropertiesCount; count++)
+    {
+      propTag = MAPIStoreSupportedProperties[count];
+      if ([self canGetProperty: propTag])
+        {
+          availableProps->aulPropTag[availableProps->cValues] = propTag;
+          availableProps->cValues++;
+        }
+    }
+
+  *propertiesP = availableProps;
+
+  return MAPISTORE_SUCCESS;  
+}
+
+- (BOOL) canGetProperty: (enum MAPITAGS) propTag
+{
+  uint16_t propValue;
+
+  propValue = (propTag & 0xffff0000) >> 16;
+
+  return (classGetters[propValue]
+          || [properties objectForKey: MAPIPropertyKey (propTag)]);
 }
 
 - (int) getProperties: (struct mapistore_property_data *) data
@@ -426,7 +444,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
                                   withTag: tags[count]
                                  inMemCtx: memCtx];
 
-
   return MAPISTORE_SUCCESS;
 }
 
@@ -439,7 +456,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
     {
       cValue = aRow->lpProps + counter;
       [properties setObject: NSObjectFromSPropValue (cValue)
-                  forKey: MAPIPropertyKey (cValue->ulPropTag)];
+                     forKey: MAPIPropertyKey (cValue->ulPropTag)];
     }
 
   return MAPISTORE_SUCCESS;
@@ -464,7 +481,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 - (NSString *) loggingPrefix
 {
   return [NSString stringWithFormat:@"<%@:%p:%@>",
-                   NSStringFromClass(isa), self, [self nameInContainer]];
+                   NSStringFromClass (isa), self, [self nameInContainer]];
 }
 
 @end

@@ -49,7 +49,7 @@
 
   properties = talloc_zero (memCtx, struct SPropTagArray);
   properties->cValues = MAPIStoreSupportedPropertiesCount + 8;
-  properties->aulPropTag = talloc_array (NULL, enum MAPITAGS,
+  properties->aulPropTag = talloc_array (properties, enum MAPITAGS,
                                          MAPIStoreSupportedPropertiesCount + 8);
 
   for (count = 0; count < MAPIStoreSupportedPropertiesCount; count++)
@@ -63,6 +63,12 @@
   *propertiesP = properties;
 
   return MAPISTORE_SUCCESS;
+}
+
+- (BOOL) canGetProperty: (enum MAPITAGS) propTag
+{
+  return ([[sogoObject properties] objectForKey: MAPIPropertyKey (propTag)]
+          || [super canGetProperty: propTag]);
 }
 
 - (void) save

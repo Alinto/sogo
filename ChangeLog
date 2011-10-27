@@ -1,5 +1,19 @@
 2011-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreObject.m (-canGetProperty:): new method that
+	determines whether a property can be requested on a
+	MAPIStoreObject instance or descendant thereof, in order to take
+	different ways of fetching properties into account, whether
+	through a dynamic getter or some dictionary...
+	(-getAvailableProperties:inMemCtx:): now compute the returned
+	array based on the result of invocations of -[self
+	canGetProperty:].
+
+	* OpenChange/MAPIStoreFSMessage.m
+	(+getAvailableProperties:inMemCtx:): fixed a leak by attaching the
+	array of enum MAPITAGS to "properties".
+	(-canGetProperty:): overriden method.
+
 	* OpenChange/MAPIStoreVolatileMessage.m: MAPIStoreMemMessage renamed
 	to MAPIStoreVolatileMessage.
 
