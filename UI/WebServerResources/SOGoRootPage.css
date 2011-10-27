@@ -15,12 +15,10 @@ DIV#aboutBox
 { position: absolute;
   z-index: 1000;
   left: 0px;
+  top: 30px;
   width: 100%;
   text-align: center; }
   
-DIV#aboutBox IMG
-{ margin-top: 20px; }
-
 DIV#aboutBox DIV
 { background-color: #fff;
   border: 1px solid #222;
