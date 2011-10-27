@@ -1,3 +1,8 @@
+%{!?sogo_major_version: %global sogo_major_version %(/bin/echo %{sogo_version} | /bin/cut -f 1 -d .)}
+%if %{sogo_major_version} >= 2
+%global oc_build_depends samba4 openchange
+%endif
+
 Summary:      SOGo
 Name:         sogo
 Version:      %{sogo_version}
@@ -12,7 +17,7 @@ Prefix:       /usr
 AutoReqProv:  off
 Requires:     gnustep-base >= 1.23, sope%{sope_major_version}%{sope_minor_version}-core, httpd, sope%{sope_major_version}%{sope_minor_version}-core, sope%{sope_major_version}%{sope_minor_version}-appserver, sope%{sope_major_version}%{sope_minor_version}-ldap, sope%{sope_major_version}%{sope_minor_version}-cards >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-sbjson, memcached, libmemcached
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}
-BuildPreReq:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel sope%{sope_major_version}%{sope_minor_version}-sbjson-devel libmemcached-devel samba4 openchange
+BuildPreReq:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel sope%{sope_major_version}%{sope_minor_version}-sbjson-devel libmemcached-devel %{?oc_build_depends}
 
 %description
 SOGo is a groupware server built around OpenGroupware.org (OGo) and
@@ -106,6 +111,7 @@ AutoReqProv:  off
 %description -n sope%{sope_major_version}%{sope_minor_version}-cards-devel
 SOPE versit parsing library for iCal and VCard formats
 
+%if %{sogo_major_version} >= 2
 %package openchange-backend
 Summary:      SOGo backend for OpenChange
 Group:        Productivity/Groupware
@@ -113,6 +119,7 @@ AutoReqProv:  off
 
 %description openchange-backend
 SOGo backend for OpenChange
+%endif
 
 ########################################
 %prep
@@ -134,10 +141,13 @@ ppc64-*)
 esac
 
 make CC="$cc" LDFLAGS="$ldflags" messages=yes
+
 # OpenChange
+%if %{sogo_major_version} >= 2
 (cd OpenChange; \
  LD_LIBRARY_PATH=../SOPE/NGCards/obj:../SOPE/GDLContentStore/obj \
  make GNUSTEP_INSTALLATION_DOMAIN=SYSTEM )
+%endif
 
 # ****************************** install ******************************
 %install
@@ -174,12 +184,14 @@ cp Scripts/sogo-default ${RPM_BUILD_ROOT}/etc/sysconfig/sogo
 rm -rf ${RPM_BUILD_ROOT}%{_bindir}/test_quick_extract
 
 # OpenChange
+%if %{sogo_major_version} >= 2
 (cd OpenChange; \
  LD_LIBRARY_PATH=${RPM_BUILD_ROOT}%{_libdir} \
  make DESTDIR=${RPM_BUILD_ROOT} \
      GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
       CC="$cc" LDFLAGS="$ldflags" \
    install)
+%endif
 
 # ****************************** clean ********************************
 %clean
@@ -202,8 +214,8 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/GNUstep/SOGo/*.SOGo
 
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Resources
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/2/libSOGo.so.*
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/2/Resources
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/libSOGo.so.*
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/Resources
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/Current
 %{_libdir}/GNUstep/SOGo/Templates
 %{_libdir}/GNUstep/SOGo/WebServerResources
@@ -231,9 +243,9 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Headers
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/libSOGo.so
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/SOGo
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/2/Headers
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/2/libSOGo.so
-%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/2/SOGo
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/Headers
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/libSOGo.so
+%{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/SOGo
 
 %files -n sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore
 %defattr(-,root,root,-)
@@ -253,10 +265,12 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_includedir}/NGCards
 %{_libdir}/libNGCards.so
 
+%if %{sogo_major_version} >= 2
 %files openchange-backend
 %defattr(-,root,root,-)
 %{_libdir}/GNUstep/SOGo/*.MAPIStore
 %{_libdir}/mapistore_backends/*
+%endif
 
 # **************************** pkgscripts *****************************
 %post
@@ -285,6 +299,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Thu Oct 27 2011 Wolfgang Sourdeau <wsourdeau@inverse.ca>
+- make build of sogo-openchange-backend conditional to sogo_version >= 2
+
 * Fri Oct 14 2011 Wolfgang Sourdeau <wsourdeau@inverse.ca>
 - adapted to gnustep-make 2.6
 - added sogo-openchange-backend
