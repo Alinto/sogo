@@ -28,6 +28,8 @@
 @interface MAPIStoreVolatileMessage : MAPIStoreMessage
 {
   BOOL fetchedAttachments;
+  NSDate *creationTime;
+  NSDate *lastModificationTime;
 }
 
 @end

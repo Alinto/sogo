@@ -120,6 +120,22 @@
   return (attMessage ? MAPISTORE_SUCCESS : MAPISTORE_ERROR);
 }
 
+- (NSDate *) creationTime
+{
+  return [container creationTime];
+}
+
+- (NSDate *) lastModificationTime
+{
+  return [container lastModificationTime];
+}
+
+- (uint64_t) objectVersion
+{
+  /* attachments have no version number */
+  return ULLONG_MAX;
+}
+
 /* subclasses */
 - (MAPIStoreAttachmentMessage *) openEmbeddedMessage
 {

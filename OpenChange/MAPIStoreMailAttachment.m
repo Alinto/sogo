@@ -192,14 +192,4 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (NSDate *) creationTime
-{
-  return [[container sogoObject] date];
-}
-
-- (NSDate *) lastModificationTime
-{
-  return [[container sogoObject] date];
-}
-
 @end

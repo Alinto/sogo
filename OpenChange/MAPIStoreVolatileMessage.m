@@ -64,9 +64,20 @@ Class NSNumberK;
 - (id) init
 {
   if ((self = [super init]))
-    fetchedAttachments = NO;
+    {
+      fetchedAttachments = NO;
+      ASSIGN (creationTime, [NSDate date]);
+      lastModificationTime = [creationTime copy];
+    }
 
   return self;
+}
+
+- (void) dealloc
+{
+  [creationTime release];
+  [lastModificationTime release];
+  [super dealloc];
 }
 
 - (int) addPropertiesFromRow: (struct SRow *) aRow
@@ -78,6 +89,7 @@ Class NSNumberK;
     {
       [sogoObject appendProperties: properties];
       [properties removeAllObjects];
+      ASSIGN (lastModificationTime, [NSDate date]);
     }
 
   return rc;
@@ -88,6 +100,7 @@ Class NSNumberK;
   [super addProperties: newProperties];
   [sogoObject appendProperties: newProperties];
   [properties removeAllObjects];
+  ASSIGN (lastModificationTime, [NSDate date]);
 }
 
 - (uint64_t) objectVersion
@@ -149,38 +162,6 @@ Class NSNumberK;
   return rc;
 }
 
-- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-                      inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSArray *keys;
-  NSUInteger count, max;
-  NSString *key;
-  struct SPropTagArray *availableProps;
-
-  keys = [[sogoObject properties] allKeys];
-  max = [keys count];
-
-  availableProps = talloc_zero (NULL, struct SPropTagArray);
-  availableProps->cValues = max;
-  availableProps->aulPropTag = talloc_array (availableProps, enum MAPITAGS, max);
-  for (count = 0; count < max; count++)
-    {
-      key = [keys objectAtIndex: count];
-      if ([key isKindOfClass: NSNumberK])
-        {
-#if (GS_SIZEOF_LONG == 4)
-          availableProps->aulPropTag[count] = [[keys objectAtIndex: count] unsignedLongValue];
-#elif (GS_SIZEOF_INT == 4)
-          availableProps->aulPropTag[count] = [[keys objectAtIndex: count] unsignedIntValue];
-#endif
-        }
-    }
-
-  *propertiesP = availableProps;
-
-  return MAPISTORE_SUCCESS;  
-}
-
 - (NSArray *) attachmentsKeysMatchingQualifier: (EOQualifier *) qualifier
                               andSortOrderings: (NSArray *) sortOrderings
 {
@@ -211,6 +192,21 @@ Class NSNumberK;
 
   return [super attachmentKeysMatchingQualifier: qualifier
                                andSortOrderings: sortOrderings];
+}
+
+- (NSDate *) creationTime
+{
+  return creationTime;
+}
+
+- (NSDate *) lastModificationTime
+{
+  return lastModificationTime;
+}
+
+- (id) lookupAttachment: (NSString *) childKey
+{
+  return [attachmentParts objectForKey: childKey];
 }
 
 - (void) save

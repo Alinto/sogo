@@ -16,6 +16,9 @@
 
 	* OpenChange/MAPIStoreVolatileMessage.m: MAPIStoreMemMessage renamed
 	to MAPIStoreVolatileMessage.
+	(-getAvailableProperties:inMemCtx:) removed obsolete method.
+	(-init): creationTime and lastModificationTime are now ivars.
+	(-lookupAttachment:): implemented manadatory method.
 
 	* OpenChange/SOGoMAPIVolatileMessage.m: SOGoMAPIMemMessage renamed
 	to SOGoMAPIVolatileMessage.
