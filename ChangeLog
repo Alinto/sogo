@@ -1,4 +1,4 @@
-2011-10-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+2011-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreVolatileMessage.m: MAPIStoreMemMessage renamed
 	to MAPIStoreVolatileMessage.
