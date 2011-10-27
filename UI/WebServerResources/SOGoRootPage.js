@@ -16,13 +16,13 @@ function initLogin() {
     var about = $("about");
     if (about) {
         about.observe("click", function(event) {
-                                  $("aboutBox").show();
-                                  event.stop() });
-
+                if (!$("aboutBox").visible())
+                    Effect.SlideDown("aboutBox", { queue: { position: 'end', scope: 'aboutscope', limit: 2 } });
+                event.stop(); });
         var aboutClose = $("aboutClose");
         aboutClose.observe("click", function(event) {
-                                  $("aboutBox").hide();
-                                  event.stop() });
+                Effect.SlideUp("aboutBox", { duration: 2.0, queue: { position: 'end', scope: 'aboutscope', limit: 2 } });
+                event.stop() });
     }
 
     var submit = $("submit");

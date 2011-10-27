@@ -1,3 +1,13 @@
+2011-10-27  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxAttendeesEditor.js
+	(performSearchCallback): show a list email address (usually an
+	LDAP group) unless the list has no email address (usually a
+	personal contacts list).
+
+	* UI/WebServerResources/SOGoRootPage.js (initLogin): added sliding
+	effect to about box.
+
 2011-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreObject.m (-canGetProperty:): new method that

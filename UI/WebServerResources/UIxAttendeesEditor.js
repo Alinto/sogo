@@ -41,8 +41,8 @@ function resolveListAttendees(input, append) {
 }
 
 function resolveListAttendeesCallback(http) {
+    var input = http.callbackData["input"];
     if (http.readyState == 4 && http.status == 200) {
-        var input = http.callbackData["input"];
         var append = http.callbackData["append"];
         var contacts = http.responseText.evalJSON(true);
         for (var i = 0; i < contacts.length; i++) {
@@ -84,6 +84,10 @@ function resolveListAttendeesCallback(http) {
                 //input.blur();
             }
         }
+    }
+    else {
+        // List not found (probably an LDAP group)
+        performSearch(input);
     }
 }
 
@@ -205,7 +209,7 @@ function performSearchCallback(http) {
                     var isList = (contact["c_component"] &&
                                   contact["c_component"] == "vlist");
                     var completeEmail = contact["c_cn"].trim();
-                    if (!isList) {
+                    if (contact["c_mail"]) {
                         if (completeEmail)
                             completeEmail += " <" + contact["c_mail"] + ">";
                         else
@@ -276,7 +280,7 @@ function performSearchCallback(http) {
                         input.container = contact["container"];
                     }
                     var completeEmail = contact["c_cn"].trim();
-                    if (!isList) {
+                    if (contact["c_mail"]) {
                         if (completeEmail)
                             completeEmail += " <" + contact["c_mail"] + ">";
                         else
