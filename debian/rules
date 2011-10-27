@@ -39,7 +39,6 @@ install-arch: build-arch
 	$(MAKE) DESTDIR=$(CURDIR)/debian/tmp GNUSTEP_INSTALLATION_DOMAIN=SYSTEM install
 	mkdir -p debian/tmp/etc/default
 	cp Scripts/sogo-default debian/tmp/etc/default/sogo
-	cp Scripts/sogod-wrapper debian/tmp/usr/sbin/sogod-wrapper
 	mkdir -p debian/tmp/usr/share/lintian/overrides
 	cp debian/sogo.overrides debian/tmp/usr/share/lintian/overrides/sogo
 	mkdir -p debian/tmp/etc/apache2/conf.d
