@@ -38,6 +38,7 @@ double *MAPIDoubleValue (void *memCtx, double value);
 
 id NSObjectFromSPropValue (const struct SPropValue *);
 id NSObjectFromMAPISPropValue (const struct mapi_SPropValue *);
+id NSObjectFromValuePointer (enum MAPITAGS, void *);
 
 static inline NSNumber *
 MAPIPropertyKey (enum MAPITAGS propTag)

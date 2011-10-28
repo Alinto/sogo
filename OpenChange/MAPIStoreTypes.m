@@ -212,6 +212,69 @@ NSObjectFromSPropValue (const struct SPropValue *value)
   return result;
 }
 
+id
+NSObjectFromValuePointer (enum MAPITAGS propTag, void *data)
+{
+  id result;
+
+  switch (propTag & 0xffff)
+    {
+    case PT_NULL:
+      result = [NSNull null];
+      break;
+    case PT_SHORT:
+      result = [NSNumber numberWithShort: *(int16_t *) data];
+      break;
+    case PT_LONG:
+      result = [NSNumber numberWithLong: *(int32_t *) data];
+      break;
+    case PT_I8:
+      result = [NSNumber numberWithUnsignedLongLong: *(uint64_t *) data];
+      break;
+    case PT_BOOLEAN:
+      result = [NSNumber numberWithBool: ((*(uint8_t *) data) ? YES : NO)];
+      break;
+    case PT_DOUBLE:
+      result = [NSNumber numberWithDouble: *(double *) data];
+      break;
+    case PT_UNICODE:
+      result = [NSString stringWithUTF8String: data];
+      break;
+    case PT_STRING8:
+      result = [NSString stringWithUTF8String: data];
+      break;
+    case PT_SYSTIME:
+      result = [NSCalendarDate dateFromFileTime: data];
+      break;
+    case PT_BINARY:
+    case PT_SVREID:
+		// lpProps->value.bin = *((const struct Binary_r *)data);
+
+      result = [NSData dataWithBinary: (const struct Binary_r *) data];
+      break;
+    // case PT_CLSID:
+    //   result = [NSData dataWithFlatUID: value->value.lpguid];
+    //   break;
+
+    default:
+// #define	PT_UNSPECIFIED		0x0
+// #define	PT_I2			0x2
+// #define	PT_CURRENCY		0x6
+// #define	PT_APPTIME		0x7
+// #define	PT_ERROR		0xa
+// #define	PT_OBJECT		0xd
+// #define	PT_I8			0x14
+// #define	PT_SVREID		0xFB
+// #define	PT_SRESTRICT		0xFD
+// #define	PT_ACTIONS		0xFE
+      result = [NSNull null];
+      NSLog (@"%s: object type not handled: %d (0x%.8x)", __PRETTY_FUNCTION__,
+             propTag, propTag);
+    }
+
+  return result;
+}
+
 void
 MAPIStoreDumpMessageProperties (NSDictionary *properties)
 {

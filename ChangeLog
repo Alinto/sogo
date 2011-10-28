@@ -1,5 +1,9 @@
 2011-10-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromValuePointer): new
+	function returning an instance of an appropriate class based on a
+	property tag and a corresponding value passed as void *.
+
 	* OpenChange/MAPIStoreFSMessage.m (-canGetProperty:): method moved
 	up in MAPIStoreVolatileMessage.
 
