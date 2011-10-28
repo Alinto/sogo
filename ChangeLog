@@ -2,6 +2,10 @@
 
 	* OpenChange/MAPIStoreMailVolatileMessage.m (_generateMailData):
 	don't consider "orig" type recipients.
+	Added "withBCC" parameter. Reorganized code to produce better
+	mime-compliant messages, in particular with regards to the
+	handling of multipart/* body parts. Split method in many
+	specialized submethods for code clarity.
 	(-getMessageData:inMemCtx:): overriden method for this class.
 
 	* OpenChange/MAPIStoreSOGo.m (sogo_message_modify_recipients):

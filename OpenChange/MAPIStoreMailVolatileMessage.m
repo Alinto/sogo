@@ -21,9 +21,8 @@
  */
 
 /* TODO:
-   - proper handling of multipart/alternative and multipart/related mime
-   body types
    - calendar invitations
+   - merge some code in a common module with SOGoDraftObject
 */
 
 #import <Foundation/NSArray.h>
@@ -149,11 +148,19 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
 
 @interface MAPIStoreAttachment (MAPIStoreMIME)
 
+- (BOOL) hasContentId;
 - (NGMimeBodyPart *) asMIMEBodyPart;
 
 @end
 
 @implementation MAPIStoreAttachment (MAPIStoreMIME)
+
+- (BOOL) hasContentId
+{
+  return ([properties
+            objectForKey: MAPIPropertyKey (PR_ATTACH_CONTENT_ID_UNICODE)]
+          != nil);
+}
 
 - (NGMimeBodyPart *) asMIMEBodyPart
 {
@@ -343,8 +350,50 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   *dataPtr = msgData;
 }
 
-/* FIXME: copied from SOGoDraftMessage... */
-- (NSString *) _quoteSpecials: (NSString *) address
+static inline NSString *
+MakeRecipientString (NSDictionary *recipient)
+{
+  NSString *fullName, *email, *fullEmail;
+
+  fullName = [recipient objectForKey: @"fullName"];
+  email = [recipient objectForKey: @"email"];
+  if ([email length] > 0)
+    {
+      if ([fullName length] > 0)
+        fullEmail = [NSString stringWithFormat: @"%@ <%@>", fullName, email];
+      else
+        fullEmail = email;
+    }
+  else
+    {
+      NSLog (@"recipient not generated from record: %@", recipient);
+      fullEmail = nil;
+    }
+
+  return fullEmail;
+}
+
+static inline NSArray *
+MakeRecipientsList (NSArray *recipients)
+{
+  NSMutableArray *list;
+  NSUInteger count, max;
+  NSString *recipient;
+
+  max = [recipients count];
+  list = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      recipient = MakeRecipientString ([recipients objectAtIndex: count]);
+      if (recipient)
+        [list addObject: recipient];
+    }
+
+  return list;
+}
+
+static NSString *
+QuoteSpecials (NSString *address)
 {
   NSString *result, *part, *s2;
   int i, len;
@@ -392,103 +441,26 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   return result;
 }
 
-- (NSArray *) _attachmentBodyParts
+static inline void
+FillMessageHeadersFromProperties (NGMutableHashMap *headers,
+                                  NSDictionary *mailProperties,
+                                  struct mapistore_connection_info *connInfo)
 {
-  NSMutableArray *attachmentBodyParts;
-  NSArray *keys;
-  MAPIStoreAttachment *attachment;
-  NSUInteger count, max;
-  NGMimeBodyPart *mimePart;
-
-  keys = [attachmentParts allKeys];
-  max = [keys count];
-  attachmentBodyParts = [NSMutableArray arrayWithCapacity: max];
-  for (count = 0; count < max; count++)
-    {
-      attachment = [attachmentParts
-                     objectForKey: [keys objectAtIndex: count]];
-      mimePart = [attachment asMIMEBodyPart];
-      if (mimePart)
-        [attachmentBodyParts addObject: mimePart];
-    }
-
-  return attachmentBodyParts;
-}
-
-- (NSString *) _recipient: (NSDictionary *) recipient
-{
-  NSString *fullName, *email, *fullEmail;
-
-  fullName = [recipient objectForKey: @"fullName"];
-  email = [recipient objectForKey: @"email"];
-  if ([email length] > 0)
-    {
-      if ([fullName length] > 0)
-        fullEmail = [NSString stringWithFormat: @"%@ <%@>", fullName, email];
-      else
-        fullEmail = email;
-    }
-  else
-    {
-      [self warnWithFormat: @"recipient not generated from record: %@",
-            recipient];
-      fullEmail = nil;
-    }
-
-  return fullEmail;
-}
-
-- (NSArray *) _recipientsList: (NSArray *) recipients
-{
-  NSMutableArray *list;
-  NSUInteger count, max;
-  NSString *recipient;
-
-  max = [recipients count];
-  list = [NSMutableArray arrayWithCapacity: max];
-  for (count = 0; count < max; count++)
-    {
-      recipient = [self _recipient: [recipients objectAtIndex: count]];
-      if (recipient)
-        [list addObject: recipient];
-    }
-
-  return list;
-}
-
-- (NSData *) _generateMailData
-{
-  NSDictionary *mailProperties;
   NSMutableString *subject;
-  NSString *from, *recId, *messageId, *subjectData, *charset,
-    *mailContentType, *textContentType;
-  NSData *textData, *messageData;
-  NSArray *list, *attParts;
-  NSNumber *codePage;
+  NSString *from, *recId, *messageId, *subjectData;
+  NSArray *list;
   NSCalendarDate *date;
   NSDictionary *recipients;
-  NGMimeMessage *message;  
-  NGMutableHashMap *map, *textMap;
-  NGMimeBodyPart *textBodyPart;
-  NGMimeMultipartBody *multiPart;
-  NGMimeMessageGenerator *generator;
-  NSUInteger count, max;
-  struct mapistore_connection_info *connInfo;
+  NSUInteger count;
   SOGoUser *activeUser;
 
-  mailProperties = [sogoObject properties];
-
-  /* headers */
-  map = [[NGMutableHashMap alloc] initWithCapacity: 16];
-
-  connInfo = [[self context] connectionInfo];
   activeUser
     = [SOGoUser
         userWithLogin: [NSString stringWithUTF8String: connInfo->username]];
 
   from = [NSString stringWithFormat: @"%@ <%@>",
                    [activeUser cn], [[activeUser allEmails] objectAtIndex: 0]];
-  [map setObject: [self _quoteSpecials: from] forKey: @"from"];
+  [headers setObject: QuoteSpecials (from) forKey: @"from"];
 
   /* save the recipients */
   recipients = [mailProperties objectForKey: @"recipients"];
@@ -497,12 +469,12 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
       for (count = 1; count < 3; count++)
 	{
 	  recId = recTypes[count];
-	  list = [self _recipientsList: [recipients objectForKey: recId]];
-          [map setObjects: list forKey: recId];
+	  list = MakeRecipientsList ([recipients objectForKey: recId]);
+          [headers setObjects: list forKey: recId];
 	}
     }
   else
-    [self errorWithFormat: @"message without recipients"];
+    NSLog (@"message without recipients");
 
   subject = [NSMutableString stringWithCapacity: 128];
   subjectData = [mailProperties objectForKey: MAPIPropertyKey (PR_SUBJECT_PREFIX_UNICODE)];
@@ -511,22 +483,73 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   subjectData = [mailProperties objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
   if (subjectData)
     [subject appendString: subjectData];
-  [map setObject: [subject asQPSubjectString: @"utf-8"] forKey: @"subject"];
+  [headers setObject: [subject asQPSubjectString: @"utf-8"] forKey: @"subject"];
 
   messageId = [mailProperties objectForKey: MAPIPropertyKey (PR_INTERNET_MESSAGE_ID_UNICODE)];
   if ([messageId length])
-    [map setObject: messageId forKey: @"message-id"];
+    [headers setObject: messageId forKey: @"message-id"];
 
   date = [mailProperties objectForKey: MAPIPropertyKey (PR_CLIENT_SUBMIT_TIME)];
   if (date)
-    [map addObject: [date rfc822DateString] forKey: @"date"];
-  [map addObject: @"1.0" forKey: @"MIME-Version"];
+    [headers addObject: [date rfc822DateString] forKey: @"date"];
+  [headers addObject: @"1.0" forKey: @"MIME-Version"];
+}
 
-  message = [[[NGMimeMessage alloc] initWithHeader: map] autorelease];
-  [map release];
+static NSArray *
+MakeAttachmentParts (NSDictionary *attachmentParts, BOOL withContentId)
+{
+  NSMutableArray *attachmentMimeParts;
+  NSArray *keys;
+  MAPIStoreAttachment *attachment;
+  NSUInteger count, max;
+  NGMimeBodyPart *mimePart;
 
-  textData = [mailProperties objectForKey: MAPIPropertyKey (PR_HTML)];
-  if (textData)
+  keys = [attachmentParts allKeys];
+  max = [keys count];
+  attachmentMimeParts = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      attachment = [attachmentParts
+                     objectForKey: [keys objectAtIndex: count]];
+      if ([attachment hasContentId] == withContentId)
+        {
+          mimePart = [attachment asMIMEBodyPart];
+          if (mimePart)
+            [attachmentMimeParts addObject: mimePart];
+        }
+    }
+
+  return attachmentMimeParts;
+}
+
+static inline id
+MakeTextPlainBody (NSDictionary *mailProperties, NSString **contentType)
+{
+  id textPlainBody;
+
+  textPlainBody = [[mailProperties
+                      objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)]
+                    dataUsingEncoding: NSUTF8StringEncoding];
+  *contentType = @"text/plain; charset=utf-8";
+
+  return textPlainBody;
+}
+
+static inline id
+MakeTextHtmlBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
+                  NSString **contentType)
+{
+  id textHtmlBody;
+  NSData *htmlBody;
+  NSString *charset, *htmlContentType;
+  NSArray *parts;
+  NSNumber *codePage;
+  NGMimeBodyPart *htmlBodyPart;
+  NGMutableHashMap *headers;
+  NSUInteger count, max;
+
+  htmlBody = [mailProperties objectForKey: MAPIPropertyKey (PR_HTML)];
+  if (htmlBody)
     {
       /* charset */
       codePage = [mailProperties objectForKey: MAPIPropertyKey (PR_INTERNET_CPID)];
@@ -545,49 +568,197 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
         default:
           charset = @"iso-8859-1";
         }
-      textContentType = [NSString stringWithFormat: @"text/html; charset=%@",
+      htmlContentType = [NSString stringWithFormat: @"text/html; charset=%@",
                                   charset];
+
+      parts = MakeAttachmentParts (attachmentParts, YES);
+      max = [parts count];
+      if (max > 0)
+        {
+          textHtmlBody = [NGMimeMultipartBody new];
+          [textHtmlBody autorelease];
+
+          headers = [[NGMutableHashMap alloc] initWithCapacity: 1];
+          [headers setObject: htmlContentType forKey: @"content-type"];
+          htmlBodyPart = [NGMimeBodyPart bodyPartWithHeader: headers];
+          [htmlBodyPart setBody: htmlBody];
+          [headers release];
+          [textHtmlBody addBodyPart: htmlBodyPart];
+
+          for (count = 0; count < max; count++)
+            [textHtmlBody addBodyPart: [parts objectAtIndex: count]];
+
+          *contentType = @"multipart/related";
+        }
+      else
+        {
+          textHtmlBody = htmlBody;
+          *contentType = htmlContentType;
+        }
+    }
+  else
+    textHtmlBody = nil;
+
+  return textHtmlBody;
+}
+
+static inline id
+MakeTextPartBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
+                  NSString **contentType)
+{
+  id textBody, textPlainBody, textHtmlBody;
+  NSString *textPlainContentType, *textHtmlContentType;
+  NGMutableHashMap *headers;
+  NGMimeBodyPart *bodyPart;
+
+  textPlainBody = MakeTextPlainBody (mailProperties, &textPlainContentType);
+  textHtmlBody = MakeTextHtmlBody (mailProperties, attachmentParts, &textHtmlContentType);
+  if (textPlainBody)
+    {
+      if (textHtmlBody)
+        {
+          textBody = [NGMimeMultipartBody new];
+          [textBody autorelease];
+
+          headers = [[NGMutableHashMap alloc] initWithCapacity: 1];
+          [headers setObject: textHtmlContentType forKey: @"content-type"];
+          bodyPart = [NGMimeBodyPart bodyPartWithHeader: headers];
+          [bodyPart setBody: textHtmlBody];
+          [headers release];
+          [textBody addBodyPart: bodyPart];
+
+          headers = [[NGMutableHashMap alloc] initWithCapacity: 1];
+          [headers setObject: textPlainContentType forKey: @"content-type"];
+          bodyPart = [NGMimeBodyPart bodyPartWithHeader: headers];
+          [bodyPart setBody: textPlainBody];
+          [headers release];
+          [textBody addBodyPart: bodyPart];
+
+          *contentType = @"multipart/alternative";
+        }
+      else
+        {
+          textBody = textPlainBody;
+          *contentType = textPlainContentType;
+        }
     }
   else
     {
-      textContentType = @"text/plain; charset=utf-8";
-      textData = [[mailProperties
-                    objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)]
-                   dataUsingEncoding: NSUTF8StringEncoding];
+      textBody = textHtmlBody;
+      *contentType = textHtmlContentType;
     }
 
-  attParts = [self _attachmentBodyParts];
-  max = [attParts count];
+  return textBody;
+}
+
+static id
+MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
+                 NSString **contentType)
+{
+  id messageBody, textBody;
+  NSString *textContentType;
+  NSArray *parts;
+  NGMimeBodyPart *textBodyPart;
+  NGMutableHashMap *headers;
+  NSUInteger count, max;
+
+  textBody = MakeTextPartBody (mailProperties, attachmentParts,
+                               &textContentType);
+
+  parts = MakeAttachmentParts (attachmentParts, NO);
+  max = [parts count];
   if (max > 0)
     {
-      mailContentType = @"multipart/mixed";
-      multiPart = [[NGMimeMultipartBody alloc] initWithPart: message];
+      messageBody = [NGMimeMultipartBody new];
+      [messageBody autorelease];
 
-      /* text part */
-      textMap = [[NGMutableHashMap alloc] initWithCapacity: 1];
-      [textMap setObject: textContentType forKey: @"content-type"];
-      textBodyPart = [NGMimeBodyPart bodyPartWithHeader: textMap];
-      [textBodyPart setBody: textData];
-      [textMap release];
+      if (textBody)
+        {
+          headers = [[NGMutableHashMap alloc] initWithCapacity: 1];
+          [headers setObject: textContentType forKey: @"content-type"];
+          textBodyPart = [NGMimeBodyPart bodyPartWithHeader: headers];
+          [textBodyPart setBody: textBody];
+          [headers release];
+          [messageBody addBodyPart: textBodyPart];
+        }
 
-      [multiPart addBodyPart: textBodyPart];
       for (count = 0; count < max; count++)
-        [multiPart addBodyPart: [attParts objectAtIndex: count]];
+        [messageBody addBodyPart: [parts objectAtIndex: count]];
 
-      [message setBody: multiPart];
-      [multiPart release];
+      *contentType = @"multipart/mixed";
     }
   else
     {
-      mailContentType = textContentType;
-      [message setBody: textData];
+      messageBody = textBody;
+      *contentType = textContentType;
     }
-  [map setObject: mailContentType forKey: @"content-type"];
+
+  return messageBody;
+}
+
+- (NGMimeMessage *) _generateMessage
+{
+  NSDictionary *mailProperties;
+  NSString *contentType;
+  NGMimeMessage *message;  
+  NGMutableHashMap *headers;
+  id messageBody;
+
+  mailProperties = [sogoObject properties];
+
+  headers = [[NGMutableHashMap alloc] initWithCapacity: 16];
+  FillMessageHeadersFromProperties (headers, mailProperties,
+                                    [[self context] connectionInfo]);
+  message = [[NGMimeMessage alloc] initWithHeader: headers];
+  [message autorelease];
+  [headers release];
+
+  messageBody = MakeMessageBody (mailProperties, attachmentParts, &contentType);
+  if (messageBody)
+    {
+      [headers setObject: contentType forKey: @"content-type"];
+      [message setBody: messageBody];
+    }
+
+  return message;
+}
+
+- (NSData *) _generateMailDataWithBcc: (BOOL) withBcc
+{
+  NGMimeMessage *message;
+  NGMimeMessageGenerator *generator;
+  NSData *messageData;
+  NSMutableData *cleanedMessage;
+  NSRange r1, r2;
 
   /* mime message generation */
   generator = [NGMimeMessageGenerator new];
+  message = [self _generateMessage];
   messageData = [generator generateMimeFromPart: message];
   [generator release];
+
+  if (!withBcc)
+    {
+      cleanedMessage = [messageData mutableCopy];
+      [cleanedMessage autorelease];
+      r1 = [cleanedMessage rangeOfCString: "\r\n\r\n"];
+      r1 = [cleanedMessage rangeOfCString: "\r\nbcc: "
+                                  options: 0
+                                    range: NSMakeRange(0,r1.location-1)];
+      if (r1.location != NSNotFound)
+        {
+          // We search for the first \r\n AFTER the Bcc: header and
+          // replace the whole thing with \r\n.
+          r2 = [cleanedMessage rangeOfCString: "\r\n"
+                                      options: 0
+                                        range: NSMakeRange(NSMaxRange(r1)+1,[cleanedMessage length]-NSMaxRange(r1)-1)];
+          [cleanedMessage replaceBytesInRange: NSMakeRange(r1.location, NSMaxRange(r2)-r1.location)
+                                    withBytes: "\r\n"
+                                       length: 2];
+        }
+      messageData = cleanedMessage;
+    }
+
   [messageData writeToFile: @"/tmp/mimegen.eml" atomically: NO];
 
   return messageData;
@@ -596,12 +767,10 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
 - (int) submitWithFlags: (enum SubmitFlags) flags
 {
   NSDictionary *mailProperties, *recipients;
-  NSData *message;
-  NSMutableData *cleanedMessage;
+  NSData *messageData;
   NSMutableArray *recipientEmails;
   NSArray *list;
   NSString *recId;
-  NSRange r1, r2;
   NSUInteger count;
   struct mapistore_connection_info *connInfo;
   SOGoUser *activeUser;
@@ -613,23 +782,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
 
   /* send mail */
 
-  message = [self _generateMailData];
-  cleanedMessage = [message mutableCopy];
-  r1 = [cleanedMessage rangeOfCString: "\r\n\r\n"];
-  r1 = [cleanedMessage rangeOfCString: "\r\nbcc: "
-                               options: 0
-                                 range: NSMakeRange(0,r1.location-1)];
-  if (r1.location != NSNotFound)
-    {
-      // We search for the first \r\n AFTER the Bcc: header and
-      // replace the whole thing with \r\n.
-      r2 = [cleanedMessage rangeOfCString: "\r\n"
-                                  options: 0
-                                    range: NSMakeRange(NSMaxRange(r1)+1,[cleanedMessage length]-NSMaxRange(r1)-1)];
-      [cleanedMessage replaceBytesInRange: NSMakeRange(r1.location, NSMaxRange(r2)-r1.location)
-                                 withBytes: "\r\n"
-                                    length: 2];
-    }
+  messageData = [self _generateMailDataWithBcc: NO];
 
   mailProperties = [sogoObject properties];
   recipientEmails = [NSMutableArray arrayWithCapacity: 32];
@@ -650,7 +803,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   dd = [activeUser domainDefaults];
   from = [[activeUser allEmails] objectAtIndex: 0];
   error = [[SOGoMailer mailerWithDomainDefaults: dd]
-                sendMailData: cleanedMessage
+                sendMailData: messageData
                 toRecipients: recipientEmails
                       sender: from];
   if (error)
@@ -676,7 +829,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   MAPIStoreMapping *mapping;
   uint64_t mid;
 
-  messageData = [self _generateMailData];
+  messageData = [self _generateMailDataWithBcc: YES];
 
   /* appending to imap folder */
   containerFolder = [container sogoObject];
