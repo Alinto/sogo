@@ -798,7 +798,7 @@
       if (value)
         {
           NSArray *recipients;
-          NSDictionary *dict, *recipientProperties;
+          NSDictionary *dict;
           iCalPerson *person;
           iCalPersonPartStat newPartStat;
           NSNumber *flags, *trackStatus;
@@ -819,9 +819,7 @@
           for (i = 0; i < [recipients count]; i++)
             {
               dict = [recipients objectAtIndex: i];
-              recipientProperties = [dict objectForKey: @"properties"];
-              flags = [recipientProperties
-                        objectForKey: MAPIPropertyKey (PR_RECIPIENT_FLAGS)];
+              flags = [dict objectForKey: MAPIPropertyKey (PR_RECIPIENT_FLAGS)];
               if (!flags)
                 {
                   [self logWithFormat: @"no recipient flags specified"];
@@ -837,7 +835,7 @@
               else
                 {
                   trackStatus
-                    = [recipientProperties
+                    = [dict
                         objectForKey: MAPIPropertyKey (PR_RECIPIENT_TRACKSTATUS)];
 
                   /* FIXME: we should provide a data converter between OL

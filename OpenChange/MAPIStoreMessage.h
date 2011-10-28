@@ -50,9 +50,9 @@ extern NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email);
 - (void) getMessageData: (struct mapistore_message **) dataPtr
                inMemCtx: (TALLOC_CTX *) memCtx;
 
-- (int) modifyRecipientsWithRows: (struct ModifyRecipientRow *) rows
-                        andCount: (NSUInteger) max
-                      andColumns: (struct SPropTagArray *) columns;
+- (int) modifyRecipientsWithRecipients: (struct mapistore_message_recipient *) recipients
+                              andCount: (NSUInteger) max
+                            andColumns: (struct SPropTagArray *) columns;
 - (NSArray *) attachmentKeys;
 - (NSArray *) attachmentKeysMatchingQualifier: (EOQualifier *) qualifier
                              andSortOrderings: (NSArray *) sortOrderings;

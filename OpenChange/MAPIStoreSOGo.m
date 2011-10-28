@@ -679,8 +679,8 @@ sogo_message_get_attachment_table (void *message_object, TALLOC_CTX *mem_ctx, vo
 static int
 sogo_message_modify_recipients (void *message_object,
                                 struct SPropTagArray *columns,
-                                struct ModifyRecipientRow *recipients,
-                                uint16_t count)
+                                uint16_t count,
+                                struct mapistore_message_recipient *recipients)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
@@ -694,9 +694,9 @@ sogo_message_modify_recipients (void *message_object,
       wrapper = message_object;
       message = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
-      rc = [message modifyRecipientsWithRows: recipients
-                                    andCount: count
-                                  andColumns: columns];
+      rc = [message modifyRecipientsWithRecipients: recipients
+                                          andCount: count
+                                        andColumns: columns];
       // [context tearDownRequest];
       [pool release];
     }

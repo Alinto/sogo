@@ -49,7 +49,8 @@
 #include <mapistore/mapistore_errors.h>
 #include <mapistore/mapistore_nameid.h>
 
-NSData *MAPIStoreInternalEntryId (NSString *username)
+NSData *
+MAPIStoreInternalEntryId (NSString *username)
 {
   NSMutableData *entryId;
   static uint8_t providerUid[] = { 0xdc, 0xa7, 0x40, 0xc8,
@@ -83,7 +84,8 @@ NSData *MAPIStoreInternalEntryId (NSString *username)
   return entryId;
 }
 
-NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
+NSData *
+MAPIStoreExternalEntryId (NSString *cn, NSString *email)
 {
   NSMutableData *entryId;
   static uint8_t providerUid[] = { 0x81, 0x2b, 0x1f, 0xa4,
@@ -203,107 +205,73 @@ NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
   *dataPtr = msgData;
 }
 
-- (NSDictionary *) _convertRecipientFromRow: (struct RecipientRow *) row
-                                 andColumns: (struct SPropTagArray *) columns
+- (NSDictionary *) _convertRecipient: (struct mapistore_message_recipient *) recipient
+                          andColumns: (struct SPropTagArray *) columns
 {
-  NSMutableDictionary *recipient, *recipientProperties;
+  NSMutableDictionary *recipientProperties;
   SOGoUser *recipientUser;
-  NSUInteger count, dataPos;
-  struct mapi_SPropValue mapiValue;
+  NSUInteger count;
   id value;
-  TALLOC_CTX *memCtx;
 
-  recipient = [NSMutableDictionary dictionaryWithCapacity: 5];
+  recipientProperties = [NSMutableDictionary dictionaryWithCapacity: columns->cValues + 2];
 
-  if ((row->RecipientFlags & 0x07) == 1)
+  if (recipient->username)
     {
-      value = [NSString stringWithUTF8String: row->X500DN.recipient_x500name];
-      [recipient setObject: value forKey: @"x500dn"];
+      value = [NSString stringWithUTF8String: recipient->username];
+      [recipientProperties setObject: value forKey: @"x500dn"];
 
       recipientUser = [SOGoUser userWithLogin: [value lowercaseString]];
       if (recipientUser)
         {
           value = [recipientUser cn];
           if ([value length] > 0)
-            [recipient setObject: value forKey: @"fullName"];
+            [recipientProperties setObject: value forKey: @"fullName"];
           value = [[recipientUser allEmails] objectAtIndex: 0];
           if ([value length] > 0)
-            [recipient setObject: value forKey: @"email"];
+            [recipientProperties setObject: value forKey: @"email"];
         }
     }
   else
     {
-      switch ((row->RecipientFlags & 0x208))
+      if (recipient->data[0])
         {
-        case 0x08:
-          // TODO: we cheat
-          value = [NSString stringWithUTF8String: row->EmailAddress.lpszA];
-          break;
-        case 0x208:
-          value = [NSString stringWithUTF8String: row->EmailAddress.lpszW];
-          break;
-        default:
-          value = nil;
+          value = [NSString stringWithUTF8String: recipient->data[0]];
+          if ([value length] > 0)
+            [recipientProperties setObject: value forKey: @"fullName"];
         }
-      if (value)
-        [recipient setObject: value forKey: @"email"];
-      
-      switch ((row->RecipientFlags & 0x210))
+      if (recipient->data[1])
         {
-        case 0x10:
-          // TODO: we cheat
-          value = [NSString stringWithUTF8String: row->DisplayName.lpszA];
-          break;
-        case 0x210:
-          value = [NSString stringWithUTF8String: row->DisplayName.lpszW];
-          break;
-        default:
-          value = nil;
+          value = [NSString stringWithUTF8String: recipient->data[1]];
+          if ([value length] > 0)
+            [recipientProperties setObject: value forKey: @"email"];
         }
-      if (value)
-        [recipient setObject: value forKey: @"fullName"];
     }
 
-  recipientProperties = [NSMutableDictionary new];
-  [recipient setObject: recipientProperties forKey: @"properties"];
-  dataPos = 0;
-
-  memCtx = talloc_zero (NULL, TALLOC_CTX);
   for (count = 0; count < columns->cValues; count++)
     {
-      mapiValue.ulPropTag = columns->aulPropTag[count];
-      if (row->layout)
+      if (recipient->data[count])
         {
-          if (row->prop_values.data[dataPos])
-            {
-              dataPos += 5;
-              continue;
-            }
-          else
-            dataPos++;
+          value = NSObjectFromValuePointer (columns->aulPropTag[count],
+                                            recipient->data[count]);
+          if (value)
+            [recipientProperties setObject: value
+                                    forKey: MAPIPropertyKey (columns->aulPropTag[count])];
         }
-      set_mapi_SPropValue_sogo (memCtx, &mapiValue, row->prop_values.data + dataPos);
-      value = NSObjectFromMAPISPropValue (&mapiValue);
-      dataPos += get_mapi_property_size (&mapiValue);
-      if (value)
-        [recipientProperties setObject: value forKey: MAPIPropertyKey (columns->aulPropTag[count])];
     }
-  [recipientProperties release];
-  talloc_free (memCtx);
 
-  return recipient;
+  return recipientProperties;
 }
 
-- (int) modifyRecipientsWithRows: (struct ModifyRecipientRow *) rows
-                        andCount: (NSUInteger) max
-                      andColumns: (struct SPropTagArray *) columns
+- (int) modifyRecipientsWithRecipients: (struct mapistore_message_recipient *) newRecipients
+                              andCount: (NSUInteger) max
+                            andColumns: (struct SPropTagArray *) columns;
 {
   static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   NSDictionary *recipientProperties;
   NSMutableDictionary *recipients;
   NSMutableArray *list;
   NSString *recType;
-  struct ModifyRecipientRow *currentRow;
+  struct mapistore_message_recipient *recipient;
   NSUInteger count;
 
   [self logWithFormat: @"METHOD '%s'", __FUNCTION__];
@@ -315,12 +283,11 @@ NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
 
   for (count = 0; count < max; count++)
     {
-      currentRow = rows + count;
+      recipient = newRecipients + count;
 
-      if (currentRow->RecipClass >= MAPI_ORIG
-          && currentRow->RecipClass <= MAPI_BCC)
+      if (recipient->type >= MAPI_ORIG && recipient->type <= MAPI_BCC)
         {
-          recType = recTypes[currentRow->RecipClass];
+          recType = recTypes[recipient->type];
           list = [recipients objectForKey: recType];
           if (!list)
             {
@@ -329,8 +296,7 @@ NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email)
               [list release];
             }
           [list addObject:
-                  [self _convertRecipientFromRow: &(currentRow->RecipientRow)
-                                      andColumns: columns]];
+                  [self _convertRecipient: recipient andColumns: columns]];
         }
     }
   [self addProperties: recipientProperties];

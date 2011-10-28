@@ -239,12 +239,10 @@ static NSCharacterSet *hexCharacterSet = nil;
     {
       mgr = [SOGoUserManager sharedUserManager];
       msgData->recipients_count = max + 1;
-      msgData->recipients = talloc_array (msgData, struct mapistore_message_recipient *, max + 1);
+      msgData->recipients = talloc_array (msgData, struct mapistore_message_recipient, max + 1);
       for (count = 0; count < max; count++)
         {
-          msgData->recipients[count]
-            = talloc_zero (msgData, struct mapistore_message_recipient);
-          recipient = msgData->recipients[count];
+          recipient = msgData->recipients + count;
 
           person = [attendees objectAtIndex: count];
           cn = [person cn];
@@ -260,7 +258,10 @@ static NSCharacterSet *hexCharacterSet = nil;
               entryId = MAPIStoreInternalEntryId (username);
             }
           else
-            entryId = MAPIStoreExternalEntryId (cn, email);
+            {
+              recipient->username = NULL;
+              entryId = MAPIStoreExternalEntryId (cn, email);
+            }
           recipient->type = MAPI_TO;
 
           /* properties */
@@ -344,9 +345,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 
       /* On with the organizer: */
       {
-        msgData->recipients[max]
-          = talloc_zero (msgData, struct mapistore_message_recipient);
-        recipient = msgData->recipients[max];
+        recipient = msgData->recipients + max;
 
         person = [event organizer];
         cn = [person cn];
@@ -360,7 +359,10 @@ static NSCharacterSet *hexCharacterSet = nil;
             entryId = MAPIStoreInternalEntryId (username);
           }
         else
-          entryId = MAPIStoreExternalEntryId (cn, email);
+          {
+            recipient->username = NULL;
+            entryId = MAPIStoreExternalEntryId (cn, email);
+          }
         recipient->type = MAPI_TO;
 
         p = 0;

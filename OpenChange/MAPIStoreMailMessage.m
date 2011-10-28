@@ -1374,12 +1374,10 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
         {
           mgr = [SOGoUserManager sharedUserManager];
           msgData->recipients_count = max;
-          msgData->recipients = talloc_array (msgData, struct mapistore_message_recipient *, max);
+          msgData->recipients = talloc_array (msgData, struct mapistore_message_recipient, max);
           for (count = 0; count < max; count++)
             {
-              msgData->recipients[count]
-                = talloc_zero (msgData, struct mapistore_message_recipient);
-              recipient = msgData->recipients[count];
+              recipient = msgData->recipients + count;
 
               currentAddress = [to objectAtIndex: count];
               cn = [currentAddress personalName];
@@ -1395,7 +1393,10 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                   entryId = MAPIStoreInternalEntryId (username);
                 }
               else
-                entryId = MAPIStoreExternalEntryId (cn, email);
+                {
+                  recipient->username = NULL;
+                  entryId = MAPIStoreExternalEntryId (cn, email);
+                }
               recipient->type = MAPI_TO;
 
               /* properties */

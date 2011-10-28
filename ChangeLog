@@ -1,5 +1,11 @@
 2011-10-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_message_modify_recipients):
+	adapted backend function to the new prototype, where the message
+	recipients are preparsed and now passed an array of "struct
+	mapistore_message_recipient", rather than a struct
+	ModifyRecipientRow.
+
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromValuePointer): new
 	function returning an instance of an appropriate class based on a
 	property tag and a corresponding value passed as void *.
