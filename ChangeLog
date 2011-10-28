@@ -1,4 +1,4 @@
-2011-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+2011-10-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFSMessage.m (-canGetProperty:): method moved
 	up in MAPIStoreVolatileMessage.
