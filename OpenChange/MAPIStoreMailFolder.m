@@ -418,7 +418,10 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSNumber *modseq1, *modseq2;
 
   if (!zeroNumber)
-    zeroNumber = [NSNumber numberWithUnsignedLongLong: 0];
+    {
+      zeroNumber = [NSNumber numberWithUnsignedLongLong: 0];
+      [zeroNumber retain];
+    }
 
   modseq1 = [entry1 objectForKey: @"modseq"];
   if (!modseq1)
