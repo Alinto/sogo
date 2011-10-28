@@ -1,5 +1,9 @@
 2011-10-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailVolatileMessage.m (_generateMailData):
+	don't consider "orig" type recipients.
+	(-getMessageData:inMemCtx:): overriden method for this class.
+
 	* OpenChange/MAPIStoreSOGo.m (sogo_message_modify_recipients):
 	adapted backend function to the new prototype, where the message
 	recipients are preparsed and now passed an array of "struct

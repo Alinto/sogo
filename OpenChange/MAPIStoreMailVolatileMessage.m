@@ -46,6 +46,7 @@
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserManager.h>
 #import <Mailer/SOGoMailFolder.h>
 #import <Mailer/NSString+Mail.h>
 
@@ -55,6 +56,7 @@
 #import "MAPIStoreMIME.h"
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
+#import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "SOGoMAPIVolatileMessage.h"
@@ -65,7 +67,7 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
-static NSString *recIds[] = { @"to", @"cc", @"bcc" };
+static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
 
 //
 // Useful extension that comes from Pantomime which is also
@@ -231,6 +233,116 @@ static NSString *recIds[] = { @"to", @"cc", @"bcc" };
 
 @implementation MAPIStoreMailVolatileMessage
 
+- (void) getMessageData: (struct mapistore_message **) dataPtr
+               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSArray *recipients;
+  NSUInteger count, max, recipientsMax, p, current;
+  NSString *username, *cn, *email;
+  NSData *entryId;
+  NSDictionary *allRecipients, *dict, *contactInfos;
+  SOGoUserManager *mgr;
+  struct mapistore_message *msgData;
+  struct mapistore_message_recipient *recipient;
+  enum ulRecipClass type;
+
+  [super getMessageData: &msgData inMemCtx: memCtx];
+
+  allRecipients = [[sogoObject properties] objectForKey: @"recipients"];
+  msgData->columns = set_SPropTagArray (msgData, 9,
+                                        PR_OBJECT_TYPE,
+                                        PR_DISPLAY_TYPE,
+                                        PR_7BIT_DISPLAY_NAME_UNICODE,
+                                        PR_SMTP_ADDRESS_UNICODE,
+                                        PR_SEND_INTERNET_ENCODING,
+                                        PR_RECIPIENT_DISPLAY_NAME_UNICODE,
+                                        PR_RECIPIENT_FLAGS,
+                                        PR_RECIPIENT_ENTRYID,
+                                        PR_RECIPIENT_TRACKSTATUS);
+  
+  /* Retrieve recipients from the message */
+  max = ([[allRecipients objectForKey: @"orig"] count]
+         + [[allRecipients objectForKey: @"to"] count]
+         + [[allRecipients objectForKey: @"cc"] count]
+         + [[allRecipients objectForKey: @"bcc"] count]);
+
+  mgr = [SOGoUserManager sharedUserManager];
+  msgData->recipients_count = max;
+  msgData->recipients = talloc_array (msgData, struct mapistore_message_recipient, max);
+  current = 0;
+  for (type = 0; type < 4; type++)
+    {
+      recipients = [allRecipients objectForKey: recTypes[type]];
+      recipientsMax = [recipients count];
+      for (count = 0; count < recipientsMax; count++)
+        {
+          recipient = msgData->recipients + current;
+          recipient->type = type;
+
+          dict = [recipients objectAtIndex: count];
+          cn = [dict objectForKey: @"fullName"];
+          email = [dict objectForKey: @"email"];
+
+          contactInfos = [mgr contactInfosForUserWithUIDorEmail: email];
+          if (contactInfos)
+            {
+              username = [contactInfos objectForKey: @"c_uid"];
+              recipient->username = [username asUnicodeInMemCtx: msgData];
+              entryId = MAPIStoreInternalEntryId (username);
+            }
+          else
+            {
+              recipient->username = NULL;
+              entryId = MAPIStoreExternalEntryId (cn, email);
+            }
+
+          /* properties */
+          p = 0;
+          recipient->data = talloc_array (msgData, void *, msgData->columns->cValues);
+          memset (recipient->data, 0, msgData->columns->cValues * sizeof (void *));
+
+          // PR_OBJECT_TYPE = MAPI_MAILUSER (see MAPI_OBJTYPE)
+          recipient->data[p] = MAPILongValue (msgData, MAPI_MAILUSER);
+          p++;
+
+          // PR_DISPLAY_TYPE = DT_MAILUSER (see MS-NSPI)
+          recipient->data[p] = MAPILongValue (msgData, 0);
+          p++;
+
+          // PR_7BIT_DISPLAY_NAME_UNICODE
+          recipient->data[p] = [cn asUnicodeInMemCtx: msgData];
+          p++;
+
+          // PR_SMTP_ADDRESS_UNICODE
+          recipient->data[p] = [email asUnicodeInMemCtx: msgData];
+          p++;
+
+          // PR_SEND_INTERNET_ENCODING = 0x00060000 (plain text, see OXCMAIL)
+          recipient->data[p] = MAPILongValue (msgData, 0x00060000);
+          p++;
+
+          // PR_RECIPIENT_DISPLAY_NAME_UNICODE
+          recipient->data[p] = [cn asUnicodeInMemCtx: msgData];
+          p++;
+
+          // PR_RECIPIENT_FLAGS
+          recipient->data[p] = MAPILongValue (msgData, 0x01);
+          p++;
+
+          // PR_RECIPIENT_ENTRYID
+          recipient->data[p] = [entryId asBinaryInMemCtx: msgData];
+          p++;
+
+          // PR_RECIPIENT_TRACKSTATUS
+          recipient->data[p] = MAPILongValue (msgData, 0x00);
+          p++;
+
+          current++;
+        }
+    }
+  *dataPtr = msgData;
+}
+
 /* FIXME: copied from SOGoDraftMessage... */
 - (NSString *) _quoteSpecials: (NSString *) address
 {
@@ -303,6 +415,47 @@ static NSString *recIds[] = { @"to", @"cc", @"bcc" };
   return attachmentBodyParts;
 }
 
+- (NSString *) _recipient: (NSDictionary *) recipient
+{
+  NSString *fullName, *email, *fullEmail;
+
+  fullName = [recipient objectForKey: @"fullName"];
+  email = [recipient objectForKey: @"email"];
+  if ([email length] > 0)
+    {
+      if ([fullName length] > 0)
+        fullEmail = [NSString stringWithFormat: @"%@ <%@>", fullName, email];
+      else
+        fullEmail = email;
+    }
+  else
+    {
+      [self warnWithFormat: @"recipient not generated from record: %@",
+            recipient];
+      fullEmail = nil;
+    }
+
+  return fullEmail;
+}
+
+- (NSArray *) _recipientsList: (NSArray *) recipients
+{
+  NSMutableArray *list;
+  NSUInteger count, max;
+  NSString *recipient;
+
+  max = [recipients count];
+  list = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      recipient = [self _recipient: [recipients objectAtIndex: count]];
+      if (recipient)
+        [list addObject: recipient];
+    }
+
+  return list;
+}
+
 - (NSData *) _generateMailData
 {
   NSDictionary *mailProperties;
@@ -341,13 +494,11 @@ static NSString *recIds[] = { @"to", @"cc", @"bcc" };
   recipients = [mailProperties objectForKey: @"recipients"];
   if (recipients)
     {
-      for (count = 0; count < 3; count++)
+      for (count = 1; count < 3; count++)
 	{
-	  recId = recIds[count];
-	  list = [recipients objectForKey: recId];
-	  if ([list count] > 0)
-	    [map setObjects: [list keysWithFormat: @"%{fullName} <%{email}>"]
-                     forKey: recId];
+	  recId = recTypes[count];
+	  list = [self _recipientsList: [recipients objectForKey: recId]];
+          [map setObjects: list forKey: recId];
 	}
     }
   else
@@ -485,7 +636,7 @@ static NSString *recIds[] = { @"to", @"cc", @"bcc" };
   recipients = [mailProperties objectForKey: @"recipients"];
   for (count = 0; count < 3; count++)
     {
-      recId = recIds[count];
+      recId = recTypes[count];
       list = [recipients objectForKey: recId];
       [recipientEmails
         addObjectsFromArray: [list objectsForKey: @"email"
