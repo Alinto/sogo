@@ -1,3 +1,8 @@
+2011-10-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreFSMessage.m (-canGetProperty:): method moved
+	up in MAPIStoreVolatileMessage.
+
 2011-10-27  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxAttendeesEditor.js

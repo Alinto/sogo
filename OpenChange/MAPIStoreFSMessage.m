@@ -65,12 +65,6 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (BOOL) canGetProperty: (enum MAPITAGS) propTag
-{
-  return ([[sogoObject properties] objectForKey: MAPIPropertyKey (propTag)]
-          || [super canGetProperty: propTag]);
-}
-
 - (void) save
 {
   uint64_t newVersion;

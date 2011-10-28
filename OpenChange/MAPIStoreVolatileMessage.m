@@ -103,6 +103,12 @@ Class NSNumberK;
   ASSIGN (lastModificationTime, [NSDate date]);
 }
 
+- (BOOL) canGetProperty: (enum MAPITAGS) propTag
+{
+  return ([super canGetProperty: propTag]
+          || [[sogoObject properties] objectForKey: MAPIPropertyKey (propTag)]);
+}
+
 - (uint64_t) objectVersion
 {
   NSNumber *version;
