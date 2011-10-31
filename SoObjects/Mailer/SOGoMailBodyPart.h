@@ -59,6 +59,7 @@
 
 - (id) partInfo;
 - (NSData *) fetchBLOB;
+- (NSData *) fetchBLOBWithPeek: (BOOL) withPeek;
 - (void) setAsAttachment;
 
 /* factory */

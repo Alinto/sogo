@@ -126,7 +126,8 @@ NSArray *SOGoMailCoreInfoKeys;
 - (void) addRequiredKeysOfStructure: (NSDictionary *) info
 			       path: (NSString *) p
 			    toArray: (NSMutableArray *) keys
-		      acceptedTypes: (NSArray *) types;
+		      acceptedTypes: (NSArray *) types
+                           withPeek: (BOOL) withPeek;
 
 @end
 

@@ -258,7 +258,7 @@ static BOOL debugOn = NO;
 
 /* fetch */
 
-- (NSData *) fetchBLOB
+- (NSData *) fetchBLOBWithPeek: (BOOL) withPeek
 {
   // HEADER, HEADER.FIELDS, HEADER.FIELDS.NOT, MIME, TEXT
   NSString *enc;
@@ -266,7 +266,8 @@ static BOOL debugOn = NO;
   
   data = [[self imap4Connection] fetchContentOfBodyPart:
 				   [self bodyPartIdentifier]
-				 atURL:[self imap4URL]];
+				 atURL:[self imap4URL]
+                                 withPeek: withPeek];
   if (data == nil) return nil;
 
   /* check for content encodings */
@@ -297,6 +298,11 @@ static BOOL debugOn = NO;
     }
 
   return data;
+}
+
+- (NSData *) fetchBLOB
+{
+  return [self fetchBLOBWithPeek: NO];
 }
 
 /* WebDAV */

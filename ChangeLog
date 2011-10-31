@@ -1,3 +1,14 @@
+2011-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailBodyPart.m (-fetchBLOBWithPeek:): new
+	method that enables the fetching of body parts either via "BODY"
+	or "BODY.PEEK".
+
+	* SoObjects/Mailer/SOGoMailObject.m
+	(-addRequiredKeysOfStructure:path:toArray:acceptedTypes:withPeek:):
+	added a "withPeek" parameter that enables the fetching of body
+	parts either via "BODY" or "BODY.PEEK".
+
 2011-10-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailVolatileMessage.m (_generateMailData):

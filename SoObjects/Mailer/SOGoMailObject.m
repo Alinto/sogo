@@ -527,6 +527,7 @@ static BOOL debugSoParts       = NO;
 			       path: (NSString *) p
 			    toArray: (NSMutableArray *) keys
 		      acceptedTypes: (NSArray *) types
+                           withPeek: (BOOL) withPeek
 {
   /* 
      This is used to collect the set of IMAP4 fetch-keys required to fetch
@@ -539,8 +540,10 @@ static BOOL debugSoParts       = NO;
   unsigned i, count;
   NSString *k;
   id body;
-  NSString *sp, *mimeType;
+  NSString *bodyToken, *sp, *mimeType;
   id childInfo;
+
+  bodyToken = (withPeek ? @"body.peek" : @"body");
 
   mimeType = [[NSString stringWithFormat: @"%@/%@",
 			[info valueForKey: @"type"],
@@ -549,7 +552,7 @@ static BOOL debugSoParts       = NO;
   if ([types containsObject: mimeType])
     {
       if ([p length] > 0)
-	k = [NSString stringWithFormat: @"body[%@]", p];
+	k = [NSString stringWithFormat: @"%@[%@]", bodyToken, p];
       else
 	{
 	  /*
@@ -557,7 +560,7 @@ static BOOL debugSoParts       = NO;
 	    entities?
 	    TODO: check with HTML
 	  */
-	  k = @"body[text]";
+	  k = [NSString stringWithFormat: @"%@[text]", bodyToken];
 	}
       [keys addObject: [NSDictionary dictionaryWithObjectsAndKeys: k, @"key",
 				     mimeType, @"mimeType", nil]];
@@ -575,7 +578,8 @@ static BOOL debugSoParts       = NO;
       
       [self addRequiredKeysOfStructure: childInfo
 	    path: sp toArray: keys
-	    acceptedTypes: types];
+	    acceptedTypes: types
+            withPeek: withPeek];
     }
       
   /* check body */
@@ -600,7 +604,8 @@ static BOOL debugSoParts       = NO;
 	sp = [p length] > 0 ? (id)[p stringByAppendingString: @".1"] : (id)@"1";
       [self addRequiredKeysOfStructure: body
 	    path: sp toArray: keys
-	    acceptedTypes: types];
+	    acceptedTypes: types
+            withPeek: withPeek];
     }
 }
 
@@ -618,7 +623,8 @@ static BOOL debugSoParts       = NO;
 		   @"application/pgp-signature", nil];
   ma = [NSMutableArray arrayWithCapacity: 4];
   [self addRequiredKeysOfStructure: [self bodyStructure]
-	path: @"" toArray: ma acceptedTypes: types];
+	path: @"" toArray: ma acceptedTypes: types
+        withPeek: NO];
 
   return ma;
 }
