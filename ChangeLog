@@ -1,5 +1,9 @@
 2011-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessage.m (-_fetchBodyData): fetch body
+	keys with BODY.PEEK rather than just BODY, to disabled the
+	automatic setting of the "\Seen" flag.
+
 	* SoObjects/Mailer/SOGoMailBodyPart.m (-fetchBLOBWithPeek:): new
 	method that enables the fetching of body parts either via "BODY"
 	or "BODY.PEEK".

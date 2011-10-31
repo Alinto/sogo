@@ -76,7 +76,7 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
   NSRange bodyRange;
   NSString *strippedKey;
 
-  bodyRange = [self rangeOfString: @"body["];
+  bodyRange = [self rangeOfString: @"body.peek["];
   if (bodyRange.length > 0)
     {
       strippedKey = [self substringFromIndex: NSMaxRange (bodyRange)];
@@ -211,7 +211,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   keys = [NSMutableArray array];
   [sogoObject addRequiredKeysOfStructure: [sogoObject bodyStructure]
                                     path: @"" toArray: keys
-                           acceptedTypes: acceptedTypes];
+                           acceptedTypes: acceptedTypes
+                                withPeek: YES];
   [keys sortUsingFunction: _compareBodyKeysByPriority context: acceptedTypes];
   if ([keys count] > 0)
     {
@@ -234,6 +235,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 - (void) _fetchBodyData
 {
   NSData *rawContent;
+  NSString *resultKey;
   id result;
 
   if (!headerSetup)
@@ -243,7 +245,12 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
     {
       result = [sogoObject fetchParts: [NSArray arrayWithObject: mimeKey]];
       result = [[result valueForKey: @"RawResponse"] objectForKey: @"fetch"];
-      rawContent = [[result objectForKey: mimeKey] objectForKey: @"data"];
+      if ([mimeKey hasPrefix: @"body.peek"])
+        resultKey = [NSString stringWithFormat: @"body[%@]",
+                              [mimeKey _strippedBodyKey]];
+      else
+        resultKey = mimeKey;
+      rawContent = [[result objectForKey: resultKey] objectForKey: @"data"];
       ASSIGN (bodyContent, [rawContent bodyDataFromEncoding: headerEncoding]);
     }
 

@@ -187,7 +187,7 @@
 - (int) getPrAttachDataBin: (void **) data
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = [[sogoObject fetchBLOB] asBinaryInMemCtx: memCtx];
+  *data = [[sogoObject fetchBLOBWithPeek: YES] asBinaryInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
