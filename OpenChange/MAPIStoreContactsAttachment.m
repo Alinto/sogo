@@ -94,6 +94,36 @@ extern NSTimeZone *utcTZ;
   return [container lastModificationTime];
 }
 
+- (int) getPrAttachEncoding: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+{
+  *data = [[NSData data] asBinaryInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAttachFlags: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getLongZero: data inMemCtx: memCtx];
+}
+
+- (int) getPrAttachmentFlags: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getLongZero: data inMemCtx: memCtx];
+}
+
+- (int) getPrAttachmentHidden: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getNo: data inMemCtx: memCtx];
+}
+
+- (int) getPrAttachmentLinkid: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getLongZero: data inMemCtx: memCtx];
+}
+
 - (int) getPrAttachMethod: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -115,6 +145,17 @@ extern NSTimeZone *utcTZ;
     ASSIGN (photoData, [[photo value: 0] dataByDecodingBase64]);
 
   *data = [photoData asBinaryInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAttachSize: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  if (!photoData)
+    ASSIGN (photoData, [[photo value: 0] dataByDecodingBase64]);
+
+  *data = MAPILongValue (memCtx, [photoData length]);
 
   return MAPISTORE_SUCCESS;
 }

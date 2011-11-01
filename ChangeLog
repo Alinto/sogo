@@ -1,5 +1,12 @@
 2011-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsAttachment.m
+	(-getPrAttachEncoding:inMemCtx:, -getPrAttachFlags:inMemCtx:)
+	(-getPrAttachmentFlags:inMemCtx:)
+	(-getPrAttachmentHidden:inMemCtx:)
+	(-getPrAttachmentLinkid:inMemCtx:, -getPrAttachSize:inMemCtx:):
+	new getters.
+
 	* OpenChange/MAPIStoreSOGo.m (sogo_message_set_read_flag): new
 	backend op.
 
