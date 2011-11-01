@@ -65,6 +65,7 @@ extern NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email);
               withAID: (uint32_t) aid;
 - (int) getAttachmentTable: (MAPIStoreAttachmentTable **) tablePtr
                andRowCount: (uint32_t *) countPtr;
+- (int) setReadFlag: (uint8_t) flag;
 - (int) saveMessage;
 
 /* helper getters */

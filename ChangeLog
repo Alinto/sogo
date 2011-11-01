@@ -1,5 +1,8 @@
 2011-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_message_set_read_flag): new
+	backend op.
+
 	* OpenChange/MAPIStoreMailMessage.m (-_fetchBodyData): fetch body
 	keys with BODY.PEEK rather than just BODY, to disabled the
 	automatic setting of the "\Seen" flag.

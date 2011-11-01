@@ -742,6 +742,13 @@ MAPIStoreExternalEntryId (NSString *cn, NSString *email)
   return [self getNo: data inMemCtx: memCtx];;
 }
 
+- (int) setReadFlag: (uint8_t) flag
+{
+  [self subclassResponsibility: _cmd];
+
+  return MAPISTORE_ERROR;
+}
+
 - (void) save
 {
   [self subclassResponsibility: _cmd];

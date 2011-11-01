@@ -709,6 +709,33 @@ sogo_message_modify_recipients (void *message_object,
 }
 
 static int
+sogo_message_set_read_flag (void *message_object, uint8_t flag)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreMessage *message;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (message_object)
+    {
+      wrapper = message_object;
+      message = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [message setReadFlag: flag];
+      // [context tearDownRequest];
+      [pool release];
+    }
+  else
+    {
+      rc = sogo_backend_unexpected_error();
+    }
+
+  return rc;
+}
+
+static int
 sogo_message_save (void *message_object)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -1168,6 +1195,7 @@ int mapistore_init_backend(void)
       backend.message.open_embedded_message = sogo_message_attachment_open_embedded_message;
       backend.message.get_message_data = sogo_message_get_message_data;
       backend.message.modify_recipients = sogo_message_modify_recipients;
+      backend.message.set_read_flag = sogo_message_set_read_flag;
       backend.message.save = sogo_message_save;
       backend.message.submit = sogo_message_submit;
       backend.table.get_available_properties = sogo_table_get_available_properties;

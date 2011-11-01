@@ -1533,6 +1533,11 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return attachment;
 }
 
+- (int) setReadFlag: (uint8_t) flag
+{
+  return MAPISTORE_SUCCESS;
+}
+
 - (void) save
 {
   NSNumber *value;
