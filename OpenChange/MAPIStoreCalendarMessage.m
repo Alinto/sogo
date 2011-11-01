@@ -799,10 +799,11 @@
         {
           NSArray *recipients;
           NSDictionary *dict;
+          NSString *orgEmail, *attEmail;
           iCalPerson *person;
           iCalPersonPartStat newPartStat;
           NSNumber *flags, *trackStatus;
-          int i;
+          int i, effective;
 
           /* We must set the organizer preliminarily here because, unlike what
              the doc states, Outlook does not always pass the real organizer
@@ -810,15 +811,28 @@
           dict = [activeUser primaryIdentity];
           person = [iCalPerson new];
           [person setCn: [dict objectForKey: @"fullName"]];
-          [person setEmail: [dict objectForKey: @"email"]];
+          orgEmail = [dict objectForKey: @"email"];
+          [person setEmail: orgEmail];
           [newEvent setOrganizer: person];
           [person release];
 
           recipients = [value objectForKey: @"to"];
-      
+          effective = 0;
           for (i = 0; i < [recipients count]; i++)
             {
               dict = [recipients objectAtIndex: i];
+              attEmail = [dict objectForKey: @"email"];
+
+              /* Work-around: it happens that Outlook still passes the
+                 organizer as a recipient, maybe because of a feature
+                 documented in a pre-mesozoic PDF still buried in a cavern...
+                 In that case we remove it, and we keep the number of
+                 effective recipients in "effective". If the total is 0, we
+                 remove the "ORGANIZER" too. */
+              if ([attEmail isEqualToString: orgEmail])
+                continue;
+
+              effective++;
               flags = [dict objectForKey: MAPIPropertyKey (PR_RECIPIENT_FLAGS)];
               if (!flags)
                 {
@@ -828,7 +842,7 @@
 
               person = [iCalPerson new];
               [person setCn: [dict objectForKey: @"fullName"]];
-              [person setEmail: [dict objectForKey: @"email"]];
+              [person setEmail: attEmail];
 
               if (([flags unsignedIntValue] & 0x0002)) /* recipOrganizer */
                 [newEvent setOrganizer: person];
@@ -860,6 +874,9 @@
                   [person setRole: @"REQ-PARTICIPANT"];
                   [newEvent addToAttendees: person];
                 }
+
+              if (effective == 0) /* See work-around above */
+                [newEvent setOrganizer: nil];
 
               [person release];
             }

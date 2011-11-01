@@ -1,5 +1,8 @@
 2011-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): added work-around
+	for setting of organizer as an attendee record.
+
 	* OpenChange/MAPIStoreMailMessage.m (-setReadFlag:): implemented
 	basic method, only dealing with actual setting or unsetting of
 	"\Seen".
