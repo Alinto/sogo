@@ -63,17 +63,17 @@
 
 "noEmailForDelegation" = "Du må angi adressen til personen du delegerer din invitasjon.";
 "delegate is organizer" = "Personen du delegerer til er arrangør. Vennligst deleger til en annen person.";
-"delegate is a participant" = "The delegate is already a participant.";
-"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+
+
 
 /* common buttons */
-"OK" = "OK";
+
 "Cancel" = "Avbryt";
 "Yes" = "Ja";
 "No" = "Nei";
 
 /* alarms */
 "Reminder:" = "Påminnelse:";
-"Start:" = "Start:";
+
 "Due Date:" = "Forfallsdato:";
 "Location:" = "Lokasjon:";

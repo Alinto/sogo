@@ -89,7 +89,7 @@
 "From"          = "De";
 "Subject"       = "Asunto";
 "To"            = "Para";
-"Cc"            = "Cc";
+
 "Bcc"           = "CCo";
 "Reply-To"	= "Responder A";
 "Add address"   = "Añadir dirección";
@@ -101,7 +101,7 @@
 "Attach File(s)..." = "Adjuntar fichero(s)...";
 
 "to"            = "Para";
-"cc"            = "Cc";
+
 "bcc"           = "CCo";
 
 "Addressbook"   = "Libreta de direcciones";
@@ -117,7 +117,7 @@
 "Priority" = "Prioridad";
 "highest" = "Muy alta";
 "high" = "Alta";
-"normal" = "Normal";
+
 "low" = "Baja";
 "lowest" = "Muy baja";
 
@@ -227,7 +227,7 @@
 "None" = "Ninguna";
 "Important" = "Importante";
 "Work" = "Trabajo";
-"Personal" = "Personal";
+
 "To Do" = "Por hacer";
 "Later" = "Más tarde";
 

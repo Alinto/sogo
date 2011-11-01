@@ -10,7 +10,7 @@
 "Switch to day view" = "Перейти к обзору дня";
 "Switch to week view" = "Перейти к обзору недели";
 "Switch to month view" = "Перейти к обзору месяца";
-"Reload all calendars" = "Reload all calendars";
+
 
 /* Tabs */
 "Date" = "Дата";
@@ -46,8 +46,8 @@
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Сегодня";
 
-"Previous Day" = "Previous Day";
-"Next Day" = "Next Day";
+
+
 
 /* Week */
 
@@ -126,7 +126,7 @@
 
 /* Misc */
 
-"OpenGroupware.org" = "OpenGroupware.org";
+
 "Forbidden" = "Запрешено";
 
 /* acls */
@@ -150,7 +150,7 @@
 "View the Date & Time" = "Показывать время и дату";
 "Modify" = "Изменить";
 "Respond To" = "Ответить";
-"None" = "None";
+
 
 "This person can create objects in my calendar."
 = "Этот участник может создавать записи в моем календаре.";
@@ -186,7 +186,7 @@
 "No appointments found" = "Не найдено назначенных встреч";
 "Meetings proposed by you" = "Ваши предложения о встрече";
 "Meetings proposed to you" = "Предложенные Вам встречи";
-"sched_startDateFormat" = "%d/%m %H:%M";
+
 "action" = "Действие";
 "accept" = "Согласиться";
 "decline" = "Отказаться";
@@ -207,7 +207,7 @@
 "Title:" = "Заголовок:";
 "Calendar:" = "Календарь:";
 "Name" = "Имя";
-"Email" = "Email";
+
 "Status:" = "Статус:";
 "% complete" = "% выполнено";
 "Location:" = "Место:";
@@ -352,13 +352,13 @@
 "Week(s)" = "недель(и)";
 "On" = "На";
 "Month(s)" = "месяца(цев)";
-"The" = "";
+
 "Recur on day(s)" = "Повторяется в дни";
 "Year(s)" = "год(года)";
-"cycle_of" = "";
+
 "No end date" = "Нет даты завершения";
 "Create" = "Создать";
-"appointment(s)" = "appointment(s)";
+
 "Repeat until" = "Повторять до";
 
 "First" = "Первый";
@@ -412,11 +412,11 @@
 "Email Organizer" = "Email организатору";
 "Email Attendees" = "Email участникам";
 
-"zoom_400" = "400%";
-"zoom_200" = "200%";
-"zoom_100" = "100%";
-"zoom_50" = "50%";
-"zoom_25" = "25%";
+
+
+
+
+
 
 /* transparency */
 
@@ -446,7 +446,7 @@ validate_endbeforestart    = "Дата начала позже даты конц
 "Day View" = "День";
 "Week View" = "По неделям";
 "Month View" = "Месяц";
-"Reload" = "Reload";
+
 
 "eventPartStatModificationError" = "Невозможно изменить статус Вашего участия.";
 
@@ -537,10 +537,10 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Show tasks" = "Показать задания";
 
 "Links to this Calendar" = "Ссылки на этот календарь";
-"Authenticated User Access" = "Authenticated User Access";
+
 "CalDAV URL" = "CalDAV url";
-"WebDAV ICS URL" = "WebDAV ICS URL";
-"WebDAV XML URL" = "WebDAV XML URL";
+
+
 
 /* Error messages */
 "dayFieldInvalid" = "Пожалуйста, укажите числовое значение в поле дней, большее или равное 1.";
@@ -550,7 +550,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "yearFieldInvalid" = "Пожалуйста, укажите числовое значение в поле лет, большее или равное 1.";
 "appointmentFieldInvalid" = "Пожалуйста, укажите числовое значение в поле встреч, большее или равное 1.";
 "recurrenceUnsupported" = "Этот тип повторений пока не поддерживается.";
-"Please specify a calendar name." = "Please specify a calendar name.";
+
 "tagNotDefined" = "Вы должны указать метку (tag) если хотите синхронизировать этот календарь.";
 "tagAlreadyExists" = "Указанная метка уже используется в другом календаре.";
 "tagHasChanged" = "Если Вы смените метку в этом календаре, то будет необходимо заново синхронизировать данные на Вашем мобильном устройстве. \nПродолжить?";
@@ -563,10 +563,10 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Mark Completed" = "Пометить как завершенное";
 "Delete Task" = "Удалить задачу";
 "Delete Event" = "Удалить событие";
-"Copy event to my calendar" = "Copy event to my calendar";
+
 
 "Subscribe to a web calendar..." = "Подписаться на калентарь в сети...";
-"URL of the Calendar" = "URL of the Calendar";
-"Web Calendar" = "Web Calendar";
+
+
 "Reload on login" = "Перезагружать при входе";
 "Invalid number." = "Число неверно.";

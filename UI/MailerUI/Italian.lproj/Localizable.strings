@@ -11,14 +11,14 @@
 "Reply"       = "Rispondi";
 "Reply All"   = "Rispondi a tutti";
 "Print"       = "Stampa";
-"Stop"        = "Stop";
+
 "Write"       = "Scrivi";
 
 "Send" = "Invia";
 "Contacts" = "Contatti";
 "Attach" = "Allegato";
 "Save" = "Salva";
-"Options" = "Options";
+
 "Size" = "Dimensione";
 
 /* Tooltips */
@@ -43,7 +43,7 @@
 
 /* Main Frame  */
 
-"Home"                 = "Home"; 
+ 
 "Calendar"             = "Calendario";
 "Addressbook"          = "Rubrica";
 "Mail"                 = "Posta";
@@ -59,7 +59,7 @@
 "Write a new message" = "Scrivi un nuovo messaggio";
 
 "Share: " = "Condividi: ";
-"Account: " = "Account: ";
+
 "Shared Account: " = "Account condiviso: ";
 
 /* acls */
@@ -89,8 +89,8 @@
 "From"          = "Da";
 "Subject"       = "Oggetto";
 "To"            = "A";
-"Cc"            = "Cc";
-"Bcc"           = "Bcc";
+
+
 "Reply-To"	= "Rispondi a";
 "Add address"   = "Aggiungi indirizzi";
 
@@ -101,8 +101,8 @@
 "Attach File(s)..." = "Allega File(s)...";
 
 "to"            = "A";
-"cc"            = "Cc";
-"bcc"           = "Bcc";
+
+
 
 "Addressbook"   = "Rubrica";
 
@@ -196,7 +196,7 @@
 "Delete Folder" = "Cancella cartella";
 "Use This Folder For" = "Usa questa cartella per";
 "Get Messages for Account" = "Scarica messaggi per l'account";
-"Properties..." = "Properties...";
+
 "Delegation..." = "Delega...";
 
 /* Use This Folder menu */

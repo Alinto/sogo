@@ -75,7 +75,7 @@ static NSURL *tableURL = nil;
 
 - (void) usage
 {
-  fprintf (stderr, "remove user1 [user2] ...\n\n"
+  fprintf (stderr, "remove <user1> [<user2>] ...\n\n"
 	   "         user       the user of whom to remove the data\n");
 }
 

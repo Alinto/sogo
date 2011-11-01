@@ -91,7 +91,7 @@
 "To"            = "Til";
 "Cc"            = "Afrit";
 "Bcc"           = "Falið afrit";
-"Reply-To"	= "Reply-To";
+
 "Add address"   = "Bæta við viðtakanda";
 
 "Attachments:" = "Viðhengi:";
@@ -111,7 +111,7 @@
 
 "Return Receipt" = "Staðfesting á lestri";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Sendandi þessa bréfs hefur beðið um að fá skilaboð þegar þú lest það. Viltu láta sendandann vita?";
-"Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
+
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Þetta er móttökukvittun fyrir tölvupóstihn sem þú sendir til %@.\n\nAth: Þessi móttökukvittun staðfestir aðeins að tölvubréfið hafi verið sýnt á tölvu móttakandans. Það er engin trygging fyrir því að móttakandinn hafi lesið eða skilið innihald tölvubréfsins.";
 
 "Priority" = "Forgangur";
@@ -160,7 +160,7 @@
 
 /* Tree */
 
-"SentFolderName"   = "Sent";
+
 "TrashFolderName"  = "Rusl";
 "InboxFolderName"  = "Innhólf";
 "DraftsFolderName" = "Drög";
@@ -234,7 +234,7 @@
 /* Mark popup menu */
 "As Read" = "Sem lesið";
 "Thread As Read" = "Umræðu sem lesna";
-"As Read By Date..." = "As Read By Date...";
+
 "All Read" = "Alla sem lesna";
 "Flag" = "Tilkynna";
 "As Junk" = "Sem ruslpóst";
@@ -243,10 +243,8 @@
 
 /* Folder operations */
 "Name :" = "Nafn :";
-"Enter the new name of your folder :"
- = "Enter the new name of your folder :";
-"Do you really want to move this folder into the trash ?"
- = "Do you really want to move this folder into the trash ?";
+
+
 "Operation failed" = "Aðgerðin mistókst";
 
 "Quota" = "Kvóti:";

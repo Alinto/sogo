@@ -9,7 +9,7 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 
 /* Receipts */
 "Title:" = "Titel:";
-"Start:" = "Start:";
+
 "End:" = "Slut:";
 
 "Receipt: users invited to a meeting" = "Kvitto: användare inbjudna till ett möte";
@@ -62,4 +62,3 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 = "%{Attendee} %{SentByText}har inte än bestämt sig om din mötesinbjudan.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";

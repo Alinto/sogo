@@ -40,7 +40,7 @@
 "a2_Tuesday" = "Ti";
 "a2_Wednesday" = "On";
 "a2_Thursday" = "To";
-"a2_Friday" = "Fr";
+
 "a2_Saturday" = "Lø";
 
 "dayLabelFormat" = "%Y-%m-%d";
@@ -66,27 +66,27 @@
 "January" = "Januar";
 "February" = "Februar";
 "March" = "Mars";
-"April" = "April";
-"May" = "May";
+
+
 "June" = "Juni";
 "July" = "Juli";
-"August" = "August";
-"September" = "September";
+
+
 "October" = "Oktober";
-"November" = "November";
+
 "December" = "Desember";
 
 "a3_January" = "Januar";
 "a3_February" = "Februar";
 "a3_March" = "Mars";
-"a3_April" = "April";
-"a3_May" = "May";
+
+
 "a3_June" = "Juni";
 "a3_July" = "Juli";
-"a3_August" = "August";
-"a3_September" = "September";
+
+
 "a3_October" = "Oktober";
-"a3_November" = "November";
+
 "a3_December" = "Desember";
 
 "Previous Month" = "Forrige måned";
@@ -126,7 +126,7 @@
 
 /* Misc */
 
-"OpenGroupware.org" = "OpenGroupware.org";
+
 "Forbidden" = "Forbudt";
 
 /* acls */
@@ -186,7 +186,7 @@
 "No appointments found" = "Ingen avtaler funnet";
 "Meetings proposed by you" = "Møter foreslått av deg";
 "Meetings proposed to you" = "Møter foreslått til deg";
-"sched_startDateFormat" = "%d/%m %H:%M";
+
 "action" = "Handling";
 "accept" = "Godta";
 "decline" = "Avslå";
@@ -208,7 +208,7 @@
 "Calendar:" = "Kalender:";
 "Name" = "Navn";
 "Email" = "E-post";
-"Status:" = "Status:";
+
 "% complete" = "% utført";
 "Location:" = "Plass:";
 "Priority:" = "Prioritet:";
@@ -301,7 +301,7 @@
 "prio_2" = "Høy";
 "prio_3" = "Høy";
 "prio_4" = "Høy";
-"prio_5" = "Normal";
+
 "prio_6" = "Lav";
 "prio_7" = "Lav";
 "prio_8" = "Lav";
@@ -352,7 +352,7 @@
 "Week(s)" = "Uke(r)";
 "On" = "På";
 "Month(s)" = "Måned(er)";
-"The" = "The";
+
 "Recur on day(s)" = "Gjentas på dag(er)";
 "Year(s)" = "År";
 "cycle_of" = "av";
@@ -412,11 +412,11 @@
 "Email Organizer" = "E-post organisator";
 "Email Attendees" = "E-post deltakere";
 
-"zoom_400" = "400%";
-"zoom_200" = "200%";
-"zoom_100" = "100%";
-"zoom_50" = "50%";
-"zoom_25" = "25%";
+
+
+
+
+
 
 /* transparency */
 
@@ -485,7 +485,7 @@ validate_endbeforestart    = "Angitt sluttdato inntreffer før angitt startdato.
 
 /* FreeBusy panel buttons and labels */
 "Suggest time slot:" = "Foreslå tid:";
-"Zoom:" = "Zoom:";
+
 "Previous slot" = "Forrige spor";
 "Next slot" = "Neste spor";
 "Previous hour" = "Forrige time";
@@ -500,7 +500,7 @@ validate_endbeforestart    = "Angitt sluttdato inntreffer før angitt startdato.
 
 /* apt list */
 "Title" = "Tittel";
-"Start" = "Start";
+
 "End" = "Slutt";
 "Location" = "Plass";
 "(Private Event)" = "(Privat hendelse)";
@@ -537,10 +537,10 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "Show tasks" = "Vis oppgaver";
 
 "Links to this Calendar" = "Linker til denne kalenderen";
-"Authenticated User Access" = "Authenticated User Access";
+
 "CalDAV URL" = "CalDAV url";
-"WebDAV ICS URL" = "WebDAV ICS URL";
-"WebDAV XML URL" = "WebDAV XML URL";
+
+
 
 /* Error messages */
 "dayFieldInvalid" = "Angi en numerisk verdi i dagsfeltet større enn eller lik 1.";
@@ -550,7 +550,7 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "yearFieldInvalid" = "Angi en numerisk verdi i årsfeltet større enn eller lik 1.";
 "appointmentFieldInvalid" = "Angi en numerisk verdi i møtesfeltet større enn eller lik 1.";
 "recurrenceUnsupported" = "Denne type gjentakelse støttes ikke i dag.";
-"Please specify a calendar name." = "Please specify a calendar name.";
+
 "tagNotDefined" = "Du må angi en merkelapp om du vil synkronisere kalenderen.";
 "tagAlreadyExists" = "Merkelappen du spesifiserte er allerede knyttet til en annen kalender.";
 "tagHasChanged" = "Om du endrer merkelappen på din kalender trenger du å laste dataene i din mobiltelefon på nytt.\nFortsätta?";
@@ -563,7 +563,7 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "Mark Completed" = "Merk utført";
 "Delete Task" = "Slett oppgave";
 "Delete Event" = "Slett hendelse";
-"Copy event to my calendar" = "Copy event to my calendar";
+
 
 "Subscribe to a web calendar..." = "Abonnere på en internett-kalender...";
 "URL of the Calendar" = "URL til kalenderen";

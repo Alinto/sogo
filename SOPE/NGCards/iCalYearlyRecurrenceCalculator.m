@@ -60,6 +60,9 @@
   count = 0;
   referenceDate = nil;
  
+  NSLog(@"*** [iCalYearly] looking at period from %@ to %@", [_r startDate], [_r endDate]);
+  NSLog(@"*** [iCalYearly] reference period from %@ to %@", [firstRange startDate], [firstRange endDate]);
+
   if ([rEnd compare: firStart] == NSOrderedAscending)
     // Range ends before first occurrence
     return nil;
@@ -91,7 +94,7 @@
 	  if ([lastDate compare: rStart] == NSOrderedAscending)
 	    // Range starts after last occurrence
 	    return nil;
-	  if ([lastDate compare: rEnd] == NSOrderedDescending)
+	  if ([lastDate compare: rEnd] == NSOrderedAscending)
 	    // Range ends after last occurence; adjust end date
 	    rEnd = lastDate;
 	}
@@ -189,12 +192,12 @@
 		      rangesInMonth = [monthlyCalc recurrenceRangesWithinCalendarDateRange: rangeForMonth];
 		      
 		      for (k = 0; k < [rangesInMonth count] && (repeatCount == 0 || count < repeatCount); k++) {
-			//NSLog(@"*** YEARLY found %@ (count = %i)", [[rangesInMonth objectAtIndex: k] startDate], count);
+			NSLog(@"*** [iCalYearly] found %@ - %@ (count = %i)", [[rangesInMonth objectAtIndex: k] startDate], [[rangesInMonth objectAtIndex: k] endDate], count);
 			count++;
 			if ([_r containsDateRange: [rangesInMonth objectAtIndex: k]])
 			  {
 			    [ranges addObject: [rangesInMonth objectAtIndex: k]];
-			    //NSLog(@"*** YEARLY adding %@ (count = %i)", [[rangesInMonth objectAtIndex: k] startDate], count);
+			    NSLog(@"*** [iCalYearly] adding %@ (count = %i)", [[rangesInMonth objectAtIndex: k] startDate], count);
 			  }
 		      }
 		    }
@@ -215,8 +218,10 @@
 	      end = [start addTimeInterval: [firstRange duration]];
 	      r = [NGCalendarDateRange calendarDateRangeWithStartDate: start
 							      endDate: end];
+              NSLog(@"*** [iCalYearly] possibly %@ - %@ (count = %i)", [r startDate], [r endDate], count);
 	      if ([_r containsDateRange: r] && (repeatCount == 0 || count < repeatCount))
 		{
+                  NSLog(@"*** [iCalYearly] adding %@ (count = %i)", [r startDate], count);
 		  [ranges addObject: r];
 		  count++;
 		}

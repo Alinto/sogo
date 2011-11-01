@@ -4,10 +4,10 @@
 "Create"      = "Erstellen";
 "Empty Trash" = "Papierkorb leeren";
 "Delete"      = "Löschen";
-"Expunge"     = "Expunge";
+
 "Forward"     = "Weiterleiten";
 "Get Mail"    = "Abrufen";
-"Junk"        = "Junk";
+
 "Reply"       = "Antworten";
 "Reply All"   = "Allen Antworten";
 "Print"       = "Drucken";
@@ -18,7 +18,7 @@
 "Contacts" = "Kontakte";
 "Attach" = "Anhang";
 "Save" = "Speichern";
-"Options" = "Options";
+
 "Size" = "Größe";
 
 /* Tooltips */
@@ -79,7 +79,7 @@
 "Archive This Folder" = "Diesen Ordner archivieren";
 "Modify the acl of this folder" = "Benutzerrechte dieses Ordners verändern";
 
-"Saved Messages.zip" = "Saved Messages.zip";
+
 
 "Update" = "Speichern";
 "Cancel" = "Abbrechen";
@@ -117,7 +117,7 @@
 "Priority" = "Priorität";
 "highest" = "Sehr hoch";
 "high" = "Hoch";
-"normal" = "Normal";
+
 "low" = "Niedrig";
 "lowest" = "Sehr niedrig";
 
@@ -142,7 +142,7 @@
 "View"          = "Ansicht";
 "All"           = "Alle";
 "Unread"        = "Ungelesene";
-"No message"    = "No message";
+
 "messages"      = "Nachricht(en)";
 
 "first"         = "Erste";
@@ -196,8 +196,8 @@
 "Delete Folder" = "Löschen";
 "Use This Folder For" = "Diesen Ordner verwenden für";
 "Get Messages for Account" = "Neue Nachrichten empfangen";
-"Properties..." = "Properties...";
-"Delegation..." = "Delegation...";
+
+
 
 /* Use This Folder menu */
 "Sent Messages" = "Gesendete Nachrichten";
@@ -228,7 +228,7 @@
 "Important" = "Wichtig";
 "Work" = "Geschäftlich";
 "Personal" = "Persönlich";
-"To Do" = "To Do";
+
 "Later" = "Später";
 
 /* Mark popup menu */
@@ -286,6 +286,6 @@
 "error_missingrecipients" = "Der Empfänger fehlt!";
 
 /* Message sending */
-"cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
-"cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
-"cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";
+
+
+

@@ -11,15 +11,15 @@
 "Reply"       = "Ateb";
 "Reply All"   = "Ateb Pawb";
 "Print"       = "Argraffu";
-"Stop"        = "Stop";
+
 "Write"       = "Ysgrifennu";
 
 "Send" = "Anfon";
 "Contacts" = "Cysylltiadau";
 "Attach" = "Atodi";
 "Save" = "Cadw";
-"Options" = "Options";
-"Size" = "Size";
+
+
 
 /* Tooltips */
 
@@ -49,7 +49,7 @@
 "Mail"                 = "Ebost";
 "Right Administration" = "Hawl Gweinyddwr";
 
-"Help" = "Help";
+
 
 /* Mail account main windows */
 
@@ -79,7 +79,7 @@
 "Archive This Folder" = "Archive This Folder";
 "Modify the acl of this folder" = "Newid acl y ffolder";
 
-"Saved Messages.zip" = "Saved Messages.zip";
+
 
 "Update" = "Diweddaru";
 "Cancel" = "Canslo";
@@ -89,35 +89,35 @@
 "From"          = "Oddi wrth";
 "Subject"       = "Testun";
 "To"            = "At";
-"Cc"            = "Cc";
-"Bcc"           = "Bcc";
+
+
 "Reply-To"	= "Ymateb i";
 "Add address"   = "Ychwanegu cyfeiriad";
 
 "Attachments:" = "Atodiadau:";
-"Open" = "Open";
-"Select All" = "Select All";
-"Attach Web Page..." = "Attach Web Page...";
-"Attach File(s)..." = "Attach File(s)...";
+
+
+
+
 
 "to"            = "At";
-"cc"            = "Cc";
-"bcc"           = "Bcc";
+
+
 
 "Addressbook"   = "Llyfr Cyfeiradau";
 
 "Edit Draft..." = "Golygu Drafft...";
 "Load Images" = "Llwytho Delweddau";
 
-"Return Receipt" = "Return Receipt";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?";
-"Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+
+
+
+
 
 "Priority" = "Blaenoriaeth";
 "highest" = "Uchaf";
 "high" = "Uchel";
-"normal" = "Normal";
+
 "low" = "Isel";
 "lowest" = "Lleiaf";
 
@@ -142,7 +142,7 @@
 "View"          = "Gweld";
 "All"           = "Oll";
 "Unread"        = "Heb ddarllen";
-"No message"    = "No message";
+
 "messages"      = "negeseuon";
 
 "first"         = "Cyntaf";
@@ -165,13 +165,13 @@
 "InboxFolderName"  = "Newydd";
 "DraftsFolderName" = "Draffts";
 "SieveFolderName"  = "Ffilteri";
-"OtherUsersFolderName"   = "Other Users";
-"SharedFoldersName" = "Shared Folders";
+
+
 "Folders"          = "Ffolderi"; /* title line */
 
 /* MailMoveToPopUp */
 
-"MoveTo"        = "Move &hellip;";
+
 
 /* Address Popup menu */
 "Add to Address Book..." = "Ychwanegu i Llyfr Cyfeiriadau...";
@@ -180,7 +180,7 @@
 
 /* Image Popup menu */
 "Save Image" = "Cadw Delwedd";
-"Save Attachment" = "Save Attachment";
+
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Agor mewn ffenestr Neges Newydd";
@@ -196,8 +196,8 @@
 "Delete Folder" = "Dileu Ffolder";
 "Use This Folder For" = "Defyddio'r Ffolder yma am";
 "Get Messages for Account" = "Cael negeseuon ar gyfer Cyfrif";
-"Properties..." = "Properties...";
-"Delegation..." = "Delegation...";
+
+
 
 /* Use This Folder menu */
 "Sent Messages" = "Negeseuon anfonwyd";
@@ -212,7 +212,7 @@
 "Edit As New..." = "Golygu fel Newydd...";
 "Move To" = "Symud i";
 "Copy To" = "Copio i";
-"Label" = "Label";
+
 "Mark" = "Marc";
 "Save As..." = "Cadw Fel...";
 "Print Preview" = "Rhagolwg Argraffu";
@@ -250,12 +250,12 @@
 "Operation failed" = "Gweithrediad wedi methu";
 
 "Quota" = "cwota:";
-"quotasFormat" = "%{0}% used on %{1} MB";
+
 
 "Please select a message." = "Dewiswch neges.";
 "Please select a message to print." = "Dewiswch neges i'w argraffu.";
 "Please select only one message to print." = "Dewiswch un neges yn unig i'w argraffu.";
-"The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
+
 
 
 "The folder with name \"%{0}\" could not be created."
@@ -277,8 +277,7 @@
 = "Mae copio neges i fewn i'w ffolder ei hun yn amhosibl!";
 
 /* Message operations */
-"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
-= "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
+
 
 /* Message editing */
 "error_validationfailed" = "Dilysiad wedi methu";
@@ -286,6 +285,6 @@
 "error_missingrecipients" = "Dim derbynnydd wedi nodi";
 
 /* Message sending */
-"cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
-"cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
-"cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";
+
+
+

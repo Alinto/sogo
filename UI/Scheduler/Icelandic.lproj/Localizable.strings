@@ -27,7 +27,7 @@
 "Saturday" = "Laugardagur";
 "DayOfTheMonth" = "Dagur mánaðarins";
 
-"Sun" = "Sun";
+
 "Mon" = "Mán";
 "Tue" = "Þri";
 "Wed" = "Mið";
@@ -35,7 +35,7 @@
 "Fri" = "Fös";
 "Sat" = "Lau";
 
-"a2_Sunday" = "Su";
+
 "a2_Monday" = "Má";
 "a2_Tuesday" = "Þr";
 "a2_Wednesday" = "Mi";
@@ -71,7 +71,7 @@
 "June" = "Júní";
 "July" = "Júlí";
 "August" = "Ágúst";
-"September" = "September";
+
 "October" = "Október";
 "November" = "Nóvember";
 "December" = "Desember";
@@ -84,7 +84,7 @@
 "a3_June" = "Júní";
 "a3_July" = "Júlí";
 "a3_August" = "Ágúst";
-"a3_September" = "September";
+
 "a3_October" = "Október";
 "a3_November" = "Nóvember";
 "a3_December" = "Desember";
@@ -111,7 +111,7 @@
 "Select an iCalendar file (.ics)." = "Velja iCalendar skrá (.ics).";
 "Upload" = "Hala upp";
 "Publish Calendar..." = "Gefa dagatal út...";
-"Reload Remote Calendars" = "Reload Remote Calendars";
+
 "Properties" = "Eiginleikar";
 "Done" = "Ljúka";
 "An error occured while importing calendar." = "Villa kom upp þegar dagatalið var flutt inn.";
@@ -126,7 +126,7 @@
 
 /* Misc */
 
-"OpenGroupware.org" = "OpenGroupware.org";
+
 "Forbidden" = "Bannað";
 
 /* acls */
@@ -186,7 +186,7 @@
 "No appointments found" = "Engar tímapantanir fundust";
 "Meetings proposed by you" = "Tillögur um fundi sem þú hefur lagt fram";
 "Meetings proposed to you" = "Tillögur um fundi sem þú hefur fengið";
-"sched_startDateFormat" = "%d/%m %H:%M";
+
 "action" = "Aðgerð";
 "accept" = "Samþykkja";
 "decline" = "Hafna";
@@ -213,10 +213,10 @@
 "Location:" = "Staðsetning:";
 "Priority:" = "Mikilvægi:";
 "Privacy" = "Friðhelgi";
-"Cycle" = "Cycle";
-"Cycle End" = "Cycle End";
+
+
 "Categories" = "Flokkar";
-"Classification" = "Classification";
+
 "Duration" = "Tímalengd";
 "Attendees:" = "Þáttakendur:";
 "Resources" = "Tilföng";
@@ -227,11 +227,11 @@
 "Repeat:" = "Endurtaka:";
 "Reminder:" = "Áminning:";
 "General:" = "Almennt:";
-"Reply:" = "Reply:";
 
-"Target:" = "Target:";
 
-"attributes" = "attributes";
+
+
+
 "attendees" = "þáttakendur";
 "delegated from" = "Skipaður fulltrúi var";
 
@@ -257,7 +257,7 @@
 
 /* Appointments (error messages) */
 
-"Conflicts found!" = "Conflicts found!";
+
 "Invalid iCal data!" = "Ógild ICal gögn!";
 "Could not create iCal data!" = "Ekki tókst að búa til iCal gögn!";
 
@@ -283,7 +283,7 @@
 "All day Event" = "Heilsdagsviðburður";
 "check for conflicts" = "Athuga með árekstra";
 
-"Browse URL" = "Browse URL";
+
 
 "newAttendee" = "Bæta þáttakanda við";
 
@@ -327,17 +327,17 @@
 
 /* Cycles */
 
-"cycle_once" = "cycle_once";
-"cycle_daily" = "cycle_daily";
-"cycle_weekly" = "cycle_weekly";
-"cycle_2weeks" = "cycle_2weeks";
-"cycle_4weeks" = "cycle_4weeks";
-"cycle_monthly" = "cycle_monthly";
-"cycle_weekday" = "cycle_weekday";
-"cycle_yearly" = "cycle_yearly";
 
-"cycle_end_never" = "cycle_end_never";
-"cycle_end_until" = "cycle_end_until";
+
+
+
+
+
+
+
+
+
+
 
 "Recurrence pattern" = "Endurtekningarmynstur";
 "Range of recurrence" = "Endurtekningartímabil";
@@ -404,7 +404,7 @@
 "reminder_AFTER" = "eftir";
 "reminder_START" = "viðburðurinn byrjar";
 "reminder_END" = "viðburðurinn endar";
-"Reminder Details" = "Reminder Details";
+
 
 "Choose a Reminder Action" = "Velja aðgerð við áminningu";
 "Show an Alert" = "Sýna viðvörun";
@@ -412,11 +412,11 @@
 "Email Organizer" = "Senda til skipuleggjanda";
 "Email Attendees" = "Senda þáttakendum";
 
-"zoom_400" = "400%";
-"zoom_200" = "200%";
-"zoom_100" = "100%";
-"zoom_50" = "50%";
-"zoom_25" = "25%";
+
+
+
+
+
 
 /* transparency */
 
@@ -530,7 +530,7 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 
 "Synchronization" = "Samstilling";
 "Synchronize" = "Samstilla";
-"Tag:" = "Tag:";
+
 
 "Display" = "Sýna";
 "Show alarms" = "Sýna vekjara";
@@ -538,9 +538,9 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 
 "Links to this Calendar" = "Tenglar í þetta dagatal";
 "Authenticated User Access" = "Aðgangur fyrir sannvottaðan notanda";
-"CalDAV URL" = "CalDAV URL";
-"WebDAV ICS URL" = "WebDAV ICS URL";
-"WebDAV XML URL" = "WebDAV XML URL";
+
+
+
 
 /* Error messages */
 "dayFieldInvalid" = "Hér þarf að tilgreina fyrir Dagana, tölugildi sem er 1 eða stærra.";
@@ -550,7 +550,7 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 "yearFieldInvalid" = "Hér þarf að tilgreina fyrir árið/árin, tölugildi sem er 1 eða stærra.";
 "appointmentFieldInvalid" = "Hér þarf að tilgreina fyrir tímapantanir, tölugildi sem er 1 eða stærra.";
 "recurrenceUnsupported" = "Þessa tegund endurtekningar er ekki hægt að styðja enn sem komið er.";
-"Please specify a calendar name." = "Please specify a calendar name.";
+
 "tagNotDefined" = "Þú þarft að tilgreina merki ef þú vilt samhæfa þetta dagatal.";
 "tagAlreadyExists" = "Merkið sem þú tilgreindir er nú þegar bendlað við annað dagatal.";
 "tagHasChanged" = "Ef þú breytir merkingunni á dagatalinu þínu, þarftu að endurhlaða gögnum inn á farsíman þinn.\nHalda áfram?";

@@ -62,4 +62,3 @@ vtodo_class2 = "(Конфіденційне завдання)";
 = "%{Attendee} %{SentByText} поки не визначився з участю в події.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";
