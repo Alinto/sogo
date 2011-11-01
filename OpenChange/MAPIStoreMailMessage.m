@@ -1535,6 +1535,14 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 
 - (int) setReadFlag: (uint8_t) flag
 {
+  NSString *imapFlag = @"\\Seen";
+
+  /* TODO: notifications should probably be emitted from here */
+  if (flag & CLEAR_READ_FLAG)
+    [sogoObject removeFlags: imapFlag];
+  else
+    [sogoObject addFlags: imapFlag];
+
   return MAPISTORE_SUCCESS;
 }
 

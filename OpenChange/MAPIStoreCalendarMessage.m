@@ -901,4 +901,9 @@
   return newAttachment;
 }
 
+- (int) setReadFlag: (uint8_t) flag
+{
+  return MAPISTORE_SUCCESS;
+}
+
 @end

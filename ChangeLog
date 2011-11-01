@@ -1,3 +1,13 @@
+2011-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailMessage.m (-setReadFlag:): implemented
+	basic method, only dealing with actual setting or unsetting of
+	"\Seen".
+
+	* OpenChange/MAPIStoreCalendarMessage.m (-setReadFlag:): overriden
+	with dumb implementation, since it seems to be invoked on this
+	kind of object.
+
 2011-10-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContactsAttachment.m
