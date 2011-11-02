@@ -811,92 +811,96 @@
       /* alarm */
       [self _setupAlarmDataInEvent: newEvent];
 
-      // Organizer
-      value = [properties objectForKey: @"recipients"];
-      if (value)
+      if ([[properties objectForKey: MAPIPropertyKey (PidLidAppointmentStateFlags)] intValue]
+          != 0)
         {
-          NSArray *recipients;
-          NSDictionary *dict;
-          NSString *orgEmail, *attEmail;
-          iCalPerson *person;
-          iCalPersonPartStat newPartStat;
-          NSNumber *flags, *trackStatus;
-          int i, effective;
-
-          /* We must set the organizer preliminarily here because, unlike what
-             the doc states, Outlook does not always pass the real organizer
-             in the recipients list. */
-          dict = [activeUser primaryIdentity];
-          person = [iCalPerson new];
-          [person setCn: [dict objectForKey: @"fullName"]];
-          orgEmail = [dict objectForKey: @"email"];
-          [person setEmail: orgEmail];
-          [newEvent setOrganizer: person];
-          [person release];
-
-          recipients = [value objectForKey: @"to"];
-          effective = 0;
-          for (i = 0; i < [recipients count]; i++)
+          // Organizer
+          value = [properties objectForKey: @"recipients"];
+          if (value)
             {
-              dict = [recipients objectAtIndex: i];
-              attEmail = [dict objectForKey: @"email"];
+              NSArray *recipients;
+              NSDictionary *dict;
+              NSString *orgEmail, *attEmail;
+              iCalPerson *person;
+              iCalPersonPartStat newPartStat;
+              NSNumber *flags, *trackStatus;
+              int i, effective;
 
-              /* Work-around: it happens that Outlook still passes the
-                 organizer as a recipient, maybe because of a feature
-                 documented in a pre-mesozoic PDF still buried in a cavern...
-                 In that case we remove it, and we keep the number of
-                 effective recipients in "effective". If the total is 0, we
-                 remove the "ORGANIZER" too. */
-              if ([attEmail isEqualToString: orgEmail])
-                continue;
-
-              effective++;
-              flags = [dict objectForKey: MAPIPropertyKey (PR_RECIPIENT_FLAGS)];
-              if (!flags)
-                {
-                  [self logWithFormat: @"no recipient flags specified"];
-                  break;
-                }
-
+              /* We must set the organizer preliminarily here because, unlike what
+                 the doc states, Outlook does not always pass the real organizer
+                 in the recipients list. */
+              dict = [activeUser primaryIdentity];
               person = [iCalPerson new];
               [person setCn: [dict objectForKey: @"fullName"]];
-              [person setEmail: attEmail];
+              orgEmail = [dict objectForKey: @"email"];
+              [person setEmail: orgEmail];
+              [newEvent setOrganizer: person];
+              [person release];
 
-              if (([flags unsignedIntValue] & 0x0002)) /* recipOrganizer */
-                [newEvent setOrganizer: person];
-              else
+              recipients = [value objectForKey: @"to"];
+              effective = 0;
+              for (i = 0; i < [recipients count]; i++)
                 {
-                  trackStatus
-                    = [dict
-                        objectForKey: MAPIPropertyKey (PR_RECIPIENT_TRACKSTATUS)];
+                  dict = [recipients objectAtIndex: i];
+                  attEmail = [dict objectForKey: @"email"];
 
-                  /* FIXME: we should provide a data converter between OL
-                     partstats and SOGo */
-                  switch ([trackStatus unsignedIntValue])
+                  /* Work-around: it happens that Outlook still passes the
+                     organizer as a recipient, maybe because of a feature
+                     documented in a pre-mesozoic PDF still buried in a cavern...
+                     In that case we remove it, and we keep the number of
+                     effective recipients in "effective". If the total is 0, we
+                     remove the "ORGANIZER" too. */
+                  if ([attEmail isEqualToString: orgEmail])
+                    continue;
+
+                  effective++;
+                  flags = [dict objectForKey: MAPIPropertyKey (PR_RECIPIENT_FLAGS)];
+                  if (!flags)
                     {
-                    case 0x02: /* respTentative */
-                      newPartStat = iCalPersonPartStatTentative;
+                      [self logWithFormat: @"no recipient flags specified"];
                       break;
-                    case 0x03: /* respAccepted */
-                      newPartStat = iCalPersonPartStatAccepted;
-                      break;
-                    case 0x04: /* respDeclined */
-                      newPartStat = iCalPersonPartStatDeclined;
-                      break;
-                    default:
-                      newPartStat = iCalPersonPartStatNeedsAction;
                     }
 
-                  [person setParticipationStatus: newPartStat];
-                  [person setRsvp: @"TRUE"];
-                  [person setRole: @"REQ-PARTICIPANT"];
-                  [newEvent addToAttendees: person];
+                  person = [iCalPerson new];
+                  [person setCn: [dict objectForKey: @"fullName"]];
+                  [person setEmail: attEmail];
+
+                  if (([flags unsignedIntValue] & 0x0002)) /* recipOrganizer */
+                    [newEvent setOrganizer: person];
+                  else
+                    {
+                      trackStatus
+                        = [dict
+                            objectForKey: MAPIPropertyKey (PR_RECIPIENT_TRACKSTATUS)];
+
+                      /* FIXME: we should provide a data converter between OL
+                         partstats and SOGo */
+                      switch ([trackStatus unsignedIntValue])
+                        {
+                        case 0x02: /* respTentative */
+                          newPartStat = iCalPersonPartStatTentative;
+                          break;
+                        case 0x03: /* respAccepted */
+                          newPartStat = iCalPersonPartStatAccepted;
+                          break;
+                        case 0x04: /* respDeclined */
+                          newPartStat = iCalPersonPartStatDeclined;
+                          break;
+                        default:
+                          newPartStat = iCalPersonPartStatNeedsAction;
+                        }
+
+                      [person setParticipationStatus: newPartStat];
+                      [person setRsvp: @"TRUE"];
+                      [person setRole: @"REQ-PARTICIPANT"];
+                      [newEvent addToAttendees: person];
+                    }
+
+                  if (effective == 0) /* See work-around above */
+                    [newEvent setOrganizer: nil];
+
+                  [person release];
                 }
-
-              if (effective == 0) /* See work-around above */
-                [newEvent setOrganizer: nil];
-
-              [person release];
             }
         }
 
