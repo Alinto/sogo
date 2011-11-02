@@ -610,6 +610,7 @@
 - (void) save
 {
   iCalCalendar *vCalendar;
+  BOOL isAllDay;
   iCalDateTime *start, *end;
   iCalTimeZone *tz;
   NSCalendarDate *now;
@@ -715,6 +716,10 @@
       tz = [iCalTimeZone timeZoneForName: tzName];
       [vCalendar addTimeZone: tz];
 
+      isAllDay = [[properties
+                    objectForKey: MAPIPropertyKey (PidLidAppointmentSubType)]
+                   boolValue];
+
       // start
       value = [properties objectForKey: MAPIPropertyKey (PR_START_DATE)];
       if (!value)
@@ -723,8 +728,13 @@
       if (value)
         {
           start = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtstart"];
-          [start setTimeZone: tz];
-          [start setDateTime: value];
+          if (isAllDay)
+            [start setDate: value];
+          else
+            {
+              [start setTimeZone: tz];
+              [start setDateTime: value];
+            }
         }
 
       /* end */
@@ -734,8 +744,13 @@
       if (value)
         {
           end = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtend"];
-          [end setTimeZone: tz];
-          [end setDateTime: value];
+          if (isAllDay)
+            [end setDate: value];
+          else
+            {
+              [end setTimeZone: tz];
+              [end setDateTime: value];
+            }
         }
 
       /* priority */
