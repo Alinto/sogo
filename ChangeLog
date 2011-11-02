@@ -2,6 +2,7 @@
 
 	* OpenChange/MAPIStoreCalendarMessage.m (-save): handle all day
 	events based on the value of PidLidAppointmentSubType.
+	Don't add the timezone component to the vCalendar in that case.
 
 2011-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

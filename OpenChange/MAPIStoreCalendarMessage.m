@@ -712,13 +712,16 @@
       if (value)
         [newEvent setLocation: value];
 
-      tzName = [[self ownerTimeZone] name];
-      tz = [iCalTimeZone timeZoneForName: tzName];
-      [vCalendar addTimeZone: tz];
-
       isAllDay = [[properties
                     objectForKey: MAPIPropertyKey (PidLidAppointmentSubType)]
                    boolValue];
+
+      if (!isAllDay)
+        {
+          tzName = [[self ownerTimeZone] name];
+          tz = [iCalTimeZone timeZoneForName: tzName];
+          [vCalendar addTimeZone: tz];
+        }
 
       // start
       value = [properties objectForKey: MAPIPropertyKey (PR_START_DATE)];
