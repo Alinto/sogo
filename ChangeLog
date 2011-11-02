@@ -1,5 +1,8 @@
 2011-11-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMessage.m (-setReadFlag:): make overrides
+	optional.
+
 	* OpenChange/MAPIStoreCalendarMessage.m (-save): handle all day
 	events based on the value of PidLidAppointmentSubType.
 	Don't add the timezone component to the vCalendar in that case.

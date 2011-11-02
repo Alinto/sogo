@@ -744,7 +744,7 @@ MAPIStoreExternalEntryId (NSString *cn, NSString *email)
 
 - (int) setReadFlag: (uint8_t) flag
 {
-  [self subclassResponsibility: _cmd];
+  // [self subclassResponsibility: _cmd];
 
   return MAPISTORE_ERROR;
 }
