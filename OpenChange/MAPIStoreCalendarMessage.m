@@ -842,33 +842,37 @@
               for (i = 0; i < [recipients count]; i++)
                 {
                   dict = [recipients objectAtIndex: i];
-                  attEmail = [dict objectForKey: @"email"];
 
-                  /* Work-around: it happens that Outlook still passes the
-                     organizer as a recipient, maybe because of a feature
-                     documented in a pre-mesozoic PDF still buried in a cavern...
-                     In that case we remove it, and we keep the number of
-                     effective recipients in "effective". If the total is 0, we
-                     remove the "ORGANIZER" too. */
-                  if ([attEmail isEqualToString: orgEmail])
-                    continue;
-
-                  effective++;
                   flags = [dict objectForKey: MAPIPropertyKey (PR_RECIPIENT_FLAGS)];
                   if (!flags)
                     {
-                      [self logWithFormat: @"no recipient flags specified"];
-                      break;
+                      [self logWithFormat:
+                              @"no recipient flags specified: skipping recipient"];
+                      continue;
                     }
 
                   person = [iCalPerson new];
                   [person setCn: [dict objectForKey: @"fullName"]];
+                  attEmail = [dict objectForKey: @"email"];
                   [person setEmail: attEmail];
 
                   if (([flags unsignedIntValue] & 0x0002)) /* recipOrganizer */
                     [newEvent setOrganizer: person];
                   else
                     {
+                      /* Work-around: it happens that Outlook still passes the
+                         organizer as a recipient, maybe because of a feature
+                         documented in a pre-mesozoic PDF still buried in a
+                         cavern... In that case we remove it, and we keep the
+                         number of effective recipients in "effective". If the
+                         total is 0, we remove the "ORGANIZER" too. */
+                      if ([attEmail isEqualToString: orgEmail])
+                        {
+                          [self logWithFormat:
+                                  @"avoiding setting organizer as recipient"];
+                          continue;
+                        }
+
                       trackStatus
                         = [dict
                             objectForKey: MAPIPropertyKey (PR_RECIPIENT_TRACKSTATUS)];
@@ -894,13 +898,14 @@
                       [person setRsvp: @"TRUE"];
                       [person setRole: @"REQ-PARTICIPANT"];
                       [newEvent addToAttendees: person];
+                      effective++;
                     }
-
-                  if (effective == 0) /* See work-around above */
-                    [newEvent setOrganizer: nil];
 
                   [person release];
                 }
+
+              if (effective == 0) /* See work-around above */
+                [newEvent setOrganizer: nil];
             }
         }
 

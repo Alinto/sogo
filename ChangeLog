@@ -7,7 +7,8 @@
 	events based on the value of PidLidAppointmentSubType.
 	Don't add the timezone component to the vCalendar in that case.
 	Take PidLidAppointmentStateFlags into account before building the
-	list of attendees.
+	list of attendees. Take the organizer passed in the recipients
+	into account when specified.
 
 2011-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
