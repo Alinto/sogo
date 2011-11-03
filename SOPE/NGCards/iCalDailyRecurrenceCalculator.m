@@ -70,6 +70,9 @@
   dayMask = nil;
   repeatCount = 0;
   
+  NSLog(@"*** [iCalDaily] occurrences between %@ and %@", [_r startDate], [_r endDate]);
+  NSLog(@"*** [iCalDaily] first occurrence starts on %@", firStart);
+
   if ([endDate compare: firStart] == NSOrderedAscending)
     // Range ends before first occurrence
     return nil;
@@ -103,6 +106,7 @@
       
       if (lastDate != nil)
 	{
+	  NSLog(@"*** [iCalDaily] ends on %@", lastDate);
 	  if ([lastDate compare: startDate] == NSOrderedAscending)
 	    // Range starts after last occurrence
 	    return nil;
@@ -161,6 +165,7 @@
 	      currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
 	      r = [NGCalendarDateRange calendarDateRangeWithStartDate: currentStartDate
                                                               endDate: currentEndDate];
+	      NSLog(@"*** [iCalDaily] Analysing period %i from %@ to %@", i, currentStartDate, currentEndDate);
 	      if ([_r containsDateRange: r] || [_r doesIntersectWithDateRange: r])
 		[ranges addObject: r];
 	    }
@@ -177,6 +182,7 @@
       
       i++;
     }
+  NSLog(@"*** [iCalDaily] returning %i ranges", [ranges count]);
   
   return ranges;
 }

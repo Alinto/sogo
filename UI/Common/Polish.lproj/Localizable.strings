@@ -67,7 +67,7 @@
 "delegate is a group" = "Wskazany adres jest grupą. Możesz oddelegować tylko pojedynczną osobę.";
 
 /* common buttons */
-"OK" = "OK";
+
 "Cancel" = "Anuluj";
 "Yes" = "Tak";
 "No" = "Nie";

@@ -2,15 +2,15 @@
 
 /* Tooltips */
 
-"Create a new event" = "Create a new event";
-"Create a new task" = "Create a new task";
-"Edit this event or task" = "Edit this event or task";
-"Delete this event or task" = "Delete this event or task";
+
+
+
+
 "Go to today" = "Naar vandaag gaan";
-"Switch to day view" = "Switch to day view";
-"Switch to week view" = "Switch to week view";
-"Switch to month view" = "Switch to month view";
-"Reload all calendars" = "Reload all calendars";
+
+
+
+
 
 /* Tabs */
 "Date" = "Datum";
@@ -51,10 +51,10 @@
 
 /* Week */
 
-"Week" = "Week";
+
 "this week" = "deze week";
 
-"Week %d" = "Week %d";
+
 
 "Previous Week" = "Vorige week";
 "Next Week" = "Volgende week";
@@ -66,15 +66,15 @@
 "January" = "Januari";
 "February" = "Februari";
 "March" = "Maart";
-"April" = "April";
+
 "May" = "Mei";
 "June" = "Juni";
 "July" = "Juli";
 "August" = "Augustus";
-"September" = "September";
+
 "October" = "Oktober";
-"November" = "November";
-"December" = "December";
+
+
 
 "a3_January" = "Jan";
 "a3_February" = "Feb";
@@ -103,20 +103,20 @@
 
 "New Calendar..." = "Nieuwe agenda...";
 "Delete Calendar" = "Agenda verwijderen";
-"Unsubscribe Calendar" = "Unsubscribe Calendar";
+
 "Sharing..." = "Delen...";
 "Export Calendar..." = "Agenda exporteren...";
-"Import Events..." = "Import Events...";
-"Import Events" = "Import Events";
-"Select an iCalendar file (.ics)." = "Select an iCalendar file (.ics).";
-"Upload" = "Upload";
+
+
+
+
 "Publish Calendar..." = "Agenda publiceren...";
 "Reload Remote Calendars" = "Externe agenda vernieuwen";
 "Properties" = "Instellingen";
-"Done" = "Done";
-"An error occured while importing calendar." = "An error occured while importing calendar.";
-"No event was imported." = "No event was imported.";
-"A total of %{0} events were imported in the calendar." = "A total of %{0} events were imported in the calendar.";
+
+
+
+
 
 "Compose E-Mail to All Attendees" = "E-mail aan alle deelnemers opstellen";
 "Compose E-Mail to Undecided Attendees" = "E-mail aan deelnemers opstellen die nog niet hebben gereageerd";
@@ -126,15 +126,15 @@
 
 /* Misc */
 
-"OpenGroupware.org" = "OpenGroupware.org";
+
 "Forbidden" = "Toegang geweigerd";
 
 /* acls */
 
 "User rights for:" = "Machtigingen voor:";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
+
+
 
 "label_Public" = "Publiek";
 "label_Private" = "Privaat";
@@ -186,7 +186,7 @@
 "No appointments found" = "Geen afspraken gevonden";
 "Meetings proposed by you" = "Door u voorgestelde vergaderingen";
 "Meetings proposed to you" = "Aan u voorgestelde vergaderingen";
-"sched_startDateFormat" = "%d/%m %H:%M";
+
 "action" = "Actie";
 "accept" = "Accepteren";
 "decline" = "Weigeren";
@@ -208,32 +208,32 @@
 "Calendar:" = "Agenda:";
 "Name" = "Naam";
 "Email" = "E-mail";
-"Status:" = "Status:";
+
 "% complete" = "% voltooid";
 "Location:" = "Plaats:";
 "Priority:" = "Prioriteit";
-"Privacy" = "Privacy";
+
 "Cycle" = "Herhalen";
 "Cycle End" = "Einde herhaling";
 "Categories" = "Categoriën";
 "Classification" = "Classificatie";
 "Duration" = "Duur";
 "Attendees:" = "Deelnemers:";
-"Resources" = "Resources";
+
 "Organizer:" = "Organisator:";
 "Description:" = "Omschrijving:";
-"Document:" = "Document:";
+
 "Category:" = "Categorie:";
 "Repeat:" = "Herhalen:";
 "Reminder:" = "Alarm:";
-"General:" = "General:";
-"Reply:" = "Reply:";
+
+
 
 "Target:" = "Bestemming:";
 
 "attributes" = "attributen";
 "attendees" = "deelnemers";
-"delegated from" = "delegated from";
+
 
 /* checkbox title */
 "is private" = "is privé";
@@ -285,7 +285,7 @@
 
 "Browse URL" = "Naar URL gaan";
 
-"newAttendee" = "Add attendee";
+
 
 /* calendar modes */
 
@@ -397,26 +397,26 @@
 "reminder_1_WEEK_BEFORE" = "1 week van tevoren";
 "reminder_CUSTOM" = "aangepast...";
 
-"reminder_MINUTES" = "minutes";
-"reminder_HOURS" = "hours";
-"reminder_DAYS" = "days";
-"reminder_BEFORE" = "before";
-"reminder_AFTER" = "after";
-"reminder_START" = "the event starts";
-"reminder_END" = "the event ends";
-"Reminder Details" = "Reminder Details";
 
-"Choose a Reminder Action" = "Choose a Reminder Action";
-"Show an Alert" = "Show an Alert";
-"Send an E-mail" = "Send an E-mail";
-"Email Organizer" = "Email Organizer";
-"Email Attendees" = "Email Attendees";
 
-"zoom_400" = "400%";
-"zoom_200" = "200%";
-"zoom_100" = "100%";
-"zoom_50" = "50%";
-"zoom_25" = "25%";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* transparency */
 
@@ -446,7 +446,7 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 "Day View" = "Dagoverzicht";
 "Week View" = "Weekoverzicht";
 "Month View" = "Maandoverzicht";
-"Reload" = "Reload";
+
 
 "eventPartStatModificationError" = "Uw participatiestatus kon niet worden gewijzigd.";
 
@@ -470,7 +470,7 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 /* Legend */
 "Participant" = "Deelnemer";
 "Optional Participant" = "Gewenste deelnemer";
-"Non Participant" = "Non Participant";
+
 "Chair" = "Voorzitter";
 
 "Needs action" = "Actie vereist";
@@ -485,18 +485,17 @@ validate_endbeforestart    = "Het begin vindt plaats vóór het einde.";
 
 /* FreeBusy panel buttons and labels */
 "Suggest time slot:" = "Tijdzone:";
-"Zoom:" = "Zoom:";
+
 "Previous slot" = "Vorige";
 "Next slot" = "Volgende";
 "Previous hour" = "Vorig uur";
 "Next hour" = "Volgend uur";
 "Work days only" = "Slechts werkdagen";
 "The whole day" = "De hele dag";
-"Between" = "Between";
+
 "and" = "en";
 
-"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?";
+
 
 /* apt list */
 "Title" = "Titel";
@@ -528,45 +527,45 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 
 "Include in free-busy" = "In de beschikbaarheid insluiten";
 
-"Synchronization" = "Synchronization";
-"Synchronize" = "Synchronize";
+
+
 "Tag:" = "Markering:";
 
-"Display" = "Display";
-"Show alarms" = "Show alarms";
-"Show tasks" = "Show tasks";
 
-"Links to this Calendar" = "Links to this Calendar";
-"Authenticated User Access" = "Authenticated User Access";
+
+
+
+
+
 "CalDAV URL" = "CalDAV url";
-"WebDAV ICS URL" = "WebDAV ICS URL";
-"WebDAV XML URL" = "WebDAV XML URL";
+
+
 
 /* Error messages */
-"dayFieldInvalid" = "Please specify a numerical value in the Days field greater or equal to 1.";
-"weekFieldInvalid" = "Please specify a numerical value in the Week(s) field greater or equal to 1.";
-"monthFieldInvalid" = "Please specify a numerical value in the Month(s) field greater or equal to 1.";
-"monthDayFieldInvalid" = "Please specify a numerical value in the month day field greater or equal to 1.";
-"yearFieldInvalid" = "Please specify a numerical value in the Year(s) field greater or equal to 1.";
-"appointmentFieldInvalid" = "Please specify a numerical value in the Appointment(s) field  greater or equal to 1.";
-"recurrenceUnsupported" = "This type of recurrence is currently unsupported.";
-"Please specify a calendar name." = "Please specify a calendar name.";
-"tagNotDefined" = "You must specify a tag if you want to synchronize this calendar.";
-"tagAlreadyExists" = "The tag you specified is already associated to another calendar.";
-"tagHasChanged" = "If you change your calendar's tag, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasAdded" = "If you want to synchronize this calendar, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
-"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
-"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 "Open Task..." = "Taak openen...";
-"Mark Completed" = "Mark Completed";
+
 "Delete Task" = "Taak verwijderen";
 "Delete Event" = "Afspraak verwijderen";
-"Copy event to my calendar" = "Copy event to my calendar";
 
-"Subscribe to a web calendar..." = "Subscribe to a web calendar...";
-"URL of the Calendar" = "URL of the Calendar";
-"Web Calendar" = "Web Calendar";
-"Reload on login" = "Reload on login";
-"Invalid number." = "Invalid number.";
+
+
+
+
+
+

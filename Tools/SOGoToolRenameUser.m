@@ -83,7 +83,7 @@
 
 - (void) usage
 {
-  fprintf (stderr, "rename-user fromuserid touserid\n\n"
+  fprintf (stderr, "rename-user <fromuserid> <touserid>\n\n"
 	   "           fromuserid  the previous user id\n"
 	   "           touserid    the new user id\n\n"
 	   "Example:   sogo-tool rename-user jane_doe janedoe\n");

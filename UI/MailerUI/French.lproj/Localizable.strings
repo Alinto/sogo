@@ -11,14 +11,14 @@
 "Reply"       = "Répondre";
 "Reply All"   = "Rép. à tous";
 "Print"       = "Imprimer";
-"Stop"        = "Stop";
+
 "Write"       = "Écrire";
 
 "Send" = "Envoyer";
-"Contacts" = "Contacts";
+
 "Attach" = "Joindre";
 "Save" = "Enregistrer";
-"Options" = "Options";
+
 "Size" = "Taille";
 
 /* Tooltips */
@@ -46,7 +46,7 @@
 "Home"                 = "Accueil"; 
 "Calendar"             = "Agenda";
 "Addressbook"          = "Adresses";
-"Mail"                 = "Mail";
+
 "Right Administration" = "Administration";
 
 "Help" = "Aide";
@@ -95,10 +95,10 @@
 "Add address"   = "Ajouter Adresse";
 
 "Attachments:" = "Pièces jointes :";
-"Open" = "Open";
-"Select All" = "Select All";
-"Attach Web Page..." = "Attach Web Page...";
-"Attach File(s)..." = "Attach File(s)...";
+
+
+
+
 
 "to"            = "Pour";
 "cc"            = "Copie à";
@@ -138,8 +138,8 @@
 "To or Cc" = "Pour ou Copie à";
 "Entire Message" = "Message Complet";
 
-"Date"          = "Date";
-"View"          = "View";
+
+
 "All"           = "Tous";
 "Unread"        = "Non lus";
 "No message"    = "Aucun message";
@@ -225,7 +225,7 @@
 
 /* Label popup menu */
 "None" = "Aucune";
-"Important" = "Important";
+
 "Work" = "Travail";
 "Personal" = "Personnel";
 "To Do" = "À faire";

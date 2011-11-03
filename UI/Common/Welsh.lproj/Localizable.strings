@@ -10,30 +10,30 @@
 "Address Book"	= "Llyfr Cyfeiriadau";
 "Mail" = "Post";
 "Preferences" = "Dewisiadau";
-"Administration" = "Administration";
+
 "Disconnect" = "Datgysylltu";
 "Right Administration" = "Hawl Gweinyddu";
 "Log Console (dev.)" = "Consol Log (dev.)";
 
 "User" = "Defnyddiwr";
 
-"Help" = "Help";
+
 
 "noJavascriptError" = "Mae angen Javascript ar SOGo i redeg. Sicrhewch fod yr opsiwn ar gael ac yn actifedig yn newisiadau eich porwr.";
 "noJavascriptRetry" = "Ailgynnig";
 
-"Owner:" = "Owner:";
+
 "Publish the Free/Busy information" = "Cyhoddwch y wybodaeth Rhydd/Brysur";
 
 "Add..." = "Ychwanegu...";
 "Remove" = "Dileu";
 
-"Subscribe User" = "Subscribe User";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
-"Any user not listed above" = "Any user not listed above";
-"Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
+
+
+
+
+
 
 "Sorry, the user rights can not be configured for that object." = "Sori, ni all hawliau'r defnyddiwr cael ei newid ar gyfer y gwrthrych hwn.";
 
@@ -51,25 +51,24 @@
      	= "Yr ydych wedi tanysgrifio eisoes i'r ffolder yna!";
 "The user rights cannot be edited for this object!"
         = "Ni all hawliau'r defnyddiwr cael eu golygu ar gyfer y gwrthrych hwn!";
-"A folder by that name already exists." = "A folder by that name already exists.";
-"You cannot create a list in a shared address book." 
-        = "You cannot create a list in a shared address book.";
-"Warning" = "Warning";
+
+
+
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Nid oes gennych caniatad mynediad i'r modiwl hwn na'r system hwn. Cysylltwch a'r Gweinyddwr Systemau os gwelwch yn dda.";
 "You don't have the required privileges to perform the operation."
 = "Nid oes gennych y breintiau gofynnol i berfformio'r gweithrediad.";
 
-"noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
-"delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
-"delegate is a participant" = "The delegate is already a participant.";
-"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+
+
+
+
 
 /* common buttons */
-"OK" = "OK";
-"Cancel" = "Cancel";
-"Yes" = "Yes";
+
+
+
 "No" = "No";
 
 /* alarms */

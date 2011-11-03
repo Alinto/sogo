@@ -12,25 +12,25 @@ vtodo_class2 = "(Skrytý úkol)";
 "Start:" = "Začátek:";
 "End:" = "Konec:";
 
-"Receipt: users invited to a meeting" = "Receipt: users invited to a meeting";
-"You have invited the following attendees(s):" = "You have invited the following attendees(s):";
-"... to attend the following event:" = "... to attend the following event:";
 
-"Receipt: invitation updated" = "Receipt: invitation updated";
-"The following attendees(s):" = "The following attendees(s):";
-"... have been notified of the changes to the following event:" = "... have been notified of the changes to the following event:";
 
-"Receipt: attendees removed from an event" = "Receipt: attendees removed from an event";
-"You have removed the following attendees(s):" = "You have removed the following attendees(s):";
-"... from the following event:" = "... from the following event:";
+
+
+
+
+
+
+
+
+
 
 /* IMIP messages */
 "startDate_label" = "Začátek:";
 "endDate_label" = "Konec:";
-"due_label" = "Due Date:";
+
 "location_label" = "Místo:";
-"summary_label" = "Summary:";
-"comment_label" = "Comment:";
+
+
 
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Pozvání na událost: \"%{Summary}\"";
@@ -62,4 +62,3 @@ vtodo_class2 = "(Skrytý úkol)";
 = "%{Attendee} %{SentByText}dosud o Vaší pozvánce k události nerozhodl/a.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";

@@ -7,7 +7,7 @@ DELEGATED = "dirprwyedig";
 TENTATIVE = "petrus";
 organized_by_you = "trefnwyd gennych chi";
 you_are_an_attendee = "yr ydych yn mynychu";
-add_info_text = "iMIP 'ADD' requests are not yet supported by SOGo.";
+
 publish_info_text = "Mae'r anfonwr yn eich hysbysu o'r digwyddiad atodol.";
 cancel_info_text = "Cafodd eich gwahoddiad i'r holl ddigwyddiad ei ganslo.";
 request_info_no_attendee = "yn cynnig cyfarfod i'r holl rhai sy'n mynychu. Rydych yn derbyn yr ebost yma fel hysbysiad, nid ydych wedi cael eich rhestri fel cyfrannogwr.";
@@ -23,10 +23,10 @@ request_info = "yn eich gwahodd i gyfarfod.";
 Accept = "Derbyn";
 Decline = "Gwrthod";
 Tentative = "Petrus";
-"Delegate ..." = "Delegate ...";
-"Delegated to" = "Delegated to";
+
+
 "Update status in calendar" = "Diweddaru statws yn y calendr";
-"delegated from" = "delegated from";
+
 
 reply_info_no_attendee = "Rydych wedi derbyn ymateb i digwyddiad ond nid yw'r anfonwr yn cyfranogwr.";
 reply_info = "Dyma ymateb i wahoddiad i digwyddiad a wnaed gennych chi.";
@@ -37,10 +37,10 @@ reply_info = "Dyma ymateb i wahoddiad i digwyddiad a wnaed gennych chi.";
 
 "Size" = "maint";
 
-"Digital signature is not valid" = "Digital signature is not valid";
-"Message is signed" = "Message is signed";
-"Subject" = "Subject";
-"From" = "From";
-"Date" = "Date";
-"To" = "To";
-"Issuer" = "Issuer";
+
+
+
+
+
+
+

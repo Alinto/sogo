@@ -10,7 +10,7 @@
 "Switch to day view" = "Napi nézetre váltás";
 "Switch to week view" = "Heti nézetre váltás";
 "Switch to month view" = "Havi nézetre váltás";
-"Reload all calendars" = "Reload all calendars";
+
 
 /* Tabs */
 "Date" = "Dátum";
@@ -46,8 +46,8 @@
 "dayLabelFormat" = "%Y.%m.%d";
 "today" = "Ma";
 
-"Previous Day" = "Previous Day";
-"Next Day" = "Next Day";
+
+
 
 /* Week */
 
@@ -56,8 +56,8 @@
 
 "Week %d" = "%d. hét";
 
-"Previous Week" = "Previous Week";
-"Next Week" = "Next Week";
+
+
 
 /* Month */
 
@@ -73,8 +73,8 @@
 "August" = "Augusztus";
 "September" = "Szeptember";
 "October" = "Október";
-"November" = "November";
-"December" = "December";
+
+
 
 "a3_January" = "Január";
 "a3_February" = "Február";
@@ -86,11 +86,11 @@
 "a3_August" = "Augusztus";
 "a3_September" = "Szeptember";
 "a3_October" = "Október";
-"a3_November" = "November";
-"a3_December" = "December";
 
-"Previous Month" = "Previous Month";
-"Next Month" = "Next Month";
+
+
+
+
 
 /* Year */
 
@@ -103,20 +103,20 @@
 
 "New Calendar..." = "Új naptár...";
 "Delete Calendar" = "Naptár törlése";
-"Unsubscribe Calendar" = "Unsubscribe Calendar";
+
 "Sharing..." = "Megosztás...";
 "Export Calendar..." = "Naptár exportálása...";
-"Import Events..." = "Import Events...";
-"Import Events" = "Import Events";
-"Select an iCalendar file (.ics)." = "Select an iCalendar file (.ics).";
-"Upload" = "Upload";
+
+
+
+
 "Publish Calendar..." = "Naptár közzététele...";
 "Reload Remote Calendars" = "Távoli naptárak frissítése";
 "Properties" = "Tulajdonságok";
-"Done" = "Done";
-"An error occured while importing calendar." = "An error occured while importing calendar.";
-"No event was imported." = "No event was imported.";
-"A total of %{0} events were imported in the calendar." = "A total of %{0} events were imported in the calendar.";
+
+
+
+
 
 "Compose E-Mail to All Attendees" = "Üzenet küldése az összes résztvevőnek";
 "Compose E-Mail to Undecided Attendees" = "Üzenet küldése az bizonytalan résztvevőnek";
@@ -126,15 +126,15 @@
 
 /* Misc */
 
-"OpenGroupware.org" = "OpenGroupware.org";
+
 "Forbidden" = "Tiltott";
 
 /* acls */
 
 "User rights for:" = "Felhasználói jogosultságok:";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
+
+
 
 "label_Public" = "Nyilvános";
 "label_Private" = "Magán";
@@ -173,7 +173,7 @@
 "Save and Close" = "Mentés és bezárás";
 "Close" = "Bezárás";
 "Invite Attendees" = "Résztvevők meghívása";
-"Attach" = "Attach";
+
 "Update" = "Mentés";
 "Cancel" = "Mégsem";
 "show_rejected_apts" = "Visszautasított találkozók mutatása";
@@ -207,7 +207,7 @@
 "Title:" = "Cím:";
 "Calendar:" = "Naptár:";
 "Name" = "Név";
-"Email" = "Email";
+
 "Status:" = "Állapot";
 "% complete" = "% kész";
 "Location:" = "Hely:";
@@ -226,14 +226,14 @@
 "Category:" = "Kategória:";
 "Repeat:" = "Ismétlés:";
 "Reminder:" = "Emlékeztető:";
-"General:" = "General:";
-"Reply:" = "Reply:";
+
+
 
 "Target:" = "Cél:";
 
 "attributes" = "tulajdonságok";
 "attendees" = "résztvevők";
-"delegated from" = "delegated from";
+
 
 /* checkbox title */
 "is private" = "magán";
@@ -350,7 +350,7 @@
 "Every" = "Minden";
 "Days" = "naponként";
 "Week(s)" = "hetenként";
-"On" = "On";
+
 "Month(s)" = "hónaponként";
 "The" = "A";
 "Recur on day(s)" = "Az alábbi napon";
@@ -404,19 +404,19 @@
 "reminder_AFTER" = "utána";
 "reminder_START" = "az esemény kezdődik";
 "reminder_END" = "az esemény végződik";
-"Reminder Details" = "Reminder Details";
 
-"Choose a Reminder Action" = "Choose a Reminder Action";
-"Show an Alert" = "Show an Alert";
-"Send an E-mail" = "Send an E-mail";
-"Email Organizer" = "Email Organizer";
-"Email Attendees" = "Email Attendees";
 
-"zoom_400" = "400%";
-"zoom_200" = "200%";
-"zoom_100" = "100%";
-"zoom_50" = "50%";
-"zoom_25" = "25%";
+
+
+
+
+
+
+
+
+
+
+
 
 /* transparency */
 
@@ -446,7 +446,7 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 "Day View" = "Napi nézet";
 "Week View" = "Heti nézet";
 "Month View" = "Havi nézet";
-"Reload" = "Reload";
+
 
 "eventPartStatModificationError" = "A résztvevői állapota nem módosítható.";
 
@@ -470,7 +470,7 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 /* Legend */
 "Participant" = "Kötelező résztvevő";
 "Optional Participant" = "Nem kötelező résztvevő";
-"Non Participant" = "Non Participant";
+
 "Chair" = "Szék";
 
 "Needs action" = "Foglalkozni kell vele";
@@ -490,13 +490,12 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 "Next slot" = "Következő ablak";
 "Previous hour" = "Előző óra";
 "Next hour" = "Következő óra";
-"Work days only" = "Work days only";
-"The whole day" = "The whole day";
-"Between" = "Between";
+
+
+
 "and" = "and";
 
-"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?";
+
 
 /* apt list */
 "Title" = "Cím";
@@ -526,47 +525,47 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Name:" = "Név:";
 "Color:" = "Szín:";
 
-"Include in free-busy" = "Include in free-busy";
 
-"Synchronization" = "Synchronization";
-"Synchronize" = "Synchronize";
+
+
+
 "Tag:" = "Cimke:";
 
-"Display" = "Display";
-"Show alarms" = "Show alarms";
-"Show tasks" = "Show tasks";
 
-"Links to this Calendar" = "Links to this Calendar";
-"Authenticated User Access" = "Authenticated User Access";
+
+
+
+
+
 "CalDAV URL" = "CalDAV url";
-"WebDAV ICS URL" = "WebDAV ICS URL";
-"WebDAV XML URL" = "WebDAV XML URL";
+
+
 
 /* Error messages */
-"dayFieldInvalid" = "Please specify a numerical value in the Days field greater or equal to 1.";
-"weekFieldInvalid" = "Please specify a numerical value in the Week(s) field greater or equal to 1.";
-"monthFieldInvalid" = "Please specify a numerical value in the Month(s) field greater or equal to 1.";
-"monthDayFieldInvalid" = "Please specify a numerical value in the month day field greater or equal to 1.";
-"yearFieldInvalid" = "Please specify a numerical value in the Year(s) field greater or equal to 1.";
-"appointmentFieldInvalid" = "Please specify a numerical value in the Appointment(s) field  greater or equal to 1.";
-"recurrenceUnsupported" = "This type of recurrence is currently unsupported.";
-"Please specify a calendar name." = "Please specify a calendar name.";
-"tagNotDefined" = "You must specify a tag if you want to synchronize this calendar.";
-"tagAlreadyExists" = "The tag you specified is already associated to another calendar.";
-"tagHasChanged" = "If you change your calendar's tag, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasAdded" = "If you want to synchronize this calendar, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
-"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
-"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
 
-"Open Task..." = "Open Task...";
-"Mark Completed" = "Mark Completed";
-"Delete Task" = "Delete Task";
-"Delete Event" = "Delete Event";
-"Copy event to my calendar" = "Copy event to my calendar";
 
-"Subscribe to a web calendar..." = "Subscribe to a web calendar...";
-"URL of the Calendar" = "URL of the Calendar";
-"Web Calendar" = "Web Calendar";
-"Reload on login" = "Reload on login";
-"Invalid number." = "Invalid number.";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

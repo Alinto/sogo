@@ -56,8 +56,7 @@ vtodo_class2 = "(Конфиденциальная задача)";
 = "%{Attendee} %{SentByText}согласился участвовать в запланированном мероприятии.";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText}отказался участвовать в запланированном мероприятии.";
-"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
+
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}не определился с желанием участвовать в запланированном мероприятии.";
 
