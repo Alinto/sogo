@@ -179,7 +179,7 @@ function performSearch(input) {
     // Perform address completion
     if (!input.value.blank()) {
         var urlstr = (UserFolderURL
-                      + "Contacts/allContactSearch?search="
+                      + "Contacts/allContactSearch?excludeGroups=1&search="
                       + encodeURIComponent(input.value));
         triggerAjaxRequest(urlstr, performSearchCallback, input);
     }

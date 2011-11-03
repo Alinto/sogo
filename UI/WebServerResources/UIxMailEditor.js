@@ -405,7 +405,8 @@ function initMailEditor() {
                                'BulletedList', '-', 'Link', 'Unlink', 'Image', 
                                'JustifyLeft','JustifyCenter','JustifyRight',
                                'JustifyBlock','Font','FontSize','-','TextColor',
-                               'BGColor','-','SpellChecker']],
+                               'BGColor','-','SpellChecker']
+                             ],
                              language : localeCode,
 			     scayt_sLang : localeCode
                           }
@@ -577,8 +578,6 @@ function onWindowResize(event) {
         attachmentswidth = attachmentsarea.getWidth();
         fromfield = $(document).getElementsByClassName('headerField', headerarea)[0];
         var height = headerarea.getHeight() - fromfield.getHeight() - subjectfield.getHeight() - 10;
-//         var height = headerarea.getHeight() - 20;
-//         alert ("height = " + height + "px");
         if (Prototype.Browser.IE)
             $("attachments").setStyle({ height: (height - 13) + 'px' });
         else

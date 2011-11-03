@@ -126,7 +126,7 @@
 
 /* Misc */
 
-
+"OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Zabronione";
 
 /* acls */
@@ -208,7 +208,7 @@
 "Calendar:" = "Kalendarz:";
 "Name" = "Nazwa";
 "Email" = "E-mail";
-
+"Status:" = "Status:";
 "% complete" = "% wykonania";
 "Location:" = "Miejsce:";
 "Priority:" = "Priorytet:";
@@ -352,10 +352,10 @@
 "Week(s)" = "Tygodni(e)";
 "On" = "w";
 "Month(s)" = "Miesiące(ęcy)";
-
+"The" = "";
 "Recur on day(s)" = "Powtarzaj w dni";
 "Year(s)" = "Lat(a)";
-
+"cycle_of" = "";
 "No end date" = "Bez daty końcowej";
 "Create" = "Utwórz";
 "appointment(s)" = "spotkanie(a)";
@@ -406,17 +406,17 @@
 "reminder_END" = "końcem wydarzenia";
 "Reminder Details" = "Szczegóły przypomnienia";
 
+"Choose a Reminder Action" = "Choose a Reminder Action";
+"Show an Alert" = "Show an Alert";
+"Send an E-mail" = "Send an E-mail";
+"Email Organizer" = "Email Organizer";
+"Email Attendees" = "Email Attendees";
 
-
-
-
-
-
-
-
-
-
-
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
 
 /* transparency */
 
@@ -538,9 +538,9 @@ vtodo_class2 = "(Zadanie poufne)";
 
 "Links to this Calendar" = "Odnośniki do tego kalendarza";
 "Authenticated User Access" = "Dostęp dla zalogowanych użytkowników";
-
-
-
+"CalDAV URL" = "CalDAV URL";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
 
 /* Error messages */
 "dayFieldInvalid" = "W polu Dni wprowadź liczbę równą lub większą od 1.";
@@ -550,23 +550,23 @@ vtodo_class2 = "(Zadanie poufne)";
 "yearFieldInvalid" = "W polu Lata wprowadź liczbę równą lub większą od 1.";
 "appointmentFieldInvalid" = "W polu Spotkania wprowadź liczbę równą lub większą od 1.";
 "recurrenceUnsupported" = "Ten typ powtórzeń obecnie nie jest obsługiwany.";
-
+"Please specify a calendar name." = "Please specify a calendar name.";
 "tagNotDefined" = "Musisz podać znacznik, jeśli chcesz synchronizować ten kalendarz.";
 "tagAlreadyExists" = "Podany znacznik jest już skojarzony z innym kalendarzem.";
 "tagHasChanged" = "Jeśli zmienisz znacznik kalendarza, musisz przeładować dane na swoim urządzeniu mobilnym.\nKontynuować?";
 "tagWasAdded" = "Jeśli chesz synchronizować ten kalendarz, będziesz musiał(a) przeładować dane na swoim urządzeniu mobilnym.\nKontynuować?";
 "tagWasRemoved" = "Jeśli usuniesz ten kalendarz z synchronizacji, będziesz musiał(a) przeładować dane na swoim urządzeniu mobilnym.\nKontynuować?";
-
-
+"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
+"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
 
 "Open Task..." = "Otwórz zadanie...";
 "Mark Completed" = "Oznacz jako ukończone";
 "Delete Task" = "Usuń zadanie";
 "Delete Event" = "Usuń wydarzenie";
-
+"Copy event to my calendar" = "Copy event to my calendar";
 
 "Subscribe to a web calendar..." = "Subskrybuj kalendarz...";
 "URL of the Calendar" = "URL do kalendarza";
 "Web Calendar" = "Kalendarz Web";
 "Reload on login" = "Przeładuj przy logowaniu";
-
+"Invalid number." = "Invalid number.";

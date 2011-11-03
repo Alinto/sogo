@@ -10,14 +10,14 @@
 "Address Book"	= "Adresboek";
 "Mail" = "E-mail";
 "Preferences" = "Instellingen";
-
+"Administration" = "Administration";
 "Disconnect" = "Uitloggen";
 "Right Administration" = "Machtigingen beheren";
 "Log Console (dev.)" = " (dev.)";
 
 "User" = "Gebruiker";
 
-
+"Help" = "Help";
 
 "noJavascriptError" = "SOGo heeft Javascript nodig om te functioneren. U dient Javascript in uw browser in te schakelen.";
 "noJavascriptRetry" = "Opnieuw proberen";
@@ -30,10 +30,10 @@
 
 "Subscribe User" = "Gebruiker abonneren";
 
-
-
-
-
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
+"Any user not listed above" = "Any user not listed above";
+"Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
 
 "Sorry, the user rights can not be configured for that object." = "De machtigingen kunnen niet worden ingesteld voor dit object.";
 
@@ -51,23 +51,24 @@
      	= "U bent al op deze map geabonneerd!";
 "The user rights cannot be edited for this object!"
         = "De machtigingen kunnen niet worden aangepast voor dit object!";
-
-
-
+"A folder by that name already exists." = "A folder by that name already exists.";
+"You cannot create a list in a shared address book." 
+        = "You cannot create a list in a shared address book.";
+"Warning" = "Warning";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "U hebt geen toegang tot deze module of dit systeem. Neem contact op met uw systeem beheerder.";
 "You don't have the required privileges to perform the operation."
 = "Voor deze actie heeft u niet de benodigde rechten.";
 
-
-
-
-
+"noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
+"delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
+"delegate is a participant" = "The delegate is already a participant.";
+"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
 
 /* common buttons */
-
-
+"OK" = "OK";
+"Cancel" = "Cancel";
 "Yes" = "Ja";
 "No" = "Nee";
 

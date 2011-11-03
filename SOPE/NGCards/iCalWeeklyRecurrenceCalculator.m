@@ -186,7 +186,7 @@
 		  currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
 		  r = [NGCalendarDateRange calendarDateRangeWithStartDate: currentStartDate
 								  endDate: currentEndDate];
-		  NSLog(@"*** [iCalWeekly] Analysing period %i from %@ to %@", i, currentStartDate, currentEndDate);
+
 		  if ([_r containsDateRange: r])
 		    [ranges addObject: r];
 		}

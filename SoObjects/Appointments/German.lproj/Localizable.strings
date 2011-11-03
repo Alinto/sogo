@@ -9,7 +9,7 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 
 /* Receipts */
 "Title:" = "Titel:";
-
+"Start:" = "Start:";
 "End:" = "Ende:";
 
 "Receipt: users invited to a meeting" = "Empfangsbestätigung: Benutzer zu einem Termin eingeladen";
@@ -25,7 +25,7 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "... from the following event:" = "... von folgendem Termin:";
 
 /* IMIP messages */
-
+"startDate_label" = "Start:";
 "endDate_label" = "Ende:";
 "due_label" = "Fällig:";
 "location_label" = "Ort:";
@@ -61,5 +61,5 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}hat noch nicht über Ihre Termineinladung entschieden.";
 
-/* Resources */
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximale Zahl simultaner Buchungen (%{NumberOfSimultaneousBookings}) erreicht für Ressource \"%{Cn} %{SystemEmail}\".";
+

@@ -126,7 +126,7 @@
 
 /* Misc */
 
-
+"OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Prohibido";
 
 /* acls */
@@ -186,7 +186,7 @@
 "No appointments found" = "No hay eventos encontrados";
 "Meetings proposed by you" = "Eventos propuestos por Ud.";
 "Meetings proposed to you" = "Eventos propuestos para Ud";
-
+"sched_startDateFormat" = "%d/%m %H:%M";
 "action" = "Acción";
 "accept" = "Aceptar";
 "decline" = "Rechazar";
@@ -226,7 +226,7 @@
 "Category:" = "Categoría:";
 "Repeat:" = "Repetir:";
 "Reminder:" = "Recordatorio:";
-
+"General:" = "General:";
 "Reply:" = "Responder:";
 
 "Target:" = "URL documento:";
@@ -301,7 +301,7 @@
 "prio_2" = "Alta";
 "prio_3" = "Alta";
 "prio_4" = "Alta";
-
+"prio_5" = "Normal";
 "prio_6" = "Baja";
 "prio_7" = "Baja";
 "prio_8" = "Baja";
@@ -412,11 +412,11 @@
 "Email Organizer" = "Enviar correo al organizador";
 "Email Attendees" = "Enviar correo a los asistentes";
 
-
-
-
-
-
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
 
 /* transparency */
 
@@ -524,7 +524,7 @@ vtodo_class2 = "(Tarea confidencial)";
 
 /* Properties dialog */
 "Name:" = "Nombre:";
-
+"Color:" = "Color:";
 
 "Include in free-busy" = "Incluye en tiempo libre-ocupado";
 
@@ -532,15 +532,15 @@ vtodo_class2 = "(Tarea confidencial)";
 "Synchronize" = "Sincroniza";
 "Tag:" = "Redacción:";
 
-
+"Display" = "Display";
 "Show alarms" = "Muestra alarmas";
 "Show tasks" = "Muestra tareas";
 
 "Links to this Calendar" = "Vínculos a éste calendario";
 "Authenticated User Access" = "Acceso a usuario autenticado";
 "CalDAV URL" = "CalDAV url";
-
-
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
 
 /* Error messages */
 "dayFieldInvalid" = "Por favor, especificar un valor númerico en el campo día superior o igual a 1.";
@@ -550,7 +550,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "yearFieldInvalid" = "Por favor, especificar un valor númerico en el campo año superior o igual a 1.";
 "appointmentFieldInvalid" = "Por favor, especificar un valor númerico en el campo cita(s) superior o igual a 1.";
 "recurrenceUnsupported" = "Este tipo de frecuencia no esta soportado.";
-
+"Please specify a calendar name." = "Please specify a calendar name.";
 "tagNotDefined" = "Tiene que especificar un marcador si quiere sincronizar este calendario.";
 "tagAlreadyExists" = "El marcador especificado ya esta asociado a otro calendario.";
 "tagHasChanged" = "Si cambia el marcador de este calendario, necesitara recargar los datos en su teléfono móvil.\n¿Continuar?";

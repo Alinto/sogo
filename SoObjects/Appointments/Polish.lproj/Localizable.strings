@@ -62,3 +62,4 @@ vtodo_class2 = "(Zadanie poufne)";
 = "%{Attendee} %{SentByText}jeszcze nie zdecydował(a) o obecności na twoim wydarzeniu.";
 
 /* Resources */
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";

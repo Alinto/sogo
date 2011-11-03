@@ -170,10 +170,5 @@ DIV#attendeesMenu .delegated .statusIcon
 DIV#attendeesMenu .no-partstat .statusIcon
 { background-position: -60px 0px; }
 
-DIV#attendeesMenu.fakeTextArea .delegate
+DIV#attendeesMenu .delegate
 { padding-left: 16px !important; }
-
-DIV#attendeesMenu .delegate SPAN
-{ float: left;
-  width: 8px;
-  border: 1px; }

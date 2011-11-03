@@ -10,7 +10,7 @@
 "Address Book"	= "Carnet d'adresses";
 "Mail" = "Courrier";
 "Preferences" = "Préférences";
-
+"Administration" = "Administration";
 "Disconnect" = "Quitter";
 "Right Administration" = "Partage";
 "Log Console (dev.)" = "Journal (dév.)";
@@ -35,7 +35,7 @@
 "Any user not listed above" = "Tout utilisateur du système non-listé ci-dessus";
 "Anybody accessing this resource from the public area" = "Quiconque accède à cette ressource via l'espace public";
 
-
+"Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -67,7 +67,7 @@
 "delegate is a group" = "L'adresse spécifiée correspond à un groupe. Vous ne pouvez déléguer qu'à une personne.";
 
 /* common buttons */
-
+"OK" = "OK";
 "Cancel" = "Annuler";
 "Yes" = "Oui";
 "No" = "Non";

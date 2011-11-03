@@ -44,45 +44,44 @@
 
 "default" = "Standard";
 
+"shortDateFmt_0" = "%d-%b-%y";
 
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
 
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
 
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
 
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
 
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+"shortDateFmt_15" = "";
    
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
 
-
-
-
-
-
-
-
-
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
 
 /* calendar */
 "Week begins on :" = "Uken begynner med:";
 "Day start time :" = "Dagen begynner kl.:";
 "Day end time :" = "Dagen slutter kl.:";
 "Day start time must be prior to day end time." = "Dagens starttid må være før dagens sluttid.";
-
 "First week of year :" = "Første uken i året:";
 "Enable reminders for Calendar items" = "Aktivere påminnelser for kalenderelementer";
 "Play a sound when a reminder comes due"
@@ -94,10 +93,10 @@
 "firstWeekOfYear_FirstFullWeek" = "Første hele uken i året";
 
 /* Default Calendar */
-
-
-
-
+"Default calendar :" = "Default calendar";
+"selectedCalendar" = "Selected calendar";
+"personalCalendar" = "Personal calendar";
+"firstCalendar" = "First enabled calendar";
 
 "reminderTime_0000" = "0 minutter";
 "reminderTime_0005" = "5 minutter";
@@ -114,7 +113,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Vis bare abonnerte postbokser";
-
+"Sort messages by threads" = "Sort messages by threads";
 "Check for new mail:" = "Hent ny post:";
 "messagecheck_manually" = "Manuelt";
 "messagecheck_every_minute" = "Hvert minutt";
@@ -135,14 +134,14 @@
 "signatureplacement_above" = "over mitt svar";
 "signatureplacement_below" = "under mitt svar";
 "Compose messages in" = "Opprett melding i";
-
+"composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Ren text";
 
 /* IMAP Accounts */
 "New Mail Account" = "Ny epostkonto";
 
 "Server Name:" = "Servernavn:";
-
+"Port:" = "Port:";
 "User Name:" = "Brukernavn:";
 "Password:" = "Passord:";
 
