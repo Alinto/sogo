@@ -133,7 +133,7 @@ TEST_TOOL_NAME += $(PLREADER_TOOL)
 LIBMAPI_CFLAGS = $(shell pkg-config libmapi --cflags)
 LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags) -DSAMBA_PREFIX="\"$(shell pkg-config libmapistore --variable=prefix)\""
 
-ifeq ($(LIBMAPISTORE_CFLAGS),)
+ifeq ($(LIBMAPI_CFLAGS),)
 all install::
 	@echo "Cannot build the OpenChange SOGo backend (empty CFLAGS for libmapistore)"
 else
