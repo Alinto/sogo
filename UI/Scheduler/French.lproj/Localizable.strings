@@ -13,7 +13,7 @@
 "Reload all calendars" = "Actualiser tous les agendas";
 
 /* Tabs */
-
+"Date" = "Date";
 "Calendars" = "Agendas";
 
 /* Day */
@@ -41,7 +41,7 @@
 "a2_Wednesday" = "Me";
 "a2_Thursday" = "Je";
 "a2_Friday" = "Ve";
-
+"a2_Saturday" = "Sa";
 
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Aujourd'hui";
@@ -99,7 +99,7 @@
 /* Menu */
 
 "Calendar" = "Agenda";
-
+"Contacts" = "Contacts";
 
 "New Calendar..." = "Nouvel agenda...";
 "Delete Calendar" = "Effacer l'agenda...";
@@ -126,7 +126,7 @@
 
 /* Misc */
 
-
+"OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Accès non autorisée";
 
 /* acls */
@@ -136,7 +136,7 @@
 "Any Authenticated User" = "Tout utilisateur identifié";
 "Public Access" = "Accès public";
 
-
+"label_Public" = "Public";
 "label_Private" = "Privé";
 "label_Confidential" = "Confidentiel";
 
@@ -186,8 +186,8 @@
 "No appointments found" = "Aucun rendez-vous";
 "Meetings proposed by you" = "Rendez-vous que vous proposez";
 "Meetings proposed to you" = "Rendez-vous qui vous sont proposés";
-
-
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Action";
 "accept" = "Accepter";
 "decline" = "Refuser";
 "more attendees" = "Autres participants";
@@ -207,7 +207,7 @@
 "Title:" = "Titre :";
 "Calendar:" = "Agenda :";
 "Name" = "Nom";
-
+"Email" = "Email";
 "Status:" = "Statut :";
 "% complete" = "% d'achèvement";
 "Location:" = "Lieu :";
@@ -215,8 +215,8 @@
 "Privacy" = "Confidentialité";
 "Cycle" = "Récurrence";
 "Cycle End" = "s'arreter";
-
-
+"Categories" = "Categories";
+"Classification" = "Classification";
 "Duration" = "Durée";
 "Attendees:" = "Participants :";
 "Resources" = "Ressources";
@@ -238,7 +238,7 @@
 /* checkbox title */
 "is private" = "Rendez-vous privé";
 /* classification */
-
+"Public" = "Public";
 "Private" = "Privé";
 /* text used in overviews and tooltips */
 "empty title" = "Titre vide";
@@ -397,7 +397,7 @@
 "reminder_1_WEEK_BEFORE" = "1 semaine avant";
 "reminder_CUSTOM" = "Personnaliser...";
 
-
+"reminder_MINUTES" = "minutes";
 "reminder_HOURS" = "heures";
 "reminder_DAYS" = "jours";
 "reminder_BEFORE" = "avant";
@@ -412,11 +412,11 @@
 "Email Organizer" = "À l'organisateur";
 "Email Attendees" = "Aux invités";
 
-
-
-
-
-
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
 
 /* transparency */
 
@@ -485,7 +485,7 @@ validate_endbeforestart    = "La date de fin est avant la date de début.";
 
 /* FreeBusy panel buttons and labels */
 "Suggest time slot:" = "Suggérer un créneau horaire :";
-
+"Zoom:" = "Zoom:";
 "Previous slot" = "Précédent";
 "Next slot" = "Prochain";
 "Previous hour" = "Heure précédente";

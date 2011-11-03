@@ -103,7 +103,7 @@
 
 "New Calendar..." = "Nový kalendář...";
 "Delete Calendar" = "Smazat kalendář";
-
+"Unsubscribe Calendar" = "Unsubscribe Calendar";
 "Sharing..." = "Sdílení...";
 "Export Calendar..." = "Exportovat kalendář...";
 "Import Events..." = "Importovat události...";
@@ -126,7 +126,7 @@
 
 /* Misc */
 
-
+"OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Zakázaná";
 
 /* acls */
@@ -186,7 +186,7 @@
 "No appointments found" = "Nenalezeny žádné schůzky";
 "Meetings proposed by you" = "Schůzky navržené Vámi";
 "Meetings proposed to you" = "Schůzky navržené Vám";
-
+"sched_startDateFormat" = "%d/%m %H:%M";
 "action" = "Akce";
 "accept" = "Přijmout";
 "decline" = "Odmítnout";
@@ -208,7 +208,7 @@
 "Calendar:" = "Kalendář:";
 "Name" = "Jméno";
 "Email" = "E-Mail";
-
+"Status:" = "Status:";
 "% complete" = "% hotovo";
 "Location:" = "Místo:";
 "Priority:" = "Priorita:";
@@ -352,10 +352,10 @@
 "Week(s)" = "Týdnů";
 "On" = "V";
 "Month(s)" = "Měsíců";
-
+"The" = "The";
 "Recur on day(s)" = "Opakovat ve dnech";
 "Year(s)" = "rocích";
-
+"cycle_of" = "of";
 "No end date" = "Bez data konce";
 "Create" = "Vytvořit";
 "appointment(s)" = "schůzku/y";
@@ -412,11 +412,11 @@
 "Email Organizer" = "E-mail organizátorovi";
 "Email Attendees" = "E-mail účastníkům";
 
-
-
-
-
-
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
 
 /* transparency */
 
@@ -539,8 +539,8 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Links to this Calendar" = "Odkazy na tento kalendář";
 "Authenticated User Access" = "Přístup pro ověřené uživatele";
 "CalDAV URL" = "CalDAV url";
-
-
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
 
 /* Error messages */
 "dayFieldInvalid" = "V políčku Dny zadejte číselnou hodnotu větší nebo rovnu 1.";
@@ -550,23 +550,23 @@ vtodo_class2 = "(Důvěrný úkol)";
 "yearFieldInvalid" = "V políčku Rok zadejte číselnou hodnotu větší nebo rovnu 1.";
 "appointmentFieldInvalid" = "V políčku Připomenutí zadejte číselnou hodnotu větší nebo rovnu 1.";
 "recurrenceUnsupported" = "Tento typ opakování není podporován.";
-
+"Please specify a calendar name." = "Please specify a calendar name.";
 "tagNotDefined" = "Chcete-li synchronizovat tento kalendář, musíte zadat jeho Štítek.";
 "tagAlreadyExists" = "Zadaný štítek je již přiřazen jinému kalendáři.";
 "tagHasChanged" = "Změníte-li štítek svého kalendáře, budete muset znovu načíst data do svého mobilního zařízení.\nPokračovat?";
 "tagWasAdded" = "Chcete-li synchronizovat tento kalendář, budete muset znovu načíst data do svého mobilního zařízení.\nPokračovat?";
 "tagWasRemoved" = "Odstraníte-li u tohoto kalendáře synchronizaci, budete muset znovu načíst data do svého mobilního zařízení.\nPokračovat?";
-
-
+"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
+"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
 
 "Open Task..." = "Otevřít úkol...";
 "Mark Completed" = "Označit jako dokončené";
 "Delete Task" = "Smazat úkol";
 "Delete Event" = "Smazat událost";
-
+"Copy event to my calendar" = "Copy event to my calendar";
 
 "Subscribe to a web calendar..." = "Odebírat vzdálený kalendář na webu";
 "URL of the Calendar" = "Adresa vzdáleného kalendáře na webu";
 "Web Calendar" = "Vzdálený kalendář na webu";
 "Reload on login" = "Aktualizovat při přihlášení";
-
+"Invalid number." = "Invalid number.";

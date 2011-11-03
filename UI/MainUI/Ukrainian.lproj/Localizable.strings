@@ -1,10 +1,10 @@
 /* this file is in UTF-8 format! */
 
-
+"title" = "SOGo";
 
 "Username:" = "Лоґін:";
 "Password:" = "Пароль:";
-
+"Domain:" = "Domain:";
 
 "Connect" = "Увійти";
 
@@ -49,7 +49,7 @@ SOGo забезпечує зручний веб-інтерфейс на осно
 "Your account was locked due to an expired password." = "Ваш обліковий запис заблоковано, оскільки закінчився термін дії пароля.";
 "Login failed due to unhandled error case: " = "Невдала спроба авторизація через невизначену помилку: ";
 "Change your Password" = "Змініть Ваш пароль";
-
+"The password was changed successfully." = "The password was changed successfully.";
 "Your password has expired, please enter a new one below:" = "Закінчився термін дії Вашого пароля, будь ласка, введіть новий нижче:";
 "Password must not be empty." = "Пароль не може бути порожнім.";
 "The passwords do not match. Please try again." = "Паролі не співпадають. Будь ласка, спробуйте ще раз.";

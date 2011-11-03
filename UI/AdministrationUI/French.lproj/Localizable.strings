@@ -3,10 +3,10 @@
 "Help" = "Aide";
 "Close" = "Fermer";
 
-
+"Modules" = "Modules";
 
 /* Modules short names */
-
+"ACLs" = "ACLs";
 
 /* Modules titles */
 "ACLs_title" = "Gestion des droits d'accès pour les dossiers utilisateurs";

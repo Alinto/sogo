@@ -10,10 +10,10 @@
 "Address Book"	= "Catálogo";
 "Mail" = "Correio";
 "Preferences" = "Preferências";
-
+"Administration" = "Administration";
 "Disconnect" = "Desconectar";
 "Right Administration" = "Administração de Direitos";
-
+"Log Console (dev.)" = "Log Console (dev.)";
 
 "User" = "Usuário";
 
@@ -22,18 +22,18 @@
 "noJavascriptError" = "SOGo requer Javascript para rodar. Por favor, certifique-se que a opção está disponível e habilitada nas preferências de seu navegador.";
 "noJavascriptRetry" = "Repetir";
 
-
+"Owner:" = "Owner:";
 "Publish the Free/Busy information" = "Divulgar a informação Livre/Ocupado";
 
 "Add..." = "Adicionar...";
 "Remove" = "Remover";
 
+"Subscribe User" = "Subscribe User";
 
-
-
-
-
-
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
+"Any user not listed above" = "Any user not listed above";
+"Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
 
 "Sorry, the user rights can not be configured for that object." = "Desculpe, os direitos de usuário não podem ser modificados para este objeto.";
 
@@ -51,24 +51,25 @@
      	= "Você já se inscreveu nesta pasta!";
 "The user rights cannot be edited for this object!"
         = "Os direitos do usuário não podem ser editados para este objeto!";
-
-
-
+"A folder by that name already exists." = "A folder by that name already exists.";
+"You cannot create a list in a shared address book." 
+        = "You cannot create a list in a shared address book.";
+"Warning" = "Warning";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Você não está liberado para acessar este módulo ou este sistema. Por favor, contate seu administrador de sistemas.";
 "You don't have the required privileges to perform the operation."
 = "Você não tem os privilégios requeridos para realizar esta operação.";
 
-
-
-
-
+"noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
+"delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
+"delegate is a participant" = "The delegate is already a participant.";
+"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
 
 /* common buttons */
-
-
-
+"OK" = "OK";
+"Cancel" = "Cancel";
+"Yes" = "Yes";
 "No" = "No";
 
 /* alarms */

@@ -169,12 +169,3 @@ UL#attachments LI IMG
 TEXTAREA#text
 { display: none;
   background: #fff; }
-
-blockquote[type=cite] {
-  display: block;
-  margin: 1em 0px;
-  -moz-padding-start: 1em;
-  -moz-border-start: solid;
-  border-color: blue;
-  border-width: thin;
-}

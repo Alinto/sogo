@@ -5,7 +5,7 @@
 "Close" = "Chiudi";
 "Edit User Rights" = "Modifica permessi";
 
-
+"Home" = "Home";
 "Calendar" = "Calendario";
 "Address Book"	= "Rubrica";
 "Mail" = "Posta";
@@ -13,7 +13,7 @@
 "Administration" = "Amministrazione";
 "Disconnect" = "Disconnetti";
 "Right Administration" = "Amministrazione permessi";
-
+"Log Console (dev.)" = "Log Console (dev.)";
 
 "User" = "Utente";
 
@@ -54,7 +54,7 @@
 "A folder by that name already exists." = "Esiste già una cartella con questo nome.";
 "You cannot create a list in a shared address book." 
         = "Non puoi creare una lista in una rubrica in sola lettura.";
-
+"Warning" = "Warning";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Non sei abilitato ad accedere a questo modulo. Contatta il tuo amministratore di sistema.";
@@ -67,9 +67,9 @@
 "delegate is a group" = "L'indirizzo specifico corrisponde ad un gruppo, puoi delegare solo una persona.";
 
 /* common buttons */
-
-
-
+"OK" = "OK";
+"Cancel" = "Cancel";
+"Yes" = "Yes";
 "No" = "No";
 
 /* alarms */

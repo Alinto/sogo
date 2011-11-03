@@ -7,7 +7,7 @@ DELEGATED = "Délégué";
 TENTATIVE = "Proposition";
 organized_by_you = "vous êtes l'organisateur";
 you_are_an_attendee = "vous êtes invité";
-
+add_info_text = "iMIP 'ADD' requests are not yet supported by SOGo.";
 publish_info_text = "L'expéditeur vous informe de l'événement attaché.";
 cancel_info_text = "Votre invitation ou l'événement au complet a été annulé.";
 request_info_no_attendee = "propose une réunion entre les invités. Ce message tient seulement lieu d'avis, vous n'êtes pas indiqué comme invité.";
@@ -41,6 +41,6 @@ reply_info = "Ceci est une réponse à un événement que vous avez organisé.";
 "Message is signed" = "Message signé";
 "Subject" = "Sujet";
 "From" = "Expéditeur";
-
+"Date" = "Date";
 "To" = "Destinataire";
 "Issuer" = "Émetteur";

@@ -8,43 +8,47 @@ vtodo_class1 = "(Tasg breifat)";
 vtodo_class2 = "(Tasg gyfrinachol)";
 
 /* Receipts */
+"Title:" = "Title:";
+"Start:" = "Start:";
+"End:" = "End:";
 
+"Receipt: users invited to a meeting" = "Receipt: users invited to a meeting";
+"You have invited the following attendees(s):" = "You have invited the following attendees(s):";
+"... to attend the following event:" = "... to attend the following event:";
 
+"Receipt: invitation updated" = "Receipt: invitation updated";
+"The following attendees(s):" = "The following attendees(s):";
+"... have been notified of the changes to the following event:" = "... have been notified of the changes to the following event:";
 
-
-
-
-
-
-
-
-
-
-
-
-
+"Receipt: attendees removed from an event" = "Receipt: attendees removed from an event";
+"You have removed the following attendees(s):" = "You have removed the following attendees(s):";
+"... from the following event:" = "... from the following event:";
 
 /* IMIP messages */
-
-
-
-
-
-
+"startDate_label" = "Start:";
+"endDate_label" = "End:";
+"due_label" = "Due Date:";
+"location_label" = "Location:";
+"summary_label" = "Summary:";
+"comment_label" = "Comment:";
 
 /* Invitation */
-
+"Event Invitation: \"%{Summary}\"" = "Event Invitation: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(anfon gan %{SentBy}) ";
-
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
 
 /* Deletion */
-
-
+"Event Cancelled: \"%{Summary}\"" = "Event Cancelled: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
 
 /* Update */
-
-
-
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "The following parameters have changed in the \"%{Summary}\" meeting:";
+"Please accept or decline those changes."
+= "Please accept or decline those changes.";
 
 /* Reply */
 "Reply to invitation: \"%{Summary}\"" = "Ymateb i wahoddiad: %{Summary}";
@@ -52,8 +56,10 @@ vtodo_class2 = "(Tasg gyfrinachol)";
 = "%{Attendee} %{SentByText}wedi derbyn.";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText}wedi gwrthod.";
-
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}heb benderfynu ar eich gwahoddiad eto.";
 
 /* Resources */
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";

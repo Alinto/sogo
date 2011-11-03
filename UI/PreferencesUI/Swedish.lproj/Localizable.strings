@@ -44,45 +44,44 @@
 
 "default" = "Standard";
 
+"shortDateFmt_0" = "%d-%b-%y";
 
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
 
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
 
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
 
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
 
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+"shortDateFmt_15" = "";
    
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
 
-
-
-
-
-
-
-
-
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
 
 /* calendar */
 "Week begins on :" = "Veckan börjar med:";
 "Day start time :" = "Dagen börjar kl:";
 "Day end time :" = "Dagen slutar kl:";
 "Day start time must be prior to day end time." = "Dagens starttid måste vara före dagens sluttid.";
-
 "First week of year :" = "Första veckan på året:";
 "Enable reminders for Calendar items" = "Aktivera påminnelser för kalenderposter";
 "Play a sound when a reminder comes due"
@@ -94,10 +93,10 @@
 "firstWeekOfYear_FirstFullWeek" = "Första hela veckan på året";
 
 /* Default Calendar */
-
-
-
-
+"Default calendar :" = "Default calendar";
+"selectedCalendar" = "Selected calendar";
+"personalCalendar" = "Personal calendar";
+"firstCalendar" = "First enabled calendar";
 
 "reminderTime_0000" = "0 minuter";
 "reminderTime_0005" = "5 minuter";
@@ -114,7 +113,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Visa endast prenumrerade postlådor";
-
+"Sort messages by threads" = "Sort messages by threads";
 "Check for new mail:" = "Hämta ny post:";
 "messagecheck_manually" = "Manuellt";
 "messagecheck_every_minute" = "Varje minut";
@@ -135,7 +134,7 @@
 "signatureplacement_above" = "under mitt svar";
 "signatureplacement_below" = "under det infogade meddelandet";
 "Compose messages in" = "Skriv meddelanden i";
-
+"composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Oformaterad text";
 
 /* IMAP Accounts */
@@ -144,7 +143,7 @@
 "Server Name:" = "
 
 Servernamn:";
-
+"Port:" = "Port:";
 "User Name:" = "Användarnamn:";
 "Password:" = "Lösenord:";
 

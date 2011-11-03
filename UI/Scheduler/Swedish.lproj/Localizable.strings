@@ -40,7 +40,7 @@
 "a2_Tuesday" = "Ti";
 "a2_Wednesday" = "On";
 "a2_Thursday" = "To";
-
+"a2_Friday" = "Fr";
 "a2_Saturday" = "Lö";
 
 "dayLabelFormat" = "%Y-%m-%d";
@@ -66,28 +66,28 @@
 "January" = "Januari";
 "February" = "Februari";
 "March" = "Mars";
-
+"April" = "April";
 "May" = "Maj";
 "June" = "Juni";
 "July" = "Juli";
 "August" = "Augusti";
-
+"September" = "September";
 "October" = "Oktober";
-
-
+"November" = "November";
+"December" = "December";
 
 "a3_January" = "Januari";
 "a3_February" = "Februari";
 "a3_March" = "Mars";
-
+"a3_April" = "April";
 "a3_May" = "Maj";
 "a3_June" = "Juni";
 "a3_July" = "Juli";
 "a3_August" = "Augusti";
-
+"a3_September" = "September";
 "a3_October" = "Oktober";
-
-
+"a3_November" = "November";
+"a3_December" = "December";
 
 "Previous Month" = "Föregående månad";
 "Next Month" = "Nästa månad";
@@ -126,7 +126,7 @@
 
 /* Misc */
 
-
+"OpenGroupware.org" = "OpenGroupware.org";
 "Forbidden" = "Förbjuden";
 
 /* acls */
@@ -186,7 +186,7 @@
 "No appointments found" = "Inga möten hittade";
 "Meetings proposed by you" = "Möten föreslagna av dig";
 "Meetings proposed to you" = "Möten föreslagna till dig";
-
+"sched_startDateFormat" = "%d/%m %H:%M";
 "action" = "Åtgärd";
 "accept" = "Acceptera";
 "decline" = "Avböj";
@@ -208,7 +208,7 @@
 "Calendar:" = "Kalender:";
 "Name" = "Namn";
 "Email" = "E-post";
-
+"Status:" = "Status:";
 "% complete" = "% utfört";
 "Location:" = "Plats:";
 "Priority:" = "Prioritet:";
@@ -301,7 +301,7 @@
 "prio_2" = "Hög";
 "prio_3" = "Hög";
 "prio_4" = "Hög";
-
+"prio_5" = "Normal";
 "prio_6" = "Låg";
 "prio_7" = "Låg";
 "prio_8" = "Låg";
@@ -352,7 +352,7 @@
 "Week(s)" = "Vecka(or)";
 "On" = "På";
 "Month(s)" = "Månad(er)";
-
+"The" = "The";
 "Recur on day(s)" = "Återkommer på dag(ar)";
 "Year(s)" = "År";
 "cycle_of" = "av";
@@ -412,11 +412,11 @@
 "Email Organizer" = "Skicka meddelande till arrangör";
 "Email Attendees" = "Skicka meddelande till deltagare";
 
-
-
-
-
-
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
 
 /* transparency */
 
@@ -485,7 +485,7 @@ validate_endbeforestart    = "Angivet slutdatumet inträffar före angivet start
 
 /* FreeBusy panel buttons and labels */
 "Suggest time slot:" = "Föreslå tid:";
-
+"Zoom:" = "Zoom:";
 "Previous slot" = "Föregående tid";
 "Next slot" = "Nästa tid";
 "Previous hour" = "Föregående timme";
@@ -500,7 +500,7 @@ validate_endbeforestart    = "Angivet slutdatumet inträffar före angivet start
 
 /* apt list */
 "Title" = "Titel";
-
+"Start" = "Start";
 "End" = "Slut";
 "Location" = "Plats";
 "(Private Event)" = "(Privat händelse)";
@@ -537,10 +537,10 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "Show tasks" = "Visa uppgifter";
 
 "Links to this Calendar" = "Länkar till denna kalender";
-
+"Authenticated User Access" = "Authenticated User Access";
 "CalDAV URL" = "CalDAV url";
-
-
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
 
 /* Error messages */
 "dayFieldInvalid" = "Ange ett numeriskt värde in dagsfältet större än eller lika med 1.";
@@ -550,7 +550,7 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "yearFieldInvalid" = "Ange ett numeriskt värde in årsfältet större än eller lika med 1.";
 "appointmentFieldInvalid" = "Ange ett numeriskt värde in mötesfältet större än eller lika med 1.";
 "recurrenceUnsupported" = "Denna upprepningstyp stöds för närvarande inte.";
-
+"Please specify a calendar name." = "Please specify a calendar name.";
 "tagNotDefined" = "Du måste ange en etikett om du vill synkronisera kalendern.";
 "tagAlreadyExists" = "Etiketten du angett är redan associerad till en annan kalender.";
 "tagHasChanged" = "Om du ändrar etiketten på din kalender, behöver du ladda om datat i din mobiltelefon.\nFortsätta?";
@@ -563,7 +563,7 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "Mark Completed" = "Märk utförd";
 "Delete Task" = "Ta bort uppgift";
 "Delete Event" = "Ta bort händelse";
-
+"Copy event to my calendar" = "Copy event to my calendar";
 
 "Subscribe to a web calendar..." = "Prenumrera på en webbkalender...";
 "URL of the Calendar" = "URL till kalendern";

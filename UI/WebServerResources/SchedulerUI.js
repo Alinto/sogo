@@ -2683,7 +2683,7 @@ function appendCalendar(folderName, folderPath) {
     if (!owner)
         owner = UserLogin;
 
-    log ("append name: " + folderName + "; path: " + folderPath + "; owner: " + owner);
+    //log ("append name: " + folderName + "; path: " + folderPath + "; owner: " + owner);
 
     if ($(folderPath))
         showAlertDialog(_("You have already subscribed to that folder!"));
