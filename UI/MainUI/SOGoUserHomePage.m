@@ -326,7 +326,7 @@
   NSMutableArray *jsonResponse, *jsonLine;
   NSArray *allUsers;
   int count, max;
-  BOOL activeUserIsInDomain, isGroup;
+  BOOL activeUserIsInDomain;
 
   login = [[context activeUser] login];
   activeUserIsInDomain = ([domain length] == 0 || [[[context activeUser] domain] isEqualToString: domain]);
