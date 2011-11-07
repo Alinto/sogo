@@ -86,7 +86,6 @@
 
 - (void) addProperties: (NSDictionary *) newProperties;
 - (NSDictionary *) properties;
-- (void) resetProperties;
 
 /* ops */
 - (int) getAvailableProperties: (struct SPropTagArray **) propertiesP

@@ -235,11 +235,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return properties;
 }
 
-- (void) resetProperties
-{
-  [properties removeAllObjects];
-}
-
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag
            inMemCtx: (TALLOC_CTX *) memCtx

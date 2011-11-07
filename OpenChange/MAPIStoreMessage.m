@@ -460,7 +460,7 @@ MAPIStoreExternalEntryId (NSString *cn, NSString *email)
     [[containerTables objectAtIndex: count]
               notifyChangesForChild: self];
   [self setIsNew: NO];
-  [self resetProperties];
+  [properties removeAllObjects];
   [container cleanupCaches];
 
   return MAPISTORE_SUCCESS;

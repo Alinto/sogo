@@ -9,6 +9,7 @@
 	invokes [self addProperties:] to modify the "properties" ivar,
 	instead of doing it directly. This enables subclasses to only need
 	overriding -addProperties:.
+	(-resetProperties): removed useless method.
 
 	* OpenChange/MAPIStoreVolatileMessage.m (-addPropertiesFromRow:):
 	removed obsolete overloading of method.

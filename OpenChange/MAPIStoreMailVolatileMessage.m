@@ -812,7 +812,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
   mapping = [[self context] mapping];
   [mapping unregisterURLWithID: [self objectId]];
   [self setIsNew: NO];
-  [self resetProperties];
+  [properties removeAllObjects];
   [[self container] cleanupCaches];
 
   return MAPISTORE_SUCCESS;
