@@ -305,6 +305,14 @@
       rp->FirstDateTime = [moduloDate asMinutesSince1601];
 
       byMonthDay = [[self byMonthDay] objectAtIndex: 0];
+      if (!byMonthDay && (freq == iCalRecurrenceFrequenceYearly))
+        {
+          byMonthDay = [NSString stringWithFormat: @"%d", [startDate dayOfMonth]];
+          [self warnWithFormat: @"no month day specified in yearly"
+                @" recurrence: we deduce it from the start date: %@",
+                byMonthDay];
+        }
+
       if (byMonthDay)
         {
           if ([byMonthDay intValue]  < 0)
@@ -325,11 +333,14 @@
         {
           rp->PatternType = PatternType_MonthNth;
           byDayMask = [self byDayMask];
-          days = [byDayMask weekDayOccurrences];
           mask = 0;
-          for (count = 0; count < 7; count++)
-            if (days[0][count])
-              mask |= 1 << count;
+          days = [byDayMask weekDayOccurrences];
+          if (days)
+            {
+              for (count = 0; count < 7; count++)
+                if (days[0][count])
+                  mask |= 1 << count;
+            }
           if (mask)
             {
               rp->PatternTypeSpecific.MonthRecurrencePattern.WeekRecurrencePattern = mask;

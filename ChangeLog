@@ -1,3 +1,11 @@
+2011-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreRecurrenceUtils.m
+	(-fillRecurrencePattern:withStartDate:andEndDate:): fixed a crash
+	occurring when no byday mask was specified. We also force a value
+	for the monthday in the case of a yearly event without a proper
+	one.
+
 2011-11-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFolder.m (-addProperties:): we now override
