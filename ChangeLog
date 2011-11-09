@@ -1,5 +1,9 @@
 2011-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsMessage.m (-save): set the NOTE
+	field to the value of PR_BODY_UNICODE or, a textual version of
+	PR_HTML.
+
 	* OpenChange/MAPIStoreMessage.m (-addProperties): intercept
 	PR_RTF_COMPRESSED attributes and convert them automatically to a
 	PR_HTML attribute.

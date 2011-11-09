@@ -27,10 +27,12 @@
 #import <Foundation/NSString.h>
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSObject+Logs.h>
-#import <NGCards/NSArray+NGCards.h>
 #import <NGCards/NGVCard.h>
 #import <NGCards/NGVCardPhoto.h>
+#import <NGCards/NSArray+NGCards.h>
+#import <NGCards/NSString+NGCards.h>
 #import <Contacts/SOGoContactGCSEntry.h>
+#import <Mailer/NSString+Mail.h>
 
 #import "MAPIStoreContactsAttachment.h"
 #import "MAPIStoreContactsFolder.h"
@@ -337,10 +339,16 @@
 {
   int rc = MAPISTORE_SUCCESS;
   NSString *stringValue;
+  NSArray *values;
 
   stringValue = [[sogoObject vCard] note];
   if ([stringValue length] > 0)
-    *data = [stringValue asUnicodeInMemCtx: memCtx];
+    {
+      /* FIXME: this is a temporary hack: we unescape things although NGVCards
+         should already have done it at this stage... */
+      values = [stringValue asCardAttributeValues];
+      *data = [[values objectAtIndex: 0] asUnicodeInMemCtx: memCtx];
+    }
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
 
@@ -1116,6 +1124,22 @@
       [self _updatePhotoInVCard: newCard
                  fromProperties: [attachment properties]];
     }
+
+  /* Note */
+  value = [properties objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
+  if (!value)
+    {
+      value = [properties objectForKey: MAPIPropertyKey (PR_HTML)];
+      if (value)
+        {
+          value = [[NSString alloc] initWithData: value
+                                        encoding: NSUTF8StringEncoding];
+          [value autorelease];
+          value = [value htmlToText];
+        }
+    }
+  if (value)
+    [newCard setNote: value];
 
   //
   // we save the new/modified card
