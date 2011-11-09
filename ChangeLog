@@ -1,3 +1,9 @@
+2011-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailVolatileMessage.m
+	(_generateMailDataWithBcc:): don't write the resulting mail body
+	to /tmp/mimegen.eml.
+
 2011-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreRecurrenceUtils.m

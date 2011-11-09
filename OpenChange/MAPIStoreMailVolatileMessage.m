@@ -759,7 +759,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
       messageData = cleanedMessage;
     }
 
-  [messageData writeToFile: @"/tmp/mimegen.eml" atomically: NO];
+  // [messageData writeToFile: @"/tmp/mimegen.eml" atomically: NO];
 
   return messageData;
 }
