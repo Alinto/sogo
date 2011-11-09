@@ -7,6 +7,8 @@ include ../Version
 
 BACKEND_VERSION = 1.0.0
 
+UNRTF_VERSION = 0.21.2
+
 ### bootstrap library
 MAPISTORESOGO = MAPIStoreSOGo
 LIBRARY_NAME = $(MAPISTORESOGO)
@@ -22,6 +24,12 @@ SOGOBACKEND = SOGoBackend
 BUNDLE_NAME = $(SOGOBACKEND)
 BUNDLE_EXTENSION = .MAPIStore
 BUNDLE_INSTALL_DIR = $(SOGO_LIBDIR)
+
+UNRTF_DIR = unrtf-$(UNRTF_VERSION)
+
+$(SOGOBACKEND)_CPPFLAGS += -I$(UNRTF_DIR)/src
+
+$(SOGOBACKEND)_SUBPROJECTS = $(UNRTF_DIR)/src
 
 $(SOGOBACKEND)_PRINCIPAL_CLASS = MAPIApplication
 
@@ -120,7 +128,27 @@ $(SOGOBACKEND)_OBJC_FILES += \
 
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
-	product.plist
+	product.plist \
+	$(UNRTF_DIR)/charmaps/SYMBOL.charmap \
+	$(UNRTF_DIR)/outputs/html.conf
+
+### unrtf
+all:: $(UNRTF_DIR)/config.h $(UNRTF_DIR)/src/GNUmakefile
+
+$(UNRTF_DIR): $(UNRTF_DIR).tar.gz $(UNRTF_DIR).diff
+	rm -rf $(UNRTF_DIR)
+	$(TAR) -xvzf $<
+	(cd $(UNRTF_DIR) && patch -p1 < ../$(UNRTF_DIR).diff)
+	touch $(UNRTF_DIR)
+
+$(UNRTF_DIR)-stamp: $(UNRTF_DIR)
+	touch $@
+
+$(UNRTF_DIR)/config.h: $(UNRTF_DIR)-stamp unrtf_config_h
+	cp unrtf_config_h $(UNRTF_DIR)/config.h
+
+$(UNRTF_DIR)/src/GNUmakefile: $(UNRTF_DIR)-stamp GNUmakefile.unrtf
+	cp GNUmakefile.unrtf $@
 
 ### pl reader
 PLREADER_TOOL = plreader
@@ -160,6 +188,7 @@ SAMBA_LIB_DIR = $(shell pkg-config libmapistore --variable=libdir)
 include $(GNUSTEP_MAKEFILES)/bundle.make
 include $(GNUSTEP_MAKEFILES)/library.make
 include $(GNUSTEP_MAKEFILES)/test-tool.make
+include $(GNUSTEP_MAKEFILES)/aggregate.make
 -include GNUmakefile.postamble
 
 endif

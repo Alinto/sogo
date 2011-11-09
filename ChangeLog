@@ -1,5 +1,9 @@
 2011-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMessage.m (-addProperties): intercept
+	PR_RTF_COMPRESSED attributes and convert them automatically to a
+	PR_HTML attribute.
+
 	* OpenChange/MAPIStoreVolatileMessage.m (-addProperties:):
 	transfer the content of the "properties" ivar instead of the
 	"newProperties" parameter, so as to benefit from treatment that
