@@ -86,7 +86,8 @@ function onLoginClick(event) {
                            : ("&language=" + language.value));
         if (domain)
             parameters += "&domain=" + domain.value;
-        if ($("rememberLogin").checked)
+        var rememberLogin = $("rememberLogin");
+        if (rememberLogin && rememberLogin.checked)
             parameters += "&rememberLogin=1";
 
         /// Discarded as it seems to create a cookie for nothing. To discard
