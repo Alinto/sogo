@@ -136,19 +136,20 @@ $(SOGOBACKEND)_RESOURCE_FILES += \
 all:: $(UNRTF_DIR)/config.h $(UNRTF_DIR)/src/GNUmakefile
 
 $(UNRTF_DIR): $(UNRTF_DIR).tar.gz $(UNRTF_DIR).diff
-	rm -rf $(UNRTF_DIR)
-	$(TAR) -xvzf $<
-	(cd $(UNRTF_DIR) && patch -p1 < ../$(UNRTF_DIR).diff)
-	touch $(UNRTF_DIR)
+	@echo " Extracting and patching $(UNRTF_DIR)..."
+	@rm -rf $(UNRTF_DIR)
+	@$(TAR) -xvzf $< > /dev/null
+	@(cd $(UNRTF_DIR) && patch -p1 < ../$(UNRTF_DIR).diff) > /dev/null
+	@touch $(UNRTF_DIR)
 
 $(UNRTF_DIR)-stamp: $(UNRTF_DIR)
-	touch $@
+	@touch $@
 
 $(UNRTF_DIR)/config.h: $(UNRTF_DIR)-stamp unrtf_config_h
-	cp unrtf_config_h $(UNRTF_DIR)/config.h
+	@cp unrtf_config_h $(UNRTF_DIR)/config.h
 
 $(UNRTF_DIR)/src/GNUmakefile: $(UNRTF_DIR)-stamp GNUmakefile.unrtf
-	cp GNUmakefile.unrtf $@
+	@cp GNUmakefile.unrtf $@
 
 ### pl reader
 PLREADER_TOOL = plreader
