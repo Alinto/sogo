@@ -1,5 +1,10 @@
 2011-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreVolatileMessage.m (-addProperties:):
+	transfer the content of the "properties" ivar instead of the
+	"newProperties" parameter, so as to benefit from treatment that
+	could have happened in parent classes.
+
 	* OpenChange/MAPIStoreMailVolatileMessage.m
 	(_generateMailDataWithBcc:): don't write the resulting mail body
 	to /tmp/mimegen.eml.

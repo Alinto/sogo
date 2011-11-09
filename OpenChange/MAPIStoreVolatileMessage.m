@@ -83,7 +83,7 @@ Class NSNumberK;
 - (void) addProperties: (NSDictionary *) newProperties
 {
   [super addProperties: newProperties];
-  [sogoObject appendProperties: newProperties];
+  [sogoObject appendProperties: properties];
   [properties removeAllObjects];
   ASSIGN (lastModificationTime, [NSDate date]);
 }
