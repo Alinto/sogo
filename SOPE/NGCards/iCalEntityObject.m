@@ -102,6 +102,7 @@
   return [[self uniqueChildWithTag: @"location"] value: 0];
 }
 
+#warning the "comment" accessors are actually "description" accessors, the "comment" ones are missing
 - (void) setComment: (NSString *) _value
 {
   [[self uniqueChildWithTag: @"description"] setValue: 0 to: _value];
