@@ -1,6 +1,18 @@
+diff -durpN unrtf-0.21.2.old/outputs/html.conf unrtf-0.21.2/outputs/html.conf
+--- unrtf-0.21.2.old/outputs/html.conf	2010-08-15 08:44:09.000000000 -0400
++++ unrtf-0.21.2/outputs/html.conf	2011-11-09 13:55:25.289763561 -0500
+@@ -5,7 +5,7 @@ comment_end
+ 	-->
+ 	
+ document_begin
+-	<!DOCTYPE html PUBLIC -//W3C//DTD HTML 4.01 Transitional//EN>
++	<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html40/loose.dtd">
+ #Second test of comments
+ 	<html>
+ 	
 diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 --- unrtf-0.21.2.old/src/attr.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/attr.c	2011-11-08 19:15:18.044195095 -0500
++++ unrtf-0.21.2/src/attr.c	2011-11-09 09:55:11.557465363 -0500
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -1250,7 +1262,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
  
 diff -durpN unrtf-0.21.2.old/src/attr.h unrtf-0.21.2/src/attr.h
 --- unrtf-0.21.2.old/src/attr.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/attr.h	2011-11-08 19:15:18.044195095 -0500
++++ unrtf-0.21.2/src/attr.h	2011-11-09 09:55:11.561465361 -0500
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -1400,7 +1412,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.h unrtf-0.21.2/src/attr.h
 +#endif /* ATTR_H */
 diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
 --- unrtf-0.21.2.old/src/convert.c	2011-06-07 08:00:23.000000000 -0400
-+++ unrtf-0.21.2/src/convert.c	2011-11-09 09:29:58.317540932 -0500
++++ unrtf-0.21.2/src/convert.c	2011-11-09 09:55:11.561465361 -0500
 @@ -1,24 +1,24 @@
  
  /*===========================================================================
@@ -7095,7 +7107,7 @@ diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
  }
 diff -durpN unrtf-0.21.2.old/src/convert.h unrtf-0.21.2/src/convert.h
 --- unrtf-0.21.2.old/src/convert.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/convert.h	2011-11-08 19:15:18.052195124 -0500
++++ unrtf-0.21.2/src/convert.h	2011-11-09 09:55:11.565465360 -0500
 @@ -36,18 +36,135 @@
  
  #ifndef _CONVERT
@@ -7239,7 +7251,7 @@ diff -durpN unrtf-0.21.2.old/src/convert.h unrtf-0.21.2/src/convert.h
  
 diff -durpN unrtf-0.21.2.old/src/defs.h unrtf-0.21.2/src/defs.h
 --- unrtf-0.21.2.old/src/defs.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/defs.h	2011-11-08 19:15:18.052195124 -0500
++++ unrtf-0.21.2/src/defs.h	2011-11-09 09:55:11.565465360 -0500
 @@ -64,9 +64,6 @@
  #define SKIP_ONE_WORD	2
  #endif
@@ -7259,7 +7271,7 @@ diff -durpN unrtf-0.21.2.old/src/defs.h unrtf-0.21.2/src/defs.h
 +#define DEFAULT_OUTPUT             "html"
 diff -durpN unrtf-0.21.2.old/src/error.c unrtf-0.21.2/src/error.c
 --- unrtf-0.21.2.old/src/error.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/error.c	2011-11-08 19:15:18.052195124 -0500
++++ unrtf-0.21.2/src/error.c	2011-11-09 09:55:11.565465360 -0500
 @@ -51,27 +51,11 @@
  #include <stdlib.h>
  #endif
@@ -7304,7 +7316,7 @@ diff -durpN unrtf-0.21.2.old/src/error.c unrtf-0.21.2/src/error.c
  #endif
 diff -durpN unrtf-0.21.2.old/src/error.h unrtf-0.21.2/src/error.h
 --- unrtf-0.21.2.old/src/error.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/error.h	2011-11-08 19:15:18.056195127 -0500
++++ unrtf-0.21.2/src/error.h	2011-11-09 09:55:11.569465360 -0500
 @@ -37,9 +37,10 @@
  
  #define CHECK_MALLOC_SUCCESS(XX) { if ((XX)==NULL) { fprintf (stderr, "internal error: cannot allocate memory in %s at %d\n", __FILE__, __LINE__); exit (1); }}
@@ -7319,7 +7331,7 @@ diff -durpN unrtf-0.21.2.old/src/error.h unrtf-0.21.2/src/error.h
  
 diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
 --- unrtf-0.21.2.old/src/hash.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/hash.c	2011-11-08 19:15:18.056195127 -0500
++++ unrtf-0.21.2/src/hash.c	2011-11-09 09:55:11.569465360 -0500
 @@ -53,24 +53,16 @@
  #include <string.h>
  #endif
@@ -7524,7 +7536,7 @@ diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
 +}
 diff -durpN unrtf-0.21.2.old/src/hash.h unrtf-0.21.2/src/hash.h
 --- unrtf-0.21.2.old/src/hash.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/hash.h	2011-11-08 19:15:18.056195127 -0500
++++ unrtf-0.21.2/src/hash.h	2011-11-09 09:55:11.569465360 -0500
 @@ -32,11 +32,11 @@
   * 16 Dec 07, daved@physiol.usyd.edu.au: updated to GPL v3
   *--------------------------------------------------------------------*/
@@ -7545,7 +7557,7 @@ diff -durpN unrtf-0.21.2.old/src/hash.h unrtf-0.21.2/src/hash.h
  
 diff -durpN unrtf-0.21.2.old/src/main.c unrtf-0.21.2/src/main.c
 --- unrtf-0.21.2.old/src/main.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/main.c	2011-11-08 19:15:18.056195127 -0500
++++ unrtf-0.21.2/src/main.c	2011-11-09 09:55:11.569465360 -0500
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -7967,7 +7979,7 @@ diff -durpN unrtf-0.21.2.old/src/main.c unrtf-0.21.2/src/main.c
 -
 diff -durpN unrtf-0.21.2.old/src/main.h unrtf-0.21.2/src/main.h
 --- unrtf-0.21.2.old/src/main.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/main.h	2011-11-08 19:15:18.056195127 -0500
++++ unrtf-0.21.2/src/main.h	2011-11-09 09:55:11.573465361 -0500
 @@ -35,21 +35,8 @@
   * 17 Jan 10, daved@physiol.usyd.edu.au: change CONFIG_DIR to drop outputs/
   *--------------------------------------------------------------------*/
@@ -7993,7 +8005,7 @@ diff -durpN unrtf-0.21.2.old/src/main.h unrtf-0.21.2/src/main.h
 +#define USAGE "unrtf [--version] [--verbose] [--help] [--nopict|-n] [--noremap] [--html] [--text] [--vt] [--latex] [--rtf] [-P config_search_path]  [-t <file_with_tags>)] <filename>"
 diff -durpN unrtf-0.21.2.old/src/Makefile.am unrtf-0.21.2/src/Makefile.am
 --- unrtf-0.21.2.old/src/Makefile.am	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/Makefile.am	2011-11-08 19:15:18.060195122 -0500
++++ unrtf-0.21.2/src/Makefile.am	2011-11-09 09:55:11.573465361 -0500
 @@ -13,7 +13,6 @@ unrtf_SOURCES = attr.c attr.h         \
  		malloc.c malloc.h     \
  		output.c output.h     \
@@ -8004,7 +8016,7 @@ diff -durpN unrtf-0.21.2.old/src/Makefile.am unrtf-0.21.2/src/Makefile.am
  		util.c util.h         \
 diff -durpN unrtf-0.21.2.old/src/malloc.c unrtf-0.21.2/src/malloc.c
 --- unrtf-0.21.2.old/src/malloc.c	2010-07-09 01:13:05.000000000 -0400
-+++ unrtf-0.21.2/src/malloc.c	2011-11-08 19:15:18.060195122 -0500
++++ unrtf-0.21.2/src/malloc.c	2011-11-09 09:55:11.573465361 -0500
 @@ -135,19 +135,19 @@ total_malloced (void) {
   *=======================================================================*/
  
@@ -8044,7 +8056,7 @@ diff -durpN unrtf-0.21.2.old/src/malloc.c unrtf-0.21.2/src/malloc.c
  }    
 diff -durpN unrtf-0.21.2.old/src/malloc.h unrtf-0.21.2/src/malloc.h
 --- unrtf-0.21.2.old/src/malloc.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/malloc.h	2011-11-08 19:15:18.060195122 -0500
++++ unrtf-0.21.2/src/malloc.h	2011-11-09 09:55:11.573465361 -0500
 @@ -32,9 +32,10 @@
   * 09 Nov 08, arkadiusz.firus@gmail.com: added my_realloc
   *--------------------------------------------------------------------*/
@@ -8060,7 +8072,7 @@ diff -durpN unrtf-0.21.2.old/src/malloc.h unrtf-0.21.2/src/malloc.h
 +extern char * my_strdup (struct ConversionContext *, char*);
 diff -durpN unrtf-0.21.2.old/src/my_iconv.c unrtf-0.21.2/src/my_iconv.c
 --- unrtf-0.21.2.old/src/my_iconv.c	2010-08-16 00:12:43.000000000 -0400
-+++ unrtf-0.21.2/src/my_iconv.c	2011-11-08 19:15:18.060195122 -0500
++++ unrtf-0.21.2/src/my_iconv.c	2011-11-09 09:55:11.573465361 -0500
 @@ -12,154 +12,133 @@
  #include <stdio.h>
  #include <string.h>
@@ -8302,7 +8314,7 @@ diff -durpN unrtf-0.21.2.old/src/my_iconv.c unrtf-0.21.2/src/my_iconv.c
  
 diff -durpN unrtf-0.21.2.old/src/my_iconv.h unrtf-0.21.2/src/my_iconv.h
 --- unrtf-0.21.2.old/src/my_iconv.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/my_iconv.h	2011-11-08 19:15:18.060195122 -0500
++++ unrtf-0.21.2/src/my_iconv.h	2011-11-09 09:55:11.573465361 -0500
 @@ -5,6 +5,9 @@
   * Purpose:    my_conv definitions
   *--------------------------------------------------------------------*/
@@ -8332,7 +8344,7 @@ diff -durpN unrtf-0.21.2.old/src/my_iconv.h unrtf-0.21.2/src/my_iconv.h
 +#endif /* _MY_ICONV */
 diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 --- unrtf-0.21.2.old/src/output.c	2011-06-07 08:04:38.000000000 -0400
-+++ unrtf-0.21.2/src/output.c	2011-11-08 19:15:18.064195114 -0500
++++ unrtf-0.21.2/src/output.c	2011-11-09 09:55:11.577465362 -0500
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -9512,7 +9524,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 -
 diff -durpN unrtf-0.21.2.old/src/output.h unrtf-0.21.2/src/output.h
 --- unrtf-0.21.2.old/src/output.h	2010-08-11 21:09:02.000000000 -0400
-+++ unrtf-0.21.2/src/output.h	2011-11-08 19:15:18.064195114 -0500
++++ unrtf-0.21.2/src/output.h	2011-11-09 09:55:11.577465362 -0500
 @@ -44,227 +44,228 @@
  typedef Collection Aliases;
  
@@ -9900,7 +9912,7 @@ diff -durpN unrtf-0.21.2.old/src/output.h unrtf-0.21.2/src/output.h
 -
 diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
 --- unrtf-0.21.2.old/src/parse.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/parse.c	2011-11-09 09:52:09.593474687 -0500
++++ unrtf-0.21.2/src/parse.c	2011-11-09 09:55:11.577465362 -0500
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -10571,7 +10583,7 @@ diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
  }
 diff -durpN unrtf-0.21.2.old/src/parse.h unrtf-0.21.2/src/parse.h
 --- unrtf-0.21.2.old/src/parse.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/parse.h	2011-11-08 19:15:18.068195109 -0500
++++ unrtf-0.21.2/src/parse.h	2011-11-09 09:55:11.581465362 -0500
 @@ -38,8 +38,6 @@
  #include "word.h"
  #endif
@@ -10664,7 +10676,7 @@ diff -durpN unrtf-0.21.2.old/src/path.h unrtf-0.21.2/src/path.h
 -void	show_dirs();
 diff -durpN unrtf-0.21.2.old/src/unrtf.h unrtf-0.21.2/src/unrtf.h
 --- unrtf-0.21.2.old/src/unrtf.h	1969-12-31 19:00:00.000000000 -0500
-+++ unrtf-0.21.2/src/unrtf.h	2011-11-08 19:15:18.068195109 -0500
++++ unrtf-0.21.2/src/unrtf.h	2011-11-09 09:55:11.581465362 -0500
 @@ -0,0 +1,55 @@
 +/*===========================================================================
 +   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -10723,7 +10735,7 @@ diff -durpN unrtf-0.21.2.old/src/unrtf.h unrtf-0.21.2/src/unrtf.h
 +#endif /* UNRTF_H */
 diff -durpN unrtf-0.21.2.old/src/user.c unrtf-0.21.2/src/user.c
 --- unrtf-0.21.2.old/src/user.c	2011-06-07 08:08:17.000000000 -0400
-+++ unrtf-0.21.2/src/user.c	2011-11-08 19:15:18.068195109 -0500
++++ unrtf-0.21.2/src/user.c	2011-11-09 09:55:11.581465362 -0500
 @@ -7,7 +7,7 @@
   *----------------------------------------------------------------------
   * Changes:
@@ -11153,7 +11165,7 @@ diff -durpN unrtf-0.21.2.old/src/user.c unrtf-0.21.2/src/user.c
  
 diff -durpN unrtf-0.21.2.old/src/user.h unrtf-0.21.2/src/user.h
 --- unrtf-0.21.2.old/src/user.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/user.h	2011-11-08 19:15:18.068195109 -0500
++++ unrtf-0.21.2/src/user.h	2011-11-09 09:55:11.585465361 -0500
 @@ -151,9 +151,10 @@
  
  #ifndef _USER
@@ -11169,7 +11181,7 @@ diff -durpN unrtf-0.21.2.old/src/user.h unrtf-0.21.2/src/user.h
  #endif
 diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
 --- unrtf-0.21.2.old/src/word.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/word.c	2011-11-08 19:15:18.076195102 -0500
++++ unrtf-0.21.2/src/word.c	2011-11-09 09:55:11.585465361 -0500
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -11492,7 +11504,7 @@ diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
  
 diff -durpN unrtf-0.21.2.old/src/word.h unrtf-0.21.2/src/word.h
 --- unrtf-0.21.2.old/src/word.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/word.h	2011-11-08 19:15:18.076195102 -0500
++++ unrtf-0.21.2/src/word.h	2011-11-09 09:55:11.585465361 -0500
 @@ -41,14 +41,15 @@ typedef struct _w {
  	struct _w * child;
  } Word;
