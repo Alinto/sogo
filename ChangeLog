@@ -1,5 +1,12 @@
 2011-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): set the DESCRIPTION
+	field to the value of PR_BODY_UNICODE or, a textual version of
+	PR_HTML. COMMENT would be nice later.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m (-getPrBody:inMemCtx:):
+	make use of -[NSString asCardAttributeValues].
+
 	* OpenChange/MAPIStoreContactsMessage.m (-save): set the NOTE
 	field to the value of PR_BODY_UNICODE or, a textual version of
 	PR_HTML.

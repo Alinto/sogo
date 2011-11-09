@@ -46,6 +46,7 @@
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
+#import <Mailer/NSString+Mail.h>
 
 #import "MAPIStoreAppointmentWrapper.h"
 #import "MAPIStoreCalendarAttachment.h"
@@ -239,6 +240,12 @@
                inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [[self appointmentWrapper] getPrImportance: data inMemCtx: memCtx];
+}
+
+- (int) getPrBody: (void **) data
+         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPrBody: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidIsRecurring: (void **) data
@@ -797,6 +804,22 @@
 	      [newEvent setTransparency: @"OPAQUE"];
 	    }
 	}
+
+      /* Comment */
+      value = [properties objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
+      if (!value)
+        {
+          value = [properties objectForKey: MAPIPropertyKey (PR_HTML)];
+          if (value)
+            {
+              value = [[NSString alloc] initWithData: value
+                                        encoding: NSUTF8StringEncoding];
+              [value autorelease];
+              value = [value htmlToText];
+            }
+        }
+      if (value)
+        [newEvent setComment: value];
       
       /* recurrence */
       value = [properties

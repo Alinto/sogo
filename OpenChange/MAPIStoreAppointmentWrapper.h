@@ -92,8 +92,6 @@ extern NSTimeZone *utcTZ;
                     inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrBody: (void **) data
-         inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrStartDate: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidAppointmentStateFlags: (void **) data
@@ -129,6 +127,8 @@ extern NSTimeZone *utcTZ;
                 inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrImportance: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrBody: (void **) data
+         inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidIsRecurring: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidRecurring: (void **) data

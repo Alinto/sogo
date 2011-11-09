@@ -629,20 +629,6 @@ static NSCharacterSet *hexCharacterSet = nil;
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPrBody: (void **) data
-         inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-
-  stringValue = [event comment];
-  if (!stringValue)
-    stringValue = @"";
-
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
 - (int) getPrStartDate: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -1033,6 +1019,28 @@ static NSCharacterSet *hexCharacterSet = nil;
   *data = MAPILongValue (memCtx, v);
 
   return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrBody: (void **) data
+         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+  NSString *stringValue;
+  NSArray *values;
+
+  /* FIXME: there is a confusion in NGCards around "comment" and "description" */
+  stringValue = [event comment];
+  if ([stringValue length] > 0)
+    {
+      /* FIXME: this is a temporary hack: we unescape things although NGVCards
+         should already have done it at this stage... */
+      values = [stringValue asCardAttributeValues];
+      *data = [[values objectAtIndex: 0] asUnicodeInMemCtx: memCtx];
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 - (int) getPidLidIsRecurring: (void **) data
