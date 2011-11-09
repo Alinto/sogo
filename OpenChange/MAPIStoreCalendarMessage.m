@@ -25,6 +25,7 @@
    - take the tz definitions from Outlook */
 
 #include <talloc.h>
+#include <util/attr.h>
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>

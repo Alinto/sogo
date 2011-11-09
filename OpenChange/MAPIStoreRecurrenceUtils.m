@@ -32,6 +32,10 @@
 #import "NSDate+MAPIStore.h"
 #import "MAPIStoreRecurrenceUtils.h"
 
+#include <talloc.h>
+#include <util/time.h>
+#include <gen_ndr/property.h>
+
 @implementation iCalCalendar (MAPIStoreRecurrence)
 
 - (void) setupRecurrenceWithMasterEntity: (iCalRepeatableEntityObject *) entity

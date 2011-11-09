@@ -53,6 +53,7 @@
 #include <gen_ndr/exchange.h>
 #include <gen_ndr/property.h>
 #include <gen_ndr/ndr_property.h>
+#include <util/attr.h>
 #include <libmapi/libmapi.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>

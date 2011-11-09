@@ -51,6 +51,7 @@
 #include <gen_ndr/exchange.h>
 
 #undef DEBUG
+#include <util/attr.h>
 #include <libmapiproxy.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_nameid.h>
