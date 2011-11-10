@@ -73,6 +73,8 @@
         }
 
       [rendering appendString: [tag uppercaseString]];
+
+      /* parameters */
       attributes = [anElement attributes];
       keys = [[attributes allKeys] objectEnumerator];
       while ((key = [keys nextObject]))
@@ -104,6 +106,7 @@
             }
         }
 
+      /* values */
       values = [anElement values];
       if ([values count] > 0)
         [rendering appendFormat: @":%@",
