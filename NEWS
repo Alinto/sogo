@@ -1,4 +1,16 @@
-1.3-201110DD (1.3.9)
+1.3-20111028 (1.3.10)
+---------------------
+New Features
+ - 
+
+Enhancements
+ - updated Norwegian translation
+
+Bug Fixes
+ - added missing Icelandic wod files
+ - 
+
+1.3-20111028 (1.3.9)
 ---------------------
 New Features
  - new user defaults SOGoDefaultCalendar to specify which calendar is used when
