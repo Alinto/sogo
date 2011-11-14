@@ -600,17 +600,15 @@ static GCSStringFormatter *stringFormatter = nil;
 
 /* writing content */
 
-- (NSString *)_formatRowValue:(id)_value {
-
+- (NSString *)_formatRowValue:(id)_value
+withAdaptor: (EOAdaptor *)_adaptor
+andAttribute: (EOAttribute *)_attribute
+{
   if ([_value isKindOfClass:NSCalendarDateClass]) {
-    /* be smart ... convert to timestamp. Note: we loose precision. */
-    char buf[256];
-    snprintf(buf, sizeof(buf), "%i", (int)[_value timeIntervalSince1970]);
-    return [NSString stringWithCString:buf];
+    _value = [NSString stringWithFormat: @"%d", (int)[_value timeIntervalSince1970]];
   }
-  else {
-    return _value;
-  }
+
+  return [_adaptor formatValue: _value forAttribute: _attribute];
 }
 
 - (NSString *) _sqlTypeForColumn: (NSString *) _field withFieldInfos: (NSArray *) _fields
@@ -633,14 +631,36 @@ static GCSStringFormatter *stringFormatter = nil;
   return sqlType;
 }
 
+- (EOAttribute *) _attributeForColumn: (NSString *) _field
+{
+  NSString *sqlType;
+  EOAttribute *attribute;
+
+  sqlType = [self _sqlTypeForColumn: _field
+                  withFieldInfos: [folderInfo quickFields]];
+  if (!sqlType)
+    sqlType = [self _sqlTypeForColumn: _field
+                    withFieldInfos: [folderInfo fields]];
+  if (sqlType)
+    {
+      attribute = AUTORELEASE([[EOAttribute alloc] init]);
+      [attribute setName: _field];
+      [attribute setColumnName: _field];
+      [attribute setExternalType: sqlType];
+    }
+  else
+    attribute = nil;
+
+  return attribute;
+}
+
 - (NSString *) _generateInsertStatementForRow:(NSDictionary *)_row
                                       adaptor:(EOAdaptor *)_adaptor
-                                      fields:(NSArray *)_fields
                                       tableName:(NSString *)_table
 {
   // TODO: move to NSDictionary category?
   NSMutableString *sql;
-  NSString *fieldName, *sqlType;
+  NSString *fieldName;
   NSArray  *keys;
   EOAttribute *attribute;
   id value;
@@ -665,18 +685,13 @@ static GCSStringFormatter *stringFormatter = nil;
 
   for (i = 0, count = [keys count]; i < count; i++) {
     fieldName = [keys objectAtIndex:i];
-    sqlType = [self _sqlTypeForColumn: fieldName withFieldInfos: _fields];
-
-    if (sqlType)
+    attribute = [self _attributeForColumn: fieldName];
+    if (attribute)
       {
-        value = [self _formatRowValue: [_row objectForKey: fieldName]];
-        attribute = AUTORELEASE([[EOAttribute alloc] init]);
-        [attribute setName: fieldName];
-        [attribute setColumnName: fieldName];
-        [attribute setExternalType: sqlType];
-    
         if (i != 0) [sql appendString:@", "];
-        [sql appendString:[_adaptor formatValue: value forAttribute: attribute]];
+        value = [self _formatRowValue: [_row objectForKey: fieldName]
+                      withAdaptor: _adaptor andAttribute: attribute];
+        [sql appendString: value];
       }
     else
       {
@@ -691,7 +706,6 @@ static GCSStringFormatter *stringFormatter = nil;
 
 - (NSString *)_generateUpdateStatementForRow:(NSDictionary *)_row
                                      adaptor:(EOAdaptor *)_adaptor
-                                     fields:(NSArray *)_fields
                                      tableName:(NSString *)_table
                                      whereColumn:(NSString *)_colname isEqualTo:(id)_value
                                      andColumn:(NSString *)_colname2  isEqualTo:(id)_value2
@@ -699,7 +713,7 @@ static GCSStringFormatter *stringFormatter = nil;
   // TODO: move to NSDictionary category?
   NSMutableString *sql;
   NSArray  *keys;
-  NSString *fieldName, *sqlType;
+  NSString *fieldName;
   EOAttribute *attribute;
   id value;
   unsigned i, count;
@@ -716,20 +730,16 @@ static GCSStringFormatter *stringFormatter = nil;
   
   for (i = 0, count = [keys count]; i < count; i++) {
     fieldName = [keys objectAtIndex:i];
-    sqlType = [self _sqlTypeForColumn: fieldName withFieldInfos: _fields];
 
-    if (sqlType)
+    attribute = [self _attributeForColumn: fieldName];
+    if (attribute)
       {
-        value = [self _formatRowValue: [_row objectForKey: fieldName]];
-        attribute = AUTORELEASE([[EOAttribute alloc] init]);
-        [attribute setName: fieldName];
-        [attribute setColumnName: fieldName];
-        [attribute setExternalType: sqlType];
-    
         if (i != 0) [sql appendString:@", "];
         [sql appendString:fieldName];
         [sql appendString:@" = "];
-        [sql appendString:[_adaptor formatValue: value forAttribute: attribute]];
+        value = [self _formatRowValue: [_row objectForKey: fieldName]
+                      withAdaptor: _adaptor andAttribute: attribute];
+        [sql appendString: value];
       }
     else
       {
@@ -738,27 +748,23 @@ static GCSStringFormatter *stringFormatter = nil;
       }
   }
 
-  sqlType = [self _sqlTypeForColumn: _colname withFieldInfos: _fields];
-  attribute = AUTORELEASE([[EOAttribute alloc] init]);
-  [attribute setName: _colname];
-  [attribute setColumnName: _colname];
-  [attribute setExternalType: sqlType];
   [sql appendString:@" WHERE "];
   [sql appendString:_colname];
   [sql appendString:@" = "];
-  [sql appendString:[_adaptor formatValue: [self _formatRowValue:_value] forAttribute: attribute]];
+  attribute = [self _attributeForColumn: _colname];
+  value = [self _formatRowValue: _value
+                withAdaptor: _adaptor andAttribute: attribute];
+  [sql appendString: value];
 
   if (_colname2 != nil) {
     [sql appendString:@" AND "];
 
-    sqlType = [self _sqlTypeForColumn: _colname2 withFieldInfos: _fields];
-    attribute = AUTORELEASE([[EOAttribute alloc] init]);
-    [attribute setName: _colname2];
-    [attribute setColumnName: _colname2];
-    [attribute setExternalType: sqlType];
     [sql appendString:_colname2];
     [sql appendString:@" = "];
-    [sql appendString:[_adaptor formatValue: [self _formatRowValue:_value2] forAttribute: attribute]];
+    attribute = [self _attributeForColumn: _colname2];
+    value = [self _formatRowValue: _value2
+                withAdaptor: _adaptor andAttribute: attribute];
+    [sql appendString: value];
   }
 
   return sql;
@@ -821,19 +827,30 @@ static GCSStringFormatter *stringFormatter = nil;
 				      andColumn:(NSString *)_colname2 
 				      isEqualTo:(id)_value2
 					 entity: (EOEntity *)_entity
+                                    withAdaptor: (EOAdaptor *)_adaptor
 {
   EOSQLQualifier *qualifier;
+  EOAttribute *attribute1, *attribute2;
 
+  attribute1 = [_entity attributeNamed: _colname];
   if (_colname2 == nil)
     {
       qualifier = [[EOSQLQualifier alloc] initWithEntity: _entity
-					  qualifierFormat: @"%A = %@", _colname, [self _formatRowValue:_value]];
+					  qualifierFormat: @"%A = %@", _colname,
+                                          [self _formatRowValue:_value
+                                                withAdaptor: _adaptor andAttribute: attribute1]];
     }
   else
     {
+      attribute2 = [_entity attributeNamed: _colname2];
       qualifier = [[EOSQLQualifier alloc] initWithEntity: _entity
-					  qualifierFormat: @"%A = %@ AND %A = %@", _colname, [self _formatRowValue:_value],
-					  _colname2, [self _formatRowValue:_value2]];
+					  qualifierFormat: @"%A = %@ AND %A = %@",
+                                          _colname,
+                                          [self _formatRowValue:_value
+                                                withAdaptor: _adaptor andAttribute: attribute1],
+                                          _colname2,
+                                          [self _formatRowValue:_value2
+                                                withAdaptor: _adaptor andAttribute: attribute2]];
     }
 
   return AUTORELEASE(qualifier);
@@ -842,15 +859,21 @@ static GCSStringFormatter *stringFormatter = nil;
 - (void) _purgeRecordWithName: (NSString *) recordName
 {
   NSString *delSql, *table;
+  EOAdaptorContext *adaptorCtx;
   EOAdaptorChannel *channel;
+  EOAttribute *attribute;
 
   channel = [self acquireStoreChannel];
-  [[channel adaptorContext] beginTransaction];
+  adaptorCtx = [channel adaptorContext];
+  [adaptorCtx beginTransaction];
 
   table = [self storeTableName];
+  attribute = [self _attributeForColumn: @"c_name"];
   delSql = [NSString stringWithFormat: @"DELETE FROM %@"
 		     @" WHERE c_name = %@", table,
-		     [self _formatRowValue: recordName]];
+                     [self _formatRowValue: recordName
+                           withAdaptor: [adaptorCtx adaptor]
+                           andAttribute: attribute]];
   [channel evaluateExpressionX: delSql];
 
   [[channel adaptorContext] commitTransaction];
@@ -989,7 +1012,6 @@ static GCSStringFormatter *stringFormatter = nil;
 				     : [quickChannel
 					 evaluateExpressionX: [self _generateInsertStatementForRow: quickRow 
                                                                     adaptor: [[quickChannel adaptorContext] adaptor]
-                                                                    fields: [folderInfo quickFields]
 								    tableName: [self quickTableName]]]);
 			  
 			  if (!error)
@@ -998,7 +1020,6 @@ static GCSStringFormatter *stringFormatter = nil;
 				     : [storeChannel
 					 evaluateExpressionX: [self _generateInsertStatementForRow: contentRow
                                                                     adaptor: [[storeChannel adaptorContext] adaptor]
-                                                                    fields: [folderInfo fields]
 								    tableName: [self storeTableName]]]);
 			}
 		      else
@@ -1008,10 +1029,10 @@ static GCSStringFormatter *stringFormatter = nil;
 				     ? [quickChannel updateRowX: quickRow
 						     describedByQualifier: [self _qualifierUsingWhereColumn: @"c_name"
 										 isEqualTo: _name  andColumn: nil  isEqualTo: nil
-										 entity: quickTableEntity]]
+										 entity: quickTableEntity
+                                                                                 withAdaptor: [[storeChannel adaptorContext] adaptor]]]
 				     : [quickChannel evaluateExpressionX: [self _generateUpdateStatementForRow: quickRow
                                                                                 adaptor: [[quickChannel adaptorContext] adaptor]
-                                                                                fields: [folderInfo quickFields]
 										tableName: [self quickTableName]
 										whereColumn: @"c_name" isEqualTo: _name
 										andColumn: nil isEqualTo: nil]]);
@@ -1021,10 +1042,10 @@ static GCSStringFormatter *stringFormatter = nil;
 						     describedByQualifier: [self _qualifierUsingWhereColumn: @"c_name"  isEqualTo: _name
 										 andColumn: (_baseVersion != 0 ? (id)@"c_version" : (id)nil)
 										 isEqualTo: (_baseVersion != 0 ? [NSNumber numberWithUnsignedInt:_baseVersion] : (NSNumber *)nil)
-										 entity: storeTableEntity]]
+										 entity: storeTableEntity
+                                                                                 withAdaptor: [[storeChannel adaptorContext] adaptor]]]
 				     : [storeChannel evaluateExpressionX: [self _generateUpdateStatementForRow: contentRow
                                                                                 adaptor: [[storeChannel adaptorContext] adaptor]
-                                                                                fields: [folderInfo fields]
                                                                                 tableName:[self storeTableName]
 										whereColumn: @"c_name"  isEqualTo: _name
 										andColumn: (_baseVersion != 0 ? (id)@"c_version" : (id)nil)
@@ -1084,6 +1105,7 @@ static GCSStringFormatter *stringFormatter = nil;
 
 - (NSException *)deleteContentWithName:(NSString *)_name {
   EOAdaptorChannel *storeChannel, *quickChannel;
+  EOAdaptorContext *adaptorCtx;
   NSException *error;
   NSString *delsql;
   NSCalendarDate *nowDate;
@@ -1119,7 +1141,8 @@ static GCSStringFormatter *stringFormatter = nil;
     }
 
   if (!ofFlags.sameTableForQuick) [[quickChannel adaptorContext] beginTransaction];
-  [[storeChannel adaptorContext] beginTransaction];
+  adaptorCtx = [storeChannel adaptorContext];
+  [adaptorCtx beginTransaction];
 
   /* delete rows */
   nowDate = [NSCalendarDate calendarDate];
@@ -1129,7 +1152,9 @@ static GCSStringFormatter *stringFormatter = nil;
   delsql = [delsql stringByAppendingFormat:@", c_lastmodified = %u",
 		   (unsigned int) [nowDate timeIntervalSince1970]];
   delsql = [delsql stringByAppendingString:@" WHERE c_name="];
-  delsql = [delsql stringByAppendingString:[self _formatRowValue:_name]];
+  delsql = [delsql stringByAppendingString: [self _formatRowValue:_name
+                                                  withAdaptor: [adaptorCtx adaptor]
+                                                  andAttribute: [self _attributeForColumn: @"c_name"]]];
   if ((error = [storeChannel evaluateExpressionX:delsql]) != nil) {
     [self errorWithFormat:
 	    @"%s: cannot delete content '%@': %@", 
@@ -1139,7 +1164,9 @@ static GCSStringFormatter *stringFormatter = nil;
     /* content row deleted, now delete the quick row */
     delsql = [@"DELETE FROM " stringByAppendingString:[self quickTableName]];
     delsql = [delsql stringByAppendingString:@" WHERE c_name="];
-    delsql = [delsql stringByAppendingString:[self _formatRowValue:_name]];
+    delsql = [delsql stringByAppendingString: [self _formatRowValue:_name
+                                                    withAdaptor: [adaptorCtx adaptor]
+                                                    andAttribute: [self _attributeForColumn: @"c_name"]]];
     if ((error = [quickChannel evaluateExpressionX:delsql]) != nil) {
       [self errorWithFormat:
 	      @"%s: cannot delete quick row '%@': %@", 
@@ -1152,7 +1179,7 @@ static GCSStringFormatter *stringFormatter = nil;
   }
   
   /* release channels and return */
-  [[storeChannel adaptorContext] commitTransaction];
+  [adaptorCtx commitTransaction];
   [self releaseChannel:storeChannel];
   
   if (!ofFlags.sameTableForQuick) {
@@ -1254,24 +1281,27 @@ static GCSStringFormatter *stringFormatter = nil;
                           isEqualTo: (id) _value
 {
   EOAdaptorChannel *quickChannel;
+  EOAdaptorContext *adaptorCtx;
   NSException *error;
   
   quickChannel = [self acquireQuickChannel];
-  [[quickChannel adaptorContext] beginTransaction];
+  adaptorCtx = [quickChannel adaptorContext];
+  [adaptorCtx beginTransaction];
   error = [quickChannel updateRowX: _fields
               describedByQualifier: [self _qualifierUsingWhereColumn: _colname
-                                                           isEqualTo: _value andColumn: nil isEqualTo: nil
-                                                              entity: [self _quickTableEntity]]];
+                                          isEqualTo: _value andColumn: nil isEqualTo: nil
+                                          entity: [self _quickTableEntity]
+                                          withAdaptor: [adaptorCtx adaptor]]];
 
   if (error)
     {
-      [[quickChannel adaptorContext] rollbackTransaction];
+      [adaptorCtx rollbackTransaction];
       [self logWithFormat:
               @"ERROR(%s): cannot update content : %@", __PRETTY_FUNCTION__, error];
     }
   else
     {
-      [[quickChannel adaptorContext] commitTransaction];
+      [adaptorCtx commitTransaction];
     }
 
   [self releaseChannel: quickChannel];

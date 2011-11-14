@@ -3,6 +3,10 @@
 	* GCSFolder.m
 	(_generateUpdateStatementForRow:adaptor:fields:tableName:whereColumn:isEqualTo:andColumn:isEqualTo:):
 	same as below.
+	(_attributeForColumn:): new helper method that automatically
+	constructs an EOAttribute for a colum name passed as parameter.
+	(_formatRowValue:withAdaptor:andAttribute:): now invokes
+	-[EOAdaptor formatValue:forAttribute:] to avoid a call from the caller.
 
 2011-10-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
