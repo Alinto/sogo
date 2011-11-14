@@ -210,7 +210,7 @@
   [component setComment: @""];
   [component setUserComment: @""];
   [component setLocation: @""];
-  [component setCategories: @""];
+  [component setCategories: [NSArray array]];
   [component setUrl: @""];
   [component removeAllAttendees];
   [component removeAllAlarms];
