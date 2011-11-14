@@ -31,7 +31,7 @@
 #import "CardGroup.h"
 
 #import "NSString+NGCards.h"
-#import "NSArray+NGCards.h"
+#import "NSDictionary+NGCards.h"
 
 #import "CardVersitRenderer.h"
 
@@ -55,9 +55,8 @@
 {
   NSMutableString *rendering;
   NSDictionary *attributes;
-  NSEnumerator *keys;
-  NSArray *values, *renderedAttrs;
-  NSString *key, *finalRendering, *tag;
+  NSMutableDictionary *values;
+  NSString *finalRendering, *tag;
 
   if (![anElement isVoid])
     {
@@ -76,41 +75,16 @@
 
       /* parameters */
       attributes = [anElement attributes];
-      keys = [[attributes allKeys] objectEnumerator];
-      while ((key = [keys nextObject]))
+      if ([attributes count])
         {
-	  NSString *s;
-	  int i, c;
-
-          renderedAttrs = [[attributes objectForKey: key] renderedForCards];
-	  c = [renderedAttrs count];
-          if (c > 0)
-            {
-              [rendering appendFormat: @";%@=", [key uppercaseString]];
-
-              for (i = 0; i < c; i++)
-                {
-                  s = [renderedAttrs objectAtIndex: i];
-	      
-                  /* We MUST quote attribute values that have a ":" in them
-                     and that not already quoted */
-                  if ([s length] > 2 && [s rangeOfString: @":"].length &&
-                      [s characterAtIndex: 0] != '"' && ![s hasSuffix: @"\""])
-                    s = [NSString stringWithFormat: @"\"%@\"", s];
-	      
-                  [rendering appendFormat: @"%@", s];
-
-                  if (i+1 < c)
-                    [rendering appendString: @","];
-                }
-            }
+          [rendering appendString: @";"];
+          [attributes versitRenderInString: rendering asAttributes: YES];
         }
 
       /* values */
       values = [anElement values];
-      if ([values count] > 0)
-        [rendering appendFormat: @":%@",
-                   [[values renderedForCards] componentsJoinedByString: @";"]];
+      [rendering appendString: @":"];
+      [values versitRenderInString: rendering asAttributes: NO];
 
       if ([rendering length] > 0)
         [rendering appendString: @"\r\n"];
@@ -143,12 +117,8 @@
   groupTag = [groupTag uppercaseString];
   [rendering appendFormat: @"BEGIN:%@\r\n", groupTag];
   children = [[aGroup children] objectEnumerator];
-  currentChild = [children nextObject];
-  while (currentChild)
-    {
-      [rendering appendString: [self render: currentChild]];
-      currentChild = [children nextObject];
-    }
+  while ((currentChild = [children nextObject]))
+    [rendering appendString: [self render: currentChild]];
   [rendering appendFormat: @"END:%@\r\n", groupTag];
 
   return rendering;

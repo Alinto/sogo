@@ -247,7 +247,7 @@
       
       while ((dateString = [dateList nextObject]))
 	{
-	  exDates = [(iCalDateTime*) dateString values];
+	  exDates = [(iCalDateTime*) dateString valuesAtIndex: 0 forKey: @""];
 	  for (i = 0; i < [exDates count]; i++)
 	    {
 	      dateString = [exDates objectAtIndex: i];

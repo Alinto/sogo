@@ -26,9 +26,6 @@
 
 @interface iCalTrigger : CardElement
 
-- (void) setValue: (NSString *) theValue;
-- (NSString *) value;
-
 - (void) setValueType: (NSString *) theType;
 - (NSString *) valueType;
 

@@ -56,7 +56,7 @@
   id newElement;
 
   newElement = [self elementWithTag: aTag];
-  [newElement addValue: aValue];
+  [newElement setSingleValue: aValue forKey: @""];
 
   return newElement;
 }
@@ -74,21 +74,6 @@
   return newElement;
 }
 
-+ (id) elementWithTag: (NSString *) aTag
-           attributes: (NSDictionary *) someAttributes
-               values: (NSArray *) someValues
-{
-  id newElement;
-
-  newElement = [self new];
-  [newElement autorelease];
-  [newElement setTag: aTag];
-  [newElement addAttributes: someAttributes];
-  [newElement addValues: someValues];
-
-  return newElement;
-}
-
 - (id) init
 {
   if ((self = [super init]))
@@ -96,7 +81,7 @@
       parent = nil;
       tag = nil;
       group = nil;
-      values = [NSMutableArray new];
+      values = [NSMutableDictionary new];
       attributes = [NSMutableDictionary new];
     }
 
@@ -142,16 +127,172 @@
   return group;
 }
 
-- (void) addValue: (NSString *) aValue
+/* values */
+- (void) setValues: (NSMutableDictionary *) newValues
 {
-  if (!aValue)
-    aValue = @"";
-  [values addObject: aValue];
+  ASSIGN (values, newValues);
 }
 
-- (void) addValues: (NSArray *) someValues
+- (NSMutableDictionary *) values
 {
-  [values addObjectsFromArray: someValues];
+  return values;
+}
+
+- (void) setValues: (NSMutableArray *) newValues
+           atIndex: (NSUInteger) idx
+            forKey: (NSString *) key
+{
+  NSMutableArray *oldValues, *subValues;
+
+  oldValues = [self valuesForKey: key];
+  if (!oldValues)
+    {
+      oldValues = [NSMutableArray new];
+      [values setObject: oldValues forKey: key];
+      [oldValues release];
+    }
+
+  while ([oldValues count] < (idx + 1))
+    {
+      subValues = [NSMutableArray new];
+      [oldValues addObject: subValues];
+      [subValues release];
+    }
+
+  if (!newValues)
+    newValues = [NSMutableArray array];
+  [oldValues replaceObjectAtIndex: idx withObject: newValues];
+}
+
+- (void) setSingleValue: (NSString *) newValue
+                atIndex: (NSUInteger) idx
+                 forKey: (NSString *) key
+{
+  NSMutableArray *subValues;
+
+  if (newValue)
+    {
+      subValues = [NSMutableArray new];
+      [subValues addObject: newValue];
+    }
+  else
+    subValues = nil;
+  [self setValues: subValues atIndex: idx forKey: key];
+  [subValues release];
+}
+
+- (void) setSingleValue: (NSString *) newValue
+                 forKey: (NSString *) key
+{
+  [self setSingleValue: newValue
+               atIndex: 0 forKey: key];
+}
+
+- (NSMutableArray *) valuesForKey: (NSString *) key
+{
+  return [values objectForKey: [key lowercaseString]];
+}
+
+- (NSMutableArray *) valuesAtIndex: (NSUInteger) idx
+                            forKey: (NSString *) key
+{
+  return [[self valuesForKey: key] objectAtIndex: idx];
+}
+
+- (NSString *) flattenedValueAtIndex: (NSUInteger) idx
+                              forKey: (NSString *) key
+{
+  NSMutableArray *orderedValues, *sValues;
+  NSUInteger count, max;
+  NSMutableString *flattenedValues;
+  NSString *encoding, *realValue, *value;
+
+  flattenedValues = [NSMutableString string];
+
+  orderedValues = [self valuesForKey: key];
+  max = [orderedValues count];
+  if (max > idx)
+    {
+      encoding = [[self value: 0 ofAttribute: @"encoding"]
+                   lowercaseString];
+      sValues = [orderedValues objectAtIndex: idx];
+      max = [sValues count];
+      for (count = 0; count < max; count++)
+        {
+          if (count > 0)
+            [flattenedValues appendString: @","];
+          realValue = [sValues objectAtIndex: count];
+          if ([encoding isEqualToString: @"quoted-printable"])
+            value = [realValue stringByDecodingQuotedPrintable];
+          else if ([encoding isEqualToString: @"base64"])
+            value = [realValue stringByDecodingBase64];
+          else
+            {
+              value = realValue;
+              if ([encoding length] && ![encoding isEqualToString: @"8bit"])
+                [self logWithFormat: @"unknown encoding '%@'", encoding];
+            }
+
+          [flattenedValues appendString: value];
+        }
+    }
+
+  return flattenedValues;
+}
+
+- (NSString *) flattenedValuesForKey: (NSString *) key
+{
+  NSMutableArray *orderedValues, *sValues;
+  NSUInteger count, max, sCount, sMax;
+  NSMutableString *flattenedValues;
+  NSString *encoding, *realValue, *value;
+
+  encoding = [[self value: 0 ofAttribute: @"encoding"]
+               lowercaseString];
+
+  flattenedValues = [NSMutableString string];
+
+  orderedValues = [self valuesForKey: key];
+  max = [orderedValues count];
+  for (count = 0; count < max; count++)
+    {
+      if (count > 0)
+        [flattenedValues appendString: @";"];
+      sValues = [orderedValues objectAtIndex: count];
+      sMax = [sValues count];
+      for (sCount = 0; sCount < sMax; sCount++)
+        {
+          if (sCount > 0)
+            [flattenedValues appendString: @","];
+          realValue = [sValues objectAtIndex: sCount];
+          if ([encoding isEqualToString: @"quoted-printable"])
+            value = [realValue stringByDecodingQuotedPrintable];
+          else if ([encoding isEqualToString: @"base64"])
+            value = [realValue stringByDecodingBase64];
+          else
+            {
+              value = realValue;
+              if ([encoding length] && ![encoding isEqualToString: @"8bit"])
+                [self logWithFormat: @"unknown encoding '%@'", encoding];
+            }
+
+          [flattenedValues appendString: value];
+        }
+    }
+
+  return flattenedValues;
+}
+
+/* attributes */
+
+- (NSMutableDictionary *) attributes
+{
+  return attributes;
+}
+
+- (void) setAttributesAsCopy: (NSMutableDictionary *) someAttributes
+{
+  ASSIGN (attributes, someAttributes);
 }
 
 - (void) addAttribute: (NSString *) anAttribute
@@ -219,26 +360,6 @@
   [self addAttribute: @"type" value: aType];
 }
 
-- (void) setValues: (NSArray *) newValues
-{
-  if (![newValues isKindOfClass: [NSMutableArray class]])
-    {
-      newValues = [newValues mutableCopy];
-      [newValues autorelease];
-    }
-  ASSIGN (values, newValues);
-}
-
-- (NSArray *) values
-{
-  return values;
-}
-
-- (NSDictionary *) attributes
-{
-  return attributes;
-}
-
 - (BOOL) hasAttribute: (NSString *) anAttribute
           havingValue: (NSString *) aValue
 {
@@ -247,141 +368,6 @@
   attribute = [attributes objectForCaseInsensitiveKey: anAttribute];
 
   return (attribute && [attribute hasCaseInsensitiveString: aValue]);
-}
-
-- (void) setValue: (unsigned int) anInt
-               to: (NSString *) aValue
-{
-  unsigned int count, max;
-
-  if (!aValue)
-    aValue = @"";
-  max = [values count];
-  for (count = max; count <= anInt; count++)
-    [self addValue: @""];
-
-  [values replaceObjectAtIndex: anInt withObject: aValue];
-}
-
-- (NSString *) value: (unsigned int) anInt
-{
-  NSString *realValue, *value, *encoding;
-
-  if ([values count] <= anInt)
-    value = @"";
-  else
-    {
-      realValue = [values objectAtIndex: anInt];
-      encoding = [[self value: 0 ofAttribute: @"encoding"] lowercaseString];
-      if ([encoding length])
-	{
-	  if ([encoding isEqualToString: @"quoted-printable"])
-	    value = [realValue stringByDecodingQuotedPrintable];
-	  else if ([encoding isEqualToString: @"base64"])
-	    value = [realValue stringByDecodingBase64];
-	  else
-	    {
-	      value = realValue;
-	      if (![encoding isEqualToString: @"8bit"])
-		[self logWithFormat: @"unknown encoding '%@'", encoding];
-	    }
-	}
-      else
-	value = realValue;
-    }
-
-  return value;
-}
-
-- (unsigned int) _namedValue: (NSString *) aValueName
-{
-  NSString *prefix, *value;
-  unsigned int count, max, result;
-
-  result = NSNotFound;
-
-  prefix = [NSString stringWithFormat: @"%@=", [aValueName uppercaseString]];
-  max = [values count];
-  count = 0;
-
-  while (result == NSNotFound && count < max)
-    {
-      value = [[values objectAtIndex: count] uppercaseString];
-      if ([value hasPrefix: prefix])
-        result = count;
-      else
-        count++;
-    }
-
-  return result;
-}
-
-- (void) setNamedValue: (NSString *) aValueName
-                    to: (NSString *) aValue
-{
-  NSString *newValue;
-  unsigned int index;
-
-  if (!aValue)
-    aValue = @"";
-  newValue = [NSString stringWithFormat: @"%@=%@",
-                       [aValueName uppercaseString],
-                       aValue];
-  index = [self _namedValue: aValueName];
-  if (index == NSNotFound)
-    {
-      if ([aValue length])
-	[self addValue: newValue];
-    }
-  else
-    {
-      if ([aValue length])
-        [self setValue: index to: newValue];
-      else
-        [values removeObjectAtIndex: index];
-    }
-}
-
-- (NSString *) namedValue: (NSString *) aValueName
-{
-  unsigned int index;
-  NSRange equalSign;
-  NSString *value;
-
-  index = [self _namedValue: aValueName];
-  if (index == NSNotFound)
-    value = @"";
-  else
-    {
-      value = [values objectAtIndex: index];
-      equalSign = [value rangeOfString: @"="];
-      if (equalSign.location != NSNotFound)
-        value = [value substringFromIndex: equalSign.location + 1];
-    }
-
-  return value;
-}
-
-- (void) setCommaSeparatedValues: (NSArray *) newValues
-{
-  NSMutableString *newValue;
-  NSUInteger count, max;
-  NSString *currentValue;
-
-  newValue = [NSMutableString stringWithCapacity: 250];
-
-  max = [newValues count];
-  for (count = 0; count < max; count++)
-    {
-      currentValue = [[newValues objectAtIndex: count]
-                       stringByReplacingString: @","
-                                    withString: @"\\,"];
-      if (count > 0)
-        [newValue appendFormat: @",%@", currentValue];
-      else
-        [newValue appendString: currentValue];
-    }
-  [self setValues: [NSArray arrayWithObject: newValue]];
 }
 
 - (void) setValue: (unsigned int) anInt
@@ -423,10 +409,7 @@
 
 - (NSString *) description
 {
-  NSArray *attrs;
   NSMutableString *str;
-  unsigned int count, max;
-  NSString *attr;
 
   str = [NSMutableString stringWithCapacity:64];
   [str appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
@@ -435,48 +418,56 @@
   else
     [str appendFormat: @"%@\n", tag, group];
 
-  attrs = [attributes allKeys];
-  max = [attrs count];
-  if (max > 0)
-    {
-      [str appendFormat: @"\n  %d attributes: {\n", [attrs count]];
-      for (count = 0; count < max; count++)
-        {
-          attr = [attrs objectAtIndex: count];
-          [str appendFormat: @"  %@: %@\n",
-               attr, [attributes objectForKey: attr]];
-        }
-      [str appendFormat: @"}"];
-    }
-
-  max = [values count];
-  if (max > 0)
-    {
-      [str appendFormat: @"\n  %d values: {\n", [values count]];
-      for (count = 0; count < max; count++)
-        [str appendFormat: @"  %@\n", [values objectAtIndex: count]];
-      [str appendFormat: @"}"];
-    }
-
-  [str appendString:@">"];
+  [str appendString: [self versitString]];
 
   return str;
 }
 
-- (BOOL) isVoid
+static inline BOOL
+_subValuesAreVoid (NSArray *subValues)
 {
-  BOOL result;
-  NSString *value;
-  NSEnumerator *enu;
+  BOOL result = YES;
+  NSUInteger count, max;
 
   result = YES;
 
-  enu = [values objectEnumerator];
-  value = [enu nextObject];
-  while (value && result)
+  max = [subValues count];
+  for (count = 0; result && count < max; count++)
+    result = ([[subValues objectAtIndex: count] length] == 0);
+
+  return result;
+}
+
+static inline BOOL
+_orderedValuesAreVoid (NSArray *orderedValues)
+{
+  BOOL result = YES;
+  NSUInteger count, max;
+
+  result = YES;
+
+  max = [orderedValues count];
+  for (count = 0; result && count < max; count++)
+    result = _subValuesAreVoid ([orderedValues objectAtIndex: count]);
+
+  return result;
+}
+
+- (BOOL) isVoid
+{
+  BOOL result = YES;
+  NSArray *keys;
+  NSMutableArray *orderedValues;
+  NSUInteger count, max;
+
+  result = YES;
+
+  keys = [values allKeys];
+  max = [keys count];
+  for (count = 0; result && count < max; count++)
     {
-      result = ([value length] == 0);
-      value = [enu nextObject];
+      orderedValues = [values objectForKey: [keys objectAtIndex: count]];
+      result = _orderedValuesAreVoid (orderedValues);
     }
 
   return result;
@@ -521,11 +512,6 @@
     }
 
   return newElement;
-}
-
-- (void) setAttributesAsCopy: (NSMutableDictionary *) someAttributes
-{
-  ASSIGN (attributes, someAttributes);
 }
 
 - (CardGroup *) searchParentOfClass: (Class) parentClass
@@ -594,7 +580,7 @@
   newGroup = [group copyWithZone: aZone];
   [new setGroup: newGroup];
   [newGroup release];
-  [new setValues: [self deepCopyOfArray: values withZone: aZone]];
+  [new setValues: [self deepCopyOfDictionary: values withZone: aZone]];
   [new setAttributesAsCopy: [self deepCopyOfDictionary: attributes
 				  withZone: aZone]];
 
@@ -604,22 +590,7 @@
 /* NSMutableCopying */
 - (id) mutableCopyWithZone: (NSZone *) aZone
 {
-#warning this method really is the same as "copyWithZone:"
-  CardElement *new;
-  NSString *newTag, *newGroup;
-
-  new = [[self class] new];
-  newTag = [tag copyWithZone: aZone];
-  [new setTag: newTag];
-  [newTag release];
-  newGroup = [group copyWithZone: aZone];
-  [new setGroup: newGroup];
-  [newGroup release];
-  [new setValues: [self deepCopyOfArray: values withZone: aZone]];
-  [new setAttributesAsCopy: [self deepCopyOfDictionary: attributes
-				  withZone: aZone]];
-
-  return new;
+  return [self copyWithZone: aZone];
 }
 
 @end

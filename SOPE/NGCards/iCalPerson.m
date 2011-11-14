@@ -57,13 +57,13 @@
 {
   /* iCal.app compatibility:
      - "mailto" prefix must be in lowercase; */
-  [self setValue: 0
-        to: [NSString stringWithFormat: @"mailto:%@", _s]];
+  [self setSingleValue: [NSString stringWithFormat: @"mailto:%@", _s]
+                forKey: @""];
 }
 
 - (NSString *) email
 {
-  return [self value: 0];
+  return [self flattenedValuesForKey: @""];
 }
 
 - (NSString *) rfc822Email

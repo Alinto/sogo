@@ -137,7 +137,7 @@
   else
     timeString = @"";
 
-  [self setValue: 0 to: timeString];
+  [self setSingleValue: timeString forKey: @""];
 }
 
 - (void) setDateTime: (NSCalendarDate *) dateTime
@@ -160,15 +160,17 @@
   iCalTimeZone *iTZ;
   NSString *date;
   NSCalendarDate *initialDate, *dateTime;
+  NSArray *subValues;
   NSMutableArray *dates;
   //NSTimeZone *tz;
   unsigned count, i;
 
-  count = [[self values] count];
+  subValues = [self valuesAtIndex: 0 forKey: @""];
+  count = [subValues count];
   dates = [NSMutableArray arrayWithCapacity: count];
   for (i = 0; i < count; i++)
     {
-      date = [self value: i];
+      date = [subValues objectAtIndex: i];
       iTZ = [self timeZone];
 
       if (iTZ)
@@ -204,7 +206,7 @@
 
 - (BOOL) isAllDay
 {
-  return [[self value: 0] isAllDayDate];
+  return [[self flattenedValuesForKey: @""] isAllDayDate];
 }
 
 @end

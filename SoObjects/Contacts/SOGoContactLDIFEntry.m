@@ -178,36 +178,34 @@
       if (!country)
         country = [ldifEntry objectForKey: @"countryname"];
 
-      element = [CardElement elementWithTag: @"adr"
-                                 attributes: nil values: nil];
+      element = [CardElement elementWithTag: @"adr"];
       [element setValue: 0 ofAttribute: @"type" to: @"work"];
 
       if (streetAddress)
-        [element setValue: 2 to: streetAddress];
+        [element setSingleValue: streetAddress atIndex: 2 forKey: @""];
       if (location)
-        [element setValue: 3 to: location];
+        [element setSingleValue: location atIndex: 3 forKey: @""];
       if (region)
-	[element setValue: 4 to: region];
+        [element setSingleValue: region atIndex: 4 forKey: @""];
       if (postalCode)
-	[element setValue: 5 to: postalCode];
+        [element setSingleValue: postalCode atIndex: 5 forKey: @""];
       if (country)
-	[element setValue: 6 to: country];
+        [element setSingleValue: country atIndex: 6 forKey: @""];
       
       if (streetAddress || location || region || postalCode || country)
         [vcard addChild: element];
 
       // We handle the org/orgunit stuff
-      element = [CardElement elementWithTag: @"org"
-                             attributes: nil values: nil];
+      element = [CardElement elementWithTag: @"org"];
       org = [ldifEntry objectForKey: @"o"];
       orgunit = [ldifEntry objectForKey: @"ou"];
       if (!orgunit)
         orgunit = [ldifEntry objectForKey: @"orgunit"];
       
       if (org)
-	[element setValue: 0 to: org];
+	[element setSingleValue: org atIndex: 0 forKey: @""];
       if (orgunit)
-	[element setValue: 1 to: orgunit];
+	[element setSingleValue: orgunit atIndex: 1 forKey: @""];
 
       if (org || orgunit)
 	[vcard addChild: element];

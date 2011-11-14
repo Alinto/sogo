@@ -77,7 +77,8 @@
   if ([photo isInline])
     data = [photo decodedContent];
   else
-    data = [[photo value: 0] dataUsingEncoding: NSISOLatin1StringEncoding];
+    data = [[photo flattenedValuesForKey: @""]
+             dataUsingEncoding: NSISOLatin1StringEncoding];
   if (data)
     {
       response = [localContext response];

@@ -607,7 +607,9 @@
           [alarm setAction: @"DISPLAY"];
           trigger = [iCalTrigger elementWithTag: @"trigger"];
           [trigger setValueType: @"DURATION"];
-          [trigger setValue: [NSString stringWithFormat: @"-PT%@M", delta]];
+          [trigger
+            setSingleValue: [NSString stringWithFormat: @"-PT%@M", delta]
+                    forKey: @""];
           [alarm setTrigger: trigger];
           [newEvent addToAlarms: alarm];
           [alarm release];

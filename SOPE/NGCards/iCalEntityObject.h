@@ -67,8 +67,8 @@ typedef enum
 - (void) setPriority: (NSString *) _value;
 - (NSString *) priority;
 
-- (void) setCategories: (NSString *) _value;
-- (NSString *)categories;
+- (void) setCategories: (NSArray *) _value;
+- (NSArray *) categories;
 
 - (void) setUserComment: (NSString *) _userComment;
 - (NSString *) userComment;

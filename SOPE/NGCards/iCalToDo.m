@@ -47,13 +47,14 @@
 
 - (void) setPercentComplete: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"percent-complete"] setValue: 0
-                                                  to: _value];
+  [[self uniqueChildWithTag: @"percent-complete"] setSingleValue: _value
+                                                          forKey: @""];
 }
 
 - (NSString *) percentComplete
 {
-  return [[self uniqueChildWithTag: @"percent-complete"] value: 0];
+  return [[self uniqueChildWithTag: @"percent-complete"]
+           flattenedValuesForKey: @""];
 }
 
 - (void) setDue: (NSCalendarDate *) newDueDate

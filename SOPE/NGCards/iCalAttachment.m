@@ -26,16 +26,6 @@
 
 /* accessors */
 
-- (void) setValue: (NSString *) _value
-{
-  [self setValue: 0 to: _value];
-}
-
-- (NSString *) value
-{
-  return [self value: 0];
-}
-
 - (void) setValueType: (NSString *) _value
 {
   [self setValue: 0 ofAttribute: @"type" to: _value];

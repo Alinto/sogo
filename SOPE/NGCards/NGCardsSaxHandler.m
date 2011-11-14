@@ -181,7 +181,7 @@
   else if ([_localName isEqualToString: @"container"])
     [self endGroupElement];
   else
-    [currentElement addValues: [self finishCollectingContent]];
+    [currentElement setValues: [self finishCollectingContent]];
 }
 
 /* content */
@@ -197,9 +197,9 @@
   vcs.collectContent = 1;
 }
 
-- (NSArray *) finishCollectingContent
+- (NSMutableDictionary *) finishCollectingContent
 {
-  NSArray *contentValues;
+  NSMutableDictionary *contentValues;
   NSString *s;
 
   vcs.collectContent = 0;
@@ -211,7 +211,7 @@
       free (content);
       content = NULL;
 //       NSLog (@"content: '%@'", s);
-      contentValues = [s vCardSubvaluesWithSeparator: ';'];
+      contentValues = [s vCardSubvalues];
     }
   else
     contentValues = nil;

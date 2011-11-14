@@ -194,6 +194,7 @@
 #import "NSCalendarDate+NGCards.h"
 #import "NSString+NGCards.h"
 
+#import "CardGroup.h"
 #import "iCalByDayMask.h"
 #import "iCalRecurrenceRule.h"
 
@@ -234,8 +235,7 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
   iCalRecurrenceRule *rule;
 
   rule = [self elementWithTag: @"rrule"];
-  if ([_iCalRep length] > 0)
-    [rule addValues: [_iCalRep componentsSeparatedByString: @";"]];
+  [rule setRrule: _iCalRep];
 
   return rule;
 }
@@ -269,15 +269,19 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
 
 - (void) setRrule: (NSString *) _rrule
 {
-  NSEnumerator *newValues;
-  NSString *newValue;
+  CardGroup *mockParent;
+  NSString *wrappedRule;
+  CardElement *mockRule;
 
-  newValues = [[_rrule componentsSeparatedByString: @";"] objectEnumerator];
-  newValue = [newValues nextObject];
-  while (newValue)
+  if ([_rrule length] > 0)
     {
-      [self addValue: newValue];
-      newValue = [newValues nextObject];
+      wrappedRule = [NSString stringWithFormat:
+                                @"BEGIN:MOCK\r\nRRULE:%@\r\nEND:MOCK",
+                              _rrule];
+      mockParent = [CardGroup parseSingleFromSource: wrappedRule];
+      mockRule = [mockParent uniqueChildWithTag: @"rrule"];
+      [values release];
+      values = [[mockRule values] mutableCopy];
     }
 }
 
@@ -350,75 +354,73 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
 
 - (void) setFrequency: (iCalRecurrenceFrequency) _frequency
 {
-  [self setNamedValue: @"freq" to: [self frequencyForValue: _frequency]];
+  [self setSingleValue: [self frequencyForValue: _frequency] forKey: @"freq"];
 }
 
 - (iCalRecurrenceFrequency) frequency
 {
-  return [self valueForFrequency: [self namedValue: @"freq"]];
-}
-
-- (void) setRepeatCount: (int) _repeatCount
-{
-  [self setNamedValue: @"count"
-        to: [NSString stringWithFormat: @"%d", _repeatCount]];
-}
-
-- (int) repeatCount
-{
-  return [[self namedValue: @"count"] intValue];
+  return [self valueForFrequency: [self flattenedValuesForKey: @"freq"]];
 }
 
 - (void) setUntilDate: (NSCalendarDate *) _untilDate
 {
-  [self setNamedValue: @"until"
-        to: [_untilDate icalString]];
+  [self setSingleValue: [_untilDate icalString] forKey: @"until"];
 }
 
 - (NSCalendarDate *) untilDate
 {
 #warning handling of default timezone needs to be implemented
-  return [[self namedValue: @"until"] asCalendarDate];
+  return [[self flattenedValuesForKey: @"until"] asCalendarDate];
 }
 
 - (void) setInterval: (NSString *) _interval
 {
-  if (_interval && [_interval intValue] == 1)
-    [self setNamedValue: @"interval" to: nil];
+  if ([_interval intValue] < 2)
+    [self setSingleValue: nil forKey: @"interval"];
   else
-    [self setNamedValue: @"interval" to: _interval];
-}
-
-- (void) setCount: (NSString *) _count
-{
-  [self setNamedValue: @"count" to: _count];
-}
-
-- (void) setUntil: (NSString *) _until
-{
-  [self setNamedValue: @"until" to: _until];
+    [self setSingleValue: _interval forKey: @"interval"];
 }
 
 - (void) setRepeatInterval: (int) _repeatInterval
 {
-  [self setNamedValue: @"interval"
-        to: [NSString stringWithFormat: @"%d", _repeatInterval]];
+  [self setInterval: [NSString stringWithFormat: @"%d", _repeatInterval]];
 }
 
 - (int) repeatInterval
 {
   int interval;
 
-  interval = [[self namedValue: @"interval"] intValue];
+  interval = [[self flattenedValuesForKey: @"interval"] intValue];
   if (interval < 1)
     interval = 1;
 
   return interval;
 }
 
+- (void) setRepeatCount: (int) _repeatCount
+{
+  [self setSingleValue: [NSString stringWithFormat: @"%d", _repeatCount]
+                forKey: @"count"];
+}
+
+- (int) repeatCount
+{
+  return [[self flattenedValuesForKey: @"count"] intValue];
+}
+
+- (void) setCount: (NSString *) _count
+{
+  [self setSingleValue: _count forKey: @"count"];
+}
+
+- (void) setUntil: (NSString *) _until
+{
+  [self setSingleValue: _until forKey: @"until"];
+}
+
 - (void) setWkst: (NSString *) _weekStart
 {
-  [self setNamedValue: @"wkst" to: _weekStart];
+  [self setSingleValue: _weekStart forKey: @"wkst"];
 }
 
 #warning we also should handle the user weekstarts
@@ -426,7 +428,7 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
 {
   NSString *start;
 
-  start = [self namedValue: @"wkst"];
+  start = [self flattenedValuesForKey: @"wkst"];
   if (![start length])
     start = @"MO";
 
@@ -445,12 +447,16 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
 
 - (void) setByDay: (NSString *) newByDay
 {
-  [self setNamedValue: @"byday" to: newByDay];
+  NSMutableArray *byDays;
+
+  byDays = [[newByDay componentsSeparatedByString: @","] mutableCopy];
+  [self setValues: byDays atIndex: 0 forKey: @"byday"];
+  [byDays release];
 }
 
 - (NSString *) byDay
 {
-  return [self namedValue: @"byday"];
+  return [self flattenedValuesForKey: @"byday"];
 }
 
 - (void) setByDayMask: (iCalByDayMask *) newByDayMask
@@ -472,12 +478,9 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
 - (NSArray *) byMonthDay
 {
   NSArray *byMonthDay;
-  NSString *byMonthDayStr;
 
-  byMonthDayStr = [self namedValue: @"bymonthday"];
-  if ([byMonthDayStr length])
-    byMonthDay = [byMonthDayStr componentsSeparatedByString: @","];
-  else
+  byMonthDay = [self valuesAtIndex: 0 forKey: @"bymonthday"];
+  if (![byMonthDay count])
     byMonthDay = nil;
 
   return byMonthDay;
@@ -486,12 +489,9 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
 - (NSArray *) byMonth
 {
   NSArray *byMonth;
-  NSString *byMonthStr;
 
-  byMonthStr = [self namedValue: @"bymonth"];
-  if ([byMonthStr length])
-    byMonth = [byMonthStr componentsSeparatedByString: @","];
-  else
+  byMonth = [self valuesAtIndex: 0 forKey: @"bymonth"];
+  if (![byMonth count])
     byMonth = nil;
 
   return byMonth;
@@ -507,9 +507,9 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
    * - BYSECOND
    * - BYSETPOS
    */
-  return ([[self namedValue: @"bymonthday"] length] || 
-	  [[self namedValue: @"byday"] length] ||
-	  [[self namedValue: @"bymonth"] length]);
+  return ([[self valuesAtIndex: 0 forKey: @"bymonthday"] count] || 
+	  [[self valuesAtIndex: 0 forKey: @"byday"] count] ||
+	  [[self valuesAtIndex: 0 forKey: @"bymonth"] count]);
 }
 
 - (BOOL) isInfinite

@@ -36,7 +36,7 @@
 @interface CardElement : NSObject <NSCopying, NSMutableCopying>
 {
   NSString *tag;
-  NSMutableArray *values;
+  NSMutableDictionary *values;
   NSMutableDictionary *attributes;
   NSString *group;
   CardGroup *parent;
@@ -51,31 +51,44 @@
                  singleType: (NSString *) aType
                       value: (NSString *) aValue;
 
-+ (id) elementWithTag: (NSString *) aTag
-           attributes: (NSDictionary *) someAttributes
-               values: (NSArray *) someValues;
-
 - (void) setParent: (CardGroup *) aParent;
 - (id) parent;
 
 - (void) setTag: (NSString *) aTag;
+- (NSString *) tag;
 
 - (void) setGroup: (NSString *) aGroup;
 - (NSString *) group;
 
-- (void) addValue: (NSString *) aValue;
-- (void) addValues: (NSArray *) someValues;
+- (BOOL) isVoid;
 
-- (void) setValue: (unsigned int) anInt
-               to: (NSString *) aValue;
-- (NSString *) value: (unsigned int) anInt;
+- (void) setValues: (NSMutableDictionary *) newValues;
+- (NSMutableDictionary *) values;
 
-- (void) setNamedValue: (NSString *) aValueName
-                    to: (NSString *) aValue;
-- (NSString *) namedValue: (NSString *) aValueName;
+/* ELEM:...;value1,value2,...;... */
+- (void) setValues: (NSMutableArray *) newValues
+           atIndex: (NSUInteger) idx
+            forKey: (NSString *) key;
 
-- (void) setCommaSeparatedValues: (NSArray *) values;
+/* ELEM:...;value;... */
+- (void) setSingleValue: (NSString *) newValue
+                atIndex: (NSUInteger) idx
+                 forKey: (NSString *) key;
+/* ELEM:value */
+- (void) setSingleValue: (NSString *) newValue
+                 forKey: (NSString *) key;
 
+- (NSMutableArray *) valuesForKey: (NSString *) key;
+- (NSMutableArray *) valuesAtIndex: (NSUInteger) idx
+                            forKey: (NSString *) key;
+
+/* This joins all subvalues with "," and ordered values with ";". Handy for
+   retrieving data from clients which don't escape their data properly. */
+- (NSString *) flattenedValuesForKey: (NSString *) key;
+- (NSString *) flattenedValueAtIndex: (NSUInteger) idx
+                              forKey: (NSString *) key;
+
+/* attribute values */
 - (void) setValue: (unsigned int) anInt
       ofAttribute: (NSString *) anAttribute
                to: (NSString *) aValue;
@@ -87,17 +100,11 @@
 - (void) addAttributes: (NSDictionary *) someAttributes;
 - (void) removeValue: (NSString *) aValue
        fromAttribute: (NSString *) anAttribute;
-
-- (void) addType: (NSString *) aType;
-
-- (NSString *) tag;
-- (void) setValues: (NSArray *) newValues;
-- (NSArray *) values;
-- (NSDictionary *) attributes;
+- (NSMutableDictionary *) attributes;
 - (BOOL) hasAttribute: (NSString *) aType
           havingValue: (NSString *) aValue;
 
-- (BOOL) isVoid;
+- (void) addType: (NSString *) aType;
 
 - (NSString *) versitString;
 

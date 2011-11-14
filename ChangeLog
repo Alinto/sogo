@@ -1,3 +1,16 @@
+2011-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContactsMessage.m (-getPrBody:inMemCtx:):
+	same as below.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m (-getPrBody:inMemCtx:):
+	removed parsing hack since things are now done properly from
+	NGCards.
+
+	* Tests/Unit/TestVersit.m (-test_rendering, -test_parsing):
+	adapted to new NGCards data structure and improved to test further
+	important use cases.
+
 2011-11-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/Unit/TestVersit.m: new test module for versit parsing and

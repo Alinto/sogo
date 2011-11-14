@@ -27,6 +27,7 @@
 
 @class NSArray;
 @class NSCalendarDate;
+@class NSMutableDictionary;
 @class NSTimeZone;
 
 @interface NSString (NGCardsExtensions)
@@ -40,7 +41,7 @@
 - (NSCalendarDate *) asCalendarDate;
 - (BOOL) isAllDayDate;
 
-- (NSArray *) vCardSubvaluesWithSeparator: (unichar) separator;
+- (NSMutableDictionary *) vCardSubvalues;
 
 @end
 

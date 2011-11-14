@@ -268,10 +268,9 @@
 
 - (NSString *) formattedMailtoString: (NGVCard *) card
 {
-  NSString *email;
+  NSString *firstName, *lastName, *email;
   NSMutableString *fn, *rc = nil;
-  NSArray *n;
-  unsigned int max;
+  CardElement *n;
 
   if ([card isKindOfClass: [NGVCard class]])
     email = [card preferredEMail];
@@ -291,17 +290,17 @@
 	  && [card isKindOfClass: [NGVCard class]])
         {
           n = [card n];
-          if (n)
+          lastName = [n flattenedValueAtIndex: 0 forKey: @""];
+          firstName = [n flattenedValueAtIndex: 1 forKey: @""];
+          if ([firstName length] > 0)
             {
-              max = [n count];
-              if (max > 0)
-                {
-                  if (max > 1)
-                    fn = [NSMutableString stringWithFormat: @"%@ %@", [n objectAtIndex: 1], [n objectAtIndex: 0]];
-                  else
-                    fn = [NSMutableString stringWithString: [n objectAtIndex: 0]];
-                }
+              if ([lastName length] > 0)
+                fn = [NSMutableString stringWithFormat: @"%@ %@", firstName, lastName];
+              else
+                fn = [NSMutableString stringWithString: firstName];
             }
+          else if ([lastName length] > 0)
+            fn = [NSMutableString stringWithString: lastName];
         }
       if ([fn length] > 0)
         {

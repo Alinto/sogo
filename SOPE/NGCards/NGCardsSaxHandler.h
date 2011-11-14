@@ -69,7 +69,7 @@
 /* content */
 
 - (void) startCollectingContent;
-- (NSArray *) finishCollectingContent;
+- (NSMutableDictionary *) finishCollectingContent;
 
 - (void) startGroupElement: (NSString *) _localName;
 - (void) endGroupElement;

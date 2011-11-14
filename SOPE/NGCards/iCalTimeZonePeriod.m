@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
@@ -63,7 +64,7 @@
   seconds = 0;
 
   offsetTo = [[self uniqueChildWithTag: offsetName]
-               value: 0];
+               flattenedValuesForKey: @""];
   length = [offsetTo length];
   negative = [offsetTo hasPrefix: @"-"];
   if (negative)
@@ -140,7 +141,7 @@
 
   [tzStart setTimeZone: [NSTimeZone timeZoneWithName: @"GMT"]];
   tmpDate = [NSCalendarDate dateWithYear: [refDate yearOfCommonEra]
-                                   month: [[rrule namedValue: @"bymonth"] intValue]
+                                   month: [[[rrule byMonth] objectAtIndex: 0] intValue]
                                      day: 1 hour: [tzStart hourOfDay]
                                   minute: [tzStart minuteOfHour] second: 0
                                 timeZone: [NSTimeZone timeZoneWithName: @"GMT"]];

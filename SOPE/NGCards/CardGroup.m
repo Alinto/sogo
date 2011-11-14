@@ -281,7 +281,7 @@ static NGCardsSaxHandler *sax = nil;
                         havingValue: (NSString *) aValue
 {
   return [children cardElementsWithAttribute: anAttribute
-                   havingValue: aValue];
+                                 havingValue: aValue];
 }
 
 - (NSArray *) childrenWithTag: (NSString *) aTag
@@ -293,7 +293,7 @@ static NGCardsSaxHandler *sax = nil;
   elements = [self childrenWithTag: aTag];
 
   return [elements cardElementsWithAttribute: anAttribute
-                   havingValue: aValue];
+                                 havingValue: aValue];
 }
 
 - (NSArray *) childrenGroupWithTag: (NSString *) aTag
@@ -313,7 +313,8 @@ static NGCardsSaxHandler *sax = nil;
     {
       if ([element isKindOfClass: [CardGroup class]])
         {
-          value = [[element uniqueChildWithTag: aChild] value: 0];
+          value = [[element uniqueChildWithTag: aChild]
+                    flattenedValuesForKey: @""];
           if ([value isEqualToString: aValue])
             [elements addObject: element];
         }

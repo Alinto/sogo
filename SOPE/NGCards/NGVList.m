@@ -77,45 +77,45 @@
 
 - (void) setProdID: (NSString *) newProdID
 {
-  [[self uniqueChildWithTag: @"prodid"] setValue: 0 to: newProdID];
+  [[self uniqueChildWithTag: @"prodid"] setSingleValue: newProdID forKey: @""];
 }
 
 - (NSString *) prodID
 {
-  return [[self uniqueChildWithTag: @"prodid"] value: 0];
+  return [[self uniqueChildWithTag: @"prodid"] flattenedValuesForKey: @""];
 }
 
 - (void) setVersion: (NSString *) newVersion
 {
-  [[self uniqueChildWithTag: @"version"] setValue: 0
-					 to: newVersion];
+  [[self uniqueChildWithTag: @"version"] setSingleValue: newVersion
+                                                 forKey: @""];
 }
 
 - (NSString *) version
 {
-  return [[self uniqueChildWithTag: @"version"] value: 0];
+  return [[self uniqueChildWithTag: @"version"] flattenedValuesForKey: @""];
 }
 
 - (void) setUid: (NSString *) newUid
 {
-  [[self uniqueChildWithTag: @"uid"] setValue: 0
-				     to: newUid];
+  [[self uniqueChildWithTag: @"uid"] setSingleValue: newUid
+                                             forKey: @""];
 }
 
 - (NSString *) uid
 {
-  return [[self uniqueChildWithTag: @"uid"] value: 0];
+  return [[self uniqueChildWithTag: @"uid"] flattenedValuesForKey: @""];
 }
 
 - (void) setAccessClass: (NSString *) newAccessClass
 {
-  [[self uniqueChildWithTag: @"class"] setValue: 0
-				       to: newAccessClass];
+  [[self uniqueChildWithTag: @"class"] setSingleValue: newAccessClass
+                                               forKey: @""];
 }
 
 - (NSString *) accessClass
 {
-  return [[self uniqueChildWithTag: @"class"] value: 0];
+  return [[self uniqueChildWithTag: @"class"] flattenedValuesForKey: @""];
 }
 
 - (NGCardsAccessClass) symbolicAccessClass
@@ -141,34 +141,34 @@
 
 - (void) setFn: (NSString *) newFn
 {
-  [[self uniqueChildWithTag: @"fn"] setValue: 0 to: newFn];
+  [[self uniqueChildWithTag: @"fn"] setSingleValue: newFn forKey: @""];
 }
 
 - (NSString *) fn
 {
-  return [[self uniqueChildWithTag: @"fn"] value: 0];
+  return [[self uniqueChildWithTag: @"fn"] flattenedValuesForKey: @""];
 }
 
 - (void) setNickname: (NSString *) newNickname
 {
-  [[self uniqueChildWithTag: @"nickname"] setValue: 0
-					  to: newNickname];
+  [[self uniqueChildWithTag: @"nickname"] setSingleValue: newNickname
+                                                  forKey: @""];
 }
 
 - (NSString *) nickname
 {
-  return [[self uniqueChildWithTag: @"nickname"] value: 0];
+  return [[self uniqueChildWithTag: @"nickname"] flattenedValuesForKey: @""];
 }
 
 - (void) setDescription: (NSString *) newDescription
 {
-  [[self uniqueChildWithTag: @"description"] setValue: 0
-					     to: newDescription];
+  [[self uniqueChildWithTag: @"description"] setSingleValue: newDescription
+                                                     forKey: @""];
 }
 
 - (NSString *) description
 {
-  return [[self uniqueChildWithTag: @"description"] value: 0];
+  return [[self uniqueChildWithTag: @"description"] flattenedValuesForKey: @""];
 }
 
 - (void) addCardReference: (NGVCardReference *) newCardRef

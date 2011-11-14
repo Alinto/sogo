@@ -60,14 +60,6 @@
 
 - (NSString *) _cardStringWithLabel: (NSString *) label
                               value: (NSString *) value
-{
-  return [self _cardStringWithLabel: label
-                              value: value
-                                url: nil];
-}
-
-- (NSString *) _cardStringWithLabel: (NSString *) label
-                              value: (NSString *) value
                                 url: (NSString *) url
 {
   NSMutableString *cardString;
@@ -89,6 +81,14 @@
   return cardString;
 }
 
+- (NSString *) _cardStringWithLabel: (NSString *) label
+                              value: (NSString *) value
+{
+  return [self _cardStringWithLabel: label
+                              value: value
+                                url: nil];
+}
+
 - (NSString *) displayName
 {
   return [self _cardStringWithLabel: @"Display Name:"
@@ -103,25 +103,24 @@
 
 - (NSString *) fullName
 {
-  NSArray *n;
-  NSString *fn;
-  unsigned int max;
+  CardElement *n;
+  NSString *fn, *firstName, *lastName;
   
   fn = [card fn];
   if ([fn length] == 0)
     {
       n = [card n];
-      if (n)
-	{
-	  max = [n count];
-	  if (max > 0)
-	    {
-	      if (max > 1)
-		fn = [NSString stringWithFormat: @"%@ %@", [n objectAtIndex: 1], [n objectAtIndex: 0]];
-	      else
-		fn = [n objectAtIndex: 0];
-	    }
-	}
+      lastName = [n flattenedValueAtIndex: 0 forKey: @""];
+      firstName = [n flattenedValueAtIndex: 1 forKey: @""];
+      if ([firstName length] > 0)
+        {
+          if ([lastName length] > 0)
+            fn = [NSString stringWithFormat: @"%@ %@", firstName, lastName];
+          else
+            fn = firstName;
+        }
+      else
+        fn = lastName;
     }
 
   return fn;
@@ -172,7 +171,7 @@
 
       for (i = 0; i < [emails count]; i++)
 	{
-	  email = [[emails objectAtIndex: i] value: 0];
+	  email = [[emails objectAtIndex: i] flattenedValuesForKey: @""];
 
 	  if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
 	    {
@@ -192,7 +191,7 @@
 {
   NSString *screenName, *goim;
 
-  screenName = [[card uniqueChildWithTag: @"x-aim"] value: 0];
+  screenName = [[card uniqueChildWithTag: @"x-aim"] flattenedValuesForKey: @""];
   if ([screenName length] > 0)
     goim = [NSString stringWithFormat: @"<a href=\"aim:goim?screenname=%@\""
 		     @">%@</a>", screenName, screenName];
@@ -250,7 +249,7 @@
       for (i = 0; i < [elements count]; i++)
 	{
 	  ce = [elements objectAtIndex: i];
-	  phone = [ce value: 0];
+	  phone = [ce flattenedValuesForKey: @""];
 
 	  if (!aTypeToExclude)
 	    break;
@@ -315,17 +314,23 @@
 
 - (NSString *) homePobox
 {
-  return [self _cardStringWithLabel: nil value: [homeAdr value: 0]];
+  return [self _cardStringWithLabel: nil
+                              value: [homeAdr flattenedValueAtIndex: 0
+                                                             forKey: @""]];
 }
 
 - (NSString *) homeExtendedAddress
 {
-  return [self _cardStringWithLabel: nil value: [homeAdr value: 1]];
+  return [self _cardStringWithLabel: nil
+                              value: [homeAdr flattenedValueAtIndex: 1
+                                                             forKey: @""]];
 }
 
 - (NSString *) homeStreetAddress
 {
-  return [self _cardStringWithLabel: nil value: [homeAdr value: 2]];
+  return [self _cardStringWithLabel: nil
+                              value: [homeAdr flattenedValueAtIndex: 2
+                                                             forKey: @""]];
 }
 
 - (NSString *) homeCityAndProv
@@ -333,8 +338,8 @@
   NSString *city, *prov;
   NSMutableString *data;
 
-  city = [homeAdr value: 3];
-  prov = [homeAdr value: 4];
+  city = [homeAdr flattenedValueAtIndex: 3 forKey: @""];
+  prov = [homeAdr flattenedValueAtIndex: 4 forKey: @""];
 
   data = [NSMutableString string];
   [data appendString: city];
@@ -350,8 +355,8 @@
   NSString *postalCode, *country;
   NSMutableString *data;
 
-  postalCode = [homeAdr value: 5];
-  country = [homeAdr value: 6];
+  postalCode = [homeAdr flattenedValueAtIndex: 5 forKey: @""];
+  country = [homeAdr flattenedValueAtIndex: 6 forKey: @""];
 
   data = [NSMutableString string];
   [data appendString: postalCode];
@@ -391,7 +396,7 @@
                    andAttribute: @"type"
                    havingValue: aType];
   if ([elements count] > 0)
-    url = [[elements objectAtIndex: 0] value: 0];
+    url = [[elements objectAtIndex: 0] flattenedValuesForKey: @""];
   else
     url = nil;
 
@@ -416,7 +421,7 @@
       workURL = nil;
 
       if ([elements count] > 0)
-	workURL = [[elements objectAtIndex: 0] value: 0];
+	workURL = [[elements objectAtIndex: 0] flattenedValuesForKey: @""];
 
       elements = [card childrenWithTag: @"url"];
 
@@ -424,9 +429,10 @@
 	{
 	  for (i = 0; i < [elements count]; i++)
 	    {
-	      if ([[[elements objectAtIndex: i] value: 0] caseInsensitiveCompare: workURL] != NSOrderedSame)
+	      if ([[[elements objectAtIndex: i] flattenedValuesForKey: @""]
+                    caseInsensitiveCompare: workURL] != NSOrderedSame)
 		{
-		  s = [[elements objectAtIndex: i] value: 0];
+		  s = [[elements objectAtIndex: i] flattenedValuesForKey: @""];
 		  break;
 		}
 	    }
@@ -434,7 +440,7 @@
 	}
       else if (!workURL && [elements count] > 0)
 	{
-	  s = [[elements objectAtIndex: 0] value: 0];
+	  s = [[elements objectAtIndex: 0] flattenedValuesForKey: @""];
 	}
 
       if (s && [s length] > 0)
@@ -474,18 +480,23 @@
 - (NSString *) workService
 {
   NSMutableArray *orgServices;
-  NSArray *org;
-  NSRange aRange;
-  NSString *services;
+  NSArray *values;
+  CardElement *org;
+  NSString *service, *services;
+  NSUInteger count, max;
 
   org = [card org];
-  if (org && [org count] > 1)
+  values = [org valuesForKey: @""];
+  max = [values count];
+  if (max > 1)
     {
-      aRange = NSMakeRange(1, [org count]-1);
-      orgServices = [NSMutableArray arrayWithArray: [org subarrayWithRange: aRange]];
-      
-      while ([orgServices containsObject: @""])
-	[orgServices removeObject: @""];
+      orgServices = [NSMutableArray arrayWithCapacity: max];
+      for (count = 1; count < max; count++)
+        {
+          service = [org flattenedValueAtIndex: count forKey: @""];
+          if ([service length] > 0)
+            [orgServices addObject: service];
+        }
 
       services = [orgServices componentsJoinedByString: @", "];
     }
@@ -497,13 +508,12 @@
 
 - (NSString *) workCompany
 {
-  NSArray *org;
+  CardElement *org;
   NSString *company;
 
   org = [card org];
-  if (org && [org count] > 0)
-    company = [org objectAtIndex: 0];
-  else
+  company = [org flattenedValueAtIndex: 0 forKey: @""];
+  if ([company length] == 0)
     company = nil;
 
   return [self _cardStringWithLabel: nil value: company];
@@ -511,17 +521,23 @@
 
 - (NSString *) workPobox
 {
-  return [self _cardStringWithLabel: nil value: [workAdr value: 0]];
+  return [self _cardStringWithLabel: nil
+                              value: [workAdr flattenedValueAtIndex: 0
+                                                             forKey: @""]];
 }
 
 - (NSString *) workExtendedAddress
 {
-  return [self _cardStringWithLabel: nil value: [workAdr value: 1]];
+  return [self _cardStringWithLabel: nil
+                              value: [workAdr flattenedValueAtIndex: 1
+                                                             forKey: @""]];
 }
 
 - (NSString *) workStreetAddress
 {
-  return [self _cardStringWithLabel: nil value: [workAdr value: 2]];
+  return [self _cardStringWithLabel: nil
+                              value: [workAdr flattenedValueAtIndex: 2
+                                                             forKey: @""]];
 }
 
 - (NSString *) workCityAndProv
@@ -529,8 +545,8 @@
   NSString *city, *prov;
   NSMutableString *data;
 
-  city = [workAdr value: 3];
-  prov = [workAdr value: 4];
+  city = [workAdr flattenedValueAtIndex: 3 forKey: @""];
+  prov = [workAdr flattenedValueAtIndex: 4 forKey: @""];
 
   data = [NSMutableString string];
   [data appendString: city];
@@ -546,8 +562,8 @@
   NSString *postalCode, *country;
   NSMutableString *data;
 
-  postalCode = [workAdr value: 5];
-  country = [workAdr value: 6];
+  postalCode = [workAdr flattenedValueAtIndex: 5 forKey: @""];
+  country = [workAdr flattenedValueAtIndex: 6 forKey: @""];
 
   data = [NSMutableString string];
   [data appendString: postalCode];
@@ -681,7 +697,7 @@
             photoURL = [NSString stringWithFormat: @"%@/photo%d",
                                  baseInlineURL, count];
           else
-            photoURL = [photo value: 0];
+            photoURL = [photo flattenedValuesForKey: @""];
           [photosURL addObject: photoURL];
         }
     }

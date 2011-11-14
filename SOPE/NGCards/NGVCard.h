@@ -117,11 +117,12 @@ typedef enum
              additional: (NSString *) additional
                prefixes: (NSString *) prefixes
                suffixes: (NSString *) suffixes;
-- (NSArray *) n;
+/* returns an array of single values */
+- (CardElement *) n;
 
 - (void) setOrg: (NSString *) anOrg
           units: (NSArray *) someUnits;
-- (NSArray *) org;
+- (CardElement *) org;
 
 - (void) setCategories: (NSArray *) newCategories;
 - (NSArray *) categories;

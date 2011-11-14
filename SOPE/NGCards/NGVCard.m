@@ -116,134 +116,134 @@
 
 /* accessors */
 
-- (void) setVersion: (NSString *) _version
+- (void) setVersion: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"version"] setValue: 0 to: _version];
+  [[self uniqueChildWithTag: @"version"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) version
 {
-  return [[self uniqueChildWithTag: @"version"] value: 0];
+  return [[self uniqueChildWithTag: @"version"] flattenedValuesForKey: @""];
 }
 
-- (void) setUid: (NSString *) _uid
+- (void) setUid: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"uid"] setValue: 0 to: _uid];
+  [[self uniqueChildWithTag: @"uid"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) uid
 {
-  return [[self uniqueChildWithTag: @"uid"] value: 0];
+  return [[self uniqueChildWithTag: @"uid"] flattenedValuesForKey: @""];
 }
 
-- (void) setVClass: (NSString *) _class
+- (void) setVClass: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"class"] setValue: 0 to: _class];
+  [[self uniqueChildWithTag: @"class"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) vClass
 {
-  return [[self uniqueChildWithTag: @"class"] value: 0];
+  return [[self uniqueChildWithTag: @"class"] flattenedValuesForKey: @""];
 }
 
 - (void) setProdID: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"prodid"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"prodid"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) prodID
 {
-  return [[self uniqueChildWithTag: @"prodid"] value: 0];
+  return [[self uniqueChildWithTag: @"prodid"] flattenedValuesForKey: @""];
 }
 
 - (void) setProfile: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"profile"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"profile"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) profile
 {
-  return [[self uniqueChildWithTag: @"profile"] value: 0];
+  return [[self uniqueChildWithTag: @"profile"] flattenedValuesForKey: @""];
 }
 
 - (void) setSource: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"source"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"source"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) source
 {
-  return [[self uniqueChildWithTag: @"source"] value: 0];
+  return [[self uniqueChildWithTag: @"source"] flattenedValuesForKey: @""];
 }
 
 - (void) setFn: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"fn"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"fn"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) fn
 {
-  return [[self uniqueChildWithTag: @"fn"] value: 0];
+  return [[self uniqueChildWithTag: @"fn"] flattenedValuesForKey: @""];
 }
 
 - (void) setRole: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"role"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"role"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) role
 {
-  return [[self uniqueChildWithTag: @"role"] value: 0];
+  return [[self uniqueChildWithTag: @"role"] flattenedValuesForKey: @""];
 }
 
-- (void) setTitle: (NSString *) _title
+- (void) setTitle: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"title"] setValue: 0 to: _title];
+  [[self uniqueChildWithTag: @"title"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) title
 {
-  return [[self uniqueChildWithTag: @"title"] value: 0];
+  return [[self uniqueChildWithTag: @"title"] flattenedValuesForKey: @""];
 }
 
 - (void) setBday: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"bday"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"bday"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) bday
 {
-  return [[self uniqueChildWithTag: @"bday"] value: 0];
+  return [[self uniqueChildWithTag: @"bday"] flattenedValuesForKey: @""];
 }
 
 - (void) setNote: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"note"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"note"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) note
 {
-  return [[self uniqueChildWithTag: @"note"] value: 0];
+  return [[self uniqueChildWithTag: @"note"] flattenedValuesForKey: @""];
 }
 
 - (void) setTz: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"tz"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"tz"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) tz
 {
-  return [[self uniqueChildWithTag: @"tz"] value: 0];
+  return [[self uniqueChildWithTag: @"tz"] flattenedValuesForKey: @""];
 }
 
 - (void) setNickname: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"nickname"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"nickname"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) nickname
 {
-  return [[self uniqueChildWithTag: @"nickname"] value: 0];
+  return [[self uniqueChildWithTag: @"nickname"] flattenedValuesForKey: @""];
 }
 
 - (void) addTel: (NSString *) phoneNumber
@@ -270,20 +270,20 @@
 
   n = [self uniqueChildWithTag: @"n"];
   if (family)
-    [n setValue: 0 to: family];
+    [n setSingleValue: family atIndex: 0 forKey: @""];
   if (given)
-    [n setValue: 1 to: given];
+    [n setSingleValue: given atIndex: 1 forKey: @""];
   if (additional)
-    [n setValue: 2 to: additional];
+    [n setSingleValue: additional atIndex: 2 forKey: @""];
   if (prefixes)
-    [n setValue: 3 to: prefixes];
+    [n setSingleValue: prefixes atIndex: 3 forKey: @""];
   if (suffixes)
-    [n setValue: 4 to: suffixes];
+    [n setSingleValue: suffixes atIndex: 4 forKey: @""];
 }
 
-- (NSArray *) n
+- (CardElement *) n
 {
-  return [[self uniqueChildWithTag: @"n"] values];
+  return [self uniqueChildWithTag: @"n"];
 }
 
 - (void) setOrg: (NSString *) anOrg
@@ -294,35 +294,30 @@
 
   org = [self uniqueChildWithTag: @"org"];
   if (anOrg)
-    [org setValue: 0 to: anOrg];
+    [org setSingleValue: anOrg atIndex: 0 forKey: @""];
   if (someUnits)
     {
       max = [someUnits count];
       for (count = 0; count < max; count++)
-        [org setValue: count + 1 to: [someUnits objectAtIndex: count]];
+        [org setSingleValue: [someUnits objectAtIndex: count]
+                    atIndex: count + 1 forKey: @""];
     }
 }
 
-- (NSArray *) org
+- (CardElement *) org
 {
-  NSArray *elements, *org;
-
-  elements = [self childrenWithTag: @"org"];
-  if ([elements count] > 0)
-    org = [[elements objectAtIndex: 0] values];
-  else
-    org = nil;
-
-  return org;
+  return [self uniqueChildWithTag: @"org"];
 }
 
 - (void) setCategories: (NSArray *) newCategories
 {
   CardElement *cats;
+  NSMutableArray *copy;
 
   cats = [self uniqueChildWithTag: @"categories"];
-
-  [cats setCommaSeparatedValues: newCategories];
+  copy = [newCategories mutableCopy];
+  [cats setValues: copy atIndex: 0 forKey: @""];
+  [copy release];
 }
 
 - (NSArray *) categories
@@ -331,7 +326,7 @@
 
   cats = [self uniqueChildWithTag: @"categories"];
 
-  return [[cats value: 0] vCardSubvaluesWithSeparator: ','];
+  return [cats valuesAtIndex: 0 forKey: @""];
 }
 
 // - (void) setOrg: (NGVCardOrg *) _v
@@ -461,12 +456,12 @@
 
 - (NSString *) preferredEMail
 {
-  return [[self _preferredElementWithTag: @"email"] value: 0];
+  return [[self _preferredElementWithTag: @"email"] flattenedValuesForKey: @""];
 }
 
 - (NSString *) preferredTel
 {
-  return [[self _preferredElementWithTag: @"tel"] value: 0];
+  return [[self _preferredElementWithTag: @"tel"] flattenedValuesForKey: @""];
 }
 
 - (CardElement *) preferredAdr

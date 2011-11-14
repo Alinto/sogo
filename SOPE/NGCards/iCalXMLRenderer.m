@@ -21,7 +21,7 @@
  */
 
 /* This class implements most of the XML iCalendar spec as defined here:
-   http://tools.ietf.org/html/draft-daboo-et-al-icalendar-in-xml-04 */
+   http://tools.ietf.org/html/rfc6321 */
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
@@ -161,28 +161,38 @@
 - (NSString *) _xmlRenderValue
 {
   NSMutableString *rendering;
-  NSString *valueTag, *currentValue;
-  int count, max;
-  BOOL displayed;
+  NSArray *keys, *orderedValues, *subValues;
+  NSString *key, *valueTag;
+  NSUInteger count, max, oCount, oMax, sCount, sMax;
+
+#warning this code should be fix to comply better with the RFC
+  rendering = [NSMutableString stringWithCapacity: 64];
 
   valueTag = [self xmlValueTag];
-  rendering = [NSMutableString stringWithCapacity: 64];
-  max = [values count];
-  displayed = NO;
+
+  keys = [values allKeys];
+  max = [keys count];
   for (count = 0; count < max; count++)
     {
-      currentValue = [[values objectAtIndex: count]
-                       stringByEscapingXMLString];
-      if ([currentValue length] > 0)
+      key = [keys objectAtIndex: count];
+      orderedValues = [values objectForKey: key];
+      oMax = [orderedValues count];
+      for (oCount = 0; oCount < oMax; oCount++)
         {
-          if (!displayed)
-            {
-              [self _appendPaddingValues: count withTag: valueTag
-                              intoString: rendering];
-              displayed = YES;
-            }
-          [rendering appendFormat: @"<%@>%@</%@>",
-                     valueTag, currentValue, valueTag];
+          if ([key length] > 0)
+            [rendering appendFormat: @"<%@>", [key lowercaseString]];
+          else
+            [rendering appendFormat: @"<%@>", valueTag];
+
+          subValues = [orderedValues objectAtIndex: oCount];
+          sMax = [subValues count];
+          for (sCount = 0; sCount < sMax; sCount++)
+            [rendering appendString: [[subValues objectAtIndex: sCount] stringByEscapingXMLString]];
+
+          if ([key length] > 0)
+            [rendering appendFormat: @"</%@>", [key lowercaseString]];
+          else
+            [rendering appendFormat: @"</%@>", valueTag];
         }
     }
 
@@ -247,39 +257,39 @@
 
 @end
 
-@implementation iCalRecurrenceRule (iCalXMLExtension)
+// @implementation iCalRecurrenceRule (iCalXMLExtension)
 
-- (NSString *) _xmlRenderValue
-{
-  NSMutableString *rendering;
-  NSArray *valueParts;
-  NSString *valueTag, *currentValue;
-  int count, max;
+// - (NSString *) _xmlRenderValue
+// {
+//   NSMutableString *rendering;
+//   NSArray *valueParts;
+//   NSString *valueTag, *currentValue;
+//   int count, max;
 
-  max = [values count];
-  rendering = [NSMutableString stringWithCapacity: 64];
-  for (count = 0; count < max; count++)
-    {
-      currentValue = [[values objectAtIndex: count]
-                       stringByEscapingXMLString];
-      if ([currentValue length] > 0)
-        {
-          valueParts = [currentValue componentsSeparatedByString: @"="];
-          if ([valueParts count] == 2)
-            {
-              valueTag = [[valueParts objectAtIndex: 0] lowercaseString];
-              [rendering appendFormat: @"<%@>%@</%@>",
-                         valueTag,
-                         [valueParts objectAtIndex: 1],
-                         valueTag];
-            }
-        }
-    }
+//   max = [values count];
+//   rendering = [NSMutableString stringWithCapacity: 64];
+//   for (count = 0; count < max; count++)
+//     {
+//       currentValue = [[values objectAtIndex: count]
+//                        stringByEscapingXMLString];
+//       if ([currentValue length] > 0)
+//         {
+//           valueParts = [currentValue componentsSeparatedByString: @"="];
+//           if ([valueParts count] == 2)
+//             {
+//               valueTag = [[valueParts objectAtIndex: 0] lowercaseString];
+//               [rendering appendFormat: @"<%@>%@</%@>",
+//                          valueTag,
+//                          [valueParts objectAtIndex: 1],
+//                          valueTag];
+//             }
+//         }
+//     }
 
-  return rendering;
-}
+//   return rendering;
+// }
 
-@end
+// @end
 
 @implementation iCalUTCOffset (iCalXMLExtension)
 

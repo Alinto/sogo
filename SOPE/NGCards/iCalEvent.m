@@ -104,13 +104,12 @@
 
 - (void) setDuration: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"duration"] setValue: 0
-                                          to: _value];
+  [[self uniqueChildWithTag: @"duration"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) duration
 {
-  return [[self uniqueChildWithTag: @"duration"] value: 0];
+  return [[self uniqueChildWithTag: @"duration"] flattenedValuesForKey: @""];
 }
 
 - (BOOL) hasDuration
@@ -148,15 +147,14 @@
   return interval;
 }
 
-- (void) setTransparency: (NSString *) _transparency
+- (void) setTransparency: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"transp"] setValue: 0
-                                        to: _transparency];
+  [[self uniqueChildWithTag: @"transp"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) transparency
 {
-  return [[self uniqueChildWithTag: @"transp"] value: 0];
+  return [[self uniqueChildWithTag: @"transp"] flattenedValuesForKey: @""];
 }
 
 /* convenience */

@@ -96,7 +96,7 @@
           [rule setFrequency: iCalRecurrenceFrequenceYearly];
           [rule setRepeatInterval: rp->Period / 12];
           month = [NSString stringWithFormat: @"%d", [startDate monthOfYear]];
-          [rule setNamedValue: @"bymonth" to: month];
+          [rule setSingleValue: month forKey: @"bymonth"];
         }
       else
         [self errorWithFormat:
@@ -116,7 +116,7 @@
               else
                 monthDay = [NSString stringWithFormat: @"%d",
                                      rp->PatternTypeSpecific.MonthRecurrencePattern.N];
-              [rule setNamedValue: @"bymonthday" to: monthDay];
+              [rule setSingleValue: monthDay forKey: @"bymonthday"];
             }
           else if ((rp->PatternTypeSpecific.MonthRecurrencePattern.WeekRecurrencePattern
                     == 0x3e) /* Nth week day */
@@ -139,8 +139,9 @@
               else
                 bySetPos = rp->PatternTypeSpecific.MonthRecurrencePattern.N;
               
-              [rule setNamedValue: @"bysetpos"
-                               to: [NSString stringWithFormat: @"%d", bySetPos]];
+              [rule
+                setSingleValue: [NSString stringWithFormat: @"%d", bySetPos]
+                        forKey: @"bysetpos"];
             }
           else 
             {
@@ -167,9 +168,10 @@
                || (rp->PatternType & 4) == 4)
         {
           /* MonthEnd, HjMonth and HjMonthEnd */
-          [rule setNamedValue: @"bymonthday"
-                           to: [NSString stringWithFormat: @"%d",
-                                         rp->PatternTypeSpecific.Day]];
+          [rule
+            setSingleValue: [NSString stringWithFormat: @"%d",
+                                      rp->PatternTypeSpecific.Day]
+                    forKey: @"bymonthday"];
         }
       else
         [self errorWithFormat: @"invalid value for PatternType: %.4x",
@@ -348,7 +350,7 @@
           if (mask)
             {
               rp->PatternTypeSpecific.MonthRecurrencePattern.WeekRecurrencePattern = mask;
-              bySetPos = [self namedValue: @"bysetpos"];
+              bySetPos = [self flattenedValuesForKey: @"bysetpos"];
               if ([bySetPos length])
                 rp->PatternTypeSpecific.MonthRecurrencePattern.N
                   = ([bySetPos hasPrefix: @"-"]

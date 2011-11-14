@@ -35,8 +35,6 @@
 - (NSArray *) cardElementsWithAttribute: (NSString *) anAttribute
                             havingValue: (NSString *) aValue;
 
-- (NSArray *) renderedForCards;
-
 @end
 
 #endif /* NSARRAY_NGCARDS_H */

@@ -1026,17 +1026,11 @@ static NSCharacterSet *hexCharacterSet = nil;
 {
   int rc = MAPISTORE_SUCCESS;
   NSString *stringValue;
-  NSArray *values;
 
   /* FIXME: there is a confusion in NGCards around "comment" and "description" */
   stringValue = [event comment];
   if ([stringValue length] > 0)
-    {
-      /* FIXME: this is a temporary hack: we unescape things although NGVCards
-         should already have done it at this stage... */
-      values = [stringValue asCardAttributeValues];
-      *data = [[values objectAtIndex: 0] asUnicodeInMemCtx: memCtx];
-    }
+    *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
     rc = MAPISTORE_ERR_NOT_FOUND;
 
@@ -1411,7 +1405,8 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
         {
           startDate = [event startDate];
           relation = [[trigger relationType] lowercaseString];
-          interval = [[trigger value] durationAsTimeInterval];
+          interval = [[trigger flattenedValuesForKey: @""]
+                       durationAsTimeInterval];
           if ([relation isEqualToString: @"end"])
             relationDate = [event endDate];
           else
