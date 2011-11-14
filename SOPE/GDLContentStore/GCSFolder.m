@@ -602,40 +602,48 @@ static GCSStringFormatter *stringFormatter = nil;
 
 - (NSString *)_formatRowValue:(id)_value {
 
-  if (![_value isNotNull])
-    return @"NULL";
-
-  if ([_value isKindOfClass:NSStringClass])
-    return [stringFormatter stringByFormattingString:_value];
-
-  if ([_value isKindOfClass:NSNumberClass]) {
-#if GNUSTEP_BASE_LIBRARY
-    _value = [_value stringValue];
-    return ([(NSString *)_value hasPrefix:@"Y"] || 
-	    [(NSString *)_value hasPrefix:@"N"])
-      ? (id)([_value boolValue] ? @"1" : @"0")
-      : _value;
-#endif
-    return [_value stringValue];
-  }
-  
   if ([_value isKindOfClass:NSCalendarDateClass]) {
     /* be smart ... convert to timestamp. Note: we loose precision. */
     char buf[256];
     snprintf(buf, sizeof(buf), "%i", (int)[_value timeIntervalSince1970]);
     return [NSString stringWithCString:buf];
   }
-  
-  [self errorWithFormat:@"cannot handle value class: %@", [_value class]];
-  return nil;
+  else {
+    return _value;
+  }
 }
 
-- (NSString *)_generateInsertStatementForRow:(NSDictionary *)_row
-  tableName:(NSString *)_table
+- (NSString *) _sqlTypeForColumn: (NSString *) _field withFieldInfos: (NSArray *) _fields
+{
+  NSString *sqlType;
+  NSEnumerator *fields;
+  GCSFieldInfo *fieldInfo;
+
+  sqlType = nil;
+  fields = [_fields objectEnumerator];
+  while ((fieldInfo = [fields nextObject]))
+    {
+      if ([[fieldInfo columnName] caseInsensitiveCompare: _field] == NSOrderedSame)
+        {
+          sqlType = [fieldInfo sqlType];
+          break;
+        }
+    }
+
+  return sqlType;
+}
+
+- (NSString *) _generateInsertStatementForRow:(NSDictionary *)_row
+                                      adaptor:(EOAdaptor *)_adaptor
+                                      fields:(NSArray *)_fields
+                                      tableName:(NSString *)_table
 {
   // TODO: move to NSDictionary category?
   NSMutableString *sql;
+  NSString *fieldName, *sqlType;
   NSArray  *keys;
+  EOAttribute *attribute;
+  id value;
   unsigned i, count;
 
   if (_row == nil || _table == nil)
@@ -656,12 +664,25 @@ static GCSStringFormatter *stringFormatter = nil;
   [sql appendString:@") VALUES ("];
 
   for (i = 0, count = [keys count]; i < count; i++) {
-    id value;
+    fieldName = [keys objectAtIndex:i];
+    sqlType = [self _sqlTypeForColumn: fieldName withFieldInfos: _fields];
 
-    if (i != 0) [sql appendString:@", "];
-    value = [_row objectForKey:[keys objectAtIndex:i]];
-    value = [self _formatRowValue:value];
-    [sql appendString:value];
+    if (sqlType)
+      {
+        value = [self _formatRowValue: [_row objectForKey: fieldName]];
+        attribute = AUTORELEASE([[EOAttribute alloc] init]);
+        [attribute setName: fieldName];
+        [attribute setColumnName: fieldName];
+        [attribute setExternalType: sqlType];
+    
+        if (i != 0) [sql appendString:@", "];
+        [sql appendString:[_adaptor formatValue: value forAttribute: attribute]];
+      }
+    else
+      {
+        [self errorWithFormat:@"%s: no type found for column name %@",
+              __PRETTY_FUNCTION__, fieldName];
+      }
   }
 
   [sql appendString:@")"];
@@ -699,7 +720,7 @@ static GCSStringFormatter *stringFormatter = nil;
 
     if (sqlType)
       {
-        value = [_row objectForKey: fieldName];
+        value = [self _formatRowValue: [_row objectForKey: fieldName]];
         attribute = AUTORELEASE([[EOAttribute alloc] init]);
         [attribute setName: fieldName];
         [attribute setColumnName: fieldName];
@@ -717,39 +738,30 @@ static GCSStringFormatter *stringFormatter = nil;
       }
   }
 
+  sqlType = [self _sqlTypeForColumn: _colname withFieldInfos: _fields];
+  attribute = AUTORELEASE([[EOAttribute alloc] init]);
+  [attribute setName: _colname];
+  [attribute setColumnName: _colname];
+  [attribute setExternalType: sqlType];
   [sql appendString:@" WHERE "];
   [sql appendString:_colname];
   [sql appendString:@" = "];
-  [sql appendString:[self _formatRowValue:_value]];
+  [sql appendString:[_adaptor formatValue: [self _formatRowValue:_value] forAttribute: attribute]];
 
   if (_colname2 != nil) {
     [sql appendString:@" AND "];
+
+    sqlType = [self _sqlTypeForColumn: _colname2 withFieldInfos: _fields];
+    attribute = AUTORELEASE([[EOAttribute alloc] init]);
+    [attribute setName: _colname2];
+    [attribute setColumnName: _colname2];
+    [attribute setExternalType: sqlType];
     [sql appendString:_colname2];
     [sql appendString:@" = "];
-    [sql appendString:[self _formatRowValue:_value2]];
+    [sql appendString:[_adaptor formatValue: [self _formatRowValue:_value2] forAttribute: attribute]];
   }
 
   return sql;
-}
-
-- (NSString *) _sqlTypeForColumn: (NSString *) _field withFieldInfos: (NSArray *) _fields
-{
-  NSString *sqlType;
-  NSEnumerator *fields;
-  GCSFieldInfo *fieldInfo;
-
-  sqlType = nil;
-  fields = [_fields objectEnumerator];
-  while ((fieldInfo = [fields nextObject]))
-    {
-      if ([[fieldInfo columnName] caseInsensitiveCompare: _field] == NSOrderedSame)
-        {
-          sqlType = [fieldInfo sqlType];
-          break;
-        }
-    }
-
-  return sqlType;
 }
 
 - (EOEntity *) _entityWithName: (NSString *) _name
@@ -976,6 +988,8 @@ static GCSStringFormatter *stringFormatter = nil;
 				     ? [quickChannel insertRowX: quickRow forEntity: quickTableEntity]
 				     : [quickChannel
 					 evaluateExpressionX: [self _generateInsertStatementForRow: quickRow 
+                                                                    adaptor: [[quickChannel adaptorContext] adaptor]
+                                                                    fields: [folderInfo quickFields]
 								    tableName: [self quickTableName]]]);
 			  
 			  if (!error)
@@ -983,6 +997,8 @@ static GCSStringFormatter *stringFormatter = nil;
 				     ? [storeChannel insertRowX: contentRow forEntity: storeTableEntity]
 				     : [storeChannel
 					 evaluateExpressionX: [self _generateInsertStatementForRow: contentRow
+                                                                    adaptor: [[storeChannel adaptorContext] adaptor]
+                                                                    fields: [folderInfo fields]
 								    tableName: [self storeTableName]]]);
 			}
 		      else

@@ -69,45 +69,44 @@
 
 /* accessors */
 
-- (void) setCalscale: (NSString *) _calscale
+- (void) setCalscale: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"calscale"] setValue: 0 to: _calscale];
+  [[self uniqueChildWithTag: @"calscale"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) calscale
 {
-  return [[self uniqueChildWithTag: @"calscale"] value: 0];
+  return [[self uniqueChildWithTag: @"calscale"] flattenedValuesForKey: @""];
 }
 
-- (void) setVersion: (NSString *) _version
+- (void) setVersion: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"version"] setValue: 0 to: _version];
+  [[self uniqueChildWithTag: @"version"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) version
 {
-  return [[self uniqueChildWithTag: @"version"] value: 0];
+  return [[self uniqueChildWithTag: @"version"] flattenedValuesForKey: @""];
 }
 
 - (void) setProdID: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"prodid"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"prodid"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) prodId
 {
-  return [[self uniqueChildWithTag: @"prodid"] value: 0];
+  return [[self uniqueChildWithTag: @"prodid"] flattenedValuesForKey: @""];
 }
 
 - (void) setMethod: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"method"] setValue: 0
-					to: [_value uppercaseString]];
+  [[self uniqueChildWithTag: @"method"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) method
 {
-  return [[self uniqueChildWithTag: @"method"] value: 0];
+  return [[self uniqueChildWithTag: @"method"] flattenedValuesForKey: @""];
 }
 
 - (void) addToEvents: (iCalEvent *) _event

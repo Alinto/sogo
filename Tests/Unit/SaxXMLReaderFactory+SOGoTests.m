@@ -38,14 +38,13 @@
 - (NSArray *) saxReaderSearchPathes
 {
   NSArray *pathes, *args;
-  NSString *cwd, *exedir;
+  NSString *exedir;
 
   args = [[NSProcessInfo processInfo] arguments];
-  cwd = [[NSFileManager defaultManager] currentDirectoryPath];
   exedir = [[args objectAtIndex: 0] stringByDeletingLastPathComponent];
   pathes = [NSArray arrayWithObject:
-                      [NSString stringWithFormat: @"%@/%@/%@",
-                                cwd, exedir,
+                      [NSString stringWithFormat: @"%@/%@",
+                                exedir,
                                 @"../../../SOPE/NGCards/versitCardsSaxDriver/"]];
 
   return pathes;

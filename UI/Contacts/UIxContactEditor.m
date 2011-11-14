@@ -366,7 +366,7 @@
       for (i = 0; i < [elements count]; i++)
 	{
 	  ce = [elements objectAtIndex: i];
-	  value = [ce value: 0];
+	  value = [ce flattenedValuesForKey: @""];
 
 	  if (!aTypeToExclude)
 	    break;
@@ -398,13 +398,13 @@
 
   if (max > 0)
     {
-      potential = [[elements objectAtIndex: 0] value: 0];
+      potential = [[elements objectAtIndex: 0] flattenedValuesForKey: @""];
       if (!workMail)
         {
           if (homeMail && homeMail == potential)
 	    {
 	      if (max > 1)
-		workMail = [[elements objectAtIndex: 1] value: 0];
+		workMail = [[elements objectAtIndex: 1] flattenedValuesForKey: @""];
 	    }
           else
             workMail = potential;
@@ -412,7 +412,7 @@
       if (!homeMail && max > 1)
         {
           if (workMail && workMail == potential)
-            homeMail = [[elements objectAtIndex: 1] value: 0];
+            homeMail = [[elements objectAtIndex: 1] flattenedValuesForKey: @""];
           else
             homeMail = potential;
         }
@@ -430,32 +430,32 @@
   [self _setSnapshotValue: @"homeMail" to: homeMail];
 
   [self _setSnapshotValue: @"mozillaUseHtmlMail"
-        to: [[card uniqueChildWithTag: @"x-mozilla-html"] value: 0]];
+        to: [[card uniqueChildWithTag: @"x-mozilla-html"] flattenedValuesForKey: @""]];
 }
 
 - (void) _setupOrgFields
 {
   NSMutableArray *orgServices;
-  NSArray *org;
-  NSRange aRange;
-  unsigned int max;
+  CardElement *org;
+  NSString *service;
+  NSUInteger count, max;
 
   org = [card org];
-  max = [org count];
-  if (max > 0)
+  [self _setSnapshotValue: @"workCompany"
+                       to: [org flattenedValueAtIndex: 0 forKey: @""]];
+  max = [[org valuesForKey: @""] count];
+  if (max > 1)
     {
-      [self _setSnapshotValue: @"workCompany" to: [org objectAtIndex: 0]];
-      if (max > 1)
+      orgServices = [NSMutableArray arrayWithCapacity: max];
+      for (count = 1; count < max; count++)
         {
-          aRange = NSMakeRange (1, max - 1);
-          orgServices = [NSMutableArray arrayWithArray: [org subarrayWithRange: aRange]];
-
-	  while ([orgServices containsObject: @""])
-	    [orgServices removeObject: @""];
-
-          [self _setSnapshotValue: @"workService"
-                to: [orgServices componentsJoinedByString: @", "]];
+          service = [org flattenedValueAtIndex: count forKey: @""];
+          if ([service length] > 0)
+            [orgServices addObject: service];
         }
+
+      [self _setSnapshotValue: @"workService"
+                           to: [orgServices componentsJoinedByString: @", "]];
     }
 }
 
@@ -481,21 +481,14 @@
 
 - (void) initSnapshot
 {
-  NSArray *n, *elements;
+  NSArray *elements;
   CardElement *element;
-  unsigned int max;
 
-  n = [card n];
-  if (n)
-    {
-      max = [n count];
-      if (max > 0)
-        {
-          [self _setSnapshotValue: @"sn" to: [n objectAtIndex: 0]];
-          if (max > 1)
-            [self _setSnapshotValue: @"givenName" to: [n objectAtIndex: 1]];
-        }
-    }
+  element = [card n];
+  [self _setSnapshotValue: @"sn"
+                       to: [element flattenedValueAtIndex: 0 forKey: @""]];
+  [self _setSnapshotValue: @"givenName"
+                       to: [element flattenedValueAtIndex: 1 forKey: @""]];
   [self _setSnapshotValue: @"fn" to: [card fn]];
   [self _setSnapshotValue: @"nickname" to: [card nickname]];
 
@@ -538,7 +531,7 @@
   [self _setupEmailFields];
 
   [self _setSnapshotValue: @"screenName"
-        to: [[card uniqueChildWithTag: @"x-aim"] value: 0]];
+        to: [[card uniqueChildWithTag: @"x-aim"] flattenedValuesForKey: @""]];
 
   elements = [card childrenWithTag: @"adr"
                    andAttribute: @"type" havingValue: @"work"];
@@ -546,17 +539,17 @@
     {
       element = [elements objectAtIndex: 0];
       [self _setSnapshotValue: @"workExtendedAddress"
-            to: [element value: 1]];
+                           to: [element flattenedValueAtIndex: 1 forKey: @""]];
       [self _setSnapshotValue: @"workStreetAddress"
-            to: [element value: 2]];
+                           to: [element flattenedValueAtIndex: 2 forKey: @""]];
       [self _setSnapshotValue: @"workCity"
-            to: [element value: 3]];
+                           to: [element flattenedValueAtIndex: 3 forKey: @""]];
       [self _setSnapshotValue: @"workState"
-            to: [element value: 4]];
+                           to: [element flattenedValueAtIndex: 4 forKey: @""]];
       [self _setSnapshotValue: @"workPostalCode"
-            to: [element value: 5]];
+                           to: [element flattenedValueAtIndex: 5 forKey: @""]];
       [self _setSnapshotValue: @"workCountry"
-            to: [element value: 6]];
+                           to: [element flattenedValueAtIndex: 6 forKey: @""]];
     }
 
   elements = [card childrenWithTag: @"adr"
@@ -565,17 +558,17 @@
     {
       element = [elements objectAtIndex: 0];
       [self _setSnapshotValue: @"homeExtendedAddress"
-            to: [element value: 1]];
+                           to: [element flattenedValueAtIndex: 1 forKey: @""]];
       [self _setSnapshotValue: @"homeStreetAddress"
-            to: [element value: 2]];
+                           to: [element flattenedValueAtIndex: 2 forKey: @""]];
       [self _setSnapshotValue: @"homeCity"
-            to: [element value: 3]];
+                           to: [element flattenedValueAtIndex: 3 forKey: @""]];
       [self _setSnapshotValue: @"homeState"
-            to: [element value: 4]];
+                           to: [element flattenedValueAtIndex: 4 forKey: @""]];
       [self _setSnapshotValue: @"homePostalCode"
-            to: [element value: 5]];
+                           to: [element flattenedValueAtIndex: 5 forKey: @""]];
       [self _setSnapshotValue: @"homeCountry"
-            to: [element value: 6]];
+                           to: [element flattenedValueAtIndex: 6 forKey: @""]];
     }
 
   elements = [card childrenWithTag: @"url"];
@@ -591,7 +584,7 @@
       [elements count] > 0)
     {
       [self _setSnapshotValue: @"homeURL"
-	    to: [[elements objectAtIndex: 0] value: 0]];
+	    to: [[elements objectAtIndex: 0] flattenedValuesForKey: @""]];
     }
   // If we do have a "work" URL but no "home" URL but two
   // values URLs present, let's add the second one as the home URL
@@ -603,11 +596,11 @@
 
       for (i = 0; i < [elements count]; i++)
 	{
-	  if ([[[elements objectAtIndex: i] value: 0]
+	  if ([[[elements objectAtIndex: i] flattenedValuesForKey: @""]
 		caseInsensitiveCompare: [snapshot objectForKey: @"workURL"]] != NSOrderedSame)
 	    {
 	      [self _setSnapshotValue: @"homeURL"
-		    to: [[elements objectAtIndex: i] value: 0]];
+		    to: [[elements objectAtIndex: i] flattenedValuesForKey: @""]];
 	      break;
 	    }
 	}
@@ -615,7 +608,7 @@
     
 
   [self _setSnapshotValue: @"calFBURL"
-        to: [[card uniqueChildWithTag: @"FBURL"] value: 0]];
+        to: [[card uniqueChildWithTag: @"FBURL"] flattenedValuesForKey: @""]];
 
   [self _setSnapshotValue: @"title" to: [card title]];
   [self _setupOrgFields];
@@ -686,7 +679,7 @@
             photoURL = [NSString stringWithFormat: @"%@/photo%d",
                                  baseInlineURL, count];
           else
-            photoURL = [photo value: 0];
+            photoURL = [photo flattenedValuesForKey: @""];
           [photosURL addObject: photoURL];
         }
     }
@@ -721,17 +714,16 @@
   CardElement *phone;
 
   phone = [self _elementWithTag: @"tel" ofType: @"work"];
-  [phone setValue: 0 to: [snapshot objectForKey: @"telephoneNumber"]];
+  [phone setSingleValue: [snapshot objectForKey: @"telephoneNumber"] forKey: @""];
   phone = [self _elementWithTag: @"tel" ofType: @"home"];
-  [phone setValue: 0 to: [snapshot objectForKey: @"homeTelephoneNumber"]];
+  [phone setSingleValue: [snapshot objectForKey: @"homeTelephoneNumber"] forKey: @""];
   phone = [self _elementWithTag: @"tel" ofType: @"cell"];
-  [phone setValue: 0 to: [snapshot objectForKey: @"mobile"]];
+  [phone setSingleValue: [snapshot objectForKey: @"mobile"] forKey: @""];
   phone = [self _elementWithTag: @"tel" ofType: @"fax"];
-  [phone setValue: 0
-         to: [snapshot objectForKey: @"facsimileTelephoneNumber"]];
+  [phone setSingleValue: [snapshot objectForKey: @"facsimileTelephoneNumber"]
+                 forKey: @""];
   phone = [self _elementWithTag: @"tel" ofType: @"pager"];
-  [phone setValue: 0
-         to: [snapshot objectForKey: @"pager"]];
+  [phone setSingleValue: [snapshot objectForKey: @"pager"] forKey: @""];
 }
 
 - (void) _saveEmails
@@ -739,9 +731,9 @@
   CardElement *workMail, *homeMail;
 
   workMail = [self _elementWithTag: @"email" ofType: @"work"];
-  [workMail setValue: 0 to: [snapshot objectForKey: @"workMail"]];
+  [workMail setSingleValue: [snapshot objectForKey: @"workMail"] forKey: @""];
   homeMail = [self _elementWithTag: @"email" ofType: @"home"];
-  [homeMail setValue: 0 to: [snapshot objectForKey: @"homeMail"]];
+  [homeMail setSingleValue: [snapshot objectForKey: @"homeMail"] forKey: @""];
   if (preferredEmail)
     {
       if ([preferredEmail isEqualToString: @"work"])
@@ -751,8 +743,8 @@
     }
 
   [[card uniqueChildWithTag: @"x-mozilla-html"]
-    setValue: 0
-    to: [snapshot objectForKey: @"mozillaUseHtmlMail"]];
+    setSingleValue: [snapshot objectForKey: @"mozillaUseHtmlMail"]
+            forKey: @""];
 }
 
 - (void) _saveSnapshot
@@ -773,20 +765,32 @@
   [card setTz: [snapshot objectForKey: @"tz"]];
 
   element = [self _elementWithTag: @"adr" ofType: @"home"];
-  [element setValue: 1 to: [snapshot objectForKey: @"homeExtendedAddress"]];
-  [element setValue: 2 to: [snapshot objectForKey: @"homeStreetAddress"]];
-  [element setValue: 3 to: [snapshot objectForKey: @"homeCity"]];
-  [element setValue: 4 to: [snapshot objectForKey: @"homeState"]];
-  [element setValue: 5 to: [snapshot objectForKey: @"homePostalCode"]];
-  [element setValue: 6 to: [snapshot objectForKey: @"homeCountry"]];
+  [element setSingleValue: [snapshot objectForKey: @"homeExtendedAddress"]
+                  atIndex: 1 forKey: @""];
+  [element setSingleValue: [snapshot objectForKey: @"homeStreetAddress"]
+                  atIndex: 2 forKey: @""];
+  [element setSingleValue: [snapshot objectForKey: @"homeCity"]
+                  atIndex: 3 forKey: @""];
+  [element setSingleValue: [snapshot objectForKey: @"homeState"]
+                  atIndex: 4 forKey: @""];
+  [element setSingleValue: [snapshot objectForKey: @"homePostalCode"]
+                  atIndex: 5 forKey: @""];
+  [element setSingleValue: [snapshot objectForKey: @"homeCountry"]
+                  atIndex: 6 forKey: @""];
 
   element = [self _elementWithTag: @"adr" ofType: @"work"];
-  [element setValue: 1 to: [snapshot objectForKey: @"workExtendedAddress"]];
-  [element setValue: 2 to: [snapshot objectForKey: @"workStreetAddress"]];
-  [element setValue: 3 to: [snapshot objectForKey: @"workCity"]];
-  [element setValue: 4 to: [snapshot objectForKey: @"workState"]];
-  [element setValue: 5 to: [snapshot objectForKey: @"workPostalCode"]];
-  [element setValue: 6 to: [snapshot objectForKey: @"workCountry"]];
+  [element setSingleValue: [snapshot objectForKey: @"workExtendedAddress"]
+                  atIndex: 1 forKey: @""];
+  [element setSingleValue: [snapshot objectForKey: @"workStreetAddress"]
+                  atIndex: 2 forKey: @""];
+  [element setSingleValue: [snapshot objectForKey: @"workCity"]
+                  atIndex: 3 forKey: @""];
+  [element setSingleValue: [snapshot objectForKey: @"workState"]
+                  atIndex: 4 forKey: @""];
+  [element setSingleValue: [snapshot objectForKey: @"workPostalCode"]
+                  atIndex: 5 forKey: @""];
+  [element setSingleValue: [snapshot objectForKey: @"workCountry"]
+                  atIndex: 6 forKey: @""];
 
   element = [CardElement simpleElementWithTag: @"fburl"
                          value: [snapshot objectForKey: @"calFBURL"]];
@@ -799,13 +803,13 @@
   [self _savePhoneValues];
   [self _saveEmails];
   [[self _elementWithTag: @"url" ofType: @"home"]
-    setValue: 0 to: [snapshot objectForKey: @"homeURL"]];
+    setSingleValue: [snapshot objectForKey: @"homeURL"] forKey: @""];
   [[self _elementWithTag: @"url" ofType: @"work"]
-    setValue: 0 to: [snapshot objectForKey: @"workURL"]];
+    setSingleValue: [snapshot objectForKey: @"workURL"] forKey: @""];
 
   [[card uniqueChildWithTag: @"x-aim"]
-    setValue: 0
-    to: [snapshot objectForKey: @"screenName"]];
+    setSingleValue: [snapshot objectForKey: @"screenName"]
+            forKey: @""];
 }
 
 - (id <WOActionResults>) saveAction
@@ -814,7 +818,6 @@
   id result;
   NSString *jsRefreshMethod;
   SoSecurityManager *sm;
-  NSException *ex;
 
   contact = [self clientObject];
   card = [contact vCard];
@@ -836,7 +839,7 @@
 	      if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
 		       onObject: componentAddressBook
 		       inContext: context])
-		ex = [contact moveToFolder: (SOGoGCSFolder *)componentAddressBook]; // TODO: handle exception
+		[contact moveToFolder: (SOGoGCSFolder *)componentAddressBook]; // TODO: handle exception
 	    }
 	}
       

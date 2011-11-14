@@ -857,8 +857,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSArray *rules, *exRules, *exDates, *ranges;
   NSArray *elements, *components;
   NSString *content;
+  NSCalendarDate *checkStartDate, *checkEndDate, *firstStartDate,
+                    *firstEndDate;
   iCalDateTime *dtstart;
-  NSCalendarDate *checkStartDate, *checkEndDate, *firstStartDate, *firstEndDate;
   iCalEvent *component;
   iCalTimeZone *eventTimeZone;
   unsigned count, max, offset;
@@ -898,8 +899,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	    {
 	      // Retrieve the range of the first/master event
 	      component = [components objectAtIndex: 0];
-	      dtstart = (iCalDateTime *)[component uniqueChildWithTag: @"dtstart"];
-              firstStartDate = [[[dtstart values] lastObject] asCalendarDate];
+              dtstart = (iCalDateTime *) [component uniqueChildWithTag: @"dtstart"];
+              firstStartDate = [dtstart dateTime];
               firstEndDate = [firstStartDate addTimeInterval: [component occurenceInterval]];
               
               firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
@@ -2655,7 +2656,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
           tz = nil;
           element = [components objectAtIndex: i];
           // Use the timezone of the start date.
-          startDate = (iCalDateTime *)[element uniqueChildWithTag: @"dtstart"];
+          startDate = (iCalDateTime *) [element uniqueChildWithTag: @"dtstart"];
           if (startDate)
             {
               timezone = [startDate timeZone];

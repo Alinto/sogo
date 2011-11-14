@@ -39,27 +39,19 @@
 {
   NSMutableDictionary *fields;
   NSArray *values;
-  CardElement *adr;
+  CardElement *element;
   NSString *value;
-  unsigned int max;
 
   fields = [NSMutableDictionary dictionaryWithCapacity: 16];
 
   value = [vCard fn];
   if (value)
     [fields setObject: value forKey: @"c_cn"];
-  values = [vCard n];
-  if (values)
-    {
-      max = [values count];
-      if (max > 0)
-        {
-          [fields setObject: [values objectAtIndex: 0] forKey: @"c_sn"];
-          if (max > 1)
-            [fields setObject: [values objectAtIndex: 1]
-                    forKey: @"c_givenName"];
-        }
-    }
+  element = [vCard n];
+  [fields setObject: [element flattenedValueAtIndex: 0 forKey: @""]
+             forKey: @"c_sn"];
+  [fields setObject: [element flattenedValueAtIndex: 1 forKey: @""]
+             forKey: @"c_givenName"];
   value = [vCard preferredTel];
   if (value)
     [fields setObject: value forKey: @"c_telephoneNumber"];
@@ -67,18 +59,17 @@
   if (![value isNotNull])
     value = @"";
   [fields setObject: value forKey: @"c_mail"];
-  values = [vCard org];
-  max = [values count];
-  if (max > 0)
-    {
-      [fields setObject: [values objectAtIndex: 0] forKey: @"c_o"];
-      if (max > 1)
-	[fields setObject: [values objectAtIndex: 1] forKey: @"c_ou"];
-    }
-  adr = [vCard preferredAdr];
-  if (adr)
-    [fields setObject: [adr value: 3] forKey: @"c_l"];
-  value = [[vCard uniqueChildWithTag: @"X-AIM"] value: 0];
+  element = [vCard org];
+  [fields setObject: [element flattenedValueAtIndex: 0 forKey: @""]
+             forKey: @"c_o"];
+  [fields setObject: [element flattenedValueAtIndex: 1 forKey: @""]
+             forKey: @"c_ou"];
+  element = [vCard preferredAdr];
+  if (element && ![element isVoid])
+    [fields setObject: [element flattenedValueAtIndex: 3
+                                               forKey: @""]
+               forKey: @"c_l"];
+  value = [[vCard uniqueChildWithTag: @"X-AIM"] flattenedValuesForKey: @""];
   [fields setObject: value forKey: @"c_screenname"];
   values = [[vCard categories] trimmedComponents];
   if ([values count] > 0)

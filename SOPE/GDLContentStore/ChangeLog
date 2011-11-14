@@ -1,3 +1,9 @@
+2011-11-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolder.m
+	(_generateUpdateStatementForRow:adaptor:fields:tableName:whereColumn:isEqualTo:andColumn:isEqualTo:):
+	same as below.
+
 2011-10-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* GCSFolder.m

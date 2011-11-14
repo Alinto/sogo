@@ -82,41 +82,41 @@
 
 - (void) setAction: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"action"] setValue: 0
-                                              to: _value];
+  [[self uniqueChildWithTag: @"action"] setSingleValue: _value
+                                                forKey: @""];
 }
 
 - (NSString *) action
 {
-  return [[self uniqueChildWithTag: @"action"] value: 0];
+  return [[self uniqueChildWithTag: @"action"] flattenedValuesForKey: @""];
 }
 
 - (void) setSummary: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"summary"] setValue: 0
-                                               to: _value];
+  [[self uniqueChildWithTag: @"summary"] setSingleValue: _value
+                                                 forKey: @""];
 }
 
 - (NSString *) summary
 {
-  return [[self uniqueChildWithTag: @"summary"] value: 0];
+  return [[self uniqueChildWithTag: @"summary"] flattenedValuesForKey: @""];
 }
 
 - (void) setComment: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"description"] setValue: 0
-                                                   to: _value];
+  [[self uniqueChildWithTag: @"description"] setSingleValue: _value
+                                                     forKey: @""];
 }
 
 - (NSString *) comment
 {
-  return [[self uniqueChildWithTag: @"description"] value: 0];
+  return [[self uniqueChildWithTag: @"description"] flattenedValuesForKey: @""];
 }
 
-- (void) setRecurrenceRule: (NSString *) _recurrenceRule
+- (void) setRecurrenceRule: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"rrule"] setValue: 0
-                                       to: _recurrenceRule];
+  [[self uniqueChildWithTag: @"rrule"] setSingleValue: _value
+                                               forKey: @""];
 }
 
 - (void) setAttendees: (NSArray *) attendees
@@ -137,7 +137,7 @@
 
 - (NSString *) recurrenceRule
 {
-  return [[self uniqueChildWithTag: @"rrule"] value: 0];
+  return [[self uniqueChildWithTag: @"rrule"] flattenedValuesForKey: @""];
 }
 
 - (NSCalendarDate *) nextAlarmDate
@@ -161,7 +161,8 @@
           == NSOrderedSame)
         {
           relation = [aTrigger relationType];
-          anInterval = [[aTrigger value] durationAsTimeInterval];
+          anInterval = [[aTrigger flattenedValuesForKey: @""]
+                         durationAsTimeInterval];
           if ([relation caseInsensitiveCompare: @"END"] == NSOrderedSame)
             {
               if ([parent isKindOfClass: [iCalEvent class]])

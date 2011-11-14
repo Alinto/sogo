@@ -29,6 +29,9 @@
 
 - (id) objectForCaseInsensitiveKey: (NSString *) aKey;
 
+- (void) versitRenderInString: (NSMutableString *) aString
+                 asAttributes: (BOOL) asAttribute; /* handling of ":" */
+
 @end
 
 #endif /* NSDICTIONARY_NGCARDS_H */

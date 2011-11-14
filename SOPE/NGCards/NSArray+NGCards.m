@@ -99,32 +99,4 @@
   return matchingElements;
 }
 
-- (NSArray *) renderedForCards
-{
-  NSMutableArray *purified;
-  NSString *string;
-  int count, max, lastInsert;
-
-  max = [self count];
-  purified = [NSMutableArray arrayWithCapacity: max];
-
-  lastInsert = -1;
-  for (count = 0; count < max; count++)
-    {
-      string = [self objectAtIndex: count];
-      if ([string length] > 0)
-        {
-          while (lastInsert < (count - 1))
-            {
-              [purified addObject: @""];
-              lastInsert++;
-            }
-          [purified addObject: [string escapedForCards]];
-          lastInsert = count;
-        }
-    }
-
-  return purified;
-}
-
 @end

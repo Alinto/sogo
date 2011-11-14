@@ -38,6 +38,7 @@
   NSArray *array;
   NSMutableArray *marray;
   NSMutableDictionary *entry;
+  CardElement *element;
   id tmp;
 
   entry = [NSMutableDictionary dictionary];
@@ -49,13 +50,14 @@
                      @"organizationalPerson", @"inetOrgPerson", 
                      @"mozillaAbPersonObsolete", nil]
             forKey: @"objectclass"];
-  
-  tmp = ([[self n] count] > 1 ? [[self n] objectAtIndex: 1] : nil);
-  if (tmp)
+
+  element = [self n];
+  tmp = [element flattenedValueAtIndex: 1 forKey: @""];
+  if ([tmp length] > 0)
     [entry setObject: tmp  forKey: @"givenName"];
   
-  tmp = ([[self n] count] ? [[self n] objectAtIndex: 0] : nil);
-  if (tmp)
+  tmp = [element flattenedValueAtIndex: 0 forKey: @""];
+  if ([tmp length] > 0)
     [entry setObject: tmp  forKey: @"sn"];
 
   tmp = [self fn];
@@ -74,11 +76,12 @@
 
   marray = [NSMutableArray arrayWithArray: [self childrenWithTag: @"email"]];
   [marray removeObjectsInArray: [self childrenWithTag: @"email"
-                 andAttribute: @"type"
-                  havingValue: @"pref"]];
+                                         andAttribute: @"type"
+                                          havingValue: @"pref"]];
   if ([marray count])
     {
-      buffer = [[marray objectAtIndex: [marray count]-1] value: 0];
+      buffer = [[marray objectAtIndex: [marray count]-1]
+                 flattenedValuesForKey: @""];
 
       if ([buffer caseInsensitiveCompare: [self preferredEMail]] != NSOrderedSame)
         [entry setObject: buffer forKey: @"mozillaSecondEmail"];
@@ -86,58 +89,75 @@
 
   array = [self childrenWithTag: @"tel" andAttribute: @"type" havingValue: @"home"];
   if ([array count])
-    [entry setObject: [[array objectAtIndex: 0] value: 0] forKey: @"homePhone"];
+    [entry setObject: [[array objectAtIndex: 0] flattenedValuesForKey: @""]
+              forKey: @"homePhone"];
   array = [self childrenWithTag: @"tel" andAttribute: @"type" havingValue: @"fax"];
   if ([array count])
-    [entry setObject: [[array objectAtIndex: 0] value: 0] forKey: @"fax"];
+    [entry setObject: [[array objectAtIndex: 0] flattenedValuesForKey: @""]
+              forKey: @"fax"];
   array = [self childrenWithTag: @"tel" andAttribute: @"type" havingValue: @"cell"];
   if ([array count])
-    [entry setObject: [[array objectAtIndex: 0] value: 0] forKey: @"mobile"];
+    [entry setObject: [[array objectAtIndex: 0] flattenedValuesForKey: @""]
+              forKey: @"mobile"];
   array = [self childrenWithTag: @"tel" andAttribute: @"type" havingValue: @"pager"];
   if ([array count])
-    [entry setObject: [[array objectAtIndex: 0] value: 0] forKey: @"pager"];
+    [entry setObject: [[array objectAtIndex: 0] flattenedValuesForKey: @""]
+              forKey: @"pager"];
 
   array = [self childrenWithTag: @"adr" andAttribute: @"type" havingValue: @"home"];
   if ([array count])
     {
       tmp = [array objectAtIndex: 0];
-      [entry setObject: [tmp value: 1] forKey: @"mozillaHomeStreet2"];
-      [entry setObject: [tmp value: 2] forKey: @"homeStreet"];
-      [entry setObject: [tmp value: 3] forKey: @"mozillaHomeLocalityName"];
-      [entry setObject: [tmp value: 4] forKey: @"mozillaHomeState"];
-      [entry setObject: [tmp value: 5] forKey: @"mozillaHomePostalCode"];
-      [entry setObject: [tmp value: 6] forKey: @"mozillaHomeCountryName"];
+      [entry setObject: [tmp flattenedValueAtIndex: 1 forKey: @""]
+                forKey: @"mozillaHomeStreet2"];
+      [entry setObject: [tmp flattenedValueAtIndex: 2 forKey: @""]
+                forKey: @"homeStreet"];
+      [entry setObject: [tmp flattenedValueAtIndex: 3 forKey: @""]
+                forKey: @"mozillaHomeLocalityName"];
+      [entry setObject: [tmp flattenedValueAtIndex: 4 forKey: @""]
+                forKey: @"mozillaHomeState"];
+      [entry setObject: [tmp flattenedValueAtIndex: 5 forKey: @""]
+                forKey: @"mozillaHomePostalCode"];
+      [entry setObject: [tmp flattenedValueAtIndex: 6 forKey: @""]
+                forKey: @"mozillaHomeCountryName"];
     }
 
-  array = [self org];
-  if (array && [array count])
-    [entry setObject: [array objectAtIndex: 0] forKey: @"o"];
+  element = [self org];
+  tmp = [element flattenedValueAtIndex: 0 forKey: @""];
+  if ([tmp length] > 0)
+    [entry setObject: tmp forKey: @"o"];
 
   array = [self childrenWithTag: @"adr" andAttribute: @"type" havingValue: @"work"];
   if ([array count])
     {
       tmp = [array objectAtIndex: 0];
-      [entry setObject: [tmp value: 1] forKey: @"mozillaWorkStreet2"];
-      [entry setObject: [tmp value: 2] forKey: @"street"];
-      [entry setObject: [tmp value: 3] forKey: @"l"];
-      [entry setObject: [tmp value: 4] forKey: @"st"];
-      [entry setObject: [tmp value: 5] forKey: @"postalCode"];
-      [entry setObject: [tmp value: 6] forKey: @"c"];
+      [entry setObject: [tmp flattenedValueAtIndex: 1 forKey: @""]
+                forKey: @"mozillaWorkStreet2"];
+      [entry setObject: [tmp flattenedValueAtIndex: 2 forKey: @""]
+                forKey: @"street"];
+      [entry setObject: [tmp flattenedValueAtIndex: 3 forKey: @""]
+                forKey: @"l"];
+      [entry setObject: [tmp flattenedValueAtIndex: 4 forKey: @""]
+                forKey: @"st"];
+      [entry setObject: [tmp flattenedValueAtIndex: 5 forKey: @""]
+                forKey: @"postalCode"];
+      [entry setObject: [tmp flattenedValueAtIndex: 6 forKey: @""]
+                forKey: @"c"];
     }
 
   array = [self childrenWithTag: @"tel" andAttribute: @"type" havingValue: @"work"];
   if ([array count])
-    [entry setObject: [[array objectAtIndex: 0] value: 0] 
+    [entry setObject: [[array objectAtIndex: 0] flattenedValuesForKey: @""] 
               forKey: @"telephoneNumber"];
 
   array = [self childrenWithTag: @"url" andAttribute: @"type" havingValue: @"work"];
   if ([array count])
-    [entry setObject: [[array objectAtIndex: 0] value: 0] 
+    [entry setObject: [[array objectAtIndex: 0] flattenedValuesForKey: @""] 
               forKey: @"workurl"];
 
   array = [self childrenWithTag: @"url" andAttribute: @"type" havingValue: @"home"];
   if ([array count])
-    [entry setObject: [[array objectAtIndex: 0] value: 0] 
+    [entry setObject: [[array objectAtIndex: 0] flattenedValuesForKey: @""] 
               forKey: @"homeurl"];
 
   tmp = [self note];

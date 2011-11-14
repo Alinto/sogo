@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
 #import <NGExtensions/NGBase64Coding.h>
@@ -61,9 +62,11 @@
         {
           /* We bypass -[values:] because we want to obtain the undecoded
              value first. */
-          if ([values count] > 0)
+          if ([values count] > 0 && [[values objectForKey: @""] count] > 0 &&
+              [[[values objectForKey: @""] objectAtIndex: 0] count] > 0)
             {
-              value = [values objectAtIndex: 0];
+              value = [[[values objectForKey: @""] objectAtIndex: 0]
+                        componentsJoinedByString: @","];
               decodedContent = [value dataByDecodingBase64];
             }
           else

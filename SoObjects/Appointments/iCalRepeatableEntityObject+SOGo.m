@@ -27,10 +27,12 @@
 #import <Foundation/NSTimeZone.h>
 
 #import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalRecurrenceRule.h>
 #import <NGCards/iCalRecurrenceCalculator.h>
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/NSString+NGCards.h>
+#import <NGCards/NSDictionary+NGCards.h>
 #import <NGExtensions/NGCalendarDateRange.h>
 
 #import "iCalRepeatableEntityObject+SOGo.h"
@@ -40,9 +42,11 @@
 - (NSArray *) _indexedRules: (NSArray *) rules
 {
   NSMutableArray *ma;
-  unsigned int i, count;
-  NSString *valuesString;
+  NSUInteger i, count;
+  NSMutableString *ruleString;
   iCalRecurrenceRule *rule;
+
+#warning we could return an NSArray instead and feed it as such to the iCalRecurrenceRule in SOGoAppointmentFolder...
 
   ma = nil;
 
@@ -53,9 +57,11 @@
       for (i = 0; i < count; i++)
 	{
 	  rule = [rules objectAtIndex:i];
-#warning we could return an NSArray instead and feed it as such to the iCalRecurrenceRule in SOGoAppointmentFolder...
-	  valuesString = [[rule values] componentsJoinedByString: @";"];
-	  [ma addObject: valuesString];
+          ruleString = [NSMutableString new];
+          [[rule values] versitRenderInString: ruleString
+                                 asAttributes: NO];
+	  [ma addObject: ruleString];
+          [ruleString release];
 	}
     }
 
@@ -138,7 +144,7 @@
       else
 	{
 	  startDate = theOccurenceDate;
-	  if ([self isAllDay])
+	  if ([self isKindOfClass: [iCalEvent class]] && [(iCalEvent *) self isAllDay])
 	    {
 	      // The event lasts all-day and has no timezone (floating); we convert the range of the first event
 	      // to the occurence's timezone.

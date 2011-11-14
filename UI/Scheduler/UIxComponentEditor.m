@@ -292,13 +292,13 @@ iRANGE(2);
 
 - (void) _loadCategories
 {
-  NSString *compCategories, *simpleCategory;
+  NSString *simpleCategory;
+  NSArray *compCategories;
 
   compCategories = [component categories];
-  if ([compCategories length] > 0)
+  if ([compCategories count] > 0)
     {
-      simpleCategory = [[compCategories componentsSeparatedByString: @","]
-			 objectAtIndex: 0];
+      simpleCategory = [compCategories objectAtIndex: 0];
       ASSIGN (category, simpleCategory);
     }
 }
@@ -405,7 +405,7 @@ iRANGE(2);
 	{
 	  repeatType = @"3";
 	 
-	  if ([[rule namedValue: @"bymonth"] length])
+	  if ([[rule flattenedValuesForKey: @"bymonth"] length])
 	    {
 	      if ([[rule byDay] length])
 		{
@@ -420,13 +420,13 @@ iRANGE(2);
 		  [self setRepeat2: @"1"];
 		  [self setRepeat5: [NSString stringWithFormat: @"%d", firstOccurrence]];
 		  [self setRepeat6: [NSString stringWithFormat: @"%d", [dayMask firstDay]]];
-		  [self setRepeat7: [NSString stringWithFormat: @"%d", [[rule namedValue: @"bymonth"] intValue]-1]];
+		  [self setRepeat7: [NSString stringWithFormat: @"%d", [[rule flattenedValuesForKey: @"bymonth"] intValue]-1]];
 		}
 	      else
 		{
 		  [self setRepeat2: @"0"];
-		  [self setRepeat3: [rule namedValue: @"bymonthday"]];
-		  [self setRepeat4: [NSString stringWithFormat: @"%d", [[rule namedValue: @"bymonth"] intValue]-1]];
+		  [self setRepeat3: [rule flattenedValuesForKey: @"bymonthday"]];
+		  [self setRepeat4: [NSString stringWithFormat: @"%d", [[rule flattenedValuesForKey: @"bymonth"] intValue]-1]];
 		}
 	    }
 	  else if ([rule repeatInterval] == 1)
@@ -440,7 +440,7 @@ iRANGE(2);
 	{
 	  repeat = @"CUSTOM";
 	  [self setRange1: @"1"];
-	  [self setRange2: [rule namedValue: @"count"]];
+	  [self setRange2: [rule flattenedValuesForKey: @"count"]];
 	}
       else if ([rule untilDate])
 	{
@@ -519,7 +519,7 @@ iRANGE(2);
            || [reminderAction isEqualToString: @"email"])
 	  && [[aTrigger valueType] caseInsensitiveCompare: @"DURATION"] == NSOrderedSame)
 	{
-	  duration = [aTrigger value];
+	  duration = [aTrigger flattenedValuesForKey: @""];
 	  i = [reminderValues indexOfObject: duration];
 
 	  if (i == NSNotFound || [reminderAction isEqualToString: @"email"])
@@ -611,8 +611,7 @@ iRANGE(2);
 	  ASSIGN (privacy, [component accessClass]);
 	  ASSIGN (priority, [component priority]);
 	  ASSIGN (status, [component status]);
-          ASSIGN (categories,
-                  [[component categories] vCardSubvaluesWithSeparator: ',']);
+          ASSIGN (categories, [component categories]);
 	  if ([[[component organizer] rfc822Email] length])
 	    {
 	      ASSIGN (organizer, [component organizer]);
@@ -1853,6 +1852,7 @@ RANGE(2);
 
 {
   int type, range;
+  NSMutableArray *values;
 
   // We decode the range
   range = [[self range1] intValue];
@@ -1990,14 +1990,21 @@ RANGE(2);
                 occurence = [[self repeat3] intValue] + 1;
 		if (occurence > 5)  // the first/second/third/fourth/fifth ..
 		  occurence = -1;   // the last ..
-                [theRule setNamedValue: @"byday"
-                                    to: [NSString stringWithFormat: @"%d%@",
-                                                  occurence, day]];
+                [theRule setSingleValue: [NSString stringWithFormat: @"%d%@",
+                                                  occurence, day]
+                                 forKey: @"byday"];
               }
             else
               {
                 if ([[self repeat5] intValue] > 0)
-                  [theRule setNamedValue: @"bymonthday" to: [self repeat5]];
+                  {
+                    values = [[[self repeat5]
+                                componentsSeparatedByString: @","]
+                               mutableCopy];
+                    [theRule setValues: values
+                             atIndex: 0 forKey: @"bymonthday"];
+                    [values release];
+                  }
  	      }
 	  }
       }
@@ -2037,22 +2044,27 @@ RANGE(2);
                 occurence = [[self repeat5] intValue] + 1;
 		if (occurence > 5)  // the first/second/third/fourth/fifth ..
 		  occurence = -1;   // the last ..
-                [theRule setNamedValue: @"byday"
-                                    to: [NSString stringWithFormat: @"%d%@",
-                                                  occurence, day]];
-		[theRule setNamedValue: @"bymonth"
-                                    to: [NSString stringWithFormat: @"%d",
-                                                  [[self repeat7] intValue] + 1]];
+                [theRule setSingleValue: [NSString stringWithFormat: @"%d%@",
+                                                  occurence, day]
+                                 forKey: @"byday"];
+                [theRule setSingleValue: [NSString stringWithFormat: @"%d",
+                                                   [[self repeat7] intValue] + 1]
+                                 forKey: @"bymonth"];
 	      }
 	    else
 	      {
 		if ([[self repeat3] intValue] > 0
 		    && [[self repeat4] intValue] > 0)
 		  {
-		    [theRule setNamedValue: @"bymonthday"
-			     to: [self repeat3]];
-		    [theRule setNamedValue: @"bymonth" 
-			     to: [NSString stringWithFormat: @"%d", ([[self repeat4] intValue]+1)]];
+                    values = [[[self repeat3]
+                                componentsSeparatedByString: @","]
+                               mutableCopy];
+		    [theRule setValues: values atIndex: 0
+                                forKey: @"bymonthday"];
+                    [values release];
+                    [theRule setSingleValue: [NSString stringWithFormat: @"%d",
+                                                       [[self repeat4] intValue] + 1]
+                                     forKey: @"bymonth"];
 		  }
 	      }
 	  }
@@ -2111,7 +2123,7 @@ RANGE(2);
   [component setComment: comment];
   [component setAttach: attachUrl];
   [component setAccessClass: privacy];
-  [component setCategories: category];
+  [component setCategories: categories];
   [self _handleAttendeesEdition];
   [self _handleOrganizer];
   clientObject = [self clientObject];
@@ -2146,7 +2158,7 @@ RANGE(2);
       if ([aValue length]) {
 	// Predefined alarm
         [anAlarm setAction: @"DISPLAY"];
-	[aTrigger setValue: aValue];
+	[aTrigger setSingleValue: aValue forKey: @""];
       }
       else {
 	// Custom alarm
@@ -2177,7 +2189,7 @@ RANGE(2);
             aValue = [aValue stringByAppendingFormat: @"%i%@",			 
                              [reminderQuantity intValue],
                              [reminderUnit substringToIndex: 1]];
-            [aTrigger setValue: aValue];
+            [aTrigger setSingleValue: aValue forKey: @""];
             [aTrigger setRelationType: reminderRelation];
           }
         else

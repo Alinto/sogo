@@ -1,3 +1,14 @@
+2011-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Unit/TestVersit.m (-test_rendering, -test_parsing):
+	adapted to new NGCards data structure and improved to test further
+	important use cases.
+
+2011-11-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+       * Tests/Unit/TestVersit.m: new test module for versit parsing and
+       outputting.
+
 2011-11-09  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SOGoRootPage.js (onLoginClick): don't

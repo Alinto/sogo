@@ -64,7 +64,7 @@
   cardReferences = [[self cardReferences] objectEnumerator];
 
   while ((currentReference = [cardReferences nextObject]))
-    [cardNames addObject: [currentReference value: 0]];
+    [cardNames addObject: [currentReference flattenedValuesForKey: @""]];
 
   return cardNames;
 }

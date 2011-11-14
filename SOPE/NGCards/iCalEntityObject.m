@@ -145,42 +145,47 @@
 
 - (void) setPriority: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"priority"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"priority"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) priority
 {
-  return [[self uniqueChildWithTag: @"priority"] value: 0];
+  return [[self uniqueChildWithTag: @"priority"] flattenedValuesForKey: @""];
 }
 
-- (void) setCategories: (NSString *) _value
+- (void) setCategories: (NSArray *) _value
 {
-  [[self uniqueChildWithTag: @"categories"] setValue: 0 to: _value];
+  NSMutableArray *copy;
+
+  copy = [_value mutableCopy];
+  [[self uniqueChildWithTag: @"categories"] setValues: copy atIndex: 0
+                                               forKey: @""];
+  [copy release];
 }
 
-- (NSString *) categories
+- (NSArray *) categories
 {
-  return [[self uniqueChildWithTag: @"categories"] value: 0];
+  return [[self uniqueChildWithTag: @"categories"] valuesAtIndex: 0 forKey: @""];
 }
 
 - (void) setUserComment: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"usercomment"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"usercomment"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) userComment
 {
-  return [[self uniqueChildWithTag: @"usercomment"] value: 0];
+  return [[self uniqueChildWithTag: @"usercomment"] flattenedValuesForKey: @""];
 }
 
 - (void) setStatus: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"status"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"status"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) status
 {
-  return [[self uniqueChildWithTag: @"status"] value: 0];
+  return [[self uniqueChildWithTag: @"status"] flattenedValuesForKey: @""];
 }
 
 - (void) setSequence: (NSNumber *)_value
@@ -188,15 +193,15 @@
   NSString *sequence;
 
   sequence = [NSString stringWithFormat: @"%@", _value];
-  [[self uniqueChildWithTag: @"sequence"] setValue: 0
-                                          to: sequence];;
+  [[self uniqueChildWithTag: @"sequence"] setSingleValue: sequence
+                                                  forKey: @""];
 }
 
 - (NSNumber *) sequence
 {
   NSString *sequence;
 
-  sequence = [[self uniqueChildWithTag: @"sequence"] value: 0];
+  sequence = [[self uniqueChildWithTag: @"sequence"] flattenedValuesForKey: @""];
 
   return [NSNumber numberWithInt: [sequence intValue]];
 }
@@ -390,16 +395,16 @@
 
 - (void) setAttach: (id) _value
 {
-  NSString *asString;
+  NSString *aString;
 
   if ([_value isKindOfClass: [NSString class]])
-    asString = _value;
+    aString = _value;
   else if ([_value isKindOfClass: [NSURL class]])
-    asString = [_value absoluteString];
+    aString = [_value absoluteString];
   else
-    asString = @"";
+    aString = @"";
 
-  [[self uniqueChildWithTag: @"attach"] setValue: 0 to: asString];
+  [[self uniqueChildWithTag: @"attach"] setSingleValue: aString forKey: @""];
 }
 
 - (NSURL *) attach
@@ -407,7 +412,7 @@
   NSString *stringAttach;
   NSURL *url;
 
-  stringAttach = [[self uniqueChildWithTag: @"attach"] value: 0];
+  stringAttach = [[self uniqueChildWithTag: @"attach"] flattenedValuesForKey: @""];
   url = [NSURL URLWithString: stringAttach];
 
   if (!url && [stringAttach length] > 0)
@@ -418,23 +423,23 @@
 
 - (void) setUrl: (id) _value
 {
-  NSString *asString;
+  NSString *aString;
 
   if ([_value isKindOfClass: [NSString class]])
-    asString = _value;
+    aString = _value;
   else if ([_value isKindOfClass: [NSURL class]])
-    asString = [_value absoluteString];
+    aString = [_value absoluteString];
   else
-    asString = @"";
+    aString = @"";
 
-  [[self uniqueChildWithTag: @"url"] setValue: 0 to: asString];
+  [[self uniqueChildWithTag: @"url"] setSingleValue: aString forKey: @""];
 }
 
 - (NSURL *) url
 {
   NSString *stringUrl;
 
-  stringUrl = [[self uniqueChildWithTag: @"url"] value: 0];
+  stringUrl = [[self uniqueChildWithTag: @"url"] flattenedValuesForKey: @""];
 
   return [NSURL URLWithString: stringUrl];
 }

@@ -15,6 +15,7 @@ $(TEST_TOOL)_OBJC_FILES += \
 	SOGoTestRunner.m \
 	SaxXMLReaderFactory+SOGoTests.m \
 	\
+	TestVersit.m \
 	TestiCalTimeZonePeriod.m \
 	TestiCalRecurrenceCalculator.m \
 	\
@@ -26,8 +27,8 @@ $(TEST_TOOL)_OBJC_FILES += \
 
 TEST_TOOL_NAME = $(TEST_TOOL)
 
-ADDITIONAL_INCLUDE_DIRS += \
-	-D_GNU_SOURCE -I../SOPE/ -I../SoObjects/ -I../UI/
+TEST_TOOL_CPPFLAGS += \
+	-Wall -D_GNU_SOURCE -I../SOPE/ -I../SoObjects/ -I../UI/
 
 ADDITIONAL_LIB_DIRS += \
 	-L../SoObjects/SOGo -lSOGo -lNGMime -lNGCards -lGDLContentStore -lNGExtensions -lSBJson -lobjc -L/usr/local/lib  -lSaxObjC

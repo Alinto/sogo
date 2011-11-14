@@ -20,9 +20,94 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
+
 #import "NSArray+NGCards.h"
+#import "NSString+NGCards.h"
 
 #import "NSDictionary+NGCards.h"
+
+@interface NSArray (NGCardsVersit)
+
+- (BOOL) _renderAsSubValuesInString: (NSMutableString *) aString
+                       asAttributes: (BOOL) asAttributes;
+- (BOOL) _renderAsOrderedValuesInString: (NSMutableString *) aString
+                                withKey: (NSString *) key;
+
+@end
+
+@implementation NSArray (NGCardsVersit)
+
+- (BOOL) _renderAsSubValuesInString: (NSMutableString *) aString
+                       asAttributes: (BOOL) asAttributes
+{
+  NSUInteger count, max;
+  NSString *subValue, *escaped;
+  BOOL previousWasEmpty = YES, rendered = NO;
+
+  max = [self count];
+  for (count = 0; count < max; count++)
+    {
+      if (!previousWasEmpty)
+        [aString appendString: @","];
+      subValue = [self objectAtIndex: count];
+
+      /* We MUST quote attribute values that have a ":" in them
+         and that not already quoted */
+      if (asAttributes && [subValue length] > 2
+          && [subValue rangeOfString: @":"].length
+          && [subValue characterAtIndex: 0] != '"'
+          && ![subValue hasSuffix: @"\""])
+        subValue = [NSString stringWithFormat: @"\"%@\"", subValue];
+
+      escaped = [subValue escapedForCards];
+      if ([escaped length] > 0)
+        {
+          [aString appendString: escaped];
+          previousWasEmpty = NO;
+          rendered = YES;
+        }
+      else
+        previousWasEmpty = YES;
+    }
+
+  return rendered;
+}
+
+- (BOOL) _renderAsOrderedValuesInString: (NSMutableString *) aString
+                                withKey: (NSString *) key
+{
+  NSUInteger count, max, lastRendered = 0;
+  BOOL rendered = NO;
+  NSArray *subValues;
+  NSMutableString *substring;
+
+  max = [self count];
+  for (count = 0; count < max; count++)
+    {
+      subValues = [self objectAtIndex: count];
+      substring = [NSMutableString string];
+      if ([subValues _renderAsSubValuesInString: substring
+                                   asAttributes: NO])
+        {
+          if (lastRendered == 0 && [key length] > 0)
+            [aString appendFormat: @"%@=", key];
+
+          while (lastRendered < count)
+            {
+              [aString appendString: @";"];
+              lastRendered++;
+            }
+          [aString appendString: substring];
+          rendered = YES;
+        }
+    }
+
+  return rendered;
+}
+
+@end
 
 @implementation NSDictionary (NGCardsExtension)
 
@@ -35,6 +120,45 @@
   realKey = [keys valueForCaseInsensitiveString: aKey];
 
   return ((realKey) ? [self objectForKey: realKey] : nil);
+}
+
+- (void) versitRenderInString: (NSMutableString *) aString
+                 asAttributes: (BOOL) asAttributes
+{
+  NSArray *keys;
+  NSUInteger count, max, rendered = 0;
+  NSArray *orderedValues;
+  NSString *key;
+  NSMutableString *substring;
+
+  keys = [self allKeys];
+  max = [keys count];
+  for (count = 0; count < max; count++)
+    {
+      key = [keys objectAtIndex: count];
+      orderedValues = [self objectForKey: key];
+      substring = [NSMutableString string];
+      if (asAttributes)
+        {
+          if ([orderedValues _renderAsSubValuesInString: substring
+                                           asAttributes: YES])
+            {
+              if (rendered > 0)
+                [aString appendString: @";"];
+              [aString appendFormat: @"%@=%@",
+                       [key uppercaseString], substring];
+              rendered++;
+            }
+        }
+      else if ([orderedValues _renderAsOrderedValuesInString: substring
+                                                     withKey: [key uppercaseString]])
+        {
+          if (rendered > 0)
+            [aString appendString: @";"];
+          [aString appendString: substring];
+          rendered++;
+        }
+    }
 }
 
 @end

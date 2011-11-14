@@ -28,9 +28,6 @@
 
 @interface iCalAttachment : CardElement
 
-- (void) setValue: (NSString *) aValue;
-- (NSString *) value;
-
 - (void) setValueType: (NSString *) aType;
 - (NSString *) valueType;
 

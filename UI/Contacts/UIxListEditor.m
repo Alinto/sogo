@@ -184,7 +184,7 @@
                       [newWorkMail setTag: @"email"];
                       [newWorkMail addType: @"work"];
                       [newCard addChild: newWorkMail];
-                      [newWorkMail setValue: 0 to: workMail];
+                      [newWorkMail setSingleValue: workMail forKey: @""];
                       [newCard setFn: fn];
 
                       // Add vCard to current folder

@@ -179,12 +179,12 @@ static NSArray *knownTimeZones;
 
 - (void) setTzId: (NSString *) tzId
 {
-  [[self uniqueChildWithTag: @"tzid"] setValue: 0 to: tzId];
+  [[self uniqueChildWithTag: @"tzid"] setSingleValue: tzId forKey: @""];
 }
 
 - (NSString *) tzId
 {
-  return [[self uniqueChildWithTag: @"tzid"] value: 0];
+  return [[self uniqueChildWithTag: @"tzid"] flattenedValuesForKey: @""];
 }
 
 - (NSCalendarDate *) _occurrenceForPeriodNamed: (NSString *) pName

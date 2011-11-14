@@ -31,7 +31,7 @@
 #import "CardGroup.h"
 
 #import "NSString+NGCards.h"
-#import "NSArray+NGCards.h"
+#import "NSDictionary+NGCards.h"
 
 #import "CardVersitRenderer.h"
 
@@ -55,9 +55,8 @@
 {
   NSMutableString *rendering;
   NSDictionary *attributes;
-  NSEnumerator *keys;
-  NSArray *values, *renderedAttrs;
-  NSString *key, *finalRendering, *tag;
+  NSMutableDictionary *values;
+  NSString *finalRendering, *tag;
 
   if (![anElement isVoid])
     {
@@ -140,12 +139,8 @@
   groupTag = [groupTag uppercaseString];
   [rendering appendFormat: @"BEGIN:%@\r\n", groupTag];
   children = [[aGroup children] objectEnumerator];
-  currentChild = [children nextObject];
-  while (currentChild)
-    {
-      [rendering appendString: [self render: currentChild]];
-      currentChild = [children nextObject];
-    }
+  while ((currentChild = [children nextObject]))
+    [rendering appendString: [self render: currentChild]];
   [rendering appendFormat: @"END:%@\r\n", groupTag];
 
   return rendering;

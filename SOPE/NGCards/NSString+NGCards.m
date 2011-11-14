@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSRange.h>
@@ -316,25 +317,35 @@
   return ([self length] == 8);
 }
 
-- (NSArray *) vCardSubvaluesWithSeparator: (unichar) separator
+- (NSMutableDictionary *) vCardSubvalues
 {
-  NSMutableArray *components;
+  /* This schema enables things like this:
+     ELEM;...:KEY1=subvalue1;KEY2=subvalue1,subvalue2
+     or
+     ELEM;...:subvalue1;subvalue1,subvalue2 (where KEY = @"") */
+  NSMutableDictionary *values; /* key <> ordered values associations */
+  NSMutableArray *orderedValues = nil; /* those are separated by ';' and contain
+                                    subvalues, may or may not be named */
+  NSMutableArray *subValues = nil; /* those are separeted by ',' */
   unichar *stringBuffer, *substringBuffer;
-  NSString *substring;
+  NSString *valuesKey, *substring;
   unichar currentChar;
   NSUInteger substringLength, count, max;
-  BOOL escaped;
+  BOOL escaped = NO;
 
-  components = [NSMutableArray arrayWithCapacity: 5];
+  values = [NSMutableDictionary dictionary];
+  valuesKey = @"";
 
   max = [self length];
-  stringBuffer = NSZoneMalloc (NULL, sizeof (unichar) * max);
+  stringBuffer = NSZoneMalloc (NULL, sizeof (unichar) * max + 1);
   [self getCharacters: stringBuffer];
-  substringLength = 0;
-  escaped = NO;
+  stringBuffer[max] = 0;
 
   substringBuffer = NSZoneMalloc (NULL, sizeof (unichar) * max);
+  substringLength = 0;
 
+  max += 1; /* we add one step to force the inclusion of the ending '\0' in
+               the loop */
   for (count = 0; count < max; count++)
     {
       currentChar = stringBuffer[count];
@@ -343,7 +354,7 @@
           escaped = NO;
           if (currentChar == 'n' || currentChar == 'N')
             substringBuffer[substringLength] = '\n';
-          else if (currentChar == 'r')
+          else if (currentChar == 'r' || currentChar == 'R')
             substringBuffer[substringLength] = '\r';
           else
             substringBuffer[substringLength] = currentChar;
@@ -353,16 +364,48 @@
         {
           if (currentChar == '\\')
             escaped = YES;
-          else if (currentChar == separator)
+          else if (currentChar == ',' || currentChar == ';' || currentChar == 0)
             {
               substring
-                = [[NSString alloc] initWithCharactersNoCopy: substringBuffer
-                                                      length: substringLength
-                                                freeWhenDone: YES];
-              [components addObject: substring];
-              [substring release];
-              substringBuffer = NSZoneMalloc (NULL, sizeof (unichar) * max);
+                = [[NSString alloc] initWithCharacters: substringBuffer
+                                                length: substringLength];
               substringLength = 0;
+
+              orderedValues = [values objectForKey: valuesKey];
+              if (!orderedValues)
+                {
+                  orderedValues = [NSMutableArray new];
+                  [values setObject: orderedValues forKey: valuesKey];
+                  [orderedValues release];
+                }
+              if (!subValues)
+                {
+                  subValues = [NSMutableArray new];
+                  [orderedValues addObject: subValues];
+                  [subValues release];
+                }
+              if ([substring length] > 0)
+                [subValues addObject: substring];
+              [substring release];
+
+              if (currentChar != ',')
+                {
+                  orderedValues = nil;
+                  subValues = nil;
+                  valuesKey = @"";
+                }
+            }
+          /* hack: 16 chars is an arbitrary limit to distinguish between
+             "named properties" and the base64 padding character. This might
+             need further tweaking... */
+          else if (currentChar == '=' && substringLength < 16)
+            {
+              substring
+                = [[NSString alloc] initWithCharacters: substringBuffer
+                                                length: substringLength];
+              [substring autorelease];
+              substringLength = 0;
+              valuesKey = [substring lowercaseString];
             }
           else
             {
@@ -372,20 +415,11 @@
         }
     }
 
-  if (substringLength > 0)
-    {
-      substring = [[NSString alloc] initWithCharactersNoCopy: substringBuffer
-						      length: substringLength
-						freeWhenDone: YES];
-      [components addObject: substring];
-      [substring release];
-    }
-
   NSZoneFree (NULL, stringBuffer);
+  NSZoneFree (NULL, substringBuffer);
 
-  return components;
+  return values;
 }
-
 
 - (NSString *) rfc822Email
 {

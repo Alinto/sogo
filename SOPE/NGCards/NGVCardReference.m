@@ -48,12 +48,12 @@
 
 - (void) setReference: (NSString *) newReference
 {
-  [self setValue: 0 to: newReference];
+  [self setSingleValue: newReference forKey: @""];
 }
 
 - (NSString *) reference
 {
-  return [self value: 0];
+  return [self flattenedValuesForKey: @""];
 }
 
 @end
