@@ -1,0 +1,203 @@
+[main]
+host = https://www.transifex.net
+
+[sogo.ui-mailerui]
+source_file = UI/MailerUI/English.lproj/Localizable.strings
+source_lang = en
+trans.ca = UI/MailerUI/Catalan.lproj/Localizable.strings
+trans.cs = UI/MailerUI/Czech.lproj/Localizable.strings
+trans.cy = UI/MailerUI/Welsh.lproj/Localizable.strings
+trans.de = UI/MailerUI/German.lproj/Localizable.strings
+trans.es = UI/MailerUI/Spanish.lproj/Localizable.strings
+trans.fr = UI/MailerUI/French.lproj/Localizable.strings
+trans.hu = UI/MailerUI/Hungarian.lproj/Localizable.strings
+trans.is = UI/MailerUI/Icelandic.lproj/Localizable.strings
+trans.it = UI/MailerUI/Italian.lproj/Localizable.strings
+trans.nl = UI/MailerUI/Dutch.lproj/Localizable.strings
+trans.no = UI/MailerUI/Norwegian.lproj/Localizable.strings
+trans.pl = UI/MailerUI/Polish.lproj/Localizable.strings
+trans.pt_BR = UI/MailerUI/BrazilianPortuguese.lproj/Localizable.strings
+trans.ru = UI/MailerUI/Russian.lproj/Localizable.strings
+trans.sv = UI/MailerUI/Swedish.lproj/Localizable.strings
+trans.uk = UI/MailerUI/Ukrainian.lproj/Localizable.strings
+
+[sogo.ui-preferencesui]
+source_file = UI/PreferencesUI/English.lproj/Localizable.strings
+source_lang = en
+trans.ca = UI/PreferencesUI/Catalan.lproj/Localizable.strings
+trans.cs = UI/PreferencesUI/Czech.lproj/Localizable.strings
+trans.cy = UI/PreferencesUI/Welsh.lproj/Localizable.strings
+trans.de = UI/PreferencesUI/German.lproj/Localizable.strings
+trans.es = UI/PreferencesUI/Spanish.lproj/Localizable.strings
+trans.fr = UI/PreferencesUI/French.lproj/Localizable.strings
+trans.hu = UI/PreferencesUI/Hungarian.lproj/Localizable.strings
+trans.is = UI/PreferencesUI/Icelandic.lproj/Localizable.strings
+trans.it = UI/PreferencesUI/Italian.lproj/Localizable.strings
+trans.nl = UI/PreferencesUI/Dutch.lproj/Localizable.strings
+trans.no = UI/PreferencesUI/Norwegian.lproj/Localizable.strings
+trans.pl = UI/PreferencesUI/Polish.lproj/Localizable.strings
+trans.pt_BR = UI/PreferencesUI/BrazilianPortuguese.lproj/Localizable.strings
+trans.ru = UI/PreferencesUI/Russian.lproj/Localizable.strings
+trans.sv = UI/PreferencesUI/Swedish.lproj/Localizable.strings
+trans.uk = UI/PreferencesUI/Ukrainian.lproj/Localizable.strings
+
+[sogo.ui-scheduler]
+source_file = UI/Scheduler/English.lproj/Localizable.strings
+source_lang = en
+trans.ca = UI/Scheduler/Catalan.lproj/Localizable.strings
+trans.cs = UI/Scheduler/Czech.lproj/Localizable.strings
+trans.cy = UI/Scheduler/Welsh.lproj/Localizable.strings
+trans.de = UI/Scheduler/German.lproj/Localizable.strings
+trans.es = UI/Scheduler/Spanish.lproj/Localizable.strings
+trans.fr = UI/Scheduler/French.lproj/Localizable.strings
+trans.hu = UI/Scheduler/Hungarian.lproj/Localizable.strings
+trans.is = UI/Scheduler/Icelandic.lproj/Localizable.strings
+trans.it = UI/Scheduler/Italian.lproj/Localizable.strings
+trans.nl = UI/Scheduler/Dutch.lproj/Localizable.strings
+trans.no = UI/Scheduler/Norwegian.lproj/Localizable.strings
+trans.pl = UI/Scheduler/Polish.lproj/Localizable.strings
+trans.pt_BR = UI/Scheduler/BrazilianPortuguese.lproj/Localizable.strings
+trans.ru = UI/Scheduler/Russian.lproj/Localizable.strings
+trans.sv = UI/Scheduler/Swedish.lproj/Localizable.strings
+trans.uk = UI/Scheduler/Ukrainian.lproj/Localizable.strings
+
+[sogo.ui-contacts]
+source_file = UI/Contacts/English.lproj/Localizable.strings
+source_lang = en
+trans.ca = UI/Contacts/Catalan.lproj/Localizable.strings
+trans.cs = UI/Contacts/Czech.lproj/Localizable.strings
+trans.cy = UI/Contacts/Welsh.lproj/Localizable.strings
+trans.de = UI/Contacts/German.lproj/Localizable.strings
+trans.es = UI/Contacts/Spanish.lproj/Localizable.strings
+trans.fr = UI/Contacts/French.lproj/Localizable.strings
+trans.hu = UI/Contacts/Hungarian.lproj/Localizable.strings
+trans.is = UI/Contacts/Icelandic.lproj/Localizable.strings
+trans.it = UI/Contacts/Italian.lproj/Localizable.strings
+trans.nl = UI/Contacts/Dutch.lproj/Localizable.strings
+trans.no = UI/Contacts/Norwegian.lproj/Localizable.strings
+trans.pl = UI/Contacts/Polish.lproj/Localizable.strings
+trans.pt_BR = UI/Contacts/BrazilianPortuguese.lproj/Localizable.strings
+trans.ru = UI/Contacts/Russian.lproj/Localizable.strings
+trans.sv = UI/Contacts/Swedish.lproj/Localizable.strings
+trans.uk = UI/Contacts/Ukrainian.lproj/Localizable.strings
+
+[sogo.ui-mainui]
+source_file = UI/MainUI/English.lproj/Localizable.strings
+source_lang = en
+trans.ca = UI/MainUI/Catalan.lproj/Localizable.strings
+trans.cs = UI/MainUI/Czech.lproj/Localizable.strings
+trans.cy = UI/MainUI/Welsh.lproj/Localizable.strings
+trans.de = UI/MainUI/German.lproj/Localizable.strings
+trans.es = UI/MainUI/Spanish.lproj/Localizable.strings
+trans.fr = UI/MainUI/French.lproj/Localizable.strings
+trans.hu = UI/MainUI/Hungarian.lproj/Localizable.strings
+trans.is = UI/MainUI/Icelandic.lproj/Localizable.strings
+trans.it = UI/MainUI/Italian.lproj/Localizable.strings
+trans.nl = UI/MainUI/Dutch.lproj/Localizable.strings
+trans.no = UI/MainUI/Norwegian.lproj/Localizable.strings
+trans.pl = UI/MainUI/Polish.lproj/Localizable.strings
+trans.pt_BR = UI/MainUI/BrazilianPortuguese.lproj/Localizable.strings
+trans.ru = UI/MainUI/Russian.lproj/Localizable.strings
+trans.sv = UI/MainUI/Swedish.lproj/Localizable.strings
+trans.uk = UI/MainUI/Ukrainian.lproj/Localizable.strings
+
+[sogo.ui-common]
+source_file = UI/Common/English.lproj/Localizable.strings
+source_lang = en
+trans.ca = UI/Common/Catalan.lproj/Localizable.strings
+trans.cs = UI/Common/Czech.lproj/Localizable.strings
+trans.cy = UI/Common/Welsh.lproj/Localizable.strings
+trans.de = UI/Common/German.lproj/Localizable.strings
+trans.es = UI/Common/Spanish.lproj/Localizable.strings
+trans.fr = UI/Common/French.lproj/Localizable.strings
+trans.hu = UI/Common/Hungarian.lproj/Localizable.strings
+trans.is = UI/Common/Icelandic.lproj/Localizable.strings
+trans.it = UI/Common/Italian.lproj/Localizable.strings
+trans.nl = UI/Common/Dutch.lproj/Localizable.strings
+trans.no = UI/Common/Norwegian.lproj/Localizable.strings
+trans.pl = UI/Common/Polish.lproj/Localizable.strings
+trans.pt_BR = UI/Common/BrazilianPortuguese.lproj/Localizable.strings
+trans.ru = UI/Common/Russian.lproj/Localizable.strings
+trans.sv = UI/Common/Swedish.lproj/Localizable.strings
+trans.uk = UI/Common/Ukrainian.lproj/Localizable.strings
+
+[sogo.ui-administrationui]
+source_file = UI/AdministrationUI/English.lproj/Localizable.strings
+source_lang = en
+trans.ca = UI/AdministrationUI/Catalan.lproj/Localizable.strings
+trans.cs = UI/AdministrationUI/Czech.lproj/Localizable.strings
+trans.cy = UI/AdministrationUI/Welsh.lproj/Localizable.strings
+trans.de = UI/AdministrationUI/German.lproj/Localizable.strings
+trans.es = UI/AdministrationUI/Spanish.lproj/Localizable.strings
+trans.fr = UI/AdministrationUI/French.lproj/Localizable.strings
+trans.hu = UI/AdministrationUI/Hungarian.lproj/Localizable.strings
+trans.is = UI/AdministrationUI/Icelandic.lproj/Localizable.strings
+trans.it = UI/AdministrationUI/Italian.lproj/Localizable.strings
+trans.nl = UI/AdministrationUI/Dutch.lproj/Localizable.strings
+trans.no = UI/AdministrationUI/Norwegian.lproj/Localizable.strings
+trans.pl = UI/AdministrationUI/Polish.lproj/Localizable.strings
+trans.pt_BR = UI/AdministrationUI/BrazilianPortuguese.lproj/Localizable.strings
+trans.ru = UI/AdministrationUI/Russian.lproj/Localizable.strings
+trans.sv = UI/AdministrationUI/Swedish.lproj/Localizable.strings
+trans.uk = UI/AdministrationUI/Ukrainian.lproj/Localizable.strings
+
+[sogo.soobjects-appointments]
+source_file = SoObjects/Appointments/English.lproj/Localizable.strings
+source_lang = en
+trans.ca = SoObjects/Appointments/Catalan.lproj/Localizable.strings
+trans.cs = SoObjects/Appointments/Czech.lproj/Localizable.strings
+trans.cy = SoObjects/Appointments/Welsh.lproj/Localizable.strings
+trans.de = SoObjects/Appointments/German.lproj/Localizable.strings
+trans.es = SoObjects/Appointments/Spanish.lproj/Localizable.strings
+trans.fr = SoObjects/Appointments/French.lproj/Localizable.strings
+trans.hu = SoObjects/Appointments/Hungarian.lproj/Localizable.strings
+trans.is = SoObjects/Appointments/Icelandic.lproj/Localizable.strings
+trans.it = SoObjects/Appointments/Italian.lproj/Localizable.strings
+trans.nl = SoObjects/Appointments/Dutch.lproj/Localizable.strings
+trans.no = SoObjects/Appointments/Norwegian.lproj/Localizable.strings
+trans.pl = SoObjects/Appointments/Polish.lproj/Localizable.strings
+trans.pt_BR = SoObjects/Appointments/BrazilianPortuguese.lproj/Localizable.strings
+trans.ru = SoObjects/Appointments/Russian.lproj/Localizable.strings
+trans.sv = SoObjects/Appointments/Swedish.lproj/Localizable.strings
+trans.uk = SoObjects/Appointments/Ukrainian.lproj/Localizable.strings
+
+[sogo.soobjects-contacts]
+source_file = SoObjects/Contacts/English.lproj/Localizable.strings
+source_lang = en
+trans.ca = SoObjects/Contacts/Catalan.lproj/Localizable.strings
+trans.cs = SoObjects/Contacts/Czech.lproj/Localizable.strings
+trans.cy = SoObjects/Contacts/Welsh.lproj/Localizable.strings
+trans.de = SoObjects/Contacts/German.lproj/Localizable.strings
+trans.es = SoObjects/Contacts/Spanish.lproj/Localizable.strings
+trans.fr = SoObjects/Contacts/French.lproj/Localizable.strings
+trans.hu = SoObjects/Contacts/Hungarian.lproj/Localizable.strings
+trans.is = SoObjects/Contacts/Icelandic.lproj/Localizable.strings
+trans.it = SoObjects/Contacts/Italian.lproj/Localizable.strings
+trans.nl = SoObjects/Contacts/Dutch.lproj/Localizable.strings
+trans.no = SoObjects/Contacts/Norwegian.lproj/Localizable.strings
+trans.pl = SoObjects/Contacts/Polish.lproj/Localizable.strings
+trans.pt_BR = SoObjects/Contacts/BrazilianPortuguese.lproj/Localizable.strings
+trans.ru = SoObjects/Contacts/Russian.lproj/Localizable.strings
+trans.sv = SoObjects/Contacts/Swedish.lproj/Localizable.strings
+trans.uk = SoObjects/Contacts/Ukrainian.lproj/Localizable.strings
+
+[sogo.ui-mailpartviewers]
+source_file = UI/MailPartViewers/English.lproj/Localizable.strings
+source_lang = en
+trans.ca = UI/MailPartViewers/Catalan.lproj/Localizable.strings
+trans.cs = UI/MailPartViewers/Czech.lproj/Localizable.strings
+trans.cy = UI/MailPartViewers/Welsh.lproj/Localizable.strings
+trans.de = UI/MailPartViewers/German.lproj/Localizable.strings
+trans.es = UI/MailPartViewers/Spanish.lproj/Localizable.strings
+trans.fr = UI/MailPartViewers/French.lproj/Localizable.strings
+trans.hu = UI/MailPartViewers/Hungarian.lproj/Localizable.strings
+trans.is = UI/MailPartViewers/Icelandic.lproj/Localizable.strings
+trans.it = UI/MailPartViewers/Italian.lproj/Localizable.strings
+trans.nl = UI/MailPartViewers/Dutch.lproj/Localizable.strings
+trans.no = UI/MailPartViewers/Norwegian.lproj/Localizable.strings
+trans.pl = UI/MailPartViewers/Polish.lproj/Localizable.strings
+trans.pt_BR = UI/MailPartViewers/BrazilianPortuguese.lproj/Localizable.strings
+trans.ru = UI/MailPartViewers/Russian.lproj/Localizable.strings
+trans.sv = UI/MailPartViewers/Swedish.lproj/Localizable.strings
+trans.uk = UI/MailPartViewers/Ukrainian.lproj/Localizable.strings
+
