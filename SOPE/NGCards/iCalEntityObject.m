@@ -72,54 +72,55 @@
 
 /* accessors */
 
-- (void) setUid: (NSString *) _uid
+- (void) setUid: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"uid"] setValue: 0 to: _uid];
+  [[self uniqueChildWithTag: @"uid"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) uid
 {
-  return [[self uniqueChildWithTag: @"uid"] value: 0];
+  return [[self uniqueChildWithTag: @"uid"] flattenedValuesForKey: @""];
 }
 
 - (void) setSummary: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"summary"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"summary"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) summary
 {
-  return [[self uniqueChildWithTag: @"summary"] value: 0];
+  return [[self uniqueChildWithTag: @"summary"] flattenedValuesForKey: @""];
 }
 
 - (void) setLocation: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"location"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"location"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) location
 {
-  return [[self uniqueChildWithTag: @"location"] value: 0];
+  return [[self uniqueChildWithTag: @"location"] flattenedValuesForKey: @""];
 }
 
+#warning the "comment" accessors are actually "description" accessors, the "comment" ones are missing
 - (void) setComment: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"description"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"description"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) comment
 {
-  return [[self uniqueChildWithTag: @"description"] value: 0];
+  return [[self uniqueChildWithTag: @"description"] flattenedValuesForKey: @""];
 }
 
 - (void) setAccessClass: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"class"] setValue: 0 to: _value];
+  [[self uniqueChildWithTag: @"class"] setSingleValue: _value forKey: @""];
 }
 
 - (NSString *) accessClass
 {
-  return [[self uniqueChildWithTag: @"class"] value: 0];
+  return [[self uniqueChildWithTag: @"class"] flattenedValuesForKey: @""];
 }
 
 - (iCalAccessClass) symbolicAccessClass

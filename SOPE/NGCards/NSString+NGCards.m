@@ -157,8 +157,8 @@
 
   string = [self stringByReplacingString: @"\\"
                  withString: @"\\\\"];
-  //  string = [string stringByReplacingString: @","
-  //                withString: @"\\,"];
+  string = [string stringByReplacingString: @","
+                   withString: @"\\,"];
   //  string = [string stringByReplacingString: @":"
   //                withString: @"\\:"];
   string = [string stringByReplacingString: @";"

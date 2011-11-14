@@ -1,3 +1,37 @@
+2011-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalTrigger.m (-setValue:, value): removed useless accessors.
+
+	* iCalAttachment.m (-setValue:, value): removed useless accessors.
+
+	* iCalRecurrenceRule.m (-setRrule): now makes use of the existing
+	parsing algorithm and get the values from the parsed element.
+
+	* iCalEntityObject.m (-setCategories:): now take an array as
+	parameter.
+
+	* NSString+NGCards.m (-vCardSubvalues): new method adapted to the
+	new CardElement data structure, replaces
+	"vCardSubvaluesWithSeparator:", since we now know how to properly
+	separate or escape elements.
+
+	* CardElement.m (-init): "values" in now an NSMutableDictionary.
+	(-setValues:, -values): new primitive accessors;
+	(-setValues:atIndex:forKey:, -setSingleValue:atIndex:forKey:)
+	(setSingleValue:forKey:): new helper setters.
+	(-flattenedValueAtIndex:forKey:, -flattenedValues:forKey:): new
+	"flattened" helper getters. "Flattening" meaning here that the
+	first and/or second level array are merged with "," and ";", to
+	support clients that badly escape(d) their output for fields
+	taking only one value or a specific set of values.
+	(-valuesForKey:,-valuesAtIndex:forKey:): new helper getters
+
+2011-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NSString+NGCards.m (-escapedForCards): restored the escaping of
+	commas, since they might be used in fields such as
+	COMMENT/DESCRIPTION (iCalendar) or NOTE (vCards)
+
 2011-09-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalToDo.m (-setCompleted:):  (hack) when invoked with a nil
