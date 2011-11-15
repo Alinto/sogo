@@ -6,7 +6,7 @@ BUNDLE_NAME = AdministrationUI
 
 AdministrationUI_PRINCIPAL_CLASS = AdministrationUIProduct
 
-AdministrationUI_LANGUAGES = BrazilianPortuguese Catalan Czech Dutch English French German Hungarian Italian Norwegian Polish Russian Spanish Swedish Ukrainian Welsh
+AdministrationUI_LANGUAGES = BrazilianPortuguese Catalan Czech Dutch English French German Hungarian Italian NorwegianBokmal NorwegianNynorsk Polish Russian Spanish Swedish Ukrainian Welsh
 
 AdministrationUI_OBJC_FILES =		\
 	AdministrationUIProduct.m	\

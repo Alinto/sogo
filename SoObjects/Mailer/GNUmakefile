@@ -62,8 +62,10 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailIcelandicReply.wo \
 	SOGoMailItalianForward.wo \
 	SOGoMailItalianReply.wo \
-	SOGoMailNorwegianForward.wo \
-	SOGoMailNorwegianReply.wo \
+	SOGoMailNorwegianBokmalForward.wo \
+	SOGoMailNorwegianBokmalReply.wo \
+	SOGoMailNorwegianNynorskForward.wo \
+	SOGoMailNorwegianNynorskReply.wo \
 	SOGoMailPolishForward.wo \
 	SOGoMailPolishReply.wo \
 	SOGoMailRussianForward.wo \

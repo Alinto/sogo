@@ -1,0 +1,284 @@
+/* toolbar */
+"Save and Close" = "Lagre og Avslutt";
+"Close" = "Avslutt";
+
+/* tabs */
+"General" = "Generelt";
+"Calendar Options" = "Kalenderinnstillinger";
+"Contacts Options" = "Kontaktinnstillinger";
+"Mail Options" = "E-post innstillinger";
+"IMAP Accounts" = "IMAP kontoer";
+"Vacation" = "Fravær";
+"Forward" = "Videresend";
+"Password" = "Passord";
+"Categories" = "Kategorier";
+"Name" = "Navn";
+"Color" = "Farge";
+"Add" = "Legg til";
+"Delete" = "Fjern";
+
+/* contacts categories */
+"contacts_category_labels" = "Familie, Foretningspartner, Kollega, Konkurrent, Kunde, Leverandør, Presse, Venn, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Aktiver auto-svar ved fravær";
+"Auto reply message :" = "Auto-svar melding:";
+"Email addresses (separated by commas) :" = "E-postadresser (separert med komma):";
+"Add default email addresses" = "Legg til standard e-postadresser";
+"Days between responses :" = "Dager mellom svar:";
+"Do not send responses to mailing lists" = "Ikke send svar til e-postlister";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Skriv melding og angi din e-postadresse som du vil aktivera auto-svar på.";
+
+/* forward messages */
+"Forward incoming messages" = "Videresend innkommende e-post";
+"Keep a copy" = "Behold en kopi";
+"Please specify an address to which you want to forward your messages."
+= "Angi adressen du vil videresende dine meldinger til.";
+
+/* d & t */
+"Current Time Zone :" = "Gjeldende tidssone:";
+"Short Date Format :" = "Kort datoformat:";
+"Long Date Format :" = "Langt datoformat:";
+"Time Format :" = "Tidsformat:";
+
+"default" = "Standard";
+
+"shortDateFmt_0" = "%d-%b-%y";
+
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+
+"shortDateFmt_15" = "";
+   
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+
+/* calendar */
+"Week begins on :" = "Uken begynner med:";
+"Day start time :" = "Dagen begynner kl.:";
+"Day end time :" = "Dagen slutter kl.:";
+"Day start time must be prior to day end time." = "Dagens starttid må være før dagens sluttid.";
+"First week of year :" = "Første uken i året:";
+"Enable reminders for Calendar items" = "Aktivere påminnelser for kalenderelementer";
+"Play a sound when a reminder comes due"
+= "Avspill lyd ved en påminnelse";
+"Default reminder :" = "Standardpåminnelse:";
+
+"firstWeekOfYear_January1" = "Begynner den 1. januar";
+"firstWeekOfYear_First4DayWeek" = "Første 4-dagersuken i året";
+"firstWeekOfYear_FirstFullWeek" = "Første hele uken i året";
+
+/* Default Calendar */
+"Default calendar :" = "Default calendar";
+"selectedCalendar" = "Selected calendar";
+"personalCalendar" = "Personal calendar";
+"firstCalendar" = "First enabled calendar";
+
+"reminderTime_0000" = "0 minutter";
+"reminderTime_0005" = "5 minutter";
+"reminderTime_0010" = "10 minutter";
+"reminderTime_0015" = "15 minutter";
+"reminderTime_0030" = "30 minutter";
+"reminderTime_0100" = "1 time";
+"reminderTime_0200" = "2 timer";
+"reminderTime_0400" = "4 timer";
+"reminderTime_0800" = "8 timer";
+"reminderTime_1200" = "1/2 dag";
+"reminderTime_2400" = "1 dag";
+"reminderTime_4800" = "2 dager";
+
+/* Mailer */
+"Show subscribed mailboxes only" = "Vis bare abonnerte postbokser";
+"Sort messages by threads" = "Sort messages by threads";
+"Check for new mail:" = "Hent ny post:";
+"messagecheck_manually" = "Manuelt";
+"messagecheck_every_minute" = "Hvert minutt";
+"messagecheck_every_2_minutes" = "Hvert 2 minutt";
+"messagecheck_every_5_minutes" = "Hvert 5 minutt";
+"messagecheck_every_10_minutes" = "Hvert 10 minutt";
+"messagecheck_every_20_minutes" = "Hvert 20 minutt";
+"messagecheck_every_30_minutes" = "Hvert 30 minutt";
+"messagecheck_once_per_hour" = "Hver time";
+
+"Forward messages:" = "Videresend melding:";
+"messageforward_inline" = "Innsatt";
+"messageforward_attached" = "Vedlegg";
+
+"replyplacement_above" = "Start svaret ovenfor";
+"replyplacement_below" = "Start svaret under";
+"And place my signature" = "Legg til min signatur";
+"signatureplacement_above" = "over mitt svar";
+"signatureplacement_below" = "under mitt svar";
+"Compose messages in" = "Opprett melding i";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Ren text";
+
+/* IMAP Accounts */
+"New Mail Account" = "Ny epostkonto";
+
+"Server Name:" = "Servernavn:";
+"Port:" = "Port:";
+"User Name:" = "Brukernavn:";
+"Password:" = "Passord:";
+
+"Full Name:" = "Fullt Navn:";
+"Email:" = "E-post:";
+"Signature:" = "Signatur:";
+"(Click to create)" = "(Klikk for å opprette)";
+
+"Signature" = "Signatur";
+"Please enter your signature below:" = "Vennligst fyll ut signatur under:";
+
+/* Additional Parameters */
+"Additional Parameters" = "Øvrige parametre";
+
+/* password */
+"New password:" = "Nytt passord:";
+"Confirmation:" = "Bekreft:";
+"Change" = "Endre";
+
+/* Event+task categories */
+"category_none" = "Ingen";
+"calendar_category_labels" = "Diverse,Favoritter,Fødselsdager,Heligdager,Idéer,Jobb,Konkurranser,Kunder,Ledighet,Leverandører,Møter,Oppfølging,Personlig,Presentasjoner,Reiser,Prosjekt,Status,Telefonsamtaler,Ærend";
+
+/* Default module */
+"Calendar" = "Kalender";
+"Contacts" = "Adressebok";
+"Mail" = "E-post";
+"Last" = "Sist besøkt";
+"Default module :" = "Standardmodul:";
+
+"Language :" = "Språk:";
+"choose" = "Velg ...";
+"Catalan" = "Català";
+"Czech" = "Česky";
+"Dutch" = "Nederlands";
+"English" = "English";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Italian" = "Italiano";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"Spanish" = "Español";
+"Swedish" = "Svenska";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+/* Return receipts */
+"When I receive a request for a return receipt:" = "Når jeg mottar anmodning om en returkvittering:";
+"Never send a return receipt" = "Send aldri en returkvittering";
+"Allow return receipts for some messages" = "Tillat returkvittering for noen meldinger";
+"If I'm not in the To or Cc of the message:" = "Hvis jeg ikke er i Til eller Cc feltet i meldingen:";
+"If the sender is outside my domain:" = "Hvis senderen er utenfor mitt domene:";
+"In all other cases:" = "I alle andre tilfeller:";
+
+"Never send" = "Send aldri";
+"Always send" = "Send alltid";
+"Ask me" = "Spør meg";
+
+/* Return receipts */
+"When I receive a request for a return receipt:" = "Når jeg mottar anmodning om en returkvittering:";
+"Never send a return receipt" = "Send aldri en returkvittering";
+"Allow return receipts for some messages" = "Tillat returkvittering for noen meldinger";
+"If I'm not in the To or Cc of the message:" = "Hvis jeg ikke er i Til eller Cc feltet i meldingen:";
+"If the sender is outside my domain:" = "Hvis senderen er utenfor mitt domene:";
+"In all other cases:" = "I alle andre tilfeller:";
+
+"Never send" = "Send aldri";
+"Always send" = "Send alltid";
+"Ask me" = "Spør meg";
+
+/* Filters - UIxPreferences */
+"Filters" = "Filtre";
+"Active" = "Aktiv";
+"Move Up" = "Flytt opp";
+"Move Down" = "Flytt ned";
+
+/* Filters - UIxFilterEditor */
+"Filter name:" = "Filternavn:";
+"For incoming messages that" = "For innkommende meldinger som";
+"match all of the following rules:" = "samsvarer med alt av følgende regler:";
+"match any of the following rules:" = "samsvarer med en av følgende regler:";
+"match all messages" = "samsvarer med alle meldinger";
+"Perform these actions:" = "Utfør disse handlingene:";
+
+"Subject" = "Emne";
+"From" = "Fra";
+"To" = "Til";
+"Cc" = "Kopi";
+"To or Cc" = "Til eller Kopi";
+"Size (Kb)" = "Størrelse (Kb)";
+"Header" = "Tittel";
+"Flag the message with:" = "Flagg meldingen med:";
+"Discard the message" = "Forkast meldingen";
+"File the message in:" = "Fil meldingen i:";
+"Keep the message" = "Behold meldingen";
+"Forward the message to:" = "Videresend melding til:";
+"Send a reject message:" = "Send en avvisningsmelding:";
+"Send a vacation message" = "Send en feriemelding";
+"Stop processing filter rules" = "Stopp prosessering av filterregler";
+
+"is under" = "er under";
+"is over" = "er over";
+"is" = "er";
+"is not" = "er ikke";
+"contains" = "inneholder";
+"does not contain" = "inneholder ikker";
+"matches" = "samsvarer";
+"does not match" = "samsvarer ikke";
+"matches regex" = "samsvarer regex";
+"does not match regex" = "samvarer ikke regex";
+
+"Seen" = "Sett";
+"Deleted" = "Slettet";
+"Answered" = "Svart";
+"Flagged" = "Flagget";
+"Junk" = "Søppel";
+"Not Junk" = "Ikke søppel";
+"Label 1" = "Etikett 1";
+"Label 2" = "Etikett 2";
+"Label 3" = "Etikett 3";
+"Label 4" = "Etikett 4";
+"Label 5" = "Etikett 5";
+
+"Password must not be empty." = "Le mot de passe ne doit pas être vide.";
+"The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
+"Password change failed" = "Échec au changement";
+"Password change failed - Permission denied" = "Échec au changement - mauvaises permissions";
+"Password change failed - Insufficient password quality" = "Échec au changement - qualité insuffisante";
+"Password change failed - Password is too short" = "Échec au changement - mot de passe trop court";
+"Password change failed - Password is too young" = "Échec au changement - mot de passe trop récent";
+"Password change failed - Password is in history" = "Échec au changement - mot de passe dans l'historique";
+"Unhandled policy error: %{0}" = "Erreur inconnue pour le ppolicy: %{0}";
+"Unhandled error response" = "Erreur inconnue";
+"Password change is not supported." = "Changement de mot de passe non-supporté.";
+"Unhandled HTTP error code: %{0}" = "Code HTTP non-géré: %{0}";
+"New password:" = "Nytt passord:";
+"Confirmation:" = "Bekreft:";
