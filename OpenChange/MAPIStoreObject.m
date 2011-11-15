@@ -235,11 +235,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return properties;
 }
 
-- (void) resetProperties
-{
-  [properties removeAllObjects];
-}
-
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag
            inMemCtx: (TALLOC_CTX *) memCtx
@@ -451,13 +446,17 @@ static Class NSExceptionK, MAPIStoreFolderK;
 {
   struct SPropValue *cValue;
   NSUInteger counter;
+  NSMutableDictionary *newProperties;
 
+  newProperties = [NSMutableDictionary dictionaryWithCapacity: aRow->cValues];
   for (counter = 0; counter < aRow->cValues; counter++)
     {
       cValue = aRow->lpProps + counter;
-      [properties setObject: NSObjectFromSPropValue (cValue)
-                     forKey: MAPIPropertyKey (cValue->ulPropTag)];
+      [newProperties setObject: NSObjectFromSPropValue (cValue)
+                        forKey: MAPIPropertyKey (cValue->ulPropTag)];
     }
+
+  [self addProperties: newProperties];
 
   return MAPISTORE_SUCCESS;
 }

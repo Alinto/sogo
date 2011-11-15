@@ -53,6 +53,7 @@
 #include <gen_ndr/exchange.h>
 #include <gen_ndr/property.h>
 #include <gen_ndr/ndr_property.h>
+#include <util/attr.h>
 #include <libmapi/libmapi.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
@@ -628,20 +629,6 @@ static NSCharacterSet *hexCharacterSet = nil;
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPrBody: (void **) data
-         inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-
-  stringValue = [event comment];
-  if (!stringValue)
-    stringValue = @"";
-
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
 - (int) getPrStartDate: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -1034,6 +1021,22 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPrBody: (void **) data
+         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+  NSString *stringValue;
+
+  /* FIXME: there is a confusion in NGCards around "comment" and "description" */
+  stringValue = [event comment];
+  if ([stringValue length] > 0)
+    *data = [stringValue asUnicodeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
 - (int) getPidLidIsRecurring: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -1402,7 +1405,8 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
         {
           startDate = [event startDate];
           relation = [[trigger relationType] lowercaseString];
-          interval = [[trigger value] durationAsTimeInterval];
+          interval = [[trigger flattenedValuesForKey: @""]
+                       durationAsTimeInterval];
           if ([relation isEqualToString: @"end"])
             relationDate = [event endDate];
           else

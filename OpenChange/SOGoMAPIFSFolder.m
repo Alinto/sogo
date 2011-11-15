@@ -35,6 +35,8 @@
 #import "SOGoMAPIFSFolder.h"
 
 #undef DEBUG
+#include <talloc.h>
+#include <util/time.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 #include <libmapiproxy.h>

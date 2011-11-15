@@ -51,6 +51,7 @@
 #include <gen_ndr/exchange.h>
 
 #undef DEBUG
+#include <util/attr.h>
 #include <libmapiproxy.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_nameid.h>
@@ -898,33 +899,28 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) addPropertiesFromRow: (struct SRow *) aRow
+- (void) addProperties: (NSDictionary *) newProperties
 {
   static enum MAPITAGS bannedProps[] = { PR_MID, PR_FID, PR_PARENT_FID,
                                          PR_SOURCE_KEY, PR_PARENT_SOURCE_KEY,
                                          PR_CHANGE_KEY, 0x00000000 };
   enum MAPITAGS *currentProp;
-  int rc;
-
-  rc = [super addPropertiesFromRow: aRow];
+  NSMutableDictionary *propsCopy;
 
   /* TODO: this should no longer be required once mapistore v2 API is in
      place, when we can then do this from -dealloc below */
-  if ([properties count] > 0)
-    {
-      currentProp = bannedProps;
-      while (*currentProp)
-        {
-          [properties removeObjectForKey: MAPIPropertyKey (*currentProp)];
-          currentProp++;
-        }
 
-      [propsMessage appendProperties: properties];
-      [propsMessage save];
-      [self resetProperties];
+  propsCopy = [newProperties mutableCopy];
+  currentProp = bannedProps;
+  while (*currentProp)
+    {
+      [propsCopy removeObjectForKey: MAPIPropertyKey (*currentProp)];
+      currentProp++;
     }
 
-  return rc;
+  [propsMessage appendProperties: propsCopy];
+  [propsMessage save];
+  [propsCopy release];
 }
 
 - (void) dealloc

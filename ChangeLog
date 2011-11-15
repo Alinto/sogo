@@ -1,18 +1,87 @@
 2011-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsMessage.m (-getPrBody:inMemCtx:):
+	same as below.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m (-getPrBody:inMemCtx:):
+	removed parsing hack since things are now done properly from
+	NGCards.
+
 	* Tests/Unit/TestVersit.m (-test_rendering, -test_parsing):
 	adapted to new NGCards data structure and improved to test further
 	important use cases.
 
 2011-11-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-       * Tests/Unit/TestVersit.m: new test module for versit parsing and
-       outputting.
+	* Tests/Unit/TestVersit.m: new test module for versit parsing and
+	outputting.
+
+2011-11-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): set the DESCRIPTION
+	field to the value of PR_BODY_UNICODE or, a textual version of
+	PR_HTML. COMMENT would be nice later.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m (-getPrBody:inMemCtx:):
+	make use of -[NSString asCardAttributeValues].
+
+	* OpenChange/MAPIStoreContactsMessage.m (-save): set the NOTE
+	field to the value of PR_BODY_UNICODE or, a textual version of
+	PR_HTML.
+
+	* OpenChange/MAPIStoreMessage.m (-addProperties): intercept
+	PR_RTF_COMPRESSED attributes and convert them automatically to a
+	PR_HTML attribute.
+
+	* OpenChange/MAPIStoreVolatileMessage.m (-addProperties:):
+	transfer the content of the "properties" ivar instead of the
+	"newProperties" parameter, so as to benefit from treatment that
+	could have happened in parent classes.
+
+	* OpenChange/MAPIStoreMailVolatileMessage.m
+	(_generateMailDataWithBcc:): don't write the resulting mail body
+	to /tmp/mimegen.eml.
 
 2011-11-09  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SOGoRootPage.js (onLoginClick): don't
 	assume that the checkbox rememberLogin is always part of the template.
+
+2011-11-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreRecurrenceUtils.m
+	(-fillRecurrencePattern:withStartDate:andEndDate:): fixed a crash
+	occurring when no byday mask was specified. We also force a value
+	for the monthday in the case of a yearly event without a proper
+	one.
+
+2011-11-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreFolder.m (-addProperties:): we now override
+	this method instead of -addPropertiesFromRow:. Also, invoking
+	resetCache is no longer required since the "properties" ivar is
+	no longer used in this class.
+
+	* OpenChange/MAPIStoreObject.m (-addPropertiesFromRow:): now
+	invokes [self addProperties:] to modify the "properties" ivar,
+	instead of doing it directly. This enables subclasses to only need
+	overriding -addProperties:.
+	(-resetProperties): removed useless method.
+
+	* OpenChange/MAPIStoreVolatileMessage.m (-addPropertiesFromRow:):
+	removed obsolete overloading of method.
+
+2011-11-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMessage.m (-setReadFlag:): make overrides
+	optional.
+
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): handle all day
+	events based on the value of PidLidAppointmentSubType.
+	Don't add the timezone component to the vCalendar in that case.
+	Take PidLidAppointmentStateFlags into account before building the
+	list of attendees. Take the organizer passed in the recipients
+	into account when specified.
 
 2011-11-01  Francis Lachapelle  <flachapelle@inverse.ca>
 
@@ -20,6 +89,9 @@
 	"normal-person" that was replaced by "normal-user".
 
 2011-11-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): added work-around
+	for setting of organizer as an attendee record.
 
 	* OpenChange/MAPIStoreMailMessage.m (-setReadFlag:): implemented
 	basic method, only dealing with actual setting or unsetting of

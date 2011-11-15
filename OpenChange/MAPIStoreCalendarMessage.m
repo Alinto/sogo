@@ -25,6 +25,7 @@
    - take the tz definitions from Outlook */
 
 #include <talloc.h>
+#include <util/attr.h>
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
@@ -45,6 +46,7 @@
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
+#import <Mailer/NSString+Mail.h>
 
 #import "MAPIStoreAppointmentWrapper.h"
 #import "MAPIStoreCalendarAttachment.h"
@@ -238,6 +240,12 @@
                inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [[self appointmentWrapper] getPrImportance: data inMemCtx: memCtx];
+}
+
+- (int) getPrBody: (void **) data
+         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPrBody: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidIsRecurring: (void **) data
@@ -599,7 +607,9 @@
           [alarm setAction: @"DISPLAY"];
           trigger = [iCalTrigger elementWithTag: @"trigger"];
           [trigger setValueType: @"DURATION"];
-          [trigger setValue: [NSString stringWithFormat: @"-PT%@M", delta]];
+          [trigger
+            setSingleValue: [NSString stringWithFormat: @"-PT%@M", delta]
+                    forKey: @""];
           [alarm setTrigger: trigger];
           [newEvent addToAlarms: alarm];
           [alarm release];
@@ -610,6 +620,7 @@
 - (void) save
 {
   iCalCalendar *vCalendar;
+  BOOL isAllDay;
   iCalDateTime *start, *end;
   iCalTimeZone *tz;
   NSCalendarDate *now;
@@ -711,9 +722,16 @@
       if (value)
         [newEvent setLocation: value];
 
-      tzName = [[self ownerTimeZone] name];
-      tz = [iCalTimeZone timeZoneForName: tzName];
-      [vCalendar addTimeZone: tz];
+      isAllDay = [[properties
+                    objectForKey: MAPIPropertyKey (PidLidAppointmentSubType)]
+                   boolValue];
+
+      if (!isAllDay)
+        {
+          tzName = [[self ownerTimeZone] name];
+          tz = [iCalTimeZone timeZoneForName: tzName];
+          [vCalendar addTimeZone: tz];
+        }
 
       // start
       value = [properties objectForKey: MAPIPropertyKey (PR_START_DATE)];
@@ -723,8 +741,13 @@
       if (value)
         {
           start = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtstart"];
-          [start setTimeZone: tz];
-          [start setDateTime: value];
+          if (isAllDay)
+            [start setDate: value];
+          else
+            {
+              [start setTimeZone: tz];
+              [start setDateTime: value];
+            }
         }
 
       /* end */
@@ -734,8 +757,13 @@
       if (value)
         {
           end = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtend"];
-          [end setTimeZone: tz];
-          [end setDateTime: value];
+          if (isAllDay)
+            [end setDate: value];
+          else
+            {
+              [end setTimeZone: tz];
+              [end setDateTime: value];
+            }
         }
 
       /* priority */
@@ -778,6 +806,22 @@
 	      [newEvent setTransparency: @"OPAQUE"];
 	    }
 	}
+
+      /* Comment */
+      value = [properties objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
+      if (!value)
+        {
+          value = [properties objectForKey: MAPIPropertyKey (PR_HTML)];
+          if (value)
+            {
+              value = [[NSString alloc] initWithData: value
+                                        encoding: NSUTF8StringEncoding];
+              [value autorelease];
+              value = [value htmlToText];
+            }
+        }
+      if (value)
+        [newEvent setComment: value];
       
       /* recurrence */
       value = [properties
@@ -793,75 +837,101 @@
       /* alarm */
       [self _setupAlarmDataInEvent: newEvent];
 
-      // Organizer
-      value = [properties objectForKey: @"recipients"];
-      if (value)
+      if ([[properties objectForKey: MAPIPropertyKey (PidLidAppointmentStateFlags)] intValue]
+          != 0)
         {
-          NSArray *recipients;
-          NSDictionary *dict;
-          iCalPerson *person;
-          iCalPersonPartStat newPartStat;
-          NSNumber *flags, *trackStatus;
-          int i;
-
-          /* We must set the organizer preliminarily here because, unlike what
-             the doc states, Outlook does not always pass the real organizer
-             in the recipients list. */
-          dict = [activeUser primaryIdentity];
-          person = [iCalPerson new];
-          [person setCn: [dict objectForKey: @"fullName"]];
-          [person setEmail: [dict objectForKey: @"email"]];
-          [newEvent setOrganizer: person];
-          [person release];
-
-          recipients = [value objectForKey: @"to"];
-      
-          for (i = 0; i < [recipients count]; i++)
+          // Organizer
+          value = [properties objectForKey: @"recipients"];
+          if (value)
             {
-              dict = [recipients objectAtIndex: i];
-              flags = [dict objectForKey: MAPIPropertyKey (PR_RECIPIENT_FLAGS)];
-              if (!flags)
-                {
-                  [self logWithFormat: @"no recipient flags specified"];
-                  break;
-                }
+              NSArray *recipients;
+              NSDictionary *dict;
+              NSString *orgEmail, *attEmail;
+              iCalPerson *person;
+              iCalPersonPartStat newPartStat;
+              NSNumber *flags, *trackStatus;
+              int i, effective;
 
+              /* We must set the organizer preliminarily here because, unlike what
+                 the doc states, Outlook does not always pass the real organizer
+                 in the recipients list. */
+              dict = [activeUser primaryIdentity];
               person = [iCalPerson new];
               [person setCn: [dict objectForKey: @"fullName"]];
-              [person setEmail: [dict objectForKey: @"email"]];
+              orgEmail = [dict objectForKey: @"email"];
+              [person setEmail: orgEmail];
+              [newEvent setOrganizer: person];
+              [person release];
 
-              if (([flags unsignedIntValue] & 0x0002)) /* recipOrganizer */
-                [newEvent setOrganizer: person];
-              else
+              recipients = [value objectForKey: @"to"];
+              effective = 0;
+              for (i = 0; i < [recipients count]; i++)
                 {
-                  trackStatus
-                    = [dict
-                        objectForKey: MAPIPropertyKey (PR_RECIPIENT_TRACKSTATUS)];
+                  dict = [recipients objectAtIndex: i];
 
-                  /* FIXME: we should provide a data converter between OL
-                     partstats and SOGo */
-                  switch ([trackStatus unsignedIntValue])
+                  flags = [dict objectForKey: MAPIPropertyKey (PR_RECIPIENT_FLAGS)];
+                  if (!flags)
                     {
-                    case 0x02: /* respTentative */
-                      newPartStat = iCalPersonPartStatTentative;
-                      break;
-                    case 0x03: /* respAccepted */
-                      newPartStat = iCalPersonPartStatAccepted;
-                      break;
-                    case 0x04: /* respDeclined */
-                      newPartStat = iCalPersonPartStatDeclined;
-                      break;
-                    default:
-                      newPartStat = iCalPersonPartStatNeedsAction;
+                      [self logWithFormat:
+                              @"no recipient flags specified: skipping recipient"];
+                      continue;
                     }
 
-                  [person setParticipationStatus: newPartStat];
-                  [person setRsvp: @"TRUE"];
-                  [person setRole: @"REQ-PARTICIPANT"];
-                  [newEvent addToAttendees: person];
+                  person = [iCalPerson new];
+                  [person setCn: [dict objectForKey: @"fullName"]];
+                  attEmail = [dict objectForKey: @"email"];
+                  [person setEmail: attEmail];
+
+                  if (([flags unsignedIntValue] & 0x0002)) /* recipOrganizer */
+                    [newEvent setOrganizer: person];
+                  else
+                    {
+                      /* Work-around: it happens that Outlook still passes the
+                         organizer as a recipient, maybe because of a feature
+                         documented in a pre-mesozoic PDF still buried in a
+                         cavern... In that case we remove it, and we keep the
+                         number of effective recipients in "effective". If the
+                         total is 0, we remove the "ORGANIZER" too. */
+                      if ([attEmail isEqualToString: orgEmail])
+                        {
+                          [self logWithFormat:
+                                  @"avoiding setting organizer as recipient"];
+                          continue;
+                        }
+
+                      trackStatus
+                        = [dict
+                            objectForKey: MAPIPropertyKey (PR_RECIPIENT_TRACKSTATUS)];
+
+                      /* FIXME: we should provide a data converter between OL
+                         partstats and SOGo */
+                      switch ([trackStatus unsignedIntValue])
+                        {
+                        case 0x02: /* respTentative */
+                          newPartStat = iCalPersonPartStatTentative;
+                          break;
+                        case 0x03: /* respAccepted */
+                          newPartStat = iCalPersonPartStatAccepted;
+                          break;
+                        case 0x04: /* respDeclined */
+                          newPartStat = iCalPersonPartStatDeclined;
+                          break;
+                        default:
+                          newPartStat = iCalPersonPartStatNeedsAction;
+                        }
+
+                      [person setParticipationStatus: newPartStat];
+                      [person setRsvp: @"TRUE"];
+                      [person setRole: @"REQ-PARTICIPANT"];
+                      [newEvent addToAttendees: person];
+                      effective++;
+                    }
+
+                  [person release];
                 }
 
-              [person release];
+              if (effective == 0) /* See work-around above */
+                [newEvent setOrganizer: nil];
             }
         }
 

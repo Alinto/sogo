@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSBundle.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
@@ -42,12 +43,16 @@
 
 #import "MAPIStoreMessage.h"
 
+#include <unrtf.h>
+
 #undef DEBUG
 #include <stdbool.h>
 #include <gen_ndr/exchange.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 #include <mapistore/mapistore_nameid.h>
+
+static NSString *resourcesDir = nil;
 
 NSData *
 MAPIStoreInternalEntryId (NSString *username)
@@ -147,6 +152,64 @@ MAPIStoreExternalEntryId (NSString *cn, NSString *email)
   return entryId;
 }
 
+/* rtf conversion via unrtf */
+static int
+unrtf_data_output (void *data, const char *str, size_t str_len)
+{
+  NSMutableData *rtfData = data;
+
+  [rtfData appendBytes: str length: str_len];
+
+  return str_len;
+}
+
+static NSData *
+uncompressRTF (NSData *compressedRTF)
+{
+  NSData *rtfData = nil;
+  DATA_BLOB *rtf;
+  TALLOC_CTX *mem_ctx;
+
+  mem_ctx = talloc_zero (NULL, TALLOC_CTX);
+  rtf = talloc_zero (mem_ctx, DATA_BLOB);
+
+  if (uncompress_rtf (mem_ctx,
+                      (uint8_t *) [compressedRTF bytes], [compressedRTF length],
+                      rtf)
+      == MAPI_E_SUCCESS)
+    rtfData = [NSData dataWithBytes: rtf->data length: rtf->length];
+
+  talloc_free (mem_ctx);
+
+  return rtfData;
+}
+
+static NSData *
+rtf2html (NSData *compressedRTF)
+{
+  NSData *rtf;
+  NSMutableData *html = nil;
+  int rc;
+  struct unRTFOptions unrtfOptions;
+
+  rtf = uncompressRTF (compressedRTF);
+  if (rtf)
+    {
+      html = [NSMutableData data];
+      memset (&unrtfOptions, 0, sizeof (struct unRTFOptions));
+      unrtf_set_output_device (&unrtfOptions, unrtf_data_output, html);
+      unrtfOptions.config_directory = [resourcesDir UTF8String];
+      unrtfOptions.output_format = "html";
+      unrtfOptions.nopict_mode = YES;
+      rc = unrtf_convert_from_string (&unrtfOptions,
+                                      [rtf bytes], [rtf length]);
+      if (!rc)
+        html = nil;
+    }
+
+  return html;
+}
+
 @interface SOGoObject (MAPIStoreProtocol)
 
 - (NSString *) davEntityTag;
@@ -155,6 +218,15 @@ MAPIStoreExternalEntryId (NSString *cn, NSString *email)
 @end
 
 @implementation MAPIStoreMessage
+
++ (void) initialize
+{
+  if (!resourcesDir)
+    {
+      resourcesDir = [[NSBundle bundleForClass: self] resourcePath];
+      [resourcesDir retain];
+    }
+}
 
 - (id) init
 {
@@ -302,6 +374,38 @@ MAPIStoreExternalEntryId (NSString *cn, NSString *email)
   [self addProperties: recipientProperties];
 
   return MAPISTORE_SUCCESS;
+}
+
+- (void) addProperties: (NSDictionary *) newNewProperties
+{
+  NSData *htmlData, *rtfData;
+  static NSNumber *htmlKey = nil, *rtfKey = nil;
+
+  [super addProperties: newNewProperties];
+
+  if (!htmlKey)
+    {
+      htmlKey = MAPIPropertyKey (PR_HTML);
+      [htmlKey retain];
+    }
+
+  if (!rtfKey)
+    {
+      rtfKey = MAPIPropertyKey (PR_RTF_COMPRESSED);
+      [rtfKey retain];
+    }
+
+  if (![properties objectForKey: htmlKey])
+    {
+      rtfData = [properties objectForKey: rtfKey];
+      if (rtfData)
+        {
+          htmlData = rtf2html (rtfData);
+          [properties setObject: htmlData forKey: htmlKey];
+          [properties removeObjectForKey: rtfKey];
+          [properties removeObjectForKey: MAPIPropertyKey (PR_RTF_IN_SYNC)];
+        }
+    }
 }
 
 - (MAPIStoreAttachment *) createAttachment
@@ -460,7 +564,7 @@ MAPIStoreExternalEntryId (NSString *cn, NSString *email)
     [[containerTables objectAtIndex: count]
               notifyChangesForChild: self];
   [self setIsNew: NO];
-  [self resetProperties];
+  [properties removeAllObjects];
   [container cleanupCaches];
 
   return MAPISTORE_SUCCESS;
@@ -744,7 +848,7 @@ MAPIStoreExternalEntryId (NSString *cn, NSString *email)
 
 - (int) setReadFlag: (uint8_t) flag
 {
-  [self subclassResponsibility: _cmd];
+  // [self subclassResponsibility: _cmd];
 
   return MAPISTORE_ERROR;
 }

@@ -26,6 +26,8 @@
 #import "MAPIStoreFAIMessage.h"
 
 #undef DEBUG
+#include <talloc.h>
+#include <util/time.h>
 #include <mapistore/mapistore.h>
 
 @implementation MAPIStoreFAIMessage
