@@ -21,7 +21,7 @@ function initLogin() {
                 event.stop(); });
         var aboutClose = $("aboutClose");
         aboutClose.observe("click", function(event) {
-                Effect.SlideUp("aboutBox", { duration: 2.0, queue: { position: 'end', scope: 'aboutscope', limit: 2 } });
+                Effect.SlideUp("aboutBox", { duration: 1.0, queue: { position: 'end', scope: 'aboutscope', limit: 2 } });
                 event.stop() });
     }
 

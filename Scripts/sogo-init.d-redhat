@@ -70,7 +70,7 @@ checkDir /var/log/$NAME
 . /etc/rc.d/init.d/functions
 if [ -z "$GNUSTEP_SYSTEM_ROOT" ]
 then
-  . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
+  . /usr/share/GNUstep/Makefiles/GNUstep.sh
 fi
 
 DAEMON_OPTS="-WOWorkersCount $PREFORK -WOPidFile $PIDFILE -WOLogFile $LOGFILE"
