@@ -629,7 +629,7 @@ static NSString *sieveScriptName = @"sogo";
   NGSieveClient *client;
   NSString *filterScript, *v, *sieveServer;
   int sievePort;
-  BOOL b;
+  BOOL b, connected;
 
   dd = [user domainDefaults];
   if (!([dd sieveScriptsEnabled] || [dd vacationEnabled] || [dd forwardEnabled]))
@@ -637,6 +637,8 @@ static NSString *sieveScriptName = @"sogo";
 
   req = [NSMutableArray arrayWithCapacity: 15];
   ud = [user userDefaults];
+
+  connected = YES;
   b = NO;
 
   script = [NSMutableString string];
@@ -793,7 +795,23 @@ static NSString *sieveScriptName = @"sogo";
     [client closeConnection];
     return NO;
   }
-  result = [client login: theLogin  authname: theAuthName  password: thePassword];
+
+  NS_DURING
+    {
+      result = [client login: theLogin  authname: theAuthName  password: thePassword];
+    }
+  NS_HANDLER
+    {
+      connected = NO;
+    }
+  NS_ENDHANDLER
+
+  if (!connected)
+    {
+      NSLog(@"Sieve connection failed on %@", [address description]);
+      return NO;
+    }
+
   if (![[result valueForKey:@"result"] boolValue]) {
     NSLog(@"failure. Attempting with a renewed password (no authname supported)");
     thePassword = [theAccount imap4PasswordRenewed: YES];

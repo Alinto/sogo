@@ -1,3 +1,8 @@
+2011-11-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	*  SoObjects/SOGo/SOGoSieveManager.m (-updateFiltersForLogin:...)
+	We now handle connection exceptions to avoid crashing sogod.
+
 2011-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContactsMessage.m (-getPrBody:inMemCtx:):
