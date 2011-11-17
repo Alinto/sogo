@@ -1,0 +1,17 @@
+To updated the timezone files:
+
+1- get the vzic or tzurl tool from http://code.google.com/p/tzurl/source/checkout and compile it
+
+2- get the zone files, for example:
+  
+  mkdir /tmp/zones
+  cd /tmp/zones
+  wget ftp://munnari.oz.au/pub/oldtz/tzdata2011n.tar.gz
+  tar -zxvf tzdata2011n.tar.gz
+
+3- run the conversion tool and adjust the PRODID
+
+  vzic --olson-dir /tmp/zones/ --output-dir SOGo/SOPE/NGCards/TimeZones/
+  cd SOGo/SOPE/NGCards/TimeZones/
+  rm -f zones.h zones.tab
+  find . -name "*.ics" | xargs -ti sed -i s/'tzurl.org\/\/NONSGML Olson 2011k'/'Inverse inc.\/\/NONSGML SOGo'/ {}
