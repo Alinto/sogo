@@ -1986,7 +1986,7 @@ static NSArray *childRecordFields = nil;
 
   [r appendFormat: @"<D:response><D:href>"];
   [r appendString: baseURL];
-  [r appendString: [object objectForKey: @"c_name"]];
+  [r appendString: [[object objectForKey: @"c_name"] stringByEscapingURL]];
   [r appendString: @"</D:href>"];
 
 //   NSLog (@"(appendPropstats...): %@", [NSDate date]);
@@ -2032,7 +2032,7 @@ static NSArray *childRecordFields = nil;
   for (count = 0; count < max; count++)
     {
       element = [refs objectAtIndex: count];
-      currentURL = [[element firstChild] nodeValue];
+      currentURL = [[[element firstChild] nodeValue] stringByUnescapingURL];
       [urls addObject: currentURL];
     }
 
