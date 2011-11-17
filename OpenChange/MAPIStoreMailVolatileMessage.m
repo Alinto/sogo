@@ -249,9 +249,12 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   NSData *entryId;
   NSDictionary *allRecipients, *dict, *contactInfos;
   SOGoUserManager *mgr;
+  struct ldb_context *samCtx;
   struct mapistore_message *msgData;
   struct mapistore_message_recipient *recipient;
   enum ulRecipClass type;
+
+  samCtx = [[self context] connectionInfo]->sam_ctx;
 
   [super getMessageData: &msgData inMemCtx: memCtx];
 
@@ -295,7 +298,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
             {
               username = [contactInfos objectForKey: @"c_uid"];
               recipient->username = [username asUnicodeInMemCtx: msgData];
-              entryId = MAPIStoreInternalEntryId (username);
+              entryId = MAPIStoreInternalEntryId (samCtx, username);
             }
           else
             {

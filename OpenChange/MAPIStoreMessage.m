@@ -55,14 +55,18 @@
 static NSString *resourcesDir = nil;
 
 NSData *
-MAPIStoreInternalEntryId (NSString *username)
+MAPIStoreInternalEntryId (struct ldb_context *samCtx, NSString *username)
 {
-  NSMutableData *entryId;
-  static uint8_t providerUid[] = { 0xdc, 0xa7, 0x40, 0xc8,
-                                   0xc0, 0x42, 0x10, 0x1a,
-                                   0xb4, 0xb9, 0x08, 0x00,
-                                   0x2b, 0x2f, 0xe1, 0x82 };
-  NSString *x500dn;
+  NSMutableData *entryId = nil;
+  TALLOC_CTX *memCtx;
+  struct ldb_result *res = NULL;
+  const char * const attrs[] = { "legacyExchangeDN", NULL };
+  const char *legacyDn;
+  int ret;
+  static const uint8_t const providerUid[] = { 0xdc, 0xa7, 0x40, 0xc8,
+                                               0xc0, 0x42, 0x10, 0x1a,
+                                               0xb4, 0xb9, 0x08, 0x00,
+                                               0x2b, 0x2f, 0xe1, 0x82 };
 
   /* structure:
      flags: 32
@@ -71,20 +75,28 @@ MAPIStoreInternalEntryId (NSString *username)
      type: 32
      X500DN: variable */
 
-  entryId = [NSMutableData dataWithCapacity: 256];
-  [entryId appendUInt32: 0]; // flags
-  [entryId appendBytes: providerUid length: 16]; // provideruid
-  [entryId appendUInt32: 1]; // version
-  [entryId appendUInt32: 0]; // type (local mail user)
+  memCtx = talloc_zero(NULL, TALLOC_CTX);
 
-  /* X500DN */
-  /* FIXME: the DN will likely work on DEMO installations for now but we
-     really should get the dn prefix from the server */
-  x500dn = [NSString stringWithFormat: @"/O=FIRST ORGANIZATION"
-                     @"/OU=FIRST ADMINISTRATIVE GROUP"
-                     @"/CN=RECIPIENTS/CN=%@", username];
-  [entryId appendData: [x500dn dataUsingEncoding: NSISOLatin1StringEncoding]];
-  [entryId appendUInt8: 0];
+  /* Search mapistoreURI given partial URI */
+  ret = ldb_search (samCtx, memCtx, &res, ldb_get_default_basedn(samCtx),
+                    LDB_SCOPE_SUBTREE, attrs,
+                    "(&(objectClass=user)(sAMAccountName=%s))",
+                    [username UTF8String]);
+  if (ret == LDB_SUCCESS && res->count == 1)
+    {
+      legacyDn = ldb_msg_find_attr_as_string (res->msgs[0], attrs[0], NULL);
+      if (legacyDn)
+        {
+          entryId = [NSMutableData dataWithCapacity: 256];
+          [entryId appendUInt32: 0]; // flags
+          [entryId appendBytes: providerUid length: 16]; // provideruid
+          [entryId appendUInt32: 1]; // version
+          [entryId appendUInt32: 0]; // type (local mail user)
+          [entryId appendBytes: legacyDn length: strlen (legacyDn) + 1]; // x500dn
+        }
+    }
+ 
+  talloc_free(memCtx);
 
   return entryId;
 }

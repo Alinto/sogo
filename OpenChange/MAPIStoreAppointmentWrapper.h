@@ -39,6 +39,7 @@ extern NSTimeZone *utcTZ;
 
 @interface MAPIStoreAppointmentWrapper : NSObject
 {
+  struct mapistore_connection_info *connInfo;
   iCalCalendar *calendar;
   iCalEvent *event;
   NSTimeZone *timeZone;
@@ -56,11 +57,13 @@ extern NSTimeZone *utcTZ;
 + (id) wrapperWithICalEvent: (iCalEvent *) newEvent
                     andUser: (SOGoUser *) newUser
              andSenderEmail: (NSString *) newSenderEmail
-                 inTimeZone: (NSTimeZone *) newTimeZone;
+                 inTimeZone: (NSTimeZone *) newTimeZone
+         withConnectionInfo: (struct mapistore_connection_info *) newConnInfo;
 - (id) initWithICalEvent: (iCalEvent *) newEvent
                  andUser: (SOGoUser *) newUser
           andSenderEmail: (NSString *) newSenderEmail
-              inTimeZone: (NSTimeZone *) newTimeZone;
+              inTimeZone: (NSTimeZone *) newTimeZone
+      withConnectionInfo: (struct mapistore_connection_info *) newConnInfo;
 
 /* getters */
 - (void) fillMessageData: (struct mapistore_message *) dataPtr

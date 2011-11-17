@@ -35,9 +35,11 @@
 @class MAPIStoreAttachmentTable;
 @class MAPIStoreFolder;
 
+struct ldb_context;
+
 #import "MAPIStoreObject.h"
 
-extern NSData *MAPIStoreInternalEntryId (NSString *username);
+extern NSData *MAPIStoreInternalEntryId (struct ldb_context *, NSString *username);
 extern NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email);
 
 @interface MAPIStoreMessage : MAPIStoreObject

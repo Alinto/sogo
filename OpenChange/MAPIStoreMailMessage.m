@@ -263,6 +263,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   iCalCalendar *calendar;
   iCalEvent *event;
   NSString *stringValue, *senderEmail;
+  MAPIStoreContext *context;
 
   if (!appointmentWrapper)
     {
@@ -280,11 +281,13 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
             senderEmail = [[from objectAtIndex: 0] email];
           else
             senderEmail = nil;
+          context = [self context];
           appointmentWrapper = [MAPIStoreAppointmentWrapper
                                  wrapperWithICalEvent: event
-                                              andUser: [[self context] activeUser]
+                                              andUser: [context activeUser]
                                        andSenderEmail: senderEmail
-                                           inTimeZone: [self ownerTimeZone]];
+                                           inTimeZone: [self ownerTimeZone]
+                                   withConnectionInfo: [context connectionInfo]];
           [appointmentWrapper retain];
         }
     }
@@ -721,6 +724,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   NSDictionary *contactInfos;
   NGMailAddress *ngAddress;
   NSData *entryId;
+  struct ldb_context *samCtx;
   int rc;
 
   if (fullMail)
@@ -743,7 +747,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       if (contactInfos)
         {
           username = [contactInfos objectForKey: @"c_uid"];
-          entryId = MAPIStoreInternalEntryId (username);
+          samCtx = [[self context] connectionInfo]->sam_ctx;
+          entryId = MAPIStoreInternalEntryId (samCtx, username);
         }
       else
         entryId = MAPIStoreExternalEntryId (cn, email);
@@ -1349,9 +1354,11 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   NSData *entryId;
   NSDictionary *contactInfos;
   SOGoUserManager *mgr;
+  struct ldb_context *samCtx;
   struct mapistore_message *msgData;
   struct mapistore_message_recipient *recipient;
 
+  samCtx = [[self context] connectionInfo]->sam_ctx;
   [super getMessageData: &msgData inMemCtx: memCtx];
 
   if (!headerSetup)
@@ -1397,7 +1404,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
                 {
                   username = [contactInfos objectForKey: @"c_uid"];
                   recipient->username = [username asUnicodeInMemCtx: msgData];
-                  entryId = MAPIStoreInternalEntryId (username);
+                  entryId = MAPIStoreInternalEntryId (samCtx, username);
                 }
               else
                 {
