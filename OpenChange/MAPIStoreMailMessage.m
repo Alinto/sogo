@@ -48,6 +48,7 @@
 #import "MAPIStoreMailAttachment.h"
 #import "MAPIStoreMailFolder.h"
 #import "MAPIStoreMapping.h"
+#import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
 
 #import "MAPIStoreMailMessage.h"

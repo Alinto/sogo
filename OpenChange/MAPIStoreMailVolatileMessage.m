@@ -54,6 +54,7 @@
 #import "MAPIStoreMailFolder.h"
 #import "MAPIStoreMIME.h"
 #import "MAPIStoreMapping.h"
+#import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"

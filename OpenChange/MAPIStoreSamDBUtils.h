@@ -24,11 +24,14 @@
 #define MAPISTORESAMDBUTILS_H
 
 @class NSString;
+
 struct ldb_context;
 
 NSString *MAPIStoreSamDBUserAttribute (struct ldb_context *samCtx,
                                        NSString *userKey,
                                        NSString *value,
                                        NSString *attributeName);
+NSData *MAPIStoreInternalEntryId (struct ldb_context *, NSString *username);
+NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email);
 
 #endif /* MAPISTORESAMDBUTILS_H */

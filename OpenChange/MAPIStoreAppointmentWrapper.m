@@ -37,8 +37,8 @@
 #import <NGCards/NSString+NGCards.h>
 #import <SOGo/SOGoUserManager.h>
 
-#import "MAPIStoreMessage.h"
 #import "MAPIStoreRecurrenceUtils.h"
+#import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"

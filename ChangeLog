@@ -4,6 +4,8 @@
 	pertaining to the SamDB.
 	(MAPIStoreSamDBUserAttribute): new function that returns the value
 	of a specified key from a user record matching one simple criteria.
+	(MAPIStoreInternalEntrydId, MAPIStoreExternalEntryId): moved
+	functions from MAPIStoreMessage.m.
 
 	* OpenChange/MAPIStoreMessage.m (MAPIStoreInternalEntryId): now
 	takes a ldb_context * parameter pointing to the samdb, which

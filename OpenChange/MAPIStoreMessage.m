@@ -36,6 +36,7 @@
 #import "MAPIStoreContext.h"
 #import "MAPIStoreFolder.h"
 #import "MAPIStorePropertySelectors.h"
+#import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
@@ -53,116 +54,6 @@
 #include <mapistore/mapistore_nameid.h>
 
 static NSString *resourcesDir = nil;
-
-NSData *
-MAPIStoreInternalEntryId (struct ldb_context *samCtx, NSString *username)
-{
-  NSMutableData *entryId = nil;
-  TALLOC_CTX *memCtx;
-  struct ldb_result *res = NULL;
-  const char * const attrs[] = { "legacyExchangeDN", NULL };
-  const char *legacyDn;
-  int ret;
-  static const uint8_t const providerUid[] = { 0xdc, 0xa7, 0x40, 0xc8,
-                                               0xc0, 0x42, 0x10, 0x1a,
-                                               0xb4, 0xb9, 0x08, 0x00,
-                                               0x2b, 0x2f, 0xe1, 0x82 };
-
-  /* structure:
-     flags: 32
-     provideruid: 32 * 4
-     version: 32
-     type: 32
-     X500DN: variable */
-
-  memCtx = talloc_zero(NULL, TALLOC_CTX);
-
-  /* Search mapistoreURI given partial URI */
-  ret = ldb_search (samCtx, memCtx, &res, ldb_get_default_basedn(samCtx),
-                    LDB_SCOPE_SUBTREE, attrs,
-                    "(&(objectClass=user)(sAMAccountName=%s))",
-                    [username UTF8String]);
-  if (ret == LDB_SUCCESS && res->count == 1)
-    {
-      legacyDn = ldb_msg_find_attr_as_string (res->msgs[0], attrs[0], NULL);
-      if (legacyDn)
-        {
-          entryId = [NSMutableData dataWithCapacity: 256];
-          [entryId appendUInt32: 0]; // flags
-          [entryId appendBytes: providerUid length: 16]; // provideruid
-          [entryId appendUInt32: 1]; // version
-          [entryId appendUInt32: 0]; // type (local mail user)
-          [entryId appendBytes: legacyDn length: strlen (legacyDn) + 1]; // x500dn
-        }
-    }
- 
-  talloc_free(memCtx);
-
-  return entryId;
-}
-
-NSData *
-MAPIStoreExternalEntryId (NSString *cn, NSString *email)
-{
-  NSMutableData *entryId;
-  static uint8_t providerUid[] = { 0x81, 0x2b, 0x1f, 0xa4,
-                                   0xbe, 0xa3, 0x10, 0x19,
-                                   0x9d, 0x6e, 0x00, 0xdd,
-                                   0x01, 0x0f, 0x54, 0x02 };
-  uint8_t flags21, flags22;
-
-  /* structure:
-     flags: 32
-     provideruid: 32 * 4
-     version: 16
-     {
-       PaD: 1
-       MAE: 2
-       Format: 4
-       M: 1
-       U: 1
-       R: 2
-       L: 1
-       Pad: 4
-     }
-     DisplayName: variable
-     AddressType: variable
-     EmailAddress: variable */
-
-  entryId = [NSMutableData dataWithCapacity: 256];
-  [entryId appendUInt32: 0]; // flags
-  [entryId appendBytes: providerUid length: 16]; // provideruid
-  [entryId appendUInt16: 0]; // version
-
-  flags21 = 0;          /* PaD, MAE, R, Pad = 0 */
-  flags21 |= 0x16;      /* Format: text and HTML */
-  flags21 |= 0x01;     /* M: mime format */
-
-  flags22 = 0x90;      /* U: unicode, L: no lookup */
-  [entryId appendUInt8: flags21];
-  [entryId appendUInt8: flags22];
-
-  /* DisplayName */
-  if (!cn)
-    cn = @"";
-  [entryId
-    appendData: [cn dataUsingEncoding: NSUTF16LittleEndianStringEncoding]];
-  [entryId appendUInt16: 0];
-
-  /* AddressType */
-  [entryId
-    appendData: [@"SMTP" dataUsingEncoding: NSUTF16LittleEndianStringEncoding]];
-  [entryId appendUInt16: 0];
-
-  /* EMailAddress */
-  if (!email)
-    email = @"";
-  [entryId
-    appendData: [email dataUsingEncoding: NSUTF16LittleEndianStringEncoding]];
-  [entryId appendUInt16: 0];
-
-  return entryId;
-}
 
 /* rtf conversion via unrtf */
 static int
