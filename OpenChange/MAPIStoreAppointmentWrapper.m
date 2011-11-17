@@ -37,8 +37,8 @@
 #import <NGCards/NSString+NGCards.h>
 #import <SOGo/SOGoUserManager.h>
 
-#import "MAPIStoreMessage.h"
 #import "MAPIStoreRecurrenceUtils.h"
+#import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
@@ -80,13 +80,15 @@ static NSCharacterSet *hexCharacterSet = nil;
                     andUser: (SOGoUser *) newUser
              andSenderEmail: (NSString *) newSenderEmail
                  inTimeZone: (NSTimeZone *) newTimeZone
+         withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
 {
   MAPIStoreAppointmentWrapper *wrapper;
 
   wrapper = [[self alloc] initWithICalEvent: newEvent
                                     andUser: newUser
                              andSenderEmail: newSenderEmail
-                                 inTimeZone: newTimeZone];
+                                 inTimeZone: newTimeZone
+                         withConnectionInfo: newConnInfo];
   [wrapper autorelease];
 
   return wrapper;
@@ -96,6 +98,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 {
   if ((self = [super init]))
     {
+      connInfo = NULL;
       calendar = nil;
       event = nil;
       timeZone = nil;
@@ -178,9 +181,11 @@ static NSCharacterSet *hexCharacterSet = nil;
                  andUser: (SOGoUser *) newUser
           andSenderEmail: (NSString *) newSenderEmail
               inTimeZone: (NSTimeZone *) newTimeZone
+      withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
 {
   if ((self = [self init]))
     {
+      connInfo = newConnInfo;
       ASSIGN (event, newEvent);
       ASSIGN (calendar, [event parent]);
       ASSIGN (timeZone, newTimeZone);
@@ -256,7 +261,7 @@ static NSCharacterSet *hexCharacterSet = nil;
             {
               username = [contactInfos objectForKey: @"c_uid"];
               recipient->username = [username asUnicodeInMemCtx: msgData];
-              entryId = MAPIStoreInternalEntryId (username);
+              entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
             }
           else
             {
@@ -357,7 +362,7 @@ static NSCharacterSet *hexCharacterSet = nil;
           {
             username = [contactInfos objectForKey: @"c_uid"];
             recipient->username = [username asUnicodeInMemCtx: msgData];
-            entryId = MAPIStoreInternalEntryId (username);
+            entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
           }
         else
           {
@@ -727,7 +732,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   if (contactInfos)
     {
       username = [contactInfos objectForKey: @"c_uid"];
-      entryId = MAPIStoreInternalEntryId (username);
+      entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
     }
   else
     entryId = MAPIStoreExternalEntryId (cn, email);

@@ -104,15 +104,18 @@
 - (MAPIStoreAppointmentWrapper *) appointmentWrapper
 {
   iCalEvent *event;
+  MAPIStoreContext *context;
 
   if (!appointmentWrapper)
     {
       event = [sogoObject component: NO secure: NO];
+      context = [self context];
       ASSIGN (appointmentWrapper,
               [MAPIStoreAppointmentWrapper wrapperWithICalEvent: event
-                                                        andUser: [[self context] activeUser]
+                                                        andUser: [context activeUser]
                                                  andSenderEmail: nil
-                                                     inTimeZone: [self ownerTimeZone]]);
+                                                     inTimeZone: [self ownerTimeZone]
+                                             withConnectionInfo: [context connectionInfo]]);
     }
 
   return appointmentWrapper;
