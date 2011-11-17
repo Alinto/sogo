@@ -1,0 +1,79 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Guardar";
+"Close" = "Cerrar";
+"Edit User Rights" = "Modificar permisos";
+
+"Home" = "Inicio";
+"Calendar" = "Calendario";
+"Address Book"	= "Libreta de direcciones";
+"Mail" = "Correo";
+"Preferences" = "Preferencias";
+"Administration" = "Administración";
+"Disconnect" = "Cerrar sesión";
+"Right Administration" = "Administración de permisos";
+"Log Console (dev.)" = "Consola de registro de actividad (dev.)";
+
+"User" = "Usuario";
+
+"Help" = "Ayuda";
+
+"noJavascriptError" = "SOGo requiere Javascript. Por favor, active Javascript en su navegador.";
+"noJavascriptRetry" = "Reintentar";
+
+"Owner:" = "Propietario:";
+"Publish the Free/Busy information" = "Publicar información de disponibilidad";
+
+"Add..." = "Añadir...";
+"Remove" = "Borrar";
+
+"Subscribe User" = "Suscribir usuario";
+
+"Any Authenticated User" = "Cualquier usuario autenticado";
+"Public Access" = "Acceso Público";
+"Any user not listed above" = "Cualquier usuario no listado arriba";
+"Anybody accessing this resource from the public area" = "Cualquier acceso a este recurso desde el área pública";
+
+"Sorry, the user rights can not be configured for that object." = "Lo siento, los permisos de este usuario no pueden ser configurados para este objeto.";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+	= "No es posible suscribirse a esta carpeta.";
+"You cannot subscribe to a folder that you own!"
+      	= "No es posible suscribirse a una carpeta que le pertenece.";
+"Unable to unsubscribe from that folder!"
+	= "No es posible darse de baja de esta carpeta.";
+"You cannot unsubscribe from a folder that you own!"
+      	= "No es posible darse de baja de una carpeta que le pertenece.";
+"Unable to rename that folder!" = "La carpeta no puede ser renombrada.";
+"You have already subscribed to that folder!"
+     	= "Ya se ha suscrito a esta carpeta.";
+"The user rights cannot be edited for this object!"
+        = "No es posible modificar los permisos de acceso a este objeto.";
+"A folder by that name already exists." = "Ya existe una carpeta con ese nombre.";
+"You cannot create a list in a shared address book." 
+        = "No es posible crear una lista en una libreta de direcciones compartida.";
+"Warning" = "Aviso";
+
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "No esta permitido el acceso a este módulo o éste sistema. Por favor contacte con su administrador de sistemas.";
+"You don't have the required privileges to perform the operation."
+= "No tiene los permisos requeridos para realizar esta operación.";
+
+"noEmailForDelegation" = "Debe especificar la dirección a la que quiere delegar su invitación.";
+"delegate is organizer" = "El delegado es el organizador. Por favor, especifique un delegado diferente.";
+"delegate is a participant" = "El delegado ya es un participante.";
+"delegate is a group" = "La dirección especificada corresponde a un grupo. Sólo puede delegar a una persona única.";
+
+/* common buttons */
+"OK" = "OK";
+"Cancel" = "Cancelar";
+"Yes" = "Si";
+"No" = "No";
+
+/* alarms */
+"Reminder:" = "Recordatorio:";
+"Start:" = "Desde:";
+"Due Date:" = "Vencimiento:";
+"Location:" = "Lugar:";

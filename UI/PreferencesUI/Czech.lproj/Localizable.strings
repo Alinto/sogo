@@ -179,11 +179,12 @@
 "Italian" = "Italiano";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
-"BrazilianPortuguese" = "Portugues brasileiro";
-"Russian" = "       ";
-"Spanish" = "Espanol";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
-"Ukrainian" = "          ";
+"Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
 /* Return receipts */

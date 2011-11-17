@@ -74,7 +74,16 @@
 @interface SOGoMailItalianReply : SOGoMailReply
 @end
 
-@interface SOGoMailSpanishReply : SOGoMailReply
+@interface SOGoMailNorwegianBokmalReply : SOGoMailReply
+@end
+
+@interface SOGoMailNorwegianNynorskReply : SOGoMailReply
+@end
+
+@interface SOGoMailSpanishSpainReply : SOGoMailReply
+@end
+
+@interface SOGoMailSpanishArgentinaReply : SOGoMailReply
 @end
 
 @interface SOGoMailSwedishReply : SOGoMailReply

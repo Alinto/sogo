@@ -263,7 +263,16 @@
 @implementation SOGoMailItalianForward
 @end
 
-@implementation SOGoMailSpanishForward
+@implementation SOGoMailNorwegianBokmalForward
+@end
+
+@implementation SOGoMailNorwegianNynorskForward
+@end
+
+@implementation SOGoMailSpanishSpainForward
+@end
+
+@implementation SOGoMailSpanishArgentinaForward
 @end
 
 @implementation SOGoMailSwedishForward

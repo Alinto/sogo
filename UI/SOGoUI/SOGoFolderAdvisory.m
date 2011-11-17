@@ -278,6 +278,18 @@
 @implementation SOGoFolderItalianRemovalAdvisory
 @end
 
+@implementation SOGoFolderNorwegianBokmalAdditionAdvisory
+@end
+
+@implementation SOGoFolderNorwegianBokmalRemovalAdvisory
+@end
+
+@implementation SOGoFolderNorwegianNynorskAdditionAdvisory
+@end
+
+@implementation SOGoFolderNorwegianNynorskRemovalAdvisory
+@end
+
 @implementation SOGoFolderPolishAdditionAdvisory
 @end
 
@@ -290,10 +302,16 @@
 @implementation SOGoFolderRussianRemovalAdvisory
 @end
 
-@implementation SOGoFolderSpanishAdditionAdvisory
+@implementation SOGoFolderSpanishSpainAdditionAdvisory
 @end
 
-@implementation SOGoFolderSpanishRemovalAdvisory
+@implementation SOGoFolderSpanishSpainRemovalAdvisory
+@end
+
+@implementation SOGoFolderSpanishArgentinaAdditionAdvisory
+@end
+
+@implementation SOGoFolderSpanishArgentinaRemovalAdvisory
 @end
 
 @implementation SOGoFolderSwedishAdditionAdvisory

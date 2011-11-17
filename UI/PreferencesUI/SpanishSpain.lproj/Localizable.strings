@@ -1,0 +1,253 @@
+/* toolbar */
+"Save and Close" = "Guardar y cerrar";
+"Close" = "Cerrar";
+
+/* tabs */
+"General" = "General";
+"Calendar Options" = "Opciones de calendario";
+"Contacts Options" = "Opciones de contactos";
+"Mail Options" = "Opciones de correo";
+"IMAP Accounts" = "Cuentas IMAP";
+"Vacation" = "Vacaciones";
+"Forward" = "Desvío";
+"Password" = "Contraseña";
+"Categories" = "Categorías";
+"Name" = "Nombre";
+"Color" = "Color";
+"Add" = "Añadir";
+"Delete" = "Borrar";
+
+/* contacts categories */
+"contacts_category_labels" = "Colega, Competidor, Cliente, Amigo, Familia, Socio, Proveedor, Prensa, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Activar respuesta automática para vacaciones";
+"Auto reply message :" = "Mensaje de respuesta automática :";
+"Email addresses (separated by commas) :" = "Dirección de correo (separado por comas) :";
+"Add default email addresses" = "Añadir dirección de correo por defecto";
+"Days between responses :" = "Dias entre respuestas :";
+"Do not send responses to mailing lists" = "No enviar respuestas a las listas de distribución";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Por favor, especificar el mensaje y la dirección de correo para aquellos a los que quiere habilitar la respuesta automática.";
+
+/* forward messages */
+"Forward incoming messages" = "Desvío de mensajes recibidos";
+"Keep a copy" = "Guardar una copia";
+"Please specify an address to which you want to forward your messages."
+= "Por favor, especificar una dirección para aquellos mensajes que quiere desviar.";
+
+/* d & t */
+"Current Time Zone :" = "Zona horaria actual :";
+"Short Date Format :" = "Formato de fecha corto :";
+"Long Date Format :" = "Formato de fecha largo :";
+"Time Format :" = "Formato de hora :";
+
+"default" = "Por defecto";
+
+"shortDateFmt_0" = "%d-%b-%y";
+
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+
+"shortDateFmt_15" = "";
+   
+"longDateFmt_0" = "%A, %e %B %Y";
+"longDateFmt_1" = "%A, %e de %B de %Y";
+"longDateFmt_2" = "%e de %b %Y";
+"longDateFmt_3" = "%e de %b de %Y";
+"longDateFmt_4" = "%e %B %Y";
+"longDateFmt_5" = "";
+
+"timeFmt_0" = "%H:%M";
+"timeFmt_1" = "%H.%M";
+"timeFmt_2" = "%H h. %M";
+"timeFmt_3" = "";
+
+/* calendar */
+"Week begins on :" = "Semana empieza por: ";
+"Day start time :" = "Hora inicio: ";
+"Day end time :" = "Hora fin: ";
+"Day start time must be prior to day end time." = "Hora de inicio del día debe ser anterior a la hora de fin del día.";
+"First week of year :" = "Primera semana del año: ";
+"Enable reminders for Calendar items" = "Habilitar recordatorios para elementos del calendario";
+"Play a sound when a reminder comes due"
+= "Señal acústica para los recordatorios";
+"Default reminder :" = "Recordatorio por defecto: ";
+
+"firstWeekOfYear_January1" = "Empieza el 1 de enero";
+"firstWeekOfYear_First4DayWeek" = "Primera semana del año de 4 días";
+"firstWeekOfYear_FirstFullWeek" = "Primera semana del año completa";
+
+"reminderTime_0000" = "0 minutos";
+"reminderTime_0005" = "5 minutos";
+"reminderTime_0010" = "10 minutos";
+"reminderTime_0015" = "15 minutos";
+"reminderTime_0030" = "30 minutos";
+"reminderTime_0100" = "1 hora";
+"reminderTime_0200" = "2 horas";
+"reminderTime_0400" = "4 horas";
+"reminderTime_0800" = "8 horas";
+"reminderTime_1200" = "1/2 día";
+"reminderTime_2400" = "1 día";
+"reminderTime_4800" = "2 días";
+
+/* Mailer */
+"Show subscribed mailboxes only" = "Mostrar sólo buzones suscritos";
+"Check for new mail:" = "Comprobar correo nuevo: ";
+"messagecheck_manually" = "Manualmente";
+"messagecheck_every_minute" = "Cada minuto";
+"messagecheck_every_2_minutes" = "Cada 2 minutos";
+"messagecheck_every_5_minutes" = "Cada 5 minutos";
+"messagecheck_every_10_minutes" = "Cada 10 minutos";
+"messagecheck_every_20_minutes" = "Cada 20 minutos";
+"messagecheck_every_30_minutes" = "Cada 30 minutos";
+"messagecheck_once_per_hour" = "Cada hora";
+
+"Forward messages:" = "Reenviar mensajes:";
+"messageforward_inline" = "Incorporado";
+"messageforward_attached" = "Como adjunto";
+
+"replyplacement_above" = "Empieza mi respuesta sobre el texto";
+"replyplacement_below" = "Empieza mi respuesta bajo el texto";
+"And place my signature" = "Y añade mi firma";
+"signatureplacement_above" = "bajo mi respuesta";
+"signatureplacement_below" = "bajo el texto";
+"Compose messages in" = "Redactar el mensaje en";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Texto plano";
+
+/* IMAP Accounts */
+"New Mail Account" = "Nueva Cuenta de Correo";
+
+"Server Name:" = "Nombre de Servidor:";
+"Port:" = "Puerto:";
+"User Name:" = "Nombre de usuario:";
+"Password:" = "Contraseña:";
+ 
+"Full Name:" = "Nombre Completo:";
+"Email:" = "Correo Electrónico:";
+"Signature:" = "Firma:";
+"(Click to create)" = "(Click para crear)";
+
+"Signature" = "Firma";
+"Please enter your signature below:" = "Por favor, ponga su firma abajo:";
+
+/* Additional Parameters */
+"Additional Parameters" = "Parámetros Adicionales";
+
+/* password */
+"New password:" = "Nueva contraseña:";
+"Confirmation:" = "Confirmar nueva contraseña:";
+"Change" = "Cambiar";
+
+/* Event+task categories */
+"category_none" = "Ninguna";
+"calendar_category_labels" = "Aniversario,Cumpleaños,Negocios,Llamadas,Clientes,Competición,Trabajo,Favoritos,Seguimiento,Regalos,Fiestas,Ideas,Reunión,Asuntos,Varios,Personal,Proyectos,Vacaciones públicas,Estado,Proveedores,Viajes,Vacaciones";
+
+/* Default module */
+"Calendar" = "Calendario";
+"Contacts" = "Libreta de direcciones";
+"Mail" = "Correo";
+"Last" = "Ultimo usado";
+"Default module :" = "Módulo por defecto :";
+
+"Language :" = "Idioma :";
+"choose" = "Elija ...";
+"Catalan" = "Català";
+"Czech" = "Česky";
+"Dutch" = "Nederlands";
+"English" = "English";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Italian" = "Italiano";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+/* Return receipts */
+"When I receive a request for a return receipt:" = "Cuando reciba una petición de un acuse de recibo:";
+"Never send a return receipt" = "Nunca enviar un acuse de recibo";
+"Allow return receipts for some messages" = "Permitir acuses de recibo para algunos mensajes";
+"If I'm not in the To or Cc of the message:" = "Si no estoy en el Para o Cc del mensaje:";
+"If the sender is outside my domain:" = "Si el remitente esta fuera de mi dominio de correo:";
+"In all other cases:" = "En el resto de casos:";
+
+"Never send" = "Nunca enviar";
+"Always send" = "Enviar siempre";
+"Ask me" = "Preguntarme";
+
+/* Filters - UIxPreferences */
+"Filters" = "Filtros";
+"Active" = "Activo";
+"Move Up" = "Subir";
+"Move Down" = "Bajar";
+
+/* Filters - UIxFilterEditor */
+"Filter name:" = "Nombre del filtro:";
+"For incoming messages that" = "Para mensajes entrantes que";
+"match all of the following rules:" = "cumplen todas las reglas siguientes:";
+"match any of the following rules:" = "cumplen algunas de las reglas siguientes:";
+"match all messages" = "cumplen todos los mensajes";
+"Perform these actions:" = "Realiza estas acciones:";
+
+"Subject" = "Asunto";
+"From" = "De";
+"To" = "Para";
+"Cc" = "Cc";
+"To or Cc" = "Para o Cc";
+"Size (Kb)" = "Tamaño (Kb)";
+"Header" = "Cabecera";
+"Flag the message with:" = "Marca el mensaje con:";
+"Discard the message" = "Descarta el mensaje";
+"File the message in:" = "Archiva el mensaje en:";
+"Keep the message" = "Guarda el mensaje";
+"Forward the message to:" = "Reenvía el mensaje a:";
+"Send a reject message:" = "Envía un mensaje de rechazo:";
+"Send a vacation message" = "Envío un mensaje de vacaciones";
+"Stop processing filter rules" = "Parar los filtros";
+
+"is under" = "es debajo";
+"is over" = "es encima";
+"is" = "es";
+"is not" = "no es";
+"contains" = "contiene";
+"does not contain" = "no contiene";
+"matches" = "es igual";
+"does not match" = "no es igual";
+"matches regex" = "es igual regex";
+"does not match regex" = "no es igual regex";
+
+"Seen" = "Visto";
+"Deleted" = "Borrado";
+"Answered" = "Respondido";
+"Flagged" = "Marcado";
+"Junk" = "Spam";
+"Not Junk" = "No es Spam";
+"Label 1" = "Etiqueta 1";
+"Label 2" = "Etiqueta 2";
+"Label 3" = "Etiqueta 3";
+"Label 4" = "Etiqueta 4";
+"Label 5" = "Etiqueta 5";

@@ -131,7 +131,16 @@
 @implementation SOGoMailItalianReply
 @end
 
-@implementation SOGoMailSpanishReply
+@implementation SOGoMailNorwegianBokmalReply
+@end
+
+@implementation SOGoMailNorwegianNynorskReply
+@end
+
+@implementation SOGoMailSpanishSpainReply
+@end
+
+@implementation SOGoMailSpanishArgentinaReply
 @end
 
 @implementation SOGoMailSwedishReply

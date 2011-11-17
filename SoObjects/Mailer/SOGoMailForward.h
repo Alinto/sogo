@@ -69,7 +69,16 @@
 @interface SOGoMailItalianForward : SOGoMailForward
 @end
 
-@interface SOGoMailSpanishForward : SOGoMailForward
+@interface SOGoMailNorwegianBokmalForward : SOGoMailForward
+@end
+
+@interface SOGoMailNorwegianNynorskForward : SOGoMailForward
+@end
+
+@interface SOGoMailSpanishSpainForward : SOGoMailForward
+@end
+
+@interface SOGoMailSpanishArgentinaForward : SOGoMailForward
 @end
 
 @interface SOGoMailSwedishForward : SOGoMailForward

@@ -107,6 +107,18 @@
 @interface SOGoFolderItalianRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderNorwegianBokmalAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderNorwegianBokmalRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
+@interface SOGoFolderNorwegianNynorskAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderNorwegianNynorskRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 @interface SOGoFolderPolishAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 
@@ -119,10 +131,16 @@
 @interface SOGoFolderRussianRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
-@interface SOGoFolderSpanishAdditionAdvisory : SOGoFolderAdditionAdvisory
+@interface SOGoFolderSpanishSpainAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 
-@interface SOGoFolderSpanishRemovalAdvisory : SOGoFolderRemovalAdvisory
+@interface SOGoFolderSpanishSpainRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
+@interface SOGoFolderSpanishArgentinaAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderSpanishArgentinaRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
 @interface SOGoFolderSwedishAdditionAdvisory : SOGoFolderAdditionAdvisory

@@ -177,9 +177,12 @@
 "German" = "Deutsch";
 "Hungarian" = "Magyar";
 "Italian" = "Italiano";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
-"Spanish" = "Español";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";

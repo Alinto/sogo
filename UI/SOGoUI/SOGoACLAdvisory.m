@@ -340,6 +340,24 @@
 @implementation SOGoACLItalianRemovalAdvisory
 @end
 
+@implementation SOGoACLNorwegianBokmalAdditionAdvisory
+@end
+
+@implementation SOGoACLNorwegianBokmalModificationAdvisory
+@end
+
+@implementation SOGoACLNorwegianBokmalRemovalAdvisory
+@end
+
+@implementation SOGoACLNorwegianNynorskAdditionAdvisory
+@end
+
+@implementation SOGoACLNorwegianNynorskModificationAdvisory
+@end
+
+@implementation SOGoACLNorwegianNynorskRemovalAdvisory
+@end
+
 @implementation SOGoACLPolishAdditionAdvisory
 @end
 
@@ -358,13 +376,22 @@
 @implementation SOGoACLRussianRemovalAdvisory
 @end
 
-@implementation SOGoACLSpanishAdditionAdvisory
+@implementation SOGoACLSpanishSpainAdditionAdvisory
 @end
 
-@implementation SOGoACLSpanishModificationAdvisory
+@implementation SOGoACLSpanishSpainModificationAdvisory
 @end
 
-@implementation SOGoACLSpanishRemovalAdvisory
+@implementation SOGoACLSpanishSpainRemovalAdvisory
+@end
+
+@implementation SOGoACLSpanishArgentinaAdditionAdvisory
+@end
+
+@implementation SOGoACLSpanishArgentinaModificationAdvisory
+@end
+
+@implementation SOGoACLSpanishArgentinaRemovalAdvisory
 @end
 
 @implementation SOGoACLSwedishAdditionAdvisory

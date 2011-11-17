@@ -146,6 +146,24 @@
 @interface SOGoACLItalianRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
+@interface SOGoACLNorwegianBokmalAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLNorwegianBokmalModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLNorwegianBokmalRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
+@interface SOGoACLNorwegianNynorskAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLNorwegianNynorskModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLNorwegianNynorskRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
 @interface SOGoACLPolishAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 
@@ -164,13 +182,22 @@
 @interface SOGoACLRussianRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
-@interface SOGoACLSpanishAdditionAdvisory : SOGoACLAdditionAdvisory
+@interface SOGoACLSpanishSpainAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 
-@interface SOGoACLSpanishModificationAdvisory : SOGoACLModificationAdvisory
+@interface SOGoACLSpanishSpainModificationAdvisory : SOGoACLModificationAdvisory
 @end
 
-@interface SOGoACLSpanishRemovalAdvisory : SOGoACLRemovalAdvisory
+@interface SOGoACLSpanishSpainRemovalAdvisory : SOGoACLRemovalAdvisory
+@end
+
+@interface SOGoACLSpanishArgentinaAdditionAdvisory : SOGoACLAdditionAdvisory
+@end
+
+@interface SOGoACLSpanishArgentinaModificationAdvisory : SOGoACLModificationAdvisory
+@end
+
+@interface SOGoACLSpanishArgentinaRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
 @interface SOGoACLSwedishAdditionAdvisory : SOGoACLAdditionAdvisory

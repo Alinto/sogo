@@ -6,7 +6,7 @@ import simplejson
 
 import sogoLogin
 
-SOGoSupportedLanguages = [ "Catalan", "Czech", "Welsh", "English", "Spanish",
+SOGoSupportedLanguages = [ "Catalan", "Czech", "Welsh", "English", "SpanishSpain", "SpanishArgentina",
                            "French", "German", "Icelandic", "Italian", "Hungarian",
                            "Dutch", "BrazilianPortuguese", "NorwegianBokmal", "NorwegianNynorsk",
                            "Polish", "Russian", "Ukrainian", "Swedish" ]
