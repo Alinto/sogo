@@ -20,13 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#undef DEBUG
-#include <talloc.h>
-#include <mapistore/mapistore.h>
-#include <mapistore/mapistore_errors.h>
-#include <libmapi/libmapi.h>
-#include <libmapiproxy.h>
-
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
@@ -37,6 +30,10 @@
 #import "NSDate+MAPIStore.h"
 
 #import "MAPIStoreTypes.h"
+
+#undef DEBUG
+#include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 uint8_t *
 MAPIBoolValue (void *memCtx, BOOL value)

@@ -39,6 +39,7 @@ extern NSTimeZone *utcTZ;
 
 @interface MAPIStoreAppointmentWrapper : NSObject
 {
+  struct mapistore_connection_info *connInfo;
   iCalCalendar *calendar;
   iCalEvent *event;
   NSTimeZone *timeZone;
@@ -56,11 +57,13 @@ extern NSTimeZone *utcTZ;
 + (id) wrapperWithICalEvent: (iCalEvent *) newEvent
                     andUser: (SOGoUser *) newUser
              andSenderEmail: (NSString *) newSenderEmail
-                 inTimeZone: (NSTimeZone *) newTimeZone;
+                 inTimeZone: (NSTimeZone *) newTimeZone
+         withConnectionInfo: (struct mapistore_connection_info *) newConnInfo;
 - (id) initWithICalEvent: (iCalEvent *) newEvent
                  andUser: (SOGoUser *) newUser
           andSenderEmail: (NSString *) newSenderEmail
-              inTimeZone: (NSTimeZone *) newTimeZone;
+              inTimeZone: (NSTimeZone *) newTimeZone
+      withConnectionInfo: (struct mapistore_connection_info *) newConnInfo;
 
 /* getters */
 - (void) fillMessageData: (struct mapistore_message *) dataPtr
@@ -92,8 +95,6 @@ extern NSTimeZone *utcTZ;
                     inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrBody: (void **) data
-         inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrStartDate: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidAppointmentStateFlags: (void **) data
@@ -129,6 +130,8 @@ extern NSTimeZone *utcTZ;
                 inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPrImportance: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPrBody: (void **) data
+         inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidIsRecurring: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidRecurring: (void **) data

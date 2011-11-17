@@ -4,9 +4,7 @@ obj
 err$
 build\.log
 imgs-.*
-diff
 .*\.bak$
-.*\.diff$
 .*\.d$
 .*\.log$
 .*\.ifb$

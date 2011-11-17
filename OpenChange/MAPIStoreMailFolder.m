@@ -64,6 +64,7 @@
 static Class SOGoMailFolderK;
 
 #undef DEBUG
+#include <util/attr.h>
 #include <libmapi/libmapi.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>

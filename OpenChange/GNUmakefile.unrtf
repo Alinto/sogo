@@ -1,0 +1,34 @@
+# -*-makefile-*-
+
+# GNUstep makefile
+
+include $(GNUSTEP_MAKEFILES)/common.make
+
+UNRTF = unrtf
+
+SUBPROJECT_NAME = $(UNRTF)
+
+$(UNRTF)_C_FILES = \
+	attr.c \
+	convert.c \
+	error.c \
+	hash.c \
+	malloc.c \
+	my_iconv.c \
+	output.c \
+	parse.c \
+	unicode.c \
+	user.c \
+	util.c \
+	word.c
+
+$(UNRTF)_CFLAGS = -DHAVE_CONFIG_H=1 -I. -I../
+
+# Option include to set any additional variables
+-include GNUmakefile.preamble
+
+# Include in the rules for making libraries
+include $(GNUSTEP_MAKEFILES)/subproject.make
+
+# Option include to define any additional rules
+-include GNUmakefile.postamble

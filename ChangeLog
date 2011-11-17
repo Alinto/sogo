@@ -1,3 +1,22 @@
+2011-11-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreSamDBUtils.m: new module containing helpers
+	pertaining to the SamDB.
+	(MAPIStoreSamDBUserAttribute): new function that returns the value
+	of a specified key from a user record matching one simple criteria.
+	(MAPIStoreInternalEntrydId, MAPIStoreExternalEntryId): moved
+	functions from MAPIStoreMessage.m.
+
+	* OpenChange/MAPIStoreMessage.m (MAPIStoreInternalEntryId): now
+	takes a ldb_context * parameter pointing to the samdb, which
+	enables us: 1) to return the real legacyExchangeDN 2) to make use
+	of sAMAccountName as search parameter for the username.
+
+2011-11-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	*  SoObjects/SOGo/SOGoSieveManager.m (-updateFiltersForLogin:...)
+	We now handle connection exceptions to avoid crashing sogod.
+
 2011-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContactsMessage.m (-getPrBody:inMemCtx:):
