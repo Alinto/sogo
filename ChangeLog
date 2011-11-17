@@ -1,5 +1,10 @@
 2011-11-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSamDBUtils.m: new module containing helpers
+	pertaining to the SamDB.
+	(MAPIStoreSamDBUserAttribute): new function that returns the value
+	of a specified key from a user record matching one simple criteria.
+
 	* OpenChange/MAPIStoreMessage.m (MAPIStoreInternalEntryId): now
 	takes a ldb_context * parameter pointing to the samdb, which
 	enables us: 1) to return the real legacyExchangeDN 2) to make use
