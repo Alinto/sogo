@@ -41,6 +41,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreMIME.m \
 	MAPIStoreTypes.m \
 	MAPIStorePropertySelectors.m \
+	MAPIStoreSamDBUtils.m \
 	\
 	SOGoMAPIVolatileMessage.m \
 	SOGoMAPIFSFolder.m \
