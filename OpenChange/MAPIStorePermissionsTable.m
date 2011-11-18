@@ -21,44 +21,48 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
-#import "MAPIStoreObject.h"
+#import <SOGo/SOGoObject.h>
+#import <SOGo/SOGoUser.h>
+
+#import "MAPIStoreContext.h"
+#import "MAPIStoreFolder.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreSamDBUtils.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStorePermissionsTable.h"
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
-
-@interface MAPIStorePermissionEntry : MAPIStoreObject
-{
-  NSString *userId;
-}
-
-+ (id) entryWithUserId: (NSString *) newUserId;
-- (id) initWithUserId: (NSString *) newUserId;
-
-@end
 
 @implementation MAPIStorePermissionEntry
 
 + (id) entryWithUserId: (NSString *) newUserId
+           andMemberId: (uint64_t) newMemberId
+             forFolder: (MAPIStoreFolder *) newFolder
 {
   MAPIStorePermissionEntry *newEntry;
 
-  newEntry = [[self alloc] initWithUserId: newUserId];
+  newEntry = [[self alloc] initWithUserId: newUserId andMemberId: newMemberId
+                           forFolder: newFolder];
   [newEntry autorelease];
 
   return newEntry;
 }
 
 - (id) initWithUserId: (NSString *) newUserId
+          andMemberId: (uint64_t) newMemberId
+            forFolder: (MAPIStoreFolder *) newFolder
 {
-  if ((self = [self init]))
+  if ((self = [self initWithSOGoObject: nil inContainer: newFolder]))
     {
       ASSIGN (userId, newUserId);
+      memberId = newMemberId;
     }
 
   return self;
@@ -70,15 +74,20 @@
   [super dealloc];
 }
 
+- (NSString *) userId
+{
+  return userId;
+}
+
+- (uint64_t) memberId
+{
+  return memberId;
+}
+
 - (int) getPrMemberId: (void **) data
              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  uint64_t value = 0;
-
-  if ([userId isEqualToString: @"anonymous"])
-    value = ULLONG_MAX;
-
-  *data = MAPILongLongValue (memCtx, value);
+  *data = MAPILongLongValue (memCtx, memberId);
 
   return MAPISTORE_SUCCESS;
 }
@@ -86,7 +95,17 @@
 - (int) getPrEntryid: (void **) data
             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = [[NSData data] asBinaryInMemCtx: memCtx];
+  NSData *entryId;
+  struct mapistore_connection_info *connInfo;
+
+  if (memberId == 0 || memberId == ULLONG_MAX)
+    entryId = [NSData data];
+  else
+    {
+      connInfo = [[container context] connectionInfo];
+      entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, userId);
+    }
+  *data = [entryId asBinaryInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
@@ -94,7 +113,16 @@
 - (int) getPrMemberName: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = [userId asUnicodeInMemCtx: memCtx];
+  NSString *displayName;
+
+  if (memberId == 0)
+    displayName = @"";
+  else if (memberId == ULLONG_MAX)
+    displayName = @"Anonymous";
+  else
+    displayName = [[SOGoUser userWithLogin: userId] cn];
+  
+  *data = [displayName asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
@@ -102,7 +130,13 @@
 - (int) getPrMemberRights: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPILongValue (memCtx, 0);
+  uint32_t rights;
+  NSArray *roles;
+
+  roles = [[(MAPIStoreFolder *) container aclFolder] aclsForUser: userId];
+  rights = [(MAPIStoreFolder *) container exchangeRightsForRoles: roles];
+
+  *data = MAPILongValue (memCtx, rights);
 
   return MAPISTORE_SUCCESS;
 }
@@ -111,9 +145,37 @@
 
 @implementation MAPIStorePermissionsTable
 
+- (void) dealloc
+{
+  [entries release];
+  [super dealloc];
+}
+
+- (void) _fetchEntries
+{
+  NSArray *permEntries;
+  NSUInteger count, max;
+  MAPIStorePermissionEntry *entry;
+
+  entries = [NSMutableDictionary new];
+  permEntries = [(MAPIStoreFolder *) container permissionEntries];
+  max = [permEntries count];
+  for (count = 0; count < max; count++)
+    {
+      entry = [permEntries objectAtIndex: count];
+      [entries setObject: entry forKey: [entry userId]];
+    }
+
+  childKeys = [entries allKeys];
+  [childKeys retain];
+}
+
 - (NSArray *) childKeys
 {
-  return [NSArray arrayWithObjects: @"default", @"anonymous", nil];
+  if (!entries)
+    [self _fetchEntries];
+
+  return childKeys;
 }
 
 - (NSArray *) restrictedChildKeys
@@ -123,7 +185,10 @@
 
 - (id) lookupChild: (NSString *) childKey
 {
-  return [MAPIStorePermissionEntry entryWithUserId: childKey];
+  if (!entries)
+    [self _fetchEntries];
+
+  return [entries objectForKey: childKey];
 }
 
 @end

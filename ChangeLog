@@ -1,5 +1,40 @@
 2011-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m (-permissionEntries): new public
+	method.
+	(-modifyPermissions:withCount:andFlags:): new backend op public
+	method.
+	(-aclFolder, -rolesForExchangeRights:, -exchangeRightsForRoles:):
+	new mandatory methods.
+
+	* OpenChange/SOGoMAPIFSFolder.m (-defaultUserID, -addUserInAcls:)
+	(-removeAclsForUsers:, -aclUsers, -aclsForUser:)
+	(-setRoles:forUser:): implemented standard ACL methods.
+
+	* OpenChange/MAPIStorePermissionsTable.m
+	(+[MAPIStorePermissionEntry
+	entryWithUserId:andMemberId:forFolder:]): constructor now takes a
+	memberId and the container folder as parameters.
+	(-[MAPIStorePermissionEntry getPrMemberId:inMemCtx:]): now based
+	on the new memberId ivar.
+	(-[MAPIStorePermissionEntry getPrEntryId:inMemCtx:]): now make use
+	of MAPIStoreInternalEntryId for regular member ids and return an
+	empty blob for special ones, as specified in oxcperm.
+	(-[MAPIStorePermissionEntry getPrMemberName:inMemCtx:]): now
+	returns the real CN of the user for regular member ids and return
+	@"" or @"Anonymous" for special ones, as specified in oxcperm.
+	(-[MAPIStorePermissionEntry getPrMemberName:inMemCtx:]): now
+	returns the real member rights, based on the aclFolder of the
+	container, using standard SOGo methods.
+
+	* OpenChange/MAPIStorePermissionsTable.h
+	(MAPIStorePermissionsEntry): made class public.
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_folder_modify_permissions): new
+	backend op.
+	(sogo_backend_init): invoke "disableLocalCache" to avoid the
+	caching of ACL.
+
 	* SoObjects/SOGo/SOGoCache.m (-disableLocalCache): new method to
 	disable the local cache altogether (helper for non-WO access).
 

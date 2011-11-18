@@ -43,11 +43,11 @@
 #import <Mailer/SOGoTrashFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoPermissions.h>
 
 #import "MAPIApplication.h"
 #import "MAPIStoreAppointmentWrapper.h"
 #import "MAPIStoreContext.h"
-// #import "MAPIStoreDraftsMessage.h"
 #import "MAPIStoreFAIMessage.h"
 #import "MAPIStoreMailMessageTable.h"
 #import "MAPIStoreMapping.h"
@@ -389,6 +389,11 @@ static Class SOGoMailFolderK;
   [self logWithFormat: @"lastMessageModificationTime: %@", value];
 
   return value;
+}
+
+- (SOGoFolder *) aclFolder
+{
+  return (SOGoFolder *) sogoObject;
 }
 
 /* synchronisation */
@@ -1006,6 +1011,65 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                                                       inContainer: self];
   
   return newMessage;
+}
+
+
+- (NSArray *) rolesForExchangeRights: (uint32_t) rights
+{
+  NSMutableArray *roles;
+
+  roles = [NSMutableArray arrayWithCapacity: 6];
+  if (rights & RoleOwner)
+    [roles addObject: SOGoMailRole_Administrator];
+  if (rights & RightsCreateItems)
+    {
+      [roles addObject: SOGoRole_ObjectCreator];
+      [roles addObject: SOGoMailRole_Writer];
+      [roles addObject: SOGoMailRole_Poster];
+    }
+  if (rights & RightsDeleteAll)
+    {
+      [roles addObject: SOGoRole_ObjectEraser];
+      [roles addObject: SOGoRole_FolderEraser];
+      [roles addObject: SOGoMailRole_Expunger];
+    }
+  if (rights & RightsEditAll)
+    [roles addObject: SOGoRole_ObjectEditor];
+  if (rights & RightsReadItems)
+    [roles addObject: SOGoRole_ObjectViewer];
+  if (rights & RightsCreateSubfolders)
+    [roles addObject: SOGoRole_FolderCreator];
+  if (rights & RightsCreateSubfolders)
+    [roles addObject: SOGoRole_FolderCreator];
+
+  return roles;
+}
+
+- (uint32_t) exchangeRightsForRoles: (NSArray *) roles
+{
+  uint32_t rights = 0;
+
+  if ([roles containsObject: SOGoMailRole_Administrator])
+    rights |= (RoleOwner ^ RightsAll);
+  if ([roles containsObject: SOGoRole_ObjectCreator])
+    rights |= RightsCreateItems;
+  if ([roles containsObject: SOGoRole_ObjectEraser]
+      && [roles containsObject: SOGoRole_FolderEraser])
+    rights |= RightsDeleteAll;
+
+  if ([roles containsObject: SOGoRole_ObjectEditor])
+    rights |= RightsEditAll;
+  if ([roles containsObject: SOGoRole_ObjectViewer])
+    rights |= RightsReadItems;
+  if ([roles containsObject: SOGoRole_FolderCreator])
+    rights |= RightsCreateSubfolders;
+  if ([roles containsObject: SOGoRole_FolderCreator])
+    rights |= RightsCreateSubfolders;
+
+  if (rights != 0)
+    rights |= RoleNone; /* actually "folder visible" */
+ 
+  return rights;
 }
 
 @end

@@ -40,9 +40,9 @@
 @class MAPIStoreFolderTable;
 @class MAPIStoreMessageTable;
 @class MAPIStorePermissionsTable;
+@class SOGoFolder;
 @class SOGoMAPIFSFolder;
 @class SOGoMAPIFSMessage;
-
 
 #import "MAPIStoreObject.h"
 
@@ -74,6 +74,7 @@
 
 /* permissions */
 - (MAPIStorePermissionsTable *) permissionsTable;
+- (NSArray *) permissionEntries;
 
 /* message objects and tables */
 - (id) lookupMessage: (NSString *) messageKey;
@@ -135,6 +136,10 @@
        tableType: (uint8_t) tableType
      andHandleId: (uint32_t) handleId;
 
+- (int) modifyPermissions: (struct PermissionData *) permissions
+                withCount: (uint16_t) pcount
+                 andFlags: (int8_t) flags;
+
 /* helpers */
 - (uint64_t) idForObjectWithKey: (NSString *) childKey;
 
@@ -151,6 +156,10 @@
                     withFID: (uint64_t) newFID;
 
 - (NSCalendarDate *) lastMessageModificationTime;
+
+- (SOGoFolder *) aclFolder;
+- (NSArray *) rolesForExchangeRights: (uint32_t) rights;
+- (uint32_t) exchangeRightsForRoles: (NSArray *) roles;
 
 /* subclass helpers */
 - (void) postNotificationsForMoveCopyMessagesWithMIDs: (uint64_t *) srcMids
