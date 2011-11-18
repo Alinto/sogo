@@ -1,3 +1,8 @@
+2011-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoCache.m (-disableLocalCache): new method to
+	disable the local cache altogether (helper for non-WO access).
+
 2011-11-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreSamDBUtils.m: new module containing helpers

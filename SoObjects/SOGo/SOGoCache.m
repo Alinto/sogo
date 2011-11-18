@@ -154,6 +154,12 @@ static memcached_st *handle = NULL;
   requestsCacheEnabled = NO;  
 }
 
+- (void) disableLocalCache
+{
+  [localCache release];
+  localCache = nil;
+}
+
 - (void) killCache
 {
   [cache removeAllObjects];
