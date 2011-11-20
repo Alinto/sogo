@@ -208,11 +208,17 @@ _prepareContextClass (Class contextClass,
       andTDBIndexing: (struct tdb_wrap *) indexingTdb
 {
   NSString *username;
+  SOGoUser *activeUser;
 
   if ((self = [self init]))
     {
       ASSIGN (contextUrl, newUrl);
       username = [NSString stringWithUTF8String: newConnInfo->username];
+      activeUser = [SOGoUser userWithLogin: username];
+      if (!activeUser)
+        [self errorWithFormat: @"user '%@' not found in SOGo environment",
+              username];
+      [woContext setActiveUser: activeUser];
       ASSIGN (mapping, [MAPIStoreMapping mappingForUsername: username
                                          withIndexing: indexingTdb]);
       [mapping increaseUseCount];

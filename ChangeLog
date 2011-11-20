@@ -1,3 +1,10 @@
+2011-11-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContext.m
+	(-initFromURL:withConnectionInfo:andTDBIndexing:): instantiate a
+	SOGoUser corresponding to the username of the new context and
+	associated it to the woContext ivar.
+
 2011-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFolder.m (-permissionEntries): new public
