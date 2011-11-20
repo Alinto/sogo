@@ -189,6 +189,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       sogoFolder = [sogoObject lookupName: folderKey
                                 inContext: woContext
                                   acquire: NO];
+      [sogoFolder setContext: woContext];
       if (sogoFolder && ![sogoFolder isKindOfClass: NSExceptionK])
         childFolder = [isa mapiStoreObjectWithSOGoObject: sogoFolder
                                              inContainer: self];

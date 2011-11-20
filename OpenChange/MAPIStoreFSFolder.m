@@ -149,23 +149,6 @@ static Class EOKeyValueQualifierK;
   return entries;
 }
 
-- (id) lookupFolder: (NSString *) childKey
-{
-  id childObject = nil;
-  SOGoMAPIFSFolder *childFolder;
-
-  [self folderKeys];
-  if ([folderKeys containsObject: childKey])
-    {
-      childFolder = [sogoObject lookupName: childKey inContext: nil
-                                   acquire: NO];
-      childObject = [MAPIStoreFSFolder mapiStoreObjectWithSOGoObject: childFolder
-                                                         inContainer: self];
-    }
-
-  return childObject;
-}
-
 - (NSDate *) lastMessageModificationTime
 {
   NSUInteger count, max;

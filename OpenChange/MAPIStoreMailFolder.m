@@ -351,23 +351,6 @@ static Class SOGoMailFolderK;
   return subfolderKeys;
 }
 
-- (id) lookupFolder: (NSString *) childKey
-{
-  id childObject = nil;
-  SOGoMailFolder *childFolder;
-
-  [self folderKeys];
-  if ([folderKeys containsObject: childKey])
-    {
-      childFolder = [sogoObject lookupName: childKey inContext: nil
-                                   acquire: NO];
-      childObject = [MAPIStoreMailFolder mapiStoreObjectWithSOGoObject: childFolder
-                                                           inContainer: self];
-    }
-
-  return childObject;
-}
-
 - (NSDate *) creationTime
 {
   return [NSCalendarDate dateWithTimeIntervalSince1970: 0x4dbb2dbe]; /* oc_version_time */
@@ -1168,26 +1151,28 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 
 - (id) lookupFolder: (NSString *) childKey
 {
-  id childObject = nil;
+  MAPIStoreMailFolder *childFolder = nil;
   SOGoMailAccount *account;
-  SOGoMailFolder *childFolder;
+  SOGoMailFolder *sogoFolder;
+  WOContext *woContext;
 
   if (usesAltNameSpace)
     {
-      [self folderKeys];
-      if ([folderKeys containsObject: childKey])
+      if ([[self folderKeys] containsObject: childKey])
         {
+          woContext = [[self context] woContext];
           account = [(SOGoMailFolder *) sogoObject mailAccountFolder];
-          childFolder = [account lookupName: childKey inContext: nil
-                                    acquire: NO];
-          childObject = [MAPIStoreMailFolder mapiStoreObjectWithSOGoObject: childFolder
-                                                               inContainer: self];
+          sogoFolder = [account lookupName: childKey inContext: woContext
+                                 acquire: NO];
+          [sogoFolder setContext: woContext];
+          childFolder = [MAPIStoreMailFolder mapiStoreObjectWithSOGoObject: sogoFolder
+                                             inContainer: self];
         }
     }
   else
-    childObject = [super lookupFolder: childKey];
+    childFolder = [super lookupFolder: childKey];
 
-  return childObject;
+  return childFolder;
 }
 
 @end

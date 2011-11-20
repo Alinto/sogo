@@ -1,5 +1,19 @@
 2011-11-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m (-lookupFolder:): explicitly set
+	the MAPIStoreContext's woContext as context to the looked up
+	folder, although one could expect it to have been set during the
+	lookup at the SOGo level...
+
+	* OpenChange/MAPIStoreFSFolder.m (-lookupFolder:): removed useless
+	overriding of method.
+
+	* OpenChange/MAPIStoreMailFolder.m (-[MAPIStoreMailFolder
+	lookupFolder:]): removed useless overriding of method.
+	(-[MAPIStoreInboxFolder lookupFolder:]): in altnamespace mode,
+	perform the same association of the woContext to the looked up
+	folder as in MAPIStoreFolder.
+
 	* OpenChange/MAPIStoreContext.m
 	(-initFromURL:withConnectionInfo:andTDBIndexing:): instantiate a
 	SOGoUser corresponding to the username of the new context and
