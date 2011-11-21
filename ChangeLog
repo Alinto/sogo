@@ -1,3 +1,13 @@
+2011-11-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js (initPreferences):
+	initialize calendar for the new vacation end date optional parameter.
+
+	* UI/PreferencesUI/UIxPreferences.m (-enableVacationEndDate)
+	(-disableVacationEndDate, -setEnableVacationEndDate:)
+	(-vacationEndDate, -setVacationEndDate:): getters/setters for the
+	new optional vacation end date.
+
 2011-11-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	*  SoObjects/SOGo/SOGoSieveManager.m (-updateFiltersForLogin:...)

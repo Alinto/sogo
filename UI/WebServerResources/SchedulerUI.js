@@ -1777,27 +1777,6 @@ function calendarDisplayCallback(http) {
              + http.readyState + "/" + http.status + ")");
 }
 
-function assignCalendar(name) {
-    if (typeof(skycalendar) != "undefined") {
-        var node = $(name);
-        if (node) {
-          node.calendar = new skycalendar(node);
-          node.calendar.setCalendarPage(ResourcesURL + "/skycalendar.html");
-          var dateFormat = node.getAttribute("dateFormat");
-          if (dateFormat)
-            node.calendar.setDateFormat(dateFormat);
-        }
-    }
-}
-
-function popupCalendar(node) {
-    var nodeId = $(node).readAttribute("inputId");
-    var input = $(nodeId);
-    input.calendar.popup();
-
-    return false;
-}
-
 function onEventsSelectionChange() {
     listOfSelection = this;
     this.removeClassName("_unfocused");

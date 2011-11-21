@@ -27,8 +27,11 @@
 "Add default email addresses" = "Add default email addresses";
 "Days between responses :" = "Days between responses :";
 "Do not send responses to mailing lists" = "Do not send responses to mailing lists";
+"Disable auto reply on" = "Disable auto reply on";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Please specify your message and your email addresses for which you want to enable auto reply.";
+"End date of your auto reply must be in the future."
+= "End date of your auto reply must be in the future.";
 
 /* forward messages */
 "Forward incoming messages" = "Forward incoming messages";
