@@ -1,3 +1,8 @@
+2011-11-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalTimeZone.m (+knownTimeZoneNames): ignore files that don't
+	have a .ics extension.
+
 2011-11-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalTrigger.m (-setValue:, value): removed useless accessors.
