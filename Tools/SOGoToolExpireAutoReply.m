@@ -65,7 +65,8 @@
 {
   fprintf (stderr, "expire-autoreply authname:authpassword\n\n"
 	   "       authname       administrator username of the Sieve server\n"
-	   "       authpassword   administrator password of the Sieve server\n");
+	   "       authpassword   administrator password of the Sieve server\n\n"
+           "The expire-autoreply action should be configured as a daily cronjob.\n");
 }
 
 - (BOOL) removeAutoReplyForLogin: (NSString *) theLogin
