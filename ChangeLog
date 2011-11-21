@@ -1,4 +1,3 @@
-<<<<<<< variant A
 2011-11-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/WORequest+SOGo.m - for now, we consider iCal 4
@@ -9,7 +8,6 @@
 	if we deal with Apple Address Book. If we don't do this and
 	a "vlist" is present, no card will be displayed at all.
 
->>>>>>> variant B
 2011-11-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxPreferences.js (initPreferences):
@@ -20,8 +18,6 @@
 	(-vacationEndDate, -setVacationEndDate:): getters/setters for the
 	new optional vacation end date.
 
-####### Ancestor
-======= end
 2011-11-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	*  SoObjects/SOGo/SOGoSieveManager.m (-updateFiltersForLogin:...)
