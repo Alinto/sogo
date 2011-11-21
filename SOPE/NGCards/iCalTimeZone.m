@@ -148,8 +148,11 @@ static NSArray *knownTimeZones;
 		    if ([fm fileExistsAtPath: zonePath isDirectory: &b] && !b)
 		      {
 			ext = [zone rangeOfString: @".ics"];
-			zone = [zone substringToIndex: ext.location];
-			[timeZoneNames addObject: zone];
+                        if (ext.location != NSNotFound)
+                          {
+                            zone = [zone substringToIndex: ext.location];
+                            [timeZoneNames addObject: zone];
+                          }
 		      }
 		  }
 		}
