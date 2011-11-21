@@ -157,7 +157,7 @@ static NSArray *folderListingFields = nil;
 	      [obj setIsNew: YES];
             }
         }
-      if (!obj)
+      if (!obj || ([obj isKindOfClass: [SOGoContactGCSList class]] && [[_ctx request] isMacOSXAddressBookApp]))
         obj = [NSException exceptionWithHTTPStatus:404 /* Not Found */];
     }
 

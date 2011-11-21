@@ -134,19 +134,34 @@
   return [self isAppleDAVWithSubstring: @"Mac OS X/10."];
 }
 
+//
+// sogod[22188] -[WEClientCapabilities initWithRequest:]: Unknown WebClient: user-agent='CalendarStore/5.0.1 (1139.14); iCal/5.0.1 (1547.4); Mac OS X/10.7.2 (11C74)'
+//
+//
 - (BOOL) isICal4
 {
-  return [self isAppleDAVWithSubstring: @"iCal/4."];
+  return ([self isAppleDAVWithSubstring: @"iCal/4."] ||
+          [self isAppleDAVWithSubstring: @"iCal/5."]);
 }
 
+
+//
+// Starting from 10.7, we see something like:
+//
+// sogod[27330] -[WEClientCapabilities initWithRequest:]: Unknown WebClient: user-agent='AddressBook/6.1 (1062) CardDAVPlugin/196 CFNetwork/520.2.5 Mac_OS_X/10.7.2 (11C74)'
+//
 - (BOOL) isMacOSXAddressBookApp
 {
   WEClientCapabilities *cc;
+  BOOL b;
 
   cc = [self clientCapabilities];
 
-  return ([[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
-          && [[cc userAgent] rangeOfString: @"Darwin"].location != NSNotFound);
+  b = [[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound &&
+	([[cc userAgent] rangeOfString: @"Darwin"].location != NSNotFound ||
+	[[cc userAgent] rangeOfString: @"AddressBook"].location != NSNotFound);
+
+  return b;
 }
 
 - (BOOL) isIPhoneAddressBookApp
