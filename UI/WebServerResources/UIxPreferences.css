@@ -66,6 +66,20 @@ DIV.listWrapper
   border-left: 1px solid #9b9b9b;
   background: #ccddec; }
 
+/* time date control */
+SPAN.timeDateControl INPUT.textField
+{ width: 7em;
+  vertical-align: text-bottom; }
+
+#vacation LABEL.timeDate,
+#vacation LABEL.timeDate input.checkBox
+{ line-height: 2.0em;
+}
+#vacation LABEL.timeDate,
+#vacation LABEL.timeDate input.checkBox,
+SPAN.timeDateControl SPAN
+{ vertical-align: text-top; }
+
 /* vacation, forward */
 #vacation, #forward
 { padding-left: 2.5em; }
@@ -81,6 +95,9 @@ DIV.listWrapper
 { height: 50px; }
 #vacation SPAN
 { float: right; }
+#vacation SPAN.timeDateControl,
+#vacation SPAN.timeDateControl SPAN
+{ float: none; }
 #vacation BR,
 #passwordView BR
 { clear: both; }

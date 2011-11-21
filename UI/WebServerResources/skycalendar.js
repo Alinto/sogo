@@ -25,6 +25,27 @@ var calendars = [];
 var RE_NUM = /^\-?\d+$/;
 var dateFormat = "yyyy-mm-dd";
 
+function assignCalendar(name) {
+    if (typeof(skycalendar) != "undefined") {
+        var node = $(name);
+        if (node) {
+          node.calendar = new skycalendar(node);
+          node.calendar.setCalendarPage(ResourcesURL + "/skycalendar.html");
+          var dateFormat = node.getAttribute("dateFormat");
+          if (dateFormat)
+            node.calendar.setDateFormat(dateFormat);
+        }
+    }
+}
+
+function popupCalendar(node) {
+    var nodeId = $(node).readAttribute("inputId");
+    var input = $(nodeId);
+    input.calendar.popup();
+
+    return false;
+}
+
 function skycalendar(obj_target) {
   // assing methods
   this.gen_date = cal_gen_date1;

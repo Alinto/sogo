@@ -23,7 +23,7 @@ function savePreferences(sender) {
         var end = $("dayEndTime");
         var selectedEnd = parseInt(end.options[end.selectedIndex].value);
         if (selectedStart >= selectedEnd) {
-            alert (_("Day start time must be prior to day end time."));
+            showAlertDialog (_("Day start time must be prior to day end time."));
             sendForm = false;
         }
     }
@@ -31,8 +31,16 @@ function savePreferences(sender) {
     if ($("enableVacation") && $("enableVacation").checked) {
         if ($("autoReplyText").value.strip().length == 0
             || $("autoReplyEmailAddresses").value.strip().length == 0) {
-            alert(_("Please specify your message and your email addresses for which you want to enable auto reply."));
+            showAlertDialog(_("Please specify your message and your email addresses for which you want to enable auto reply."));
             sendForm = false;
+        }
+        if ($("enableVacationEndDate") && $("enableVacationEndDate").checked) {
+            var endDate = new Date($("vacationEndDate_date").value);
+            var now = new Date();
+            if (endDate.getTime() < now.getTime()) {
+                showAlertDialog(_("End date of your auto reply must be in the future."));
+                sendForm = false;
+            }
         }
     }
 
@@ -40,7 +48,7 @@ function savePreferences(sender) {
         var addresses = $("forwardAddress").value.split(",");
         for (var i = 0; i < addresses.length && sendForm; i++)
             if (!emailRE.test(addresses[i].strip())) {
-                alert(_("Please specify an address to which you want to forward your messages."));
+                showAlertDialog(_("Please specify an address to which you want to forward your messages."));
                 sendForm = false;
             }
     }
@@ -198,6 +206,14 @@ function initPreferences() {
 
     initSieveFilters();
     initMailAccounts();
+
+    assignCalendar('vacationEndDate_date');
+    $("enableVacationEndDate").on("change", function(event) {
+        if (this.checked)
+            $("vacationEndDate_date").enable();
+        else        
+            $("vacationEndDate_date").disable();
+    });
 }
 
 function initSieveFilters() {

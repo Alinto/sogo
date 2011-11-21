@@ -883,6 +883,40 @@
   return ignore;
 }
 
+- (BOOL) enableVacationEndDate
+{
+  return [[vacationOptions objectForKey: @"endDateEnabled"] boolValue];
+}
+
+- (BOOL) disableVacationEndDate
+{
+  return ![self enableVacationEndDate];
+}
+
+- (void) setEnableVacationEndDate: (BOOL) enableVacationEndDate
+{
+  [vacationOptions setObject: [NSNumber numberWithBool: enableVacationEndDate]
+                      forKey: @"endDateEnabled"];
+}
+
+- (void) setVacationEndDate: (NSCalendarDate *) endDate
+{
+  NSNumber *time;
+  
+  time = [NSNumber numberWithInt: [endDate timeIntervalSince1970]];
+
+  [vacationOptions setObject: time forKey: @"endDate"];
+}
+
+- (NSCalendarDate *) vacationEndDate
+{
+  int time;
+
+  time = [[vacationOptions objectForKey: @"endDate"] intValue];
+
+  return [NSCalendarDate dateWithTimeIntervalSince1970: time];
+}
+
 /* mail forward */
 
 - (BOOL) isForwardEnabled

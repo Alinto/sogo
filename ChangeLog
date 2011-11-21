@@ -1,3 +1,23 @@
+2011-11-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/WORequest+SOGo.m - for now, we consider iCal 4
+	and iCal 5 to be the same and added new strings to recognize
+	Apple Address Book on Mac OS X 10.7 (Lion)
+
+	* SoObjects/Contacts/SOGoContactGCSFolder.m - we now skip list
+	if we deal with Apple Address Book. If we don't do this and
+	a "vlist" is present, no card will be displayed at all.
+
+2011-11-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js (initPreferences):
+	initialize calendar for the new vacation end date optional parameter.
+
+	* UI/PreferencesUI/UIxPreferences.m (-enableVacationEndDate)
+	(-disableVacationEndDate, -setEnableVacationEndDate:)
+	(-vacationEndDate, -setVacationEndDate:): getters/setters for the
+	new optional vacation end date.
+
 2011-11-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFolder.m (-lookupFolder:): explicitly set
