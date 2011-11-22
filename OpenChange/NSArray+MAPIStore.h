@@ -41,6 +41,7 @@
 + (id) arrayFromMVUnicode: (const struct WStringArray_r *) mvUnicode;
 - (struct WStringArray_r *) asMVUnicodeInMemCtx: (void *) memCtx;
 + (id) arrayFromMVBinary: (const struct BinaryArray_r *) mvBinary;
+- (struct BinaryArray_r *) asMVBinaryInMemCtx: (void *) memCtx;
 + (id) arrayFromMVGuid: (const struct FlatUIDArray_r *) mvGuid;
 + (id) arrayFromMVFileTime: (const struct DateTimeArray_r *) mvGuid;
 

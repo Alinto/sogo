@@ -230,6 +230,28 @@
   return mvResult;
 }
 
+- (struct BinaryArray_r *) asMVBinaryInMemCtx: (void *) memCtx
+{
+  struct BinaryArray_r *list;
+  NSData *data;
+  NSInteger count, max;
+
+  max = [self count];
+
+  list = talloc_zero(memCtx,struct BinaryArray_r);
+  list->cValues = max;
+  list->lpbin = talloc_array(list, struct Binary_r, max);
+
+  for (count = 0; count < max; count++)
+    {
+      data = [self objectAtIndex: count];
+      list->lpbin[count].cb = [data length];
+      list->lpbin[count].lpb = talloc_memdup (list->lpbin, [data bytes], list->lpbin[count].cb);
+    }
+
+  return list;
+}
+
 + (id) arrayFromMVGuid: (const struct FlatUIDArray_r *) mvGuid
 {
   NSUInteger count;

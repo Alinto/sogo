@@ -115,6 +115,9 @@ static int MAPIStoreTallocWrapperDestroy (void *data)
     case PT_MV_UNICODE:
       *data = [(NSArray *) self asMVUnicodeInMemCtx: memCtx];
       break;
+    case PT_MV_BINARY:
+      *data = [(NSArray *) self asMVBinaryInMemCtx: memCtx];
+      break;
 
     default:
       [self errorWithFormat: @"object type not handled: %d (0x%.4x)",
