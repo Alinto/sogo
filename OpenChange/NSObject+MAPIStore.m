@@ -111,7 +111,9 @@ static int MAPIStoreTallocWrapperDestroy (void *data)
     case PT_CLSID:
       *data = [(NSData *) self asGUIDInMemCtx: memCtx];
       break;
-
+    case PT_MV_LONG:
+      *data = [(NSArray *) self asMVLongInMemCtx: memCtx];
+      break;
     case PT_MV_UNICODE:
       *data = [(NSArray *) self asMVUnicodeInMemCtx: memCtx];
       break;

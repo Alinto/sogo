@@ -2,7 +2,8 @@
 
 	* OpenChange/NSArray+MAPIStore.m (-asMVUnicodeInMemCtx:) renamed
 	from "asArrayOfUnicodeStringsInCtx".
-	(-asMVUnicodeInMemCtx:): new conversion method.
+	(-asMVUnicodeInMemCtx:, -asMVLongInMemCtx:): new conversion
+	methods.
 
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromValuePointer):
 	simplified method by using set_SPropValue_proptag and

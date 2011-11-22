@@ -149,6 +149,26 @@
   return mvResult;
 }
 
+- (struct LongArray_r *) asMVLongInMemCtx: (void *) memCtx
+{
+  struct LongArray_r *list;
+  NSNumber *number;
+  NSInteger count, max;
+
+  max = [self count];
+
+  list = talloc_zero(memCtx, struct LongArray_r);
+  list->cValues = max;
+  list->lpl = talloc_array(list, uint32_t, max);
+  for (count = 0; count < max; count++)
+    {
+      number = [self objectAtIndex: count];
+      list->lpl[count] = [number longValue];
+    }
+
+  return list;
+}
+
 + (id) arrayFromMVI8: (const struct I8Array_r *) mvI8
 {
   NSUInteger count;
