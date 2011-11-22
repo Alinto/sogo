@@ -27,8 +27,22 @@
 
 @interface NSArray (MAPIStoreFolders)
 
-- (struct WStringArray_r *) asArrayOfUnicodeStringsInCtx: (void *) memCtx;
-// - (struct mapi_SPLSTRArrayW *) asArrayOfUnicodeStringsInCtx: (void *) memCtx;
+/* mapi structs */
++ (id) arrayFromMAPIMVLong: (const struct mapi_MV_LONG_STRUCT *) mvLong;
++ (id) arrayFromMAPIMVUnicode: (const struct mapi_SPLSTRArrayW *) mvUnicode;
++ (id) arrayFromMAPIMVString: (const struct mapi_SLPSTRArray *) mvString;
++ (id) arrayFromMAPIMVBinary: (const struct mapi_SBinaryArray *) mvBinary;
++ (id) arrayFromMAPIMVGuid: (const struct mapi_SGuidArray *) mvGuid;
+
++ (id) arrayFromMVShort: (const struct ShortArray_r *) mvShort;
++ (id) arrayFromMVLong: (const struct LongArray_r *) mvLong;
++ (id) arrayFromMVI8: (const struct I8Array_r *) mvI8;
++ (id) arrayFromMVString: (const struct StringArray_r *) mvString;
++ (id) arrayFromMVUnicode: (const struct WStringArray_r *) mvUnicode;
+- (struct WStringArray_r *) asArrayOfUnicodeStringsInMemCtx: (void *) memCtx;
++ (id) arrayFromMVBinary: (const struct BinaryArray_r *) mvBinary;
++ (id) arrayFromMVGuid: (const struct FlatUIDArray_r *) mvGuid;
++ (id) arrayFromMVFileTime: (const struct DateTimeArray_r *) mvGuid;
 
 @end
 
