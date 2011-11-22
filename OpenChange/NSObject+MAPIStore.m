@@ -113,7 +113,7 @@ static int MAPIStoreTallocWrapperDestroy (void *data)
       break;
 
     case PT_MV_UNICODE:
-      *data = [(NSArray *) self asArrayOfUnicodeStringsInMemCtx: memCtx];
+      *data = [(NSArray *) self asMVUnicodeInMemCtx: memCtx];
       break;
 
     default:

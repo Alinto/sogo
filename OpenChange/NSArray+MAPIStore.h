@@ -39,7 +39,7 @@
 + (id) arrayFromMVI8: (const struct I8Array_r *) mvI8;
 + (id) arrayFromMVString: (const struct StringArray_r *) mvString;
 + (id) arrayFromMVUnicode: (const struct WStringArray_r *) mvUnicode;
-- (struct WStringArray_r *) asArrayOfUnicodeStringsInMemCtx: (void *) memCtx;
+- (struct WStringArray_r *) asMVUnicodeInMemCtx: (void *) memCtx;
 + (id) arrayFromMVBinary: (const struct BinaryArray_r *) mvBinary;
 + (id) arrayFromMVGuid: (const struct FlatUIDArray_r *) mvGuid;
 + (id) arrayFromMVFileTime: (const struct DateTimeArray_r *) mvGuid;

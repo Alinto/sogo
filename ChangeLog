@@ -1,12 +1,14 @@
 2011-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSArray+MAPIStore.m (-asMVUnicodeInMemCtx:) renamed
+	from "asArrayOfUnicodeStringsInCtx".
+
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromValuePointer):
 	simplified method by using set_SPropValue_proptag and
 	NSObjectFromSPropValue.
 
 	* OpenChange/NSObject+MAPIStore.m (-getValue:forTag:inMemCtx:):
 	renamed from "getMAPIValue:...".
-	(-asArrayOfUnicodeStringsInMemCtx:) renamed from "asArrayOfUnicodeStringsInCtx".
 	(-arrayFromMAPIMVLong:, +arrayFromMAPIMVUnicode:)
 	(+arrayFromMAPIMVString:, +arrayFromMAPIMVBinary:)
 	(+arrayFromMAPIMVGuid:, +arrayFromMVShort:, +arrayFromMVLong:)

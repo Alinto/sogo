@@ -181,7 +181,7 @@
   return mvResult;
 }
 
-- (struct WStringArray_r *) asArrayOfUnicodeStringsInMemCtx: (void *) memCtx
+- (struct WStringArray_r *) asMVUnicodeInMemCtx: (void *) memCtx
 {
   struct WStringArray_r *list;
   NSInteger count, max;
