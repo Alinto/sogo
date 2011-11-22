@@ -157,9 +157,9 @@
 
   max = [self count];
 
-  list = talloc_zero(memCtx, struct LongArray_r);
+  list = talloc_zero (memCtx, struct LongArray_r);
   list->cValues = max;
-  list->lpl = talloc_array(list, uint32_t, max);
+  list->lpl = talloc_array (list, uint32_t, max);
   for (count = 0; count < max; count++)
     {
       number = [self objectAtIndex: count];
@@ -208,9 +208,9 @@
 
   max = [self count];
 
-  list = talloc_zero(memCtx, struct WStringArray_r);
+  list = talloc_zero (memCtx, struct WStringArray_r);
   list->cValues = max;
-  list->lppszW = talloc_array(list, const char *, max);
+  list->lppszW = talloc_array (list, const char *, max);
 
   for (count = 0; count < max; count++)
     list->lppszW[count] = [[self objectAtIndex: count] asUnicodeInMemCtx: list->lppszW];
@@ -258,9 +258,9 @@
 
   max = [self count];
 
-  list = talloc_zero(memCtx,struct BinaryArray_r);
+  list = talloc_zero (memCtx,struct BinaryArray_r);
   list->cValues = max;
-  list->lpbin = talloc_array(list, struct Binary_r, max);
+  list->lpbin = talloc_array (list, struct Binary_r, max);
 
   for (count = 0; count < max; count++)
     {
