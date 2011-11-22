@@ -247,7 +247,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 
   value = [properties objectForKey: MAPIPropertyKey (propTag)];
   if (value)
-    rc = [value getMAPIValue: data forTag: propTag inMemCtx: memCtx];
+    rc = [value getValue: data forTag: propTag inMemCtx: memCtx];
   else
     {
       propValue = (propTag & 0xffff0000) >> 16;

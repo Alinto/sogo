@@ -1,3 +1,15 @@
+2011-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/NSObject+MAPIStore.m (-getValue:forTag:inMemCtx:):
+	renamed from "getMAPIValue:...".
+	(-asArrayOfUnicodeStringsInMemCtx:) renamed from "asArrayOfUnicodeStringsInCtx".
+	(-arrayFromMAPIMVLong:, +arrayFromMAPIMVUnicode:)
+	(+arrayFromMAPIMVString:, +arrayFromMAPIMVBinary:)
+	(+arrayFromMAPIMVGuid:, +arrayFromMVShort:, +arrayFromMVLong:)
+	(+arrayFromMVI8:, +arrayFromMVUnicode:, +arrayFromMVString:)
+	(+arrayFromMVBinary:, +arrayFromMVGuid:, +arrayFromMVFileTime:)
+	new constructors for multivalue types.
+
 2011-11-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFolder.m (-lookupFolder:): explicitly set

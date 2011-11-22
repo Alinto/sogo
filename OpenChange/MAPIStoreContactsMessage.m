@@ -245,7 +245,7 @@
   if (!stringValue)
     stringValue = @"";
   *data = [[NSArray arrayWithObject: stringValue]
-            asArrayOfUnicodeStringsInCtx: memCtx];
+            asArrayOfUnicodeStringsInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }

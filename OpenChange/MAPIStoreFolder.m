@@ -1201,7 +1201,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   value = [[propsMessage properties]
             objectForKey: MAPIPropertyKey (propTag)];
   if (value)
-    rc = [value getMAPIValue: data forTag: propTag inMemCtx: memCtx];
+    rc = [value getValue: data forTag: propTag inMemCtx: memCtx];
   else
     rc = [super getProperty: data withTag: propTag inMemCtx: memCtx];
 

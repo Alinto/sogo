@@ -26,6 +26,7 @@
 #import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
 
+#import "NSArray+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 
@@ -123,6 +124,22 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
       result = [NSData dataWithGUID: &value->value.lpguid];
       break;
 
+    case PT_MV_LONG:
+      result = [NSArray arrayFromMAPIMVLong: &value->value.MVl];
+      break;
+    case PT_MV_STRING8:
+      result = [NSArray arrayFromMAPIMVString: &value->value.MVszA];
+      break;
+    case PT_MV_UNICODE:
+      result = [NSArray arrayFromMAPIMVUnicode: &value->value.MVszW];
+      break;
+    case PT_MV_CLSID:
+      result = [NSArray arrayFromMAPIMVGuid: &value->value.MVguid];
+      break;
+    case PT_MV_BINARY:
+      result = [NSArray arrayFromMAPIMVBinary: &value->value.MVbin];
+      break;
+
     default:
 // #define	PT_UNSPECIFIED		0x0
 // #define	PT_I2			0x2
@@ -135,8 +152,9 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
 // #define	PT_SRESTRICT		0xFD
 // #define	PT_ACTIONS		0xFE
       result = [NSNull null];
+      abort();
       NSLog (@"%s: object type not handled: %d (0x%.4x)",
-	     __PRETTY_FUNCTION__, valueType, valueType);
+             __PRETTY_FUNCTION__, valueType, valueType);
     }
 
   return result;
@@ -189,6 +207,30 @@ NSObjectFromSPropValue (const struct SPropValue *value)
     case PT_CLSID:
       result = [NSData dataWithFlatUID: value->value.lpguid];
       break;
+    case PT_MV_SHORT:
+      result = [NSArray arrayFromMVShort: &value->value.MVi];
+      break;
+    case PT_MV_LONG:
+      result = [NSArray arrayFromMVLong: &value->value.MVl];
+      break;
+    case PT_MV_I8:
+      result = [NSArray arrayFromMVI8: &value->value.MVi8];
+      break;
+    case PT_MV_STRING8:
+      result = [NSArray arrayFromMVString: &value->value.MVszA];
+      break;
+    case PT_MV_UNICODE:
+      result = [NSArray arrayFromMVUnicode: &value->value.MVszW];
+      break;
+    case PT_MV_CLSID:
+      result = [NSArray arrayFromMVGuid: &value->value.MVguid];
+      break;
+    case PT_MV_BINARY:
+      result = [NSArray arrayFromMVBinary: &value->value.MVbin];
+      break;
+    case PT_MV_SYSTIME:
+      result = [NSArray arrayFromMVFileTime: &value->value.MVft];
+      break;
 
     default:
 // #define	PT_UNSPECIFIED		0x0
@@ -202,8 +244,9 @@ NSObjectFromSPropValue (const struct SPropValue *value)
 // #define	PT_SRESTRICT		0xFD
 // #define	PT_ACTIONS		0xFE
       result = [NSNull null];
+      abort();
       NSLog (@"%s: object type not handled: %d (0x%.4x)",
-	     __PRETTY_FUNCTION__, valueType, valueType);
+             __PRETTY_FUNCTION__, valueType, valueType);
     }
 
   return result;
@@ -265,6 +308,7 @@ NSObjectFromValuePointer (enum MAPITAGS propTag, void *data)
 // #define	PT_SRESTRICT		0xFD
 // #define	PT_ACTIONS		0xFE
       result = [NSNull null];
+      abort();
       NSLog (@"%s: object type not handled: %d (0x%.8x)", __PRETTY_FUNCTION__,
              propTag, propTag);
     }
