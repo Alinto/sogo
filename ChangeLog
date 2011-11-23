@@ -1,3 +1,12 @@
+2011-11-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContactsMessageTable.m
+	(-evaluatePropertyRestriction:intoQualifier:): returns
+	"MAPIRestrictionStateAlwaysTrue" for PR_SENSITIVITY.
+
+	* OpenChange/MAPIStoreContactsMessage.m
+	(-getPrSensitivity:inMemCtx:): new getter that always returns 0.
+
 2011-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/NSArray+MAPIStore.m (-asMVUnicodeInMemCtx:) renamed

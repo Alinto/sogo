@@ -745,6 +745,12 @@
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPrSensitivity: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getLongZero: data inMemCtx: memCtx];
+}
+
 /* attachments (photos) */
 - (void) _fetchAttachmentParts
 {
