@@ -26,9 +26,6 @@
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalRecurrenceRule.h>
 
-#include <stdbool.h>
-#include <gen_ndr/property.h>
-
 @class NSCalendarDate;
 @class iCalRepeatableEntityObject;
 @class iCalRecurrenceRule;

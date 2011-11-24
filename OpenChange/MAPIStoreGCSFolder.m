@@ -133,6 +133,11 @@
   return value;
 }
 
+- (SOGoFolder *) aclFolder
+{
+  return (SOGoFolder *) sogoObject;
+}
+
 /* synchronisation */
 
 /* Tree

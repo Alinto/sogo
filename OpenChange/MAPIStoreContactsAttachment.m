@@ -142,7 +142,8 @@ extern NSTimeZone *utcTZ;
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!photoData)
-    ASSIGN (photoData, [[photo value: 0] dataByDecodingBase64]);
+    ASSIGN (photoData,
+            [[photo flattenedValuesForKey: @""] dataByDecodingBase64]);
 
   *data = [photoData asBinaryInMemCtx: memCtx];
 
@@ -153,7 +154,8 @@ extern NSTimeZone *utcTZ;
                inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!photoData)
-    ASSIGN (photoData, [[photo value: 0] dataByDecodingBase64]);
+    ASSIGN (photoData,
+            [[photo flattenedValuesForKey: @""] dataByDecodingBase64]);
 
   *data = MAPILongValue (memCtx, [photoData length]);
 

@@ -23,6 +23,7 @@
 #import <Foundation/NSURL.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <EOControl/EOQualifier.h>
+#import <SOGo/SOGoPermissions.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Contacts/SOGoContactFolders.h>
 
@@ -32,6 +33,9 @@
 #import "MAPIStoreContactsMessageTable.h"
 
 #import "MAPIStoreContactsFolder.h"
+
+#include <util/time.h>
+#include <gen_ndr/exchange.h>
 
 @implementation MAPIStoreContactsFolder
 
@@ -101,6 +105,41 @@
                                                            inContainer: self];
 
   return newMessage;
+}
+
+- (NSArray *) rolesForExchangeRights: (uint32_t) rights
+{
+  NSMutableArray *roles;
+
+  roles = [NSMutableArray arrayWithCapacity: 6];
+  if (rights & RightsCreateItems)
+    [roles addObject: SOGoRole_ObjectCreator];
+  if (rights & RightsDeleteAll)
+    [roles addObject: SOGoRole_ObjectEraser];
+  if (rights & RightsEditAll)
+    [roles addObject: SOGoRole_ObjectEditor];
+  if (rights & RightsReadItems)
+    [roles addObject: SOGoRole_ObjectViewer];
+
+  return roles;
+}
+
+- (uint32_t) exchangeRightsForRoles: (NSArray *) roles
+{
+  uint32_t rights = 0;
+
+  if ([roles containsObject: SOGoRole_ObjectCreator])
+    rights |= RightsCreateItems;
+  if ([roles containsObject: SOGoRole_ObjectEraser])
+    rights |= RightsDeleteAll;
+  if ([roles containsObject: SOGoRole_ObjectEditor])
+    rights |= RightsEditAll;
+  if ([roles containsObject: SOGoRole_ObjectViewer])
+    rights |= RightsReadItems;
+  if (rights != 0)
+    rights |= RoleNone; /* actually "folder visible" */
+ 
+  return rights;
 }
 
 @end

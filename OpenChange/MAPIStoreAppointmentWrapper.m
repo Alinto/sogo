@@ -37,8 +37,8 @@
 #import <NGCards/NSString+NGCards.h>
 #import <SOGo/SOGoUserManager.h>
 
-#import "MAPIStoreMessage.h"
 #import "MAPIStoreRecurrenceUtils.h"
+#import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
@@ -53,6 +53,7 @@
 #include <gen_ndr/exchange.h>
 #include <gen_ndr/property.h>
 #include <gen_ndr/ndr_property.h>
+#include <util/attr.h>
 #include <libmapi/libmapi.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
@@ -79,13 +80,15 @@ static NSCharacterSet *hexCharacterSet = nil;
                     andUser: (SOGoUser *) newUser
              andSenderEmail: (NSString *) newSenderEmail
                  inTimeZone: (NSTimeZone *) newTimeZone
+         withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
 {
   MAPIStoreAppointmentWrapper *wrapper;
 
   wrapper = [[self alloc] initWithICalEvent: newEvent
                                     andUser: newUser
                              andSenderEmail: newSenderEmail
-                                 inTimeZone: newTimeZone];
+                                 inTimeZone: newTimeZone
+                         withConnectionInfo: newConnInfo];
   [wrapper autorelease];
 
   return wrapper;
@@ -95,6 +98,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 {
   if ((self = [super init]))
     {
+      connInfo = NULL;
       calendar = nil;
       event = nil;
       timeZone = nil;
@@ -177,9 +181,11 @@ static NSCharacterSet *hexCharacterSet = nil;
                  andUser: (SOGoUser *) newUser
           andSenderEmail: (NSString *) newSenderEmail
               inTimeZone: (NSTimeZone *) newTimeZone
+      withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
 {
   if ((self = [self init]))
     {
+      connInfo = newConnInfo;
       ASSIGN (event, newEvent);
       ASSIGN (calendar, [event parent]);
       ASSIGN (timeZone, newTimeZone);
@@ -255,7 +261,7 @@ static NSCharacterSet *hexCharacterSet = nil;
             {
               username = [contactInfos objectForKey: @"c_uid"];
               recipient->username = [username asUnicodeInMemCtx: msgData];
-              entryId = MAPIStoreInternalEntryId (username);
+              entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
             }
           else
             {
@@ -356,7 +362,7 @@ static NSCharacterSet *hexCharacterSet = nil;
           {
             username = [contactInfos objectForKey: @"c_uid"];
             recipient->username = [username asUnicodeInMemCtx: msgData];
-            entryId = MAPIStoreInternalEntryId (username);
+            entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
           }
         else
           {
@@ -628,20 +634,6 @@ static NSCharacterSet *hexCharacterSet = nil;
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPrBody: (void **) data
-         inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-
-  stringValue = [event comment];
-  if (!stringValue)
-    stringValue = @"";
-
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
 - (int) getPrStartDate: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -740,7 +732,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   if (contactInfos)
     {
       username = [contactInfos objectForKey: @"c_uid"];
-      entryId = MAPIStoreInternalEntryId (username);
+      entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, username);
     }
   else
     entryId = MAPIStoreExternalEntryId (cn, email);
@@ -1032,6 +1024,22 @@ static NSCharacterSet *hexCharacterSet = nil;
   *data = MAPILongValue (memCtx, v);
 
   return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrBody: (void **) data
+         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+  NSString *stringValue;
+
+  /* FIXME: there is a confusion in NGCards around "comment" and "description" */
+  stringValue = [event comment];
+  if ([stringValue length] > 0)
+    *data = [stringValue asUnicodeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 - (int) getPidLidIsRecurring: (void **) data
@@ -1402,7 +1410,8 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
         {
           startDate = [event startDate];
           relation = [[trigger relationType] lowercaseString];
-          interval = [[trigger value] durationAsTimeInterval];
+          interval = [[trigger flattenedValuesForKey: @""]
+                       durationAsTimeInterval];
           if ([relation isEqualToString: @"end"])
             relationDate = [event endDate];
           else

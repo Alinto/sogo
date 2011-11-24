@@ -81,6 +81,8 @@ h_template = """/* %(filename)s (auto-generated) - this file is part of SOGo
 #import <Foundation/NSObjCRuntime.h>
 
 #include <stdbool.h>
+#include <talloc.h>
+#include <util/time.h>
 #include <gen_ndr/exchange.h>
 
 extern const NSUInteger MAPIStorePropertyGettersCount;

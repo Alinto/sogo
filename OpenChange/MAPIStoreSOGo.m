@@ -1,6 +1,6 @@
 /* MAPIStoreSOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2010, 2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -100,6 +100,7 @@ sogo_backend_init (void)
     [[MAPIApplicationK new] activateApplication];
 
   [[SOGoCache sharedCache] disableRequestsCache];
+  [[SOGoCache sharedCache] disableLocalCache];
 
   [pool release];
 
@@ -544,6 +545,36 @@ sogo_folder_open_table(void *folder_object, TALLOC_CTX *mem_ctx,
                 andHandleId: handle_id];
       if (rc == MAPISTORE_SUCCESS)
         *table_object = [table tallocWrapper: mem_ctx];
+      [pool release];
+    }
+  else
+    {
+      rc = sogo_backend_unexpected_error();
+    }
+
+  return rc;
+}
+
+static int
+sogo_folder_modify_permissions(void *folder_object, uint8_t flags,
+                               uint16_t pcount,
+                               struct PermissionData *permissions)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreFolder *folder;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (folder_object)
+    {
+      wrapper = folder_object;
+      folder = wrapper->MAPIStoreSOGoObject;
+      pool = [NSAutoreleasePool new];
+      rc = [folder modifyPermissions: permissions
+                           withCount: pcount
+                            andFlags: flags];
       [pool release];
     }
   else
@@ -1189,6 +1220,7 @@ int mapistore_init_backend(void)
       backend.folder.get_deleted_fmids = sogo_folder_get_deleted_fmids;
       backend.folder.get_child_count = sogo_folder_get_child_count;
       backend.folder.open_table = sogo_folder_open_table;
+      backend.folder.modify_permissions = sogo_folder_modify_permissions;
       backend.message.create_attachment = sogo_message_create_attachment;
       backend.message.get_attachment_table = sogo_message_get_attachment_table;
       backend.message.open_attachment = sogo_message_open_attachment;

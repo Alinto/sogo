@@ -80,7 +80,7 @@
 
   [sogoObject appendProperties: properties];
   [sogoObject save];
-  [self resetProperties];
+  [properties removeAllObjects];
 }
 
 - (NSDate *) creationTime

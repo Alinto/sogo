@@ -24,6 +24,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "MAPIStoreTypes.h"
+#import "NSArray+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSValue+MAPIStore.h"
@@ -68,9 +69,9 @@ static int MAPIStoreTallocWrapperDestroy (void *data)
 
 @implementation NSObject (MAPIStoreDataTypes)
 
-- (int) getMAPIValue: (void **) data
-              forTag: (enum MAPITAGS) propTag
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getValue: (void **) data
+          forTag: (enum MAPITAGS) propTag
+        inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint16_t valueType;
   int rc = MAPISTORE_SUCCESS;
@@ -110,10 +111,20 @@ static int MAPIStoreTallocWrapperDestroy (void *data)
     case PT_CLSID:
       *data = [(NSData *) self asGUIDInMemCtx: memCtx];
       break;
+    case PT_MV_LONG:
+      *data = [(NSArray *) self asMVLongInMemCtx: memCtx];
+      break;
+    case PT_MV_UNICODE:
+      *data = [(NSArray *) self asMVUnicodeInMemCtx: memCtx];
+      break;
+    case PT_MV_BINARY:
+      *data = [(NSArray *) self asMVBinaryInMemCtx: memCtx];
+      break;
 
     default:
       [self errorWithFormat: @"object type not handled: %d (0x%.4x)",
             valueType, valueType];
+      abort();
       *data = NULL;
       rc = MAPISTORE_ERR_NOT_FOUND;
     }

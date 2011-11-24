@@ -37,9 +37,6 @@
 
 #import "MAPIStoreObject.h"
 
-extern NSData *MAPIStoreInternalEntryId (NSString *username);
-extern NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email);
-
 @interface MAPIStoreMessage : MAPIStoreObject
 {
   NSArray *attachmentKeys;

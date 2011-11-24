@@ -105,6 +105,9 @@ static Class MAPIStoreContactsMessageK, NGMailAddressK, NSDataK, NSStringK;
 	rc = MAPIRestrictionStateAlwaysFalse;
       break;
 
+    case PR_SENSITIVITY:
+      rc = MAPIRestrictionStateAlwaysTrue;
+      break;
     case PidLidAddressBookProviderArrayType:
     case PidLidAddressBookProviderEmailList:
       /* FIXME: this is a hack. We should return a real qualifier here */
