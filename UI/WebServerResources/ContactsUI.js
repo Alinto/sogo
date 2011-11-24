@@ -1330,7 +1330,7 @@ function resetCategoriesMenu() {
             var catName = UserDefaults["SOGoContactsCategories"][i];
             if (catName.length > 0) {
                 var menuLI = createElement("li");
-                menuLI.observe("click", onCategoriesMenuItemClick);
+                menuLI.observe("mousedown", onCategoriesMenuItemClick);
                 menuLI.category = catName;
                 menuLI.appendChild(document.createTextNode(catName));
                 menuUL.appendChild(menuLI);

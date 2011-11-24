@@ -1,3 +1,9 @@
+2011-11-24  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js (resetCategoriesMenu): the
+	event listener must be on mousedown since click is already
+	observed by document.body.
+
 2011-11-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/WORequest+SOGo.m - for now, we consider iCal 4
