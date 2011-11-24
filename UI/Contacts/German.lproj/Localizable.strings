@@ -143,7 +143,7 @@
 = "Sie können ihr Persönliches Adressbuch nicht löschen.";
 
 "Are you sure you want to delete the selected contacts?"
-= "Wollen Sie wirklich die gewählten Karten löschen?";
+= "Wollen Sie wirklich die gewählten Adresskarten löschen?";
 
 "You cannot delete the card of \"%{0}\"."
 = "Sie können die Adresskarte von \"%{0}\" nicht löschen.";

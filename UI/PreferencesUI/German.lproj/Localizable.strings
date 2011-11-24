@@ -77,6 +77,7 @@
 "Day start time :" = "Tagesanfang:";
 "Day end time :" = "Tagesende:";
 "Day start time must be prior to day end time." = "Der Tagesanfang muss vor dem Tagesende liegen.";
+"Show time as busy outside working hours" = "Zeit außerhalb der Arbeitszeit als gebucht anzeigen";
 "First week of year :" = "Erste Woche des Jahres:";
 "Enable reminders for Calendar items" = "Terminerinnerung aktivieren";
 "Play a sound when a reminder comes due"
@@ -86,6 +87,12 @@
 "firstWeekOfYear_January1" = "Beginnt am 1.Januar";
 "firstWeekOfYear_First4DayWeek" = "Erste 4 Tage Woche";
 "firstWeekOfYear_FirstFullWeek" = "Erste ganze Woche";
+
+/* Default Calendar */
+"Default calendar :" = "Standardkalender";
+"selectedCalendar" = "Ausgewählter Kalender";
+"personalCalendar" = "Persönlicher Kalender";
+"firstCalendar" = "Erster Kalender";
 
 "reminderTime_0000" = "0 Minuten";
 "reminderTime_0005" = "5 Minuten";
@@ -102,6 +109,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Nur abonnierte Ordner anzeigen";
+"Sort messages by threads" = "Nachrichten nach Thema sortieren";
 "Check for new mail:" = "Auf neue Nachrichten prüfen:";
 "messagecheck_manually" = "Manuell";
 "messagecheck_every_minute" = "Minütlich";

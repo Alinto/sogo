@@ -5,6 +5,7 @@
 "Username:" = "Benutzername:";
 "Password:" = "Passwort:";
 "Domain:" = "Domain:";
+"Remember username" = "Benutzernamen merken";
 
 "Connect" = "Anmelden";
 
@@ -39,10 +40,10 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Über";
-"AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>
-SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>
-SOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>
-See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "Entwickelt von Inverse. SOGo ist ein vollständiger Groupware-Server mit Fokus auf Skalierbarkeit und Unkompliziertheit.<br/><br/>
+SOGo bietet ein umfangreiches, auf AJAX basierendes Web-Interface. Durch die Verwendung von Protokollstandards wie etwa CalDAV und CardDAV werden verschiedene native Clients unterstützt.<br/><br/>
+SOGo wird unter der <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPLv2</a> oder höher, Teile unter der <a href=\"http://gnu.org/licenses/lgpl.html\">GNU LGPLv2</a> verbreitet. Dies ist freie Software: Sie haben die Freiheit sie zu verändern und erneut zu verbreiten. Es besteht KEINE GEWÄHRLEISTUNG, soweit dies gesetzlich zulässig ist.<br/><br/>
+Auf <a href=\"http://www.sogo.nu/en/support/community.html\">dieser Seite</a> (in englischer Sprache) können Sie sich über weitere Support-Optionen informieren.";
 
 "Your account was locked due to too many failed attempts." = "Ihr Konto wurde wegen zu vieler fehlgeschlagener Versuche gesperrt.";
 "Your account was locked due to an expired password." = "Ihr Konto wurde wegen eines abgelaufenen Passworts gesperrt.";

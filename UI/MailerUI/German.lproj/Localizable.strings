@@ -142,7 +142,7 @@
 "View"          = "Ansicht";
 "All"           = "Alle";
 "Unread"        = "Ungelesene";
-"No message"    = "No message";
+"No message"    = "Keine Nachricht";
 "messages"      = "Nachricht(en)";
 
 "first"         = "Erste";
@@ -196,8 +196,8 @@
 "Delete Folder" = "Löschen";
 "Use This Folder For" = "Diesen Ordner verwenden für";
 "Get Messages for Account" = "Neue Nachrichten empfangen";
-"Properties..." = "Properties...";
-"Delegation..." = "Delegation...";
+"Properties..." = "Eigenschaften...";
+"Delegation..." = "Delegierung...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Gesendete Nachrichten";
@@ -228,7 +228,7 @@
 "Important" = "Wichtig";
 "Work" = "Geschäftlich";
 "Personal" = "Persönlich";
-"To Do" = "To Do";
+"To Do" = "To-Do";
 "Later" = "Später";
 
 /* Mark popup menu */
@@ -286,6 +286,6 @@
 "error_missingrecipients" = "Der Empfänger fehlt!";
 
 /* Message sending */
-"cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
-"cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
-"cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";
+"cannot send message: (smtp) all recipients discarded" = "Zustellungsfehler: Alle Empfänger sind fehlerhaft.";
+"cannot send message (smtp) - recipients discarded:" = "Zustellungsfehler bei folgenden Empfängern:";
+"cannot send message: (smtp) error when connecting" = "Zustellungsfehler: Fehler bei der Verbindung zum SMTP-Server.";
