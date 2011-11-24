@@ -1153,7 +1153,7 @@
       contactsClasses
         = [NSArray arrayWithObjects:
                      NSClassFromString (@"SOGoContactFolders"),
-                   NSClassFromString (@"SOGoContacGCSFolder"),
+                   NSClassFromString (@"SOGoContactGCSFolder"),
                    NSClassFromString (@"SOGoContactSourceFolder"),
                    nil];
       [contactsClasses retain];
