@@ -54,6 +54,7 @@
 + (SOGoCache *) sharedCache;
 
 - (void) disableRequestsCache;
+- (void) disableLocalCache;
 
 - (void) killCache;
 

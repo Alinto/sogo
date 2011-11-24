@@ -25,6 +25,7 @@
 #import <Foundation/NSURL.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <EOControl/EOQualifier.h>
+#import <SOGo/SOGoPermissions.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoAppointmentObject.h>
@@ -35,6 +36,9 @@
 #import "MAPIStoreCalendarMessageTable.h"
 
 #import "MAPIStoreCalendarFolder.h"
+
+#include <util/time.h>
+#include <gen_ndr/exchange.h>
 
 @implementation MAPIStoreCalendarFolder
 
@@ -104,6 +108,53 @@
 
   
   return newMessage;
+}
+
+- (NSArray *) rolesForExchangeRights: (uint32_t) rights
+{
+  NSMutableArray *roles;
+
+  roles = [NSMutableArray arrayWithCapacity: 6];
+  if (rights & RightsCreateItems)
+    [roles addObject: SOGoRole_ObjectCreator];
+  if (rights & RightsDeleteAll)
+    [roles addObject: SOGoRole_ObjectEraser];
+  if (rights & RightsEditAll)
+    {
+      [roles addObject: SOGoCalendarRole_PublicModifier];
+      [roles addObject: SOGoCalendarRole_PrivateModifier];
+      [roles addObject: SOGoCalendarRole_ConfidentialModifier];
+    }
+  else if (rights & RightsReadItems)
+    {
+      [roles addObject: SOGoCalendarRole_PublicViewer];
+      [roles addObject: SOGoCalendarRole_PrivateViewer];
+      [roles addObject: SOGoCalendarRole_ConfidentialViewer];
+    }
+
+  return roles;
+}
+
+- (uint32_t) exchangeRightsForRoles: (NSArray *) roles
+{
+  uint32_t rights = 0;
+
+  if ([roles containsObject: SOGoRole_ObjectCreator])
+    rights |= RightsCreateItems;
+  if ([roles containsObject: SOGoRole_ObjectEraser])
+    rights |= RightsDeleteAll;
+  if ([roles containsObject: SOGoCalendarRole_PublicModifier]
+      && [roles containsObject: SOGoCalendarRole_PrivateModifier]
+      && [roles containsObject: SOGoCalendarRole_ConfidentialModifier])
+    rights |= RightsReadItems | RightsEditAll;
+  else if ([roles containsObject: SOGoCalendarRole_PublicViewer]
+           && [roles containsObject: SOGoCalendarRole_PrivateViewer]
+           && [roles containsObject: SOGoCalendarRole_ConfidentialViewer])
+    rights |= RightsReadItems;
+  if (rights != 0)
+    rights |= RoleNone; /* actually "folder visible" */
+ 
+  return rights;
 }
 
 @end

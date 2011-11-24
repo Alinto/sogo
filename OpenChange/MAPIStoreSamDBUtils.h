@@ -1,4 +1,4 @@
-/* MAPIStoreFAIMessage.m - this file is part of SOGo
+/* MAPIStoreSamDBUtils.h - this file is part of SOGo
  *
  * Copyright (C) 2011 Inverse inc
  *
@@ -6,7 +6,7 @@
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -20,29 +20,18 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import "MAPIStoreActiveTables.h"
-#import "NSObject+MAPIStore.h"
+#ifndef MAPISTORESAMDBUTILS_H
+#define MAPISTORESAMDBUTILS_H
 
-#import "MAPIStoreFAIMessage.h"
+@class NSString;
 
-#undef DEBUG
-#include <talloc.h>
-#include <util/time.h>
-#include <mapistore/mapistore.h>
+struct ldb_context;
 
-@implementation MAPIStoreFAIMessage
+NSString *MAPIStoreSamDBUserAttribute (struct ldb_context *samCtx,
+                                       NSString *userKey,
+                                       NSString *value,
+                                       NSString *attributeName);
+NSData *MAPIStoreInternalEntryId (struct ldb_context *, NSString *username);
+NSData *MAPIStoreExternalEntryId (NSString *cn, NSString *email);
 
-- (NSArray *) activeContainerMessageTables
-{
-  return [[MAPIStoreActiveTables activeTables]
-             activeTablesForFMID: [container objectId]
-                         andType: MAPISTORE_FAI_TABLE];
-}
-
-- (int) getPrAssociated: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getYes: data inMemCtx: memCtx];
-}
-
-@end
+#endif /* MAPISTORESAMDBUTILS_H */

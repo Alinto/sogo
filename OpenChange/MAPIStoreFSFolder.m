@@ -149,23 +149,6 @@ static Class EOKeyValueQualifierK;
   return entries;
 }
 
-- (id) lookupFolder: (NSString *) childKey
-{
-  id childObject = nil;
-  SOGoMAPIFSFolder *childFolder;
-
-  [self folderKeys];
-  if ([folderKeys containsObject: childKey])
-    {
-      childFolder = [sogoObject lookupName: childKey inContext: nil
-                                   acquire: NO];
-      childObject = [MAPIStoreFSFolder mapiStoreObjectWithSOGoObject: childFolder
-                                                         inContainer: self];
-    }
-
-  return childObject;
-}
-
 - (NSDate *) lastMessageModificationTime
 {
   NSUInteger count, max;
@@ -191,6 +174,66 @@ static Class EOKeyValueQualifierK;
     }
 
   return date;
+}
+
+- (SOGoFolder *) aclFolder
+{
+  return propsFolder;
+}
+
+- (NSArray *) rolesForExchangeRights: (uint32_t) rights
+{
+  NSMutableArray *roles;
+
+  roles = [NSMutableArray arrayWithCapacity: 9];
+  if (rights & RightsReadItems)
+    [roles addObject: @"RightsReadItems"];
+  if (rights & RightsCreateItems)
+    [roles addObject: @"RightsCreateItems"];
+  if (rights & RightsEditOwn)
+    [roles addObject: @"RightsEditOwn"];
+  if (rights & RightsDeleteOwn)
+    [roles addObject: @"RightsDeleteOwn"];
+  if (rights & RightsEditAll)
+    [roles addObject: @"RightsEditAll"];
+  if (rights & RightsDeleteAll)
+    [roles addObject: @"RightsDeleteAll"];
+  if (rights & RightsCreateSubfolders)
+    [roles addObject: @"RightsCreateSubfolders"];
+  if (rights & RightsFolderOwner)
+    [roles addObject: @"RightsFolderOwner"];
+  if (rights & RightsFolderContact)
+    [roles addObject: @"RightsFolderContact"];
+
+  return roles;
+}
+
+- (uint32_t) exchangeRightsForRoles: (NSArray *) roles
+{
+  uint32_t rights = 0;
+
+  if ([roles containsObject: @"RightsReadItems"])
+    rights |= RightsReadItems;
+  if ([roles containsObject: @"RightsCreateItems"])
+    rights |= RightsCreateItems;
+  if ([roles containsObject: @"RightsEditOwn"])
+    rights |= RightsEditOwn;
+  if ([roles containsObject: @"RightsDeleteOwn"])
+    rights |= RightsDeleteOwn;
+  if ([roles containsObject: @"RightsEditAll"])
+    rights |= RightsEditAll;
+  if ([roles containsObject: @"RightsDeleteAll"])
+    rights |= RightsDeleteAll;
+  if ([roles containsObject: @"RightsCreateSubfolders"])
+    rights |= RightsCreateSubfolders;
+  if ([roles containsObject: @"RightsFolderOwner"])
+    rights |= RightsFolderOwner;
+  if ([roles containsObject: @"RightsFolderContact"])
+    rights |= RightsFolderContact;
+  if (rights != 0)
+    rights |= RoleNone; /* actually "folder visible" */
+ 
+  return rights;
 }
 
 @end
