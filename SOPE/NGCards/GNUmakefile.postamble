@@ -6,6 +6,6 @@ mappings-dir ::
 	$(MKDIRS) $(MAPDIR)
 
 after-install :: mappings-dir
-	cp NGCards.xmap $(MAPDIR)
-	-mkdir -p $(GNUSTEP_LIBRARY)/Libraries/Resources/NGCards
-	cp -dpR TimeZones $(GNUSTEP_LIBRARY)/Libraries/Resources/NGCards
+	${INSTALL_DATA} NGCards.xmap $(MAPDIR)
+	$(MKDIRS) $(GNUSTEP_LIBRARY)/Libraries/Resources/NGCards
+	cp -R TimeZones $(GNUSTEP_LIBRARY)/Libraries/Resources/NGCards
