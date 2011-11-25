@@ -412,11 +412,6 @@ static NSArray *childRecordFields = nil;
   return [basePathElements subarrayWithRange: NSMakeRange (2, max - 2)];
 }
 
-- (NSString *) davDisplayName
-{
-  return [self displayName];
-}
-
 - (NSException *) setDavDisplayName: (NSString *) newName
 {
   NSException *error;
