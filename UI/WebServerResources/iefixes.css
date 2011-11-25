@@ -177,7 +177,7 @@ A.toolbarButton:active SPAN {
   background-position: auto; /*broken*/
 }
 A.toolbarButton, A.toolbarButton SPAN, A.button, A.button SPAN
-{ color: #535D6D; }
+{ color: #262B33; }
 
 DIV#toolbar
 { overflow: hidden; }

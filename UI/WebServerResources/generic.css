@@ -424,7 +424,7 @@ TD.tbtv_subject_headercell
 DIV.dragHandle
 { position: absolute;
   z-index: 1;
-  background-color: #E6E7E6; }
+  background: #E6E7E6 url("dragdot.png") no-repeat center center; }
 
 DIV.dragHandle:active
 { background-color: #99a; }
