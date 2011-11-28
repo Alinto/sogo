@@ -21,13 +21,17 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSFileManager.h>
+#import <Foundation/NSPropertyList.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 #import <Foundation/NSURL.h>
 
 #import <NGExtensions/NSObject+Logs.h>
+#import <SOGo/NSArray+Utilities.h>
 
 #import "EOQualifier+MAPI.h"
 #import "SOGoMAPIFSMessage.h"
@@ -35,6 +39,8 @@
 #import "SOGoMAPIFSFolder.h"
 
 #undef DEBUG
+#include <talloc.h>
+#include <util/time.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 #include <libmapiproxy.h>
@@ -198,11 +204,14 @@ static NSString *privateDir = nil;
   for (count = 0; count < max; count++)
     {
       file = [contents objectAtIndex: count];
-      fullName = [directory stringByAppendingPathComponent: file];
-      if ([fm fileExistsAtPath: fullName
-		   isDirectory: &isDir]
-	  && dirs == isDir)
-	[files addObject: file];
+      if (![file isEqualToString: @"permissions.plist"])
+        {
+          fullName = [directory stringByAppendingPathComponent: file];
+          if ([fm fileExistsAtPath: fullName
+                       isDirectory: &isDir]
+              && dirs == isDir)
+            [files addObject: file];
+        }
     }
 
   return files;
@@ -301,6 +310,110 @@ static NSString *privateDir = nil;
 - (NSCalendarDate *) lastModificationTime
 {
   return [self _fileAttributeForKey: NSFileModificationDate];
+}
+
+/* acl */
+- (NSString *) defaultUserID
+{
+  return @"default";
+}
+
+- (NSMutableDictionary *) _aclEntries
+{
+  NSMutableDictionary *aclEntries;
+  NSData *content;
+  NSString *error, *filename;
+  NSPropertyListFormat format;
+
+  filename = [directory stringByAppendingPathComponent: @"permissions.plist"];
+  content = [NSData dataWithContentsOfFile: filename];
+  if (content)
+    aclEntries = [NSPropertyListSerialization propertyListFromData: content
+                                                  mutabilityOption: NSPropertyListMutableContainers
+                                                            format: &format
+                                                  errorDescription: &error];
+  else
+    aclEntries = nil;
+  if (!aclEntries)
+    {
+      aclEntries = [NSMutableDictionary dictionary];
+      [aclEntries setObject: [NSMutableArray array] forKey: @"users"];
+      [aclEntries setObject: [NSMutableDictionary dictionary]
+                     forKey: @"entries"];
+    }
+
+  return aclEntries;
+}
+
+- (void) _saveAcl: (NSDictionary *) acl
+{
+  NSString *filename;
+  NSData *content;
+
+  filename = [directory stringByAppendingPathComponent: @"permissions.plist"];
+  [self ensureDirectory];
+
+  if (acl)
+    content = [NSPropertyListSerialization 
+                dataFromPropertyList: acl
+                              format: NSPropertyListBinaryFormat_v1_0
+                    errorDescription: NULL];
+  else
+    content = [NSData data];
+  if (![content writeToFile: filename atomically: NO])
+    [NSException raise: @"MAPIStoreIOException"
+                format: @"could not save acl"];
+}
+
+- (void) addUserInAcls: (NSString *) user
+{
+  NSMutableDictionary *acl;
+  NSMutableArray *users;
+
+  acl = [self _aclEntries];
+  users = [acl objectForKey: @"users"];
+  [users addObjectUniquely: user];
+  [self _saveAcl: acl];
+}
+
+- (void) removeAclsForUsers: (NSArray *) oldUsers
+{
+  NSDictionary *acl;
+  NSMutableDictionary *entries;
+  NSMutableArray *users;
+
+  acl = [self _aclEntries];
+  entries = [acl objectForKey: @"entries"];
+  [entries removeObjectsForKeys: oldUsers];
+  users = [acl objectForKey: @"users"];
+  [users removeObjectsInArray: oldUsers];
+  [self _saveAcl: acl];
+}
+
+- (NSArray *) aclUsers
+{
+  return [[self _aclEntries] objectForKey: @"users"];
+}
+
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  NSDictionary *entries;
+
+  entries = [[self _aclEntries] objectForKey: @"entries"];
+
+  return [entries objectForKey: uid];
+}
+
+- (void) setRoles: (NSArray *) roles
+          forUser: (NSString *) uid
+{
+  NSMutableDictionary *acl;
+  NSMutableDictionary *entries;
+
+  acl = [self _aclEntries];
+  entries = [acl objectForKey: @"entries"];
+  [entries setObject: roles forKey: uid];
+  [self _saveAcl: acl];
 }
 
 @end

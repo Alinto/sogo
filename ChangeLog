@@ -12,6 +12,35 @@
 	event listener must be on mousedown since click is already
 	observed by document.body.
 
+2011-11-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContactsMessageTable.m
+	(-evaluatePropertyRestriction:intoQualifier:): returns
+	"MAPIRestrictionStateAlwaysTrue" for PR_SENSITIVITY.
+
+	* OpenChange/MAPIStoreContactsMessage.m
+	(-getPrSensitivity:inMemCtx:): new getter that always returns 0.
+
+2011-11-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/NSArray+MAPIStore.m (-asMVUnicodeInMemCtx:) renamed
+	from "asArrayOfUnicodeStringsInCtx".
+	(-asMVUnicodeInMemCtx:, -asMVLongInMemCtx:): new conversion
+	methods.
+
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromValuePointer):
+	simplified method by using set_SPropValue_proptag and
+	NSObjectFromSPropValue.
+
+	* OpenChange/NSObject+MAPIStore.m (-getValue:forTag:inMemCtx:):
+	renamed from "getMAPIValue:...".
+	(-arrayFromMAPIMVLong:, +arrayFromMAPIMVUnicode:)
+	(+arrayFromMAPIMVString:, +arrayFromMAPIMVBinary:)
+	(+arrayFromMAPIMVGuid:, +arrayFromMVShort:, +arrayFromMVLong:)
+	(+arrayFromMVI8:, +arrayFromMVUnicode:, +arrayFromMVString:)
+	(+arrayFromMVBinary:, +arrayFromMVGuid:, +arrayFromMVFileTime:)
+	new constructors for multivalue types.
+
 2011-11-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/WORequest+SOGo.m - for now, we consider iCal 4
@@ -31,6 +60,81 @@
 	(-disableVacationEndDate, -setEnableVacationEndDate:)
 	(-vacationEndDate, -setVacationEndDate:): getters/setters for the
 	new optional vacation end date.
+
+2011-11-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreFolder.m (-lookupFolder:): explicitly set
+	the MAPIStoreContext's woContext as context to the looked up
+	folder, although one could expect it to have been set during the
+	lookup at the SOGo level...
+
+	* OpenChange/MAPIStoreFSFolder.m (-lookupFolder:): removed useless
+	overriding of method.
+
+	* OpenChange/MAPIStoreMailFolder.m (-[MAPIStoreMailFolder
+	lookupFolder:]): removed useless overriding of method.
+	(-[MAPIStoreInboxFolder lookupFolder:]): in altnamespace mode,
+	perform the same association of the woContext to the looked up
+	folder as in MAPIStoreFolder.
+
+	* OpenChange/MAPIStoreContext.m
+	(-initFromURL:withConnectionInfo:andTDBIndexing:): instantiate a
+	SOGoUser corresponding to the username of the new context and
+	associated it to the woContext ivar.
+
+2011-11-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreFolder.m (-permissionEntries): new public
+	method.
+	(-modifyPermissions:withCount:andFlags:): new backend op public
+	method.
+	(-aclFolder, -rolesForExchangeRights:, -exchangeRightsForRoles:):
+	new mandatory methods.
+
+	* OpenChange/SOGoMAPIFSFolder.m (-defaultUserID, -addUserInAcls:)
+	(-removeAclsForUsers:, -aclUsers, -aclsForUser:)
+	(-setRoles:forUser:): implemented standard ACL methods.
+
+	* OpenChange/MAPIStorePermissionsTable.m
+	(+[MAPIStorePermissionEntry
+	entryWithUserId:andMemberId:forFolder:]): constructor now takes a
+	memberId and the container folder as parameters.
+	(-[MAPIStorePermissionEntry getPrMemberId:inMemCtx:]): now based
+	on the new memberId ivar.
+	(-[MAPIStorePermissionEntry getPrEntryId:inMemCtx:]): now make use
+	of MAPIStoreInternalEntryId for regular member ids and return an
+	empty blob for special ones, as specified in oxcperm.
+	(-[MAPIStorePermissionEntry getPrMemberName:inMemCtx:]): now
+	returns the real CN of the user for regular member ids and return
+	@"" or @"Anonymous" for special ones, as specified in oxcperm.
+	(-[MAPIStorePermissionEntry getPrMemberName:inMemCtx:]): now
+	returns the real member rights, based on the aclFolder of the
+	container, using standard SOGo methods.
+
+	* OpenChange/MAPIStorePermissionsTable.h
+	(MAPIStorePermissionsEntry): made class public.
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_folder_modify_permissions): new
+	backend op.
+	(sogo_backend_init): invoke "disableLocalCache" to avoid the
+	caching of ACL.
+
+	* SoObjects/SOGo/SOGoCache.m (-disableLocalCache): new method to
+	disable the local cache altogether (helper for non-WO access).
+
+2011-11-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreSamDBUtils.m: new module containing helpers
+	pertaining to the SamDB.
+	(MAPIStoreSamDBUserAttribute): new function that returns the value
+	of a specified key from a user record matching one simple criteria.
+	(MAPIStoreInternalEntrydId, MAPIStoreExternalEntryId): moved
+	functions from MAPIStoreMessage.m.
+
+	* OpenChange/MAPIStoreMessage.m (MAPIStoreInternalEntryId): now
+	takes a ldb_context * parameter pointing to the samdb, which
+	enables us: 1) to return the real legacyExchangeDN 2) to make use
+	of sAMAccountName as search parameter for the username.
 
 2011-11-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
 

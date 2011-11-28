@@ -80,25 +80,10 @@ Class NSNumberK;
   [super dealloc];
 }
 
-- (int) addPropertiesFromRow: (struct SRow *) aRow
-{
-  int rc;
-
-  rc = [super addPropertiesFromRow: aRow];
-  if (rc == MAPISTORE_SUCCESS)
-    {
-      [sogoObject appendProperties: properties];
-      [properties removeAllObjects];
-      ASSIGN (lastModificationTime, [NSDate date]);
-    }
-
-  return rc;
-}
-
 - (void) addProperties: (NSDictionary *) newProperties
 {
   [super addProperties: newProperties];
-  [sogoObject appendProperties: newProperties];
+  [sogoObject appendProperties: properties];
   [properties removeAllObjects];
   ASSIGN (lastModificationTime, [NSDate date]);
 }
@@ -129,7 +114,7 @@ Class NSNumberK;
  
   value = [[sogoObject properties] objectForKey: MAPIPropertyKey (propTag)];
   if (value)
-    rc = [value getMAPIValue: data forTag: propTag inMemCtx: memCtx];
+    rc = [value getValue: data forTag: propTag inMemCtx: memCtx];
   else
     rc = [super getProperty: data withTag: propTag inMemCtx: memCtx];
 

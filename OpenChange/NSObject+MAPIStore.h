@@ -40,9 +40,9 @@ struct MAPIStoreTallocWrapper
 
 @interface NSObject (MAPIStoreDataTypes)
 
-- (int) getMAPIValue: (void **) data
-              forTag: (enum MAPITAGS) propTag
-            inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getValue: (void **) data
+          forTag: (enum MAPITAGS) propTag
+        inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* getter helpers */
 - (int) getEmptyString: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;

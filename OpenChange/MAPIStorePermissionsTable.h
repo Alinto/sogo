@@ -25,7 +25,31 @@
 
 #import "MAPIStoreTable.h"
 
+struct ldb_context;
+
+@interface MAPIStorePermissionEntry : MAPIStoreObject
+{
+  NSString *userId;
+  uint64_t memberId;
+}
+
++ (id) entryWithUserId: (NSString *) newUserId
+           andMemberId: (uint64_t) newMemberId
+             forFolder: (MAPIStoreFolder *) newFolder;
+- (id) initWithUserId: (NSString *) newUserId
+          andMemberId: (uint64_t) newMemberId
+            forFolder: (MAPIStoreFolder *) newFolder;
+
+- (NSString *) userId;
+- (uint64_t) memberId;
+
+@end
+
 @interface MAPIStorePermissionsTable : MAPIStoreTable
+{
+  NSMutableDictionary *entries;
+}
+
 @end
 
 #endif /* MAPISTOREPERMISSIONSTABLE_H */

@@ -54,6 +54,7 @@
 #import "MAPIStoreMailFolder.h"
 #import "MAPIStoreMIME.h"
 #import "MAPIStoreMapping.h"
+#import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
@@ -249,9 +250,12 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   NSData *entryId;
   NSDictionary *allRecipients, *dict, *contactInfos;
   SOGoUserManager *mgr;
+  struct ldb_context *samCtx;
   struct mapistore_message *msgData;
   struct mapistore_message_recipient *recipient;
   enum ulRecipClass type;
+
+  samCtx = [[self context] connectionInfo]->sam_ctx;
 
   [super getMessageData: &msgData inMemCtx: memCtx];
 
@@ -295,7 +299,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
             {
               username = [contactInfos objectForKey: @"c_uid"];
               recipient->username = [username asUnicodeInMemCtx: msgData];
-              entryId = MAPIStoreInternalEntryId (username);
+              entryId = MAPIStoreInternalEntryId (samCtx, username);
             }
           else
             {
@@ -759,7 +763,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
       messageData = cleanedMessage;
     }
 
-  [messageData writeToFile: @"/tmp/mimegen.eml" atomically: NO];
+  // [messageData writeToFile: @"/tmp/mimegen.eml" atomically: NO];
 
   return messageData;
 }
@@ -812,7 +816,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
   mapping = [[self context] mapping];
   [mapping unregisterURLWithID: [self objectId]];
   [self setIsNew: NO];
-  [self resetProperties];
+  [properties removeAllObjects];
   [[self container] cleanupCaches];
 
   return MAPISTORE_SUCCESS;

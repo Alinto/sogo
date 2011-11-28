@@ -41,6 +41,7 @@
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreMessage.h"
 #import "MAPIStorePermissionsTable.h"
+#import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -51,6 +52,7 @@
 #include <gen_ndr/exchange.h>
 
 #undef DEBUG
+#include <util/attr.h>
 #include <libmapiproxy.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_nameid.h>
@@ -187,6 +189,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       sogoFolder = [sogoObject lookupName: folderKey
                                 inContext: woContext
                                   acquire: NO];
+      [sogoFolder setContext: woContext];
       if (sogoFolder && ![sogoFolder isKindOfClass: NSExceptionK])
         childFolder = [isa mapiStoreObjectWithSOGoObject: sogoFolder
                                              inContainer: self];
@@ -699,6 +702,23 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
+- (SOGoFolder *) aclFolder
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
+- (void) _modifyPermissionEntryForUser: (NSString *) user
+                             withRoles: (NSArray *) roles
+                            isAddition: (BOOL) isAddition
+                         withACLFolder: (SOGoFolder *) aclFolder
+{
+  if (isAddition)
+    [aclFolder addUserInAcls: user];
+  [aclFolder setRoles: roles forUser: user];
+}
+
 - (void) postNotificationsForMoveCopyMessagesWithMIDs: (uint64_t *) srcMids
                                        andMessageURLs: (NSArray *) oldMessageURLs
                                              andCount: (uint32_t) midCount
@@ -898,33 +918,28 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) addPropertiesFromRow: (struct SRow *) aRow
+- (void) addProperties: (NSDictionary *) newProperties
 {
   static enum MAPITAGS bannedProps[] = { PR_MID, PR_FID, PR_PARENT_FID,
                                          PR_SOURCE_KEY, PR_PARENT_SOURCE_KEY,
                                          PR_CHANGE_KEY, 0x00000000 };
   enum MAPITAGS *currentProp;
-  int rc;
-
-  rc = [super addPropertiesFromRow: aRow];
+  NSMutableDictionary *propsCopy;
 
   /* TODO: this should no longer be required once mapistore v2 API is in
      place, when we can then do this from -dealloc below */
-  if ([properties count] > 0)
-    {
-      currentProp = bannedProps;
-      while (*currentProp)
-        {
-          [properties removeObjectForKey: MAPIPropertyKey (*currentProp)];
-          currentProp++;
-        }
 
-      [propsMessage appendProperties: properties];
-      [propsMessage save];
-      [self resetProperties];
+  propsCopy = [newProperties mutableCopy];
+  currentProp = bannedProps;
+  while (*currentProp)
+    {
+      [propsCopy removeObjectForKey: MAPIPropertyKey (*currentProp)];
+      currentProp++;
     }
 
-  return rc;
+  [propsMessage appendProperties: propsCopy];
+  [propsMessage save];
+  [propsCopy release];
 }
 
 - (void) dealloc
@@ -1186,7 +1201,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   value = [[propsMessage properties]
             objectForKey: MAPIPropertyKey (propTag)];
   if (value)
-    rc = [value getMAPIValue: data forTag: propTag inMemCtx: memCtx];
+    rc = [value getValue: data forTag: propTag inMemCtx: memCtx];
   else
     rc = [super getProperty: data withTag: propTag inMemCtx: memCtx];
 
@@ -1249,6 +1264,196 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (MAPIStorePermissionsTable *) permissionsTable
 {
   return [MAPIStorePermissionsTable tableForContainer: self];
+}
+
+- (NSArray *) permissionEntries
+{
+  NSMutableArray *permissionEntries;
+  MAPIStorePermissionEntry *entry;
+  NSArray *aclUsers;
+  uint64_t memberId, regularMemberId = 1;
+  NSUInteger count, max;
+  NSString *username, *defaultUserId;
+  SOGoFolder *aclFolder;
+
+  aclFolder = [self aclFolder];
+
+  defaultUserId = [aclFolder defaultUserID];
+  aclUsers = [aclFolder aclUsers];
+  max = [aclUsers count];
+  permissionEntries = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      username = [aclUsers objectAtIndex: count];
+      if (![username hasPrefix: @"@"])
+        {
+          if ([username isEqualToString: defaultUserId])
+            memberId = 0;
+          else if ([username isEqualToString: @"anonymous"])
+            memberId = ULLONG_MAX;
+          else
+            {
+              memberId = regularMemberId;
+              regularMemberId++;
+            }
+          entry = [MAPIStorePermissionEntry entryWithUserId: username
+                                                andMemberId: memberId
+                                                  forFolder: self];
+          [permissionEntries addObject: entry];
+        }
+    }
+
+  return permissionEntries;
+}
+
+- (NSArray *) rolesForExchangeRights: (uint32_t) rights
+{
+  [self subclassResponsibility: _cmd];
+  return nil;
+}
+
+- (uint32_t) exchangeRightsForRoles: (NSArray *) roles
+{
+  [self subclassResponsibility: _cmd];
+  return 0;
+}
+
+- (NSString *) _usernameFromEntryId: (struct SBinary_short *) bin
+{
+  struct Binary_r bin32;
+  struct AddressBookEntryId *entryId;
+  NSString *username;
+  struct ldb_context *samCtx;
+
+  bin32.cb = bin->cb;
+  bin32.lpb = bin->lpb;
+
+  entryId = get_AddressBookEntryId (NULL, &bin32);
+  if (entryId)
+    {
+      samCtx = [[self context] connectionInfo]->sam_ctx;
+      username = MAPIStoreSamDBUserAttribute (samCtx, @"legacyExchangeDN",
+                                              [NSString stringWithUTF8String: entryId->X500DN],
+                                              @"sAMAccountName");
+    }
+  else
+    username = nil;
+  talloc_free (entryId);
+
+  return username;
+}
+
+- (NSString *) _usernameFromMemberId: (uint64_t) memberId
+                           inEntries: (NSArray *) entries
+{
+  NSString *username = nil;
+  NSUInteger count, max;
+  MAPIStorePermissionEntry *entry;
+
+  max = [entries count];
+  for (count = 0; !username && count < max; count++)
+    {
+      entry = [entries objectAtIndex: count];
+      if ([entry memberId] == memberId)
+        username = [entry userId];
+    }
+
+  return username;
+}
+
+- (void) _emptyACL
+{
+  NSUInteger count, max;
+  NSArray *users;
+  SOGoFolder *aclFolder;
+
+  aclFolder = [self aclFolder];
+
+  users = [aclFolder aclUsers];
+  max = [users count];
+  for (count = 0; count < max; count++)
+    [aclFolder removeUserFromAcls: [users objectAtIndex: count]];
+}
+
+- (int) modifyPermissions: (struct PermissionData *) permissions
+                withCount: (uint16_t) pcount
+                 andFlags: (int8_t) flags
+{
+  NSUInteger count, propCount;
+  struct PermissionData *currentPermission;
+  struct mapi_SPropValue *mapiValue;
+  NSString *permissionUser;
+  NSArray *entries;
+  NSArray *permissionRoles;
+  BOOL reset, isAdd;
+  SOGoFolder *aclFolder;
+
+  aclFolder = [self aclFolder];
+
+  reset = ((flags & ModifyPerms_ReplaceRows) != 0);
+  if (reset)
+    [self _emptyACL];
+
+  entries = [self permissionEntries];
+
+  for (count = 0; count < pcount; count++)
+    {
+      currentPermission = permissions + count;
+
+      permissionUser = nil;
+      permissionRoles = nil;
+ 
+      isAdd = (currentPermission->PermissionDataFlags == ROW_ADD);
+      for (propCount = 0;
+           propCount < currentPermission->lpProps.cValues;
+           propCount++)
+        {
+          mapiValue = currentPermission->lpProps.lpProps + propCount;
+          switch (mapiValue->ulPropTag)
+            {
+            case PR_ENTRYID:
+              permissionUser
+                = [self _usernameFromEntryId: &mapiValue->value.bin];
+              break;
+            case PR_MEMBER_ID:
+              permissionUser = [self _usernameFromMemberId: mapiValue->value.d
+                                                 inEntries: entries];
+              break;
+            case PR_MEMBER_RIGHTS:
+              permissionRoles = [self
+                                  rolesForExchangeRights: mapiValue->value.l];
+              break;
+            default:
+              if (mapiValue->ulPropTag != PR_MEMBER_NAME)
+                [self warnWithFormat: @"unhandled permission property: %.8x",
+                      mapiValue->ulPropTag];
+            }
+        }
+
+      if (reset)
+        {
+          if (isAdd)
+            [self _modifyPermissionEntryForUser: permissionUser
+                                      withRoles: permissionRoles
+                                     isAddition: YES
+                                  withACLFolder: aclFolder];
+        }
+      else
+        {
+          if (isAdd || currentPermission->PermissionDataFlags == ROW_MODIFY)
+            [self _modifyPermissionEntryForUser: permissionUser
+                                      withRoles: permissionRoles
+                                     isAddition: isAdd
+                                  withACLFolder: aclFolder];
+          else if (currentPermission->PermissionDataFlags == ROW_REMOVE)
+            [aclFolder removeUserFromAcls: permissionUser];
+          else
+            [self errorWithFormat: @"unhandled permission action flag: %d",
+                  currentPermission->PermissionDataFlags];
+        }
+    }
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (uint64_t) objectId

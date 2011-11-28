@@ -34,9 +34,6 @@
 
 #import "MAPIStoreFSBaseContext.h"
 
-#undef DEBUG
-#include <mapistore/mapistore.h>
-
 static Class MAPIStoreFSFolderK;
 
 @implementation MAPIStoreFSBaseContext
