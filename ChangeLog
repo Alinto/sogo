@@ -1,3 +1,11 @@
+2011-11-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-bareFetchFields:from:to:title:component:additionalFilters:):
+	we must not attempt to instantiate an EOQualifier with a "nil"
+	format, otherwise it causes an exception. Settings the qualifier
+	as nil instead.
+
 2011-11-24  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js (resetCategoriesMenu): the

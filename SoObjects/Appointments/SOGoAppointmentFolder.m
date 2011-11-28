@@ -544,12 +544,14 @@ static NSNumber *sharedYes = nil;
                       filterSqlString];
       /* sql is empty when we fetch everything (all parameters are nil) */
       if ([sql length] > 0)
-        sql = [sql substringFromIndex: 4];
+        {
+          sql = [sql substringFromIndex: 4];
+          qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
+        }
       else
-        sql = nil;
+        qualifier = nil;
 
       /* fetch non-recurrent apts first */
-      qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
 
       records = [folder fetchFields: fields matchingQualifier: qualifier];
     }
