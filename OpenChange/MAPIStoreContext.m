@@ -106,16 +106,8 @@ _prepareContextClass (Class contextClass,
                       struct mapistore_connection_info *connInfo,
                       struct tdb_wrap *indexingTdb, NSURL *url)
 {
-  static NSMutableDictionary *registration = nil;
   MAPIStoreContext *context;
   MAPIStoreAuthenticator *authenticator;
-
-  if (!registration)
-    registration = [NSMutableDictionary new];
-
-  if (![registration objectForKey: contextClass])
-    [registration setObject: [NSNull null]
-                  forKey: contextClass];
 
   context = [[contextClass alloc] initFromURL: url
                            withConnectionInfo: connInfo
@@ -208,20 +200,39 @@ _prepareContextClass (Class contextClass,
       andTDBIndexing: (struct tdb_wrap *) indexingTdb
 {
   NSString *username;
-  SOGoUser *activeUser;
 
   if ((self = [self init]))
     {
-      ASSIGN (contextUrl, newUrl);
       username = [NSString stringWithUTF8String: newConnInfo->username];
-      activeUser = [SOGoUser userWithLogin: username];
+      ASSIGN (activeUser, [SOGoUser userWithLogin: username]);
       if (!activeUser)
-        [self errorWithFormat: @"user '%@' not found in SOGo environment",
-              username];
+        {
+          [self errorWithFormat: @"user '%@' not found in SOGo environment",
+                username];
+          [self release];
+          return nil;
+        }
       [woContext setActiveUser: activeUser];
+      username = [newUrl user];
+      if ([username length] == 0)
+        {
+          [self errorWithFormat:
+                  @"attempt to instantiate a context with an empty owner"];
+          [self release];
+          return nil;
+        }
+      ASSIGN (ownerUser, [SOGoUser userWithLogin: username]);
+      if (!ownerUser)
+        {
+          [self errorWithFormat:
+                  @"attempt to instantiate a context without a valid owner"];
+          [self release];
+          return nil;
+        }
       ASSIGN (mapping, [MAPIStoreMapping mappingForUsername: username
-                                         withIndexing: indexingTdb]);
+                                               withIndexing: indexingTdb]);
       [mapping increaseUseCount];
+      ASSIGN (contextUrl, newUrl);
       mstoreCtx = newConnInfo->mstore_ctx;
       connInfo = newConnInfo;
     }
@@ -294,18 +305,12 @@ _prepareContextClass (Class contextClass,
 
 - (SOGoUser *) activeUser
 {
-  SOGoUser *activeUser;
-  NSString *userName;
-
-  if (connInfo && connInfo->username)
-    {
-      userName = [NSString stringWithUTF8String: connInfo->username];
-      activeUser = [SOGoUser userWithLogin: userName];
-    }
-  else
-    activeUser = nil;
-
   return activeUser;
+}
+
+- (SOGoUser *) ownerUser
+{
+  return ownerUser;
 }
 
 // - (void) logRestriction: (struct mapi_SRestriction *) res
@@ -407,7 +412,7 @@ _prepareContextClass (Class contextClass,
 - (uint64_t) idForObjectWithKey: (NSString *) key
                     inFolderURL: (NSString *) folderURL
 {
-  NSString *childURL;
+  NSString *childURL, *owner;
   uint64_t mappingId;
   uint32_t contextId;
   void *rootObject;
@@ -427,7 +432,9 @@ _prepareContextClass (Class contextClass,
       // FIXME: + 7 to skip the BOM or what?
       mapistore_search_context_by_uri (mstoreCtx, [folderURL UTF8String] + 7,
                                        &contextId, &rootObject);
-      mapistore_indexing_record_add_mid (mstoreCtx, contextId, mappingId);
+      owner = [ownerUser login];
+      mapistore_indexing_record_add_mid (mstoreCtx, contextId,
+                                         [owner UTF8String], mappingId);
     }
 
   return mappingId;
@@ -438,7 +445,7 @@ _prepareContextClass (Class contextClass,
   uint64_t newVersionNumber;
 
   if (openchangedb_get_new_changeNumber (connInfo->oc_ctx, &newVersionNumber)
-      != MAPISTORE_SUCCESS)
+      != MAPI_E_SUCCESS)
     abort ();
 
   return newVersionNumber;

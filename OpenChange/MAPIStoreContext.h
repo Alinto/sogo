@@ -56,6 +56,9 @@
   struct mapistore_context *mstoreCtx;
   struct mapistore_connection_info *connInfo;
 
+  SOGoUser *activeUser;
+  SOGoUser *ownerUser;
+
   NSURL *contextUrl;
 
   MAPIStoreMapping *mapping;
@@ -88,6 +91,7 @@
 - (void) tearDownRequest;
 
 - (SOGoUser *) activeUser;
+- (SOGoUser *) ownerUser;
 
 // - (id) lookupObject: (NSString *) objectURLString;
 

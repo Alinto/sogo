@@ -1,5 +1,10 @@
 2011-11-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m
+	(-initFromURL:withConnectionInfo:andTDBIndexing:): assign a
+	SOGoUser corresponding to the object owner and to the active user
+	to the "ownerUser" and "activeUser" ivars.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-bareFetchFields:from:to:title:component:additionalFilters:):
 	we must not attempt to instantiate an EOQualifier with a "nil"
