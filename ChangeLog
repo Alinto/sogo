@@ -1,3 +1,9 @@
+2011-11-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromSPropValue): set the
+	resulting string to @"" when the unicode or string pointers are
+	NULL.
+
 2011-11-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContext.m
