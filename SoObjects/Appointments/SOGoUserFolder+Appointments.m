@@ -59,20 +59,31 @@
   NSArray *tag;
   NSMutableArray *addresses;
   NSEnumerator *emails;
+  NSMutableDictionary *doneEmails;
   NSString *currentEmail;
   SOGoUser *ownerUser;
 
   addresses = [NSMutableArray array];
 
+  doneEmails = [NSMutableDictionary dictionary];
   ownerUser = [SOGoUser userWithLogin: owner];
   emails = [[ownerUser allEmails] objectEnumerator];
   while ((currentEmail = [emails nextObject]))
     {
-      tag = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
-		     [NSString stringWithFormat: @"mailto:%@", currentEmail],
-		     nil];
-      [addresses addObject: tag];
+      if (![doneEmails objectForKey: currentEmail])
+        {
+          tag = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
+                         [NSString stringWithFormat: @"mailto:%@", currentEmail],
+                         nil];
+          [addresses addObject: tag];
+          [doneEmails setObject: [NSNull null] forKey: currentEmail];
+        }
     }
+
+  tag = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
+                 [NSString stringWithFormat: @"/SOGo/dav/%@/", nameInContainer],
+                 nil];
+  [addresses addObjectUniquely: tag];
 
   return addresses;
 }
