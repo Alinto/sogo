@@ -1,5 +1,8 @@
 2011-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/WORequest+SOGo.m (-isICal, -isICal4): updated for
+	iCal 5.
+
 	* SoObjects/Appointments/SOGoAppointmentInboxFolder.m
 	(-davScheduleDefaultCalendarURL): fixed method to return a
 	properly formatted XML chunk.
