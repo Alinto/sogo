@@ -2049,6 +2049,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return @"";
 }
 
+- (NSString *) davResourceId
+{
+  return [NSString stringWithFormat: @"urn:uuid:%@:calendars:%@",
+                   [self ownerInContext: context], [self nameInContainer]];
+}
+
 - (NSArray *) davScheduleCalendarTransparency
 {
   const NSString *opacity;

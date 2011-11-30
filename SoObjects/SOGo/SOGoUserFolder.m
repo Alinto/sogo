@@ -635,6 +635,11 @@
 	   getCNForUID: nameInContainer];
 }
 
+- (NSString *) davResourceId
+{
+  return [NSString stringWithFormat: @"urn:uuid:%@", nameInContainer];
+}
+
 - (NSException *) setDavSignature: (NSString *) newSignature
 {
   SOGoUserDefaults *ud;
