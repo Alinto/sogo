@@ -1,5 +1,11 @@
 2011-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoObject.m (-davComplianceClassesInContext:):
+	declare "calendar-query-extended", "extended-mkcol",
+	"calendarserver-principal-property-search" as additional calendar
+	classes, even though it's a lie.
+	(-davCurrentUserPrincipal): new method.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m (-davResourceId):
 	new DAV getter.
 
