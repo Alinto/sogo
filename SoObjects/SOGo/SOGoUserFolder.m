@@ -660,5 +660,4 @@
   return YES;
 }
 
-
 @end /* SOGoUserFolder */
