@@ -1,4 +1,4 @@
-1.3-2011MMDD (1.3.10)
+1.3-20111130 (1.3.10)
 ---------------------
 New Features
  - new migration script for SquirrelMail (address books)
@@ -8,6 +8,8 @@ New Features
 Enhancements
  - splitted Norwegian translation into NorwegianBokmal and NorwegianNynorsk
  - splitted Spanish translation into SpanishSpain and SpanishArgentina
+ - updated timezone files
+ - updated French translation
 
 Bug Fixes
  - added missing Icelandic wod files
@@ -15,6 +17,10 @@ Bug Fixes
  - fixed bug with iOS devices and UIDs containing the @ symbol
  - fixed handling of commas in multi-values fields of versit strings
  - fixed support of UTF-8 characters in LDAP searches
+ - added initial fixes for iCal 5 (Mac OS X 10.7)
+ - Address Book 6.1 now shows properly the personal address book
+ - fixed vcomponent updates for MySQL
+ - fixed clang/llvm and libobjc2 build
 
 1.3-20111028 (1.3.9)
 ---------------------

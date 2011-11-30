@@ -6,7 +6,7 @@
 "Modules" = "Modules";
 
 /* Modules short names */
-"ACLs" = "ACLs";
+"ACLs" = "Droits";
 
 /* Modules titles */
 "ACLs_title" = "Gestion des droits d'accès pour les dossiers utilisateurs";

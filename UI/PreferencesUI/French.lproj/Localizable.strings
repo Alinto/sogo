@@ -27,8 +27,11 @@
 "Add default email addresses" = "Ajouter les adresses par défaut";
 "Days between responses :" = "Nombre de jours entre réponses :";
 "Do not send responses to mailing lists" = "Ne pas envoyer les réponses aux listes de diffusion";
+"Disable auto reply on" = "Désactiver la réponse automatique le";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Veuillez définir un message et vos adresses pour lesquelles pour désirez activer une réponse automatique.";
+"End date of your auto reply must be in the future."
+= "La date de fin de la réponse automatique doit être dans le future.";
 
 /* forward messages */
 "Forward incoming messages" = "Transférer les messages entrant";
@@ -70,12 +73,12 @@
 "longDateFmt_0" = "%A %e %B %Y";
 "longDateFmt_1" = "%e %b. %Y";
 "longDateFmt_2" = "%e %B %Y";
-"longDateFmt_3" = "";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
-"timeFmt_2" = "%H h. %M";
-"timeFmt_3" = "";
+"timeFmt_2" = "";
 
 /* calendar */
 "Week begins on :" = "Premier jour de la semaine :";
@@ -145,11 +148,11 @@
 "Port:" = "Port :";
 "User Name:" = "Utilisateur :";
 "Password:" = "Mot de passe :";
-"(Click to create)" = "(Signature vide)";
- 
+
 "Full Name:" = "Nom complet :";
 "Email:" = "Email :";
 "Signature:" = "Signature :";
+"(Click to create)" = "(Signature vide)";
 
 "Signature" = "Signature";
 "Please enter your signature below:" = "Introduisez votre signature ci-dessous :";
@@ -158,6 +161,8 @@
 "Additional Parameters" = "Paramètres supplémentaires";
 
 /* password */
+"New password:" = "Nouveau mot de passe:";
+"Confirmation:" = "Confirmation:";
 "Change" = "Changer";
 
 /* Event+task categories */
@@ -190,6 +195,18 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+/* Return receipts */
+"When I receive a request for a return receipt:" = "Lors de la réception d'une demande d'accusé de réception :";
+"Never send a return receipt" = "Ne jamais envoyer d'accusé de réception";
+"Allow return receipts for some messages" = "Autoriser les accusés de réception pour certains messages";
+"If I'm not in the To or Cc of the message:" = "Si je ne suis pas dans le destinataire ou en copie du message :";
+"If the sender is outside my domain:" = "Si l'expéditeur est hors de mon domaine :";
+"In all other cases:" = "Dans tous les autres cas :";
+
+"Never send" = "Ne jamais envoyer";
+"Always send" = "Toujours envoyer";
+"Ask me" = "Me demander";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "Lors de la réception d'une demande d'accusé de réception :";
