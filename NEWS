@@ -9,6 +9,7 @@ Enhancements
  - splitted Norwegian translation into NorwegianBokmal and NorwegianNynorsk
  - splitted Spanish translation into SpanishSpain and SpanishArgentina
  - updated timezone files
+ - updated French translation
 
 Bug Fixes
  - added missing Icelandic wod files
