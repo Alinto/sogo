@@ -55,8 +55,6 @@
 - (id) mailAccountsFolder: (NSString *) _key
                 inContext: (WOContext *) _ctx;
 
-- (NSArray *) davPrincipalURL;
-
 - (BOOL) collectionDavKey: (NSString *) key
 		  matches: (NSString *) value;
 
