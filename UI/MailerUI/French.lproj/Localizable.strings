@@ -11,7 +11,7 @@
 "Reply"       = "Répondre";
 "Reply All"   = "Rép. à tous";
 "Print"       = "Imprimer";
-"Stop"        = "Stop";
+"Stop"        = "Arrêter";
 "Write"       = "Écrire";
 
 "Send" = "Envoyer";
@@ -46,7 +46,7 @@
 "Home"                 = "Accueil"; 
 "Calendar"             = "Agenda";
 "Addressbook"          = "Adresses";
-"Mail"                 = "Mail";
+"Mail"                 = "Courrier";
 "Right Administration" = "Administration";
 
 "Help" = "Aide";
@@ -95,10 +95,10 @@
 "Add address"   = "Ajouter Adresse";
 
 "Attachments:" = "Pièces jointes :";
-"Open" = "Open";
-"Select All" = "Select All";
-"Attach Web Page..." = "Attach Web Page...";
-"Attach File(s)..." = "Attach File(s)...";
+"Open" = "Ouvrir";
+"Select All" = "Tout sélectionner";
+"Attach Web Page..." = "Joindre une page Web...";
+"Attach File(s)..." = "Joindre un fichier...";
 
 "to"            = "Pour";
 "cc"            = "Copie à";
@@ -139,7 +139,7 @@
 "Entire Message" = "Message Complet";
 
 "Date"          = "Date";
-"View"          = "View";
+"View"          = "Voir";
 "All"           = "Tous";
 "Unread"        = "Non lus";
 "No message"    = "Aucun message";

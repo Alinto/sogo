@@ -207,7 +207,7 @@
 "Title:" = "Titre :";
 "Calendar:" = "Agenda :";
 "Name" = "Nom";
-"Email" = "Email";
+"Email" = "Courrier";
 "Status:" = "Statut :";
 "% complete" = "% d'achèvement";
 "Location:" = "Lieu :";
@@ -215,7 +215,7 @@
 "Privacy" = "Confidentialité";
 "Cycle" = "Récurrence";
 "Cycle End" = "s'arreter";
-"Categories" = "Categories";
+"Categories" = "Catégories";
 "Classification" = "Classification";
 "Duration" = "Durée";
 "Attendees:" = "Participants :";
@@ -549,13 +549,14 @@ vtodo_class2 = "(Tâche confidentielle)";
 "monthDayFieldInvalid" = "Veuillez spécifier un chiffre supérieur ou égal à 1 dans la journée du mois.";
 "yearFieldInvalid" = "Veuillez spécifier un chiffre supérieur ou égal à 1 dans le champ Année(s).";
 "appointmentFieldInvalid" = "Veuillez spécifier un chiffre supérieur ou égal à 1 dans le champ rendez-vous.";
-"recurrenceUnsupported" = "Ce type de récurrence n\\'est pas supporté.";
+"recurrenceUnsupported" = "Ce type de récurrence n\'est pas supporté.";
 "Please specify a calendar name." = "Veuillez définir un nom au calendrier.";
 "tagNotDefined" = "Vous devez spécifier un label si vous désirez synchroniser ce calendrier.";
 "tagAlreadyExists" = "Le label spécifié est déjà associé à un autre calendrier. Choisissez-en un autre.";
 "tagHasChanged" = "En changeant le label de ce calendrier, vous devrez recharger les données sur votre appareil mobile.\nVoulez-vous continuer?";
 "tagWasAdded" = "Afin de synchroniser ce calendrier, vous devrez recharger les données sur votre appareil mobile.\nVoulez-vous continuer?";
-"tagWasRemoved" = "Afin de ne plus synchroniser ce calendrier, vous devrez recharger les données sur votre appareil mobile.\nVoulez-vous continuer?";
+"tagWasRemoved" = "Afin de ne plus synchroniser ce calendrier, vous devrez recharger les données sur votre appareil mobile.
+Voulez-vous continuer?";
 "DestinationCalendarError" = "Le calendrier de destination est le même que celui de l'événement. Choisissez un calendrier de destination différent.";
 "EventCopyError" = "La copie a échouée. Choisissez un calendrier de destination différent.";
 
