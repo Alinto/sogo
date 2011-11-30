@@ -635,14 +635,9 @@
 	   getCNForUID: nameInContainer];
 }
 
-- (NSArray *) davPrincipalURL
+- (NSString *) davResourceId
 {
-  NSArray *principalURL;
-
-  principalURL = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                          [self davURLAsString], nil];
-
-  return [NSArray arrayWithObject: principalURL];
+  return [NSString stringWithFormat: @"urn:uuid:%@", nameInContainer];
 }
 
 - (NSException *) setDavSignature: (NSString *) newSignature
@@ -664,6 +659,5 @@
 {
   return YES;
 }
-
 
 @end /* SOGoUserFolder */

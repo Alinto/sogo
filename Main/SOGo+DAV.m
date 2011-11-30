@@ -48,6 +48,26 @@
 
 @implementation SOGo (SOGoWebDAVExtensions)
 
+- (NSArray *) davPrincipalURL
+{
+  NSArray *principalURL;
+  NSString *classes;
+  WOContext *context;
+
+  context = [self context];
+  if ([[context request] isICal4])
+    {
+      classes = [[self davComplianceClassesInContext: context]
+                  componentsJoinedByString: @", "];
+      [[context response] setHeader: classes forKey: @"DAV"];
+    }
+
+  principalURL = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                          [self davURLAsString], nil];
+
+  return [NSArray arrayWithObject: principalURL];
+}
+
 - (WOResponse *) davPrincipalSearchPropertySet: (WOContext *) localContext
 {
   static NSDictionary *davResponse = nil;
@@ -62,6 +82,7 @@
       properties = [NSArray arrayWithObjects:
                               @"calendar-user-type",
                             @"calendar-user-address-set",
+                            @"calendar-user-type",
                             @"displayname",
                             @"first-name",
                             @"last-name",
@@ -71,6 +92,7 @@
         = [properties resultsOfSelector: @selector (asDAVPropertyDescription)];
       namespaces = [NSArray arrayWithObjects:
                               XMLNS_CALDAV,
+                            XMLNS_CALDAV,
                             XMLNS_CALDAV,
                             XMLNS_WEBDAV,
                             XMLNS_CalendarServerOrg,
@@ -549,9 +571,15 @@
     {
       newClasses
         = [[super davComplianceClassesInContext: localContext] mutableCopy];
-      selfClasses = [NSArray arrayWithObjects: @"access-control", @"addressbook",
-                             @"calendar-access", @"calendar-auto-schedule",
-                             @"calendar-schedule", @"calendar-proxy", nil];
+      selfClasses = [NSArray arrayWithObjects: @"access-control",
+                             @"addressbook", @"calendar-access",
+                             @"calendar-schedule", @"calendar-auto-schedule",
+                             @"calendar-proxy",
+
+                             @"calendar-query-extended",
+                             @"extended-mkcol",
+                             @"calendarserver-principal-property-search",
+                             nil];
       [newClasses addObjectsFromArray: selfClasses];
     }
 

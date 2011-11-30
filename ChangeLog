@@ -1,3 +1,56 @@
+2011-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoFolder.m
+	(_expandPropertyResponse:forObject:): set the element in the 404
+	bag only if the value is nil to avoid iCal complaining about lack
+	of support for sharing.
+
+	* SoObjects/Appointments/SOGoCalendarProxy.m (+webdavAclManager):
+	overriden method.
+	(-davGroupMemberSet, -setDavGroupMemberSet:): instantiate the
+	"Calendar" object from the result of -[self lookupUserFolder]
+	instead of "container", since we might attach proxy objects to
+	other containers.
+
+	* Main/SOGo+DAV.m (-davPrincipalURL): new DAV getter.
+	(-davPrincipalSearchPropertySet): added "calendar-user-type", even
+	though it's a lie.
+	(-davComplianceClassesInContext:): declare
+	"calendar-query-extended", "extended-mkcol",
+	"calendarserver-principal-property-search" as additional classes,
+	even though it's a lie.
+
+	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
+	(-davCalendarUserAddressSet): make sure each email address is
+	reported only once, we also return the user principal in the list
+	(for iCal).
+
+	* SoObjects/SOGo/SOGoObject.m (-davComplianceClassesInContext:):
+	declare "calendar-query-extended", "extended-mkcol",
+	"calendarserver-principal-property-search" as additional calendar
+	classes, even though it's a lie.
+	(-davCurrentUserPrincipal): new method.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (-davResourceId):
+	new DAV getter.
+
+	* SoObjects/SOGo/SOGoUserFolder.m (-davResourceId): new DAV getter.
+
+	* SoObjects/SOGo/SOGoFolder.m (-davPrincipalURL): moved from
+	SOGoUserFolder.
+
+	* SoObjects/SOGo/WORequest+SOGo.m (-isICal, -isICal4): updated for
+	iCal 5.
+
+	* SoObjects/Appointments/SOGoAppointmentInboxFolder.m
+	(-davScheduleDefaultCalendarURL): fixed method to return a
+	properly formatted XML chunk.
+	(-displayName): returns nameInContainer.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-davCalendarTimeZone): fixed by embedding the VTIMEZONE element
+	in a VCALENDAR.
+
 2011-11-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromSPropValue): set the

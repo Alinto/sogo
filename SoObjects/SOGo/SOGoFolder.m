@@ -44,6 +44,7 @@
 #import "NSString+Utilities.h"
 #import "SOGoPermissions.h"
 #import "SOGoWebDAVAclManager.h"
+#import "WORequest+SOGo.h"
 #import "WOResponse+SOGo.h"
 
 #import "SOGoFolder.h"
@@ -232,14 +233,16 @@
     {
       comparison = [self _compareByNameInContainer: otherFolder];
       if (comparison == NSOrderedSame)
-        if ([self displayName] == nil)
-          comparison = NSOrderedAscending;
-        else if ([otherFolder displayName] == nil)
-          comparison = NSOrderedDescending;
-        else
-          comparison
-            = [[self displayName]
-                localizedCaseInsensitiveCompare: [otherFolder displayName]];
+        {
+          if ([self displayName] == nil)
+            comparison = NSOrderedAscending;
+          else if ([otherFolder displayName] == nil)
+            comparison = NSOrderedDescending;
+          else
+            comparison
+              = [[self displayName]
+                  localizedCaseInsensitiveCompare: [otherFolder displayName]];
+        }
     }
 
   return comparison;
@@ -442,7 +445,7 @@
       if (!tagNS)
         tagNS = XMLNS_WEBDAV;
       tagName = [childProperty attribute: @"name"];
-      if ([childValue count])
+      if (childValue)
         [properties200 addObject: davElementWithContent (tagName,
                                                          tagNS,
                                                          childValue)];
@@ -560,6 +563,24 @@
 - (NSArray *) aclUsers
 {
   return nil;
+}
+
+- (NSArray *) davPrincipalURL
+{
+  NSArray *principalURL;
+  NSString *classes;
+
+  if ([[context request] isICal4])
+    {
+      classes = [[self davComplianceClassesInContext: context]
+                  componentsJoinedByString: @", "];
+      [[context response] setHeader: classes forKey: @"DAV"];
+    }
+
+  principalURL = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                          [self davURLAsString], nil];
+
+  return [NSArray arrayWithObject: principalURL];
 }
 
 @end

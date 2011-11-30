@@ -59,6 +59,7 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoPermissions.h>
@@ -1542,11 +1543,22 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   SOGoUser *ownerUser;
   NSString *ownerTimeZone;
+  iCalCalendar *tzCal;
+  iCalTimeZone *tz;
+  NSString *prodID;
 
   ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
   ownerTimeZone = [[ownerUser userDefaults] timeZoneName];
-  
-  return [[iCalTimeZone timeZoneForName: ownerTimeZone] versitString];
+  tz = [iCalTimeZone timeZoneForName: ownerTimeZone];
+
+  tzCal = [iCalCalendar groupWithTag: @"vcalendar"];
+  [tzCal setVersion: @"2.0"];
+  prodID = [NSString stringWithFormat:
+                       @"-//Inverse inc./SOGo %@//EN", SOGoVersion];
+  [tzCal setProdID: prodID];
+  [tzCal addChild: tz];
+
+  return [tzCal versitString];
 }
 
 - (NSException *) setDavCalendarTimeZone: (NSString *) newTimeZone
@@ -2035,6 +2047,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (NSString *) davDescription
 {
   return @"";
+}
+
+- (NSString *) davResourceId
+{
+  return [NSString stringWithFormat: @"urn:uuid:%@:calendars:%@",
+                   [self ownerInContext: context], [self nameInContainer]];
 }
 
 - (NSArray *) davScheduleCalendarTransparency

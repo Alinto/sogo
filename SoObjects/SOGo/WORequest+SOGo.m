@@ -131,7 +131,8 @@
 
 - (BOOL) isICal
 {
-  return [self isAppleDAVWithSubstring: @"Mac OS X/10."];
+  return ([self isAppleDAVWithSubstring: @"Mac OS X/10."]
+          || [self isAppleDAVWithSubstring: @"CoreDAV/"]);
 }
 
 //
@@ -140,8 +141,9 @@
 //
 - (BOOL) isICal4
 {
-  return ([self isAppleDAVWithSubstring: @"iCal/4."] ||
-          [self isAppleDAVWithSubstring: @"iCal/5."]);
+  return ([self isAppleDAVWithSubstring: @"iCal/4."]
+          || [self isAppleDAVWithSubstring: @"iCal/5."]
+          || [self isAppleDAVWithSubstring: @"CoreDAV/"]);
 }
 
 

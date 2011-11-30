@@ -1211,12 +1211,46 @@
   /* CalDAV */
   if (needCalDAVClasses)
     {
-      caldavClasses = [NSArray arrayWithObjects: @"calendar-access", @"calendar-schedule",
-                                 @"calendar-auto-schedule", @"calendar-proxy", nil];
+      caldavClasses = [NSArray arrayWithObjects: @"calendar-access",
+                               @"calendar-schedule",
+                               @"calendar-auto-schedule",
+                               @"calendar-proxy",
+                               // @"calendarserver-private-events",
+                               // @"calendarserver-private-comments",
+                               // @"calendarserver-sharing",
+                               // @"calendarserver-sharing-no-scheduling",
+                               @"calendar-query-extended",
+                               @"extended-mkcol",
+                               @"calendarserver-principal-property-search",
+                               nil];
       [classes addObjectsFromArray: caldavClasses];
     }
 
   return classes;
+}
+
+- (SOGoWebDAVValue *) davCurrentUserPrincipal
+{
+  NSDictionary *userHREF;
+  NSString *login;
+  SOGoUser *activeUser;
+  SOGoWebDAVValue *davCurrentUserPrincipal;
+
+  activeUser = [[self context] activeUser];
+  login = [activeUser login];
+  if ([login isEqualToString: @"anonymous"])
+    davCurrentUserPrincipal = nil;
+  else
+    {
+      userHREF = davElementWithContent (@"href", XMLNS_WEBDAV, [self davURLAsString]);
+      davCurrentUserPrincipal
+        = [davElementWithContent (@"current-user-principal",
+                                  XMLNS_WEBDAV,
+                                  userHREF)
+                                 asWebDAVValue];
+    }
+
+  return davCurrentUserPrincipal;
 }
 
 /* dav acls */

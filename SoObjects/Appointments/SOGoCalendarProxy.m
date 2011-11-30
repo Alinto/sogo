@@ -30,11 +30,73 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 
+#import <SOGo/NSObject+DAV.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoWebDAVAclManager.h>
+
 #import "SOGoAppointmentFolders.h"
 
 #import "SOGoCalendarProxy.h"
 
 @implementation SOGoCalendarProxy
+
++ (SOGoWebDAVAclManager *) webdavAclManager
+{
+  static SOGoWebDAVAclManager *aclManager = nil;
+  NSString *nsI;
+
+  if (!aclManager)
+    {
+      nsI = @"urn:inverse:params:xml:ns:inverse-dav";
+
+      aclManager = [SOGoWebDAVAclManager new];
+      [aclManager registerDAVPermission: davElement (@"read", XMLNS_WEBDAV)
+                               abstract: YES
+                         withEquivalent: SoPerm_WebDAVAccess
+                              asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+      [aclManager
+        registerDAVPermission: davElement (@"read-current-user-privilege-set", XMLNS_WEBDAV)
+                     abstract: YES
+               withEquivalent: SoPerm_WebDAVAccess
+                    asChildOf: davElement (@"read", XMLNS_WEBDAV)];
+      [aclManager registerDAVPermission: davElement (@"write", XMLNS_WEBDAV)
+                               abstract: YES
+                         withEquivalent: nil
+                              asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+      [aclManager registerDAVPermission: davElement (@"bind", XMLNS_WEBDAV)
+                               abstract: NO
+                         withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                              asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+      [aclManager registerDAVPermission: davElement (@"unbind", XMLNS_WEBDAV)
+                               abstract: NO
+                         withEquivalent: SoPerm_DeleteObjects
+                              asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+      [aclManager
+	registerDAVPermission: davElement (@"write-properties", XMLNS_WEBDAV)
+                     abstract: NO
+               withEquivalent: SoPerm_ChangePermissions /* hackish */
+                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+      [aclManager
+	registerDAVPermission: davElement (@"write-content", XMLNS_WEBDAV)
+                     abstract: NO
+               withEquivalent: SoPerm_AddDocumentsImagesAndFiles
+                    asChildOf: davElement (@"write", XMLNS_WEBDAV)];
+      [aclManager registerDAVPermission: davElement (@"admin", nsI)
+                               abstract: YES
+                         withEquivalent: nil
+                              asChildOf: davElement (@"all", XMLNS_WEBDAV)];
+      [aclManager registerDAVPermission: davElement (@"read-acl", XMLNS_WEBDAV)
+                               abstract: YES
+                         withEquivalent: SOGoPerm_ReadAcls
+                              asChildOf: davElement (@"admin", nsI)];
+      [aclManager registerDAVPermission: davElement (@"write-acl", XMLNS_WEBDAV)
+                               abstract: YES
+                         withEquivalent: SoPerm_ChangePermissions
+                              asChildOf: davElement (@"admin", nsI)];
+    }
+
+  return aclManager;
+}
 
 - (id) init
 {
@@ -78,7 +140,9 @@
   appName = [[context request] applicationName];
 
   proxySubscribers
-    = [[container lookupName: @"Calendar" inContext: context acquire: NO]
+    = [[[self lookupUserFolder] lookupName: @"Calendar"
+                                 inContext: context
+                                   acquire: NO]
         proxySubscribersWithWriteAccess: hasWriteAccess];
   max = [proxySubscribers count];
   members = [NSMutableArray arrayWithCapacity: max];
@@ -138,18 +202,13 @@
 
 - (NSException *) setDavGroupMemberSet: (NSString *) memberSet
 {
-  SOGoUser *ownerUser;
-  SOGoUserSettings *us;
   NSMutableArray *addedSubscribers, *removedSubscribers;
   NSArray *oldProxySubscribers, *newProxySubscribers;
-  NSString *login;
   SOGoAppointmentFolders *folders;
 
-  login = [self ownerInContext: context];
-  ownerUser = [SOGoUser userWithLogin: login roles: nil];
-  us = [ownerUser userSettings];
-  folders = [container lookupName: @"Calendar"
-                        inContext: context acquire: NO];
+  folders = [[self lookupUserFolder] lookupName: @"Calendar"
+                                      inContext: context
+                                        acquire: NO];
   oldProxySubscribers
     = [folders proxySubscribersWithWriteAccess: hasWriteAccess];
   if (!oldProxySubscribers)
