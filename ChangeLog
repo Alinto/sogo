@@ -1,5 +1,12 @@
 2011-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarProxy.m (+webdavAclManager):
+	overriden method.
+	(-davGroupMemberSet, -setDavGroupMemberSet:): instantiate the
+	"Calendar" object from the result of -[self lookupUserFolder]
+	instead of "container", since we might attach proxy objects to
+	other containers.
+
 	* Main/SOGo+DAV.m (-davPrincipalURL): new DAV getter.
 	(-davPrincipalSearchPropertySet): added "calendar-user-type", even
 	though it's a lie.
