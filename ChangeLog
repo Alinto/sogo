@@ -1,5 +1,13 @@
 2011-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/SOGo+DAV.m (-davPrincipalURL): new DAV getter.
+	(-davPrincipalSearchPropertySet): added "calendar-user-type", even
+	though it's a lie.
+	(-davComplianceClassesInContext:): declare
+	"calendar-query-extended", "extended-mkcol",
+	"calendarserver-principal-property-search" as additional classes,
+	even though it's a lie.
+
 	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
 	(-davCalendarUserAddressSet): make sure each email address is
 	reported only once, we also return the user principal in the list
