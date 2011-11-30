@@ -562,4 +562,22 @@
   return nil;
 }
 
+- (NSArray *) davPrincipalURL
+{
+  NSArray *principalURL;
+  NSString *classes;
+
+  if ([[context request] isICal4])
+    {
+      classes = [[self davComplianceClassesInContext: context]
+                  componentsJoinedByString: @", "];
+      [[context response] setHeader: classes forKey: @"DAV"];
+    }
+
+  principalURL = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                          [self davURLAsString], nil];
+
+  return [NSArray arrayWithObject: principalURL];
+}
+
 @end

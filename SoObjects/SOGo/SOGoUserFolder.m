@@ -635,16 +635,6 @@
 	   getCNForUID: nameInContainer];
 }
 
-- (NSArray *) davPrincipalURL
-{
-  NSArray *principalURL;
-
-  principalURL = [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
-                          [self davURLAsString], nil];
-
-  return [NSArray arrayWithObject: principalURL];
-}
-
 - (NSException *) setDavSignature: (NSString *) newSignature
 {
   SOGoUserDefaults *ud;

@@ -1,5 +1,8 @@
 2011-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m (-davPrincipalURL): moved from
+	SOGoUserFolder.
+
 	* SoObjects/SOGo/WORequest+SOGo.m (-isICal, -isICal4): updated for
 	iCal 5.
 
