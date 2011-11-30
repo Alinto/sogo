@@ -1,3 +1,9 @@
+2011-11-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-davCalendarTimeZone): fixed by embedding the VTIMEZONE element
+	in a VCALENDAR.
+
 2011-11-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
