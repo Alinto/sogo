@@ -1,4 +1,9 @@
-2011-11-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+2011-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentInboxFolder.m
+	(-davScheduleDefaultCalendarURL): fixed method to return a
+	properly formatted XML chunk.
+	(-displayName): returns nameInContainer.
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-davCalendarTimeZone): fixed by embedding the VTIMEZONE element

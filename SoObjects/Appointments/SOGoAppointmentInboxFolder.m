@@ -76,17 +76,17 @@
   return nil;
 }
 
-- (NSArray *) davScheduleDefaultCalendarURL
+- (SOGoWebDAVValue *) davScheduleDefaultCalendarURL
 {
-  NSArray *response;
   NSString *personalURL;
+  NSDictionary *href;
 
   personalURL = [NSString stringWithFormat: @"%@personal/",
                           [container davURLAsString]];
-  response = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
-                      personalURL, nil];
+  href = davElementWithContent (@"href", XMLNS_WEBDAV, personalURL);
 
-  return response;
+  return [davElementWithContent (@"schedule-default-calendar-URL", XMLNS_CALDAV, href)
+                                asWebDAVValue];
 }
 
 - (NSArray *) aclsForUser: (NSString *) userID
@@ -107,6 +107,11 @@
     }
 
   return acls;
+}
+
+- (NSString *) displayName
+{
+  return nameInContainer;
 }
 
 @end
