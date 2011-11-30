@@ -1,5 +1,10 @@
 2011-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m
+	(_expandPropertyResponse:forObject:): set the element in the 404
+	bag only if the value is nil to avoid iCal complaining about lack
+	of support for sharing.
+
 	* SoObjects/Appointments/SOGoCalendarProxy.m (+webdavAclManager):
 	overriden method.
 	(-davGroupMemberSet, -setDavGroupMemberSet:): instantiate the

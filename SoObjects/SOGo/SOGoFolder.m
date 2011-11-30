@@ -442,7 +442,7 @@
       if (!tagNS)
         tagNS = XMLNS_WEBDAV;
       tagName = [childProperty attribute: @"name"];
-      if ([childValue count])
+      if (childValue)
         [properties200 addObject: davElementWithContent (tagName,
                                                          tagNS,
                                                          childValue)];
