@@ -634,10 +634,7 @@ static SoSecurityManager *sm = nil;
 {
   SOGoAppointmentFolder *currentFolder;
   NSArray *subFolderNames, *proxyRoles;
-  NSMutableArray *subscribers;
   int folderCount, folderMax, userCount, userMax;
-
-  subscribers = [NSMutableArray array];
 
   proxyRoles = [self _requiredProxyRolesWithWriteAccess: write];
   subFolderNames = [self subFolders];
@@ -664,10 +661,7 @@ static SoSecurityManager *sm = nil;
 {
   SOGoAppointmentFolder *currentFolder;
   NSArray *subFolderNames;
-  NSMutableArray *subscribers;
   int folderCount, folderMax, userCount, userMax;
-
-  subscribers = [NSMutableArray array];
 
   subFolderNames = [self subFolders];
   folderMax = [subFolderNames count];
