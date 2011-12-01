@@ -113,7 +113,7 @@
       context = [self context];
       ASSIGN (appointmentWrapper,
               [MAPIStoreAppointmentWrapper wrapperWithICalEvent: event
-                                                        andUser: [context activeUser]
+                                                        andUser: [context ownerUser]
                                                  andSenderEmail: nil
                                                      inTimeZone: [self ownerTimeZone]
                                              withConnectionInfo: [context connectionInfo]]);
@@ -653,7 +653,7 @@
   iCalEvent *newEvent;
   iCalPerson *userPerson;
   NSUInteger responseStatus = 0;
-  SOGoUser *activeUser;
+  SOGoUser *activeUser, *ownerUser;
   id value;
 
   if (isNew)
@@ -684,8 +684,8 @@
   vCalendar = [iCalCalendar parseSingleFromSource: content];
   newEvent = [[vCalendar events] objectAtIndex: 0];
 
-  activeUser = [[self context] activeUser];
-  userPerson = [newEvent userAsAttendee: activeUser];
+  ownerUser = [[self context] ownerUser];
+  userPerson = [newEvent userAsAttendee: ownerUser];
   [newEvent setTimeStampAsDate: now];
 
   if (userPerson)
@@ -723,7 +723,7 @@
         {
           // iCalPerson *participant;
 
-          // participant = [newEvent userAsAttendee: activeUser];
+          // participant = [newEvent userAsAttendee: ownerUser];
           // [participant setParticipationStatus: newPartStat];
           // [sogoObject saveComponent: newEvent];
 
@@ -871,7 +871,7 @@
             {
               NSArray *recipients;
               NSDictionary *dict;
-              NSString *orgEmail, *attEmail;
+              NSString *orgEmail, *sentBy, *attEmail;
               iCalPerson *person;
               iCalPersonPartStat newPartStat;
               NSNumber *flags, *trackStatus;
@@ -880,11 +880,20 @@
               /* We must set the organizer preliminarily here because, unlike what
                  the doc states, Outlook does not always pass the real organizer
                  in the recipients list. */
-              dict = [activeUser primaryIdentity];
+              dict = [ownerUser primaryIdentity];
               person = [iCalPerson new];
               [person setCn: [dict objectForKey: @"fullName"]];
               orgEmail = [dict objectForKey: @"email"];
               [person setEmail: orgEmail];
+
+              activeUser = [[self context] activeUser];
+              if (![activeUser isEqual: ownerUser])
+                {
+                  dict = [activeUser primaryIdentity];
+                  sentBy = [NSString stringWithFormat: @"mailto:%@",
+                                     [dict objectForKey: @"email"]];
+                  [person setSentBy: sentBy];
+                }
               [newEvent setOrganizer: person];
               [person release];
 

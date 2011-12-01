@@ -1,5 +1,12 @@
 2011-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m (-appointmentWrapper):
+	pass the owner user as parameter to the appointment wrapper
+	contructor rather than the active user.
+	(-save): make use of the owner user coordinates instead of the
+	ones of the active user. Handle the "sent-by" parameter for the
+	organizer element.
+
 	* OpenChange/MAPIStoreFolder.m
 	(-openMessage:withMID:forWriting:inMemCtx:): takes a new
 	"forWriting:" parameter and make use of subscriberCanModifyMessage
