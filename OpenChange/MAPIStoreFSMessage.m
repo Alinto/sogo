@@ -28,6 +28,7 @@
 #import "MAPIStorePropertySelectors.h"
 #import "SOGoMAPIFSMessage.h"
 
+#import "MAPIStoreFSFolder.h"
 #import "MAPIStoreFSMessage.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
@@ -83,16 +84,29 @@
   [properties removeAllObjects];
 }
 
-- (BOOL) subscriberCanReadMessage
+- (BOOL) _messageIsFreeBusy
 {
-  /* This is a HACK until we figure out how to determine a message position in
-     the mailbox hierarchy.... (missing: folderid and role) */
   NSString *msgClass;
   
+  /* This is a HACK until we figure out how to determine a message position in
+     the mailbox hierarchy.... (missing: folderid and role) */
   msgClass = [[sogoObject properties]
                objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)];
 
-  return [msgClass isEqualToString: @"IPM.Microsoft.ScheduleData.FreeBusy"]; 
+  return [msgClass isEqualToString: @"IPM.Microsoft.ScheduleData.FreeBusy"];
+}
+
+/* TODO: differentiate between the "Own" and "All" cases */
+- (BOOL) subscriberCanReadMessage
+{
+  return ([(MAPIStoreFolder *) container subscriberCanReadMessages]
+          || [self _messageIsFreeBusy]);
+}
+
+- (BOOL) subscriberCanModifyMessage
+{
+  return ([(MAPIStoreFolder *) container subscriberCanModifyMessages]
+          || [self _messageIsFreeBusy]);
 }
 
 - (NSDate *) creationTime

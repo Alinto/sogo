@@ -27,7 +27,9 @@
 #import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
+#import <SOGo/SOGoUser.h>
 #import "EOQualifier+MAPI.h"
+#import "MAPIStoreContext.h"
 #import "MAPIStoreFSFolderTable.h"
 #import "MAPIStoreFSMessage.h"
 #import "MAPIStoreFSMessageTable.h"
@@ -235,6 +237,45 @@ static Class EOKeyValueQualifierK;
     rights |= RoleNone; /* actually "folder visible" */
  
   return rights;
+}
+
+- (BOOL) _testRoleForActiveUser: (NSString *) role
+{
+  SOGoUser *activeUser;
+  NSArray *roles;
+
+  activeUser = [[self context] activeUser];
+
+  roles = [[self aclFolder] aclsForUser: [activeUser login]];
+
+  return [roles containsObject: role];
+}
+
+- (BOOL) subscriberCanCreateMessages
+{
+  return [self _testRoleForActiveUser: @"RightsCreateItems"];
+}
+
+- (BOOL) subscriberCanModifyMessages
+{
+  return ([self _testRoleForActiveUser: @"RightsEditAll"]
+          || [self _testRoleForActiveUser: @"RightsEditOwn"]);
+}
+
+- (BOOL) subscriberCanReadMessages
+{
+  return [self _testRoleForActiveUser: @"RightsReadItems"];
+}
+
+- (BOOL) subscriberCanDeleteMessages
+{
+  return ([self _testRoleForActiveUser: @"RightsDeleteAll"]
+          || [self _testRoleForActiveUser: @"RightsDeleteOwn"]);
+}
+
+- (BOOL) subscriberCanCreateSubFolders
+{
+  return [self _testRoleForActiveUser: @"RightsCreateSubfolders"];
 }
 
 @end
