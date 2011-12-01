@@ -102,7 +102,8 @@ static Class EOKeyValueQualifierK;
 
   newKey = [NSString stringWithFormat: @"%@.plist",
                      [SOGoObject globallyUniqueObjectId]];
-  fsObject = [SOGoMAPIFSMessage objectWithName: newKey inContainer: sogoObject];
+  fsObject = [SOGoMAPIFSMessage objectWithName: newKey
+                                   inContainer: sogoObject];
   newMessage = [MAPIStoreFSMessage mapiStoreObjectWithSOGoObject: fsObject
                                                      inContainer: self];
 
