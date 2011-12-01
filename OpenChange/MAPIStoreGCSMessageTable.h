@@ -29,7 +29,6 @@
 
 @interface MAPIStoreGCSMessageTable : MAPIStoreMessageTable
 
-- (EOQualifier *) componentQualifier;
 - (NSString *) sortIdentifierForProperty: (enum MAPITAGS) property;
 
 @end

@@ -1,5 +1,8 @@
 2011-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSMessageTable.m (-componentQualifier):
+	removed useless accessor, left over by a previous commit.
+
 	* OpenChange/MAPIStoreGCSFolder.m (-aclQualifier): new accessor
 	providing an additional qualifier when listing elements of a
 	table, based on the current user rights.
