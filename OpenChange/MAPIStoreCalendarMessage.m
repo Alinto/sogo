@@ -42,6 +42,7 @@
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalTrigger.h>
+#import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
@@ -618,6 +619,27 @@
           [alarm release];
         }
     }
+}
+
+- (BOOL) subscriberCanReadMessage
+{
+  return ([[self activeUserRoles]
+            containsObject: SOGoCalendarRole_ComponentViewer]
+          || [self subscriberCanModifyMessage]);
+}
+
+- (BOOL) subscriberCanModifyMessage
+{
+  BOOL rc;
+  NSArray *roles = [self activeUserRoles];
+
+  if (isNew)
+    rc = [roles containsObject: SOGoRole_ObjectCreator];
+  else
+    rc = ([roles containsObject: SOGoCalendarRole_ComponentModifier]
+          || [roles containsObject: SOGoCalendarRole_ComponentResponder]);
+
+  return rc;
 }
 
 - (void) save

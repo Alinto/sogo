@@ -29,6 +29,8 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoGCSFolder.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
 
 #import "MAPIStoreContext.h"
 #import "MAPIStoreTypes.h"
@@ -53,6 +55,7 @@
       ASSIGN (versionsMessage,
               [SOGoMAPIFSMessage objectWithName: @"versions.plist"
 				 inContainer: propsFolder]);
+      activeUserRoles = nil;
     }
 
   return self;
@@ -66,6 +69,7 @@
       ASSIGN (versionsMessage,
               [SOGoMAPIFSMessage objectWithName: @"versions.plist"
                                     inContainer: propsFolder]);
+      activeUserRoles = nil;
     }
 
   return self;
@@ -74,6 +78,7 @@
 - (void) dealloc
 {
   [versionsMessage release];
+  [activeUserRoles release];
   [super dealloc];
 }
 
@@ -516,7 +521,37 @@
   return deletedKeys;
 }
 
+- (NSArray *) activeUserRoles
+{
+  SOGoUser *activeUser;
+
+  if (!activeUserRoles)
+    {
+      activeUser = [[self context] activeUser];
+      activeUserRoles = [activeUser rolesForObject: sogoObject
+                                         inContext: [context woContext]];
+      [activeUserRoles retain];
+    }
+
+  return activeUserRoles;
+}
+
+- (BOOL) subscriberCanCreateMessages
+{
+  return [[self activeUserRoles] containsObject: SOGoRole_ObjectCreator];
+}
+
+- (BOOL) subscriberCanDeleteMessages
+{
+  return [[self activeUserRoles] containsObject: SOGoRole_ObjectEraser];
+}
+
 /* subclasses */
+
+- (EOQualifier *) aclQualifier
+{
+  return nil;
+}
 
 - (EOQualifier *) componentQualifier
 {

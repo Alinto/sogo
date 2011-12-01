@@ -161,6 +161,12 @@
 - (NSArray *) rolesForExchangeRights: (uint32_t) rights;
 - (uint32_t) exchangeRightsForRoles: (NSArray *) roles;
 
+- (BOOL) subscriberCanCreateMessages;
+- (BOOL) subscriberCanModifyMessages;
+- (BOOL) subscriberCanReadMessages;
+- (BOOL) subscriberCanDeleteMessages;
+- (BOOL) subscriberCanCreateSubFolders;
+
 /* subclass helpers */
 - (void) postNotificationsForMoveCopyMessagesWithMIDs: (uint64_t *) srcMids
                                        andMessageURLs: (NSArray *) oldMessageURLs

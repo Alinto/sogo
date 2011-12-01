@@ -25,6 +25,7 @@
 
 #import "MAPIStoreFolder.h"
 
+@class NSArray;
 @class NSCalendarDate;
 @class NSData;
 @class NSMutableDictionary;
@@ -34,6 +35,7 @@
 @interface MAPIStoreGCSFolder : MAPIStoreFolder
 {
   SOGoMAPIFSMessage *versionsMessage;
+  NSArray *activeUserRoles;
 }
 
 /* synchronisation */
@@ -45,6 +47,8 @@
 - (NSData *) predecessorChangeListForMessageWithKey: (NSString *) messageKey;
 - (void) setChangeKey: (NSData *) changeKey
     forMessageWithKey: (NSString *) messageKey;
+
+- (NSArray *) activeUserRoles;
 
 /* subclasses */
 - (EOQualifier *) componentQualifier;

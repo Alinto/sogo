@@ -28,6 +28,7 @@
 #import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoObject.h>
+#import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 
 #import "MAPIStoreActiveTables.h"
@@ -137,6 +138,7 @@ rtf2html (NSData *compressedRTF)
     {
       attachmentParts = [NSMutableDictionary new];
       activeTables = [NSMutableArray new];
+      activeUserRoles = nil;
     }
 
   return self;
@@ -144,6 +146,7 @@ rtf2html (NSData *compressedRTF)
 
 - (void) dealloc
 {
+  [activeUserRoles release];
   [attachmentKeys release];
   [attachmentParts release];
   [activeTables release];
@@ -797,6 +800,33 @@ rtf2html (NSData *compressedRTF)
 - (void) removeActiveTable: (MAPIStoreTable *) activeTable
 {
   [activeTables removeObject: activeTable];
+}
+
+- (NSArray *) activeUserRoles
+{
+  MAPIStoreContext *context;
+
+  if (!activeUserRoles)
+    {
+      context = [self context];
+
+      activeUserRoles = [[context activeUser]
+                          rolesForObject: sogoObject
+                               inContext: [context woContext]];
+      [activeUserRoles retain];
+    }
+
+  return activeUserRoles;
+}
+
+- (BOOL) subscriberCanReadMessage
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanModifyMessage
+{
+  return NO;
 }
 
 @end

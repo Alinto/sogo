@@ -42,6 +42,7 @@
   NSArray *attachmentKeys;
   NSMutableDictionary *attachmentParts;
   NSMutableArray *activeTables;
+  NSArray *activeUserRoles;
 }
 
 - (void) getMessageData: (struct mapistore_message **) dataPtr
@@ -70,12 +71,17 @@
                inMemCtx: (TALLOC_CTX *) memCtx;
 - (NSArray *) activeContainerMessageTables;
 
+- (NSArray *) activeUserRoles;
+
 /* subclasses */
 - (void) save;
 
 /* attachments (subclasses) */
 - (MAPIStoreAttachment *) createAttachment;
 - (MAPIStoreAttachmentTable *) attachmentTable;
+
+- (BOOL) subscriberCanReadMessage;
+- (BOOL) subscriberCanModifyMessage;
 
 @end
 

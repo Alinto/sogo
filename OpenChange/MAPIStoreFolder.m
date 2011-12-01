@@ -1519,4 +1519,29 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return nil;
 }
 
+- (BOOL) subscriberCanCreateMessages
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanModifyMessages
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanReadMessages
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanDeleteMessages
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanCreateSubFolders
+{
+  return NO;
+}
+
 @end

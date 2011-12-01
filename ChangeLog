@@ -1,3 +1,14 @@
+2011-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMessage.m (-subscriberCanReadMessage)
+	(-subscriberCanModifyMessage): new getters for ACL operations at
+	the message level.
+
+	* OpenChange/MAPIStoreFolder.m (-subscriberCanCreateMessages)
+	(-subscriberCanModifyMessages, -subscriberCanReadMessages)
+	(-subscriberCanDeleteMessages, -subscriberCanCreateSubFolders):
+	new getters for ACL operations at the folder level.
+
 2011-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoFolder.m
