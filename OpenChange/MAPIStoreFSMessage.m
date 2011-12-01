@@ -83,6 +83,18 @@
   [properties removeAllObjects];
 }
 
+- (BOOL) subscriberCanReadMessage
+{
+  /* This is a HACK until we figure out how to determine a message position in
+     the mailbox hierarchy.... (missing: folderid and role) */
+  NSString *msgClass;
+  
+  msgClass = [[sogoObject properties]
+               objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)];
+
+  return [msgClass isEqualToString: @"IPM.Microsoft.ScheduleData.FreeBusy"]; 
+}
+
 - (NSDate *) creationTime
 {
   return [sogoObject creationTime];

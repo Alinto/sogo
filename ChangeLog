@@ -1,5 +1,10 @@
 2011-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFSMessage.m (-subscriberCanReadMessage):
+	returns YES when the message is of class
+	"IPM.Microsoft.ScheduleData.FreeBusy", as a hack until freebusy
+	messages are handled by the backend.
+
 	* OpenChange/MAPIStoreContext.m (_prepareContextClass): now return
 	the context via a pointer parameter. Return a proper "enum
 	mapistore_error" value.
