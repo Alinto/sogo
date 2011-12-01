@@ -109,7 +109,7 @@
 
   if (!appointmentWrapper)
     {
-      event = [sogoObject component: NO secure: NO];
+      event = [sogoObject component: NO secure: YES];
       context = [self context];
       ASSIGN (appointmentWrapper,
               [MAPIStoreAppointmentWrapper wrapperWithICalEvent: event
