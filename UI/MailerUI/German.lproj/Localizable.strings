@@ -18,13 +18,13 @@
 "Contacts" = "Kontakte";
 "Attach" = "Anhang";
 "Save" = "Speichern";
-"Options" = "Options";
+"Options" = "Optionen";
 "Size" = "Größe";
 
 /* Tooltips */
 
 "Send this message now" = "Diese Nachricht jetzt senden";
-"Select a recipient from an Address Book" = "Einen Empfänger aus dem Adressbuch wählen";
+"Select a recipient from an Address Book" = "Einen Empfänger aus einem Adressbuch wählen";
 "Include an attachment" = "Datei-Anhang hinzufügen";
 "Save this message" = "Diese Nachricht speichern";
 "Get new messages" = "Neue Nachrichten empfangen";
@@ -43,7 +43,7 @@
 
 /* Main Frame  */
 
-"Home"                 = "Start"; 
+"Home"                 = "Anfang"; 
 "Calendar"             = "Kalender";
 "Addressbook"          = "Adressbuch";
 "Mail"                 = "E-Mail";
@@ -53,23 +53,23 @@
 
 /* Mail account main windows */
 
-"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Willkommen zu SOGo Mailer.";
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Willkommen zum SOGo Mailer. Verwenden Sie den Ordnerbaum auf der linken Seite, um in Ihrem E-Mail-Konto zu stöbern!";
 
 "Read messages"       = "Nachrichten lesen";
 "Write a new message" = "Eine neue Nachricht schreiben";
 
 "Share: " = "Benutzerrechte: ";
 "Account: " = "Konto: ";
-"Shared Account: " = "Gemeinsames Konto ";
+"Shared Account: " = "Gemeinsames Konto: ";
 
 /* acls */
 "Default Roles" = "Standardrechte";
 "User rights for:" = "Benutzerrechte für:";
 
 "List and see this folder" = "Diesen Ordner sehen";
-"Read mails from this folder" = "E-Mails in diesem Ordner lesen";
+"Read mails from this folder" = "E-Mails in diesem Ordner ansehen";
 "Mark mails read and unread" = "E-Mails in diesem Ordner als (un)gelesen markieren";
-"Modify the flags of the mails in this folder" = "Schlagwörter in diesem Ordner verändern";
+"Modify the flags of the mails in this folder" = "Markierungen von E-Mails in diesem Ordner verändern";
 "Insert, copy and move mails into this folder" = "E-Mails in diesem Ordner hinzufügen, kopieren und verschieben";
 "Post mails" = "E-Mails versenden";
 "Add subfolders to this folder" = "Neue Unterordner anlegen";
@@ -79,7 +79,7 @@
 "Archive This Folder" = "Diesen Ordner archivieren";
 "Modify the acl of this folder" = "Benutzerrechte dieses Ordners verändern";
 
-"Saved Messages.zip" = "Saved Messages.zip";
+"Saved Messages.zip" = "Gespeicherte Nachrichten.zip";
 
 "Update" = "Speichern";
 "Cancel" = "Abbrechen";
@@ -110,9 +110,11 @@
 "Load Images" = "Bilder laden";
 
 "Return Receipt" = "Empfangsbestätigung";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Der Absender dieser Nachricht hat eine Empfangsbestätigung angefordert. Wollen Sie eine Empfangsbestätigung senden?";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Der Absender dieser Nachricht hat um eine Empfangsbestätigung gebeten. Möchten Sie eine Empfangsbestätigung senden?";
 "Return Receipt (displayed) - %@"= "Empfangsbestätigung (angezeigt) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dies ist die Empfangsbestätigung für die Nachricht, die Sie an %@ gesendet haben.\n\nHinweis: Es wird lediglich bestätigt, dass die Nachricht auf dem Computer des Empfängers empfangen (angezeigt) wurde. Es wird nicht garantiert, dass der Empfänger die Nachricht gelesen und/oder verstanden hat.";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dies ist die Empfangsbestätigung für die Nachricht, die Sie an %@ gesendet haben.
+
+Hinweis: Es wird lediglich bestätigt, dass die Nachricht auf dem Computer des Empfängers empfangen (angezeigt) wurde. Es wird nicht garantiert, dass der Empfänger die Nachricht gelesen und/oder verstanden hat.";
 
 "Priority" = "Priorität";
 "highest" = "Sehr hoch";
@@ -148,7 +150,7 @@
 "first"         = "Erste";
 "previous"      = "Vorherige";
 "next"          = "Nächste";
-"last"          = "Letzter";
+"last"          = "Letzte";
 
 "msgnumber_to"  = "bis";
 "msgnumber_of"  = "von";
@@ -171,11 +173,11 @@
 
 /* MailMoveToPopUp */
 
-"MoveTo"        = "Verschieben nach";
+"MoveTo"        = "Verschieben nach &hellip;";
 
 /* Address Popup menu */
-"Add to Address Book..." = "Zum Adressbuch hinzufügen";
-"Compose Mail To" = "Verfassen";
+"Add to Address Book..." = "Zum Adressbuch hinzufügen...";
+"Compose Mail To" = "Verfassen an";
 "Create Filter From Message..." = "Filter aus Nachricht erstellen...";
 
 /* Image Popup menu */
@@ -184,7 +186,7 @@
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "In neuem Fenster öffnen";
-"Copy Folder Location" = "Ordner-Adresse kopieren";
+"Copy Folder Location" = "Ordneradresse kopieren";
 "Subscribe..." = "Abonnieren...";
 "Mark Folder Read..." = "Ordner als gelesen markieren";
 "New Folder..." = "Neuer Ordner...";
@@ -197,7 +199,7 @@
 "Use This Folder For" = "Diesen Ordner verwenden für";
 "Get Messages for Account" = "Neue Nachrichten empfangen";
 "Properties..." = "Eigenschaften...";
-"Delegation..." = "Delegierung...";
+"Delegation..." = "Delegation...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Gesendete Nachrichten";
@@ -219,7 +221,7 @@
 "View Message Source" = "Nachrichten-Quelltext";
 "Print..." = "Drucken...";
 "Delete Message" = "Nachricht löschen";
-"Delete Selected Messages" = "Gewählte Nachrichten löschen";
+"Delete Selected Messages" = "Gewählte Nachricht(en) löschen";
 
 "This Folder" = "Dieser Ordner";
 
@@ -236,7 +238,7 @@
 "Thread As Read" = "Thema gelesen";
 "As Read By Date..." = "Datumsbereich gelesen...";
 "All Read" = "Alles gelesen";
-"Flag" = "Kennzeichnung";
+"Flag" = "Markierung";
 "As Junk" = "Junk";
 "As Not Junk" = "Kein Junk";
 "Run Junk Mail Controls" = "Junk-Filter anwenden";
@@ -249,7 +251,7 @@
  = "Wollen Sie diesen Ordner wirklich in den Papierkorb verschieben?";
 "Operation failed" = "Operation fehlgeschlagen.";
 
-"Quota" = "Quota";
+"Quota" = "Quota:";
 "quotasFormat" = "%{0}% von %{1} MB verwendet";
 
 "Please select a message." = "Sie müssen eine Nachricht auswählen.";
@@ -267,7 +269,7 @@
 "The trash could not be emptied."
 = "Der Papierkorb konnte nicht geleert werden.";
 "The folder functionality could not be changed."
-= "Die Ordner-Funktionalität konnte nicht geändert werden.";
+= "Die Ordnerverwendung konnte nicht geändert werden.";
 
 "You need to choose a non-virtual folder!" = "Sie müssen einen nicht-virtuellen Ordner auswählen!";
 
@@ -278,14 +280,14 @@
 
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
-= "Die Nachricht kann nicht in den Papierkorb verschoben werden. Wollen Sie sie endgültig löschen?";
+= "Die Nachricht(en) können nicht in den Papierkorb verschoben werden. Wollen Sie diese endgültig löschen?";
 
 /* Message editing */
 "error_validationfailed" = "Prüfung ist fehlgeschlagen!";
-"error_missingsubject" = "Der Betreff fehlt!";
-"error_missingrecipients" = "Der Empfänger fehlt!";
+"error_missingsubject" = "Der Betreff fehlt";
+"error_missingrecipients" = "Der Empfänger fehlt";
 
 /* Message sending */
-"cannot send message: (smtp) all recipients discarded" = "Zustellungsfehler: Alle Empfänger sind fehlerhaft.";
-"cannot send message (smtp) - recipients discarded:" = "Zustellungsfehler bei folgenden Empfängern:";
-"cannot send message: (smtp) error when connecting" = "Zustellungsfehler: Fehler bei der Verbindung zum SMTP-Server.";
+"cannot send message: (smtp) all recipients discarded" = "Kann Nachricht nicht versenden: Alle Empfänger sind ungültig.";
+"cannot send message (smtp) - recipients discarded:" = "Kann Nachricht nicht versenden: Die folgenden Addressen sind ungültig:";
+"cannot send message: (smtp) error when connecting" = "Kann Nachricht nicht versenden: Fehler beim Verbinden mit dem SMTP-Server.";

@@ -5,14 +5,14 @@
 "Username:" = "Benutzername:";
 "Password:" = "Passwort:";
 "Domain:" = "Domain:";
-"Remember username" = "Benutzernamen merken";
+"Remember username" = "Benutzername merken";
 
 "Connect" = "Anmelden";
 
 "Wrong username or password." = "Falscher Benutzername oder falsches Passwort";
 "cookiesNotEnabled" = "Verbindung zu SOGo ist nicht möglich, da Cookies in Ihrem Browser deaktiviert sind. Bitte aktivieren Sie Cookies in Ihrem Browser.";
 
-"browserNotCompatible" = "Wir haben festgestellt, dass Ihre Browserversion im Moment nicht von SOGo unterstützt wird. Klicken Sie auf den Link, um die letzte Version von Firefox zu installieren.";
+"browserNotCompatible" = "Wir haben festgestellt, dass Ihre Browserversion im Moment nicht von SOGo unterstützt wird. Klicken Sie unten auf den Link, um die aktuelle Version Ihres Browsers zu installieren.";
 "alternativeBrowsers" = "Sie können auch die folgenden Browser benutzen";
 "alternativeBrowserSafari" = "Sie können auch Safari benutzen.";
 "Download" = "Herunterladen";
@@ -28,13 +28,13 @@
 "Hungarian" = "Magyar";
 "Icelandic" = "Íslenska";
 "Italian" = "Italiano";
-"NorwegianBokmal" = "Norsk bokmål";
-"NorwegianNynorsk" = "Norsk nynorsk";
+"NorwegianBokmal" = "Norsk Bokmål";
+"NorwegianNynorsk" = "Norsk Nynorsk";
 "Polish" = "Polski";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
 "SpanishSpain" = "Español (España)";
-"SpanishArgentina" = "Español (Argentina)";
+"SpanishArgentina" = "Español (Argentinien)";
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
@@ -42,15 +42,15 @@
 "About" = "Über";
 "AboutBox" = "Entwickelt von Inverse. SOGo ist ein vollständiger Groupware-Server mit Fokus auf Skalierbarkeit und Unkompliziertheit.<br/><br/>
 SOGo bietet ein umfangreiches, auf AJAX basierendes Web-Interface. Durch die Verwendung von Protokollstandards wie etwa CalDAV und CardDAV werden verschiedene native Clients unterstützt.<br/><br/>
-SOGo wird unter der <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPLv2</a> oder höher, Teile unter der <a href=\"http://gnu.org/licenses/lgpl.html\">GNU LGPLv2</a> verbreitet. Dies ist freie Software: Sie haben die Freiheit sie zu verändern und erneut zu verbreiten. Es besteht KEINE GEWÄHRLEISTUNG, soweit dies gesetzlich zulässig ist.<br/><br/>
-Auf <a href=\"http://www.sogo.nu/en/support/community.html\">dieser Seite</a> (in englischer Sprache) können Sie sich über weitere Support-Optionen informieren.";
+SOGo wird unter der <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPLv2</a> oder höher, Teile unter der <a href=\"http://gnu.org/licenses/lgpl.html\">GNU LGPLv2</a> angeboten. Dies ist freie Software: Sie haben die Freiheit sie zu verändern und erneut zu verbreiten. Es besteht KEINE GEWÄHRLEISTUNG, soweit dies gesetzlich zulässig ist.<br/><br/>
+Auf <a href=\"http://www.sogo.nu/en/support/community.html\">dieser Seite</a> (in englischer Sprache) können Sie sich über weitere Support-Möglichkeiten informieren.";
 
 "Your account was locked due to too many failed attempts." = "Ihr Konto wurde wegen zu vieler fehlgeschlagener Versuche gesperrt.";
-"Your account was locked due to an expired password." = "Ihr Konto wurde wegen eines abgelaufenen Passworts gesperrt.";
+"Your account was locked due to an expired password." = "Ihr Konto wurde wegen eines abgelaufenen Passwortes gesperrt.";
 "Login failed due to unhandled error case: " = "Die Anmeldung ist aufgrund eines unbehandelten Fehlers fehlgeschlagen: ";
-"Change your Password" = "Passwort ändern";
-"The password was changed successfully." = "The password was changed successfully.";
-"Your password has expired, please enter a new one below:" = "Ihr Passwort ist abgelaufen. Bitte geben Sie ein neues an:";
+"Change your Password" = "Bitte Passwort ändern";
+"The password was changed successfully." = "Das Passwort wurde erfolgreich geändert.";
+"Your password has expired, please enter a new one below:" = "Ihr Passwort ist abgelaufen. Bitte geben Sie unten ein neues an:";
 "Password must not be empty." = "Passwort darf nicht leer sein.";
 "The passwords do not match. Please try again." = "Die Passwörter stimmen nicht überein. Bitte noch einmal eingeben.";
 "Password Grace Period" = "Passwort-Schonfrist";
@@ -68,7 +68,7 @@ Auf <a href=\"http://www.sogo.nu/en/support/community.html\">dieser Seite</a> (i
 "Password change failed - Password is too young" = "Passwortänderung fehlgeschlagen - Passwort ist zu jung";
 "Password change failed - Password is in history" = "Passwortänderung fehlgeschlagen - Passwort wurde bereits früher verwendet";
 "Unhandled policy error: %{0}" = "Unbehandelter Richtlinienfehler: %{0}";
-"Unhandled error response" = "Unbehandelter Fehlerantwort";
+"Unhandled error response" = "Unbehandelte Fehlerantwort";
 "Password change is not supported." = "Passwortänderung wird nicht unterstützt.";
 "Unhandled HTTP error code: %{0}" = "Unbehandelter HTTP Fehlercode: %{0}";
 "New password:" = "Neues Passwort:";

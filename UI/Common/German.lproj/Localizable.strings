@@ -8,11 +8,11 @@
 "Home" = "Start";
 "Calendar" = "Kalender";
 "Address Book"	= "Adressbuch";
-"Mail" = "Mail";
+"Mail" = "E-Mail";
 "Preferences" = "Einstellungen";
 "Administration" = "Administration";
 "Disconnect" = "Beenden";
-"Right Administration" = "Rechte Administration";
+"Right Administration" = "Rechteadministration";
 "Log Console (dev.)" = "Journal (dev.)";
 
 "User" = "Benutzer";
@@ -39,13 +39,13 @@
 
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "Es ist nicht möglich, diesen Ordner zu abonnieren.";
+	= "Es ist nicht möglich, diesen Ordner zu abonnieren!";
 "You cannot subscribe to a folder that you own!"
-      	= "Es ist nicht möglich einen Ordner zu abonnieren, der Ihnen selbst gehört.";
+      	= "Es ist nicht möglich einen Ordner zu abonnieren, der Ihnen selbst gehört!";
 "Unable to unsubscribe from that folder!"
-	= "Es ist nicht möglich, diesen Ordner zu kündigen.";
+	= "Es ist nicht möglich, diesen Ordner zu kündigen!";
 "You cannot unsubscribe from a folder that you own!"
-      	= "Es ist nicht möglich, einen Ordner zu kündigen, der Ihnen selbst gehört.";
+      	= "Es ist nicht möglich, einen Ordner zu kündigen, der Ihnen selbst gehört!";
 "Unable to rename that folder!" = "Es ist nicht möglich, diesen Ordner umzubenennen!";
 "You have already subscribed to that folder!"
      	= "Sie haben diesen Ordner bereits abonniert!";
@@ -53,18 +53,18 @@
         = "Die Benutzerrechte können für dieses Objekt nicht verändert werden!";
 "A folder by that name already exists." = "Ein Ordner mit diesem Namen existiert bereits.";
 "You cannot create a list in a shared address book." 
-        = "Es ist nicht möglich, eine Liste in einem gemeinsamen Adressbuch zu erstellen.";
-"Warning" = "Warning";
+        = "Sie können keine Liste in einem gemeinsamen Adressbuch erstellen.";
+"Warning" = "Warnung";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Sie sind nicht berechtigt auf dieses Modul oder System zuzugreifen. Bitte kontaktieren Sie ihren Systemadministrator.";
 "You don't have the required privileges to perform the operation."
-= "Sie haben nicht die benötigte Berechtigung für diesen Befehl.";
+= "Sie haben nicht die benötigten Berechtigungen für diesen Befehl.";
 
-"noEmailForDelegation" = "Zum Delegieren der Einladung muss eine Adresse angegeben werden.";
+"noEmailForDelegation" = "Sie müssen eine Adresse angeben, an die Sie Ihre Einladung delegieren möchten.";
 "delegate is organizer" = "Der Vertreter ist der Organisator. Bitte einen anderen Vertreter angeben.";
 "delegate is a participant" = "Der Vertreter ist bereits ein Teilnehmer.";
-"delegate is a group" = "Die angegebene Adresse gehört einer Gruppe. Es kann nur zu einer einzelnen Person delegiert werden.";
+"delegate is a group" = "Die angegebene Adresse gehört einer Gruppe. Es kann nur an eine einzelne Person delegiert werden.";
 
 /* common buttons */
 "OK" = "OK";

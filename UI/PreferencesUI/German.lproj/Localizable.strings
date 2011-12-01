@@ -5,7 +5,7 @@
 /* tabs */
 "General" = "Allgemein";
 "Calendar Options" = "Kalender";
-"Contacts Options" = "Kontakte-Optionen";
+"Contacts Options" = "Kontakte";
 "Mail Options" = "E-Mail";
 "IMAP Accounts" = "IMAP-Konten";
 "Vacation" = "Abwesenheit";
@@ -21,20 +21,23 @@
 "contacts_category_labels" = "Geschäftspartner, Familie, Freund, Kollegin, Konkurrenten, Kunden, Lieferant, Presse, VIP";
 
 /* vacation (auto-reply) */
-"Enable vacation auto reply" = "Automatische Abwesenheitsantwort aktivieren";
-"Auto reply message :" = "Folgende Antwort wird automatisch einmal an jeden Absender gesendet:";
-"Email addresses (separated by commas) :" = "E-Mailadressen (getrennt per Komma) :";
+"Enable vacation auto reply" = "Automatische Abwesenheitsnachricht aktivieren";
+"Auto reply message :" = "Folgende Nachricht wird automatisch einmal an jeden Absender gesendet:";
+"Email addresses (separated by commas) :" = "E-Mail-Adressen (getrennt durch Kommata) :";
 "Add default email addresses" = "Standardadresse hinzufügen";
-"Days between responses :" = "Tage zwischen Antworten :";
-"Do not send responses to mailing lists" = "Keine Antworten an Mailinglisten senden";
+"Days between responses :" = "Tage zwischen automatischen Abwesenheitsnachrichten :";
+"Do not send responses to mailing lists" = "Keine automatischen Abwesenheitsnachrichten an Mailinglisten senden";
+"Disable auto reply on" = "Automatische Abwesenheitsnachricht abschalten am";
 "Please specify your message and your email addresses for which you want to enable auto reply."
-= "Bitte ihren Nachrichtentext und ihre E-Mailadressen angeben, für die Automatische Antwort aktiviert werden soll .";
+= "Bitte ihren Nachrichtentext und ihre E-Mail-Adressen angeben, für die automatische Abwesenheitsnachrichten aktiviert werden sollen .";
+"End date of your auto reply must be in the future."
+= "Das Endedatum für Ihre automatische Abwesenheitsnachricht muss in der Zukunft liegen.";
 
 /* forward messages */
 "Forward incoming messages" = "Ankommende Nachrichten weiterleiten";
 "Keep a copy" = "Kopie behalten";
 "Please specify an address to which you want to forward your messages."
-= "Bitte Adresse angeben, an die Nachrichten weitergeleitet werden sollen.";
+= "Bitte Adresse angeben, an die Ihre Nachrichten weitergeleitet werden sollen.";
 
 /* d & t */
 "Current Time Zone :" = "Aktuelle Zeitzone:";
@@ -45,16 +48,20 @@
 "default" = "Standard";
 
 "shortDateFmt_0" = "%d.%m.%Y";
+
 "shortDateFmt_1" = "%e.%m.%Y";
 "shortDateFmt_2" = "%d.%m.%y";
 "shortDateFmt_3" = "%e.%m.%y";
+
 "shortDateFmt_4" = "%Y-%m-%d";
 "shortDateFmt_5" = "%d. %b. %Y";
+
 "shortDateFmt_6" = "%e. %b. %Y";
 "shortDateFmt_7" = "%d. %b. %y";
 "shortDateFmt_8" = "%e. %b. %y";
-"shortDateFmt_9" = "";
 
+"shortDateFmt_9" = "";
+   
 "longDateFmt_0" = "%A, %d. %B %Y";
 "longDateFmt_1" = "%A, %e. %B %Y";
 "longDateFmt_2" = "%a. %d. %B %Y";
@@ -77,7 +84,7 @@
 "Day start time :" = "Tagesanfang:";
 "Day end time :" = "Tagesende:";
 "Day start time must be prior to day end time." = "Der Tagesanfang muss vor dem Tagesende liegen.";
-"Show time as busy outside working hours" = "Zeit außerhalb der Arbeitszeit als gebucht anzeigen";
+"Show time as busy outside working hours" = "Zeiten außerhalb der Arbeitszeit als belegt anzeigen";
 "First week of year :" = "Erste Woche des Jahres:";
 "Enable reminders for Calendar items" = "Terminerinnerung aktivieren";
 "Play a sound when a reminder comes due"
@@ -90,9 +97,9 @@
 
 /* Default Calendar */
 "Default calendar :" = "Standardkalender";
-"selectedCalendar" = "Ausgewählter Kalender";
+"selectedCalendar" = "Gewählter Kalender";
 "personalCalendar" = "Persönlicher Kalender";
-"firstCalendar" = "Erster Kalender";
+"firstCalendar" = "Erster eingeschalteter Kalender";
 
 "reminderTime_0000" = "0 Minuten";
 "reminderTime_0005" = "5 Minuten";
@@ -124,34 +131,30 @@
 "messageforward_inline" = "Eingebunden";
 "messageforward_attached" = "Als Anhang";
 
-"replyplacement_above" = "Antwort oberhalb";
-"replyplacement_below" = "Antwort unterhalb";
+"replyplacement_above" = "Antwort oberhalb des Zitates beginnen";
+"replyplacement_below" = "Antwort unterhalb des Zitates beginnen";
 "And place my signature" = "Und setze meine Signatur";
-"signatureplacement_above" = "Signatur oberhalb";
-"signatureplacement_below" = "Signatur unterhalb";
+"signatureplacement_above" = "unterhalb meiner Antwort";
+"signatureplacement_below" = "unterhalb des Zitates";
 "Compose messages in" = "Nachrichten verfassen in";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Reintext";
 
 /* IMAP Accounts */
-"New Mail Account" = "Neues Mail-Konto";
+"New Mail Account" = "Neues E-Mail-Konto";
 
 "Server Name:" = "Servername:";
 "Port:" = "Port:";
-"Encryption:" = "Verschlüsselung:";
-"None" = "Keine";
 "User Name:" = "Benutzername:";
 "Password:" = "Passwort:";
- 
+
 "Full Name:" = "Name:";
 "Email:" = "E-Mail-Adresse:";
 "Signature:" = "Signatur:";
 "(Click to create)" = "(Klick zum Erstellen)";
 
 "Signature" = "Signatur";
-"Please enter your signature below:" = "Please enter your signature below:";
 "Please enter your signature below:" = "Bitte fügen Sie die Signatur hier ein:";
-"Cancel" = "Abbrechen";
 
 /* Additional Parameters */
 "Additional Parameters" = "Zusätzliche Einstellungen";
@@ -163,14 +166,14 @@
 
 /* Event+task categories */
 "category_none" = "Keine";
-"calendar_category_labels" = "Jubiläum,Geburtstag,Geschäft,Anrufe,Klienten,Konkurrenz,Kunde,Favoriten,Nachgehen,Geschenke,Ferien,Ideen,Meeting,Fragen,Verschiedenes,Persönlich,Projekte,Feiertag,Status,Lieferanten,Reise,Urlaub";
+"calendar_category_labels" = "Jubiläum,Geburtstag,Geschäft,Anrufe,Klienten,Konkurrenz,Kunde,Favoriten,Fortsetzung,Geschenke,Ferien,Ideen,Meeting,Fragen,Verschiedenes,Persönlich,Projekte,Feiertag,Status,Lieferanten,Reise,Urlaub";
 
 /* Default module */
 "Calendar" = "Kalender";
 "Contacts" = "Adressbuch";
 "Mail" = "Mail";
 "Last" = "Zuletzt benutztes";
-"Default module :" = "Vorgegebenes Modul:"; 
+"Default module :" = "Vorgegebenes Modul:";
 
 "Language :" = "Sprache :";
 "choose" = "Auswählen";
@@ -196,7 +199,19 @@
 "When I receive a request for a return receipt:" = "Wenn ich die Anforderung einer Empfangsbestätigung erhalte:";
 "Never send a return receipt" = "Niemals eine Bestätigung senden";
 "Allow return receipts for some messages" = "Erlaube eine Bestätigung für einige Nachrichten";
-"If I'm not in the To or Cc of the message:" = "Wenn ich nicht in An oder Cc der Nachricht bin:";
+"If I'm not in the To or Cc of the message:" = "Wenn ich nicht in An oder CC der Nachricht bin:";
+"If the sender is outside my domain:" = "Wenn der Absender außerhalb meiner Domain ist:";
+"In all other cases:" = "In allen anderen Fällen:";
+
+"Never send" = "Niemals senden";
+"Always send" = "Immer senden";
+"Ask me" = "Mich fragen";
+
+/* Return receipts */
+"When I receive a request for a return receipt:" = "Wenn ich die Anforderung einer Empfangsbestätigung erhalte:";
+"Never send a return receipt" = "Niemals eine Bestätigung senden";
+"Allow return receipts for some messages" = "Erlaube eine Bestätigung für einige Nachrichten";
+"If I'm not in the To or Cc of the message:" = "Wenn ich nicht in An oder CC der Nachricht bin:";
 "If the sender is outside my domain:" = "Wenn der Absender außerhalb meiner Domain ist:";
 "In all other cases:" = "In allen anderen Fällen:";
 
@@ -221,9 +236,9 @@
 "Subject" = "Betreff";
 "From" = "Von";
 "To" = "An";
-"Cc" = "Cc";
-"To or Cc" = "An oder Cc";
-"Size (Kb)" = "Größe (Kb)";
+"Cc" = "CC";
+"To or Cc" = "An oder CC";
+"Size (Kb)" = "Größe (KB)";
 "Header" = "Header";
 "Flag the message with:" = "Markiere die Nachricht als:";
 "Discard the message" = "Verwerfe die Nachricht";
@@ -242,8 +257,8 @@
 "does not contain" = "enthält nicht";
 "matches" = "stimmt überein mit";
 "does not match" = "stimmt nicht überein mit";
-"matches regex" = "entspricht regulären Ausdrücken";
-"does not match regex" = "entspricht nicht regulären Ausdrücken";
+"matches regex" = "entspricht den regulären Ausdrücken";
+"does not match regex" = "entspricht nicht den regulären Ausdrücken";
 
 "Seen" = "Gelesen";
 "Deleted" = "Gelöscht";
@@ -256,3 +271,18 @@
 "Label 3" = "Label 3";
 "Label 4" = "Label 4";
 "Label 5" = "Label 5";
+
+"Password must not be empty." = "Das Passwort darf nicht leer sein.";
+"The passwords do not match. Please try again." = "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es noch einmal.";
+"Password change failed" = "Passwortänderung fehlgeschlagen.";
+"Password change failed - Permission denied" = "Passwortänderung fehlgeschlagen - Zugriff verweigert";
+"Password change failed - Insufficient password quality" = "Passwortänderung fehlgeschlagen - Passwortqualität unzureichend";
+"Password change failed - Password is too short" = "Passwortänderung fehlgeschlagen - Passwort ist zu kurz";
+"Password change failed - Password is too young" = "Passwortänderung fehlgeschlagen - Passwortänderung ist zu früh";
+"Password change failed - Password is in history" = "Passwortänderung fehlgeschlagen - Passwort existiert bereits in der Historie";
+"Unhandled policy error: %{0}" = "Unbearbeiteter Vorgabenfehler: %{0}";
+"Unhandled error response" = "Unbearbeitete Fehlerantwort";
+"Password change is not supported." = "Passwortänderung wird nicht unterstützt.";
+"Unhandled HTTP error code: %{0}" = "Unbearbeiteter HTTP-Fehlercode: %{0}";
+"New password:" = "Neues Passwort:";
+"Confirmation:" = "Bestätigung:";

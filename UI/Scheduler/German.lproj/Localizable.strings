@@ -9,7 +9,7 @@
 "Go to today" = "Zu Heute wechseln";
 "Switch to day view" = "Zur Tagesansicht wechseln";
 "Switch to week view" = "Zur Wochenansicht wechseln";
-"Switch to month view" = "Zur wehrwöchigen Ansicht wechseln";
+"Switch to month view" = "Zur Monatsansicht wechseln";
 "Reload all calendars" = "Alle Kalender neu laden";
 
 /* Tabs */
@@ -43,7 +43,7 @@
 "a2_Friday" = "Fr";
 "a2_Saturday" = "Sa";
 
-"dayLabelFormat" = "%d/%m/%Y";
+"dayLabelFormat" = "%d.%m.%Y";
 "today" = "Heute";
 
 "Previous Day" = "Vorheriger Tag";
@@ -108,12 +108,12 @@
 "Export Calendar..." = "Kalender exportieren...";
 "Import Events..." = "Termine importieren...";
 "Import Events" = "Termine importieren";
-"Select iCalendar file (*.ics)..." = "iCalendar Datei (*.ics) wählen...";
+"Select an iCalendar file (.ics)." = "Wählen Sie eine iCalendar-Datei (.ics).";
 "Upload" = "Hochladen";
 "Publish Calendar..." = "Kalender publizieren...";
 "Reload Remote Calendars" = "Externe Kalender neu laden";
 "Properties" = "Einstellungen";
-"Done" = "Done";
+"Done" = "Fertig";
 "An error occured while importing calendar." = "Fehler während des Importierens von Terminen.";
 "No event was imported." = "Es wurden keine Termine importiert.";
 "A total of %{0} events were imported in the calendar." = "%{0} Termine wurden in den Kalender importiert.";
@@ -153,7 +153,7 @@
 "None" = "Keine";
 
 "This person can create objects in my calendar."
-= "Diese Person kann Objekte in meinem Kalender hinzufügen.";
+= "Diese Person kann Objekte in meinen Kalender hinzufügen.";
 "This person can erase objects from my calendar."
 = "Diese Person kann Objekte in meinem Kalender löschen.";
 
@@ -186,7 +186,7 @@
 "No appointments found" = "Keine Termine gefunden";
 "Meetings proposed by you" = "Von Ihnen vorgeschlagene Termine";
 "Meetings proposed to you" = "Von Anderen vorgeschlagene Termine";
-"sched_startDateFormat" = "%d/%m %H:%M";
+"sched_startDateFormat" = "%d.%m %H:%M";
 "action" = "Aktion";
 "accept" = "Annehmen";
 "decline" = "Ablehnen";
@@ -215,8 +215,8 @@
 "Privacy" = "Datenschutz";
 "Cycle" = "Wiederholen";
 "Cycle End" = "Enddatum";
-"Categories" = "Kategorie";
-"Classification" = "Kategorie";
+"Categories" = "Kategorien";
+"Classification" = "Einordnung";
 "Duration" = "Dauer";
 "Attendees:" = "Teilnehmer:";
 "Resources" = "Ressourcen";
@@ -233,7 +233,7 @@
 
 "attributes" = "Attribute";
 "attendees" = "Teilnehmer";
-"delegated from" = "übertragen von";
+"delegated from" = "delegiert von";
 
 /* checkbox title */
 "is private" = "Privater Termin";
@@ -251,15 +251,15 @@
 "partStat_NEEDS-ACTION" = "Benötigt Eingriff";
 "partStat_ACCEPTED" = "Ich nehme teil";
 "partStat_DECLINED" = "Ich nehme nicht teil";
-"partStat_TENTATIVE" = "Ich bestätige später";
+"partStat_TENTATIVE" = "Ich nehme eventuell teil";
 "partStat_DELEGATED" = "Vertreter";
 "partStat_OTHER" = "Anderer";
 
 /* Appointments (error messages) */
 
-"Conflicts found!" = "Einer order mehrere Konflikte wurden gefunden";
-"Invalid iCal data!" = "Ungültige iCal-Daten...";
-"Could not create iCal data!" = "iCal-Daten konnten nicht erstellt werden...";
+"Conflicts found!" = "Einer order mehrere Konflikte wurden gefunden!";
+"Invalid iCal data!" = "Ungültige iCal-Daten!";
+"Could not create iCal data!" = "iCal-Daten konnten nicht erstellt werden!";
 
 /* Searching */
 
@@ -371,7 +371,7 @@
 /* Appointment categories */
 
 "category_none" = "Keine";
-"category_labels" = "Jubiläum,Geburtstag,Geschäft,Anrufe,Klienten,Konkurrenz,Kunde,Favoriten,Nachgehen,Geschenke,Ferien,Ideen,Meeting,Fragen,Verschiedenes,Persönlich,Projekte,Feiertag,Status,Lieferanten,Reise,Urlaub";
+"category_labels" = "Jubiläum,Geburtstag,Geschäft,Anrufe,Klienten,Konkurrenz,Kunde,Favoriten,Fortsetzung,Geschenke,Ferien,Ideen,Meeting,Fragen,Verschiedenes,Persönlich,Projekte,Feiertag,Status,Lieferanten,Reise,Urlaub";
 
 "repeat_NEVER" = "wiederholt sich nicht";
 "repeat_DAILY" = "täglich";
@@ -425,9 +425,9 @@
 /* validation errors */
 
 validate_notitle           = "Sie haben keinen Titel eingegeben. Wollen Sie trotzdem fortfahren?";
-validate_invalid_startdate = "Ungültiges Startdatum !";
+validate_invalid_startdate = "Ungültiges Beginndatum !";
 validate_invalid_enddate   = "Ungültiges Enddatum !";
-validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
+validate_endbeforestart    = "Ihr Ende ist vor dem Beginndatum.";
 
 "Tasks" = "Aufgaben";
 "Show completed tasks" = "Abgeschlossene Aufgaben anzeigen";
@@ -459,7 +459,9 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "Workweek days only" = "nur Arbeitstage";
 "Tasks in View" = "Aufgaben anzeigen";
 
-"eventDeleteConfirmation" = "Diese Termine werden gelöscht: \n%{0}\nFortfahren?";
+"eventDeleteConfirmation" = "Diese Termine werden gelöscht: 
+%{0}
+Fortfahren?";
 "taskDeleteConfirmation" = "Wollen Sie diese Aufgabe wirklich dauerhaft löschen?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
@@ -496,7 +498,8 @@ validate_endbeforestart    = "Ihr Beginn ist nach dem Ende";
 "and" = "und";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "Dieser Termin überschneidet sich mit dem Termin eines Teilnehmers,\nwollen sie die Einstellungen trotzdem so belassen?";
+= "Dieser Termin überschneidet sich mit dem Termin eines Teilnehmers.
+Wollen sie die Einstellungen trotzdem so belassen?";
 
 /* apt list */
 "Title" = "Titel";
@@ -530,30 +533,35 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 
 "Synchronization" = "Synchronisation";
 "Synchronize" = "Synchronisieren";
-"Tag:" = "Tag:";
+"Tag:" = "Kennzeichen:";
 
 "Display" = "Anzeige";
 "Show alarms" = "Zeige Erinnerungen";
 "Show tasks" = "Zeige Aufgaben";
 
 "Links to this Calendar" = "Links zu diesem Kalender";
+"Authenticated User Access" = "Zugang für angemeldete Benutzer";
 "CalDAV URL" = "CalDAV URL";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 
 /* Error messages */
-"dayFieldInvalid" = "Im Feld Tage ist ein numerischer Wert größer oder gleich 1 erforderlich.";
+"dayFieldInvalid" = "Im Feld Tag(e) ist ein numerischer Wert größer oder gleich 1 erforderlich.";
 "weekFieldInvalid" = "Im Feld Woche(n) ist ein numerischer Wert größer oder gleich 1 erforderlich.";
 "monthFieldInvalid" = "Im Feld Monat(e) ist ein numerischer Wert größer oder gleich 1 erforderlich.";
 "monthDayFieldInvalid" = "Im Feld Monatstag ist ein numerischer Wert größer oder gleich 1 erforderlich.";
 "yearFieldInvalid" = "Im Feld Jahr(e) ist ein numerischer Wert größer oder gleich 1 erforderlich.";
 "appointmentFieldInvalid" = "Im Feld Termin(e) ist ein numerischer Wert größer oder gleich 1 erforderlich.";
 "recurrenceUnsupported" = "Diese Art von Wiederholung wird derzeit nicht unterstützt.";
-"tagNotDefined" = "Zum Synchronisieren des Kalenders muss ein Tag angegeben werden.";
-"tagAlreadyExists" = "Das angegebene Tag ist bereits für einen anderen Kalender vergeben.";
-"tagHasChanged" = "Wenn der Tag des Kalenders geändert wird, müssen die Daten erneut auf das Mobilgerät geladen werden.\nFortfahren?";
-"tagWasAdded" = "Wenn der Kalender synchronisiert werden soll, müssen die Daten erneut auf das Mobilgerät geladen werden.\nFortfahren?";
-"tagWasRemoved" = "Wenn der Kalender aus der Synchronisation entfernt wird, müssen die Daten erneut auf das Mobilgerät geladen werden.\nFortfahren?";
+"Please specify a calendar name." = "Bitte geben Sie einen Kalendernamen an.";
+"tagNotDefined" = "Zum Synchronisieren des Kalenders muss ein Kennzeichen angegeben werden.";
+"tagAlreadyExists" = "Das angegebene Kennzeichen ist bereits für einen anderen Kalender vergeben.";
+"tagHasChanged" = "Wenn das Kennzeichen des Kalenders geändert wird, müssen die Daten erneut auf das Mobilgerät geladen werden.
+Fortfahren?";
+"tagWasAdded" = "Wenn der Kalender synchronisiert werden soll, müssen die Daten erneut auf das Mobilgerät geladen werden.
+Fortfahren?";
+"tagWasRemoved" = "Wenn der Kalender aus der Synchronisation entfernt wird, müssen die Daten erneut auf das Mobilgerät geladen werden.
+Fortfahren?";
 "DestinationCalendarError" = "Quell- und Zielkalender sind identisch. Bitte kopieren Sie in einen anderen Kalender.";
 "EventCopyError" = "Kopieren fehlgeschlagen. Bitte kopieren Sie in einen anderen Kalender.";
 
@@ -561,10 +569,10 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Mark Completed" = "Als abgeschlossen markieren";
 "Delete Task" = "Aufgabe löschen";
 "Delete Event" = "Termin löschen";
+"Copy event to my calendar" = "Kopiere diesen Termin in meinen Kalender";
 
 "Subscribe to a web calendar..." = "Einen Web-Kalender abonnieren...";
 "URL of the Calendar" = "URL des Kalenders";
 "Web Calendar" = "Web-Kalender";
-
 "Reload on login" = "Neu laden beim Anmelden";
 "Invalid number." = "Ungültige Nummer.";
