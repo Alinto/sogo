@@ -64,7 +64,7 @@
 - (int) getAttachmentTable: (MAPIStoreAttachmentTable **) tablePtr
                andRowCount: (uint32_t *) countPtr;
 - (int) setReadFlag: (uint8_t) flag;
-- (int) saveMessage;
+- (enum mapistore_error) saveMessage;
 
 /* helper getters */
 - (int) getSMTPAddrType: (void **) data

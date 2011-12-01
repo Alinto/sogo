@@ -282,6 +282,22 @@ rtf2html (NSData *compressedRTF)
   return MAPISTORE_SUCCESS;
 }
 
+- (int) addPropertiesFromRow: (struct SRow *) aRow
+{
+  enum mapistore_error rc;
+  MAPIStoreContext *context;
+
+  context = [self context];
+
+  if ([[context activeUser] isEqual: [context ownerUser]]
+      || [self subscriberCanModifyMessage])
+    rc = [super addPropertiesFromRow: aRow];
+  else
+    rc = MAPISTORE_ERR_DENIED;
+
+  return rc;
+}
+
 - (void) addProperties: (NSDictionary *) newNewProperties
 {
   NSData *htmlData, *rtfData;
@@ -407,73 +423,85 @@ rtf2html (NSData *compressedRTF)
                          andType: MAPISTORE_MESSAGE_TABLE];
 }
 
-- (int) saveMessage
+- (enum mapistore_error) saveMessage
 {
+  enum mapistore_error rc;
   NSArray *containerTables;
   NSUInteger count, max;
   struct mapistore_object_notification_parameters *notif_parameters;
   uint64_t folderId;
   struct mapistore_context *mstoreCtx;
+  MAPIStoreContext *context;
 
-  /* notifications */
-  folderId = [(MAPIStoreFolder *) container objectId];
-  mstoreCtx = [[self context] connectionInfo]->mstore_ctx;
-
-  /* folder modified */
-  notif_parameters
-    = talloc_zero(NULL, struct mapistore_object_notification_parameters);
-  notif_parameters->object_id = folderId;
-  if (isNew)
+  context = [self context];
+  if ([[context activeUser] isEqual: [context ownerUser]]
+      || ((isNew
+           && [(MAPIStoreFolder *) container subscriberCanCreateMessages])
+          || (!isNew && [self subscriberCanModifyMessage])))
     {
-      notif_parameters->tag_count = 3;
-      notif_parameters->tags = talloc_array (notif_parameters,
-                                             enum MAPITAGS, 3);
-      notif_parameters->tags[0] = PR_CONTENT_COUNT;
-      notif_parameters->tags[1] = PR_MESSAGE_SIZE;
-      notif_parameters->tags[2] = PR_NORMAL_MESSAGE_SIZE;
-      notif_parameters->new_message_count = true;
-      notif_parameters->message_count
-        = [[(MAPIStoreFolder *) container messageKeys] count] + 1;
-    }
-  mapistore_push_notification (mstoreCtx,
-                               MAPISTORE_FOLDER, MAPISTORE_OBJECT_MODIFIED,
-                               notif_parameters);
-  talloc_free (notif_parameters);
+      /* notifications */
+      folderId = [(MAPIStoreFolder *) container objectId];
+      mstoreCtx = [[self context] connectionInfo]->mstore_ctx;
 
-  /* message created */
-  if (isNew)
-    {
+      /* folder modified */
       notif_parameters
-        = talloc_zero(NULL,
-                      struct mapistore_object_notification_parameters);
-      notif_parameters->object_id = [self objectId];
-      notif_parameters->folder_id = folderId;
-      
-      notif_parameters->tag_count = 0xffff;
+        = talloc_zero(NULL, struct mapistore_object_notification_parameters);
+      notif_parameters->object_id = folderId;
+      if (isNew)
+        {
+          notif_parameters->tag_count = 3;
+          notif_parameters->tags = talloc_array (notif_parameters,
+                                                 enum MAPITAGS, 3);
+          notif_parameters->tags[0] = PR_CONTENT_COUNT;
+          notif_parameters->tags[1] = PR_MESSAGE_SIZE;
+          notif_parameters->tags[2] = PR_NORMAL_MESSAGE_SIZE;
+          notif_parameters->new_message_count = true;
+          notif_parameters->message_count
+            = [[(MAPIStoreFolder *) container messageKeys] count] + 1;
+        }
       mapistore_push_notification (mstoreCtx,
-                                   MAPISTORE_MESSAGE, MAPISTORE_OBJECT_CREATED,
+                                   MAPISTORE_FOLDER, MAPISTORE_OBJECT_MODIFIED,
                                    notif_parameters);
       talloc_free (notif_parameters);
-    }
 
-  /* we ensure the table caches are loaded so that old and new state
-     can be compared */
-  containerTables = [self activeContainerMessageTables];
-  max = [containerTables count];
-  for (count = 0; count < max; count++)
-    [[containerTables objectAtIndex: count] restrictedChildKeys];
+      /* message created */
+      if (isNew)
+        {
+          notif_parameters
+            = talloc_zero(NULL,
+                          struct mapistore_object_notification_parameters);
+          notif_parameters->object_id = [self objectId];
+          notif_parameters->folder_id = folderId;
+      
+          notif_parameters->tag_count = 0xffff;
+          mapistore_push_notification (mstoreCtx,
+                                       MAPISTORE_MESSAGE, MAPISTORE_OBJECT_CREATED,
+                                       notif_parameters);
+          talloc_free (notif_parameters);
+        }
+
+      /* we ensure the table caches are loaded so that old and new state
+         can be compared */
+      containerTables = [self activeContainerMessageTables];
+      max = [containerTables count];
+      for (count = 0; count < max; count++)
+        [[containerTables objectAtIndex: count] restrictedChildKeys];
   
-  [self save];
+      [self save];
 
-  /* table modified */
-  for (count = 0; count < max; count++)
-    [[containerTables objectAtIndex: count]
-              notifyChangesForChild: self];
-  [self setIsNew: NO];
-  [properties removeAllObjects];
-  [container cleanupCaches];
+      /* table modified */
+      for (count = 0; count < max; count++)
+        [[containerTables objectAtIndex: count]
+          notifyChangesForChild: self];
+      [self setIsNew: NO];
+      [properties removeAllObjects];
+      [container cleanupCaches];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_DENIED;
 
-  return MAPISTORE_SUCCESS;
+  return rc;
 }
 
 /* helper getters */
