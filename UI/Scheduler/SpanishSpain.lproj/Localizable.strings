@@ -265,9 +265,9 @@
 
 "view_all" = "Todos los eventos";
 "view_today" = "Hoy";
-"view_next7" = "Próximos 7 days";
-"view_next14" = "Próximos 14 days";
-"view_next31" = "Próximos 31 days";
+"view_next7" = "Próximos 7 días";
+"view_next14" = "Próximos 14 días";
+"view_next31" = "Próximos 31 días";
 "view_thismonth" = "Este mes";
 "view_future" = "Todos los eventos futuros";
 "view_selectedday" = "Día seleccionado";
@@ -459,7 +459,9 @@ validate_endbeforestart    = "La fecha/hora de inicio es posterior a la de fin."
 "Workweek days only" = "Sólo días laborables";
 "Tasks in View" = "Mostrar tareas";
 
-"eventDeleteConfirmation" = "Se eliminarán el/los siguiente(s) evento(s) : \n%{0}\n¿Desea proceder?";
+"eventDeleteConfirmation" = "Se eliminarán el/los siguiente(s) evento(s) : 
+%{0}
+¿Desea proceder?";
 "taskDeleteConfirmation" = "No se puede deshacer el borrado de esta tarea. ¿Desea continuar?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
@@ -496,7 +498,8 @@ validate_endbeforestart    = "La fecha/hora de inicio es posterior a la de fin."
 "and" = "y";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "Existe un conflicto de disponibilidad con uno o más asistentes.\n¿Quiere guardar ésta propuesta de todas formas?";
+= "Existe un conflicto de disponibilidad con uno o más asistentes.
+¿Quiere guardar ésta propuesta de todas formas?";
 
 /* apt list */
 "Title" = "Título";
@@ -532,7 +535,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "Synchronize" = "Sincroniza";
 "Tag:" = "Redacción:";
 
-"Display" = "Display";
+"Display" = "Ver";
 "Show alarms" = "Muestra alarmas";
 "Show tasks" = "Muestra tareas";
 
@@ -550,12 +553,15 @@ vtodo_class2 = "(Tarea confidencial)";
 "yearFieldInvalid" = "Por favor, especificar un valor númerico en el campo año superior o igual a 1.";
 "appointmentFieldInvalid" = "Por favor, especificar un valor númerico en el campo cita(s) superior o igual a 1.";
 "recurrenceUnsupported" = "Este tipo de frecuencia no esta soportado.";
-"Please specify a calendar name." = "Please specify a calendar name.";
+"Please specify a calendar name." = "Por favor, especifique el nombre del calendario.";
 "tagNotDefined" = "Tiene que especificar un marcador si quiere sincronizar este calendario.";
 "tagAlreadyExists" = "El marcador especificado ya esta asociado a otro calendario.";
-"tagHasChanged" = "Si cambia el marcador de este calendario, necesitara recargar los datos en su teléfono móvil.\n¿Continuar?";
-"tagWasAdded" = "Si quiere sincronizar con este calendario, necesitara recargar los datos en su teléfono móvil.\n¿Continuar?";
-"tagWasRemoved" = "Si quita este calendario de la sincronización, necesitará recargar los datos en su teléfono móvil.\n¿Continuar?";
+"tagHasChanged" = "Si cambia el marcador de este calendario, necesitara recargar los datos en su teléfono móvil.
+¿Continuar?";
+"tagWasAdded" = "Si quiere sincronizar con este calendario, necesitara recargar los datos en su teléfono móvil.
+¿Continuar?";
+"tagWasRemoved" = "Si quita este calendario de la sincronización, necesitará recargar los datos en su teléfono móvil.
+¿Continuar?";
 "DestinationCalendarError" = "El calendario origen y el destino son iguales. Por favor, intente copiar a otro calendario.";
 "EventCopyError" = "La copia falló. Por favor, intente copiar a un calendario distinto.";
 

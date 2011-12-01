@@ -2,7 +2,7 @@
 
 /* Icon's label */
 "Create"      = "Crear";
-"Empty Trash" = "Vaciar papelera";
+"Empty Trash" = "Vaciar la papelera";
 "Delete"      = "Borrar";
 "Expunge"     = "Compactar";
 "Forward"     = "Reenviar";
@@ -24,7 +24,7 @@
 /* Tooltips */
 
 "Send this message now" = "Enviar este mensaje ahora";
-"Select a recipient from an Address Book" = "Seleccionar un destinatario de una libreta de direcciones";
+"Select a recipient from an Address Book" = "Seleccione un destinatario de alguna de las libretas de direcciones";
 "Include an attachment" = "Incluir un adjunto";
 "Save this message" = "Guardar este mensaje";
 "Get new messages" = "Recibir mensajes nuevos";
@@ -32,7 +32,7 @@
 "Go to address book" = "Ir a libreta de direcciones";
 "Reply to the message" = "Responder al mensaje";
 "Reply to sender and all recipients" = "Responder al remitente y a todos los destinatarios";
-"Forward selected message" = "Reenviar mensaje seleccionado";
+"Forward selected message" = "Reenviar el mensaje seleccionado";
 "Delete selected message or folder" = "Borrar el mensaje o la carpeta seleccionados";
 "Mark the selected messages as junk" = "Marcar los mensajes seleccionados como SPAM";
 "Print this message" = "Imprimir este mensaje";
@@ -53,7 +53,7 @@
 
 /* Mail account main windows */
 
-"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Bienvenido a SOGo Mailer. Use el árbol de carpetas a la izquierda para navegar por sus cuentas de correo.";
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "Bienvenido al módulo de correo de SOGo. Use el árbol de carpetas a la izquierda para navegar por sus cuentas de correo.";
 
 "Read messages"       = "Leer mensajes";
 "Write a new message" = "Redactar un nuevo mensaje";
@@ -70,16 +70,16 @@
 "Read mails from this folder" = "Leer corrreo de esta carpeta";
 "Mark mails read and unread" = "Marcar correos como leídos y no leídos";
 "Modify the flags of the mails in this folder" = "Modificar los indicadores de los correos en esta carpeta";
-"Insert, copy and move mails into this folder" = "Insertar, copiar y mover correos a esta carpeta";
-"Post mails" = "Enviar correos";
+"Insert, copy and move mails into this folder" = "Insertar, copiar y mover correos en esta carpeta";
+"Post mails" = "Enviar correo";
 "Add subfolders to this folder" = "Añadir subcarpetas a esta carpeta";
 "Remove this folder" = "Borrar esta carpeta";
 "Erase mails from this folder" = "Borrar los correos de esta carpeta";
 "Expunge this folder" = "Compactar esta carpeta";
 "Archive This Folder" = "Archivar esta carpeta";
-"Modify the acl of this folder" = "Modificar la lista de permisos de esta carpeta";
+"Modify the acl of this folder" = "Modificar los permisos de esta carpeta";
 
-"Saved Messages.zip" = "Guardar Mensaje.zip";
+"Saved Messages.zip" = "Mensajes Guardados.zip";
 
 "Update" = "Actualizar";
 "Cancel" = "Cancelar";
@@ -91,14 +91,14 @@
 "To"            = "Para";
 "Cc"            = "Cc";
 "Bcc"           = "CCo";
-"Reply-To"	= "Responder A";
+"Reply-To"	= "Responder a";
 "Add address"   = "Añadir dirección";
 
 "Attachments:" = "Adjuntos:";
 "Open" = "Abrir";
 "Select All" = "Seleccionar todo";
 "Attach Web Page..." = "Adjuntar página web...";
-"Attach File(s)..." = "Adjuntar fichero(s)...";
+"Attach File(s)..." = "Adjuntar archivo(s)...";
 
 "to"            = "Para";
 "cc"            = "Cc";
@@ -106,13 +106,15 @@
 
 "Addressbook"   = "Libreta de direcciones";
 
-"Edit Draft..." = "Modificar borrador...";
+"Edit Draft..." = "Editar borrador...";
 "Load Images" = "Cargar Imágenes";
 
 "Return Receipt" = "Acuse de Recibo";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "El remitente ha solicitado ser notificado al leerse este mensaje. ¿Quiere notificar al remitente?";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "El remitente ha solicitado que se le notifique cuando se lea este correo. ¿Quiere notificar al remitente?";
 "Return Receipt (displayed) - %@"= "Acuse de Recibo (mostrado) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Este es un Acuse de Recibo del correo enviado a %@.\n\nNota: Este acuse de recibo sólo acredita que el mensaje se mostró en el ordenador del destinatario. No hay garantía de que el destinatario haya leído o comprendido el contenido del mensaje.";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Este es un Acuse de Recibo del correo enviado a %@.
+
+Nota: Este acuse de recibo sólo garantiza que el mensaje se mostró en la computadora del destinatario. No hay garantía de que el destinatario haya leído o comprendido el contenido del mensaje.";
 
 "Priority" = "Prioridad";
 "highest" = "Muy alta";
@@ -121,7 +123,7 @@
 "low" = "Baja";
 "lowest" = "Muy baja";
 
-"This mail is being sent from an unsecure network!" = "Este mendaje es enviado desde una red no segura.";
+"This mail is being sent from an unsecure network!" = "Este mensaje esta siendo enviado desde una red no segura.";
 
 /* Popup "show" */
 
@@ -142,11 +144,11 @@
 "View"          = "Vista";
 "All"           = "Todo";
 "Unread"        = "No leído";
-"No message"    = "Sin mensaje";
+"No message"    = "Sin mensajes";
 "messages"      = "mensajes";
 
 "first"         = "Primero";
-"previous"      = "Previo";
+"previous"      = "Anterior";
 "next"          = "Siguiente";
 "last"          = "Último";
 
