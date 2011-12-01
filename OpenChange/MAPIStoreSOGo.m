@@ -359,7 +359,7 @@ sogo_folder_get_child_count(void *folder_object, uint8_t table_type, uint32_t *c
 static int
 sogo_folder_open_message(void *folder_object,
                          TALLOC_CTX *mem_ctx,
-                         uint64_t mid,
+                         uint64_t mid, bool write_access,
                          void **message_object)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -375,7 +375,10 @@ sogo_folder_open_message(void *folder_object,
       wrapper = folder_object;
       folder = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
-      rc = [folder openMessage: &message withMID: mid inMemCtx: mem_ctx];
+      rc = [folder openMessage: &message
+                       withMID: mid
+                    forWriting: write_access
+                      inMemCtx: mem_ctx];
       if (rc == MAPISTORE_SUCCESS)
         *message_object = [message tallocWrapper: mem_ctx];
       [pool release];

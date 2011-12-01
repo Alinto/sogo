@@ -31,10 +31,13 @@
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalToDo.h>
 #import <NGCards/iCalPerson.h>
+#import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/SOGoTaskObject.h>
 
+#import "MAPIStoreContext.h"
 #import "MAPIStoreTasksFolder.h"
 #import "MAPIStoreTypes.h"
 #import "NSDate+MAPIStore.h"
@@ -89,7 +92,7 @@
 {
   iCalToDo *task;
 
-  task = [sogoObject component: NO secure: NO];
+  task = [sogoObject component: NO secure: YES];
   *data = [[task summary] asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
@@ -101,7 +104,7 @@
   uint32_t v;
   iCalToDo *task;
 
-  task = [sogoObject component: NO secure: NO];
+  task = [sogoObject component: NO secure: YES];
   if ([[task priority] isEqualToString: @"9"])
     v = 0x0;
   else if ([[task priority] isEqualToString: @"1"])
@@ -119,7 +122,7 @@
 {
   iCalToDo *task;
 
-  task = [sogoObject component: NO secure: NO];
+  task = [sogoObject component: NO secure: YES];
   *data = MAPIBoolValue (memCtx,
                          [[task status] isEqualToString: @"COMPLETED"]);
 
@@ -132,7 +135,7 @@
   double doubleValue;
   iCalToDo *task;
 
-  task = [sogoObject component: NO secure: NO];
+  task = [sogoObject component: NO secure: YES];
 
   doubleValue = ((double) [[task percentComplete] intValue] / 100);
   *data = MAPIDoubleValue (memCtx, doubleValue);
@@ -147,7 +150,7 @@
   NSCalendarDate *dateValue;
   iCalToDo *task;
 
-  task = [sogoObject component: NO secure: NO];
+  task = [sogoObject component: NO secure: YES];
 
   dateValue = [task completed];
   if (dateValue)
@@ -209,7 +212,7 @@
   NSCalendarDate *dateValue;
   iCalToDo *task;
 
-  task = [sogoObject component: NO secure: NO];
+  task = [sogoObject component: NO secure: YES];
   dateValue = [task due];
   if (dateValue)
     *data = [dateValue asFileTimeInMemCtx: memCtx];
@@ -226,7 +229,7 @@
   NSCalendarDate *dateValue;
   iCalToDo *task;
 
-  task = [sogoObject component: NO secure: NO];
+  task = [sogoObject component: NO secure: YES];
   dateValue = [task startDate];
   if (dateValue)
     *data = [dateValue asFileTimeInMemCtx: memCtx];
@@ -262,7 +265,7 @@
   uint32_t longValue;
   iCalToDo *task;
 
-  task = [sogoObject component: NO secure: NO];
+  task = [sogoObject component: NO secure: YES];
   status = [task status];
   if (![status length]
       || [status isEqualToString: @"NEEDS-ACTION"])
@@ -294,6 +297,27 @@
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
+}
+
+- (BOOL) subscriberCanReadMessage
+{
+  return ([[self activeUserRoles]
+            containsObject: SOGoCalendarRole_ComponentViewer]
+          || [self subscriberCanModifyMessage]);
+}
+
+- (BOOL) subscriberCanModifyMessage
+{
+  BOOL rc;
+  NSArray *roles = [self activeUserRoles];
+
+  if (isNew)
+    rc = [roles containsObject: SOGoRole_ObjectCreator];
+  else
+    rc = ([roles containsObject: SOGoCalendarRole_ComponentModifier]
+          || [roles containsObject: SOGoCalendarRole_ComponentResponder]);
+
+  return rc;
 }
 
 - (void) save

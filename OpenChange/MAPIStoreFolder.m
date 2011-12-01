@@ -403,6 +403,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (int) openMessage: (MAPIStoreMessage **) messagePtr
             withMID: (uint64_t) mid
+         forWriting: (BOOL) readWrite
            inMemCtx: (TALLOC_CTX *) memCtx;
 {
   NSString *messageURL;
@@ -417,8 +418,15 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       message = [self lookupMessageByURL: messageURL];
       if (message)
         {
-          *messagePtr = message;
-          rc = MAPISTORE_SUCCESS;
+          if ([[context activeUser] isEqual: [context ownerUser]]
+              || (readWrite && [message subscriberCanModifyMessage])
+              || (!readWrite && [message subscriberCanReadMessage]))
+            {
+              *messagePtr = message;
+              rc = MAPISTORE_SUCCESS;
+            }
+          else
+            rc = MAPISTORE_ERR_DENIED;
         }
     }
 
@@ -580,6 +588,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   memCtx = talloc_zero (NULL, TALLOC_CTX);
   rc = [sourceFolder openMessage: &sourceMsg
                          withMID: srcMid
+                      forWriting: NO
                         inMemCtx: memCtx];
   if (rc != MAPISTORE_SUCCESS)
     goto end;
@@ -1517,6 +1526,31 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [self subclassResponsibility: _cmd];
 
   return nil;
+}
+
+- (BOOL) subscriberCanCreateMessages
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanModifyMessages
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanReadMessages
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanDeleteMessages
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanCreateSubFolders
+{
+  return NO;
 }
 
 @end
