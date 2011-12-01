@@ -61,4 +61,14 @@
   return rc;
 }
 
+- (BOOL) subscriberCanReadMessage
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanModifyMessage
+{
+  return NO;
+}
+
 @end

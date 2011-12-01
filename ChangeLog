@@ -1,5 +1,8 @@
 2011-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFAIMessage.m (-subscriberCanReadMessage)
+	(-subscriberCanModifyMessage): always return "NO" for subscribers.
+
 	* OpenChange/MAPIStoreFSFolder.m: mapped role strings into
 	variables.
 
