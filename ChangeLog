@@ -1,5 +1,8 @@
 2011-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFSFolder.m: mapped role strings into
+	variables.
+
 	* OpenChange/MAPIStoreGCSMessage.m (-getPrAccess:inMemCtx:)
 	(-getPrAccessLevel:inMemCtx:): return a value based on the ACL
 	getters below.

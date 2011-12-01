@@ -47,6 +47,16 @@
 
 static Class EOKeyValueQualifierK;
 
+static NSString *MAPIStoreRightReadItems = @"RightsReadItems";
+static NSString *MAPIStoreRightCreateItems = @"RightsCreateItems";
+static NSString *MAPIStoreRightEditOwn = @"RightsEditOwn";
+static NSString *MAPIStoreRightEditAll = @"RightsEditAll";
+static NSString *MAPIStoreRightDeleteOwn = @"RightsDeleteOwn";
+static NSString *MAPIStoreRightDeleteAll = @"RightsDeleteAll";
+static NSString *MAPIStoreRightCreateSubfolders = @"RightsCreateSubfolders";
+static NSString *MAPIStoreRightFolderOwner = @"RightsFolderOwner";
+static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
+
 @implementation MAPIStoreFSFolder
 
 + (void) initialize
@@ -190,23 +200,23 @@ static Class EOKeyValueQualifierK;
 
   roles = [NSMutableArray arrayWithCapacity: 9];
   if (rights & RightsReadItems)
-    [roles addObject: @"RightsReadItems"];
+    [roles addObject: MAPIStoreRightReadItems];
   if (rights & RightsCreateItems)
-    [roles addObject: @"RightsCreateItems"];
+    [roles addObject: MAPIStoreRightCreateItems];
   if (rights & RightsEditOwn)
-    [roles addObject: @"RightsEditOwn"];
+    [roles addObject: MAPIStoreRightEditOwn];
   if (rights & RightsDeleteOwn)
-    [roles addObject: @"RightsDeleteOwn"];
+    [roles addObject: MAPIStoreRightDeleteOwn];
   if (rights & RightsEditAll)
-    [roles addObject: @"RightsEditAll"];
+    [roles addObject: MAPIStoreRightEditAll];
   if (rights & RightsDeleteAll)
-    [roles addObject: @"RightsDeleteAll"];
+    [roles addObject: MAPIStoreRightDeleteAll];
   if (rights & RightsCreateSubfolders)
-    [roles addObject: @"RightsCreateSubfolders"];
+    [roles addObject: MAPIStoreRightCreateSubfolders];
   if (rights & RightsFolderOwner)
-    [roles addObject: @"RightsFolderOwner"];
+    [roles addObject: MAPIStoreRightFolderOwner];
   if (rights & RightsFolderContact)
-    [roles addObject: @"RightsFolderContact"];
+    [roles addObject: MAPIStoreRightFolderContact];
 
   return roles;
 }
@@ -215,23 +225,23 @@ static Class EOKeyValueQualifierK;
 {
   uint32_t rights = 0;
 
-  if ([roles containsObject: @"RightsReadItems"])
+  if ([roles containsObject: MAPIStoreRightReadItems])
     rights |= RightsReadItems;
-  if ([roles containsObject: @"RightsCreateItems"])
+  if ([roles containsObject: MAPIStoreRightCreateItems])
     rights |= RightsCreateItems;
-  if ([roles containsObject: @"RightsEditOwn"])
+  if ([roles containsObject: MAPIStoreRightEditOwn])
     rights |= RightsEditOwn;
-  if ([roles containsObject: @"RightsDeleteOwn"])
+  if ([roles containsObject: MAPIStoreRightDeleteOwn])
     rights |= RightsDeleteOwn;
-  if ([roles containsObject: @"RightsEditAll"])
+  if ([roles containsObject: MAPIStoreRightEditAll])
     rights |= RightsEditAll;
-  if ([roles containsObject: @"RightsDeleteAll"])
+  if ([roles containsObject: MAPIStoreRightDeleteAll])
     rights |= RightsDeleteAll;
-  if ([roles containsObject: @"RightsCreateSubfolders"])
+  if ([roles containsObject: MAPIStoreRightCreateSubfolders])
     rights |= RightsCreateSubfolders;
-  if ([roles containsObject: @"RightsFolderOwner"])
+  if ([roles containsObject: MAPIStoreRightFolderOwner])
     rights |= RightsFolderOwner;
-  if ([roles containsObject: @"RightsFolderContact"])
+  if ([roles containsObject: MAPIStoreRightFolderContact])
     rights |= RightsFolderContact;
   if (rights != 0)
     rights |= RoleNone; /* actually "folder visible" */
@@ -239,7 +249,7 @@ static Class EOKeyValueQualifierK;
   return rights;
 }
 
-- (BOOL) _testRoleForActiveUser: (NSString *) role
+- (BOOL) _testRoleForActiveUser: (const NSString *) role
 {
   SOGoUser *activeUser;
   NSArray *roles;
@@ -253,29 +263,29 @@ static Class EOKeyValueQualifierK;
 
 - (BOOL) subscriberCanCreateMessages
 {
-  return [self _testRoleForActiveUser: @"RightsCreateItems"];
+  return [self _testRoleForActiveUser: MAPIStoreRightCreateItems];
 }
 
 - (BOOL) subscriberCanModifyMessages
 {
-  return ([self _testRoleForActiveUser: @"RightsEditAll"]
-          || [self _testRoleForActiveUser: @"RightsEditOwn"]);
+  return ([self _testRoleForActiveUser: MAPIStoreRightEditAll]
+          || [self _testRoleForActiveUser: MAPIStoreRightEditOwn]);
 }
 
 - (BOOL) subscriberCanReadMessages
 {
-  return [self _testRoleForActiveUser: @"RightsReadItems"];
+  return [self _testRoleForActiveUser: MAPIStoreRightReadItems];
 }
 
 - (BOOL) subscriberCanDeleteMessages
 {
-  return ([self _testRoleForActiveUser: @"RightsDeleteAll"]
-          || [self _testRoleForActiveUser: @"RightsDeleteOwn"]);
+  return ([self _testRoleForActiveUser: MAPIStoreRightDeleteAll]
+          || [self _testRoleForActiveUser: MAPIStoreRightDeleteOwn]);
 }
 
 - (BOOL) subscriberCanCreateSubFolders
 {
-  return [self _testRoleForActiveUser: @"RightsCreateSubfolders"];
+  return [self _testRoleForActiveUser: MAPIStoreRightCreateSubfolders];
 }
 
 @end
