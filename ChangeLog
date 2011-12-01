@@ -1,5 +1,10 @@
 2011-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTasksMessageTable.m
+	(-evaluatePropertyRestriction:intoQualifier:): return
+	MAPIRestrictionStateAlwaysTrue for PR_SENSITIVITY since privacy
+	filtering is performed internally.
+
 	* OpenChange/MAPIStoreGCSMessageTable.m (-componentQualifier):
 	removed useless accessor, left over by a previous commit.
 
