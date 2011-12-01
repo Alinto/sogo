@@ -51,6 +51,7 @@
 - (NSArray *) activeUserRoles;
 
 /* subclasses */
+- (EOQualifier *) aclQualifier;
 - (EOQualifier *) componentQualifier;
 
 @end

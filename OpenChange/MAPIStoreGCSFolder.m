@@ -87,7 +87,8 @@
 {
   static NSArray *fields = nil;
   NSArray *records;
-  EOQualifier *componentQualifier, *fetchQualifier;
+  NSMutableArray *qualifierArray;
+  EOQualifier *fetchQualifier, *aclQualifier;
   GCSFolder *ocsFolder;
   EOFetchSpecification *fs;
   NSArray *keys;
@@ -96,24 +97,27 @@
     fields = [[NSArray alloc]
 	       initWithObjects: @"c_name", @"c_version", nil];
 
-  componentQualifier = [self componentQualifier];
-  if (qualifier)
+  qualifierArray = [NSMutableArray new];
+  if (![[context activeUser] isEqual: [context ownerUser]])
     {
-      fetchQualifier = [[EOAndQualifier alloc]
-                         initWithQualifiers:
-                           componentQualifier,
-                         qualifier,
-                         nil];
-      [fetchQualifier autorelease];
+      aclQualifier = [self aclQualifier];
+      if (aclQualifier)
+        [qualifierArray addObject: aclQualifier];
     }
-  else
-    fetchQualifier = componentQualifier;
+  [qualifierArray addObject: [self componentQualifier]];
+  if (qualifier)
+    [qualifierArray addObject: qualifier];
+
+  fetchQualifier = [[EOAndQualifier alloc]
+                     initWithQualifierArray: qualifierArray];
 
   ocsFolder = [sogoObject ocsFolder];
   fs = [EOFetchSpecification
          fetchSpecificationWithEntityName: [ocsFolder folderName]
                                 qualifier: fetchQualifier
                             sortOrderings: sortOrderings];
+  [fetchQualifier release];
+  [qualifierArray release];
   records = [ocsFolder fetchFields: fields fetchSpecification: fs];
   keys = [records objectsForKey: @"c_name"
                  notFoundMarker: nil];

@@ -1,5 +1,14 @@
 2011-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSFolder.m (-aclQualifier): new accessor
+	providing an additional qualifier when listing elements of a
+	table, based on the current user rights.
+	(-messageKeysMatchingQualifier:andSortOrderings:): make use of the
+	new -aclQualifier method when the active user is not the owner of
+	the sogo object. Slightly simplified code by storing all
+	qualifiers in an array passed as parameter to the EOAndQualifier
+	constructor.
+
 	* OpenChange/MAPIStoreMessage.m (-subscriberCanReadMessage)
 	(-subscriberCanModifyMessage): new getters for ACL operations at
 	the message level.
