@@ -1,5 +1,9 @@
 2011-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (_prepareContextClass): now return
+	the context via a pointer parameter. Return a proper "enum
+	mapistore_error" value.
+
 	* OpenChange/MAPIStoreCalendarMessage.m (-appointmentWrapper):
 	pass the owner user as parameter to the appointment wrapper
 	contructor rather than the active user.
