@@ -111,9 +111,9 @@
               withMID: (uint64_t) mid
          isAssociated: (BOOL) isAssociated;
 
-
 - (int) openMessage: (MAPIStoreMessage **) messagePtr
             withMID: (uint64_t) mid
+         forWriting: (BOOL) readWrite
            inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) deleteMessageWithMID: (uint64_t) mid
                     andFlags: (uint8_t) flags;

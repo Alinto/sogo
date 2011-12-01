@@ -1,5 +1,14 @@
 2011-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m
+	(-openMessage:withMID:forWriting:inMemCtx:): takes a new
+	"forWriting:" parameter and make use of subscriberCanModifyMessage
+	and subscriberCanReadMessage to return a proper error code, if
+	needed.
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_folder_open_message): added the
+	"write_access" parameter.
+
 	* OpenChange/MAPIStoreTasksMessage.m:
 	invoke component:secure: with the secure parameter set to "YES" in
 	all accessors that requires the iCalTask object.
