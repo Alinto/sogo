@@ -1,5 +1,9 @@
 2011-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSMessage.m (-getPrAccess:inMemCtx:)
+	(-getPrAccessLevel:inMemCtx:): return a value based on the ACL
+	getters below.
+
 	* OpenChange/MAPIStoreFSMessage.m (-subscriberCanReadMessage):
 	returns YES when the message is of class
 	"IPM.Microsoft.ScheduleData.FreeBusy", as a hack until freebusy

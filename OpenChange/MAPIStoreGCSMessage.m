@@ -22,8 +22,10 @@
 
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSValue.h>
+#import <NGObjWeb/SoSecurityManager.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoContentObject.h>
+#import <SOGo/SOGoPermissions.h>
 
 #import "MAPIStoreContext.h"
 #import "MAPIStoreGCSFolder.h"
@@ -46,6 +48,69 @@
 - (NSDate *) lastModificationTime
 {
   return [sogoObject lastModified];
+}
+
+- (int) getPrAccess: (void **) data // TODO
+           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  MAPIStoreContext *context;
+  WOContext *woContext;
+  SoSecurityManager *sm;
+  uint32_t access;
+
+  context = [self context];
+  if ([[context activeUser] isEqual: [context ownerUser]])
+    access = 0x03;
+  else
+    {
+      sm = [SoSecurityManager sharedSecurityManager];
+      woContext = [context woContext];
+
+      access = 0;
+      if (![sm validatePermission: SoPerm_ChangeImagesAndFiles
+                         onObject: sogoObject
+                        inContext: woContext])
+        access |= 1;
+      if (![sm validatePermission: SoPerm_AccessContentsInformation
+                         onObject: sogoObject
+                        inContext: woContext])
+        access |= 2;
+      if (![sm validatePermission: SOGoPerm_DeleteObject
+                         onObject: sogoObject
+                        inContext: woContext])
+        access |= 4;
+    }
+  *data = MAPILongValue (memCtx, access);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPrAccessLevel: (void **) data // TODO
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  MAPIStoreContext *context;
+  WOContext *woContext;
+  SoSecurityManager *sm;
+  uint32_t accessLvl;
+
+  context = [self context];
+  if ([[context activeUser] isEqual: [context ownerUser]])
+    accessLvl = 1;
+  else
+    {
+      sm = [SoSecurityManager sharedSecurityManager];
+      woContext = [context woContext];
+
+      if (![sm validatePermission: SoPerm_ChangeImagesAndFiles
+                         onObject: sogoObject
+                        inContext: woContext])
+        accessLvl = 1;
+      else
+        accessLvl = 0;
+    }
+  *data = MAPILongValue (memCtx, accessLvl);
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) getPrChangeKey: (void **) data
