@@ -447,6 +447,24 @@ static NSMutableArray *abbrMonthLabelKeys = nil;
 	       inContext: context]);
 }
 
+- (BOOL) singleWindowModeEnabled
+{
+  //WEClientCapabilities *cc;
+  NSString *value;
+  BOOL result;
+  
+  //cc = [[context request] clientCapabilities];
+  
+  //NSLog(@"User agent = %@, Type = %@, OS = %@, CPU = %@, Browser major version = %i", [cc userAgent], [cc userAgentType], [cc os], [cc cpu], [cc majorVersion]);
+
+  value = [[context request] cookieValueForKey: @"SOGoWindowMode"];
+  result = ([value isEqualToString: @"single"]);
+
+  NSLog(@"Single window mode %@", result?@"enabled":@"disabled");
+
+  return result;
+}
+
 /* SoUser */
 
 - (NSString *) shortUserNameForDisplay

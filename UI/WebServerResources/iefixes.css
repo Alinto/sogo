@@ -6,6 +6,9 @@ FORM
 { padding: 0px;
   margin: 0px; }
 
+DIV#loginScreen A.button SPAN
+{ padding: 0; }
+
 /* generic */
 
 SPAN.disabledToolbarButton
@@ -38,8 +41,13 @@ DIV.tabsContainer > DIV.scrollToolbar > A > SPAN
 DIV.dialog.none DIV
 { padding-bottom: 0px; }
 
+DIV#popupFrame IFRAME
+{ height: expression(document.body.clientHeight - 88 + "px") }
+
+DIV#bgFrameDiv,
 DIV#bgDialogDiv
-{ filter: alpha(opacity=30); }
+{ background-color: #555;
+  filter: alpha(opacity=40); }
 
 /* MailerUI */
 
@@ -176,7 +184,10 @@ A.smallToolbarButton SPAN, A.smallToolbarButton:hover SPAN
 A.toolbarButton:active SPAN {
   background-position: auto; /*broken*/
 }
-A.toolbarButton, A.toolbarButton SPAN, A.button, A.button SPAN
+A.toolbarButton, A.toolbarButton SPAN
+{ color: #fff; }
+
+A.button, A.button SPAN
 { color: #262B33; }
 
 DIV#toolbar

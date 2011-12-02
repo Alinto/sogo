@@ -565,6 +565,8 @@ DIV.dialog
 
 DIV.dialog > DIV
 { border: 1px solid #444;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.5);
+  box-shadow: 0 5px 10px rgba(0,0,0,.5);
   background-color: #fff;
   padding: 5px;
   padding-bottom: 26px; }
@@ -617,14 +619,23 @@ DIV.dialog.none P
 DIV.dialog.none P.prompt
 { text-align: right; }
 
+DIV#bgFrameDiv
+{ position: absolute;
+  top: 0px; left: 0px;
+  bottom: 0px;
+  right: 0px;
+  z-index: 2;
+  background: -webkit-radial-gradient(ellipse cover,rgba(0, 0, 0, .1) 0,rgba(0, 0, 0, .1) 20%,rgba(0, 0, 0, .7) 80%);
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, .5),  rgba(0, 0, 0, .1)); }
+
 DIV#bgDialogDiv
 { position: absolute;
   top: 0px; left: 0px;
   bottom: 0px;
   right: 0px;
   z-index: 2;
-  opacity: .3;
-  background-color: #555 !important; }
+  background: -webkit-radial-gradient(ellipse cover,rgba(0, 0, 0, .1) 0,rgba(0, 0, 0, .1) 20%,rgba(0, 0, 0, .7) 80%);
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, .5),  rgba(0, 0, 0, .1)); }
 
 DIV#uploadDialog,
 DIV#uploadResults
@@ -885,6 +896,36 @@ DIV.tabsContainer > DIV.tabs > DIV.tab
 IFRAME.hidden,
 DIV.tab
 { display: none; }
+
+DIV#popupFrame
+{ position: absolute;
+  top: 40px;
+  bottom: 40px;
+  left: 15%;
+  right: 15%;
+  padding: 4px;
+  z-index: 2000;
+  background-color: #E6E7E6;
+  -webkit-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.5);
+  box-shadow: 0 5px 10px rgba(0,0,0,.5);
+}
+
+DIV#popupFrame.small
+{ left: 30%;
+  right: 30%;
+}
+
+DIV#popupFrame > IFRAME
+{ margin: 0;
+  padding: 0;
+  color: #000;
+  background-color: #E6E7E6;
+  border: 0;
+  -webkit-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0;
+}
 
 DIV.tabsContainer DIV.active
 { display: block; }

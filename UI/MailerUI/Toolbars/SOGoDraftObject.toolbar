@@ -10,7 +10,7 @@
   ),
   (
     { link  = "#";
-      onclick  = "return onContactAdd(null);";
+      onclick  = "return onContactAdd(this);";
       image = "tb-compose-contacts-flat-24x24.png";
       cssClass = "tbicon_addressbook";
       label = "Contacts";
@@ -35,5 +35,12 @@
       image = "options.png";
       cssClass = "tbicon_options";
       label = "Options"; }
+  ),
+  (
+    { link = "#";
+      isSafe = NO;
+      onclick = "return onCloseButtonClick(event);";
+      label = "Close";
+      image = "tb-mail-stop-flat-24x24.png"; }
   )
 )

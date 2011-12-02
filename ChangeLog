@@ -1,3 +1,36 @@
+2011-12-05  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (deleteSelectedMessages)
+	(onMailboxTreeItemClick, onMessageSelecitionChange)
+	(configureMessageListEvents): update the message content div only
+	if it exists (will be hidden in single-window mode).
+
+	* UI/WebServerResources/UIxContactsUserFolders.js
+	(initUserFoldersWindow): registered "click" event on new Done button.
+
+	* UI/WebServerResources/UIxMailEditor.js (onContactAdd): show
+	contacts in a pane instead of a new window.
+	(onContactFolderChange): new method to update the contacts list
+	when changing contacts folder from the new popup menu.
+	(configureDragHandle): new method to allow the new contacts pane
+	to be resizable.
+	(onMailEditorResize): was onWindowResize. Now computes the space
+	used by the search contacts pane.
+
+	* UI/WebServerResources/ContactsUI.js (getMenus): the function now
+	overloads the returning array with the menus defined by the
+	previously defined function with the same name. Used in
+	UIxMailEditor.wox that loads both MailerUI.js and ContactsUI.js.
+	(contactsListCallback): added support for 2-column view. Also
+	used in mail editor to refresh the new contacts pane.
+	(initContacts, onContactSelectionChange): don't update contactView when the div
+	doesn't exist.
+	(configureDraggables): don't allow drag'n'drop when the folders
+	list doesn't exist.
+
+	* UI/MainUI/UIxLoading.m: new class for empty template used when
+	loading the iframe in single-window mode.
+
 2011-12-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m (-setCategory): ensure that
@@ -69,6 +102,18 @@
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromSPropValue): set the
 	resulting string to @"" when the unicode or string pointers are
 	NULL.
+
+2011-11-28  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/SOGoUI/UIxComponent.m (-singleWindowModeEnabled): new method
+	that returns true if the single-window mode is enabled. This mode
+	can be forced by setting the cookie "SOGoWindowMode" to "single".
+
+	* UI/MailerUI/UIxMailEditor.m (-contactFolders)
+	(-personalContactInfos, -setCurrentFolder:, -currentContactFolderId)
+	(-currentContactFolderName, -currentContactFolderOwner)
+	(-currentContactFolderClass): getters/setters for new contacts
+	pane in the mail editor.
 
 2011-11-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

@@ -3,16 +3,20 @@
 <container xmlns="http://www.w3.org/1999/xhtml"
            xmlns:var="http://www.skyrix.com/od/binding"
            xmlns:const="http://www.skyrix.com/od/constant"
+           xmlns:rsrc="OGo:url"
            ><var:string var:value="doctype" const:escapeHTML="NO" />
-  <html><head><!-- space --></head>
+  <html>
+    <head>
+      <script type="text/javascript" rsrc:src="prototype.js"><!-- space --></script>
+      <script type="text/javascript" rsrc:src="generic.js"><!-- space --></script>      
+    </head>
     <body style="background-color: #dbdad5;"
       ><script type="text/javascript"
         ><var:if condition="hasRefreshMethod">
-          if (window.opener) {
-            window.opener.setTimeout('<var:string value="refreshMethod" const:escapeHTML="NO" />;', 50);
-          }
+          var p = <var:if condition="singleWindowModeEnabled">parent</var:if><var:if condition="singleWindowModeEnabled" const:negate="YES">window.opener</var:if>;
+          if (p) p.setTimeout('<var:string value="refreshMethod" const:escapeHTML="NO" />;', 50);
         </var:if>
-        window.close();
+        onCloseButtonClick();
       </script>
     </body>
   </html>
