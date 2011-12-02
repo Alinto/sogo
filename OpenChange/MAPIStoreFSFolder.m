@@ -119,7 +119,6 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   newMessage = [MAPIStoreFSMessage mapiStoreObjectWithSOGoObject: fsObject
                                                      inContainer: self];
 
-  
   return newMessage;
 }
 
