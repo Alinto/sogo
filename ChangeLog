@@ -1,5 +1,9 @@
 2011-12-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMessage.m (-getPrAccess:inMemCtx:)
+	(-getPrAccessLevel:inMemCtx:): reimplemented methods in a generic
+	way just like the MAPIStoreFolder versions.
+
 	* OpenChange/MAPIStoreFSMessage.m (-subscriberCanModifyMessage):
 	handle the case where the message is being created.
 

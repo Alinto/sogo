@@ -544,31 +544,60 @@ rtf2html (NSData *compressedRTF)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAccess: (void **) data // TODO
+/*
+  Possible values are:
+  
+  0x00000001 Modify
+  0x00000002 Read
+  0x00000004 Delete
+  0x00000008 Create Hierarchy Table
+  0x00000010 Create Contents Table
+  0x00000020 Create Associated Contents Table
+*/
+- (int) getPrAccess: (void **) data
            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPILongValue (memCtx, 0x03);
+  uint32_t access = 0;
+  BOOL userIsOwner;
+  MAPIStoreContext *context;
+
+  context = [self context];
+  userIsOwner = [[context activeUser] isEqual: [context ownerUser]];
+  if (userIsOwner || [self subscriberCanModifyMessage])
+    access |= 0x01;
+  if (userIsOwner || [self subscriberCanReadMessage])
+    access |= 0x02;
+  if (userIsOwner || [(MAPIStoreFolder *) container subscriberCanDeleteMessages])
+    access |= 0x04;
+  
+  *data = MAPILongValue (memCtx, access);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAccessLevel: (void **) data // TODO
+/*
+  Possible values are:
+
+  0x00000000 Read-Only
+  0x00000001 Modify
+*/
+- (int) getPrAccessLevel: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPILongValue (memCtx, 0x01);
+  uint32_t access = 0;
+  BOOL userIsOwner;
+  MAPIStoreContext *context;
+
+  context = [self context];
+  userIsOwner = [[context activeUser] isEqual: [context ownerUser]];
+  if (userIsOwner || [self subscriberCanModifyMessage])
+    access = 0x01;
+  else
+    access = 0;
+  *data = MAPILongValue (memCtx, access);
 
   return MAPISTORE_SUCCESS;
 }
-
-// - (int) getPrViewStyle: (void **) data
-// {
-//   return [self getLongZero: data inMemCtx: memCtx];
-// }
-
-// - (int) getPrViewMajorversion: (void **) data
-// {
-//   return [self getLongZero: data inMemCtx: memCtx];
-// }
 
 - (int) getPidLidSideEffects: (void **) data // TODO
                     inMemCtx: (TALLOC_CTX *) memCtx
