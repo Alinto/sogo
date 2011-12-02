@@ -133,6 +133,12 @@ $(SOGOBACKEND)_RESOURCE_FILES += \
 	$(UNRTF_DIR)/charmaps/SYMBOL.charmap \
 	$(UNRTF_DIR)/outputs/html.conf
 
+$(SOGOBACKEND)_LDFLAGS += \
+         $(LIBMAPI_LIBS) \
+         $(LIBMAPISTORE_LIBS) \
+        -L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
+        -L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore
+
 ### unrtf
 all:: $(UNRTF_DIR)/config.h $(UNRTF_DIR)/src/GNUmakefile
 
@@ -178,11 +184,8 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-I../SoObjects -I../SOPE \
 	-DBACKEND_BUNDLE_NAME="@\"$(BUNDLE_NAME)$(BUNDLE_EXTENSION)\"" \
 	-DSOGO_BUNDLES_DIR="@\"$(BUNDLE_INSTALL_DIR)\""
-ADDITIONAL_LIB_DIRS += -Wl,--no-as-needed \
-	-L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
-	-L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore \
-	 $(LIBMAPI_LIBS) \
-	 $(LIBMAPISTORE_LIBS)
+
+ADDITIONAL_LIB_DIRS += -Wl,--no-as-needed
 
 SAMBA_LIB_DIR = $(shell pkg-config libmapistore --variable=libdir)
 
