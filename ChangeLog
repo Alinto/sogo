@@ -1,3 +1,9 @@
+2011-12-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreFSFolder.m
+	(-messageKeysMatchingQualifier:andSortOrderings:): ensure the
+	active user can read the folder messages before returning them.
+
 2011-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFAIMessage.m (-subscriberCanReadMessage)

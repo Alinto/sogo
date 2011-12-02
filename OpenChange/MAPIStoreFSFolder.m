@@ -125,9 +125,17 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 - (NSArray *) messageKeysMatchingQualifier: (EOQualifier *) qualifier
                           andSortOrderings: (NSArray *) sortOrderings
 {
-  return [(SOGoMAPIFSFolder *) sogoObject
-           toOneRelationshipKeysMatchingQualifier: qualifier
-                                 andSortOrderings: sortOrderings];
+  NSArray *keys;
+
+  if ([[context activeUser] isEqual: [context ownerUser]]
+      || [self subscriberCanReadMessages])
+    keys = [(SOGoMAPIFSFolder *) sogoObject
+              toOneRelationshipKeysMatchingQualifier: qualifier
+                                    andSortOrderings: sortOrderings];
+  else
+    keys = [NSArray array];
+
+  return keys;
 }
 
 - (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
