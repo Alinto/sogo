@@ -24,9 +24,13 @@
   </var:if><var:if condition="verticalDragHandleStyle">
     DIV#rightDragHandle, DIV#messageContent
      { top: <var:string value="verticalDragHandleStyle" />; }
-  </var:if><var:if condition="mailboxContentStyle">
+  </var:if><var:if condition="singleWindowModeEnabled" const:negate="YES"><var:if condition="mailboxContentStyle">
     DIV#mailboxContent
      { height: <var:string value="mailboxContentStyle" />; }
+  </var:if></var:if><var:if condition="singleWindowModeEnabled">
+    DIV#mailboxContent
+     { height: auto;
+       bottom: 0px; }
   </var:if>
   </style>
   
@@ -306,8 +310,10 @@
   </table>
 </div>
     </div>
-    <div class="dragHandle" id="rightDragHandle"><!-- space --></div>
-    <div id="messageContent"><!-- space --></div>
+    <var:if condition="singleWindowModeEnabled" const:negate="YES"
+      ><div class="dragHandle" id="rightDragHandle"><!-- space --></div>
+      <div id="messageContent"><!-- space --></div
+    ></var:if>
   </div>
 
   <var:string value="errorAlertJavaScript" const:escapeHTML="NO" />
