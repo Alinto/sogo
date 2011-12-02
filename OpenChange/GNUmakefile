@@ -133,12 +133,6 @@ $(SOGOBACKEND)_RESOURCE_FILES += \
 	$(UNRTF_DIR)/charmaps/SYMBOL.charmap \
 	$(UNRTF_DIR)/outputs/html.conf
 
-$(SOGOBACKEND)_LDFLAGS += \
-         $(LIBMAPI_LIBS) \
-         $(LIBMAPISTORE_LIBS) \
-        -L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
-        -L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore
-
 ### unrtf
 all:: $(UNRTF_DIR)/config.h $(UNRTF_DIR)/src/GNUmakefile
 
@@ -167,7 +161,6 @@ TEST_TOOL_NAME += $(PLREADER_TOOL)
 
 ### cflags and libs
 LIBMAPI_CFLAGS = $(shell pkg-config libmapi --cflags)
-LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags) -DSAMBA_PREFIX="\"$(shell pkg-config libmapistore --variable=prefix)\""
 
 ifeq ($(LIBMAPI_CFLAGS),)
 all install::
@@ -175,6 +168,8 @@ all install::
 else
 
 LIBMAPI_LIBS = $(shell pkg-config libmapi --libs)
+
+LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags) -DSAMBA_PREFIX="\"$(shell pkg-config libmapistore --variable=prefix)\""
 LIBMAPISTORE_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy
 
 ADDITIONAL_INCLUDE_DIRS += \
@@ -188,6 +183,12 @@ ADDITIONAL_INCLUDE_DIRS += \
 ADDITIONAL_LIB_DIRS += -Wl,--no-as-needed
 
 SAMBA_LIB_DIR = $(shell pkg-config libmapistore --variable=libdir)
+
+$(SOGOBACKEND)_LDFLAGS += \
+         $(LIBMAPI_LIBS) \
+         $(LIBMAPISTORE_LIBS) \
+        -L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
+        -L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
