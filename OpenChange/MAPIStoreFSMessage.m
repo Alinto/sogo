@@ -105,7 +105,10 @@
 
 - (BOOL) subscriberCanModifyMessage
 {
-  return ([(MAPIStoreFolder *) container subscriberCanModifyMessages]
+  return ((isNew
+           && [(MAPIStoreFolder *) container subscriberCanCreateMessages])
+          || (!isNew
+              && [(MAPIStoreFolder *) container subscriberCanModifyMessages])
           || [self _messageIsFreeBusy]);
 }
 

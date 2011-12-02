@@ -1,5 +1,8 @@
 2011-12-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFSMessage.m (-subscriberCanModifyMessage):
+	handle the case where the message is being created.
+
 	* OpenChange/MAPIStoreFSFolder.m
 	(-messageKeysMatchingQualifier:andSortOrderings:): ensure the
 	active user can read the folder messages before returning them.
