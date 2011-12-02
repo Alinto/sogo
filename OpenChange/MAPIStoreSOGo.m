@@ -50,7 +50,7 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
-static int
+static enum mapistore_error
 sogo_backend_unexpected_error()
 {
   NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
@@ -62,7 +62,7 @@ sogo_backend_unexpected_error()
 
    \return MAPISTORE_SUCCESS on success
 */
-static int
+static enum mapistore_error
 sogo_backend_init (void)
 {
   NSAutoreleasePool *pool;
@@ -115,7 +115,7 @@ sogo_backend_init (void)
    \param private_data pointer to the private backend context 
 */
 
-static int
+static enum mapistore_error
 sogo_backend_create_context(TALLOC_CTX *mem_ctx,
                             struct mapistore_connection_info *conn_info,
                             struct tdb_wrap *indexingTdb,
@@ -163,7 +163,7 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE error
 */
-static int
+static enum mapistore_error
 sogo_context_get_path(void *backend_object, TALLOC_CTX *mem_ctx,
                       uint64_t fmid, char **path)
 {
@@ -190,7 +190,7 @@ sogo_context_get_path(void *backend_object, TALLOC_CTX *mem_ctx,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_context_get_root_folder(void *backend_object, TALLOC_CTX *mem_ctx,
                              uint64_t fid, void **folder_object)
 {
@@ -229,7 +229,7 @@ sogo_context_get_root_folder(void *backend_object, TALLOC_CTX *mem_ctx,
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
 */
-static int
+static enum mapistore_error
 sogo_folder_open_folder(void *folder_object, TALLOC_CTX *mem_ctx, uint64_t fid, void **childfolder_object)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -265,7 +265,7 @@ sogo_folder_open_folder(void *folder_object, TALLOC_CTX *mem_ctx, uint64_t fid, 
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
 */
-static int
+static enum mapistore_error
 sogo_folder_create_folder(void *folder_object, TALLOC_CTX *mem_ctx,
                           uint64_t fid, struct SRow *aRow,
                           void **childfolder_object)
@@ -304,7 +304,7 @@ sogo_folder_create_folder(void *folder_object, TALLOC_CTX *mem_ctx,
 
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
 */
-static int
+static enum mapistore_error
 sogo_folder_delete_folder(void *folder_object, uint64_t fid)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -330,7 +330,7 @@ sogo_folder_delete_folder(void *folder_object, uint64_t fid)
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_folder_get_child_count(void *folder_object, uint8_t table_type, uint32_t *child_count)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -356,7 +356,7 @@ sogo_folder_get_child_count(void *folder_object, uint8_t table_type, uint32_t *c
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_folder_open_message(void *folder_object,
                          TALLOC_CTX *mem_ctx,
                          uint64_t mid, bool write_access,
@@ -391,7 +391,7 @@ sogo_folder_open_message(void *folder_object,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_folder_create_message(void *folder_object,
                            TALLOC_CTX *mem_ctx,
                            uint64_t mid,
@@ -426,7 +426,7 @@ sogo_folder_create_message(void *folder_object,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_folder_delete_message(void *folder_object, uint64_t mid, uint8_t flags)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -452,7 +452,7 @@ sogo_folder_delete_message(void *folder_object, uint64_t mid, uint8_t flags)
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_folder_move_copy_messages(void *folder_object,
                                void *source_folder_object,
                                uint32_t mid_count,
@@ -492,7 +492,7 @@ sogo_folder_move_copy_messages(void *folder_object,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_folder_get_deleted_fmids(void *folder_object, TALLOC_CTX *mem_ctx,
                               uint8_t table_type, uint64_t change_num,
                               struct I8Array_r **fmidsp, uint64_t *cnp)
@@ -524,7 +524,7 @@ sogo_folder_get_deleted_fmids(void *folder_object, TALLOC_CTX *mem_ctx,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_folder_open_table(void *folder_object, TALLOC_CTX *mem_ctx,
                        uint8_t table_type, uint32_t handle_id,
                        void **table_object, uint32_t *row_count)
@@ -558,7 +558,7 @@ sogo_folder_open_table(void *folder_object, TALLOC_CTX *mem_ctx,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_folder_modify_permissions(void *folder_object, uint8_t flags,
                                uint16_t pcount,
                                struct PermissionData *permissions)
@@ -588,7 +588,7 @@ sogo_folder_modify_permissions(void *folder_object, uint8_t flags,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_message_get_message_data(void *message_object,
                               TALLOC_CTX *mem_ctx,
                               struct mapistore_message **msg_dataP)
@@ -618,7 +618,7 @@ sogo_message_get_message_data(void *message_object,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_message_create_attachment (void *message_object, TALLOC_CTX *mem_ctx, void **attachment_object, uint32_t *aidp)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -648,7 +648,7 @@ sogo_message_create_attachment (void *message_object, TALLOC_CTX *mem_ctx, void 
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_message_open_attachment (void *message_object, TALLOC_CTX *mem_ctx,
                               uint32_t aid, void **attachment_object)
 {
@@ -679,7 +679,7 @@ sogo_message_open_attachment (void *message_object, TALLOC_CTX *mem_ctx,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_message_get_attachment_table (void *message_object, TALLOC_CTX *mem_ctx, void **table_object, uint32_t *row_count)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -710,7 +710,7 @@ sogo_message_get_attachment_table (void *message_object, TALLOC_CTX *mem_ctx, vo
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_message_modify_recipients (void *message_object,
                                 struct SPropTagArray *columns,
                                 uint16_t count,
@@ -742,7 +742,7 @@ sogo_message_modify_recipients (void *message_object,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_message_set_read_flag (void *message_object, uint8_t flag)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -769,7 +769,7 @@ sogo_message_set_read_flag (void *message_object, uint8_t flag)
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_message_save (void *message_object)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -796,7 +796,7 @@ sogo_message_save (void *message_object)
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_message_submit (void *message_object, enum SubmitFlags flags)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -823,7 +823,7 @@ sogo_message_submit (void *message_object, enum SubmitFlags flags)
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_message_attachment_open_embedded_message
 (void *attachment_object,
  TALLOC_CTX *mem_ctx, void **message_object,
@@ -861,7 +861,7 @@ sogo_message_attachment_open_embedded_message
   return rc;
 }
 
-static int sogo_table_get_available_properties(void *table_object,
+static enum mapistore_error sogo_table_get_available_properties(void *table_object,
                                                TALLOC_CTX *mem_ctx, struct SPropTagArray **propertiesP)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -887,7 +887,7 @@ static int sogo_table_get_available_properties(void *table_object,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_table_set_columns (void *table_object, uint16_t count, enum MAPITAGS *properties)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -914,7 +914,7 @@ sogo_table_set_columns (void *table_object, uint16_t count, enum MAPITAGS *prope
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_table_set_restrictions (void *table_object, struct mapi_SRestriction *restrictions, uint8_t *table_status)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -943,7 +943,7 @@ sogo_table_set_restrictions (void *table_object, struct mapi_SRestriction *restr
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_table_set_sort_order (void *table_object, struct SSortOrderSet *sort_order, uint8_t *table_status)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -972,7 +972,7 @@ sogo_table_set_sort_order (void *table_object, struct SSortOrderSet *sort_order,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_table_get_row (void *table_object, TALLOC_CTX *mem_ctx,
                     enum table_query_type query_type, uint32_t row_id,
                     struct mapistore_property_data **data)
@@ -1001,7 +1001,7 @@ sogo_table_get_row (void *table_object, TALLOC_CTX *mem_ctx,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_table_get_row_count (void *table_object,
                           enum table_query_type query_type,
                           uint32_t *row_countp)
@@ -1030,7 +1030,7 @@ sogo_table_get_row_count (void *table_object,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_table_handle_destructor (void *table_object, uint32_t handle_id)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -1057,7 +1057,7 @@ sogo_table_handle_destructor (void *table_object, uint32_t handle_id)
   return rc;
 }
 
-static int sogo_properties_get_available_properties(void *object,
+static enum mapistore_error sogo_properties_get_available_properties(void *object,
                                                     TALLOC_CTX *mem_ctx,
                                                     struct SPropTagArray **propertiesP)
 {
@@ -1084,7 +1084,7 @@ static int sogo_properties_get_available_properties(void *object,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_properties_get_properties (void *object,
                                 TALLOC_CTX *mem_ctx,
                                 uint16_t count, enum MAPITAGS *properties,
@@ -1115,7 +1115,7 @@ sogo_properties_get_properties (void *object,
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_properties_set_properties (void *object, struct SRow *aRow)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -1141,7 +1141,7 @@ sogo_properties_set_properties (void *object, struct SRow *aRow)
   return rc;
 }
 
-static int
+static enum mapistore_error
 sogo_manager_generate_uri (TALLOC_CTX *mem_ctx, 
                            const char *user, 
                            const char *folder, 
