@@ -277,6 +277,15 @@
 @implementation SOGoACLCzechRemovalAdvisory
 @end
 
+@implementation SOGoACLDanishDenmarkAdditionAdvisory
+@end
+
+@implementation SOGoACLDanishDenmarkModificationAdvisory
+@end
+
+@implementation SOGoACLDanishDenmarkRemovalAdvisory
+@end
+
 @implementation SOGoACLDutchAdditionAdvisory
 @end
 

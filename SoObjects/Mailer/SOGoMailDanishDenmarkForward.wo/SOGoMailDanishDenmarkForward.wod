@@ -1,0 +1,79 @@
+subject: WOString {
+  value = subject;
+  escapeHTML = NO;
+}
+
+date: WOString {
+  value = date;
+  escapeHTML = NO;
+}
+
+from: WOString {
+  value = from;
+  escapeHTML = NO;
+}
+
+newLine: WOString {
+  value = newLine;
+  escapeHTML = NO;
+}
+
+hasReplyTo: WOConditional {
+  condition = hasReplyTo;
+}
+
+replyTo: WOString {
+  value = replyTo;
+  escapeHTML = NO;
+}
+
+hasOrganization: WOConditional {
+  condition = hasOrganization;
+}
+
+organization: WOString {
+  value = organization;
+  escapeHTML = NO;
+}
+
+to: WOString {
+  value = to;
+  escapeHTML = NO;
+}
+
+hasCc: WOConditional {
+  condition = hasCc;
+}
+
+cc: WOString {
+  value = cc;
+  escapeHTML = NO;
+}
+
+hasNewsGroups: WOConditional {
+  condition = hasNewsGroups;
+}
+
+newsgroups: WOString {
+  value = newsgroups;
+  escapeHTML = NO;
+}
+
+hasReferences: WOConditional {
+  condition = hasReferences;
+}
+
+references: WOString {
+  value = references;
+  escapeHTML = NO;
+}
+
+messageBody: WOString {
+  value = messageBody;
+  escapeHTML = NO;
+}
+
+signature: WOString {
+  value = signature;
+  escapeHTML = NO;
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    <var:string value="currentUserName" const:escapeHTML="NO"/> has modified the access rights
+</var:if>
+
+<var:if condition="isBody">
+<var:string value="currentUserName" const:escapeHTML="NO"/> has modified your access rights for his <var:string const:value='"' const:escapeHTML="NO"/><var:string value="resourceName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> folder.
+<!--
+You can subscribe directly to that folder by following this link:
+    <var:string value="httpAdvisoryURL" const:escapeHTML="NO"/>subscribe?mail-invitation=YES
+
+Otherwise, you will be able to subscribe later from the SOGo web interface.
+
+You can also access this resource remotely using the following URL:
+
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
+</var:if>
+
+</container>

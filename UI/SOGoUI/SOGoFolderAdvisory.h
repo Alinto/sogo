@@ -65,6 +65,12 @@
 @interface SOGoFolderCzechRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
+@interface SOGoFolderDanishDenmarkAdditionAdvisory : SOGoFolderAdditionAdvisory
+@end
+
+@interface SOGoFolderDanishDenmarkRemovalAdvisory : SOGoFolderRemovalAdvisory
+@end
+
 @interface SOGoFolderDutchAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 

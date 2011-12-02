@@ -7,9 +7,9 @@ import simplejson
 import sogoLogin
 
 SOGoSupportedLanguages = [ "Catalan", "Czech", "Welsh", "English", "SpanishSpain", "SpanishArgentina",
-                           "French", "German", "Icelandic", "Italian", "Hungarian",
-                           "Dutch", "BrazilianPortuguese", "NorwegianBokmal", "NorwegianNynorsk",
-                           "Polish", "Russian", "Ukrainian", "Swedish" ]
+                           "French", "German", "Icelandic", "Italian", "Hungarian", "DanishDenmark",
+                           "Dutch", "BrazilianPortuguese", "NorwegianBokmal",
+                           "NorwegianNynorsk", "Polish", "Russian", "Ukrainian", "Swedish" ]
 daysBetweenResponseList=[1,2,3,5,7,14,21,30]
 
 class HTTPPreferencesPOST (webdavlib.HTTPPOST):

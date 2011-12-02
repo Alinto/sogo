@@ -1,0 +1,580 @@
+/* this file is in UTF-8 format! */
+
+/* Tooltips */
+
+"Create a new event" = "Opret en ny begivenhed";
+"Create a new task" = "Opret en ny opgave";
+"Edit this event or task" = "Rediger denne begivenhed eller opgave";
+"Delete this event or task" = "Slet denne begivenhed eller opgave";
+"Go to today" = "Gå til i dag";
+"Switch to day view" = "Skift til dagsvisning";
+"Switch to week view" = "Skift til ugevisning";
+"Switch to month view" = "Skift til månedsvisning";
+"Reload all calendars" = "Genindlæs alle kalendere";
+
+/* Tabs */
+"Date" = "Dato";
+"Calendars" = "Kalendere";
+
+/* Day */
+
+"Sunday" = "Søndag";
+"Monday" = "Mandag";
+"Tuesday" = "Tirsdag";
+"Wednesday" = "Onsdag";
+"Thursday" = "Torsdag";
+"Friday" = "Fredag";
+"Saturday" = "Lørdag";
+"DayOfTheMonth" = "Dag i måneden";
+
+"Sun" = "Søn";
+"Mon" = "Man";
+"Tue" = "Tir";
+"Wed" = "Ons";
+"Thu" = "Tor";
+"Fri" = "Fre";
+"Sat" = "Lør";
+
+"a2_Sunday" = "Sø";
+"a2_Monday" = "Ma";
+"a2_Tuesday" = "Ti";
+"a2_Wednesday" = "On";
+"a2_Thursday" = "To";
+"a2_Friday" = "Fr";
+"a2_Saturday" = "Lø";
+
+"dayLabelFormat" = "%m/%d/%Y";
+"today" = "I dag";
+
+"Previous Day" = "Forrige dag";
+"Next Day" = "Næste dag";
+
+/* Week */
+
+"Week" = "Uge";
+"this week" = "Denne uge";
+
+"Week %d" = "Uge%d";
+
+"Previous Week" = "Forrige uge";
+"Next Week" = "Næste uge";
+
+/* Month */
+
+"this month" = "Denne måned";
+
+"January" = "Januar";
+"February" = "Februar";
+"March" = "Marts";
+"April" = "April";
+"May" = "Maj";
+"June" = "Juni";
+"July" = "Juli";
+"August" = "August";
+"September" = "September";
+"October" = "Oktober";
+"November" = "November";
+"December" = "December";
+
+"a3_January" = "Januar";
+"a3_February" = "Februar";
+"a3_March" = "Marts";
+"a3_April" = "April";
+"a3_May" = "Maj";
+"a3_June" = "Juni";
+"a3_July" = "Juli";
+"a3_August" = "August";
+"a3_September" = "September";
+"a3_October" = "Oktober";
+"a3_November" = "November";
+"a3_December" = "December";
+
+"Previous Month" = "Forrige måned";
+"Next Month" = "Næste måned";
+
+/* Year */
+
+"this year" = "I år";
+
+/* Menu */
+
+"Calendar" = "Kalender";
+"Contacts" = "Kontakter";
+
+"New Calendar..." = "Ny kalender ...";
+"Delete Calendar" = "Slet Kalender ...";
+"Unsubscribe Calendar" = "Afmeld Kalender";
+"Sharing..." = "Deling ...";
+"Export Calendar..." = "Eksportér kalender ...";
+"Import Events..." = "Importér begivenheder ...";
+"Import Events" = "Importér begivenheder";
+"Select an iCalendar file (.ics)." = "Vælg en iCalendar-fil (.ics).";
+"Upload" = "Indlæs";
+"Publish Calendar..." = "Publicér kalender ...";
+"Reload Remote Calendars" = "Opdatér kalendere";
+"Properties" = "Egenskaber";
+"Done" = "Udført";
+"An error occured while importing calendar." = "Der opstod en fejl under importering af kalender.";
+"No event was imported." = "Ingen begivenhed blev importeret.";
+"A total of %{0} events were imported in the calendar." = "I alt %{0} begivenheder blev importeret i kalenderen.";
+
+"Compose E-Mail to All Attendees" = "Skriv besked til alle deltagere";
+"Compose E-Mail to Undecided Attendees" = "Skriv besked til ikke ubestemte deltagere";
+
+/* Folders */
+"Personal calendar" = "Personlig kalender";
+
+/* Misc */
+
+"OpenGroupware.org" = "OpenGroupware.org";
+"Forbidden" = "Forbudt";
+
+/* acls */
+
+"User rights for:" = "Brugerrettigheder:";
+
+"Any Authenticated User" = "Enhver godkendt bruger";
+"Public Access" = "Offentlig adgang";
+
+"label_Public" = "Offentlig";
+"label_Private" = "Privat";
+"label_Confidential" = "Hemmelig";
+
+"label_Viewer" = "Vis alle";
+"label_DAndTViewer" = "Se dato og klokkeslæt";
+"label_Modifier" = "Redigér";
+"label_Responder" = "Reagér på";
+"label_None" = "Ingen";
+
+"View All" = "Vis alle";
+"View the Date & Time" = "Se dato og klokkeslæt";
+"Modify" = "Redigér";
+"Respond To" = "Reagér på";
+"None" = "Ingen";
+
+"This person can create objects in my calendar."
+= "Denne person kan oprette emner i min kalender.";
+"This person can erase objects from my calendar."
+= "Denne person kan slette emner fra min kalender.";
+
+/* Button Titles */
+
+"New Calendar..." = "Ny kalender ...";
+"Subscribe to a Calendar..." = "Abonnér på en kalender ...";
+"Remove the selected Calendar" = "Fjern den valgte kalender";
+
+"Name of the Calendar" = "Navn på Kalender";
+
+"new" = "Ny";
+"printview" = "Udskriftsvisning";
+"edit" = "Redigér";
+"delete" = "Slet";
+"proposal" = "Forslag";
+"Save and Close" = "Gem og luk";
+"Close" = "Luk";
+"Invite Attendees" = "Invitér deltagere";
+"Attach" = "Vedhæft";
+"Update" = "Opdatér";
+"Cancel" = "Annullér";
+"show_rejected_apts" = "Vis afviste aftaler";
+"hide_rejected_apts" = "Skjul afviste aftaler";
+
+
+/* Schedule */
+
+"Schedule" = "Planlæg";
+"No appointments found" = "Ingen fundne aftaler";
+"Meetings proposed by you" = "Møder foreslået af dig";
+"Meetings proposed to you" = "Møder foreslået til dig";
+"sched_startDateFormat" = "%d/%m %H:%M";
+"action" = "Handling";
+"accept" = "Acceptér";
+"decline" = "Afvis";
+"more attendees" = "Flere deltagere";
+"Hide already accepted and rejected appointments" = "Skjul allerede accepterede og afviste aftaler";
+"Show already accepted and rejected appointments" = "Vis allerede accepterede og afviste aftaler";
+
+
+/* Appointments */
+
+"Appointment viewer" = "Aftale viser";
+"Appointment editor" = "Aftale editor";
+"Appointment proposal" = "Aftale Forslag";
+"Appointment on" = "Aftale på";
+"Start:" = "Start:";
+"End:" = "Slut:";
+"Due Date:" = "Forfaldsdato:";
+"Title:" = "Titel:";
+"Calendar:" = "Kalender:";
+"Name" = "Navn";
+"Email" = "E-mail";
+"Status:" = "Status:";
+"% complete" = "% Færdig";
+"Location:" = "Sted:";
+"Priority:" = "Prioritet:";
+"Privacy" = "Beskyttelse af personlige oplysninger";
+"Cycle" = "Cyklus";
+"Cycle End" = "Cyklus sluttidspunkt";
+"Categories" = "Kategorier";
+"Classification" = "Klassifikation";
+"Duration" = "Varighed";
+"Attendees:" = "Deltagere:";
+"Resources" = "Ressourcer";
+"Organizer:" = "Arrangør:";
+"Description:" = "Beskrivelse:";
+"Document:" = "Dokument:";
+"Category:" = "Kategori:";
+"Repeat:" = "Gentag:";
+"Reminder:" = "Påmindelse:";
+"General:" = "Generelt:";
+"Reply:" = "Svar:";
+
+"Target:" = "Mål:";
+
+"attributes" = "attributter";
+"attendees" = "deltagere";
+"delegated from" = "delegeret fra";
+
+/* checkbox title */
+"is private" = "er privat";
+/* classification */
+"Public" = "Offentlig";
+"Private" = "Privat";
+/* text used in overviews and tooltips */
+"empty title" = "Tom titel";
+"private appointment" = "Privat aaftale";
+
+"Change..." = "Skift ...";
+
+/* Appointments (participation state) */
+
+"partStat_NEEDS-ACTION" = "Jeg vil bekræfte senere";
+"partStat_ACCEPTED" = "Jeg vil deltage";
+"partStat_DECLINED" = "Jeg vil ikke deltage";
+"partStat_TENTATIVE" = "Jeg vil måske deltage";
+"partStat_DELEGATED" = "Jeg uddelegerer";
+"partStat_OTHER" = "Andre";
+
+/* Appointments (error messages) */
+
+"Conflicts found!" = "Konflikter fundet!";
+"Invalid iCal data!" = "Ugyldig iCal data!";
+"Could not create iCal data!" = "Kunne ikke oprette iCal data!";
+
+/* Searching */
+
+"view_all" = "Alle";
+"view_today" = "I dag";
+"view_next7" = "Næste 7 dage";
+"view_next14" = "Næste 14 dage";
+"view_next31" = "Næste 31 dage";
+"view_thismonth" = "Denne måned";
+"view_future" = "Alle fremtidige begivenheder";
+"view_selectedday" = "Valgte dag";
+
+"View:" = "Vis:";
+"Title or Description" = "Titel eller Beskrivelse";
+
+"Search" = "Søg";
+"Search attendees" = "Søg deltagere";
+"Search resources" = "Søg ressourcer";
+"Search appointments" = "Søg aftaler";
+
+"All day Event" = "Heldags arrangement";
+"check for conflicts" = "Kontrollér for konflikter";
+
+"Browse URL" = "Gennemse URL";
+
+"newAttendee" = "Tilføj deltager";
+
+/* calendar modes */
+
+"Overview" = "Oversigt";
+"Chart" = "Top";
+"List" = "Liste";
+"Columns" = "Kolonner";
+
+/* Priorities */
+
+"prio_0" = "Ikke specificeret";
+"prio_1" = "Høj";
+"prio_2" = "Høj";
+"prio_3" = "Høj";
+"prio_4" = "Høj";
+"prio_5" = "Normal";
+"prio_6" = "Lav";
+"prio_7" = "Lav";
+"prio_8" = "Lav";
+"prio_9" = "Lav";
+
+/* access classes (privacy) */
+"PUBLIC_vevent" = "Offentlig begivenhed";
+"CONFIDENTIAL_vevent" = "Hemmelig begivenhed";
+"PRIVATE_vevent" = "Privat begivenhed";
+"PUBLIC_vtodo" = "Offentlig opgave";
+"CONFIDENTIAL_vtodo" = "Hemmelig opgave";
+"PRIVATE_vtodo" = "Privat opgave";
+
+/* status type */
+"status_" = "Ikke specificeret";
+"status_NOT-SPECIFIED" = "Ikke specificeret";
+"status_TENTATIVE" = "Tentativ";
+"status_CONFIRMED" = "Bekræftet";
+"status_CANCELLED" = "Annulleret";
+"status_NEEDS-ACTION" = "Kræver handling";
+"status_IN-PROCESS" = "I gang";
+"status_COMPLETED" = "Afsluttet den";
+
+/* Cycles */
+
+"cycle_once" = "cycle_once";
+"cycle_daily" = "cycle_daily";
+"cycle_weekly" = "cycle_weekly";
+"cycle_2weeks" = "cycle_2weeks";
+"cycle_4weeks" = "cycle_4weeks";
+"cycle_monthly" = "cycle_monthly";
+"cycle_weekday" = "cycle_weekday";
+"cycle_yearly" = "cycle_yearly";
+
+"cycle_end_never" = "cycle_end_never";
+"cycle_end_until" = "cycle_end_until";
+
+"Recurrence pattern" = "Gentagelsesmønster";
+"Range of recurrence" = "gentagelsesinterval";
+
+"Repeat" = "Gentag";
+"Daily" = "Dagligt";
+"Weekly" = "Ugentligt";
+"Monthly" = "Månedligt";
+"Yearly" = "Årligt";
+"Every" = "Hver";
+"Days" = "Dag";
+"Week(s)" = "Uge(r)";
+"On" = "den";
+"Month(s)" = "Måned (er)";
+"The" = "Den";
+"Recur on day(s)" = "Gentages på dag(e)";
+"Year(s)" = "År";
+"cycle_of" = "af";
+"No end date" = "Ingen slutdato";
+"Create" = "Opret";
+"appointment(s)" = "aftale(r)";
+"Repeat until" = "Gentag indtil";
+
+"First" = "Første";
+"Second" = "Anden";
+"Third" = "Tredje";
+"Fourth" = "Fjerde";
+"Fift" = "Femte";
+"Last" = "Sidste";
+
+/* Appointment categories */
+
+"category_none" = "Ingen";
+"category_labels" = "Jubilæum, fødselsdag, forretning, kald, klienter, konkurrence, kunde, favoritter, opfølgning, gaver, helligdage, idéer, møde, problemer, diverse, personlig, projekter, offentlig helligdag, status, Leverandører, Rejser, Ferie";
+
+"repeat_NEVER" = "Gentages ikke";
+"repeat_DAILY" = "Dagligt";
+"repeat_WEEKLY" = "Ugentligt";
+"repeat_BI-WEEKLY" = "En gang om ugen";
+"repeat_EVERY WEEKDAY" = "Alle hverdage";
+"repeat_MONTHLY" = "Månedligt";
+"repeat_YEARLY" = "Årligt";
+"repeat_CUSTOM" = "Tilpasset ...";
+
+"reminder_NONE" = "Ingen påmindelse";
+"reminder_5_MINUTES_BEFORE" = "5 minutter før";
+"reminder_10_MINUTES_BEFORE" = "10 minutter før";
+"reminder_15_MINUTES_BEFORE" = "15 minutter før";
+"reminder_30_MINUTES_BEFORE" = "30 minutter før";
+"reminder_45_MINUTES_BEFORE" = "45 minutter før";
+"reminder_1_HOUR_BEFORE" = "1 time før";
+"reminder_2_HOURS_BEFORE" = "2 timer før";
+"reminder_5_HOURS_BEFORE" = "5 timer før";
+"reminder_15_HOURS_BEFORE" = "15 timer før";
+"reminder_1_DAY_BEFORE" = "1 dag før";
+"reminder_2_DAYS_BEFORE" = "2 dage før";
+"reminder_1_WEEK_BEFORE" = "1 uge før";
+"reminder_CUSTOM" = "Tilpasset ...";
+
+"reminder_MINUTES" = "Minutter";
+"reminder_HOURS" = "Timer";
+"reminder_DAYS" = "Dage";
+"reminder_BEFORE" = "Før";
+"reminder_AFTER" = "Efter";
+"reminder_START" = "Begivenheden starter";
+"reminder_END" = "Begivenheden slutter";
+"Reminder Details" = "Påmindelsesdetaljer";
+
+"Choose a Reminder Action" = "Vælg en påmindelseshandling";
+"Show an Alert" = "Vis en alarm";
+"Send an E-mail" = "Send en e-mail";
+"Email Organizer" = "Email arrangør";
+"Email Attendees" = "E-mail deltagere";
+
+"zoom_400" = "400%";
+"zoom_200" = "200%";
+"zoom_100" = "100%";
+"zoom_50" = "50%";
+"zoom_25" = "25%";
+
+/* transparency */
+
+"Show Time as Free" = "Vis tidspunkt som ledig";
+
+/* validation errors */
+
+validate_notitle           = "Ingen titel er indtastet, vil du fortsætte?";
+validate_invalid_startdate = "Forkert startdato!";
+validate_invalid_enddate   = "Forkert slutdato!";
+validate_endbeforestart    = "Indtastet slutdato ligger før startdato.";
+
+"Tasks" = "Opgaver";
+"Show completed tasks" = "Vis udførte opgaver";
+
+/* tabs */
+"Task" = "Opgave";
+"Event" = "Begivenhed";
+"Recurrence" = "Gentagelse";
+
+/* toolbar */
+"New Event" = "Ny begivenhed";
+"New Task" = "Ny opgave";
+"Edit" = "Redigér";
+"Delete" = "Slet";
+"Go to Today" = "Gå til i dag";
+"Day View" = "Dagsvisning";
+"Week View" = "Ugevisning";
+"Month View" = "Månedsvisning";
+"Reload" = "Opdatér";
+
+"eventPartStatModificationError" = "Din deltagelsesstatus kunne ikke ændres.";
+
+/* menu */
+"New Event..." = "Ny begivenhed ...";
+"New Task..." = "Ny opgave ...";
+"Edit Selected Event..." = "Redigér valgte begivenhed ...";
+"Delete Selected Event" = "Slet valgte begivenhed";
+"Select All" = "Vælg alle";
+"Workweek days only" = "Arbejdsuge dage kun";
+"Tasks in View" = "Opgaver i visning";
+
+"eventDeleteConfirmation" = "Følgende begivenhed er/bliver slettet: 
+%{0}
+Fortsæt?";
+"taskDeleteConfirmation" = "Følgende opgave(r) bliver slettet: 
+%{0}
+Fortsæt?";
+
+"You cannot remove nor unsubscribe from your personal calendar."
+= "Du kan ikke fjerne eller afmelde din personlige kalender.";
+"Are you sure you want to delete the calendar \"%{0}\"?"
+= "Er du sikker på du vil slette kalenderen \"%{0}\"?";
+
+/* Legend */
+"Participant" = "Deltager";
+"Optional Participant" = "Valgfri deltager";
+"Non Participant" = "Deltager ikke";
+"Chair" = "Sæde";
+
+"Needs action" = "Kræver handling";
+"Accepted" = "Accepteret";
+"Declined" = "Afvist";
+"Tentative" = "Tentativ";
+
+"Free" = "Ledig";
+"Busy" = "Optaget";
+"Maybe busy" = "Måske optaget";
+"No free-busy information" = "Ingen ledig/optaget information ";
+
+/* FreeBusy panel buttons and labels */
+"Suggest time slot:" = "Foreslå tidsinterval:";
+"Zoom:" = "Zoom:";
+"Previous slot" = "Forrige interval";
+"Next slot" = "Næste interval";
+"Previous hour" = "Forrige time";
+"Next hour" = "Næste time";
+"Work days only" = "Kun på hverdage";
+"The whole day" = "Hele dagen";
+"Between" = "Mellem";
+"and" = "og";
+
+"A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
+= "En tidskonflikt med en eller flere deltagere. 
+Behold de aktuelle indstillinger alligevel?";
+
+/* apt list */
+"Title" = "Titel";
+"Start" = "Start";
+"End" = "Slut";
+"Location" = "Sted";
+"(Private Event)" = "(Privat begivenhed)";
+
+vevent_class0 = "(Offentlig begivenhed)";
+vevent_class1 = "(Privat begivenhed)";
+vevent_class2 = "(Hemmelig begivenhed)";
+
+vtodo_class0 = "(Offentlig opgave)";
+vtodo_class1 = "(Privat opgave)";
+vtodo_class2 = "(Hemmelig opgave)";
+
+"closeThisWindowMessage" = "Tak! Du kan nu lukke dette vindue, eller se din";
+"Multicolumn Day View" = "Flersøjle dagsvisning";
+
+"Please select an event or a task." = "Vælg venligst en begivenhed eller en opgave.";
+
+"editRepeatingItem" = "Det element, du redigerer, er et gentaget element. Ønsker du at redigere alle forekomster af det eller kun dette ene tilfælde?";
+"button_thisOccurrenceOnly" = "Kun denne forekomst";
+"button_allOccurrences" = "Alle forekomster";
+
+/* Properties dialog */
+"Name:" = "Navn:";
+"Color:" = "Farve:";
+
+"Include in free-busy" = "Medtag i ledig-optaget";
+
+"Synchronization" = "Synkronisering";
+"Synchronize" = "Synkronisér";
+"Tag:" = "Mærke";
+
+"Display" = "Display";
+"Show alarms" = "Vis alarmer";
+"Show tasks" = "Vis opgaver";
+
+"Links to this Calendar" = "Links til denne kalender";
+"Authenticated User Access" = "Godkendt brugeradgang";
+"CalDAV URL" = "CalDAV URL";
+"WebDAV ICS URL" = "WebDAV ICS URL";
+"WebDAV XML URL" = "WebDAV XML URL";
+
+/* Error messages */
+"dayFieldInvalid" = "Angiv venligst en numerisk værdi i feltet Dag(e) skal være større end eller lig med 1.";
+"weekFieldInvalid" = "Angiv venligst en numerisk værdi i feltet. Uge(r) skal være større end eller lig med 1.";
+"monthFieldInvalid" = "Angiv venligst en numerisk værdi i feltet. måned(er) skal være større end eller lig med 1.";
+"monthDayFieldInvalid" = "Angiv venligst en numerisk værdi i feltet. månedsdag(e) skal være større end eller lig med 1.";
+"yearFieldInvalid" = "Angiv venligst en numerisk værdi i feltet. Årstal skal være større end eller lig med 1.";
+"appointmentFieldInvalid" = "Angiv venligst en numerisk værdi i feltet. Aftale skal være større end eller lig med 1.";
+"recurrenceUnsupported" = "Denne type gentagelser er i øjeblikket ikke understøttet.";
+"Please specify a calendar name." = "Angiv venligst et kalender navn.";
+"tagNotDefined" = "Du skal angive et mærkat, hvis du ønsker at synkronisere denne kalender.";
+"tagAlreadyExists" = "Mærkatet du har angivet er allerede knyttet til en anden kalender.";
+"tagHasChanged" = "Hvis du ændrer din kalenders mærkat, skal du genindlæse data på din mobile enhed.
+Fortsæt?";
+"tagWasAdded" = "Hvis du ønsker at synkronisere denne kalender, skal du genindlæse data på din mobile enhed.
+Fortsæt?";
+"tagWasRemoved" = "Hvis du fjerner denne kalender fra synkronisering, skal du genindlæse data på din mobile enhed.
+Fortsæt?";
+"DestinationCalendarError" = "Kilde og destination kalendere er de samme. Prøv at kopiere til en anden kalender.";
+"EventCopyError" = "Kopieringen mislykkedes. Prøv at kopiér til en anden kalender.";
+
+"Open Task..." = "Åbn opgave ...";
+"Mark Completed" = "Markér afsluttet";
+"Delete Task" = "Slet opgave";
+"Delete Event" = "Slet begivenhed";
+"Copy event to my calendar" = "Kopiér begivenhed til min kalender";
+
+"Subscribe to a web calendar..." = "Abonnér på en online kalender ...";
+"URL of the Calendar" = "Kalenderens URL";
+"Web Calendar" = "Online kalender";
+"Reload on login" = "Genindlæs ved login";
+"Invalid number." = "Ugyldigt nummer.";
