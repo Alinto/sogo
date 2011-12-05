@@ -68,8 +68,8 @@
 {
   NSMutableDictionary *row;
   NSCalendarDate *startDate, *endDate, *nextAlarmDate;
-  NSArray *attendees;
-  NSString *uid, *title, *location, *status, *category;
+  NSArray *attendees, *categories;
+  NSString *uid, *title, *location, *status;
   NSNumber *sequence;
   id organizer;
   id participants, partmails;
@@ -257,9 +257,10 @@
   else
     [row setObject: [NSNumber numberWithInt: 0] forKey: @"c_nextalarm"];
 
-  category = [self categories];
-  if ([category length] > 0)
-    [row setObject: category forKey: @"c_category"];
+  categories = [self categories];
+  if ([categories count] > 0)
+    [row setObject: [categories componentsJoinedByString: @","]
+            forKey: @"c_category"];
 
   return row;
 }
