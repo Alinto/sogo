@@ -6,13 +6,14 @@ BUNDLE_NAME = MainUI
 
 MainUI_PRINCIPAL_CLASS = MainUIProduct
 
-MainUI_LANGUAGES = BrazilianPortuguese Catalan Czech Dutch English French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
+MainUI_LANGUAGES = BrazilianPortuguese Catalan Czech DanishDenmark Dutch English French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
 
 MainUI_OBJC_FILES += \
 	MainUIProduct.m		\
 	SOGoRootPage.m		\
 	SOGoUserHomePage.m	\
 	SOGoBrowsersPanel.m	\
+	UIxLoading.m		\
 
 MainUI_RESOURCE_FILES += 	\
 	product.plist		\

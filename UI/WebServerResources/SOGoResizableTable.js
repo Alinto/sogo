@@ -36,6 +36,10 @@ var SOGoResizableTableInterface = {
     },
 
     _resize: function() {
+        this.restore();
+    },
+
+    restore: function(relativeWidths) {
         if (Prototype.Browser.IE)
             while (SOGoResizableTable._stylesheet.styleSheet.rules.length)
                 SOGoResizableTable._stylesheet.styleSheet.removeRule();
@@ -43,24 +47,15 @@ var SOGoResizableTableInterface = {
             while (SOGoResizableTable._stylesheet.firstChild)
                 SOGoResizableTable._stylesheet.removeChild(SOGoResizableTable._stylesheet.firstChild);
         
+        if (relativeWidths)
+            this.ratios = relativeWidths;
         var tableWidth = this.getWidth()/100;
-        var cells = $(this).down('tr').childElements();
+        var cells = $(this).down('tr').select('.resizable');
 	for (i = 0; i < cells.length; i++) {
             var cell = cells[i];
             var ratio = this.ratios.get(cell.id);
             SOGoResizableTable._resize(this, $(cell), i, null, ratio*tableWidth);
         }
-    },
-
-    restore: function(relativeWidths) {
-        var tableWidth = this.getWidth()/100;
-        var cells = $(this).down('tr').childElements();
-	for (i = 0; i < cells.length; i++) {
-            var cell = cells[i];
-            var ratio = relativeWidths.get(cell.id);
-            SOGoResizableTable._resize(this, $(cell), i, null, ratio*tableWidth);
-        }
-        this.ratios = relativeWidths;
     },
 
     computeColumnsWidths: function() {
@@ -172,7 +167,7 @@ SOGoResizableTable = {
          }
         
         // Respect the minimum width of the cell.
-        w = Math.max(w - pad, parseInt(cell.getStyle('minWidth')));
+        w = Math.max(Math.round(w) - pad, parseInt(cell.getStyle('minWidth')));
 
         var delta = w - cell.getWidth() + pad;
 

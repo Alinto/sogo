@@ -1,0 +1,204 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "Kontakt";
+"Address" = "Adresse";
+"Photos" = "Billeder";
+"Other" = "Andet";
+
+"Address Books" = "Adressebøger";
+"Addressbook" = "Adressebog";
+"Addresses" = "Adresser";
+"Update" = "Opdatér";
+"Cancel" = "Annullér";
+"Common" = "Fælles";
+"Contact editor" = "Kontakt editor";
+"Contact viewer" = "Kontakt viser";
+"Email" = "E-mail";
+"Screen Name" = "Skærmnavn";
+"Extended" = "Udvidet";
+"Fax" = "Fax";
+"Firstname" = "Fornavn";
+"Home" = "Hjem";
+"HomePhone" = "Fastnet nr.";
+"Lastname" = "Efternavn";
+"Location" = "Sted";
+"MobilePhone" = "Mobil tlf. nr.";
+"Name" = "Navn";
+"OfficePhone" = "Kontor tlf. nr.";
+"Organization" = "Firma";
+"Work Phone" = "Arbejde tlf. nr.";
+"Phone" = "Telefon";
+"Phones" = "Telefoner";
+"Postal" = "Post";
+"Save" = "Gem";
+"Internet" = "Internet";
+"Unit" = "Enhed";
+"delete" = "Slet";
+"edit" = "Redigér";
+"invalidemailwarn" = "Den angivne e-mail er ugyldigt";
+"invaliddatewarn" = "Den angivne dato er ugyldig";
+"new" = "Ny";
+"Preferred Phone" = "Foretrukken tlf. nr.";
+
+"Move To" = "Flyt til";
+"Copy To" = "Kopiér til";
+"Add to:" = "Tilføj til:";
+
+/* Tooltips */
+
+"Create a new address book card" = "Opret nyt kort til adressebog";
+"Create a new list" = "Opret en ny liste";
+"Edit the selected card" = "Redigér det valgte kort";
+"Send a mail message" = "Send en besked";
+"Delete selected card or address book" = "Slet valgte kort eller adressebog";
+"Reload all contacts" = "Genindlæs alle kontakter";
+
+"htmlMailFormat_UNKNOWN" = "Ukendt";
+"htmlMailFormat_FALSE" = "Almindelig tekst";
+"htmlMailFormat_TRUE" = "HTML";
+
+"Name or Email" = "Navn eller e-mail";
+"Category" = "Kategori";
+"Personal Addressbook" = "Personlig adressebog";
+"Search in Addressbook" = "Søg i adressebog";
+
+"New Card" = "Nyt kort";
+"New List" = "Ny liste";
+"Properties" = "Egenskaber";
+"Sharing..." = "Deling ...";
+"Write" = "Skriv";
+"Delete" = "Slet";
+"Instant Message" = "Øjeblikkelig besked";
+"Add..." = "Tilføj ...";
+"Remove" = "Fjern";
+
+"Please wait..." = "Vent venligst ...";
+"No possible subscription" = "Intet muligt abonnement";
+
+"Preferred" = "Foretrukket";
+"Display:" = "Vis:";
+"Display Name:" = "Vist navn:";
+"Email:" = "E-mail:";
+"Additional Email:" = "ekstra e-mails:";
+
+"Phone Number:" = "Telefonnummer:";
+"Prefers to receive messages formatted as:" = "Foretrækker at modtage beskeder formateret som:";
+"Screen Name:" = "Skærmnavn:";
+"Categories:" = "Kategorier:";
+
+"First:" = "Først:";
+"Last:" = "Sidst:";
+"Nickname:" = "Kaldenavn:";
+
+"Telephone" = "Telefon";
+"Work:" = "Arbejde:";
+"Home:" = "Hjem:";
+"Fax:" = "Fax:";
+"Mobile:" = "Mobil:";
+"Pager:" = "Personsøger:";
+
+/* categories */
+"contacts_category_labels" = "kollega, konkurrent, kunde, ven, familie, samarbejdspartner, udbyder, presse, VIP";
+"Categories" = "Kategorier";
+"New category" = "Ny kategori";
+
+/* adresses */
+"Title:" = "Titel:";
+"Service:" = "Service:";
+"Company:" = "Firma:";
+"Department:" = "Afdeling:";
+"Organization:" = "Organisation:";
+"Address:" = "Adresse:";
+"City:" = "By:";
+"State_Province:" = "Stat / provins:";
+"ZIP_Postal Code:" = "ZIP/Postnr.:";
+"Country:" = "Land:";
+"Web Page:" = "Hjemmeside:";
+
+"Work" = "Arbejde";
+"Other Infos" = "Andet info";
+
+"Note:" = "Bemærk:";
+"Timezone:" = "Tidszone:";
+"Birthday:" = "Fødselsdag:";
+"Birthday (yyyy-mm-dd):" = "Fødselsdag (dd-mm-åååå):";
+"Freebusy URL:" = "Ledig/optaget URL:";
+
+"Add as..." = "Tilføj som ...";
+"Recipient" = "Modtager";
+"Carbon Copy" = "Kopi";
+"Blind Carbon Copy" = "Usynlig kopi";
+
+"New Addressbook..." = "Ny adressebog ...";
+"Subscribe to an Addressbook..." = "Abonnér på en adressebog ...";
+"Remove the selected Addressbook" = "Fjern den valgte adressebog";
+
+"Name of the Address Book" = "Adressebogens navn";
+"Are you sure you want to delete the selected address book?"
+= "Er du sikker på du vil slette den valgte adressebog?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "Du kan ikke fjerne eller afmelde dig fra en offentlig adressebog.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "Du kan ikke fjerne eller afmelde din personlige adressebog.";
+
+"Are you sure you want to delete the selected contacts?"
+= "Er du sikker på du vil slette de valgte kontakter?";
+
+"You cannot delete the card of \"%{0}\"."
+= "Du kan ikke slette kortet fra \"% {0}\".";
+
+"Address Book Name" = "Adressebog navn";
+
+"You cannot subscribe to a folder that you own!"
+= "Du kan ikke abonnere på en mappe, som du ejer.";
+"Unable to subscribe to that folder!"
+= "Det er ikke muligt at abonnere på denne mappe.";
+
+"User rights for:" = "Brugerrettigheder:";
+
+"Any Authenticated User" = "Enhver godkendt bruger";
+"Public Access" = "Offentlig adgang";
+
+"This person can add cards to this addressbook."
+= "Denne person kan tilføje kort til denne adressebog.";
+"This person can edit the cards of this addressbook."
+= "Denne person kan redigere kort i denne adressebog.";
+"This person can list the content of this addressbook."
+= "Denne person kan liste indholdet af denne adressebog.";
+"This person can read the cards of this addressbook."
+= "Denne person kan læse kort i denne adressebog.";
+"This person can erase cards from this addressbook."
+= "Denne person kan slette kort fra denne adressebog.";
+
+"The selected contact has no email address."
+= "Den valgte kontaktperson har ingen e-mail-adresse.";
+
+"Please select a contact." = "Vælg venligst en kontaktperson";
+
+/* Error messages for move and copy */
+
+"SoAccessDeniedException" = "Du kan ikke skrive til denne adressebog.";
+"Forbidden" = "Du kan ikke skrive til denne adressebog.";
+"Invalid Contact" = "Den valgte kontaktperson findes ikke mere.";
+"Unknown Destination Folder" = "Den valgte adressebog eksisterer ikke længere.";
+
+/* Lists */
+"List details" = "Liste detaljer";
+"List name:" = "Liste navn:";
+"List nickname:" = "Liste kaldenavn:";
+"List description:" = "Liste beskrivelse:";
+"Members" = "Medlemmer";
+"Contacts" = "Kontaktpersoner";
+"Add" = "Tilføj";
+"Lists can't be moved or copied." = "Lister kan ikke flyttes eller kopieres.";
+"Export" = "Eksportér";
+"Export Address Book..." = "Eksportér adressebog ...";
+"Import Cards" = "Importér kort";
+"Select a vCard or LDIF file." = "Vælg en vCard - eller LDIF-fil.";
+"Upload" = "Indlæs";
+"Done" = "Udført";
+"An error occured while importing contacts." = "Der opstod en fejl under importering af kontaktpersoner.";
+"No card was imported." = "Intet kort blev importeret.";
+"A total of %{0} cards were imported in the addressbook." = "I alt blev % {0} kort importeret i adressebogen.";
+
+"Reload" = "Genindlæs";

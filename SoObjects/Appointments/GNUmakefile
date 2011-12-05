@@ -47,7 +47,7 @@ Appointments_OBJC_FILES = \
 Appointments_RESOURCE_FILES +=		\
 	product.plist			\
 
-Appointments_LANGUAGES = BrazilianPortuguese Catalan Czech Dutch English French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
+Appointments_LANGUAGES = BrazilianPortuguese Catalan Czech DanishDenmark Dutch English French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
 
 Appointments_LOCALIZED_RESOURCE_FILES = Localizable.strings
 

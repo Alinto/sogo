@@ -1,0 +1,73 @@
+"Personal Calendar" = "Personlig kalender";
+vevent_class0 = "(Offentlig begivenhed)";
+vevent_class1 = "(Privat begivenhed)";
+vevent_class2 = "(Hemmelig begivenhed)";
+
+vtodo_class0 = "(Offentlig opgave)";
+vtodo_class1 = "(Privat opgave)";
+vtodo_class2 = "(Hemmelig opgave)";
+
+/* Receipts */
+"Title:" = "Titel:";
+"Start:" = "Start:";
+"End:" = "Slut:";
+
+"Receipt: users invited to a meeting" = "Kvittering: brugere inviteret til et møde";
+"You have invited the following attendees(s):" = "Du har inviteret følgende deltager(e):";
+"... to attend the following event:" = "... til at deltage i følgende begivenhed:";
+
+"Receipt: invitation updated" = "Kvittering: invitation opdateret";
+"The following attendees(s):" = "Følgende deltager(e):";
+"... have been notified of the changes to the following event:" = "... er blevet underrettet om ændringer i følgende begivenheder:";
+
+"Receipt: attendees removed from an event" = "Kvittering: deltagere fjernet fra en begivenhed";
+"You have removed the following attendees(s):" = "Du har fjernet følgende deltager(e):";
+"... from the following event:" = "... fra følgende begivenhed:";
+
+/* IMIP messages */
+"startDate_label" = "Start:";
+"endDate_label" = "Slut:";
+"due_label" = "Forfaldsdato:";
+"location_label" = "Sted:";
+"summary_label" = "Resumé:";
+"comment_label" = "Kommentér:";
+
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "Begivenhed Invitation: \"%{Opsummering}\"";
+"(sent by %{SentBy}) " = "(Sendt af%{SentBy})";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer}%{SentByText} har inviteret dig til%{Summary}.
+
+Start:%{StartDate}ved%{StartTime}
+End:%{EndDate}ved%{endTime}
+Description:%{Description}";
+
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "Begivenhed Annulleret: \"%{Opsummering}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}har annulleret denne begivenhed: %{Summary}.
+
+Start: %{StartDate} at %{StartTime}
+End: %{EndDate} at %{EndTime}
+Description: %{Description}";
+
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "Aftalen \"%{Summary}\" den %{OldStartDate} kl. %{OldStartTime} er blevet ændret";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= "Følgende parametre har ændret sig i \"% {Opsummering}\" møde:";
+"Please accept or decline those changes."
+= "Venligst acceptér eller afvis disse ændringer.";
+
+/* Reply */
+"Reply to invitation: \"%{Summary}\"" = "Svar på invitation: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "%{Attendee} %{SentByText} har accepteret din begivenhedsinvitation.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "%{Attendee} %{SentByText} har afvist din begivenhedsinvitation.";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "%{Attendee} %{SentByText} har delegeret en invitation til %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText} har endnu ikke taget stilling til din begivenhedsinvitation.";
+
+/* Resources */
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximalt antal samtidige bookings (%{NumberOfSimultaneousBookings}) er nået for \"%{Cn} %{SystemEmail}\".";

@@ -1,0 +1,23 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE container>
+<container 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+<var:if condition="isSubject">
+    <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> has been deleted
+</var:if>
+
+<var:if condition="isBody">
+The <var:string const:value='"' const:escapeHTML="NO"/><var:string value="displayName" const:escapeHTML="NO"/><var:string const:value='"' const:escapeHTML="NO"/> folder has been deleted. 
+<!--
+The following URL is now no longer active:
+
+<var:string value="httpFolderURL" const:escapeHTML="NO"/>
+-->
+</var:if>
+
+</container>

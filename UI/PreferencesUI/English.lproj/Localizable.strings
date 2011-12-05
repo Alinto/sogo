@@ -75,10 +75,17 @@
 "longDateFmt_2" = "%A, %d %B, %Y";
 "longDateFmt_3" = "%d %B, %Y";
 "longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
 
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
+"timeFmt_3" = "";
 
 /* calendar */
 "Week begins on :" = "Week begins on :";
@@ -180,6 +187,7 @@
 "choose" = "Choose ...";
 "Catalan" = "Català";
 "Czech" = "Česky";
+"DanishDenmark" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
 "English" = "English";
 "French" = "Français";
