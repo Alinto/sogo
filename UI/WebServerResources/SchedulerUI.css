@@ -1297,10 +1297,6 @@ DIV.event > DIV.eventInside
   left: 0px;
   right: 0px; }
 
-DIV.event._selected > DIV.eventInside
-{ -moz-opacity: 0.7;
-  opacity: 0.7; }
-
 DIV.eventInside SPAN.location
 { font-size: smaller; }
 
@@ -1321,6 +1317,9 @@ DIV.gradient > IMG
   height: 100%;
   min-height: 15px; /* for 15-minute events */
   width: 100%; }
+
+DIV.event._selected > DIV.eventInside > DIV.gradient
+{ display: none; }
 
 DIV.text SPAN.icons
 { float: right; }
