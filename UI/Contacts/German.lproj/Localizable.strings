@@ -19,16 +19,16 @@
 "Fax" = "Fax";
 "Firstname" = "Vorname";
 "Home" = "Privat";
-"HomePhone" = "Privat";
-"Lastname" = "Name";
+"HomePhone" = "Privatnummer";
+"Lastname" = "Nachname";
 "Location" = "Adresse";
-"MobilePhone" = "Mobil";
+"MobilePhone" = "Mobilnummer";
 "Name" = "Name";
-"OfficePhone" = "Dienstlich";
+"OfficePhone" = "Büronummer";
 "Organization" = "Organisation";
-"Work Phone" = "Dienstlich";
+"Work Phone" = "Dienstnummer";
 "Phone" = "Telefon";
-"Phones" = "Telefon";
+"Phones" = "Telefone";
 "Postal" = "PLZ";
 "Save" = "Speichern";
 "Internet" = "Internet";
@@ -38,10 +38,10 @@
 "invalidemailwarn" = "Das Format der angegebenen E-Mail-Adresse ist ungültig.";
 "invaliddatewarn" = "Das angegebene Datum ist ungültig.";
 "new" = "Neu";
-"Preferred Phone"   = "Bevorzugt";
+"Preferred Phone" = "Bevorzugte Telefonnummer";
 
 "Move To" = "Verschieben in";
-"Copy To" = "Kopieren in";
+"Copy To" = "Kopieren nach";
 "Add to:" = "Hinzufügen zu:";
 
 /* Tooltips */
@@ -58,7 +58,7 @@
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Name oder E-Mail";
-"Category" = "Category";
+"Category" = "Kategorie";
 "Personal Addressbook" = "Persönliches Adressbuch";
 "Search in Addressbook" = "Im Adressbuch suchen ...";
 
@@ -76,8 +76,7 @@
 "No possible subscription" = "Kein Abonnieren möglich";
 
 "Preferred" = "Bevorzugt";
-"Card for %@" = "%@";
-"Display:" = "Anzeigename:";
+"Display:" = "Anzeige:";
 "Display Name:" = "Anzeigename:";
 "Email:" = "E-Mail:";
 "Additional Email:" = "Zusätzliche E-Mail:";
@@ -88,7 +87,7 @@
 "Categories:" = "Kategorien:";
 
 "First:" = "Vorname:";
-"Last:" = "Name:";
+"Last:" = "Nachname:";
 "Nickname:" = "Spitzname:";
 
 "Telephone" = "Telefon";
@@ -99,7 +98,7 @@
 "Pager:" = "Pager:";
 
 /* categories */
-"contacts_category_labels" = "Geschäftspartner, Familie, Freund, Kollegin, Konkurrenten, Kunden, Lieferant, Presse, VIP";
+"contacts_category_labels" = "Familienmitglied, Freund, Geschäftspartner, Kollegin, Konkurrent, Kunde, Lieferant, Presse, VIP";
 "Categories" = "Kategorien";
 "New category" = "Neue Kategorie";
 
@@ -117,12 +116,12 @@
 "Web Page:" = "Webseite:";
 
 "Work" = "Dienstlich";
-"Other Infos" = "Andere";
+"Other Infos" = "Andere Informationen";
 
 "Note:" = "Notizen:";
 "Timezone:" = "Zeitzone:";
 "Birthday:" = "Geburtsdatum:";
-"Birthday (yyyy-mm-dd):" = "Geburtsdatum (yyyy-mm-dd):";
+"Birthday (yyyy-mm-dd):" = "Geburtsdatum (JJJJ-MM-TT):";
 "Freebusy URL:" = "Frei/Gebucht URL:";
 
 "Add as..." = "Hinzufügen als ...";
@@ -134,13 +133,13 @@
 "Subscribe to an Addressbook..." = "Ein Adressbuch abonnieren...";
 "Remove the selected Addressbook" = "Gewähltes Adressbuch löschen";
 
-"Name of the Address Book" = "Adressbuch-Name";
+"Name of the Address Book" = "Adressbuchname";
 "Are you sure you want to delete the selected address book?"
 = "Wollen Sie wirklich das gewählte Adressbuch löschen?";
 "You cannot remove nor unsubscribe from a public addressbook."
-= "Sie können das gemeinsame Adressbuch nicht löschen.";
+= "Sie können das öffentliche Adressbuch weder löschen noch abbestellen.";
 "You cannot remove nor unsubscribe from your personal addressbook."
-= "Sie können ihr Persönliches Adressbuch nicht löschen.";
+= "Sie können ihr Persönliches Adressbuch weder löschen noch abbestellen.";
 
 "Are you sure you want to delete the selected contacts?"
 = "Wollen Sie wirklich die gewählten Adresskarten löschen?";
@@ -148,12 +147,12 @@
 "You cannot delete the card of \"%{0}\"."
 = "Sie können die Adresskarte von \"%{0}\" nicht löschen.";
 
-"Address Book Name" = "Adressbuch-Name";
+"Address Book Name" = "Adressbuchname";
 
 "You cannot subscribe to a folder that you own!"
-= "Sie können ihre eigenen Ordner nicht abonnieren!";
+= "Sie können ihre eigenen Ordner nicht abonnieren.";
 "Unable to subscribe to that folder!"
-= "Abonnieren des Ordners nicht möglich!";
+= "Abonnieren des Ordners nicht möglich.";
 
 "User rights for:" = "Benutzerrechte für:";
 
@@ -165,9 +164,9 @@
 "This person can edit the cards of this addressbook."
 = "Diese Person kann in diesem Adressbuch bestehende Adresskarten verändern.";
 "This person can list the content of this addressbook."
-= "Diese Person kann die Liste der Adresskarten dieses Adressbuches anzeigen.";
+= "Diese Person kann die Adresskarten dieses Adressbuches auflisten.";
 "This person can read the cards of this addressbook."
-= "Diese Person kann Adresskarten dieses Adressbuches anzeigen.";
+= "Diese Person kann Adresskarten dieses Adressbuches ansehen.";
 "This person can erase cards from this addressbook."
 = "Diese Person kann Adresskarten aus diesem Adressbuch löschen.";
 
@@ -195,11 +194,11 @@
 "Export" = "Export";
 "Export Address Book..." = "Addressbuch exportieren...";
 "Import Cards" = "Adresskarten importieren";
-"Select LDIF or vCard file..." = "LDIF oder vCard Datei wählen...";
+"Select a vCard or LDIF file." = "Bitte wählen Sie eine vCard oder eine LDIF-Datei.";
 "Upload" = "Hochladen";
 "Done" = "Abgeschlossen";
 "An error occured while importing contacts." = "Fehler während des Importierens von Adresskarten.";
-"No card was imported." = "Es wurden keine Adresskarten importiert.";
+"No card was imported." = "Es wurde keine Adresskarte importiert.";
 "A total of %{0} cards were imported in the addressbook." = "%{0} Adresskarten wurden in das Adressbuch importiert.";
 
 "Reload" = "Neu laden";

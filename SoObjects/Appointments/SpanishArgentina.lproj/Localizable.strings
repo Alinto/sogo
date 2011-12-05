@@ -33,14 +33,22 @@ vtodo_class2 = "(Tarea confidencial)";
 "comment_label" = "Comentario:";
 
 /* Invitation */
-"Invitacion a un Evento: \"%{Summary}\"" = "Invitación a un Evento: \"%{Summary}\"";
+"Event Invitation: \"%{Summary}\"" = "Invitación al evento: ";
 "(sent by %{SentBy}) " = "(enviado por %{SentBy}) ";
-"%{Organizer} %{SentByText}le ha invitado a %{Summary}.\n\nInicio: %{StartDate} a %{StartTime}\nFin: %{EndDate} a %{EndTime}\nDescripción: %{Description}" = "%{Organizer} %{SentByText}ha sido invitado a %{Summary}.\n\nStart: %{StartDate} a las %{StartTime}\nEnd: %{EndDate} las %{EndTime}\nDescripción: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}lo ha invitado %{Summary}.
+
+Comienzo: %{StartDate} a las %{StartTime}
+Finalización: %{EndDate} a las %{EndTime}
+Descripción: %{Description}";
 
 /* Deletion */
-"Evento Cancelado: \"%{Summary}\"" = "Evento Cancelado: \"%{Summary}\"";
-"%{Organizer} %{SentByText}ha cancelado este evento: %{Summary}.\n\nInicio: %{StartDate} a %{StartTime}\nFin: %{EndDate} a %{EndTime}\nDescripción: %{Description}"
-= "%{Organizer} %{SentByText}ha cancelado éste evento: %{Summary}.\n\nInicio: %{StartDate} a las %{StartTime}\nEnd: %{EndDate} a %{EndTime}\nDescripción: %{Description}";
+"Event Cancelled: \"%{Summary}\"" = "Evento cancelado: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}ha cancelado este evento: %{Summary}.
+
+Comienzo: %{StartDate} a las %{StartTime}
+Finalización: %{EndDate} a las %{EndTime}
+Descripción: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
@@ -61,5 +69,5 @@ vtodo_class2 = "(Tarea confidencial)";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}no ha tomado tadavia una decision sobre esta cita.";
 
+/* Resources */
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Número máximo de reservas simultáneas (%{NumberOfSimultaneousBookings}) alcanzado para recurso \"%{Cn} %{SystemEmail}\".";
-

@@ -27,8 +27,11 @@
 "Add default email addresses" = "Añadir dirección de correo por defecto";
 "Days between responses :" = "Dias entre respuestas :";
 "Do not send responses to mailing lists" = "No enviar respuestas a las listas de distribución";
+"Disable auto reply on" = "Desactivar respuesta automatica";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Por favor, especificar el mensaje y la dirección de correo para aquellos a los que quiere habilitar la respuesta automática.";
+"End date of your auto reply must be in the future."
+= "La fecha de fin de respuesta automatica debe ser en el futuro.";
 
 /* forward messages */
 "Forward incoming messages" = "Desvío de mensajes recibidos";
@@ -84,6 +87,7 @@
 "Day start time :" = "Hora inicio: ";
 "Day end time :" = "Hora fin: ";
 "Day start time must be prior to day end time." = "Hora de inicio del día debe ser anterior a la hora de fin del día.";
+"Show time as busy outside working hours" = "Mostrar tiempo ocupado fuera del horario laboral";
 "First week of year :" = "Primera semana del año: ";
 "Enable reminders for Calendar items" = "Habilitar recordatorios para elementos del calendario";
 "Play a sound when a reminder comes due"
@@ -93,6 +97,12 @@
 "firstWeekOfYear_January1" = "Empieza el 1 de enero";
 "firstWeekOfYear_First4DayWeek" = "Primera semana del año de 4 días";
 "firstWeekOfYear_FirstFullWeek" = "Primera semana del año completa";
+
+/* Default Calendar */
+"Default calendar :" = "Calendario por defecto";
+"selectedCalendar" = "Calendario seleccionado";
+"personalCalendar" = "Calendario personal";
+"firstCalendar" = "Primer calendario disponible";
 
 "reminderTime_0000" = "0 minutos";
 "reminderTime_0005" = "5 minutos";
@@ -109,6 +119,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Mostrar sólo buzones suscritos";
+"Sort messages by threads" = "Ordenar mensajes por temas";
 "Check for new mail:" = "Comprobar correo nuevo: ";
 "messagecheck_manually" = "Manualmente";
 "messagecheck_every_minute" = "Cada minuto";
@@ -139,7 +150,7 @@
 "Port:" = "Puerto:";
 "User Name:" = "Nombre de usuario:";
 "Password:" = "Contraseña:";
- 
+
 "Full Name:" = "Nombre Completo:";
 "Email:" = "Correo Electrónico:";
 "Signature:" = "Firma:";
@@ -186,6 +197,18 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+/* Return receipts */
+"When I receive a request for a return receipt:" = "Cuando reciba una petición de un acuse de recibo:";
+"Never send a return receipt" = "Nunca enviar un acuse de recibo";
+"Allow return receipts for some messages" = "Permitir acuses de recibo para algunos mensajes";
+"If I'm not in the To or Cc of the message:" = "Si no estoy en el Para o Cc del mensaje:";
+"If the sender is outside my domain:" = "Si el remitente esta fuera de mi dominio de correo:";
+"In all other cases:" = "En el resto de casos:";
+
+"Never send" = "Nunca enviar";
+"Always send" = "Enviar siempre";
+"Ask me" = "Preguntarme";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "Cuando reciba una petición de un acuse de recibo:";
@@ -251,3 +274,18 @@
 "Label 3" = "Etiqueta 3";
 "Label 4" = "Etiqueta 4";
 "Label 5" = "Etiqueta 5";
+
+"Password must not be empty." = "La contraseña no puede estar vacía.";
+"The passwords do not match. Please try again." = "Las contraseñas no coinciden. Por favor, inténtalo de nuevo.";
+"Password change failed" = "Cambio de contraseña fallido";
+"Password change failed - Permission denied" = "Cambio de contraseña fallido - Permiso denegado";
+"Password change failed - Insufficient password quality" = "Cambio de contraseña fallido - Calidad de la contraseña insuficiente";
+"Password change failed - Password is too short" = "Cambio de contraseña fallido - Contraseña demasiado corta";
+"Password change failed - Password is too young" = "Cambio de contraseña fallido - Contraseña demasiado reciente";
+"Password change failed - Password is in history" = "Cambio de contraseña fallido - Contraseña figura en el historico";
+"Unhandled policy error: %{0}" = "Error de la política no controlada:% {0}";
+"Unhandled error response" = "Respuesta de error no controlado";
+"Password change is not supported." = "Cambio de contraseña no compatible.";
+"Unhandled HTTP error code: %{0}" = "Código de error HTTP no controlada:% {0}";
+"New password:" = "Nueva contraseña:";
+"Confirmation:" = "Confirmar nueva contraseña:";

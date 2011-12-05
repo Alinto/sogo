@@ -8,7 +8,7 @@
 "Contacts Options" = "Opciones de contactos";
 "Mail Options" = "Opciones de correo";
 "IMAP Accounts" = "Cuentas IMAP";
-"Vacation" = "Vacaciones";
+"Vacation" = "Autorrespuesta";
 "Forward" = "Desvío";
 "Password" = "Contraseña";
 "Categories" = "Categorías";
@@ -18,29 +18,32 @@
 "Delete" = "Borrar";
 
 /* contacts categories */
-"contacts_category_labels" = "Colega, Competidor, Cliente, Amigo, Familia, Socio, Proveedor, Prensa, VIP";
+"contacts_category_labels" = "Colega, Competencia, Cliente, Amigo, Familia, Socio, Proveedor, Prensa, VIP";
 
 /* vacation (auto-reply) */
-"Enable vacation auto reply" = "Activar respuesta automática para vacaciones";
+"Enable vacation auto reply" = "Activar respuesta automática por vacaciones";
 "Auto reply message :" = "Mensaje de respuesta automática :";
 "Email addresses (separated by commas) :" = "Dirección de correo (separado por comas) :";
 "Add default email addresses" = "Añadir dirección de correo por defecto";
 "Days between responses :" = "Dias entre respuestas :";
-"Do not send responses to mailing lists" = "No enviar respuestas a las listas de distribución";
+"Do not send responses to mailing lists" = "No enviar respuestas a listas de correo";
+"Disable auto reply on" = "Deshabilitar la autorespuesta para";
 "Please specify your message and your email addresses for which you want to enable auto reply."
-= "Por favor, especificar el mensaje y la dirección de correo para aquellos a los que quiere habilitar la respuesta automática.";
+= "Por favor, especifique el mensaje y su dirección de correo para la respuesta automática.";
+"End date of your auto reply must be in the future."
+= "La fecha de finalización de la autorespuesta debe ser futura";
 
 /* forward messages */
-"Forward incoming messages" = "Desvío de mensajes recibidos";
+"Forward incoming messages" = "Reenviar los mensajes recibidos";
 "Keep a copy" = "Guardar una copia";
 "Please specify an address to which you want to forward your messages."
-= "Por favor, especificar una dirección para aquellos mensajes que quiere desviar.";
+= "Por favor, especifique una dirección para aquellos mensajes que quiere reenviar.";
 
 /* d & t */
-"Current Time Zone :" = "Zona horaria actual :";
-"Short Date Format :" = "Formato de fecha corto :";
-"Long Date Format :" = "Formato de fecha largo :";
-"Time Format :" = "Formato de hora :";
+"Current Time Zone :" = "Zona horaria actual:";
+"Short Date Format :" = " Formato de fecha corto:";
+"Long Date Format :" = "Formato de fecha largo:";
+"Time Format :" = "Formato de hora:";
 
 "default" = "Por defecto";
 
@@ -80,12 +83,13 @@
 "timeFmt_3" = "";
 
 /* calendar */
-"Week begins on :" = "Semana empieza por: ";
-"Day start time :" = "Hora inicio: ";
-"Day end time :" = "Hora fin: ";
-"Day start time must be prior to day end time." = "Hora de inicio del día debe ser anterior a la hora de fin del día.";
+"Week begins on :" = "La semana comienza el: ";
+"Day start time :" = "Hora de inicio del día: ";
+"Day end time :" = "Hora de finalización del día:";
+"Day start time must be prior to day end time." = "La hora de inicio del día debe ser anterior a la hora de fin del día.";
+"Show time as busy outside working hours" = "Mostrar el tiempo fuera de las horas de trabajo como ocupado";
 "First week of year :" = "Primera semana del año: ";
-"Enable reminders for Calendar items" = "Habilitar recordatorios para elementos del calendario";
+"Enable reminders for Calendar items" = "Habilitar recordatorios para los elementos del calendario";
 "Play a sound when a reminder comes due"
 = "Señal acústica para los recordatorios";
 "Default reminder :" = "Recordatorio por defecto: ";
@@ -93,6 +97,12 @@
 "firstWeekOfYear_January1" = "Empieza el 1 de enero";
 "firstWeekOfYear_First4DayWeek" = "Primera semana del año de 4 días";
 "firstWeekOfYear_FirstFullWeek" = "Primera semana del año completa";
+
+/* Default Calendar */
+"Default calendar :" = "Calendario por defecto";
+"selectedCalendar" = "Calendario seleccionado";
+"personalCalendar" = "Calendario personal";
+"firstCalendar" = "Primer calendario habilitado";
 
 "reminderTime_0000" = "0 minutos";
 "reminderTime_0005" = "5 minutos";
@@ -109,7 +119,8 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Mostrar sólo buzones suscritos";
-"Check for new mail:" = "Comprobar correo nuevo: ";
+"Sort messages by threads" = "Ordenar mensajes por conversaciones";
+"Check for new mail:" = "Comprobar si hay nuevos correos: ";
 "messagecheck_manually" = "Manualmente";
 "messagecheck_every_minute" = "Cada minuto";
 "messagecheck_every_2_minutes" = "Cada 2 minutos";
@@ -123,30 +134,30 @@
 "messageforward_inline" = "Incorporado";
 "messageforward_attached" = "Como adjunto";
 
-"replyplacement_above" = "Empieza mi respuesta sobre el texto";
+"replyplacement_above" = "Empiezar mi respuesta sobre el texto ";
 "replyplacement_below" = "Empieza mi respuesta bajo el texto";
-"And place my signature" = "Y añade mi firma";
+"And place my signature" = "Y añadir mi firma";
 "signatureplacement_above" = "bajo mi respuesta";
 "signatureplacement_below" = "bajo el texto";
-"Compose messages in" = "Redactar el mensaje en";
+"Compose messages in" = "Redactar los mensajes en";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Texto plano";
 
 /* IMAP Accounts */
 "New Mail Account" = "Nueva Cuenta de Correo";
 
-"Server Name:" = "Nombre de Servidor:";
+"Server Name:" = "Nombre del servidor:";
 "Port:" = "Puerto:";
 "User Name:" = "Nombre de usuario:";
 "Password:" = "Contraseña:";
- 
+
 "Full Name:" = "Nombre Completo:";
 "Email:" = "Correo Electrónico:";
 "Signature:" = "Firma:";
 "(Click to create)" = "(Click para crear)";
 
 "Signature" = "Firma";
-"Please enter your signature below:" = "Por favor, ponga su firma abajo:";
+"Please enter your signature below:" = "Por favor, escriba su firma abajo:";
 
 /* Additional Parameters */
 "Additional Parameters" = "Parámetros Adicionales";
@@ -158,7 +169,7 @@
 
 /* Event+task categories */
 "category_none" = "Ninguna";
-"calendar_category_labels" = "Aniversario,Cumpleaños,Negocios,Llamadas,Clientes,Competición,Trabajo,Favoritos,Seguimiento,Regalos,Fiestas,Ideas,Reunión,Asuntos,Varios,Personal,Proyectos,Vacaciones públicas,Estado,Proveedores,Viajes,Vacaciones";
+"calendar_category_labels" = "Aniversario,Cumpleaños,Negocios,Llamadas,Clientes,Competencia,Trabajo,Favoritos,Seguimiento,Regalos,Fiestas,Ideas,Reunión,Asuntos,Varios,Personal,Proyectos,Vacaciones públicas,Estado,Proveedores,Viajes,Vacaciones";
 
 /* Default module */
 "Calendar" = "Calendario";
@@ -195,7 +206,19 @@
 "If the sender is outside my domain:" = "Si el remitente esta fuera de mi dominio de correo:";
 "In all other cases:" = "En el resto de casos:";
 
-"Never send" = "Nunca enviar";
+"Never send" = "No enviar nunca";
+"Always send" = "Enviar siempre";
+"Ask me" = "Preguntarme";
+
+/* Return receipts */
+"When I receive a request for a return receipt:" = "Cuando reciba una petición de un acuse de recibo:";
+"Never send a return receipt" = "Nunca enviar un acuse de recibo";
+"Allow return receipts for some messages" = "Permitir acuses de recibo para algunos mensajes";
+"If I'm not in the To or Cc of the message:" = "Si no estoy en el Para o Cc del mensaje:";
+"If the sender is outside my domain:" = "Si el remitente esta fuera de mi dominio de correo:";
+"In all other cases:" = "En el resto de casos:";
+
+"Never send" = "No enviar nunca";
 "Always send" = "Enviar siempre";
 "Ask me" = "Preguntarme";
 
@@ -208,10 +231,10 @@
 /* Filters - UIxFilterEditor */
 "Filter name:" = "Nombre del filtro:";
 "For incoming messages that" = "Para mensajes entrantes que";
-"match all of the following rules:" = "cumplen todas las reglas siguientes:";
-"match any of the following rules:" = "cumplen algunas de las reglas siguientes:";
-"match all messages" = "cumplen todos los mensajes";
-"Perform these actions:" = "Realiza estas acciones:";
+"match all of the following rules:" = "cumplan todas las estas reglas:";
+"match any of the following rules:" = "cumplen algunas de estas reglas:";
+"match all messages" = "coincidan con todos los mensajes";
+"Perform these actions:" = "Realizar estas acciones:";
 
 "Subject" = "Asunto";
 "From" = "De";
@@ -220,25 +243,25 @@
 "To or Cc" = "Para o Cc";
 "Size (Kb)" = "Tamaño (Kb)";
 "Header" = "Cabecera";
-"Flag the message with:" = "Marca el mensaje con:";
-"Discard the message" = "Descarta el mensaje";
-"File the message in:" = "Archiva el mensaje en:";
-"Keep the message" = "Guarda el mensaje";
-"Forward the message to:" = "Reenvía el mensaje a:";
-"Send a reject message:" = "Envía un mensaje de rechazo:";
-"Send a vacation message" = "Envío un mensaje de vacaciones";
-"Stop processing filter rules" = "Parar los filtros";
+"Flag the message with:" = "Marcar el mensaje con:";
+"Discard the message" = "Descartar el mensaje";
+"File the message in:" = "Archivar el mensaje en:";
+"Keep the message" = "Guardar el mensaje";
+"Forward the message to:" = "Reenvíar el mensaje a:";
+"Send a reject message:" = "Enviar un mensaje de rechazo:";
+"Send a vacation message" = "Enviar una autorespuesta";
+"Stop processing filter rules" = "Dejar de procesar las reglas de filtrado";
 
-"is under" = "es debajo";
-"is over" = "es encima";
+"is under" = "está debajo";
+"is over" = "está encima";
 "is" = "es";
 "is not" = "no es";
 "contains" = "contiene";
 "does not contain" = "no contiene";
 "matches" = "es igual";
 "does not match" = "no es igual";
-"matches regex" = "es igual regex";
-"does not match regex" = "no es igual regex";
+"matches regex" = "coincide con la expresión regular";
+"does not match regex" = "no coincide con la expresión regular";
 
 "Seen" = "Visto";
 "Deleted" = "Borrado";
@@ -251,3 +274,18 @@
 "Label 3" = "Etiqueta 3";
 "Label 4" = "Etiqueta 4";
 "Label 5" = "Etiqueta 5";
+
+"Password must not be empty." = "La contraseña no puede estar en blanco";
+"The passwords do not match. Please try again." = "Las contraseñas no coinciden. Por favor intente de nuevo";
+"Password change failed" = "El cambio de contraseña falló";
+"Password change failed - Permission denied" = "El cambio de contraseña falló - Permiso denegado";
+"Password change failed - Insufficient password quality" = "El cambio de contraseña falló - La contraseña no  es lo suficientemente fuerte";
+"Password change failed - Password is too short" = "El cambio de contraseña falló - La contraseña es demasiado corta";
+"Password change failed - Password is too young" = "Falló el cambio de la contraseña - La contraseña es demasiado reciente";
+"Password change failed - Password is in history" = "El cambio de contraseña falló - Ya ha usado esta contraseña anteriormente";
+"Unhandled policy error: %{0}" = "Error de políticas no registrado:%{0}";
+"Unhandled error response" = "Error de respuesta no registrado";
+"Password change is not supported." = "El cambio de contraseña no está soportado";
+"Unhandled HTTP error code: %{0}" = "Código de error HTTP no registrado:%{0}";
+"New password:" = "Nueva contraseña:";
+"Confirmation:" = "Confirmar nueva contraseña:";
