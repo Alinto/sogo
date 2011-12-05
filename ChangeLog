@@ -1,5 +1,8 @@
 2011-12-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m (-setCategory): ensure that
+	the new category is reported in the "categories" ivar.
+
 	* SoObjects/Appointments/iCalEvent+SOGo.m (-quickRecord):
 	-[iCalEntityObject categories] returns an NSArray that we need to
 	convert to a string for the database content.

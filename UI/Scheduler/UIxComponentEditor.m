@@ -998,7 +998,7 @@ iRANGE(2);
 
 - (void) setCategory: (NSString *) newCategory
 {
-  ASSIGN (category, newCategory);
+  ASSIGN (categories, [NSArray arrayWithObject: newCategory]);
 }
 
 - (NSString *) category
