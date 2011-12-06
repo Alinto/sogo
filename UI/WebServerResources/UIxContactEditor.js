@@ -131,8 +131,7 @@ function onFnNewValue(event) {
 
 function onEditorCancelClick(event) {
     this.blur();
-    preventDefault(event);
-    window.close();
+    onCloseButtonClick(event);
 }
 
 function onEditorSubmitClick(event) {

@@ -39,6 +39,7 @@
 @class NSDictionary;
 @class NSString;
 @class WOContext;
+@class SOGoContactFolders;
 
 @interface SOGoUserFolder : SOGoFolder
 
@@ -57,6 +58,9 @@
 
 - (BOOL) collectionDavKey: (NSString *) key
 		  matches: (NSString *) value;
+
+- (SOGoContactFolders *) privateContacts: (NSString *) _key
+                               inContext: (WOContext *) _ctx;
 
 @end
 

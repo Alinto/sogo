@@ -1,0 +1,15 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "Hjælp";
+"Close" = "Luk";
+
+"Modules" = "Moduler";
+
+/* Modules short names */
+"ACLs" = "ACL'er";
+
+/* Modules titles */
+"ACLs_title" = "Users folders ACLs management";
+
+/* Modules descriptions */
+"ACLs_description" = "<p>The Access Control Lists administration module allows to change the ACLs of each user's Calendars and Address books.</p><p>To modify the ACLs of a user's folder, type the name of the user in the search field at the top of the window and double-click on the desired folder.</p>";

@@ -6,7 +6,7 @@
     { link = "#";
       isSafe = NO;
       label = "Close";
-      onclick = "window.close(); return false;";
+      onclick = "return onCloseButtonClick();";
       image = "tb-mail-stop-flat-24x24.png"; }
   )
 )

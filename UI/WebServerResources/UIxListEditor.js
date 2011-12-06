@@ -142,11 +142,6 @@ function resetTableActions() {
     }
 }
 
-function onEditorCancelClick(event) {
-	preventDefault(event);
-	window.close();
-}
-
 function onEditorSubmitClick(event) {
   if (validateListEditor())
     $("mainForm").submit();
@@ -168,7 +163,7 @@ function initListEditor() {
     resetTableActions();
     $("referenceAdd").observe("click", onReferenceAdd);
     $("referenceDelete").observe("click", onReferenceDelete);
-    $("cancelButton").observe("click", onEditorCancelClick);
+    $("cancelButton").observe("click", onCloseButtonClick);
     $("submitButton").observe("click", onEditorSubmitClick);
 
     Event.observe(document, "keydown", onDocumentKeydown);

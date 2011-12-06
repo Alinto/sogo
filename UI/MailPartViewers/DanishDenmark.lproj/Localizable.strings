@@ -1,0 +1,46 @@
+ACCEPTED = "accepteret";
+COMPLETED = "afsluttet";
+DECLINED = "Afvist";
+DELEGATED = "uddelegeret";
+"IN-PROCESS" = "i gang";
+"NEEDS-ACTION" = "kræver handling";
+TENTATIVE = "Tentativ";
+organized_by_you = "arrangeret af dig";
+you_are_an_attendee = "du er deltager";
+add_info_text = "iMIP 'Tilføj' anmodning er endnu ikke understøttet af Sogo.";
+publish_info_text = "Afsenderen informerer dig om vedlagte begivenheden.";
+cancel_info_text = "Din invitation eller hele begivenheden er aflyst.";
+request_info_no_attendee = "Foreslår et møde til deltagerne. Du modtager denne besked som en notifikation, du er ikke deltager";
+Appointment = "Aftale";
+
+Organizer = "Arrangør";
+Time = "Tid";
+Attendees = "Deltagere";
+request_info = "inviterer dig til at deltage i et møde.";
+"Add to calendar" = "Tilføj til kalender";
+"Delete from calendar" = "Slet fra kalender";
+"Update status" = "Opdatér status";
+Accept = "Acceptér";
+Decline = "Afvis";
+Tentative = "Tentativ";
+"Delegate ..." = "Uddelegér ...";
+"Delegated to" = "Uddelegeret til";
+"Update status in calendar" = "Opdatér status i kalender";
+"delegated from" = "Uddelegeret fra";
+
+reply_info_no_attendee = "Du har modtaget et svar til en planlagt begivenhed, men afsenderen af svaret er ikke en deltager";
+reply_info = "Dette er et svar på en begivenhed inviteret af dig.";
+
+"to" = "til";
+
+"Untitled" = "Ikke navngivet";
+
+"Size" = "Størrelse";
+
+"Digital signature is not valid" = "Digital signatur ikke er gyldig";
+"Message is signed" = "Beskeden er signeret";
+"Subject" = "Emne";
+"From" = "Fra";
+"Date" = "Dato";
+"To" = "Til";
+"Issuer" = "Udsteder";

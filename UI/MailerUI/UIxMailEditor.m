@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2008-2010 Inverse inc.
+  Copyright (C) 2008-2011 Inverse inc.
 
   This file is part of SOGo.
 
@@ -47,15 +47,19 @@
 #import <NGMime/NGMimeType.h>
 
 #import <SOGo/SOGoUserDefaults.h>
-#import <Mailer/SOGoDraftObject.h>
-#import <Mailer/SOGoMailFolder.h>
-#import <Mailer/SOGoMailAccount.h>
-#import <Mailer/SOGoMailAccounts.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
+#import <Mailer/SOGoDraftObject.h>
+#import <Mailer/SOGoMailFolder.h>
+#import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailAccounts.h>
+#import <Contacts/SOGoContactFolders.h>
+#import <Contacts/SOGoContactFolder.h>
+#import <Contacts/SOGoContactSourceFolder.h>
 
 /*
   UIxMailEditor
@@ -80,6 +84,7 @@
   NSString *priority;
   NSString *receipt;
   id item;
+  id currentFolder;
 
   /* these are for the inline attachment list */
   NSString *attachmentName;
@@ -108,6 +113,7 @@ static NSArray *infoKeys = nil;
     {
       priority = @"NORMAL";
       receipt = nil;
+      currentFolder = nil;
     }
   
   return self;
@@ -131,6 +137,7 @@ static NSArray *infoKeys = nil;
   [attachmentName release];
   [attachmentNames release];
   [attachedFiles release];
+  [currentFolder release];
   [super dealloc];
 }
 
@@ -384,6 +391,61 @@ static NSArray *infoKeys = nil;
 {
   [self debugWithFormat:@"storing info ..."];
   return [self valuesForKeys:infoKeys];
+}
+
+/* contacts search */
+- (NSArray *) contactFolders
+{
+  SOGoContactFolders *folderContainer;
+
+  folderContainer = (SOGoContactFolders *) [[[self clientObject] lookupUserFolder] privateContacts: @"Contacts"
+                                                                                        inContext: nil];
+  
+  return [folderContainer subFolders];
+}
+
+- (NSArray *) personalContactInfos
+{
+  SOGoContactFolders *folderContainer;
+  id <SOGoContactFolder> folder;
+  NSArray *contactInfos;
+
+  folderContainer = (SOGoContactFolders *) [[[self clientObject] lookupUserFolder] privateContacts: @"Contacts"
+                                                                                           inContext: nil];
+  folder = [folderContainer lookupPersonalFolder: @"personal" ignoringRights: YES];
+
+  contactInfos = [folder lookupContactsWithFilter: nil
+				       onCriteria: nil
+					   sortBy: @"c_cn"
+					 ordering: NSOrderedAscending];
+  
+  return contactInfos;
+}
+
+- (void) setCurrentFolder: (id) _currentFolder
+{
+  ASSIGN (currentFolder, _currentFolder);
+}
+
+- (NSString *) currentContactFolderId
+{
+  return [NSString stringWithFormat: @"/%@", [currentFolder nameInContainer]];
+}
+
+- (NSString *) currentContactFolderName
+{
+  return [currentFolder displayName];
+}
+
+- (NSString *) currentContactFolderOwner
+{
+  return [currentFolder ownerInContext: context];
+}
+
+- (NSString *) currentContactFolderClass
+{
+  return ([currentFolder isKindOfClass: [SOGoContactSourceFolder class]]
+          ? @"remote" : @"local");
 }
 
 /* requests */

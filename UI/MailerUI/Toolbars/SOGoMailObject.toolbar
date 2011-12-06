@@ -1,29 +1,6 @@
 ( /* the toolbar groups -*-cperl-*- */
 
-  ( /* first group */
-    { link  = "#";
-      image = "tb-mail-getmail-flat-24x24.png";
-      cssClass = "tbicon_getmail";
-      label = "Get Mail";
-      onclick = "return refreshMailbox(this);";
-      tooltip = "Get new messages"; },
-    { link     = "#";
-      isSafe   = NO;
-      image = "tb-mail-write-flat-24x24.png";
-      onclick  = "return onComposeMessage();";
-      cssClass = "tbicon_compose";
-      label = "Write";
-      tooltip = "Create a new message"; },
-    { link  = "#";
-      target = "addressbook";
-      onclick  = "openAddressbook(this);return false;";
-      image = "tb-mail-addressbook-flat-24x24.png";
-      cssClass = "tbicon_addressbook";
-      label = "Addressbook";
-      tooltip = "Go to address book"; },
-  ),
-
-  ( // second group
+  ( // first group
     { link = "#";
       onclick = "return openMessageWindowsForSelection('reply');";
       isSafe   = NO;
@@ -47,7 +24,7 @@
       tooltip = "Forward selected message"; },
   ),
 
-  ( // third group
+  ( // second group
     { link = "#";
       isSafe = NO;
       onclick = "onMenuDeleteMessage(event);";
@@ -71,4 +48,11 @@
      label = "Print"; 
      tooltip = "Print this message"; },
   ),
+  (
+   { link = "#";
+     isSafe = NO;
+      onclick = "return onCloseButtonClick(event);";
+     label = "Close";
+     image = "tb-mail-stop-flat-24x24.png"; }
+  )
 )

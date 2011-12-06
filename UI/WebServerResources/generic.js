@@ -1,7 +1,7 @@
 /* generic.js - this file is part of SOGo
 
    Copyright (C) 2005 SKYRIX Software AG
-   Copyright (C) 2006-2010 Inverse
+   Copyright (C) 2006-2011 Inverse
 
  SOGo is free software; you can redistribute it and/or modify it under
  the terms of the GNU Lesser General Public License as published by the
@@ -161,46 +161,108 @@ function openUserFolderSelector(callback, type) {
     if (! urlstr.endsWith('/'))
         urlstr += '/';
     urlstr += ("../../" + UserLogin + "/Contacts/userFolders");
-    var w = window.open(urlstr, "_blank",
-                        "width=322,height=250,resizable=1,scrollbars=0,location=0");
-    w.opener = window;
-    window.userFolderCallback = callback;
-    window.userFolderType = type;
-    w.focus();
+
+    var div = $("popupFrame");
+    if (div) {
+        if (!div.hasClassName("small"))
+            div.addClassName("small");
+        var iframe = div.down("iframe");
+        iframe.src = urlstr;
+        iframe.id = "folderSelectorFrame";
+        var bgDiv = $("bgFrameDiv");
+        if (bgDiv) {
+            bgDiv.show();
+        }
+        else {
+            bgDiv = createElement("div", "bgFrameDiv", ["bgMail"]);
+            document.body.appendChild(bgDiv);
+        }
+        div.show();
+    }
+    else {
+        var w = window.open(urlstr, "_blank",
+                            "width=322,height=250,resizable=1,scrollbars=0,location=0");
+        w.opener = window;
+        window.userFolderCallback = callback;
+        window.userFolderType = type;
+        w.focus();
+    }
 }
 
 function openContactWindow(url, wId) {
-    if (!wId)
-        wId = "_blank";
-    else
-        wId = sanitizeWindowName(wId);
+    var div = $("popupFrame");
+    if (div) {
+        if (!div.hasClassName("small"))
+            div.addClassName("small");
+        var iframe = div.down("iframe");
+        iframe.src = url;
+        iframe.id = "contactEditorFrame";
+        var bgDiv = $("bgFrameDiv");
+        if (bgDiv) {
+            bgDiv.show();
+        }
+        else {
+            bgDiv = createElement("div", "bgFrameDiv");
+            document.body.appendChild(bgDiv);
+        }
+        div.show();
 
-    var w = window.open(url, wId,
-                        "width=450,height=530,resizable=0,location=0");
-    w.focus();
+        return div;
+    }
+    else {
+        if (!wId)
+            wId = "_blank";
+        else
+            wId = sanitizeWindowName(wId);
 
-    return w;
+        var w = window.open(url, wId,
+                            "width=450,height=530,resizable=0,location=0");
+        w.focus();
+
+        return w;
+    }
 }
 
 function openMailComposeWindow(url, wId) {
-    var parentWindow = this;
+    var div = $("popupFrame");
+    if (div) {
+        if (div.hasClassName("small"))
+            div.removeClassName("small");
+        var iframe = div.down("iframe");
+        iframe.src = url;
+        iframe.id = "messageCompositionFrame";
+        var bgDiv = $("bgFrameDiv");
+        if (bgDiv) {
+            bgDiv.show();
+        }
+        else {
+            bgDiv = createElement("div", "bgFrameDiv");
+            document.body.appendChild(bgDiv);
+        }
+        div.show();
 
-    if (!wId)
-        wId = "_blank";
-    else
-        wId = sanitizeWindowName(wId);
+        return div;
+    }
+    else {
+        var parentWindow = this;
 
-    if (document.body.hasClassName("popup"))
-        parentWindow = window.opener;
+        if (!wId)
+            wId = "_blank";
+        else
+            wId = sanitizeWindowName(wId);
 
-    var w = parentWindow.open(url, wId,
-                              "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
-                              + "location=0,directories=0,status=0,menubar=0"
-                              + ",copyhistory=0");
+        if (document.body.hasClassName("popup"))
+            parentWindow = window.opener;
 
-    w.focus();
+        var w = parentWindow.open(url, wId,
+                                  "width=680,height=520,resizable=1,scrollbars=1,toolbar=0,"
+                                  + "location=0,directories=0,status=0,menubar=0"
+                                  + ",copyhistory=0");
 
-    return w;
+        w.focus();
+
+        return w;
+    }
 }
 
 function openMailTo(senderMailTo) {
@@ -580,7 +642,7 @@ function onRowClick(event, target) {
     else
         // Not a list; stop here
         return true;
-    
+
     var initialSelection = $(node.parentNode).getSelectedNodesId();
     if (initialSelection && initialSelection.length > 0
         && initialSelection.indexOf(node.id) >= 0
@@ -803,10 +865,17 @@ function toggleLogConsole(event) {
 
 function log(message) {
     if (!logWindow) {
-        logWindow = window;
         try {
-            while (logWindow.opener && logWindow.opener_logMessage)
-                logWindow = logWindow.opener;
+            if (window.frameElement && window.frameElement.id) {
+                logWindow = parent.window;
+                while (logWindow.frameElement && window.frameElement.id) 
+                    logWindow = logWindow.parent.window;
+            }
+            else {
+                logWindow = window;
+                while (logWindow.opener && logWindow.opener._logMessage)
+                    logWindow = logWindow.opener;
+            }
         }
         catch(e) {}
     }
@@ -945,8 +1014,8 @@ function popupSearchMenu(event) {
 
         var popup = $(menuId);
         offset = Position.positionedOffset(this);
-        popup.setStyle({ top: this.offsetHeight + "px",
-                         left: (offset[0] + 3) + "px",
+        popup.setStyle({ top: (offset.top + this.getHeight()) + "px",
+                         left: (offset.left + 3) + "px",
                          visibility: "visible" });
 
         document.currentPopupMenu = popup;
@@ -958,6 +1027,9 @@ function setSearchCriteria(event) {
     var searchValue = $("searchValue");
     var searchCriteria = $("searchCriteria");
 
+    if (searchValue.ghostPhrase == searchValue.value)
+        searchValue.value = "";
+    
     searchValue.ghostPhrase = this.innerHTML;
     searchCriteria.value = this.getAttribute('id');
 
@@ -973,13 +1045,6 @@ function setSearchCriteria(event) {
 
         onSearchFormSubmit();
     }
-}
-
-function checkSearchValue(event) {
-    var searchValue = $("searchValue");
-
-    if (searchValue.value == searchValue.ghostPhrase)
-        searchValue.value = "";
 }
 
 function configureSearchField() {
@@ -1368,6 +1433,8 @@ function initMenus() {
             var menuDIV = $(menuID);
             if (menuDIV)
                 initMenu(menuDIV, menus[menuID]);
+            else
+                log("Can't find menu " + menuID);
         }
     }
 }
@@ -1429,7 +1496,8 @@ function getTopWindow() {
     var currentWindow = window;
     while (!topWindow) {
         if (currentWindow.document.body.hasClassName("popup")
-            && currentWindow.opener)
+            && currentWindow.opener
+            && currentWindow.opener.getTopWindow)
             currentWindow = currentWindow.opener;
         else
             topWindow = currentWindow;
@@ -1535,6 +1603,23 @@ function onLoadHandler(event) {
     onFinalLoadHandler();
 }
 
+function onCloseButtonClick(event) {
+    if (event)
+        Event.stop(event);
+
+    if (window.frameElement && window.frameElement.id) {
+        var div = parent$("popupFrame");
+        div.hide();
+        div.down("iframe").src = "/SOGo/loading";
+        parent$("bgFrameDiv").hide();
+    }
+    else {
+        window.close();
+    }
+
+    return false;
+}
+
 function onBodyClickContextMenu(event) {
     var target = $(event.target);
     if (!(target
@@ -1562,12 +1647,32 @@ function onLinkBannerClick() {
 
 function onPreferencesClick(event) {
     var urlstr = UserFolderURL + "preferences";
-    var w = window.open(urlstr, "_blank",
-                        "width=580,height=450,resizable=1,scrollbars=0,location=0");
-    w.opener = window;
-    w.focus();
+    var div = $("popupFrame");
+    if (div) {
+        if (div.hasClassName("small"))
+            div.removeClassName("small");
+        var iframe = div.down("iframe");
+        iframe.src = urlstr;
+        iframe.id = "preferencesFrame";
+        var bgDiv = $("bgFrameDiv");
+        if (bgDiv) {
+            bgDiv.show();
+        }
+        else {
+            bgDiv = createElement("div", "bgFrameDiv", ["bgMail"]);
+            document.body.appendChild(bgDiv);
+        }
+        div.show(); //setStyle({display: "block"});
+    }
+    else {
+        var w = window.open(urlstr, "_blank",
+                            "width=580,height=450,resizable=1,scrollbars=0,location=0");
+        w.opener = window;
+        w.focus();
+    }
 
     preventDefault(event);
+    return false;
 }
 
 function configureLinkBanner() {
@@ -1688,7 +1793,14 @@ function onFinalLoadHandler(event) {
 }
 
 function parent$(element) {
-    return this.opener.document.getElementById(element);
+    var div = $("popupFrame");
+
+    if (div)
+        p = parent.document;
+    else
+        p = this.opener.document;
+
+    return p.getElementById(element);
 }
 
 /* stubs */
@@ -1710,12 +1822,7 @@ function _(key) {
         value = labels[key];
     }
     else {
-        var topWindow = null;
-        if (!topWindow) {
-            topWindow = window;
-            while (topWindow.opener)
-                topWindow = topWindow.opener;
-        }
+        var topWindow = getTopWindow();
         if (topWindow && topWindow.clabels && topWindow.clabels[key])
             value = topWindow.clabels[key];
     }

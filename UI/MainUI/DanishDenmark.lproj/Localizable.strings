@@ -1,0 +1,75 @@
+/* this file is in UTF-8 format! */
+
+"title" = "Sogo";
+
+"Username:" = "Brugernavn:";
+"Password:" = "Adgangskode:";
+"Domain:" = "Domæne:";
+"Remember username" = "Husk brugernavn";
+
+"Connect" = "Tilslut";
+
+"Wrong username or password." = "Forkert brugernavn eller adgangskode.";
+"cookiesNotEnabled" = "Du kan ikke logge ind fordi din browsers cookies er slået fra. Du skal aktivere cookies i din browsers indstillinger og derefter prøve igen.";
+
+"browserNotCompatible" = "Vi har registreret, at din browsers version ikke understøttes på denne hjemmeside. Vores anbefaling er at bruge Firefox. Klik på linket nedenfor for at downloade den nyeste version af denne browser.";
+"alternativeBrowsers" = "Alternativt kan du også bruge følgende kompatible browsere";
+"alternativeBrowserSafari" = "Alternativt kan du også bruge Safari.";
+"Download" = "Download";
+
+"Language:" = "Sprog:";
+"choose" = "Vælg ...";
+"Catalan" = "Català";
+"Czech" = "Česky";
+"DanishDenmark" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"NorwegianBokmal" = "Norsk";
+"NorwegianNynorsk" = "Nynorsk";
+"Polish" = "Polski";
+"BrazilianPortuguese" = "Português brasileiro";
+"Russian" = "Русский";
+"SpanishSpain" = "Spansk (Spanien)";
+"SpanishArgentina" = "Spansk (Argentina)";
+"Swedish" = "Svenska";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+"About" = "Om";
+"AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>⏎ SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>⏎ SOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>⏎ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+
+"Your account was locked due to too many failed attempts." = "Din konto er låst på grund af for mange mislykkede forsøg.";
+"Your account was locked due to an expired password." = "Din konto er låst på grund af en udløbet adgangskode.";
+"Login failed due to unhandled error case: " = "Login mislykkedes på grund af denne fejl:";
+"Change your Password" = "Skift din adgangskode";
+"The password was changed successfully." = "Adgangskoden er ændret.";
+"Your password has expired, please enter a new one below:" = "Din adgangskode er udløbet, indtast venligst et nyt nedenfor:";
+"Password must not be empty." = "Adgangskode må ikke være tomt.";
+"The passwords do not match. Please try again." = "De indtastede adgangskoder stemmer ikke overens. Prøv venligst igen.";
+"Password Grace Period" = "Adgangskodens varighed";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Du har %{0} loginforsøg tilbage, før din konto bliver låst. Vær venlig at ændre din adgangskode i dialogboksen.";
+"Password about to expire" = "Adgangskode er ved at udløbe";
+"Your password is going to expire in %{0} %{1}." = "Din adgangskode udløber om %{0}%{1}.";
+"days" = "dage";
+"hours" = "timer";
+"minutes" = "minutter";
+"seconds" = "sekunder";
+"Password change failed" = "Ændring af adgangskode mislykkedes";
+"Password change failed - Permission denied" = "Ændring af adgangskode mislykkedes - Adgang nægtet";
+"Password change failed - Insufficient password quality" = "Ændring af adgangskode mislykkedes - Utilstrækkelig adgangskode kvalitet";
+"Password change failed - Password is too short" = "Ændring af adgangskode mislykkedes - adgangskoden er for kort";
+"Password change failed - Password is too young" = "Ændring af adgangskode mislykkedes - Adgangskoden er brugt for nyligt";
+"Password change failed - Password is in history" = "Ændring af adgangskode mislykkedes - Adgangskoden er i historikken";
+"Unhandled policy error: %{0}" = "Fejl: %{0}";
+"Unhandled error response" = "fejlreaktion";
+"Password change is not supported." = "Ændring af adgangskoden er ikke understøttet.";
+"Unhandled HTTP error code: %{0}" = "HTTP fejlkode: %{0}";
+"New password:" = "Ny adgangskode:";
+"Confirmation:" = "Bekræftelse:";
+"Cancel" = "Annullér";
+"Please wait..." = "Vent venligst ...";

@@ -201,11 +201,15 @@ TABLE#contactsList
   -khtml-user-select: none;
   width: 100%; }
 
+TABLE#contactsList TBODY TD
+{ cursor: pointer; }
+
 TABLE#contactsList TD,
 TABLE#contactsList TH
 { overflow: hidden;
   line-height: 16px;
   height: 18px;
+  text-overflow: ellipsis;
   white-space: nowrap; } /* pre, normal, nowrap */
 
 TABLE#contactsList TH

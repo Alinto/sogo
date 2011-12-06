@@ -67,6 +67,8 @@ DIV#windowButtons
   vertical-align: middle;
   text-align: right; }
 
+INPUT.textField
+{ width: 100%; }
 
 DIV#buttons
 { position: fixed;

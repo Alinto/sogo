@@ -259,8 +259,10 @@ function onFolderSearchKeyDown(event) {
 function initUserFoldersWindow() {
     var searchValue = $("searchValue");
     searchValue.observe("keydown", onFolderSearchKeyDown);
-    var addButton = $("addButton");
-    addButton.observe("click", onConfirmFolderSelection);
+
+    $("addButton").observe("click", onConfirmFolderSelection);
+    $("doneButton").observe("click", onCloseButtonClick);
+
     searchValue.focus();
 }
 

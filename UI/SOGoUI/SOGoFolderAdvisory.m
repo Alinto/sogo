@@ -236,6 +236,12 @@
 @implementation SOGoFolderCzechRemovalAdvisory
 @end
 
+@implementation SOGoFolderDanishDenmarkAdditionAdvisory
+@end
+
+@implementation SOGoFolderDanishDenmarkRemovalAdvisory
+@end
+
 @implementation SOGoFolderDutchAdditionAdvisory
 @end
 

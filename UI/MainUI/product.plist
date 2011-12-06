@@ -144,6 +144,10 @@
           pageName = "SOGoRootPage";
           actionName = "changePassword";
         };
+        loading = {
+          protectedBy = "<public>";
+          pageName    = "UIxLoading";
+        };
         GET = { // more or less a hack, see README of dbd
           protectedBy = "<public>";
           pageName = "SOGoRootPage"; 

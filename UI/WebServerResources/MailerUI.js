@@ -35,8 +35,12 @@ var messageCheckTimer;
 
 /* We need to override this method since it is adapted to GCS-based folder
    references, which we do not use here */
-function URLForFolderID(folderID) {
-    var url = ApplicationBaseURL + encodeURI(folderID.substr(1));
+function URLForFolderID(folderID, application) {
+    if (application)
+        application = UserFolderURL + application + "/";
+    else
+        application = ApplicationBaseURL;
+    var url = application + encodeURI(folderID.substr(1));
 
     if (url[url.length-1] == '/')
         url = url.substr(0, url.length-1);
@@ -53,6 +57,7 @@ function openMessageWindow(msguid, url) {
         markMailReadInWindow(window, msguid);
     }
     var msgWin = openMailComposeWindow(url, wId);
+
     msgWin.focus();
     Mailer.popups.push(msgWin);
 
@@ -395,7 +400,7 @@ function onDocumentKeydown(event) {
                     var divDimensions = viewPort.getDimensions();
                     var centerOffset = divDimensions.height/2;
                     var rowScrollOffset = nextRow.cumulativeScrollOffset();
-                     var divBottom = divDimensions.height + rowScrollOffset.top;
+                    var divBottom = divDimensions.height + rowScrollOffset.top;
                     var rowBottom = nextRow.offsetTop + nextRow.getHeight();
 
                     if (divBottom < rowBottom)
@@ -458,7 +463,7 @@ function deleteSelectedMessages(sender) {
 
             deleteCachedMessage(path);
             if (Mailer.currentMessages[Mailer.currentMailbox] == uid) {
-                messageContent.innerHTML = '';
+                if (messageContent) messageContent.innerHTML = '';
                 Mailer.currentMessages[Mailer.currentMailbox] = null;
             }
 
@@ -490,7 +495,7 @@ function deleteSelectedMessages(sender) {
                         }
                     }
                 }
-                else {
+                else if (messageContent) {
                     messageContent.innerHTML = '';
                 }
                 Mailer.dataTable.remove(uid);
@@ -623,7 +628,8 @@ function onMailboxTreeItemClick(event) {
     Mailer.currentMailboxType = this.parentNode.getAttribute("datatype");
     if (Mailer.currentMailboxType == "account" || Mailer.currentMailboxType == "additional") {
         Mailer.currentMailbox = mailbox;
-        $("messageContent").innerHTML = '';
+        var messageContent = $("messageContent");
+        if (messageContent) messageContent.innerHTML = '';
         $("messageCountHeader").childNodes[0].innerHTML = '&nbsp;';
         Mailer.dataTable._emptyTable();
         updateWindowTitle();
@@ -772,7 +778,7 @@ function openMailbox(mailbox, reload) {
 
         if (!reload) {
             var messageContent = $("messageContent");
-            messageContent.innerHTML = '';
+            if (messageContent) messageContent.innerHTML = '';
             $("messageCountHeader").childNodes[0].innerHTML = '&nbsp;';
             lastClickedRow = -1; // from generic.js
         }
@@ -1171,11 +1177,11 @@ function onMessageSelectionChange(event) {
             }
             else if (t.className == 'messageUnreadColumn') {
                 mailListToggleMessagesRead(t.parentNode);
-                return true;
+                return false;
             }
             else if (t.className == 'messageFlagColumn') {
                 mailListToggleMessagesFlagged(t.parentNode);
-                return true;
+                return false;
             }
         }
     }
@@ -1185,15 +1191,16 @@ function onMessageSelectionChange(event) {
     // Update rows selection
     onRowClick(event, t);
     
+    var messageContent = $("messageContent");
     var rows = this.getSelectedRowsId();
     if (rows.length == 1) {
         var idx = rows[0].substr(4);
         if (Mailer.currentMessages[Mailer.currentMailbox] != idx) {
             Mailer.currentMessages[Mailer.currentMailbox] = idx;
-            loadMessage(idx);
+            if (messageContent) loadMessage(idx);
         }
     }
-    else if (rows.length > 1)
+    else if (rows.length > 1 && messageContent)
         $('messageContent').innerHTML = '';
 
     return true;
@@ -1206,6 +1213,10 @@ function loadMessage(msguid) {
     }
 
     var div = $('messageContent');
+    if (div == null)
+        // Single-window mode
+        return false;
+
     var cachedMessage = getCachedMessage(msguid);
     var row = $("row_" + msguid);
     var seenStateHasChanged = row && row.hasClassName('mailer_unreadmail');
@@ -1852,6 +1863,7 @@ function refreshMessage(mailbox, messageUID) {
 function configureMessageListEvents() {
     var headerTable = $("messageListHeader");
     var dataTable = $("messageListBody");
+    var messageContent = $("messageContent");
 
     if (headerTable)
         // Sortable columns
@@ -1859,8 +1871,16 @@ function configureMessageListEvents() {
 
     if (dataTable) {
         dataTable.multiselect = true;
-        dataTable.observe("click", onMessageSelectionChange);
-        dataTable.observe("dblclick", onMessageDoubleClick);
+        if (messageContent) {
+            dataTable.observe("click", onMessageSelectionChange);
+            dataTable.observe("dblclick", onMessageDoubleClick);
+        }
+        else {
+            // Single-window mode
+            dataTable.observe("click", function(e) {
+                onMessageSelectionChange.bind(this)(e) &&
+                    onMessageDoubleClick.bind(this)(e); });
+        }
         dataTable.observe("selectstart", listRowMouseDownHandler);
         dataTable.observe("contextmenu", onMessageContextMenu);
     }
@@ -1890,6 +1910,7 @@ function onMessageListResize(event) {
 }
 
 function onWindowResize(event) {
+    log ("resize mailer");
     var handle = $("verticalDragHandle");
     if (handle)
         handle.adjust();

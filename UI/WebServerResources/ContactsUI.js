@@ -35,7 +35,7 @@ function openContactsFolder(contactsFolder, reload, idx) {
     if ((contactsFolder && contactsFolder != Contact.currentAddressBook)
         || reload) {
         Contact.currentAddressBook = contactsFolder;
-        var url = URLForFolderID(Contact.currentAddressBook) +
+        var url = URLForFolderID(Contact.currentAddressBook, "Contacts") +
             "/view?noframe=1";
 
         var searchValue = search["value"];
@@ -63,6 +63,7 @@ function openContactsFolder(contactsFolder, reload, idx) {
             document.contactsListAjaxRequest.aborted = true;
             document.contactsListAjaxRequest.abort();
         }
+
         document.contactsListAjaxRequest
             = triggerAjaxRequest(url, contactsListCallback, selection);
     }
@@ -77,6 +78,7 @@ function contactsListCallback(http) {
             var table = $("contactsList");
             var tbody = table.tBodies[0];
             var rows = tbody.getElementsByTagName("TR");
+            var fullView = (table.tHead.rows[0].cells.length > 2);
             var data = [];
             if (http.responseText.length > 0)
                 data = http.responseText.evalJSON(true);
@@ -96,9 +98,11 @@ function contactsListCallback(http) {
                     var cells = row.getElementsByTagName("TD");
                     $(cells[0]).update(contact["c_cn"]);
                     $(cells[1]).update(contact["c_mail"]);
-                    $(cells[2]).update(contact["c_screenname"]);
-                    $(cells[3]).update(contact["c_o"]);
-                    $(cells[4]).update(contact["c_telephonenumber"]);
+                    if (fullView) {
+                        $(cells[2]).update(contact["c_screenname"]);
+                        $(cells[3]).update(contact["c_o"]);
+                        $(cells[4]).update(contact["c_telephonenumber"]);
+                    }
                 }
 
                 // Add extra rows
@@ -119,26 +123,31 @@ function contactsListCallback(http) {
                                              null,
                                              row);
                     cell.appendChild(document.createTextNode(contact["c_cn"]));
+                    cell.title = contact["c_cn"];
 
                     cell = document.createElement("td");
                     row.appendChild(cell);
-                    if (contact["c_mail"])
+                    if (contact["c_mail"]) {
                         cell.appendChild(document.createTextNode(contact["c_mail"]));
+                        cell.title = contact["c_mail"];
+                    }
 
-                    cell = document.createElement("td");
-                    row.appendChild(cell);
-                    if (contact["c_screenname"])
-                        cell.appendChild(document.createTextNode(contact["c_screenname"]));
+                    if (fullView) {
+                        cell = document.createElement("td");
+                        row.appendChild(cell);
+                        if (contact["c_screenname"])
+                            cell.appendChild(document.createTextNode(contact["c_screenname"]));
 
-                    cell = document.createElement("td");
-                    row.appendChild(cell);
-                    if (contact["c_o"])
-                        cell.appendChild(document.createTextNode(contact["c_o"]));
+                        cell = document.createElement("td");
+                        row.appendChild(cell);
+                        if (contact["c_o"])
+                            cell.appendChild(document.createTextNode(contact["c_o"]));
 
-                    cell = document.createElement("td");
-                    row.appendChild(cell);
-                    if (contact["c_telephonenumber"])
-                        cell.appendChild(document.createTextNode(contact["c_telephonenumber"]));
+                        cell = document.createElement("td");
+                        row.appendChild(cell);
+                        if (contact["c_telephonenumber"])
+                            cell.appendChild(document.createTextNode(contact["c_telephonenumber"]));
+                    }
                 }
 
                 configureDraggables();
@@ -180,9 +189,9 @@ function contactsListCallback(http) {
             }
 
             // Restore selection and scroll to first selected node
-            tbody.refreshSelectionByIds();
             var selection = http.callbackData;
             if (selection) {
+                tbody.refreshSelectionByIds(selection);
                 for (var i = 0; i < selection.length; i++) {
                     var row = $(selection[i]);
                     if (row) {
@@ -406,21 +415,23 @@ function onContactRowDblClick(event) {
 }
 
 function onContactSelectionChange(event) {
+    var contactView = $("contactView");
     if (event) {
         // Update rows selection
         var t = getTarget(event);
         onRowClick(event, t);
     }
-
-    var rows = this.parentNode.getSelectedRowsId();
+    if (contactView) {
+        var rows = this.parentNode.getSelectedRowsId();
   
-    if (rows.length == 1) {
-        var node = $(rows[0]);
-        loadContact(node.getAttribute('id'));
-    }
-    else if (rows.length > 1) {
-        $('contactView').update();
-        Contact.currentContact = null;
+        if (rows.length == 1) {
+            var node = $(rows[0]);
+            loadContact(node.getAttribute('id'));
+        }
+        else if (rows.length > 1) {
+            $('contactView').update();
+            Contact.currentContact = null;
+        }
     }
 }
 
@@ -626,10 +637,11 @@ function refreshCurrentFolder() {
     openContactsFolder(Contact.currentAddressBook, true);
 }
 
+/* Only used in UIxMailEditor */
 function onConfirmContactSelection(event) {
     var tag = this.getAttribute("name");
-    var folderLi = $(Contact.currentAddressBook);
-    var currentAddressBookName = folderLi.innerHTML;
+    var folder = $("contactFolder");
+    var currentAddressBookName = folder.textContent;
     var selectorList = null;
     var initialValues = null;
 	
@@ -644,9 +656,8 @@ function onConfirmContactSelection(event) {
         else {
           var cname = '' + rows[i].readAttribute("contactname");
           var email = '' + rows[i].cells[1].innerHTML;
-		
-          window.opener.addContact(tag, currentAddressBookName + '/' + cname,
-                                   cid, cname, email);
+          addContact(tag, currentAddressBookName + '/' + cname,
+                     cid, cname, email);
         }
     }
 
@@ -657,7 +668,7 @@ function onConfirmContactSelection(event) {
 }
 
 function addListToOpener (tag, aBookId, aBookName, listId) {
-    var url = ApplicationBaseURL + "/" + aBookId + "/" + listId + "/properties";
+    var url = UserFolderURL + "Contacts/" + aBookId + "/" + listId + "/properties";
     triggerAjaxRequest (url, addListToOpenerCallback, {
                         "aBookId": aBookId, 
                         "aBookName": aBookName,
@@ -669,8 +680,8 @@ function addListToOpenerCallback (http) {
     var received = http.responseText.evalJSON (true);
     for (var i = 0; i < received.length; i++) {
         var contact = received[i];
-        window.opener.addContact(data.tag, data.aBookName + '/' + contact[1],
-                                   contact[0], contact[1], contact[2]);
+        addContact(data.tag, data.aBookName + '/' + contact[1],
+                   contact[0], contact[1], contact[2]);
     }
 }
 
@@ -1161,7 +1172,11 @@ function onContactMenuPrepareVisibility() {
     return true;
 }
 
-function getMenus() {
+var originalGetMenus = null;
+if (typeof getMenus == 'function') {
+    originalGetMenus = getMenus;
+}
+getMenus = function() {
     var menus = {};
     menus["contactFoldersMenu"] = new Array(onAddressBookModify, "-", newContact,
                                             newList, "-",
@@ -1184,6 +1199,12 @@ function getMenus() {
     if (contactMenu)
         contactMenu.prepareVisibility = onContactMenuPrepareVisibility;
    
+    if (originalGetMenus) {
+        var originalMenus = originalGetMenus();
+        if (originalMenus)
+            menus = Object.extend(menus, originalMenus);
+    }
+
     return menus;
 }
 
@@ -1195,15 +1216,6 @@ function configureSelectionButtons() {
             $(buttons[i]).observe("click", onConfirmContactSelection);
         }
     }
-}
-
-function onWindowResize(event) {
-    var handle = $("dragHandle");
-    if (handle)
-        handle.adjust();
-    handle = $("rightDragHandle");
-    if (handle)
-        handle.adjust();
 }
 
 function onDocumentKeydown(event) {
@@ -1297,21 +1309,34 @@ function initContacts(event) {
         table.multiselect = true;
         var tbody = $(table.tBodies[0]);
         tbody.on("click", onContactSelectionChange);
-        tbody.on("dblclick", onContactRowDblClick);
-        tbody.on("selectstart", listRowMouseDownHandler);
-        tbody.on("contextmenu", onContactContextMenu);
+        if ($("contactView")) {
+            tbody.on("dblclick", onContactRowDblClick);
+            tbody.on("selectstart", listRowMouseDownHandler);
+            tbody.on("contextmenu", onContactContextMenu);
+            resetCategoriesMenu();
+            TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
+        }
         configureSortableTableHeaders(table);
-        TableKit.Resizable.init(table, {'trueResize' : true, 'keepWidth' : true});
-    
-        resetCategoriesMenu();
     }
     
-    onWindowResize.defer();
-    Event.observe(window, "resize", onWindowResize);
-    
+    if (typeof onWindowResize != 'function') {
+        // When loaded from the mail editor, onWindowResize is
+        // already registered
+        onWindowResize.defer();
+        Event.observe(window, "resize", onWindowResize);
+    } 
     // Default sort options
     sorting["attribute"] = "c_cn";
     sorting["ascending"] = true;
+}
+
+function onWindowResize(event) {
+    var handle = $("dragHandle");
+    if (handle)
+        handle.adjust();
+    handle = $("rightDragHandle");
+    if (handle)
+        handle.adjust();
 }
 
 function resetCategoriesMenu() {
@@ -1431,23 +1456,25 @@ function unsetCategoryOnNode(contactNode, category) {
 }
 
 function configureDraggables() {
-    var mainElement = $("dragDropVisual");
-    Draggables.empty ();
+    if ($("contactFolders")) {
+        var mainElement = $("dragDropVisual");
+        Draggables.empty();
     
-    if (mainElement == null) {
-        mainElement = new Element ("div", {id: "dragDropVisual"});
-        document.body.appendChild(mainElement);
-        mainElement.absolutize ();
-    }
-    mainElement.hide();
+        if (mainElement == null) {
+            mainElement = new Element ("div", {id: "dragDropVisual"});
+            document.body.appendChild(mainElement);
+            mainElement.absolutize();
+        }
+        mainElement.hide();
     
-    new Draggable ("dragDropVisual", 
-                   { handle: "contactsList", 
-                           onStart: startDragging,
-                           onEnd: stopDragging,
-                           onDrag: whileDragging,
-                           scroll: window
+        new Draggable ("dragDropVisual", 
+                       { handle: "contactsList", 
+                               onStart: startDragging,
+                               onEnd: stopDragging,
+                               onDrag: whileDragging,
+                               scroll: window
                            }); 
+    }
 }
 
 function configureDroppables() {

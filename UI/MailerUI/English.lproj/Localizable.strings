@@ -123,6 +123,9 @@
 
 "This mail is being sent from an unsecure network!" = "This mail is being sent from an unsecure network!";
 
+"Address Book:" = "Address Book:";
+"Search For:" = "Search For:";
+
 /* Popup "show" */
 
 "all"     = "all";

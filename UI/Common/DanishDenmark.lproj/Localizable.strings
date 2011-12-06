@@ -1,0 +1,79 @@
+/* this file is in UTF-8 format! */
+
+/* toolbars */
+"Save" = "Gem";
+"Close" = "Luk";
+"Edit User Rights" = "Redigér brugerrettigheder";
+
+"Home" = "Hjem";
+"Calendar" = "Kalender";
+"Address Book"	= "Adressebog";
+"Mail" = "Mail";
+"Preferences" = "Indstillinger";
+"Administration" = "Administration";
+"Disconnect" = "Afbryd";
+"Right Administration" = "Rettighedsadministration";
+"Log Console (dev.)" = "Log konsol (dev.)";
+
+"User" = "Bruger";
+
+"Help" = "Hjælp";
+
+"noJavascriptError" = "Sogo kræver Javascript for at køre. Sørg for, at denne mulighed er tilgængelig og aktiveret i din browsers indstillinger.";
+"noJavascriptRetry" = "Prøv igen";
+
+"Owner:" = "Ejer:";
+"Publish the Free/Busy information" = "Offentliggør  ledig/optaget information";
+
+"Add..." = "Tilføj ...";
+"Remove" = "Fjern";
+
+"Subscribe User" = "Tilmeld bruger";
+
+"Any Authenticated User" = "Enhver godkendt bruger";
+"Public Access" = "Offentlig adgang";
+"Any user not listed above" = "Enhver bruger, som ikke er nævnt ovenfor";
+"Anybody accessing this resource from the public area" = "Enhver adgang til denne ressource fra det offentlige rum";
+
+"Sorry, the user rights can not be configured for that object." = "Beklager, brugerrettighederne kan ikke konfigureres for dette emne";
+
+/* generic.js */
+"Unable to subscribe to that folder!"
+	= "Det er ikke muligt at abonnere på denne mappe!";
+"You cannot subscribe to a folder that you own!"
+      	= "Du kan ikke abonnere på en mappe, som du ejer!";
+"Unable to unsubscribe from that folder!"
+	= "Det er ikke muligt afmelde abonnementet på denne mappe!";
+"You cannot unsubscribe from a folder that you own!"
+      	= "Du kan ikke ophæve abonnementet på en mappe, som du ejer!";
+"Unable to rename that folder!" = "Det er ikke muligt ikke omdøbe denne mappe!";
+"You have already subscribed to that folder!"
+     	= "Du abonnerer allerede på denne mappe!";
+"The user rights cannot be edited for this object!"
+        = "Brugerrettighederne kan ikke redigeres for dette emne!";
+"A folder by that name already exists." = "En mappe med det navn findes allerede.";
+"You cannot create a list in a shared address book." 
+        = "Du kan ikke oprette en liste i en delt adressebog.";
+"Warning" = "Advarsel";
+
+"You are not allowed to access this module or this system. Please contact your system administrator."
+= "Du har ikke adgang til dette modul eller dette system. Kontakt venligst din systemadministrator.";
+"You don't have the required privileges to perform the operation."
+= "Du har ikke de nødvendige privilegier til at udføre handlingen.";
+
+"noEmailForDelegation" = "Du skal angive den adresse, som du ønsker sende din invitation til.";
+"delegate is organizer" = "Den inviterede er arrangør. Angiv en anden.";
+"delegate is a participant" = "Den inviterede er allerede en deltager.";
+"delegate is a group" = "Den angivne adresse svarer til en gruppe. Du kan kun invitere en enkelt person.";
+
+/* common buttons */
+"OK" = "OK";
+"Cancel" = "Annullér";
+"Yes" = "Ja";
+"No" = "Nej";
+
+/* alarms */
+"Reminder:" = "Påmindelse:";
+"Start:" = "Start:";
+"Due Date:" = "Forfaldsdato:";
+"Location:" = "Sted:";
