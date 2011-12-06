@@ -1,0 +1,35 @@
+/* DanishDenmark */
+{
+  NSLanguageName = "DanishDenmark";
+  NSFormalName = "Danish";
+  NSLocaleCode = "da_DK"; /* ISO 639-1 */
+  NSLanguageCode = "dan"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSAMPMDesignation = (AM, PM);
+  NSCurrencySymbol = "$";
+  NSDateFormatString = "%A, %B %e, %Y";
+  NSDateTimeOrdering = MDYH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ".";
+  NSEarlierTimeDesignations = (prior, last, past, ago);
+  NSHourNameDesignations = ((0, midnight), (10, morning), (12, noon, lunch), (14, afternoon), (19, dinner));
+  NSInternationalCurrencyString = USD; /* ISO 4217 */
+  NSLaterTimeDesignations = (next);
+  NSMonthNameArray = (January, February, March, April, May, June, July, August, September, October, November, December);
+  NSNextDayDesignations = (tomorrow);
+  NSNextNextDayDesignations = (nextday);
+  NSPriorDayDesignations = (yesterday);
+  NSShortDateFormatString = "%m/%e/%y";
+  NSShortMonthNameArray = (Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec);
+  NSShortTimeDateFormatString = "%m/%e/%y %I:%M %p";
+  NSShortWeekDayNameArray = (Sun, Mon, Tue, Wed, Thu, Fri, Sat);
+  NSThisDayDesignations = (today, now);
+  NSThousandsSeparator = ",";
+  NSTimeDateFormatString = "%A, %B %e, %Y %I:%M:%S %p %Z";
+  NSTimeFormatString = "%I:%M:%S %p";
+  NSWeekDayNameArray = (Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday);
+  NSYearMonthWeekDesignations = (year, month, week);
+  NSPositiveCurrencyFormatString = "$9,999.00";
+  NSNegativeCurrencyFormatString = "-$9,999.00";
+}
