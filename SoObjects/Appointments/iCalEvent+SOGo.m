@@ -274,14 +274,19 @@
 {
   NSCalendarDate *start, *end;
   NGCalendarDateRange *firstRange;
+  NSArray *dates;
 
   firstRange = nil;
 
-  start = [self startDate];
-  end = [start addTimeInterval: [self occurenceInterval]];
+  dates = [[[self uniqueChildWithTag: @"dtstart"] valuesForKey: @""] lastObject];
+  if ([dates count] > 0)
+    {
+      start = [[dates lastObject] asCalendarDate];
+      end = [start addTimeInterval: [self occurenceInterval]];
 
-  firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: start
-                                                           endDate: end];
+      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: start
+                                                               endDate: end];
+    }
   
   return firstRange;
 }
