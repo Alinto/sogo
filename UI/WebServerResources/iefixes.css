@@ -73,14 +73,6 @@ TABLE.messageList TR.thread TD
 DIV#editorTabs TABLE.frame INPUT.textField
 { margin: 0px; }
 
-/* SchedulerUI */
-
-DIV.event > DIV.eventInside
-{ filter: alpha(opacity=100); }
-
-DIV.event._selected DIV.eventInside
-{ filter: alpha(opacity=70); }
-
 /* UIxAppointmentEditor */
 
 DIV#attendeesMenu LI.separator
