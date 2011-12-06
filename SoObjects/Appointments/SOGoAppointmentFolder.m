@@ -903,7 +903,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	      // Retrieve the range of the first/master event
 	      component = [components objectAtIndex: 0];
               dtstart = (iCalDateTime *) [component uniqueChildWithTag: @"dtstart"];
-              firstStartDate = [dtstart dateTime];
+              firstStartDate = [[[[dtstart valuesForKey: @""]
+                                   lastObject]
+                                  lastObject]
+                                 asCalendarDate];
               firstEndDate = [firstStartDate addTimeInterval: [component occurenceInterval]];
               
               firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate

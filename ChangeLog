@@ -1,3 +1,10 @@
+2011-12-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(_flattenCycleRecord:forRange:intoArray:): reverted to retrieving
+	the event start date using the old and buggy method, adapted to
+	the new NGCards API.
+
 2011-12-05  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (deleteSelectedMessages)
