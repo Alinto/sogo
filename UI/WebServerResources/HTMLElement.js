@@ -257,12 +257,14 @@ Element.addMethods({
             var s = element.select("._selected");
             for (var i = 0; i < s.length; i++)
                 s[i].removeClassName("_selected");
+
             element.selectedElements = null;
             element.selectedIds = null;
         },
 
         refreshSelectionByIds: function(element, selectedIds) {
             element = $(element);
+            var selectedCount = 0;
             if (selectedIds)
                 element.selectedIds = selectedIds;
             if (element.selectedIds) {
@@ -272,6 +274,7 @@ Element.addMethods({
                     if (e) {
                         if (!e.hasClassName('_selected'))
                             e.addClassName('_selected');
+                        selectedCount++;
                     }
                     else {
                         log ("refreshSelectionByIds Error: " + element.tagName
@@ -280,6 +283,7 @@ Element.addMethods({
                     }
                 }
             }
+            return selectedCount;
         },
 
         setCaretTo: function(element, pos) {
