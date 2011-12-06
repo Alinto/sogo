@@ -1,5 +1,8 @@
 2011-12-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/iCalEvent+SOGo.m (-firstOccurrenceRange):
+	same as below.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(_flattenCycleRecord:forRange:intoArray:): reverted to retrieving
 	the event start date using the old and buggy method, adapted to
