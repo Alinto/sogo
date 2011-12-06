@@ -11,7 +11,7 @@
   title="panelTitle"
   const:popup="YES"
   const:userDefaultsKeys="SOGoMailComposeMessageType,SOGoMailReplyPlacement,SOGoMailSignature"
-  const:jsFiles="UIxMailToSelection.js,ckeditor/ckeditor.js,SOGoAutoCompletion.js">
+  const:jsFiles="UIxMailToSelection.js,ckeditor/ckeditor.js,SOGoAutoCompletion.js,ContactsUI.js">
   <script type="text/javascript">
     var mailIsReply = <var:string value="isMailReply"/>;
     var sourceUID = <var:string value="sourceUID"/>;
@@ -49,6 +49,58 @@
     </ul>
   </div>
 
+  <div id="contacts" style="display: none;">
+  <div id="leftPanel">
+    <div id="contactsSearch">
+      <label><var:string label:value="Address Book:" /></label>
+      <var:popup const:name="contactFolder" const:id="contactFolder"
+	list="contactFolders"
+	item="currentFolder"
+        string="currentContactFolderName"
+        value="currentContactFolderId"
+	/>
+      <label><var:string label:value="Search For:"/></label>
+      <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
+      <div id="contactsListContent">
+      <table id="contactsList" cellspacing="0">
+	<thead>
+	  <tr class="tableview">
+	    <!-- localize -->
+	    <td class="tbtv_headercell sortableTableHeader" id="nameHeader"
+		><img id="messageSortImage" class="sortImage" rsrc:src="arrow-up.png"
+		/><var:string label:value="Name"
+	    /></td
+	    ><td class="tbtv_headercell sortableTableHeader" id="mailHeader"
+	    ><var:string label:value="Email"/></td
+	    ></tr>
+	</thead>
+	<tbody id="contactsListTbody">
+
+      <var:foreach list="personalContactInfos" item="currentContact">
+        <tr var:class="currentContactClasses"
+          var:categories="currentContact.c_categories"
+          var:id="currentContact.c_name"
+          var:contactname="currentContact.c_cn">
+          <td class="displayName" var:title="currentContact.c_cn"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>
+          <td var:title="currentContact.c_mail"><var:string value="currentContact.c_mail"/></td>
+        </tr>
+      </var:foreach>
+
+	</tbody>
+      </table>
+    </div>
+
+    <div class="contactSelection">
+      <var:component className="UIxContactsMailerSelection" />
+    </div>
+
+    </div>
+  </div>
+    
+  <div class="dragHandle" id="hiddenDragHandle"><!-- space --></div>
+  </div>
+
+  <div id="rightPanel">
   <form const:href="" name="pageform" enctype="multipart/form-data" autocomplete="off">
     <input type="hidden" name="priority" id="priority" var:value="priority"/>
     <input type="hidden" name="receipt" id="receipt" var:value="receipt"/>
@@ -88,4 +140,5 @@
     <textarea id="text" name="text" rows="30" var:value="text"></textarea>
     <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->
   </form>
+  </div>
 </var:component>

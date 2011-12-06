@@ -1,0 +1,21 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE container>
+<container xmlns="http://www.w3.org/1999/xhtml"
+           xmlns:var="http://www.skyrix.com/od/binding"
+           xmlns:label="OGo:label"
+           xmlns:const="http://www.skyrix.com/od/constant"
+           xmlns:rsrc="OGo:url"
+           ><var:string var:value="doctype" const:escapeHTML="NO" />
+  <html>
+    <head>
+      <style type="text/css">   
+        BODY { background-color: #E6E7E6; }
+        DIV { position: fixed; top: 50%; left: 50%; margin-left: -50px; margin-top: -20px; }
+        SPAN { font: 18px/2.0 'Helvetica Neue',Helvetica,Arial,sans-serif; font-weight: bold; text-shadow: 0 1px 0 #fff; color: #999; }
+      </style>
+    </head>
+    <body>
+      <div><span><var:string label:value="Loading" /></span></div>
+    </body>
+  </html>
+</container>

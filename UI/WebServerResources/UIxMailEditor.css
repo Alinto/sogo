@@ -1,5 +1,30 @@
 /* CSS for compose panel */
 
+DIV#leftPanel
+{ position: absolute;
+  top: 52px;
+  left: 0px;
+  width: 15em;
+  bottom: 0px;
+  overflow: hidden; }
+
+DIV#rightPanel
+{ position: absolute;
+  top: 48px;
+  left: 0em;
+  right: 0px;
+  bottom: 0px;
+  margin-left: 5px;
+  overflow: hidden; }
+
+DIV#hiddenDragHandle
+{ cursor: e-resize;
+  border: 0px;
+  top: 52px;
+  left: 15em;
+  width: 5px;
+  bottom: 0; }
+
 div#compose_panel div table
 { padding: 2px; }
 
@@ -82,8 +107,7 @@ div#compose_internetmarker
   border-style:     solid; }
 
 div#headerArea
-{ border-top: 1px solid #fff;
-  padding: 5px 0px; }
+{ padding: 5px 0px; }
 
 div#headerArea div.addressList
 { max-height: 10em;
@@ -110,7 +134,7 @@ hr.fieldSeparator
   width: 100%; }
 
 input.currentAttachment
-{ position: absolute;
+{ position: fixed;
   top: 1em;
   right: 1em; }
 
@@ -169,3 +193,70 @@ UL#attachments LI IMG
 TEXTAREA#text
 { display: none;
   background: #fff; }
+
+/* Contacts search pane */
+
+DIV#contactsSearch
+{ border-right: 1px solid #fff;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: 5px; }
+
+DIV#contactsSearch LABEL
+{ display: block;
+  margin: 0 0 5px 0; }
+
+SELECT#contactFolder
+{ margin-bottom: 5px; }
+
+INPUT#searchValue
+{ position: absolute;
+  top: 6.2em;
+  left: 5px;
+  right: 0px; /* doesn't work in FF */
+  display: block;
+  width: auto; }
+
+DIV#contactsListContent
+{ position: absolute;
+  top: 9em;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  margin: 0;
+  border-right: 1px solid #fff;
+  background-color: #fff; }
+
+TABLE#contactsList
+{ width: 100%; }
+
+TABLE#contactsList TD,
+TABLE#contactsList TH
+{ overflow: hidden;
+  line-height: 16px;
+  height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap; }
+
+TABLE#contactsList TD#nameHeader,
+TABLE#contactsList TD#mailHeader
+{ width: 50%;
+  max-width: 50%; }
+
+DIV.contactSelection
+{
+  z-index: 10;
+  background: inherit;
+  position: absolute;
+  bottom: 0em;
+  padding: 1em;
+  left: 0px;
+  right: 0px;
+  height: 90px;
+  text-align: right;
+  background: #E6E7E6;
+  border-top: 1px solid #fff;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 0px;
+}

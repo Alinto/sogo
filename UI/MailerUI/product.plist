@@ -73,7 +73,7 @@
       slots = {
         toolbar = {
           protectedBy = "View";
-          value = "SOGoMailObject.toolbar";
+          value = "SOGoMailFolder.toolbar";
         };
       };
       methods = {
@@ -184,7 +184,7 @@
       slots = {
         toolbar = {
           protectedBy = "View";
-          value = "SOGoMailObject.toolbar";
+          value = "SOGoMailFolder.toolbar";
         };
       };
       methods = {
@@ -329,7 +329,7 @@
       slots = {
         toolbar = {
           protectedBy = "View";
-          value = "SOGoMailObject.toolbar";
+          value = "SOGoMailFolder.toolbar";
         };
       };
       methods = {
@@ -369,7 +369,7 @@
       slots = {
         toolbar = {
           protectedBy = "View";
-          value = "SOGoMailObject.toolbar";
+          value = "SOGoMailFolder.toolbar";
         };
       };
       methods = {

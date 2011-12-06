@@ -42,7 +42,9 @@
 
       <body var:class="bodyClasses"
 	><var:if condition="isCompatibleBrowser"
-	  ><var:if condition="shortUserNameForDisplay" const:value="anonymous"
+	  ><var:if condition="singleWindowModeEnabled"
+          ><div id="popupFrame" style="display: none;"><iframe width="100%" height="100%" src="/SOGo/loading"><!-- space --></iframe></div></var:if
+          ><var:if condition="shortUserNameForDisplay" const:value="anonymous"
             const:negate="YES"><var:if condition="hasUserSettingsKeys"
               ><script type="text/javascript">
                 var UserSettings = <var:string value="userSettings" const:escapeHTML="NO"/>;

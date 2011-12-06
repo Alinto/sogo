@@ -17,5 +17,7 @@
   <div id="buttons">
     <a id="addButton" class="button actionButton disabled" href="#">
       <span><var:string label:value="Add..." /></span></a>
+    <a id="doneButton" class="button" name="done">
+      <span><var:string label:value="Done"/></span></a>
   </div>
 </var:component>
