@@ -161,7 +161,6 @@ TEST_TOOL_NAME += $(PLREADER_TOOL)
 
 ### cflags and libs
 LIBMAPI_CFLAGS = $(shell pkg-config libmapi --cflags)
-LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags) -DSAMBA_PREFIX="\"$(shell pkg-config libmapistore --variable=prefix)\""
 
 ifeq ($(LIBMAPI_CFLAGS),)
 all install::
@@ -169,6 +168,8 @@ all install::
 else
 
 LIBMAPI_LIBS = $(shell pkg-config libmapi --libs)
+
+LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags) -DSAMBA_PREFIX="\"$(shell pkg-config libmapistore --variable=prefix)\""
 LIBMAPISTORE_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy
 
 ADDITIONAL_INCLUDE_DIRS += \
@@ -178,13 +179,16 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-I../SoObjects -I../SOPE \
 	-DBACKEND_BUNDLE_NAME="@\"$(BUNDLE_NAME)$(BUNDLE_EXTENSION)\"" \
 	-DSOGO_BUNDLES_DIR="@\"$(BUNDLE_INSTALL_DIR)\""
-ADDITIONAL_LIB_DIRS += -Wl,--no-as-needed \
-	-L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
-	-L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore \
-	 $(LIBMAPI_LIBS) \
-	 $(LIBMAPISTORE_LIBS)
+
+ADDITIONAL_LIB_DIRS += -Wl,--no-as-needed
 
 SAMBA_LIB_DIR = $(shell pkg-config libmapistore --variable=libdir)
+
+$(SOGOBACKEND)_LDFLAGS += \
+         $(LIBMAPI_LIBS) \
+         $(LIBMAPISTORE_LIBS) \
+        -L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
+        -L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make

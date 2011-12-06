@@ -84,6 +84,9 @@ static Class MAPIStoreTasksMessageK = Nil;
       else
 	rc = MAPIRestrictionStateAlwaysFalse;
       break;
+    case PR_SENSITIVITY:
+      rc = MAPIRestrictionStateAlwaysTrue;
+      break;
     case PR_RULE_PROVIDER_UNICODE: // TODO: what's this?
       rc = MAPIRestrictionStateAlwaysTrue;
       break;

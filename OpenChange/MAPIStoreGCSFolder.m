@@ -29,6 +29,8 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoGCSFolder.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
 
 #import "MAPIStoreContext.h"
 #import "MAPIStoreTypes.h"
@@ -53,6 +55,7 @@
       ASSIGN (versionsMessage,
               [SOGoMAPIFSMessage objectWithName: @"versions.plist"
 				 inContainer: propsFolder]);
+      activeUserRoles = nil;
     }
 
   return self;
@@ -66,6 +69,7 @@
       ASSIGN (versionsMessage,
               [SOGoMAPIFSMessage objectWithName: @"versions.plist"
                                     inContainer: propsFolder]);
+      activeUserRoles = nil;
     }
 
   return self;
@@ -74,6 +78,7 @@
 - (void) dealloc
 {
   [versionsMessage release];
+  [activeUserRoles release];
   [super dealloc];
 }
 
@@ -82,7 +87,8 @@
 {
   static NSArray *fields = nil;
   NSArray *records;
-  EOQualifier *componentQualifier, *fetchQualifier;
+  NSMutableArray *qualifierArray;
+  EOQualifier *fetchQualifier, *aclQualifier;
   GCSFolder *ocsFolder;
   EOFetchSpecification *fs;
   NSArray *keys;
@@ -91,24 +97,27 @@
     fields = [[NSArray alloc]
 	       initWithObjects: @"c_name", @"c_version", nil];
 
-  componentQualifier = [self componentQualifier];
-  if (qualifier)
+  qualifierArray = [NSMutableArray new];
+  if (![[context activeUser] isEqual: [context ownerUser]])
     {
-      fetchQualifier = [[EOAndQualifier alloc]
-                         initWithQualifiers:
-                           componentQualifier,
-                         qualifier,
-                         nil];
-      [fetchQualifier autorelease];
+      aclQualifier = [self aclQualifier];
+      if (aclQualifier)
+        [qualifierArray addObject: aclQualifier];
     }
-  else
-    fetchQualifier = componentQualifier;
+  [qualifierArray addObject: [self componentQualifier]];
+  if (qualifier)
+    [qualifierArray addObject: qualifier];
+
+  fetchQualifier = [[EOAndQualifier alloc]
+                     initWithQualifierArray: qualifierArray];
 
   ocsFolder = [sogoObject ocsFolder];
   fs = [EOFetchSpecification
          fetchSpecificationWithEntityName: [ocsFolder folderName]
                                 qualifier: fetchQualifier
                             sortOrderings: sortOrderings];
+  [fetchQualifier release];
+  [qualifierArray release];
   records = [ocsFolder fetchFields: fields fetchSpecification: fs];
   keys = [records objectsForKey: @"c_name"
                  notFoundMarker: nil];
@@ -516,7 +525,37 @@
   return deletedKeys;
 }
 
+- (NSArray *) activeUserRoles
+{
+  SOGoUser *activeUser;
+
+  if (!activeUserRoles)
+    {
+      activeUser = [[self context] activeUser];
+      activeUserRoles = [activeUser rolesForObject: sogoObject
+                                         inContext: [context woContext]];
+      [activeUserRoles retain];
+    }
+
+  return activeUserRoles;
+}
+
+- (BOOL) subscriberCanCreateMessages
+{
+  return [[self activeUserRoles] containsObject: SOGoRole_ObjectCreator];
+}
+
+- (BOOL) subscriberCanDeleteMessages
+{
+  return [[self activeUserRoles] containsObject: SOGoRole_ObjectEraser];
+}
+
 /* subclasses */
+
+- (EOQualifier *) aclQualifier
+{
+  return nil;
+}
 
 - (EOQualifier *) componentQualifier
 {

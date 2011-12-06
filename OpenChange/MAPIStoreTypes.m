@@ -190,12 +190,12 @@ NSObjectFromSPropValue (const struct SPropValue *value)
     case PT_UNICODE:
       result = (value->value.lpszW
                 ? [NSString stringWithUTF8String: value->value.lpszW]
-                : @"");
+                : (id) @"");
       break;
     case PT_STRING8:
       result = (value->value.lpszA
                 ? [NSString stringWithUTF8String: value->value.lpszA]
-                : @"");
+                : (id) @"");
       break;
     case PT_SYSTIME:
       result = [NSCalendarDate dateFromFileTime: &(value->value.ft)];
