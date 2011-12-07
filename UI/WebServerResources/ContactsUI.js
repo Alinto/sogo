@@ -190,8 +190,7 @@ function contactsListCallback(http) {
 
             // Restore selection and scroll to first selected node
             var selection = http.callbackData;
-            if (selection) {
-                tbody.refreshSelectionByIds(selection);
+            if (selection && tbody.refreshSelectionByIds(selection) > 0) {
                 for (var i = 0; i < selection.length; i++) {
                     var row = $(selection[i]);
                     if (row) {
@@ -202,7 +201,8 @@ function contactsListCallback(http) {
                     }
                 }
             }
-            
+            else
+                tbody.deselectAll();
         }
         else {
             // No more access to this address book; empty the list
