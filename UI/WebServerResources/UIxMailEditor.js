@@ -14,13 +14,13 @@ var MailEditor = {
 function onContactAdd(button) {
     var div = $("contacts");
     if (div.visible()) {
-        $("contacts").hide();
-        $("rightPanel").setStyle({ left: "0" });
+        div.hide();
+        $("rightPanel").setStyle({ left: "0px" });
         $(button).removeClassName("active");
     }
     else {
         $("rightPanel").setStyle({ left: $("leftPanel").getStyle("width") });
-        $("contacts").show();
+        div.show();
         $(button).addClassName("active");
     }
 
