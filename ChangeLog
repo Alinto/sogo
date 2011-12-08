@@ -1,5 +1,12 @@
 2011-12-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFSMessageTable.m
+	(-evaluatePropertyRestriction:intoQualifier:): interpret filtering
+	on PR_SUBJECT_UNICODE in order to include
+	PR_NORMALIZED_SUBJECT_UNICODE and PR_SUBJECT_PREFIX_UNICODE in the
+	search, as PR_SUBJECT_UNICODE might not actually exist on the FS
+	messages.
+
 	* OpenChange/MAPIStoreObject.m (-addPropertiesFromRow:): perform
 	test on PT_STRING8 alone after "masking" the ulPropTag with 0xfff,
 	since PT_XX values are not bitmasks.
