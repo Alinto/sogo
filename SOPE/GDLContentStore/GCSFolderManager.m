@@ -221,8 +221,8 @@ static NSCharacterSet *asciiAlphaNumericCS  = nil;
   return ch;
 }
 - (void)releaseChannel:(EOAdaptorChannel *)_channel {
+  if (debugOn) [self debugWithFormat:@"releasing channel: %@", _channel];
   [[self channelManager] releaseChannel:_channel];
-  if (debugOn) [self debugWithFormat:@"released channel: %@", _channel];
 }
 
 - (BOOL)canConnect {
