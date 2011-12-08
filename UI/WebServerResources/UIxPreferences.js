@@ -207,13 +207,16 @@ function initPreferences() {
     initSieveFilters();
     initMailAccounts();
 
-    assignCalendar('vacationEndDate_date');
-    $("enableVacationEndDate").on("change", function(event) {
-        if (this.checked)
-            $("vacationEndDate_date").enable();
-        else        
-            $("vacationEndDate_date").disable();
-    });
+    button = $("enableVacationEndDate");
+    if (button) {
+        assignCalendar('vacationEndDate_date');
+        button.on("change", function(event) {
+            if (this.checked)
+                $("vacationEndDate_date").enable();
+            else
+                $("vacationEndDate_date").disable();
+        });
+    }
 }
 
 function initSieveFilters() {
