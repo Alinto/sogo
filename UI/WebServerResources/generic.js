@@ -1608,10 +1608,10 @@ function onCloseButtonClick(event) {
         Event.stop(event);
 
     if (window.frameElement && window.frameElement.id) {
+        parent$("bgFrameDiv").fade({ duration: 0.2 });
         var div = parent$("popupFrame");
         div.hide();
         div.down("iframe").src = "/SOGo/loading";
-        parent$("bgFrameDiv").hide();
     }
     else {
         window.close();
