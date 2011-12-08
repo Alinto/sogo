@@ -11,7 +11,10 @@
       <script type="text/javascript" rsrc:src="generic.js"><!-- space --></script>      
     </head>
     <body style="background-color: #dbdad5;"
-      ><script type="text/javascript"
+      ><var:if condition="singleWindowModeEnabled"
+       ><div id="popupFrame"><!-- space --></div
+       ></var:if
+       ><script type="text/javascript"
         ><var:if condition="hasRefreshMethod">
           var p = <var:if condition="singleWindowModeEnabled">parent</var:if><var:if condition="singleWindowModeEnabled" const:negate="YES">window.opener</var:if>;
           if (p) p.setTimeout('<var:string value="refreshMethod" const:escapeHTML="NO" />;', 50);
