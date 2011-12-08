@@ -228,8 +228,8 @@ static GCSStringFormatter *stringFormatter = nil;
 }
 
 - (void)releaseChannel:(EOAdaptorChannel *)_channel {
+  if (debugOn) [self debugWithFormat:@"releasing channel: %@", _channel];
   [[self _channelManager] releaseChannel:_channel];
-  if (debugOn) [self debugWithFormat:@"released channel: %@", _channel];
 }
 
 - (BOOL)canConnectStore {

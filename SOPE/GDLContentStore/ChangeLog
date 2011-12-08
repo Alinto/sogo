@@ -1,3 +1,11 @@
+2011-12-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSFolder.m (-releaseChannel:): perform the debug logging BEFORE
+	the channel is released, to avoid a crash.
+
+	* GCSFolderManager.m (-releaseChannel:): perform the debug logging BEFORE
+	the channel is released, to avoid a crash.
+
 2011-11-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolder.m
