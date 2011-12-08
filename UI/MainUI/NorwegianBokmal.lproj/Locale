@@ -1,8 +1,8 @@
 /* Norwegian */
 {
-  NSLanguageName = "Norwegian (Bokmal)";
+  NSLanguageName = "NorwegianBokmal";
   NSFormalName = "Norsk bokmål";
-  NSLocaleCode = "no"; /* ISO 639-1 */
+  NSLocaleCode = "nb"; /* ISO 639-1 */
   NSLanguageCode = "nor"; /* ISO 639-2 */
   NSParentContext = "";
 
