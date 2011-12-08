@@ -1,3 +1,9 @@
+2011-12-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreObject.m (-addPropertiesFromRow:): perform
+	test on PT_STRING8 alone after "masking" the ulPropTag with 0xfff,
+	since PT_XX values are not bitmasks.
+
 2011-12-06  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js (contactsListCallback):

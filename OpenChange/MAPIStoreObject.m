@@ -452,7 +452,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   for (counter = 0; counter < aRow->cValues; counter++)
     {
       cValue = aRow->lpProps + counter;
-      if ((cValue->ulPropTag & PT_STRING8) == PT_STRING8)
+      if ((cValue->ulPropTag & 0xfff) == PT_STRING8)
         [self warnWithFormat:
                 @"attempting to set string property as PR_STRING8: %.8x",
               cValue->ulPropTag];
