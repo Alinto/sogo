@@ -176,10 +176,8 @@ A.smallToolbarButton SPAN, A.smallToolbarButton:hover SPAN
 A.toolbarButton:active SPAN {
   background-position: auto; /*broken*/
 }
-A.toolbarButton, A.toolbarButton SPAN
-{ color: #fff; }
 
-A.button, A.button SPAN
+A.toolbarButton, A.toolbarButton SPAN, A.button, A.button SPAN
 { color: #262B33; }
 
 DIV#toolbar
