@@ -95,7 +95,7 @@ function prototypeIfyFilters() {
 function _setupEvents() {
     var widgets = [ "timezone", "shortDateFormat", "longDateFormat",
                     "timeFormat", "weekStartDay", "dayStartTime", "dayEndTime",
-                    "firstWeek", "messageCheck", "sortByThreads", 
+                    "firstWeek", "messageCheck", "sortByThreads",
                     "subscribedFoldersOnly", "language", "defaultCalendar",
                     "enableVacation" ];
     for (var i = 0; i < widgets.length; i++) {
@@ -110,7 +110,7 @@ function _setupEvents() {
     // might not be present if ModulesConstraints disable those elements
     if ($("replyPlacementList"))
     	$("replyPlacementList").observe ("change", onReplyPlacementListChange);
-    
+
     if ($("composeMessagesType"))
     	$("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
 
@@ -781,14 +781,14 @@ function saveMailAccounts() {
     /* This removal enables us to avoid a few warning from SOPE for the inputs
      that were created dynamically. */
     var editor = $("mailAccountEditor");
-    
+
     // Could be null if ModuleConstraints disables email access
     if (editor)
     	editor.parentNode.removeChild(editor);
 
     compactMailAccounts();
     var mailAccountsJSON = $("mailAccountsJSON");
- 
+
     if (mailAccountsJSON)
         mailAccountsJSON.value = Object.toJSON(mailAccounts);
 }

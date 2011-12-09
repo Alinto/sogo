@@ -1,3 +1,17 @@
+2011-12-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/SOGoUI/UIxComponent.m (-isCalendarEnabled)
+	(-isContactsEnabled, -isMailEnabled, -isPreferencesEnabled): new
+	accessors.
+	(-userHasCalendarAccess, -userHasMailAccess): moved from UIxPageFrame.
+
+	* UI/Common/UIxToolbar.m (-cssClasses): new accessor that
+	generates the CSS classes dynamically depending on the button
+	state and it descriptor's cssClass.
+
+	* UI/WebServerResources/generic.js (parent$): handle the case
+	where window.opener is null.
+
 2011-12-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFSMessageTable.m

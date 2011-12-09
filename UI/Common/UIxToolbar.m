@@ -227,6 +227,24 @@
   return [[[[self context] page] valueForKeyPath:onOffKey] boolValue];
 }
 
+- (NSString *) cssClasses
+{
+  NSMutableArray *cssClasses;
+  NSString *infoClasses;
+
+  cssClasses = [NSMutableArray arrayWithCapacity: 16];
+  if ([self isButtonEnabled])
+    [cssClasses addObject: @"toolbarButton"];
+  else
+    [cssClasses addObject: @"disabledToolbarButton"];
+
+  infoClasses = [[self buttonInfo] objectForKey: @"cssClass"];
+  if ([infoClasses length] > 0)
+    [cssClasses addObject: infoClasses];
+
+  return [cssClasses componentsJoinedByString: @" "];
+}
+
 - (BOOL) isLastGroup {
   return ([toolbarConfig indexOfObject: toolbarGroup]
 	  == ([toolbarConfig count] - 1));

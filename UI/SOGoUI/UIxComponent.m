@@ -465,6 +465,45 @@ static NSMutableArray *abbrMonthLabelKeys = nil;
   return result;
 }
 
+- (BOOL) userHasCalendarAccess
+{
+  SOGoUser *user;
+
+  user = [context activeUser];
+
+  return [user canAccessModule: @"Calendar"];
+}
+
+- (BOOL) userHasMailAccess
+{
+  SOGoUser *user;
+
+  user = [context activeUser];
+
+  return [user canAccessModule: @"Mail"];
+}
+
+#warning we might want to refine the tests here...
+- (BOOL) isCalendarEnabled
+{
+  return [self userHasCalendarAccess] && ![self singleWindowModeEnabled];
+}
+
+- (BOOL) isContactsEnabled
+{
+  return ![self singleWindowModeEnabled];
+}
+
+- (BOOL) isMailEnabled
+{
+  return [self userHasMailAccess];
+}
+
+- (BOOL) isPreferencesEnabled
+{
+  return ![self singleWindowModeEnabled];
+}
+
 /* SoUser */
 
 - (NSString *) shortUserNameForDisplay

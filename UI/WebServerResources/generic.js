@@ -868,7 +868,7 @@ function log(message) {
         try {
             if (window.frameElement && window.frameElement.id) {
                 logWindow = parent.window;
-                while (logWindow.frameElement && window.frameElement.id) 
+                while (logWindow.frameElement && window.frameElement.id)
                     logWindow = logWindow.parent.window;
             }
             else {
@@ -1029,7 +1029,7 @@ function setSearchCriteria(event) {
 
     if (searchValue.ghostPhrase == searchValue.value)
         searchValue.value = "";
-    
+
     searchValue.ghostPhrase = this.innerHTML;
     searchCriteria.value = this.getAttribute('id');
 
@@ -1797,10 +1797,12 @@ function parent$(element) {
 
     if (div)
         p = parent.document;
-    else
+    else if (this.opener)
         p = this.opener.document;
+    else
+        p = null;
 
-    return p.getElementById(element);
+    return (p ? p.getElementById(element) : null);
 }
 
 /* stubs */
