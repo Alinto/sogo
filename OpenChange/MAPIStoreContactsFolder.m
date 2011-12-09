@@ -142,4 +142,14 @@
   return rights;
 }
 
+- (BOOL) subscriberCanModifyMessages
+{
+  return [[self activeUserRoles] containsObject: SOGoRole_ObjectEditor];
+}
+
+- (BOOL) subscriberCanReadMessages
+{
+  return [[self activeUserRoles] containsObject: SOGoRole_ObjectViewer];
+}
+
 @end

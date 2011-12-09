@@ -1,3 +1,16 @@
+2011-12-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreFSMessageTable.m
+	(-evaluatePropertyRestriction:intoQualifier:): interpret filtering
+	on PR_SUBJECT_UNICODE in order to include
+	PR_NORMALIZED_SUBJECT_UNICODE and PR_SUBJECT_PREFIX_UNICODE in the
+	search, as PR_SUBJECT_UNICODE might not actually exist on the FS
+	messages.
+
+	* OpenChange/MAPIStoreObject.m (-addPropertiesFromRow:): perform
+	test on PT_STRING8 alone after "masking" the ulPropTag with 0xfff,
+	since PT_XX values are not bitmasks.
+
 2011-12-06  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js (contactsListCallback):
@@ -58,6 +71,93 @@
 	* SoObjects/Appointments/iCalToDo+SOGo.m (-quickRecord):
 	-[iCalEntityObject categories] returns an NSArray that we need to
 	convert to a string for the database content.
+
+2011-12-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreNotesMessage.m
+	(-getPrMessageClass:inMemCtx:): explicit method.
+	(-getPrSubject:inMemCtx:): explicit method.
+
+	* OpenChange/MAPIStoreMessage.m (-getPrAccess:inMemCtx:)
+	(-getPrAccessLevel:inMemCtx:): reimplemented methods in a generic
+	way just like the MAPIStoreFolder versions.
+
+	* OpenChange/MAPIStoreFSMessage.m (-subscriberCanModifyMessage):
+	handle the case where the message is being created.
+
+	* OpenChange/MAPIStoreFSFolder.m
+	(-messageKeysMatchingQualifier:andSortOrderings:): ensure the
+	active user can read the folder messages before returning them.
+
+2011-12-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreFAIMessage.m (-subscriberCanReadMessage)
+	(-subscriberCanModifyMessage): always return "NO" for subscribers.
+
+	* OpenChange/MAPIStoreFSFolder.m: mapped role strings into
+	variables.
+
+	* OpenChange/MAPIStoreGCSMessage.m (-getPrAccess:inMemCtx:)
+	(-getPrAccessLevel:inMemCtx:): return a value based on the ACL
+	getters below.
+
+	* OpenChange/MAPIStoreFSMessage.m (-subscriberCanReadMessage):
+	returns YES when the message is of class
+	"IPM.Microsoft.ScheduleData.FreeBusy", as a hack until freebusy
+	messages are handled by the backend.
+
+	* OpenChange/MAPIStoreContext.m (_prepareContextClass): now return
+	the context via a pointer parameter. Return a proper "enum
+	mapistore_error" value.
+
+	* OpenChange/MAPIStoreCalendarMessage.m (-appointmentWrapper):
+	pass the owner user as parameter to the appointment wrapper
+	contructor rather than the active user.
+	(-save): make use of the owner user coordinates instead of the
+	ones of the active user. Handle the "sent-by" parameter for the
+	organizer element.
+
+	* OpenChange/MAPIStoreFolder.m
+	(-openMessage:withMID:forWriting:inMemCtx:): takes a new
+	"forWriting:" parameter and make use of subscriberCanModifyMessage
+	and subscriberCanReadMessage to return a proper error code, if
+	needed.
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_folder_open_message): added the
+	"write_access" parameter.
+
+	* OpenChange/MAPIStoreTasksMessage.m:
+	invoke component:secure: with the secure parameter set to "YES" in
+	all accessors that requires the iCalTask object.
+
+	* OpenChange/MAPIStoreCalendarMessage.m (-appointmentWrapper):
+	invoke component:secure: with the secure parameter set to "YES".
+
+	* OpenChange/MAPIStoreTasksMessageTable.m
+	(-evaluatePropertyRestriction:intoQualifier:): return
+	MAPIRestrictionStateAlwaysTrue for PR_SENSITIVITY since privacy
+	filtering is performed internally.
+
+	* OpenChange/MAPIStoreGCSMessageTable.m (-componentQualifier):
+	removed useless accessor, left over by a previous commit.
+
+	* OpenChange/MAPIStoreGCSFolder.m (-aclQualifier): new accessor
+	providing an additional qualifier when listing elements of a
+	table, based on the current user rights.
+	(-messageKeysMatchingQualifier:andSortOrderings:): make use of the
+	new -aclQualifier method when the active user is not the owner of
+	the sogo object. Slightly simplified code by storing all
+	qualifiers in an array passed as parameter to the EOAndQualifier
+	constructor.
+
+	* OpenChange/MAPIStoreMessage.m (-subscriberCanReadMessage)
+	(-subscriberCanModifyMessage): new getters for ACL operations at
+	the message level.
+
+	* OpenChange/MAPIStoreFolder.m (-subscriberCanCreateMessages)
+	(-subscriberCanModifyMessages, -subscriberCanReadMessages)
+	(-subscriberCanDeleteMessages, -subscriberCanCreateSubFolders):
+	new getters for ACL operations at the folder level.
 
 2011-11-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
