@@ -38,6 +38,16 @@
 	<var:if-ie
 	  ><link type="text/css" rel="stylesheet" rsrc:href="iefixes.css"
 	    /></var:if-ie>
+        <style type="text/css">
+          <var:if condition="singleWindowModeEnabled"
+            >.single-window-not-conditional</var:if
+            ><var:if condition="singleWindowModeEnabled"
+              const:negate="YES"
+              >.single-window-conditional</var:if>
+            {
+              display: none !important;
+            }
+        </style>
       </head>
 
       <body var:class="bodyClasses"
@@ -66,46 +76,46 @@
                   <var:if condition="userHasVacationEnabled"><img rsrc:src="status.vacation-msg.png" label:title="Vacation message is enabled" /></var:if>
                   <var:string var:value="userIdentification"/></span
                   ></var:if>
-	      <var:if condition="userHasCalendarAccess">
-		<var:if condition="isCalendar">
-		  <span class="active"><var:string label:value="Calendar"
-		      /></span>
-		  </var:if>
-		<var:if condition="isCalendar" const:negate="YES">
-		  <a id="calendarBannerLink"
-		    var:href="relativeCalendarPath"
-		    ><var:string label:value="Calendar" /></a>
-		</var:if>
-		
-	      </var:if>
-	      <var:if condition="isContacts">
-		<span class="active"><var:string label:value="Address Book"
-		    /></span>
-	      </var:if>
-	      <var:if condition="isContacts" const:negate="YES">
-		<a id="contactsBannerLink"
-		  var:href="relativeContactsPath"
-		  ><var:string label:value="Address Book" /></a>
-	      </var:if>
-	      
-	      <var:if condition="userHasMailAccess">
+              <var:if condition="isCalendarEnabled">
+                <var:if condition="isCalendar">
+                  <span class="active"><var:string label:value="Calendar"
+                      /></span>
+                </var:if>
+                <var:if condition="isCalendar" const:negate="YES">
+                  <a id="calendarBannerLink"
+                    var:href="relativeCalendarPath"
+                    ><var:string label:value="Calendar" /></a>
+                </var:if>
+              </var:if>
+              <var:if condition="isContactsEnabled">
+                <var:if condition="isContacts">
+                  <span class="active"><var:string label:value="Address Book"
+                      /></span>
+                </var:if>
+                <var:if condition="isContacts" const:negate="YES">
+                  <a id="contactsBannerLink"
+                    var:href="relativeContactsPath"
+                    ><var:string label:value="Address Book" /></a>
+                </var:if>
+              </var:if>
+              <var:if condition="isMailEnabled">
 		<var:if condition="isMail">
-		    <span class="active"><var:string label:value="Mail"
+                  <span class="active"><var:string label:value="Mail"
 		      /></span>
 		</var:if>
 		<var:if condition="isMail" const:negate="YES">
 		  <a id="mailBannerLink" var:href="relativeMailPath"
 		    ><var:string label:value="Mail" /></a>
 		</var:if>
-		
 	      </var:if>
-	      <a id="preferencesBannerLink"
-		var:href="relativePreferencesPath"
-		><var:string label:value="Preferences" /></a>
-	      <var:if condition="isSuperUser">
-		
+              <var:if condition="isPreferencesEnabled">
+                <a id="preferencesBannerLink"
+                  var:href="relativePreferencesPath"
+                  ><var:string label:value="Preferences" /></a>
+              </var:if
+                ><var:if condition="isSuperUser">
 		<var:if condition="isAdministration">
-		    <span class="active"><var:string label:value="Administration"
+                  <span class="active"><var:string label:value="Administration"
 		      /></span>
 		</var:if>
 		<var:if condition="isAdministration" const:negate="YES">
@@ -136,6 +146,12 @@
 	    <var:if condition="isSuperUser" const:negate="YES"
 	      >var IsSuperUser = false;
 	    </var:if>
+            var IsCalendarEnabled = <var:if condition="isCalendarEnabled">true</var:if
+              ><var:if condition="isCalendarEnabled" const:negate="YES">false</var:if>;
+            var IsAddressBookEnabled = <var:if condition="isAddressBookEnabled">true</var:if
+              ><var:if condition="isAddressBookEnabled" const:negate="YES">false</var:if>;
+            var IsMailEnabled = <var:if condition="isMailEnabled">true</var:if
+              ><var:if condition="isMailEnabled" const:negate="YES">false</var:if>;
 	    <var:if condition="usesCASAuthentication"
 	      >var usesCASAuthentication = true;
 	    </var:if>

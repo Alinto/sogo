@@ -479,24 +479,6 @@
   return canLogoff;
 }
 
-- (BOOL) userHasCalendarAccess
-{
-  SOGoUser *user;
-
-  user = [context activeUser];
-
-  return [user canAccessModule: @"Calendar"];
-}
-
-- (BOOL) userHasMailAccess
-{
-  SOGoUser *user;
-
-  user = [context activeUser];
-
-  return [user canAccessModule: @"Mail"];
-}
-
 - (NSString *) userLanguage
 {
   SOGoUserDefaults *ud;
