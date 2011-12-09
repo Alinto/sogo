@@ -111,9 +111,9 @@
               withMID: (uint64_t) mid
          isAssociated: (BOOL) isAssociated;
 
-
 - (int) openMessage: (MAPIStoreMessage **) messagePtr
             withMID: (uint64_t) mid
+         forWriting: (BOOL) readWrite
            inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) deleteMessageWithMID: (uint64_t) mid
                     andFlags: (uint8_t) flags;
@@ -160,6 +160,12 @@
 - (SOGoFolder *) aclFolder;
 - (NSArray *) rolesForExchangeRights: (uint32_t) rights;
 - (uint32_t) exchangeRightsForRoles: (NSArray *) roles;
+
+- (BOOL) subscriberCanCreateMessages;
+- (BOOL) subscriberCanModifyMessages;
+- (BOOL) subscriberCanReadMessages;
+- (BOOL) subscriberCanDeleteMessages;
+- (BOOL) subscriberCanCreateSubFolders;
 
 /* subclass helpers */
 - (void) postNotificationsForMoveCopyMessagesWithMIDs: (uint64_t *) srcMids

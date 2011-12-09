@@ -157,4 +157,10 @@
   return rights;
 }
 
+- (EOQualifier *) aclQualifier
+{
+  return [EOQualifier qualifierWithQualifierFormat:
+            [(SOGoAppointmentFolder *) sogoObject aclSQLListingFilter]];
+}
+
 @end
