@@ -1,9 +1,12 @@
+2011-12-09  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MainUI/SOGoRootPage.m (_cookieWithUsername:): the SOGoLogin
+	cookie now expires in one month.
+
 2011-12-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* UI/SOGoUI/UIxComponent.m (-isCalendarEnabled)
-	(-isContactsEnabled, -isMailEnabled, -isPreferencesEnabled): new
-	accessors.
-	(-userHasCalendarAccess, -userHasMailAccess): moved from UIxPageFrame.
+	* UI/SOGoUI/UIxComponent.m (-userHasCalendarAccess) 
+	(-userHasMailAccess): moved from UIxPageFrame.
 
 	* UI/Common/UIxToolbar.m (-cssClasses): new accessor that
 	generates the CSS classes dynamically depending on the button

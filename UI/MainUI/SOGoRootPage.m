@@ -147,17 +147,23 @@
   NSCalendarDate *date;
 
   appName = [[context request] applicationName];
+  date = [NSCalendarDate calendarDate];
+  [date setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"GMT"]];
   if (username)
     {
+      // Cookie expires in one month
       loginCookie = [WOCookie cookieWithName: @"SOGoLogin"
-                                       value: [username stringByEncodingBase64]];
+                                       value: [username stringByEncodingBase64]
+                                        path: nil
+                                      domain: nil
+                                     expires: [date dateByAddingYears:0 months:1 days:0
+                                                                hours:0 minutes:0 seconds:0]
+                                    isSecure: NO];
     }
   else
     {
       loginCookie = [WOCookie cookieWithName: @"SOGoLogin"
                                        value: nil];
-      date = [NSCalendarDate calendarDate];
-      [date setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"GMT"]];
       [loginCookie setExpires: [date yesterday]];
     }
 
