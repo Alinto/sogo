@@ -336,35 +336,41 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
-  mapping = [[self context] mapping];
-  childURL = [mapping urlFromID: fid];
-  if (childURL)
-    rc = MAPISTORE_ERR_EXIST;
-  else
+  if ([[context activeUser] isEqual: [context ownerUser]]
+      || [self subscriberCanCreateSubFolders])
     {
-      folderKey = [self createFolder: aRow withFID: fid];
-      if (folderKey)
+      mapping = [[self context] mapping];
+      childURL = [mapping urlFromID: fid];
+      if (childURL)
+        rc = MAPISTORE_ERR_EXIST;
+      else
         {
-          [self cleanupCaches];
-          baseURL = [self url];
-          if (![baseURL hasSuffix: @"/"])
-            baseURL = [NSString stringWithFormat: @"%@/", baseURL];
-          childURL = [NSString stringWithFormat: @"%@%@",
-                               baseURL, folderKey];
-          [mapping registerURL: childURL withID: fid];
-          childFolder = [self lookupFolder: folderKey];
-          if (childFolder)
+          folderKey = [self createFolder: aRow withFID: fid];
+          if (folderKey)
             {
-              [childFolder addPropertiesFromRow: aRow];
-              *childFolderPtr = childFolder;
+              [self cleanupCaches];
+              baseURL = [self url];
+              if (![baseURL hasSuffix: @"/"])
+                baseURL = [NSString stringWithFormat: @"%@/", baseURL];
+              childURL = [NSString stringWithFormat: @"%@%@",
+                                   baseURL, folderKey];
+              [mapping registerURL: childURL withID: fid];
+              childFolder = [self lookupFolder: folderKey];
+              if (childFolder)
+                {
+                  [childFolder addPropertiesFromRow: aRow];
+                  *childFolderPtr = childFolder;
+                }
+              else
+                [NSException raise: @"MAPIStoreIOException"
+                             format: @"unable to fetch created folder"];
             }
           else
-            [NSException raise: @"MAPIStoreIOException"
-                        format: @"unable to fetch created folder"];
+            rc = MAPISTORE_ERROR;
         }
-      else
-        rc = MAPISTORE_ERROR;
     }
+  else
+    rc = MAPISTORE_ERR_DENIED;
 
   return rc;
 }
@@ -403,6 +409,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (int) openMessage: (MAPIStoreMessage **) messagePtr
             withMID: (uint64_t) mid
+         forWriting: (BOOL) readWrite
            inMemCtx: (TALLOC_CTX *) memCtx;
 {
   NSString *messageURL;
@@ -417,8 +424,15 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       message = [self lookupMessageByURL: messageURL];
       if (message)
         {
-          *messagePtr = message;
-          rc = MAPISTORE_SUCCESS;
+          if ([[context activeUser] isEqual: [context ownerUser]]
+              || (readWrite && [message subscriberCanModifyMessage])
+              || (!readWrite && [message subscriberCanReadMessage]))
+            {
+              *messagePtr = message;
+              rc = MAPISTORE_SUCCESS;
+            }
+          else
+            rc = MAPISTORE_ERR_DENIED;
         }
     }
 
@@ -429,7 +443,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
               withMID: (uint64_t) mid
          isAssociated: (BOOL) isAssociated
 {
-  int rc;
+  enum mapistore_error rc;
   MAPIStoreMessage *message;
   NSString *baseURL, *childURL;
   MAPIStoreMapping *mapping;
@@ -437,26 +451,33 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [self logWithFormat: @"METHOD '%s' -- mid: 0x%.16llx  associated: %d",
 	__FUNCTION__, mid, isAssociated];
 
-  mapping = [[self context] mapping];
-  if ([mapping urlFromID: mid])
-    rc = MAPISTORE_ERR_EXIST;
-  else
+  context = [self context];
+  if ([[context activeUser] isEqual: [context ownerUser]]
+      || (!isAssociated && [self subscriberCanCreateMessages]))
     {
-      message = [self createMessage: isAssociated];
-      if (message)
-        {
-          baseURL = [self url];
-          if (![baseURL hasSuffix: @"/"])
-            baseURL = [NSString stringWithFormat: @"%@/", baseURL];
-          childURL = [NSString stringWithFormat: @"%@%@",
-                               baseURL, [message nameInContainer]];
-          [mapping registerURL: childURL withID: mid];
-          *messagePtr = message;
-          rc = MAPISTORE_SUCCESS;
-        }
+      mapping = [[self context] mapping];
+      if ([mapping urlFromID: mid])
+        rc = MAPISTORE_ERR_EXIST;
       else
-        rc = MAPISTORE_ERROR;
+        {
+          message = [self createMessage: isAssociated];
+          if (message)
+            {
+              baseURL = [self url];
+              if (![baseURL hasSuffix: @"/"])
+                baseURL = [NSString stringWithFormat: @"%@/", baseURL];
+              childURL = [NSString stringWithFormat: @"%@%@",
+                                   baseURL, [message nameInContainer]];
+              [mapping registerURL: childURL withID: mid];
+              *messagePtr = message;
+              rc = MAPISTORE_SUCCESS;
+            }
+          else
+            rc = MAPISTORE_ERROR;
+        }
     }
+  else
+    rc = MAPISTORE_ERR_DENIED;
 
   return rc;
 }
@@ -483,73 +504,80 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       message = [self lookupMessageByURL: childURL];
       if (message)
         {
-          /* we ensure the table caches are loaded so that old and new state
-             can be compared */
-          activeTables = ([message isKindOfClass: MAPIStoreFAIMessageK]
-                          ? [self activeFAIMessageTables]
-                          : [self activeMessageTables]);
-          max = [activeTables count];
-          for (count = 0; count < max; count++)
-            [[activeTables objectAtIndex: count] restrictedChildKeys];
-
-          msgObject = [message sogoObject];
-          if (([msgObject respondsToSelector: @selector (prepareDelete)]
-               && [msgObject prepareDelete])
-              || [msgObject delete])
+          if ([[context activeUser] isEqual: [context ownerUser]]
+              || (![message isKindOfClass: MAPIStoreFAIMessageK]
+                  && [self subscriberCanDeleteMessages]))
             {
-              rc = MAPISTORE_ERROR;
-              [self logWithFormat: @"ERROR deleting object at URL: %@", childURL];
+              /* we ensure the table caches are loaded so that old and new state
+                 can be compared */
+              activeTables = ([message isKindOfClass: MAPIStoreFAIMessageK]
+                              ? [self activeFAIMessageTables]
+                              : [self activeMessageTables]);
+              max = [activeTables count];
+              for (count = 0; count < max; count++)
+                [[activeTables objectAtIndex: count] restrictedChildKeys];
+
+              msgObject = [message sogoObject];
+              if (([msgObject respondsToSelector: @selector (prepareDelete)]
+                   && [msgObject prepareDelete])
+                  || [msgObject delete])
+                {
+                  rc = MAPISTORE_ERROR;
+                  [self logWithFormat: @"ERROR deleting object at URL: %@", childURL];
+                }
+              else
+                {
+                  if (![message isNew])
+                    {
+                      /* folder notification */
+                      notif_parameters
+                        = talloc_zero(NULL,
+                                      struct mapistore_object_notification_parameters);
+                      notif_parameters->object_id = [self objectId];
+                      notif_parameters->tag_count = 5;
+                      notif_parameters->tags = talloc_array (notif_parameters,
+                                                             enum MAPITAGS, 5);
+                      notif_parameters->tags[0] = PR_CONTENT_COUNT;
+                      notif_parameters->tags[1] = PR_DELETED_COUNT_TOTAL;
+                      notif_parameters->tags[2] = PR_MESSAGE_SIZE;
+                      notif_parameters->tags[3] = PR_NORMAL_MESSAGE_SIZE;
+                      notif_parameters->tags[4] = PR_DELETED_MSG_COUNT;
+                      notif_parameters->new_message_count = true;
+                      notif_parameters->message_count = [[self messageKeys]
+                                                          count] - 1;
+                      connInfo = [[self context] connectionInfo];
+                      mapistore_push_notification (connInfo->mstore_ctx,
+                                                   MAPISTORE_FOLDER,
+                                                   MAPISTORE_OBJECT_MODIFIED,
+                                                   notif_parameters);
+                      talloc_free(notif_parameters);
+
+                      /* message notification */
+                      notif_parameters
+                        = talloc_zero(NULL,
+                                      struct mapistore_object_notification_parameters);
+                      notif_parameters->object_id = mid;
+                      notif_parameters->folder_id = [self objectId];
+                      /* Exchange sends a fnevObjectCreated!! */
+                      mapistore_push_notification (connInfo->mstore_ctx,
+                                                   MAPISTORE_MESSAGE,
+                                                   MAPISTORE_OBJECT_CREATED,
+                                                   notif_parameters);
+                      talloc_free(notif_parameters);
+
+                      /* table notification */
+                      for (count = 0; count < max; count++)
+                        [[activeTables objectAtIndex: count]
+                              notifyChangesForChild: message];
+                    }
+                  [self logWithFormat: @"successfully deleted object at URL: %@", childURL];
+                  [mapping unregisterURLWithID: mid];
+                  [self cleanupCaches];
+                  rc = MAPISTORE_SUCCESS;
+                }
             }
           else
-            {
-              if (![message isNew])
-                {
-                  /* folder notification */
-                  notif_parameters
-                    = talloc_zero(NULL,
-                                  struct mapistore_object_notification_parameters);
-                  notif_parameters->object_id = [self objectId];
-                  notif_parameters->tag_count = 5;
-                  notif_parameters->tags = talloc_array (notif_parameters,
-                                                         enum MAPITAGS, 5);
-                  notif_parameters->tags[0] = PR_CONTENT_COUNT;
-                  notif_parameters->tags[1] = PR_DELETED_COUNT_TOTAL;
-                  notif_parameters->tags[2] = PR_MESSAGE_SIZE;
-                  notif_parameters->tags[3] = PR_NORMAL_MESSAGE_SIZE;
-                  notif_parameters->tags[4] = PR_DELETED_MSG_COUNT;
-                  notif_parameters->new_message_count = true;
-                  notif_parameters->message_count = [[self messageKeys]
-                                                      count] - 1;
-                  connInfo = [[self context] connectionInfo];
-                  mapistore_push_notification (connInfo->mstore_ctx,
-                                               MAPISTORE_FOLDER,
-                                               MAPISTORE_OBJECT_MODIFIED,
-                                               notif_parameters);
-                  talloc_free(notif_parameters);
-
-                  /* message notification */
-                  notif_parameters
-                    = talloc_zero(NULL,
-                                  struct mapistore_object_notification_parameters);
-                  notif_parameters->object_id = mid;
-                  notif_parameters->folder_id = [self objectId];
-                  /* Exchange sends a fnevObjectCreated!! */
-                  mapistore_push_notification (connInfo->mstore_ctx,
-                                               MAPISTORE_MESSAGE,
-                                               MAPISTORE_OBJECT_CREATED,
-                                               notif_parameters);
-                  talloc_free(notif_parameters);
-
-                  /* table notification */
-                  for (count = 0; count < max; count++)
-                    [[activeTables objectAtIndex: count]
-                      notifyChangesForChild: message];
-                }
-              [self logWithFormat: @"successfully deleted object at URL: %@", childURL];
-              [mapping unregisterURLWithID: mid];
-              [self cleanupCaches];
-              rc = MAPISTORE_SUCCESS;
-            }
+            rc = MAPISTORE_ERR_DENIED;
         }
       else
         rc = MAPISTORE_ERR_NOT_FOUND;
@@ -580,6 +608,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   memCtx = talloc_zero (NULL, TALLOC_CTX);
   rc = [sourceFolder openMessage: &sourceMsg
                          withMID: srcMid
+                      forWriting: NO
                         inMemCtx: memCtx];
   if (rc != MAPISTORE_SUCCESS)
     goto end;
@@ -658,46 +687,51 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   MAPIStoreMapping *mapping;
   struct Binary_r *targetChangeKey;
 
-  if ([sourceFolder isKindOfClass: isa]
-      || [self isKindOfClass: [sourceFolder class]])
-    [self logWithFormat: @"%s: this class could probably implement"
-          @" a specialized/optimized version", __FUNCTION__];
-  oldMessageURLs = [NSMutableArray arrayWithCapacity: midCount];
-  mapping = [[self context] mapping];
-  for (count = 0; rc == MAPISTORE_SUCCESS && count < midCount; count++)
+  if (wantCopy || [[context activeUser] isEqual: [context ownerUser]])
     {
-      oldMessageURL = [mapping urlFromID: srcMids[count]];
-      if (oldMessageURL)
+      if ([sourceFolder isKindOfClass: isa]
+          || [self isKindOfClass: [sourceFolder class]])
+        [self logWithFormat: @"%s: this class could probably implement"
+              @" a specialized/optimized version", __FUNCTION__];
+      oldMessageURLs = [NSMutableArray arrayWithCapacity: midCount];
+      mapping = [[self context] mapping];
+      for (count = 0; rc == MAPISTORE_SUCCESS && count < midCount; count++)
         {
-          [oldMessageURLs addObject: oldMessageURL];
-          if (targetChangeKeys)
-            targetChangeKey = targetChangeKeys[count];
+          oldMessageURL = [mapping urlFromID: srcMids[count]];
+          if (oldMessageURL)
+            {
+              [oldMessageURLs addObject: oldMessageURL];
+              if (targetChangeKeys)
+                targetChangeKey = targetChangeKeys[count];
+              else
+                targetChangeKey = NULL;
+              rc = [self moveCopyMessageWithMID: srcMids[count]
+                                     fromFolder: sourceFolder
+                                        withMID: targetMids[count]
+                                   andChangeKey: targetChangeKey
+                                       wantCopy: wantCopy];
+            }
           else
-            targetChangeKey = NULL;
-          rc = [self moveCopyMessageWithMID: srcMids[count]
-                                 fromFolder: sourceFolder
-                                    withMID: targetMids[count]
-                               andChangeKey: targetChangeKey
-                                   wantCopy: wantCopy];
+            rc = MAPISTORE_ERR_NOT_FOUND;
         }
-      else
-        rc = MAPISTORE_ERR_NOT_FOUND;
-    }
 
-  /* Notifications */
-  if (rc == MAPISTORE_SUCCESS)
-    {
-      [self postNotificationsForMoveCopyMessagesWithMIDs: srcMids
-                                          andMessageURLs: oldMessageURLs
-                                                andCount: midCount
-                                              fromFolder: sourceFolder
-                                                withMIDs: targetMids
-                                                wantCopy: wantCopy];
+      /* Notifications */
+      if (rc == MAPISTORE_SUCCESS)
+        {
+          [self postNotificationsForMoveCopyMessagesWithMIDs: srcMids
+                                              andMessageURLs: oldMessageURLs
+                                                    andCount: midCount
+                                                  fromFolder: sourceFolder
+                                                    withMIDs: targetMids
+                                                    wantCopy: wantCopy];
 
-      // We cleanup cache of our source and destination folders
-      [self cleanupCaches];
-      [sourceFolder cleanupCaches];
+          // We cleanup cache of our source and destination folders
+          [self cleanupCaches];
+          [sourceFolder cleanupCaches];
+        }
     }
+  else
+    rc = MAPISTORE_ERR_DENIED;
 
   return rc;
 }
@@ -1097,7 +1131,24 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (int) getPrAccess: (void **) data
            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPILongValue (memCtx, 0x1|0x2|0x4|0x8|0x10|0x20);
+  uint32_t access = 0;
+  BOOL userIsOwner;
+
+  userIsOwner = [[context activeUser] isEqual: [context ownerUser]];
+  if (userIsOwner || [self subscriberCanModifyMessages])
+    access |= 0x01;
+  if (userIsOwner || [self subscriberCanReadMessages])
+    access |= 0x02;
+  if (userIsOwner || [self subscriberCanDeleteMessages])
+    access |= 0x04;
+  if (userIsOwner || [self subscriberCanCreateSubFolders])
+    access |= 0x08;
+  if (userIsOwner || [self subscriberCanCreateMessages])
+    access |= 0x10;
+  if (userIsOwner)
+    access |= 0x20;
+  
+  *data = MAPILongValue (memCtx, access);
 
   return MAPISTORE_SUCCESS;
 }
@@ -1517,6 +1568,31 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [self subclassResponsibility: _cmd];
 
   return nil;
+}
+
+- (BOOL) subscriberCanCreateMessages
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanModifyMessages
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanReadMessages
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanDeleteMessages
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanCreateSubFolders
+{
+  return NO;
 }
 
 @end

@@ -20,7 +20,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+
 #import "MAPIStoreTypes.h"
+#import "NSObject+MAPIStore.h"
+#import "NSString+MAPIStore.h"
 
 #import "MAPIStoreNotesMessage.h"
 
@@ -42,12 +46,28 @@
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPrMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"IPM.StickyNote" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (int) getPrSubject: (void **) data
             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getProperty: data
-                   withTag: PR_NORMALIZED_SUBJECT_UNICODE
-                  inMemCtx: memCtx];
+  id value;
+  int rc;
+ 
+  value = [[sogoObject properties]
+            objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
+  if (value)
+    rc = [value getValue: data forTag: PR_NORMALIZED_SUBJECT_UNICODE
+                inMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 @end

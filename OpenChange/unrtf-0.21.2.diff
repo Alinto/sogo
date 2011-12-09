@@ -1,6 +1,6 @@
 diff -durpN unrtf-0.21.2.old/outputs/html.conf unrtf-0.21.2/outputs/html.conf
 --- unrtf-0.21.2.old/outputs/html.conf	2010-08-15 08:44:09.000000000 -0400
-+++ unrtf-0.21.2/outputs/html.conf	2011-11-09 15:48:29.982798286 -0500
++++ unrtf-0.21.2/outputs/html.conf	2011-11-09 15:53:21.802783775 -0500
 @@ -5,7 +5,7 @@ comment_end
  	-->
  	
@@ -12,7 +12,7 @@ diff -durpN unrtf-0.21.2.old/outputs/html.conf unrtf-0.21.2/outputs/html.conf
  	
 diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 --- unrtf-0.21.2.old/src/attr.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/attr.c	2011-11-09 15:48:29.990798214 -0500
++++ unrtf-0.21.2/src/attr.c	2011-12-01 10:14:45.282855488 -0500
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -1176,7 +1176,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 +    {
 +      col = (Collection *)my_malloc(sizeof(Collection));
 +      col->nr = nr;
-+      col->text = text;
++      col->text = strdup(text);
 +      col->next = NULL;
 +    }
 +  else
@@ -1188,7 +1188,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 +              /* Here is a memory leak but not heavy. Do we need to care about this?
 +                 my_free(a->alias.text);
 +              */
-+              c->text = text;
++              c->text = strdup(text);
  
 -				return col;
 -			}
@@ -1207,7 +1207,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 -	}
 +      c->next = (Collection *)my_malloc(sizeof(Collection));
 +      c->next->nr = nr;
-+      c->next->text = text;
++      c->next->text = strdup(text);
 +      c->next->next = NULL;
 +    }
  
@@ -1239,7 +1239,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
  }
  
  /*========================================================================
-@@ -855,13 +831,13 @@ get_from_collection(Collection *c, int n
+@@ -855,13 +831,15 @@ get_from_collection(Collection *c, int n
  void
  free_collection(Collection *c)
  {
@@ -1255,14 +1255,17 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 +  while (c != NULL)
 +    {
 +      c2 = c->next;
++      if (c->text) {
++        my_free((void *)c->text);
++      }
 +      my_free((void *)c);
 +      c = c2;
 +    }
  }
- 
+-
 diff -durpN unrtf-0.21.2.old/src/attr.h unrtf-0.21.2/src/attr.h
 --- unrtf-0.21.2.old/src/attr.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/attr.h	2011-11-09 15:48:29.990798214 -0500
++++ unrtf-0.21.2/src/attr.h	2011-11-09 15:53:21.806783776 -0500
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -1412,7 +1415,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.h unrtf-0.21.2/src/attr.h
 +#endif /* ATTR_H */
 diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
 --- unrtf-0.21.2.old/src/convert.c	2011-06-07 08:00:23.000000000 -0400
-+++ unrtf-0.21.2/src/convert.c	2011-11-09 15:52:04.710787385 -0500
++++ unrtf-0.21.2/src/convert.c	2011-12-01 10:32:16.958862025 -0500
 @@ -1,24 +1,24 @@
  
  /*===========================================================================
@@ -6856,7 +6859,7 @@ diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
  }
  
  
-@@ -3652,37 +3664,225 @@ word_print_core (Word *w)
+@@ -3652,37 +3664,227 @@ word_print_core (Word *w)
   *=======================================================================*/
  
  void 
@@ -7045,6 +7048,8 @@ diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
 +  }
 +
 +  hash_free(&cc);
++  if (cc.input_str)
++    my_free(cc.input_str);
 +  word_free(word);
 +  fonttable_free(oc.conversion);
 +  if (my_iconv_is_valid(oc.conversion->desc))
@@ -7106,7 +7111,7 @@ diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
  }
 diff -durpN unrtf-0.21.2.old/src/convert.h unrtf-0.21.2/src/convert.h
 --- unrtf-0.21.2.old/src/convert.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/convert.h	2011-11-09 15:48:29.998798267 -0500
++++ unrtf-0.21.2/src/convert.h	2011-11-09 15:53:21.810783765 -0500
 @@ -36,18 +36,135 @@
  
  #ifndef _CONVERT
@@ -7250,7 +7255,7 @@ diff -durpN unrtf-0.21.2.old/src/convert.h unrtf-0.21.2/src/convert.h
  
 diff -durpN unrtf-0.21.2.old/src/defs.h unrtf-0.21.2/src/defs.h
 --- unrtf-0.21.2.old/src/defs.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/defs.h	2011-11-09 15:48:29.998798267 -0500
++++ unrtf-0.21.2/src/defs.h	2011-11-09 15:53:21.810783765 -0500
 @@ -64,9 +64,6 @@
  #define SKIP_ONE_WORD	2
  #endif
@@ -7270,7 +7275,7 @@ diff -durpN unrtf-0.21.2.old/src/defs.h unrtf-0.21.2/src/defs.h
 +#define DEFAULT_OUTPUT             "html"
 diff -durpN unrtf-0.21.2.old/src/error.c unrtf-0.21.2/src/error.c
 --- unrtf-0.21.2.old/src/error.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/error.c	2011-11-09 15:48:29.998798267 -0500
++++ unrtf-0.21.2/src/error.c	2011-11-09 15:53:21.810783765 -0500
 @@ -51,27 +51,11 @@
  #include <stdlib.h>
  #endif
@@ -7315,7 +7320,7 @@ diff -durpN unrtf-0.21.2.old/src/error.c unrtf-0.21.2/src/error.c
  #endif
 diff -durpN unrtf-0.21.2.old/src/error.h unrtf-0.21.2/src/error.h
 --- unrtf-0.21.2.old/src/error.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/error.h	2011-11-09 15:48:29.998798267 -0500
++++ unrtf-0.21.2/src/error.h	2011-11-09 15:53:21.810783765 -0500
 @@ -37,9 +37,10 @@
  
  #define CHECK_MALLOC_SUCCESS(XX) { if ((XX)==NULL) { fprintf (stderr, "internal error: cannot allocate memory in %s at %d\n", __FILE__, __LINE__); exit (1); }}
@@ -7330,7 +7335,7 @@ diff -durpN unrtf-0.21.2.old/src/error.h unrtf-0.21.2/src/error.h
  
 diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
 --- unrtf-0.21.2.old/src/hash.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/hash.c	2011-11-09 15:48:29.998798267 -0500
++++ unrtf-0.21.2/src/hash.c	2011-11-09 15:53:21.810783765 -0500
 @@ -53,24 +53,16 @@
  #include <string.h>
  #endif
@@ -7535,7 +7540,7 @@ diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
 +}
 diff -durpN unrtf-0.21.2.old/src/hash.h unrtf-0.21.2/src/hash.h
 --- unrtf-0.21.2.old/src/hash.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/hash.h	2011-11-09 15:51:52.846788680 -0500
++++ unrtf-0.21.2/src/hash.h	2011-11-09 15:53:21.810783765 -0500
 @@ -32,11 +32,15 @@
   * 16 Dec 07, daved@physiol.usyd.edu.au: updated to GPL v3
   *--------------------------------------------------------------------*/
@@ -7559,7 +7564,7 @@ diff -durpN unrtf-0.21.2.old/src/hash.h unrtf-0.21.2/src/hash.h
 +#endif /* HASH_H */
 diff -durpN unrtf-0.21.2.old/src/main.c unrtf-0.21.2/src/main.c
 --- unrtf-0.21.2.old/src/main.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/main.c	2011-11-09 15:48:29.998798267 -0500
++++ unrtf-0.21.2/src/main.c	2011-11-09 15:53:21.810783765 -0500
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -7981,7 +7986,7 @@ diff -durpN unrtf-0.21.2.old/src/main.c unrtf-0.21.2/src/main.c
 -
 diff -durpN unrtf-0.21.2.old/src/main.h unrtf-0.21.2/src/main.h
 --- unrtf-0.21.2.old/src/main.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/main.h	2011-11-09 15:48:29.998798267 -0500
++++ unrtf-0.21.2/src/main.h	2011-11-09 15:53:21.810783765 -0500
 @@ -35,21 +35,8 @@
   * 17 Jan 10, daved@physiol.usyd.edu.au: change CONFIG_DIR to drop outputs/
   *--------------------------------------------------------------------*/
@@ -8007,7 +8012,7 @@ diff -durpN unrtf-0.21.2.old/src/main.h unrtf-0.21.2/src/main.h
 +#define USAGE "unrtf [--version] [--verbose] [--help] [--nopict|-n] [--noremap] [--html] [--text] [--vt] [--latex] [--rtf] [-P config_search_path]  [-t <file_with_tags>)] <filename>"
 diff -durpN unrtf-0.21.2.old/src/Makefile.am unrtf-0.21.2/src/Makefile.am
 --- unrtf-0.21.2.old/src/Makefile.am	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/Makefile.am	2011-11-09 15:48:29.998798267 -0500
++++ unrtf-0.21.2/src/Makefile.am	2011-11-09 15:53:21.810783765 -0500
 @@ -13,7 +13,6 @@ unrtf_SOURCES = attr.c attr.h         \
  		malloc.c malloc.h     \
  		output.c output.h     \
@@ -8018,7 +8023,7 @@ diff -durpN unrtf-0.21.2.old/src/Makefile.am unrtf-0.21.2/src/Makefile.am
  		util.c util.h         \
 diff -durpN unrtf-0.21.2.old/src/malloc.c unrtf-0.21.2/src/malloc.c
 --- unrtf-0.21.2.old/src/malloc.c	2010-07-09 01:13:05.000000000 -0400
-+++ unrtf-0.21.2/src/malloc.c	2011-11-09 15:48:29.998798267 -0500
++++ unrtf-0.21.2/src/malloc.c	2011-12-01 10:36:18.514864760 -0500
 @@ -135,19 +135,19 @@ total_malloced (void) {
   *=======================================================================*/
  
@@ -8058,7 +8063,7 @@ diff -durpN unrtf-0.21.2.old/src/malloc.c unrtf-0.21.2/src/malloc.c
  }    
 diff -durpN unrtf-0.21.2.old/src/malloc.h unrtf-0.21.2/src/malloc.h
 --- unrtf-0.21.2.old/src/malloc.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/malloc.h	2011-11-09 15:48:29.998798267 -0500
++++ unrtf-0.21.2/src/malloc.h	2011-11-09 15:53:21.810783765 -0500
 @@ -32,9 +32,10 @@
   * 09 Nov 08, arkadiusz.firus@gmail.com: added my_realloc
   *--------------------------------------------------------------------*/
@@ -8074,7 +8079,7 @@ diff -durpN unrtf-0.21.2.old/src/malloc.h unrtf-0.21.2/src/malloc.h
 +extern char * my_strdup (struct ConversionContext *, char*);
 diff -durpN unrtf-0.21.2.old/src/my_iconv.c unrtf-0.21.2/src/my_iconv.c
 --- unrtf-0.21.2.old/src/my_iconv.c	2010-08-16 00:12:43.000000000 -0400
-+++ unrtf-0.21.2/src/my_iconv.c	2011-11-09 15:48:29.998798267 -0500
++++ unrtf-0.21.2/src/my_iconv.c	2011-11-09 15:53:21.814783744 -0500
 @@ -12,154 +12,133 @@
  #include <stdio.h>
  #include <string.h>
@@ -8316,7 +8321,7 @@ diff -durpN unrtf-0.21.2.old/src/my_iconv.c unrtf-0.21.2/src/my_iconv.c
  
 diff -durpN unrtf-0.21.2.old/src/my_iconv.h unrtf-0.21.2/src/my_iconv.h
 --- unrtf-0.21.2.old/src/my_iconv.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/my_iconv.h	2011-11-09 15:48:29.998798267 -0500
++++ unrtf-0.21.2/src/my_iconv.h	2011-11-09 15:53:21.814783744 -0500
 @@ -5,6 +5,9 @@
   * Purpose:    my_conv definitions
   *--------------------------------------------------------------------*/
@@ -8346,7 +8351,7 @@ diff -durpN unrtf-0.21.2.old/src/my_iconv.h unrtf-0.21.2/src/my_iconv.h
 +#endif /* _MY_ICONV */
 diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 --- unrtf-0.21.2.old/src/output.c	2011-06-07 08:04:38.000000000 -0400
-+++ unrtf-0.21.2/src/output.c	2011-11-09 15:50:35.126792073 -0500
++++ unrtf-0.21.2/src/output.c	2011-12-01 10:30:41.598861702 -0500
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -8449,7 +8454,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
  
  /*========================================================================
   * Name:	op_translate_char
-@@ -119,102 +122,110 @@ op_free (OutputPersonality *op)
+@@ -119,102 +122,113 @@ op_free (OutputPersonality *op)
   *=======================================================================*/
  
  char *
@@ -8463,7 +8468,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 -	size_t inbytes = (ch / 256) + 1, outbytes = inbytes * 4, i;
 +  char *result=NULL;
 +  static char output_buffer[2]={ 0, 0 };
-+  char *inbuf, *outbuf, *originbuf, *origoutbuf;
++  char *inbuf, *outbuf, *originbuf, *origoutbuf, *alias;
 +  size_t inbytes = (ch / 256) + 1, outbytes = inbytes * 4, i;
 +  my_iconv_t cd;
  
@@ -8615,7 +8620,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 +        /* End of conversion*/
  
 -		result = get_alias(op, ch);
-+        result = get_alias(op, ch);
++        alias = get_alias(op, ch);
  
 -		if (result == NULL)
 -			if (ch > 127 && op->unisymbol_print)
@@ -8623,23 +8628,26 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 -			else
 -				result = outbuf;
 -	}
-+        if (result == NULL)
++        if (alias == NULL)
 +          {
 +            if (ch > 127 && op->unisymbol_print)
 +              result = assemble_string(op->unisymbol_print, ch);
 +            else
-+              result = outbuf;
++              result = strdup(outbuf);
 +          }
++        else
++          result = strdup(alias);
  
 -	return result;
 +        free (originbuf);
++        free (origoutbuf);
 +      }
 +
 +  return result;
  }
  
  #if 0 /* daved - 0.21.2 */
-@@ -227,123 +238,122 @@ op_translate_char (OutputPersonality *op
+@@ -227,123 +241,122 @@ op_translate_char (OutputPersonality *op
   *=======================================================================*/
  
  char *
@@ -8851,7 +8859,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
  }
  #endif
  
-@@ -357,113 +367,115 @@ op_translate_str (OutputPersonality *op,
+@@ -357,113 +370,115 @@ op_translate_str (OutputPersonality *op,
   *=======================================================================*/
  
  char *
@@ -9050,7 +9058,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
  }
  #endif
  /*========================================================================
-@@ -475,123 +487,113 @@ op_translate_doublet (OutputPersonality
+@@ -475,123 +490,113 @@ op_translate_doublet (OutputPersonality
   *=======================================================================*/
  
  void
@@ -9277,7 +9285,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
  }
  
  
-@@ -604,123 +606,113 @@ op_begin_std_fontsize (OutputPersonality
+@@ -604,123 +609,113 @@ op_begin_std_fontsize (OutputPersonality
   *=======================================================================*/
  
  void
@@ -9504,7 +9512,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
  }
  
  #if 1 /* AK3 - AF */
-@@ -734,7 +726,7 @@ op_end_std_fontsize (OutputPersonality *
+@@ -734,7 +729,7 @@ op_end_std_fontsize (OutputPersonality *
  void
  add_alias(OutputPersonality *op, int nr, char *text)
  {
@@ -9513,7 +9521,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
  }
  
  /*========================================================================
-@@ -745,9 +737,8 @@ add_alias(OutputPersonality *op, int nr,
+@@ -745,9 +740,8 @@ add_alias(OutputPersonality *op, int nr,
   *=======================================================================*/
  
  char *
@@ -9527,7 +9535,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 -
 diff -durpN unrtf-0.21.2.old/src/output.h unrtf-0.21.2/src/output.h
 --- unrtf-0.21.2.old/src/output.h	2010-08-11 21:09:02.000000000 -0400
-+++ unrtf-0.21.2/src/output.h	2011-11-09 15:48:30.002798270 -0500
++++ unrtf-0.21.2/src/output.h	2011-11-09 15:53:21.814783744 -0500
 @@ -44,227 +44,228 @@
  typedef Collection Aliases;
  
@@ -9915,7 +9923,7 @@ diff -durpN unrtf-0.21.2.old/src/output.h unrtf-0.21.2/src/output.h
 -
 diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
 --- unrtf-0.21.2.old/src/parse.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/parse.c	2011-11-09 15:48:30.002798270 -0500
++++ unrtf-0.21.2/src/parse.c	2011-12-01 10:27:41.486860883 -0500
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -10170,7 +10178,7 @@ diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
  }
  
  
-@@ -222,183 +179,181 @@ expand_word_buffer ()
+@@ -222,183 +179,184 @@ expand_word_buffer ()
   *=======================================================================*/
  
  static int 
@@ -10202,6 +10210,9 @@ diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
 -		error_handler("Cannot allocate word storage");
 +  /* Get some storage for a word.
 +   */
++  if (cc->input_str) {
++    my_free(cc->input_str);
++  }
 +  cc->input_str = my_malloc (cc->current_max_length);
 +  if (!cc->input_str)
 +    error_handler(cc, "Cannot allocate word storage");
@@ -10509,7 +10520,7 @@ diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
  }
  
  
-@@ -412,44 +367,42 @@ read_word (FILE *f)
+@@ -412,44 +370,42 @@ read_word (FILE *f)
   *=======================================================================*/
  
  Word *
@@ -10586,7 +10597,7 @@ diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
  }
 diff -durpN unrtf-0.21.2.old/src/parse.h unrtf-0.21.2/src/parse.h
 --- unrtf-0.21.2.old/src/parse.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/parse.h	2011-11-09 15:48:30.002798270 -0500
++++ unrtf-0.21.2/src/parse.h	2011-11-09 15:53:21.814783744 -0500
 @@ -38,8 +38,6 @@
  #include "word.h"
  #endif
@@ -10679,7 +10690,7 @@ diff -durpN unrtf-0.21.2.old/src/path.h unrtf-0.21.2/src/path.h
 -void	show_dirs();
 diff -durpN unrtf-0.21.2.old/src/unrtf.h unrtf-0.21.2/src/unrtf.h
 --- unrtf-0.21.2.old/src/unrtf.h	1969-12-31 19:00:00.000000000 -0500
-+++ unrtf-0.21.2/src/unrtf.h	2011-11-09 15:48:30.002798270 -0500
++++ unrtf-0.21.2/src/unrtf.h	2011-11-09 15:53:21.814783744 -0500
 @@ -0,0 +1,55 @@
 +/*===========================================================================
 +   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -10738,7 +10749,7 @@ diff -durpN unrtf-0.21.2.old/src/unrtf.h unrtf-0.21.2/src/unrtf.h
 +#endif /* UNRTF_H */
 diff -durpN unrtf-0.21.2.old/src/user.c unrtf-0.21.2/src/user.c
 --- unrtf-0.21.2.old/src/user.c	2011-06-07 08:08:17.000000000 -0400
-+++ unrtf-0.21.2/src/user.c	2011-11-09 15:48:30.002798270 -0500
++++ unrtf-0.21.2/src/user.c	2011-12-01 09:59:46.215667415 -0500
 @@ -7,7 +7,7 @@
   *----------------------------------------------------------------------
   * Changes:
@@ -11168,7 +11179,7 @@ diff -durpN unrtf-0.21.2.old/src/user.c unrtf-0.21.2/src/user.c
  
 diff -durpN unrtf-0.21.2.old/src/user.h unrtf-0.21.2/src/user.h
 --- unrtf-0.21.2.old/src/user.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/user.h	2011-11-09 15:48:30.002798270 -0500
++++ unrtf-0.21.2/src/user.h	2011-11-09 15:53:21.814783744 -0500
 @@ -151,9 +151,10 @@
  
  #ifndef _USER
@@ -11184,7 +11195,7 @@ diff -durpN unrtf-0.21.2.old/src/user.h unrtf-0.21.2/src/user.h
  #endif
 diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
 --- unrtf-0.21.2.old/src/word.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/word.c	2011-11-09 15:48:30.002798270 -0500
++++ unrtf-0.21.2/src/word.c	2011-12-01 10:15:34.590855632 -0500
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -11243,7 +11254,7 @@ diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
  /*========================================================================
   * Name:	word_string
   * Purpose:	Obtains the string of a Word object. This involves accessing
-@@ -90,12 +87,12 @@ static int indent_level=0;
+@@ -90,12 +87,14 @@ static int indent_level=0;
   *=======================================================================*/
  
  char *
@@ -11256,13 +11267,15 @@ diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
 +word_string (const struct ConversionContext *cc, Word *w) {
 +  char *str;
 +  CHECK_PARAM_NOT_NULL(w);
++
 +  if (w->hash_index) str = hash_get_string (cc, w->hash_index);
 +  else str = NULL;
++
 +  return str;
  }
  
  
-@@ -108,24 +105,22 @@ word_string (Word *w) {
+@@ -108,24 +107,22 @@ word_string (Word *w) {
   *=======================================================================*/
  
  Word * 
@@ -11297,7 +11310,7 @@ diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
  /*========================================================================
   * Name:	word_free
   * Purpose:	Deallocates a Word object. This is only called at the end of
-@@ -135,20 +130,20 @@ word_new (char *str) {
+@@ -135,20 +132,20 @@ word_new (char *str) {
   *=======================================================================*/
  
  void word_free (Word *w) {
@@ -11329,7 +11342,7 @@ diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
  }
  
  
-@@ -165,14 +160,14 @@ void word_free (Word *w) {
+@@ -165,14 +162,14 @@ void word_free (Word *w) {
  static void
  print_indentation (int level)
  {
@@ -11351,7 +11364,7 @@ diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
  }
  
  
-@@ -186,33 +181,33 @@ print_indentation (int level)
+@@ -186,33 +183,33 @@ print_indentation (int level)
   *=======================================================================*/
  
  void
@@ -11407,7 +11420,7 @@ diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
  }
  
  #if 1 /* AK6 - AF */
-@@ -223,56 +218,56 @@ word_dump (Word *w)
+@@ -223,56 +220,56 @@ word_dump (Word *w)
   * Returns:	Optimized word.
   *=======================================================================*/
  Word *
@@ -11507,7 +11520,7 @@ diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
  
 diff -durpN unrtf-0.21.2.old/src/word.h unrtf-0.21.2/src/word.h
 --- unrtf-0.21.2.old/src/word.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/word.h	2011-11-09 15:48:30.002798270 -0500
++++ unrtf-0.21.2/src/word.h	2011-11-09 15:53:21.814783744 -0500
 @@ -41,14 +41,15 @@ typedef struct _w {
  	struct _w * child;
  } Word;
