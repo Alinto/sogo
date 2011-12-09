@@ -20,15 +20,13 @@
       <ul>
         <li target="generalView"><span>
             <var:string label:value="General" /></span></li>
-	<var:if condition="isCalendarEnabled">
+	<var:if condition="userHasCalendarAccess">
           <li target="calendarOptionsView"><span><var:string
                 label:value="Calendar Options"/></span></li>
 	</var:if
-          ><var:if condition="isContactsEnabled">
-          <li target="contactsOptionsView"><span><var:string
-                label:value="Contacts Options"/></span></li>
-        </var:if
-          ><var:if condition="isMailEnabled">
+          ><li target="contactsOptionsView"><span><var:string
+              label:value="Contacts Options"/></span></li
+          ><var:if condition="userHasMailAccess">
           <li target="mailOptionsView"><span><var:string
                 label:value="Mail Options"/></span></li>
           <li target="mailAccountsView"><span><var:string
@@ -82,7 +80,7 @@
                 /></label>
           </div>
         </div>
-        <var:if condition="isCalendarEnabled">
+        <var:if condition="userHasCalendarAccess">
           <div id="calendarOptionsView" class="tab">
             <label><var:string label:value="Week begins on :"/>
               <var:popup list="daysList" item="item"
@@ -181,7 +179,7 @@
           <input type="hidden" const:id="contactsCategoriesValue" 
             const:name="contactsCategoriesValue" var:value="contactsCategoriesValue"/>
         </div>
-        <var:if condition="isMailEnabled">
+        <var:if condition="userHasMailAccess">
           <div id="mailOptionsView" class="tab">
             <label><input type="checkbox" 
                 const:name="subscribedFoldersOnly"

@@ -66,12 +66,6 @@
 - (NSString *)ownPath;
 - (NSString *)relativePathToUserFolderSubPath:(NSString *)_sub;
 
-/* module access */
-- (BOOL) isCalendarEnabled;
-- (BOOL) isContactsEnabled;
-- (BOOL) isMailEnabled;
-- (BOOL) isPreferencesEnabled;
-
 /* date selection */
 - (NSCalendarDate *) selectedDate;
 

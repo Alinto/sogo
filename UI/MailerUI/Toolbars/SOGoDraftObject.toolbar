@@ -12,7 +12,7 @@
     { link  = "#";
       onclick  = "return onContactAdd(this);";
       image = "tb-compose-contacts-flat-24x24.png";
-      cssClass = "tbicon_addressbook";
+      cssClass = "tbicon_addressbook single-window-not-conditional";
       label = "Contacts";
       tooltip = "Select a recipient from an Address Book"; },
     { link  = "#";

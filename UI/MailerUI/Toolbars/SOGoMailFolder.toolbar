@@ -59,7 +59,7 @@
   (
    { link = "#";
      onclick = "return onPrintCurrentMessage(event);";
-     cssClass = "tbicon_print";
+     cssClass = "tbicon_print single-window-not-conditional";
      image = "tb-mail-print-flat-24x24.png";
      label = "Print"; 
      tooltip = "Print this message"; },

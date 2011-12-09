@@ -460,7 +460,7 @@ static NSMutableArray *abbrMonthLabelKeys = nil;
   value = [[context request] cookieValueForKey: @"SOGoWindowMode"];
   result = ([value isEqualToString: @"single"]);
 
-  NSLog(@"Single window mode %@", result?@"enabled":@"disabled");
+  //NSLog(@"Single window mode %@", result?@"enabled":@"disabled");
 
   return result;
 }
@@ -481,27 +481,6 @@ static NSMutableArray *abbrMonthLabelKeys = nil;
   user = [context activeUser];
 
   return [user canAccessModule: @"Mail"];
-}
-
-#warning we might want to refine the tests here...
-- (BOOL) isCalendarEnabled
-{
-  return [self userHasCalendarAccess] && ![self singleWindowModeEnabled];
-}
-
-- (BOOL) isContactsEnabled
-{
-  return ![self singleWindowModeEnabled];
-}
-
-- (BOOL) isMailEnabled
-{
-  return [self userHasMailAccess];
-}
-
-- (BOOL) isPreferencesEnabled
-{
-  return ![self singleWindowModeEnabled];
 }
 
 /* SoUser */
