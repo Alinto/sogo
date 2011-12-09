@@ -10,7 +10,7 @@
       <var:foreach list="toolbarConfig" item="toolbarGroup"
         ><var:foreach list="toolbarGroup" item="buttonInfo"
           ><var:if condition="isButtonEnabled"
-            ><a class="toolbarButton" 
+            ><a var:class="cssClasses"
               var:href="buttonInfo.link"
               var:target="buttonInfo.target"
               var:onclick="buttonInfo.onclick"
@@ -28,7 +28,7 @@
             </a></var:if
             ><var:if condition="isButtonEnabled"
             const:negate="YES"
-            ><span class="disabledToolbarButton"
+            ><span var:class="cssClasses"
               ><img class="buttonImage"
                 var:src="buttonImage"
                 var:alt="buttonTooltip"
