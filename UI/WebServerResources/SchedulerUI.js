@@ -255,7 +255,7 @@ function deleteEvent() {
                     eventsToDelete.push(sortedNodes[calendars[i]]);
                 }
                 if (i > 0) {
-                    var p = createElement("p");
+                    var p = createElement("p", null, ["list"]);
                     var str = "";
                     if (Prototype.Browser.IE)
                         str = label.formatted('<br><br> - <b>' + events.join('</b><br> - <b>') + '</b><br><br>');
@@ -313,7 +313,7 @@ function deleteEvent() {
                 eventsToDelete.push(sortedNodes[calendars[i]]);
             }
             if (i > 0) {
-                var p = createElement("p");
+                var p = createElement("p", null, ["list"]);
                 var label = _("eventDeleteConfirmation");
                 if (Prototype.Browser.IE)
                     label = label.formatted('<br><br> - <b>' + events.join('</b><br> - <b>') + '</b><br><br>');

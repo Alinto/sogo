@@ -619,6 +619,10 @@ DIV.dialog.none P
 DIV.dialog.none P.prompt
 { text-align: right; }
 
+DIV.dialog P.list
+{ max-height: 200px;
+  overflow-y: auto; }
+
 DIV#bgFrameDiv
 { position: absolute;
   top: 0px; left: 0px;

@@ -14,6 +14,7 @@ Enhancements
 
 Bug Fixes
  - fixed encoding of headers in sogo-ealarm-notify
+ - fixed confirmation dialog box when deleting too many events
 
 1.3-20111130 (1.3.10)
 ---------------------
