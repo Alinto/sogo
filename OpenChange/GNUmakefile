@@ -14,7 +14,6 @@ MAPISTORESOGO = MAPIStoreSOGo
 LIBRARY_NAME = $(MAPISTORESOGO)
 
 $(MAPISTORESOGO)_VERSION = $(BACKEND_VERSION)
-$(MAPISTORESOGO)_INSTALL_DIR = $(DESTDIR)/$(SAMBA_LIB_DIR)/mapistore_backends
 
 $(MAPISTORESOGO)_OBJC_FILES += \
 	MAPIStoreSOGo.m
@@ -27,9 +26,7 @@ BUNDLE_INSTALL_DIR = $(SOGO_LIBDIR)
 
 UNRTF_DIR = unrtf-$(UNRTF_VERSION)
 
-$(SOGOBACKEND)_CPPFLAGS += -I$(UNRTF_DIR)/src
-
-$(SOGOBACKEND)_SUBPROJECTS = $(UNRTF_DIR)/src
+$(SOGOBACKEND)_SUBPROJECTS += $(UNRTF_DIR)/src
 
 $(SOGOBACKEND)_PRINCIPAL_CLASS = MAPIApplication
 
@@ -161,30 +158,39 @@ TEST_TOOL_NAME += $(PLREADER_TOOL)
 
 ### cflags and libs
 LIBMAPI_CFLAGS = $(shell pkg-config libmapi --cflags)
-LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags) -DSAMBA_PREFIX="\"$(shell pkg-config libmapistore --variable=prefix)\""
 
 ifeq ($(LIBMAPI_CFLAGS),)
 all install::
 	@echo "Cannot build the OpenChange SOGo backend (empty CFLAGS for libmapistore)"
 else
 
+SAMBA_LIB_DIR = $(shell pkg-config libmapistore --variable=libdir)
+
 LIBMAPI_LIBS = $(shell pkg-config libmapi --libs)
+
+LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags) -DSAMBA_PREFIX="\"$(shell pkg-config libmapistore --variable=prefix)\""
 LIBMAPISTORE_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy
+
+$(MAPISTORESOGO)_INSTALL_DIR = $(DESTDIR)/$(SAMBA_LIB_DIR)/mapistore_backends
+$(MAPISTORESOGO)_LDFLAGS += \
+        -L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
+	$(LIBMAPI_LIBS) \
+	$(LIBMAPISTORE_LIBS)
+
+$(SOGOBACKEND)_LDFLAGS += \
+        -L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore \
+        -L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
+	$(LIBMAPI_LIBS) \
+	$(LIBMAPISTORE_LIBS)
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-Werror -Wall \
 	$(LIBMAPI_CFLAGS) \
 	$(LIBMAPISTORE_CFLAGS) \
+	-I$(UNRTF_DIR)/src \
 	-I../SoObjects -I../SOPE \
 	-DBACKEND_BUNDLE_NAME="@\"$(BUNDLE_NAME)$(BUNDLE_EXTENSION)\"" \
 	-DSOGO_BUNDLES_DIR="@\"$(BUNDLE_INSTALL_DIR)\""
-ADDITIONAL_LIB_DIRS += -Wl,--no-as-needed \
-	-L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
-	-L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore \
-	 $(LIBMAPI_LIBS) \
-	 $(LIBMAPISTORE_LIBS)
-
-SAMBA_LIB_DIR = $(shell pkg-config libmapistore --variable=libdir)
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make

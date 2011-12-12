@@ -157,4 +157,43 @@
   return rights;
 }
 
+- (BOOL) subscriberCanReadMessages
+{
+  static NSArray *viewerRoles = nil;
+
+  if (!viewerRoles)
+    viewerRoles = [[NSArray alloc] initWithObjects:
+                                     SOGoCalendarRole_PublicViewer,
+                                   SOGoCalendarRole_PublicDAndTViewer,
+                                   SOGoCalendarRole_PrivateViewer,
+                                   SOGoCalendarRole_PrivateDAndTViewer,
+                                   SOGoCalendarRole_ConfidentialViewer,
+                                   SOGoCalendarRole_ConfidentialDAndTViewer,
+                                   nil];
+
+  return ([[self activeUserRoles] firstObjectCommonWithArray: viewerRoles]
+          != nil);
+}
+
+- (BOOL) subscriberCanModifyMessages
+{
+  static NSArray *modifierRoles = nil;
+
+  if (!modifierRoles)
+    modifierRoles = [[NSArray alloc] initWithObjects:
+                                       SOGoCalendarRole_PublicModifier,
+                                     SOGoCalendarRole_PrivateModifier,
+                                     SOGoCalendarRole_ConfidentialModifier,
+                                     nil];
+
+  return ([[self activeUserRoles] firstObjectCommonWithArray: modifierRoles]
+          != nil);
+}
+
+- (EOQualifier *) aclQualifier
+{
+  return [EOQualifier qualifierWithQualifierFormat:
+            [(SOGoAppointmentFolder *) sogoObject aclSQLListingFilter]];
+}
+
 @end

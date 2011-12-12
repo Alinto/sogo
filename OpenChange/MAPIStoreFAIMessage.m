@@ -21,6 +21,7 @@
  */
 
 #import "MAPIStoreActiveTables.h"
+#import "MAPIStoreContext.h"
 #import "NSObject+MAPIStore.h"
 
 #import "MAPIStoreFAIMessage.h"
@@ -29,6 +30,7 @@
 #include <talloc.h>
 #include <util/time.h>
 #include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreFAIMessage
 
@@ -43,6 +45,30 @@
                inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
+}
+
+- (enum mapistore_error) saveMessage
+{
+  enum mapistore_error rc;
+  MAPIStoreContext *context;
+
+  context = [self context];
+  if ([[context activeUser] isEqual: [context ownerUser]])
+    rc = [super saveMessage];
+  else
+    rc = MAPISTORE_ERR_DENIED;
+
+  return rc;
+}
+
+- (BOOL) subscriberCanReadMessage
+{
+  return NO;
+}
+
+- (BOOL) subscriberCanModifyMessage
+{
+  return NO;
 }
 
 @end
