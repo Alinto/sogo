@@ -104,7 +104,7 @@
 - (NSString *) fullName
 {
   CardElement *n;
-  NSString *fn, *firstName, *lastName;
+  NSString *fn, *firstName, *lastName, *org;
   
   fn = [card fn];
   if ([fn length] == 0)
@@ -119,8 +119,14 @@
           else
             fn = firstName;
         }
-      else
+      else if ([lastName length] > 0)
         fn = lastName;
+      else
+        {
+          n = [card org];
+          org = [n flattenedValueAtIndex: 0 forKey: @""];
+          fn = org;
+        }
     }
 
   return fn;

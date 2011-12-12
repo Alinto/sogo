@@ -212,7 +212,15 @@ static NSArray *folderListingFields = nil;
   if (![data length])
     {
       data = [contactRecord keysWithFormat: @"%{c_givenname} %{c_sn}"];
-      [contactRecord setObject: data forKey: @"c_cn"];
+      if ([data length] > 1)
+        {
+          [contactRecord setObject: data forKey: @"c_cn"];
+        }
+      else
+        {
+          data = [contactRecord objectForKey: @"c_o"];
+          [contactRecord setObject: data forKey: @"c_cn"];          
+        }
     }
 
   if (![contactRecord objectForKey: @"c_mail"])
