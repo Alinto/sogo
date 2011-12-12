@@ -18,8 +18,8 @@
 "Contacts" = "Адресная книга";
 "Attach" = "Вложить";
 "Save" = "Сохранить";
-"Options" = "Options";
-"Size" = "Size";
+"Options" = "Опции";
+"Size" = "Размер";
 
 /* Tooltips */
 
@@ -95,10 +95,10 @@
 "Add address"   = "Добавить адрес";
 
 "Attachments:" = "Вложения:";
-"Open" = "Open";
-"Select All" = "Select All";
-"Attach Web Page..." = "Attach Web Page...";
-"Attach File(s)..." = "Attach File(s)...";
+"Open" = "Открыть";
+"Select All" = "Выбрать все";
+"Attach Web Page..." = "Прикрепить веб-страницы ...";
+"Attach File(s)..." = "Прикрепить файл (ы) ...";
 
 "to"            = "Кому";
 "cc"            = "Копия";
@@ -109,10 +109,12 @@
 "Edit Draft..." = "Редактировать черновик...";
 "Load Images" = "Загрузить изображения";
 
-"Return Receipt" = "Return Receipt";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?";
-"Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+"Return Receipt" = "Уведомление о вручении";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Отправитель этого сообщения запросил получать уведомления, когда вы читаете это сообщение. Вы хотите уведомить отправителя?";
+"Return Receipt (displayed) - %@"= "Уведомление о вручении (отображается на дисплее) -% @";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.
+
+Note: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
 
 "Priority" = "Важность";
 "highest" = "Самый высокий";
@@ -121,7 +123,10 @@
 "low" = "Низкий";
 "lowest" = "Самый низкий";
 
-"This mail is being sent from an unsecure network!" = "This mail is being sent from an unsecure network!";
+"This mail is being sent from an unsecure network!" = "Это почта была послана с небезопасной сети!";
+
+"Address Book:" = "Адресная книга";
+"Search For:" = "Что искать:";
 
 /* Popup "show" */
 
@@ -142,7 +147,7 @@
 "View"          = "Просмотр";
 "All"           = "Все";
 "Unread"        = "Непрочитанные";
-"No message"    = "No message";
+"No message"    = "Нет сообщений";
 "messages"      = "сообщения";
 
 "first"         = "первая";
@@ -180,7 +185,7 @@
 
 /* Image Popup menu */
 "Save Image" = "Сохранить изображение";
-"Save Attachment" = "Save Attachment";
+"Save Attachment" = "Сохранить Приложения";
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Открыть в новом окне";
@@ -196,8 +201,8 @@
 "Delete Folder" = "Удалить папку";
 "Use This Folder For" = "Использовать эту папку для";
 "Get Messages for Account" = "Получить новые сообщения";
-"Properties..." = "Properties...";
-"Delegation..." = "Delegation...";
+"Properties..." = "Свойства ...";
+"Delegation..." = "Делегирование ...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Отправленные сообщения";
@@ -255,7 +260,7 @@
 "Please select a message." = "Пожалуйста выберите сообщение.";
 "Please select a message to print." = "Пожалуйста выберите сообщение для отправки на печать.";
 "Please select only one message to print." = "Пожалуйста выберите только одно сообщение для печати.";
-"The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
+"The message you have selected doesn't exist anymore." = "Сообщение, которое вы выбрали, не существует больше.";
 
 
 "The folder with name \"%{0}\" could not be created."
@@ -286,6 +291,6 @@
 "error_missingrecipients" = "Не указан адрес получателя";
 
 /* Message sending */
-"cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
-"cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
-"cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";
+"cannot send message: (smtp) all recipients discarded" = "Не удается отправить сообщение: всем получателям, все получатели являются недействительными.";
+"cannot send message (smtp) - recipients discarded:" = "Не удается отправить сообщение. Следующие адреса неверны:";
+"cannot send message: (smtp) error when connecting" = "Не удается отправить сообщение: ошибка при соединении с сервером SMTP.";

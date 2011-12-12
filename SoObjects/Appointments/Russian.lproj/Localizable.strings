@@ -35,12 +35,19 @@ vtodo_class2 = "(Конфиденциальная задача)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Приглашение на мероприятие: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(послал %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} пригласил вас на %{Summary}.\n\Начало: %{StartDate} в %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} пригласил вас на %{Summary}.
+\Начало: %{StartDate} в %{StartTime}
+Конец: %{EndDate} в %{EndTime}
+Описание: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Мероприятие отменено: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText} отменил это мероприятие: %{Summary}.\n\nНачало: %{StartDate} в %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}";
+= "%{Organizer} %{SentByText} отменил это мероприятие: %{Summary}.
+
+Начало: %{StartDate} в %{StartTime}
+Конец: %{EndDate} в %{EndTime}
+Описание: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
@@ -57,7 +64,7 @@ vtodo_class2 = "(Конфиденциальная задача)";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText}отказался участвовать в запланированном мероприятии.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
+= "%{Attendee} %{SentByText}делегировал приглашение %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}не определился с желанием участвовать в запланированном мероприятии.";
 

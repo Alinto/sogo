@@ -12,4 +12,4 @@
 "ACLs_title" = "Управление списками доступа к пользовательским папкам (ACL)";
 
 /* Modules descriptions */
-"ACLs_description" = "<p>The Access Control Lists administration module allows to change the ACLs of each user's Calendars and Address books.</p><p>To modify the ACLs of a user's folder, type the name of the user in the search field at the top of the window and double-click on the desired folder.</p>";
+"ACLs_description" = "<p> Списки контроля доступа модуль администрирования позволяет изменять списки ACL календарей каждого пользователя и адрес книги. </p><p> Чтобы изменить списки ACL папки пользователя, введите имя пользователя в поле поиска в верхней части окна и дважды щелкнуть по нужной папке. </p>";

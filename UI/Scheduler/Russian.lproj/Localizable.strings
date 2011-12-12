@@ -10,7 +10,7 @@
 "Switch to day view" = "Перейти к обзору дня";
 "Switch to week view" = "Перейти к обзору недели";
 "Switch to month view" = "Перейти к обзору месяца";
-"Reload all calendars" = "Reload all calendars";
+"Reload all calendars" = "Перезагрузить все календари";
 
 /* Tabs */
 "Date" = "Дата";
@@ -46,8 +46,8 @@
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Сегодня";
 
-"Previous Day" = "Previous Day";
-"Next Day" = "Next Day";
+"Previous Day" = "Предыдущий день";
+"Next Day" = "Следующий день";
 
 /* Week */
 
@@ -150,7 +150,7 @@
 "View the Date & Time" = "Показывать время и дату";
 "Modify" = "Изменить";
 "Respond To" = "Ответить";
-"None" = "None";
+"None" = "Нет";
 
 "This person can create objects in my calendar."
 = "Этот участник может создавать записи в моем календаре.";
@@ -352,13 +352,13 @@
 "Week(s)" = "недель(и)";
 "On" = "На";
 "Month(s)" = "месяца(цев)";
-"The" = "";
+"The" = " ";
 "Recur on day(s)" = "Повторяется в дни";
 "Year(s)" = "год(года)";
-"cycle_of" = "";
+"cycle_of" = " ";
 "No end date" = "Нет даты завершения";
 "Create" = "Создать";
-"appointment(s)" = "appointment(s)";
+"appointment(s)" = "встреча(встречи)";
 "Repeat until" = "Повторять до";
 
 "First" = "Первый";
@@ -446,7 +446,7 @@ validate_endbeforestart    = "Дата начала позже даты конц
 "Day View" = "День";
 "Week View" = "По неделям";
 "Month View" = "Месяц";
-"Reload" = "Reload";
+"Reload" = "Перезагрузить";
 
 "eventPartStatModificationError" = "Невозможно изменить статус Вашего участия.";
 
@@ -459,8 +459,11 @@ validate_endbeforestart    = "Дата начала позже даты конц
 "Workweek days only" = "Только рабочие дни недели";
 "Tasks in View" = "Задания в виде";
 
-"eventDeleteConfirmation" = "Следующие события будут удалены: \n%{0}\nПродолжить удаление?";
-"taskDeleteConfirmation" = "Событие будет удалено безвозвратно.\nПродолжить?";
+"eventDeleteConfirmation" = "Следующие события будут удалены: 
+%{0}
+Продолжить удаление?";
+"taskDeleteConfirmation" = "Событие будет удалено безвозвратно.
+Продолжить?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Вы не можете удалить персональный календарь, равно как и выключить подписку на него.";
@@ -496,7 +499,8 @@ validate_endbeforestart    = "Дата начала позже даты конц
 "and" = "и";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "У одного или нескольких приглашенных есть конфликт по времени.\nВы хотите сохранить текущие настройки несмотря на конфликт?";
+= "У одного или нескольких приглашенных есть конфликт по времени.
+Вы хотите сохранить текущие настройки несмотря на конфликт?";
 
 /* apt list */
 "Title" = "Название";
@@ -537,7 +541,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Show tasks" = "Показать задания";
 
 "Links to this Calendar" = "Ссылки на этот календарь";
-"Authenticated User Access" = "Authenticated User Access";
+"Authenticated User Access" = "Доступ авторизированных пользователей";
 "CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
@@ -550,12 +554,15 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "yearFieldInvalid" = "Пожалуйста, укажите числовое значение в поле лет, большее или равное 1.";
 "appointmentFieldInvalid" = "Пожалуйста, укажите числовое значение в поле встреч, большее или равное 1.";
 "recurrenceUnsupported" = "Этот тип повторений пока не поддерживается.";
-"Please specify a calendar name." = "Please specify a calendar name.";
+"Please specify a calendar name." = "Пожалуйста, укажите имя календаря";
 "tagNotDefined" = "Вы должны указать метку (tag) если хотите синхронизировать этот календарь.";
 "tagAlreadyExists" = "Указанная метка уже используется в другом календаре.";
-"tagHasChanged" = "Если Вы смените метку в этом календаре, то будет необходимо заново синхронизировать данные на Вашем мобильном устройстве. \nПродолжить?";
-"tagWasAdded" = "Если Вы захотите синхронизировать этот календарь, то будет необходимо заново синхронизировать данные на Вашем мобильном устройстве. \nПродолжить?";
-"tagWasRemoved" = "Если вы удалите этот календарь, то будет необходимо заново синхронизировать данные на Вашем мобильном устройстве.\n Продолжить?";
+"tagHasChanged" = "Если Вы смените метку в этом календаре, то будет необходимо заново синхронизировать данные на Вашем мобильном устройстве. 
+Продолжить?";
+"tagWasAdded" = "Если Вы захотите синхронизировать этот календарь, то будет необходимо заново синхронизировать данные на Вашем мобильном устройстве. 
+Продолжить?";
+"tagWasRemoved" = "Если вы удалите этот календарь, то будет необходимо заново синхронизировать данные на Вашем мобильном устройстве.
+ Продолжить?";
 "DestinationCalendarError" = "Исходный и целевой календари совпадают. Пожалуйста, выберите другой целевой календарь.";
 "EventCopyError" = "Копирование не удалось. Пожалуйста, попытайтесь скопировать в другой календарь.";
 
@@ -563,10 +570,10 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Mark Completed" = "Пометить как завершенное";
 "Delete Task" = "Удалить задачу";
 "Delete Event" = "Удалить событие";
-"Copy event to my calendar" = "Copy event to my calendar";
+"Copy event to my calendar" = "Копировать событие в мой календарь";
 
 "Subscribe to a web calendar..." = "Подписаться на калентарь в сети...";
-"URL of the Calendar" = "URL of the Calendar";
+"URL of the Calendar" = "URL календаря";
 "Web Calendar" = "Web Calendar";
 "Reload on login" = "Перезагружать при входе";
 "Invalid number." = "Число неверно.";

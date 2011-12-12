@@ -5,6 +5,7 @@
 "Photos" = "Фото";
 "Other" = "Другое";
 
+"Address Books" = "Адресные книги";
 "Addressbook" = "Адресная книга";
 "Addresses" = "Адреса";
 "Update" = "Обновить";
@@ -30,13 +31,18 @@
 "Phones" = "Телефоны";
 "Postal" = "Почтовый адрес";
 "Save" = "Сохранить";
-"URL" = "URL";
+"Internet" = "Интернет";
 "Unit" = "Unit";
 "delete" = "удалить";
 "edit" = "редактировать";
 "invalidemailwarn" = "The specified email is invalid";
+"invaliddatewarn" = "Указанная дата является неверной.";
 "new" = "новый";
-"Preferred Phone"   = "Preferred Phone";
+"Preferred Phone" = "Preferred Phone";
+
+"Move To" = "Переместить в";
+"Copy To" = "Копировать";
+"Add to:" = "Добавить в:";
 
 /* Tooltips */
 
@@ -70,22 +76,26 @@
 "No possible subscription" = "Нет возможных подписок";
 
 "Preferred" = "Избранные";
-"Card for %@" = "Запись для %@";
-"Display Name: " = "Показываемое имя: ";
-"Email Address: " = "Email Address: ";
+"Display:" = "Показывать:";
+"Display Name:" = "Отображаемое имя:";
+"Email:" = "E-mail:";
+"Additional Email:" = "Дополнительный E-mail:";
 
+"Phone Number:" = "Номер телефона:";
+"Prefers to receive messages formatted as:" = "Предпочитает принимать сообщения, отформатированные следующим образом:";
+"Screen Name:" = "Имя показа:";
 "Categories:" = "Категории:";
 
-"Firstname: " = "Имя: ";
-"Lastname: " = "Фамилия: ";
-"Nickname: " = "Псевдоним: ";
+"First:" = "Имя:";
+"Last:" = "Последнее:";
+"Nickname:" = "Ник:";
 
 "Telephone" = "Телефон";
-"Work: " = "Рабочий: ";
-"Home: " = "Домашний: ";
-"Fax: " = "Факс: ";
-"Mobile: " = "Мобильный: ";
-"Pager: " = "Пейджер: ";
+"Work:" = "Рабочий телефон:";
+"Home:" = "Домашний телефон:";
+"Fax:" = "Факс:";
+"Mobile:" = "Мобильный телефон:";
+"Pager:" = "Пейджер:";
 
 /* categories */
 "contacts_category_labels" = "Коллега, Конкурент, Клиент, Друг, Семья, Партнер по бизнесу, Поставщик, Пресса, VIP";
@@ -93,24 +103,26 @@
 "New category" = "Новые категории";
 
 /* adresses */
-"Title: " = "Обращение: ";
-"Service: " = "Должность: ";
-"Company: " = "Компания: ";
-"Street Address: " = "Адрес: ";
-"City: " = "Город: ";
+"Title:" = "Звание:";
+"Service:" = "Сервис:";
+"Company:" = "Компания:";
+"Department:" = "Отдел:";
+"Organization:" = "Организация:";
+"Address:" = "Адрес:";
+"City:" = "Город:";
 "State_Province:" = "Область/штат:";
 "ZIP_Postal Code:" = "ZIP/Postal Code:";
-"Country: " = "Страна: ";
-"Web: " = "Web: ";
+"Country:" = "Страна:";
+"Web Page:" = "Веб-страница:";
 
 "Work" = "Работа";
 "Other Infos" = "Другая информация";
 
-"Note: " = "Заметка: ";
-"Timezone: " = "Timezone: ";
+"Note:" = "Примечание:";
+"Timezone:" = "Часовой пояс:";
 "Birthday:" = "День рождения";
 "Birthday (yyyy-mm-dd):" = "День рождения (ГГГГ-ММ-ДД):";
-"Freebusy URL: " = "Freebusy URL: ";
+"Freebusy URL:" = "Freebusy URL:";
 
 "Add as..." = "Добавить как...";
 "Recipient" = "Получатель";
@@ -132,8 +144,6 @@
 "Are you sure you want to delete the selected contacts?"
 = "Вы уверены, что вы хотите удалить выбранные контакты?";
 
-"You don't have the required privileges to perform the operation."
-= "Нет достаточных привилегий для выполнения этой операции.";
 "You cannot delete the card of \"%{0}\"."
 = "Вы не можете удалить запись \"%{0}\".";
 
@@ -181,7 +191,6 @@
 "Contacts" = "Контакты";
 "Add" = "Добавить";
 "Lists can't be moved or copied." = "Списки не могут быть перемещены или скопированы.";
-
 "Export" = "Экспорт";
 "Export Address Book..." = "Экспорт адресной книги...";
 "Import Cards" = "Импорт записей";

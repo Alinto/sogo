@@ -27,8 +27,11 @@
 "Add default email addresses" = "Добавить e-mail адреса по умолчанию";
 "Days between responses :" = "Дни между ответами :";
 "Do not send responses to mailing lists" = "Не отправлять ответы на почтовые списки рассылки";
+"Disable auto reply on" = "Запрет автоответа включен";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Пожалуйста, укажите Ваше сообщение и адреса электронной почты для которых Вы хотите включить автоматический ответ.";
+"End date of your auto reply must be in the future."
+= "Дата завершения вашего автоответа должна быть в будущем.";
 
 /* forward messages */
 "Forward incoming messages" = "Пересылать входящие сообщения";
@@ -87,6 +90,7 @@
 "Day start time :" = "Рабочий день начинается в :";
 "Day end time :" = "Рабочий день заканчивается в :";
 "Day start time must be prior to day end time." = "Day start time must be prior to day end time.";
+"Show time as busy outside working hours" = "Показывать время, как занятое, если оно за границами рабочего времени.";
 "First week of year :" = "Первая неделя года :";
 "Enable reminders for Calendar items" = "Включить напоминания для событий календаря";
 "Play a sound when a reminder comes due"
@@ -96,6 +100,12 @@
 "firstWeekOfYear_January1" = "Начинается 1 января";
 "firstWeekOfYear_First4DayWeek" = "Первая 4-х дневная неделя";
 "firstWeekOfYear_FirstFullWeek" = "Первая полная неделя";
+
+/* Default Calendar */
+"Default calendar :" = "Календарь по-умолчанию";
+"selectedCalendar" = "Выбранный календарь";
+"personalCalendar" = "Персональный календарь";
+"firstCalendar" = "Первый разрешенный календарь";
 
 "reminderTime_0000" = "0 минут";
 "reminderTime_0005" = "5 минут";
@@ -112,6 +122,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Показывать только почтовые ящики, на которые подписан";
+"Sort messages by threads" = "Сортировать сообщения по нитям";
 "Check for new mail:" = "Проверять новую почту:";
 "messagecheck_manually" = "Вручную";
 "messagecheck_every_minute" = "Каждую минуту";
@@ -142,7 +153,7 @@
 "Port:" = "Port:";
 "User Name:" = "User Name:";
 "Password:" = "Пароль:";
- 
+
 "Full Name:" = "Full Name:";
 "Email:" = "Email:";
 "Signature:" = "Подпись:";
@@ -190,6 +201,18 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+/* Return receipts */
+"When I receive a request for a return receipt:" = "Когда я получаю запрос об уведомлении о доставке:";
+"Never send a return receipt" = "Никогда не посылать уведомления о доставке";
+"Allow return receipts for some messages" = "Разрешить уведомления о доставке для некоторых сообщений";
+"If I'm not in the To or Cc of the message:" = "Если я не в поле Кому: или Копия: для этого сообщения:";
+"If the sender is outside my domain:" = "Если отправитель вне моего домена:";
+"In all other cases:" = "Во всех остальных случаях:";
+
+"Never send" = "Никогда не посылать";
+"Always send" = "Всегда посылать";
+"Ask me" = "Спросить меня";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "Когда я получаю запрос об уведомлении о доставке:";
@@ -255,3 +278,18 @@
 "Label 3" = "Label 3";
 "Label 4" = "Label 4";
 "Label 5" = "Label 5";
+
+"Password must not be empty." = "Пароль не должен быть пустым";
+"The passwords do not match. Please try again." = "Пароли не совпадают. Пожалуйста попробуйте заново.";
+"Password change failed" = "Изменение пароля не удалось";
+"Password change failed - Permission denied" = "Изменение пароля не удалось - доступ запрещен.";
+"Password change failed - Insufficient password quality" = "Изменение пароля не удалось - качество нового пароля недостаточно.";
+"Password change failed - Password is too short" = "Изменение пароля не удалось - пароль слишком короткий";
+"Password change failed - Password is too young" = "Изменение пароля не удалось - пароль слишком молод";
+"Password change failed - Password is in history" = "Изменение пароля не удалось - пароль есть в истории";
+"Unhandled policy error: %{0}" = "Unhandled policy error: %{0}";
+"Unhandled error response" = "Unhandled error response";
+"Password change is not supported." = "Изменение пароля не поддерживается";
+"Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
+"New password:" = "Новый пароль:";
+"Confirmation:" = "Повтор нового пароля:";

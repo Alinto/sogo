@@ -10,16 +10,16 @@
 "Address Book"	= "Адресная книга";
 "Mail" = "Почта";
 "Preferences" = "Настройки";
-"Administration" = "Administration";
+"Administration" = "Администрация";
 "Disconnect" = "Выход";
 "Right Administration" = "Управление доступом";
-"Log Console (dev.)" = "Log Console (dev.)";
+"Log Console (dev.)" = "Вход Console (dev.)";
 
 "User" = "Пользователь";
 
 "Help" = "Помощь";
 
-"noJavascriptError" = "SOGo requires Javascript to run. Please make sure this option is available and activated within your browser preferences.";
+"noJavascriptError" = "SOGo требует работы Javascript  Пожалуйста, включите его в опциях браузера.";
 "noJavascriptRetry" = "Повторить попытку";
 
 "Owner:" = "Владелец:";
