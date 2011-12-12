@@ -140,6 +140,8 @@ typedef enum {
 
 /* bulk fetches */
 
+- (NSString *) aclSQLListingFilter;
+
 - (NSString *) roleForComponentsWithAccessClass: (iCalAccessClass) accessClass
 					forUser: (NSString *) uid;
 

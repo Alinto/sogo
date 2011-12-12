@@ -152,13 +152,6 @@
   return rc;
 }
 
-- (EOQualifier *) componentQualifier
-{
-  [self subclassResponsibility: _cmd];
-
-  return nil;
-}
-
 /* sorting */
 
 - (EOSortOrdering *) _sortOrderingFromSortOrder: (struct SSortOrder *) sortOrder

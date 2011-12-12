@@ -33,6 +33,7 @@
 #import <NGCards/NSString+NGCards.h>
 #import <Contacts/SOGoContactGCSEntry.h>
 #import <Mailer/NSString+Mail.h>
+#import <SOGo/SOGoPermissions.h>
 
 #import "MAPIStoreContactsAttachment.h"
 #import "MAPIStoreContactsFolder.h"
@@ -845,6 +846,22 @@
                         atIndex: 0 forKey: @""];
         }
     }
+}
+
+- (BOOL) subscriberCanReadMessage
+{
+  return [[self activeUserRoles] containsObject: SOGoRole_ObjectViewer];
+}
+
+- (BOOL) subscriberCanModifyMessage
+{
+  NSArray *roles;
+
+  roles = [self activeUserRoles];
+
+  return ((isNew
+           && [roles containsObject: SOGoRole_ObjectCreator])
+          || (!isNew && [roles containsObject: SOGoRole_ObjectEditor]));
 }
 
 //

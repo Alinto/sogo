@@ -101,30 +101,44 @@ static NSMutableDictionary *contextClassMapping;
     }
 }
 
-static inline MAPIStoreContext *
+static inline enum mapistore_error
 _prepareContextClass (Class contextClass,
                       struct mapistore_connection_info *connInfo,
-                      struct tdb_wrap *indexingTdb, NSURL *url)
+                      struct tdb_wrap *indexingTdb, NSURL *url,
+                      MAPIStoreContext **contextP)
 {
   MAPIStoreContext *context;
   MAPIStoreAuthenticator *authenticator;
+  enum mapistore_error rc;
 
   context = [[contextClass alloc] initFromURL: url
                            withConnectionInfo: connInfo
                                andTDBIndexing: indexingTdb];
-  [context autorelease];
+  if (context)
+    {
+      [context autorelease];
 
-  authenticator = [MAPIStoreAuthenticator new];
-  [authenticator setUsername: [url user]];
-  [authenticator setPassword: [url password]];
-  [context setAuthenticator: authenticator];
-  [authenticator release];
+      authenticator = [MAPIStoreAuthenticator new];
+      [authenticator setUsername: [url user]];
+      [authenticator setPassword: [url password]];
+      [context setAuthenticator: authenticator];
+      [authenticator release];
 
-  [context setupRequest];
-  [context setupBaseFolder: url];
-  [context tearDownRequest];
+      [context setupRequest];
+      [context setupBaseFolder: url];
+      [context tearDownRequest];
+      if (context->baseFolder && [context->baseFolder sogoObject])
+        {
+          *contextP = context;
+          rc = MAPISTORE_SUCCESS;
+        }
+      else
+        rc = MAPISTORE_ERR_DENIED;
+    }
+  else
+    rc = MAPISTORE_ERROR;
 
-  return context;
+  return rc;
 }
 
 + (int) openContext: (MAPIStoreContext **) contextPtr
@@ -157,16 +171,15 @@ _prepareContextClass (Class contextClass,
               contextClass = [contextClassMapping objectForKey: module];
               if (contextClass)
                 {
-                  context = _prepareContextClass (contextClass,
-                                                  newConnInfo, indexingTdb, 
-                                                  baseURL);
-                  if (context)
+                  rc = _prepareContextClass (contextClass,
+                                             newConnInfo, indexingTdb, 
+                                             baseURL, &context);
+                  if (rc == MAPISTORE_SUCCESS)
                     {
                       *contextPtr = context;
 		      mapistore_mgmt_backend_register_user (newConnInfo,
                                                             "SOGo",
                                                             [[[context authenticator] username] UTF8String]);
-                      rc = MAPISTORE_SUCCESS;
                     }
                 }
               else
