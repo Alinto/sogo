@@ -1,4 +1,4 @@
-1.3-201112DD (1.3.11)
+1.3-20111212 (1.3.11)
 ---------------------
 New Features
  - new experimental feature to force popup windows to appear in an iframe -- this mode
@@ -7,6 +7,7 @@ New Features
 Enhancements
  - contacts from the email editor now appear in a pane, like in Thunderbird
  - improved display of contacts in Address Book module
+ - "remember login" cookie now expires after one month
  - added DanishDenmark translation - thanks to Altibox
  - updated German translation
  - updated SpanishArgentina translation
@@ -15,6 +16,10 @@ Enhancements
 Bug Fixes
  - fixed encoding of headers in sogo-ealarm-notify
  - fixed confirmation dialog box when deleting too many events
+ - fixed issue when saving associating a category to an event/task
+ - fixed time shift regression in Calendar module
+ - activated "standard conforming strings" in the PosgreSQL adapter to fixed errors with backslashes
+ - fixed a bug when GCSFolderDebugEnabled or GCSFolderManagerDebugEnabled were enabled
 
 1.3-20111130 (1.3.10)
 ---------------------
