@@ -1,3 +1,11 @@
+2011-12-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/iCalEvent+SOGo.m (-quickRecord): set
+	"c_category" to NULL when empty.
+
+	* OGoContentStore/OCSContactFieldExtractor.m
+	(-extractQuickFieldsFromVCard:): same as above.
+
 2011-12-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* Tools/SOGoEAlarmsNotifier.m

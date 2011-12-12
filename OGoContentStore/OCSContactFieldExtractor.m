@@ -75,6 +75,8 @@
   if ([values count] > 0)
     [fields setObject: [values componentsJoinedByString: @","]
                forKey: @"c_categories"];
+  else
+    [fields setObject: [NSNull null] forKey: @"c_categories"];
   [fields setObject: @"vcard" forKey: @"c_component"];
 
   return fields;

@@ -261,6 +261,8 @@
   if ([categories count] > 0)
     [row setObject: [categories componentsJoinedByString: @","]
             forKey: @"c_category"];
+  else
+    [row setObject: [NSNull null] forKey: @"c_category"];
 
   return row;
 }
