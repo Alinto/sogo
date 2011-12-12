@@ -6,13 +6,14 @@ New Features
 
 Enhancements
  - contacts from the email editor now appear in a pane, like in Thunderbird
+ - improved display of contacts in Address Book module
  - added DanishDenmark translation - thanks to Altibox
  - updated German translation
  - updated SpanishArgentina translation
  - updated SpanishSpain translation
 
 Bug Fixes
- - 
+ - fixed encoding of headers in sogo-ealarm-notify
 
 1.3-20111130 (1.3.10)
 ---------------------

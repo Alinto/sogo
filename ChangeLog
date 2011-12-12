@@ -1,5 +1,9 @@
 2011-12-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* Tools/SOGoEAlarmsNotifier.m
+	(-_sendMessageWithHeaders:content:toAttendee:from:withMailer:):
+	encode sender and recipient addresses in quoted printatble.
+
 	* SoObjects/Contacts/SOGoContactGCSFolder.m
 	(-fixupContactRecord:): fallback on organization name when the
 	contact has no display name, no firstname, and no lastname.

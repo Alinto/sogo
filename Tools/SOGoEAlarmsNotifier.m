@@ -1,6 +1,6 @@
 /* SOGoEAlarmsNotifier.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -91,7 +91,7 @@
   [headers setObject: @"quoted-printable" forKey: @"Content-Transfer-Encoding"];
 
   identity = [owner primaryIdentity];
-  fullName = [identity objectForKey: @"fullName"];
+  fullName = [[identity objectForKey: @"fullName"] asQPSubjectString: @"utf-8"];
   if ([fullName length])
     email = [NSString stringWithFormat: @"%@ <%@>", fullName,
                 [identity objectForKey: @"email"]];
@@ -109,9 +109,15 @@
                       withMailer: (SOGoMailer *) mailer
 {
   NGMimeMessage *message;
-  NSString *to;
+  NSString *to, *headerTo, *attendeeName;
 
-  [headers setObject: [attendee mailAddress] forKey: @"To"];
+  attendeeName = [[attendee cnWithoutQuotes] asQPSubjectString: @"utf-8"];
+  if ([attendeeName length])
+    headerTo = [NSString stringWithFormat: @"%@ <%@>", attendeeName,
+                         [attendee rfc822Email]];
+  else
+    headerTo = [attendee rfc822Email];
+  [headers setObject: headerTo forKey: @"To"];
   [headers setObject: [self _messageID] forKey: @"Message-Id"];
   message = [NGMimeMessage messageWithHeader: headers];
   [message setBody: content];
