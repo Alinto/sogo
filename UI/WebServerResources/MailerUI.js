@@ -1910,7 +1910,6 @@ function onMessageListResize(event) {
 }
 
 function onWindowResize(event) {
-    log ("resize mailer");
     var handle = $("verticalDragHandle");
     if (handle)
         handle.adjust();

@@ -1322,6 +1322,7 @@ function initContacts(event) {
     if (typeof onWindowResize != 'function') {
         // When loaded from the mail editor, onWindowResize is
         // already registered
+        onWindowResize = onContactsWindowResize;
         onWindowResize.defer();
         Event.observe(window, "resize", onWindowResize);
     } 
@@ -1330,7 +1331,7 @@ function initContacts(event) {
     sorting["ascending"] = true;
 }
 
-function onWindowResize(event) {
+onContactsWindowResize = function (event) {
     var handle = $("dragHandle");
     if (handle)
         handle.adjust();

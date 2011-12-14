@@ -1,3 +1,8 @@
+2011-12-14  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js (getMenus): register the
+	function onWindowResize only if it's not already defined.
+
 2011-12-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/iCalEvent+SOGo.m (-quickRecord): set

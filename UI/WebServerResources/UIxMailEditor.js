@@ -25,7 +25,7 @@ function onContactAdd(button) {
     }
 
     $("hiddenDragHandle").adjust();
-    onMailEditorResize(null);
+    onWindowResize(null);
 }
 
 function addContact(tag, fullContactName, contactId, contactName, contactEmail) {
@@ -56,7 +56,7 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
             var select = $(td.childNodesWithTag("select")[0]);
             select.value = neededOptionValue;
             insertContact($("addr_" + currentIndex), contactName, contactEmail);
-            onMailEditorResize(null);
+            onWindowResize(null);
         }
     }
 }
@@ -212,7 +212,7 @@ function clickedEditorAttach() {
 
         if (!area.style.display) {
             area.setStyle({ display: "block" });
-            onMailEditorResize(null);
+            onWindowResize(null);
         }
         var inputs = area.getElementsByTagName("input");
         var attachmentName = "attachment" + attachmentCount;
@@ -368,7 +368,7 @@ function configureDragHandle() {
         handle.leftMargin = 100;
         handle.leftBlock=$("leftPanel");
         handle.rightBlock=$("rightPanel");
-        handle.observe("handle:dragged", onMailEditorResize);
+        handle.observe("handle:dragged", onWindowResize);
     }
 }
 
@@ -437,10 +437,10 @@ function initMailEditor() {
     $("contactFolder").observe("change", onContactFolderChange);
     
     
-    Event.observe(window, "resize", onMailEditorResize);
+    Event.observe(window, "resize", onWindowResize);
     Event.observe(window, "beforeunload", onMailEditorClose);
     
-    onMailEditorResize.defer();
+    onWindowResize.defer();
 }
 
 function focusCKEditor(event) {
@@ -584,7 +584,7 @@ function onSelectOptions(event) {
     }
 }
 
-function onMailEditorResize(event) {
+function onWindowResize(event) {
     if (!document.pageform)
       return;
     var textarea = document.pageform.text;
@@ -631,7 +631,7 @@ function onMailEditorResize(event) {
     if (composeMode == "html") {
         var editor = $('cke_text');
         if (editor == null) {
-            onMailEditorResize.defer();
+            onWindowResize.defer();
             return;
         }
         var ck_top = $("cke_top_text");
