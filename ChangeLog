@@ -1,3 +1,9 @@
+2011-12-15  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/SOGoSieveManager.m - slightly reworked
+	the code to use NSURL in order to instanciate the SOPE
+	Sieve code - that permits using TLS.
+
 2011-12-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js (getMenus): register the
