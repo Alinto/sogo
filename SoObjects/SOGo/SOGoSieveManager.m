@@ -622,12 +622,13 @@ static NSString *sieveScriptName = @"sogo";
 {
   NSMutableArray *req;
   NSMutableString *script, *header;
-  NGInternetSocketAddress *address;
   NSDictionary *result, *values;
   SOGoUserDefaults *ud;
   SOGoDomainDefaults *dd;
   NGSieveClient *client;
   NSString *filterScript, *v, *sieveServer;
+  NSURL *url;
+  
   int sievePort;
   BOOL b, connected;
 
@@ -744,19 +745,20 @@ static NSString *sieveScriptName = @"sogo";
   //
   // sieve://localhost
   // sieve://localhost:2000
+  // sieve://localhost:2000/?tls=YES
   //
   // Values such as "localhost" or "localhost:2000" are NOT supported.
   //
   sieveServer = [dd sieveServer];
   sievePort = 2000;
+  url = nil;
       
   if (!sieveServer)
     {
       NSString *s;
-
-      sieveServer = @"localhost";
+      
       s = [dd imapServer];
-
+      
       if (s)
 	{
 	  NSURL *url;
@@ -768,26 +770,20 @@ static NSString *sieveScriptName = @"sogo";
 	  else
 	    sieveServer = s;
 	}
+      else
+	sieveServer = @"localhost";
+      
+      url = [NSURL URLWithString: [NSString stringWithFormat: @"%@:%d", sieveServer, sievePort]];
     }
   else
     {
-      NSURL *url;
-
       url = [NSURL URLWithString: sieveServer];
-      
-      if ([url host])
-	sieveServer = [url host];
-      
-      if ([[url port] intValue] != 0)
-	sievePort = [[url port] intValue];
     }
 
-  address =  [NGInternetSocketAddress addressWithPort: sievePort  onHost: sieveServer];
-
-  client = [NGSieveClient clientWithAddress: address];
+  client = [[NGSieveClient alloc] initWithURL: url];
   
   if (!client) {
-    NSLog(@"Sieve connection failed on %@", [address description]);
+    NSLog(@"Sieve connection failed on %@", [url description]);
     return NO;
   }
   
@@ -808,7 +804,7 @@ static NSString *sieveScriptName = @"sogo";
 
   if (!connected)
     {
-      NSLog(@"Sieve connection failed on %@", [address description]);
+      NSLog(@"Sieve connection failed on %@", [url description]);
       return NO;
     }
 
