@@ -222,10 +222,11 @@ DIV#contactsListContent
   top: 9em;
   left: 0px;
   right: 0px;
-  bottom: 0px;
+  bottom: 110px;
   margin: 0;
   border-right: 1px solid #fff;
-  background-color: #fff; }
+  background-color: #fff;
+  overflow-y: auto; }
 
 TABLE#contactsList
 { width: 100%; }
