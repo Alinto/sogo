@@ -7,7 +7,7 @@ DELEGATED = "делеговано";
 TENTATIVE = "попереднє погодження";
 organized_by_you = "організоване Вами";
 you_are_an_attendee = "за Вашої участі";
-add_info_text = "iMIP 'ADD' requests are not yet supported by SOGo.";
+add_info_text = "запити iMIP 'ADD' ще не підтримуються у SOGo.";
 publish_info_text = "Відправник повідомляє про вкладену подію.";
 cancel_info_text = "Ваше запрошення або всі заходи скасовано.";
 request_info_no_attendee = "пропонує учасникам зустрітись. Ви отримали це повідомлення як запрошена особа. Ви ще не долучені до списку підтверджених учасників.";
@@ -26,7 +26,7 @@ Tentative = "попередьно погодитись";
 "Delegate ..." = "Делегуват ...";
 "Delegated to" = "Делегувати";
 "Update status in calendar" = "Поновити статус в календарі";
-"delegated from" = "delegated from";
+"delegated from" = "делеговано від";
 
 reply_info_no_attendee = "Ви отримали відповідь на запланований захід, але відправник повідомлення відсутній серед запрошених.";
 reply_info = "Це відповідь на Ваше запрошення взяти участь у заході.";

@@ -78,6 +78,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailSpanishArgentinaReply.wo \
 	SOGoMailSwedishForward.wo \
 	SOGoMailSwedishReply.wo \
+	SOGoMailUkrainianForward.wo \
+	SOGoMailUkrainianReply.wo \
 	SOGoMailWelshForward.wo \
 	SOGoMailWelshReply.wo
 

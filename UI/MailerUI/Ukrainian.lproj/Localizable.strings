@@ -19,6 +19,7 @@
 "Attach" = "Вкладення";
 "Save" = "Зберегти";
 "Options" = "Налаштування";
+"Close" = "Закрити";
 "Size" = "Розмір";
 
 /* Tooltips */
@@ -112,7 +113,9 @@
 "Return Receipt" = "Сповіщення про доставку";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Відправник цього листа попросив сповістити, як ви переглянете лист. Чи ви бажаєте повідомити?";
 "Return Receipt (displayed) - %@"= "Повідомлення про отримання (показано) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Це зворотнє повідомлення підтверджує, що ви надіслали лист%@.\n\nУвага: Це зворотнє повідомлення лише підтверджує, що лист було відкрито на комп’ютері отримувача. Це не означає, що отримувач прочитав або зрозумів його зміст.";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Це зворотнє повідомлення підтверджує, що ви надіслали лист%@.
+
+Увага: Це зворотнє повідомлення лише підтверджує, що лист було відкрито на комп’ютері отримувача. Це не означає, що отримувач прочитав або зрозумів його зміст.";
 
 "Priority" = "Важливість";
 "highest" = "Найвища";
@@ -122,6 +125,9 @@
 "lowest" = "Найнижча";
 
 "This mail is being sent from an unsecure network!" = "Це повідомлення надсилається з небезпечної мережі!";
+
+"Address Book:" = "Адресна книга:";
+"Search For:" = "Шукати:";
 
 /* Popup "show" */
 
@@ -278,7 +284,7 @@
 
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
-= "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
+= "Неможливо перемістити повідомлення до кошику. ";
 
 /* Message editing */
 "error_validationfailed" = "Перевірка зазнала невдачі";
