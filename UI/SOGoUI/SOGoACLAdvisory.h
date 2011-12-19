@@ -83,13 +83,13 @@
 @interface SOGoACLCzechRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
-@interface SOGoACLDanishDenmarkAdditionAdvisory : SOGoACLAdditionAdvisory
+@interface SOGoACLDanishAdditionAdvisory : SOGoACLAdditionAdvisory
 @end
 
-@interface SOGoACLDanishDenmarkModificationAdvisory : SOGoACLModificationAdvisory
+@interface SOGoACLDanishModificationAdvisory : SOGoACLModificationAdvisory
 @end
 
-@interface SOGoACLDanishDenmarkRemovalAdvisory : SOGoACLRemovalAdvisory
+@interface SOGoACLDanishRemovalAdvisory : SOGoACLRemovalAdvisory
 @end
 
 @interface SOGoACLDutchAdditionAdvisory : SOGoACLAdditionAdvisory

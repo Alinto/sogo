@@ -110,6 +110,9 @@
 @implementation SOGoMailCzechReply
 @end
 
+@implementation SOGoMailDanishReply
+@end
+
 @implementation SOGoMailDutchReply
 @end
 

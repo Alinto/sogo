@@ -7,7 +7,7 @@ import simplejson
 import sogoLogin
 
 SOGoSupportedLanguages = [ "Catalan", "Czech", "Welsh", "English", "SpanishSpain", "SpanishArgentina",
-                           "French", "German", "Icelandic", "Italian", "Hungarian", "DanishDenmark",
+                           "French", "German", "Icelandic", "Italian", "Hungarian", "Danish",
                            "Dutch", "BrazilianPortuguese", "NorwegianBokmal",
                            "NorwegianNynorsk", "Polish", "Russian", "Ukrainian", "Swedish" ]
 daysBetweenResponseList=[1,2,3,5,7,14,21,30]

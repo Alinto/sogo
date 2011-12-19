@@ -65,10 +65,10 @@
 @interface SOGoFolderCzechRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
-@interface SOGoFolderDanishDenmarkAdditionAdvisory : SOGoFolderAdditionAdvisory
+@interface SOGoFolderDanishAdditionAdvisory : SOGoFolderAdditionAdvisory
 @end
 
-@interface SOGoFolderDanishDenmarkRemovalAdvisory : SOGoFolderRemovalAdvisory
+@interface SOGoFolderDanishRemovalAdvisory : SOGoFolderRemovalAdvisory
 @end
 
 @interface SOGoFolderDutchAdditionAdvisory : SOGoFolderAdditionAdvisory
