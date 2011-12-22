@@ -2,7 +2,7 @@
 
 var SOGoDragHandlesInterface = {
     leftMargin: 180,
-    topMargin: 160,
+    topMargin: 180,
     dhType: null,
     dhLimit: -1,
     origX: -1,
