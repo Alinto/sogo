@@ -34,6 +34,8 @@
   static Class MainProduct = Nil;
   NSString *lpath;
 
+#warning TODO: create method "languagesBeginingWith:"
+
   lpath = [self pathForResourceNamed: @"Locale"
 			 inFramework: nil
 			   languages: [NSArray arrayWithObject:_name]];

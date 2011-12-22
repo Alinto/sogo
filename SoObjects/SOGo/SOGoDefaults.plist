@@ -37,7 +37,7 @@
                                "SpanishSpain", "SpanishArgentina", "French", "German",
                                "Icelandic", "Italian", "Hungarian", "BrazilianPortuguese",
                                "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Russian",
-                               "Ukrainian", "Swedish");
+                               "Ukrainian", "Swedish" );
 
     SOGoTimeZone = "UTC";
     SOGoDayStartTime = "8";
