@@ -1,5 +1,8 @@
 2011-12-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/Scheduler/UIxAppointmentEditor.m (-viewAction): the end
+	date/time is now also returned.
+
 	* UI/PreferencesUI/UIxPreferences.m (-vacationEndDate): return
 	current date when no end date is defined.
 
