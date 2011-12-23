@@ -192,10 +192,10 @@ typedef enum
                     }
 
                   key = [arguments objectAtIndex: i++];
-                  value = [arguments objectAtIndex: i++];
 
 		  if (max > i)
                     {
+                      value = [arguments objectAtIndex: i++];
                       if ([value caseInsensitiveCompare: @"-f"] == NSOrderedSame)
                         {
                           if (max > i)
