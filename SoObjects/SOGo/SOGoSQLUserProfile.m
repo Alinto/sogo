@@ -145,7 +145,6 @@ static NSString *uidColumnName = @"c_uid";
 
   sql = [jsonRepresentation mutableCopy];
   [sql autorelease];
-  [sql replaceString: @"\\" withString: @"\\\\"];
   [sql replaceString: @"'" withString: @"''"];
 
   return sql;

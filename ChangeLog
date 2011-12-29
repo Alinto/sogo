@@ -1,3 +1,9 @@
+2011-12-29  Ludovic Marcotte  <lmarcotte@inverse.ca.>
+
+	* SoObjects/SOGo/SOGoSQLUserProfile.m (_sqlJsonRepresentation:):
+	don't escape the / character as it's generating invalid JSON
+	output on newer versions of PostgreSQL.
+
 2011-12-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxAppointmentEditor.m (-viewAction): the end
