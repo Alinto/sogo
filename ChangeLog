@@ -1,3 +1,28 @@
+2011-12-29  Ludovic Marcotte  <lmarcotte@inverse.ca.>
+
+	* SoObjects/SOGo/SOGoSQLUserProfile.m (_sqlJsonRepresentation:):
+	don't escape the / character as it's generating invalid JSON
+	output on newer versions of PostgreSQL.
+
+2011-12-23  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxAppointmentEditor.m (-viewAction): the end
+	date/time is now also returned.
+
+	* UI/PreferencesUI/UIxPreferences.m (-vacationEndDate): return
+	current date when no end date is defined.
+
+	* Tools/SOGoToolUserPreferences.m (-run): fixed possible out of
+	bound exception when parsing arguments.
+
+2011-12-22  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxTaskEditor.m (-takeValuesFromRequest:inContext:): remove alarms
+	when no start date is defined.
+
+	* UI/WebServerResources/UIxTaskEditor.js (onTimeControlCheck):
+	disable the reminder popup menu when no start date is defined.
+
 2011-12-15  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/SOGoSieveManager.m - slightly reworked

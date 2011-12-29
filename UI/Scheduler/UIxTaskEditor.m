@@ -511,15 +511,15 @@
   if (hasStartDate)
     [todo setStartDate: taskStartDate];
   else
-    [todo setStartDate: nil];
+    {
+      [todo setStartDate: nil];
+      [todo removeAllAlarms];
+    }
 
   if (hasDueDate)
     [todo setDue: taskDueDate];
   else
-    {
       [todo setDue: nil];
-      [todo removeAllAlarms];
-    }
 
   if ([status isEqualToString: @"COMPLETED"])
     [todo setCompleted: statusDate];

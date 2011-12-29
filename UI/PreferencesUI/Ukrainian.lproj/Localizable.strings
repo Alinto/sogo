@@ -17,9 +17,6 @@
 "Add" = "Додати";
 "Delete" = "Вилучити";
 
-/* "Cancel" = "Скасувати"; */
-/* "OK" = "Добре"; */
-
 /* contacts categories */
 "contacts_category_labels" = "Робота, Конкуренти, Клієнти, Друзі, Родина, Партнери, Постачальники, Преса, ВІП";
 
@@ -30,8 +27,11 @@
 "Add default email addresses" = "Додати адреси за замовчанням";
 "Days between responses :" = "Днів між відповідями :";
 "Do not send responses to mailing lists" = "Не надсилати автоматичні відповіді на адреси розсилок";
+"Disable auto reply on" = "Вимкнути автоматичну відповідь";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Будь ласка, зазначте Ваше повідомлення та Ваші елекронні адреси, для яких потрібно увімкнути автоматичну відповідь.";
+"End date of your auto reply must be in the future."
+= "Кінцева дата автоматичної відповіді має бути у майбутньому.";
 
 /* forward messages */
 "Forward incoming messages" = "Перенаправляти вхідні повідомлення";
@@ -85,6 +85,7 @@
 "Day start time :" = "Робочий день починається о :";
 "Day end time :" = "Робочий день закінчується о :";
 "Day start time must be prior to day end time." = "Початок дня має бути ранішим за кінець дня.";
+"Show time as busy outside working hours" = "Показувати час зайнятим якщо поза межами робочих годин";
 "First week of year :" = "Перший тиждень року :";
 "Enable reminders for Calendar items" = "Увімкнути нагадування подій календаря";
 "Play a sound when a reminder comes due"
@@ -94,6 +95,12 @@
 "firstWeekOfYear_January1" = "Починається 1 січня";
 "firstWeekOfYear_First4DayWeek" = "Перший чотириденний тиждень";
 "firstWeekOfYear_FirstFullWeek" = "Перший повний тиждень";
+
+/* Default Calendar */
+"Default calendar :" = "Типовий календар";
+"selectedCalendar" = "Вибраний календар";
+"personalCalendar" = "Особистий календар";
+"firstCalendar" = "Перший активний календар";
 
 "reminderTime_0000" = "0 хвилин";
 "reminderTime_0005" = "5 хвилин";
@@ -110,6 +117,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Показувати лише поштові скриньки, на які я підписаний";
+"Sort messages by threads" = "Сортувати повідомлення за гілками";
 "Check for new mail:" = "Перевіряти нову пошту:";
 "messagecheck_manually" = "Вручну";
 "messagecheck_every_minute" = "Щохвилини";
@@ -170,8 +178,9 @@
 
 "Language :" = "Мова :";
 "choose" = "Choose ...";
+"Catalan" = "Català";
 "Czech" = "Česky";
-"DanishDenmark" = "Dansk (Danmark)";
+"Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
 "English" = "English";
 "French" = "Français";
@@ -187,6 +196,18 @@
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
+
+/* Return receipts */
+"When I receive a request for a return receipt:" = "Коли я отримую запит на сповіщення про прочитання:";
+"Never send a return receipt" = "Ніколи не відправляти сповіщення";
+"Allow return receipts for some messages" = "Дозволити надсилати сповіщення для окремих повідомлень";
+"If I'm not in the To or Cc of the message:" = "Якщо я не серед адресатів та у копії листа:";
+"If the sender is outside my domain:" = "Якщо відправник не з мого домену:";
+"In all other cases:" = "У всіх інших випадках:";
+
+"Never send" = "Ніколи не відправляти";
+"Always send" = "Завжди відправляти";
+"Ask me" = "Спитати";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "Коли я отримую запит на сповіщення про прочитання:";
@@ -253,5 +274,17 @@
 "Label 4" = "Позначка 4";
 "Label 5" = "Позначка 5";
 
-"Encryption:" = "Безпека з’єднання:";
-"None" = "жодної";
+"Password must not be empty." = "Пароль не має бути порожнім";
+"The passwords do not match. Please try again." = "Паролі не співпадають. Спробуйте ще раз.";
+"Password change failed" = "Помилка під час зміни пароля.";
+"Password change failed - Permission denied" = "Помилка під час зміни пароля: доступ заборонено.";
+"Password change failed - Insufficient password quality" = "Помилка під час зміни пароля: недостатня стійкість пароля";
+"Password change failed - Password is too short" = "Помилка під час зміни пароля: пароль замалий";
+"Password change failed - Password is too young" = "Помилка під час зміни пароля: такий пароль нещодавно вже встановлювався";
+"Password change failed - Password is in history" = "Помилка під час зміни пароля: такий пароль вже встановлювався";
+"Unhandled policy error: %{0}" = "Невідома помилка політик: %{0}";
+"Unhandled error response" = "Невідома помилка";
+"Password change is not supported." = "Зміна паролю не підтримується.";
+"Unhandled HTTP error code: %{0}" = "Невідомий код помилки HTTP: %{0}";
+"New password:" = "Новий пароль:";
+"Confirmation:" = "Повтор нового пароля:";

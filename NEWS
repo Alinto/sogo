@@ -1,3 +1,14 @@
+1.3-YYYYMMDD (1.3.12)
+---------------------
+New Features
+ - show end time in bubble box of events
+
+Enhancements
+ - updated Ukrainian translation
+
+Bug Fixes
+ - alarms for tasks now depend on the start date and instead of the due date
+
 1.3-20111212 (1.3.11)
 ---------------------
 New Features

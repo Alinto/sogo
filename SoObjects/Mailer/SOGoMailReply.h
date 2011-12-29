@@ -53,6 +53,9 @@
 @interface SOGoMailCzechReply : SOGoMailReply
 @end
 
+@interface SOGoMailDanishReply : SOGoMailReply
+@end
+
 @interface SOGoMailDutchReply : SOGoMailReply
 @end
 

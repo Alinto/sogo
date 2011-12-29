@@ -914,7 +914,10 @@
 
   time = [[vacationOptions objectForKey: @"endDate"] intValue];
 
-  return [NSCalendarDate dateWithTimeIntervalSince1970: time];
+  if (time > 0)
+    return [NSCalendarDate dateWithTimeIntervalSince1970: time];
+  else
+    return [NSCalendarDate calendarDate];
 }
 
 /* mail forward */

@@ -48,6 +48,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailCatalanReply.wo \
 	SOGoMailCzechForward.wo \
 	SOGoMailCzechReply.wo \
+	SOGoMailDanishForward.wo \
+	SOGoMailDanishReply.wo \
 	SOGoMailDutchForward.wo \
 	SOGoMailDutchReply.wo \
 	SOGoMailEnglishForward.wo \
@@ -76,6 +78,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailSpanishArgentinaReply.wo \
 	SOGoMailSwedishForward.wo \
 	SOGoMailSwedishReply.wo \
+	SOGoMailUkrainianForward.wo \
+	SOGoMailUkrainianReply.wo \
 	SOGoMailWelshForward.wo \
 	SOGoMailWelshReply.wo
 

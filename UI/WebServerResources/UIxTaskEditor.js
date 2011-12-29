@@ -178,7 +178,7 @@ function onTimeControlCheck(checkBox) {
         for (var i = 0; i < selects.length; i++)
             if (selects[i] != checkBox)
                 selects[i].disabled = !checkBox.checked;
-	if (checkBox.id == "dueDateCB")
+	if (checkBox.id == "startDateCB")
             $("reminderList").disabled = !checkBox.checked;
     }
 }
@@ -323,7 +323,7 @@ function onTaskEditorLoad() {
     }
 
     // Enable or disable the reminder list
-    onTimeControlCheck($("dueDateCB"));
+    onTimeControlCheck($("startDateCB"));
 
     initializeStatusLine();
 }

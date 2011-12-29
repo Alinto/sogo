@@ -733,15 +733,15 @@ function onViewEventCallback(http) {
                 para.hide();
 
             para = $(paras[1]);
-            if (parseInt(data["isAllDay"]) == 0) {
-                para.down("SPAN", 1).update(data["startTime"]);
+            if (data["location"].length) {
+                para.down("SPAN", 1).update(data["location"]);
                 para.show();
             } else
                 para.hide();
 
             para = $(paras[2]);
-            if (data["location"].length) {
-                para.down("SPAN", 1).update(data["location"]);
+            if (parseInt(data["isAllDay"]) == 0) {
+                para.down("SPAN").update(data["startTime"] + " - " + data["endTime"]);
                 para.show();
             } else
                 para.hide();
@@ -2774,6 +2774,7 @@ function onCalendarRemove(event) {
             }
             else {
                 var folderUrl = ApplicationBaseURL + folderId;
+                nodes[i].deselect();
                 unsubscribeFromFolder(folderUrl, owner,
                                       onFolderUnsubscribeCB, folderId);
             }

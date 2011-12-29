@@ -28,8 +28,12 @@
 "Add..." = "Додати...";
 "Remove" = "Вилучити";
 
-"Default Roles" = "Контроль доступу для всіх";
 "Subscribe User" = "Підписати користувача";
+
+"Any Authenticated User" = "Будь-який авторизований користувач";
+"Public Access" = "Публічний доступ";
+"Any user not listed above" = "Будь-який користувач, крім зазначених вище";
+"Anybody accessing this resource from the public area" = "Будь-який користувач, що бажає отримати доступ з публічного простору";
 
 "Sorry, the user rights can not be configured for that object." = "Вибачте, для цього об’єкту неможливо налаштувати права доступу.";
 
@@ -50,7 +54,6 @@
 "A folder by that name already exists." = "Тека з такою назвою вже існує.";
 "You cannot create a list in a shared address book." 
         = "Ви не можете створювати перелік у спільній адресній книзі.";
-
 "Warning" = "Увага";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."

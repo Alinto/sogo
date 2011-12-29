@@ -277,13 +277,13 @@
 @implementation SOGoACLCzechRemovalAdvisory
 @end
 
-@implementation SOGoACLDanishDenmarkAdditionAdvisory
+@implementation SOGoACLDanishAdditionAdvisory
 @end
 
-@implementation SOGoACLDanishDenmarkModificationAdvisory
+@implementation SOGoACLDanishModificationAdvisory
 @end
 
-@implementation SOGoACLDanishDenmarkRemovalAdvisory
+@implementation SOGoACLDanishRemovalAdvisory
 @end
 
 @implementation SOGoACLDutchAdditionAdvisory

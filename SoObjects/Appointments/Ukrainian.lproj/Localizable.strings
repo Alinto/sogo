@@ -35,12 +35,20 @@ vtodo_class2 = "(Конфіденційне завдання)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Запрошення на подію: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(надіслано %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} запросив вас до %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} запросив вас до %{Summary}.
+
+Start: %{StartDate} at %{StartTime}
+End: %{EndDate} at %{EndTime}
+Description: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Подію скасовано: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText} скасував подію: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+= "%{Organizer} %{SentByText} скасував подію: %{Summary}.
+
+Start: %{StartDate} at %{StartTime}
+End: %{EndDate} at %{EndTime}
+Description: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
@@ -62,4 +70,4 @@ vtodo_class2 = "(Конфіденційне завдання)";
 = "%{Attendee} %{SentByText} поки не визначився з участю в події.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Максимальне число одночасного резервування (%{NumberOfSimultaneousBookings}) для ресурсу досягло \"%{Cn} %{SystemEmail}\".";

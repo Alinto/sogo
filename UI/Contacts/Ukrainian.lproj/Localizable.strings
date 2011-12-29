@@ -2,8 +2,8 @@
 
 "Contact" = "Контакт";
 "Address" = "Адреси";
-"Other" = "Інше";
 "Photos" = "Світлини";
+"Other" = "Інше";
 
 "Address Books" = "Адресні книги";
 "Addressbook" = "Адресна книга";
@@ -36,11 +36,12 @@
 "delete" = "вилучити";
 "edit" = "редагувати";
 "invalidemailwarn" = "Неправильно зазначена електронна адреса";
+"invaliddatewarn" = "Зазначена дата неправильна.";
 "new" = "новий";
 "Preferred Phone" = "Основний телефон";
 
-"Copy To" = "Скопіювати до";
 "Move To" = "Пересунути до";
+"Copy To" = "Скопіювати до";
 "Add to:" = "Додати до:";
 
 /* Tooltips */
@@ -50,6 +51,7 @@
 "Edit the selected card" = "Зміна вибраної картки";
 "Send a mail message" = "Створення повідомлення";
 "Delete selected card or address book" = "Вилучення вибраної картки або адресної книги";
+"Reload all contacts" = "Перезавантажити усі контакти";
 
 "htmlMailFormat_UNKNOWN" = "Невідомо";
 "htmlMailFormat_FALSE" = "Звичайний текст";
@@ -74,7 +76,6 @@
 "No possible subscription" = "Відсутні підписки";
 
 "Preferred" = "Найзручніше";
-"Card for %@" = "Картка для %@";
 "Display:" = "Відображати як:";
 "Display Name:" = "Ім’я, що відображається:";
 "Email:" = "Електронна пошта:";
@@ -153,7 +154,6 @@
 "Unable to subscribe to that folder!"
 = "Неможливо підписатись на цю теку.";
 
-"Default Roles" = "Ролі за замовчанням";
 "User rights for:" = "Права доступу користувача до:";
 
 "Any Authenticated User" = "Будь-який авторизований користувач";

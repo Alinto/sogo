@@ -1,6 +1,6 @@
-/* DanishDenmark */
+/* Danish */
 {
-  NSLanguageName = "DanishDenmark";
+  NSLanguageName = "Danish (Denmark)";
   NSFormalName = "Danish";
   NSLocaleCode = "da_DK"; /* ISO 639-1 */
   NSLanguageCode = "dan"; /* ISO 639-2 */
