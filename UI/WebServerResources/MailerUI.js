@@ -855,7 +855,7 @@ function openMailbox(mailbox, reload) {
 
         Mailer.currentMailbox = mailbox;
 
-        if (!getUnseenCountForAllFolders && Mailer.unseenCountMailboxes.indexOf(mailbox) == -1) {
+        if (Mailer.unseenCountMailboxes.indexOf(mailbox) == -1) {
             Mailer.unseenCountMailboxes.push(mailbox);
         }
 
@@ -2048,10 +2048,9 @@ function initMailboxTreeCB() {
     checkAjaxRequestsState();
     getFoldersState();
     configureDroppables();
-    if (getUnseenCountForAllFolders) {
-        for (var i = 0; i < mailboxTree.aNodes.length; i++) {
-            var mailboxPath = mailboxTree.aNodes[i].dataname;
-            Mailer.unseenCountMailboxes.push(mailboxPath);
+    if (unseenCountFolders.length > 0) {
+        for (var i = 0; i < unseenCountFolders.length; i++) {
+            Mailer.unseenCountMailboxes.push(unseenCountFolders[i]);
         }
         refreshUnseenCounts();
     }

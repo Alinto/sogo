@@ -2,6 +2,9 @@
   Copyright (C) 2007-2011 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
+  Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+          Ludovic Marcotte <lmarcotte@inverse.ca>
+
   This file is part of SOGo.
 
   SOGo is free software; you can redistribute it and/or modify it under
@@ -626,14 +629,55 @@
   return [self labelForKey: [currentColumn objectForKey: @"value"]];
 }
 
-- (NSString *) getUnseenCountForAllFolders
+- (NSString *) unseenCountFolders
 {
-  SOGoDomainDefaults *dd;
+  NSArray *pathComponents, *filters, *actions;
+  NSDictionary *d, *action;
+  NSMutableArray *folders;
+  NSMutableString *path;
+  SOGoUserDefaults *ud;
+  NSString *s;
+  int i, j, k;
 
-  dd = [[context activeUser] domainDefaults];
+  ud = [[context activeUser] userDefaults];
+  folders = [NSMutableArray array];
 
-  return ([dd mailCheckAllUnseenCounts] ? @"true" : @"false");
+  filters = [ud sieveFilters];
+
+  for (i = 0; i < [filters count]; i++)
+    {
+      d = [filters objectAtIndex: i];      
+      actions = [d objectForKey: @"actions"];
+
+      for (j = 0; j < [actions count]; j++)
+	{
+	  action = [actions objectAtIndex: j];
+	  
+	  if ([[action objectForKey: @"method"] caseInsensitiveCompare: @"fileinto"] == NSOrderedSame)
+	    {
+	      s = [action objectForKey: @"argument"];
+	      
+	      // We format the result string so that MailerUI.js can simply consume that information
+	      // without doing anything special on its side
+	      if (s)
+		{
+		  pathComponents = [s componentsSeparatedByString: @"/"];
+		  path = [NSMutableString string];
+
+		  for (k = 0; k < [pathComponents count]; k++)
+		    {
+		      [path appendFormat: @"folder%@", [[pathComponents objectAtIndex: k] asCSSIdentifier]];
+		      if (k < [pathComponents count] - 1)
+			[path appendString: @"/"];
+		    }
+		  
+		  [folders addObject: [NSString stringWithFormat: @"/0/%@", path]];
+		}
+	    }
+	}
+    }
+  
+  return [folders jsonRepresentation];
 }
 
 @end /* UIxMailMainFrame */
-

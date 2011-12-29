@@ -2,6 +2,8 @@
 ---------------------
 New Features
  - show end time in bubble box of events
+ - we now check for new mails in folders for which
+   sieve rules are defined to file messages into
 
 Enhancements
  - updated Ukrainian translation

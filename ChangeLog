@@ -4,6 +4,14 @@
 	don't escape the / character as it's generating invalid JSON
 	output on newer versions of PostgreSQL.
 
+	* Dropped all references to "SOGoMailCheckAllUnseenCounts". We
+	now check all folders for which filters are defined with a
+	"fileinto" action - even if they are disable.
+
+	* UI/MailerUI/UIxMailAccountActions.m (_jsonFolders:) - we
+	use a local autorelease pool in the tight loop to avoid consuming
+	too many LDAP connections during its execution.
+
 2011-12-23  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Scheduler/UIxAppointmentEditor.m (-viewAction): the end

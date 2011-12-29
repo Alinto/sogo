@@ -3,6 +3,7 @@
  * Copyright (C) 2007-2011 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +22,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValue.h>
@@ -122,10 +124,16 @@
   SOGoUserManager *userManager;
   NSDictionary *folderData;
   NSMutableArray *folders;
+  NSAutoreleasePool *pool;
 
   folders = [NSMutableArray array];
   while ((currentFolder = [rawFolders nextObject]))
     {
+      // Using a local pool to avoid using too many file descriptors. This could
+      // happen with tons of mailboxes under "Other Users" as LDAP connections
+      // are never reused and "autoreleased" at the end. This loop would consume
+      // lots of LDAP connections during its execution.
+      pool = [[NSAutoreleasePool alloc] init];
       currentFolderType = [self _folderType: currentFolder];
 
       // We translate the "Other Users" and "Shared Folders" namespaces.
@@ -169,6 +177,7 @@
 				 currentDisplayName, @"displayName",
 	nil];
       [folders addObject: folderData];
+      [pool release];
     }
 
   return folders;

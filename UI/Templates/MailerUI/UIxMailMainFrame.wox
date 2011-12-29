@@ -13,7 +13,7 @@
   <script type="text/javascript">
     var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO"/>;
     var inboxData = <var:string value="inboxData" const:escapeHTML="NO"/>;
-    var getUnseenCountForAllFolders = <var:string value="getUnseenCountForAllFolders"/>;
+    var unseenCountFolders = <var:string value="unseenCountFolders" const:escapeHTML="NO"/>;
   </script>
   <style type="text/css">
   <var:if condition="horizontalDragHandleStyle">
