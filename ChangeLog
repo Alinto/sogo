@@ -1,3 +1,9 @@
+2011-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoFolder+CardDAV.m (_isValidFilter:): make
+	use of the lowercase instance of the string, which was erroneously
+	ignored previously.
+
 2011-12-29  Ludovic Marcotte  <lmarcotte@inverse.ca.>
 
 	* SoObjects/SOGo/SOGoSQLUserProfile.m (_sqlJsonRepresentation:):
