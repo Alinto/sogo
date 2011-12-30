@@ -30,6 +30,7 @@ import sys
 
 xmlns_dav = "DAV:"
 xmlns_caldav = "urn:ietf:params:xml:ns:caldav"
+xmlns_carddav = "urn:ietf:params:xml:ns:carddav"
 xmlns_inversedav = "urn:inverse:params:xml:ns:inverse-dav"
 
 url_re = None
@@ -400,6 +401,25 @@ class CalDAVCalendarQuery(WebDAVREPORT):
             cal_filter_node.append(comp_node)
             filter_node.append(cal_filter_node)
             self.top_node.append(filter_node)
+
+class CardDAVAddressBookQuery(WebDAVREPORT):
+    def __init__(self, url, properties, searchProperty = None, searchValue = None):
+        WebDAVQuery.__init__(self, url)
+        query_tag = self.ns_mgr.register("addressbook-query", xmlns_carddav)
+        ns_key = self.ns_mgr.xmlns[xmlns_carddav]
+        self.top_node = _WD_XMLTreeElement(query_tag)
+        if properties is not None and len(properties) > 0:
+            self._initProperties(properties)
+
+        if searchProperty is not None:
+            filter_node = _WD_XMLTreeElement("%s:filter" % ns_key)
+            self.top_node.append(filter_node)
+            propfilter_node = _WD_XMLTreeElement("%s:prop-filter" % ns_key, { "name": searchProperty })
+            filter_node.append(propfilter_node)
+            match_node = _WD_XMLTreeElement("%s:text-match" % ns_key,
+                                            { "collation": "i;unicasemap", "match-type": "starts-with" })
+            propfilter_node.append(match_node)
+            match_node.appendSubtree(None, searchValue)
 
 class MailDAVMailQuery(WebDAVREPORT):
     def __init__(self, url, properties, filters = None,
