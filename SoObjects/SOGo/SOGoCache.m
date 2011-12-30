@@ -127,7 +127,10 @@ static memcached_st *handle = NULL;
                 servers
 		  = memcached_servers_parse([memcachedServerName UTF8String]);
 
-              memcached_server_push(handle, servers);
+              if ([memcachedServerName hasPrefix:@"/"])
+                  memcached_server_add_unix_socket(handle, [memcachedServerName UTF8String]);
+              else
+                  memcached_server_push(handle, servers);
             }
         }
     }

@@ -7,6 +7,7 @@ New Features
 
 Enhancements
  - updated Ukrainian translation
+ - now possible to use memcached over a UNIX socket
 
 Bug Fixes
  - alarms for tasks now depend on the start date and instead of the due date
