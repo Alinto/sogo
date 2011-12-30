@@ -38,6 +38,7 @@
 #import <SaxObjC/XMLNamespaces.h>
 
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoSource.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -96,9 +97,14 @@
   [super dealloc];
 }
 
-- (void) setSource: (id) newSource
+- (void) setSource: (id <SOGoSource>) newSource
 {
   ASSIGN (source, newSource);
+}
+
+- (id <SOGoSource>) source
+{
+  return source;
 }
 
 - (NSString *) groupDavResourceType
@@ -126,7 +132,9 @@
           acquire: (BOOL) acquire
 {
   NSDictionary *ldifEntry;
-  id obj;
+  SOGoContactLDIFEntry *obj;
+  NSString *url;
+  BOOL isNew = NO;
 
   /* first check attributes directly bound to the application */
   obj = [super lookupName: objectName inContext: lookupContext acquire: NO];
@@ -139,11 +147,24 @@
           ldifEntry = [source lookupContactEntry: objectName];
 	  if (ldifEntry)
 	    [childRecords setObject: ldifEntry forKey: objectName];
+          else if ([self isValidContentName: objectName])
+            {
+              url = [[[lookupContext request] uri] urlWithoutParameters];
+              if ([url hasSuffix: @"AsContact"])
+                {
+                  ldifEntry = [NSMutableDictionary dictionary];
+                  isNew = YES;
+                }
+            }
         }
       if (ldifEntry)
-        obj = [SOGoContactLDIFEntry contactEntryWithName: objectName
-                                           withLDIFEntry: ldifEntry
-                                             inContainer: self];
+        {
+          obj = [SOGoContactLDIFEntry contactEntryWithName: objectName
+                                             withLDIFEntry: ldifEntry
+                                               inContainer: self];
+          if (isNew)
+            [obj setIsNew: YES];
+        }
       else
         obj = [NSException exceptionWithHTTPStatus: 404];
     }
@@ -154,6 +175,19 @@
 - (NSArray *) toOneRelationshipKeys
 {
   return [source allEntryIDs];
+}
+
+- (NSException *) saveLDIFEntry: (SOGoContactLDIFEntry *) ldifEntry
+{
+  return (([ldifEntry isNew])
+          ? [source addContactEntry: [ldifEntry ldifRecord]
+                    withID: [ldifEntry nameInContainer]]
+          : [source updateContactEntry: [ldifEntry ldifRecord]]);
+}
+
+- (NSException *) deleteLDIFEntry: (SOGoContactLDIFEntry *) ldifEntry
+{
+  return [source removeContactEntryWithID: [ldifEntry nameInContainer]];
 }
 
 - (NSDictionary *) _flattenedRecord: (NSDictionary *) oldRecord
@@ -324,10 +358,26 @@
   return [NSArray arrayWithObject: SoRole_Authenticated];
 }
 
-/* TODO: this might change one day when we support LDAP acls */
 - (NSArray *) aclsForUser: (NSString *) uid
 {
-  return nil;
+  NSArray *acls, *modifiers;
+  static NSArray *modifierRoles = nil;
+
+  if (!modifierRoles)
+    modifierRoles = [[NSArray alloc] initWithObjects: @"Owner",
+                                     @"ObjectViewer",
+                                     @"ObjectEditor", @"ObjectCreator",
+                                     @"ObjectEraser", nil];
+
+  modifiers = [source modifiers];
+  if ([modifiers containsObject: uid])
+    acls = [modifierRoles copy];
+  else
+    acls = [NSArray new];
+
+  [acls autorelease];
+
+  return acls;
 }
 
 @end

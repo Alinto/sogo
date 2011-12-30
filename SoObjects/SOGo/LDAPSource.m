@@ -35,6 +35,7 @@
 #import <NGLdap/NGLdapEntry.h>
 #import <NGLdap/NGLdapModification.h>
 
+#import "LDAPSourceSchema.h"
 #import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
 #import "SOGoDomainDefaults.h"
@@ -44,89 +45,76 @@
 
 #import "../../Main/SOGo.h"
 
+static Class NSStringK;
+
 #define SafeLDAPCriteria(x) [[[x stringByReplacingString: @"\\" withString: @"\\\\"] \
                                  stringByReplacingString: @"'" withString: @"\\'"] \
                                  stringByReplacingString: @"%" withString: @"%%"]
-static NSArray *commonSearchFields;
+
+@interface NGLdapAttribute (SOGoLDAP)
+
+- (id) _asArrayOrString;
+
+@end
+
+@implementation NGLdapAttribute (SOGoLDAP)
+
+- (id) _asArrayOrString
+{
+  id value;
+  NSArray *arrayValue;
+
+  arrayValue = [self allStringValues];
+  if ([arrayValue count] == 1)
+    value = [arrayValue objectAtIndex: 0];
+  else
+    value = arrayValue;
+
+  return value;
+}
+
+@end
+
+@interface NGLdapEntry (SOGoLDAP)
+
+- (NSMutableDictionary *) _asDictionary;
+
+@end
+
+@implementation NGLdapEntry (SOGoLDAP)
+
+- (NSMutableDictionary *) _asDictionary
+{
+  NSMutableDictionary *ldapRecord;
+  NSDictionary *ldapAttributes;
+  NSArray *keys;
+  NSString *key;
+  NSUInteger count, max;
+  id value;
+  
+  ldapAttributes = [self attributes];
+  keys = [ldapAttributes allKeys];
+  max = [keys count];
+
+  ldapRecord = [NSMutableDictionary dictionaryWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      key = [keys objectAtIndex: count];
+      value = [[ldapAttributes objectForKey: key] _asArrayOrString];
+      if (value)
+        [ldapRecord setObject: value forKey: [key lowercaseString]];
+    }
+
+  return ldapRecord;
+}
+
+@end
 
 @implementation LDAPSource
 
 + (void) initialize
 {
-  if (!commonSearchFields)
-    {
-      commonSearchFields = [NSArray arrayWithObjects:
-				      @"title",
-				    @"company",
-				    @"o",
-				    @"displayname",
-				    @"modifytimestamp",
-				    @"mozillahomestate",
-				    @"mozillahomeurl",
-				    @"homeurl",
-				    @"st",
-				    @"region",
-				    @"mozillacustom2",
-				    @"custom2",
-				    @"mozillahomecountryname",
-				    @"description",
-				    @"notes",
-				    @"department",
-				    @"departmentnumber",
-				    @"ou",
-				    @"orgunit",
-				    @"mobile",
-				    @"cellphone",
-				    @"carphone",
-				    @"mozillacustom1",
-				    @"custom1",
-				    @"mozillanickname",
-				    @"xmozillanickname",
-				    @"mozillaworkurl",
-				    @"workurl",
-				    @"fax",
-				    @"facsimiletelephonenumber",
-				    @"telephonenumber",
-				    @"mozillahomestreet",
-				    @"mozillasecondemail",
-				    @"xmozillasecondemail",
-				    @"mozillacustom4",
-				    @"custom4",
-				    @"nsaimid",
-				    @"nscpaimscreenname",
-				    @"street",
-				    @"streetaddress",
-				    @"postofficebox",
-				    @"homephone",
-				    @"cn",
-				    @"commonname",
-				    @"givenname",
-				    @"mozillahomepostalcode",
-				    @"mozillahomelocalityname",
-				    @"mozillaworkstreet2",
-				    @"mozillausehtmlmail",
-				    @"xmozillausehtmlmail",
-				    @"mozillahomestreet2",
-				    @"postalcode",
-				    @"zip",
-				    @"c",
-				    @"countryname",
-				    @"pager",
-				    @"pagerphone",
-				    @"mail",
-				    @"sn",
-				    @"surname",
-				    @"mozillacustom3",
-				    @"custom3",
-				    @"l",
-				    @"locality",
-				    @"birthyear",
-				    @"serialnumber",
-				    @"calfburl",
-                                    @"proxyaddresses",
-				    nil];	
-      [commonSearchFields retain];
-    }
+  NSStringK = [NSString class];
 }
 
 //
@@ -162,11 +150,13 @@ static NSArray *commonSearchFields;
       domain = nil;
 
       baseDN = nil;
+      schema = nil;
       IDField = @"cn"; /* the first part of a user DN */
       CNField = @"cn";
       UIDField = @"uid";
       mailFields = [NSArray arrayWithObject: @"mail"];
       [mailFields retain];
+      contactMapping = nil;
       searchFields = [NSArray arrayWithObjects: @"sn", @"displayname", @"telephonenumber", nil];
       [searchFields retain];
       IMAPHostField = nil;
@@ -182,6 +172,7 @@ static NSArray *commonSearchFields;
       multipleBookingsField = nil;
 
       _dnCache = [[NSMutableDictionary alloc] init];
+      modifiers = nil;
     }
 
   return self;
@@ -192,6 +183,7 @@ static NSArray *commonSearchFields;
 //
 - (void) dealloc
 {
+  [schema release];
   [bindDN release];
   [password release];
   [sourceBindDN release];
@@ -202,6 +194,7 @@ static NSArray *commonSearchFields;
   [IDField release];
   [CNField release];
   [UIDField release];
+  [contactMapping release];
   [mailFields release];
   [searchFields release];
   [IMAPHostField release];
@@ -216,6 +209,7 @@ static NSArray *commonSearchFields;
   [_dnCache release];
   [kindField release];
   [multipleBookingsField release];
+  [modifiers release];
   [super dealloc];
 }
 
@@ -250,6 +244,9 @@ static NSArray *commonSearchFields;
 	   bindFields: [udSource objectForKey: @"bindFields"]
 	    kindField: [udSource objectForKey: @"KindFieldName"]
 	    andMultipleBookingsField: [udSource objectForKey: @"MultipleBookingsFieldName"]];
+
+      [self setContactMapping: [udSource objectForKey: @"mapping"]
+             andObjectClasses: [udSource objectForKey: @"objectClasses"]];
 
       if ([sourceDomain length])
         {
@@ -286,6 +283,8 @@ static NSArray *commonSearchFields;
 
       if ([udSource objectForKey: @"passwordPolicy"])
 	passwordPolicy = [[udSource objectForKey: @"passwordPolicy"] boolValue];
+
+      ASSIGN (modifiers, [udSource objectForKey: @"modifiers"]);
     }
   
   return self;
@@ -345,15 +344,15 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 {
   ASSIGN(baseDN, [newBaseDN lowercaseString]);
   if (newIDField)
-    ASSIGN(IDField, newIDField);
+    ASSIGN(IDField, [newIDField lowercaseString]);
   if (newCNField)
-    ASSIGN(CNField, newCNField);
+    ASSIGN(CNField, [newCNField lowercaseString]);
   if (newUIDField)
-    ASSIGN(UIDField, newUIDField);
+    ASSIGN(UIDField, [newUIDField lowercaseString]);
   if (newIMAPHostField)
-    ASSIGN(IMAPHostField, newIMAPHostField);
+    ASSIGN(IMAPHostField, [newIMAPHostField lowercaseString]);
   if (newIMAPLoginField)
-    ASSIGN(IMAPLoginField, newIMAPLoginField);
+    ASSIGN(IMAPLoginField, [newIMAPLoginField lowercaseString]);
   if (newMailFields)
     ASSIGN(mailFields, newMailFields);
   if (newSearchFields)
@@ -382,9 +381,16 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 	}
     }
   if (newKindField)
-    ASSIGN(kindField, newKindField);
+    ASSIGN(kindField, [newKindField lowercaseString]);
   if (newMultipleBookingsField)
-    ASSIGN(multipleBookingsField, newMultipleBookingsField);
+    ASSIGN(multipleBookingsField, [newMultipleBookingsField lowercaseString]);
+}
+
+- (void) setContactMapping: (NSDictionary *) newMapping
+          andObjectClasses: (NSArray *) newObjectClasses
+{
+  ASSIGN (contactMapping, newMapping);
+  ASSIGN (contactObjectClasses, newObjectClasses);
 }
 
 //
@@ -438,7 +444,9 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
     }
   NS_HANDLER
     {
-      NSLog(@"Could not bind to the LDAP server %@ (%d) using the bind DN: %@", hostname, port, bindDN);
+      [self errorWithFormat: @"Could not bind to the LDAP server %@ (%d)"
+						 @" using the bind DN: %@",
+            hostname, port, bindDN];
       ldapConnection = nil;
     }
   NS_ENDHANDLER;
@@ -738,44 +746,6 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   return fields;
 }
 
-- (NSArray *) _searchAttributes
-{
-  if (!searchAttributes)
-    {
-      searchAttributes = [NSMutableArray new];
-      [searchAttributes addObject: @"objectClass"];
-      if (CNField)
-	[searchAttributes addObject: CNField];
-      if (UIDField)
-	[searchAttributes addObject: UIDField];
-      [searchAttributes addObjectsFromArray: mailFields];
-      [searchAttributes addObjectsFromArray: [self _constraintsFields]];
-      [searchAttributes addObjectsFromArray: commonSearchFields];
-      [searchAttributes addObjectUniquely: IDField];
-
-      // Add SOGoLDAPContactInfoAttribute from user defaults
-      if ([contactInfoAttribute length])
-        [searchAttributes addObjectUniquely: contactInfoAttribute];
-
-      // Add IMAP hostname from user defaults
-      if ([IMAPHostField length])
-        [searchAttributes addObjectUniquely: IMAPHostField];
-
-      // Add IMAP login from user defaults
-      if ([IMAPLoginField length])
-        [searchAttributes addObjectUniquely: IMAPLoginField];
-
-      // Add the resources handling attributes
-      if ([kindField length])
-	[searchAttributes addObjectUniquely: kindField];
-
-      if ([multipleBookingsField length])
-	[searchAttributes addObjectUniquely: multipleBookingsField];
-    }
-
-  return searchAttributes;
-}
-
 - (NSArray *) allEntryIDs
 {
   NSEnumerator *entries;
@@ -814,7 +784,7 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 }
 
 - (void) _fillEmailsOfEntry: (NGLdapEntry *) ldapEntry
-	   intoContactEntry: (NSMutableDictionary *) contactEntry
+             intoLDIFRecord: (NSMutableDictionary *) ldifRecord
 {
   NSEnumerator *emailFields;
   NSString *currentFieldName, *ldapValue;
@@ -829,27 +799,27 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 		    allStringValues];
       [emails addObjectsFromArray: allValues];
     }
-  [contactEntry setObject: emails forKey: @"c_emails"];
+  [ldifRecord setObject: emails forKey: @"c_emails"];
   [emails release];
 
   if (IMAPHostField)
     {
       ldapValue = [[ldapEntry attributeWithName: IMAPHostField] stringValueAtIndex: 0];
       if ([ldapValue length] > 0)
-	[contactEntry setObject: ldapValue forKey: @"c_imaphostname"];
+	[ldifRecord setObject: ldapValue forKey: @"c_imaphostname"];
     }
 
   if (IMAPLoginField)
     {
       ldapValue = [[ldapEntry attributeWithName: IMAPLoginField] stringValueAtIndex: 0];
       if ([ldapValue length] > 0)
-	[contactEntry setObject: ldapValue forKey: @"c_imaplogin"];
+	[ldifRecord setObject: ldapValue forKey: @"c_imaplogin"];
     }
 }
 
 - (void) _fillConstraints: (NGLdapEntry *) ldapEntry
 		forModule: (NSString *) module
-	 intoContactEntry: (NSMutableDictionary *) contactEntry
+           intoLDIFRecord: (NSMutableDictionary *) ldifRecord
 {
   NSDictionary *constraints;
   NSEnumerator *matches;
@@ -875,22 +845,95 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 	}
     }
 
-  [contactEntry setObject: [NSNumber numberWithBool: result]
-		forKey: [NSString stringWithFormat: @"%@Access", module]];
+  [ldifRecord setObject: [NSNumber numberWithBool: result]
+                 forKey: [NSString stringWithFormat: @"%@Access", module]];
+}
+
+/* conversion LDAP -> SOGo inetOrgPerson entry */
+- (void) _applyContactMappingToResult: (NSMutableDictionary *) ldifRecord
+{
+  NSArray *sourceFields;
+  NSArray *keys;
+  NSString *key, *field, *value;
+  NSUInteger count, max, fieldCount, fieldMax;
+  BOOL filled;
+
+  keys = [contactMapping allKeys];
+  max = [keys count];
+  for (count = 0; count < max; count++)
+    {
+      key = [keys objectAtIndex: count];
+      sourceFields = [contactMapping objectForKey: key];
+      if ([sourceFields isKindOfClass: NSStringK])
+        sourceFields = [NSArray arrayWithObject: sourceFields];
+      fieldMax = [sourceFields count];
+      filled = NO;
+      for (fieldCount = 0;
+           !filled && fieldCount < fieldMax;
+           fieldCount++)
+        {
+          field = [[sourceFields objectAtIndex: fieldCount] lowercaseString];
+          value = [ldifRecord objectForKey: field];
+          if (value)
+            {
+              [ldifRecord setObject: value forKey: [key lowercaseString]];
+              filled = YES;
+            }
+        }
+    }
+}
+
+/* conversion SOGo inetOrgPerson entry -> LDAP */
+- (void) _applyContactMappingToOutput: (NSMutableDictionary *) ldifRecord
+{
+  NSArray *sourceFields;
+  NSArray *keys;
+  NSString *key, *lowerKey, *field, *value;
+  NSUInteger count, max, fieldCount, fieldMax;
+
+  if (contactObjectClasses)
+    [ldifRecord setObject: contactObjectClasses
+                   forKey: @"objectclass"];
+
+  keys = [contactMapping allKeys];
+  max = [keys count];
+  for (count = 0; count < max; count++)
+    {
+      key = [keys objectAtIndex: count];
+      lowerKey = [key lowercaseString];
+      value = [ldifRecord objectForKey: lowerKey];
+      if ([value length] > 0)
+        {
+          sourceFields = [contactMapping objectForKey: key];
+          if ([sourceFields isKindOfClass: NSStringK])
+            sourceFields = [NSArray arrayWithObject: sourceFields];
+
+          fieldMax = [sourceFields count];
+          for (fieldCount = 0; fieldCount < fieldMax; fieldCount++)
+            {
+              field = [[sourceFields objectAtIndex: fieldCount]
+                        lowercaseString];
+              [ldifRecord setObject: value forKey: field];
+            }
+        }
+    }
 }
 
 - (NSDictionary *) _convertLDAPEntryToContact: (NGLdapEntry *) ldapEntry
 {
-  NSMutableDictionary *contactEntry;
-  NSEnumerator *attributes;
-  NSString *currentAttribute, *value;
+  NSMutableDictionary *ldifRecord;
+  NSString *value;
+  static NSArray *resourceKinds = nil;
   NSMutableArray *classes;
   id o;
 
-  contactEntry = [NSMutableDictionary dictionary];
-  [contactEntry setObject: [ldapEntry dn] forKey: @"dn"];
-  attributes = [[self _searchAttributes] objectEnumerator];
+  if (!resourceKinds)
+    resourceKinds = [[NSArray alloc] initWithObjects: @"location", @"thing",
+                                     @"group", nil];
 
+  ldifRecord = [ldapEntry _asDictionary];
+  [ldifRecord setObject: [ldapEntry dn] forKey: @"dn"];
+  
   // We get our objectClass attribute values. We lowercase
   // everything for ease of search after.
   o = [ldapEntry objectClasses];
@@ -909,9 +952,6 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 
   if (classes)
     {
-      [contactEntry setObject: classes
-		       forKey: @"objectclasses"];
-
       // We check if our entry is a group. If so, we set the
       // 'isGroup' custom attribute.
       if ([classes containsObject: @"group"] ||
@@ -919,63 +959,48 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 	  [classes containsObject: @"groupofuniquenames"] ||
 	  [classes containsObject: @"posixgroup"])
 	{
-	  [contactEntry setObject: [NSNumber numberWithInt: 1]
-			   forKey: @"isGroup"];
+	  [ldifRecord setObject: [NSNumber numberWithInt: 1]
+                         forKey: @"isGroup"];
 	}
       // We check if our entry is a resource. We also support
       // determining resources based on the KindFieldName attribute
       // value - see below.
       else if ([classes containsObject: @"calendarresource"])
 	{
-	  [contactEntry setObject: [NSNumber numberWithInt: 1]
-			forKey: @"isResource"];
+	  [ldifRecord setObject: [NSNumber numberWithInt: 1]
+                         forKey: @"isResource"];
 	}
     }
 
-  while ((currentAttribute = [attributes nextObject]))
+  // We check if that entry corresponds to a resource. For this,
+  // kindField must be defined and it must hold one of those values
+  //				       
+  // location
+  // thing
+  // group
+  //
+  if ([kindField length] > 0)
     {
-      value = [[ldapEntry attributeWithName: currentAttribute]
-		stringValueAtIndex: 0];
+      value = [ldifRecord objectForKey: [kindField lowercaseString]];
+      if ([value isKindOfClass: NSStringK]
+          && [resourceKinds containsObject: value])
+        [ldifRecord setObject: [NSNumber numberWithInt: 1]
+                       forKey: @"isResource"];
+    }
 
-      // It's important here to set our attributes' key in lowercase.
-      if (value)
-	{
-	  currentAttribute = [currentAttribute lowercaseString];
-	  [contactEntry setObject: value forKey: currentAttribute];
-
-	  // We check if that entry corresponds to a resource. For this,
-	  // kindField must be defined and it must hold one of those values
-	  //				       
-	  // location
-	  // thing
-	  // group
-	  //
-	  if (kindField &&
-	      [kindField caseInsensitiveCompare: currentAttribute] == NSOrderedSame)
-	    {
-	      if ([value caseInsensitiveCompare: @"location"] == NSOrderedSame ||
-		  [value caseInsensitiveCompare: @"thing"] == NSOrderedSame ||
-		  [value caseInsensitiveCompare: @"group"] == NSOrderedSame) 
-		{
-		  [contactEntry setObject: [NSNumber numberWithInt: 1]
-				forKey: @"isResource"];
-		}
-	    }
-	  // We check for the number of simultanous bookings that is allowed.
-	  // A value of 0 means that there's no limit.
-	  if (multipleBookingsField &&
-	      [multipleBookingsField caseInsensitiveCompare: currentAttribute] == NSOrderedSame)
-	    {
-	      [contactEntry setObject: [NSNumber numberWithInt: [value intValue]]
-			    forKey: @"numberOfSimultaneousBookings"];
-	    }
-	}
+  // We check for the number of simultanous bookings that is allowed.
+  // A value of 0 means that there's no limit.
+  if ([multipleBookingsField length] > 0)
+    {
+      value = [ldifRecord objectForKey: [multipleBookingsField lowercaseString]];
+      [ldifRecord setObject: [NSNumber numberWithInt: [value intValue]]
+                     forKey: @"numberOfSimultaneousBookings"];
     }
 
   value = [[ldapEntry attributeWithName: IDField] stringValueAtIndex: 0];
   if (!value)
     value = @"";
-  [contactEntry setObject: value forKey: @"c_name"];
+  [ldifRecord setObject: value forKey: @"c_name"];
   value = [[ldapEntry attributeWithName: UIDField] stringValueAtIndex: 0];
   if (!value)
     value = @"";
@@ -984,11 +1009,14 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 //      Eventually, we could check at this point if the entry is a group
 //      and prefix the UID with a "@"
 //    }
-  [contactEntry setObject: value forKey: @"c_uid"];
+  [ldifRecord setObject: value forKey: @"c_uid"];
   value = [[ldapEntry attributeWithName: CNField] stringValueAtIndex: 0];
   if (!value)
     value = @"";
-  [contactEntry setObject: value forKey: @"c_cn"];
+  [ldifRecord setObject: value forKey: @"c_cn"];
+  /* if "displayName" is not set, we use CNField because it must exist */
+  if (![ldifRecord objectForKey: @"displayname"])
+    [ldifRecord setObject: value forKey: @"displayname"];
 
   if (contactInfoAttribute)
     {
@@ -999,21 +1027,24 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
     }
   else
     value = @"";
-  [contactEntry setObject: value forKey: @"c_info"];
+  [ldifRecord setObject: value forKey: @"c_info"];
 
   if (domain)
     value = domain;
   else
     value = @"";
-  [contactEntry setObject: value forKey: @"c_domain"];
+  [ldifRecord setObject: value forKey: @"c_domain"];
 
-  [self _fillEmailsOfEntry: ldapEntry intoContactEntry: contactEntry];
+  [self _fillEmailsOfEntry: ldapEntry intoLDIFRecord: ldifRecord];
   [self _fillConstraints: ldapEntry forModule: @"Calendar"
-	intoContactEntry: (NSMutableDictionary *) contactEntry];
+          intoLDIFRecord: (NSMutableDictionary *) ldifRecord];
   [self _fillConstraints: ldapEntry forModule: @"Mail"
-	intoContactEntry: (NSMutableDictionary *) contactEntry];
+          intoLDIFRecord: (NSMutableDictionary *) ldifRecord];
 
-  return contactEntry;
+  if (contactMapping)
+    [self _applyContactMappingToResult: ldifRecord];
+
+  return ldifRecord;
 }
 
 - (NSArray *) fetchContactsMatching: (NSString *) match
@@ -1031,7 +1062,8 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
     {
       ldapConnection = [self _ldapConnection];
       qualifier = [self _qualifierForFilter: match];
-      attributes = [self _searchAttributes];
+      // attributes = [self _searchAttributes];
+      attributes = [NSArray arrayWithObject: @"*"];
 
       if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
         entries = [ldapConnection baseSearchAtBaseDN: baseDN
@@ -1053,83 +1085,76 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   return contacts;
 }
 
+- (NGLdapEntry *) _lookupLDAPEntry: (EOQualifier *) qualifier
+{
+  NGLdapConnection *ldapConnection;
+  NSArray *attributes;
+  NSEnumerator *entries;
+
+  // attributes = [self _searchAttributes];
+  ldapConnection = [self _ldapConnection];
+  if (!schema)
+    {
+      schema = [LDAPSourceSchema new];
+      [schema readSchemaFromConnection: ldapConnection];
+    }
+  attributes = [NSArray arrayWithObject: @"*"];
+
+  if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
+    entries = [ldapConnection baseSearchAtBaseDN: baseDN
+                                       qualifier: qualifier
+                                      attributes: attributes];
+  else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
+    entries = [ldapConnection flatSearchAtBaseDN: baseDN
+                                       qualifier: qualifier
+                                      attributes: attributes];
+  else
+    entries = [ldapConnection deepSearchAtBaseDN: baseDN
+                                       qualifier: qualifier
+                                      attributes: attributes];
+
+  return [entries nextObject];
+}
+
 - (NSDictionary *) lookupContactEntry: (NSString *) theID
 {
   NGLdapEntry *ldapEntry;
-  NGLdapConnection *ldapConnection;
-  NSEnumerator *entries;
   EOQualifier *qualifier;
-  NSArray *attributes;
   NSString *s;
-  NSDictionary *contactEntry;
+  NSDictionary *ldifRecord;
 
-  contactEntry = nil;
+  ldifRecord = nil;
 
   if ([theID length] > 0)
     {
-      ldapConnection = [self _ldapConnection];
       s = [NSString stringWithFormat: @"(%@='%@')",
                     IDField, SafeLDAPCriteria(theID)];
       qualifier = [EOQualifier qualifierWithQualifierFormat: s];
-      attributes = [self _searchAttributes];
-
-      if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
-        entries = [ldapConnection baseSearchAtBaseDN: baseDN
-                                           qualifier: qualifier
-                                          attributes: attributes];
-      else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
-        entries = [ldapConnection flatSearchAtBaseDN: baseDN
-                                           qualifier: qualifier
-                                          attributes: attributes];
-      else
-        entries = [ldapConnection deepSearchAtBaseDN: baseDN
-                                           qualifier: qualifier
-                                          attributes: attributes];
-
-      ldapEntry = [entries nextObject];
+      ldapEntry = [self _lookupLDAPEntry: qualifier];
       if (ldapEntry)
-        contactEntry = [self _convertLDAPEntryToContact: ldapEntry];
+        ldifRecord = [self _convertLDAPEntryToContact: ldapEntry];
     }
 
-  return contactEntry;
+  return ldifRecord;
 }
 
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) uid
 {
-  NGLdapConnection *ldapConnection;
   NGLdapEntry *ldapEntry;
-  NSEnumerator *entries;
   EOQualifier *qualifier;
-  NSArray *attributes;
-  NSDictionary *contactEntry;
+  NSDictionary *ldifRecord;
 
-  contactEntry = nil;
+  ldifRecord = nil;
 
   if ([uid length] > 0)
     {
-      ldapConnection = [self _ldapConnection];
       qualifier = [self _qualifierForUIDFilter: uid];
-      attributes = [self _searchAttributes];
-
-      if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
-        entries = [ldapConnection baseSearchAtBaseDN: baseDN
-                                           qualifier: qualifier
-                                          attributes: attributes];
-      else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
-        entries = [ldapConnection flatSearchAtBaseDN: baseDN
-                                           qualifier: qualifier
-                                          attributes: attributes];
-      else
-        entries = [ldapConnection deepSearchAtBaseDN: baseDN
-                                           qualifier: qualifier
-                                          attributes: attributes];
-	  
-      ldapEntry = [entries nextObject];
+      ldapEntry = [self _lookupLDAPEntry: qualifier];
       if (ldapEntry)
-        contactEntry = [self _convertLDAPEntryToContact: ldapEntry];
+        ldifRecord = [self _convertLDAPEntryToContact: ldapEntry];
     }
 
-  return contactEntry;
+  return ldifRecord;
 }
 
 - (NSString *) lookupLoginByDN: (NSString *) theDN
@@ -1171,43 +1196,24 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 - (NGLdapEntry *) lookupGroupEntryByAttribute: (NSString *) theAttribute 
 				     andValue: (NSString *) theValue
 {
-  NSMutableArray *attributes;
-  NSEnumerator *entries;
   EOQualifier *qualifier;
   NSString *s;
-  NGLdapConnection *ldapConnection;
   NGLdapEntry *ldapEntry;
 
   if ([theValue length] > 0)
     {
-      ldapConnection = [self _ldapConnection];
-	  
       s = [NSString stringWithFormat: @"(%@='%@')",
                     theAttribute, SafeLDAPCriteria(theValue)];
       qualifier = [EOQualifier qualifierWithQualifierFormat: s];
 
       // We look for additional attributes - the ones related to group
       // membership
-      attributes = [NSMutableArray arrayWithArray: [self _searchAttributes]];
-      [attributes addObject: @"member"];
-      [attributes addObject: @"uniqueMember"];
-      [attributes addObject: @"memberUid"];
-      [attributes addObject: @"memberOf"];
-
-      if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame)
-        entries = [ldapConnection baseSearchAtBaseDN: baseDN
-                                           qualifier: qualifier
-                                          attributes: attributes];
-      else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame)
-        entries = [ldapConnection flatSearchAtBaseDN: baseDN
-                                           qualifier: qualifier
-                                          attributes: attributes];
-      else
-        entries = [ldapConnection deepSearchAtBaseDN: baseDN
-                                           qualifier: qualifier
-                                          attributes: attributes];
-      
-      ldapEntry = [entries nextObject];
+      // attributes = [NSMutableArray arrayWithArray: [self _searchAttributes]];
+      // [attributes addObject: @"member"];
+      // [attributes addObject: @"uniqueMember"];
+      // [attributes addObject: @"memberUid"];
+      // [attributes addObject: @"memberOf"];
+      ldapEntry = [self _lookupLDAPEntry: qualifier];
     }
   else
     ldapEntry = nil;
@@ -1223,6 +1229,249 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 - (NSString *) baseDN
 {
   return baseDN;
+}
+
+- (NSArray *) modifiers
+{
+  return modifiers;
+}
+
+static NSArray *
+_convertRecordToLDAPAttributes (LDAPSourceSchema *schema, NSDictionary *ldifRecord)
+{
+  /* convert resulting record to NGLdapEntry:
+     - ignore fields with empty values
+     - ignore extra fields
+     - use correct case for LDAP attribute matching classes */
+  NSMutableArray *attributes;
+  NGLdapAttribute *attribute;
+  NSArray *classes, *fields, *values;
+  NSString *field, *lowerField, *value;
+  NSUInteger count, max, valueCount, valueMax;
+
+  attributes = [NSMutableArray new];
+
+  classes = [ldifRecord objectForKey: @"objectclass"];
+  if ([classes isKindOfClass: NSStringK])
+    classes = [NSArray arrayWithObject: classes];
+  fields = [schema fieldsForClasses: classes];
+
+  max = [fields count];
+  for (count = 0; count < max; count++)
+    {
+      attribute = nil;
+      field = [fields objectAtIndex: count];
+      lowerField = [field lowercaseString];
+      if (![lowerField isEqualToString: @"dn"])
+        {
+          values = [ldifRecord objectForKey: lowerField];
+          if ([values isKindOfClass: NSStringK])
+            values = [NSArray arrayWithObject: values];
+          valueMax = [values count];
+          for (valueCount = 0; valueCount < valueMax; valueCount++)
+            {
+              value = [values objectAtIndex: valueCount];
+              if ([value length] > 0)
+                {
+                  if (!attribute)
+                    {
+                      attribute = [[NGLdapAttribute alloc]
+                                    initWithAttributeName: field];
+                      [attributes addObject: attribute];
+                      [attribute release];
+                    }
+                  [attribute addStringValue: value];
+                }
+            }
+        }
+    }
+
+  return attributes;
+}
+
+- (NSException *) addContactEntry: (NSDictionary *) roLdifRecord
+                           withID: (NSString *) aId
+{
+  NSException *result = nil;
+  NGLdapEntry *newEntry;
+  NSMutableDictionary *ldifRecord;
+  NSArray *attributes;
+  NSString *dn, *cnValue;
+  NGLdapConnection *ldapConnection;
+
+  if ([aId length] > 0)
+    {
+      ldapConnection = [self _ldapConnection];
+      if (!schema)
+        {
+          schema = [LDAPSourceSchema new];
+          [schema readSchemaFromConnection: ldapConnection];
+        }
+
+      ldifRecord = [roLdifRecord mutableCopy];
+      [ldifRecord autorelease];
+      [ldifRecord setObject: aId forKey: UIDField];
+
+      /* if CN is not set, we use aId because it must exist */
+      if (![ldifRecord objectForKey: CNField])
+        {
+          cnValue = [ldifRecord objectForKey: @"displayname"];
+          if ([cnValue length] == 0)
+            cnValue = aId;
+          [ldifRecord setObject: aId forKey: @"cn"];
+        }
+
+      [self _applyContactMappingToOutput: ldifRecord];
+
+      /* since the id might have changed due to the mapping above, we
+         reload the record ID */
+      aId = [ldifRecord objectForKey: UIDField];
+      dn = [NSString stringWithFormat: @"%@=%@,%@", IDField, aId, baseDN];
+      attributes = _convertRecordToLDAPAttributes (schema, ldifRecord);
+
+      newEntry = [[NGLdapEntry alloc] initWithDN: dn
+                                      attributes: attributes];
+      [newEntry autorelease];
+      [attributes release];
+      NS_DURING
+        {
+          [ldapConnection addEntry: newEntry];
+        }
+      NS_HANDLER
+        {
+          result = localException;
+        }
+      NS_ENDHANDLER;
+    }
+  else
+    [self errorWithFormat: @"no value for id field '%@'", IDField];
+
+  return result;
+}
+
+static NSArray *
+_makeLDAPChanges (NGLdapConnection *ldapConnection,
+                  NSString *dn, NSArray *attributes)
+{
+  NSMutableArray *changes, *attributeNames, *origAttributeNames;
+  NGLdapEntry *origEntry;
+  NSArray *values;
+  NGLdapAttribute *attribute, *origAttribute;
+  NSString *name;
+  NSDictionary *origAttributes;
+  NSUInteger count, max, valueCount, valueMax;
+  BOOL allStrings;
+
+  /* additions and modifications */
+  origEntry = [ldapConnection entryAtDN: dn
+                             attributes: [NSArray arrayWithObject: @"*"]];
+  origAttributes = [origEntry attributes];
+
+  max = [attributes count];
+  changes = [NSMutableArray arrayWithCapacity: max];
+  attributeNames = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      attribute = [attributes objectAtIndex: count];
+      name = [attribute attributeName];
+      [attributeNames addObject: name];
+      origAttribute = [origAttributes objectForKey: name];
+      if (origAttribute)
+        {
+          if (![origAttribute isEqual: attribute])
+            [changes
+              addObject: [NGLdapModification replaceModification: attribute]];
+        }
+      else
+        [changes addObject: [NGLdapModification addModification: attribute]];
+    }
+
+  /* deletions */
+  origAttributeNames = [[origAttributes allKeys] mutableCopy];
+  [origAttributeNames autorelease];
+  [origAttributeNames removeObjectsInArray: attributeNames];
+  max = [origAttributeNames count];
+  for (count = 0; count < max; count++)
+    {
+      name = [origAttributeNames objectAtIndex: count];
+      origAttribute = [origAttributes objectForKey: name];
+      /* the attribute must only have string values, otherwise it will anyway
+         be missing from the new record */
+      allStrings = YES;
+      values = [origAttribute allValues];
+      valueMax = [values count];
+      for (valueCount = 0; allStrings && valueCount < valueMax; valueCount++)
+        if (![[values objectAtIndex: valueCount] isKindOfClass: NSStringK])
+          allStrings = NO;
+      if (allStrings)
+        [changes
+          addObject: [NGLdapModification deleteModification: origAttribute]];
+    }
+
+  return changes;
+}
+
+- (NSException *) updateContactEntry: (NSDictionary *) roLdifRecord
+{
+  NSException *result = nil;
+  NSString *dn;
+  NSMutableDictionary *ldifRecord;
+  NSArray *attributes, *changes;
+  NGLdapConnection *ldapConnection;
+
+  dn = [roLdifRecord objectForKey: @"dn"];
+  if ([dn length] > 0)
+    {
+      ldapConnection = [self _ldapConnection];
+      if (!schema)
+        {
+          schema = [LDAPSourceSchema new];
+          [schema readSchemaFromConnection: ldapConnection];
+        }
+
+      ldifRecord = [roLdifRecord mutableCopy];
+      [ldifRecord autorelease];
+      [self _applyContactMappingToOutput: ldifRecord];
+      attributes = _convertRecordToLDAPAttributes (schema, ldifRecord);
+
+      changes = _makeLDAPChanges (ldapConnection, dn, attributes);
+
+      NS_DURING
+        {
+          [ldapConnection modifyEntryWithDN: dn
+                                    changes: changes];
+        }
+      NS_HANDLER
+        {
+          result = localException;
+        }
+      NS_ENDHANDLER;
+    }
+  else
+    [self errorWithFormat: @"expected dn for modified record"];
+
+  return result;
+}
+
+- (NSException *) removeContactEntryWithID: (NSString *) aId
+{
+  NSException *result = nil;
+  NGLdapConnection *ldapConnection;
+  NSString *dn;
+
+  ldapConnection = [self _ldapConnection];
+  dn = [NSString stringWithFormat: @"%@=%@,%@", IDField, aId, baseDN];
+  NS_DURING
+    {
+      [ldapConnection removeEntryWithDN: dn];
+    }
+  NS_HANDLER
+    {
+      result = localException;
+    }
+  NS_ENDHANDLER;
+
+  return result;
 }
 
 @end
