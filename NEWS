@@ -11,6 +11,8 @@ Enhancements
 
 Bug Fixes
  - alarms for tasks now depend on the start date and instead of the due date
+ - increased the content column size in database tables to permit syncs of
+   cards with big photos in them
 
 1.3-20111212 (1.3.11)
 ---------------------

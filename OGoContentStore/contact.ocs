@@ -12,7 +12,7 @@
     },
     {
       columnName = c_content;
-      sqlType    = "VARCHAR(100000)";
+      sqlType    = "TEXT";
       allowsNull = NO;
       isPrimaryKey = NO;
     },
