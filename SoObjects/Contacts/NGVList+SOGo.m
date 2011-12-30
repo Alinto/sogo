@@ -27,7 +27,7 @@
 
 #import <NGCards/NGVCardReference.h>
 
-#import <SOGo/NSDictionary+Utilities.h>
+#import "NSDictionary+LDIF.h"
 
 #import "NGVList+SOGo.h"
 
@@ -65,7 +65,7 @@
     }
   [entry setObject: members forKey: @"member"];
 
-  rc = [NSMutableString stringWithString: [entry userRecordAsLDIFEntry]];
+  rc = [NSMutableString stringWithString: [entry ldifRecordAsString]];
   [rc appendFormat: @"\n"];
 
   return rc;

@@ -31,8 +31,8 @@
 
 @interface SOGoContactLDIFEntry : SOGoObject <SOGoContactObject>
 {
+  BOOL isNew;
   NSDictionary *ldifEntry;
-  NGVCard *vcard;
 }
 
 + (SOGoContactLDIFEntry *) contactEntryWithName: (NSString *) newName
@@ -41,6 +41,9 @@
 - (id) initWithName: (NSString *) newName
       withLDIFEntry: (NSDictionary *) newEntry
         inContainer: (id) newContainer;
+
+- (BOOL) isNew;
+- (void) setIsNew: (BOOL) newIsNew;
 
 - (NSString *) davEntityTag;
 

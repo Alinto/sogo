@@ -45,6 +45,7 @@
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/NSObject+DAV.h>
+#import <SOGo/WORequest+SOGo.h>
 
 #import "SOGoContactGCSEntry.h"
 #import "SOGoContactGCSList.h"
