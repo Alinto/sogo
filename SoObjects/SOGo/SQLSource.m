@@ -487,7 +487,8 @@
 	      int i;
 
 	      for (i = 0; i < [_mailFields count]; i++)
-		if ((s = [response objectForKey: [_mailFields objectAtIndex: i]]))
+		if ((s = [response objectForKey: [_mailFields objectAtIndex: i]]) &&
+		    [[s stringByTrimmingSpaces] length] > 0)
 		  [emails addObject: s];
 	    }
 	  
