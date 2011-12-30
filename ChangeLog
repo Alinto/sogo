@@ -1,5 +1,8 @@
 2011-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/LDAPSourceSchema.[hm]: new class module enabling
+	schema auto-discovery.
+
 	* UI/WebServerResources/UIxContactEditor.js
 	(validateContactEditor): the birth date is validated slightly
 	differently, by enabling empty and 2-digit years as well as single
