@@ -81,6 +81,9 @@ TABLE.messageList TR.thread TD
 DIV#editorTabs TABLE.frame INPUT.textField
 { margin: 0px; }
 
+INPUT.textField._invalid, INPUT.comboBoxField._invalid
+{ background: #f00 !important; }
+
 /* UIxAppointmentEditor */
 
 DIV#attendeesMenu LI.separator

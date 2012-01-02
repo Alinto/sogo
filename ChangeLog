@@ -1,5 +1,9 @@
 2012-01-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxPreferences.js (getFilterFromEditor):
+	return a string (JSON) so the data is properly passed to the
+	opened window with IE7.
+
 	* UI/WebServerResources/UIxFilterEditor.js (ensureFieldValidity):
 	a field value is always considered invalid when empty.
 

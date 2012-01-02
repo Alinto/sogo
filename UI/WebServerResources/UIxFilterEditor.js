@@ -27,7 +27,7 @@ function onLoadHandler() {
     if (!window.opener || filterId == "new") {
         setupNewFilterData();
     } else {
-        filter = window.opener.getFilterFromEditor(filterId);
+        filter = window.opener.getFilterFromEditor(filterId).evalJSON();
     }
 
     if (!window.opener || window.opener.userMailboxes) {

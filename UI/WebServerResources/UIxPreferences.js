@@ -193,7 +193,7 @@ function initPreferences() {
             $("replyPlacementList").selectedIndex = 0;
             $("replyPlacementList").disabled = 1;
         }
-        onReplyPlacementListChange ();
+        onReplyPlacementListChange();
     }
 
     var button = $("addDefaultEmailAddresses");
@@ -353,7 +353,6 @@ function onFilterEdit(event) {
 
 function copyFilter(originalFilter) {
     var newFilter = {};
-
     newFilter.name = originalFilter.name;
     newFilter.match = originalFilter.match;
     newFilter.active = originalFilter.active;
@@ -388,7 +387,8 @@ function getSieveCapabilitiesFromEditor() {
 }
 
 function getFilterFromEditor(filterId) {
-    return copyFilter(filters[filterId]);
+    var filter = copyFilter(filters[filterId]);
+    return Object.toJSON(filter);
 }
 
 function setupMailboxesFromJSON(jsonResponse) {
