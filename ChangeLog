@@ -1,3 +1,8 @@
+2012-01-02  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxFilterEditor.js (ensureFieldValidity):
+	a field value is always considered invalid when empty.
+
 2011-12-29  Ludovic Marcotte  <lmarcotte@inverse.ca.>
 
 	* SoObjects/SOGo/SOGoSQLUserProfile.m (_sqlJsonRepresentation:):

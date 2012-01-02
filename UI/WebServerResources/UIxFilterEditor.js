@@ -443,11 +443,10 @@ function ensureValueInputRepresentation(container, valueSpan) {
 }
 
 function ensureFieldValidity(input) {
-    var valid = true;
-    if (input.rule.field == "size") {
+    var valid = ensureFieldIsNotEmpty(input);
+    if (valid && input.rule.field == "size") {
         valid = ensureFieldIsNumerical(input);
-    } else
-        input.removeClassName("_invalid");
+    }
 
     return valid;
 }
@@ -456,11 +455,22 @@ function onValueInputChange(event) {
     if (ensureFieldValidity(this))
         this.rule.value = this.value;
     else
-        this.rule.value = "0";
+        this.rule.value = "";
 }
 
 function ensureFieldIsNumerical(input) {
     var valid = !isNaN(input.value);
+    if (valid) {
+        input.removeClassName("_invalid");
+    } else {
+        input.addClassName("_invalid");
+    }
+
+    return valid;
+}
+
+function ensureFieldIsNotEmpty(input) {
+    var valid = !input.value.blank();
     if (valid) {
         input.removeClassName("_invalid");
     } else {
@@ -773,11 +783,20 @@ function onActionDeleteClick(event) {
 }
 
 function savePreferences() {
-    if (window.opener) {
-        window.opener.updateFilterFromEditor(filterId, Object.toJSON(filter));
-    }
-    window.close();
+    var inputs = $$("DIV#filterRules input");
+    var valid = true;
+    inputs.each(function(input) {
+            if (input.hasClassName("_invalid"))
+                valid = false;
+        });
 
+    if (valid) {
+        if (window.opener) {
+            window.opener.updateFilterFromEditor(filterId, Object.toJSON(filter));
+        }
+        window.close();
+    }
+    
     return false;
 }
 
