@@ -28,9 +28,10 @@
 #import "SOGoConstants.h"
 
 @class NSDictionary;
+@class NSException;
 @class NSString;
 
-@protocol SOGoSource
+@protocol SOGoSource <NSObject>
 
 + (id) sourceFromUDSource: (NSDictionary *) udSource
                  inDomain: (NSString *) domain;
@@ -57,6 +58,12 @@
 - (NSArray *) allEntryIDs;
 - (NSArray *) fetchContactsMatching: (NSString *) filter;
 - (NSString *) sourceID;
+- (NSArray *) modifiers;
+
+- (NSException *) addContactEntry: (NSDictionary *) roLdifRecord
+                           withID: (NSString *) aId;
+- (NSException *) updateContactEntry: (NSDictionary *) ldifRecord;
+- (NSException *) removeContactEntryWithID: (NSString *) aId;
 
 @end
 

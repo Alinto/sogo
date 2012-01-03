@@ -512,9 +512,6 @@ function onToolbarDeleteSelectedContactsConfirm(dialogId) {
     var contactsList = $('contactsList');
     var rows = contactsList.getSelectedRowsId();
     for (var i = 0; i < rows.length; i++) {
-        var row = $(rows[i]);
-        row.deselect();
-        row.hide();
         delete cachedContacts[Contact.currentAddressBook + "/" + rows[i]];
         var urlstr = (URLForFolderID(Contact.currentAddressBook) + "/"
                       + rows[i] + "/delete");
@@ -532,6 +529,7 @@ function onContactDeleteEventCallback(http) {
                 $("contactView").update();
                 Contact.currentContact = null;
             }
+
             Contact.deleteContactsRequestCount--;
             if (Contact.deleteContactsRequestCount == 0) {
                 var nextRow = row.next("tr");
@@ -543,7 +541,10 @@ function onContactDeleteEventCallback(http) {
                     loadContact(Contact.currentContact);
                 }
             }
-            row.parentNode.removeChild(row);
+            if (row) {
+                row.deselect();
+                row.parentNode.removeChild(row);
+            }
         }
         else if (parseInt(http.status) == 403) {
             var row = $(http.callbackData);

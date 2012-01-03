@@ -1,8 +1,8 @@
-/* NGVCard+SOGo.h - this file is part of SOGo
+/* NSDictionary+LDIF.h - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
+ * Copyright (C) 2011 Inverse inc
  *
- * Author: Cyril Robert <crobert@inverse.ca>
+ * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,19 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef NGVCARD_SOGO_H
-#define NGVCARD_SOGO_H
+#ifndef NSDICTIONARY_LDIF_H
+#define NSDICTIONARY_LDIF_H
 
-#import <NGCards/NGVCard.h>
+#import <Foundation/NSDictionary.h>
 
-@class NSDictionary;
-@class NSMutableDictionary;
+@interface NSDictionary (SOGoLDIF)
 
-@interface NGVCard (SOGoExtensions)
-
-- (void) updateFromLDIFRecord: (NSDictionary *) ldifRecord;
-- (NSMutableDictionary *) asLDIFRecord;
+- (NSString *) ldifRecordAsString;
 
 @end
 
-#endif /* NGVCARD_SOGO_H */
+#endif /* NSDICTIONARY_LDIF_H */

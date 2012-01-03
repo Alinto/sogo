@@ -1,3 +1,106 @@
+2011-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSourceSchema.[hm]: new class module enabling
+	schema auto-discovery.
+
+	* UI/WebServerResources/UIxContactEditor.js
+	(validateContactEditor): the birth date is validated slightly
+	differently, by enabling empty and 2-digit years as well as single
+	digits months and days.
+
+	* UI/Contacts/UIxContactView.m (-defaultAction, -dealloc): retain
+	and release the "card" ivar.
+	(_formattedURL:): the url should be displayed only if it is
+	non-nil AND non-empty.
+	(-vcardAction): removed useless method.
+
+	* UI/Contacts/UIxContactEditor.m (init): removed the "snapshot",
+	"preferredEmail", "card", "photosURL" and "contactCategories" ivars.
+	(-ldifRecord): new getter that proxy the invocation to the client
+	object, but by taking the contactEmail and contactFN url
+	parameters. Replaces the "-snapshot" getter, since the LDIF record
+	is now directly edited.
+	(-addressBooksList): the client object container class is no
+	longer taken into account when fetching the current user's permissions.
+	(-supportCategories, -supportPhotos): new getters that enables the
+	categories and photo tabs.
+	(-setJsonContactCategories:, -jsonContactCategories): now make
+	use of the special "vcardcategories" parameter found in the
+	contact LDIF record.
+
+	* SoObjects/SOGo/SQLSource.m (_lookupContactEntry:considerEmail:):
+	enhanced to copy the "c_XX" fields to unprefixed equivalents.
+
+	* SoObjects/Contacts/NSString+LDIF.m (mustEncodeLDIFValue): new
+	method, replacing "_isLDIFSafe" in a clearly public manner.
+
+	* SoObjects/SOGo/LDAPSource.m (-[NGLdapEntry _asDictionary]): new
+	utility method to convert an entry into a "SOGo LDIF record".
+	(-[NGLdapAttribute _asArrayOrString]): new utility method to
+	convert an LDAP attribute into a string or an array of strings
+	when the attribute has one or more values.
+	(-initFromUDSource:inDomain:): handle the new "modifiers",
+	"mapping" and "objectClasses" configuration keys, used when the
+	source instance is used as an addressbook. All LDAP fields are now
+	converted to lowercase.
+	(_searchAttributes): removed method as the special "*" attribute
+	is not costly enough to justify its existence, thereby reducing
+	code complexity.
+	(-lookupContactEntry:, -lookupContactEntryWithUIDorEmail:)
+	(-lookupLoginByDN:): merged common code in the new
+	-_lookupLDAPEntry: method, that accepts an EOQualifier as argument.
+	(--addContactEntry:withID:, -updateContactEntry: and
+	removeContactEntryWithID:): new methods for editing addressbook
+	sources.
+
+	* SoObjects/Contacts/SOGoContactSourceFolder.m (-source): new
+	getter for the "source" ivar.
+	(-lookupName:inContext:acquire:): accept the creation of new LDIF
+	entries via web methods ending with "AsContact".
+	(-saveLDIFEntry:, -deleteLDIFEntry:): new proxy methods for the
+	new SOGoSource -addContactEntry:withID:, -updateContactEntry: and
+	removeContactEntryWithID: methods, enabling the creation,
+	modification and deletion of LDAP contacts.
+	(-aclsForUser:): implemented method based on the array returned by
+	-[<SOGoSource> modifiers].
+
+	* SoObjects/Contacts/SOGoContactLDIFEntry.m (-vCard): the vcard is
+	now generated automatically from the LDIF record of the entry,
+	using the new method provided by NGVCard+SOGo.
+	(-aclsForUser:): new overriden method similar to the
+	implementation from SOGoContentObject.
+
+	* SoObjects/Contacts/SOGoContactGCSEntry.m (-setLDIFRecord)
+	(-ldifRecord, -hasPhoto): new accessors required by the
+	SOGoContactObject protocol.
+	(-lookupName:inContext:acquire:): return the only photo element
+	when the "photo" key is requested, if present in the card.
+	(-save): now returns an NSException, instead of void.
+
+	* SoObjects/Contacts/SOGoContactEntryPhoto.m
+	(+entryPhotoWithID:inContainer:, -setPhotoID:): removed methods,
+	since there can only be one PHOTO element per contact.
+	(-photo): simplified thanks to the constraint mentionned above.
+
+	* SoObjects/Contacts/NSDictionary+LDIF.m (-ldifRecordAsString):
+	new method implementing the code previously found in
+	SOGo/NSDictionary+Utilities.m, in order to produce a textual
+	representation of an LDIF record.
+
+	* SoObjects/Contacts/NSDictionary+LDIF.[hm]: new category module.
+
+	* SoObjects/Contacts/NGVCard+SOGo.m (-asLDIFRecord): new method
+	implementing the conversion code previously found in
+	UIxContactEditor, in order to produce an "LDIF record" in the form
+	of an NSDictionary matching the inetOrgPerson and
+	mozillaAbPersonAlpha object classes.
+	(-updateFromLDIFRecord:) reciprocal method to "-asLDIFRecord",
+	with conversion code moved from UIxContactEditor.
+
+	* SoObjects/Contacts/SOGoFolder+CardDAV.m (_isValidFilter:): make
+	use of the lowercase instance of the string, which was erroneously
+	ignored previously.
+
 2012-01-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxPreferences.js (getFilterFromEditor):
