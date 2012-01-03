@@ -573,7 +573,7 @@
   NSMutableArray *emails;
   NSDictionary *userEntry;
   NSEnumerator *sogoSources;
-  NSObject <SOGoDNSource> *currentSource;
+  NSObject <SOGoSource> *currentSource;
   NSString *sourceID, *cn, *c_domain, *c_uid, *c_imaphostname, *c_imaplogin;
   NSArray *c_emails;
   BOOL access;
@@ -592,12 +592,14 @@
 
   sogoSources = [[self authenticationSourceIDsInDomain: domain]
                   objectEnumerator];
-  while ((sourceID = [sogoSources nextObject]))
+  userEntry = nil;
+  while (!userEntry && (sourceID = [sogoSources nextObject]))
     {
       currentSource = [_sources objectForKey: sourceID];
       userEntry = [currentSource lookupContactEntryWithUIDorEmail: uid];
       if (userEntry)
 	{
+          [currentUser setObject: sourceID forKey: @"SOGoSource"];
 	  if (!cn)
 	    cn = [userEntry objectForKey: @"c_cn"];
 	  if (!c_uid)

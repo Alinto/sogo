@@ -1,3 +1,14 @@
+2012-01-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUser.m (-authenticationSource): new method
+	that returned the SOGoSource instance that successfully recognized
+	the user represented by the current instance.
+
+	* SoObjects/SOGo/SOGoUserManager.m
+	(_fillContactInfosForUser:withUIDorEmail:inDomain:): we now set
+	the identifier of the source that authenticated the specified user
+	as the "SOGoSource" entry of the returned dictionary.
+
 2011-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSourceSchema.[hm]: new class module enabling

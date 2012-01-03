@@ -52,6 +52,8 @@
 @class SOGoUserProfile;
 @class SOGoUserSettings;
 
+@protocol SOGoSource;
+
 @interface SOGoUser : SoUser
 {
   SOGoUserDefaults *_defaults;
@@ -88,6 +90,7 @@
 
 /* properties */
 - (NSString *) domain;
+- (id <SOGoSource>) authenticationSource;
 
 - (NSArray *) allEmails;
 - (BOOL) hasEmail: (NSString *) email;
