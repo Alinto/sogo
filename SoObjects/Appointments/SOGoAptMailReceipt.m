@@ -1,6 +1,6 @@
 /* SOGoAptMailReceipt.m - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
+ * Copyright (C) 2009-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -146,9 +146,12 @@ static NSCharacterSet *wsSet = nil;
 
   formatter = [currentUser dateFormatterInContext: context];
 
-  return [NSString stringWithFormat: @"%@ - %@",
-           [formatter formattedDate: tzDate],
-           [formatter formattedTime: tzDate]];
+  if ([apt isAllDay])
+    return [formatter formattedDate: tzDate];
+  else
+    return [NSString stringWithFormat: @"%@ - %@",
+             [formatter formattedDate: tzDate],
+             [formatter formattedTime: tzDate]];
 }
 
 - (NSString *) aptStartDate

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2010 Inverse inc.
+  Copyright (C) 2006-2012 Inverse inc.
   Copyright (C) 2000-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -209,14 +209,16 @@
   date = [self newStartDate];
   [values setObject: [dateFormatter shortFormattedDate: date]
              forKey: @"StartDate"];
-  [values setObject: [dateFormatter formattedTime: date]
-             forKey: @"StartTime"];
+  if (![apt isAllDay])
+    [values setObject: [dateFormatter formattedTime: date]
+               forKey: @"StartTime"];
 
   date = [self newEndDate];
   [values setObject: [dateFormatter shortFormattedDate: date]
              forKey: @"EndDate"];
-  [values setObject: [dateFormatter formattedTime: date]
-             forKey: @"EndTime"];
+  if (![apt isAllDay])
+    [values setObject: [dateFormatter formattedTime: date]
+               forKey: @"EndTime"];
 
   description = [[self apt] comment];
   [values setObject: (description ? description : @"")

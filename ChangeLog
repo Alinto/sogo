@@ -1,3 +1,17 @@
+2012-01-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAptMailNotification.m (-setupValues):
+	don't set the start/end times when dealing with an all-day event.
+
+	* SoObjects/Appointments/SOGoAptMailInvitation.m (-getBody): don't
+	display the start/end times when dealing with an all-day event.
+
+	* SoObjects/Appointments/SOGoAptMailReceipt.m (-_formattedUserDate:): idem.
+
+	* SoObjects/Appointments/SOGoAptMailUpdate.m (-getSubject): idem.
+
+	* SoObjects/Appointments/SOGoAptMailDeletion.m (-getBody): idem.
+
 2012-01-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxPreferences.js (getFilterFromEditor):

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2010 Inverse
+  Copyright (C) 2010-2012 Inverse
 
   This file is part of SOGo
 
@@ -131,8 +131,10 @@
   date = [self oldStartDate];
   [values setObject: [dateFormatter shortFormattedDate: date]
              forKey: @"OldStartDate"];
-  [values setObject: [dateFormatter formattedTime: date]
-             forKey: @"OldStartTime"];
+
+  if (![apt isAllDay])
+    [values setObject: [dateFormatter formattedTime: date]
+               forKey: @"OldStartTime"];
 
   [self _setupBodyValuesWithFormatter: dateFormatter];
 }
@@ -144,10 +146,16 @@
   if (!values)
     [self setupValues];
 
-  subjectFormat = [self labelForKey: @"The appointment \"%{Summary}\" for the"
-                        @" %{OldStartDate} at"
-                        @" %{OldStartTime} has changed"
-                          inContext: context];
+  if ([values objectForKey: @"OldStartTime"])
+    subjectFormat = [self labelForKey: (@"The appointment \"%{Summary}\" for the"
+                                        @" %{OldStartDate} at"
+                                        @" %{OldStartTime} has changed")
+                            inContext: context];
+  else
+    subjectFormat = [self labelForKey: (@"The appointment \"%{Summary}\" for the"
+                                        @" %{OldStartDate}"
+                                        @" has changed")
+                            inContext: context];
 
   return [values keysWithFormat: subjectFormat];
 }
