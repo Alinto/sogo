@@ -258,7 +258,7 @@
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (\n"
        @"  c_name VARCHAR (255) NOT NULL PRIMARY KEY,\n"
-       @"  c_content TEXT NOT NULL,\n"
+       @"  c_content MEDIUMTEXT NOT NULL,\n"
        @"  c_creationdate INT NOT NULL,\n"
        @"  c_lastmodified INT NOT NULL,\n"
        @"  c_version INT NOT NULL,\n"
