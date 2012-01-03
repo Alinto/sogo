@@ -457,7 +457,7 @@
 {
   WOResponse *result;
   NSDictionary *data;
-  NSCalendarDate *eventDate;
+  NSCalendarDate *eventStartDate, *eventEndDate;
   NSTimeZone *timeZone;
   SOGoUserDefaults *ud;
   SOGoCalendarComponent *co;
@@ -469,8 +469,10 @@
   result = [self responseWithStatus: 200];
   ud = [[context activeUser] userDefaults];
   timeZone = [ud timeZone];
-  eventDate = [event startDate];
-  [eventDate setTimeZone: timeZone];
+  eventStartDate = [event startDate];
+  eventEndDate = [event endDate];
+  [eventStartDate setTimeZone: timeZone];
+  [eventEndDate setTimeZone: timeZone];
   co = [self clientObject];
   
   if (!componentCalendar)
@@ -507,8 +509,10 @@
   data = [NSDictionary dictionaryWithObjectsAndKeys:
 		       [componentCalendar displayName], @"calendar",
 		       [event tag], @"component",
-		       [dateFormatter formattedDate: eventDate], @"startDate",
-		       [dateFormatter formattedTime: eventDate], @"startTime",
+		       [dateFormatter formattedDate: eventStartDate], @"startDate",
+		       [dateFormatter formattedTime: eventStartDate], @"startTime",
+		       [dateFormatter formattedDate: eventEndDate], @"endDate",
+		       [dateFormatter formattedTime: eventEndDate], @"endTime",
 		       ([event hasRecurrenceRules] ? @"1": @"0"), @"isRecurring",
 		       ([event isAllDay] ? @"1": @"0"), @"isAllDay",
 		       [event summary], @"summary",
