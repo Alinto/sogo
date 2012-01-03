@@ -1,5 +1,8 @@
 2012-01-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoParentFolder.m (-appendPersonalSources): made
+	method public so that it can be easily overriden in subclasses.
+
 	* SoObjects/SOGo/SOGoUser.m (-authenticationSource): new method
 	that returned the SOGoSource instance that successfully recognized
 	the user represented by the current instance.
