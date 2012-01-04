@@ -31,10 +31,11 @@
 #include "SOGoConstants.h"
 
 @class LDAPSourceSchema;
-@class NSDictionary;
-@class NSString;
-@class NGLdapConnection;
 @class NGLdapEntry;
+@class NSException;
+@class NSMutableArray;
+@class NSMutableDictionary;
+@class NSString;
 
 @interface LDAPSource : NSObject <SOGoDNSource>
 {
@@ -42,6 +43,8 @@
   int queryTimeout;
 
   NSString *sourceID;
+  NSString *displayName;
+
   NSString *bindDN;       // The bindDN/password could be either the source's one
   NSString *password;     // or the current user if _bindAsCurrentUser is set to YES
   NSString *sourceBindDN; // while sourceBindDN/sourceBindPassword always belong to the source
@@ -50,6 +53,7 @@
   unsigned int port;
   NSString *encryption;
   NSString *_filter;
+  BOOL _bindAsCurrentUser;
   NSString *_scope;
 
   NSString *baseDN;
@@ -60,7 +64,8 @@
   NSArray *mailFields, *searchFields;
   NSString *IMAPHostField, *IMAPLoginField;
   NSArray *bindFields;
-  BOOL _bindAsCurrentUser;
+
+  BOOL listRequiresDot;
 
   NSString *domain;
   NSString *contactInfoAttribute;
@@ -79,6 +84,9 @@
   /* resources handling */
   NSString *kindField;
   NSString *multipleBookingsField;
+
+  /* user addressbooks */
+  NSString *abOU;
 
   /* ACL */
   NSArray *modifiers;

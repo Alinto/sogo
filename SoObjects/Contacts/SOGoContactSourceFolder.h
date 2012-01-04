@@ -35,6 +35,7 @@
 {
   id <SOGoSource> source;
   NSMutableDictionary *childRecords;
+  BOOL isPersonalSource;
 }
 
 + (id) folderWithName: (NSString *) aName
@@ -47,6 +48,9 @@
 
 - (NSException *) saveLDIFEntry: (SOGoContactLDIFEntry *) ldifEntry;
 - (NSException *) deleteLDIFEntry: (SOGoContactLDIFEntry *) ldifEntry;
+
+- (void) setIsPersonalSource: (BOOL) isPersonal;
+- (BOOL) isPersonalSource;
 
 @end
 

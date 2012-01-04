@@ -258,17 +258,6 @@ function onContactContextMenuHide(event) {
     this.stopObserving("contextmenu:hide", onContactContextMenuHide);
 }
 
-function onFolderMenuHide(event) {
-    var topNode = $('d');
-
-    if (topNode.menuSelectedEntry) {
-        topNode.menuSelectedEntry.deselect();
-        topNode.menuSelectedEntry = null;
-    }
-    if (topNode.selectedEntry)
-        topNode.selectedEntry.selectElement();
-}
-
 function _onContactMenuAction(folderItem, action, refresh) {
     var selectedFolders = $("contactFolders").getSelectedNodes();
     var folderId = $(folderItem).readAttribute("folderId");
@@ -308,8 +297,9 @@ function onContactMenuMove(event) {
 
 function onMenuExportContact (event) {
     var selectedFolders = $("contactFolders").getSelectedNodes();
-    var selectedFolderId = $(selectedFolders[0]).readAttribute("id");
-    if (selectedFolderId != "/shared") {
+    var canExport = (selectedFolders[0].getAttribute("owner") != "nobody");
+    if (canExport) {
+        var selectedFolderId = $(selectedFolders[0]).readAttribute("id");
         var contactIds = $(document.menuTarget).collect(function(row) {
                                                         return row.getAttribute("id");
                                                         });
@@ -599,10 +589,11 @@ function newContact(sender) {
 
 function newList(sender) {
     var li = $(Contact.currentAddressBook);
-    if (li.hasClassName("remote"))
-      showAlertDialog(_("You cannot create a list in a shared address book."));
-    else
+    var listEditing = li.getAttribute("list-editing");
+    if (listEditing && listEditing == "available")
       openContactWindow(URLForFolderID(Contact.currentAddressBook) + "/newlist");
+    else
+      showAlertDialog(_("You cannot create a list in a shared address book."));
 
     return false;
 }
@@ -1069,15 +1060,15 @@ function onMenuSharing(event) {
 
     var folders = $("contactFolders");
     var selected = folders.getSelectedNodes()[0];
-    var owner = selected.getAttribute("owner");
-    if (owner == "nobody")
-        showAlertDialog(_("The user rights cannot be edited for this object!"));
-    else {
+    var aclEditing = selected.getAttribute("acl-editing");
+    if (aclEditing && aclEditing == "available") {
         var title = this.innerHTML;
         var url = URLForFolderID(selected.getAttribute("id"));
 
         openAclWindow(url + "/acls", title);
     }
+    else
+        showAlertDialog(_("The user rights cannot be edited for this object!"));
 }
 
 function onAddressBooksMenuPrepareVisibility() {
@@ -1090,30 +1081,55 @@ function onAddressBooksMenuPrepareVisibility() {
         var menu = $("contactFoldersMenu").down("ul");;
         var listElements = menu.childNodesWithTag("li");
         var modifyOption = listElements[0];
+        var newListOption = listElements[3];
         var removeOption = listElements[5];
         var exportOption = listElements[7];
+        var importOption = listElements[8];
         var sharingOption = listElements[listElements.length - 1];
 
         // Disable the "Sharing" and "Modify" options when address book
         // is not owned by user
         if (folderOwner == UserLogin || IsSuperUser) {
-            modifyOption.removeClassName("disabled"); // WARNING: will fail for super users anyway
-            sharingOption.removeClassName("disabled");
+            modifyOption.removeClassName("disabled"); // WARNING: will fail
+                                                      // for super users
+                                                      // anyway
+            var aclEditing = selected[0].getAttribute("acl-editing");
+            if (aclEditing && aclEditing == "available") {
+                sharingOption.removeClassName("disabled");
+            }
+            else {
+                sharingOption.addClassName("disabled");
+            }
         }
         else {
             modifyOption.addClassName("disabled");
             sharingOption.addClassName("disabled");
         }
 
+        var listEditing = selected[0].getAttribute("list-editing");
+        if (listEditing && listEditing == "available") {
+            newListOption.removeClassName("disabled");
+        }
+        else {
+            newListOption.addClassName("disabled");
+        }
+
         /* Disable the "remove" and "export ab" options when address book is
            public */
         if (folderOwner == "nobody") {
             exportOption.addClassName("disabled");
+            importOption.addClassName("disabled");
             removeOption.addClassName("disabled");
         }
         else {
             exportOption.removeClassName("disabled");
-            removeOption.removeClassName("disabled");
+            importOption.removeClassName("disabled");
+            if (selected[0].getAttribute("id") == "/personal") {
+                removeOption.addClassName("disabled");
+            }
+            else {
+                removeOption.removeClassName("disabled");
+            }
         }
 
         return true;

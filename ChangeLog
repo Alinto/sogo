@@ -1,3 +1,57 @@
+2012-01-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js
+	(onAddressBooksMenuPrepareVisibility): the "new list", "sharing" and "import"
+	options are now greyed out properly, depending on the object type
+	and the new attributes below.
+
+	* UI/Contacts/UIxContactFoldersView.m
+	(-currentContactFolderAclEditing)
+	(-currentContactFolderListEditing): new attribute accessors.
+
+	* SoObjects/SOGo/SOGoFolder.m (-sendFolderAdvisoryTemplate:):
+	moved method from SOGoGCSFolder in order to make it available to
+	other folder classes.
+
+	* SoObjects/SOGo/LDAPSource.m (-initFromUDSource:inDomain:): use
+	the new setters for certain ivars + take the new "abOU" key into
+	account.
+	(-setListRequiresDot:, -listRequiresDot:, -setSourceID:)
+	(-setDisplayName, -displayName, -setModifiers:): new accessors.
+	(-_convertRecordToLDAPAttributes): we now strip object classes that
+	are not supported by the server prior to remove the related fields.
+	(-hasUserAddressBooks): new method that returns whether user
+	addressbooks are supported, i.e. when "abOU" is set.
+	(-addressBookSourcesForUser:): when "abOU" is set, returns an
+	array of LDAPSource instances representing the personal
+	addressbooks of the specified user.
+	(-addAddressBookSource:withDisplayName:forUser:)
+	(-renameAddressBookSource:withDisplayName:forUser:)
+	(-removeAddressBookSource:forUser:): new methods with a
+	self-explicit name.
+
+	* SoObjects/Contacts/SOGoContactSourceFolder.m
+	(-setIsPersonalSource, -isPersonalSource): new accessors for the
+	"isPersonalSource ivar".
+	(-lookupName:inContext:acquire:): setup the object classes of the
+	new entries to "inetorgperson" and "mozillaabpersonalpha".
+	(-lookupContactsWithFilter:onCriteria:sortBy:ordering:): check
+	whether "listRequiresDot" is set on the current source and return
+	the full listing if not required.
+	(-compare:): enhanced to treat personal sources as if they were
+	regular GCS folders, in order to sort them properly.
+	(-delete, -renameTo:): implemented method, required for the
+	corresponding web methods.
+	(-ownerInContext:) adapted method to personal sources.
+
+	* SoObjects/Contacts/SOGoContactFolders.m (-appendPersonalSource):
+	overriden method for returning LDAP-based user addresbook sources.
+	(-newFolderWithName:andNameInContainer:): idem
+	(-renameLDAPAddressBook:withDisplayName:): new method that enables
+	the renaming of LDAP-based user addresbook sources.
+	(-removeLDAPAddressBook:): new method that enables
+	the removal of LDAP-based user addresbook sources.
+
 2012-01-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoParentFolder.m (-appendPersonalSources): made

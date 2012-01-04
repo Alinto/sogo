@@ -41,6 +41,10 @@
 
 - (NSString *) domain;
 
+/* requires a "." to obtain the full list of contacts */
+- (void) setListRequiresDot: (BOOL) aBool;
+- (BOOL) listRequiresDot;
+
 - (BOOL) checkLogin: (NSString *) _login
 	   password: (NSString *) _pwd
 	       perr: (SOGoPasswordPolicyError *) _perr
@@ -57,13 +61,35 @@
 
 - (NSArray *) allEntryIDs;
 - (NSArray *) fetchContactsMatching: (NSString *) filter;
+
+- (void) setSourceID: (NSString *) newSourceID;
 - (NSString *) sourceID;
+
+- (void) setDisplayName: (NSString *) newDisplayName;
+- (NSString *) displayName;
+
+- (void) setModifiers: (NSArray *) newModifiers;
 - (NSArray *) modifiers;
+
+- (BOOL) hasUserAddressBooks;
+- (NSArray *) addressBookSourcesForUser: (NSString *) user;
 
 - (NSException *) addContactEntry: (NSDictionary *) roLdifRecord
                            withID: (NSString *) aId;
 - (NSException *) updateContactEntry: (NSDictionary *) ldifRecord;
 - (NSException *) removeContactEntryWithID: (NSString *) aId;
+
+/* user address books */
+- (NSArray *) addressBookSourcesForUser: (NSString *) user;
+
+- (NSException *) addAddressBookSource: (NSString *) newId
+                       withDisplayName: (NSString *) newDisplayName
+                               forUser: (NSString *) user;
+- (NSException *) renameAddressBookSource: (NSString *) newId
+                          withDisplayName: (NSString *) newDisplayName
+                                  forUser: (NSString *) user;
+- (NSException *) removeAddressBookSource: (NSString *) newId
+                                  forUser: (NSString *) user;
 
 @end
 

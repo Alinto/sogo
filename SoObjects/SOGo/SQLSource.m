@@ -691,13 +691,46 @@
   return results;
 }
 
+- (void) setSourceID: (NSString *) newSourceID
+{
+}
+
 - (NSString *) sourceID
 {
   return _sourceID;
 }
 
+- (void) setDisplayName: (NSString *) newDisplayName
+{
+}
+
+- (NSString *) displayName
+{
+  /* This method is only used when supporting user "source" addressbooks,
+     which is only supported by the LDAP backend for now. */
+  return _sourceID;
+}
+
+- (void) setListRequiresDot: (BOOL) newListRequiresDot
+{
+}
+
+- (BOOL) listRequiresDot
+{
+  /* This method is not implemented for SQLSource. It must enable a mechanism
+     where using "." is not required to list the content of addressbooks. */
+  return YES;
+}
+
+/* card editing */
+- (void) setModifiers: (NSArray *) newModifiers
+{
+}
+
 - (NSArray *) modifiers
 {
+  /* This method is only used when supporting card editing,
+     which is only supported by the LDAP backend for now. */
   return nil;
 }
 
@@ -729,6 +762,61 @@
 }
 
 - (NSException *) removeContactEntryWithID: (NSString *) aId
+{
+  NSString *reason;
+
+  reason = [NSString stringWithFormat: @"method '%@' is not available"
+                     @" for class '%@'", NSStringFromSelector (_cmd),
+                     NSStringFromClass (isa)];
+
+  return [NSException exceptionWithName: @"SQLSourceIOException"
+                                 reason: reason
+                               userInfo: nil];
+}
+
+/* user addressbooks */
+- (BOOL) hasUserAddressBooks
+{
+  return NO;
+}
+
+- (NSArray *) addressBookSourcesForUser: (NSString *) user
+{
+  return nil;
+}
+
+- (NSException *) addAddressBookSource: (NSString *) newId
+                       withDisplayName: (NSString *) newDisplayName
+                               forUser: (NSString *) user
+{
+  NSString *reason;
+
+  reason = [NSString stringWithFormat: @"method '%@' is not available"
+                     @" for class '%@'", NSStringFromSelector (_cmd),
+                     NSStringFromClass (isa)];
+
+  return [NSException exceptionWithName: @"SQLSourceIOException"
+                                 reason: reason
+                               userInfo: nil];
+}
+
+- (NSException *) renameAddressBookSource: (NSString *) newId
+                          withDisplayName: (NSString *) newDisplayName
+                                  forUser: (NSString *) user
+{
+  NSString *reason;
+
+  reason = [NSString stringWithFormat: @"method '%@' is not available"
+                     @" for class '%@'", NSStringFromSelector (_cmd),
+                     NSStringFromClass (isa)];
+
+  return [NSException exceptionWithName: @"SQLSourceIOException"
+                                 reason: reason
+                               userInfo: nil];
+}
+
+- (NSException *) removeAddressBookSource: (NSString *) newId
+                                  forUser: (NSString *) user
 {
   NSString *reason;
 

@@ -37,12 +37,16 @@
 #import <EOControl/EOSortOrdering.h>
 #import <SaxObjC/XMLNamespaces.h>
 
-#import <SOGo/SOGoPermissions.h>
-#import <SOGo/SOGoSource.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoSource.h>
+#import <SOGo/SOGoUserSettings.h>
+#import <SOGo/WORequest+SOGo.h>
 
+#import "SOGoContactFolders.h"
+#import "SOGoContactGCSFolder.h"
 #import "SOGoContactLDIFEntry.h"
 #import "SOGoContactSourceFolder.h"
 
@@ -107,6 +111,16 @@
   return source;
 }
 
+- (void) setIsPersonalSource: (BOOL) isPersonal
+{
+  isPersonalSource = isPersonal;
+}
+
+- (BOOL) isPersonalSource
+{
+  return isPersonalSource;
+}
+
 - (NSString *) groupDavResourceType
 {
   return @"vcard-collection";
@@ -135,6 +149,7 @@
   SOGoContactLDIFEntry *obj;
   NSString *url;
   BOOL isNew = NO;
+  NSArray *baseClasses;
 
   /* first check attributes directly bound to the application */
   obj = [super lookupName: objectName inContext: lookupContext acquire: NO];
@@ -152,7 +167,11 @@
               url = [[[lookupContext request] uri] urlWithoutParameters];
               if ([url hasSuffix: @"AsContact"])
                 {
-                  ldifEntry = [NSMutableDictionary dictionary];
+                  baseClasses = [NSArray arrayWithObjects: @"inetorgperson",
+                                         @"mozillaabpersonalpha", nil];
+                  ldifEntry = [NSMutableDictionary
+                                dictionaryWithObject: baseClasses
+                                forKey: @"objectclass"];
                   isNew = YES;
                 }
             }
@@ -294,7 +313,8 @@
 
   result = nil;
 
-  if ([filter length] > 0 && [criteria isEqualToString: @"name_or_address"])
+  if (([filter length] > 0 && [criteria isEqualToString: @"name_or_address"])
+      || ![source listRequiresDot])
     {
       records = [source fetchContactsMatching: filter];
       [childRecords setObjects: records
@@ -335,22 +355,88 @@
 - (NSComparisonResult) compare: (id) otherFolder
 {
   NSComparisonResult comparison;
+  BOOL otherIsPersonal;
 
-  if ([NSStringFromClass([otherFolder class])
-			isEqualToString: @"SOGoContactGCSFolder"])
-    comparison = NSOrderedDescending;
+  otherIsPersonal = ([otherFolder isKindOfClass: [SOGoContactGCSFolder class]]
+                     || ([otherFolder isKindOfClass: isa] && [otherFolder isPersonalSource]));
+
+  if (isPersonalSource)
+    {
+      if (otherIsPersonal && ![nameInContainer isEqualToString: @"personal"])
+        {
+          if ([[otherFolder nameInContainer] isEqualToString: @"personal"])
+            comparison = NSOrderedDescending;
+          else
+            comparison
+              = [[self displayName]
+                  localizedCaseInsensitiveCompare: [otherFolder displayName]];
+        }
+      else
+        comparison = NSOrderedAscending;
+    }
   else
-    comparison
-      = [[self displayName]
-	  localizedCaseInsensitiveCompare: [otherFolder displayName]];
+    {
+      if (otherIsPersonal)
+        comparison = NSOrderedDescending;
+      else
+        comparison
+          = [[self displayName]
+              localizedCaseInsensitiveCompare: [otherFolder displayName]];
+    }
 
   return comparison;
+}
+
+/* common methods */
+
+- (NSException *) delete
+{
+  NSException *error;
+
+  if (isPersonalSource)
+    {
+      error = [(SOGoContactFolders *) container
+                  removeLDAPAddressBook: nameInContainer];
+      if (!error && [[context request] handledByDefaultHandler])
+        [self sendFolderAdvisoryTemplate: @"Removal"];
+    }
+  else
+    error = [NSException exceptionWithHTTPStatus: 501 /* not implemented */
+                                          reason: @"delete not available on system sources"];
+
+  return error;
+}
+
+- (void) renameTo: (NSString *) newName
+{
+  NSException *error;
+
+  if (isPersonalSource)
+    {
+      if (![[source displayName] isEqualToString: newName])
+        {
+          error = [(SOGoContactFolders *) container
+                      renameLDAPAddressBook: nameInContainer
+                            withDisplayName: newName];
+          if (!error)
+            [self setDisplayName: newName];
+        }
+    }
+  /* If public source then method is ignored, maybe we should return an
+     NSException instead... */
 }
 
 /* acls */
 - (NSString *) ownerInContext: (WOContext *) noContext
 {
-  return @"nobody";
+  NSString *sourceOwner;
+
+  if (isPersonalSource)
+    sourceOwner = [[source modifiers] objectAtIndex: 0];
+  else
+    sourceOwner = @"nobody";
+
+  return sourceOwner;
 }
 
 - (NSArray *) subscriptionRoles
