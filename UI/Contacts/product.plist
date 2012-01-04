@@ -139,6 +139,11 @@
           pageName    = "UIxContactEditor";
           actionName  = "new";
         };
+        renameFolder = {
+          protectedBy = "Change Permissions";
+          actionClass = "UIxFolderActions";
+          actionName  = "renameFolder";
+        };
         mailer-contacts = {
           protectedBy = "<public>";
           pageName    = "UIxContactFoldersView";
