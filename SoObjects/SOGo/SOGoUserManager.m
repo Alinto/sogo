@@ -103,44 +103,51 @@
   sourceID = [udSource objectForKey: @"id"];
   if ([sourceID length] > 0)
     {
-      type = [[udSource objectForKey: @"type"] lowercaseString];
-      c = NSClassFromString([_registry sourceClassForType: type]);
-      sogoSource = [c sourceFromUDSource: udSource inDomain: domain];
-      if (sourceID)
-        [_sources setObject: sogoSource forKey: sourceID];
-      else
-        [self errorWithFormat: @"id field missing in an user source,"
-              @" check the SOGoUserSources defaults"];
-      metadata = [NSMutableDictionary dictionary];
-      if (domain)
-        [metadata setObject: domain forKey: @"domain"];
-      value = [udSource objectForKey: @"canAuthenticate"];
-      if (value)
-        [metadata setObject: value forKey: @"canAuthenticate"];
-      value = [udSource objectForKey: @"isAddressBook"];
-      if (value)
-        {
-          [metadata setObject: value forKey: @"isAddressBook"];
-          isAddressBook = [value boolValue];
-        }
-      else
-        isAddressBook = NO;
-      value = [udSource objectForKey: @"displayName"];
-      if (value)
-        [metadata setObject: value forKey: @"displayName"];
+      if ([_sourcesMetadata objectForKey: sourceID])
+        [self errorWithFormat: @"attempted to register a contact/user source"
+              @" with duplicated id (%@)", sourceID];
       else
         {
-          if (isAddressBook)
-            [self errorWithFormat: @"addressbook source '%@' has"
-                  @" no displayname", sourceID];
+          type = [[udSource objectForKey: @"type"] lowercaseString];
+          c = NSClassFromString([_registry sourceClassForType: type]);
+          sogoSource = [c sourceFromUDSource: udSource inDomain: domain];
+          if (sourceID)
+            [_sources setObject: sogoSource forKey: sourceID];
+          else
+            [self errorWithFormat: @"id field missing in an user source,"
+                  @" check the SOGoUserSources defaults"];
+          metadata = [NSMutableDictionary dictionary];
+          if (domain)
+            [metadata setObject: domain forKey: @"domain"];
+          value = [udSource objectForKey: @"canAuthenticate"];
+          if (value)
+            [metadata setObject: value forKey: @"canAuthenticate"];
+          value = [udSource objectForKey: @"isAddressBook"];
+          if (value)
+            {
+              [metadata setObject: value forKey: @"isAddressBook"];
+              isAddressBook = [value boolValue];
+            }
+          else
+            isAddressBook = NO;
+          value = [udSource objectForKey: @"displayName"];
+          if (value)
+            [metadata setObject: value forKey: @"displayName"];
+          else
+            {
+              if (isAddressBook)
+                [self errorWithFormat: @"addressbook source '%@' has"
+                      @" no displayname", sourceID];
+            }
+          value = [udSource objectForKey: @"MailFieldNames"];
+          if (value)
+            [metadata setObject: value forKey: @"MailFieldNames"];
+          value = [udSource objectForKey: @"SearchFieldNames"];
+          if (value)
+            [metadata setObject: value forKey: @"SearchFieldNames"];
+ 
+          [_sourcesMetadata setObject: metadata forKey: sourceID];
         }
-      value = [udSource objectForKey: @"MailFieldNames"];
-      if (value)
-        [metadata setObject: value forKey: @"MailFieldNames"];
-      value = [udSource objectForKey: @"SearchFieldNames"];
-      if (value)
-        [metadata setObject: value forKey: @"SearchFieldNames"];
-      [_sourcesMetadata setObject: metadata forKey: sourceID];
     }
   else
     [self errorWithFormat: @"attempted to register a contact/user source"
