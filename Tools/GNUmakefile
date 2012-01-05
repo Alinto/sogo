@@ -29,7 +29,7 @@ $(SOGO_SLAPD_SOCKD)_OBJC_FILES += \
 	\
 	SOGoSockD.m \
 	SOGoSockDScanner.m \
-	SOGoSockDOperation.m \
+	SOGoSockDOperation.m
 TOOL_NAME += $(SOGO_SLAPD_SOCKD)
 
 ###
