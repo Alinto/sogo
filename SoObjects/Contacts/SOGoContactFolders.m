@@ -38,7 +38,6 @@
 #import <DOM/DOMProtocols.h>
 
 #import <SOGo/NSObject+DAV.h>
-#import <SOGo/SOGoLDAPAddressBook.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserManager.h>
