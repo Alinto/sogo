@@ -24,6 +24,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
 #import <SOGo/SOGoPermissions.h>
 #import <Appointments/SOGoAppointmentFolder.h>
@@ -132,6 +133,8 @@
       [roles addObject: SOGoCalendarRole_ConfidentialViewer];
     }
 
+  // [self logWithFormat: @"roles for rights %.8x = (%@)", rights, roles];
+
   return roles;
 }
 
@@ -153,6 +156,8 @@
     rights |= RightsReadItems;
   if (rights != 0)
     rights |= RoleNone; /* actually "folder visible" */
+
+  // [self logWithFormat: @"rights for roles (%@) = %.8x", roles, rights];
  
   return rights;
 }
