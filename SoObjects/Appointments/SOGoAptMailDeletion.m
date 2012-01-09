@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2010 Inverse
+  Copyright (C) 2010-2012 Inverse
 
   This file is part of SOGo
 
@@ -49,12 +49,20 @@
   if (!values)
     [self setupValues];
 
-  bodyFormat = [self labelForKey: (@"%{Organizer} %{SentByText}has cancelled"
-                                   @" this event: %{Summary}.\n\n"
-                                   @"Start: %{StartDate} at %{StartTime}\n"
-                                   @"End: %{EndDate} at %{EndTime}\n"
-                                   @"Description: %{Description}")
-                       inContext: context];
+  if ([values objectForKey: @"StartTime"] && [values objectForKey: @"EndTime"])
+    bodyFormat = [self labelForKey: (@"%{Organizer} %{SentByText}has cancelled"
+                                     @" this event: %{Summary}.\n\n"
+                                     @"Start: %{StartDate} at %{StartTime}\n"
+                                     @"End: %{EndDate} at %{EndTime}\n"
+                                     @"Description: %{Description}")
+                         inContext: context];
+  else
+    bodyFormat = [self labelForKey: (@"%{Organizer} %{SentByText}has cancelled"
+                                     @" this event: %{Summary}.\n\n"
+                                     @"Start: %{StartDate}\n"
+                                     @"End: %{EndDate}\n"
+                                     @"Description: %{Description}")
+                         inContext: context];
 
   return [values keysWithFormat: bodyFormat];
 }

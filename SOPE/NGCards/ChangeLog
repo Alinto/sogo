@@ -1,3 +1,8 @@
+2012-01-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NSString+NGCards.m (-vCardSubvalues): fixed allocation of
+	parsing buffer to avoid a buffer overflow.
+
 2011-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* NGVCard.m (-initWithUid:): initialize "CLASS" and "PROFILE".

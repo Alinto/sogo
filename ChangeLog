@@ -1,3 +1,8 @@
+2012-01-05  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserManager.m (-_registerSource:inDomain::):
+	log error when duplicated IDs are found.
+
 2012-01-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js
@@ -65,6 +70,20 @@
 	(_fillContactInfosForUser:withUIDorEmail:inDomain:): we now set
 	the identifier of the source that authenticated the specified user
 	as the "SOGoSource" entry of the returned dictionary.
+
+2012-01-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAptMailNotification.m (-setupValues):
+	don't set the start/end times when dealing with an all-day event.
+
+	* SoObjects/Appointments/SOGoAptMailInvitation.m (-getBody): don't
+	display the start/end times when dealing with an all-day event.
+
+	* SoObjects/Appointments/SOGoAptMailReceipt.m (-_formattedUserDate:): idem.
+
+	* SoObjects/Appointments/SOGoAptMailUpdate.m (-getSubject): idem.
+
+	* SoObjects/Appointments/SOGoAptMailDeletion.m (-getBody): idem.
 
 2012-01-02  Francis Lachapelle  <flachapelle@inverse.ca>
 
