@@ -153,7 +153,7 @@
   else if ([roles containsObject: SOGoCalendarRole_PublicViewer]
            && [roles containsObject: SOGoCalendarRole_PrivateViewer]
            && [roles containsObject: SOGoCalendarRole_ConfidentialViewer])
-    rights |= RightsReadItems;
+    rights |= RightsReadItems | 0x1800;
   if (rights != 0)
     rights |= RoleNone; /* actually "folder visible" */
 
