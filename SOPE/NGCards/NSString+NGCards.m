@@ -325,7 +325,7 @@
      ELEM;...:subvalue1;subvalue1,subvalue2 (where KEY = @"") */
   NSMutableDictionary *values; /* key <> ordered values associations */
   NSMutableArray *orderedValues = nil; /* those are separated by ';' and contain
-                                    subvalues, may or may not be named */
+                                          subvalues, may or may not be named */
   NSMutableArray *subValues = nil; /* those are separeted by ',' */
   unichar *stringBuffer, *substringBuffer;
   NSString *valuesKey, *substring;
@@ -337,7 +337,7 @@
   valuesKey = @"";
 
   max = [self length];
-  stringBuffer = NSZoneMalloc (NULL, sizeof (unichar) * max + 1);
+  stringBuffer = NSZoneMalloc (NULL, sizeof (unichar) * (max + 1));
   [self getCharacters: stringBuffer];
   stringBuffer[max] = 0;
 
