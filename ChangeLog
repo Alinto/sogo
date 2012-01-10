@@ -1,5 +1,8 @@
 2012-01-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSObject+MAPIStore.m (-getValue:forTag:inMemCtx:):
+	handle PT_SVREID just as PT_BINARY.
+
 	* OpenChange/MAPIStoreCalendarFolder.m (-exchangeRightsForRoles):
 	add the freebusy read rights when the user has read permission on
 	calendar objects.

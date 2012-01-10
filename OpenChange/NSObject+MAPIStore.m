@@ -106,6 +106,7 @@ static int MAPIStoreTallocWrapperDestroy (void *data)
       *data = [(NSCalendarDate * ) self asFileTimeInMemCtx: memCtx];
       break;
     case PT_BINARY:
+    case PT_SVREID:
       *data = [(NSData *) self asBinaryInMemCtx: memCtx];
       break;
     case PT_CLSID:
