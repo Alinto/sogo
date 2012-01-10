@@ -166,6 +166,7 @@ make DESTDIR=${RPM_BUILD_ROOT} \
      CC="$cc" LDFLAGS="$ldflags" \
      install
 mkdir -p ${RPM_BUILD_ROOT}/etc/init.d
+mkdir -p ${RPM_BUILD_ROOT}/etc/cron.d
 mkdir -p ${RPM_BUILD_ROOT}/etc/cron.daily
 mkdir -p ${RPM_BUILD_ROOT}/etc/logrotate.d
 mkdir -p ${RPM_BUILD_ROOT}/etc/sysconfig
@@ -175,6 +176,7 @@ mkdir -p ${RPM_BUILD_ROOT}/var/run/sogo
 mkdir -p ${RPM_BUILD_ROOT}/var/log/sogo
 mkdir -p ${RPM_BUILD_ROOT}/var/spool/sogo
 cat Apache/SOGo.conf | sed -e "s@/lib/@/%{_lib}/@g" > ${RPM_BUILD_ROOT}/etc/httpd/conf.d/SOGo.conf
+install -m 600 Scripts/sogo.cron ${RPM_BUILD_ROOT}/etc/cron.d/sogo
 cp Scripts/tmpwatch ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
 chmod 755 ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
 cp Scripts/logrotate ${RPM_BUILD_ROOT}/etc/logrotate.d/sogo
@@ -222,6 +224,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/GNUstep/OCSTypeModels
 %{_libdir}/GNUstep/WOxElemBuilders-*
 
+%config(noreplace) %{_sysconfdir}/cron.d/sogo
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/SOGo.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/sogo
 %doc ChangeLog NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh Scripts/sql-update-101_to_102.sh Scripts/sql-update-1.2.2_to_1.3.0.sh Scripts/sql-update-1.2.2_to_1.3.0-mysql.sh Scripts/sql-update-1.3.3_to_1.3.4.sh Scripts/sql-update-1.3.3_to_1.3.4-mysql.sh
@@ -299,6 +302,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Tue Jan 10 2012 Jean Raby <jraby@inverse.ca>
+- /etc/cron.d/sogo
+
 * Thu Oct 27 2011 Wolfgang Sourdeau <wsourdeau@inverse.ca>
 - make build of sogo-openchange-backend conditional to sogo_version >= 2
 
