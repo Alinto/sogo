@@ -69,3 +69,9 @@ INPUT.comboBoxField, #emptyCategory
 
 #otherInfos TEXTAREA
 { width: 70%; }
+
+#birthday, #birthmonth
+{ width: 18px; }
+
+#birthyear
+{ width: 36px; }

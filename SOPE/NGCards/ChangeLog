@@ -3,6 +3,14 @@
 	* NSString+NGCards.m (-vCardSubvalues): fixed allocation of
 	parsing buffer to avoid a buffer overflow.
 
+2011-12-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NGVCard.m (-initWithUid:): initialize "CLASS" and "PROFILE".
+
+	* CardGroup.m (-isVoid): overriden method.
+	(-cleanupEmptyChildren): make use of "isVoid" to detect and remove
+	empty children.
+
 2011-11-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalTimeZone.m (+knownTimeZoneNames): ignore files that don't

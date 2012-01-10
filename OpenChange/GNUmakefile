@@ -172,12 +172,12 @@ LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags) -DSAMBA_PREFIX="
 LIBMAPISTORE_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy
 
 $(MAPISTORESOGO)_INSTALL_DIR = $(DESTDIR)/$(SAMBA_LIB_DIR)/mapistore_backends
-$(MAPISTORESOGO)_LDFLAGS += \
+$(MAPISTORESOGO)_LIB_DIRS += \
         -L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
 	$(LIBMAPI_LIBS) \
 	$(LIBMAPISTORE_LIBS)
 
-$(SOGOBACKEND)_LDFLAGS += \
+$(SOGOBACKEND)_LIB_DIRS += \
         -L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore \
         -L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
 	$(LIBMAPI_LIBS) \

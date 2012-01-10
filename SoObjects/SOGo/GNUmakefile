@@ -28,6 +28,7 @@ SOGo_HEADER_FILES = \
 	\
 	SOGoUserManager.h		\
 	LDAPSource.h			\
+	LDAPSourceSchema.h		\
 	SQLSource.h			\
 	SOGoUserProfile.h		\
 	SOGoDateFormatter.h		\
@@ -97,6 +98,7 @@ SOGo_OBJC_FILES = \
 	SOGoStartupLogger.m		\
 	SOGoUserManager.m		\
 	LDAPSource.m			\
+	LDAPSourceSchema.m		\
 	SQLSource.m			\
 	SOGoUserProfile.m		\
 	SOGoSQLUserProfile.m		\

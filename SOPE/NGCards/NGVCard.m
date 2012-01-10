@@ -50,6 +50,8 @@
       [self setTag: @"vcard"];
       [self setUid: _uid];
       [self setVersion: @"3.0"];
+      [self setVClass: @"PUBLIC"];
+      [self setProfile: @"VCARD"];
     }
 
   return self;

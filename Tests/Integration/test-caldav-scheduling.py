@@ -8,10 +8,10 @@ from config import hostname, port, username, password, \
 		   resource_no_overbook, resource_can_overbook
 
 import datetime
+import dateutil.tz
 import sogotests
 import sys
 import time
-import pytz
 import unittest
 import utilities
 import vobject
@@ -143,7 +143,7 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
         vevent.add('summary').value = summary
         vevent.add('transp').value = transparency[transp]
 
-        now = datetime.datetime.now(pytz.timezone("America/Montreal"))
+        now = datetime.datetime.now(dateutil.tz.gettz("America/Montreal"))
         startdate = vevent.add('dtstart')
         startdate.value = now
         enddate = vevent.add('dtend')

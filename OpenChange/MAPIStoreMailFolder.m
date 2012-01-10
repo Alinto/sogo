@@ -1025,6 +1025,8 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   if (rights & RightsCreateSubfolders)
     [roles addObject: SOGoRole_FolderCreator];
 
+  // [self logWithFormat: @"roles for rights %.8x = (%@)", rights, roles];
+
   return roles;
 }
 
@@ -1051,6 +1053,8 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 
   if (rights != 0)
     rights |= RoleNone; /* actually "folder visible" */
+
+  // [self logWithFormat: @"rights for roles (%@) = %.8x", roles, rights];
  
   return rights;
 }
