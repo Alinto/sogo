@@ -848,7 +848,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   /* sample: 1 OK [COPYUID 1311899334 1:3 11:13] Completed */
 
   max = [line length];
-  uniString = NSZoneMalloc (NULL, max * sizeof (unichar) + 1);
+  uniString = NSZoneMalloc (NULL, sizeof (unichar) * (max + 1));
   [line getCharacters: uniString];
   uniString[max] = 0;
 
