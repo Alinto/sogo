@@ -1,5 +1,8 @@
 2012-01-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(_requireResponseFromAttendees:): initialize listHasChanged to NO.
+
 	* OpenChange/MAPIStoreMailFolder.m (_parseCOPYUID): the uniString
 	buffer was allocated one byte too short.
 
