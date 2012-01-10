@@ -362,7 +362,7 @@
 {
   NSArray *attendees;
   iCalPerson *currentAttendee;
-  BOOL listHasChanged;
+  BOOL listHasChanged = NO;
   int count, max;
 
   attendees = [event attendees];
