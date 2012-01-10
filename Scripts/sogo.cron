@@ -1,0 +1,8 @@
+# Sogod cronjobs
+
+# Vacation messages expiration
+# Make sure to set authname and authpassword with the credentials of a sieve admin
+#0 0 * * *	sogo	/usr/sbin/sogo-tool expire-autoreply authname:authpassword
+
+# Email alarms - runs every minutes
+#* * * * *       sogo	/usr/sbin/sogo-ealarms-notify
