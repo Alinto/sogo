@@ -24,6 +24,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOApplication.h>
@@ -160,6 +161,7 @@
 {
   NSMutableDictionary *newRecord;
   NSString *data;
+  NSObject <SOGoSource> *recordSource;
 
   newRecord = [NSMutableDictionary dictionaryWithCapacity: 8];
   [newRecord setObject: [oldRecord objectForKey: @"c_uid"]
@@ -218,6 +220,11 @@
   if ([data length] > 0)
     [newRecord setObject: data forKey: @"contactInfo"];
 
+  recordSource = [oldRecord objectForKey: @"source"];
+  if ([recordSource conformsToProtocol: @protocol (SOGoDNSource)] &&
+      [[(NSObject <SOGoDNSource>*) recordSource MSExchangeHostname] length])
+    [newRecord setObject: [NSNumber numberWithInt: 1] forKey: @"isMSExchange"];
+  
   return newRecord;
 }
 

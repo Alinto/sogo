@@ -61,6 +61,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserManager.h>
+#import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/WOResourceManager+SOGo.h>
@@ -248,9 +249,12 @@ iRANGE(2);
 {
   NSEnumerator *attendees;
   NSMutableDictionary *currentAttendeeData;
+  NSString *uid, *domain;
+  NSArray *contacts;
+  NSDictionary *contact;
   iCalPerson *currentAttendee;
-  NSString *uid;
   SOGoUserManager *um;
+  NSObject <SOGoSource> *source;
 
   jsonAttendees = [NSMutableDictionary new];
   um = [SOGoUserManager sharedUserManager];
@@ -271,6 +275,23 @@ iRANGE(2);
       if (uid != nil)
 	[currentAttendeeData setObject: uid 
 				forKey: @"uid"];
+      else
+        {
+          domain = [[context activeUser] domain];
+          contacts = [um fetchContactsMatching: [currentAttendee rfc822Email] inDomain: domain];
+          if ([contacts count] == 1)
+            {
+              contact = [contacts lastObject];
+              source = [contact objectForKey: @"source"];
+              if ([source conformsToProtocol: @protocol (SOGoDNSource)] &&
+                  [[(NSObject <SOGoDNSource>*) source MSExchangeHostname] length])
+                {
+                  uid = [NSString stringWithFormat: @"%@:%@", [[context activeUser] login],
+                              [contact valueForKey: @"c_uid"]];
+                  [currentAttendeeData setObject: uid forKey: @"uid"];
+                }
+            }
+        }
 
       [currentAttendeeData setObject: [[currentAttendee partStat] lowercaseString]
 			      forKey: @"partstat"];

@@ -23,6 +23,13 @@
 	limited perform a SOAP request to a MS Exhange server to retrieve
 	the freebusy information of a user.
 
+	* UI/Scheduler/UIxComponentEditor.m (-_loadAttendees): when the
+	attendee's email address doesn't match a user from the
+	authentication source(s), perform a lookup in the addressbook
+	source(s). If the email matches a user from a source with a
+	MSExchangeHostname, return a concatenation of the active user uid
+	and this contact uid.
+
 	* UI/WebServerResources/UIxAttendeesEditor.js
 	(performSearchCallback): if a matching contact has the
 	"isMSExchange" attribute, prefix the uid with the login uid.
