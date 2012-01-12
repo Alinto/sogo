@@ -80,11 +80,11 @@ case "$1" in
 	;;
   restart|force-reload)
 	log_daemon_msg "Restarting $DESC" "$NAME"
-	start-stop-daemon --stop --pidfile $PIDFILE --retry=TERM/20/KILL/5
+	start-stop-daemon --stop --pidfile $PIDFILE --retry=TERM/20/KILL/5 || true
         # Ensure directory's existence and permissions
-        install -o sogo -g adm -m 755 -d /var/run/$NAME
-        install -o sogo -g adm -m 750 -d /var/spool/$NAME
-        install -o sogo -g adm -m 750 -d /var/log/$NAME
+        install -o $USER -g adm -m 755 -d /var/run/$NAME
+        install -o $USER -g adm -m 750 -d /var/spool/$NAME
+        install -o $USER -g adm -m 750 -d /var/log/$NAME
 	start-stop-daemon -c $USER --quiet --start --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS 
 	log_end_msg 0
 	;;
