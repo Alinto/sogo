@@ -1,5 +1,12 @@
 2012-01-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): same as below +
+	ensure that nil fields are removed from non-new instances.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m
+	(-getPrStartDate:inMemCtx:, -getPrEndDate:inMemCtx:): remove the
+	tz offset from dates in all-day events.
+
 	* OpenChange/MAPIStoreTasksMessage.m (-save): the dates provided
 	by Outlook for start, due and completed are all-day dates, we thus
 	need to remove the timezone offset from those dates.
