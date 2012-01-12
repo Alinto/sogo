@@ -214,12 +214,8 @@ static Class NSStringK;
   [_dnCache release];
   [kindField release];
   [multipleBookingsField release];
-<<<<<<< variant A
   [MSExchangeHostname release];
->>>>>>> variant B
   [modifiers release];
-####### Ancestor
-======= end
   [super dealloc];
 }
 
@@ -976,22 +972,12 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   NSMutableArray *classes;
   id o;
 
-<<<<<<< variant A
-  contactEntry = [NSMutableDictionary dictionary];
-  [contactEntry setObject: self forKey: @"source"];
-  [contactEntry setObject: [ldapEntry dn] forKey: @"dn"];
-  attributes = [[self _searchAttributes] objectEnumerator];
->>>>>>> variant B
   if (!resourceKinds)
     resourceKinds = [[NSArray alloc] initWithObjects: @"location", @"thing",
                                      @"group", nil];
-####### Ancestor
-  contactEntry = [NSMutableDictionary dictionary];
-  [contactEntry setObject: [ldapEntry dn] forKey: @"dn"];
-  attributes = [[self _searchAttributes] objectEnumerator];
-======= end
 
   ldifRecord = [ldapEntry _asDictionary];
+  [ldifRecord setObject: self forKey: @"source"];
   [ldifRecord setObject: [ldapEntry dn] forKey: @"dn"];
   
   // We get our objectClass attribute values. We lowercase
@@ -1301,13 +1287,11 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   return baseDN;
 }
 
-<<<<<<< variant A
 - (NSString *) MSExchangeHostname
 {
   return MSExchangeHostname;
 }
 
->>>>>>> variant B
 - (void) setModifiers: (NSArray *) newModifiers
 {
   ASSIGN (modifiers, newModifiers);
@@ -1793,6 +1777,4 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   return result;
 }
 
-####### Ancestor
-======= end
 @end
