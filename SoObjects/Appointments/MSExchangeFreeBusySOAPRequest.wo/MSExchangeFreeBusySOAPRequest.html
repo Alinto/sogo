@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="yes"?>
+  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+    <soap:Header>
+      <t:RequestServerVersion Version="<#serverVersion/>"/>
+    </soap:Header>
+    <soap:Body>
+      <GetUserAvailabilityRequest xmlns="http://schemas.microsoft.com/exchange/services/2006/messages"
+                                  xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+        <t:TimeZone xmlns="http://schemas.microsoft.com/exchange/services/2006/types">
+          <Bias>0</Bias>
+          <StandardTime>
+            <Bias>0</Bias>
+            <Time>00:00:00</Time>
+            <DayOrder>1</DayOrder>
+            <Month>1</Month>
+            <DayOfWeek>Sunday</DayOfWeek>
+          </StandardTime>
+          <DaylightTime>
+            <Bias>0</Bias>
+            <Time>00:00:00</Time>
+            <DayOrder>1</DayOrder>
+            <Month>1</Month>
+            <DayOfWeek>Sunday</DayOfWeek>
+          </DaylightTime>
+        </t:TimeZone>
+        <MailboxDataArray>
+          <t:MailboxData>
+            <t:Email>
+              <t:Address><#address/></t:Address>
+            </t:Email>
+            <t:AttendeeType>Required</t:AttendeeType>
+            <t:ExcludeConflicts>false</t:ExcludeConflicts>
+          </t:MailboxData>
+        </MailboxDataArray>
+        <t:FreeBusyViewOptions>
+          <t:TimeWindow>
+            <t:StartTime><#startTime/></t:StartTime>
+            <t:EndTime><#endTime/></t:EndTime>
+          </t:TimeWindow>
+          <t:MergedFreeBusyIntervalInMinutes>15</t:MergedFreeBusyIntervalInMinutes>
+          <t:RequestedView>DetailedMerged</t:RequestedView>
+        </t:FreeBusyViewOptions>
+      </GetUserAvailabilityRequest>
+    </soap:Body>
+  </soap:Envelope>

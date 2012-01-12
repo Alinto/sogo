@@ -158,6 +158,7 @@
 - (NSString *) _freeBusyFromStartDate: (NSCalendarDate *) startDate
                             toEndDate: (NSCalendarDate *) endDate
                           forFreeBusy: (SOGoFreeBusyObject *) fb
+                              andUser: (NSString *) user
 {
   NSMutableArray *freeBusy;
   unsigned int *freeBusyItems;
@@ -169,7 +170,7 @@
 
   freeBusyItems = NSZoneCalloc (NULL, intervals, sizeof (int));
   [self _fillFreeBusyItems: freeBusyItems count: intervals
-	       withRecords: [fb fetchFreeBusyInfosFrom: startDate to: endDate]
+	       withRecords: [fb fetchFreeBusyInfosFrom: startDate to: endDate forUser: user]
         fromStartDate: startDate toEndDate: endDate];
 
   freeBusy = [NSMutableArray arrayWithCapacity: intervals];
@@ -184,15 +185,16 @@
 - (id <WOActionResults>) readFreeBusyAction
 {
   WOResponse *response;
-  SOGoFreeBusyObject *co;
+  SOGoFreeBusyObject *freebusy;
   NSCalendarDate *startDate, *endDate;
-  NSString *queryDay;
+  NSString *queryDay, *uid;
   NSTimeZone *uTZ;
   SOGoUser *user;
 
   user = [context activeUser];
   uTZ = [[user userDefaults] timeZone];
 
+  uid = [self queryParameterForKey: @"uid"];
   queryDay = [self queryParameterForKey: @"sday"];
   if ([queryDay length] == 8)
     {
@@ -211,13 +213,13 @@
                                       andString: @"Start date is later than end date."];
           else
             {
-              co = [self clientObject];
+             freebusy = [self clientObject];
               response
                 = [self responseWithStatus: 200
-                                 andString: [self
-                                              _freeBusyFromStartDate: startDate
-                                                           toEndDate: endDate
-                                                         forFreeBusy: co]];
+                                 andString: [self _freeBusyFromStartDate: startDate
+                                                               toEndDate: endDate
+                                                             forFreeBusy: freebusy
+                                                                 andUser: uid]];
             }
         }
       else

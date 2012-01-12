@@ -42,10 +42,15 @@ Appointments_OBJC_FILES = \
 	SOGoAptMailUpdate.m		\
 	SOGoAptMailReceipt.m		\
 	\
-	SOGoEMailAlarmsManager.m
+	SOGoEMailAlarmsManager.m	\
+	\
+	MSExchangeFreeBusySOAPRequest.m \
+	MSExchangeFreeBusy.m
 
 Appointments_RESOURCE_FILES +=		\
 	product.plist			\
+	\
+	MSExchangeFreeBusySOAPRequest.wo
 
 Appointments_LANGUAGES = BrazilianPortuguese Catalan Czech Danish Dutch English French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
 
@@ -53,6 +58,7 @@ Appointments_LOCALIZED_RESOURCE_FILES = Localizable.strings
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
 ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
+ADDITIONAL_LDFLAGS += -lcurl -lgnutls
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make

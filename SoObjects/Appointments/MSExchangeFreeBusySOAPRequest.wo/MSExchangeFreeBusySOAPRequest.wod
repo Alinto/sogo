@@ -1,0 +1,24 @@
+serverVersion: WOString {
+  value = serverVersion;
+  escapeHTML = NO;
+}
+
+address: WOString {
+  value = address;
+  escapeHTML = NO;
+}
+
+startTime: WOString {
+  value = startTime;
+  escapeHTML = NO;
+}
+
+endTime: WOString {
+  value = endTime;
+  escapeHTML = NO;
+}
+
+interval: WOString {
+  value = interval;
+  escapeHTML = NO;
+}

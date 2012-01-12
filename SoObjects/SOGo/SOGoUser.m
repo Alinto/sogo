@@ -234,7 +234,7 @@
   [currentPassword release];
   [cn release];
   [loginInDomain release];
-  [language release];
+  //[language release];
   [super dealloc];
 }
 

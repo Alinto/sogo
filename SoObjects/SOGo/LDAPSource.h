@@ -74,6 +74,8 @@
   /* resources handling */
   NSString *kindField;
   NSString *multipleBookingsField;
+
+  NSString *MSExchangeHostname;
 }
 
 - (void) setBindDN: (NSString *) newBindDN

@@ -60,7 +60,7 @@
   SOGoUserFolder *homeFolder;
   NSString *currentPassword;
   NSString *loginInDomain;
-  NSString *language;
+  //NSString *language;
   NSArray *allEmails;
   NSMutableArray *mailAccounts;
   NSString *cn;

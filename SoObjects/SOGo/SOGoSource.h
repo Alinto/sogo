@@ -1,6 +1,6 @@
 /* SOGoSource.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2010 Inverse inc.
+ * Copyright (C) 2009-2012 Inverse inc.
  *
  * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
  *
@@ -63,13 +63,16 @@
 @protocol SOGoDNSource <SOGoSource>
 
 - (void) setBindDN: (NSString *) theDN;
+- (NSString *) bindDN;
 - (void) setBindPassword: (NSString *) thePassword;
+- (NSString *) bindPassword;
 - (BOOL) bindAsCurrentUser;
 
 - (NSString *) lookupLoginByDN: (NSString *) theDN;
 - (NSString *) lookupDNByLogin: (NSString *) theLogin;
 
 - (NSString *) baseDN;
+- (NSString *) MSExchangeHostname;
 
 @end
 

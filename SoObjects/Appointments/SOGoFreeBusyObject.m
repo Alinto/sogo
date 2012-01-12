@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2011 Inverse inc.
+  Copyright (C) 2007-2012 Inverse inc.
   Copyright (C) 2000-2004 SKYRIX Software AG
 
   This file is part of SOGo
@@ -21,10 +21,12 @@
 */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValue.h>
 
+#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
@@ -34,6 +36,7 @@
 
 #import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserManager.h>
@@ -41,6 +44,8 @@
 
 #import "SOGoAppointmentFolder.h"
 #import "SOGoAppointmentFolders.h"
+
+#import "MSExchangeFreeBusy.h"
 
 #import "SOGoFreeBusyObject.h"
 
@@ -239,6 +244,60 @@
                                     from: _startDate
                                       to: _endDate];
 }
+
+/**
+ * Fetch freebusy information for a user that exists in a contact source
+ * (not an authentication source) for which freebusy information is available
+ * (currently limited to a Microsoft Exchange server with Web Services enabled).
+ * @param startDate the beginning of the covered period
+ * @param endDate the ending of the covered period
+ * @param uid the ID of the user within the current domain
+ * @return an array of dictionaries containing the start and end dates of each busy period
+ * @see MSExchangeFreeBusy.m
+ */
+- (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) startDate
+                                  to: (NSCalendarDate *) endDate
+                             forUser: (NSString *) uid
+{
+  if ([uid length])
+    {
+      SOGoUserManager *um;
+      NSArray *users;
+      NSString *domain, *email;
+      NSDictionary *user;
+      MSExchangeFreeBusy *exchangeFreeBusy;
+      NSObject <SOGoDNSource> *source;
+
+      um = [SOGoUserManager sharedUserManager];
+      domain = [[context activeUser] domain];
+      users = [um fetchContactsMatching: uid inDomain: domain];
+      if ([users count] == 1)
+        {
+          user = [users lastObject];
+          email = [user valueForKey: @"c_email"];
+          source = [user objectForKey: @"source"];
+          if ([email length])
+            {
+              exchangeFreeBusy = [[MSExchangeFreeBusy alloc] init];
+              [exchangeFreeBusy autorelease];
+
+              return [exchangeFreeBusy fetchFreeBusyInfosFrom: startDate
+                                                           to: endDate
+                                                     forEmail: email
+                                                     inSource: source
+                                                    inContext: context];
+            }
+        }
+    }
+  else
+    {
+      return [self fetchFreeBusyInfosFrom: startDate to: endDate];
+    }
+  
+  // No freebusy information found
+  return nil;
+}
+
 
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) startDate
                                   to: (NSCalendarDate *) endDate

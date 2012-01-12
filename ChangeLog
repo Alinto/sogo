@@ -1,3 +1,36 @@
+2012-01-12  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoSource.h (-bindDN, -bindPassword)
+	(-MSExchangeHostname): new accessors to the SOGoDNSource protocol.
+
+	* SoObjects/SOGo/LDAPSource.m (-_convertLDAPEntryToContact:):
+	added a reference to the instance source in the returned dictionary.
+
+	* SoObjects/SOGo/SOGoUserManager.m
+	(-_compactAndCompleteContacts:): keep the source instance in the
+	returned dictionary.
+
+	* UI/MainUI/SOGoUserHomePage.m (-readFreeBusyAction): the http
+	post can now include an optional "uid" parameter to perform the
+	freebusy lookup on the user corresponding to the specified
+	uid. This covers the special case where we want to query a user
+	from a contact source (not an authentication source) and for which
+	external freebusy information is available (currently limited to a
+	Microsoft Exchange server with Web Services enabled).
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m
+	(-fetchFreeBusyInfosFrom:to:forUser:): new method currently
+	limited perform a SOAP request to a MS Exhange server to retrieve
+	the freebusy information of a user.
+
+	* UI/WebServerResources/UIxAttendeesEditor.js
+	(performSearchCallback): if a matching contact has the
+	"isMSExchange" attribute, prefix the uid with the login uid.
+	(_performAjaxRequest): query the freebusy information from the
+	login user (/SOGo/so/<loginuser>/freebusy.ifb/ajaxRead?uid=<contact>)
+	when a contact uid is specified. Otherwise, perform the query on
+	the user instance as usual (/SOGo/so/<contactuser>/freebusy.ifb/ajaxRead).
+
 2012-01-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m

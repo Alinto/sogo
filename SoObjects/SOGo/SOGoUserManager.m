@@ -91,15 +91,16 @@
   return sharedUserManager;
 }
 
-- (void) _registerSource: (NSDictionary *) udSource
+- (BOOL) _registerSource: (NSDictionary *) udSource
                 inDomain: (NSString *) domain
 {
   NSString *sourceID, *value, *type;
   NSMutableDictionary *metadata;
   NSObject <SOGoSource> *sogoSource;
-  BOOL isAddressBook;
+  BOOL isAddressBook, result;
   Class c;
 
+  result = NO;
   sourceID = [udSource objectForKey: @"id"];
   if ([sourceID length] > 0)
     {
@@ -147,17 +148,20 @@
             [metadata setObject: value forKey: @"SearchFieldNames"];
  
           [_sourcesMetadata setObject: metadata forKey: sourceID];
+          result = YES;
         }
     }
   else
     [self errorWithFormat: @"attempted to register a contact/user source"
           @" without id (skipped)"];
+
+  return result;
 }
 
 - (int) _registerSourcesInDomain: (NSString *) domain
 {
   NSArray *userSources;
-  unsigned int count, max;
+  unsigned int count, max, total;
   SOGoDomainDefaults *dd;
 
   if (domain)
@@ -167,11 +171,13 @@
 
   userSources = [dd userSources];
   max = [userSources count];
+  total = 0;
   for (count = 0; count < max; count++)
-    [self _registerSource: [userSources objectAtIndex: count]
-                 inDomain: domain];
+    if ([self _registerSource: [userSources objectAtIndex: count]
+                     inDomain: domain])
+      total++;
 
-  return max;
+  return total;
 }
 
 - (void) _prepareSources
@@ -634,8 +640,7 @@
 	  if ([userEntry objectForKey: @"numberOfSimultaneousBookings"])
 	    [currentUser setObject: [userEntry objectForKey: @"numberOfSimultaneousBookings"]
 			 forKey: @"numberOfSimultaneousBookings"];
-	  
-	}
+        }
     }
 
   if (!cn)
@@ -824,8 +829,9 @@
 	    {
 	      returnContact = [NSMutableDictionary dictionary];
 	      [returnContact setObject: uid forKey: @"c_uid"];
-	      [compactContacts setObject: returnContact forKey: uid];
-	    }
+	      [returnContact setObject: [userEntry objectForKey: @"source"] forKey: @"source"];
+              [compactContacts setObject: returnContact forKey: uid];
+            }
 	  if (![[returnContact objectForKey: @"c_name"] length])
 	    [returnContact setObject: [userEntry objectForKey: @"c_name"]
 			   forKey: @"c_name"];

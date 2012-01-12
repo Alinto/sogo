@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2011 Inverse inc.
+  Copyright (C) 2007-2012 Inverse inc.
   Copyright (C) 2000-2004 SKYRIX Software AG
 
   This file is part of SOGo
@@ -38,8 +38,6 @@
 @class iCalPerson;
 
 @interface SOGoFreeBusyObject : SOGoObject
-{
-}
 
 /* accessors */
 
@@ -55,7 +53,9 @@
 
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) _startDate
 				  to: (NSCalendarDate *) _endDate;
-
+- (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) startDate
+                                  to: (NSCalendarDate *) endDate
+                             forUser: (NSString *) uid;
 @end
 
 #endif	/* __Appointments_SOGoFreeBusyObject_H_ */

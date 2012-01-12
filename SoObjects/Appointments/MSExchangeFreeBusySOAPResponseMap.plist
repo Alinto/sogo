@@ -1,0 +1,63 @@
+{ /* -*-java-*- */
+    "http://schemas.xmlsoap.org/soap/envelope/" = {
+        Envelope = {
+            class = NSMutableDictionary;
+        };
+
+        Header = {
+            class = NSMutableDictionary;
+            attributes = {
+                serverVersionInfo = ServerVersionInfo;
+            };
+        };
+
+        Body = {
+            class = NSMutableDictionary;
+        };
+    };
+    
+    "http://schemas.microsoft.com/exchange/services/2006/messages" = {
+        GetUserAvailabilityResponse = {
+            class = MSExchangeFreeBusyResponse;
+            attributes = {
+                FreeBusyResponseArray = FreeBusyResponseArray;
+            };
+        };
+
+        FreeBusyResponseArray = {
+            class = NSMutableDictionary;
+            ToManyRelationships = {
+                responses = ( FreeBusyResponse );
+            };
+        };
+
+        ResponseMessage = {
+            class = NSMutableDictionary;
+        };
+
+        ResponseCode = {
+            class = NSString;
+        };
+
+        FreeBusyResponse = {
+            class = NSMutableDictionary;
+        };
+
+        FreeBusyView = {
+            class = MSExchangeFreeBusyView;
+            attributes = {
+                FreeBusyViewType = freeBusyViewType;
+                MergedFreeBusy = mergedFreeBusy;
+            };
+        };
+    };
+
+    "http://schemas.microsoft.com/exchange/services/2006/types" = {
+        FreeBusyViewType = {
+            class = NSString;
+        };
+        MergedFreeBusy = {
+            class = NSString;
+        };
+    };
+}

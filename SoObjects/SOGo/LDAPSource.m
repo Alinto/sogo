@@ -1,6 +1,6 @@
 /* LDAPSource.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2011 Inverse inc.
+ * Copyright (C) 2007-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -124,6 +124,8 @@ static NSArray *commonSearchFields;
 				    @"serialnumber",
 				    @"calfburl",
                                     @"proxyaddresses",
+                                    // MS Exchange
+                                    @"msExchHomeServerName",
 				    nil];	
       [commonSearchFields retain];
     }
@@ -181,6 +183,8 @@ static NSArray *commonSearchFields;
       kindField = nil;
       multipleBookingsField = nil;
 
+      MSExchangeHostname = nil;
+
       _dnCache = [[NSMutableDictionary alloc] init];
     }
 
@@ -216,6 +220,7 @@ static NSArray *commonSearchFields;
   [_dnCache release];
   [kindField release];
   [multipleBookingsField release];
+  [MSExchangeHostname release];
   [super dealloc];
 }
 
@@ -249,7 +254,7 @@ static NSArray *commonSearchFields;
        IMAPLoginField: [udSource objectForKey: @"IMAPLoginFieldName"]
 	   bindFields: [udSource objectForKey: @"bindFields"]
 	    kindField: [udSource objectForKey: @"KindFieldName"]
-	    andMultipleBookingsField: [udSource objectForKey: @"MultipleBookingsFieldName"]];
+            andMultipleBookingsField: [udSource objectForKey: @"MultipleBookingsFieldName"]];
 
       if ([sourceDomain length])
         {
@@ -286,6 +291,8 @@ static NSArray *commonSearchFields;
 
       if ([udSource objectForKey: @"passwordPolicy"])
 	passwordPolicy = [[udSource objectForKey: @"passwordPolicy"] boolValue];
+
+      ASSIGN(MSExchangeHostname, [udSource objectForKey: @"MSExchangeHostname"]);
     }
   
   return self;
@@ -297,9 +304,19 @@ static NSArray *commonSearchFields;
   ASSIGN(bindDN, theDN);
 }
 
+- (NSString *) bindDN
+{
+  return bindDN;
+}
+
 - (void) setBindPassword: (NSString *) thePassword
 {
   ASSIGN (password, thePassword);
+}
+
+- (NSString *) bindPassword
+{
+  return password;
 }
 
 - (BOOL) bindAsCurrentUser
@@ -888,6 +905,7 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   id o;
 
   contactEntry = [NSMutableDictionary dictionary];
+  [contactEntry setObject: self forKey: @"source"];
   [contactEntry setObject: [ldapEntry dn] forKey: @"dn"];
   attributes = [[self _searchAttributes] objectEnumerator];
 
@@ -1223,6 +1241,11 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 - (NSString *) baseDN
 {
   return baseDN;
+}
+
+- (NSString *) MSExchangeHostname
+{
+  return MSExchangeHostname;
 }
 
 @end
