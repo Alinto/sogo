@@ -1,3 +1,9 @@
+2012-01-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreTasksMessage.m (-save): the dates provided
+	by Outlook for start, due and completed are all-day dates, we thus
+	need to remove the timezone offset from those dates.
+
 2012-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreGCSMessageTable.m
