@@ -1,3 +1,8 @@
+2012-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NSString+NGCards.m (-asCardAttributeValues): fixed a leak by
+	freeing "characters" at the end of the method.
+
 2012-01-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* NSString+NGCards.m (-vCardSubvalues): fixed allocation of

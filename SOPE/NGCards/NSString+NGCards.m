@@ -148,6 +148,8 @@
   [values addObject: newString];
   [newString release];
 
+  NSZoneFree (NULL, characters);
+
   return values;
 }
 
