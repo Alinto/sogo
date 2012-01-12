@@ -1,3 +1,9 @@
+2012-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreGCSMessageTable.m
+	(_fixedDatePropertyRestriction:inMemCtx:): attached the result to
+	the memCtx passed as parameter to avoid a leak.
+
 2012-01-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m
