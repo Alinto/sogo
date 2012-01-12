@@ -121,6 +121,8 @@
         ><li var:id="currentContactFolderId"
           var:owner="currentContactFolderOwner"
           var:class="currentContactFolderClass"
+          var:acl-editing="currentContactFolderAclEditing"
+          var:list-editing="currentContactFolderListEditing"
           ><var:string value="currentContactFolderName"/></li
           ></var:foreach
         >

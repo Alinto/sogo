@@ -1,8 +1,8 @@
-/* NGVCard+SOGo.h - this file is part of SOGo
+/* LDAPSourceSchema.h - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
+ * Copyright (C) 2011 Inverse inc
  *
- * Author: Cyril Robert <crobert@inverse.ca>
+ * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,19 +20,26 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef NGVCARD_SOGO_H
-#define NGVCARD_SOGO_H
+#ifndef LDAPSOURCESCHEMA_H
+#define LDAPSOURCESCHEMA_H
 
-#import <NGCards/NGVCard.h>
+#import <Foundation/NSObject.h>
 
-@class NSDictionary;
 @class NSMutableDictionary;
+@class NGLdapConnection;
 
-@interface NGVCard (SOGoExtensions)
+@interface LDAPSourceSchema : NSObject
+{
+  NSMutableDictionary *schema;
+}
 
-- (void) updateFromLDIFRecord: (NSDictionary *) ldifRecord;
-- (NSMutableDictionary *) asLDIFRecord;
+- (void) readSchemaFromConnection: (NGLdapConnection *) conn;
+
+- (NSArray *) fieldsForClass: (NSString *) className;
+
+/* merged list of attributes with unique names */
+- (NSArray *) fieldsForClasses: (NSArray *) className;
 
 @end
 
-#endif /* NGVCARD_SOGO_H */
+#endif /* LDAPSOURCESCHEMA_H */
