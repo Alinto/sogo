@@ -158,7 +158,7 @@
 - (NSString *) _freeBusyFromStartDate: (NSCalendarDate *) startDate
                             toEndDate: (NSCalendarDate *) endDate
                           forFreeBusy: (SOGoFreeBusyObject *) fb
-                              andUser: (NSString *) user
+                           andContact: (NSString *) uid
 {
   NSMutableArray *freeBusy;
   unsigned int *freeBusyItems;
@@ -170,7 +170,7 @@
 
   freeBusyItems = NSZoneCalloc (NULL, intervals, sizeof (int));
   [self _fillFreeBusyItems: freeBusyItems count: intervals
-	       withRecords: [fb fetchFreeBusyInfosFrom: startDate to: endDate forUser: user]
+	       withRecords: [fb fetchFreeBusyInfosFrom: startDate to: endDate forContact: uid]
         fromStartDate: startDate toEndDate: endDate];
 
   freeBusy = [NSMutableArray arrayWithCapacity: intervals];
@@ -219,7 +219,7 @@
                                  andString: [self _freeBusyFromStartDate: startDate
                                                                toEndDate: endDate
                                                              forFreeBusy: freebusy
-                                                                 andUser: uid]];
+                                                              andContact: uid]];
             }
         }
       else
