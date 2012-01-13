@@ -37,11 +37,12 @@
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/LDAPSource.h>
 #import <SOGo/NSArray+Utilities.h>
-#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserProfile.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <Contacts/NSDictionary+LDIF.h>
 
 #import "SOGoTool.h"
 
@@ -60,6 +61,12 @@
 @end
 
 @implementation SOGoToolBackup
+
++ (void) initialize
+{
+  [[SOGoProductLoader productLoader]
+    loadProducts: [NSArray arrayWithObject: @"Contacts.SOGo"]];
+}
 
 + (NSString *) command
 {
@@ -376,7 +383,7 @@
       userEntry = [currentSource lookupContactEntry: uid];
       if (userEntry)
 	{
-          [userRecord setObject: [userEntry userRecordAsLDIFEntry]
+          [userRecord setObject: [userEntry ldifRecordAsString]
                          forKey: @"ldif_record"];
           done = YES;
 	}

@@ -19,11 +19,15 @@
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
 #import <NGCards/NGVCard.h>
+#import <NGCards/NGVCardPhoto.h>
 
+#import "NGVCard+SOGo.h"
 #import "SOGoContactEntryPhoto.h"
 
 #import "SOGoContactGCSEntry.h"
@@ -62,6 +66,21 @@
   return card;
 }
 
+- (void) setLDIFRecord: (NSDictionary *) newLDIFRecord
+{
+  [[self vCard] updateFromLDIFRecord: newLDIFRecord];
+}
+
+- (NSDictionary *) ldifRecord
+{
+  return [[self vCard] asLDIFRecord];
+}
+
+- (BOOL) hasPhoto
+{
+  return ([[self vCard] firstChildWithTag: @"photo"] != nil);
+}
+
 /* actions */
 
 - (id) lookupName: (NSString *) lookupName
@@ -69,16 +88,12 @@
           acquire: (BOOL) acquire
 {
   id obj;
-  int photoIndex;
-  NSArray *photoElements;
 
-  if ([lookupName hasPrefix: @"photo"])
+  if ([lookupName isEqualToString: @"photo"])
     {
-      photoElements = [[self vCard] childrenWithTag: @"photo"];
-      photoIndex = [[lookupName substringFromIndex: 5] intValue];
-      if (photoIndex > -1 && photoIndex < [photoElements count])
-        obj = [SOGoContactEntryPhoto entryPhotoWithID: photoIndex
-                                          inContainer: self];
+      if ([self hasPhoto])
+        obj = [SOGoContactEntryPhoto objectWithName: lookupName
+                                        inContainer: self];
       else
         obj = nil;
     }
@@ -127,13 +142,16 @@
 
 /* specialized actions */
 
-- (void) save
+- (NSException *) save
 {
-  NGVCard *vcard;
+  NSException *result;
 
-  vcard = [self vCard];
+  if (card)
+    result = [self saveContentString: [card versitString]];
+  else
+    result = nil; /* TODO: we should probably return an exception instead */
 
-  [self saveContentString: [vcard versitString]];
+  return result;
 }
 
 - (NSException *) saveContentString: (NSString *) newContent
