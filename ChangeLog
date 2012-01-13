@@ -1,3 +1,24 @@
+2012-01-13  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-caldavFreeBusyRequestOnRecipient:withUID:andOrganizer:from:to:):
+	if the recipient is not associated to a user (from an
+	authentication source), verify if it is a contact (from an
+	addressbook source). If it is, SOGoFreeBusyObject will take care
+	of fetching the freebusy information if the contact is associated
+	to a MS Exchange server.
+
+	* SoObjects/Appointments/SOGoFreeBusyObject.m
+	(-iCalPersonWithUID:): if no user is found from an authentication
+	source, verify if it matches a contact from an addressbook
+	source.
+	(-contentAsStringWithMethod:andUID:andOrganizer:andContact:from:to:):
+	added new parameter "contactID".
+
+	* SoObjects/Appointments/iCalPerson+SOGo.m (-contactIDInContext:):
+	new method that tries to associated the person's email address to
+	a contact ID.
+
 2012-01-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/SOGoSource.h (-bindDN, -bindPassword)

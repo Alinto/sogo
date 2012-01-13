@@ -22,6 +22,7 @@
 
 #import <Foundation/NSString.h>
 #import <SOGo/SOGoUserManager.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 
 #import "iCalPerson+SOGo.h"
 
@@ -49,6 +50,27 @@ static SOGoUserManager *um = nil;
     um = [SOGoUserManager sharedUserManager];
 
   return [um getUIDForEmail: [self rfc822Email]];
+}
+
+- (NSString *) contactIDInContext: (WOContext *) context
+{
+  NSString *domain, *uid;
+  NSArray *contacts;
+  NSDictionary *contact;
+
+  if (!um)
+    um = [SOGoUserManager sharedUserManager];
+
+  uid = nil;
+  domain = [[context activeUser] domain];
+  contacts = [um fetchContactsMatching: [self rfc822Email] inDomain: domain];
+  if ([contacts count] == 1)
+    {
+      contact = [contacts lastObject];
+      uid = [contact valueForKey: @"c_uid"];
+    }
+      
+  return uid;
 }
 
 - (BOOL) hasSentBy

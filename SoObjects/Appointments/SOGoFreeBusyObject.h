@@ -48,6 +48,7 @@
 - (NSString *) contentAsStringWithMethod: (NSString *) method
                                   andUID: (NSString *) uid
                             andOrganizer: (iCalPerson *) organizer
+                              andContact: (NSString *) contactID
 				    from: (NSCalendarDate *) _startDate
 				      to: (NSCalendarDate *) _endDate;
 
@@ -55,7 +56,7 @@
 				  to: (NSCalendarDate *) _endDate;
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) startDate
                                   to: (NSCalendarDate *) endDate
-                             forUser: (NSString *) uid;
+                          forContact: (NSString *) uid;
 @end
 
 #endif	/* __Appointments_SOGoFreeBusyObject_H_ */

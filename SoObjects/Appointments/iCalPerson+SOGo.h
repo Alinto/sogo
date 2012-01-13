@@ -31,6 +31,7 @@
 
 - (NSString *) mailAddress;
 - (NSString *) uid;
+- (NSString *) contactIDInContext: (WOContext *) context;
 - (BOOL) hasSentBy;
 - (NSString *) sentBy;
 

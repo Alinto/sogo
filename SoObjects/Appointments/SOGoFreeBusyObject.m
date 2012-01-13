@@ -61,10 +61,20 @@
 {
   iCalPerson *person;
   SOGoUserManager *um;
+  NSString *domain;
   NSDictionary *contactInfos;
+  NSArray *contacts;
 
   um = [SOGoUserManager sharedUserManager];
   contactInfos = [um contactInfosForUserWithUIDorEmail: uid];
+  if (contactInfos == nil)
+    {
+      domain = [[context activeUser] domain];
+      [um fetchContactsMatching: uid inDomain: domain];
+      contacts = [um fetchContactsMatching: uid inDomain: domain];
+      if ([contacts count] == 1)
+          contactInfos = [contacts lastObject];
+    }
 
   /* iCal.app compatibility:
      - don't add "cn"; */
@@ -96,6 +106,7 @@
 			       withMethod: (NSString *) method
                                    andUID: (NSString *) uid
                              andOrganizer: (iCalPerson *) organizer
+                               andContact: (NSString *) contactID
                                      from: (NSCalendarDate *) _startDate
                                        to: (NSCalendarDate *) _endDate
 {
@@ -125,7 +136,10 @@
     [freebusy setUid: uid];
   if (organizer)
     [freebusy setOrganizer: organizer];
-  [freebusy addToAttendees: [self iCalPersonWithUID: login]];
+  if (contactID)
+    [freebusy addToAttendees: [self iCalPersonWithUID: contactID]];
+  else
+    [freebusy addToAttendees: [self iCalPersonWithUID: login]];
   [freebusy setTimeStampAsDate: [NSCalendarDate calendarDate]];
   [freebusy setStartDate: _startDate];
   [freebusy setEndDate: _endDate];
@@ -223,16 +237,19 @@
 - (NSString *) contentAsStringWithMethod: (NSString *) method
                                   andUID: (NSString *) UID
                             andOrganizer: (iCalPerson *) organizer
+                              andContact: (NSString *) contactID
 				    from: (NSCalendarDate *) _startDate
 				      to: (NSCalendarDate *) _endDate
 {
   NSArray *infos;
 
-  infos = [self fetchFreeBusyInfosFrom: _startDate to: _endDate];
+  infos = [self fetchFreeBusyInfosFrom: _startDate to: _endDate
+                            forContact: contactID];
 
   return [self iCalStringForFreeBusyInfos: infos
                                withMethod: method
                                    andUID: UID andOrganizer: organizer
+                               andContact: contactID
                                      from: _startDate to: _endDate];
 }
 
@@ -241,6 +258,7 @@
 {
   return [self contentAsStringWithMethod: nil andUID: nil
                             andOrganizer: nil
+                              andContact: nil
                                     from: _startDate
                                       to: _endDate];
 }
@@ -251,31 +269,31 @@
  * (currently limited to a Microsoft Exchange server with Web Services enabled).
  * @param startDate the beginning of the covered period
  * @param endDate the ending of the covered period
- * @param uid the ID of the user within the current domain
+ * @param uid the ID of the contact within the current domain
  * @return an array of dictionaries containing the start and end dates of each busy period
  * @see MSExchangeFreeBusy.m
  */
 - (NSArray *) fetchFreeBusyInfosFrom: (NSCalendarDate *) startDate
                                   to: (NSCalendarDate *) endDate
-                             forUser: (NSString *) uid
+                          forContact: (NSString *) uid
 {
   if ([uid length])
     {
       SOGoUserManager *um;
-      NSArray *users;
+      NSArray *contacts;
       NSString *domain, *email;
-      NSDictionary *user;
+      NSDictionary *contact;
       MSExchangeFreeBusy *exchangeFreeBusy;
       NSObject <SOGoDNSource> *source;
 
       um = [SOGoUserManager sharedUserManager];
       domain = [[context activeUser] domain];
-      users = [um fetchContactsMatching: uid inDomain: domain];
-      if ([users count] == 1)
+      contacts = [um fetchContactsMatching: uid inDomain: domain];
+      if ([contacts count] == 1)
         {
-          user = [users lastObject];
-          email = [user valueForKey: @"c_email"];
-          source = [user objectForKey: @"source"];
+          contact = [contacts lastObject];
+          email = [contact valueForKey: @"c_email"];
+          source = [contact objectForKey: @"source"];
           if ([email length])
             {
               exchangeFreeBusy = [[MSExchangeFreeBusy alloc] init];
