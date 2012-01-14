@@ -109,10 +109,10 @@ function _setupEvents() {
     // We check for non-null elements as replyPlacementList and composeMessagesType
     // might not be present if ModulesConstraints disable those elements
     if ($("replyPlacementList"))
-    	$("replyPlacementList").observe ("change", onReplyPlacementListChange);
+    	$("replyPlacementList").observe("change", onReplyPlacementListChange);
 
     if ($("composeMessagesType"))
-    	$("composeMessagesType").observe ("change", onComposeMessagesTypeChange);
+    	$("composeMessagesType").observe("change", onComposeMessagesTypeChange);
 
     // Note: we also monitor changes to the calendar categories.
     // See functions endEditable and onColorPickerChoice.
@@ -188,15 +188,24 @@ function initPreferences() {
     }
 
     // Disable placement (after) if composing in HTML
-    if ($("composeMessagesType")) {
-        if ($("composeMessagesType").value == 1) {
-            $("replyPlacementList").selectedIndex = 0;
-            $("replyPlacementList").disabled = 1;
+    var button = $("composeMessagesType");
+    if (button) {
+        if (button.value == 1) {
+            $("replyPlacementList").value = 0;
+            $("replyPlacementList").disabled = true;
         }
         onReplyPlacementListChange();
+        button.on("change", function(event) {
+            if (this.value == 0)
+                $("replyPlacementList").disabled = false;
+            else {
+                $("replyPlacementList").value = 0;
+                $("replyPlacementList").disabled = true;
+            }
+        });
     }
 
-    var button = $("addDefaultEmailAddresses");
+    button = $("addDefaultEmailAddresses");
     if (button)
         button.observe("click", addDefaultEmailAddresses);
 
