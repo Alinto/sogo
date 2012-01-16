@@ -572,6 +572,8 @@
 			    forKey: @"numberOfSimultaneousBookings"];
 		}
 	    }
+
+          [response setObject: self forKey: @"source"];
         }
       else
         [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];
@@ -678,7 +680,12 @@
           attrs = [channel describeResults: NO];
 
           while ((row = [channel fetchAttributes: attrs withZone: NULL]))
-            [results addObject: row];
+            {
+              row = [row mutableCopy];
+              [(NSMutableDictionary *) row setObject: self forKey: @"source"];
+              [results addObject: row];
+              [row release];
+            }
         }
       else
         [self errorWithFormat: @"could not run SQL '%@': %@", sql, ex];

@@ -1,3 +1,9 @@
+2012-01-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SQLSource.m (_lookupContactEntry:considerEmail:)
+	(fetchContactsMatching:): assigned self to the "source" key of the
+	returned dictionaries.
+
 2012-01-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
