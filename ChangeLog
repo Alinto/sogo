@@ -1,3 +1,15 @@
+2012-01-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/UIxFilterEditor.js (setupNewFilterData):
+	mark new filter as active by default.
+
+2012-01-17  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js (initPreferences): When
+	the mail composer is set to use HTML, the reply position popup
+	menu is disabled. When switching to text-based message,
+	the popup menu is now correctly re-enabled.
+
 2012-01-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SQLSource.m (_lookupContactEntry:considerEmail:)

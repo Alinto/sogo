@@ -182,7 +182,8 @@ function createFilterAction() {
 
 function setupNewFilterData() {
     var newFilterTemplate = $({ name: _("Untitled Filter"),
-                                match: "any" });
+                                match: "any",
+                                active: true });
     newFilterTemplate.rules = $([ createFilterRule() ]);
     newFilterTemplate.actions = $([ createFilterAction() ]);
 
