@@ -154,6 +154,7 @@ function addressFieldChanged(event) {
     //   "dude, buddy dude@domain.com; bro" => "dude, buddy <dude@domain.com>" + "bro"
     //   "dude, buddy, bro <bro@domain.com>" => "dude, buddy, bro <bro@domain.com>"
     //   "dude, buddy, bro" => "dude" + "buddy" + "bro"
+    //   "dude@domain.com, <buddy@domain.com>" => "<dude@domain.com>" + "<buddy@domain.com>"
     var addresses = this.value.split(';');
     if (addresses.length > 0) {
         var first = true;
@@ -161,7 +162,7 @@ function addressFieldChanged(event) {
             var words = addresses[i].split(' ');
             var phrase = new Array();
             for (var j = 0; j < words.length; j++) {
-                var word = words[j].strip().replace(/<(.+)>/, "$1");
+                var word = words[j].strip().replace(/<(.+)>/, "$1").replace(',', '');
                 if (word.length > 0) {
                     // Use the regexp defined in generic.js
                     if (emailRE.test(word)) {
@@ -176,7 +177,7 @@ function addressFieldChanged(event) {
                         phrase = new Array();
                     }
                     else
-                        phrase.push(word);
+                        phrase.push(words[j].strip());
                 }
             }
             if (phrase.length > 0) {

@@ -1,3 +1,8 @@
+2012-01-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxMailToSelection.js
+	(addressFieldChanged): remove commas before testing email regexp.
+
 2012-01-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxFilterEditor.js (setupNewFilterData):
