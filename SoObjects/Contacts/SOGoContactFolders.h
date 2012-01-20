@@ -27,6 +27,10 @@
 
 @interface SOGoContactFolders : SOGoParentFolder
 
+- (NSException *) renameLDAPAddressBook: (NSString *) sourceID
+                        withDisplayName: (NSString *) newDisplayName;
+- (NSException *) removeLDAPAddressBook: (NSString *) sourceID;
+
 @end
 
 #endif /* SOGOCONTACTFOLDERS_H */

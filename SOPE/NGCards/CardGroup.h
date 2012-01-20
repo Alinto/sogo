@@ -46,12 +46,15 @@
 - (CardElement *) uniqueChildWithTag: (NSString *) aTag;
 - (void) setUniqueChild: (CardElement *) aChild;
 
+- (NSMutableArray *) children;
+
 - (void) addChild: (CardElement *) aChild;
 - (void) addChildren: (NSArray *) someChildren;
 - (void) removeChild: (CardElement *) aChild;
 - (void) removeChildren: (NSArray *) someChildren;
 
-- (NSMutableArray *) children;
+- (void) cleanupEmptyChildren;
+
 - (CardElement *) firstChildWithTag: (NSString *) aTag;
 - (NSArray *) childrenWithTag: (NSString *) aTag;
 - (NSArray *) childrenWithAttribute: (NSString *) anAttribute

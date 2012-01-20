@@ -1,7 +1,7 @@
 setup
 -----
 
-(you need "python-simplejson", "python-xml", "python-vobject" and "python-m2crypto"
+(you need "python-simplejson", "python-xml", "python-vobject", "python-dateutil" and "python-m2crypto"
  in order to run the scripts on Debian)
 
 1) copy config.py.in to config.py (make sure to never EVER add it to monotone)

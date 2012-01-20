@@ -25,6 +25,8 @@
 
 #import "SOGoObject.h"
 
+@class NSString;
+
 @interface SOGoFolder : SOGoObject
 {
   NSMutableString *displayName;
@@ -54,6 +56,9 @@
 
 /* outlook */
 - (NSString *) outlookFolderClass;
+
+/* email advisories */
+- (void) sendFolderAdvisoryTemplate: (NSString *) template;
 
 @end
 

@@ -33,6 +33,7 @@
 #import <Foundation/NSEnumerator.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/NSException+HTTP.h>
 #import <DOM/DOMElement.h>
 #import <DOM/DOMProtocols.h>
 
@@ -45,6 +46,7 @@
 
 #import "SOGoContactGCSFolder.h"
 #import "SOGoContactSourceFolder.h"
+
 #import "SOGoContactFolders.h"
 
 #define XMLNS_INVERSEDAV @"urn:inverse:params:xml:ns:inverse-dav"
@@ -58,6 +60,62 @@
 + (Class) subFolderClass
 {
   return [SOGoContactGCSFolder class];
+}
+
+- (void) _fetchLDAPAddressBooks: (id <SOGoSource>) source
+{
+  id <SOGoSource> abSource;
+  SOGoContactSourceFolder *folder;
+  NSArray *abSources;
+  NSUInteger count, max;
+  NSString *name;
+
+  abSources = [source addressBookSourcesForUser: owner];
+  max = [abSources count];
+  for (count = 0; count < max; count++)
+    {
+      abSource = [abSources objectAtIndex: count];
+      name = [abSource sourceID];
+      folder = [SOGoContactSourceFolder folderWithName: name
+                                        andDisplayName: [abSource displayName]
+                                           inContainer: self];
+      [folder setSource: abSource];
+      [folder setIsPersonalSource: YES];
+      [subFolders setObject: folder forKey: name];
+    }
+}
+
+- (NSException *) appendPersonalSources
+{
+  SOGoUser *currentUser;
+  NSException *result;
+  id <SOGoSource> source;
+
+  currentUser = [context activeUser];
+  source = [currentUser authenticationSource];
+  if ([source hasUserAddressBooks])
+    {
+      result = nil;
+      /* We don't handle ACLs for user LDAP addressbooks yet, therefore only
+         the owner has access to his addressbooks. */
+      if (activeUserIsOwner
+          || [[currentUser login] isEqualToString: owner])
+        {
+          [self _fetchLDAPAddressBooks: source];
+          if (![subFolders objectForKey: @"personal"])
+            {
+              result = [source addAddressBookSource: @"personal"
+                                    withDisplayName: [self defaultFolderName]
+                                            forUser: owner];
+              if (!result)
+                [self _fetchLDAPAddressBooks: source];
+            }
+        }
+    }
+  else
+    result = [super appendPersonalSources];
+
+  return result;
 }
 
 - (NSException *) appendSystemSources
@@ -100,6 +158,88 @@
     }
 
   return nil;
+}
+
+- (NSException *) newFolderWithName: (NSString *) name
+		 andNameInContainer: (NSString *) newNameInContainer
+{
+  SOGoUser *currentUser;
+  NSException *result;
+  id <SOGoSource> source;
+
+  currentUser = [context activeUser];
+  source = [currentUser authenticationSource];
+  if ([source hasUserAddressBooks])
+    {
+      result = nil;
+      /* We don't handle ACLs for user LDAP addressbooks yet, therefore only
+         the owner has access to his addressbooks. */
+      if (activeUserIsOwner
+          || [[currentUser login] isEqualToString: owner])
+        {
+          result = [source addAddressBookSource: newNameInContainer
+                                withDisplayName: name
+                                        forUser: owner];
+          if (!result)
+            [self _fetchLDAPAddressBooks: source];
+        }
+    }
+  else
+    result = [super newFolderWithName: name
+                   andNameInContainer: newNameInContainer];
+
+  return result;
+}
+
+- (NSException *) renameLDAPAddressBook: (NSString *) sourceID
+                        withDisplayName: (NSString *) newDisplayName
+{
+  NSException *result;
+  SOGoUser *currentUser;
+  id <SOGoSource> source;
+
+  currentUser = [context activeUser];
+  source = [currentUser authenticationSource];
+  /* We don't handle ACLs for user LDAP addressbooks yet, therefore only
+     the owner has access to his addressbooks. */
+  if (activeUserIsOwner
+      || [[currentUser login] isEqualToString: owner])
+    result = [source renameAddressBookSource: sourceID
+                             withDisplayName: newDisplayName
+                                       forUser: owner];
+  else
+    result = [NSException exceptionWithHTTPStatus: 403
+                                           reason: @"operation denied"];
+
+  return result;
+}
+
+- (NSException *) removeLDAPAddressBook: (NSString *) sourceID
+{
+  NSException *result;
+  SOGoUser *currentUser;
+  id <SOGoSource> source;
+
+  if ([sourceID isEqualToString: @"personal"])
+    result = [NSException exceptionWithHTTPStatus: 403
+                                          reason: @"folder 'personal' cannot be deleted"];
+  else
+    {
+      result = nil;
+      currentUser = [context activeUser];
+      source = [currentUser authenticationSource];
+      /* We don't handle ACLs for user LDAP addressbooks yet, therefore only
+         the owner has access to his addressbooks. */
+      if (activeUserIsOwner
+          || [[currentUser login] isEqualToString: owner])
+        result = [source removeAddressBookSource: sourceID
+                                         forUser: owner];
+      else
+        result = [NSException exceptionWithHTTPStatus: 403
+                                               reason: @"operation denied"];
+    }
+
+  return result;
 }
   
 - (NSString *) defaultFolderName

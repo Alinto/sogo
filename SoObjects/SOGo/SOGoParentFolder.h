@@ -42,6 +42,8 @@
 
 - (NSString *) defaultFolderName;
 
+- (NSException *) appendPersonalSources;
+
 - (void) setBaseOCSPath: (NSString *) newOCSPath;
 
 - (NSArray *) toManyRelationshipKeys;
