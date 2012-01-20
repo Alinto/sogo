@@ -15,3 +15,5 @@ ADDITIONAL_LIB_DIRS += \
 	-L../../SOPE/GDLContentStore/$(GNUSTEP_OBJ_DIR)/ -lGDLContentStore \
 	-L../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ -lNGCards \
         -L/usr/local/lib -L/usr/lib -lEOControl -lNGStreams -lNGMime -lNGExtensions
+
+ADDITIONAL_LDFLAGS += -Wl,--no-as-needed
