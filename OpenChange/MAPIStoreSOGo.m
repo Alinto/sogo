@@ -43,10 +43,6 @@
 #import "MAPIStoreTable.h"
 #import "NSObject+MAPIStore.h"
 
-#undef DEBUG
-#include <stdbool.h>
-#include <talloc.h>
-#include <gen_ndr/exchange.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
@@ -331,7 +327,7 @@ sogo_folder_delete_folder(void *folder_object, uint64_t fid)
 }
 
 static enum mapistore_error
-sogo_folder_get_child_count(void *folder_object, uint8_t table_type, uint32_t *child_count)
+sogo_folder_get_child_count(void *folder_object, enum mapistore_table_type table_type, uint32_t *child_count)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
@@ -494,7 +490,7 @@ sogo_folder_move_copy_messages(void *folder_object,
 
 static enum mapistore_error
 sogo_folder_get_deleted_fmids(void *folder_object, TALLOC_CTX *mem_ctx,
-                              uint8_t table_type, uint64_t change_num,
+                              enum mapistore_table_type table_type, uint64_t change_num,
                               struct I8Array_r **fmidsp, uint64_t *cnp)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -526,7 +522,7 @@ sogo_folder_get_deleted_fmids(void *folder_object, TALLOC_CTX *mem_ctx,
 
 static enum mapistore_error
 sogo_folder_open_table(void *folder_object, TALLOC_CTX *mem_ctx,
-                       uint8_t table_type, uint32_t handle_id,
+                       enum mapistore_table_type table_type, uint32_t handle_id,
                        void **table_object, uint32_t *row_count)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -974,7 +970,7 @@ sogo_table_set_sort_order (void *table_object, struct SSortOrderSet *sort_order,
 
 static enum mapistore_error
 sogo_table_get_row (void *table_object, TALLOC_CTX *mem_ctx,
-                    enum table_query_type query_type, uint32_t row_id,
+                    enum mapistore_query_type query_type, uint32_t row_id,
                     struct mapistore_property_data **data)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -1003,7 +999,7 @@ sogo_table_get_row (void *table_object, TALLOC_CTX *mem_ctx,
 
 static enum mapistore_error
 sogo_table_get_row_count (void *table_object,
-                          enum table_query_type query_type,
+                          enum mapistore_query_type query_type,
                           uint32_t *row_countp)
 {
   struct MAPIStoreTallocWrapper *wrapper;

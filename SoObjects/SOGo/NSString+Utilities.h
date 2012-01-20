@@ -62,8 +62,6 @@
 
 - (int) timeValue;
 
-- (BOOL) _isLDIFSafe;
-
 - (BOOL) isJSONString;
 
 - (id) objectFromJSONString;

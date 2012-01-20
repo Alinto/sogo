@@ -118,9 +118,6 @@
 - (void) removeAclsForUsers: (NSArray *) users
             forObjectAtPath: (NSArray *) objectPathArray;
 
-/* advisories */
-- (void) sendFolderAdvisoryTemplate: (NSString *) template;
-
 /* DAV */
 - (NSURL *) publicDavURL;
 - (NSURL *) realDavURL;

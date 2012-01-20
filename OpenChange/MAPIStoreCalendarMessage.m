@@ -207,7 +207,8 @@
 - (int) getPidLidAppointmentSubType: (void **) data
                            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPidLidAppointmentSubType: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidLidAppointmentSubType: data
+                                                       inMemCtx: memCtx];
 }
 
 - (int) getPidLidBusyStatus: (void **) data // TODO
@@ -653,6 +654,7 @@
   iCalEvent *newEvent;
   iCalPerson *userPerson;
   NSUInteger responseStatus = 0;
+  NSInteger tzOffset;
   SOGoUser *activeUser, *ownerUser;
   id value;
 
@@ -747,10 +749,11 @@
       if (value)
         [newEvent setLocation: value];
 
-      isAllDay = [[properties
-                    objectForKey: MAPIPropertyKey (PidLidAppointmentSubType)]
-                   boolValue];
-
+      isAllDay = [newEvent isAllDay];
+      value = [properties
+                objectForKey: MAPIPropertyKey (PidLidAppointmentSubType)];
+      if (value)
+        isAllDay = [value boolValue];
       if (!isAllDay)
         {
           tzName = [[self ownerTimeZone] name];
@@ -767,7 +770,14 @@
         {
           start = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtstart"];
           if (isAllDay)
-            [start setDate: value];
+            {
+              tzOffset = [[value timeZone] secondsFromGMTForDate: value];
+              value = [value dateByAddingYears: 0 months: 0 days: 0
+                                         hours: 0 minutes: 0
+                                       seconds: -tzOffset];
+              [start setTimeZone: nil];
+              [start setDate: value];
+            }
           else
             {
               [start setTimeZone: tz];
@@ -776,14 +786,21 @@
         }
 
       /* end */
-      value = [properties objectForKey: MAPIPropertyKey(PR_END_DATE)];
+      value = [properties objectForKey: MAPIPropertyKey (PR_END_DATE)];
       if (!value)
-        value = [properties objectForKey: MAPIPropertyKey(PidLidAppointmentEndWhole)];
+        value = [properties objectForKey: MAPIPropertyKey (PidLidAppointmentEndWhole)];
       if (value)
         {
           end = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtend"];
           if (isAllDay)
-            [end setDate: value];
+            {
+              tzOffset = [[value timeZone] secondsFromGMTForDate: value];
+              value = [value dateByAddingYears: 0 months: 0 days: 0
+                                         hours: 0 minutes: 0
+                                       seconds: -tzOffset];
+              [end setTimeZone: nil];
+              [end setDate: value];
+            }
           else
             {
               [end setTimeZone: tz];
@@ -840,13 +857,14 @@
           if (value)
             {
               value = [[NSString alloc] initWithData: value
-                                        encoding: NSUTF8StringEncoding];
+                                            encoding: NSUTF8StringEncoding];
               [value autorelease];
               value = [value htmlToText];
             }
         }
-      if (value)
-        [newEvent setComment: value];
+      if (value && [value length] == 0)
+        value = nil;
+      [newEvent setComment: value];
       
       /* recurrence */
       value = [properties
