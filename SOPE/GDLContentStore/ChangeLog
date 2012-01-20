@@ -1,3 +1,8 @@
+2012-01-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* GCSSpecialQueries.m (-createSessionsFolderWithName:): declare
+	c_id as primary key to make sure it's indexed.
+
 2011-12-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* GCSFolder.m (-releaseChannel:): perform the debug logging BEFORE
