@@ -745,7 +745,7 @@ _userStateInEvent (NSArray *event)
 		  [currentDay addObject: eventBlock];
 		}
 	      else
-		[self warnWithFormat: @"event '%@' has end < start: %d < %d",
+		[self warnWithFormat: @"event '%@' has end <= start: %d < %d",
 		      [event objectAtIndex: eventNameIndex], eventEnd, currentStart];
 	    }
         }

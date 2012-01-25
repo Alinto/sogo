@@ -72,6 +72,9 @@
     {
       fileContent = [[NSString alloc] initWithData: (NSData *) data 
                                           encoding: NSUTF8StringEncoding];
+      if (fileContent == nil)
+        fileContent = [[NSString alloc] initWithData: (NSData *) data 
+                                            encoding: NSISOLatin1StringEncoding];
       [fileContent autorelease];
     }
 

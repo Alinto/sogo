@@ -832,7 +832,7 @@ andAttribute: (EOAttribute *)_attribute
   EOSQLQualifier *qualifier;
   EOAttribute *attribute1, *attribute2;
 
-  attribute1 = [_entity attributeNamed: _colname];
+  attribute1 = [self _attributeForColumn: _colname];
   if (_colname2 == nil)
     {
       qualifier = [[EOSQLQualifier alloc] initWithEntity: _entity
@@ -842,7 +842,7 @@ andAttribute: (EOAttribute *)_attribute
     }
   else
     {
-      attribute2 = [_entity attributeNamed: _colname2];
+      attribute2 = [self _attributeForColumn: _colname2];
       qualifier = [[EOSQLQualifier alloc] initWithEntity: _entity
 					  qualifierFormat: @"%A = %@ AND %A = %@",
                                           _colname,

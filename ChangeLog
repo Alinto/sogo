@@ -1,3 +1,14 @@
+2012-01-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SOPE/GDLContentStore/GCSFolder.m - we now use the proper
+	method to determine column types, avoiding the generation
+	of broken UPDATE statements on MySQL when snoozing alarms.
+
+2012-01-24  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Scheduler/UIxCalFolderActions.m (-importAction): failback to
+	latin-1 when utf-8 decoding doesn't work.
+
 2012-01-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxMailToSelection.js
