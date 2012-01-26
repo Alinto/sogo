@@ -165,6 +165,8 @@
 - (BOOL) subscriberCanDeleteMessages;
 - (BOOL) subscriberCanCreateSubFolders;
 
+- (BOOL) supportsSubFolders; /* capability */
+
 /* subclass helpers */
 - (void) postNotificationsForMoveCopyMessagesWithMIDs: (uint64_t *) srcMids
                                        andMessageURLs: (NSArray *) oldMessageURLs
