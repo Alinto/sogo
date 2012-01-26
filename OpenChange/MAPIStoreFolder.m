@@ -1141,7 +1141,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     access |= 0x02;
   if (userIsOwner || [self subscriberCanDeleteMessages])
     access |= 0x04;
-  if (userIsOwner || [self subscriberCanCreateSubFolders])
+  if ((userIsOwner || [self subscriberCanCreateSubFolders])
+      && [self supportsSubFolders])
     access |= 0x08;
   if (userIsOwner || [self subscriberCanCreateMessages])
     access |= 0x10;
@@ -1591,6 +1592,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 }
 
 - (BOOL) subscriberCanCreateSubFolders
+{
+  return NO;
+}
+
+- (BOOL) supportsSubFolders
 {
   return NO;
 }

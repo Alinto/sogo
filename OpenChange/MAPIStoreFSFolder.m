@@ -295,4 +295,9 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   return [self _testRoleForActiveUser: MAPIStoreRightCreateSubfolders];
 }
 
+- (BOOL) supportsSubFolders
+{
+  return YES;
+}
+
 @end
