@@ -50,6 +50,7 @@
   NSString *encryption;
   NSString *_filter;
   NSString *_scope;
+  NSString *_userPasswordAlgorithm;
 
   NSString *baseDN;
   NSString *IDField;     // the first part of a user DN

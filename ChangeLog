@@ -1,3 +1,10 @@
+2012-01-26 Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+    * SoObjects/SOGo/LDAPSource.{h,m} - now honor
+	userPasswordAlgorithm when changing the password with
+	no password-policy. It'll now be encrypted per your
+	preference. This fixes #755
+
 2012-01-25  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SOPE/GDLContentStore/GCSFolder.m - we now use the proper

@@ -176,6 +176,7 @@ static NSArray *commonSearchFields;
       bindFields = nil;
       _scope = @"sub";
       _filter = nil;
+	  _userPasswordAlgorithm = nil;
 
       searchAttributes = nil;
       passwordPolicy = NO;
@@ -212,6 +213,7 @@ static NSArray *commonSearchFields;
   [IMAPLoginField release];
   [bindFields release];
   [_filter release];
+  [_userPasswordAlgorithm release];
   [sourceID release];
   [modulesConstraints release];
   [_scope release];
@@ -285,9 +287,13 @@ static NSArray *commonSearchFields;
       ASSIGN(modulesConstraints,
 	     [udSource objectForKey: @"ModulesConstraints"]);
       ASSIGN(_filter, [udSource objectForKey: @"filter"]);
+      ASSIGN(_userPasswordAlgorithm, [udSource objectForKey: @"userPasswordAlgorithm"]);
       ASSIGN(_scope, ([udSource objectForKey: @"scope"]
                        ? [udSource objectForKey: @"scope"]
                        : (id)@"sub"));
+
+      if (!_userPasswordAlgorithm)
+	_userPasswordAlgorithm = @"none";
 
       if ([udSource objectForKey: @"passwordPolicy"])
 	passwordPolicy = [[udSource objectForKey: @"passwordPolicy"] boolValue];
@@ -598,6 +604,36 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   return didBind;
 }
 
+/**
+ * Encrypts a string using this source password algorithm.
+ * @param plainPassword the unencrypted password.
+ * @return a new encrypted string.
+ * @see _isPassword:equalTo:
+ */
+- (NSString *) _encryptPassword: (NSString *) plainPassword
+{
+  if ([_userPasswordAlgorithm caseInsensitiveCompare: @"none"] == NSOrderedSame)
+    {
+      return plainPassword;
+    }
+  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"crypt"] == NSOrderedSame)
+    {
+      return [NSString stringWithFormat: @"{CRYPT}%@", [plainPassword asCryptStringUsingSalt: [plainPassword asMD5String]]];
+    }
+  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"md5"] == NSOrderedSame)
+    {
+      return [NSString stringWithFormat: @"{MD5}%@", [plainPassword asMD5String]];
+    }
+  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"sha"] == NSOrderedSame)
+    {
+      return [NSString stringWithFormat: @"{SHA}%@", [plainPassword asSHA1String]];
+    }
+  
+  [self errorWithFormat: @"Unsupported user-password algorithm: %@", _userPasswordAlgorithm];
+  
+  return plainPassword;
+}
+
 //
 //
 //
@@ -638,7 +674,7 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 		    NSArray *changes;
 		    
 		    attr = [[NGLdapAttribute alloc] initWithAttributeName: @"userPassword"];
-		    [attr addStringValue: newPassword];
+		    [attr addStringValue: [self _encryptPassword: newPassword]];
 		    
 		    mod = [NGLdapModification replaceModification: attr];
 		    changes = [NSArray arrayWithObject: mod];
