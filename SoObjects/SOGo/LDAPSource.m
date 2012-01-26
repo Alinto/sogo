@@ -166,12 +166,8 @@ static Class NSStringK;
       bindFields = nil;
       _scope = @"sub";
       _filter = nil;
-<<<<<<< variant A
 	  _userPasswordAlgorithm = nil;
->>>>>>> variant B
       listRequiresDot = YES;
-####### Ancestor
-======= end
 
       searchAttributes = nil;
       passwordPolicy = NO;
