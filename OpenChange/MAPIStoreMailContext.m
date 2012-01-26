@@ -24,14 +24,23 @@
 
 #import "MAPIStoreMailFolder.h"
 #import "MAPIStoreMapping.h"
+#import "NSString+MAPIStore.h"
 
 #import "MAPIStoreMailContext.h"
+
+#undef DEBUG
+#include <mapistore/mapistore.h>
 
 @implementation MAPIStoreMailContext
 
 + (NSString *) MAPIModuleName
 {
   return nil;
+}
+
++ (enum mapistore_context_role) contextRole
+{
+  return MAPISTORE_MAIL_ROLE;
 }
 
 @end
@@ -41,6 +50,24 @@
 + (NSString *) MAPIModuleName
 {
   return @"inbox";
+}
+
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
+                                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  struct mapistore_contexts_list *context;
+  NSString *url;
+
+  context = talloc_zero(memCtx, struct mapistore_contexts_list);
+  url = [NSString stringWithFormat: @"sogo://%@:%@@%@/", userName, userName, [self MAPIModuleName]];
+  context->url = [url asUnicodeInMemCtx: context];
+  // context->name = "Inbox";
+  context->main_folder = true;
+  context->role = [self contextRole];
+  context->tag = "tag";
+  context->prev = context;
+
+  return context;
 }
 
 - (void) setupBaseFolder: (NSURL *) newURL
@@ -59,6 +86,11 @@
   return @"sent-items";
 }
 
++ (enum mapistore_context_role) contextRole
+{
+  return MAPISTORE_SENTITEMS_ROLE;
+}
+
 - (void) setupBaseFolder: (NSURL *) newURL
 {
   baseFolder = [MAPIStoreSentItemsFolder baseFolderWithURL: newURL
@@ -73,6 +105,11 @@
 + (NSString *) MAPIModuleName
 {
   return @"drafts";
+}
+
++ (enum mapistore_context_role) contextRole
+{
+  return MAPISTORE_DRAFTS_ROLE;
 }
 
 - (void) setupBaseFolder: (NSURL *) newURL
@@ -91,6 +128,11 @@
 + (NSString *) MAPIModuleName
 {
   return @"deleted-items";
+}
+
++ (enum mapistore_context_role) contextRole
+{
+  return MAPISTORE_DELETEDITEMS_ROLE;
 }
 
 - (void) setupBaseFolder: (NSURL *) newURL
@@ -113,6 +155,11 @@
 + (NSString *) MAPIModuleName
 {
   return @"outbox";
+}
+
++ (enum mapistore_context_role) contextRole
+{
+  return MAPISTORE_OUTBOX_ROLE;
 }
 
 - (void) setupBaseFolder: (NSURL *) newURL
