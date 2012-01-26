@@ -35,6 +35,7 @@
 #import <Contacts/SOGoContactObject.h>
 #import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactFolders.h>
+#import <Contacts/NSDictionary+LDIF.h>
 
 #import <SoObjects/Contacts/NGVCard+SOGo.h>
 #import <SoObjects/Contacts/NGVList+SOGo.h>
@@ -76,9 +77,10 @@
                                     inContext: [self context]
                                       acquire: NO];
       if ([currentChild respondsToSelector: @selector (vCard)])
-        [content appendFormat: [[currentChild vCard] ldifString]];
+        [content appendFormat: [[currentChild ldifRecord] ldifRecordAsString]];
       else if ([currentChild respondsToSelector: @selector (vList)])
         [content appendFormat: [[currentChild vList] ldifString]];
+      [content appendString: @"\n"];
     }
 
   response = [context response];

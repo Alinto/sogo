@@ -139,6 +139,11 @@
           pageName    = "UIxContactEditor";
           actionName  = "new";
         };
+        renameFolder = {
+          protectedBy = "Change Permissions";
+          actionClass = "UIxFolderActions";
+          actionName  = "renameFolder";
+        };
         mailer-contacts = {
           protectedBy = "<public>";
           pageName    = "UIxContactFoldersView";
@@ -234,12 +239,26 @@
     SOGoContactLDIFEntry = {
       methods = {
         view = {
-          protectedBy = "<public>";
+          protectedBy = "Access Contents Information";
           pageName    = "UIxContactView";
         };
         edit = {
-          protectedBy = "<public>";
+          protectedBy = "Access Contents Information";
           pageName    = "UIxContactEditor";
+        };
+        editAsContact = {
+          protectedBy = "Access Contents Information";
+          pageName    = "UIxContactEditor";
+        };
+        save = {
+          protectedBy = "Change Images And Files";
+          pageName    = "UIxContactEditor";
+          actionName  = "save";
+        };
+        saveAsContact = {
+          protectedBy = "Change Images And Files";
+          pageName    = "UIxContactEditor";
+          actionName  = "save";
         };
         write = {
           protectedBy = "<public>";

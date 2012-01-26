@@ -35,36 +35,9 @@
 
 @implementation SOGoContactEntryPhoto
 
-+ (id) entryPhotoWithID: (int) photoID
-            inContainer: (id) container
-{
-  id photo;
-
-  photo
-    = [super objectWithName: [NSString stringWithFormat: @"photo%d", photoID]
-                inContainer: container];
-  [photo setPhotoID: photoID];
-
-  return photo;
-}
-
-- (void) setPhotoID: (int) newPhotoID
-{
-  photoID = newPhotoID;
-}
-
 - (NGVCardPhoto *) photo
 {
-  NGVCardPhoto *photo;
-  NSArray *photoElements;
-
-  photoElements = [[container vCard] childrenWithTag: @"photo"];
-  if ([photoElements count] > photoID)
-    photo = [photoElements objectAtIndex: photoID];
-  else
-    photo = nil;
-
-  return photo;
+  return (NGVCardPhoto *) [[container vCard] firstChildWithTag: @"photo"];
 }
 
 - (id) GETAction: (WOContext *) localContext

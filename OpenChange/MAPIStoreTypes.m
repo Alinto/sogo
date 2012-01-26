@@ -148,7 +148,6 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
 // #define	PT_ERROR		0xa
 // #define	PT_OBJECT		0xd
 // #define	PT_I8			0x14
-// #define	PT_SVREID		0xFB
 // #define	PT_SRESTRICT		0xFD
 // #define	PT_ACTIONS		0xFE
       result = [NSNull null];
@@ -244,7 +243,6 @@ NSObjectFromSPropValue (const struct SPropValue *value)
 // #define	PT_ERROR		0xa
 // #define	PT_OBJECT		0xd
 // #define	PT_I8			0x14
-// #define	PT_SVREID		0xFB
 // #define	PT_SRESTRICT		0xFD
 // #define	PT_ACTIONS		0xFE
       result = [NSNull null];
