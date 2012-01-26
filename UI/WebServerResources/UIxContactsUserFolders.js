@@ -196,7 +196,7 @@ function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
 }
 
 function addFolderNotFoundNode (tree, nodeId) {
-    var icon = ResourcesURL + '/icon_unread.gif';
+    var icon = ResourcesURL + '/dot.png';
     var node = new Node(1, nodeId, _("No possible subscription"), 0, '#',
                         null, null, '', '', icon, icon);
     node._ls = true;
