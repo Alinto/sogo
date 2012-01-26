@@ -383,7 +383,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 }
 
 - (int) getChildCount: (uint32_t *) rowCount
-          ofTableType: (uint8_t) tableType
+          ofTableType: (enum mapistore_table_type) tableType
 {
   NSArray *keys;
   int rc = MAPISTORE_SUCCESS;
@@ -863,7 +863,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (int) getDeletedFMIDs: (struct I8Array_r **) fmidsPtr
                   andCN: (uint64_t *) cnPtr
        fromChangeNumber: (uint64_t) changeNum
-            inTableType: (uint8_t) tableType
+            inTableType: (enum mapistore_table_type) tableType
                inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc;
@@ -920,7 +920,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (int) getTable: (MAPIStoreTable **) tablePtr
      andRowCount: (uint32_t *) countPtr
-       tableType: (uint8_t) tableType
+       tableType: (enum mapistore_table_type) tableType
      andHandleId: (uint32_t) handleId
 {
   int rc = MAPISTORE_SUCCESS;
@@ -1076,7 +1076,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                          andType: MAPISTORE_FAI_TABLE];
 }
 
-- (void) _cleanupTableCaches: (uint8_t) tableType
+- (void) _cleanupTableCaches: (enum mapistore_table_type) tableType
 {
   NSArray *tables;
   NSUInteger count, max;
@@ -1552,7 +1552,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum
                                        andCN: (NSNumber **) cnNbrs
-                                 inTableType: (uint8_t) tableType
+                                 inTableType: (enum mapistore_table_type) tableType
 {
   return nil;
 }

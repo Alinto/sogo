@@ -22,9 +22,9 @@
 	02111-1307, USA.
 */
 
-var dateRegex = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
+var dateRegex = /^(([0-9]{2})?[0-9])?[0-9]-[0-9]?[0-9]-[0-9]?[0-9]$/;
 
-var displayNameChanged = false;
+var displaynameChanged = false;
 
 var tabIndex = 0;
 
@@ -37,43 +37,43 @@ function unescapeCallbackParameter(s) {
 }
 
 function copyContact(type, email, uid, sn,
-                     cn, givenName, telephoneNumber, facsimileTelephoneNumber,
-										 mobile, postalAddress, homePostalAddress,
-										 departmentNumber, l)
+                     displayname, givenname, telephonenumber, facsimiletelephonenumber,
+		             mobile, postalAddress, homePostalAddress,
+		             departmentnumber, l)
 {
     //  var type = arguments[0];
     //  var email = arguments[1];
     //  var uid = arguments[2];
     //  var sn = arguments[3];
-    //  var givenName = arguments[4];
-    //  var telephoneNumber = arguments[5];
-    //  var facsimileTelephoneNumber = arguments[6];
+    //  var givenname = arguments[4];
+    //  var telephonenumber = arguments[5];
+    //  var facsimiletelephonenumber = arguments[6];
     //  var mobile = arguments[7];
-    //  var postalAddress = arguments[8];
-    //  var homePostalAddress = arguments[9];
-    //  var departmentNumber = arguments[10];
+    //  var postaladdress = arguments[8];
+    //  var homepostaladdress = arguments[9];
+    //  var departmentnumber = arguments[10];
     //  var l = arguments[11];
     var e;
-    e = $('cn');
-    e.setAttribute('value', unescapeCallbackParameter(cn));
+    e = $('displayname');
+    e.setAttribute('value', unescapeCallbackParameter(displayname));
     e = $('email');
     e.setAttribute('value', email);
     e = $('sn');
     e.setAttribute('value', unescapeCallbackParameter(sn));
-    e = $('givenName');
-    e.setAttribute('value', unescapeCallbackParameter(givenName));
-    e = $('telephoneNumber');
-    e.setAttribute('value', telephoneNumber);
-    e = $('facsimileTelephoneNumber');
-    e.setAttribute('value', facsimileTelephoneNumber);
+    e = $('givenname');
+    e.setAttribute('value', unescapeCallbackParameter(givenname));
+    e = $('telephonenumber');
+    e.setAttribute('value', telephonenumber);
+    e = $('facsimiletelephonenumber');
+    e.setAttribute('value', facsimileTelephonenumber);
     e = $('mobile');
     e.setAttribute('value', mobile);
-    e = $('postalAddress');
+    e = $('postaladdress');
     e.setAttribute('value', unescapeCallbackParameter(postalAddress));
-    e = $('homePostalAddress');
+    e = $('homepostaladdress');
     e.setAttribute('value', unescapeCallbackParameter(homePostalAddress));
-    e = $('departmentNumber');
-    e.setAttribute('value', unescapeCallbackParameter(departmentNumber));
+    e = $('departmentnumber');
+    e.setAttribute('value', unescapeCallbackParameter(departmentnumber));
     e = $('l');
     e.setAttribute('value', unescapeCallbackParameter(l));
 };
@@ -81,23 +81,25 @@ function copyContact(type, email, uid, sn,
 function validateContactEditor() {
     var rc = true;
 
-    var e = $('workMail');
+    var e = $('mail');
     if (e.value.length > 0
         && !emailRE.test(e.value)) {
         alert(_("invalidemailwarn"));
         rc = false;
     }
 
-    e = $('homeMail');
+    e = $('mozillasecondemail');
     if (e.value.length > 0
         && !emailRE.test(e.value)) {
         alert(_("invalidemailwarn"));
         rc = false;
     }
 
-    e = $('birthday');
-    if (e.value.length > 0
-        && !dateRegex.test(e.value)) {
+    var byear = $('birthyear');
+    var bmonth = $('birthmonth');
+    var bday = $('birthday');
+    var bdayValue = byear.value + "-" + bmonth.value + "-" + bday.value;
+    if (bdayValue != "--" && !dateRegex.test(bdayValue)) {
         alert(_("invaliddatewarn"));
         rc = false;
     }
@@ -105,25 +107,25 @@ function validateContactEditor() {
     return rc;
 }
 
-function onFnKeyDown() {
-    var fn = $("fn");
+function onDisplaynameKeyDown() {
+    var fn = $("displayname");
     fn.onkeydown = null;
-    displayNameChanged = true;
+    displaynameChanged = true;
 
     return true;
 }
 
-function onFnNewValue(event) {
-    if (!displayNameChanged) {
+function onDisplaynameNewValue(event) {
+    if (!displaynameChanged) {
         var sn = $("sn").value.trim();
-        var givenName = $("givenName").value.trim();
+        var givenname = $("givenname").value.trim();
 
-        var fullName = givenName;
-        if (fullName && sn)
-            fullName += ' ';
-        fullName += sn;
+        var fullname = givenname;
+        if (fullname && sn)
+            fullname += ' ';
+        fullname += sn;
 
-        $("fn").value = fullName;
+        $("displayname").value = fullname;
     }
 
     return true;
@@ -144,7 +146,7 @@ function onEditorSubmitClick(event) {
 
 function saveCategories() {
     var container = $("categoryContainer");
-    var catsInput = $("contactCategories");
+    var catsInput = $("jsonContactCategories");
     if (container && catsInput) {
         var newCategories = $([]);
         var inputs = container.select("INPUT");
@@ -164,8 +166,8 @@ function onDocumentKeydown(event) {
     var target = Event.element(event);
     if (target.tagName == "INPUT" || target.tagName == "SELECT") {
         if (event.keyCode == Event.KEY_RETURN) {
-            var fcn = onEditorSubmitClick.bind($("submitButton"));
-            fcn();
+            var fdisplayname = onEditorSubmitClick.bind($("submitButton"));
+            fdisplayname();
             Event.stop(event);
         }
     }
@@ -267,10 +269,10 @@ function initEditorForm() {
     var controller = new SOGoTabsController();
     controller.attachToTabsContainer(tabsContainer);
 
-    displayNameChanged = ($("fn").value.length > 0);
-    $("fn").onkeydown = onFnKeyDown;
-    $("sn").onkeyup = onFnNewValue;
-    $("givenName").onkeyup = onFnNewValue;
+    displaynameChanged = ($("displayname").value.length > 0);
+    $("displayname").onkeydown = onDisplaynameKeyDown;
+    $("sn").onkeyup = onDisplaynameNewValue;
+    $("givenname").onkeyup = onDisplaynameNewValue;
 
     $("cancelButton").observe("click", onEditorCancelClick);
     var submitButton = $("submitButton");
@@ -280,8 +282,10 @@ function initEditorForm() {
 
     Event.observe(document, "keydown", onDocumentKeydown);
 
-    regenerateCategoriesMenu();
-    var catsInput = $("contactCategories");
+    if (typeof(gCategories) != "undefined") {
+        regenerateCategoriesMenu();
+    }
+    var catsInput = $("jsonContactCategories");
     if (catsInput && catsInput.value.length > 0) {
         var contactCats = $(catsInput.value.evalJSON(false));
         for (var i = 0; i < contactCats.length; i++) {
@@ -294,6 +298,6 @@ function initEditorForm() {
         emptyCategory.tabIndex = 10000;
         emptyCategory.observe("click", onEmptyCategoryClick);
     }
-}   
+}
 
 document.observe("dom:loaded", initEditorForm);

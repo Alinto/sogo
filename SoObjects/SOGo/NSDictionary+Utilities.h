@@ -35,8 +35,7 @@
 - (NSString *) jsonRepresentation;
 - (NSString *) keysWithFormat: (NSString *) keyFormat;
 
-// LDIF methods
-- (NSString *) userRecordAsLDIFEntry;
+- (NSComparisonResult) caseInsensitiveDisplayNameCompare: (NSDictionary *) theDictionary;
 
 @end
 
