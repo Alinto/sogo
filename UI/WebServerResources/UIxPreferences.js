@@ -34,6 +34,10 @@ function savePreferences(sender) {
             showAlertDialog(_("Please specify your message and your email addresses for which you want to enable auto reply."));
             sendForm = false;
         }
+	if ($("autoReplyText").value.strip().endsWith('\n.')) {
+	  showAlertDialog(_("Your vacation message must not end with a single dot on a line."));
+	  sendForm = false;
+	}
         if ($("enableVacationEndDate") && $("enableVacationEndDate").checked) {
             var endDate = new Date($("vacationEndDate_date").value);
             var now = new Date();
