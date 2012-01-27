@@ -294,7 +294,7 @@
           contact = [contacts lastObject];
           email = [contact valueForKey: @"c_email"];
           source = [contact objectForKey: @"source"];
-          if ([email length])
+          if ([email length] && [source MSExchangeHostname])
             {
               exchangeFreeBusy = [[MSExchangeFreeBusy alloc] init];
               [exchangeFreeBusy autorelease];
