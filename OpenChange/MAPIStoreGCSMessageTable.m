@@ -58,7 +58,7 @@
   NSCalendarDate *dateValue;
   int32_t longDate;
 
-  translatedRes = talloc (NULL, struct mapi_SPropertyRestriction);
+  translatedRes = talloc (memCtx, struct mapi_SPropertyRestriction);
   translatedRes->ulPropTag = (res->ulPropTag & 0xffff0000) | PT_LONG;
   translatedRes->relop = res->relop;
   dateValue = NSObjectFromMAPISPropValue (&res->lpProp);

@@ -22,8 +22,10 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalCalendar.h>
@@ -325,13 +327,11 @@
   iCalCalendar *vCalendar;
   iCalToDo *vToDo;
   id value;
-  SOGoUserDefaults *ud;
-  iCalTimeZone *tz;
   iCalDateTime *date;
-  NSString *owner, *status, *priority;
+  NSString *status, *priority;
   NSCalendarDate *now;
+  NSInteger tzOffset;
 
-  owner = [sogoObject ownerInContext: nil];
   vToDo = [sogoObject component: YES secure: NO];
   vCalendar = [vToDo parent];
   [vCalendar setProdID: @"-//Inverse inc.//OpenChange+SOGo//EN"];
@@ -366,17 +366,16 @@
       [vToDo setTimeStampAsDate: value];
     }
 
-  ud = [[SOGoUser userWithLogin: owner] userDefaults];
-  tz = [iCalTimeZone timeZoneForName: [ud timeZoneName]];
-  [vCalendar addTimeZone: tz];
-
   // start
   value = [properties objectForKey: MAPIPropertyKey (PidLidTaskStartDate)];
   if (value)
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"dtstart"];
-      [date setTimeZone: tz];
-      [date setDateTime: value];
+      tzOffset = [[value timeZone] secondsFromGMTForDate: value];
+      value = [value dateByAddingYears: 0 months: 0 days: 0
+                                 hours: 0 minutes: 0
+                               seconds: -tzOffset];
+      [date setDate: value];
     }
   else
     {
@@ -388,8 +387,11 @@
   if (value)
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"due"];
-      [date setTimeZone: tz];
-      [date setDateTime: value];
+      tzOffset = [[value timeZone] secondsFromGMTForDate: value];
+      value = [value dateByAddingYears: 0 months: 0 days: 0
+                                 hours: 0 minutes: 0
+                               seconds: -tzOffset];
+      [date setDate: value];
     }
   else
     {
@@ -401,8 +403,11 @@
   if (value)
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"completed"];
-      [date setTimeZone: tz];
-      [date setDateTime: value];
+      tzOffset = [[value timeZone] secondsFromGMTForDate: value];
+      value = [value dateByAddingYears: 0 months: 0 days: 0
+                                 hours: 0 minutes: 0
+                               seconds: -tzOffset];
+      [date setDate: value];
     }
   else
     {

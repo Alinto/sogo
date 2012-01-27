@@ -26,11 +26,31 @@
 
 #import "MAPIStoreFallbackContext.h"
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
 @implementation MAPIStoreFallbackContext
 
 + (NSString *) MAPIModuleName
 {
   return @"fallback";
+}
+
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
+                                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  struct mapistore_contexts_list *context;
+
+  context = talloc_zero(memCtx, struct mapistore_contexts_list);
+  context->url = talloc_asprintf (context, "sogo://%s@fallback/",
+                                  [userName UTF8String]);
+  context->name = "Fallback";
+  context->main_folder = true;
+  context->role = MAPISTORE_FALLBACK_ROLE;
+  context->tag = "tag";
+  context->prev = context;
+
+  return context;
 }
 
 - (void) setupBaseFolder: (NSURL *) newURL

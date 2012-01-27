@@ -22,25 +22,20 @@
 #ifndef __Contacts_SOGoContactObject_H__
 #define __Contacts_SOGoContactObject_H__
 
-/*
-  SOGoContactObject
-  
-  Represents a single contact. This SOPE controller object manages all the
-  attendee storages (that is, it might store into multiple folders for meeting
-  appointments!).
-
-  Note: SOGoContactObject do not need to exist yet. They can also be "new"
-        appointments with an externally generated unique key.
-*/
-
 @class NSDictionary;
-@class NSString;
 @class NGVCard;
 
 @protocol SOGoContactObject
 
 - (NGVCard *) vCard;
-- (void) save;
+- (BOOL) hasPhoto;
+
+/* web editing */
+- (void) setLDIFRecord: (NSDictionary *) newLDIFRecord;
+- (NSDictionary *) ldifRecord;
+
+- (NSException *) save;
+- (NSException *) delete;
 
 @end
 

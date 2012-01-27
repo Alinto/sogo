@@ -9,17 +9,20 @@ Contacts_PRINCIPAL_CLASS = SOGoContactsProduct
 
 Contacts_OBJC_FILES =			\
 	Product.m			\
-	NGVCard+SOGo.m \
-	NGVList+SOGo.m \
+	NGVCard+SOGo.m			\
+	NGVList+SOGo.m			\
 	SOGoFolder+CardDAV.m		\
 	SOGoContactFolders.m		\
 	SOGoContactGCSEntry.m		\
 	SOGoContactGCSList.m		\
 	SOGoContactGCSFolder.m		\
 	SOGoContactLDIFEntry.m		\
-	SOGoContactSourceFolder.m		\
-	SOGoUserFolder+Contacts.m		\
+	SOGoContactSourceFolder.m	\
+	SOGoUserFolder+Contacts.m	\
 	SOGoContactEntryPhoto.m		\
+	\
+	NSDictionary+LDIF.m		\
+	NSString+LDIF.m
 
 Contacts_RESOURCE_FILES +=		\
 	product.plist			\

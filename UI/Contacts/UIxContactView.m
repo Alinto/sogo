@@ -52,6 +52,7 @@
 
 - (void) dealloc
 {
+  [card release];
   [photosURL release];
   [super dealloc];
 }
@@ -377,9 +378,7 @@
 {
   NSString *data;
 
-  data = nil;
-
-  if (url)
+  if ([url length] > 0)
     {
       if (![[url lowercaseString] rangeOfString: @"://"].length)
 	url = [NSString stringWithFormat: @"http://%@", url];
@@ -388,6 +387,8 @@
                          @"<a href=\"%@\" target=\"_blank\">%@</a>",
                        url, url];
     }
+  else
+    data = nil;
 
   return [self _cardStringWithLabel: nil value: data];
 }
@@ -646,30 +647,12 @@
 
 /* action */
 
-- (id <WOActionResults>) vcardAction
-{
-#warning this method is unused
-  WOResponse *response;
-
-  card = [[self clientObject] vCard];
-  if (card)
-    {
-      response = [context response];
-      [response setHeader: @"text/vcard" forKey: @"Content-type"];
-      [response appendContentString: [card versitString]];
-    }
-  else
-    return [NSException exceptionWithHTTPStatus: 404 /* Not Found */
-                        reason:@"could not locate contact"];
-
-  return response;
-}
-
 - (id <WOActionResults>) defaultAction
 {
   card = [[self clientObject] vCard];
   if (card)
     {
+      [card retain];
       phones = nil;
       homeAdr = nil;
       workAdr = nil;

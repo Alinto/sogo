@@ -30,11 +30,6 @@
   int photoID;
 }
 
-+ (id) entryPhotoWithID: (int) photoId
-            inContainer: (id) container;
-
-- (void) setPhotoID: (int) newPhotoID;
-
 - (NSString *) davContentType;
 
 @end
