@@ -1,3 +1,15 @@
+<<<<<<< variant A
+2012-01-27 Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(bareFetchFields: ...) - we now cache the returned
+	results - just like for fetchFields:...
+
+	* SoObjects/Appointments/SOGoAppointmentFolderObject.m 
+	(_folderCalenars) - we now ask for the c_content and use
+	a local autorelease pool to avoid consuming too much memory
+
+>>>>>>> variant B
 2012-01-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCommonViewsContext.[hm],
@@ -26,6 +38,8 @@
 	(+listContextsForUser:inMemCtx:): new individual method invoked by
 	the above. Overridden by concrete subclasses.
 
+####### Ancestor
+======= end
 2012-01-26 Ludovic Marcotte  <lmarcotte@inverse.ca>
 
     * SoObjects/SOGo/LDAPSource.{h,m} - now honor

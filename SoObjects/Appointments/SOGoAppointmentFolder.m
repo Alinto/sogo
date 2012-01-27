@@ -558,6 +558,11 @@ static NSNumber *sharedYes = nil;
     }
   else
     records = [NSArray array];
+  
+  if ([self _checkIfWeCanRememberRecords: fields])
+    {
+      [self _rememberRecords: records];
+    }
 
   return records;
 }
