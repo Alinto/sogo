@@ -69,6 +69,11 @@
   MAPIStoreFolder *baseFolder;
 }
 
++ (struct mapistore_contexts_list *) listAllContextsForUser: (NSString *)  userName
+                                                   inMemCtx: (TALLOC_CTX *) memCtx;
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
+                                                inMemCtx: (TALLOC_CTX *) memCtx;
+
 + (int) openContext: (MAPIStoreContext **) contextPtr
             withURI: (const char *) newUri
      connectionInfo: (struct mapistore_connection_info *) newConnInfo

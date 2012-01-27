@@ -1179,6 +1179,11 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   return childFolder;
 }
 
+- (BOOL) supportsSubFolders
+{
+  return !usesAltNameSpace;
+}
+
 @end
 
 @implementation MAPIStoreSentItemsFolder : MAPIStoreMailFolder

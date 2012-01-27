@@ -46,6 +46,8 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
+static Class MAPIStoreContextK = Nil;
+
 static enum mapistore_error
 sogo_backend_unexpected_error()
 {
@@ -81,7 +83,7 @@ sogo_backend_init (void)
 
   [SOGoSystemDefaults sharedSystemDefaults];
 
-  // /* We force the plugin to base its configuration on the SOGo tree. */
+  /* We force the plugin to base its configuration on the SOGo tree. */
   ud = [NSUserDefaults standardUserDefaults];
   [ud registerDefaults: [ud persistentDomainForName: @"sogod"]];
 
@@ -97,6 +99,8 @@ sogo_backend_init (void)
 
   [[SOGoCache sharedCache] disableRequestsCache];
   [[SOGoCache sharedCache] disableLocalCache];
+
+  MAPIStoreContextK = NSClassFromString (@"MAPIStoreContext");
 
   [pool release];
 
@@ -118,7 +122,6 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
                             const char *uri, void **context_object)
 {
   NSAutoreleasePool *pool;
-  Class MAPIStoreContextK;
   MAPIStoreContext *context;
   int rc;
 
@@ -126,7 +129,6 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
 
   pool = [NSAutoreleasePool new];
 
-  MAPIStoreContextK = NSClassFromString (@"MAPIStoreContext");
   if (MAPIStoreContextK)
     {
       rc = [MAPIStoreContextK openContext: &context
@@ -135,6 +137,33 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
                            andTDBIndexing: indexingTdb];
       if (rc == MAPISTORE_SUCCESS)
         *context_object = [context tallocWrapper: mem_ctx];
+    }
+  else
+    rc = MAPISTORE_ERROR;
+
+  [pool release];
+
+  return rc;
+}
+
+static enum mapistore_error
+sogo_backend_list_contexts(const char *username, TALLOC_CTX *mem_ctx,
+                           struct mapistore_contexts_list **contexts_listp)
+{
+  NSAutoreleasePool *pool;
+  NSString *userName;
+  int rc;
+
+  DEBUG(0, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  pool = [NSAutoreleasePool new];
+
+  if (MAPIStoreContextK)
+    {
+      userName = [NSString stringWithUTF8String: username];
+      *contexts_listp = [MAPIStoreContextK listAllContextsForUser: userName
+                                                         inMemCtx: mem_ctx];
+      rc = MAPISTORE_SUCCESS;
     }
   else
     rc = MAPISTORE_ERROR;
@@ -1207,6 +1236,7 @@ int mapistore_init_backend(void)
       backend.backend.namespace = "sogo://";
       backend.backend.init = sogo_backend_init;
       backend.backend.create_context = sogo_backend_create_context;
+      backend.backend.list_contexts = sogo_backend_list_contexts;
       backend.context.get_path = sogo_context_get_path;
       backend.context.get_root_folder = sogo_context_get_root_folder;
       backend.folder.open_folder = sogo_folder_open_folder;

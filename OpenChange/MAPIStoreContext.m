@@ -101,6 +101,40 @@ static NSMutableDictionary *contextClassMapping;
     }
 }
 
+
++ (struct mapistore_contexts_list *) listAllContextsForUser: (NSString *)  userName
+                                                   inMemCtx: (TALLOC_CTX *) memCtx
+{
+  struct mapistore_contexts_list *list, *current;
+  NSArray *classes;
+  Class currentClass;
+  NSUInteger count, max;
+
+  list = NULL;
+
+  classes = GSObjCAllSubclassesOfClass (self);
+  max = [classes count];
+  for (count = 0; count < max; count++)
+    {
+      currentClass = [classes objectAtIndex: count];
+      current = [currentClass listContextsForUser: userName
+                                         inMemCtx: memCtx];
+      if (current)
+        {
+          [self logWithFormat: @"adding list: %p", current];
+          DLIST_CONCATENATE(list, current, void);
+        }
+    }
+
+  return list;
+}
+
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
+                                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return NULL;
+}
+
 static inline enum mapistore_error
 _prepareContextClass (Class contextClass,
                       struct mapistore_connection_info *connInfo,

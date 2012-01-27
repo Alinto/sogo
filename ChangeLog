@@ -1,3 +1,31 @@
+2012-01-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreCommonViewsContext.[hm],
+	OpenChange/MAPIStoreDeferredActionsContext.[hm],
+	OpenChange/MAPIStoreFreebusyContext.[hm],
+	OpenChange/MAPIStoreJournalContext.[hm],
+	OpenChange/MAPIStoreRemindersContext.[hm],
+	OpenChange/MAPIStoreScheduleContext.[hm],
+	OpenChange/MAPIStoreSearchContext.[hm],
+	OpenChange/MAPIStoreShortcutsContext.[hm],
+	OpenChange/MAPIStoreSpoolerContext.[hm],
+	OpenChange/MAPIStoreViewsContext.[hm]: deleted obsolete classes.
+
+	* OpenChange/MAPIStoreFolder.m (supportsSubFolders): new
+	overridable method that returns whether the current folder can
+	contain subfolders, nowithstanding the right of the current user
+	to create or access them.
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_backend_list_contexts): new
+	backend method.
+
+	* OpenChange/MAPIStoreContext.m
+	(+listAllContextsForUser:inMemCtx:): centralized method for
+	returning all contexts available from all context classes for one
+	user.
+	(+listContextsForUser:inMemCtx:): new individual method invoked by
+	the above. Overridden by concrete subclasses.
+
 2012-01-26 Ludovic Marcotte  <lmarcotte@inverse.ca>
 
     * SoObjects/SOGo/LDAPSource.{h,m} - now honor

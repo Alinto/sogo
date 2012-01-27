@@ -27,11 +27,31 @@
 
 #import "MAPIStoreCalendarContext.h"
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
 @implementation MAPIStoreCalendarContext
 
 + (NSString *) MAPIModuleName
 {
   return @"calendar";
+}
+
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
+                                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  struct mapistore_contexts_list *context;
+
+  context = talloc_zero(memCtx, struct mapistore_contexts_list);
+  context->url = talloc_asprintf (context, "sogo://%s@calendar/",
+                                  [userName UTF8String]);
+  // context->name = "Agenda personnel";
+  context->main_folder = true;
+  context->role = MAPISTORE_CALENDAR_ROLE;
+  context->tag = "tag";
+  context->prev = context;
+
+  return context;
 }
 
 - (void) setupBaseFolder: (NSURL *) newURL

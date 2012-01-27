@@ -102,17 +102,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreNotesFolder.m \
 	MAPIStoreNotesMessage.m \
 	\
-	MAPIStoreCommonViewsContext.m \
-	MAPIStoreDeferredActionsContext.m \
 	MAPIStoreFallbackContext.m \
-	MAPIStoreFreebusyContext.m \
-	MAPIStoreJournalContext.m \
-	MAPIStoreRemindersContext.m \
-	MAPIStoreScheduleContext.m \
-	MAPIStoreSearchContext.m \
-	MAPIStoreShortcutsContext.m \
-	MAPIStoreSpoolerContext.m \
-	MAPIStoreViewsContext.m \
 	\
 	NSArray+MAPIStore.m \
 	NSData+MAPIStore.m \
