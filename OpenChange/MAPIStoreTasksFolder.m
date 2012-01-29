@@ -42,37 +42,6 @@
 
 @implementation MAPIStoreTasksFolder
 
-- (id) initWithURL: (NSURL *) newURL
-         inContext: (MAPIStoreContext *) newContext
-{
-  SOGoUserFolder *userFolder;
-  SOGoAppointmentFolders *parentFolder;
-  WOContext *woContext;
-
-  if ((self = [super initWithURL: newURL
-                       inContext: newContext]))
-    {
-      woContext = [newContext woContext];
-      userFolder = [SOGoUserFolder objectWithName: [newURL user]
-                                      inContainer: MAPIApp];
-      [parentContainersBag addObject: userFolder];
-      [woContext setClientObject: userFolder];
-
-      parentFolder = [userFolder lookupName: @"Calendar"
-                                  inContext: woContext
-                                    acquire: NO];
-      [parentContainersBag addObject: parentFolder];
-      [woContext setClientObject: parentFolder];
-      
-      sogoObject = [parentFolder lookupName: @"personal"
-                                  inContext: woContext
-                                    acquire: NO];
-      [sogoObject retain];
-    }
-
-  return self;
-}
-
 - (MAPIStoreMessageTable *) messageTable
 {
   [self synchroniseCache];

@@ -56,6 +56,7 @@
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreRecurrenceUtils.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
@@ -106,14 +107,16 @@
 {
   iCalEvent *event;
   MAPIStoreContext *context;
+  MAPIStoreUserContext *userContext;
 
   if (!appointmentWrapper)
     {
       event = [sogoObject component: NO secure: YES];
       context = [self context];
+      userContext = [self userContext];
       ASSIGN (appointmentWrapper,
               [MAPIStoreAppointmentWrapper wrapperWithICalEvent: event
-                                                        andUser: [context ownerUser]
+                                                        andUser: [userContext sogoUser]
                                                  andSenderEmail: nil
                                                      inTimeZone: [self ownerTimeZone]
                                              withConnectionInfo: [context connectionInfo]]);
@@ -551,7 +554,7 @@
   existingCName = [[container sogoObject] resourceNameForEventUID: uid];
   if (existingCName)
     {
-      mapping = [[self context] mapping];
+      mapping = [self mapping];
 
       /* dissociate the object url from the old object's id */
       existingURL = [NSString stringWithFormat: @"%@%@",
@@ -568,7 +571,7 @@
       [mapping registerURL: existingURL withID: objectId];
 
       /* reinstantiate the old sogo object and attach it to self */
-      woContext = [[self context] woContext];
+      woContext = [[self userContext] woContext];
       existingObject = [[container sogoObject] lookupName: existingCName
                                                 inContext: woContext
                                                   acquire: NO];
@@ -686,7 +689,7 @@
   vCalendar = [iCalCalendar parseSingleFromSource: content];
   newEvent = [[vCalendar events] objectAtIndex: 0];
 
-  ownerUser = [[self context] ownerUser];
+  ownerUser = [[self userContext] sogoUser];
   userPerson = [newEvent userAsAttendee: ownerUser];
   [newEvent setTimeStampAsDate: now];
 

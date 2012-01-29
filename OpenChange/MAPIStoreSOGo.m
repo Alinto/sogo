@@ -52,6 +52,7 @@ static enum mapistore_error
 sogo_backend_unexpected_error()
 {
   NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
+  abort();
   return MAPISTORE_SUCCESS;
 }
 
@@ -147,7 +148,8 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
 }
 
 static enum mapistore_error
-sogo_backend_list_contexts(const char *username, TALLOC_CTX *mem_ctx,
+sogo_backend_list_contexts(const char *username, struct tdb_wrap *indexingTdb,
+                           TALLOC_CTX *mem_ctx,
                            struct mapistore_contexts_list **contexts_listp)
 {
   NSAutoreleasePool *pool;
@@ -162,6 +164,7 @@ sogo_backend_list_contexts(const char *username, TALLOC_CTX *mem_ctx,
     {
       userName = [NSString stringWithUTF8String: username];
       *contexts_listp = [MAPIStoreContextK listAllContextsForUser: userName
+                                                  withTDBIndexing: indexingTdb
                                                          inMemCtx: mem_ctx];
       rc = MAPISTORE_SUCCESS;
     }

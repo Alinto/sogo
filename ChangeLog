@@ -1,5 +1,36 @@
 2012-01-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailContext.[hm]: removed
+	"MAPIStoreInboxContext", "MAPIStoreSentItemsContext",
+	and child folders."MAPIStoreDraftsContext" and
+	"MAPIStoreOutboxContext" which have made obsolete by the new
+	provisioning and instantiation mechanisms.
+
+	* OpenChange/MAPIStoreContext.m (-woContext:, -mapping)
+	(-authenticator): those methods are now part of
+	MAPIStoreUserContext.
+	(-setupBaseFolder:): removed method, obsoleted by those below.
+	(-getRootFolder:withFID:): the "root folder" is now instantiated
+	by lookups from the root folder provided by the user context and
+	the chain of folders listed in the context url path.
+	(-MAPIStoreFolderClass): new method returning the Class object
+	representing the context's class of objects.
+	(-rootSOGoFolder): new method that returns the proper root folder
+	depending on the context's class of objects.
+
+	* OpenChange/MAPIStoreFolder.m (-initWithURL:inContext:): all
+	folders are now instantiated the same way since root objects are
+	now stored in the MAPIStoreUserContext instancesB.
+	(-setContext:): new setter to provide a reference to the folder's
+	mapistore context instance from the topmost parent.
+	(-setupVersionsMessage:): new helper method invoked during the
+	folder instantiations, from the moment its parent context has been
+	made available, which does not occur at the same moment for parent
+	and child folders...
+
+	* OpenChange/MAPIApplication.m (-init): removed the "mapiContext"
+	but added the "userContext" ivars.
+
 	* SoObjects/SOGo/SOGoFolder.m (-outlookFolderClass): removed
 	useless method.
 

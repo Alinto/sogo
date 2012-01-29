@@ -22,15 +22,24 @@
 
 #import <Foundation/NSString.h>
 
+#import <Contacts/SOGoContactFolders.h>
+
 #import "MAPIStoreContactsFolder.h"
-#import "MAPIStoreMapping.h"
+#import "MAPIStoreUserContext.h"
 
 #import "MAPIStoreContactsContext.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
 
+static Class MAPIStoreContactsFolderK;
+
 @implementation MAPIStoreContactsContext
+
++ (void) initialize
+{
+  MAPIStoreContactsFolderK = [MAPIStoreContactsFolder class];
+}
 
 + (NSString *) MAPIModuleName
 {
@@ -38,12 +47,13 @@
 }
 
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
+                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *context;
 
   context = talloc_zero(memCtx, struct mapistore_contexts_list);
-  context->url = talloc_asprintf (context, "sogo://%s@contacts/",
+  context->url = talloc_asprintf (context, "sogo://%s@contacts/personal",
                                   [userName UTF8String]);
   // context->name = "Carnet d'adresses personnel";
   context->main_folder = true;
@@ -54,11 +64,14 @@
   return context;
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
+- (Class) MAPIStoreFolderClass
 {
-  baseFolder = [MAPIStoreContactsFolder baseFolderWithURL: newURL
-                                                inContext: self];
-  [baseFolder retain];
+  return MAPIStoreContactsFolderK;
+}
+
+- (id) rootSOGoFolder
+{
+  return [userContext contactsRoot];
 }
 
 @end

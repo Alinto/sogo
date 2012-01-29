@@ -34,6 +34,7 @@
 #import "MAPIStoreFSMessage.h"
 #import "MAPIStoreFSMessageTable.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "SOGoMAPIFSFolder.h"
 #import "SOGoMAPIFSMessage.h"
 
@@ -62,20 +63,6 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 + (void) initialize
 {
   EOKeyValueQualifierK = [EOKeyValueQualifier class];
-}
-
-- (id) initWithURL: (NSURL *) newURL
-         inContext: (MAPIStoreContext *) newContext
-{
-  if ((self = [super initWithURL: newURL
-                       inContext: newContext]))
-    {
-      sogoObject = [SOGoMAPIFSFolder folderWithURL: newURL
-                                      andTableType: MAPISTORE_MESSAGE_TABLE];
-      [sogoObject retain];
-    }
-
-  return self;
 }
 
 - (MAPIStoreMessageTable *) messageTable
@@ -126,8 +113,10 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
                           andSortOrderings: (NSArray *) sortOrderings
 {
   NSArray *keys;
+  SOGoUser *ownerUser;
 
-  if ([[context activeUser] isEqual: [context ownerUser]]
+  ownerUser = [[self userContext] sogoUser];
+  if ([[context activeUser] isEqual: ownerUser]
       || [self subscriberCanReadMessages])
     keys = [(SOGoMAPIFSFolder *) sogoObject
               toOneRelationshipKeysMatchingQualifier: qualifier

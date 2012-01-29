@@ -21,16 +21,25 @@
  */
 
 #import <Foundation/NSString.h>
+#import <Appointments/SOGoAppointmentFolders.h>
 
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreCalendarFolder.h"
+#import "MAPIStoreUserContext.h"
 
 #import "MAPIStoreCalendarContext.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
 
+static Class MAPIStoreCalendarFolderK;
+
 @implementation MAPIStoreCalendarContext
+
++ (void) initialize
+{
+  MAPIStoreCalendarFolderK = [MAPIStoreCalendarFolder class];
+}
 
 + (NSString *) MAPIModuleName
 {
@@ -38,12 +47,13 @@
 }
 
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
+                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *context;
 
   context = talloc_zero(memCtx, struct mapistore_contexts_list);
-  context->url = talloc_asprintf (context, "sogo://%s@calendar/",
+  context->url = talloc_asprintf (context, "sogo://%s@calendar/personal",
                                   [userName UTF8String]);
   // context->name = "Agenda personnel";
   context->main_folder = true;
@@ -54,11 +64,14 @@
   return context;
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
+- (Class) MAPIStoreFolderClass
 {
-  baseFolder = [MAPIStoreCalendarFolder baseFolderWithURL: newURL
-                                                inContext: self];
-  [baseFolder retain];
+  return MAPIStoreCalendarFolderK;
+}
+
+- (id) rootSOGoFolder
+{
+  return [userContext calendarRoot];
 }
 
 @end

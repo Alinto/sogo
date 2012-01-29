@@ -22,8 +22,6 @@
 
 #import <Foundation/NSString.h>
 
-#import "MAPIStoreFSFolder.h"
-
 #import "MAPIStoreFallbackContext.h"
 
 #undef DEBUG
@@ -37,6 +35,7 @@
 }
 
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
+                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *context;
@@ -51,12 +50,6 @@
   context->prev = context;
 
   return context;
-}
-
-- (void) setupBaseFolder: (NSURL *) newURL
-{
-  baseFolder = [MAPIStoreFSFolder baseFolderWithURL: newURL inContext: self];
-  [baseFolder retain];
 }
 
 @end

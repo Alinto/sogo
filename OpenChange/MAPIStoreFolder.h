@@ -28,7 +28,6 @@
 @class NSArray;
 @class NSMutableArray;
 @class NSNumber;
-@class NSURL;
 
 @class EOQualifier;
 
@@ -46,7 +45,6 @@
 
 @interface MAPIStoreFolder : MAPIStoreObject
 {
-  NSURL *folderURL;
   MAPIStoreContext *context;
   NSArray *messageKeys;
   NSArray *faiMessageKeys;
@@ -57,10 +55,7 @@
   SOGoMAPIFSMessage *propsMessage;
 }
 
-+ (id) baseFolderWithURL: (NSURL *) newURL
-               inContext: (MAPIStoreContext *) newContext;
-- (id) initWithURL: (NSURL *) newURL
-         inContext: (MAPIStoreContext *) newContext;
+- (void) setContext: (MAPIStoreContext *) newContext;
 
 - (NSArray *) activeMessageTables;
 - (NSArray *) activeFAIMessageTables;
@@ -168,6 +163,7 @@
 - (BOOL) supportsSubFolders; /* capability */
 
 /* subclass helpers */
+- (void) setupVersionsMessage;
 - (void) postNotificationsForMoveCopyMessagesWithMIDs: (uint64_t *) srcMids
                                        andMessageURLs: (NSArray *) oldMessageURLs
                                              andCount: (uint32_t) midCount
