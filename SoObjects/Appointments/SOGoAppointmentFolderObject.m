@@ -1,6 +1,6 @@
  /* SOGoAppointmentFolderObject.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2010-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
@@ -50,7 +51,7 @@ static NSArray *contentFields = nil;
   if (!contentFields)
     contentFields = [[NSArray alloc] initWithObjects: @"c_name", @"c_version",
                                      @"c_lastmodified", @"c_creationdate",
-                                     @"c_component", nil];
+                                     @"c_component", @"c_content", nil];
 }
 
 - (id) init
@@ -181,6 +182,7 @@ static NSArray *contentFields = nil;
   NSArray *records;
   NSMutableArray *calendars;
   SOGoCalendarComponent *component;
+  NSAutoreleasePool *pool;
   int count, max;
   iCalCalendar *calendar;
   NSString *name;
@@ -188,8 +190,19 @@ static NSArray *contentFields = nil;
   records = [self _fetchFolderRecords];
   max = [records count];
   calendars = [NSMutableArray arrayWithCapacity: max];
+  pool = nil;
+
+  // This can consume a significant amount of memory so
+  // we use a local autorelease pool to avoid running
+  // out of memory.
   for (count = 0; count < max; count++)
     {
+      if (count % 100 == 0)
+	{
+	  RELEASE(pool);
+	  pool = [[NSAutoreleasePool alloc] init];
+	}
+
       name = [[records objectAtIndex: count] objectForKey: @"c_name"];
       component = [folder lookupName: name
                            inContext: context
@@ -201,6 +214,8 @@ static NSArray *contentFields = nil;
         [self errorWithFormat: @"record with c_name '%@' should obviously not"
               @" be listed here", name];
     }
+
+  RELEASE(pool);
 
   return calendars;
 }
