@@ -54,9 +54,6 @@
 /* dav */
 - (NSArray *) davResourceType;
 
-/* outlook */
-- (NSString *) outlookFolderClass;
-
 /* email advisories */
 - (void) sendFolderAdvisoryTemplate: (NSString *) template;
 

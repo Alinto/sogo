@@ -376,11 +376,6 @@ static NSArray *folderListingFields = nil;
   return @"Contact";
 }
 
-- (NSString *) outlookFolderClass
-{
-  return @"IPF.Contact";
-}
-
 /* TODO: multiget reorg */
 - (NSString *) _nodeTagForProperty: (NSString *) property
 {

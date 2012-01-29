@@ -1,5 +1,8 @@
 2012-01-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoFolder.m (-outlookFolderClass): removed
+	useless method.
+
 	* OpenChange/MAPIStoreUserContext.[hm]: new class for accessing
 	user data common to all "mapistore contexts" as a singleton: the
 	same instance is used across all requests until all related

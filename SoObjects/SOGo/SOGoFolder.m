@@ -563,13 +563,6 @@
 	       isEqualToString: [otherFolder nameInContainer]]);
 }
 
-- (NSString *) outlookFolderClass
-{
-  [self subclassResponsibility: _cmd];
-
-  return nil;
-}
-
 /* acls */
 
 - (NSString *) defaultUserID
