@@ -1,3 +1,10 @@
+2012-01-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreUserContext.[hm]: new class for accessing
+	user data common to all "mapistore contexts" as a singleton: the
+	same instance is used across all requests until all related
+	objects have been freed.
+
 2012-01-27 Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
