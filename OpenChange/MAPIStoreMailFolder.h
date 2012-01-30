@@ -37,12 +37,7 @@
 @interface MAPIStoreMailFolder : MAPIStoreFolder
 {
   SOGoMAPIFSMessage *versionsMessage;
-  BOOL usesAltNameSpace;
 }
-
-/* subclasses */
-- (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) account
-                                    inContext: (WOContext *) woContext;
 
 /* synchronisation & versioning */
 - (BOOL) synchroniseCache;

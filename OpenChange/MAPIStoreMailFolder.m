@@ -77,15 +77,11 @@ static Class SOGoMailFolderK;
   [MAPIStoreAppointmentWrapper class];
 }
 
-- (id) initWithSOGoObject: (id) newSOGoObject
-              inContainer: (MAPIStoreObject *) newContainer
+- (id) init
 {
-  // NSString *urlString;
-
-  if ((self = [super initWithSOGoObject: newSOGoObject inContainer: newContainer]))
+  if ((self = [super init]))
     {
-      usesAltNameSpace = NO;
-      // urlString = [[self url] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+      versionsMessage = nil;
     }
 
   return self;
@@ -104,12 +100,25 @@ static Class SOGoMailFolderK;
   [super dealloc];
 }
 
-- (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) accountFolder
-                                    inContext: (WOContext *) woContext
-{
-  [self subclassResponsibility: _cmd];
 
-  return nil;
+- (void) addProperties: (NSDictionary *) newProperties
+{
+  NSString *newDisplayName;
+  NSMutableDictionary *propsCopy;
+  NSNumber *key;
+
+  key = MAPIPropertyKey (PR_DISPLAY_NAME_UNICODE);
+  newDisplayName = [newProperties objectForKey: key];
+  if (newDisplayName)
+    {
+      [(SOGoMailFolder *) sogoObject renameTo: newDisplayName];
+      propsCopy = [newProperties mutableCopy];
+      [propsCopy removeObjectForKey: key];
+      [propsCopy autorelease];
+      newProperties = propsCopy;
+    }
+
+  [super addProperties: newProperties];
 }
 
 - (MAPIStoreMessageTable *) messageTable

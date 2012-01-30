@@ -72,6 +72,26 @@
   [super dealloc];
 }
 
+- (void) addProperties: (NSDictionary *) newProperties
+{
+  NSString *newDisplayName;
+  NSMutableDictionary *propsCopy;
+  NSNumber *key;
+
+  key = MAPIPropertyKey (PR_DISPLAY_NAME_UNICODE);
+  newDisplayName = [newProperties objectForKey: key];
+  if (newDisplayName)
+    {
+      [sogoObject renameTo: newDisplayName];
+      propsCopy = [newProperties mutableCopy];
+      [propsCopy removeObjectForKey: key];
+      [propsCopy autorelease];
+      newProperties = propsCopy;
+    }
+
+  [super addProperties: newProperties];
+}
+
 - (NSArray *) messageKeysMatchingQualifier: (EOQualifier *) qualifier
                           andSortOrderings: (NSArray *) sortOrderings
 {
