@@ -106,10 +106,11 @@ static NSMutableDictionary *contextClassMapping;
   NSUInteger count, max;
   MAPIStoreUserContext *userContext;
 
+  list = NULL;
+
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
                                                andTDBIndexing: indexingTdb];
   [userContext activateWithUser: [userContext sogoUser]];
-  list = NULL;
 
   classes = GSObjCAllSubclassesOfClass (self);
   max = [classes count];
@@ -120,10 +121,7 @@ static NSMutableDictionary *contextClassMapping;
                                   withTDBIndexing: indexingTdb
                                          inMemCtx: memCtx];
       if (current)
-        {
-          [self logWithFormat: @"adding list: %p", current];
-          DLIST_CONCATENATE(list, current, void);
-        }
+        DLIST_CONCATENATE(list, current, void);
     }
 
   return list;
