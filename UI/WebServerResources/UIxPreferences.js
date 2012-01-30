@@ -86,9 +86,11 @@ function prototypeIfyFilters() {
             }
         }
 
-        newFilter.actions = $([]);
-        for (var j = 0; j < filter.actions.length; j++) {
-            newFilter.actions.push($(filter.actions[j]));
+        if (filter.actions) {
+            newFilter.actions = $([]);
+            for (var j = 0; j < filter.actions.length; j++) {
+                newFilter.actions.push($(filter.actions[j]));
+            }
         }
         newFilters.push(newFilter);
     }
