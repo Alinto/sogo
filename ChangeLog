@@ -1,5 +1,9 @@
 2012-01-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m (-renameTo:): new method,
+	implementing most of the code from [UIxMailFolderActions
+	renameFolderAction].
+
 	* OpenChange/MAPIStoreFallbackContext.m
 	(+listContextsForUser:withTDBIndexing:inMemCtx:): now returns the
 	fallback subfolders as secondary contexts (tmp hack).
