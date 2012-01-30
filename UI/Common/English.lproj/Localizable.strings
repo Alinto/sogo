@@ -37,6 +37,11 @@
 
 "Sorry, the user rights can not be configured for that object." = "Sorry, the user rights can not be configured for that object.";
 
+"Are you sure you want to give rights to all authenticated users?" = "Are you sure you want to give rights to all authenticated users?";
+"Are you sure you want to give rights to everybody?" = "Are you sure you want to give rights to everybody?";
+"Give Access" = "Give Access";
+"Keep Private" = "Keep Private";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Unable to subscribe to that folder!";

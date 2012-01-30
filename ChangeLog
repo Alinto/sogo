@@ -1,3 +1,20 @@
+2012-01-30  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxCalUserRightsEditor.js (onUpdateACL):
+	ask confirmation when giving access to all authenticated users or
+	when giving public access.
+
+	* UI/WebServerResources/UIxMailUserRightsEditor.js (onUpdateACL): idem.
+
+	* UI/WebServerResources/UIxContactsUserRightsEditor.js (onUpdateACL): idem.
+
+	* UI/WebServerResources/SchedulerUI.js (onViewEventCallback):
+	moved start/end time just under the event name.
+
+	* UI/WebServerResources/generic.js (showConfirmDialog): this
+	function now accepts two additional arguments to change the
+	default "yes" and "no" buttons.
+
 2012-01-27 Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m

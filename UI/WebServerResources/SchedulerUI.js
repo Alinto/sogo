@@ -725,6 +725,13 @@ function onViewEventCallback(http) {
 
             var paras = div.getElementsByTagName("p");
             var para = $(paras[0]);
+            if (parseInt(data["isAllDay"]) == 0) {
+                para.down("SPAN").update(data["startTime"] + " - " + data["endTime"]);
+                para.show();
+            } else
+                para.hide();
+
+            para = $(paras[1]);
             if (data["calendar"].length) {
  		// Remove owner email from calendar's name
                 para.down("SPAN", 1).update(data["calendar"].replace(/ \<.*\>/, ""));
@@ -732,16 +739,9 @@ function onViewEventCallback(http) {
             } else
                 para.hide();
 
-            para = $(paras[1]);
+            para = $(paras[2]);
             if (data["location"].length) {
                 para.down("SPAN", 1).update(data["location"]);
-                para.show();
-            } else
-                para.hide();
-
-            para = $(paras[2]);
-            if (parseInt(data["isAllDay"]) == 0) {
-                para.down("SPAN").update(data["startTime"] + " - " + data["endTime"]);
                 para.show();
             } else
                 para.hide();

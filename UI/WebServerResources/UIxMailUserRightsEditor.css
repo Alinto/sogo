@@ -47,3 +47,10 @@ DIV.calendarUserRights > TABLE TD
 DIV.buttons
 { text-align: right;
   margin: 1em; }
+
+DIV.dialog.none
+{ position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  margin: 75px auto; }

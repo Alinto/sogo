@@ -216,3 +216,9 @@ TABLE#filtersList
 
 .SOGoTimePickerMenu > DIV
 { width: 310px; }
+
+/* UIx*UserRights */
+BODY.popup DIV.dialog.none
+{ left: 50%;
+  width: 350px;
+  margin-left: -175px; }
