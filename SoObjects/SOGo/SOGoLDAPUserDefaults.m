@@ -208,7 +208,7 @@ _fetchLDAPDNAndAttrWithHandle (const char *dn, char *attrs[], LDAP *ldapHandle)
 		  if (!(atomsCount % SOGoLDAPContainerSize))
 		    {
 		      atoms = NSZoneRealloc (NULL, atoms,
-                                             (int) (SOGoLDAPContainerSizee
+                                             (int) (SOGoLDAPContainerSize
                                                     + atomsCount)
                                              * sizeof (_SOGoLDAPValue *));
 		      currentAtom = atoms + atomsCount;
@@ -356,7 +356,7 @@ _convertLDAPAtomToNSDictionary (_SOGoLDAPValue *atom)
 static _SOGoLDAPValue *
 _initLDAPDefaults ()
 {
-#error dn, password, uri, configDN should be defined
+#warning dn, password, uri, configDN should be defined
   const char *dn, *password, *uri, *configDN;
   LDAP *ldapHandle;
   int rc, opt;
