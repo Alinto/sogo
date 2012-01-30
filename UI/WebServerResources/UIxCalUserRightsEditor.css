@@ -27,3 +27,10 @@ DIV.buttons
 { text-align: right;
   margin: 1em;
   margin-top: 0px; }
+
+DIV.dialog.none
+{ position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  margin: 50px auto; }

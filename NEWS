@@ -10,6 +10,7 @@ Enhancements
  - now possible to use memcached over a UNIX socket
  - increase size of content columns
  - improved import of .ics files
+ - new cronjob template with commented out entries
 
 Bug Fixes
  - alarms for tasks now depend on the start date and instead of the due date
