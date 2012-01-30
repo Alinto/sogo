@@ -1,5 +1,9 @@
 2012-01-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFallbackContext.m
+	(+listContextsForUser:withTDBIndexing:inMemCtx:): now returns the
+	fallback subfolders as secondary contexts (tmp hack).
+
 	* OpenChange/MAPIStoreUserContext.m (-rootFolders): new method
 	replacing the "...root" methods in way that can match the
 	MAPIModuleName.
