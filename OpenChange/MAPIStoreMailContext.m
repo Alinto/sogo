@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
 #import <Mailer/SOGoMailAccount.h>
@@ -69,7 +70,7 @@ static Class MAPIStoreMailFolderK;
 
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
                                                andTDBIndexing: indexingTdb];
-  accountFolder = [userContext mailRoot];
+  accountFolder = [[userContext rootFolders] objectForKey: @"mail"];
   woContext = [userContext woContext];
   folderName[0] = @"folderINBOX";
   folderName[1] = [NSString stringWithFormat: @"folder%@",
@@ -105,7 +106,7 @@ static Class MAPIStoreMailFolderK;
 
 - (id) rootSOGoFolder
 {
-  return [userContext mailRoot];
+  return [[userContext rootFolders] objectForKey: @"mail"];
 }
 
 + (enum mapistore_context_role) contextRole
