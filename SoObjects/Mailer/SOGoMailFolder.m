@@ -267,6 +267,53 @@ static NSString *defaultUserID =  @"anyone";
   return filenames;
 }
 
+- (NSException *) renameTo: (NSString *) newName
+{
+  NSException *error;
+  SOGoMailFolder *inbox;
+  NSURL *destURL;
+  NSString *path;
+  NGImap4Client *client;
+
+  if ([newName length] > 0)
+    {
+      [self imap4URL];
+
+      [self imap4Connection];
+      client = [imap4 client];
+
+      inbox = [[self mailAccountFolder] inboxFolderInContext: context];
+      [client select: [inbox absoluteImap4Name]];
+
+      path = [[imap4URL path] stringByDeletingLastPathComponent];
+      if (![path hasSuffix: @"/"])
+        path = [path stringByAppendingString: @"/"];
+      destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
+                                         host: [imap4URL host]
+                                         path: [NSString stringWithFormat: @"%@%@",
+                                                         path, newName]];
+      [destURL autorelease];
+      error = [imap4 moveMailboxAtURL: imap4URL
+                                toURL: destURL];
+      if (!error)
+	{
+	  // We unsubscribe to the old one, and subscribe back to the new one
+	  if ([[[context activeUser] userDefaults]
+                mailShowSubscribedFoldersOnly])
+	    {	    
+	      [client subscribe: [destURL path]];
+	      [client unsubscribe: [imap4URL path]];
+	    }
+	}
+    }
+  else
+    error = [NSException exceptionWithName: @"SOGoMailException"
+                                    reason: @"given name is empty"
+                                  userInfo: nil];
+
+  return error;
+}
+
 /* messages */
 - (void) prefetchCoreInfosForMessageKeys: (NSArray *) keys
 {
