@@ -1,3 +1,9 @@
+2012-01-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreGCSBaseContext.m
+	(+listContextsForUser:inMemCtx:): centralized code for all GCS
+	classes.
+
 2012-01-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailContext.[hm]: removed

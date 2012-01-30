@@ -46,32 +46,14 @@ static Class MAPIStoreContactsFolderK;
   return @"contacts";
 }
 
-+ (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
-                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
-                                                inMemCtx: (TALLOC_CTX *) memCtx
++ (enum mapistore_context_role) MAPIModuleRole
 {
-  struct mapistore_contexts_list *context;
-
-  context = talloc_zero(memCtx, struct mapistore_contexts_list);
-  context->url = talloc_asprintf (context, "sogo://%s@contacts/personal",
-                                  [userName UTF8String]);
-  // context->name = "Carnet d'adresses personnel";
-  context->main_folder = true;
-  context->role = MAPISTORE_CONTACTS_ROLE;
-  context->tag = "tag";
-  context->prev = context;
-
-  return context;
+  return MAPISTORE_CONTACTS_ROLE;
 }
 
 - (Class) MAPIStoreFolderClass
 {
   return MAPIStoreContactsFolderK;
-}
-
-- (id) rootSOGoFolder
-{
-  return [userContext contactsRoot];
 }
 
 @end

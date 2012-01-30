@@ -45,32 +45,14 @@ static Class MAPIStoreTasksFolderK;
   return @"tasks";
 }
 
-+ (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
-                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
-                                                inMemCtx: (TALLOC_CTX *) memCtx
++ (enum mapistore_context_role) MAPIModuleRole
 {
-  struct mapistore_contexts_list *context;
-
-  context = talloc_zero(memCtx, struct mapistore_contexts_list);
-  context->url = talloc_asprintf (context, "sogo://%s@tasks/personal",
-                                  [userName UTF8String]);
-  // context->name = "Tâches personnelles";
-  context->main_folder = true;
-  context->role = MAPISTORE_TASKS_ROLE;
-  context->tag = "tag";
-  context->prev = context;
-
-  return context;
+  return MAPISTORE_TASKS_ROLE;
 }
 
 - (Class) MAPIStoreFolderClass
 {
   return MAPIStoreTasksFolderK;
-}
-
-- (id) rootSOGoFolder
-{
-  return [userContext calendarRoot];
 }
 
 @end
