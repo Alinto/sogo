@@ -44,10 +44,8 @@
   SOGoUser *sogoUser;
 
   SOGoUserFolder *userFolder;
-  SOGoAppointmentFolders *calendarRoot;
-  SOGoContactFolders *contactsRoot;
-  SOGoMailAccount *mailRoot; /* only one account supported */
   NSMutableArray *containersBag;
+  NSMutableDictionary *rootFolders;
 
   MAPIStoreMapping *mapping;
 
@@ -66,9 +64,7 @@
 
 - (SOGoUserFolder *) userFolder;
 
-- (SOGoAppointmentFolders *) calendarRoot;
-- (SOGoContactFolders *) contactsRoot;
-- (SOGoMailAccount *) mailRoot;
+- (NSDictionary *) rootFolders;
 
 - (MAPIStoreMapping *) mapping;
 

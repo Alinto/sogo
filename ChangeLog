@@ -1,5 +1,9 @@
 2012-01-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreUserContext.m (-rootFolders): new method
+	replacing the "...root" methods in way that can match the
+	MAPIModuleName.
+
 	* OpenChange/MAPIStoreGCSBaseContext.m
 	(+listContextsForUser:inMemCtx:): centralized code for all GCS
 	classes.

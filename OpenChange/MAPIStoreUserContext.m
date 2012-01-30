@@ -1,4 +1,4 @@
-/* MAPIStoreUserContext.m - this file is part of $PROJECT_NAME_HERE$
+/* MAPIStoreUserContext.m - this file is part of SOGo
  *
  * Copyright (C) 2012 Inverse inc
  *
@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSMapTable.h>
 #import <Foundation/NSThread.h>
 
@@ -73,11 +74,8 @@ static NSMapTable *contextsTable = nil;
       sogoUser = nil;
 
       userFolder = nil;
-      calendarRoot = nil;
-      contactsRoot = nil;
-      mailRoot = nil;
-
       containersBag = [NSMutableArray new];
+      rootFolders = nil;
 
       mapping = nil;
 
@@ -113,19 +111,17 @@ static NSMapTable *contextsTable = nil;
 
 - (void) dealloc
 {
-  [contextsTable removeObjectForKey: username];
-
   [userFolder release];
-  [calendarRoot release];
-  [contactsRoot release];
-  [mailRoot release];
   [containersBag release];
+  [rootFolders release];
 
   [authenticator release];
   [mapping release];
 
   [username release];
   [sogoUser release];
+
+  [contextsTable removeObjectForKey: username];
 
   [super dealloc];
 }
@@ -155,62 +151,49 @@ static NSMapTable *contextsTable = nil;
   return userFolder;
 }
 
-- (SOGoAppointmentFolders *) calendarRoot
-{
-  if (!calendarRoot)
-    {
-      [self userFolder];
-      [woContext setClientObject: userFolder];
-
-      calendarRoot = [userFolder lookupName: @"Calendar"
-                                  inContext: woContext
-                                    acquire: NO];
-      [calendarRoot retain];
-    }
-
-  return calendarRoot;
-}
-
-- (SOGoContactFolders *) contactsRoot
-{
-  if (!contactsRoot)
-    {
-      [self userFolder];
-      [woContext setClientObject: userFolder];
-
-      contactsRoot = [userFolder lookupName: @"Contacts"
-                                  inContext: woContext
-                                    acquire: NO];
-      [contactsRoot retain];
-    }
-
-  return contactsRoot;
-}
-
-- (SOGoMailAccount *) mailRoot
+- (NSDictionary *) rootFolders
 {
   SOGoMailAccounts *accountsFolder;
+  id currentFolder;
 
-  if (!mailRoot)
+  if (!rootFolders)
     {
+      rootFolders = [NSMutableDictionary new];
       [self userFolder];
       [woContext setClientObject: userFolder];
 
+      /* Calendar */
+      currentFolder = [userFolder lookupName: @"Calendar"
+                                   inContext: woContext
+                                     acquire: NO];
+      [rootFolders setObject: currentFolder
+                      forKey: @"calendar"];
+      [rootFolders setObject: currentFolder
+                      forKey: @"tasks"];
+
+      /* Contacts */
+      currentFolder = [userFolder lookupName: @"Contacts"
+                                   inContext: woContext
+                                     acquire: NO];
+      [rootFolders setObject: currentFolder
+                      forKey: @"contacts"];
+
+      /* Mail */
       accountsFolder = [userFolder lookupName: @"Mail"
                                     inContext: woContext
                                       acquire: NO];
       [containersBag addObject: accountsFolder];
       [woContext setClientObject: accountsFolder];
-
-      mailRoot = [accountsFolder lookupName: @"0"
+      currentFolder = [accountsFolder lookupName: @"0"
                                   inContext: woContext
                                     acquire: NO];
-      [[mailRoot imap4Connection]
+      [rootFolders setObject: currentFolder
+                      forKey: @"mail"];
+      [[currentFolder imap4Connection]
          enableExtension: @"QRESYNC"];
-      [mailRoot retain];
     }
 
-  return mailRoot;
+  return rootFolders;
 }
 
 - (MAPIStoreMapping *) mapping
