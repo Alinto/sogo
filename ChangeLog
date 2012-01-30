@@ -1,3 +1,9 @@
+2012-01-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreGCSBaseContext.m
+	(+listContextsForUser:inMemCtx:): centralized code for all GCS
+	classes.
+
 2012-01-30  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxCalUserRightsEditor.js (onUpdateACL):
