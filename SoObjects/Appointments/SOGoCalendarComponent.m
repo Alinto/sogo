@@ -1222,7 +1222,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
   folder = [[self container] ocsFolder];
   if (!folder)
     {
-      [self errorWithFormat:@"(%s): missing folder for fetch!",
+      [self errorWithFormat:@"(%s): missing folder for update!",
             __PRETTY_FUNCTION__];
       return;
     }
