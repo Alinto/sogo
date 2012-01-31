@@ -30,10 +30,12 @@
 #include "SOGoSource.h"
 #include "SOGoConstants.h"
 
-@class NSDictionary;
-@class NSString;
-@class NGLdapConnection;
+@class LDAPSourceSchema;
 @class NGLdapEntry;
+@class NSException;
+@class NSMutableArray;
+@class NSMutableDictionary;
+@class NSString;
 
 @interface LDAPSource : NSObject <SOGoDNSource>
 {
@@ -41,6 +43,8 @@
   int queryTimeout;
 
   NSString *sourceID;
+  NSString *displayName;
+
   NSString *bindDN;       // The bindDN/password could be either the source's one
   NSString *password;     // or the current user if _bindAsCurrentUser is set to YES
   NSString *sourceBindDN; // while sourceBindDN/sourceBindPassword always belong to the source
@@ -49,20 +53,26 @@
   unsigned int port;
   NSString *encryption;
   NSString *_filter;
+  BOOL _bindAsCurrentUser;
   NSString *_scope;
   NSString *_userPasswordAlgorithm;
 
   NSString *baseDN;
+  LDAPSourceSchema *schema;
   NSString *IDField;     // the first part of a user DN
   NSString *CNField;
   NSString *UIDField;
   NSArray *mailFields, *searchFields;
   NSString *IMAPHostField, *IMAPLoginField;
   NSArray *bindFields;
-  BOOL _bindAsCurrentUser;
+
+  BOOL listRequiresDot;
 
   NSString *domain;
   NSString *contactInfoAttribute;
+
+  NSDictionary *contactMapping;
+  NSArray *contactObjectClasses;
 
   NSDictionary *modulesConstraints;
 
@@ -77,6 +87,12 @@
   NSString *multipleBookingsField;
 
   NSString *MSExchangeHostname;
+
+  /* user addressbooks */
+  NSString *abOU;
+
+  /* ACL */
+  NSArray *modifiers;
 }
 
 - (void) setBindDN: (NSString *) newBindDN
@@ -97,6 +113,11 @@
         bindFields: (id) newBindFields
 	 kindField: (NSString *) newKindField
 andMultipleBookingsField: (NSString *) newMultipleBookingsField;
+
+/* This enable the convertion of a contact entry with inetOrgPerson and mozillaAbPerson
+   to and from an LDAP record */
+- (void) setContactMapping: (NSDictionary *) newMapping
+          andObjectClasses: (NSArray *) newObjectClasses;
 
 - (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID;
 - (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail;

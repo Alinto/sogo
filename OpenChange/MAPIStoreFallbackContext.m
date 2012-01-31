@@ -22,9 +22,10 @@
 
 #import <Foundation/NSString.h>
 
-#import "MAPIStoreFSFolder.h"
-
 #import "MAPIStoreFallbackContext.h"
+
+#undef DEBUG
+#include <mapistore/mapistore.h>
 
 @implementation MAPIStoreFallbackContext
 
@@ -33,10 +34,22 @@
   return @"fallback";
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
+                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  baseFolder = [MAPIStoreFSFolder baseFolderWithURL: newURL inContext: self];
-  [baseFolder retain];
+  struct mapistore_contexts_list *context;
+
+  context = talloc_zero(memCtx, struct mapistore_contexts_list);
+  context->url = talloc_asprintf (context, "sogo://%s@fallback/",
+                                  [userName UTF8String]);
+  context->name = "Fallback";
+  context->main_folder = true;
+  context->role = MAPISTORE_FALLBACK_ROLE;
+  context->tag = "tag";
+  context->prev = context;
+
+  return context;
 }
 
 @end

@@ -889,32 +889,6 @@ static NSString *defaultUserID =  @"anyone";
   return @"Mail";
 }
 
-- (NSString *) outlookFolderClass
-{
-  // TODO: detect Trash/Sent/Drafts folders
-  SOGoMailAccount *account;
-  NSString *name;
-
-  if (!folderType)
-    {
-      account = [self mailAccountFolder];
-      name = [self traversalFromMailAccount];
-
-      if ([name isEqualToString: [account trashFolderNameInContext: nil]])
-	folderType = @"IPF.Trash";
-      else if ([name
-		 isEqualToString: [account inboxFolderNameInContext: nil]])
-	folderType = @"IPF.Inbox";
-      else if ([name
-		 isEqualToString: [account sentFolderNameInContext: nil]])
-	folderType = @"IPF.Sent";
-      else
-	folderType = @"IPF.Folder";
-    }
-  
-  return folderType;
-}
-
 /* acls */
 
 - (NSArray *) _imapAclsToSOGoAcls: (NSString *) imapAcls

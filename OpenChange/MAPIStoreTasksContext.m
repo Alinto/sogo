@@ -21,24 +21,56 @@
  */
 
 #import <Foundation/NSString.h>
+#import <Appointments/SOGoAppointmentFolders.h>
 
 #import "MAPIStoreTasksFolder.h"
-#import "MAPIStoreMapping.h"
+#import "MAPIStoreUserContext.h"
 
 #import "MAPIStoreTasksContext.h"
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
+static Class MAPIStoreTasksFolderK;
+
 @implementation MAPIStoreTasksContext
+
++ (void) initialize
+{
+  MAPIStoreTasksFolderK = [MAPIStoreTasksFolder class];
+}
 
 + (NSString *) MAPIModuleName
 {
   return @"tasks";
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
+                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  baseFolder = [MAPIStoreTasksFolder baseFolderWithURL: newURL
-                                             inContext: self];
-  [baseFolder retain];
+  struct mapistore_contexts_list *context;
+
+  context = talloc_zero(memCtx, struct mapistore_contexts_list);
+  context->url = talloc_asprintf (context, "sogo://%s@tasks/personal",
+                                  [userName UTF8String]);
+  // context->name = "Tâches personnelles";
+  context->main_folder = true;
+  context->role = MAPISTORE_TASKS_ROLE;
+  context->tag = "tag";
+  context->prev = context;
+
+  return context;
+}
+
+- (Class) MAPIStoreFolderClass
+{
+  return MAPIStoreTasksFolderK;
+}
+
+- (id) rootSOGoFolder
+{
+  return [userContext calendarRoot];
 }
 
 @end
