@@ -28,9 +28,7 @@
 @interface MAPIStoreMailContext : MAPIStoreContext
 @end
 
-#import "MAPIStoreFSBaseContext.h"
-
-@interface MAPIStoreDeletedItemsContext : MAPIStoreFSBaseContext
+@interface MAPIStoreOutboxContext : MAPIStoreMailContext
 @end
 
 #endif /* MAPISTOREMAILCONTEXT_H */

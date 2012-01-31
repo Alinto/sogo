@@ -1,3 +1,12 @@
+2012-01-31  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailContext.m
+	(+listContextsForUser:withTDBIndexing:inMemCtx:): now returns
+	secondary folders.
+	(+[MAPIStoreOutboxContext
+	listContextsForUser:withTDBIndexing:inMemCtx:]): overridden method
+	in outbox-specific class.
+
 2012-01-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailFolder.m (-addProperties): overriden
