@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 
@@ -33,12 +34,21 @@
 {
   static Class MainProduct = Nil;
   NSString *lpath;
+  NSRange range;
+  NSMutableArray *languages;
 
-#warning TODO: create method "languagesBeginingWith:"
+  languages = [NSMutableArray arrayWithObject: _name];
+
+  // If the language has a CamelCase form, add the first part to the lookup languages.
+  range = [_name rangeOfCharacterFromSet: [NSCharacterSet uppercaseLetterCharacterSet]
+                                 options: NSBackwardsSearch
+                                   range: NSMakeRange(1, [_name length] - 1)];
+  if (range.location != NSNotFound && range.location > 0)
+    [languages addObject: [_name substringToIndex: range.location]];
 
   lpath = [self pathForResourceNamed: @"Locale"
 			 inFramework: nil
-			   languages: [NSArray arrayWithObject:_name]];
+			   languages: languages];
   if (![lpath length])
     {
       if (!MainProduct)
