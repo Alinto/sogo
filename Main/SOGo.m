@@ -509,9 +509,9 @@ static BOOL debugLeaks;
     }
 
   if (!locale)
+    // no appropriate language, fallback to default
     locale = [[self resourceManager] localeForLanguageNamed: @"English"];
 
-  /* no appropriate language, fallback to default */
   return locale;
 }
 
