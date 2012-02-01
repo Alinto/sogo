@@ -62,6 +62,15 @@
   return uid;
 }
 
+- (NSString *) folderName
+{
+  id folder;
+  
+  folder = [context clientObject];
+  
+  return [folder displayName];
+}
+
 - (BOOL) userIsDefaultUser
 {
   if (!defaultUserID)
@@ -79,11 +88,21 @@
 {
   SOGoUserManager *um;
 
-  um = [SOGoUserManager sharedUserManager];
-
-  return [NSString stringWithFormat: @"%@ <%@>",
-		   [um getCNForUID: uid],
-		   [um getEmailForUID: uid]];
+  if ([self userIsAnonymousUser])
+    {
+      return [self labelForKey: @"Public Access"];
+    }
+  else if ([self userIsDefaultUser])
+    {
+      return [self labelForKey: @"Any Authenticated User"];
+    }
+  else
+    {
+      um = [SOGoUserManager sharedUserManager];
+      return [NSString stringWithFormat: @"%@ <%@>",
+                        [um getCNForUID: uid],
+                     [um getEmailForUID: uid]];
+    }
 }
 
 - (BOOL) _initRights

@@ -154,7 +154,9 @@
 "Unable to subscribe to that folder!"
 = "Unable to subscribe to that folder.";
 
-"User rights for:" = "User rights for:";
+/* acls */
+"Access rights to" = "Access rights to";
+"For user" = "For user";
 
 "Any Authenticated User" = "Any Authenticated User";
 "Public Access" = "Public Access";

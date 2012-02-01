@@ -40,6 +40,8 @@
 - (NSString *) userDisplayName;
 - (NSString *) uid;
 
+- (NSString *) folderName;
+
 - (void) appendRight: (NSString *) newRight;
 - (void) appendExclusiveRight: (NSString *) newRight
 		     fromList: (NSArray *) list;

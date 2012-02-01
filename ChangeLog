@@ -1,3 +1,18 @@
+2012-02-01  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxCalUserRightsEditor.js (onUpdateACL):
+	added some serious warnings when giving access rights to any
+	authenticated users or public access.
+
+	* UI/WebServerResources/UIxMailUserRightsEditor.js (onUpdateACL): idem.
+
+	* UI/WebServerResources/UIxContactsUserRightsEditor.js (onUpdateACL): idem.
+
+	* UI/Common/UIxUserRightsEditor.m (-folderName): new method that
+	returns the folder display name.
+	(-userDisplayName): now also return the names of anonymous and
+	authenticated users.
+
 2012-01-31  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/WOResourceManager+SOGo.m

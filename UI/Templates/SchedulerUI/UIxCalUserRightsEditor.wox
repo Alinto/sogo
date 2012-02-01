@@ -13,19 +13,10 @@
   <form id="userRightsForm" const:href="saveUserRights">
     <input id="uid" type="hidden" name="uid" var:value="uid"/>
     <div class="title">
-      <var:if condition="userIsDefaultUser">
-	<label><span class="value"><var:string label:value="Any Authenticated User"
-	      /></span></label>
-      </var:if><var:if condition="userIsDefaultUser" const:negate="YES"
-        ><var:if condition="userIsAnonymousUser"
-          ><label><span class="value"><var:string label:value="Public Access"
-                /></span></label
-            ></var:if
-          ><var:if condition="userIsAnonymousUser" const:negate="YES"
-          ><label><var:string label:value="User rights for:"/><br/>
-            <span class="value"><var:string value="userDisplayName"
-                /></span></label></var:if>
-      </var:if>
+      <label><span><var:string label:value="Access rights to"/></span>
+      <span id="folderName" class="value"><var:string value="folderName"/></span></label>
+      <label><span><var:string label:value="For user"/></span>
+      <span class="value"><var:string value="userDisplayName"/></span></label>
     </div>
     <div class="calendarUserRights">
       <var:foreach list="rightTypes" item="currentRightType">

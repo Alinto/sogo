@@ -11,7 +11,7 @@ function onUpdateACL(event) {
             }
         }
         if (enabled) {
-            showConfirmDialog(_("Confirmation"), _("Are you sure you want to give rights to all authenticated users?"),
+            showConfirmDialog(_("Warning"), _("Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?").formatted($("folderName").allTextContent()),
                               onUpdateACLConfirm, onUpdateACLCancel,
                               "Give Access", "Keep Private");
             return false;

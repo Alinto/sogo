@@ -131,7 +131,8 @@
 
 /* acls */
 
-"User rights for:" = "User rights for:";
+"Access rights to" = "Access rights to";
+"For user" = "For user";
 
 "Any Authenticated User" = "Any Authenticated User";
 "Public Access" = "Public Access";

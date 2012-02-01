@@ -3,7 +3,7 @@
 
 var cachedContacts = {};
 
-var usersRightsWindowHeight = 179;
+var usersRightsWindowHeight = 194;
 var usersRightsWindowWidth = 450;
 
 var Contact = {

@@ -21,9 +21,16 @@ function onUpdateACL(event) {
             }
         }
         if (enabled) {
-            showConfirmDialog(_("Confirmation"), _("Are you sure you want to give rights to " + ((uid == "<default>")?"all authenticated users":"everybody") + "?"),
-                              onUpdateACLConfirm, onUpdateACLCancel,
-                              "Give Access", "Keep Private");
+            if (uid == '<default>')
+                showConfirmDialog(_("Warning"),
+                                  _("Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?").formatted($("folderName").allTextContent()),
+                                  onUpdateACLConfirm, onUpdateACLCancel,
+                                  "Give Access", "Keep Private");
+            else
+                showConfirmDialog(_("Warning"),
+                                  _("Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?").formatted($("folderName").allTextContent()),
+                                  onUpdateACLConfirm, onUpdateACLCancel,
+                                  "Give Access", "Keep Private");
             return false;
         }
     }
