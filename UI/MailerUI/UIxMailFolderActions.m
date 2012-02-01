@@ -84,70 +84,24 @@
   return response;  
 }
 
-- (NSURL *) _urlOfFolder: (NSURL *) srcURL
-	       renamedTo: (NSString *) folderName
-{
-  NSString *path;
-  NSURL *destURL;
-
-  path = [[srcURL path] stringByDeletingLastPathComponent];
-  if (![path hasSuffix: @"/"])
-    path = [path stringByAppendingString: @"/"];
-
-  destURL = [[NSURL alloc] initWithScheme: [srcURL scheme]
-			   host: [srcURL host]
-			   path: [NSString stringWithFormat: @"%@%@",
-					   path, folderName]];
-  [destURL autorelease];
-
-  return destURL;
-}
-
 - (WOResponse *) renameFolderAction
 {
-  SOGoMailFolder *co, *inbox;
+  SOGoMailFolder *co;
   WOResponse *response;
-  NGImap4Connection *connection;
   NSException *error;
   NSString *folderName;
-  NSURL *srcURL, *destURL;
 
   co = [self clientObject];
 
   folderName = [[context request] formValueForKey: @"name"];
-  if ([folderName length] > 0)
-    {
-      srcURL = [co imap4URL];
-      destURL = [self _urlOfFolder: srcURL renamedTo: folderName];
-      connection = [co imap4Connection];
-      inbox = [[co mailAccountFolder] inboxFolderInContext: context];
-      [[connection client] select: [inbox absoluteImap4Name]];
-      error = [connection moveMailboxAtURL: srcURL
-			  toURL: destURL];
-
-      if (error)
-	{
-	  response = [self responseWithStatus: 500];
-	  [response appendContentString: @"Unable to rename folder."];
-	}
-      else
-	{
-	  // We unsubscribe to the old one, and subscribe back to the new one
-	  if ([[[context activeUser] userDefaults]
-                mailShowSubscribedFoldersOnly])
-	    {	    
-	      [[connection client] subscribe: [destURL path]];
-	      [[connection client] unsubscribe: [srcURL path]];
-	    }
-
-	  response = [self responseWith204];
-	}
-    }
-  else
+  error = [co renameTo: folderName];
+  if (error)
     {
       response = [self responseWithStatus: 500];
-      [response appendContentString: @"Missing 'name' parameter."];
+      [response appendContentString: @"Unable to rename folder."];
     }
+  else
+    response = [self responseWith204];
 
   return response;
 }

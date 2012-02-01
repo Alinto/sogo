@@ -26,6 +26,7 @@
 #import <SOGo/SOGoParentFolder.h>
 
 @class NSArray;
+@class NSMutableArray;
 
 @class SOGoWebAppointmentFolder;
 

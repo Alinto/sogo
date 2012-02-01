@@ -30,6 +30,7 @@
 #import "MAPIStoreFolder.h"
 #import "MAPIStorePropertySelectors.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "NSDate+MAPIStore.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
@@ -170,9 +171,19 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return [sogoObject nameInContainer];
 }
 
-- (id) context
+- (MAPIStoreContext *) context
 {
   return [container context];
+}
+
+- (MAPIStoreUserContext *) userContext
+{
+  return [[self context] userContext];
+}
+
+- (MAPIStoreMapping *) mapping
+{
+  return [[self userContext] mapping];
 }
 
 - (void) cleanupCaches
@@ -217,7 +228,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   NSTimeZone *tz;
   WOContext *woContext;
 
-  woContext = [[self context] woContext];
+  woContext = [[self userContext] woContext];
   owner = [sogoObject ownerInContext: woContext];
   ud = [[SOGoUser userWithLogin: owner] userDefaults];
   tz = [ud timeZone];

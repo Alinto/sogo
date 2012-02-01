@@ -62,7 +62,7 @@
 
 @class iCalCalendar, iCalEvent;
 
-static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
+static Class NSExceptionK;
 
 @interface NSString (MAPIStoreMIME)
 
@@ -105,8 +105,6 @@ static Class NSExceptionK, MAPIStoreSentItemsFolderK, MAPIStoreDraftsFolderK;
 + (void) initialize
 {
   NSExceptionK = [NSException class];
-  MAPIStoreSentItemsFolderK = [MAPIStoreSentItemsFolder class];
-  MAPIStoreDraftsFolderK = [MAPIStoreDraftsFolder class];
 }
 
 - (id) init
@@ -582,9 +580,9 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   coreInfos = [sogoObject fetchCoreInfos];
   flags = [coreInfos objectForKey: @"flags"];
 
-  if ([container isKindOfClass: MAPIStoreSentItemsFolderK]
-      || [container isKindOfClass: MAPIStoreDraftsFolderK])
-    v |= MSGFLAG_FROMME;
+  // if ([container isKindOfClass: MAPIStoreSentItemsFolderK]
+  //     || [container isKindOfClass: MAPIStoreDraftsFolderK])
+  //   v |= MSGFLAG_FROMME;
   if ([flags containsObject: @"seen"])
     v |= MSGFLAG_READ;
   if ([[self attachmentKeys]

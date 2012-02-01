@@ -96,7 +96,7 @@ static NSString *privateDir = nil;
 - (id) initWithURL: (NSURL *) url
       andTableType: (uint8_t) tableType
 {
-  NSString *path, *tableParticle;
+  NSString *path, *username, *tableParticle;
 
   if ((self = [self init]))
     {
@@ -116,9 +116,11 @@ static NSString *privateDir = nil;
       path = [url path];
       if (![path hasSuffix: @"/"])
 	path = [NSString stringWithFormat: @"%@/", path];
+      username = [url user];
       directory = [NSString stringWithFormat: @"%@/mapistore/SOGo/%@/%@/%@%@",
-			    privateDir, [url user], tableParticle,
+			    privateDir, username, tableParticle,
 			    [url host], path];
+      [self setOwner: username];
       [self logWithFormat: @"directory: %@", directory];
       [directory retain];
       ASSIGN (nameInContainer, [path stringByDeletingLastPathComponent]);

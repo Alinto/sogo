@@ -326,7 +326,7 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
 
 - (int) getRow: (struct mapistore_property_data **) dataP
      withRowID: (uint32_t) rowId
-  andQueryType: (enum table_query_type) queryType
+  andQueryType: (enum mapistore_query_type) queryType
       inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!fetchedCoreInfos)

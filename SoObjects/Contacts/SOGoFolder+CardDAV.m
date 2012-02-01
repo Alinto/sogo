@@ -118,10 +118,10 @@
 
   newString = [theString lowercaseString];
 
-  return ([theString isEqualToString: @"sn"]
-	  || [theString isEqualToString: @"givenname"]
-	  || [theString isEqualToString: @"mail"]
-	  || [theString isEqualToString: @"telephonenumber"]);
+  return ([newString isEqualToString: @"sn"]
+	  || [newString isEqualToString: @"givenname"]
+	  || [newString isEqualToString: @"mail"]
+	  || [newString isEqualToString: @"telephonenumber"]);
 }
 
 - (NSDictionary *) _parseContactFilter: (id <DOMElement>) filterElement

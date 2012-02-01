@@ -39,6 +39,7 @@
 #import "MAPIStorePropertySelectors.h"
 #import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -286,10 +287,11 @@ rtf2html (NSData *compressedRTF)
 {
   enum mapistore_error rc;
   MAPIStoreContext *context;
+  SOGoUser *ownerUser;
 
   context = [self context];
-
-  if ([[context activeUser] isEqual: [context ownerUser]]
+  ownerUser = [[self userContext] sogoUser];
+  if ([[context activeUser] isEqual: ownerUser]
       || [self subscriberCanModifyMessage])
     rc = [super addPropertiesFromRow: aRow];
   else
@@ -432,9 +434,11 @@ rtf2html (NSData *compressedRTF)
   uint64_t folderId;
   struct mapistore_context *mstoreCtx;
   MAPIStoreContext *context;
+  SOGoUser *ownerUser;
 
   context = [self context];
-  if ([[context activeUser] isEqual: [context ownerUser]]
+  ownerUser = [[self userContext] sogoUser];
+  if ([[context activeUser] isEqual: ownerUser]
       || ((isNew
            && [(MAPIStoreFolder *) container subscriberCanCreateMessages])
           || (!isNew && [self subscriberCanModifyMessage])))
@@ -560,9 +564,11 @@ rtf2html (NSData *compressedRTF)
   uint32_t access = 0;
   BOOL userIsOwner;
   MAPIStoreContext *context;
+  SOGoUser *ownerUser;
 
   context = [self context];
-  userIsOwner = [[context activeUser] isEqual: [context ownerUser]];
+  ownerUser = [[self userContext] sogoUser];
+  userIsOwner = [[context activeUser] isEqual: ownerUser];
   if (userIsOwner || [self subscriberCanModifyMessage])
     access |= 0x01;
   if (userIsOwner || [self subscriberCanReadMessage])
@@ -587,9 +593,11 @@ rtf2html (NSData *compressedRTF)
   uint32_t access = 0;
   BOOL userIsOwner;
   MAPIStoreContext *context;
+  SOGoUser *ownerUser;
 
   context = [self context];
-  userIsOwner = [[context activeUser] isEqual: [context ownerUser]];
+  ownerUser = [[self userContext] sogoUser];
+  userIsOwner = [[context activeUser] isEqual: ownerUser];
   if (userIsOwner || [self subscriberCanModifyMessage])
     access = 0x01;
   else
@@ -862,14 +870,15 @@ rtf2html (NSData *compressedRTF)
 - (NSArray *) activeUserRoles
 {
   MAPIStoreContext *context;
+  MAPIStoreUserContext *userContext;
 
   if (!activeUserRoles)
     {
       context = [self context];
-
+      userContext = [self userContext];
       activeUserRoles = [[context activeUser]
                           rolesForObject: sogoObject
-                               inContext: [context woContext]];
+                               inContext: [userContext woContext]];
       [activeUserRoles retain];
     }
 

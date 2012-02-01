@@ -34,6 +34,7 @@
 
 #import "MAPIStoreContext.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -46,33 +47,22 @@
 
 @implementation MAPIStoreGCSFolder
 
-- (id) initWithURL: (NSURL *) newURL
-         inContext: (MAPIStoreContext *) newContext
+- (id) initWithSOGoObject: (id) newSOGoObject
+              inContainer: (MAPIStoreObject *) newContainer
 {
-  if ((self = [super initWithURL: newURL
-                       inContext: newContext]))
+  if ((self = [super initWithSOGoObject: newSOGoObject inContainer: newContainer]))
     {
-      ASSIGN (versionsMessage,
-              [SOGoMAPIFSMessage objectWithName: @"versions.plist"
-				 inContainer: propsFolder]);
       activeUserRoles = nil;
     }
 
   return self;
 }
 
-- (id) initWithSOGoObject: (id) newSOGoObject
-              inContainer: (MAPIStoreObject *) newContainer
+- (void) setupVersionsMessage
 {
-  if ((self = [super initWithSOGoObject: newSOGoObject inContainer: newContainer]))
-    {
-      ASSIGN (versionsMessage,
-              [SOGoMAPIFSMessage objectWithName: @"versions.plist"
-                                    inContainer: propsFolder]);
-      activeUserRoles = nil;
-    }
-
-  return self;
+  ASSIGN (versionsMessage,
+          [SOGoMAPIFSMessage objectWithName: @"versions.plist"
+                                inContainer: propsFolder]);
 }
 
 - (void) dealloc
@@ -82,10 +72,31 @@
   [super dealloc];
 }
 
+- (void) addProperties: (NSDictionary *) newProperties
+{
+  NSString *newDisplayName;
+  NSMutableDictionary *propsCopy;
+  NSNumber *key;
+
+  key = MAPIPropertyKey (PR_DISPLAY_NAME_UNICODE);
+  newDisplayName = [newProperties objectForKey: key];
+  if (newDisplayName)
+    {
+      [sogoObject renameTo: newDisplayName];
+      propsCopy = [newProperties mutableCopy];
+      [propsCopy removeObjectForKey: key];
+      [propsCopy autorelease];
+      newProperties = propsCopy;
+    }
+
+  [super addProperties: newProperties];
+}
+
 - (NSArray *) messageKeysMatchingQualifier: (EOQualifier *) qualifier
                           andSortOrderings: (NSArray *) sortOrderings
 {
   static NSArray *fields = nil;
+  SOGoUser *ownerUser;
   NSArray *records;
   NSMutableArray *qualifierArray;
   EOQualifier *fetchQualifier, *aclQualifier;
@@ -98,7 +109,8 @@
 	       initWithObjects: @"c_name", @"c_version", nil];
 
   qualifierArray = [NSMutableArray new];
-  if (![[context activeUser] isEqual: [context ownerUser]])
+  ownerUser = [[self userContext] sogoUser];
+  if (![[context activeUser] isEqual: ownerUser])
     {
       aclQualifier = [self aclQualifier];
       if (aclQualifier)
@@ -528,12 +540,14 @@
 - (NSArray *) activeUserRoles
 {
   SOGoUser *activeUser;
+  WOContext *woContext;
 
   if (!activeUserRoles)
     {
       activeUser = [[self context] activeUser];
+      woContext = [[self userContext] woContext];
       activeUserRoles = [activeUser rolesForObject: sogoObject
-                                         inContext: [context woContext]];
+                                         inContext: woContext];
       [activeUserRoles retain];
     }
 

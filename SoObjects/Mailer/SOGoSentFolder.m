@@ -25,10 +25,4 @@
 
 @implementation SOGoSentFolder
 
-/* folder type */
-
-- (NSString *)outlookFolderClass {
-  return @"IPF.Sent";
-}
-
 @end /* SOGoSentFolder */

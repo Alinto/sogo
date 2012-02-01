@@ -27,21 +27,17 @@
 @class NSString;
 @class NSMutableDictionary;
 
-@class NGVCard;
-
 @class SOGoContactFolder;
 
 @interface UIxContactEditor : UIxComponent
 {
   id addressBookItem;
-  NSString *preferredEmail;
   NSString *item;
-  NGVCard *card;
-  NSMutableArray *photosURL;
-  NSMutableDictionary *snapshot; /* contains the values for editing */
+  NSMutableDictionary *ldifRecord; /* contains the values for editing */
   SOGoContactFolder *componentAddressBook;
-  NSArray *contactCategories;
 }
+
+- (NSMutableDictionary *) ldifRecord;
 
 - (void) setAddressBookItem: (id) _item;
 - (id) addressBookItem;
