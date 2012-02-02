@@ -364,6 +364,8 @@ function onFilterMoveDown(event) {
 function onFilterEdit(event) {
     _editFilter(this.rowIndex - 1);
     event.stop();
+
+    return false;
 }
 
 function copyFilter(originalFilter) {
