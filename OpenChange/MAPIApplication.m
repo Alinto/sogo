@@ -67,15 +67,11 @@ MAPIApplication *MAPIApp = nil;
   return MAPIApp;
 }
 
-- (void) dealloc
-{
-  [userContext release];
-  [super dealloc];
-}
-
 - (void) setUserContext: (MAPIStoreUserContext *) newContext
 {
-  ASSIGN (userContext, newContext);
+  /* user contexts must not be retained here ad their holder (mapistore)
+     contexts must be active when any operation occurs. */
+  userContext = newContext;
 }
 
 - (id) authenticatorInContext: (id) context

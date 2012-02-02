@@ -1,3 +1,8 @@
+2012-02-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIApplication.m (-setUserContext:): do not retain
+	the user context.
+
 2012-02-01  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxCalUserRightsEditor.js (onUpdateACL):
