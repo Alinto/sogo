@@ -1,5 +1,8 @@
 2012-02-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoParentFolder.m (-removeSubFolder): new method
+	that removes a subfolder entry from the folder cache.
+
 	* OpenChange/MAPIApplication.m (-setUserContext:): do not retain
 	the user context.
 

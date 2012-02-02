@@ -43,6 +43,7 @@
 - (NSString *) defaultFolderName;
 
 - (NSException *) appendPersonalSources;
+- (void) removeSubFolder: (NSString *) subfolderName;
 
 - (void) setBaseOCSPath: (NSString *) newOCSPath;
 
