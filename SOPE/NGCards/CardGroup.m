@@ -142,6 +142,19 @@ static NGCardsSaxHandler *sax = nil;
   return nil;
 }
 
+- (BOOL) isVoid
+{
+  BOOL isVoid = YES;
+  NSUInteger count, max;
+
+  max = [children count];
+  for (count = 0; isVoid && count < max; count++)
+    if (![[children objectAtIndex: count] isVoid])
+      isVoid = NO;
+
+  return isVoid;
+}
+
 - (void) addChild: (CardElement *) aChild
 {
   Class mappedClass;
@@ -364,6 +377,23 @@ static NGCardsSaxHandler *sax = nil;
     [newChild addType: type];
 
   [self addChild: newChild];
+}
+
+- (void) cleanupEmptyChildren
+{
+  NSUInteger max;
+  NSInteger count;
+  CardElement *child;
+
+  max = [children count];
+  for (count = max - 1; count > -1; count--)
+    {
+      child = [children objectAtIndex: count];
+      if ([child isKindOfClass: [CardGroup class]])
+        [(CardGroup *) child cleanupEmptyChildren];
+      if ([child isVoid])
+        [children removeObjectAtIndex: count];
+    }
 }
 
 - (NSString *) description

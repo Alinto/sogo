@@ -21,24 +21,39 @@
  */
 
 #import <Foundation/NSString.h>
+#import <Appointments/SOGoAppointmentFolders.h>
 
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreCalendarFolder.h"
+#import "MAPIStoreUserContext.h"
 
 #import "MAPIStoreCalendarContext.h"
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
+static Class MAPIStoreCalendarFolderK;
+
 @implementation MAPIStoreCalendarContext
+
++ (void) initialize
+{
+  MAPIStoreCalendarFolderK = [MAPIStoreCalendarFolder class];
+}
 
 + (NSString *) MAPIModuleName
 {
   return @"calendar";
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
++ (enum mapistore_context_role) MAPIModuleRole
 {
-  baseFolder = [MAPIStoreCalendarFolder baseFolderWithURL: newURL
-                                                inContext: self];
-  [baseFolder retain];
+  return MAPISTORE_CALENDAR_ROLE;
+}
+
+- (Class) MAPIStoreFolderClass
+{
+  return MAPIStoreCalendarFolderK;
 }
 
 @end

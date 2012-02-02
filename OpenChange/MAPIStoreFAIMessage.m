@@ -22,6 +22,7 @@
 
 #import "MAPIStoreActiveTables.h"
 #import "MAPIStoreContext.h"
+#import "MAPIStoreUserContext.h"
 #import "NSObject+MAPIStore.h"
 
 #import "MAPIStoreFAIMessage.h"
@@ -51,9 +52,11 @@
 {
   enum mapistore_error rc;
   MAPIStoreContext *context;
+  SOGoUser *ownerUser;
 
   context = [self context];
-  if ([[context activeUser] isEqual: [context ownerUser]])
+  ownerUser = [[self userContext] sogoUser];
+  if ([[context activeUser] isEqual: ownerUser])
     rc = [super saveMessage];
   else
     rc = MAPISTORE_ERR_DENIED;

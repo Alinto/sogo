@@ -47,27 +47,27 @@
 @class MAPIStoreAttachment;
 @class MAPIStoreAttachmentTable;
 @class MAPIStoreFolder;
-@class MAPIStoreMapping;
 @class MAPIStoreMessage;
 @class MAPIStoreTable;
+@class MAPIStoreUserContext;
 
 @interface MAPIStoreContext : NSObject
 {
-  struct mapistore_context *mstoreCtx;
   struct mapistore_connection_info *connInfo;
 
   SOGoUser *activeUser;
-  SOGoUser *ownerUser;
+
+  MAPIStoreUserContext *userContext;
 
   NSURL *contextUrl;
-
-  MAPIStoreMapping *mapping;
-
-  MAPIStoreAuthenticator *authenticator;
-  WOContext *woContext;
-
-  MAPIStoreFolder *baseFolder;
 }
+
++ (struct mapistore_contexts_list *) listAllContextsForUser: (NSString *)  userName
+                                            withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                                   inMemCtx: (TALLOC_CTX *) memCtx;
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
+                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                                inMemCtx: (TALLOC_CTX *) memCtx;
 
 + (int) openContext: (MAPIStoreContext **) contextPtr
             withURI: (const char *) newUri
@@ -78,20 +78,12 @@
   withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
       andTDBIndexing: (struct tdb_wrap *) indexingTdb;
 
-- (void) setAuthenticator: (MAPIStoreAuthenticator *) newAuthenticator;
-- (MAPIStoreAuthenticator *) authenticator;
-
 - (NSURL *) url;
 - (struct mapistore_connection_info *) connectionInfo;
 
-- (WOContext *) woContext;
-- (MAPIStoreMapping *) mapping;
-
-- (void) setupRequest;
-- (void) tearDownRequest;
+- (MAPIStoreUserContext *) userContext;
 
 - (SOGoUser *) activeUser;
-- (SOGoUser *) ownerUser;
 
 // - (id) lookupObject: (NSString *) objectURLString;
 
@@ -112,7 +104,11 @@
 
 /* subclass methods */
 + (NSString *) MAPIModuleName;
-- (void) setupBaseFolder: (NSURL *) newURL;
+- (Class) MAPIStoreFolderClass;
+
+/* the top-most parent of the context folder: SOGoMailAccount,
+   SOGoCalendarFolders, ... */
+- (id) rootSOGoFolder;
 
 @end
 

@@ -20,11 +20,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
-
-#import "MAPIStoreFSFolder.h"
+#import <Foundation/NSURL.h>
 
 #import "MAPIStoreFallbackContext.h"
+#import "NSString+MAPIStore.h"
+#import "SOGoMAPIFSFolder.h"
+
+#undef DEBUG
+#include <mapistore/mapistore.h>
 
 @implementation MAPIStoreFallbackContext
 
@@ -33,10 +38,48 @@
   return @"fallback";
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
+                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  baseFolder = [MAPIStoreFSFolder baseFolderWithURL: newURL inContext: self];
-  [baseFolder retain];
+  struct mapistore_contexts_list *firstContext = NULL, *context;
+  SOGoMAPIFSFolder *root;
+  NSArray *names;
+  NSUInteger count, max;
+  NSString *baseURL, *url, *name;
+
+  baseURL = [NSString stringWithFormat: @"sogo://%@@fallback/", userName];
+
+  context = talloc_zero (memCtx, struct mapistore_contexts_list);
+  context->url = [baseURL asUnicodeInMemCtx: context];
+  context->name = "Fallback";
+  context->main_folder = true;
+  context->role = MAPISTORE_FALLBACK_ROLE;
+  context->tag = "tag";
+
+  DLIST_ADD_END (firstContext, context, void);
+
+
+  /* Maybe emsmdbp_provisioning should be fixed in order to only take the uri
+     returned above to avoid deleting its entries... */
+  root = [SOGoMAPIFSFolder folderWithURL: [NSURL URLWithString: baseURL]
+                            andTableType: MAPISTORE_MESSAGE_TABLE];
+  names = [root toManyRelationshipKeys];
+  max = [names count];
+  for (count = 0; count < max; count++)
+    {
+      name = [names objectAtIndex: count];
+      url = [NSString stringWithFormat: @"%@%@/", baseURL, name];
+      context = talloc_zero (memCtx, struct mapistore_contexts_list);
+      context->url = [url asUnicodeInMemCtx: context];
+      context->name = [name asUnicodeInMemCtx: context];
+      context->main_folder = false;
+      context->role = MAPISTORE_FALLBACK_ROLE;
+      context->tag = "tag";
+      DLIST_ADD_END (firstContext, context, void);
+    }
+
+  return firstContext;
 }
 
 @end

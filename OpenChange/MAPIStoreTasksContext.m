@@ -21,24 +21,38 @@
  */
 
 #import <Foundation/NSString.h>
+#import <Appointments/SOGoAppointmentFolders.h>
 
 #import "MAPIStoreTasksFolder.h"
-#import "MAPIStoreMapping.h"
+#import "MAPIStoreUserContext.h"
 
 #import "MAPIStoreTasksContext.h"
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
+static Class MAPIStoreTasksFolderK;
+
 @implementation MAPIStoreTasksContext
+
++ (void) initialize
+{
+  MAPIStoreTasksFolderK = [MAPIStoreTasksFolder class];
+}
 
 + (NSString *) MAPIModuleName
 {
   return @"tasks";
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
++ (enum mapistore_context_role) MAPIModuleRole
 {
-  baseFolder = [MAPIStoreTasksFolder baseFolderWithURL: newURL
-                                             inContext: self];
-  [baseFolder retain];
+  return MAPISTORE_TASKS_ROLE;
+}
+
+- (Class) MAPIStoreFolderClass
+{
+  return MAPIStoreTasksFolderK;
 }
 
 @end
