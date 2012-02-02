@@ -61,6 +61,7 @@ static NSMapTable *contextsTable = nil;
       userContext = [[self alloc] initWithUsername: username
                                     andTDBIndexing: indexingTdb];
       [userContext autorelease];
+      [contextsTable setObject: userContext forKey: username];
     }
 
   return userContext;
@@ -97,11 +98,9 @@ static NSMapTable *contextsTable = nil;
       if (indexingTdb)
         ASSIGN (mapping, [MAPIStoreMapping mappingForUsername: username
                                                  withIndexing: indexingTdb]);
-      [contextsTable setObject: self forKey: username];
 
       authenticator = [MAPIStoreAuthenticator new];
       [authenticator setUsername: username];
-
       /* TODO: very hackish (IMAP access) */
       [authenticator setPassword: username];
     }
@@ -118,7 +117,6 @@ static NSMapTable *contextsTable = nil;
   [authenticator release];
   [mapping release];
 
-  [username release];
   [sogoUser release];
 
   [contextsTable removeObjectForKey: username];

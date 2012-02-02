@@ -1,5 +1,10 @@
 2012-02-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreUserContext.m (-destroy): dont't release
+	"username" as it is not initially retained.
+	(+userContextWithUsername:andTDBIndexing:): the resulting instance
+	is cached in the table from here instead.
+
 	* OpenChange/MAPIStoreTable.m (-destroyHandle:): skih operation if
 	the handle parameter is 0.
 
