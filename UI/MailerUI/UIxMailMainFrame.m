@@ -251,7 +251,7 @@
 
           if ([addresses count] > 0)
 	    parameters = [NSString stringWithFormat: @"?mailto=%@", 
-				   [addresses componentsJoinedByString: @","]];
+                                   [addresses jsonRepresentation]];
         }
     }
   else if ([[request formValues] objectForKey: @"mailto"])

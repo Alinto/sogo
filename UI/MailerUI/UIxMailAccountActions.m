@@ -212,7 +212,7 @@
   SOGoDraftsFolder *drafts;
   SOGoDraftObject *newDraftMessage;
   NSString *urlBase, *url, *value, *signature;
-  NSArray *mailTo;
+  id mailTo;
   NSMutableDictionary *headers;
   BOOL save;
 
@@ -225,9 +225,12 @@
   value = [[self request] formValueForKey: @"mailto"];
   if ([value length] > 0)
     {
-      mailTo = [[value stringByUnescapingURL] componentsSeparatedByString: @","];
-      [headers setObject: mailTo forKey: @"to"];
-      save = YES;
+      mailTo = [[value stringByUnescapingURL] objectFromJSONString];
+      if (mailTo && [mailTo isKindOfClass: [NSArray class]])
+        {
+          [headers setObject: (NSArray *) mailTo forKey: @"to"];
+          save = YES;
+        }
     }
 
   value = [[self request] formValueForKey: @"subject"];
