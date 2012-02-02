@@ -65,7 +65,7 @@
     {
       userContext = [MAPIStoreUserContext userContextWithUsername: userName
                                                    andTDBIndexing: indexingTdb];
-      parentFolder = [[userContext rootFolders] objectForKey: [self MAPIModuleName]];
+      parentFolder = [[userContext rootFolders] objectForKey: moduleName];
       baseUrl = [NSString stringWithFormat: @"sogo://%@@%@/",
                           userName, moduleName];
 
