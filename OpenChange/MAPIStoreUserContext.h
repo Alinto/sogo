@@ -25,6 +25,7 @@
 
 #import <Foundation/NSObject.h>
 
+@class NSMutableDictionary;
 @class NSString;
 
 @class WOContext;
