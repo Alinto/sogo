@@ -351,7 +351,7 @@ static Class NSDataK, NSStringK;
 
 - (void) destroyHandle: (uint32_t) tableHandleId
 {
-  if (handleId == tableHandleId)
+  if (tableHandleId && (handleId == tableHandleId))
     [[MAPIStoreActiveTables activeTables] unregisterTable: self];
 }
 

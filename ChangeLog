@@ -1,5 +1,8 @@
 2012-02-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTable.m (-destroyHandle:): skih operation if
+	the handle parameter is 0.
+
 	* OpenChange/SOGoMAPIFSMessage.m (-delete): returns the exception
 	rather than raising it.
 
