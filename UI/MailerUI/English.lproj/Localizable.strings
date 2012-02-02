@@ -147,7 +147,6 @@
 "Date"          = "Date";
 "View"          = "View";
 "All"           = "All";
-"Unread"        = "Unread";
 "No message"    = "No message";
 "messages"      = "messages";
 
@@ -214,7 +213,6 @@
 "Open Message In New Window" = "Open Message In New Window";
 "Reply to Sender Only" = "Reply to Sender Only";
 "Reply to All" = "Reply to All";
-"Forward" = "Forward";
 "Edit As New..." = "Edit As New...";
 "Move To" = "Move To";
 "Copy To" = "Copy To";

@@ -76,7 +76,6 @@
 "No possible subscription" = "Aucune inscription possible";
 
 "Preferred" = "Préféré";
-"Card for %@" = "Fiche pour %@";
 "Display:" = "Nom à afficher :";
 "Display Name:" = "Nom à afficher :";
 "Email:" = "Adresse électronique :";
@@ -155,7 +154,9 @@
 "Unable to subscribe to that folder!"
 = "Impossible de vous inscrire à ce dossier.";
 
-"User rights for:" = "Autorisations pour :";
+/* acls */
+"Access rights to" = "Droits d'accès à";
+"For user" = "Pour l'utilisateur";
 
 "Any Authenticated User" = "Tout utilisateur identifié";
 "Public Access" = "Accès public";

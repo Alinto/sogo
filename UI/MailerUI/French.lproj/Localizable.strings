@@ -19,6 +19,7 @@
 "Attach" = "Joindre";
 "Save" = "Enregistrer";
 "Options" = "Options";
+"Close" = "Fermer";
 "Size" = "Taille";
 
 /* Tooltips */
@@ -63,8 +64,10 @@
 "Shared Account: " = "Compte Partagé ";
 
 /* acls */
-"Default Roles" = "Rôles par défaut";
-"User rights for:" = "Autorisations pour:";
+"Access rights to" = "Droits d'accès à";
+"For user" = "Pour l'utilisateur";
+
+"Any Authenticated User" = "Tout utilisateur identifié";
 
 "List and see this folder" = "Lister et voir ce dossier";
 "Read mails from this folder" = "Lire les messages de ce dossier";
@@ -123,6 +126,9 @@
 
 "This mail is being sent from an unsecure network!" = "Ce mail est envoyé depuis un réseau non sécurisé !";
 
+"Address Book:" = "Carnet d'adresses :";
+"Search For:" = "Rechercher :";
+
 /* Popup "show" */
 
 "all"     = "Tous";
@@ -141,7 +147,6 @@
 "Date"          = "Date";
 "View"          = "Voir";
 "All"           = "Tous";
-"Unread"        = "Non lus";
 "No message"    = "Aucun message";
 "messages"      = "message(s)";
 
@@ -208,7 +213,6 @@
 "Open Message In New Window" = "Ouvrir dans une nouvelle fenétre";
 "Reply to Sender Only" = "Répondre à l'expéditeur";
 "Reply to All" = "Répondre à tout le monde";
-"Forward" = "Transférer";
 "Edit As New..." = "Modifier comme un nouveau message";
 "Move To" = "Déplacer vers";
 "Copy To" = "Copier vers";
