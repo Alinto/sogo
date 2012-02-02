@@ -314,6 +314,23 @@ static NSString *privateDir = nil;
   return [self _fileAttributeForKey: NSFileModificationDate];
 }
 
+- (NSException *) delete
+{
+  NSFileManager *fm;
+  NSException *error;
+  
+  fm = [NSFileManager defaultManager];
+
+  if (![fm removeFileAtPath: directory handler: NULL])
+    error = [NSException exceptionWithName: @"MAPIStoreIOException"
+                                    reason: @"could not delete folder"
+                                  userInfo: nil];
+  else
+    error = nil;
+
+  return error;
+}
+
 /* acl */
 - (NSString *) defaultUserID
 {

@@ -384,11 +384,13 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) deleteFolderWithFID: (uint64_t) fid
+- (int) deleteFolder
 {
-  [self logWithFormat: @"UNIMPLEMENTED METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  [propsMessage delete];
+  [propsFolder delete];
+  [faiFolder delete];
 
-  return MAPISTORE_ERROR;
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) getChildCount: (uint32_t *) rowCount

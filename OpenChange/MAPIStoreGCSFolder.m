@@ -22,6 +22,7 @@
 
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOFetchSpecification.h>
@@ -29,6 +30,7 @@
 #import <GDLContentStore/GCSFolder.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoGCSFolder.h>
+#import <SOGo/SOGoParentFolder.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 
@@ -44,6 +46,7 @@
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreGCSFolder
 
@@ -70,6 +73,33 @@
   [versionsMessage release];
   [activeUserRoles release];
   [super dealloc];
+}
+
+- (int) deleteFolder
+{
+  int rc;
+  NSException *error;
+  NSString *name;
+
+  name = [self nameInContainer];
+  if ([name isEqualToString: @"personal"])
+    rc = MAPISTORE_ERR_DENIED;
+  else
+    {
+      [[sogoObject container] removeSubFolder: name];
+      error = [(SOGoGCSFolder *) sogoObject delete];
+      if (error)
+        rc = MAPISTORE_ERROR;
+      else
+        {
+          if (![versionsMessage delete])
+            rc = MAPISTORE_SUCCESS;
+          else
+            rc = MAPISTORE_ERROR;
+        }
+    }
+
+  return (rc == MAPISTORE_SUCCESS) ? [super deleteFolder] : rc;
 }
 
 - (void) addProperties: (NSDictionary *) newProperties

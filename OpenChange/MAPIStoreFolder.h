@@ -96,7 +96,7 @@
 - (int) createFolder: (MAPIStoreFolder **) childFolderPtr
              withRow: (struct SRow *) aRow
               andFID: (uint64_t) fid;
-- (int) deleteFolderWithFID: (uint64_t) fid;
+- (int) deleteFolder;
 - (int) getChildCount: (uint32_t *) rowCount
           ofTableType: (enum mapistore_table_type) tableType;
 

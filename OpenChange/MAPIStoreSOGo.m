@@ -333,7 +333,7 @@ sogo_folder_create_folder(void *folder_object, TALLOC_CTX *mem_ctx,
    \return MAPISTORE_SUCCESS on success, otherwise MAPISTORE_ERROR
 */
 static enum mapistore_error
-sogo_folder_delete_folder(void *folder_object, uint64_t fid)
+sogo_folder_delete(void *folder_object)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
@@ -347,7 +347,7 @@ sogo_folder_delete_folder(void *folder_object, uint64_t fid)
       wrapper = folder_object;
       folder = wrapper->MAPIStoreSOGoObject;
       pool = [NSAutoreleasePool new];
-      rc = [folder deleteFolderWithFID: fid];
+      rc = [folder deleteFolder];
       [pool release];
     }
   else
@@ -1244,7 +1244,7 @@ int mapistore_init_backend(void)
       backend.context.get_root_folder = sogo_context_get_root_folder;
       backend.folder.open_folder = sogo_folder_open_folder;
       backend.folder.create_folder = sogo_folder_create_folder;
-      backend.folder.delete_folder = sogo_folder_delete_folder;
+      backend.folder.delete = sogo_folder_delete;
       backend.folder.open_message = sogo_folder_open_message;
       backend.folder.create_message = sogo_folder_create_message;
       backend.folder.delete_message = sogo_folder_delete_message;
