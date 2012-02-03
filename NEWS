@@ -1,4 +1,4 @@
-1.3-YYYYMMDD (1.3.12)
+1.3-201202DD (1.3.12)
 ---------------------
 New Features
  - show end time in bubble box of events
@@ -11,11 +11,17 @@ Enhancements
  - increase size of content columns
  - improved import of .ics files
  - new cronjob template with commented out entries
+ - LDAP passwords can now be encrypted with the specified algorithm
+ - improved parsing of addresses when composing mail
 
 Bug Fixes
+ - fixed resizing issue of mail editor
  - alarms for tasks now depend on the start date and instead of the due date
  - increased the content column size in database tables to permit syncs of
    cards with big photos in them
+ - fixed intended behavior of WOSendMail
+ - fixed selection issue with Firefox when editing the content of a textarea
+ - fixed bug with daily recurrence calculator that would affect conflict detection
 
 1.3-20111212 (1.3.11)
 ---------------------
