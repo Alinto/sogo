@@ -9,6 +9,14 @@
 
 2012-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolderTable.m
+	(-evaluatePropertyRestriction:intoQualifier:): overriden method to
+	always return true for restrictions on PR_CHANGE_NUM, in order to
+	help the fxics mechanism.
+
+	* OpenChange/MAPIStoreFolder.m (-deleteFolder): cleanup the caches
+	in order to let the folder disappear.
+
 	* OpenChange/MAPIStoreSOGo.m (sogo_backend_create_root_folder):
 	new backend method.
 
