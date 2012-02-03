@@ -43,11 +43,6 @@
   return nil;
 }
 
-+ (enum mapistore_context_role) MAPIModuleRole
-{
-  return -1;
-}
-
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
                                          withTDBIndexing: (struct tdb_wrap *) indexingTdb
                                                 inMemCtx: (TALLOC_CTX *) memCtx
@@ -83,7 +78,7 @@
               context->name = [[currentFolder displayName]
                                 asUnicodeInMemCtx: context];
               context->main_folder = [nameInContainer isEqualToString: @"personal"];
-              context->role = [self MAPIModuleRole];
+              context->role = [self MAPIContextRole];
               context->tag = "tag";
               DLIST_ADD_END (firstContext, context, void);
             }

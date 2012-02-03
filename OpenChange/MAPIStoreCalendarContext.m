@@ -46,7 +46,7 @@ static Class MAPIStoreCalendarFolderK;
   return @"calendar";
 }
 
-+ (enum mapistore_context_role) MAPIModuleRole
++ (enum mapistore_context_role) MAPIContextRole
 {
   return MAPISTORE_CALENDAR_ROLE;
 }
