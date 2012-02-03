@@ -1,3 +1,14 @@
+<<<<<<< variant A
+2012-02-02  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailMainFrame.m (-composeAction): recipient
+	addresses are now passed as a JSON-formatted string.
+
+	* UI/MailerUI/UIxMailAccountActions.m (-composeAction): the
+	received "mailto" parameter is now a JSON-formatted string; we
+	parse it accordingly.
+
+>>>>>>> variant B
 2012-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreSOGo.m (sogo_backend_create_root_folder):
@@ -38,6 +49,8 @@
 	* OpenChange/MAPIApplication.m (-setUserContext:): do not retain
 	the user context.
 
+####### Ancestor
+======= end
 2012-02-01  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxCalUserRightsEditor.js (onUpdateACL):

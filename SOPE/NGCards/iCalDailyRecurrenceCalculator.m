@@ -144,26 +144,29 @@
 	    break;
 	}
       
-      if (wrongDay == NO &&
-	  ([startDate compare: currentStartDate] == NSOrderedAscending ||
-	   [startDate compare: currentStartDate] == NSOrderedSame))
-	{
-	  NGCalendarDateRange *r;
+      if (wrongDay == NO)
+        {
+          currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
+	  if ([startDate compare: currentStartDate] == NSOrderedAscending ||
+              [startDate compare: currentStartDate] == NSOrderedSame ||
+              [startDate compare: currentEndDate] == NSOrderedAscending)
+            {
+              NGCalendarDateRange *r;
 
-	  if (isFirStart == NO && dayMask && repeatCount == 0)
-	    {
-	      if (![dayMask occursOnDay: [currentStartDate dayOfWeek]])
-		wrongDay = YES;
-	    }
-
-	  if (isFirStart == YES || wrongDay == NO)
-	    {
-	      currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
-	      r = [NGCalendarDateRange calendarDateRangeWithStartDate: currentStartDate
-                                                              endDate: currentEndDate];
-	      if ([_r containsDateRange: r] || [_r doesIntersectWithDateRange: r])
-		[ranges addObject: r];
-	    }
+              if (isFirStart == NO && dayMask && repeatCount == 0)
+                {
+                  if (![dayMask occursOnDay: [currentStartDate dayOfWeek]])
+                    wrongDay = YES;
+                }
+              
+              if (isFirStart == YES || wrongDay == NO)
+                {
+                  r = [NGCalendarDateRange calendarDateRangeWithStartDate: currentStartDate
+                                                                  endDate: currentEndDate];
+                  if ([_r containsDateRange: r] || [_r doesIntersectWithDateRange: r])
+                    [ranges addObject: r];
+                }
+            }
 	}
       
       currentStartDate = [firStart dateByAddingYears: 0 months: 0

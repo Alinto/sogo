@@ -535,9 +535,6 @@ DIV.dTreeNode SPAN._dragOver
   color: #fff;
 }
 
-INPUT.checkBox
-{ vertical-align: middle; }
-
 /* resizable columns */
 
 TABLE TD.resize-handle-active,
@@ -814,9 +811,7 @@ SPAN.caption
 
 DIV.tabsContainer
 { overflow: hidden;
-  padding: 0px 5px;
-  -moz-user-select: none;
-  -khtml-user-select: none; }
+  padding: 0px 5px; }
 
 DIV.tabsContainer > DIV.scrollToolbar
 { position: absolute;

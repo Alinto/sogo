@@ -73,6 +73,15 @@
 "delegate is a participant" = "Le délégué est déjà un participant.";
 "delegate is a group" = "L'adresse spécifiée correspond à un groupe. Vous ne pouvez déléguer qu'à une personne.";
 
+"Snooze for " = "Rappel dans ";
+"5 minutes" = "5 minutes";
+"10 minutes" = "10 minutes";
+"15 minutes" = "15 minutes";
+"30 minutes" = "30 minutes";
+"45 minutes" = "45 minutes";
+"1 hour" = "1 heure";
+
+
 /* common buttons */
 "OK" = "OK";
 "Cancel" = "Annuler";

@@ -109,16 +109,14 @@ DIV#filtersListWrapper
   top: 174px;
   left: 2em; }
 
+DIV#filtersListWrapper TD,
+DIV.bottomToolbar
+{ -khtml-user-select: none;
+  -moz-user-select: none; }
+
 TABLE#filtersList
 { width: 100%;
   cursor: default; }
-
-TR.filterListRow
-{ background: #ccddec;
-  cursor: pointer; }
-
-TD.filterListCell
-{ -moz-user-select: none; }
 
 TH#activeTableHeader
 { width: 50px;
