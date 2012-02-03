@@ -1,12 +1,3 @@
-2012-02-02  Francis Lachapelle  <flachapelle@inverse.ca>
-
-	* UI/MailerUI/UIxMailMainFrame.m (-composeAction): recipient
-	addresses are now passed as a JSON-formatted string.
-
-	* UI/MailerUI/UIxMailAccountActions.m (-composeAction): the
-	received "mailto" parameter is now a JSON-formatted string; we
-	parse it accordingly.
-
 2012-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFolderTable.m
@@ -28,6 +19,15 @@
 
 	* SoObjects/Mailer/SOGoMailFolder.m (-exists): new method that
 	returns whether an IMAP folder exists or not yet.
+
+2012-02-02  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailMainFrame.m (-composeAction): recipient
+	addresses are now passed as a JSON-formatted string.
+
+	* UI/MailerUI/UIxMailAccountActions.m (-composeAction): the
+	received "mailto" parameter is now a JSON-formatted string; we
+	parse it accordingly.
 
 2012-02-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
