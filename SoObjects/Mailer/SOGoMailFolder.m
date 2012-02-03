@@ -248,7 +248,7 @@ static NSString *defaultUserID =  @"anyone";
   if (!filenames)
     {
       filenames = [NSMutableArray new];
-      if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
+      if ([self exists])
         {
           uids = [self fetchUIDsMatchingQualifier: nil sortOrdering: @"DATE"];
           if (![uids isKindOfClass: [NSException class]])
@@ -555,7 +555,7 @@ static NSString *defaultUserID =  @"anyone";
   NSString *archiveName;
   EOQualifier *notDeleted;
 
-  if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
+  if ([self exists])
     {
       notDeleted = [EOQualifier qualifierWithQualifierFormat:
                                   @"(not (flags = %@))", @"deleted"];
@@ -722,7 +722,7 @@ static NSString *defaultUserID =  @"anyone";
 {
   // We check for the existence of the IMAP folder (likely to be the
   // Sent mailbox) prior to appending messages to it.
-  if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]]
+  if ([self exists]
       || ![[self imap4Connection] createMailbox: [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]]
                                           atURL: [[self mailAccountFolder] imap4URL]])
     return [[self imap4Connection] postData: _data flags: _flags
@@ -835,7 +835,7 @@ static NSString *defaultUserID =  @"anyone";
                                                   inContainer: self];
         }
       else if (isdigit ([_key characterAtIndex: 0])
-               && [[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
+               && [self exists])
         {
           obj = [SOGoMailObject objectWithName: _key inContainer: self];
           if ([_key hasSuffix: @".eml"])
@@ -861,6 +861,11 @@ static NSString *defaultUserID =  @"anyone";
 			    inContext: (id) _ctx
 {
   return [[self imap4Connection] createMailbox:_name atURL:[self imap4URL]];
+}
+
+- (BOOL) exists
+{
+  return [[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]];
 }
 
 - (BOOL) create

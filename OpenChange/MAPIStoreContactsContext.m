@@ -46,7 +46,7 @@ static Class MAPIStoreContactsFolderK;
   return @"contacts";
 }
 
-+ (enum mapistore_context_role) MAPIModuleRole
++ (enum mapistore_context_role) MAPIContextRole
 {
   return MAPISTORE_CONTACTS_ROLE;
 }

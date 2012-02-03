@@ -35,6 +35,7 @@
 
 #import "MAPIStoreAttachment.h"
 // #import "MAPIStoreAttachmentTable.h"
+#import "MAPIStoreFallbackContext.h"
 #import "MAPIStoreFolder.h"
 #import "MAPIStoreFolderTable.h"
 #import "MAPIStoreMapping.h"
@@ -66,7 +67,7 @@
 
 /* sogo://username:password@{contacts,calendar,tasks,journal,notes,mail}/dossier/id */
 
-static Class NSExceptionK;
+static Class NSExceptionK, MAPIStoreFallbackContextK;
 
 static NSMutableDictionary *contextClassMapping;
 
@@ -89,11 +90,13 @@ static NSMutableDictionary *contextClassMapping;
       if (moduleName)
 	{
 	  [contextClassMapping setObject: currentClass
-			       forKey: moduleName];
+                                  forKey: moduleName];
 	  NSLog (@"  registered class '%@' as handler of '%@' contexts",
 		 NSStringFromClass (currentClass), moduleName);
 	}
     }
+
+  MAPIStoreFallbackContextK = [MAPIStoreFallbackContext class];
 }
 
 + (struct mapistore_contexts_list *) listAllContextsForUser: (NSString *)  userName
@@ -127,11 +130,71 @@ static NSMutableDictionary *contextClassMapping;
   return list;
 }
 
-+ (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
                                          withTDBIndexing: (struct tdb_wrap *) indexingTdb
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return NULL;
+}
+
+static Class
+MAPIStoreLookupContextClassByRole (Class self, enum mapistore_context_role role)
+{
+  static NSMutableDictionary *classMapping = nil;
+  Class currentClass;
+  enum mapistore_context_role classRole;
+  NSNumber *roleNbr;
+  NSArray *classes;
+  NSUInteger count, max;
+
+  if (!classMapping)
+    {
+      classMapping = [NSMutableDictionary new];
+      classes = GSObjCAllSubclassesOfClass (self);
+      max = [classes count];
+      for (count = 0; count < max; count++)
+        {
+          currentClass = [classes objectAtIndex: count];
+          classRole = [currentClass MAPIContextRole];
+          if (classRole != -1)
+            {
+              roleNbr = [NSNumber numberWithUnsignedInt: classRole];
+              [classMapping setObject: currentClass
+                               forKey: roleNbr];
+            }
+        }
+    }
+
+  roleNbr = [NSNumber numberWithUnsignedInt: role];
+
+  return [classMapping objectForKey: roleNbr];
+}
+
++ (enum mapistore_error) createRootFolder: (NSString **) mapistoreUriP
+                                  withFID: (uint64_t) fid
+                                  andName: (NSString *) folderName
+                                  forUser: (NSString *) userName
+                                 withRole: (enum mapistore_context_role) role
+                           andTDBIndexing: (struct tdb_wrap *) indexingTdb
+{
+  Class contextClass;
+  NSString *mapistoreURI;
+  enum mapistore_error rc = MAPISTORE_SUCCESS;
+
+  contextClass = MAPIStoreLookupContextClassByRole (self, role);
+  if (!contextClass)
+    contextClass = MAPIStoreFallbackContextK;
+
+  mapistoreURI = [contextClass createRootSecondaryFolderWithFID: fid
+                                                        andName: (NSString *) folderName
+                                                        forUser: userName
+                                                withTDBIndexing: indexingTdb];
+  if (mapistoreURI)
+    *mapistoreUriP = mapistoreURI;
+  else
+    rc = MAPISTORE_ERROR;
+
+  return rc;
 }
 
 static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
@@ -468,6 +531,22 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 /* subclasses */
 
 + (NSString *) MAPIModuleName
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
++ (enum mapistore_context_role) MAPIContextRole
+{
+  return -1;
+}
+
++ (NSString *)
+ createRootSecondaryFolderWithFID: (uint64_t) fid
+                          andName: (NSString *) folderName
+                          forUser: (NSString *) userName
+                  withTDBIndexing: (struct tdb_wrap *) indexingTdb
 {
   [self subclassResponsibility: _cmd];
 

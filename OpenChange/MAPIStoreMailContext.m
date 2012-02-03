@@ -31,6 +31,7 @@
 #import "MAPIStoreUserContext.h"
 #import "NSString+MAPIStore.h"
 
+#import <SOGo/NSString+Utilities.h>
 #import "MAPIStoreMailContext.h"
 
 #include <dlinklist.h>
@@ -49,6 +50,11 @@ static Class MAPIStoreMailFolderK;
 + (NSString *) MAPIModuleName
 {
   return @"mail";
+}
+
++ (enum mapistore_context_role) MAPIContextRole
+{
+  return MAPISTORE_MAIL_ROLE;
 }
 
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
@@ -93,7 +99,7 @@ static Class MAPIStoreMailFolderK;
                       folderName[count]];
       context->url = [stringData asUnicodeInMemCtx: context];
       /* remove "folder" prefix */
-      stringData = [folderName[count] substringFromIndex: 6];
+      stringData = [[folderName[count] substringFromIndex: 6] fromCSSIdentifier];
       context->name = [stringData asUnicodeInMemCtx: context];
       context->main_folder = true;
       context->role = role[count];
@@ -116,7 +122,7 @@ static Class MAPIStoreMailFolderK;
       currentName = [secondaryFolders objectAtIndex: count];
       stringData = [NSString stringWithFormat: @"%@%@", urlBase, currentName];
       context->url = [stringData asUnicodeInMemCtx: context];
-      stringData = [currentName substringFromIndex: 6];
+      stringData = [[currentName substringFromIndex: 6] fromCSSIdentifier];
       context->name = [stringData asUnicodeInMemCtx: context];
       context->main_folder = false;
       context->role = MAPISTORE_MAIL_ROLE;
@@ -125,6 +131,33 @@ static Class MAPIStoreMailFolderK;
     }
 
   return firstContext;
+}
+
++ (NSString *)
+ createRootSecondaryFolderWithFID: (uint64_t) fid
+                          andName: (NSString *) newFolderName
+                          forUser: (NSString *) userName
+                  withTDBIndexing: (struct tdb_wrap *) indexingTdb
+{
+  NSString *mapistoreURI, *folderName;
+  MAPIStoreUserContext *userContext;
+  SOGoMailAccount *accountFolder;
+  SOGoMailFolder *newFolder;
+
+  userContext = [MAPIStoreUserContext userContextWithUsername: userName
+                                               andTDBIndexing: indexingTdb];
+  accountFolder = [[userContext rootFolders] objectForKey: @"mail"];
+  folderName = [NSString stringWithFormat: @"folder%@",
+                         [newFolderName asCSSIdentifier]];
+  newFolder = [SOGoMailFolder objectWithName: folderName
+                                 inContainer: accountFolder];
+  if ([newFolder create])
+    mapistoreURI = [NSString stringWithFormat: @"sogo://%@:%@@mail/%@/",
+                             userName, userName, folderName];
+  else
+    mapistoreURI = nil;
+
+  return mapistoreURI;
 }
 
 - (Class) MAPIStoreFolderClass

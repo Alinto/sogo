@@ -145,8 +145,9 @@
                                        andCN: (NSNumber **) cnNbr
                                  inTableType: (enum mapistore_table_type) tableType;
 
-- (NSString *) createFolder: (struct SRow *) aRow
-                    withFID: (uint64_t) newFID;
+- (enum mapistore_error) createFolder: (struct SRow *) aRow
+                              withFID: (uint64_t) newFID
+                               andKey: (NSString **) newKeyP;
 
 - (NSCalendarDate *) lastMessageModificationTime;
 

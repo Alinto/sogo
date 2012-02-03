@@ -354,8 +354,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
         rc = MAPISTORE_ERR_EXIST;
       else
         {
-          folderKey = [self createFolder: aRow withFID: fid];
-          if (folderKey)
+          rc = [self createFolder: aRow withFID: fid andKey: &folderKey];
+          if (rc == MAPISTORE_SUCCESS)
             {
               [self cleanupCaches];
               baseURL = [self url];
@@ -374,8 +374,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                 [NSException raise: @"MAPIStoreIOException"
                              format: @"unable to fetch created folder"];
             }
-          else
-            rc = MAPISTORE_ERROR;
         }
     }
   else
@@ -1299,12 +1297,13 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return newMessage;
 }
 
-- (NSString *) createFolder: (struct SRow *) aRow
-                    withFID: (uint64_t) newFID
+- (enum mapistore_error) createFolder: (struct SRow *) aRow
+                              withFID: (uint64_t) newFID
+                               andKey: (NSString **) newKeyP
 {
   [self errorWithFormat: @"new folders cannot be created in this context"];
 
-  return nil;
+  return MAPISTORE_ERR_DENIED;
 }
 
 /* helpers */

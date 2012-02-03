@@ -45,7 +45,7 @@ static Class MAPIStoreTasksFolderK;
   return @"tasks";
 }
 
-+ (enum mapistore_context_role) MAPIModuleRole
++ (enum mapistore_context_role) MAPIContextRole
 {
   return MAPISTORE_TASKS_ROLE;
 }
