@@ -84,6 +84,16 @@ DIV#editorTabs TABLE.frame INPUT.textField
 INPUT.textField._invalid, INPUT.comboBoxField._invalid
 { background: #f00 !important; }
 
+/* SchedulerUI */
+
+DIV.eventInside.tentative,
+DIV.eventInside.needs-action
+{ filter: alpha(opacity=70); }
+
+DIV.eventInside.delegated,
+DIV.eventInside.declined
+{ filter: alpha(opacity=40); }
+
 /* UIxAppointmentEditor */
 
 DIV#attendeesMenu LI.separator
