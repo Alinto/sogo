@@ -158,6 +158,32 @@ static Class SOGoMailFolderK;
   return nameInContainer;
 }
 
+- (int) deleteFolder
+{
+  int rc;
+  NSException *error;
+  NSString *name;
+
+  name = [self nameInContainer];
+  if ([name isEqualToString: @"folderINBOX"])
+    rc = MAPISTORE_ERR_DENIED;
+  else
+    {
+      error = [(SOGoMailFolder *) sogoObject delete];
+      if (error)
+        rc = MAPISTORE_ERROR;
+      else
+        {
+          if (![versionsMessage delete])
+            rc = MAPISTORE_SUCCESS;
+          else
+            rc = MAPISTORE_ERROR;
+        }
+    }
+
+  return (rc == MAPISTORE_SUCCESS) ? [super deleteFolder] : rc;
+}
+
 - (int) getPrContentUnread: (void **) data
                   inMemCtx: (TALLOC_CTX *) memCtx
 {

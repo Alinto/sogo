@@ -1,5 +1,7 @@
 2012-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailFolder.m (-deleteFolder): overriden method.
+
 	* SoObjects/Mailer/SOGoMailFolder.m (-exists): new method that
 	returns whether an IMAP folder exists or not yet.
 
