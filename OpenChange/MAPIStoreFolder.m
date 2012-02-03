@@ -388,6 +388,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [propsFolder delete];
   [faiFolder delete];
 
+  [self cleanupCaches];
+
   return MAPISTORE_SUCCESS;
 }
 
