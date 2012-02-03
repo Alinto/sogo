@@ -1,3 +1,10 @@
+2012-02-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalDailyRecurrenceCalculator.m
+	(-recurrenceRangesWithinCalendarDateRange): handle the case
+	where the occurrence start date doesn't cover the reference period
+	but the end date does.
+
 2012-01-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* NSString+NGCards.m (-asCardAttributeValues): fixed a leak by
