@@ -42,9 +42,7 @@
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
-// #include <mapistore/mapistore_errors.h>
-// #include <libmapiproxy.h>
-// #include <param.h>
+#include <mapistore/mapistore_errors.h>
 
 static Class EOKeyValueQualifierK;
 
@@ -75,8 +73,9 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   return [MAPIStoreFSFolderTable tableForContainer: self];
 }
 
-- (NSString *) createFolder: (struct SRow *) aRow
-                    withFID: (uint64_t) newFID
+- (enum mapistore_error) createFolder: (struct SRow *) aRow
+                              withFID: (uint64_t) newFID
+                               andKey: (NSString **) newKeyP
 {
   NSString *newKey, *urlString;
   NSURL *childURL;
@@ -89,8 +88,9 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   childFolder = [SOGoMAPIFSFolder folderWithURL: childURL
                                    andTableType: MAPISTORE_MESSAGE_TABLE];
   [childFolder ensureDirectory];
+  *newKeyP = newKey;
 
-  return newKey;
+  return MAPISTORE_SUCCESS;
 }
 
 - (MAPIStoreMessage *) createMessage

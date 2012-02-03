@@ -1,5 +1,9 @@
 2012-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m (-createFolder:withFID:andKey:):
+	modified method to return a enum mapistore_error, in order to
+	better determine of the failures that occur.
+
 	* OpenChange/MAPIStoreMailFolder.m (-deleteFolder): overriden method.
 
 	* SoObjects/Mailer/SOGoMailFolder.m (-exists): new method that

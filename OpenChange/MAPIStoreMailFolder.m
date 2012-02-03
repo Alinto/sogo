@@ -127,9 +127,11 @@ static Class SOGoMailFolderK;
   return [MAPIStoreMailMessageTable tableForContainer: self];
 }
 
-- (NSString *) createFolder: (struct SRow *) aRow
-                    withFID: (uint64_t) newFID
+- (enum mapistore_error) createFolder: (struct SRow *) aRow
+                              withFID: (uint64_t) newFID
+                               andKey: (NSString **) newKeyP
 {
+  enum mapistore_error rc;
   NSString *folderName, *nameInContainer;
   SOGoMailFolder *newFolder;
   int i;
@@ -151,11 +153,15 @@ static Class SOGoMailFolderK;
                                   [folderName asCSSIdentifier]];
       newFolder = [SOGoMailFolderK objectWithName: nameInContainer
                                       inContainer: sogoObject];
-      if (![newFolder create])
-        nameInContainer = nil;
+      if ([newFolder create])
+        *newKeyP = nameInContainer;
+      else if ([newFolder exists])
+        rc = MAPISTORE_ERR_EXIST;
+      else
+        rc = MAPISTORE_ERR_DENIED;
     }
 
-  return nameInContainer;
+  return rc;
 }
 
 - (int) deleteFolder
