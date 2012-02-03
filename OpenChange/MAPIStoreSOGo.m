@@ -42,6 +42,7 @@
 #import "MAPIStoreObject.h"
 #import "MAPIStoreTable.h"
 #import "NSObject+MAPIStore.h"
+#import "NSString+MAPIStore.h"
 
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
@@ -138,6 +139,43 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
                            andTDBIndexing: indexingTdb];
       if (rc == MAPISTORE_SUCCESS)
         *context_object = [context tallocWrapper: mem_ctx];
+    }
+  else
+    rc = MAPISTORE_ERROR;
+
+  [pool release];
+
+  return rc;
+}
+
+static enum mapistore_error
+sogo_backend_create_root_folder (const char *username,
+                                 enum mapistore_context_role role,
+                                 uint64_t fid, const char *name,
+                                 struct tdb_wrap *indexingTdb,
+                                 TALLOC_CTX *mem_ctx, char **mapistore_urip)
+{
+  NSAutoreleasePool *pool;
+  NSString *userName, *folderName;
+  NSString *mapistoreUri;
+  int rc;
+
+  DEBUG(0, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  pool = [NSAutoreleasePool new];
+
+  if (MAPIStoreContextK)
+    {
+      userName = [NSString stringWithUTF8String: username];
+      folderName = [NSString stringWithUTF8String: name];
+      rc = [MAPIStoreContextK createRootFolder: &mapistoreUri
+                                       withFID: fid
+                                       andName: folderName
+                                       forUser: userName
+                                      withRole: role
+                                andTDBIndexing: indexingTdb];
+      if (rc == MAPISTORE_SUCCESS)
+        *mapistore_urip = [mapistoreUri asUnicodeInMemCtx: mem_ctx];
     }
   else
     rc = MAPISTORE_ERROR;
@@ -1239,6 +1277,7 @@ int mapistore_init_backend(void)
       backend.backend.namespace = "sogo://";
       backend.backend.init = sogo_backend_init;
       backend.backend.create_context = sogo_backend_create_context;
+      backend.backend.create_root_folder = sogo_backend_create_root_folder;
       backend.backend.list_contexts = sogo_backend_list_contexts;
       backend.context.get_path = sogo_context_get_path;
       backend.context.get_root_folder = sogo_context_get_root_folder;

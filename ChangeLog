@@ -1,5 +1,8 @@
 2012-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_backend_create_root_folder):
+	new backend method.
+
 	* OpenChange/MAPIStoreFolder.m (-createFolder:withFID:andKey:):
 	modified method to return a enum mapistore_error, in order to
 	better determine of the failures that occur.

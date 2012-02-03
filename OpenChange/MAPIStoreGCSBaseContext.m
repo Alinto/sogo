@@ -88,6 +88,30 @@
   return firstContext;
 }
 
++ (NSString *)
+ createRootSecondaryFolderWithFID: (uint64_t) fid
+                          andName: (NSString *) folderName
+                          forUser: (NSString *) userName
+                  withTDBIndexing: (struct tdb_wrap *) indexingTdb
+{
+  NSString *mapistoreURI, *nameInContainer, *moduleName;
+  MAPIStoreUserContext *userContext;
+  SOGoParentFolder *parentFolder;
+
+  userContext = [MAPIStoreUserContext userContextWithUsername: userName
+                                               andTDBIndexing: indexingTdb];
+  moduleName = [self MAPIModuleName];
+  parentFolder = [[userContext rootFolders] objectForKey: moduleName];
+  if (![parentFolder newFolderWithName: folderName
+                       nameInContainer: &nameInContainer])
+    mapistoreURI = [NSString stringWithFormat: @"sogo://%@@%@/%@/",
+                             userName, moduleName, nameInContainer];
+  else
+    mapistoreURI = nil;
+
+  return mapistoreURI;
+}
+
 - (id) rootSOGoFolder
 {
   return [[userContext rootFolders] objectForKey: [isa MAPIModuleName]];

@@ -24,9 +24,11 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 
-#import "MAPIStoreFallbackContext.h"
+#import "MAPIStoreUserContext.h"
 #import "NSString+MAPIStore.h"
 #import "SOGoMAPIFSFolder.h"
+
+#import "MAPIStoreFallbackContext.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
@@ -36,6 +38,11 @@
 + (NSString *) MAPIModuleName
 {
   return @"fallback";
+}
+
++ (enum mapistore_context_role) MAPIContextRole
+{
+  return MAPISTORE_MAIL_ROLE;
 }
 
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
@@ -80,6 +87,16 @@
     }
 
   return firstContext;
+}
+
++ (NSString *)
+ createRootSecondaryFolderWithFID: (uint64_t) fid
+                          andName: (NSString *) folderName
+                          forUser: (NSString *) userName
+                  withTDBIndexing: (struct tdb_wrap *) indexingTdb
+{
+  return [NSString stringWithFormat: @"sogo://%@@fallback/0x%.16"PRIx64"/",
+                   userName, (unsigned long long) fid];
 }
 
 @end

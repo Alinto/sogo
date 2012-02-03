@@ -68,6 +68,12 @@
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
                                          withTDBIndexing: (struct tdb_wrap *) indexingTdb
                                                 inMemCtx: (TALLOC_CTX *) memCtx;
++ (enum mapistore_error) createRootFolder: (NSString **) mapistoreUriP
+                                  withFID: (uint64_t ) fid
+                                  andName: (NSString *) folderName
+                                  forUser: (NSString *) username
+                                 withRole: (enum mapistore_context_role) role
+                           andTDBIndexing: (struct tdb_wrap *) indexingTdb;
 
 + (int) openContext: (MAPIStoreContext **) contextPtr
             withURI: (const char *) newUri
@@ -104,6 +110,12 @@
 
 /* subclass methods */
 + (NSString *) MAPIModuleName;
++ (enum mapistore_context_role) MAPIContextRole;
++ (NSString *)
+ createRootSecondaryFolderWithFID: (uint64_t) fid
+                          andName: (NSString *) folderName
+                          forUser: (NSString *) userName
+                  withTDBIndexing: (struct tdb_wrap *) indexingTdb;
 - (Class) MAPIStoreFolderClass;
 
 /* the top-most parent of the context folder: SOGoMailAccount,
