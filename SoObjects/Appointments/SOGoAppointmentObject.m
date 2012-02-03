@@ -392,7 +392,7 @@
 		    ignoringAttendees: (NSArray *) attendees
 		         fromOldEvent: (iCalEvent *) oldEvent
 {
-  NSMutableArray *updateAttendees, *updateUIDs;
+  NSMutableArray *updateAttendees;
   NSEnumerator *enumerator;
   iCalPerson *currentAttendee;
   NSString *currentUID;
@@ -400,7 +400,6 @@
   updateAttendees = [NSMutableArray arrayWithArray: [newEvent attendees]];
   [updateAttendees removeObjectsInArray: attendees];
 
-  updateUIDs = [NSMutableArray arrayWithCapacity: [updateAttendees count]];
   enumerator = [updateAttendees objectEnumerator];
   while ((currentAttendee = [enumerator nextObject]))
     {
