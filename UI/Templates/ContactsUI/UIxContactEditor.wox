@@ -322,8 +322,8 @@
                 <label><var:string
                     label:value="ZIP_Postal Code:"
                     />
-                  <input type="text" class="textField" name="postalCode"
-                    id="postalCode" var:value="ldifRecord.postalCode"
+                  <input type="text" class="textField" name="postalcode"
+                    id="postalcode" var:value="ldifRecord.postalcode"
                     /></label>
               </td>
             </tr>
