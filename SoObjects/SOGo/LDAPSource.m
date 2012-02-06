@@ -35,6 +35,7 @@
 #import <NGLdap/NGLdapAttribute.h>
 #import <NGLdap/NGLdapEntry.h>
 #import <NGLdap/NGLdapModification.h>
+#import <NGLdap/NSString+DN.h>
 
 #import "LDAPSourceSchema.h"
 #import "NSArray+Utilities.h"
@@ -601,7 +602,7 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 		}
 	      else
 		userDN = [NSString stringWithFormat: @"%@=%@,%@",
-				   IDField, _login, baseDN];
+				   IDField, [_login escapedForLDAPDN], baseDN];
 	    }
 
 	  if (userDN)
@@ -690,7 +691,7 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 	    userDN = [self _fetchUserDNForLogin: login];
 	  else
 	    userDN = [NSString stringWithFormat: @"%@=%@,%@",
-			       IDField, login, baseDN];
+			       IDField, [login escapedForLDAPDN], baseDN];
 	  if (userDN)
 	    {
 	      NS_DURING
@@ -1439,7 +1440,8 @@ _convertRecordToLDAPAttributes (LDAPSourceSchema *schema, NSDictionary *ldifReco
       /* since the id might have changed due to the mapping above, we
          reload the record ID */
       aId = [ldifRecord objectForKey: UIDField];
-      dn = [NSString stringWithFormat: @"%@=%@,%@", IDField, aId, baseDN];
+      dn = [NSString stringWithFormat: @"%@=%@,%@", IDField,
+                     [aId escapedForLDAPDN], baseDN];
       attributes = _convertRecordToLDAPAttributes (schema, ldifRecord);
 
       newEntry = [[NGLdapEntry alloc] initWithDN: dn
@@ -1569,7 +1571,8 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   NSString *dn;
 
   ldapConnection = [self _ldapConnection];
-  dn = [NSString stringWithFormat: @"%@=%@,%@", IDField, aId, baseDN];
+  dn = [NSString stringWithFormat: @"%@=%@,%@", IDField,
+                 [aId escapedForLDAPDN], baseDN];
   NS_DURING
     {
       [ldapConnection removeEntryWithDN: dn];
@@ -1608,7 +1611,9 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
       sources = [NSMutableArray array];
 
       ldapConnection = [self _ldapConnection];
-      abBaseDN = [NSString stringWithFormat: @"ou=%@,%@=%@,%@", abOU, IDField, user, baseDN];
+      abBaseDN = [NSString stringWithFormat: @"ou=%@,%@=%@,%@",
+                           [abOU escapedForLDAPDN], IDField,
+                           [user escapedForLDAPDN], baseDN];
 
       /* test ou=addressbooks entry */
       attributes = [NSArray arrayWithObject: @"*"];
@@ -1694,7 +1699,8 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   if ([self hasUserAddressBooks])
     {
       abDN = [NSString stringWithFormat: @"ou=%@,ou=%@,%@=%@,%@",
-                       newId, abOU, IDField, user, baseDN];
+                       [newId escapedForLDAPDN], [abOU escapedForLDAPDN],
+                       IDField, [user escapedForLDAPDN], baseDN];
       entryRecord = [NSMutableDictionary dictionary];
       [entryRecord setObject: @"organizationalUnit" forKey: @"objectclass"];
       [entryRecord setObject: newId forKey: @"ou"];
@@ -1740,7 +1746,8 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   if ([self hasUserAddressBooks])
     {
       abDN = [NSString stringWithFormat: @"ou=%@,ou=%@,%@=%@,%@",
-                       newId, abOU, IDField, user, baseDN];
+                       [newId escapedForLDAPDN], [abOU escapedForLDAPDN],
+                       IDField, [user escapedForLDAPDN], baseDN];
       entryRecord = [NSMutableDictionary dictionary];
       [entryRecord setObject: @"organizationalUnit" forKey: @"objectclass"];
       [entryRecord setObject: newId forKey: @"ou"];
@@ -1784,7 +1791,8 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   if ([self hasUserAddressBooks])
     {
       abDN = [NSString stringWithFormat: @"ou=%@,ou=%@,%@=%@,%@",
-                       newId, abOU, IDField, user, baseDN];
+                       [newId escapedForLDAPDN], [abOU escapedForLDAPDN],
+                       IDField, [user escapedForLDAPDN], baseDN];
       ldapConnection = [self _ldapConnection];
       NS_DURING
         {
