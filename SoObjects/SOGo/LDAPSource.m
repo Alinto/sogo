@@ -34,6 +34,7 @@
 #import <NGLdap/NGLdapAttribute.h>
 #import <NGLdap/NGLdapEntry.h>
 #import <NGLdap/NGLdapModification.h>
+#import <NGLdap/NSString+DN.h>
 
 #import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
@@ -572,7 +573,7 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 		}
 	      else
 		userDN = [NSString stringWithFormat: @"%@=%@,%@",
-				   IDField, _login, baseDN];
+				   IDField, [_login escapedForLDAPDN], baseDN];
 	    }
 
 	  if (userDN)
@@ -661,7 +662,7 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 	    userDN = [self _fetchUserDNForLogin: login];
 	  else
 	    userDN = [NSString stringWithFormat: @"%@=%@,%@",
-			       IDField, login, baseDN];
+			       IDField, [login escapedForLDAPDN], baseDN];
 	  if (userDN)
 	    {
 	      NS_DURING

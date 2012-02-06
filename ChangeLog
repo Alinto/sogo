@@ -1,3 +1,8 @@
+2012-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m: escape built DNs using the new
+	-[NSString escapedForLDAPDN] method.
+
 2012-02-03  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxMailEditor.js (onRemoveAttachments):
