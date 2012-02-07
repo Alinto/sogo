@@ -1,9 +1,10 @@
 /* UIxMailPartHTMLViewer.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2011 Inverse inc.
+ * Copyright (C) 2007-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,6 +53,10 @@
 
 /* Tags that are forbidden within the body of the html content */
 static NSArray *BannedTags = nil;
+
+/* Tags that can't have any contents (no end tag)
+   See http://www.w3.org/TR/html5/syntax.html#void-elements */
+static NSArray *VoidTags = nil;
 
 static xmlCharEncoding
 _xmlCharsetForCharset (NSString *charset)
@@ -230,6 +235,8 @@ static NSData* _sanitizeContent(NSData *theData)
     BannedTags = [[NSArray alloc] initWithObjects: @"script", @"frameset",
                                   @"frame", @"iframe", @"applet", @"link",
                                   @"base", @"meta", @"title", nil];
+  if (!VoidTags)
+    VoidTags = [[NSArray alloc] initWithObjects: @"br", @"hr", nil];
 }
 
 - (id) init
@@ -411,53 +418,62 @@ static NSData* _sanitizeContent(NSData *theData)
           resultPart = [NSMutableString string];
           [resultPart appendFormat: @"<%@", _rawName];
 
-          max = [_attributes count];
-          for (count = 0; count < max; count++)
+          if ([VoidTags containsObject: lowerName])
             {
-              skipAttribute = NO;
-              name = [[_attributes nameAtIndex: count] lowercaseString];
-              if ([name hasPrefix: @"ON"])
-                skipAttribute = YES;
-              else if ([name isEqualToString: @"src"])
+              if (!ignoredContent)
+                ignoreTag = [lowerName copy];
+              ignoredContent++;
+            }
+          else
+            {
+              max = [_attributes count];
+              for (count = 0; count < max; count++)
                 {
-                  value = [_attributes valueAtIndex: count];
-                  if ([value hasPrefix: @"cid:"])
+                  skipAttribute = NO;
+                  name = [[_attributes nameAtIndex: count] lowercaseString];
+                  if ([name hasPrefix: @"ON"])
+                    skipAttribute = YES;
+                  else if ([name isEqualToString: @"src"])
                     {
-                      cid = [NSString stringWithFormat: @"<%@>",
-                             [value substringFromIndex: 4]];
-                      value = [attachmentIds objectForKey: cid];
-                      skipAttribute = (value == nil);
+                      value = [_attributes valueAtIndex: count];
+                      if ([value hasPrefix: @"cid:"])
+                        {
+                          cid = [NSString stringWithFormat: @"<%@>",
+                                 [value substringFromIndex: 4]];
+                          value = [attachmentIds objectForKey: cid];
+                          skipAttribute = (value == nil);
+                        }
+                      else if ([lowerName isEqualToString: @"img"])
+                        {
+                          /* [resultPart appendString:
+                             @"src=\"/SOGo.woa/WebServerResources/empty.gif\""]; */
+                          name = @"unsafe-src";
+                        }
+                      else
+                        skipAttribute = YES;
                     }
-                  else if ([lowerName isEqualToString: @"img"])
+                  else if (([name isEqualToString: @"data"]
+                            || [name isEqualToString: @"classid"])
+                           && [lowerName isEqualToString: @"object"])
                     {
-                      /* [resultPart appendString:
-                        @"src=\"/SOGo.woa/WebServerResources/empty.gif\""]; */
-                      name = @"unsafe-src";
+                      value = [_attributes valueAtIndex: count];
+                      name = [NSString stringWithFormat: @"unsafe-%@", name];
+                    }
+                  else if ([name isEqualToString: @"href"]
+                           || [name isEqualToString: @"action"])
+                    {
+                      value = [_attributes valueAtIndex: count];
+                      skipAttribute = ([value rangeOfString: @"://"].location
+                                       == NSNotFound
+                                       && ![value hasPrefix: @"#"]);
                     }
                   else
-                    skipAttribute = YES;
+                    value = [_attributes valueAtIndex: count];
+                  if (!skipAttribute)
+                    [resultPart appendFormat: @" %@=\"%@\"",
+                                name, [value stringByReplacingString: @"\""
+                                                          withString: @"\\\""]];
                 }
-              else if (([name isEqualToString: @"data"]
-                        || [name isEqualToString: @"classid"])
-                       && [lowerName isEqualToString: @"object"])
-                {
-                  value = [_attributes valueAtIndex: count];
-                  name = [NSString stringWithFormat: @"unsafe-%@", name];
-                }
-              else if ([name isEqualToString: @"href"]
-                       || [name isEqualToString: @"action"])
-                {
-                  value = [_attributes valueAtIndex: count];
-                  skipAttribute = ([value rangeOfString: @"://"].location
-                                   == NSNotFound
-                                   && ![value hasPrefix: @"#"]);
-                }
-              else
-                value = [_attributes valueAtIndex: count];
-              if (!skipAttribute)
-                [resultPart appendFormat: @" %@=\"%@\"",
-                            name, [value stringByReplacingString: @"\""
-                                                      withString: @"\\\""]];
             }
 
           [resultPart appendString: @">"];
