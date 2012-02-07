@@ -1,5 +1,10 @@
 2012-02-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/SOGo/SOGoGCSFolder.m (+webdavAclManager): must include
+	"write" in the "current-user-privilege-set" so the latest version
+	of AddressBook.app (bundled with 10.7.3) knows the personal
+	addressbook is writable by the owner.
+
 	* UI/WebServerResources/UIxAttendeesEditor.js
 	(performSearchCallback): set the uid parameter to null instead of
 	an empty string when the returned contact has no uid (ie, it comes
