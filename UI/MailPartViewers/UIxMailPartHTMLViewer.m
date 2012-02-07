@@ -54,8 +54,7 @@
 /* Tags that are forbidden within the body of the html content */
 static NSArray *BannedTags = nil;
 
-/* Tags that can't have any contents (no end tag)
-   See http://www.w3.org/TR/html5/syntax.html#void-elements */
+/* Tags that can't have any contents (no end tag) */
 static NSArray *VoidTags = nil;
 
 static xmlCharEncoding
