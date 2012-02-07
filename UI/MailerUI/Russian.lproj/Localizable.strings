@@ -19,6 +19,7 @@
 "Attach" = "Вложить";
 "Save" = "Сохранить";
 "Options" = "Опции";
+"Close" = "Закрыть";
 "Size" = "Размер";
 
 /* Tooltips */
@@ -63,8 +64,10 @@
 "Shared Account: " = "Общая учетная запись: ";
 
 /* acls */
-"Default Roles" = "Роли по умолчанию";
-"User rights for:" = "Права доступа для:";
+"Access rights to" = "Права доступа к";
+"For user" = "Для пользователя";
+
+"Any Authenticated User" = "Любой аутентифицированный пользователь";
 
 "List and see this folder" = "Видеть папку и названия писем в ней";
 "Read mails from this folder" = "Читать письма в папке";
@@ -104,17 +107,13 @@
 "cc"            = "Копия";
 "bcc"           = "Скрытая копия";
 
-"Addressbook"   = "Адресная книга";
-
 "Edit Draft..." = "Редактировать черновик...";
 "Load Images" = "Загрузить изображения";
 
 "Return Receipt" = "Уведомление о вручении";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Отправитель этого сообщения запросил получать уведомления, когда вы читаете это сообщение. Вы хотите уведомить отправителя?";
 "Return Receipt (displayed) - %@"= "Уведомление о вручении (отображается на дисплее) -% @";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.
-
-Note: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
 
 "Priority" = "Важность";
 "highest" = "Самый высокий";
@@ -146,7 +145,6 @@ Note: This Return Receipt only acknowledges that the message was displayed on th
 "Date"          = "Дата";
 "View"          = "Просмотр";
 "All"           = "Все";
-"Unread"        = "Непрочитанные";
 "No message"    = "Нет сообщений";
 "messages"      = "сообщения";
 
@@ -213,7 +211,6 @@ Note: This Return Receipt only acknowledges that the message was displayed on th
 "Open Message In New Window" = "Открыть сообщение в новом окне";
 "Reply to Sender Only" = "Ответить отправителю";
 "Reply to All" = "Ответить всем упомянутым адресатам";
-"Forward" = "Переслать";
 "Edit As New..." = "Редактировать как новое...";
 "Move To" = "Переместить в";
 "Copy To" = "Скопировать в";

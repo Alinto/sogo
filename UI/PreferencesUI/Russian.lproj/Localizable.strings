@@ -214,18 +214,6 @@
 "Always send" = "Всегда посылать";
 "Ask me" = "Спросить меня";
 
-/* Return receipts */
-"When I receive a request for a return receipt:" = "Когда я получаю запрос об уведомлении о доставке:";
-"Never send a return receipt" = "Никогда не посылать уведомления о доставке";
-"Allow return receipts for some messages" = "Разрешить уведомления о доставке для некоторых сообщений";
-"If I'm not in the To or Cc of the message:" = "Если я не в поле Кому: или Копия: для этого сообщения:";
-"If the sender is outside my domain:" = "Если отправитель вне моего домена:";
-"In all other cases:" = "Во всех остальных случаях:";
-
-"Never send" = "Никогда не посылать";
-"Always send" = "Всегда посылать";
-"Ask me" = "Спросить меня";
-
 /* Filters - UIxPreferences */
 "Filters" = "Фильтры";
 "Active" = "Активные";
@@ -291,5 +279,3 @@
 "Unhandled error response" = "Unhandled error response";
 "Password change is not supported." = "Изменение пароля не поддерживается";
 "Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
-"New password:" = "Новый пароль:";
-"Confirmation:" = "Повтор нового пароля:";
