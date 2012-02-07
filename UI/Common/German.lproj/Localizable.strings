@@ -32,20 +32,27 @@
 
 "Any Authenticated User" = "Alle authentifizierten Benutzer";
 "Public Access" = "Öffentlicher Zugang";
-"Any user not listed above" = "Jeder Benutzer, der nicht oben aufgelistet ist";
+"Any user not listed above" = "Jeder andere Benutzer";
 "Anybody accessing this resource from the public area" = "Jeder, der diese Ressource öffentlich erreicht";
 
 "Sorry, the user rights can not be configured for that object." = "Leider können die Benutzerrechte für dieses Objekt nicht konfiguriert werden.";
+
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Jeder Benutzer mit einem Account auf diesem System wird in der Lage sein, auf Ihren Kalender \"%{0}\" zuzugreifen. Sind Sie sicher, dass Sie allen vertrauen?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Jeder aus dem Internet wird in der Lage sein, auf Ihren Kalender \"%{0}\" zuzugreifen, selbst wenn jene Personen keinen Account auf diesem System haben. Sind diese Informationen für das öffentliche Internet gedacht?";
+"Give Access" = "Allen Zugriff gewähren";
+"Keep Private" = "Privat halten";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Es ist nicht möglich, diesen Ordner zu abonnieren!";
 "You cannot subscribe to a folder that you own!"
-      	= "Es ist nicht möglich einen Ordner zu abonnieren, der Ihnen selbst gehört!";
+      	= "Sie können keinen Ordner abonnieren, der Ihnen selbst gehört!";
 "Unable to unsubscribe from that folder!"
 	= "Es ist nicht möglich, diesen Ordner zu kündigen!";
 "You cannot unsubscribe from a folder that you own!"
-      	= "Es ist nicht möglich, einen Ordner zu kündigen, der Ihnen selbst gehört!";
+      	= "Sie können keinen Ordner kündigen, der Ihnen selbst gehört!";
 "Unable to rename that folder!" = "Es ist nicht möglich, diesen Ordner umzubenennen!";
 "You have already subscribed to that folder!"
      	= "Sie haben diesen Ordner bereits abonniert!";
@@ -65,6 +72,15 @@
 "delegate is organizer" = "Der Vertreter ist der Organisator. Bitte einen anderen Vertreter angeben.";
 "delegate is a participant" = "Der Vertreter ist bereits ein Teilnehmer.";
 "delegate is a group" = "Die angegebene Adresse gehört einer Gruppe. Es kann nur an eine einzelne Person delegiert werden.";
+
+"Snooze for " = "Erneut erinnern nach ";
+"5 minutes" = "5 Minuten";
+"10 minutes" = "10 Minuten";
+"15 minutes" = "15 Minuten";
+"30 minutes" = "30 Minuten";
+"45 minutes" = "45 Minuten";
+"1 hour" = "1 Stunde";
+
 
 /* common buttons */
 "OK" = "OK";

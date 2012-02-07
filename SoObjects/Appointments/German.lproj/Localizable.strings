@@ -27,36 +27,28 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 /* IMIP messages */
 "startDate_label" = "Beginn:";
 "endDate_label" = "Ende:";
-"due_label" = "Fällig:";
+"due_label" = "Fälligkeit:";
 "location_label" = "Ort:";
 "summary_label" = "Zusammenfassung:";
 "comment_label" = "Kommentar:";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Termin Einladung: \"%{Summary}\"";
+"Event Invitation: \"%{Summary}\"" = "Termineinladung: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(gesendet von %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} hat Sie eingeladen zu %{Summary}.
-
-Beginn: %{StartDate} um %{StartTime}
-Ende: %{EndDate} um %{EndTime}
-Beschreibung: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} hat Sie eingeladen zu %{Summary}.\n\nBeginn: %{StartDate} um %{StartTime}\nEnde: %{EndDate} um %{EndTime}\nBeschreibung: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Termin abgesagt: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText} hat diesen Termin abgesagt: %{Summary}.
-
-Beginn: %{StartDate} um %{StartTime}
-Ende: %{EndDate} um %{EndTime}
-Beschreibung: %{Description}";
+= "%{Organizer} %{SentByText} hat diesen Termin abgesagt: %{Summary}.\n\nBeginn: %{StartDate} um %{StartTime}\nEnde: %{EndDate} um %{EndTime}\nBeschreibung: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "Der Termin \"%{Summary}\" für den %{OldStartDate} um %{OldStartTime} hat sich geändert";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "Folgende Parameter haben sich im Termin \"%{Summary}\" geändert:";
+= "Folgendes wurde am Termin \"%{Summary}\" geändert:";
 "Please accept or decline those changes."
-= "Bitte akzeptieren oder lehnen Sie diese Änderungen ab.";
+= "Bitte akzeptieren Sie diese Änderung oder lehnen Sie ab.";
 
 /* Reply */
 "Reply to invitation: \"%{Summary}\"" = "Antwort auf Termineinladung: %{Summary}";

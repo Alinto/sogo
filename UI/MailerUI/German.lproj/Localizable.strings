@@ -19,6 +19,7 @@
 "Attach" = "Anhang";
 "Save" = "Speichern";
 "Options" = "Optionen";
+"Close" = "Schließen";
 "Size" = "Größe";
 
 /* Tooltips */
@@ -63,8 +64,10 @@
 "Shared Account: " = "Gemeinsames Konto: ";
 
 /* acls */
-"Default Roles" = "Standardrechte";
-"User rights for:" = "Benutzerrechte für:";
+"Access rights to" = "Zugriffsrechte für";
+"For user" = "Für Benutzer";
+
+"Any Authenticated User" = "Alle authentifizierten Benutzer ";
 
 "List and see this folder" = "Diesen Ordner sehen";
 "Read mails from this folder" = "E-Mails in diesem Ordner ansehen";
@@ -104,17 +107,13 @@
 "cc"            = "CC";
 "bcc"           = "BCC";
 
-"Addressbook"   = "Adressbuch";
-
 "Edit Draft..." = "Entwurf bearbeiten...";
 "Load Images" = "Bilder laden";
 
 "Return Receipt" = "Empfangsbestätigung";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Der Absender dieser Nachricht hat um eine Empfangsbestätigung gebeten. Möchten Sie eine Empfangsbestätigung senden?";
 "Return Receipt (displayed) - %@"= "Empfangsbestätigung (angezeigt) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dies ist die Empfangsbestätigung für die Nachricht, die Sie an %@ gesendet haben.
-
-Hinweis: Es wird lediglich bestätigt, dass die Nachricht auf dem Computer des Empfängers empfangen (angezeigt) wurde. Es wird nicht garantiert, dass der Empfänger die Nachricht gelesen und/oder verstanden hat.";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dies ist die Empfangsbestätigung für die Nachricht, die Sie an %@ gesendet haben.\n\nHinweis: Es wird lediglich bestätigt, dass die Nachricht auf dem Computer des Empfängers empfangen (angezeigt) wurde. Es wird nicht garantiert, dass der Empfänger die Nachricht gelesen und/oder verstanden hat.";
 
 "Priority" = "Priorität";
 "highest" = "Sehr hoch";
@@ -124,6 +123,9 @@ Hinweis: Es wird lediglich bestätigt, dass die Nachricht auf dem Computer des E
 "lowest" = "Sehr niedrig";
 
 "This mail is being sent from an unsecure network!" = "Diese E-Mail wurde von einem unsicheren Netzwerk gesendet!";
+
+"Address Book:" = "Adressbuch:";
+"Search For:" = "Suche nach:";
 
 /* Popup "show" */
 
@@ -143,7 +145,6 @@ Hinweis: Es wird lediglich bestätigt, dass die Nachricht auf dem Computer des E
 "Date"          = "Datum";
 "View"          = "Ansicht";
 "All"           = "Alle";
-"Unread"        = "Ungelesene";
 "No message"    = "Keine Nachricht";
 "messages"      = "Nachricht(en)";
 
@@ -210,7 +211,6 @@ Hinweis: Es wird lediglich bestätigt, dass die Nachricht auf dem Computer des E
 "Open Message In New Window" = "In neuem Fenster öffnen";
 "Reply to Sender Only" = "Antworten nur an Absender";
 "Reply to All" = "Antworten an alle";
-"Forward" = "Weiterleiten";
 "Edit As New..." = "Als neu bearbeiten";
 "Move To" = "Verschieben in";
 "Copy To" = "Kopieren in";

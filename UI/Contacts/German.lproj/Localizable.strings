@@ -154,7 +154,9 @@
 "Unable to subscribe to that folder!"
 = "Abonnieren des Ordners nicht möglich.";
 
-"User rights for:" = "Benutzerrechte für:";
+/* acls */
+"Access rights to" = "Zugriffsrechte für";
+"For user" = "Für Benutzer";
 
 "Any Authenticated User" = "Alle authentifizierten Benutzer";
 "Public Access" = "Öffentlicher Zugriff";
