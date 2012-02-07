@@ -211,18 +211,6 @@
 "Always send" = "Enviar sempre";
 "Ask me" = "Preguntar";
 
-/* Return receipts */
-"When I receive a request for a return receipt:" = "6dcbafaedc1d191157e4d52dd3258258_tr";
-"Never send a return receipt" = "3d146beb0aca4bf10235cb758fff026c_tr";
-"Allow return receipts for some messages" = "5cea65ec00f7f15bb276d1d13a2d492f_tr";
-"If I'm not in the To or Cc of the message:" = "90d95d42c39f94371f8b899a4f8159c5_tr";
-"If the sender is outside my domain:" = "f8978945e6d6530b49c9893f127da5d7_tr";
-"In all other cases:" = "80a19db12534f93dc16139cb208f081b_tr";
-
-"Never send" = "d96089efc3367a3278e80f40a49a9b56_tr";
-"Always send" = "8833fc53740dc58b5f789b57b94b8233_tr";
-"Ask me" = "41b53400ba659bc88f3c4d6b0e0f7596_tr";
-
 /* Filters - UIxPreferences */
 "Filters" = "Filtres";
 "Active" = "Actiu";
