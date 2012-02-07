@@ -37,6 +37,13 @@
 
 "Sorry, the user rights can not be configured for that object." = "Beklager, brukerrettighetene kan ikke konfigureres for objektet.";
 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Alle brukere med konto på systemet vil kunne aksessere kalenderen \"%{0}\". Er du sikker på at du stoler på alle?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Potensielt kan hvem som helst på Internett aksessere kalenderen \"%{0}\", selv om de ikke har konto på systemet. Er denne informasjonen passende for åpent Internett?";
+"Give Access" = "Gi tilgang";
+"Keep Private" = "Behold privat";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Du kan ikke abonnere på den mappen!";
@@ -63,8 +70,17 @@
 
 "noEmailForDelegation" = "Du må angi adressen til personen du delegerer din invitasjon.";
 "delegate is organizer" = "Personen du delegerer til er arrangør. Vennligst deleger til en annen person.";
-"delegate is a participant" = "The delegate is already a participant.";
-"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+"delegate is a participant" = "Delegaten er allerede en deltaker.";
+"delegate is a group" = "Den angitte adressen er en gruppe. Du kan bare delegere til unike personer.";
+
+"Snooze for " = "Slumre i";
+"5 minutes" = "5 minutt";
+"10 minutes" = "10 minutt";
+"15 minutes" = "15 minutt";
+"30 minutes" = "30 minutt";
+"45 minutes" = "45 minutt";
+"1 hour" = "1 time";
+
 
 /* common buttons */
 "OK" = "OK";

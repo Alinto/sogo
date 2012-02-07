@@ -67,7 +67,7 @@
 "February" = "Februar";
 "March" = "Mars";
 "April" = "April";
-"May" = "May";
+"May" = "Mai";
 "June" = "Juni";
 "July" = "Juli";
 "August" = "August";
@@ -80,7 +80,7 @@
 "a3_February" = "Februar";
 "a3_March" = "Mars";
 "a3_April" = "April";
-"a3_May" = "May";
+"a3_May" = "Mai";
 "a3_June" = "Juni";
 "a3_July" = "Juli";
 "a3_August" = "August";
@@ -131,7 +131,8 @@
 
 /* acls */
 
-"User rights for:" = "Brukerrettigheter for:";
+"Access rights to" = "Tilgangsrettigheter til";
+"For user" = "For bruker";
 
 "Any Authenticated User" = "Enhver autentisert bruker";
 "Public Access" = "Felles adgang";
@@ -159,7 +160,6 @@
 
 /* Button Titles */
 
-"New Calendar..." = "Ny kalender...";
 "Subscribe to a Calendar..." = "Abonnere på en kalender...";
 "Remove the selected Calendar" = "Slett markert kalender";
 
@@ -352,7 +352,7 @@
 "Week(s)" = "Uke(r)";
 "On" = "På";
 "Month(s)" = "Måned(er)";
-"The" = "The";
+"The" = "";
 "Recur on day(s)" = "Gjentas på dag(er)";
 "Year(s)" = "År";
 "cycle_of" = "av";
@@ -485,7 +485,7 @@ validate_endbeforestart    = "Angitt sluttdato inntreffer før angitt startdato.
 
 /* FreeBusy panel buttons and labels */
 "Suggest time slot:" = "Foreslå tid:";
-"Zoom:" = "Zoom:";
+"Zoom:" = "Forstørr:";
 "Previous slot" = "Forrige spor";
 "Next slot" = "Neste spor";
 "Previous hour" = "Forrige time";
@@ -537,7 +537,7 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "Show tasks" = "Vis oppgaver";
 
 "Links to this Calendar" = "Linker til denne kalenderen";
-"Authenticated User Access" = "Authenticated User Access";
+"Authenticated User Access" = "Autentisert brukertilgang";
 "CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
@@ -550,7 +550,7 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "yearFieldInvalid" = "Angi en numerisk verdi i årsfeltet større enn eller lik 1.";
 "appointmentFieldInvalid" = "Angi en numerisk verdi i møtesfeltet større enn eller lik 1.";
 "recurrenceUnsupported" = "Denne type gjentakelse støttes ikke i dag.";
-"Please specify a calendar name." = "Please specify a calendar name.";
+"Please specify a calendar name." = "Vennligst angi ett kalendernavn.";
 "tagNotDefined" = "Du må angi en merkelapp om du vil synkronisere kalenderen.";
 "tagAlreadyExists" = "Merkelappen du spesifiserte er allerede knyttet til en annen kalender.";
 "tagHasChanged" = "Om du endrer merkelappen på din kalender trenger du å laste dataene i din mobiltelefon på nytt.\nFortsätta?";
@@ -563,7 +563,7 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "Mark Completed" = "Merk utført";
 "Delete Task" = "Slett oppgave";
 "Delete Event" = "Slett hendelse";
-"Copy event to my calendar" = "Copy event to my calendar";
+"Copy event to my calendar" = "Kopier hendelse til min kalender";
 
 "Subscribe to a web calendar..." = "Abonnere på en internett-kalender...";
 "URL of the Calendar" = "URL til kalenderen";

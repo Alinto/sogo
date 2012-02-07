@@ -13,6 +13,7 @@ Enhancements
  - updated Spanish (Spain) translation
  - updated German translation
  - updated Catalan translation
+ - updated Norwegian (Bokmal) translation
  - now possible to use memcached over a UNIX socket
  - increase size of content columns
  - improved import of .ics files

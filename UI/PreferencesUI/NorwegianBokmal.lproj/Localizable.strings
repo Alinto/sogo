@@ -27,8 +27,12 @@
 "Add default email addresses" = "Legg til standard e-postadresser";
 "Days between responses :" = "Dager mellom svar:";
 "Do not send responses to mailing lists" = "Ikke send svar til e-postlister";
+"Disable auto reply on" = "Skru av auto-svar";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Skriv melding og angi din e-postadresse som du vil aktivera auto-svar på.";
+"Your vacation message must not end with a single dot on a line." = "Fraværsmeldingen kan ikke slutte med ett ensomt punktum på en linje. ";
+"End date of your auto reply must be in the future."
+= "Slutt-dato for auto-svar må være i fremtiden.";
 
 /* forward messages */
 "Forward incoming messages" = "Videresend innkommende e-post";
@@ -72,16 +76,24 @@
 "longDateFmt_2" = "%A, %d %B, %Y";
 "longDateFmt_3" = "%d %B, %Y";
 "longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
 
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
+"timeFmt_3" = "";
 
 /* calendar */
 "Week begins on :" = "Uken begynner med:";
 "Day start time :" = "Dagen begynner kl.:";
 "Day end time :" = "Dagen slutter kl.:";
 "Day start time must be prior to day end time." = "Dagens starttid må være før dagens sluttid.";
+"Show time as busy outside working hours" = "Vis tid som opptatt utenfor arbeidstid";
 "First week of year :" = "Første uken i året:";
 "Enable reminders for Calendar items" = "Aktivere påminnelser for kalenderelementer";
 "Play a sound when a reminder comes due"
@@ -93,10 +105,10 @@
 "firstWeekOfYear_FirstFullWeek" = "Første hele uken i året";
 
 /* Default Calendar */
-"Default calendar :" = "Default calendar";
-"selectedCalendar" = "Selected calendar";
-"personalCalendar" = "Personal calendar";
-"firstCalendar" = "First enabled calendar";
+"Default calendar :" = "Standard kalender";
+"selectedCalendar" = "Valgte kalender";
+"personalCalendar" = "Personlig kalender";
+"firstCalendar" = "Første aktiverte kalender";
 
 "reminderTime_0000" = "0 minutter";
 "reminderTime_0005" = "5 minutter";
@@ -113,7 +125,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Vis bare abonnerte postbokser";
-"Sort messages by threads" = "Sort messages by threads";
+"Sort messages by threads" = "Sorter meldinger etter tråder";
 "Check for new mail:" = "Hent ny post:";
 "messagecheck_manually" = "Manuelt";
 "messagecheck_every_minute" = "Hvert minutt";
@@ -205,18 +217,6 @@
 "Always send" = "Send alltid";
 "Ask me" = "Spør meg";
 
-/* Return receipts */
-"When I receive a request for a return receipt:" = "Når jeg mottar anmodning om en returkvittering:";
-"Never send a return receipt" = "Send aldri en returkvittering";
-"Allow return receipts for some messages" = "Tillat returkvittering for noen meldinger";
-"If I'm not in the To or Cc of the message:" = "Hvis jeg ikke er i Til eller Cc feltet i meldingen:";
-"If the sender is outside my domain:" = "Hvis senderen er utenfor mitt domene:";
-"In all other cases:" = "I alle andre tilfeller:";
-
-"Never send" = "Send aldri";
-"Always send" = "Send alltid";
-"Ask me" = "Spør meg";
-
 /* Filters - UIxPreferences */
 "Filters" = "Filtre";
 "Active" = "Aktiv";
@@ -270,17 +270,15 @@
 "Label 4" = "Etikett 4";
 "Label 5" = "Etikett 5";
 
-"Password must not be empty." = "Le mot de passe ne doit pas être vide.";
-"The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
-"Password change failed" = "Échec au changement";
-"Password change failed - Permission denied" = "Échec au changement - mauvaises permissions";
-"Password change failed - Insufficient password quality" = "Échec au changement - qualité insuffisante";
-"Password change failed - Password is too short" = "Échec au changement - mot de passe trop court";
-"Password change failed - Password is too young" = "Échec au changement - mot de passe trop récent";
-"Password change failed - Password is in history" = "Échec au changement - mot de passe dans l'historique";
-"Unhandled policy error: %{0}" = "Erreur inconnue pour le ppolicy: %{0}";
-"Unhandled error response" = "Erreur inconnue";
-"Password change is not supported." = "Changement de mot de passe non-supporté.";
-"Unhandled HTTP error code: %{0}" = "Code HTTP non-géré: %{0}";
-"New password:" = "Nytt passord:";
-"Confirmation:" = "Bekreft:";
+"Password must not be empty." = "Passord kan ikke være tomme.";
+"The passwords do not match. Please try again." = "Passordene er ikke like. Prøv igjen.";
+"Password change failed" = "Passordendring feilet";
+"Password change failed - Permission denied" = "Passordendring feilet -- ikke tilgang";
+"Password change failed - Insufficient password quality" = "Passordendring feilet -- for dårlig passord";
+"Password change failed - Password is too short" = "Passordendring feilet -- passordet er for kort";
+"Password change failed - Password is too young" = "Passordendring feilet -- passordet er nylig brukt før";
+"Password change failed - Password is in history" = "Passordendring feilet -- passordet er brukt før";
+"Unhandled policy error: %{0}" = "";
+"Unhandled error response" = "";
+"Password change is not supported." = "Passordendring er ikke støttet.";
+"Unhandled HTTP error code: %{0}" = "";
