@@ -430,58 +430,57 @@ static NSData* _sanitizeContent(NSData *theData)
                 ignoreTag = [lowerName copy];
               ignoredContent++;
             }
-          else
+          max = [_attributes count];
+          for (count = 0; count < max; count++)
             {
-              max = [_attributes count];
-              for (count = 0; count < max; count++)
+              skipAttribute = NO;
+              name = [[_attributes nameAtIndex: count] lowercaseString];
+              if ([name hasPrefix: @"ON"])
+                skipAttribute = YES;
+              else if ([name isEqualToString: @"src"])
                 {
-                  skipAttribute = NO;
-                  name = [[_attributes nameAtIndex: count] lowercaseString];
-                  if ([name hasPrefix: @"ON"])
-                    skipAttribute = YES;
-                  else if ([name isEqualToString: @"src"])
+                  value = [_attributes valueAtIndex: count];
+                  if ([value hasPrefix: @"cid:"])
                     {
-                      value = [_attributes valueAtIndex: count];
-                      if ([value hasPrefix: @"cid:"])
-                        {
-                          cid = [NSString stringWithFormat: @"<%@>",
-                                 [value substringFromIndex: 4]];
-                          value = [attachmentIds objectForKey: cid];
-                          skipAttribute = (value == nil);
-                        }
-                      else if ([lowerName isEqualToString: @"img"])
-                        {
-                          /* [resultPart appendString:
-                             @"src=\"/SOGo.woa/WebServerResources/empty.gif\""]; */
-                          name = @"unsafe-src";
-                        }
-                      else
-                        skipAttribute = YES;
+                      cid = [NSString stringWithFormat: @"<%@>",
+                             [value substringFromIndex: 4]];
+                      value = [attachmentIds objectForKey: cid];
+                      skipAttribute = (value == nil);
                     }
-                  else if (([name isEqualToString: @"data"]
-                            || [name isEqualToString: @"classid"])
-                           && [lowerName isEqualToString: @"object"])
+                  else if ([lowerName isEqualToString: @"img"])
                     {
-                      value = [_attributes valueAtIndex: count];
-                      name = [NSString stringWithFormat: @"unsafe-%@", name];
-                    }
-                  else if ([name isEqualToString: @"href"]
-                           || [name isEqualToString: @"action"])
-                    {
-                      value = [_attributes valueAtIndex: count];
-                      skipAttribute = ([value rangeOfString: @"://"].location
-                                       == NSNotFound
-                                       && ![value hasPrefix: @"#"]);
+                      /* [resultPart appendString:
+                         @"src=\"/SOGo.woa/WebServerResources/empty.gif\""]; */
+                      name = @"unsafe-src";
                     }
                   else
-                    value = [_attributes valueAtIndex: count];
-                  if (!skipAttribute)
-                    [resultPart appendFormat: @" %@=\"%@\"",
-                                name, [value stringByReplacingString: @"\""
-                                                          withString: @"\\\""]];
+                    skipAttribute = YES;
                 }
+              else if (([name isEqualToString: @"data"]
+                        || [name isEqualToString: @"classid"])
+                       && [lowerName isEqualToString: @"object"])
+                {
+                  value = [_attributes valueAtIndex: count];
+                  name = [NSString stringWithFormat: @"unsafe-%@", name];
+                }
+              else if ([name isEqualToString: @"href"]
+                       || [name isEqualToString: @"action"])
+                {
+                  value = [_attributes valueAtIndex: count];
+                  skipAttribute = ([value rangeOfString: @"://"].location
+                                   == NSNotFound
+                                   && ![value hasPrefix: @"#"]);
+                }
+              else
+                value = [_attributes valueAtIndex: count];
+              if (!skipAttribute)
+                [resultPart appendFormat: @" %@=\"%@\"",
+                            name, [value stringByReplacingString: @"\""
+                                                      withString: @"\\\""]];
             }
 
+          if ([VoidTags containsObject: lowerName])
+            [resultPart appendString: @"/"];
           [resultPart appendString: @">"];
           [result appendString: resultPart];
         }
