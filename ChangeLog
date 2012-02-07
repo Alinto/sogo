@@ -1,5 +1,8 @@
 2012-02-10  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/generic.js (openMailTo): recipients are
+	now a JSON string (see commit of February 2nd).
+
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
 	(-startElement:namespace:rawName:attributes:): we should not add
 	end tags to void tags (ex: <br>).

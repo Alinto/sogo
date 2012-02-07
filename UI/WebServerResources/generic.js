@@ -279,7 +279,7 @@ function openMailTo(senderMailTo) {
 
     if (mailto.length > 0)
         openMailComposeWindow(ApplicationBaseURL
-                              + "../Mail/compose?mailto=" + encodeURIComponent(mailto)
+                              + "../Mail/compose?mailto=" + encodeURIComponent(Object.toJSON([mailto]))
                               + ((subject.length > 0)?"?subject=" + encodeURIComponent(subject):""));
 
     return false; /* stop following the link */
