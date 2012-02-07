@@ -7,6 +7,12 @@ New Features
 
 Enhancements
  - updated Ukrainian translation
+ - updated Russian translation
+ - updated Brazilian (Portuguese) translation
+ - updated Italian translation
+ - updated Spanish (Spain) translation
+ - updated German translation
+ - updated Catalan translation
  - now possible to use memcached over a UNIX socket
  - increase size of content columns
  - improved import of .ics files
