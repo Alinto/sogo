@@ -8,47 +8,47 @@ vtodo_class1 = "(Tarefa Privada)";
 vtodo_class2 = "(Tarefa Confidencial)";
 
 /* Receipts */
-"Title:" = "Title:";
-"Start:" = "Start:";
-"End:" = "End:";
+"Title:" = "Título:";
+"Start:" = "Início:";
+"End:" = "Fim:";
 
-"Receipt: users invited to a meeting" = "Receipt: users invited to a meeting";
-"You have invited the following attendees(s):" = "You have invited the following attendees(s):";
-"... to attend the following event:" = "... to attend the following event:";
+"Receipt: users invited to a meeting" = "Recepção: usuários convidados para uma reunião";
+"You have invited the following attendees(s):" = "Você convidou o(s) seguinte(s) participante(s):";
+"... to attend the following event:" = ".. para participar do seguinte evento:";
 
-"Receipt: invitation updated" = "Receipt: invitation updated";
-"The following attendees(s):" = "The following attendees(s):";
-"... have been notified of the changes to the following event:" = "... have been notified of the changes to the following event:";
+"Receipt: invitation updated" = "Recepção: Convite atualizado";
+"The following attendees(s):" = "O(s) seguinte(s) participante(s):";
+"... have been notified of the changes to the following event:" = "... foi notificado das alterações do seguinte evento:";
 
-"Receipt: attendees removed from an event" = "Receipt: attendees removed from an event";
-"You have removed the following attendees(s):" = "You have removed the following attendees(s):";
-"... from the following event:" = "... from the following event:";
+"Receipt: attendees removed from an event" = "Recepção: participantes removidos de um evento";
+"You have removed the following attendees(s):" = "Você removeu o(s) seguinte(s) participante(s): ";
+"... from the following event:" = "... do seguinte evento:";
 
 /* IMIP messages */
-"startDate_label" = "Start:";
-"endDate_label" = "End:";
-"due_label" = "Due Date:";
-"location_label" = "Location:";
-"summary_label" = "Summary:";
-"comment_label" = "Comment:";
+"startDate_label" = "Início:";
+"endDate_label" = "Fim:";
+"due_label" = "Data de Vencimento:";
+"location_label" = "Local:";
+"summary_label" = "Resumo:";
+"comment_label" = "Comentário:";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Event Invitation: \"%{Summary}\"";
+"Event Invitation: \"%{Summary}\"" = "Convite do Evento: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(enviado por %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} convidou você para %{Summary}.\n\nInício: %{StartDate} as %{StartTime}\nFim: %{EndDate} as %{EndTime}\nDescrição: %{Description}";
 
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Event Cancelled: \"%{Summary}\"";
+"Event Cancelled: \"%{Summary}\"" = "Evento Cancelado: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+= "%{Organizer} %{SentByText} cancelou este evento: %{Summary}.\n\nInício: %{StartDate} as %{StartTime}\nFim: %{EndDate} as %{EndTime}\nDescrição: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed";
+= "O Compromisso \"%{Summary}\" de %{OldStartDate} as %{OldStartTime} mudou";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "The following parameters have changed in the \"%{Summary}\" meeting:";
+= "Os seguintes parâmetros mudaram na reunião \"%{Summary}\" :\n\n";
 "Please accept or decline those changes."
-= "Please accept or decline those changes.";
+= "Por favor, aceitar ou recusar as alterações.";
 
 /* Reply */
 "Reply to invitation: \"%{Summary}\"" = "Resposta a Evento de Convite: \"%{Summary}\"";
@@ -57,9 +57,9 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText}foi declinado seu convite ao evento.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
+= "%{Attendee} %{SentByText} delegou o convite para %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}foi ainda não decidiu seu convite ao evento.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Número máximo de reservas simultâneas (%{NumberOfSimultaneousBookings}) alcançadas para o recurso \"%{Cn} %{SystemEmail}\".";

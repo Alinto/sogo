@@ -18,8 +18,9 @@
 "Contacts" = "Contatos";
 "Attach" = "Anexo";
 "Save" = "Salvar";
-"Options" = "Options";
-"Size" = "Size";
+"Options" = "Opções";
+"Close" = "Fechar";
+"Size" = "Tamanho";
 
 /* Tooltips */
 
@@ -63,8 +64,10 @@
 "Shared Account: " = "Conta Compartilhada: ";
 
 /* acls */
-"Default Roles" = "Papéis Padrão";
-"User rights for:" = "Direitos de:";
+"Access rights to" = "Direitos de acesso para";
+"For user" = "Para usuário";
+
+"Any Authenticated User" = "Qualquer Usuário Autenticado";
 
 "List and see this folder" = "Listar e ver esta pasta";
 "Read mails from this folder" = "Ler emails desta pasta";
@@ -79,7 +82,7 @@
 "Archive This Folder" = "Archive This Folder";
 "Modify the acl of this folder" = "Modificar os direitos desta pasta";
 
-"Saved Messages.zip" = "Saved Messages.zip";
+"Saved Messages.zip" = "Mensagens Salvas.zip";
 
 "Update" = "Atualizar";
 "Cancel" = "Cancelar";
@@ -95,24 +98,24 @@
 "Add address"   = "Adicionar endereço";
 
 "Attachments:" = "Anexos:";
-"Open" = "Open";
-"Select All" = "Select All";
-"Attach Web Page..." = "Attach Web Page...";
-"Attach File(s)..." = "Attach File(s)...";
+"Open" = "Abrir";
+"Select All" = "Selecionar Tudo";
+"Attach Web Page..." = "Anexar Página Web...";
+"Attach File(s)..." = "Anexar Arquivo(s)...";
 
 "to"            = "Para";
 "cc"            = "Cc";
 "bcc"           = "Bcc";
 
-"Addressbook"   = "Catálogo";
+"Addressbook"   = "74dac49ea10c32f4141ab15f89148aa0_tr";
 
 "Edit Draft..." = "Editar Rascunho...";
 "Load Images" = "Carregar Imagens";
 
-"Return Receipt" = "Return Receipt";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?";
-"Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+"Return Receipt" = "Endereço de Resposta";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "O remetente desta mensagem pediu para ser notificado quando você ler esta mensagem. Deseja notificar o remetente?";
+"Return Receipt (displayed) - %@"= "Endereço de Resposta - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Este é o Endereço de Resposta do e-mail que você enviou para %@.\n\nNota: Este Endereço de Resposta permite saber que a mensagem foi visualizada pelo destinatário. Não há garantia de que o destinatário tenha lido ou entendido o conteúdo da mensagem.";
 
 "Priority" = "Prioridade";
 "highest" = "Muito Alta";
@@ -122,6 +125,9 @@
 "lowest" = "Muito Baixa";
 
 "This mail is being sent from an unsecure network!" = "Este email está sendo enviado por uma rede não segura!";
+
+"Address Book:" = "Catálogo:";
+"Search For:" = "Pesquisar Por:";
 
 /* Popup "show" */
 
@@ -141,8 +147,7 @@
 "Date"          = "Data";
 "View"          = "Visão";
 "All"           = "Tudo";
-"Unread"        = "Não Lido";
-"No message"    = "No message";
+"No message"    = "Sem mensagem";
 "messages"      = "mensagens";
 
 "first"         = "Primeiro";
@@ -180,7 +185,7 @@
 
 /* Image Popup menu */
 "Save Image" = "Salvar Imagem";
-"Save Attachment" = "Save Attachment";
+"Save Attachment" = "Salvar Anexo.";
 
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Abrir em uma Nova Janela";
@@ -196,8 +201,8 @@
 "Delete Folder" = "Apagar Pasta";
 "Use This Folder For" = "Usar Esta Pasta Para";
 "Get Messages for Account" = "Receber Mensagens por Conta";
-"Properties..." = "Properties...";
-"Delegation..." = "Delegation...";
+"Properties..." = "Propriedades...";
+"Delegation..." = "Delegação...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Enviar Mensagens";
@@ -208,7 +213,6 @@
 "Open Message In New Window" = "Abrir Mensagens em uma Nova Janela";
 "Reply to Sender Only" = "Responder Somente para o Remetente";
 "Reply to All" = "Responder a Todos";
-"Forward" = "Encaminhar";
 "Edit As New..." = "Editar Como Novo...";
 "Move To" = "Mover Para";
 "Copy To" = "Copiar Para";
@@ -255,7 +259,7 @@
 "Please select a message." = "Por favor, selecione uma mensagem.";
 "Please select a message to print." = "Por favor, selecione a mensagem para imprimir.";
 "Please select only one message to print." = "Por favor, selecione somente uma mensagem para imprimir.";
-"The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
+"The message you have selected doesn't exist anymore." = "A mensagem que você selecionou não existe mais.";
 
 
 "The folder with name \"%{0}\" could not be created."
@@ -278,7 +282,7 @@
 
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
-= "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
+= "As mensagens não podem ser movidas para a lixeira. Gostaria de excluí-las imediatamente?";
 
 /* Message editing */
 "error_validationfailed" = "Validação falhou";
@@ -286,6 +290,6 @@
 "error_missingrecipients" = "Sem destinatários selecionados";
 
 /* Message sending */
-"cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
-"cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
-"cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";
+"cannot send message: (smtp) all recipients discarded" = "Não é possível enviar a mensagem: todos os destinatários são inválidos.";
+"cannot send message (smtp) - recipients discarded:" = "Não é possível enviar a mensagem. Os seguintes endereços estão inválidos:";
+"cannot send message: (smtp) error when connecting" = "Não é possível enviar a mensagem: erro ao conectar ao servidor SMTP.";
