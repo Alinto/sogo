@@ -209,18 +209,6 @@
 "Always send" = "Завжди відправляти";
 "Ask me" = "Спитати";
 
-/* Return receipts */
-"When I receive a request for a return receipt:" = "Коли я отримую запит на сповіщення про прочитання:";
-"Never send a return receipt" = "Ніколи не відправляти сповіщення";
-"Allow return receipts for some messages" = "Дозволити надсилати сповіщення для окремих повідомлень";
-"If I'm not in the To or Cc of the message:" = "Якщо я не серед адресатів та у копії листа:";
-"If the sender is outside my domain:" = "Якщо відправник не з мого домену:";
-"In all other cases:" = "У всіх інших випадках:";
-
-"Never send" = "Ніколи не відправляти";
-"Always send" = "Завжди відправляти";
-"Ask me" = "Спитати";
-
 /* Filters - UIxPreferences */
 "Filters" = "Фільтри";
 "Active" = "Увімкнено";
@@ -286,5 +274,3 @@
 "Unhandled error response" = "Невідома помилка";
 "Password change is not supported." = "Зміна паролю не підтримується.";
 "Unhandled HTTP error code: %{0}" = "Невідомий код помилки HTTP: %{0}";
-"New password:" = "Новий пароль:";
-"Confirmation:" = "Повтор нового пароля:";
