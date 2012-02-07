@@ -10,7 +10,7 @@
 "Switch to day view" = "Giorno";
 "Switch to week view" = "Settimana";
 "Switch to month view" = "Mese";
-"Reload all calendars" = "Reload all calendars";
+"Reload all calendars" = "Ricarica tutto i calendari";
 
 /* Tabs */
 "Date" = "Data";
@@ -41,7 +41,7 @@
 "a2_Wednesday" = "Me";
 "a2_Thursday" = "Gi";
 "a2_Friday" = "Ve";
-"a2_Saturday" = "Sa";
+"a2_Saturday" = "Sab";
 
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Oggi";
@@ -131,7 +131,8 @@
 
 /* acls */
 
-"User rights for:" = "Permessi per:";
+"Access rights to" = "Permessi di accesso a";
+"For user" = "Per utente";
 
 "Any Authenticated User" = "Utenti autenticati";
 "Public Access" = "Accesso pubblico";
@@ -159,7 +160,6 @@
 
 /* Button Titles */
 
-"New Calendar..." = "Nuovo calendario...";
 "Subscribe to a Calendar..." = "Sottoscrivi un calendario...";
 "Remove the selected Calendar" = "Rimuovi il calendario selezionato...";
 
@@ -406,11 +406,11 @@
 "reminder_END" = "l'evento termina";
 "Reminder Details" = "Dettagli promemoria";
 
-"Choose a Reminder Action" = "Choose a Reminder Action";
-"Show an Alert" = "Show an Alert";
-"Send an E-mail" = "Send an E-mail";
-"Email Organizer" = "Email Organizer";
-"Email Attendees" = "Email Attendees";
+"Choose a Reminder Action" = "Scegli l'azione dell'allarme";
+"Show an Alert" = "Mostra un allarme";
+"Send an E-mail" = "Invia una Email";
+"Email Organizer" = "Email dell'Organizzatore";
+"Email Attendees" = "Email dei Partecipanti";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -429,7 +429,7 @@ validate_invalid_startdate = "Data iniziale non corretta!";
 validate_invalid_enddate   = "Data finale non corretta!";
 validate_endbeforestart    = "La data finale specificata è precedente alla data di inizio.";
 
-"Tasks" = "Tasks";
+"Tasks" = "Attività";
 "Show completed tasks" = "Visualizza attività completate";
 
 /* tabs */
@@ -537,7 +537,7 @@ vtodo_class2 = "(Attività confidenziale)";
 "Show tasks" = "Mostra attività";
 
 "Links to this Calendar" = "Link a questo Calendario";
-"Authenticated User Access" = "Authenticated User Access";
+"Authenticated User Access" = "Tutti gli utenti autenticati";
 "CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
@@ -550,20 +550,20 @@ vtodo_class2 = "(Attività confidenziale)";
 "yearFieldInvalid" = "Prego specificare nel campo Anno(i) un valore numerico maggiore o uguale a 1.";
 "appointmentFieldInvalid" = "Prego specificare nel campo Appuntamento(i) un valore numerico maggiore o uguale a 1.";
 "recurrenceUnsupported" = "Questo tipo di ricorrenza non è attualmente supportata.";
-"Please specify a calendar name." = "Please specify a calendar name.";
+"Please specify a calendar name." = "Prego specificare il nome del calendario";
 "tagNotDefined" = "E' necessario specificare un etichetta se si vuole sincronizzare questo calendario.";
 "tagAlreadyExists" = "L'etichetta specificata è già associata ad un altro calendario.";
 "tagHasChanged" = "Cambiando l'etichetta del calendario è necessario ricaricare tutti i dati sul dispositivo mobile.\nContinuare?";
 "tagWasAdded" = "Sincronizzando questo calendario sarà necessario ricaricare i dati sul dispositivo mobile.\nContinuare?";
 "tagWasRemoved" = "Rimuovendo questo calendario dalla sincronizzazione, sarà necessario ricaricare i dati sul dispositivo mobile.\nCotinuare?";
-"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
-"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
+"DestinationCalendarError" = "La sorgente e la destinazione dei calendari sono le stesse. Prego provare a copiare in un calendario differente.";
+"EventCopyError" = "La copia è fallita. Provare a copiare su un calendario differente.";
 
 "Open Task..." = "Apri attività...";
 "Mark Completed" = "Segna come completata";
 "Delete Task" = "Elimina attività";
 "Delete Event" = "Elimina evento";
-"Copy event to my calendar" = "Copy event to my calendar";
+"Copy event to my calendar" = "Copia gli eventi sul mio calendario";
 
 "Subscribe to a web calendar..." = "Sottoscrivi un calendario remoto...";
 "URL of the Calendar" = "URL del calendario";

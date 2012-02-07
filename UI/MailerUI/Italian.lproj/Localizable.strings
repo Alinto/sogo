@@ -18,7 +18,8 @@
 "Contacts" = "Contatti";
 "Attach" = "Allegato";
 "Save" = "Salva";
-"Options" = "Options";
+"Options" = "Opzioni";
+"Close" = "Chiudi";
 "Size" = "Dimensione";
 
 /* Tooltips */
@@ -59,12 +60,14 @@
 "Write a new message" = "Scrivi un nuovo messaggio";
 
 "Share: " = "Condividi: ";
-"Account: " = "Account: ";
+"Account: " = "Account:";
 "Shared Account: " = "Account condiviso: ";
 
 /* acls */
-"Default Roles" = "Permessi predefiniti";
-"User rights for:" = "Permessi per:";
+"Access rights to" = "Permessi di accesso a";
+"For user" = "Per utente";
+
+"Any Authenticated User" = "Utenti Autenticati";
 
 "List and see this folder" = "Elenca e guarda questa cartella";
 "Read mails from this folder" = "Leggi emails da questa cartella";
@@ -104,7 +107,7 @@
 "cc"            = "Cc";
 "bcc"           = "Bcc";
 
-"Addressbook"   = "Rubrica";
+"Addressbook"   = "74dac49ea10c32f4141ab15f89148aa0_tr";
 
 "Edit Draft..." = "Modifica bozza...";
 "Load Images" = "Carica Immagini";
@@ -122,6 +125,9 @@
 "lowest" = "Molto bassa";
 
 "This mail is being sent from an unsecure network!" = "Questa email è stata spedita da una rete contrassegnata come non sicuro!";
+
+"Address Book:" = "Rubrica:";
+"Search For:" = "Cerca:";
 
 /* Popup "show" */
 
@@ -141,7 +147,6 @@
 "Date"          = "Data";
 "View"          = "Vista";
 "All"           = "Tutti";
-"Unread"        = "Non letti";
 "No message"    = "Nessun messaggio";
 "messages"      = "messaggi";
 
@@ -196,7 +201,7 @@
 "Delete Folder" = "Cancella cartella";
 "Use This Folder For" = "Usa questa cartella per";
 "Get Messages for Account" = "Scarica messaggi per l'account";
-"Properties..." = "Properties...";
+"Properties..." = "Proprietà...";
 "Delegation..." = "Delega...";
 
 /* Use This Folder menu */
@@ -208,7 +213,6 @@
 "Open Message In New Window" = "Apri messaggio in una nuova finestra";
 "Reply to Sender Only" = "Rispondi";
 "Reply to All" = "Rispondi a tutti";
-"Forward" = "Inoltra";
 "Edit As New..." = "Modifica come...";
 "Move To" = "Sposta in ";
 "Copy To" = "Copia in ";

@@ -37,6 +37,13 @@
 
 "Sorry, the user rights can not be configured for that object." = "Non è possibile configurare i  permessi per questo oggetto.";
 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Ogni utente con un account di sistema potrà accedere al tuo calendario \"%{0}\". Sei sicuro di fidarti di tutti?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Potenzialmente chiunque in Internert sarà in grado di accedere al tuo calendario \"%{0}\", anche se non ha un account di sistema. Questa risorsa può essere pubblicata su Internet?";
+"Give Access" = "Dai Accesso";
+"Keep Private" = "Mantieni Privato";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Impossibile sottoscrivere la cartella!";
@@ -54,7 +61,7 @@
 "A folder by that name already exists." = "Esiste già una cartella con questo nome.";
 "You cannot create a list in a shared address book." 
         = "Non puoi creare una lista in una rubrica in sola lettura.";
-"Warning" = "Warning";
+"Warning" = "Attenzione";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Non sei abilitato ad accedere a questo modulo. Contatta il tuo amministratore di sistema.";
@@ -66,10 +73,19 @@
 "delegate is a participant" = "Il delegato è già un partecipante.";
 "delegate is a group" = "L'indirizzo specifico corrisponde ad un gruppo, puoi delegare solo una persona.";
 
+"Snooze for " = "Posponi per";
+"5 minutes" = "5 minuti";
+"10 minutes" = "10 minuti";
+"15 minutes" = "15 minuti";
+"30 minutes" = "30 minuti";
+"45 minutes" = "45 minuti";
+"1 hour" = "1 ora";
+
+
 /* common buttons */
 "OK" = "OK";
-"Cancel" = "Cancel";
-"Yes" = "Yes";
+"Cancel" = "Annulla";
+"Yes" = "Sì";
 "No" = "No";
 
 /* alarms */

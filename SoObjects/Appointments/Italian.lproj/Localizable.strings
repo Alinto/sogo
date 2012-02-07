@@ -27,7 +27,7 @@ vtodo_class2 = "(Attività confidenziale)";
 /* IMIP messages */
 "startDate_label" = "Inizio:";
 "endDate_label" = "Fine:";
-"due_label" = "Due Date:";
+"due_label" = "Scadenza:";
 "location_label" = "Luogo:";
 "summary_label" = "Summario:";
 "comment_label" = "Commento:";
@@ -62,4 +62,4 @@ vtodo_class2 = "(Attività confidenziale)";
 = "%{Attendee} %{SentByText}non ha ancora deciso riguardo il tuo invito all'evento.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Numero massimo di prenotazioni simultanee (%{NumberOfSimultaneousBookings}) raggiunto per la risorsa \"%{Cn} %{SystemEmail}\".";

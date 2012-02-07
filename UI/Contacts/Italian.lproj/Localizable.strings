@@ -76,7 +76,6 @@
 "No possible subscription" = "Nessuna sottoscrizione possibile";
 
 "Preferred" = "Predefinito";
-"Card for %@" = "Biglietto da visita di %@";
 "Display:" = "Nome visualizzato:";
 "Display Name:" = "Nome visualizzato:";
 "Email:" = "Email:";
@@ -155,7 +154,9 @@
 "Unable to subscribe to that folder!"
 = "Non puoi sottoscrivere la cartella!";
 
-"User rights for:" = "Permessi per:";
+/* acls */
+"Access rights to" = "Permessi di accesso a";
+"For user" = "Per utente";
 
 "Any Authenticated User" = "Utenti autenticati";
 "Public Access" = "Accesso pubblico";
