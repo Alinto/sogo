@@ -219,7 +219,10 @@ function performSearchCallback(http) {
                     list.appendChild(node);
                     node.address = completeEmail;
                     // log("node.address: " + node.address);
-                    node.uid = (contact["isMSExchange"]? UserLogin + ":" : "") + contact["c_uid"];
+                    if (contact["c_uid"])
+                        node.uid = (contact["isMSExchange"]? UserLogin + ":" : "") + contact["c_uid"];
+                    else
+                        node.uid = null;
                     node.isList = isList;
                     if (isList) {
                         node.cname = contact["c_name"];
@@ -272,7 +275,10 @@ function performSearchCallback(http) {
                 if (data.contacts.length == 1) {
                     // Single result
                     var contact = data.contacts[0];
-                    input.uid = (contact["isMSExchange"]? UserLogin + ":" : "") + contact["c_uid"];
+                    if (contact["c_uid"])
+                        input.uid = (contact["isMSExchange"]? UserLogin + ":" : "") + contact["c_uid"];
+                    else
+                        input.uid = null;
                     var isList = (contact["c_component"] &&
                                   contact["c_component"] == "vlist");
                     if (isList) {

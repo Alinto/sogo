@@ -37,6 +37,13 @@
 
 "Sorry, the user rights can not be configured for that object." = "Вибачте, для цього об’єкту неможливо налаштувати права доступу.";
 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Будь-який користувач з обліковим записом у цій системі зможе отримати доступ до Вашого календаря \"%{0}\". Чи Ви впевнені, що бажаєте опублікувати Ваш календар у такий спосіб?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Потенційно будь-хто з Інтернету зможе отримати доступ до Вашого календаря \"%{0}\", навіть якщо не має зареєстрованого облікового доступу у цій системі. Чи Ви впевнені, що бажаєте опублікувати Ваш календар у такий спосіб?";
+"Give Access" = "Дати доступ";
+"Keep Private" = "Залишити у приватному доступі";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "Неможливо підписатись на цю теку!";
@@ -65,6 +72,15 @@
 "delegate is organizer" = "Запрошений учасник є організатором. Будь ласка, зазначте іншу запрошену особу.";
 "delegate is a participant" = "Цього учасника вже запрошено.";
 "delegate is a group" = "Зазначена адреса є групою. Ви можете запросити лише окрему особу.";
+
+"Snooze for " = "Відкласти на";
+"5 minutes" = "5 хвилин";
+"10 minutes" = "10 хвилин";
+"15 minutes" = "15 хвилин";
+"30 minutes" = "30 хвилин";
+"45 minutes" = "45 хвилин";
+"1 hour" = "1 годину";
+
 
 /* common buttons */
 "OK" = "Добре";

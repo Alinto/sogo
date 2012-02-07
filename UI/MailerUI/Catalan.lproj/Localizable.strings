@@ -19,6 +19,7 @@
 "Attach" = "Adjuntar";
 "Save" = "Desar";
 "Options" = "Opcions";
+"Close" = "Tancar";
 "Size" = "Mida";
 
 /* Tooltips */
@@ -63,8 +64,10 @@
 "Shared Account: " = "Compte compartit: ";
 
 /* acls */
-"Default Roles" = "Rols per defecte";
-"User rights for:" = "Permisos per a:";
+"Access rights to" = "Drets d'accés a";
+"For user" = "Per a l'usuari";
+
+"Any Authenticated User" = "Qualsevol usuari autenticat";
 
 "List and see this folder" = "Llistar i veure aquesta carpeta";
 "Read mails from this folder" = "Llegir corrreu d'aquesta carpeta";
@@ -104,15 +107,13 @@
 "cc"            = "cc";
 "bcc"           = "c/o";
 
-"Addressbook"   = "Llibreta d'adreces";
-
 "Edit Draft..." = "Modificar esborrany...";
 "Load Images" = "Carregar imatges";
 
 "Return Receipt" = "Justificant de recepció";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?";
-"Return Receipt (displayed) - %@"= "Return Receipt (displayed) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents.";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "El remitent d'aquest missatge ha demanat justificant de recepció. Voleu enviar-li justificant de recepció?";
+"Return Receipt (displayed) - %@"= " Justificant de recepció (mostrat) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Aquest és un justificant de recepció del missatge que has enviat a% @. \ N \ nNota: Aquest justificant de recepció només confirma que el missatge ha estat mostrat en l'ordinador del destinatari. No es garanteix que el destinatari haja llegit o entès el contingut del missatge.";
 
 "Priority" = "Prioritat";
 "highest" = "Màxima";
@@ -122,6 +123,9 @@
 "lowest" = "Mínima";
 
 "This mail is being sent from an unsecure network!" = "Aquest missatge s'envia des d'una xarxa no segura.";
+
+"Address Book:" = "Llibreta d'adreces";
+"Search For:" = "Cercar:";
 
 /* Popup "show" */
 
@@ -141,7 +145,6 @@
 "Date"          = "Data";
 "View"          = "Vista";
 "All"           = "Tot";
-"Unread"        = "No llegit";
 "No message"    = "Sense missatges";
 "messages"      = "Missatges";
 
@@ -196,8 +199,8 @@
 "Delete Folder" = "Esborrar carpeta";
 "Use This Folder For" = "Usar aquesta carpeta per a";
 "Get Messages for Account" = "Rebre missatges per a compte";
-"Properties..." = "Properties...";
-"Delegation..." = "Delegation...";
+"Properties..." = "Propietats...";
+"Delegation..." = "Delegació ...";
 
 /* Use This Folder menu */
 "Sent Messages" = "Enviar missatges";
@@ -208,7 +211,6 @@
 "Open Message In New Window" = "Obrir missatge en una finestra nova";
 "Reply to Sender Only" = "Respondre només al remitent";
 "Reply to All" = "Repondre a tots";
-"Forward" = "Reenviar";
 "Edit As New..." = "Editar com a nou...";
 "Move To" = "Moure a";
 "Copy To" = "Copiar a";
@@ -278,7 +280,7 @@
 
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
-= "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
+= "Els missatges no poden traslladar-se a la paperera. Els voleu esborrar immediatament?";
 
 /* Message editing */
 "error_validationfailed" = "Error de validació";
@@ -286,6 +288,6 @@
 "error_missingrecipients" = "No heu indicat els destinataris";
 
 /* Message sending */
-"cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
-"cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
-"cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";
+"cannot send message: (smtp) all recipients discarded" = "No s'ha pogut enviar el missatge: tots els destinataris són incorrectes.";
+"cannot send message (smtp) - recipients discarded:" = "No s'ha pogut enviar el missatge. Les següents adreces són incorrectes:";
+"cannot send message: (smtp) error when connecting" = "No s'ha pogut enviar el missatge. Error al connectar amb el servidor SMTP.";

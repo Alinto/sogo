@@ -154,7 +154,9 @@
 "Unable to subscribe to that folder!"
 = "Невозможно подписаться на эту папку.";
 
-"User rights for:" = "Права пользователя на:";
+/* acls */
+"Access rights to" = "Права доступа к";
+"For user" = "Для пользователя";
 
 "Any Authenticated User" = "Любой аутентифицированный пользователь";
 "Public Access" = "Публичный доступ";

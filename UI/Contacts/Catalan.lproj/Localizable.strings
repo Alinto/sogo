@@ -1,6 +1,6 @@
 /* this file is in UTF-8 format! */
 
-"Contact" = "Contacte";
+"Contact" = "Nova llibreta d'adreces";
 "Address" = "Adreça";
 "Photos" = "Fotos";
 "Other" = "Altres dades";
@@ -38,7 +38,7 @@
 "invalidemailwarn" = "Adreça de correu no vàlida.";
 "invaliddatewarn" = "Data no vàlida.";
 "new" = "nou";
-"Preferred Phone"   = "Telèfon preferit";
+"Preferred Phone" = "Telèfon preferit";
 
 "Move To" = "Moure a";
 "Copy To" = "Copiar a";
@@ -76,7 +76,6 @@
 "No possible subscription" = "La subscripció no és possible";
 
 "Preferred" = "Preferit";
-"Card for %@" = "Contacte per a %@";
 "Display:" = "Nom mostrat:";
 "Display Name:" = "Nom:";
 "Email:" = "Correu electrònic:";
@@ -130,7 +129,7 @@
 "Carbon Copy" = "Còpia oculta";
 "Blind Carbon Copy" = "c/o";
 
-"New addressbook..." = "Crear llibreta...";
+"New Addressbook..." = "Nova llibreta d'adreces";
 "Subscribe to an Addressbook..." = "Subscribiure's a una llibreta...";
 "Remove the selected Addressbook" = "Esborrar la llibreta seleccionada";
 
@@ -155,7 +154,9 @@
 "Unable to subscribe to that folder!"
 = "No us podeu subscriure a aquesta carpeta.";
 
-"User rights for:" = "Permisos per a:";
+/* acls */
+"Access rights to" = "Drets d'accés a";
+"For user" = "Per a l'usuari";
 
 "Any Authenticated User" = "Qualsevol usuari autenticat";
 "Public Access" = "Accés públic";

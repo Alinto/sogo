@@ -211,18 +211,6 @@
 "Always send" = "Enviar siempre";
 "Ask me" = "Preguntarme";
 
-/* Return receipts */
-"When I receive a request for a return receipt:" = "Cuando reciba una petición de un acuse de recibo:";
-"Never send a return receipt" = "Nunca enviar un acuse de recibo";
-"Allow return receipts for some messages" = "Permitir acuses de recibo para algunos mensajes";
-"If I'm not in the To or Cc of the message:" = "Si no estoy en el Para o Cc del mensaje:";
-"If the sender is outside my domain:" = "Si el remitente esta fuera de mi dominio de correo:";
-"In all other cases:" = "En el resto de casos:";
-
-"Never send" = "Nunca enviar";
-"Always send" = "Enviar siempre";
-"Ask me" = "Preguntarme";
-
 /* Filters - UIxPreferences */
 "Filters" = "Filtros";
 "Active" = "Activo";

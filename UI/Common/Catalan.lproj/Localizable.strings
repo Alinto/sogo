@@ -37,6 +37,13 @@
 
 "Sorry, the user rights can not be configured for that object." = "Els permisos d'accés no es poden configurar per a aquest objecte.";
 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Qualsevol altre usuari amb un compte al sistema serà capaç d'accedir al seu calendari \"%{0}\". ¿Està vostè segur de voler permetre aço?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Potencialment, qualsevol usuari d'Internet podrà accedir al seu calendari \"% {0}\", encara que no tinga un compte en aquest sistema. Aquesta informació és adequada per publicar-la en Internet?";
+"Give Access" = "Donar accés";
+"Keep Private" = "Mantenir en privat";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "No us podeu subscriure a aquesta carpeta!";
@@ -65,6 +72,15 @@
 "delegate is organizer" = "El delegat és l'organitzador. Si us plau, especifiqueu un altre delegat.";
 "delegate is a participant" = "El delegat ja és un participant.";
 "delegate is a group" = "L'adreça especificada correspon a un grup. Només podeu delegar en una persona.";
+
+"Snooze for " = "Posposar ";
+"5 minutes" = "5 minuts";
+"10 minutes" = "10 minuts";
+"15 minutes" = "15 minuts";
+"30 minutes" = "30 minuts";
+"45 minutes" = "45 minuts";
+"1 hour" = "1 hora";
+
 
 /* common buttons */
 "OK" = "D'acord";

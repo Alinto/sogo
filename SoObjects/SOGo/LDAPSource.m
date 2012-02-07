@@ -766,7 +766,7 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 	  [qs appendString: searchFormat];
 	}
 
-      if ([_filter length])
+      if (_filter && [_filter length])
 	[qs appendFormat: @" AND %@", _filter];
 
       qualifier = [EOQualifier qualifierWithQualifierFormat: qs];

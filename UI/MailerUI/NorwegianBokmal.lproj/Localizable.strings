@@ -19,6 +19,7 @@
 "Attach" = "Vedlegg";
 "Save" = "Lagre";
 "Options" = "Innstillinger";
+"Close" = "Lukk";
 "Size" = "Størrelse";
 
 /* Tooltips */
@@ -63,8 +64,10 @@
 "Shared Account: " = "Delt konto: ";
 
 /* acls */
-"Default Roles" = "Standard roller";
-"User rights for:" = "Brukerrettigheter til:";
+"Access rights to" = "Tilgangsrettighet til";
+"For user" = "For bruker";
+
+"Any Authenticated User" = "Alle autentiserte brukere";
 
 "List and see this folder" = "List og se i mappen";
 "Read mails from this folder" = "Les meldinger fra denne mappen";
@@ -104,8 +107,6 @@
 "cc"            = "Kopi";
 "bcc"           = "Blindkopi";
 
-"Addressbook"   = "Adressebok";
-
 "Edit Draft..." = "Rediger utkast...";
 "Load Images" = "Last ned bilder";
 
@@ -122,6 +123,9 @@
 "lowest" = "Lavest";
 
 "This mail is being sent from an unsecure network!" = "Denne e-posten sendes fra en usikker nettverksforbindelse!";
+
+"Address Book:" = "Adressebok:";
+"Search For:" = "Søk etter:";
 
 /* Popup "show" */
 
@@ -141,7 +145,6 @@
 "Date"          = "Dato";
 "View"          = "Vis";
 "All"           = "Alle";
-"Unread"        = "Ulest";
 "No message"    = "Ingen melding";
 "messages"      = "meldinger";
 
@@ -165,8 +168,8 @@
 "InboxFolderName"  = "Innboks";
 "DraftsFolderName" = "Kladder";
 "SieveFolderName"  = "Filter";
-"OtherUsersFolderName"   = "Other Users";
-"SharedFoldersName" = "Shared Folders";
+"OtherUsersFolderName"   = "Andre brukere";
+"SharedFoldersName" = "Delte mapper";
 "Folders"          = "Mapper"; /* title line */
 
 /* MailMoveToPopUp */
@@ -208,7 +211,6 @@
 "Open Message In New Window" = "Åpne melding i nytt vindu";
 "Reply to Sender Only" = "Svar kun til avsender";
 "Reply to All" = "Svar alle";
-"Forward" = "Videresend";
 "Edit As New..." = "Redigere som nytt...";
 "Move To" = "Flytt til";
 "Copy To" = "Kopier til";
@@ -286,6 +288,6 @@
 "error_missingrecipients" = "Ingen mottagere er angitt";
 
 /* Message sending */
-"cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
-"cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
-"cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";
+"cannot send message: (smtp) all recipients discarded" = "Kan ikke sende melding: alle mottakeradresser er ugyldige.";
+"cannot send message (smtp) - recipients discarded:" = "Kan ikke sende melding. Følgende mottakeradresser er ugyldige:";
+"cannot send message: (smtp) error when connecting" = "Kan ikke sende melding: problem med å prate med SMTP-tjener.";

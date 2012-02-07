@@ -107,7 +107,7 @@
 "Sharing..." = "Compartir...";
 "Export Calendar..." = "Exportar calendari...";
 "Import Events..." = "Importar esdeveniments...";
-"Export Events" = "Exportar esdeveniments";
+"Import Events" = "Importar esdeveniments";
 "Select an iCalendar file (.ics)." = "Seleccionar un fitxer iCalendar (.ics).";
 "Upload" = "Carregar";
 "Publish Calendar..." = "Publicar calendari...";
@@ -131,7 +131,8 @@
 
 /* acls */
 
-"User rights for:" = "Permisos per a:";
+"Access rights to" = "Drets d'accés a";
+"For user" = "Per a l'usuari";
 
 "Any Authenticated User" = "Qualsevol usuari autenticat";
 "Public Access" = "Accés públic";
@@ -159,7 +160,6 @@
 
 /* Button Titles */
 
-"New Calendar..." = "Calendari nou...";
 "Subscribe to a Calendar..." = "Subscriure a un calendari...";
 "Remove the selected Calendar" = "Esborrar calendari seleccionat";
 
@@ -496,7 +496,7 @@ validate_endbeforestart    = "La data/hora de començament és posterior a la d'
 "and" = "i";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-  = "Hi ha un conflicte temporal amb un o més assistents.\nTot i així, voleu mantenir la cita?";
+= "Hi ha un conflicte temporal amb un o més assistents.\nTot i així, voleu mantenir la cita?";
 
 /* apt list */
 "Title" = "Títol";
@@ -537,6 +537,7 @@ vtodo_class2 = "(Tasca confidencial)";
 "Show tasks" = "Mostra les tasques";
 
 "Links to this Calendar" = "Enllaços a aquest calendari";
+"Authenticated User Access" = "Accés autenticat";
 "CalDAV URL" = "url CalDAV";
 "WebDAV ICS URL" = "url WebDAV ICS";
 "WebDAV XML URL" = "url WebDAV XML";
@@ -549,6 +550,7 @@ vtodo_class2 = "(Tasca confidencial)";
 "yearFieldInvalid" = "Cal especificar un valor numèric per al camp Any/s major o igual que 1.";
 "appointmentFieldInvalid" = "Cal especificar un valor numèric per al camp Cita/es major o igual que 1.";
 "recurrenceUnsupported" = "Aquest tipus de repetició no funciona encara.";
+"Please specify a calendar name." = "Per favor especifiqueu un nom de calendari";
 "tagNotDefined" = "Especifiqueu una etiqueta si voleu sincronitzar aquest calendari.";
 "tagAlreadyExists" = "L'etiqueta especificada ja està associada a un altre calendari.";
 "tagHasChanged" = "Si canvieu l'etiqueta d'aquest calendari, haureu de recarregar les dades en el dispositiu mòbil.\nVoleu continuar?";
@@ -561,9 +563,10 @@ vtodo_class2 = "(Tasca confidencial)";
 "Mark Completed" = "Marcar com a completada";
 "Delete Task" = "Esborrar tasca";
 "Delete Event" = "Esorrar esdeveniment";
+"Copy event to my calendar" = "Copiar l'esdeveniment al meu calendari";
 
 "Subscribe to a web calendar..." = "Subscriure's a un calendari web...";
 "URL of the Calendar" = "URL del calendari";
 "Web Calendar" = "Calendari Web";
 "Reload on login" = "Actualitzar en connectar-se";
-
+"Invalid number." = "Número incorrecte";

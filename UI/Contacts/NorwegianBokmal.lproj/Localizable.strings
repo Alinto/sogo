@@ -76,7 +76,6 @@
 "No possible subscription" = "Abonnering er ikke mulig";
 
 "Preferred" = "Foretrukket";
-"Card for %@" = "Adressekort for %@";
 "Display:" = "Vise:";
 "Display Name:" = "Visningsnamn:";
 "Email:" = "E-post:";
@@ -155,7 +154,9 @@
 "Unable to subscribe to that folder!"
 = "Du kan ikke abonnere på mappen.";
 
-"User rights for:" = "Brukerrettigheter for:";
+/* acls */
+"Access rights to" = "Tilgangsrettigheter til";
+"For user" = "For bruker";
 
 "Any Authenticated User" = "Alle autentiserte brukere";
 "Public Access" = "Public Access";

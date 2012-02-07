@@ -110,8 +110,8 @@ static NSArray *childRecordFields = nil;
 		  withEquivalent: SoPerm_WebDAVAccess
 		  asChildOf: davElement (@"read", @"DAV:")]; */
       [aclManager registerDAVPermission: davElement (@"write", @"DAV:")
-		  abstract: YES
-		  withEquivalent: nil
+		  abstract: NO
+		  withEquivalent: SoPerm_AddDocumentsImagesAndFiles
 		  asChildOf: davElement (@"all", @"DAV:")];
       [aclManager registerDAVPermission: davElement (@"bind", @"DAV:")
 		  abstract: NO

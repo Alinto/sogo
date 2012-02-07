@@ -39,8 +39,8 @@ reply_info = "Dies ist eine Anwort auf eine Termineinladung von Ihnen.";
 
 "Digital signature is not valid" = "Digitale Signatur ist nicht gültig";
 "Message is signed" = "Nachricht ist signiert";
-"Subject" = "Betreff";
+"Subject" = "Zertifizierter";
 "From" = "Von";
 "Date" = "Datum";
-"To" = "An";
+"To" = "Bis";
 "Issuer" = "Aussteller";

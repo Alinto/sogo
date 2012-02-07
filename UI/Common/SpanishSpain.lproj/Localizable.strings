@@ -37,6 +37,13 @@
 
 "Sorry, the user rights can not be configured for that object." = "Lo siento, los permisos de este usuario no pueden ser configurados para este objeto.";
 
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Cualquier usuario con una cuenta en este sistema tendrá acceso al calendario \"%{0}\". ¿Esta seguro que se puede fiar de todos?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Potencialmente cualquier usuario en Internet puede tener acceso al calendario \"%{0}\", aunque no tiene una cuenta en este sistema. ¿Esta valida esta información para todo el publico en Internet?";
+"Give Access" = "Permite Acceso";
+"Keep Private" = "Mantiene Privado";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "No es posible suscribirse a esta carpeta.";
@@ -65,6 +72,15 @@
 "delegate is organizer" = "El delegado es el organizador. Por favor, especifique un delegado diferente.";
 "delegate is a participant" = "El delegado ya es un participante.";
 "delegate is a group" = "La dirección especificada corresponde a un grupo. Sólo puede delegar a una persona única.";
+
+"Snooze for " = "Posponer para";
+"5 minutes" = "5 minutos";
+"10 minutes" = "10 minutos";
+"15 minutes" = "15 minutos";
+"30 minutes" = "30 minutos";
+"45 minutes" = "45 minutos";
+"1 hour" = "1 hora";
+
 
 /* common buttons */
 "OK" = "OK";

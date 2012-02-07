@@ -26,40 +26,45 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 
 /* IMIP messages */
 "startDate_label" = "Start:";
-"endDate_label" = "End:";
-"due_label" = "Due Date:";
-"location_label" = "Location:";
-"summary_label" = "Summary:";
-"comment_label" = "Comment:";
+"endDate_label" = "Slutt:";
+"due_label" = "Forfallsdato:";
+"location_label" = "Sted:";
+"summary_label" = "Sammendrag:";
+"comment_label" = "Kommentar:";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Event Invitation: \"%{Summary}\"";
-"(sent by %{SentBy}) " = "(sent by %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+"Event Invitation: \"%{Summary}\"" = "Hendelseinvitasjon: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(sendt av %{SentBy})";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} har invitert deg til %{Summary}.\n\nStart: %{StartDate} %{StartTime}\nSlutt: %{EndDate} %{EndTime}\nBeskrivelse: %{Description}";
 
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Event Cancelled: \"%{Summary}\"";
+"Event Cancelled: \"%{Summary}\"" = "Hendelse avlyst: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+= "%{Organizer} %{SentByText} har avlyst : %{Summary}.\n\nStart: %{StartDate} %{StartTime}\nEnd: %{EndDate} %{EndTime}\nBeskrivelse: %{Description}";
 
 /* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed";
+= "Avtalen \"%{Summary}\" for %{OldStartDate} klokken %{OldStartTime} er endret.";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "The following parameters have changed in the \"%{Summary}\" meeting:";
+= "Følgende parametre er endret for \"%{Summary}\" møtet:";
 "Please accept or decline those changes."
-= "Please accept or decline those changes.";
+= "Vennligst godta eller avvis endringene.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Reply to invitation: \"%{Summary}\"";
+"Reply to invitation: \"%{Summary}\"" = "Svar til invitasjonen: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
-= "%{Attendee} %{SentByText}has accepted your event invitation.";
+= "%{Attendee} %{SentByText} har godtatt invitasjonen.";
 "%{Attendee} %{SentByText}has declined your event invitation."
-= "%{Attendee} %{SentByText}has declined your event invitation.";
+= "%{Attendee} %{SentByText} har avvist invitasjonen.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
+= "%{Attendee} %{SentByText} har delegert invitasjonen til %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
-= "%{Attendee} %{SentByText}has not yet decided upon your event invitation.";
+= "%{Attendee} %{SentByText} had ends ikke var på invitasjonen.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maksimalt antall samtidige bookinger  (%{NumberOfSimultaneousBookings}) er nåd for ressurs \"%{Cn} %{SystemEmail}\".";

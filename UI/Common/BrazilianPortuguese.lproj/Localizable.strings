@@ -10,7 +10,7 @@
 "Address Book"	= "Catálogo";
 "Mail" = "Correio";
 "Preferences" = "Preferências";
-"Administration" = "Administration";
+"Administration" = "Administração";
 "Disconnect" = "Desconectar";
 "Right Administration" = "Administração de Direitos";
 "Log Console (dev.)" = "Log Console (dev.)";
@@ -22,20 +22,27 @@
 "noJavascriptError" = "SOGo requer Javascript para rodar. Por favor, certifique-se que a opção está disponível e habilitada nas preferências de seu navegador.";
 "noJavascriptRetry" = "Repetir";
 
-"Owner:" = "Owner:";
+"Owner:" = "Dono:";
 "Publish the Free/Busy information" = "Divulgar a informação Livre/Ocupado";
 
 "Add..." = "Adicionar...";
 "Remove" = "Remover";
 
-"Subscribe User" = "Subscribe User";
+"Subscribe User" = "Usuário Inscrito";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
-"Any user not listed above" = "Any user not listed above";
-"Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
+"Any Authenticated User" = "Qualquer Usuário Autenticado";
+"Public Access" = "Acesso Público";
+"Any user not listed above" = "Qualquer usuário não listado abaixo";
+"Anybody accessing this resource from the public area" = "Ninguém acessando este recurso de uma área pública";
 
 "Sorry, the user rights can not be configured for that object." = "Desculpe, os direitos de usuário não podem ser modificados para este objeto.";
+
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Qualquer usuário com uma conta neste sistema poderá acessar seu calendário \"%{0}\". Você tem certeza que confia em todos?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Qualquer um na Internet poderá acessar seu calendário \"%{0}\". Estas informações podem ser publicadas na Internet?";
+"Give Access" = "Conceder Acesso";
+"Keep Private" = "Manter Privado";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -51,25 +58,34 @@
      	= "Você já se inscreveu nesta pasta!";
 "The user rights cannot be edited for this object!"
         = "Os direitos do usuário não podem ser editados para este objeto!";
-"A folder by that name already exists." = "A folder by that name already exists.";
+"A folder by that name already exists." = "Este nome já existe.";
 "You cannot create a list in a shared address book." 
-        = "You cannot create a list in a shared address book.";
-"Warning" = "Warning";
+        = "Você não pode criar uma lista em um catálogo público";
+"Warning" = "Aviso";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Você não está liberado para acessar este módulo ou este sistema. Por favor, contate seu administrador de sistemas.";
 "You don't have the required privileges to perform the operation."
 = "Você não tem os privilégios requeridos para realizar esta operação.";
 
-"noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
-"delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
-"delegate is a participant" = "The delegate is already a participant.";
-"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+"noEmailForDelegation" = "Você deve informar o endereço ao qual deseja delegar seu convite.";
+"delegate is organizer" = "O delegado é o organizador. Por favor, especifique um delegado diferente.";
+"delegate is a participant" = "O delegado já é um participante.";
+"delegate is a group" = "O endereço especificado corresponde a um grupo. Você só pode delegar a uma pessoa única.";
+
+"Snooze for " = "Uma pausa de";
+"5 minutes" = "5 minutos";
+"10 minutes" = "10 minutos";
+"15 minutes" = "15 minutos";
+"30 minutes" = "30 minutes";
+"45 minutes" = "45 minutos";
+"1 hour" = "1 hora";
+
 
 /* common buttons */
 "OK" = "OK";
-"Cancel" = "Cancel";
-"Yes" = "Yes";
+"Cancel" = "Cancelar";
+"Yes" = "Sim";
 "No" = "No";
 
 /* alarms */

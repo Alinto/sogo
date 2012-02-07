@@ -4,7 +4,8 @@
 
 "Username:" = "Usuari:";
 "Password:" = "Contrasenya:";
-"Domain:" = "Domain:";
+"Domain:" = "Domini:";
+"Remember username" = "recordar usuari";
 
 "Connect" = "Connectar";
 
@@ -16,8 +17,8 @@
 "alternativeBrowserSafari" = "Safari.";
 "Download" = "Descàrrega";
 
-"Language:" = "Language:";
-"choose" = "Choose ...";
+"Language:" = "Llengua:";
+"choose" = "Triar ...";
 "Catalan" = "Català";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -40,16 +41,13 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Informació";
-"AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>
-SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>
-SOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>
-See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "Desenvolupat per Inverse, Sogo és un servidor amb totes les funcions de treball en grup amb un enfocament en la escalabilitat i simplicitat. <br/> ⏎ Sogo ofereix una rica interfície web basada en AJAX i suporta múltiples clients natius mitjançant l'ús de protocols estàndard, com CalDAV i CardDAV. <br/> ⏎ Sogo es distribueix sota la <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</ a> versió 2 o posterior, i parts es distribueixen sota la llicència GNU LGPL versió 2. Aquest és programari lliure: és lliure de canviar i redistribuir. NO hi ha cap garantia, en la mesura permesa per la llei. <br/> ⏎ Veure <a href = \"http://www.sogo.nu/en/support/community.html\"> aquesta pàgina</ a> per a les opcions de suport.";
 
 "Your account was locked due to too many failed attempts." = "El vostre compte ha estat bloquejat per un excés d'intents fallits.";
 "Your account was locked due to an expired password." = "El vostre compte ha estat bloquejat perquè la contrasenya ha caducat.";
 "Login failed due to unhandled error case: " = "Connexió fallida a causa d'un error inesperat: ";
 "Change your Password" = "Canvieu la contrasenya";
-"The password was changed successfully." = "The password was changed successfully.";
+"The password was changed successfully." = "La contrasenya s'ha canviat correctament";
 "Your password has expired, please enter a new one below:" = "La contrasenya ha caducat; introduïu-ne una de nova:";
 "Password must not be empty." = "Heu d'escriure la contrasenya.";
 "The passwords do not match. Please try again." = "Les contrasenyes no coincideixen. Torneu-ho a intentar.";

@@ -64,8 +64,10 @@
 "Shared Account: " = "Спільний обліковий запис: ";
 
 /* acls */
-"Default Roles" = "Ролі за замовчанням";
-"User rights for:" = "Права доступу для:";
+"Access rights to" = "Права доступу до";
+"For user" = "Для користувача";
+
+"Any Authenticated User" = "Для будь-якого авторизованого користувача";
 
 "List and see this folder" = "Бачити теку та назву листів в ній";
 "Read mails from this folder" = "Читати листи в теці";
@@ -105,17 +107,13 @@
 "cc"            = "Копія";
 "bcc"           = "Прихована копія";
 
-"Addressbook"   = "Адресна книга";
-
 "Edit Draft..." = "Редагувати чернетку...";
 "Load Images" = "Завантажити зображення";
 
 "Return Receipt" = "Сповіщення про доставку";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Відправник цього листа попросив сповістити, як ви переглянете лист. Чи ви бажаєте повідомити?";
 "Return Receipt (displayed) - %@"= "Повідомлення про отримання (показано) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Це зворотнє повідомлення підтверджує, що ви надіслали лист%@.
-
-Увага: Це зворотнє повідомлення лише підтверджує, що лист було відкрито на комп’ютері отримувача. Це не означає, що отримувач прочитав або зрозумів його зміст.";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Це зворотнє повідомлення підтверджує, що ви надіслали лист%@.\n\nУвага: Це зворотнє повідомлення лише підтверджує, що лист було відкрито на комп’ютері отримувача. Це не означає, що отримувач прочитав або зрозумів його зміст.";
 
 "Priority" = "Важливість";
 "highest" = "Найвища";
@@ -147,7 +145,6 @@
 "Date"          = "Дата";
 "View"          = "Перегляд";
 "All"           = "Всі";
-"Unread"        = "Непрочитані";
 "No message"    = "Повідомлення відсутні";
 "messages"      = "повідомлення";
 
@@ -214,7 +211,6 @@
 "Open Message In New Window" = "Відкрити повідомлення в новому вікні";
 "Reply to Sender Only" = "Відповісти відправнику";
 "Reply to All" = "Відповісти відправнику та всім адресатам";
-"Forward" = "Переслати";
 "Edit As New..." = "Редагувати як нове...";
 "Move To" = "Перемістити у";
 "Copy To" = "Копіювати в";

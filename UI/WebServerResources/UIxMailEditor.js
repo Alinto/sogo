@@ -424,7 +424,7 @@ function initMailEditor() {
                                'BulletedList', '-', 'Link', 'Unlink', 'Image', 
                                'JustifyLeft','JustifyCenter','JustifyRight',
                                'JustifyBlock','Font','FontSize','-','TextColor',
-                               'BGColor','-','SpellChecker']
+                               'BGColor','-','SpellChecker','Scayt']
                              ],
                              language : localeCode,
 			     scayt_sLang : localeCode
@@ -513,12 +513,7 @@ function onRemoveAttachments() {
             list.removeChild(nodes[i]);
         }
         else {
-            var filename = "";
-            var childNodes = nodes[i].childNodes;
-            for (var j = 0; j < childNodes.length; j++) {
-                if (childNodes[j].nodeType == 3)
-                    filename += childNodes[j].nodeValue;
-            }
+            var filename = nodes[i].title;
             var url = "" + window.location;
             var parts = url.split("/");
             parts[parts.length-1] = "deleteAttachment?filename=" + encodeURIComponent(filename);

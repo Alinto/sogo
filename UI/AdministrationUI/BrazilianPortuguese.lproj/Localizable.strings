@@ -1,15 +1,15 @@
 /* this file is in UTF-8 format! */
 
-"Help" = "Help";
-"Close" = "Close";
+"Help" = "Ajuda";
+"Close" = "Fechar";
 
-"Modules" = "Modules";
+"Modules" = "Módulos";
 
 /* Modules short names */
 "ACLs" = "ACLs";
 
 /* Modules titles */
-"ACLs_title" = "Users folders ACLs management";
+"ACLs_title" = "Gerenciamento de ACLs para Usuários";
 
 /* Modules descriptions */
-"ACLs_description" = "<p>The Access Control Lists administration module allows to change the ACLs of each user's Calendars and Address books.</p><p>To modify the ACLs of a user's folder, type the name of the user in the search field at the top of the window and double-click on the desired folder.</p>";
+"ACLs_description" = "<p>O módulo administrativo das Listas de Controle de Acesso permitem alterar as ACLs de Calendário e Catálogo de cada usuário.</p><p>Para modificar as ACLs do usuário, digite o nome no campo de busca, no topo da janela e dê um duplo-click na opção desejada.</p>";

@@ -1,7 +1,26 @@
+2012-02-08  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGCSFolder.m (+webdavAclManager): must include
+	"write" in the "current-user-privilege-set" so the latest version
+	of AddressBook.app (bundled with 10.7.3) knows the personal
+	addressbook is writable by the owner.
+
+	* UI/WebServerResources/UIxAttendeesEditor.js
+	(performSearchCallback): set the uid parameter to null instead of
+	an empty string when the returned contact has no uid (ie, it comes
+	from a personal addressbook).
+
 2012-02-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m: escape built DNs using the new
 	-[NSString escapedForLDAPDN] method.
+
+2012-02-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxMailEditor.js (onRemoveAttachments):
+	instead of extracting the filename from the text nodes under the
+	list element, we now use the title attribute. This fixes an issue
+	with IE that would append an extra space to the filename.
 
 2012-02-03  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
