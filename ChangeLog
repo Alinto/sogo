@@ -1,10 +1,19 @@
->>>>>>> variant B
 2012-02-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Contacts/UIxContactView.m (-photoURL, -hasPhoto): copied code
 	from UIxContactEditor, thereby replacing "photosURL".
 
 2012-02-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m (+initialize): added
+	all simple tag to "VoidTags", based on list from
+	http://www.w3.org/TR/html4/index/elements.html.
+
+	* UI/WebServerResources/JavascriptAPIExtensions.js
+	(String.asCSSIdentifier): same as below.
+
+	* SoObjects/SOGo/NSString+Utilities.m (-setupCSSEscaping): add
+	"_P_" as escaping sequence for "+".
 
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m (+initialize): added
 	all simple tag to "VoidTags", based on list from
@@ -18,14 +27,6 @@
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
 	(-startElement:namespace:rawName:attributes:): we should not add
 	end tags to void tags (ex: <br>).
-
-2012-02-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
-
-	* UI/WebServerResources/JavascriptAPIExtensions.js
-	(String.asCSSIdentifier): same as below.
-
-	* SoObjects/SOGo/NSString+Utilities.m (-setupCSSEscaping): add
-	"_P_" as escaping sequence for "+".
 
 2012-02-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
