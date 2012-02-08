@@ -35,14 +35,19 @@ vtodo_class2 = "(Tâche confidentielle)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Invitation à la réunion : \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(envoyé par %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}vous a invité à la réunion « %{Summary} ».\n\nDébut: %{StartDate}\nFin: %{EndDate}\nDescription: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}vous a invité à la réunion « %{Summary} ».\n\nDébut: %{StartDate} à %{StartTime}\nFin: %{EndDate} à %{EndTime}\nDescription: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Réunion annulée : « %{Summary} »";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}a annulé cette réunion : « %{Summary} ».\n\nDébut: %{StartDate}\nFin: %{EndDate}\nDescription: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}a annulé cette réunion : « %{Summary} ».\n\nDébut: %{StartDate} à %{StartTime}\nFin: %{EndDate} à %{EndTime}\nDescription: %{Description}";
 
 /* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "La réunion « %{Summary} » de %{OldStartDate} a été modifiée";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "La réunion « %{Summary} » de %{OldStartDate} à %{OldStartTime} a été modifiée";
 "The following parameters have changed in the \"%{Summary}\" meeting:"

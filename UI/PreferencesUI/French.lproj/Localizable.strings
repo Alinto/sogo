@@ -30,6 +30,7 @@
 "Disable auto reply on" = "Désactiver la réponse automatique le";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Veuillez définir un message et vos adresses pour lesquelles pour désirez activer une réponse automatique.";
+"Your vacation message must not end with a single dot on a line." = "Le message de vacances ne doit pas se terminer par une ligne ne contenant qu'un point.";
 "End date of your auto reply must be in the future."
 = "La date de fin de la réponse automatique doit être dans le future.";
 
@@ -75,10 +76,17 @@
 "longDateFmt_2" = "%e %B %Y";
 "longDateFmt_3" = "%d %B, %Y";
 "longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
 "timeFmt_2" = "";
+"timeFmt_3" = "";
 
 /* calendar */
 "Week begins on :" = "Premier jour de la semaine :";
@@ -274,5 +282,3 @@
 "Unhandled error response" = "Erreur inconnue";
 "Password change is not supported." = "Changement de mot de passe non-supporté.";
 "Unhandled HTTP error code: %{0}" = "Code HTTP non-géré: %{0}";
-"New password:" = "Nouveau mot de passe:";
-"Confirmation:" = "Confirmation:";
