@@ -100,7 +100,7 @@
   
   mapistoreMsg = talloc_zero (memCtx, struct mapistore_message);
 
-  mapping = [[self context] mapping];
+  mapping = [self mapping];
 
   attMessage = [self openEmbeddedMessage];
   if (attMessage)

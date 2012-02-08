@@ -25,16 +25,16 @@
 
 #import <NGObjWeb/SoApplication.h>
 
-@class MAPIStoreContext;
+@class MAPIStoreUserContext;
 
 @interface MAPIApplication : SoApplication
 {
-        MAPIStoreContext *mapiContext;
+  MAPIStoreUserContext *userContext;
 }
 
 - (id) authenticatorInContext: (id) context;
 
-- (void) setMAPIStoreContext: (MAPIStoreContext *) newMAPIStoreContext;
+- (void) setUserContext: (MAPIStoreUserContext *) newContext;
 
 @end
 

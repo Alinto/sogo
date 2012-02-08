@@ -460,8 +460,6 @@ _orderedValuesAreVoid (NSArray *orderedValues)
   NSMutableArray *orderedValues;
   NSUInteger count, max;
 
-  result = YES;
-
   keys = [values allKeys];
   max = [keys count];
   for (count = 0; result && count < max; count++)

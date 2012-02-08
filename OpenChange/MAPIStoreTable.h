@@ -27,6 +27,9 @@
 
 #import <Foundation/NSObject.h>
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
 #define SENSITIVITY_NONE 0
 #define SENSITIVITY_PERSONAL 1
 #define SENSITIVITY_PRIVATE 2
@@ -62,7 +65,7 @@ typedef enum {
   uint32_t currentRow;
   MAPIStoreObject *currentChild;
 
-  uint8_t tableType; /* mapistore */
+  enum mapistore_table_type tableType; /* mapistore */
 
   /* proof of concept */
   uint16_t columnsCount;
@@ -75,13 +78,13 @@ typedef enum {
 - (id) initForContainer: (MAPIStoreObject *) newContainer;
 
 - (id) container;
-- (uint8_t) tableType;
+- (enum mapistore_table_type) tableType;
 
 - (void) setHandleId: (uint32_t) newHandleId;
 - (void) destroyHandle: (uint32_t) handleId;
 
 - (id) childAtRowID: (uint32_t) rowId
-       forQueryType: (enum table_query_type) queryType;
+       forQueryType: (enum mapistore_query_type) queryType;
 
 - (void) cleanupCaches;
 
@@ -92,10 +95,10 @@ typedef enum {
          withCount: (uint16_t) newColumCount;
 - (int) getRow: (struct mapistore_property_data **) dataP
      withRowID: (uint32_t) rowId
-  andQueryType: (enum table_query_type) queryType
+  andQueryType: (enum mapistore_query_type) queryType
       inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getRowCount: (uint32_t *) countP
-      withQueryType: (enum table_query_type) queryType;
+      withQueryType: (enum mapistore_query_type) queryType;
 
 - (void) notifyChangesForChild: (MAPIStoreObject *) child;
 

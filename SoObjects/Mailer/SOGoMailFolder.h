@@ -82,9 +82,13 @@
 - (void) markForExpunge;
 - (void) expungeLastMarkedFolder;
 
+- (BOOL) exists;
+
 - (BOOL) create;
 
 - (NSException *) expunge;
+
+- (NSException *) renameTo: (NSString *) newName;
 
 - (NSCalendarDate *) mostRecentMessageDate;
 
@@ -93,8 +97,6 @@
 - (NSException *) addFlagsToAllMessages: (id) _f;
 
 /* folder type */
-
-- (NSString *) outlookFolderClass;
 
 - (NSArray *) subfolders;
 

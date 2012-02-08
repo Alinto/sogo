@@ -141,14 +141,18 @@
 - (NSException *) delete
 {
   NSFileManager *fm;
+  NSException *error;
   
   fm = [NSFileManager defaultManager];
 
   if (![fm removeFileAtPath: [self completeFilename] handler: NULL])
-    [NSException raise: @"MAPIStoreIOException"
-		 format: @"could not delete message"];
+    error = [NSException exceptionWithName: @"MAPIStoreIOException"
+                                    reason: @"could not delete message"
+                                  userInfo: nil];
+  else
+    error = nil;
 
-  return nil;
+  return error;
 }
 
 - (id) _fileAttributeForKey: (NSString *) key

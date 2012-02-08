@@ -337,7 +337,7 @@ static Class NSDataK, NSStringK;
   return container;
 }
 
-- (uint8_t) tableType
+- (enum mapistore_table_type) tableType
 {
   return tableType;
 }
@@ -351,7 +351,7 @@ static Class NSDataK, NSStringK;
 
 - (void) destroyHandle: (uint32_t) tableHandleId
 {
-  if (handleId == tableHandleId)
+  if (tableHandleId && (handleId == tableHandleId))
     [[MAPIStoreActiveTables activeTables] unregisterTable: self];
 }
 
@@ -765,7 +765,7 @@ static Class NSDataK, NSStringK;
 }
 
 - (id) childAtRowID: (uint32_t) rowId
-       forQueryType: (enum table_query_type) queryType
+       forQueryType: (enum mapistore_query_type) queryType
 {
   id child;
   NSArray *children, *restrictedChildren;
@@ -833,7 +833,7 @@ static Class NSDataK, NSStringK;
 
 - (int) getRow: (struct mapistore_property_data **) dataP
      withRowID: (uint32_t) rowId
-  andQueryType: (enum table_query_type) queryType
+  andQueryType: (enum mapistore_query_type) queryType
       inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSUInteger count;
@@ -860,7 +860,7 @@ static Class NSDataK, NSStringK;
 }
 
 - (int) getRowCount: (uint32_t *) countP
-      withQueryType: (enum table_query_type) queryType
+      withQueryType: (enum mapistore_query_type) queryType
 {
   NSArray *children;
 
