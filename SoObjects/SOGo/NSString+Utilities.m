@@ -486,44 +486,6 @@ static int cssEscapingCount;
   return time;
 }
 
-static NSMutableCharacterSet *safeLDIFChars = nil;
-static NSMutableCharacterSet *safeLDIFStartChars = nil;
-
-- (void) _initSafeLDIFChars
-{
-  safeLDIFChars = [NSMutableCharacterSet new];
-  [safeLDIFChars addCharactersInRange: NSMakeRange (0x01, 9)];
-  [safeLDIFChars addCharactersInRange: NSMakeRange (0x0b, 2)];
-  [safeLDIFChars addCharactersInRange: NSMakeRange (0x0e, 114)];
-
-  safeLDIFStartChars = [safeLDIFChars mutableCopy];
-  [safeLDIFStartChars removeCharactersInString: @" :<"];
-}
-
-- (BOOL) _isLDIFSafe
-{
-  int count, max;
-  BOOL rc;
-
-  if (!safeLDIFChars)
-    [self _initSafeLDIFChars];
-
-  rc = YES;
-
-  max = [self length];
-  if (max > 0)
-    {
-      if ([safeLDIFStartChars characterIsMember: [self characterAtIndex: 0]])
-        for (count = 1; rc && count < max; count++)
-          rc = [safeLDIFChars
-                 characterIsMember: [self characterAtIndex: count]];
-      else
-        rc = NO;
-    }
-  
-  return rc;
-}
-
 - (BOOL) isJSONString
 {
   NSDictionary *jsonData;

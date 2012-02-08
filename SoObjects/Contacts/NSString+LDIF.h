@@ -1,12 +1,12 @@
-/* MAPIStoreFreebusyContext.h - this file is part of SOGo
+/* NSString+LDIF.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2011 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -20,13 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREFREEBUSYCONTEXT_H
-#define MAPISTOREFREEBUSYCONTEXT_H
+#ifndef NSSTRING_LDIF_H
+#define NSSTRING_LDIF_H
 
-#import "MAPIStoreFSBaseContext.h"
+#import <Foundation/NSString.h>
 
-@interface MAPIStoreFreebusyContext : MAPIStoreFSBaseContext
+@interface NSString (SOGoLDIF)
+
+- (BOOL) mustEncodeLDIFValue;
 
 @end
 
-#endif /* MAPISTOREFREEBUSYCONTEXT_H */
+#endif /* NSSTRING_LDIF_H */

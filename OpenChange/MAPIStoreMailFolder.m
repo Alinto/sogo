@@ -77,71 +77,21 @@ static Class SOGoMailFolderK;
   [MAPIStoreAppointmentWrapper class];
 }
 
-- (id) initWithURL: (NSURL *) newURL
-         inContext: (MAPIStoreContext *) newContext
+- (id) init
 {
-  SOGoUserFolder *userFolder;
-  SOGoMailAccounts *accountsFolder;
-  SOGoMailAccount *accountFolder;
-  SOGoFolder *currentContainer;
-  WOContext *woContext;
-
-  if ((self = [super initWithURL: newURL
-                       inContext: newContext]))
+  if ((self = [super init]))
     {
-      woContext = [newContext woContext];
-      userFolder = [SOGoUserFolder objectWithName: [newURL user]
-                                      inContainer: MAPIApp];
-      [parentContainersBag addObject: userFolder];
-      [woContext setClientObject: userFolder];
-
-      accountsFolder = [userFolder lookupName: @"Mail"
-                                    inContext: woContext
-                                      acquire: NO];
-      [parentContainersBag addObject: accountsFolder];
-      [woContext setClientObject: accountsFolder];
-      
-      accountFolder = [accountsFolder lookupName: @"0"
-                                       inContext: woContext
-                                         acquire: NO];
-      [[accountFolder imap4Connection]
-        enableExtension: @"QRESYNC"];
-
-      [parentContainersBag addObject: accountFolder];
-      [woContext setClientObject: accountFolder];
-
-      sogoObject = [self specialFolderFromAccount: accountFolder
-                                        inContext: woContext];
-      [sogoObject retain];
-      currentContainer = [sogoObject container];
-      while (currentContainer != (SOGoFolder *) accountFolder)
-        {
-          [parentContainersBag addObject: currentContainer];
-          currentContainer = [currentContainer container];
-        }
-
-      ASSIGN (versionsMessage,
-              [SOGoMAPIFSMessage objectWithName: @"versions.plist"
-                                    inContainer: propsFolder]);
+      versionsMessage = nil;
     }
 
   return self;
 }
 
-- (id) initWithSOGoObject: (id) newSOGoObject
-              inContainer: (MAPIStoreObject *) newContainer
+- (void) setupVersionsMessage
 {
-  // NSString *urlString;
-
-  if ((self = [super initWithSOGoObject: newSOGoObject inContainer: newContainer]))
-    {
-      // urlString = [[self url] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-      ASSIGN (versionsMessage,
-              [SOGoMAPIFSMessage objectWithName: @"versions.plist"
-                                 inContainer: propsFolder]);
-    }
-
-  return self;
+  ASSIGN (versionsMessage,
+          [SOGoMAPIFSMessage objectWithName: @"versions.plist"
+                                inContainer: propsFolder]);
 }
 
 - (void) dealloc
@@ -150,12 +100,25 @@ static Class SOGoMailFolderK;
   [super dealloc];
 }
 
-- (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) accountFolder
-                                    inContext: (WOContext *) woContext
-{
-  [self subclassResponsibility: _cmd];
 
-  return nil;
+- (void) addProperties: (NSDictionary *) newProperties
+{
+  NSString *newDisplayName;
+  NSMutableDictionary *propsCopy;
+  NSNumber *key;
+
+  key = MAPIPropertyKey (PR_DISPLAY_NAME_UNICODE);
+  newDisplayName = [newProperties objectForKey: key];
+  if (newDisplayName)
+    {
+      [(SOGoMailFolder *) sogoObject renameTo: newDisplayName];
+      propsCopy = [newProperties mutableCopy];
+      [propsCopy removeObjectForKey: key];
+      [propsCopy autorelease];
+      newProperties = propsCopy;
+    }
+
+  [super addProperties: newProperties];
 }
 
 - (MAPIStoreMessageTable *) messageTable
@@ -164,10 +127,11 @@ static Class SOGoMailFolderK;
   return [MAPIStoreMailMessageTable tableForContainer: self];
 }
 
-- (NSString *) createFolder: (struct SRow *) aRow
-                    withFID: (uint64_t) newFID
-                inContainer: (id) subfolderParent
+- (enum mapistore_error) createFolder: (struct SRow *) aRow
+                              withFID: (uint64_t) newFID
+                               andKey: (NSString **) newKeyP
 {
+  enum mapistore_error rc;
   NSString *folderName, *nameInContainer;
   SOGoMailFolder *newFolder;
   int i;
@@ -188,19 +152,42 @@ static Class SOGoMailFolderK;
       nameInContainer = [NSString stringWithFormat: @"folder%@",
                                   [folderName asCSSIdentifier]];
       newFolder = [SOGoMailFolderK objectWithName: nameInContainer
-                                      inContainer: subfolderParent];
-      if (![newFolder create])
-        nameInContainer = nil;
+                                      inContainer: sogoObject];
+      if ([newFolder create])
+        *newKeyP = nameInContainer;
+      else if ([newFolder exists])
+        rc = MAPISTORE_ERR_EXIST;
+      else
+        rc = MAPISTORE_ERR_DENIED;
     }
 
-  return nameInContainer;
+  return rc;
 }
 
-- (NSString *) createFolder: (struct SRow *) aRow
-                    withFID: (uint64_t) newFID
+- (int) deleteFolder
 {
-  return [self createFolder: aRow withFID: newFID
-                inContainer: sogoObject];
+  int rc;
+  NSException *error;
+  NSString *name;
+
+  name = [self nameInContainer];
+  if ([name isEqualToString: @"folderINBOX"])
+    rc = MAPISTORE_ERR_DENIED;
+  else
+    {
+      error = [(SOGoMailFolder *) sogoObject delete];
+      if (error)
+        rc = MAPISTORE_ERROR;
+      else
+        {
+          if (![versionsMessage delete])
+            rc = MAPISTORE_SUCCESS;
+          else
+            rc = MAPISTORE_ERROR;
+        }
+    }
+
+  return (rc == MAPISTORE_SUCCESS) ? [super deleteFolder] : rc;
 }
 
 - (int) getPrContentUnread: (void **) data
@@ -848,7 +835,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   /* sample: 1 OK [COPYUID 1311899334 1:3 11:13] Completed */
 
   max = [line length];
-  uniString = NSZoneMalloc (NULL, max * sizeof (unichar) + 1);
+  uniString = NSZoneMalloc (NULL, sizeof (unichar) * (max + 1));
   [line getCharacters: uniString];
   uniString[max] = 0;
 
@@ -896,7 +883,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                                   wantCopy: wantCopy];
 
   /* Conversion of mids to IMAP uids */
-  mapping = [[self context] mapping];
+  mapping = [self mapping];
   uids = [NSMutableArray arrayWithCapacity: midCount];
   oldMessageURLs = [NSMutableArray arrayWithCapacity: midCount];
   for (count = 0; count < midCount; count++)
@@ -1025,6 +1012,8 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   if (rights & RightsCreateSubfolders)
     [roles addObject: SOGoRole_FolderCreator];
 
+  // [self logWithFormat: @"roles for rights %.8x = (%@)", rights, roles];
+
   return roles;
 }
 
@@ -1051,172 +1040,10 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 
   if (rights != 0)
     rights |= RoleNone; /* actually "folder visible" */
+
+  // [self logWithFormat: @"rights for roles (%@) = %.8x", roles, rights];
  
   return rights;
-}
-
-@end
-
-@implementation MAPIStoreInboxFolder : MAPIStoreMailFolder
-
-- (id) initWithURL: (NSURL *) newURL
-         inContext: (MAPIStoreContext *) newContext
-{
-  NSDictionary *list, *response;
-  NGImap4Client *client;
-
-  if ((self = [super initWithURL: newURL
-                       inContext: newContext]))
-    {
-      client = [[(SOGoMailFolder *) sogoObject imap4Connection] client];
-      list = [client list: @"" pattern: @"INBOX"];
-      response = [[list objectForKey: @"RawResponse"] objectForKey: @"list"];
-      usesAltNameSpace = [[response objectForKey: @"flags"] containsObject: @"noinferiors"];
-    }
-
-  return self;
-}
-
-- (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) accountFolder
-                                    inContext: (WOContext *) woContext
-{
-  return [accountFolder inboxFolderInContext: woContext];
-}
-
-- (NSString *) createFolder: (struct SRow *) aRow
-                    withFID: (uint64_t) newFID
-{
-  id subfolderParent;
-
-  if (usesAltNameSpace)
-    subfolderParent = [(SOGoMailFolder *) sogoObject mailAccountFolder];
-  else
-    subfolderParent = sogoObject;
-
-  return [self createFolder: aRow withFID: newFID
-                inContainer: subfolderParent];
-}
-
-- (NSMutableString *) _imapFolderNameRepresentation: (NSString *) subfolderName
-{
-  NSMutableString *representation;
-
-  if (usesAltNameSpace)
-    {
-      /* with "altnamespace", the subfolders are NEVER subfolders of INBOX... */;
-      if (![subfolderName hasPrefix: @"folder"])
-        abort ();
-      representation
-        = [NSMutableString stringWithString:
-          [subfolderName substringFromIndex: 6]];
-    }
-  else
-    representation = [super _imapFolderNameRepresentation: subfolderName];
-
-  return representation;
-}
-
-- (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
-                         andSortOrderings: (NSArray *) sortOrderings
-{
-  NSMutableArray *subfolderKeys;
-  SOGoMailAccount *account;
-
-  if (usesAltNameSpace)
-    {
-      if (qualifier)
-        [self errorWithFormat: @"qualifier is not used for folders"];
-      if (sortOrderings)
-        [self errorWithFormat: @"sort orderings are not used for folders"];
-
-      account = [(SOGoMailFolder *) sogoObject mailAccountFolder];
-      subfolderKeys
-        = [[account toManyRelationshipKeysWithNamespaces: NO]
-            mutableCopy];
-      [subfolderKeys removeObject: @"folderINBOX"];
-
-      [self _cleanupSubfolderKeys: subfolderKeys];
-    }
-  else
-    subfolderKeys = [[super folderKeysMatchingQualifier: qualifier
-                                       andSortOrderings: sortOrderings]
-                      mutableCopy];
-
-  /* TODO: remove special folders */
-
-  [subfolderKeys autorelease];
-
-  return subfolderKeys;
-}
-
-- (id) lookupFolder: (NSString *) childKey
-{
-  MAPIStoreMailFolder *childFolder = nil;
-  SOGoMailAccount *account;
-  SOGoMailFolder *sogoFolder;
-  WOContext *woContext;
-
-  if (usesAltNameSpace)
-    {
-      if ([[self folderKeys] containsObject: childKey])
-        {
-          woContext = [[self context] woContext];
-          account = [(SOGoMailFolder *) sogoObject mailAccountFolder];
-          sogoFolder = [account lookupName: childKey inContext: woContext
-                                 acquire: NO];
-          [sogoFolder setContext: woContext];
-          childFolder = [MAPIStoreMailFolder mapiStoreObjectWithSOGoObject: sogoFolder
-                                             inContainer: self];
-        }
-    }
-  else
-    childFolder = [super lookupFolder: childKey];
-
-  return childFolder;
-}
-
-@end
-
-@implementation MAPIStoreSentItemsFolder : MAPIStoreMailFolder
-
-- (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) accountFolder
-                                    inContext: (WOContext *) woContext
-{
-  return [accountFolder sentFolderInContext: woContext];
-}
-
-@end
-
-@implementation MAPIStoreDraftsFolder : MAPIStoreMailFolder
-
-- (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) accountFolder
-                                    inContext: (WOContext *) woContext
-{
-  return [accountFolder draftsFolderInContext: woContext];
-}
-
-@end
-
-// @implementation MAPIStoreDeletedItemsFolder : MAPIStoreMailFolder
-
-// - (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) accountFolder
-//                                     inContext: (WOContext *) woContext
-// {
-//   return [accountFolder trashFolderInContext: woContext];
-// }
-
-// @end
-
-
-//
-//
-//
-@implementation MAPIStoreOutboxFolder : MAPIStoreMailFolder
-
-- (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) accountFolder
-                                    inContext: (WOContext *) woContext
-{
-  return [accountFolder draftsFolderInContext: woContext];
 }
 
 @end

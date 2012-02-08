@@ -22,23 +22,38 @@
 
 #import <Foundation/NSString.h>
 
+#import <Contacts/SOGoContactFolders.h>
+
 #import "MAPIStoreContactsFolder.h"
-#import "MAPIStoreMapping.h"
+#import "MAPIStoreUserContext.h"
 
 #import "MAPIStoreContactsContext.h"
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
+static Class MAPIStoreContactsFolderK;
+
 @implementation MAPIStoreContactsContext
+
++ (void) initialize
+{
+  MAPIStoreContactsFolderK = [MAPIStoreContactsFolder class];
+}
 
 + (NSString *) MAPIModuleName
 {
   return @"contacts";
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
++ (enum mapistore_context_role) MAPIContextRole
 {
-  baseFolder = [MAPIStoreContactsFolder baseFolderWithURL: newURL
-                                                inContext: self];
-  [baseFolder retain];
+  return MAPISTORE_CONTACTS_ROLE;
+}
+
+- (Class) MAPIStoreFolderClass
+{
+  return MAPIStoreContactsFolderK;
 }
 
 @end

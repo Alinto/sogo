@@ -35,8 +35,11 @@
 
 @class EOQualifier;
 
+@class MAPIStoreContext;
 @class MAPIStoreFolder;
+@class MAPIStoreMapping;
 @class MAPIStoreTable;
+@class MAPIStoreUserContext;
 
 @interface MAPIStoreObject : NSObject
 {
@@ -71,7 +74,9 @@
 - (id) sogoObject;
 - (MAPIStoreObject *) container;
 
-- (id) context;
+- (MAPIStoreContext *) context;
+- (MAPIStoreUserContext *) userContext;
+- (MAPIStoreMapping *) mapping;
 
 - (void) cleanupCaches;
 

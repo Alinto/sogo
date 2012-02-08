@@ -27,7 +27,7 @@
 
 #import <Appointments/iCalEntityObject+SOGo.h>
 
-#import "MAPIStoreContext.h"
+#import "MAPIStoreUserContext.h"
 
 #import "MAPIApplication.h"
 
@@ -67,20 +67,16 @@ MAPIApplication *MAPIApp = nil;
   return MAPIApp;
 }
 
-- (void) dealloc
+- (void) setUserContext: (MAPIStoreUserContext *) newContext
 {
-  [mapiContext release];
-  [super dealloc];
-}
-
-- (void) setMAPIStoreContext: (MAPIStoreContext *) newMAPIStoreContext
-{
-  ASSIGN (mapiContext, newMAPIStoreContext);
+  /* user contexts must not be retained here ad their holder (mapistore)
+     contexts must be active when any operation occurs. */
+  userContext = newContext;
 }
 
 - (id) authenticatorInContext: (id) context
 {
-  return [mapiContext authenticator];
+  return [userContext authenticator];
 }
 
 @end

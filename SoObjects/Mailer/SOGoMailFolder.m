@@ -248,7 +248,7 @@ static NSString *defaultUserID =  @"anyone";
   if (!filenames)
     {
       filenames = [NSMutableArray new];
-      if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
+      if ([self exists])
         {
           uids = [self fetchUIDsMatchingQualifier: nil sortOrdering: @"DATE"];
           if (![uids isKindOfClass: [NSException class]])
@@ -265,6 +265,53 @@ static NSString *defaultUserID =  @"anyone";
     }
 
   return filenames;
+}
+
+- (NSException *) renameTo: (NSString *) newName
+{
+  NSException *error;
+  SOGoMailFolder *inbox;
+  NSURL *destURL;
+  NSString *path;
+  NGImap4Client *client;
+
+  if ([newName length] > 0)
+    {
+      [self imap4URL];
+
+      [self imap4Connection];
+      client = [imap4 client];
+
+      inbox = [[self mailAccountFolder] inboxFolderInContext: context];
+      [client select: [inbox absoluteImap4Name]];
+
+      path = [[imap4URL path] stringByDeletingLastPathComponent];
+      if (![path hasSuffix: @"/"])
+        path = [path stringByAppendingString: @"/"];
+      destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
+                                         host: [imap4URL host]
+                                         path: [NSString stringWithFormat: @"%@%@",
+                                                         path, newName]];
+      [destURL autorelease];
+      error = [imap4 moveMailboxAtURL: imap4URL
+                                toURL: destURL];
+      if (!error)
+	{
+	  // We unsubscribe to the old one, and subscribe back to the new one
+	  if ([[[context activeUser] userDefaults]
+                mailShowSubscribedFoldersOnly])
+	    {	    
+	      [client subscribe: [destURL path]];
+	      [client unsubscribe: [imap4URL path]];
+	    }
+	}
+    }
+  else
+    error = [NSException exceptionWithName: @"SOGoMailException"
+                                    reason: @"given name is empty"
+                                  userInfo: nil];
+
+  return error;
 }
 
 /* messages */
@@ -508,7 +555,7 @@ static NSString *defaultUserID =  @"anyone";
   NSString *archiveName;
   EOQualifier *notDeleted;
 
-  if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
+  if ([self exists])
     {
       notDeleted = [EOQualifier qualifierWithQualifierFormat:
                                   @"(not (flags = %@))", @"deleted"];
@@ -675,7 +722,7 @@ static NSString *defaultUserID =  @"anyone";
 {
   // We check for the existence of the IMAP folder (likely to be the
   // Sent mailbox) prior to appending messages to it.
-  if ([[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]]
+  if ([self exists]
       || ![[self imap4Connection] createMailbox: [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]]
                                           atURL: [[self mailAccountFolder] imap4URL]])
     return [[self imap4Connection] postData: _data flags: _flags
@@ -788,7 +835,7 @@ static NSString *defaultUserID =  @"anyone";
                                                   inContainer: self];
         }
       else if (isdigit ([_key characterAtIndex: 0])
-               && [[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]])
+               && [self exists])
         {
           obj = [SOGoMailObject objectWithName: _key inContainer: self];
           if ([_key hasSuffix: @".eml"])
@@ -814,6 +861,11 @@ static NSString *defaultUserID =  @"anyone";
 			    inContext: (id) _ctx
 {
   return [[self imap4Connection] createMailbox:_name atURL:[self imap4URL]];
+}
+
+- (BOOL) exists
+{
+  return [[self imap4Connection] doesMailboxExistAtURL: [self imap4URL]];
 }
 
 - (BOOL) create
@@ -887,32 +939,6 @@ static NSString *defaultUserID =  @"anyone";
 - (NSString *) folderType
 {
   return @"Mail";
-}
-
-- (NSString *) outlookFolderClass
-{
-  // TODO: detect Trash/Sent/Drafts folders
-  SOGoMailAccount *account;
-  NSString *name;
-
-  if (!folderType)
-    {
-      account = [self mailAccountFolder];
-      name = [self traversalFromMailAccount];
-
-      if ([name isEqualToString: [account trashFolderNameInContext: nil]])
-	folderType = @"IPF.Trash";
-      else if ([name
-		 isEqualToString: [account inboxFolderNameInContext: nil]])
-	folderType = @"IPF.Inbox";
-      else if ([name
-		 isEqualToString: [account sentFolderNameInContext: nil]])
-	folderType = @"IPF.Sent";
-      else
-	folderType = @"IPF.Folder";
-    }
-  
-  return folderType;
 }
 
 /* acls */

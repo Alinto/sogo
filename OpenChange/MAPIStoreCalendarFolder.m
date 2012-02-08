@@ -24,6 +24,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
 #import <SOGo/SOGoPermissions.h>
 #import <Appointments/SOGoAppointmentFolder.h>
@@ -41,37 +42,6 @@
 #include <gen_ndr/exchange.h>
 
 @implementation MAPIStoreCalendarFolder
-
-- (id) initWithURL: (NSURL *) newURL
-         inContext: (MAPIStoreContext *) newContext
-{
-  SOGoUserFolder *userFolder;
-  SOGoAppointmentFolders *parentFolder;
-  WOContext *woContext;
-
-  if ((self = [super initWithURL: newURL
-                       inContext: newContext]))
-    {
-      woContext = [newContext woContext];
-      userFolder = [SOGoUserFolder objectWithName: [newURL user]
-                                      inContainer: MAPIApp];
-      [parentContainersBag addObject: userFolder];
-      [woContext setClientObject: userFolder];
-
-      parentFolder = [userFolder lookupName: @"Calendar"
-                                  inContext: woContext
-                                    acquire: NO];
-      [parentContainersBag addObject: parentFolder];
-      [woContext setClientObject: parentFolder];
-      
-      sogoObject = [parentFolder lookupName: @"personal"
-                                  inContext: woContext
-                                    acquire: NO];
-      [sogoObject retain];
-    }
-
-  return self;
-}
 
 - (MAPIStoreMessageTable *) messageTable
 {
@@ -132,6 +102,8 @@
       [roles addObject: SOGoCalendarRole_ConfidentialViewer];
     }
 
+  // [self logWithFormat: @"roles for rights %.8x = (%@)", rights, roles];
+
   return roles;
 }
 
@@ -150,9 +122,11 @@
   else if ([roles containsObject: SOGoCalendarRole_PublicViewer]
            && [roles containsObject: SOGoCalendarRole_PrivateViewer]
            && [roles containsObject: SOGoCalendarRole_ConfidentialViewer])
-    rights |= RightsReadItems;
+    rights |= RightsReadItems | 0x1800;
   if (rights != 0)
     rights |= RoleNone; /* actually "folder visible" */
+
+  // [self logWithFormat: @"rights for roles (%@) = %.8x", roles, rights];
  
   return rights;
 }
