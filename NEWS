@@ -1,5 +1,5 @@
-1.3-20120213 (1.3.12)
----------------------
+1.3.12 (2012-02-13)
+-------------------
 New Features
  - show end time in bubble box of events
  - we now check for new mails in folders for which sieve rules are defined to
@@ -32,8 +32,8 @@ Bug Fixes
  - fixed issue with Apple Address Book 6.1 (1083) (bundled with MacOS X 10.7.3)
  - removed double line breaks in HTML mail and fixed empty tags in general
 
-1.3-20111212 (1.3.11)
----------------------
+1.3.11 (2011-12-12)
+-------------------
 New Features
  - new experimental feature to force popup windows to appear in an iframe -- this mode
    can be forced by setting the cookie "SOGoWindowMode" to "single"
@@ -56,8 +56,8 @@ Bug Fixes
  - activated "standard conforming strings" in the PosgreSQL adapter to fixed errors with backslashes
  - fixed a bug when GCSFolderDebugEnabled or GCSFolderManagerDebugEnabled were enabled
 
-1.3-20111130 (1.3.10)
----------------------
+1.3.10 (2011-11-30)
+-------------------
 New Features
  - new migration script for SquirrelMail (address books)
  - users can now set an end date to their vacation message (sysadmin must 
@@ -80,8 +80,8 @@ Bug Fixes
  - fixed vcomponent updates for MySQL
  - fixed clang/llvm and libobjc2 build
 
-1.3-20111028 (1.3.9)
----------------------
+1.3.9 (2011-10-28)
+-------------------
 New Features
  - new user defaults SOGoDefaultCalendar to specify which calendar is used when
    creating an event or a task (selected, personal, first enabled)
@@ -110,14 +110,14 @@ Bug Fixes
  - fixed Swedish translation classes
  - fixed bug when setting no ACL on a calendar
 
-1.3-20110726 (1.3.8b)
----------------------
+1.3.8b (2011-07-26)
+-------------------
 Bug Fixes
  - fixed a bug with multi-domain configurations that would cause the first
    authentication to fail
 
-1.3-20110719 (1.3.8a)
----------------------
+1.3.8a (2011-07-19)
+-------------------
 New Features
  - new system setting SOGoEnableDomainBasedUID to enable user identification
      by domain
@@ -125,8 +125,8 @@ New Features
 Bug Fixes
  - fixed a buffer overflow in SOPE (mainly affecting OpenBSD)
 
-1.3-20110714 (1.3.8)
----------------------
+1.3.8 (2011-07-14)
+-------------------
 New Features
  - initial support for threaded-view in the webmail interface
  - sogo-tool: new "rename-user" command that automatically updates all the
@@ -161,8 +161,8 @@ Bug Fixes
  - many small fixes related to CalDAV scheduling
  - many OpenBSD-related fixes
  
-1.3-20110503 (1.3.7)
----------------------
+1.3.7 (2011-05-03)
+-------------------
 New Features
  - IMAP namespaces are now translated and the full name of the
    mailbox owner is extracted under "Other Users" 
@@ -187,8 +187,8 @@ Bug Fixes
  - crash when some events had no end date
 
 
-1.3-20110408 (1.3.6)
---------------------
+1.3.6 (2011-04-08)
+-------------------
 New Features
 - added Norwegian translation - thanks to Altibox
 
@@ -229,8 +229,8 @@ Bug Fixes
 - sope-appserver: fixed a bug leaving child processes performing the watchdog
   safety belt cleanup
 
-1.3-20110125 (1.3.5)
---------------------
+1.3.5 (2011-01-25)
+-------------------
 New Features
 - implemented secured sessions
 - added SHA1 password hashing in SQL sources
@@ -251,8 +251,8 @@ Bug Fixes
 - fixed wrapping of long lines in messages with non-ASCII characters
 - fixed a bug that would prevent alarms to be triggered when non-repetitive
 
-1.3-20101117 (1.3.4)
---------------------
+1.3.4 (2010-11-17)
+-------------------
 - updated CKEditor to version 3.4.2
 - added event details in invitation email
 - fixed a bug that would prevent web calendars from being considered as such
@@ -266,8 +266,8 @@ Bug Fixes
   freebusy information
 - increased the contrast ratio of input/select/textarea fields
 
-1.3-20101019 (1.3.3)
---------------------
+1.3.3 (2010-10-19)
+-------------------
 - added Catalan translation, thanks to Hector Rulot
 - fixed German translation
 - fixed Polish translation
@@ -298,8 +298,8 @@ Bug Fixes
   selected
 - added caching of ACLs locally and in memcached
 
-1.3-20100921 (1.3.2)
---------------------
+1.3.2 (2010-09-21)
+-------------------
 - fixed various issues with some types of email address fields
 - added support for Ctrl-A (select all) in all web modules
 - added support for Ctrl-C/Ctrl-V (copy/paste) in the calendar web module
@@ -313,8 +313,8 @@ Bug Fixes
 - added display of unread messages count for all mailboxes
 - added support for email event reminders
 
-1.3-20100819 (1.3.1)
---------------------
+1.3.1 (2010-08-19)
+-------------------
 - added migration scripts for Horde (email signatures and address books)
 - added migration script for Oracle Calendar (events, tasks and access rights)
 - added Polish translation
@@ -323,8 +323,8 @@ Bug Fixes
 - added the caldav-auto-schedule capability 
 - improved support for IE8
 
-1.3-20100721 (1.3.0)
---------------------
+1.3.0 (2010-07-21)
+-------------------
 - added support for the "tentative" status in the invitation responses
 - inviting a group of contacts is now possible, where each contact will be
   extracted when the group is resolved
@@ -354,8 +354,8 @@ Bug Fixes
 - added a Ukrainian translation
 - updated the Czech translation
 
-1.2-20100504 (1.2.2)
---------------------
+1.2.2 (2010-05-04)
+-------------------
 - subscribers can now rename folders that do not belong to them in their own environment
 - added support for LDAP password policies
 - added support for custom Sieve filters
@@ -375,8 +375,8 @@ Bug Fixes
 - improved the webmail security by banning a few sensitive tags and handling
   "object" elements
 
-1.2-20100219 (1.2.1)
---------------------
+1.2.1 (2010-02-19)
+-------------------
 - added CAS authentication support
 - improved display of message size in webmail
 - improved security of login cookie by specifying a path
@@ -386,8 +386,8 @@ Bug Fixes
 - added many IMAP fixes for Courier and Dovecot
 - many small bug fixes and other small enhancements
 
-1.2-20100125 (1.2.0)
---------------------
+1.2.0 (2010-01-25)
+-------------------
 - improved handling of popup windows when closing the parent window
 - major refresh of CSS
 - added handling of preforked processes by SOPE/SOGo (a load balancer is
@@ -405,8 +405,8 @@ Bug Fixes
   the ACL dialog
 - added fixes for bugs in GNUstep 1.19.3 (NSURL)
 
-1.1-20091028 (1.1.0)
---------------------
+1.1.0 (2009-10-28)
+-------------------
 - added backup/restore tools for all user's data (calendars, address books, preferences, etc.)
 - added Web administrative interface (right now, only for ACLs)
 - added the "Starred" column in the webmail module to match Thunderbird's behavior
@@ -426,8 +426,8 @@ Bug Fixes
 - added support SQL-based authentication sources and address books
 - added support for Sieve filters (Vacation and Forward)
 
-1.0-20090812 (1.0.4)
---------------------
+1.0.4 (2009-08-12)
+-------------------
 - added ability to create and modify event categories in the preferences
 - added contextual menu in web calendar views
 - added "Reload" button to refresh the current view in the calendar module
@@ -444,8 +444,8 @@ Bug Fixes
   permissions
 - added Hungarian translation, thanks to Sándor Kuti
 
-1.0-20090714 (1.0.3)
---------------------
+1.0.3 (2009-07-14)
+-------------------
 - improved search behavior of users folders (UIxContactsUserFolders)
 - the editor window in the web interface now appears directly when editing an exception occurence of a repeating event (no more dialog window, as in Lightning)
 - implemented the webdav sync spec from Cyrus Daboo, in order to reduce useless payload on databases
@@ -462,8 +462,8 @@ Bug Fixes
 - added Czech translation, thanks to Šimon Halamásek
 - added Brazilian Portuguese translation, thanks to Alexandre Marcilio
 
-1.0-20090605 (1.0.2)
---------------------
+1.0.2 (2009-06-05)
+-------------------
 - basic alarm implementation for the web interface
 - added Welsh translation, thanks to Iona Bailey
 - added Russian translation, thanks to Alex Kabakaev
@@ -489,8 +489,8 @@ Bug Fixes
 - fixed LDAP and SQL injection bugs
 - fixed many bugs related to the encoding and decoding of IMAP folder names
 
-1.0-20090407 (1.0.1)
---------------------
+1.0.1 (2009-04-07)
+-------------------
 - now possbile to navigate using keyboard keys in the address book and mail
   modules
 - the favicon can now be specified using the SOGoFaviconRelativeURL preference
@@ -504,8 +504,8 @@ Bug Fixes
 - various database fixes (Oracle, connection pools, unavailability, etc.)
 - init scripts improvements
 
-1.0-20090317 (1.0.0)
----------------
+1.0.0 (2009-03-17)
+-------------------
 - when double-clicking in the all-day zone (day & week views), the "All Day
   event" checkbox is now automatically checked
 - replaced the JavaScript FastInit class by the dom:loaded event of Prototype
@@ -517,8 +517,8 @@ Bug Fixes
 - new SOGo login screen
 - added MySQL support
 
-1.0-20090130 (1.0 rc9)
-------------------
+1.0 rc9 (2009-01-30)
+-------------------
 - added quota indicator in web mail module
 - improved drag handles behavior
 - added support for LDAP-based configuration
@@ -527,8 +527,8 @@ Bug Fixes
 - improved the ACL editor of the calendar web module
 - fixed handling of timezones in daily and weekly events
 
-1.0-20080826 (1.0 rc8)
-----------------------
+1.0 rc8 (2008-08-26)
+-------------------
 - fixed a bug that would prevent deleted event and tasks from being removed
   from the events and tasks list
 - fixed a bug where the search of contacts would be done in
@@ -553,8 +553,8 @@ Bug Fixes
   into account, and another one where the value would always take the one of the
   first calendar queries during the process lifetime.
 
-0.9.0-20080729 (1.0 rc7)
-------------------------
+1.0 rc7 (2008-07-29)
+-------------------
 - work around the situation where Courier IMAP would refuse to rename the
   current mailbox or move it into the trash
 - fixed tab index in mail composition window
@@ -583,8 +583,8 @@ Bug Fixes
 - fixed a bug where the search of users would be done in addressbook-only LDAP
   repositories
 
-0.9.0-20080520 (1.0 rc6)
-------------------------
+1.0 rc6 (2008-05-20)
+-------------------
 - retrieving the freebusy DAV object was causing SOGo to crash
 - converted to use the gnustep-make 2 build framework
 - added custom DAV methods for managing user permissions from the SOGo
@@ -615,8 +615,8 @@ Bug Fixes
 - applied a patch from Wilco Baan Hofman to let SOGo works correctly through a
   Squid proxy
 
-0.9.0-20080208 (1.0 rc5)
-------------------------
+1.0 rc5 (2008-02-08)
+-------------------
 - improved validation in the custom recurrence window
 - improved resiliance when parsing buggy recurrence rules
 - added the ability to authenticate users and to identify their resources with
@@ -633,8 +633,8 @@ Bug Fixes
 - improved the appearance of widgets in IE7
 - dramatic improvement in the overall stability of SOGo
 
-0.9.0-20080116 (1.0 rc4)
-------------------------
+1.0 rc4 (2008-01-16)
+-------------------
 - improved the attendees window;
 - added the attendees pulldown menu in the event editor (like in Lightning);
 - added the recurrence window;
@@ -642,8 +642,8 @@ Bug Fixes
   from an event attendees menu;
 - many bugfixes in the Calendar module;
 
-0.9.0-20071217 (1.0 rc3)
-------------------------
+1.0 rc3 (2007-12-17)
+-------------------
 - mail folders state is now saved;
 - image attachments in emails can now be saved;
 - the status of participants in represented with an icon;
@@ -654,8 +654,8 @@ Bug Fixes
 - many bugfixes in the Mail and Calendar modules;
 - improved handling of ACLs;
 
-0.9.0-20071127 (1.0 rc2)
-------------------------
+1.0 rc2 (2007-11-27)
+-------------------
 - the user password is no longer transmitted in the url when logging in;
 - SOGo will no longer redirect the browser to the default page when a
   specific location is submitted before login;
@@ -671,8 +671,8 @@ Bug Fixes
 - it is now possible to search events by title in the Calendar module;
 - all the writable calendars are now listed in the event edition dialog;
 
-0.9.0-20071119 (1.0 rc1)
-------------------------
+1.0 rc1 (2007-11-19)
+-------------------
 - the user can now configure his folders as drafts, trash or sent folder;
 - added the ability the move and copy message across mail folders;
 - added the ability to label messages;
@@ -695,8 +695,8 @@ Bug Fixes
 - changed look of message composition window to Thunderbird 2.0;
 - countless bugfixes;
 
-0.9.0-20070824
---------------
+0.9.0 (2007-08-24)
+-------------------
 - added the ability to choose the default module from the
   application settings: "Calendars", "Contacts" or "Mail";
 - added the ability to show or hide the password change dialog from the
@@ -715,8 +715,8 @@ Bug Fixes
   Thunderbird;
 - added a German translation based on Thunderbird;
 
-0.9.0-20070713
---------------
+0.9.0 (2007-07-13)
+-------------------
 - added the ability to specify a super user through the SOGoSuperUsername user
   default; 
 - added the ability to view the message source;
