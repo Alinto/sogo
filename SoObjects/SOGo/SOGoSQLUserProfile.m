@@ -25,6 +25,7 @@
 
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/NSURL+GCS.h>
+#import <GDLAccess/EOAdaptor.h>
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLAccess/EOAdaptorContext.h>
 #import <GDLAccess/EOAttribute.h>
@@ -35,11 +36,13 @@
 
 static NSURL *tableURL = nil;
 static NSString *uidColumnName = @"c_uid";
+static EOAttribute *textColumn = nil;
 
 @implementation SOGoSQLUserProfile
 
 + (void) initialize
 {
+  NSDictionary *description;
   NSString *profileURL;
   SOGoSystemDefaults *sd;
 
@@ -49,6 +52,19 @@ static NSString *uidColumnName = @"c_uid";
       profileURL = [sd profileURL];
       if (profileURL)
         tableURL = [[NSURL alloc] initWithString: profileURL];
+    }
+
+  if (!textColumn)
+    {
+      #warning This is a hack for providing an EOAttribute definition \
+        that is compatible with all the backends that we support
+      /* TODO: ... We should make use of EOModel for the profile tables */
+      description = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    @"c_textfield", @"columnName",
+                                    @"VARCHAR", @"externalType",
+                                  nil];
+      textColumn = [EOAttribute attributeFromPropertyList: description];
+      [textColumn retain];
     }
 }
 
@@ -139,17 +155,6 @@ static NSString *uidColumnName = @"c_uid";
   return value;
 }
 
-- (NSString *) _sqlJsonRepresentation: (NSString *) jsonRepresentation
-{
-  NSMutableString *sql;
-
-  sql = [jsonRepresentation mutableCopy];
-  [sql autorelease];
-  [sql replaceString: @"'" withString: @"''"];
-
-  return sql;
-}
-
 - (NSString *) generateSQLForInsert: (NSString *) jsonRepresentation
 {
   NSString *sql;
@@ -157,10 +162,10 @@ static NSString *uidColumnName = @"c_uid";
   if ([jsonRepresentation length])
     sql = [NSString stringWithFormat: (@"INSERT INTO %@"
                                        @"            (%@, %@)"
-                                       @"     VALUES ('%@', '%@')"),
+                                       @"     VALUES ('%@', %@)"),
                     [tableURL gcsTableName], uidColumnName, fieldName,
                     [self uid],
-                    [self _sqlJsonRepresentation: jsonRepresentation]];
+                    jsonRepresentation];
   else
     sql = nil;
 
@@ -173,11 +178,11 @@ static NSString *uidColumnName = @"c_uid";
 
   if ([jsonRepresentation length])
     sql = [NSString stringWithFormat: (@"UPDATE %@"
-                                       @"     SET %@ = '%@'"
+                                       @"     SET %@ = %@"
                                        @"   WHERE %@ = '%@'"),
                     [tableURL gcsTableName],
                     fieldName,
-                    [self _sqlJsonRepresentation: jsonRepresentation],
+                    jsonRepresentation,
                     uidColumnName, [self uid]];
   else
     sql = nil;
@@ -191,14 +196,11 @@ static NSString *uidColumnName = @"c_uid";
   EOAdaptorChannel *channel;
   EOAdaptorContext *context;
   NSException *ex;
-  NSString *sql;
+  NSString *sql, *formattedValue;
   BOOL rc;
 
   rc = NO;
 
-  sql = ((defFlags.isNew)
-         ? [self generateSQLForInsert: jsonRepresentation]
-         : [self generateSQLForUpdate: jsonRepresentation]);
   cm = [GCSChannelManager defaultChannelManager];
   channel = [cm acquireOpenChannelForURL: tableURL];
   if (channel)
@@ -206,6 +208,12 @@ static NSString *uidColumnName = @"c_uid";
       context = [channel adaptorContext];
       if ([context beginTransaction])
         {
+          formattedValue = [[context adaptor] formatValue: jsonRepresentation
+                                             forAttribute: textColumn];
+          sql = ((defFlags.isNew)
+                 ? [self generateSQLForInsert: formattedValue]
+                 : [self generateSQLForUpdate: formattedValue]);
+
           defFlags.ready = YES;
           ex = [channel evaluateExpressionX:sql];
           if (ex)
