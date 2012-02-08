@@ -1,3 +1,10 @@
+2012-02-14  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js (contactsListCallback): when
+	restoring selection after the folder refresh, call "selectElement"
+	on each row. This fixes the contacts selection retrieval when using the
+	contextual menu.
+
 2012-02-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoSQLUserProfile.m (_sqlJsonRepresentation:):
