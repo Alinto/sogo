@@ -522,6 +522,7 @@ function checkAttendee(input) {
     if (tbody && input.value.blank()) {
         var dataTable = $("freeBusyData").tBodies[0];
         var dataRow = dataTable.rows[row.sectionRowIndex];
+        input.stopObserving();
         tbody.removeChild(row);
         dataTable.removeChild(dataRow);
     }

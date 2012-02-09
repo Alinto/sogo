@@ -1,3 +1,9 @@
+2012-02-16  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxAttendeesEditor.js (checkAttendee):
+	stop observing events on input field before removing the row,
+	otherwise the blur event is triggered and generates an error.
+
 2012-02-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js (contactsListCallback): when
