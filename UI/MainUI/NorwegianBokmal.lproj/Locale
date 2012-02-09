@@ -15,12 +15,12 @@
   NSHourNameDesignations = ((0, midnatt), (10, formiddag), (12, lunch), (14, ettermiddag), (19, kveld));
   NSInternationalCurrencyString = NOK; /* ISO 4217 */
   NSLaterTimeDesignations = (neste);
-  NSMonthNameArray = (Januar, Februar, Mars, April, May, Juni, Juli, August, September, Oktober, November, Desember);
+  NSMonthNameArray = (Januar, Februar, Mars, April, Mai, Juni, Juli, August, September, Oktober, November, Desember);
   NSNextDayDesignations = ("i morgen");
   NSNextNextDayDesignations = (overmorgen);
   NSPriorDayDesignations = ("i går");
   NSShortDateFormatString = "%d.%m.%Y";
-  NSShortMonthNameArray = (Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Okt, Nov, Des);
+  NSShortMonthNameArray = (Jan, Feb, Mar, Apr, Mai, Jun, Jul, Aug, Sep, Okt, Nov, Des);
   NSShortTimeDateFormatString = "%d.%m.%Y %H:%M";
   NSShortWeekDayNameArray = ("Søn", Man, Tir, Ons, Tor, Fre, "Lør");
   NSThisDayDesignations = ("i dag", "nå");
