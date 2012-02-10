@@ -622,6 +622,7 @@ function onWindowResize(event) {
     textarea.setStyle({ 'top': hr.offsetTop + 'px' });
 
     // Resize the textarea (message content)
+    var offsetTop = $('rightPanel').offsetTop + headerarea.getHeight();
     var composeMode = UserDefaults["SOGoMailComposeMessageType"];
     if (composeMode == "html") {
         var editor = $('cke_text');
@@ -629,23 +630,11 @@ function onWindowResize(event) {
             onWindowResize.defer();
             return;
         }
-        var ck_top = $("cke_top_text");
-        var ck_bottom = $("cke_bottom_text");
-        var content = $("cke_contents_text");
-        var top = hr.offsetTop;
-        var height = Math.floor(window.height() - top - ck_top.getHeight() - ck_bottom.getHeight());
-        height = height - 15;
-        
-        if (Prototype.Browser.IE) {
-            editor.style.width = '';
-            editor.style.height = '';
-        }
-
-        editor.setStyle({ top: (top + 2) + 'px' });
-        content.setStyle({ height: height + 'px' });
+        var height = window.height() - offsetTop;
+        CKEDITOR.instances["text"].resize('100%', height);
     }
     else
-        textarea.rows = Math.floor((window.height() - textarea.offsetTop) / rowheight);
+        textarea.rows = Math.floor((window.height() - offsetTop) / rowheight);
 
     // Resize search contacts addressbook selector
     if ($("contacts").visible())

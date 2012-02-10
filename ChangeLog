@@ -1,3 +1,8 @@
+2012-02-20  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxMailEditor.js (onWindowResize): we now
+	make use of the ckeditor javascript api to reszie the container.
+
 2012-02-16  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxAttendeesEditor.js (checkAttendee):

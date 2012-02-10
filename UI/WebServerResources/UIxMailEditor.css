@@ -127,7 +127,6 @@ hr.fieldSeparator
   border: 0;
   clear: both;
   color: #848284;
-  float: left;
   height: 1px;
   margin: 0px;
   padding: 0px;
@@ -178,14 +177,6 @@ UL#attachments LI
 
 UL#attachments LI IMG
 { vertical-align: bottom; }
-
-#pageContent TEXTAREA,
-#cke_text
-{ position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /*top: 999em;*/ }
 
 #pageContent TEXTAREA
 { width: 99%; }
