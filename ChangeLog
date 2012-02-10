@@ -1,3 +1,9 @@
+2012-02-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m (+): added all simple
+	tag to "VoidTags", based on list from
+	http://www.w3.org/TR/html4/index/elements.html.
+
 2012-02-10  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (openMailTo): recipients are

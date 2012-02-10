@@ -236,7 +236,13 @@ static NSData* _sanitizeContent(NSData *theData)
                                   @"frame", @"iframe", @"applet", @"link",
                                   @"base", @"meta", @"title", nil];
   if (!VoidTags)
-    VoidTags = [[NSArray alloc] initWithObjects: @"br", @"hr", nil];
+    {
+      /* see http://www.w3.org/TR/html4/index/elements.html */
+      VoidTags = [[NSArray alloc] initWithObjects: @"area", @"base",
+                                  @"basefont", @"br", @"col", @"frame", @"hr",
+                                  @"img", @"input", @"isindex", @"link",
+                                @"meta", @"param", @"", nil];
+    }
 }
 
 - (id) init
