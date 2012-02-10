@@ -164,7 +164,7 @@ Hello Jacques,
 
 Can you read me?
 
-This message is just a big larger than message1 but smaller than message2
+This message is just a bit larger than message1 but smaller than message2
 -- 
 Cyril <cyril@cyril.dev>
 """
