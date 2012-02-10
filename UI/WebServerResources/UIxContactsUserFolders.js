@@ -48,7 +48,7 @@ function addUserLineToTree(tree, parent, line) {
     if (line[4] && !line[4].empty())
         email += ", " + line[4].split("\n").join("; "); // extra contact info
     var icon_card = 'abcard.png';
-    var datatype = 'person';
+    var datatype = 'user';
     if (line[3]) {
         icon_card = 'ablist.png';
         datatype = 'group';

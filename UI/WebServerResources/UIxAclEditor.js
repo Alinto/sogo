@@ -21,16 +21,22 @@ function addUser(userName, userID, type) {
         var nextLi = null;
         while (count > -1 && !nextLi) {
             if ($(lis[count]).hasClassName("normal-user")) {
-                nextLi = lis[count+1];
+                if ((count+1) < lis.length)
+                    ul.insertBefore(newNode, lis[count+1]);
+                else
+                    ul.appendChild(newNode);
+                break;
             }
             else {
                 count--;
             }
         }
         if (!nextLi) {
-            nextLi = lis[0];
+            if (count > 0)
+                ul.insertBefore(newNode, lis[0]);
+            else
+                ul.appendChild(newNode);
         }
-        ul.insertBefore(newNode, nextLi);
 
         var url = window.location.href;
         var elements = url.split("/");
@@ -188,13 +194,16 @@ function onAclLoadHandler() {
     for (var i = 0; i < lis.length; i++)
         setEventsOnUserNode(lis[i]);
 
-    defaultUserID = $("defaultUserID").value;
-    var userNode = nodeForUser(_("Any Authenticated User"),
-                               defaultUserID);
-    userNode.addClassName("any-user");
-    userNode.setAttribute("title",
-                          _("Any user not listed above"));
-    ul.appendChild(userNode);
+    var input = $("defaultUserID");
+    if (input) {
+        defaultUserID = $("defaultUserID").value;
+        var userNode = nodeForUser(_("Any Authenticated User"),
+                                   defaultUserID);
+        userNode.addClassName("any-user");
+        userNode.setAttribute("title",
+                              _("Any user not listed above"));
+        ul.appendChild(userNode);
+    }
     if (isPublicAccessEnabled && CurrentModule() != "Mail") {
         userNode = nodeForUser(_("Public Access"), "anonymous");
         userNode.addClassName("anonymous-user");

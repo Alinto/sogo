@@ -1,3 +1,8 @@
+2012-02-22  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxAclEditor.js (addUser): fixed case when
+	both canSubscribeUsers and isPublicAccessEnabled are disabled.
+
 2012-02-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SQLSource.m (_lookupContactEntry:considerEmail:):
