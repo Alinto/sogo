@@ -29,6 +29,7 @@
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
@@ -122,7 +123,8 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
     contactInfos = [folder lookupContactsWithFilter: nil
                                          onCriteria: nil
                                              sortBy: @"c_cn"
-                                           ordering: NSOrderedAscending];
+                                           ordering: NSOrderedAscending
+                                           inDomain: nil];
   else
     contactInfos = nil;
   
@@ -159,7 +161,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
 {
   id <WOActionResults> result;
   SOGoFolder <SOGoContactFolder> *folder;
-  NSString *searchText, *mail;
+  NSString *searchText, *mail, *domain;
   NSDictionary *data;
   NSArray *folders, *contacts, *descriptors, *sortedContacts;
   NSMutableArray *sortedFolders;
@@ -174,6 +176,7 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
       // NSLog(@"Search all contacts: %@", searchText);
       excludeGroups = [[self queryParameterForKey: @"excludeGroups"] boolValue];
       excludeLists = [[self queryParameterForKey: @"excludeLists"] boolValue];
+      domain = [[context activeUser] domain];
       folders = nil;
       NS_DURING
         folders = [[self clientObject] subFolders];
@@ -205,7 +208,8 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
           contacts = [folder lookupContactsWithFilter: searchText
                                            onCriteria: @"name_or_address"
                                                sortBy: @"c_cn"
-                                             ordering: NSOrderedAscending];
+                                             ordering: NSOrderedAscending
+                                             inDomain: domain];
           for (j = 0; j < [contacts count]; j++)
             {
               contact = [contacts objectAtIndex: j];

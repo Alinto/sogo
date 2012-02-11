@@ -275,7 +275,8 @@ Class SOGoContactSourceFolderKlass = Nil;
                     = [folder lookupContactsWithFilter: filter
                                             onCriteria: @"name_or_address"
                                                 sortBy: @"c_cn"
-                                              ordering: NSOrderedAscending];
+                                              ordering: NSOrderedAscending
+                                              inDomain: nil];
                 }
               else
                 {

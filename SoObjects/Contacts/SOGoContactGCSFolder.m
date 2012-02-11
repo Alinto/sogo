@@ -285,10 +285,15 @@ static NSArray *folderListingFields = nil;
   return record;
 }
 
+/* 
+ * GCS folder are personal folders and are not associated to a domain.
+ * The domain is therefore ignored.
+ */
 - (NSArray *) lookupContactsWithFilter: (NSString *) filter
                             onCriteria: (NSString *) criteria
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering
+                              inDomain: (NSString *) domain
 {
   NSArray *dbRecords, *records;
   EOQualifier *qualifier;

@@ -314,6 +314,7 @@
                             onCriteria: (NSString *) criteria
                                 sortBy: (NSString *) sortKey
                               ordering: (NSComparisonResult) sortOrdering
+                              inDomain: (NSString *) domain
 {
   NSArray *records, *result;
   EOSortOrdering *ordering;
@@ -323,7 +324,8 @@
   if (([filter length] > 0 && [criteria isEqualToString: @"name_or_address"])
       || ![source listRequiresDot])
     {
-      records = [source fetchContactsMatching: filter];
+      records = [source fetchContactsMatching: filter
+                                     inDomain: domain];
       [childRecords setObjects: records
                        forKeys: [records objectsForKey: @"c_name"
                                         notFoundMarker: nil]];

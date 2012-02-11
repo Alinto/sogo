@@ -417,7 +417,8 @@ static NSArray *infoKeys = nil;
   contactInfos = [folder lookupContactsWithFilter: nil
 				       onCriteria: nil
 					   sortBy: @"c_cn"
-					 ordering: NSOrderedAscending];
+					 ordering: NSOrderedAscending
+                                         inDomain: nil];
   
   return contactInfos;
 }

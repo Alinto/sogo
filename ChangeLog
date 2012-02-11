@@ -5,8 +5,33 @@
 
 2012-02-22  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserManager.m
+	(-authenticationSourceIDsInDomain:): when looking for a specific
+	domain, also return sources that are not associated to a domain.
+
+	* SoObjects/SOGo/SOGoSource.h
+	(-lookupContactEntryWithUIDorEmail:inDomain:): changed this method
+	of the protocol to specify a domain.
+	(-fetchContactsMatching:inDomain:): idem.
+
+	* SoObjects/Contacts/SOGoContactFolder.h
+	(-lookupContactsWithFilter:onCriteria:sortBy:ordering:inDomain:):
+	changed this method of the protocol to specify a domain.
+
 	* UI/WebServerResources/UIxAclEditor.js (addUser): fixed case when
 	both canSubscribeUsers and isPublicAccessEnabled are disabled.
+
+	* SoObjects/SOGo/SQLSource.m
+	(-_lookupContactEntry:considerEmail:inDomain:): if the configuration
+	parameter DomainFieldName is defined for the source, set the user
+	domain to the value of this field.
+	(-fetchContactsMatching:inDomain:): when the configuration parameter
+	DomainField is defined, limit the results to the entries matching
+	the specified domain.
+
+	* SoObjects/SOGo/SOGoUserManager.m (-sourceIDsInDomain): if the
+	source is not associated to a domain, set it to the requested
+	domain. It will be used by sources with dynamic domain assignation.
 
 2012-02-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

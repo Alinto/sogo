@@ -57,10 +57,12 @@
 			   perr: (SOGoPasswordPolicyError *) perr;
 
 - (NSDictionary *) lookupContactEntry: (NSString *) theID;
-- (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID;
+- (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID
+                                           inDomain: (NSString *) domain;
 
 - (NSArray *) allEntryIDs;
-- (NSArray *) fetchContactsMatching: (NSString *) filter;
+- (NSArray *) fetchContactsMatching: (NSString *) filter
+                           inDomain: (NSString *) domain;
 
 - (void) setSourceID: (NSString *) newSourceID;
 - (NSString *) sourceID;

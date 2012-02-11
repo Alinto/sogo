@@ -268,7 +268,7 @@
   while ((currentID = [allIDs nextObject]))
     {
       sourceDomain = [[_sources objectForKey: currentID] domain];
-      if (![domain length] || [domain isEqualToString: sourceDomain])
+      if (![domain length] || ![sourceDomain length] || [domain isEqualToString: sourceDomain])
         {
           metadata = [_sourcesMetadata objectForKey: currentID];
           if ([[metadata objectForKey: @"canAuthenticate"] boolValue])
@@ -609,7 +609,8 @@
   while (!userEntry && (sourceID = [sogoSources nextObject]))
     {
       currentSource = [_sources objectForKey: sourceID];
-      userEntry = [currentSource lookupContactEntryWithUIDorEmail: uid];
+      userEntry = [currentSource lookupContactEntryWithUIDorEmail: uid
+                                                         inDomain: domain];
       if (userEntry)
 	{
           [currentUser setObject: sourceID forKey: @"SOGoSource"];
@@ -876,6 +877,7 @@
 
 - (NSArray *) _fetchEntriesInSources: (NSArray *) sourcesList
 			    matching: (NSString *) filter
+                            inDomain: (NSString *) domain
 {
   NSMutableArray *contacts;
   NSEnumerator *sources;
@@ -888,7 +890,8 @@
     {
       currentSource = [_sources objectForKey: sourceID];
       [contacts addObjectsFromArray:
-		  [currentSource fetchContactsMatching: filter]];
+		  [currentSource fetchContactsMatching: filter
+                                              inDomain: domain]];
     }
 
   return [self _compactAndCompleteContacts: [contacts objectEnumerator]];
@@ -899,15 +902,17 @@
 {
   return [self
            _fetchEntriesInSources: [self addressBookSourceIDsInDomain: domain]
-                         matching: filter];
+                         matching: filter
+                         inDomain: domain];
 }
 
 - (NSArray *) fetchUsersMatching: (NSString *) filter
                         inDomain: (NSString *) domain
 {
-  return [self _fetchEntriesInSources:
-                 [self authenticationSourceIDsInDomain: domain]
-                             matching: filter];
+  return [self
+           _fetchEntriesInSources: [self authenticationSourceIDsInDomain: domain]
+                         matching: filter
+                         inDomain: domain];
 }
 
 - (NSString *) getLoginForDN: (NSString *) theDN

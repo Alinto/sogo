@@ -400,7 +400,7 @@
           _domainDefaults = [SOGoDomainDefaults defaultsForDomain: domain];
           if (!_domainDefaults)
             {
-              [self errorWithFormat: @"domain '%@' does not exist!", domain];
+              //[self errorWithFormat: @"domain '%@' does not exist!", domain];
               _domainDefaults = [SOGoSystemDefaults sharedSystemDefaults];
             }
         }

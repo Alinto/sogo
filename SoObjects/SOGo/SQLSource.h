@@ -37,6 +37,7 @@
 {
   NSString *_sourceID;
   NSString *_domain;
+  NSString *_domainField;
   NSString *_authenticationFilter;
   NSArray *_loginFields;
   NSArray *_mailFields;
