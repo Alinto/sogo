@@ -664,34 +664,18 @@
   return self;
 }
 
-- (NSArray *) photosURL
+- (BOOL) hasPhoto
 {
-  NSArray *photoElements;
+  return [[self clientObject] hasPhoto];
+}
+
+- (NSString *) photoURL
+{
   NSURL *soURL;
-  NSString *baseInlineURL, *photoURL;
-  NGVCardPhoto *photo;
-  int count, max;
 
-  if (!photosURL)
-    {
-      soURL = [[self clientObject] soURL];
-      baseInlineURL = [soURL absoluteString];
-      photoElements = [card childrenWithTag: @"photo"];
-      max = [photoElements count];
-      photosURL = [[NSMutableArray alloc] initWithCapacity: max];
-      for (count = 0; count < max; count++)
-        {
-          photo = [photoElements objectAtIndex: count];
-          if ([photo isInline])
-            photoURL = [NSString stringWithFormat: @"%@/photo%d",
-                                 baseInlineURL, count];
-          else
-            photoURL = [photo flattenedValuesForKey: @""];
-          [photosURL addObject: photoURL];
-        }
-    }
+  soURL = [[self clientObject] soURL];
 
-  return photosURL;
+  return [NSString stringWithFormat: @"%@/photo", [soURL absoluteString]];
 }
 
 @end /* UIxContactView */

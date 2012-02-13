@@ -19,8 +19,9 @@
           /><var:string value="screenName" escapeHTML="NO"
           /><var:string value="preferredAddress" escapeHTML="NO"
           /><var:string value="categories" escapeHTML="NO"
-          /><var:foreach list="photosURL" item="currentPhotoURL"
-          ><br/><img var:src="currentPhotoURL" class="contactPhoto"/>
+          /><var:if condition="hasPhoto"
+          ><img var:src="photoURL" class="contactPhoto"
+            /></var:if>
         </var:foreach></div
 
         ><var:if condition="hasHomeInfos"

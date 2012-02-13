@@ -1,3 +1,8 @@
+2012-02-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Contacts/UIxContactView.m (-photoURL, -hasPhoto): copied code
+	from UIxContactEditor, thereby replacing "photosURL".
+
 2012-02-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGCSFolder.m (+webdavAclManager): must include
