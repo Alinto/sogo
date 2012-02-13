@@ -1,3 +1,9 @@
+2012-02-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/JavascriptAPIExtensions.js
+	(String.asCSSIdentifier): escape the "+" character as its going to
+	be used in a regexp.
+
 2012-02-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m (+initialize): added
