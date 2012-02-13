@@ -96,7 +96,7 @@ static NSString *privateDir = nil;
 - (id) initWithURL: (NSURL *) url
       andTableType: (uint8_t) tableType
 {
-  NSString *path, *tableParticle;
+  NSString *path, *username, *tableParticle;
 
   if ((self = [self init]))
     {
@@ -116,9 +116,11 @@ static NSString *privateDir = nil;
       path = [url path];
       if (![path hasSuffix: @"/"])
 	path = [NSString stringWithFormat: @"%@/", path];
+      username = [url user];
       directory = [NSString stringWithFormat: @"%@/mapistore/SOGo/%@/%@/%@%@",
-			    privateDir, [url user], tableParticle,
+			    privateDir, username, tableParticle,
 			    [url host], path];
+      [self setOwner: username];
       [self logWithFormat: @"directory: %@", directory];
       [directory retain];
       ASSIGN (nameInContainer, [path stringByDeletingLastPathComponent]);
@@ -310,6 +312,23 @@ static NSString *privateDir = nil;
 - (NSCalendarDate *) lastModificationTime
 {
   return [self _fileAttributeForKey: NSFileModificationDate];
+}
+
+- (NSException *) delete
+{
+  NSFileManager *fm;
+  NSException *error;
+  
+  fm = [NSFileManager defaultManager];
+
+  if (![fm removeFileAtPath: directory handler: NULL])
+    error = [NSException exceptionWithName: @"MAPIStoreIOException"
+                                    reason: @"could not delete folder"
+                                  userInfo: nil];
+  else
+    error = nil;
+
+  return error;
 }
 
 /* acl */

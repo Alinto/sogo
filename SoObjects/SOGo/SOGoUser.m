@@ -287,6 +287,17 @@
   return [self _fetchFieldForUser: @"c_domain"];
 }
 
+- (id <SOGoSource>) authenticationSource
+{
+  NSString *sourceID;
+  SOGoUserManager *um;
+
+  sourceID = [self _fetchFieldForUser: @"SOGoSource"];
+  um = [SOGoUserManager sharedUserManager];
+
+  return [um sourceWithID: sourceID];
+}
+
 - (NSArray *) allEmails
 {
   if (!allEmails)

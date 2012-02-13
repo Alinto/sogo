@@ -25,12 +25,9 @@
 
 #import <Foundation/NSObject.h>
 
-#import "MAPIStoreTable.h"
-
 @class NSArray;
 @class NSMutableArray;
 @class NSNumber;
-@class NSURL;
 
 @class EOQualifier;
 
@@ -48,7 +45,6 @@
 
 @interface MAPIStoreFolder : MAPIStoreObject
 {
-  NSURL *folderURL;
   MAPIStoreContext *context;
   NSArray *messageKeys;
   NSArray *faiMessageKeys;
@@ -59,10 +55,7 @@
   SOGoMAPIFSMessage *propsMessage;
 }
 
-+ (id) baseFolderWithURL: (NSURL *) newURL
-               inContext: (MAPIStoreContext *) newContext;
-- (id) initWithURL: (NSURL *) newURL
-         inContext: (MAPIStoreContext *) newContext;
+- (void) setContext: (MAPIStoreContext *) newContext;
 
 - (NSArray *) activeMessageTables;
 - (NSArray *) activeFAIMessageTables;
@@ -103,9 +96,9 @@
 - (int) createFolder: (MAPIStoreFolder **) childFolderPtr
              withRow: (struct SRow *) aRow
               andFID: (uint64_t) fid;
-- (int) deleteFolderWithFID: (uint64_t) fid;
+- (int) deleteFolder;
 - (int) getChildCount: (uint32_t *) rowCount
-          ofTableType: (uint8_t) tableType;
+          ofTableType: (enum mapistore_table_type) tableType;
 
 - (int) createMessage: (MAPIStoreMessage **) messagePtr
               withMID: (uint64_t) mid
@@ -128,12 +121,12 @@
 - (int) getDeletedFMIDs: (struct I8Array_r **) fmidsPtr
                   andCN: (uint64_t *) cnPtr
        fromChangeNumber: (uint64_t) changeNum
-            inTableType: (uint8_t) tableType
+            inTableType: (enum mapistore_table_type) tableType
                inMemCtx: (TALLOC_CTX *) mem_ctx;
 
 - (int) getTable: (MAPIStoreTable **) tablePtr
      andRowCount: (uint32_t *) count
-       tableType: (uint8_t) tableType
+       tableType: (enum mapistore_table_type) tableType
      andHandleId: (uint32_t) handleId;
 
 - (int) modifyPermissions: (struct PermissionData *) permissions
@@ -150,10 +143,11 @@
                           andSortOrderings: (NSArray *) sortOrderings;
 - (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum
                                        andCN: (NSNumber **) cnNbr
-                                 inTableType: (uint8_t) tableType;
+                                 inTableType: (enum mapistore_table_type) tableType;
 
-- (NSString *) createFolder: (struct SRow *) aRow
-                    withFID: (uint64_t) newFID;
+- (enum mapistore_error) createFolder: (struct SRow *) aRow
+                              withFID: (uint64_t) newFID
+                               andKey: (NSString **) newKeyP;
 
 - (NSCalendarDate *) lastMessageModificationTime;
 
@@ -167,7 +161,10 @@
 - (BOOL) subscriberCanDeleteMessages;
 - (BOOL) subscriberCanCreateSubFolders;
 
+- (BOOL) supportsSubFolders; /* capability */
+
 /* subclass helpers */
+- (void) setupVersionsMessage;
 - (void) postNotificationsForMoveCopyMessagesWithMIDs: (uint64_t *) srcMids
                                        andMessageURLs: (NSArray *) oldMessageURLs
                                              andCount: (uint32_t) midCount

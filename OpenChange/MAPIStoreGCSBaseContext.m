@@ -20,15 +20,101 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
+#import <SOGo/SOGoGCSFolder.h>
+#import <SOGo/SOGoParentFolder.h>
+
+#import "MAPIStoreUserContext.h"
+#import "NSString+MAPIStore.h"
+
 #import "MAPIStoreGCSBaseContext.h"
+
+#undef DEBUG
+#include <mapistore/mapistore.h>
+#include <dlinklist.h>
 
 @implementation MAPIStoreGCSBaseContext
 
 + (NSString *) MAPIModuleName
 {
   return nil;
+}
+
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
+                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  struct mapistore_contexts_list *firstContext = NULL, *context;
+  NSString *moduleName, *baseUrl, *url, *nameInContainer;
+  NSArray *subfolders;
+  MAPIStoreUserContext *userContext;
+  SOGoParentFolder *parentFolder;
+  NSUInteger count, max;
+  SOGoGCSFolder *currentFolder;
+
+  moduleName = [self MAPIModuleName];
+  if (moduleName)
+    {
+      userContext = [MAPIStoreUserContext userContextWithUsername: userName
+                                                   andTDBIndexing: indexingTdb];
+      parentFolder = [[userContext rootFolders] objectForKey: moduleName];
+      baseUrl = [NSString stringWithFormat: @"sogo://%@@%@/",
+                          userName, moduleName];
+
+      subfolders = [parentFolder subFolders];
+      max = [subfolders count];
+      for (count = 0; count < max; count++)
+        {
+          currentFolder = [subfolders objectAtIndex: count];
+          if ([[currentFolder ownerInContext: nil] isEqualToString: userName])
+            {
+              context = talloc_zero (memCtx, struct mapistore_contexts_list);
+              nameInContainer = [currentFolder nameInContainer];
+              url = [NSString stringWithFormat: @"%@%@", baseUrl, nameInContainer];
+              context->url = [url asUnicodeInMemCtx: context];
+              context->name = [[currentFolder displayName]
+                                asUnicodeInMemCtx: context];
+              context->main_folder = [nameInContainer isEqualToString: @"personal"];
+              context->role = [self MAPIContextRole];
+              context->tag = "tag";
+              DLIST_ADD_END (firstContext, context, void);
+            }
+        }
+    }
+
+  return firstContext;
+}
+
++ (NSString *)
+ createRootSecondaryFolderWithFID: (uint64_t) fid
+                          andName: (NSString *) folderName
+                          forUser: (NSString *) userName
+                  withTDBIndexing: (struct tdb_wrap *) indexingTdb
+{
+  NSString *mapistoreURI, *nameInContainer, *moduleName;
+  MAPIStoreUserContext *userContext;
+  SOGoParentFolder *parentFolder;
+
+  userContext = [MAPIStoreUserContext userContextWithUsername: userName
+                                               andTDBIndexing: indexingTdb];
+  moduleName = [self MAPIModuleName];
+  parentFolder = [[userContext rootFolders] objectForKey: moduleName];
+  if (![parentFolder newFolderWithName: folderName
+                       nameInContainer: &nameInContainer])
+    mapistoreURI = [NSString stringWithFormat: @"sogo://%@@%@/%@/",
+                             userName, moduleName, nameInContainer];
+  else
+    mapistoreURI = nil;
+
+  return mapistoreURI;
+}
+
+- (id) rootSOGoFolder
+{
+  return [[userContext rootFolders] objectForKey: [isa MAPIModuleName]];
 }
 
 @end

@@ -52,6 +52,7 @@
 
 - (void) dealloc
 {
+  [card release];
   [photosURL release];
   [super dealloc];
 }
@@ -377,9 +378,7 @@
 {
   NSString *data;
 
-  data = nil;
-
-  if (url)
+  if ([url length] > 0)
     {
       if (![[url lowercaseString] rangeOfString: @"://"].length)
 	url = [NSString stringWithFormat: @"http://%@", url];
@@ -388,6 +387,8 @@
                          @"<a href=\"%@\" target=\"_blank\">%@</a>",
                        url, url];
     }
+  else
+    data = nil;
 
   return [self _cardStringWithLabel: nil value: data];
 }
@@ -646,30 +647,12 @@
 
 /* action */
 
-- (id <WOActionResults>) vcardAction
-{
-#warning this method is unused
-  WOResponse *response;
-
-  card = [[self clientObject] vCard];
-  if (card)
-    {
-      response = [context response];
-      [response setHeader: @"text/vcard" forKey: @"Content-type"];
-      [response appendContentString: [card versitString]];
-    }
-  else
-    return [NSException exceptionWithHTTPStatus: 404 /* Not Found */
-                        reason:@"could not locate contact"];
-
-  return response;
-}
-
 - (id <WOActionResults>) defaultAction
 {
   card = [[self clientObject] vCard];
   if (card)
     {
+      [card retain];
       phones = nil;
       homeAdr = nil;
       workAdr = nil;
@@ -681,34 +664,18 @@
   return self;
 }
 
-- (NSArray *) photosURL
+- (BOOL) hasPhoto
 {
-  NSArray *photoElements;
+  return [[self clientObject] hasPhoto];
+}
+
+- (NSString *) photoURL
+{
   NSURL *soURL;
-  NSString *baseInlineURL, *photoURL;
-  NGVCardPhoto *photo;
-  int count, max;
 
-  if (!photosURL)
-    {
-      soURL = [[self clientObject] soURL];
-      baseInlineURL = [soURL absoluteString];
-      photoElements = [card childrenWithTag: @"photo"];
-      max = [photoElements count];
-      photosURL = [[NSMutableArray alloc] initWithCapacity: max];
-      for (count = 0; count < max; count++)
-        {
-          photo = [photoElements objectAtIndex: count];
-          if ([photo isInline])
-            photoURL = [NSString stringWithFormat: @"%@/photo%d",
-                                 baseInlineURL, count];
-          else
-            photoURL = [photo flattenedValuesForKey: @""];
-          [photosURL addObject: photoURL];
-        }
-    }
+  soURL = [[self clientObject] soURL];
 
-  return photosURL;
+  return [NSString stringWithFormat: @"%@/photo", [soURL absoluteString]];
 }
 
 @end /* UIxContactView */

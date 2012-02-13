@@ -20,91 +20,155 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
-#import "MAPIStoreMailFolder.h"
-#import "MAPIStoreMapping.h"
+#import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailFolder.h>
 
+#import "MAPIStoreMailFolder.h"
+#import "MAPIStoreUserContext.h"
+#import "NSString+MAPIStore.h"
+
+#import <SOGo/NSString+Utilities.h>
 #import "MAPIStoreMailContext.h"
+
+#include <dlinklist.h>
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
+static Class MAPIStoreMailFolderK;
 
 @implementation MAPIStoreMailContext
 
-+ (NSString *) MAPIModuleName
++ (void) initialize
 {
-  return nil;
+  MAPIStoreMailFolderK = [MAPIStoreMailFolder class];
 }
-
-@end
-
-@implementation MAPIStoreInboxContext
 
 + (NSString *) MAPIModuleName
 {
-  return @"inbox";
+  return @"mail";
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
++ (enum mapistore_context_role) MAPIContextRole
 {
-  baseFolder = [MAPIStoreInboxFolder baseFolderWithURL: newURL
-                                             inContext: self];
-  [baseFolder retain];
+  return MAPISTORE_MAIL_ROLE;
 }
 
-@end
-
-@implementation MAPIStoreSentItemsContext
-
-+ (NSString *) MAPIModuleName
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
+                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return @"sent-items";
+  struct mapistore_contexts_list *firstContext = NULL, *context;
+  NSString *urlBase, *stringData, *currentName, *inboxName, *draftsName, *sentName, *trashName;
+  NSMutableArray *secondaryFolders;
+  enum mapistore_context_role role[] = {MAPISTORE_MAIL_ROLE,
+                                        MAPISTORE_DRAFTS_ROLE,
+                                        MAPISTORE_SENTITEMS_ROLE};
+  NSString *folderName[3];
+  NSUInteger count, max;
+  SOGoMailAccount *accountFolder;
+  MAPIStoreUserContext *userContext;
+  WOContext *woContext;
+
+  userContext = [MAPIStoreUserContext userContextWithUsername: userName
+                                               andTDBIndexing: indexingTdb];
+  accountFolder = [[userContext rootFolders] objectForKey: @"mail"];
+  woContext = [userContext woContext];
+
+  inboxName = @"folderINBOX";
+  folderName[0] = inboxName;
+
+  draftsName = [NSString stringWithFormat: @"folder%@",
+                         [accountFolder draftsFolderNameInContext: woContext]];
+  folderName[1] = draftsName;
+  sentName = [NSString stringWithFormat: @"folder%@",
+                       [accountFolder sentFolderNameInContext: woContext]];
+  folderName[2] = sentName;
+  trashName = [NSString stringWithFormat: @"folder%@",
+                       [accountFolder trashFolderNameInContext: woContext]];
+
+  urlBase = [NSString stringWithFormat: @"sogo://%@:%@@mail/", userName, userName];
+
+  for (count = 0; count < 3; count++)
+    {
+      context = talloc_zero (memCtx, struct mapistore_contexts_list);
+      stringData = [NSString stringWithFormat: @"%@%@", urlBase,
+                      folderName[count]];
+      context->url = [stringData asUnicodeInMemCtx: context];
+      /* remove "folder" prefix */
+      stringData = [[folderName[count] substringFromIndex: 6] fromCSSIdentifier];
+      context->name = [stringData asUnicodeInMemCtx: context];
+      context->main_folder = true;
+      context->role = role[count];
+      context->tag = "tag";
+      DLIST_ADD_END (firstContext, context, void);
+    }
+
+  secondaryFolders = [[accountFolder toManyRelationshipKeysWithNamespaces: NO]
+                       mutableCopy];
+  [secondaryFolders autorelease];
+  [secondaryFolders removeObject: inboxName];
+  [secondaryFolders removeObject: draftsName];
+  [secondaryFolders removeObject: draftsName];
+  [secondaryFolders removeObject: sentName];
+  [secondaryFolders removeObject: trashName];
+  max = [secondaryFolders count];
+  for (count = 0; count < max; count++)
+    {
+      context = talloc_zero (memCtx, struct mapistore_contexts_list);
+      currentName = [secondaryFolders objectAtIndex: count];
+      stringData = [NSString stringWithFormat: @"%@%@", urlBase, currentName];
+      context->url = [stringData asUnicodeInMemCtx: context];
+      stringData = [[currentName substringFromIndex: 6] fromCSSIdentifier];
+      context->name = [stringData asUnicodeInMemCtx: context];
+      context->main_folder = false;
+      context->role = MAPISTORE_MAIL_ROLE;
+      context->tag = "tag";
+      DLIST_ADD_END (firstContext, context, void);
+    }
+
+  return firstContext;
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
++ (NSString *)
+ createRootSecondaryFolderWithFID: (uint64_t) fid
+                          andName: (NSString *) newFolderName
+                          forUser: (NSString *) userName
+                  withTDBIndexing: (struct tdb_wrap *) indexingTdb
 {
-  baseFolder = [MAPIStoreSentItemsFolder baseFolderWithURL: newURL
-                                                 inContext: self];
-  [baseFolder retain];
+  NSString *mapistoreURI, *folderName;
+  MAPIStoreUserContext *userContext;
+  SOGoMailAccount *accountFolder;
+  SOGoMailFolder *newFolder;
+
+  userContext = [MAPIStoreUserContext userContextWithUsername: userName
+                                               andTDBIndexing: indexingTdb];
+  accountFolder = [[userContext rootFolders] objectForKey: @"mail"];
+  folderName = [NSString stringWithFormat: @"folder%@",
+                         [newFolderName asCSSIdentifier]];
+  newFolder = [SOGoMailFolder objectWithName: folderName
+                                 inContainer: accountFolder];
+  if ([newFolder create])
+    mapistoreURI = [NSString stringWithFormat: @"sogo://%@:%@@mail/%@/",
+                             userName, userName, folderName];
+  else
+    mapistoreURI = nil;
+
+  return mapistoreURI;
 }
 
-@end
-
-@implementation MAPIStoreDraftsContext
-
-+ (NSString *) MAPIModuleName
+- (Class) MAPIStoreFolderClass
 {
-  return @"drafts";
+  return MAPIStoreMailFolderK;
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
+- (id) rootSOGoFolder
 {
-  baseFolder = [MAPIStoreDraftsFolder baseFolderWithURL: newURL
-                                              inContext: self];
-  [baseFolder retain];
+  return [[userContext rootFolders] objectForKey: @"mail"];
 }
-
-@end
-
-#import "MAPIStoreFSFolder.h"
-
-@implementation MAPIStoreDeletedItemsContext
-
-+ (NSString *) MAPIModuleName
-{
-  return @"deleted-items";
-}
-
-- (void) setupBaseFolder: (NSURL *) newURL
-{
-  baseFolder = [MAPIStoreFSFolder baseFolderWithURL: newURL inContext: self];
-  [baseFolder retain];
-}
-
-// - (void) setupBaseFolder: (NSURL *) newURL
-// {
-//   baseFolder = [MAPIStoreDeletedItemsFolder baseFolderWithURL: newURL
-//                                                     inContext: self];
-//   [baseFolder retain];
-// }
 
 @end
 
@@ -115,11 +179,35 @@
   return @"outbox";
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
+                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  baseFolder = [MAPIStoreOutboxFolder baseFolderWithURL: newURL
-                                              inContext: self];
-  [baseFolder retain];
+  struct mapistore_contexts_list *context;
+  NSString *url, *folderName;
+  SOGoMailAccount *accountFolder;
+  MAPIStoreUserContext *userContext;
+  WOContext *woContext;
+
+  userContext = [MAPIStoreUserContext userContextWithUsername: userName
+                                               andTDBIndexing: indexingTdb];
+  accountFolder = [[userContext rootFolders] objectForKey: @"mail"];
+  woContext = [userContext woContext];
+  folderName = [NSString stringWithFormat: @"folder%@",
+                         [accountFolder draftsFolderNameInContext: woContext]];
+  url = [NSString stringWithFormat: @"sogo://%@:%@@outbox/%@", userName,
+                  userName, folderName];
+
+  context = talloc_zero (memCtx, struct mapistore_contexts_list);
+  context->url = [url asUnicodeInMemCtx: context];
+  /* TODO: use a localized version of this display name */
+  context->name = [@"Outbox" asUnicodeInMemCtx: context];
+  context->main_folder = true;
+  context->role = MAPISTORE_OUTBOX_ROLE;
+  context->tag = "tag";
+  context->prev = context;
+
+  return context;
 }
 
 @end

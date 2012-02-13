@@ -29,9 +29,13 @@
 #import <NGCards/CardVersitRenderer.h>
 
 #import <SOGo/SOGoBuild.h>
+#import <SOGo/SOGoSource.h>
+#import <SOGo/SOGoPermissions.h>
 
+#import "NGVCard+SOGo.h"
 #import "SOGoContactGCSEntry.h"
 #import "SOGoContactLDIFEntry.h"
+#import "SOGoContactSourceFolder.h"
 
 @implementation SOGoContactLDIFEntry
 
@@ -42,8 +46,8 @@
   SOGoContactLDIFEntry *entry;
 
   entry = [[self alloc] initWithName: newName
-                        withLDIFEntry: newEntry
-                        inContainer: newContainer];
+                       withLDIFEntry: newEntry
+                         inContainer: newContainer];
   [entry autorelease];
 
   return entry;
@@ -56,7 +60,7 @@
   if ((self = [self initWithName: newName inContainer: newContainer]))
     {
       ASSIGN (ldifEntry, newEntry);
-      vcard = nil;
+      isNew = NO;
     }
 
   return self;
@@ -64,9 +68,18 @@
 
 - (void) dealloc
 {
-  [vcard release];
   [ldifEntry release];
   [super dealloc];
+}
+
+- (BOOL) isNew
+{
+  return isNew;
+}
+
+- (void) setIsNew: (BOOL) newIsNew
+{
+  isNew = newIsNew;
 }
 
 - (NSString *) contentAsString
@@ -74,164 +87,35 @@
   return [[self vCard] versitString];
 }
 
-- (void) _setPhonesOfVCard: (NGVCard *) vCard
-{
-  NSString *info;
-
-  info = [ldifEntry objectForKey: @"telephonenumber"];
-  if (info)
-    [vCard addTel: info
-           types: [NSArray arrayWithObjects: @"work", @"voice", @"pref", nil]];
-  info = [ldifEntry objectForKey: @"homephone"];
-  if (info)
-    [vCard addTel: info
-           types: [NSArray arrayWithObjects: @"home", @"voice", nil]];
-  info = [ldifEntry objectForKey: @"fax"];
-  if (info)
-    [vCard addTel: info
-           types: [NSArray arrayWithObjects: @"work", @"fax", nil]];
-  info = [ldifEntry objectForKey: @"pager"];
-  if (info)
-    [vCard addTel: info
-           types: [NSArray arrayWithObjects: @"pager", nil]];
-  info = [ldifEntry objectForKey: @"mobile"];
-  if (info)
-    [vCard addTel: info
-           types: [NSArray arrayWithObjects: @"cell", @"voice", nil]];
-
-// telephoneNumber: work phone
-// homePhone: home phone
-// fax: fax phone
-// pager: page phone
-// mobile: mobile phone
-  
-}
-
 - (NGVCard *) vCard
 {
-  NSString *info, *surname, *streetAddress, *location, *region, *postalCode, *country, *org, *orgunit;
-  CardElement *element;
-  unsigned int count;
+  NGVCard *vcard;
 
-  if (!vcard)
-    {
-      vcard = [[NGVCard alloc] initWithUid: [self nameInContainer]];
-      [vcard setVClass: @"PUBLIC"];
-      [vcard setProdID: [NSString
-                          stringWithFormat: @"-//Inverse inc./SOGo %@//EN",
-                          SOGoVersion]];
-      [vcard setProfile: @"VCARD"];
-      info = [ldifEntry objectForKey: @"c_cn"];
-      if (![info length])
-        {
-          info = [ldifEntry objectForKey: @"displayname"];
-          if (![info length])
-            info = [ldifEntry objectForKey: @"cn"];
-        }
-      [vcard setFn: info];
-      surname = [ldifEntry objectForKey: @"sn"];
-      if (!surname)
-        surname = [ldifEntry objectForKey: @"surname"];
-      [vcard setNWithFamily: surname
-                      given: [ldifEntry objectForKey: @"givenname"]
-                 additional: nil
-                   prefixes: nil
-                   suffixes: nil];
-      info = [ldifEntry objectForKey: @"title"];
-      if (info)
-        [vcard setTitle: info];
-      info = [ldifEntry objectForKey: @"mozillanickname"];
-      if (info)
-        [vcard setNickname: info];
-
-      /* If "c_info" is defined, we set as the NOTE value in order for
-         Thunderbird (or any other CardDAV client) to display it. */
-      info = [ldifEntry objectForKey: @"c_info"];
-      if (![info length])
-        info = [ldifEntry objectForKey: @"description"];
-      if ([info length])
-        [vcard setNote: info];
-
-      info = [ldifEntry objectForKey: @"mail"];
-      if (info)
-        [vcard addEmail: info
-               types: [NSArray arrayWithObjects: @"internet", @"pref", nil]];
-      [self _setPhonesOfVCard: vcard];
-
-      streetAddress = [ldifEntry objectForKey: @"street"];
-      if (!streetAddress)
-        streetAddress = [ldifEntry objectForKey: @"streetaddress"];
-
-      location = [ldifEntry objectForKey: @"l"];
-      if (!location)
-        location = [ldifEntry objectForKey: @"locality"];
-
-      region = [ldifEntry objectForKey: @"st"];
-      if (!region)
-        region = [ldifEntry objectForKey: @"region"];
-
-      postalCode = [ldifEntry objectForKey: @"postalcode"];
-      if (!postalCode)
-        postalCode = [ldifEntry objectForKey: @"zip"];
-
-      country = [ldifEntry objectForKey: @"c"];
-      if (!country)
-        country = [ldifEntry objectForKey: @"countryname"];
-
-      element = [CardElement elementWithTag: @"adr"];
-      [element setValue: 0 ofAttribute: @"type" to: @"work"];
-
-      if (streetAddress)
-        [element setSingleValue: streetAddress atIndex: 2 forKey: @""];
-      if (location)
-        [element setSingleValue: location atIndex: 3 forKey: @""];
-      if (region)
-        [element setSingleValue: region atIndex: 4 forKey: @""];
-      if (postalCode)
-        [element setSingleValue: postalCode atIndex: 5 forKey: @""];
-      if (country)
-        [element setSingleValue: country atIndex: 6 forKey: @""];
-      
-      if (streetAddress || location || region || postalCode || country)
-        [vcard addChild: element];
-
-      // We handle the org/orgunit stuff
-      element = [CardElement elementWithTag: @"org"];
-      org = [ldifEntry objectForKey: @"o"];
-      orgunit = [ldifEntry objectForKey: @"ou"];
-      if (!orgunit)
-        orgunit = [ldifEntry objectForKey: @"orgunit"];
-      
-      if (org)
-	[element setSingleValue: org atIndex: 0 forKey: @""];
-      if (orgunit)
-	[element setSingleValue: orgunit atIndex: 1 forKey: @""];
-
-      if (org || orgunit)
-	[vcard addChild: element];
-
-      info = [ldifEntry objectForKey: @"calFBURL"];
-      if (info)
-        [vcard addChildWithTag: @"FBURL"
-               types: nil
-               singleValue: info];
-      for (count = 1; count < 5; count++)
-	{
-	  info = [ldifEntry objectForKey:
-			      [NSString stringWithFormat: @"mozillacustom%d",
-					count]];
-	  if (info)
-	    [vcard addChildWithTag: [NSString stringWithFormat: @"CUSTOM%d",
-					      count]
-		   types: nil
-		   singleValue: info];
-	}
-    }
+  vcard = [NGVCard cardWithUid: [self nameInContainer]];
+  [vcard setProdID: [NSString
+                      stringWithFormat: @"-//Inverse inc./SOGo %@//EN",
+                      SOGoVersion]];
+  [vcard updateFromLDIFRecord: [self ldifRecord]];
 
   return vcard;
 }
 
 - (BOOL) isFolderish
+{
+  return NO;
+}
+
+- (void) setLDIFRecord: (NSDictionary *) newLDIFRecord
+{
+  ASSIGN (ldifEntry, newLDIFRecord);
+}
+
+- (NSDictionary *) ldifRecord
+{
+  return ldifEntry;
+}
+
+- (BOOL) hasPhoto
 {
   return NO;
 }
@@ -251,13 +135,47 @@
   return @"text/x-vcard";
 }
 
-- (NSArray *) aclsForUser: (NSString *) uid
+- (NSException *) save
 {
-  return nil;
+  return [(SOGoContactSourceFolder *) container saveLDIFEntry: self];
 }
 
-- (void) save
+- (NSException *) delete
 {
+  return [(SOGoContactSourceFolder *) container deleteLDIFEntry: self];
+}
+
+/* acl */
+
+- (NSArray *) aclsForUser: (NSString *) uid
+{
+  NSMutableArray *acls;
+  NSArray *containerAcls;
+
+  acls = [NSMutableArray array];
+  /* this is unused... */
+//   ownAcls = [container aclsForUser: uid
+// 		       forObjectAtPath: [self pathArrayToSOGoObject]];
+//   [acls addObjectsFromArray: ownAcls];
+  containerAcls = [container aclsForUser: uid];
+  if ([containerAcls count] > 0)
+    {
+      [acls addObjectsFromArray: containerAcls];
+      /* The creation of an object is actually a "modification" to an
+	 unexisting object. When the object is new, we give the
+	 "ObjectCreator" the "ObjectModifier" role temporarily while we
+	 disallow the "ObjectModifier" users to modify them, unless they are
+	 ObjectCreators too. */
+      if (isNew)
+	{
+	  if ([containerAcls containsObject: SOGoRole_ObjectCreator])
+	    [acls addObject: SOGoRole_ObjectEditor];
+	  else
+	    [acls removeObject: SOGoRole_ObjectEditor];
+	}
+    }
+
+  return acls;
 }
 
 /* DAV */
