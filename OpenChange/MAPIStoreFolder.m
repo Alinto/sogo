@@ -43,6 +43,7 @@
 #import "MAPIStorePermissionsTable.h"
 #import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
@@ -71,17 +72,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   MAPIStoreFolderTableK = [MAPIStoreFolderTable class];
 }
 
-+ (id) baseFolderWithURL: (NSURL *) newURL
-               inContext: (MAPIStoreContext *) newContext
-{
-  id newFolder;
-
-  newFolder = [[self alloc] initWithURL: newURL inContext: newContext];
-  [newFolder autorelease];
-
-  return newFolder;
-}
-
 - (id) init
 {
   if ((self = [super init]))
@@ -90,7 +80,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       faiMessageKeys = nil;
       folderKeys = nil;
       faiFolder = nil;
-      folderURL = nil;
       context = nil;
 
       propsFolder = nil;
@@ -100,54 +89,72 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return self;
 }
 
-/* from context */
-- (id) initWithURL: (NSURL *) newURL
-         inContext: (MAPIStoreContext *) newContext
-{
-  if ((self = [self init]))
-    {
-      context = newContext;
-      ASSIGN (folderURL, newURL);
-      ASSIGN (faiFolder,
-              [SOGoMAPIFSFolder folderWithURL: newURL
-                                 andTableType: MAPISTORE_FAI_TABLE]);
-      ASSIGN (propsFolder,
-              [SOGoMAPIFSFolder folderWithURL: newURL
-                                 andTableType: MAPISTORE_FOLDER_TABLE]);
-      ASSIGN (propsMessage,
-              [SOGoMAPIFSMessage objectWithName: @"properties.plist"
-                                 inContainer: propsFolder]);
-    }
-
-  return self;
-}
-
-/* from parent folder */
-- (id) initWithSOGoObject: (id) newSOGoObject
-              inContainer: (MAPIStoreObject *) newContainer
+- (void) _setupAuxiliaryObjects
 {
   NSURL *propsURL;
   NSString *urlString;
 
-  if ((self = [super initWithSOGoObject: newSOGoObject inContainer: newContainer]))
+  urlString = [[self url] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+  propsURL = [NSURL URLWithString: urlString];
+  [self logWithFormat: @"_setupAuxiliaryObjects: %@", propsURL];
+  ASSIGN (faiFolder,
+          [SOGoMAPIFSFolder folderWithURL: propsURL
+                             andTableType: MAPISTORE_FAI_TABLE]);
+  ASSIGN (propsFolder,
+          [SOGoMAPIFSFolder folderWithURL: propsURL
+                             andTableType: MAPISTORE_FOLDER_TABLE]);
+  ASSIGN (propsMessage,
+          [SOGoMAPIFSMessage objectWithName: @"properties.plist"
+                                inContainer: propsFolder]);
+  [self setupVersionsMessage];
+}
+
+- (id) initWithSOGoObject: (id) newSOGoObject
+              inContainer: (MAPIStoreObject *) newContainer
+{
+  /* The instantiation of auxiliary folders is postponed when newContainer is
+     nil since there is no way to deduce the parent url. When setContext: is
+     invoked, it becomes possible again. */
+  if ((self = [super initWithSOGoObject: newSOGoObject
+                            inContainer: newContainer])
+      && newContainer)
     {
-      urlString = [[self url] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-      propsURL = [NSURL URLWithString: urlString];
-      ASSIGN (faiFolder,
-              [SOGoMAPIFSFolder folderWithURL: propsURL
-                                 andTableType: MAPISTORE_FAI_TABLE]);
-      ASSIGN (propsFolder,
-              [SOGoMAPIFSFolder folderWithURL: propsURL
-                                andTableType: MAPISTORE_FOLDER_TABLE]);
-      ASSIGN (propsMessage,
-              [SOGoMAPIFSMessage objectWithName: @"properties.plist"
-                                 inContainer: propsFolder]);
+      [self _setupAuxiliaryObjects];
     }
 
   return self;
 }
 
+- (void) setContext: (MAPIStoreContext *) newContext
+{
+  ASSIGN (context, newContext);
+  if (newContext)
+    [self _setupAuxiliaryObjects];
+}
+
+- (MAPIStoreContext *) context
+{
+  if (!context)
+    [self setContext: [container context]];
+
+  return context;
+}
+
+- (void) dealloc
+{
+  [propsMessage release];
+  [propsFolder release];
+  [messageKeys release];
+  [faiMessageKeys release];
+  [folderKeys release];
+  [faiFolder release];
+  [context release];
+
+  [super dealloc];
+}
+
 /* backend interface */
+
 - (SOGoMAPIFSMessage *) propertiesMessage
 {
   return propsMessage;
@@ -185,7 +192,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   if ([[self folderKeys] containsObject: folderKey])
     {
-      woContext = [[self context] woContext];
+      woContext = [[self userContext] woContext];
       sogoFolder = [sogoObject lookupName: folderKey
                                 inContext: woContext
                                   acquire: NO];
@@ -237,7 +244,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                                  acquire: NO];
       if (msgObject && ![msgObject isKindOfClass: NSExceptionK])
         {
-          [msgObject setContext: [[self context] woContext]];
+          [msgObject setContext: [[self userContext] woContext]];
           messageClass = [msgObject mapistoreMessageClass];
           childMessage
             = [messageClass mapiStoreObjectWithSOGoObject: msgObject
@@ -310,7 +317,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
-  mapping = [[self context] mapping];
+  mapping = [self mapping];
   childURL = [mapping urlFromID: fid];
   if (childURL)
     {
@@ -333,20 +340,22 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   MAPIStoreMapping *mapping;
   NSString *baseURL, *childURL, *folderKey;
   MAPIStoreFolder *childFolder;
+  SOGoUser *ownerUser;
 
   [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
-  if ([[context activeUser] isEqual: [context ownerUser]]
+  ownerUser = [[self userContext] sogoUser];
+  if ([[context activeUser] isEqual: ownerUser]
       || [self subscriberCanCreateSubFolders])
     {
-      mapping = [[self context] mapping];
+      mapping = [self mapping];
       childURL = [mapping urlFromID: fid];
       if (childURL)
         rc = MAPISTORE_ERR_EXIST;
       else
         {
-          folderKey = [self createFolder: aRow withFID: fid];
-          if (folderKey)
+          rc = [self createFolder: aRow withFID: fid andKey: &folderKey];
+          if (rc == MAPISTORE_SUCCESS)
             {
               [self cleanupCaches];
               baseURL = [self url];
@@ -365,8 +374,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                 [NSException raise: @"MAPIStoreIOException"
                              format: @"unable to fetch created folder"];
             }
-          else
-            rc = MAPISTORE_ERROR;
         }
     }
   else
@@ -375,15 +382,19 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) deleteFolderWithFID: (uint64_t) fid
+- (int) deleteFolder
 {
-  [self logWithFormat: @"UNIMPLEMENTED METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  [propsMessage delete];
+  [propsFolder delete];
+  [faiFolder delete];
 
-  return MAPISTORE_ERROR;
+  [self cleanupCaches];
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) getChildCount: (uint32_t *) rowCount
-          ofTableType: (uint8_t) tableType
+          ofTableType: (enum mapistore_table_type) tableType
 {
   NSArray *keys;
   int rc = MAPISTORE_SUCCESS;
@@ -415,16 +426,18 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSString *messageURL;
   MAPIStoreMapping *mapping;
   MAPIStoreMessage *message;
+  SOGoUser *ownerUser;
   int rc = MAPISTORE_ERR_NOT_FOUND;
 
-  mapping = [[self context] mapping];
+  mapping = [self mapping];
   messageURL = [mapping urlFromID: mid];
   if (messageURL)
     {
       message = [self lookupMessageByURL: messageURL];
       if (message)
         {
-          if ([[context activeUser] isEqual: [context ownerUser]]
+          ownerUser = [[self userContext] sogoUser];
+          if ([[context activeUser] isEqual: ownerUser]
               || (readWrite && [message subscriberCanModifyMessage])
               || (!readWrite && [message subscriberCanReadMessage]))
             {
@@ -447,15 +460,18 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   MAPIStoreMessage *message;
   NSString *baseURL, *childURL;
   MAPIStoreMapping *mapping;
+  SOGoUser *ownerUser;
 
   [self logWithFormat: @"METHOD '%s' -- mid: 0x%.16llx  associated: %d",
 	__FUNCTION__, mid, isAssociated];
 
   context = [self context];
-  if ([[context activeUser] isEqual: [context ownerUser]]
+  ownerUser = [[self userContext] sogoUser];
+
+  if ([[context activeUser] isEqual: ownerUser]
       || (!isAssociated && [self subscriberCanCreateMessages]))
     {
-      mapping = [[self context] mapping];
+      mapping = [self mapping];
       if ([mapping urlFromID: mid])
         rc = MAPISTORE_ERR_EXIST;
       else
@@ -491,20 +507,23 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSArray *activeTables;
   NSUInteger count, max;
   id msgObject;
+  SOGoUser *ownerUser;
   struct mapistore_connection_info *connInfo;
   struct mapistore_object_notification_parameters *notif_parameters;
   int rc;
 
   [self logWithFormat: @"-deleteMessageWithMID: mid: 0x%.16llx  flags: %d", mid, flags];
   
-  mapping = [[self context] mapping];
+  mapping = [self mapping];
   childURL = [mapping urlFromID: mid];
   if (childURL)
     {
       message = [self lookupMessageByURL: childURL];
       if (message)
         {
-          if ([[context activeUser] isEqual: [context ownerUser]]
+          ownerUser = [[self userContext] sogoUser];
+
+          if ([[context activeUser] isEqual: ownerUser]
               || (![message isKindOfClass: MAPIStoreFAIMessageK]
                   && [self subscriberCanDeleteMessages]))
             {
@@ -685,16 +704,19 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSMutableArray *oldMessageURLs;
   NSString *oldMessageURL;
   MAPIStoreMapping *mapping;
+  SOGoUser *ownerUser;
   struct Binary_r *targetChangeKey;
 
-  if (wantCopy || [[context activeUser] isEqual: [context ownerUser]])
+  ownerUser = [[self userContext] sogoUser];
+
+  if (wantCopy || [[context activeUser] isEqual: ownerUser])
     {
       if ([sourceFolder isKindOfClass: isa]
           || [self isKindOfClass: [sourceFolder class]])
         [self logWithFormat: @"%s: this class could probably implement"
               @" a specialized/optimized version", __FUNCTION__];
       oldMessageURLs = [NSMutableArray arrayWithCapacity: midCount];
-      mapping = [[self context] mapping];
+      mapping = [self mapping];
       for (count = 0; rc == MAPISTORE_SUCCESS && count < midCount; count++)
         {
           oldMessageURL = [mapping urlFromID: srcMids[count]];
@@ -751,6 +773,10 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   if (isAddition)
     [aclFolder addUserInAcls: user];
   [aclFolder setRoles: roles forUser: user];
+}
+
+- (void) setupVersionsMessage
+{
 }
 
 - (void) postNotificationsForMoveCopyMessagesWithMIDs: (uint64_t *) srcMids
@@ -849,7 +875,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   talloc_free(notif_parameters);
 
   // table notification 
-  mapping = [[self context] mapping];
+  mapping = [self mapping];
   for (count = 0; count < midCount; count++)
     {
       messageURL = [mapping urlFromID: targetMids[count]];
@@ -863,7 +889,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (int) getDeletedFMIDs: (struct I8Array_r **) fmidsPtr
                   andCN: (uint64_t *) cnPtr
        fromChangeNumber: (uint64_t) changeNum
-            inTableType: (uint8_t) tableType
+            inTableType: (enum mapistore_table_type) tableType
                inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc;
@@ -879,7 +905,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                                   inTableType: tableType];
   if (keys)
     {
-      mapping = [[self context] mapping];
+      mapping = [self mapping];
 
       max = [keys count];
 
@@ -920,7 +946,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (int) getTable: (MAPIStoreTable **) tablePtr
      andRowCount: (uint32_t *) countPtr
-       tableType: (uint8_t) tableType
+       tableType: (enum mapistore_table_type) tableType
      andHandleId: (uint32_t) handleId
 {
   int rc = MAPISTORE_SUCCESS;
@@ -974,27 +1000,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [propsMessage appendProperties: propsCopy];
   [propsMessage save];
   [propsCopy release];
-}
-
-- (void) dealloc
-{
-  [propsMessage release];
-  [propsFolder release];
-  [folderURL release];
-  [messageKeys release];
-  [faiMessageKeys release];
-  [folderKeys release];
-  [faiFolder release];
-
-  [super dealloc];
-}
-
-- (MAPIStoreContext *) context
-{
-  if (!context)
-    context = [container context];
-
-  return context;
 }
 
 - (NSArray *) messageKeys
@@ -1076,7 +1081,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                          andType: MAPISTORE_FAI_TABLE];
 }
 
-- (void) _cleanupTableCaches: (uint8_t) tableType
+- (void) _cleanupTableCaches: (enum mapistore_table_type) tableType
 {
   NSArray *tables;
   NSUInteger count, max;
@@ -1132,16 +1137,20 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
            inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t access = 0;
+  SOGoUser *ownerUser;
   BOOL userIsOwner;
 
-  userIsOwner = [[context activeUser] isEqual: [context ownerUser]];
+  ownerUser = [[self userContext] sogoUser];
+
+  userIsOwner = [[context activeUser] isEqual: ownerUser];
   if (userIsOwner || [self subscriberCanModifyMessages])
     access |= 0x01;
   if (userIsOwner || [self subscriberCanReadMessages])
     access |= 0x02;
   if (userIsOwner || [self subscriberCanDeleteMessages])
     access |= 0x04;
-  if (userIsOwner || [self subscriberCanCreateSubFolders])
+  if ((userIsOwner || [self subscriberCanCreateSubFolders])
+      && [self supportsSubFolders])
     access |= 0x08;
   if (userIsOwner || [self subscriberCanCreateMessages])
     access |= 0x10;
@@ -1284,18 +1293,19 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   else
     newMessage = [self createMessage];
   [newMessage setIsNew: YES];
-  woContext = [[self context] woContext];
+  woContext = [[self userContext] woContext];
   [[newMessage sogoObject] setContext: woContext];
 
   return newMessage;
 }
 
-- (NSString *) createFolder: (struct SRow *) aRow
-                    withFID: (uint64_t) newFID
+- (enum mapistore_error) createFolder: (struct SRow *) aRow
+                              withFID: (uint64_t) newFID
+                               andKey: (NSString **) newKeyP
 {
   [self errorWithFormat: @"new folders cannot be created in this context"];
 
-  return nil;
+  return MAPISTORE_ERR_DENIED;
 }
 
 /* helpers */
@@ -1304,10 +1314,14 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   NSString *url;
 
-  if (folderURL)
-    url = [folderURL absoluteString];
-  else
+  if (container)
     url = [NSString stringWithFormat: @"%@/", [super url]];
+  else
+    {
+      url = [[context url] absoluteString];
+      if (![url hasSuffix: @"/"])
+        url = [NSString stringWithFormat: @"%@/", url];
+    }
 
   return url;
 }
@@ -1511,10 +1525,10 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   uint64_t objectId;
 
-  if (folderURL)
-    objectId = [self idForObjectWithKey: nil];
-  else
+  if (container)
     objectId = [super objectId];
+  else
+    objectId = [self idForObjectWithKey: nil];
 
   return objectId;
 }
@@ -1552,7 +1566,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum
                                        andCN: (NSNumber **) cnNbrs
-                                 inTableType: (uint8_t) tableType
+                                 inTableType: (enum mapistore_table_type) tableType
 {
   return nil;
 }
@@ -1591,6 +1605,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 }
 
 - (BOOL) subscriberCanCreateSubFolders
+{
+  return NO;
+}
+
+- (BOOL) supportsSubFolders
 {
   return NO;
 }

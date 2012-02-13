@@ -26,14 +26,16 @@
 #import "SOGoContactFolder.h"
 #import "SOGoFolder+CardDAV.h"
 
-@class NSMutableDictionary;
+#import <SOGo/SOGoSource.h>
 
-#import "../SOGo/SOGoSource.h"
+@class NSMutableDictionary;
+@class SOGoContactLDIFEntry;
 
 @interface SOGoContactSourceFolder : SOGoFolder <SOGoContactFolder>
 {
-  id source;
+  id <SOGoSource> source;
   NSMutableDictionary *childRecords;
+  BOOL isPersonalSource;
 }
 
 + (id) folderWithName: (NSString *) aName
@@ -42,7 +44,13 @@
 - (id) initWithName: (NSString *) newName
      andDisplayName: (NSString *) newDisplayName
 	inContainer: (id) newContainer;
-- (void) setSource: (id) newSource;
+- (void) setSource: (id <SOGoSource>) newSource;
+
+- (NSException *) saveLDIFEntry: (SOGoContactLDIFEntry *) ldifEntry;
+- (NSException *) deleteLDIFEntry: (SOGoContactLDIFEntry *) ldifEntry;
+
+- (void) setIsPersonalSource: (BOOL) isPersonal;
+- (BOOL) isPersonalSource;
 
 @end
 

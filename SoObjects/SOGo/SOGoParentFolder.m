@@ -183,7 +183,6 @@ static SoSecurityManager *sm = nil;
   SOGoGCSFolder *folder;
   NSString *key;
   NSException *error;
-  SOGoUser *currentUser;
 
   if (!subFolderClass)
     subFolderClass = [[self class] subFolderClass];
@@ -191,8 +190,6 @@ static SoSecurityManager *sm = nil;
   error = [fc evaluateExpressionX: sql];
   if (!error)
     {
-      currentUser = [context activeUser];
-
       attrs = [fc describeResults: NO];
       while ((row = [fc fetchAttributes: attrs withZone: NULL]))
 	{
@@ -362,6 +359,11 @@ static SoSecurityManager *sm = nil;
     error = nil;
 
   return error;
+}
+
+- (void) removeSubFolder: (NSString *) subfolderName
+{
+  [subFolders removeObjectForKey: subfolderName];
 }
 
 - (NSException *) initSubscribedSubFolders

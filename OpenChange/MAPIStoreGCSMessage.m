@@ -30,6 +30,7 @@
 #import "MAPIStoreContext.h"
 #import "MAPIStoreGCSFolder.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
 
 #import "MAPIStoreGCSMessage.h"
@@ -56,15 +57,17 @@
   MAPIStoreContext *context;
   WOContext *woContext;
   SoSecurityManager *sm;
+  MAPIStoreUserContext *userContext;
   uint32_t access;
 
   context = [self context];
-  if ([[context activeUser] isEqual: [context ownerUser]])
+  userContext = [self userContext];
+  if ([[context activeUser] isEqual: [userContext sogoUser]])
     access = 0x03;
   else
     {
       sm = [SoSecurityManager sharedSecurityManager];
-      woContext = [context woContext];
+      woContext = [userContext woContext];
 
       access = 0;
       if (![sm validatePermission: SoPerm_ChangeImagesAndFiles
@@ -89,18 +92,19 @@
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStoreContext *context;
+  MAPIStoreUserContext *userContext;
   WOContext *woContext;
   SoSecurityManager *sm;
   uint32_t accessLvl;
 
   context = [self context];
-  if ([[context activeUser] isEqual: [context ownerUser]])
+  userContext = [self userContext];
+  if ([[context activeUser] isEqual: [userContext sogoUser]])
     accessLvl = 1;
   else
     {
       sm = [SoSecurityManager sharedSecurityManager];
-      woContext = [context woContext];
-
+      woContext = [userContext woContext];
       if (![sm validatePermission: SoPerm_ChangeImagesAndFiles
                          onObject: sogoObject
                         inContext: woContext])

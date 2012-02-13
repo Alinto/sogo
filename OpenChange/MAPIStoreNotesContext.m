@@ -27,6 +27,9 @@
 
 #import "MAPIStoreNotesContext.h"
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
+
 @implementation MAPIStoreNotesContext
 
 + (NSString *) MAPIModuleName
@@ -34,11 +37,22 @@
   return @"notes";
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
++ (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
+                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  baseFolder = [MAPIStoreNotesFolder baseFolderWithURL: newURL
-                                             inContext: self];
-  [baseFolder retain];
+  struct mapistore_contexts_list *context;
+
+  context = talloc_zero(memCtx, struct mapistore_contexts_list);
+  context->url = talloc_asprintf (context, "sogo://%s@notes/",
+                                  [userName UTF8String]);
+  // context->name = "Notes personnelles";
+  context->main_folder = true;
+  context->role = MAPISTORE_NOTES_ROLE;
+  context->tag = "tag";
+  context->prev = context;
+
+  return context;
 }
 
 @end

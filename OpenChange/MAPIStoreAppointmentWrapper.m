@@ -638,11 +638,19 @@ static NSCharacterSet *hexCharacterSet = nil;
               inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
+  NSInteger offset;
 
   if ([event isRecurrent])
     dateValue = [event firstRecurrenceStartDate];
   else
     dateValue = [event startDate];
+  if ([event isAllDay])
+    {
+      offset = -[timeZone secondsFromGMTForDate: dateValue];
+      dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                         hours: 0 minutes: 0
+                                       seconds: offset];
+    }
   [dateValue setTimeZone: utcTZ];
   *data = [dateValue asFileTimeInMemCtx: memCtx];
   
@@ -882,16 +890,18 @@ static NSCharacterSet *hexCharacterSet = nil;
             inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
+  NSInteger offset;
 
   if ([event isRecurrent])
     dateValue = [event firstRecurrenceStartDate];
   else
     dateValue = [event startDate];
-  dateValue
-    = [dateValue dateByAddingYears: 0 months: 0 days: 0
-                             hours: 0 minutes: 0
-                           seconds: (NSInteger) [event
-                                                  durationAsTimeInterval]];
+  offset = [event durationAsTimeInterval];
+  if ([event isAllDay])
+    offset -= [timeZone secondsFromGMTForDate: dateValue];
+  dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                     hours: 0 minutes: 0
+                                   seconds: offset];
   [dateValue setTimeZone: utcTZ];
   *data = [dateValue asFileTimeInMemCtx: memCtx];
 

@@ -25,9 +25,13 @@
 
 #import <NGCards/NGVCard.h>
 
+@class NSDictionary;
+@class NSMutableDictionary;
+
 @interface NGVCard (SOGoExtensions)
 
-- (NSString *) ldifString;
+- (void) updateFromLDIFRecord: (NSDictionary *) ldifRecord;
+- (NSMutableDictionary *) asLDIFRecord;
 
 @end
 
