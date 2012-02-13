@@ -21,8 +21,8 @@
           /><var:string value="categories" escapeHTML="NO"
           /><var:if condition="hasPhoto"
           ><img var:src="photoURL" class="contactPhoto"
-            /></var:if>
-        </var:foreach></div
+            />
+        </var:if></div
 
         ><var:if condition="hasHomeInfos"
         ><div id="homeInfos"
