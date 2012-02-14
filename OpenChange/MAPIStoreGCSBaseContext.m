@@ -92,14 +92,13 @@
  createRootSecondaryFolderWithFID: (uint64_t) fid
                           andName: (NSString *) folderName
                           forUser: (NSString *) userName
-                  withTDBIndexing: (struct tdb_wrap *) indexingTdb
 {
   NSString *mapistoreURI, *nameInContainer, *moduleName;
   MAPIStoreUserContext *userContext;
   SOGoParentFolder *parentFolder;
 
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
-                                               andTDBIndexing: indexingTdb];
+                                               andTDBIndexing: NULL];
   moduleName = [self MAPIModuleName];
   parentFolder = [[userContext rootFolders] objectForKey: moduleName];
   if (![parentFolder newFolderWithName: folderName

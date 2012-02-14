@@ -1,5 +1,11 @@
 2012-02-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m
+	(+createRootFolder:withFID:andName:forUser:withRole:): removed the
+	"andTDBIndexing:" argument.
+	(+createRootSecondaryFolderWithFID:andName:forUser:): same as
+	above.
+
 	* OpenChange/MAPIStoreCalendarMessage.m
 	(-subscriberCanReadMessage): returns YES when the current role is
 	ComponentDAndTViewer too.

@@ -175,7 +175,6 @@ MAPIStoreLookupContextClassByRole (Class self, enum mapistore_context_role role)
                                   andName: (NSString *) folderName
                                   forUser: (NSString *) userName
                                  withRole: (enum mapistore_context_role) role
-                           andTDBIndexing: (struct tdb_wrap *) indexingTdb
 {
   Class contextClass;
   NSString *mapistoreURI;
@@ -187,8 +186,7 @@ MAPIStoreLookupContextClassByRole (Class self, enum mapistore_context_role role)
 
   mapistoreURI = [contextClass createRootSecondaryFolderWithFID: fid
                                                         andName: (NSString *) folderName
-                                                        forUser: userName
-                                                withTDBIndexing: indexingTdb];
+                                                        forUser: userName];
   if (mapistoreURI)
     *mapistoreUriP = mapistoreURI;
   else
@@ -546,7 +544,6 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
  createRootSecondaryFolderWithFID: (uint64_t) fid
                           andName: (NSString *) folderName
                           forUser: (NSString *) userName
-                  withTDBIndexing: (struct tdb_wrap *) indexingTdb
 {
   [self subclassResponsibility: _cmd];
 

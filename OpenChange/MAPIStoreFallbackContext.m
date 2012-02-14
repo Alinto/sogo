@@ -93,7 +93,6 @@
  createRootSecondaryFolderWithFID: (uint64_t) fid
                           andName: (NSString *) folderName
                           forUser: (NSString *) userName
-                  withTDBIndexing: (struct tdb_wrap *) indexingTdb
 {
   return [NSString stringWithFormat: @"sogo://%@@fallback/0x%.16"PRIx64"/",
                    userName, (unsigned long long) fid];

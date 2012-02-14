@@ -72,8 +72,7 @@
                                   withFID: (uint64_t ) fid
                                   andName: (NSString *) folderName
                                   forUser: (NSString *) username
-                                 withRole: (enum mapistore_context_role) role
-                           andTDBIndexing: (struct tdb_wrap *) indexingTdb;
+                                 withRole: (enum mapistore_context_role) role;
 
 + (int) openContext: (MAPIStoreContext **) contextPtr
             withURI: (const char *) newUri
@@ -114,8 +113,7 @@
 + (NSString *)
  createRootSecondaryFolderWithFID: (uint64_t) fid
                           andName: (NSString *) folderName
-                          forUser: (NSString *) userName
-                  withTDBIndexing: (struct tdb_wrap *) indexingTdb;
+                          forUser: (NSString *) userName;
 - (Class) MAPIStoreFolderClass;
 
 /* the top-most parent of the context folder: SOGoMailAccount,

@@ -152,7 +152,7 @@ static enum mapistore_error
 sogo_backend_create_root_folder (const char *username,
                                  enum mapistore_context_role role,
                                  uint64_t fid, const char *name,
-                                 struct tdb_wrap *indexingTdb,
+                                 // struct tdb_wrap *indexingTdb,
                                  TALLOC_CTX *mem_ctx, char **mapistore_urip)
 {
   NSAutoreleasePool *pool;
@@ -172,8 +172,7 @@ sogo_backend_create_root_folder (const char *username,
                                        withFID: fid
                                        andName: folderName
                                        forUser: userName
-                                      withRole: role
-                                andTDBIndexing: indexingTdb];
+                                      withRole: role];
       if (rc == MAPISTORE_SUCCESS)
         *mapistore_urip = [mapistoreUri asUnicodeInMemCtx: mem_ctx];
     }
