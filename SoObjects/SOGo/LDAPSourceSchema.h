@@ -1,12 +1,12 @@
-/* MAPIStoreDeferredActionsContext.m - this file is part of SOGo
+/* LDAPSourceSchema.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2011 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -20,17 +20,26 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
+#ifndef LDAPSOURCESCHEMA_H
+#define LDAPSOURCESCHEMA_H
 
-#import "MAPIStoreMapping.h"
+#import <Foundation/NSObject.h>
 
-#import "MAPIStoreDeferredActionsContext.h"
+@class NSMutableDictionary;
+@class NGLdapConnection;
 
-@implementation MAPIStoreDeferredActionsContext
-
-+ (NSString *) MAPIModuleName
+@interface LDAPSourceSchema : NSObject
 {
-  return @"deferred-actions";
+  NSMutableDictionary *schema;
 }
 
+- (void) readSchemaFromConnection: (NGLdapConnection *) conn;
+
+- (NSArray *) fieldsForClass: (NSString *) className;
+
+/* merged list of attributes with unique names */
+- (NSArray *) fieldsForClasses: (NSArray *) className;
+
 @end
+
+#endif /* LDAPSOURCESCHEMA_H */

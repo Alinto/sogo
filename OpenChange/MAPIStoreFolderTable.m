@@ -85,6 +85,26 @@
   return restrictedChildKeys;
 }
 
+- (MAPIRestrictionState) evaluatePropertyRestriction: (struct mapi_SPropertyRestriction *) res
+				       intoQualifier: (EOQualifier **) qualifier
+{
+  MAPIRestrictionState rc;
+
+  switch ((uint32_t) res->ulPropTag)
+    {
+      /* HACK: we cheat here as we current have no mechanism for searching
+         folders based on PR_CHANGE_NUM, which is used by the oxcfxics
+         mechanism... */
+    case PR_CHANGE_NUM:
+      rc = MAPIRestrictionStateAlwaysTrue;
+      break;
+    default:
+      rc = [super evaluatePropertyRestriction: res intoQualifier: qualifier];
+    }
+
+  return rc;
+}
+
 - (id) lookupChild: (NSString *) childKey
 {
   return [(MAPIStoreFolder *) container lookupFolder: childKey];

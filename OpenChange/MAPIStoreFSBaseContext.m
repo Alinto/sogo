@@ -30,9 +30,13 @@
 
 #import "MAPIStoreFSFolder.h"
 #import "MAPIStoreMapping.h"
+#import "MAPIStoreUserContext.h"
 #import "SOGoMAPIFSFolder.h"
 
 #import "MAPIStoreFSBaseContext.h"
+
+#undef DEBUG
+#include <mapistore/mapistore.h>
 
 static Class MAPIStoreFSFolderK;
 
@@ -48,12 +52,28 @@ static Class MAPIStoreFSFolderK;
   return nil;
 }
 
-- (void) setupBaseFolder: (NSURL *) newURL
+- (Class) MAPIStoreFolderClass
 {
-  [self logWithFormat: @"invoked %s", __PRETTY_FUNCTION__];
-  baseFolder = [MAPIStoreFSFolderK baseFolderWithURL: newURL
-                                           inContext: self];
-  [baseFolder retain];
+  return MAPIStoreFSFolderK;
+}
+
+- (void) ensureContextFolder
+{
+  SOGoMAPIFSFolder *contextFolder;
+
+  contextFolder = [SOGoMAPIFSFolder folderWithURL: contextUrl
+                                     andTableType: MAPISTORE_MESSAGE_TABLE];
+  [contextFolder ensureDirectory];
+}
+
+- (id) rootSOGoFolder
+{
+  NSString *urlString;
+
+  urlString = [NSString stringWithFormat: @"sogo://%@@%@/",
+                        [userContext username], [isa MAPIModuleName]];
+  return [SOGoMAPIFSFolder folderWithURL: [NSURL URLWithString: urlString]
+                            andTableType: MAPISTORE_MESSAGE_TABLE];
 }
 
 @end
