@@ -215,7 +215,7 @@ static memcached_st *handle = NULL;
 	    inContainer: [container container]];
       fullPath = [self _pathFromObject: container
 		       withName: name];
-      if (![cache objectForKey: fullPath])
+      if (fullPath && ![cache objectForKey: fullPath])
 	{
 	  [cache setObject: object forKey: fullPath];
 	}
