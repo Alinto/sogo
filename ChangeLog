@@ -7,6 +7,14 @@
 
 2012-02-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserManager.m (_compactAndCompleteContacts:):
+	we make sure that "source" is not nil before assigning it to the
+	compact record.
+
+	* SoObjects/SOGo/SQLSource.m (_lookupContactEntry:considerEmail:):
+	assign self as value for "source" in the returned record.
+	(-fetchContactsMatching): same as above.
+
 	* SoObjects/SOGo/SOGoSQLUserProfile.m (_sqlJsonRepresentation:):
 	removed obsolete method.
 	(-storeJSONProfileInDB:): we now properly escape the stored value
