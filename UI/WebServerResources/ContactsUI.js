@@ -115,7 +115,6 @@ function contactsListCallback(http) {
                                             { categories: contact["c_categories"],
                                               contactname: contact["c_cn"] },
                                             tbody);
-                    
                     var cell = createElement("td",
                                              null,
                                              ( "displayName" ),
@@ -197,6 +196,7 @@ function contactsListCallback(http) {
                         var rowPosition = row.rowIndex * row.getHeight();
                         if (div.getHeight() < rowPosition)
                             div.scrollTop = rowPosition; // scroll to selected contact
+                        row.selectElement();
                         break;
                     }
                 }
@@ -300,9 +300,9 @@ function onMenuExportContact (event) {
     var canExport = (selectedFolders[0].getAttribute("owner") != "nobody");
     if (canExport) {
         var selectedFolderId = $(selectedFolders[0]).readAttribute("id");
-        var contactIds = $(document.menuTarget).collect(function(row) {
-                                                        return row.getAttribute("id");
-                                                        });
+        var contactIds = document.menuTarget.collect(function(row) {
+                return row.readAttribute("id");
+            });
         var url = ApplicationBaseURL + selectedFolderId + "/export"
           + "?uid=" + contactIds.join("&uid=");
         window.location.href = url;

@@ -1,3 +1,20 @@
+1.3.12b (2012-02-14)
+-------------------
+
+Bug Fixes
+ - we now properly escape strings via the database adapator methods when
+   saving users settings
+ - fixed a crash when exporting a vCard without specifying a UID
+ - fixed the contextual menu on newly created contacts and lists
+
+1.3.12a (2012-02-13)
+-------------------
+
+Bug Fixes
+ - the plus sign (+) is now properly escaped in JavaScript (fixes issue when
+   loading the mailboxes list)
+ - added missing migration script in Debian/Ubuntu packages
+
 1.3.12 (2012-02-13)
 -------------------
 New Features

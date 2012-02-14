@@ -819,6 +819,7 @@
   NSMutableArray *emails;
   NSString *uid, *email, *info;
   NSNumber *isGroup;
+  id <SOGoSource> source;
 
   compactContacts = [NSMutableDictionary dictionary];
   while ((userEntry = [contacts nextObject]))
@@ -831,7 +832,9 @@
 	    {
 	      returnContact = [NSMutableDictionary dictionary];
 	      [returnContact setObject: uid forKey: @"c_uid"];
-	      [returnContact setObject: [userEntry objectForKey: @"source"] forKey: @"source"];
+              source = [userEntry objectForKey: @"source"];
+              if (source)
+                [returnContact setObject: source forKey: @"source"];
               [compactContacts setObject: returnContact forKey: uid];
             }
 	  if (![[returnContact objectForKey: @"c_name"] length])

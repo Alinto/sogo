@@ -1,4 +1,19 @@
+2012-02-14  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js (contactsListCallback): when
+	restoring selection after the folder refresh, call "selectElement"
+	on each row. This fixes the contacts selection retrieval when using the
+	contextual menu.
+
 2012-02-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserManager.m (_compactAndCompleteContacts:):
+	we make sure that "source" is not nil before assigning it to the
+	compact record.
+
+	* SoObjects/SOGo/SQLSource.m (_lookupContactEntry:considerEmail:):
+	assign self as value for "source" in the returned record.
+	(-fetchContactsMatching): same as above.
 
 	* SoObjects/SOGo/SOGoSQLUserProfile.m (_sqlJsonRepresentation:):
 	removed obsolete method.
