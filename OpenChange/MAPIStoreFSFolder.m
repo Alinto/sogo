@@ -34,6 +34,7 @@
 #import "MAPIStoreFSMessage.h"
 #import "MAPIStoreFSMessageTable.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "SOGoMAPIFSFolder.h"
 #import "SOGoMAPIFSMessage.h"
 
@@ -41,9 +42,7 @@
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
-// #include <mapistore/mapistore_errors.h>
-// #include <libmapiproxy.h>
-// #include <param.h>
+#include <mapistore/mapistore_errors.h>
 
 static Class EOKeyValueQualifierK;
 
@@ -64,20 +63,6 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   EOKeyValueQualifierK = [EOKeyValueQualifier class];
 }
 
-- (id) initWithURL: (NSURL *) newURL
-         inContext: (MAPIStoreContext *) newContext
-{
-  if ((self = [super initWithURL: newURL
-                       inContext: newContext]))
-    {
-      sogoObject = [SOGoMAPIFSFolder folderWithURL: newURL
-                                      andTableType: MAPISTORE_MESSAGE_TABLE];
-      [sogoObject retain];
-    }
-
-  return self;
-}
-
 - (MAPIStoreMessageTable *) messageTable
 {
   return [MAPIStoreFSMessageTable tableForContainer: self];
@@ -88,8 +73,9 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   return [MAPIStoreFSFolderTable tableForContainer: self];
 }
 
-- (NSString *) createFolder: (struct SRow *) aRow
-                    withFID: (uint64_t) newFID
+- (enum mapistore_error) createFolder: (struct SRow *) aRow
+                              withFID: (uint64_t) newFID
+                               andKey: (NSString **) newKeyP
 {
   NSString *newKey, *urlString;
   NSURL *childURL;
@@ -102,8 +88,9 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   childFolder = [SOGoMAPIFSFolder folderWithURL: childURL
                                    andTableType: MAPISTORE_MESSAGE_TABLE];
   [childFolder ensureDirectory];
+  *newKeyP = newKey;
 
-  return newKey;
+  return MAPISTORE_SUCCESS;
 }
 
 - (MAPIStoreMessage *) createMessage
@@ -126,8 +113,10 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
                           andSortOrderings: (NSArray *) sortOrderings
 {
   NSArray *keys;
+  SOGoUser *ownerUser;
 
-  if ([[context activeUser] isEqual: [context ownerUser]]
+  ownerUser = [[self userContext] sogoUser];
+  if ([[context activeUser] isEqual: ownerUser]
       || [self subscriberCanReadMessages])
     keys = [(SOGoMAPIFSFolder *) sogoObject
               toOneRelationshipKeysMatchingQualifier: qualifier
@@ -293,6 +282,11 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 - (BOOL) subscriberCanCreateSubFolders
 {
   return [self _testRoleForActiveUser: MAPIStoreRightCreateSubfolders];
+}
+
+- (BOOL) supportsSubFolders
+{
+  return YES;
 }
 
 @end

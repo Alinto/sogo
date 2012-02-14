@@ -33,9 +33,9 @@
 
 - (void) test_stringByEscapingURL
 {
-  const char *inStrings[] = { "éléphant", "2š", NULL };
+  const char *inStrings[] = { "éléphant", "2š", "sogo+test", NULL };
   const char **inString;
-  NSString *outStrings[] = { @"%C3%A9l%C3%A9phant", @"2%C5%A1" };
+  NSString *outStrings[] = { @"%C3%A9l%C3%A9phant", @"2%C5%A1", @"sogo+test" };
   NSString **outString;
   NSString *result, *error;
 

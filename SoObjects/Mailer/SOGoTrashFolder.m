@@ -25,10 +25,4 @@
 
 @implementation SOGoTrashFolder
 
-/* folder type */
-
-- (NSString *)outlookFolderClass {
-  return @"IPF.Trash";
-}
-
 @end /* SOGoTrashFolder */

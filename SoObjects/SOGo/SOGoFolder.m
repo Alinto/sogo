@@ -27,6 +27,7 @@
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
+#import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/SoWebDAVValue.h>
@@ -37,12 +38,16 @@
 
 #import <SaxObjC/XMLNamespaces.h>
 
+#import <SOGoUI/SOGoFolderAdvisory.h>
+
 #import "DOMNode+SOGo.h"
 #import "NSArray+Utilities.h"
 #import "NSObject+DAV.h"
 #import "NSString+DAV.h"
 #import "NSString+Utilities.h"
 #import "SOGoPermissions.h"
+#import "SOGoUser.h"
+#import "SOGoDomainDefaults.h"
 #import "SOGoWebDAVAclManager.h"
 #import "WORequest+SOGo.h"
 #import "WOResponse+SOGo.h"
@@ -246,6 +251,30 @@
     }
 
   return comparison;
+}
+
+/* email advisories */
+
+- (void) sendFolderAdvisoryTemplate: (NSString *) template
+{
+  NSString *pageName;
+  SOGoUser *user;
+  SOGoFolderAdvisory *page;
+  NSString *language;
+
+  user = [SOGoUser userWithLogin: [self ownerInContext: context]];
+  if ([[user domainDefaults] foldersSendEMailNotifications])
+    {
+      language = [[user userDefaults] language];
+      pageName = [NSString stringWithFormat: @"SOGoFolder%@%@Advisory",
+			   language, template];
+
+      page = [[WOApplication application] pageWithName: pageName
+					  inContext: context];
+      [page setFolderObject: self];
+      [page setRecipientUID: [user login]];
+      [page send];
+    }
 }
 
 /* WebDAV */
@@ -532,13 +561,6 @@
 	  && [container isEqual: [otherFolder container]]
 	  && [nameInContainer
 	       isEqualToString: [otherFolder nameInContainer]]);
-}
-
-- (NSString *) outlookFolderClass
-{
-  [self subclassResponsibility: _cmd];
-
-  return nil;
 }
 
 /* acls */

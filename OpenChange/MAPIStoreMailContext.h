@@ -28,20 +28,6 @@
 @interface MAPIStoreMailContext : MAPIStoreContext
 @end
 
-@interface MAPIStoreInboxContext : MAPIStoreMailContext
-@end
-
-@interface MAPIStoreSentItemsContext : MAPIStoreMailContext
-@end
-
-@interface MAPIStoreDraftsContext : MAPIStoreMailContext
-@end
-
-#import "MAPIStoreFSBaseContext.h"
-
-@interface MAPIStoreDeletedItemsContext : MAPIStoreFSBaseContext
-@end
-
 @interface MAPIStoreOutboxContext : MAPIStoreMailContext
 @end
 

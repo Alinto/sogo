@@ -26,12 +26,8 @@
 #import <Foundation/NSException.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSCharacterSet.h>
-
-#import <NGExtensions/NGBase64Coding.h>
 
 #import "NSArray+Utilities.h"
-#import "NSObject+Utilities.h"
 #import "NSString+Utilities.h"
 
 #import "NSDictionary+Utilities.h"
@@ -108,84 +104,6 @@
 {
   return [[self objectForKey: @"cn"] caseInsensitiveCompare: [theDictionary objectForKey: @"cn"]];
 }
-
-// LDIF Methods
-#warning We might want to support more than just strings here
-- (void) _appendLDIFKey: (NSString *) key
-                  value: (NSString *) value
-               toString: (NSMutableString *) ldifString
-{
-  if ([value isKindOfClass: [NSString class]])
-    {
-      if ([value _isLDIFSafe])
-	[ldifString appendFormat: @"%@: %@\n", key, value];
-      else
-	[ldifString appendFormat: @"%@:: %@\n",
-		    key, [value stringByEncodingBase64]];
-    }
-}
-
-- (void) _appendLDIFKey: (NSString *) key
-               toString: (NSMutableString *) ldifString
-{
-  id value;
-  int count, max;
-
-  value = [self objectForKey: key];
-  if ([value isKindOfClass: [NSArray class]])
-    {
-      max = [value count];
-      for (count = 0; count < max; count++)
-        [self _appendLDIFKey: key value: [value objectAtIndex: count]
-                    toString: ldifString];
-    }
-  else
-    [self _appendLDIFKey: key value: [self objectForKey: key]
-                toString: ldifString];
-}
-
-- (void) _appendObjectClassesToString: (NSMutableString *) ldifString
-{
-  NSEnumerator *classes;
-  NSString *currentClass;
-
-  classes = [[self objectForKey: @"objectClasses"] objectEnumerator];
-  while ((currentClass = [classes nextObject]))
-    [self _appendLDIFKey: @"objectClass" value: currentClass
-                toString: ldifString];
-}
-
-- (NSString *) userRecordAsLDIFEntry
-{
-  NSMutableString *ldifString;
-  NSEnumerator *keys;
-  NSString *currentKey;
-
-// {CalendarAccess = YES; MailAccess = YES; c_cn = "Wolfgang Sourdeau"; c_emails = ("wolfgang@test.com"); c_name = "wolfgang@test.com"; c_uid = "wolfgang@test.com"; cn = "wolfgang@test.com"; displayName = "Wolfgang Sourdeau"; dn = "cn=wolfgang@test.com,ou=evariste,o=inverse.ca"; givenName = Wolfgang; mail = "wolfgang@test.com"; objectClass = organizationalPerson; sn = Sourdeau; }
-
-  ldifString = [NSMutableString string];
-  [self _appendLDIFKey: @"dn" toString: ldifString];
-  [self _appendObjectClassesToString: ldifString];
-
-  keys = [[self allKeys] objectEnumerator];
-  while ((currentKey = [keys nextObject]))
-    {
-      if (!([currentKey isEqualToString: @"CalendarAccess"]
-            || [currentKey isEqualToString: @"MailAccess"]
-            || [currentKey isEqualToString: @"ContactAccess"]
-            || [currentKey hasPrefix: @"objectClass"]
-            || [currentKey hasPrefix: @"c_"]
-            || [currentKey isEqualToString: @"dn"]
-	    || [currentKey isEqualToString: @"isGroup"]
-	    || [currentKey isEqualToString: @"isResource"]
-	    || [currentKey isEqualToString: @"numberOfSimultaneousBookings"]
-	    || [currentKey isEqualToString: @"canAuthenticate"]))
-        [self _appendLDIFKey: currentKey toString: ldifString];
-    }
-
-  return ldifString;
-}
-
 
 @end
 

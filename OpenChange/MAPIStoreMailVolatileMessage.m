@@ -813,7 +813,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
   if (error)
     [self logWithFormat: @"an error occurred: '%@'", error];
 
-  mapping = [[self context] mapping];
+  mapping = [self mapping];
   [mapping unregisterURLWithID: [self objectId]];
   [self setIsNew: NO];
   [properties removeAllObjects];
@@ -851,7 +851,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
       newIdString = [[flag componentsSeparatedByString: @" "]
                       objectAtIndex: 2];
       mid = [self objectId];
-      mapping = [[self context] mapping];
+      mapping = [self mapping];
       [mapping unregisterURLWithID: mid];
       [sogoObject setNameInContainer: [NSString stringWithFormat: @"%@.eml", newIdString]];
       [mapping registerURL: [self url] withID: mid];

@@ -39,10 +39,7 @@
   SOGoMAPIFSMessage *versionsMessage;
 }
 
-/* subclasses */
-- (SOGoMailFolder *) specialFolderFromAccount: (SOGoMailAccount *) account
-                                    inContext: (WOContext *) woContext;
-
+- (BOOL) ensureFolderExists;
 
 /* synchronisation & versioning */
 - (BOOL) synchroniseCache;
@@ -54,25 +51,6 @@
 - (NSData *) changeKeyForMessageWithKey: (NSString *) messageKey;
 - (NSData *) predecessorChangeListForMessageWithKey: (NSString *) messageKey;
 
-@end
-
-@interface MAPIStoreInboxFolder : MAPIStoreMailFolder
-{
-  BOOL usesAltNameSpace;
-}
-
-@end
-
-@interface MAPIStoreSentItemsFolder : MAPIStoreMailFolder
-@end
-
-@interface MAPIStoreDraftsFolder : MAPIStoreMailFolder
-@end
-
-// @interface MAPIStoreDeletedItemsFolder : MAPIStoreFFolder
-// @end
-
-@interface MAPIStoreOutboxFolder : MAPIStoreMailFolder
 @end
 
 #endif /* MAPISTOREMAILFOLDER_H */

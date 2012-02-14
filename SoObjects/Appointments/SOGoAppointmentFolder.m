@@ -2617,11 +2617,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return @"Appointment";
 }
 
-- (NSString *) outlookFolderClass
-{
-  return @"IPF.Appointment";
-}
-
 - (BOOL) isActive
 {
   SOGoUserSettings *settings;

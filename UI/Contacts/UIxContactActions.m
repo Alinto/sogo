@@ -52,6 +52,8 @@
 
   categories = [[self categories] mutableCopy];
   [categories autorelease];
+  if (!categories)
+    categories = [NSMutableArray array];
   if (set)
     {
       if (![categories containsObject: category])
