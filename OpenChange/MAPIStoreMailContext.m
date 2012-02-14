@@ -112,7 +112,6 @@ static Class MAPIStoreMailFolderK;
   [secondaryFolders autorelease];
   [secondaryFolders removeObject: inboxName];
   [secondaryFolders removeObject: draftsName];
-  [secondaryFolders removeObject: draftsName];
   [secondaryFolders removeObject: sentName];
   [secondaryFolders removeObject: trashName];
   max = [secondaryFolders count];
