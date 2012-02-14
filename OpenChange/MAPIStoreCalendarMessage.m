@@ -627,8 +627,12 @@
 
 - (BOOL) subscriberCanReadMessage
 {
-  return ([[self activeUserRoles]
-            containsObject: SOGoCalendarRole_ComponentViewer]
+  NSArray *roles;
+
+  roles = [self activeUserRoles];
+
+  return ([roles containsObject: SOGoCalendarRole_ComponentViewer]
+          || [roles containsObject: SOGoCalendarRole_ComponentDAndTViewer]
           || [self subscriberCanModifyMessage]);
 }
 

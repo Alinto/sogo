@@ -1,3 +1,9 @@
+2012-02-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreCalendarMessage.m
+	(-subscriberCanReadMessage): returns YES when the current role is
+	ComponentDAndTViewer too.
+
 2012-02-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/JavascriptAPIExtensions.js
