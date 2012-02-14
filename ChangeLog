@@ -1,5 +1,15 @@
 2012-02-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailFolder.m (-ensureFolderExists): new
+	method that attempts to create a folder when it does not exists
+	and returns NO if that creation failed or YES in any other case.
+	(-createFolder:withFID:andKey:): rc was never initialized when in
+	success code.
+	(-messageKeysMatchingQualifier:andSortOrderings:)
+	(-folderKeysMatchingQualifier:andSortOrderings:)
+	(-permissionEntries): invoke "ensureFolderExists" prior to any
+	operation.
+
 	* OpenChange/MAPIStoreContext.m
 	(+createRootFolder:withFID:andName:forUser:withRole:): removed the
 	"andTDBIndexing:" argument.

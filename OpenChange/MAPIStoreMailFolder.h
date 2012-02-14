@@ -39,6 +39,8 @@
   SOGoMAPIFSMessage *versionsMessage;
 }
 
+- (BOOL) ensureFolderExists;
+
 /* synchronisation & versioning */
 - (BOOL) synchroniseCache;
 - (NSNumber *) modseqFromMessageChangeNumber: (NSNumber *) changeNum;

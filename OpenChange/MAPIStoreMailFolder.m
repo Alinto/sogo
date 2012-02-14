@@ -87,6 +87,12 @@ static Class SOGoMailFolderK;
   return self;
 }
 
+- (void) dealloc
+{
+  [versionsMessage release];
+  [super dealloc];
+}
+
 - (void) setupVersionsMessage
 {
   ASSIGN (versionsMessage,
@@ -94,12 +100,10 @@ static Class SOGoMailFolderK;
                                 inContainer: propsFolder]);
 }
 
-- (void) dealloc
+- (BOOL) ensureFolderExists
 {
-  [versionsMessage release];
-  [super dealloc];
+  return [(SOGoMailFolder *) sogoObject exists] || [sogoObject create];
 }
-
 
 - (void) addProperties: (NSDictionary *) newProperties
 {
@@ -154,7 +158,10 @@ static Class SOGoMailFolderK;
       newFolder = [SOGoMailFolderK objectWithName: nameInContainer
                                       inContainer: sogoObject];
       if ([newFolder create])
-        *newKeyP = nameInContainer;
+        {
+          *newKeyP = nameInContainer;
+          rc = MAPISTORE_SUCCESS;
+        }
       else if ([newFolder exists])
         rc = MAPISTORE_ERR_EXIST;
       else
@@ -248,23 +255,30 @@ static Class SOGoMailFolderK;
   NSArray *uidKeys;
   EOQualifier *fetchQualifier;
 
-  if (!sortOrderings)
-    sortOrderings = [NSArray arrayWithObject: @"ARRIVAL"];
-
-  if (qualifier)
+  if ([self ensureFolderExists])
     {
-      fetchQualifier
-        = [[EOAndQualifier alloc] initWithQualifiers:
-                                    [self nonDeletedQualifier], qualifier,
-                                  nil];
-      [fetchQualifier autorelease];
+      if (!sortOrderings)
+        sortOrderings = [NSArray arrayWithObject: @"ARRIVAL"];
+
+      if (qualifier)
+        {
+          fetchQualifier
+            = [[EOAndQualifier alloc] initWithQualifiers:
+                                        [self nonDeletedQualifier], qualifier,
+                                      nil];
+          [fetchQualifier autorelease];
+        }
+      else
+        fetchQualifier = [self nonDeletedQualifier];
+
+      uidKeys = [[sogoObject fetchUIDsMatchingQualifier: fetchQualifier
+                                          sortOrdering: sortOrderings]
+                   stringsWithFormat: @"%@.eml"];
     }
   else
-    fetchQualifier = [self nonDeletedQualifier];
+    uidKeys = nil;
 
-  uidKeys = [sogoObject fetchUIDsMatchingQualifier: fetchQualifier
-                                      sortOrdering: sortOrderings];
-  return [uidKeys stringsWithFormat: @"%@.eml"];
+  return uidKeys;
 }
 
 - (NSMutableString *) _imapFolderNameRepresentation: (NSString *) subfolderName
@@ -325,15 +339,20 @@ static Class SOGoMailFolderK;
 {
   NSMutableArray *subfolderKeys;
 
-  if (qualifier)
-    [self errorWithFormat: @"qualifier is not used for folders"];
-  if (sortOrderings)
-    [self errorWithFormat: @"sort orderings are not used for folders"];
+  if ([self ensureFolderExists])
+    {
+      if (qualifier)
+        [self errorWithFormat: @"qualifier is not used for folders"];
+      if (sortOrderings)
+        [self errorWithFormat: @"sort orderings are not used for folders"];
+      
+      subfolderKeys = [[sogoObject toManyRelationshipKeys] mutableCopy];
+      [subfolderKeys autorelease];
 
-  subfolderKeys = [[sogoObject toManyRelationshipKeys] mutableCopy];
-  [subfolderKeys autorelease];
-
-  [self _cleanupSubfolderKeys: subfolderKeys];
+      [self _cleanupSubfolderKeys: subfolderKeys];
+    }
+  else
+    subfolderKeys = nil;
 
   return subfolderKeys;
 }
@@ -364,6 +383,18 @@ static Class SOGoMailFolderK;
 - (SOGoFolder *) aclFolder
 {
   return (SOGoFolder *) sogoObject;
+}
+
+- (NSArray *) permissionEntries
+{
+  NSArray *permissionEntries;
+
+  if ([self ensureFolderExists])
+    permissionEntries = [super permissionEntries];
+  else
+    permissionEntries = nil;
+
+  return permissionEntries;
 }
 
 /* synchronisation */
