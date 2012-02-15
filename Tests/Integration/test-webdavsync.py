@@ -51,7 +51,8 @@ class WebdavSyncTest(unittest.TestCase):
         token = int(token_node.text)
 
         self.assertTrue(token > 0)
-        self.assertTrue(token <= int(query1.start))
+        self.assertTrue(token <= int(query1.start), 
+                     "token = %d > query.start = %d" % (token, int(query1.start)))
 
         # we make sure that any token is acceoted when the collection is
         # empty, but that the returned token differs
