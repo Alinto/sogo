@@ -66,7 +66,7 @@ class sieveTest(unittest.TestCase):
     def testSieveSimpleVacation(self):
       """ enable simple vacation script """
       vacation_msg="vacation test"
-      daysSelect=4
+      daysSelect=3
 
       sieveScript = sieve_simple_vacation % { "mailaddr": self.user_email,
                                                "vacation_msg": vacation_msg,
