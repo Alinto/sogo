@@ -53,6 +53,7 @@ class preferences:
     # should probably be unified...
     self.preferencesMap = {
         "SOGoLanguage": "language",
+        "SOGoTimeZone": "timezone",
         "SOGoSieveFilters": "sieveFilters",
 
 			   # Vacation stuff
@@ -88,9 +89,9 @@ class preferences:
 
     self.client.execute (post)
 
-    # Raise an exception if the language wasn't properly set
+    # Raise an exception if the pref wasn't properly set
     if post.response["status"] != 200:
-      raise Exception ("failure setting language, (code = %d)" \
+      raise Exception ("failure setting prefs, (code = %d)" \
                        % post.response["status"])
 
   def get(self, preference):
