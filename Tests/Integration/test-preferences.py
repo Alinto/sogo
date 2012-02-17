@@ -16,11 +16,8 @@ class preferencesTest(unittest.TestCase):
       # make sure it was set correctly
       prefData = self.prefs.get("Vacation")
         
-      try:
-        self.assertEqual(prefData["autoReplyText"], prefText,
+      self.assertEqual(prefData["autoReplyText"], prefText,
                   "%s != %s" % (prefData["autoReplyText"], prefText))
-      except TypeError as err:
-        self.fail("Preferences are probably hosed: %s" % (err))
 
     def setUp(self):
       self.prefs = preferences.preferences()
