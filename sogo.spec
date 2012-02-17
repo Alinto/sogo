@@ -234,7 +234,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %config(noreplace) %{_sysconfdir}/cron.d/sogo
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/SOGo.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/sogo
-%doc ChangeLog NEWS Scripts/sql-update-20070724.sh Scripts/sql-update-20070822.sh Scripts/sql-update-20080303.sh Scripts/sql-update-101_to_102.sh Scripts/sql-update-1.2.2_to_1.3.0.sh Scripts/sql-update-1.2.2_to_1.3.0-mysql.sh Scripts/sql-update-1.3.3_to_1.3.4.sh Scripts/sql-update-1.3.3_to_1.3.4-mysql.sh
+%doc ChangeLog NEWS Scripts/sql*sh
 
 %files -n sogo-tool
 %{_sbindir}/sogo-tool
@@ -309,6 +309,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Fri Feb 16 2012 Jean Raby <jraby@inverse.ca>
+- Use globbing to include all sql upgrade scripts instead of listing them all
+
 * Tue Jan 10 2012 Jean Raby <jraby@inverse.ca>
 - /etc/cron.d/sogo
 
