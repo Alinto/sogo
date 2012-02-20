@@ -66,7 +66,7 @@ class HTTPUnparsedURL:
 class WebDAVClient:
     user_agent = "Mozilla/5.0"
 
-    def __init__(self, hostname, port, username = None, password = None,
+    def __init__(self, hostname, port, username = None, password = "",
                  forcessl = False):
         if int(port) == 443 or forcessl:
             import M2Crypto.httpslib
@@ -75,13 +75,11 @@ class WebDAVClient:
         else:
             self.conn = httplib.HTTPConnection(hostname, port, True)
 
-        if username is not None:
-            if password is None:
-                password = ""
+        if username is None:
+            self.simpleauth_hash = None
+        else:
             self.simpleauth_hash = (("%s:%s" % (username, password))
                                     .encode('base64')[:-1])
-        else:
-            self.simpleauth_hash = None
 
     def prepare_headers(self, query, body):
         headers = { "User-Agent": self.user_agent }

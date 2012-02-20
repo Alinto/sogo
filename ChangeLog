@@ -1,5 +1,17 @@
 2012-02-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSFolder.m (-setDisplayName:): new method
+	that intercept the setting of PR_DISPLAY_NAME_UNICODE following
+	the mechanism described below.
+	(-getPrDisplayName:inMemCtx): overriden method.
+
+	* OpenChange/MAPIStoreGCSBaseContext.m (+folderNameSuffix): new
+	method that returns an optional suffix to differentiate between
+	SOGo folders that are common to multiple Outlook folders, in
+	particular for Calendar and Tasks folder.
+	(+getFolderDisplayName:): new utility method that returns a
+	display name with the above suffix added properly.
+
 	* OpenChange/MAPIStoreObject.m (-setMAPIRetainCount)
 	(-retainCount): removed accessors as well as the corresponding
 	"mapiRetainCount" ivar as this was part of an unused feature.

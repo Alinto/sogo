@@ -43,12 +43,31 @@
   return nil;
 }
 
++ (NSString *) folderNameSuffix
+{
+  return @"";
+}
+
++ (NSString *) getFolderDisplayName: (NSString *) sogoDisplayName
+{
+  NSString *suffix, *displayName;
+
+  suffix = [self folderNameSuffix];
+  if ([suffix length] > 0 && ![sogoDisplayName hasSuffix: suffix])
+    displayName = [NSString stringWithFormat: @"%@ (%@)",
+                            sogoDisplayName, suffix];
+  else
+    displayName = sogoDisplayName;
+
+  return displayName;
+}
+
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
                                          withTDBIndexing: (struct tdb_wrap *) indexingTdb
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *firstContext = NULL, *context;
-  NSString *moduleName, *baseUrl, *url, *nameInContainer;
+  NSString *moduleName, *baseUrl, *url, *nameInContainer, *displayName;
   NSArray *subfolders;
   MAPIStoreUserContext *userContext;
   SOGoParentFolder *parentFolder;
@@ -75,8 +94,8 @@
               nameInContainer = [currentFolder nameInContainer];
               url = [NSString stringWithFormat: @"%@%@", baseUrl, nameInContainer];
               context->url = [url asUnicodeInMemCtx: context];
-              context->name = [[currentFolder displayName]
-                                asUnicodeInMemCtx: context];
+              displayName = [self getFolderDisplayName: [currentFolder displayName]];
+              context->name = [displayName asUnicodeInMemCtx: context];
               context->main_folder = [nameInContainer isEqualToString: @"personal"];
               context->role = [self MAPIContextRole];
               context->tag = "tag";

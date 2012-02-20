@@ -29,6 +29,9 @@
 
 @interface MAPIStoreGCSBaseContext : MAPIStoreContext
 
++ (NSString *) folderNameSuffix;
++ (NSString *) getFolderDisplayName: (NSString *) sogoDisplayName;
+
 @end
 
 #endif /* MAPISTOREGCSBASECONTEXT_H */

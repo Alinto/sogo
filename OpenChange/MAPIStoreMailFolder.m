@@ -61,7 +61,7 @@
 
 #import "MAPIStoreMailFolder.h"
 
-static Class SOGoMailFolderK;
+static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
 
 #undef DEBUG
 #include <util/attr.h>
@@ -74,6 +74,7 @@ static Class SOGoMailFolderK;
 + (void) initialize
 {
   SOGoMailFolderK = [SOGoMailFolder class];
+  MAPIStoreOutboxFolderK = [MAPIStoreOutboxFolder class];
   [MAPIStoreAppointmentWrapper class];
 }
 
@@ -113,7 +114,10 @@ static Class SOGoMailFolderK;
 
   key = MAPIPropertyKey (PR_DISPLAY_NAME_UNICODE);
   newDisplayName = [newProperties objectForKey: key];
-  if (newDisplayName)
+  if (newDisplayName
+      && ![self isKindOfClass: MAPIStoreOutboxFolderK]
+      && ![[(SOGoMailFolder *) sogoObject displayName]
+            isEqualToString: newDisplayName])
     {
       [(SOGoMailFolder *) sogoObject renameTo: newDisplayName];
       propsCopy = [newProperties mutableCopy];
@@ -1075,6 +1079,18 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   // [self logWithFormat: @"rights for roles (%@) = %.8x", roles, rights];
  
   return rights;
+}
+
+@end
+
+@implementation MAPIStoreOutboxFolder
+
+- (int) getPrDisplayName: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"Outbox" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
 }
 
 @end

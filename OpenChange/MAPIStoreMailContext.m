@@ -38,13 +38,14 @@
 #undef DEBUG
 #include <mapistore/mapistore.h>
 
-static Class MAPIStoreMailFolderK;
+static Class MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 
 @implementation MAPIStoreMailContext
 
 + (void) initialize
 {
   MAPIStoreMailFolderK = [MAPIStoreMailFolder class];
+  MAPIStoreOutboxFolderK = [MAPIStoreOutboxFolder class];
 }
 
 + (NSString *) MAPIModuleName
@@ -206,6 +207,11 @@ static Class MAPIStoreMailFolderK;
   context->prev = context;
 
   return context;
+}
+
+- (Class) MAPIStoreFolderClass
+{
+  return MAPIStoreOutboxFolderK;
 }
 
 @end

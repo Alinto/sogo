@@ -56,4 +56,9 @@ static Class MAPIStoreCalendarFolderK;
   return MAPIStoreCalendarFolderK;
 }
 
++ (NSString *) folderNameSuffix
+{
+  return @"c";
+}
+
 @end

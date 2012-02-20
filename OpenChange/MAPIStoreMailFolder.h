@@ -53,4 +53,9 @@
 
 @end
 
+/* MAPIStoreOutboxFolder is a special subclass of MAPIStoreMailFolder where
+   the displayname is always "Outbox" and can not be changed. */
+@interface MAPIStoreOutboxFolder : MAPIStoreMailFolder
+@end
+
 #endif /* MAPISTOREMAILFOLDER_H */
