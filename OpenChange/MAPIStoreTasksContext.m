@@ -55,4 +55,9 @@ static Class MAPIStoreTasksFolderK;
   return MAPIStoreTasksFolderK;
 }
 
++ (NSString *) folderNameSuffix
+{
+  return @"t";
+}
+
 @end

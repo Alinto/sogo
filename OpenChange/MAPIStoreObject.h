@@ -45,8 +45,6 @@
 {
   const IMP *classGetters;
 
-  uint32_t mapiRetainCount;
-
   NSMutableArray *parentContainersBag;
   MAPIStoreObject *container;
   id sogoObject;
@@ -61,10 +59,6 @@
 
 - (id) initWithSOGoObject: (id) newSOGoObject
               inContainer: (MAPIStoreObject *) newFolder;
-
-/* HACK: MAPI retain count */
-- (void) setMAPIRetainCount: (uint32_t) newCount;
-- (uint32_t) mapiRetainCount;
 
 - (void) setIsNew: (BOOL) newIsNew;
 - (BOOL) isNew;

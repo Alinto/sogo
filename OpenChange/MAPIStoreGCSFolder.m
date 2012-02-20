@@ -34,7 +34,7 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 
-#import "MAPIStoreContext.h"
+#import "MAPIStoreGCSBaseContext.h"
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
@@ -102,6 +102,44 @@
   return (rc == MAPISTORE_SUCCESS) ? [super deleteFolder] : rc;
 }
 
+- (void) setDisplayName: (NSString *) newDisplayName
+{
+  NSString *suffix, *fullSuffix;
+  Class cClass;
+
+  cClass = [(MAPIStoreGCSBaseContext *) [self context] class];
+
+  /* if a suffix exists, we strip it from the final name */
+  suffix = [cClass folderNameSuffix];
+  if ([suffix length] > 0)
+    {
+      fullSuffix = [NSString stringWithFormat: @"(%@)", suffix];
+      if ([newDisplayName hasSuffix: fullSuffix])
+        {
+          newDisplayName = [newDisplayName substringToIndex:
+                                             [newDisplayName length]
+                                           - [fullSuffix length]];
+          newDisplayName = [newDisplayName stringByTrimmingSpaces];
+        }
+    }
+
+  if (![[sogoObject displayName] isEqualToString: newDisplayName])
+    [sogoObject renameTo: newDisplayName];
+}
+
+- (int) getPrDisplayName: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSString *displayName;
+  Class cClass;
+
+  cClass = [(MAPIStoreGCSBaseContext *) [self context] class];
+  displayName = [cClass getFolderDisplayName: [sogoObject displayName]];
+  *data = [displayName asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (void) addProperties: (NSDictionary *) newProperties
 {
   NSString *newDisplayName;
@@ -112,7 +150,7 @@
   newDisplayName = [newProperties objectForKey: key];
   if (newDisplayName)
     {
-      [sogoObject renameTo: newDisplayName];
+      [self setDisplayName: newDisplayName];
       propsCopy = [newProperties mutableCopy];
       [propsCopy removeObjectForKey: key];
       [propsCopy autorelease];

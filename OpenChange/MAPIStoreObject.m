@@ -100,7 +100,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
 {
   if ((self = [super init]))
     {
-      mapiRetainCount = 0;
       classGetters = (IMP *) MAPIStorePropertyGettersForClass (isa);
       parentContainersBag = [NSMutableArray new];
       container = nil;
@@ -134,16 +133,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
   [parentContainersBag release];
   [container release];
   [super dealloc];
-}
-
-- (void) setMAPIRetainCount: (uint32_t) newCount
-{
-  mapiRetainCount = newCount;
-}
-
-- (uint32_t) mapiRetainCount
-{
-  return mapiRetainCount;
 }
 
 - (void) setIsNew: (BOOL) newIsNew
