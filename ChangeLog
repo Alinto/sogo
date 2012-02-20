@@ -1,3 +1,9 @@
+2012-02-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreObject.m (-setMAPIRetainCount)
+	(-retainCount): removed accessors as well as the corresponding
+	"mapiRetainCount" ivar as this was part of an unused feature.
+
 2012-02-16  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxAttendeesEditor.js (checkAttendee):
