@@ -1,5 +1,8 @@
 2012-02-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxComponentEditor.m (-setComponent:): fetch
+	default classification from user defauts.
+
 	* UI/PreferencesUI/UIxPreferences.m
 	(-calendarClassificationsList): new getter for the list of
 	classifications.
