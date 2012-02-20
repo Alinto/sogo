@@ -41,12 +41,12 @@ function onPopupAttendeesWindow(event) {
     return false;
 }
 
-function onSelectPrivacy(event) {
+function onSelectClassification(event) {
     if (event.button == 0 || (isWebKit() && event.button == 1)) {
         var node = getTarget(event);
         if (node.tagName != 'A')
             node = $(node).up("A");
-        popupToolbarMenu(node, "privacy-menu");
+        popupToolbarMenu(node, "classification-menu");
         Event.stop(event);
     }
 }
@@ -97,8 +97,8 @@ function onMenuSetClassification(event) {
     this.addClassName("_chosen");
     this.parentNode.chosenNode = this;
 
-    var privacyInput = $("privacy");
-    privacyInput.value = classification;
+    var classificationInput = $("classification");
+    classificationInput.value = classification;
 }
 
 function onChangeCalendar(event) {
@@ -135,19 +135,19 @@ function initializeDocumentHref() {
         changeUrlButton.observe("click", onPopupAttachWindow, false);
 }
 
-function initializePrivacyMenu() {
-    if ($("privacy-menu")) {
-        var privacy = $("privacy").value.toUpperCase();
-        var privacyMenu = $("privacy-menu").childNodesWithTag("ul")[0];
-        var menuEntries = $(privacyMenu).childNodesWithTag("li");
+function initializeClassificationMenu() {
+    if ($("classification-menu")) {
+        var classification = $("classification").value.toUpperCase();
+        var classificationMenu = $("classification-menu").childNodesWithTag("ul")[0];
+        var menuEntries = $(classificationMenu).childNodesWithTag("li");
         var chosenNode;
-        if (privacy == "CONFIDENTIAL")
+        if (classification == "CONFIDENTIAL")
             chosenNode = menuEntries[1];
-        else if (privacy == "PRIVATE")
+        else if (classification == "PRIVATE")
             chosenNode = menuEntries[2];
         else
             chosenNode = menuEntries[0];
-        privacyMenu.chosenNode = chosenNode;
+        classificationMenu.chosenNode = chosenNode;
         $(chosenNode).addClassName("_chosen");
     }
 }
@@ -190,14 +190,14 @@ function findDelegateAddress() {
 
 function onComponentEditorLoad(event) {
     initializeDocumentHref();
-    initializePrivacyMenu();
+    initializeClassificationMenu();
     var list = $("calendarList");
     if (list) {
         list.observe("change", onChangeCalendar, false);
         list.fire("mousedown");
     }
     
-    var tmp = $("itemPrivacyList");
+    var tmp = $("itemClassificationList");
     if (tmp) {
         var menuItems = tmp.childNodesWithTag("li");
         for (var i = 0; i < menuItems.length; i++)

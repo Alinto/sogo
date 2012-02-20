@@ -6,7 +6,7 @@
     { link = "#";
       hasMenu = YES;
       label = "Privacy";
-      onclick = "return onSelectPrivacy(event);";
+      onclick = "return onSelectClassification(event);";
       image = "tb-compose-security-flat-24x24.png"; },
     { link = "#";
       label = "Attach";

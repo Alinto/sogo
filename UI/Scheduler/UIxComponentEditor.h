@@ -54,7 +54,7 @@
   NSString *comment;
   NSString *attachUrl;
   NSString *priority;
-  NSString *privacy;
+  NSString *classification;
   NSString *status;
   NSString *category;
   NSArray *categories;
@@ -119,10 +119,10 @@
 - (NSString *) priority;
 - (NSString *) itemPriorityText;
 
-- (NSArray *) privacyClasses;
-- (void) setPrivacy: (NSString *) _privacy;
-- (NSString *) privacy;
-- (NSString *) itemPrivacyText;
+- (NSArray *) classificationClasses;
+- (void) setClassification: (NSString *) _classification;
+- (NSString *) classification;
+- (NSString *) itemClassificationText;
 
 - (void) setStatus: (NSString *) _status;
 - (NSString *) status;

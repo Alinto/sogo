@@ -28,11 +28,11 @@
   ></script>
 
   <var:if condition="eventIsReadOnly" const:negate="YES">
-  <div class="menu" id="privacy-menu">
-    <ul id="itemPrivacyList" class="choiceMenu">
-      <var:foreach list="privacyClasses" item="item">
+  <div class="menu" id="classification-menu">
+    <ul id="itemClassificationList" class="choiceMenu">
+      <var:foreach list="classificationClasses" item="item">
 	<li var:classification="item"><var:string
-	    var:value="itemPrivacyText" /></li>
+	    var:value="itemClassificationText" /></li>
       </var:foreach>
     </ul>
   </div>
@@ -111,8 +111,8 @@
 
       <!-- hidden -->
       <input type="hidden" name="attach" id="attach" var:value="attach"/>
-      <input type="hidden" name="privacy" id="privacy"
-	var:value="privacy"/>
+      <input type="hidden" name="classification" id="classification"
+	var:value="classification"/>
       <input type="hidden" name="attendees" id="attendees" />
       <input type="hidden" name="calendarFoldersList"
 	id="calendarFoldersList"
@@ -279,8 +279,8 @@
   </var:if>
 
       <input type="hidden" name="attach" id="attach" var:value="attach"/>
-      <input type="hidden" name="privacy" id="privacy"
-	var:value="privacy"/>
+      <input type="hidden" name="classification" id="classification"
+	var:value="classification"/>
       <input type="hidden" name="attendeesNames" id="attendeesNames"
 	var:value="attendeesNames"/>
       <input type="hidden" name="attendeesUIDs" id="attendeesUIDs"
