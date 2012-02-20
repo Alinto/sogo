@@ -1,3 +1,8 @@
+2012-02-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/Scheduler/UIxComponentEditor.m: s/privacy/classification/g,
+	which is a better description for the "CLASS" attribute.
+
 2012-02-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxMailEditor.js (onWindowResize): we now
