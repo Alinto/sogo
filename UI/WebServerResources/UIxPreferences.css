@@ -49,9 +49,9 @@ DIV.listWrapper
   background: #ccddec;}
 
 #calendarCategoriesListWrapper
-{ bottom: 30px;
+{ top: 170px;
+  bottom: 30px;
   right: 2em;
-  top: 128px;
   left: 2em; }
 
 #contactsCategoriesListWrapper

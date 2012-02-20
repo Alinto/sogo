@@ -63,6 +63,9 @@
 
     SOGoCalendarDefaultCategoryColor = "#aaa";
     SOGoCalendarShouldDisplayWeekend = YES;
+    SOGoCalendarEventsDefaultClassification = "PUBLIC";
+    SOGoCalendarTasksDefaultClassification = "PUBLIC";
+
     SOGoFreeBusyDefaultInterval = ( 7, 7 );
 
     SOGoReminderEnabled = YES;

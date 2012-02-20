@@ -164,6 +164,12 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setCalendarShouldDisplayWeekend: (BOOL) newValue;
 - (BOOL) calendarShouldDisplayWeekend;
 
+- (void) setCalendarEventsDefaultClassification: (NSString *) newValue;
+- (NSString *) calendarEventsDefaultClassification;
+
+- (void) setCalendarTasksDefaultClassification: (NSString *) newValue;
+- (NSString *) calendarTasksDefaultClassification;
+
 - (void) setReminderEnabled: (BOOL) newValue;
 - (BOOL) reminderEnabled;
 

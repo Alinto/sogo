@@ -161,6 +161,13 @@
 "Confirmation:" = "Megerősítés:";
 "Change" = "Megváltoztat";
 
+/* Event+task classifications */
+"Default events classification :" = "Default events classification :";
+"Default tasks classification :" = "Default tasks classification :";
+"PUBLIC_item" = "Public";
+"CONFIDENTIAL_item" = "Confidential";
+"PRIVATE_item" = "Private";
+
 /* Event+task categories */
 "category_none" = "Nincs";
 "calendar_category_labels" = "Évforduló,Születésnap,Üzleti,Meghívás,Ügyfelek,Versenytársak,Vevő,Kedvencek,Nyomonkövetés,Ajándékozás,Szabadság,Ötletek,Meeting,Ügyek,Egyéb,Személyes,Projektek,Állami ünnep,Állapot,Szállítók,Utazás,Szünidő";

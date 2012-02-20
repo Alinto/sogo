@@ -1,5 +1,12 @@
 2012-02-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserDefaults.m
+	(-setCalendarEventsDefaultClassification:)
+	(-calendarEventsDefaultClassification)
+	(-setCalendarTasksDefaultClassification:)
+	(-calendarTasksDefaultClassification): new accessors related to
+	the user-configured default classification of calendar components.
+
 	* UI/Scheduler/UIxComponentEditor.m: s/privacy/classification/g,
 	which is a better description for the "CLASS" attribute.
 

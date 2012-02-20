@@ -170,6 +170,13 @@
 "Confirmation:" = "Повтор нового пароля:";
 "Change" = "Изменить";
 
+/* Event+task classifications */
+"Default events classification :" = "Default events classification :";
+"Default tasks classification :" = "Default tasks classification :";
+"PUBLIC_item" = "Public";
+"CONFIDENTIAL_item" = "Confidential";
+"PRIVATE_item" = "Private";
+
 /* Event+task categories */
 "category_none" = "None";
 "calendar_category_labels" = "Годовщина,День рождения,Деловые,Звонки,Клиенты,Конкуренты,Потребители,Избранное,Вслед за,Подарки,Праздники,Идеи,Встречи,Проблемы,Разное,Персональное,Проекты,Государственный праздник,Статус,Поставщики,Путешествия,Отпуск";

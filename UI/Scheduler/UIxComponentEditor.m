@@ -167,7 +167,7 @@ iRANGE(2);
 
       component = nil;
       componentCalendar = nil;
-      [self setClassification: @"PUBLIC"];
+      classification = nil;
       [self setIsCycleEndNever];
       componentOwner = @"";
       organizer = nil;
@@ -213,6 +213,7 @@ iRANGE(2);
   [ownerAsAttendee release];
   [comment release];
   [priority release];
+  [classification release];
   [categories release];
   [cycle release];
   [cycleEnd release];
@@ -612,10 +613,12 @@ iRANGE(2);
    doing this... for example, when the clientObject is set */
 - (void) setComponent: (iCalRepeatableEntityObject *) newComponent
 {
-  SOGoObject *co;
+  SOGoCalendarComponent *co;
   SOGoUserManager *um;
   NSString *owner, *ownerEmail;
   iCalRepeatableEntityObject *masterComponent;
+  SOGoUserDefaults *defaults;
+  NSString *tag;
 
   if (!component)
     {
@@ -630,6 +633,21 @@ iRANGE(2);
 	  ASSIGN (comment, [component comment]);
 	  ASSIGN (attachUrl, [[component attach] absoluteString]);
 	  ASSIGN (classification, [component accessClass]);
+          if ([co isNew] && [classification length] == 0)
+            {
+              defaults = [[context activeUser] userDefaults];
+              tag = [co componentTag];
+              [classification release];
+              if ([tag isEqualToString: @"vevent"])
+                classification = [defaults calendarEventsDefaultClassification];
+              else
+                classification = [defaults calendarTasksDefaultClassification];
+              
+              if ([classification length] == 0)
+                classification = @"PUBLIC";
+              [classification retain];
+            }
+
 	  ASSIGN (priority, [component priority]);
 	  ASSIGN (status, [component status]);
           ASSIGN (categories, [component categories]);

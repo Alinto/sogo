@@ -173,6 +173,13 @@
 "Confirmation:" = "Bekreft:";
 "Change" = "Endre";
 
+/* Event+task classifications */
+"Default events classification :" = "Default events classification :";
+"Default tasks classification :" = "Default tasks classification :";
+"PUBLIC_item" = "Public";
+"CONFIDENTIAL_item" = "Confidential";
+"PRIVATE_item" = "Private";
+
 /* Event+task categories */
 "category_none" = "Ingen";
 "calendar_category_labels" = "Diverse,Favoritter,Fødselsdager,Heligdager,Idéer,Jobb,Konkurranser,Kunder,Ledighet,Leverandører,Møter,Oppfølging,Personlig,Presentasjoner,Reiser,Prosjekt,Status,Telefonsamtaler,Ærend";

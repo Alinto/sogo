@@ -154,6 +154,13 @@
 "Confirmation:" = "Staðfesting:";
 "Change" = "Breyta";
 
+/* Event+task classifications */
+"Default events classification :" = "Default events classification :";
+"Default tasks classification :" = "Default tasks classification :";
+"PUBLIC_item" = "Public";
+"CONFIDENTIAL_item" = "Confidential";
+"PRIVATE_item" = "Private";
+
 /* Event+task categories */
 "category_none" = "Engin";
 "calendar_category_labels" = "Árdagur,Afmælisdagur,Viðskipti,Símtöl,Skjólstæðingar,Samkeppni,Viðskiptavinur,Uppáhald,Eftirfylgni,Gjafir,Helgidagar,Hugmyndir,Fundur,Úrlausnarefni,Ýmislegt,Persónulegt,Verkefni,Almenn Frí,Staða,Birgjar,Ferðalög,Frí";

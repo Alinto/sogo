@@ -123,6 +123,20 @@
                 const:name="defaultCalendar"
                 string="itemCalendarText" selection="userDefaultCalendar"
                 /></label><br/>
+
+            <label><var:string label:value="Default events classification :"/>
+              <var:popup list="calendarClassificationsList" item="item"
+                const:id="eventsClassification"
+                const:name="eventsClassification"
+                string="itemClassificationText" selection="eventsDefaultClassification"
+                /></label><br/>
+            <label><var:string label:value="Default tasks classification :"/>
+              <var:popup list="calendarClassificationsList" item="item"
+                const:id="tasksClassification"
+                const:name="tasksClassification"
+                string="itemClassificationText" selection="tasksDefaultClassification"
+                /></label><br/>
+
             <label><var:string label:value="Categories"/></label>
             <div id="calendarCategoriesListWrapper" class="listWrapper"
               ><table class="categoriesList" cellspacing="0">

@@ -173,6 +173,13 @@
 "Confirmation:" = "Confirmation:";
 "Change" = "Changer";
 
+/* Event+task classifications */
+"Default events classification :" = "Classification par défaut des événements :";
+"Default tasks classification :" = "Classification par défaut des tâches :";
+"PUBLIC_item" = "Public";
+"CONFIDENTIAL_item" = "Confidentiel";
+"PRIVATE_item" = "Privé";
+
 /* Event+task categories */
 "category_none" = "Aucune";
 "calendar_category_labels" = "Anniversaire,Affaire,Appels,Clients,Compétitions,Congrès,Consommation,Préférés,Suivis,Cadeaux,Congés,Idées,Problèmes,Réunion,Divers,Personnel,Projets,Jour férié,Statut,Fournisseurs,Voyages,Professionnel";

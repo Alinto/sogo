@@ -163,6 +163,13 @@ Servernamn:";
 "Confirmation:" = "Bekräfta:";
 "Change" = "Ändra";
 
+/* Event+task classifications */
+"Default events classification :" = "Default events classification :";
+"Default tasks classification :" = "Default tasks classification :";
+"PUBLIC_item" = "Public";
+"CONFIDENTIAL_item" = "Confidential";
+"PRIVATE_item" = "Private";
+
 /* Event+task categories */
 "category_none" = "Ingen";
 "calendar_category_labels" = "Arbete,Diverse,Favoriter,Födelsedagar,Helgdagar,Idéer,Kunder,Ledighet,Leverantörer,Personligt,Presenter,Projekt,Möte,Resor,Status,Telefonsamtal,Tävlingar,Uppföljning,Ärenden";

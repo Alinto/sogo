@@ -165,6 +165,13 @@
 "Confirmation:" = "Повтор нового пароля:";
 "Change" = "Змінити";
 
+/* Event+task classifications */
+"Default events classification :" = "Default events classification :";
+"Default tasks classification :" = "Default tasks classification :";
+"PUBLIC_item" = "Public";
+"CONFIDENTIAL_item" = "Confidential";
+"PRIVATE_item" = "Private";
+
 /* Event+task categories */
 "category_none" = "Без категорії";
 "calendar_category_labels" = "Важливий день,День народження,Справи,Дзвінки,Клієнти,Поточне,Користувачі,Обране,Продовження,Подарунки,Свято,Думки,Зустріч,Питання,Різне,Особисте,Проекти,Публічне свято,Поточне,Постачальники,Поїздка,Відпустка";

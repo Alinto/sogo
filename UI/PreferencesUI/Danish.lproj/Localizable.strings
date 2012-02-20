@@ -165,6 +165,13 @@
 "Confirmation:" = "Bekræftelse:";
 "Change" = "Skift";
 
+/* Event+task classifications */
+"Default events classification :" = "Default events classification :";
+"Default tasks classification :" = "Default tasks classification :";
+"PUBLIC_item" = "Public";
+"CONFIDENTIAL_item" = "Confidential";
+"PRIVATE_item" = "Private";
+
 /* Event+task categories */
 "category_none" = "Ingen";
 "calendar_category_labels" = "Jubilæum, fødselsdag, forretning,kald, kunder, konkurrence, foretrukne, opfølgning, gaver, helligdage, idéer, møde, problemer, diverse, personlig, projekter, offentlige helligdage, status, leverandører, rejser, ferie";

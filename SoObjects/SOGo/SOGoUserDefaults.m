@@ -621,6 +621,26 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self boolForKey: @"SOGoCalendarShouldDisplayWeekend"];
 }
 
+- (void) setCalendarEventsDefaultClassification: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoCalendarEventsDefaultClassification"];
+}
+
+- (NSString *) calendarEventsDefaultClassification
+{
+  return [self stringForKey: @"SOGoCalendarEventsDefaultClassification"];
+}
+
+- (void) setCalendarTasksDefaultClassification: (NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoCalendarTasksDefaultClassification"];
+}
+
+- (NSString *) calendarTasksDefaultClassification
+{
+  return [self stringForKey: @"SOGoCalendarTasksDefaultClassification"];
+}
+
 - (void) setReminderEnabled: (BOOL) newValue
 {
   [self setBool: newValue forKey: @"SOGoReminderEnabled"];
