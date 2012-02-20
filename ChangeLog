@@ -1,5 +1,13 @@
 2012-02-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/PreferencesUI/UIxPreferences.m
+	(-calendarClassificationsList): new getter for the list of
+	classifications.
+	(-itemClassificationText): new i81n getter.
+	(-setEventsDefaultClassification:, -eventsDefaultClassification)
+	(-setTasksDefaultClassification:, -tasksDefaultClassification):
+	new accessors.
+
 	* SoObjects/SOGo/SOGoUserDefaults.m
 	(-setCalendarEventsDefaultClassification:)
 	(-calendarEventsDefaultClassification)
