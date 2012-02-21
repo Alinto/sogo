@@ -1,5 +1,10 @@
 2012-02-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoSQLUserProfile.m (-fetchJSONProfileFromDB):
+	removed an escaping hack for Oracle that should no longer be
+	required after the recent fixes in the Oracle adaptor, and which
+	was causing bad unescaping of double-escaped backslashes.
+
 	* Tests/Unit/TestSBJsonParser.m (-test_parseJSONString): added a
 	line for escaped characters.
 

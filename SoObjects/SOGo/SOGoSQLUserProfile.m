@@ -134,12 +134,7 @@ static EOAttribute *textColumn = nil;
           defFlags.isNew = (row == nil);
 
           value = [row objectForKey: fieldName];
-          if ([value isNotNull])
-            /* The following enables the restitution of coded unicode (\U1234)
-               characters with the Oracle adaptor. */
-            value = [value stringByReplacingString: @"\\\\"
-                                        withString: @"\\"];
-          else
+          if (![value isNotNull])
             value = nil; /* we discard any NSNull instance */
         }
 
