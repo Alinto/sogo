@@ -1,3 +1,15 @@
+2012-02-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-davEventsDefaultClassification,)
+	(setDavEventsDefaultClassification:)
+	(-davTasksDefaultClassification)
+	(-setDavTasksDefaultClassification:): new DAV accessors for the
+	default classification preferences.
+
+	* Tests/Integration/test-default-classification.py: new test
+	module for setting/getting defaults classification preferences.
+
 2012-02-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/Scheduler/UIxComponentEditor.m (-setComponent:): fetch

@@ -398,6 +398,69 @@ static SoSecurityManager *sm = nil;
   return componentSet;
 }
 
+- (NSString *) _davDefaultClassWithSelector: (SEL) selector
+{
+  SOGoUser *ownerUser;
+  SOGoUserDefaults *defaults;
+  NSString *classification;
+
+  ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
+  defaults = [ownerUser userDefaults];
+  classification = [defaults performSelector: selector];
+
+  return classification;
+}
+
+- (NSException *) _davSetDefaultClass: (NSString *) newClass
+                         withSelector: (SEL) selector
+{
+  NSException *error;
+  static NSArray *validClassifications = nil;
+  SOGoUser *ownerUser;
+  SOGoUserDefaults *defaults;
+
+  if (!validClassifications)
+    validClassifications = [[NSArray alloc] initWithObjects: @"PUBLIC",
+                                           @"CONFIDENTIAL", @"PRIVATE", nil];
+
+  if (newClass && [validClassifications containsObject: newClass])
+    {
+      error = nil;
+      ownerUser = [SOGoUser userWithLogin: [self ownerInContext: context]];
+      defaults = [ownerUser userDefaults];
+      [defaults performSelector: selector withObject: newClass];
+      [defaults synchronize];
+    }
+  else
+    error = [NSException exceptionWithHTTPStatus: 403
+                                          reason: @"invalid"
+                         @" classification value"];
+
+  return error;
+}
+
+- (NSString *) davEventsDefaultClassification
+{
+  return [self _davDefaultClassWithSelector: @selector (calendarEventsDefaultClassification)];
+}
+
+- (NSException *) setDavEventsDefaultClassification: (NSString *) newClass
+{
+  return [self _davSetDefaultClass: newClass
+                      withSelector: @selector (setCalendarEventsDefaultClassification:)];
+}
+
+- (NSString *) davTasksDefaultClassification
+{
+  return [self _davDefaultClassWithSelector: @selector (calendarTasksDefaultClassification)];
+}
+
+- (NSException *) setDavTasksDefaultClassification: (NSString *) newClass
+{
+  return [self _davSetDefaultClass: newClass
+                      withSelector: @selector (setCalendarTasksDefaultClassification:)];
+}
+
 /* This method fixes an issue that occurred previously in
    _migrateWebCalendarsSettings, where the active user, rather than the
    owner's login would be taken to compose the expected key prefix, leading to
