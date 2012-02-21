@@ -1,5 +1,8 @@
 2012-02-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Tests/Unit/TestSBJsonParser.m (-test_parseJSONString): added a
+	line for escaped characters.
+
 	* SoObjects/Appointments/SOGoAppointmentFolders.m
 	(-davEventsDefaultClassification,)
 	(setDavEventsDefaultClassification:)

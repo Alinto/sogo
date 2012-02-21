@@ -46,22 +46,24 @@
                               @"\"\\u0041\"", @"A",
                               @"\"\\u000A\"", @"\n",
                               @"\"\\u000a\"", @"\n",
+                              @"\"weird data \\\\ ' \\\"; ^\"", @"weird data \\ ' \"; ^",
                               nil };
 
   parser = [SBJsonParser new];
   [parser autorelease];
+
   count = 0;
-  while ((currentString = testStrings[count * 2]))
+  while ((currentString = testStrings[count]))
     {
       resultObject = [parser objectWithString: [NSString stringWithFormat:
                                                            @"[%@]",
                                                          currentString]];
-      expected = [NSArray arrayWithObject: testStrings[count * 2 + 1]];
+      expected = [NSArray arrayWithObject: testStrings[count + 1]];
       error = [NSString stringWithFormat:
                           @"objects '%@' and '%@' differs (count: %d)",
                         expected, resultObject, count];
       testEqualsWithMessage(expected, resultObject, error);
-      count++;
+      count += 2;
     }
 }
 
