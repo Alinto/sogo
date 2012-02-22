@@ -72,11 +72,11 @@ class preferences:
   def set(self, preference, value=None):
     # if preference is a dict, set all prefs found in the dict
     content=""
-    try:
+    if isinstance(preference, dict):
       for k,v in preference.items():
         content+="%s=%s&" % (self.preferencesMap[k], v)
-    except AttributeError:
-      # preference wasn't a dict
+    else:
+      # assume it is a str
       formKey = self.preferencesMap[preference]
       content = "%s=%s&hasChanged=1" % (formKey, value)
 
