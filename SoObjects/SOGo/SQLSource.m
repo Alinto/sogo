@@ -552,7 +552,7 @@
 	  // We check if it's a resource of not
 	  if (_kindField)
 	    {	      
-	      if ((value = [response objectForKey: _kindField]))
+	      if ((value = [response objectForKey: _kindField]) && [value isNotNull])
 		{
 		  if ([value caseInsensitiveCompare: @"location"] == NSOrderedSame ||
 		      [value caseInsensitiveCompare: @"thing"] == NSOrderedSame ||

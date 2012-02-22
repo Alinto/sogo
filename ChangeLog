@@ -1,3 +1,9 @@
+2012-02-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SQLSource.m (_lookupContactEntry:considerEmail:):
+	make sure the value of column pointer to by _kindField is not nil,
+	nor an NSNull instance before treating it like a string.
+
 2012-02-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoSQLUserProfile.m (-fetchJSONProfileFromDB):
