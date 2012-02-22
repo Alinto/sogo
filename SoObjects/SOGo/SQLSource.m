@@ -88,6 +88,7 @@
       _viewURL = nil;
       _kindField = nil;
       _multipleBookingsField = nil;
+      _imapHostField = nil;
     }
 
   return self;
@@ -103,6 +104,7 @@
   [_viewURL release];
   [_kindField release];
   [_multipleBookingsField release];
+  [_imapHostField release];
    
   [super dealloc];
 }
@@ -118,6 +120,7 @@
   ASSIGN(_mailFields, [udSource objectForKey: @"MailFieldNames"]);
   ASSIGN(_userPasswordAlgorithm, [udSource objectForKey: @"userPasswordAlgorithm"]);
   ASSIGN(_imapLoginField, [udSource objectForKey: @"IMAPLoginFieldName"]);
+  ASSIGN(_imapHostField, [udSource objectForKey:  @"IMAPHostFieldName"]);
   ASSIGN(_kindField, [udSource objectForKey: @"KindFieldName"]);
   ASSIGN(_multipleBookingsField, [udSource objectForKey: @"MultipleBookingsFieldName"]);
   
@@ -505,6 +508,12 @@
 	    }
 	  
 	  [response setObject: emails  forKey: @"c_emails"];
+          if (_imapHostField)
+            {
+              value = [response objectForKey: _imapHostField];
+              if ([value isNotNull])
+                [response setObject: value forKey: @"c_imaphostname"];
+            }
 
           // We check if the user can authenticate
           if (_authenticationFilter)
