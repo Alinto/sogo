@@ -3,6 +3,10 @@
 	* SoObjects/SOGo/SQLSource.m (_lookupContactEntry:considerEmail:):
 	make sure the value of column pointer to by _kindField is not nil,
 	nor an NSNull instance before treating it like a string.
+	Use the value of "_imapHostField", when available, to map the
+	"c_imaphostname" value of the contact/user record.
+	(-init): new "_imapHostField" ivar, holder of the value of
+	IMAPHostFieldName of the source configuration dictionary.
 
 2012-02-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
