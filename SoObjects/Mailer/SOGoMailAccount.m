@@ -182,7 +182,6 @@ static NSString *inboxFolderName = @"INBOX";
   imapFolders = [[self imap4Connection] subfoldersForURL: [self imap4URL]];
   folders = [imapFolders mutableCopy];
   [folders autorelease];
-  [folders addObjectUniquely: [self draftsFolderNameInContext: nil]];
   if (withNSs)
     [self _appendNamespaces: folders];
   else

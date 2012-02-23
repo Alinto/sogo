@@ -1,5 +1,12 @@
 2012-02-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailAccount.m
+	(-toManyRelationshipKeysWithNamespaces:): for some reason, we were
+	explicitly returning the drafts folder name in the batch whether
+	the corresponding folder exists or not, which is useless and
+	wrong since the folder in question might actually be a child of
+	another folder.
+
 	* OpenChange/MAPIStoreContext.m (-init): restored "containersBag"
 	mechanism where root context folders that are deeper than the
 	first level of their hierarchy needs to have their parent folders
