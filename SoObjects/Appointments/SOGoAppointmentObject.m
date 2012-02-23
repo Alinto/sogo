@@ -411,9 +411,10 @@
     }
 
   [self sendEMailUsingTemplateNamed: @"Update"
-	forObject: [newEvent itipEntryWithMethod: @"request"]
-	previousObject: oldEvent
-	toAttendees: updateAttendees];
+                          forObject: [newEvent itipEntryWithMethod: @"request"]
+                     previousObject: oldEvent
+                        toAttendees: updateAttendees
+                           withType: @"calendar:invitation-update"];
   [self sendReceiptEmailUsingTemplateNamed: @"Update"
                                  forObject: newEvent to: updateAttendees];
 }
@@ -573,7 +574,8 @@
       [self sendEMailUsingTemplateNamed: @"Deletion"
                               forObject: [newEvent itipEntryWithMethod: @"cancel"]
                          previousObject: oldEvent
-                            toAttendees: attendees];
+                            toAttendees: attendees
+                               withType: @"calendar:cancellation"];
       [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
                                      forObject: newEvent to: attendees];
     }
@@ -627,9 +629,10 @@
 	return ex;
       
       [self sendEMailUsingTemplateNamed: @"Invitation"
-	    forObject: [newEvent itipEntryWithMethod: @"request"]
-	    previousObject: oldEvent
-	    toAttendees: attendees];
+                              forObject: [newEvent itipEntryWithMethod: @"request"]
+                         previousObject: oldEvent
+                            toAttendees: attendees
+                               withType: @"calendar:invitation"];
       [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
                                      forObject: newEvent to: attendees];
     }
@@ -694,7 +697,8 @@
 	  [self sendEMailUsingTemplateNamed: @"Invitation"
 				  forObject: [newEvent itipEntryWithMethod: @"request"]
 			     previousObject: nil
-				toAttendees: attendees];
+				toAttendees: attendees
+                                   withType: @"calendar:invitation"];
           [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
                                          forObject: newEvent to: attendees];
 	}
@@ -1001,7 +1005,8 @@
 	  [self sendEMailUsingTemplateNamed: @"Deletion"
 				  forObject: [event itipEntryWithMethod: @"cancel"]
 			     previousObject: nil
-				toAttendees: delegates];
+				toAttendees: delegates
+                                   withType: @"calendar:cancellation"];
 	  [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
 					 forObject: event
 						to: delegates];
@@ -1022,7 +1027,8 @@
 	  [self sendEMailUsingTemplateNamed: @"Invitation"
 				  forObject: [event itipEntryWithMethod: @"request"]
 			     previousObject: nil
-				toAttendees: delegates];
+				toAttendees: delegates
+                                   withType: @"calendar:invitation"];
 	  [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
 					 forObject: event to: delegates];
 	}
@@ -1335,9 +1341,10 @@
 	  [self _handleRemovedUsers: attendees
 		withRecurrenceId: recurrenceId];
 	  [self sendEMailUsingTemplateNamed: @"Deletion"
-		forObject: [occurence itipEntryWithMethod: @"cancel"]
-		previousObject: nil
-		toAttendees: attendees];
+                                  forObject: [occurence itipEntryWithMethod: @"cancel"]
+                             previousObject: nil
+                                toAttendees: attendees
+                                   withType: @"calendar:cancellation"];
 	  [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
 		forObject: occurence
 		to: attendees];
@@ -1667,9 +1674,10 @@
 		}
 
 	      [self sendEMailUsingTemplateNamed: @"Invitation"
-		    forObject: [event itipEntryWithMethod: @"request"]
-		    previousObject: nil
-		    toAttendees: attendees];
+                                      forObject: [event itipEntryWithMethod: @"request"]
+                                 previousObject: nil
+                                    toAttendees: attendees
+                                       withType: @"calendar:invitation"];
 	      [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
 		    forObject: event to: attendees];
 	    }

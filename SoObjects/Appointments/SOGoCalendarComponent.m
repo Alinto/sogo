@@ -749,6 +749,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 			   forObject: (iCalRepeatableEntityObject *) object
 		      previousObject: (iCalRepeatableEntityObject *) previousObject
                          toAttendees: (NSArray *) attendees
+                            withType: (NSString *) msgType
 {
   NSString *pageName;
   NSString *senderEmail, *shortSenderEmail, *email;
@@ -844,6 +845,8 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 		  mailDate = [[NSCalendarDate date] rfc822DateString];
 		  [headerMap setObject: mailDate forKey: @"date"];
 		  [headerMap setObject: subject forKey: @"subject"];
+                  if ([msgType length] > 0)
+                    [headerMap setObject: msgType forKey: @"x-sogo-message-type"];
 		  msg = [NGMimeMessage messageWithHeader: headerMap];
 
 		  /* multipart body */
@@ -925,6 +928,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
                     forKey: @"subject"];
       [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
       [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
+      [headerMap setObject: @"calendar:invitation-reply" forKey: @"x-sogo-message-type"];
       msg = [NGMimeMessage messageWithHeader: headerMap];
 
       /* multipart body */
