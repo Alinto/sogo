@@ -1,5 +1,9 @@
 2012-02-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailContext.m
+	(+listContextsForUser:withTDBIndexing:inMemCtx:): added back
+	"trashName".
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	(-sendEMailUsingTemplateNamed:forObject:previousObject:toAttendees:withType:):
 	added a "msgType" parameter that is added as value to the new

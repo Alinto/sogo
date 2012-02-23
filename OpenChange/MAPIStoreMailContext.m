@@ -84,7 +84,7 @@ MakeDisplayFolderName (NSString *folderName)
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *firstContext = NULL, *context;
-  NSString *urlBase, *stringData, *currentName, *inboxName, *draftsName, *sentName;
+  NSString *urlBase, *stringData, *currentName, *inboxName, *draftsName, *sentName, *trashName;
   NSArray *unprefixedFolders;
   NSMutableArray *secondaryFolders;
   enum mapistore_context_role role[] = {MAPISTORE_MAIL_ROLE,
@@ -115,6 +115,13 @@ MakeDisplayFolderName (NSString *folderName)
   sentName = [NSString stringWithFormat: @"folder%@",
                        [unprefixedFolders componentsJoinedByString: @"/folder"]];
   folderName[2] = sentName;
+
+  /* Note: trash is not used as a mail folder, since "Deleted Items" makes use of
+     the fallback context */
+  unprefixedFolders = [[accountFolder trashFolderNameInContext: woContext]
+                        componentsSeparatedByString: @"/"];
+  trashName = [NSString stringWithFormat: @"folder%@",
+                       [unprefixedFolders componentsJoinedByString: @"/folder"]];
 
   urlBase = [NSString stringWithFormat: @"sogo://%@:%@@mail/", userName, userName];
   for (count = 0; count < 3; count++)
