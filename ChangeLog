@@ -1,5 +1,10 @@
 2012-02-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailContext.m
+	(+listContextForUser:withTDBIndexing:inMemCtx:): make sure special
+	folders have all the "folder" prefixes appended to their list of
+	names (for nested folders).
+
 	* OpenChange/MAPIStoreContext.m
 	(+createRootFolder:withFID:andName:forUser:withRole:): when the
 	creation of a folder fails in the proper contact, fallback on the

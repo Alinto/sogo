@@ -58,12 +58,34 @@ static Class MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   return MAPISTORE_MAIL_ROLE;
 }
 
+static inline NSString *
+MakeDisplayFolderName (NSString *folderName)
+{
+  NSArray *parts;
+  NSString *lastFolder;
+  NSUInteger max;
+ 
+  parts = [folderName componentsSeparatedByString: @"/"];
+  max = [parts count];
+  if (max > 1)
+    {
+      lastFolder = [parts objectAtIndex: max - 1];
+      if ([lastFolder length] == 0)
+        lastFolder = [parts objectAtIndex: max - 2];
+    }
+  else
+    lastFolder = folderName;
+
+  return [[lastFolder substringFromIndex: 6] fromCSSIdentifier];
+}
+
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
                                          withTDBIndexing: (struct tdb_wrap *) indexingTdb
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *firstContext = NULL, *context;
-  NSString *urlBase, *stringData, *currentName, *inboxName, *draftsName, *sentName, *trashName;
+  NSString *urlBase, *stringData, *currentName, *inboxName, *draftsName, *sentName;
+  NSArray *unprefixedFolders;
   NSMutableArray *secondaryFolders;
   enum mapistore_context_role role[] = {MAPISTORE_MAIL_ROLE,
                                         MAPISTORE_DRAFTS_ROLE,
@@ -82,17 +104,19 @@ static Class MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   inboxName = @"folderINBOX";
   folderName[0] = inboxName;
 
+  unprefixedFolders = [[accountFolder draftsFolderNameInContext: woContext]
+                        componentsSeparatedByString: @"/"];
   draftsName = [NSString stringWithFormat: @"folder%@",
-                         [accountFolder draftsFolderNameInContext: woContext]];
+                         [unprefixedFolders componentsJoinedByString: @"/folder"]];
   folderName[1] = draftsName;
+
+  unprefixedFolders = [[accountFolder sentFolderNameInContext: woContext]
+                        componentsSeparatedByString: @"/"];
   sentName = [NSString stringWithFormat: @"folder%@",
-                       [accountFolder sentFolderNameInContext: woContext]];
+                       [unprefixedFolders componentsJoinedByString: @"/folder"]];
   folderName[2] = sentName;
-  trashName = [NSString stringWithFormat: @"folder%@",
-                       [accountFolder trashFolderNameInContext: woContext]];
 
   urlBase = [NSString stringWithFormat: @"sogo://%@:%@@mail/", userName, userName];
-
   for (count = 0; count < 3; count++)
     {
       context = talloc_zero (memCtx, struct mapistore_contexts_list);
@@ -100,7 +124,7 @@ static Class MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
                       folderName[count]];
       context->url = [stringData asUnicodeInMemCtx: context];
       /* remove "folder" prefix */
-      stringData = [[folderName[count] substringFromIndex: 6] fromCSSIdentifier];
+      stringData = MakeDisplayFolderName (folderName[count]);
       context->name = [stringData asUnicodeInMemCtx: context];
       context->main_folder = true;
       context->role = role[count];
@@ -184,6 +208,7 @@ static Class MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 {
   struct mapistore_contexts_list *context;
   NSString *url, *folderName;
+  NSArray *unprefixedFolders;
   SOGoMailAccount *accountFolder;
   MAPIStoreUserContext *userContext;
   WOContext *woContext;
@@ -192,8 +217,11 @@ static Class MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
                                                andTDBIndexing: indexingTdb];
   accountFolder = [[userContext rootFolders] objectForKey: @"mail"];
   woContext = [userContext woContext];
+
+  unprefixedFolders = [[accountFolder draftsFolderNameInContext: woContext]
+                        componentsSeparatedByString: @"/"];
   folderName = [NSString stringWithFormat: @"folder%@",
-                         [accountFolder draftsFolderNameInContext: woContext]];
+                         [unprefixedFolders componentsJoinedByString: @"/folder"]];
   url = [NSString stringWithFormat: @"sogo://%@:%@@outbox/%@", userName,
                   userName, folderName];
 
