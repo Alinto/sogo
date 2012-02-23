@@ -1,5 +1,10 @@
 2012-02-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m
+	(+createRootFolder:withFID:andName:forUser:withRole:): when the
+	creation of a folder fails in the proper contact, fallback on the
+	fallback context.
+
 	* SoObjects/Mailer/SOGoMailAccount.m
 	(-toManyRelationshipKeysWithNamespaces:): for some reason, we were
 	explicitly returning the drafts folder name in the batch whether

@@ -185,12 +185,16 @@ MAPIStoreLookupContextClassByRole (Class self, enum mapistore_context_role role)
     contextClass = MAPIStoreFallbackContextK;
 
   mapistoreURI = [contextClass createRootSecondaryFolderWithFID: fid
-                                                        andName: (NSString *) folderName
+                                                        andName: folderName
                                                         forUser: userName];
+  if (!mapistoreURI && contextClass != MAPIStoreFallbackContextK)
+    mapistoreURI = [MAPIStoreFallbackContextK createRootSecondaryFolderWithFID: fid
+                                                                       andName: folderName
+                                                                       forUser: userName];
   if (mapistoreURI)
     *mapistoreUriP = mapistoreURI;
   else
-    rc = MAPISTORE_ERROR;
+    rc = MAPISTORE_ERR_NOT_FOUND;
 
   return rc;
 }
