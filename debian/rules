@@ -59,6 +59,10 @@ binary-arch: build-arch install-arch
 	dh_install
 	dh_link
 	dh_strip --dbg-package=sogo-dbg
+#	workaround for http://sourceware.org/bugzilla/show_bug.cgi?id=9538
+#	to let gdb find the symbols for libSOGo
+	( cd debian/sogo-dbg/usr/lib/debug/usr/lib/; \
+	  ln -s GNUstep/Frameworks/SOGo.framework/Versions/*/libSOGo* ./ )
 	dh_compress
 	dh_fixperms -X/etc/cron.d/sogo
 	dh_makeshlibs

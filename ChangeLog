@@ -1,3 +1,8 @@
+2012-02-23  Jean Raby   <jraby@inverse.ca>
+
+	* debian/rules: add a symlink to let gdb find debugging symbols
+  for libSOGo on debian/ubuntu. (gdb bug #9538)
+
 2012-02-22  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxAclEditor.js (addUser): fixed case when
