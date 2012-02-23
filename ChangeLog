@@ -1,5 +1,12 @@
 2012-02-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	(-sendEMailUsingTemplateNamed:forObject:previousObject:toAttendees:withType:):
+	added a "msgType" parameter that is added as value to the new
+	"x-sogo-message-type" header.
+	(-sendIMIPReplyForEvent:from:to:): added a "x-sogo-message-type"
+	to the headers.
+
 	* OpenChange/MAPIStoreMailContext.m
 	(+listContextForUser:withTDBIndexing:inMemCtx:): make sure special
 	folders have all the "folder" prefixes appended to their list of

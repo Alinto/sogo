@@ -67,7 +67,8 @@
 - (void) sendEMailUsingTemplateNamed: (NSString *) pageName
 			   forObject: (iCalRepeatableEntityObject *) object
 		      previousObject: (iCalRepeatableEntityObject *) previousObject
-                         toAttendees: (NSArray *) attendees;
+                         toAttendees: (NSArray *) attendees
+                            withType: (NSString *) msgType;
 - (void) sendIMIPReplyForEvent: (iCalRepeatableEntityObject *) event
 			  from: (SOGoUser *) from
 			    to: (iCalPerson *) recipient;
