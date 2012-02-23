@@ -25,6 +25,7 @@
 #import <Foundation/NSEnumerator.h>
 
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -34,6 +35,7 @@
 #import <SaxObjC/SaxObjC.h>
 #import <SaxObjC/XMLNamespaces.h>
 
+#import <SOGo/SOGoUser.h>
 #import <SOGo/WOResponse+SOGo.h>
 
 #import "SOGoContactFolder.h"
@@ -92,9 +94,10 @@
   unsigned int count, max;
   NSDictionary *currentFilter, *contact;
   NSEnumerator *contacts;
-  NSString *baseURL;
+  NSString *baseURL, *domain;
 
   baseURL = [self baseURLInContext: localContext];
+  domain = [[localContext activeUser] domain];
 
   max = [filters count];
   for (count = 0; count < max; count++)
@@ -103,7 +106,8 @@
       contacts = [[(id<SOGoContactFolder>)self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
                                                              onCriteria: @"name_or_address"
                                                                  sortBy: @"c_givenname"
-                                                               ordering: NSOrderedDescending]
+                                                               ordering: NSOrderedDescending
+                                                               inDomain: domain]
 		   objectEnumerator];
       
       while ((contact = [contacts nextObject]))

@@ -27,6 +27,7 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGExtensions/NSString+misc.h>
@@ -110,7 +111,8 @@
       contactInfos = [folder lookupContactsWithFilter: valueText
                                            onCriteria: searchText
                                                sortBy: [self sortKey]
-                                             ordering: ordering];
+                                             ordering: ordering
+                                             inDomain: [[context activeUser] domain]];
       [contactInfos retain];
     }
 
@@ -138,7 +140,7 @@
 {
   id <WOActionResults> result;
   id <SOGoContactFolder> folder;
-  NSString *searchText, *mail;
+  NSString *searchText, *mail, *domain;
   NSDictionary *contact, *data;
   NSArray *contacts, *descriptors, *sortedContacts;
   NSMutableDictionary *uniqueContacts;
@@ -158,12 +160,14 @@
         else
           [localException raise];
       NS_ENDHANDLER
-
+        
+      domain = [[context activeUser] domain];
       uniqueContacts = [NSMutableDictionary dictionary];
       contacts = [folder lookupContactsWithFilter: searchText
                                        onCriteria: @"name_or_address"
                                            sortBy: @"c_cn"
-                                         ordering: NSOrderedAscending];
+                                         ordering: NSOrderedAscending
+                                           inDomain: domain];
       for (i = 0; i < [contacts count]; i++)
         {
           contact = [contacts objectAtIndex: i];

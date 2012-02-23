@@ -1,6 +1,6 @@
 /* SQLSource.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2011 Inverse inc.
+ * Copyright (C) 2009-2012 Inverse inc.
  *
  * Authors: Ludovic Marcotte <lmarcotte@inverse.ca>
  *          Francis Lachapelle <flachapelle@inverse.ca>
@@ -59,7 +59,7 @@
  *  {   
  *    id = zot;
  *    type = sql;
- *    viewURL = "http://sogo:sogo@127.0.0.1:5432/sogo/sogo_view";
+ *    viewURL = "mysql://sogo:sogo@127.0.0.1:5432/sogo/sogo_view";
  *    canAuthenticate = YES;
  *    isAddressBook = YES;
  *    userPasswordAlgorithm = md5;
@@ -81,6 +81,7 @@
   if ((self = [super init]))
     {
       _sourceID = nil;
+      _domainField = nil;
       _authenticationFilter = nil;
       _loginFields = nil;
       _mailFields = nil;
@@ -104,6 +105,7 @@
   [_viewURL release];
   [_kindField release];
   [_multipleBookingsField release];
+  [_domainField release];
   [_imapHostField release];
    
   [super dealloc];
@@ -123,6 +125,7 @@
   ASSIGN(_imapHostField, [udSource objectForKey:  @"IMAPHostFieldName"]);
   ASSIGN(_kindField, [udSource objectForKey: @"KindFieldName"]);
   ASSIGN(_multipleBookingsField, [udSource objectForKey: @"MultipleBookingsFieldName"]);
+  ASSIGN(_domainField, [udSource objectForKey: @"DomainFieldName"]);
   
   if (!_userPasswordAlgorithm)
     _userPasswordAlgorithm = @"none";
@@ -380,12 +383,13 @@
 
 - (NSDictionary *) _lookupContactEntry: (NSString *) theID
                          considerEmail: (BOOL) b
+                              inDomain: (NSString *) domain
 {
   NSMutableDictionary *response;
   NSMutableArray *qualifiers;
   NSArray *fieldNames;
   EOAdaptorChannel *channel;
-  EOQualifier *loginQualifier, *qualifier;
+  EOQualifier *loginQualifier, *domainQualifier, *qualifier;
   GCSChannelManager *cm;
   NSMutableString *sql;
   NSString *value, *field;
@@ -424,6 +428,15 @@
             }
         }
       
+      domainQualifier = nil;
+      if (_domainField && domain)
+        {
+          domainQualifier = [[EOKeyValueQualifier alloc] initWithKey: _domainField
+                                                    operatorSelector: EOQualifierOperatorEqual
+                                                               value: domain];
+          [domainQualifier autorelease];
+        }
+
       if (b)
         {
           // Always compare againts the mail field
@@ -456,6 +469,8 @@
                              @" WHERE ",
                              [_viewURL gcsTableName]];
       qualifier = [[EOOrQualifier alloc] initWithQualifierArray: qualifiers];
+      if (domainQualifier)
+        qualifier = [[EOAndQualifier alloc] initWithQualifiers: domainQualifier, qualifier, nil];
       [qualifier _gcsAppendToString: sql];
 
       ex = [channel evaluateExpressionX: sql];
@@ -484,9 +499,12 @@
           [response setObject: [NSNumber numberWithBool: YES] forKey: @"MailAccess"];
 
 	  // We set the domain, if any
+          value = nil;
 	  if (_domain)
 	    value = _domain;
-	  else
+	  else if (_domainField)
+            value = [response objectForKey: _domainField];
+          if (![value isNotNull])
 	    value = @"";
 	  [response setObject: value forKey: @"c_domain"];
 
@@ -598,12 +616,13 @@
 
 - (NSDictionary *) lookupContactEntry: (NSString *) theID
 {
-  return [self _lookupContactEntry: theID  considerEmail: NO];
+  return [self _lookupContactEntry: theID  considerEmail: NO inDomain: nil];
 }
 
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) entryID
+                                           inDomain: (NSString *) domain
 {
-  return [self _lookupContactEntry: entryID  considerEmail: YES];
+  return [self _lookupContactEntry: entryID  considerEmail: YES inDomain: domain];
 }
 
 - (NSArray *) allEntryIDs
@@ -652,12 +671,14 @@
 }
 
 - (NSArray *) fetchContactsMatching: (NSString *) filter
+                           inDomain: (NSString *) domain
 {
   EOAdaptorChannel *channel;
   NSMutableArray *results;
   GCSChannelManager *cm;
   NSException *ex;
-  NSString *sql, *lowerFilter;
+  NSMutableString *sql;
+  NSString *lowerFilter;
   
   results = [NSMutableArray array];
 
@@ -668,17 +689,28 @@
       lowerFilter = [filter lowercaseString];
       lowerFilter = [lowerFilter stringByReplacingString: @"'"  withString: @"''"];
 
-      sql = [NSString stringWithFormat: (@"SELECT *"
+      sql = [NSMutableString stringWithFormat: (@"SELECT *"
                                          @" FROM %@"
-                                         @" WHERE LOWER(c_cn) LIKE '%%%@%%'"
-                                         @"    OR LOWER(mail) LIKE '%%%@%%'"),
+                                         @" WHERE"
+                                         @" (LOWER(c_cn) LIKE '%%%@%%'"
+                                         @" OR LOWER(mail) LIKE '%%%@%%'"),
                       [_viewURL gcsTableName],
                       lowerFilter, lowerFilter];
-
+      
       if (_mailFields && [_mailFields count] > 0)
 	{
-	  sql = [sql stringByAppendingString: [self _whereClauseFromArray: _mailFields  value: lowerFilter  exact: NO]];
+	  [sql appendString: [self _whereClauseFromArray: _mailFields  value: lowerFilter  exact: NO]];
 	}
+
+      [sql appendString: @")"];
+
+      if (_domainField)
+        {
+          if ([domain length])
+            [sql appendFormat: @" AND %@ = '%@'", _domainField, domain];
+          else
+            [sql appendFormat: @" AND %@ IS NULL", _domainField];
+        }
 
       ex = [channel evaluateExpressionX: sql];
       if (!ex)

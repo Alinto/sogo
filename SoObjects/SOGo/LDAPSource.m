@@ -499,9 +499,6 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   return ldapConnection;
 }
 
-//
-//
-//
 - (NSString *) domain
 {
   return domain;
@@ -1131,6 +1128,7 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 }
 
 - (NSArray *) fetchContactsMatching: (NSString *) match
+                           inDomain: (NSString *) domain
 {
   NGLdapConnection *ldapConnection;
   NGLdapEntry *currentEntry;
@@ -1217,6 +1215,7 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 }
 
 - (NSDictionary *) lookupContactEntryWithUIDorEmail: (NSString *) uid
+                                           inDomain: (NSString *) domain
 {
   NGLdapEntry *ldapEntry;
   EOQualifier *qualifier;
