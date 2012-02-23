@@ -260,6 +260,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
       activeUser = nil;
       userContext = nil;
       contextUrl = nil;
+      containersBag = [NSMutableArray new];
     }
 
   return self;
@@ -314,6 +315,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
                                             UTF8String]);
   [contextUrl release];
   [userContext release];
+  [containersBag release];
 
   [super dealloc];
 }
@@ -437,6 +439,8 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
                             acquire: NO];
       if ([currentFolder isKindOfClass: NSExceptionK])
         currentFolder = nil;
+      else
+        [containersBag addObject: currentFolder];
     }
 
   if (currentFolder)

@@ -54,11 +54,9 @@
 @interface MAPIStoreContext : NSObject
 {
   struct mapistore_connection_info *connInfo;
-
+  NSMutableArray *containersBag;
   SOGoUser *activeUser;
-
   MAPIStoreUserContext *userContext;
-
   NSURL *contextUrl;
 }
 

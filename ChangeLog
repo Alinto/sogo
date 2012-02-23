@@ -1,3 +1,10 @@
+2012-02-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContext.m (-init): restored "containersBag"
+	mechanism where root context folders that are deeper than the
+	first level of their hierarchy needs to have their parent folders
+	retained.
+
 2012-02-23  Jean Raby   <jraby@inverse.ca>
 
 	* debian/rules: add a symlink to let gdb find debugging symbols
