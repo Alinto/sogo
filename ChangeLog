@@ -1,3 +1,10 @@
+2012-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m: ensure the imap connection is
+	available before performing certain operations, otherwise return
+	an exception. This only applies on methods that return an
+	exception, others were left untouched.
+
 2012-02-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailContext.m
