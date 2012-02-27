@@ -1,3 +1,9 @@
+2012-02-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreUserContext.m (-rootFolders:):
+	-[NGImap4Connection enableExtensions:] now takes an array of
+	strings rather than a single string argument.
+
 2012-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.m: ensure the imap connection is
