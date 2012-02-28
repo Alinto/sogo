@@ -106,15 +106,15 @@ extern const enum MAPITAGS MAPIStoreSupportedProperties[];
 
 # hack: some properties have multiple and incompatible types. Sometimes those
 # props are not related at all...
-bannedProps = { "PrBodyHtml": True, "PrFavAutosubfolders": True,
-                "PrAttachDataObj": True, "PrAclTable": True,
-                "PrAclData": True, "PrRulesTable": True, "PrRulesData": True,
-                "PrDisableWinsock": True, "PrHierarchyServer": True,
-                "PrOfflineAddrbookEntryid": True,
-                "PrShorttermEntryidFromObject": True,
-                "PrNormalMessageSizeExtended": True,
-                "PrAssocMessageSizeExtended": True,
-                "PrMessageSizeExtended": True }
+bannedProps = [ "PrBodyHtml", "PrFavAutosubfolders",
+                "PrAttachDataObj", "PrAclTable",
+                "PrAclData", "PrRulesTable", "PrRulesData",
+                "PrDisableWinsock", "PrHierarchyServer",
+                "PrOfflineAddrbookEntryid",
+                "PrShorttermEntryidFromObject",
+                "PrNormalMessageSizeExtended",
+                "PrAssocMessageSizeExtended",
+                "PrMessageSizeExtended" ]
 
 def ParseExchangeH(names, lines):
     state = 0
@@ -151,7 +151,7 @@ def ParseExchangeHDefinition(names, line):
     propName = GenExchangeHName(stripped[0:eqIdx])
     if not propName.endswith("Error") and not propName.endswith("Unicode") \
              and not propName.startswith("PrProfile") \
-             and not bannedProps.has_key(propName):
+             and propName not in bannedProps:
         intIdx = stripped.find("(int", eqIdx)
         valueIdx = stripped.find("0x", intIdx + 1)
         endIdx = stripped.find(")", valueIdx)
