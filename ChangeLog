@@ -2,6 +2,7 @@
 
 	* OpenChange/gen-property-selectors.py: bannedProps is now an
 	array instead of a dict of "True" values.
+	Added "PrOabContainerGuid" to bannedProps.
 
 2012-02-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

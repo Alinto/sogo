@@ -106,15 +106,12 @@ extern const enum MAPITAGS MAPIStoreSupportedProperties[];
 
 # hack: some properties have multiple and incompatible types. Sometimes those
 # props are not related at all...
-bannedProps = [ "PrBodyHtml", "PrFavAutosubfolders",
-                "PrAttachDataObj", "PrAclTable",
-                "PrAclData", "PrRulesTable", "PrRulesData",
+bannedProps = [ "PrBodyHtml", "PrFavAutosubfolders", "PrAttachDataObj",
+                "PrAclTable", "PrAclData", "PrRulesTable", "PrRulesData",
                 "PrDisableWinsock", "PrHierarchyServer",
-                "PrOfflineAddrbookEntryid",
-                "PrShorttermEntryidFromObject",
-                "PrNormalMessageSizeExtended",
-                "PrAssocMessageSizeExtended",
-                "PrMessageSizeExtended" ]
+                "PrOfflineAddrbookEntryid", "PrShorttermEntryidFromObject",
+                "PrNormalMessageSizeExtended", "PrAssocMessageSizeExtended",
+                "PrMessageSizeExtended", "PrOabContainerGuid" ]
 
 def ParseExchangeH(names, lines):
     state = 0
