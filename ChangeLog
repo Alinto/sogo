@@ -1,5 +1,11 @@
 2012-02-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailFolder.m
+	(-moveCopyMessagesWithMIDs:andCount:fromFolder:withMIDs:andChangeKeys:wantCopy:):
+	we sync the version cache with the folder in order to update the
+	target message change keys, which was causing versioning issues
+	with Outlook 2010.
+
 	* OpenChange/gen-property-selectors.py: bannedProps is now an
 	array instead of a dict of "True" values.
 	Added "PrOabContainerGuid" to bannedProps.
