@@ -1,5 +1,11 @@
 2012-03-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/LDAPSource.m (_convertRecordToLDAPAttributes):
+	make sure no field get listed twice in the list of valid field
+	names by using "removeDoubles".
+	(_makeLDAPChanges): don't bother checking whether the removed
+	attributes are strings.
+
 	* SoObjects/SOGo/NSArray+Utilities.m (-[NSMutableArray
 	removeDoubles]): new method removing doublons.
 

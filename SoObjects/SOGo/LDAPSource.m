@@ -1368,6 +1368,7 @@ _convertRecordToLDAPAttributes (LDAPSourceSchema *schema, NSDictionary *ldifReco
           [validFields addObjectsFromArray: fields];
         }
     }
+  [validFields removeDoubles];
 
   attributes = [NSMutableArray new];
   max = [validFields count];
@@ -1455,8 +1456,10 @@ _convertRecordToLDAPAttributes (LDAPSourceSchema *schema, NSDictionary *ldifReco
       NS_HANDLER
         {
           result = localException;
+          [result retain];
         }
       NS_ENDHANDLER;
+      [result autorelease];
     }
   else
     [self errorWithFormat: @"no value for id field '%@'", IDField];
@@ -1470,12 +1473,12 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
 {
   NSMutableArray *changes, *attributeNames, *origAttributeNames;
   NGLdapEntry *origEntry;
-  NSArray *values;
+  // NSArray *values;
   NGLdapAttribute *attribute, *origAttribute;
   NSString *name;
   NSDictionary *origAttributes;
-  NSUInteger count, max, valueCount, valueMax;
-  BOOL allStrings;
+  NSUInteger count, max/* , valueCount, valueMax */;
+  // BOOL allStrings;
 
   /* additions and modifications */
   origEntry = [ldapConnection entryAtDN: dn
@@ -1512,15 +1515,15 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
       origAttribute = [origAttributes objectForKey: name];
       /* the attribute must only have string values, otherwise it will anyway
          be missing from the new record */
-      allStrings = YES;
-      values = [origAttribute allValues];
-      valueMax = [values count];
-      for (valueCount = 0; allStrings && valueCount < valueMax; valueCount++)
-        if (![[values objectAtIndex: valueCount] isKindOfClass: NSStringK])
-          allStrings = NO;
-      if (allStrings)
-        [changes
-          addObject: [NGLdapModification deleteModification: origAttribute]];
+      // allStrings = YES;
+      // values = [origAttribute allValues];
+      // valueMax = [values count];
+      // for (valueCount = 0; allStrings && valueCount < valueMax; valueCount++)
+      //   if (![[values objectAtIndex: valueCount] isKindOfClass: NSStringK])
+      //     allStrings = NO;
+      // if (allStrings)
+      [changes
+        addObject: [NGLdapModification deleteModification: origAttribute]];
     }
 
   return changes;
@@ -1554,8 +1557,10 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
       NS_HANDLER
         {
           result = localException;
+          [result retain];
         }
       NS_ENDHANDLER;
+      [result autorelease];
     }
   else
     [self errorWithFormat: @"expected dn for modified record"];
@@ -1580,8 +1585,11 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
   NS_HANDLER
     {
       result = localException;
+      [result retain];
     }
   NS_ENDHANDLER;
+
+  [result autorelease];
 
   return result;
 }
@@ -1720,8 +1728,10 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
         {
           [self errorWithFormat: @"failed to create addressbook entry"];
           result = localException;
+          [result retain];
         }
       NS_ENDHANDLER;
+      [result autorelease];
     }
   else
     result = [NSException exceptionWithName: @"LDAPSourceIOException"
@@ -1766,8 +1776,10 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
         {
           [self errorWithFormat: @"failed to rename addressbook entry"];
           result = localException;
+          [result retain];
         }
       NS_ENDHANDLER;
+      [result autorelease];
     }
   else
     result = [NSException exceptionWithName: @"LDAPSourceIOException"
@@ -1808,8 +1820,10 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
         {
           [self errorWithFormat: @"failed to remove addressbook entry"];
           result = localException;
+          [result retain];
         }
       NS_ENDHANDLER;
+      [result autorelease];
     }
   else
     result = [NSException exceptionWithName: @"LDAPSourceIOException"
