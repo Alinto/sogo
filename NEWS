@@ -1,3 +1,21 @@
+1.3.13 (2012-03-DD)
+-------------------
+New Features
+ - email notifications now includes a new x-sogo-message-type mail header
+ - added the "IMAPHostnameFieldName" parameter in SQL source to
+   specify a different IMAP hostname for each user (was already possible for
+   LDAP sources)
+ - default event & task classification can now be set from the preferences window
+ - contacts from LDAP sources can now be modified by privileges owners (see
+   the "modifiers" parameter)
+
+Enhancements
+ - 
+
+Bug Fixes
+ - fixed escaping issue with PostgreSQL 8.1
+ - fixed resizing issue when editing an HTML message
+
 1.3.12b (2012-02-14)
 -------------------
 
