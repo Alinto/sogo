@@ -70,6 +70,8 @@
 
 - (void) addObjectUniquely: (id) object;
 
+- (void) removeDoubles;
+
 - (BOOL) hasRangeIntersection: (NSRange) testRange;
 
 @end

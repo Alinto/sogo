@@ -324,4 +324,20 @@
   return response;
 }
 
+- (void) removeDoubles
+{
+  NSMutableDictionary *valueDicts;
+  NSNull *dummy;
+  NSUInteger count, max;
+
+  dummy = [NSNull null];
+
+  max = [self count];
+  valueDicts = [NSMutableDictionary dictionaryWithCapacity: max];
+
+  for (count = 0; count < max; count++)
+    [valueDicts setObject: dummy forKey: [self objectAtIndex: count]];
+  [self setArray: [valueDicts allKeys]];
+}
+
 @end
