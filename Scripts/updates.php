@@ -33,7 +33,7 @@ $plugins
         "sogo-integrator@inverse.ca"
          => array( "application" => "thunderbird",
                    "version" => "10.0.0",
-                   "filename" => "sogo-integrator-10.0.0.xpi" )
+                   "filename" => "sogo-integrator-10.0.0.xpi" ),
 	"{e2fda1a4-762b-4020-b5ad-a41df1933103}"
 	=> array( "application" => "thunderbird",
 		   "version" => "1.2.1",
