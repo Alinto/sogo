@@ -2772,7 +2772,7 @@ function getMenus() {
                            "folderTypeMenu",
                            "-", null,
                            onMenuSharing ],
-        addressMenu: [ newContactFromEmail, newEmailTo, null ],
+        addressMenu: [ newContactFromEmail, newEmailTo ],
         messageListMenu: [ onMenuOpenMessage, "-",
                            onMenuReplyToSender,
                            onMenuReplyToAll,
