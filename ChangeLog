@@ -1,3 +1,8 @@
+2012-03-01  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js (appendAddressBook): assume
+	that lists can be created in the new addressbook.
+
 2012-02-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailContext.m
