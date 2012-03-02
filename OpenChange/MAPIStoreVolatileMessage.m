@@ -121,21 +121,21 @@ Class NSNumberK;
   return rc;
 }
 
-- (int) getPrSubject: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSubject: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* if we get here, it means that the properties file didn't contain a
      relevant value */
   return [self getEmptyString: data inMemCtx: memCtx];
 }
 
-- (int) getPrMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrChangeKey: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagChangeKey: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSData *changeKey;
   int rc;
@@ -148,7 +148,7 @@ Class NSNumberK;
       rc = MAPISTORE_SUCCESS;
     }
   else
-    rc = [super getPrChangeKey: data inMemCtx: memCtx];
+    rc = [super getPidTagChangeKey: data inMemCtx: memCtx];
 
   return rc;
 }

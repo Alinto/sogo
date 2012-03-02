@@ -94,52 +94,52 @@ extern NSTimeZone *utcTZ;
   return [container lastModificationTime];
 }
 
-- (int) getPrAttachEncoding: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidTagAttachEncoding: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
 {
   *data = [[NSData data] asBinaryInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachFlags: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getLongZero: data inMemCtx: memCtx];
-}
-
-- (int) getPrAttachmentFlags: (void **) data
+- (int) getPidTagAttachFlags: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPrAttachmentHidden: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getNo: data inMemCtx: memCtx];
-}
-
-- (int) getPrAttachmentLinkid: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachmentFlags: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPrAttachMethod: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachmentHidden: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getNo: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagAttachmentLinkId: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getLongZero: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagAttachMethod: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x00000001);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachmentContactphoto: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachmentContactPhoto: (void **) data
+                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPrAttachDataBin: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachDataBinary: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!photoData)
     ASSIGN (photoData,
@@ -150,8 +150,8 @@ extern NSTimeZone *utcTZ;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachSize: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachSize: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!photoData)
     ASSIGN (photoData,
@@ -162,16 +162,16 @@ extern NSTimeZone *utcTZ;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachExtension: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachExtension: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self fileExtension] asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachLongFilename: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachLongFilename: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *filename;
 
@@ -183,17 +183,17 @@ extern NSTimeZone *utcTZ;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachFilename: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachFilename: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrAttachLongFilename: data
-                              inMemCtx: memCtx];
+  return [self getPidTagAttachLongFilename: data
+                                  inMemCtx: memCtx];
 }
 
-- (int) getPrDisplayName: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagDisplayName: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrAttachLongFilename: data inMemCtx: memCtx];
+  return [self getPidTagAttachLongFilename: data inMemCtx: memCtx];
 }
 
 @end

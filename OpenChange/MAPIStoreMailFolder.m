@@ -201,8 +201,8 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
   return (rc == MAPISTORE_SUCCESS) ? [super deleteFolder] : rc;
 }
 
-- (int) getPrContentUnread: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagContentUnreadCount: (void **) data
+		       inMemCtx: (TALLOC_CTX *) memCtx
 {
   EOQualifier *searchQualifier;
   uint32_t longValue;
@@ -217,7 +217,7 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrContainerClass: (void **) data
+- (int) getPidTagContainerClass: (void **) data
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPF.Note" asUnicodeInMemCtx: memCtx];
@@ -225,7 +225,7 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMessageClass: (void **) data
+- (int) getPidTagMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];
@@ -1097,7 +1097,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 
 @implementation MAPIStoreOutboxFolder
 
-- (int) getPrDisplayName: (void **) data
+- (int) getPidTagDisplayName: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"Outbox" asUnicodeInMemCtx: memCtx];

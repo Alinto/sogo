@@ -85,7 +85,7 @@
   CardElement *element;
 
   elements = [card childrenWithTag: tag
-                   andAttribute: @"type" havingValue: type];
+                      andAttribute: @"type" havingValue: type];
   if ([elements count] > 0)
     element = [elements objectAtIndex: 0];
   else
@@ -100,8 +100,8 @@
   return element;
 }
 
-- (int) getPrIconIndex: (void **) data // TODO
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagIconIndex: (void **) data // TODO
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
   *data = MAPILongValue (memCtx, 0x00000200);
@@ -109,15 +109,15 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMessageClass: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMessageClass: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup (memCtx, "IPM.Contact");
 
   return MAPISTORE_SUCCESS;
 }
 
-// - (int) getPrOabName: (void **) data
+// - (int) getPidTagOfflineAddressBookName: (void **) data
 //             inMemCtx: (TALLOC_CTX *) memCtx
 // {
 //   *data = talloc_strdup (memCtx, "PR_OAB_NAME_UNICODE");
@@ -125,7 +125,7 @@
 //   return MAPISTORE_SUCCESS;
 // }
 
-// - (int) getPrOabLangid: (void **) data
+// - (int) getPidTagOfflineAddressBookLanguageId: (void **) data
 //               inMemCtx: (TALLOC_CTX *) memCtx
 // {
 //   /* see http://msdn.microsoft.com/en-us/goglobal/bb895996.asxp */
@@ -136,8 +136,8 @@
 // }
 
 
-- (int) getPrTitle: (void **) data
-          inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagTitle: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -147,8 +147,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrCompanyName: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagCompanyName: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   CardElement *org;
   
@@ -159,8 +159,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrDepartmentName: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagDepartmentName: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   CardElement *org;
   
@@ -171,24 +171,24 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrSendInternetEncoding: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSendInternetEncoding: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x00065001);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrSubject: (void **) data
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSubject: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrDisplayName: data inMemCtx: memCtx];
+  return [self getPidTagDisplayName: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidFileUnder: (void **) data
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrDisplayName: data inMemCtx: memCtx];
+  return [self getPidTagDisplayName: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidFileUnderId: (void **) data
@@ -231,14 +231,14 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAccount: (void **) data
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAccount: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidLidEmail1EmailAddress: data inMemCtx: memCtx];
 }
 
-- (int) getPrContactEmailAddresses: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagContactEmailAddresses: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -251,8 +251,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrEmsAbTargetAddress: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagEmsAbTargetAddress: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -263,8 +263,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrSearchKey: (void **) data // TODO
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSearchKey: (void **) data // TODO
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -275,8 +275,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMailPermission: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMailPermission: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
@@ -321,8 +321,8 @@
   return [self getPidLidEmail2EmailAddress: data inMemCtx: memCtx];
 }
     
-- (int) getPrBody: (void **) data
-         inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagBody: (void **) data
+             inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc = MAPISTORE_SUCCESS;
   NSString *stringValue;
@@ -372,57 +372,57 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrOfficeTelephoneNumber: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagBusinessTelephoneNumber: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"tel" ofType: @"work" excluding: @"fax"
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrHomeTelephoneNumber: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagHomeTelephoneNumber: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"tel" ofType: @"home" excluding: @"fax"
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrMobileTelephoneNumber: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMobileTelephoneNumber: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"tel" ofType: @"cell" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrPagerTelephoneNumber: (void **) data
-			 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagPagerTelephoneNumber: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"tel" ofType: @"pager" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrPrimaryTelephoneNumber: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagPrimaryTelephoneNumber: (void **) data
+                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"tel" ofType: @"pref" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrBusinessFaxNumber: (void **) data
-		      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagBusinessFaxNumber: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"tel" ofType: @"fax" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrBusinessHomePage: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagBusinessHomePage: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"url" ofType: @"work" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrPersonalHomePage: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagPersonalHomePage: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"url" ofType: @"home" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
@@ -491,50 +491,50 @@
 //
 // getters when no address is selected as the Mailing Address
 //
-- (int) getPrPostalAddress: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagPostalAddress: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"label" ofType: @"pref" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrPostOfficeBox: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagPostOfficeBox: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"pref" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrStreetAddress: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagStreetAddress: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"pref" excluding: nil
                      atPos: 2 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrLocality: (void **) data
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagLocality: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"pref" excluding: nil
                      atPos: 3 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrStateOrProvince: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagStateOrProvince: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"pref" excluding: nil
                      atPos: 4 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrPostalCode: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagPostalCode: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"pref" excluding: nil
                      atPos: 5 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrCountry: (void **) data
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagCountry: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"pref" excluding: nil
                      atPos: 6 inData: data inMemCtx: memCtx];
@@ -550,42 +550,42 @@
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrHomeAddressPostOfficeBox: (void **) data
-			     inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagHomeAddressPostOfficeBox: (void **) data
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"home" excluding: nil
                      atPos: 0 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrHomeAddressStreet: (void **) data
-		      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagHomeAddressStreet: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"home" excluding: nil
                      atPos: 2 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrHomeAddressCity: (void **) data
-		    inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagHomeAddressCity: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"home" excluding: nil
                      atPos: 3 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrHomeAddressStateOrProvince: (void **) data
-			       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagHomeAddressStateOrProvince: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"home" excluding: nil
                      atPos: 4 inData: data inMemCtx: memCtx];
 }
 
-- (int) getPrHomeAddressPostalCode: (void **) data
-			  inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagHomeAddressPostalCode: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"home" excluding: nil
                      atPos: 5 inData: data inMemCtx: memCtx];
 }
-- (int) getPrHomeAddressCountry: (void **) data
-		       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagHomeAddressCountry: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getElement: @"adr" ofType: @"home" excluding: nil
                      atPos: 6 inData: data inMemCtx: memCtx];
@@ -646,8 +646,8 @@
 //
 //
 //
-- (int) getPrNickname: (void **) data
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagNickname: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -657,8 +657,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrBirthday: (void **) data
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagBirthday: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
   NSString *stringValue;
@@ -681,8 +681,8 @@
 //
 // Decomposed fullname getters
 //
-- (int) getPrSurname: (void **) data
-	    inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSurname: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
 {  
   NSString *stringValue;
   
@@ -694,8 +694,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrGivenName: (void **) data
-	      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagGivenName: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
   
@@ -707,8 +707,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMiddleName: (void **) data
-	       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMiddleName: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
   
@@ -720,8 +720,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrDisplayNamePrefix: (void **) data
-		      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagDisplayNamePrefix: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
   
@@ -733,8 +733,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrGeneration: (void **) data
-	       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagGeneration: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
   
@@ -746,8 +746,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrSensitivity: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSensitivity: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
@@ -808,7 +808,7 @@
 }
 
 - (void) _updatePhotoInVCard: (NGVCard *) card
-              fromProperties: (NSDictionary *) attachmentProps
+fromProperties: (NSDictionary *) attachmentProps
 {
   NSString *photoExt, *photoType, *content;
   CardElement *photo;
@@ -886,10 +886,10 @@
   
   // Decomposed fullname
   [newCard setNWithFamily: [properties objectForKey: MAPIPropertyKey(PR_SURNAME_UNICODE)]
-	   given: [properties objectForKey: MAPIPropertyKey(PR_GIVEN_NAME_UNICODE)]
-	   additional: [properties objectForKey: MAPIPropertyKey(PR_MIDDLE_NAME_UNICODE)]
-	   prefixes: [properties objectForKey: MAPIPropertyKey(PR_DISPLAY_NAME_PREFIX_UNICODE)]
-	   suffixes: [properties objectForKey: MAPIPropertyKey(PR_GENERATION_UNICODE)]];
+                    given: [properties objectForKey: MAPIPropertyKey(PR_GIVEN_NAME_UNICODE)]
+               additional: [properties objectForKey: MAPIPropertyKey(PR_MIDDLE_NAME_UNICODE)]
+                 prefixes: [properties objectForKey: MAPIPropertyKey(PR_DISPLAY_NAME_PREFIX_UNICODE)]
+                 suffixes: [properties objectForKey: MAPIPropertyKey(PR_GENERATION_UNICODE)]];
 
   //
   // display name
@@ -1161,7 +1161,7 @@
   value = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
   if (value)
     [(MAPIStoreContactsFolder *) container
-        setChangeKey: value forMessageWithKey: [self nameInContainer]];
+    setChangeKey: value forMessageWithKey: [self nameInContainer]];
 }
 
 @end

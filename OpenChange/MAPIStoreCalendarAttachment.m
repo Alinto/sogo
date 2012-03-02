@@ -34,24 +34,24 @@
 
 @implementation MAPIStoreCalendarAttachment
 
-- (int) getPrAttachmentHidden: (void **) data
-                     inMemCtx: (TALLOC_CTX *) localMemCtx
+- (int) getPidTagAttachmentHidden: (void **) data
+                         inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   *data = MAPIBoolValue (localMemCtx, YES);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachmentFlags: (void **) data
-                    inMemCtx: (TALLOC_CTX *) localMemCtx
+- (int) getPidTagAttachmentFlags: (void **) data
+                        inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   *data = MAPILongValue (localMemCtx, 0x00000002); /* afException */
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachmMethod: (void **) data
-                  inMemCtx: (TALLOC_CTX *) localMemCtx
+- (int) getPidTagAttachMethod: (void **) data
+                     inMemCtx: (TALLOC_CTX *) localMemCtx
 {
   *data = MAPILongValue (localMemCtx, 0x00000005); /* afEmbeddedMessage */
 

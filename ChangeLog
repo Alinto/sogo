@@ -1,5 +1,27 @@
 2012-03-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreAppointmentWrapper.m,,
+	OpenChange/MAPIStoreAttachment.m,
+	OpenChange/MAPIStoreCalendarAttachment.m,
+	OpenChange/MAPIStoreCalendarMessage.m,
+	OpenChange/MAPIStoreContactsAttachment.m,
+	OpenChange/MAPIStoreContactsMessage.m,
+	OpenChange/MAPIStoreFAIMessage.m,
+	OpenChange/MAPIStoreFSMessageTable.m,
+	OpenChange/MAPIStoreFolder.m, OpenChange/MAPIStoreFolderTable.m,
+	OpenChange/MAPIStoreGCSFolder.m, OpenChange/MAPIStoreGCSMessage.m,
+	OpenChange/MAPIStoreGCSMessageTable.m,
+	OpenChange/MAPIStoreMailAttachment.m,
+	OpenChange/MAPIStoreMailFolder.m,
+	OpenChange/MAPIStoreMailMessage.m,
+	OpenChange/MAPIStoreMailMessageTable.m,
+	OpenChange/MAPIStoreMessage.m, OpenChange/MAPIStoreNotesMessage.m,
+	OpenChange/MAPIStoreObject.m,
+	OpenChange/MAPIStorePermissionsTable.m,
+	OpenChange/MAPIStoreTasksMessage.m,
+	OpenChange/MAPIStoreVolatileMessage.m: updated name of getters to
+	reflect the new nomenclature.
+
 	* OpenChange/NSArray+MAPIStore.[hm]: updated to new name of
 	handled structs.
 
