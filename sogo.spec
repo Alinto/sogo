@@ -234,7 +234,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %config(noreplace) %{_sysconfdir}/cron.d/sogo
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/SOGo.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/sogo
-%doc ChangeLog NEWS Scripts/sql*sh
+%doc ChangeLog NEWS Scripts/*sh Scripts/updates.php
 
 %files -n sogo-tool
 %{_sbindir}/sogo-tool
