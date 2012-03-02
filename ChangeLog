@@ -1,3 +1,9 @@
+2012-03-02  Jean Raby  <jraby@inverse.ca>
+
+	* Scripts/sogo-backup.sh: new script to automate backups.
+	Updated sogo.cron to include a commented out entry for sogo-backup.sh
+	Include updates.php in the packages
+
 2012-03-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m (_convertRecordToLDAPAttributes):
