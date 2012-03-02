@@ -1,5 +1,8 @@
 2012-03-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSArray+MAPIStore.[hm]: updated to new name of
+	handled structs.
+
 	* OpenChange/gen-property-selectors.py: adapted for new getters
 	name, based on new property names. Added all new clashing
 	properties to bannedProps.
