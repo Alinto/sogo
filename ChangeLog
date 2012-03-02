@@ -1,3 +1,9 @@
+2012-03-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/gen-property-selectors.py: adapted for new getters
+	name, based on new property names. Added all new clashing
+	properties to bannedProps.
+
 2012-03-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m (_convertRecordToLDAPAttributes):
