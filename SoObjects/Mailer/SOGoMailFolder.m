@@ -468,7 +468,7 @@ static NSString *defaultUserID =  @"anyone";
 {
   NSException *error;
   NSFileManager *fm;
-  NSString *spoolPath, *fileName, *zipPath, *qpFileName;
+  NSString *spoolPath, *fileName, *baseName, *extension, *zipPath, *qpFileName;
   NSDictionary *msgs;
   NSArray *messages;
   NSData *content, *zipContent;
@@ -533,7 +533,17 @@ static NSString *defaultUserID =  @"anyone";
   }
   
   response = [context response];
-  qpFileName = [archiveName asQPSubjectString: @"utf-8"];
+
+  baseName = [archiveName stringByDeletingPathExtension];
+  extension = [archiveName pathExtension];
+  if ([extension length] > 0)
+    extension = [@"." stringByAppendingString: extension];
+  else
+    extension = @"";
+
+  qpFileName = [NSString stringWithFormat: @"%@%@",
+                         [baseName asQPSubjectString: @"utf-8"],
+                         extension];
   [response setHeader: [NSString stringWithFormat: @"application/zip;"
                                  @" name=\"%@\"",
                                  qpFileName]
