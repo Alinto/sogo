@@ -1,3 +1,14 @@
+2012-03-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-archiveUIDs:inArchiveNamed:inContext:): output filename is now
+	escaped without its extension.
+
+	* SoObjects/Contacts/NGVCard+SOGo.m
+	(-_setupEmailFieldsInLDIFRecord:): simplified code and fixed a bug
+	where the home mail would be taken for both first and second email
+	fields when no work mail was present.
+
 2012-03-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreAppointmentWrapper.m,,

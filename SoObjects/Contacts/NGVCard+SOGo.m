@@ -351,40 +351,38 @@ convention:
 - (void) _setupEmailFieldsInLDIFRecord: (NSMutableDictionary *) ldifRecord
 {
   NSArray *elements;
-  NSString *workMail, *homeMail, *potential;
-  unsigned int max;
+  NSString *workMail, *homeMail, *mail, *secondEmail;
+  NSUInteger max;
 
   elements = [self childrenWithTag: @"email"];
-  max = [elements count];
-  workMail = [self _simpleValueForType: @"work"
-                               inArray: elements  excluding: nil];
-  homeMail = [self _simpleValueForType: @"home"
-                               inArray: elements  excluding: nil];
 
+  max = [elements count];
   if (max > 0)
     {
-      potential = [[elements objectAtIndex: 0] flattenedValuesForKey: @""];
-      if (!workMail)
-        {
-          if (homeMail && homeMail == potential)
-	    {
-	      if (max > 1)
-		workMail = [[elements objectAtIndex: 1] flattenedValuesForKey: @""];
-	    }
-          else
-            workMail = potential;
-        }
-      if (!homeMail && max > 1)
-        {
-          if (workMail && workMail == potential)
-            homeMail = [[elements objectAtIndex: 1] flattenedValuesForKey: @""];
-          else
-            homeMail = potential;
-        }
-    }
+      workMail = [self _simpleValueForType: @"work"
+                                   inArray: elements excluding: nil];
+      homeMail = [self _simpleValueForType: @"home"
+                                   inArray: elements excluding: nil];
 
-  [self _setValue: @"mail" to: workMail inLDIFRecord: ldifRecord];
-  [self _setValue: @"mozillasecondemail" to: homeMail inLDIFRecord: ldifRecord];
+      mail = workMail;
+      if (mail)
+        secondEmail = homeMail;
+      else
+        {
+          secondEmail = nil;
+          mail = homeMail;
+        }
+
+      if (!mail)
+        {
+          mail = [elements objectAtIndex: 0];
+          if (max > 1) /* we know secondEmail is not set here either... */
+            secondEmail = [elements objectAtIndex: 1];
+        }
+
+      [self _setValue: @"mail" to: mail inLDIFRecord: ldifRecord];
+      [self _setValue: @"mozillasecondemail" to: secondEmail inLDIFRecord: ldifRecord];
+    }
 
   [self _setValue: @"mozillausehtmlmail"
                to: [[self uniqueChildWithTag: @"x-mozilla-html"]
