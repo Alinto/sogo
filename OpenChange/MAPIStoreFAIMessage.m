@@ -42,8 +42,8 @@
                          andType: MAPISTORE_FAI_TABLE];
 }
 
-- (int) getPrAssociated: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAssociated: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }

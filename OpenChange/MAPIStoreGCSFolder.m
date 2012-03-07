@@ -127,7 +127,7 @@
     [sogoObject renameTo: newDisplayName];
 }
 
-- (int) getPrDisplayName: (void **) data
+- (int) getPidTagDisplayName: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *displayName;

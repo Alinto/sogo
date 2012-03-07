@@ -9,6 +9,37 @@
 	where the home mail would be taken for both first and second email
 	fields when no work mail was present.
 
+2012-03-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m,,
+	OpenChange/MAPIStoreAttachment.m,
+	OpenChange/MAPIStoreCalendarAttachment.m,
+	OpenChange/MAPIStoreCalendarMessage.m,
+	OpenChange/MAPIStoreContactsAttachment.m,
+	OpenChange/MAPIStoreContactsMessage.m,
+	OpenChange/MAPIStoreFAIMessage.m,
+	OpenChange/MAPIStoreFSMessageTable.m,
+	OpenChange/MAPIStoreFolder.m, OpenChange/MAPIStoreFolderTable.m,
+	OpenChange/MAPIStoreGCSFolder.m, OpenChange/MAPIStoreGCSMessage.m,
+	OpenChange/MAPIStoreGCSMessageTable.m,
+	OpenChange/MAPIStoreMailAttachment.m,
+	OpenChange/MAPIStoreMailFolder.m,
+	OpenChange/MAPIStoreMailMessage.m,
+	OpenChange/MAPIStoreMailMessageTable.m,
+	OpenChange/MAPIStoreMessage.m, OpenChange/MAPIStoreNotesMessage.m,
+	OpenChange/MAPIStoreObject.m,
+	OpenChange/MAPIStorePermissionsTable.m,
+	OpenChange/MAPIStoreTasksMessage.m,
+	OpenChange/MAPIStoreVolatileMessage.m: updated name of getters to
+	reflect the new nomenclature.
+
+	* OpenChange/NSArray+MAPIStore.[hm]: updated to new name of
+	handled structs.
+
+	* OpenChange/gen-property-selectors.py: adapted for new getters
+	name, based on new property names. Added all new clashing
+	properties to bannedProps.
+
 2012-03-02  Jean Raby  <jraby@inverse.ca>
 
 	* Scripts/sogo-backup.sh: new script to automate backups.
@@ -30,6 +61,31 @@
 
 	* UI/WebServerResources/ContactsUI.js (appendAddressBook): assume
 	that lists can be created in the new addressbook.
+
+2012-02-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailFolder.m
+	(-moveCopyMessagesWithMIDs:andCount:fromFolder:withMIDs:andChangeKeys:wantCopy:):
+	we sync the version cache with the folder in order to update the
+	target message change keys, which was causing versioning issues
+	with Outlook 2010.
+
+	* OpenChange/gen-property-selectors.py: bannedProps is now an
+	array instead of a dict of "True" values.
+	Added "PrOabContainerGuid" to bannedProps.
+
+2012-02-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreUserContext.m (-rootFolders:):
+	-[NGImap4Connection enableExtensions:] now takes an array of
+	strings rather than a single string argument.
+
+2012-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m: ensure the imap connection is
+	available before performing certain operations, otherwise return
+	an exception. This only applies on methods that return an
+	exception, others were left untouched.
 
 2012-02-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

@@ -436,7 +436,7 @@ static NSCharacterSet *hexCharacterSet = nil;
     }
 }
 
-- (int) getPrIconIndex: (void **) data // TODO
+- (int) getPidTagIconIndex: (void **) data // TODO
               inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t longValue;
@@ -502,8 +502,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrOwnerApptId: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagOwnerAppointmentId: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc;
   const char *utf8UID;
@@ -581,7 +581,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
-- (int) getPrMessageClass: (void **) data
+- (int) getPidTagMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   const char *className;
@@ -634,7 +634,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPrStartDate: (void **) data
+- (int) getPidTagStartDate: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
@@ -716,7 +716,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 - (int) getPidLidAppointmentStartWhole: (void **) data
                               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrStartDate: data inMemCtx: memCtx];
+  return [self getPidTagStartDate: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidCommonStart: (void **) data
@@ -797,7 +797,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
-- (int) _getEntryid: (void **) data
+- (int) _getEntryId: (void **) data
       forICalPerson: (iCalPerson *) person
            inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -820,7 +820,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 /* sender (organizer) */
-- (int) getPrSenderEmailAddress: (void **) data
+- (int) getPidTagSenderEmailAddress: (void **) data
                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getEmailAddress: data
@@ -828,7 +828,7 @@ static NSCharacterSet *hexCharacterSet = nil;
                        inMemCtx: memCtx];
 }
 
-- (int) getPrSenderAddrtype: (void **) data
+- (int) getPidTagSenderAddressType: (void **) data
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getAddrType: data
@@ -836,7 +836,7 @@ static NSCharacterSet *hexCharacterSet = nil;
                    inMemCtx: memCtx];
 }
 
-- (int) getPrSenderName: (void **) data
+- (int) getPidTagSenderName: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getName: data
@@ -844,16 +844,16 @@ static NSCharacterSet *hexCharacterSet = nil;
                inMemCtx: memCtx];
 }
 
-- (int) getPrSenderEntryid: (void **) data
+- (int) getPidTagSenderEntryId: (void **) data
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self _getEntryid: data
+  return [self _getEntryId: data
              forICalPerson: [event organizer]
                   inMemCtx: memCtx];
 }
 
 /* attendee */
-- (int) getPrReceivedByEmailAddress: (void **) data
+- (int) getPidTagReceivedByEmailAddress: (void **) data
                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getEmailAddress: data
@@ -861,7 +861,7 @@ static NSCharacterSet *hexCharacterSet = nil;
                        inMemCtx: memCtx];
 }
 
-- (int) getPrReceivedByAddrtype: (void **) data
+- (int) getPidTagReceivedByAddressType: (void **) data
                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getAddrType: data
@@ -869,7 +869,7 @@ static NSCharacterSet *hexCharacterSet = nil;
                    inMemCtx: memCtx];
 }
 
-- (int) getPrReceivedByName: (void **) data
+- (int) getPidTagReceivedByName: (void **) data
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getName: data
@@ -877,16 +877,16 @@ static NSCharacterSet *hexCharacterSet = nil;
                inMemCtx: memCtx];
 }
 
-- (int) getPrReceivedByEntryid: (void **) data
+- (int) getPidTagReceivedByEntryId: (void **) data
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self _getEntryid: data
+  return [self _getEntryId: data
              forICalPerson: [event userAsAttendee: user]
                   inMemCtx: memCtx];
 }
 /* /attendee */
 
-- (int) getPrEndDate: (void **) data
+- (int) getPidTagEndDate: (void **) data
             inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSCalendarDate *dateValue;
@@ -911,7 +911,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 - (int) getPidLidAppointmentEndWhole: (void **) data
                             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrEndDate: data inMemCtx: memCtx];
+  return [self getPidTagEndDate: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidCommonEnd: (void **) data
@@ -960,7 +960,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   return [self getPidLidBusyStatus: data inMemCtx: memCtx];
 }
 
-- (int) getPrSubject: (void **) data // SUMMARY
+- (int) getPidTagSubject: (void **) data // SUMMARY
             inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[event summary] asUnicodeInMemCtx: memCtx];
@@ -1013,14 +1013,14 @@ static NSCharacterSet *hexCharacterSet = nil;
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPrSensitivity: (void **) data // not implemented, depends on CLASS
+- (int) getPidTagSensitivity: (void **) data // not implemented, depends on CLASS
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   // normal = 0, personal?? = 1, private = 2, confidential = 3
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPrImportance: (void **) data
+- (int) getPidTagImportance: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t v;
@@ -1036,7 +1036,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrBody: (void **) data
+- (int) getPidTagBody: (void **) data
          inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc = MAPISTORE_SUCCESS;
@@ -1397,7 +1397,7 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
     [self _setupAlarm];
 
   return (alarm
-          ? [self getPrStartDate: data inMemCtx: memCtx]
+          ? [self getPidTagStartDate: data inMemCtx: memCtx]
           : MAPISTORE_ERR_NOT_FOUND);
 }
 

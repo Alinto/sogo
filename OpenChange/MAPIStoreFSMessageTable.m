@@ -59,7 +59,7 @@ static Class MAPIStoreFSMessageK = Nil;
   NSNumber *version;
   uint64_t cVersion;
 
-  if ((uint32_t) res->ulPropTag == PR_CHANGE_NUM)
+  if ((uint32_t) res->ulPropTag == PidTagChangeNumber)
     {
       value = NSObjectFromMAPISPropValue (&res->lpProp);
       cVersion = exchange_globcnt ([value unsignedLongLongValue] >> 16);

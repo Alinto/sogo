@@ -66,8 +66,8 @@
 
 @implementation MAPIStoreTasksMessage
 
-- (int) getPrIconIndex: (void **) data // TODO
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagIconIndex: (void **) data // TODO
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
   // Unassigned recurring task 0x00000501
@@ -81,16 +81,16 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMessageClass: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMessageClass: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup(memCtx, "IPM.Task");
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrSubject: (void **) data // SUMMARY
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSubject: (void **) data // SUMMARY
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalToDo *task;
 
@@ -100,8 +100,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrImportance: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagImportance: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t v;
   iCalToDo *task;
@@ -201,8 +201,8 @@
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPrHasattach: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagHasAttachments: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
@@ -242,22 +242,22 @@
 }
 
 
-- (int) getPrMessageDeliveryTime: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMessageDeliveryTime: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrLastModificationTime: data inMemCtx: memCtx];
+  return [self getPidTagLastModificationTime: data inMemCtx: memCtx];
 }
 
 - (int) getClientSubmitTime: (void **) data
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrLastModificationTime: data inMemCtx: memCtx];
+  return [self getPidTagLastModificationTime: data inMemCtx: memCtx];
 }
 
 - (int) getLocalCommitTime: (void **) data
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrLastModificationTime: data inMemCtx: memCtx];
+  return [self getPidTagLastModificationTime: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidTaskStatus: (void **) data // status
@@ -466,7 +466,7 @@
   value = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
   if (value)
     [(MAPIStoreTasksFolder *) container
-        setChangeKey: value forMessageWithKey: [self nameInContainer]];
+    setChangeKey: value forMessageWithKey: [self nameInContainer]];
 }
 
 @end

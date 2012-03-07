@@ -68,24 +68,24 @@
   ASSIGN (bodyInfo, newBodyInfo);
 }
 
-- (int) getPrAttachMethod: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachMethod: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x00000001); // afByValue
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachTag: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachTag: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self mimeAttachTag] asBinaryInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachSize: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachSize: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t longValue;
 
@@ -95,8 +95,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrRecordKey: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagRecordKey: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   static char recordBytes[] = {0xd9, 0xd8, 0x11, 0xa3, 0xe2, 0x90, 0x18, 0x41,
                                0x9e, 0x04, 0x58, 0x46, 0x9d, 0x6d, 0x1b,
@@ -125,16 +125,16 @@
   return fileName;
 }
 
-- (int) getPrAttachLongFilename: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachLongFilename: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self _fileName] asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachFilename: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachFilename: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *fileName, *baseName, *ext;
 
@@ -153,7 +153,7 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrDisplayName: (void **) data
+- (int) getPidTagDisplayName: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[bodyInfo objectForKey: @"description"]
@@ -162,8 +162,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachContentId: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachContentId: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
 { 
   *data = [[bodyInfo objectForKey: @"bodyId"]
             asUnicodeInMemCtx: memCtx];
@@ -171,21 +171,21 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachMimeTag: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachMimeTag: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *mimeTag;
 
   mimeTag = [NSString stringWithFormat: @"%@/%@",
-                          [bodyInfo objectForKey: @"type"],
-                          [bodyInfo objectForKey: @"subtype"]];
+                [bodyInfo objectForKey: @"type"],
+                [bodyInfo objectForKey: @"subtype"]];
   *data = [[mimeTag lowercaseString] asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachDataBin: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachDataBinary: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[sogoObject fetchBLOBWithPeek: YES] asBinaryInMemCtx: memCtx];
 
