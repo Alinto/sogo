@@ -1,5 +1,8 @@
 2012-03-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m (-getPidTagSubFolders:inMemCtx:):
+	invoke [self folderKeys] rather than the corresponding ivar.
+
 	* OpenChange/MAPIStoreTypes.m (NSObjectFromMAPISPropValue)
 	(NSObjectFromSPropValue): treat PT_ERROR just as PT_LONG.
 

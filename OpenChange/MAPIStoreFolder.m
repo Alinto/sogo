@@ -1196,7 +1196,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (int) getPidTagSubfolders: (void **) data
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPIBoolValue (memCtx, [folderKeys count] > 0);
+  *data = MAPIBoolValue (memCtx, [[self folderKeys] count] > 0);
   
   return MAPISTORE_SUCCESS;
 }
