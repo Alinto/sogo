@@ -288,7 +288,8 @@
   BOOL rc = YES, foundChange = NO;
   uint64_t newChangeNum;
   NSData *changeKey;
-  NSNumber *ti, *changeNumber, *lastModificationDate, *cName, *cVersion, *cLastModified;
+  NSString *cName;
+  NSNumber *ti, *changeNumber, *lastModificationDate, *cVersion, *cLastModified;
   EOFetchSpecification *fs;
   EOQualifier *searchQualifier, *fetchQualifier;
   NSUInteger count, max;
@@ -366,6 +367,8 @@
           cName = [result objectForKey: @"c_name"];
           cVersion = [result objectForKey: @"c_version"];
           cLastModified = [result objectForKey: @"c_lastmodified"];
+
+          [sogoObject removeChildRecordWithName: cName];
 
           messageEntry = [messages objectForKey: cName];
           if (!messageEntry)

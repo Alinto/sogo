@@ -1,5 +1,9 @@
 2012-03-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSFolder.m (-synchroniseCache): ensure that
+	any record that are marked as updated are removed from the record
+	cache of the corresponding SOGoGCSFolder instance.
+
 	* OpenChange/MAPIStoreFolder.m (-getPidTagSubFolders:inMemCtx:):
 	invoke [self folderKeys] rather than the corresponding ivar.
 
