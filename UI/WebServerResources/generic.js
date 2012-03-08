@@ -1494,7 +1494,7 @@ function getTopWindow() {
     var topWindow = null;
     var currentWindow = window;
     while (!topWindow) {
-        if (currentWindow.document.body.hasClassName("popup")
+        if ($(currentWindow.document.body).hasClassName("popup")
             && currentWindow.opener
             && currentWindow.opener.getTopWindow)
             currentWindow = currentWindow.opener;
