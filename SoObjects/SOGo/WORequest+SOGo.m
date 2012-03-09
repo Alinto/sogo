@@ -172,8 +172,8 @@
 
   cc = [self clientCapabilities];
 
-  return ([[cc userAgent] rangeOfString: @"DataAccess/1.0"].location
-          != NSNotFound);
+  return ([[cc userAgent] rangeOfString: @"DataAccess/1.0"].location != NSNotFound ||
+          [[cc userAgent] rangeOfString: @"dataaccessd/1.0"].location != NSNotFound); // Seen on iOS 5.0.1 on iPad
 }
 
 @end
