@@ -1,3 +1,10 @@
+2012-03-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/NGVCard+SOGo.m
+	(_setupEmailFieldsInLDIFRecord:): the value of card elements were
+	not properly extracted when no email field were of type "home" or
+	"work".
+
 2012-03-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (getTopWindow): extend the

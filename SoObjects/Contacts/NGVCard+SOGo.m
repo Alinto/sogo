@@ -375,9 +375,9 @@ convention:
 
       if (!mail)
         {
-          mail = [elements objectAtIndex: 0];
+          mail = [[elements objectAtIndex: 0] flattenedValuesForKey: @""];
           if (max > 1) /* we know secondEmail is not set here either... */
-            secondEmail = [elements objectAtIndex: 1];
+            secondEmail = [[elements objectAtIndex: 1] flattenedValuesForKey: @""];
         }
 
       [self _setValue: @"mail" to: mail inLDIFRecord: ldifRecord];
