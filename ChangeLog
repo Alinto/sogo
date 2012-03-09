@@ -1,5 +1,8 @@
 2012-03-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m: commented out key cache ivars
+	(temporarily).
+
 	* OpenChange/MAPIStoreContext.m (-getRootFolder:inMemCtx:): do not
 	store the looked up folders when they are not descendants of
 	SOGoObject. Return MAPISTORE_ERR_NOT_FOUND when the looked up

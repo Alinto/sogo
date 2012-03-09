@@ -75,9 +75,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   if ((self = [super init]))
     {
-      messageKeys = nil;
-      faiMessageKeys = nil;
-      folderKeys = nil;
+      // messageKeys = nil;
+      // faiMessageKeys = nil;
+      // folderKeys = nil;
       faiFolder = nil;
       context = nil;
 
@@ -141,11 +141,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (void) dealloc
 {
+  // [messageKeys release];
+  // [faiMessageKeys release];
+  // [folderKeys release];
   [propsMessage release];
   [propsFolder release];
-  [messageKeys release];
-  [faiMessageKeys release];
-  [folderKeys release];
   [faiFolder release];
   [context release];
 
@@ -261,8 +261,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   if (messageKey)
     {
-      [self faiMessageKeys];
-      if ([faiMessageKeys containsObject: messageKey])
+      if ([[self faiMessageKeys] containsObject: messageKey])
         {
           msgObject = [faiFolder lookupName: messageKey
                                   inContext: nil
@@ -1003,14 +1002,16 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (NSArray *) messageKeys
 {
-  if (!messageKeys)
-    {
-      messageKeys = [self messageKeysMatchingQualifier: nil
-                                      andSortOrderings: nil];
-      [messageKeys retain];
-    }
+  return [self messageKeysMatchingQualifier: nil
+                           andSortOrderings: nil];
+  // if (!messageKeys)
+  //   {
+  //     messageKeys = [self messageKeysMatchingQualifier: nil
+  //                                     andSortOrderings: nil];
+  //     [messageKeys retain];
+  //   }
 
-  return messageKeys;
+  // return messageKeys;
 }
 
 - (MAPIStoreFAIMessageTable *) faiMessageTable
@@ -1028,14 +1029,16 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (NSArray *) faiMessageKeys
 {
-  if (!faiMessageKeys)
-    {
-      faiMessageKeys = [self faiMessageKeysMatchingQualifier: nil
-                                            andSortOrderings: nil];
-      [faiMessageKeys retain];
-    }
+  return [self faiMessageKeysMatchingQualifier: nil
+                              andSortOrderings: nil];
+  // if (!faiMessageKeys)
+  //   {
+  //     faiMessageKeys = [self faiMessageKeysMatchingQualifier: nil
+  //                                           andSortOrderings: nil];
+  //     [faiMessageKeys retain];
+  //   }
 
-  return faiMessageKeys;
+  // return faiMessageKeys;
 }
 
 - (MAPIStoreFolderTable *) folderTable
@@ -1045,14 +1048,16 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (NSArray *) folderKeys
 {
-  if (!folderKeys)
-    {
-      folderKeys = [self folderKeysMatchingQualifier: nil
-                                    andSortOrderings: nil];
-      [folderKeys retain];
-    }
+  return [self folderKeysMatchingQualifier: nil
+                          andSortOrderings: nil];
+  // if (!folderKeys)
+  //   {
+  //     folderKeys = [self folderKeysMatchingQualifier: nil
+  //                                   andSortOrderings: nil];
+  //     [folderKeys retain];
+  //   }
 
-  return folderKeys;
+  // return folderKeys;
 }
 
 - (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
@@ -1098,12 +1103,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [self _cleanupTableCaches: MAPISTORE_MESSAGE_TABLE];
   [self _cleanupTableCaches: MAPISTORE_FAI_TABLE];
   [self _cleanupTableCaches: MAPISTORE_FOLDER_TABLE];
-  [faiMessageKeys release];
-  faiMessageKeys = nil;
-  [messageKeys release];
-  messageKeys = nil;
-  [folderKeys release];
-  folderKeys = nil;
+  // [faiMessageKeys release];
+  // faiMessageKeys = nil;
+  // [messageKeys release];
+  // messageKeys = nil;
+  // [folderKeys release];
+  // folderKeys = nil;
 }
 
 - (int) getPidTagParentFolderId: (void **) data
