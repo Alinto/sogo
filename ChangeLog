@@ -1,4 +1,4 @@
-2012-03-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+2012-03-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/NGVCard+SOGo.m
 	(_setupEmailFieldsInLDIFRecord:): the value of card elements were
