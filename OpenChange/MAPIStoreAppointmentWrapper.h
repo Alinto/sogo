@@ -69,33 +69,33 @@ extern NSTimeZone *utcTZ;
 - (void) fillMessageData: (struct mapistore_message *) dataPtr
                 inMemCtx: (TALLOC_CTX *) memCtx;
 
-- (int) getPrSenderEmailAddress: (void **) data
+- (int) getPidTagSenderEmailAddress: (void **) data
                        inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrSenderAddrtype: (void **) data
+- (int) getPidTagSenderAddressType: (void **) data
                    inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrSenderName: (void **) data
+- (int) getPidTagSenderName: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrSenderEntryid: (void **) data
+- (int) getPidTagSenderEntryId: (void **) data
                   inMemCtx: (TALLOC_CTX *) memCtx;
 
-- (int) getPrReceivedByAddrtype: (void **) data
+- (int) getPidTagReceivedByAddressType: (void **) data
                        inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrReceivedByEmailAddress: (void **) data
+- (int) getPidTagReceivedByEmailAddress: (void **) data
                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrReceivedByName: (void **) data
+- (int) getPidTagReceivedByName: (void **) data
                    inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrReceivedByEntryid: (void **) data
+- (int) getPidTagReceivedByEntryId: (void **) data
                       inMemCtx: (TALLOC_CTX *) memCtx;
 
-- (int) getPrIconIndex: (void **) data
+- (int) getPidTagIconIndex: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrOwnerApptId: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidTagOwnerAppointmentId: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidMeetingType: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrMessageClass: (void **) data
+- (int) getPidTagMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrStartDate: (void **) data
+- (int) getPidTagStartDate: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidAppointmentStateFlags: (void **) data
                               inMemCtx: (TALLOC_CTX *) memCtx;
@@ -106,7 +106,7 @@ extern NSTimeZone *utcTZ;
                               inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidCommonStart: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrEndDate: (void **) data
+- (int) getPidTagEndDate: (void **) data
             inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidAppointmentEndWhole: (void **) data
                             inMemCtx: (TALLOC_CTX *) memCtx;
@@ -120,17 +120,17 @@ extern NSTimeZone *utcTZ;
                    inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidIndentedBusyStatus: (void **) data // TODO
                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrSubject: (void **) data // SUMMARY
+- (int) getPidTagSubject: (void **) data // SUMMARY
             inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidLocation: (void **) data // LOCATION
                  inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
                 inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrSensitivity: (void **) data // not implemented, depends on CLASS
+- (int) getPidTagSensitivity: (void **) data // not implemented, depends on CLASS
                 inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrImportance: (void **) data
+- (int) getPidTagImportance: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrBody: (void **) data
+- (int) getPidTagBody: (void **) data
          inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidIsRecurring: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx;

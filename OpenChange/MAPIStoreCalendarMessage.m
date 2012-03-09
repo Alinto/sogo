@@ -126,10 +126,10 @@
 }
 
 /* getters */
-- (int) getPrIconIndex: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagIconIndex: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrIconIndex: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagIconIndex: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidFInvited: (void **) data
@@ -138,24 +138,24 @@
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPrMessageClass: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMessageClass: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup (memCtx, "IPM.Appointment");
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrOwnerApptId: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagOwnerAppointmentId: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrOwnerApptId: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagOwnerAppointmentId: data inMemCtx: memCtx];
 }
 
-- (int) getPrStartDate: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagStartDate: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrStartDate: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagStartDate: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidAppointmentStateFlags: (void **) data
@@ -183,10 +183,10 @@
   return [[self appointmentWrapper] getPidLidCommonStart: data inMemCtx: memCtx];
 }
 
-- (int) getPrEndDate: (void **) data
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagEndDate: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrEndDate: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagEndDate: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidAppointmentEndWhole: (void **) data
@@ -220,10 +220,10 @@
   return [[self appointmentWrapper] getPidLidBusyStatus: data inMemCtx: memCtx];
 }
 
-- (int) getPrSubject: (void **) data // SUMMARY
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSubject: (void **) data // SUMMARY
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrSubject: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagSubject: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidLocation: (void **) data // LOCATION
@@ -238,22 +238,22 @@
   return [[self appointmentWrapper] getPidLidPrivate: data inMemCtx: memCtx];
 }
 
-- (int) getPrSensitivity: (void **) data // not implemented, depends on CLASS
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSensitivity: (void **) data // not implemented, depends on CLASS
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrSensitivity: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagSensitivity: data inMemCtx: memCtx];
 }
 
-- (int) getPrImportance: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagImportance: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrImportance: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagImportance: data inMemCtx: memCtx];
 }
 
-- (int) getPrBody: (void **) data
-         inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagBody: (void **) data
+             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrBody: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagBody: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidIsRecurring: (void **) data
@@ -289,7 +289,7 @@
                                                         inMemCtx: memCtx];
 }
 
-- (int) getPrProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
@@ -324,114 +324,114 @@
 }
 
 /* sender */
-- (int) getPrSenderEmailAddress: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSenderEmailAddress: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrSenderEmailAddress: data
-                                                   inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagSenderEmailAddress: data
+                                                       inMemCtx: memCtx];
 }
 
-- (int) getPrSenderAddrtype: (void **) data
+- (int) getPidTagSenderAddressType: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidTagSenderAddressType: data
+                                                      inMemCtx: memCtx];
+}
+
+- (int) getPidTagSenderName: (void **) data
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrSenderAddrtype: data
+  return [[self appointmentWrapper] getPidTagSenderName: data
                                                inMemCtx: memCtx];
 }
 
-- (int) getPrSenderName: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSenderEntryId: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrSenderName: data
-                                           inMemCtx: memCtx];
-}
-
-- (int) getPrSenderEntryid: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPrSenderEntryid: data
-                                              inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagSenderEntryId: data
+                                                  inMemCtx: memCtx];
 }
 
 /* sender representing */
-- (int) getPrSentRepresentingEmailAddress: (void **) data
-                                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSentRepresentingEmailAddress: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSenderEmailAddress: data inMemCtx: memCtx];
+  return [self getPidTagSenderEmailAddress: data inMemCtx: memCtx];
 }
 
-- (int) getPrSentRepresentingAddrtype: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSentRepresentingAddressType: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
-- (int) getPrSentRepresentingName: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSentRepresentingName: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSenderName: data inMemCtx: memCtx];
+  return [self getPidTagSenderName: data inMemCtx: memCtx];
 }
 
-- (int) getPrSentRepresentingEntryid: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSentRepresentingEntryId: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSenderEntryid: data inMemCtx: memCtx];
+  return [self getPidTagSenderEntryId: data inMemCtx: memCtx];
 }
 
 /* attendee */
-// - (int) getPrReceivedByAddrtype: (void **) data
+// - (int) getPidTagReceivedByAddressType: (void **) data
 //                        inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [[self appointmentWrapper] getPrReceivedByAddrtype: data
+//   return [[self appointmentWrapper] getPidTagReceivedByAddressType: data
 //                                                    inMemCtx: memCtx];
 // }
 
-// - (int) getPrReceivedByEmailAddress: (void **) data
+// - (int) getPidTagReceivedByEmailAddress: (void **) data
 //                            inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [[self appointmentWrapper] getPrReceivedByEmailAddress: data
+//   return [[self appointmentWrapper] getPidTagReceivedByEmailAddress: data
 //                                                        inMemCtx: memCtx];
 // }
 
-// - (int) getPrReceivedByName: (void **) data
+// - (int) getPidTagReceivedByName: (void **) data
 //                    inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [[self appointmentWrapper] getPrReceivedByName: data
+//   return [[self appointmentWrapper] getPidTagReceivedByName: data
 //                                                inMemCtx: memCtx];
 // }
 
-// - (int) getPrReceivedByEntryid: (void **) data
+// - (int) getPidTagReceivedByEntryId: (void **) data
 //                       inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [[self appointmentWrapper] getPrReceivedByEntryid: data
+//   return [[self appointmentWrapper] getPidTagReceivedByEntryId: data
 //                                                   inMemCtx: memCtx];
 // }
 
 // /* attendee representing */
-// - (int) getPrRcvdRepresentingEmailAddress: (void **) data
+// - (int) getPidTagReceivedRepresentingEmailAddress: (void **) data
 //                                  inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [self getPrReceivedByEmailAddress: data inMemCtx: memCtx];
+//   return [self getPidTagReceivedByEmailAddress: data inMemCtx: memCtx];
 // }
 
-// - (int) getPrRcvdRepresentingAddrtype: (void **) data
+// - (int) getPidTagReceivedRepresentingAddressType: (void **) data
 //                              inMemCtx: (TALLOC_CTX *) memCtx
 // {
 //   return [self getSMTPAddrType: data inMemCtx: memCtx];
 // }
 
-// - (int) getPrRcvdRepresentingName: (void **) data
+// - (int) getPidTagReceivedRepresentingName: (void **) data
 //                          inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [self getPrReceivedByName: data inMemCtx: memCtx];
+//   return [self getPidTagReceivedByName: data inMemCtx: memCtx];
 // }
 
-// - (int) getPrRcvdRepresentingEntryid: (void **) data
+// - (int) getPidTagReceivedRepresentingEntryId: (void **) data
 //                             inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [self getPrReceivedByEntryid: data inMemCtx: memCtx];
+//   return [self getPidTagReceivedByEntryId: data inMemCtx: memCtx];
 // }
 
-- (int) getPrResponseRequested: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagResponseRequested: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
@@ -916,7 +916,7 @@
                 {
                   dict = [activeUser primaryIdentity];
                   sentBy = [NSString stringWithFormat: @"mailto:%@",
-                                     [dict objectForKey: @"email"]];
+                                   [dict objectForKey: @"email"]];
                   [person setSentBy: sentBy];
                 }
               [newEvent setOrganizer: person];
@@ -1000,7 +1000,7 @@
   value = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
   if (value)
     [(MAPIStoreCalendarFolder *) container
-        setChangeKey: value forMessageWithKey: [self nameInContainer]];
+    setChangeKey: value forMessageWithKey: [self nameInContainer]];
 }
 
 - (id) lookupAttachment: (NSString *) childKey

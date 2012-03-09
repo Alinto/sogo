@@ -294,7 +294,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 /* getters */
-- (int) getPrDisplayName: (void **) data
+- (int) getPidTagDisplayName: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[sogoObject displayName] asUnicodeInMemCtx: memCtx];
@@ -302,7 +302,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrSearchKey: (void **) data
+- (int) getPidTagSearchKey: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
@@ -314,20 +314,20 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrGenerateExchangeViews: (void **) data
+- (int) getPidTagGenerateExchangeViews: (void **) data
                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPrParentSourceKey: (void **) data
+- (int) getPidTagParentSourceKey: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getReplicaKey: data fromGlobCnt: [container objectId] >> 16
                     inMemCtx: memCtx];
 }
 
-- (int) getPrSourceKey: (void **) data
+- (int) getPidTagSourceKey: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getReplicaKey: data fromGlobCnt: [self objectId] >> 16
@@ -341,7 +341,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return ULLONG_MAX;
 }
 
-- (int) getPrChangeKey: (void **) data
+- (int) getPidTagChangeKey: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc;
@@ -357,7 +357,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return rc;
 }
 
-- (int) getPrChangeNum: (void **) data
+- (int) getPidTagChangeNumber: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc;
@@ -376,7 +376,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return rc;
 }
 
-- (int) getPrCreationTime: (void **) data
+- (int) getPidTagCreationTime: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self creationTime] asFileTimeInMemCtx: memCtx];
@@ -384,7 +384,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrLastModificationTime: (void **) data
+- (int) getPidTagLastModificationTime: (void **) data
                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[self lastModificationTime] asFileTimeInMemCtx: memCtx];

@@ -84,16 +84,16 @@
   return memberId;
 }
 
-- (int) getPrMemberId: (void **) data
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMemberId: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, memberId);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrEntryid: (void **) data
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagEntryId: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSData *entryId;
   struct mapistore_connection_info *connInfo;
@@ -110,8 +110,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMemberName: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMemberName: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *displayName;
 
@@ -127,8 +127,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMemberRights: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMemberRights: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t rights;
   NSArray *roles;

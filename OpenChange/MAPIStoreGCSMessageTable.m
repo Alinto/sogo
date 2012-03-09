@@ -86,7 +86,7 @@
   MAPIRestrictionState rc;
   TALLOC_CTX *memCtx = NULL;
 
-  if (res->ulPropTag == PR_CHANGE_NUM)
+  if (res->ulPropTag == PidTagChangeNumber)
     {
       value = NSObjectFromMAPISPropValue (&res->lpProp);
       lastModified = [(MAPIStoreGCSFolder *)
