@@ -949,6 +949,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   int rc = MAPISTORE_SUCCESS;
   MAPIStoreTable *table;
+  SOGoUser *ownerUser;
 
   if (tableType == MAPISTORE_MESSAGE_TABLE)
     table = [self messageTable];
@@ -957,21 +958,31 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   else if (tableType == MAPISTORE_FOLDER_TABLE)
     table = [self folderTable];
   else if (tableType == MAPISTORE_PERMISSIONS_TABLE)
-    table = [self permissionsTable];
+    {
+      ownerUser = [[self userContext] sogoUser];
+      if ([[context activeUser] isEqual: ownerUser])
+        table = [self permissionsTable];
+      else
+        rc = MAPISTORE_ERR_DENIED;
+    }
   else
     {
       table = nil;
       [NSException raise: @"MAPIStoreIOException"
                   format: @"unsupported table type: %d", tableType];
     }
-  if (table)
+
+  if (rc == MAPISTORE_SUCCESS)
     {
-      [table setHandleId: handleId];
-      *tablePtr = table;
-      *countPtr = [[table childKeys] count];
+      if (table)
+        {
+          [table setHandleId: handleId];
+          *tablePtr = table;
+          *countPtr = [[table childKeys] count];
+        }
+      else
+        rc = MAPISTORE_ERR_NOT_FOUND;
     }
-  else
-    rc = MAPISTORE_ERR_NOT_FOUND;
 
   return rc;
 }

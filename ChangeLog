@@ -1,5 +1,10 @@
 2012-03-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m
+	(-getTable:andRowCount:tableType:andHandleId:): if the current
+	user is not the owner of the folder, the permissions table cannot
+	be open and MAPISTORE_ERR_DENIED is now returned.
+
 	* SoObjects/Contacts/NGVCard+SOGo.m
 	(_setupEmailFieldsInLDIFRecord:): the value of card elements were
 	not properly extracted when no email field were of type "home" or
