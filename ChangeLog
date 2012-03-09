@@ -1,5 +1,9 @@
 2012-03-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m (-renameTo:): reset the
+	imap4URL to nil and change the nameInContainer after a successful
+	operation.
+
 	* OpenChange/MAPIStoreFolder.m
 	(-getTable:andRowCount:tableType:andHandleId:): if the current
 	user is not the owner of the folder, the permissions table cannot
