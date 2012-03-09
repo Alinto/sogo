@@ -1,5 +1,11 @@
 2012-03-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (-getRootFolder:inMemCtx:): do not
+	store the looked up folders when they are not descendants of
+	SOGoObject. Return MAPISTORE_ERR_NOT_FOUND when the looked up
+	folder is owner by the current user and MAPISTORE_ERR_DENIED
+	otherwise.
+
 	* OpenChange/MAPIStoreGCSFolder.m (-synchroniseCache): ensure that
 	any record that are marked as updated are removed from the record
 	cache of the corresponding SOGoGCSFolder instance.
