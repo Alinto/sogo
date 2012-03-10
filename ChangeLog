@@ -1,5 +1,9 @@
 2012-03-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailVolatileMessage.m (-submitWithFlags:):
+	skip any message that is not of class "IPM.Note", in order to
+	avoid sending invitations or responses.
+
 	* SoObjects/Mailer/SOGoMailFolder.m (-renameTo:): reset the
 	imap4URL to nil and change the nameInContainer after a successful
 	operation.
