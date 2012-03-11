@@ -114,7 +114,7 @@
 
 - (BOOL) hasDuration
 {
-  return ([[self childrenWithTag: @"duration"] count] > 0);
+  return ([[self duration] length] > 0);
 }
 
 - (NSTimeInterval) durationAsTimeInterval

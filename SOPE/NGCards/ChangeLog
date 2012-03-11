@@ -1,3 +1,8 @@
+2012-03-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalEvent.m (-hasDuration): returns NO when the value is present
+	but empty.
+
 2012-02-03  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalDailyRecurrenceCalculator.m
