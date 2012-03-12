@@ -1,3 +1,20 @@
+2012-03-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreCalendarMessage.m
+	(-getPidLidAppointmentMessageClass:inMemCtx:): returns "IPM.Appointment".
+	(-getPidLidSideEffects:inMemCtx:): returns the value specified in
+	OXOCAL, section 2.2.2.2.
+	(_fixupAppointmentObjectWithUID:): renamed method and made more
+	generic, in order to handle the case where the response record has
+	already been deleted.
+	(-save): handle organizer and attendees more in compliance with
+	the spec, in order to avoid ending up with an empty event when an
+	invitation is being replied to. Of course, the documentation
+	happened to be inexact with regardes to the value of
+	"PidTagRecipientTrackStatus", which can be 5 even though the user
+	replied with another value... Also, lowered the priority of
+	SOGo-specific hacks for setting the organizer.
+
 2012-03-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailVolatileMessage.m (-submitWithFlags:):
