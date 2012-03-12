@@ -1,5 +1,8 @@
 2012-03-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTypes.m (_reverseCN): fixed used of ull
+	constants on 32 bit platforms.
+
 	* OpenChange/MAPIStoreGCSFolder.m (-componentQualifier): now
 	provided by the parent class itself.
 	(-contentComponentQualifier): new method that returns a qualifier
