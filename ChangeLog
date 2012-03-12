@@ -1,3 +1,9 @@
+2012-03-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreTypes.m (MAPICNCompare): new function that
+	returns an NSComparisonResult for two change numbers (reverse
+	format).
+
 2012-03-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarMessage.m
