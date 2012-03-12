@@ -1,5 +1,9 @@
 2012-03-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSFolder.m (-lastMessageModificationTime):
+	force a synchronisation from here to ensure that the cache is
+	up-to-date.
+
 	* OpenChange/MAPIStoreTypes.m (_reverseCN): fixed used of ull
 	constants on 32 bit platforms.
 

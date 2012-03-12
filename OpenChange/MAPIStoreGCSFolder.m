@@ -218,6 +218,8 @@ static Class NSNumberK;
   NSDate *value;
   NSNumber *ti;
 
+  [self synchroniseCache];
+
   ti = [[versionsMessage properties]
          objectForKey: @"SyncLastModificationDate"];
   if (ti)
