@@ -107,22 +107,22 @@
              inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* implemented getters */
-- (int) getPrDisplayName: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrSearchKey: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrGenerateExchangeViews: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrParentSourceKey: (void **) data
+- (int) getPidTagDisplayName: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrSourceKey: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrChangeKey: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrCreationTime: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrLastModificationTime: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidTagSearchKey: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidTagGenerateExchangeViews: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidTagParentSourceKey: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidTagSourceKey: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidTagChangeKey: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidTagCreationTime: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidTagLastModificationTime: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* subclasses */
 - (uint64_t) objectVersion;

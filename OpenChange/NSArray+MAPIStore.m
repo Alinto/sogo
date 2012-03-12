@@ -52,7 +52,7 @@
   return mvResult;
 }
 
-+ (id) arrayFromMAPIMVUnicode: (struct mapi_SPLSTRArrayW *) mvUnicode
++ (id) arrayFromMAPIMVUnicode: (struct mapi_SLPSTRArrayW *) mvUnicode
 {
   NSUInteger count;
   NSString *subObject;
@@ -185,7 +185,7 @@
   return mvResult;
 }
 
-+ (id) arrayFromMVUnicode: (const struct WStringArray_r *) mvUnicode
++ (id) arrayFromMVUnicode: (const struct StringArrayW_r *) mvUnicode
 {
   NSUInteger count;
   NSString *subObject;
@@ -201,14 +201,14 @@
   return mvResult;
 }
 
-- (struct WStringArray_r *) asMVUnicodeInMemCtx: (void *) memCtx
+- (struct StringArrayW_r *) asMVUnicodeInMemCtx: (void *) memCtx
 {
-  struct WStringArray_r *list;
+  struct StringArrayW_r *list;
   NSInteger count, max;
 
   max = [self count];
 
-  list = talloc_zero (memCtx, struct WStringArray_r);
+  list = talloc_zero (memCtx, struct StringArrayW_r);
   list->cValues = max;
   list->lppszW = talloc_array (list, const char *, max);
 

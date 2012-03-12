@@ -67,7 +67,7 @@
 
 /* sogo://username:password@{contacts,calendar,tasks,journal,notes,mail}/dossier/id */
 
-static Class NSExceptionK, MAPIStoreFallbackContextK;
+static Class NSExceptionK, MAPIStoreFallbackContextK, SOGoObjectK;
 
 static NSMutableDictionary *contextClassMapping;
 
@@ -79,6 +79,7 @@ static NSMutableDictionary *contextClassMapping;
   NSString *moduleName;
 
   NSExceptionK = [NSException class];
+  SOGoObjectK = [SOGoObject class];
 
   contextClassMapping = [NSMutableDictionary new];
   classes = GSObjCAllSubclassesOfClass (self);
@@ -441,10 +442,11 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
         = [currentFolder lookupName: [pathComponents objectAtIndex: count]
                           inContext: woContext
                             acquire: NO];
-      if ([currentFolder isKindOfClass: NSExceptionK])
-        currentFolder = nil;
-      else
+      if ([currentFolder isKindOfClass: SOGoObjectK]) /* class common to all
+                                                         SOGo folder types */
         [containersBag addObject: currentFolder];
+      else
+        currentFolder = nil;
     }
 
   if (currentFolder)
@@ -457,8 +459,10 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
       *folderPtr = baseFolder;
       rc = MAPISTORE_SUCCESS;
     }
-  else
+  else if ([[userContext sogoUser] isEqual: activeUser])
     rc = MAPISTORE_ERR_NOT_FOUND;
+  else
+    rc = MAPISTORE_ERR_DENIED;
 
   return rc;
 }

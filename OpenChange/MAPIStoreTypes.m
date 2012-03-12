@@ -96,6 +96,7 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
       result = [NSNumber numberWithUnsignedShort: value->value.i];
       break;
     case PT_LONG:
+    case PT_ERROR:
       result = [NSNumber numberWithUnsignedLong: value->value.l];
       break;
     case PT_I8:
@@ -175,6 +176,7 @@ NSObjectFromSPropValue (const struct SPropValue *value)
       result = [NSNumber numberWithShort: value->value.i];
       break;
     case PT_LONG:
+    case PT_ERROR:
       result = [NSNumber numberWithLong: value->value.l];
       break;
     case PT_I8:
