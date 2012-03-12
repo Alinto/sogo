@@ -45,18 +45,9 @@
   return [MAPIStoreContactsMessageTable tableForContainer: self];
 }
 
-- (EOQualifier *) componentQualifier
+- (NSString *) component
 {
-  static EOQualifier *componentQualifier = nil;
-
-  /* TODO: we need to support vlist as well */
-  if (!componentQualifier)
-    componentQualifier
-      = [[EOKeyValueQualifier alloc] initWithKey: @"c_component"
-				operatorSelector: EOQualifierOperatorEqual
-					   value: @"vcard"];
-
-  return componentQualifier;
+  return @"vcard";
 }
 
 - (MAPIStoreMessage *) createMessage

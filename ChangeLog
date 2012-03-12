@@ -1,5 +1,25 @@
 2012-03-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSFolder.m (-componentQualifier): now
+	provided by the parent class itself.
+	(-contentComponentQualifier): new method that returns a qualifier
+	that translated to "c_content like '%BEGIN:XXX%'". This is a hack
+	to work-around the fact that calendar folders may content both
+	vevent and vtodo and that c_component, being part of the quick
+	table, is no longer available when a record is deleted.
+	(-synchroniseCache): update version values for deleted records
+	too, by taking into account the fact that their c_version value
+	might still be 0. Make use of contentComponentQualifier above.
+	Remove the modified records from the SOGoGCSFolder cache.
+	(-getDeletedKeysFromChangeNumber:andCN:inTableType:): wander the
+	list of deleted records and no longer increase the change number,
+	as this is now done from "synchroniseCache". Also, handle the case
+	were deleted records might already have been reported by comparing
+	their change number to the one provided as parameter. The
+	resulting change number is now guaranteed to be the highest one.
+	(-component): new subclassable method that returns a string
+	matching the folder's handled component.
+
 	* OpenChange/MAPIStoreFolder.m
 	(-getPidTagLocalCommitTimeMax:inMemCtx:): returns
 	MAPISTORE_ERR_NOT_FOUND if the resulting date is nil.

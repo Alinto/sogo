@@ -49,17 +49,9 @@
   return [MAPIStoreCalendarMessageTable tableForContainer: self];
 }
 
-- (EOQualifier *) componentQualifier
+- (NSString *) component
 {
-  static EOQualifier *componentQualifier = nil;
-
-  if (!componentQualifier)
-    componentQualifier
-      = [[EOKeyValueQualifier alloc] initWithKey: @"c_component"
-				operatorSelector: EOQualifierOperatorEqual
-					   value: @"vevent"];
-
-  return componentQualifier;
+  return @"vevent";
 }
 
 - (MAPIStoreMessage *) createMessage
