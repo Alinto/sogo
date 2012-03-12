@@ -1,5 +1,10 @@
 2012-03-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSMessage.m
+	(-getPidTagPredecessorChangeList:inMemCtx:): when the list is
+	missing, request a synchronisation from the container as the
+	message might now have been synchronised yet...
+
 	* OpenChange/MAPIStoreTypes.m (MAPICNCompare): new function that
 	returns an NSComparisonResult for two change numbers (reverse
 	format).
