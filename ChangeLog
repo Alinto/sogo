@@ -1,5 +1,9 @@
 2012-03-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m
+	(-getPidTagLocalCommitTimeMax:inMemCtx:): returns
+	MAPISTORE_ERR_NOT_FOUND if the resulting date is nil.
+
 	* OpenChange/MAPIStoreGCSMessage.m
 	(-getPidTagPredecessorChangeList:inMemCtx:): when the list is
 	missing, request a synchronisation from the container as the

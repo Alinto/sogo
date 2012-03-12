@@ -1261,9 +1261,16 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (int) getPidTagLocalCommitTimeMax: (void **) data
                            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = [[self lastMessageModificationTime] asFileTimeInMemCtx: memCtx];
+  int rc = MAPISTORE_SUCCESS;
+  NSDate *date;
 
-  return MAPISTORE_SUCCESS;
+  date = [self lastMessageModificationTime];
+  if (date)
+    *data = [date asFileTimeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 - (int) getProperty: (void **) data
