@@ -529,10 +529,18 @@ DIV.dTreeNode A._selected SPAN.nodeName
   color: #fff;
 }
 
+/* drag'n'drop */
+
 DIV.dTreeNode SPAN._dragOver
 { 
   background-color: #9ABCD8;
   color: #fff;
+}
+
+.genericHoverClass
+{
+  background-color: #9ABCD8 !important;
+  color: #fff !important;
 }
 
 /* resizable columns */
@@ -548,12 +556,6 @@ DIV.resize-handle
   position: absolute;
   top: 0px;
   left: 0px; }
-
-.genericHoverClass
-{
-  background-color: #9ABCD8 !important;
-  color: #fff !important;
-}
 
 DIV.dialog
 { position: absolute;
