@@ -1,5 +1,8 @@
 2012-03-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarFolder.m
+	(-getPidTagDefaultPostMessageClass:inMemCtx:): new getter.
+
 	* OpenChange/MAPIStoreFolder.m
 	(_modifyPermissionEntryForUser:withRoles:isAddition:withACLFolder:):
 	skip any modification when user is nil.

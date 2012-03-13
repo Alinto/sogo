@@ -35,9 +35,11 @@
 #import "MAPIStoreCalendarContext.h"
 #import "MAPIStoreCalendarMessage.h"
 #import "MAPIStoreCalendarMessageTable.h"
+#import "NSString+MAPIStore.h"
 
 #import "MAPIStoreCalendarFolder.h"
 
+#include <mapistore/mapistore_errors.h>
 #include <util/time.h>
 #include <gen_ndr/exchange.h>
 
@@ -161,5 +163,14 @@
   return [EOQualifier qualifierWithQualifierFormat:
             [(SOGoAppointmentFolder *) sogoObject aclSQLListingFilter]];
 }
+
+- (int) getPidTagDefaultPostMessageClass: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"IPM.Appointment" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
 
 @end
