@@ -1,7 +1,7 @@
 ( /* the toolbar groups -*-cperl-*- */
   ( { link = "#";
       label = "Save and Close";
-      onclick = "return savePreferences();";
+      onclick = "return savePreferences(event);";
       image = "tb-compose-save-flat-24x24.png"; },
     { link = "#";
       isSafe = NO;

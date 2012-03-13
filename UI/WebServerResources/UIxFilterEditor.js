@@ -783,13 +783,28 @@ function onActionDeleteClick(event) {
     event.stop();
 }
 
-function savePreferences() {
-    var inputs = $$("DIV#filterRules input");
+function savePreferences(event) {
     var valid = true;
-    inputs.each(function(input) {
-            if (input.hasClassName("_invalid"))
-                valid = false;
-        });
+
+    var rules = $$("DIV#filterRules DIV.rule");
+    if (rules.length == 0) {
+        onRuleAddClick(event);
+        valid = false;
+    }
+
+    var actions = $$("DIV#filterActions DIV.action");
+    if (actions.length == 0) {
+        onActionAddClick(event);        
+        valid = false;
+    }
+
+    if (valid) {
+        var inputs = $$("DIV#filterRules input");
+        inputs.each(function(input) {
+                if (input.hasClassName("_invalid"))
+                    valid = false;
+            });
+    }
 
     if (valid) {
         if (window.opener) {

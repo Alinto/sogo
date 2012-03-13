@@ -1,5 +1,8 @@
 2012-03-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxFilterEditor.js (savePreferences):
+	only save the filters if there's at least one rule and one action defined.
+
 	* UI/WebServerResources/ContactsUI.js (configureDraggables):
 	increased the delay before starting drag and drop.
 
