@@ -1,3 +1,14 @@
+2012-03-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreFolder.m
+	(_modifyPermissionEntryForUser:withRoles:isAddition:withACLFolder:):
+	skip any modification when user is nil.
+	(_usernameFromEntryId:): when the bytes array is nil or is empty,
+	we return a nil username.
+	(-modifyPermissions:withCount:andFlags:): ignore the presence of
+	certain fields but not others depending on the requested
+	modification.
+
 2012-03-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreGCSFolder.m (-lastMessageModificationTime):

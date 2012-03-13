@@ -768,9 +768,14 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                             isAddition: (BOOL) isAddition
                          withACLFolder: (SOGoFolder *) aclFolder
 {
-  if (isAddition)
-    [aclFolder addUserInAcls: user];
-  [aclFolder setRoles: roles forUser: user];
+  if (user)
+    {
+      if (isAddition)
+        [aclFolder addUserInAcls: user];
+      [aclFolder setRoles: roles forUser: user];
+    }
+  else
+    [self logWithFormat: @"user is nil, keeping intended entry intact"];
 }
 
 - (void) setupVersionsMessage
@@ -1412,20 +1417,25 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSString *username;
   struct ldb_context *samCtx;
 
-  bin32.cb = bin->cb;
-  bin32.lpb = bin->lpb;
-
-  entryId = get_AddressBookEntryId (NULL, &bin32);
-  if (entryId)
+  if (bin && bin->cb)
     {
-      samCtx = [[self context] connectionInfo]->sam_ctx;
-      username = MAPIStoreSamDBUserAttribute (samCtx, @"legacyExchangeDN",
-                                              [NSString stringWithUTF8String: entryId->X500DN],
-                                              @"sAMAccountName");
+      bin32.cb = bin->cb;
+      bin32.lpb = bin->lpb;
+
+      entryId = get_AddressBookEntryId (NULL, &bin32);
+      if (entryId)
+        {
+          samCtx = [[self context] connectionInfo]->sam_ctx;
+          username = MAPIStoreSamDBUserAttribute (samCtx, @"legacyExchangeDN",
+                                                  [NSString stringWithUTF8String: entryId->X500DN],
+                                                  @"sAMAccountName");
+        }
+      else
+        username = nil;
+      talloc_free (entryId);
     }
   else
     username = nil;
-  talloc_free (entryId);
 
   return username;
 }
@@ -1437,12 +1447,19 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSUInteger count, max;
   MAPIStorePermissionEntry *entry;
 
-  max = [entries count];
-  for (count = 0; !username && count < max; count++)
+  if (memberId == 0)
+    username = [[self aclFolder] defaultUserID];
+  else if (memberId == ULLONG_MAX)
+    username = @"anonymous";
+  else
     {
-      entry = [entries objectAtIndex: count];
-      if ([entry memberId] == memberId)
-        username = [entry userId];
+      max = [entries count];
+      for (count = 0; !username && count < max; count++)
+        {
+          entry = [entries objectAtIndex: count];
+          if ([entry memberId] == memberId)
+            username = [entry userId];
+        }
     }
 
   return username;
@@ -1472,7 +1489,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSString *permissionUser;
   NSArray *entries;
   NSArray *permissionRoles;
-  BOOL reset, isAdd;
+  BOOL reset, isAdd = NO, isDelete = NO, isModify = NO;
   SOGoFolder *aclFolder;
 
   aclFolder = [self aclFolder];
@@ -1490,7 +1507,13 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       permissionUser = nil;
       permissionRoles = nil;
  
-      isAdd = (currentPermission->PermissionDataFlags == ROW_ADD);
+      if (currentPermission->PermissionDataFlags == ROW_ADD)
+        isAdd = YES;
+      else if (currentPermission->PermissionDataFlags == ROW_MODIFY)
+        isModify = YES;
+      else
+        isDelete = YES;
+
       for (propCount = 0;
            propCount < currentPermission->lpProps.cValues;
            propCount++)
@@ -1499,16 +1522,19 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
           switch (mapiValue->ulPropTag)
             {
             case PR_ENTRYID:
-              permissionUser
-                = [self _usernameFromEntryId: &mapiValue->value.bin];
+              if (isAdd)
+                permissionUser
+                  = [self _usernameFromEntryId: &mapiValue->value.bin];
               break;
             case PR_MEMBER_ID:
-              permissionUser = [self _usernameFromMemberId: mapiValue->value.d
-                                                 inEntries: entries];
+              if (isModify || isDelete)
+                permissionUser = [self _usernameFromMemberId: mapiValue->value.d
+                                                   inEntries: entries];
               break;
             case PR_MEMBER_RIGHTS:
-              permissionRoles = [self
-                                  rolesForExchangeRights: mapiValue->value.l];
+              if (isAdd || isModify)
+                permissionRoles
+                  = [self rolesForExchangeRights: mapiValue->value.l];
               break;
             default:
               if (mapiValue->ulPropTag != PR_MEMBER_NAME)
