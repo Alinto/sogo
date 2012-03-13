@@ -27,8 +27,7 @@ DIV#rightPanel
   right: 0px;
   bottom: 0px;
   overflow: hidden;
-  -moz-user-select: none;
-  -khtml-user-select: none; }
+}
 
 /* top list */
 DIV#contactsListContent

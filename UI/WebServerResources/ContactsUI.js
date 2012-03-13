@@ -768,7 +768,6 @@ function onAddressBookExport(event) {
     window.location.href = url;
 
     event.stop();
-    hideMenu(document.currentPopupMenu);
 }
 
 function onAddressBookImport(event) {
@@ -1481,19 +1480,19 @@ function configureDraggables() {
         Draggables.empty();
     
         if (mainElement == null) {
-            mainElement = new Element("div", {id: "dragDropVisual"});
+            mainElement = new Element ("div", {id: "dragDropVisual"});
             document.body.appendChild(mainElement);
             mainElement.absolutize();
         }
         mainElement.hide();
     
-        new Draggable("dragDropVisual", 
-                      { handle: "contactsList", 
-                        onStart: startDragging,
-                        onEnd: stopDragging,
-                        onDrag: whileDragging,
-                        scroll: window,
-                        delay: 250 }); 
+        new Draggable ("dragDropVisual", 
+                       { handle: "contactsList", 
+                               onStart: startDragging,
+                               onEnd: stopDragging,
+                               onDrag: whileDragging,
+                               scroll: window
+                           }); 
     }
 }
 
@@ -1524,8 +1523,7 @@ function startDragging (itm, e) {
     var target = Event.element(e);
     if (target.up().up().tagName != "TBODY")
         return false;
-
-    $("contactsListContent").setStyle({ overflow: "visible" });
+    
     var handle = $("dragDropVisual");
     var contacts = $('contactsList').getSelectedRowsId();
     var count = contacts.length;
@@ -1553,7 +1551,6 @@ function whileDragging (itm, e) {
 }
 
 function stopDragging () {
-    $("contactsListContent").setStyle({ overflow: "auto" });
     var handle = $("dragDropVisual");
     handle.hide();
     if (handle.hasClassName ("copy"))

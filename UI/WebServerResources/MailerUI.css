@@ -40,9 +40,7 @@ DIV#rightPanel
   margin: 0px;
   margin-left: 5px;
   padding: 0px;
-  overflow: hidden;
-  -moz-user-select: none;
-  -khtml-user-select: none; }
+  overflow: hidden; }
 
 /* top list */
 DIV#mailboxContent
