@@ -257,35 +257,58 @@ DIV#contactView A
   text-decoration: none; }
 
 DIV#contactView H3.contactCardTitle
-{ display: block;
-  margin: 0px;
+{ margin: 0px;
   padding: .2em 0px;
   font-size: large;
   font-weight: bold;
-  width: 100%;
+  width: 300px;
   text-decoration: underline; }
 
 DIV.contactColumn
-{ 
-  width: 45%;
+{ width: 300px;
   margin-left: 1em;
   padding: .5em;
-  float: left;
-}
+  float: left; }
 
 DIV.contactColumn DIV
 { margin-bottom: 1em; }
 
 DIV.contactColumn H4
-{
-  margin: .2em 0px;
+{ margin: .2em 0px;
   margin-left: -1em;
+  font-size: 10pt;
   font-weight: bold;
   background: #9ABCD8;
   color: #fff;
   width: 100%;
-  padding: .1em .2em;
-}
+  padding: .1em .2em; }
+
+SPAN.photoFrame
+{ cursor: pointer;
+  float: left;
+  background-color: #fff;
+  border: 1px solid #999;
+  padding: 8px;
+  margin: 8px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+  -moz-transform: rotate(-2deg);
+  -webkit-transform: rotate(-2deg);
+  -ms-transform: rotate(-2deg);
+  -moz-transition: all 0.2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out; }
+
+SPAN.photoFrame IMG.contactPhoto
+{ max-width: 120px;
+  max-height: 120px;} 
+
+SPAN.photoFrame:hover {
+  -moz-transform: scale(3.0, 3.0) rotate(0deg) translate(33%, 33%);
+  -webkit-transform: scale(3.0, 3.0) rotate(0deg) translate(33%, 33%);
+  -ms-transform: rotate(0deg) scale(3.0, 3.0); }
+
+SPAN.photoFrame:hover IMG.contactPhoto
+{ 
+  }
 
 /* drag handles */
 DIV#dragHandle

@@ -7,6 +7,10 @@
     xmlns:label="OGo:label"
     xmlns:uix="OGo:uix">
     
+    <var:if condition="hasPhoto"
+          ><span class="photoFrame"><img var:src="photoURL" class="contactPhoto"
+            /></span></var:if>
+
     <h3 class="contactCardTitle"><var:string value="fullName" /></h3
       
       ><div id="leftContactColumn" class="contactColumn"
@@ -19,12 +23,9 @@
           /><var:string value="screenName" escapeHTML="NO"
           /><var:string value="preferredAddress" escapeHTML="NO"
           /><var:string value="categories" escapeHTML="NO"
-          /><var:if condition="hasPhoto"
-          ><img var:src="photoURL" class="contactPhoto"
-            />
-        </var:if></div
-
-        ><var:if condition="hasHomeInfos"
+          /></div
+        >
+        <var:if condition="hasHomeInfos"
         ><div id="homeInfos"
           ><h4><var:string label:value="Home" /></h4
             ><var:string value="homeStreetAddress" escapeHTML="NO"
