@@ -1,5 +1,10 @@
 2012-03-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/ContactsUI.js (configureDraggables):
+	increased the delay before starting drag and drop.
+
+	* UI/WebServerResources/MailerUI.js (configureDraggables): idem.
+
 	* UI/WebServerResources/UIxAclEditor.js (addUser): fixed
 	positioning of new user.
 
