@@ -18,21 +18,21 @@ function addUser(userName, userID, type) {
         newNode.addClassName("normal-" + type);
 
         var count = lis.length - 1;
-        var nextLi = null;
-        while (count > -1 && !nextLi) {
+        var inserted = false;
+        while (count > -1 && !inserted) {
             if ($(lis[count]).hasClassName("normal-user")) {
                 if ((count+1) < lis.length)
                     ul.insertBefore(newNode, lis[count+1]);
                 else
                     ul.appendChild(newNode);
-                break;
+                inserted = true;
             }
             else {
                 count--;
             }
         }
-        if (!nextLi) {
-            if (count > 0)
+        if (!inserted) {
+            if (lis.length > 0)
                 ul.insertBefore(newNode, lis[0]);
             else
                 ul.appendChild(newNode);
