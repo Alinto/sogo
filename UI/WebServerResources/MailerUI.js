@@ -2928,7 +2928,7 @@ function configureDraggables() {
                     onEnd: stopDragging,
                     onDrag: whileDragging,
                     scroll: "folderTreeContent",
-                    delay: 100 });
+                    delay: 250 });
 }
 
 function configureDroppables() {
@@ -2960,6 +2960,9 @@ function startDragging (itm, e) {
     var target = Event.element(e);
     if (target.up('TBODY') == undefined)
         return;
+
+    console.info("start dragging");
+    $("mailboxList").setStyle({ overflow: "visible" });
 
     var row = target.up('TR');
     var handle = $("dragDropVisual");
@@ -2996,7 +2999,9 @@ function whileDragging (itm, e) {
     }
 }
 
-function stopDragging () {
+function stopDragging() {
+    console.info("stop dragging");
+    $("mailboxList").setStyle({ overflow: "auto" });
     var handle = $("dragDropVisual");
     handle.hide();
     if (handle.hasClassName("copy"))

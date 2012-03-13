@@ -38,13 +38,18 @@ DIV#calendarsList
 { height: 100%; }
 
 DIV.colorBox
-{ display: inline;
-  border: 1px solid #333;
-  font-weight: normal;
+{ n0display: inline-block;
+  display: inline-block;
+  n0float: left;
+  background: transparent url("event-gradient.png") repeat-x scroll left center;
+  n0border: 1px solid #333;
+  border-radius: 50%;
+  n0vertical-align: text-bottom;
   margin-right: 3px;
-  font-size: 80%;
-  width: 1em;
-  height: .75em; }
+  n0margin: auto;
+  n0margin: 5px;
+  width: 11px;
+  height: 11px; }
 
 UL#tasksList, UL#calendarList
 { cursor: default;
@@ -66,10 +71,6 @@ UL#calendarList
 { clear: left;
   height: 115px; }
 
-UL#calendarList LI
-{ cursor: pointer;
-  white-space: nowrap; }
-
 UL#tasksList
 { position: absolute;
   top: 2em;
@@ -77,9 +78,10 @@ UL#tasksList
   right: 0px;
   bottom: .25em; }
 
-UL#tasksList LI
+UL#calendarList LI, UL#tasksList LI
 { cursor: pointer;
   width: 100%;
+  line-height: 2em;
   white-space: nowrap; }
 
 UL#tasksList LI.overdue
@@ -1294,8 +1296,10 @@ DIV.event > DIV.eventInside
   padding: 1px;
   top: 0px;
   bottom: 0px;
-  left: 0px;
-  right: 0px; }
+  left: 2px;
+  right: 1px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px; }
 
 DIV.eventInside SPAN.location
 { font-size: smaller; }
