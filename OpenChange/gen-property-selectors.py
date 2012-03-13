@@ -130,7 +130,7 @@ bannedProps = [ "PidTagBodyHtml", "PidTagFavAutosubfolders",
                 "PidTagScheduleInfoDelegateEntryIds", 
                 "PidTagBusiness2TelephoneNumbers",
                 "PidTagHome2TelephoneNumbers",
-                "PidTagAttachDataObject"
+                "PidTagAttachDataObject", "PidTagShorttermEntryIdFromObject",
                 ]
 
 def ParseExchangeH(names, lines):
