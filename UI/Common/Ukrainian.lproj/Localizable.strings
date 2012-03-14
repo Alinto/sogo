@@ -37,10 +37,16 @@
 
 "Sorry, the user rights can not be configured for that object." = "Вибачте, для цього об’єкту неможливо налаштувати права доступу.";
 
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Будь-який користувач з обліковим записом у цій системі зможе отримати доступ до Вашої скриньки \"%{0}\". Чи Ви бажаєте надати такий доступ?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
      = "Будь-який користувач з обліковим записом у цій системі зможе отримати доступ до Вашого календаря \"%{0}\". Чи Ви впевнені, що бажаєте опублікувати Ваш календар у такий спосіб?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Потенційно будь-хто з Інтернету зможе отримати доступ до Вашого календаря \"%{0}\", навіть якщо не має зареєстрованого облікового доступу у цій системі. Чи Ви впевнені, що бажаєте опублікувати Ваш календар у такий спосіб?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Будь-який користувач з обліковим записом у цій системи зможе отримати доступ до Вашої адресної книги \"%{0}\". Чи Ви бажаєте надати такий доступ?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Ймовірно будь-хто з користувачів Інтернет зможе отримати доступ до Вашої адресної книги \"%{0}\", навіть якщо не має облікового запису у цій системі. Чи Ви бажаєте надати такий доступ?";
 "Give Access" = "Дати доступ";
 "Keep Private" = "Залишити у приватному доступі";
 

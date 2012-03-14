@@ -30,6 +30,7 @@
 "Disable auto reply on" = "Вимкнути автоматичну відповідь";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Будь ласка, зазначте Ваше повідомлення та Ваші елекронні адреси, для яких потрібно увімкнути автоматичну відповідь.";
+"Your vacation message must not end with a single dot on a line." = "Ваше повідомлення про відпустку не має закінчуватись одиничною крапкою на рядку.";
 "End date of your auto reply must be in the future."
 = "Кінцева дата автоматичної відповіді має бути у майбутньому.";
 
@@ -75,10 +76,17 @@
 "longDateFmt_2" = "%A, %d %B %Y р.";
 "longDateFmt_3" = "%d %B %Y р.";
 "longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
 
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
+"timeFmt_3" = "";
 
 /* calendar */
 "Week begins on :" = "Тиждень починаєтья з :";
@@ -166,11 +174,11 @@
 "Change" = "Змінити";
 
 /* Event+task classifications */
-"Default events classification :" = "Default events classification :";
-"Default tasks classification :" = "Default tasks classification :";
-"PUBLIC_item" = "Public";
-"CONFIDENTIAL_item" = "Confidential";
-"PRIVATE_item" = "Private";
+"Default events classification :" = "Класифікація типових подій:";
+"Default tasks classification :" = "Класифікація типових завдань:";
+"PUBLIC_item" = "Загальний доступ";
+"CONFIDENTIAL_item" = "Обмежений доступ";
+"PRIVATE_item" = "Приватний доступ";
 
 /* Event+task categories */
 "category_none" = "Без категорії";
