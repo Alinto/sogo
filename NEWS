@@ -15,6 +15,8 @@ Enhancements
   to improve the user experience with cheap mouses
  - updated German translation
  - updated Spanish (Spain) translation
+ - updated Spanish (Argentina) translation
+ - updated Ukrainian translation
 
 Bug Fixes
  - fixed escaping issue with PostgreSQL 8.1
