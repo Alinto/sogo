@@ -188,7 +188,7 @@ static NSMapTable *contextsTable = nil;
       [rootFolders setObject: currentFolder
                       forKey: @"mail"];
       [[currentFolder imap4Connection]
-         enableExtension: @"QRESYNC"];
+        enableExtensions: [NSArray arrayWithObject: @"QRESYNC"]];
     }
 
   return rootFolders;

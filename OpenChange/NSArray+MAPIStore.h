@@ -29,7 +29,7 @@
 
 /* mapi structs */
 + (id) arrayFromMAPIMVLong: (const struct mapi_MV_LONG_STRUCT *) mvLong;
-+ (id) arrayFromMAPIMVUnicode: (const struct mapi_SPLSTRArrayW *) mvUnicode;
++ (id) arrayFromMAPIMVUnicode: (const struct mapi_SLPSTRArrayW *) mvUnicode;
 + (id) arrayFromMAPIMVString: (const struct mapi_SLPSTRArray *) mvString;
 + (id) arrayFromMAPIMVBinary: (const struct mapi_SBinaryArray *) mvBinary;
 + (id) arrayFromMAPIMVGuid: (const struct mapi_SGuidArray *) mvGuid;
@@ -39,8 +39,8 @@
 - (struct LongArray_r *) asMVLongInMemCtx: (void *) memCtx;
 + (id) arrayFromMVI8: (const struct I8Array_r *) mvI8;
 + (id) arrayFromMVString: (const struct StringArray_r *) mvString;
-+ (id) arrayFromMVUnicode: (const struct WStringArray_r *) mvUnicode;
-- (struct WStringArray_r *) asMVUnicodeInMemCtx: (void *) memCtx;
++ (id) arrayFromMVUnicode: (const struct StringArrayW_r *) mvUnicode;
+- (struct StringArrayW_r *) asMVUnicodeInMemCtx: (void *) memCtx;
 + (id) arrayFromMVBinary: (const struct BinaryArray_r *) mvBinary;
 - (struct BinaryArray_r *) asMVBinaryInMemCtx: (void *) memCtx;
 + (id) arrayFromMVGuid: (const struct FlatUIDArray_r *) mvGuid;

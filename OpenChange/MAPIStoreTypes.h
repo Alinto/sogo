@@ -42,6 +42,8 @@ id NSObjectFromSPropValue (const struct SPropValue *);
 id NSObjectFromMAPISPropValue (const struct mapi_SPropValue *);
 id NSObjectFromValuePointer (enum MAPITAGS, const void *);
 
+NSComparisonResult MAPICNCompare (uint64_t cn1, uint64_t cn2);
+
 static inline NSNumber *
 MAPIPropertyKey (enum MAPITAGS propTag)
 {

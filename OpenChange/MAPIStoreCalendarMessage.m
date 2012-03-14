@@ -126,10 +126,10 @@
 }
 
 /* getters */
-- (int) getPrIconIndex: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagIconIndex: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrIconIndex: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagIconIndex: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidFInvited: (void **) data
@@ -138,24 +138,32 @@
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPrMessageClass: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMessageClass: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup (memCtx, "IPM.Appointment");
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrOwnerApptId: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidLidAppointmentMessageClass: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrOwnerApptId: data inMemCtx: memCtx];
+  *data = talloc_strdup (memCtx, "IPM.Appointment");
+
+  return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrStartDate: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagOwnerAppointmentId: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrStartDate: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagOwnerAppointmentId: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagStartDate: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidTagStartDate: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidAppointmentStateFlags: (void **) data
@@ -183,10 +191,10 @@
   return [[self appointmentWrapper] getPidLidCommonStart: data inMemCtx: memCtx];
 }
 
-- (int) getPrEndDate: (void **) data
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagEndDate: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrEndDate: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagEndDate: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidAppointmentEndWhole: (void **) data
@@ -220,10 +228,20 @@
   return [[self appointmentWrapper] getPidLidBusyStatus: data inMemCtx: memCtx];
 }
 
-- (int) getPrSubject: (void **) data // SUMMARY
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSubject: (void **) data // SUMMARY
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrSubject: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagSubject: data inMemCtx: memCtx];
+}
+
+- (int) getPidLidSideEffects: (void **) data // TODO
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPILongValue (memCtx,
+                         seOpenToDelete | seOpenToCopy | seOpenToMove
+                         | seCoerceToInbox | seOpenForCtxMenu);
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) getPidLidLocation: (void **) data // LOCATION
@@ -238,22 +256,22 @@
   return [[self appointmentWrapper] getPidLidPrivate: data inMemCtx: memCtx];
 }
 
-- (int) getPrSensitivity: (void **) data // not implemented, depends on CLASS
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSensitivity: (void **) data // not implemented, depends on CLASS
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrSensitivity: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagSensitivity: data inMemCtx: memCtx];
 }
 
-- (int) getPrImportance: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagImportance: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrImportance: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagImportance: data inMemCtx: memCtx];
 }
 
-- (int) getPrBody: (void **) data
-         inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagBody: (void **) data
+             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrBody: data inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagBody: data inMemCtx: memCtx];
 }
 
 - (int) getPidLidIsRecurring: (void **) data
@@ -289,7 +307,7 @@
                                                         inMemCtx: memCtx];
 }
 
-- (int) getPrProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
@@ -324,114 +342,114 @@
 }
 
 /* sender */
-- (int) getPrSenderEmailAddress: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSenderEmailAddress: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrSenderEmailAddress: data
-                                                   inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagSenderEmailAddress: data
+                                                       inMemCtx: memCtx];
 }
 
-- (int) getPrSenderAddrtype: (void **) data
+- (int) getPidTagSenderAddressType: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidTagSenderAddressType: data
+                                                      inMemCtx: memCtx];
+}
+
+- (int) getPidTagSenderName: (void **) data
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrSenderAddrtype: data
+  return [[self appointmentWrapper] getPidTagSenderName: data
                                                inMemCtx: memCtx];
 }
 
-- (int) getPrSenderName: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSenderEntryId: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [[self appointmentWrapper] getPrSenderName: data
-                                           inMemCtx: memCtx];
-}
-
-- (int) getPrSenderEntryid: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPrSenderEntryid: data
-                                              inMemCtx: memCtx];
+  return [[self appointmentWrapper] getPidTagSenderEntryId: data
+                                                  inMemCtx: memCtx];
 }
 
 /* sender representing */
-- (int) getPrSentRepresentingEmailAddress: (void **) data
-                                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSentRepresentingEmailAddress: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSenderEmailAddress: data inMemCtx: memCtx];
+  return [self getPidTagSenderEmailAddress: data inMemCtx: memCtx];
 }
 
-- (int) getPrSentRepresentingAddrtype: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSentRepresentingAddressType: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
-- (int) getPrSentRepresentingName: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSentRepresentingName: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSenderName: data inMemCtx: memCtx];
+  return [self getPidTagSenderName: data inMemCtx: memCtx];
 }
 
-- (int) getPrSentRepresentingEntryid: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSentRepresentingEntryId: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSenderEntryid: data inMemCtx: memCtx];
+  return [self getPidTagSenderEntryId: data inMemCtx: memCtx];
 }
 
 /* attendee */
-// - (int) getPrReceivedByAddrtype: (void **) data
+// - (int) getPidTagReceivedByAddressType: (void **) data
 //                        inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [[self appointmentWrapper] getPrReceivedByAddrtype: data
+//   return [[self appointmentWrapper] getPidTagReceivedByAddressType: data
 //                                                    inMemCtx: memCtx];
 // }
 
-// - (int) getPrReceivedByEmailAddress: (void **) data
+// - (int) getPidTagReceivedByEmailAddress: (void **) data
 //                            inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [[self appointmentWrapper] getPrReceivedByEmailAddress: data
+//   return [[self appointmentWrapper] getPidTagReceivedByEmailAddress: data
 //                                                        inMemCtx: memCtx];
 // }
 
-// - (int) getPrReceivedByName: (void **) data
+// - (int) getPidTagReceivedByName: (void **) data
 //                    inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [[self appointmentWrapper] getPrReceivedByName: data
+//   return [[self appointmentWrapper] getPidTagReceivedByName: data
 //                                                inMemCtx: memCtx];
 // }
 
-// - (int) getPrReceivedByEntryid: (void **) data
+// - (int) getPidTagReceivedByEntryId: (void **) data
 //                       inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [[self appointmentWrapper] getPrReceivedByEntryid: data
+//   return [[self appointmentWrapper] getPidTagReceivedByEntryId: data
 //                                                   inMemCtx: memCtx];
 // }
 
 // /* attendee representing */
-// - (int) getPrRcvdRepresentingEmailAddress: (void **) data
+// - (int) getPidTagReceivedRepresentingEmailAddress: (void **) data
 //                                  inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [self getPrReceivedByEmailAddress: data inMemCtx: memCtx];
+//   return [self getPidTagReceivedByEmailAddress: data inMemCtx: memCtx];
 // }
 
-// - (int) getPrRcvdRepresentingAddrtype: (void **) data
+// - (int) getPidTagReceivedRepresentingAddressType: (void **) data
 //                              inMemCtx: (TALLOC_CTX *) memCtx
 // {
 //   return [self getSMTPAddrType: data inMemCtx: memCtx];
 // }
 
-// - (int) getPrRcvdRepresentingName: (void **) data
+// - (int) getPidTagReceivedRepresentingName: (void **) data
 //                          inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [self getPrReceivedByName: data inMemCtx: memCtx];
+//   return [self getPidTagReceivedByName: data inMemCtx: memCtx];
 // }
 
-// - (int) getPrRcvdRepresentingEntryid: (void **) data
+// - (int) getPidTagReceivedRepresentingEntryId: (void **) data
 //                             inMemCtx: (TALLOC_CTX *) memCtx
 // {
-//   return [self getPrReceivedByEntryid: data inMemCtx: memCtx];
+//   return [self getPidTagReceivedByEntryId: data inMemCtx: memCtx];
 // }
 
-- (int) getPrResponseRequested: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagResponseRequested: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
 }
@@ -542,43 +560,50 @@
   return uid;
 }
 
-- (void) _fixupEventWithExistingUID
+- (void) _fixupAppointmentObjectWithUID: (NSString *) uid
 {
-  NSString *uid, *existingCName, *existingURL;
+  NSString *cname, *url;
   MAPIStoreMapping *mapping;
   uint64_t objectId;
-  SOGoAppointmentObject *existingObject;
+  SOGoAppointmentFolder *folder;
+  SOGoAppointmentObject *newObject;
   WOContext *woContext;
 
-  uid = [self _uidFromGlobalObjectId];
-  existingCName = [[container sogoObject] resourceNameForEventUID: uid];
-  if (existingCName)
+  cname = [[container sogoObject] resourceNameForEventUID: uid];
+  if (cname)
+    isNew = NO;
+  else
+    cname = [NSString stringWithFormat: @"%@.ics", uid];
+
+  mapping = [self mapping];
+
+  url = [NSString stringWithFormat: @"%@%@", [container url], cname];
+  folder = [container sogoObject];
+  /* reinstantiate the old sogo object and attach it to self */
+  woContext = [[self userContext] woContext];
+  if (isNew)
+    newObject = [SOGoAppointmentObject objectWithName: cname
+                                          inContainer: folder];
+  else
     {
-      mapping = [self mapping];
-
       /* dissociate the object url from the old object's id */
-      existingURL = [NSString stringWithFormat: @"%@%@",
-                              [container url], existingCName];
-      objectId = [mapping idFromURL: existingURL];
+      objectId = [mapping idFromURL: url];
       [mapping unregisterURLWithID: objectId];
-
-      /* dissociate the object url associated with this object, as we want to
-         discard it */
-      objectId = [self objectId];
-      [mapping unregisterURLWithID: objectId];
-      
-      /* associate the object url with this object id */
-      [mapping registerURL: existingURL withID: objectId];
-
-      /* reinstantiate the old sogo object and attach it to self */
-      woContext = [[self userContext] woContext];
-      existingObject = [[container sogoObject] lookupName: existingCName
-                                                inContext: woContext
-                                                  acquire: NO];
-      [existingObject setContext: woContext];
-      ASSIGN (sogoObject, existingObject);
-      isNew = NO;
+      newObject = [folder lookupName: cname
+                           inContext: woContext
+                             acquire: NO];
     }
+
+  /* dissociate the object url associated with this object, as we want to
+     discard it */
+  objectId = [self objectId];
+  [mapping unregisterURLWithID: objectId];
+      
+  /* associate the new object url with this object id */
+  [mapping registerURL: url withID: objectId];
+
+  [newObject setContext: woContext];
+  ASSIGN (sogoObject, newObject);
 }
 
 - (void) _setupAlarmDataInEvent: (iCalEvent *) newEvent
@@ -657,9 +682,9 @@
   iCalDateTime *start, *end;
   iCalTimeZone *tz;
   NSCalendarDate *now;
-  NSString *content, *tzName, *priority;
+  NSString *uid, *content, *tzName, *priority, *newParticipationStatus = nil;
   iCalEvent *newEvent;
-  iCalPerson *userPerson;
+  // iCalPerson *userPerson;
   NSUInteger responseStatus = 0;
   NSInteger tzOffset;
   SOGoUser *activeUser, *ownerUser;
@@ -667,12 +692,18 @@
 
   if (isNew)
     {
-      /* Hack required because of what's explained in oxocal 3.1.4.7.1:
-         basically, Outlook creates a copy of the event and then removes the
-         old instance. We perform a trickery to avoid performing those
-         operations in the backend, in a way that enables us to recover the
-         initial instance and act solely on it. */
-      [self _fixupEventWithExistingUID];
+      uid = [self _uidFromGlobalObjectId];
+      if (uid)
+        {
+          /* Hack required because of what's explained in oxocal 3.1.4.7.1:
+             basically, Outlook creates a copy of the event and then removes the
+             old instance. We perform a trickery to avoid performing those
+             operations in the backend, in a way that enables us to recover the
+             initial instance and act solely on it. */
+          [self _fixupAppointmentObjectWithUID: uid];
+        }
+      else
+        uid = [SOGoObject globallyUniqueObjectId];
     }
 
   [self logWithFormat: @"-save, event props:"];
@@ -686,286 +717,225 @@
       newEvent = [sogoObject component: YES secure: NO];
       vCalendar = [newEvent parent];
       [vCalendar setProdID: @"-//Inverse inc.//OpenChange+SOGo//EN"];
-      content = [vCalendar versitString];
       [newEvent setCreated: now];
+      [newEvent setUid: uid];
+      content = [vCalendar versitString];
     }
 
   vCalendar = [iCalCalendar parseSingleFromSource: content];
   newEvent = [[vCalendar events] objectAtIndex: 0];
-
-  ownerUser = [[self userContext] sogoUser];
-  userPerson = [newEvent userAsAttendee: ownerUser];
   [newEvent setTimeStampAsDate: now];
+  [newEvent setLastModified: now];
 
-  if (userPerson)
+  // summary
+  value = [properties
+                objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
+  if (value)
+    [newEvent setSummary: value];
+
+  // Location
+  value = [properties objectForKey: MAPIPropertyKey (PidLidLocation)];
+  if (value)
+    [newEvent setLocation: value];
+
+  isAllDay = [newEvent isAllDay];
+  value = [properties
+                objectForKey: MAPIPropertyKey (PidLidAppointmentSubType)];
+  if (value)
+    isAllDay = [value boolValue];
+  if (!isAllDay)
     {
-      // iCalPersonPartStat newPartStat;
-      NSString *newPartStat;
-
-      value
-        = [properties objectForKey: MAPIPropertyKey (PidLidResponseStatus)];
-      if (value)
-        responseStatus = [value unsignedLongValue];
-
-      /* FIXME: we should provide a data converter between OL partstats and
-         SOGo */
-      switch (responseStatus)
+      tzName = [[self ownerTimeZone] name];
+      tz = [iCalTimeZone timeZoneForName: tzName];
+      [vCalendar addTimeZone: tz];
+    }
+  
+  // start
+  value = [properties objectForKey: MAPIPropertyKey (PR_START_DATE)];
+  if (!value)
+    value = [properties
+                  objectForKey: MAPIPropertyKey (PidLidAppointmentStartWhole)];
+  if (value)
+    {
+      start = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtstart"];
+      if (isAllDay)
         {
-        case 0x02: /* respTentative */
-          // newPartStat = iCalPersonPartStatTentative;
-          newPartStat = @"TENTATIVE";
-          break;
-        case 0x03: /* respAccepted */
-          // newPartStat = iCalPersonPartStatAccepted;
-          newPartStat = @"ACCEPTED";
-          break;
-        case 0x04: /* respDeclined */
-          // newPartStat = iCalPersonPartStatDeclined;
-          newPartStat = @"DECLINED";
-          break;
-        default:
-          newPartStat = nil;
+          tzOffset = [[value timeZone] secondsFromGMTForDate: value];
+          value = [value dateByAddingYears: 0 months: 0 days: 0
+                                     hours: 0 minutes: 0
+                                   seconds: -tzOffset];
+          [start setTimeZone: nil];
+          [start setDate: value];
         }
-
-      if (newPartStat // != iCalPersonPartStatUndefined
-          )
+      else
         {
-          // iCalPerson *participant;
+          [start setTimeZone: tz];
+          [start setDateTime: value];
+        }
+    }
 
-          // participant = [newEvent userAsAttendee: ownerUser];
-          // [participant setParticipationStatus: newPartStat];
-          // [sogoObject saveComponent: newEvent];
+  /* end */
+  value = [properties objectForKey: MAPIPropertyKey (PR_END_DATE)];
+  if (!value)
+    value = [properties objectForKey: MAPIPropertyKey (PidLidAppointmentEndWhole)];
+  if (value)
+    {
+      end = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtend"];
+      if (isAllDay)
+        {
+          tzOffset = [[value timeZone] secondsFromGMTForDate: value];
+          value = [value dateByAddingYears: 0 months: 0 days: 0
+                                     hours: 0 minutes: 0
+                                   seconds: -tzOffset];
+          [end setTimeZone: nil];
+          [end setDate: value];
+        }
+      else
+        {
+          [end setTimeZone: tz];
+          [end setDateTime: value];
+        }
+    }
 
-          [sogoObject changeParticipationStatus: newPartStat
-                                   withDelegate: nil];
-          // [[self context] tearDownRequest];
+  /* priority */
+  value = [properties objectForKey: MAPIPropertyKey(PR_IMPORTANCE)];
+  if (value)
+    {
+      switch ([value intValue])
+        {
+        case 0: // IMPORTANCE_LOW
+          priority = @"9";
+          break;
+        case 2: // IMPORTANCE_HIGH
+          priority = @"1";
+          break;
+        default: // IMPORTANCE_NORMAL
+          priority = @"5";
         }
     }
   else
+    priority = @"0"; // None
+  [newEvent setPriority: priority];
+
+  /* show time as free/busy/tentative/out of office. Possible values are:
+     0x00000000 - olFree
+     0x00000001 - olTentative
+     0x00000002 - olBusy
+     0x00000003 - olOutOfOffice */
+  value = [properties objectForKey: MAPIPropertyKey(PidLidBusyStatus)];
+  if (value)
     {
-      [newEvent setLastModified: now];
-
-      // summary
-      value = [properties
-                objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
-      if (value)
-        [newEvent setSummary: value];
-
-      // Location
-      value = [properties objectForKey: MAPIPropertyKey (PidLidLocation)];
-      if (value)
-        [newEvent setLocation: value];
-
-      isAllDay = [newEvent isAllDay];
-      value = [properties
-                objectForKey: MAPIPropertyKey (PidLidAppointmentSubType)];
-      if (value)
-        isAllDay = [value boolValue];
-      if (!isAllDay)
+      switch ([value intValue])
         {
-          tzName = [[self ownerTimeZone] name];
-          tz = [iCalTimeZone timeZoneForName: tzName];
-          [vCalendar addTimeZone: tz];
+        case 0:
+          [newEvent setTransparency: @"TRANSPARENT"];
+          break;
+        case 1:
+        case 2:
+        case 3:
+        default:
+          [newEvent setTransparency: @"OPAQUE"];
         }
+    }
 
-      // start
-      value = [properties objectForKey: MAPIPropertyKey (PR_START_DATE)];
-      if (!value)
-        value = [properties
-                  objectForKey: MAPIPropertyKey (PidLidAppointmentStartWhole)];
+  /* Comment */
+  value = [properties objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
+  if (!value)
+    {
+      value = [properties objectForKey: MAPIPropertyKey (PR_HTML)];
       if (value)
         {
-          start = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtstart"];
-          if (isAllDay)
-            {
-              tzOffset = [[value timeZone] secondsFromGMTForDate: value];
-              value = [value dateByAddingYears: 0 months: 0 days: 0
-                                         hours: 0 minutes: 0
-                                       seconds: -tzOffset];
-              [start setTimeZone: nil];
-              [start setDate: value];
-            }
-          else
-            {
-              [start setTimeZone: tz];
-              [start setDateTime: value];
-            }
+          value = [[NSString alloc] initWithData: value
+                                        encoding: NSUTF8StringEncoding];
+          [value autorelease];
+          value = [value htmlToText];
         }
-
-      /* end */
-      value = [properties objectForKey: MAPIPropertyKey (PR_END_DATE)];
-      if (!value)
-        value = [properties objectForKey: MAPIPropertyKey (PidLidAppointmentEndWhole)];
-      if (value)
-        {
-          end = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtend"];
-          if (isAllDay)
-            {
-              tzOffset = [[value timeZone] secondsFromGMTForDate: value];
-              value = [value dateByAddingYears: 0 months: 0 days: 0
-                                         hours: 0 minutes: 0
-                                       seconds: -tzOffset];
-              [end setTimeZone: nil];
-              [end setDate: value];
-            }
-          else
-            {
-              [end setTimeZone: tz];
-              [end setDateTime: value];
-            }
-        }
-
-      /* priority */
-      value = [properties objectForKey: MAPIPropertyKey(PR_IMPORTANCE)];
-      if (value)
-	{
-	  switch ([value intValue])
-	    {
-	    case 0: // IMPORTANCE_LOW
-	      priority = @"9";
-	      break;
-	    case 2: // IMPORTANCE_HIGH
-	      priority = @"1";
-	      break;
-	    default: // IMPORTANCE_NORMAL
-	      priority = @"5";
-	    }
-	}
-      else
-	priority = @"0"; // None
-      [newEvent setPriority: priority];
-
-      /* show time as free/busy/tentative/out of office. Possible values are:
-	 0x00000000 - olFree
-	 0x00000001 - olTentative
-	 0x00000002 - olBusy
-	 0x00000003 - olOutOfOffice */
-      value = [properties objectForKey: MAPIPropertyKey(PidLidBusyStatus)];
-      if (value)
-	{
-	  switch ([value intValue])
-	    {
-	    case 0:
-	      [newEvent setTransparency: @"TRANSPARENT"];
-	      break;
-	    case 1:
-	    case 2:
-	    case 3:
-	    default:
-	      [newEvent setTransparency: @"OPAQUE"];
-	    }
-	}
-
-      /* Comment */
-      value = [properties objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
-      if (!value)
-        {
-          value = [properties objectForKey: MAPIPropertyKey (PR_HTML)];
-          if (value)
-            {
-              value = [[NSString alloc] initWithData: value
-                                            encoding: NSUTF8StringEncoding];
-              [value autorelease];
-              value = [value htmlToText];
-            }
-        }
-      if (value && [value length] == 0)
-        value = nil;
-      [newEvent setComment: value];
+    }
+  if (value && [value length] == 0)
+    value = nil;
+  [newEvent setComment: value];
       
-      /* recurrence */
-      value = [properties
+  /* recurrence */
+  value = [properties
                 objectForKey: MAPIPropertyKey (PidLidAppointmentRecur)];
+  if (value)
+    [self _setupRecurrenceInCalendar: vCalendar
+                           withEvent: newEvent
+                            fromData: value];
+
+  [newEvent setOrganizer: nil];
+  [newEvent removeAllAttendees];
+
+  /* alarm */
+  [self _setupAlarmDataInEvent: newEvent];
+
+  if ([[properties objectForKey: MAPIPropertyKey (PidLidAppointmentStateFlags)] intValue]
+      != 0)
+    {
+      // Organizer
+      value = [properties objectForKey: @"recipients"];
       if (value)
-        [self _setupRecurrenceInCalendar: vCalendar
-	                       withEvent: newEvent
-                                fromData: value];
-
-      [newEvent setOrganizer: nil];
-      [newEvent removeAllAttendees];
-
-      /* alarm */
-      [self _setupAlarmDataInEvent: newEvent];
-
-      if ([[properties objectForKey: MAPIPropertyKey (PidLidAppointmentStateFlags)] intValue]
-          != 0)
         {
-          // Organizer
-          value = [properties objectForKey: @"recipients"];
-          if (value)
-            {
-              NSArray *recipients;
-              NSDictionary *dict;
-              NSString *orgEmail, *sentBy, *attEmail;
-              iCalPerson *person;
-              iCalPersonPartStat newPartStat;
-              NSNumber *flags, *trackStatus;
-              int i, effective;
+          NSArray *recipients;
+          NSDictionary *dict;
+          NSString *orgEmail, *sentBy, *attEmail;
+          iCalPerson *person;
+          iCalPersonPartStat newPartStat;
+          NSNumber *flags, *trackStatus;
+          int i, effective;
+          BOOL organizerIsSet = NO;
 
-              /* We must set the organizer preliminarily here because, unlike what
-                 the doc states, Outlook does not always pass the real organizer
-                 in the recipients list. */
-              dict = [ownerUser primaryIdentity];
+          recipients = [value objectForKey: @"to"];
+          effective = 0;
+          for (i = 0; i < [recipients count]; i++)
+            {
+              dict = [recipients objectAtIndex: i];
               person = [iCalPerson new];
               [person setCn: [dict objectForKey: @"fullName"]];
-              orgEmail = [dict objectForKey: @"email"];
-              [person setEmail: orgEmail];
-
-              activeUser = [[self context] activeUser];
-              if (![activeUser isEqual: ownerUser])
+              attEmail = [dict objectForKey: @"email"];
+              [person setEmail: attEmail];
+ 
+              flags = [dict objectForKey: MAPIPropertyKey (PR_RECIPIENT_FLAGS)];
+              if (!flags)
                 {
-                  dict = [activeUser primaryIdentity];
-                  sentBy = [NSString stringWithFormat: @"mailto:%@",
-                                     [dict objectForKey: @"email"]];
-                  [person setSentBy: sentBy];
+                  [self logWithFormat:
+                          @"no recipient flags specified: skipping recipient"];
+                  continue;
                 }
-              [newEvent setOrganizer: person];
-              [person release];
 
-              recipients = [value objectForKey: @"to"];
-              effective = 0;
-              for (i = 0; i < [recipients count]; i++)
+              if (([flags unsignedIntValue] & 0x0002)) /* recipOrganizer */
                 {
-                  dict = [recipients objectAtIndex: i];
+                  [newEvent setOrganizer: person];
+                  organizerIsSet = YES;
+                  [self logWithFormat: @"organizer set via recipient flags"];
+                }
+              else
+                {
+                  BOOL isOrganizer = NO;
 
-                  flags = [dict objectForKey: MAPIPropertyKey (PR_RECIPIENT_FLAGS)];
-                  if (!flags)
+                  // /* Work-around: it happens that Outlook still passes the
+                  //    organizer as a recipient, maybe because of a feature
+                  //    documented in a pre-mesozoic PDF still buried in a
+                  //    cavern... In that case we remove it, and we keep the
+                  //    number of effective recipients in "effective". If the
+                  //    total is 0, we remove the "ORGANIZER" too. */
+                  // if ([attEmail isEqualToString: orgEmail])
+                  //   {
+                  //     [self logWithFormat:
+                  //             @"avoiding setting organizer as recipient"];
+                  //     continue;
+                  //   }
+
+                  trackStatus = [dict objectForKey: MAPIPropertyKey (PidTagRecipientTrackStatus)];
+                  if (trackStatus)
                     {
-                      [self logWithFormat:
-                              @"no recipient flags specified: skipping recipient"];
-                      continue;
-                    }
-
-                  person = [iCalPerson new];
-                  [person setCn: [dict objectForKey: @"fullName"]];
-                  attEmail = [dict objectForKey: @"email"];
-                  [person setEmail: attEmail];
-
-                  if (([flags unsignedIntValue] & 0x0002)) /* recipOrganizer */
-                    [newEvent setOrganizer: person];
-                  else
-                    {
-                      /* Work-around: it happens that Outlook still passes the
-                         organizer as a recipient, maybe because of a feature
-                         documented in a pre-mesozoic PDF still buried in a
-                         cavern... In that case we remove it, and we keep the
-                         number of effective recipients in "effective". If the
-                         total is 0, we remove the "ORGANIZER" too. */
-                      if ([attEmail isEqualToString: orgEmail])
-                        {
-                          [self logWithFormat:
-                                  @"avoiding setting organizer as recipient"];
-                          continue;
-                        }
-
-                      trackStatus
-                        = [dict
-                            objectForKey: MAPIPropertyKey (PR_RECIPIENT_TRACKSTATUS)];
-
                       /* FIXME: we should provide a data converter between OL
                          partstats and SOGo */
                       switch ([trackStatus unsignedIntValue])
                         {
+                        case 0x01: /* respOrganized */
+                          isOrganizer = YES;
+                          break;
                         case 0x02: /* respTentative */
                           newPartStat = iCalPersonPartStatTentative;
                           break;
@@ -979,28 +949,127 @@
                           newPartStat = iCalPersonPartStatNeedsAction;
                         }
 
-                      [person setParticipationStatus: newPartStat];
-                      [person setRsvp: @"TRUE"];
-                      [person setRole: @"REQ-PARTICIPANT"];
-                      [newEvent addToAttendees: person];
-                      effective++;
+                      if (isOrganizer)
+                        {
+                          [newEvent setOrganizer: person];
+                          organizerIsSet = YES;
+                          [self logWithFormat: @"organizer set via track status"];
+                        }
+                      else
+                        {
+                          [person setParticipationStatus: newPartStat];
+                          [person setRsvp: @"TRUE"];
+                          [person setRole: @"REQ-PARTICIPANT"];
+                          [newEvent addToAttendees: person];
+                          effective++;
+                        }
                     }
-
-                  [person release];
+                  else
+                    [self errorWithFormat: @"skipped recipient due"
+                          @" to missing track status"];
                 }
 
-              if (effective == 0) /* See work-around above */
-                [newEvent setOrganizer: nil];
+              [person release];
+            }
+
+          if (effective == 0) /* See work-around above */
+            [newEvent setOrganizer: nil];
+          else
+            {
+              ownerUser = [[self userContext] sogoUser];
+              if (organizerIsSet)
+                {
+                  /* We must reset the participation status to the value
+                     obtained from PidLidResponseStatus as the value in
+                     PidTagRecipientTrackStatus is not correct. Note (hack):
+                     the method used here requires that the user directory
+                     from LDAP and Samba matches perfectly. This can be solved
+                     more appropriately by making use of the sender
+                     properties... */
+                  person = [newEvent userAsAttendee: ownerUser];
+                  if (person)
+                    {
+                      value
+                        = [properties objectForKey: MAPIPropertyKey (PidLidResponseStatus)];
+                      if (value)
+                        responseStatus = [value unsignedLongValue];
+                      
+                      /* FIXME: we should provide a data converter between OL partstats and
+                         SOGo */
+                      switch (responseStatus)
+                        {
+                        case 0x02: /* respTentative */
+                          newPartStat = iCalPersonPartStatTentative;
+                          break;
+                        case 0x03: /* respAccepted */
+                          newPartStat = iCalPersonPartStatAccepted;
+                          break;
+                        case 0x04: /* respDeclined */
+                          newPartStat = iCalPersonPartStatDeclined;
+                          break;
+                        default:
+                          newPartStat = iCalPersonPartStatNeedsAction;
+                        }
+                      [person setParticipationStatus: newPartStat];
+                      newParticipationStatus = [person partStatWithDefault];
+                      
+                      //                 if (newPartStat // != iCalPersonPartStatUndefined
+  //                     )
+  //                   {
+  //                     // iCalPerson *participant;
+
+  //                     // participant = [newEvent userAsAttendee: ownerUser];
+  //                     // [participant setParticipationStatus: newPartStat];
+  //                     // [sogoObject saveComponent: newEvent];
+
+  //                     [sogoObject changeParticipationStatus: newPartStat
+  //                                              withDelegate: nil];
+  //                     // [[self context] tearDownRequest];
+  //                   }
+  // //   }1005
+
+  // // else
+  // //   {
+                    }
+                }
+              else
+                {
+                  [self errorWithFormat: @"organizer was not set although a"
+                        @" recipient list was specified"];
+                  /* We must set the organizer preliminarily here because, unlike what
+                     the doc states, Outlook does not always pass the real organizer
+                     in the recipients list. */
+                  dict = [ownerUser primaryIdentity];
+                  person = [iCalPerson new];
+                  [person setCn: [dict objectForKey: @"fullName"]];
+                  orgEmail = [dict objectForKey: @"email"];
+                  [person setEmail: orgEmail];
+                  
+                  activeUser = [[self context] activeUser];
+                  if (![activeUser isEqual: ownerUser])
+                    {
+                      dict = [activeUser primaryIdentity];
+                      sentBy = [NSString stringWithFormat: @"mailto:%@",
+                                       [dict objectForKey: @"email"]];
+                      [person setSentBy: sentBy];
+                    }
+                  [newEvent setOrganizer: person];
+                  [person release];
+                }
             }
         }
-
-      [sogoObject saveComponent: newEvent];
     }
+
+  [sogoObject saveComponent: newEvent];
+  if (newParticipationStatus)
+    [sogoObject changeParticipationStatus: newParticipationStatus
+                             withDelegate: nil];
+
   [(MAPIStoreCalendarFolder *) container synchroniseCache];
   value = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
   if (value)
     [(MAPIStoreCalendarFolder *) container
-        setChangeKey: value forMessageWithKey: [self nameInContainer]];
+    setChangeKey: value forMessageWithKey: [self nameInContainer]];
 }
 
 - (id) lookupAttachment: (NSString *) childKey

@@ -106,15 +106,32 @@ extern const enum MAPITAGS MAPIStoreSupportedProperties[];
 
 # hack: some properties have multiple and incompatible types. Sometimes those
 # props are not related at all...
-bannedProps = { "PrBodyHtml": True, "PrFavAutosubfolders": True,
-                "PrAttachDataObj": True, "PrAclTable": True,
-                "PrAclData": True, "PrRulesTable": True, "PrRulesData": True,
-                "PrDisableWinsock": True, "PrHierarchyServer": True,
-                "PrOfflineAddrbookEntryid": True,
-                "PrShorttermEntryidFromObject": True,
-                "PrNormalMessageSizeExtended": True,
-                "PrAssocMessageSizeExtended": True,
-                "PrMessageSizeExtended": True }
+bannedProps = [ "PidTagBodyHtml", "PidTagFavAutosubfolders",
+                "PidTagAttachDataObj", "PidTagAclTable", "PidTagAclData",
+                "PidTagRulesTable", "PidTagRulesData", "PidTagDisableWinsock",
+                "PidTagHierarchyServer", "PidTagOfflineAddrbookEntryid",
+                "PidTagShorttermEntryidFromObject",
+                "PidTagNormalMessageSizeExtended",
+                "PidTagAssocMessageSizeExtended", "PidTagMessageSizeExtended",
+                "PidTagOabContainerGuid",
+                "PidTagOfflineAddressBookMessageClass", "PidTagScriptData",
+                "PidTagOfflineAddressBookTruncatedProperties",
+                "PidTagOfflineAddressBookContainerGuid",
+                "PidTagOfflineAddressBookDistinguishedName",
+                "PidTagOfflineAddressBookShaHash",
+                "PidTagSenderTelephoneNumber", "PidTagGatewayNeedsToRefresh",
+                "PidTagWlinkType", "PidTagWlinkFlags",
+                "PidTagWlinkGroupClsid", "PidTagWlinkGroupName",
+                "PidTagWlinkGroupHeaderID",
+                "PidTagScheduleInfoDelegatorWantsCopy", "PidTagWlinkOrdinal",
+                "PidTagWlinkSection", "PidTagWlinkCalendarColor",
+                "PidTagWlinkAddressBookEID", "PidTagWlinkFolderType",
+                "PidTagScheduleInfoDelegateNames",
+                "PidTagScheduleInfoDelegateEntryIds", 
+                "PidTagBusiness2TelephoneNumbers",
+                "PidTagHome2TelephoneNumbers",
+                "PidTagAttachDataObject", "PidTagShorttermEntryIdFromObject",
+                ]
 
 def ParseExchangeH(names, lines):
     state = 0
@@ -135,23 +152,15 @@ def ParseExchangeH(names, lines):
                 ParseExchangeHDefinition(names, stripped)
         x = x + 1
 
-def GenExchangeHName(startname):
-    parts = startname.split("_")
-    newParts = []
-    for part in parts:
-        newParts.append("%s%s" % (part[0].upper(), part[1:].lower()))
-
-    return "".join(newParts)
-
 def ParseExchangeHDefinition(names, line):
     stripped = line.strip()
     eqIdx = stripped.find("=")
     if eqIdx == -1:
         raise Exception, "line does not contain a '='"
-    propName = GenExchangeHName(stripped[0:eqIdx])
-    if not propName.endswith("Error") and not propName.endswith("Unicode") \
-             and not propName.startswith("PrProfile") \
-             and not bannedProps.has_key(propName):
+
+    propName = stripped[0:eqIdx]
+    if not propName.endswith("_Error") and not propName.endswith("_string8") \
+            and propName not in bannedProps:
         intIdx = stripped.find("(int", eqIdx)
         valueIdx = stripped.find("0x", intIdx + 1)
         endIdx = stripped.find(")", valueIdx)
@@ -172,9 +181,9 @@ def ParseMapistoreNameIDHDefinition(names, line):
         raise Exception, "line does not contain a 'Pid'"
     valueIdx = stripped.find("0x")
     propName = stripped[pidIdx:valueIdx].strip()
-    value = int(stripped[valueIdx:], 16)
-
-    names[propName] = value
+    if not propName.startswith("PidLidUnknown") and propName not in bannedProps:
+        value = int(stripped[valueIdx:], 16)
+        names[propName] = value
 
 def FindHFile(filename):
     found = None

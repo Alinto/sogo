@@ -96,6 +96,7 @@ NSObjectFromMAPISPropValue (const struct mapi_SPropValue *value)
       result = [NSNumber numberWithUnsignedShort: value->value.i];
       break;
     case PT_LONG:
+    case PT_ERROR:
       result = [NSNumber numberWithUnsignedLong: value->value.l];
       break;
     case PT_I8:
@@ -175,6 +176,7 @@ NSObjectFromSPropValue (const struct SPropValue *value)
       result = [NSNumber numberWithShort: value->value.i];
       break;
     case PT_LONG:
+    case PT_ERROR:
       result = [NSNumber numberWithLong: value->value.l];
       break;
     case PT_I8:
@@ -264,6 +266,34 @@ NSObjectFromValuePointer (enum MAPITAGS propTag, const void *data)
     result = NSObjectFromSPropValue (&sPropValue);
   else
     result = nil;
+
+  return result;
+}
+
+static uint64_t
+_reverseCN (uint64_t cn)
+{
+  return ((cn & UINT64_C (0x00000000000000ff)) << 56
+          | (cn & UINT64_C (0x000000000000ff00)) << 40
+          | (cn & UINT64_C (0x0000000000ff0000)) << 24
+          | (cn & UINT64_C (0x00000000ff000000)) << 8
+          | (cn & UINT64_C (0x000000ff00000000)) >> 8
+          | (cn & UINT64_C (0x0000ff0000000000)) >> 24
+          | (cn & UINT64_C (0x00ff000000000000)) >> 40
+          | (cn & UINT64_C (0xff00000000000000)) >> 56);
+}
+
+NSComparisonResult
+MAPICNCompare (uint64_t cn1, uint64_t cn2)
+{
+  NSComparisonResult result;
+
+  if (cn1 == cn2)
+    result = NSOrderedSame;
+  else if (_reverseCN (cn1) < _reverseCN (cn2))
+    result = NSOrderedAscending;
+  else
+    result = NSOrderedDescending;
 
   return result;
 }

@@ -163,8 +163,9 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   NSUInteger count, max;
   NSDate *date, *fileDate;
   MAPIStoreFSMessage *msg;
+  NSArray *messageKeys;
 
-  [self messageKeys];
+  messageKeys = [self messageKeys];
 
   date = [NSCalendarDate date];
   [self logWithFormat: @"current date: %@", date];

@@ -53,7 +53,6 @@
 #include <gen_ndr/exchange.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
-#include <mapistore/mapistore_nameid.h>
 
 static NSString *resourcesDir = nil;
 
@@ -164,16 +163,16 @@ rtf2html (NSData *compressedRTF)
   //       __FUNCTION__, __LINE__];
 
   msgData = talloc_zero (memCtx, struct mapistore_message);
-
-  if ([self getPrSubjectPrefix: &propValue
-                      inMemCtx: msgData] == MAPISTORE_SUCCESS
+  
+  if ([self getPidTagSubjectPrefix: &propValue
+                          inMemCtx: msgData] == MAPISTORE_SUCCESS
       && propValue)
     msgData->subject_prefix = propValue;
   else
     msgData->subject_prefix = "";
 
-  if ([self getPrNormalizedSubject: &propValue
-                          inMemCtx: msgData] == MAPISTORE_SUCCESS
+  if ([self getPidTagNormalizedSubject: &propValue
+                              inMemCtx: msgData] == MAPISTORE_SUCCESS
       && propValue)
     msgData->normalized_subject = propValue;
   else
@@ -421,8 +420,8 @@ rtf2html (NSData *compressedRTF)
 - (NSArray *) activeContainerMessageTables
 {
   return [[MAPIStoreActiveTables activeTables]
-             activeTablesForFMID: [container objectId]
-                         andType: MAPISTORE_MESSAGE_TABLE];
+           activeTablesForFMID: [container objectId]
+                       andType: MAPISTORE_MESSAGE_TABLE];
 }
 
 - (enum mapistore_error) saveMessage
@@ -517,8 +516,8 @@ rtf2html (NSData *compressedRTF)
 }
 
 /* getters */
-- (int) getPrInstId: (void **) data // TODO: DOUBT
-           inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagInstID: (void **) data // TODO: DOUBT
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* we return a unique id based on the key */
   *data = MAPILongLongValue (memCtx, [[sogoObject nameInContainer] hash]);
@@ -526,22 +525,22 @@ rtf2html (NSData *compressedRTF)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrInstanceNum: (void **) data // TODO: DOUBT
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagInstanceNum: (void **) data // TODO: DOUBT
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPrRowType: (void **) data // TODO: DOUBT
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagRowType: (void **) data // TODO: DOUBT
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, TBL_LEAF_ROW);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrDepth: (void **) data // TODO: DOUBT
-          inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagDepth: (void **) data // TODO: DOUBT
+              inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, 0);
 
@@ -558,8 +557,8 @@ rtf2html (NSData *compressedRTF)
   0x00000010 Create Contents Table
   0x00000020 Create Associated Contents Table
 */
-- (int) getPrAccess: (void **) data
-           inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAccess: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t access = 0;
   BOOL userIsOwner;
@@ -587,8 +586,8 @@ rtf2html (NSData *compressedRTF)
   0x00000000 Read-Only
   0x00000001 Modify
 */
-- (int) getPrAccessLevel: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAccessLevel: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t access = 0;
   BOOL userIsOwner;
@@ -645,40 +644,40 @@ rtf2html (NSData *compressedRTF)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrFid: (void **) data
-        inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagFolderId: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, [container objectId]);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMid: (void **) data
-        inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMid: (void **) data
+            inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, [self objectId]);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMessageLocaleId: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMessageLocaleId: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x0409);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMessageFlags: (void **) data // TODO
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMessageFlags: (void **) data // TODO
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, MSGFLAG_FROMME | MSGFLAG_READ | MSGFLAG_UNMODIFIED);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMessageSize: (void **) data // TODO
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMessageSize: (void **) data // TODO
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* TODO: choose another name in SOGo for that method */
   *data = MAPILongValue (memCtx, [[sogoObject davContentLength] intValue]);
@@ -686,99 +685,99 @@ rtf2html (NSData *compressedRTF)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMsgStatus: (void **) data // TODO
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMessageStatus: (void **) data // TODO
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPrImportance: (void **) data // TODO -> subclass?
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagImportance: (void **) data // TODO -> subclass?
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 1);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrPriority: (void **) data // TODO -> subclass?
-             inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagPriority: (void **) data // TODO -> subclass?
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPrSensitivity: (void **) data // TODO -> subclass in calendar
+- (int) getPidTagSensitivity: (void **) data // TODO -> subclass in calendar
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getLongZero: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagSubject: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getLongZero: data inMemCtx: memCtx];
-}
-
-- (int) getPrSubject: (void **) data
-            inMemCtx: (TALLOC_CTX *) memCtx
 {
   [self subclassResponsibility: _cmd];
 
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPrNormalizedSubject: (void **) data
+- (int) getPidTagNormalizedSubject: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSubject: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagOriginalSubject: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagNormalizedSubject: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagConversationTopic: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagNormalizedSubject: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagSubjectPrefix: (void **) data
                       inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSubject: data inMemCtx: memCtx];
+  return [self getEmptyString: data inMemCtx: memCtx];
 }
 
-- (int) getPrOriginalSubject: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPrNormalizedSubject: data inMemCtx: memCtx];
-}
-
-- (int) getPrConversationTopic: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPrNormalizedSubject: data inMemCtx: memCtx];
-}
-
-- (int) getPrSubjectPrefix: (void **) data
+- (int) getPidTagDisplayTo: (void **) data
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getEmptyString: data inMemCtx: memCtx];
 }
 
-- (int) getPrDisplayTo: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagDisplayCc: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getEmptyString: data inMemCtx: memCtx];
 }
 
-- (int) getPrDisplayCc: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagDisplayBcc: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getEmptyString: data inMemCtx: memCtx];
 }
 
-- (int) getPrDisplayBcc: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getEmptyString: data inMemCtx: memCtx];
-}
-
-// - (int) getPrOriginalDisplayTo: (void **) data
+// - (int) getPidTagOriginalDisplayTo: (void **) data
 // {
-//   return [self getPrDisplayTo: data];
+//   return [self getPidTagDisplayTo: data];
 // }
 
-// - (int) getPrOriginalDisplayCc: (void **) data
+// - (int) getPidTagOriginalDisplayCc: (void **) data
 // {
-//   return [self getPrDisplayCc: data];
+//   return [self getPidTagDisplayCc: data];
 // }
 
-// - (int) getPrOriginalDisplayBcc: (void **) data
+// - (int) getPidTagOriginalDisplayBcc: (void **) data
 // {
-//   return [self getPrDisplayBcc: data];
+//   return [self getPidTagDisplayBcc: data];
 // }
 
-- (int) getPrLastModifierName: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagLastModifierName: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSURL *contextUrl;
 
@@ -788,22 +787,22 @@ rtf2html (NSData *compressedRTF)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMessageClass: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMessageClass: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   [self subclassResponsibility: _cmd];
 
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPrOrigMessageClass: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagOriginalMessageClass: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrMessageClass: data inMemCtx: memCtx];
+  return [self getPidTagMessageClass: data inMemCtx: memCtx];
 }
 
-- (int) getPrHasattach: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagHasAttachments: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPIBoolValue (memCtx,
                          [[self attachmentKeys] count] > 0);
@@ -811,8 +810,8 @@ rtf2html (NSData *compressedRTF)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAssociated: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAssociated: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];;
 }

@@ -201,8 +201,8 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
   return (rc == MAPISTORE_SUCCESS) ? [super deleteFolder] : rc;
 }
 
-- (int) getPrContentUnread: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagContentUnreadCount: (void **) data
+		       inMemCtx: (TALLOC_CTX *) memCtx
 {
   EOQualifier *searchQualifier;
   uint32_t longValue;
@@ -217,7 +217,7 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrContainerClass: (void **) data
+- (int) getPidTagContainerClass: (void **) data
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPF.Note" asUnicodeInMemCtx: memCtx];
@@ -225,7 +225,7 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrMessageClass: (void **) data
+- (int) getPidTagMessageClass: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];
@@ -902,7 +902,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 {
   NGImap4Connection *connection;
   NGImap4Client *client;
-  NSString *sourceFolderName, *targetFolderName, *messageURL, *v;
+  NSString *sourceFolderName, *targetFolderName, *messageURL, *messageKey, *v;
   NSMutableArray *uids, *oldMessageURLs;
   NSNumber *uid;
   NSArray *destUIDs;
@@ -910,6 +910,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   NSDictionary *result;
   NSUInteger count;
   NSArray *a;
+  NSData *changeKey;
 
   if (![sourceFolder isKindOfClass: [MAPIStoreMailFolder class]])
     return [super moveCopyMessagesWithMIDs: srcMids andCount: midCount
@@ -987,6 +988,17 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                              [self url],
                              [destUIDs objectAtIndex: count]];
       [mapping registerURL: messageURL withID: targetMids[count]];
+    }
+
+  /* Update the change keys */
+  [self synchroniseCache];
+  for (count = 0; count < midCount; count++)
+    {
+      changeKey = [NSData dataWithBinary: targetChangeKeys[count]];
+      messageKey = [NSString stringWithFormat: @"%@.eml",
+                      [destUIDs objectAtIndex: count]];
+      [self   setChangeKey: changeKey
+         forMessageWithKey: messageKey];
     }
 
   [self postNotificationsForMoveCopyMessagesWithMIDs: srcMids
@@ -1085,7 +1097,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 
 @implementation MAPIStoreOutboxFolder
 
-- (int) getPrDisplayName: (void **) data
+- (int) getPidTagDisplayName: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"Outbox" asUnicodeInMemCtx: memCtx];
