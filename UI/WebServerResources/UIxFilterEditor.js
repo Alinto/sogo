@@ -164,12 +164,12 @@ function onMatchTypeChange() {
 
 function onFilterRulesDivClick(event) {
     setSelectedRuleDiv(null);
-    event.stop();
+    Event.stop(event);
 }
 
 function onFilterActionsDivClick(event) {
     setSelectedActionDiv(null);
-    event.stop();
+    Event.stop(event);
 }
 
 function createFilterRule() {
@@ -235,7 +235,7 @@ function appendRule(container, rule) {
 
 function onRuleDivClick(event) {
     setSelectedRuleDiv(this);
-    event.stop();
+    Event.stop(event);
 }
 
 function setSelectedRuleDiv(newDiv) {
@@ -494,7 +494,7 @@ function appendAction(container, action) {
 
 function onActionDivClick(event) {
     setSelectedActionDiv(this);
-    event.stop();
+    Event.stop(event);
 }
 
 function setSelectedActionDiv(newSpan) {
@@ -740,7 +740,7 @@ function onRuleAddClick(event) {
         setSelectedRuleDiv(newRuleDiv);
         filterRules.scrollTop = newRuleDiv.offsetTop;
     }
-    event.stop();
+    Event.stop(event);
 }
 
 function onRuleDeleteClick(event) {
@@ -754,7 +754,7 @@ function onRuleDeleteClick(event) {
         setSelectedRuleDiv(nextSelected);
     }
 
-    event.stop();
+    Event.stop(event);
 }
 
 function onActionAddClick(event) {
@@ -766,7 +766,7 @@ function onActionAddClick(event) {
         setSelectedActionDiv(newActionDiv);
         filterActions.scrollTop = newActionDiv.offsetTop;
     }
-    event.stop();
+    Event.stop(event);
 }
 
 function onActionDeleteClick(event) {
@@ -780,7 +780,7 @@ function onActionDeleteClick(event) {
         setSelectedActionDiv(nextSelected);
     }
 
-    event.stop();
+    Event.stop(event);
 }
 
 function savePreferences(event) {
