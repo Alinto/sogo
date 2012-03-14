@@ -548,8 +548,11 @@ function onMailIdentitySignatureClick(event) {
                                       label,
                                       fields,
                                       "none");
+            if (Prototype.Browser.IE)
+                // Overwrite some fixes from iefixes.css
+                dialog.setStyle({ width: 'auto', marginLeft: 'auto' });
+
             document.body.appendChild(dialog);
-            dialog.show();
             dialogs[dialogId] = dialog;
 
             if ($("composeMessagesType").value != 0) {
@@ -573,12 +576,34 @@ function onMailIdentitySignatureClick(event) {
             area.value = identity["signature"];
         else
             area.value = "";
+
+
         dialog.show();
         $("bgDialogDiv").show();
-        if (!CKEDITOR.instances["signature"])
+        if (CKEDITOR.instances["signature"])
+                focusCKEditor();
+        else
             area.focus();
-        event.stop();
+        Event.stop(event);
     }
+}
+
+function focusCKEditor() {
+    if (CKEDITOR.status != 'basic_ready')
+        setTimeout("focusCKEditor()", 100);
+    else
+        // CKEditor reports being ready but it's still not focusable;
+        // we wait for a few more milliseconds
+        setTimeout("CKEDITOR.instances.signature.focus()", 500);
+}
+
+function hideSignature() {
+    if (CKEDITOR.status != 'basic_ready')
+        setTimeout("hideSignature()", 100);
+    else
+        // CKEditor reports being ready but it's not;
+        // we wait for a few more milliseconds
+        setTimeout('disposeDialog("signatureDialog")', 200);
 }
 
 function onMailIdentitySignatureOK(event) {
@@ -594,8 +619,7 @@ function onMailIdentitySignatureOK(event) {
                    : $("signature").value);
     identity["signature"] = content;
     displayAccountSignature(mailAccount);
-    dialog.hide();
-    $("bgDialogDiv").hide();
+    hideSignature();
     dialog.mailAccount = null;
     var hasChanged = $("hasChanged");
     hasChanged.value = "1";

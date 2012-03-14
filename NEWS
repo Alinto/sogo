@@ -13,12 +13,15 @@ Enhancements
  - bundled a shell script to perform and manage backups using sogo-tool
  - increased the delay before starting drag and drop in Mail and Contacts module
   to improve the user experience with cheap mouses
+ - updated German translation
+ - updated Spanish (Spain) translation
 
 Bug Fixes
  - fixed escaping issue with PostgreSQL 8.1
  - fixed resizing issue when editing an HTML message
  - fixed Spanish (Argentina) templates for mail reply and forward
  - we don't show public address books (from SOGoUserSources) on iOS 5.0.1
+ - improved support for IE
 
 1.3.12c (2012-02-15)
 -------------------

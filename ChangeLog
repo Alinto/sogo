@@ -1,5 +1,9 @@
 2012-03-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxPreferences.js (focusCKEditor)
+	(hideSignature): new functions to wait until the CKEditor is ready
+	before performing certain actions. Fixes a problem with IE.
+
 	* UI/WebServerResources/SOGoTimePicker.js (position): new method
 	to be able to recompute the position of the widget.
 
