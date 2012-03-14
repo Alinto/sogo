@@ -30,6 +30,7 @@
 "Disable auto reply on" = "Desactivar respuesta automatica";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Por favor, especificar el mensaje y la dirección de correo para aquellos a los que quiere habilitar la respuesta automática.";
+"Your vacation message must not end with a single dot on a line." = "El mensaje de vacaciones no puede finalizarse con un único punto en una linea.";
 "End date of your auto reply must be in the future."
 = "La fecha de fin de respuesta automatica debe ser en el futuro.";
 
@@ -74,12 +75,17 @@
 "longDateFmt_1" = "%A, %e de %B de %Y";
 "longDateFmt_2" = "%e de %b %Y";
 "longDateFmt_3" = "%e de %b de %Y";
-"longDateFmt_4" = "%e %B %Y";
+"longDateFmt_4" = "";
 "longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
-"timeFmt_2" = "%H h. %M";
+"timeFmt_2" = "";
 "timeFmt_3" = "";
 
 /* calendar */
@@ -168,11 +174,11 @@
 "Change" = "Cambiar";
 
 /* Event+task classifications */
-"Default events classification :" = "Default events classification :";
-"Default tasks classification :" = "Default tasks classification :";
-"PUBLIC_item" = "Public";
-"CONFIDENTIAL_item" = "Confidential";
-"PRIVATE_item" = "Private";
+"Default events classification :" = "Clasificación de evento por defecto";
+"Default tasks classification :" = "Clasificación de tarea por defecto";
+"PUBLIC_item" = "Publico";
+"CONFIDENTIAL_item" = "Confidencial";
+"PRIVATE_item" = "Privado";
 
 /* Event+task categories */
 "category_none" = "Ninguna";
@@ -283,5 +289,3 @@
 "Unhandled error response" = "Respuesta de error no controlado";
 "Password change is not supported." = "Cambio de contraseña no compatible.";
 "Unhandled HTTP error code: %{0}" = "Código de error HTTP no controlada:% {0}";
-"New password:" = "Nueva contraseña:";
-"Confirmation:" = "Confirmar nueva contraseña:";
