@@ -84,6 +84,22 @@ var SOGoTimePickerInterface = {
         inner.appendChild(new Element("hr"));
        
         // Compute position
+        this.position();
+
+        // Register observers
+        this.on("click", this.toggleVisibility.bindAsEventListener(this));
+        this.on("change", this.onChange.bindAsEventListener(this));
+        this.on("keydown", this.onKeydown.bindAsEventListener(this));
+        this.div.on("mouseenter", this.onEnter.bindAsEventListener(this));
+        this.div.on("mouseleave",  this.onLeave.bindAsEventListener(this));
+        this.disposeHandler = $(document.body).on("click", this.onDispose.bindAsEventListener(this));
+        this.disposeHandler.stop();
+
+        // Apply current input value if defined
+        this.onChange();
+    },
+
+    position: function () {
         var inputPosition = this.cumulativeOffset();
         var inputDimensions = this.getDimensions();
         var divWidth = this.div.getWidth();
@@ -98,18 +114,6 @@ var SOGoTimePickerInterface = {
         this.div.setStyle({ top: top+"px",
                             left: left+"px",
                             backgroundPosition: arrow+'px top'});
-
-        // Register observers
-        this.on("click", this.toggleVisibility.bindAsEventListener(this));
-        this.on("change", this.onChange.bindAsEventListener(this));
-        this.on("keydown", this.onKeydown.bindAsEventListener(this));
-        this.div.on("mouseenter", this.onEnter.bindAsEventListener(this));
-        this.div.on("mouseleave",  this.onLeave.bindAsEventListener(this));
-        this.disposeHandler = $(document.body).on("click", this.onDispose.bindAsEventListener(this));
-        this.disposeHandler.stop();
-
-        // Apply current input value if defined
-        this.onChange();
     },
 
     onHourClick: function (event) {

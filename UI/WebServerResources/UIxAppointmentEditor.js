@@ -413,6 +413,10 @@ function refreshAttendees(newAttendees) {
         // Hide link of attendees
         attendeesLabel.setStyle({ display: "none" });
     }
+
+     // Recompute the position of the time picker widgets
+     window.timeWidgets['start']['time'].position();
+     window.timeWidgets['end']['time'].position();
 }
 
 function setupAttendeeNode(aNode, aAttendee, isDelegate) {

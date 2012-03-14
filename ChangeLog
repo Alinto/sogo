@@ -1,3 +1,13 @@
+2012-03-14  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SOGoTimePicker.js (position): new method
+	to be able to recompute the position of the widget.
+
+	* UI/WebServerResources/UIxAppointmentEditor.js
+	(refreshAttendees): when changing the attendees, we recompute the
+	position of the time pickers because the attendees link could
+	shift up or down the time fields.
+
 2012-03-13  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxFilterEditor.js (savePreferences):
