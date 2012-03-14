@@ -168,12 +168,9 @@
   else
     {
       // We unsubscribe to the old one, and subscribe back to the new one
-      if ([[[context activeUser] userDefaults] mailShowSubscribedFoldersOnly])
-	{
-	  [[connection client] subscribe: [destURL path]];
-	  [[connection client] unsubscribe: [srcURL path]];
-	}
-
+      [[connection client] subscribe: [destURL path]];
+      [[connection client] unsubscribe: [srcURL path]];
+      
       response = [self responseWith204];
     }
 

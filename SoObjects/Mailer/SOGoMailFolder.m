@@ -298,13 +298,9 @@ static NSString *defaultUserID =  @"anyone";
       if (!error)
 	{
 	  // We unsubscribe to the old one, and subscribe back to the new one
-	  if ([[[context activeUser] userDefaults]
-                mailShowSubscribedFoldersOnly])
-	    {	    
-	      [client subscribe: [destURL path]];
-	      [client unsubscribe: [imap4URL path]];
-	    }
-	}
+          [client subscribe: [destURL path]];
+          [client unsubscribe: [imap4URL path]];
+        }
     }
   else
     error = [NSException exceptionWithName: @"SOGoMailException"

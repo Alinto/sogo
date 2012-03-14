@@ -1,5 +1,11 @@
 2012-03-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/MailerUI/UIxMailFolderActions.m (-deleteAction): we now
+	unconditionaly unsubscribe from the folder and subscribe to the
+	folder moved to the trash.
+
+	* SoObjects/Mailer/SOGoMailFolder.m (-renameTo): idem.
+
 	* UI/WebServerResources/UIxPreferences.js (focusCKEditor)
 	(hideSignature): new functions to wait until the CKEditor is ready
 	before performing certain actions. Fixes a problem with IE.
