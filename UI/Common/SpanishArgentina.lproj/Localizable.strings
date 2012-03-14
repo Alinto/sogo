@@ -37,6 +37,19 @@
 
 "Sorry, the user rights can not be configured for that object." = "Lo siento, los permisos de este usuario no pueden ser configurados para este objeto.";
 
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Cualquier usuario con una cuenta en el sistema tendrá acceso a su buzón de correo \"%{0}\".  ¿Está seguro de querer dar acceso a cualquier usuario?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Cualquier usuario con una cuenta en el sistema tendrá acceso a su calendario \"%{0}\". ¿Está seguro de que confía en cualquier usuario del sistema?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Cualquiera persona en Internet podrá tener acceso a su calendario \"%{0}\", incluso si no tiene una cuenta en este sistema. ¿Está seguro de querer publicar esta información en Internet?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Cualquier usuario con una cuenta en el sistema tendrá acceso a su libreta de direcciones \"%{0}\". ¿Está seguro de querer dar acceso a cualquier usuario?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Cualquier usuario en Internet tendrá acceso a su libreta de direcciones \"%{0}\", incluso aquellos que no tengan cuenta en este sistema. ¿Está seguro de que la información de la libreta es adecuada para ser publicada en Internet?";
+"Give Access" = "Permitir el acceso";
+"Keep Private" = "Mantener privado";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
 	= "No es posible suscribirse a esta carpeta.";
@@ -54,7 +67,7 @@
 "A folder by that name already exists." = "Ya existe una carpeta con ese nombre.";
 "You cannot create a list in a shared address book." 
         = "No es posible crear una lista en una libreta de direcciones compartida.";
-"Warning" = "Aviso";
+"Warning" = "Atención";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "No esta permitido el acceso a este módulo o éste sistema. Por favor contacte con su administrador de sistemas.";
@@ -62,9 +75,18 @@
 = "No tiene los permisos requeridos para realizar esta operación.";
 
 "noEmailForDelegation" = "Debe especificar la dirección a la que quiere delegar su invitación.";
-"delegate is organizer" = "El delegado es el organizador. Por favor, especifique un delegado diferente.";
-"delegate is a participant" = "El delegado ya es un participante.";
-"delegate is a group" = "La dirección especificada corresponde a un grupo. Sólo puede delegar a una persona única.";
+"delegate is organizer" = "La persona que ha delegado es el organizador. Por favor, especifique una persona diferente.";
+"delegate is a participant" = "La persona a la que ha delegado ya es un participante.";
+"delegate is a group" = "La dirección especificada corresponde a un grupo. Sólo puede delegar a una única persona.";
+
+"Snooze for " = "Posponer por ";
+"5 minutes" = "5 minutos";
+"10 minutes" = "10 minutos";
+"15 minutes" = "15 minutos";
+"30 minutes" = "30 minutos";
+"45 minutes" = "45 minutos";
+"1 hour" = "1 hora";
+
 
 /* common buttons */
 "OK" = "OK";
