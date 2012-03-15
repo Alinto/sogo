@@ -36,6 +36,7 @@
 {
   SOGoMAPIFSMessage *versionsMessage;
   NSArray *activeUserRoles;
+  EOQualifier *componentQualifier;
 }
 
 /* synchronisation */
@@ -50,9 +51,12 @@
 
 - (NSArray *) activeUserRoles;
 
+- (EOQualifier *) componentQualifier;
+- (EOQualifier *) contentComponentQualifier;
+
 /* subclasses */
 - (EOQualifier *) aclQualifier;
-- (EOQualifier *) componentQualifier;
+- (NSString *) component;
 
 @end
 

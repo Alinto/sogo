@@ -95,7 +95,7 @@
       /* HACK: we cheat here as we current have no mechanism for searching
          folders based on PR_CHANGE_NUM, which is used by the oxcfxics
          mechanism... */
-    case PR_CHANGE_NUM:
+    case PidTagChangeNumber:
       rc = MAPIRestrictionStateAlwaysTrue;
       break;
     default:

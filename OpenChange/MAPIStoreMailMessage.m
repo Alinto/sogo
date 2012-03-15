@@ -58,7 +58,6 @@
 #include <gen_ndr/exchange.h>
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
-#include <mapistore/mapistore_nameid.h>
 
 @class iCalCalendar, iCalEvent;
 
@@ -294,8 +293,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return appointmentWrapper;
 }
 
-- (int) getPrChangeKey: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagChangeKey: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc = MAPISTORE_SUCCESS;
   NSData *changeKey;
@@ -330,8 +329,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return rc;
 }
 
-- (int) getPrPredecessorChangeList: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagPredecessorChangeList: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc = MAPISTORE_SUCCESS;
   NSData *changeList;
@@ -341,14 +340,14 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   else
     {
       changeList = [(MAPIStoreMailFolder *)[self container]
-                       predecessorChangeListForMessageWithKey: [self nameInContainer]];
+                   predecessorChangeListForMessageWithKey: [self nameInContainer]];
       if (!changeList)
         {
           [self warnWithFormat: @"attempting to get predecessor change list"
                 @" by synchronising folder..."];
           [(MAPIStoreMailFolder *) container synchroniseCache];
           changeList = [(MAPIStoreMailFolder *)[self container]
-                           predecessorChangeListForMessageWithKey: [self nameInContainer]];
+                       predecessorChangeListForMessageWithKey: [self nameInContainer]];
           if (changeList)
             [self logWithFormat: @"got one"];
           else
@@ -373,14 +372,14 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   if (uid)
     {
       changeNumber = [(MAPIStoreMailFolder *) container
-                       changeNumberForMessageUID: uid];
+                     changeNumberForMessageUID: uid];
       if (!changeNumber)
         {
           [self warnWithFormat: @"attempting to get change number"
                 @" by synchronising folder..."];
           [(MAPIStoreMailFolder *) container synchroniseCache];
           changeNumber = [(MAPIStoreMailFolder *) container
-                           changeNumberForMessageUID: uid];
+                         changeNumberForMessageUID: uid];
           if (changeNumber)
             [self logWithFormat: @"got one"];
           else
@@ -397,8 +396,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return version;
 }
 
-- (int) getPrIconIndex: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagIconIndex: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t longValue;
 
@@ -406,7 +405,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
     [self _fetchHeaderData];
 
   if (mailIsEvent)
-    [[self _appointmentWrapper] getPrIconIndex: data inMemCtx: memCtx];
+    [[self _appointmentWrapper] getPidTagIconIndex: data inMemCtx: memCtx];
   else
     {
       /* see http://msdn.microsoft.com/en-us/library/cc815472.aspx */
@@ -448,8 +447,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrSubject: (void **) data
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSubject: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -461,8 +460,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrSubjectPrefix: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSubjectPrefix: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *subject;
   NSUInteger colIdx;
@@ -472,7 +471,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   colIdx = [subject rangeOfString: @":"].location;
   if (colIdx != NSNotFound && colIdx < 4)
     stringValue = [NSString stringWithFormat: @"%@: ",
-                            [subject substringToIndex: colIdx]];
+                   [subject substringToIndex: colIdx]];
   else
     stringValue = @"";
   *data = [stringValue asUnicodeInMemCtx: memCtx];
@@ -480,8 +479,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrNormalizedSubject: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagNormalizedSubject: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *subject;
   NSUInteger colIdx;
@@ -507,15 +506,15 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPrMessageClass: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMessageClass: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!headerSetup)
     [self _fetchHeaderData];
 
   if (mailIsEvent)
-    [[self _appointmentWrapper] getPrMessageClass: data
-                                         inMemCtx: memCtx];
+    [[self _appointmentWrapper] getPidTagMessageClass: data
+                                             inMemCtx: memCtx];
   else
     *data = talloc_strdup (memCtx, "IPM.Note");
 
@@ -523,7 +522,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 }
 
 /* Note: this applies to regular mails... */
-// - (int) getPrReplyRequested: (void **) data // TODO
+// - (int) getPidTagReplyRequested: (void **) data // TODO
 //                    inMemCtx: (TALLOC_CTX *) memCtx
 // {
 //   if (!headerSetup)
@@ -535,8 +534,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 // }
 
 /* ... while this applies to invitations. */
-- (int) getPrResponseRequested: (void **) data // TODO
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagResponseRequested: (void **) data // TODO
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!headerSetup)
     [self _fetchHeaderData];
@@ -546,32 +545,32 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           : MAPISTORE_ERR_NOT_FOUND);
 }
 
-- (int) getPrLatestDeliveryTime: (void **) data // DOUBT
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagLatestDeliveryTime: (void **) data // DOUBT
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrCreationTime: data inMemCtx: memCtx];
+  return [self getPidTagCreationTime: data inMemCtx: memCtx];
 }
 
-- (int) getPrOriginalSubmitTime: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagOriginalSubmitTime: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrCreationTime: data inMemCtx: memCtx];
+  return [self getPidTagCreationTime: data inMemCtx: memCtx];
 }
 
-- (int) getPrClientSubmitTime: (void **) data
+- (int) getPidTagClientSubmitTime: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagCreationTime: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagMessageDeliveryTime: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagCreationTime: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagMessageFlags: (void **) data // TODO
                      inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPrCreationTime: data inMemCtx: memCtx];
-}
-
-- (int) getPrMessageDeliveryTime: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPrCreationTime: data inMemCtx: memCtx];
-}
-
-- (int) getPrMessageFlags: (void **) data // TODO
-                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSDictionary *coreInfos;
   NSArray *flags;
@@ -594,8 +593,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrFlagStatus: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagFlagStatus: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSDictionary *coreInfos;
   NSArray *flags;
@@ -614,8 +613,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrFollowupIcon: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagFollowupIcon: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSDictionary *coreInfos;
   NSArray *flags;
@@ -634,38 +633,38 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrSensitivity: (void **) data // TODO
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSensitivity: (void **) data // TODO
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
-- (int) getPrOriginalSensitivity: (void **) data // TODO
-                        inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagOriginalSensitivity: (void **) data // TODO
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrSensitivity: data inMemCtx: memCtx];
+  return [self getPidTagSensitivity: data inMemCtx: memCtx];
 }
 
-- (int) getPrSentRepresentingAddrtype: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getSMTPAddrType: data inMemCtx: memCtx];
-}
-
-- (int) getPrRcvdRepresentingAddrtype: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSentRepresentingAddressType: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
-- (int) getPrReceivedByAddrtype: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagReceivedRepresentingAddressType: (void **) data
+                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
 
-- (int) getPrSenderAddrtype: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagReceivedByAddressType: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getSMTPAddrType: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagSenderAddressType: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getSMTPAddrType: data inMemCtx: memCtx];
 }
@@ -762,111 +761,111 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return rc;
 }
 
-- (int) getPrSenderEmailAddress: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSenderEmailAddress: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getEmailAddressFromEmail: [sogoObject from]
                                   inData: data
                                 inMemCtx: memCtx];
 }
 
-- (int) getPrSenderName: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSenderName: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getCNFromEmail: [sogoObject from]
                         inData: data
                       inMemCtx: memCtx];
 }
 
-- (int) getPrSenderEntryid: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSenderEntryId: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getEntryIdFromEmail: [sogoObject from]
                              inData: data
                            inMemCtx: memCtx];
 }
 
-- (int) getPrOriginalAuthorName: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPrSenderEmailAddress: data inMemCtx: memCtx];
-}
-
-- (int) getPrSentRepresentingEmailAddress: (void **) data
-                                 inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPrSenderEmailAddress: data inMemCtx: memCtx];
-}
-
-- (int) getPrSentRepresentingName: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPrSenderName: data inMemCtx: memCtx];
-}
-
-- (int) getPrSentRepresentingEntryid: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPrSenderEntryid: data inMemCtx: memCtx];
-}
-
-- (int) getPrReceivedByEmailAddress: (void **) data
+- (int) getPidTagOriginalAuthorName: (void **) data
                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSenderEmailAddress: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagSentRepresentingEmailAddress: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSenderEmailAddress: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagSentRepresentingName: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSenderName: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagSentRepresentingEntryId: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSenderEntryId: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagReceivedByEmailAddress: (void **) data
+                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getEmailAddressFromEmail: [sogoObject to]
                                   inData: data
                                 inMemCtx: memCtx];
 }
 
-- (int) getPrReceivedByName: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagReceivedByName: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getCNFromEmail: [sogoObject to]
                         inData: data
                       inMemCtx: memCtx];
 }
 
-- (int) getPrReceivedByEntryid: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagReceivedByEntryId: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getEntryIdFromEmail: [sogoObject to]
                              inData: data
                            inMemCtx: memCtx];
 }
 
-- (int) getPrRcvdRepresentingName: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPrReceivedByName: data inMemCtx: memCtx];
-}
-
-- (int) getPrRcvdRepresentingEmailAddress: (void **) data
+- (int) getPidTagReceivedRepresentingName: (void **) data
                                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrReceivedByEmailAddress: data inMemCtx: memCtx];
+  return [self getPidTagReceivedByName: data inMemCtx: memCtx];
 }
 
-- (int) getPrRcvdRepresentingEntryid: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagReceivedRepresentingEmailAddress: (void **) data
+                                         inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrReceivedByEntryid: data inMemCtx: memCtx];
+  return [self getPidTagReceivedByEmailAddress: data inMemCtx: memCtx];
 }
 
-- (int) getPrDisplayTo: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagReceivedRepresentingEntryId: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagReceivedByEntryId: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagDisplayTo: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[sogoObject to] asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrOriginalDisplayTo: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagOriginalDisplayTo: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrDisplayTo: data inMemCtx: memCtx];
+  return [self getPidTagDisplayTo: data inMemCtx: memCtx];
 }
 
-- (int) getPrDisplayCc: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagDisplayCc: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
 
@@ -879,22 +878,22 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrOriginalDisplayCc: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagOriginalDisplayCc: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrDisplayCc: data inMemCtx: memCtx];
+  return [self getPidTagDisplayCc: data inMemCtx: memCtx];
 }
 
-- (int) getPrDisplayBcc: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagDisplayBcc: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getEmptyString: data inMemCtx: memCtx];
 }
 
-- (int) getPrOriginalDisplayBcc: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagOriginalDisplayBcc: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPrDisplayBcc: data inMemCtx: memCtx];
+  return [self getPidTagDisplayBcc: data inMemCtx: memCtx];
 }
 
 - (int) getPidNameContentType: (void **) data
@@ -905,8 +904,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrImportance: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagImportance: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t v;
   NSString *s;
@@ -924,24 +923,24 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrInternetCpid: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagInternetCodepage: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* ref:
-  http://msdn.microsoft.com/en-us/library/dd317756%28v=vs.85%29.aspx
+     http://msdn.microsoft.com/en-us/library/dd317756%28v=vs.85%29.aspx
   
-  minimal list that should be handled:
-  us-ascii: 20127
-  iso-8859-1: 28591
-  iso-8859-15: 28605
-  utf-8: 65001 */
+     minimal list that should be handled:
+     us-ascii: 20127
+     iso-8859-1: 28591
+     iso-8859-15: 28605
+     utf-8: 65001 */
   *data = MAPILongValue(memCtx, 65001);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrBody: (void **) data
-         inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagBody: (void **) data
+             inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *stringValue;
   int rc = MAPISTORE_SUCCESS;
@@ -955,8 +954,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       *data = [stringValue asUnicodeInMemCtx: memCtx];
     }
   else if (mailIsEvent)
-    rc = [[self _appointmentWrapper] getPrBody: data
-                                     inMemCtx: memCtx];
+    rc = [[self _appointmentWrapper] getPidTagBody: data
+                                          inMemCtx: memCtx];
   else
     {
       *data = NULL;
@@ -966,8 +965,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return rc;
 }
 
-- (int) getPrHtml: (void **) data
-         inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagHtml: (void **) data
+             inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc = MAPISTORE_SUCCESS;
 
@@ -985,36 +984,36 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return rc;
 }
 
-- (int) getPrRtfCompressed: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagRtfCompressed: (void **) data
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = NULL;
 
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (int) getPrRtfInSync: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagRtfInSync: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPrInternetMessageId: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagInternetMessageId: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[sogoObject messageId] asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrReadReceiptRequested: (void **) data // TODO
-                         inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagReadReceiptRequested: (void **) data // TODO
+                             inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPrDeleteAfterSubmit: (void **) data // TODO
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagDeleteAfterSubmit: (void **) data // TODO
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
@@ -1065,7 +1064,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           : MAPISTORE_ERR_NOT_FOUND);
 }
 
-- (int) getPrProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc;
 
@@ -1104,8 +1103,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           :  [self getNo: data inMemCtx: memCtx]);
 }
 
-- (int) getPrMsgEditorFormat: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMessageEditorFormat: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t format;
 
@@ -1149,14 +1148,14 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 }
 
 /* event getters */
-- (int) getPrStartDate: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagStartDate: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!headerSetup)
     [self _fetchHeaderData];
 
   return (mailIsEvent
-          ? [[self _appointmentWrapper] getPrStartDate: data inMemCtx: memCtx]
+          ? [[self _appointmentWrapper] getPidTagStartDate: data inMemCtx: memCtx]
           : MAPISTORE_ERR_NOT_FOUND);
 }
 
@@ -1200,14 +1199,14 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           : MAPISTORE_ERR_NOT_FOUND);
 }
 
-- (int) getPrEndDate: (void **) data
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagEndDate: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!headerSetup)
     [self _fetchHeaderData];
 
   return (mailIsEvent
-          ? [[self _appointmentWrapper] getPrEndDate: data inMemCtx: memCtx]
+          ? [[self _appointmentWrapper] getPidTagEndDate: data inMemCtx: memCtx]
           : MAPISTORE_ERR_NOT_FOUND);
 }
 
@@ -1319,15 +1318,15 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
           : MAPISTORE_ERR_NOT_FOUND);
 }
 
-- (int) getPrOwnerApptId: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagOwnerAppointmentId: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   if (!headerSetup)
     [self _fetchHeaderData];
 
   return (mailIsEvent
-          ? [[self _appointmentWrapper] getPrOwnerApptId: data
-                                                inMemCtx: memCtx]
+          ? [[self _appointmentWrapper] getPidTagOwnerAppointmentId: data
+                                                           inMemCtx: memCtx]
           : MAPISTORE_ERR_NOT_FOUND);
 }
 

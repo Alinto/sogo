@@ -31,12 +31,98 @@
 	* UI/WebServerResources/UIxAclEditor.js (addUser): fixed
 	positioning of new user.
 
+2012-03-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreCalendarFolder.m
+	(-getPidTagDefaultPostMessageClass:inMemCtx:): new getter.
+
+	* OpenChange/MAPIStoreFolder.m
+	(_modifyPermissionEntryForUser:withRoles:isAddition:withACLFolder:):
+	skip any modification when user is nil.
+	(_usernameFromEntryId:): when the bytes array is nil or is empty,
+	we return a nil username.
+	(-modifyPermissions:withCount:andFlags:): ignore the presence of
+	certain fields but not others depending on the requested
+	modification.
+
 2012-03-12  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/WORequest+SOGo.m (-isIPhoneAddressBookApp): catch
 	the user agent of iOS 5.0.1 on iPad.
 
+2012-03-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreGCSFolder.m (-lastMessageModificationTime):
+	force a synchronisation from here to ensure that the cache is
+	up-to-date.
+
+	* OpenChange/MAPIStoreTypes.m (_reverseCN): fixed used of ull
+	constants on 32 bit platforms.
+
+	* OpenChange/MAPIStoreGCSFolder.m (-componentQualifier): now
+	provided by the parent class itself.
+	(-contentComponentQualifier): new method that returns a qualifier
+	that translated to "c_content like '%BEGIN:XXX%'". This is a hack
+	to work-around the fact that calendar folders may content both
+	vevent and vtodo and that c_component, being part of the quick
+	table, is no longer available when a record is deleted.
+	(-synchroniseCache): update version values for deleted records
+	too, by taking into account the fact that their c_version value
+	might still be 0. Make use of contentComponentQualifier above.
+	Remove the modified records from the SOGoGCSFolder cache.
+	(-getDeletedKeysFromChangeNumber:andCN:inTableType:): wander the
+	list of deleted records and no longer increase the change number,
+	as this is now done from "synchroniseCache". Also, handle the case
+	were deleted records might already have been reported by comparing
+	their change number to the one provided as parameter. The
+	resulting change number is now guaranteed to be the highest one.
+	(-component): new subclassable method that returns a string
+	matching the folder's handled component.
+
+	* OpenChange/MAPIStoreFolder.m
+	(-getPidTagLocalCommitTimeMax:inMemCtx:): returns
+	MAPISTORE_ERR_NOT_FOUND if the resulting date is nil.
+
+	* OpenChange/MAPIStoreGCSMessage.m
+	(-getPidTagPredecessorChangeList:inMemCtx:): when the list is
+	missing, request a synchronisation from the container as the
+	message might now have been synchronised yet...
+
+	* OpenChange/MAPIStoreTypes.m (MAPICNCompare): new function that
+	returns an NSComparisonResult for two change numbers (reverse
+	format).
+
+2012-03-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreCalendarMessage.m
+	(-getPidLidAppointmentMessageClass:inMemCtx:): returns "IPM.Appointment".
+	(-getPidLidSideEffects:inMemCtx:): returns the value specified in
+	OXOCAL, section 2.2.2.2.
+	(_fixupAppointmentObjectWithUID:): renamed method and made more
+	generic, in order to handle the case where the response record has
+	already been deleted.
+	(-save): handle organizer and attendees more in compliance with
+	the spec, in order to avoid ending up with an empty event when an
+	invitation is being replied to. Of course, the documentation
+	happened to be inexact with regardes to the value of
+	"PidTagRecipientTrackStatus", which can be 5 even though the user
+	replied with another value... Also, lowered the priority of
+	SOGo-specific hacks for setting the organizer.
+
 2012-03-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailVolatileMessage.m (-submitWithFlags:):
+	skip any message that is not of class "IPM.Note", in order to
+	avoid sending invitations or responses.
+
+	* SoObjects/Mailer/SOGoMailFolder.m (-renameTo:): reset the
+	imap4URL to nil and change the nameInContainer after a successful
+	operation.
+
+	* OpenChange/MAPIStoreFolder.m
+	(-getTable:andRowCount:tableType:andHandleId:): if the current
+	user is not the owner of the folder, the permissions table cannot
+	be open and MAPISTORE_ERR_DENIED is now returned.
 
 	* SoObjects/Contacts/NGVCard+SOGo.m
 	(_setupEmailFieldsInLDIFRecord:): the value of card elements were
@@ -49,6 +135,27 @@
 	attributes of document.body before calling "hasClassName" to fix
 	an error with IE9.
 
+2012-03-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreFolder.m: commented out key cache ivars
+	(temporarily).
+
+	* OpenChange/MAPIStoreContext.m (-getRootFolder:inMemCtx:): do not
+	store the looked up folders when they are not descendants of
+	SOGoObject. Return MAPISTORE_ERR_NOT_FOUND when the looked up
+	folder is owner by the current user and MAPISTORE_ERR_DENIED
+	otherwise.
+
+	* OpenChange/MAPIStoreGCSFolder.m (-synchroniseCache): ensure that
+	any record that are marked as updated are removed from the record
+	cache of the corresponding SOGoGCSFolder instance.
+
+	* OpenChange/MAPIStoreFolder.m (-getPidTagSubFolders:inMemCtx:):
+	invoke [self folderKeys] rather than the corresponding ivar.
+
+	* OpenChange/MAPIStoreTypes.m (NSObjectFromMAPISPropValue)
+	(NSObjectFromSPropValue): treat PT_ERROR just as PT_LONG.
+
 2012-03-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.m
@@ -59,6 +166,37 @@
 	(-_setupEmailFieldsInLDIFRecord:): simplified code and fixed a bug
 	where the home mail would be taken for both first and second email
 	fields when no work mail was present.
+
+2012-03-02  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m,,
+	OpenChange/MAPIStoreAttachment.m,
+	OpenChange/MAPIStoreCalendarAttachment.m,
+	OpenChange/MAPIStoreCalendarMessage.m,
+	OpenChange/MAPIStoreContactsAttachment.m,
+	OpenChange/MAPIStoreContactsMessage.m,
+	OpenChange/MAPIStoreFAIMessage.m,
+	OpenChange/MAPIStoreFSMessageTable.m,
+	OpenChange/MAPIStoreFolder.m, OpenChange/MAPIStoreFolderTable.m,
+	OpenChange/MAPIStoreGCSFolder.m, OpenChange/MAPIStoreGCSMessage.m,
+	OpenChange/MAPIStoreGCSMessageTable.m,
+	OpenChange/MAPIStoreMailAttachment.m,
+	OpenChange/MAPIStoreMailFolder.m,
+	OpenChange/MAPIStoreMailMessage.m,
+	OpenChange/MAPIStoreMailMessageTable.m,
+	OpenChange/MAPIStoreMessage.m, OpenChange/MAPIStoreNotesMessage.m,
+	OpenChange/MAPIStoreObject.m,
+	OpenChange/MAPIStorePermissionsTable.m,
+	OpenChange/MAPIStoreTasksMessage.m,
+	OpenChange/MAPIStoreVolatileMessage.m: updated name of getters to
+	reflect the new nomenclature.
+
+	* OpenChange/NSArray+MAPIStore.[hm]: updated to new name of
+	handled structs.
+
+	* OpenChange/gen-property-selectors.py: adapted for new getters
+	name, based on new property names. Added all new clashing
+	properties to bannedProps.
 
 2012-03-02  Jean Raby  <jraby@inverse.ca>
 
@@ -81,6 +219,31 @@
 
 	* UI/WebServerResources/ContactsUI.js (appendAddressBook): assume
 	that lists can be created in the new addressbook.
+
+2012-02-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailFolder.m
+	(-moveCopyMessagesWithMIDs:andCount:fromFolder:withMIDs:andChangeKeys:wantCopy:):
+	we sync the version cache with the folder in order to update the
+	target message change keys, which was causing versioning issues
+	with Outlook 2010.
+
+	* OpenChange/gen-property-selectors.py: bannedProps is now an
+	array instead of a dict of "True" values.
+	Added "PrOabContainerGuid" to bannedProps.
+
+2012-02-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreUserContext.m (-rootFolders:):
+	-[NGImap4Connection enableExtensions:] now takes an array of
+	strings rather than a single string argument.
+
+2012-02-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m: ensure the imap connection is
+	available before performing certain operations, otherwise return
+	an exception. This only applies on methods that return an
+	exception, others were left untouched.
 
 2012-02-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

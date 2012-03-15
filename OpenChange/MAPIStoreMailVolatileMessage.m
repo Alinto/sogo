@@ -774,50 +774,55 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
   NSData *messageData;
   NSMutableArray *recipientEmails;
   NSArray *list;
-  NSString *recId;
+  NSString *recId, *from, *msgClass;
   NSUInteger count;
-  struct mapistore_connection_info *connInfo;
   SOGoUser *activeUser;
-  NSString *from;
   // SOGoMailFolder *sentFolder;
   SOGoDomainDefaults *dd;
   NSException *error;
   MAPIStoreMapping *mapping;
 
-  /* send mail */
-
-  messageData = [self _generateMailDataWithBcc: NO];
-
   mailProperties = [sogoObject properties];
-  recipientEmails = [NSMutableArray arrayWithCapacity: 32];
-  recipients = [mailProperties objectForKey: @"recipients"];
-  for (count = 0; count < 3; count++)
+  msgClass = [mailProperties objectForKey: MAPIPropertyKey (PidTagMessageClass)];
+  if ([msgClass isEqualToString: @"IPM.Note"]) /* we skip invitation replies */
     {
-      recId = recTypes[count];
-      list = [recipients objectForKey: recId];
-      [recipientEmails
-        addObjectsFromArray: [list objectsForKey: @"email"
-                                  notFoundMarker: nil]];
-    }
+      /* send mail */
 
-  connInfo = [[self context] connectionInfo];
-  activeUser = [SOGoUser userWithLogin: [NSString stringWithUTF8String: connInfo->username]];
+      messageData = [self _generateMailDataWithBcc: NO];
+      
+      mailProperties = [sogoObject properties];
+      recipientEmails = [NSMutableArray arrayWithCapacity: 32];
+      recipients = [mailProperties objectForKey: @"recipients"];
+      for (count = 0; count < 3; count++)
+        {
+          recId = recTypes[count];
+          list = [recipients objectForKey: recId];
+          [recipientEmails
+            addObjectsFromArray: [list objectsForKey: @"email"
+                                      notFoundMarker: nil]];
+        }
 
-  [self logWithFormat: @"recipients: %@", recipientEmails];
-  dd = [activeUser domainDefaults];
-  from = [[activeUser allEmails] objectAtIndex: 0];
-  error = [[SOGoMailer mailerWithDomainDefaults: dd]
+      activeUser = [[self context] activeUser];
+
+      [self logWithFormat: @"recipients: %@", recipientEmails];
+      dd = [activeUser domainDefaults];
+      from = [[activeUser allEmails] objectAtIndex: 0];
+      error = [[SOGoMailer mailerWithDomainDefaults: dd]
                 sendMailData: messageData
                 toRecipients: recipientEmails
                       sender: from];
-  if (error)
-    [self logWithFormat: @"an error occurred: '%@'", error];
+      if (error)
+        [self logWithFormat: @"an error occurred: '%@'", error];
 
-  mapping = [self mapping];
-  [mapping unregisterURLWithID: [self objectId]];
-  [self setIsNew: NO];
-  [properties removeAllObjects];
-  [[self container] cleanupCaches];
+      mapping = [self mapping];
+      [mapping unregisterURLWithID: [self objectId]];
+      [self setIsNew: NO];
+      [properties removeAllObjects];
+      [[self container] cleanupCaches];
+    }
+  else
+    [self logWithFormat: @"skipping submit of message with class '%@'",
+          msgClass];
 
   return MAPISTORE_SUCCESS;
 }

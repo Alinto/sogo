@@ -35,9 +35,11 @@
 #import "MAPIStoreCalendarContext.h"
 #import "MAPIStoreCalendarMessage.h"
 #import "MAPIStoreCalendarMessageTable.h"
+#import "NSString+MAPIStore.h"
 
 #import "MAPIStoreCalendarFolder.h"
 
+#include <mapistore/mapistore_errors.h>
 #include <util/time.h>
 #include <gen_ndr/exchange.h>
 
@@ -49,17 +51,9 @@
   return [MAPIStoreCalendarMessageTable tableForContainer: self];
 }
 
-- (EOQualifier *) componentQualifier
+- (NSString *) component
 {
-  static EOQualifier *componentQualifier = nil;
-
-  if (!componentQualifier)
-    componentQualifier
-      = [[EOKeyValueQualifier alloc] initWithKey: @"c_component"
-				operatorSelector: EOQualifierOperatorEqual
-					   value: @"vevent"];
-
-  return componentQualifier;
+  return @"vevent";
 }
 
 - (MAPIStoreMessage *) createMessage
@@ -169,5 +163,14 @@
   return [EOQualifier qualifierWithQualifierFormat:
             [(SOGoAppointmentFolder *) sogoObject aclSQLListingFilter]];
 }
+
+- (int) getPidTagDefaultPostMessageClass: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"IPM.Appointment" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
 
 @end
