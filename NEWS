@@ -13,11 +13,13 @@ Enhancements
  - bundled a shell script to perform and manage backups using sogo-tool
  - increased the delay before starting drag and drop in Mail and Contacts module
   to improve the user experience with cheap mouses
+ - improved contact card layout when it includes a photo
  - updated German translation
  - updated Spanish (Spain) translation
  - updated Spanish (Argentina) translation
  - updated Ukrainian translation
- - improved contact card layout when it includes a photo
+ - updated Hungarian translation
+ - updated Dutch translation
 
 Bug Fixes
  - fixed escaping issue with PostgreSQL 8.1
