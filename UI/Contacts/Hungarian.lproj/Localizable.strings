@@ -76,7 +76,6 @@
 "No possible subscription" = "Nincs mappa, melyre feliratkozhat";
 
 "Preferred" = "Preferált";
-"Card for %@" = "Névjegy: %@";
 "Display:" = "Megjelenítendő név:";
 "Display Name:" = "Megjelenítendő név:";
 "Email:" = "Email cím:";
@@ -155,7 +154,9 @@
 "Unable to subscribe to that folder!"
 = "Erre a mappára nem lehet feliratkozni.";
 
-"User rights for:" = "Felhasználói jogosultságok:";
+/* acls */
+"Access rights to" = "Hozzáférés az alábbiaknak:";
+"For user" = "Felhasználónak";
 
 "Any Authenticated User" = "Any Authenticated User";
 "Public Access" = "Public Access";

@@ -23,10 +23,10 @@ request_info = "meghívja önt résztvevőnek egy találkozóra.";
 Accept = "Elfogad";
 Decline = "Elutasít";
 Tentative = "Bizonytalan";
-"Delegate ..." = "Delegate ...";
-"Delegated to" = "Delegated to";
+"Delegate ..." = "Jogok átruházása...";
+"Delegated to" = "Jogok átruházása az alábiaknak:";
 "Update status in calendar" = "Állapot frissítése a naptárban";
-"delegated from" = "delegated from";
+"delegated from" = "Jogok átruházója:";
 
 reply_info_no_attendee = "Ön választ kapott egy találkozóra, a feladó azonban nem résztvevő.";
 reply_info = "Ez egy válasz az ön által kiküldött meghívásra.";
@@ -37,10 +37,10 @@ reply_info = "Ez egy válasz az ön által kiküldött meghívásra.";
 
 "Size" = "Méret";
 
-"Digital signature is not valid" = "Digital signature is not valid";
-"Message is signed" = "Message is signed";
-"Subject" = "Subject";
-"From" = "From";
-"Date" = "Date";
-"To" = "To";
-"Issuer" = "Issuer";
+"Digital signature is not valid" = "Az elektronikus aláírás nem érvényes";
+"Message is signed" = "Az üzenet alá van írva";
+"Subject" = "Tárgy";
+"From" = "Feladó";
+"Date" = "Dátum";
+"To" = "Címzett";
+"Issuer" = "Tanusító";

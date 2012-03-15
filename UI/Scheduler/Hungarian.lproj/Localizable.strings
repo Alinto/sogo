@@ -10,7 +10,7 @@
 "Switch to day view" = "Napi nézetre váltás";
 "Switch to week view" = "Heti nézetre váltás";
 "Switch to month view" = "Havi nézetre váltás";
-"Reload all calendars" = "Reload all calendars";
+"Reload all calendars" = "Az összes naptár frissítése";
 
 /* Tabs */
 "Date" = "Dátum";
@@ -25,7 +25,7 @@
 "Thursday" = "Csütörtök";
 "Friday" = "Péntek";
 "Saturday" = "Szombat";
-"DayOfTheMonth" = "DayOfTheMonth";
+"DayOfTheMonth" = "A hónap napja";
 
 "Sun" = "Vas";
 "Mon" = "Hét";
@@ -46,8 +46,8 @@
 "dayLabelFormat" = "%Y.%m.%d";
 "today" = "Ma";
 
-"Previous Day" = "Previous Day";
-"Next Day" = "Next Day";
+"Previous Day" = "Előző nap";
+"Next Day" = "Következő nap";
 
 /* Week */
 
@@ -56,8 +56,8 @@
 
 "Week %d" = "%d. hét";
 
-"Previous Week" = "Previous Week";
-"Next Week" = "Next Week";
+"Previous Week" = "Előző hét";
+"Next Week" = "Következő hét";
 
 /* Month */
 
@@ -89,8 +89,8 @@
 "a3_November" = "November";
 "a3_December" = "December";
 
-"Previous Month" = "Previous Month";
-"Next Month" = "Next Month";
+"Previous Month" = "Előző hónap";
+"Next Month" = "Következő hónap";
 
 /* Year */
 
@@ -103,20 +103,20 @@
 
 "New Calendar..." = "Új naptár...";
 "Delete Calendar" = "Naptár törlése";
-"Unsubscribe Calendar" = "Unsubscribe Calendar";
+"Unsubscribe Calendar" = "Leíratkozás a naptárról ";
 "Sharing..." = "Megosztás...";
 "Export Calendar..." = "Naptár exportálása...";
-"Import Events..." = "Import Events...";
-"Import Events" = "Import Events";
-"Select an iCalendar file (.ics)." = "Select an iCalendar file (.ics).";
-"Upload" = "Upload";
+"Import Events..." = "Események importálása...";
+"Import Events" = "Események importálása";
+"Select an iCalendar file (.ics)." = "Válasszon egy iCalendar fájlt (.ics).";
+"Upload" = "Feltöltés";
 "Publish Calendar..." = "Naptár közzététele...";
 "Reload Remote Calendars" = "Távoli naptárak frissítése";
 "Properties" = "Tulajdonságok";
-"Done" = "Done";
-"An error occured while importing calendar." = "An error occured while importing calendar.";
-"No event was imported." = "No event was imported.";
-"A total of %{0} events were imported in the calendar." = "A total of %{0} events were imported in the calendar.";
+"Done" = "Kész";
+"An error occured while importing calendar." = "Hiba történt a naptár importálásakor.";
+"No event was imported." = "Nem volt importált esemény.";
+"A total of %{0} events were imported in the calendar." = "Összesen %{0} esemény lett importálva a naptárba.";
 
 "Compose E-Mail to All Attendees" = "Üzenet küldése az összes résztvevőnek";
 "Compose E-Mail to Undecided Attendees" = "Üzenet küldése az bizonytalan résztvevőnek";
@@ -131,10 +131,11 @@
 
 /* acls */
 
-"User rights for:" = "Felhasználói jogosultságok:";
+"Access rights to" = "Hozzáférés az alábbiaknak:";
+"For user" = "Felhasználónak";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
+"Any Authenticated User" = "Bejelentkezett felhasználók";
+"Public Access" = "Mindenki (publikus hozzáférés)";
 
 "label_Public" = "Nyilvános";
 "label_Private" = "Magán";
@@ -159,7 +160,6 @@
 
 /* Button Titles */
 
-"New Calendar..." = "Új naptár...";
 "Subscribe to a Calendar..." = "Feliratkozás naptárra...";
 "Remove the selected Calendar" = "Kijelölt naptár törlése";
 
@@ -173,7 +173,7 @@
 "Save and Close" = "Mentés és bezárás";
 "Close" = "Bezárás";
 "Invite Attendees" = "Résztvevők meghívása";
-"Attach" = "Attach";
+"Attach" = "Csatolás";
 "Update" = "Mentés";
 "Cancel" = "Mégsem";
 "show_rejected_apts" = "Visszautasított találkozók mutatása";
@@ -226,14 +226,14 @@
 "Category:" = "Kategória:";
 "Repeat:" = "Ismétlés:";
 "Reminder:" = "Emlékeztető:";
-"General:" = "General:";
-"Reply:" = "Reply:";
+"General:" = "Általános:";
+"Reply:" = "Válasz:";
 
 "Target:" = "Cél:";
 
 "attributes" = "tulajdonságok";
 "attendees" = "résztvevők";
-"delegated from" = "delegated from";
+"delegated from" = "Jogok átruházója:";
 
 /* checkbox title */
 "is private" = "magán";
@@ -350,7 +350,7 @@
 "Every" = "Minden";
 "Days" = "naponként";
 "Week(s)" = "hetenként";
-"On" = "On";
+"On" = "Be";
 "Month(s)" = "hónaponként";
 "The" = "A";
 "Recur on day(s)" = "Az alábbi napon";
@@ -404,13 +404,13 @@
 "reminder_AFTER" = "utána";
 "reminder_START" = "az esemény kezdődik";
 "reminder_END" = "az esemény végződik";
-"Reminder Details" = "Reminder Details";
+"Reminder Details" = "Emlékeztető részletei";
 
-"Choose a Reminder Action" = "Choose a Reminder Action";
-"Show an Alert" = "Show an Alert";
-"Send an E-mail" = "Send an E-mail";
-"Email Organizer" = "Email Organizer";
-"Email Attendees" = "Email Attendees";
+"Choose a Reminder Action" = "Válasszon egy emlékeztető műveletet";
+"Show an Alert" = "Riasztás";
+"Send an E-mail" = "Email küldése";
+"Email Organizer" = "Email szervező";
+"Email Attendees" = "Email résztvevő";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -446,7 +446,7 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 "Day View" = "Napi nézet";
 "Week View" = "Heti nézet";
 "Month View" = "Havi nézet";
-"Reload" = "Reload";
+"Reload" = "Frissítés";
 
 "eventPartStatModificationError" = "A résztvevői állapota nem módosítható.";
 
@@ -470,7 +470,7 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 /* Legend */
 "Participant" = "Kötelező résztvevő";
 "Optional Participant" = "Nem kötelező résztvevő";
-"Non Participant" = "Non Participant";
+"Non Participant" = "Nem résztvevő";
 "Chair" = "Szék";
 
 "Needs action" = "Foglalkozni kell vele";
@@ -490,13 +490,13 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 "Next slot" = "Következő ablak";
 "Previous hour" = "Előző óra";
 "Next hour" = "Következő óra";
-"Work days only" = "Work days only";
-"The whole day" = "The whole day";
-"Between" = "Between";
+"Work days only" = "Csak munkanapok";
+"The whole day" = "Az egész nap";
+"Between" = "Között";
 "and" = "and";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?";
+= "Egy vagy több résztvevő között időütközés van.\nMegtartja ennek ellenére a beállításokat?";
 
 /* apt list */
 "Title" = "Cím";
@@ -526,47 +526,47 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Name:" = "Név:";
 "Color:" = "Szín:";
 
-"Include in free-busy" = "Include in free-busy";
+"Include in free-busy" = "Foglaltság mutatása";
 
-"Synchronization" = "Synchronization";
-"Synchronize" = "Synchronize";
+"Synchronization" = "Szinkronizáció";
+"Synchronize" = "Szinkronizálás";
 "Tag:" = "Cimke:";
 
-"Display" = "Display";
-"Show alarms" = "Show alarms";
-"Show tasks" = "Show tasks";
+"Display" = "Kijelez";
+"Show alarms" = "Riasztások megjelenítése";
+"Show tasks" = "Feladatok megjelenítése";
 
-"Links to this Calendar" = "Links to this Calendar";
-"Authenticated User Access" = "Authenticated User Access";
+"Links to this Calendar" = "Hivatkozások ehhez a naptárhoz";
+"Authenticated User Access" = "Belépett felhasználók";
 "CalDAV URL" = "CalDAV url";
 "WebDAV ICS URL" = "WebDAV ICS URL";
 "WebDAV XML URL" = "WebDAV XML URL";
 
 /* Error messages */
-"dayFieldInvalid" = "Please specify a numerical value in the Days field greater or equal to 1.";
-"weekFieldInvalid" = "Please specify a numerical value in the Week(s) field greater or equal to 1.";
-"monthFieldInvalid" = "Please specify a numerical value in the Month(s) field greater or equal to 1.";
-"monthDayFieldInvalid" = "Please specify a numerical value in the month day field greater or equal to 1.";
-"yearFieldInvalid" = "Please specify a numerical value in the Year(s) field greater or equal to 1.";
-"appointmentFieldInvalid" = "Please specify a numerical value in the Appointment(s) field  greater or equal to 1.";
-"recurrenceUnsupported" = "This type of recurrence is currently unsupported.";
-"Please specify a calendar name." = "Please specify a calendar name.";
-"tagNotDefined" = "You must specify a tag if you want to synchronize this calendar.";
-"tagAlreadyExists" = "The tag you specified is already associated to another calendar.";
-"tagHasChanged" = "If you change your calendar's tag, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasAdded" = "If you want to synchronize this calendar, you'll need to reload the data on your mobile device.\nContinue?";
-"tagWasRemoved" = "If you remove this calendar from synchronization, you'll need to reload the data on your mobile device.\nContinue?";
-"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
-"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
+"dayFieldInvalid" = "Kérem adjon meg egy számértéket a Napok mezőben, amely egyenlő vagy nagyobb, mint 1.";
+"weekFieldInvalid" = "Kérem adjon meg egy számértéket a Hét mezőben, amely egyenlő vagy nagyobb, mint 1.";
+"monthFieldInvalid" = "Kérem adjon meg egy számértéket a Hónap mezőben, amely egyenlő vagy nagyobb, mint 1.";
+"monthDayFieldInvalid" = "Kérem adjon meg egy számértéket a Hónap napja mezőben, amely egyenlő vagy nagyobb, mint 1.";
+"yearFieldInvalid" = "Kérem adjon meg egy számértéket az Év mezőben, amely egyenlő vagy nagyobb, mint 1.";
+"appointmentFieldInvalid" = "Kérem adjon meg egy számértéket a Találkozó mezőben, amely egyenlő vagy nagyobb, mint 1.";
+"recurrenceUnsupported" = "Ez a típusú ismétlődés jelenleg nem támogatott.";
+"Please specify a calendar name." = "Kérem adjon meg egy nevet a naptárnak.";
+"tagNotDefined" = "Meg kell adnia egy címkét, amennyiben szinkronizálni akarja a naptárat.";
+"tagAlreadyExists" = "A megadott címke már egy másik naptárhoz lett hozzárendeve.";
+"tagHasChanged" = "A naptár címkéjének megváltoztatása után frissíteni kell az adatokat a mobil készülékén.\nFolytatja?";
+"tagWasAdded" = "A naptár szinkronizálásához frissíteni kell az adatokat a mobil készülékén.";
+"tagWasRemoved" = "Amennyiben nem szinkronizálja a továbbiakban a naptárat, frissíteni kell az adatokat a mobil készülékén.";
+"DestinationCalendarError" = "A forrás- és cél naptár ugyanaz. Kérem válasszon egy másik naptárat.";
+"EventCopyError" = "Hiba történt a másoláskor. Kérem válasszon egy másik naptárat.";
 
-"Open Task..." = "Open Task...";
-"Mark Completed" = "Mark Completed";
-"Delete Task" = "Delete Task";
-"Delete Event" = "Delete Event";
-"Copy event to my calendar" = "Copy event to my calendar";
+"Open Task..." = "Feladat megnyitása...";
+"Mark Completed" = "A jelölés befejeződött.";
+"Delete Task" = "Feladat törlése";
+"Delete Event" = "Esemény törlése";
+"Copy event to my calendar" = "Esemény másolása a naptáromba";
 
-"Subscribe to a web calendar..." = "Subscribe to a web calendar...";
-"URL of the Calendar" = "URL of the Calendar";
-"Web Calendar" = "Web Calendar";
-"Reload on login" = "Reload on login";
-"Invalid number." = "Invalid number.";
+"Subscribe to a web calendar..." = "Internetes naptár becsatolása";
+"URL of the Calendar" = "A naptár URL címe";
+"Web Calendar" = "Internetes naptár";
+"Reload on login" = "Frissítés bejelentkezéskor";
+"Invalid number." = "Érvénytelen szám";

@@ -8,47 +8,52 @@ vtodo_class1 = "(Magán feladat)";
 vtodo_class2 = "(Bizalmas feladat)";
 
 /* Receipts */
-"Title:" = "Title:";
-"Start:" = "Start:";
-"End:" = "End:";
+"Title:" = "Cím:";
+"Start:" = "Kezdete:";
+"End:" = "Vége:";
 
-"Receipt: users invited to a meeting" = "Receipt: users invited to a meeting";
-"You have invited the following attendees(s):" = "You have invited the following attendees(s):";
-"... to attend the following event:" = "... to attend the following event:";
+"Receipt: users invited to a meeting" = "Visszaigazolás: meghívás találkozóra";
+"You have invited the following attendees(s):" = "Az alábbi résztvevőket hívta meg:";
+"... to attend the following event:" = "... hogy vegyen részt az alábbi eseményen:";
 
-"Receipt: invitation updated" = "Receipt: invitation updated";
-"The following attendees(s):" = "The following attendees(s):";
-"... have been notified of the changes to the following event:" = "... have been notified of the changes to the following event:";
+"Receipt: invitation updated" = "Visszaigazolás: meghívás módosítása";
+"The following attendees(s):" = "Az alábbi résztvevők:";
+"... have been notified of the changes to the following event:" = "lettek értesítve az alábbi esemény változásáról:";
 
-"Receipt: attendees removed from an event" = "Receipt: attendees removed from an event";
-"You have removed the following attendees(s):" = "You have removed the following attendees(s):";
-"... from the following event:" = "... from the following event:";
+"Receipt: attendees removed from an event" = "Visszaigazolás: résztvevők meghívásának visszavonása";
+"You have removed the following attendees(s):" = "Az alábbi résztvevők meghívását vonta vissza:";
+"... from the following event:" = "... az alábbi eseményről:";
 
 /* IMIP messages */
-"startDate_label" = "Start:";
-"endDate_label" = "End:";
-"due_label" = "Due Date:";
-"location_label" = "Location:";
-"summary_label" = "Summary:";
-"comment_label" = "Comment:";
+"startDate_label" = "Kezdete:";
+"endDate_label" = "Vége:";
+"due_label" = "Lejárat napja:";
+"location_label" = "Hely:";
+"summary_label" = "Összegzés:";
+"comment_label" = "Megjegyzés:";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Event Invitation: \"%{Summary}\"";
+"Event Invitation: \"%{Summary}\"" = "Meghívás eseményre: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(%{SentBy} által elküldve) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} meghívta Önt a(z) %{Summary} tárgyú eseményre.\n\nKezdete: %{StartDate}: \nVége: %{EndDate}\nLeírása: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} meghívta Önt erre az eseményre: %{Summary}.\n\nKezdete: %{StartDate} at %{StartTime}\nVége: %{EndDate} at %{EndTime}\nLeírás: %{Description}";
 
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Event Cancelled: \"%{Summary}\"";
+"Event Cancelled: \"%{Summary}\"" = "Az esemény törölve lett: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} törlte az alábbi eseményt: %{Summary}.\n\nKzdete: %{StartDate}\nVége: %{EndDate}\nLeírás: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+= "%{Organizer} %{SentByText} törölte az alábbi eseményt: %{Summary}.\n\nKezdete: %{StartDate} at %{StartTime}\nVége: %{EndDate} at %{EndTime}\nLeírás: %{Description}";
 
 /* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "A(z) \"%{Summary}\" tárgyú, %{OldStartDate} időpontra tervezett esemény módosult.";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed";
+= "A \"%{Summary}\" tárgyú, %{OldStartDate} %{OldStartTime} időpontra tervezett találkozó adatai módosultak";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "The following parameters have changed in the \"%{Summary}\" meeting:";
+= "A \"%{Summary}\" tárgyú találkozó következő adatai módosultak:";
 "Please accept or decline those changes."
-= "Please accept or decline those changes.";
+= "Kérem fogadja el vagy utasítsa vissza a változásokat.";
 
 /* Reply */
 "Reply to invitation: \"%{Summary}\"" = "Válasz a meghívásra: %{Summary}";
@@ -57,7 +62,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText}visszautasította a meghívását.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
+= "%{Attendee} %{SentByText} átruházta a meghívást az alábbi személynek %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}még meggondolja a meghívását.";
 

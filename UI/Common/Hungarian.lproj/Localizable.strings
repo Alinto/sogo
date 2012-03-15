@@ -10,10 +10,10 @@
 "Address Book"	= "Címjegyzék";
 "Mail" = "Üzenetek";
 "Preferences" = "Beállítások";
-"Administration" = "Administration";
+"Administration" = "Rendszerfelügyelet";
 "Disconnect" = "Kilépés";
 "Right Administration" = "Jogosultság szerkesztése";
-"Log Console (dev.)" = "Log Console (dev.)";
+"Log Console (dev.)" = "Napló konzol (fejl.)";
 
 "User" = "Felhasználó";
 
@@ -22,20 +22,33 @@
 "noJavascriptError" = "A SOGo-nak Javascript futtatási környezetre van szüksége. Kérem győződjön meg, hogy böngészője támogatja-e, illetve be van-e kapcsolva ez az opció.";
 "noJavascriptRetry" = "Újra";
 
-"Owner:" = "Owner:";
+"Owner:" = "Tulajdonos";
 "Publish the Free/Busy information" = "Foglaltsági információ nyilvánossá tétele";
 
 "Add..." = "Hozzáadás...";
 "Remove" = "Törlés";
 
-"Subscribe User" = "Subscribe User";
+"Subscribe User" = "Felíratkozott felhasználók";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
-"Any user not listed above" = "Any user not listed above";
-"Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
+"Any Authenticated User" = "Bejelentkezett felhasználók";
+"Public Access" = "Publikus hozzáférés";
+"Any user not listed above" = "Az összes fel nem sorolt felhasználó";
+"Anybody accessing this resource from the public area" = "Bárki, aki a publikus tartományból az erőforrást elérheti";
 
 "Sorry, the user rights can not be configured for that object." = "Sajnálom, erre az objektumra nem állíthatók be felhasználói jogosultságok.";
+
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "A rendszer bármely felhasználója el tudja érni az alábbi email fiókot: \"%{0}\". Biztos, hogy megbízik mindegyikükben?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "A rendszer bármely felhasználója el tudja érni az alábbi naptárját: \"%{0}\". Biztos, hogy megbízik mindegyikükben?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Lényegében bárki az interneten el tudja érni a(z) \"%{0}\" naptárját, még akkor is, ha nem rendelkezik fiókkal a rendszerben. Biztos, hogy a naptár publikus adatokat tartalmaz?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "A rendszer bármely felhasználója el tudja érni az alábbi címjegyzékét: \"%{0}\". Biztos, hogy megbízik mindegyikükben?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Lényegében bárki az interneten el tudja érni a(z) \"%{0}\" címjegyzékét, még akkor is, ha nem rendelkezik fiókkal a rendszerben. Biztos, hogy a címjegyzék publikus adatokat tartalmaz?";
+"Give Access" = "Hozzáférés biztosítása";
+"Keep Private" = "Magán célúnak megtart";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -51,25 +64,34 @@
      	= "Erre a mappára már feliratkozott!";
 "The user rights cannot be edited for this object!"
         = "Ezen az objektumon nem szerkeszthetőek a felhasználói jogosultságok!";
-"A folder by that name already exists." = "A folder by that name already exists.";
+"A folder by that name already exists." = "Ezzel a névvel már létezik mappa.";
 "You cannot create a list in a shared address book." 
-        = "You cannot create a list in a shared address book.";
-"Warning" = "Warning";
+        = "Nem hozható létre lista egy megosztott címjegyzékben.";
+"Warning" = "Figyelmeztetés";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Önnek nem engedélyezett a hozzáférés ehhez a modulhoz vagy rendszerhez. Kérem lépjen kapcsolatba a rendszergazdával.";
 "You don't have the required privileges to perform the operation."
 = "Önnek nincs jogosultsága ehhez a művelethez.";
 
-"noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
-"delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
-"delegate is a participant" = "The delegate is already a participant.";
-"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+"noEmailForDelegation" = "Meg kell adnia a címet, amelyre a meghívását átruházza.";
+"delegate is organizer" = "Az átruházott személy nem lehet a szervező, kérem adjon meg mást.";
+"delegate is a participant" = "Az átruházott személy nem lehet résztvevő.";
+"delegate is a group" = "A megadott cím egy csoporté, átruházni csak egy személyre lehet.";
+
+"Snooze for " = "Szundi:";
+"5 minutes" = "5 perc";
+"10 minutes" = "10 perc";
+"15 minutes" = "15 perc";
+"30 minutes" = "30 perc";
+"45 minutes" = "45 perc";
+"1 hour" = "1 óra";
+
 
 /* common buttons */
-"OK" = "OK";
-"Cancel" = "Cancel";
-"Yes" = "Yes";
+"OK" = "Ok";
+"Cancel" = "Mégse";
+"Yes" = "Igen";
 "No" = "No";
 
 /* alarms */
