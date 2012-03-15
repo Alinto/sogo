@@ -65,24 +65,24 @@
   return mimeAttachTag;
 }
 
-- (int) getPrMid: (void **) data
-        inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagMid: (void **) data
+            inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, [container objectId]);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttachNum: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttachNumber: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, aid);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrRenderingPosition: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagRenderingPosition: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0xffffffff);
 

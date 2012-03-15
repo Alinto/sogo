@@ -51,8 +51,8 @@
   return [sogoObject lastModified];
 }
 
-- (int) getPrAccess: (void **) data // TODO
-           inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAccess: (void **) data // TODO
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStoreContext *context;
   WOContext *woContext;
@@ -88,8 +88,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAccessLevel: (void **) data // TODO
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAccessLevel: (void **) data // TODO
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStoreContext *context;
   MAPIStoreUserContext *userContext;
@@ -117,8 +117,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrChangeKey: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagChangeKey: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc = MAPISTORE_SUCCESS;
   NSData *changeKey;
@@ -145,18 +145,26 @@
   return rc;
 }
 
-- (int) getPrPredecessorChangeList: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagPredecessorChangeList: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc = MAPISTORE_SUCCESS;
   NSData *changeList;
+  MAPIStoreGCSFolder *parentFolder;
 
   if (isNew)
     rc = MAPISTORE_ERR_NOT_FOUND;
   else
     {
-      changeList = [(MAPIStoreGCSFolder *)[self container]
-                                          predecessorChangeListForMessageWithKey: [self nameInContainer]];
+      parentFolder = (MAPIStoreGCSFolder *)[self container];
+      changeList = [parentFolder
+                     predecessorChangeListForMessageWithKey: [self nameInContainer]];
+      if (!changeList)
+        {
+          [parentFolder synchroniseCache];
+          changeList = [parentFolder
+                         predecessorChangeListForMessageWithKey: [self nameInContainer]];
+        }
       if (!changeList)
         abort ();
       *data = [changeList asBinaryInMemCtx: memCtx];

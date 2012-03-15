@@ -48,7 +48,14 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
+static Class NSNumberK;
+
 @implementation MAPIStoreGCSFolder
+
++ (void) initialize
+{
+  NSNumberK = [NSNumber class];
+}
 
 - (id) initWithSOGoObject: (id) newSOGoObject
               inContainer: (MAPIStoreObject *) newContainer
@@ -72,6 +79,7 @@
 {
   [versionsMessage release];
   [activeUserRoles release];
+  [componentQualifier release];
   [super dealloc];
 }
 
@@ -127,7 +135,7 @@
     [sogoObject renameTo: newDisplayName];
 }
 
-- (int) getPrDisplayName: (void **) data
+- (int) getPidTagDisplayName: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   NSString *displayName;
@@ -207,17 +215,17 @@
 
 - (NSDate *) lastMessageModificationTime
 {
+  NSDate *value;
   NSNumber *ti;
-  NSDate *value = nil;
+
+  [self synchroniseCache];
 
   ti = [[versionsMessage properties]
-         objectForKey: @"SyncLastSynchronisationDate"];
+         objectForKey: @"SyncLastModificationDate"];
   if (ti)
     value = [NSDate dateWithTimeIntervalSince1970: [ti doubleValue]];
   else
-    value = [NSDate date];
-
-  [self logWithFormat: @"lastMessageModificationTime: %@", value];
+    value = nil;
 
   return value;
 }
@@ -283,12 +291,41 @@
   [changeList setObject: globCnt forKey: guid];
 }
 
+- (EOQualifier *) componentQualifier
+{
+  if (!componentQualifier)
+    componentQualifier
+      = [[EOKeyValueQualifier alloc] initWithKey: @"c_component"
+				operatorSelector: EOQualifierOperatorEqual
+					   value: [self component]];
+
+  return componentQualifier;
+}
+
+- (EOQualifier *) contentComponentQualifier
+{
+  EOQualifier *contentComponentQualifier;
+  NSString *likeString;
+  
+  likeString = [NSString stringWithFormat: @"%%BEGIN:%@%%",
+                         [[self component] uppercaseString]];
+  contentComponentQualifier = [[EOKeyValueQualifier alloc]
+                                initWithKey: @"c_content"
+                           operatorSelector: EOQualifierOperatorLike
+                                      value: likeString];
+  [contentComponentQualifier autorelease];
+
+  return contentComponentQualifier;
+}
+
 - (BOOL) synchroniseCache
 {
   BOOL rc = YES, foundChange = NO;
   uint64_t newChangeNum;
   NSData *changeKey;
-  NSNumber *ti, *changeNumber, *lastModificationDate, *cName, *cVersion, *cLastModified;
+  NSString *cName;
+  NSNumber *ti, *changeNumber, *lastModificationDate, *cVersion,
+    *cLastModified, *cDeleted;
   EOFetchSpecification *fs;
   EOQualifier *searchQualifier, *fetchQualifier;
   NSUInteger count, max;
@@ -303,7 +340,7 @@
   if (!fields)
     fields = [[NSArray alloc]
 	       initWithObjects: @"c_name", @"c_version", @"c_lastmodified",
-               nil];
+               @"c_deleted", nil];
 
   if (!sortOrdering)
     {
@@ -312,26 +349,7 @@
       [sortOrdering retain];
     }
 
-  now = [NSCalendarDate date];
-
-  currentProperties = [[versionsMessage properties] mutableCopy];
-  if (!currentProperties)
-    currentProperties = [NSMutableDictionary new];
-  [currentProperties autorelease];
-  messages = [currentProperties objectForKey: @"Messages"];
-  if (!messages)
-    {
-      messages = [NSMutableDictionary new];
-      [currentProperties setObject: messages forKey: @"Messages"];
-      [messages release];
-    }
-  mapping = [currentProperties objectForKey: @"VersionMapping"];
-  if (!mapping)
-    {
-      mapping = [NSMutableDictionary new];
-      [currentProperties setObject: mapping forKey: @"VersionMapping"];
-      [mapping release];
-    }
+  currentProperties = [versionsMessage properties];
 
   lastModificationDate = [currentProperties objectForKey: @"SyncLastModificationDate"];
   if (lastModificationDate)
@@ -341,8 +359,9 @@
                            operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
                                       value: lastModificationDate];
       fetchQualifier = [[EOAndQualifier alloc]
-                         initWithQualifiers:
-                           searchQualifier, [self componentQualifier], nil];
+                         initWithQualifiers: searchQualifier,
+                         [self contentComponentQualifier],
+                         nil];
       [fetchQualifier autorelease];
       [searchQualifier release];
     }
@@ -354,17 +373,38 @@
              fetchSpecificationWithEntityName: [ocsFolder folderName]
                                     qualifier: fetchQualifier
                                 sortOrderings: [NSArray arrayWithObject: sortOrdering]];
-  fetchResults = [ocsFolder fetchFields: fields fetchSpecification: fs];
+  fetchResults = [ocsFolder fetchFields: fields
+                     fetchSpecification: fs
+                          ignoreDeleted: NO];
   max = [fetchResults count];
   if (max > 0)
     {
+      messages = [currentProperties objectForKey: @"Messages"];
+      if (!messages)
+        {
+          messages = [NSMutableDictionary new];
+          [currentProperties setObject: messages forKey: @"Messages"];
+          [messages release];
+        }
+      mapping = [currentProperties objectForKey: @"VersionMapping"];
+      if (!mapping)
+        {
+          mapping = [NSMutableDictionary new];
+          [currentProperties setObject: mapping forKey: @"VersionMapping"];
+          [mapping release];
+        }
+
       ldb_transaction_start([[self context] connectionInfo]->oc_ctx);
 
       for (count = 0; count < max; count++)
         {
           result = [fetchResults objectAtIndex: count];
           cName = [result objectForKey: @"c_name"];
-          cVersion = [result objectForKey: @"c_version"];
+          cDeleted = [result objectForKey: @"c_deleted"];
+          if ([cDeleted isKindOfClass: NSNumberK] && [cDeleted intValue])
+            cVersion = [NSNumber numberWithInt: -1];
+          else
+            cVersion = [result objectForKey: @"c_version"];
           cLastModified = [result objectForKey: @"c_lastmodified"];
 
           messageEntry = [messages objectForKey: cName];
@@ -374,9 +414,12 @@
               [messages setObject: messageEntry forKey: cName];
               [messageEntry release];
             }
+
           if (![[messageEntry objectForKey: @"c_version"]
                  isEqual: cVersion])
             {
+              [sogoObject removeChildRecordWithName: cName];
+
               foundChange = YES;
 
               newChangeNum = [[self context] getNewChangeNumber];
@@ -402,6 +445,7 @@
       
       if (foundChange)
         {
+          now = [NSCalendarDate date];
           ti = [NSNumber numberWithDouble: [now timeIntervalSince1970]];
           [currentProperties setObject: ti
                                 forKey: @"SyncLastSynchronisationDate"];
@@ -526,9 +570,9 @@
   NSArray *deletedKeys, *deletedCNames, *records;
   NSNumber *changeNumNbr, *lastModified;
   NSString *cName;
-  NSDictionary *versionProperties;
-  NSMutableDictionary *messages, *mapping;
-  uint64_t newChangeNum = 0;
+  NSDictionary *versionProperties, *messageEntry;
+  NSMutableDictionary *messages;
+  uint64_t maxChangeNum = changeNum, currentChangeNum;
   EOAndQualifier *fetchQualifier;
   EOKeyValueQualifier *cDeletedQualifier, *cLastModifiedQualifier;
   EOFetchSpecification *fs;
@@ -573,28 +617,28 @@
                              ignoreDeleted: NO];
           deletedCNames = [records objectsForKey: @"c_name" notFoundMarker: nil];
           max = [deletedCNames count];
-          if (max > 0)
+          for (count = 0; count < max; count++)
             {
-              mapping = [versionProperties objectForKey: @"VersionsMapping"];
-              for (count = 0; count < max; count++)
+              cName = [deletedCNames objectAtIndex: count];
+              [sogoObject removeChildRecordWithName: cName];
+              messageEntry = [messages objectForKey: cName];
+              if (messageEntry)
                 {
-                  cName = [deletedCNames objectAtIndex: count];
-                  if ([messages objectForKey: cName])
+                  currentChangeNum
+                    = [[messageEntry objectForKey: @"version"]
+                        unsignedLongLongValue];
+                  if (MAPICNCompare (changeNum, currentChangeNum)
+                      == NSOrderedAscending)
                     {
-                      [messages removeObjectForKey: cName];
                       [(NSMutableArray *) deletedKeys addObject: cName];
-                      newChangeNum = [[self context] getNewChangeNumber];
+                      if (MAPICNCompare (maxChangeNum, currentChangeNum)
+                          == NSOrderedAscending)
+                        maxChangeNum = currentChangeNum;
                     }
                 }
-              if (newChangeNum)
-                {
-                  changeNumNbr
-                    = [NSNumber numberWithUnsignedLongLong: newChangeNum];
-                  [mapping setObject: lastModified forKey: changeNumNbr];
-                  *cnNbr = changeNumNbr;
-                  [versionsMessage save];
-                }
             }
+          if (maxChangeNum != changeNum)
+            *cnNbr = [NSNumber numberWithUnsignedLongLong: maxChangeNum];
         }
     }
   else
@@ -639,7 +683,7 @@
   return nil;
 }
 
-- (EOQualifier *) componentQualifier
+- (NSString *) component
 {
   [self subclassResponsibility: _cmd];
 

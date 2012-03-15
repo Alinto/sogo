@@ -149,11 +149,11 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
 	rc = MAPIRestrictionStateAlwaysFalse;
       break;
 
-    case PR_CONVERSATION_KEY:
+    case PidTagConversationKey:
 	rc = MAPIRestrictionStateAlwaysFalse;
       break;
 
-    case PR_CHANGE_NUM:
+    case PidTagChangeNumber:
       {
         modseq = [(MAPIStoreMailFolder *)
                    container modseqFromMessageChangeNumber: value];
@@ -205,7 +205,7 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
       else
 	rc = MAPIRestrictionStateAlwaysFalse;
       break;
-    case PR_CONVERSATION_KEY:
+    case PidTagConversationKey:
       rc = MAPIRestrictionStateAlwaysFalse;
       break;
     default:

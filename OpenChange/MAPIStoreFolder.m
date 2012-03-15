@@ -56,7 +56,6 @@
 #include <util/attr.h>
 #include <libmapiproxy.h>
 #include <mapistore/mapistore.h>
-#include <mapistore/mapistore_nameid.h>
 #include <mapistore/mapistore_errors.h>
 
 Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMessageTableK, MAPIStoreFolderTableK;
@@ -76,9 +75,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   if ((self = [super init]))
     {
-      messageKeys = nil;
-      faiMessageKeys = nil;
-      folderKeys = nil;
+      // messageKeys = nil;
+      // faiMessageKeys = nil;
+      // folderKeys = nil;
       faiFolder = nil;
       context = nil;
 
@@ -142,11 +141,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (void) dealloc
 {
+  // [messageKeys release];
+  // [faiMessageKeys release];
+  // [folderKeys release];
   [propsMessage release];
   [propsFolder release];
-  [messageKeys release];
-  [faiMessageKeys release];
-  [folderKeys release];
   [faiFolder release];
   [context release];
 
@@ -167,16 +166,16 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   uint64_t cn;
 
   props = [propsMessage properties];
-  value = [props objectForKey: MAPIPropertyKey (PR_CHANGE_NUM)];
+  value = [props objectForKey: MAPIPropertyKey (PidTagChangeNumber)];
   if (value)
     cn = [value unsignedLongLongValue];
   else
     {
-      [self logWithFormat: @"no value for PR_CHANGE_NUM, adding one now"];
+      [self logWithFormat: @"no value for PidTagChangeNumber, adding one now"];
       cn = [[self context] getNewChangeNumber];
       value = [NSNumber numberWithUnsignedLongLong: cn];
       props = [NSDictionary dictionaryWithObject: value
-                                          forKey: MAPIPropertyKey (PR_CHANGE_NUM)];
+                                          forKey: MAPIPropertyKey (PidTagChangeNumber)];
       [propsMessage appendProperties: props];
       [propsMessage save];
     }
@@ -262,8 +261,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
   if (messageKey)
     {
-      [self faiMessageKeys];
-      if ([faiMessageKeys containsObject: messageKey])
+      if ([[self faiMessageKeys] containsObject: messageKey])
         {
           msgObject = [faiFolder lookupName: messageKey
                                   inContext: nil
@@ -372,7 +370,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                 }
               else
                 [NSException raise: @"MAPIStoreIOException"
-                             format: @"unable to fetch created folder"];
+                            format: @"unable to fetch created folder"];
             }
         }
     }
@@ -770,9 +768,14 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                             isAddition: (BOOL) isAddition
                          withACLFolder: (SOGoFolder *) aclFolder
 {
-  if (isAddition)
-    [aclFolder addUserInAcls: user];
-  [aclFolder setRoles: roles forUser: user];
+  if (user)
+    {
+      if (isAddition)
+        [aclFolder addUserInAcls: user];
+      [aclFolder setRoles: roles forUser: user];
+    }
+  else
+    [self logWithFormat: @"user is nil, keeping intended entry intact"];
 }
 
 - (void) setupVersionsMessage
@@ -951,6 +954,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   int rc = MAPISTORE_SUCCESS;
   MAPIStoreTable *table;
+  SOGoUser *ownerUser;
 
   if (tableType == MAPISTORE_MESSAGE_TABLE)
     table = [self messageTable];
@@ -959,21 +963,31 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   else if (tableType == MAPISTORE_FOLDER_TABLE)
     table = [self folderTable];
   else if (tableType == MAPISTORE_PERMISSIONS_TABLE)
-    table = [self permissionsTable];
+    {
+      ownerUser = [[self userContext] sogoUser];
+      if ([[context activeUser] isEqual: ownerUser])
+        table = [self permissionsTable];
+      else
+        rc = MAPISTORE_ERR_DENIED;
+    }
   else
     {
       table = nil;
       [NSException raise: @"MAPIStoreIOException"
                   format: @"unsupported table type: %d", tableType];
     }
-  if (table)
+
+  if (rc == MAPISTORE_SUCCESS)
     {
-      [table setHandleId: handleId];
-      *tablePtr = table;
-      *countPtr = [[table childKeys] count];
+      if (table)
+        {
+          [table setHandleId: handleId];
+          *tablePtr = table;
+          *countPtr = [[table childKeys] count];
+        }
+      else
+        rc = MAPISTORE_ERR_NOT_FOUND;
     }
-  else
-    rc = MAPISTORE_ERR_NOT_FOUND;
 
   return rc;
 }
@@ -1004,14 +1018,16 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (NSArray *) messageKeys
 {
-  if (!messageKeys)
-    {
-      messageKeys = [self messageKeysMatchingQualifier: nil
-                                      andSortOrderings: nil];
-      [messageKeys retain];
-    }
+  return [self messageKeysMatchingQualifier: nil
+                           andSortOrderings: nil];
+  // if (!messageKeys)
+  //   {
+  //     messageKeys = [self messageKeysMatchingQualifier: nil
+  //                                     andSortOrderings: nil];
+  //     [messageKeys retain];
+  //   }
 
-  return messageKeys;
+  // return messageKeys;
 }
 
 - (MAPIStoreFAIMessageTable *) faiMessageTable
@@ -1029,14 +1045,16 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (NSArray *) faiMessageKeys
 {
-  if (!faiMessageKeys)
-    {
-      faiMessageKeys = [self faiMessageKeysMatchingQualifier: nil
-                                            andSortOrderings: nil];
-      [faiMessageKeys retain];
-    }
+  return [self faiMessageKeysMatchingQualifier: nil
+                              andSortOrderings: nil];
+  // if (!faiMessageKeys)
+  //   {
+  //     faiMessageKeys = [self faiMessageKeysMatchingQualifier: nil
+  //                                           andSortOrderings: nil];
+  //     [faiMessageKeys retain];
+  //   }
 
-  return faiMessageKeys;
+  // return faiMessageKeys;
 }
 
 - (MAPIStoreFolderTable *) folderTable
@@ -1046,14 +1064,16 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (NSArray *) folderKeys
 {
-  if (!folderKeys)
-    {
-      folderKeys = [self folderKeysMatchingQualifier: nil
-                                    andSortOrderings: nil];
-      [folderKeys retain];
-    }
+  return [self folderKeysMatchingQualifier: nil
+                          andSortOrderings: nil];
+  // if (!folderKeys)
+  //   {
+  //     folderKeys = [self folderKeysMatchingQualifier: nil
+  //                                   andSortOrderings: nil];
+  //     [folderKeys retain];
+  //   }
 
-  return folderKeys;
+  // return folderKeys;
 }
 
 - (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
@@ -1099,24 +1119,24 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [self _cleanupTableCaches: MAPISTORE_MESSAGE_TABLE];
   [self _cleanupTableCaches: MAPISTORE_FAI_TABLE];
   [self _cleanupTableCaches: MAPISTORE_FOLDER_TABLE];
-  [faiMessageKeys release];
-  faiMessageKeys = nil;
-  [messageKeys release];
-  messageKeys = nil;
-  [folderKeys release];
-  folderKeys = nil;
+  // [faiMessageKeys release];
+  // faiMessageKeys = nil;
+  // [messageKeys release];
+  // messageKeys = nil;
+  // [folderKeys release];
+  // folderKeys = nil;
 }
 
-- (int) getPrParentFid: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagParentFolderId: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, [container objectId]);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrFid: (void **) data
-        inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagFolderId: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongLongValue (memCtx, [self objectId]);
 
@@ -1133,8 +1153,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   0x00000010 Create Contents Table
   0x00000020 Create Associated Contents Table
 */
-- (int) getPrAccess: (void **) data
-           inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAccess: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t access = 0;
   SOGoUser *ownerUser;
@@ -1168,74 +1188,74 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   0x00000000 Read-Only
   0x00000001 Modify
 */
-- (int) getPrAccessLevel: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAccessLevel: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0x01);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAttrHidden: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttributeHidden: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPrAttrSystem: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttributeSystem: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPrAttrReadOnly: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAttributeReadOnly: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPrSubfolders: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagSubfolders: (void **) data
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPIBoolValue (memCtx, [folderKeys count] > 0);
+  *data = MAPIBoolValue (memCtx, [[self folderKeys] count] > 0);
   
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrFolderChildCount: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagFolderChildCount: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, [[self folderKeys] count]);
   
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrContentCount: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagContentCount: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, [[self messageKeys] count]);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrContentUnread: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagContentUnreadCount: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, 0);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrAssocContentCount: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagAssociatedContentCount: (void **) data
+                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx, [[self faiMessageKeys] count]);
 
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrDeletedCountTotal: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagDeletedCountTotal: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* TODO */
   *data = MAPILongValue (memCtx, 0);
@@ -1243,12 +1263,19 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPrLocalCommitTimeMax: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagLocalCommitTimeMax: (void **) data
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = [[self lastMessageModificationTime] asFileTimeInMemCtx: memCtx];
+  int rc = MAPISTORE_SUCCESS;
+  NSDate *date;
 
-  return MAPISTORE_SUCCESS;
+  date = [self lastMessageModificationTime];
+  if (date)
+    *data = [date asFileTimeInMemCtx: memCtx];
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 - (int) getProperty: (void **) data
@@ -1390,20 +1417,25 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSString *username;
   struct ldb_context *samCtx;
 
-  bin32.cb = bin->cb;
-  bin32.lpb = bin->lpb;
-
-  entryId = get_AddressBookEntryId (NULL, &bin32);
-  if (entryId)
+  if (bin && bin->cb)
     {
-      samCtx = [[self context] connectionInfo]->sam_ctx;
-      username = MAPIStoreSamDBUserAttribute (samCtx, @"legacyExchangeDN",
-                                              [NSString stringWithUTF8String: entryId->X500DN],
-                                              @"sAMAccountName");
+      bin32.cb = bin->cb;
+      bin32.lpb = bin->lpb;
+
+      entryId = get_AddressBookEntryId (NULL, &bin32);
+      if (entryId)
+        {
+          samCtx = [[self context] connectionInfo]->sam_ctx;
+          username = MAPIStoreSamDBUserAttribute (samCtx, @"legacyExchangeDN",
+                                                  [NSString stringWithUTF8String: entryId->X500DN],
+                                                  @"sAMAccountName");
+        }
+      else
+        username = nil;
+      talloc_free (entryId);
     }
   else
     username = nil;
-  talloc_free (entryId);
 
   return username;
 }
@@ -1415,12 +1447,19 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSUInteger count, max;
   MAPIStorePermissionEntry *entry;
 
-  max = [entries count];
-  for (count = 0; !username && count < max; count++)
+  if (memberId == 0)
+    username = [[self aclFolder] defaultUserID];
+  else if (memberId == ULLONG_MAX)
+    username = @"anonymous";
+  else
     {
-      entry = [entries objectAtIndex: count];
-      if ([entry memberId] == memberId)
-        username = [entry userId];
+      max = [entries count];
+      for (count = 0; !username && count < max; count++)
+        {
+          entry = [entries objectAtIndex: count];
+          if ([entry memberId] == memberId)
+            username = [entry userId];
+        }
     }
 
   return username;
@@ -1450,7 +1489,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSString *permissionUser;
   NSArray *entries;
   NSArray *permissionRoles;
-  BOOL reset, isAdd;
+  BOOL reset, isAdd = NO, isDelete = NO, isModify = NO;
   SOGoFolder *aclFolder;
 
   aclFolder = [self aclFolder];
@@ -1468,7 +1507,13 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       permissionUser = nil;
       permissionRoles = nil;
  
-      isAdd = (currentPermission->PermissionDataFlags == ROW_ADD);
+      if (currentPermission->PermissionDataFlags == ROW_ADD)
+        isAdd = YES;
+      else if (currentPermission->PermissionDataFlags == ROW_MODIFY)
+        isModify = YES;
+      else
+        isDelete = YES;
+
       for (propCount = 0;
            propCount < currentPermission->lpProps.cValues;
            propCount++)
@@ -1477,16 +1522,19 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
           switch (mapiValue->ulPropTag)
             {
             case PR_ENTRYID:
-              permissionUser
-                = [self _usernameFromEntryId: &mapiValue->value.bin];
+              if (isAdd)
+                permissionUser
+                  = [self _usernameFromEntryId: &mapiValue->value.bin];
               break;
             case PR_MEMBER_ID:
-              permissionUser = [self _usernameFromMemberId: mapiValue->value.d
-                                                 inEntries: entries];
+              if (isModify || isDelete)
+                permissionUser = [self _usernameFromMemberId: mapiValue->value.d
+                                                   inEntries: entries];
               break;
             case PR_MEMBER_RIGHTS:
-              permissionRoles = [self
-                                  rolesForExchangeRights: mapiValue->value.l];
+              if (isAdd || isModify)
+                permissionRoles
+                  = [self rolesForExchangeRights: mapiValue->value.l];
               break;
             default:
               if (mapiValue->ulPropTag != PR_MEMBER_NAME)

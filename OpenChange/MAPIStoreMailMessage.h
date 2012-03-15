@@ -48,26 +48,26 @@
 
 - (NSString *) subject;
 
-- (int) getPrIconIndex: (void **) data
+- (int) getPidTagIconIndex: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrFlagStatus: (void **) data
+- (int) getPidTagFlagStatus: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx;
 
-- (int) getPrMessageFlags: (void **) data
+- (int) getPidTagMessageFlags: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrFollowupIcon: (void **) data
+- (int) getPidTagFollowupIcon: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrImportance: (void **) data
+- (int) getPidTagImportance: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrReceivedByEmailAddress: (void **) data
+- (int) getPidTagReceivedByEmailAddress: (void **) data
                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrSenderEmailAddress: (void **) data
+- (int) getPidTagSenderEmailAddress: (void **) data
                        inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrDisplayTo: (void **) data
+- (int) getPidTagDisplayTo: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrDisplayCc: (void **) data
+- (int) getPidTagDisplayCc: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPrDisplayBcc: (void **) data
+- (int) getPidTagDisplayBcc: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx;
 
 @end

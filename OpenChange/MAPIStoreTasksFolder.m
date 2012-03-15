@@ -48,17 +48,9 @@
   return [MAPIStoreTasksMessageTable tableForContainer: self];
 }
 
-- (EOQualifier *) componentQualifier
+- (NSString *) component
 {
-  static EOQualifier *componentQualifier = nil;
-
-  if (!componentQualifier)
-    componentQualifier
-      = [[EOKeyValueQualifier alloc] initWithKey: @"c_component"
-				operatorSelector: EOQualifierOperatorEqual
-					   value: @"vtodo"];
-
-  return componentQualifier;
+  return @"vtodo";
 }
 
 - (MAPIStoreMessage *) createMessage

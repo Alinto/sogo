@@ -46,9 +46,9 @@
 @interface MAPIStoreFolder : MAPIStoreObject
 {
   MAPIStoreContext *context;
-  NSArray *messageKeys;
-  NSArray *faiMessageKeys;
-  NSArray *folderKeys;
+  // NSArray *messageKeys;
+  // NSArray *faiMessageKeys;
+  // NSArray *folderKeys;
 
   SOGoMAPIFSFolder *faiFolder;
   SOGoMAPIFSFolder *propsFolder;
