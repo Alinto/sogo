@@ -1664,7 +1664,7 @@ function onPreferencesClick(event) {
         div.show(); //setStyle({display: "block"});
     }
     else {
-        var w = window.open(urlstr, "_blank",
+        var w = window.open(urlstr, "SOGoPreferences",
                             "width=580,height=450,resizable=1,scrollbars=0,location=0");
         w.opener = window;
         w.focus();

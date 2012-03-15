@@ -1,5 +1,8 @@
 2012-03-15  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/generic.js (onPreferencesClick): don't
+	allow the user to open the preferences window multiple times.
+
 	* UI/WebServerResources/SOGoDragHandles.js (enableRightSafety):
 	new method to display a "safety" block on top of the right block
 	when dragging the handle. This fixes a problem when the right
