@@ -2,11 +2,12 @@
 
 from config import hostname, port, username, password
 
+import math
 import sys
 import sogotests
+import time
 import unittest
 import webdavlib
-import time
 
 resource = '/SOGo/dav/%s/Calendar/test-webdavsync/' % username
 
@@ -51,10 +52,11 @@ class WebdavSyncTest(unittest.TestCase):
         token = int(token_node.text)
 
         self.assertTrue(token > 0)
-        self.assertTrue(token <= int(query1.start), 
-                     "token = %d > query.start = %d" % (token, int(query1.start)))
+        query1EndTime = int(math.ceil(query1.start + query1.duration))
+        self.assertTrue(token <= query1EndTime, 
+                     "token = %d > query1EndTime = %d" % (token, query1EndTime))
 
-        # we make sure that any token is acceoted when the collection is
+        # we make sure that any token is accepted when the collection is
         # empty, but that the returned token differs
         query2 = webdavlib.WebDAVSyncQuery(resource, "1234", [ "getetag" ])
         self.client.execute(query2)
