@@ -8,47 +8,52 @@ vtodo_class1 = "(Privétaak)";
 vtodo_class2 = "(Vertrouwelijke taak)";
 
 /* Receipts */
-"Title:" = "Title:";
+"Title:" = "Titel:";
 "Start:" = "Start:";
-"End:" = "End:";
+"End:" = "Einde:";
 
-"Receipt: users invited to a meeting" = "Receipt: users invited to a meeting";
-"You have invited the following attendees(s):" = "You have invited the following attendees(s):";
-"... to attend the following event:" = "... to attend the following event:";
+"Receipt: users invited to a meeting" = "Ontvangstbevestiging: gebruikers uitgenodigd voor een bijeenkomst";
+"You have invited the following attendees(s):" = "U heeft de volgende deelnemer(s) uitgenodigd:";
+"... to attend the following event:" = "... om de volgende gebeurtenis bij te wonen:";
 
-"Receipt: invitation updated" = "Receipt: invitation updated";
-"The following attendees(s):" = "The following attendees(s):";
-"... have been notified of the changes to the following event:" = "... have been notified of the changes to the following event:";
+"Receipt: invitation updated" = "Ontvangstbevestiging: uitnodiging bijgewerkt";
+"The following attendees(s):" = "De volgende deelnemer(s):";
+"... have been notified of the changes to the following event:" = "... zijn in kennis gesteld van de wijzigingen in de volgende gebeurtenis:";
 
-"Receipt: attendees removed from an event" = "Receipt: attendees removed from an event";
-"You have removed the following attendees(s):" = "You have removed the following attendees(s):";
-"... from the following event:" = "... from the following event:";
+"Receipt: attendees removed from an event" = "Ontvangstbevestiging: deelnemers verwijderd uit een gebeurtenis";
+"You have removed the following attendees(s):" = "U heeft de volgende deelnemer(s) verwijderd:";
+"... from the following event:" = "... uit de volgende gebeurtenis:";
 
 /* IMIP messages */
 "startDate_label" = "Start:";
-"endDate_label" = "End:";
-"due_label" = "Due Date:";
-"location_label" = "Location:";
-"summary_label" = "Summary:";
-"comment_label" = "Comment:";
+"endDate_label" = "Einde:";
+"due_label" = "Vervaldag:";
+"location_label" = "Locatie:";
+"summary_label" = "Samenvatting:";
+"comment_label" = "Commentaar:";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Event Invitation: \"%{Summary}\"";
-"(sent by %{SentBy}) " = "(sent by %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+"Event Invitation: \"%{Summary}\"" = "Gebeurtenisuitnodiging: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(Verzonden door %{SentBy})";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}heeft u uitgenodigd voor: %{Summary}.\n\nBegin: %{StartDate}\nEinde: %{EndDate}\nBeschrijving: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}heeft u uitgenodigd voor %{Summary}.\n\nStart: %{StartDate} om %{StartTime}\nEinde: %{EndDate} om %{EndTime}\nOmschrijving: %{Description}";
 
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Event Cancelled: \"%{Summary}\"";
+"Event Cancelled: \"%{Summary}\"" = "Gebeurtenis geannuleerd: \"%{Samenvatting}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}heeft deze gebeurtenis afgezegd: %{Summary}.\n\nBegin: %{StartDate}\nEinde: %{EndDate}\nBeschrijving: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+= "%{Organizer} %{SentByText}heeft de gebeurtenis: %{Summary} geannuleerd.\n\nStart: %{StartDate} om %{StartTime}\nEinde: %{EndDate} om %{EndTime}\nOmschrijving: %{Description}";
 
 /* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "De gebeurtenis \"%{Summary}\" op %{OldStartDate} is veranderd.";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
-= "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed";
+= "De gebeurtenis \"%{Summary}\" op %{OldStartDate} om %{OldStartTime} is gewijzigd";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "The following parameters have changed in the \"%{Summary}\" meeting:";
+= "De volgende parameters zijn veranderd in de \"%{Samenvatting}\" vergadering:";
 "Please accept or decline those changes."
-= "Please accept or decline those changes.";
+= "Accepteer deze wijzigingen of sla ze af.";
 
 /* Reply */
 "Reply to invitation: \"%{Summary}\"" = "Antwoord voor de gebeurtenisuitnodiging: \"%{Summary}\"";
@@ -57,9 +62,9 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText}heeft uw uitnodiging voor de gebeurtenis geweigerd.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}.";
+= "%{Attendee} %{SentByText}heeft de uitnodiging gedelegeerd aan %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
-= "%{Attendee} %{SentByText}has not yet decided upon your event invitation.";
+= "%{Attendee} %{SentByText}heeft nog niet gereageerd op uw uitnodiging.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum aantal gelijktijdige boekingen (%{NumberOfSimultaneousBookings}) bereikb voor hulpmiddel \"%{Cn} %{SystemEmail}\".";

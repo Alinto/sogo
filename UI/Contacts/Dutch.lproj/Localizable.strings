@@ -76,7 +76,6 @@
 "No possible subscription" = "Abonnement niet mogelijk";
 
 "Preferred" = "Voorkeurs-";
-"Card for %@" = "%@";
 "Display:" = "Weergavenaam:";
 "Display Name:" = "Weergavenaam:";
 "Email:" = "E-mail:";
@@ -155,7 +154,9 @@
 "Unable to subscribe to that folder!"
 = "Abonneren op deze map mislukt!";
 
-"User rights for:" = "Machtigingen voor:";
+/* acls */
+"Access rights to" = "Toegangsrechten voor";
+"For user" = "Voor gebruiker";
 
 "Any Authenticated User" = "Any Authenticated User";
 "Public Access" = "Public Access";

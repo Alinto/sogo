@@ -10,10 +10,10 @@
 "Address Book"	= "Adresboek";
 "Mail" = "E-mail";
 "Preferences" = "Instellingen";
-"Administration" = "Administration";
+"Administration" = "Beheer";
 "Disconnect" = "Uitloggen";
 "Right Administration" = "Machtigingen beheren";
-"Log Console (dev.)" = " (dev.)";
+"Log Console (dev.)" = "Log Console (dev.)";
 
 "User" = "Gebruiker";
 
@@ -30,12 +30,25 @@
 
 "Subscribe User" = "Gebruiker abonneren";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
-"Any user not listed above" = "Any user not listed above";
-"Anybody accessing this resource from the public area" = "Anybody accessing this resource from the public area";
+"Any Authenticated User" = "Elke geauthenticeerde gebruiker";
+"Public Access" = "Publieke toegang";
+"Any user not listed above" = "Elke niet hierboven vermelde gebruiker";
+"Anybody accessing this resource from the public area" = "Iedereen die dit hulpmiddel uit het publieke gedeelte benadert";
 
 "Sorry, the user rights can not be configured for that object." = "De machtigingen kunnen niet worden ingesteld voor dit object.";
+
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Iedereen met een gebruikersaccount voor dit systeem zal toegang hebben tot uw mailbox \"%{0}\". Weet u zeker dat u iedereen kan vertrouwen?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Iedereen met een gebruikersaccount voor dit systeem zal toegang hebben tot uw agenda \"%{0}\". Weet u zeker dat u iedereen kan vertrouwen?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Iedereen op het Internet toegang kunnen krijgen tot uw agenda \"%{0}\", zelfs als diegenen geen gebruikersaccount hebben voor dit systeem. Is de informatie geschikt voor het openbare Internet?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Iedereen met een gebruikersaccount voor dit systeem zal toegang hebben tot uw adresboek \"%{0}\". Weet u zeker dat u iedereen kan vertrouwen?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Iedereen op het Internet toegang kunnen krijgen tot uw adresboek \"%{0}\", zelfs als diegenen geen gebruikersaccount hebben voor dit systeem. Is de informatie geschikt voor het openbare Internet?";
+"Give Access" = "Toegang geven";
+"Keep Private" = "Privé houden";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -51,24 +64,33 @@
      	= "U bent al op deze map geabonneerd!";
 "The user rights cannot be edited for this object!"
         = "De machtigingen kunnen niet worden aangepast voor dit object!";
-"A folder by that name already exists." = "A folder by that name already exists.";
+"A folder by that name already exists." = "Een map met die naam bestaat reeds.";
 "You cannot create a list in a shared address book." 
-        = "You cannot create a list in a shared address book.";
-"Warning" = "Warning";
+        = "U kunt geen lijst maken in een gedeeld adresboek.";
+"Warning" = "Waarschuwing";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
-= "U hebt geen toegang tot deze module of dit systeem. Neem contact op met uw systeem beheerder.";
+= "U hebt geen toegang tot deze module of dit systeem. Neem contact op met uw systeembeheerder.";
 "You don't have the required privileges to perform the operation."
-= "Voor deze actie heeft u niet de benodigde rechten.";
+= "U heeft niet de benodigde rechten voor deze actie.";
 
-"noEmailForDelegation" = "You must specify the address to which you want to delegate your invitation.";
-"delegate is organizer" = "The delegate is the organizer. Please specify a different delegate.";
-"delegate is a participant" = "The delegate is already a participant.";
-"delegate is a group" = "The specified address corresponds to a group. You can only delegate to a unique person.";
+"noEmailForDelegation" = "U moet het adres opgeven waarnaar u uw uitnodiging wilt delegeren.";
+"delegate is organizer" = "De gedelegeerde is de organisator. Geef een andere gedelegeerde op.";
+"delegate is a participant" = "De gedelegeerde is al een deelnemer.";
+"delegate is a group" = "U heeft een groepsadres opgegeven. U kunt alleen delegeren aan een uniek persoon.";
+
+"Snooze for " = "Sluimer nog ";
+"5 minutes" = "5 minuten";
+"10 minutes" = "10 minuten";
+"15 minutes" = "15 minuten";
+"30 minutes" = "30 minuten";
+"45 minutes" = "45 minuten";
+"1 hour" = "1 uur";
+
 
 /* common buttons */
 "OK" = "OK";
-"Cancel" = "Cancel";
+"Cancel" = "Annuleren";
 "Yes" = "Ja";
 "No" = "Nee";
 
