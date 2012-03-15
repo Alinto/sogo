@@ -232,3 +232,8 @@ BODY.popup DIV.dialog.none
 { left: 50%;
   width: 350px;
   margin-left: -175px; }
+
+/* SOGoDragHandles */
+.safetyBlock
+{  background-color: #fff;
+   filter: alpha(opacity=0); }

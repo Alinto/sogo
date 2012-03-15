@@ -1,5 +1,13 @@
 /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
+/*
+ * Drag handle widget interface to be added to a DIV (the drag handle)
+ *
+ * Available events:
+ *   handle:resize -- fired once the value of the input has changed
+ *   handle:dragged -- 
+ *
+ */
 var SOGoDragHandlesInterface = {
     leftMargin: 180,
     topMargin: 180,
@@ -17,6 +25,7 @@ var SOGoDragHandlesInterface = {
     rightBlock: null,
     upperBlock: null,
     lowerBlock: null,
+    rightSafetyBlock: null,
     startHandleDraggingBound: null,
     stopHandleDraggingBound: null,
     moveBound: null,
@@ -24,6 +33,11 @@ var SOGoDragHandlesInterface = {
     bind: function () {
         this.startHandleDraggingBound = this.startHandleDragging.bindAsEventListener(this);
         this.observe("mousedown", this.startHandleDraggingBound, false);
+    },
+    enableRightSafety: function () {
+        this.rightSafetyBlock = new Element('div', {'class': 'safetyBlock'});
+        this.rightSafetyBlock.hide();
+        document.body.appendChild(this.rightSafetyBlock);
     },
     adjust: function () {
         if (!this.dhType)
@@ -70,6 +84,12 @@ var SOGoDragHandlesInterface = {
                 this.delta = 0;
                 this.origRight = this.rightBlock.offsetLeft - 5;
                 document.body.setStyle({ cursor: "e-resize" });
+                if (this.rightSafetyBlock) {
+                    this.rightSafetyBlock.setStyle({
+                                top: this.rightBlock.getStyle('top'),
+                                left: this.rightBlock.getStyle('left') });
+                    this.rightSafetyBlock.show();
+                }
             } else if (this.dhType == 'vertical') {
                 this.dhLimit = window.height() - 20;
                 this.origY = this.offsetTop;
@@ -110,6 +130,8 @@ var SOGoDragHandlesInterface = {
                 this.leftBlock.setStyle({ width: (this.origLeft + deltaX) + 'px' });
             }
             this.saveDragHandleState(this.dhType, parseInt(this.leftBlock.getStyle("width")));
+            if (this.rightSafetyBlock)
+                this.rightSafetyBlock.hide();
         }
         else if (this.dhType == 'vertical') {
             var pointerY = Event.pointerY(event);
@@ -122,8 +144,6 @@ var SOGoDragHandlesInterface = {
                 deltaY = Math.floor(pointerY - this.origY - (this.offsetHeight / 2));
             this.lowerBlock.setStyle({ top: (this.origLower + deltaY - this.delta) + 'px' });
             this.upperBlock.setStyle({ height: (this.origUpper + deltaY - this.delta) + 'px' });
-            //this.lowerBlock.fire("handle:resize");
-            this.upperBlock.fire("handle:resize");
             this.saveDragHandleState(this.dhType, parseInt(this.lowerBlock.getStyle("top")));
         }
         if (Prototype.Browser.IE)

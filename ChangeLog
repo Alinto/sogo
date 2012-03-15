@@ -1,3 +1,10 @@
+2012-03-15  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SOGoDragHandles.js (enableRightSafety):
+	new method to display a "safety" block on top of the right block
+	when dragging the handle. This fixes a problem when the right
+	block contains an instance of CKEditor.
+
 2012-03-14  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailerUI/UIxMailFolderActions.m (-deleteAction): we now

@@ -360,14 +360,15 @@ function initAddresses() {
         });
 }
 
-/* Overwrites function of MailerUI.js */
+/* Overwrite function of MailerUI.js */
 function configureDragHandle() {
     var handle = $("hiddenDragHandle");
     if (handle) {
         handle.addInterface(SOGoDragHandlesInterface);
-        handle.leftMargin = 100;
-        handle.leftBlock=$("leftPanel");
-        handle.rightBlock=$("rightPanel");
+        handle.leftMargin = 135; // minimum width
+        handle.leftBlock = $("leftPanel");
+        handle.rightBlock = $("rightPanel");
+        handle.enableRightSafety();
         handle.observe("handle:dragged", onWindowResize);
     }
 }
@@ -435,7 +436,6 @@ function initMailEditor() {
     }
 
     $("contactFolder").observe("change", onContactFolderChange);
-    
     
     Event.observe(window, "resize", onWindowResize);
     Event.observe(window, "beforeunload", onMailEditorClose);
