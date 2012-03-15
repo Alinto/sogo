@@ -1900,7 +1900,7 @@ function configureDragHandles() {
         handle.addInterface(SOGoDragHandlesInterface);
         handle.upperBlock=$("mailboxContent");
         handle.lowerBlock=$("messageContent");
-        handle.upperBlock.observe("handle:resize", onMessageListResize);
+        handle.observe("handle:dragged", onMessageListResize);
     }
 }
 
