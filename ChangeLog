@@ -1,31 +1,26 @@
 2012-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* OpenChange/MAPIStoreTypes.m (MAPICNCompare): added as void *
-	parameter so that the function can be used as a comparator
-	function in NSArray sort methods.
-
-	* OpenChange/MAPIStoreMailFolder.m
-	(-getPidTagMessageClass:inMemCtx:): removed method, as folders are
-	not supposed to return a PidTagMessageClass attribute.
-
 	* OpenChange/MAPIStoreGCSFolder.m
 	(-predecessorChangeListForMessageWithKey:): same as below.
 	(-setChangeKey:forMessageWithKey:): synchronise the version cache
 	if the message entry is not found.
+	(-updateVersionsForMessageWithKey:withChangeKey:): new method,
+	common to all GCS messages, that updates the folder cache and
+	insert the PidTagChangeKey provided by the client during the save
+	operations.
 
 	* OpenChange/MAPIStoreMailFolder.m
 	(-predecessorChangeListForMessageWithKey:): the returned list must
 	be binary ordered by GUID (as specified in the SPEC). We now do so
 	using the new function below.
+	(-getPidTagMessageClass:inMemCtx:): removed method, as folders are
+	not supposed to return a PidTagMessageClass attribute.
 
-	* OpenChange/MAPIStoreTypes.m (MAPIChangeKeyGUIDCompare): new
-	comparator function to compare the GUID of two change key streams.
-
-	* OpenChange/MAPIStoreGCSFolder.m
-	(-updateVersionsForMessageWithKey:withChangeKey:): new method,
-	common to all GCS messages, that updates the folder cache and
-	insert the PidTagChangeKey provided by the client during the save
-	operations.
+	* OpenChange/MAPIStoreTypes.m (MAPICNCompare): added as void *
+	parameter so that the function can be used as a comparator
+	function in NSArray sort methods.
+	(MAPIChangeKeyGUIDCompare): new comparator function to compare the
+	GUID of two change key streams.
 
 	* OpenChange/MAPIStoreGCSMessage.m (-updateVersions): new proxy
 	method for -[MAPIStoreGCSFolder
