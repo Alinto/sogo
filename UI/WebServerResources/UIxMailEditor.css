@@ -15,7 +15,9 @@ DIV#rightPanel
   right: 0px;
   bottom: 0px;
   margin-left: 5px;
-  overflow: hidden; }
+  overflow: hidden;
+  -moz-user-select: text;
+  -khtml-user-select: text; }
 
 DIV#hiddenDragHandle
 { cursor: e-resize;
