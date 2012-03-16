@@ -1,4 +1,4 @@
-1.3.13 (2012-03-DD)
+1.3.13 (2012-03-16)
 -------------------
 New Features
  - email notifications now includes a new x-sogo-message-type mail header
@@ -57,6 +57,8 @@ New Features
  - show end time in bubble box of events
  - we now check for new mails in folders for which sieve rules are defined to
    file messages into
+ - new parameter DomainFieldName for SQL sources to dynamically determine the 
+   domain of the user
 
 Enhancements
  - updated Ukrainian translation
