@@ -1,5 +1,9 @@
 2012-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTypes.m (MAPICNCompare): added as void *
+	parameter so that the function can be used as a comparator
+	function in NSArray sort methods.
+
 	* OpenChange/MAPIStoreMailFolder.m
 	(-getPidTagMessageClass:inMemCtx:): removed method, as folders are
 	not supposed to return a PidTagMessageClass attribute.

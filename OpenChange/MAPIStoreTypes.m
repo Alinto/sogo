@@ -284,7 +284,7 @@ _reverseCN (uint64_t cn)
 }
 
 NSComparisonResult
-MAPICNCompare (uint64_t cn1, uint64_t cn2)
+MAPICNCompare (uint64_t cn1, uint64_t cn2, void *unused)
 {
   NSComparisonResult result;
 

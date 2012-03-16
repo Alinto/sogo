@@ -631,11 +631,11 @@ static Class NSNumberK;
                   currentChangeNum
                     = [[messageEntry objectForKey: @"version"]
                         unsignedLongLongValue];
-                  if (MAPICNCompare (changeNum, currentChangeNum)
+                  if (MAPICNCompare (changeNum, currentChangeNum, NULL)
                       == NSOrderedAscending)
                     {
                       [(NSMutableArray *) deletedKeys addObject: cName];
-                      if (MAPICNCompare (maxChangeNum, currentChangeNum)
+                      if (MAPICNCompare (maxChangeNum, currentChangeNum, NULL)
                           == NSOrderedAscending)
                         maxChangeNum = currentChangeNum;
                     }
