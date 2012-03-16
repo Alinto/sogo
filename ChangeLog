@@ -1,5 +1,13 @@
 2012-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSBaseContext.m
+	(+createRootSecondaryFolderWithFID:andName:forUser:): setup the
+	userContext in the MAPIApp object.
+
+	* OpenChange/MAPIStoreMailContext.m
+	(+createRootSecondaryFolderWithFID:andName:forUser:): setup the
+	userContext in the MAPIApp object.
+
 	* OpenChange/MAPIStoreContactsFolder.m
 	(-getPidTagDefaultPostMessageClass:inMemCtx:): new getter.
 

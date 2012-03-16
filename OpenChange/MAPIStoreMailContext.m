@@ -32,6 +32,7 @@
 #import "NSString+MAPIStore.h"
 
 #import <SOGo/NSString+Utilities.h>
+#import "MAPIApplication.h"
 #import "MAPIStoreMailContext.h"
 
 #include <dlinklist.h>
@@ -176,6 +177,7 @@ MakeDisplayFolderName (NSString *folderName)
 
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
                                                andTDBIndexing: NULL];
+  [MAPIApp setUserContext: userContext];
   accountFolder = [[userContext rootFolders] objectForKey: @"mail"];
   folderName = [NSString stringWithFormat: @"folder%@",
                          [newFolderName asCSSIdentifier]];
@@ -186,6 +188,7 @@ MakeDisplayFolderName (NSString *folderName)
                              userName, userName, folderName];
   else
     mapistoreURI = nil;
+  [MAPIApp setUserContext: nil];
 
   return mapistoreURI;
 }

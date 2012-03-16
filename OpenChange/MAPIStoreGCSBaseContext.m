@@ -27,6 +27,7 @@
 #import <SOGo/SOGoGCSFolder.h>
 #import <SOGo/SOGoParentFolder.h>
 
+#import "MAPIApplication.h"
 #import "MAPIStoreUserContext.h"
 #import "NSString+MAPIStore.h"
 
@@ -118,6 +119,7 @@
 
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
                                                andTDBIndexing: NULL];
+  [MAPIApp setUserContext: userContext];
   moduleName = [self MAPIModuleName];
   parentFolder = [[userContext rootFolders] objectForKey: moduleName];
   if (![parentFolder newFolderWithName: folderName
@@ -126,6 +128,7 @@
                              userName, moduleName, nameInContainer];
   else
     mapistoreURI = nil;
+  [MAPIApp setUserContext: nil];
 
   return mapistoreURI;
 }
