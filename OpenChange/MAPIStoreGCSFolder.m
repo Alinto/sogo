@@ -252,7 +252,7 @@ static Class NSNumberK;
     ...
   };
   VersionMapping = {
-    Version = MessageKey;
+    Version = last-modified;
     ...
   }
 }
@@ -457,6 +457,15 @@ static Class NSNumberK;
     }
 
   return rc;
+}
+
+- (void) updateVersionsForMessageWithKey: (NSString *) messageKey
+                           withChangeKey: (NSData *) newChangeKey
+{
+  [self synchroniseCache];
+
+  if (newChangeKey)
+    [self setChangeKey: newChangeKey forMessageWithKey: messageKey];
 }
  
 - (NSNumber *) lastModifiedFromMessageChangeNumber: (NSNumber *) changeNum

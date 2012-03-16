@@ -29,6 +29,9 @@
 {
 }
 
+/* subclass helpers */
+- (void) updateVersions;
+
 @end
 
 #endif /* MAPISTOREGCSMESSAGE_H */

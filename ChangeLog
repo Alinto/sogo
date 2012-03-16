@@ -1,5 +1,15 @@
 2012-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreGCSFolder.m
+	(-updateVersionsForMessageWithKey:withChangeKey:): new method,
+	common to all GCS messages, that updates the folder cache and
+	insert the PidTagChangeKey provided by the client during the save
+	operations.
+
+	* OpenChange/MAPIStoreGCSMessage.m (-updateVersions): new proxy
+	method for -[MAPIStoreGCSFolder
+	updateVersionsForMessageWithKey:withChangeKey:].
+
 	* OpenChange/MAPIStoreGCSBaseContext.m
 	(+createRootSecondaryFolderWithFID:andName:forUser:): setup the
 	userContext in the MAPIApp object.

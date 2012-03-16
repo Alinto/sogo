@@ -462,11 +462,8 @@
   [vToDo setTimeStampAsDate: now];
 
   [sogoObject saveContentString: [vCalendar versitString]];
-  [(MAPIStoreTasksFolder *) container synchroniseCache];
-  value = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
-  if (value)
-    [(MAPIStoreTasksFolder *) container
-    setChangeKey: value forMessageWithKey: [self nameInContainer]];
+
+  [self updateVersions];
 }
 
 @end
