@@ -1,5 +1,9 @@
 2012-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_backend_init): check for
+	"SOGoDebugLeaks" in the user defaults and activate GSDebug
+	allocation utilities.
+
 	* OpenChange/NSData+MAPIStore.m (+dataWithChangeKeyGUID:andCnt:):
 	new method replacing _dataFromChangeKeyGUID:andCnt: from
 	MAPIStore{GCS,Mail}Folder.
