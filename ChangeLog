@@ -1,6 +1,17 @@
 2012-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreGCSFolder.m
+	(-predecessorChangeListForMessageWithKey:): same as below.
+
+	* OpenChange/MAPIStoreMailFolder.m
+	(-predecessorChangeListForMessageWithKey:): the returned list must
+	be binary ordered by GUID (as specified in the SPEC). We now do so
+	using the new function below.
+
+	* OpenChange/MAPIStoreTypes.m (MAPIChangeKeyGUIDCompare): new
+	comparator function to compare the GUID of two change key streams.
+
+	* OpenChange/MAPIStoreGCSFolder.m
 	(-updateVersionsForMessageWithKey:withChangeKey:): new method,
 	common to all GCS messages, that updates the folder cache and
 	insert the PidTagChangeKey provided by the client during the save

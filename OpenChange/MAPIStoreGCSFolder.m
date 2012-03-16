@@ -527,9 +527,10 @@ static Class NSNumberK;
 
 - (NSData *) predecessorChangeListForMessageWithKey: (NSString *) messageKey
 {
-  NSMutableData *changeKeys = nil;
+  NSMutableData *list = nil;
   NSDictionary *messages, *changeListDict;
   NSArray *keys;
+  NSMutableArray *changeKeys;
   NSUInteger count, max;
   NSData *changeKey;
   NSString *guid;
@@ -540,21 +541,30 @@ static Class NSNumberK;
                      objectForKey: @"PredecessorChangeList"];
   if (changeListDict)
     {
-      changeKeys = [NSMutableData data];
       keys = [changeListDict allKeys];
       max = [keys count];
 
+      changeKeys = [NSMutableArray arrayWithCapacity: max];
       for (count = 0; count < max; count++)
         {
           guid = [keys objectAtIndex: count];
           globCnt = [changeListDict objectForKey: guid];
           changeKey = [NSData dataWithChangeKeyGUID: guid andCnt: globCnt];
-          [changeKeys appendUInt8: [changeKey length]];
-          [changeKeys appendData: changeKey];
+          [changeKeys addObject: changeKey];
+        }
+      [changeKeys sortUsingFunction: MAPIChangeKeyGUIDCompare
+                            context: nil];
+
+      list = [NSMutableData data];
+      for (count = 0; count < max; count++)
+        {
+          changeKey = [changeKeys objectAtIndex: count];
+          [list appendUInt8: [changeKey length]];
+          [list appendData: changeKey];
         }
     }
 
-  return changeKeys;
+  return list;
 }
 
 - (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum
