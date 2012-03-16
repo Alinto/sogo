@@ -685,12 +685,6 @@ rtf2html (NSData *compressedRTF)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagMessageStatus: (void **) data // TODO
-                      inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getLongZero: data inMemCtx: memCtx];
-}
-
 - (int) getPidTagImportance: (void **) data // TODO -> subclass?
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
