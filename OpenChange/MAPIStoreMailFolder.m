@@ -218,17 +218,9 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
 }
 
 - (int) getPidTagContainerClass: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPF.Note" asUnicodeInMemCtx: memCtx];
-  
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidTagMessageClass: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
-{
-  *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];
   
   return MAPISTORE_SUCCESS;
 }

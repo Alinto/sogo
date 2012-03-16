@@ -1,5 +1,9 @@
 2012-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailFolder.m
+	(-getPidTagMessageClass:inMemCtx:): removed method, as folders are
+	not supposed to return a PidTagMessageClass attribute.
+
 	* OpenChange/MAPIStoreGCSFolder.m
 	(-predecessorChangeListForMessageWithKey:): same as below.
 
