@@ -450,7 +450,7 @@
   // percent complete
   // NOTE: this does not seem to work on Outlook 2003. PidLidPercentComplete's value
   //       is always set to 0, no matter what value is set in Outlook
-  value = [properties objectForKey: MAPIPropertyKey(PidLidPercentComplete)];
+  value = [properties objectForKey: MAPIPropertyKey (PidLidPercentComplete)];
   if (value)
     [vToDo setPercentComplete: [value stringValue]];
 
