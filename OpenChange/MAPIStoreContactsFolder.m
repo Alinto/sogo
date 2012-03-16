@@ -31,11 +31,13 @@
 #import "MAPIStoreContactsContext.h"
 #import "MAPIStoreContactsMessage.h"
 #import "MAPIStoreContactsMessageTable.h"
+#import "NSString+MAPIStore.h"
 
 #import "MAPIStoreContactsFolder.h"
 
 #include <util/time.h>
 #include <gen_ndr/exchange.h>
+#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreContactsFolder
 
@@ -110,6 +112,14 @@
 - (BOOL) subscriberCanReadMessages
 {
   return [[self activeUserRoles] containsObject: SOGoRole_ObjectViewer];
+}
+
+- (int) getPidTagDefaultPostMessageClass: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"IPM.Contact" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
 }
 
 @end

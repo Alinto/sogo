@@ -34,11 +34,13 @@
 #import "MAPIStoreTasksContext.h"
 #import "MAPIStoreTasksMessage.h"
 #import "MAPIStoreTasksMessageTable.h"
+#import "NSString+MAPIStore.h"
 
 #import "MAPIStoreTasksFolder.h"
 
 #include <util/time.h>
 #include <gen_ndr/exchange.h>
+#include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreTasksFolder
 
@@ -122,6 +124,14 @@
 {
   return [EOQualifier qualifierWithQualifierFormat:
             [(SOGoAppointmentFolder *) sogoObject aclSQLListingFilter]];
+}
+
+- (int) getPidTagDefaultPostMessageClass: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"IPM.Task" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
 }
 
 @end

@@ -1,5 +1,17 @@
 2012-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsFolder.m
+	(-getPidTagDefaultPostMessageClass:inMemCtx:): new getter.
+
+	* OpenChange/MAPIStoreCalendarFolder.m
+	(-getPidTagDefaultPostMessageClass:inMemCtx:): new getter.
+
+	* OpenChange/MAPIStoreTasksFolder.m
+	(-getPidTagDefaultPostMessageClass:inMemCtx:): new getter.
+
+	* OpenChange/MAPIStoreFolder.m
+	(-getPidTagDefaultPostMessageClass:inMemCtx:): new getter.
+
 	* OpenChange/MAPIStoreMessage.m
 	(-getPidTagMessageStatus:inMemCtx:): removed useless getter.
 
