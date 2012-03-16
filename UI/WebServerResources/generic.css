@@ -1059,6 +1059,13 @@ DIV.bottomToolbar A.bottomButton SPAN:active
 .editing > INPUT[type="text"]
 { width: 98%; }
 
+.safetyBlock
+{ position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px; }
+
 @media print
 {
   BODY

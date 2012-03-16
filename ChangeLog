@@ -1,3 +1,10 @@
+2012-03-16  Jean Raby  <jraby@inverse.ca>
+
+	* sogo.spec debian/sogo.postint: upon installation, update timestamp
+	on WebServerResources/* to let the webserver know the files changed.
+	Should fix issues where browsers would use a locally cached version
+	of a resource when the sogo package have just been upgraded.
+
 2012-03-15  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/generic.js (onPreferencesClick): don't
