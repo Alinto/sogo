@@ -289,6 +289,8 @@ if ! id sogo >& /dev/null; then /usr/sbin/adduser sogo > /dev/null 2>&1; fi
 /bin/chown sogo /var/log/sogo
 /bin/chown sogo /var/spool/sogo
 /bin/chmod 700 /var/spool/sogo
+# update timestamp on imgs,css,js to let apache know the files changed
+find %{_libdir}/GNUstep/SOGo/WebServerResources  -exec touch {} \;
 /sbin/chkconfig --add sogod
 
 %preun
@@ -309,6 +311,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Fri Mar 16 2012 Jean Raby <jraby@inverse.ca>
+- %post: update timestamp on imgs,css,js to let apache know the files changed
+
 * Fri Feb 16 2012 Jean Raby <jraby@inverse.ca>
 - Use globbing to include all sql upgrade scripts instead of listing them all
 
