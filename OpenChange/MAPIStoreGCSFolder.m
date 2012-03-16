@@ -500,7 +500,12 @@ static Class NSNumberK;
   messages = [[versionsMessage properties] objectForKey: @"Messages"];
   messageEntry = [messages objectForKey: messageKey];
   if (!messageEntry)
-    abort ();
+    {
+      [self synchroniseCache];
+      messageEntry = [messages objectForKey: messageKey];
+      if (!messageEntry)
+        abort ();
+    }
   [self _setChangeKey: changeKey forMessageEntry: messageEntry];
   
   [versionsMessage save];

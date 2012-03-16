@@ -10,6 +10,8 @@
 
 	* OpenChange/MAPIStoreGCSFolder.m
 	(-predecessorChangeListForMessageWithKey:): same as below.
+	(-setChangeKey:forMessageWithKey:): synchronise the version cache
+	if the message entry is not found.
 
 	* OpenChange/MAPIStoreMailFolder.m
 	(-predecessorChangeListForMessageWithKey:): the returned list must
