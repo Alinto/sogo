@@ -172,5 +172,4 @@
   return MAPISTORE_SUCCESS;
 }
 
-
 @end
