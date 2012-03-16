@@ -6,7 +6,7 @@ New Features
    specify a different IMAP hostname for each user (was already possible for
    LDAP sources)
  - default event & task classification can now be set from the preferences window
- - contacts from LDAP sources can now be modified by privileges owners (see
+ - contacts from LDAP sources can now be modified by privileged owners (see
    the "modifiers" parameter)
 
 Enhancements
