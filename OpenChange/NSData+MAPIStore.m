@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import "NSString+MAPIStore.h"
+
 #import "NSData+MAPIStore.h"
 
 #undef DEBUG
@@ -166,6 +168,21 @@ static void _fillFlatUIDWithGUID (struct FlatUID_r *flatUID, const struct GUID *
     }
 
   return xid;
+}
+
++ (id) dataWithChangeKeyGUID: (NSString *) guidString
+                      andCnt: (NSData *) globCnt;
+{
+  NSMutableData *changeKey;
+  struct GUID guid;
+
+  changeKey = [NSMutableData dataWithCapacity: 16 + [globCnt length]];
+
+  [guidString extractGUID: &guid];
+  [changeKey appendData: [NSData dataWithGUID: &guid]];
+  [changeKey appendData: globCnt];
+
+  return changeKey;
 }
 
 @end

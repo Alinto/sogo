@@ -1,3 +1,9 @@
+2012-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/NSData+MAPIStore.m (+dataWithChangeKeyGUID:andCnt:):
+	new method replacing _dataFromChangeKeyGUID:andCnt: from
+	MAPIStore{GCS,Mail}Folder.
+
 2012-03-16  Jean Raby  <jraby@inverse.ca>
 
 	* sogo.spec debian/sogo.postint: upon installation, update timestamp

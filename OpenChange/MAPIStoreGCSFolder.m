@@ -497,21 +497,6 @@ static Class NSNumberK;
   [versionsMessage save];
 }
 
-- (NSData *) _dataFromChangeKeyGUID: (NSString *) guidString
-                             andCnt: (NSData *) globCnt
-{
-  NSMutableData *changeKey;
-  struct GUID guid;
-
-  changeKey = [NSMutableData dataWithCapacity: 16 + [globCnt length]];
-
-  [guidString extractGUID: &guid];
-  [changeKey appendData: [NSData dataWithGUID: &guid]];
-  [changeKey appendData: globCnt];
-
-  return changeKey;
-}
-
 - (NSData *) changeKeyForMessageWithKey: (NSString *) messageKey
 {
   NSDictionary *messages, *changeKeyDict;
@@ -525,7 +510,7 @@ static Class NSNumberK;
     {
       guid = [changeKeyDict objectForKey: @"GUID"];
       globCnt = [changeKeyDict objectForKey: @"LocalId"];
-      changeKey = [self _dataFromChangeKeyGUID: guid andCnt: globCnt];
+      changeKey = [NSData dataWithChangeKeyGUID: guid andCnt: globCnt];
     }
 
   return changeKey;
@@ -554,7 +539,7 @@ static Class NSNumberK;
         {
           guid = [keys objectAtIndex: count];
           globCnt = [changeListDict objectForKey: guid];
-          changeKey = [self _dataFromChangeKeyGUID: guid andCnt: globCnt];
+          changeKey = [NSData dataWithChangeKeyGUID: guid andCnt: globCnt];
           [changeKeys appendUInt8: [changeKey length]];
           [changeKeys appendData: changeKey];
         }
