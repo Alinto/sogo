@@ -89,6 +89,46 @@
   return addresses;
 }
 
+- (NSString *) davCalendarUserType
+{
+  /* FIXME: not always true */
+  return @"INDIVIDUAL";
+}
+
+- (NSArray *) davEmailAddressSet
+{
+  NSArray *tag;
+  NSMutableArray *addresses;
+  NSEnumerator *emails;
+  NSMutableDictionary *doneEmails;
+  NSString *currentEmail;
+  SOGoUser *ownerUser;
+
+  addresses = [NSMutableArray array];
+
+  doneEmails = [NSMutableDictionary dictionary];
+  ownerUser = [SOGoUser userWithLogin: owner];
+  emails = [[ownerUser allEmails] objectEnumerator];
+  while ((currentEmail = [emails nextObject]))
+    {
+      if (![doneEmails objectForKey: currentEmail])
+        {
+          tag = [NSArray arrayWithObjects: @"email-address", XMLNS_CalendarServerOrg, @"cso",
+                         [NSString stringWithFormat: @"%@", currentEmail],
+                         nil];
+          [addresses addObject: tag];
+          [doneEmails setObject: [NSNull null] forKey: currentEmail];
+        }
+    }
+
+  tag = [NSArray arrayWithObjects: @"href", XMLNS_WEBDAV, @"D",
+                 [NSString stringWithFormat: @"/SOGo/dav/%@/", nameInContainer],
+                 nil];
+  [addresses addObjectUniquely: tag];
+
+  return addresses;
+}
+
 /* CalDAV support */
 - (NSArray *) davCalendarHomeSet
 {

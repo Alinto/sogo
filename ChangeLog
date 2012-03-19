@@ -1,5 +1,8 @@
 2012-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
+	(-davCalendarUserType, -davEmailAddressSet): new DAV accessors.
+
 	* OpenChange/MAPIStoreCalendarMessage.m (-save): check recipients
 	even if PidLidAppointmentStateFlags is nil or 0, since all that
 	matters is that the "recipients" dict be present in the properties
