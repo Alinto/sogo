@@ -40,8 +40,9 @@
 {
   if ((self = [super init]))
     {
-      propertiesLoaded = NO;
       completeFilename = nil;
+      fileSize = 0;
+      lastModificationTime = nil;
     }
 
   return self;
@@ -84,14 +85,66 @@
   return completeFilename;
 }
 
+- (BOOL) _readFileChangesDataWithDate: (NSDate **) newLMTime
+                              andSize: (NSUInteger *) newFileSize
+{
+  BOOL rc;
+  NSDictionary *attributes;
+
+  attributes = [[NSFileManager defaultManager]
+                   fileAttributesAtPath: [self completeFilename]
+                           traverseLink: NO];
+  if (attributes)
+    {
+      *newLMTime = [attributes fileModificationDate];
+      *newFileSize = [attributes fileSize];
+      rc = YES;
+    }
+  else
+    rc = NO;
+
+  return rc;
+}
+
+- (BOOL) _checkFileChangesDataWithDate: (NSDate **) newLMTime
+                               andSize: (NSUInteger *) newFileSize
+{
+  BOOL hasChanged = NO;
+  NSDate *lastLMTime;
+  NSUInteger lastFileSize;
+
+  if ([self _readFileChangesDataWithDate: &lastLMTime
+                                 andSize: &lastFileSize])
+    {
+      if (fileSize != lastFileSize
+          || ![lastModificationTime isEqual: lastLMTime])
+        {
+          if (lastLMTime)
+            *newLMTime = lastLMTime;
+          if (newFileSize)
+            *newFileSize = lastFileSize;
+          hasChanged = YES;
+        }
+    }
+
+  return hasChanged;
+}
+
 - (NSMutableDictionary *) properties
 {
   NSData *content;
   NSString *error;
   NSPropertyListFormat format;
+  NSDate *lastLMTime;
+  NSUInteger lastFileSize;
 
-  if (!propertiesLoaded)
+  if ([self _checkFileChangesDataWithDate: &lastLMTime
+                                  andSize: &lastFileSize])
     {
+      [self logWithFormat: @"file '%@' new or modified: rereading properties",
+            [self completeFilename]];
+      [properties release];
+      properties = nil;
       content = [NSData dataWithContentsOfFile: [self completeFilename]];
       if (content)
         {
@@ -104,8 +157,8 @@
             [self logWithFormat: @"an error occurred during deserialization"
                   @" of message: '%@'", error];
         }
-
-      propertiesLoaded = YES;
+      ASSIGN (lastModificationTime, lastLMTime);
+      fileSize = lastFileSize;
     }
 
   return [super properties];
@@ -114,6 +167,8 @@
 - (void) save
 {
   NSData *content;
+  NSDate *lastLMTime;
+  NSUInteger lastFileSize;
 
   [container ensureDirectory];
 
@@ -126,12 +181,17 @@
   if (![content writeToFile: [self completeFilename] atomically: NO])
     [NSException raise: @"MAPIStoreIOException"
 		 format: @"could not save message"];
+
+  [self _readFileChangesDataWithDate: &lastLMTime
+                             andSize: &lastFileSize];
+  ASSIGN (lastModificationTime, lastLMTime);
+  fileSize = lastFileSize;
   // [self logWithFormat: @"fs message written to '%@'", [self completeFilename]];
 }
 
 - (NSString *) davEntityTag
 {
-  NSCalendarDate *lm;
+  NSDate *lm;
 
   lm = [self lastModificationTime];
 
@@ -166,12 +226,12 @@
   return [attributes objectForKey: key];
 }
 
-- (NSCalendarDate *) creationTime
+- (NSDate *) creationTime
 {
   return [self _fileAttributeForKey: NSFileCreationDate];
 }
 
-- (NSCalendarDate *) lastModificationTime
+- (NSDate *) lastModificationTime
 {
   return [self _fileAttributeForKey: NSFileModificationDate];
 }

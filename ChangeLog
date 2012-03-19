@@ -1,3 +1,13 @@
+2012-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/SOGoMAPIFSMessage.m (-init): init 2 new ivars:
+	fileSize and lastModificationTime.
+	(-properties): check the current file size and last modification
+	time against cached values and reload the props file if anything
+	changed.
+	(-creationTime, -lastModificationTime): new return type: NSDate
+	instead of NSCalendarDate.
+
 2012-03-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreGCSFolder.m
