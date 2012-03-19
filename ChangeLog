@@ -1,5 +1,10 @@
 2012-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): check recipients
+	even if PidLidAppointmentStateFlags is nil or 0, since all that
+	matters is that the "recipients" dict be present in the properties
+	dictionary.
+
 	* OpenChange/SOGoMAPIFSMessage.m (-init): init 2 new ivars:
 	fileSize and lastModificationTime.
 	(-properties): check the current file size and last modification
