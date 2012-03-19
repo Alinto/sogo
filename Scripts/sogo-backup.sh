@@ -1,7 +1,7 @@
 #!/bin/bash
 set -o pipefail
 
-set -x
+#set -x
 PROGNAME="$(basename $0)"
 
 BACKUP_DIR=/home/sogo/backups
