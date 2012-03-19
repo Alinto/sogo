@@ -25,21 +25,22 @@
 
 #import "SOGoMAPIVolatileMessage.h"
 
-@class NSCalendarDate;
+@class NSDate;
 @class NSString;
 
 @interface SOGoMAPIFSMessage : SOGoMAPIVolatileMessage
 {
-  BOOL propertiesLoaded;
   NSString *completeFilename;
+  NSUInteger fileSize;
+  NSData *lastModificationTime;
 }
 
 - (void) save;
 
 - (NSString *) completeFilename;
 
-- (NSCalendarDate *) creationTime;
-- (NSCalendarDate *) lastModificationTime;
+- (NSDate *) creationTime;
+- (NSDate *) lastModificationTime;
 
 @end
 
