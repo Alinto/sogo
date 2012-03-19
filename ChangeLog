@@ -1,5 +1,11 @@
 2012-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* Main/SOGo+DAV.m (_fillCollections:where:matches:inContext:):
+	added bogosupport for
+	"{http://calendarserver.org/ns/}email-address-set".
+	(_principalCollectionsMatching:inContext:): relationship between
+	search criteria is now and "OR" rathern than an "AND".
+
 	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
 	(-davCalendarUserType, -davEmailAddressSet): new DAV accessors.
 

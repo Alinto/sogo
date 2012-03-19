@@ -40,6 +40,7 @@
 #import <SOGo/NSString+DAV.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResponse+SOGo.h>
+#import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
@@ -362,46 +363,53 @@
     [collections addObject: collection];
 }
 
-- (NSMutableArray *) _firstPrincipalCollectionsWhere: (NSString *) key
-					     matches: (NSString *) value
-                                           inContext: (WOContext *) localContext
+- (void)       _fillCollections: (NSMutableArray *) collections
+    withEmailAddressSetMatching: (NSString *) value
+                      inContext: (WOContext *) localContext
 {
-  NSMutableArray *collections;
+  id <SOGoSource> authenticationSource;
+  SOGoUser *activeUser;
+  NSArray *records;
+  NSUInteger count, max;
+  NSString *uid;
+  SOGoUserFolder *collection;
 
-  collections = [NSMutableArray array];
+  activeUser = [localContext activeUser];
+  if ([activeUser respondsToSelector: @selector (authenticationSource)])
+    {
+      authenticationSource = [[localContext activeUser] authenticationSource];
+      records = [authenticationSource
+                  fetchContactsMatching: value
+                               inDomain: [activeUser domain]];
+      max = [records count];
+      for (count = 0; count < max; count++)
+        {
+          uid = [[records objectAtIndex: count] objectForKey: @"c_uid"];
+          if ([uid length] > 0)
+            {
+              collection = [[SOGoUser userWithLogin: uid]
+                             homeFolderInContext: localContext];
+              [collections addObject: collection];
+            }
+        }
+    }
+}
+
+- (void) _fillCollections: (NSMutableArray *) collections
+                    where: (NSString *) key
+                  matches: (NSString *) value
+                inContext: (WOContext *) localContext
+{
   if ([key
 	isEqualToString: @"{urn:ietf:params:xml:ns:caldav}calendar-home-set"])
     [self _fillCollections: collections withCalendarHomeSetMatching: value
                  inContext: localContext];
+  else if ([key isEqualToString: @"{http://calendarserver.org/ns/}email-address-set"])
+    [self _fillCollections: collections withEmailAddressSetMatching: value
+                 inContext: localContext];
   else
-    [self errorWithFormat: @"principal-property-search: unhandled key '%@'",
+    [self warnWithFormat: @"principal-property-search: unhandled key '%@'",
 	  key];
-
-  return collections;
-}
-
-- (void) _principalCollections: (NSMutableArray **) baseCollections
-                         where: (NSString *) key
-                       matches: (NSString *) value
-                     inContext: (WOContext *) localContext
-{
-  SOGoUserFolder *currentCollection;
-  unsigned int count, max;
-
-  if (!*baseCollections)
-    *baseCollections = [self _firstPrincipalCollectionsWhere: key
-                                                     matches: value
-                                                   inContext: localContext];
-  else
-    {
-      max = [*baseCollections count];
-      for (count = max; count > 0; count--)
-	{
-	  currentCollection = [*baseCollections objectAtIndex: count - 1];
-	  if (![currentCollection collectionDavKey: key matches: value])
-	    [*baseCollections removeObjectAtIndex: count - 1];
-	}
-    }
 }
 
 - (NSArray *) _principalCollectionsMatching: (NSDictionary *) matches
@@ -411,14 +419,14 @@
   NSEnumerator *allKeys;
   NSString *currentKey;
 
-  collections = nil;
+  collections = [NSMutableArray array];
 
   allKeys = [[matches allKeys] objectEnumerator];
   while ((currentKey = [allKeys nextObject]))
-    [self _principalCollections: &collections
-                          where: currentKey
-                        matches: [matches objectForKey: currentKey]
-                      inContext: localContext];
+    [self _fillCollections: collections
+                     where: currentKey
+                   matches: [matches objectForKey: currentKey]
+                 inContext: localContext];
 
   return collections;
 }
@@ -453,13 +461,14 @@
   SEL methodSel;
   NSString *currentProperty;
   id currentValue;
-  NSMutableArray *response, *props;
+  NSMutableArray *response, *props, *propstat;
   NSDictionary *keyTuple;
 
   response = [NSMutableArray array];
   [response addObject: davElementWithContent (@"href", XMLNS_WEBDAV,
 					      [collection davURLAsString])];
   props = [NSMutableArray array];
+
   max = [properties count];
   for (count = 0; count < max; count++)
     {
@@ -483,10 +492,13 @@
 						   currentValue)];
 	}
     }
-  [response addObject: davElementWithContent (@"propstat", XMLNS_WEBDAV,
-					      davElementWithContent
-					      (@"prop", XMLNS_WEBDAV,
-					       props))];
+
+  propstat = [NSMutableArray array];
+  [propstat addObject: davElementWithContent (@"status", XMLNS_WEBDAV,
+                                              @"HTTP/1.1 200 OK")];
+  [propstat addObject: davElementWithContent (@"prop", XMLNS_WEBDAV,
+                                              props)];
+  [response addObject: davElementWithContent (@"propstat", XMLNS_WEBDAV, propstat)];
   [responses addObject: davElementWithContent (@"response", XMLNS_WEBDAV,
 					       response)];
 }
@@ -503,8 +515,8 @@
   responses = [NSMutableArray arrayWithCapacity: max];
   for (count = 0; count < max; count++)
     [self _appendProperties: properties
-	  ofCollection: [collections objectAtIndex: count]
-	  toResponses: responses];
+               ofCollection: [collections objectAtIndex: count]
+                toResponses: responses];
   mStatus = davElementWithContent (@"multistatus", XMLNS_WEBDAV, responses);
   [response appendContentString: [mStatus asWebDavStringWithNamespaces: nil]];
 }
