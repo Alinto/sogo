@@ -284,7 +284,7 @@ _reverseCN (uint64_t cn)
 }
 
 NSComparisonResult
-MAPICNCompare (uint64_t cn1, uint64_t cn2)
+MAPICNCompare (uint64_t cn1, uint64_t cn2, void *unused)
 {
   NSComparisonResult result;
 
@@ -294,6 +294,41 @@ MAPICNCompare (uint64_t cn1, uint64_t cn2)
     result = NSOrderedAscending;
   else
     result = NSOrderedDescending;
+
+  return result;
+}
+
+NSComparisonResult MAPIChangeKeyGUIDCompare (NSData *ck1, NSData *ck2, void *unused)
+{
+  NSUInteger count;
+  const unsigned char *ptr1, *ptr2;
+  NSComparisonResult result = NSOrderedSame;
+
+  if ([ck1 length] < 16)
+    {
+      NSLog (@"ck1 has a length < 16");
+      abort ();
+    }
+  if ([ck2 length] < 16)
+    {
+      NSLog (@"ck2 has a length < 16");
+      abort ();
+    }
+
+  ptr1 = [ck1 bytes];
+  ptr2 = [ck2 bytes];
+  for (count = 0; result == NSOrderedSame && count < 16; count++)
+    {
+      if (*ptr1 < *ptr2)
+        result = NSOrderedAscending;
+      else if (*ptr1 > *ptr2)
+        result = NSOrderedDescending;
+      else
+        {
+          ptr1++;
+          ptr2++;
+        }
+    }
 
   return result;
 }

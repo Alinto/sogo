@@ -1157,11 +1157,8 @@ fromProperties: (NSDictionary *) attachmentProps
   // we save the new/modified card
   //
   [sogoObject saveContentString: [newCard versitString]];
-  [(MAPIStoreContactsFolder *) container synchroniseCache];
-  value = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
-  if (value)
-    [(MAPIStoreContactsFolder *) container
-    setChangeKey: value forMessageWithKey: [self nameInContainer]];
+
+  [self updateVersions];
 }
 
 @end

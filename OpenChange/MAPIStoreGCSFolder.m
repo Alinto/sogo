@@ -252,7 +252,7 @@ static Class NSNumberK;
     ...
   };
   VersionMapping = {
-    Version = MessageKey;
+    Version = last-modified;
     ...
   }
 }
@@ -458,6 +458,15 @@ static Class NSNumberK;
 
   return rc;
 }
+
+- (void) updateVersionsForMessageWithKey: (NSString *) messageKey
+                           withChangeKey: (NSData *) newChangeKey
+{
+  [self synchroniseCache];
+
+  if (newChangeKey)
+    [self setChangeKey: newChangeKey forMessageWithKey: messageKey];
+}
  
 - (NSNumber *) lastModifiedFromMessageChangeNumber: (NSNumber *) changeNum
 {
@@ -491,25 +500,15 @@ static Class NSNumberK;
   messages = [[versionsMessage properties] objectForKey: @"Messages"];
   messageEntry = [messages objectForKey: messageKey];
   if (!messageEntry)
-    abort ();
+    {
+      [self synchroniseCache];
+      messageEntry = [messages objectForKey: messageKey];
+      if (!messageEntry)
+        abort ();
+    }
   [self _setChangeKey: changeKey forMessageEntry: messageEntry];
   
   [versionsMessage save];
-}
-
-- (NSData *) _dataFromChangeKeyGUID: (NSString *) guidString
-                             andCnt: (NSData *) globCnt
-{
-  NSMutableData *changeKey;
-  struct GUID guid;
-
-  changeKey = [NSMutableData dataWithCapacity: 16 + [globCnt length]];
-
-  [guidString extractGUID: &guid];
-  [changeKey appendData: [NSData dataWithGUID: &guid]];
-  [changeKey appendData: globCnt];
-
-  return changeKey;
 }
 
 - (NSData *) changeKeyForMessageWithKey: (NSString *) messageKey
@@ -525,7 +524,7 @@ static Class NSNumberK;
     {
       guid = [changeKeyDict objectForKey: @"GUID"];
       globCnt = [changeKeyDict objectForKey: @"LocalId"];
-      changeKey = [self _dataFromChangeKeyGUID: guid andCnt: globCnt];
+      changeKey = [NSData dataWithChangeKeyGUID: guid andCnt: globCnt];
     }
 
   return changeKey;
@@ -533,9 +532,10 @@ static Class NSNumberK;
 
 - (NSData *) predecessorChangeListForMessageWithKey: (NSString *) messageKey
 {
-  NSMutableData *changeKeys = nil;
+  NSMutableData *list = nil;
   NSDictionary *messages, *changeListDict;
   NSArray *keys;
+  NSMutableArray *changeKeys;
   NSUInteger count, max;
   NSData *changeKey;
   NSString *guid;
@@ -546,21 +546,30 @@ static Class NSNumberK;
                      objectForKey: @"PredecessorChangeList"];
   if (changeListDict)
     {
-      changeKeys = [NSMutableData data];
       keys = [changeListDict allKeys];
       max = [keys count];
 
+      changeKeys = [NSMutableArray arrayWithCapacity: max];
       for (count = 0; count < max; count++)
         {
           guid = [keys objectAtIndex: count];
           globCnt = [changeListDict objectForKey: guid];
-          changeKey = [self _dataFromChangeKeyGUID: guid andCnt: globCnt];
-          [changeKeys appendUInt8: [changeKey length]];
-          [changeKeys appendData: changeKey];
+          changeKey = [NSData dataWithChangeKeyGUID: guid andCnt: globCnt];
+          [changeKeys addObject: changeKey];
+        }
+      [changeKeys sortUsingFunction: MAPIChangeKeyGUIDCompare
+                            context: nil];
+
+      list = [NSMutableData data];
+      for (count = 0; count < max; count++)
+        {
+          changeKey = [changeKeys objectAtIndex: count];
+          [list appendUInt8: [changeKey length]];
+          [list appendData: changeKey];
         }
     }
 
-  return changeKeys;
+  return list;
 }
 
 - (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum
@@ -627,11 +636,11 @@ static Class NSNumberK;
                   currentChangeNum
                     = [[messageEntry objectForKey: @"version"]
                         unsignedLongLongValue];
-                  if (MAPICNCompare (changeNum, currentChangeNum)
+                  if (MAPICNCompare (changeNum, currentChangeNum, NULL)
                       == NSOrderedAscending)
                     {
                       [(NSMutableArray *) deletedKeys addObject: cName];
-                      if (MAPICNCompare (maxChangeNum, currentChangeNum)
+                      if (MAPICNCompare (maxChangeNum, currentChangeNum, NULL)
                           == NSOrderedAscending)
                         maxChangeNum = currentChangeNum;
                     }

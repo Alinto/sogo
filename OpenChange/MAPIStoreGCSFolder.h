@@ -41,6 +41,8 @@
 
 /* synchronisation */
 - (BOOL) synchroniseCache;
+- (void) updateVersionsForMessageWithKey: (NSString *) messageKey
+                           withChangeKey: (NSData *) newChangeKey;
 - (NSNumber *) lastModifiedFromMessageChangeNumber: (NSNumber *) changeNum;
 - (NSNumber *) changeNumberForMessageWithKey: (NSString *) messageKey;
 

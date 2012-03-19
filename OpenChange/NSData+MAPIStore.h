@@ -42,6 +42,9 @@
 + (id) dataWithXID: (const struct XID *) xid;
 - (struct XID *) asXIDInMemCtx: (void *) memCtx;
 
++ (id) dataWithChangeKeyGUID: (NSString *) guidString
+                      andCnt: (NSData *) globCnt;
+
 @end
 
 @interface NSMutableData (MAPIStoreDataTypes)

@@ -218,17 +218,9 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
 }
 
 - (int) getPidTagContainerClass: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPF.Note" asUnicodeInMemCtx: memCtx];
-  
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidTagMessageClass: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
-{
-  *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];
   
   return MAPISTORE_SUCCESS;
 }
@@ -686,21 +678,6 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   [versionsMessage save];
 }
 
-- (NSData *) _dataFromChangeKeyGUID: (NSString *) guidString
-                             andCnt: (NSData *) globCnt
-{
-  NSMutableData *changeKey;
-  struct GUID guid;
-
-  changeKey = [NSMutableData dataWithCapacity: 16 + [globCnt length]];
-
-  [guidString extractGUID: &guid];
-  [changeKey appendData: [NSData dataWithGUID: &guid]];
-  [changeKey appendData: globCnt];
-
-  return changeKey;
-}
-
 - (NSData *) changeKeyForMessageWithKey: (NSString *) messageKey
 {
   NSDictionary *messages, *changeKeyDict;
@@ -716,7 +693,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
     {
       guid = [changeKeyDict objectForKey: @"GUID"];
       globCnt = [changeKeyDict objectForKey: @"LocalId"];
-      changeKey = [self _dataFromChangeKeyGUID: guid andCnt: globCnt];
+      changeKey = [NSData dataWithChangeKeyGUID: guid andCnt: globCnt];
     }
 
   return changeKey;
@@ -724,9 +701,10 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
 - (NSData *) predecessorChangeListForMessageWithKey: (NSString *) messageKey
 {
-  NSMutableData *changeKeys = nil;
+  NSMutableData *list = nil;
   NSDictionary *messages, *changeListDict;
   NSArray *keys;
+  NSMutableArray *changeKeys;
   NSUInteger count, max;
   NSData *changeKey;
   NSString *guid;
@@ -739,21 +717,30 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                      objectForKey: @"PredecessorChangeList"];
   if (changeListDict)
     {
-      changeKeys = [NSMutableData data];
       keys = [changeListDict allKeys];
       max = [keys count];
 
+      changeKeys = [NSMutableArray arrayWithCapacity: max];
       for (count = 0; count < max; count++)
         {
           guid = [keys objectAtIndex: count];
           globCnt = [changeListDict objectForKey: guid];
-          changeKey = [self _dataFromChangeKeyGUID: guid andCnt: globCnt];
-          [changeKeys appendUInt8: [changeKey length]];
-          [changeKeys appendData: changeKey];
+          changeKey = [NSData dataWithChangeKeyGUID: guid andCnt: globCnt];
+          [changeKeys addObject: changeKey];
+        }
+      [changeKeys sortUsingFunction: MAPIChangeKeyGUIDCompare
+                            context: nil];
+
+      list = [NSMutableData data];
+      for (count = 0; count < max; count++)
+        {
+          changeKey = [changeKeys objectAtIndex: count];
+          [list appendUInt8: [changeKey length]];
+          [list appendData: changeKey];
         }
     }
 
-  return changeKeys;
+  return list;
 }
 
 - (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum

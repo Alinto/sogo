@@ -23,6 +23,7 @@
 /* OpenChange SOGo storage backend */
 
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSDebug.h>
 #import <Foundation/NSFileHandle.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSUserDefaults.h>
@@ -48,6 +49,7 @@
 #include <mapistore/mapistore_errors.h>
 
 static Class MAPIStoreContextK = Nil;
+static BOOL leakDebugging = NO;
 
 static enum mapistore_error
 sogo_backend_unexpected_error()
@@ -55,6 +57,16 @@ sogo_backend_unexpected_error()
   NSLog (@"  UNEXPECTED WEIRDNESS: RECEIVED NO OBJECT");
   abort();
   return MAPISTORE_SUCCESS;
+}
+
+static void
+sogo_backend_atexit (void)
+{
+  NSAutoreleasePool *pool;
+
+  pool = [NSAutoreleasePool new];
+  NSLog (@"allocated classes:\n%s", GSDebugAllocationList (YES));
+  [pool release];
 }
 
 /**
@@ -88,6 +100,14 @@ sogo_backend_init (void)
   /* We force the plugin to base its configuration on the SOGo tree. */
   ud = [NSUserDefaults standardUserDefaults];
   [ud registerDefaults: [ud persistentDomainForName: @"sogod"]];
+
+  if (!leakDebugging && [ud boolForKey: @"SOGoDebugLeaks"])
+    {
+      NSLog (@"  leak debugging on");
+      GSDebugAllocationActive (YES);
+      atexit (sogo_backend_atexit);
+      leakDebugging = YES;
+    }
 
   registry = [SoProductRegistry sharedProductRegistry];
   [registry scanForProductsInDirectory: SOGO_BUNDLES_DIR];

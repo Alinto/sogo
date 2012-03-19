@@ -21,11 +21,21 @@
  */
 
 #import "MAPIStoreNotesFolder.h"
-
 #import "MAPIStoreNotesMessage.h"
+#import "NSString+MAPIStore.h"
+
+#include <mapistore/mapistore_errors.h>
 
 #import "MAPIStoreNotesFolder.h"
 
 @implementation MAPIStoreNotesFolder
+
+- (int) getPidTagDefaultPostMessageClass: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"IPM.StickyNote" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
 
 @end

@@ -54,7 +54,7 @@ class WebdavSyncTest(unittest.TestCase):
         self.assertTrue(token > 0)
         query1EndTime = int(math.ceil(query1.start + query1.duration))
         self.assertTrue(token <= query1EndTime, 
-                     "token = %d > query1EndTime = %d" % (token, query1EndTime))
+                        "token = %d > query1EndTime = %d" % (token, query1EndTime))
 
         # we make sure that any token is accepted when the collection is
         # empty, but that the returned token differs

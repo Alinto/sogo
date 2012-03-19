@@ -1064,12 +1064,7 @@
   if (newParticipationStatus)
     [sogoObject changeParticipationStatus: newParticipationStatus
                              withDelegate: nil];
-
-  [(MAPIStoreCalendarFolder *) container synchroniseCache];
-  value = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
-  if (value)
-    [(MAPIStoreCalendarFolder *) container
-    setChangeKey: value forMessageWithKey: [self nameInContainer]];
+  [self updateVersions];
 }
 
 - (id) lookupAttachment: (NSString *) childKey

@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -202,6 +203,17 @@
     }
 
   return version;
+}
+
+- (void) updateVersions
+{
+  NSData *newChangeKey;
+
+  newChangeKey = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
+
+  [(MAPIStoreGCSFolder *) container
+    updateVersionsForMessageWithKey: [self nameInContainer]
+                      withChangeKey: newChangeKey];
 }
 
 @end
