@@ -1,3 +1,9 @@
+2012-03-20  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject+Draft.m
+	(_contentForEditingFromKeys:): prefer the HTML part over the text
+	part when composing HTML messages.
+
 2012-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Main/SOGo+DAV.m (_fillCollections:where:matches:inContext:):
