@@ -1,5 +1,8 @@
 2012-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSDate+MAPIStore.m (-isNever): new accessor for dates
+	occurring in 4500.
+
 	* OpenChange/MAPIStoreTypes.m (MAPIChangeKeyGUIDCompare): NSData
 	arguments passed as "id" due to the pickiness of some versions of
 	gcc.
