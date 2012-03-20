@@ -1,5 +1,11 @@
 2012-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m
+	(-getPidLidAppointmentSequence:inMemCtx:): new getter.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m
+	(-getPidLidAppointmentSequence:inMemCtx:): new getter.
+
 	* OpenChange/NSDate+MAPIStore.m (-isNever): new accessor for dates
 	occurring in 4500.
 

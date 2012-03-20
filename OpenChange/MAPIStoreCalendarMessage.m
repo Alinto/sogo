@@ -166,6 +166,13 @@
   return [[self appointmentWrapper] getPidTagStartDate: data inMemCtx: memCtx];
 }
 
+- (int) getPidLidAppointmentSequence: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidLidAppointmentSequence: data
+                                                        inMemCtx: memCtx];
+}
+
 - (int) getPidLidAppointmentStateFlags: (void **) data
                               inMemCtx: (TALLOC_CTX *) memCtx
 {

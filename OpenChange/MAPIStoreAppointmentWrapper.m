@@ -657,6 +657,14 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPidLidAppointmentSequence: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPILongValue (memCtx, [[event sequence] unsignedIntValue]);
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (int) getPidLidAppointmentStateFlags: (void **) data
                               inMemCtx: (TALLOC_CTX *) memCtx
 {
