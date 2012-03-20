@@ -162,6 +162,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   method = [[event parent] method];
   if ([method length] > 0)
     {
+      method = [method uppercaseString];
       [method retain];
       if ([method isEqualToString: @"REPLY"])
         {

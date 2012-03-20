@@ -6,6 +6,9 @@
 
 2012-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreAppointmentWrapper.m (-_setupITIPContext):
+	ensure method is uppercase.
+
 	* OpenChange/MAPIStoreCalendarMessage.m
 	(-getPidLidAppointmentSequence:inMemCtx:): new getter.
 	(-save): properly initialize CREATED, LAST-MODIFIED, DTSTAMP and
