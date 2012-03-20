@@ -6,6 +6,9 @@
 
 2012-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoUserFolder.m (-davLastName, -davFirstName):
+	quick and dirty implementation of those getters.
+
 	* OpenChange/MAPIStoreAppointmentWrapper.m (-_setupITIPContext):
 	ensure method is uppercase.
 
