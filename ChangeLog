@@ -2,6 +2,8 @@
 
 	* OpenChange/MAPIStoreCalendarMessage.m
 	(-getPidLidAppointmentSequence:inMemCtx:): new getter.
+	(-save): properly initialize CREATED, LAST-MODIFIED, DTSTAMP and
+	SEQUENCE from MAPI properties.
 
 	* OpenChange/MAPIStoreAppointmentWrapper.m
 	(-getPidLidAppointmentSequence:inMemCtx:): new getter.
