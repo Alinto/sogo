@@ -98,22 +98,38 @@
   NSArray *types;
   NSDictionary *parts;
   NSString *rawPart, *content, *contentKey;
+  SOGoUserDefaults *ud;
   int index;
-  BOOL htmlContent;
+  BOOL htmlComposition, htmlContent;
 
   content = @"";
 
   if ([keys count])
     {
+      ud = [[context activeUser] userDefaults];
+      htmlComposition = [[ud mailComposeMessageType] isEqualToString: @"html"];
+      htmlContent = NO;
       types = [keys objectsForKey: @"mimeType" notFoundMarker: @""];
-      index = [types indexOfObject: @"text/plain"];
-      if (index == NSNotFound)
+
+      if (htmlComposition)
         {
+          // Prefer HTML content
           index = [types indexOfObject: @"text/html"];
-          htmlContent = YES;
+          if (index == NSNotFound)
+            index = [types indexOfObject: @"text/plain"];
+          else
+            htmlContent = YES;
         }
       else
-        htmlContent = NO;
+        {
+          // Prefer text content
+          index = [types indexOfObject: @"text/plain"];
+          if (index == NSNotFound)
+            {
+              index = [types indexOfObject: @"text/html"];
+              htmlContent = YES;
+            }
+        }
 
       if (index != NSNotFound)
         {
