@@ -101,7 +101,9 @@
 
 - (void) setMethod: (NSString *) _value
 {
-  [[self uniqueChildWithTag: @"method"] setSingleValue: _value forKey: @""];
+  [[self uniqueChildWithTag: @"method"]
+    setSingleValue: [_value uppercaseString]
+            forKey: @""];
 }
 
 - (NSString *) method
