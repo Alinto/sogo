@@ -816,11 +816,12 @@
 {
   NSMutableDictionary *compactContacts, *returnContact;
   NSDictionary *userEntry;
-  NSArray *newContacts;
+  NSArray *newContacts, *allEmails;
   NSMutableArray *emails;
   NSString *uid, *email, *info;
   NSNumber *isGroup;
   id <SOGoSource> source;
+  NSUInteger count, max;
 
   compactContacts = [NSMutableDictionary dictionary];
   while ((userEntry = [contacts nextObject]))
@@ -851,7 +852,17 @@
 	      [returnContact setObject: emails forKey: @"emails"];
 	    }
 	  email = [userEntry objectForKey: @"mail"];
-	  if (email && ![emails containsObject: email])
+          if ([email isKindOfClass: [NSArray class]])
+            {
+              allEmails = (NSArray *) email;
+              max = [allEmails count];
+              for (count = 0; count < max; count++)
+                {
+                  email = [allEmails objectAtIndex: count];
+                  [emails addObjectUniquely: email];
+                }
+            }
+          else if (email && ![emails containsObject: email])
 	    [emails addObject: email];
 	  email = [userEntry objectForKey: @"mozillasecondemail"];
 	  if (email && ![emails containsObject: email])

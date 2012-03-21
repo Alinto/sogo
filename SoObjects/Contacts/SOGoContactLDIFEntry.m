@@ -95,7 +95,7 @@
   [vcard setProdID: [NSString
                       stringWithFormat: @"-//Inverse inc./SOGo %@//EN",
                       SOGoVersion]];
-  [vcard updateFromLDIFRecord: [self ldifRecord]];
+  [vcard updateFromLDIFRecord: [self simplifiedLDIFRecord]];
 
   return vcard;
 }
@@ -113,6 +113,37 @@
 - (NSDictionary *) ldifRecord
 {
   return ldifEntry;
+}
+
+- (NSDictionary *) simplifiedLDIFRecord
+{
+  NSMutableDictionary *newRecord;
+  NSArray *keys;
+  NSUInteger count, max;
+  NSString *key;
+  id value;
+
+  newRecord = [[self ldifRecord] mutableCopy];
+  [newRecord autorelease];
+
+  keys = [newRecord allKeys];
+  max = [keys count];
+  for (count = 0; count < max; count++)
+    {
+      key = [keys objectAtIndex: count];
+      value = [newRecord objectForKey: key];
+      if ([value isKindOfClass: [NSArray class]]
+          && ![key isEqualToString: @"objectclass"])
+        {
+          if ([value count] > 0)
+            [newRecord setObject: [value objectAtIndex: 0]
+                          forKey: key];
+          else
+            [newRecord removeObjectForKey: key];
+        }
+    }
+
+  return newRecord;
 }
 
 - (BOOL) hasPhoto

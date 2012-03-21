@@ -1,3 +1,16 @@
+2012-03-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserManager.m (_compactAndCompleteContacts:):
+	if "mail" is an array, all values are added to "c_emails".
+
+	* SoObjects/Contacts/SOGoContactSourceFolder.m
+	(_flattenedRecord:): if "mail" is an array, we only take the first
+	value of it.
+
+	* SoObjects/Contacts/SOGoContactLDIFEntry.m (-simplifiedRecord):
+	new record guaranteeing that all array values have been stripped
+	and converted to strings.
+
 2012-03-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailObject+Draft.m

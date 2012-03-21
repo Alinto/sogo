@@ -76,6 +76,11 @@
   return [[self vCard] asLDIFRecord];
 }
 
+- (NSDictionary *) simplifiedLDIFRecord
+{
+  return [self ldifRecord];
+}
+
 - (BOOL) hasPhoto
 {
   return ([[self vCard] firstChildWithTag: @"photo"] != nil);

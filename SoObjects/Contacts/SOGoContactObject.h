@@ -33,6 +33,7 @@
 /* web editing */
 - (void) setLDIFRecord: (NSDictionary *) newLDIFRecord;
 - (NSDictionary *) ldifRecord;
+- (NSDictionary *) simplifiedLDIFRecord;
 
 - (NSException *) save;
 - (NSException *) delete;
