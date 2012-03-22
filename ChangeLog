@@ -1,3 +1,8 @@
+2012-03-22  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailerUI/UIxMailFolderActions.m (-emptyTrashAction:): we now
+	unsubscribe from the folders found in the trash.
+
 2012-03-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserManager.m (_compactAndCompleteContacts:):

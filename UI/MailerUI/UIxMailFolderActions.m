@@ -489,7 +489,10 @@
       connection = [co imap4Connection];
       subfolders = [[co allFolderURLs] objectEnumerator];
       while ((currentURL = [subfolders nextObject]))
-	[connection deleteMailboxAtURL: currentURL];
+        {
+          [[connection client] unsubscribe: [currentURL path]];
+          [connection deleteMailboxAtURL: currentURL];
+        }
     }
   if (error)
     {
