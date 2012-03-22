@@ -162,6 +162,7 @@ static NSCharacterSet *hexCharacterSet = nil;
   method = [[event parent] method];
   if ([method length] > 0)
     {
+      method = [method uppercaseString];
       [method retain];
       if ([method isEqualToString: @"REPLY"])
         {
@@ -654,6 +655,14 @@ static NSCharacterSet *hexCharacterSet = nil;
   [dateValue setTimeZone: utcTZ];
   *data = [dateValue asFileTimeInMemCtx: memCtx];
   
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidAppointmentSequence: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPILongValue (memCtx, [[event sequence] unsignedIntValue]);
+
   return MAPISTORE_SUCCESS;
 }
 

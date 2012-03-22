@@ -114,4 +114,17 @@ _setupRefDate ()
   return timeValue;
 }
 
+- (BOOL) isNever /* occurs on 4500-12-31 */
+{
+  NSCalendarDate *calDate;
+
+  if ([self isKindOfClass: [NSCalendarDate class]])
+    calDate = (NSCalendarDate *) self;
+  else
+    calDate = [NSCalendarDate dateWithTimeIntervalSince1970:
+                                [self timeIntervalSince1970]];
+
+  return [calDate yearOfCommonEra] == 4500;
+}
+
 @end

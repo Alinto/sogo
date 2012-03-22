@@ -38,14 +38,15 @@
 
 @implementation NSObject (MAPIStoreTallocHelpers)
 
-static int MAPIStoreTallocWrapperDestroy (void *data)
+static int
+MAPIStoreTallocWrapperDestroy (void *data)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
 
   pool = [NSAutoreleasePool new];
   wrapper = data;
-  NSLog (@"destroying wrapped object (wrapper: %p; object: %p)...\n", wrapper, wrapper->MAPIStoreSOGoObject);
+  // NSLog (@"destroying wrapped object (wrapper: %p; object: %p)...\n", wrapper, wrapper->MAPIStoreSOGoObject);
   [wrapper->MAPIStoreSOGoObject release];
   [pool release];
 
@@ -57,10 +58,10 @@ static int MAPIStoreTallocWrapperDestroy (void *data)
   struct MAPIStoreTallocWrapper *wrapper;
 
   wrapper = talloc_zero (tallocCtx, struct MAPIStoreTallocWrapper);
-  wrapper->MAPIStoreSOGoObject = self;
-  [wrapper->MAPIStoreSOGoObject retain];
   talloc_set_destructor ((void *) wrapper, MAPIStoreTallocWrapperDestroy);
-  NSLog (@"returning wrapper: %p; object: %p", wrapper, self);
+  wrapper->MAPIStoreSOGoObject = self;
+  [self retain];
+  // NSLog (@"returning wrapper: %p; object: %p", wrapper, self);
 
   return wrapper;
 }

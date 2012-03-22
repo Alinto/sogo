@@ -3,6 +3,12 @@
 	* UI/MailerUI/UIxMailFolderActions.m (-emptyTrashAction:): we now
 	unsubscribe from the folders found in the trash.
 
+2012-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreTasksMessage.m (-save):
+	PidLidPercentComplete is a double, that we need to convert in
+	order to obtain the proper value.
+
 2012-03-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserManager.m (_compactAndCompleteContacts:):
@@ -21,6 +27,29 @@
 	* SoObjects/Mailer/SOGoMailObject+Draft.m
 	(_contentForEditingFromKeys:): prefer the HTML part over the text
 	part when composing HTML messages.
+
+2012-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserFolder.m (-davLastName, -davFirstName):
+	quick and dirty implementation of those getters.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m (-_setupITIPContext):
+	ensure method is uppercase.
+
+	* OpenChange/MAPIStoreCalendarMessage.m
+	(-getPidLidAppointmentSequence:inMemCtx:): new getter.
+	(-save): properly initialize CREATED, LAST-MODIFIED, DTSTAMP and
+	SEQUENCE from MAPI properties.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m
+	(-getPidLidAppointmentSequence:inMemCtx:): new getter.
+
+	* OpenChange/NSDate+MAPIStore.m (-isNever): new accessor for dates
+	occurring in 4500.
+
+	* OpenChange/MAPIStoreTypes.m (MAPIChangeKeyGUIDCompare): NSData
+	arguments passed as "id" due to the pickiness of some versions of
+	gcc.
 
 2012-03-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

@@ -33,6 +33,8 @@
 + (id) dateFromFileTime: (const struct FILETIME *) timeValue;
 - (struct FILETIME *) asFileTimeInMemCtx: (void *) memCtx;
 
+- (BOOL) isNever; /* occurs on 4500-12-31 */
+
 @end
 
 #endif /* NSCALENDARDATE+MAPISTORE_H */

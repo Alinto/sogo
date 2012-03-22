@@ -298,7 +298,8 @@ MAPICNCompare (uint64_t cn1, uint64_t cn2, void *unused)
   return result;
 }
 
-NSComparisonResult MAPIChangeKeyGUIDCompare (NSData *ck1, NSData *ck2, void *unused)
+NSComparisonResult
+MAPIChangeKeyGUIDCompare (id ck1, id ck2, void *unused)
 {
   NSUInteger count;
   const unsigned char *ptr1, *ptr2;
