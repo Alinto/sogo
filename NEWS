@@ -1,3 +1,20 @@
+1.3.14 (2012-03-DD)
+-------------------
+New Features
+ - 
+
+Enhancements
+ - when replying or inline-forwarding a message, we now prefer the HTML part
+   over the text part when composing HTML messages
+ - when emptying the trash, we now unsubscribe from folders within the trash
+ - added CalDAV autocompletion support for iPad (iOS 5.0.x)
+ - improved notifications support for Apple iCal
+
+Bug Fixes
+ - fixed name of backup script in cronjob template
+ - fixed crash caused by contacts with multiple mail values
+ - fixed signal handlers to avoid possible hanging issues
+
 1.3.13 (2012-03-16)
 -------------------
 New Features
