@@ -1493,7 +1493,7 @@ function configureDraggables() {
                         onEnd: stopDragging,
                         onDrag: whileDragging,
                         scroll: window,
-                        delay: 250 }); 
+                        delay: 250 });
     }
 }
 
@@ -1521,6 +1521,8 @@ function currentFolderIsRemote () {
 }
 
 function startDragging (itm, e) {
+    if (!Event.isLeftClick(e))
+        return false;
     var target = Event.element(e);
     if (target.up().up().tagName != "TBODY")
         return false;
@@ -1553,7 +1555,7 @@ function whileDragging (itm, e) {
 }
 
 function stopDragging () {
-    $("contactsListContent").setStyle({ overflow: "auto" });
+    $("contactsListContent").setStyle({ overflow: "auto", overflowX: "hidden" });
     var handle = $("dragDropVisual");
     handle.hide();
     if (handle.hasClassName ("copy"))

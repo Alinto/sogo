@@ -2741,8 +2741,6 @@ function onMenuArchiveFolder(event) {
     var folderID = document.menuTarget.getAttribute("dataname");
     var url = URLForFolderID(folderID) + "/exportFolder";
     window.location.href = url;
-
-    event.stop();
 }
 
 function onMenuAccountDelegation(event) {
@@ -2957,9 +2955,11 @@ function configureDroppables() {
 }
 
 function startDragging (itm, e) {
+    if (!Event.isLeftClick(e))
+        return false;
     var target = Event.element(e);
     if (target.up('TBODY') == undefined)
-        return;
+        return false;
 
     $("mailboxList").setStyle({ overflow: "visible" });
 
@@ -2999,8 +2999,7 @@ function whileDragging (itm, e) {
 }
 
 function stopDragging() {
-    console.info("stop dragging");
-    $("mailboxList").setStyle({ overflow: "auto" });
+    $("mailboxList").setStyle({ overflow: "auto", overflowX: "hidden" });
     var handle = $("dragDropVisual");
     handle.hide();
     if (handle.hasClassName("copy"))
