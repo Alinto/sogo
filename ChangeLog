@@ -1,3 +1,9 @@
+2012-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreTasksMessage.m (-save):
+	PidLidPercentComplete is a double, that we need to convert in
+	order to obtain the proper value.
+
 2012-03-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoUserManager.m (_compactAndCompleteContacts:):
