@@ -97,6 +97,8 @@ extern NSTimeZone *utcTZ;
                  inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidTagStartDate: (void **) data
               inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidLidAppointmentSequence: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidAppointmentStateFlags: (void **) data
                               inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidResponseStatus: (void **) data

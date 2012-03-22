@@ -167,7 +167,7 @@
                                        onCriteria: @"name_or_address"
                                            sortBy: @"c_cn"
                                          ordering: NSOrderedAscending
-                                           inDomain: domain];
+                                         inDomain: domain];
       for (i = 0; i < [contacts count]; i++)
         {
           contact = [contacts objectAtIndex: i];

@@ -166,6 +166,13 @@
   return [[self appointmentWrapper] getPidTagStartDate: data inMemCtx: memCtx];
 }
 
+- (int) getPidLidAppointmentSequence: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [[self appointmentWrapper] getPidLidAppointmentSequence: data
+                                                        inMemCtx: memCtx];
+}
+
 - (int) getPidLidAppointmentStateFlags: (void **) data
                               inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -718,14 +725,28 @@
       vCalendar = [newEvent parent];
       [vCalendar setProdID: @"-//Inverse inc.//OpenChange+SOGo//EN"];
       [newEvent setCreated: now];
+      // CREATED = PidTagCreationTime
+      value = [properties objectForKey: MAPIPropertyKey (PidTagCreationTime)];
+      if (value)
+        [newEvent setCreated: value];
       [newEvent setUid: uid];
       content = [vCalendar versitString];
     }
 
   vCalendar = [iCalCalendar parseSingleFromSource: content];
   newEvent = [[vCalendar events] objectAtIndex: 0];
-  [newEvent setTimeStampAsDate: now];
-  [newEvent setLastModified: now];
+
+  // DTSTAMP = PidLidOwnerCriticalChange or PidLidAttendeeCriticalChange
+  value = [properties objectForKey: MAPIPropertyKey (PidLidOwnerCriticalChange)];
+  if (!value || [value isNever])
+    value = now;
+  [newEvent setTimeStampAsDate: value];
+ 
+ // LAST-MODIFIED = PidTagLastModificationTime
+  value = [properties objectForKey: MAPIPropertyKey (PidTagLastModificationTime)];
+  if (!value)
+    value = now;
+  [newEvent setLastModified: value];
 
   // summary
   value = [properties
@@ -973,6 +994,11 @@
         [newEvent setOrganizer: nil];
       else
         {
+          // SEQUENCE = PidLidAppointmentSequence
+          value = [properties objectForKey: MAPIPropertyKey (PidLidAppointmentSequence)];
+          if (value)
+            [newEvent setSequence: value];
+
           ownerUser = [[self userContext] sogoUser];
           if (organizerIsSet)
             {
@@ -1009,7 +1035,10 @@
                     }
                   [person setParticipationStatus: newPartStat];
                   newParticipationStatus = [person partStatWithDefault];
-                      
+
+                  value = [properties objectForKey: MAPIPropertyKey (PidLidAttendeeCriticalChange)];
+                  if (value && ![value isNever])
+                    [newEvent setTimeStampAsDate: value];
                   //                 if (newPartStat // != iCalPersonPartStatUndefined
                   //                     )
                   //                   {

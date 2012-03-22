@@ -4,7 +4,49 @@
 	(_contentForEditingFromKeys:): prefer the HTML part over the text
 	part when composing HTML messages.
 
+2012-03-22  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreTasksMessage.m (-save):
+	PidLidPercentComplete is a double, that we need to convert in
+	order to obtain the proper value.
+
+2012-03-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserManager.m (_compactAndCompleteContacts:):
+	if "mail" is an array, all values are added to "c_emails".
+
+	* SoObjects/Contacts/SOGoContactSourceFolder.m
+	(_flattenedRecord:): if "mail" is an array, we only take the first
+	value of it.
+
+	* SoObjects/Contacts/SOGoContactLDIFEntry.m (-simplifiedRecord):
+	new record guaranteeing that all array values have been stripped
+	and converted to strings.
+
+2012-03-20  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailObject+Draft.m
+	(_contentForEditingFromKeys:): prefer the HTML part over the text
+	part when composing HTML messages.
+
 2012-03-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoUserFolder.m (-davLastName, -davFirstName):
+	quick and dirty implementation of those getters.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m (-_setupITIPContext):
+	ensure method is uppercase.
+
+	* OpenChange/MAPIStoreCalendarMessage.m
+	(-getPidLidAppointmentSequence:inMemCtx:): new getter.
+	(-save): properly initialize CREATED, LAST-MODIFIED, DTSTAMP and
+	SEQUENCE from MAPI properties.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m
+	(-getPidLidAppointmentSequence:inMemCtx:): new getter.
+
+	* OpenChange/NSDate+MAPIStore.m (-isNever): new accessor for dates
+	occurring in 4500.
 
 	* OpenChange/MAPIStoreTypes.m (MAPIChangeKeyGUIDCompare): NSData
 	arguments passed as "id" due to the pickiness of some versions of

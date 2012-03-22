@@ -88,7 +88,7 @@ static Class SOGoContactGCSEntryK = Nil;
 
   if (!ldifRecord)
     {
-      clientLDIFRecord = [[self clientObject] ldifRecord];
+      clientLDIFRecord = [[self clientObject] simplifiedLDIFRecord];
       ldifRecord = [clientLDIFRecord mutableCopy];
       queryValue = [self queryParameterForKey: @"contactEmail"];
       if ([queryValue length] > 0)

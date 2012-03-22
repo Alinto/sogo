@@ -213,7 +213,7 @@
 - (NSDictionary *) _flattenedRecord: (NSDictionary *) oldRecord
 {
   NSMutableDictionary *newRecord;
-  NSString *data;
+  id data;
   NSObject <SOGoSource> *recordSource;
 
   newRecord = [NSMutableDictionary dictionaryWithCapacity: 8];
@@ -232,6 +232,13 @@
   data = [oldRecord objectForKey: @"mail"];
   if (!data)
     data = @"";
+  else if ([data isKindOfClass: [NSArray class]])
+    {
+      if ([data count] > 0)
+        data = [data objectAtIndex: 0];
+      else
+        data = @"";
+    }
   [newRecord setObject: data forKey: @"c_mail"];
 
   data = [oldRecord objectForKey: @"nsaimid"];
