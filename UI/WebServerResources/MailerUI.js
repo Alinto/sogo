@@ -2956,10 +2956,10 @@ function configureDroppables() {
 
 function startDragging (itm, e) {
     if (!Event.isLeftClick(e))
-        return false;
+        return;
     var target = Event.element(e);
     if (target.up('TBODY') == undefined)
-        return false;
+        return;
 
     $("mailboxList").setStyle({ overflow: "visible" });
 

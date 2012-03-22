@@ -1522,10 +1522,10 @@ function currentFolderIsRemote () {
 
 function startDragging (itm, e) {
     if (!Event.isLeftClick(e))
-        return false;
+        return;
     var target = Event.element(e);
     if (target.up().up().tagName != "TBODY")
-        return false;
+        return;
 
     $("contactsListContent").setStyle({ overflow: "visible" });
     var handle = $("dragDropVisual");
