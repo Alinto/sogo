@@ -6,6 +6,8 @@ Enhancements
  - when emptying the trash, we now unsubscribe from folders within the trash
  - added CalDAV autocompletion support for iPad (iOS 5.0.x)
  - improved notifications support for Apple iCal
+ - updated Czech translation
+ - updated Russian translation
 
 Bug Fixes
  - fixed name of backup script in cronjob template
