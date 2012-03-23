@@ -87,6 +87,7 @@
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
 "timeFmt_3" = "";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "Week begins on :";

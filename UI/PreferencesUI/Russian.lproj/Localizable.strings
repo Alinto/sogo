@@ -30,6 +30,7 @@
 "Disable auto reply on" = "Запрет автоответа включен";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Пожалуйста, укажите Ваше сообщение и адреса электронной почты для которых Вы хотите включить автоматический ответ.";
+"Your vacation message must not end with a single dot on a line." = "Ваше сообщение о верменном отсутсвии не должно оканчиваться строкой с одиночной точкой.";
 "End date of your auto reply must be in the future."
 = "Дата завершения вашего автоответа должна быть в будущем.";
 
@@ -78,6 +79,9 @@
 "longDateFmt_5" = "%A, %d %B, %Y";
 "longDateFmt_6" = "%d %B, %Y";
 "longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";

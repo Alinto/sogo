@@ -35,21 +35,19 @@ vtodo_class2 = "(Конфиденциальная задача)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Приглашение на мероприятие: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(послал %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} пригласил вас на %{Summary}.
-\Начало: %{StartDate} в %{StartTime}
-Конец: %{EndDate} в %{EndTime}
-Описание: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}пригласил вас на %{Summary}.\n\nНачало: %{StartDate}\nОкончание: %{EndDate}\nОписание: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} пригласил вас на %{Summary}.\n\Начало: %{StartDate} в %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Мероприятие отменено: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}отменил эту встречу: %{Summary}.\n\nНачало: %{StartDate}\nОкончание: %{EndDate}\nОписание: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText} отменил это мероприятие: %{Summary}.
-
-Начало: %{StartDate} в %{StartTime}
-Конец: %{EndDate} в %{EndTime}
-Описание: %{Description}";
+= "%{Organizer} %{SentByText} отменил это мероприятие: %{Summary}.\n\nНачало: %{StartDate} в %{StartTime}\nКонец: %{EndDate} в %{EndTime}\nОписание: %{Description}";
 
 /* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "Встреча \"%{Summary}\" назначенная на %{OldStartDate} была изменена";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "Изменено мероприятие \"%{Summary}\", назначенное на %{OldStartDate} в %{OldStartTime}.";
 "The following parameters have changed in the \"%{Summary}\" meeting:"

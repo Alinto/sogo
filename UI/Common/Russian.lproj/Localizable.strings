@@ -37,10 +37,16 @@
 
 "Sorry, the user rights can not be configured for that object." = "Извините, для данного объекта невозможно настроить права доступа.";
 
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Любой пользователь данной системы получит доступ к вашему почтовому ящику \"%{0}\". Вы уверены что доверяете им всем?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
      = "Любой зарегистрированный в данной системе пользователь сможет просматривать ваш календарь \"%{0}\". Вы уверены что доверяете им всем?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Вероятнее всего, любые пользователи Интернета сможет получить доступ к вашему календарю \"%{0}\", даже если они не зарегистрированы в этой системе. Действительно ли эта информация может быть доступна для всего Интернета?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Любой пользователь эданной той системы может читать вашу адресную книгу \"%{0}\". Вы уверены что доверяете им всем?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Потенциально любой пользователь интернета смодет прочитать вашу адресную книгу \"%{0}\", даже если они не зарегистрированы в данной системе. Информация в этой адресной книге может быть выставлена в публичную сеть?";
 "Give Access" = "Предоставить доступ";
 "Keep Private" = "Оставить в личном доступе";
 
