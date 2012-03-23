@@ -205,8 +205,6 @@ typedef enum
                               [value autorelease];
                             }
                         }
-                      else
-                        value = [arguments objectAtIndex: i];
                     }
 		}
 	      else
