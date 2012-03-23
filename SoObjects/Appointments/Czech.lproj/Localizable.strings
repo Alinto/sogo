@@ -12,37 +12,42 @@ vtodo_class2 = "(Skrytý úkol)";
 "Start:" = "Začátek:";
 "End:" = "Konec:";
 
-"Receipt: users invited to a meeting" = "Receipt: users invited to a meeting";
-"You have invited the following attendees(s):" = "You have invited the following attendees(s):";
-"... to attend the following event:" = "... to attend the following event:";
+"Receipt: users invited to a meeting" = "Potvrzení: uživatelé pozvaní na setkání";
+"You have invited the following attendees(s):" = "Pozval/a jste tyto účastníky:";
+"... to attend the following event:" = "... k účasti na následující události:";
 
-"Receipt: invitation updated" = "Receipt: invitation updated";
-"The following attendees(s):" = "The following attendees(s):";
-"... have been notified of the changes to the following event:" = "... have been notified of the changes to the following event:";
+"Receipt: invitation updated" = "Potvrzení: pozvánka byla aktualizována";
+"The following attendees(s):" = "Následující účastník/ci:";
+"... have been notified of the changes to the following event:" = "... byl informován o změně v následující události:";
 
-"Receipt: attendees removed from an event" = "Receipt: attendees removed from an event";
-"You have removed the following attendees(s):" = "You have removed the following attendees(s):";
-"... from the following event:" = "... from the following event:";
+"Receipt: attendees removed from an event" = "Potvrzení: účastníci odstranění z události";
+"You have removed the following attendees(s):" = "Odstranil/a jste následující účastníky:";
+"... from the following event:" = "... z následující události:";
 
 /* IMIP messages */
 "startDate_label" = "Začátek:";
 "endDate_label" = "Konec:";
-"due_label" = "Due Date:";
+"due_label" = "Termín:";
 "location_label" = "Místo:";
-"summary_label" = "Summary:";
-"comment_label" = "Comment:";
+"summary_label" = "Název:";
+"comment_label" = "Komentář:";
 
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Pozvání na událost: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(poslal/a %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}Vás pozval/a na %{Summary}.\n\nZačátek: %{StartDate}\nKonec: %{EndDate}\nPopis: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}Vás pozval/a na %{Summary}.\n\nZačátek: %{StartDate} v %{StartTime}\nKonec: %{EndDate} v %{EndTime}\nPopis: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Zrušení události: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}zrušil/a událost: %{Summary}.\n\nZačátek: %{StartDate}\nKonec: %{EndDate}\nPopis: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}zrušil/a událost: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
+= "%{Organizer} %{SentByText}zrušil/a událost: %{Summary}.\n\nZačátek: %{StartDate} v %{StartTime}\nKonec: %{EndDate} v %{EndTime}\nPopis: %{Description}";
 
 /* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "Schůzka \"%{Summary}\" na %{OldStartDate} byla změněna";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "Schůzka \"%{Summary}\" na %{OldStartDate} v %{OldStartTime} byla změněna";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
@@ -55,11 +60,11 @@ vtodo_class2 = "(Skrytý úkol)";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}přijal/a Vaši pozvánku.";
 "%{Attendee} %{SentByText}has declined your event invitation."
-= "%{Attendee} %{SentByText}odmítl/a Vaši pozvánku.";
+= "%{Attendee} %{SentByText}odmítnul/a Vaši pozvánku.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
 = "%{Attendee} %{SentByText}delegoval/a Vaši pozvánku na %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText}dosud o Vaší pozvánce k události nerozhodl/a.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximální počet současných rezervací (%{NumberOfSimultaneousBookings}) byl dosažen pro zdroj \"%{Cn} %{SystemEmail}\".";

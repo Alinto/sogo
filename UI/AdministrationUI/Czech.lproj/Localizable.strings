@@ -1,15 +1,15 @@
 /* this file is in UTF-8 format! */
 
-"Help" = "Help";
-"Close" = "Close";
+"Help" = "Nápověda";
+"Close" = "Zavřít";
 
-"Modules" = "Modules";
+"Modules" = "Moduly";
 
 /* Modules short names */
-"ACLs" = "ACLs";
+"ACLs" = "Přístupová práva";
 
 /* Modules titles */
-"ACLs_title" = "Users folders ACLs management";
+"ACLs_title" = "Managenent přístupových práv složek uživatelů";
 
 /* Modules descriptions */
-"ACLs_description" = "<p>The Access Control Lists administration module allows to change the ACLs of each user's Calendars and Address books.</p><p>To modify the ACLs of a user's folder, type the name of the user in the search field at the top of the window and double-click on the desired folder.</p>";
+"ACLs_description" = "<p>Administrační modul přístupových práv umožňuje nastavovat přístupová práva ke kalendářům a adresářům každého uživatele.</p><p>Chcete-li změnit přístupová práva ke složkám uživatele, zadejte jeho uživatelské jméno do vyhledávacího pole v horní části okna, rozbalte stromovou strukturu jeho složek a na požadované složce udělejte dvojkliknutí.</p>";
