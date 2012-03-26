@@ -1,3 +1,9 @@
+2012-03-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalDateTime.m (_setDateTime:forAllDayEntity:): set or unset the
+	"VALUE" parameter to the date instance, depending on its the
+	all-dayness.
+
 2012-03-11  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalEvent.m (-hasDuration): returns NO when the value is present

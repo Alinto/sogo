@@ -137,6 +137,11 @@
   else
     timeString = @"";
 
+  if (forAllDayEntity)
+    [self setValue: 0 ofAttribute: @"VALUE" to: @"DATE"];
+  else
+    [self removeValue: @"DATE" fromAttribute: @"VALUE"];
+
   [self setSingleValue: timeString forKey: @""];
 }
 
