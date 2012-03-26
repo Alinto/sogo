@@ -635,6 +635,54 @@
 	   getCNForUID: nameInContainer];
 }
 
+/* For firstname and lastname, we handle "Firstname Blabla Lastname" and
+   "Lastname, Firstname Blabla" */
+- (NSString *) davLastName
+{
+  NSArray *parts;
+  NSString *cn, *lastName;
+  NSRange comma;
+
+  cn = [self davDisplayName];
+  comma = [cn rangeOfString: @","];
+  if (comma.location != NSNotFound)
+    lastName = [[cn substringToIndex: comma.location]
+                 stringByTrimmingSpaces];
+  else
+    {
+      parts = [cn componentsSeparatedByString: @" "];
+      if ([parts count] > 0)
+        lastName = [parts lastObject];
+      else
+        lastName = nil;
+    }
+
+  return lastName;
+}
+
+- (NSString *) davFirstName
+{
+  NSArray *parts;
+  NSString *subtext, *cn, *firstName;
+  NSRange comma;
+
+  cn = [self davDisplayName];
+  comma = [cn rangeOfString: @","];
+  if (comma.location != NSNotFound)
+    subtext = [[cn substringFromIndex: comma.location]
+                stringByTrimmingSpaces];
+  else
+    subtext = cn;
+
+  parts = [subtext componentsSeparatedByString: @" "];
+  if ([parts count] > 0)
+    firstName = [parts objectAtIndex: 0];
+  else
+    firstName = nil;
+
+  return firstName;
+}
+
 - (NSString *) davResourceId
 {
   return [NSString stringWithFormat: @"urn:uuid:%@", nameInContainer];

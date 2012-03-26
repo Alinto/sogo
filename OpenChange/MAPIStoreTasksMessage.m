@@ -331,6 +331,7 @@
   NSString *status, *priority;
   NSCalendarDate *now;
   NSInteger tzOffset;
+  double doubleValue;
 
   vToDo = [sogoObject component: YES secure: NO];
   vCalendar = [vToDo parent];
@@ -452,7 +453,11 @@
   //       is always set to 0, no matter what value is set in Outlook
   value = [properties objectForKey: MAPIPropertyKey (PidLidPercentComplete)];
   if (value)
-    [vToDo setPercentComplete: [value stringValue]];
+    {
+      doubleValue = [value doubleValue];
+      [vToDo setPercentComplete:
+               [NSString stringWithFormat: @"%d", (int) (doubleValue * 100)]];
+    }
 
   now = [NSCalendarDate date];
   if ([sogoObject isNew])
