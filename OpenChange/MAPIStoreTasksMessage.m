@@ -38,6 +38,7 @@
 #import <SOGo/SOGoUserDefaults.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/SOGoTaskObject.h>
+#import <Mailer/NSString+Mail.h>
 
 #import "MAPIStoreContext.h"
 #import "MAPIStoreTasksFolder.h"
@@ -346,6 +347,21 @@
   // comment
   value = [properties
             objectForKey: MAPIPropertyKey (PR_BODY_UNICODE)];
+  if (!value)
+    {
+      value = [properties objectForKey: MAPIPropertyKey (PR_HTML)];
+      if (value)
+        {
+          value = [[NSString alloc] initWithData: value
+                                        encoding: NSUTF8StringEncoding];
+          [value autorelease];
+          value = [value htmlToText];
+        }
+    }
+  if (value && [value length] == 0)
+    value = nil;
+  [vToDo setComment: value];
+
   if (value)
     [vToDo setComment: value];
 

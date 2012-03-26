@@ -1,5 +1,9 @@
 2012-03-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTasksMessage.m (-save): take PR_HTML as
+	possible value for the COMMENT field, as as with
+	MAPIStoreCalendarMessages.
+
 	* OpenChange/MAPIApplication.m (-init): removed hack pertaining to
 	UnixSignalHandler since the class no longer exists.
 
