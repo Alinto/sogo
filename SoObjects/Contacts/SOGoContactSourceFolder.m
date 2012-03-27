@@ -137,14 +137,13 @@
 - (NSArray *) davResourceType
 {
   NSMutableArray *resourceType;
-  NSArray *cardDavCollection;
-
-  cardDavCollection
-    = [NSArray arrayWithObjects: @"addressbook",
-	       @"urn:ietf:params:xml:ns:carddav", nil];
+  NSArray *type;
 
   resourceType = [NSMutableArray arrayWithArray: [super davResourceType]];
-  [resourceType addObject: cardDavCollection];
+  type = [NSArray arrayWithObjects: @"addressbook", XMLNS_CARDDAV, nil];
+  [resourceType addObject: type];
+  type = [NSArray arrayWithObjects: @"directory", XMLNS_CARDDAV, nil];
+  [resourceType addObject: type];
 
   return resourceType;
 }
@@ -621,7 +620,7 @@
 - (id) davAddressbookMultiget: (id) queryContext
 {
   return [self performMultigetInContext: queryContext
-                            inNamespace: @"urn:ietf:params:xml:ns:carddav"];
+                            inNamespace: XMLNS_CARDDAV];
 }
 
 - (NSString *) davDisplayName

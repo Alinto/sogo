@@ -14,6 +14,7 @@
 	* SoObjects/Contacts/SOGoUserFolder+Contacts.m
 	(-davDirectoryGateway): new getter that returns the url to the
 	first available directory source.
+	(-davResourceType): declare resource as "directory" (carddav).
 
 2012-03-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
