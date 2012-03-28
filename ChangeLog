@@ -1,5 +1,12 @@
 2012-03-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIFSMessage.m
+	(_readFileChangesDataWithDate:andInode:): use the inode number
+	rather than the filesize as change indicator since a new file is
+	created each time the dictionary is written to disk, thanks to the
+	"atomically" flag.
+	(-save): write the file atomically.
+
 	* SoObjects/Contacts/SOGoFolder+CardDAV.m (_isValidFilter:):
 	accept "email" as filter name.
 	(_appendObject:withBaseURL:toREPORTResponse:): fixed the ordering
