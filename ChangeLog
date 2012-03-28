@@ -1,5 +1,11 @@
 2012-03-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Contacts/SOGoFolder+CardDAV.m (_isValidFilter:):
+	accept "email" as filter name.
+	(_appendObject:withBaseURL:toREPORTResponse:): fixed the ordering
+	of XML elements as the address*-data props where put outside of
+	the <D:prop> tree.
+
 	* SoObjects/SOGo/LDAPSource.m (-allEntryIDs): take the _filter
 	ivar into account.
 
