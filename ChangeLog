@@ -1,3 +1,8 @@
+2012-03-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m (-allEntryIDs): take the _filter
+	ivar into account.
+
 2012-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Contacts/SOGoContactFolders.m
