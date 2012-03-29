@@ -26,9 +26,7 @@ DIV#rightPanel
   margin-left: 5px;
   right: 0px;
   bottom: 0px;
-  overflow: hidden;
-  -moz-user-select: none;
-  -khtml-user-select: none; }
+  overflow: hidden; }
 
 /* top list */
 DIV#contactsListContent
@@ -41,9 +39,7 @@ DIV#contactsListContent
   height: 15.5em;
   border-left: 1px solid #9B9B9B;
   overflow: auto;
-  overflow-x: hidden;
-  -moz-user-select: none;
-  -khtml-user-select: none; }
+  overflow-x: hidden; }
 
 .aptview_text
 {

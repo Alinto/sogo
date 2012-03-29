@@ -148,8 +148,6 @@ function contactsListCallback(http) {
                             cell.appendChild(document.createTextNode(contact["c_telephonenumber"]));
                     }
                 }
-
-                configureDraggables();
             }
 
             // Remove unnecessary rows
@@ -1510,7 +1508,7 @@ function configureDroppables() {
         });   
 }
 
-function currentFolderIsRemote () {
+function currentFolderIsRemote() {
     rc = false;
     var selectedFolders = $("contactFolders").getSelectedNodes();
     if (selectedFolders.length > 0) {
@@ -1520,7 +1518,7 @@ function currentFolderIsRemote () {
     return rc;
 }
 
-function startDragging (itm, e) {
+function startDragging(itm, e) {
     if (!Event.isLeftClick(e))
         return;
     var target = Event.element(e);
@@ -1528,6 +1526,19 @@ function startDragging (itm, e) {
         return;
 
     $("contactsListContent").setStyle({ overflow: "visible" });
+
+    // Create overlapping safety block to avoid selection issues
+    var rightSafetyBlock = $("rightSafetyBlock");
+    if (!rightSafetyBlock) {
+        rightSafetyBlock = new Element('div', {'id': 'rightSafetyBlock', 'class': 'safetyBlock'});
+        document.body.appendChild(rightSafetyBlock);
+    }
+    var rightBlock = $("rightPanel");
+    rightSafetyBlock.setStyle({
+        top: rightBlock.getStyle('top'),
+        left: rightBlock.getStyle('left') });
+    rightSafetyBlock.show();
+
     var handle = $("dragDropVisual");
     var contacts = $('contactsList').getSelectedRowsId();
     var count = contacts.length;
@@ -1546,16 +1557,19 @@ function startDragging (itm, e) {
     handle.show();
 }
 
-function whileDragging (itm, e) {
-    var handle = $("dragDropVisual");
-    if (e.shiftKey || currentFolderIsRemote ())
-        handle.addClassName ("copy");
-    else if (handle.hasClassName ("copy"))
-        handle.removeClassName ("copy");
+function whileDragging(itm, e) {
+    if (e) {
+        var handle = $("dragDropVisual");
+        if (e.shiftKey || currentFolderIsRemote())
+            handle.addClassName ("copy");
+        else if (handle.hasClassName ("copy"))
+            handle.removeClassName ("copy");
+    }
 }
 
 function stopDragging () {
     $("contactsListContent").setStyle({ overflow: "auto", overflowX: "hidden" });
+    $("rightSafetyBlock").hide();
     var handle = $("dragDropVisual");
     handle.hide();
     if (handle.hasClassName ("copy"))

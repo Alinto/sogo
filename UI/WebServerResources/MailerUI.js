@@ -2954,7 +2954,7 @@ function configureDroppables() {
                });
 }
 
-function startDragging (itm, e) {
+function startDragging(itm, e) {
     if (!Event.isLeftClick(e))
         return;
     var target = Event.element(e);
@@ -2962,6 +2962,18 @@ function startDragging (itm, e) {
         return;
 
     $("mailboxList").setStyle({ overflow: "visible" });
+    
+    // Create overlapping safety block to avoid selection issues
+    var rightSafetyBlock = $("rightSafetyBlock");
+    if (!rightSafetyBlock) {
+        rightSafetyBlock = new Element('div', {'id': 'rightSafetyBlock', 'class': 'safetyBlock'});
+        document.body.appendChild(rightSafetyBlock);
+    }
+    var rightBlock = $("rightPanel");
+    rightSafetyBlock.setStyle({
+        top: rightBlock.getStyle('top'),
+        left: rightBlock.getStyle('left') });
+    rightSafetyBlock.show();
 
     var row = target.up('TR');
     var handle = $("dragDropVisual");
@@ -2988,7 +3000,7 @@ function startDragging (itm, e) {
     handle.show();
 }
 
-function whileDragging (itm, e) {
+function whileDragging(itm, e) {
     if (e) {
         var handle = $("dragDropVisual");
         if (e.shiftKey)
@@ -3000,6 +3012,7 @@ function whileDragging (itm, e) {
 
 function stopDragging() {
     $("mailboxList").setStyle({ overflow: "auto", overflowX: "hidden" });
+    $("rightSafetyBlock").hide();
     var handle = $("dragDropVisual");
     handle.hide();
     if (handle.hasClassName("copy"))
