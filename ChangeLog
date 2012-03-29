@@ -1,5 +1,9 @@
 2012-03-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxPreferences.js (savePreferences): fixed
+	validation of end date of vacation of message when not using ISO
+	format (currently limited to French).
+
 	* UI/WebServerResources/ContactsUI.js (startDragging): create an
 	overlapping safety block (div) to avoid possible selection of the
 	underlying text.

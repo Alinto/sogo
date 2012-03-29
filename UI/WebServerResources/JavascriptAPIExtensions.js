@@ -52,11 +52,11 @@ String.prototype.asDate = function () {
     var newDate;
     var date = this.split("/");
     if (date.length == 3)
-        newDate = new Date(date[2], date[1] - 1, date[0]);
+        newDate = new Date(date[2], date[1] - 1, date[0]); // dd/mm/yyyy
     else {
         date = this.split("-");
         if (date.length == 3)
-            newDate = new Date(date[0], date[1] - 1, date[2]);
+            newDate = new Date(date[0], date[1] - 1, date[2]); // yyyy-mm-dd
         else {
             if (this.length == 8) {
                 newDate = new Date(this.substring(0, 4),
