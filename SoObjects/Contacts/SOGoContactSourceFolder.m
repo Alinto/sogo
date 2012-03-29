@@ -24,6 +24,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -34,17 +35,23 @@
 #import <NGObjWeb/SoObject.h>
 #import <NGObjWeb/SoSelectorInvocation.h>
 #import <NGObjWeb/SoUser.h>
+#import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
+#import <DOM/DOMElement.h>
+#import <DOM/DOMProtocols.h>
 #import <EOControl/EOSortOrdering.h>
 #import <SaxObjC/XMLNamespaces.h>
 
+#import <SOGo/DOMNode+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/NSObject+DAV.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSource.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/WORequest+SOGo.h>
+#import <SOGo/WOResponse+SOGo.h>
 
 #import "SOGoContactFolders.h"
 #import "SOGoContactGCSFolder.h"
@@ -130,14 +137,13 @@
 - (NSArray *) davResourceType
 {
   NSMutableArray *resourceType;
-  NSArray *cardDavCollection;
-
-  cardDavCollection
-    = [NSArray arrayWithObjects: @"addressbook",
-	       @"urn:ietf:params:xml:ns:carddav", nil];
+  NSArray *type;
 
   resourceType = [NSMutableArray arrayWithArray: [super davResourceType]];
-  [resourceType addObject: cardDavCollection];
+  type = [NSArray arrayWithObjects: @"addressbook", XMLNS_CARDDAV, nil];
+  [resourceType addObject: type];
+  type = [NSArray arrayWithObjects: @"directory", XMLNS_CARDDAV, nil];
+  [resourceType addObject: type];
 
   return resourceType;
 }
@@ -348,6 +354,273 @@
     }
 
   return result;
+}
+
+- (NSString *) _deduceObjectNameFromURL: (NSString *) url
+                            fromBaseURL: (NSString *) baseURL
+{
+  NSRange urlRange;
+  NSString *name;
+
+  urlRange = [url rangeOfString: baseURL];
+  if (urlRange.location != NSNotFound)
+    {
+      name = [url substringFromIndex: NSMaxRange (urlRange)];
+      if ([name hasPrefix: @"/"])
+        name = [name substringFromIndex: 1];
+    }
+  else
+    name = nil;
+
+  return name;
+}
+
+/* TODO: multiget reorg */
+- (NSString *) _nodeTagForProperty: (NSString *) property
+{
+  NSString *namespace, *nodeName, *nsRep;
+  NSRange nsEnd;
+
+  nsEnd = [property rangeOfString: @"}"];
+  namespace
+    = [property substringFromRange: NSMakeRange (1, nsEnd.location - 1)];
+  nodeName = [property substringFromIndex: nsEnd.location + 1];
+  if ([namespace isEqualToString: XMLNS_CARDDAV])
+    nsRep = @"C";
+  else
+    nsRep = @"D";
+
+  return [NSString stringWithFormat: @"%@:%@", nsRep, nodeName];
+}
+
+- (NSString *) _nodeTag: (NSString *) property
+{
+  static NSMutableDictionary *tags = nil;
+  NSString *nodeTag;
+
+  if (!tags)
+    tags = [NSMutableDictionary new];
+  nodeTag = [tags objectForKey: property];
+  if (!nodeTag)
+    {
+      nodeTag = [self _nodeTagForProperty: property];
+      [tags setObject: nodeTag forKey: property];
+    }
+
+  return nodeTag;
+}
+
+- (NSString **) _properties: (NSString **) properties
+                      count: (unsigned int) propertiesCount
+                   ofObject: (NSDictionary *) object
+{
+  SOGoContactLDIFEntry *ldifEntry;
+  NSString **currentProperty;
+  NSString **values, **currentValue;
+  SEL methodSel;
+
+//   NSLog (@"_properties:ofObject:: %@", [NSDate date]);
+
+  values = NSZoneMalloc (NULL,
+                         (propertiesCount + 1) * sizeof (NSString *));
+  *(values + propertiesCount) = nil;
+
+  ldifEntry = [SOGoContactLDIFEntry
+                contactEntryWithName: [object objectForKey: @"c_name"]
+                       withLDIFEntry: object
+                         inContainer: self];
+  currentProperty = properties;
+  currentValue = values;
+  while (*currentProperty)
+    {
+      methodSel = SOGoSelectorForPropertyGetter (*currentProperty);
+      if (methodSel && [ldifEntry respondsToSelector: methodSel])
+        *currentValue = [[ldifEntry performSelector: methodSel]
+                          stringByEscapingXMLString];
+      currentProperty++;
+      currentValue++;
+    }
+
+//    NSLog (@"/_properties:ofObject:: %@", [NSDate date]);
+
+  return values;
+}
+
+- (NSArray *) _propstats: (NSString **) properties
+                   count: (unsigned int) propertiesCount
+		ofObject: (NSDictionary *) object
+{
+  NSMutableArray *propstats, *properties200, *properties404, *propDict;
+  NSString **property, **values, **currentValue;
+  NSString *propertyValue, *nodeTag;
+
+//   NSLog (@"_propstats:ofObject:: %@", [NSDate date]);
+
+  propstats = [NSMutableArray array];
+
+  properties200 = [NSMutableArray array];
+  properties404 = [NSMutableArray array];
+
+  values = [self _properties: properties count: propertiesCount
+                    ofObject: object];
+  currentValue = values;
+
+  property = properties;
+  while (*property)
+    {
+      nodeTag = [self _nodeTag: *property];
+      if (*currentValue)
+	{
+	  propertyValue = [NSString stringWithFormat: @"<%@>%@</%@>",
+				    nodeTag, *currentValue, nodeTag];
+	  propDict = properties200;
+	}
+      else
+	{
+	  propertyValue = [NSString stringWithFormat: @"<%@/>", nodeTag];
+	  propDict = properties404;
+	}
+      [propDict addObject: propertyValue];
+      property++;
+      currentValue++;
+    }
+  free (values);
+
+  if ([properties200 count])
+    [propstats addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+					  properties200, @"properties",
+					@"HTTP/1.1 200 OK", @"status",
+					nil]];
+  if ([properties404 count])
+    [propstats addObject: [NSDictionary dictionaryWithObjectsAndKeys:
+					  properties404, @"properties",
+					@"HTTP/1.1 404 Not Found", @"status",
+					nil]];
+//    NSLog (@"/_propstats:ofObject:: %@", [NSDate date]);
+
+  return propstats;
+}
+
+- (void) _appendPropstat: (NSDictionary *) propstat
+                toBuffer: (NSMutableString *) r
+{
+  NSArray *properties;
+  unsigned int count, max;
+
+  [r appendString: @"<D:propstat><D:prop>"];
+  properties = [propstat objectForKey: @"properties"];
+  max = [properties count];
+  for (count = 0; count < max; count++)
+    [r appendString: [properties objectAtIndex: count]];
+  [r appendString: @"</D:prop><D:status>"];
+  [r appendString: [propstat objectForKey: @"status"]];
+  [r appendString: @"</D:status></D:propstat>"];
+}
+
+- (void) appendObject: (NSDictionary *) object
+	   properties: (NSString **) properties
+                count: (unsigned int) propertiesCount
+          withBaseURL: (NSString *) baseURL
+	     toBuffer: (NSMutableString *) r
+{
+  NSArray *propstats;
+  unsigned int count, max;
+
+  [r appendFormat: @"<D:response><D:href>"];
+  [r appendString: baseURL];
+  [r appendString: [[object objectForKey: @"c_name"] stringByEscapingURL]];
+  [r appendString: @"</D:href>"];
+
+//   NSLog (@"(appendPropstats...): %@", [NSDate date]);
+  propstats = [self _propstats: properties count: propertiesCount
+                      ofObject: object];
+  max = [propstats count];
+  for (count = 0; count < max; count++)
+    [self _appendPropstat: [propstats objectAtIndex: count]
+	  toBuffer: r];
+//   NSLog (@"/(appendPropstats...): %@", [NSDate date]);
+
+  [r appendString: @"</D:response>"];
+}
+
+- (void) appendMissingObjectRef: (NSString *) href
+		       toBuffer: (NSMutableString *) r
+{
+  [r appendString: @"<D:response><D:href>"];
+  [r appendString: href];
+  [r appendString: @"</D:href><D:status>HTTP/1.1 404 Not Found</D:status></D:response>"];
+}
+
+- (void) _appendComponentProperties: (NSArray *) properties
+                       matchingURLs: (id <DOMNodeList>) refs
+                         toResponse: (WOResponse *) response
+{
+  NSObject <DOMElement> *element;
+  NSString *url, *baseURL, *cname;
+  NSString **propertiesArray;
+  NSMutableString *buffer;
+  unsigned int count, max, propertiesCount;
+
+  baseURL = [self davURLAsString];
+#warning review this when fixing http://www.scalableogo.org/bugs/view.php?id=276
+  if (![baseURL hasSuffix: @"/"])
+    baseURL = [NSString stringWithFormat: @"%@/", baseURL];
+
+  propertiesArray = [properties asPointersOfObjects];
+  propertiesCount = [properties count];
+
+  max = [refs length];
+  buffer = [NSMutableString stringWithCapacity: max*512];
+
+  for (count = 0; count < max; count++)
+    {
+      element = [refs objectAtIndex: count];
+      url = [[[element firstChild] nodeValue] stringByUnescapingURL];
+      cname = [self _deduceObjectNameFromURL: url fromBaseURL: baseURL];
+      if (cname)
+        [self appendObject: [source lookupContactEntry: cname]
+                properties: propertiesArray
+                     count: propertiesCount
+               withBaseURL: baseURL
+                  toBuffer: buffer];
+      else
+        [self appendMissingObjectRef: url
+                            toBuffer: buffer];
+    }
+  [response appendContentString: buffer];
+//   NSLog (@"/adding properties with url");
+
+  NSZoneFree (NULL, propertiesArray);
+}
+
+- (WOResponse *) performMultigetInContext: (WOContext *) queryContext
+                              inNamespace: (NSString *) namespace
+{
+  WOResponse *r;
+  id <DOMDocument> document;
+  DOMElement *documentElement, *propElement;
+
+  r = [context response];
+  [r prepareDAVResponse];
+  [r appendContentString:
+       [NSString stringWithFormat: @"<D:multistatus xmlns:D=\"DAV:\""
+                         @" xmlns:C=\"%@\">", namespace]];
+  document = [[queryContext request] contentAsDOMDocument];
+  documentElement = (DOMElement *) [document documentElement];
+  propElement = [documentElement firstElementWithTag: @"prop"
+                                         inNamespace: @"DAV:"];
+  [self _appendComponentProperties: [propElement flatPropertyNameOfSubElements]
+                      matchingURLs: [documentElement getElementsByTagName: @"href"]
+                        toResponse: r];
+  [r appendContentString:@"</D:multistatus>"];
+
+  return r;
+}
+
+- (id) davAddressbookMultiget: (id) queryContext
+{
+  return [self performMultigetInContext: queryContext
+                            inNamespace: XMLNS_CARDDAV];
 }
 
 - (NSString *) davDisplayName

@@ -830,6 +830,8 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   NSEnumerator *entries;
   NGLdapEntry *currentEntry;
   NGLdapConnection *ldapConnection;
+  EOQualifier *qualifier;
+  NSMutableString *qs;
   NSString *value;
   NSArray *attributes;
   NSMutableArray *ids;
@@ -838,17 +840,23 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 
   ldapConnection = [self _ldapConnection];
   attributes = [NSArray arrayWithObject: IDField];
+
+  qs = [NSMutableString stringWithFormat: @"(%@='*')", CNField];
+  if ([_filter length])
+    [qs appendFormat: @" AND %@", _filter];
+  qualifier = [EOQualifier qualifierWithQualifierFormat: qs];
+
   if ([_scope caseInsensitiveCompare: @"BASE"] == NSOrderedSame) 
     entries = [ldapConnection baseSearchAtBaseDN: baseDN
-                                       qualifier: nil
+                                       qualifier: qualifier
                                       attributes: attributes];
   else if ([_scope caseInsensitiveCompare: @"ONE"] == NSOrderedSame) 
     entries = [ldapConnection flatSearchAtBaseDN: baseDN
-                                       qualifier: nil
+                                       qualifier: qualifier
                                       attributes: attributes];
   else
     entries = [ldapConnection deepSearchAtBaseDN: baseDN
-                                       qualifier: nil
+                                       qualifier: qualifier
                                       attributes: attributes];
 
   while ((currentEntry = [entries nextObject]))

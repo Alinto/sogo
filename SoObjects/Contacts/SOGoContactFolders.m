@@ -259,6 +259,52 @@
   return keys;
 }
 
+- (id) lookupName: (NSString *) name
+        inContext: (WOContext *) lookupContext
+          acquire: (BOOL) acquire
+{
+  id folder = nil;
+  SOGoUser *currentUser;
+  SOGoUserManager *um;
+  SOGoSystemDefaults *sd;
+  NSEnumerator *domains;
+  NSArray *sourceIDs;
+  NSString *domain, *srcDisplayName;
+
+  if ([[context request] isIPhoneAddressBookApp])
+    {
+      currentUser = [context activeUser];
+      if (activeUserIsOwner
+          || [[currentUser login] isEqualToString: owner])
+        {
+          domain = [currentUser domain];
+          um = [SOGoUserManager sharedUserManager];
+          sd = [SOGoSystemDefaults sharedSystemDefaults];
+          domains = [[sd visibleDomainsForDomain: domain] objectEnumerator];
+          while (domain)
+            {
+              sourceIDs = [um addressBookSourceIDsInDomain: domain];
+              if ([sourceIDs containsObject: name])
+                {
+                  srcDisplayName = [um displayNameForSourceWithID: name];
+                  folder = [SOGoContactSourceFolder
+                             folderWithName: name
+                             andDisplayName: srcDisplayName
+                                inContainer: self];
+                  [folder setSource: [um sourceWithID: name]];
+                }
+              domain = [domains nextObject];
+            }
+        }
+    }
+
+  if (!folder)
+    folder = [super lookupName: name inContext: lookupContext
+                    acquire: acquire];
+
+  return folder;
+}
+
 - (NSException *) setDavContactsCategories: (NSString *) newCategories
 {
   SOGoUser *ownerUser;
