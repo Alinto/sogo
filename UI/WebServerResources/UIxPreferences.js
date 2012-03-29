@@ -70,6 +70,10 @@ function savePreferences(sender) {
     return false;
 }
 
+function onAdjustTime(event) {
+    // unconditionally called from skycalendar.html
+}
+
 function prototypeIfyFilters() {
     var newFilters = $([]);
     for (var i = 0; i < filters.length; i++) {
