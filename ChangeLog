@@ -1,5 +1,10 @@
 2012-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIApplication.m (-init): utcTZ is now initialized
+	here.
+
+	* OpenChange/MAPIStoreTypes.[hm]: new host module for utcTZ.
+
 	* OpenChange/MAPIStoreUserContext.m (-timeZone): new method that
 	returns the timezone of an owner user.
 
