@@ -1,3 +1,12 @@
+2012-04-03  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* Tools/SOGoToolRemoveDoubles.m (-removeDoublesFromFolder)
+	(-amountOfFilledQuickFields): lowered the case of the
+	telephonenumber table fieldname.
+
+	* OGoContentStore/OCSContactFieldExtractor.m
+	(-extractQuickFieldsFromVCard): idem.
+
 2012-03-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxPreferences.js (savePreferences): fixed

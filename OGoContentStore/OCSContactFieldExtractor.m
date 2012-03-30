@@ -54,7 +54,7 @@
              forKey: @"c_givenName"];
   value = [vCard preferredTel];
   if (value)
-    [fields setObject: value forKey: @"c_telephoneNumber"];
+    [fields setObject: value forKey: @"c_telephonenumber"];
   value = [vCard preferredEMail];
   if (![value isNotNull])
     value = @"";
