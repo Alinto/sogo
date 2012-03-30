@@ -874,10 +874,13 @@
           value = [value htmlToText];
         }
     }
-  if (value && [value length] == 0)
-    value = nil;
-  [newEvent setComment: value];
-      
+  if (value)
+    {
+      if ([value length] == 0 || [value isEqualToString: @"\\n"])
+        value = nil;
+      [newEvent setComment: value];
+    }
+
   /* recurrence */
   value = [properties
                 objectForKey: MAPIPropertyKey (PidLidAppointmentRecur)];

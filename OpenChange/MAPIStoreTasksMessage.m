@@ -365,7 +365,7 @@
     }
   if (value)
     {
-      if ([value length] == 0)
+      if ([value length] == 0 || [value isEqualToString: @"\\n"])
         value = nil;
       [vToDo setComment: value];
     }

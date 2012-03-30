@@ -1,8 +1,12 @@
 2012-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): remove comment if
+	content is "\n".
+
 	* OpenChange/MAPIStoreTasksMessage.m (-save): do not reset fields
 	that have not been passed in the properties array, since only
 	RopDeleteProperties should remove them.
+	Remove comment if content is "\n".
 
 	* OpenChange/MAPIStoreObject.m (-addPropertiesFromRow:): dates are
 	now all converted to the user's timezone, even though it just
