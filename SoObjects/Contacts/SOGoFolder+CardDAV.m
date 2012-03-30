@@ -73,17 +73,17 @@
       etagLine = [NSString stringWithFormat: @"<D:getetag>%@</D:getetag>",
                            [component davEntityTag]];
       [r appendContentString: etagLine];
-      [r appendContentString: @"</D:prop>"
-                        @"<D:status>HTTP/1.1 200 OK</D:status>"
-                       @"</D:propstat>"
-                        @"<C:addressbook-data>"];
+      [r appendContentString: @"<C:address-data>"];
       contactString = [[component contentAsString] stringByEscapingXMLString];
       [r appendContentString: contactString];
-      [r appendContentString: @"</C:addressbook-data>"
-                        @"<C:address-data>"];
-      [r appendContentString: contactString];
       [r appendContentString: @"</C:address-data>"
-                     @"</D:response>"];
+                        @"<C:addressbook-data>"];
+      [r appendContentString: contactString];
+      [r appendContentString: @"</C:addressbook-data>"
+         @"</D:prop>"
+         @"<D:status>HTTP/1.1 200 OK</D:status>"
+         @"</D:propstat>"
+         @"</D:response>"];
     }
 }
 
@@ -124,6 +124,7 @@
 
   return ([newString isEqualToString: @"sn"]
 	  || [newString isEqualToString: @"givenname"]
+	  || [newString isEqualToString: @"email"]
 	  || [newString isEqualToString: @"mail"]
 	  || [newString isEqualToString: @"telephonenumber"]);
 }

@@ -1,3 +1,32 @@
+2012-03-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoFolder+CardDAV.m (_isValidFilter:):
+	accept "email" as filter name.
+	(_appendObject:withBaseURL:toREPORTResponse:): fixed the ordering
+	of XML elements as the address*-data props where put outside of
+	the <D:prop> tree.
+
+	* SoObjects/SOGo/LDAPSource.m (-allEntryIDs): take the _filter
+	ivar into account.
+
+2012-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactFolders.m
+	(-lookupName:inContext:acquire:): overriden method that enables
+	the lookup of hidden public sources with iOS devices.
+
+	* SoObjects/Contacts/SOGoContactLDIFEntry.m (-davAddressData): new
+	getter similar to davCalendarData.
+
+	* SoObjects/Contacts/SOGoContactSourceFolder.m
+	(-davAddressbookMultiget): new REPORT handler based on
+	-[SOGoAppointmentFolder davCalendarMultiget].
+
+	* SoObjects/Contacts/SOGoUserFolder+Contacts.m
+	(-davDirectoryGateway): new getter that returns the url to the
+	first available directory source.
+	(-davResourceType): declare resource as "directory" (carddav).
+
 2012-03-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreTasksMessage.m (-save): take PR_HTML as

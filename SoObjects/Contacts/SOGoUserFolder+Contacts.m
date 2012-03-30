@@ -29,6 +29,7 @@
 #import <SaxObjC/XMLNamespaces.h>
 
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+DAV.h>
 
@@ -57,5 +58,31 @@
 
   return [NSArray arrayWithObject: tag];
 }
+
+- (NSArray *) davDirectoryGateway
+{
+  NSArray *tag, *sources;
+  SOGoContactFolders *parent;
+  SOGoUserManager *um;
+  NSString *domain, *url;
+
+  domain = [[context activeUser] domain];
+  um = [SOGoUserManager sharedUserManager];
+  sources = [um addressBookSourceIDsInDomain: domain];
+  if ([sources count] > 0)
+    {
+      parent = [self privateContacts: @"Contacts" inContext: context];
+      url = [NSString stringWithFormat: @"%@%@/", [parent davURLAsString],
+                      [sources objectAtIndex: 0]];
+      tag = [NSArray arrayWithObject:
+                       [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
+                                url, nil]];
+    }
+  else
+    tag = nil;
+
+  return tag;
+}
+
 
 @end
