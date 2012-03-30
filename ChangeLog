@@ -1,3 +1,11 @@
+2012-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreUserContext.m (-timeZone): new method that
+	returns the timezone of an owner user.
+
+	* OpenChange/MAPIStoreObject.m (-ownerTimeZone): removed method,
+	replaced with the one above.
+
 2012-03-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxPreferences.js (savePreferences): fixed

@@ -210,21 +210,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
                     containerURL, [self nameInContainer]];
 }
 
-- (NSTimeZone *) ownerTimeZone
-{
-  NSString *owner;
-  SOGoUserDefaults *ud;
-  NSTimeZone *tz;
-  WOContext *woContext;
-
-  woContext = [[self userContext] woContext];
-  owner = [sogoObject ownerInContext: woContext];
-  ud = [[SOGoUser userWithLogin: owner] userDefaults];
-  tz = [ud timeZone];
-
-  return tz;
-}
-
 - (void) addProperties: (NSDictionary *) newNewProperties
 {
   [properties addEntriesFromDictionary: newNewProperties];

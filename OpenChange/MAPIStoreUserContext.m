@@ -137,6 +137,20 @@ static NSMapTable *contextsTable = nil;
   return sogoUser;
 }
 
+- (NSTimeZone *) timeZone
+{
+  if (!timeZone)
+    {
+      SOGoUser *user;
+
+      user = [self sogoUser];
+      timeZone = [[user userDefaults] timeZone];
+      [timeZone retain];
+    }
+
+  return timeZone;
+}
+
 - (SOGoUserFolder *) userFolder
 {
   if (!userFolder)

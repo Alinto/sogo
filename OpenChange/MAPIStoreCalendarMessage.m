@@ -118,7 +118,7 @@
               [MAPIStoreAppointmentWrapper wrapperWithICalEvent: event
                                                         andUser: [userContext sogoUser]
                                                  andSenderEmail: nil
-                                                     inTimeZone: [self ownerTimeZone]
+                                                     inTimeZone: [userContext timeZone]
                                              withConnectionInfo: [context connectionInfo]]);
     }
 
@@ -766,7 +766,7 @@
     isAllDay = [value boolValue];
   if (!isAllDay)
     {
-      tzName = [[self ownerTimeZone] name];
+      tzName = [[[self userContext] timeZone] name];
       tz = [iCalTimeZone timeZoneForName: tzName];
       [vCalendar addTimeZone: tz];
     }
