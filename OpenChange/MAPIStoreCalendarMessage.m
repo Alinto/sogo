@@ -770,6 +770,8 @@
       tz = [iCalTimeZone timeZoneForName: tzName];
       [vCalendar addTimeZone: tz];
     }
+  else
+    tz = nil;
   
   // start
   value = [properties objectForKey: MAPIPropertyKey (PR_START_DATE)];
@@ -779,18 +781,18 @@
   if (value)
     {
       start = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtstart"];
+      [start setTimeZone: tz];
       if (isAllDay)
+        {
+          [start setDate: value];
+          [start setTimeZone: nil];
+        }
+      else
         {
           tzOffset = [[value timeZone] secondsFromGMTForDate: value];
           value = [value dateByAddingYears: 0 months: 0 days: 0
                                      hours: 0 minutes: 0
-                                   seconds: -tzOffset];
-          [start setTimeZone: nil];
-          [start setDate: value];
-        }
-      else
-        {
-          [start setTimeZone: tz];
+                                   seconds: tzOffset];
           [start setDateTime: value];
         }
     }
@@ -802,18 +804,18 @@
   if (value)
     {
       end = (iCalDateTime *) [newEvent uniqueChildWithTag: @"dtend"];
+      [end setTimeZone: tz];
       if (isAllDay)
+        {
+          [end setDate: value];
+          [end setTimeZone: nil];
+        }
+      else
         {
           tzOffset = [[value timeZone] secondsFromGMTForDate: value];
           value = [value dateByAddingYears: 0 months: 0 days: 0
                                      hours: 0 minutes: 0
-                                   seconds: -tzOffset];
-          [end setTimeZone: nil];
-          [end setDate: value];
-        }
-      else
-        {
-          [end setTimeZone: tz];
+                                   seconds: tzOffset];
           [end setDateTime: value];
         }
     }

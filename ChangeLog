@@ -1,5 +1,13 @@
 2012-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreTasksMessage.m (-save): do not reset fields
+	that have not been passed in the properties array, since only
+	RopDeleteProperties should remove them.
+
+	* OpenChange/MAPIStoreObject.m (-addPropertiesFromRow:): dates are
+	now all converted to the user's timezone, even though it just
+	inverts the problem we currently have.
+
 	* OpenChange/MAPIApplication.m (-init): utcTZ is now initialized
 	here.
 
