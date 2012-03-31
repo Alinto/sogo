@@ -10,13 +10,13 @@ you_are_an_attendee = "es un participante";
 add_info_text = "iMIP 'ADD' aún no está soportado por SOGo.";
 publish_info_text = "El remitente le informa del evento adjunto.";
 cancel_info_text = "Su invitación o el evento ha sido cancelado.";
-request_info_no_attendee = "ha propuesto un evento a los participantes. Ud recibe este correo como notificación, pero no aparece como participante.";
+request_info_no_attendee = "ha propuesto un evento a los participantes. Usted recibe este correo como notificación. Nota: Usted no está registrado como participante";
 Appointment = "Cita";
 
 Organizer = "Organizador";
 Time = "Hora";
 Attendees = "Participantes";
-request_info = "le invita a un evento.";
+request_info = "lo invita a un evento.";
 "Add to calendar" = "Añadir al calendario";
 "Delete from calendar" = "Borrar del calendario";
 "Update status" = "Actualizar estado";
@@ -25,11 +25,11 @@ Decline = "Rechazar";
 Tentative = "Tentativo";
 "Delegate ..." = "Delegar a ...";
 "Delegated to" = "Delegado a";
-"Update status in calendar" = "Actualizar estado en calendario";
+"Update status in calendar" = "Actualizar estado en el calendario";
 "delegated from" = "delegado de";
 
 reply_info_no_attendee = "Ha recibido una respuesta a una invitación de evento pero el remitente no aparece como un participante.";
-reply_info = "Esta es la respuesta a una invitación de evento hecha por Ud.";
+reply_info = "Esta es la respuesta a una invitación a un evento hecha que Usted ha organizado.";
 
 "to" = "para";
 

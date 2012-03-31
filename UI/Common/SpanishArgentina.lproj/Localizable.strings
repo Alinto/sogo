@@ -35,12 +35,12 @@
 "Any user not listed above" = "Cualquier usuario no listado arriba";
 "Anybody accessing this resource from the public area" = "Cualquier acceso a este recurso desde el área pública";
 
-"Sorry, the user rights can not be configured for that object." = "Lo siento, los permisos de este usuario no pueden ser configurados para este objeto.";
+"Sorry, the user rights can not be configured for that object." = "Lo sentimos, los permisos de este usuario no pueden ser configurados para este objeto.";
 
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Cualquier usuario con una cuenta en el sistema tendrá acceso a su buzón de correo \"%{0}\".  ¿Está seguro de querer dar acceso a cualquier usuario?";
+     = "Cualquier usuario con una cuenta en el sistema tendrá acceso a su buzón de correo \"%{0}\".  ¿Está seguro de querer dar acceso a cualquier usuario en el sistema?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
-     = "Cualquier usuario con una cuenta en el sistema tendrá acceso a su calendario \"%{0}\". ¿Está seguro de que confía en cualquier usuario del sistema?";
+     = "Cualquier usuario con una cuenta en el sistema tendrá acceso a su calendario \"%{0}\". ¿Está seguro de querer dar acceso a cualquier usuario en el sistema?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Cualquiera persona en Internet podrá tener acceso a su calendario \"%{0}\", incluso si no tiene una cuenta en este sistema. ¿Está seguro de querer publicar esta información en Internet?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
@@ -64,7 +64,7 @@
      	= "Ya se ha suscrito a esta carpeta.";
 "The user rights cannot be edited for this object!"
         = "No es posible modificar los permisos de acceso a este objeto.";
-"A folder by that name already exists." = "Ya existe una carpeta con ese nombre.";
+"A folder by that name already exists." = "Ya existe una carpeta con el mismo nombre.";
 "You cannot create a list in a shared address book." 
         = "No es posible crear una lista en una libreta de direcciones compartida.";
 "Warning" = "Atención";

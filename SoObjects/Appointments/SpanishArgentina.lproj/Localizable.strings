@@ -17,8 +17,8 @@ vtodo_class2 = "(Tarea confidencial)";
 "... to attend the following event:" = "... para asistir al siguiente evento:";
 
 "Receipt: invitation updated" = "Recepción: invitación actualizada";
-"The following attendees(s):" = "Lossiguientes asistentes:";
-"... have been notified of the changes to the following event:" = "... ha sido notificado de los cambios para el siguiente evento:";
+"The following attendees(s):" = "Los siguientes asistentes:";
+"... have been notified of the changes to the following event:" = "... han sido notificado de los cambios para el siguiente evento:";
 
 "Receipt: attendees removed from an event" = "Recepción: asistentes eliminados de un evento";
 "You have removed the following attendees(s):" = "Ha eliminado a los siguiente asistentes:";
@@ -27,36 +27,33 @@ vtodo_class2 = "(Tarea confidencial)";
 /* IMIP messages */
 "startDate_label" = "Inicio:";
 "endDate_label" = "Fin:";
-"due_label" = "Fecha Fin:";
-"location_label" = "Localización:";
+"due_label" = "Fecha de finalización:";
+"location_label" = "Lugar:";
 "summary_label" = "Resumen:";
 "comment_label" = "Comentario:";
 
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Invitación al evento: ";
 "(sent by %{SentBy}) " = "(enviado por %{SentBy}) ";
-"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}lo ha invitado %{Summary}.
-
-Comienzo: %{StartDate} a las %{StartTime}
-Finalización: %{EndDate} a las %{EndTime}
-Descripción: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}lo ha invitado a %{Summary}.\n\nComienzo: %{StartDate}\nFin: %{EndDate}\nDescripción: %{Description}";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}lo ha invitado %{Summary}.\n\nComienzo: %{StartDate} a las %{StartTime}\nFinalización: %{EndDate} a las %{EndTime}\nDescripción: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Evento cancelado: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}ha cancelado este evento: %{Summary}.\n\nComienzo: %{StartDate}\nFin: %{EndDate}\nDescripcción: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText}ha cancelado este evento: %{Summary}.
-
-Comienzo: %{StartDate} a las %{StartTime}
-Finalización: %{EndDate} a las %{EndTime}
-Descripción: %{Description}";
+= "%{Organizer} %{SentByText}ha cancelado este evento: %{Summary}.\n\nComienzo: %{StartDate} a las %{StartTime}\nFinalización: %{EndDate} a las %{EndTime}\nDescripción: %{Description}";
 
 /* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "El evento \"%{Summary}\" para el %{OldStartDate} ha cambiado";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "La cita \"%{Summary}\" para el %{OldStartDate} a las %{OldStartTime} ha cambiado";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "Los siguientes parametros han cambiados enla cita \"%{Summary}\":";
+= "Los siguientes parametros han cambiados en la cita \"%{Summary}\":";
 "Please accept or decline those changes."
-= "Por favor, acepta o rechaza estos cambios.";
+= "Por favor, acepte o rechace estos cambios.";
 
 /* Reply */
 "Reply to invitation: \"%{Summary}\"" = "Respuesta a la invitación del evento: \"%{Summary}\"";
@@ -65,9 +62,9 @@ Descripción: %{Description}";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText}ha rechazado su invitación al evento.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText}has delegado la invitación para %{Delegate}.";
+= "%{Attendee} %{SentByText}ha delegado la invitación a %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
-= "%{Attendee} %{SentByText}no ha tomado tadavia una decision sobre esta cita.";
+= "%{Attendee} %{SentByText}no ha tomado tadavia una decision respecto a esta cita.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Número máximo de reservas simultáneas (%{NumberOfSimultaneousBookings}) alcanzado para recurso \"%{Cn} %{SystemEmail}\".";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Número máximo de reservas simultáneas (%{NumberOfSimultaneousBookings}) alcanzado para el recurso \"%{Cn} %{SystemEmail}\".";

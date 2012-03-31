@@ -27,7 +27,7 @@
 "Add default email addresses" = "Añadir dirección de correo por defecto";
 "Days between responses :" = "Dias entre respuestas :";
 "Do not send responses to mailing lists" = "No enviar respuestas a listas de correo";
-"Disable auto reply on" = "Deshabilitar la autorespuesta para";
+"Disable auto reply on" = "Deshabilitar la autorrespuesta en la siguiente fecha";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Por favor, especifique el mensaje y su dirección de correo para la respuesta automática.";
 "Your vacation message must not end with a single dot on a line." = "Su mensaje de autorrespuesta por vacaciones no debe terminar con un punto en una línea aparte.";
@@ -75,7 +75,7 @@
 "longDateFmt_1" = "%A, %e de %B de %Y";
 "longDateFmt_2" = "%e de %b %Y";
 "longDateFmt_3" = "%e de %b de %Y";
-"longDateFmt_4" = "%e %B %Y";
+"longDateFmt_4" = "";
 "longDateFmt_5" = "";
 "longDateFmt_6" = "";
 "longDateFmt_7" = "";
@@ -85,8 +85,9 @@
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
-"timeFmt_2" = "%H h. %M";
+"timeFmt_2" = "";
 "timeFmt_3" = "";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "La semana comienza el: ";
