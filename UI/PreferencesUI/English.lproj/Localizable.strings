@@ -22,10 +22,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Enable vacation auto reply";
-"Auto reply message :" = "Auto reply message :";
-"Email addresses (separated by commas) :" = "Email addresses (separated by commas) :";
+"Auto reply message :" = "Auto reply message:";
+"Email addresses (separated by commas) :" = "Email addresses (separated by commas):";
 "Add default email addresses" = "Add default email addresses";
-"Days between responses :" = "Days between responses :";
+"Days between responses :" = "Days between responses:";
 "Do not send responses to mailing lists" = "Do not send responses to mailing lists";
 "Disable auto reply on" = "Disable auto reply on";
 "Please specify your message and your email addresses for which you want to enable auto reply."
@@ -41,10 +41,10 @@
 = "Please specify an address to which you want to forward your messages.";
 
 /* d & t */
-"Current Time Zone :" = "Current Time Zone :";
-"Short Date Format :" = "Short Date Format :";
-"Long Date Format :" = "Long Date Format :";
-"Time Format :" = "Time Format :";
+"Current Time Zone :" = "Current Time Zone:";
+"Short Date Format :" = "Short Date Format:";
+"Long Date Format :" = "Long Date Format:";
+"Time Format :" = "Time Format:";
 
 "default" = "Default";
 
@@ -90,23 +90,23 @@
 "timeFmt_4" = "";
 
 /* calendar */
-"Week begins on :" = "Week begins on :";
-"Day start time :" = "Day start time :";
-"Day end time :" = "Day end time :";
+"Week begins on :" = "Week begins on:";
+"Day start time :" = "Day start time:";
+"Day end time :" = "Day end time:";
 "Day start time must be prior to day end time." = "Day start time must be prior to day end time.";
 "Show time as busy outside working hours" = "Show time as busy outside working hours";
-"First week of year :" = "First week of year :";
+"First week of year :" = "First week of year:";
 "Enable reminders for Calendar items" = "Enable reminders for Calendar items";
 "Play a sound when a reminder comes due"
 = "Play a sound when a reminder comes due";
-"Default reminder :" = "Default reminder :";
+"Default reminder :" = "Default reminder:";
 
 "firstWeekOfYear_January1" = "Starts on january 1";
 "firstWeekOfYear_First4DayWeek" = "First 4-day week";
 "firstWeekOfYear_FirstFullWeek" = "First full week";
 
 /* Default Calendar */
-"Default calendar :" = "Default calendar";
+"Default calendar :" = "Default calendar:";
 "selectedCalendar" = "Selected calendar";
 "personalCalendar" = "Personal calendar";
 "firstCalendar" = "First enabled calendar";
@@ -175,8 +175,8 @@
 "Change" = "Change";
 
 /* Event+task classifications */
-"Default events classification :" = "Default events classification :";
-"Default tasks classification :" = "Default tasks classification :";
+"Default events classification :" = "Default events classification:";
+"Default tasks classification :" = "Default tasks classification:";
 "PUBLIC_item" = "Public";
 "CONFIDENTIAL_item" = "Confidential";
 "PRIVATE_item" = "Private";
@@ -190,9 +190,9 @@
 "Contacts" = "Address Book";
 "Mail" = "Mail";
 "Last" = "Last used";
-"Default module :" = "Default module :";
+"Default module :" = "Default module:";
 
-"Language :" = "Language :";
+"Language :" = "Language:";
 "choose" = "Choose ...";
 "Catalan" = "Català";
 "Czech" = "Česky";
