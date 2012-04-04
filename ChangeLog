@@ -1,3 +1,11 @@
+2012-04-04  Jean Raby  <jraby@inverse.ca>
+
+	* Added a new tool: 'sogo-tool expire-sessions'
+		Along with the associated new cronjob, this allows
+		user sessions expiration without a custom script.
+
+	* While there, sort tools in sogo-tool output
+
 2012-04-03  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* Tools/SOGoToolRemoveDoubles.m (-removeDoublesFromFolder)

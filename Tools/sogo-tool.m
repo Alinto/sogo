@@ -143,11 +143,11 @@
   [helpString appendString: @"  argument1, ...\targuments passed to the"
               @" specified command\n\n"];
   [helpString appendString: @"  Available commands:\n"];
-  toolsEnum = [[tools allKeys] objectEnumerator];
+  toolsEnum = [[[tools allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)] objectEnumerator];
   while ((command = [toolsEnum nextObject]))
     {
       currentTool = [tools objectForKey: command];
-      [helpString appendFormat: @"\t%@\t-- %@\n",
+      [helpString appendFormat: @"\t%-20@-- %@\n",
                   command, [currentTool objectAtIndex: 1]];
     }
 

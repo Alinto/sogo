@@ -18,7 +18,8 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	SOGoToolRemove.m \
 	SOGoToolRenameUser.m \
 	SOGoToolUserPreferences.m \
-	SOGoToolExpireAutoReply.m
+	SOGoToolExpireAutoReply.m \
+	SOGoToolExpireUserSessions.m
 TOOL_NAME += $(SOGO_TOOL)
 
 ###

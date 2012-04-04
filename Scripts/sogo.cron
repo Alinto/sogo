@@ -4,6 +4,11 @@
 # Make sure to set authname and authpassword with the credentials of a sieve admin
 #0 0 * * *      sogo	/usr/sbin/sogo-tool expire-autoreply authname:authpassword
 
+# Session cleanup - runs every minute
+#   - Ajust the nbMinutes parameter to suit your needs
+# Example: Sessions without activity since 60 minutes will be dropped:
+#* * * * *      sogo	/usr/sbin/sogo-tool expire-sessions 60
+
 # Email alarms - runs every minutes
 #* * * * *      sogo	/usr/sbin/sogo-ealarms-notify
 
