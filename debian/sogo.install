@@ -12,5 +12,4 @@ usr/lib/GNUstep/SOGo/*.SOGo
 usr/lib/GNUstep/SOGo/Templates
 usr/lib/GNUstep/SOGo/WebServerResources
 usr/lib/lib*.so.*
-usr/include/GNUstep/*
 usr/share/lintian/*
