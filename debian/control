@@ -26,6 +26,7 @@ Package: sogo-dev
 Section: devel
 Architecture: any
 Depends: sogo (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Replaces: sogo (<< ${binary:Version})
 Description: a modern and scalable groupware - development files
  SOGo is a groupware server built around OpenGroupware.org (OGo) and
  the SOPE application server with focus on scalability.
