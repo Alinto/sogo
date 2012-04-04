@@ -54,9 +54,6 @@ DIV#bgDialogDiv
 IMG.dragMessage
 { filter: alpha(opacity=70); }
 
-TD.mailer_fieldname
-{ width: 8em; }
-
 TABLE.messageList TD
 { white-space: pre; }
 

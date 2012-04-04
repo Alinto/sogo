@@ -304,7 +304,7 @@
     {
       quickFields = [NSArray arrayWithObjects: @"c_givenname", @"c_cn",
 			     @"c_sn", @"c_screenname", @"c_l", @"c_mail",
-			     @"c_o", @"c_ou", @"c_telephoneNumber", nil];
+			     @"c_o", @"c_ou", @"c_telephonenumber", nil];
       [quickFields retain];
     }
 
@@ -466,7 +466,7 @@
 
   fields = [NSArray arrayWithObjects: @"c_name", @"c_givenname", @"c_cn",
 		    @"c_sn", @"c_screenname", @"c_l", @"c_mail", @"c_o",
-		    @"c_ou", @"c_telephoneNumber", @"c_content", @"c_version",
+		    @"c_ou", @"c_telephonenumber", @"c_content", @"c_version",
 		    @"c_creationdate", @"c_lastmodified", nil];
   qualifier = [EOQualifier qualifierWithQualifierFormat: @"c_component = %@",
                            @"vcard"];
