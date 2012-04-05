@@ -1,3 +1,9 @@
+2012-04-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Utilities.m (-objectFromJSONString):
+	added a work-around for JSON strings that were escaped one too
+	many time, in previous versions of sope-gdl1-xxx.
+
 2012-04-04  Jean Raby  <jraby@inverse.ca>
 
 	* Added a new tool: 'sogo-tool expire-sessions'

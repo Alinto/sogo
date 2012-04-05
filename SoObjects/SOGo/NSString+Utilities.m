@@ -501,6 +501,7 @@ static int cssEscapingCount;
   SBJsonParser *parser;
   NSObject *object;
   NSError *error;
+  NSString *unescaped;
 
   object = nil;
 
@@ -513,9 +514,19 @@ static int cssEscapingCount;
                                   error: &error];
       if (error)
         {
-          [self errorWithFormat: @"json parser: %@", error];
-          [self errorWithFormat: @"original string is: %@", self];
-          object = nil;
+          [self errorWithFormat: @"json parser: %@,"
+                @" attempting once more after unescaping...", error];
+          unescaped = [self stringByReplacingString: @"\\\\"
+                                         withString: @"\\"];
+          object = [parser objectWithString: unescaped
+                                      error: &error];
+          if (error)
+            {
+              [self errorWithFormat: @"total failure. Original string is: %@", self];
+              object = nil;
+            }
+          else
+            [self logWithFormat: @"initial object deserialized successfully!"];
         }
     }
 
