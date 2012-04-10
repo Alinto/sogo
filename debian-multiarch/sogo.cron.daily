@@ -1,0 +1,6 @@
+#!/bin/sh
+
+SOGOSPOOL=/var/spool/sogo
+
+/usr/sbin/tmpreaper 24 "$SOGOSPOOL"
+find "$SOGOSPOOL" -mindepth 1 -type d -empty -exec /bin/rmdir -p {} \; 2> /dev/null

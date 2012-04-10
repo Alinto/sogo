@@ -1,0 +1,61 @@
+Source: sogo
+Priority: optional
+Maintainer: Inverse Support <support@inverse.ca>
+Build-Depends: debhelper (>= 8.0.0), gobjc | objc-compiler, libgnustep-base-dev, libsope-appserver4.9-dev, libsope-core4.9-dev, libsope-gdl1-4.9-dev, libsope-ldap4.9-dev, libsope-mime4.9-dev, libsope-xml4.9-dev, libmemcached-dev, libxml2-dev, libsbjson-dev, libssl-dev, libcurl4-openssl-dev | libcurl4-gnutls-dev, libmapi-dev, libmapistore-dev, libmapiproxy-dev
+Section: web
+Standards-Version: 3.9.2
+
+Package: sogo
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Section: web
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, tmpreaper, sope4.9-libxmlsaxdriver, sope4.9-db-connector, gnustep-make, libcurl3
+Suggests: nginx
+Description: a modern and scalable groupware
+ SOGo is a groupware server built around OpenGroupware.org (OGo) and
+ the SOPE application server with focus on scalability.
+ The Inverse edition of this project has many feature enhancements:
+  * CalDAV and GroupDAV compliance
+  * full handling of vCard as well as vCalendar/iCalendar formats
+  * support for folder sharing and ACLs
+ .
+ The Web interface has been rewritten in an AJAX fashion to provide a faster
+ UI for the users, consistency in look and feel with the Mozilla applications,
+ and to reduce the load of the transactions on the server.
+
+Package: sogo-dev
+Section: devel
+Architecture: any
+Depends: sogo (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Replaces: sogo (<< ${binary:Version})
+Description: a modern and scalable groupware - development files
+ SOGo is a groupware server built around OpenGroupware.org (OGo) and
+ the SOPE application server with focus on scalability.
+ .
+ This package contains the development files for developing SOGo modules.
+
+Package: sogo-openchange
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Section: net
+Priority: extra
+Architecture: any
+Depends: sogo (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Description: a modern and scalable groupware - OpenChange backend
+ SOGo is a groupware server built around OpenGroupware.org (OGo) and
+ the SOPE application server with focus on scalability.
+ .
+ This package contains the backend plugin for using SOGo as a backend
+ to OpenChange.
+
+Package: sogo-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Depends: sogo (= ${binary:Version}), ${misc:Depends}
+Description: a modern and scalable groupware - debugging symbols
+ SOGo is a groupware server built around OpenGroupware.org (OGo) and
+ the SOPE application server with focus on scalability.
+ .
+ This package contains the debugging symbols for SOGo.
