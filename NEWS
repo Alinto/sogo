@@ -3,12 +3,14 @@
 New Features
  - Sources address books are now exposed in Apple and iOS AddressBook app
    using the "directory gateway" extension of CardDAV
+ - sogo-tool: new "expire-sessions" command
 
 Enhancements
- - 
+ - Updated Spanish (Argentina) translation
 
 Bug Fixes
  - fixed wrong date validation in preferences module affecting French users
+ - fixed bugs in weekly recurrence calculator
 
 1.3.14 (2012-03-23)
 -------------------

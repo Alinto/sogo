@@ -1,3 +1,11 @@
+2012-04-11  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalWeeklyRecurrenceCalculator.m
+	(-recurrenceRangesWithinCalendarDateRange): we now return
+	occurrences that intersects with the period (not only occurrences
+	within the period). We no longer rely on NSCalendarDate to compute
+	the number of days since the master event start date (it is bugged).
+
 2012-03-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalDateTime.m (_setDateTime:forAllDayEntity:): set or unset the

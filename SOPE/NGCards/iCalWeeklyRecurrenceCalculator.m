@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2006-2010 Inverse inc.
+  Copyright (C) 2006-2012 Inverse inc.
  
   This file is part of SOPE.
  
@@ -85,7 +85,7 @@
     dayMask = [rrule byDayMask];
 
   // If rule is bound, check the bounds
-  if (![rrule isInfinite]) 
+  if (![rrule isInfinite])
     {
       NSCalendarDate *until, *lastDate;
  
@@ -118,7 +118,7 @@
   currentStartDate = [firStart copy];
   [currentStartDate autorelease];
   ranges = [NSMutableArray array];
-  i = 1;
+  i = 0;
   count = 0;
 
   if (dayMask == nil)
@@ -137,10 +137,10 @@
 	      if ([_r containsDateRange: r])
 		[ranges addObject: r];
 	    }
+	  i++;
 	  currentStartDate = [firStart dateByAddingYears: 0
 				       months: 0
 				       days: (interval * i * 7)];
-	  i++;
 	}
     }
   else
@@ -151,28 +151,25 @@
 	     [currentStartDate compare: endDate] == NSOrderedSame)
 	{
 	  BOOL isRecurrence = NO;
-	  NSInteger days, week;
+	  NSInteger week;
 
 	  if (repeatCount > 0 ||
 	      [startDate compare: currentStartDate] == NSOrderedAscending ||
 	      [startDate compare: currentStartDate] == NSOrderedSame)
 	    {
 	      // If the rule count is defined, stop once the count is reached.
-	      if (i == 1)
+	      if (i == 0)
 		{
-		  // Always add the start date the recurring event if within
+		  // Always add the start date of the recurring event if within
 		  // the lookup range.
 		  isRecurrence = YES;
 		}
 	      else 
 		{
-		  [currentStartDate years:NULL months:NULL days:&days hours:NULL
-				  minutes:NULL seconds:NULL sinceDate: firStart];
-
-		  // The following adjustment always set the first day of the
-		  // week to Sunday, ie WKST is ignored.
-		  week = (days + [firStart dayOfWeek]) / 7;
-		  
+		  // The following always set the first day of the week as the day
+		  // of the master event start date, ie WKST is ignored.
+		  week = i / 7;
+                  
 		  if ((week % interval) == 0 &&
 		      [dayMask occursOnDay: [currentStartDate dayOfWeek]])
 		    isRecurrence = YES;
@@ -187,7 +184,7 @@
 		  r = [NGCalendarDateRange calendarDateRangeWithStartDate: currentStartDate
 								  endDate: currentEndDate];
 
-		  if ([_r containsDateRange: r])
+		  if ([_r doesIntersectWithDateRange: r])
 		    [ranges addObject: r];
 		}
 	    }
