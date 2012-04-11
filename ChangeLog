@@ -1,3 +1,8 @@
+2012-04-11  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/ContactsUI.js (onDocumentKeydown): don't
+	trap keyboard input when inside a textarea.
+
 2012-04-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.m (-objectFromJSONString):

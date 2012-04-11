@@ -1237,7 +1237,7 @@ function configureSelectionButtons() {
 
 function onDocumentKeydown(event) {
     var target = Event.element(event);
-    if (target.tagName != "INPUT") {
+    if (target.tagName != "INPUT" && target.tagName != "TEXTAREA") {
         var keyCode = event.keyCode;
         if (!keyCode) {
             keyCode = event.charCode;
