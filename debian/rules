@@ -5,9 +5,12 @@ export DH_VERBOSE=1
 
 DESTDIR=$(CURDIR)/debian/tmp
 
+include /etc/GNUstep/GNUstep.conf
+include /usr/share/GNUstep/Makefiles/common.make
+
 config.make: configure
 	dh_testdir
-	./configure
+	./configure --prefix=$(GNUSTEP_SYSTEM_ROOT)
 
 #Architecture
 build: build-arch
@@ -25,6 +28,9 @@ clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-arch-stamp
+	( cd Tests/Integration; make clean )
+	rm -f Tests/Integration/config.py
+	-find Tests -name "*.pyc" -exec rm -f {} \;
 	if [ -f config.make ]; \
 	then \
 	  if pkg-config --atleast-version=1.0 libmapi; \
@@ -33,6 +39,10 @@ clean:
 	  fi; \
 	  make clean; \
 	fi
+	-rm -f OpenChange/MAPIStorePropertySelectors.*
+	-find OpenChange -type d -name "unrtf-*" -exec rm -rf {} \;
+	-rm -f OpenChange/unrtf*-stamp
+	-rm -f config.make
 	dh_clean 
 
 install: install-arch
