@@ -456,7 +456,7 @@ static NSNumber *sharedYes = nil;
 
   // vTODOs don't necessarily have start/end dates
   return [NSString stringWithFormat:
-                     @" AND (c_startdate = NULL OR c_startdate <= %u) AND (c_enddate = NULL OR c_enddate >= %u)",
+                     @"(c_startdate = NULL OR c_startdate <= %u) AND (c_enddate = NULL OR c_enddate >= %u)",
                    end, start];
 }
 
@@ -497,76 +497,6 @@ static NSNumber *sharedYes = nil;
   return filter;
 }
 
-- (NSArray *) bareFetchFields: (NSArray *) fields
-                         from: (NSCalendarDate *) startDate
-                           to: (NSCalendarDate *) endDate 
-                        title: (NSString *) title
-                    component: (NSString *) component
-            additionalFilters: (NSString *) filters
-{
-  EOQualifier *qualifier;
-  GCSFolder *folder;
-  NSString *sql, *dateSqlString, *titleSqlString, *componentSqlString,
-    *privacySQLString;
-  NSMutableString *filterSqlString;
-  NSArray *records;
-
-  folder = [self ocsFolder];
-  if (startDate && endDate)
-    dateSqlString = [self _sqlStringRangeFrom: startDate to: endDate];
-  else
-    dateSqlString = @"";
-
-  if ([title length])
-    titleSqlString = [NSString stringWithFormat: @"AND (c_title"
-			       @" isCaseInsensitiveLike: '%%%@%%')", title];
-  else
-    titleSqlString = @"";
-
-  if (component)
-    componentSqlString = [NSString stringWithFormat: @"AND c_component = '%@'",
-                                   component];
-  else
-    componentSqlString = @"";
-  filterSqlString = [NSMutableString string];
-  if ([filters length])
-    [filterSqlString appendFormat: @"AND (%@)", filters];
-
-  privacySQLString = [self aclSQLListingFilter];
-  if (privacySQLString)
-    {
-      if ([privacySQLString length])
-        [filterSqlString appendFormat: @"AND (%@)", privacySQLString];
-
-      /* prepare mandatory fields */
-
-      sql = [NSString stringWithFormat: @"%@%@%@%@",
-                      dateSqlString, titleSqlString, componentSqlString,
-                      filterSqlString];
-      /* sql is empty when we fetch everything (all parameters are nil) */
-      if ([sql length] > 0)
-        {
-          sql = [sql substringFromIndex: 4];
-          qualifier = [EOQualifier qualifierWithQualifierFormat: sql];
-        }
-      else
-        qualifier = nil;
-
-      /* fetch non-recurrent apts first */
-
-      records = [folder fetchFields: fields matchingQualifier: qualifier];
-    }
-  else
-    records = [NSArray array];
-  
-  if ([self _checkIfWeCanRememberRecords: fields])
-    {
-      [self _rememberRecords: records];
-    }
-
-  return records;
-}
-
 - (BOOL) _checkIfWeCanRememberRecords: (NSArray *) fields
 {
   return ([fields containsObject: @"c_name"]
@@ -585,6 +515,65 @@ static NSNumber *sharedYes = nil;
   while ((currentRecord = [recordsEnum nextObject]))
     [childRecords setObject: currentRecord
 		  forKey: [currentRecord objectForKey: @"c_name"]];
+}
+
+- (NSArray *) bareFetchFields: (NSArray *) fields
+                         from: (NSCalendarDate *) startDate
+                           to: (NSCalendarDate *) endDate 
+                        title: (NSString *) title
+                    component: (NSString *) component
+            additionalFilters: (NSString *) filters
+{
+  EOQualifier *qualifier;
+  GCSFolder *folder;
+  NSMutableArray *baseWhere;
+  NSString *where, *privacySQLString;
+  NSArray *records;
+
+  folder = [self ocsFolder];
+
+  baseWhere = [NSMutableArray arrayWithCapacity: 32];
+  if (startDate && endDate)
+    [baseWhere addObject: [self _sqlStringRangeFrom: startDate to: endDate]];
+
+  if ([title length])
+    [baseWhere
+      addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '%%%@%%'",
+                           [title stringByReplacingString: @"'"  withString: @"''"]]];
+
+  if (component)
+    [baseWhere addObject: [NSString stringWithFormat: @"c_component = '%@'",
+                                    component]];
+
+  if ([filters length])
+    [baseWhere addObject: filters];
+
+  privacySQLString = [self aclSQLListingFilter];
+  if (privacySQLString)
+    {
+      if ([privacySQLString length])
+        [baseWhere addObject: privacySQLString];
+
+      /* sql is empty when we fetch everything (all parameters are nil) */
+      if ([baseWhere count] > 0)
+        {
+          where = [baseWhere componentsJoinedByString: @" AND "];
+          qualifier = [EOQualifier qualifierWithQualifierFormat: where];
+        }
+      else
+        qualifier = nil;
+
+      /* fetch non-recurrent apts first */
+
+      records = [folder fetchFields: fields matchingQualifier: qualifier];
+    }
+  else
+    records = [NSArray array];
+  
+  if ([self _checkIfWeCanRememberRecords: fields])
+    [self _rememberRecords: records];
+
+  return records;
 }
 
 /**
@@ -1084,7 +1073,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   GCSFolder *folder;
   NSMutableArray *fields, *ma;
   NSArray *records;
-  NSMutableString *baseWhere;
+  NSMutableArray *baseWhere;
   NSString *where, *dateSqlString, *privacySQLString, *currentLogin;
   NSCalendarDate *endDate;
   NGCalendarDateRange *r;
@@ -1103,11 +1092,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       return nil;
     }
 
+  baseWhere = [NSMutableArray arrayWithCapacity: 32];
   if (_component)
-    baseWhere = [NSMutableString stringWithFormat: @"AND c_component = '%@'",
-                               _component];
-  else
-    baseWhere = [NSMutableString string];
+    [baseWhere addObject: [NSMutableString stringWithFormat: @"c_component = '%@'",
+                                           _component]];
 
   if (_startDate)
     {
@@ -1122,22 +1110,22 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   else
     {
       r = nil;
-      dateSqlString = @"";
+      dateSqlString = nil;
     }
 
   privacySQLString = [self aclSQLListingFilter];
   if (privacySQLString)
     {
       if ([privacySQLString length])
-        [baseWhere appendFormat: @"AND %@", privacySQLString];
+        [baseWhere addObject: privacySQLString];
 
       if ([title length])
         [baseWhere
-          appendFormat: @"AND c_title isCaseInsensitiveLike: '%%%@%%'",
-          [title stringByReplacingString: @"'"  withString: @"\\'\\'"]];
+          addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '%%%@%%'",
+                               [title stringByReplacingString: @"'"  withString: @"''"]]];
 
       if ([filters length])
-        [baseWhere appendFormat: @"AND (%@)", filters];
+        [baseWhere addObject: [NSString stringWithFormat: @"(%@)", filters]];
 
       /* prepare mandatory fields */
 
@@ -1149,14 +1137,16 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [fields addObjectUniquely: @"c_isallday"];
 
       if (canCycle)
-        where = [NSString stringWithFormat: @"%@ %@ AND c_iscycle = 0",
-                          baseWhere, dateSqlString];
-      else
-        where = baseWhere;
+        {
+          if (dateSqlString)
+            [baseWhere addObject: dateSqlString];
+          [baseWhere addObject: @"c_iscycle = 0"];
+        }
+
+      where = [baseWhere componentsJoinedByString: @" AND "];
 
       /* fetch non-recurrent apts first */
-      qualifier = [EOQualifier qualifierWithQualifierFormat:
-                                  [where substringFromIndex: 4]];
+      qualifier = [EOQualifier qualifierWithQualifierFormat: where];
       records = [folder fetchFields: fields matchingQualifier: qualifier];
 
       if (records)
@@ -1171,8 +1161,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       // Fetch recurrent apts now, *excluding* events with no cycle end.
       if (canCycle && _endDate)
         {
-          where = [NSString stringWithFormat: @"%@ AND c_iscycle = 1", baseWhere];
-          qualifier = [EOQualifier qualifierWithQualifierFormat: [where substringFromIndex: 4]];
+          /* we know the last element of "baseWhere" is the c_iscycle
+             condition */
+          [baseWhere removeLastObject];
+          [baseWhere addObject: @"c_iscycle = 1"];
+          where = [baseWhere componentsJoinedByString: @" AND "];
+          qualifier = [EOQualifier qualifierWithQualifierFormat: where];
           records = [folder fetchFields: fields matchingQualifier: qualifier];
           if (records)
             {

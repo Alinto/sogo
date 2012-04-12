@@ -1,3 +1,11 @@
+2012-04-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-bareFetchFields: ...,
+	(-fetchFields:from:to:title:component:additionalFilters:includeProtectedInformation:):
+	make use of a mutable array to define the global WHERE clause, by
+	joining the elements with " AND ".
+
 2012-04-11  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/ContactsUI.js (onDocumentKeydown): don't
