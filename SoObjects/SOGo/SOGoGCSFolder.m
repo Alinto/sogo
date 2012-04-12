@@ -2018,7 +2018,7 @@ static NSArray *childRecordFields = nil;
   NSEnumerator *addFields;
 
   baseURL = [self davURLAsString];
-#warning review this when fixing http://www.scalableogo.org/bugs/view.php?id=276
+#warning review this when bug #276
   if (![baseURL hasSuffix: @"/"])
     baseURL = [NSString stringWithFormat: @"%@/", baseURL];
 
