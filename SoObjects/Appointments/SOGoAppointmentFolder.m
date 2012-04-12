@@ -556,8 +556,15 @@ static NSNumber *sharedYes = nil;
                            [title stringByReplacingString: @"'"  withString: @"''"]]];
 
   if (component)
-    [baseWhere addObject: [NSString stringWithFormat: @"c_component = '%@'",
-                                    component]];
+    {
+      if ([component isEqualToString: @"vtodo"] && ![self showCalendarTasks])
+        return [NSArray array];
+      else
+        [baseWhere addObject: [NSString stringWithFormat: @"c_component = '%@'",
+                                        component]];
+    }
+  else if (![self showCalendarTasks])
+      [baseWhere addObject: @"c_component != 'vtodo'"];
 
   if ([filters length])
     [baseWhere addObject: filters];
@@ -1108,8 +1115,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   baseWhere = [NSMutableArray arrayWithCapacity: 32];
   if (_component)
-    [baseWhere addObject: [NSMutableString stringWithFormat: @"c_component = '%@'",
-                                           _component]];
+    {
+      if ([_component isEqualToString: @"vtodo"] && ![self showCalendarTasks])
+        return [NSArray array];
+      else
+        [baseWhere addObject: [NSString stringWithFormat: @"c_component = '%@'",
+                                               _component]];
+    }
+  else if (![self showCalendarTasks])
+      [baseWhere addObject: @"c_component != 'vtodo'"];
 
   if (_startDate)
     {
