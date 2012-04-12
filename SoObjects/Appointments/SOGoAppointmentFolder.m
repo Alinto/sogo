@@ -1675,21 +1675,25 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSCalendarDate *startDate;
   NSString *filter;
+  NSMutableArray *filters;
   int startDateSecs;
 
+  filters = [NSMutableArray arrayWithCapacity: 8];
   startDate = [self _getMaxStartDate];
   if (startDate)
     {
       startDateSecs = (int) [startDate timeIntervalSince1970];
-      filter = [NSString stringWithFormat: @"c_enddate = NULL"
+      filter = [NSString stringWithFormat: @"(c_enddate = NULL"
                          @" OR (c_enddate >= %d AND c_iscycle = 0)"
-                         @" OR (c_cycleenddate >= %d AND c_iscycle = 1)",
+                         @" OR (c_cycleenddate >= %d AND c_iscycle = 1))",
                          startDateSecs, startDateSecs];
+      [filters addObject: filter];
     }
-  else
-    filter = @"";
 
-  return filter;
+  if (![self showCalendarTasks])
+    [filters addObject: @"c_component != 'vtodo'"];
+
+  return [filters componentsJoinedByString: @" AND "];
 }
 
 - (Class) objectClassForContent: (NSString *) content

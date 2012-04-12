@@ -5,6 +5,8 @@
 	(-fetchFields:from:to:title:component:additionalFilters:includeProtectedInformation:):
 	make use of a mutable array to define the global WHERE clause, by
 	joining the elements with " AND ".
+	(-additionalWebdavSyncFilters): don't include 'vtodo' components
+	when -[self showCalendarTasks] returns NO.
 
 2012-04-11  Francis Lachapelle  <flachapelle@inverse.ca>
 
