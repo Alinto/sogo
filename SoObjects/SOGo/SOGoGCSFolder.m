@@ -617,19 +617,42 @@ static NSArray *childRecordFields = nil;
   return filter;
 }
 
+- (NSString *) componentSQLFilter
+{
+  return nil;
+}
+
 - (NSArray *) toOneRelationshipKeys
 {
   NSArray *records, *names;
-  NSString *sqlFilter;
-  EOQualifier *qualifier;
+  NSString *sqlFilter, *compFilter;
+  EOQualifier *aclQualifier, *componentQualifier, *qualifier;
 
   sqlFilter = [self aclSQLListingFilter];
   if (sqlFilter)
     {
       if ([sqlFilter length] > 0)
-        qualifier = [EOQualifier qualifierWithQualifierFormat: sqlFilter];
+        aclQualifier = [EOQualifier qualifierWithQualifierFormat: sqlFilter];
       else
-        qualifier = nil;
+        aclQualifier = nil;
+
+      compFilter = [self componentSQLFilter];
+      if ([compFilter length] > 0)
+        {
+          componentQualifier
+            = [EOQualifier qualifierWithQualifierFormat: compFilter];
+          if (aclQualifier)
+            {
+              qualifier = [[EOAndQualifier alloc] initWithQualifiers:
+                                                    aclQualifier,
+                                                  componentQualifier];
+              [qualifier autorelease];
+            }
+          else
+            qualifier = componentQualifier;
+        }
+      else
+        qualifier = aclQualifier;
 
       records = [[self ocsFolder] fetchFields: childRecordFields
                             matchingQualifier: qualifier];

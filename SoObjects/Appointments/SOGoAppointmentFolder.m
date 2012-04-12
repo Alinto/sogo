@@ -499,6 +499,18 @@ static NSNumber *sharedYes = nil;
   return filter;
 }
 
+- (NSString *) componentSQLFilter
+{
+  NSString *filter;
+
+  if ([self showCalendarTasks])
+    filter = nil;
+  else
+    filter = @"c_component != 'vtodo'";
+
+  return filter;
+}
+
 - (BOOL) _checkIfWeCanRememberRecords: (NSArray *) fields
 {
   return ([fields containsObject: @"c_name"]
