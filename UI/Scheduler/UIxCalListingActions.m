@@ -322,8 +322,7 @@ static NSArray *tasksFields = nil;
   folders = [[clientObject subFolders] objectEnumerator];
   while ((currentFolder = [folders nextObject]))
     {
-      if ([currentFolder isActive]
-          && (![component isEqualToString: @"vtodo"] || [currentFolder showCalendarTasks]))
+      if ([currentFolder isActive])
         {
           folderIsRemote
             = [currentFolder isKindOfClass: [SOGoWebAppointmentFolder class]];
