@@ -41,7 +41,7 @@
   if ((self = [super init]))
     {
       completeFilename = nil;
-      fileSize = 0;
+      inode = 0;
       lastModificationTime = nil;
     }
 
@@ -86,7 +86,7 @@
 }
 
 - (BOOL) _readFileChangesDataWithDate: (NSDate **) newLMTime
-                              andSize: (NSUInteger *) newFileSize
+                             andInode: (NSUInteger *) newInode
 {
   BOOL rc;
   NSDictionary *attributes;
@@ -97,7 +97,7 @@
   if (attributes)
     {
       *newLMTime = [attributes fileModificationDate];
-      *newFileSize = [attributes fileSize];
+      *newInode = [attributes fileSystemFileNumber];
       rc = YES;
     }
   else
@@ -107,22 +107,22 @@
 }
 
 - (BOOL) _checkFileChangesDataWithDate: (NSDate **) newLMTime
-                               andSize: (NSUInteger *) newFileSize
+                              andInode: (NSUInteger *) newInode
 {
   BOOL hasChanged = NO;
   NSDate *lastLMTime;
-  NSUInteger lastFileSize;
+  NSUInteger lastInode;
 
   if ([self _readFileChangesDataWithDate: &lastLMTime
-                                 andSize: &lastFileSize])
+                                andInode: &lastInode])
     {
-      if (fileSize != lastFileSize
+      if (inode != lastInode
           || ![lastModificationTime isEqual: lastLMTime])
         {
           if (lastLMTime)
             *newLMTime = lastLMTime;
-          if (newFileSize)
-            *newFileSize = lastFileSize;
+          if (newInode)
+            *newInode = lastInode;
           hasChanged = YES;
         }
     }
@@ -136,10 +136,10 @@
   NSString *error;
   NSPropertyListFormat format;
   NSDate *lastLMTime;
-  NSUInteger lastFileSize;
+  NSUInteger lastInode;
 
   if ([self _checkFileChangesDataWithDate: &lastLMTime
-                                  andSize: &lastFileSize])
+                                 andInode: &lastInode])
     {
       [self logWithFormat: @"file '%@' new or modified: rereading properties",
             [self completeFilename]];
@@ -158,7 +158,7 @@
                   @" of message: '%@'", error];
         }
       ASSIGN (lastModificationTime, lastLMTime);
-      fileSize = lastFileSize;
+      inode = lastInode;
     }
 
   return [super properties];
@@ -168,7 +168,7 @@
 {
   NSData *content;
   NSDate *lastLMTime;
-  NSUInteger lastFileSize;
+  NSUInteger lastInode;
 
   [container ensureDirectory];
 
@@ -178,14 +178,13 @@
               dataFromPropertyList: [self properties]
                             format: NSPropertyListBinaryFormat_v1_0
                   errorDescription: NULL];
-  if (![content writeToFile: [self completeFilename] atomically: NO])
+  if (![content writeToFile: [self completeFilename] atomically: YES])
     [NSException raise: @"MAPIStoreIOException"
 		 format: @"could not save message"];
 
-  [self _readFileChangesDataWithDate: &lastLMTime
-                             andSize: &lastFileSize];
+  [self _readFileChangesDataWithDate: &lastLMTime andInode: &lastInode];
   ASSIGN (lastModificationTime, lastLMTime);
-  fileSize = lastFileSize;
+  inode = lastInode;
   // [self logWithFormat: @"fs message written to '%@'", [self completeFilename]];
 }
 

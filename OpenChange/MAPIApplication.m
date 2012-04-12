@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSTimeZone.h>
 
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoSystemDefaults.h>
@@ -28,6 +29,7 @@
 #import <Appointments/iCalEntityObject+SOGo.h>
 
 #import "MAPIStoreUserContext.h"
+#import "MAPIStoreTypes.h"
 
 #import "MAPIApplication.h"
 
@@ -49,6 +51,9 @@ MAPIApplication *MAPIApp = nil;
 
       MAPIApp = [super init];
       [MAPIApp retain];
+
+      utcTZ = [NSTimeZone timeZoneWithName: @"UTC"];
+      [utcTZ retain];
     }
 
   return MAPIApp;
