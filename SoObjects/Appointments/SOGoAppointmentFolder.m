@@ -2026,9 +2026,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       gdVEventCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 0],
                   XMLNS_GROUPDAV, nil];
       [colType addObject: gdVEventCol];
-      gdVTodoCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 1],
-                 XMLNS_GROUPDAV, nil];
-      [colType addObject: gdVTodoCol];
+      if ([self showCalendarTasks])
+        {
+          gdVTodoCol = [NSArray arrayWithObjects: [gdRT objectAtIndex: 1],
+                                XMLNS_GROUPDAV, nil];
+          [colType addObject: gdVTodoCol];
+        }
       if ([nameInContainer isEqualToString: @"personal"])
         [colType addObject: [NSArray arrayWithObjects: @"schedule-outbox",
                                      XMLNS_CALDAV, nil]];
