@@ -263,6 +263,7 @@ static NSNumber *sharedYes = nil;
       /* 86400 / 2 = 43200. We hardcode that value in order to avoid
          integer and float confusion. */
       davTimeHalfLimitSeconds = davCalendarStartTimeLimit * 43200;
+      componentSet = nil;
     }
 
   return self;
@@ -273,6 +274,7 @@ static NSNumber *sharedYes = nil;
   [aclMatrix release];
   [stripFields release];
   [uidToFilename release];
+  [componentSet release];
   [super dealloc];
 }
 
@@ -2037,27 +2039,28 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 - (SOGoWebDAVValue *) davCalendarComponentSet
 {
-  static SOGoWebDAVValue *componentSet = nil;
   NSMutableArray *components;
 
   if (!componentSet)
     {
-      components = [NSMutableArray array];
+      components = [[NSMutableArray alloc] initWithCapacity: 2];
       /* Totally hackish.... we use the "n1" prefix because we know our
          extensions will assign that one to ..:caldav but we really need to
          handle element attributes */
       [components addObject: [SOGoWebDAVValue
                                valueForObject: @"<n1:comp name=\"VEVENT\"/>"
                                    attributes: nil]];
-      [components addObject: [SOGoWebDAVValue
-                               valueForObject: @"<n1:comp name=\"VTODO\"/>"
-                                   attributes: nil]];
+      if ([self showCalendarTasks])
+        [components addObject: [SOGoWebDAVValue
+                                 valueForObject: @"<n1:comp name=\"VTODO\"/>"
+                                     attributes: nil]];
       componentSet
         = [davElementWithContent (@"supported-calendar-component-set",
                                   XMLNS_CALDAV,
                                   components)
                                  asWebDAVValue];
       [componentSet retain];
+      [components release];
     }
 
   return componentSet;

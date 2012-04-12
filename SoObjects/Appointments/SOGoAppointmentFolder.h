@@ -49,6 +49,7 @@
 @class NSTimeZone;
 @class GCSFolder;
 @class iCalCalendar;
+@class SOGoWebDAVValue;
 
 typedef enum {
   SOGoAppointmentProxyPermissionNone = 0,
@@ -66,6 +67,7 @@ typedef enum {
   int davTimeLimitSeconds;
   int davTimeHalfLimitSeconds;
   BOOL userCanAccessObjectsClassifiedAs[iCalAccessClassCount];
+  SOGoWebDAVValue *componentSet;
 }
 
 - (BOOL) isActive;

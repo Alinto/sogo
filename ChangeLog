@@ -1,5 +1,9 @@
 2012-04-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-davCalendarComponentSet): componentSet is now an ivar. Include
+	VTODO only with showCalendarTasks returns YES.
+
 	* UI/Scheduler/UIxCalListingActions.m
 	(_fetchFields:forComponentOfType:): do not check for
 	"showCalendarTasks" since it is now handled at the
