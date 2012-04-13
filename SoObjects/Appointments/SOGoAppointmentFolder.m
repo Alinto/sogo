@@ -553,7 +553,7 @@ static NSNumber *sharedYes = nil;
   if ([title length])
     [baseWhere
       addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '%%%@%%'",
-                           [title stringByReplacingString: @"'"  withString: @"''"]]];
+                           [title stringByReplacingString: @"'"  withString: @"\\'\\'"]]];
 
   if (component)
     {
@@ -1150,7 +1150,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       if ([title length])
         [baseWhere
           addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '%%%@%%'",
-                               [title stringByReplacingString: @"'"  withString: @"''"]]];
+                               [title stringByReplacingString: @"'"  withString: @"\\'\\'"]]];
 
       if ([filters length])
         [baseWhere addObject: [NSString stringWithFormat: @"(%@)", filters]];
