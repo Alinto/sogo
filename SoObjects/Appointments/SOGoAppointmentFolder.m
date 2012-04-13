@@ -531,6 +531,7 @@ static NSNumber *sharedYes = nil;
 		  forKey: [currentRecord objectForKey: @"c_name"]];
 }
 
+#warning filters should make use of EOQualifier
 - (NSArray *) bareFetchFields: (NSArray *) fields
                          from: (NSCalendarDate *) startDate
                            to: (NSCalendarDate *) endDate 
