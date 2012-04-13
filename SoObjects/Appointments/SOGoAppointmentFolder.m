@@ -2135,6 +2135,37 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return error;
 }
 
+- (NSString *) davCalendarShowAlarms
+{
+  NSString *boolean;
+
+  if ([self showCalendarAlarms])
+    boolean = @"true";
+  else
+    boolean = @"false";
+
+  return boolean;
+}
+
+- (NSException *) setDavCalendarShowAlarms: (id) newBoolean
+{
+  NSException *error;
+
+  error = nil;
+
+  if ([newBoolean isEqualToString: @"true"]
+      || [newBoolean isEqualToString: @"1"])
+    [self setShowCalendarAlarms: YES];
+  else if ([newBoolean isEqualToString: @"false"]
+           || [newBoolean isEqualToString: @"0"])
+    [self setShowCalendarAlarms: NO];
+  else
+    error = [NSException exceptionWithHTTPStatus: 400
+                                          reason: @"Bad boolean value."];
+
+  return error;
+}
+
 /* vevent UID handling */
 
 - (NSString *) resourceNameForEventUID: (NSString *) uid
