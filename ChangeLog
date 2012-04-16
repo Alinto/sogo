@@ -1,5 +1,9 @@
 2012-04-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/NSString+Utilities.m (-encryptWithKey:)
+	(-decryptWithKey:): new methods providing symmetric encryption of
+	strings.
+
 	* Tests/Unit/SOGoTestRunner.m (-run): do not empty the pool after
 	each test.
 
