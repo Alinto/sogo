@@ -74,6 +74,11 @@
 
 - (NSUInteger) countOccurrencesOfString: (NSString *) substring;
 
+
+/* Those methods provide symmetric enc-/decryption via a XOR operation */
+- (NSString *) encryptWithKey: (NSString *) theKey;
+- (NSString *) decryptWithKey: (NSString *) theKey;
+
 @end
 
 #endif /* NSSTRING_URL_H */

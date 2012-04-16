@@ -47,4 +47,27 @@
   failIf(count != 0);
 }
 
+- (void) test_encryptdecrypt
+{
+  NSString *secret = @"this is a secret";
+  NSString *password = @"qwerty";
+  NSString *encresult, *decresult;
+  
+  encresult = [secret encryptWithKey: nil];
+  failIf(encresult != nil);
+  encresult = [secret encryptWithKey: @""];
+  failIf(encresult != nil);
+
+  encresult = [secret encryptWithKey: password];
+  failIf(encresult == nil);
+
+  decresult = [encresult decryptWithKey: nil];
+  failIf(decresult != nil);
+  decresult = [encresult decryptWithKey: @""];
+  failIf(decresult != nil);
+
+  decresult = [encresult decryptWithKey: password];
+  failIf(![decresult isEqualToString: secret]);
+}
+
 @end

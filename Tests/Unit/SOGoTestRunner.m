@@ -68,11 +68,9 @@
   NSEnumerator *allTestClasses;
   NSString *class;
   SOGoTest *test;
-  NSAutoreleasePool *pool;
   int rc;
 
   rc = 0;
-  pool = [NSAutoreleasePool currentPool];
 
   [self retain];
   allTestClasses = [[SOGoTest allTestClasses] objectEnumerator];
@@ -83,8 +81,7 @@
       [test setTestRunner: self];
       if (![test run])
         rc |= -1;
-      [test autorelease];
-      [pool emptyPool];
+      [test release];
     }
 
   [self displayReport];
