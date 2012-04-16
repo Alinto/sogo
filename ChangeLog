@@ -1,3 +1,8 @@
+2012-04-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Unit/SOGoTestRunner.m (-run): do not empty the pool after
+	each test.
+
 2012-04-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m (-bareFetchFields: ...),
