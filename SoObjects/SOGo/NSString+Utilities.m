@@ -35,6 +35,7 @@
 
 #import <NGExtensions/NSDictionary+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NGBase64Coding.h>
 
 #import <NGMime/NGMimeHeaderFieldGenerator.h>
 #import <SBJson/SBJsonParser.h>
@@ -608,6 +609,87 @@ static int cssEscapingCount;
     }
 
   return count;
+}
+
+- (NSString *) encryptWithKey: (NSString *) theKey
+{
+  NSMutableData *encryptedPassword;
+  NSMutableString *key;
+  NSString *result;
+  NSUInteger i, passLength, theKeyLength, keyLength;
+  unichar p, k, e;
+ 
+  if ([theKey length] > 0)
+    {
+      // The length of the key must be greater (or equal) than
+      // the length of the password
+      key = [NSMutableString string];
+      keyLength = 0;
+
+      passLength = [self length];
+      theKeyLength = [theKey length];
+      while (keyLength < passLength)
+        {
+          [key appendString: theKey];
+          keyLength += theKeyLength;
+        }
+ 
+      encryptedPassword = [NSMutableData data];
+      for (i = 0; i < passLength; i++)
+        {
+          p = [self characterAtIndex: i];
+          k = [key characterAtIndex: i];
+          e = p ^ k;
+          [encryptedPassword appendBytes: (void *)&e length: 2];
+        }
+ 
+      result = [encryptedPassword stringByEncodingBase64];
+    }
+  else
+    result = nil;
+ 
+  return result;
+}
+ 
+- (NSString *) decryptWithKey: (NSString *) theKey
+{
+  NSMutableString *result;
+  NSMutableString *key;
+  NSData *decoded;
+  unichar *decryptedPassword;
+  NSUInteger i, theKeyLength, keyLength, decodedLength;
+  unichar p, k;
+ 
+  if ([theKey length] > 0)
+    {
+      decoded = [self dataByDecodingBase64];
+      decryptedPassword = (unichar *)[decoded bytes];
+
+      // The length of the key must be greater (or equal) than
+      // the length of the password
+      key = [NSMutableString string];
+      keyLength = 0;
+      decodedLength = ([decoded length] / 2); /* 1 unichar = 2 bytes/char */
+      theKeyLength = [theKey length];
+ 
+      while (keyLength < decodedLength)
+        {
+          [key appendString: theKey];
+          keyLength += theKeyLength;
+        }
+ 
+      result = [NSMutableString string];
+      for (i = 0; i < decodedLength; i++)
+        {
+          k = [key characterAtIndex: i];
+          p = decryptedPassword[i] ^ k;
+          [result appendFormat: @"%C", p];
+        }
+    }
+  else
+    result = nil;
+
+  return result;
 }
 
 @end
