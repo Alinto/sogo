@@ -247,7 +247,7 @@ static inline unsigned iCalDoWForNSDoW (int dow)
   if (byMonth && [byMonth count] > 0)
      {
        int i;
-       for (i = 0; i <= 12; i++)
+       for (i = 0; i < 12; i++)
  	byMonthList[i] = [byMonth containsObject: [NSString stringWithFormat: @"%i", i + 1]];
      }
 
