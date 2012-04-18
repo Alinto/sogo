@@ -2420,7 +2420,7 @@ function onMenuSharing(event) {
     var folders = $("calendarList");
     var selected = folders.getSelectedNodes()[0];
     /* FIXME: activation of the context menu should preferably select the entry
-       above which the event has occured */
+       above which the event has occurred */
     if (selected) {
         var folderID = selected.getAttribute("id");
         var urlstr = URLForFolderID(folderID) + "/acls";
@@ -2588,7 +2588,7 @@ function addWebCalendarCallback (http) {
         changeCalendarDisplay();
     }
     else {
-        showAlertDialog (_("An error occured while importing calendar."));
+        showAlertDialog (_("An error occurred while importing calendar."));
     }
 }
 
@@ -2637,7 +2637,7 @@ function uploadCompleted(response) {
 
     var div = $("uploadResults");
     if (data.imported < 0)
-        $("uploadResultsContent").update(_("An error occured while importing calendar."));
+        $("uploadResultsContent").update(_("An error occurred while importing calendar."));
     else if (data.imported == 0)
         $("uploadResultsContent").update(_("No event was imported."));
     else {

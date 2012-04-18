@@ -114,7 +114,7 @@
 "Reload Remote Calendars" = "Távoli naptárak frissítése";
 "Properties" = "Tulajdonságok";
 "Done" = "Kész";
-"An error occured while importing calendar." = "Hiba történt a naptár importálásakor.";
+"An error occurred while importing calendar." = "Hiba történt a naptár importálásakor.";
 "No event was imported." = "Nem volt importált esemény.";
 "A total of %{0} events were imported in the calendar." = "Összesen %{0} esemény lett importálva a naptárba.";
 

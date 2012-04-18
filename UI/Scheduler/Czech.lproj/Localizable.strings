@@ -114,7 +114,7 @@
 "Reload Remote Calendars" = "Aktualizovat vzdálené kalendáře";
 "Properties" = "Vlastnosti";
 "Done" = "Hotovo";
-"An error occured while importing calendar." = "Při importu událostí došlo k chybě.";
+"An error occurred while importing calendar." = "Při importu událostí došlo k chybě.";
 "No event was imported." = "Nebyla importována žádná událost.";
 "A total of %{0} events were imported in the calendar." = "Do kalendáře bylo importováno %{0} událostí.";
 

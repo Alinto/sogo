@@ -114,7 +114,7 @@
 "Reload Remote Calendars" = "Recarregar Calendários Remotos";
 "Properties" = "Propriedades";
 "Done" = "Feito";
-"An error occured while importing calendar." = "Um erro ocorreu na importação do calendário.";
+"An error occurred while importing calendar." = "Um erro ocorreu na importação do calendário.";
 "No event was imported." = "Nenhum evento importado.";
 "A total of %{0} events were imported in the calendar." = "Um total de %{0} eventos foram importados no calendário.";
 

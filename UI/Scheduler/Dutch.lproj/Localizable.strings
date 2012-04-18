@@ -114,7 +114,7 @@
 "Reload Remote Calendars" = "Externe agenda herladen";
 "Properties" = "Instellingen";
 "Done" = "Klaar";
-"An error occured while importing calendar." = "Er is een fout opgetreden bij het importeren van de kalender.";
+"An error occurred while importing calendar." = "Er is een fout opgetreden bij het importeren van de kalender.";
 "No event was imported." = "Geen enkele gebeurtenis werd geïmporteerd.";
 "A total of %{0} events were imported in the calendar." = "Een totaal van %{0} gebeurtenissen werd geïmporteerd in de kalender.";
 

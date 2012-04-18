@@ -114,7 +114,7 @@
 "Reload Remote Calendars" = "Перевантажити віддалені календарі";
 "Properties" = "Властивості";
 "Done" = "Зроблено";
-"An error occured while importing calendar." = "Виникла помилка під час імпорту календаря.";
+"An error occurred while importing calendar." = "Виникла помилка під час імпорту календаря.";
 "No event was imported." = "Жодну подію не було імпортовано.";
 "A total of %{0} events were imported in the calendar." = "Разом %{0} подій було імпортовано в цьому календарі.";
 
