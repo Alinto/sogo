@@ -25,6 +25,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest+So.h>
@@ -133,25 +134,35 @@ static SoSecurityManager *sm = nil;
 
 - (SOGoWebAppointmentFolder *)
  newWebCalendarWithName: (NSString *) folderDisplayName
-                  atURL: (NSString *) url
+                  atURL: (NSString *) urlString
 {
+  NSException *error;
   SOGoAppointmentFolder *aptFolder;
   SOGoWebAppointmentFolder *webCalendar;
   NSString *name;
+  NSURL *url;
 
-  if ([self newFolderWithName: folderDisplayName
-               nameInContainer: &name])
-    webCalendar = nil;
-  else
+  webCalendar = nil;
+
+  if ([folderDisplayName length] > 0 && [urlString length] > 0)
     {
-      aptFolder = [subFolders objectForKey: name];
-      [aptFolder setFolderPropertyValue: url
-                             inCategory: @"WebCalendars"];
-
-      webCalendar = [SOGoWebAppointmentFolder objectWithName: name
-                                                 inContainer: self];
-      [webCalendar setOCSPath: [aptFolder ocsPath]];
-      [subFolders setObject: webCalendar forKey: name];
+      url = [NSURL URLWithString: urlString];
+      if ([[url scheme] hasPrefix: @"http"])
+        {
+          error = [self newFolderWithName: folderDisplayName
+                          nameInContainer: &name];
+          if (!error)
+            {
+              aptFolder = [subFolders objectForKey: name];
+              [aptFolder setFolderPropertyValue: urlString
+                                     inCategory: @"WebCalendars"];
+              
+              webCalendar = [SOGoWebAppointmentFolder objectWithName: name
+                                                         inContainer: self];
+              [webCalendar setOCSPath: [aptFolder ocsPath]];
+              [subFolders setObject: webCalendar forKey: name];
+            }
+        }
     }
 
   return webCalendar;
@@ -542,6 +553,7 @@ static SoSecurityManager *sm = nil;
   calSettings = [us objectForKey: @"Calendar"];
   refs = [[calSettings objectForKey: @"WebCalendars"] allKeys];
   max = [refs count];
+
   for (count = 0; count < max; count++)
     {
       ref = [refs objectAtIndex: count];

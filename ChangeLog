@@ -1,5 +1,9 @@
 2012-04-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentFolders.m
+	(-newWebCalendarWithName:atURL:): perform sanity checks on the url
+	parameter.
+
 	* SoObjects/Appointments/SOGoWebAppointmentFolder.m
 	(-setUsername:andPassword:): new method that associate an
 	encrypted login pair for authenticating to remove calendars.
