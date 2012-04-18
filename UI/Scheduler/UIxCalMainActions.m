@@ -60,51 +60,41 @@
   WORequest *r;
   WOResponse *response;
   SOGoWebAppointmentFolder *folder;
-  NSURL *url;
   NSString *urlString, *displayName;
   NSMutableDictionary *rc;
   SOGoAppointmentFolders *folders;
-  int imported = 0;
 
   r = [context request];
-  rc = [NSMutableDictionary dictionary];
 
-  // Just a check
-  urlString = [r formValueForKey: @"url"];
-  url = [NSURL URLWithString: urlString];
-  if (url)
+  urlString = [[r formValueForKey: @"url"] stringByTrimmingSpaces];
+  if ([urlString length] > 0)
     {
       folders = [self clientObject];
-      displayName = [self displayNameForUrl: [r formValueForKey: @"url"]];
+      displayName = [self displayNameForUrl: urlString];
       folder = [folders newWebCalendarWithName: displayName
                                          atURL: urlString];
       if (folder)
         {
-          imported = [folder loadWebCalendar];
-          if (imported >= 0)
-            {
-              [rc setObject: displayName forKey: @"displayname"];
-              [rc setObject: [folder nameInContainer] forKey: @"name"];
-            }
-          else
-            {
-              [folder delete];
-            }
-          [rc setObject: [NSNumber numberWithInt: imported] 
-                 forKey: @"imported"];
+          response = [self responseWithStatus: 200];
+          [response setHeader: @"application/json" forKey: @"content-type"];
+          
+          rc = [NSMutableDictionary dictionary];
+          [rc setObject: [folder displayName] forKey: @"name"];
+          [rc setObject: [folder folderReference] forKey: @"folderID"];
+          [response appendContentString: [rc jsonRepresentation]];
         }
+      else
+        response = (WOResponse *)
+          [NSException exceptionWithHTTPStatus: 400
+                                        reason: @"folder was not created"];
     }
+  else
+    response = (WOResponse *)
+      [NSException exceptionWithHTTPStatus: 400
+                                    reason: @"missing 'url' parameter"];
   
-  response = [self responseWithStatus: 200];
-  [response appendContentString: [rc jsonRepresentation]];
+
   return response;
-}
-
-- (WOResponse *) reloadWebCalendarsAction
-{
-  [[self clientObject] reloadWebCalendars: YES];
-
-  return [self responseWith204];
 }
 
 @end

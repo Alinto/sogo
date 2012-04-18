@@ -1266,11 +1266,18 @@ function accessToSubscribedFolder(serverFolder) {
 
     var parts = serverFolder.split(":");
     if (parts.length > 1) {
+        var username = parts[0];
         var paths = parts[1].split("/");
-        folder = "/" + parts[0].asCSSIdentifier() + "_" + paths[2];
+        if (username == UserLogin) {
+            folder = paths[1];
+        }
+        else {
+            folder = "/" + username.asCSSIdentifier() + "_" + paths[1];
+        }
     }
-    else
+    else {
         folder = serverFolder;
+    }
 
     return folder;
 }
@@ -2093,6 +2100,53 @@ function _showSelectDialog(title, label, options, button, callbackFcn, callbackA
     if (defaultValue)
 	defaultOption = dialog.down('option[value="'+defaultValue+'"]').selected = true;
     dialog.appear({ duration: 0.2 });
+}
+
+function showAuthenticationDialog(label, callback) {
+    log("* showAuthenticationDialog");
+    log(backtrace());
+
+    var div = $("bgDialogDiv");
+    if (div && div.visible() && div.getOpacity() > 0) {
+        log("push");
+        dialogsStack.push(_showAuthenticationDialog.bind(this, label, callback));
+    }
+    else {
+        log("show");
+        _showAuthenticationDialog(label, callback);
+    }
+}
+
+function _showAuthenticationDialog(label, callback) {
+    var dialog = dialogs[label];
+    if (dialog) {
+        $("bgDialogDiv").show();
+        var inputs = dialog.getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].value = "";
+        }
+    }
+    else {
+        var fields = createElement("p", null, ["prompt"]);
+	fields.appendChild(document.createTextNode(_("Username:")));
+        var un_input = createElement("input", null, "textField",
+				     { type: "text", "value": "" });
+	fields.appendChild(un_input);
+	fields.appendChild(document.createTextNode(_("Password:")));
+        var pw_input = createElement("input", null, "textField",
+			             { type: "password", "value": "" });
+	fields.appendChild(pw_input);
+        function callbackWrapper() {
+            callback(un_input.value, pw_input.value);
+        }
+        fields.appendChild(createButton(null, _("OK"), callbackWrapper));
+	fields.appendChild(createButton(null, _("Cancel"), disposeDialog));
+        dialog = createDialog(null, label, null, fields, "none");
+        document.body.appendChild(dialog);
+        dialogs[label] = dialog;
+    }
+    dialog.appear({ duration: 0.2,
+                    afterFinish: function () { dialog.down("input").focus(); } });
 }
 
 function disposeDialog() {

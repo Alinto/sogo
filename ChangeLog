@@ -1,5 +1,28 @@
 2012-04-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js (showAuthenticationDialog): new
+	dialog providing an interface for requesting a username and a
+	password to acallback passed as parameter.
+	(accessToSubscribedFolder): fixed method to return the proper url
+	for folders owned by the active user.
+
+	* UI/WebServerResources/SchedulerUI.js (reloadWebCalendars): now
+	invokes "reloadAction" on every web calendar foldar, in a chain of
+	simultaneous requests.
+	(reloadWebCalendar): new function invoking "reloadAction" on a
+	single cal folder.
+	(reloadWebCalendarCallback): callback for the above invocation
+	that takes care of refreshing the views at the end of a refresh
+	chain, if present, and when useful.
+
+	* UI/Scheduler/UIxCalFolderActions.m (reloadAction): new web
+	method that applies only to SOGoWebAppointmentFolder instances and
+	which returns a JSON representation of the result returned by
+	-[SOGoWebAppointmentFolder loadWebCalendar]. This method replaces
+	-[UIxCalMainActions -reloadWebCalendars].
+	(setCredentialsAction): new web method acting as a proxy for
+	-[SOGoWebAppointmentFolder setUsername:andPassword:].
+
 	* UI/WebServerResources/generic.js (clickEventWrapper): new
 	function that returns a wrapper function for click callbacks which
 	invokes "preventDefault" on the "event" parameter before it is
@@ -7,6 +30,7 @@
 
 	* UI/Scheduler/UIxCalMainActions.m
 	(-reloadWebCalendarsAndRedirectAction): removed obsolete method.
+	(-reloadWebCalendars): removed obsolete method.
 
 	* SoObjects/Appointments/SOGoAppointmentFolders.m
 	(-newWebCalendarWithName:atURL:): perform sanity checks on the url
