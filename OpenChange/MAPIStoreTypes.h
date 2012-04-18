@@ -32,6 +32,9 @@
 
 @class NSData;
 @class NSDictionary;
+@class NSTimeZone;
+
+extern NSTimeZone *utcTZ;
 
 uint8_t *MAPIBoolValue (void *memCtx, BOOL value);
 uint32_t *MAPILongValue (void *memCtx, uint32_t value);

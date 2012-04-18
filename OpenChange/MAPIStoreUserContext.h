@@ -27,6 +27,7 @@
 
 @class NSMutableDictionary;
 @class NSString;
+@class NSTimeZone;
 
 @class WOContext;
 
@@ -43,6 +44,7 @@
 {
   NSString *username;
   SOGoUser *sogoUser;
+  NSTimeZone *timeZone;
 
   SOGoUserFolder *userFolder;
   NSMutableArray *containersBag;
@@ -62,6 +64,8 @@
 
 - (NSString *) username;
 - (SOGoUser *) sogoUser;
+
+- (NSTimeZone *) timeZone;
 
 - (SOGoUserFolder *) userFolder;
 
