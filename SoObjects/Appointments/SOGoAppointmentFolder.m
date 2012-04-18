@@ -2746,8 +2746,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       components = [[calendar events] mutableCopy];
       [components autorelease];
       [components addObjectsFromArray: [calendar todos]];
-      [components addObjectsFromArray: [calendar journals]];
-      [components addObjectsFromArray: [calendar freeBusys]];
+      // [components addObjectsFromArray: [calendar journals]];
+      // [components addObjectsFromArray: [calendar freeBusys]];
       count = [components count];
       for (i = 0; i < count; i++)
         {
