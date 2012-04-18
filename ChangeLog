@@ -1,5 +1,8 @@
 2012-04-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/Scheduler/UIxCalMainActions.m
+	(-reloadWebCalendarsAndRedirectAction): removed obsolete method.
+
 	* SoObjects/Appointments/SOGoAppointmentFolders.m
 	(-newWebCalendarWithName:atURL:): perform sanity checks on the url
 	parameter.

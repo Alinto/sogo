@@ -50,11 +50,6 @@
           actionClass = "UIxCalMainActions";
           actionName  = "reloadWebCalendars";
         };
-        reloadWebCalendarsAndRedirect = {
-          protectedBy = "View";
-          actionClass = "UIxCalMainActions";
-          actionName  = "reloadWebCalendarsAndRedirect";
-        };
         saveDragHandleState = {
           protectedBy = "View";
           pageName    = "UIxCalMainView";
