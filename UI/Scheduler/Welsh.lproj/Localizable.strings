@@ -114,7 +114,7 @@
 "Reload Remote Calendars" = "Ail-lwytho Calendrau Anghysbell";
 "Properties" = "Dewisiadau";
 "Done" = "Done";
-"An error occured while importing calendar." = "An error occured while importing calendar.";
+"An error occurred while importing calendar." = "An error occurred while importing calendar.";
 "No event was imported." = "No event was imported.";
 "A total of %{0} events were imported in the calendar." = "A total of %{0} events were imported in the calendar.";
 

@@ -20,12 +20,13 @@
 */
 
 #import <Foundation/NSValue.h>
-
-#import <SoObjects/SOGo/NSDictionary+Utilities.h>
-
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WORequest.h>
 
+#import <SOGo/NSDictionary+Utilities.h>
+
 #import <Appointments/SOGoAppointmentFolder.h>
+#import <Appointments/SOGoWebAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolderICS.h>
 
 #import "UIxCalFolderActions.h"
@@ -92,6 +93,45 @@
   [response setHeader: @"text/html" 
                forKey: @"content-type"];
   [(WOResponse*)response appendContentString: [rc jsonRepresentation]];
+  return response;
+}
+
+/* These methods are only available on instance of SOGoWebAppointmentFolder. */
+- (WOResponse *) reloadAction
+{
+  WOResponse *response;
+  NSDictionary *results;
+
+  response = [self responseWithStatus: 200];
+  [response setHeader: @"application/json" forKey: @"content-type"];
+  results = [[self clientObject] loadWebCalendar];
+  [response appendContentString: [results jsonRepresentation]];
+
+  return response;
+}
+
+- (WOResponse *) setCredentialsAction
+{
+  WORequest *request;
+  WOResponse *response;
+  NSString *username, *password;
+
+  request = [context request];
+
+  username = [[request formValueForKey: @"username"] stringByTrimmingSpaces];
+  password = [[request formValueForKey: @"password"] stringByTrimmingSpaces];
+  if ([username length] > 0 && [password length] > 0)
+    {
+      [[self clientObject] setUsername: username
+                           andPassword: password];
+      response = [self responseWith204];
+    }
+  else
+    response
+      = (WOResponse *) [NSException exceptionWithHTTPStatus: 400
+                                    reason: @"missing 'username' and/or"
+                                    @" 'password' parameters"];
+
   return response;
 }
 

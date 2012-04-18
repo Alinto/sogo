@@ -114,7 +114,7 @@
 "Reload Remote Calendars" = "Обновить удаленные календари";
 "Properties" = "Свойства";
 "Done" = "Готово";
-"An error occured while importing calendar." = "Ошибка при импорте календаря.";
+"An error occurred while importing calendar." = "Ошибка при импорте календаря.";
 "No event was imported." = "События не были импортированы.";
 "A total of %{0} events were imported in the calendar." = " Всего %{0} событий было импортировано в календарь.";
 

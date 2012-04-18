@@ -114,7 +114,7 @@
 "Reload Remote Calendars" = "Opdatér kalendere";
 "Properties" = "Egenskaber";
 "Done" = "Udført";
-"An error occured while importing calendar." = "Der opstod en fejl under importering af kalender.";
+"An error occurred while importing calendar." = "Der opstod en fejl under importering af kalender.";
 "No event was imported." = "Ingen begivenhed blev importeret.";
 "A total of %{0} events were imported in the calendar." = "I alt %{0} begivenheder blev importeret i kalenderen.";
 

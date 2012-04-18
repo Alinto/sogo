@@ -27,7 +27,10 @@
 
 @interface SOGoWebAppointmentFolder : SOGoAppointmentFolder
 
-- (int) loadWebCalendar;
+- (void) setUsername: (NSString *) username
+         andPassword: (NSString *) password;
+
+- (NSDictionary *) loadWebCalendar;
 - (void) deleteAllContent;
 
 - (void) setReloadOnLogin: (BOOL) newReloadOnLogin;

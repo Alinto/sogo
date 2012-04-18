@@ -22,6 +22,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
@@ -29,6 +30,7 @@
 
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <Appointments/SOGoWebAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
@@ -60,68 +62,41 @@
   WORequest *r;
   WOResponse *response;
   SOGoWebAppointmentFolder *folder;
-  NSURL *url;
   NSString *urlString, *displayName;
   NSMutableDictionary *rc;
   SOGoAppointmentFolders *folders;
-  int imported = 0;
 
   r = [context request];
-  rc = [NSMutableDictionary dictionary];
 
-  // Just a check
-  urlString = [r formValueForKey: @"url"];
-  url = [NSURL URLWithString: urlString];
-  if (url)
+  urlString = [[r formValueForKey: @"url"] stringByTrimmingSpaces];
+  if ([urlString length] > 0)
     {
       folders = [self clientObject];
-      displayName = [self displayNameForUrl: [r formValueForKey: @"url"]];
+      displayName = [self displayNameForUrl: urlString];
       folder = [folders newWebCalendarWithName: displayName
                                          atURL: urlString];
       if (folder)
         {
-          imported = [folder loadWebCalendar];
-          if (imported >= 0)
-            {
-              [rc setObject: displayName forKey: @"displayname"];
-              [rc setObject: [folder nameInContainer] forKey: @"name"];
-            }
-          else
-            {
-              [folder delete];
-            }
-          [rc setObject: [NSNumber numberWithInt: imported] 
-                 forKey: @"imported"];
+          response = [self responseWithStatus: 200];
+          [response setHeader: @"application/json" forKey: @"content-type"];
+          
+          rc = [NSMutableDictionary dictionary];
+          [rc setObject: [folder displayName] forKey: @"name"];
+          [rc setObject: [folder folderReference] forKey: @"folderID"];
+          [response appendContentString: [rc jsonRepresentation]];
         }
+      else
+        response = (WOResponse *)
+          [NSException exceptionWithHTTPStatus: 400
+                                        reason: @"folder was not created"];
     }
+  else
+    response = (WOResponse *)
+      [NSException exceptionWithHTTPStatus: 400
+                                    reason: @"missing 'url' parameter"];
   
-  response = [self responseWithStatus: 200];
-  [response appendContentString: [rc jsonRepresentation]];
+
   return response;
 }
-
-- (WOResponse *) reloadWebCalendarsAction
-{
-  [[self clientObject] reloadWebCalendars: YES];
-
-  return [self responseWith204];
-}
-
-//
-// The method below is different than the -reloadWebCalendarsAction as it
-// won't force the reload of all calendars and automatically redirect the
-// user to the /SOGo/so page upon completion.
-//
-// This is particularly useful for WebAuth users and they won't have a
-// precise "entry point" in SOGo - so calendars reload upon login
-// isn't possible for them.
-//
-- (WOResponse *) reloadWebCalendarsAndRedirectAction
-{
-  [[self clientObject] reloadWebCalendars: NO];
-
-  return [self redirectToLocation: @"/SOGo/so"];
-}
-
 
 @end

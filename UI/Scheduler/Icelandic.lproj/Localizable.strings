@@ -114,7 +114,7 @@
 "Reload Remote Calendars" = "Reload Remote Calendars";
 "Properties" = "Eiginleikar";
 "Done" = "Ljúka";
-"An error occured while importing calendar." = "Villa kom upp þegar dagatalið var flutt inn.";
+"An error occurred while importing calendar." = "Villa kom upp þegar dagatalið var flutt inn.";
 "No event was imported." = "Enginn viðburður var fluttur inn.";
 "A total of %{0} events were imported in the calendar." = "Alls voru %{0} viðburðir fluttir inn í dagatalið.";
 

@@ -1203,25 +1203,180 @@ function onMonthOverview() {
     return _ensureView("monthview");
 }
 
-function onCalendarReload() {
+function refreshEventsAndTasks() {
     refreshEvents();
     refreshTasks();
-    reloadWebCalendars();
+}
+
+function onCalendarReload() {
+    if (!reloadWebCalendars()) {
+        refreshEventsAndTasks();
+    }
+
     return false;
 }
 
 function reloadWebCalendars() {
-    var url = ApplicationBaseURL + "reloadWebCalendars";
-    if (document.reloadWebCalAjaxRequest) {
-        document.reloadWebCalAjaxRequest.aborted = true;
-        document.reloadWebCalAjaxRequest.abort();
+    log("* reloadWebCalendars");
+    var hasWebCalendars = false;
+
+    var remaining = [];
+    var refreshOperations = { "remaining": remaining };
+    if (UserSettings['Calendar']
+        && UserSettings['Calendar']['WebCalendars']) {
+        var webCalendars = UserSettings['Calendar']['WebCalendars'];
+        
+        var folders = $("calendarList");
+        var calendarNodes = folders.childNodesWithTag("li");
+        for (var i = 0; i < calendarNodes.length; i++) {
+            var current = calendarNodes[i];
+            var calendarID = current.getAttribute("id");
+            var owner = current.getAttribute("owner");
+            var realID = owner + ":Calendar/" + calendarID.substr(1);
+            if (webCalendars[realID]) { /* is web calendar ? */
+                remaining.push(realID);
+                reloadWebCalendar(realID, refreshOperations);
+            }
+        }
     }
-    document.reloadWebCalAjaxRequest
-        = triggerAjaxRequest(url, reloadWebCalendarsCallback);
+
+    return (remaining.length > 0);
 }
 
-function reloadWebCalendarsCallback (http) {
-    changeCalendarDisplay(null, currentView);
+var calendarReloadErrors = { "invalid-calendar-content":
+                             _("the returned content was not valid calendar"
+                               + " data"),
+                             "http-error": _("an unknown http error occurred"
+                                             + " during the load operation"),
+                             "bad-url": _("the url in use is invalid or the"
+                                          + " host is currently unreachable"),
+                             "invalid-url": _("the url being used is invalid"
+                                              + " or not handled") };
+
+function reloadWebCalendar(folderID, refreshOperations) {
+    var url = URLForFolderID(folderID) + "/reload";
+    var cbData = { "folderID": folderID };
+    if (refreshOperations) {
+        cbData["refreshOperations"] = refreshOperations;
+    }
+    triggerAjaxRequest(url, reloadWebCalendarCallback, cbData);
+}
+
+function reloadWebCalendarCallback(http) {
+    var cbData = http.callbackData;
+    if (http.status == 200) {
+        var result = http.responseText.evalJSON(true);
+        var requireAuth = false;
+        var success = false;
+        if (result.status) {
+            if (result.status == 401) {
+                requireAuth = true;
+            }
+            else {
+                if (result.status == 200) {
+                    success = true;
+                }
+                else {
+                    var errorMessage = _("An error occurred while importing calendar.");
+                    if (result["error"]) {
+                        var message = calendarReloadErrors[result["error"]];
+                        errorMessage = (_("An error occurred while loading remote"
+                                          + " calendar: %{0}.").formatted(message));
+                    }
+                    showAlertDialog (errorMessage);
+                }
+            }
+        }
+        else {
+            var errorMessage = _("An error occurred while importing calendar.");
+            if (result["error"]) {
+                var message = calendarReloadErrors[result["error"]];
+                errorMessage = (_("An error occurred while loading remote"
+                                  + " calendar: %{0}.").formatted(message));
+            }
+            showAlertDialog (errorMessage);
+        }
+
+        if (requireAuth) {
+            reauthenticateWebCalendar(cbData["folderID"], cbData);
+        }
+        else {
+            var refreshOperations = cbData["refreshOperations"];
+            if (refreshOperations) {
+                var remaining = refreshOperations["remaining"];
+                var calIdx = remaining.indexOf(cbData["folderID"]);
+                remaining.splice(calIdx, 1);
+                if (remaining.length == 0) {
+                    refreshEventsAndTasks();
+                    changeCalendarDisplay(null, currentView);
+                }
+                else {
+                    var newFolderID = remaining[0];
+                    reloadWebCalendar(newFolderID, refreshOperations);
+                }
+            }
+            else {
+                if (success) {
+                    refreshEventsAndTasks();
+                    changeCalendarDisplay(null, currentView);
+                }
+            }
+        }
+    }
+    else {
+        showAlertDialog(_("An error occurred while importing calendar."));
+        var refreshOperations = cbData["refreshOperations"];
+        if (refreshOperations) {
+            var remaining = refreshOperations["remaining"];
+            var calIdx = remaining.indexOf(cbData["folderID"]);
+            remaining.splice(calIdx, 1);
+            if (remaining.length > 0) {
+                var newFolderID = remaining[0];
+                reloadWebCalendar(newFolderID, refreshOperations);
+            }
+        }
+    }
+}
+
+function reauthenticateWebCalendar(folderID, refreshCBData) {
+    var remoteURL = null;
+    if (UserSettings['Calendar'] && UserSettings['Calendar']['WebCalendars']) {
+        var webCalendars = UserSettings['Calendar']['WebCalendars'];
+        remoteURL = webCalendars[folderID];
+    }
+    var parts = remoteURL.split("/");
+    var hostname = parts[2];
+    function authenticate(username, password) {
+        disposeDialog();
+        var url = URLForFolderID(folderID) + "/set-credentials";
+        var parameters = ("username=" + encodeURIComponent(username)
+                          + "&password=" + encodeURIComponent(password));
+        triggerAjaxRequest(url, authenticateWebCalendarCallback, refreshCBData, parameters,
+                           { "Content-type": "application/x-www-form-urlencoded" });
+    }
+    showAuthenticationDialog(_("Please identify yourself to \"%{0}\"...")
+                             .formatted(hostname),
+                             authenticate);
+}
+
+function authenticateWebCalendarCallback(http) {
+    var cbData = http.callbackData;
+    var folderID = cbData["folderID"];
+    var refreshOperations = cbData["refreshOperations"];
+    if (isHttpStatus204(http.status)) {
+        reloadWebCalendar(folderID, refreshOperations);
+    }
+    else {
+        if (refreshOperations) {
+            var remaining = refreshOperations["remaining"];
+            var calIdx = remaining.indexOf(folderID);
+            remaining.splice(calIdx, 1);
+            if (remaining.length > 0) {
+                var newFolderID = remaining[0];
+                reloadWebCalendar(newFolderID, refreshOperations);
+            }
+        }
+    }
 }
 
 function scrollDayView(scrollEvent) {
@@ -2420,7 +2575,7 @@ function onMenuSharing(event) {
     var folders = $("calendarList");
     var selected = folders.getSelectedNodes()[0];
     /* FIXME: activation of the context menu should preferably select the entry
-       above which the event has occured */
+       above which the event has occurred */
     if (selected) {
         var folderID = selected.getAttribute("id");
         var urlstr = URLForFolderID(folderID) + "/acls";
@@ -2473,14 +2628,14 @@ function initCalendarSelector() {
     var items = list.childNodesWithTag("li");
     for (var i = 0; i < items.length; i++) {
         var input = items[i].childNodesWithTag("input")[0];
-        $(input).observe("click", updateCalendarStatus);
+        $(input).observe("click", clickEventWrapper(updateCalendarStatus));
     }
 
     var links = $("calendarSelectorButtons").childNodesWithTag("a");
-    $(links[0]).observe("click", onCalendarNew);
-    $(links[1]).observe("click", onCalendarWebAdd);
-    $(links[2]).observe("click", onCalendarAdd);
-    $(links[3]).observe("click", onCalendarRemove);
+    $(links[0]).observe("click", clickEventWrapper(onCalendarNew));
+    $(links[1]).observe("click", clickEventWrapper(onCalendarWebAdd));
+    $(links[2]).observe("click", clickEventWrapper(onCalendarAdd));
+    $(links[3]).observe("click", clickEventWrapper(onCalendarRemove));
 }
 
 function onCalendarSelectionChange(event) {
@@ -2567,29 +2722,51 @@ function onCalendarWebAdd(event) {
 }
 
 function onCalendarWebAddConfirm() {
+    disposeDialog();
     var calendarUrl = this.value;
     if (calendarUrl) {
-        if (document.addWebCalendarRequest) {
-            document.addWebCalendarRequest.aborted = true;
-            document.addWebCalendarRequest.abort ();
-        }
-        var url = ApplicationBaseURL + "/addWebCalendar?url=" + escape (calendarUrl);
-        document.addWebCalendarRequest =
-          triggerAjaxRequest (url, addWebCalendarCallback);
+        var url = ApplicationBaseURL + "/addWebCalendar"
+        var parameters = "url=" + calendarUrl;
+        triggerAjaxRequest(url, addWebCalendarCallback, calendarUrl, parameters,
+                           { "Content-type": "application/x-www-form-urlencoded" });
     }
-    disposeDialog();
 }
-function addWebCalendarCallback (http) {
-    var data = http.responseText.evalJSON(true);
-    if (data.imported >= 0) {
-        appendCalendar(data.displayname, "/" + data.name);
-        refreshEvents();
-        refreshTasks();
-        changeCalendarDisplay();
+
+function addWebCalendarCallback(http) {
+    if (http.status == 200) {
+        var data = http.responseText.evalJSON(true);
+        if (!data || data["error"] || !data["name"] || !data["folderID"]) {
+            showAlertDialog (_("An error occurred while importing calendar."));
+        }
+        else {
+            if (UserSettings['Calendar']) {
+                var webCalendars = UserSettings['Calendar']['WebCalendars'];
+                if (!webCalendars) {
+                    webCalendars = {};
+                    UserSettings['Calendar']['WebCalendars'] = webCalendars;
+                }
+                webCalendars[data["folderID"]] = http.callbackData;
+            }
+
+            appendCalendar(data["name"], data["folderID"]);
+            reloadWebCalendar(data["folderID"]);
+        }
     }
     else {
-        showAlertDialog (_("An error occured while importing calendar."));
+        showAlertDialog (_("An error occurred while importing calendar."));
     }
+
+    // if (data.imported) {
+    //     appendCalendar(data.displayname, "/" + data.name);
+    //     refreshEvents();
+    //     refreshTasks();
+    //     changeCalendarDisplay();
+    // }
+    // else if (data.status && data.status == 401) {
+    //     reauthenticateWebCalendar(data.name, data.url);
+    // }
+    // else {
+    // }
 }
 
 function onCalendarExport(event) {
@@ -2637,7 +2814,7 @@ function uploadCompleted(response) {
 
     var div = $("uploadResults");
     if (data.imported < 0)
-        $("uploadResultsContent").update(_("An error occured while importing calendar."));
+        $("uploadResultsContent").update(_("An error occurred while importing calendar."));
     else if (data.imported == 0)
         $("uploadResultsContent").update(_("No event was imported."));
     else {
@@ -2699,7 +2876,7 @@ function appendCalendar(folderName, folderPath) {
         li.getElementsByTagName("input")[0].checked = true;
 
         // Register event on checkbox
-        $(checkBox).on("click", updateCalendarStatus);
+        $(checkBox).on("click", clickEventWrapper(updateCalendarStatus));
 
         var url = URLForFolderID(folderPath) + "/canAccessContent";
         triggerAjaxRequest(url, calendarEntryCallback, folderPath);

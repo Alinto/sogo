@@ -45,16 +45,6 @@
           actionClass = "UIxCalMainActions";
           actionName  = "addWebCalendar";
         };
-        reloadWebCalendars = {
-          protectedBy = "View";
-          actionClass = "UIxCalMainActions";
-          actionName  = "reloadWebCalendars";
-        };
-        reloadWebCalendarsAndRedirect = {
-          protectedBy = "View";
-          actionClass = "UIxCalMainActions";
-          actionName  = "reloadWebCalendarsAndRedirect";
-        };
         saveDragHandleState = {
           protectedBy = "View";
           pageName    = "UIxCalMainView";
@@ -177,6 +167,21 @@
           protectedBy = "<public>";
           pageName    = "UIxTaskEditor"; 
           actionName  = "new";
+        };
+      };
+    };
+
+    SOGoWebAppointmentFolder = {
+      methods = {
+        reload = {
+          protectedBy = "View";
+          actionClass = "UIxCalFolderActions";
+          actionName = "reload";
+        };
+        "set-credentials" = {
+          protectedBy = "View";
+          actionClass = "UIxCalFolderActions";
+          actionName = "setCredentials";
         };
       };
     };
