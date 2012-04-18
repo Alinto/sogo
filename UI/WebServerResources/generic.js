@@ -1943,8 +1943,9 @@ function createButton(id, caption, action) {
         var span = createElement("span", null, null, null, null, newButton);
         span.appendChild(document.createTextNode(caption));
     }
-    if (action)
-        newButton.on("click", action);
+    if (action) {
+        newButton.on("click", clickEventWrapper(action));
+    }
 
     return newButton;
 }
