@@ -7,6 +7,7 @@ New Features
 
 Enhancements
  - Updated Spanish (Argentina) translation
+ - updated CKEditor to version 3.6.3
 
 Bug Fixes
  - fixed wrong date validation in preferences module affecting French users
