@@ -2473,14 +2473,14 @@ function initCalendarSelector() {
     var items = list.childNodesWithTag("li");
     for (var i = 0; i < items.length; i++) {
         var input = items[i].childNodesWithTag("input")[0];
-        $(input).observe("click", updateCalendarStatus);
+        $(input).observe("click", clickEventWrapper(updateCalendarStatus));
     }
 
     var links = $("calendarSelectorButtons").childNodesWithTag("a");
-    $(links[0]).observe("click", onCalendarNew);
-    $(links[1]).observe("click", onCalendarWebAdd);
-    $(links[2]).observe("click", onCalendarAdd);
-    $(links[3]).observe("click", onCalendarRemove);
+    $(links[0]).observe("click", clickEventWrapper(onCalendarNew));
+    $(links[1]).observe("click", clickEventWrapper(onCalendarWebAdd));
+    $(links[2]).observe("click", clickEventWrapper(onCalendarAdd));
+    $(links[3]).observe("click", clickEventWrapper(onCalendarRemove));
 }
 
 function onCalendarSelectionChange(event) {
@@ -2699,7 +2699,7 @@ function appendCalendar(folderName, folderPath) {
         li.getElementsByTagName("input")[0].checked = true;
 
         // Register event on checkbox
-        $(checkBox).on("click", updateCalendarStatus);
+        $(checkBox).on("click", clickEventWrapper(updateCalendarStatus));
 
         var url = URLForFolderID(folderPath) + "/canAccessContent";
         triggerAjaxRequest(url, calendarEntryCallback, folderPath);
