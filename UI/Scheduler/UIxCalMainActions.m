@@ -22,6 +22,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
@@ -29,6 +30,7 @@
 
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
 #import <Appointments/SOGoWebAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
