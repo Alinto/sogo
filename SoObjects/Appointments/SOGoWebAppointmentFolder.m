@@ -21,12 +21,26 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/Foundation.h>
+#import <curl/curl.h>
+
+#import <Foundation/NSData.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSURL.h>
+#import <Foundation/NSValue.h>
+
+#import <NGObjWeb/WOHTTPConnection.h>
+#import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGExtensions/NSObject+Logs.h>
+#import <NGHttp/NGHttpResponse.h>
+
 #import <NGCards/iCalCalendar.h>
 #import <GDLContentStore/GCSFolder.h>
-#import <NGObjWeb/WOContext+SoObjects.h>
-#import <SoObjects/SOGo/SOGoUser.h>
-#import <SoObjects/SOGo/SOGoUserSettings.h>
+#import <SOGo/SOGoAuthenticator.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserSettings.h>
+#import <SOGo/NSDictionary+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 
 #import "SOGoWebAppointmentFolder.h"
 
@@ -39,45 +53,154 @@
   [[self ocsFolder] deleteAllContent];
 }
 
-- (int) loadWebCalendar
+- (NSDictionary *) _loadAuthData
 {
-  NSString *location, *contents;
-  WOHTTPURLHandle *handle;
-  iCalCalendar *calendar;
-  NSData *data;
+  NSDictionary *authData;
+  NSString *authValue, *userPassword;
+  NSArray *parts, *keys;
+  
+  userPassword = [[self authenticatorInContext: context]
+                   passwordInContext: context];
+  if ([userPassword length] == 0)
+    {
+      authData = nil;
+    }
+  else
+    {
+      authValue
+        = [[self folderPropertyValueInCategory: @"WebCalendarsAuthentication"]
+            decryptWithKey: userPassword];
+      parts = [authValue componentsSeparatedByString: @":"];
+      if ([parts count] == 2)
+        {
+          keys = [NSArray arrayWithObjects: @"username",  @"password", nil];
+          authData = [NSDictionary dictionaryWithObjects: parts
+                                                 forKeys: keys];
+        }
+      else
+        authData = nil;
+    }
+
+  return authData;
+}
+
+- (void) setUsername: (NSString *) username
+         andPassword: (NSString *) password
+{
+  NSString *authValue, *userPassword;
+
+  userPassword = [[self authenticatorInContext: context]
+                   passwordInContext: context];
+  if ([userPassword length] > 0)
+    {
+      if (!username)
+        username = @"";
+      if (!password)
+        password = @"";
+      authValue = [NSString stringWithFormat: @"%@:%@", username, password];
+      [self setFolderPropertyValue: [authValue encryptWithKey: userPassword]
+                        inCategory: @"WebCalendarsAuthentication"];
+    }
+}
+
+- (NSDictionary *) loadWebCalendar
+{
+  NSString *location, *httpauth;
+  NSDictionary *authInfos;
+  NSMutableData *bodyData;
   NSURL *url;
+  CURL *curl;
+  CURLcode rc;
+  char error[CURL_ERROR_SIZE];
+  NSMutableDictionary *result;
+  NSString *content, *newDisplayName;
+  iCalCalendar *calendar;
+  NSUInteger imported, status;
 
-  int imported = 0;
+  result = [NSMutableDictionary dictionary];
 
+  // Prepare HTTPS post using libcurl
   location = [self folderPropertyValueInCategory: @"WebCalendars"];
+  [result setObject: location forKey: @"url"];
+
   url = [NSURL URLWithString: location];
   if (url)
     {
-      handle = AUTORELEASE([[WOHTTPURLHandle alloc] initWithURL: url  cached: NO]);
-      data = [handle resourceData];
-
-      if (!data && [[location lowercaseString] hasPrefix: @"https"]) 
-	{
-	  NSLog(@"WARNING: Your GNUstep/SOPE installation might not have SSL support.");
-	  return -1;
-	}
-
-      contents = [[NSString alloc] initWithData: data 
-                                       encoding: NSUTF8StringEncoding];
-      [contents autorelease];
-      calendar = [iCalCalendar parseSingleFromSource: contents];
-      if (calendar)
+      curl_global_init (CURL_GLOBAL_SSL);
+      curl = curl_easy_init ();
+      if (curl)
         {
-          [self deleteAllContent];
-          imported = [self importCalendar: calendar];
-        }
-      else
-        {
-          imported = -1;
+          curl_easy_setopt (curl, CURLOPT_URL, [location UTF8String]);
+          curl_easy_setopt (curl, CURLOPT_SSL_VERIFYPEER, 0L);
+          curl_easy_setopt (curl, CURLOPT_SSL_VERIFYHOST, 0L);
+
+          authInfos = [self _loadAuthData];
+          if (authInfos)
+            {
+              httpauth = [authInfos keysWithFormat: @"%{username}:%{password}"];
+              curl_easy_setopt (curl, CURLOPT_USERPWD, [httpauth UTF8String]);
+              curl_easy_setopt (curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+            }
+
+          bodyData = [NSMutableData data];
+          size_t curlBodyFunction (void *ptr, size_t size, size_t nmemb, void *inSelf)
+          {
+            size_t total;
+
+            total = size * nmemb;
+            [bodyData appendBytes: ptr length: total];
+
+            return total;
+          }
+          curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, curlBodyFunction);
+
+          error[0] = 0;
+          curl_easy_setopt (curl, CURLOPT_ERRORBUFFER, &error);
+      
+          // Perform SOAP request
+          rc = curl_easy_perform (curl);
+          if (rc == 0)
+            {
+              curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, &status);
+              [result setObject: [NSNumber numberWithUnsignedInt: status]
+                         forKey: @"status"];
+
+              if (status == 200)
+                {
+                  content = [[NSString alloc] initWithData: bodyData
+                                                  encoding: NSUTF8StringEncoding];
+                  if (!content)
+                    content = [[NSString alloc] initWithData: bodyData
+                                                    encoding: NSISOLatin1StringEncoding];
+                  [content autorelease];
+                  calendar = [iCalCalendar parseSingleFromSource: content];
+                  if (calendar)
+                    {
+                      newDisplayName = [[calendar
+                                          firstChildWithTag: @"x-wr-calname"]
+                                         flattenedValuesForKey: @""];
+                      if ([newDisplayName length] > 0)
+                        [self setDisplayName: newDisplayName];
+                      [self deleteAllContent];
+                      imported = [self importCalendar: calendar];
+                      [result setObject: [NSNumber numberWithInt: imported]
+                                 forKey: @"imported"];
+                    }
+                  else
+                    [result setObject: @"invalid-calendar-content" forKey: @"error"];
+                }
+              else
+                [result setObject: @"http-error" forKey: @"error"];
+            }
+          else
+            [result setObject: @"bad-url" forKey: @"error"];
+          curl_easy_cleanup (curl);
         }
     }
-  
-  return imported;
+  else
+    [result setObject: @"invalid-url" forKey: @"error"];
+
+  return result;
 }
 
 - (void) setReloadOnLogin: (BOOL) newReloadOnLogin
@@ -98,7 +221,10 @@
 
   error = [super delete];
   if (!error)
-    [self setFolderPropertyValue: nil inCategory: @"WebCalendars"];
+    {
+      [self setFolderPropertyValue: nil inCategory: @"WebCalendars"];
+      [self setFolderPropertyValue: nil inCategory: @"WebCalendarsAuthentication"];
+    }
 
   return error;
 }

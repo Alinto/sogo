@@ -1,5 +1,13 @@
 2012-04-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoWebAppointmentFolder.m
+	(-setUsername:andPassword:): new method that associate an
+	encrypted login pair for authenticating to remove calendars.
+	(-loadWebCalendar): rewrote method to make use of curl, thereby
+	permitting HTTP authentication. A NSDictionary containing
+	different informations about the connection is not returned,
+	including the HTTP status and an error tag, when required.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-importCalendar:): journals and freebusys are not
 	supported.
