@@ -91,7 +91,7 @@
     }
   else
     {
-      [clientObject subscribeUser: login reallyDo: reallyDo];
+      [clientObject subscribeUserOrGroup: login reallyDo: reallyDo];
       if (isMailInvitation)
         {
           mailInvitationURL
@@ -376,8 +376,8 @@
       folder = [self clientObject];
       max = [userIDs count];
       for (count = 0; count < max; count++)
-        [folder subscribeUser: [userIDs objectAtIndex: count]
-                     reallyDo: YES];
+        [folder subscribeUserOrGroup: [userIDs objectAtIndex: count]
+			    reallyDo: YES];
       ex = nil;
     }
   else

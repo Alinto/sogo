@@ -725,8 +725,8 @@ static SoSecurityManager *sm = nil;
           userMax = [proxySubscribers count];
           for (userCount = 0; userCount < userMax; userCount++)
             [currentFolder
-              subscribeUser: [proxySubscribers objectAtIndex: userCount]
-                   reallyDo: YES];
+              subscribeUserOrGroup: [proxySubscribers objectAtIndex: userCount]
+			  reallyDo: YES];
         }
     }
 }
@@ -750,8 +750,8 @@ static SoSecurityManager *sm = nil;
           userMax = [proxySubscribers count];
           for (userCount = 0; userCount < userMax; userCount++)
             [currentFolder
-              subscribeUser: [proxySubscribers objectAtIndex: userCount]
-                   reallyDo: NO];
+              subscribeUserOrGroup: [proxySubscribers objectAtIndex: userCount]
+			  reallyDo: NO];
         }
     }
 }

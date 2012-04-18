@@ -572,6 +572,9 @@
       = [NSString stringWithFormat: @"%@@%@", uid, [dd mailDomain]];
   else
     systemEmail = uid;
+
+  // We always add the system email, which will always be returned
+  // by SOGoUser -systemEmail.
   [emails addObject: systemEmail];
   [contact setObject: [emails objectAtIndex: 0] forKey: @"c_email"];
 }
@@ -583,11 +586,12 @@
 		   withUIDorEmail: (NSString *) uid
                          inDomain: (NSString *) domain
 {
-  NSMutableArray *emails;
-  NSDictionary *userEntry;
-  NSEnumerator *sogoSources;
-  NSObject <SOGoSource> *currentSource;
   NSString *sourceID, *cn, *c_domain, *c_uid, *c_imaphostname, *c_imaplogin;
+  NSObject <SOGoSource> *currentSource;
+  NSEnumerator *sogoSources;
+  NSDictionary *userEntry;
+  NSMutableArray *emails;
+  NSNumber *isGroup;
   NSArray *c_emails;
   BOOL access;
 
@@ -635,6 +639,11 @@
 	  if (!access)
 	    [currentUser setObject: [NSNumber numberWithBool: NO]
 			 forKey: @"MailAccess"];
+	  
+	  // We check if it's a group
+          isGroup = [userEntry objectForKey: @"isGroup"];
+          if (isGroup)
+            [currentUser setObject: isGroup forKey: @"isGroup"];
 
 	  // We also fill the resource attributes, if any
 	  if ([userEntry objectForKey: @"isResource"])

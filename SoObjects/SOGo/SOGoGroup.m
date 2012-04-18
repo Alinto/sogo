@@ -23,7 +23,6 @@
 /*
   Here are some group samples:
 
-
   [ POSIX group ]
 
   dn: cn=it-staff,ou=Group,dc=zzz,dc=xxx,dc=yyy
@@ -42,6 +41,16 @@
   memberUid: ja
   memberUid: hbt
   memberUid: hossein
+
+  dn: cn=inverse,ou=groups,dc=inverse,dc=ca
+  objectClass: groupOfUniqueNames
+  objectClass: top
+  objectClass: extensibleObject
+  uniqueMember: uid=flachapelle,ou=users,dc=inverse,dc=ca
+  uniqueMember: uid=lmarcotte,ou=users,dc=inverse,dc=ca
+  uniqueMember: uid=wsourdeau,ou=users,dc=inverse,dc=ca
+  cn: inverse
+  mail: inverse@inverse.ca
 
  */
 

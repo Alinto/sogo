@@ -102,8 +102,8 @@
 - (void) removeFolderSettings: (NSMutableDictionary *) moduleSettings
                 withReference: (NSString *) reference;
 
-- (BOOL) subscribeUser: (NSString *) subscribingUser
-              reallyDo: (BOOL) reallyDo;
+- (BOOL) subscribeUserOrGroup: (NSString *) theIdentifier
+		     reallyDo: (BOOL) reallyDo;
 - (BOOL) userIsSubscriber: (NSString *) subscribingUser;
 
 - (void) initializeQuickTablesAclsInContext: (WOContext *) localContext;

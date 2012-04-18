@@ -306,6 +306,10 @@
   return allEmails;
 }
 
+// 
+// We always return the last object among our list of email addresses. This value
+// is always added in SOGoUserManager: -_fillContactMailRecords:
+//
 - (NSString *) systemEmail
 {
   if (!allEmails)

@@ -459,8 +459,10 @@
 	      NSMutableArray *fbInfo;
 	      int i;
 
+	      // We get the start/end date for our conflict range. If the event to be added is recurring, we
+	      // check for at least a year to start with.
 	      start = [[theEvent startDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: 1];
-	      end = [[theEvent endDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -1];
+	      end = [[theEvent endDate] dateByAddingYears: ([theEvent isRecurrent] ? 1 : 0)  months: 0  days: 0  hours: 0  minutes: 0  seconds: -1];
 
 	      folder = [[SOGoUser userWithLogin: currentUID]
 			 personalCalendarFolderInContext: context];
@@ -488,16 +490,23 @@
 		    [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
 		  else
 		    {
+		      iCalCalendar *calendar;
 		      NSDictionary *values;
 		      NSString *reason;
+		      iCalEvent *event;
+		      
+		      calendar =  [iCalCalendar parseSingleFromSource: [[fbInfo objectAtIndex: 0] objectForKey: @"c_content"]];
+		      event = [[calendar events] lastObject];
 		      
 		      values = [NSDictionary dictionaryWithObjectsAndKeys: 
 					       [NSString stringWithFormat: @"%d", [user numberOfSimultaneousBookings]], @"NumberOfSimultaneousBookings",
 					     [user cn], @"Cn",
 					     [user systemEmail], @"SystemEmail",
+				             ([event summary] ? [event summary] : @""), @"EventTitle",
+					     [[fbInfo objectAtIndex: 0] objectForKey: @"startDate"], @"StartDate",
 					     nil];
 
-		      reason = [values keysWithFormat: [self labelForKey: @"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"."]];
+		      reason = [values keysWithFormat: [self labelForKey: @"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}."]];
 
 		      return [NSException exceptionWithHTTPStatus:403
 					  reason: reason];
@@ -1668,7 +1677,7 @@
 	      else
 		{
 		  // We might have auto-accepted resources here. If that's the
-		  // case, let's regerate the versitstring and replace the
+		  // case, let's regenerate the versitstring and replace the
 		  // one from the request.
 		  [rq setContent: [[[event parent] versitString] dataUsingEncoding: [rq contentEncoding]]];
 		}
@@ -1815,6 +1824,13 @@
 	    {
 	      if ((ex = [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent]))
 		return ex;
+	      else
+		{
+		  // We might have auto-accepted resources here. If that's the
+		  // case, let's regenerate the versitstring and replace the
+		  // one from the request.
+		  [rq setContent: [[[newEvent parent] versitString] dataUsingEncoding: [rq contentEncoding]]];
+		}
 	      
 	      // A RECURRENCE-ID was removed so there has to be a change in the master event
 	      // We could also have an EXDATE added in the master component of the attendees

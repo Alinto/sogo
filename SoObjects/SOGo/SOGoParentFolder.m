@@ -251,7 +251,7 @@ static SoSecurityManager *sm = nil;
   return nil;
 }
 
-- (void) _appendSubscribedSource: (NSString *) sourceKey
+- (BOOL) _appendSubscribedSource: (NSString *) sourceKey
 {
   SOGoGCSFolder *subscribedFolder;
 
@@ -262,32 +262,67 @@ static SoSecurityManager *sm = nil;
       && ![sm validatePermission: SOGoPerm_AccessObject
 			onObject: subscribedFolder
 		       inContext: context])
-    [subscribedSubFolders setObject: subscribedFolder
-			     forKey: [subscribedFolder nameInContainer]];
+    {
+      [subscribedSubFolders setObject: subscribedFolder
+			       forKey: [subscribedFolder nameInContainer]];
+      return YES;
+    }
+  
+  return NO;
 }
 
 - (NSException *) appendSubscribedSources
 {
-  NSArray *subscribedReferences;
-  SOGoUser *ownerUser;
+  NSMutableDictionary *folderDisplayNames;
+  NSMutableArray *subscribedReferences;
   SOGoUserSettings *settings;
   NSEnumerator *allKeys;
   NSString *currentKey;
+  SOGoUser *ownerUser;
   NSException *error;
+  id o;
+
+  BOOL dirty;
 
   error = nil; /* we ignore non-DB errors at this time... */
+  dirty = NO;
 
   ownerUser = [SOGoUser userWithLogin: owner];
   settings = [ownerUser userSettings];
-  subscribedReferences = [[settings objectForKey: nameInContainer]
-			   objectForKey: @"SubscribedFolders"];
-  if ([subscribedReferences isKindOfClass: [NSArray class]])
-    {
-      allKeys = [subscribedReferences objectEnumerator];
-      while ((currentKey = [allKeys nextObject]))
-	[self _appendSubscribedSource: currentKey];
-    }
 
+  subscribedReferences = [NSMutableArray arrayWithArray: [[settings objectForKey: nameInContainer]
+							   objectForKey: @"SubscribedFolders"]];
+  o =  [[settings objectForKey: nameInContainer] objectForKey: @"FolderDisplayNames"];
+  folderDisplayNames = nil;
+
+  if (o)
+    folderDisplayNames = [NSMutableDictionary dictionaryWithDictionary: o];
+ 
+
+  allKeys = [subscribedReferences objectEnumerator];
+  while ((currentKey = [allKeys nextObject]))
+    {
+      if (![self _appendSubscribedSource: currentKey])
+	{
+	  // We no longer have access to this subscription, let's
+	  // remove it from the current list.
+	  [subscribedReferences removeObject: currentKey];
+	  [folderDisplayNames removeObjectForKey: currentKey];
+	  dirty = YES;
+	}
+    }
+  
+  // If we changed the folder subscribtion list, we must sync it
+  if (dirty)
+    {
+      id o;
+
+      [[settings objectForKey: nameInContainer] setObject: subscribedReferences
+						   forKey: @"SubscribedFolders"];
+      [[settings objectForKey: nameInContainer] setObject: folderDisplayNames
+						   forKey: @"FolderDisplayNames"];
+    }
+	    
   return error;
 }
 

@@ -138,7 +138,7 @@
 - (BOOL) canSubscribeUsers
 {
   return [[self clientObject]
-           respondsToSelector: @selector (subscribeUser:reallyDo:)];
+           respondsToSelector: @selector (subscribeUserOrGroup:reallyDo:)];
 }
 
 - (BOOL) currentUserIsSubscribed
