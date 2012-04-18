@@ -48,6 +48,12 @@
 	(-importCalendar:): journals and freebusys are not
 	supported.
 
+2012-04-16  Jean Raby  <jraby@inverse.ca>
+
+	* SOPE/NGCards/iCalMonthlyRecurrenceCalculator.m
+	(-recurrenceRangesWithinCalendarDateRange:):
+	Fix of by one error. (bug #1772)
+
 2012-04-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Utilities.m (-encryptWithKey:)
