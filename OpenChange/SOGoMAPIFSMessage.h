@@ -31,7 +31,7 @@
 @interface SOGoMAPIFSMessage : SOGoMAPIVolatileMessage
 {
   NSString *completeFilename;
-  NSUInteger fileSize;
+  NSUInteger inode;
   NSData *lastModificationTime;
 }
 
