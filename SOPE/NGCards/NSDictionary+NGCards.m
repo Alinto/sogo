@@ -123,15 +123,37 @@
 }
 
 - (void) versitRenderInString: (NSMutableString *) aString
+              withKeyOrdering: (NSArray *) ordering
                  asAttributes: (BOOL) asAttributes
 {
-  NSArray *keys;
-  NSUInteger count, max, rendered = 0;
+  NSMutableArray *keys;
+  NSUInteger count, max, rendered = 0, keyIndex, newKeyIndex;
   NSArray *orderedValues;
   NSString *key;
   NSMutableString *substring;
 
-  keys = [self allKeys];
+  keys = [[self allKeys] mutableCopy];
+  [keys autorelease];
+
+  /* We reorder the fields based on the "ordering" array, by first placing
+     those that are specified and then the rest of them. */
+  newKeyIndex = 0;
+  max = [ordering count];
+  for (count = 0; count < max; count++)
+    {
+      key = [ordering objectAtIndex: count];
+      keyIndex = [keys indexOfObject: key];
+      if (keyIndex != NSNotFound)
+        {
+          if (keyIndex != newKeyIndex)
+            {
+              [keys removeObjectAtIndex: keyIndex];
+              [keys insertObject: key atIndex: newKeyIndex];
+            }
+          newKeyIndex++;
+        }
+    }
+
   max = [keys count];
   for (count = 0; count < max; count++)
     {

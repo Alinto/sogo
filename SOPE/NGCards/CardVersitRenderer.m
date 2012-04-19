@@ -78,13 +78,17 @@
       if ([attributes count])
         {
           [rendering appendString: @";"];
-          [attributes versitRenderInString: rendering asAttributes: YES];
+          [attributes versitRenderInString: rendering
+                           withKeyOrdering: [anElement orderOfAttributeKeys]
+                              asAttributes: YES];
         }
 
       /* values */
       values = [anElement values];
       [rendering appendString: @":"];
-      [values versitRenderInString: rendering asAttributes: NO];
+      [values versitRenderInString: rendering
+                   withKeyOrdering: [anElement orderOfValueKeys]
+                      asAttributes: NO];
 
       if ([rendering length] > 0)
         [rendering appendString: @"\r\n"];
