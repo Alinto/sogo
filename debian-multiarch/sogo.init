@@ -1,0 +1,100 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          sogo
+# Required-Start:    $remote_fs $network
+# Required-Stop:     $remote_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: SOGo server
+### END INIT INFO
+
+# SOGo init script for Debian GNU/Linux
+#
+# Copyright (C) 2007-2010 Inverse inc.
+#
+# Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+#         Ludovic Marcotte <ludovic@inverse.ca>
+#
+# This file is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+#
+# This file is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; see the file COPYING.  If not, write to
+# the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+NAME=sogo
+DAEMON=/usr/sbin/sogod
+DESC="SOGo"
+
+USER=$NAME
+PREFORK=1
+
+PIDFILE=/var/run/$NAME/$NAME.pid
+LOGFILE=/var/log/$NAME/$NAME.log
+
+if [ -f /etc/default/$NAME ]; then
+    . /etc/default/$NAME
+fi
+
+. /lib/lsb/init-functions
+
+if [ ! -x $DAEMON ]; then
+    log_failure_msg "$DAEMON is not executable."
+    exit 1
+fi
+
+set -e
+
+. /usr/share/GNUstep/Makefiles/GNUstep.sh
+
+DAEMON_OPTS="-WOWorkersCount $PREFORK -WOPidFile $PIDFILE -WOLogFile $LOGFILE"
+
+case "$1" in
+  start)
+	log_daemon_msg "Starting $DESC" "$NAME"
+
+        # Ensure directory's existence and permissions
+        install -o $USER -g adm -m 755 -d /var/run/$NAME
+        install -o $USER -g adm -m 750 -d /var/spool/$NAME
+        install -o $USER -g adm -m 750 -d /var/log/$NAME
+
+	if ! start-stop-daemon -c $USER --quiet --start --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS 
+	then
+	    log_progress_msg "already running"
+        fi
+	log_end_msg 0
+	;;
+  stop)
+	log_daemon_msg "Stopping $DESC" "$NAME"
+	start-stop-daemon --stop --pidfile $PIDFILE --retry=TERM/20/KILL/5 --oknodo
+	log_end_msg 0
+	;;
+  restart|force-reload)
+	log_daemon_msg "Restarting $DESC" "$NAME"
+	start-stop-daemon --stop --pidfile $PIDFILE --retry=TERM/20/KILL/5 --oknodo
+        # Ensure directory's existence and permissions
+        install -o $USER -g adm -m 755 -d /var/run/$NAME
+        install -o $USER -g adm -m 750 -d /var/spool/$NAME
+        install -o $USER -g adm -m 750 -d /var/log/$NAME
+	start-stop-daemon -c $USER --quiet --start --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS 
+	log_end_msg 0
+	;;
+  status)
+	status_of_proc -p $PIDFILE "$DAEMON" $NAME && exit 0 || exit $?
+	;;
+  *)
+	echo "Usage: $NAME {start|stop|restart|status}" >&2
+	exit 1
+	;;
+esac
+
+exit 0
