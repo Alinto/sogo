@@ -175,6 +175,43 @@
 	* OGoContentStore/OCSContactFieldExtractor.m
 	(-extractQuickFieldsFromVCard): idem.
 
+2012-03-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): remove comment if
+	content is "\n".
+
+	* OpenChange/MAPIStoreTasksMessage.m (-save): do not reset fields
+	that have not been passed in the properties array, since only
+	RopDeleteProperties should remove them.
+	Remove comment if content is "\n".
+
+	* OpenChange/MAPIStoreObject.m (-addPropertiesFromRow:): dates are
+	now all converted to the user's timezone, even though it just
+	inverts the problem we currently have.
+
+	* OpenChange/MAPIApplication.m (-init): utcTZ is now initialized
+	here.
+
+	* OpenChange/MAPIStoreTypes.[hm]: new host module for utcTZ.
+
+	* OpenChange/MAPIStoreUserContext.m (-timeZone): new method that
+	returns the timezone of an owner user.
+
+	* OpenChange/MAPIStoreObject.m (-ownerTimeZone): removed method,
+	replaced with the one above.
+
+2012-03-29  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js (savePreferences): fixed
+	validation of end date of vacation of message when not using ISO
+	format (currently limited to French).
+
+	* UI/WebServerResources/ContactsUI.js (startDragging): create an
+	overlapping safety block (div) to avoid possible selection of the
+	underlying text.
+
+	* UI/WebServerResources/MailerUI.js (startDragging): idem.
+
 2012-03-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxPreferences.js (savePreferences): fixed
@@ -197,6 +234,42 @@
 
 	* SoObjects/SOGo/LDAPSource.m (-allEntryIDs): take the _filter
 	ivar into account.
+
+2012-03-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/SOGoMAPIFSMessage.m
+	(_readFileChangesDataWithDate:andInode:): use the inode number
+	rather than the filesize as change indicator since a new file is
+	created each time the dictionary is written to disk, thanks to the
+	"atomically" flag.
+	(-save): write the file atomically.
+
+	* SoObjects/Contacts/SOGoFolder+CardDAV.m (_isValidFilter:):
+	accept "email" as filter name.
+	(_appendObject:withBaseURL:toREPORTResponse:): fixed the ordering
+	of XML elements as the address*-data props where put outside of
+	the <D:prop> tree.
+
+	* SoObjects/SOGo/LDAPSource.m (-allEntryIDs): take the _filter
+	ivar into account.
+
+2012-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Contacts/SOGoContactFolders.m
+	(-lookupName:inContext:acquire:): overriden method that enables
+	the lookup of hidden public sources with iOS devices.
+
+	* SoObjects/Contacts/SOGoContactLDIFEntry.m (-davAddressData): new
+	getter similar to davCalendarData.
+
+	* SoObjects/Contacts/SOGoContactSourceFolder.m
+	(-davAddressbookMultiget): new REPORT handler based on
+	-[SOGoAppointmentFolder davCalendarMultiget].
+
+	* SoObjects/Contacts/SOGoUserFolder+Contacts.m
+	(-davDirectoryGateway): new getter that returns the url to the
+	first available directory source.
+	(-davResourceType): declare resource as "directory" (carddav).
 
 2012-03-27  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
