@@ -450,16 +450,23 @@ static NSNumber *sharedYes = nil;
 
 - (NSString *) _sqlStringRangeFrom: (NSCalendarDate *) _startDate
                                 to: (NSCalendarDate *) _endDate
+                             cycle: (BOOL) _isCycle
 {
+  NSString *format;
   unsigned int start, end;
 
   start = (unsigned int) [_startDate timeIntervalSince1970];
   end = (unsigned int) [_endDate timeIntervalSince1970];
 
   // vTODOs don't necessarily have start/end dates
-  return [NSString stringWithFormat:
-                     @"(c_startdate = NULL OR c_startdate <= %u) AND (c_enddate = NULL OR c_enddate >= %u)",
-                   end, start];
+  if (_isCycle)
+    format = (@"(c_startdate = NULL OR c_startdate <= %u)"
+              @" AND (c_cycleenddate = NULL OR c_cycleenddate >= %u)");
+  else
+    format = (@"(c_startdate = NULL OR c_startdate <= %u)"
+              @" AND (c_enddate = NULL OR c_enddate >= %u)");
+
+  return [NSString stringWithFormat: format, end, start];
 }
 
 - (NSString *) aclSQLListingFilter
@@ -549,7 +556,8 @@ static NSNumber *sharedYes = nil;
 
   baseWhere = [NSMutableArray arrayWithCapacity: 32];
   if (startDate && endDate)
-    [baseWhere addObject: [self _sqlStringRangeFrom: startDate to: endDate]];
+    [baseWhere addObject: [self _sqlStringRangeFrom: startDate to: endDate
+                                              cycle: NO]];
 
   if ([title length])
     [baseWhere
@@ -1134,7 +1142,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
         endDate = [NSCalendarDate distantFuture];
       r = [NGCalendarDateRange calendarDateRangeWithStartDate: _startDate
                                                       endDate: endDate];
-      dateSqlString = [self _sqlStringRangeFrom: _startDate to: endDate];
+      dateSqlString = [self _sqlStringRangeFrom: _startDate to: endDate
+                                          cycle: NO];
     }
   else
     {
@@ -1193,6 +1202,16 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
           /* we know the last element of "baseWhere" is the c_iscycle
              condition */
           [baseWhere removeLastObject];
+
+          /* replace the date range */
+          if (r)
+            {
+              [baseWhere removeLastObject];
+              dateSqlString = [self _sqlStringRangeFrom: _startDate
+                                                     to: endDate
+                                                  cycle: YES];
+              [baseWhere addObject: dateSqlString];
+            }
           [baseWhere addObject: @"c_iscycle = 1"];
           where = [baseWhere componentsJoinedByString: @" AND "];
           qualifier = [EOQualifier qualifierWithQualifierFormat: where];

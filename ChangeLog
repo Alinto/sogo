@@ -1,3 +1,10 @@
+2012-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-fetchFields:from:to:title:component:additionalFilters:includeProtectedInformation:):
+	fix the date condition for cycle record, by using c_cycleenddate
+	instead of c_enddate.
+
 2012-04-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
 	
 	* SoObjects/Appointments/SOGoAppointmentObject.m (-_handleResourcesConflicts: ...):
