@@ -657,7 +657,7 @@
 //       +------------> _handleUpdatedEvent:fromOldEvent: ---> _addOrUpdateEvent:forUID:owner:  <-----------+
 //                               |           |                   ^                                          |
 //                               v           v                   |                                          |
-//  _handleRemoveUsers:withRecurrenceId:  _handleSequenceUpdateInEvent:ignoringAttendees:fromOldEvent:      |
+//  _handleRemovedUsers:withRecurrenceId:  _handleSequenceUpdateInEvent:ignoringAttendees:fromOldEvent:      |
 //                     |                                                                                    |
 //                     |             [DELETEAction:]                                                        |
 //                     |                    |              {_handleAdded/Updated...}<--+                    |
@@ -1883,10 +1883,22 @@
 			withDelegate: nil // FIXME (specify delegate?)
 			forRecurrenceId: [self _addedExDate: oldEvent  newEvent: newEvent]];
 	      }
-	      else
-		[self changeParticipationStatus: [attendee partStat]
-				   withDelegate: delegate
-				forRecurrenceId: recurrenceId];
+	      else if (attendee)
+		{
+		  [self changeParticipationStatus: [attendee partStat]
+				     withDelegate: delegate
+				  forRecurrenceId: recurrenceId];
+		}
+	      // All attendees and the organizer field were removed. Apple iCal does
+	      // that when we remove the last attendee of an event.
+	      //
+	      // We must update previous's attendees' calendars to actually
+	      // remove the event in each of them.
+	      else 
+		{
+		  [self _handleRemovedUsers: [changes deletedAttendees]
+			   withRecurrenceId: recurrenceId];
+		}
 	    }
 	}
     }

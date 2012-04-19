@@ -1,3 +1,11 @@
+2012-04-19  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m (-PUTAction:)
+	We now handle cases where the last attendee AND the organizer
+	is removed from the event during a PUT action (happens when
+	you delete the last attendee of an event with iCal). This used
+	to crash sogod.
+
 2012-04-19  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
