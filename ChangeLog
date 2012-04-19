@@ -6,6 +6,10 @@
 
 2012-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/SOGo/SOGoParentFolder.m (-appendSubscribedSources):
+	ensure the array set as values in the settings dicts are not nil
+	prior to setting them.
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-fetchFields:from:to:title:component:additionalFilters:includeProtectedInformation:):
 	fix the date condition for cycle record, by using c_cycleenddate
