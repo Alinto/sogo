@@ -293,11 +293,10 @@ static SoSecurityManager *sm = nil;
   subscribedReferences = [NSMutableArray arrayWithArray: [[settings objectForKey: nameInContainer]
 							   objectForKey: @"SubscribedFolders"]];
   o =  [[settings objectForKey: nameInContainer] objectForKey: @"FolderDisplayNames"];
-  folderDisplayNames = nil;
-
   if (o)
     folderDisplayNames = [NSMutableDictionary dictionaryWithDictionary: o];
- 
+  else
+    folderDisplayNames = nil;
 
   allKeys = [subscribedReferences objectEnumerator];
   while ((currentKey = [allKeys nextObject]))
@@ -315,12 +314,12 @@ static SoSecurityManager *sm = nil;
   // If we changed the folder subscribtion list, we must sync it
   if (dirty)
     {
-      id o;
-
-      [[settings objectForKey: nameInContainer] setObject: subscribedReferences
-						   forKey: @"SubscribedFolders"];
-      [[settings objectForKey: nameInContainer] setObject: folderDisplayNames
-						   forKey: @"FolderDisplayNames"];
+      if (subscribedReferences)
+        [[settings objectForKey: nameInContainer] setObject: subscribedReferences
+                                                     forKey: @"SubscribedFolders"];
+      if (folderDisplayNames)
+        [[settings objectForKey: nameInContainer] setObject: folderDisplayNames
+                                                     forKey: @"FolderDisplayNames"];
     }
 	    
   return error;
