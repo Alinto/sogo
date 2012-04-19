@@ -5,6 +5,8 @@
 	is removed from the event during a PUT action (happens when
 	you delete the last attendee of an event with iCal). This used
 	to crash sogod.
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (-importCalendar:)
+	Fixed the import process of broken all-day events (#1055)
 
 2012-04-19  Francis Lachapelle  <flachapelle@inverse.ca>
 

@@ -2796,8 +2796,20 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                       else
                         [event setDuration: @"PT1H"];
                       
-                      [self errorWithFormat: @"Importing event with no end date; setting duration to %@", [event duration]];
+                      [self errorWithFormat: @"Importing event with no end date; setting duration to %@ for UID = %@", [event duration], [event uid]];
                     }
+		  //
+		  // We check for broken all-day events (like the ones coming from the "WebCalendar" tool) where
+		  // the start date is equal to the end date. This clearly violates the RFC:
+		  //
+		  // 3.8.2.2. Date-Time End
+		  // The value MUST be later in time than the value of the "DTSTART" property. 
+		  //
+		  if ([event isAllDay] && [[event startDate] isEqual: [event endDate]])
+		    {
+		      [event setEndDate: [[event startDate] dateByAddingYears: 0  months: 0  days: 1  hours: 0  minutes: 0  seconds: 0]];
+		      [self errorWithFormat: @"Fixed broken all-day event; setting end date to %@ for UID = %@", [event endDate], [event uid]];
+		    }
                   if ([event recurrenceId])
                     {
                       // Event is an occurrence of a repeating event
