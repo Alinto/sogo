@@ -30,6 +30,7 @@
 - (id) objectForCaseInsensitiveKey: (NSString *) aKey;
 
 - (void) versitRenderInString: (NSMutableString *) aString
+              withKeyOrdering: (NSArray *) ordering
                  asAttributes: (BOOL) asAttribute; /* handling of ":" */
 
 @end

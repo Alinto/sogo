@@ -59,6 +59,7 @@
 	  rule = [rules objectAtIndex:i];
           ruleString = [NSMutableString new];
           [[rule values] versitRenderInString: ruleString
+                              withKeyOrdering: [rule orderOfValueKeys]
                                  asAttributes: NO];
 	  [ma addObject: ruleString];
           [ruleString release];

@@ -106,6 +106,9 @@
 
 - (void) addType: (NSString *) aType;
 
+- (NSArray *) orderOfAttributeKeys;
+- (NSArray *) orderOfValueKeys;
+
 - (NSString *) versitString;
 
 - (CardGroup *) searchParentOfClass: (Class) parentClass;

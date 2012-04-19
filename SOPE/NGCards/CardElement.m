@@ -471,6 +471,16 @@ _orderedValuesAreVoid (NSArray *orderedValues)
   return result;
 }
 
+- (NSArray *) orderOfAttributeKeys
+{
+  return nil;
+}
+
+- (NSArray *) orderOfValueKeys
+{
+  return nil;
+}
+
 - (NSString *) versitString
 {
   NSString *string;

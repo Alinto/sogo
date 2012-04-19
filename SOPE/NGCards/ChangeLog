@@ -1,3 +1,15 @@
+2012-04-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* NSDictionary+NGCards.m
+	(-versitRenderInString:withKeyOrdering:asAttributes:): now takes
+	an "ordering" parameter resulting from the methods below and
+	reorder the dictionary keys as specified.
+
+	* CardElement.m (-orderOfAttributeKeys, -orderOfValueKeys): new
+	methods that return an ordered array of value keys, used for
+	rendering data in a way that is acceptable to certain picky
+	clients.
+
 2012-04-11  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalWeeklyRecurrenceCalculator.m
