@@ -1,3 +1,9 @@
+2012-04-19  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(-importCalendar:): associate occurrences of a repeating event to
+	its master vcalendar to avoid duplicated events when importing a .ics.
+
 2012-04-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoParentFolder.m (-appendSubscribedSources):
@@ -10,27 +16,27 @@
 	instead of c_enddate.
 
 2012-04-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
-	
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m (-_handleResourcesConflicts: ...):
 	We now handle recurring appointments by fetching the freebusy information for one full
 	year from the date of the event. Also improved the conflict
 	reporting messages.
-	
+
 	* SoObjects/Appointments/SOGoAppointmentObject.m (-PUTAction:):
 	update the versit string in the request when updating the event, in
 	case a resource auto-accepted the event
-	
+
 	* SoObjects/SOGo/SOGoGCSFolder.m: renamed -subscribeUser:reallydo: to
 	subscribeUserOrGroup:reallydo and we now handle group subscriptions.
 	Refactored all callers.
-	
+
 	* SoObjects/SOGo/SOGoParentFolder.m (-_appendSubscribedSource:): now returns a
 	BOOL if the permission are still valid or not
-	
+
 	* SoObjects/SOGo/SOGoParentFolder.m (-appendSubscribedSources): consumes the
 	returned value from -_appendSubscribedSource: and cleans up SubscribedFolders
 	and FolderDisplayNames accordingly in the user's settings.
-	
+
 	* SoObjects/SOGo/SOGoUserManager.m (-_fillContactInfosForUser: ...): we now
 	set the isGroup attribute as we need this for quick groups
 	resolving.

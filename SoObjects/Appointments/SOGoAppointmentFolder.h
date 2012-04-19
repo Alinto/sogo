@@ -49,6 +49,7 @@
 @class NSTimeZone;
 @class GCSFolder;
 @class iCalCalendar;
+@class iCalTimeZone;
 @class SOGoWebDAVValue;
 
 typedef enum {
@@ -162,8 +163,8 @@ typedef enum {
 - (BOOL) includeInFreeBusy;
 - (void) setIncludeInFreeBusy: (BOOL) newInclude;
 
-- (BOOL) importComponent: (iCalEntityObject *) event
-		timezone: (NSString *) timezone;
+- (NSString *) importComponent: (iCalEntityObject *) event
+                      timezone: (iCalTimeZone *) timezone;
 
 - (int) importCalendar: (iCalCalendar *) calendar;
 

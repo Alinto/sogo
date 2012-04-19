@@ -1775,6 +1775,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return [name isEqualToString: @"OPTIONS"];
 }
 
+/*
 - (id) lookupComponentByUID: (NSString *) uid
 {
   NSString *filename;
@@ -1792,6 +1793,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   return nil;
 }
+*/
 
 - (id) lookupName: (NSString *)_key
         inContext: (id)_ctx
@@ -2710,22 +2712,24 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return (![inactiveFolders containsObject: nameInContainer]);
 }
 
-- (BOOL) importComponent: (iCalEntityObject *) event
-		timezone: (NSString *) timezone
+- (NSString *) importComponent: (iCalEntityObject *) event
+                      timezone: (iCalTimeZone *) timezone
 {
   SOGoAppointmentObject *object;
   NSString *uid;
-  NSString *content;
+  NSMutableString *content;
 
   uid =  [self globallyUniqueObjectId];
   [event setUid: uid];
   object = [SOGoAppointmentObject objectWithName: uid
                                     inContainer: self];
   [object setIsNew: YES];
-  content = 
-    [NSString stringWithFormat: @"BEGIN:VCALENDAR\n%@%@\nEND:VCALENDAR", 
-	      timezone, [event versitString]];
-  return ([object saveContentString: content] == nil);
+  content = [NSMutableString stringWithString: @"BEGIN:VCALENDAR\n"];
+  if (timezone)
+    [content appendFormat: @"%@\n",  [timezone versitString]];
+  [content appendFormat: @"%@\nEND:VCALENDAR", [event versitString]];
+  
+  return ([object saveContentString: content] == nil) ? uid : nil;
 }
 
 /**
@@ -2737,11 +2741,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSArray *vtimezones;
   NSMutableArray *components;
-  NSMutableDictionary *timezones;
-  NSString *tz;
+  NSMutableDictionary *timezones, *uids;
+  NSString *tzId, *uid, *originalUid, *content;
   iCalEntityObject *element;
   iCalDateTime *startDate;
   iCalTimeZone *timezone;
+  iCalCalendar *masterCalendar;
   iCalEvent *event;
 
   int imported, count, i;
@@ -2757,11 +2762,12 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       for (i = 0; i < count; i++)
         {
           timezone = (iCalTimeZone *)[vtimezones objectAtIndex: i];
-          [timezones setValue: [NSString stringWithFormat: @"%@\n", [timezone versitString]]
+          [timezones setValue: timezone
                        forKey: [timezone tzId]];
         }
 
       // Parse events/todos/journals and import them
+      uids = [NSMutableDictionary dictionary];
       components = [[calendar events] mutableCopy];
       [components autorelease];
       [components addObjectsFromArray: [calendar todos]];
@@ -2770,14 +2776,15 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       count = [components count];
       for (i = 0; i < count; i++)
         {
-          tz = nil;
+          timezone = nil;
           element = [components objectAtIndex: i];
           // Use the timezone of the start date.
           startDate = (iCalDateTime *) [element uniqueChildWithTag: @"dtstart"];
           if (startDate)
             {
-              timezone = [startDate timeZone];
-              tz = [timezones valueForKey: [timezone tzId]];
+              tzId = [startDate value: 0 ofAttribute: @"tzid"];
+              if ([tzId length])
+                timezone = [timezones valueForKey: tzId];
               if ([element isKindOfClass: [iCalEvent class]])
                 {
                   event = (iCalEvent *)element;
@@ -2791,11 +2798,37 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                       
                       [self errorWithFormat: @"Importing event with no end date; setting duration to %@", [event duration]];
                     }
+                  if ([event recurrenceId])
+                    {
+                      // Event is an occurrence of a repeating event
+                      if ((uid = [uids valueForKey: [event uid]]))
+                        {
+                          SOGoAppointmentObject *master = [self lookupName: uid
+                                                                 inContext: context
+                                                                   acquire: NO];
+                          if (master)
+                            {
+                              // Associate the occurrence to the master event
+                              masterCalendar = [master calendar: NO secure: NO];
+                              [masterCalendar addToEvents: event];
+                              if (timezone)
+                                [masterCalendar addTimeZone: timezone];
+                              content = [masterCalendar versitString];
+                              [master saveContentString: content];
+                              continue;
+                            }
+                        }
+                    }
                 }
             }
-          if ([self importComponent: element
-                           timezone: (tz == nil? @"" : tz)])
-            imported++;
+          originalUid = [element uid];
+          if ((uid = [self importComponent: element
+                                  timezone: timezone]))
+            {
+              imported++;
+              [uids setValue: uid
+                      forKey: originalUid];
+            }
         }
     }
   
