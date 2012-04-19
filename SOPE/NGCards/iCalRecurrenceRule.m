@@ -854,6 +854,15 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
 //     }
 // }
 
+/* versit key ordering */
+- (NSArray *) orderOfValueKeys
+{
+  return [NSArray arrayWithObjects: @"freq", @"interval", @"count", @"until",
+                  @"bymonth", @"byweekno", @"byyearday", @"bymonthday",
+                  @"byday", @"byhour", @"byminute", @"bysecond", @"bysetpos",
+                  nil];
+}
+
 /* key/value coding */
 
 - (void) handleTakeValue: (id) _value

@@ -1,5 +1,7 @@
 2012-04-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* iCalRecurrenceRule.m (-orderOfValueKeys): overrriden method.
+
 	* NSDictionary+NGCards.m
 	(-versitRenderInString:withKeyOrdering:asAttributes:): now takes
 	an "ordering" parameter resulting from the methods below and
