@@ -74,6 +74,8 @@
 - (NSArray *) freeBusys;
 - (NSArray *) timezones;
 
+- (void) addToEvents: (iCalEvent *) _event;
+
 - (BOOL) addTimeZone: (iCalTimeZone *) iTZ;
 - (iCalTimeZone *) timeZoneWithId: (NSString *) tzId;
 

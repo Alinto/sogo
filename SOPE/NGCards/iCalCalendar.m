@@ -32,7 +32,6 @@
 #import "iCalCalendar.h"
 
 @interface iCalCalendar (Privates)
-- (void) addToEvents: (iCalEvent *) _event;
 - (void) addToTimezones: (iCalTimeZone *) _tz;
 - (void) addToTodos: (iCalToDo *) _todo;
 - (void) addToJournals: (iCalJournal *) _obj;
