@@ -36,6 +36,8 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
+NSTimeZone *utcTZ;
+
 uint8_t *
 MAPIBoolValue (void *memCtx, BOOL value)
 {
