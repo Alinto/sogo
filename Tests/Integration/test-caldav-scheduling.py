@@ -134,6 +134,10 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
                           "%stest-can-overbook.ics" % self.user_calendar, None)
         self._deleteEvent(self.client,
                           "%stest-can-overbook-overlap.ics" % self.user_calendar, None)
+        self._deleteEvent(self.client,
+                          "%stest-remove-attendee.ics" % self.user_calendar, None)
+        self._deleteEvent(self.client,
+                          "%stest-remove-attendee-no-org.ics" % self.user_calendar, None)
 
     def _newEvent(self, summary="test event", uid="test", transp=0):
         transparency = ("OPAQUE", "TRANSPARENT")
@@ -237,6 +241,102 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
                               " (actual: '%s', expected: '%s')"
                               % (email,
                                  compared_attendees[email], attendees[email]))
+
+    def testUninviteAttendee(self):
+        """ Remove attendee after event creation """
+
+        # make sure the event doesn't exist
+        ics_name = "test-remove-attendee.ics"
+        self._deleteEvent(self.client,
+                          "%s%s" % (self.user_calendar,ics_name), None)
+        self._deleteEvent(self.client,
+                          "%s%s" % (self.attendee1_calendar,ics_name), None)
+
+        # 1. create an event in the organiser's calendar
+        event = self._newEvent(summary="Test uninvite attendee", uid="Test uninvite attendee")
+        organizer = event.vevent.add('organizer')
+        organizer.cn_param = self.user_name
+        organizer.value = self.user_email
+
+        self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
+
+        # keep a copy around for updates without other attributes
+        noAttendeeEvent = vobject.iCalendar()
+        noAttendeeEvent.copy(event)
+
+        # 2. add an attendee
+        event.add("method").value = "REQUEST"
+        attendee = event.vevent.add('attendee')
+        attendee.cn_param = self.attendee1_name
+        attendee.rsvp_param = "TRUE"
+        attendee.partstat_param = "NEEDS-ACTION"
+        attendee.value = self.attendee1_email
+        self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event,
+                        exp_status=204)
+
+        # 3. verify that the attendee has the event
+        attendee_event = self._getEvent(self.client, "%s%s" % (self.attendee1_calendar, ics_name))
+
+        # 4. make sure the received event match the original one
+        self.assertEquals(event.vevent.uid, attendee_event.vevent.uid)
+
+        # 5. uninvite the attendee - put the event back without the attendee 
+        now = datetime.datetime.now(dateutil.tz.gettz("America/Montreal"))
+        noAttendeeEvent.vevent.last_modified.value = now
+        self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), noAttendeeEvent,
+                        exp_status=204)
+
+        # 6. verify that the attendee doesn't have the event anymore
+        attendee_event = self._getEvent(self.client, "%s%s" % (self.attendee1_calendar, ics_name), 404)
+
+    def testUninviteAttendeeNoOrganizer(self):
+        """ Remove attendee and organizer after event creation """
+
+        # make sure the event doesn't exist
+        ics_name = "test-remove-attendee-no-org.ics"
+        self._deleteEvent(self.client,
+                          "%s%s" % (self.user_calendar,ics_name), None)
+        self._deleteEvent(self.client,
+                          "%s%s" % (self.attendee1_calendar,ics_name), None)
+
+        # 1. create an event in the organiser's calendar
+        event = self._newEvent(summary="Test uninvite attendee no org", uid="Test uninvite attendee no org")
+        # keep a copy around for updates without other attributes
+        plainEvent = vobject.iCalendar()
+        plainEvent.copy(event)
+
+        organizer = event.vevent.add('organizer')
+        organizer.cn_param = self.user_name
+        organizer.value = self.user_email
+
+        self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
+
+
+        # 2. add an attendee
+        event.add("method").value = "REQUEST"
+        attendee = event.vevent.add('attendee')
+        attendee.cn_param = self.attendee1_name
+        attendee.rsvp_param = "TRUE"
+        attendee.partstat_param = "NEEDS-ACTION"
+        attendee.value = self.attendee1_email
+        self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event,
+                        exp_status=204)
+
+        # 3. verify that the attendee has the event
+        attendee_event = self._getEvent(self.client, "%s%s" % (self.attendee1_calendar, ics_name))
+
+        # 4. make sure the received event match the original one
+        self.assertEquals(event.vevent.uid, attendee_event.vevent.uid)
+
+        # 5. put the event back without attendee or organizer
+        now = datetime.datetime.now(dateutil.tz.gettz("America/Montreal"))
+        plainEvent.vevent.last_modified.value = now
+        self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), plainEvent,
+                        exp_status=204)
+
+        # 6. verify that the attendee doesn't have the event anymore
+        attendee_event = self._getEvent(self.client, "%s%s" % (self.attendee1_calendar, ics_name), 404)
+
 
     def testAddAttendee(self):
 	""" add attendee after event creation """
