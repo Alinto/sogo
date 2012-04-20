@@ -45,6 +45,7 @@
   NSArray *daysOfWeek, *daysBetweenResponsesList;
   NSArray *sieveFilters;
   NSMutableDictionary *vacationOptions, *forwardOptions;
+  BOOL mailCustomFromEnabled;
   BOOL hasChanged;
 }
 

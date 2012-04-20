@@ -98,6 +98,11 @@
   return [self stringForKey: @"OCSFolderInfoURL"];
 }
 
+- (BOOL) mailCustomFromEnabled
+{
+  return [self boolForKey: @"SOGoMailCustomFromEnabled"];
+}
+
 - (BOOL) mailAuxiliaryUserAccountsEnabled
 {
   return [self boolForKey: @"SOGoMailAuxiliaryUserAccountsEnabled"];

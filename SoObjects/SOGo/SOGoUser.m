@@ -577,7 +577,7 @@
 - (void) _appendSystemMailAccount
 {
   NSString *fullName, *replyTo, *imapLogin, *imapServer, *signature,
-    *encryption, *scheme, *action, *query;
+    *encryption, *scheme, *action, *query, *customValue;
   NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts;
   NSNumber *port;
   NSMutableArray *identities;
@@ -647,6 +647,37 @@
   max = [mails count];
   if (max > 1)
     max--;
+
+  /* custom from */
+  if ([[self domainDefaults] mailCustomFromEnabled])
+    {
+      [self userDefaults];
+      customValue = [_defaults mailCustomEmail];
+      if ([customValue length] > 0)
+        {
+          identity = [NSMutableDictionary new];
+          [identity setObject: customValue forKey: @"email"];
+
+          fullName = [_defaults mailCustomFullName];
+          if (![fullName length])
+            {
+              fullName = [self cn];
+              if (![fullName length])
+                fullName = login;
+            }
+          [identity setObject: fullName forKey: @"fullName"];
+
+          if ([replyTo length] > 0)
+            [identity setObject: replyTo forKey: @"replyTo"];
+
+          signature = [_defaults mailSignature];
+          if (signature)
+            [identity setObject: signature forKey: @"signature"];
+          [identities addObject: identity];
+          [identity release];
+        }
+    }
+
   for (count = 0; count < max; count++)
     {
       identity = [NSMutableDictionary new];
@@ -749,7 +780,7 @@
   NSArray *identities;
 
   identities = [[self mailAccounts] objectsForKey: @"identities"
-				    notFoundMarker: nil];
+                                   notFoundMarker: nil];
 
   return [identities flattenedArray];
 }

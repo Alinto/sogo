@@ -664,8 +664,10 @@ function displayMailAccount(mailAccount, readOnly) {
     fieldSet = $("identityInfo");
     inputs = $(fieldSet.getElementsByTagName("input"));
     inputs.each(function (i) { i.mailAccount = mailAccount; });
-    for (var i = 0; i < 2; i++) {
-        inputs[i].disabled = readOnly;
+    if (!mailCustomFromEnabled) {
+        for (var i = 0; i < 2; i++) {
+            inputs[i].disabled = readOnly;
+        }
     }
 
     var form = $("mainForm");

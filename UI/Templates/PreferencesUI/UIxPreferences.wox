@@ -318,6 +318,11 @@
 
                   <input const:name="encryption" type="hidden" const:value="none"/>
               </fieldset>
+
+              <script type="text/javascript">
+                var mailCustomFromEnabled = <var:string value="mailCustomFromEnabled" const:escapeHTML="NO"/>;
+              </script>
+
               <fieldset const:id="identityInfo">
                 <label><var:string label:value="Full Name:"/>
                   <input const:name="fullName" const:id="fullName" type="text" const:value=""

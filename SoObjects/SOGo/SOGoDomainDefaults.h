@@ -37,6 +37,7 @@
 
 - (NSArray *) userSources;
 
+- (BOOL) mailCustomFromEnabled;
 - (BOOL) mailAuxiliaryUserAccountsEnabled;
 
 - (NSString *) mailDomain;

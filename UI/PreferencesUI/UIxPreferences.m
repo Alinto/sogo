@@ -106,6 +106,8 @@
             forwardOptions = [NSMutableDictionary new];
 	}
 
+      mailCustomFromEnabled = [dd mailCustomFromEnabled];
+
       hasChanged = NO;
     }
 
@@ -1285,6 +1287,29 @@
       if (!value)
         value = @"";
       [userDefaults setMailSignature: value];
+
+      if (mailCustomFromEnabled)
+        {
+          value = [[identity objectForKey: @"email"]
+                    stringByTrimmingSpaces];
+
+          /* We make sure that the "custom" value is different from the values
+             returned by the user directory service. */
+          if ([value length] == 0
+              || [[user allEmails] containsObject: value])
+            {
+              [userDefaults setMailCustomEmail: nil];
+              [userDefaults setMailCustomFullName: nil];
+            }
+          else
+            {
+              [userDefaults setMailCustomEmail: value];
+              value = [[identity objectForKey: @"fullName"]
+                        stringByTrimmingSpaces];
+              [userDefaults setMailCustomFullName: value];
+            }
+        }
+
       value = [[identity objectForKey: @"replyTo"]
                 stringByTrimmingSpaces];
       [userDefaults setMailReplyTo: value];
@@ -1526,6 +1551,11 @@
     }
 
   return [accounts jsonRepresentation];
+}
+
+- (NSString *) mailCustomFromEnabled
+{
+  return (mailCustomFromEnabled ? @"true" : @"false");
 }
 
 @end

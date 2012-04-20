@@ -1,5 +1,24 @@
 2012-04-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/UIxPreferences.js (displayMailAccount):
+	disable the "fullName" and "email" input fields of the first
+	account only when SOGoMailCustomFromEnabled is NO.
+
+	* UI/PreferencesUI/UIxPreferences.m (_extractMainIdentity:): the
+	custom values for "fullName" and "email" are now registered in the
+	user defaults, if "email" is different from all the values
+	returned by the user directory AND if SOGoMailCustomFromEnabled is
+	YES.
+
+	* SoObjects/SOGo/SOGoUserDefaults.m (-setMailCustomFullName:)
+	(-mailCustomFullName): new accessors for the new
+	"SOGoMailCustomFullName" user default.
+	(-setMailCustomEmail:, -mailCustomEmail): new accessors for the
+	new "SOGoMailCustomEmail" user default.
+
+	* SoObjects/SOGo/SOGoDomainDefaults.m (-mailCustomFromEnabled):
+	new getter for the "SOGoMailCustomFromEnabled" domain default.
+
 	* SoObjects/Mailer/SOGoDraftObject.m
 	(-mimeHeaderMapWithHeaders:excluding:) take the new "replyTo"
 	header into account.
@@ -7,6 +26,10 @@
 	* SoObjects/SOGo/SOGoUser.m (-_appendSystemMailAccount): specify
 	the value of "SOGoMailReplyTo" in the "replyTo" field of each
 	identity, if present.
+	When "SOGoMailCustomFromEnabled" is YES and the user has set
+	a value for "SOGoMailCustomEmail", a first identity is created and
+	set at the first position in the list, based on that value and on
+	"SOGoMailCustomFullName".
 
 	* SoObjects/SOGo/SOGoUserDefaults.m (-setMailReplyTo:)
 	(-mailReplyTo:): accessors for the "SOGoMailReplyTo" user default.
