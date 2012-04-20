@@ -1,5 +1,8 @@
 2012-04-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/HTMLElement.js: enhanced both
+	HTMLCollection and NodeList with the "Enumerable" interface.
+
 	* UI/WebServerResources/UIxPreferences.js (displayMailAccount):
 	disable the "fullName" and "email" input fields of the first
 	account only when SOGoMailCustomFromEnabled is NO.
