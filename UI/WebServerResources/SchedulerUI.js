@@ -1211,6 +1211,7 @@ function refreshEventsAndTasks() {
 function onCalendarReload() {
     if (!reloadWebCalendars()) {
         refreshEventsAndTasks();
+        changeCalendarDisplay();
     }
 
     return false;
@@ -1308,7 +1309,7 @@ function reloadWebCalendarCallback(http) {
                 remaining.splice(calIdx, 1);
                 if (remaining.length == 0) {
                     refreshEventsAndTasks();
-                    changeCalendarDisplay(null, currentView);
+                    changeCalendarDisplay();
                 }
                 else {
                     var newFolderID = remaining[0];
@@ -1318,7 +1319,7 @@ function reloadWebCalendarCallback(http) {
             else {
                 if (success) {
                     refreshEventsAndTasks();
-                    changeCalendarDisplay(null, currentView);
+                    changeCalendarDisplay();
                 }
             }
         }
