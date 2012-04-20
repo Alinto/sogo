@@ -46,7 +46,7 @@ Element.addMethods({
 
             var matchingNodes = new Array();
             tagName = tagName.toUpperCase();
-    
+
             for (var i = 0; i < element.childNodes.length; i++) {
                 var childNode = $(element.childNodes[i]);
                 if (Object.isElement(childNode)
@@ -62,13 +62,13 @@ Element.addMethods({
             element = $(element);
             var currentElement = element;
             tagName = tagName.toUpperCase();
-    
+
             currentElement = currentElement.parentNode;
             while (currentElement
                    && currentElement.tagName != tagName) {
                 currentElement = currentElement.parentNode;
             }
-    
+
             return currentElement;
         },
 
@@ -89,39 +89,39 @@ Element.addMethods({
             element = $(element);
             var currentElement = element;
             var offset = 0;
-    
+
             var i = 0;
-    
+
             while (currentElement && currentElement.tagName) {
                 offset += currentElement.offsetTop;
                 currentElement = currentElement.parentNode;
                 i++;
             }
-    
+
             return offset;
         },
- 
+
         dump: function(element, additionalInfo, additionalKeys) {
             element = $(element);
             var id = element.getAttribute("id");
             var nclass = element.getAttribute("class");
-    
+
             var str = element.tagName;
             if (id)
                 str += "; id = " + id;
             if (nclass)
                 str += "; class = " + nclass;
-    
+
             if (additionalInfo)
                 str += "; " + additionalInfo;
-    
+
             if (additionalKeys)
                 for (var i = 0; i < additionalKeys.length; i++) {
                     var value = element.readAttribute(additionalKeys[i]);
                     if (value)
                         str += "; " + additionalKeys[i] + " = " + value;
                 }
-    
+
             log (str);
         },
 
@@ -158,7 +158,7 @@ Element.addMethods({
             element = $(element);
             if (document.currentPopupMenu)
                 hideMenu(document.currentPopupMenu);
-    
+
             var popup = element.sogoContextMenu;
             var menuTop = Event.pointerY(event);
             var menuLeft = Event.pointerX(event);
@@ -166,7 +166,7 @@ Element.addMethods({
                               - (menuTop + popup.offsetHeight));
             if (heightDiff < 0)
                 menuTop += heightDiff;
-    
+
             var leftDiff = (window.width()
                             - (menuLeft + popup.offsetWidth));
             if (leftDiff < 0)
@@ -181,7 +181,7 @@ Element.addMethods({
             if (isVisible) {
                 popup.setStyle( { top: menuTop + "px",
                             left: menuLeft + "px",
-                            visibility: "visible" } );                
+                            visibility: "visible" } );
                 document.currentPopupMenu = popup;
                 $(document.body).on("mousedown", onBodyClickMenuHandler);
             }
@@ -214,7 +214,7 @@ Element.addMethods({
                 parent.selectedIds.push(element.id);
             }
         },
-            
+
         selectRange: function(element, startIndex, endIndex) {
             element = $(element);
             var s;
@@ -307,11 +307,11 @@ Element.addMethods({
             element = $(element);
             if (element.setSelectionRange) {  // For Mozilla and Safari
                 element.focus();
-                element.setSelectionRange(pos, pos); 
+                element.setSelectionRange(pos, pos);
             }
             else if (element.createTextRange) {  // For IE
                 var range = element.createTextRange();
-                range.move("character", pos); 
+                range.move("character", pos);
                 range.select();
             }
         },
@@ -361,7 +361,7 @@ Element.addMethods({
             Form.getInputs(element, 'checkbox', checkboxName).each(function(input) {
                     if (input.checked)
                         values.push(i+1);
-	
+
                     i++;
                 });
             return values.join(",");
@@ -373,7 +373,7 @@ Element.addMethods({
             var i = 1;
 
             Form.getInputs(element, 'checkbox', checkboxName).each(function(input) {
-      
+
                     if ($(v).indexOf(i+"") != -1)
                         input.checked = 1;
                     i++;
