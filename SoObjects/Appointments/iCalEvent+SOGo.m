@@ -234,7 +234,6 @@
       // - the component must not be recurrent;
       // - only the first alarm is considered;
       // - the alarm's action must be of type DISPLAY;
-      // - the alarm's trigger value type must be DURATION;
       //
       // Morever, we don't update the quick table if the property X-WebStatus
       // of the trigger is set to "triggered".

@@ -142,45 +142,20 @@
 
 - (NSCalendarDate *) nextAlarmDate
 {
-  iCalTrigger *aTrigger;
-  NSCalendarDate *relationDate, *nextAlarmDate;
-  NSString *relation;
-  NSTimeInterval anInterval;
+  NSCalendarDate *nextAlarmDate;
 
   // We currently have the following limitations for alarms:
   // - the alarm's trigger value type must be DURATION;
 
-  nextAlarmDate = nil;
-
   if ([parent isKindOfClass: [iCalEvent class]]
       || [parent isKindOfClass: [iCalToDo class]])
-    {
-      aTrigger = [self trigger];
-
-      if ([[aTrigger valueType] caseInsensitiveCompare: @"DURATION"]
-          == NSOrderedSame)
-        {
-          relation = [aTrigger relationType];
-          anInterval = [[aTrigger flattenedValuesForKey: @""]
-                         durationAsTimeInterval];
-          if ([relation caseInsensitiveCompare: @"END"] == NSOrderedSame)
-            {
-              if ([parent isKindOfClass: [iCalEvent class]])
-                relationDate = [(iCalEvent *) parent endDate];
-              else
-                relationDate = [(iCalToDo *) parent due];
-            }
-          else
-            relationDate = [(iCalEntityObject *) parent startDate];
-	      
-          // Compute the next alarm date with respect to the reference date
-          if ([relationDate isNotNull])
-            nextAlarmDate = [relationDate addTimeInterval: anInterval];
-        }
-    }
+    nextAlarmDate = [[self trigger] nextAlarmDate];
   else
-    [self warnWithFormat: @"alarms not handled for elements of class '%@'",
-          NSStringFromClass ([parent class])];
+    {
+      nextAlarmDate = nil;
+      [self errorWithFormat: @"alarms not handled for elements of class '%@'",
+            NSStringFromClass ([parent class])];
+    }
 
   return nextAlarmDate;
 }

@@ -32,6 +32,8 @@
 - (void) setRelationType: (NSString *) theRelationType;
 - (NSString *) relationType;
 
+- (NSCalendarDate *) nextAlarmDate;
+
 @end
 
 #endif /* __NGCards_iCalTrigger_H__ */

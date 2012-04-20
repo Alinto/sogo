@@ -21,7 +21,11 @@
 
 #import <Foundation/NSString.h>
 
+#import "iCalEvent.h"
 #import "iCalTrigger.h"
+#import "iCalToDo.h"
+
+#import "NSString+NGCards.h"
 
 @implementation iCalTrigger
 
@@ -45,6 +49,48 @@
 - (NSString *) relationType
 {
   return [self value: 0 ofAttribute: @"related"];
+}
+
+- (NSCalendarDate *) nextAlarmDate
+{
+  NSCalendarDate *relationDate, *nextAlarmDate;
+  NSString *relation, *triggerValue;
+  NSTimeInterval anInterval;
+  id grandParent;
+
+  triggerValue = [[self valueType] uppercaseString];
+  if ([triggerValue length] == 0)
+    triggerValue = @"DURATION";
+
+  if ([triggerValue isEqualToString: @"DURATION"])
+    {
+      relation = [[self relationType] uppercaseString];
+
+      grandParent = [parent parent];
+      if ([relation isEqualToString: @"END"])
+        {
+          if ([grandParent isKindOfClass: [iCalEvent class]])
+            relationDate = [(iCalEvent *) grandParent endDate];
+          else
+            relationDate = [(iCalToDo *) grandParent due];
+        }
+      else
+        relationDate = [(iCalEntityObject *) grandParent startDate];
+	      
+      // Compute the next alarm date with respect to the reference date
+      if (relationDate)
+        {
+          anInterval = [[self flattenedValuesForKey: @""]
+                         durationAsTimeInterval];
+          nextAlarmDate = [relationDate addTimeInterval: anInterval];
+        }
+    }
+  else if ([triggerValue isEqualToString: @"DATE-TIME"])
+    nextAlarmDate = [[self flattenedValuesForKey: @""] asCalendarDate];
+  else
+    nextAlarmDate = nil;
+
+  return nextAlarmDate;
 }
 
 @end /* iCalTrigger */
