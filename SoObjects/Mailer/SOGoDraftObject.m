@@ -269,7 +269,7 @@ static NSString    *userAgent      = nil;
 {
   id headerValue;
   unsigned int count;
-  NSString *messageID, *priority, *pureSender;
+  NSString *messageID, *priority, *pureSender,*replyTo;
 
   for (count = 0; count < 8; count++)
     {
@@ -308,6 +308,13 @@ static NSString    *userAgent      = nil;
   else
     {
       [headers setObject: @"5 (Lowest)"  forKey: @"X-Priority"];
+    }
+
+  replyTo = [headers objectForKey: @"replyTo"];
+  if ([replyTo length] > 0)
+    {
+      [headers setObject: replyTo forKey: @"reply-to"];
+      [headers removeObjectForKey: @"replyTo"];
     }
 
   if ([[newHeaders objectForKey: @"receipt"] isEqualToString: @"true"])
@@ -1361,7 +1368,7 @@ static NSString    *userAgent      = nil;
   NSString *s, *dateString;
   NGMutableHashMap *map;
   NSArray *emails;
-  id from;
+  id from, replyTo;
   
   map = [[[NGMutableHashMap alloc] initWithCapacity:16] autorelease];
   
@@ -1382,6 +1389,9 @@ static NSString    *userAgent      = nil;
     else
       [map setObject: [self _quoteSpecials: from] forKey: @"from"];
   }
+
+  if (replyTo = [headers objectForKey: @"reply-to"])
+    [map setObject: replyTo forKey: @"reply-to"];
 
   if (inReplyTo)
     [map setObject: inReplyTo forKey: @"in-reply-to"];

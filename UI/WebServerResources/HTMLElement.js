@@ -1,5 +1,18 @@
 /* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
+if (NodeList) {
+    var _each = NodeList.prototype.forEach;
+    if (!_each) {
+        _each = function NodeList_each(iterator, context) {
+            for (var i = 0, length = this.length >>> 0; i < length; i++) {
+                if (i in this) iterator.call(context, this[i], i, this);
+            }
+        };
+    }
+    NodeList.prototype._each = _each;
+    Object.extend(NodeList.prototype, Enumerable);
+}
+
 /* custom extensions to the DOM api */
 Element.addMethods({
         addInterface: function(element, objectInterface) {

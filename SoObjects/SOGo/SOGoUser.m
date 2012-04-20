@@ -576,8 +576,8 @@
 
 - (void) _appendSystemMailAccount
 {
-  NSString *fullName, *imapLogin, *imapServer, *signature, *encryption,
-    *scheme, *action, *query;
+  NSString *fullName, *replyTo, *imapLogin, *imapServer, *signature,
+    *encryption, *scheme, *action, *query;
   NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts;
   NSNumber *port;
   NSMutableArray *identities;
@@ -642,6 +642,8 @@
   mails = [self allEmails];
   [mailAccount setObject: [mails objectAtIndex: 0] forKey: @"name"];
 
+  replyTo = [_defaults mailReplyTo];
+
   max = [mails count];
   if (max > 1)
     max--;
@@ -653,6 +655,10 @@
         fullName = login;
       [identity setObject: fullName forKey: @"fullName"];
       [identity setObject: [mails objectAtIndex: count] forKey: @"email"];
+
+      if ([replyTo length] > 0)
+        [identity setObject: replyTo forKey: @"replyTo"];
+
       signature = [_defaults mailSignature];
       if (signature)
         [identity setObject: signature forKey: @"signature"];
