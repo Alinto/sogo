@@ -1273,33 +1273,21 @@
   return [[user domainDefaults] mailAuxiliaryUserAccountsEnabled];
 }
 
-- (void) _extractMainSignature: (NSDictionary *) account
+- (void) _extractMainIdentity: (NSDictionary *) identity
 {
   /* We perform some validation here as we have no guaranty on the input
      validity. */
-  NSString *signature;
-  NSArray *identities;
-  NSDictionary *identity;
+  NSString *value;
 
-  if ([account isKindOfClass: [NSDictionary class]])
+  if ([identity isKindOfClass: [NSDictionary class]])
     {
-      identities = [account objectForKey: @"identities"];
-      if ([identities isKindOfClass: [NSArray class]])
-        {
-          signature = nil;
-
-          if ([identities count] > 0)
-            {
-              identity = [identities objectAtIndex: 0];
-              if ([identity isKindOfClass: [NSDictionary class]])
-                {
-                  signature = [identity objectForKey: @"signature"];
-                  if (!signature)
-                    signature = @"";
-                  [userDefaults setMailSignature: signature];
-                }
-            }
-        }
+      value = [identity objectForKey: @"signature"];
+      if (!value)
+        value = @"";
+      [userDefaults setMailSignature: value];
+      value = [[identity objectForKey: @"replyTo"]
+                stringByTrimmingSpaces];
+      [userDefaults setMailReplyTo: value];
     }
 }
 
@@ -1311,35 +1299,38 @@
               || [action isEqualToString: @"ask"]));
 }
 
-- (void) _extractMainReceiptsPreferences: (NSDictionary *) account
+- (void) _extractMainReceiptsPreferences: (NSDictionary *) receipts
 {
   /* We perform some validation here as we have no guaranty on the input
      validity. */
-  NSDictionary *receipts;
   NSString *action;
 
-  if ([account isKindOfClass: [NSDictionary class]])
+  if ([receipts isKindOfClass: [NSDictionary class]])
     {
-      receipts = [account objectForKey: @"receipts"];
-      if ([receipts isKindOfClass: [NSDictionary class]])
-        {
-          action = [receipts objectForKey: @"receiptAction"];
-          [userDefaults
-            setAllowUserReceipt: [action isEqualToString: @"allow"]];
+      action = [receipts objectForKey: @"receiptAction"];
+      [userDefaults
+        setAllowUserReceipt: [action isEqualToString: @"allow"]];
+      
+      action = [receipts objectForKey: @"receiptNonRecipientAction"];
+      if ([self _validateReceiptAction: action])
+        [userDefaults setUserReceiptNonRecipientAction: action];
 
-          action = [receipts objectForKey: @"receiptNonRecipientAction"];
-          if ([self _validateReceiptAction: action])
-            [userDefaults setUserReceiptNonRecipientAction: action];
-
-          action = [receipts objectForKey: @"receiptOutsideDomainAction"];
-          if ([self _validateReceiptAction: action])
-            [userDefaults setUserReceiptOutsideDomainAction: action];
-
-          action = [receipts objectForKey: @"receiptAnyAction"];
-          if ([self _validateReceiptAction: action])
-            [userDefaults setUserReceiptAnyAction: action];
-        }
+      action = [receipts objectForKey: @"receiptOutsideDomainAction"];
+      if ([self _validateReceiptAction: action])
+        [userDefaults setUserReceiptOutsideDomainAction: action];
+      
+      action = [receipts objectForKey: @"receiptAnyAction"];
+      if ([self _validateReceiptAction: action])
+        [userDefaults setUserReceiptAnyAction: action];
     }
+}
+
+- (void) _extractMainCustomFrom: (NSDictionary *) account
+{
+}
+
+- (void) _extractMainReplyTo: (NSDictionary *) account
+{
 }
 
 - (BOOL) _validateAccountIdentities: (NSArray *) identities
@@ -1355,7 +1346,7 @@
   if (!knownKeys)
     {
       knownKeys = [NSArray arrayWithObjects: @"fullName", @"email",
-                           @"signature", nil];
+                           @"signature", @"replyTo", nil];
       [knownKeys retain];
     }
 
@@ -1407,7 +1398,7 @@
   if (!knownKeys)
     {
       knownKeys = [NSArray arrayWithObjects: @"name", @"serverName", @"port",
-                           @"userName", @"password", @"encryption",
+                           @"userName", @"password", @"encryption", @"replyTo",
                            @"identities", @"mailboxes",
                            @"receipts",
                            nil];
@@ -1447,6 +1438,20 @@
     }
 
   return valid;
+}
+
+- (void) _extractMainAccountSettings: (NSDictionary *) account
+{
+  NSArray *identities;
+
+  if ([account isKindOfClass: [NSDictionary class]])
+    {
+      identities = [account objectForKey: @"identities"];
+      if ([identities isKindOfClass: [NSArray class]]
+          && [identities count] > 0)
+        [self _extractMainIdentity: [identities objectAtIndex: 0]];
+      [self _extractMainReceiptsPreferences: [account objectForKey: @"receipts"]];
+    }
 }
 
 - (void) _extractAuxiliaryAccounts: (NSArray *) accounts
@@ -1499,9 +1504,7 @@
       max = [accounts count];
       if (max > 0)
         {
-          [self _extractMainSignature: [accounts objectAtIndex: 0]];
-          [self _extractMainReceiptsPreferences: [accounts objectAtIndex: 0]];
-
+          [self _extractMainAccountSettings: [accounts objectAtIndex: 0]];
           if ([self mailAuxiliaryUserAccountsEnabled])
             [self _extractAuxiliaryAccounts: accounts];
         }

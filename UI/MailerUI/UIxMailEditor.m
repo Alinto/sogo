@@ -104,6 +104,7 @@ static NSArray *infoKeys = nil;
     infoKeys = [[NSArray alloc] initWithObjects:
                                   @"subject", @"to", @"cc", @"bcc", 
                                 @"from", @"inReplyTo",
+                                @"replyTo",
                                 @"priority", @"receipt", nil];
 }
 
@@ -253,6 +254,15 @@ static NSArray *infoKeys = nil;
     }
 
   return from;
+}
+
+- (NSString *) replyTo
+{
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+
+  return [ud mailReplyTo];
 }
 
 - (void) setSubject: (NSString *) newSubject

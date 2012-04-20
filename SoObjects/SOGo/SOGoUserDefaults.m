@@ -531,6 +531,18 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return signaturePlacement;
 }
 
+- (void) setMailReplyTo: (NSString *) newValue
+{
+  if ([newValue length] == 0)
+    newValue = nil;
+  [self setObject: newValue forKey: @"SOGoMailReplyTo"];
+}
+
+- (NSString *) mailReplyTo
+{
+  return [self stringForKey: @"SOGoMailReplyTo"];
+}
+
 - (void) setAllowUserReceipt: (BOOL) allow
 {
   [self setBool: allow forKey: @"SOGoMailReceiptAllow"];

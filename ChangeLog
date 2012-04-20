@@ -1,3 +1,16 @@
+2012-04-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m
+	(-mimeHeaderMapWithHeaders:excluding:) take the new "replyTo"
+	header into account.
+
+	* SoObjects/SOGo/SOGoUser.m (-_appendSystemMailAccount): specify
+	the value of "SOGoMailReplyTo" in the "replyTo" field of each
+	identity, if present.
+
+	* SoObjects/SOGo/SOGoUserDefaults.m (-setMailReplyTo:)
+	(-mailReplyTo:): accessors for the "SOGoMailReplyTo" user default.
+
 2012-04-19  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m (-PUTAction:)

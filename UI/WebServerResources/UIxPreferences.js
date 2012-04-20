@@ -657,16 +657,15 @@ function onMailAccountEntryClick(event) {
 
 function displayMailAccount(mailAccount, readOnly) {
     var fieldSet = $("accountInfo");
-    var inputs = fieldSet.getElementsByTagName("input");
-    for (var i = 0; i < inputs.length; i++) {
-        inputs[i].disabled = readOnly;
-        inputs[i].mailAccount = mailAccount;
-    }
+    var inputs = $(fieldSet.getElementsByTagName("input"));
+    inputs.each(function (i) { i.disabled = readOnly;
+                               i.mailAccount = mailAccount; });
+
     fieldSet = $("identityInfo");
-    inputs = fieldSet.getElementsByTagName("input");
-    for (var i = 0; i < inputs.length; i++) {
+    inputs = $(fieldSet.getElementsByTagName("input"));
+    inputs.each(function (i) { i.mailAccount = mailAccount; });
+    for (var i = 0; i < 2; i++) {
         inputs[i].disabled = readOnly;
-        inputs[i].mailAccount = mailAccount;
     }
 
     var form = $("mainForm");
@@ -701,6 +700,7 @@ function displayMailAccount(mailAccount, readOnly) {
                     : {} );
     $("fullName").value = identity["fullName"] || "";
     $("email").value = identity["email"] || "";
+    $("replyTo").value = identity["replyTo"] || "";
 
     displayAccountSignature(mailAccount);
 

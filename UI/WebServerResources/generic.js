@@ -1681,13 +1681,10 @@ function onPreferencesClick(event) {
     }
     else {
         var w = window.open(urlstr, "SOGoPreferences",
-                            "width=580,height=450,resizable=1,scrollbars=0,location=0");
+                            "width=580,height=476,resizable=1,scrollbars=0,location=0");
         w.opener = window;
         w.focus();
     }
-
-    preventDefault(event);
-    return false;
 }
 
 function configureLinkBanner() {
@@ -1704,7 +1701,7 @@ function configureLinkBanner() {
         link = $("preferencesBannerLink");
         if (link) {
             link.observe("mousedown", listRowMouseDownHandler);
-            link.observe("click", onPreferencesClick);
+            link.observe("click", clickEventWrapper(onPreferencesClick));
         }
         link = $("consoleBannerLink");
         if (link) {
