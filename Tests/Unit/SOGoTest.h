@@ -25,6 +25,7 @@
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSValue.h>
 
 @class NSArray;
 @class NSMutableArray;
@@ -66,7 +67,10 @@
 #define failIf(c) test(!(c))
 
 #define testEquals(a,b) \
-  testWithMessage((((a) == (b)) || ([(a) isEqual: (b)])),               \
+  testWithMessage((((a) == (b)) || ([(a) isEqual: (b)]) \
+                   || ([(a) isKindOfClass: [NSNumber class]] \
+                       && [(b) isKindOfClass: [NSNumber class]] \
+                       && [(NSNumber *) (a) isEqualToNumber: (NSNumber *) (b)])), \
                   ([NSString stringWithFormat: @"objects '%@' and '%@' differs", (a), (b)]))
 
 #define testEqualsWithMessage(a,b,m) \
