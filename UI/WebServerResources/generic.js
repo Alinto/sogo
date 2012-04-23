@@ -2101,9 +2101,6 @@ function _showSelectDialog(title, label, options, button, callbackFcn, callbackA
 }
 
 function showAuthenticationDialog(label, callback) {
-    log("* showAuthenticationDialog");
-    log(backtrace());
-
     var div = $("bgDialogDiv");
     if (div && div.visible() && div.getOpacity() > 0) {
         log("push");

@@ -1218,7 +1218,6 @@ function onCalendarReload() {
 }
 
 function reloadWebCalendars() {
-    log("* reloadWebCalendars");
     var hasWebCalendars = false;
 
     var remaining = [];
