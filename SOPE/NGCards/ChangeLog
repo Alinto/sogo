@@ -1,3 +1,10 @@
+2012-04-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* iCalMonthlyRecurrenceCalculator.m (NGMonthDaySet_clear): make
+	use of memset, which is expected to be faster.
+	(-recurrenceRangesWithinCalendarDateRange:): added handling of
+	"BYSETPOS" for "BYDAY" sets.
+
 2012-04-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalTrigger.m (-nextAlarmDate): new method including most of

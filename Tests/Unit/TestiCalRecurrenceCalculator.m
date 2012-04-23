@@ -169,6 +169,23 @@
 				     @"19980129T090000Z",
 				     @"19980226T090000Z",
 				     nil],
+			    // Second friday of the month, until Feb 26 1998
+			    [NSArray arrayWithObjects: @"19980101T090000Z",
+				     @"FREQ=MONTHLY;BYDAY=FR;BYSETPOS=2;UNTIL=19980428T090000Z",
+                                     @"19980101T090000Z",
+				     @"19980109T090000Z",
+				     @"19980213T090000Z",
+				     @"19980313T090000Z",
+				     @"19980410fT090000Z",
+				     nil],
+			    // Last friday of the month, until Feb 26 1998
+			    [NSArray arrayWithObjects: @"19980101T090000Z",
+				     @"FREQ=MONTHLY;BYDAY=MO,WE;BYSETPOS=-2;UNTIL=19980331T090000Z",
+                                     @"19980101T090000Z",
+				     @"19980126T090000Z",
+				     @"19980223T090000Z",
+				     @"19980325T090000Z",
+				     nil],
 			    nil];
 
   NSString *dateFormat = @"%a %Y-%m-%d %H:%M";

@@ -21,6 +21,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSString.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 
 #import "iCalRecurrenceCalculator.h"
@@ -34,7 +35,6 @@
 #import "NSCalendarDate+ICal.h"
 
 #import <string.h>
-#import <math.h>
 
 @interface iCalRecurrenceCalculator (PrivateAPI)
 
@@ -49,14 +49,11 @@
 typedef BOOL NGMonthSet[12];
 typedef BOOL NGMonthDaySet[32]; // 0 is unused
 
-static void
+static inline void
 NGMonthDaySet_clear (NGMonthDaySet *daySet)
 
 {
-  register unsigned i;
-  
-  for (i = 0; i <= 31; i++)
-    (*daySet)[i] = NO;
+  memset (daySet, 0, sizeof (NGMonthDaySet));
 }
 
 static void
@@ -201,7 +198,7 @@ static inline unsigned iCalDoWForNSDoW (int dow)
     YES, YES, YES, YES, YES, YES, 
     YES, YES, YES, YES, YES, YES
   };
-  NSArray       *byMonth, *byMonthDay; // array of ints (-31..-1 and 1..31)
+  NSArray       *byMonth, *byMonthDay, *bySetPos; // array of ints (-31..-1 and 1..31)
   NGMonthDaySet byPositiveMonthDaySet, byNegativeMonthDaySet;
   iCalByDayMask *byDayMask;
   
@@ -216,6 +213,7 @@ static inline unsigned iCalDoWForNSDoW (int dow)
   byMonth         = [rrule byMonth];
   byMonthDay      = [rrule byMonthDay];
   byDayMask       = [rrule byDayMask];
+  bySetPos        = [rrule bySetPos];              
   diff            = 0;
 
   if (![rrule isInfinite])
@@ -239,7 +237,7 @@ static inline unsigned iCalDoWForNSDoW (int dow)
       if ([until compare: rStart] == NSOrderedAscending)
 	// Range starts after last occurrence
 	return nil;
-      if ([until compare: rEnd] == NSOrderedDescending)
+      if ([until compare: rEnd] == NSOrderedAscending)
 	// Range ends after last occurence; adjust end date
 	rEnd = until;
     }
@@ -334,43 +332,81 @@ static inline unsigned iCalDoWForNSDoW (int dow)
     
       if (byDayMask)
 	{
-	  unsigned int firstDoWInMonth, currentWeekDay;
-	  unsigned int weekDaysCount[7], currentWeekDaysCount[7];
-	  int i, positiveOrder, negativeOrder;
+          if (!didByFill)
+            NGMonthDaySet_clear (&monthDays);
 
-	  firstDoWInMonth = [[cursor firstDayOfMonth] dayOfWeek];
+          if (bySetPos)
+            {
+              NSUInteger monthDay;
+              NSInteger currentPos;
+              iCalWeekDay currentWeekDay;
 
-	  if (!didByFill)
-	    NGMonthDaySet_clear (&monthDays);
+              currentWeekDay = [[cursor firstDayOfMonth] dayOfWeek];
+              currentPos = 1;
+              for (monthDay = 0; monthDay <= numDaysInMonth; monthDay++)
+                {
+                  if ([byDayMask occursOnDay: currentWeekDay])
+                    {
+                      if ([bySetPos containsObject:
+                                      [NSString stringWithFormat: @"%d", currentPos]])
+                        monthDays[monthDay+1] = YES;
+                      currentPos++;
+                    }
+                  currentWeekDay = (currentWeekDay + 1) % 7;
+                }
 
-	  // Fill weekDaysCount to handle negative positions
-	  currentWeekDay = firstDoWInMonth;
-	  memset(weekDaysCount, 0, 7 * sizeof(unsigned int));
-	  for (i = 1; i <= numDaysInMonth; i++)
-	    {
-	      weekDaysCount[currentWeekDay]++;
-	      currentWeekDay++;
-	      currentWeekDay = fmod (currentWeekDay, 7);
-	    }
+              currentWeekDay = [[cursor lastDayOfMonth] dayOfWeek];
+              currentPos = -1;
+              for (monthDay = numDaysInMonth; monthDay > 0; monthDay--)
+                {
+                  if ([byDayMask occursOnDay: currentWeekDay])
+                    {
+                      if ([bySetPos containsObject:
+                                      [NSString stringWithFormat: @"%d", currentPos]])
+                        monthDays[monthDay] = YES;
+                      currentPos--;
+                    }
+                  if (currentWeekDay > 0)
+                    currentWeekDay--;
+                  else
+                    currentWeekDay = 6;
+                }
+            }
+          else
+            {
+              unsigned int firstDoWInMonth, currentWeekDay;
+              unsigned int weekDaysCount[7], currentWeekDaysCount[7];
+              int i, positiveOrder, negativeOrder;
 
-	  currentWeekDay = firstDoWInMonth;
-	  memset(currentWeekDaysCount, 0, 7 * sizeof(unsigned int));
-	  for (i = 1; i <= numDaysInMonth; i++)
-	    {
-	      if (!didByFill || monthDays[i])
-		{
-		  positiveOrder = currentWeekDaysCount[currentWeekDay] + 1;
-		  negativeOrder = currentWeekDaysCount[currentWeekDay] - weekDaysCount[currentWeekDay];
-		  monthDays[i] = (([byDayMask occursOnDay: (iCalWeekDay)currentWeekDay
-					   withWeekNumber: positiveOrder]) ||
-				  ([byDayMask occursOnDay: (iCalWeekDay)currentWeekDay
-					   withWeekNumber: negativeOrder]));
-		}
-	      currentWeekDaysCount[currentWeekDay]++;
-	      currentWeekDay++;
-	      currentWeekDay = fmod (currentWeekDay, 7);
-	    }
-	  didByFill = YES;
+              firstDoWInMonth = [[cursor firstDayOfMonth] dayOfWeek];
+
+              // Fill weekDaysCount to handle negative positions
+              currentWeekDay = firstDoWInMonth;
+              memset(weekDaysCount, 0, 7 * sizeof(unsigned int));
+              for (i = 1; i <= numDaysInMonth; i++)
+                {
+                  weekDaysCount[currentWeekDay]++;
+                  currentWeekDay = (currentWeekDay + 1) % 7;
+                }
+
+              currentWeekDay = firstDoWInMonth;
+              memset(currentWeekDaysCount, 0, 7 * sizeof(unsigned int));
+              for (i = 1; i <= numDaysInMonth; i++)
+                {
+                  if (!didByFill || monthDays[i])
+                    {
+                      positiveOrder = currentWeekDaysCount[currentWeekDay] + 1;
+                      negativeOrder = currentWeekDaysCount[currentWeekDay] - weekDaysCount[currentWeekDay];
+                      monthDays[i] = (([byDayMask occursOnDay: (iCalWeekDay)currentWeekDay
+                                                  withWeekNumber: positiveOrder]) ||
+                                      ([byDayMask occursOnDay: (iCalWeekDay)currentWeekDay
+                                                  withWeekNumber: negativeOrder]));
+                    }
+                  currentWeekDaysCount[currentWeekDay]++;
+                  currentWeekDay = (currentWeekDay + 1) % 7;
+                }
+            }
+          didByFill = YES;
 	}
     
       if (didByFill)
