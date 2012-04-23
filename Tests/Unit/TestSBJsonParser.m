@@ -70,7 +70,7 @@
 - (void) test_parseJSONNumber
 {
   SBJsonParser *parser;
-  NSObject *result;
+  id result;
 
   parser = [SBJsonParser new];
   [parser autorelease];
@@ -84,10 +84,9 @@
   result = [parser objectWithString: @"[ -1 ]"];
   testEquals (result, [NSArray arrayWithObject: [NSNumber numberWithInt: -1]]);
   
-  /* TODO: the 2 following fail because NSDecimalNumber does not implement
-     "compare:" */
   result = [parser objectWithString: @"[ 12.3456 ]"];
-  testEquals (result, [NSArray arrayWithObject: [NSNumber numberWithDouble: 12.3456]]);
+  testEquals ([result objectAtIndex: 0],
+              [NSDecimalNumber decimalNumberWithString: @"12.3456"]);
 
   result = [parser objectWithString: @"[ -312.3456 ]"];
   testEquals (result, [NSArray arrayWithObject: [NSNumber numberWithDouble: -312.3456]]);
