@@ -183,6 +183,7 @@
 */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSException.h>
 #import <NGExtensions/NSString+Ext.h>
@@ -581,6 +582,19 @@ NSString *iCalWeekDayString[] = { @"SU", @"MO", @"TU", @"WE", @"TH", @"FR",
     case iCalWeekDaySunday: return @"SU";
     default:  return @"MO"; // TODO: return error?
     }
+}
+
+- (NSArray *) bySetPos
+{
+  NSArray *lists, *bySetPos;
+
+  lists = [self valuesForKey: @"bysetpos"];
+  if ([lists count] > 0)
+    bySetPos = [lists objectAtIndex: 0];
+  else
+    bySetPos = nil;
+
+  return bySetPos;
 }
 
 // - (iCalWeekDay) weekDayForiCalRepre: (NSString *) _weekDay

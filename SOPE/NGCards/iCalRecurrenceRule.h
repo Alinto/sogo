@@ -92,6 +92,8 @@ extern NSString *iCalWeekDayString[];
 - (NSArray *) byMonth;
 - (BOOL) hasByMask;
 
+- (NSArray *) bySetPos;
+
 /* count and untilDate are mutually exclusive */
 
 - (void) setRepeatCount: (int) _repeatCount;

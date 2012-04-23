@@ -90,7 +90,6 @@
       startDate = [[currentRule objectAtIndex: 0] asCalendarDate];
       endDate = [startDate dateByAddingYears: 0 months: 0 days: 0 hours: 1 minutes: 0 seconds: 0];
       recurrenceRule = [iCalRecurrenceRule recurrenceRuleWithICalRepresentation: [currentRule objectAtIndex: 1]];
-//       NSLog(@"%@: %@", startDate, recurrenceRule);
 
       firRange = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
 							     endDate: endDate];
@@ -107,22 +106,12 @@
 			    [[[occurrences objectAtIndex: j] startDate] descriptionWithCalendarFormat: dateFormat],
 			    [currentOccurrence descriptionWithCalendarFormat: dateFormat]];
 	  testWithMessage([currentOccurrence isDateOnSameDay: [[occurrences objectAtIndex: j] startDate]], error);
-//  	  if ([currentOccurrence compare: [[occurrences objectAtIndex: j] startDate]] != NSOrderedSame)
-//  	    NSLog(@"Expected: %@ Obtained: %@", [currentOccurrence descriptionWithCalendarFormat: dateFormat],
-//  		  [[[occurrences objectAtIndex: j] startDate] descriptionWithCalendarFormat: dateFormat]);
-//  	  else
-//  	    NSLog(@"          %@ Matched:  %@", [currentOccurrence descriptionWithCalendarFormat: dateFormat],
-//  		  [[[occurrences objectAtIndex: j] startDate] descriptionWithCalendarFormat: dateFormat]);
 	}
       error = [NSString stringWithFormat: @"Unexpected number of occurrences for recurrence rule %@ (found %i, expected %i)",
 			[currentRule objectAtIndex: 1],
 			[occurrences count],
 			[currentRule count] - 2];
       testWithMessage([currentRule count] - [occurrences count] == 2, error);
-//       for (; i < [currentRule count]; i++)
-// 	NSLog(@"Expected additional date : %@", [[currentRule objectAtIndex: i] asCalendarDate]);
-//       for (; j < [occurrences count]; j++)
-// 	NSLog(@"Found additional date : %@", [[occurrences objectAtIndex: j] startDate]);
     }
 }
 
@@ -169,6 +158,23 @@
 				     @"19980129T090000Z",
 				     @"19980226T090000Z",
 				     nil],
+			    // Second friday of the month, until Feb 26 1998
+			    [NSArray arrayWithObjects: @"19980101T090000Z",
+				     @"FREQ=MONTHLY;BYDAY=FR;BYSETPOS=2;UNTIL=19980428T090000Z",
+                                     @"19980101T090000Z",
+				     @"19980109T090000Z",
+				     @"19980213T090000Z",
+				     @"19980313T090000Z",
+				     @"19980410fT090000Z",
+				     nil],
+			    // Last friday of the month, until Feb 26 1998
+			    [NSArray arrayWithObjects: @"19980101T090000Z",
+				     @"FREQ=MONTHLY;BYDAY=MO,WE;BYSETPOS=-2;UNTIL=19980331T090000Z",
+                                     @"19980101T090000Z",
+				     @"19980126T090000Z",
+				     @"19980223T090000Z",
+				     @"19980325T090000Z",
+				     nil],
 			    nil];
 
   NSString *dateFormat = @"%a %Y-%m-%d %H:%M";
@@ -204,22 +210,12 @@
 			    [[[occurrences objectAtIndex: j] startDate] descriptionWithCalendarFormat: dateFormat],
 			    [currentOccurrence descriptionWithCalendarFormat: dateFormat]];
 	  testWithMessage([currentOccurrence isDateOnSameDay: [[occurrences objectAtIndex: j] startDate]], error);
-//  	  if ([currentOccurrence compare: [[occurrences objectAtIndex: j] startDate]] != NSOrderedSame)
-//  	    NSLog(@"Expected: %@ Obtained: %@", [currentOccurrence descriptionWithCalendarFormat: dateFormat],
-//  		  [[[occurrences objectAtIndex: j] startDate] descriptionWithCalendarFormat: dateFormat]);
-//  	  else
-//  	    NSLog(@"          %@ Matched:  %@", [currentOccurrence descriptionWithCalendarFormat: dateFormat],
-//  		  [[[occurrences objectAtIndex: j] startDate] descriptionWithCalendarFormat: dateFormat]);
 	}
       error = [NSString stringWithFormat: @"Unexpected number of occurrences for recurrence rule %@ (found %i, expected %i)",
 			[currentRule objectAtIndex: 1],
 			[occurrences count],
 			[currentRule count] - 2];
       testWithMessage([currentRule count] - [occurrences count] == 2, error);
-//       for (; i < [currentRule count]; i++)
-// 	NSLog(@"Expected additional date : %@", [[currentRule objectAtIndex: i] asCalendarDate]);
-//       for (; j < [occurrences count]; j++)
-// 	NSLog(@"Found additional date : %@", [[occurrences objectAtIndex: j] startDate]);
     }
 }
 
@@ -363,7 +359,6 @@
       startDate = [[currentRule objectAtIndex: 0] asCalendarDate];
       endDate = [startDate dateByAddingYears: 0 months: 0 days: 0 hours: 1 minutes: 0 seconds: 0];
       recurrenceRule = [iCalRecurrenceRule recurrenceRuleWithICalRepresentation: [currentRule objectAtIndex: 1]];
-//       NSLog(@"%@: %@", startDate, recurrenceRule);
 
       firRange = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
 							     endDate: endDate];
@@ -380,22 +375,12 @@
 			    [[[occurrences objectAtIndex: j] startDate] descriptionWithCalendarFormat: dateFormat],
 			    [currentOccurrence descriptionWithCalendarFormat: dateFormat]];
 	  testWithMessage([currentOccurrence isDateOnSameDay: [[occurrences objectAtIndex: j] startDate]], error);
-//  	  if ([currentOccurrence compare: [[occurrences objectAtIndex: j] startDate]] != NSOrderedSame)
-//  	    NSLog(@"Expected: %@ Obtained: %@", [currentOccurrence descriptionWithCalendarFormat: dateFormat],
-//  		  [[[occurrences objectAtIndex: j] startDate] descriptionWithCalendarFormat: dateFormat]);
-//  	  else
-//  	    NSLog(@"          %@ Matched:  %@", [currentOccurrence descriptionWithCalendarFormat: dateFormat],
-//  		  [[[occurrences objectAtIndex: j] startDate] descriptionWithCalendarFormat: dateFormat]);
 	}
       error = [NSString stringWithFormat: @"Unexpected number of occurrences for recurrence rule %@ (found %i, expected %i)",
 			[currentRule objectAtIndex: 1],
 			[occurrences count],
 			[currentRule count] - 2];
       testWithMessage([currentRule count] - [occurrences count] == 2, error);
-//       for (; i < [currentRule count]; i++)
-// 	NSLog(@"Expected additional date : %@", [[currentRule objectAtIndex: i] asCalendarDate]);
-//       for (; j < [occurrences count]; j++)
-// 	NSLog(@"Found additional date : %@", [[occurrences objectAtIndex: j] startDate]);
     }
 }
 
