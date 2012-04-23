@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -32,6 +33,7 @@
 #import "NSDate+MAPIStore.h"
 #import "MAPIStoreRecurrenceUtils.h"
 
+#include <stdbool.h>
 #include <talloc.h>
 #include <util/time.h>
 #include <gen_ndr/property.h>

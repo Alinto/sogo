@@ -31,6 +31,7 @@
 #import "MAPIStoreFallbackContext.h"
 
 #undef DEBUG
+#include <inttypes.h>
 #include <mapistore/mapistore.h>
 
 @implementation MAPIStoreFallbackContext

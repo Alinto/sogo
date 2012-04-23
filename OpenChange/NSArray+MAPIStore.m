@@ -29,6 +29,7 @@
 #import "NSArray+MAPIStore.h"
 
 #undef DEBUG
+#include <stdbool.h>
 #include <talloc.h>
 #include <util/time.h>
 #include <gen_ndr/exchange.h>
