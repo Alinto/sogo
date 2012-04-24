@@ -1658,10 +1658,12 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 - (id) PUTAction: (WOContext *) _ctx
 {
   NSException *ex;
+  NSString *etag;
   NSArray *roles;
   WORequest *rq;
-  
   id response;
+
+  unsigned int baseVersion;
 
   rq = [_ctx request];
   roles = [[context activeUser] rolesForObject: self  inContext: context];
@@ -1961,9 +1963,27 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	}
     }
 
-  // This will save the event into the database and also handle
-  // E-Tags properly, as well as content versioning.
-  response = [super PUTAction: _ctx];
+  // We must NOT invoke [super PUTAction:] here as it'll resave
+  // the content string and we could have etag mismatches.
+  response = [_ctx response];
+
+  baseVersion = (isNew ? 0 : version);
+
+  ex = [self saveContentString: [rq contentAsString]
+		   baseVersion: baseVersion];
+  if (ex)
+    response = (WOResponse *) ex;
+  else
+    {
+      if (isNew)
+	[response setStatus: 201 /* Created */];
+      else
+	[response setStatus: 204 /* No Content */];
+      
+      etag = [self davEntityTag];
+      if (etag)
+	[response setHeader: etag forKey: @"etag"];
+    }
 
   return response;
 }

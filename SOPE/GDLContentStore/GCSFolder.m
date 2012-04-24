@@ -882,7 +882,7 @@ andAttribute: (EOAttribute *)_attribute
 
 - (NSException *) writeContent: (NSString *) _content
 			toName: (NSString *) _name
-		   baseVersion: (unsigned int) _baseVersion
+		   baseVersion: (unsigned int *) _baseVersion
 {
   EOAdaptorChannel    *storeChannel, *quickChannel;
   NSMutableDictionary *quickRow, *contentRow;
@@ -939,8 +939,8 @@ andAttribute: (EOAttribute *)_attribute
 
 	  /* check whether sequence matches */
 	  /* use version = 0 to override check */
-	  if (_baseVersion == 0
-	      || _baseVersion == [storedVersion unsignedIntValue])
+	  if (*_baseVersion == 0
+	      || *_baseVersion == [storedVersion unsignedIntValue])
 	    {
 	      /* extract quick info */
 	      extractor = [folderInfo quickExtractor];
@@ -1040,16 +1040,16 @@ andAttribute: (EOAttribute *)_attribute
 			    error = (hasUpdateDelegate
 				     ? [storeChannel updateRowX: contentRow
 						     describedByQualifier: [self _qualifierUsingWhereColumn: @"c_name"  isEqualTo: _name
-										 andColumn: (_baseVersion != 0 ? (id)@"c_version" : (id)nil)
-										 isEqualTo: (_baseVersion != 0 ? [NSNumber numberWithUnsignedInt:_baseVersion] : (NSNumber *)nil)
+										 andColumn: (*_baseVersion != 0 ? (id)@"c_version" : (id)nil)
+										 isEqualTo: (*_baseVersion != 0 ? [NSNumber numberWithUnsignedInt: *_baseVersion] : (NSNumber *)nil)
 										 entity: storeTableEntity
                                                                                  withAdaptor: [[storeChannel adaptorContext] adaptor]]]
 				     : [storeChannel evaluateExpressionX: [self _generateUpdateStatementForRow: contentRow
                                                                                 adaptor: [[storeChannel adaptorContext] adaptor]
                                                                                 tableName:[self storeTableName]
 										whereColumn: @"c_name"  isEqualTo: _name
-										andColumn: (_baseVersion != 0 ? (id)@"c_version" : (id)nil)
-										isEqualTo: (_baseVersion != 0 ? [NSNumber numberWithUnsignedInt: _baseVersion] : (NSNumber *)nil)]]);
+										andColumn: (*_baseVersion != 0 ? (id)@"c_version" : (id)nil)
+										isEqualTo: (*_baseVersion != 0 ? [NSNumber numberWithUnsignedInt: *_baseVersion] : (NSNumber *)nil)]]);
 		      }
   
 		      if (error)
@@ -1063,6 +1063,9 @@ andAttribute: (EOAttribute *)_attribute
 			}
 		      else
 			{
+			  if (!isNewRecord)
+			    *_baseVersion += 1;
+
 			  [[storeChannel adaptorContext] commitTransaction];
 			  [[quickChannel adaptorContext] commitTransaction];
 			}
@@ -1082,7 +1085,7 @@ andAttribute: (EOAttribute *)_attribute
 	  else /* version mismatch (concurrent update) */
 	    error = [self errorVersionMismatchBetweenStoredVersion:
 			    [storedVersion unsignedIntValue]
-			  andExpectedVersion: _baseVersion];
+			  andExpectedVersion: *_baseVersion];
   	}
       else
 	error = [NSException exceptionWithName:@"GCSStoreException"
@@ -1100,7 +1103,8 @@ andAttribute: (EOAttribute *)_attribute
 
 - (NSException *)writeContent:(NSString *)_content toName:(NSString *)_name {
   /* this method does not check for concurrent writes */
-  return [self writeContent:_content toName:_name baseVersion:0];
+  unsigned int v = 0;
+  return [self writeContent:_content toName:_name baseVersion:&v];
 }
 
 - (NSException *)deleteContentWithName:(NSString *)_name {

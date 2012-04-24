@@ -209,7 +209,7 @@
     {
       ex = [folder writeContent: newContent
 		   toName: nameInContainer
-		   baseVersion: newVersion];
+		   baseVersion: &version];
       if (ex)
 	[self errorWithFormat:@"write failed: %@", ex];
     }
@@ -225,7 +225,7 @@
 
 - (NSException *) saveContentString: (NSString *) newContent
 {
-  return [self saveContentString: newContent baseVersion: 0];
+  return [self saveContentString: newContent baseVersion: version];
 }
 
 /* actions */
@@ -347,8 +347,6 @@
 	response = (WOResponse *) error;
       else
 	{
-	  if (!isNew)
-	    version++;
 	  response = [_ctx response];
 	  /* setup response */
   

@@ -118,7 +118,7 @@
 
 - (NSException *) writeContent: (NSString *) _content
 			toName: (NSString *) _name
-		   baseVersion: (unsigned int) _baseVersion;
+		   baseVersion: (unsigned int *) _baseVersion;
 - (NSException *) writeContent: (NSString *) _content
 			toName: (NSString *) _name;
 - (NSException *) deleteContentWithName: (NSString *) _name;

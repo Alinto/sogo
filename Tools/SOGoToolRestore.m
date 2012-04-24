@@ -1,6 +1,6 @@
 /* SOGoToolRestore.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2010 Inverse inc.
+ * Copyright (C) 2009-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -346,14 +346,16 @@ typedef enum SOGoToolRestoreMode {
 - (BOOL) restoreRecords: (NSArray *) records
                ofFolder: (GCSFolder *) gcsFolder
 {
-  BOOL rc;
   NSDictionary *existingRecords, *currentRecord;
   NSString *cName, *cContent;
   NSException *ex;
-  int count, max;
+
+  int count, max, version;
+  BOOL rc;
 
   if (records)
     {
+      version = 0;
       rc = YES;
       existingRecords = [self fetchExistingRecordsFromFolder: gcsFolder];
       max = [records count];
@@ -366,7 +368,7 @@ typedef enum SOGoToolRestoreMode {
               NSLog (@"restoring record '%@'", cName);
               cContent = [currentRecord objectForKey: @"c_content"];
               ex = [gcsFolder writeContent: cContent toName: cName
-                               baseVersion: 0];
+                               baseVersion: &version];
             }
         }
     }
