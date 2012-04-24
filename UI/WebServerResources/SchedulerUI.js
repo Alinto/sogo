@@ -2399,7 +2399,9 @@ function updateCalendarStatus(event) {
         changeCalendarDisplay();
     }
 
-    return false;
+    if (event) {
+        event.returnValue = true;
+    }
 }
 
 function calendarStatusCallback(http) {

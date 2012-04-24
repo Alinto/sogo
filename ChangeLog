@@ -1,5 +1,9 @@
 2012-04-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/SchedulerUI.js (updateCalendarStatus): if
+	"event" is set, we set its returnValue to true, to avoid a bug
+	occurring since the use of "clickEventWrapper".
+
 	* UI/WebServerResources/HTMLElement.js: get "HTMLCollection"
 	and "NodeList" classes by class rather than by direct reference.
 
