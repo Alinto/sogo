@@ -1,5 +1,8 @@
 2012-04-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/HTMLElement.js: get "HTMLCollection"
+	and "NodeList" classes by class rather than by direct reference.
+
 	* UI/WebServerResources/generic.js (clickEventWrapper): pass the
 	value of "this" to the invoked callback.
 

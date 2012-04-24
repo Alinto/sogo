@@ -1,8 +1,9 @@
 /* -*- Mode: js-mode; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
-[HTMLCollection, NodeList].each(
-    function (contClass) {
-        if (contClass) {
+["HTMLCollection", "NodeList"].each(
+    function (className) {
+        if (className in window) {
+            var contClass = window[className];
             var _each = contClass.prototype.forEach;
             if (!_each) {
                 _each = function HTMLElement_each(iterator, context) {
