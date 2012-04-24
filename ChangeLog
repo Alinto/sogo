@@ -1,3 +1,8 @@
+2012-04-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.js (clickEventWrapper): pass the
+	value of "this" to the invoked callback.
+
 2012-04-24  Ludovic Marcotte  <lmarcotte@inverse.ca> 
 
 	* SOPE/GDLContentStore/GCSFolder.m (-writeContent:toName:baseVersion:):

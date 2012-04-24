@@ -50,7 +50,7 @@ var emailRE = /^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-
 function clickEventWrapper(functionRef) {
     function button_clickEventWrapper(event) {
         preventDefault(event);
-        return functionRef(event);
+        return functionRef.apply(this, [event]);
     }
 
     return button_clickEventWrapper;
