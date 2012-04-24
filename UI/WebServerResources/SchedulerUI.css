@@ -412,7 +412,6 @@ DIV#calendarHeader,
 DIV#daysView
 { position: absolute;
   top: 0px;
-  bottom: 0px;
   left: 0px; }
 
 DIV#daysView
@@ -426,8 +425,8 @@ DIV#daysView
 DIV#calendarHeader
 { top: 50px;
   border: 0px;
-  right: 0px;
-  height: 70px; }
+  height: 100px;
+  right: 0px; }
 
 DIV#calendarHeader DIV.dayLabels,
 DIV#calendarHeader DIV.days
@@ -439,7 +438,7 @@ DIV#calendarHeader DIV.days
   overflow: hidden; }
 
 DIV#calendarHeader DIV.dayLabels
-{ bottom: 40px;
+{ top: 0px;
   height: 35px; }
 
 DIV#calendarHeader DIV.dayLabels DIV.day
@@ -456,7 +455,7 @@ DIV#calendarHeader DIV.dayLabels
 DIV#calendarHeader DIV.days
 { cursor: pointer;
   bottom: 0px;
-  height: 40px; }
+  top: 35px; }
 
 DIV#calendarHeader DIV.day,
 DIV#daysView DIV.day
