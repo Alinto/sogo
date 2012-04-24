@@ -1,3 +1,13 @@
+2012-04-24  Ludovic Marcotte  <lmarcotte@inverse.ca> 
+
+	* SOPE/GDLContentStore/GCSFolder.m (-writeContent:toName:baseVersion:):
+	We now keep track of the saved version for all callers. Also updated
+	all callers to reflect that change.
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m (-PUTAction:)
+	Took some of the logic from SOGoContentObject's -PUTAction: to
+	avoid etag mismatches.
+
 2012-04-23  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
     * SoObjects/Appointments/SOGoAppointmentObject.m: We now
