@@ -520,6 +520,8 @@ function _deleteCalendarEventBlocks(calendar, cname, occurenceTime) {
                 }
         }
     }
+
+    resizeCalendarHeaderDIV();
 }
 
 function _deleteEventFromTables(calendar, cname, occurenceTime) {
@@ -1687,8 +1689,8 @@ function newBaseEventDIV(eventRep, event, eventText) {
 }
 
 function _drawCalendarAllDayEvents(events, eventsData) {
-    var daysView = $("calendarHeader");
-    var subdivs = daysView.childNodesWithTag("div");
+    var headerView = $("calendarHeader");
+    var subdivs = headerView.childNodesWithTag("div");
     var days = subdivs[1].childNodesWithTag("div");
     for (var i = 0; i < days.length; i++) {
         var parentDiv = days[i];
@@ -1697,6 +1699,48 @@ function _drawCalendarAllDayEvents(events, eventsData) {
             var nbr = eventRep.nbr;
             var eventCell = newAllDayEventDIV(eventRep, eventsData[nbr]);
             parentDiv.appendChild(eventCell);
+        }
+    }
+
+    resizeCalendarHeaderDIV();
+}
+
+/* When the list of all day events overflows, we resize it in order to contain
+   at least 6 or 7 items. Afterwards we restore the regular scrollbar
+   mechanism. */
+function resizeCalendarHeaderDIV() {
+    var headerView = $("calendarHeader");
+    var daysView = $("daysView");
+    if (headerView && daysView) {
+        /* consts */
+        var headerViewBaseHeight = 70;
+        var daysViewBaseTop = 120;
+        var maxDelta = 80;
+        /* /consts */
+
+        var maxEventPerDay = 0;
+
+        var subdivs = headerView.childNodesWithTag("div");
+        var days = subdivs[1].childNodesWithTag("div");
+        for (var i = 0; i < days.length; i++) {
+            var parentDiv = days[i];
+            var divs = parentDiv.childNodesWithTag("div");
+            if (divs.length > maxEventPerDay) {
+                maxEventPerDay = divs.length;
+            }
+        }
+
+        if (maxEventPerDay > 2) {
+            var delta = ((maxEventPerDay - 2) * 22) + 10;
+            if (delta > maxDelta) {
+                delta = maxDelta;
+            }
+            daysView.style.top = String(delta + daysViewBaseTop) + "px";
+            headerView.style.height = String(delta + headerViewBaseHeight) + "px";
+        }
+        else {
+            daysView.style.top = null;
+            headerView.style.height = null;
         }
     }
 }
