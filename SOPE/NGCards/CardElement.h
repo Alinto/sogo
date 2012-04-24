@@ -106,17 +106,18 @@
 
 - (void) addType: (NSString *) aType;
 
+/* rendering */
 - (NSArray *) orderOfAttributeKeys;
 - (NSArray *) orderOfValueKeys;
-
 - (NSString *) versitString;
 
 - (CardGroup *) searchParentOfClass: (Class) parentClass;
 
+/* conversion */
 - (id) elementWithClass: (Class) elementClass;
 
+/* copy */
 - (void) setAttributesAsCopy: (NSMutableDictionary *) someAttributes;
-
 - (NSMutableArray *) deepCopyOfArray: (NSArray *) oldArray
 			    withZone: (NSZone *) aZone;
 - (NSMutableDictionary *) deepCopyOfDictionary: (NSDictionary *) oldDictionary
