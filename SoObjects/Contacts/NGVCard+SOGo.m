@@ -297,7 +297,11 @@ convention:
   else
     [self setBday: @""];
 
-  [self setNote: [ldifRecord objectForKey: @"description"]];
+  /* hack to carry SOGoLDAPContactInfo to vcards */
+  [[self uniqueChildWithTag: @"x-sogo-contactinfo"]
+    setSingleValue: [ldifRecord objectForKey: @"c_info"]
+            forKey: @""];
+
   [self setCategories: [ldifRecord objectForKey: @"vcardcategories"]];
 
   [self cleanupEmptyChildren];
