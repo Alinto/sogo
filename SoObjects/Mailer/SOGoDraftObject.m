@@ -1119,7 +1119,7 @@ static NSString    *userAgent      = nil;
   NGMimeBodyPart   *bodyPart;
   NSString         *s;
   NSData           *content;
-  BOOL             attachAsString, is7bit;
+  BOOL             attachAsString, force7bitText;
   NSString         *p;
   id body;
 
@@ -1134,7 +1134,7 @@ static NSString    *userAgent      = nil;
     return nil;
   }
   attachAsString = NO;
-  is7bit         = NO;
+  force7bitText = NO;
   
   /* prepare header of body part */
 
@@ -1145,7 +1145,7 @@ static NSString    *userAgent      = nil;
     if ([s hasPrefix: @"text/plain"] || [s hasPrefix: @"text/html"])
       attachAsString = YES;
     else if ([s hasPrefix: @"message/rfc822"])
-      is7bit = YES;
+      force7bitText = YES;
   }
   if ((s = [self contentDispositionForAttachmentWithName:_name]))
     {
@@ -1163,8 +1163,8 @@ static NSString    *userAgent      = nil;
     
     content = [[NSData alloc] initWithContentsOfMappedFile:p];
     
-    s = [[NSString alloc] initWithData:content
-			  encoding:[NSString defaultCStringEncoding]];
+    s = [[NSString alloc] initWithData: content
+                              encoding: [NSString defaultCStringEncoding]];
     if (s != nil) {
       body = s;
       [content release]; content = nil;
@@ -1176,16 +1176,6 @@ static NSString    *userAgent      = nil;
       content = nil;
     }
   }
-  else if (is7bit) {
-    /* 
-       Note: Apparently NGMimeFileData objects are not processed by the MIME
-             generator!
-    */
-    body = [[NGMimeFileData alloc] initWithPath:p removeFile:NO];
-    [map setObject: @"7bit" forKey: @"content-transfer-encoding"];
-    [map setObject:[NSNumber numberWithInt:[body length]] 
-	 forKey: @"content-length"];
-  }
   else {
     /* 
        Note: in OGo this is done in LSWImapMailEditor.m:2477. Apparently
@@ -1194,12 +1184,21 @@ static NSString    *userAgent      = nil;
     NSData *encoded;
     
     content = [[NSData alloc] initWithContentsOfMappedFile:p];
-    encoded = [content dataByEncodingBase64];
-    [content release]; content = nil;
-    
-    [map setObject: @"base64" forKey: @"content-transfer-encoding"];
+
+    if (force7bitText)
+      {
+        encoded = [content dataByEncodingQuotedPrintable];
+        [map setObject: @"quoted-printable"
+                forKey: @"content-transfer-encoding"];
+      }
+    else
+      {
+        encoded = [content dataByEncodingBase64];
+        [map setObject: @"base64" forKey: @"content-transfer-encoding"];
+      }
     [map setObject:[NSNumber numberWithInt:[encoded length]] 
 	 forKey: @"content-length"];
+    [content release]; content = nil;
     
     /* Note: the -init method will create a temporary file! */
     body = [[NGMimeFileData alloc] initWithBytes:[encoded bytes]
@@ -1390,7 +1389,7 @@ static NSString    *userAgent      = nil;
       [map setObject: [self _quoteSpecials: from] forKey: @"from"];
   }
 
-  if (replyTo = [headers objectForKey: @"reply-to"])
+  if ((replyTo = [headers objectForKey: @"reply-to"]))
     [map setObject: replyTo forKey: @"reply-to"];
 
   if (inReplyTo)

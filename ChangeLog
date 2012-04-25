@@ -1,3 +1,10 @@
+2012-04-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m
+	(-bodyPartForAttachmentWithName:): force conversion of rfc822
+	content to quoted-printable, since it would otherwise risk passing
+	8bit data via the "APPEND" command.
+
 2012-04-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (updateCalendarStatus): if
