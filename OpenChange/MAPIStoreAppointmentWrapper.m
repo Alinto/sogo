@@ -59,16 +59,12 @@
 #include <mapistore/mapistore_errors.h>
 #include <mapistore/mapistore_nameid.h>
 
-NSTimeZone *utcTZ;
-
 static NSCharacterSet *hexCharacterSet = nil;
 
 @implementation MAPIStoreAppointmentWrapper
 
 + (void) initialize
 {
-  utcTZ = [NSTimeZone timeZoneWithName: @"UTC"];
-  [utcTZ retain];
   if (!hexCharacterSet)
     {
       hexCharacterSet = [NSCharacterSet characterSetWithCharactersInString: @"1234567890abcdefABCDEF"];
