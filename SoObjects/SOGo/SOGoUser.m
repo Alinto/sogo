@@ -577,7 +577,7 @@
 - (void) _appendSystemMailAccount
 {
   NSString *fullName, *replyTo, *imapLogin, *imapServer, *signature,
-    *encryption, *scheme, *action, *query, *customValue;
+    *encryption, *scheme, *action, *query, *customEmail;
   NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts;
   NSNumber *port;
   NSMutableArray *identities;
@@ -652,19 +652,22 @@
   if ([[self domainDefaults] mailCustomFromEnabled])
     {
       [self userDefaults];
-      customValue = [_defaults mailCustomEmail];
-      if ([customValue length] > 0)
+      customEmail = [_defaults mailCustomEmail];
+      fullName = [_defaults mailCustomFullName];
+      if ([customEmail length] > 0 || [fullName length] > 0)
         {
-          identity = [NSMutableDictionary new];
-          [identity setObject: customValue forKey: @"email"];
+          if ([customEmail length] == 0)
+            customEmail = [mails objectAtIndex: 0];
 
-          fullName = [_defaults mailCustomFullName];
-          if (![fullName length])
+          if ([fullName length] == 0)
             {
               fullName = [self cn];
-              if (![fullName length])
+              if ([fullName length] == 0)
                 fullName = login;
             }
+
+          identity = [NSMutableDictionary new];
+          [identity setObject: customEmail forKey: @"email"];
           [identity setObject: fullName forKey: @"fullName"];
 
           if ([replyTo length] > 0)

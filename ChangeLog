@@ -1,5 +1,12 @@
 2012-04-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/PreferencesUI/UIxPreferences.m (_extractMainIdentity:): save
+	the custom full name even when the configured custom email has the
+	same value as the system value.
+
+	* SoObjects/SOGo/SOGoUser.m (-appendSystemMailAccount): append
+	custom identity even though only the full name has a custom value.
+
 	* SoObjects/Mailer/SOGoDraftObject.m
 	(-bodyPartForAttachmentWithName:): force conversion of rfc822
 	content to quoted-printable, since it would otherwise risk passing
