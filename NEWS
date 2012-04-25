@@ -4,10 +4,17 @@ New Features
  - Sources address books are now exposed in Apple and iOS AddressBook app
    using the "directory gateway" extension of CardDAV
  - sogo-tool: new "expire-sessions" command
+ - the all-day events container is now resized progressively
+ - added handling of "BYSETPOS" for "BYDAY" sets in monthly recurrence
+   calculator
+ - new domain default (SOGoMailCustomFromEnabled) to allow users to change
+   their "from" and "reply-to" headers 
 
 Enhancements
- - Updated Spanish (Argentina) translation
+ - updated Spanish (Argentina) translation
  - updated CKEditor to version 3.6.3
+ - automatically add/remove attendees to recurrence exceptions when they are
+   being added to the master event
 
 Bug Fixes
  - fixed wrong date validation in preferences module affecting French users
