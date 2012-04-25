@@ -35,8 +35,6 @@
 
 @class SOGoUser;
 
-extern NSTimeZone *utcTZ;
-
 @interface MAPIStoreAppointmentWrapper : NSObject
 {
   struct mapistore_connection_info *connInfo;
