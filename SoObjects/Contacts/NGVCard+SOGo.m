@@ -302,6 +302,7 @@ convention:
     setSingleValue: [ldifRecord objectForKey: @"c_info"]
             forKey: @""];
 
+  [self setNote: [ldifRecord objectForKey: @"description"]];
   [self setCategories: [ldifRecord objectForKey: @"vcardcategories"]];
 
   [self cleanupEmptyChildren];
