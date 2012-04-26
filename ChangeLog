@@ -1,3 +1,14 @@
+2012-04-25  Jean Raby  <jraby@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m
+	(-updateFromLDIFRecord:): carry the c_info attribute
+	in vcards through the x-sogo-contactinfo attribute.
+	This functionality was lost a while ago.
+	We used to use the NOTE attribute for this. From now on,
+	the sogo-connector.autoComplete.commentAttribute have to be set to
+	'unprocessed:x-sogo-contactinfo' instead of 'Notes'.
+
+
 2012-04-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/PreferencesUI/UIxPreferences.m (_extractMainIdentity:): save
