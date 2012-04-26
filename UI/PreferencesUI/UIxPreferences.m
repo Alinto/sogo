@@ -1297,17 +1297,15 @@
              returned by the user directory service. */
           if ([value length] == 0
               || [[user allEmails] containsObject: value])
-            {
-              [userDefaults setMailCustomEmail: nil];
-              [userDefaults setMailCustomFullName: nil];
-            }
-          else
-            {
-              [userDefaults setMailCustomEmail: value];
-              value = [[identity objectForKey: @"fullName"]
-                        stringByTrimmingSpaces];
-              [userDefaults setMailCustomFullName: value];
-            }
+            value = nil;
+          [userDefaults setMailCustomEmail: value];
+
+          value = [[identity objectForKey: @"fullName"]
+                    stringByTrimmingSpaces];
+          if ([value length] == 0
+              || [[user cn] isEqualToString: value])
+            value = nil;
+          [userDefaults setMailCustomFullName: value];
         }
 
       value = [[identity objectForKey: @"replyTo"]
