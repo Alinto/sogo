@@ -1,6 +1,6 @@
 /* SOGoDomainDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2010 Inverse inc.
+ * Copyright (C) 2009-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -312,6 +312,11 @@
 - (NSArray *) additionalJSFiles
 {
   return [self stringArrayForKey: @"SOGoUIAdditionalJSFiles"];
+}
+
+- (BOOL) hideSystemEMail
+{
+  return [self boolForKey: @"SOGoHideSystemEMail"];
 }
 
 @end
