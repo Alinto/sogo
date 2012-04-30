@@ -29,6 +29,7 @@
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSValue.h>
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -495,7 +496,11 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
 
   date = [mailProperties objectForKey: MAPIPropertyKey (PR_CLIENT_SUBMIT_TIME)];
   if (date)
-    [headers addObject: [date rfc822DateString] forKey: @"date"];
+    {
+      date = [date addYear: 0 month: 0 day: 0
+                      hour: 0 minute: 0 second: [[date timeZone] secondsFromGMT]];
+      [headers addObject: [date rfc822DateString] forKey: @"date"];
+    }
   [headers addObject: @"1.0" forKey: @"MIME-Version"];
 }
 
