@@ -10,6 +10,12 @@
 	(-davCalendarUserAddressSet): Modified to honor
 	SOGoHideSystemEMail domain default.
 
+	* SoObjects/Mailer/SOGoDraftObject.m (-lookupName:...):
+	We prioritize the lookup of the "Drafts" folder over the
+	"Sent" one if both are matching.
+
+	* SoObjects/Mailer/SOGoMailFolder.m: Same as above.
+	
 
 2012-04-25  Jean Raby  <jraby@inverse.ca>
 

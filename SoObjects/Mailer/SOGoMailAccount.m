@@ -547,11 +547,11 @@ static NSString *inboxFolderName = @"INBOX";
       if ([namespaces containsObject: folderName])
         klazz = [SOGoMailNamespace class];
       else if ([folderName
-                 isEqualToString: [self sentFolderNameInContext: _ctx]])
-	klazz = [SOGoSentFolder class];
-      else if ([folderName
 		 isEqualToString: [self draftsFolderNameInContext: _ctx]])
 	klazz = [SOGoDraftsFolder class];
+      else if ([folderName
+                 isEqualToString: [self sentFolderNameInContext: _ctx]])
+	klazz = [SOGoSentFolder class];
       else if ([folderName
 		 isEqualToString: [self trashFolderNameInContext: _ctx]])
 	klazz = [SOGoTrashFolder class];

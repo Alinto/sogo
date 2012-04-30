@@ -870,13 +870,13 @@ static NSString *defaultUserID =  @"anyone";
           fullFolderName = [NSString stringWithFormat: @"%@/%@",
                                      [self traversalFromMailAccount], folderName];
           if ([fullFolderName
-                    isEqualToString:
-                  [mailAccount sentFolderNameInContext: _ctx]])
-            className = @"SOGoSentFolder";
-          else if ([fullFolderName
                      isEqualToString:
                        [mailAccount draftsFolderNameInContext: _ctx]])
             className = @"SOGoDraftsFolder";
+          else if ([fullFolderName
+                    isEqualToString:
+                  [mailAccount sentFolderNameInContext: _ctx]])
+            className = @"SOGoSentFolder";
           else if ([fullFolderName
                      isEqualToString:
                        [mailAccount trashFolderNameInContext: _ctx]])
