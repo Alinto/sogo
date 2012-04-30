@@ -284,11 +284,9 @@ function openMailTo(senderMailTo) {
             sanitizedAddresses.push(sanitizedAddress);
     }
 
-    var mailto = sanitizedAddresses.join(",");
-
-    if (mailto.length > 0)
+    if (sanitizedAddresses.length > 0)
         openMailComposeWindow(ApplicationBaseURL
-                              + "../Mail/compose?mailto=" + encodeURIComponent(Object.toJSON([mailto]))
+                              + "../Mail/compose?mailto=" + encodeURIComponent(Object.toJSON(sanitizedAddresses))
                               + ((subject.length > 0)?"?subject=" + encodeURIComponent(subject):""));
 
     return false; /* stop following the link */
@@ -619,13 +617,12 @@ function onRowClick(event, target) {
     var node = target || getTarget(event);
     var rowIndex = null;
 
-    if (node.tagName != 'TD' && node.tagName != 'LI')
+    if (node.tagName != 'TD' && node.tagName != 'LI' && node.tagName != 'TR')
         node = this;
 
     if (node.tagName == 'TD') {
         node = node.parentNode; // select TR
     }
-
     if (node.tagName == 'TR') {
         var head = $(node).up('table').down('thead');
         rowIndex = node.rowIndex;
