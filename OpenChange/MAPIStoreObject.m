@@ -20,7 +20,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSTimeZone.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoObject.h>
 #import <SOGo/SOGoUser.h>
@@ -208,21 +210,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
 
   return  [NSString stringWithFormat: format,
                     containerURL, [self nameInContainer]];
-}
-
-- (NSTimeZone *) ownerTimeZone
-{
-  NSString *owner;
-  SOGoUserDefaults *ud;
-  NSTimeZone *tz;
-  WOContext *woContext;
-
-  woContext = [[self userContext] woContext];
-  owner = [sogoObject ownerInContext: woContext];
-  ud = [[SOGoUser userWithLogin: owner] userDefaults];
-  tz = [ud timeZone];
-
-  return tz;
 }
 
 - (void) addProperties: (NSDictionary *) newNewProperties
@@ -447,16 +434,37 @@ static Class NSExceptionK, MAPIStoreFolderK;
   struct SPropValue *cValue;
   NSUInteger counter;
   NSMutableDictionary *newProperties;
+  NSTimeZone *tz;
+  NSInteger tzOffset;
+  id value;
+
+  tz = nil;
 
   newProperties = [NSMutableDictionary dictionaryWithCapacity: aRow->cValues];
   for (counter = 0; counter < aRow->cValues; counter++)
     {
       cValue = aRow->lpProps + counter;
-      if ((cValue->ulPropTag & 0xfff) == PT_STRING8)
-        [self warnWithFormat:
-                @"attempting to set string property as PR_STRING8: %.8x",
-              cValue->ulPropTag];
-      [newProperties setObject: NSObjectFromSPropValue (cValue)
+      value = NSObjectFromSPropValue (cValue);
+      switch (cValue->ulPropTag & 0xffff)
+        {
+        case PT_STRING8:
+        case PT_MV_STRING8:
+          [self warnWithFormat:
+                  @"attempting to set string property as PR_STRING8: %.8x",
+                cValue->ulPropTag];
+          break;
+        case PT_SYSTIME:
+          if (!tz)
+            {
+              tz = [[self userContext] timeZone];
+              tzOffset = -[tz secondsFromGMT];
+            }
+          value = [value addYear: 0 month: 0 day: 0
+                            hour: 0 minute: 0 second: tzOffset];
+          [value setTimeZone: tz];
+          break;
+        }
+      [newProperties setObject: value
                         forKey: MAPIPropertyKey (cValue->ulPropTag)];
     }
 
