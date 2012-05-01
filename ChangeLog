@@ -4,7 +4,7 @@
 	(-bodyPartForAttachmentWithName:): attach rfc822 content as 8bit,
 	since the "quoted-printable" encoder of SOPE is broken.
 
-2012-04-30  Ludovic Marcotte  <lmarcotte@inverse.ca> 
+2012-04-30  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/SOGoDomainDefaults.{h,m} - added
 	-hideSystemEMail that honors SOGoHideSystemEMail.
@@ -21,7 +21,7 @@
 	"Sent" one if both are matching.
 
 	* SoObjects/Mailer/SOGoMailFolder.m: Same as above.
-	
+
 
 2012-04-25  Jean Raby  <jraby@inverse.ca>
 
@@ -64,7 +64,7 @@
 	* UI/WebServerResources/generic.js (clickEventWrapper): pass the
 	value of "this" to the invoked callback.
 
-2012-04-24  Ludovic Marcotte  <lmarcotte@inverse.ca> 
+2012-04-24  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SOPE/GDLContentStore/GCSFolder.m (-writeContent:toName:baseVersion:):
 	We now keep track of the saved version for all callers. Also updated
@@ -1192,7 +1192,7 @@
 	(bareFetchFields: ...) - we now cache the returned
 	results - just like for fetchFields:...
 
-	* SoObjects/Appointments/SOGoAppointmentFolderObject.m 
+	* SoObjects/Appointments/SOGoAppointmentFolderObject.m
 	(_folderCalenars) - we now ask for the c_content and use
 	a local autorelease pool to avoid consuming too much memory
 
@@ -1632,7 +1632,7 @@
 
 2011-12-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
-	* UI/SOGoUI/UIxComponent.m (-userHasCalendarAccess) 
+	* UI/SOGoUI/UIxComponent.m (-userHasCalendarAccess)
 	(-userHasMailAccess): moved from UIxPageFrame.
 
 	* UI/Common/UIxToolbar.m (-cssClasses): new accessor that
@@ -4023,7 +4023,7 @@
 
 2011-05-16  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
-	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: Added a 
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m: Added a
 	workaround for a libxml's issue where the charset
 	specified in meta tags have precedence over the one
 	we "force" when creating the parser. This "bug" has
@@ -5253,7 +5253,7 @@
 	* OpenChange/SOGoMAPIFSMessage.m: -MAPISave added a hack
 	to AVOID saving informations on the fs when dealing
 	with the "inbox" folder - as it'll crash Outlook upon
-	next restarts  
+	next restarts
 	* Added OpenChange/MAPIStoreNotesMessageTable.{h,m} to
 	later extend and improve Notes support.
 
@@ -6146,7 +6146,7 @@
 
 	* UI/WebServerResources/generic.js (triggerAjaxRequest): invoke
 	the request callback only when set on the http object.
-	
+
 	* SoObjects/Mailer/SOGoMailBaseObject.m (-_createIMAP4Connection):
 	we need to initialize newConnection to nil when the return
 	password is nil.
@@ -7156,7 +7156,7 @@
 	In addUserCallback(), we remove the owner of the
 	resource if it was added. This fixes #682.
 	* We now correctly encode/decode the '&'
-	character in the mailbox name when copying and moving 
+	character in the mailbox name when copying and moving
 	messages and also when opening mailboxes. This
 	fixes #716.
 
@@ -7429,7 +7429,7 @@
 	too.
 
 2010-08-03  Ludovic Marcotte  <lmarcotte@inverse.ca>
-	
+
 	* Applied patch for bug #690
 	* Applied patch for bug #703
 	* Applied patch for bug #714
@@ -8160,7 +8160,7 @@
 	(-_privacySqlString): renamed to the new standardized
 	"aclSQLListingFilter". Again, a difference is now made between
 	empty and nil return strings, which we now apply here too.
-	(-bareFetchFields:from:to:title:component:additionalFilters:, 
+	(-bareFetchFields:from:to:title:component:additionalFilters:,
 	(-fetchFields:from:to:title:component:additionalFilters:includeProtectedInformation:):
 	make use of the new semantics to the above method.
 
@@ -8261,7 +8261,7 @@
 	function to toggle the address column header content
 	(From/To). This column changes depending on the mailbox type
 	selected (draft, sent or other).
-	
+
 	* UI/WebServerResources/HTMLElement.js (refreshSelectionByIds):
 	new method to restore the selection based on the elements IDs instead
 	of the elements themselves.
@@ -9907,7 +9907,7 @@
 	* UI/WebServerResources/SchedulerUI.js - we also invoke
 	refreshTasks() in onCalendarReload(). This fixes:
 	http://www.sogo.nu/bugs/view.php?id=250
-	
+
 2009-12-22  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Removed all the Kolab-related stuff (more specifically,
@@ -10429,7 +10429,7 @@
 2009-10-28  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
         * UI/MailPartViewers/UIxMailPartICalActions.m
-	(_setupChosenEventAndEventObject:) - we now 
+	(_setupChosenEventAndEventObject:) - we now
 	correctly save the event contained in the mail
 	when clicking on Accept/Decline/Delegate into
 	the user's calendar if it's not in there already.
@@ -10438,7 +10438,7 @@
 
 	* UI/Common/UIxPageFrame.m (userEmail): Added to display the user's email
 	address in the linkBanner.
-	* UI/Contacts/UIxListView.m 
+	* UI/Contacts/UIxListView.m
 	(itemHref, itemName, itemEmail): Added to allow clickable email addresses in
 	UIxListView.
 	(itemText): Removed, no longer needed.
@@ -10568,7 +10568,7 @@
 	-davCreateCollection:inContext:
 	We check, prior to creating the resource, if
 	where we create it is a supported target.
-	* SOPE/NGCards/iCalTimeZonePeriod.m 
+	* SOPE/NGCards/iCalTimeZonePeriod.m
 	-_occurenceForDate:byRRule:
 	We correctly compute the number of shifting days
 	during DST changes.
@@ -10587,13 +10587,13 @@
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m
 	(saveComponent:) - in case of an update, we check
-	if no organizer was specified when handling 
+	if no organizer was specified when handling
 	attendees addition to the event.
 
 2009-10-17  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
-	* UI/WebServerResources/UIxListEditor.js (endEditable): 
-	We use "uname" instead of "name" when reading back the 
+	* UI/WebServerResources/UIxListEditor.js (endEditable):
+	We use "uname" instead of "name" when reading back the
 	values from the autocompletion code.
 
 2009-10-16  Francis Lachapelle  <flachapelle@inverse.ca>
@@ -10616,9 +10616,9 @@
 
 	* SoObjects/Appointments/SOGoAppointmentFolders.m
 	(+webdavAclManager): Added to fix issues with iPhones (3.1.2)
-	* SoObjects/Appointments/SOGoAppointmentFolder.m 
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(+webdavAclManager): Changed write-properties and write-content to
-	non-abstract, and set the equivalent for write-content to 
+	non-abstract, and set the equivalent for write-content to
 	SoPerm_AddDocumentsImagesAndFiles
 	* SoObjects/SOGo/SOGoWebDAVAclManager.m (-copyWithZone:): Added to allow
 	object copy (useful for SOGoAppointmentFolders)
@@ -10685,7 +10685,7 @@
 	prefs, not the NSURL instance.
 
 2009-10-13  Ludovic Marcotte  <lmarcotte@inverse.ca>
- 
+
 	* SoObjects/SOGo/NSDictionary+BSJSONAdditions.m
         Fixed the objCType comparison on GNUstep for boolean
         values - we must consider 'c' and 'C'.
@@ -10747,7 +10747,7 @@
 	* Updated patchset to support properly windows-1250
 	charset instead of fallbacking stupidly to iso-8859-1
 	* Updated version number to 1.1.0
-	* Fixed type for the "Administration" module 
+	* Fixed type for the "Administration" module
 
 2009-10-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
@@ -10964,7 +10964,7 @@
 
 	* SoObjects/Mailer/EOQualifier+MailDAV.m: New category to generate IMAP
 	qualifiers from DAV filters. (REPORT)
-	(buildQualifierFromFilters:): Formatted dates using [NSCalendarDate 
+	(buildQualifierFromFilters:): Formatted dates using [NSCalendarDate
 	rfc822DateString]. Added NOT and extra fields.
 
 2009-10-04  Ludovic Marcotte  <lmarcotte@inverse.ca>
