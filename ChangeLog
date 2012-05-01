@@ -1,3 +1,16 @@
+2012-04-30  Ludovic Marcotte  <lmarcotte@inverse.ca> 
+
+	* SoObjects/SOGo/SOGoDomainDefaults.{h,m} - added
+	-hideSystemEMail that honors SOGoHideSystemEMail.
+	Right now, this variable is limited only to
+	the calendar-user-address-set response but can/will be
+	extended later.
+
+	* SoObjects/Appointments/SOGoUserFolder+Appointments.m
+	(-davCalendarUserAddressSet): Modified to honor
+	SOGoHideSystemEMail domain default.
+
+
 2012-04-25  Jean Raby  <jraby@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m

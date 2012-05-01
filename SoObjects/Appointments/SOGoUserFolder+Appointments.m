@@ -68,7 +68,20 @@
 
   doneEmails = [NSMutableDictionary dictionary];
   ownerUser = [SOGoUser userWithLogin: owner];
-  emails = [[ownerUser allEmails] objectEnumerator];
+  emails = nil;
+
+  if ([[ownerUser domainDefaults] hideSystemEMail])
+    {
+      int count;
+
+      count = [[ownerUser allEmails] count];
+      if (count > 1)
+	emails = [[[ownerUser allEmails] subarrayWithRange: NSMakeRange(0, count-1)] objectEnumerator];
+    }
+
+  if (!emails)
+    emails = [[ownerUser allEmails] objectEnumerator];
+
   while ((currentEmail = [emails nextObject]))
     {
       if (![doneEmails objectForKey: currentEmail])
