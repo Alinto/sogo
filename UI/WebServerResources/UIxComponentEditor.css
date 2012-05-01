@@ -152,6 +152,11 @@ SPAN.timeDateControl SPAN
   margin-top: 19px;
   padding: 5px; }
 
+.SOGoTimePickerMenu .hours,
+.SOGoTimePickerMenu .minutes,
+.SOGoTimePickerMenu .button
+{ clear: both; /* Opera fix */ }
+
 .SOGoTimePickerMenu SPAN DIV
 { padding: 2px; }
 
