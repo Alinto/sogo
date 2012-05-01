@@ -1266,10 +1266,10 @@ function accessToSubscribedFolder(serverFolder) {
         var username = parts[0];
         var paths = parts[1].split("/");
         if (username == UserLogin) {
-            folder = paths[1];
+            folder = paths[2];
         }
         else {
-            folder = "/" + username.asCSSIdentifier() + "_" + paths[1];
+            folder = "/" + username.asCSSIdentifier() + "_" + paths[2];
         }
     }
     else {

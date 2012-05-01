@@ -1,5 +1,9 @@
 2012-05-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js (accessToSubscribedFolder): use
+	the last part of the string as folder identifier. Otherwise we end
+	up with the module name.
+
 	* SoObjects/Mailer/SOGoDraftObject.m
 	(-bodyPartForAttachmentWithName:): attach rfc822 content as 8bit,
 	since the "quoted-printable" encoder of SOPE is broken.
