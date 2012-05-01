@@ -1119,7 +1119,7 @@ static NSString    *userAgent      = nil;
   NGMimeBodyPart   *bodyPart;
   NSString         *s;
   NSData           *content;
-  BOOL             attachAsString, force7bitText;
+  BOOL             attachAsString, attachAsRFC822;
   NSString         *p;
   id body;
 
@@ -1134,7 +1134,7 @@ static NSString    *userAgent      = nil;
     return nil;
   }
   attachAsString = NO;
-  force7bitText = NO;
+  attachAsRFC822 = NO;
   
   /* prepare header of body part */
 
@@ -1145,7 +1145,7 @@ static NSString    *userAgent      = nil;
     if ([s hasPrefix: @"text/plain"] || [s hasPrefix: @"text/html"])
       attachAsString = YES;
     else if ([s hasPrefix: @"message/rfc822"])
-      force7bitText = YES;
+      attachAsRFC822 = YES;
   }
   if ((s = [self contentDispositionForAttachmentWithName:_name]))
     {
@@ -1181,28 +1181,25 @@ static NSString    *userAgent      = nil;
        Note: in OGo this is done in LSWImapMailEditor.m:2477. Apparently
              NGMimeFileData objects are not processed by the MIME generator!
     */
-    NSData *encoded;
-    
     content = [[NSData alloc] initWithContentsOfMappedFile:p];
 
-    if (force7bitText)
+    if (attachAsRFC822)
       {
-        encoded = [content dataByEncodingQuotedPrintable];
-        [map setObject: @"quoted-printable"
-                forKey: @"content-transfer-encoding"];
+        [map setObject: @"8bit" forKey: @"content-transfer-encoding"];
+        [map setObject: @"inline" forKey: @"content-disposition"];
       }
     else
       {
-        encoded = [content dataByEncodingBase64];
+        content = [content dataByEncodingBase64];
         [map setObject: @"base64" forKey: @"content-transfer-encoding"];
       }
-    [map setObject:[NSNumber numberWithInt:[encoded length]] 
+    [map setObject:[NSNumber numberWithInt:[content length]] 
 	 forKey: @"content-length"];
-    [content release]; content = nil;
     
     /* Note: the -init method will create a temporary file! */
-    body = [[NGMimeFileData alloc] initWithBytes:[encoded bytes]
-				   length:[encoded length]];
+    body = [[NGMimeFileData alloc] initWithBytes:[content bytes]
+                                          length:[content length]];
+    [content release]; content = nil;
   }
   
   bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];

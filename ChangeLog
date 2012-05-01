@@ -1,3 +1,9 @@
+2012-05-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m
+	(-bodyPartForAttachmentWithName:): attach rfc822 content as 8bit,
+	since the "quoted-printable" encoder of SOPE is broken.
+
 2012-04-30  Ludovic Marcotte  <lmarcotte@inverse.ca> 
 
 	* SoObjects/SOGo/SOGoDomainDefaults.{h,m} - added
