@@ -55,8 +55,8 @@
 {
   struct mapistore_connection_info *connInfo;
   NSMutableArray *containersBag;
-  SOGoUser *activeUser;
-  MAPIStoreUserContext *userContext;
+  SOGoUser *activeUser;              /* the user accessing the resource */
+  MAPIStoreUserContext *userContext; /* the owner or the resource */
   NSURL *contextUrl;
 }
 
