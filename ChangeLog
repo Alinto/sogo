@@ -5,8 +5,8 @@
 	up with the module name.
 
 	* SoObjects/Mailer/SOGoDraftObject.m
-	(-bodyPartForAttachmentWithName:): attach rfc822 content as 8bit,
-	since the "quoted-printable" encoder of SOPE is broken.
+	(-bodyPartForAttachmentWithName:): attach rfc822 content as
+	with base64 encoding, just as any other non-text data.
 
 2012-04-30  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
