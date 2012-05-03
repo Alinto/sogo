@@ -2,7 +2,7 @@
 
 /* Icon's label */
 "Create"      = "Aanmaken";
-"Empty Trash" = "Prullenbak leegmaken";
+"Empty Trash" = "Prullenbak legen";
 "Delete"      = "Verwijderen";
 "Expunge"     = "Leegmaken";
 "Forward"     = "Doorsturen";
@@ -60,8 +60,8 @@
 "Write a new message" = "Een nieuw bericht opstellen";
 
 "Share: " = "Delen: ";
-"Account: " = "Account:";
-"Shared Account: " = "Gedeeld account";
+"Account: " = "Account: ";
+"Shared Account: " = "Gedeeld account: ";
 
 /* acls */
 "Access rights to" = "Toegangsrechten voor";
@@ -79,8 +79,8 @@
 "Remove this folder" = "Deze map verwijderen";
 "Erase mails from this folder" = "E-mails in in deze map verwijderen";
 "Expunge this folder" = "Deze map leegmaken";
-"Archive This Folder" = "Deze Map Archiveren";
-"Modify the acl of this folder" = "Machtigingen van deze map aanpassen";
+"Archive This Folder" = "Deze map archiveren";
+"Modify the acl of this folder" = "Machtigingen voor deze map aanpassen";
 
 "Saved Messages.zip" = "Bewaarde Berichten.zip";
 
@@ -103,15 +103,15 @@
 "Attach Web Page..." = "Voeg Webpagina toe...";
 "Attach File(s)..." = "Voeg Bestand(en) toe...";
 
-"to"            = "aan";
-"cc"            = "cc";
-"bcc"           = "bcc";
+"to"            = "Aan";
+"cc"            = "Cc";
+"bcc"           = "Bcc";
 
 "Edit Draft..." = "Concept aanpassen...";
 "Load Images" = "Afbeeldingen laden";
 
 "Return Receipt" = "Ontvangstbevestiging";
-"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "De afzender van dit bericht heeft gevraagd te worden geinformeerd als u het leest. Wilt u de afzender informeren?";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "De afzender van dit bericht heeft gevraagd te worden geïnformeerd als u het leest. Wilt u de afzender informeren?";
 "Return Receipt (displayed) - %@"= "Ontvangstbevestigig (vertoond) - %@";
 "This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dit is een Ontvangstbevestiging voor de e-mail die u hebt verzonden naar %@.\n\nOpmerking: Deze Ontvangstbevestiging bevestigt alleen dat het bericht is weergegeven op de computer van de ontvanger. Er is geen garantie dat de ontvanger het heeft gelezen of begrepen.";
 
@@ -124,7 +124,7 @@
 
 "This mail is being sent from an unsecure network!" = "Deze e-mail wordt verzonden vanaf een onveilig netwerk!";
 
-"Address Book:" = "Adresboek";
+"Address Book:" = "Adresboek:";
 "Search For:" = "Zoek naar:";
 
 /* Popup "show" */
@@ -148,10 +148,10 @@
 "No message"    = "Geen bericht";
 "messages"      = "berichten";
 
-"first"         = "eerste";
-"previous"      = "vorige";
-"next"          = "volgende";
-"last"          = "laatste";
+"first"         = "Eerste";
+"previous"      = "Vorige";
+"next"          = "Volgende";
+"last"          = "Laatste";
 
 "msgnumber_to"  = "tot";
 "msgnumber_of"  = "van";
@@ -251,7 +251,7 @@
  = "Weet u zeker dat u deze map wilt verplaatsen naar de prullenbak";
 "Operation failed" = "Bewerking mislukt.";
 
-"Quota" = "Quota";
+"Quota" = "Quota:";
 "quotasFormat" = "%{0}% van %{1} MB gebruikt";
 
 "Please select a message." = "Selecteer een bericht.";
@@ -288,6 +288,6 @@
 "error_missingrecipients" = "U heeft geen ontvanger opgegeven!";
 
 /* Message sending */
-"cannot send message: (smtp) all recipients discarded" = "kan bericht niet sturen: (smtp) alle ontvangers verwijderd";
-"cannot send message (smtp) - recipients discarded:" = "kan bericht niet sturen (smtp) - ontvangers verwijderd";
-"cannot send message: (smtp) error when connecting" = "kan bericht niet sturen: (smtp) fout bij verbinden";
+"cannot send message: (smtp) all recipients discarded" = "Kan bericht niet sturen: alle ontvangers zijn ongeldig.";
+"cannot send message (smtp) - recipients discarded:" = "Kan bericht niet sturen: de volgende adressen zijn ongeldig:";
+"cannot send message: (smtp) error when connecting" = "Kan bericht niet sturen: fout bij verbinden met de SMTP server.";

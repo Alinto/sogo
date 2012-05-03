@@ -10,7 +10,7 @@
 "Connect" = "Inloggen";
 
 "Wrong username or password." = "Onjuiste gebruikersnaam of wachtwoord.";
-"cookiesNotEnabled" = "U kunt niet inloggen omdat de browser geen cookies accepteert. Verander AUB de cookies instellingen van de browser en probeer het opnieuw.";
+"cookiesNotEnabled" = "U kunt niet inloggen omdat de browser geen cookies accepteert. Verander de cookie-instellingen van de browser en probeer het opnieuw.";
 
 "browserNotCompatible" = "We hebben gedetecteerd dat de browser die u op dit moment gebruikt niet word ondersteund voor deze site. Onze aanbeveling is Firefox te gebruiken. Hieronder staat een link om de laatste versie van deze browser te downloaden.";
 "alternativeBrowsers" = "Als alternatief kun u ook de volgende compatible browsers gebruiken.";
@@ -68,7 +68,7 @@
 "Unhandled policy error: %{0}" = "Onverwerkte beleidsfout: %{0}";
 "Unhandled error response" = "Onverwerkte foutmelding";
 "Password change is not supported." = "Wachtwoordwijziging wordt niet ondersteund.";
-"Unhandled HTTP error code: %{0}" = "Onverwerkte HTTP-foutcode:%{0}";
+"Unhandled HTTP error code: %{0}" = "Onverwerkte HTTP-foutcode: %{0}";
 "New password:" = "Nieuw wachtwoord:";
 "Confirmation:" = "Bevestiging:";
 "Cancel" = "Annuleren";
