@@ -496,7 +496,7 @@ typedef enum SOGoToolRestoreMode {
           else
             {
               rc = NO;
-              NSLog (@"no user table with that name");
+              NSLog (@"no user table '%@' found", currentFolder);
             }
         }
     }
