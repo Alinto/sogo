@@ -1,3 +1,9 @@
+2012-05-04  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreSOGo.m: register and unregister current
+	thread before and after each backend operation, in order to avoid
+	issues in multithreaded environment. 
+
 2012-05-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/generic.js (accessToSubscribedFolder): use
