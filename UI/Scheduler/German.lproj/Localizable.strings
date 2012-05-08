@@ -383,18 +383,18 @@
 "repeat_CUSTOM" = "benutzerdefiniert...";
 
 "reminder_NONE" = "Keine Erinnerung";
-"reminder_5_MINUTES_BEFORE" = "5 Minuten vor";
-"reminder_10_MINUTES_BEFORE" = "10 Minuten vor";
-"reminder_15_MINUTES_BEFORE" = "15 Minuten vor";
-"reminder_30_MINUTES_BEFORE" = "30 Minuten vor";
-"reminder_45_MINUTES_BEFORE" = "45 Minuten vor";
-"reminder_1_HOUR_BEFORE" = "1 Stunde vor";
-"reminder_2_HOURS_BEFORE" = "2 Stunden vor";
-"reminder_5_HOURS_BEFORE" = "5 Stunden vor";
-"reminder_15_HOURS_BEFORE" = "15 Stunden vor";
-"reminder_1_DAY_BEFORE" = "1 Tag vor";
-"reminder_2_DAYS_BEFORE" = "2 Tage vor";
-"reminder_1_WEEK_BEFORE" = "1 Woche vor";
+"reminder_5_MINUTES_BEFORE" = "5 Minuten vorher";
+"reminder_10_MINUTES_BEFORE" = "10 Minuten vorher";
+"reminder_15_MINUTES_BEFORE" = "15 Minuten vorher";
+"reminder_30_MINUTES_BEFORE" = "30 Minuten vorher";
+"reminder_45_MINUTES_BEFORE" = "45 Minuten vorher";
+"reminder_1_HOUR_BEFORE" = "1 Stunde vorher";
+"reminder_2_HOURS_BEFORE" = "2 Stunden vorher";
+"reminder_5_HOURS_BEFORE" = "5 Stunden vorher";
+"reminder_15_HOURS_BEFORE" = "15 Stunden vorher";
+"reminder_1_DAY_BEFORE" = "1 Tag vorher";
+"reminder_2_DAYS_BEFORE" = "2 Tage vorher";
+"reminder_1_WEEK_BEFORE" = "1 Woche vorher";
 "reminder_CUSTOM" = "Benutzerdefiniert...";
 
 "reminder_MINUTES" = "Minuten";

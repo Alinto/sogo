@@ -1,12 +1,12 @@
 /* this file is in UTF-8 format! */
 
-"Contact" = "Contactpersoon";
+"Contact" = "Herlaad";
 "Address" = "Adres";
-"Photos" = "Fotos";
+"Photos" = "Foto's";
 "Other" = "Overige";
 
-"Address Books" = "Addressbooks";
-"Addressbook" = "Addressbook";
+"Address Books" = "Adresboeken";
+"Addressbook" = "Adresboek";
 "Addresses" = "Adressen";
 "Update" = "Opslaan";
 "Cancel" = "Annuleren";
@@ -35,29 +35,29 @@
 "Unit" = "Afdeling";
 "delete" = "Verwijderen";
 "edit" = "Bewerken";
-"invalidemailwarn" = "E-mailadres is ongeldig. Wilt u toch doorgaan?";
-"invaliddatewarn" = "The specified date is invalid.";
+"invalidemailwarn" = "Het ingevoerde e-mailadres is ongeldig.";
+"invaliddatewarn" = "De ingevoerde datum is ongeldig.";
 "new" = "Nieuw";
 "Preferred Phone" = "Voorkeurstelefoon";
 
-"Move To" = "Move To";
-"Copy To" = "Copy To";
-"Add to:" = "Add to:";
+"Move To" = "Verplaatsen naar";
+"Copy To" = "Kopieren naar";
+"Add to:" = "Toevoegen aan:";
 
 /* Tooltips */
 
-"Create a new address book card" = "Create a new address book card";
-"Create a new list" = "Create a new list";
-"Edit the selected card" = "Edit the selected card";
-"Send a mail message" = "Send a mail message";
-"Delete selected card or address book" = "Delete selected card or address book";
-"Reload all contacts" = "Reload all contacts";
+"Create a new address book card" = "Nieuwe contactpersoon aanmaken";
+"Create a new list" = "Nieuwe lijst aanmaken";
+"Edit the selected card" = "Bewerk de geselecteerde contactpersoon";
+"Send a mail message" = "Stuur een e-mailbericht";
+"Delete selected card or address book" = "Verwijder geselecteerd adresboek of contactpersoon";
+"Reload all contacts" = "Herlaad alle contactpersonen";
 
 "htmlMailFormat_UNKNOWN" = "Onbekend";
 "htmlMailFormat_FALSE" = "Platte tekst";
 "htmlMailFormat_TRUE" = "HTML";
 
-"Name or Email" = "Naam of E-mail";
+"Name or Email" = "Naam of e-mail";
 "Category" = "Category";
 "Personal Addressbook" = "Persoonlijk adresboek";
 "Search in Addressbook" = "Adresboek doorzoeken...";
@@ -72,19 +72,19 @@
 "Add..." = "Toevoegen...";
 "Remove" = "Verwijderen";
 
-"Please wait..." = "Even geduld AUB...";
+"Please wait..." = "Even geduld alstublieft ...";
 "No possible subscription" = "Abonnement niet mogelijk";
 
 "Preferred" = "Voorkeurs-";
-"Display:" = "Weergavenaam:";
+"Display:" = "Weergave:";
 "Display Name:" = "Weergavenaam:";
 "Email:" = "E-mail:";
-"Additional Email:" = "Alternatieve E-mail:";
+"Additional Email:" = "Alternatieve e-mail:";
 
 "Phone Number:" = "Telefoon:";
 "Prefers to receive messages formatted as:" = "Geeft voorkeur aan berichten geformatteerd als:";
 "Screen Name:" = "Weergavenaam:";
-"Categories:" = "Categories:";
+"Categories:" = "Categorieën:";
 
 "First:" = "Voornaam:";
 "Last:" = "Achternaam:";
@@ -99,13 +99,13 @@
 
 /* categories */
 "contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
-"Categories" = "Categories";
-"New category" = "New category";
+"Categories" = "Categorieën";
+"New category" = "Niewe categorie";
 
 /* adresses */
 "Title:" = "Titel:";
 "Service:" = "Service:";
-"Company:" = "Company:";
+"Company:" = "Bedrijf:";
 "Department:" = "Afdeling:";
 "Organization:" = "Organisatie:";
 "Address:" = "Adres:";
@@ -122,7 +122,7 @@
 "Timezone:" = "Tijdzone:";
 "Birthday:" = "Geboortedatum:";
 "Birthday (yyyy-mm-dd):" = "Geboortedatum (yyyy-mm-dd):";
-"Freebusy URL:" = "Beschikbaarheids (Free/Busy) URL:";
+"Freebusy URL:" = "Beschikbaarheids-URL (Free/Busy):";
 
 "Add as..." = "Toevoegen als ...";
 "Recipient" = "Ontvanger";
@@ -145,7 +145,7 @@
 = "Weet u zeker dat u de geselecteerde contactpersonen wilt verwijderen?";
 
 "You cannot delete the card of \"%{0}\"."
-= "You cannot delete the card of \"%{0}\".";
+= "U kunt da kaart van \"%{0}\" niet verwijderen.";
 
 "Address Book Name" = "Naam van het adresboek";
 
@@ -158,8 +158,8 @@
 "Access rights to" = "Toegangsrechten voor";
 "For user" = "Voor gebruiker";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
+"Any Authenticated User" = "Elke geauthenticeerde gebruiker";
+"Public Access" = "Publieke toegang";
 
 "This person can add cards to this addressbook."
 = "Deze persoon mag contactpersonen toevoegen aan dit adresboek.";
@@ -179,28 +179,28 @@
 
 /* Error messages for move and copy */
 
-"SoAccessDeniedException" = "You cannot write to this address book.";
-"Forbidden" = "You cannot write to this address book.";
-"Invalid Contact" = "The selected contact no longer exists.";
-"Unknown Destination Folder" = "The chosen destination address book no longer exists.";
+"SoAccessDeniedException" = "U kunt niet naar dit adresboek schrijven.";
+"Forbidden" = "U kunt niet naar dit adresboek schrijven.";
+"Invalid Contact" = "De geselecteerde contactpersoon bestaat niet meer.";
+"Unknown Destination Folder" = "Het geselecteerde doeladresboek bestaat niet meer.";
 
 /* Lists */
-"List details" = "List details";
-"List name:" = "List name:";
-"List nickname:" = "List nickname:";
-"List description:" = "List description:";
-"Members" = "Members";
-"Contacts" = "Contacts";
-"Add" = "Add";
-"Lists can't be moved or copied." = "Lists can't be moved or copied.";
+"List details" = "Toon details";
+"List name:" = "Lijst-naam:";
+"List nickname:" = "Lijst-bijnaam:";
+"List description:" = "Beschrijving:";
+"Members" = "Leden";
+"Contacts" = "Contactpersonen";
+"Add" = "Toevoegen";
+"Lists can't be moved or copied." = "Lijsten kunnen niet worden verplaatst of gekopieerd.";
 "Export" = "Export";
-"Export Address Book..." = "Export Address Book...";
-"Import Cards" = "Import Cards";
-"Select a vCard or LDIF file." = "Select LDIF or vCard file.";
+"Export Address Book..." = "Adresboek exporteren...";
+"Import Cards" = "Contactgegevens importeren";
+"Select a vCard or LDIF file." = "Selecteer LDIF- of vCard-bestanden.";
 "Upload" = "Upload";
-"Done" = "Done";
-"An error occured while importing contacts." = "An error occured while importing contacts.";
-"No card was imported." = "No card was imported.";
-"A total of %{0} cards were imported in the addressbook." = "A total of %{0} cards were imported in the addressbook.";
+"Done" = "Klaar";
+"An error occured while importing contacts." = "Tijdens het importeren is een fout opgetreden.";
+"No card was imported." = "Geen contactgegevens geïmporteerd.";
+"A total of %{0} cards were imported in the addressbook." = "Een totaal van %{0} kaarten werd in het adresboek geïmporteerd.";
 
-"Reload" = "Reload";
+"Reload" = "Herlaad";

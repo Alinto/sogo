@@ -35,14 +35,19 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Termineinladung: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(gesendet von %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText} Hat Sie eingeladen zu %{Summary}.\n\nBeginn: %{StartDate}\nEnde: %{EndDate}\nBeschreibung: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText} hat Sie eingeladen zu %{Summary}.\n\nBeginn: %{StartDate} um %{StartTime}\nEnde: %{EndDate} um %{EndTime}\nBeschreibung: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Termin abgesagt: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} hat den folgenden Termin abgesagt: %{Summary}.\n\nBeginn: %{StartDate}\nEnde: %{EndDate}\nBeschreibung: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} hat diesen Termin abgesagt: %{Summary}.\n\nBeginn: %{StartDate} um %{StartTime}\nEnde: %{EndDate} um %{EndTime}\nBeschreibung: %{Description}";
 
 /* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "Die Verabredung \"%{Summary}\" am %{OldStartDate} wurde geändert";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "Der Termin \"%{Summary}\" für den %{OldStartDate} um %{OldStartTime} hat sich geändert";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
@@ -62,4 +67,4 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 = "%{Attendee} %{SentByText} hat noch nicht über Ihre Termineinladung entschieden.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximale Zahl gleichzeitiger Buchungen (%{NumberOfSimultaneousBookings}) erreicht für Ressource \"%{Cn} %{SystemEmail}\".";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Die maximale Anzahl von gleichzeitigen Buchungen (%{NumberOfSimultaneousBookings}) für die Ressource \"%{Cn} %{SystemEmail}\" ist erreicht. Der kollidierende Termin ist \"%{EventTitle}\", und beginnt am %{StartDate}.";

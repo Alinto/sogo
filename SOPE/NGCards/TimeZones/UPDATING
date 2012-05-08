@@ -14,4 +14,6 @@ To updated the timezone files:
   vzic --olson-dir /tmp/zones/ --output-dir SOGo/SOPE/NGCards/TimeZones/
   cd SOGo/SOPE/NGCards/TimeZones/
   rm -f zones.h zones.tab
-  find . -name "*.ics" | xargs -ti sed -i s/'tzurl.org\/\/NONSGML Olson 2011k'/'Inverse inc.\/\/NONSGML SOGo'/ {}
+
+  find . -name "*.ics" | xargs -ti sed -i s/'My Organization\/\/NONSGML My Product'/'Inverse inc.\/\/NONSGML SOGo'/ {}
+  find . -name "*.ics" | xargs -ti sed -i s/'\/myorganization.org\/20120508_1\/'// {}

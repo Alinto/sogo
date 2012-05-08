@@ -3,44 +3,44 @@ COMPLETED = "abgeschlossen";
 DECLINED = "zurückgewiesen";
 DELEGATED = "delegiert";
 "IN-PROCESS" = "in Bearbeitung";
-"NEEDS-ACTION" = "Reaktion erwarted";
+"NEEDS-ACTION" = "Reaktion erwartet";
 TENTATIVE = "vorläufig";
 organized_by_you = "von Ihnen organisiert";
 you_are_an_attendee = "Sie sind ein Teilnehmer";
 add_info_text = "iMIP 'ADD' Anfragen werden von SOGo noch nicht unterstützt.";
 publish_info_text = "Der Absender informiert Sie über den angefügten Termin.";
 cancel_info_text = "Ihre Einladung zu dem Termin, oder der gesamte Termin wurde abgesagt.";
-request_info_no_attendee = "schlägt den Teilnehmern einen Termin vor. Sie sind kein vorgesehener Teilnehmer und erhalten diese Nachricht lediglich als Information.";
+request_info_no_attendee = "schlägt den Teilnehmern einen Termin vor. Sie sind kein vorgesehener Teilnehmer und erhalten diese Nachricht lediglich als Hinweis.";
 Appointment = "Termin";
 
 Organizer = "Organisator";
 Time = "Zeit";
 Attendees = "Teilnehmer";
-request_info = "lädt sie ein, an einem Termin teilzunehmen.";
+request_info = "lädt sie ein, an einem Treffen teilzunehmen.";
 "Add to calendar" = "Zum Kalender hinzufügen";
-"Delete from calendar" = "Aus Kalender entfernen";
+"Delete from calendar" = "Aus dem Kalender entfernen";
 "Update status" = "Status aktualisieren";
 Accept = "Annehmen";
 Decline = "Ablehnen";
 Tentative = "Vorläufig";
 "Delegate ..." = "Delegieren ...";
-"Delegated to" = "Delegieren an";
+"Delegated to" = "Delegiert an";
 "Update status in calendar" = "Kalender Status aktualisieren";
 "delegated from" = "delegiert von";
 
-reply_info_no_attendee = "Sie haben eine Antwort auf einen Termin von einem Nicht-Teilnehmer erhalten.";
+reply_info_no_attendee = "Sie haben eine Antwort auf eine Termineinladung von einem Nicht-Teilnehmer erhalten.";
 reply_info = "Dies ist eine Anwort auf eine Termineinladung von Ihnen.";
 
-"to" = "für";
+"to" = "an";
 
-"Untitled" = "ohne Titel";
+"Untitled" = "Ohne Titel";
 
 "Size" = "Größe";
 
 "Digital signature is not valid" = "Digitale Signatur ist nicht gültig";
 "Message is signed" = "Nachricht ist signiert";
-"Subject" = "Zertifizierter";
+"Subject" = "Betreff";
 "From" = "Von";
 "Date" = "Datum";
-"To" = "Bis";
+"To" = "An";
 "Issuer" = "Aussteller";

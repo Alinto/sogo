@@ -33,13 +33,13 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "comment_label" = "Commentaar:";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Gebeurtenisuitnodiging: \"%{Summary}\"";
+"Event Invitation: \"%{Summary}\"" = "Uitnodiging voor gebeurtenis: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(Verzonden door %{SentBy})";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}heeft u uitgenodigd voor: %{Summary}.\n\nBegin: %{StartDate}\nEinde: %{EndDate}\nBeschrijving: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}heeft u uitgenodigd voor %{Summary}.\n\nStart: %{StartDate} om %{StartTime}\nEinde: %{EndDate} om %{EndTime}\nOmschrijving: %{Description}";
 
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Gebeurtenis geannuleerd: \"%{Samenvatting}\"";
+"Event Cancelled: \"%{Summary}\"" = "Gebeurtenis geannuleerd: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}heeft deze gebeurtenis afgezegd: %{Summary}.\n\nBegin: %{StartDate}\nEinde: %{EndDate}\nBeschrijving: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
@@ -51,12 +51,12 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "De gebeurtenis \"%{Summary}\" op %{OldStartDate} om %{OldStartTime} is gewijzigd";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
-= "De volgende parameters zijn veranderd in de \"%{Samenvatting}\" vergadering:";
+= "De volgende parameters zijn veranderd in de \"%{Summary}\" vergadering:";
 "Please accept or decline those changes."
-= "Accepteer deze wijzigingen of sla ze af.";
+= "Accepteer deze wijzigingen of wijs ze af.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Antwoord voor de gebeurtenisuitnodiging: \"%{Summary}\"";
+"Reply to invitation: \"%{Summary}\"" = "Antwoord voor de uitnodiging: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}heeft uw uitnodiging voor de gebeurtenis geaccepteerd.";
 "%{Attendee} %{SentByText}has declined your event invitation."
@@ -67,4 +67,4 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 = "%{Attendee} %{SentByText}heeft nog niet gereageerd op uw uitnodiging.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum aantal gelijktijdige boekingen (%{NumberOfSimultaneousBookings}) bereikb voor hulpmiddel \"%{Cn} %{SystemEmail}\".";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Het maximale aantal gelijktijdige reserveringen (%{NumberOfSimultaneousBookings}) voor \"%{Cn} %{SystemEmail}\" is bereikt. De conflicterende gebeurtenis is \"%{EventTitle}\" en begint op %{StartDate}.";

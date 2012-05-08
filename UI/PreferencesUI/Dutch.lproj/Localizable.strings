@@ -23,13 +23,13 @@
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatisch bericht bij afwezigheid inschakelen";
 "Auto reply message :" = "Automatisch eenmalig met het volgende bericht beantwoorden:";
-"Email addresses (separated by commas) :" = "E-mailaddressen (gescheiden door komma's) :";
-"Add default email addresses" = "Standaard E-mailadres toevoegen";
+"Email addresses (separated by commas) :" = "E-mailaddressen (gescheiden door komma's):";
+"Add default email addresses" = "Standaard e-mailadres toevoegen";
 "Days between responses :" = "Dagen tussen reacties:";
-"Do not send responses to mailing lists" = "Geen reacties naar mailling-lists sturen";
+"Do not send responses to mailing lists" = "Geen reacties naar maillinglijsten sturen";
 "Disable auto reply on" = "Automatisch bericht bij afwezigheid uitschakelen op";
 "Please specify your message and your email addresses for which you want to enable auto reply."
-= "Geeft u alstublieft de tekst van het autimaitsche bericht bij afwezigheid op en de e-mailadressen waarvoor het moet worden geactiveerd.";
+= "Geeft u alstublieft de tekst van het automatische bericht bij afwezigheid op en de e-mailadressen waarvoor het moet worden geactiveerd.";
 "Your vacation message must not end with a single dot on a line." = "Uw automatisch bericht bij afwezigheid mag niet eindigen met een enkele punt op een regel.";
 "End date of your auto reply must be in the future."
 = "Einddatum van uw automatische antwoord moet in de toekomst liggen.";
@@ -87,18 +87,19 @@
 "timeFmt_1" = "%H.%M";
 "timeFmt_2" = "%H h. %M";
 "timeFmt_3" = "";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "Week begint op:";
 "Day start time :" = "Dag begint om:";
 "Day end time :" = "Dag eindigt om:";
 "Day start time must be prior to day end time." = "Het begin van de dag moet voor het einde liggen.";
-"Show time as busy outside working hours" = "Tijd weergeven als bezet buiten werkdag";
+"Show time as busy outside working hours" = "Tijd buiten werkdag weergeven als bezet";
 "First week of year :" = "Eerste week van het jaar:";
 "Enable reminders for Calendar items" = "Herinneringen inschakelen voor afspraken";
 "Play a sound when a reminder comes due"
-= "Geluidafspelen bij herinnering";
-"Default reminder :" = "Standaard herinnering:";
+= "Geluid afspelen bij herinnering";
+"Default reminder :" = "Standaardherinnering:";
 
 "firstWeekOfYear_January1" = "Begint op 1 januari";
 "firstWeekOfYear_First4DayWeek" = "Eerste week met 4 dagen";
@@ -108,7 +109,7 @@
 "Default calendar :" = "Standaard agenda";
 "selectedCalendar" = "Geselecteerde agenda";
 "personalCalendar" = "Persoonlijke agenda";
-"firstCalendar" = "Eerste ingeschakelde kalender";
+"firstCalendar" = "Eerste ingeschakelde agenda";
 
 "reminderTime_0000" = "0 minuten";
 "reminderTime_0005" = "5 minuten";
@@ -163,7 +164,7 @@
 "(Click to create)" = "(Klik om op te stellen)";
 
 "Signature" = "Ondertekening";
-"Please enter your signature below:" = "Please enter your signature below:";
+"Please enter your signature below:" = "Stel de ondertekening hieronder op:";
 
 /* Additional Parameters */
 "Additional Parameters" = "Extra Parameters";
@@ -288,4 +289,4 @@
 "Unhandled policy error: %{0}" = "Onverwerkte beleidsfout: %{0}";
 "Unhandled error response" = "Onverwerkte foutmelding";
 "Password change is not supported." = "Wachtwoordwijziging wordt niet ondersteund.";
-"Unhandled HTTP error code: %{0}" = "Onverwerkte HTTP-foutcode:%{0}";
+"Unhandled HTTP error code: %{0}" = "Onverwerkte HTTP-foutcode: %{0}";

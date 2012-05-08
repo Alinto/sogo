@@ -23,13 +23,14 @@
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatische Abwesenheitsnachricht aktivieren";
 "Auto reply message :" = "Folgende Nachricht wird automatisch einmal an jeden Absender gesendet:";
-"Email addresses (separated by commas) :" = "E-Mail-Adressen (getrennt durch Kommata) :";
+"Email addresses (separated by commas) :" = "E-Mail-Adressen (getrennt durch Kommata):";
 "Add default email addresses" = "Standardadresse hinzufügen";
-"Days between responses :" = "Tage zwischen automatischen Abwesenheitsnachrichten :";
+"Days between responses :" = "Tage zwischen automatischen Abwesenheitsnachrichten:";
 "Do not send responses to mailing lists" = "Keine automatischen Abwesenheitsnachrichten an Mailinglisten senden";
 "Disable auto reply on" = "Automatische Abwesenheitsnachricht abschalten am";
 "Please specify your message and your email addresses for which you want to enable auto reply."
-= "Bitte ihren Nachrichtentext und ihre E-Mail-Adressen angeben, für die automatische Abwesenheitsnachrichten aktiviert werden sollen .";
+= "Bitte ihren Nachrichtentext und ihre E-Mail-Adressen angeben, für die automatische Abwesenheitsnachrichten aktiviert werden sollen.";
+"Your vacation message must not end with a single dot on a line." = "Ihre Abwesenheitsnachricht darf nicht mit einem alleinstehenden Punkt in einer Zeile enden.";
 "End date of your auto reply must be in the future."
 = "Das Endedatum für Ihre automatische Abwesenheitsnachricht muss in der Zukunft liegen.";
 
@@ -61,7 +62,15 @@
 "shortDateFmt_8" = "%e. %b. %y";
 
 "shortDateFmt_9" = "";
-   
+"shortDateFmt_10" = "";
+"shortDateFmt_11" = "";
+
+"shortDateFmt_12" = "";
+"shortDateFmt_13" = "";
+"shortDateFmt_14" = "";
+
+"shortDateFmt_15" = "";
+
 "longDateFmt_0" = "%A, %d. %B %Y";
 "longDateFmt_1" = "%A, %e. %B %Y";
 "longDateFmt_2" = "%a. %d. %B %Y";
@@ -72,12 +81,14 @@
 "longDateFmt_7" = "%a. %e. %b. %Y";
 "longDateFmt_8" = "%d. %B %Y";
 "longDateFmt_9" = "%e. %B %Y";
+
 "longDateFmt_10" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%Hh:%Mm";
 "timeFmt_2" = "%Hh %Mm";
 "timeFmt_3" = "";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "Erster Wochentag:";
@@ -165,15 +176,15 @@
 "Change" = "Ändern";
 
 /* Event+task classifications */
-"Default events classification :" = "Default events classification :";
-"Default tasks classification :" = "Default tasks classification :";
-"PUBLIC_item" = "Public";
-"CONFIDENTIAL_item" = "Confidential";
-"PRIVATE_item" = "Private";
+"Default events classification :" = "Standard Einstufung Termine:";
+"Default tasks classification :" = "Standard Einstufung Aufgaben:";
+"PUBLIC_item" = "Öffentlich";
+"CONFIDENTIAL_item" = "Vertraulich";
+"PRIVATE_item" = "Privat";
 
 /* Event+task categories */
 "category_none" = "Keine";
-"calendar_category_labels" = "Jubiläum,Geburtstag,Geschäft,Anrufe,Klienten,Konkurrenz,Kunde,Favoriten,Fortsetzung,Geschenke,Ferien,Ideen,Meeting,Fragen,Verschiedenes,Persönlich,Projekte,Feiertag,Status,Lieferanten,Reise,Urlaub";
+"calendar_category_labels" = "Jubiläum,Geburtstag,Geschäft,Anrufe,Klienten,Konkurrenz,Kunde,Favoriten,Fortsetzung,Geschenke,Ferien,Ideen,Besprechung,Fragen,Verschiedenes,Persönlich,Projekte,Feiertag,Status,Lieferanten,Reise,Urlaub";
 
 /* Default module */
 "Calendar" = "Kalender";
@@ -238,7 +249,7 @@
 "Header" = "Header";
 "Flag the message with:" = "Markiere die Nachricht als:";
 "Discard the message" = "Verwerfe die Nachricht";
-"File the message in:" = "Verschiebe die Nachricht in:";
+"File the message in:" = "Verschiebe die Nachricht nach:";
 "Keep the message" = "Behalte die Nachricht";
 "Forward the message to:" = "Weiterleiten der Nachricht an:";
 "Send a reject message:" = "Sende eine Ablehnungsnachricht:";
@@ -280,5 +291,3 @@
 "Unhandled error response" = "Unbearbeitete Fehlerantwort";
 "Password change is not supported." = "Passwortänderung wird nicht unterstützt.";
 "Unhandled HTTP error code: %{0}" = "Unbearbeiteter HTTP-Fehlercode: %{0}";
-"New password:" = "Neues Passwort:";
-"Confirmation:" = "Bestätigung:";
