@@ -1,3 +1,9 @@
+2012-05-08  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxContactView.m (-primaryEmail): in the mailto
+	link, remove double-quotes and escape single-quotes from the fullname.
+	(-secondaryEmail): idem.
+
 2012-05-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/generic.js (accessToSubscribedFolder): use
