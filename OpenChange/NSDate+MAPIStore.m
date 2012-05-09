@@ -27,6 +27,7 @@
 #import "NSDate+MAPIStore.h"
 
 #undef DEBUG
+#include <stdbool.h>
 #include <talloc.h>
 #include <util/time.h>
 #include <mapistore/mapistore.h>

@@ -77,8 +77,6 @@
 - (uint64_t) objectId;
 - (NSString *) url;
 
-- (NSTimeZone *) ownerTimeZone;
-
 /* properties */
 
 - (BOOL) canGetProperty: (enum MAPITAGS) propTag;
