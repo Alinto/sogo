@@ -329,7 +329,8 @@
   iCalToDo *vToDo;
   id value;
   iCalDateTime *date;
-  NSString *status, *priority;
+  iCalTimeZone *tz;
+  NSString *status, *priority, *tzName;
   NSCalendarDate *now;
   NSInteger tzOffset;
   double doubleValue;
@@ -337,6 +338,10 @@
   vToDo = [sogoObject component: YES secure: NO];
   vCalendar = [vToDo parent];
   [vCalendar setProdID: @"-//Inverse inc.//OpenChange+SOGo//EN"];
+
+  tzName = [[[self userContext] timeZone] name];
+  tz = [iCalTimeZone timeZoneForName: tzName];
+  [vCalendar addTimeZone: tz];
 
   // summary
   value = [properties
@@ -358,12 +363,12 @@
           value = [value htmlToText];
         }
     }
-  if (value && [value length] == 0)
-    value = nil;
-  [vToDo setComment: value];
-
   if (value)
-    [vToDo setComment: value];
+    {
+      if ([value length] == 0 || [value isEqualToString: @"\\n"])
+        value = nil;
+      [vToDo setComment: value];
+    }
 
   // location
   value = [properties objectForKey: MAPIPropertyKey (PidLidLocation)];
@@ -388,31 +393,17 @@
   if (value)
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"dtstart"];
-      tzOffset = [[value timeZone] secondsFromGMTForDate: value];
-      value = [value dateByAddingYears: 0 months: 0 days: 0
-                                 hours: 0 minutes: 0
-                               seconds: -tzOffset];
-      [date setDate: value];
+      [date setTimeZone: tz];
+      [date setDateTime: value];
     }
-  else
-    {
-      [vToDo setStartDate: nil]; 
-    }
-
+  
   // due
   value = [properties objectForKey: MAPIPropertyKey (PidLidTaskDueDate)];
   if (value)
     {
       date = (iCalDateTime *) [vToDo uniqueChildWithTag: @"due"];
-      tzOffset = [[value timeZone] secondsFromGMTForDate: value];
-      value = [value dateByAddingYears: 0 months: 0 days: 0
-                                 hours: 0 minutes: 0
-                               seconds: -tzOffset];
-      [date setDate: value];
-    }
-  else
-    {
-      [vToDo setDue: nil];
+      [date setTimeZone: tz];
+      [date setDateTime: value];
     }
 
   // completed
@@ -425,10 +416,6 @@
                                  hours: 0 minutes: 0
                                seconds: -tzOffset];
       [date setDate: value];
-    }
-  else
-    {
-      [vToDo setCompleted: nil];
     }
 
   // status
@@ -459,10 +446,8 @@
         default: // IMPORTANCE_NORMAL
           priority = @"5";
         }
+      [vToDo setPriority: priority];
     }
-  else
-    priority = @"0"; // None
-  [vToDo setPriority: priority];
 
   // percent complete
   // NOTE: this does not seem to work on Outlook 2003. PidLidPercentComplete's value

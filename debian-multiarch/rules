@@ -4,6 +4,7 @@ export DH_VERBOSE=1
 # export DH_OPTIONS="-p sogo"
 
 DESTDIR=$(CURDIR)/debian/tmp
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
 include /etc/GNUstep/GNUstep.conf
 include /usr/share/GNUstep/Makefiles/common.make
@@ -66,10 +67,10 @@ install-arch: build-arch
 	       DESTDIR=$(DESTDIR) \
 	       GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
 	     install); \
-	  rm -f $(DESTDIR)/usr/lib/mapistore_backends/libMAPIStoreSOGo.so.1; \
-	  rm -f $(DESTDIR)/usr/lib/mapistore_backends/libMAPIStoreSOGo.so; \
-	  mv -f $(DESTDIR)/usr/lib/mapistore_backends/libMAPIStoreSOGo.so.1.0.0 \
-	           $(DESTDIR)/usr/lib/mapistore_backends/SOGo.so; \
+	  rm -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so.1; \
+	  rm -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so; \
+	  mv -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so.1.0.0 \
+	           $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/SOGo.so; \
 	fi
 
 	mkdir -p debian/tmp/etc/default
@@ -100,7 +101,7 @@ binary-arch: build-arch install-arch
 	  ln -s GNUstep/Frameworks/SOGo.framework/Versions/*/libSOGo* ./ )
 	dh_compress
 	dh_fixperms
-	dh_makeshlibs -X/usr/lib/mapistore_backends
+	dh_makeshlibs -X/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends
 	dh_shlibdeps
 	dh_installdeb
 	dh_gencontrol
