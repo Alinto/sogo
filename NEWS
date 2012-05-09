@@ -15,12 +15,15 @@ Enhancements
  - updated CKEditor to version 3.6.3
  - automatically add/remove attendees to recurrence exceptions when they are
    being added to the master event
+ - replaced the Scriptaculous Javascript framework by jQuery to improve the
+   drag'n'drop experience
 
 Bug Fixes
  - fixed wrong date validation in preferences module affecting French users
  - fixed bugs in weekly recurrence calculator
  - when saving a draft, fixed content-transfer-encoding to properly handle
    8bit data
+ - escaped single-quote in HTML view of contacts
 
 1.3.14 (2012-03-23)
 -------------------

@@ -304,6 +304,8 @@ sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/plus.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/previous.gif
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/properties.png
 sogo: embedded-javascript-library usr/lib/GNUstep/SOGo/WebServerResources/prototype.js
+sogo: embedded-javascript-library usr/lib/GNUstep/SOGo/WebServerResources/jquery.js
+sogo: embedded-javascript-library usr/lib/GNUstep/SOGo/WebServerResources/jquery-ui.js
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/quota-level-alert.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/quota-level-ok.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/quota-level-warn.png
@@ -313,8 +315,6 @@ sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/remote-addrb
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/remove-addressbook.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/remove-calendar.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/remove-contact.gif
-sogo: extra-license-file usr/lib/GNUstep/SOGo/WebServerResources/scriptaculous/MIT-LICENSE
-sogo: embedded-javascript-library usr/lib/GNUstep/SOGo/WebServerResources/scriptaculous/scriptaculous.js
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/search-messages.png
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/slider_handle.gif
 sogo: image-file-in-usr-lib usr/lib/GNUstep/SOGo/WebServerResources/sogo-logo.png

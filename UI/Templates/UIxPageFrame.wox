@@ -152,6 +152,8 @@
 	    <var:string value="productLocalizableStrings" const:escapeHTML="NO"/>
 	  </script>
 	  <script type="text/javascript" rsrc:src="prototype.js"><!-- space --></script>
+	  <script type="text/javascript" rsrc:src="jquery.js"><!-- space --></script>
+          <script>jQuery.noConflict();</script>
           <script type="text/javascript" rsrc:src="XMLHttpRequest.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="tablekit.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="tablekit-trueresize.js"><!-- space --></script>
@@ -163,7 +165,6 @@
 	  <script type="text/javascript" rsrc:src="generic.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="SOGoDragHandles.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="SOGoTabsController.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="scriptaculous.js"><!-- space --></script>
 	  <var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"
 	      var:src="productJavaScriptURL"><!-- space --></script></var:if>
 	  <var:if condition="hasPageSpecificJavaScript"><script type="text/javascript"

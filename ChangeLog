@@ -1,5 +1,19 @@
 2012-05-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/ContactsUI.js (configureDraggables)
+	(configureDroppables, startDragging, whileDragging, stopDragging)
+	(dropAction): drag'n'drop is how handle by jQuery instead of Scriptaculous.
+
+	* UI/WebServerResources/MailerUI.js (configureDraggables)
+	(configureDroppables, startDragging, whileDragging, stopDragging)
+	(dropAction): idem.
+
+	* UI/WebServerResources/generic.js (onCloseButtonClick)
+	(showPromptDialog, showSelectDialog, showAuthenticationDialog)
+	(disposeDialog, _disposeDialog): idem.
+
+	* UI/WebServerResources/SOGoRootPage.js (initLogin): idem.
+
 	* UI/Contacts/UIxContactView.m (-primaryEmail): in the mailto
 	link, remove double-quotes and escape single-quotes from the fullname.
 	(-secondaryEmail): idem.

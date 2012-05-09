@@ -9,7 +9,7 @@
   title="title"
   const:userDefaultsKeys="SOGoMailMessageCheck,SOGoMailSortByThreads,SOGoMailListViewColumnsOrder"
   const:userSettingsKeys="Mail"
-  const:jsFiles="dtree.js,MailerUIdTree.js,SOGoAutoCompletion.js,SOGoResizableTable.js,SOGoMailDataSource.js,SOGoDataTable.js">
+  const:jsFiles="dtree.js,MailerUIdTree.js,SOGoAutoCompletion.js,SOGoResizableTable.js,SOGoMailDataSource.js,SOGoDataTable.js,jquery-ui.js">
   <script type="text/javascript">
     var mailAccounts = <var:string value="mailAccounts" const:escapeHTML="NO"/>;
     var inboxData = <var:string value="inboxData" const:escapeHTML="NO"/>;

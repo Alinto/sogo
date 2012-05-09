@@ -1620,7 +1620,7 @@ function onCloseButtonClick(event) {
         Event.stop(event);
 
     if (window.frameElement && window.frameElement.id) {
-        parent$("bgFrameDiv").fade({ duration: 0.2 });
+        jQuery(parent$("bgFrameDiv")).fadeOut('fast');
         var div = parent$("popupFrame");
         div.hide();
         div.down("iframe").src = "/SOGo/loading";
@@ -1970,7 +1970,7 @@ function _showAlertDialog(label) {
         document.body.appendChild(dialog);
         dialogs[label] = dialog;
     }
-    dialog.appear({ duration: 0.2 });
+    jQuery(dialog).fadeIn('fast');
 }
 
 function showConfirmDialog(title, label, callbackYes, callbackNo, yesLabel, noLabel) {
@@ -2008,7 +2008,7 @@ function _showConfirmDialog(title, label, callbackYes, callbackNo, yesLabel, noL
         document.body.appendChild(dialog);
         dialogs[key] = dialog;
     }
-    dialog.appear({ duration: 0.2 });
+    jQuery(dialog).fadeIn('fast');
 }
 
 function showPromptDialog(title, label, callback, defaultValue) {
@@ -2047,8 +2047,7 @@ function _showPromptDialog(title, label, callback, defaultValue) {
         document.body.appendChild(dialog);
         dialogs[title+label] = dialog;
     }
-    dialog.appear({ duration: 0.2,
-                    afterFinish: function () { dialog.down("input").focus(); } });
+    jQuery(dialog).fadeIn('fast', function () { dialog.down("input").focus(); });       
 }
 
 function showSelectDialog(title, label, options, button, callbackFcn, callbackArg, defaultValue) {
@@ -2094,7 +2093,7 @@ function _showSelectDialog(title, label, options, button, callbackFcn, callbackA
     }
     if (defaultValue)
 	defaultOption = dialog.down('option[value="'+defaultValue+'"]').selected = true;
-    dialog.appear({ duration: 0.2 });
+    jQuery(dialog).fadeIn('fast');
 }
 
 function showAuthenticationDialog(label, callback) {
@@ -2137,14 +2136,13 @@ function _showAuthenticationDialog(label, callback) {
         document.body.appendChild(dialog);
         dialogs[label] = dialog;
     }
-    dialog.appear({ duration: 0.2,
-                    afterFinish: function () { dialog.down("input").focus(); } });
+    jQuery(dialog).fadeIn('fast', function () { dialog.down("input").focus(); });
 }
 
 function disposeDialog() {
     $$("DIV.dialog").each(function(div) {
         if (div.visible() && div.getOpacity() == 1)
-            div.fade({ duration: 0.2 });
+            jQuery(div).fadeOut('fast');
     });
     if (dialogsStack.length > 0) {
         // Show the next dialog box
@@ -2153,19 +2151,16 @@ function disposeDialog() {
         dialogFcn.delay(0.2);
     }
     else if ($('bgDialogDiv')) {
-        var bgFade = Effect.Fade('bgDialogDiv', { duration: 0.2 });
         // By the end the background fade out, a new dialog
         // may need to be displayed.
-        _disposeDialog.delay(0.1, bgFade);
+        jQuery('#bgDialogDiv').fadeOut('fast', _disposeDialog);
     }
 }
 
-function _disposeDialog(bgEffect) {
+function _disposeDialog() {
     if (dialogsStack.length) {
         var div = $("bgDialogDiv");
-        bgEffect.cancel();
-        div.show();
-        div.appear({ duration: 0.2, to: 0.3 });
+        jQuery(div).fadeIn(100);
         var dialogFcn = dialogsStack.first();
         dialogsStack.splice(0, 1);
         dialogFcn();
