@@ -1,4 +1,4 @@
-1.3.15 (2012-04-DD)
+1.3.15 (2012-05-DD)
 -------------------
 New Features
  - sources address books are now exposed in Apple and iOS AddressBook app
@@ -9,6 +9,8 @@ New Features
    calculator
  - new domain default (SOGoMailCustomFromEnabled) to allow users to change
    their "from" and "reply-to" headers 
+ - new domain default (SOGoHideSystemEMail) to hide or not the system
+   email. This is currently limited to CalDAV operations
 
 Enhancements
  - updated Spanish (Argentina), German, Dutch translations
@@ -17,6 +19,7 @@ Enhancements
    being added to the master event
  - replaced the Scriptaculous Javascript framework by jQuery to improve the
    drag'n'drop experience
+ - updated timezone definition files
 
 Bug Fixes
  - fixed wrong date validation in preferences module affecting French users
