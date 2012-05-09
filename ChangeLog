@@ -1,3 +1,8 @@
+2012-05-09  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m - don't encode message/rfc822
+	parts in base64 - it's not allowed.
+
 2012-05-08  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxContactView.m (-primaryEmail): in the mailto
