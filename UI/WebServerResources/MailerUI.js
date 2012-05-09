@@ -2911,96 +2911,44 @@ Mailbox.prototype = {
 };
 
 function configureDraggables() {
-    var mainElement = $("dragDropVisual");
-
-    if (mainElement == null) {
-        mainElement = new Element("div", {id: "dragDropVisual"});
-        document.body.appendChild(mainElement);
-        mainElement.absolutize();
-    }
-    mainElement.hide();
-
-    new Draggable("dragDropVisual",
-                  { handle: "messageListBody",
-                    onStart: startDragging,
-                    onEnd: stopDragging,
-                    onDrag: whileDragging,
-                    scroll: "folderTreeContent",
-                    delay: 250 });
+    var table = jQuery("#messageListBody");
+    table.draggable({
+        addClasses: false,
+        helper: function (event) { return '<div id="dragDropVisual"></div>'; },
+        start: startDragging,
+        drag: whileDragging,
+        stop: stopDragging,
+        appendTo: 'body',
+        cursorAt: { top: 15, right: 15 },
+        scroll: false,
+        distance: 4,
+        zIndex: 20
+    });
 }
 
 function configureDroppables() {
-    var drops = $$("div#mailboxTree div.dTreeNode a.node span.nodeName");
-
-    if (Mailer.drops)
-        Mailer.drops.each(function (drop) { Droppables.remove(drop); });
-
-    drops.each(function (drop) {
-                   var dataname = drop.parentNode.parentNode.getAttribute("dataname");
-                   var acceptClass = "account";
-                   if (dataname.length > 0) {
-                       var parts = dataname.split("/");
-                       acceptClass += parts[1];
-                   }
-                   var parent = drop.parentNode.parentNode;
-                   if (parent.getAttribute("datatype") != "account") {
-                       drop.identify();
-                       Droppables.add(drop.id,
-                                      { hoverclass: "genericHoverClass",
-                                        accept: [ acceptClass ],
-                                        onDrop: dropAction });
-                       Mailer.drops.push(drop);
-                   }
-               });
+    jQuery('#mailboxTree .dTreeNode[datatype!="account"][datatype!="additional"] .node .nodeName').droppable({
+        hoverClass: 'genericHoverClass',
+              drop: dropAction });
 }
 
-function startDragging(itm, e) {
-    if (!Event.isLeftClick(e))
-        return;
-    var target = Event.element(e);
-    if (target.up('TBODY') == undefined)
-        return;
+function startDragging(e, ui) {
+    var handle = ui.helper;
+    var count = $('messageListBody').getSelectedRowsId().length;
 
-    $("mailboxList").setStyle({ overflow: "visible" });
-    
-    // Create overlapping safety block to avoid selection issues
-    var rightSafetyBlock = $("rightSafetyBlock");
-    if (!rightSafetyBlock) {
-        rightSafetyBlock = new Element('div', {'id': 'rightSafetyBlock', 'class': 'safetyBlock'});
-        document.body.appendChild(rightSafetyBlock);
+    if (count == 0) {
+        jQuery(this).trigger("stop");
+        return false;
     }
-    var rightBlock = $("rightPanel");
-    rightSafetyBlock.setStyle({
-        top: rightBlock.getStyle('top'),
-        left: rightBlock.getStyle('left') });
-    rightSafetyBlock.show();
+    handle.html(count);
 
-    var row = target.up('TR');
-    var handle = $("dragDropVisual");
-    var selectedIds = $("messageListBody").getSelectedRowsId();
-    var count = selectedIds.length;
-    var rowId = row.id;
-
-    if (count == 0 || selectedIds.indexOf(rowId) < 0) {
-        if (target.tagName != 'TD')
-            target = target.up('TD');
-        onRowClick(e, target);
-        selectedIds = $("messageListBody").getSelectedRowsId();
-        count = selectedIds.length;
-    }
-    handle.update(count);
-
-    if (Mailer.currentMailbox) {
-        var parts = Mailer.currentMailbox.split("/");
-        handle.addClassName("account" + parts[1]);
-    }
     if (e.shiftKey) {
-        handle.addClassName("copy");
+      handle.addClassName("copy");
     }
     handle.show();
 }
 
-function whileDragging(itm, e) {
+function whileDragging(e, ui) {
     if (e) {
         var handle = $("dragDropVisual");
         if (e.shiftKey)
@@ -3011,8 +2959,6 @@ function whileDragging(itm, e) {
 }
 
 function stopDragging() {
-    $("mailboxList").setStyle({ overflow: "auto", overflowX: "hidden" });
-    $("rightSafetyBlock").hide();
     var handle = $("dragDropVisual");
     handle.hide();
     if (handle.hasClassName("copy"))
@@ -3022,8 +2968,8 @@ function stopDragging() {
     }
 }
 
-function dropAction (dropped, zone, e) {
-    var destination = zone.up("div.dTreeNode");
+function dropAction(event, ui) {
+    var destination = $(this).up("div.dTreeNode");
 
     var sourceAct = Mailer.currentMailbox.split("/")[1];
     var destAct = destination.getAttribute("dataname").split("/")[1];

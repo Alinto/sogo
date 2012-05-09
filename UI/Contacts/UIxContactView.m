@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004 SKYRIX Software AG
-  Copyright (C) 2005-2011 Inverse inc.
+  Copyright (C) 2005-2012 Inverse inc.
 
   This file is part of SOGo.
  
@@ -135,13 +135,18 @@
 
 - (NSString *) primaryEmail
 {
-  NSString *email, *mailTo;
+  NSString *email, *fn, *mailTo;
 
   email = [card preferredEMail];
   if ([email length] > 0)
-    mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
-                       @" onclick=\"return openMailTo('%@ <%@>');\">"
-                       @"%@</a>", email, [[card fn] stringByReplacingString: @"\""  withString: @""], email, email];
+    {
+      fn = [card fn];
+      fn = [fn stringByReplacingString: @"\""  withString: @""];
+      fn = [fn stringByReplacingString: @"'"  withString: @"\\\'"];
+      mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
+                         @" onclick=\"return openMailTo('%@ <%@>');\">"
+                         @"%@</a>", email, fn, email, email];
+    }
   else
     mailTo = nil;
 
@@ -151,7 +156,7 @@
 
 - (NSString *) secondaryEmail
 {
-  NSString *email, *mailTo;
+  NSString *email, *fn, *mailTo;
   NSMutableArray *emails;
 
   emails = [NSMutableArray array];
@@ -182,9 +187,12 @@
 
 	  if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
 	    {
+              fn = [card fn];
+              fn = [fn stringByReplacingString: @"\""  withString: @""];
+              fn = [fn stringByReplacingString: @"'"  withString: @"\\\'"];
 	      mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
 				 @" onclick=\"return openMailTo('%@ <%@>');\">"
-				 @"%@</a>", email, [[card fn] stringByReplacingString: @"\""  withString: @""], email, email];
+				 @"%@</a>", email, fn, email, email];
 	      break;
 	    }
 	}

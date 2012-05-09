@@ -1181,11 +1181,6 @@ static NSString    *userAgent      = nil;
     content = [[NSData alloc] initWithContentsOfMappedFile:p];
     [content autorelease];
 
-    content = [content dataByEncodingBase64];
-    [map setObject: @"base64" forKey: @"content-transfer-encoding"];
-    [map setObject:[NSNumber numberWithInt:[content length]] 
-	 forKey: @"content-length"];
-    
     /* Note: the -init method will create a temporary file! */
     body = [[NGMimeFileData alloc] initWithBytes:[content bytes]
                                           length:[content length]];
