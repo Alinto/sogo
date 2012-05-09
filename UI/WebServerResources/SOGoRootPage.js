@@ -16,12 +16,11 @@ function initLogin() {
     var about = $("about");
     if (about) {
         about.observe("click", function(event) {
-                if (!$("aboutBox").visible())
-                    Effect.SlideDown("aboutBox", { queue: { position: 'end', scope: 'aboutscope', limit: 2 } });
+                jQuery('#aboutBox').slideToggle('fast');
                 event.stop(); });
         var aboutClose = $("aboutClose");
         aboutClose.observe("click", function(event) {
-                Effect.SlideUp("aboutBox", { duration: 1.0, queue: { position: 'end', scope: 'aboutscope', limit: 2 } });
+                jQuery('#aboutBox').slideUp('fast');
                 event.stop() });
     }
 

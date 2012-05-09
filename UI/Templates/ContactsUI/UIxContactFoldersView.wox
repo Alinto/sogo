@@ -8,6 +8,7 @@
   xmlns:label="OGo:label"
   xmlns:rsrc="OGo:url"
   const:userDefaultsKeys="SOGoContactsCategories"
+  const:jsFiles="jquery-ui.js"
   className="UIxPageFrame"
   title="name"
   var:popup="isPopup">
