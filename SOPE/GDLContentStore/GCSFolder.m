@@ -44,6 +44,10 @@
 #import "EOQualifier+GCS.h"
 #import "GCSStringFormatter.h"
 
+#if __GNU_LIBOBJC__ >= 20100911
+#  define sel_eq(__A__,__B__) sel_isEqual(__A__,__B__)
+#endif
+
 typedef enum {
   noTableRequired = 0,
   quickTableRequired = 1,

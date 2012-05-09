@@ -27,6 +27,10 @@
 
 #import "EOQualifier+GCS.h"
 
+#if __GNU_LIBOBJC__ >= 20100911
+#  define sel_eq(__A__,__B__) sel_isEqual(__A__,__B__)
+#endif
+
 @implementation EOQualifier(GCS)
 
 - (void)_appendAndQualifier:(EOAndQualifier *)_q 
