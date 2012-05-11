@@ -573,6 +573,8 @@ class CalDAVSchedulingTest(unittest.TestCase):
 	# 8. delete the attendee from the master event (uninvite)
 	#    The event should be deleted from the attendee's calendar
 	del org_ev_exception.attendee
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), 
+			org_ev, exp_status=204)
 	del org_ev_master.attendee
 	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), 
 			org_ev, exp_status=204)
