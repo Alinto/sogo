@@ -125,6 +125,12 @@ class CalDAVSchedulingTest(unittest.TestCase):
         self.attendee1_calendar = "/SOGo/dav/%s/Calendar/personal/" % attendee1
         self.attendee1_delegate_calendar = "/SOGo/dav/%s/Calendar/personal/" % attendee1_delegate
 
+        # fetch non existing event to let sogo create the calendars in the db
+        self._getEvent(self.client, "%snonexistent" % self.user_calendar, exp_status=404)
+        self._getEvent(self.attendee1_client, "%snonexistent" % self.attendee1_calendar, exp_status=404)
+        self._getEvent(self.attendee1_delegate_client, "%snonexistent" %
+                        self.attendee1_delegate_calendar, exp_status=404)
+
 
     def tearDown(self):
         self._deleteEvent(self.client,
