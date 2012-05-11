@@ -1,16 +1,24 @@
-# setup: username must be super-user or have read-access to PUBLIC events in
-#        both attendee and delegate's personal calendar
+# setup: 4 user are needed: username, superuser, attendee1, attendee1_delegate
+# superuser must be a sogo superuser...
 
 hostname = "localhost"
 port = "80"
 username = "myuser"
 password = "mypass"
 
+superuser = "super"
+superuser_password="pass"
+
 subscriber_username = "otheruser"
 subscriber_password = "otherpass"
 
 attendee1 = "user@domain.com"
-attendee1_delegate = "otheruser@domain.com"
+attendee1_username = "user"
+attendee1_password = "pass"
+
+attendee1_delegate = "user2@domain.com"
+attendee1_delegate_username = "sogo2"
+attendee1_delegate_password = "sogo"
 
 resource_no_overbook = "res"
 resource_can_overbook = "res-nolimit"
