@@ -1891,16 +1891,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 		  // one from the request.
 		  [rq setContent: [[[newEvent parent] versitString] dataUsingEncoding: [rq contentEncoding]]];
 		}
-	      
-	      // A RECURRENCE-ID was removed so there has to be a change in the master event
-	      // We could also have an EXDATE added in the master component of the attendees
-	      // so we always compare the MASTER event.
-	      if (!master)
-		{
-		  newEvent = [newEvents objectAtIndex: 0];
-		  oldEvent = [oldEvents objectAtIndex: 0];
-		  [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent];
-		}
 	    }
 	  //
 	  // else => attendee is responding

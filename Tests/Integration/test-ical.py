@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
-from config import hostname, port, username, password, subscriber_username
+# FIXME: we should avoid using superuser if possible
+
+from config import hostname, port, username, password, subscriber_username, \
+		   superuser, superuser_password
 
 import unittest
 import sogotests
@@ -48,7 +51,7 @@ class iCalTest(unittest.TestCase):
                         for x in members ]
         props = { "{DAV:}group-member-set": membersHref }
         proppatch = webdavlib.WebDAVPROPPATCH(resource, props)
-        client = webdavlib.WebDAVClient(hostname, port, username, password)
+        client = webdavlib.WebDAVClient(hostname, port, superuser, superuser_password)
         client.user_agent = "DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374); Mac OS X/10.6.2 (10C540)"
         client.execute(proppatch)
         self.assertEquals(proppatch.response["status"], 207,
@@ -60,7 +63,7 @@ class iCalTest(unittest.TestCase):
         resource = '/SOGo/dav/%s/' % user
         propfind = webdavlib.WebDAVPROPFIND(resource,
                                              ["{DAV:}group-membership"], 0)
-        client = webdavlib.WebDAVClient(hostname, port, username, password)
+        client = webdavlib.WebDAVClient(hostname, port, superuser, superuser_password)
         client.user_agent = "DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374); Mac OS X/10.6.2 (10C540)"
         client.execute(propfind)
 
@@ -73,7 +76,7 @@ class iCalTest(unittest.TestCase):
         resource = '/SOGo/dav/%s/' % user
         prop = "{http://calendarserver.org/ns/}calendar-proxy-%s-for" % perm
         propfind = webdavlib.WebDAVPROPFIND(resource, [prop], 0)
-        client = webdavlib.WebDAVClient(hostname, port, username, password)
+        client = webdavlib.WebDAVClient(hostname, port, superuser, superuser_password)
         client.user_agent = "DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374); Mac OS X/10.6.2 (10C540)"
         client.execute(propfind)
 
@@ -136,7 +139,7 @@ class iCalTest(unittest.TestCase):
 
     def testCalendarProxy2(self):
         """calendar-proxy as used from SOGo"""
-        client = webdavlib.WebDAVClient(hostname, port, username, password)
+        client = webdavlib.WebDAVClient(hostname, port, superuser, superuser_password)
         client.user_agent = "DAVKit/4.0.1 (730); CalendarStore/4.0.1 (973); iCal/4.0.1 (1374); Mac OS X/10.6.2 (10C540)"
         personal_resource = "/SOGo/dav/%s/Calendar/personal/" % username
         dav_utility = utilities.TestCalendarACLUtility(self,
