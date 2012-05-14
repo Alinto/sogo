@@ -199,7 +199,7 @@ def FindHFile(filename):
     return found
 
 def ProcessHeaders(names, hdict):
-    for filename in hdict.keys():
+    for filename in hdict:
         header_filename = FindHFile(filename)
         header_file = open(header_filename, "r")
         lines = header_file.readlines()
@@ -243,12 +243,10 @@ if __name__ == "__main__":
 
     prop_types = {}
     # sanitization: only take unicode version of text properties
-    all_keys = names.keys()
-    for name in all_keys:
-        prop_tag = names[name]
+    for name, prop_tag in names.iteritems():
         prop_id = prop_tag >> 16
         prop_type = prop_tag & 0xffff
-        if not prop_types.has_key(prop_id):
+        if not prop_id in prop_types:
             prop_types[prop_id] = []
         prop_types[prop_id].append(prop_type)
         if (prop_type & 0xfff) == 0x001e:
@@ -256,19 +254,15 @@ if __name__ == "__main__":
         names[name] = prop_tag
 
     #sanitization: report multiple types for the same keynames
-    all_keys = prop_types.keys()
-    for prop_id in all_keys:
-        xtypes = prop_types[prop_id]
+    for prop_id, xtypes in prop_types.iteritems():
         cnt = len(xtypes)
         if cnt > 1:
             print "%d types available for prop id 0x%.4x: %s" % (cnt, prop_id, ", ".join(["%.4x" % x for x in xtypes]))
 
     supported_properties = []
-    all_keys = names.keys()
     current_getter_idx = 0
     highest_prop_idx = 0
-    for name in all_keys:
-        prop_tag = names[name]
+    for name, prop_tag in names.iteritems():
         supported_properties.append("  0x%.8x" % prop_tag);
         prop_idx = (prop_tag & 0xffff0000) >> 16
         getters_idx[prop_idx] = "  0x%.4x" % current_getter_idx
