@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSThread.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "MAPIStoreTypes.h"
@@ -44,11 +45,13 @@ MAPIStoreTallocWrapperDestroy (void *data)
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
 
+  GSRegisterCurrentThread ();
   pool = [NSAutoreleasePool new];
   wrapper = data;
   // NSLog (@"destroying wrapped object (wrapper: %p; object: %p)...\n", wrapper, wrapper->MAPIStoreSOGoObject);
   [wrapper->MAPIStoreSOGoObject release];
   [pool release];
+  GSUnregisterCurrentThread ();
 
   return 0;
 }
