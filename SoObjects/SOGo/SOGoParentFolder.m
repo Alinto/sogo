@@ -157,14 +157,16 @@ static SoSecurityManager *sm = nil;
 {
   NSArray *roles;
   SOGoGCSFolder *folder;
+  SOGoUser *folderOwner;
 
   roles = [[context activeUser] rolesForObject: self inContext: context];
+  folderOwner = [SOGoUser userWithLogin: [self ownerInContext: context]];
 
   // We autocreate the calendars if the user is the owner, a superuser or
   // if it's a resource as we won't necessarily want to login as a resource
   // in order to create its database tables.
   if ([roles containsObject: SoRole_Owner] ||
-      [[context activeUser] isResource])
+      (folderOwner && [folderOwner isResource]))
     {
       folder = [subFolderClass objectWithName: @"personal" inContainer: self];
       [folder setDisplayName: [self defaultFolderName]];

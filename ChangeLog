@@ -5,6 +5,28 @@
 	IE, we use $$() now so that we can invoke "each" on the result set
 	without triggering an exception.
 
+2012-05-09  Jean Raby  <jraby@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m (PUTAction):
+	Delete bitrotten code that could end up duplicating attendees.
+	Behavior exposed by the new caldav tests
+
+	* Tests/Integration/config.py.in
+	* Tests/Integration/test-caldav-scheduling.py
+	* Tests/Integration/test-ical.py
+	* Tests/Integration/test-davacl.py:
+	Use an unprivileged webdavclient where possible.
+	This would have uncovered the resources calendar autocreation bug.
+
+	* Tests/Integration/test-caldav-scheduling.py:
+	New tests to excercise somewhat fragile code in dav autoscheduling.
+
+2012-05-09  Jean Raby  <jraby@inverse.ca>
+
+	* SoObject/SOGo/SOGoParentFolder.m (_createPersonalFolder):
+	Automatically create the folder if its owner is a resource.
+	(not if the active user is a resource)
+
 2012-05-09  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m - don't encode message/rfc822
