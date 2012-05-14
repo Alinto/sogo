@@ -1,5 +1,3 @@
-/* -*- Mode: java; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
-
 var listFilter = 'view_today';
 
 var listOfSelection = null;
