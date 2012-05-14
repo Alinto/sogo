@@ -1211,7 +1211,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
     var folderPath = folderData[1];
     if (username != UserLogin) {
         var url = (UserFolderURL + "../" + username
-                   + folderPath + "/subscribe");
+                   + "/" + folderPath + "/subscribe");
         if (document.subscriptionAjaxRequest) {
             document.subscriptionAjaxRequest.aborted = true;
             document.subscriptionAjaxRequest.abort();
@@ -1266,10 +1266,10 @@ function accessToSubscribedFolder(serverFolder) {
         var username = parts[0];
         var paths = parts[1].split("/");
         if (username == UserLogin) {
-            folder = paths[2];
+            folder = paths[1];
         }
         else {
-            folder = "/" + username.asCSSIdentifier() + "_" + paths[2];
+            folder = "/" + username.asCSSIdentifier() + "_" + paths[1];
         }
     }
     else {
@@ -2047,7 +2047,7 @@ function _showPromptDialog(title, label, callback, defaultValue) {
         document.body.appendChild(dialog);
         dialogs[title+label] = dialog;
     }
-    jQuery(dialog).fadeIn('fast', function () { dialog.down("input").focus(); });       
+    jQuery(dialog).fadeIn('fast', function () { dialog.down("input").focus(); });
 }
 
 function showSelectDialog(title, label, options, button, callbackFcn, callbackArg, defaultValue) {

@@ -1,5 +1,9 @@
 2012-05-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/WebServerResources/generic.js (subscribeToFolder): prepend a
+	"/" to the folder name, as it comes originally in the form
+	user:module/folder.
+
 	* UI/WebServerResources/UIxPreferences.js (initMailAccounts)
 	(displayMailAccount): getElementsByTagName seems too standard for
 	IE, we use $$() now so that we can invoke "each" on the result set
