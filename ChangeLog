@@ -1,5 +1,8 @@
 2012-05-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/gen-property-selectors.py: "bannedProps" is now a
+	set, for faster lookups.
+
 	* UI/WebServerResources/UIxContactsUserFolders.js: folder ids are
 	in the form "user:module/folder", therefore we must remove the
 	first char, which is a slash.
