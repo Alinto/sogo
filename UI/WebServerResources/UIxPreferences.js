@@ -469,26 +469,23 @@ function initMailAccounts() {
         }
     }
 
-    var info = $("accountInfo");
-    var inputs = info.getElementsByTagName("input");
+    var inputs = $$("#accountInfo input");
     for (var i = 0; i < inputs.length; i++) {
         $(inputs[i]).observe("change", onMailAccountInfoChange);
     }
 
-    info = $("identityInfo");
-    inputs = info.getElementsByTagName("input");
+    inputs = $$("#identityInfo input");
     for (var i = 0; i < inputs.length; i++) {
         $(inputs[i]).observe("change", onMailIdentityInfoChange);
     }
     $("actSignature").observe("click", onMailIdentitySignatureClick);
     displayMailAccount(mailAccounts[0], true);
 
-    info = $("returnReceiptsInfo");
-    inputs = info.getElementsByTagName("input");
+    inputs = $$("#returnReceiptsInfo input");
     for (var i = 0; i < inputs.length; i++) {
         $(inputs[i]).observe("change", onMailReceiptInfoChange);
     }
-    inputs = info.getElementsByTagName("select");
+    inputs = $$("#returnReceiptsInfo select");
     for (var i = 0; i < inputs.length; i++) {
         $(inputs[i]).observe("change", onMailReceiptActionChange);
     }
@@ -656,13 +653,11 @@ function onMailAccountEntryClick(event) {
 }
 
 function displayMailAccount(mailAccount, readOnly) {
-    var fieldSet = $("accountInfo");
-    var inputs = $(fieldSet.getElementsByTagName("input"));
+    var inputs = $$("#accountInfo input");
     inputs.each(function (i) { i.disabled = readOnly;
                                i.mailAccount = mailAccount; });
 
-    fieldSet = $("identityInfo");
-    inputs = $(fieldSet.getElementsByTagName("input"));
+    inputs = $$("#identityInfo input");
     inputs.each(function (i) { i.mailAccount = mailAccount; });
     if (!mailCustomFromEnabled) {
         for (var i = 0; i < 2; i++) {
