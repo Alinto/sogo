@@ -2098,14 +2098,10 @@ function _showSelectDialog(title, label, options, button, callbackFcn, callbackA
 
 function showAuthenticationDialog(label, callback) {
     var div = $("bgDialogDiv");
-    if (div && div.visible() && div.getOpacity() > 0) {
-        log("push");
+    if (div && div.visible() && div.getOpacity() > 0)
         dialogsStack.push(_showAuthenticationDialog.bind(this, label, callback));
-    }
-    else {
-        log("show");
+    else
         _showAuthenticationDialog(label, callback);
-    }
 }
 
 function _showAuthenticationDialog(label, callback) {
