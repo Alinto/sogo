@@ -1,3 +1,9 @@
+2012-05-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/gen-property-selectors.py: the use of the "{}" to
+	construct a set is only valid on py2.7 therefore we make use of
+	set([]) instead.
+
 2012-05-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/gen-property-selectors.py: "bannedProps" is now a
