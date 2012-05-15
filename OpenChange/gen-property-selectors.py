@@ -233,8 +233,8 @@ if __name__ == "__main__":
 
     names = {}
     ProcessHeaders(names,
-                   { "gen_ndr/exchange.h": ParseExchangeH,
-                     "mapistore/mapistore_nameid.h": ParseMapistoreNameIDH })
+                   {"gen_ndr/exchange.h": ParseExchangeH,
+                    "mapistore/mapistore_nameid.h": ParseMapistoreNameIDH})
 
     getters = []
     getters_idx = []
@@ -284,14 +284,14 @@ if __name__ == "__main__":
     filename = "%s.m" % output
     h_filename = "%s.h" % output
     outf = open(filename, "wb+")
-    outf.write(m_template % { "getters_idx": ",\n".join(getters_idx),
-                              "getters": ",\n".join(getters),
-                              "nbr_getters": len(getters),
-                              "last_property": highest_prop_idx,
-                              "nbr_supported_properties": len(supported_properties),
-                              "supported_properties": ",\n".join(supported_properties),
-                              "filename": filename,
-                              "h_filename": h_filename })
+    outf.write(m_template % {"getters_idx": ",\n".join(getters_idx),
+                             "getters": ",\n".join(getters),
+                             "nbr_getters": len(getters),
+                             "last_property": highest_prop_idx,
+                             "nbr_supported_properties": len(supported_properties),
+                             "supported_properties": ",\n".join(supported_properties),
+                             "filename": filename,
+                             "h_filename": h_filename})
     outf.close()
 
     outf = open(h_filename, "wb+")
@@ -300,7 +300,7 @@ if __name__ == "__main__":
         if ord(x) < 65 or ord(x) > 90:
             x = "_"
         exclusion = exclusion + x
-    outf.write(h_template % { "prototypes": "\n".join(prototypes),
-                              "h_exclusion": exclusion,
-                              "filename": h_filename })
+    outf.write(h_template % {"prototypes": "\n".join(prototypes),
+                             "h_exclusion": exclusion,
+                             "filename": h_filename })
     outf.close()
