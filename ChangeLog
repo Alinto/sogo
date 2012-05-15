@@ -1,3 +1,11 @@
+2012-05-15  Jean Raby  <jraby@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m (_handleResourcesConflicts):
+	Deny access to resources if the resource's ACL don't allow the organizer
+	to read its freebusy info.
+	Without this, sogo would always auto-accept invitations from 'unprivileged'
+	users, potentially bypassing the multiplebooking parameter.
+	
 2012-05-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* UI/WebServerResources/UIxContactsUserFolders.js: folder ids are

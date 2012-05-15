@@ -467,7 +467,19 @@
 	      folder = [[SOGoUser userWithLogin: currentUID]
 			 personalCalendarFolderInContext: context];
 
-	      
+	      // Deny access to the resource if the ACLs don't allow the user
+	      if (![folder aclSQLListingFilter])
+	        {
+		  NSDictionary *values;
+		  NSString *reason;
+
+		  values = [NSDictionary dictionaryWithObjectsAndKeys:
+		  		[user cn], @"Cn",
+				[user systemEmail], @"SystemEmail"];
+		  reason = [values keysWithFormat: [self labelForKey: @"Cannot access resource: \"%{Cn} %{SystemEmail}\""]];
+	      	  return [NSException exceptionWithHTTPStatus:403 reason: reason];
+	      	}
+
 	      fbInfo = [NSMutableArray arrayWithArray: [folder fetchFreeBusyInfosFrom: start
 							       to: end]];
 
