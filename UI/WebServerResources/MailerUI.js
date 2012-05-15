@@ -2932,7 +2932,7 @@ function configureDroppables() {
               drop: dropAction });
 }
 
-function startDragging(e, ui) {
+function startDragging(event, ui) {
     var handle = ui.helper;
     var count = $('messageListBody').getSelectedRowsId().length;
 
@@ -2942,29 +2942,29 @@ function startDragging(e, ui) {
     }
     handle.html(count);
 
-    if (e.shiftKey) {
-      handle.addClassName("copy");
+    if (event.shiftKey) {
+        handle.addClass("copy");
     }
     handle.show();
 }
 
-function whileDragging(e, ui) {
-    if (e) {
-        var handle = $("dragDropVisual");
-        if (e.shiftKey)
-            handle.addClassName("copy");
-        else if (handle.hasClassName("copy"))
-            handle.removeClassName("copy");
+function whileDragging(event, ui) {
+    if (event) {
+        var handle = ui.helper;
+        if (event.shiftKey)
+            handle.addClass("copy");
+        else if (handle.hasClass("copy"))
+            handle.removeClass("copy");
     }
 }
 
-function stopDragging() {
-    var handle = $("dragDropVisual");
+function stopDragging(event, ui) {
+    var handle = ui.helper;
     handle.hide();
-    if (handle.hasClassName("copy"))
-        handle.removeClassName("copy");
+    if (handle.hasClass("copy"))
+        handle.removeClass("copy");
     for (var i = 0; i < accounts.length; i++) {
-        handle.removeClassName("account" + i);
+        handle.removeClass("account" + i);
     }
 }
 
@@ -2975,7 +2975,7 @@ function dropAction(event, ui) {
     var destAct = destination.getAttribute("dataname").split("/")[1];
     if (sourceAct == destAct) {
         var f;
-        if ($("dragDropVisual").hasClassName("copy")) {
+        if (ui.helper.hasClass("copy")) {
             // Message(s) copied
             f = onMailboxMenuCopy.bind(destination);
         }

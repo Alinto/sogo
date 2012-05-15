@@ -1509,45 +1509,45 @@ function currentFolderIsRemote() {
     return rc;
 }
 
-function startDragging(e, itm) {
-    var row = e.target;
-    var handle = $("dragDropVisual");
+function startDragging(event, ui) {
+    var row = event.target;
+    var handle = ui.helper;
     var contacts = $('contactsList').getSelectedRowsId();
     var count = contacts.length;
 
     if (count == 0 || contacts.indexOf(row.id) < 0) {
-        onRowClick(e, $(row.id));
+        onRowClick(event, $(row.id));
         contacts = $("contactsList").getSelectedRowsId();
         count = contacts.length;
     }
-    handle.update(count);
+    handle.html(count);
 
-    if (e.shiftKey || currentFolderIsRemote()) {
-      handle.addClassName("copy");
+    if (event.shiftKey || currentFolderIsRemote()) {
+      handle.addClass("copy");
     }
     handle.show();
 }
 
-function whileDragging(e, itm) {
-    if (e) {
-        var handle = $("dragDropVisual");
-        if (e.shiftKey || currentFolderIsRemote())
-            handle.addClassName ("copy");
-        else if (handle.hasClassName ("copy"))
-            handle.removeClassName ("copy");
+function whileDragging(event, ui) {
+    if (event) {
+        var handle = ui.helper;
+        if (event.shiftKey || currentFolderIsRemote())
+            handle.addClass("copy");
+        else if (handle.hasClass("copy"))
+            handle.removeClass("copy");
     }
 }
 
-function stopDragging(e, itm) {
-    var handle = $("dragDropVisual");
+function stopDragging(event, ui) {
+    var handle = ui.helper;
     handle.hide();
-    if (handle.hasClassName("copy"))
-        handle.removeClassName("copy");
+    if (handle.hasClass("copy"))
+        handle.removeClass("copy");
 }
 
 function dropAction(event, ui) {
     var action = "move"; 
-    if ($("dragDropVisual").hasClassName("copy"))
+    if (ui.helper.hasClass("copy"))
         action = "copy";
     else
         $('contactView').update();
