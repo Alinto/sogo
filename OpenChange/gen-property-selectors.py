@@ -106,32 +106,37 @@ extern const enum MAPITAGS MAPIStoreSupportedProperties[];
 
 # hack: some properties have multiple and incompatible types. Sometimes those
 # props are not related at all...
-bannedProps = [ "PidTagBodyHtml", "PidTagFavAutosubfolders",
-                "PidTagAttachDataObj", "PidTagAclTable", "PidTagAclData",
-                "PidTagRulesTable", "PidTagRulesData", "PidTagDisableWinsock",
-                "PidTagHierarchyServer", "PidTagOfflineAddrbookEntryid",
-                "PidTagShorttermEntryidFromObject",
-                "PidTagNormalMessageSizeExtended",
-                "PidTagAssocMessageSizeExtended", "PidTagMessageSizeExtended",
-                "PidTagOabContainerGuid",
-                "PidTagOfflineAddressBookMessageClass", "PidTagScriptData",
-                "PidTagOfflineAddressBookTruncatedProperties",
-                "PidTagOfflineAddressBookContainerGuid",
-                "PidTagOfflineAddressBookDistinguishedName",
-                "PidTagOfflineAddressBookShaHash",
-                "PidTagSenderTelephoneNumber", "PidTagGatewayNeedsToRefresh",
-                "PidTagWlinkType", "PidTagWlinkFlags",
-                "PidTagWlinkGroupClsid", "PidTagWlinkGroupName",
-                "PidTagWlinkGroupHeaderID",
-                "PidTagScheduleInfoDelegatorWantsCopy", "PidTagWlinkOrdinal",
-                "PidTagWlinkSection", "PidTagWlinkCalendarColor",
-                "PidTagWlinkAddressBookEID", "PidTagWlinkFolderType",
-                "PidTagScheduleInfoDelegateNames",
-                "PidTagScheduleInfoDelegateEntryIds", 
-                "PidTagBusiness2TelephoneNumbers",
-                "PidTagHome2TelephoneNumbers",
-                "PidTagAttachDataObject", "PidTagShorttermEntryIdFromObject",
-                ]
+bannedProps = set(["PidTagBodyHtml", "PidTagFavAutosubfolders",
+                   "PidTagAttachDataObj", "PidTagAclTable", "PidTagAclData",
+                   "PidTagRulesTable", "PidTagRulesData",
+                   "PidTagDisableWinsock",
+                   "PidTagHierarchyServer", "PidTagOfflineAddrbookEntryid",
+                   "PidTagShorttermEntryidFromObject",
+                   "PidTagNormalMessageSizeExtended",
+                   "PidTagAssocMessageSizeExtended",
+                   "PidTagMessageSizeExtended",
+                   "PidTagOabContainerGuid",
+                   "PidTagOfflineAddressBookMessageClass", "PidTagScriptData",
+                   "PidTagOfflineAddressBookTruncatedProperties",
+                   "PidTagOfflineAddressBookContainerGuid",
+                   "PidTagOfflineAddressBookDistinguishedName",
+                   "PidTagOfflineAddressBookShaHash",
+                   "PidTagSenderTelephoneNumber",
+                   "PidTagGatewayNeedsToRefresh",
+                   "PidTagWlinkType", "PidTagWlinkFlags",
+                   "PidTagWlinkGroupClsid", "PidTagWlinkGroupName",
+                   "PidTagWlinkGroupHeaderID",
+                   "PidTagScheduleInfoDelegatorWantsCopy",
+                   "PidTagWlinkOrdinal",
+                   "PidTagWlinkSection", "PidTagWlinkCalendarColor",
+                   "PidTagWlinkAddressBookEID", "PidTagWlinkFolderType",
+                   "PidTagScheduleInfoDelegateNames",
+                   "PidTagScheduleInfoDelegateEntryIds", 
+                   "PidTagBusiness2TelephoneNumbers",
+                   "PidTagHome2TelephoneNumbers",
+                   "PidTagAttachDataObject",
+                   "PidTagShorttermEntryIdFromObject",
+                   ])
 
 def ParseExchangeH(names, lines):
     state = 0
@@ -199,7 +204,7 @@ def FindHFile(filename):
     return found
 
 def ProcessHeaders(names, hdict):
-    for filename in hdict.keys():
+    for filename in hdict:
         header_filename = FindHFile(filename)
         header_file = open(header_filename, "r")
         lines = header_file.readlines()
@@ -228,8 +233,8 @@ if __name__ == "__main__":
 
     names = {}
     ProcessHeaders(names,
-                   { "gen_ndr/exchange.h": ParseExchangeH,
-                     "mapistore/mapistore_nameid.h": ParseMapistoreNameIDH })
+                   {"gen_ndr/exchange.h": ParseExchangeH,
+                    "mapistore/mapistore_nameid.h": ParseMapistoreNameIDH})
 
     getters = []
     getters_idx = []
@@ -243,12 +248,10 @@ if __name__ == "__main__":
 
     prop_types = {}
     # sanitization: only take unicode version of text properties
-    all_keys = names.keys()
-    for name in all_keys:
-        prop_tag = names[name]
+    for name, prop_tag in names.iteritems():
         prop_id = prop_tag >> 16
         prop_type = prop_tag & 0xffff
-        if not prop_types.has_key(prop_id):
+        if not prop_id in prop_types:
             prop_types[prop_id] = []
         prop_types[prop_id].append(prop_type)
         if (prop_type & 0xfff) == 0x001e:
@@ -256,19 +259,15 @@ if __name__ == "__main__":
         names[name] = prop_tag
 
     #sanitization: report multiple types for the same keynames
-    all_keys = prop_types.keys()
-    for prop_id in all_keys:
-        xtypes = prop_types[prop_id]
+    for prop_id, xtypes in prop_types.iteritems():
         cnt = len(xtypes)
         if cnt > 1:
             print "%d types available for prop id 0x%.4x: %s" % (cnt, prop_id, ", ".join(["%.4x" % x for x in xtypes]))
 
     supported_properties = []
-    all_keys = names.keys()
     current_getter_idx = 0
     highest_prop_idx = 0
-    for name in all_keys:
-        prop_tag = names[name]
+    for name, prop_tag in names.iteritems():
         supported_properties.append("  0x%.8x" % prop_tag);
         prop_idx = (prop_tag & 0xffff0000) >> 16
         getters_idx[prop_idx] = "  0x%.4x" % current_getter_idx
@@ -285,14 +284,14 @@ if __name__ == "__main__":
     filename = "%s.m" % output
     h_filename = "%s.h" % output
     outf = open(filename, "wb+")
-    outf.write(m_template % { "getters_idx": ",\n".join(getters_idx),
-                              "getters": ",\n".join(getters),
-                              "nbr_getters": len(getters),
-                              "last_property": highest_prop_idx,
-                              "nbr_supported_properties": len(supported_properties),
-                              "supported_properties": ",\n".join(supported_properties),
-                              "filename": filename,
-                              "h_filename": h_filename })
+    outf.write(m_template % {"getters_idx": ",\n".join(getters_idx),
+                             "getters": ",\n".join(getters),
+                             "nbr_getters": len(getters),
+                             "last_property": highest_prop_idx,
+                             "nbr_supported_properties": len(supported_properties),
+                             "supported_properties": ",\n".join(supported_properties),
+                             "filename": filename,
+                             "h_filename": h_filename})
     outf.close()
 
     outf = open(h_filename, "wb+")
@@ -301,7 +300,7 @@ if __name__ == "__main__":
         if ord(x) < 65 or ord(x) > 90:
             x = "_"
         exclusion = exclusion + x
-    outf.write(h_template % { "prototypes": "\n".join(prototypes),
-                              "h_exclusion": exclusion,
-                              "filename": h_filename })
+    outf.write(h_template % {"prototypes": "\n".join(prototypes),
+                             "h_exclusion": exclusion,
+                             "filename": h_filename })
     outf.close()
