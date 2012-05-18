@@ -1,3 +1,8 @@
+2012-05-18  Jean Raby  <jraby@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m (bodyPartForAttachmentWithName):
+	Merge back lost code to handle encoding of binary and rcf822 attachments.
+
 2012-05-15  Jean Raby  <jraby@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m (_handleResourcesConflicts):
