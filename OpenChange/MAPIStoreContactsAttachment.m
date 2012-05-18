@@ -35,8 +35,6 @@
 
 #include <mapistore/mapistore_errors.h>
 
-extern NSTimeZone *utcTZ;
-
 /* TODO: handle URL pictures via PidTagAttachMethod = ref ? */
 
 @implementation MAPIStoreContactsAttachment
