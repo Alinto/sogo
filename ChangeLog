@@ -1,3 +1,9 @@
+2012-05-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.js
+	(clickEventWrapper.button_clickEventWrappe): don't invoke
+	"preventDefault" on elements that do not have a tagName of "A".
+
 2012-05-18  Jean Raby  <jraby@inverse.ca>
 
 	* SoObjects/Mailer/SOGoDraftObject.m (bodyPartForAttachmentWithName):

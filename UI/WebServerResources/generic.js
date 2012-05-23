@@ -47,9 +47,17 @@ var removeFolderRequestCount = 0;
 // Email validation regexp
 var emailRE = /^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i;
 
+
+/* This function enables the execution of a wrapper function just before the
+ user callback is executed. The wrapper in question executes "preventDefault"
+ to the event parameter if and only when "this" is a link. The goal of this
+ operation is to prevent links with attached even handlers to be followed,
+ including those with an href set to "#". */
 function clickEventWrapper(functionRef) {
     function button_clickEventWrapper(event) {
-        preventDefault(event);
+        if (this.tagName == "A") {
+            preventDefault(event);
+        }
         return functionRef.apply(this, [event]);
     }
 
