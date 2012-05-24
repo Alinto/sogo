@@ -292,6 +292,7 @@ if ! id sogo >& /dev/null; then /usr/sbin/adduser sogo > /dev/null 2>&1; fi
 # update timestamp on imgs,css,js to let apache know the files changed
 find %{_libdir}/GNUstep/SOGo/WebServerResources  -exec touch {} \;
 /sbin/chkconfig --add sogod
+/etc/init.d/sogod condrestart  >&/dev/null
 
 %preun
 if [ "$1" == "0" ]
@@ -311,6 +312,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Fri May 24 2012 Jean Raby <jraby@inverse.ca>
+- %post: restart sogo if it was running before rpm install
+
 * Fri Mar 16 2012 Jean Raby <jraby@inverse.ca>
 - %post: update timestamp on imgs,css,js to let apache know the files changed
 
