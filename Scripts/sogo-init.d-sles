@@ -96,6 +96,11 @@ case "$1" in
 	startproc -u $USER $DAEMON $DAEMON_OPTS || true
 	echo "$NAME."
 	;;
+  condrestart|try-restart)
+	if checkproc -p "$PIDFILE" $DAEMON >&/dev/null; then
+	  restart
+	fi
+	;;
   status)
 	checkproc -p $PIDFILE $DAEMON
         result="$?"
@@ -115,7 +120,7 @@ case "$1" in
 	fi
 	;;
   *)
-	echo "Usage: $NAME {start|stop|restart|status}" >&2
+	echo "Usage: $NAME {start|stop|restart|condrestart|status}" >&2
 	exit 1
 	;;
 esac

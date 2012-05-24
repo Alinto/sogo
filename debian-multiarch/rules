@@ -85,7 +85,7 @@ install-arch: build-arch
 binary-arch: build-arch install-arch
 	dh_testdir
 	dh_testroot
-	dh_installinit -r
+	dh_installinit -R
 	dh_installlogrotate
 	dh_installcron
 	dh_installchangelogs ChangeLog
