@@ -1,3 +1,11 @@
+2012-05-29  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalRecurrenceCalculator.m
+	(_removeExceptionDatesFromRanges:withDates:withinRange:startingWithDate:):
+	when removing exception dates, avoid removing dates matching the
+	end date of the occurrence. This fixes an issue with all-day
+	daily events.
+
 2012-04-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalMonthlyRecurrenceCalculator.m (NGMonthDaySet_clear): make
