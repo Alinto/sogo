@@ -53,7 +53,7 @@
     nil
   };
   BOOL hasPrefix;
-  unsigned int i;
+  NSUInteger i;
   NSString *subject, *newSubject;
 
   hasPrefix = NO;
@@ -101,7 +101,7 @@
   NSDictionary *parts;
   NSString *rawPart, *content, *contentKey;
   SOGoUserDefaults *ud;
-  int index;
+  NSUInteger index;
   BOOL htmlComposition, htmlContent;
 
   content = @"";
@@ -191,7 +191,7 @@
   static NSString *sescape[] = { 
     @"/", @"..", @"~", @"\"", @"'", @" ", @".", nil 
   };
-  unsigned int count, length;
+  NSUInteger count, length;
 
   subject = [self decodedSubject];
   length = [subject length];
@@ -300,7 +300,7 @@
   NSString *newPath;
   NSArray *subparts;
   NSString *type;
-  unsigned int i;
+  NSUInteger i;
 
   type = [[part objectForKey: @"type"] lowercaseString];
   if ([type isEqualToString: @"multipart"])

@@ -354,7 +354,7 @@ static NGCardsSaxHandler *sax = nil;
 
 - (void) setChildrenAsCopy: (NSMutableArray *) someChildren
 {
-  unsigned int count, max;
+  NSUInteger count, max;
 
   ASSIGN (children, someChildren);
 
@@ -399,7 +399,7 @@ static NGCardsSaxHandler *sax = nil;
 - (NSString *) description
 {
   NSMutableString *str;
-  unsigned int count, max;
+  NSUInteger count, max;
 
   str = [NSMutableString stringWithCapacity:64];
   [str appendFormat:@"<%p[%@]:%@",
@@ -421,7 +421,7 @@ static NGCardsSaxHandler *sax = nil;
 - (void) replaceThisElement: (CardElement *) oldElement
                 withThisOne: (CardElement *) newElement
 {
-  unsigned int index;
+  NSUInteger index;
 
   index = [children indexOfObject: oldElement];
   if (index != NSNotFound)

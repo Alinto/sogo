@@ -125,8 +125,8 @@
     // TODO: this is ugly, create reusable link facility in SOPE
     // TODO: remove 'search' and 'filterpopup', preserve sorting
     NSMutableString *ms;
-    NSArray  *qp;
-    unsigned i, count;
+    NSArray    *qp;
+    NSUInteger i, count;
     
     qp    = [[u substringFromIndex:(r.location + r.length)] 
 	        componentsSeparatedByString:@"&"];
@@ -193,8 +193,8 @@
   SOGoMailAccounts *co;
   SOGoContactFolders *folders;
   SOGoParentFolder *folder;
-  WORequest *request;
-  int i, count;
+  WORequest  *request;
+  NSUInteger i, count;
 
   parameters = nil;
   co = [self clientObject];
@@ -549,7 +549,7 @@
   NSArray *available;
   NSDictionary *metaData;
   SOGoUserDefaults *ud;
-  unsigned int i;
+  NSUInteger i;
 
   if (!columnsOrder)
     {
@@ -636,8 +636,8 @@
   NSMutableArray *folders;
   NSMutableString *path;
   SOGoUserDefaults *ud;
-  NSString *s;
-  int i, j, k;
+  NSString   *s;
+  NSUInteger i, j, k;
 
   ud = [[context activeUser] userDefaults];
   folders = [NSMutableArray array];

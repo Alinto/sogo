@@ -394,7 +394,7 @@ static NSArray *infoKeys = nil;
 {
   if (![_info isNotNull]) return;
   [self debugWithFormat:@"loading info ..."];
-  [self takeValuesFromDictionary:_info];
+  [self setValuesForKeysWithDictionary:_info];
 }
 
 - (NSDictionary *) storeInfo

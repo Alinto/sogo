@@ -525,7 +525,7 @@ iRANGE(2);
   iCalTrigger *aTrigger;
   NSString *duration, *quantity;
   unichar c;
-  unsigned int i;
+  NSUInteger i;
 
   if ([component hasAlarms])
     {
@@ -1289,7 +1289,7 @@ iRANGE(2);
   NSString *currentOwner;
   SOGoAppointmentFolder *currentCalendar;
   SOGoUser *currentUser;
-  unsigned i;
+  NSUInteger i;
 
   calendars = [self calendarList];
   owners = [NSMutableArray arrayWithCapacity: [calendars count]];
@@ -1562,7 +1562,7 @@ RANGE(2);
 {
   NSString *cycleRep;
   NSArray *cycles;
-  unsigned i, count;
+  NSUInteger i, count;
 
   if (!_rrule)
     return [[self cycles] objectAtIndex:0];
@@ -1721,7 +1721,7 @@ RANGE(2);
 //   s = [self queryParameterForKey:_qp];
 //   if(s && [s length] > 0) {
 //     NSArray *es;
-//     unsigned i, count;
+//     NSUInteger i, count;
     
 //     es = [s componentsSeparatedByString: @","];
 //     count = [es count];
@@ -1766,7 +1766,7 @@ RANGE(2);
 - (void) _handleAttendeesEdition
 {
   NSMutableArray *newAttendees;
-  unsigned int count, max;
+  NSUInteger count, max;
   NSString *currentEmail;
   iCalPerson *currentAttendee;
   NSString *json, *role, *partstat;
@@ -2189,7 +2189,7 @@ RANGE(2);
       iCalTrigger *aTrigger;
       iCalAlarm *anAlarm;
       NSString *aValue;
-      unsigned int index;
+      NSUInteger index;
 
       anAlarm = [iCalAlarm new];
 

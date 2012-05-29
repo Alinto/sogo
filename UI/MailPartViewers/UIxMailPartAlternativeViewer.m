@@ -43,7 +43,7 @@
 @interface UIxMailPartAlternativeViewer : UIxMailPartViewer
 {
   id           childInfo;
-  unsigned int childIndex;
+  NSUInteger   childIndex;
 }
 
 @end
@@ -70,7 +70,7 @@
 - (NSArray *) childPartTypes
 {
   NSMutableArray *types;
-  unsigned i, count;
+  NSUInteger i, count;
   NSArray  *childParts;
 
   childParts = [[self bodyInfo] valueForKey:@"parts"];
@@ -89,10 +89,10 @@
   return types;
 }
 
-- (unsigned int) _preferredTypesPart: (NSArray *) types
+- (NSUInteger) _preferredTypesPart: (NSArray *) types
 {
-  unsigned int count, max;
-  unsigned int part;
+  NSUInteger count, max;
+  NSUInteger part;
   const NSString *priorities[] = { @"multipart/related", @"multipart/mixed",
 				   @"text/calendar", @"text/html",
 				   @"text/plain" };
@@ -113,7 +113,7 @@
 - (int) _selectPartIndexFromTypes: (NSArray *) _types
 {
   /* returns the index of the selected part or NSNotFound */
-  unsigned count, max, part;
+  NSUInteger count, max, part;
 
   part = [self _preferredTypesPart: _types];
   if (part == NSNotFound)
@@ -136,7 +136,7 @@
 
 - (void) selectChildInfo
 {
-  unsigned idx;
+  NSUInteger idx;
 
   [childInfo release]; childInfo = nil;
   childIndex = 0;
@@ -164,7 +164,7 @@
   return childInfo;
 }
 
-- (unsigned int) childIndex
+- (NSUInteger) childIndex
 {
   if (!childIndex)
     [self selectChildInfo];
@@ -176,7 +176,7 @@
 {
   char buf[8];
 
-  sprintf (buf, "%d", [self childIndex] + 1);
+  sprintf (buf, "%"PRIuPTR"", [self childIndex] + 1);
 
   return [NSString stringWithCString:buf];
 }
