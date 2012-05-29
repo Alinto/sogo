@@ -13,6 +13,10 @@
 	* UI/MailerUI/UIxMailEditor.m (-validateForSend): don't force the
 	subject to be defined.
 
+	* SoObjects/Mailer/SOGoMailObject+Draft.m (-subjectForReply): make
+	sure subject is a defined value to avoid "null" strings in the
+	reply message.
+
 2012-05-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (validateUploadForm): hide

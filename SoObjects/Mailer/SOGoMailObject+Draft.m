@@ -59,6 +59,8 @@
   hasPrefix = NO;
 
   subject = [self decodedSubject];
+  if (![subject length]) subject = @"";
+
   i = 0;
   while (!hasPrefix && replyPrefixes[i])
     if ([subject hasPrefix: replyPrefixes[i]])
