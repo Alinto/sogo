@@ -12,25 +12,6 @@ var Contact = {
     deleteContactsRequestCount: null
 };
 
-function validateEditorInput(sender) {
-    var errortext = "";
-    var field;
-  
-    field = document.pageform.subject;
-    if (field.value == "")
-        errortext = errortext + labels.error_missingsubject + "\n";
-
-    if (!hasRecipients())
-        errortext = errortext + labels.error_missingrecipients + "\n";
-  
-    if (errortext.length > 0) {
-        alert(labels.error_validationfailed + ":\n"
-              + errortext);
-        return false;
-    }
-    return true;
-}
-
 function openContactsFolder(contactsFolder, reload, idx) {
     if ((contactsFolder && contactsFolder != Contact.currentAddressBook)
         || reload) {

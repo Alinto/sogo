@@ -653,10 +653,7 @@ static NSArray *infoKeys = nil;
 
   if (![self hasOneOrMoreRecipients])
     error = [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
-			 reason: @"Please select a recipient!"];
-  else if ([[self subject] length] == 0)
-    error = [NSException exceptionWithHTTPStatus: 400 /* Bad Request */
-			 reason: @"Please set a subject!"];
+                                          reason: [self labelForKey: @"error_missingrecipients"]];
   else
     error = nil;
   

@@ -1,3 +1,18 @@
+2012-05-29  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxMailEditor.js (validateEditorInput):
+	merged with onValidate.
+	(onValidate): don't force the subject to be defined, but alert
+	the user.
+
+	* UI/MailerUI/UIxMailView.m (-messageSubject): don't set the
+	subject to "Untitled" if it's not set.
+
+	* UI/MailPartViewers/UIxMailPartMessageViewer.m (-messageSubject): idem.
+
+	* UI/MailerUI/UIxMailEditor.m (-validateForSend): don't force the
+	subject to be defined.
+
 2012-05-28  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (validateUploadForm): hide

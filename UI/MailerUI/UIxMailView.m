@@ -96,8 +96,6 @@ static NSString *mailETag = nil;
   NSString *subject;
 
   subject = [[self clientObject] decodedSubject];
-  if (![subject length])
-    subject = [self labelForKey: @"Untitled"];
 
   return subject;
 }
