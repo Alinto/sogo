@@ -1,4 +1,4 @@
-1.3.15 (2012-05-DD)
+1.3.15 (2012-05-15)
 -------------------
 New Features
  - sources address books are now exposed in Apple and iOS AddressBook app
@@ -9,6 +9,7 @@ New Features
    calculator
  - new domain default (SOGoMailCustomFromEnabled) to allow users to change
    their "from" and "reply-to" headers 
+ - access to external calendar subscriptions (.ics) with authentication
  - new domain default (SOGoHideSystemEMail) to hide or not the system
    email. This is currently limited to CalDAV operations
 
@@ -27,6 +28,9 @@ Bug Fixes
  - when saving a draft, fixed content-transfer-encoding to properly handle
    8bit data
  - escaped single-quote in HTML view of contacts
+ - fixed support of recurrent events with Apple iCal
+ - fixed overbooking handling of resources with recurrent events
+ - fixed auto-accept of resources when added later to an event
 
 1.3.14 (2012-03-23)
 -------------------

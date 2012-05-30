@@ -467,7 +467,19 @@
 	      folder = [[SOGoUser userWithLogin: currentUID]
 			 personalCalendarFolderInContext: context];
 
-	      
+	      // Deny access to the resource if the ACLs don't allow the user
+	      if (![folder aclSQLListingFilter])
+	        {
+		  NSDictionary *values;
+		  NSString *reason;
+
+		  values = [NSDictionary dictionaryWithObjectsAndKeys:
+		  		[user cn], @"Cn",
+				[user systemEmail], @"SystemEmail"];
+		  reason = [values keysWithFormat: [self labelForKey: @"Cannot access resource: \"%{Cn} %{SystemEmail}\""]];
+	      	  return [NSException exceptionWithHTTPStatus:403 reason: reason];
+	      	}
+
 	      fbInfo = [NSMutableArray arrayWithArray: [folder fetchFreeBusyInfosFrom: start
 							       to: end]];
 
@@ -1890,16 +1902,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 		  // case, let's regenerate the versitstring and replace the
 		  // one from the request.
 		  [rq setContent: [[[newEvent parent] versitString] dataUsingEncoding: [rq contentEncoding]]];
-		}
-	      
-	      // A RECURRENCE-ID was removed so there has to be a change in the master event
-	      // We could also have an EXDATE added in the master component of the attendees
-	      // so we always compare the MASTER event.
-	      if (!master)
-		{
-		  newEvent = [newEvents objectAtIndex: 0];
-		  oldEvent = [oldEvents objectAtIndex: 0];
-		  [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent];
 		}
 	    }
 	  //

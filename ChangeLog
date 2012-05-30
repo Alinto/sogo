@@ -1,3 +1,75 @@
+2012-05-24  Jean Raby  <jraby@inverse.ca>
+
+	* debian*/rules: Restart sogod after pkg upgrade (dh_installinit -R)
+	* Scripts/sogo-init.d-*: add support for conditional restart.
+	  Patch from Romain Le Disez
+	* sogo.spec: Restart sogod during post installation if it was already running
+
+	* Apache/SOGo.conf:
+	Use mod_expires to allow long term caching of static content. (1 year)
+	Note that from now on, a resource's URL _must_ change to let the client
+	reload it.  This is now done automatically for 'rsrc' in the wox templates,
+	but must be done manually for files referenced from css and js.
+
+2012-05-23  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* UI/WebServerResources/generic.js
+	(clickEventWrapper.button_clickEventWrappe): don't invoke
+	"preventDefault" on elements that do not have a tagName of "A".
+
+2012-05-18  Jean Raby  <jraby@inverse.ca>
+
+	* SoObjects/Mailer/SOGoDraftObject.m (bodyPartForAttachmentWithName):
+	Merge back lost code to handle encoding of binary and rcf822 attachments.
+
+2012-05-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/gen-property-selectors.py: the use of the "{}" to
+	construct a set is only valid on py2.7 therefore we make use of
+	set([]) instead.
+
+2012-05-15  Jean Raby  <jraby@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m (_handleResourcesConflicts):
+	Deny access to resources if the resource's ACL don't allow the organizer
+	to read its freebusy info.
+	Without this, sogo would always auto-accept invitations from 'unprivileged'
+	users, potentially bypassing the multiplebooking parameter.
+	
+2012-05-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/gen-property-selectors.py: "bannedProps" is now a
+	set, for faster lookups.
+
+	* UI/WebServerResources/UIxContactsUserFolders.js: folder ids are
+	in the form "user:module/folder", therefore we must remove the
+	first char, which is a slash.
+
+	* UI/WebServerResources/generic.js (subscribeToFolder): prepend a
+	"/" to the folder name, as it comes originally in the form
+	user:module/folder.
+
+	* UI/WebServerResources/UIxPreferences.js (initMailAccounts)
+	(displayMailAccount): getElementsByTagName seems too standard for
+	IE, we use $$() now so that we can invoke "each" on the result set
+	without triggering an exception.
+
+2012-05-09  Jean Raby  <jraby@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m (PUTAction):
+	Delete bitrotten code that could end up duplicating attendees.
+	Behavior exposed by the new caldav tests
+
+	* Tests/Integration/config.py.in
+	* Tests/Integration/test-caldav-scheduling.py
+	* Tests/Integration/test-ical.py
+	* Tests/Integration/test-davacl.py:
+	Use an unprivileged webdavclient where possible.
+	This would have uncovered the resources calendar autocreation bug.
+
+	* Tests/Integration/test-caldav-scheduling.py:
+	New tests to excercise somewhat fragile code in dav autoscheduling.
+
 2012-05-09  Jean Raby  <jraby@inverse.ca>
 
 	* SoObject/SOGo/SOGoParentFolder.m (_createPersonalFolder):

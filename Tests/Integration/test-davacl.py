@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-from config import hostname, port, username, password, subscriber_username, subscriber_password
+from config import hostname, port, username, password, subscriber_username, subscriber_password, \
+		   superuser, superuser_password
 
 import sys
 import unittest
@@ -25,7 +26,7 @@ import utilities
 class DAVCalendarSuperUserAclTest(unittest.TestCase):
     def __init__(self, arg):
         self.client = webdavlib.WebDAVClient(hostname, port,
-                                             username, password)
+                                             superuser, superuser_password)
         self.resource = "/SOGo/dav/%s/Calendar/test-dav-superuser-acl/" % subscriber_username
         self.filename = "suevent.ics"
         self.url = "%s%s" % (self.resource, self.filename)
@@ -949,6 +950,8 @@ class DAVPublicAccessTest(unittest.TestCase):
 class DAVCalendarPublicAclTest(unittest.TestCase):
     def setUp(self):
         self.createdRsrc = None
+        self.superuser_client = webdavlib.WebDAVClient(hostname, port,
+                                             superuser, superuser_password)
         self.client = webdavlib.WebDAVClient(hostname, port,
                                              username, password)
         self.subscriber_client = webdavlib.WebDAVClient(hostname, port,
@@ -959,7 +962,7 @@ class DAVCalendarPublicAclTest(unittest.TestCase):
     def tearDown(self):
         if self.createdRsrc is not None:
             delete = webdavlib.WebDAVDELETE(self.createdRsrc)
-            self.client.execute(delete)
+            self.superuser_client.execute(delete)
 
     def testCollectionAccessNormalUser(self):
         """normal user access to (non-)shared resource from su"""
@@ -1091,7 +1094,7 @@ class DAVCalendarPublicAclTest(unittest.TestCase):
         for rsrc in [ 'personal', 'test-dav-acl' ]:
             resource = '%s%s/' % (parentColl, rsrc)
             mkcol = webdavlib.WebDAVMKCOL(resource)
-            self.client.execute(mkcol)
+            self.superuser_client.execute(mkcol)
             acl_utility = utilities.TestCalendarACLUtility(self,
                                                            self.subscriber_client,
                                                            resource)

@@ -1,10 +1,15 @@
 #!/usr/bin/python
 
-# setup: username must be super-user or have read-access to PUBLIC events in
-#        both attendee and delegate's personal calendar
+# setup: 4 users are needed: username, attendee1_username,
+#        attendee1_delegate_username and superuser.
+# when writing new tests, avoid using superuser when not absolutely needed
 
 from config import hostname, port, username, password, \
-                   attendee1, attendee1_delegate,      \
+		   superuser, superuser_password, \
+                   attendee1, attendee1_username, \
+		   attendee1_password, \
+		   attendee1_delegate, attendee1_delegate_username, \
+		   attendee1_delegate_password, \
 		   resource_no_overbook, resource_can_overbook
 
 import datetime
@@ -98,10 +103,17 @@ class CalDAVPropertiesTest(unittest.TestCase):
                           % (proppatch.response["status"],
                              proppatch.response["body"]))
 
-class CalDAVITIPDelegationTest(unittest.TestCase):
+class CalDAVSchedulingTest(unittest.TestCase):
     def setUp(self):
+        self.superuser_client = webdavlib.WebDAVClient(hostname, port,
+                                             superuser, superuser_password)
         self.client = webdavlib.WebDAVClient(hostname, port,
                                              username, password)
+        self.attendee1_client = webdavlib.WebDAVClient(hostname, port,
+                                             attendee1_username, attendee1_password)
+        self.attendee1_delegate_client = webdavlib.WebDAVClient(hostname, port,
+                                             attendee1_delegate_username, attendee1_password)
+
         utility = utilities.TestUtility(self, self.client)
         (self.user_name, self.user_email) = utility.fetchUserInfo(username)
         (self.attendee1_name, self.attendee1_email) = utility.fetchUserInfo(attendee1)
@@ -113,18 +125,24 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
         self.attendee1_calendar = "/SOGo/dav/%s/Calendar/personal/" % attendee1
         self.attendee1_delegate_calendar = "/SOGo/dav/%s/Calendar/personal/" % attendee1_delegate
 
+        # fetch non existing event to let sogo create the calendars in the db
+        self._getEvent(self.client, "%snonexistent" % self.user_calendar, exp_status=404)
+        self._getEvent(self.attendee1_client, "%snonexistent" % self.attendee1_calendar, exp_status=404)
+        self._getEvent(self.attendee1_delegate_client, "%snonexistent" %
+                        self.attendee1_delegate_calendar, exp_status=404)
+
 
     def tearDown(self):
         self._deleteEvent(self.client,
                           "%stest-delegation.ics" % self.user_calendar, None)
-        self._deleteEvent(self.client,
+        self._deleteEvent(self.attendee1_client,
                           "%stest-delegation.ics" % self.attendee1_calendar, None)
-        self._deleteEvent(self.client,
+        self._deleteEvent(self.attendee1_delegate_client,
                           "%stest-delegation.ics" % self.attendee1_delegate_calendar,
                           None)
         self._deleteEvent(self.client,
                           "%stest-add-attendee.ics" % self.user_calendar, None)
-        self._deleteEvent(self.client,
+        self._deleteEvent(self.attendee1_client,
                           "%stest-add-attendee.ics" % self.attendee1_calendar, None)
         self._deleteEvent(self.client,
                           "%stest-no-overbook.ics" % self.user_calendar, None)
@@ -135,9 +153,13 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
         self._deleteEvent(self.client,
                           "%stest-can-overbook-overlap.ics" % self.user_calendar, None)
         self._deleteEvent(self.client,
-                          "%stest-remove-attendee.ics" % self.user_calendar, None)
+                          "%stest-rrule-exception-invitation-dance.ics" % self.user_calendar, None)
+        self._deleteEvent(self.attendee1_client,
+                          "%stest-rrule-exception-invitation-dance.ics" % self.attendee1_calendar, None)
         self._deleteEvent(self.client,
-                          "%stest-remove-attendee-no-org.ics" % self.user_calendar, None)
+                          "%stest-rrule-invitation-deleted-exdate-dance.ics" % self.user_calendar, None)
+        self._deleteEvent(self.attendee1_client,
+                          "%stest-rrule-invitation-deleted-exdate-dance.ics" % self.attendee1_calendar, None)
 
     def _newEvent(self, summary="test event", uid="test", transp=0):
         transparency = ("OPAQUE", "TRANSPARENT")
@@ -156,7 +178,7 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
         vevent.add('dtstamp').value = now
         vevent.add('last-modified').value = now
         vevent.add('created').value = now
-        
+        vevent.add('class').value = "PUBLIC"
         vevent.add('sequence').value = "0"
 
         return newCal
@@ -242,6 +264,41 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
                               % (email,
                                  compared_attendees[email], attendees[email]))
 
+    def testAddAttendee(self):
+	""" add attendee after event creation """
+
+	# make sure the event doesn't exist
+	ics_name = "test-add-attendee.ics"
+        self._deleteEvent(self.client,
+                          "%s%s" % (self.user_calendar,ics_name), None)
+        self._deleteEvent(self.attendee1_client,
+                          "%s%s" % (self.attendee1_calendar,ics_name), None)
+
+        # 1. create an event in the organiser's calendar
+	event = self._newEvent(summary="Test add attendee", uid="Test add attendee")
+        organizer = event.vevent.add('organizer')
+        organizer.cn_param = self.user_name
+        organizer.value = self.user_email
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
+
+	# 2. add an attendee
+        event.add("method").value = "REQUEST"
+        attendee = event.vevent.add('attendee')
+        attendee.cn_param = self.attendee1_name
+        attendee.rsvp_param = "TRUE"
+        attendee.partstat_param = "NEEDS-ACTION"
+        attendee.value = self.attendee1_email
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event,
+			exp_status=204)
+
+
+	# 3. verify that the attendee has the event
+        attendee_event = self._getEvent(self.attendee1_client, "%s%s" % (self.attendee1_calendar, ics_name))
+
+	# 4. make sure the received event match the original one
+	# XXX is this enough?
+	self.assertEquals(event.vevent.uid, attendee_event.vevent.uid)
+	
     def testUninviteAttendee(self):
         """ Remove attendee after event creation """
 
@@ -249,7 +306,7 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
         ics_name = "test-remove-attendee.ics"
         self._deleteEvent(self.client,
                           "%s%s" % (self.user_calendar,ics_name), None)
-        self._deleteEvent(self.client,
+        self._deleteEvent(self.attendee1_client,
                           "%s%s" % (self.attendee1_calendar,ics_name), None)
 
         # 1. create an event in the organiser's calendar
@@ -275,7 +332,7 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
                         exp_status=204)
 
         # 3. verify that the attendee has the event
-        attendee_event = self._getEvent(self.client, "%s%s" % (self.attendee1_calendar, ics_name))
+        attendee_event = self._getEvent(self.attendee1_client, "%s%s" % (self.attendee1_calendar, ics_name))
 
         # 4. make sure the received event match the original one
         self.assertEquals(event.vevent.uid, attendee_event.vevent.uid)
@@ -287,91 +344,41 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
                         exp_status=204)
 
         # 6. verify that the attendee doesn't have the event anymore
-        attendee_event = self._getEvent(self.client, "%s%s" % (self.attendee1_calendar, ics_name), 404)
+        attendee_event = self._getEvent(self.attendee1_client, "%s%s" % (self.attendee1_calendar, ics_name), 404)
 
-    def testUninviteAttendeeNoOrganizer(self):
-        """ Remove attendee and organizer after event creation """
+    def testAddAttendee(self):
+        """ add attendee after event creation """
 
         # make sure the event doesn't exist
-        ics_name = "test-remove-attendee-no-org.ics"
+        ics_name = "test-add-attendee.ics"
         self._deleteEvent(self.client,
                           "%s%s" % (self.user_calendar,ics_name), None)
         self._deleteEvent(self.client,
                           "%s%s" % (self.attendee1_calendar,ics_name), None)
 
         # 1. create an event in the organiser's calendar
-        event = self._newEvent(summary="Test uninvite attendee no org", uid="Test uninvite attendee no org")
-        # keep a copy around for updates without other attributes
-        plainEvent = vobject.iCalendar()
-        plainEvent.copy(event)
-
+        event = self._newEvent(summary="Test add attendee", uid="Test add attendee")
         organizer = event.vevent.add('organizer')
         organizer.cn_param = self.user_name
         organizer.value = self.user_email
-
         self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
 
-
         # 2. add an attendee
-        event.add("method").value = "REQUEST"
         attendee = event.vevent.add('attendee')
         attendee.cn_param = self.attendee1_name
         attendee.rsvp_param = "TRUE"
         attendee.partstat_param = "NEEDS-ACTION"
         attendee.value = self.attendee1_email
         self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event,
-                        exp_status=204)
+                       exp_status=204)
+
 
         # 3. verify that the attendee has the event
-        attendee_event = self._getEvent(self.client, "%s%s" % (self.attendee1_calendar, ics_name))
-
+        attendee_event = self._getEvent(self.attendee1_client, "%s%s" % (self.attendee1_calendar, ics_name))
+ 
         # 4. make sure the received event match the original one
+        # XXX is this enough?
         self.assertEquals(event.vevent.uid, attendee_event.vevent.uid)
-
-        # 5. put the event back without attendee or organizer
-        now = datetime.datetime.now(dateutil.tz.gettz("America/Montreal"))
-        plainEvent.vevent.last_modified.value = now
-        self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), plainEvent,
-                        exp_status=204)
-
-        # 6. verify that the attendee doesn't have the event anymore
-        attendee_event = self._getEvent(self.client, "%s%s" % (self.attendee1_calendar, ics_name), 404)
-
-
-    def testAddAttendee(self):
-	""" add attendee after event creation """
-
-	# make sure the event doesn't exist
-	ics_name = "test-add-attendee.ics"
-        self._deleteEvent(self.client,
-                          "%s%s" % (self.user_calendar,ics_name), None)
-        self._deleteEvent(self.client,
-                          "%s%s" % (self.attendee1_calendar,ics_name), None)
-
-        # 1. create an event in the organiser's calendar
-	event = self._newEvent(summary="Test add attendee", uid="Test add attendee")
-        organizer = event.vevent.add('organizer')
-        organizer.cn_param = self.user_name
-        organizer.value = self.user_email
-	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
-
-	# 2. add an attendee
-        event.add("method").value = "REQUEST"
-        attendee = event.vevent.add('attendee')
-        attendee.cn_param = self.attendee1_name
-        attendee.rsvp_param = "TRUE"
-        attendee.partstat_param = "NEEDS-ACTION"
-        attendee.value = self.attendee1_email
-	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event,
-			exp_status=204)
-
-
-	# 3. verify that the attendee has the event
-        attendee_event = self._getEvent(self.client, "%s%s" % (self.attendee1_calendar, ics_name))
-
-	# 4. make sure the received event match the original one
-	# XXX is this enough?
-	self.assertEquals(event.vevent.uid, attendee_event.vevent.uid)
 
     def testResourceNoOverbook(self):
 	""" try to overbook a resource """
@@ -450,15 +457,221 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
 	self._putEvent(self.client, "%s%s" % (self.user_calendar, ob_ics_name), event)
 
 
+    def testRruleExceptionInvitationDance(self):
+	""" RRULE exception invitation dance """
+
+	# This workflow is based on what lightning 1.2.1 does
+	#  create a reccurring event
+	#  add an exception
+	#  invite bob to the exception:
+	#    bob is declined in the master event
+	#    bob needs-action in the exception
+	#  bob accepts
+	#    bob is declined in the master event
+	#    bob is accepted in the exception
+	#  the organizer 'uninvites' bob
+	#    the event disappears from bob's calendar 
+	#    bob isn't in the master+exception event
+
+	ics_name = "test-rrule-exception-invitation-dance.ics"
+	self._deleteEvent(self.client,
+			  "%s%s" % (self.user_calendar, ics_name), None)
+	self._deleteEvent(self.attendee1_client,
+			  "%s%s" % (self.attendee1_calendar, ics_name), None)
+
+	# 1.  create a recurring event in the organiser's calendar
+	summary="Test reccuring exception invite cancel"
+	uid="Test-recurring-exception-invite-cancel"
+	event = self._newEvent(summary, uid)
+	event.vevent.add('rrule').value = "FREQ=DAILY;COUNT=5"
+
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
+
+	# read the event back from the server
+	org_ev = self._getEvent(self.client, "%s%s" % (self.user_calendar, ics_name))
+
+	# 2. Add an exception to the master event and invite attendee1 to it
+	now = datetime.datetime.now(dateutil.tz.gettz("America/Montreal"))
+	org_ev.vevent.last_modified.value = now
+	orig_dtstart = org_ev.vevent.dtstart.value
+	orig_dtend = org_ev.vevent.dtend.value
+
+	ev_exception = org_ev.add("vevent")
+	ev_exception.add('created').value = now
+	ev_exception.add('last-modified').value = now
+	ev_exception.add('dtstamp').value = now
+	ev_exception.add('uid').value = uid
+	ev_exception.add('summary').value = summary
+	# out of laziness, add the exception for the first occurence of the event
+	recurrence_id = orig_dtstart
+	ev_exception.add('recurrence-id').value = recurrence_id
+
+	ev_exception.add('transp').value = "OPAQUE"
+	ev_exception.add('description').value = "Exception"
+	ev_exception.add('sequence').value = "1"
+	ev_exception.add('dtstart').value = orig_dtstart
+	ev_exception.add('dtend').value = orig_dtend
+
+	# 2.1 Add attendee1 and organizer to the exception
+	organizer = ev_exception.add('organizer')
+	organizer.cn_param = self.user_name
+	organizer.partstat_param = "ACCEPTED"
+	organizer.value = self.user_email
+	attendee = ev_exception.add('attendee')
+	attendee.cn_param = self.attendee1_name
+	attendee.rsvp_param = "TRUE"
+	attendee.role_param = "REQ-PARTICIPANT"
+	attendee.partstat_param = "NEEDS-ACTION"
+	attendee.value = self.attendee1_email
+
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), org_ev,
+			exp_status=204)
+
+	# 3. Make sure the attendee got the event
+        attendee_ev = self._getEvent(self.attendee1_client, "%s%s" % (self.attendee1_calendar, ics_name))
+
+	for ev in attendee_ev.vevent_list:
+	  try:
+	    if (ev.recurrence_id.value):
+	      attendee_ev_exception = ev
+	  except:
+	    attendee_ev_master = ev
+	
+	# make sure sogo doesn't duplicate attendees - yes, we've seen that
+	self.assertEquals(len(attendee_ev_master.attendee_list), 1)
+	self.assertEquals(len(attendee_ev_exception.attendee_list), 1)
+
+	# 4. The master event must contain the invitation, declined
+	self.assertEquals(attendee_ev_master.attendee.partstat_param, "DECLINED")
+
+	# 5. The exception event contain the invitation, NEEDS-ACTION
+	self.assertEquals(attendee_ev_exception.attendee.partstat_param, "NEEDS-ACTION")
+
+	# 6. attendee accepts invitation
+	attendee_ev_exception.attendee.partstat_param = "ACCEPTED"
+	self._putEvent(self.attendee1_client, "%s%s" % (self.attendee1_calendar, ics_name), 
+			attendee_ev, exp_status=204)
+	
+	# fetch the organizer's event
+	org_ev = self._getEvent(self.client, "%s%s" % (self.user_calendar, ics_name))
+	for ev in org_ev.vevent_list:
+	  try:
+	    if (ev.recurrence_id.value):
+	      org_ev_exception = ev
+	  except:
+	    org_ev_master = ev
+
+	# make sure sogo doesn't duplicate attendees
+	self.assertEquals(len(org_ev_master.attendee_list), 1)
+	self.assertEquals(len(org_ev_exception.attendee_list), 1)
+
+	# 7. Make sure organizer got the accept for the exception and
+	# that the attendee is still declined in the master
+	self.assertEquals(org_ev_exception.attendee.partstat_param, "ACCEPTED")
+	self.assertEquals(org_ev_master.attendee.partstat_param, "DECLINED")
+
+	# 8. delete the attendee from the master event (uninvite)
+	#    The event should be deleted from the attendee's calendar
+	del org_ev_exception.attendee
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), 
+			org_ev, exp_status=204)
+	del org_ev_master.attendee
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), 
+			org_ev, exp_status=204)
+
+	self._getEvent(self.client, "%s%s" % (self.attendee1_calendar, ics_name),
+			exp_status=404)
+
+	# now be happy
+
+    def testRruleInvitationDeleteExdate(self):
+	"""RRULE invitation delete exdate dance"""
+
+	# Workflow:
+	# Create an recurring event and invite Bob
+	# Add an exdate to the master event
+	# Verify that the exdate has propagated to Bob's calendar
+	# Add an exdate to bob's version of the event
+	# Verify that an exception has been created in the org's calendar
+	#  and that bob is 'declined'
+
+	ics_name = "test-rrule-invitation-deleted-exdate-dance.ics"
+	self._deleteEvent(self.client,
+			  "%s%s" % (self.user_calendar, ics_name), None)
+	self._deleteEvent(self.attendee1_client,
+			  "%s%s" % (self.attendee1_calendar, ics_name), None)
+
+	# 1.  create a recurring event in the organiser's calendar
+	summary="Test-rrule-invitation-deleted-exdate-dance"
+	uid=summary
+	event = self._newEvent(summary, uid)
+	event.vevent.add('rrule').value = "FREQ=DAILY;COUNT=5"
+	organizer = event.vevent.add('organizer')
+	organizer.cn_param = self.user_name
+	organizer.partstat_param = "ACCEPTED"
+	organizer.value = self.user_email
+	attendee = event.vevent.add('attendee')
+	attendee.cn_param = self.attendee1_name
+	attendee.rsvp_param = "TRUE"
+	attendee.role_param = "REQ-PARTICIPANT"
+	attendee.partstat_param = "NEEDS-ACTION"
+	attendee.value = self.attendee1_email
+
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
+
+	# 2. Make sure the attendee got it
+	self._getEvent(self.attendee1_client, "%s%s" % (self.attendee1_calendar, ics_name))
+
+	# 3. Add exdate to master event
+	org_ev=self._getEvent(self.client, "%s%s" % (self.user_calendar, ics_name))
+	orig_dtstart = org_ev.vevent.dtstart.value
+	# exdate is a list in vobject.icalendar
+	org_exdate = [orig_dtstart.astimezone(dateutil.tz.gettz("UTC"))]
+	org_ev.vevent.add('exdate').value = org_exdate
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), org_ev, exp_status=204)
+
+	# 4. make sure the attendee has the exdate
+	attendee_ev = self._getEvent(self.attendee1_client, "%s%s" %
+			(self.attendee1_calendar, ics_name))
+	self.assertEqual(org_exdate, attendee_ev.vevent.exdate.value)
+
+	# 5. Create an exdate in the attendee's calendar
+	new_exdate = orig_dtstart + datetime.timedelta(days=2)
+	attendee_exdate = [new_exdate.astimezone(dateutil.tz.gettz("UTC"))]
+	attendee_ev.vevent.add('exdate').value = attendee_exdate
+        now = datetime.datetime.now(dateutil.tz.gettz("America/Montreal"))
+        attendee_ev.vevent.last_modified.value =  now
+	self._putEvent(self.attendee1_client, "%s%s" % (self.attendee1_calendar, ics_name),
+			attendee_ev, exp_status=204)
+
+	# 6. Make sure the attendee is:
+	#  needs-action in master event
+	#  declined in the new exception created by the exdate above
+	org_ev=self._getEvent(self.client, "%s%s" % (self.user_calendar, ics_name))
+	for ev in org_ev.vevent_list:
+	  try:
+	    if (ev.recurrence_id.value == attendee_exdate[0]):
+	      org_ev_exception = ev
+	  except:
+	    org_ev_master = ev
+	
+	self.assertTrue(org_ev_exception)
+	# make sure sogo doesn't duplicate attendees
+	self.assertEquals(len(org_ev_master.attendee_list), 1)
+	self.assertEquals(len(org_ev_exception.attendee_list), 1)
+
+	self.assertEqual(org_ev_master.attendee.partstat_param, "NEEDS-ACTION");
+	self.assertEqual(org_ev_exception.attendee.partstat_param, "DECLINED");
+	
     def testInvitationDelegation(self):
         """ invitation delegation """
 
         # the invitation must not exist
         self._deleteEvent(self.client,
                           "%stest-delegation.ics" % self.user_calendar, None)
-        self._deleteEvent(self.client,
+        self._deleteEvent(self.attendee1_client,
                           "%stest-delegation.ics" % self.attendee1_calendar, None)
-        self._deleteEvent(self.client,
+        self._deleteEvent(self.attendee1_delegate_client,
                           "%stest-delegation.ics" % self.attendee1_delegate_calendar,
                           None)
 
@@ -482,7 +695,7 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
                        "%stest-delegation.ics" % self.user_calendar,
                        invitation)
 
-        att_inv = self._getEvent(self.client,
+        att_inv = self._getEvent(self.attendee1_client,
                                  "%stest-delegation.ics"
                                  % self.attendee1_calendar)
         self._compareAttendees(att_inv, invitation)
@@ -502,19 +715,19 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
         delegate.partstat_param = "NEEDS-ACTION"
         delegate.value = self.attendee1_delegate_email
 
-        self._postEvent(self.client,
+        self._postEvent(self.attendee1_client,
                         self.attendee1_calendar, invitation,
                         self.attendee1_email, [self.attendee1_delegate_email])
         invitation.method.value = "REPLY"
-        self._postEvent(self.client,
+        self._postEvent(self.attendee1_client,
                         self.attendee1_calendar, invitation,
                         self.attendee1_email, [self.user_email])
         del invitation.method
-        self._putEvent(self.client,
+        self._putEvent(self.attendee1_client,
                        "%stest-delegation.ics" % self.attendee1_calendar,
                        invitation, 204)
 
-        del_inv = self._getEvent(self.client,
+        del_inv = self._getEvent(self.attendee1_delegate_client,
                                  "%stest-delegation.ics"
                                  % self.attendee1_delegate_calendar)
         self._compareAttendees(del_inv, invitation)
@@ -528,18 +741,18 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
 
         invitation.add("method").value = "REPLY"
         delegate.partstat_param = "ACCEPTED"
-        self._postEvent(self.client,
+        self._postEvent(self.attendee1_delegate_client,
                         self.attendee1_delegate_calendar, invitation,
                         self.attendee1_delegate_email, [self.user_email, self.attendee1_email])
         del invitation.method
-        self._putEvent(self.client,
+        self._putEvent(self.attendee1_delegate_client,
                        "%stest-delegation.ics" % self.attendee1_delegate_calendar,
                        invitation, 204)
 
         org_inv = self._getEvent(self.client,
                                  "%stest-delegation.ics" % self.user_calendar)
         self._compareAttendees(org_inv, invitation)
-        att_inv = self._getEvent(self.client,
+        att_inv = self._getEvent(self.attendee1_client,
                                  "%stest-delegation.ics" % self.attendee1_calendar)
         self._compareAttendees(att_inv, invitation)
 
@@ -551,7 +764,7 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
         cancellation.copy(invitation)
         cancellation.add("method").value = "CANCEL"
         cancellation.vevent.sequence.value = "1"
-        self._postEvent(self.client,
+        self._postEvent(self.attendee1_client,
                         self.attendee1_calendar, cancellation,
                         self.attendee1_email, [self.attendee1_delegate_email])
 
@@ -560,12 +773,12 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
         del attendee1.delegated_to_param
         invitation.add("method").value = "REPLY"
         invitation.vevent.remove(delegate)
-        self._postEvent(self.client,
+        self._postEvent(self.attendee1_client,
                         self.attendee1_calendar, invitation,
                         self.attendee1_email, [self.user_email])
 
         del invitation.method
-        self._putEvent(self.client,
+        self._putEvent(self.attendee1_client,
                        "%stest-delegation.ics" % self.attendee1_calendar,
                        invitation, 204)
 
@@ -573,7 +786,7 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
                                  "%stest-delegation.ics" % self.user_calendar)
         self._compareAttendees(org_inv, invitation)
 
-        del_inv = self._getEvent(self.client,
+        del_inv = self._getEvent(self.attendee1_delegate_client,
                                  "%stest-delegation.ics" % self.attendee1_delegate_calendar, 404)
 
         # 5. org updates inv.
@@ -595,7 +808,7 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
                        "%stest-delegation.ics" % self.user_calendar,
                        invitation, 204)
 
-        att_inv = self._getEvent(self.client,
+        att_inv = self._getEvent(self.attendee1_client,
                                  "%stest-delegation.ics" % self.attendee1_calendar)
         self._compareAttendees(att_inv, invitation)
 
@@ -613,22 +826,22 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
         delegate.partstat_param = "NEEDS-ACTION"
         delegate.value = self.attendee1_delegate_email
 
-        self._postEvent(self.client,
+        self._postEvent(self.attendee1_client,
                         self.attendee1_calendar, invitation,
                         self.attendee1_email, [self.attendee1_delegate_email])
         invitation.method.value = "REPLY"
-        self._postEvent(self.client,
+        self._postEvent(self.attendee1_client,
                         self.attendee1_calendar, invitation,
                         self.attendee1_email, [self.user_email])
         del invitation.method
-        self._putEvent(self.client,
+        self._putEvent(self.attendee1_client,
                        "%stest-delegation.ics" % self.attendee1_calendar,
                        invitation, 204)
 
         org_inv = self._getEvent(self.client,
                                  "%stest-delegation.ics" % self.user_calendar)
         self._compareAttendees(org_inv, invitation)
-        del_inv = self._getEvent(self.client,
+        del_inv = self._getEvent(self.attendee1_delegate_client,
                                  "%stest-delegation.ics"
                                  % self.attendee1_delegate_calendar)
         self._compareAttendees(del_inv, invitation)
@@ -638,19 +851,19 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
 
         invitation.add("method").value = "REPLY"
         delegate.partstat_param = "ACCEPTED"
-        self._postEvent(self.client,
+        self._postEvent(self.attendee1_delegate_client,
                         self.attendee1_delegate_calendar, invitation,
                         self.attendee1_delegate_email, [self.user_email,
                                                         self.attendee1_email])
         del invitation.method
-        self._putEvent(self.client,
+        self._putEvent(self.attendee1_delegate_client,
                        "%stest-delegation.ics" % self.attendee1_delegate_calendar,
                        invitation, 204)
 
         org_inv = self._getEvent(self.client,
                                  "%stest-delegation.ics" % self.user_calendar)
         self._compareAttendees(org_inv, invitation)
-        att_inv = self._getEvent(self.client,
+        att_inv = self._getEvent(self.attendee1_client,
                                  "%stest-delegation.ics" % self.attendee1_calendar)
         self._compareAttendees(att_inv, invitation)
 
@@ -674,10 +887,10 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
                        "%stest-delegation.ics" % self.user_calendar,
                        invitation, 204)
 
-        att_inv = self._getEvent(self.client,
+        att_inv = self._getEvent(self.attendee1_client,
                                  "%stest-delegation.ics" % self.attendee1_calendar)
         self._compareAttendees(att_inv, invitation)
-        del_inv = self._getEvent(self.client,
+        del_inv = self._getEvent(self.attendee1_client,
                                  "%stest-delegation.ics" % self.attendee1_calendar)
         self._compareAttendees(del_inv, invitation)
 
@@ -702,9 +915,9 @@ class CalDAVITIPDelegationTest(unittest.TestCase):
                        "%stest-delegation.ics" % self.user_calendar,
                        invitation, 204)
 
-        att_inv = self._getEvent(self.client,
+        att_inv = self._getEvent(self.attendee1_client,
                                  "%stest-delegation.ics" % self.attendee1_calendar, 404)
-        del_inv = self._getEvent(self.client,
+        del_inv = self._getEvent(self.attendee1_delegate_client,
                                  "%stest-delegation.ics" % self.attendee1_delegate_calendar, 404)
 
 if __name__ == "__main__":

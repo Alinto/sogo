@@ -1119,7 +1119,7 @@ static NSString    *userAgent      = nil;
   NGMimeBodyPart   *bodyPart;
   NSString         *s;
   NSData           *content;
-  BOOL             attachAsString;
+  BOOL             attachAsString, attachAsRFC822;
   NSString         *p;
   id body;
 
@@ -1134,6 +1134,7 @@ static NSString    *userAgent      = nil;
     return nil;
   }
   attachAsString = NO;
+  attachAsRFC822 = NO;
   
   /* prepare header of body part */
 
@@ -1143,6 +1144,8 @@ static NSString    *userAgent      = nil;
     [map setObject:s forKey: @"content-type"];
     if ([s hasPrefix: @"text/plain"] || [s hasPrefix: @"text/html"])
       attachAsString = YES;
+    else if ([s hasPrefix: @"message/rfc822"])
+      attachAsRFC822 = YES;
   }
   if ((s = [self contentDispositionForAttachmentWithName:_name]))
     {
@@ -1181,6 +1184,19 @@ static NSString    *userAgent      = nil;
     content = [[NSData alloc] initWithContentsOfMappedFile:p];
     [content autorelease];
 
+    if (attachAsRFC822)
+      {
+        [map setObject: @"8bit" forKey: @"content-transfer-encoding"];
+        [map setObject: @"inline" forKey: @"content-disposition"];
+      }
+    else
+      {
+	content = [content dataByEncodingBase64];
+        [map setObject: @"base64" forKey: @"content-transfer-encoding"];
+      }
+    [map setObject:[NSNumber numberWithInt:[content length]] 
+	 forKey: @"content-length"];
+    
     /* Note: the -init method will create a temporary file! */
     body = [[NGMimeFileData alloc] initWithBytes:[content bytes]
                                           length:[content length]];

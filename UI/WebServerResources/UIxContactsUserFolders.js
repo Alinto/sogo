@@ -1,5 +1,3 @@
-/* -*- Mode: java; tab-width: 2; c-label-minimum-indentation: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
-
 var d;
 
 function onSearchFormSubmit() {
@@ -182,7 +180,7 @@ function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
         icon += 'tb-mail-addressbook-flat-16x16.png';
     else
         icon += 'calendar-folder-16x16.png';
-    var folderId = user + ":" + folderInfos[1];
+    var folderId = user + ":" + folderInfos[1].substr(1);
     var name = folderInfos[0]; // name has the format "Folername (Firstname Lastname <email>)"
     var pos = name.lastIndexOf(' (');
     if (pos > -1)

@@ -146,12 +146,17 @@ case "$1" in
   restart)
 	restart
 	;;
+  condrestart|try-restart)
+	if status -p "$PIDFILE" $DAEMON >&/dev/null; then
+	  restart
+	fi
+	;;
   status)
   	status -p "$PIDFILE" $DAEMON
 	;;
   *)
 	N=/etc/init.d/$NAME
-	echo "Usage: $N {start|stop|restart|status}" >&2
+	echo "Usage: $N {start|stop|restart|condrestart|status}" >&2
 	exit 1
 	;;
 esac

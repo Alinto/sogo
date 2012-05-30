@@ -47,9 +47,17 @@ var removeFolderRequestCount = 0;
 // Email validation regexp
 var emailRE = /^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i;
 
+
+/* This function enables the execution of a wrapper function just before the
+ user callback is executed. The wrapper in question executes "preventDefault"
+ to the event parameter if and only when "this" is a link. The goal of this
+ operation is to prevent links with attached even handlers to be followed,
+ including those with an href set to "#". */
 function clickEventWrapper(functionRef) {
     function button_clickEventWrapper(event) {
-        preventDefault(event);
+        if (this.tagName == "A") {
+            preventDefault(event);
+        }
         return functionRef.apply(this, [event]);
     }
 
@@ -1211,7 +1219,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
     var folderPath = folderData[1];
     if (username != UserLogin) {
         var url = (UserFolderURL + "../" + username
-                   + folderPath + "/subscribe");
+                   + "/" + folderPath + "/subscribe");
         if (document.subscriptionAjaxRequest) {
             document.subscriptionAjaxRequest.aborted = true;
             document.subscriptionAjaxRequest.abort();
@@ -1266,10 +1274,10 @@ function accessToSubscribedFolder(serverFolder) {
         var username = parts[0];
         var paths = parts[1].split("/");
         if (username == UserLogin) {
-            folder = paths[2];
+            folder = paths[1];
         }
         else {
-            folder = "/" + username.asCSSIdentifier() + "_" + paths[2];
+            folder = "/" + username.asCSSIdentifier() + "_" + paths[1];
         }
     }
     else {
@@ -2047,7 +2055,7 @@ function _showPromptDialog(title, label, callback, defaultValue) {
         document.body.appendChild(dialog);
         dialogs[title+label] = dialog;
     }
-    jQuery(dialog).fadeIn('fast', function () { dialog.down("input").focus(); });       
+    jQuery(dialog).fadeIn('fast', function () { dialog.down("input").focus(); });
 }
 
 function showSelectDialog(title, label, options, button, callbackFcn, callbackArg, defaultValue) {
@@ -2098,14 +2106,10 @@ function _showSelectDialog(title, label, options, button, callbackFcn, callbackA
 
 function showAuthenticationDialog(label, callback) {
     var div = $("bgDialogDiv");
-    if (div && div.visible() && div.getOpacity() > 0) {
-        log("push");
+    if (div && div.visible() && div.getOpacity() > 0)
         dialogsStack.push(_showAuthenticationDialog.bind(this, label, callback));
-    }
-    else {
-        log("show");
+    else
         _showAuthenticationDialog(label, callback);
-    }
 }
 
 function _showAuthenticationDialog(label, callback) {

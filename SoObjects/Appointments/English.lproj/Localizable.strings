@@ -67,4 +67,5 @@ vtodo_class2 = "(Confidential task)";
 = "%{Attendee} %{SentByText}has not yet decided upon your event invitation.";
 
 /* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Cannot access resource: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}.";
