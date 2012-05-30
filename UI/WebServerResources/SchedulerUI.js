@@ -2849,13 +2849,21 @@ function hideImportResults(event) {
 }
 function validateUploadForm() {
     rc = false;
-    if ($("calendarFile").value.length)
+    if ($("calendarFile").value.length) {
+      var btn = jQuery('#uploadSubmit');
+      jQuery('#uploadCancel').fadeOut('fast');
+      btn.addClass("disabled");
+      btn.children('span').text(_('Uploading'));
       rc = true;
+    }
     return rc;
 }
 function uploadCompleted(response) {
     data = response.evalJSON(true);
-
+    jQuery('#uploadCancel').show();
+    var btn = jQuery('#uploadSubmit');
+    btn.removeClass("disabled");
+    btn.children('span').text(_('Upload'));
     var div = $("uploadResults");
     if (data.imported < 0)
         $("uploadResultsContent").update(_("An error occurred while importing calendar."));

@@ -192,7 +192,7 @@
   baseSubject = [[message valueForKey: @"envelope"] subject];
   subject = [baseSubject decodedHeader];
   if (![subject length])
-    subject = [self labelForKey: @"Untitled"];
+    subject = @"";
 
   return [subject stringByEscapingHTMLString];
 }

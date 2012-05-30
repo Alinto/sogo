@@ -189,6 +189,7 @@ static Class yearlyCalcClass  = Nil;
   NSCalendarDate *currentDate;
   NGCalendarDateRange *currentRange;
   unsigned int count, maxRanges;
+  NSComparisonResult compare;
 
   dates = [[self _dates: exdates withinRange: limits] objectEnumerator];
   while ((currentDate = [dates nextObject]))
@@ -197,8 +198,12 @@ static Class yearlyCalcClass  = Nil;
       for (count = maxRanges; count > 0; count--)
 	{
 	  currentRange = [ranges objectAtIndex: count - 1];
-	  if ([currentRange containsDate: currentDate])
-	    [ranges removeObjectAtIndex: count - 1];
+          compare = [[currentRange startDate] compare: currentDate];
+          if ((compare == NSOrderedAscending || compare == NSOrderedSame) &&
+              [[currentRange endDate] compare: currentDate] == NSOrderedDescending)
+            {
+              [ranges removeObjectAtIndex: count - 1];
+            }
 	}
     }
 }

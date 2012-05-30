@@ -471,7 +471,8 @@ static int cssEscapingCount;
 
 - (int) timeValue
 {
-  int i, time;
+  int 		time;
+  NSInteger 	i;
 
   if ([self length] > 0)
     {

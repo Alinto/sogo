@@ -107,51 +107,45 @@ function insertContact(inputNode, contactName, contactEmail) {
 
 /* mail editor */
 
-function validateEditorInput() {
-    var errortext = "";
-    var field;
-   
-    field = document.pageform.subject;
-    if (field.value == "")
-        errortext = errortext + _("error_missingsubject") + "\n";
-
-    if (!hasRecipients())
-        errortext = errortext + _("error_missingrecipients") + "\n";
-   
-    if (errortext.length > 0) {
-        alert(_("error_validationfailed") + ":\n" + errortext);
-        return false;
+function onValidate(onSuccess) {
+    if (document.pageform.action != "send") {
+        
+        if (!hasRecipients()) {
+            showAlertDialog(_("error_missingrecipients"));
+        }
+        else if (document.pageform.subject.value == "") {
+            showConfirmDialog(_("Warning"), _("error_missingsubject"), onValidateDone.bind(this, onSuccess), null, _("Send anyway"), _("Cancel"));
+        }
+        else {
+            onValidateDone(onSuccess);
+        }
     }
-
-    return true;
 }
 
-function onValidate(event) {
-    var rc = false;
+function onValidateDone(onSuccess) {
+    var input = currentAttachmentInput();
+    if (input)
+        input.parentNode.removeChild(input);
 
-    if (document.pageform.action != "send"
-        && validateEditorInput()) {
-        var input = currentAttachmentInput();
-        if (input)
-            input.parentNode.removeChild(input);
-
-        var toolbar = document.getElementById("toolbar");
-        if (!document.busyAnim)
-            document.busyAnim = startAnimation(toolbar);
-  
-        var lastRow = $("lastRow");
-        lastRow.down("select").name = "popup_last";
+    var toolbar = document.getElementById("toolbar");
+    if (!document.busyAnim)
+        document.busyAnim = startAnimation(toolbar);
     
-        window.shouldPreserve = true;
+    var lastRow = $("lastRow");
+    lastRow.down("select").name = "popup_last";
+    
+    window.shouldPreserve = true;
+    
+    document.pageform.action = "send";
+    
+    AIM.submit($(document.pageform), {'onComplete' : onPostComplete});
+    
+    if (typeof onSuccess == 'function')
+        onSuccess();
 
-        document.pageform.action = "send";
+    disposeDialog();
 
-        AIM.submit($(document.pageform), {'onComplete' : onPostComplete});
-
-        rc = true;
-    }
-
-    return rc;
+    return true;
 }
 
 function onPostComplete(response) {
@@ -184,9 +178,9 @@ function onPostComplete(response) {
 }
 
 function clickedEditorSend() {
-    if (onValidate()) {
-        document.pageform.submit();
-    }
+    onValidate(function() {
+            document.pageform.submit();
+        });
 
     return false;
 }

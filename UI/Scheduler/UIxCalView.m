@@ -118,7 +118,7 @@
 - (NSArray *) filterAppointments:(NSArray *) _apts
 {
   NSMutableArray *filtered;
-  unsigned i, count, p, pCount;
+  NSUInteger i, count, p, pCount;
   NSString *email, *partmailsString, *state, *pEmail;
   NSDictionary *info, *primaryIdentity;
   NSArray *partmails, *partstates;
@@ -370,7 +370,7 @@
 {
   NSArray        *apts;
   NSMutableArray *filtered;
-  unsigned       i, count;
+  NSUInteger     i, count;
 
   if (allDayApts)
     return allDayApts;
@@ -532,7 +532,8 @@
   NSString *uidsString, *loc, *prevMethod, *userFolderID;
   id <WOActionResults> r;
   BOOL useGroups;
-  unsigned index;
+  NSUInteger index;
+
 
   uidsString = [self queryParameterForKey: @"userUIDString"];
   uidsString = [uidsString stringByTrimmingSpaces];

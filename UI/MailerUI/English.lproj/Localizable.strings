@@ -283,9 +283,9 @@
 = "The messages could not be moved to the trash folder. Would you like to delete them immediately?";
 
 /* Message editing */
-"error_validationfailed" = "Validation failed";
-"error_missingsubject" = "Subject is missing";
-"error_missingrecipients" = "No recipients specified";
+"error_missingsubject" = "The message has no subject. Are you sure you want to send it?";
+"error_missingrecipients" = "Please specify at least one recipient.";
+"Send Anyway" = "Send Anyway";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";

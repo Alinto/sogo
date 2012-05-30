@@ -198,6 +198,7 @@
 "Import Cards" = "Import Cards";
 "Select a vCard or LDIF file." = "Select a vCard or LDIF file.";
 "Upload" = "Upload";
+"Uploading" = "Uploading";
 "Done" = "Done";
 "An error occured while importing contacts." = "An error occured while importing contacts.";
 "No card was imported." = "No card was imported.";

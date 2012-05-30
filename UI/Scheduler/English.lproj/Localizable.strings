@@ -110,6 +110,7 @@
 "Import Events" = "Import Events";
 "Select an iCalendar file (.ics)." = "Select an iCalendar file (.ics).";
 "Upload" = "Upload";
+"Uploading" = "Uploading";
 "Publish Calendar..." = "Publish Calendar...";
 "Reload Remote Calendars" = "Reload Remote Calendars";
 "Properties" = "Properties";

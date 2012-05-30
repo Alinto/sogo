@@ -237,7 +237,7 @@ TABLE#contactsList TD#mailHeader
 
 DIV.contactSelection
 {
-  z-index: 10;
+  z-index: 1;
   background: inherit;
   position: absolute;
   bottom: 0em;
