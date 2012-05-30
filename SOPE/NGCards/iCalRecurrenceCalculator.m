@@ -201,7 +201,9 @@ static Class yearlyCalcClass  = Nil;
           compare = [[currentRange startDate] compare: currentDate];
           if ((compare == NSOrderedAscending || compare == NSOrderedSame) &&
               [[currentRange endDate] compare: currentDate] == NSOrderedDescending)
-	    [ranges removeObjectAtIndex: count - 1];
+            {
+              [ranges removeObjectAtIndex: count - 1];
+            }
 	}
     }
 }

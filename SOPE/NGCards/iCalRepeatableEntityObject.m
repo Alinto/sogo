@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2011 Inverse inc.
+  Copyright (C) 2012 Inverse inc.
 
   This file is part of SOPE.
 
@@ -24,10 +24,12 @@
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NGCalendarDateRange.h>
 
 #import "NSCalendarDate+NGCards.h"
+#import "NSString+NGCards.h"
 #import "iCalDateTime.h"
 #import "iCalEvent.h"
 #import "iCalTimeZone.h"
@@ -79,7 +81,7 @@
   return [self childrenWithTag: @"rrule"];
 }
 
-- (NSArray *) recurrenceRulesWithTimeZone: (iCalTimeZone *) timezone
+- (NSArray *) recurrenceRulesWithTimeZone: (id) timezone
 {
   NSArray *rules;
 
@@ -113,7 +115,7 @@
   return [self childrenWithTag: @"exrule"];
 }
 
-- (NSArray *) exceptionRulesWithTimeZone: (iCalTimeZone *) timezone
+- (NSArray *) exceptionRulesWithTimeZone: (id) timezone
 {
   NSArray *rules;
 
@@ -131,12 +133,13 @@
  * @see exceptionRulesWithTimeZone:
  * @return a new array of iCalRecurrenceRule instances, adjusted for the timezone.
  */
-- (NSArray *) rules: (NSArray *) theRules withTimeZone: (iCalTimeZone *) theTimeZone
+- (NSArray *) rules: (NSArray *) theRules withTimeZone: (id) theTimeZone
 {
   NSArray *rules;
   NSCalendarDate *untilDate;
   NSMutableArray *fixedRules;
   iCalRecurrenceRule *currentRule;
+  int offset;
   unsigned int max, count;
 
   rules = theRules;
@@ -152,7 +155,14 @@
 	      untilDate = [currentRule untilDate];
 	      if (untilDate)
 		{
-		  untilDate = [theTimeZone computedDateForDate: untilDate];
+                  if ([theTimeZone isKindOfClass: [iCalTimeZone class]])
+                    untilDate = [(iCalTimeZone *) theTimeZone computedDateForDate: untilDate];
+                  else
+                    {
+                      offset = [(NSTimeZone *) theTimeZone secondsFromGMTForDate: untilDate];
+                      untilDate = (NSCalendarDate *) [untilDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                                          seconds:-offset];
+                    }
 		  [currentRule setUntilDate: untilDate];
 		}
 	      [fixedRules addObject: currentRule];
@@ -232,12 +242,13 @@
  * @see [iCalTimeZone computedDatesForStrings:]
  * @return the exception dates, adjusted to the timezone.
  */
-- (NSArray *) exceptionDatesWithTimeZone: (iCalTimeZone *) theTimeZone
+- (NSArray *) exceptionDatesWithTimeZone: (id) theTimeZone
 {
   NSArray *dates, *exDates;
   NSEnumerator *dateList;
   NSCalendarDate *exDate;
   NSString *dateString;
+  int offset;
   unsigned i;
 
   if (theTimeZone)
@@ -251,9 +262,19 @@
 	  for (i = 0; i < [exDates count]; i++)
 	    {
 	      dateString = [exDates objectAtIndex: i];
-	      exDate = [theTimeZone computedDateForString: dateString];
+              if ([theTimeZone isKindOfClass: [iCalTimeZone class]])
+                {
+                  exDate = [(iCalTimeZone *) theTimeZone computedDateForString: dateString];
+                }
+              else
+                {
+                  exDate = [dateString asCalendarDate];
+                  offset = [(NSTimeZone *) theTimeZone secondsFromGMTForDate: exDate];
+                  exDate = (NSCalendarDate *) [exDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                               seconds:-offset];
+                }
 	      [(NSMutableArray *) dates addObject: exDate];
-	    }
+   	    }
 	}
     }
   else

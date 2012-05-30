@@ -1,3 +1,9 @@
+2012-05-30  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalRepeatableEntityObject.m (-exceptionDatesWithTimeZone:)
+	(-rules:withTimeZone:): exception dates and exception rules must
+	also be adjusted for floating all-day repeating events.
+
 2012-05-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalRecurrenceCalculator.m

@@ -125,9 +125,7 @@
   NSArray *ranges;
   NGCalendarDateRange *checkRange, *firstRange;
   NSCalendarDate *startDate, *endDate;
-  NSTimeZone *timeZone;
-  id firstStartDate, firstEndDate;
-  iCalTimeZone *eventTimeZone;
+  id firstStartDate, firstEndDate, timeZone;
   BOOL doesOccur;
   int offset;
 
@@ -139,9 +137,11 @@
 
       // Set the range to check with respect to the event timezone (extracted from the start date)
       firstStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
-      eventTimeZone = [(iCalDateTime *)firstStartDate timeZone];
-      if (eventTimeZone)
-	startDate = [eventTimeZone computedDateForDate: theOccurenceDate];
+      timeZone = [(iCalDateTime *)firstStartDate timeZone];
+      if (timeZone)
+        {
+          startDate = [(iCalTimeZone *)timeZone computedDateForDate: theOccurenceDate];
+        }
       else
 	{
 	  startDate = theOccurenceDate;
@@ -150,13 +150,14 @@
 	      // The event lasts all-day and has no timezone (floating); we convert the range of the first event
 	      // to the occurence's timezone.
 	      timeZone = [theOccurenceDate timeZone];
-	      offset = [timeZone secondsFromGMTForDate: [firstRange startDate]];
+	      offset = [(NSTimeZone *)timeZone secondsFromGMTForDate: [firstRange startDate]];
 	      firstStartDate = (NSCalendarDate *)[[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
 										   seconds:-offset];
 	      firstEndDate = (NSCalendarDate *)[[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
 									       seconds:-offset];
 	      [(NSCalendarDate *)firstStartDate setTimeZone: timeZone];
 	      [(NSCalendarDate *)firstEndDate setTimeZone: timeZone];
+
 	      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
 								       endDate: firstEndDate];
 	    }
@@ -168,9 +169,9 @@
       // Calculate the occurrences for the given date
       ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: checkRange
 						  firstInstanceCalendarDateRange: firstRange
-								 recurrenceRules: [self recurrenceRulesWithTimeZone: eventTimeZone]
-								  exceptionRules: [self exceptionRulesWithTimeZone: eventTimeZone]
-								  exceptionDates: [self exceptionDatesWithTimeZone: eventTimeZone]];
+								 recurrenceRules: [self recurrenceRulesWithTimeZone: timeZone]
+								  exceptionRules: [self exceptionRulesWithTimeZone: timeZone]
+								  exceptionDates: [self exceptionDatesWithTimeZone: timeZone]];
       doesOccur = [ranges dateRangeArrayContainsDate: startDate];
     }
 
