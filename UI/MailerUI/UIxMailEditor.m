@@ -422,7 +422,13 @@ static NSArray *infoKeys = nil;
 
   folderContainer = (SOGoContactFolders *) [[[self clientObject] lookupUserFolder] privateContacts: @"Contacts"
                                                                                            inContext: nil];
+  
   folder = [folderContainer lookupPersonalFolder: @"personal" ignoringRights: YES];
+
+  // If the folder doesn't exist anymore or if the database is down, we
+  // return an empty array.
+  if ([folder isKindOfClass: [NSException class]])
+      return [NSArray array];
 
   contactInfos = [folder lookupContactsWithFilter: nil
 				       onCriteria: nil
