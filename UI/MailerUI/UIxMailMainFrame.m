@@ -639,6 +639,11 @@
   NSString   *s;
   NSUInteger i, j, k;
 
+  // If Sieve scripts aren't enabled, there's no need in considering
+  // what's potentially in the database regarding "fileinto" scripts.
+  if (![[[context activeUser] domainDefaults] sieveScriptsEnabled])
+    return [[NSArray array] jsonRepresentation];
+
   ud = [[context activeUser] userDefaults];
   folders = [NSMutableArray array];
 
