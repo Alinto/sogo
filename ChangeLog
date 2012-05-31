@@ -12,6 +12,10 @@
 	* UI/MailerUI/UIxMailEditor.m (-personalContactInfos): we check
 	if the folder still exist and if the database isn't down
 	before performing any address books search operations.
+	* UI/MailerUI/UIxMailMainFrame.m (-unseenCountFolders): we no
+	longer fill up the list of mailboxes to with the ones that are
+	targets for "fileinto" methods if Sieve scripts aren't enabled
+	in SOGo's domain defaults.
 
 2012-05-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
