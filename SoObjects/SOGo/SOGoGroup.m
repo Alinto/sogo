@@ -1,6 +1,6 @@
 /* SOGoGroup.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2011 Inverse inc.
+ * Copyright (C) 2009-2012 Inverse inc.
  *
  * Author: Ludovic Marcotte <lmarcotte@inverse.ca>
  *
@@ -57,6 +57,7 @@
 #include "SOGoGroup.h"
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
 #include "SOGoCache.h"
@@ -163,15 +164,26 @@
   if (entry)
     {
       NSArray *classes;
-      
+
       // We check to see if it's a group
-      classes = [[entry attributeWithName: @"objectClass"] allStringValues];
+      classes = [[entry asDictionary] objectForKey: @"objectclass"];
+
+      if (classes)
+	{
+	  int i, c;
+	  
+	  classes = [NSMutableArray arrayWithArray: classes];
+	  c = [classes count];
+	  for (i = 0; i < c; i++)
+	    [(id)classes replaceObjectAtIndex: i
+				   withObject: [[classes objectAtIndex: i] lowercaseString]];
+	}
 
       // Found a group, let's return it.
       if ([classes containsObject: @"group"] ||
-	  [classes containsObject: @"groupOfNames"] ||
-	  [classes containsObject: @"groupOfUniqueNames"] ||
-	  [classes containsObject: @"posixGroup"])
+	  [classes containsObject: @"groupofnames"] ||
+	  [classes containsObject: @"groupofuniquenames"] ||
+	  [classes containsObject: @"posixgroup"])
 	{
 	  o = [[self alloc] initWithIdentifier: theValue
 			                domain: domain
@@ -192,9 +204,10 @@
 {
   NSMutableArray *dns, *uids, *logins;
   NSString *dn, *login;
+  SOGoUserManager *um;
+  NSDictionary *d;
   SOGoUser *user;
   NSArray *o;
-  SOGoUserManager *um;
   int i, c;
 
   if (!_members)
@@ -206,15 +219,16 @@
 
       // We check if it's a static group  
       // Fetch "members" - we get DNs
-      o = [[_entry attributeWithName: @"member"] allStringValues];
+      d = [_entry asDictionary];
+      o = [d objectForKey: @"member"];
       if (o) [dns addObjectsFromArray: o];
 
       // Fetch "uniqueMembers" - we get DNs
-      o = [[_entry attributeWithName: @"uniqueMember"] allStringValues];
+      o = [d objectForKey: @"uniquemember"];
       if (o) [dns addObjectsFromArray: o];
   
       // Fetch "memberUid" - we get UID (like login names)
-      o = [[_entry attributeWithName: @"memberUid"] allStringValues];
+      o = [d objectForKey: @"memberuid"];
       if (o) [uids addObjectsFromArray: o];
 
       c = [dns count] + [uids count];

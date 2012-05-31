@@ -52,64 +52,6 @@ static Class NSStringK;
                                  stringByReplacingString: @"'" withString: @"\\'"] \
                                  stringByReplacingString: @"%" withString: @"%%"]
 
-@interface NGLdapAttribute (SOGoLDAP)
-
-- (id) _asArrayOrString;
-
-@end
-
-@implementation NGLdapAttribute (SOGoLDAP)
-
-- (id) _asArrayOrString
-{
-  id value;
-  NSArray *arrayValue;
-
-  arrayValue = [self allStringValues];
-  if ([arrayValue count] == 1)
-    value = [arrayValue objectAtIndex: 0];
-  else
-    value = arrayValue;
-
-  return value;
-}
-
-@end
-
-@interface NGLdapEntry (SOGoLDAP)
-
-- (NSMutableDictionary *) _asDictionary;
-
-@end
-
-@implementation NGLdapEntry (SOGoLDAP)
-
-- (NSMutableDictionary *) _asDictionary
-{
-  NSMutableDictionary *ldapRecord;
-  NSDictionary *ldapAttributes;
-  NSArray *keys;
-  NSString *key;
-  NSUInteger count, max;
-  id value;
-  
-  ldapAttributes = [self attributes];
-  keys = [ldapAttributes allKeys];
-  max = [keys count];
-
-  ldapRecord = [NSMutableDictionary dictionaryWithCapacity: max];
-  for (count = 0; count < max; count++)
-    {
-      key = [keys objectAtIndex: count];
-      value = [[ldapAttributes objectForKey: key] _asArrayOrString];
-      if (value)
-        [ldapRecord setObject: value forKey: [key lowercaseString]];
-    }
-
-  return ldapRecord;
-}
-
-@end
 
 @implementation LDAPSource
 
@@ -1018,7 +960,7 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
     resourceKinds = [[NSArray alloc] initWithObjects: @"location", @"thing",
                                      @"group", nil];
 
-  ldifRecord = [ldapEntry _asDictionary];
+  ldifRecord = [ldapEntry asDictionary];
   [ldifRecord setObject: self forKey: @"source"];
   [ldifRecord setObject: [ldapEntry dn] forKey: @"dn"];
   
@@ -1645,7 +1587,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
           modifier = [NSArray arrayWithObject: user];
           while ((entry = [entries nextObject]))
             {
-              sourceRec = [entry _asDictionary];
+              sourceRec = [entry asDictionary];
               ab = [LDAPSource new];
               [ab setSourceID: [sourceRec objectForKey: @"ou"]];
               [ab setDisplayName: [sourceRec objectForKey: @"description"]];

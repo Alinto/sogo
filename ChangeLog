@@ -1,3 +1,10 @@
+2012-05-31  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGroup.m - we now handle lowercase
+	all attribute names
+	* SoObject/SOGo/LDAPSource.m - moved the lowercasing
+	of attributes to SOPE.
+
 2012-05-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxMailEditor.js (validateEditorInput):
