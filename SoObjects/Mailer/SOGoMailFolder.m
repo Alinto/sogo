@@ -1216,6 +1216,17 @@ static NSString *defaultUserID =  @"anyone";
   [mailboxACL release];
 
   mailboxACL = [[self imap4Connection] aclForMailboxAtURL: [self imap4URL]];
+
+  // If the mailbox doesn't exist, we create it. That could happen if
+  // a special mailbox (Drafts, Sent, Trash) is deleted from SOGo's web GUI
+  // or if any other mailbox is deleted behind SOGo's back.
+  if ([mailboxACL isKindOf: [NSException class]])
+    {
+      [[self imap4Connection] createMailbox: [[self imap4Connection] imap4FolderNameForURL: [self imap4URL]]
+				      atURL: [[self mailAccountFolder] imap4URL]];
+      mailboxACL = [[self imap4Connection] aclForMailboxAtURL: [self imap4URL]];
+    }
+
   [mailboxACL retain];
 
   [self _convertIMAPGroupnames];
