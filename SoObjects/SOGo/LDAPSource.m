@@ -40,6 +40,7 @@
 #import "LDAPSourceSchema.h"
 #import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
+#import "NSString+Crypto.h"
 #import "SOGoDomainDefaults.h"
 #import "SOGoSystemDefaults.h"
 
@@ -581,26 +582,13 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
  */
 - (NSString *) _encryptPassword: (NSString *) plainPassword
 {
-  if ([_userPasswordAlgorithm caseInsensitiveCompare: @"none"] == NSOrderedSame)
-    {
-      return plainPassword;
-    }
-  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"crypt"] == NSOrderedSame)
-    {
-      return [NSString stringWithFormat: @"{CRYPT}%@", [plainPassword asCryptStringUsingSalt: [plainPassword asMD5String]]];
-    }
-  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"md5"] == NSOrderedSame)
-    {
-      return [NSString stringWithFormat: @"{MD5}%@", [plainPassword asMD5String]];
-    }
-  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"sha"] == NSOrderedSame)
-    {
-      return [NSString stringWithFormat: @"{SHA}%@", [plainPassword asSHA1String]];
-    }
-  
-  [self errorWithFormat: @"Unsupported user-password algorithm: %@", _userPasswordAlgorithm];
-  
-  return plainPassword;
+  NSString *pass;
+  pass = [plainPassword asCryptedPassUsingScheme: _userPasswordAlgorithm];
+
+  if (pass == nil)
+    [self errorWithFormat: @"Unsupported user-password algorithm: %@", _userPasswordAlgorithm];
+
+  return [NSString stringWithFormat: @"{%@}%@", _userPasswordAlgorithm, pass];
 }
 
 //

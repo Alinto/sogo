@@ -21,10 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __OpenBSD__ 
-#include <crypt.h>
-#endif
-
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSData.h>
@@ -44,12 +40,6 @@
 #import "NSDictionary+URL.h"
 
 #import "NSString+Utilities.h"
-
-#define _XOPEN_SOURCE 1
-#include <unistd.h>
-#include <openssl/evp.h>
-#include <openssl/md5.h>
-#include <openssl/sha.h>
 
 static NSMutableCharacterSet *urlNonEndingChars = nil;
 static NSMutableCharacterSet *urlAfterEndingChars = nil;
@@ -533,48 +523,6 @@ static int cssEscapingCount;
     }
 
   return object;
-}
-
-- (NSString *) asCryptStringUsingSalt: (NSString *) theSalt
-{
-  char *buf;
-  
-  // The salt is weak here, but who cares anyway, crypt should not
-  // be used anymore
-  buf = crypt([self UTF8String], [theSalt UTF8String]);
-  return [NSString stringWithUTF8String: buf];
-}
-
-- (NSString *) asMD5String
-{
-  unsigned char md[MD5_DIGEST_LENGTH];
-  char buf[80];
-  int i;
-  
-  memset(md, 0, MD5_DIGEST_LENGTH);
-  memset(buf, 0, 80);
-  
-  EVP_Digest((const void *) [self UTF8String], strlen([self UTF8String]), md, NULL, EVP_md5(), NULL);
-  for (i = 0; i < MD5_DIGEST_LENGTH; i++)
-    sprintf(&(buf[i*2]), "%02x", md[i]);
-  
-  return [NSString stringWithUTF8String: buf];
-}
-
-- (NSString *) asSHA1String
-{
-  unsigned char sha[SHA_DIGEST_LENGTH];
-  char buf[80];
-  int i;
-  
-  memset(sha, 0, SHA_DIGEST_LENGTH);
-  memset(buf, 0, 80);
-  
-  SHA1((const void *)[self UTF8String], strlen([self UTF8String]), sha);
-  for (i = 0; i < SHA_DIGEST_LENGTH; i++)
-    sprintf(&(buf[i*2]), "%02x", sha[i]);
-  
-  return [NSString stringWithUTF8String: buf];
 }
 
 - (NSString *) asSafeSQLString

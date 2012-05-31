@@ -39,6 +39,7 @@
 
 #import "SOGoConstants.h"
 #import "NSString+Utilities.h"
+#import "NSString+Crypto.h"
 
 #import "SQLSource.h"
 
@@ -47,7 +48,10 @@
  *
  * c_uid      - will be used for authentication - it's a username or username@domain.tld)
  * c_name     - which can be identical to c_uid - will be used to uniquely identify entries)
- * c_password - password of the user, plain-text, md5 or sha encoded for now
+ * c_password - password of the user, can be encoded in {scheme}pass format, or when stored without
+ *              scheme it uses the scheme set in userPasswordAlgorithm.
+ *              Possible algorithms are:  plain, md5, crypt-md5, sha, ssha (including 256/512 variants),
+ *              cram-md5, smd5, crypt, crypt-md5
  * c_cn       - the user's common name
  * mail       - the user's mail address
  *
@@ -63,7 +67,11 @@
  *    canAuthenticate = YES;
  *    isAddressBook = YES;
  *    userPasswordAlgorithm = md5;
+ *    prependPasswordScheme = YES;
  *  }
+ *
+ * If prependPasswordScheme is set to YES, the generated passwords will have the format {scheme}password.
+ * If it is NO (the default), the password will be written to database without encryption scheme.
  *
  */
 
@@ -126,6 +134,10 @@
   ASSIGN(_kindField, [udSource objectForKey: @"KindFieldName"]);
   ASSIGN(_multipleBookingsField, [udSource objectForKey: @"MultipleBookingsFieldName"]);
   ASSIGN(_domainField, [udSource objectForKey: @"DomainFieldName"]);
+  if ([udSource objectForKey: @"prependPasswordScheme"])
+    _prependPasswordScheme = [[udSource objectForKey: @"prependPasswordScheme"] boolValue];
+  else
+    _prependPasswordScheme = NO;
   
   if (!_userPasswordAlgorithm)
     _userPasswordAlgorithm = @"none";
@@ -157,28 +169,8 @@
   if (!plainPassword || !encryptedPassword)
     return NO;
 
-  if ([_userPasswordAlgorithm caseInsensitiveCompare: @"none"] == NSOrderedSame)
-    {
-      return [plainPassword isEqualToString: encryptedPassword];
-    }
-  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"crypt"] == NSOrderedSame)
-    {
-      return [[plainPassword asCryptStringUsingSalt: encryptedPassword] isEqualToString: encryptedPassword];
-    }
-  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"md5"] == NSOrderedSame)
-    {
-      return [[plainPassword asMD5String] isEqualToString: encryptedPassword];
-    }
-  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"sha"] == NSOrderedSame)
-    {
-
-      return [[plainPassword asSHA1String] isEqualToString: encryptedPassword];
-    }
-
-
-  [self errorWithFormat: @"Unsupported user-password algorithm: %@", _userPasswordAlgorithm];
-
-  return NO;
+  return [plainPassword isEqualToCrypted: encryptedPassword
+                       withDefaultScheme: _userPasswordAlgorithm];
 }
 
 /**
@@ -189,26 +181,20 @@
  */
 - (NSString *) _encryptPassword: (NSString *) plainPassword
 {
-  if ([_userPasswordAlgorithm caseInsensitiveCompare: @"none"] == NSOrderedSame)
-    {
-      return plainPassword;
-    }
-  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"crypt"] == NSOrderedSame)
-    {
-      return [plainPassword asCryptStringUsingSalt: [plainPassword asMD5String]];
-    }
-  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"md5"] == NSOrderedSame)
-    {
-      return [plainPassword asMD5String];
-    }
-  else if ([_userPasswordAlgorithm caseInsensitiveCompare: @"sha"] == NSOrderedSame)
-    {
-      return [plainPassword asSHA1String];
-    }
+  NSString *pass;
+  NSString* result;
   
-  [self errorWithFormat: @"Unsupported user-password algorithm: %@", _userPasswordAlgorithm];
-  
-  return plainPassword;
+  pass = [plainPassword asCryptedPassUsingScheme: _userPasswordAlgorithm];
+
+  if (pass == nil)
+    [self errorWithFormat: @"Unsupported user-password algorithm: %@", _userPasswordAlgorithm];
+
+  if (_prependPasswordScheme)
+    result = [NSString stringWithFormat: @"{%@}%@", _userPasswordAlgorithm, pass];
+  else
+    result = pass;
+
+  return result;
 }
 
 //

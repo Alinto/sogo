@@ -45,6 +45,7 @@
   NSString *_imapHostField;
   NSString *_userPasswordAlgorithm;
   NSURL *_viewURL;
+  BOOL _prependPasswordScheme;
 
   /* resources handling */
   NSString *_kindField;

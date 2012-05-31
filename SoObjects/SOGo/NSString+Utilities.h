@@ -66,10 +66,6 @@
 
 - (id) objectFromJSONString;
 
-- (NSString *) asCryptStringUsingSalt: (NSString *) theSalt;
-- (NSString *) asMD5String;
-- (NSString *) asSHA1String;
-
 - (NSString *) asSafeSQLString;
 
 - (NSUInteger) countOccurrencesOfString: (NSString *) substring;
