@@ -6,9 +6,12 @@
 	of attributes to SOPE.
 	* Added patch from bug #1608. This add many more password
 	schemes for SQL authentication.
-	* SoObject/Mailer/SOGoMailFolder.m (_readMailboxACL): we
+	* SoObject/Mailer/SOGoMailFolder.m (-_readMailboxACL): we
 	now create the mailbox if we are trying to read ACL of
 	a deleted mailbox.
+	* UI/MailerUI/UIxMailEditor.m (-personalContactInfos): we check
+	if the folder still exist and if the database isn't down
+	before performing any address books search operations.
 
 2012-05-29  Francis Lachapelle  <flachapelle@inverse.ca>
 
