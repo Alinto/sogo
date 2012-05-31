@@ -4,6 +4,8 @@
 	all attribute names
 	* SoObject/SOGo/LDAPSource.m - moved the lowercasing
 	of attributes to SOPE.
+	* Added patch from bug #1608. This add many more password
+	schemes for SQL authentication.
 
 2012-05-29  Francis Lachapelle  <flachapelle@inverse.ca>
 

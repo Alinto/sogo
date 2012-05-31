@@ -46,6 +46,8 @@ SOGo_HEADER_FILES = \
 	NSObject+Utilities.h		\
 	NSString+DAV.h			\
 	NSString+Utilities.h		\
+	NSString+Crypto.h		\
+	NSData+Crypto.h			\
 	NSURL+DAV.h			\
 	\
 	SOGoAuthenticator.h		\
@@ -114,6 +116,8 @@ SOGo_OBJC_FILES = \
 	NSObject+Utilities.m		\
 	NSString+DAV.m  		\
 	NSString+Utilities.m		\
+	NSString+Crypto.m		\
+	NSData+Crypto.m			\
 	NSURL+DAV.m	  		\
 	\
 	SOGoSession.m			\

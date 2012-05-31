@@ -33,6 +33,7 @@
 
 #import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
+#import "NSString+Crypto.h"
 #import "NSObject+Utilities.h"
 #import "SOGoDomainDefaults.h"
 #import "SOGoSource.h"
