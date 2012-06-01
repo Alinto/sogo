@@ -174,11 +174,8 @@
 
 - (NSString *) childPartName
 {
-  char buf[8];
-
-  sprintf (buf, "%"PRIuPTR"", [self childIndex] + 1);
-
-  return [NSString stringWithCString:buf];
+  return [NSString stringWithFormat: @"%u",
+                   (unsigned int) ([self childIndex] + 1)];
 }
 
 - (id) childPartPath

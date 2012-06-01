@@ -1,5 +1,9 @@
 2012-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* UI/MailPartViewers/UIxMailPartAlternativeViewer.m
+	(-childPartName): fixed a potential crash by building the NSString
+	from the integer itself, with the proper format string.
+
 	* SoObjects/SOGo/NSString+Crypto.m
 	(-isEqualToCrypted:withDefaultScheme:): invoke "intValue" rather
 	than "integerValue" on the encoding number as the int type is not
