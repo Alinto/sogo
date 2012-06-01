@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <SOGo/SOGoUser.h>
+
 #import "MAPIStoreActiveTables.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreUserContext.h"

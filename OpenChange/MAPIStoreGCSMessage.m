@@ -27,6 +27,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoContentObject.h>
 #import <SOGo/SOGoPermissions.h>
+#import <SOGo/SOGoUser.h>
 
 #import "MAPIStoreContext.h"
 #import "MAPIStoreGCSFolder.h"

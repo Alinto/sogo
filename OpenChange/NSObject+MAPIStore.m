@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSThread.h>
 #import <NGExtensions/NSObject+Logs.h>
 

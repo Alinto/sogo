@@ -35,6 +35,7 @@
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalTrigger.h>
 #import <NGCards/NSString+NGCards.h>
+#import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
 
 #import "MAPIStoreRecurrenceUtils.h"
