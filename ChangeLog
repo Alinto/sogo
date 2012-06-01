@@ -1,3 +1,14 @@
+2012-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Crypto.m
+	(-isEqualToCrypted:withDefaultScheme:): invoke "intValue" rather
+	than "integerValue" on the encoding number as the int type is not
+	crucial and it breaks the build with old versions of GNUstep.
+
+	* SoObjects/SOGo/NSString+Crypto.[hm]: new module that provides
+	category methods for returning encrypted passwords strings and
+	their encryption algorithm.
+
 2012-05-31  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGroup.m - we now handle lowercase
