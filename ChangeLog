@@ -1,3 +1,11 @@
+2012-06-01  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/NSString+Utilities.m
+	(-_handleURLs:textToMatch:prefix:inRanges:): don't reset the
+	prefix for the subsequent matching strings. This fixes links in
+	messages with multiple email addresses, some of which already
+	prefixed by "mailto;".
+
 2012-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/NSString+Crypto.m
