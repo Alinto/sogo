@@ -215,13 +215,13 @@ static int cssEscapingCount;
     {
       rangePtr->location += offset;
       urlText = [selfCopy substringFromRange: *rangePtr];
-      if ([urlText hasPrefix: prefix]) prefix = @"";
       newUrlText = [NSString stringWithFormat: @"<a href=\"%@%@\">%@</a>",
-			     prefix, urlText, urlText];
+                          ([urlText hasPrefix: prefix]? @"" : prefix),
+                             urlText, urlText];
       [selfCopy replaceCharactersInRange: *rangePtr
-		withString: newUrlText];
+                              withString: newUrlText];
       offset += ([newUrlText length] - [urlText length]);
-
+      
       // Add range for further substitutions
       currentUrlRange = NSMakeRange (rangePtr->location, [newUrlText length]);
       [ranges addNonNSObject: &currentUrlRange
@@ -240,12 +240,12 @@ static int cssEscapingCount;
   selfCopy = [NSMutableString stringWithString: self];
   [self _handleURLs: selfCopy
 	textToMatch: @"://"
-	prefix: @""
-	inRanges: ranges];
+             prefix: @""
+           inRanges: ranges];
   [self _handleURLs: selfCopy
 	textToMatch: @"@"
-	prefix: @"mailto:"
-	inRanges: ranges];
+             prefix: @"mailto:"
+           inRanges: ranges];
   [ranges freeNonNSObjects];
 
   return selfCopy;
