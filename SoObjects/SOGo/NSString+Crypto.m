@@ -142,7 +142,7 @@
   scheme   = [passInfo objectAtIndex: 0];
   pass     = [passInfo objectAtIndex: 1];
   encodingNumber = [passInfo objectAtIndex: 2];
-  encoding = [encodingNumber integerValue];
+  encoding = [encodingNumber intValue];
 
   if (encoding == encHex)
     {
