@@ -270,6 +270,8 @@ static NSArray *knownTimeZones;
 
 /**
  * Adjust a date with respect to this vTimeZone.
+ * Example: Timezone is -0400, the date is 2012-05-23 13:00:00 +0000:
+ *                              it returns 2012-05-23 09:00:00 +0000
  * @param theDate the string representing a date.
  * @return a new GMT date adjusted with the offset of this timezone.
  */

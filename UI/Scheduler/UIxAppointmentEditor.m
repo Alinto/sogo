@@ -513,7 +513,7 @@
 		       [dateFormatter formattedTime: eventStartDate], @"startTime",
 		       [dateFormatter formattedDate: eventEndDate], @"endDate",
 		       [dateFormatter formattedTime: eventEndDate], @"endTime",
-		       ([event hasRecurrenceRules] ? @"1": @"0"), @"isRecurring",
+                     //([event hasRecurrenceRules] ? @"1": @"0"), @"isRecurring",
 		       ([event isAllDay] ? @"1": @"0"), @"isAllDay",
 		       [event summary], @"summary",
 		       [event location], @"location",

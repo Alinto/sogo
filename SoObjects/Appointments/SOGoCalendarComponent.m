@@ -399,8 +399,8 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 	  recID = [lookupName substringFromIndex: 9];
 	  occurence = [self lookupOccurence: recID];
 	  if (occurence)
-	    isNewOccurence = NO;
-	  else
+            isNewOccurence = NO;
+          else
 	    {
 	      occurence = [self newOccurenceWithID: recID];
 	      isNewOccurence = YES;

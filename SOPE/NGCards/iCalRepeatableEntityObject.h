@@ -60,7 +60,7 @@
 
 - (BOOL)isRecurrent;
 - (BOOL)isWithinCalendarDateRange:(NGCalendarDateRange *)_range
-  firstInstanceCalendarDateRange:(NGCalendarDateRange *)_fir;
+   firstInstanceCalendarDateRange:(NGCalendarDateRange *)_fir;
 - (NSArray *)recurrenceRangesWithinCalendarDateRange:(NGCalendarDateRange *)_r
   firstInstanceCalendarDateRange:(NGCalendarDateRange *)_fir;
 

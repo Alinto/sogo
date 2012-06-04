@@ -744,7 +744,7 @@ static NSNumber *sharedYes = nil;
     {
       currentRecord = [recordArray objectAtIndex: count];
       if ([[currentRecord objectForKey: @"startDate"]
-	    isEqual: matchDate])
+	    compare: matchDate] == NSOrderedSame)
 	recordIndex = count;
       else
 	count++;
@@ -773,18 +773,32 @@ static NSNumber *sharedYes = nil;
 firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		       fromRow: (NSDictionary *) row
 		      forRange: (NGCalendarDateRange *) dateRange
+                  withTimeZone: (NSTimeZone *) tz
 		       toArray: (NSMutableArray *) ma
 {
   NSCalendarDate *startDate, *recurrenceId;
   NSMutableDictionary *newRecord;
   NSDictionary *oldRecord;
   NGCalendarDateRange *newRecordRange;
-  int recordIndex;
+  NSComparisonResult compare;
+  int recordIndex, secondsOffsetFromGMT;
 
   newRecord = nil;
   recurrenceId = [component recurrenceId];
   
-  if ([dateRange containsDate: recurrenceId])
+  if (tz)
+    {
+      // The following adjustment is necessary for floating all-day events.
+      // For example, the recurrence-id 20120523T000000Z for timezone -0400
+      // will become 20120523T000400Z
+      secondsOffsetFromGMT = [tz secondsFromGMTForDate: recurrenceId];
+      recurrenceId = (NSCalendarDate *) [recurrenceId dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                                seconds:-secondsOffsetFromGMT];
+    }
+
+  compare = [[dateRange startDate] compare: recurrenceId];
+  if ((compare == NSOrderedAscending || compare == NSOrderedSame) &&
+      [[dateRange endDate] compare: recurrenceId] == NSOrderedDescending)
     {
       recordIndex = [self _indexOfRecordMatchingDate: recurrenceId
 					     inArray: ma];
@@ -799,7 +813,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	      oldRecord = [ma objectAtIndex: recordIndex];
 	      [newRecord setObject: [oldRecord objectForKey: @"c_recurrence_id"]
 			    forKey: @"c_recurrence_id"];
-	      
+//              [newRecord setObject: [NSNumber numberWithInt: [recurrenceId timeIntervalSince1970]]
+//			    forKey: @"c_recurrence_id"];
+
 	      // The first instance date is added to the dictionary so it can
 	      // be used by UIxCalListingActions to compute the DST offset.
 	      [newRecord setObject: [fir startDate] forKey: @"cycleStartDate"];
@@ -838,6 +854,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 - (void) _appendCycleExceptionsFromRow: (NSDictionary *) row
         firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 			      forRange: (NGCalendarDateRange *) dateRange
+                          withTimeZone: (NSTimeZone *) tz
 			       toArray: (NSMutableArray *) ma
 {
   NSArray *elements, *components;
@@ -859,6 +876,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		  firstInstanceCalendarDateRange: fir
 				fromRow: row
 			       forRange: dateRange
+                           withTimeZone: tz
 				toArray: ma];
 	}
     }
@@ -877,20 +895,19 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                    intoArray: (NSMutableArray *) theRecords
 {
   NSMutableDictionary *row, *fixedRow;
-  NSMutableArray *records, *newExDates;
+  NSMutableArray *records;
   NSDictionary *cycleinfo;
-  NSEnumerator *exDatesList;
   NGCalendarDateRange *firstRange, *recurrenceRange, *oneRange;
   NSArray *rules, *exRules, *exDates, *ranges;
   NSArray *elements, *components;
   NSString *content;
-  NSCalendarDate *checkStartDate, *checkEndDate, *firstStartDate,
-                    *firstEndDate;
+  NSCalendarDate *checkStartDate, *checkEndDate, *firstStartDate, *firstEndDate;
+  NSTimeZone *allDayTimeZone;
   iCalDateTime *dtstart;
   iCalEvent *component;
   iCalTimeZone *eventTimeZone;
   unsigned count, max, offset;
-  id exDate;
+  id tz;
 
   content = [theRecord objectForKey: @"c_cycleinfo"];
   if (![content isNotNull])
@@ -910,7 +927,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   rules = [cycleinfo objectForKey: @"rules"];
   exRules = [cycleinfo objectForKey: @"exRules"];
   exDates = [cycleinfo objectForKey: @"exDates"];
-  
+  eventTimeZone = allDayTimeZone = tz = nil;
+
   row = [self fixupRecord: theRecord];
   [row removeObjectForKey: @"c_cycleinfo"];
   [row setObject: sharedYes forKey: @"isRecurrentEvent"];
@@ -945,12 +963,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                   recurrenceRange = [NGCalendarDateRange calendarDateRangeWithStartDate: checkStartDate
                                                                                 endDate: checkEndDate];
                   
-                  // Adjust the exception dates
-                  exDates = [eventTimeZone computedDatesForStrings: exDates];
-                  
-                  // Adjust the recurrence rules "until" dates
-                  rules = [component recurrenceRulesWithTimeZone: eventTimeZone];
-                  exRules = [component exceptionRulesWithTimeZone: eventTimeZone];
                 }
               else 
                 {
@@ -959,29 +971,30 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                     {
                       // The event lasts all-day and has no timezone (floating); we convert the range of the first event
                       // to the user's timezone
-                      offset = [timeZone secondsFromGMTForDate: [firstRange startDate]];
+                      allDayTimeZone = timeZone;
+                      offset = [allDayTimeZone secondsFromGMTForDate: [firstRange startDate]];
                       firstStartDate = [[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
                                                                          seconds:-offset];
                       firstEndDate = [[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
                                                                      seconds:-offset];
-                      [firstStartDate setTimeZone: timeZone];
-                      [firstEndDate setTimeZone: timeZone];
+                      [firstStartDate setTimeZone: allDayTimeZone];
+                      [firstEndDate setTimeZone: allDayTimeZone];
                       firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
                                                                                endDate: firstEndDate];
-        
-                      // Adjust the exception dates
-                      exDatesList = [exDates objectEnumerator];
-                      newExDates = [NSMutableArray arrayWithCapacity: [exDates count]];
-                      while ((exDate = [exDatesList nextObject]))
-                        {
-                          exDate = [[exDate asCalendarDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-                                                                      seconds:-offset];
-                          [newExDates addObject: exDate];
-                        }
-                      exDates = newExDates;
                     }
                 }
-              
+
+              tz = eventTimeZone? eventTimeZone : allDayTimeZone;
+              if (tz)
+                {
+                  // Adjust the exception dates
+                  exDates = [component exceptionDatesWithTimeZone: tz];
+                  
+                  // Adjust the recurrence rules "until" dates
+                  rules = [component recurrenceRulesWithTimeZone: tz];
+                  exRules = [component exceptionRulesWithTimeZone: tz];
+                }
+
               // Calculate the occurrences for the given range
               records = [NSMutableArray array];
               ranges = [iCalRecurrenceCalculator recurrenceRangesWithinCalendarDateRange: recurrenceRange
@@ -1004,6 +1017,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
               [self _appendCycleExceptionsFromRow: row
                    firstInstanceCalendarDateRange: firstRange
                                          forRange: theRange
+                                     withTimeZone: allDayTimeZone
                                           toArray: records];
               
               [theRecords addObjectsFromArray: records];

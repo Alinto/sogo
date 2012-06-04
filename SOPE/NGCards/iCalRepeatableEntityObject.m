@@ -268,6 +268,8 @@
                 }
               else
                 {
+                  // Example: timezone is -0400, date is 2012-05-24 (00:00:00 +0000),
+                  //                      and changes to 2012-05-24 04:00:00 +0000
                   exDate = [dateString asCalendarDate];
                   offset = [(NSTimeZone *) theTimeZone secondsFromGMTForDate: exDate];
                   exDate = (NSCalendarDate *) [exDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
