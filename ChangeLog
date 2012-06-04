@@ -1,5 +1,9 @@
 2012-06-04  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/UIxFilterEditor.js (savePreferences):
+	don't validate filters if they are not visible (when matching all
+	incoming messages).
+
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
 	(-_appendCycleException:firstInstanceCalendarDateRange:fromRow:forRange:withTimeZone:toArray:):
 	adjust recurrence id according to timezone when dealing with a
