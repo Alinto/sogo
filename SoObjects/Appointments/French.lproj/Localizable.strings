@@ -67,5 +67,4 @@ vtodo_class2 = "(Tâche confidentielle)";
 = "%{Attendee} %{SentByText}choisit de reporter sa décision par rapport à votre invitation.";
 
 /* Resources */
-"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Impossible d'accéder à la resource: \"%{Cn} %{SystemEmail}\"";
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Le nombre maximum (%{NumberOfSimultaneousBookings}) de réservation(s) simultanée(s) a été atteint pour la ressource \"%{Cn} %{SystemEmail}\".";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Le nombre maximal de réservations simultanées (%{NumberOfSimultaneousBookings}) est atteint pour la ressource «%{Cn} %{SystemEmail}». L'événement en conflit est «%{EventTitle}» et débute le %{StartDate}.";

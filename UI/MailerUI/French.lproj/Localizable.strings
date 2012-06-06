@@ -107,8 +107,6 @@
 "cc"            = "Copie à";
 "bcc"           = "Copie cachée à";
 
-"Addressbook"   = "Adresses";
-
 "Edit Draft..." = "Modifier le brouillon...";
 "Load Images" = "Télécharger les images";
 
@@ -285,9 +283,9 @@
 = "Les messages ne peuvent être déplacés dans la corbeille. Voulez-vous les supprimer immédiatement?";
 
 /* Message editing */
-"error_validationfailed" = "Message invalide";
-"error_missingsubject" = "- le sujet est manquant";
-"error_missingrecipients" = "- aucun destinataire spécifié";
+"error_missingsubject" = "Le message n'as pas de sujet. Êtes-vous certain de vouloir l'envoyer?";
+"error_missingrecipients" = "Veuillez spécifier au moins un destinataire.";
+"Send Anyway" = "Envoyer sans sujet";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Le message n'a pas pu être envoyé car aucune adresse n'est valide.";
