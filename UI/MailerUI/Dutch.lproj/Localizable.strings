@@ -283,9 +283,9 @@
 = "De berichten konden niet naar de vuilnisbak worden verplaatst. Wilt u ze direct verwijderen?";
 
 /* Message editing */
-"error_validationfailed" = "Validering mislukt!";
 "error_missingsubject" = "U heeft geen onderwerp opgegeven!";
 "error_missingrecipients" = "U heeft geen ontvanger opgegeven!";
+"Send Anyway" = "Toch verzenden";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Kan bericht niet sturen: alle ontvangers zijn ongeldig.";
