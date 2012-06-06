@@ -283,9 +283,9 @@
 = "Die Nachricht(en) können nicht in den Papierkorb verschoben werden. Wollen Sie diese endgültig löschen?";
 
 /* Message editing */
-"error_validationfailed" = "Prüfung ist fehlgeschlagen!";
 "error_missingsubject" = "Der Betreff fehlt";
 "error_missingrecipients" = "Der Empfänger fehlt";
+"Send Anyway" = "Trotzdem versenden";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Kann Nachricht nicht versenden: Alle Empfänger sind ungültig.";
