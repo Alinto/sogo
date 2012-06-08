@@ -50,6 +50,7 @@
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 
 #import "MAPIStoreMailMessage.h"
 

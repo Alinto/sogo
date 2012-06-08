@@ -19,6 +19,8 @@
 
 2012-06-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/*: fixed build errors with gcc-4.7
+
 	* UI/MailPartViewers/UIxMailPartAlternativeViewer.m
 	(-childPartName): fixed a potential crash by building the NSString
 	from the integer itself, with the proper format string.

@@ -43,6 +43,7 @@
 #import "MAPIStoreContext.h"
 #import "MAPIStoreTasksFolder.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "NSDate+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"

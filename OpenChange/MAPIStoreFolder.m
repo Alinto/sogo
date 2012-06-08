@@ -30,6 +30,7 @@
 #import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoContentObject.h>
+#import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoFolder.h>
 
 #import "MAPIStoreActiveTables.h"

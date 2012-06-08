@@ -22,6 +22,8 @@
 
 #import <Foundation/NSString.h>
 
+#import "MAPIStoreAttachment.h"
+
 #import "MAPIStoreEmbeddedMessage.h"
 
 static Class MAPIStoreAttachmentK;

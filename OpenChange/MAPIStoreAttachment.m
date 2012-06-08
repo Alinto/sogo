@@ -23,6 +23,7 @@
 #import <Foundation/NSData.h>
 
 #import "MAPIStoreAttachment.h"
+#import "MAPIStoreEmbeddedMessage.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreMessage.h"
@@ -89,12 +90,12 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) openEmbeddedMessage: (MAPIStoreAttachmentMessage **) messagePtr
+- (int) openEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
                     withMID: (uint64_t *) mid
            withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  MAPIStoreAttachmentMessage *attMessage;
+  MAPIStoreEmbeddedMessage *attMessage;
   MAPIStoreMapping *mapping;
   struct mapistore_message *mapistoreMsg;
   
@@ -137,14 +138,14 @@
 }
 
 /* subclasses */
-- (MAPIStoreAttachmentMessage *) openEmbeddedMessage
+- (MAPIStoreEmbeddedMessage *) openEmbeddedMessage
 {
   // [self subclassResponsibility: _cmd];
 
   return nil;
 }
 
-- (MAPIStoreAttachmentMessage *) createEmbeddedMessage
+- (MAPIStoreEmbeddedMessage *) createEmbeddedMessage
 {
   [self subclassResponsibility: _cmd];
 

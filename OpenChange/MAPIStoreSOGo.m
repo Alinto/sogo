@@ -36,7 +36,9 @@
 
 #import "MAPIApplication.h"
 #import "MAPIStoreAttachment.h"
+#import "MAPIStoreAttachmentTable.h"
 #import "MAPIStoreContext.h"
+#import "MAPIStoreEmbeddedMessage.h"
 #import "MAPIStoreFolder.h"
 #import "MAPIStoreMessage.h"
 #import "MAPIStoreMailVolatileMessage.h"
@@ -969,7 +971,7 @@ sogo_message_attachment_open_embedded_message
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
   MAPIStoreAttachment *attachment;
-  MAPIStoreAttachmentMessage *message;
+  MAPIStoreEmbeddedMessage *message;
   int rc;
 
   DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));

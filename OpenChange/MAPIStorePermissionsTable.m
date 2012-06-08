@@ -24,6 +24,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
+#import <SOGo/SOGoFolder.h>
 #import <SOGo/SOGoObject.h>
 #import <SOGo/SOGoUser.h>
 
