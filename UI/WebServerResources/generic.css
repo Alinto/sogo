@@ -695,7 +695,8 @@ INPUT.comboBoxField
 { margin-right: 0px; }
 
 INPUT.textField._invalid, INPUT.comboBoxField._invalid
-{ background-color: #f00 !important; }
+{ background-color: #f66 !important;
+  border-color: #f00; }
 
 BUTTON.comboBoxButton
 { background-image: url("arrow-down.png");

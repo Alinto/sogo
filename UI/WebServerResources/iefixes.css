@@ -79,7 +79,7 @@ DIV#editorTabs TABLE.frame INPUT.textField
 { margin: 0px; }
 
 INPUT.textField._invalid, INPUT.comboBoxField._invalid
-{ background: #f00 !important; }
+{ background: #f66 !important; }
 
 /* SchedulerUI */
 
