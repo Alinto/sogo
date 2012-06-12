@@ -170,13 +170,24 @@
 
       if (classes)
 	{
-	  int i, c;
+          /* LDAP records returned as dictionaries may contain NSString or
+             NSArray values, depending on whether the amount of values
+             assigned to a key is 1 or more. Since this can occur with
+             "objectclass" too, we need to check whether "classes" is actually
+             an NSString instance... */
+          if ([classes isKindOfClass: [NSString class]])
+            classes = [NSArray arrayWithObject:
+                                 [(NSString *) classes lowercaseString]];
+          else
+            {
+              int i, c;
 	  
-	  classes = [NSMutableArray arrayWithArray: classes];
-	  c = [classes count];
-	  for (i = 0; i < c; i++)
-	    [(id)classes replaceObjectAtIndex: i
-				   withObject: [[classes objectAtIndex: i] lowercaseString]];
+              classes = [NSMutableArray arrayWithArray: classes];
+              c = [classes count];
+              for (i = 0; i < c; i++)
+                [(id)classes replaceObjectAtIndex: i
+                     withObject: [[classes objectAtIndex: i] lowercaseString]];
+            }
 	}
 
       // Found a group, let's return it.

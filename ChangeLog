@@ -1,3 +1,10 @@
+2012-06-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoGroup.m
+	(+groupWithValue:andSourceSelector:inDomain:): handle the case
+	the value of "objectclass" is actually an NSString instance,
+	otherwise causing a crash with the NSArray methods.
+
 2012-06-04  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/UIxFilterEditor.js (savePreferences):
