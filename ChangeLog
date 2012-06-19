@@ -1,3 +1,13 @@
+2012-06-19  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m (-importCalendar:):
+	We now handle correctly floating events by forcing the use of
+	the user's timezone.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m (-expandGroupsInEvent:):
+	We now remove all attendees that are equal (email-based comparison) to
+	the event's organizer instead of only for decomposed groups.
+
 2012-06-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGroup.m

@@ -2764,7 +2764,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   iCalEvent *event;
 
   int imported, count, i;
-  
+
   imported = 0;
 
   if (calendar)
@@ -2799,6 +2799,41 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
               tzId = [startDate value: 0 ofAttribute: @"tzid"];
               if ([tzId length])
                 timezone = [timezones valueForKey: tzId];
+	      else
+		{
+		  // If the start date is a "floating time", let's use the user's timezone
+		  // during the import for both the start and end dates.
+		  NSString *s;
+		  
+		  s = [[startDate valuesAtIndex: 0 forKey: @""] objectAtIndex: 0];
+		  
+		  if ([element isKindOfClass: [iCalEvent class]] &&
+		      ![(iCalEvent *)element isAllDay] &&
+		      ![s hasSuffix: @"Z"] &&
+		      ![s hasSuffix: @"z"])
+		    {
+		      iCalDateTime *endDate;
+		      int delta;
+		      
+		      timezone = [iCalTimeZone timeZoneForName: [[[self->context activeUser] userDefaults] timeZoneName]];
+		      [calendar addTimeZone: timezone];
+	
+		      delta = [[timezone periodForDate: [startDate dateTime]] secondsOffsetFromGMT];
+		      event = (iCalEvent *)element;
+		  
+		      [event setStartDate: [[event startDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -delta]];
+		      [startDate setTimeZone: timezone];
+
+		      endDate = (iCalDateTime *) [element uniqueChildWithTag: @"dtend"];
+		      
+		      if (endDate)
+			{
+			  [event setEndDate: [[event endDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: -delta]];
+			  [endDate setTimeZone: timezone];
+			}
+		    }
+		}
+	      
               if ([element isKindOfClass: [iCalEvent class]])
                 {
                   event = (iCalEvent *)element;
