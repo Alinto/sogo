@@ -294,9 +294,11 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
               [MAPIStoreUserContext userContextWithUsername: username
                                              andTDBIndexing: indexingTdb]);
 
+#if 0
       mapistore_mgmt_backend_register_user (newConnInfo,
                                             "SOGo",
                                             [username UTF8String]);
+#endif
 
       connInfo = newConnInfo;
       username = [NSString stringWithUTF8String: newConnInfo->username];
@@ -315,9 +317,12 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 
 - (void) dealloc
 {
+#if 0
   mapistore_mgmt_backend_unregister_user ([self connectionInfo], "SOGo", 
                                           [[userContext username]
                                             UTF8String]);
+#endif
+
   [contextUrl release];
   [userContext release];
   [containersBag release];
