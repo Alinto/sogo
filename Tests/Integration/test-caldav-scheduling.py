@@ -160,6 +160,14 @@ class CalDAVSchedulingTest(unittest.TestCase):
                           "%stest-rrule-invitation-deleted-exdate-dance.ics" % self.user_calendar, None)
         self._deleteEvent(self.attendee1_client,
                           "%stest-rrule-invitation-deleted-exdate-dance.ics" % self.attendee1_calendar, None)
+        self._deleteEvent(self.client,
+                          "%stest-organizer-is-attendee.ics" % self.user_calendar, None)
+        self._deleteEvent(self.attendee1_client,
+                          "%stest-organizer-is-attendee.ics" % self.attendee1_calendar, None)
+        self._deleteEvent(self.client,
+                          "%stest-remove-attendee.ics" % self.user_calendar, None)
+        self._deleteEvent(self.attendee1_client,
+                          "%stest-remove-attendee.ics" % self.attendee1_calendar, None)
 
     def _newEvent(self, summary="test event", uid="test", transp=0):
         transparency = ("OPAQUE", "TRANSPARENT")
@@ -268,7 +276,7 @@ class CalDAVSchedulingTest(unittest.TestCase):
 	""" add attendee after event creation """
 
 	# make sure the event doesn't exist
-	ics_name = "test-add-attendee.ics"
+        ics_name = "test-add-attendee.ics"
         self._deleteEvent(self.client,
                           "%s%s" % (self.user_calendar,ics_name), None)
         self._deleteEvent(self.attendee1_client,
@@ -345,40 +353,6 @@ class CalDAVSchedulingTest(unittest.TestCase):
 
         # 6. verify that the attendee doesn't have the event anymore
         attendee_event = self._getEvent(self.attendee1_client, "%s%s" % (self.attendee1_calendar, ics_name), 404)
-
-    def testAddAttendee(self):
-        """ add attendee after event creation """
-
-        # make sure the event doesn't exist
-        ics_name = "test-add-attendee.ics"
-        self._deleteEvent(self.client,
-                          "%s%s" % (self.user_calendar,ics_name), None)
-        self._deleteEvent(self.client,
-                          "%s%s" % (self.attendee1_calendar,ics_name), None)
-
-        # 1. create an event in the organiser's calendar
-        event = self._newEvent(summary="Test add attendee", uid="Test add attendee")
-        organizer = event.vevent.add('organizer')
-        organizer.cn_param = self.user_name
-        organizer.value = self.user_email
-        self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
-
-        # 2. add an attendee
-        attendee = event.vevent.add('attendee')
-        attendee.cn_param = self.attendee1_name
-        attendee.rsvp_param = "TRUE"
-        attendee.partstat_param = "NEEDS-ACTION"
-        attendee.value = self.attendee1_email
-        self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event,
-                       exp_status=204)
-
-
-        # 3. verify that the attendee has the event
-        attendee_event = self._getEvent(self.attendee1_client, "%s%s" % (self.attendee1_calendar, ics_name))
- 
-        # 4. make sure the received event match the original one
-        # XXX is this enough?
-        self.assertEquals(event.vevent.uid, attendee_event.vevent.uid)
 
     def testResourceNoOverbook(self):
 	""" try to overbook a resource """
@@ -663,6 +637,49 @@ class CalDAVSchedulingTest(unittest.TestCase):
 	self.assertEqual(org_ev_master.attendee.partstat_param, "NEEDS-ACTION");
 	self.assertEqual(org_ev_exception.attendee.partstat_param, "DECLINED");
 	
+    def testOrganizerIsAttendee(self):
+        """ iCal organizer is attendee - bug #1837 """
+
+        # This tries to have the same behavior as iCal
+        #   1. create an event, add an attendee and add the organizer as an attendee
+        #   2. SOGo should remove the organizer from the attendee list
+	ics_name = "test-organizer-is-attendee.ics"
+	self._deleteEvent(self.client,
+			  "%s%s" % (self.user_calendar, ics_name), None)
+	self._deleteEvent(self.attendee1_client,
+			  "%s%s" % (self.attendee1_calendar, ics_name), None)
+
+	# 1.  create a recurring event in the organiser's calendar
+	summary="org is attendee"
+	uid=summary
+	event = self._newEvent(summary, uid)
+	organizer = event.vevent.add('organizer')
+	organizer.cn_param = self.user_name
+	organizer.partstat_param = "ACCEPTED"
+	organizer.value = self.user_email
+	attendee = event.vevent.add('attendee')
+	attendee.cn_param = self.attendee1_name
+	attendee.rsvp_param = "TRUE"
+	attendee.role_param = "REQ-PARTICIPANT"
+	attendee.partstat_param = "NEEDS-ACTION"
+	attendee.value = self.attendee1_email
+
+        # 1.1 add the organizer as an attendee
+	attendee = event.vevent.add('attendee')
+	attendee.cn_param = self.user_name
+	attendee.rsvp_param = "TRUE"
+	attendee.role_param = "REQ-PARTICIPANT"
+	attendee.partstat_param = "ACCEPTED"
+	attendee.value = self.user_email
+
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
+
+	# 2. Fetch the event and make sure the organizer is not in the attendee list anymore
+	org_ev = self._getEvent(self.client, "%s%s" % (self.user_calendar, ics_name))
+
+        for attendee in org_ev.vevent.attendee_list:
+          self.assertNotEqual(self.user_email, attendee.value)
+
     def testInvitationDelegation(self):
         """ invitation delegation """
 
