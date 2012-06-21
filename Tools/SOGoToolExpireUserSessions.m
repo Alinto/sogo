@@ -109,7 +109,7 @@
     return rc=NO;
   }
 
-  sql = [NSString stringWithFormat: @"SELECT count(*) FROM %@ WHERE c_lastseen <= %d;",
+  sql = [NSString stringWithFormat: @"SELECT count(*) FROM %@ WHERE c_lastseen <= %d",
                         [tableURL gcsTableName], oldest];
   ex = [channel evaluateExpressionX: sql]; 
   if (ex)
@@ -129,7 +129,7 @@
     if (verbose)
       NSLog(@"Will be removing %d sessions", sessionsToDelete);
     [channel cancelFetch];
-    sql = [NSString stringWithFormat: @"DELETE FROM %@ WHERE c_lastseen <= %d;",
+    sql = [NSString stringWithFormat: @"DELETE FROM %@ WHERE c_lastseen <= %d",
                         [tableURL gcsTableName], oldest];
     if (verbose)
       NSLog(@"Removing sessions older than %d minute(s)", nbMinutes);
