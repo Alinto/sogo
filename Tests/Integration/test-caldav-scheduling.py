@@ -638,7 +638,7 @@ class CalDAVSchedulingTest(unittest.TestCase):
 	self.assertEqual(org_ev_exception.attendee.partstat_param, "DECLINED");
 	
     def testOrganizerIsAttendee(self):
-        """ iCal organizer is attendee - bug #1837 """
+        """ iCal organizer is attendee - bug #1839 """
 
         # This tries to have the same behavior as iCal
         #   1. create an event, add an attendee and add the organizer as an attendee
