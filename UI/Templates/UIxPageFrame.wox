@@ -130,6 +130,7 @@
 	  <script type="text/javascript">
 	    var ApplicationBaseURL = '<var:string value="modulePath"/>';
 	    var ResourcesURL = '<var:string value="applicationPath"/>.woa/WebServerResources';
+	    var minimumSearchLength = <var:string value="minimumSearchLength"/>;
 	    <var:if condition="isSuperUser"
 	      >var IsSuperUser = true;
 	    </var:if>
