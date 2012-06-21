@@ -70,4 +70,6 @@
 
     SOGoReminderEnabled = YES;
     SOGoRemindWithASound = YES;
+
+    SOGoSearchMinimumWordLength = 2;
 }

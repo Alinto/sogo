@@ -1,3 +1,12 @@
+2012-06-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Added the SOGoSearchMinimumWordLength domain
+	default which controls the minimal length required
+	before trigging server-side search operations for
+	attendee completion, contact searches, etc. The
+	default value is 2, which means search operations
+	are trigged once the 3rd character is typed.
+
 2012-06-20  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m
