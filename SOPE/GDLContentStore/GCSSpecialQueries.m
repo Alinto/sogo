@@ -189,7 +189,7 @@
 - (NSString *) createSessionsFolderWithName: (NSString *) tableName
 {
   static NSString *sqlFolderFormat
-    = (@"CREATE TABLE %@ (" 
+    = (@"CREATE TABLE %@ ("
        @" c_id VARCHAR(255) NOT NULL PRIMARY KEY,"
        @" c_value VARCHAR(255) NOT NULL,"
        @" c_creationdate INT4 NOT NULL,"
