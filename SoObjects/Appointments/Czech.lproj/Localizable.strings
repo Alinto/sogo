@@ -67,4 +67,4 @@ vtodo_class2 = "(Skrytý úkol)";
 = "%{Attendee} %{SentByText}dosud o Vaší pozvánce k události nerozhodl/a.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximální počet současných rezervací (%{NumberOfSimultaneousBookings}) byl dosažen pro zdroj \"%{Cn} %{SystemEmail}\".";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Byl dosažen maximální počet současných rezervací\n(%{NumberOfSimultaneousBookings})  pro zdroj \"%{Cn} %{SystemEmail}\". Konfliktní událost je \"%{EventTitle}\" a začíná %{StartDate}.";
