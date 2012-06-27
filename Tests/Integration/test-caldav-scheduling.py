@@ -4,6 +4,9 @@
 #        attendee1_delegate_username and superuser.
 # when writing new tests, avoid using superuser when not absolutely needed
 
+# TODO
+#   - Individual tests should set the ACLs themselves on Resources tests
+
 from config import hostname, port, username, password, \
 		   superuser, superuser_password, \
                    attendee1, attendee1_username, \
@@ -790,6 +793,31 @@ class CalDAVSchedulingTest(unittest.TestCase):
 
         for attendee in org_ev.vevent.attendee_list:
           self.assertNotEqual(self.user_email, attendee.value)
+
+    def testEventsWithSameUID(self):
+        """ PUT 2 events with the same UID - bug #1853 """
+
+	ics_name = "test-same-uid.ics"
+        self.ics_list += [ics_name]
+
+	self._deleteEvent(self.client,
+			  "%s%s" % (self.user_calendar, ics_name), None)
+
+	conflict_ics_name = "test-same-uid-conflict.ics"
+        self.ics_list += [ics_name]
+
+	self._deleteEvent(self.client,
+			  "%s%s" % (self.user_calendar, conflict_ics_name), None)
+
+	# 1.  create simple event
+	summary="same uid"
+	uid=summary
+	event = self._newEvent(summary, uid)
+
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, ics_name), event)
+
+        # PUT the same event with a new filename - should trigger a 403
+	self._putEvent(self.client, "%s%s" % (self.user_calendar, conflict_ics_name), event, exp_status=403)
 
     def testInvitationDelegation(self):
         """ invitation delegation """

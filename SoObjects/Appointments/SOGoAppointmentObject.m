@@ -1756,15 +1756,25 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     {
       iCalCalendar *calendar;
       SOGoUser *ownerUser;
-      iCalEvent *event;
+      iCalEvent *event, *conflictingEvent;
       
+      NSString *eventUID;
       BOOL scheduling;
 
       calendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
 
       event = [[calendar events] objectAtIndex: 0];
+      eventUID = [event uid];
       ownerUser = [SOGoUser userWithLogin: owner];
       scheduling = [self _shouldScheduleEvent: [event organizer]];
+
+      // make sure eventUID doesn't conflict with an existing event -  see bug #1853
+      // TODO: send out a no-uid-conflict (DAV:href) xml element (rfc4791 section 5.3.2.1)
+      if (conflictingEvent = [container resourceNameForEventUID: eventUID])
+        {
+  NSString *reason = [NSString stringWithFormat: @"Event UID already in use. (%s)", eventUID];
+  return [NSException exceptionWithHTTPStatus:403 reason: reason];
+        }
      
       //
       // New event and we're the organizer -- send invitation to all attendees

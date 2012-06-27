@@ -1,3 +1,9 @@
+2012-06-27  Jean Raby  <jraby@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(PUTAction:): detect conflicting event UID and
+	deny the request accordingly.
+
 2012-06-21  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Added the SOGoSearchMinimumWordLength domain
