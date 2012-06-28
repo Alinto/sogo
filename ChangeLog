@@ -1,3 +1,8 @@
+2012-06-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m (-initWithName:inContainer:): make
+	sure that "_name" is neither nil nor empty.
+
 2012-06-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoGroup.m
