@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2011 Inverse inc.
+  Copyright (C) 2007-2012 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo
@@ -456,8 +456,12 @@
 	    {
 	      SOGoAppointmentFolder *folder;
 	      NSCalendarDate *start, *end;
+	      NGCalendarDateRange *range;
 	      NSMutableArray *fbInfo;
-	      int i;
+	      NSArray *allOccurences;
+  
+	      BOOL must_delete;
+  	      int i, j;
 
 	      // We get the start/end date for our conflict range. If the event to be added is recurring, we
 	      // check for at least a year to start with.
@@ -486,12 +490,50 @@
 	      // We first remove any occurences in the freebusy that corresponds to the
 	      // current event. We do this to avoid raising a conflict if we move a 1 hour
 	      // meeting from 12:00-13:00 to 12:15-13:15. We would overlap on ourself otherwise.
+	      //
+	      // We must also check here for repetitive events that don't overlap our event.
+	      // We remove all events that don't overlap. The events here are already
+	      // decomposed.
+	      //
+	      if ([theEvent isRecurrent])
+		allOccurences = [theEvent recurrenceRangesWithinCalendarDateRange: [NGCalendarDateRange calendarDateRangeWithStartDate: start
+															       endDate: end]
+						   firstInstanceCalendarDateRange: [NGCalendarDateRange calendarDateRangeWithStartDate: [theEvent startDate]
+															       endDate: [theEvent endDate]]];
+	      else
+		allOccurences = nil;
+	      
 	      for (i = [fbInfo count]-1; i >= 0; i--)
 		{
+		  range = [NGCalendarDateRange calendarDateRangeWithStartDate: [[fbInfo objectAtIndex: i] objectForKey: @"startDate"]
+								      endDate: [[fbInfo objectAtIndex: i] objectForKey: @"endDate"]];
+		  
 		  if ([[[fbInfo objectAtIndex: i] objectForKey: @"c_uid"] compare: [theEvent uid]] == NSOrderedSame)
-		    [fbInfo removeObjectAtIndex: i];
-		}
+		    {
+		      [fbInfo removeObjectAtIndex: i];
+		      continue;
+		    }
+		  
+		  // No need to check if the event isn't recurrent here as it's handled correctly
+		  // when we compute the "end" date.
+		  if ([allOccurences count])
+		    {
+		      must_delete = YES;
 
+		      for (j = 0; j < [allOccurences count]; j++)
+			{
+			  if ([range doesIntersectWithDateRange: [allOccurences objectAtIndex: j]])
+			    {
+			      must_delete = NO;
+			      break;
+			    }
+			}
+		      
+		      if (must_delete)
+			[fbInfo removeObjectAtIndex: i];
+		    }
+		}
+	      
 	      if ([fbInfo count])
 		{
 		  // If we always force the auto-accept if numberOfSimultaneousBookings == 0 (ie., no limit
@@ -1714,15 +1756,25 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     {
       iCalCalendar *calendar;
       SOGoUser *ownerUser;
-      iCalEvent *event;
+      iCalEvent *event, *conflictingEvent;
       
+      NSString *eventUID;
       BOOL scheduling;
 
       calendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
 
       event = [[calendar events] objectAtIndex: 0];
+      eventUID = [event uid];
       ownerUser = [SOGoUser userWithLogin: owner];
       scheduling = [self _shouldScheduleEvent: [event organizer]];
+
+      // make sure eventUID doesn't conflict with an existing event -  see bug #1853
+      // TODO: send out a no-uid-conflict (DAV:href) xml element (rfc4791 section 5.3.2.1)
+      if (conflictingEvent = [container resourceNameForEventUID: eventUID])
+        {
+  NSString *reason = [NSString stringWithFormat: @"Event UID already in use. (%s)", eventUID];
+  return [NSException exceptionWithHTTPStatus:403 reason: reason];
+        }
      
       //
       // New event and we're the organizer -- send invitation to all attendees

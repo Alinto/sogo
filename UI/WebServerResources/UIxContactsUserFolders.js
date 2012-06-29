@@ -1,8 +1,6 @@
 var d;
 
 function onSearchFormSubmit() {
-    startAnimation($("pageContent"), $("filterPanel"));
-
     var searchValue = $("searchValue");
     var encodedValue = encodeURI(searchValue.value);
 
@@ -16,8 +14,11 @@ function onSearchFormSubmit() {
             document.userFoldersRequest.aborted = true;
             document.userFoldersRequest.abort();
         }
-        document.userFoldersRequest
-            = triggerAjaxRequest(url, usersSearchCallback);
+	if (encodedValue.trim().length > minimumSearchLength) {
+	    startAnimation($("pageContent"), $("filterPanel"));
+            document.userFoldersRequest
+                = triggerAjaxRequest(url, usersSearchCallback);
+	}
     }
 
     return false;

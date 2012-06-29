@@ -77,6 +77,8 @@
 
 - (BOOL) hideSystemEMail;
 
+- (int) searchMinimumWordLength;
+
 @end
 
 #endif /* SOGODOMAINDEFAULTS_H */

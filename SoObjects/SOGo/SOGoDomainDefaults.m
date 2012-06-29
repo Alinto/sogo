@@ -319,4 +319,9 @@
   return [self boolForKey: @"SOGoHideSystemEMail"];
 }
 
+- (int) searchMinimumWordLength
+{
+  return [self integerForKey: @"SOGoSearchMinimumWordLength"];
+}
+
 @end
