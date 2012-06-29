@@ -100,8 +100,6 @@ typedef enum {
 - (int) getRowCount: (uint32_t *) countP
       withQueryType: (enum mapistore_query_type) queryType;
 
-- (void) notifyChangesForChild: (MAPIStoreObject *) child;
-
 /* helpers */
 
 - (SEL) operatorFromRestrictionOperator: (uint32_t) resOp;

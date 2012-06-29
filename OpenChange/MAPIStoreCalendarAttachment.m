@@ -67,10 +67,10 @@
 {
   MAPIStoreEmbeddedMessage *msg;
 
-  if (isNew)
+  // if (isNew)
     msg = nil;
-  else
-    msg = nil;
+  // else
+  //   msg = nil;
 
   return msg;
 }
