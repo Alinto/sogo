@@ -35,9 +35,9 @@
 @class MAPIStoreAttachmentTable;
 @class MAPIStoreFolder;
 
-#import "MAPIStoreObject.h"
+#import "MAPIStoreSOGoObject.h"
 
-@interface MAPIStoreMessage : MAPIStoreObject
+@interface MAPIStoreMessage : MAPIStoreSOGoObject
 {
   NSArray *attachmentKeys;
   NSMutableDictionary *attachmentParts;

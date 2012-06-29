@@ -28,10 +28,8 @@
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <SOGo/SOGoFolder.h>
 #import <SOGo/SOGoUser.h>
-
-#import "SOGoMAPIFSFolder.h"
-#import "SOGoMAPIFSMessage.h"
 
 #import "MAPIStoreAttachment.h"
 // #import "MAPIStoreAttachmentTable.h"
@@ -433,25 +431,29 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 
   [self ensureContextFolder];
   currentFolder = [self rootSOGoFolder];
+  [containersBag addObject: currentFolder];
   path = [contextUrl path];
   if ([path hasPrefix: @"/"])
     path = [path substringFromIndex: 1];
   if ([path hasSuffix: @"/"])
     path = [path substringToIndex: [path length] - 1];
-  pathComponents = [path componentsSeparatedByString: @"/"];
-  max = [pathComponents count];
-  for (count = 0; currentFolder && count < max; count++)
+  if ([path length] > 0)
     {
-      [woContext setClientObject: currentFolder];
-      currentFolder
-        = [currentFolder lookupName: [pathComponents objectAtIndex: count]
-                          inContext: woContext
+      pathComponents = [path componentsSeparatedByString: @"/"];
+      max = [pathComponents count];
+      for (count = 0; currentFolder && count < max; count++)
+        {
+          [woContext setClientObject: currentFolder];
+          currentFolder = [currentFolder
+                            lookupName: [pathComponents objectAtIndex: count]
+                            inContext: woContext
                             acquire: NO];
-      if ([currentFolder isKindOfClass: SOGoObjectK]) /* class common to all
-                                                         SOGo folder types */
-        [containersBag addObject: currentFolder];
-      else
-        currentFolder = nil;
+          if ([currentFolder isKindOfClass: SOGoObjectK]) /* class common to all
+                                                             SOGo folder types */
+            [containersBag addObject: currentFolder];
+          else
+            currentFolder = nil;
+        }
     }
 
   if (currentFolder)
@@ -460,7 +462,6 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
                      mapiStoreObjectWithSOGoObject: currentFolder
                                        inContainer: nil];
       [baseFolder setContext: self];
-
       *folderPtr = baseFolder;
       rc = MAPISTORE_SUCCESS;
     }

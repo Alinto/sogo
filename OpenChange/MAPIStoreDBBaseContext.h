@@ -1,6 +1,6 @@
-/* MAPIStoreFSFolderTable.m - this file is part of SOGo
+/* MAPIStoreDBBaseContext.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,17 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSString.h>
+#ifndef MAPISTOREDBBASECONTEXT_H
+#define MAPISTOREDBBASECONTEXT_H
 
-#import "MAPIStoreTypes.h"
+#import "MAPIStoreContext.h"
 
-#import "MAPIStoreFSFolderTable.h"
-
-@implementation MAPIStoreFSFolderTable
-
-- (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
-{
-  return [NSString stringWithFormat: @"%@", MAPIPropertyKey (property)];
-}
+@interface MAPIStoreDBBaseContext : MAPIStoreContext
 
 @end
+
+#endif /* MAPISTOREDBBASECONTEXT_H */

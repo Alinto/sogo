@@ -1,3 +1,11 @@
+2012-06-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/SOGoMAPIDBObject.m: new class module that replaced
+	SOGoMAPIFSMessage.
+
+	* OpenChange/SOGoMAPIDBFolder.m: new class module that replaced
+	SOGoMAPIFSFolder.
+
 2012-06-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/SOGo/SOGoObject.m (-initWithName:inContainer:): make
