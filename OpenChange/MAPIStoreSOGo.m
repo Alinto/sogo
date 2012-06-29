@@ -963,9 +963,8 @@ sogo_message_submit (void *message_object, enum SubmitFlags flags)
 
 static enum mapistore_error
 sogo_message_attachment_open_embedded_message
-(void *attachment_object,
- TALLOC_CTX *mem_ctx, void **message_object,
- uint64_t *midP,
+(void *attachment_object, enum OpenEmbeddedMessage_OpenModeFlags mode,
+ TALLOC_CTX *mem_ctx, void **message_object, uint64_t *midP,
  struct mapistore_message **msg)
 {
   struct MAPIStoreTallocWrapper *wrapper;
@@ -983,6 +982,7 @@ sogo_message_attachment_open_embedded_message
       GSRegisterCurrentThread ();
       pool = [NSAutoreleasePool new];
       rc = [attachment openEmbeddedMessage: &message
+                                    inMode: mode
                                    withMID: midP
                           withMAPIStoreMsg: msg
                                   inMemCtx: mem_ctx];
