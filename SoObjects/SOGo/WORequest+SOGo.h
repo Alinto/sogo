@@ -36,6 +36,7 @@
 - (BOOL) isICal4;
 - (BOOL) isMacOSXAddressBookApp;
 - (BOOL) isIPhoneAddressBookApp;
+- (BOOL) isAndroid;
 
 @end
 

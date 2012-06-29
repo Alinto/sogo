@@ -127,7 +127,8 @@
   SOGoContactSourceFolder *currentFolder;
   SOGoUser *currentUser;
 
-  if (![[context request] isIPhoneAddressBookApp])
+  if (! ([[context request] isIPhoneAddressBookApp] &&
+           ![[context request] isAndroid]))
     {
       currentUser = [context activeUser];
       if (activeUserIsOwner
@@ -271,7 +272,8 @@
   NSArray *sourceIDs;
   NSString *domain, *srcDisplayName;
 
-  if ([[context request] isIPhoneAddressBookApp])
+  if ([[context request] isIPhoneAddressBookApp] &&
+      ![[context request] isAndroid])
     {
       currentUser = [context activeUser];
       if (activeUserIsOwner

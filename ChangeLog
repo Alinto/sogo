@@ -1,3 +1,13 @@
+2012-06-29  Jean Raby  <jraby@inverse.ca>
+
+	* SoObjects/SOGo/WORequest+SOGo.[mh]
+	(-isAndroid): new method to detect whether the
+	request has been performed from an android client
+
+	* SoObjects/Contacts/SOGoContactFolders.m (appendSystemSources):
+	Let sogo append system sources if the request comes from an android
+	client even if its user agent matches the IPhoneAddressBook
+
 2012-06-27  Jean Raby  <jraby@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m

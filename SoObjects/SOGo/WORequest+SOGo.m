@@ -176,4 +176,15 @@
           [[cc userAgent] rangeOfString: @"dataaccessd/1.0"].location != NSNotFound); // Seen on iOS 5.0.1 on iPad
 }
 
+- (BOOL) isAndroid
+{
+  WEClientCapabilities *cc;
+
+  cc = [self clientCapabilities];
+
+  // CardDAV-Sync (Android) (like iOS/5.0.1 (9A405) dataaccessd/1.0) gzip 
+  return ([[cc userAgent] rangeOfString: @"Android"].location != NSNotFound);
+}
+
+
 @end
