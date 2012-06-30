@@ -36,6 +36,7 @@
 #import "MAPIStoreAttachmentTable.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreFolder.h"
+#import "MAPIStoreMessageTable.h"
 #import "MAPIStorePropertySelectors.h"
 #import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
@@ -116,7 +117,6 @@ rtf2html (NSData *compressedRTF)
 
 @interface SOGoObject (MAPIStoreProtocol)
 
-- (NSString *) davEntityTag;
 - (NSString *) davContentLength;
 
 @end
@@ -304,6 +304,7 @@ rtf2html (NSData *compressedRTF)
   NSData *htmlData, *rtfData;
   static NSNumber *htmlKey = nil, *rtfKey = nil;
 
+  /* we intercept any RTF content and convert it to HTML */
   [super addProperties: newNewProperties];
 
   if (!htmlKey)
@@ -339,10 +340,8 @@ rtf2html (NSData *compressedRTF)
 
   newAid = [[self attachmentKeys] count];
 
-  newAttachment = [MAPIStoreAttachment
-                    mapiStoreObjectWithSOGoObject: nil
-                                      inContainer: self];
-  [newAttachment setIsNew: YES];
+  newAttachment = [MAPIStoreAttachment mapiStoreObjectInContainer: self];
+  // [newAttachment setIsNew: YES];
   [newAttachment setAID: newAid];
   newKey = [NSString stringWithFormat: @"%ul", newAid];
   [attachmentParts setObject: newAttachment
@@ -497,7 +496,6 @@ rtf2html (NSData *compressedRTF)
         [[containerTables objectAtIndex: count]
           notifyChangesForChild: self];
       [self setIsNew: NO];
-      [properties removeAllObjects];
       [container cleanupCaches];
       rc = MAPISTORE_SUCCESS;
     }
@@ -792,7 +790,7 @@ rtf2html (NSData *compressedRTF)
 - (int) getPidTagOriginalMessageClass: (void **) data
                              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPidTagMessageClass: data inMemCtx: memCtx];
+  return [self getProperty: data withTag: PidTagMessageClass inMemCtx: memCtx];
 }
 
 - (int) getPidTagHasAttachments: (void **) data

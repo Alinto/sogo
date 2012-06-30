@@ -52,6 +52,7 @@
   if ((self = [super init]))
     {
       bodyInfo = nil;
+      bodyPart = nil;
     }
 
   return self;
@@ -60,12 +61,18 @@
 - (void) dealloc
 {
   [bodyInfo release];
+  [bodyPart release];
   [super dealloc];
 }
 
 - (void) setBodyInfo: (NSDictionary *) newBodyInfo
 {
   ASSIGN (bodyInfo, newBodyInfo);
+}
+
+- (void) setBodyPart: (SOGoMailBodyPart *) newBodyPart
+{
+  ASSIGN (bodyPart, newBodyPart);
 }
 
 - (int) getPidTagAttachMethod: (void **) data
@@ -187,7 +194,7 @@
 - (int) getPidTagAttachDataBinary: (void **) data
                          inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = [[sogoObject fetchBLOBWithPeek: YES] asBinaryInMemCtx: memCtx];
+  *data = [[bodyPart fetchBLOBWithPeek: YES] asBinaryInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
