@@ -1,6 +1,6 @@
 /* UIxAttendeesEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -28,7 +28,6 @@
 @interface UIxAttendeesEditor : UIxComponent
 {
   NSString *item;
-//   NSString *zoom;
 }
 
 - (void) setItem: (NSString *) newItem;

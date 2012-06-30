@@ -516,19 +516,23 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 //
 // Returs "YES" if a a group was decomposed among attendees.
 //
+// It can also return yes if an attendee was found in the list
+// matching the organizer. In which case, it was removed.
+//
 - (BOOL) expandGroupsInEvent: (iCalEvent *) theEvent
 {
-  NSMutableArray *allAttendees;
-  NSEnumerator *enumerator;
   NSString *organizerEmail, *domain;
+  NSMutableArray *allAttendees;
   iCalPerson *currentAttendee;
+  NSEnumerator *enumerator;
   SOGoGroup *group;
-  BOOL doesIncludeGroup;
+
+  BOOL eventWasModified;
   unsigned int i;
 
   domain = [[context activeUser] domain];
   organizerEmail = [[theEvent organizer] rfc822Email];
-  doesIncludeGroup = NO;
+  eventWasModified = NO;
   allAttendees = [NSMutableArray arrayWithArray: [theEvent attendees]];
   enumerator = [[theEvent attendees] objectEnumerator];
   while ((currentAttendee = [enumerator nextObject]))
@@ -548,7 +552,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 	  for (i = 0; i < [members count]; i++)
 	    {
 	      user = [members objectAtIndex: i];
-	      doesIncludeGroup = YES;
+	      eventWasModified = YES;
 
 	      // If the organizer is part of the group, we skip it from
 	      // the addition to the attendees' list
@@ -565,12 +569,23 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 		[allAttendees addObject: person];
 	    }
 	}
-    }
+      else
+	{
+	  // We remove any attendees matching the organizer. Apple iCal will do that when
+	  // you invite someone. It'll add the organizer in the attendee list, which will
+	  // confuse itself!
+	  if ([[currentAttendee rfc822Email] caseInsensitiveCompare: organizerEmail] == NSOrderedSame)
+	    {
+	      [allAttendees removeObject: currentAttendee];
+	      eventWasModified = YES;
+	    }
+	}
+    } // while (currentAttendee ...
 
-  if (doesIncludeGroup)
+  if (eventWasModified)
     [theEvent setAttendees: allAttendees];
   
-  return doesIncludeGroup;
+  return eventWasModified;
 }
 
 - (void) _updateRecurrenceIDsWithEvent: (iCalRepeatableEntityObject*) newEvent

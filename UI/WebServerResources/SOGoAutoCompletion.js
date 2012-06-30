@@ -125,7 +125,7 @@ var SOGoAutoCompletionInterface = {
             document.contactLookupAjaxRequest.aborted = true;
             document.contactLookupAjaxRequest.abort();
         }
-        if (input.value.trim().length > 2) {
+        if (input.value.trim().length > minimumSearchLength) {
             var urlstr = UserFolderURL + "Contacts/";
             if (input.addressBook)
                 urlstr += input.addressBook + "/contact";

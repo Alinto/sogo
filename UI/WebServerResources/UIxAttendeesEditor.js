@@ -177,7 +177,7 @@ function onContactKeydown(event) {
 
 function performSearch(input) {
     // Perform address completion
-    if (!input.value.blank()) {
+    if (input.value.trim().length > minimumSearchLength) {
         var urlstr = (UserFolderURL
                       + "Contacts/allContactSearch?excludeGroups=1&search="
                       + encodeURIComponent(input.value));

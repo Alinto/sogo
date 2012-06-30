@@ -1,7 +1,7 @@
 /* generic.js - this file is part of SOGo
 
    Copyright (C) 2005 SKYRIX Software AG
-   Copyright (C) 2006-2011 Inverse
+   Copyright (C) 2006-2012 Inverse
 
  SOGo is free software; you can redistribute it and/or modify it under
  the terms of the GNU Lesser General Public License as published by the
@@ -1143,7 +1143,7 @@ function onSearchFormSubmit(event) {
 
     if (searchValue.value != searchValue.ghostPhrase
         && (searchValue.value != searchValue.lastSearch
-            || searchValue.value.strip().length > 0)) {
+            && searchValue.value.strip().length > minimumSearchLength)) {
         search["criteria"] = searchCriteria.value;
         search["value"] = searchValue.value;
         searchValue.lastSearch = searchValue.value;
