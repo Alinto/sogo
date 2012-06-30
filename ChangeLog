@@ -1,3 +1,9 @@
+2012-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/NSObject+MAPIStore.h: renamed
+	MAPIStoreTallocWrapper.MAPIStoreSOGoObject to .instance, to avoid
+	confusion in certain versions of GCC with our new class type.
+
 2012-06-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreSOGo.m

@@ -29,7 +29,7 @@
 
 struct MAPIStoreTallocWrapper
 {
-  id MAPIStoreSOGoObject;
+  id instance;
 };
 
 @interface NSObject (MAPIStoreTallocHelpers)
