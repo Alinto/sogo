@@ -39,6 +39,6 @@
 
 @end
 
-NSComparisonResult NSDateCompare (NSDate *date1, NSDate *date2, void *);
+NSComparisonResult NSDateCompare (id date1, id date2, void *);
 
 #endif /* NSCALENDARDATE+MAPISTORE_H */

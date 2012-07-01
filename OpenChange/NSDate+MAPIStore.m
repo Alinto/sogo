@@ -131,7 +131,7 @@ _setupRefDate ()
 @end
 
 NSComparisonResult
-NSDateCompare (NSDate *date1, NSDate *date2, void *ctx)
+NSDateCompare (id date1, id date2, void *ctx)
 {
   NSTimeInterval secs1, secs2;
   NSComparisonResult result;
