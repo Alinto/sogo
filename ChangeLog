@@ -1,5 +1,13 @@
 2012-07-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreRecurrenceUtils.m
+	(-setupRecurrenceWithMasterEntity:fromRecurrencePattern:): add
+	exception dates to master entity based on the
+	"DeletedInstanceDates" member of the struct.
+	(-fillRecurrencePattern:withEvent:inTimeZone:inMemCtx:): new name
+	for fillRecurrencePattern:withStartDate:andEndDate:, add exception
+	dates to struct.
+
 	* OpenChange/NSDate+MAPIStore.m (NSDateCompare): new comparison
 	function for sorting array of NSDate instances.
 
