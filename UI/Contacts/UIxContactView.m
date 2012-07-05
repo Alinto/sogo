@@ -158,10 +158,10 @@
 {
   NSString *email, *fn, *mailTo;
   NSMutableArray *emails;
-  NSMutableArrays *secondaryEmails;
+  NSMutableArray *secondaryEmails;
 
   emails = [NSMutableArray array];
-  secondayEmails = [NSMutableArray array];
+  secondaryEmails = [NSMutableArray array];
   mailTo = nil;
 
   [emails addObjectsFromArray: [card childrenWithTag: @"email"]];
@@ -208,7 +208,7 @@
     }
 
 
-  return secondayEmails;
+  return secondaryEmails;
 }
 
 - (NSString *) screenName
