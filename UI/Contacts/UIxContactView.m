@@ -154,12 +154,14 @@
                value: mailTo];
 }
 
-- (NSString *) secondaryEmail
+- (NSArray *) secondaryEmails
 {
   NSString *email, *fn, *mailTo;
   NSMutableArray *emails;
+  NSMutableArrays *secondaryEmails;
 
   emails = [NSMutableArray array];
+  secondayEmails = [NSMutableArray array];
   mailTo = nil;
 
   [emails addObjectsFromArray: [card childrenWithTag: @"email"]];
@@ -185,6 +187,7 @@
 	{
 	  email = [[emails objectAtIndex: i] flattenedValuesForKey: @""];
 
+          // skip primary email
 	  if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
 	    {
               fn = [card fn];
@@ -193,13 +196,19 @@
 	      mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
 				 @" onclick=\"return openMailTo('%@ <%@>');\">"
 				 @"%@</a>", email, fn, email, email];
-	      break;
+              [secondaryEmails addObject: [self _cardStringWithLabel: @"Additional Email:"
+                                       value: mailTo]];
 	    }
 	}
     }
+  else
+    {
+      [secondaryEmails addObject: [self _cardStringWithLabel: @"Additional Email:"
+                                        value: mailTo]];
+    }
 
-  return [self _cardStringWithLabel: @"Additional Email:"
-               value: mailTo];
+
+  return secondayEmails;
 }
 
 - (NSString *) screenName

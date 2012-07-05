@@ -19,8 +19,10 @@
           ><var:string value="displayName" escapeHTML="NO"
           /><var:string value="nickName" escapeHTML="NO"
           /><var:string value="primaryEmail" escapeHTML="NO"
-          /><var:string value="secondaryEmail" escapeHTML="NO"
-          /><var:string value="screenName" escapeHTML="NO"
+          /><var:foreach list="secondaryEmails" item="currentEmail">
+             <var:string value="currentEmail" escapeHTML="NO"/> 
+            </var:foreach>
+            <var:string value="screenName" escapeHTML="NO"
           /><var:string value="preferredAddress" escapeHTML="NO"
           /><var:string value="categories" escapeHTML="NO"
           /></div
