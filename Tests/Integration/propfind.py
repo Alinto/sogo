@@ -38,8 +38,9 @@ client = webdavlib.WebDAVClient(hostname, port, username, password)
 propfind = webdavlib.WebDAVPROPFIND(resource, properties, depth)
 client.execute(propfind)
 
-print "response:\n\n%s" % propfind.response["body"]
+sys.stderr.write("response:\n\n")
+print propfind.response["body"]
 
 if propfind.response.has_key("document"):
-    print "document tree:"
+    sys.stderr.write("document tree:\n")
     xml.dom.ext.PrettyPrint(propfind.response["document"])
