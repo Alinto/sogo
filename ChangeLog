@@ -1,3 +1,14 @@
+2012-07-05  Jean Raby  <jraby@inverse.ca>
+
+	* UI/Contacts/UIxContactView.m (secondaryEmail):
+	function renamed to secondaryEmails. It now returns all addresses
+	instead of the first one found in the vcard.
+
+	* UI/Templates/ContactsUI/UIxContactView.wox:
+	Show all addresses returned from secondaryEmails.
+	This still need some css tweaks.
+	  
+
 2012-07-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreRecurrenceUtils.m
