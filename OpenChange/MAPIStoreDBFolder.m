@@ -1,4 +1,4 @@
-/* MAPIStoreFSFolder.m - this file is part of SOGo
+/* MAPIStoreDBFolder.m - this file is part of SOGo
  *
  * Copyright (C) 2011 Inverse inc
  *
@@ -31,15 +31,15 @@
 #import <SOGo/SOGoUser.h>
 #import "EOQualifier+MAPI.h"
 #import "MAPIStoreContext.h"
-#import "MAPIStoreFSFolderTable.h"
-#import "MAPIStoreFSMessage.h"
-#import "MAPIStoreFSMessageTable.h"
+#import "MAPIStoreDBFolderTable.h"
+#import "MAPIStoreDBMessage.h"
+#import "MAPIStoreDBMessageTable.h"
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreUserContext.h"
-#import "SOGoMAPIFSFolder.h"
-#import "SOGoMAPIFSMessage.h"
+#import "SOGoMAPIDBFolder.h"
+#import "SOGoMAPIDBMessage.h"
 
-#import "MAPIStoreFSFolder.h"
+#import "MAPIStoreDBFolder.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
@@ -57,39 +57,34 @@ static NSString *MAPIStoreRightCreateSubfolders = @"RightsCreateSubfolders";
 static NSString *MAPIStoreRightFolderOwner = @"RightsFolderOwner";
 static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 
-@implementation MAPIStoreFSFolder
+@implementation MAPIStoreDBFolder
 
 + (void) initialize
 {
   EOKeyValueQualifierK = [EOKeyValueQualifier class];
 }
 
+- (void) setupAuxiliaryObjects
+{
+  [super setupAuxiliaryObjects];
+  ASSIGN (sogoObject, dbFolder);
+}
+
 - (MAPIStoreMessageTable *) messageTable
 {
-  return [MAPIStoreFSMessageTable tableForContainer: self];
+  return [MAPIStoreDBMessageTable tableForContainer: self];
 }
 
 - (MAPIStoreFolderTable *) folderTable
 {
-  return [MAPIStoreFSFolderTable tableForContainer: self];
+  return [MAPIStoreDBFolderTable tableForContainer: self];
 }
 
 - (enum mapistore_error) createFolder: (struct SRow *) aRow
                               withFID: (uint64_t) newFID
                                andKey: (NSString **) newKeyP
 {
-  NSString *newKey, *urlString;
-  NSURL *childURL;
-  SOGoMAPIFSFolder *childFolder;
-
-  newKey = [NSString stringWithFormat: @"0x%.16"PRIx64, (unsigned long long) newFID];
-
-  urlString = [NSString stringWithFormat: @"%@/%@", [self url], newKey];
-  childURL = [NSURL URLWithString: [urlString stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-  childFolder = [SOGoMAPIFSFolder folderWithURL: childURL
-                                   andTableType: MAPISTORE_MESSAGE_TABLE];
-  [childFolder ensureDirectory];
-  *newKeyP = newKey;
+  *newKeyP = [NSString stringWithFormat: @"0x%.16"PRIx64, (unsigned long long) newFID];
 
   return MAPISTORE_SUCCESS;
 }
@@ -97,14 +92,15 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 - (MAPIStoreMessage *) createMessage
 {
   MAPIStoreMessage *newMessage;
-  SOGoMAPIFSMessage *fsObject;
+  SOGoMAPIDBMessage *fsObject;
   NSString *newKey;
 
   newKey = [NSString stringWithFormat: @"%@.plist",
                      [SOGoObject globallyUniqueObjectId]];
-  fsObject = [SOGoMAPIFSMessage objectWithName: newKey
+  fsObject = [SOGoMAPIDBMessage objectWithName: newKey
                                    inContainer: sogoObject];
-  newMessage = [MAPIStoreFSMessage mapiStoreObjectWithSOGoObject: fsObject
+  [fsObject setObjectType: MAPIDBObjectTypeMessage];
+  newMessage = [MAPIStoreDBMessage mapiStoreObjectWithSOGoObject: fsObject
                                                      inContainer: self];
 
   return newMessage;
@@ -119,9 +115,10 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   ownerUser = [[self userContext] sogoUser];
   if ([[context activeUser] isEqual: ownerUser]
       || [self subscriberCanReadMessages])
-    keys = [(SOGoMAPIFSFolder *) sogoObject
-              toOneRelationshipKeysMatchingQualifier: qualifier
-                                    andSortOrderings: sortOrderings];
+    keys = [(SOGoMAPIDBFolder *) sogoObject childKeysOfType: MAPIDBObjectTypeMessage
+                                             includeDeleted: NO
+                                          matchingQualifier: qualifier
+                                           andSortOrderings: sortOrderings];
   else
     keys = [NSArray array];
 
@@ -131,39 +128,17 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 - (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
                          andSortOrderings: (NSArray *) sortOrderings
 {
-  NSArray *entries;
-  NSMutableArray *filteredEntries;
-  NSUInteger count, max;
-  MAPIStoreFSFolder *subfolder;
-  SOGoMAPIFSMessage *propertiesMessage;
-  NSString *subfolderKey;
-
-  entries = [(SOGoMAPIFSFolder *) sogoObject toManyRelationshipKeys];
-  if (qualifier)
-    {
-      max = [entries count];
-      filteredEntries = [NSMutableArray arrayWithCapacity: max];
-      for (count = 0; count < max; count++)
-        {
-          subfolderKey = [entries objectAtIndex: count];
-          subfolder = [self lookupFolder: subfolderKey];
-          propertiesMessage = [subfolder propertiesMessage];
-          if ([qualifier evaluateMAPIVolatileMessage: propertiesMessage])
-            [filteredEntries addObject: subfolderKey];
-        }
-      entries = filteredEntries;
-    }
-  if (sortOrderings)
-    [self errorWithFormat: @"sort orderings are not used for folders"];
-
-  return entries;
+  return [dbFolder childKeysOfType: MAPIDBObjectTypeFolder
+                    includeDeleted: NO
+                 matchingQualifier: qualifier
+                  andSortOrderings: sortOrderings];
 }
 
 - (NSDate *) lastMessageModificationTime
 {
   NSUInteger count, max;
   NSDate *date, *fileDate;
-  MAPIStoreFSMessage *msg;
+  MAPIStoreDBMessage *msg;
   NSArray *messageKeys;
 
   messageKeys = [self messageKeys];
@@ -189,7 +164,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 
 - (SOGoFolder *) aclFolder
 {
-  return propsFolder;
+  return sogoObject;
 }
 
 - (NSArray *) rolesForExchangeRights: (uint32_t) rights
