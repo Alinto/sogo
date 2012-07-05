@@ -38,29 +38,34 @@
 @class MAPIStoreMessageTable;
 @class MAPIStorePermissionsTable;
 @class SOGoFolder;
-@class SOGoMAPIFSFolder;
-@class SOGoMAPIFSMessage;
+@class SOGoMAPIDBFolder;
+@class SOGoMAPIDBMessage;
 
-#import "MAPIStoreObject.h"
+#import "MAPIStoreSOGoObject.h"
 
-@interface MAPIStoreFolder : MAPIStoreObject
+@interface MAPIStoreFolder : MAPIStoreSOGoObject
 {
   MAPIStoreContext *context;
   // NSArray *messageKeys;
   // NSArray *faiMessageKeys;
   // NSArray *folderKeys;
 
-  SOGoMAPIFSFolder *faiFolder;
-  SOGoMAPIFSFolder *propsFolder;
-  SOGoMAPIFSMessage *propsMessage;
+  SOGoMAPIDBFolder *dbFolder;
+  // SOGoMAPIDBFolder *faiFolder;
+  // SOGoMAPIDBFolder *propsFolder;
+  // SOGoMAPIDBMessage *propsMessage;
 }
 
 - (void) setContext: (MAPIStoreContext *) newContext;
 
+- (void) setupAuxiliaryObjects;
+
+- (SOGoMAPIDBFolder *) dbFolder;
+
 - (NSArray *) activeMessageTables;
 - (NSArray *) activeFAIMessageTables;
 
-- (SOGoMAPIFSMessage *) propertiesMessage;
+// - (SOGoMAPIDBMessage *) propertiesMessage;
 
 - (id) lookupMessageByURL: (NSString *) messageURL;
 - (id) lookupFolderByURL: (NSString *) folderURL;

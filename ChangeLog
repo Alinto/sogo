@@ -24,6 +24,25 @@
 	This still need some css tweaks.
 	  
 
+2012-07-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreRecurrenceUtils.m
+	(-setupRecurrenceWithMasterEntity:fromRecurrencePattern:): add
+	exception dates to master entity based on the
+	"DeletedInstanceDates" member of the struct.
+	(-fillRecurrencePattern:withEvent:inTimeZone:inMemCtx:): new name
+	for fillRecurrencePattern:withStartDate:andEndDate:, add exception
+	dates to struct.
+
+	* OpenChange/NSDate+MAPIStore.m (NSDateCompare): new comparison
+	function for sorting array of NSDate instances.
+
+2012-06-30  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/NSObject+MAPIStore.h: renamed
+	MAPIStoreTallocWrapper.MAPIStoreSOGoObject to .instance, to avoid
+	confusion in certain versions of GCC with our new class type.
+
 2012-06-29  Jean Raby  <jraby@inverse.ca>
 
 	* SoObjects/SOGo/WORequest+SOGo.[mh]
@@ -33,6 +52,23 @@
 	* SoObjects/Contacts/SOGoContactFolders.m (appendSystemSources):
 	Let sogo append system sources if the request comes from an android
 	client even if its user agent matches the IPhoneAddressBook
+
+2012-06-29  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreSOGo.m
+	(sogo_message_attachment_open_embedded_message): added the "mode"
+	parameter.
+
+	* OpenChange/SOGoMAPIDBObject.m: new class module that replaced
+	SOGoMAPIFSMessage.
+
+	* OpenChange/SOGoMAPIDBFolder.m: new class module that replaced
+	SOGoMAPIFSFolder.
+
+2012-06-28  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/SOGo/SOGoObject.m (-initWithName:inContainer:): make
+	sure that "_name" is neither nil nor empty.
 
 2012-06-27  Jean Raby  <jraby@inverse.ca>
 

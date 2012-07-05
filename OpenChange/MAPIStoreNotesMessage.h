@@ -23,9 +23,9 @@
 #ifndef MAPISTORENOTESMESSAGE_H
 #define MAPISTORENOTESMESSAGE_H
 
-#import "MAPIStoreFSMessage.h"
+#import "MAPIStoreDBMessage.h"
 
-@interface MAPIStoreNotesMessage : MAPIStoreFSMessage
+@interface MAPIStoreNotesMessage : MAPIStoreDBMessage
 @end
 
 #endif /* MAPISTORENOTESMESSAGE_H */

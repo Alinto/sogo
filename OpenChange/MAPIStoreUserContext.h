@@ -28,6 +28,7 @@
 @class NSMutableDictionary;
 @class NSString;
 @class NSTimeZone;
+@class NSURL;
 
 @class WOContext;
 
@@ -52,6 +53,9 @@
 
   MAPIStoreMapping *mapping;
 
+  BOOL userDbTableExists;
+  NSURL *folderTableURL;
+
   WOContext *woContext;
   MAPIStoreAuthenticator *authenticator;
 }
@@ -71,7 +75,10 @@
 
 - (NSDictionary *) rootFolders;
 
+- (NSURL *) folderTableURL;
 - (MAPIStoreMapping *) mapping;
+
+- (void) ensureFolderTableExists;
 
 /* SOGo hacky magic */
 - (void) activateWithUser: (SOGoUser *) activeUser;

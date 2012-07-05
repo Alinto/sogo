@@ -23,9 +23,9 @@
 #ifndef MAPISTORENOTESCONTEXT_H
 #define MAPISTORENOTESCONTEXT_H
 
-#import "MAPIStoreFSBaseContext.h"
+#import "MAPIStoreDBBaseContext.h"
 
-@interface MAPIStoreNotesContext : MAPIStoreFSBaseContext
+@interface MAPIStoreNotesContext : MAPIStoreDBBaseContext
 
 @end
 
