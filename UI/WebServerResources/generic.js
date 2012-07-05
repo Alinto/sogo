@@ -206,6 +206,42 @@ function openUserFolderSelector(callback, type) {
     }
 }
 
+function openGenericWindow(url, wId) {
+    var div = $("popupFrame");
+    if (div) {
+        if (!div.hasClassName("small"))
+            div.addClassName("small");
+        var iframe = div.down("iframe");
+        iframe.src = url;
+        if (!wId)
+	    wId = "genericFrame";
+        iframe.id = wId;;
+        var bgDiv = $("bgFrameDiv");
+        if (bgDiv) {
+            bgDiv.show();
+        }
+        else {
+            bgDiv = createElement("div", "bgFrameDiv");
+            document.body.appendChild(bgDiv);
+        }
+        div.show();
+
+        return div;
+    }
+    else {
+        if (!wId)
+            wId = "_blank";
+        else
+            wId = sanitizeWindowName(wId);
+
+        var w = window.open(url, wId,
+                            "width=550,height=650,resizable=1,scrollbars=1,location=0");
+        w.focus();
+
+        return w;
+    }
+}
+
 function openContactWindow(url, wId) {
     var div = $("popupFrame");
     if (div) {

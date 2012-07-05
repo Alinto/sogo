@@ -1,5 +1,20 @@
 2012-07-05  Jean Raby  <jraby@inverse.ca>
 
+	* UI/WebServerResources/generic.js (openGenericWindow):
+	New method that opens a simple new window.
+
+	* UI/WebServerResources/ContactsUI.js (onMenuRawContact):
+	New callback to show the vCard content from the menu.
+
+	* UI/WebServerResources/ContactsUI.js (onContactMenuPrepareVisibility):
+	Enable the export and raw functions only on vcards contacts.
+
+	* UI/Templates/ContactsUI/UIxContactFoldersView.wox:
+	New contextual menu item: Show vCard content
+
+	* UI/Contacts/UIxContactFolderActions.m (rawAction):
+	New method that returns the raw contact data for all the contact uids provided
+
 	* UI/Contacts/UIxContactView.m (secondaryEmail):
 	function renamed to secondaryEmails. It now returns all addresses
 	instead of the first one found in the vcard.

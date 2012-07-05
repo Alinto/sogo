@@ -290,6 +290,20 @@ function onMenuExportContact (event) {
     }
 }
 
+function onMenuRawContact (event) {
+    var selectedFolders = $("contactFolders").getSelectedNodes();
+    var canExport = (selectedFolders[0].getAttribute("owner") != "nobody");
+    if (canExport) {
+        var selectedFolderId = $(selectedFolders[0]).readAttribute("id");
+        var contactIds = document.menuTarget.collect(function(row) {
+                return row.readAttribute("id");
+            });
+        var url = ApplicationBaseURL + selectedFolderId + "/raw"
+          + "?uid=" + contactIds.join("&uid=");
+        openGenericWindow(url);
+    }
+}
+
 function actionContactCallback(http) {
     if (http.readyState == 4)
         if (isHttpStatus204(http.status)) {
@@ -1176,6 +1190,19 @@ function onContactMenuPrepareVisibility() {
         deleteOption.removeClassName("disabled");
         moveOption.removeClassName("disabled");
     }
+
+    var exportOption = elements[10];
+    var rawOption = elements[11];
+    if ($(selectedFolder).getAttribute("owner") == "nobody") {
+        // public folders (ldap) cannot export or show raw contacts 
+        exportOption.addClassName("disabled");
+        rawOption.addClassName("disabled");
+    }
+    else {
+        exportOption.removeClassName("disabled");
+        rawOption.removeClassName("disabled");
+    }
+
 	
     return true;
 }
@@ -1197,7 +1224,7 @@ getMenus = function() {
                                      onMenuWriteToContact, onMenuAIMContact,
                                      "-", onMenuDeleteContact, "-",
                                      "moveContactMenu", "copyContactMenu", 
-                                     onMenuExportContact);
+                                     onMenuExportContact, onMenuRawContact);
     menus["searchMenu"] = new Array(setSearchCriteria, setSearchCriteria);
    
     var contactFoldersMenu = $("contactFoldersMenu");

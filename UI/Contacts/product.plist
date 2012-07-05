@@ -99,6 +99,11 @@
           actionClass = "UIxContactFolderActions";
           actionName  = "export";
         };
+        raw = {
+          protectedBy = "View";
+          actionClass = "UIxContactFolderActions";
+          actionName  = "raw";
+        };
         exportFolder = {
           protectedBy = "View";
           actionClass = "UIxContactFolderActions";
