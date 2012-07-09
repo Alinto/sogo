@@ -161,7 +161,7 @@ typedef enum
 	      o = [source objectForKey: key];
 
 	      if (o)
-		NSLog(@"value for key \"%@\": %@", key, [o jsonRepresentation]);
+		printf("%s: %s\n", [key UTF8String], [[o jsonRepresentation] UTF8String]);
 	      else
 		NSLog(@"Value for key \"%@\" not found in %@", key, type);
 
