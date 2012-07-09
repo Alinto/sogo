@@ -67,8 +67,7 @@
   fprintf (stderr, "expire-sessions [nbMinutes]\n\n"
 	   "       nbMinutes       Number of minutes of inactivity after which a user session will be expired\n"
 	   "\n"
-	   "The SOGoSessionExpireMinutes user default will be used if nbMinutes is not specified\n"
-           "The expire-sessions action should be configured as a cronjob.\n");
+     "The expire-sessions action should be configured as a cronjob.\n");
 }
 
 - (BOOL) expireUserSessionOlderThan: (int) nbMinutes
