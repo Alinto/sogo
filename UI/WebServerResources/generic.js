@@ -1179,7 +1179,8 @@ function onSearchFormSubmit(event) {
 
     if (searchValue.value != searchValue.ghostPhrase
         && (searchValue.value != searchValue.lastSearch
-            && searchValue.value.strip().length > minimumSearchLength)) {
+            && (searchValue.value.strip().length > minimumSearchLength
+                || searchValue.value.strip() == "." ))) {
         search["criteria"] = searchCriteria.value;
         search["value"] = searchValue.value;
         searchValue.lastSearch = searchValue.value;
