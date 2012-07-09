@@ -99,11 +99,6 @@
           actionClass = "UIxContactFolderActions";
           actionName  = "export";
         };
-        raw = {
-          protectedBy = "View";
-          actionClass = "UIxContactFolderActions";
-          actionName  = "raw";
-        };
         exportFolder = {
           protectedBy = "View";
           actionClass = "UIxContactFolderActions";
@@ -206,6 +201,11 @@
           actionClass = "UIxContactActions";
           actionName  = "unsetCategory";
         };
+        raw = {
+          protectedBy = "View";
+          actionClass = "UIxContactActions";
+          actionName  = "raw";
+        };
       };
     };
 
@@ -237,6 +237,11 @@
           protectedBy = "Change Images And Files";
           pageName    = "UIxListEditor";
           actionName  = "save";
+        };
+        raw = {
+          protectedBy = "View";
+          actionClass = "UIxContactActions";
+          actionName  = "raw";
         };
       };
     };

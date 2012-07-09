@@ -72,6 +72,8 @@
       <li><!-- separator --></li>
       <li><var:string label:value="Mark Completed"/></li>
       <li><var:string label:value="Delete Task"/></li>
+      <li><!-- separator --></li>
+      <li><var:string label:value="View Raw Source"/></li>
     </ul>
   </div>
 

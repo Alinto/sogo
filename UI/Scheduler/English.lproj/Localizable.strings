@@ -565,6 +565,7 @@ vtodo_class2 = "(Confidential task)";
 "Delete Task" = "Delete Task";
 "Delete Event" = "Delete Event";
 "Copy event to my calendar" = "Copy event to my calendar";
+"View Raw Source" = "View Raw Source";
 
 "Subscribe to a web calendar..." = "Subscribe to a web calendar...";
 "URL of the Calendar" = "URL of the Calendar";

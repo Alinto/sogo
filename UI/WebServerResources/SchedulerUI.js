@@ -414,6 +414,18 @@ function copyEventCallback(http) {
     }
 }
 
+function onMenuRawEvent(event) {
+    if (selectedCalendarCell.length != 1) {
+      return;
+    }
+
+    var calendar = selectedCalendarCell[0].calendar;
+    var cname = selectedCalendarCell[0].cname;
+
+    var url = ApplicationBaseURL + calendar + "/" + cname + "/raw"
+    openGenericWindow(url);
+}
+
 function modifyEvent(sender, modification, parameters) {
     var currentLocation = '' + window.location;
     var arr = currentLocation.split("/");
@@ -1898,7 +1910,9 @@ function calendarDisplayCallback(http) {
                              loadNextView,
                              "-",
                              deleteEvent,
-                             copyEventToPersonalCalendar);
+                             copyEventToPersonalCalendar,
+			     onMenuRawEvent
+			     );
         var observer;
         if (currentView == 'dayview') {
             observer = $("daysView");
@@ -2539,9 +2553,11 @@ function onMenuCurrentViewPrepareVisibility() {
     var options = $(this).down("ul");
     var deleteOption = options.down("li", 6);
     var copyOption = options.down("li", 7);
+    var rawOption = options.down("li", 8);
     if (!selectedCalendarCell) {
         deleteOption.addClassName("disabled");
         copyOption.addClassName("disabled");
+        rawOption.addClassName("disabled");
     }
     else {
         deleteOption.removeClassName("disabled");
@@ -2550,11 +2566,29 @@ function onMenuCurrentViewPrepareVisibility() {
             copyOption.addClassName("disabled");
         else
             copyOption.removeClassName("disabled");
+	if (selectedCalendarCell.length == 1) {
+	    // show raw content is only allowed for single event
+            rawOption.removeClassName("disabled");
+        }
+	else
+            rawOption.addClassName("disabled");
     }
 
     return true;
 }
 
+function onTasksListMenuPrepareVisibility() {
+    var options = $(this).down("ul");
+    var rawOption = options.down("li", 6);
+
+    var selectedTasks = $$("UL#tasksList LI._selected");
+    if (selectedTasks.length == 1)
+        rawOption.removeClassName("disabled");
+    else
+        rawOption.addClassName("disabled");
+
+    return true;
+}
 function getMenus() {
     var menus = {};
 
@@ -2581,11 +2615,16 @@ function getMenus() {
     menus["searchMenu"] = new Array(setSearchCriteria);
 
     menus["tasksListMenu"] = new Array (editEvent, newTask, "-",
-                                        marksTasksAsCompleted, deleteEvent);
+                                        marksTasksAsCompleted, deleteEvent, "-",
+					onMenuRawTask);
 
     var calendarsMenu = $("calendarsMenu");
     if (calendarsMenu)
         calendarsMenu.prepareVisibility = onCalendarsMenuPrepareVisibility;
+
+    var tasksListMenu = $("tasksListMenu");
+    if (tasksListMenu)
+        tasksListMenu.prepareVisibility = onTasksListMenuPrepareVisibility;
 
     return menus;
 }
@@ -2611,6 +2650,17 @@ function _updateTaskCompletion (task, value) {
 
     return false;
 }
+
+function onMenuRawTask(event) {
+    var selectedTasks = $$("UL#tasksList LI._selected");
+    if (selectedTasks.length != 1) {
+      return;
+    }
+
+    var url = ApplicationBaseURL + selectedTasks[0].calendar  + "/" + selectedTasks[0].cname + "/raw"
+    openGenericWindow(url);
+}
+
 
 function onMenuSharing(event) {
     if ($(this).hasClassName("disabled"))
