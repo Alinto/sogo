@@ -1,5 +1,9 @@
 2012-07-09  Jean Raby  <jraby@inverse.ca>
 
+	* Tools/SOGoToolUserPreferences.m:
+	use printf() instead of NSLog to print out user preferences.
+	Makes it easier to grep.
+
 	* UI/WebServerResources/generic.js (onSearchFormSubmit):
 	Restore behavior of a single dot (.) in the search field (wildcard search)
 
