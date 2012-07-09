@@ -1,5 +1,8 @@
 2012-07-09  Jean Raby  <jraby@inverse.ca>
 
+	* UI/WebServerResources/UIxContactsUserFolders.js (onSearchFormSubmit):
+	Restore behavior of a single dot (.) in the search field (wildcard search)
+
 	* UI/WebServerResources/SchedulerUI.js (onMenuRawEvent, onMenuRawTask):
 	New callback to show the event/task content from the menu
 

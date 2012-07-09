@@ -14,7 +14,8 @@ function onSearchFormSubmit() {
             document.userFoldersRequest.aborted = true;
             document.userFoldersRequest.abort();
         }
-	if (encodedValue.trim().length > minimumSearchLength) {
+	if (encodedValue.trim().length > minimumSearchLength 
+            || encodedValue == "." ) {
 	    startAnimation($("pageContent"), $("filterPanel"));
             document.userFoldersRequest
                 = triggerAjaxRequest(url, usersSearchCallback);
