@@ -1198,7 +1198,9 @@ function onContactMenuPrepareVisibility() {
         rawOption.removeClassName("disabled");
     }
 
-	
+    if (contactRows.length != 1)
+        rawOption.addClassName("disabled");
+
     return true;
 }
 
