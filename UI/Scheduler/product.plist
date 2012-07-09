@@ -235,6 +235,11 @@
           actionClass    = "UIxAppointmentActions";
           actionName  = "copy";
         };
+        raw = {
+          protectedBy = "ViewAllComponent";
+          actionClass = "UIxComponentEditor";
+          actionName  = "raw";
+        };
         accept = { 
           protectedBy = "RespondToComponent";
           pageName    = "UIxAppointmentEditor"; 
@@ -303,6 +308,11 @@
           protectedBy = "ModifyComponent";
           pageName    = "UIxTaskEditor"; 
           actionName  = "changeStatus";
+        };
+        raw = {
+          protectedBy = "ViewAllComponent";
+          pageName    = "UIxComponentEditor"; 
+          actionName  = "raw";
         };
       };
     };

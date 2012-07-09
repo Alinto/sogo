@@ -1,3 +1,27 @@
+2012-07-09  Jean Raby  <jraby@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (onMenuRawEvent, onMenuRawTask):
+	New callback to show the event/task content from the menu
+
+	* UI/Scheduler/UIxComponentEditor.m (rawAction):
+	New method that returns the object's raw content in a WOResponse.
+
+	* UI/Templates/SchedulerUI/UIxCal{Day,Month,Main,Week}View.wox:
+	New contextual menu item: Show Raw Source
+
+	* UI/WebServerResources/ContactsUI.js (onMenuRawContact):
+	Rework to use calendar/ics/raw
+
+	* UI/Contacts/UIxContactFolderActions.m (rawAction):
+	Removed / moved to UI/Contacts/UIxContactActions.m
+
+	* UI/Contacts/UIxContactActions.m (rawAction):
+	New method that returns the object's raw content in a WOResponse.
+
+	* UI/Templates/ContactsUI/UIxContactFoldersView.wox:
+	Show vCard content -> Show Raw Source
+
+
 2012-07-05  Jean Raby  <jraby@inverse.ca>
 
 	* UI/WebServerResources/generic.js (openGenericWindow):

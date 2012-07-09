@@ -291,17 +291,12 @@ function onMenuExportContact (event) {
 }
 
 function onMenuRawContact (event) {
-    var selectedFolders = $("contactFolders").getSelectedNodes();
-    var canExport = (selectedFolders[0].getAttribute("owner") != "nobody");
-    if (canExport) {
-        var selectedFolderId = $(selectedFolders[0]).readAttribute("id");
-        var contactIds = document.menuTarget.collect(function(row) {
-                return row.readAttribute("id");
-            });
-        var url = ApplicationBaseURL + selectedFolderId + "/raw"
-          + "?uid=" + contactIds.join("&uid=");
-        openGenericWindow(url);
-    }
+    var cname = document.menuTarget.collect(function(row) {
+            return row.readAttribute("id");
+        });
+
+    openGenericWindow(URLForFolderID(Contact.currentAddressBook)
+                      + "/" + cname + "/raw");
 }
 
 function actionContactCallback(http) {

@@ -17,6 +17,7 @@
       <li><!-- separator --></li>
       <li><var:string label:value="Delete Event"/></li>
       <li><var:string label:value="Copy event to my calendar"/></li>
+      <li><var:string label:value="View Raw Source"/></li>
     </ul>
   </div>
   <a href="#"

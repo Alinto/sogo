@@ -84,7 +84,7 @@
       <li><var:string label:value="Move To" /></li>
       <li><var:string label:value="Copy To" /></li>
       <li><var:string label:value="Export" /></li>
-      <li><var:string label:value="Show vCard content" /></li>
+      <li><var:string label:value="View Raw Source" /></li>
     </ul>
   </div>
 
