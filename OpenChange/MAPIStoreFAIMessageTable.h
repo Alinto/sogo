@@ -23,9 +23,9 @@
 #ifndef MAPISTOREFAIMESSAGETABLE_H
 #define MAPISTOREFAIMESSAGETABLE_H
 
-#import "MAPIStoreFSMessageTable.h"
+#import "MAPIStoreDBMessageTable.h"
 
-@interface MAPIStoreFAIMessageTable : MAPIStoreFSMessageTable
+@interface MAPIStoreFAIMessageTable : MAPIStoreDBMessageTable
 @end
 
 #endif /* MAPISTOREFAIMESSAGETABLE_H */

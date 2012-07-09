@@ -177,6 +177,9 @@
 {
   if ((self = [self init]))
     {
+      if ([_name length] == 0)
+        [NSException raise: NSInvalidArgumentException
+                     format: @"'_name' must not be an empty string"];
       context = [[WOApplication application] context];
       nameInContainer = [_name copy];
       container = _container;

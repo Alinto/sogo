@@ -1,6 +1,6 @@
-/* SOGoMAPIFSMessage.h - this file is part of SOGo
+/* MAPIStoreDBFolderTable.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,28 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOMAPIFSMESSAGE_H
-#define SOGOMAPIFSMESSAGE_H
+#ifndef MAPISTOREDBFOLDERTABLE_H
+#define MAPISTOREDBFOLDERTABLE_H
 
-#import "SOGoMAPIVolatileMessage.h"
+#import "MAPIStoreFolderTable.h"
 
-@class NSDate;
-@class NSString;
-
-@interface SOGoMAPIFSMessage : SOGoMAPIVolatileMessage
-{
-  NSString *completeFilename;
-  NSUInteger inode;
-  NSData *lastModificationTime;
-}
-
-- (void) save;
-
-- (NSString *) completeFilename;
-
-- (NSDate *) creationTime;
-- (NSDate *) lastModificationTime;
-
+@interface MAPIStoreDBFolderTable : MAPIStoreFolderTable
 @end
 
-#endif /* SOGOMAPIFSMESSAGE_H */
+#endif /* MAPISTOREDBFOLDERTABLE_H */

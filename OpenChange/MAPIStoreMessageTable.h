@@ -28,6 +28,7 @@
 @interface MAPIStoreMessageTable : MAPIStoreTable
 
 - (void) setSortOrder: (const struct SSortOrderSet *) set;
+- (void) notifyChangesForChild: (MAPIStoreMessage *) child;
 
 @end
 

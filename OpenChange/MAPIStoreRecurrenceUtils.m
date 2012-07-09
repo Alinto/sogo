@@ -21,17 +21,22 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <NGCards/iCalByDayMask.h>
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
 #import <NGCards/iCalRecurrenceRule.h>
-#import <NGCards/iCalByDayMask.h>
+#import <NGCards/iCalTimeZone.h>
 
 #import "NSDate+MAPIStore.h"
 #import "MAPIStoreRecurrenceUtils.h"
+#import "MAPIStoreTypes.h"
 
 #include <stdbool.h>
 #include <talloc.h>
@@ -43,7 +48,7 @@
 - (void) setupRecurrenceWithMasterEntity: (iCalRepeatableEntityObject *) entity
                    fromRecurrencePattern: (struct RecurrencePattern *) rp
 {
-  NSCalendarDate *startDate, *olEndDate, *untilDate;
+  NSCalendarDate *startDate, *olEndDate, *untilDate, *exDate;
   NSString *monthDay, *month;
   iCalRecurrenceRule *rule;
   iCalByDayMask *byDayMask;
@@ -203,6 +208,17 @@
       [self errorWithFormat: @"invalid value for EndType: %.4x",
             rp->EndType];
     }
+
+  /* exception dates */
+  for (count = 0; count < rp->DeletedInstanceCount; count++)
+    {
+      exDate
+        = [NSDate dateFromMinutesSince1601: rp->DeletedInstanceDates[count]];
+      exDate = [exDate hour: [startDate hourOfDay]
+                     minute: [startDate minuteOfHour]
+                     second: [startDate secondOfMinute]];
+      [entity addToExceptionDates: exDate];
+    }
 }
 
 @end
@@ -210,17 +226,24 @@
 @implementation iCalRecurrenceRule (MAPIStoreRecurrence)
 
 - (void) fillRecurrencePattern: (struct RecurrencePattern *) rp
-                 withStartDate: (NSCalendarDate *) startDate
-                    andEndDate: (NSCalendarDate *) endDate
+                     withEvent: (iCalEvent *) event
+                    inTimeZone: (NSTimeZone *) timeZone
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalRecurrenceFrequency freq;
   iCalByDayMask *byDayMask;
   NSString *byMonthDay, *bySetPos;
-  NSCalendarDate *untilDate, *beginOfWeek, *minimumDate, *moduloDate, *midnight;
+  NSCalendarDate *startDate, *endDate, *untilDate, *beginOfWeek, *minimumDate, *moduloDate, *midnight;
   iCalWeekOccurrences *days;
-  NSInteger dayOfWeek, repeatInterval, repeatCount, count, firstOccurrence;
+  NSInteger dayOfWeek, repeatInterval, repeatCount, count, firstOccurrence, max;
   uint32_t nbrMonths, mask;
+  NSArray *exDates;
 
+  startDate = [event firstRecurrenceStartDate];
+  [startDate setTimeZone: timeZone];
+  endDate = [event lastPossibleRecurrenceStartDate];
+  [endDate setTimeZone: timeZone];
+  
   rp->ReaderVersion = 0x3004;
   rp->WriterVersion = 0x3004;
 
@@ -369,6 +392,19 @@
           else
             [self errorWithFormat: @"rule for an event that never occurs"];
         }
+    }
+
+  
+  exDates = [[event exceptionDatesWithTimeZone: utcTZ]
+              sortedArrayUsingFunction: NSDateCompare
+                               context: NULL];
+  max = [exDates count];
+  rp->DeletedInstanceCount = max;
+  rp->DeletedInstanceDates = talloc_array (memCtx, uint32_t, max);
+  for (count = 0; count < max; count++)
+    {
+      startDate = [[exDates objectAtIndex: count] hour: 0 minute: 0 second: 0];
+      *(rp->DeletedInstanceDates + count) = [startDate asMinutesSince1601];
     }
 }
 
