@@ -44,4 +44,11 @@ typedef enum
 // Domain defaults
 extern NSString *SOGoPasswordChangeEnabled;
 
+typedef enum
+{
+  EventCreated = 0,
+  EventDeleted = 1,
+  EventUpdated = 2,
+} SOGoEventOperation;
+
 #endif /* _SOGOCONSTANTS_H_ */

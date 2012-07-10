@@ -78,6 +78,8 @@
 - (BOOL) hideSystemEMail;
 
 - (int) searchMinimumWordLength;
+- (BOOL) notifyOnPersonalModifications;
+- (BOOL) notifyOnExternalModifications;
 
 @end
 

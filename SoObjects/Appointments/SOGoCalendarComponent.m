@@ -760,6 +760,9 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
   return bodyPart;
 }
 
+//
+//
+//
 - (void) sendEMailUsingTemplateNamed: (NSString *) newPageName
 			   forObject: (iCalRepeatableEntityObject *) object
 		      previousObject: (iCalRepeatableEntityObject *) previousObject
@@ -994,75 +997,98 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
     }
 }
 
-- (void) sendReceiptEmailUsingTemplateNamed: (NSString *) template
-                                  forObject: (iCalRepeatableEntityObject *) object
-                                         to: (NSArray *) attendees
+- (void) sendReceiptEmailForObject: (iCalRepeatableEntityObject *) object
+		    addedAttendees: (NSArray *) theAddedAttendees
+		  deletedAttendees: (NSArray *) theDeletedAttendees
+		  updatedAttendees: (NSArray *) theUpdatedAttendees
+			 operation: (SOGoEventOperation) theOperation
 {
-  NSString *pageName, *mailDate, *mailText, *fullSenderEmail, *senderEmail;
+  NSString *mailDate, *mailText, *fullSenderEmail, *senderEmail, *fullRecipientEmail, *recipientEmail;
+  NSDictionary *senderIdentity, *recipientIdentity;
   SOGoAptMailReceipt *page;
   NGMutableHashMap *headerMap;
   NGMimeMessage *msg;
   SOGoUser *currentUser;
   SOGoDomainDefaults *dd;
-  NSDictionary *identity;
 
+  // We must handle three cases here:
+  // - Receive a mail when I modify my calendar
+  // - Receive a mail when someone else modifies my calendar
+  // - When I modify my calendar, send a mail to: <foo@bar.com>
+
+  // We first built the template that we'll slightly adjust for our three use-cases
+  page = [[WOApplication application] pageWithName: @"SOGoAptMailReceipt"
+					 inContext: context];
+  [page setApt: (iCalEvent *) object];
+  [page setAddedAttendees: theAddedAttendees];
+  [page setDeletedAttendees: theDeletedAttendees];
+  [page setUpdatedAttendees: theUpdatedAttendees];
+  [page setOperation: theOperation];
+  
   currentUser = [context activeUser];
-  if ([[currentUser userDefaults] appointmentSendEMailReceipts]
-      && [attendees count])
-    {
-      pageName = [NSString stringWithFormat: @"SOGoAptMail%@Receipt",
-                           template];
-      page = [[WOApplication application] pageWithName: pageName
-                                             inContext: context];
-      [page setApt: (iCalEvent *) object];
-      [page setRecipients: attendees];
+  senderIdentity = [currentUser primaryIdentity];
 
-      identity = [currentUser primaryIdentity];
+  dd = [currentUser domainDefaults];
 
-      /* construct message */
 #warning SOPE is just plain stupid here - if you change the case of keys, it will break the encoding of fields
-      headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
-      fullSenderEmail = [identity keysWithFormat: @"%{fullName} <%{email}>"];
-      [headerMap setObject: fullSenderEmail forKey: @"from"];
-      [headerMap setObject: fullSenderEmail forKey: @"to"];
-      mailDate = [[NSCalendarDate date] rfc822DateString];
-      [headerMap setObject: mailDate forKey: @"date"];
-      [headerMap setObject: [page getSubject] forKey: @"subject"];
-      [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
-      [headerMap setObject: @"text/plain; charset=utf-8"
-                    forKey: @"content-type"];
-      msg = [NGMimeMessage messageWithHeader: headerMap];
+  headerMap = [NGMutableHashMap hashMapWithCapacity: 5];
+  
+  // Sender can vary, base on whom modifies the actual event (owner vs. someone else)
+  senderEmail = [senderIdentity objectForKey: @"email"];
+  fullSenderEmail = [senderIdentity keysWithFormat: @"%{fullName} <%{email}>"];
+  [headerMap setObject: fullSenderEmail forKey: @"from"];
 
-      /* text part */
-      mailText = [page getBody];
-      [msg setBody: [mailText dataUsingEncoding: NSUTF8StringEncoding]];
+  // Recipient is fixed, which is the calendar owner
+  currentUser = [SOGoUser userWithLogin: self->owner];
+  recipientIdentity = [currentUser primaryIdentity];
+  recipientEmail = [recipientIdentity objectForKey: @"email"];
+  fullRecipientEmail = [recipientIdentity keysWithFormat: @"%{fullName} <%{email}>"];
+  
+  [headerMap setObject: fullRecipientEmail forKey: @"to"];
 
-      /* send the damn thing */
-      senderEmail = [identity objectForKey: @"email"];
-      dd = [currentUser domainDefaults];
+  mailDate = [[NSCalendarDate date] rfc822DateString];
+  [headerMap setObject: mailDate forKey: @"date"];
+  [headerMap setObject: [page getSubject] forKey: @"subject"];
+  [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
+  [headerMap setObject: @"text/plain; charset=utf-8"
+		forKey: @"content-type"];
+  msg = [NGMimeMessage messageWithHeader: headerMap];
+  
+  /* text part */
+  mailText = [page getBody];
+  [msg setBody: [mailText dataUsingEncoding: NSUTF8StringEncoding]];
+  
+  if ([self->owner isEqualToString: [currentUser login]])
+    {
+      if ([[self container] notifyOnPersonalModifications])
+	{
+	  [[SOGoMailer mailerWithDomainDefaults: dd]
+		    sendMimePart: msg
+		    toRecipients: [NSArray arrayWithObject: recipientEmail]
+                          sender: senderEmail];
+	}
+      
+      if ([[self container] notifyUserOnPersonalModifications])
+	{
+	  recipientEmail = [[self container] notifiedUserOnPersonalModifications];
+	  [[SOGoMailer mailerWithDomainDefaults: dd]
+		    sendMimePart: msg
+		    toRecipients: [NSArray arrayWithObject: recipientEmail]
+                          sender: senderEmail];
+	}
+    }
+
+      
+  if ([[self container] notifyOnExternalModifications] &&
+      ![self->owner isEqualToString: [currentUser login]])
+    {
       [[SOGoMailer mailerWithDomainDefaults: dd]
 		    sendMimePart: msg
-		    toRecipients: [NSArray arrayWithObject: senderEmail]
+		    toRecipients: [NSArray arrayWithObject: recipientEmail]
                           sender: senderEmail];
     }
+
 }
-
-// - (BOOL) isOrganizerOrOwner: (SOGoUser *) user
-// {
-//   BOOL isOrganizerOrOwner;
-//   iCalRepeatableEntityObject *component;
-//   NSString *organizerEmail;
-
-//   component = [self component: NO];
-//   organizerEmail = [[component organizer] rfc822Email];
-//   if (component && [organizerEmail length] > 0)
-//     isOrganizerOrOwner = [user hasEmail: organizerEmail];
-//   else
-//     isOrganizerOrOwner
-//       = [[container ownerInContext: context] isEqualToString: [user login]];
-
-//   return isOrganizerOrOwner;
-// }
 
 - (iCalPerson *) findParticipantWithUID: (NSString *) uid
 {

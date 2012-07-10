@@ -324,4 +324,14 @@
   return [self integerForKey: @"SOGoSearchMinimumWordLength"];
 }
 
+- (BOOL) notifyOnPersonalModifications
+{
+  return [self boolForKey: @"SOGoNotifyOnPersonalModifications"];
+}
+
+- (BOOL) notifyOnExternalModifications
+{
+  return [self boolForKey: @"SOGoNotifyOnExternalModifications"];
+}
+
 @end

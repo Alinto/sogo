@@ -1,3 +1,22 @@
+2012-07-09  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+	* Dropped old templates (SOGoAptMailDeletionReceipt.wox
+	SOGoAptMailInvitationReceipt.wox and SOGoAptMailUpdateReceipt.wox)
+	which are in fact replaced by SOGoAptMailReceipt.wox. File added
+	to the repository.
+
+	* Dropped SOGoAppointmentSendEMailReceipts
+
+	* Added two new domain defaults: SOGoNotifyOnPersonalModifications
+	and SOGoNotifyOnExternalModifications. They allow users to be notified
+	when modifying their own calendars or when someone else to it. These
+	defaults are over-writable by users from their calendar properties window.
+
+	* Implemented the code related to the two new defaults together with a 
+	third option - which is to notify a specific person when one modifies
+	his/her calendar. This commit is partial as more testing is required
+	and some code changes to trigger the right notifications.
+
 2012-07-09  Jean Raby  <jraby@inverse.ca>
 
 	* Tools/SOGoToolUserPreferences.m:

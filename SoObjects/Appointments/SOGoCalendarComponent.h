@@ -75,9 +75,10 @@
 - (void) sendResponseToOrganizer: (iCalRepeatableEntityObject *) newComponent
                             from: (SOGoUser *) owner;
 
-- (void) sendReceiptEmailUsingTemplateNamed: (NSString *) template
-                                  forObject: (iCalRepeatableEntityObject *) object
-                                         to: (NSArray *) recipients;
+- (void) sendReceiptEmailForObject: (iCalRepeatableEntityObject *) object
+		    addedAttendees: (NSArray *) theAddedAttendees
+		  deletedAttendees: (NSArray *) theDeletedAttendees
+		  updatedAttendees: (NSArray *) theUpdatedAttendees;
 
 - (iCalPerson *) findParticipantWithUID: (NSString *) uid;
 

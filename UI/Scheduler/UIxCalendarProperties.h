@@ -1,8 +1,9 @@
 /* UIxCalendarProperties.m - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
+ * Copyright (C) 2008-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,5 +51,15 @@
 - (BOOL) mustSynchronize;
 - (NSString *) calendarSyncTag;
 - (void) setCalendarSyncTag: (NSString *) newTag;
+
+/* notifications */
+- (BOOL) notifyOnPersonalModifications;
+- (void) setNotifyOnPersonalModifications: (BOOL) b;
+- (BOOL) notifyOnExternalModifications;
+- (void) setNotifyOnExternalModifications: (BOOL) b;
+- (BOOL) notifyUserOnPersonalModifications;
+- (void) setNotifyUserOnPersonalModifications: (BOOL) b;
+- (NSString *) notifiedUserOnPersonalModifications;
+- (void) setNotifiedUserOnPersonalModifications: (NSString *) theUser;
 
 @end

@@ -2747,8 +2747,8 @@ function onCalendarModify(event) {
     var owner = selected.getAttribute("owner");
     var url = ApplicationBaseURL + calendarID + "/properties";
     var windowID = sanitizeWindowName(calendarID + " properties");
-    var width = 310;
-    var height = 294;
+    var width = 410;
+    var height = 410;
     var isWebCalendar = false;
     if (UserSettings['Calendar']
         && UserSettings['Calendar']['WebCalendars']) {
