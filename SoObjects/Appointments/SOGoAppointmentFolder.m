@@ -2273,6 +2273,84 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return error;
 }
 
+- (NSString *) davNotifyOnPersonalModifications
+{
+  return [self davBooleanForResult: [self notifyOnPersonalModifications]];
+}
+
+- (NSException *) setDavNotifyOnPersonalModifications: (NSString *) newBoolean
+{
+  NSException *error;
+
+  if ([self isValidDAVBoolean: newBoolean])
+    {
+      [self setNotifyOnPersonalModifications:
+              [self resultForDAVBoolean: newBoolean]];
+      error = nil;
+    }
+  else
+    error = [NSException exceptionWithHTTPStatus: 400
+                                          reason: @"Bad boolean value."];
+
+  return error;
+}
+
+- (NSString *) davNotifyOnExternalModifications
+{
+  return [self davBooleanForResult: [self notifyOnExternalModifications]];
+}
+
+- (NSException *) setDavNotifyOnExternalModifications: (NSString *) newBoolean
+{
+  NSException *error;
+
+  if ([self isValidDAVBoolean: newBoolean])
+    {
+      [self setNotifyOnExternalModifications:
+              [self resultForDAVBoolean: newBoolean]];
+      error = nil;
+    }
+  else
+    error = [NSException exceptionWithHTTPStatus: 400
+                                          reason: @"Bad boolean value."];
+
+  return error;
+}
+
+- (NSString *) davNotifyUserOnPersonalModifications
+{
+  return [self davBooleanForResult: [self notifyUserOnPersonalModifications]];
+}
+
+- (NSException *) setDavNotifyUserOnPersonalModifications: (NSString *) newBoolean
+{
+  NSException *error;
+
+  if ([self isValidDAVBoolean: newBoolean])
+    {
+      [self setNotifyUserOnPersonalModifications:
+              [self resultForDAVBoolean: newBoolean]];
+      error = nil;
+    }
+  else
+    error = [NSException exceptionWithHTTPStatus: 400
+                                          reason: @"Bad boolean value."];
+
+  return error;
+}
+
+- (NSString *) davNotifiedUserOnPersonalModifications
+{
+  return [self notifiedUserOnPersonalModifications];
+}
+
+- (NSException *) setDavNotifiedUserOnPersonalModifications: (NSString *) theUser
+{
+  [self setNotifiedUserOnPersonalModifications: theUser];
+
+  return nil;
+}
+
 /* vevent UID handling */
 
 - (NSString *) resourceNameForEventUID: (NSString *) uid
