@@ -2250,28 +2250,18 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 - (NSString *) davCalendarShowAlarms
 {
-  NSString *boolean;
-
-  if ([self showCalendarAlarms])
-    boolean = @"true";
-  else
-    boolean = @"false";
-
-  return boolean;
+  return [self davBooleanForResult: [self showCalendarAlarms]];
 }
 
 - (NSException *) setDavCalendarShowAlarms: (id) newBoolean
 {
   NSException *error;
 
-  error = nil;
-
-  if ([newBoolean isEqualToString: @"true"]
-      || [newBoolean isEqualToString: @"1"])
-    [self setShowCalendarAlarms: YES];
-  else if ([newBoolean isEqualToString: @"false"]
-           || [newBoolean isEqualToString: @"0"])
-    [self setShowCalendarAlarms: NO];
+  if ([self isValidDAVBoolean: newBoolean])
+    {
+      [self setShowCalendarAlarms: [self resultForDAVBoolean: newBoolean]];
+      error = nil;
+    }
   else
     error = [NSException exceptionWithHTTPStatus: 400
                                           reason: @"Bad boolean value."];
