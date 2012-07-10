@@ -3,6 +3,7 @@
  * Copyright (C) 2009-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +58,9 @@ static NSCharacterSet *wsSet = nil;
   if ((self = [super init]))
     {
       originator = nil;
-      recipients = nil;
+      addedAttendees = nil;
+      deletedAttendees = nil;
+      updatedAttendees = nil;
       isSubject = NO;
     }
 
@@ -67,7 +70,9 @@ static NSCharacterSet *wsSet = nil;
 - (void) dealloc
 {
   [originator release];
-  [recipients release];
+  [addedAttendees release];
+  [deletedAttendees release];
+  [updatedAttendees release];
   [super dealloc];
 }
 
@@ -112,14 +117,34 @@ static NSCharacterSet *wsSet = nil;
   ASSIGN (originator, newOriginator);
 }
 
-- (void) setRecipients: (NSArray *) newRecipients
+- (void) setAddedAttendees: (NSArray *) theAttendees;
 {
-  ASSIGN (recipients, newRecipients);
+  ASSIGN (addedAttendees, theAttendees);
 }
 
-- (NSArray *) recipients
+- (NSArray *) addedAttendees;
 {
-  return recipients;
+  return addedAttendees;
+}
+
+- (void) setDeletedAttendees: (NSArray *) theAttendees;
+{
+  ASSIGN (deletedAttendees, theAttendees);
+}
+
+- (NSArray *) deletedAttendees;
+{
+  return deletedAttendees;
+}
+
+- (NSArray *) updatedAttendes
+{
+  return updatedAttendees;
+}
+
+- (void) setUpdatedAttendees: (NSArray *) theAttendees
+{
+  ASSIGN (updatedAttendees, theAttendees);
 }
 
 - (void) setCurrentRecipient: (iCalPerson *) newCurrentRecipient
@@ -130,6 +155,32 @@ static NSCharacterSet *wsSet = nil;
 - (iCalPerson *) currentRecipient
 {
   return currentRecipient;
+}
+
+- (void) setOperation: (SOGoEventOperation) theOperation
+{
+  operation = theOperation;
+}
+
+- (NSString *) subject
+{
+  NSString *s;
+  switch (operation)
+    {
+    case EventCreated:
+      s = @"Receipt: event was created";
+      break;
+      
+    case EventDeleted:
+      s = @"Receipt: event was deleted";
+      break;
+      
+    case EventUpdated:
+    default:
+      s = @"Receipt: event was updated";
+    }
+
+  return s;
 }
 
 - (NSString *) _formattedUserDate: (NSCalendarDate *) date
@@ -163,17 +214,5 @@ static NSCharacterSet *wsSet = nil;
 {
   return [self _formattedUserDate: [(iCalEvent *) apt endDate]];
 }
-
-@end
-
-@implementation SOGoAptMailInvitationReceipt : SOGoAptMailReceipt
-
-@end
-
-@implementation SOGoAptMailUpdateReceipt : SOGoAptMailReceipt
-
-@end
-
-@implementation SOGoAptMailDeletionReceipt : SOGoAptMailReceipt
 
 @end

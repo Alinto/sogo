@@ -1,8 +1,9 @@
 /* UIxCalendarProperties.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2010 Inverse inc.
+ * Copyright (C) 2008-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -308,6 +309,46 @@
 - (NSString *) publicWebDavXMLURL
 {
   return [NSString stringWithFormat: @"%@.xml", [self _basePublicCalDAVURL]];
+}
+
+- (BOOL) notifyOnPersonalModifications
+{
+  return [calendar notifyOnPersonalModifications];
+}
+
+- (void) setNotifyOnPersonalModifications: (BOOL) b
+{
+  [calendar setNotifyOnPersonalModifications: b];
+}
+
+- (BOOL) notifyOnExternalModifications
+{
+  return [calendar notifyOnExternalModifications];
+}
+
+- (void) setNotifyOnExternalModifications: (BOOL) b
+{
+  [calendar setNotifyOnExternalModifications: b];
+}
+
+- (BOOL) notifyUserOnPersonalModifications
+{
+  return [calendar notifyUserOnPersonalModifications];
+}
+
+- (void) setNotifyUserOnPersonalModifications: (BOOL) b
+{
+  [calendar setNotifyUserOnPersonalModifications: b];
+}
+
+- (NSString *) notifiedUserOnPersonalModifications
+{
+  return [calendar notifiedUserOnPersonalModifications];
+}
+
+- (void) setNotifiedUserOnPersonalModifications: (NSString *) theUser
+{
+  [calendar setNotifiedUserOnPersonalModifications: theUser];
 }
 
 @end

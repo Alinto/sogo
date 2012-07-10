@@ -40,6 +40,7 @@
 
 #import <SOPE/NGCards/NSString+NGCards.h>
 
+#import <SOGo/SOGoConstants.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSDictionary+Utilities.h>
@@ -415,8 +416,13 @@
                      previousObject: oldEvent
                         toAttendees: updateAttendees
                            withType: @"calendar:invitation-update"];
-  [self sendReceiptEmailUsingTemplateNamed: @"Update"
-                                 forObject: newEvent to: updateAttendees];
+
+#if 0
+  [self sendReceiptEmailForObject: newEvent
+		   addedAttendees: nil
+		 deletedAttendees: nil
+		 updatedAttendees: updateAttendees];
+#endif
 }
 
 //
@@ -647,9 +653,13 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 - (NSException *) _handleUpdatedEvent: (iCalEvent *) newEvent
 		         fromOldEvent: (iCalEvent *) oldEvent
 {
+  NSArray *addedAttendees, *deletedAttendees, *updatedAttendees;
   iCalEventChanges *changes;
-  NSArray *attendees;
   NSException *ex;
+
+  addedAttendees = nil;
+  deletedAttendees = nil;
+  updatedAttendees = nil;
 
   changes = [newEvent getChangesRelativeToEvent: oldEvent];
   if ([changes sequenceShouldBeIncreased])
@@ -662,36 +672,34 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
         changes = [newEvent getChangesRelativeToEvent: oldEvent];
     }
 
-  attendees = [changes deletedAttendees];
+  deletedAttendees = [changes deletedAttendees];
 
   // We delete the attendees in all exception occurences, if
   // the attendees were removed from the master event.
-  [self _addOrDeleteAttendees: attendees
+  [self _addOrDeleteAttendees: deletedAttendees
 	inRecurrenceExceptionsForEvent: newEvent
 			  add: NO];
 
-  if ([attendees count])
+  if ([deletedAttendees count])
     {
-      [self _handleRemovedUsers: attendees
+      [self _handleRemovedUsers: deletedAttendees
                withRecurrenceId: [newEvent recurrenceId]];
       [self sendEMailUsingTemplateNamed: @"Deletion"
                               forObject: [newEvent itipEntryWithMethod: @"cancel"]
                          previousObject: oldEvent
-                            toAttendees: attendees
+                            toAttendees: deletedAttendees
                                withType: @"calendar:cancellation"];
-      [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
-                                     forObject: newEvent to: attendees];
     }
   
   if ((ex = [self _handleResourcesConflicts: [newEvent attendees]
                                    forEvent: newEvent]))
     return ex;
 
-  attendees = [changes insertedAttendees];
+  addedAttendees = [changes insertedAttendees];
 
   // We insert the attendees in all exception occurences, if
   // the attendees were added to the master event.
-  [self _addOrDeleteAttendees: attendees
+  [self _addOrDeleteAttendees: addedAttendees
 	inRecurrenceExceptionsForEvent: newEvent
 			  add: YES];
 
@@ -701,7 +709,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       // Update attendees calendars and send them an update
       // notification by email
       [self _handleSequenceUpdateInEvent: newEvent
-                       ignoringAttendees: attendees
+                       ignoringAttendees: addedAttendees
                             fromOldEvent: oldEvent];
     }
   else
@@ -713,7 +721,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	  NSEnumerator *enumerator;
 	  iCalPerson *currentAttendee;
 	  NSString *currentUID;
-          NSArray *updatedAttendees;
 	  
           updatedAttendees = [newEvent attendees];
 	  enumerator = [updatedAttendees objectEnumerator];
@@ -725,27 +732,27 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 				 forUID: currentUID
 				  owner: owner];
 	    }
-
-          [self sendReceiptEmailUsingTemplateNamed: @"Update"
-                                         forObject: newEvent
-                                                to: updatedAttendees];
 	}
     }
 
-  if ([attendees count])
+  if ([addedAttendees count])
     {
       // Send an invitation to new attendees
-      if ((ex = [self _handleAddedUsers: attendees fromEvent: newEvent]))
+      if ((ex = [self _handleAddedUsers: addedAttendees fromEvent: newEvent]))
 	return ex;
       
       [self sendEMailUsingTemplateNamed: @"Invitation"
                               forObject: [newEvent itipEntryWithMethod: @"request"]
                          previousObject: oldEvent
-                            toAttendees: attendees
+                            toAttendees: addedAttendees
                                withType: @"calendar:invitation"];
-      [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
-                                     forObject: newEvent to: attendees];
     }
+
+  [self sendReceiptEmailForObject: newEvent
+		   addedAttendees: addedAttendees
+		 deletedAttendees: deletedAttendees
+		 updatedAttendees: updatedAttendees
+			operation: EventUpdated];
 
   return nil;
 }
@@ -809,9 +816,13 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 			     previousObject: nil
 				toAttendees: attendees
                                    withType: @"calendar:invitation"];
-          [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
-                                         forObject: newEvent to: attendees];
 	}
+
+      [self sendReceiptEmailForObject: newEvent
+		       addedAttendees: attendees
+		     deletedAttendees: nil
+		     updatedAttendees: nil
+			    operation: EventCreated];
     }
   else
     {
@@ -1117,9 +1128,11 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 			     previousObject: nil
 				toAttendees: delegates
                                    withType: @"calendar:cancellation"];
+#if 0
 	  [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
 					 forObject: event
 						to: delegates];
+#endif
 	}
 
       if (addDelegate)
@@ -1139,8 +1152,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 			     previousObject: nil
 				toAttendees: delegates
                                    withType: @"calendar:invitation"];
+#if 0
 	  [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
 					 forObject: event to: delegates];
+#endif
 	}
       
       // We generate the updated iCalendar file and we save it in the database.
@@ -1455,10 +1470,20 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                              previousObject: nil
                                 toAttendees: attendees
                                    withType: @"calendar:cancellation"];
-	  [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
-		forObject: occurence
-		to: attendees];
 	}
+
+      iCalPerson *foo = [[iCalPerson alloc] init];
+
+      [foo setCn: @"Ludovic Marcotte"];
+      [foo setEmail: @"lmarcotte@inverse.ca"];
+      
+      NSArray *zot = [NSArray arrayWithObject: foo];
+
+#if 0
+      [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
+				     forObject: occurence
+					    to: foo];
+#endif
     }
   else if ([occurence userIsAttendee: ownerUser])
     // The current user deletes the occurence; let the organizer know that
@@ -1757,11 +1782,13 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       iCalCalendar *calendar;
       SOGoUser *ownerUser;
       iCalEvent *event, *conflictingEvent;
-      
+      NSArray *attendees;
+
       NSString *eventUID;
       BOOL scheduling;
 
       calendar = [iCalCalendar parseSingleFromSource: [rq contentAsString]];
+      attendees = nil;
 
       event = [[calendar events] objectAtIndex: 0];
       eventUID = [event uid];
@@ -1772,8 +1799,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       // TODO: send out a no-uid-conflict (DAV:href) xml element (rfc4791 section 5.3.2.1)
       if (conflictingEvent = [container resourceNameForEventUID: eventUID])
         {
-  NSString *reason = [NSString stringWithFormat: @"Event UID already in use. (%s)", eventUID];
-  return [NSException exceptionWithHTTPStatus:403 reason: reason];
+	  return [NSException exceptionWithHTTPStatus: 403
+					       reason: [NSString stringWithFormat: @"Event UID already in use. (%s)", eventUID]];
         }
      
       //
@@ -1781,8 +1808,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       //
       if (scheduling && [event userIsOrganizer: ownerUser])
 	{ 
-	  NSArray *attendees;
-
 	  attendees = [event attendeesWithoutUser: ownerUser];
 	  if ([attendees count])
 	    {
@@ -1801,8 +1826,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                                  previousObject: nil
                                     toAttendees: attendees
                                        withType: @"calendar:invitation"];
-	      [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
-		    forObject: event to: attendees];
 	    }
 	}
       //
@@ -1816,6 +1839,13 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 		from: ownerUser
 		to: [event organizer]];
 	}
+
+      	      
+      [self sendReceiptEmailForObject: event
+		       addedAttendees: attendees
+		     deletedAttendees: nil
+		     updatedAttendees: nil
+			    operation: EventCreated];
     }
   else
     {
@@ -2015,7 +2045,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 		}
 	    }
 	}
-    }
+    }  // else of if (isNew) ...
 
   // We must NOT invoke [super PUTAction:] here as it'll resave
   // the content string and we could have etag mismatches.

@@ -434,6 +434,84 @@ static NSNumber *sharedYes = nil;
                     inCategory: @"FreeBusyExclusions"];
 }
 
+- (BOOL) _notificationValueForKey: (NSString *) theKey
+                 defaultDomainKey: (NSString *) theDomainKey
+{
+  SOGoUser *ownerUser;
+  NSNumber *notify;
+  
+  ownerUser = [SOGoUser userWithLogin: self->owner];
+  notify = [self folderPropertyValueInCategory: theKey
+				       forUser: ownerUser];
+
+  if (!notify && theDomainKey)
+    notify = [NSNumber numberWithBool: [[[context activeUser] domainDefaults]
+					 boolForKey: theDomainKey]];
+
+  return [notify boolValue];
+}
+
+//
+// We MUST keep the 'NO' value here, because we will always
+// fallback to the domain defaults otherwise.
+//
+- (BOOL) _setNotificationValue: (BOOL) b
+                        forKey: (NSString *) theKey
+{
+  [self setFolderPropertyValue: [NSNumber numberWithBool: b]
+		    inCategory: theKey];
+}
+
+- (BOOL) notifyOnPersonalModifications
+{
+  return [self _notificationValueForKey: @"NotifyOnPersonalModifications"
+		       defaultDomainKey: @"SOGoNotifyOnPersonalModifications"];
+}
+
+- (void) setNotifyOnPersonalModifications: (BOOL) b
+{
+  [self _setNotificationValue: b  forKey: @"NotifyOnPersonalModifications"];
+}
+
+- (BOOL) notifyOnExternalModifications
+{
+  return [self _notificationValueForKey: @"NotifyOnExternalModifications"
+		       defaultDomainKey: @"SOGoNotifyOnExternalModifications"];
+}
+
+- (void) setNotifyOnExternalModifications: (BOOL) b
+{
+  [self _setNotificationValue: b  forKey: @"NotifyOnExternalModifications"];
+}
+
+- (BOOL) notifyUserOnPersonalModifications
+{
+  return [self _notificationValueForKey: @"NotifyUserOnPersonalModifications"
+		       defaultDomainKey: nil];
+}
+
+- (void) setNotifyUserOnPersonalModifications: (BOOL) b
+{
+  [self _setNotificationValue: b  forKey: @"NotifyUserOnPersonalModifications"];
+  
+}
+
+- (NSString *) notifiedUserOnPersonalModifications
+{
+  SOGoUser *ownerUser;
+
+  ownerUser = [SOGoUser userWithLogin: self->owner];
+
+  return [self folderPropertyValueInCategory: @"NotifiedUserOnPersonalModifications"
+				     forUser: ownerUser];
+}
+
+- (void) setNotifiedUserOnPersonalModifications: (NSString *) theUser
+{
+  [self setFolderPropertyValue: theUser
+                    inCategory: @"NotifiedUserOnPersonalModifications"];
+}
+
 /* selection */
 
 - (NSArray *) calendarUIDs 
