@@ -455,7 +455,7 @@ static NSNumber *sharedYes = nil;
 // We MUST keep the 'NO' value here, because we will always
 // fallback to the domain defaults otherwise.
 //
-- (BOOL) _setNotificationValue: (BOOL) b
+- (void) _setNotificationValue: (BOOL) b
                         forKey: (NSString *) theKey
 {
   [self setFolderPropertyValue: [NSNumber numberWithBool: b]
@@ -1005,7 +1005,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   rules = [cycleinfo objectForKey: @"rules"];
   exRules = [cycleinfo objectForKey: @"exRules"];
   exDates = [cycleinfo objectForKey: @"exDates"];
-  eventTimeZone = allDayTimeZone = tz = nil;
+  eventTimeZone = nil;
+  allDayTimeZone = nil;
+  tz = nil;
 
   row = [self fixupRecord: theRecord];
   [row removeObjectForKey: @"c_cycleinfo"];
@@ -1062,7 +1064,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                     }
                 }
 
-              tz = eventTimeZone? eventTimeZone : allDayTimeZone;
+#warning this code is ugly: we should not mix objects with different types as\
+  it reduces readability
+              tz = eventTimeZone ? eventTimeZone : allDayTimeZone;
               if (tz)
                 {
                   // Adjust the exception dates
