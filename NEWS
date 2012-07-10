@@ -1,10 +1,15 @@
 1.3.17 (2012-MM-DD)
 -------------------
 New Features
- - New contextual menu to view the raw content of events, tasks and contacts
+ - new contextual menu to view the raw content of events, tasks and contacts
+ - send and/or receive email notifications when a calendar is modified (new
+   domain defaults SOGoNotifyOnPersonalModifications and
+   SOGoNotifyOnExternalModifications)
 
 Enhancements
- - updated Czech translation
+ - updated Czech, French translations
+ - all addresses from a contact are displayed in the Web interface (no longer
+   limited to one additional address)
 
 Bug Fixes
  - 

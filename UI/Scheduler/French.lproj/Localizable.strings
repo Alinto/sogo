@@ -110,6 +110,7 @@
 "Import Events" = "Importer des événements";
 "Select an iCalendar file (.ics)." = "Sélectionner un fichier. iCalendar (*.ics).";
 "Upload" = "Ajouter";
+"Uploading" = "Téléversement en cours";
 "Publish Calendar..." = "Publier l'agenda...";
 "Reload Remote Calendars" = "Recharger les agendas distants";
 "Properties" = "Propriétés";
@@ -564,6 +565,7 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Delete Task" = "Supprimer la tâche";
 "Delete Event" = "Supprimer l'événement";
 "Copy event to my calendar" = "Copier l'événement dans mon agenda";
+"View Raw Source" = "Afficher le contenu original";
 
 "Subscribe to a web calendar..." = "S'inscrire à un agenda en ligne...";
 "URL of the Calendar" = "URL de l'agenda";
