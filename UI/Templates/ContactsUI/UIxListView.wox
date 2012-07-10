@@ -11,18 +11,24 @@
     const:popup="YES"
     >
     <h3 class="contactCardTitle"><var:string value="listName" /></h3>
-    <var:if condition="hasNickname">
-      <h4><var:string value="listNickname" /></h4>
-    </var:if>
-    <var:if condition="hasDescription">
-      <div class="listDescription"><var:string value="listDescription" /></div>
-    </var:if>
-    <ul class="listComponents">
-      <var:foreach list="components" item="item">
-        <li><var:string var:value="itemName"/> 
-          <var:if condition="itemHasEmail"><a var:href="itemHref" var:onclick="itemOnclick">
+    <div class="contactColumn">
+    <dl class="dl-horizontal">
+      <dt><var:if condition="hasNickname"><var:string value="listNickname" /></var:if></dt>
+      <dd><var:if condition="hasDescription"><var:string value="listDescription" /></var:if></dd>
+    </dl>
+    <h4><var:string label:value="Members" /></h4>
+    <dl class="dl-horizontal">
+      <dt></dt>
+      <dd>
+        <ul class="listComponents">
+          <var:foreach list="components" item="item">
+            <li><var:string var:value="itemName"/> 
+            <var:if condition="itemHasEmail"><a var:href="itemHref" var:onclick="itemOnclick">
             &lt;<var:string var:value="itemEmail"/>&gt;</a></var:if>
-        </li>
-      </var:foreach>
-    </ul>
+            </li>
+          </var:foreach
+        ></ul>
+      </dd>
+    </dl>
+    </div>
   </var:component>

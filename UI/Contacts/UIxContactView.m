@@ -73,10 +73,10 @@
         value = [NSString stringWithFormat: @"<a href=\"%@:%@\">%@</a>", url, value, value];
 
       if (label)
-        [cardString appendFormat: @"%@&nbsp;%@<br />\n",
+        [cardString appendFormat: @"<dt>%@</dt><dd>%@</dd>\n",
                     [self labelForKey: label], value];
       else
-        [cardString appendFormat: @"%@<br />\n", value];
+        [cardString appendFormat: @"<dt></dt><dd>%@</dd>\n", value];
     }
 
   return cardString;
@@ -196,14 +196,14 @@
 	      mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
 				 @" onclick=\"return openMailTo('%@ <%@>');\">"
 				 @"%@</a>", email, fn, email, email];
-              [secondaryEmails addObject: [self _cardStringWithLabel: @"Additional Email:"
+              [secondaryEmails addObject: [self _cardStringWithLabel: nil
                                        value: mailTo]];
 	    }
 	}
     }
   else
     {
-      [secondaryEmails addObject: [self _cardStringWithLabel: @"Additional Email:"
+      [secondaryEmails addObject: [self _cardStringWithLabel: nil
                                         value: mailTo]];
     }
 
@@ -575,7 +575,7 @@
   data = [NSMutableString string];
   [data appendString: city];
   if ([city length] > 0 && [prov length] > 0)
-    [data appendString: @", "];
+    [data appendString: @" "];
   [data appendString: prov];
 
   return [self _cardStringWithLabel: nil value: data];
@@ -592,7 +592,7 @@
   data = [NSMutableString string];
   [data appendString: postalCode];
   if ([postalCode length] > 0 && [country length] > 0)
-    [data appendFormat: @", ", country];
+    [data appendFormat: @" ", country];
   [data appendString: country];
 
   return [self _cardStringWithLabel: nil value: data];

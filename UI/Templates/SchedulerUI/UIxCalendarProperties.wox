@@ -118,11 +118,13 @@
             ><input type="checkbox" const:class="checkBox" 
               id="notifyUserOnPersonalModifications" var:checked="notifyUserOnPersonalModifications"
               /><var:string label:value="When I modify my calendar, send a mail to:"
-              /></label><span class="content"><input type="text"
-              name="notifiedUserOnPersonalModifications" id="notifiedUserOnPersonalModifications"
-              class="textField"
-              var:value="notifiedUserOnPersonalModifications"
-              /></span></div>
+              /></label></div>
+        <div><span class="label"
+            ><entity name="nbsp"/></span><span class="content">
+             <input type="text" name="notifiedUserOnPersonalModifications" id="notifiedUserOnPersonalModifications"
+                    class="textField"
+                    var:value="notifiedUserOnPersonalModifications"
+             /></span></div>
       </fieldset>
 
     </div>

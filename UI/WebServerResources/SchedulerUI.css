@@ -1293,8 +1293,10 @@ DIV.event > DIV.eventInside
   padding: 1px;
   top: 0px;
   bottom: 0px;
-  left: 0px;
-  right: 0px; }
+  left: 2px;
+  right: 1px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px; }
 
 DIV.eventInside SPAN.location
 { font-size: smaller; }

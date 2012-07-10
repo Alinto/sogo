@@ -279,6 +279,38 @@ DIV.contactColumn H4
   width: 100%;
   padding: .1em .2em; }
 
+dt, dd {
+  line-height: 14px;
+}
+
+dt {
+  color: #666;
+  line-height: 13px;
+}
+dd {
+  margin-left: 9px;
+}
+.dl-horizontal dt {
+  float: left;
+  width: 100px;
+  overflow: hidden;
+  clear: left;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dl-horizontal dd {
+  margin-left: 110px;
+}
+
+.dl-horizontal ul {
+  list-style-type: none;
+  margin: 0px;
+  padding-left: 0px;
+}
+.dl-horizontal li {
+  margin-left: 0;
+}
 SPAN.photoFrame
 { cursor: pointer;
   float: left;

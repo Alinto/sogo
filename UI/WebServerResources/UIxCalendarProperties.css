@@ -13,19 +13,20 @@ FIELDSET DIV
 
 SPAN.label
 { cursor: default;
-  width: 60px;
+  width: 55px;
   text-align: right;
   line-height: 2em;
   float: left;
   display: block; }
 
 INPUT.checkBox
-{ margin-left: 35px; }
+{ margin-left: 38px;
+  margin-right: 6px; }
 
 SPAN.content
-{ display: block;
-  line-height: 1.5em;
-  vertical-align: middle; }
+{ line-height: 1.5em;
+  vertical-align: middle;
+  margin-left: 4px; }
 
 SPAN.content INPUT.textField
 { width: 160px; }
