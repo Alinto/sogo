@@ -1070,11 +1070,18 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
       
       if ([[self container] notifyUserOnPersonalModifications])
 	{
+	  id o;
+
+	  o = [headerMap objectForKey: @"to"];
 	  recipientEmail = [[self container] notifiedUserOnPersonalModifications];
+	  [headerMap setObject: recipientEmail forKey: @"to"];
+	  
 	  [[SOGoMailer mailerWithDomainDefaults: dd]
 		    sendMimePart: msg
 		    toRecipients: [NSArray arrayWithObject: recipientEmail]
                           sender: senderEmail];
+
+	  [headerMap setObject: o forKey: @"to"];
 	}
     }
 

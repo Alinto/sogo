@@ -418,6 +418,7 @@
                            withType: @"calendar:invitation-update"];
 
 #if 0
+  // DELETE CODE
   [self sendReceiptEmailForObject: newEvent
 		   addedAttendees: nil
 		 deletedAttendees: nil
@@ -1129,6 +1130,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 				toAttendees: delegates
                                    withType: @"calendar:cancellation"];
 #if 0
+	  // DELETE CODE
 	  [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
 					 forObject: event
 						to: delegates];
@@ -1153,6 +1155,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 				toAttendees: delegates
                                    withType: @"calendar:invitation"];
 #if 0
+	  // DELETE CODE
 	  [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
 					 forObject: event to: delegates];
 #endif
@@ -1428,14 +1431,17 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 //
 - (void) prepareDeleteOccurence: (iCalEvent *) occurence
 {
-  iCalEvent *event;
   SOGoUser *ownerUser, *currentUser;
-  NSArray *attendees;
   NSCalendarDate *recurrenceId;
+  NSArray *attendees;
+  iCalEvent *event;
+  BOOL send_receipt;
+
   
   ownerUser = [SOGoUser userWithLogin: owner];
   event = [self component: NO secure: NO];
-  
+  send_receipt = YES;
+
   if (![self _shouldScheduleEvent: [event organizer]])
     return;
 
@@ -1471,25 +1477,22 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                                 toAttendees: attendees
                                    withType: @"calendar:cancellation"];
 	}
-
-      iCalPerson *foo = [[iCalPerson alloc] init];
-
-      [foo setCn: @"Ludovic Marcotte"];
-      [foo setEmail: @"lmarcotte@inverse.ca"];
-      
-      NSArray *zot = [NSArray arrayWithObject: foo];
-
-#if 0
-      [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
-				     forObject: occurence
-					    to: foo];
-#endif
     }
   else if ([occurence userIsAttendee: ownerUser])
-    // The current user deletes the occurence; let the organizer know that
-    // the user has declined this occurence.
-    [self changeParticipationStatus: @"DECLINED" withDelegate: nil
-	  forRecurrenceId: recurrenceId];
+    {
+      // The current user deletes the occurence; let the organizer know that
+      // the user has declined this occurence.
+      [self changeParticipationStatus: @"DECLINED" withDelegate: nil
+		      forRecurrenceId: recurrenceId];
+      send_receipt = NO;
+    }
+
+  if (send_receipt)
+    [self sendReceiptEmailForObject: event
+		     addedAttendees: nil
+		   deletedAttendees: nil
+		   updatedAttendees: nil
+			  operation: EventDeleted];
 }
 
 - (NSException *) prepareDelete
@@ -1846,7 +1849,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 		     deletedAttendees: nil
 		     updatedAttendees: nil
 			    operation: EventCreated];
-    }
+    }  // if ([self isNew])
   else
     {
       iCalCalendar *oldCalendar, *newCalendar;
@@ -1999,7 +2002,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	      NSString *delegateEmail;
 	      
 	      attendee = [newEvent userAsAttendee: [SOGoUser userWithLogin: owner]];
-	      
+
 	      // We first check of the sequences are alright. We don't accept attendees
 	      // accepting "old" invitations. If that's the case, we return a 403
               if ([[newEvent sequence] intValue] < [[oldEvent sequence] intValue])
@@ -2026,7 +2029,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 		  [self changeParticipationStatus: @"DECLINED"
 			withDelegate: nil // FIXME (specify delegate?)
 			forRecurrenceId: [self _addedExDate: oldEvent  newEvent: newEvent]];
-	      }
+		}
 	      else if (attendee)
 		{
 		  [self changeParticipationStatus: [attendee partStat]
@@ -2043,7 +2046,15 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 		  [self _handleRemovedUsers: [changes deletedAttendees]
 			   withRecurrenceId: recurrenceId];
 		}
-	    }
+	    }  
+	} // if ([[newEvent attendees] count] || [[oldEvent attendees] count])
+      else
+	{
+	  [self sendReceiptEmailForObject: newEvent
+			   addedAttendees: nil
+			 deletedAttendees: nil
+			 updatedAttendees: nil
+				operation: EventUpdated];
 	}
     }  // else of if (isNew) ...
 

@@ -1,3 +1,9 @@
+2012-07-11  Ludovic Marcotte <lmarcotte@inverse.ca>
+
+    * Finished the implementation and testing of the two
+	new defaults. Also added documentation in the SOGo Installation
+	and Configuration Guide.
+
 2012-07-09  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Dropped old templates (SOGoAptMailDeletionReceipt.wox
