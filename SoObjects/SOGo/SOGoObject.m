@@ -27,6 +27,7 @@
 #import <Foundation/NSClassDescription.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSPathUtilities.h>
+#import <Foundation/NSSet.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSValue.h>
@@ -177,6 +178,9 @@
 {
   if ((self = [self init]))
     {
+      if ([_name length] == 0)
+        [NSException raise: NSInvalidArgumentException
+                     format: @"'_name' must not be an empty string"];
       context = [[WOApplication application] context];
       nameInContainer = [_name copy];
       container = _container;
@@ -1580,6 +1584,35 @@
     }
 
   return exception;
+}
+
+- (NSString *) davBooleanForResult: (BOOL) result
+{
+  return (result ? @"true" : @"false");
+}
+
+- (BOOL) isValidDAVBoolean: (NSString *) davBoolean
+{
+  static NSSet *validBooleans = nil;
+
+  if (!validBooleans)
+    {
+      validBooleans = [NSSet setWithObjects: @"true", @"false", @"1", @"0",
+                             nil];
+      [validBooleans retain];
+    }
+
+  return [validBooleans containsObject: davBoolean];
+}
+
+- (BOOL) resultForDAVBoolean: (NSString *) davBoolean
+{
+  BOOL result;
+
+  result = ([davBoolean isEqualToString: @"true"]
+            || [davBoolean isEqualToString: @"1"]);
+
+  return result;
 }
 
 - (NSString *) labelForKey: (NSString *) key

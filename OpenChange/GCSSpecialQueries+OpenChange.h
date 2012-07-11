@@ -1,6 +1,6 @@
-/* MAPIStoreFSFolder.h - this file is part of SOGo
+/* GCSSpecialQueries+OpenChange.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,14 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREFSFOLDER_H
-#define MAPISTOREFSFOLDER_H
+#ifndef GCSSPECIALQUERIES_OPENCHANGE_H
+#define GCSSPECIALQUERIES_OPENCHANGE_H
 
-#import "MAPIStoreFolder.h"
+#import <GDLContentStore/GCSSpecialQueries.h>
 
-@interface MAPIStoreFSFolder : MAPIStoreFolder
+@interface GCSSpecialQueries (OpenChangeHelpers)
+
+- (NSString *) createOpenChangeFSTableWithName: (NSString *) tableName;
 
 @end
 
-
-#endif /* MAPISTOREFSFOLDER_H */
+#endif /* GCSSPECIALQUERIES_OPENCHANGE_H */
