@@ -1,11 +1,9 @@
-<<<<<<< variant A
 2012-07-11  Ludovic Marcotte <lmarcotte@inverse.ca>
 
     * Finished the implementation and testing of the two
 	new defaults. Also added documentation in the SOGo Installation
 	and Configuration Guide.
 
->>>>>>> variant B
 2012-07-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
@@ -26,8 +24,6 @@
 	(-resultForDAVBoolean:): new method that returns a BOOL from a DAV
 	boolean.
 
-####### Ancestor
-======= end
 2012-07-09  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Dropped old templates (SOGoAptMailDeletionReceipt.wox
