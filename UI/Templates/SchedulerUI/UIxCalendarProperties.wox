@@ -103,29 +103,33 @@
                 /></label></div></var:if>
       </fieldset>
 
-      <fieldset>
-	<legend><var:string label:value="Notifications"/></legend>
-        <div><label
-            ><input type="checkbox" const:class="checkBox"
-              id="notifyOnPersonalModifications" var:checked="notifyOnPersonalModifications"
-              /><var:string label:value="Receive a mail when I modify my calendar"/></label></div>
-        <div><label
-            ><input type="checkbox" const:class="checkBox" 
-              id="notifyOnExternalModifications" var:checked="notifyOnExternalModifications"
-              /><var:string label:value="Receive a mail when someone else modifies my calendar"
-              /></label></div>
-        <div><label
-            ><input type="checkbox" const:class="checkBox" 
-              id="notifyUserOnPersonalModifications" var:checked="notifyUserOnPersonalModifications"
-              /><var:string label:value="When I modify my calendar, send a mail to:"
-              /></label></div>
-        <div><span class="label"
-            ><entity name="nbsp"/></span><span class="content">
-             <input type="text" name="notifiedUserOnPersonalModifications" id="notifiedUserOnPersonalModifications"
-                    class="textField"
-                    var:value="notifiedUserOnPersonalModifications"
-             /></span></div>
-      </fieldset>
+      <var:if condition="isWebCalendar" const:negate="YES">
+	      <var:if condition="calendar.activeUserIsOwner">
+		<fieldset>
+		  <legend><var:string label:value="Notifications"/></legend>
+		  <div><label
+			   ><input type="checkbox" const:class="checkBox"
+			   id="notifyOnPersonalModifications" var:checked="notifyOnPersonalModifications"
+			   /><var:string label:value="Receive a mail when I modify my calendar"/></label></div>
+		  <div><label
+			   ><input type="checkbox" const:class="checkBox" 
+			   id="notifyOnExternalModifications" var:checked="notifyOnExternalModifications"
+			   /><var:string label:value="Receive a mail when someone else modifies my calendar"
+			   /></label></div>
+		  <div><label
+			   ><input type="checkbox" const:class="checkBox" 
+			   id="notifyUserOnPersonalModifications" var:checked="notifyUserOnPersonalModifications"
+			   /><var:string label:value="When I modify my calendar, send a mail to:"
+			   /></label></div>
+		  <div><span class="label"
+			     ><entity name="nbsp"/></span><span class="content">
+		  <input type="text" name="notifiedUserOnPersonalModifications" id="notifiedUserOnPersonalModifications"
+			 class="textField"
+			 var:value="notifiedUserOnPersonalModifications"
+			 /></span></div>
+		</fieldset>
+	      </var:if>
+      </var:if>
 
     </div>
     <div id="davLinksView" class="tab">

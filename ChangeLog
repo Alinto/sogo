@@ -4,6 +4,10 @@
 	new defaults. Also added documentation in the SOGo Installation
 	and Configuration Guide.
 
+	* Updated UI/Templates/SchedulerUI/UIxCalendarProperties.wox to not
+	show the notification options if it's a web calendar or if the active
+	user isn't the owner of the calendar.
+
 2012-07-09  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Dropped old templates (SOGoAptMailDeletionReceipt.wox
