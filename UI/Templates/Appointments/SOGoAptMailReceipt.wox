@@ -1,54 +1,58 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE container>
-<container 
+<html 
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
 
-  <var:if condition="isSubject">
-    <var:string value="subject"
-		const:escapeHTML="NO"/> 
+  <var:string label:value="Event details:" const:escapeHTML="NO"/>
+  <br/>
+  
+  <var:string label:value="Title:" const:escapeHTML="NO"/> <var:string
+  value="apt.summary" const:escapeHTML="NO"/>
+  <br/>
+ 
+  <var:if condition="apt.location.length">
+    <var:string label:value="Location:" const:escapeHTML="NO"/> <var:string
+    value="apt.location" const:escapeHTML="NO"/>
   </var:if>
-
-  <var:if condition="isSubject" const:negate="YES">
-    <var:string label:value="Event details:" const:escapeHTML="NO"/>
-    
-    <var:string label:value="Title:" const:escapeHTML="NO"/> <var:string
-      value="apt.summary" const:escapeHTML="NO"/>
-    <var:if condition="apt.location.length">
-      <var:string label:value="Location:" const:escapeHTML="NO"/> <var:string
-      value="apt.location" const:escapeHTML="NO"/>
-    </var:if>
-    <var:string label:value="Start:" const:escapeHTML="NO"/> <var:string
-      value="aptStartDate" const:escapeHTML="NO"/>
-    <var:string label:value="End:" const:escapeHTML="NO"/> <var:string
-      value="aptEndDate" const:escapeHTML="NO"/>
-    
-    <var:if condition="updatedAttendees.count">
-      <var:string label:value="The following attendees(s) were notified:"
-		  const:escapeHTML="NO"/>
-      <var:foreach list="updatedAttendees" item="currentRecipient">
-	<var:string value="currentRecipient.mailAddress" const:escapeHTML="NO"
-		    /></var:foreach>
-    </var:if>
-
-    <var:if condition="addedAttendees.count">
-      <var:string label:value="The following attendees(s) were added:"
-		  const:escapeHTML="NO"/>
-      <var:foreach list="addedAttendees" item="currentRecipient">
-	<var:string value="currentRecipient.mailAddress" const:escapeHTML="NO"
-		    /></var:foreach>
-    </var:if>
-    
-    <var:if condition="deletedAttendees.count">
-      <var:string label:value="The following attendees(s) were removed:"
-		  const:escapeHTML="NO"/>
-      <var:foreach list="deletedAttendees" item="currentRecipient">
-	<var:string value="currentRecipient.mailAddress" const:escapeHTML="NO"
-		    /></var:foreach>
-    </var:if>
-    
+  <br/>
+ 
+  <var:string label:value="Start:" const:escapeHTML="NO"/> <var:string
+  value="aptStartDate" const:escapeHTML="NO"/>
+  <br/>
+ 
+  <var:string label:value="End:" const:escapeHTML="NO"/> <var:string
+  value="aptEndDate" const:escapeHTML="NO"/>
+  <br/>
+ 
+  <var:if condition="updatedAttendees.count">
+    <var:string label:value="The following attendees(s) were notified:"
+		const:escapeHTML="NO"/>
+    <var:foreach list="updatedAttendees" item="currentRecipient">
+      <var:string value="currentRecipient.mailAddress" const:escapeHTML="NO"
+		  /></var:foreach>
   </var:if>
-</container>
+  <br/>
+  
+  <var:if condition="addedAttendees.count">
+    <var:string label:value="The following attendees(s) were added:"
+		const:escapeHTML="NO"/>
+    <var:foreach list="addedAttendees" item="currentRecipient">
+      <var:string value="currentRecipient.mailAddress" const:escapeHTML="NO"
+		  /></var:foreach>
+  </var:if>
+  <br/>
+   
+  <var:if condition="deletedAttendees.count">
+    <var:string label:value="The following attendees(s) were removed:"
+		const:escapeHTML="NO"/>
+    <var:foreach list="deletedAttendees" item="currentRecipient">
+      <var:string value="currentRecipient.mailAddress" const:escapeHTML="NO"
+		  /></var:foreach>
+  </var:if>
+  <br/>
+  
+</html>

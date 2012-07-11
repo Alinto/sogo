@@ -31,6 +31,7 @@
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 
+#import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoDateFormatter.h>
@@ -61,7 +62,6 @@ static NSCharacterSet *wsSet = nil;
       addedAttendees = nil;
       deletedAttendees = nil;
       updatedAttendees = nil;
-      isSubject = NO;
     }
 
   return self;
@@ -76,36 +76,12 @@ static NSCharacterSet *wsSet = nil;
   [super dealloc];
 }
 
-
-- (NSString *) getSubject
-{
-  NSString *subject;
-
-  if (!values)
-    [self setupValues];
-
-  isSubject = YES;
-  subject = [[[self generateResponse] contentAsString]
-	      stringByTrimmingCharactersInSet: wsSet];
-  if (!subject)
-    {
-      [self errorWithFormat:@"Failed to properly generate subject! Please check "
-	    @"template for component '%@'!",
-	    [self name]];
-      subject = @"ERROR: missing subject!";
-    }
-
-  return [subject asQPSubjectString: @"utf-8"];
-}
-
 - (NSString *) getBody
 {
   NSString *body;
 
   if (!values)
     [self setupValues];
-
-  isSubject = NO;
 
   body = [[self generateResponse] contentAsString];
 
@@ -168,19 +144,19 @@ static NSCharacterSet *wsSet = nil;
   switch (operation)
     {
     case EventCreated:
-      s = @"Receipt: event was created";
+      s = [self labelForKey: @"Receipt: event was created"  inContext: context];
       break;
       
     case EventDeleted:
-      s = @"Receipt: event was deleted";
+      s = [self labelForKey: @"Receipt: event was deleted"  inContext: context];
       break;
       
     case EventUpdated:
     default:
-      s = @"Receipt: event was updated";
+      s = [self labelForKey: @"Receipt: event was updated" inContext: context];
     }
 
-  return s;
+  return [[s stringByTrimmingCharactersInSet: wsSet] asQPSubjectString: @"utf-8"];
 }
 
 - (NSString *) _formattedUserDate: (NSCalendarDate *) date

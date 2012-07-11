@@ -8,6 +8,9 @@
 	show the notification options if it's a web calendar or if the active
 	user isn't the owner of the calendar.
 
+	* Added strings to translate and cleaned up the template to send
+	HTML mails instead of text/plain.
+
 2012-07-09  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Dropped old templates (SOGoAptMailDeletionReceipt.wox

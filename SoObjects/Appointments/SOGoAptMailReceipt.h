@@ -40,7 +40,6 @@
   NSArray *updatedAttendees;
   iCalPerson *currentRecipient;
   SOGoEventOperation operation;
-  BOOL isSubject;
 }
 
 - (void) setOriginator: (NSString *) newOriginator;

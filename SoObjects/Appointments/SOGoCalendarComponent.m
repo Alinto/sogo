@@ -1048,9 +1048,9 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
 
   mailDate = [[NSCalendarDate date] rfc822DateString];
   [headerMap setObject: mailDate forKey: @"date"];
-  [headerMap setObject: [page getSubject] forKey: @"subject"];
+  [headerMap setObject: [page subject] forKey: @"subject"];
   [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
-  [headerMap setObject: @"text/plain; charset=utf-8"
+  [headerMap setObject: @"text/html; charset=utf-8"
 		forKey: @"content-type"];
   msg = [NGMimeMessage messageWithHeader: headerMap];
   
