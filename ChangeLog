@@ -1,6 +1,13 @@
+2012-07-12  Jean Raby <jraby@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailForward.m (from, to, cc, reply-to):
+	mailHeaders returns an array if there are multiple headers of the same type.
+	Handle this case to correctly show multiple from, to, cc and reply-to headers
+	in mail replies/forwards instead of crashing.
+
 2012-07-11  Ludovic Marcotte <lmarcotte@inverse.ca>
 
-    * Finished the implementation and testing of the two
+	* Finished the implementation and testing of the two
 	new defaults. Also added documentation in the SOGo Installation
 	and Configuration Guide.
 

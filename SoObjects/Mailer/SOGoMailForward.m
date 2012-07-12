@@ -89,13 +89,13 @@
 
 - (NSString *) from
 {
-  NSString *rc;
+  id rc;
 
+  rc = [[sourceMail mailHeaders] objectForKey: @"from"];
+  if ([rc isKindOfClass: [NSArray class]])
+    rc = [rc componentsJoinedByString: @", "];
   if (htmlComposition)
-    rc = [[[sourceMail mailHeaders] objectForKey: @"from"]
-           stringByEscapingHTMLString];
-  else
-    rc = [[sourceMail mailHeaders] objectForKey: @"from"];
+    rc = [rc stringByEscapingHTMLString];
 
   return rc;
 }
@@ -119,13 +119,16 @@
 
 - (NSString *) replyTo
 {
-  NSString *rc;
+  id rc;
 
+  rc = [self _headerField: @"reply-to"];
+  if ([rc isKindOfClass: [NSArray class]])
+    rc = [rc componentsJoinedByString: @", "];
   if (htmlComposition)
     rc = [NSString stringWithFormat: @"%@<br/>", 
-          [[self _headerField: @"reply-to"] stringByEscapingHTMLString]];
+          [rc stringByEscapingHTMLString]];
   else
-    rc = ([NSString stringWithFormat: @"%@\n", [self _headerField: @"reply-to"]]);
+    rc = ([NSString stringWithFormat: @"%@\n", rc]);
 
   return rc;
 }
@@ -149,12 +152,13 @@
 
 - (NSString *) to
 {
-  NSString *rc;
+  id rc;
 
+  rc = [self _headerField: @"to"];
+  if ([rc isKindOfClass: [NSArray class]])
+    rc = [rc componentsJoinedByString: @", "];
   if (htmlComposition)
-    rc = [[[sourceMail mailHeaders] objectForKey: @"to"] stringByEscapingHTMLString];
-  else
-    rc = [[sourceMail mailHeaders] objectForKey: @"to"];
+    rc = [rc stringByEscapingHTMLString];
 
   return rc;
 }
@@ -166,13 +170,17 @@
 
 - (NSString *) cc
 {
-  NSString *rc;
+  id *rc;
+
+  rc = [self _headerField: @"cc"];
+  if ([rc isKindOfClass: [NSArray class]])
+    rc = [rc componentsJoinedByString: @", "];
 
   if (htmlComposition)
     rc = [NSString stringWithFormat: @"%@<br/>", 
-          [[self _headerField: @"cc"] stringByEscapingHTMLString]];
+          [rc stringByEscapingHTMLString]];
   else
-    rc = ([NSString stringWithFormat: @"%@\n", [self _headerField: @"cc"]]);
+    rc = [NSString stringWithFormat: @"%@\n", rc];
 
   return rc;
 }

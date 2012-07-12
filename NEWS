@@ -12,7 +12,7 @@ Enhancements
    limited to one additional address)
 
 Bug Fixes
- - 
+ - Fixed a crash when multiple mail header of the same type were encountered.
 
 1.3.16 (2012-06-07)
 -------------------
