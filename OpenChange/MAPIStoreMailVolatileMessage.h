@@ -23,9 +23,9 @@
 #ifndef MAPISTOREMAILVOLATILEMESSAGE_H
 #define MAPISTOREMAILVOLATILEMESSAGE_H
 
-#import "MAPIStoreVolatileMessage.h"
+#import "MAPIStoreMessage.h"
 
-@interface MAPIStoreMailVolatileMessage : MAPIStoreVolatileMessage
+@interface MAPIStoreMailVolatileMessage : MAPIStoreMessage
 
 - (int) submitWithFlags: (enum SubmitFlags) flags;
 
