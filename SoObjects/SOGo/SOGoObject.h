@@ -166,6 +166,10 @@
 		     parameters: (NSArray *) params;
 
 /* utilities */
+- (NSString *) davBooleanForResult: (BOOL) result;
+- (BOOL) isValidDAVBoolean: (NSString *) davBoolean;
+- (BOOL) resultForDAVBoolean: (NSString *) davBoolean;
+
 - (NSString *) labelForKey: (NSString *) key;
 
 /* description */
