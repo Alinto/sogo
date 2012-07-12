@@ -4,7 +4,6 @@
 	new defaults. Also added documentation in the SOGo Installation
 	and Configuration Guide.
 
-<<<<<<< variant A
 	* Updated UI/Templates/SchedulerUI/UIxCalendarProperties.wox to not
 	show the notification options if it's a web calendar or if the active
 	user isn't the owner of the calendar.
@@ -32,29 +31,6 @@
 	(-resultForDAVBoolean:): new method that returns a BOOL from a DAV
 	boolean.
 
->>>>>>> variant B
-2012-07-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
-
-	* SoObjects/Appointments/SOGoAppointmentFolder.m
-	(-davNotifyOnPersonalModifications)
-	(-setDavNotifyOnPersonalModifications:)
-	(-davNotifyOnExternalModifications)
-	(-setDavNotifyOnExternalModifications:)
-	(-davNotifyUserOnPersonalModifications)
-	(-setDavNotifyUserOnPersonalModifications:)
-	(-davNotifiedUserOnPersonalModifications)
-	(-setDavNotifiedUserOnPersonalModifications:): new dav accessors.
-
-
-	* SoObjects/SOGo/SOGoObject.m (-davBooleanForResult:): new method
-	that returns a valid DAV boolean from a BOOL.
-	(-isValidDAVBoolean:): new method that validates the value as a
-	DAV boolean.
-	(-resultForDAVBoolean:): new method that returns a BOOL from a DAV
-	boolean.
-
-####### Ancestor
-======= end
 2012-07-09  Ludovic Marcotte <lmarcotte@inverse.ca>
 
 	* Dropped old templates (SOGoAptMailDeletionReceipt.wox
