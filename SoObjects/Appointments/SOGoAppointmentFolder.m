@@ -455,7 +455,7 @@ static NSNumber *sharedYes = nil;
 // We MUST keep the 'NO' value here, because we will always
 // fallback to the domain defaults otherwise.
 //
-- (BOOL) _setNotificationValue: (BOOL) b
+- (void) _setNotificationValue: (BOOL) b
                         forKey: (NSString *) theKey
 {
   [self setFolderPropertyValue: [NSNumber numberWithBool: b]
@@ -1005,7 +1005,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   rules = [cycleinfo objectForKey: @"rules"];
   exRules = [cycleinfo objectForKey: @"exRules"];
   exDates = [cycleinfo objectForKey: @"exDates"];
-  eventTimeZone = allDayTimeZone = tz = nil;
+  eventTimeZone = nil;
+  allDayTimeZone = nil;
+  tz = nil;
 
   row = [self fixupRecord: theRecord];
   [row removeObjectForKey: @"c_cycleinfo"];
@@ -1062,7 +1064,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                     }
                 }
 
-              tz = eventTimeZone? eventTimeZone : allDayTimeZone;
+#warning this code is ugly: we should not mix objects with different types as\
+  it reduces readability
+              tz = eventTimeZone ? eventTimeZone : allDayTimeZone;
               if (tz)
                 {
                   // Adjust the exception dates
@@ -2250,33 +2254,101 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
 - (NSString *) davCalendarShowAlarms
 {
-  NSString *boolean;
-
-  if ([self showCalendarAlarms])
-    boolean = @"true";
-  else
-    boolean = @"false";
-
-  return boolean;
+  return [self davBooleanForResult: [self showCalendarAlarms]];
 }
 
 - (NSException *) setDavCalendarShowAlarms: (id) newBoolean
 {
   NSException *error;
 
-  error = nil;
-
-  if ([newBoolean isEqualToString: @"true"]
-      || [newBoolean isEqualToString: @"1"])
-    [self setShowCalendarAlarms: YES];
-  else if ([newBoolean isEqualToString: @"false"]
-           || [newBoolean isEqualToString: @"0"])
-    [self setShowCalendarAlarms: NO];
+  if ([self isValidDAVBoolean: newBoolean])
+    {
+      [self setShowCalendarAlarms: [self resultForDAVBoolean: newBoolean]];
+      error = nil;
+    }
   else
     error = [NSException exceptionWithHTTPStatus: 400
                                           reason: @"Bad boolean value."];
 
   return error;
+}
+
+- (NSString *) davNotifyOnPersonalModifications
+{
+  return [self davBooleanForResult: [self notifyOnPersonalModifications]];
+}
+
+- (NSException *) setDavNotifyOnPersonalModifications: (NSString *) newBoolean
+{
+  NSException *error;
+
+  if ([self isValidDAVBoolean: newBoolean])
+    {
+      [self setNotifyOnPersonalModifications:
+              [self resultForDAVBoolean: newBoolean]];
+      error = nil;
+    }
+  else
+    error = [NSException exceptionWithHTTPStatus: 400
+                                          reason: @"Bad boolean value."];
+
+  return error;
+}
+
+- (NSString *) davNotifyOnExternalModifications
+{
+  return [self davBooleanForResult: [self notifyOnExternalModifications]];
+}
+
+- (NSException *) setDavNotifyOnExternalModifications: (NSString *) newBoolean
+{
+  NSException *error;
+
+  if ([self isValidDAVBoolean: newBoolean])
+    {
+      [self setNotifyOnExternalModifications:
+              [self resultForDAVBoolean: newBoolean]];
+      error = nil;
+    }
+  else
+    error = [NSException exceptionWithHTTPStatus: 400
+                                          reason: @"Bad boolean value."];
+
+  return error;
+}
+
+- (NSString *) davNotifyUserOnPersonalModifications
+{
+  return [self davBooleanForResult: [self notifyUserOnPersonalModifications]];
+}
+
+- (NSException *) setDavNotifyUserOnPersonalModifications: (NSString *) newBoolean
+{
+  NSException *error;
+
+  if ([self isValidDAVBoolean: newBoolean])
+    {
+      [self setNotifyUserOnPersonalModifications:
+              [self resultForDAVBoolean: newBoolean]];
+      error = nil;
+    }
+  else
+    error = [NSException exceptionWithHTTPStatus: 400
+                                          reason: @"Bad boolean value."];
+
+  return error;
+}
+
+- (NSString *) davNotifiedUserOnPersonalModifications
+{
+  return [self notifiedUserOnPersonalModifications];
+}
+
+- (NSException *) setDavNotifiedUserOnPersonalModifications: (NSString *) theUser
+{
+  [self setNotifiedUserOnPersonalModifications: theUser];
+
+  return nil;
 }
 
 /* vevent UID handling */
