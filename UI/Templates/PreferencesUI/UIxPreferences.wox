@@ -304,12 +304,12 @@
                   <input const:name="serverName" const:id="serverName" type="text" const:value=""/></label>
                 <label><var:string label:value="Port:"/>
                   <input const:name="port" const:id="port" type="text" const:value=""/></label><br/>
-                <var:string label:value="Encryption:"/>
-                <label><input const:name="encryption" type="radio" const:value="none"/>
-                  <var:string label:value="None"/></label>
-                <label><input const:name="encryption" type="radio" const:value="ssl"/>
-                  <var:string label:value="SSL"/></label>
-                <label><input const:name="encryption" type="radio" const:value="tls"/>
+                <label><var:string label:value="Encryption:"/>
+                  <input const:name="encryption" type="radio" const:value="none"/>
+                  <var:string label:value="None"/>
+                  <input const:name="encryption" type="radio" const:value="ssl"/>
+                  <var:string label:value="SSL"/>
+                  <input const:name="encryption" type="radio" const:value="tls"/>
                   <var:string label:value="TLS"/></label><br/>
                 <label><var:string label:value="User Name:"/>
                   <input const:name="userName" const:id="userName" type="text" const:value=""/></label><br/>
@@ -331,8 +331,8 @@
                   <input const:name="email" const:id="email" type="text" const:value=""/></label><br/>
                 <label><var:string label:value="Reply To Email:"/>
                   <input const:name="replyTo" const:id="replyTo" type="text" const:value=""/></label><br/>
-                <var:string label:value="Signature:"/>
-                <span id="actSignature"><!--space --></span>
+                <label><var:string label:value="Signature:"/>
+                  <span id="actSignature"><!--space --></span></label>
               </fieldset>
 
               <fieldset const:id="returnReceiptsInfo">

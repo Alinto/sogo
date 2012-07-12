@@ -537,6 +537,10 @@ vtodo_class2 = "(Confidential task)";
 "Show alarms" = "Show alarms";
 "Show tasks" = "Show tasks";
 
+"Receive a mail when I modify my calendar" = "Receive a mail when I modify my calendar";
+"Receive a mail when someone else modifies my calendar" = "Receive a mail when someone else modifies my calendar";
+"When I modify my calendar, send a mail to:" = "When I modify my calendar, send a mail to:";
+
 "Links to this Calendar" = "Links to this Calendar";
 "Authenticated User Access" = "Authenticated User Access";
 "CalDAV URL" = "CalDAV URL";
