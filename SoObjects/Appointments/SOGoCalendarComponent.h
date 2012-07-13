@@ -24,6 +24,7 @@
 #ifndef SOGOCALENDARCOMPONENT_H
 #define SOGOCALENDARCOMPONENT_H
 
+#import <SOGo/SOGoConstants.h>
 #import <SOGo/SOGoContentObject.h>
 
 #import "SOGoComponentOccurence.h"
@@ -79,6 +80,7 @@
 		    addedAttendees: (NSArray *) theAddedAttendees
 		  deletedAttendees: (NSArray *) theDeletedAttendees
 		  updatedAttendees: (NSArray *) theUpdatedAttendees;
+                         operation: (SOGoEventOperation) theOperation;
 
 - (iCalPerson *) findParticipantWithUID: (NSString *) uid;
 
