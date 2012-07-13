@@ -188,8 +188,7 @@ static NSString *sessionsFolderURLString = nil;
 
   queries = [tc specialQueries];
 
-  sql = [NSString stringWithFormat: @"SELECT count(*) FROM %@",
-                  [self _storeTableName]];
+  sql = [NSString stringWithFormat: @"SELECT count(*) FROM %@", tableName];
   if ([tc evaluateExpressionX: sql])
     {
       sql = [queries createSessionsFolderWithName: tableName];
