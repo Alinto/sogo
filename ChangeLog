@@ -1,3 +1,9 @@
+2012-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Integration/test-caldav-scheduling.py
+	(CalDAVSchedulingTest.setUp): use the proper password for
+	attendee1_delegate.
+
 2012-07-12  Jean Raby <jraby@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailForward.m (from, to, cc, reply-to):
