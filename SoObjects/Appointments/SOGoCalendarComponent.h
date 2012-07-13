@@ -79,7 +79,7 @@
 - (void) sendReceiptEmailForObject: (iCalRepeatableEntityObject *) object
 		    addedAttendees: (NSArray *) theAddedAttendees
 		  deletedAttendees: (NSArray *) theDeletedAttendees
-		  updatedAttendees: (NSArray *) theUpdatedAttendees;
+		  updatedAttendees: (NSArray *) theUpdatedAttendees
                          operation: (SOGoEventOperation) theOperation;
 
 - (iCalPerson *) findParticipantWithUID: (NSString *) uid;
