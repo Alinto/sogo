@@ -299,7 +299,7 @@
   if (recurrenceId)
     {
       recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
-      isInCalendar = ([[self storedEventObject] lookupOccurence: recurrenceTime] != nil);
+      isInCalendar = ([[self storedEventObject] lookupOccurrence: recurrenceTime] != nil);
     }
   else
     isInCalendar = ([self storedEventObject] != nil);
@@ -324,7 +324,7 @@
 	  iCalPerson *organizer;
 
 	  recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
-	  storedEvent = (iCalEvent*)[[self storedEventObject] lookupOccurence: recurrenceTime];
+	  storedEvent = (iCalEvent*)[[self storedEventObject] lookupOccurrence: recurrenceTime];
 
 	  if (storedEvent == nil)
 	    // If no occurence found, create one

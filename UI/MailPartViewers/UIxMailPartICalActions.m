@@ -191,7 +191,7 @@
 
 	      recurrenceTime = [NSString stringWithFormat: @"%f", 
 					 [[emailEvent recurrenceId] timeIntervalSince1970]];
-	      calendarEvent = (iCalEvent *)[*eventObject lookupOccurence: recurrenceTime];
+	      calendarEvent = (iCalEvent *)[*eventObject lookupOccurrence: recurrenceTime];
 	    }
 	  else
 	    calendarEvent = (iCalEvent *) [*eventObject component: NO  secure: NO];
