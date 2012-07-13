@@ -112,7 +112,6 @@
 	* UI/Templates/ContactsUI/UIxContactView.wox:
 	Show all addresses returned from secondaryEmails.
 	This still need some css tweaks.
-	  
 
 2012-06-29  Jean Raby  <jraby@inverse.ca>
 
