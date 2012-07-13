@@ -1,5 +1,11 @@
 2012-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(-updateContentWithCalendar:fromRequest:): new method spawned from
+	the previous incarnation of PUTRequest:, designed to centralize
+	all the processed performed on an iCalendar instance, new or
+	derived from the original.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	(-lookupOccurrence:): now a virtual method forcing the use by
 	subclasses of the new methods below.
