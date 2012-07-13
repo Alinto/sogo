@@ -1,5 +1,13 @@
 2012-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	(-lookupOccurrence:): now a virtual method forcing the use by
+	subclasses of the new methods below.
+
+	* SoObjects/Appointments/iCalCalendar+SOGo.m: new category module.
+	(-eventWithRecurrenceId, -todoWithRecurrenceId): new method that
+	return as recurrence based on the id passed as parameter.
+
 	* Tests/Integration/test-caldav-scheduling.py
 	(CalDAVSchedulingTest.setUp): use the proper password for
 	attendee1_delegate.

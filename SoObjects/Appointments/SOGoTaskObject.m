@@ -32,6 +32,7 @@
 
 #import <SoObjects/SOGo/SOGoMailer.h>
 
+#import "iCalCalendar+SOGo.h"
 #import "NSArray+Appointments.h"
 #import "SOGoAptMailNotification.h"
 #import "SOGoAppointmentFolder.h"
@@ -44,6 +45,11 @@
 - (NSString *) componentTag
 {
   return @"vtodo";
+}
+
+- (iCalRepeatableEntityObject *) lookupOccurrence: (NSString *) recID
+{
+  return [[self calendar: NO secure: NO] todoWithRecurrenceID: recID];
 }
 
 - (SOGoComponentOccurence *) occurence: (iCalRepeatableEntityObject *) occ

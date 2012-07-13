@@ -9,6 +9,7 @@ Appointments_PRINCIPAL_CLASS = SOGoAppointmentsProduct
 Appointments_OBJC_FILES = \
 	Product.m			\
 	NSArray+Appointments.m		\
+	iCalCalendar+SOGo.m 	\
 	iCalEntityObject+SOGo.m 	\
 	iCalRepeatableEntityObject+SOGo.m	\
 	iCalEvent+SOGo.m	 	\

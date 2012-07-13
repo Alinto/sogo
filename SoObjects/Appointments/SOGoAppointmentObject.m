@@ -53,6 +53,7 @@
 #import <SOGo/SOGoWebDAVValue.h>
 #import <SOGo/WORequest+SOGo.h>
 
+#import "iCalCalendar+SOGo.h"
 #import "iCalEventChanges+SOGo.h"
 #import "iCalEntityObject+SOGo.h"
 #import "iCalPerson+SOGo.h"
@@ -119,6 +120,12 @@
     }
   
   return newOccurence;
+}
+
+- (iCalRepeatableEntityObject *) lookupOccurrence: (NSString *) recID
+
+{
+  return [[self calendar: NO secure: NO] eventWithRecurrenceID: recID];
 }
 
 - (SOGoAppointmentObject *) _lookupEvent: (NSString *) eventUID
@@ -839,7 +846,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	  // If recurrenceId is defined, find the specified occurence
 	  // within the repeating vEvent.
 	  recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
-	  oldEvent = (iCalEvent*)[self lookupOccurence: recurrenceTime];
+	  oldEvent = (iCalEvent*)[self lookupOccurrence: recurrenceTime];
 	  if (oldEvent == nil)
 	    // If no occurence found, create one
 	    oldEvent = (iCalEvent *)[self newOccurenceWithID: recurrenceTime];
@@ -906,7 +913,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	  // If recurrenceId is defined, find the specified occurence
 	  // within the repeating vEvent.
 	  recurrenceTime = [NSString stringWithFormat: @"%f", [recurrenceId timeIntervalSince1970]];
-	  event = [eventObject lookupOccurence: recurrenceTime];
+	  event = [eventObject lookupOccurrence: recurrenceTime];
 	  
 	  if (event == nil)
 	    // If no occurence found, create one
@@ -1348,7 +1355,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	  // If _recurrenceId is defined, find the specified occurence
 	  // within the repeating vEvent.
 	  recurrenceTime = [NSString stringWithFormat: @"%f", [_recurrenceId timeIntervalSince1970]];
-	  event = (iCalEvent*)[self lookupOccurence: recurrenceTime];
+	  event = (iCalEvent*)[self lookupOccurrence: recurrenceTime];
 	  
 	  if (event == nil)
 	    // If no occurence found, create one
