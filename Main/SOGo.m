@@ -201,6 +201,7 @@ static BOOL debugLeaks;
   fileSuffix = [channelURL scheme];
   tc = [cm acquireOpenChannelForURL: channelURL];
 
+  /* FIXME: make use of [EOChannelAdaptor describeTableNames] instead */
   tableName = [url lastPathComponent];
   if ([tc evaluateExpressionX:
 	    [NSString stringWithFormat: @"SELECT count(*) FROM %@",

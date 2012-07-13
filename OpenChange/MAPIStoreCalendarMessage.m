@@ -1111,9 +1111,7 @@
   newAid = [[self attachmentKeys] count];
 
   newAttachment = [MAPIStoreCalendarAttachment
-                    mapiStoreObjectWithSOGoObject: nil
-                                      inContainer: self];
-  [newAttachment setIsNew: YES];
+                    mapiStoreObjectInContainer: self];
   [newAttachment setAID: newAid];
   newKey = [NSString stringWithFormat: @"%ul", newAid];
   [attachmentParts setObject: newAttachment
