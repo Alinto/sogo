@@ -3,6 +3,8 @@
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	(-lookupOccurrence:): now a virtual method forcing the use by
 	subclasses of the new methods below.
+	(-saveCalendar:): new method that enables the saving of an
+	iCalendar object.
 
 	* SoObjects/Appointments/iCalCalendar+SOGo.m: new category module.
 	(-eventWithRecurrenceId, -todoWithRecurrenceId): new method that

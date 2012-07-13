@@ -62,6 +62,7 @@
 		       toFolder: (SOGoGCSFolder *) newFolder;
 
 - (void) updateComponent: (iCalRepeatableEntityObject *) newObject;
+- (NSException *) saveCalendar: (iCalCalendar *) newCalendar;
 - (NSException *) saveComponent: (iCalRepeatableEntityObject *) newObject;
 
 /* mail notifications */

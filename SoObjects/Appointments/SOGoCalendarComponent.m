@@ -645,15 +645,16 @@
     }
 }
 
-- (NSException *) saveComponent: (iCalRepeatableEntityObject *) newObject
+- (NSException *) saveCalendar: (iCalCalendar *) newCalendar
 {
-  NSString *newiCalString;
-
-  newiCalString = [[newObject parent] versitString];
-
-  [self saveContentString: newiCalString];
+  [self saveContentString: [newCalendar versitString]];
 
   return nil;
+}
+
+- (NSException *) saveComponent: (iCalRepeatableEntityObject *) newObject
+{
+  return [self saveCalendar: [newObject parent]];
 }
 
 /* raw saving */
