@@ -28,6 +28,8 @@
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalCalendar.h>
@@ -35,10 +37,11 @@
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalEventChanges.h>
 #import <NGCards/iCalPerson.h>
+#import <NGCards/iCalRecurrenceCalculator.h>
 #import <NGCards/NSCalendarDate+NGCards.h>
 #import <SaxObjC/XMLNamespaces.h>
 
-#import <SOPE/NGCards/NSString+NGCards.h>
+#import <NGCards/NSString+NGCards.h>
 
 #import <SOGo/SOGoConstants.h>
 #import <SOGo/SOGoUserManager.h>
