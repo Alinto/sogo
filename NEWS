@@ -5,6 +5,10 @@ New Features
  - send and/or receive email notifications when a calendar is modified (new
    domain defaults SOGoNotifyOnPersonalModifications and
    SOGoNotifyOnExternalModifications)
+ - added the SOGoSearchMinimumWordLength domain default which controls the
+   minimal length required before trigging server-side search operations for
+   attendee completion, contact searches, etc. The default value is 2, which
+   means search operations are trigged once the 3rd character is typed.
 
 Enhancements
  - updated Czech, French translations

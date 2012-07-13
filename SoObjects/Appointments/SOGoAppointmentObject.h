@@ -28,6 +28,8 @@
 @class NSException;
 @class NSString;
 
+@class WORequest;
+
 @class iCalEvent;
 @class iCalCalendar;
 
@@ -48,6 +50,9 @@
 - (NSArray *) postCalDAVEventRequestTo: (NSArray *) recipients  from: (NSString *) originator;
 - (NSArray *) postCalDAVEventReplyTo: (NSArray *) recipients  from: (NSString *) originator;
 - (NSArray *) postCalDAVEventCancelTo: (NSArray *) recipients  from: (NSString *) originator;
+
+- (NSException *) updateContentWithCalendar: (iCalCalendar *) calendar
+                                fromRequest: (WORequest *) rq;
 
 @end
 

@@ -115,7 +115,7 @@ class CalDAVSchedulingTest(unittest.TestCase):
         self.attendee1_client = webdavlib.WebDAVClient(hostname, port,
                                              attendee1_username, attendee1_password)
         self.attendee1_delegate_client = webdavlib.WebDAVClient(hostname, port,
-                                             attendee1_delegate_username, attendee1_password)
+                                                                attendee1_delegate_username, attendee1_delegate_password)
 
         utility = utilities.TestUtility(self, self.client)
         (self.user_name, self.user_email) = utility.fetchUserInfo(username)

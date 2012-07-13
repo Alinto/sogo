@@ -24,6 +24,7 @@
 #ifndef SOGOCALENDARCOMPONENT_H
 #define SOGOCALENDARCOMPONENT_H
 
+#import <SOGo/SOGoConstants.h>
 #import <SOGo/SOGoContentObject.h>
 
 #import "SOGoComponentOccurence.h"
@@ -61,6 +62,7 @@
 		       toFolder: (SOGoGCSFolder *) newFolder;
 
 - (void) updateComponent: (iCalRepeatableEntityObject *) newObject;
+- (NSException *) saveCalendar: (iCalCalendar *) newCalendar;
 - (NSException *) saveComponent: (iCalRepeatableEntityObject *) newObject;
 
 /* mail notifications */
@@ -78,7 +80,8 @@
 - (void) sendReceiptEmailForObject: (iCalRepeatableEntityObject *) object
 		    addedAttendees: (NSArray *) theAddedAttendees
 		  deletedAttendees: (NSArray *) theDeletedAttendees
-		  updatedAttendees: (NSArray *) theUpdatedAttendees;
+		  updatedAttendees: (NSArray *) theUpdatedAttendees
+                         operation: (SOGoEventOperation) theOperation;
 
 - (iCalPerson *) findParticipantWithUID: (NSString *) uid;
 
@@ -86,7 +89,8 @@
 - (NSArray *) getUIDsForICalPersons: (NSArray *) iCalPersons;
 
 /* recurrences */
-- (iCalRepeatableEntityObject *) lookupOccurence: (NSString *) recID;
+/* same as above, but refers to the existing calendar component */
+- (iCalRepeatableEntityObject *) lookupOccurrence: (NSString *) recID;
 - (SOGoComponentOccurence *) occurence: (iCalRepeatableEntityObject *) component;
 - (iCalRepeatableEntityObject *) newOccurenceWithID: (NSString *) recID;
 

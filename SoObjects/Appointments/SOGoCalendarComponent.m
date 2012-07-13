@@ -269,45 +269,11 @@
   return iCalString;
 }
 
-static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
-                                    NSString *recID)
+- (iCalRepeatableEntityObject *) lookupOccurrence: (NSString *) recID
 {
-  unsigned int seconds, recSeconds;
-  
-  seconds = [recID intValue];
-  recSeconds = [[occurence recurrenceId] timeIntervalSince1970];
+  [self subclassResponsibility: _cmd];
 
-  return (seconds == recSeconds);
-}
-
-- (iCalRepeatableEntityObject *) lookupOccurence: (NSString *) recID
-{
-  iCalRepeatableEntityObject *component, *occurence, *currentOccurence;
-  NSArray *occurences;
-  unsigned int count, max;
-
-  occurence = nil;
-
-  component = [self component: NO secure: NO];
-  if ([component hasRecurrenceRules])
-    {
-      occurences = [[self calendar: NO secure: NO] allObjects];
-      max = [occurences count];
-      count = 1; // skip master event
-      while (!occurence && count < max)
-	{
-	  currentOccurence = [occurences objectAtIndex: count];
-	  if (_occurenceHasID (currentOccurence, recID))
-	    occurence = currentOccurence;
-	  else
-	    count++;
-	}
-    }
-  else if (_occurenceHasID (component, recID))
-    /* The "master" event could be that occurrence. */
-    occurence = component;
-
-  return occurence;
+  return nil;
 }
 
 - (SOGoComponentOccurence *) occurence: (iCalRepeatableEntityObject *) component
@@ -397,7 +363,7 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
       else if ([lookupName hasPrefix: @"occurence"])
 	{
 	  recID = [lookupName substringFromIndex: 9];
-	  occurence = [self lookupOccurence: recID];
+	  occurence = [self lookupOccurrence: recID];
 	  if (occurence)
             isNewOccurence = NO;
           else
@@ -679,15 +645,16 @@ static inline BOOL _occurenceHasID (iCalRepeatableEntityObject *occurence,
     }
 }
 
-- (NSException *) saveComponent: (iCalRepeatableEntityObject *) newObject
+- (NSException *) saveCalendar: (iCalCalendar *) newCalendar
 {
-  NSString *newiCalString;
-
-  newiCalString = [[newObject parent] versitString];
-
-  [self saveContentString: newiCalString];
+  [self saveContentString: [newCalendar versitString]];
 
   return nil;
+}
+
+- (NSException *) saveComponent: (iCalRepeatableEntityObject *) newObject
+{
+  return [self saveCalendar: [newObject parent]];
 }
 
 /* raw saving */

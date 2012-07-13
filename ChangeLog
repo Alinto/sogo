@@ -1,3 +1,25 @@
+2012-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(-updateContentWithCalendar:fromRequest:): new method spawned from
+	the previous incarnation of PUTRequest:, designed to centralize
+	all the processed performed on an iCalendar instance, new or
+	derived from the original.
+
+	* SoObjects/Appointments/SOGoCalendarComponent.m
+	(-lookupOccurrence:): now a virtual method forcing the use by
+	subclasses of the new methods below.
+	(-saveCalendar:): new method that enables the saving of an
+	iCalendar object.
+
+	* SoObjects/Appointments/iCalCalendar+SOGo.m: new category module.
+	(-eventWithRecurrenceId, -todoWithRecurrenceId): new method that
+	return as recurrence based on the id passed as parameter.
+
+	* Tests/Integration/test-caldav-scheduling.py
+	(CalDAVSchedulingTest.setUp): use the proper password for
+	attendee1_delegate.
+
 2012-07-12  Jean Raby <jraby@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailForward.m (from, to, cc, reply-to):
@@ -112,7 +134,6 @@
 	* UI/Templates/ContactsUI/UIxContactView.wox:
 	Show all addresses returned from secondaryEmails.
 	This still need some css tweaks.
-	  
 
 2012-07-01  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
