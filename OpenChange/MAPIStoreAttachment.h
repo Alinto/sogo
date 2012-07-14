@@ -37,6 +37,7 @@
 - (uint32_t) AID;
 
 - (int) openEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
+                     inMode: (enum OpenEmbeddedMessage_OpenModeFlags) mode
                     withMID: (uint64_t *) mid
            withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
                    inMemCtx: (TALLOC_CTX *) memCtx;
