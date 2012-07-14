@@ -5,6 +5,11 @@
 	the previous incarnation of PUTRequest:, designed to centralize
 	all the processed performed on an iCalendar instance, new or
 	derived from the original.
+	(-changeParticipationStatus:withDelegate:forRecurrenceId:):
+	reorganized the method workflow by not testing "calendar" as it is
+	guaranteed to be returned. Also, we save the iCalendar object from
+	here, as we cannot invoke the method above, which would reinvoke
+	this method in loop in the current state of the code.
 
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	(-lookupOccurrence:): now a virtual method forcing the use by

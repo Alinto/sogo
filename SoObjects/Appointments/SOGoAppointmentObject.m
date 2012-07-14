@@ -1155,19 +1155,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 #endif
 	}
       
-      /*
-      // We generate the updated iCalendar file and we save it in the database.
-      // We do this ONLY when using SOGo from the Web interface. Over DAV, it'll
-      // be handled directly in PUTAction:
-
-      if (![context request] || [[context request] handledByDefaultHandler])
-	{
-          NSString *newContent;
-	  newContent = [[event parent] versitString];
-	  ex = [self saveContentString: newContent];
-	}
-      */
-
       // If the current user isn't the organizer of the event
       // that has just been updated, we update the event and
       // send a notification
@@ -1340,65 +1327,78 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 
   calendar = [[self calendar: NO secure: NO] mutableCopy];
   [calendar autorelease];
-  if (calendar)
+
+  if (_recurrenceId)
     {
-      if (_recurrenceId)
-	{
-	  // If _recurrenceId is defined, find the specified occurence
-	  // within the repeating vEvent.
-	  recurrenceTime = [NSString stringWithFormat: @"%f", [_recurrenceId timeIntervalSince1970]];
-	  event = (iCalEvent*)[self lookupOccurrence: recurrenceTime];
-	  
-	  if (event == nil)
-	    // If no occurence found, create one
-	    event = (iCalEvent*)[self newOccurenceWithID: recurrenceTime];
-	}
-      else
-	// No specific occurence specified; return the first vEvent of
-	// the vCalendar.
-	event = (iCalEvent*)[calendar firstChildWithTag: [self componentTag]];
+      // If _recurrenceId is defined, find the specified occurence
+      // within the repeating vEvent.
+      recurrenceTime = [NSString stringWithFormat: @"%f", [_recurrenceId timeIntervalSince1970]];
+      event = (iCalEvent*)[self lookupOccurrence: recurrenceTime];
+      
+      if (event == nil)
+        // If no occurence found, create one
+        event = (iCalEvent*)[self newOccurenceWithID: recurrenceTime];
     }
+  else
+    // No specific occurence specified; return the first vEvent of
+    // the vCalendar.
+    event = (iCalEvent*)[calendar firstChildWithTag: [self componentTag]];
+  
   if (event)
     {
       // ownerUser will actually be the owner of the calendar
       // where the participation change on the event occurs. The particpation
       // change will be on the attendee corresponding to the ownerUser.
       ownerUser = [SOGoUser userWithLogin: owner];
-
+      
       attendee = [event userAsAttendee: ownerUser];
       if (attendee)
-	{
-	  if (delegate
-	      && ![[delegate email] isEqualToString: [attendee delegatedTo]])
-	    {
-	      delegatedUid = [delegate uid];
-	      if (delegatedUid)
-		delegatedUser = [SOGoUser userWithLogin: delegatedUid];
-	      if (delegatedUser != nil && [event userIsOrganizer: delegatedUser])
-		ex = [NSException exceptionWithHTTPStatus: 403
-						   reason: @"delegate is organizer"];		
-	      if ([event isAttendee: [[delegate email] rfc822Email]])
-		ex = [NSException exceptionWithHTTPStatus: 403
-						   reason: @"delegate is a attendee"];
-	      else if ([SOGoGroup groupWithEmail: [[delegate email] rfc822Email]
+        {
+          if (delegate
+              && ![[delegate email] isEqualToString: [attendee delegatedTo]])
+            {
+              delegatedUid = [delegate uid];
+              if (delegatedUid)
+                delegatedUser = [SOGoUser userWithLogin: delegatedUid];
+              if (delegatedUser != nil && [event userIsOrganizer: delegatedUser])
+                ex = [NSException exceptionWithHTTPStatus: 403
+                                                   reason: @"delegate is organizer"];		
+              if ([event isAttendee: [[delegate email] rfc822Email]])
+                ex = [NSException exceptionWithHTTPStatus: 403
+                                                   reason: @"delegate is a attendee"];
+              else if ([SOGoGroup groupWithEmail: [[delegate email] rfc822Email]
                                         inDomain: [ownerUser domain]])
-		ex = [NSException exceptionWithHTTPStatus: 403
-						   reason: @"delegate is a group"];
-	    }
-	  if (ex == nil)
-	    ex = [self _handleAttendee: attendee
-			  withDelegate: delegate
-			     ownerUser: ownerUser
-			  statusChange: _status
-			       inEvent: event];
-	}
+                ex = [NSException exceptionWithHTTPStatus: 403
+                                                   reason: @"delegate is a group"];
+            }
+          if (ex == nil)
+            ex = [self _handleAttendee: attendee
+                          withDelegate: delegate
+                             ownerUser: ownerUser
+                          statusChange: _status
+                               inEvent: event];
+          if (ex == nil)
+            {
+              // We generate the updated iCalendar file and we save it in
+              // the database. We do this ONLY when using SOGo from the
+              // Web interface. Over DAV, it'll be handled directly in
+              // PUTAction:
+
+              /* FIXME: this is a hack caused by the fact that
+                 updateContentWithCalendar:fromRequest: invokes
+                 changeParticipationStatusblabla, while the latter was
+                 actually designed to be invoked by web methods only */
+              if (![context request] || [[context request] handledByDefaultHandler])
+                ex = [self saveContentString: [calendar versitString]];
+            }
+        }
       else
         ex = [NSException exceptionWithHTTPStatus: 404 // Not Found
-					   reason: @"user does not participate in this calendar event"];
+                                           reason: @"user does not participate in this calendar event"];
     }
   else
     ex = [NSException exceptionWithHTTPStatus: 500 // Server Error
-				       reason: @"unable to parse event record"];
+                                       reason: @"unable to parse event record"];
   
   return ex;
 }
