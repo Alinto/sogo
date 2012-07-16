@@ -1,3 +1,14 @@
+2012-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* Tests/Integration/webdavlib.py (WebDAVQuery.set_response): make
+	use of xml.etree.cElementTree for speed and avoid using a
+	cStringIO altogether by directly passing the content string.
+
+	* Tests/Integration/test-davacl.py (DAVCalendarSuperUserAclTest._getEvent)
+	(DAVCalendarAclTest._getEvent): ensure that the resulting event
+	does not contain any "\r" char as the XML parser would anyway
+	strip them.
+
 2012-07-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m

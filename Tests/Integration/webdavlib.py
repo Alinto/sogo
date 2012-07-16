@@ -19,12 +19,11 @@
 # Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
 # USA.
 
-import cStringIO
 import httplib
 import re
 import time
 import xml.dom.expatbuilder
-import xml.etree.ElementTree
+import xml.etree.cElementTree
 import xml.sax.saxutils
 import sys
 
@@ -216,9 +215,8 @@ class WebDAVQuery(HTTPQuery):
             and (headers["content-type"].startswith("application/xml")
                  or headers["content-type"].startswith("text/xml"))
             and int(headers["content-length"]) > 0):
-            tree = xml.etree.ElementTree.ElementTree()
-            stream = cStringIO.StringIO(self.response["body"])
-            self.response["document"] = tree.parse(stream)
+            document = xml.etree.cElementTree.fromstring(self.response["body"])
+            self.response["document"] = document
 
 class WebDAVMKCOL(WebDAVQuery):
     method = "MKCOL"
