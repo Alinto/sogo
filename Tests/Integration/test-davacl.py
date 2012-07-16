@@ -51,7 +51,7 @@ class DAVCalendarSuperUserAclTest(unittest.TestCase):
         self.client.execute(get)
 
         if get.response["status"] == 200:
-            event = get.response["body"]
+            event = get.response["body"].replace("\r", "")
         else:
             event = None
 
@@ -499,7 +499,7 @@ class DAVCalendarAclTest(DAVAclTest):
         self.subscriber_client.execute(get)
 
         if get.response["status"] == 200:
-            event = get.response["body"]
+            event = get.response["body"].replace("\r", "")
         else:
             event = None
 
@@ -596,10 +596,10 @@ class DAVCalendarAclTest(DAVAclTest):
                             " (right: %s)" % (operation, right))
             if right == "v" or right == "r" or right == "m":
                 icsClass = self.classToICSClass[event_class]
-                complete_event = (event_template % { "class": icsClass,
-                                                     "filename": "%s-event.ics" % icsClass.lower(),
-                                                     "organizer_line": "",
-                                                     "attendee_line": ""})
+                complete_event = (event_template % {"class": icsClass,
+                                                    "filename": "%s-event.ics" % icsClass.lower(),
+                                                    "organizer_line": "",
+                                                    "attendee_line": ""})
                 self.assertTrue(event.strip() == complete_event.strip(),
                                 "Right '%s' should return complete event"
                                 " during operation '%s'"
@@ -680,7 +680,7 @@ class DAVCalendarAclTest(DAVAclTest):
                                               "filename": filename,
                                               "organizer_line": "ORGANIZER:mailto:someone@nowhere.com\n",
                                               "attendee_line": att_line}
-            event = self._getEvent(event_class, True).replace("\r", "")
+            event = self._getEvent(event_class, True)
             self.assertEquals(exp_event.strip(), event.strip(),
                               "'respond to' event does not match:\nreceived:\n"
                               "/%s/\nexpected:\n/%s/" % (event, exp_event))
