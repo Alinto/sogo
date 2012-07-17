@@ -50,7 +50,7 @@ MAPIStoreTallocWrapperDestroy (void *data)
   pool = [NSAutoreleasePool new];
   wrapper = data;
   // NSLog (@"destroying wrapped object (wrapper: %p; object: %p)...\n", wrapper, wrapper->MAPIStoreSOGoObject);
-  [wrapper->MAPIStoreSOGoObject release];
+  [wrapper->instance release];
   [pool release];
   GSUnregisterCurrentThread ();
 
@@ -63,7 +63,7 @@ MAPIStoreTallocWrapperDestroy (void *data)
 
   wrapper = talloc_zero (tallocCtx, struct MAPIStoreTallocWrapper);
   talloc_set_destructor ((void *) wrapper, MAPIStoreTallocWrapperDestroy);
-  wrapper->MAPIStoreSOGoObject = self;
+  wrapper->instance = self;
   [self retain];
   // NSLog (@"returning wrapper: %p; object: %p", wrapper, self);
 

@@ -25,11 +25,11 @@
 
 #import <EOControl/EOQualifier.h>
 
-@class SOGoMAPIVolatileMessage;
+@class SOGoMAPIDBObject;
 
 @interface EOQualifier (MAPIStoreRestrictions)
 
-- (BOOL) evaluateMAPIVolatileMessage: (SOGoMAPIVolatileMessage *) message;
+- (BOOL) evaluateSOGoMAPIDBObject: (SOGoMAPIDBObject *) object;
 
 @end
 

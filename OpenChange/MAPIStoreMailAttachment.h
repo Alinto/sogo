@@ -30,9 +30,11 @@
 @interface MAPIStoreMailAttachment : MAPIStoreAttachment
 {
   NSDictionary *bodyInfo;
+  SOGoMailBodyPart *bodyPart;
 }
 
 - (void) setBodyInfo: (NSDictionary *) newBodyInfo;
+- (void) setBodyPart: (SOGoMailBodyPart *) newBodyPart;
 
 @end
 

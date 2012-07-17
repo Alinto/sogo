@@ -34,7 +34,7 @@
 
 @interface MAPIStoreGCSFolder : MAPIStoreFolder
 {
-  SOGoMAPIFSMessage *versionsMessage;
+  SOGoMAPIDBMessage *versionsMessage;
   NSArray *activeUserRoles;
   EOQualifier *componentQualifier;
 }
