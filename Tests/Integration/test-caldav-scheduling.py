@@ -60,10 +60,7 @@ class CalDAVPropertiesTest(unittest.TestCase):
         values = transp.getchildren()
         self.assertEquals(len(values), 1, "one and only one element expected")
         value = values[0]
-        self.assertTrue(isinstance(value, xml.etree.ElementTree._ElementInterface),
-                          "schedule-calendar-transp must be an instance of" \
-                              " %s, not %s"
-                          % ("_ElementInterface", transp.__class__.__name__))
+        self.assertTrue(xml.etree.ElementTree.iselement(value))
         ns = value.tag[0:31]
         tag = value.tag[31:]
         self.assertTrue(ns == "{urn:ietf:params:xml:ns:caldav}",
