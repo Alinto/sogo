@@ -1,3 +1,10 @@
+2012-07-18  Jean Raby  <jraby@inverse.ca>
+	* Scripts/sql-update-1.3.16_to_1.3.17-mysql.sh 
+	* Scripts/sql-update-1.3.16_to_1.3.17.sh:
+	New scripts to expand c_cycleinfo to mediumtext or varchar(1000000)
+	The field was expanded around 1.3.3.
+	See http://www.sogo.nu/bugs/view.php?id=1848
+
 2012-07-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* Tests/Integration/webdavlib.py (WebDAVQuery.set_response): make
@@ -22003,3 +22010,4 @@
 2006-06-15	ludovic@inverse.ca
 
 	* Initial import of SOGo from trunk.
+
