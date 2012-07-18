@@ -1,3 +1,11 @@
+2012-07-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentObject.m
+	(_setupResponseInRequestCalendar:): we now return the
+	calendar read from the database and not use the one
+	from the request anymore, as it can override properties
+	other than participation status changes.
+
 2012-07-18  Jean Raby  <jraby@inverse.ca>
 	* Scripts/sql-update-1.3.16_to_1.3.17-mysql.sh 
 	* Scripts/sql-update-1.3.16_to_1.3.17.sh:

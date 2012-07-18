@@ -1534,7 +1534,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   return partStats;
 }
 
-- (void) _setupResponseInRequestCalendar: (iCalCalendar *) rqCalendar
+- (iCalCalendar *) _setupResponseInRequestCalendar: (iCalCalendar *) rqCalendar
 {
   iCalCalendar *calendar;
   NSArray *keys;
@@ -1559,6 +1559,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
             }
         }
     }
+
+  return calendar;
 }
 
 - (void) _adjustTransparencyInRequestCalendar: (iCalCalendar *) rqCalendar
@@ -1718,7 +1720,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
   //
   if ([roles containsObject: @"ComponentResponder"]
       && ![roles containsObject: @"ComponentModifier"])
-    [self _setupResponseInRequestCalendar: calendar];
+    calendar = [self _setupResponseInRequestCalendar: calendar];
   else
     {
       if (![[rq headersForKey: @"X-SOGo"]
