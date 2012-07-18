@@ -59,7 +59,7 @@ Appointments_LOCALIZED_RESOURCE_FILES = Localizable.strings
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
 ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
-ADDITIONAL_LDFLAGS += -lcurl
+ADDITIONAL_LDFLAGS += -Wl,--no-as-needed -lcurl
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/wobundle.make
