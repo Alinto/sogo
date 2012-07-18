@@ -32,3 +32,5 @@ sieve_port = 2000
 
 sogo_user = "sogo"
 sogo_tool_path = "/usr/local/sbin/sogo-tool"
+
+webCalendarURL = "http://inverse.ca/sogo-integration-tests/CanadaHolidays.ics"

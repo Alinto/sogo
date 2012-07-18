@@ -136,6 +136,14 @@ class HTTPSimpleQuery:
 
 class HTTPGET(HTTPSimpleQuery):
     method = "GET"
+    cookie = None
+
+    def prepare_headers (self):
+      headers = HTTPSimpleQuery.prepare_headers(self)
+      if self.cookie:
+        headers["Cookie"] = self.cookie
+      return headers
+
 
 class HTTPOPTIONS(HTTPSimpleQuery):
     method = "OPTIONS"
@@ -168,6 +176,15 @@ class HTTPPUT(HTTPQuery):
 
 class HTTPPOST(HTTPPUT):
     method = "POST"
+    cookie = None
+
+    def prepare_headers (self):
+      headers = HTTPPUT.prepare_headers(self)
+      if self.cookie:
+        headers["Cookie"] = self.cookie
+      return headers
+
+
 
 class WebDAVQuery(HTTPQuery):
     method = None

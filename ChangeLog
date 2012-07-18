@@ -7,6 +7,15 @@
 	other than participation status changes.
 
 2012-07-18  Jean Raby  <jraby@inverse.ca>
+	* Tests/Integration/config.py.in: New config parameter: webCalendarURL
+	* Tests/Integration/webdavlib.py(HTTPPOST,HTTPGET):
+	  Allow cookies in post and get requests.
+	* Tests/Integration/test-ui-posts.py: New test class
+	  Currently contains only one test case which exercises addWebCalendar
+
+	* SoObjects/Appointments/GNUmakefile:
+	  use -Wl,--no-as-needed when linking. Fixes #1863
+
 	* Scripts/sql-update-1.3.16_to_1.3.17-mysql.sh 
 	* Scripts/sql-update-1.3.16_to_1.3.17.sh:
 	New scripts to expand c_cycleinfo to mediumtext or varchar(1000000)
