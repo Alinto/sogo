@@ -1,6 +1,6 @@
-/* SOGoMAPIVolatileMessage.m - this file is part of SOGo
+/* MAPIStoreDBBaseContext.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,39 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <Foundation/NSDictionary.h>
+#ifndef MAPISTOREDBBASECONTEXT_H
+#define MAPISTOREDBBASECONTEXT_H
 
-#import "SOGoMAPIVolatileMessage.h"
+#import "MAPIStoreContext.h"
 
-@implementation SOGoMAPIVolatileMessage
-
-- (id) init
-{
-  if ((self = [super init]))
-    {
-      properties = nil;
-    }
-
-  return self;
-}
-
-- (void) dealloc
-{
-  [properties release];
-  [super dealloc];
-}
-
-- (NSMutableDictionary *) properties
-{
-  if (!properties)
-    properties = [NSMutableDictionary new];
-
-  return properties;
-}
-
-- (void) appendProperties: (NSDictionary *) newProperties
-{
-  [[self properties] addEntriesFromDictionary: newProperties];
-}
+@interface MAPIStoreDBBaseContext : MAPIStoreContext
 
 @end
+
+#endif /* MAPISTOREDBBASECONTEXT_H */

@@ -23,10 +23,14 @@
 #ifndef MAPISTORERECURRENCEUTILS_H
 #define MAPISTORERECURRENCEUTILS_H
 
+#include <talloc.h>
+
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalRecurrenceRule.h>
 
-@class NSCalendarDate;
+@class NSTimeZone;
+
+@class iCalEvent;
 @class iCalRepeatableEntityObject;
 @class iCalRecurrenceRule;
 
@@ -44,8 +48,9 @@
 @interface iCalRecurrenceRule (MAPIStoreRecurrence)
 
 - (void) fillRecurrencePattern: (struct RecurrencePattern *) rp
-                 withStartDate: (NSCalendarDate *) startDate
-                    andEndDate: (NSCalendarDate *) endDate;
+                     withEvent: (iCalEvent *) event
+                    inTimeZone: (NSTimeZone *) timeZone
+                      inMemCtx: (TALLOC_CTX *) memCtx;
 
 @end
 

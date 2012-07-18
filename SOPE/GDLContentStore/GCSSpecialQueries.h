@@ -48,4 +48,15 @@
 
 @end
 
+/* interfaces exposed so that categories can be created from them */
+@interface GCSPostgreSQLSpecialQueries : GCSSpecialQueries
+@end
+
+@interface GCSMySQLSpecialQueries : GCSSpecialQueries
+@end
+
+@interface GCSOracleSpecialQueries : GCSSpecialQueries
+@end
+
+
 #endif /* GCSSPECIALQUERIES_H */
