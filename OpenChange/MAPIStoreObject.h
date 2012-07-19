@@ -60,6 +60,8 @@
 - (MAPIStoreUserContext *) userContext;
 - (MAPIStoreMapping *) mapping;
 
+- (NSString *) url;
+
 /* properties */
 
 - (void) addProperties: (NSDictionary *) newProperties;
@@ -89,6 +91,7 @@
                              inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* subclasses */
+- (NSString *) nameInContainer
 - (NSDate *) creationTime;
 - (NSDate *) lastModificationTime;
 

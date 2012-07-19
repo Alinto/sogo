@@ -146,20 +146,6 @@ static Class MAPIStoreFolderK;
   return objectId;
 }
 
-- (NSString *) url
-{
-  NSString *containerURL, *format;
-
-  containerURL = (NSString *) [container url];
-  if ([containerURL hasSuffix: @"/"])
-    format = @"%@%@";
-  else
-    format = @"%@/%@";
-
-  return  [NSString stringWithFormat: format,
-                    containerURL, [self nameInContainer]];
-}
-
 /* getters */
 - (int) getPidTagDisplayName: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx

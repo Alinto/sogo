@@ -58,14 +58,11 @@
 
 - (id) sogoObject;
 
-- (NSString *) nameInContainer;
-
 - (MAPIStoreObject *) container;
 
 - (void) cleanupCaches;
 
 - (uint64_t) objectId;
-- (NSString *) url;
 
 /* implemented getters */
 - (int) getPidTagDisplayName: (void **) data

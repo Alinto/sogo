@@ -122,6 +122,20 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return [[self userContext] mapping];
 }
 
+- (NSString *) url
+{
+  NSString *containerURL, *format;
+
+  containerURL = (NSString *) [container url];
+  if ([containerURL hasSuffix: @"/"])
+    format = @"%@%@";
+  else
+    format = @"%@/%@";
+
+  return  [NSString stringWithFormat: format,
+                    containerURL, [self nameInContainer]];
+}
+
 /* helpers */
 
 - (void) addProperties: (NSDictionary *) newNewProperties
@@ -293,6 +307,13 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 /* subclasses */
+- (NSString *) nameInContainer
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
 - (NSDate *) creationTime
 {
   [self subclassResponsibility: _cmd];

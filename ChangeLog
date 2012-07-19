@@ -1,5 +1,9 @@
 2012-07-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreObject.m (-nameInContainer): moved method
+	from MAPIStoreSOGoObject and made mandatory for subclasses.
+	(-url): new methed moved from MAPIStoreSOGoObject.
+
 	* OpenChange/MAPIStoreAppointmentWrapper.m: now a subclass of
 	MAPIStoreObjectProxy.
 
