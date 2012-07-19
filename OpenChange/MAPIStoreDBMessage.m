@@ -91,7 +91,7 @@
   [(SOGoMAPIDBMessage *) sogoObject reloadIfNeeded];
   versionNbr = [properties objectForKey: @"version"];
   if (versionNbr)
-    objectVersion = [versionNbr unsignedLongLongValue];
+    objectVersion = [versionNbr unsignedLongLongValue] >> 16;
   else
     objectVersion = ULLONG_MAX;
 
@@ -158,7 +158,7 @@
   if ([attachmentKeys count] > 0)
     [properties setObject: attachmentParts forKey: @"attachments"];
 
-  newVersion = exchange_globcnt ([[self context] getNewChangeNumber] >> 16);
+  newVersion = [[self context] getNewChangeNumber];
   [properties setObject: [NSNumber numberWithUnsignedLongLong: newVersion]
                  forKey: @"version"];
 

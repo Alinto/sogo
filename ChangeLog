@@ -1,3 +1,10 @@
+2012-07-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreDBMessage.m (-objectVersion): shift the
+	version number by 16 bits, instead of doing it in -save.
+	(-save): don t swap the bytes of the version number as it would
+	return a wrong change number and a wrong change key for DB objects.
+
 2012-07-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m
