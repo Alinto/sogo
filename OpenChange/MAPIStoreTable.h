@@ -25,7 +25,7 @@
 
 #include <talloc.h>
 
-#import <Foundation/NSObject.h>
+#import "NSObject+MAPIStore.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
