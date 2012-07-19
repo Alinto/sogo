@@ -87,51 +87,33 @@
 
 @implementation MAPIStoreCalendarMessage
 
-- (id) init
-{
-  if ((self = [super init]))
-    {
-      appointmentWrapper = nil;
-    }
-
-  return self;
-}
-
-- (void) dealloc
-{
-  [appointmentWrapper release];
-  [super dealloc];
-}
-
-- (MAPIStoreAppointmentWrapper *) appointmentWrapper
+- (id) initWithSOGoObject: (id) newSOGoObject
+              inContainer: (MAPIStoreObject *) newFolder
 {
   iCalEvent *event;
   MAPIStoreContext *context;
   MAPIStoreUserContext *userContext;
-
-  if (!appointmentWrapper)
+  MAPIStoreAppointmentWrapper *appointmentWrapper;
+ 
+  if ((self = [super initWithSOGoObject: newSOGoObject
+                            inContainer: newFolder]))
     {
       event = [sogoObject component: NO secure: YES];
       context = [self context];
       userContext = [self userContext];
-      ASSIGN (appointmentWrapper,
-              [MAPIStoreAppointmentWrapper wrapperWithICalEvent: event
-                                                        andUser: [userContext sogoUser]
-                                                 andSenderEmail: nil
-                                                     inTimeZone: [userContext timeZone]
-                                             withConnectionInfo: [context connectionInfo]]);
+      appointmentWrapper
+        = [MAPIStoreAppointmentWrapper wrapperWithICalEvent: event
+                                                    andUser: [userContext sogoUser]
+                                             andSenderEmail: nil
+                                                 inTimeZone: [userContext timeZone]
+                                         withConnectionInfo: [context connectionInfo]];
+      [self addProxy: appointmentWrapper];
     }
-
-  return appointmentWrapper;
+ 
+  return self;
 }
 
 /* getters */
-- (int) getPidTagIconIndex: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidTagIconIndex: data inMemCtx: memCtx];
-}
-
 - (int) getPidLidFInvited: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -154,93 +136,6 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagOwnerAppointmentId: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidTagOwnerAppointmentId: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagStartDate: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidTagStartDate: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidAppointmentSequence: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidAppointmentSequence: data
-                                                        inMemCtx: memCtx];
-}
-
-- (int) getPidLidAppointmentStateFlags: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidAppointmentStateFlags: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidResponseStatus: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidResponseStatus: data
-                                                   inMemCtx: memCtx];
-}
-
-- (int) getPidLidAppointmentStartWhole: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidAppointmentStartWhole: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidCommonStart: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidCommonStart: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagEndDate: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidTagEndDate: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidAppointmentEndWhole: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidAppointmentEndWhole: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidCommonEnd: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidCommonEnd: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidAppointmentDuration: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidAppointmentDuration: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidAppointmentSubType: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidAppointmentSubType: data
-                                                       inMemCtx: memCtx];
-}
-
-- (int) getPidLidBusyStatus: (void **) data // TODO
-                   inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidBusyStatus: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagSubject: (void **) data // SUMMARY
-                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidTagSubject: data inMemCtx: memCtx];
-}
-
 - (int) getPidLidSideEffects: (void **) data // TODO
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -251,90 +146,9 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidLocation: (void **) data // LOCATION
-                 inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidLocation: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
-                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidPrivate: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagSensitivity: (void **) data // not implemented, depends on CLASS
-                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidTagSensitivity: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagImportance: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidTagImportance: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagBody: (void **) data
-             inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidTagBody: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidIsRecurring: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidIsRecurring: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidRecurring: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidRecurring: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidAppointmentRecur: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidAppointmentRecur: data
-                                                     inMemCtx: memCtx];
-}
-
-- (int) getPidLidGlobalObjectId: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidGlobalObjectId: data
-                                                   inMemCtx: memCtx];
-}
-
-- (int) getPidLidCleanGlobalObjectId: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidCleanGlobalObjectId: data
-                                                        inMemCtx: memCtx];
-}
-
 - (int) getPidTagProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidServerProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidServerProcessed: data
-                                                    inMemCtx: memCtx];
-}
-
-- (int) getPidLidServerProcessingActions: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidServerProcessingActions: data
-                                                            inMemCtx: memCtx];
-}
-
-- (int) getPidLidAppointmentReplyTime: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidAppointmentReplyTime: data
-                                                         inMemCtx: memCtx];
 }
 
 - (void) getMessageData: (struct mapistore_message **) dataPtr
@@ -343,63 +157,37 @@
   struct mapistore_message *msgData;
 
   [super getMessageData: &msgData inMemCtx: memCtx];
-  [[self appointmentWrapper] fillMessageData: msgData
-                                    inMemCtx: memCtx];
+  /* HACK: we know the first (and only) proxy is our appointment wrapper
+     instance, but this might not always be true */
+  [[proxies objectAtIndex: 0] fillMessageData: msgData
+                                     inMemCtx: memCtx];
   *dataPtr = msgData;
 }
 
-/* sender */
-- (int) getPidTagSenderEmailAddress: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidTagSenderEmailAddress: data
-                                                       inMemCtx: memCtx];
-}
-
-- (int) getPidTagSenderAddressType: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidTagSenderAddressType: data
-                                                      inMemCtx: memCtx];
-}
-
-- (int) getPidTagSenderName: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidTagSenderName: data
-                                               inMemCtx: memCtx];
-}
-
-- (int) getPidTagSenderEntryId: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidTagSenderEntryId: data
-                                                  inMemCtx: memCtx];
-}
-
 /* sender representing */
-- (int) getPidTagSentRepresentingEmailAddress: (void **) data
-                                     inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPidTagSenderEmailAddress: data inMemCtx: memCtx];
-}
+// - (int) getPidTagSentRepresentingEmailAddress: (void **) data
+//                                      inMemCtx: (TALLOC_CTX *) memCtx
+// {
+//   return [self getPidTagSenderEmailAddress: data inMemCtx: memCtx];
+// }
 
-- (int) getPidTagSentRepresentingAddressType: (void **) data
-                                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getSMTPAddrType: data inMemCtx: memCtx];
-}
+// - (int) getPidTagSentRepresentingAddressType: (void **) data
+//                                     inMemCtx: (TALLOC_CTX *) memCtx
+// {
+//   return [self getSMTPAddrType: data inMemCtx: memCtx];
+// }
 
-- (int) getPidTagSentRepresentingName: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPidTagSenderName: data inMemCtx: memCtx];
-}
+// - (int) getPidTagSentRepresentingName: (void **) data
+//                              inMemCtx: (TALLOC_CTX *) memCtx
+// {
+//   return [self getPidTagSenderName: data inMemCtx: memCtx];
+// }
 
-- (int) getPidTagSentRepresentingEntryId: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPidTagSenderEntryId: data inMemCtx: memCtx];
-}
+// - (int) getPidTagSentRepresentingEntryId: (void **) data
+//                                 inMemCtx: (TALLOC_CTX *) memCtx
+// {
+//   return [self getPidTagSenderEntryId: data inMemCtx: memCtx];
+// }
 
 /* attendee */
 // - (int) getPidTagReceivedByAddressType: (void **) data
@@ -459,63 +247,6 @@
                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
-}
-
-/* alarms */
-- (int) getPidLidReminderSet: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidReminderSet: data
-                                                inMemCtx: memCtx];
-}
-
-- (int) getPidLidReminderDelta: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidReminderDelta: data
-                                                  inMemCtx: memCtx];
-}
-
-- (int) getPidLidReminderTime: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidReminderTime: data
-                                                 inMemCtx: memCtx];
-}
-
-- (int) getPidLidReminderSignalTime: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidReminderSignalTime: data
-                                                       inMemCtx: memCtx];
-}
-
-- (int) getPidLidReminderOverride: (void **) data
-                         inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidReminderOverride: data
-                                                     inMemCtx: memCtx];
-}
-
-- (int) getPidLidReminderType: (void **) data
-                     inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidReminderType: data
-                                                 inMemCtx: memCtx];
-}
-
-- (int) getPidLidReminderPlaySound: (void **) data
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidReminderPlaySound: data
-                                                      inMemCtx: memCtx];
-}
-
-- (int) getPidLidReminderFileParameter: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [[self appointmentWrapper] getPidLidReminderFileParameter: data
-                                                          inMemCtx: memCtx];
 }
 
 /* attendee */

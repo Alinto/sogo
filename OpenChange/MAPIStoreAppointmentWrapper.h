@@ -23,9 +23,10 @@
 #ifndef MAPISTORECALENDARWRAPPER_H
 #define MAPISTORECALENDARWRAPPER_H
 
-#import <Foundation/NSObject.h>
 #import <NGCards/iCalPerson.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
+
+#import "MAPIStoreObjectProxy.h"
 
 @class NSTimeZone;
 
@@ -35,7 +36,7 @@
 
 @class SOGoUser;
 
-@interface MAPIStoreAppointmentWrapper : NSObject
+@interface MAPIStoreAppointmentWrapper : MAPIStoreObjectProxy
 {
   struct mapistore_connection_info *connInfo;
   iCalCalendar *calendar;

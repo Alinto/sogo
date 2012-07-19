@@ -28,9 +28,6 @@
 @class MAPIStoreAppointmentWrapper;
 
 @interface MAPIStoreCalendarMessage : MAPIStoreGCSMessage
-{
-  MAPIStoreAppointmentWrapper *appointmentWrapper;
-}
 
 @end
 

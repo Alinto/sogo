@@ -1,5 +1,12 @@
 2012-07-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreAppointmentWrapper.m: now a subclass of
+	MAPIStoreObjectProxy.
+
+	* OpenChange/MAPIStoreCalendarMessage.m
+	(-initWithSOGoObject:inContainer:): we now register our
+	appointment wrapper as a proxy.
+
 	* OpenChange/MAPIStoreObject.m (-addProxy:): new method that keeps
 	proxy objects in the new "proxies" ivar.
 	(-getProperty:withTag:inMemCtx:): added code that pass the request
