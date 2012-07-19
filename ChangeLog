@@ -1,3 +1,10 @@
+2012-07-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/NSObject+MAPIStore.m
+	(+getAvailableProperties:inMemCtx:)
+	(-getAvailableProperties:inMemCtx:, canGetProperty:): methods
+	moved from MAPIStoreObject.m
+
 2012-07-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarFolder.m (-createMessage): attach a

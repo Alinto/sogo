@@ -68,35 +68,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return newObject;
 }
 
-+ (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-                      inMemCtx: (TALLOC_CTX *) memCtx
-{
-  struct SPropTagArray *properties;
-  const MAPIStorePropertyGetter *classGetters;
-  NSUInteger count;
-  enum MAPITAGS propTag;
-  uint16_t propValue;
-
-  properties = talloc_zero (memCtx, struct SPropTagArray);
-  properties->aulPropTag = talloc_array (properties, enum MAPITAGS,
-                                         MAPIStoreSupportedPropertiesCount);
-  classGetters = MAPIStorePropertyGettersForClass (self);
-  for (count = 0; count < MAPIStoreSupportedPropertiesCount; count++)
-    {
-      propTag = MAPIStoreSupportedProperties[count];
-      propValue = (propTag & 0xffff0000) >> 16;
-      if (classGetters[propValue])
-        {
-          properties->aulPropTag[properties->cValues] = propTag;
-          properties->cValues++;
-        }
-    }
-
-  *propertiesP = properties;
-
-  return MAPISTORE_SUCCESS;
-}
-
 - (id) init
 {
   if ((self = [super init]))
@@ -202,31 +173,6 @@ static Class NSExceptionK, MAPIStoreFolderK;
   *data = [[self lastModificationTime] asFileTimeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
-}
-
-- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-                      inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSUInteger count;
-  struct SPropTagArray *availableProps;
-  enum MAPITAGS propTag;
-
-  availableProps = talloc_zero (memCtx, struct SPropTagArray);
-  availableProps->aulPropTag = talloc_array (availableProps, enum MAPITAGS,
-                                             MAPIStoreSupportedPropertiesCount);
-  for (count = 0; count < MAPIStoreSupportedPropertiesCount; count++)
-    {
-      propTag = MAPIStoreSupportedProperties[count];
-      if ([self canGetProperty: propTag])
-        {
-          availableProps->aulPropTag[availableProps->cValues] = propTag;
-          availableProps->cValues++;
-        }
-    }
-
-  *propertiesP = availableProps;
-
-  return MAPISTORE_SUCCESS;  
 }
 
 - (BOOL) canGetProperty: (enum MAPITAGS) propTag

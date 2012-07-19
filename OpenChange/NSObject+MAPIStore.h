@@ -26,6 +26,7 @@
 #import <Foundation/NSObject.h>
 
 #include <talloc.h>
+#include <mapistore/mapistore_errors.h>
 
 struct MAPIStoreTallocWrapper
 {
@@ -55,6 +56,16 @@ struct MAPIStoreTallocWrapper
 @interface NSObject (MAPIStoreExtension)
 
 - (Class) mapistoreMessageClass;
+
+@end
+
+@interface NSObject (MAPIStoreProperties)
+
++ (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx;
+- (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx;
+- (BOOL) canGetProperty: (enum MAPITAGS) propTag;
 
 @end
 

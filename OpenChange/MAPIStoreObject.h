@@ -50,8 +50,6 @@
 + (id) mapiStoreObjectInContainer: (MAPIStoreObject *) newContainer;
 - (id) initInContainer: (MAPIStoreObject *) newContainer;
 
-+ (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-                      inMemCtx: (TALLOC_CTX *) memCtx;
 
 - (MAPIStoreObject *) container;
 
@@ -61,14 +59,10 @@
 
 /* properties */
 
-- (BOOL) canGetProperty: (enum MAPITAGS) propTag;
-
 - (void) addProperties: (NSDictionary *) newProperties;
 - (NSMutableDictionary *) properties;
 
 /* ops */
-- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-                      inMemCtx: (TALLOC_CTX *) localMemCtx;
 - (int) getProperties: (struct mapistore_property_data *) data
              withTags: (enum MAPITAGS *) tags
              andCount: (uint16_t) columnCount
