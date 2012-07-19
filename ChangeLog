@@ -1,5 +1,9 @@
 2012-07-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarFolder.m (-createMessage): attach a
+	WOContext to the newEntry in order to enable page templates
+	resolution when notifications are sent.
+
 	* OpenChange/MAPIApplication.m (-init): a WEResourceManager is
 	setup for the application so that page templates can be properly
 	be initialized.
