@@ -143,6 +143,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   SEL methodSel;
   id value;
   int rc = MAPISTORE_ERR_NOT_FOUND;
+  NSUInteger count, max;
 
   value = [properties objectForKey: MAPIPropertyKey (propTag)];
   if (value)
@@ -154,6 +155,16 @@ static Class NSExceptionK, MAPIStoreFolderK;
       method = (MAPIStorePropertyGetter) classGetters[propValue];
       if (method)
         rc = method (self, methodSel, data, memCtx);
+    }
+
+  if (rc == MAPISTORE_ERR_NOT_FOUND)
+    {
+      max = [proxies count];
+      for (count = 0; rc == MAPISTORE_ERR_NOT_FOUND && count < max; count++)
+        rc = [[proxies objectAtIndex: count]
+               getProperty: data
+                   withTag: propTag
+                  inMemCtx: memCtx];
     }
 
   return rc;
@@ -198,6 +209,11 @@ static Class NSExceptionK, MAPIStoreFolderK;
                                  inMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
+}
+
+- (void) addProxy: (MAPIStoreObjectProxy *) newProxy
+{
+  [proxies addObject: newProxy];
 }
 
 - (int) addPropertiesFromRow: (struct SRow *) aRow

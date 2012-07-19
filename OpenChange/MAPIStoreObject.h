@@ -35,6 +35,7 @@
 
 @class MAPIStoreContext;
 @class MAPIStoreMapping;
+@class MAPIStoreObjectProxy;
 @class MAPIStoreUserContext;
 @class MAPIStoreSOGoObject;
 
@@ -43,6 +44,7 @@
   const IMP *classGetters;
 
   NSMutableArray *parentContainersBag;
+  NSMutableArray *proxies;
   id container;
   NSMutableDictionary *properties;
 }
@@ -50,6 +52,7 @@
 + (id) mapiStoreObjectInContainer: (MAPIStoreObject *) newContainer;
 - (id) initInContainer: (MAPIStoreObject *) newContainer;
 
+- (void) addProxy: (MAPIStoreObjectProxy *) newProxy;
 
 - (MAPIStoreObject *) container;
 

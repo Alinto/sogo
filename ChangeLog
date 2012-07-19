@@ -1,5 +1,16 @@
 2012-07-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreObject.m (-addProxy:): new method that keeps
+	proxy objects in the new "proxies" ivar.
+	(-getProperty:withTag:inMemCtx:): added code that pass the request
+	to the available object proxies, when the property getters have
+	not been found in the local class.
+
+	* OpenChange/MAPIStoreObjectProxy.[hm]: new class module that
+	provide a facility for providing property getters in the name of
+	another class, working around the fact that Objective-C does not
+	provide multiple-inheritance.
+
 	* OpenChange/NSObject+MAPIStore.m
 	(+getAvailableProperties:inMemCtx:)
 	(-getAvailableProperties:inMemCtx:, canGetProperty:): methods

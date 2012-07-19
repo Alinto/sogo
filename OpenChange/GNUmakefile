@@ -55,6 +55,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreFolder.m \
 	MAPIStoreMessage.m \
 	MAPIStoreObject.m \
+	MAPIStoreObjectProxy.m \
 	MAPIStoreSOGoObject.m \
 	MAPIStoreTable.m \
 	MAPIStoreMessageTable.m \
