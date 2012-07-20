@@ -1,3 +1,16 @@
+2012-07-20  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (onEmailTo): append the email
+	address from the href attribute if it doesn't appear in the link content.
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	(-startElement:namespace:rawName:attributes:): don't skip "mailto:"
+	href.
+
+	* SoObjects/Appointments/SOGoAptMailReceipt.m (aptSummary-): new
+	method that returns a properly formatted string of the event title
+	with respect to the current operation (creation/deletion/update).
+
 2012-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/NSObject+MAPIStore.m (-getSMTPAddrType:inMemCtx:):
@@ -183,7 +196,7 @@
 	when modifying their own calendars or when someone else to it. These
 	defaults are over-writable by users from their calendar properties window.
 
-	* Implemented the code related to the two new defaults together with a 
+	* Implemented the code related to the two new defaults together with a
 	third option - which is to notify a specific person when one modifies
 	his/her calendar. This commit is partial as more testing is required
 	and some code changes to trigger the right notifications.
