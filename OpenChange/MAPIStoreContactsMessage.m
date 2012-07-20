@@ -180,8 +180,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagSubject: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagNormalizedSubject: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidTagDisplayName: data inMemCtx: memCtx];
 }

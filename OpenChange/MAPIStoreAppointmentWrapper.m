@@ -963,8 +963,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return [self getPidLidBusyStatus: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagSubject: (void **) data // SUMMARY
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagNormalizedSubject: (void **) data // SUMMARY
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[event summary] asUnicodeInMemCtx: memCtx];
 

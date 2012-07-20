@@ -448,19 +448,6 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagSubject: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-
-  stringValue = [self subject];
-  if (!stringValue)
-    stringValue = @"";
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
 - (int) getPidTagSubjectPrefix: (void **) data
                       inMemCtx: (TALLOC_CTX *) memCtx
 {

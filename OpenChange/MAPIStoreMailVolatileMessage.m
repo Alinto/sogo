@@ -285,13 +285,6 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
           : ULLONG_MAX);
 }
 
-- (int) getPidTagSubject: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
-{
-  /* if we get here, it means that the properties file didn't contain a
-     relevant value */
-  return [self getEmptyString: data inMemCtx: memCtx];
-}
-
 - (int) getPidTagMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];

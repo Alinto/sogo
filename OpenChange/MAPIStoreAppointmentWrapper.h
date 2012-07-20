@@ -121,8 +121,8 @@
                    inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidIndentedBusyStatus: (void **) data // TODO
                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagSubject: (void **) data // SUMMARY
-            inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidTagNormalizedSubject: (void **) data // SUMMARY
+                          inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidLocation: (void **) data // LOCATION
                  inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
