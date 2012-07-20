@@ -91,7 +91,7 @@
                              inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* subclasses */
-- (NSString *) nameInContainer
+- (NSString *) nameInContainer;
 - (NSDate *) creationTime;
 - (NSDate *) lastModificationTime;
 
