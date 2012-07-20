@@ -1,6 +1,6 @@
-/* MAPIStoreFSMessageTable.m - this file is part of SOGo
+/* MAPIStoreDBMessageTable.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc
+ * Copyright (C) 2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -25,25 +25,25 @@
 #import <EOControl/EOQualifier.h>
 
 #import "MAPIStoreTypes.h"
-#import "MAPIStoreFSMessage.h"
+#import "MAPIStoreDBMessage.h"
 
-#import "MAPIStoreFSMessageTable.h"
+#import "MAPIStoreDBMessageTable.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
 
-static Class MAPIStoreFSMessageK = Nil;
+static Class MAPIStoreDBMessageK = Nil;
 
-@implementation MAPIStoreFSMessageTable
+@implementation MAPIStoreDBMessageTable
 
 + (void) initialize
 {
-  MAPIStoreFSMessageK = [MAPIStoreFSMessage class];
+  MAPIStoreDBMessageK = [MAPIStoreDBMessage class];
 }
 
 + (Class) childObjectClass
 {
-  return MAPIStoreFSMessageK;
+  return MAPIStoreDBMessageK;
 }
 
 - (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property

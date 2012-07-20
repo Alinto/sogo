@@ -23,9 +23,9 @@
 #ifndef MAPISTORENOTESFOLDER_H
 #define MAPISTORENOTESFOLDER_H
 
-#import "MAPIStoreFSFolder.h"
+#import "MAPIStoreDBFolder.h"
 
-@interface MAPIStoreNotesFolder : MAPIStoreFSFolder
+@interface MAPIStoreNotesFolder : MAPIStoreDBFolder
 @end
 
 #endif /* MAPISTORENOTESFOLDER_H */

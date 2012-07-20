@@ -41,9 +41,11 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreSamDBUtils.m \
 	MAPIStoreUserContext.m \
 	\
-	SOGoMAPIVolatileMessage.m \
-	SOGoMAPIFSFolder.m \
-	SOGoMAPIFSMessage.m \
+	SOGoMAPIObject.m \
+	\
+	SOGoMAPIDBObject.m \
+	SOGoMAPIDBMessage.m \
+	SOGoMAPIDBFolder.m \
 	\
 	MAPIStoreAppointmentWrapper.m \
 	MAPIStoreAttachment.m \
@@ -53,18 +55,18 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreFolder.m \
 	MAPIStoreMessage.m \
 	MAPIStoreObject.m \
+	MAPIStoreObjectProxy.m \
+	MAPIStoreSOGoObject.m \
 	MAPIStoreTable.m \
 	MAPIStoreMessageTable.m \
 	MAPIStoreFolderTable.m \
 	MAPIStorePermissionsTable.m \
 	\
-	MAPIStoreVolatileMessage.m \
-	\
-	MAPIStoreFSBaseContext.m \
-	MAPIStoreFSFolder.m \
-	MAPIStoreFSFolderTable.m \
-	MAPIStoreFSMessage.m \
-	MAPIStoreFSMessageTable.m \
+	MAPIStoreDBBaseContext.m \
+	MAPIStoreDBFolder.m \
+	MAPIStoreDBFolderTable.m \
+	MAPIStoreDBMessage.m \
+	MAPIStoreDBMessageTable.m \
 	\
 	MAPIStoreFAIMessage.m \
 	MAPIStoreFAIMessageTable.m \
@@ -78,6 +80,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreCalendarContext.m \
 	MAPIStoreCalendarFolder.m \
 	MAPIStoreCalendarMessage.m \
+	MAPIStoreCalendarEmbeddedMessage.m \
 	MAPIStoreCalendarMessageTable.m \
 	MAPIStoreRecurrenceUtils.m \
 	\
@@ -112,8 +115,13 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	NSString+MAPIStore.m \
 	NSValue+MAPIStore.m \
 	\
-	EOBitmaskQualifier.m \
+	iCalEvent+MAPIStore.m \
+	\
+	GCSSpecialQueries+OpenChange.m\
+	\
 	EOQualifier+MAPI.m \
+	\
+	EOBitmaskQualifier.m
 
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
@@ -145,7 +153,13 @@ PLREADER_TOOL = plreader
 $(PLREADER_TOOL)_OBJC_FILES += \
 	plreader.m \
 
-TEST_TOOL_NAME += $(PLREADER_TOOL)
+DBMSGREADER_TOOL = dbmsgreader
+$(DBMSGREADER_TOOL)_OBJC_FILES += \
+	dbmsgreader.m
+
+$(DBMSGREADER_TOOL)_LIB_DIRS += -L../SoObjects/SOGo/ -lSOGo -lNGObjWeb
+
+TEST_TOOL_NAME += $(PLREADER_TOOL) $(DBMSGREADER_TOOL)
 
 ### cflags and libs
 LIBMAPI_CFLAGS = $(shell pkg-config libmapi --cflags)
