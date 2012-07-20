@@ -1,11 +1,9 @@
-<<<<<<< variant A
 2012-07-20  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailRenderingContext.m
 	(_shouldDisplayAsAttachment:): refactored to consider
 	the "bodyId" parameter only for non text/* parts.
 
->>>>>>> variant B
 2012-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentFolder.m
@@ -13,8 +11,6 @@
 	return immediately if the occurrence does not have a valid
 	recurrence-id.
 
-####### Ancestor
-======= end
 2012-07-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (onEmailTo): append the email
