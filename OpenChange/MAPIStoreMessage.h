@@ -66,9 +66,6 @@
 - (int) setReadFlag: (uint8_t) flag;
 - (enum mapistore_error) saveMessage;
 
-/* helper getters */
-- (int) getSMTPAddrType: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx;
 - (NSArray *) activeContainerMessageTables;
 
 - (NSArray *) activeUserRoles;

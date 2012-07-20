@@ -168,6 +168,13 @@ MAPIStoreTallocWrapperDestroy (void *data)
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getSMTPAddrType: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
 @end
 
 @implementation NSObject (MAPIStoreProperties)

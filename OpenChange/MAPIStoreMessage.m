@@ -505,14 +505,6 @@ rtf2html (NSData *compressedRTF)
   return rc;
 }
 
-/* helper getters */
-- (int) getSMTPAddrType: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
-{
-  *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
 /* getters */
 - (int) getPidTagInstID: (void **) data // TODO: DOUBT
                inMemCtx: (TALLOC_CTX *) memCtx

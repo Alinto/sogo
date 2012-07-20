@@ -50,6 +50,7 @@ struct MAPIStoreTallocWrapper
 - (int) getLongZero: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getYes: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getNo: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getSMTPAddrType: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
 
 @end
 

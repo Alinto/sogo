@@ -1,5 +1,8 @@
 2012-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSObject+MAPIStore.m (-getSMTPAddrType:inMemCtx:):
+	new helper getter.
+
 	* OpenChange/MAPIStoreSOGo.m
 	(sogo_message_attachment_create_embedded_message): new backend method.
 
