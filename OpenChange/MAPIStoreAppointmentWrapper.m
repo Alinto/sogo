@@ -1,6 +1,6 @@
 /* MAPIStoreAppointmentWrapper.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011, 2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -26,6 +26,7 @@
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSTimeZone.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalEvent.h>
@@ -432,7 +433,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 - (int) getPidTagIconIndex: (void **) data // TODO
-              inMemCtx: (TALLOC_CTX *) memCtx
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t longValue;
 
@@ -855,6 +856,31 @@ static NSCharacterSet *hexCharacterSet = nil;
                   inMemCtx: memCtx];
 }
 
+/* sender representing */
+- (int) getPidTagSentRepresentingEmailAddress: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSenderEmailAddress: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagSentRepresentingAddressType: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getSMTPAddrType: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagSentRepresentingName: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSenderName: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagSentRepresentingEntryId: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSenderEntryId: data inMemCtx: memCtx];
+}
+
 /* attendee */
 - (int) getPidTagReceivedByEmailAddress: (void **) data
                                inMemCtx: (TALLOC_CTX *) memCtx
@@ -1057,14 +1083,6 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
-- (int) getPidLidIsRecurring: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  *data = MAPIBoolValue (memCtx, [event isRecurrent]);
-
-  return MAPISTORE_SUCCESS;
-}
-
 - (int) getPidLidRecurring: (void **) data
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -1073,15 +1091,57 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (struct SBinary_short *) _computeAppointmentRecurInMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidLidIsRecurring: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPIBoolValue (memCtx,
+                         [event isRecurrent]
+                         || ([event recurrenceId] != nil));
 
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidIsException: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPIBoolValue (memCtx, [event recurrenceId] != nil);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (void) _fillExceptionInfo: (struct ExceptionInfo *) exceptionInfo
+              withException: (iCalEvent *) exceptionEvent
+{
+  memset (exceptionInfo, 0, sizeof (struct ExceptionInfo));
+  exceptionInfo->OverrideFlags = 0;
+  exceptionInfo->StartDateTime = [[exceptionEvent startDate] asMinutesSince1601];
+  exceptionInfo->EndDateTime = [[exceptionEvent endDate] asMinutesSince1601];
+  exceptionInfo->OriginalStartDate = [[[exceptionEvent recurrenceId] hour: 0
+                                                                   minute: 0
+                                                                   second: 0]
+                                       asMinutesSince1601];
+}
+
+- (void) _fillExtendedException: (struct ExtendedException *) extendedException
+                  withException: (iCalEvent *) exceptionEvent
+{
+  memset (extendedException, 0, sizeof (struct ExtendedException));
+  extendedException->ChangeHighlight.Size = sizeof (uint32_t);
+  extendedException->ChangeHighlight.Value = 1 << 31 | 1 << 30;
+}
+
+// - (struct SBinary_short *) _computeAppointmentRecurInMemCtx: (TALLOC_CTX *) memCtx
+- (struct Binary_r *) _computeAppointmentRecurInMemCtx: (TALLOC_CTX *) memCtx
 {
   struct AppointmentRecurrencePattern *arp;
   struct Binary_r *bin;
-  struct SBinary_short *sBin;
+  // struct SBinary_short *sBin;
   NSCalendarDate *firstStartDate;
   iCalRecurrenceRule *rule;
   NSUInteger startMinutes;
+  NSArray *events, *exceptions;
+  iCalEvent *exceptionEvent;
+  NSUInteger count, max;
 
   rule = [[event recurrenceRules] objectAtIndex: 0];
 
@@ -1090,7 +1150,7 @@ static NSCharacterSet *hexCharacterSet = nil;
     {
       [firstStartDate setTimeZone: timeZone];
 
-      arp = talloc_zero (memCtx, struct AppointmentRecurrencePattern);
+      arp = talloc_zero (NULL, struct AppointmentRecurrencePattern);
       [rule fillRecurrencePattern: &arp->RecurrencePattern
                         withEvent: event
                        inTimeZone: timeZone
@@ -1105,17 +1165,31 @@ static NSCharacterSet *hexCharacterSet = nil;
                             + (NSUInteger) ([event durationAsTimeInterval]
                                             / 60));
 
-      arp->ExceptionCount = 0;
+      events = [[event parent] events];
+      exceptions
+        = [events subarrayWithRange: NSMakeRange (1, [events count] - 1)];
+      max = [exceptions count];
+      arp->ExceptionCount = max;
+      arp->ExceptionInfo = talloc_array (memCtx, struct ExceptionInfo, max);
+      arp->ExtendedException = talloc_array (memCtx, struct ExtendedException, max);
+      for (count = 0; count < max; count++)
+        {
+          exceptionEvent = [exceptions objectAtIndex: count];
+          [self _fillExceptionInfo: arp->ExceptionInfo + count
+                     withException: exceptionEvent];
+          [self _fillExtendedException: arp->ExtendedException + count
+                         withException: exceptionEvent];
+        }
       arp->ReservedBlock1Size = 0;
+      arp->ReservedBlock2Size = 0;
 
       /* Currently ignored in property.idl: arp->ReservedBlock2Size = 0; */
 
-
       /* convert struct to blob */
-      sBin = talloc_zero (memCtx, struct SBinary_short);
-      bin = set_AppointmentRecurrencePattern (sBin, arp);
-      sBin->cb = bin->cb;
-      sBin->lpb = bin->lpb;
+      // sBin = talloc_zero (memCtx, struct SBinary_short);
+      bin = set_AppointmentRecurrencePattern (memCtx, arp);
+      // sBin->cb = bin->cb;
+      // sBin->lpb = bin->lpb;
       talloc_free (arp);
 
       // DEBUG(5, ("To client:\n"));
@@ -1124,10 +1198,11 @@ static NSCharacterSet *hexCharacterSet = nil;
   else
     {
       [self errorWithFormat: @"no first occurrence found in rule: %@", rule];
-      sBin = NULL;
+      // bin = NULL;
+      bin = NULL;
     }
 
-  return sBin;
+  return bin;
 }
 
 - (int) getPidLidAppointmentRecur: (void **) data

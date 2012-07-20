@@ -1,6 +1,6 @@
-/* MAPIStoreCalendarMessage.h - this file is part of SOGo
+/* iCalEvent+MAPIStore.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,21 +20,22 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTORECALENDARMESSAGE_H
-#define MAPISTORECALENDARMESSAGE_H
+#ifndef ICALEVENT_MAPISTORE_H
+#define ICALEVENT_MAPISTORE_H
 
-#import "MAPIStoreGCSMessage.h"
+#import <NGCards/iCalEvent.h>
 
-@class iCalCalendar;
-@class iCalEvent;
-@class MAPIStoreAppointmentWrapper;
+@class MAPIStoreUserContext;
+@class NSDictionary;
+@class NSString;
+@class SOGoUser;
 
-@interface MAPIStoreCalendarMessage : MAPIStoreGCSMessage
-{
-  iCalCalendar *calendar;
-  iCalEvent *masterEvent;
-}
+@interface iCalEvent (MAPIStoreProperties)
+
+- (void) updateFromMAPIProperties: (NSDictionary *) properties
+                    inUserContext: (MAPIStoreUserContext *) userContext
+                   withActiveUser: (SOGoUser *) activeUser;
 
 @end
 
-#endif /* MAPISTORECALENDARMESSAGE_H */
+#endif /* ICALEVENT_MAPISTORE_H */

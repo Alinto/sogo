@@ -20,9 +20,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import "MAPIStoreTypes.h"
+#import <Foundation/NSDictionary.h>
 
-#import "MAPIStoreEmbeddedMessage.h"
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGExtensions/NSObject+Logs.h>
+
+#import "iCalEvent+MAPIStore.h"
+#import "MAPIStoreTypes.h"
+#import "MAPIStoreCalendarEmbeddedMessage.h"
 
 #import "MAPIStoreCalendarAttachment.h"
 
@@ -33,6 +38,32 @@
 #include <mapistore/mapistore_errors.h>
 
 @implementation MAPIStoreCalendarAttachment
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      event = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  [event release];
+  [super dealloc];
+}
+
+- (void) setEvent: (iCalEvent *) newEvent
+{
+  ASSIGN (event, newEvent);
+}
+
+- (iCalEvent *) event
+{
+  return event;
+}
 
 - (int) getPidTagAttachmentHidden: (void **) data
                          inMemCtx: (TALLOC_CTX *) localMemCtx
@@ -53,7 +84,7 @@
 - (int) getPidTagAttachMethod: (void **) data
                      inMemCtx: (TALLOC_CTX *) localMemCtx
 {
-  *data = MAPILongValue (localMemCtx, 0x00000005); /* afEmbeddedMessage */
+  *data = MAPILongValue (localMemCtx, afEmbeddedMessage);
 
   return MAPISTORE_SUCCESS;
 }
@@ -63,21 +94,24 @@
 // case PidTagExceptionReplaceTime:
 
 /* subclasses */
-- (MAPIStoreEmbeddedMessage *) openEmbeddedMessage
+- (MAPIStoreCalendarEmbeddedMessage *) openEmbeddedMessage
 {
-  MAPIStoreEmbeddedMessage *msg;
+  MAPIStoreCalendarEmbeddedMessage *msg;
 
-  // if (isNew)
-    msg = nil;
-  // else
-  //   msg = nil;
+  msg = [MAPIStoreCalendarEmbeddedMessage
+          mapiStoreObjectInContainer: self];
 
   return msg;
 }
 
-- (MAPIStoreEmbeddedMessage *) createEmbeddedMessage
+- (MAPIStoreCalendarEmbeddedMessage *) createEmbeddedMessage
 {
-  return [MAPIStoreEmbeddedMessage embeddedMessageWithAttachment: self];
+  MAPIStoreCalendarEmbeddedMessage *msg;
+
+  msg = [self openEmbeddedMessage];
+  [msg setIsNew: YES];
+
+  return msg;
 }
 
 @end

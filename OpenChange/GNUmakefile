@@ -80,6 +80,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreCalendarContext.m \
 	MAPIStoreCalendarFolder.m \
 	MAPIStoreCalendarMessage.m \
+	MAPIStoreCalendarEmbeddedMessage.m \
 	MAPIStoreCalendarMessageTable.m \
 	MAPIStoreRecurrenceUtils.m \
 	\
@@ -114,11 +115,13 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	NSString+MAPIStore.m \
 	NSValue+MAPIStore.m \
 	\
-	EOBitmaskQualifier.m \
+	iCalEvent+MAPIStore.m \
 	\
 	GCSSpecialQueries+OpenChange.m\
 	\
-	EOQualifier+MAPI.m
+	EOQualifier+MAPI.m \
+	\
+	EOBitmaskQualifier.m
 
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
