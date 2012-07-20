@@ -47,7 +47,8 @@
 - (void) setDeletedAttendees: (NSArray *) theAttendees;
 - (void) setUpdatedAttendees: (NSArray *) theAttendees;
 - (void) setOperation: (SOGoEventOperation) theOperation;
-- (NSString *) subject;
+
+- (NSString *) aptSummary;
 
 @end
 

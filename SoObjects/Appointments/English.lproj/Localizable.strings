@@ -8,13 +8,9 @@ vtodo_class1 = "(Private task)";
 vtodo_class2 = "(Confidential task)";
 
 /* Receipts */
-"Title:" = "Title:";
-"Start:" = "Start:";
-"End:" = "End:";
-"Location:" = "Location:";
-"Receipt: event was created" = "Receipt: event was created";
-"Receipt: event was deleted" = "Receipt: event was deleted";
-"Receipt: event was updated" = "Receipt: event was updated";
+"The event \"%{Summary}\" was created" = "The event \"%{Summary}\" was created";
+"The event \"%{Summary}\" was deleted" = "The event \"%{Summary}\" was deleted";
+"The event \"%{Summary}\" was updated" = "The event \"%{Summary}\" was updated";
 "The following attendees(s) were notified:" = "The following attendees(s) were notified:";
 "The following attendees(s) were added:" = "The following attendees(s) were added:";
 "The following attendees(s) were removed:" = "The following attendees(s) were removed:";

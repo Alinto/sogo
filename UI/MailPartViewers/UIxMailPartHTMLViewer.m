@@ -468,6 +468,7 @@ static NSData* _sanitizeContent(NSData *theData)
                   value = [_attributes valueAtIndex: count];
                   skipAttribute = ([value rangeOfString: @"://"].location
                                    == NSNotFound
+                                   && ![value hasPrefix: @"mailto:"]
                                    && ![value hasPrefix: @"#"]);
                 }
               else
