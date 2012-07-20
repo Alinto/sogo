@@ -115,6 +115,30 @@
   return self;
 }
 
+- (void) _setupAttachmentParts
+{
+  NSUInteger count, max;
+  NSArray *events;
+  NSString *newKey;
+  MAPIStoreCalendarAttachment *attachment;
+  NSUInteger aid;
+
+  events = [calendar events];
+  max = [events count];
+  for (count = 1; count < max; count++)
+    {
+      attachment = [MAPIStoreCalendarAttachment
+                      mapiStoreObjectInContainer: self];
+      /* we now that there are no attachments yet, so we can assume that the
+         right AID is 0 from the start */
+      aid = count - 1;
+      [attachment setAID: aid];
+      [attachment setEvent: [events objectAtIndex: count]];
+      newKey = [NSString stringWithFormat: @"%ul", aid];
+      [attachmentParts setObject: attachment forKey: newKey];
+    }
+}
+
 - (id) initWithSOGoObject: (id) newSOGoObject
               inContainer: (MAPIStoreObject *) newFolder
 {
@@ -140,6 +164,7 @@
           origCalendar = [sogoObject calendar: YES secure: YES];
           calendar = [origCalendar mutableCopy];
           masterEvent = [[calendar events] objectAtIndex: 0];
+          [self _setupAttachmentParts];
         }
       context = [self context];
       userContext = [self userContext];
@@ -397,9 +422,51 @@
   return rc;
 }
 
+- (void) _updateAttachedEvent: (MAPIStoreCalendarAttachment *) attachment
+                      withUID: (NSString *) uid
 {
   iCalEvent *newEvent;
+  SOGoUser *activeUser;
+
+  newEvent = [iCalEvent groupWithTag: @"vevent"];
+  [calendar addToEvents: newEvent];
+  activeUser = [[self context] activeUser];
+  [newEvent setUid: uid];
+  [newEvent updateFromMAPIProperties: [attachment properties]
+                       inUserContext: [self userContext]
+                      withActiveUser: activeUser];
+}
+                
+- (void) _updateAttachedEvents
+{
+  NSMutableArray *otherEvents;
+  NSArray *allAttachments;
+  NSUInteger count, max;
+  NSString *uid;
+
+  /* cleanup all recurring events */
+  otherEvents = [[calendar events] mutableCopy];
+  [otherEvents removeObject: masterEvent];
+  [calendar removeChildren: otherEvents];
+  [otherEvents release];
+
+  uid = [masterEvent uid];
+
+  allAttachments = [attachmentParts allValues];
+  max = [allAttachments count];
+  for (count = 0; count < max; count++)
+    [self _updateAttachedEvent: [allAttachments objectAtIndex: count]
+                     withUID: uid];
+}
+
+- (void) save
+{
+  // iCalCalendar *vCalendar;
+  // NSCalendarDate *now;
+  NSString *uid;
+  // iCalEvent *newEvent;
   // iCalPerson *userPerson;
+  SOGoUser *activeUser;
 
   if (isNew)
     {
@@ -429,6 +496,7 @@
   [masterEvent updateFromMAPIProperties: properties
                           inUserContext: [self userContext]
                          withActiveUser: activeUser];
+  [self _updateAttachedEvents];
   [sogoObject updateContentWithCalendar: calendar
                             fromRequest: nil];
 

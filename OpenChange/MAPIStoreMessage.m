@@ -56,6 +56,7 @@
 #include <mapistore/mapistore_errors.h>
 
 static NSString *resourcesDir = nil;
+static Class MAPIStoreFolderK = nil;
 
 /* rtf conversion via unrtf */
 static int
@@ -130,6 +131,7 @@ rtf2html (NSData *compressedRTF)
       resourcesDir = [[NSBundle bundleForClass: self] resourcePath];
       [resourcesDir retain];
     }
+  MAPIStoreFolderK = [MAPIStoreFolder class];
 }
 
 - (id) init
@@ -442,61 +444,68 @@ rtf2html (NSData *compressedRTF)
           || (!isNew && [self subscriberCanModifyMessage])))
     {
       /* notifications */
-      folderId = [(MAPIStoreFolder *) container objectId];
-      mstoreCtx = [[self context] connectionInfo]->mstore_ctx;
-
-      /* folder modified */
-      notif_parameters
-        = talloc_zero(NULL, struct mapistore_object_notification_parameters);
-      notif_parameters->object_id = folderId;
-      if (isNew)
+      if ([container isKindOfClass: MAPIStoreFolderK])
         {
-          notif_parameters->tag_count = 3;
-          notif_parameters->tags = talloc_array (notif_parameters,
-                                                 enum MAPITAGS, 3);
-          notif_parameters->tags[0] = PR_CONTENT_COUNT;
-          notif_parameters->tags[1] = PR_MESSAGE_SIZE;
-          notif_parameters->tags[2] = PR_NORMAL_MESSAGE_SIZE;
-          notif_parameters->new_message_count = true;
-          notif_parameters->message_count
-            = [[(MAPIStoreFolder *) container messageKeys] count] + 1;
-        }
-      mapistore_push_notification (mstoreCtx,
-                                   MAPISTORE_FOLDER, MAPISTORE_OBJECT_MODIFIED,
-                                   notif_parameters);
-      talloc_free (notif_parameters);
+          folderId = [(MAPIStoreFolder *) container objectId];
+          mstoreCtx = [[self context] connectionInfo]->mstore_ctx;
 
-      /* message created */
-      if (isNew)
-        {
+          /* folder modified */
           notif_parameters
-            = talloc_zero(NULL,
-                          struct mapistore_object_notification_parameters);
-          notif_parameters->object_id = [self objectId];
-          notif_parameters->folder_id = folderId;
-      
-          notif_parameters->tag_count = 0xffff;
+            = talloc_zero(NULL, struct mapistore_object_notification_parameters);
+          notif_parameters->object_id = folderId;
+          if (isNew)
+            {
+              notif_parameters->tag_count = 3;
+              notif_parameters->tags = talloc_array (notif_parameters,
+                                                     enum MAPITAGS, 3);
+              notif_parameters->tags[0] = PR_CONTENT_COUNT;
+              notif_parameters->tags[1] = PR_MESSAGE_SIZE;
+              notif_parameters->tags[2] = PR_NORMAL_MESSAGE_SIZE;
+              notif_parameters->new_message_count = true;
+              notif_parameters->message_count
+                = [[(MAPIStoreFolder *) container messageKeys] count] + 1;
+            }
           mapistore_push_notification (mstoreCtx,
-                                       MAPISTORE_MESSAGE, MAPISTORE_OBJECT_CREATED,
+                                       MAPISTORE_FOLDER,
+                                       MAPISTORE_OBJECT_MODIFIED,
                                        notif_parameters);
           talloc_free (notif_parameters);
-        }
 
-      /* we ensure the table caches are loaded so that old and new state
-         can be compared */
-      containerTables = [self activeContainerMessageTables];
-      max = [containerTables count];
-      for (count = 0; count < max; count++)
-        [[containerTables objectAtIndex: count] restrictedChildKeys];
+          /* message created */
+          if (isNew)
+            {
+              notif_parameters
+                = talloc_zero(NULL,
+                              struct mapistore_object_notification_parameters);
+              notif_parameters->object_id = [self objectId];
+              notif_parameters->folder_id = folderId;
+      
+              notif_parameters->tag_count = 0xffff;
+              mapistore_push_notification (mstoreCtx,
+                                           MAPISTORE_MESSAGE, MAPISTORE_OBJECT_CREATED,
+                                           notif_parameters);
+              talloc_free (notif_parameters);
+            }
+
+          /* we ensure the table caches are loaded so that old and new state
+             can be compared */
+          containerTables = [self activeContainerMessageTables];
+          max = [containerTables count];
+          for (count = 0; count < max; count++)
+            [[containerTables objectAtIndex: count] restrictedChildKeys];
+        }
   
       [self save];
 
-      /* table modified */
-      for (count = 0; count < max; count++)
-        [[containerTables objectAtIndex: count]
-          notifyChangesForChild: self];
+      if ([container isKindOfClass: MAPIStoreFolderK])
+        {
+          /* table modified */
+          for (count = 0; count < max; count++)
+            [[containerTables objectAtIndex: count]
+              notifyChangesForChild: self];
+          [container cleanupCaches];
+        }
       [self setIsNew: NO];
-      [container cleanupCaches];
       rc = MAPISTORE_SUCCESS;
     }
   else
@@ -645,9 +654,19 @@ rtf2html (NSData *compressedRTF)
 - (int) getPidTagMid: (void **) data
             inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPILongLongValue (memCtx, [self objectId]);
+  int rc;
+  uint64_t obId;
 
-  return MAPISTORE_SUCCESS;
+  obId = [self objectId];
+  if (obId == ULLONG_MAX)
+    rc = MAPISTORE_ERR_NOT_FOUND;
+  else
+    {
+      *data = MAPILongLongValue (memCtx, obId);
+      rc = MAPISTORE_SUCCESS;
+    }
+
+  return rc;
 }
 
 - (int) getPidTagMessageLocaleId: (void **) data

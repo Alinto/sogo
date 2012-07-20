@@ -24,6 +24,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -45,7 +46,7 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
-static Class EOKeyValueQualifierK;
+static Class EOKeyValueQualifierK, SOGoMAPIDBFolderK;
 
 static NSString *MAPIStoreRightReadItems = @"RightsReadItems";
 static NSString *MAPIStoreRightCreateItems = @"RightsCreateItems";
@@ -62,6 +63,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 + (void) initialize
 {
   EOKeyValueQualifierK = [EOKeyValueQualifier class];
+  SOGoMAPIDBFolderK = [SOGoMAPIDBFolder class];
 }
 
 - (void) setupAuxiliaryObjects
@@ -84,9 +86,40 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
                               withFID: (uint64_t) newFID
                                andKey: (NSString **) newKeyP
 {
-  *newKeyP = [NSString stringWithFormat: @"0x%.16"PRIx64, (unsigned long long) newFID];
+  enum mapistore_error rc;
+  NSString *folderName, *nameInContainer;
+  SOGoMAPIDBFolder *newFolder;
+  struct SPropValue *value;
 
-  return MAPISTORE_SUCCESS;
+  value = get_SPropValue_SRow (aRow, PidTagDisplayName);
+  if (value)
+    folderName = [NSString stringWithUTF8String: value->value.lpszW];
+  else
+    {
+      value = get_SPropValue_SRow (aRow, PidTagDisplayName_string8);
+      if (value)
+        folderName = [NSString stringWithUTF8String: value->value.lpszA];
+      else
+        folderName = nil;
+    }
+
+  if (folderName)
+    {
+      nameInContainer = [NSString stringWithFormat: @"0x%.16"PRIx64,
+                                  (unsigned long long) newFID];
+      newFolder = [SOGoMAPIDBFolderK objectWithName: nameInContainer
+                                        inContainer: sogoObject];
+      [newFolder setIsNew: YES];
+      [[newFolder properties] setObject: folderName
+                                 forKey: MAPIPropertyKey (PidTagDisplayName)];
+      [newFolder save];
+      *newKeyP = nameInContainer;
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_INVALID_PARAMETER;
+
+  return rc;
 }
 
 - (MAPIStoreMessage *) createMessage
@@ -133,6 +166,15 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
                  matchingQualifier: qualifier
                   andSortOrderings: sortOrderings];
 }
+
+/* TODO: now that we are DB-based, this method can easily be implemented
+
+- (NSArray *) getDeletedKeysFromChangeNumber: (uint64_t) changeNum
+                                       andCN: (NSNumber **) cnNbrs
+                                 inTableType: (enum mapistore_table_type) tableType
+{
+}
+*/
 
 - (NSDate *) lastMessageModificationTime
 {

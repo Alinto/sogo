@@ -21,6 +21,7 @@
  */
 
 #import "MAPIStorePropertySelectors.h"
+#import "NSString+MAPIStore.h"
 
 #import "MAPIStoreObjectProxy.h"
 
