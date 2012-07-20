@@ -718,6 +718,7 @@ function appendAddressBook(name, folder) {
         li.setAttribute("id", folder);
         li.setAttribute("owner", owner);
         li.setAttribute("list-editing", "available");
+        li.setAttribute("acl-editing", "available");
         li.addClassName("local");
         li.appendChild(document.createTextNode(name
                                                .replace("&lt;", "<", "g")
