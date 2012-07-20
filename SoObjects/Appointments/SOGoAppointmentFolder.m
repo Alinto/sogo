@@ -863,6 +863,11 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 
   newRecord = nil;
   recurrenceId = [component recurrenceId];
+  if (!recurrenceId)
+    {
+      [self errorWithFormat: @"ignored component with an empty EXCEPTION-ID"];
+      return;
+    }
   
   if (tz)
     {
