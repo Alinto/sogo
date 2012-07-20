@@ -1,10 +1,24 @@
+<<<<<<< variant A
 2012-07-20  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailRenderingContext.m
 	(_shouldDisplayAsAttachment:): refactored to consider
 	the "bodyId" parameter only for non text/* parts.
 
+>>>>>>> variant B
+2012-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(_appendCycleException:firstInstanceCalendarDateRange:fromRow:forRange:withTimeZone:toArray:):
+	return immediately if the occurrence does not have a valid
+	recurrence-id.
+
+####### Ancestor
+======= end
 2012-07-20  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (onEmailTo): append the email
+	address from the href attribute if it doesn't appear in the link content.
 
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
 	(-startElement:namespace:rawName:attributes:): don't skip "mailto:"

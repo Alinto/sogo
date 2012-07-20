@@ -1790,7 +1790,11 @@ function newContactFromEmail(event) {
 }
 
 function onEmailTo(event) {
-    openMailTo(this.innerHTML.strip());
+    var s = this.innerHTML.strip();
+    if (!/@/.test(s)) {
+        s += ' <' + this.href.substr(7) + '>';
+    }
+    openMailTo(s);
     Event.stop(event);
     return false;
 }
