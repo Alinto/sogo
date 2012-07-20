@@ -7,52 +7,48 @@
   xmlns:rsrc="OGo:url"
   xmlns:label="OGo:label">
 
-  <var:string label:value="Event details:" const:escapeHTML="NO"/>
-  <br/>
-  
-  <var:string label:value="Title:" const:escapeHTML="NO"/> <var:string
-  value="apt.summary" const:escapeHTML="NO"/>
-  <br/>
- 
-  <var:if condition="apt.location.length">
-    <var:string label:value="Location:" const:escapeHTML="NO"/> <var:string
-    value="apt.location" const:escapeHTML="NO"/>
-  </var:if>
-  <br/>
- 
-  <var:string label:value="Start:" const:escapeHTML="NO"/> <var:string
-  value="aptStartDate" const:escapeHTML="NO"/>
-  <br/>
- 
-  <var:string label:value="End:" const:escapeHTML="NO"/> <var:string
-  value="aptEndDate" const:escapeHTML="NO"/>
-  <br/>
- 
-  <var:if condition="updatedAttendees.count">
-    <var:string label:value="The following attendees(s) were notified:"
-		const:escapeHTML="NO"/>
-    <var:foreach list="updatedAttendees" item="currentRecipient">
-      <var:string value="currentRecipient.mailAddress" const:escapeHTML="NO"
-		  /></var:foreach>
-  </var:if>
-  <br/>
-  
-  <var:if condition="addedAttendees.count">
-    <var:string label:value="The following attendees(s) were added:"
-		const:escapeHTML="NO"/>
-    <var:foreach list="addedAttendees" item="currentRecipient">
-      <var:string value="currentRecipient.mailAddress" const:escapeHTML="NO"
-		  /></var:foreach>
-  </var:if>
-  <br/>
-   
-  <var:if condition="deletedAttendees.count">
-    <var:string label:value="The following attendees(s) were removed:"
-		const:escapeHTML="NO"/>
-    <var:foreach list="deletedAttendees" item="currentRecipient">
-      <var:string value="currentRecipient.mailAddress" const:escapeHTML="NO"
-		  /></var:foreach>
-  </var:if>
-  <br/>
-  
+  <head>
+    <style type="text/css">
+.container { width: 600px; }
+h1 { font-size: 18px; font-weight: normal; padding-bottom: 9px; border-bottom: 1px solid #ccc; }
+.dl-horizontal dt { float: left; width: 120px; overflow: hidden; clear: left; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
+dt { font-weight: bold; line-height: 17px; }
+dt, dd { font-size: 12px; line-height: 18px; }
+dt { display: block; }
+h1, dd, .dl-list dt { margin-left: 130px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1><var:string value="aptSummary" const:escapeHTML="NO"/></h1>
+    
+      <dl class="dl-horizontal">
+        <var:if condition="apt.location.length"
+        ><dt><var:string label:value="location_label" const:escapeHTML="NO"/></dt>
+        <dd><var:string value="apt.location" const:escapeHTML="NO"/></dd></var:if> 
+        <dt><var:string label:value="startDate_label" const:escapeHTML="NO"/></dt>
+        <dd><var:string value="aptStartDate" const:escapeHTML="NO"/></dd>     
+        <dt><var:string label:value="endDate_label" const:escapeHTML="NO"/></dt>
+        <dd><var:string value="aptEndDate" const:escapeHTML="NO"/></dd>
+      </dl>
+
+      <dl class="dl-list">
+      <var:if condition="updatedAttendees.count">
+        <dt><var:string label:value="The following attendees(s) were notified:" const:escapeHTML="NO"/></dt>
+        <var:foreach list="updatedAttendees" item="currentRecipient">
+          <dd><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn" const:escapeHTML="NO"/></a></dd></var:foreach>
+      </var:if>
+      <var:if condition="addedAttendees.count">
+        <dt><var:string label:value="The following attendees(s) were added:" const:escapeHTML="NO"/></dt>
+        <var:foreach list="addedAttendees" item="currentRecipient">
+          <dd><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn" const:escapeHTML="NO"/></a></dd></var:foreach>
+      </var:if>       
+      <var:if condition="deletedAttendees.count">
+        <dt><var:string label:value="The following attendees(s) were removed:" const:escapeHTML="NO"/></dt>
+        <var:foreach list="deletedAttendees" item="currentRecipient">
+          <dd><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn" const:escapeHTML="NO"/></a></dd></var:foreach>
+      </var:if>
+      </dl>
+    </div>
+  </body>
 </html>

@@ -4,6 +4,7 @@
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ *         Francis Lachapelle <flachapelle@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +32,7 @@
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUserManager.h>
@@ -138,25 +140,37 @@ static NSCharacterSet *wsSet = nil;
   operation = theOperation;
 }
 
-- (NSString *) subject
+- (NSString *) aptSummary
 {
   NSString *s;
+
+  if (!values)
+    [self setupValues];
+
   switch (operation)
     {
     case EventCreated:
-      s = [self labelForKey: @"Receipt: event was created"  inContext: context];
+      s = [self labelForKey: @"The event \"%{Summary}\" was created"
+                  inContext: context];
       break;
       
     case EventDeleted:
-      s = [self labelForKey: @"Receipt: event was deleted"  inContext: context];
+      s = [self labelForKey: @"The event \"%{Summary}\" was deleted"
+                  inContext: context];
       break;
       
     case EventUpdated:
     default:
-      s = [self labelForKey: @"Receipt: event was updated" inContext: context];
+      s = [self labelForKey: @"The event \"%{Summary}\" was updated"
+                  inContext: context];
     }
 
-  return [[s stringByTrimmingCharactersInSet: wsSet] asQPSubjectString: @"utf-8"];
+  return [values keysWithFormat: s];
+}
+
+- (NSString *) getSubject
+{
+  return [[[self aptSummary] stringByTrimmingCharactersInSet: wsSet] asQPSubjectString: @"utf-8"];
 }
 
 - (NSString *) _formattedUserDate: (NSCalendarDate *) date
