@@ -841,8 +841,7 @@ static Class NSDataK, NSStringK;
   struct mapistore_property_data *rowData;
   int rc;
 
-  child = [self childAtRowID: rowId
-                forQueryType: queryType];
+  child = [self childAtRowID: rowId forQueryType: queryType];
   if (child)
     {
       rowData = talloc_array(memCtx, struct mapistore_property_data, columnsCount);
