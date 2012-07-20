@@ -1,3 +1,4 @@
+<<<<<<< variant A
 2012-07-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (onEmailTo): append the email
@@ -80,6 +81,96 @@
 	(-save): don t swap the bytes of the version number as it would
 	return a wrong change number and a wrong change key for DB objects.
 
+>>>>>>> variant B
+2012-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/NSObject+MAPIStore.m (-getSMTPAddrType:inMemCtx:):
+	new helper getter.
+
+	* OpenChange/MAPIStoreSOGo.m
+	(sogo_message_attachment_create_embedded_message): new backend method.
+
+	* OpenChange/NSObject+MAPIStore.m
+	(+fillAvailableProperties:withExclusions:): new method that fills
+	an existing array of properties with properties existing in
+	another class, as long as they are not listed in the array of
+	exclusions.
+
+	* OpenChange/MAPIStoreObject.m (-init): assigned a mutable array
+	to "proxies"
+	(-canGetProperty:): test the proxies for the availability of
+	properties so that -getAvailableProperties:inMemCtx: can return an
+	accurate result.
+
+	* OpenChange/MAPIStoreMessage.m (-getPidTagSubject:inMemCtx:): now
+	compute the return value based on PidTagNormalizedSubject and
+	PidTagSubjectPrefix as PidTagSubject is never actually set from
+	the client.
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(_appendCycleException:firstInstanceCalendarDateRange:fromRow:forRange:withTimeZone:toArray:):
+	return immediately if the occurrence does not have a valid
+	recurrence-id.
+
+2012-07-20  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/MailerUI.js (onEmailTo): append the email
+	address from the href attribute if it doesn't appear in the link content.
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
+	(-startElement:namespace:rawName:attributes:): don't skip "mailto:"
+	href.
+
+	* SoObjects/Appointments/SOGoAptMailReceipt.m (aptSummary-): new
+	method that returns a properly formatted string of the event title
+	with respect to the current operation (creation/deletion/update).
+
+2012-07-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreObject.m (-nameInContainer): moved method
+	from MAPIStoreSOGoObject and made mandatory for subclasses.
+	(-url): new methed moved from MAPIStoreSOGoObject.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m: now a subclass of
+	MAPIStoreObjectProxy.
+
+	* OpenChange/MAPIStoreCalendarMessage.m
+	(-initWithSOGoObject:inContainer:): we now register our
+	appointment wrapper as a proxy.
+
+	* OpenChange/MAPIStoreObject.m (-addProxy:): new method that keeps
+	proxy objects in the new "proxies" ivar.
+	(-getProperty:withTag:inMemCtx:): added code that pass the request
+	to the available object proxies, when the property getters have
+	not been found in the local class.
+
+	* OpenChange/MAPIStoreObjectProxy.[hm]: new class module that
+	provide a facility for providing property getters in the name of
+	another class, working around the fact that Objective-C does not
+	provide multiple-inheritance.
+
+	* OpenChange/NSObject+MAPIStore.m
+	(+getAvailableProperties:inMemCtx:)
+	(-getAvailableProperties:inMemCtx:, canGetProperty:): methods
+	moved from MAPIStoreObject.m
+
+2012-07-18  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreCalendarFolder.m (-createMessage): attach a
+	WOContext to the newEntry in order to enable page templates
+	resolution when notifications are sent.
+
+	* OpenChange/MAPIApplication.m (-init): a WEResourceManager is
+	setup for the application so that page templates can be properly
+	be initialized.
+
+	* OpenChange/MAPIStoreDBMessage.m (-objectVersion): shift the
+	version number by 16 bits, instead of doing it in -save.
+	(-save): don t swap the bytes of the version number as it would
+	return a wrong change number and a wrong change key for DB objects.
+
+####### Ancestor
+======= end
 2012-07-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m
