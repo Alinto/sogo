@@ -962,10 +962,11 @@ sogo_message_submit (void *message_object, enum SubmitFlags flags)
 }
 
 static enum mapistore_error
-sogo_message_attachment_open_embedded_message
-(void *attachment_object, enum OpenEmbeddedMessage_OpenModeFlags mode,
- TALLOC_CTX *mem_ctx, void **message_object, uint64_t *midP,
- struct mapistore_message **msg)
+sogo_message_attachment_open_embedded_message (void *attachment_object,
+                                               TALLOC_CTX *mem_ctx,
+                                               void **message_object,
+                                               uint64_t *midP,
+                                               struct mapistore_message **msg)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
@@ -982,10 +983,45 @@ sogo_message_attachment_open_embedded_message
       GSRegisterCurrentThread ();
       pool = [NSAutoreleasePool new];
       rc = [attachment openEmbeddedMessage: &message
-                                    inMode: mode
                                    withMID: midP
                           withMAPIStoreMsg: msg
                                   inMemCtx: mem_ctx];
+      if (rc == MAPISTORE_SUCCESS)
+        *message_object = [message tallocWrapper: mem_ctx];
+      [pool release];
+      GSUnregisterCurrentThread ();
+    }
+  else
+    {
+      rc = sogo_backend_unexpected_error();
+    }
+
+  return rc;
+}
+
+static enum mapistore_error
+sogo_message_attachment_create_embedded_message (void *attachment_object,
+                                                 TALLOC_CTX *mem_ctx,
+                                                 void **message_object,
+                                                 struct mapistore_message **msg)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreAttachment *attachment;
+  MAPIStoreEmbeddedMessage *message;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (attachment_object)
+    {
+      wrapper = attachment_object;
+      attachment = wrapper->instance;
+      GSRegisterCurrentThread ();
+      pool = [NSAutoreleasePool new];
+      rc = [attachment createEmbeddedMessage: &message
+                            withMAPIStoreMsg: msg
+                                    inMemCtx: mem_ctx];
       if (rc == MAPISTORE_SUCCESS)
         *message_object = [message tallocWrapper: mem_ctx];
       [pool release];
@@ -1386,6 +1422,7 @@ int mapistore_init_backend(void)
       backend.message.get_attachment_table = sogo_message_get_attachment_table;
       backend.message.open_attachment = sogo_message_open_attachment;
       backend.message.open_embedded_message = sogo_message_attachment_open_embedded_message;
+      backend.message.create_embedded_message = sogo_message_attachment_create_embedded_message;
       backend.message.get_message_data = sogo_message_get_message_data;
       backend.message.modify_recipients = sogo_message_modify_recipients;
       backend.message.set_read_flag = sogo_message_set_read_flag;

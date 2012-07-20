@@ -1,5 +1,8 @@
 2012-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m
+	(sogo_message_attachment_create_embedded_message): new backend method.
+
 	* OpenChange/NSObject+MAPIStore.m
 	(+fillAvailableProperties:withExclusions:): new method that fills
 	an existing array of properties with properties existing in
