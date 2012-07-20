@@ -87,6 +87,22 @@
 
 @implementation MAPIStoreCalendarMessage
 
++ (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  BOOL listedProperties[65536];
+  NSUInteger count;
+
+  memset (listedProperties, NO, 65536 * sizeof (BOOL));
+  [super getAvailableProperties: propertiesP inMemCtx: memCtx];
+  for (count = 0; count < (*propertiesP)->cValues; count++)
+    listedProperties[(*propertiesP)->aulPropTag[count] >> 16] = YES;
+  [MAPIStoreAppointmentWrapper fillAvailableProperties: *propertiesP
+                                        withExclusions: listedProperties];
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (id) initWithSOGoObject: (id) newSOGoObject
               inContainer: (MAPIStoreObject *) newFolder
 {

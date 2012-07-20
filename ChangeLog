@@ -1,5 +1,17 @@
 2012-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/NSObject+MAPIStore.m
+	(+fillAvailableProperties:withExclusions:): new method that fills
+	an existing array of properties with properties existing in
+	another class, as long as they are not listed in the array of
+	exclusions.
+
+	* OpenChange/MAPIStoreObject.m (-init): assigned a mutable array
+	to "proxies"
+	(-canGetProperty:): test the proxies for the availability of
+	properties so that -getAvailableProperties:inMemCtx: can return an
+	accurate result.
+
 	* OpenChange/MAPIStoreMessage.m (-getPidTagSubject:inMemCtx:): now
 	compute the return value based on PidTagNormalizedSubject and
 	PidTagSubjectPrefix as PidTagSubject is never actually set from

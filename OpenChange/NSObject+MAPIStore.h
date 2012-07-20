@@ -63,6 +63,9 @@ struct MAPIStoreTallocWrapper
 
 + (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
                                        inMemCtx: (TALLOC_CTX *) memCtx;
++ (void) fillAvailableProperties: (struct SPropTagArray *) properties
+                  withExclusions: (BOOL *) exclusions;
+
 - (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
                                        inMemCtx: (TALLOC_CTX *) memCtx;
 - (BOOL) canGetProperty: (enum MAPITAGS) propTag;

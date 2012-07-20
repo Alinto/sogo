@@ -76,6 +76,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
       parentContainersBag = [NSMutableArray new];
       container = nil;
       properties = [NSMutableDictionary new];
+      proxies = [NSMutableArray new];
     }
 
   // [self logWithFormat: @"-init"];
@@ -96,6 +97,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 - (void) dealloc
 {
   // [self logWithFormat: @"-dealloc"];
+  [proxies release];
   [properties release];
   [parentContainersBag release];
   [container release];
@@ -203,11 +205,18 @@ static Class NSExceptionK, MAPIStoreFolderK;
 - (BOOL) canGetProperty: (enum MAPITAGS) propTag
 {
   uint16_t propValue;
+  BOOL canGetProperty;
+  NSUInteger count, max;
 
   propValue = (propTag & 0xffff0000) >> 16;
 
-  return (classGetters[propValue]
-          || [properties objectForKey: MAPIPropertyKey (propTag)]);
+  canGetProperty = (classGetters[propValue]
+                    || [properties objectForKey: MAPIPropertyKey (propTag)]);
+  max = [proxies count];
+  for (count = 0; !canGetProperty && count < max; count++)
+    canGetProperty = [[proxies objectAtIndex: count] canGetProperty: propTag];
+
+  return canGetProperty;
 }
 
 - (int) getProperties: (struct mapistore_property_data *) data

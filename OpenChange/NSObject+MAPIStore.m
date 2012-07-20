@@ -201,6 +201,30 @@ MAPIStoreTallocWrapperDestroy (void *data)
   return MAPISTORE_SUCCESS;
 }
 
++ (void) fillAvailableProperties: (struct SPropTagArray *) properties
+                  withExclusions: (BOOL *) exclusions
+{
+  TALLOC_CTX *localMemCtx;
+  struct SPropTagArray *subProperties;
+  uint16_t propId;
+  NSUInteger count;
+  
+  localMemCtx = talloc_zero (NULL, TALLOC_CTX);
+  [self getAvailableProperties: &subProperties inMemCtx: localMemCtx];
+  for (count = 0; count < subProperties->cValues; count++)
+    {
+      propId = (subProperties->aulPropTag[count] >> 16);
+      if (!exclusions[propId])
+        {
+          properties->aulPropTag[properties->cValues]
+            = subProperties->aulPropTag[count];
+          properties->cValues++;
+          exclusions[propId] = YES;
+        }
+    }
+  talloc_free (localMemCtx);
+}
+
 - (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
                                        inMemCtx: (TALLOC_CTX *) memCtx
 {
