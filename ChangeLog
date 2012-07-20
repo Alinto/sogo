@@ -1,3 +1,10 @@
+2012-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMessage.m (-getPidTagSubject:inMemCtx:): now
+	compute the return value based on PidTagNormalizedSubject and
+	PidTagSubjectPrefix as PidTagSubject is never actually set from
+	the client.
+
 2012-07-19  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreObject.m (-nameInContainer): moved method

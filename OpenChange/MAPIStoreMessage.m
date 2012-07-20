@@ -706,21 +706,35 @@ rtf2html (NSData *compressedRTF)
 - (int) getPidTagSubject: (void **) data
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
-  [self subclassResponsibility: _cmd];
+  int rc;
+  TALLOC_CTX *localMemCtx;
+  char *prefix, *normalizedSubject;
 
-  return MAPISTORE_ERR_NOT_FOUND;
+  localMemCtx = talloc_zero (NULL, TALLOC_CTX);
+  if ([self getProperty: (void **) &prefix
+                withTag: PidTagSubjectPrefix
+               inMemCtx: localMemCtx]
+      != MAPISTORE_SUCCESS)
+    prefix = "";
+  rc = [self getProperty: (void **) &normalizedSubject
+                 withTag: PidTagNormalizedSubject
+                inMemCtx: localMemCtx];
+  if (rc == MAPISTORE_SUCCESS)
+    *data = talloc_asprintf (memCtx, "%s%s", prefix, normalizedSubject);
+
+  return rc;
 }
 
 - (int) getPidTagNormalizedSubject: (void **) data
                           inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPidTagSubject: data inMemCtx: memCtx];
+  return MAPISTORE_ERR_NOT_FOUND;
 }
 
 - (int) getPidTagOriginalSubject: (void **) data
                         inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPidTagNormalizedSubject: data inMemCtx: memCtx];
+  return [self getPidTagSubject: data inMemCtx: memCtx];
 }
 
 - (int) getPidTagConversationTopic: (void **) data
