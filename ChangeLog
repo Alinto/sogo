@@ -1,3 +1,9 @@
+2012-07-20  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailRenderingContext.m
+	(_shouldDisplayAsAttachment:): refactored to consider
+	the "bodyId" parameter only for non text/* parts.
+
 2012-07-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m

@@ -32,22 +32,25 @@
 
 @interface UIxMailRenderingContext (Private)
 
-- (BOOL) _shouldDisplayAsAttachment: (NSDictionary *) info;
-
+- (BOOL) _shouldDisplayAsAttachment: (NSDictionary *) info
+                           textPart: (BOOL) textPart;
 @end
 
 @implementation UIxMailRenderingContext (Private)
 
 - (BOOL) _shouldDisplayAsAttachment: (NSDictionary *) info
+                           textPart: (BOOL) textPart
 {
   NSString *s;
   BOOL shouldDisplay;
 
   s = [[info objectForKey:@"disposition"] objectForKey: @"type"];
 
-  shouldDisplay = ((s && ([s caseInsensitiveCompare: @"ATTACHMENT"]
-			  == NSOrderedSame))
-		   || [[info objectForKey: @"bodyId"] length]);
+  shouldDisplay = (s && ([s caseInsensitiveCompare: @"ATTACHMENT"]
+			 == NSOrderedSame));
+  
+  if (!shouldDisplay && !textPart)
+    shouldDisplay = ([[info objectForKey: @"bodyId"] length] ? YES : NO);
 
   return shouldDisplay;
 }
@@ -198,7 +201,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
   else if ([mt isEqualToString:@"text"])
     {
       if ([st isEqualToString:@"plain"] || [st isEqualToString:@"html"]) {
-	if (!showNamedTextAttachmentsInline && [self _shouldDisplayAsAttachment: _info])
+	if (!showNamedTextAttachmentsInline && [self _shouldDisplayAsAttachment: _info textPart:YES])
 	  return [self linkViewer];
       
 	return [st isEqualToString:@"html"] 
@@ -212,7 +215,7 @@ static BOOL showNamedTextAttachmentsInline = NO;
   // Tiffs aren't well-supported
   if ([mt isEqualToString:@"image"] && ![st isEqualToString: @"tiff"])
     {
-      if ([self _shouldDisplayAsAttachment: _info])
+      if ([self _shouldDisplayAsAttachment: _info textPart: NO])
 	return [self linkViewer];
      
       return [self imageViewer];
