@@ -1,3 +1,10 @@
+2012-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAppointmentFolder.m
+	(_appendCycleException:firstInstanceCalendarDateRange:fromRow:forRange:withTimeZone:toArray:):
+	return immediately if the occurrence does not have a valid
+	recurrence-id.
+
 2012-07-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (onEmailTo): append the email
