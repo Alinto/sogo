@@ -1,5 +1,8 @@
 2012-07-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/MailerUI.js (onEmailTo): append the email
+	address from the href attribute if it doesn't appear in the link content.
+
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m
 	(-startElement:namespace:rawName:attributes:): don't skip "mailto:"
 	href.
