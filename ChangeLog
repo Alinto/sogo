@@ -1,4 +1,3 @@
-<<<<<<< variant A
 2012-07-20  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/MailerUI.js (onEmailTo): append the email
@@ -81,7 +80,6 @@
 	(-save): don t swap the bytes of the version number as it would
 	return a wrong change number and a wrong change key for DB objects.
 
->>>>>>> variant B
 2012-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/NSObject+MAPIStore.m (-getSMTPAddrType:inMemCtx:):
