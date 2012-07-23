@@ -43,6 +43,10 @@ class CASProxyValidator:
     def _runAsCGI(self):
         if self._cgiChecks():
             form = cgi.FieldStorage()
+	    if form.list == []:
+		message = "Empty parameters : assuming cert. validation"
+		self._printCGIError(message, 200)
+		return
             if form.has_key("pgtId") and form.has_key("pgtIou"):
                 pgtIou = form.getfirst("pgtIou")
                 pgtId = form.getfirst("pgtId")
