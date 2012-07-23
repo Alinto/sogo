@@ -1,3 +1,10 @@
+2012-07-23  Jean Raby  <jraby@inverse.ca>
+	* debian*/sogo.logrotate:
+	  drop distro specific log rotate scripts
+	* debian*/sogo.install
+	* debian*/rules :
+	  Use the logrotate script from Scripts/.
+
 2012-07-20  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailRenderingContext.m
