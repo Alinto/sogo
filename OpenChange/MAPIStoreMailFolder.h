@@ -36,7 +36,7 @@
 
 @interface MAPIStoreMailFolder : MAPIStoreFolder
 {
-  SOGoMAPIFSMessage *versionsMessage;
+  SOGoMAPIDBMessage *versionsMessage;
 }
 
 - (BOOL) ensureFolderExists;

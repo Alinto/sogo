@@ -54,9 +54,8 @@
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
-#import "SOGoMAPIFSMessage.h"
+#import "SOGoMAPIDBMessage.h"
 
-#import "SOGoMAPIVolatileMessage.h"
 #import "MAPIStoreMailVolatileMessage.h"
 
 #import "MAPIStoreMailFolder.h"
@@ -97,8 +96,9 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
 - (void) setupVersionsMessage
 {
   ASSIGN (versionsMessage,
-          [SOGoMAPIFSMessage objectWithName: @"versions.plist"
-                                inContainer: propsFolder]);
+          [SOGoMAPIDBMessage objectWithName: @"versions.plist"
+                                inContainer: dbFolder]);
+  [versionsMessage setObjectType: MAPIDBObjectTypeInternal];
 }
 
 - (BOOL) ensureFolderExists
@@ -119,6 +119,9 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
       && ![[(SOGoMailFolder *) sogoObject displayName]
             isEqualToString: newDisplayName])
     {
+      [NSException raise: @"MAPIStoreIOException"
+                  format: @"renaming a mail folder via OpenChange is"
+                   @" currently a bad idea"];
       [(SOGoMailFolder *) sogoObject renameTo: newDisplayName];
       propsCopy = [newProperties mutableCopy];
       [propsCopy removeObjectForKey: key];
@@ -489,10 +492,8 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   now = [NSCalendarDate date];
   [now setTimeZone: utcTZ];
 
-  currentProperties = [[versionsMessage properties] mutableCopy];
-  if (!currentProperties)
-    currentProperties = [NSMutableDictionary new];
-  [currentProperties autorelease];
+  [versionsMessage reloadIfNeeded];
+  currentProperties = [versionsMessage properties];
   messages = [currentProperties objectForKey: @"Messages"];
   if (!messages)
     {
@@ -613,7 +614,6 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       ti = [NSNumber numberWithDouble: [now timeIntervalSince1970]];
       [currentProperties setObject: ti
                             forKey: @"SyncLastSynchronisationDate"];
-      [versionsMessage appendProperties: currentProperties];
       [versionsMessage save];
     }
 
@@ -1004,19 +1004,15 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 
 - (MAPIStoreMessage *) createMessage
 {
-  MAPIStoreMailVolatileMessage *newMessage;
-  SOGoMAPIVolatileMessage *newObject;
+  SOGoMAPIObject *childObject;
 
-  newObject = [SOGoMAPIVolatileMessage
-                objectWithName: [SOGoObject globallyUniqueObjectId]
-                   inContainer: sogoObject];
-  newMessage
-    = [MAPIStoreMailVolatileMessage mapiStoreObjectWithSOGoObject: newObject
-                                                      inContainer: self];
-  
-  return newMessage;
+  childObject = [SOGoMAPIObject objectWithName: [SOGoMAPIObject
+                                                  globallyUniqueObjectId]
+                                   inContainer: sogoObject];
+  return [MAPIStoreMailVolatileMessage
+           mapiStoreObjectWithSOGoObject: childObject
+                             inContainer: self];
 }
-
 
 - (NSArray *) rolesForExchangeRights: (uint32_t) rights
 {

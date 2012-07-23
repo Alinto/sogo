@@ -25,9 +25,11 @@
 
 #import <Foundation/NSDate.h>
 
+@class NSCalendarDate;
+
 @interface NSDate (MAPIStoreDataTypes)
 
-+ (id) dateFromMinutesSince1601: (uint32_t) minutes;
++ (NSCalendarDate *) dateFromMinutesSince1601: (uint32_t) minutes;
 - (uint32_t) asMinutesSince1601;
 
 + (id) dateFromFileTime: (const struct FILETIME *) timeValue;
@@ -36,5 +38,7 @@
 - (BOOL) isNever; /* occurs on 4500-12-31 */
 
 @end
+
+NSComparisonResult NSDateCompare (id date1, id date2, void *);
 
 #endif /* NSCALENDARDATE+MAPISTORE_H */

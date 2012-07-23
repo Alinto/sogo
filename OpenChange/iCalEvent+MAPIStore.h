@@ -1,6 +1,6 @@
-/* MAPIStoreFSMessage.h - this file is part of SOGo
+/* iCalEvent+MAPIStore.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,12 +20,22 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREFSMESSAGE_H
-#define MAPISTOREFSMESSAGE_H
+#ifndef ICALEVENT_MAPISTORE_H
+#define ICALEVENT_MAPISTORE_H
 
-#import "MAPIStoreVolatileMessage.h"
+#import <NGCards/iCalEvent.h>
 
-@interface MAPIStoreFSMessage : MAPIStoreVolatileMessage
+@class MAPIStoreUserContext;
+@class NSDictionary;
+@class NSString;
+@class SOGoUser;
+
+@interface iCalEvent (MAPIStoreProperties)
+
+- (void) updateFromMAPIProperties: (NSDictionary *) properties
+                    inUserContext: (MAPIStoreUserContext *) userContext
+                   withActiveUser: (SOGoUser *) activeUser;
+
 @end
 
-#endif /* MAPISTOREFSMESSAGE_H */
+#endif /* ICALEVENT_MAPISTORE_H */

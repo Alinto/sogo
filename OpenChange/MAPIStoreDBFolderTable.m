@@ -1,6 +1,6 @@
-/* SOGoMAPIVolatileMessage.h - this file is part of SOGo
+/* MAPIStoreDBFolderTable.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,22 +20,17 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOMAPIVOLATILEMESSAGE_H
-#define SOGOMAPIVOLATILEMESSAGE_H
+#import <Foundation/NSString.h>
 
-#import <SOGo/SOGoObject.h>
+#import "MAPIStoreTypes.h"
 
-@class NSDictionary;
-@class NSMutableDictionary;
+#import "MAPIStoreDBFolderTable.h"
 
-@interface SOGoMAPIVolatileMessage : SOGoObject
+@implementation MAPIStoreDBFolderTable
+
+- (NSString *) backendIdentifierForProperty: (enum MAPITAGS) property
 {
-  NSMutableDictionary *properties;
+  return [NSString stringWithFormat: @"%@", MAPIPropertyKey (property)];
 }
 
-- (NSMutableDictionary *) properties;
-- (void) appendProperties: (NSDictionary *) newProperties;
-
 @end
-
-#endif /* SOGOMAPIVOLATILEMESSAGE_H */
