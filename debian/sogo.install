@@ -1,6 +1,7 @@
 etc/default/sogo
 etc/apache2/conf.d/SOGo.conf
 etc/cron.d/sogo
+etc/logrotate.d/sogo
 usr/sbin/*
 usr/lib/GNUstep/Frameworks/*
 usr/lib/GNUstep/Libraries/*
