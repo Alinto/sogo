@@ -20,8 +20,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSMapTable.h>
+#import <Foundation/NSPropertyList.h>
 #import <Foundation/NSThread.h>
 #import <Foundation/NSURL.h>
 
@@ -95,9 +97,37 @@ static NSMapTable *contextsTable = nil;
   return self;
 }
 
+- (NSString *) _readUserPassword: (NSString *) newUsername
+{
+  NSString *password;
+  NSData *content;
+  id plist;
+  NSPropertyListFormat plistFormat;
+  NSString *error;
+
+  password = nil;
+
+  content = [NSData dataWithContentsOfFile: SAMBA_PRIVATE_DIR
+                    @"/mapistore/SOGo/userpwds.plist"];
+  if (content)
+    {
+      plist = [NSPropertyListSerialization
+                propertyListFromData: content
+                    mutabilityOption: NSPropertyListImmutable
+                              format: &plistFormat
+                    errorDescription: &error];
+      if ([plist respondsToSelector: @selector (objectForKey:)])
+        password = [plist objectForKey: newUsername];
+    }
+
+  return password;
+}
+
 - (id) initWithUsername: (NSString *) newUsername
          andTDBIndexing: (struct tdb_wrap *) indexingTdb
 {
+  NSString *userPassword;
+
   if ((self = [self init]))
     {
       /* "username" will be retained by table */
@@ -109,7 +139,10 @@ static NSMapTable *contextsTable = nil;
       authenticator = [MAPIStoreAuthenticator new];
       [authenticator setUsername: username];
       /* TODO: very hackish (IMAP access) */
-      [authenticator setPassword: username];
+      userPassword = [self _readUserPassword: newUsername];
+      if ([userPassword length] == 0)
+        userPassword = username;
+      [authenticator setPassword: userPassword];
     }
 
   return self;

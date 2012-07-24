@@ -1,5 +1,9 @@
 2012-07-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreUserContext.m
+	(-initWithUsername:andTDBIndexing:): attempt to read the user
+	password from a property list.
+
 	* OpenChange/samba-get-config.py: new utility taking a samba
 	configuration variable and prints the value on stdout
 
