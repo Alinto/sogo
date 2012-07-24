@@ -14,6 +14,7 @@ Enhancements
  - updated Czech, French translations
  - all addresses from a contact are displayed in the Web interface (no longer
    limited to one additional address)
+ - updated CKEditor to version 3.6.4
 
 Bug Fixes
  - Fixed a crash when multiple mail header of the same type were encountered.
