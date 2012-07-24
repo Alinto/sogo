@@ -27,8 +27,12 @@
 "Add default email addresses" = "Přidat základní emailové adresy";
 "Days between responses :" = "Počet dnů mezi odpověďmi :";
 "Do not send responses to mailing lists" = "Neposílat odpovědi do konferencí";
+"Disable auto reply on" = "Zakázat automatické odpovědi na";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Prosím zadejte text zprávy a své emailové adresy, pro které chcete zasílání v nepřítomnosti použít.";
+"Your vacation message must not end with a single dot on a line." = "Vaše zpráva v nepřítomnosti nesmí končit samotnou tečkou na řádce.";
+"End date of your auto reply must be in the future."
+= "Datum ukončení vaší automatické odpovědi musí být v budoucnosti.";
 
 /* forward messages */
 "Forward incoming messages" = "Přeposílat příchozí zprávy";
@@ -72,25 +76,40 @@
 "longDateFmt_2" = "%A, %d %B, %Y";
 "longDateFmt_3" = "%d %B, %Y";
 "longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
 
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "Týden začíná v :";
 "Day start time :" = "Začátek dne :";
 "Day end time :" = "Konec dne :";
-"Day start time must be prior to day end time." = "Day start time must be prior to day end time.";
+"Day start time must be prior to day end time." = "Čas Začátek dne musí předcházet času Konec dne.";
+"Show time as busy outside working hours" = "Čas mimo pracovní dobu zobrazovat jako obsazený";
 "First week of year :" = "První týden roku :";
-"Enable reminders for Calendar items" = "Povolit upomínky pro položky v kalendáři";
+"Enable reminders for Calendar items" = "Povolit upozornění pro události v kalendáři";
 "Play a sound when a reminder comes due"
-= "Přehrát zvuk s upomínkou";
-"Default reminder :" = "Výchozí upomínka :";
+= "Při upozornění přehrát zvuk";
+"Default reminder :" = "Výchozí upozornění :";
 
 "firstWeekOfYear_January1" = "Začíná 1. ledna";
 "firstWeekOfYear_First4DayWeek" = "První 4-denní týden";
 "firstWeekOfYear_FirstFullWeek" = "První celý týden";
+
+/* Default Calendar */
+"Default calendar :" = "Výchozí kalendář :";
+"selectedCalendar" = "Zvolený kalendář";
+"personalCalendar" = "Osobní kalendář";
+"firstCalendar" = "První kalendář";
 
 "reminderTime_0000" = "0 minut";
 "reminderTime_0005" = "5 minut";
@@ -107,6 +126,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Ukázat pouze odebírané mailové schránky";
+"Sort messages by threads" = "Třídit zprávy podle souvislostí";
 "Check for new mail:" = "Zkontrolovat novou poštu:";
 "messagecheck_manually" = "Manuálně";
 "messagecheck_every_minute" = "Každou minutu";
@@ -135,13 +155,12 @@
 
 "Server Name:" = "Adresa serveru:";
 "Port:" = "Port:";
-"Encryption:" = "Zabezpečení spojení:";
-"None" = "Žádné";
 "User Name:" = "Uživatelské jméno:";
 "Password:" = "Heslo:";
 
 "Full Name:" = "Celé jméno:";
 "Email:" = "E-mailová adresa:";
+"Reply To Email:" = "Adresa pro odpověď:";
 "Signature:" = "Podpis:";
 "(Click to create)" = "(Klikni pro vytvoření)";
 
@@ -157,11 +176,11 @@
 "Change" = "Změnit";
 
 /* Event+task classifications */
-"Default events classification :" = "Default events classification :";
-"Default tasks classification :" = "Default tasks classification :";
-"PUBLIC_item" = "Public";
-"CONFIDENTIAL_item" = "Confidential";
-"PRIVATE_item" = "Private";
+"Default events classification :" = "Výchozí druh události :";
+"Default tasks classification :" = "Výchozí druh úkolu :";
+"PUBLIC_item" = "Veřejné";
+"CONFIDENTIAL_item" = "Důvěrné";
+"PRIVATE_item" = "Soukromé";
 
 /* Event+task categories */
 "category_none" = "Žádný";
@@ -171,7 +190,7 @@
 "Calendar" = "Kalendář";
 "Contacts" = "Adresář";
 "Mail" = "Pošta";
-"Last" = "Naposledy použité";
+"Last" = "Naposledy použitý";
 "Default module :" = "Výchozí modul :";
 
 "Language :" = "Jazyk :";
@@ -187,7 +206,7 @@
 "Italian" = "Italiano";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
-"BrazilianPortuguese" = "Português brasileiro";
+"BrazilianPortuguese" = "Portugues brasileiro";
 "Russian" = "Русский";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
@@ -259,3 +278,16 @@
 "Label 3" = "Label 3";
 "Label 4" = "Label 4";
 "Label 5" = "Label 5";
+
+"Password must not be empty." = "Heslo nesmí být prázdné.";
+"The passwords do not match. Please try again." = "Hesla se neshodují. Prosím zadejte je znovu.";
+"Password change failed" = "Změna hesla selhala";
+"Password change failed - Permission denied" = "Změna hesla selhala - Přístup odepřen";
+"Password change failed - Insufficient password quality" = "Změna hesla selhala - Nepostačující kvalita hesla";
+"Password change failed - Password is too short" = "Změna hesla selhala - Příliš krátké heslo";
+"Password change failed - Password is too young" = "Změna hesla selhala - Příliš nové heslo";
+"Password change failed - Password is in history" = "Změna hesla selhala - Heslo je v historii";
+"Unhandled policy error: %{0}" = "Neošetřená chyba: %{0}";
+"Unhandled error response" = "Neošetřená chyba";
+"Password change is not supported." = "Změna hesla není podporována.";
+"Unhandled HTTP error code: %{0}" = "Neošetřený HTTP chybový kód: %{0}";

@@ -283,9 +283,9 @@
 = "Los mensajes no pueden ser movidos a la papelera. ¿Quiere borrarlos inmediatamente?";
 
 /* Message editing */
-"error_validationfailed" = "Error de validación";
 "error_missingsubject" = "No ha indicado el asunto";
 "error_missingrecipients" = "No ha indicado el/los destinatario(s)";
+"Send Anyway" = "Enviar de cualquier forma";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "No se puede enviar el mensaje: (smtp) todos los destinatarios han sido descartados";

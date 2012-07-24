@@ -87,6 +87,7 @@
 "timeFmt_1" = "%H.%M";
 "timeFmt_2" = "";
 "timeFmt_3" = "";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "Semana empieza por: ";
@@ -159,6 +160,7 @@
 
 "Full Name:" = "Nombre Completo:";
 "Email:" = "Correo Electrónico:";
+"Reply To Email:" = "Correo electronico para responder:";
 "Signature:" = "Firma:";
 "(Click to create)" = "(Click para crear)";
 

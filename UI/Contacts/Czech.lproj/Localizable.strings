@@ -76,7 +76,6 @@
 "No possible subscription" = "Žádné možné odebírání";
 
 "Preferred" = "Upřednostňovaný";
-"Card for %@" = "Karta pro %@";
 "Display:" = "Zobrazované jméno:";
 "Display Name:" = "Zobrazované jméno:";
 "Email:" = "E-mail:";
@@ -85,7 +84,7 @@
 "Phone Number:" = "Telefonní číslo:";
 "Prefers to receive messages formatted as:" = "Upřednostňovaný formát zpráv:";
 "Screen Name:" = "Zobrazované jméno:";
-"Categories:" = "Categories:";
+"Categories:" = "Kategorie:";
 
 "First:" = "Křestní jméno:";
 "Last:" = "Příjmení:";
@@ -134,7 +133,6 @@
 "Subscribe to an Addressbook..." = "Odebírat složku kontaktů...";
 "Remove the selected Addressbook" = "Smazat složku kontaktů";
 
-"Confirmation:" = "Potvrzení:";
 "Name of the Address Book" = "Název složky kontaktů";
 "Are you sure you want to delete the selected address book?"
 = "Opravdu chcete odstranit označenou složku kontaktů?";
@@ -156,9 +154,11 @@
 "Unable to subscribe to that folder!"
 = "Nemůžete se přihlásit k odebírání této složky!";
 
-"User rights for:" = "Uživatelská práva pro:";
+/* acls */
+"Access rights to" = "Přístupová práva k";
+"For user" = "Pro uživatele";
 
-"Any Authenticated User" = "Každý ověřený uživatel";
+"Any Authenticated User" = "Všichni ověření uživatelé";
 "Public Access" = "Veřejný přístup";
 
 "This person can add cards to this addressbook."
@@ -195,9 +195,11 @@
 "Lists can't be moved or copied." = "Skupinu nelze přesunout nebo kopírovat.";
 "Export" = "Exportovat";
 "Export Address Book..." = "Exportovat adresář...";
+"View Raw Source" = "Zobrazit surový zdroj";
 "Import Cards" = "Importovat kontakty";
 "Select a vCard or LDIF file." = "Zvolte LDIF nebo vCard soubor.";
 "Upload" = "Upload";
+"Uploading" = "Nahrávání";
 "Done" = "Done";
 "An error occured while importing contacts." = "Při importu došlo k chybě.";
 "No card was imported." = "Nebyl importován žádný kontakt.";

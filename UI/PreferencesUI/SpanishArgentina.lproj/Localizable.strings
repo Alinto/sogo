@@ -141,8 +141,8 @@
 "messageforward_inline" = "Incorporado";
 "messageforward_attached" = "Como adjunto";
 
-"replyplacement_above" = "Empiezar mi respuesta sobre el texto ";
-"replyplacement_below" = "Empieza mi respuesta bajo el texto";
+"replyplacement_above" = "Empezar mi respuesta sobre el texto citado";
+"replyplacement_below" = "Empieza mi respuesta bajo el texto citado";
 "And place my signature" = "Y añadir mi firma";
 "signatureplacement_above" = "bajo mi respuesta";
 "signatureplacement_below" = "bajo el texto";
@@ -160,6 +160,7 @@
 
 "Full Name:" = "Nombre Completo:";
 "Email:" = "Correo Electrónico:";
+"Reply To Email:" = "Responder a esta dirección de correo:";
 "Signature:" = "Firma:";
 "(Click to create)" = "(Click para crear)";
 
@@ -284,7 +285,7 @@
 "Password change failed - Permission denied" = "El cambio de contraseña falló - Permiso denegado";
 "Password change failed - Insufficient password quality" = "El cambio de contraseña falló - La contraseña no  es lo suficientemente fuerte";
 "Password change failed - Password is too short" = "El cambio de contraseña falló - La contraseña es demasiado corta";
-"Password change failed - Password is too young" = "Falló el cambio de la contraseña - La contraseña es demasiado reciente";
+"Password change failed - Password is too young" = "El cambio de la contraseña falló - La contraseña es demasiado reciente";
 "Password change failed - Password is in history" = "El cambio de contraseña falló - Ya ha usado esta contraseña anteriormente";
 "Unhandled policy error: %{0}" = "Error de políticas no registrado:%{0}";
 "Unhandled error response" = "Error de respuesta no registrado";

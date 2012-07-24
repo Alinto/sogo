@@ -30,6 +30,7 @@
 "Disable auto reply on" = "Desativar resposta automática em";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Favor especificar a sua mensagem e seus endereços de e-mail para o qual você deseja ativar resposta automática.";
+"Your vacation message must not end with a single dot on a line." = "Sua mensagem de férias não deve terminar com um ponto único em uma linha.";
 "End date of your auto reply must be in the future."
 = "A data final da resposta automática deve estar no futuro.";
 
@@ -86,6 +87,7 @@
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
 "timeFmt_3" = "";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "A Semana começa em :";
@@ -173,11 +175,11 @@
 "Change" = "Alterar";
 
 /* Event+task classifications */
-"Default events classification :" = "Default events classification :";
-"Default tasks classification :" = "Default tasks classification :";
-"PUBLIC_item" = "Public";
-"CONFIDENTIAL_item" = "Confidential";
-"PRIVATE_item" = "Private";
+"Default events classification :" = "Classificação padrão do compromisso:";
+"Default tasks classification :" = "Classificação padrão da tarefa:";
+"PUBLIC_item" = "Público";
+"CONFIDENTIAL_item" = "Confidencial";
+"PRIVATE_item" = "Particular";
 
 /* Event+task categories */
 "category_none" = "Nenhum";
@@ -194,7 +196,7 @@
 "choose" = "Escolha ...";
 "Catalan" = "Català";
 "Czech" = "Česky";
-"DanishDenmark" = "Dansk (Danmark)";
+"Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
 "English" = "English";
 "French" = "Français";

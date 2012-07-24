@@ -110,6 +110,7 @@
 "Import Events" = "Importovat události";
 "Select an iCalendar file (.ics)." = "Zvolte iCalendar soubor (*.ics).";
 "Upload" = "Nahrát";
+"Uploading" = "Nahrávání";
 "Publish Calendar..." = "Publikovat kalendář...";
 "Reload Remote Calendars" = "Aktualizovat vzdálené kalendáře";
 "Properties" = "Vlastnosti";
@@ -131,7 +132,8 @@
 
 /* acls */
 
-"User rights for:" = "Uživatelská práva pro:";
+"Access rights to" = "Přístupová práva k";
+"For user" = "Pro uživatele";
 
 "Any Authenticated User" = "Každý ověřený uživatel";
 "Public Access" = "Veřejný přístup";
@@ -159,7 +161,6 @@
 
 /* Button Titles */
 
-"New Calendar..." = "Nový kalendář...";
 "Subscribe to a Calendar..." = "Odebírat kalendář...";
 "Remove the selected Calendar" = "Smazat zvolený kalendář";
 
@@ -536,6 +537,10 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Show alarms" = "Zobrazit připomenutí";
 "Show tasks" = "Zobrazit úkoly";
 
+"Receive a mail when I modify my calendar" = "Obdržet zprávu když upravím svůj kalendář";
+"Receive a mail when someone else modifies my calendar" = "Obdržet zprávu když někdo jiný upraví můj kalendář";
+"When I modify my calendar, send a mail to:" = "Když upravím svůj kalendář, poslat zprávu na:";
+
 "Links to this Calendar" = "Odkazy na tento kalendář";
 "Authenticated User Access" = "Přístup pro ověřené uživatele";
 "CalDAV URL" = "CalDAV url";
@@ -564,6 +569,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Delete Task" = "Smazat úkol";
 "Delete Event" = "Smazat událost";
 "Copy event to my calendar" = "Copy event to my calendar";
+"View Raw Source" = "Zobrazit surový zdroj";
 
 "Subscribe to a web calendar..." = "Odebírat vzdálený kalendář na webu";
 "URL of the Calendar" = "Adresa vzdáleného kalendáře na webu";

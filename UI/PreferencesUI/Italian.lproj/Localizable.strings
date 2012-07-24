@@ -30,6 +30,7 @@
 "Disable auto reply on" = "Disabilita il risponditore automatico";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Prego specificare il tuo messaggio e l'indirizzo email per il quale vuoi abilitare il risponditore automatico.";
+"Your vacation message must not end with a single dot on a line." = "Il messaggio dell'auto-risponditore non deve finire con un singolo punto per linea ";
 "End date of your auto reply must be in the future."
 = "La data di fine del risponditore automatico deve essere nel futuro";
 
@@ -86,6 +87,7 @@
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
 "timeFmt_3" = "";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "La settimana inizia il:";
@@ -158,6 +160,7 @@
 
 "Full Name:" = "Nome completo:";
 "Email:" = "Email";
+"Reply To Email:" = "Rispondi all'email:";
 "Signature:" = "Firma:";
 "(Click to create)" = "(Clicca per creare)";
 
@@ -173,11 +176,11 @@
 "Change" = "Cambia Password";
 
 /* Event+task classifications */
-"Default events classification :" = "Default events classification :";
-"Default tasks classification :" = "Default tasks classification :";
-"PUBLIC_item" = "Public";
-"CONFIDENTIAL_item" = "Confidential";
-"PRIVATE_item" = "Private";
+"Default events classification :" = "Classificazioni degli eventi di default:";
+"Default tasks classification :" = "Classificazione di default delle attività:";
+"PUBLIC_item" = "Pubblico";
+"CONFIDENTIAL_item" = "Confidenziale";
+"PRIVATE_item" = "Privato";
 
 /* Event+task categories */
 "category_none" = "Nessuna";
@@ -194,7 +197,7 @@
 "choose" = "Scegli...";
 "Catalan" = "Català";
 "Czech" = "Česky";
-"DanishDenmark" = "Dansk (Danmark)";
+"Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
 "English" = "English";
 "French" = "Français";

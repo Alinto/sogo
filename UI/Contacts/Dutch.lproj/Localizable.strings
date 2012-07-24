@@ -195,9 +195,11 @@
 "Lists can't be moved or copied." = "Lijsten kunnen niet worden verplaatst of gekopieerd.";
 "Export" = "Export";
 "Export Address Book..." = "Adresboek exporteren...";
+"View Raw Source" = "Bekijk broncode";
 "Import Cards" = "Contactgegevens importeren";
 "Select a vCard or LDIF file." = "Selecteer LDIF- of vCard-bestanden.";
 "Upload" = "Upload";
+"Uploading" = "Uploaden";
 "Done" = "Klaar";
 "An error occured while importing contacts." = "Tijdens het importeren is een fout opgetreden.";
 "No card was imported." = "Geen contactgegevens geïmporteerd.";

@@ -41,10 +41,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "À propos";
-"AboutBox" = "Développé par la compagnie Inverse, SOGo est un collecticiel complet mettant l'emphase sur la simplicité et l'extensibilité.<br/><br/>
-SOGo propose une interface Web moderne basée sur AJAX ainsi qu'un accès par de nombreux clients natifs (comme Mozilla Thunderbird et Lightning et Apple iCal) par l'utilisation de protocoles standards tel que CalDAV et CardDAV.<br/><br/>
-Ce programme est un logiciel libre ; vous pouvez le redistribuer et/ou le modifier conformément aux dispositions de la <a href=\"http://gnu.org/licenses/gpl.html\">Licence Publique Générale GNU</a>, telle que publiée par la Free Software Foundation ; version 2 de la licence, ou encore (à votre choix) toute version ultérieure. Ce programme est distribué dans l’espoir qu’il sera utile, mais SANS AUCUNE GARANTIE.<br/><br/>
-Plusieurs <a href=\"http://www.sogo.nu/en/support/community.html\">types de soutien</a> sont offerts.";
+"AboutBox" = "Développé par la compagnie Inverse, SOGo est un collecticiel complet mettant l'emphase sur la simplicité et l'extensibilité.<br/><br/>\nSOGo propose une interface Web moderne basée sur AJAX ainsi qu'un accès par de nombreux clients natifs (comme Mozilla Thunderbird et Lightning et Apple iCal) par l'utilisation de protocoles standards tel que CalDAV et CardDAV.<br/><br/>\nCe programme est un logiciel libre ; vous pouvez le redistribuer et/ou le modifier conformément aux dispositions de la <a href=\"http://gnu.org/licenses/gpl.html\">Licence Publique Générale GNU</a>, telle que publiée par la Free Software Foundation ; version 2 de la licence, ou encore (à votre choix) toute version ultérieure. Ce programme est distribué dans l’espoir qu’il sera utile, mais SANS AUCUNE GARANTIE.<br/><br/>\nPlusieurs <a href=\"http://www.sogo.nu/en/support/community.html\">types de soutien</a> sont offerts.";
 
 "Your account was locked due to too many failed attempts." = "Votre compte a été bloqué dû à un nombre élevé de tentative d'authentification infructueuse.";
 "Your account was locked due to an expired password." = "Votre compte a été bloqué car votre mot de passe est expiré.";

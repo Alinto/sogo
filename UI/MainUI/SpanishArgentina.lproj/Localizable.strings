@@ -41,10 +41,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Acerca de";
-"AboutBox" = "Desarrollado por Inverse, SOGo es un servidor groupware (software colaborativo) con todas las características necesarias con un focus para simlicidad y capacidad de ampliación.<br/><br/>
-SOGo facilita una interface web rica basada en AJAX Web y soporta una multitud de clientes a través del soporte de protocolos estándares como CalDAV y CardDAV.<br/><br/>
-SOGo esta distribuido bajo <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versión 2 o siguiente, y partes bajo la licencia GNU LGPL versión 2. Esto es software libre: esta autorizado el cambio y la redistribución del mismo. No hay garantías, dentro del límite de la ley.<br/><br/>
-Ver <a href=\"http://www.sogo.nu/en/support/community.html\">esta página</a> para las diferentes opciones de soporte.";
+"AboutBox" = "Desarrollado por Inverse, SOGo es un servidor groupware (software colaborativo) con todas las características necesarias con un focus para simlicidad y capacidad de ampliación.<br/><br/>\nSOGo facilita una interface web rica basada en AJAX Web y soporta una multitud de clientes a través del soporte de protocolos estándares como CalDAV y CardDAV.<br/><br/>\nSOGo esta distribuido bajo <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versión 2 o siguiente, y partes bajo la licencia GNU LGPL versión 2. Esto es software libre: esta autorizado el cambio y la redistribución del mismo. No hay garantías, dentro del límite de la ley.<br/><br/>\nVer <a href=\"http://www.sogo.nu/en/support/community.html\">esta página</a> para las diferentes opciones de soporte.";
 
 "Your account was locked due to too many failed attempts." = "Su cuenta ha sido bloqueada debido a un número excesivo de errores de conexión.";
 "Your account was locked due to an expired password." = "Su cuenta ha sido bloqueada debido a una contraseña caducada.";

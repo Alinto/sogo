@@ -195,9 +195,11 @@
 "Lists can't be moved or copied." = "Las listas no se pueden mover o copiar.";
 "Export" = "Exportar";
 "Export Address Book..." = "Exportar libreta de direcciones...";
+"View Raw Source" = "Ver fuente Raw";
 "Import Cards" = "Importar Contactos";
 "Select a vCard or LDIF file." = "Seleccionar una vCard o un fichero LDIF.";
 "Upload" = "Cargar";
+"Uploading" = "Cargando";
 "Done" = "Hecho";
 "An error occured while importing contacts." = "Ha ocurrido un error mientras importaba contactos.";
 "No card was imported." = "El contacto no ha sido importado.";

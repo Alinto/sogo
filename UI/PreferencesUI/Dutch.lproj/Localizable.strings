@@ -106,7 +106,7 @@
 "firstWeekOfYear_FirstFullWeek" = "Eerste volledige week";
 
 /* Default Calendar */
-"Default calendar :" = "Standaard agenda";
+"Default calendar :" = "Standaardagenda:";
 "selectedCalendar" = "Geselecteerde agenda";
 "personalCalendar" = "Persoonlijke agenda";
 "firstCalendar" = "Eerste ingeschakelde agenda";
@@ -141,8 +141,8 @@
 "messageforward_inline" = "In het bericht";
 "messageforward_attached" = "Als bijlage";
 
-"replyplacement_above" = "Reactie boven orgineletekst";
-"replyplacement_below" = "Reactie onder orgineletekst";
+"replyplacement_above" = "Reactie boven orginele tekst";
+"replyplacement_below" = "Reactie onder orginele tekst";
 "And place my signature" = "Ondertekening plaatsen";
 "signatureplacement_above" = "boven orginele tekst";
 "signatureplacement_below" = "onder orginele tekst";
@@ -160,6 +160,7 @@
 
 "Full Name:" = "Naam:";
 "Email:" = "E-mail:";
+"Reply To Email:" = "Antwoord op e-mail:";
 "Signature:" = "Ondertekening:";
 "(Click to create)" = "(Klik om op te stellen)";
 
@@ -192,7 +193,7 @@
 "Last" = "Laatst gebruikt";
 "Default module :" = "Standaardmodule:";
 
-"Language :" = "Taal :";
+"Language :" = "Taal:";
 "choose" = "Kies...";
 "Catalan" = "Català";
 "Czech" = "Česky";

@@ -4,7 +4,8 @@
 
 "Username:" = "Uživatelské jméno:";
 "Password:" = "Heslo:";
-"Domain:" = "Domain:";
+"Domain:" = "Doména";
+"Remember username" = "Pamatovat si uživatelské jméno";
 
 "Connect" = "Připojit";
 
@@ -39,7 +40,7 @@
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
 
-"About" = "O";
+"About" = "About";
 "AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>
 SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>
 SOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>
@@ -49,7 +50,7 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Your account was locked due to an expired password." = "Váš účet byl zablokován z důvodu expirovaného hesla.";
 "Login failed due to unhandled error case: " = "Přihlášení selhalo z důvodu chyby: ";
 "Change your Password" = "Změňte své heslo";
-"The password was changed successfully." = "The password was changed successfully.";
+"The password was changed successfully." = "Heslo bylo úspěšně změněno.";
 "Your password has expired, please enter a new one below:" = "Vaše heslo expirovalo, prosím zadejte nové:";
 "Password must not be empty." = "Heslo nesmí být prázdné.";
 "The passwords do not match. Please try again." = "Hesla se neshodují. Prosím zadejte znovu.";
@@ -67,10 +68,10 @@ See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for v
 "Password change failed - Password is too short" = "Změna hesla selhala - Příliš krátké heslo";
 "Password change failed - Password is too young" = "Změna hesla selhala - Příliš nové heslo";
 "Password change failed - Password is in history" = "Změna hesla selhala - Heslo je v historii";
-"Unhandled policy error: %{0}" = "Unhandled policy error: %{0}";
-"Unhandled error response" = "Unhandled error response";
+"Unhandled policy error: %{0}" = "Neošetřená chyba: %{0}";
+"Unhandled error response" = "Neošetřená chyba";
 "Password change is not supported." = "Změna hesla není podporována.";
-"Unhandled HTTP error code: %{0}" = "Unhandled HTTP error code: %{0}";
+"Unhandled HTTP error code: %{0}" = "Neošetřený HTTP chybový kód: %{0}";
 "New password:" = "Nové heslo:";
 "Confirmation:" = "Potvrzení:";
 "Cancel" = "Storno";

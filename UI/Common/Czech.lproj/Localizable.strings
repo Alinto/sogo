@@ -30,16 +30,29 @@
 
 "Subscribe User" = "Odebírat";
 
-"Any Authenticated User" = "Každý ověřený uživatel";
+"Any Authenticated User" = "Všichni ověření uživatelé";
 "Public Access" = "Veřejný přístup";
 "Any user not listed above" = "Ostatní uživatelé neuvedení výše";
 "Anybody accessing this resource from the public area" = "Každý, kdo k tomuto zdroji přistupuje z veřejného prostoru";
 
 "Sorry, the user rights can not be configured for that object." = "Omlouváme se, ale uživatelská práva pro tento objekt nemohou být nastavena.";
 
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Všichni uživatelé tohoto systému budou mít přístup k vaší složce \"%{0}\". Jste si jistí, že důvěřujete jim všem?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Všichni uživatelé tohoto systému budou mít přístup k vašemu kalendáři \"%{0}\". Jste si jistí, že důvěřujete jim všem?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Potenciálně kdokoliv v Internetu bude mít přístup k vašemu kalendáři \"%{0}\", i když není uživatelem tohoto systému. Jsou tyto informace vhodné pro veřejný Internet?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Všichni uživatelé tohoto systému budou mít přístup k vašemu adresáři \"%{0}\". Jste si jistí, že důvěřujete jim všem?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Potenciálně kdokoliv v Internetu bude mít přístup k vašemu adresáři \"%{0}\", i když není uživatelem tohoto systému. Jsou tyto informace vhodné pro veřejný Internet?";
+"Give Access" = "Umožnit přístup";
+"Keep Private" = "Ponechat soukromým";
+
 /* generic.js */
 "Unable to subscribe to that folder!"
-	= "Není možne se přihlásit k odebírání této složky!";
+	= "Není možné se přihlásit k odebírání této složky!";
 "You cannot subscribe to a folder that you own!"
       	= "Nemůžete se přihlásit k odebírání své vlastní složky!";
 "Unable to unsubscribe from that folder!"
@@ -53,7 +66,7 @@
         = "Uživatelská práva pro tento objekt nemohou být upravena!";
 "A folder by that name already exists." = "Složka tohoto jména již existuje.";
 "You cannot create a list in a shared address book." 
-        = "You cannot create a list in a shared address book.";
+        = "Nemůžete vytvořit seznam ve sdíleném adresáři.";
 "Warning" = "Upozornění";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
@@ -65,6 +78,15 @@
 "delegate is organizer" = "Delegovaný je organizátor. Prosím určete jiného delegovaného.";
 "delegate is a participant" = "Delegovaný je již účastníkem.";
 "delegate is a group" = "Určená adresa odpovídá skupině. Delegovat můžete pouze na osobu.";
+
+"Snooze for " = "Odložit o ";
+"5 minutes" = "5 minut";
+"10 minutes" = "10 minut";
+"15 minutes" = "15 minut";
+"30 minutes" = "30 minut";
+"45 minutes" = "45 minut";
+"1 hour" = "1 hodinu";
+
 
 /* common buttons */
 "OK" = "OK";

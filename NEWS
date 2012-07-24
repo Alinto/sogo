@@ -11,7 +11,8 @@ New Features
    means search operations are trigged once the 3rd character is typed.
 
 Enhancements
- - updated Czech, French translations
+ - updated BrazilianPortuguese, Czech, Dutch, French, German, Italian,
+   Spanish (Argentina), Spanish (Spain) translations
  - all addresses from a contact are displayed in the Web interface (no longer
    limited to one additional address)
  - updated CKEditor to version 3.6.4

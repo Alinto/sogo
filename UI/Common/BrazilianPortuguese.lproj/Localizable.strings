@@ -37,10 +37,16 @@
 
 "Sorry, the user rights can not be configured for that object." = "Desculpe, os direitos de usuário não podem ser modificados para este objeto.";
 
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Qualquer usuário com uma conta neste sistema será capaz de acessar sua caixa postal \"% {0}\". Tem a certeza que confia em todos?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
      = "Qualquer usuário com uma conta neste sistema poderá acessar seu calendário \"%{0}\". Você tem certeza que confia em todos?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Qualquer um na Internet poderá acessar seu calendário \"%{0}\". Estas informações podem ser publicadas na Internet?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Qualquer usuário com uma conta neste sistema será capaz de acessar seu catálogo de endereços \"% {0}\". Tem a certeza que confia em todos?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Qualquer pessoa na Internet será capaz de acessar seu catálogo de endereços \"% {0}\", mesmo se não tiver uma conta no sistema. Esta informação pode ser tornar pública na Internet?";
 "Give Access" = "Conceder Acesso";
 "Keep Private" = "Manter Privado";
 
