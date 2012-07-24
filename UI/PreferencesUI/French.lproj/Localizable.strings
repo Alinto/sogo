@@ -87,6 +87,7 @@
 "timeFmt_1" = "%H.%M";
 "timeFmt_2" = "";
 "timeFmt_3" = "";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "Premier jour de la semaine :";
@@ -159,11 +160,15 @@
 
 "Full Name:" = "Nom complet :";
 "Email:" = "Email :";
+"Reply To Email:" = "Adresse de retour :";
 "Signature:" = "Signature :";
 "(Click to create)" = "(Signature vide)";
 
 "Signature" = "Signature";
 "Please enter your signature below:" = "Introduisez votre signature ci-dessous :";
+
+"Please specify a valid sender address." = "Veuillez définir une adresse d'expédition valide.";
+"Please specify a valid reply-to address." = "Veuillez définir une adresse de retour valide.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Paramètres supplémentaires";
