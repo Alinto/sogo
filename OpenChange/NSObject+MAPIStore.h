@@ -26,10 +26,11 @@
 #import <Foundation/NSObject.h>
 
 #include <talloc.h>
+#include <mapistore/mapistore_errors.h>
 
 struct MAPIStoreTallocWrapper
 {
-  id MAPIStoreSOGoObject;
+  id instance;
 };
 
 @interface NSObject (MAPIStoreTallocHelpers)
@@ -49,12 +50,26 @@ struct MAPIStoreTallocWrapper
 - (int) getLongZero: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getYes: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getNo: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getSMTPAddrType: (void **) data inMemCtx: (TALLOC_CTX *) memCtx;
 
 @end
 
 @interface NSObject (MAPIStoreExtension)
 
 - (Class) mapistoreMessageClass;
+
+@end
+
+@interface NSObject (MAPIStoreProperties)
+
++ (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx;
++ (void) fillAvailableProperties: (struct SPropTagArray *) properties
+                  withExclusions: (BOOL *) exclusions;
+
+- (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx;
+- (BOOL) canGetProperty: (enum MAPITAGS) propTag;
 
 @end
 

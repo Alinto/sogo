@@ -27,15 +27,6 @@
 
 #import "GCSSpecialQueries.h"
 
-@interface GCSPostgreSQLSpecialQueries : GCSSpecialQueries
-@end
-
-@interface GCSMySQLSpecialQueries : GCSSpecialQueries
-@end
-
-@interface GCSOracleSpecialQueries : GCSSpecialQueries
-@end
-
 @implementation EOAdaptorChannel (GCSSpecialQueries)
 
 - (GCSSpecialQueries *) specialQueries
@@ -163,7 +154,7 @@
 {
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (\n"
-       @"  c_name VARCHAR (255) NOT NULL PRIMARY KEY,\n"
+       @"  c_name VARCHAR (255) PRIMARY KEY,\n"
        @"  c_content TEXT NOT NULL,\n"
        @"  c_creationdate INT4 NOT NULL,\n"
        @"  c_lastmodified INT4 NOT NULL,\n"
@@ -190,7 +181,7 @@
 {
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ ("
-       @" c_id VARCHAR(255) NOT NULL PRIMARY KEY,"
+       @" c_id VARCHAR(255) PRIMARY KEY,"
        @" c_value VARCHAR(255) NOT NULL,"
        @" c_creationdate INT4 NOT NULL,"
        @" c_lastseen INT4 NOT NULL)");
@@ -257,7 +248,7 @@
 {
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (\n"
-       @"  c_name VARCHAR (255) NOT NULL PRIMARY KEY,\n"
+       @"  c_name VARCHAR (255) PRIMARY KEY,\n"
        @"  c_content MEDIUMTEXT NOT NULL,\n"
        @"  c_creationdate INT NOT NULL,\n"
        @"  c_lastmodified INT NOT NULL,\n"
@@ -284,7 +275,7 @@
 {
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
-       @" c_id VARCHAR(255) NOT NULL PRIMARY KEY,"
+       @" c_id VARCHAR(255) PRIMARY KEY,"
        @" c_value VARCHAR(255) NOT NULL,"
        @" c_creationdate INT NOT NULL,"
        @" c_lastseen INT NOT NULL)");
@@ -351,7 +342,7 @@
 {
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (\n"
-       @"  c_name VARCHAR2 (255) NOT NULL PRIMARY KEY,\n"
+       @"  c_name VARCHAR2 (255) PRIMARY KEY,\n"
        @"  c_content CLOB NOT NULL,\n"
        @"  c_creationdate INTEGER NOT NULL,\n"
        @"  c_lastmodified INTEGER NOT NULL,\n"
@@ -377,7 +368,7 @@
 {
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
-       @" c_id VARCHAR2(255) NOT NULL PRIMARY KEY,"
+       @" c_id VARCHAR2(255) PRIMARY KEY,"
        @" c_value VARCHAR2(255) NOT NULL,"
        @" c_creationdate INTEGER NOT NULL,"
        @" c_lastseen INTEGER NOT NULL)");

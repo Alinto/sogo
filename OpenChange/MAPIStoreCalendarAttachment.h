@@ -25,7 +25,15 @@
 
 #import "MAPIStoreAttachment.h"
 
-@interface MAPIStoreCalendarAttachment :  MAPIStoreAttachment
+@class iCalEvent;
+
+@interface MAPIStoreCalendarAttachment : MAPIStoreAttachment
+{
+  iCalEvent *event;
+}
+
+- (void) setEvent: (iCalEvent *) newEvent;
+- (iCalEvent *) event;
 
 @end
 

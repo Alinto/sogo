@@ -91,8 +91,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagSubject: (void **) data // SUMMARY
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagNormalizedSubject: (void **) data // SUMMARY
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalToDo *task;
 

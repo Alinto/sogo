@@ -332,7 +332,7 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
   if (!fetchedCoreInfos)
     {
       fetchedCoreInfos = YES;
-      [(SOGoMailFolder *) [container sogoObject]
+      [(SOGoMailFolder *) [(MAPIStoreMailFolder *) container sogoObject]
          prefetchCoreInfosForMessageKeys: [self restrictedChildKeys]];
     }
 
