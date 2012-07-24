@@ -289,6 +289,7 @@
   iCalCalendar *calendar;
   NSCalendarDate *recDate;
   NSTimeZone *timeZone;
+  iCalPerson *organizer;
 
   recDate = [NSCalendarDate dateWithTimeIntervalSince1970: [recID intValue]];
   masterOccurence = [self component: NO secure: NO];
@@ -298,11 +299,17 @@
   if ([masterOccurence doesOccurOnDate: recDate])
     {
       newOccurence = [masterOccurence mutableCopy];
+      organizer = [masterOccurence organizer];
       [newOccurence autorelease];
       [newOccurence removeAllRecurrenceRules];
       [newOccurence removeAllExceptionRules];
       [newOccurence removeAllExceptionDates];
-      [newOccurence setOrganizer: nil];
+
+      // It is important to set the organizer as some DAV clients (iCal
+      // and Thunderbird 10/Lightning 1.2) will prompt the event "edition"
+      // dialog instead of the event "invitation" (for accept/decline/tentative)
+      // if the organizer isn't found in a specific recurrence
+      [newOccurence setOrganizer: organizer];
       [newOccurence setRecurrenceId: recDate];
 
       calendar = [masterOccurence parent];
