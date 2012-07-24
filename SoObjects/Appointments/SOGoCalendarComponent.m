@@ -289,6 +289,7 @@
   iCalCalendar *calendar;
   NSCalendarDate *recDate;
   NSTimeZone *timeZone;
+  iCalPerson *organizer;
 
   recDate = [NSCalendarDate dateWithTimeIntervalSince1970: [recID intValue]];
   masterOccurence = [self component: NO secure: NO];
@@ -298,11 +299,12 @@
   if ([masterOccurence doesOccurOnDate: recDate])
     {
       newOccurence = [masterOccurence mutableCopy];
+      organizer = [masterOccurence organizer];
       [newOccurence autorelease];
       [newOccurence removeAllRecurrenceRules];
       [newOccurence removeAllExceptionRules];
       [newOccurence removeAllExceptionDates];
-      [newOccurence setOrganizer: nil];
+      [newOccurence setOrganizer: organizer];
       [newOccurence setRecurrenceId: recDate];
 
       calendar = [masterOccurence parent];
