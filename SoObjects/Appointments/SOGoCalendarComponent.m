@@ -304,6 +304,11 @@
       [newOccurence removeAllRecurrenceRules];
       [newOccurence removeAllExceptionRules];
       [newOccurence removeAllExceptionDates];
+
+      // It is important to set the organizer as some DAV clients (iCal
+      // and Thunderbird 10/Lightning 1.2) will prompt the event "edition"
+      // dialog instead of the event "invitation" (for accept/decline/tentative)
+      // if the organizer isn't found in a specific recurrence
       [newOccurence setOrganizer: organizer];
       [newOccurence setRecurrenceId: recDate];
 
