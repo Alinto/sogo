@@ -169,8 +169,7 @@
     [self setTimeStampAsDate: value];
  
   /* SUMMARY */
-  value = [properties
-                objectForKey: MAPIPropertyKey (PR_NORMALIZED_SUBJECT_UNICODE)];
+  value = [properties objectForKey: MAPIPropertyKey (PidTagNormalizedSubject)];
   if (value)
     [self setSummary: value];
 
