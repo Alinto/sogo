@@ -17,6 +17,16 @@ function savePreferences(sender) {
         serializeContactsCategories();
     }
 
+    if (mailCustomFromEnabled && !emailRE.test($("email").value)) {
+        showAlertDialog(_("Please specify a valid sender address."));
+        sendForm = false;
+    }
+
+    if (!emailRE.test($("replyTo").value)) {
+        showAlertDialog(_("Please specify a valid reply-to address."));
+        sendForm = false;
+    }
+
     if ($("dayStartTime")) {
         var start = $("dayStartTime");
         var selectedStart = parseInt(start.options[start.selectedIndex].value);
@@ -63,10 +73,10 @@ function savePreferences(sender) {
         $("sieveFilters").setValue(Object.toJSON(jsonFilters));
     }
 
-    saveMailAccounts();
-
-    if (sendForm)
+    if (sendForm) {
+        saveMailAccounts();
         $("mainForm").submit();
+    }
 
     return false;
 }

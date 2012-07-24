@@ -1,3 +1,8 @@
+2012-07-24  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/UIxPreferences.js (savePreferences):
+	validate the email address of the sender mail and reply-to fields.
+
 2012-07-23  Jean Raby  <jraby@inverse.ca>
 	* debian*/sogo.logrotate:
 	  drop distro specific log rotate scripts
