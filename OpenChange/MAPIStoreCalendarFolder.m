@@ -35,6 +35,7 @@
 #import "MAPIStoreCalendarContext.h"
 #import "MAPIStoreCalendarMessage.h"
 #import "MAPIStoreCalendarMessageTable.h"
+#import "MAPIStoreUserContext.h"
 #import "NSString+MAPIStore.h"
 
 #import "MAPIStoreCalendarFolder.h"
@@ -67,6 +68,8 @@
   newEntry = [SOGoAppointmentObject objectWithName: name
                                        inContainer: sogoObject];
   [newEntry setIsNew: YES];
+  /* the WOContext is required here for resolving notification pages */
+  [newEntry setContext: [[self userContext] woContext]];
   newMessage = [MAPIStoreCalendarMessage mapiStoreObjectWithSOGoObject: newEntry
                                                            inContainer: self];
 

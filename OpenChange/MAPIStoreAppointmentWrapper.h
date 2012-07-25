@@ -23,9 +23,10 @@
 #ifndef MAPISTORECALENDARWRAPPER_H
 #define MAPISTORECALENDARWRAPPER_H
 
-#import <Foundation/NSObject.h>
 #import <NGCards/iCalPerson.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
+
+#import "MAPIStoreObjectProxy.h"
 
 @class NSTimeZone;
 
@@ -35,7 +36,7 @@
 
 @class SOGoUser;
 
-@interface MAPIStoreAppointmentWrapper : NSObject
+@interface MAPIStoreAppointmentWrapper : MAPIStoreObjectProxy
 {
   struct mapistore_connection_info *connInfo;
   iCalCalendar *calendar;
@@ -120,8 +121,8 @@
                    inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidIndentedBusyStatus: (void **) data // TODO
                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagSubject: (void **) data // SUMMARY
-            inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidTagNormalizedSubject: (void **) data // SUMMARY
+                          inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidLocation: (void **) data // LOCATION
                  inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
