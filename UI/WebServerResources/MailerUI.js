@@ -1966,6 +1966,9 @@ function initMailer(event) {
         if (UserSettings["Mail"] && UserSettings["Mail"]["ColumnsState"]) {
             messageListHeader.restore($H(UserSettings["Mail"]["ColumnsState"]));
         }
+        else {
+            messageListHeader.restore();
+        }
 
         configureDraggables();
         configureMessageListEvents();

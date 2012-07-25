@@ -766,17 +766,16 @@
       if (count)
 	{
 	  /* sender */
-	  //currentUser = [context activeUser];
-	  //shortSenderEmail = [[currentUser allEmails] objectAtIndex: 0];
-	  //  senderEmail = [NSString stringWithFormat: @"%@ <%@>",
-	  //			  [ownerUser cn], shortSenderEmail];
 	  shortSenderEmail = [[object organizer] rfc822Email];
-	  if (![shortSenderEmail length])
-	    shortSenderEmail = [[previousObject organizer] rfc822Email];
-	  senderEmail = [[object organizer] mailAddress];
-// 	  NSLog (@"sending '%@' from %@",
-// 		 [(iCalCalendar *) [object parent] method], senderEmail);
-	  /* generate iCalString once */
+	  if ([shortSenderEmail length])
+            {
+              senderEmail = [[object organizer] mailAddress];
+            }
+          else
+            {
+              shortSenderEmail = [[previousObject organizer] rfc822Email];
+              senderEmail = [[previousObject organizer] mailAddress];
+            }
 
           /* calendar part */
           eventBodyPart = [self _bodyPartForICalObject: object];
@@ -785,7 +784,6 @@
 	  app = [WOApplication application];
 
 	  /* generate dynamic message content */
-
 	  for (i = 0; i < count; i++)
 	    {
 	      attendee = [attendees objectAtIndex: i];
