@@ -1,5 +1,9 @@
 2012-07-25  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/Mailer/SOGoMailFolder.m
+	(-deleteUIDs:useTrashFolder:inContext:): fixed comparison with the
+	trash folder name when using subfolders (ex: INBOX/Trash).
+
 	* SoObjects/SOGo/SOGoSieveManager.m
 	(-updateFiltersForLogin:authname:password:account:): write the
 	filters before the vacation auto-reply.

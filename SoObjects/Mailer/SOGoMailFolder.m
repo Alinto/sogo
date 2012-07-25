@@ -406,7 +406,7 @@ static NSString *defaultUserID =  @"anyone";
 	      
                   // If we are deleting messages within the Trash folder itself, we
                   // do not, of course, try to move messages to the Trash folder.
-                  if ([folderName isEqualToString: [self relativeImap4Name]])
+                  if ([folderName isEqualToString: [imap4 imap4FolderNameForURL: [self imap4URL]]])
                     {
                       *withTrash = NO;
                     }
