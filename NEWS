@@ -1,4 +1,4 @@
-1.3.17 (2012-MM-DD)
+1.3.17 (2012-07-DD)
 -------------------
 New Features
  - new contextual menu to view the raw content of events, tasks and contacts
@@ -18,7 +18,15 @@ Enhancements
  - updated CKEditor to version 3.6.4
 
 Bug Fixes
- - Fixed a crash when multiple mail header of the same type were encountered.
+ - fixed a crash when multiple mail headers of the same type were encountered
+ - fixed logrotate script for Debian
+ - fixed linking of libcurl on Ubuntu 12.04
+ - fixed parsing of timezones when importing .ics files
+ - fixed resource reservation for recurring events
+ - fixed display of text attachments in messages
+ - fixed contextual menu on newly created address books
+ - fixed missing sender in mail notifications to removed attendees
+ - improved invitations handling in iCal
 
 1.3.16 (2012-06-07)
 -------------------
