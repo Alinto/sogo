@@ -1,5 +1,9 @@
 2012-07-25  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* SoObjects/SOGo/SOGoSieveManager.m
+	(-updateFiltersForLogin:authname:password:account:): write the
+	filters before the vacation auto-reply.
+
 	* SoObjects/Appointments/SOGoCalendarComponent.m
 	(-sendEMailUsingTemplateNamed:forObject:previousObject:toAttendees:withType:):
 	fixed the from header when the updated event has no mode organizer.

@@ -644,13 +644,26 @@ static NSString *sieveScriptName = @"sogo";
 
   script = [NSMutableString string];
 
-  // Right now, we handle Sieve filters here and only for vacation
-  // and forwards. Traditional filters support (for fileinto, for
-  // example) will be added later.
-  values = [ud vacationOptions];
+  // We first handle filters
+  filterScript = [self sieveScriptWithRequirements: req];
+  if (filterScript)
+    {
+      if ([filterScript length])
+        {
+          b = YES;
+          [script appendString: filterScript];
+        }
+    }
+  else
+    {
+      NSLog(@"Sieve generation failure: %@", [self lastScriptError]);
+      return NO;
+    }
 
   // We handle vacation messages.
   // See http://ietfreport.isoc.org/idref/draft-ietf-sieve-vacation/
+  values = [ud vacationOptions];
+
   if (values && [[values objectForKey: @"enabled"] boolValue])
     {
       NSArray *addresses;
@@ -717,21 +730,6 @@ static NSString *sieveScriptName = @"sogo";
 	[script appendString: @"keep;\r\n"];
     }
   
-  filterScript = [self sieveScriptWithRequirements: req];
-  if (filterScript)
-    {
-      if ([filterScript length])
-        {
-          b = YES;
-          [script appendString: filterScript];
-        }
-    }
-  else
-    {
-      NSLog(@"Sieve generation failure: %@", [self lastScriptError]);
-      return NO;
-    }
-
   if ([req count])
     {
       header = [NSString stringWithFormat: @"require [\"%@\"];\r\n",
