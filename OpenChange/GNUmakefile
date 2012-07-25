@@ -26,7 +26,16 @@ BUNDLE_INSTALL_DIR = $(SOGO_LIBDIR)
 
 UNRTF_DIR = unrtf-$(UNRTF_VERSION)
 
-SAMBA_PRIVATE_DIR = $(shell ./samba-get-config.py "private dir")
+PYTHON = /usr/bin/python
+PYTHON_IS_GOOD = $(shell $(PYTHON) -c 'from sys import version_info; a=version_info; print a.major == 2 and a.minor >= 6')
+ifeq (${PYTHON_IS_GOOD},False)
+PYTHON = /usr/bin/python2.6
+endif
+
+all::
+	@echo " Python executable: ${PYTHON}"
+
+SAMBA_PRIVATE_DIR = $(shell $(PYTHON) ./samba-get-config.py "private dir")
 
 $(SOGOBACKEND)_SUBPROJECTS += $(UNRTF_DIR)/src
 
