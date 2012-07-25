@@ -109,7 +109,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
                                   (unsigned long long) newFID];
       newFolder = [SOGoMAPIDBFolderK objectWithName: nameInContainer
                                         inContainer: sogoObject];
-      [newFolder setIsNew: YES];
+      [newFolder reloadIfNeeded];
       [[newFolder properties] setObject: folderName
                                  forKey: MAPIPropertyKey (PidTagDisplayName)];
       [newFolder save];
@@ -133,6 +133,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   fsObject = [SOGoMAPIDBMessage objectWithName: newKey
                                    inContainer: sogoObject];
   [fsObject setObjectType: MAPIDBObjectTypeMessage];
+  [fsObject reloadIfNeeded];
   newMessage = [MAPIStoreDBMessage mapiStoreObjectWithSOGoObject: fsObject
                                                      inContainer: self];
 

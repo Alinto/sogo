@@ -1,3 +1,9 @@
+2012-07-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreDBFolder.m (-createFolder:withFID:andKey:):
+	invoke "reloadIfNeeded" on the created folder object in order to
+	initialize it.
+
 2012-07-24  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreUserContext.m
