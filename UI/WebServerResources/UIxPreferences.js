@@ -22,7 +22,8 @@ function savePreferences(sender) {
         sendForm = false;
     }
 
-    if (!emailRE.test($("replyTo").value)) {
+    var replyTo = $("replyTo").value;
+    if (!replyTo.blank() && !emailRE.test(replyTo)) {
         showAlertDialog(_("Please specify a valid reply-to address."));
         sendForm = false;
     }
