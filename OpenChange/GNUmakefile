@@ -127,6 +127,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	NSValue+MAPIStore.m \
 	\
 	iCalEvent+MAPIStore.m \
+	iCalTimeZone+MAPIStore.m \
 	\
 	GCSSpecialQueries+OpenChange.m\
 	\

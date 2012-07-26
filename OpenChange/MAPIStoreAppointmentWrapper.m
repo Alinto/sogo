@@ -20,6 +20,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <talloc.h>
+
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSCharacterSet.h>
@@ -29,6 +31,7 @@
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalAlarm.h>
+#import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalPerson.h>
 #import <NGCards/iCalTrigger.h>
@@ -36,6 +39,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
 
+#import "iCalTimeZone+MAPIStore.h"
 #import "MAPIStoreRecurrenceUtils.h"
 #import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
@@ -1582,6 +1586,24 @@ static NSCharacterSet *hexCharacterSet = nil;
                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidLidTimeZoneStruct: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  enum mapistore_error rc;
+  iCalTimeZone *icalTZ;
+
+  icalTZ = [(iCalDateTime *) [event firstChildWithTag: @"dtstart"] timeZone];
+  if (icalTZ)
+    {
+      *data = [icalTZ asTimeZoneStructInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 @end

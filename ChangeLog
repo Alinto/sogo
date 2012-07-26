@@ -1,3 +1,13 @@
+2012-07-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/iCalTimeZone+MAPIStore.[hm]: new category module.
+	(-asTimeZoneStructInMemCtx:): new method that returns a struct
+	TimeZoneStruct as a binary blob from an iCalTimeZone object.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m
+	(-getPidLidTimeZoneStruct:inMemCtx:): new property getter that
+	returns the equivalent of the iCalTimeZone of the current event.
+
 2012-07-25  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreDBFolder.m (-createFolder:withFID:andKey:):
