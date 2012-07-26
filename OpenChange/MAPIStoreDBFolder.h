@@ -1,6 +1,6 @@
-/* MAPIStoreFSMessageTable.h - this file is part of SOGo
+/* MAPIStoreDBFolder.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc
+ * Copyright (C) 2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,12 +20,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREFSMESSAGETABLE_H
-#define MAPISTOREFSMESSAGETABLE_H
+#ifndef MAPISTOREDBFOLDER_H
+#define MAPISTOREDBFOLDER_H
 
-#import "MAPIStoreMessageTable.h"
+#import "MAPIStoreFolder.h"
 
-@interface MAPIStoreFSMessageTable : MAPIStoreMessageTable
+@interface MAPIStoreDBFolder : MAPIStoreFolder
+
 @end
 
-#endif /* MAPISTOREFSMESSAGETABLE_H */
+
+#endif /* MAPISTOREDBFOLDER_H */

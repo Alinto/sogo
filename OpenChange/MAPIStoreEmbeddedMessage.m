@@ -26,6 +26,8 @@
 
 #import "MAPIStoreEmbeddedMessage.h"
 
+#include <mapistore/mapistore_errors.h>
+
 static Class MAPIStoreAttachmentK;
 
 @implementation MAPIStoreEmbeddedMessage
@@ -35,30 +37,43 @@ static Class MAPIStoreAttachmentK;
   MAPIStoreAttachmentK = [MAPIStoreAttachment class];
 }
 
-+ (id) embeddedMessageWithAttachment: (id) newAttachment
+- (int) getPidTagFolderId: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
 {
-  MAPIStoreEmbeddedMessage *newMessage;
-
-  newMessage = [[self alloc] initWithAttachment: newAttachment];
-  [newMessage autorelease];
-
-  return newMessage;
+  return MAPISTORE_ERR_NOT_FOUND;
 }
 
-- (id) initWithAttachment: (id) newAttachment
+- (int) getPidTagChangeKey: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  if ((self = [self init]))
-    {
-      if ([newAttachment isKindOfClass: MAPIStoreAttachmentK])
-        ASSIGN (container, newAttachment);
-    }
+  return MAPISTORE_ERR_NOT_FOUND;
+}
 
-  return self;
+- (int) getPidTagParentSourceKey: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagChangeNumber: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
 }
 
 - (NSString *) nameInContainer
 {
   return @"as-message";
+}
+
+- (uint64_t) objectVersion
+{
+  return ULLONG_MAX;
+}
+
+- (void) save
+{
+  [self subclassResponsibility: _cmd];
 }
 
 @end

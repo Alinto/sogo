@@ -40,7 +40,7 @@
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
-#import "SOGoMAPIFSMessage.h"
+#import "SOGoMAPIDBMessage.h"
 
 #import "MAPIStoreGCSFolder.h"
 
@@ -71,8 +71,9 @@ static Class NSNumberK;
 - (void) setupVersionsMessage
 {
   ASSIGN (versionsMessage,
-          [SOGoMAPIFSMessage objectWithName: @"versions.plist"
-                                inContainer: propsFolder]);
+          [SOGoMAPIDBMessage objectWithName: @"versions.plist"
+                                inContainer: dbFolder]);
+  [versionsMessage setObjectType: MAPIDBObjectTypeInternal];
 }
 
 - (void) dealloc
@@ -288,7 +289,8 @@ static Class NSNumberK;
                     forKey: @"PredecessorChangeList"];
       [changeList release];
     }
-  [changeList setObject: globCnt forKey: guid];
+  [changeList setObject: globCnt
+                 forKey: guid];
 }
 
 - (EOQualifier *) componentQualifier
@@ -349,6 +351,7 @@ static Class NSNumberK;
       [sortOrdering retain];
     }
 
+  [versionsMessage reloadIfNeeded];
   currentProperties = [versionsMessage properties];
 
   lastModificationDate = [currentProperties objectForKey: @"SyncLastModificationDate"];
@@ -451,7 +454,6 @@ static Class NSNumberK;
                                 forKey: @"SyncLastSynchronisationDate"];
           [currentProperties setObject: lastModificationDate
                                 forKey: @"SyncLastModificationDate"];
-          [versionsMessage appendProperties: currentProperties];
           [versionsMessage save];
         }
     }
