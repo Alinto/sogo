@@ -1,2 +1,2 @@
-usr/lib/mapistore_backends/*
+usr/lib/*/mapistore_backends/*
 usr/lib/GNUstep/SOGo/SOGoBackend.MAPIStore
