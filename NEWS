@@ -6,7 +6,7 @@ New Features
    domain defaults SOGoNotifyOnPersonalModifications and
    SOGoNotifyOnExternalModifications)
  - added the SOGoSearchMinimumWordLength domain default which controls the
-   minimal length required before trigging server-side search operations for
+   minimal length required before triggering server-side search operations for
    attendee completion, contact searches, etc. The default value is 2, which
    means search operations are trigged once the 3rd character is typed.
 
