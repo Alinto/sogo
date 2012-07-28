@@ -563,7 +563,6 @@ static NSString *sieveScriptName = @"sogo";
   NSString *sieveText;
   NSArray *scripts;
   int count, max;
-  BOOL previousWasConditional;
   NSDictionary *currentScript;
 
   sieveScript = [NSMutableString stringWithCapacity: 8192];
@@ -576,22 +575,12 @@ static NSString *sieveScriptName = @"sogo";
   max = [scripts count];
   if (max)
     {
-      previousWasConditional = NO;
       for (count = 0; !scriptError && count < max; count++)
         {
           currentScript = [scripts objectAtIndex: count];
           if ([[currentScript objectForKey: @"active"] boolValue])
             {
               sieveText = [self _convertScriptToSieve: currentScript];
-              if ([sieveText hasPrefix: @"if"])
-                {
-                  if (previousWasConditional)
-                    [sieveScript appendFormat: @"els"];
-                  else
-                    previousWasConditional = YES;
-                }
-              else
-                previousWasConditional = NO;
               [sieveScript appendString: sieveText];
             }
         }
