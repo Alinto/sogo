@@ -1,6 +1,6 @@
-/* MAPIStoreFSFolder.h - this file is part of SOGo
+/* MAPIStoreCalendarEmbeddedMessage.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,14 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREFSFOLDER_H
-#define MAPISTOREFSFOLDER_H
+#ifndef MAPISTORECALENDAREMBEDDEDMESSAGE_H
+#define MAPISTORECALENDAREMBEDDEDMESSAGE_H
 
-#import "MAPIStoreFolder.h"
+#import "MAPIStoreEmbeddedMessage.h"
 
-@interface MAPIStoreFSFolder : MAPIStoreFolder
+@class MAPIStoreAppointmentWrapper;
+
+@interface MAPIStoreCalendarEmbeddedMessage : MAPIStoreEmbeddedMessage
 
 @end
 
-
-#endif /* MAPISTOREFSFOLDER_H */
+#endif /* MAPISTORECALENDAREMBEDDEDMESSAGE_H */

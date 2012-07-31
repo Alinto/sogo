@@ -25,10 +25,19 @@
 
 #import "CardGroup.h"
 
+@class NSCalendarDate;
+
+@class iCalRecurrenceRule;
+
 @interface iCalTimeZonePeriod : CardGroup
+
+- (NSCalendarDate *) startDate;
+- (iCalRecurrenceRule *) recurrenceRule;
 
 - (NSCalendarDate *) occurenceForDate: (NSCalendarDate *) refDate;
 - (int) secondsOffsetFromGMT;
+
+- (NSComparisonResult) compare: (iCalTimeZonePeriod *) otherPeriod;
 
 @end
 

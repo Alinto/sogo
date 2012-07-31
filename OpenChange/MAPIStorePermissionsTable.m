@@ -50,7 +50,7 @@
   MAPIStorePermissionEntry *newEntry;
 
   newEntry = [[self alloc] initWithUserId: newUserId andMemberId: newMemberId
-                           forFolder: newFolder];
+                                forFolder: newFolder];
   [newEntry autorelease];
 
   return newEntry;
@@ -60,7 +60,7 @@
           andMemberId: (uint64_t) newMemberId
             forFolder: (MAPIStoreFolder *) newFolder
 {
-  if ((self = [self initWithSOGoObject: nil inContainer: newFolder]))
+  if ((self = [self initInContainer: newFolder]))
     {
       ASSIGN (userId, newUserId);
       memberId = newMemberId;

@@ -51,6 +51,7 @@
 #import <Mailer/NSString+Mail.h>
 
 #import "MAPIStoreAttachment.h"
+#import "MAPIStoreAttachmentTable.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreMailFolder.h"
 #import "MAPIStoreMIME.h"
@@ -60,13 +61,15 @@
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
-#import "SOGoMAPIVolatileMessage.h"
+#import "SOGoMAPIObject.h"
 
 #import "MAPIStoreMailVolatileMessage.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
+
+static Class NSNumberK = Nil;
 
 static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
 
@@ -242,6 +245,99 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
 
 @implementation MAPIStoreMailVolatileMessage
 
++ (void) initialize
+{
+  NSNumberK = [NSNumber class];
+}
+
+- (id) initWithSOGoObject: (id) newSOGoObject
+              inContainer: (MAPIStoreObject *) newContainer
+{
+  if ((self = [super initWithSOGoObject: newSOGoObject
+                            inContainer: newContainer]))
+    {
+      ASSIGN (properties, [sogoObject properties]);
+    }
+
+  return self;
+}
+
+- (void) addProperties: (NSDictionary *) newProperties
+{
+  [super addProperties: newProperties];
+  [sogoObject adjustLastModified];
+}
+
+- (BOOL) canGetProperty: (enum MAPITAGS) propTag
+{
+  return ([super canGetProperty: propTag]
+          || [properties objectForKey: MAPIPropertyKey (propTag)] != nil);
+}
+
+- (uint64_t) objectVersion
+{
+  NSNumber *version;
+
+  version = [properties objectForKey: @"version"];
+
+  return (version
+          ? exchange_globcnt ([version unsignedLongLongValue])
+          : ULLONG_MAX);
+}
+
+- (int) getPidTagMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagChangeKey: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSData *changeKey;
+  int rc;
+
+  changeKey = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
+  if (changeKey)
+    {
+      *data = [changeKey asBinaryInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = [super getPidTagChangeKey: data inMemCtx: memCtx];
+
+  return rc;
+}
+
+- (NSArray *) attachmentsKeysMatchingQualifier: (EOQualifier *) qualifier
+                              andSortOrderings: (NSArray *) sortOrderings
+{
+  NSDictionary *attachments;
+
+  attachments = [properties objectForKey: @"attachments"];
+
+  return [attachments allKeys];
+}
+
+- (NSDate *) creationTime
+{
+  return [sogoObject creationDate];
+}
+
+- (NSDate *) lastModificationTime
+{
+  return [sogoObject lastModified];
+}
+
+- (id) lookupAttachment: (NSString *) childKey
+{
+  NSDictionary *attachments;
+
+  attachments = [properties objectForKey: @"attachments"];
+
+  return [attachments objectForKey: childKey];
+}
+
 - (void) getMessageData: (struct mapistore_message **) dataPtr
                inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -258,9 +354,11 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
 
   samCtx = [[self context] connectionInfo]->sam_ctx;
 
-  [super getMessageData: &msgData inMemCtx: memCtx];
+  // [super getMessageData: &msgData inMemCtx: memCtx];
 
-  allRecipients = [[sogoObject properties] objectForKey: @"recipients"];
+  msgData = talloc_zero (memCtx, struct mapistore_message);
+
+  allRecipients = [properties objectForKey: @"recipients"];
   msgData->columns = set_SPropTagArray (msgData, 9,
                                         PR_OBJECT_TYPE,
                                         PR_DISPLAY_TYPE,
@@ -660,10 +758,13 @@ MakeTextPartBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
   return textBody;
 }
 
+// static id
+// MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
+//                  NSString **contentType)
 static id
-MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
-                 NSString **contentType)
+MakeMessageBody (NSDictionary *mailProperties, NSString **contentType)
 {
+  NSDictionary *attachmentParts;
   id messageBody, textBody;
   NSString *textContentType;
   NSArray *parts;
@@ -671,6 +772,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
   NGMutableHashMap *headers;
   NSUInteger count, max;
 
+  attachmentParts = [mailProperties objectForKey: @"attachments"];
   textBody = MakeTextPartBody (mailProperties, attachmentParts,
                                &textContentType);
 
@@ -707,22 +809,20 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
 
 - (NGMimeMessage *) _generateMessage
 {
-  NSDictionary *mailProperties;
   NSString *contentType;
   NGMimeMessage *message;  
   NGMutableHashMap *headers;
   id messageBody;
 
-  mailProperties = [sogoObject properties];
-
   headers = [[NGMutableHashMap alloc] initWithCapacity: 16];
-  FillMessageHeadersFromProperties (headers, mailProperties,
+  FillMessageHeadersFromProperties (headers, properties,
                                     [[self context] connectionInfo]);
   message = [[NGMimeMessage alloc] initWithHeader: headers];
   [message autorelease];
   [headers release];
 
-  messageBody = MakeMessageBody (mailProperties, attachmentParts, &contentType);
+  messageBody = MakeMessageBody (properties, &contentType);
+  // messageBody = MakeMessageBody (mailProperties, attachmentParts, &contentType);
   if (messageBody)
     {
       [headers setObject: contentType forKey: @"content-type"];
@@ -775,7 +875,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
 
 - (int) submitWithFlags: (enum SubmitFlags) flags
 {
-  NSDictionary *mailProperties, *recipients;
+  NSDictionary *recipients;
   NSData *messageData;
   NSMutableArray *recipientEmails;
   NSArray *list;
@@ -785,19 +885,17 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
   // SOGoMailFolder *sentFolder;
   SOGoDomainDefaults *dd;
   NSException *error;
-  MAPIStoreMapping *mapping;
+  // MAPIStoreMapping *mapping;
 
-  mailProperties = [sogoObject properties];
-  msgClass = [mailProperties objectForKey: MAPIPropertyKey (PidTagMessageClass)];
+  msgClass = [properties objectForKey: MAPIPropertyKey (PidTagMessageClass)];
   if ([msgClass isEqualToString: @"IPM.Note"]) /* we skip invitation replies */
     {
       /* send mail */
 
       messageData = [self _generateMailDataWithBcc: NO];
       
-      mailProperties = [sogoObject properties];
       recipientEmails = [NSMutableArray arrayWithCapacity: 32];
-      recipients = [mailProperties objectForKey: @"recipients"];
+      recipients = [properties objectForKey: @"recipients"];
       for (count = 0; count < 3; count++)
         {
           recId = recTypes[count];
@@ -819,11 +917,11 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
       if (error)
         [self logWithFormat: @"an error occurred: '%@'", error];
 
-      mapping = [self mapping];
-      [mapping unregisterURLWithID: [self objectId]];
-      [self setIsNew: NO];
-      [properties removeAllObjects];
-      [[self container] cleanupCaches];
+      // mapping = [self mapping];
+      // [mapping unregisterURLWithID: [self objectId]];
+      // [self setIsNew: NO];
+      // [properties removeAllObjects];
+      [(MAPIStoreMailFolder *) [self container] cleanupCaches];
     }
   else
     [self logWithFormat: @"skipping submit of message with class '%@'",
@@ -834,14 +932,14 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
 
 - (void) save
 {
-  NSString *folderName, *flag, *newIdString;
+  NSString *folderName, *flag, *newIdString, *messageKey;
   NSData *changeKey, *messageData;
   NGImap4Connection *connection;
   NGImap4Client *client;
   SOGoMailFolder *containerFolder;
   NSDictionary *result, *responseResult;
-  MAPIStoreMapping *mapping;
-  uint64_t mid;
+  // MAPIStoreMapping *mapping;
+  // uint64_t mid;
 
   messageData = [self _generateMailDataWithBcc: YES];
 
@@ -860,21 +958,24 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
       flag = [responseResult objectForKey: @"flag"];
       newIdString = [[flag componentsSeparatedByString: @" "]
                       objectAtIndex: 2];
-      mid = [self objectId];
-      mapping = [self mapping];
-      [mapping unregisterURLWithID: mid];
-      [sogoObject setNameInContainer: [NSString stringWithFormat: @"%@.eml", newIdString]];
-      [mapping registerURL: [self url] withID: mid];
-    }
+      // mid = [self objectId];
+      // mapping = [self mapping];
+      // [mapping unregisterURLWithID: mid];
+      // [sogoObject setNameInContainer: ];
+      messageKey = [NSString stringWithFormat: @"%@.eml", newIdString];
+      // [mapping registerURL: [NSString stringWithFormat: @"%@%@",
+      //                                 [(MAPIStoreMailFolder *) container url], messageKey]
+      //          withID: mid];
 
-  /* synchronise the cache and update the change key with the one provided by
-     the client */
-  [(MAPIStoreMailFolder *) container synchroniseCache];
-  changeKey = [[sogoObject properties]
-                objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
-  if (changeKey)
-    [(MAPIStoreMailFolder *) container
-        setChangeKey: changeKey forMessageWithKey: [self nameInContainer]];
+      /* synchronise the cache and update the change key with the one provided
+         by the client */
+      [(MAPIStoreMailFolder *) container synchroniseCache];
+      changeKey = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
+      if (changeKey)
+        [(MAPIStoreMailFolder *) container
+                setChangeKey: changeKey
+           forMessageWithKey: messageKey];
+    }
 }
 
 @end

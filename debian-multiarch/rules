@@ -20,6 +20,9 @@ build-arch: build-arch-stamp
 build-arch-stamp:  config.make 
 #	 Add here commands to compile the arch part of the package.
 	$(MAKE)
+	if pkg-config --atleast-version=1.0 libmapi; \
+	then (cd OpenChange; $(MAKE));  \
+	fi
 	touch $@
 
 clean: 
@@ -31,8 +34,15 @@ clean:
 	-find Tests -name "*.pyc" -exec rm -f {} \;
 	if [ -f config.make ]; \
 	then \
+	  if pkg-config --atleast-version=1.0 libmapi; \
+	  then \
+	    (cd OpenChange; make clean); \
+	  fi; \
 	  make clean; \
 	fi
+	-rm -f OpenChange/MAPIStorePropertySelectors.*
+	-find OpenChange -type d -name "unrtf-*" -exec rm -rf {} \;
+	-rm -f OpenChange/unrtf*-stamp
 	-rm -f config.make
 	dh_clean 
 
@@ -50,6 +60,18 @@ install-arch: build-arch
 #	dh_installdirs -s
 
 	$(MAKE) DESTDIR=$(DESTDIR) GNUSTEP_INSTALLATION_DOMAIN=SYSTEM install
+	if pkg-config --atleast-version=1.0 libmapi; \
+	then \
+	  (cd OpenChange; \
+	   $(MAKE) \
+	       DESTDIR=$(DESTDIR) \
+	       GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
+	     install); \
+	  rm -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so.1; \
+	  rm -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so; \
+	  mv -f $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/libMAPIStoreSOGo.so.1.0.0 \
+	           $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/SOGo.so; \
+	fi
 
 	mkdir -p debian/tmp/etc/default
 	cp Scripts/sogo-default debian/tmp/etc/default/sogo
