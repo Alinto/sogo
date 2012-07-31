@@ -212,7 +212,6 @@ rm -fr ${RPM_BUILD_ROOT}
 
 /etc/init.d/sogod
 /etc/cron.daily/sogo-tmpwatch
-/etc/logrotate.d/sogo
 /var/run/sogo
 /var/log/sogo
 /var/spool/sogo
@@ -231,6 +230,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/GNUstep/OCSTypeModels
 %{_libdir}/GNUstep/WOxElemBuilders-*
 
+%config(noreplace) %{_sysconfdir}/logrotate.d/sogo
 %config(noreplace) %{_sysconfdir}/cron.d/sogo
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/SOGo.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/sogo
@@ -312,6 +312,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Tue Jul 31 2012 Jean Raby <jraby@inverse.ca>
+- treat logrotate file as a config file
+
 * Fri May 24 2012 Jean Raby <jraby@inverse.ca>
 - %post: restart sogo if it was running before rpm install
 

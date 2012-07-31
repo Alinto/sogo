@@ -1,3 +1,8 @@
+2012-07-31  Jean Raby  <jraby@inverse.ca>
+
+	* sogo.spec:
+	  Treat logrotate file as a config file (noreplace)
+
 2012-07-31  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/SOGo/SOGoSieveManager.m
