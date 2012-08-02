@@ -1,3 +1,9 @@
+2012-08-02  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* OpenChange/MAPIStoreUserContext.m (-_readUserPassword:)
+	We now read per-user passwords instead of relying on
+	a global file.
+
 2012-07-31  Jean Raby  <jraby@inverse.ca>
 
 	* sogo.spec:

@@ -99,25 +99,21 @@ static NSMapTable *contextsTable = nil;
 
 - (NSString *) _readUserPassword: (NSString *) newUsername
 {
-  NSString *password;
+  NSString *password, *path;
   NSData *content;
-  id plist;
-  NSPropertyListFormat plistFormat;
-  NSString *error;
-
+ 
   password = nil;
+  
+  path = [NSString stringWithFormat: SAMBA_PRIVATE_DIR
+		   @"/mapistore/%@/password", newUsername];
 
-  content = [NSData dataWithContentsOfFile: SAMBA_PRIVATE_DIR
-                    @"/mapistore/SOGo/userpwds.plist"];
+  content = [NSData dataWithContentsOfFile: path];
+
   if (content)
     {
-      plist = [NSPropertyListSerialization
-                propertyListFromData: content
-                    mutabilityOption: NSPropertyListImmutable
-                              format: &plistFormat
-                    errorDescription: &error];
-      if ([plist respondsToSelector: @selector (objectForKey:)])
-        password = [plist objectForKey: newUsername];
+      password = [[NSString alloc] initWithData: content
+				       encoding: NSUTF8StringEncoding];
+      [password autorelease];
     }
 
   return password;
