@@ -186,7 +186,7 @@ SAMBA_LIB_DIR = $(shell pkg-config libmapistore --variable=libdir)
 LIBMAPI_LIBS = $(shell pkg-config libmapi --libs)
 
 LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags) -DSAMBA_PREFIX="\"$(shell pkg-config libmapistore --variable=prefix)\""
-LIBMAPISTORE_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy
+LIBMAPISTORE_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy -lWEExtensions
 
 $(MAPISTORESOGO)_INSTALL_DIR = $(DESTDIR)/$(SAMBA_LIB_DIR)/mapistore_backends
 $(MAPISTORESOGO)_LIB_DIRS += \
