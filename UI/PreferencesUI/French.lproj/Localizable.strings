@@ -282,6 +282,7 @@
 "Label 4" = "étiquette 4";
 "Label 5" = "étiquette 5";
 
+"The password was changed successfully." = "Votre mot de passe a bien été changé.";
 "Password must not be empty." = "Le mot de passe ne doit pas être vide.";
 "The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
 "Password change failed" = "Échec au changement";
