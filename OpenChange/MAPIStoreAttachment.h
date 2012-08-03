@@ -40,6 +40,9 @@
                     withMID: (uint64_t *) mid
            withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
                    inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) createEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
+             withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
+                     inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* helpers */
 - (NSData *) mimeAttachTag;

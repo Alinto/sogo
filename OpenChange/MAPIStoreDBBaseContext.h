@@ -1,6 +1,6 @@
-/* MAPIStoreFSBaseContext.h - this file is part of SOGo
+/* MAPIStoreDBBaseContext.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,13 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREFSBASECONTEXT_H
-#define MAPISTOREFSBASECONTEXT_H
+#ifndef MAPISTOREDBBASECONTEXT_H
+#define MAPISTOREDBBASECONTEXT_H
 
 #import "MAPIStoreContext.h"
 
-@interface MAPIStoreFSBaseContext : MAPIStoreContext
+@interface MAPIStoreDBBaseContext : MAPIStoreContext
 
 @end
 
-#endif /* MAPISTOREFSBASECONTEXT_H */
+#endif /* MAPISTOREDBBASECONTEXT_H */

@@ -1,12 +1,12 @@
-/* MAPIStoreFSFolderTable.h - this file is part of SOGo
+/* MAPIStoreObjectProxy.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -20,12 +20,22 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREFSFOLDERTABLE_H
-#define MAPISTOREFSFOLDERTABLE_H
+#ifndef MAPISTOREOBJECTPROXY_H
+#define MAPISTOREOBJECTPROXY_H
 
-#import "MAPIStoreFolderTable.h"
+#include <talloc.h>
 
-@interface MAPIStoreFSFolderTable : MAPIStoreFolderTable
+#import <Foundation/NSObject.h>
+
+@interface MAPIStoreObjectProxy : NSObject
+{
+  const IMP *classGetters;
+}
+
+- (enum mapistore_error) getProperty: (void **) data
+                             withTag: (enum MAPITAGS) propTag
+                            inMemCtx: (TALLOC_CTX *) localMemCtx;
+
 @end
 
-#endif /* MAPISTOREFSFOLDERTABLE_H */
+#endif /* MAPISTOREOBJECTPROXY_H */

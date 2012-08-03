@@ -25,6 +25,7 @@
 #import <Foundation/NSThread.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#import "MAPIStorePropertySelectors.h"
 #import "MAPIStoreTypes.h"
 #import "NSArray+MAPIStore.h"
 #import "NSData+MAPIStore.h"
@@ -50,7 +51,7 @@ MAPIStoreTallocWrapperDestroy (void *data)
   pool = [NSAutoreleasePool new];
   wrapper = data;
   // NSLog (@"destroying wrapped object (wrapper: %p; object: %p)...\n", wrapper, wrapper->MAPIStoreSOGoObject);
-  [wrapper->MAPIStoreSOGoObject release];
+  [wrapper->instance release];
   [pool release];
   GSUnregisterCurrentThread ();
 
@@ -63,7 +64,7 @@ MAPIStoreTallocWrapperDestroy (void *data)
 
   wrapper = talloc_zero (tallocCtx, struct MAPIStoreTallocWrapper);
   talloc_set_destructor ((void *) wrapper, MAPIStoreTallocWrapperDestroy);
-  wrapper->MAPIStoreSOGoObject = self;
+  wrapper->instance = self;
   [self retain];
   // NSLog (@"returning wrapper: %p; object: %p", wrapper, self);
 
@@ -165,6 +166,106 @@ MAPIStoreTallocWrapperDestroy (void *data)
   *data = MAPIBoolValue (memCtx, NO);
 
   return MAPISTORE_SUCCESS;
+}
+
+- (int) getSMTPAddrType: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"SMTP" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+@end
+
+@implementation NSObject (MAPIStoreProperties)
+
++ (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  struct SPropTagArray *properties;
+  const MAPIStorePropertyGetter *classGetters;
+  NSUInteger count;
+  enum MAPITAGS propTag;
+  uint16_t propValue;
+
+  properties = talloc_zero (memCtx, struct SPropTagArray);
+  properties->aulPropTag = talloc_array (properties, enum MAPITAGS,
+                                         MAPIStoreSupportedPropertiesCount);
+  classGetters = MAPIStorePropertyGettersForClass (self);
+  for (count = 0; count < MAPIStoreSupportedPropertiesCount; count++)
+    {
+      propTag = MAPIStoreSupportedProperties[count];
+      propValue = (propTag & 0xffff0000) >> 16;
+      if (classGetters[propValue])
+        {
+          properties->aulPropTag[properties->cValues] = propTag;
+          properties->cValues++;
+        }
+    }
+
+  *propertiesP = properties;
+
+  return MAPISTORE_SUCCESS;
+}
+
++ (void) fillAvailableProperties: (struct SPropTagArray *) properties
+                  withExclusions: (BOOL *) exclusions
+{
+  TALLOC_CTX *localMemCtx;
+  struct SPropTagArray *subProperties;
+  uint16_t propId;
+  NSUInteger count;
+  
+  localMemCtx = talloc_zero (NULL, TALLOC_CTX);
+  [self getAvailableProperties: &subProperties inMemCtx: localMemCtx];
+  for (count = 0; count < subProperties->cValues; count++)
+    {
+      propId = (subProperties->aulPropTag[count] >> 16);
+      if (!exclusions[propId])
+        {
+          properties->aulPropTag[properties->cValues]
+            = subProperties->aulPropTag[count];
+          properties->cValues++;
+          exclusions[propId] = YES;
+        }
+    }
+  talloc_free (localMemCtx);
+}
+
+- (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
+                                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSUInteger count;
+  struct SPropTagArray *availableProps;
+  enum MAPITAGS propTag;
+
+  availableProps = talloc_zero (memCtx, struct SPropTagArray);
+  availableProps->aulPropTag = talloc_array (availableProps, enum MAPITAGS,
+                                             MAPIStoreSupportedPropertiesCount);
+  for (count = 0; count < MAPIStoreSupportedPropertiesCount; count++)
+    {
+      propTag = MAPIStoreSupportedProperties[count];
+      if ([self canGetProperty: propTag])
+        {
+          availableProps->aulPropTag[availableProps->cValues] = propTag;
+          availableProps->cValues++;
+        }
+    }
+
+  *propertiesP = availableProps;
+
+  return MAPISTORE_SUCCESS;  
+}
+
+- (BOOL) canGetProperty: (enum MAPITAGS) propTag
+{
+  uint16_t propValue;
+  const IMP *classGetters;
+
+  classGetters = (IMP *) MAPIStorePropertyGettersForClass (isa);
+  propValue = (propTag & 0xffff0000) >> 16;
+
+  return (classGetters[propValue] != NULL);
 }
 
 @end
