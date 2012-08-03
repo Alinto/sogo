@@ -631,7 +631,10 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 		    NSArray *changes;
 		    
 		    attr = [[NGLdapAttribute alloc] initWithAttributeName: @"userPassword"];
-		    [attr addStringValue: [self _encryptPassword: newPassword]];
+		    if ([_userPasswordAlgorithm isEqualToString: @"none"])
+		      [attr addStringValue:  newPassword];
+		    else
+		      [attr addStringValue: [self _encryptPassword: newPassword]];
 		    
 		    mod = [NGLdapModification replaceModification: attr];
 		    changes = [NSArray arrayWithObject: mod];

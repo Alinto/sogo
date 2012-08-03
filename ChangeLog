@@ -1,3 +1,10 @@
+2012-08-03  Jean Raby  <jraby@inverse.ca>
+
+	* SoObjects/SOGo/LDAPSource.m (changePasswordForLogin):
+	  if userPasswordAlgorithm was not set or was set to "none",
+		use the plaintext password directly instead of using '{none}plaintext'
+		which isn't valid.
+
 2012-07-31  Jean Raby  <jraby@inverse.ca>
 
 	* sogo.spec:
