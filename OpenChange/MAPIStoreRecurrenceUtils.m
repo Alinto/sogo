@@ -293,6 +293,7 @@
       else
         {
           rp->EndDate = 0x5ae980df;
+          rp->OccurrenceCount = 0xa;
           rp->EndType = END_NEVER_END;
         }
     }
@@ -426,7 +427,10 @@
   for (count = 1; count < max; count++)
     {
       startDate = [[events objectAtIndex: count] recurrenceId];
-      [modifiedDates addObject: startDate];
+      if (startDate)
+        [modifiedDates addObject: startDate];
+      else
+        [self errorWithFormat: @"missing recurrence-id for event %d", count];
     }
   max = [modifiedDates count];
   rp->ModifiedInstanceCount = max;

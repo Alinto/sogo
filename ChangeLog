@@ -1,5 +1,10 @@
 2012-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreRecurrenceUtils.m (-[iCalRecurrenceRule
+	fillRecurrencePattern:withEvent:inTimeZone:inMemCtx:]): fixed a
+	crash occurring when the exception has no recurrence-id and
+	ignore the specific occurrence.
+
 	* OpenChange/MAPIStoreMailVolatileMessage.m (MakeMessageBody):
 	take "attachmentParts" parameter, deduced from the ivar with the
 	corresponding name.
