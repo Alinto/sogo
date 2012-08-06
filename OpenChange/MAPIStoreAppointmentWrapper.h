@@ -40,6 +40,7 @@
 {
   struct mapistore_connection_info *connInfo;
   iCalCalendar *calendar;
+  iCalEvent *firstEvent;
   iCalEvent *event;
   NSTimeZone *timeZone;
   SOGoUser *user;
