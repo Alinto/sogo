@@ -309,16 +309,6 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   return rc;
 }
 
-- (NSArray *) attachmentsKeysMatchingQualifier: (EOQualifier *) qualifier
-                              andSortOrderings: (NSArray *) sortOrderings
-{
-  NSDictionary *attachments;
-
-  attachments = [properties objectForKey: @"attachments"];
-
-  return [attachments allKeys];
-}
-
 - (NSDate *) creationTime
 {
   return [sogoObject creationDate];
@@ -331,11 +321,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
 
 - (id) lookupAttachment: (NSString *) childKey
 {
-  NSDictionary *attachments;
-
-  attachments = [properties objectForKey: @"attachments"];
-
-  return [attachments objectForKey: childKey];
+  return [attachmentParts objectForKey: childKey];
 }
 
 - (void) getMessageData: (struct mapistore_message **) dataPtr
@@ -762,9 +748,8 @@ MakeTextPartBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
 // MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts,
 //                  NSString **contentType)
 static id
-MakeMessageBody (NSDictionary *mailProperties, NSString **contentType)
+MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NSString **contentType)
 {
-  NSDictionary *attachmentParts;
   id messageBody, textBody;
   NSString *textContentType;
   NSArray *parts;
@@ -772,7 +757,6 @@ MakeMessageBody (NSDictionary *mailProperties, NSString **contentType)
   NGMutableHashMap *headers;
   NSUInteger count, max;
 
-  attachmentParts = [mailProperties objectForKey: @"attachments"];
   textBody = MakeTextPartBody (mailProperties, attachmentParts,
                                &textContentType);
 
@@ -821,8 +805,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSString **contentType)
   [message autorelease];
   [headers release];
 
-  messageBody = MakeMessageBody (properties, &contentType);
-  // messageBody = MakeMessageBody (mailProperties, attachmentParts, &contentType);
+  messageBody = MakeMessageBody (properties, attachmentParts, &contentType);
   if (messageBody)
     {
       [headers setObject: contentType forKey: @"content-type"];

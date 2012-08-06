@@ -1,5 +1,9 @@
 2012-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailVolatileMessage.m (MakeMessageBody):
+	take "attachmentParts" parameter, deduced from the ivar with the
+	corresponding name.
+
 	* OpenChange/MAPIStoreSOGoObject.m (-objectId): force generation
 	of objectId by parent, whether it is a folder or not.
 
