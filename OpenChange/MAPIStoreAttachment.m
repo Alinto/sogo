@@ -28,6 +28,7 @@
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreMessage.h"
 #import "MAPIStoreTypes.h"
+#import "NSObject+MAPIStore.h"
 
 #undef DEBUG
 #include <stdbool.h>
@@ -88,6 +89,12 @@
   *data = MAPILongValue (memCtx, 0xffffffff);
 
   return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagAccessLevel: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) openEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr

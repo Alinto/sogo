@@ -122,6 +122,7 @@
   NSString *newKey;
   MAPIStoreCalendarAttachment *attachment;
   NSUInteger aid;
+  iCalEvent *event;
 
   events = [calendar events];
   max = [events count];
@@ -133,8 +134,10 @@
          right AID is 0 from the start */
       aid = count - 1;
       [attachment setAID: aid];
-      [attachment setEvent: [events objectAtIndex: count]];
-      newKey = [NSString stringWithFormat: @"%ul", aid];
+      event = [events objectAtIndex: count];
+      [attachment setEvent: event];
+      newKey = [[event uniqueChildWithTag: @"recurrence-id"]
+                 flattenedValuesForKey: @""];
       [attachmentParts setObject: attachment forKey: newKey];
     }
 }
@@ -195,14 +198,6 @@
 
 - (int) getPidTagMessageClass: (void **) data
                      inMemCtx: (TALLOC_CTX *) memCtx
-{
-  *data = talloc_strdup (memCtx, "IPM.Appointment");
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidLidAppointmentMessageClass: (void **) data
-                                inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = talloc_strdup (memCtx, "IPM.Appointment");
 
@@ -422,41 +417,28 @@
   return rc;
 }
 
-- (void) _updateAttachedEvent: (MAPIStoreCalendarAttachment *) attachment
-                      withUID: (NSString *) uid
-{
-  iCalEvent *newEvent;
-  SOGoUser *activeUser;
-
-  newEvent = [iCalEvent groupWithTag: @"vevent"];
-  [calendar addToEvents: newEvent];
-  activeUser = [[self context] activeUser];
-  [newEvent setUid: uid];
-  [newEvent updateFromMAPIProperties: [attachment properties]
-                       inUserContext: [self userContext]
-                      withActiveUser: activeUser];
-}
-                
 - (void) _updateAttachedEvents
 {
-  NSMutableArray *otherEvents;
   NSArray *allAttachments;
   NSUInteger count, max;
-  NSString *uid;
+  NSString *uid, *summary;
+  iCalEvent *event;
+  MAPIStoreCalendarAttachment *attachment;
 
-  /* cleanup all recurring events */
-  otherEvents = [[calendar events] mutableCopy];
-  [otherEvents removeObject: masterEvent];
-  [calendar removeChildren: otherEvents];
-  [otherEvents release];
-
+  /* ensure that all exception events have the same UID as the master */
   uid = [masterEvent uid];
+  summary = [masterEvent summary];
 
   allAttachments = [attachmentParts allValues];
   max = [allAttachments count];
   for (count = 0; count < max; count++)
-    [self _updateAttachedEvent: [allAttachments objectAtIndex: count]
-                     withUID: uid];
+    {
+      attachment = [allAttachments objectAtIndex: count];
+      event = [attachment event];
+      if ([[event summary] length] == 0)
+        [event setSummary: summary];
+      [event setUid: uid];
+    }
 }
 
 - (void) save
@@ -513,12 +495,17 @@
   MAPIStoreCalendarAttachment *newAttachment;
   uint32_t newAid;
   NSString *newKey;
+  iCalEvent *newEvent;
 
   newAid = [[self attachmentKeys] count];
 
   newAttachment = [MAPIStoreCalendarAttachment
                     mapiStoreObjectInContainer: self];
   [newAttachment setAID: newAid];
+  newEvent = [iCalEvent groupWithTag: @"vevent"];
+  [newAttachment setEvent: newEvent];
+  [calendar addToEvents: newEvent];
+
   newKey = [NSString stringWithFormat: @"%ul", newAid];
   [attachmentParts setObject: newAttachment
                       forKey: newKey];

@@ -20,14 +20,22 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSTimeZone.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "iCalEvent+MAPIStore.h"
-#import "MAPIStoreTypes.h"
 #import "MAPIStoreCalendarEmbeddedMessage.h"
+#import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
+#import "NSDate+MAPIStore.h"
+#import "NSData+MAPIStore.h"
+#import "NSObject+MAPIStore.h"
+#import "NSString+MAPIStore.h"
 
 #import "MAPIStoreCalendarAttachment.h"
 
@@ -65,12 +73,16 @@
   return event;
 }
 
+- (NSString *) nameInContainer
+{
+  return [[event uniqueChildWithTag: @"recurrence-id"]
+           flattenedValuesForKey: @""];
+}
+
 - (int) getPidTagAttachmentHidden: (void **) data
                          inMemCtx: (TALLOC_CTX *) localMemCtx
 {
-  *data = MAPIBoolValue (localMemCtx, YES);
-
-  return MAPISTORE_SUCCESS;
+  return [self getYes: data inMemCtx: localMemCtx];
 }
 
 - (int) getPidTagAttachmentFlags: (void **) data
@@ -81,6 +93,18 @@
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPidTagAttachmentLinkId: (void **) data
+                         inMemCtx: (TALLOC_CTX *) localMemCtx
+{
+  return [self getLongZero: data inMemCtx: localMemCtx];
+}
+
+- (int) getPidTagAttachFlags: (void **) data
+                    inMemCtx: (TALLOC_CTX *) localMemCtx
+{
+  return [self getLongZero: data inMemCtx: localMemCtx];
+}
+
 - (int) getPidTagAttachMethod: (void **) data
                      inMemCtx: (TALLOC_CTX *) localMemCtx
 {
@@ -89,8 +113,28 @@
   return MAPISTORE_SUCCESS;
 }
 
-// case PidTagExceptionStartTime:
-// case PidTagExceptionEndTime:
+- (int) getPidTagAttachEncoding: (void **) data
+                      inMemCtx: (TALLOC_CTX *) localMemCtx
+{
+  *data = [[NSData data] asBinaryInMemCtx: localMemCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagDisplayName: (void **) data
+                    inMemCtx: (TALLOC_CTX *) localMemCtx
+{
+  *data = "Untitled";
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagAttachmentContactPhoto: (void **) data
+                               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getNo: data inMemCtx: memCtx];
+}
+
 // case PidTagExceptionReplaceTime:
 
 /* subclasses */

@@ -98,6 +98,14 @@
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPidTagMessageFlags: (void **) data // TODO
+                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPILongValue (memCtx, MSGFLAG_UNMODIFIED);
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (int) getPidTagProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
@@ -107,6 +115,44 @@
                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
+}
+
+/* discarded properties */
+
+- (int) getPidLidAppointmentLastSequence: (void **)
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidLidMeetingWorkspaceUrl: (void **)
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidLidContacts: (void **)
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagSensitivity: (void **)
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidLidPrivate: (void **)
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidNameKeywords: (void **)
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
 }
 
 - (void) save
