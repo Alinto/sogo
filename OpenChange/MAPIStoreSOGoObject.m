@@ -132,18 +132,7 @@ static Class MAPIStoreFolderK;
 /* helpers */
 - (uint64_t) objectId
 {
-  uint64_t objectId;
-
-  if ([container isKindOfClass: MAPIStoreFolderK])
-    objectId = [(MAPIStoreFolder *) container
-                 idForObjectWithKey: [sogoObject nameInContainer]];
-  else
-    {
-      [self errorWithFormat: @"%s: container is not a folder", __PRETTY_FUNCTION__];
-      objectId = (uint64_t) -1;
-    }
- 
-  return objectId;
+  return [container idForObjectWithKey: [sogoObject nameInContainer]];
 }
 
 /* getters */

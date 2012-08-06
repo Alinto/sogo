@@ -1,3 +1,8 @@
+2012-08-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreSOGoObject.m (-objectId): force generation
+	of objectId by parent, whether it is a folder or not.
+
 2012-08-03  Jean Raby  <jraby@inverse.ca>
 
 	* SoObjects/SOGo/LDAPSource.m (changePasswordForLogin):
