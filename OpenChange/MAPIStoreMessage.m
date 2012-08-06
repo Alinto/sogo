@@ -614,7 +614,8 @@ rtf2html (NSData *compressedRTF)
 - (int) getPidLidCurrentVersion: (void **) data
                        inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPILongValue (memCtx, 115608); // Outlook 11.5608
+  // *data = MAPILongValue (memCtx, 115608); // Outlook 11.5608
+  *data = MAPILongValue (memCtx, 0x1ce3a); // Outlook 11.8330
 
   return MAPISTORE_SUCCESS;
 }
