@@ -1,5 +1,9 @@
 2012-08-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* SoObjects/Appointments/SOGoAptMailNotification.m (-setupValues):
+	test whether each value is non-nil before adding it to the
+	dictionary.
+
 	* OpenChange/MAPIStoreMailVolatileMessage.m (-save): restored
 	registration of message url when saved.
 
