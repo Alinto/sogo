@@ -923,7 +923,6 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
   NSDictionary *result, *responseResult;
   MAPIStoreMapping *mapping;
   uint64_t mid;
-  BOOL registerAgain;
 
   messageData = [self _generateMailDataWithBcc: YES];
 
