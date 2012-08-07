@@ -75,9 +75,11 @@ static Class MAPIStoreContactsMessageK, NGMailAddressK, NSDataK, NSStringK;
       [knownProperties setObject: @"c_mail"
 			  forKey: MAPIPropertyKey (PidLidEmail3EmailAddress)];
       [knownProperties setObject: @"c_cn"
-			  forKey: MAPIPropertyKey (PR_DISPLAY_NAME_UNICODE)];
-      [knownProperties setObject: @"c_cn"
 			  forKey: MAPIPropertyKey (PidLidFileUnder)];
+      [knownProperties setObject: @"c_cn"
+                          forKey: MAPIPropertyKey (PidTagDisplayName)];
+      [knownProperties setObject: @"c_cn"
+			  forKey: MAPIPropertyKey (PidTagSubject)]; 
     }
 
   return [knownProperties objectForKey: MAPIPropertyKey (property)];
@@ -213,7 +215,11 @@ static Class MAPIStoreContactsMessageK, NGMailAddressK, NSDataK, NSStringK;
       [knownProperties setObject: @"c_cn"
                           forKey: MAPIPropertyKey (PidLidFileUnder)];
       [knownProperties setObject: @"c_cn"
-                          forKey: MAPIPropertyKey (PR_DISPLAY_NAME_UNICODE)];
+                          forKey: MAPIPropertyKey (PidTagDisplayName)];
+      [knownProperties setObject: @"c_cn"
+			  forKey: MAPIPropertyKey (PidTagSubject)];
+      [knownProperties setObject: @"c_cn"
+			  forKey: MAPIPropertyKey (PidTagNormalizedSubject)];
     }
 
   return [knownProperties objectForKey: MAPIPropertyKey (property)];
