@@ -921,8 +921,9 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
   NGImap4Client *client;
   SOGoMailFolder *containerFolder;
   NSDictionary *result, *responseResult;
-  // MAPIStoreMapping *mapping;
-  // uint64_t mid;
+  MAPIStoreMapping *mapping;
+  uint64_t mid;
+  BOOL registerAgain;
 
   messageData = [self _generateMailDataWithBcc: YES];
 
@@ -939,16 +940,17 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
       responseResult = [[result objectForKey: @"RawResponse"]
                          objectForKey: @"ResponseResult"];
       flag = [responseResult objectForKey: @"flag"];
+
       newIdString = [[flag componentsSeparatedByString: @" "]
                       objectAtIndex: 2];
-      // mid = [self objectId];
-      // mapping = [self mapping];
-      // [mapping unregisterURLWithID: mid];
+      mapping = [self mapping];
+      mid = [self objectId];
+      [mapping unregisterURLWithID: mid];
       // [sogoObject setNameInContainer: ];
+
       messageKey = [NSString stringWithFormat: @"%@.eml", newIdString];
-      // [mapping registerURL: [NSString stringWithFormat: @"%@%@",
-      //                                 [(MAPIStoreMailFolder *) container url], messageKey]
-      //          withID: mid];
+      [sogoObject setNameInContainer: messageKey];
+      [mapping registerURL: [self url] withID: mid];
 
       /* synchronise the cache and update the change key with the one provided
          by the client */
