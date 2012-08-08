@@ -66,6 +66,11 @@ MAPIApplication *MAPIApp = nil;
   return MAPIApp;
 }
 
+- (BOOL) shouldSetupSignalHandlers
+{
+  return NO;
+}
+
 - (void) setUserContext: (MAPIStoreUserContext *) newContext
 {
   /* user contexts must not be retained here ad their holder (mapistore)
