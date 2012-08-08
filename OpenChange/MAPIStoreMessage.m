@@ -496,6 +496,11 @@ rtf2html (NSData *compressedRTF)
         }
   
       [self save];
+      /* We make sure that any change-related properties are removes from the
+         properties dictionary, to make sure that related methods will be
+         invoked the next time they are requested. */
+      [properties removeObjectForKey: MAPIPropertyKey (PidTagChangeKey)];
+      [properties removeObjectForKey: MAPIPropertyKey (PidTagChangeNumber)];
 
       if ([container isKindOfClass: MAPIStoreFolderK])
         {

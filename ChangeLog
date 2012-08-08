@@ -1,5 +1,9 @@
 2012-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMessage.m (-saveMessage): make sure that the
+	PidTagChangeKey and PidTagChangeNumber props are no longer set in
+	the properties dict after the save occurred.
+
 	* OpenChange/MAPIApplication.m (-shouldSetupSignalHandlers):
 	overriden method by returning "NO".
 
