@@ -445,10 +445,11 @@
 {
   // iCalCalendar *vCalendar;
   // NSCalendarDate *now;
-  NSString *uid;
+  NSString *uid, *nameInContainer;
   // iCalEvent *newEvent;
   // iCalPerson *userPerson;
   SOGoUser *activeUser;
+  NSRange rangeOfDot;
 
   if (isNew)
     {
@@ -463,10 +464,27 @@
           [self _fixupAppointmentObjectWithUID: uid];
         }
       else
-        uid = [SOGoObject globallyUniqueObjectId];
+        {
+          /* We create a UID from the nameInContainer, or the reverse if the
+             latter is already set... */
+          nameInContainer = [sogoObject nameInContainer];
+          if (nameInContainer)
+            {
+              rangeOfDot = [nameInContainer rangeOfString: @"."
+                                                  options: NSBackwardsSearch];
+              if (rangeOfDot.location == NSNotFound)
+                uid = nameInContainer;
+              else
+                uid = [nameInContainer substringToIndex: rangeOfDot.location];
+            }
+          else
+            {
+              uid = [SOGoObject globallyUniqueObjectId];
+              nameInContainer = [NSString stringWithFormat: @"%@.ics", uid];
+              [sogoObject setNameInContainer: nameInContainer];
+            }
+        }
       [masterEvent setUid: uid];
-      [sogoObject setNameInContainer:
-                    [NSString stringWithFormat: @"%@.ics", uid]];
     }
 
   // [self logWithFormat: @"-save, event props:"];

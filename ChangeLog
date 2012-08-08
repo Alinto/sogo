@@ -1,5 +1,9 @@
 2012-08-08  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m (-save): generate a
+	"nameInContainer" for the new object iif it is not set yet. If
+	set, we generate a new UID from it instead.
+
 	* OpenChange/MAPIStoreMessage.m (-saveMessage): make sure that the
 	PidTagChangeKey and PidTagChangeNumber props are no longer set in
 	the properties dict after the save occurred.
