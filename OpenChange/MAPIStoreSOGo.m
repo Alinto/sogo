@@ -609,6 +609,86 @@ sogo_folder_move_copy_messages(void *folder_object,
 }
 
 static enum mapistore_error
+sogo_folder_move_folder(void *folder_object, void *source_folder_object,
+                        uint64_t fid, const char *new_folder_name)
+{
+  MAPIStoreFolder *sourceFolder, *targetFolder;
+  NSAutoreleasePool *pool;
+  NSString *newFolderName;
+  struct MAPIStoreTallocWrapper *wrapper;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (folder_object)
+    {
+      wrapper = folder_object;
+      targetFolder = wrapper->instance;
+
+      wrapper = source_folder_object;
+      sourceFolder = wrapper->instance;
+
+      GSRegisterCurrentThread ();
+      pool = [NSAutoreleasePool new];
+
+      newFolderName = [NSString stringWithUTF8String: new_folder_name];
+
+      rc = [targetFolder moveFolderWithFID: fid
+                                fromFolder: sourceFolder
+                               withNewName: newFolderName];
+      [pool release];
+      GSUnregisterCurrentThread ();
+    }
+  else
+    {
+      rc = sogo_backend_unexpected_error();
+    }
+
+  return rc;
+}
+
+static enum mapistore_error
+sogo_folder_copy_folder(void *folder_object, void *source_folder_object,
+                        uint64_t fid, bool recursive,
+                        const char *new_folder_name)
+{
+  MAPIStoreFolder *sourceFolder, *targetFolder;
+  NSAutoreleasePool *pool;
+  NSString *newFolderName;
+  struct MAPIStoreTallocWrapper *wrapper;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (folder_object)
+    {
+      wrapper = folder_object;
+      targetFolder = wrapper->instance;
+
+      wrapper = source_folder_object;
+      sourceFolder = wrapper->instance;
+
+      GSRegisterCurrentThread ();
+      pool = [NSAutoreleasePool new];
+
+      newFolderName = [NSString stringWithUTF8String: new_folder_name];
+
+      rc = [targetFolder copyFolderWithFID: fid
+                                fromFolder: sourceFolder
+                                 recursive: recursive
+                               withNewName: newFolderName];
+      [pool release];
+      GSUnregisterCurrentThread ();
+    }
+  else
+    {
+      rc = sogo_backend_unexpected_error();
+    }
+
+  return rc;
+}
+
+static enum mapistore_error
 sogo_folder_get_deleted_fmids(void *folder_object, TALLOC_CTX *mem_ctx,
                               enum mapistore_table_type table_type, uint64_t change_num,
                               struct I8Array_r **fmidsp, uint64_t *cnp)
@@ -1414,6 +1494,8 @@ int mapistore_init_backend(void)
       backend.folder.create_message = sogo_folder_create_message;
       backend.folder.delete_message = sogo_folder_delete_message;
       backend.folder.move_copy_messages = sogo_folder_move_copy_messages;
+      backend.folder.move_folder = sogo_folder_move_folder;
+      backend.folder.copy_folder = sogo_folder_copy_folder;
       backend.folder.get_deleted_fmids = sogo_folder_get_deleted_fmids;
       backend.folder.get_child_count = sogo_folder_get_child_count;
       backend.folder.open_table = sogo_folder_open_table;

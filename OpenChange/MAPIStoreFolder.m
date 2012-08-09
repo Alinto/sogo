@@ -795,6 +795,21 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
+- (enum mapistore_error) moveFolderWithFID: (uint64_t) fid
+                                fromFolder: (MAPIStoreFolder *) sourceFolder
+                               withNewName: (NSString *) newFolderName
+{
+  return MAPISTORE_ERR_DENIED;
+}
+
+- (enum mapistore_error) copyFolderWithFID: (uint64_t) fid
+                                fromFolder: (MAPIStoreFolder *) sourceFolder
+                                 recursive: (BOOL) resursive
+                               withNewName: (NSString *) newFolderName
+{
+  return MAPISTORE_ERR_DENIED;
+}
+
 - (SOGoFolder *) aclFolder
 {
   [self subclassResponsibility: _cmd];

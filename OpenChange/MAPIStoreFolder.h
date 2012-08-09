@@ -123,6 +123,14 @@
                    andChangeKeys: (struct Binary_r **) targetChangeKeys
                         wantCopy: (uint8_t) want_copy;
 
+- (enum mapistore_error) moveFolderWithFID: (uint64_t) fid
+                                fromFolder: (MAPIStoreFolder *) sourceFolder
+                               withNewName: (NSString *) newFolderName;
+- (enum mapistore_error) copyFolderWithFID: (uint64_t) fid
+                                fromFolder: (MAPIStoreFolder *) sourceFolder
+                                 recursive: (BOOL) resursive
+                               withNewName: (NSString *) newFolderName;
+
 - (int) getDeletedFMIDs: (struct I8Array_r **) fmidsPtr
                   andCN: (uint64_t *) cnPtr
        fromChangeNumber: (uint64_t) changeNum
