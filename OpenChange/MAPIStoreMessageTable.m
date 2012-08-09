@@ -29,6 +29,7 @@
 
 #import "MAPIStoreContext.h"
 #import "MAPIStoreFolder.h"
+#import "MAPIStoreMessage.h"
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"

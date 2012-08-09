@@ -25,6 +25,7 @@
 #import <Foundation/NSMapTable.h>
 #import <Foundation/NSPropertyList.h>
 #import <Foundation/NSThread.h>
+#import <Foundation/NSTimeZone.h>
 #import <Foundation/NSURL.h>
 
 #import <NGObjWeb/WOContext.h>

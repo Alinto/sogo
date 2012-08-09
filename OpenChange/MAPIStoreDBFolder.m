@@ -29,6 +29,7 @@
 #import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <EOControl/EOQualifier.h>
+#import <SOGo/SOGoFolder.h>
 #import <SOGo/SOGoUser.h>
 #import "EOQualifier+MAPI.h"
 #import "MAPIStoreContext.h"

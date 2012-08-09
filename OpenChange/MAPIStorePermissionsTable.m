@@ -23,7 +23,6 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
-
 #import <SOGo/SOGoFolder.h>
 #import <SOGo/SOGoObject.h>
 #import <SOGo/SOGoUser.h>
@@ -103,7 +102,7 @@
     entryId = [NSData data];
   else
     {
-      connInfo = [[container context] connectionInfo];
+      connInfo = [(MAPIStoreContext *) [container context] connectionInfo];
       entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, userId);
     }
   *data = [entryId asBinaryInMemCtx: memCtx];
