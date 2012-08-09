@@ -631,7 +631,10 @@ sogo_folder_move_folder(void *folder_object, void *source_folder_object,
       GSRegisterCurrentThread ();
       pool = [NSAutoreleasePool new];
 
-      newFolderName = [NSString stringWithUTF8String: new_folder_name];
+      if (new_folder_name)
+        newFolderName = [NSString stringWithUTF8String: new_folder_name];
+      else
+        newFolderName = nil;
 
       rc = [targetFolder moveFolderWithFID: fid
                                 fromFolder: sourceFolder
