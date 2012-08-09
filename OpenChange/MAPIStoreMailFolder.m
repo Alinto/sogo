@@ -60,7 +60,7 @@
 
 #import "MAPIStoreMailFolder.h"
 
-static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
+static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 
 #undef DEBUG
 #include <util/attr.h>
@@ -73,6 +73,7 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
 + (void) initialize
 {
   SOGoMailFolderK = [SOGoMailFolder class];
+  MAPIStoreMailFolderK = [MAPIStoreMailFolder class];
   MAPIStoreOutboxFolderK = [MAPIStoreOutboxFolder class];
   [MAPIStoreAppointmentWrapper class];
 }
@@ -1000,6 +1001,44 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   [sourceFolder cleanupCaches];
 
   return MAPISTORE_SUCCESS;
+}
+
+- (enum mapistore_error) moveFolderWithFID: (uint64_t) fid
+                                fromFolder: (MAPIStoreFolder *) sourceFolder
+                               withNewName: (NSString *) newFolderName
+{
+  enum mapistore_error rc;
+  MAPIStoreMailFolder *moveFolder;
+  NSURL *folderURL, *newFolderURL;
+  SOGoMailFolder *sogoMoveFolder;
+  NSException *error;
+
+  if ([sourceFolder isKindOfClass: MAPIStoreMailFolderK])
+    {
+      rc = [sourceFolder openFolder: &moveFolder withFID: fid];
+      if (rc == MAPISTORE_SUCCESS)
+        {
+          sogoMoveFolder = [moveFolder sogoObject];
+          folderURL = [sogoMoveFolder imap4URL];
+          if (!newFolderName)
+            newFolderName = [sogoMoveFolder nameInContainer];
+          newFolderURL = [NSURL URLWithString: newFolderName
+                                relativeToURL: [sogoObject imap4URL]];
+          error = [[sogoMoveFolder imap4Connection]
+                      moveMailboxAtURL: folderURL
+                                 toURL: newFolderURL];
+          if (error)
+            rc = MAPISTORE_ERR_DENIED;
+          else
+            rc = MAPISTORE_SUCCESS;
+        }
+      else
+        rc = MAPISTORE_ERR_NOT_FOUND;
+    }
+  else
+    rc = MAPISTORE_ERR_DENIED;
+
+  return rc;
 }
 
 - (MAPIStoreMessage *) createMessage

@@ -1,5 +1,9 @@
 2012-08-09  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailFolder.m
+	(-moveFolderWithFID:fromFolder:withNewName:): first implementation
+	for IMAP folders.
+
 	* OpenChange/MAPIStoreSOGo.m (sogo_folder_move_folder)
 	(sogo_folder_copy_folder): new backend methods.
 	(sogo_folder_move_folder): do not instantiate an NSString from a
