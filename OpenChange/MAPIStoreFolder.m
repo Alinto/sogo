@@ -795,17 +795,15 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (enum mapistore_error) moveFolderWithFID: (uint64_t) fid
-                                fromFolder: (MAPIStoreFolder *) sourceFolder
-                               withNewName: (NSString *) newFolderName
+- (enum mapistore_error) moveToFolder: (MAPIStoreFolder *) targetFolder
+                          withNewName: (NSString *) newFolderName
 {
   return MAPISTORE_ERR_DENIED;
 }
 
-- (enum mapistore_error) copyFolderWithFID: (uint64_t) fid
-                                fromFolder: (MAPIStoreFolder *) sourceFolder
-                                 recursive: (BOOL) resursive
-                               withNewName: (NSString *) newFolderName
+- (enum mapistore_error) copyToFolder: (MAPIStoreFolder *) targetFolder
+                            recursive: (BOOL) resursive
+                          withNewName: (NSString *) newFolderName
 {
   return MAPISTORE_ERR_DENIED;
 }

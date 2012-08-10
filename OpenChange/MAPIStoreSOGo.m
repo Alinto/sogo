@@ -609,11 +609,11 @@ sogo_folder_move_copy_messages(void *folder_object,
 }
 
 static enum mapistore_error
-sogo_folder_move_folder(void *folder_object, void *source_folder_object,
-                        uint64_t fid, const char *new_folder_name)
+sogo_folder_move_folder(void *folder_object, void *target_folder_object,
+                        const char *new_folder_name)
 {
-  MAPIStoreFolder *sourceFolder, *targetFolder;
   NSAutoreleasePool *pool;
+  MAPIStoreFolder *moveFolder, *targetFolder;
   NSString *newFolderName;
   struct MAPIStoreTallocWrapper *wrapper;
   int rc;
@@ -623,10 +623,10 @@ sogo_folder_move_folder(void *folder_object, void *source_folder_object,
   if (folder_object)
     {
       wrapper = folder_object;
-      targetFolder = wrapper->instance;
+      moveFolder = wrapper->instance;
 
-      wrapper = source_folder_object;
-      sourceFolder = wrapper->instance;
+      wrapper = target_folder_object;
+      targetFolder = wrapper->instance;
 
       GSRegisterCurrentThread ();
       pool = [NSAutoreleasePool new];
@@ -636,9 +636,8 @@ sogo_folder_move_folder(void *folder_object, void *source_folder_object,
       else
         newFolderName = nil;
 
-      rc = [targetFolder moveFolderWithFID: fid
-                                fromFolder: sourceFolder
-                               withNewName: newFolderName];
+      rc = [moveFolder moveToFolder: targetFolder
+                        withNewName: newFolderName];
       [pool release];
       GSUnregisterCurrentThread ();
     }
@@ -651,12 +650,11 @@ sogo_folder_move_folder(void *folder_object, void *source_folder_object,
 }
 
 static enum mapistore_error
-sogo_folder_copy_folder(void *folder_object, void *source_folder_object,
-                        uint64_t fid, bool recursive,
-                        const char *new_folder_name)
+sogo_folder_copy_folder(void *folder_object, void *target_folder_object,
+                        bool recursive, const char *new_folder_name)
 {
-  MAPIStoreFolder *sourceFolder, *targetFolder;
   NSAutoreleasePool *pool;
+  MAPIStoreFolder *copyFolder, *targetFolder;
   NSString *newFolderName;
   struct MAPIStoreTallocWrapper *wrapper;
   int rc;
@@ -666,20 +664,19 @@ sogo_folder_copy_folder(void *folder_object, void *source_folder_object,
   if (folder_object)
     {
       wrapper = folder_object;
-      targetFolder = wrapper->instance;
+      copyFolder = wrapper->instance;
 
-      wrapper = source_folder_object;
-      sourceFolder = wrapper->instance;
+      wrapper = target_folder_object;
+      targetFolder = wrapper->instance;
 
       GSRegisterCurrentThread ();
       pool = [NSAutoreleasePool new];
 
       newFolderName = [NSString stringWithUTF8String: new_folder_name];
 
-      rc = [targetFolder copyFolderWithFID: fid
-                                fromFolder: sourceFolder
-                                 recursive: recursive
-                               withNewName: newFolderName];
+      rc = [copyFolder copyToFolder: targetFolder
+                          recursive: recursive
+                        withNewName: newFolderName];
       [pool release];
       GSUnregisterCurrentThread ();
     }

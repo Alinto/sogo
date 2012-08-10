@@ -1003,37 +1003,29 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   return MAPISTORE_SUCCESS;
 }
 
-- (enum mapistore_error) moveFolderWithFID: (uint64_t) fid
-                                fromFolder: (MAPIStoreFolder *) sourceFolder
-                               withNewName: (NSString *) newFolderName
+- (enum mapistore_error) moveToFolder: (MAPIStoreFolder *) targetFolder
+                          withNewName: (NSString *) newFolderName
 {
   enum mapistore_error rc;
-  MAPIStoreMailFolder *moveFolder;
   NSURL *folderURL, *newFolderURL;
-  SOGoMailFolder *sogoMoveFolder;
+  SOGoMailFolder *targetSOGoFolder;
   NSException *error;
 
-  if ([sourceFolder isKindOfClass: MAPIStoreMailFolderK])
+  if ([targetFolder isKindOfClass: MAPIStoreMailFolderK])
     {
-      rc = [sourceFolder openFolder: &moveFolder withFID: fid];
-      if (rc == MAPISTORE_SUCCESS)
-        {
-          sogoMoveFolder = [moveFolder sogoObject];
-          folderURL = [sogoMoveFolder imap4URL];
-          if (!newFolderName)
-            newFolderName = [sogoMoveFolder nameInContainer];
-          newFolderURL = [NSURL URLWithString: newFolderName
-                                relativeToURL: [sogoObject imap4URL]];
-          error = [[sogoMoveFolder imap4Connection]
-                      moveMailboxAtURL: folderURL
-                                 toURL: newFolderURL];
-          if (error)
-            rc = MAPISTORE_ERR_DENIED;
-          else
-            rc = MAPISTORE_SUCCESS;
-        }
+      folderURL = [sogoObject imap4URL];
+      if (!newFolderName)
+        newFolderName = [sogoObject nameInContainer];
+      targetSOGoFolder = [targetFolder sogoObject];
+      newFolderURL = [NSURL URLWithString: newFolderName
+                            relativeToURL: [targetSOGoFolder imap4URL]];
+      error = [[sogoObject imap4Connection]
+                moveMailboxAtURL: folderURL
+                           toURL: newFolderURL];
+      if (error)
+        rc = MAPISTORE_ERR_DENIED;
       else
-        rc = MAPISTORE_ERR_NOT_FOUND;
+        rc = MAPISTORE_SUCCESS;
     }
   else
     rc = MAPISTORE_ERR_DENIED;
