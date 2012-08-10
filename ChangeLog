@@ -1,3 +1,9 @@
+2012-08-10  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Changed OpenChange/SOGoMAPIDBObject.m so we use
+	GNUstep's binary encoding - which is an order or
+	magnitude faster at encoding data than any other formats.
+
 2012-08-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreSOGo.m (sogo_folder_move_folder)

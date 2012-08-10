@@ -428,7 +428,7 @@ static EOAttribute *textColumn = nil;
     {
       content = [NSPropertyListSerialization
                       dataFromPropertyList: properties
-                                    format: NSPropertyListBinaryFormat_v1_0
+                                    format: NSPropertyListGNUstepBinaryFormat
                           errorDescription: NULL];
       propsValue = [adaptor formatValue: [content stringByEncodingBase64]
                            forAttribute: textColumn];
