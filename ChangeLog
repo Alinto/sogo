@@ -1,3 +1,8 @@
+2012-08-10  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreSOGo.m (sogo_properties_get_uri): new
+	backend method.
+
 2012-08-10  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Changed OpenChange/SOGoMAPIDBObject.m so we use

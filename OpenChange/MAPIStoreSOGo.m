@@ -1325,6 +1325,35 @@ sogo_table_handle_destructor (void *table_object, uint32_t handle_id)
   return rc;
 }
 
+static enum mapistore_error sogo_properties_get_uri(void *object,
+                                                    TALLOC_CTX *mem_ctx,
+                                                    char **uriP)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreObject *propObject;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (object)
+    {
+      wrapper = object;
+      propObject = wrapper->instance;
+      GSRegisterCurrentThread ();
+      pool = [NSAutoreleasePool new];
+      rc = [propObject getURI: uriP inMemCtx: mem_ctx];
+      [pool release];
+      GSUnregisterCurrentThread ();
+    }
+  else
+    {
+      rc = sogo_backend_unexpected_error();
+    }
+
+  return rc;
+}
+
 static enum mapistore_error sogo_properties_get_available_properties(void *object,
                                                     TALLOC_CTX *mem_ctx,
                                                     struct SPropTagArray **propertiesP)
@@ -1517,6 +1546,7 @@ int mapistore_init_backend(void)
       backend.table.get_row = sogo_table_get_row;
       backend.table.get_row_count = sogo_table_get_row_count;
       backend.table.handle_destructor = sogo_table_handle_destructor;
+      backend.properties.get_uri = sogo_properties_get_uri;
       backend.properties.get_available_properties = sogo_properties_get_available_properties;
       backend.properties.get_properties = sogo_properties_get_properties;
       backend.properties.set_properties = sogo_properties_set_properties;

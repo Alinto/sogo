@@ -68,6 +68,9 @@
 - (NSMutableDictionary *) properties;
 
 /* ops */
+- (enum mapistore_error) getURI: (char **) uriP
+                       inMemCtx: (TALLOC_CTX *) memCtx;
+
 - (int) getProperties: (struct mapistore_property_data *) data
              withTags: (enum MAPITAGS *) tags
              andCount: (uint16_t) columnCount

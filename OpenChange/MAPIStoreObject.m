@@ -150,6 +150,24 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return properties;
 }
 
+- (enum mapistore_error) getURI: (char **) uriP
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  enum mapistore_error rc;
+  NSString *url;
+
+  url = [self url];
+  if (url)
+    {
+      *uriP = [url asUnicodeInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
 - (int) getProperty: (void **) data
             withTag: (enum MAPITAGS) propTag
            inMemCtx: (TALLOC_CTX *) memCtx
