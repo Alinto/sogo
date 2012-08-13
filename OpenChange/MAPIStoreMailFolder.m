@@ -1009,13 +1009,16 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   enum mapistore_error rc;
   NSURL *folderURL, *newFolderURL;
   SOGoMailFolder *targetSOGoFolder;
+  NSString *newURL;
   NSException *error;
+  MAPIStoreMapping *mapping;
 
   if ([targetFolder isKindOfClass: MAPIStoreMailFolderK])
     {
       folderURL = [sogoObject imap4URL];
       if (!newFolderName)
-        newFolderName = [sogoObject nameInContainer];
+        newFolderName = [[sogoObject nameInContainer]
+                          substringFromIndex: 6]; /* length of "folder" */
       targetSOGoFolder = [targetFolder sogoObject];
       newFolderURL = [NSURL URLWithString: newFolderName
                             relativeToURL: [targetSOGoFolder imap4URL]];
@@ -1025,7 +1028,15 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
       if (error)
         rc = MAPISTORE_ERR_DENIED;
       else
-        rc = MAPISTORE_SUCCESS;
+        {
+          rc = MAPISTORE_SUCCESS;
+          mapping = [self mapping];
+          newURL = [NSString stringWithFormat: @"%@folder%@/",
+                             [targetFolder url],
+                             [newFolderName stringByEscapingURL]];
+          [mapping updateID: [self objectId]
+                    withURL: newURL];
+        }
     }
   else
     rc = MAPISTORE_ERR_DENIED;

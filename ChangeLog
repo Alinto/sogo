@@ -1,5 +1,11 @@
 2012-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailFolder.m (-moveToFolder:withName:): if
+	the new name is not provided (unlikely), the computed new name
+	must not have the "folder" prefix.
+	We now also make use of -[MAPIStoreMapping updateID:withURL:] to
+	change the references in the mapping database.
+
 	* OpenChange/MAPIStoreFolder.m (-objectId): folder keys always end
 	with a "/" by convention.
 
