@@ -55,6 +55,7 @@
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "SOGoMAPIDBMessage.h"
+#import "SOGoMAPIDBFolder.h"
 
 #import "MAPIStoreMailVolatileMessage.h"
 
@@ -1014,7 +1015,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   enum mapistore_error rc;
   NSURL *folderURL, *newFolderURL;
   SOGoMailFolder *targetSOGoFolder;
-  NSString *newURL;
+  NSString *newURL, *parentDBFolderPath;
   NSException *error;
   MAPIStoreMapping *mapping;
 
@@ -1024,6 +1025,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
       if (!newFolderName)
         newFolderName = [[sogoObject nameInContainer]
                           substringFromIndex: 6]; /* length of "folder" */
+      newFolderName = [newFolderName stringByEscapingURL];
       targetSOGoFolder = [targetFolder sogoObject];
       newFolderURL = [NSURL URLWithString: newFolderName
                             relativeToURL: [targetSOGoFolder imap4URL]];
@@ -1037,10 +1039,16 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
           rc = MAPISTORE_SUCCESS;
           mapping = [self mapping];
           newURL = [NSString stringWithFormat: @"%@folder%@/",
-                             [targetFolder url],
-                             [newFolderName stringByEscapingURL]];
+                             [targetFolder url], newFolderName];
           [mapping updateID: [self objectId]
                     withURL: newURL];
+          parentDBFolderPath = [[targetFolder dbFolder] path];
+          if (!parentDBFolderPath)
+            parentDBFolderPath = @"";
+          [dbFolder changePathTo: [NSString stringWithFormat:
+                                              @"%@/folder%@",
+                                            parentDBFolderPath,
+                                            newFolderName]];
         }
     }
   else
@@ -1086,8 +1094,6 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
     [roles addObject: SOGoRole_ObjectViewer];
   if (rights & RightsCreateSubfolders)
     [roles addObject: SOGoRole_FolderCreator];
-  if (rights & RightsCreateSubfolders)
-    [roles addObject: SOGoRole_FolderCreator];
 
   // [self logWithFormat: @"roles for rights %.8x = (%@)", rights, roles];
 
@@ -1110,8 +1116,6 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
     rights |= RightsEditAll;
   if ([roles containsObject: SOGoRole_ObjectViewer])
     rights |= RightsReadItems;
-  if ([roles containsObject: SOGoRole_FolderCreator])
-    rights |= RightsCreateSubfolders;
   if ([roles containsObject: SOGoRole_FolderCreator])
     rights |= RightsCreateSubfolders;
 
