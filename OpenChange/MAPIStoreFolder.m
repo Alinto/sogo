@@ -399,7 +399,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
               baseURL = [self url];
               if (![baseURL hasSuffix: @"/"])
                 baseURL = [NSString stringWithFormat: @"%@/", baseURL];
-              childURL = [NSString stringWithFormat: @"%@%@",
+              childURL = [NSString stringWithFormat: @"%@%@/",
                                    baseURL, folderKey];
               [mapping registerURL: childURL withID: fid];
               childFolder = [self lookupFolder: folderKey];
