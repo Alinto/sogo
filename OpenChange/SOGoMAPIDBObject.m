@@ -260,6 +260,33 @@ static EOAttribute *textColumn = nil;
 }
 
 /* actions */
+- (void) changePathTo: (NSString *) newPath
+{
+  NSMutableString *sql;
+  NSString *oldPath, *newParentPath;
+  NSRange slashRange;
+
+  oldPath = [self path];
+
+  slashRange = [newPath rangeOfString: @"/"
+                              options: NSBackwardsSearch];
+  if (slashRange.location != NSNotFound)
+    newParentPath = [newPath substringToIndex: slashRange.location];
+  else
+    newParentPath = NULL;
+
+  sql = [NSMutableString stringWithFormat: @"UPDATE %@"
+                         @" SET c_path = '%@'",
+                         [self tableName],
+                         newPath];
+  if (newParentPath)
+    [sql appendFormat: @", c_parent_path = '%@'", newParentPath];
+  else
+    [sql appendString: @", c_parent_path = NULL"];
+  [sql appendFormat: @" WHERE c_path = '%@'", oldPath];
+  [self performBatchSQLQueries: [NSArray arrayWithObject: sql]];
+}
+
 - (EOAdaptor *) tableChannelAdaptor
 {
   GCSChannelManager *cm;
@@ -305,6 +332,38 @@ static EOAttribute *textColumn = nil;
   [cm releaseChannel: channel];
   
   return records;
+}
+
+- (BOOL) performBatchSQLQueries: (NSArray *) queries
+{
+  GCSChannelManager *cm;
+  EOAdaptorChannel *channel;
+  EOAdaptorContext *dbContext;
+  NSException *error;
+  NSUInteger count, max;
+  NSString *sql;
+
+  cm = [GCSChannelManager defaultChannelManager];
+  channel = [cm acquireOpenChannelForURL: [self tableUrl]];
+  dbContext = [channel adaptorContext];
+
+  [dbContext beginTransaction];
+
+  error = nil;
+
+  max = [queries count];
+  for (count = 0; error == nil && count < max; count++)
+    {
+      sql = [queries objectAtIndex: count];
+      error = [channel evaluateExpressionX: sql];
+      if (error)
+        [dbContext rollbackTransaction];
+    }
+  if (!error)
+    [dbContext commitTransaction];
+  [cm releaseChannel: channel];
+  
+  return (error == nil);
 }
 
 - (NSDictionary *) lookupRecord: (NSString *) path

@@ -1,5 +1,10 @@
 2012-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIDBObject.m (-performBatchSQLQueries:) new
+	method to perform void queries under a transaction.
+	(-changePathTo:) new method that updates the references for the
+	object record in the dbfs table.
+
 	* SoObjects/SOGo/NSString+Utilities.m
 	(-stringByReplacingPrefix:withPrefix:): new self-explicit method.
 

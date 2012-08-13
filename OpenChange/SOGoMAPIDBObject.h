@@ -73,10 +73,12 @@ typedef enum {
 /* automatically set from actions */
 - (BOOL) deleted;
 
+- (void) changePathTo: (NSString *) newPath;
+
 /* db helpers */
 - (EOAdaptor *) tableChannelAdaptor;
 - (NSArray *) performSQLQuery: (NSString *) sql;
-
+- (BOOL) performBatchSQLQueries: (NSArray *) queries;
 
 @end
 
