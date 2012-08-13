@@ -30,6 +30,8 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
+#import <SOGo/NSString+Utilities.h>
+
 #import "MAPIStoreTypes.h"
 
 #import "MAPIStoreMapping.h"
@@ -209,12 +211,9 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 {
   NSArray *allKeys;
   NSUInteger count, max;
-  NSString *currentKey, *keyEnd, *newKey;
-  NSUInteger oldURLLength;
+  NSString *currentKey, *newKey;
   NSNumber *idKey;
   TDB_DATA key, dbuf;
-
-  oldURLLength = [oldURL length];
 
   allKeys = [reverseMapping allKeys];
   max = [allKeys count];
@@ -223,8 +222,8 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
       currentKey = [allKeys objectAtIndex: count];
       if ([currentKey hasPrefix: oldURL])
         {
-          keyEnd = [currentKey substringFromIndex: oldURLLength];
-          newKey = [NSString stringWithFormat: @"%@%@", urlString, keyEnd];
+          newKey = [currentKey stringByReplacingPrefix: oldURL
+                                            withPrefix: urlString];
 
           idKey = [reverseMapping objectForKey: currentKey];
           [mapping setObject: newKey forKey: idKey];
