@@ -242,22 +242,18 @@ Class SOGoMAPIDBObjectK = Nil;
         {
           record = [records objectAtIndex: count];
           path = [record objectForKey: @"c_path"];
-          if ([path isEqualToString: oldPath]
-              || [path hasPrefix: oldPathAsPrefix])
-            {
-              sql = [NSMutableString stringWithFormat: @"UPDATE %@"
-                                     @" SET c_path = '%@'",
-                                     [self tableName],
-                                     [path stringByReplacingPrefix: oldPath
-                                                        withPrefix: newPath]];
-              parentPath = [record objectForKey: @"c_parent_path"];
-              if ([parentPath isNotNull])
-                [sql appendFormat: @", c_parent_path = '%@'",
-                     [parentPath stringByReplacingPrefix: oldPath
-                                 withPrefix: newPath]];
-              [sql appendFormat: @" WHERE c_path = '%@'", oldPath];
-              [queries addObject: sql];
-            }
+          sql = [NSMutableString stringWithFormat: @"UPDATE %@"
+                                 @" SET c_path = '%@'",
+                                 [self tableName],
+                                 [path stringByReplacingPrefix: oldPath
+                                       withPrefix: newPath]];
+          parentPath = [record objectForKey: @"c_parent_path"];
+          if ([parentPath isNotNull])
+            [sql appendFormat: @", c_parent_path = '%@'",
+                 [parentPath stringByReplacingPrefix: oldPath
+                             withPrefix: newPath]];
+          [sql appendFormat: @" WHERE c_path = '%@'", path];
+          [queries addObject: sql];
         }
       [self performBatchSQLQueries: queries];
     }
