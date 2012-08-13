@@ -1,5 +1,8 @@
 2012-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_properties_get_uri): removed
+	useless backend method.
+
 	* OpenChange/MAPIStoreFolder.m (-createFolder:withRow:andFID:):
 	append a "/" to the new folder url when registering with the
 	url/id mapper.
