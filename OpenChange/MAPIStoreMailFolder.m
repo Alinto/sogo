@@ -397,6 +397,11 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   return permissionEntries;
 }
 
+- (BOOL) supportsSubFolders
+{
+  return YES;
+}
+
 /* synchronisation */
 
 /* Tree:
