@@ -1656,9 +1656,14 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (uint64_t) objectId
 {
   uint64_t objectId;
+  NSString *folderKey;
 
   if (container)
-    objectId = [super objectId];
+    {
+      folderKey = [NSString stringWithFormat: @"%@/",
+                            [sogoObject nameInContainer]];
+      objectId = [container idForObjectWithKey: folderKey];
+    }
   else
     objectId = [self idForObjectWithKey: nil];
 

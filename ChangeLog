@@ -1,5 +1,8 @@
 2012-08-12  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreFolder.m (-objectId): folder keys always end
+	with a "/" by convention.
+
 	* OpenChange/MAPIStoreMapping.m (-updateID:withURL:): new method
 	that perform a change of url on container and leaf entries.
 
