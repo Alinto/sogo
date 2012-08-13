@@ -25,6 +25,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <NGExtensions/NSObject+Logs.h>
@@ -36,6 +37,7 @@
 #import "MAPIStoreDBFolderTable.h"
 #import "MAPIStoreDBMessage.h"
 #import "MAPIStoreDBMessageTable.h"
+#import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreUserContext.h"
 #import "SOGoMAPIDBFolder.h"
@@ -47,7 +49,7 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
-static Class EOKeyValueQualifierK, SOGoMAPIDBFolderK;
+static Class EOKeyValueQualifierK, SOGoMAPIDBFolderK, MAPIStoreDBFolderK;
 
 static NSString *MAPIStoreRightReadItems = @"RightsReadItems";
 static NSString *MAPIStoreRightCreateItems = @"RightsCreateItems";
@@ -65,6 +67,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 {
   EOKeyValueQualifierK = [EOKeyValueQualifier class];
   SOGoMAPIDBFolderK = [SOGoMAPIDBFolder class];
+  MAPIStoreDBFolderK = [MAPIStoreDBFolder class];
 }
 
 - (void) setupAuxiliaryObjects
@@ -119,6 +122,43 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
     }
   else
     rc = MAPISTORE_ERR_INVALID_PARAMETER;
+
+  return rc;
+}
+
+- (enum mapistore_error) moveToFolder: (MAPIStoreFolder *) targetFolder
+                          withNewName: (NSString *) newFolderName
+{
+  enum mapistore_error rc;
+  NSString *path, *pathComponent, *targetPath, *newPath;
+  NSString *newURL;
+  MAPIStoreMapping *mapping;
+  NSRange slashRange;
+
+  if ([targetFolder isKindOfClass: MAPIStoreDBFolderK])
+    {
+      path = [sogoObject path];
+      slashRange = [path rangeOfString: @"/" options: NSBackwardsSearch];
+      if (slashRange.location == NSNotFound)
+        [NSException raise: @"MAPIStoreIOException"
+                    format: @"db folder path must start with a '/'"];
+      else
+        pathComponent = [path substringFromIndex: slashRange.location + 1];
+      targetPath = [[targetFolder sogoObject] path];
+      newPath = [NSString stringWithFormat: @"%@/%@",
+                          targetPath, pathComponent];
+      [dbFolder changePathTo: newPath];
+      
+      mapping = [self mapping];
+      newURL = [NSString stringWithFormat: @"%@%@/",
+                         [targetFolder url], pathComponent];
+      [mapping updateID: [self objectId]
+                withURL: newURL];
+
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_DENIED;
 
   return rc;
 }

@@ -1,5 +1,8 @@
 2012-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreDBFolder.m (-moveToFolder:withNewName:):
+	implemented method.
+
 	* OpenChange/MAPIStoreMailFolder.m (-moveToFolder:withNewName:):
 	invoke changePathTo: on the dbFolder.
 
