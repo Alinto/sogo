@@ -72,6 +72,7 @@
 
 - (int) timeValue;
 
+/* substrings */
 - (NSUInteger) countOccurrencesOfString: (NSString *) substring;
 
 
