@@ -74,7 +74,8 @@
 
 /* substrings */
 - (NSUInteger) countOccurrencesOfString: (NSString *) substring;
-
+- (NSString *) stringByReplacingPrefix: (NSString *) oldPrefix
+                            withPrefix: (NSString *) newPrefix;
 
 /* Those methods provide symmetric enc-/decryption via a XOR operation */
 - (NSString *) encryptWithKey: (NSString *) theKey;

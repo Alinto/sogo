@@ -560,6 +560,24 @@ static int cssEscapingCount;
   return count;
 }
 
+- (NSString *) stringByReplacingPrefix: (NSString *) oldPrefix
+                            withPrefix: (NSString *) newPrefix
+{
+  NSUInteger oldPrefixLength;
+  NSString *newString;
+
+  if (![self hasPrefix: oldPrefix])
+    [NSException raise: NSInvalidArgumentException
+                 format: @"string does not have the specified prefix"];
+
+  oldPrefixLength = [oldPrefix length];
+  newString = [NSString stringWithFormat: @"%@%@",
+                        newPrefix,
+                        [self substringFromIndex: oldPrefixLength]];
+  
+  return newString;
+}
+
 - (NSString *) encryptWithKey: (NSString *) theKey
 {
   NSMutableData *encryptedPassword;
