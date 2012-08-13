@@ -52,6 +52,8 @@
             matchingQualifier: (EOQualifier *) qualifier
              andSortOrderings: (NSArray *) sortOrderings;
 
+- (void) changePathTo: (NSString *) newPath;
+
 @end
 
 #endif /* SOGOMAPIDBFOLDER_H */

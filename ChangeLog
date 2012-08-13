@@ -1,5 +1,8 @@
 2012-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIDBFolder.m (-changePathTo:): overriden method
+	in order to update children records too.
+
 	* OpenChange/SOGoMAPIDBObject.m (-performBatchSQLQueries:) new
 	method to perform void queries under a transaction.
 	(-changePathTo:) new method that updates the references for the

@@ -30,11 +30,13 @@
 #import <Foundation/NSURL.h>
 
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSNull+misc.h>
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLContentStore/GCSChannelManager.h>
 // #import <GDLContentStore/EOQualifier+GCS.m>
 
 #import <SOGo/NSArray+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import "EOQualifier+MAPI.h"
@@ -211,6 +213,57 @@ Class SOGoMAPIDBObjectK = Nil;
                 includeDeleted: NO
              matchingQualifier: nil
               andSortOrderings: nil];
+}
+
+- (void) changePathTo: (NSString *) newPath
+{
+  NSMutableString *sql// , *qualifierClause
+    ;
+  NSString *oldPath, *oldPathAsPrefix, *path, *parentPath;
+  NSMutableArray *queries;
+  NSArray *records;
+  NSDictionary *record;
+  NSUInteger count, max;
+
+  /* change the paths in children records */
+  oldPath = [self path];
+  oldPathAsPrefix = [NSString stringWithFormat: @"%@/", oldPath];
+
+  sql = [NSMutableString stringWithFormat:
+                           @"SELECT c_path, c_parent_path FROM %@"
+                         @" WHERE c_path LIKE '%@%%'",
+                         [self tableName], oldPathAsPrefix];
+  records = [self performSQLQuery: sql];
+  max = [records count];
+  queries = [NSMutableArray arrayWithCapacity: max + 1];
+  if (max > 0)
+    {
+      for (count = 0; count < max; count++)
+        {
+          record = [records objectAtIndex: count];
+          path = [record objectForKey: @"c_path"];
+          if ([path isEqualToString: oldPath]
+              || [path hasPrefix: oldPathAsPrefix])
+            {
+              sql = [NSMutableString stringWithFormat: @"UPDATE %@"
+                                     @" SET c_path = '%@'",
+                                     [self tableName],
+                                     [path stringByReplacingPrefix: oldPath
+                                                        withPrefix: newPath]];
+              parentPath = [record objectForKey: @"c_parent_path"];
+              if ([parentPath isNotNull])
+                [sql appendFormat: @", c_parent_path = '%@'",
+                     [parentPath stringByReplacingPrefix: oldPath
+                                 withPrefix: newPath]];
+              [sql appendFormat: @" WHERE c_path = '%@'", oldPath];
+              [queries addObject: sql];
+            }
+        }
+      [self performBatchSQLQueries: queries];
+    }
+
+  /* change the path in this folder record */
+  [super changePathTo: newPath];
 }
 
 // - (NSArray *) toOneRelationshipKeysMatchingQualifier: (EOQualifier *) qualifier
