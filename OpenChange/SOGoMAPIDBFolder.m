@@ -107,7 +107,7 @@ Class SOGoMAPIDBObjectK = Nil;
   NSMutableString *path;
 
   path = [self path];
-  [path appendFormat:  @"/%@", childName];
+  [path appendFormat: @"/%@", childName];
 
   return path;
 }
@@ -153,15 +153,16 @@ Class SOGoMAPIDBObjectK = Nil;
   [sql appendFormat: @"SELECT * FROM %@", [self tableName]];
 
   whereClause = [NSMutableArray arrayWithCapacity: 2];
-  childPathPrefix = [NSString stringWithFormat: @"%@/", [self path]];
-  [whereClause addObject: [NSString stringWithFormat: @"c_path LIKE '%@%%'",
-                                    childPathPrefix]];
+  [whereClause addObject: [NSString stringWithFormat: @"c_parent_path = '%@'",
+                                    [self path]]];
   [whereClause addObject: [NSString stringWithFormat: @"c_type = %d", type]];
   if (!includeDeleted)
     [whereClause addObject: @"c_deleted = 0"];
 
   [sql appendFormat: @" WHERE %@",
        [whereClause componentsJoinedByString: @" AND "]];
+
+  childPathPrefix = [NSString stringWithFormat: @"%@/", [self path]];
 
   /* results */
   records = [self performSQLQuery: sql];

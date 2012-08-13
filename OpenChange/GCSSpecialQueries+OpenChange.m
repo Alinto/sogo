@@ -35,6 +35,8 @@
 
 @implementation GCSSpecialQueries (OpenChangeHelpers)
 
+/* FIXME: c_parent_path should be indexed */
+
 - (NSString *) createOpenChangeFSTableWithName: (NSString *) tableName
 {
   [self subclassResponsibility: _cmd];
@@ -51,6 +53,7 @@
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
        @" c_path VARCHAR(255) PRIMARY KEY,"
+       @" c_parent_path VARCHAR(255),"
        @" c_type SMALLINT NOT NULL,"
        @" c_creationdate INT4 NOT NULL,"
        @" c_lastmodified INT4 NOT NULL,"
@@ -70,6 +73,7 @@
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
        @" c_path VARCHAR(255) PRIMARY KEY,"
+       @" c_parent_path VARCHAR(255),"
        @" c_type TINYINT NOT NULL,"
        @" c_creationdate INT NOT NULL,"
        @" c_lastmodified INT NOT NULL,"
@@ -89,6 +93,7 @@
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
        @" c_path VARCHAR2(255) PRIMARY KEY,"
+       @" c_parent_path VARCHAR2(255),"
        @" c_type SMALLINT NOT NULL,"
        @" c_creationdate INT4 NOT NULL,"
        @" c_lastmodified INT4 NOT NULL,"

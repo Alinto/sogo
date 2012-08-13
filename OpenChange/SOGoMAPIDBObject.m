@@ -391,7 +391,7 @@ static EOAttribute *textColumn = nil;
   EOAdaptor *adaptor;
   EOAdaptorChannel *channel;
   NSInteger creationDateValue, lastModifiedValue, deletedValue;
-  NSString *tableName, *pathValue, *propsValue;
+  NSString *tableName, *pathValue, *parentPathValue, *propsValue;
   NSException *result;
 
   if (!initialized)
@@ -440,14 +440,18 @@ static EOAttribute *textColumn = nil;
     {
       ASSIGN (creationDate, now);
       creationDateValue = (NSInteger) [creationDate timeIntervalSince1970];
+      parentPathValue = [adaptor formatValue: [container path]
+                                 forAttribute: textColumn];
+      if (!parentPathValue)
+        parentPathValue = @"NULL";
       sql = [NSString stringWithFormat:
                         (@"INSERT INTO %@"
-                         @"  (c_path, c_type, c_creationdate, c_lastmodified,"
+                         @"  (c_path, c_parent_path, c_type, c_creationdate, c_lastmodified,"
                          @"   c_deleted, c_version, c_content)"
-                         @" VALUES (%@, %d, %d, %d, 0, 0, %@"
+                         @" VALUES (%@, %@, %d, %d, %d, 0, 0, %@"
                          @")"),
                       tableName,
-                      pathValue, objectType,
+                      pathValue, parentPathValue, objectType,
                       creationDateValue, lastModifiedValue,
                       propsValue];
       isNew = NO;

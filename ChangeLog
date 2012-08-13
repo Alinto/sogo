@@ -1,5 +1,13 @@
 2012-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIDBFolder.m
+	(-childKeysOfType:includeDeleted:matchingQualifier:andSortOrderings:):
+	records now have a c_parent_path column in order to avoid fetch
+	the children of children due to the nature of our "LIKE" clause.
+
+	* OpenChange/SOGoMAPIDBObject.m (-save): records now have a
+	c_parent_path.
+
 	* OpenChange/MAPIStoreMailFolder.m (-supportsSubFolders):
 	overriden method to return YES.
 
