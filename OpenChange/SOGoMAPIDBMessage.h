@@ -1,6 +1,6 @@
-/* MAPIStoreVolatileMessage.h - this file is part of SOGo
+/* SOGoMAPIDBMessage.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,18 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREVOLATILEMESSAGE_H
-#define MAPISTOREVOLATILEMESSAGE_H
+#ifndef SOGOMAPIDBMESSAGE_H
+#define SOGOMAPIDBMESSAGE_H
 
-#import "MAPIStoreMessage.h"
+#import "SOGoMAPIDBObject.h"
 
-@interface MAPIStoreVolatileMessage : MAPIStoreMessage
-{
-  BOOL fetchedAttachments;
-  NSDate *creationTime;
-  NSDate *lastModificationTime;
-}
+@class NSDate;
+@class NSString;
 
+@interface SOGoMAPIDBMessage : SOGoMAPIDBObject
 @end
 
-#endif /* MAPISTOREVOLATILEMESSAGE_H */
+#endif /* SOGOMAPIDBMESSAGE_H */

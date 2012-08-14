@@ -173,8 +173,8 @@
 
 - (void) setupValues
 {
-  NSString *sentBy, *sentByText, *description;
-  NSCalendarDate *date;
+  NSString *sentByText;
+  id value;
   NSDictionary *sentByValues;
   SOGoUser *user;
   SOGoDateFormatter *dateFormatter;
@@ -184,15 +184,18 @@
   [viewTZ retain];
 
   values = [NSMutableDictionary new];
-  [values setObject: [self summary] forKey: @"Summary"];
+  value = [self summary];
+  if (!value)
+    value = @"";
+  [values setObject: value forKey: @"Summary"];
   if (organizerName)
     {
       [values setObject: organizerName forKey: @"Organizer"];
 
-      sentBy = [[apt organizer] sentBy];
-      if ([sentBy length])
+      value = [[apt organizer] sentBy];
+      if (value)
         {
-          sentByValues = [NSDictionary dictionaryWithObject: sentBy
+          sentByValues = [NSDictionary dictionaryWithObject: value
                                                      forKey: @"SentBy"];
           sentByText
             = [sentByValues keysWithFormat: [self
@@ -201,29 +204,36 @@
         }
       else
         sentByText = @"";
+
       [values setObject: sentByText forKey: @"SentByText"];
     }
 
   dateFormatter = [[context activeUser] dateFormatterInContext: context];
 
-  date = [self newStartDate];
-  [values setObject: [dateFormatter shortFormattedDate: date]
-             forKey: @"StartDate"];
-  if (![apt isAllDay])
-    [values setObject: [dateFormatter formattedTime: date]
-               forKey: @"StartTime"];
+  value = [self newStartDate];
+  if (value)
+    {
+      [values setObject: [dateFormatter shortFormattedDate: value]
+                 forKey: @"StartDate"];
+      if (![apt isAllDay])
+        [values setObject: [dateFormatter formattedTime: value]
+                   forKey: @"StartTime"];
+    }
 
-  date = [self newEndDate];
-  [values setObject: [dateFormatter shortFormattedDate: date]
-             forKey: @"EndDate"];
-  if (![apt isAllDay])
-    [values setObject: [dateFormatter formattedTime: date]
-               forKey: @"EndTime"];
+  value = [self newEndDate];
+  if (value)
+    {
+      [values setObject: [dateFormatter shortFormattedDate: value]
+                 forKey: @"EndDate"];
+      if (![apt isAllDay])
+        [values setObject: [dateFormatter formattedTime: value]
+                   forKey: @"EndTime"];
+    }
 
-  description = [[self apt] comment];
-  [values setObject: (description ? description : @"")
-	  forKey: @"Description"];
-
+  value = [[self apt] comment];
+  if (!value)
+    value = @"";
+  [values setObject: value forKey: @"Description"];
 }
 
 @end

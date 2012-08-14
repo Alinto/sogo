@@ -109,6 +109,11 @@
 			   dateTime];
 }
 
+- (iCalRecurrenceRule *) recurrenceRule
+{
+  return (iCalRecurrenceRule *) [self firstChildWithTag: @"rrule"];
+}
+
 /**
  * This method returns the date corresponding for to the start of the period
  * in the year of the reference date.
@@ -182,6 +187,11 @@
 - (int) secondsOffsetFromGMT
 {
   return [self _secondsOfOffset: @"tzoffsetto"];
+}
+
+- (NSComparisonResult) compare: (iCalTimeZonePeriod *) otherPeriod
+{
+  return [[self startDate] compare: [otherPeriod startDate]];
 }
 
 @end

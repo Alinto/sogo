@@ -26,13 +26,6 @@
 #import "MAPIStoreMessage.h"
 
 @interface MAPIStoreEmbeddedMessage : MAPIStoreMessage
-{
-  id attachment;
-}
-
-+ (id) embeddedMessageWithAttachment: (id) newAttachment;
-
-- (id) initWithAttachment: (id) newAttachment;
 
 @end
 
