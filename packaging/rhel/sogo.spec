@@ -3,6 +3,13 @@
 %global oc_build_depends samba4 openchange
 %endif
 
+%{!?python_sys_pyver: %global python_sys_pyver %(/usr/bin/python -c "import sys; print sys.hexversion")}
+
+# if hex(sys.hexversion) < 0x02060000
+%if %{python_sys_pyver} < 33947648
+%global __python /usr/bin/python2.6
+%endif
+
 Summary:      SOGo
 Name:         sogo
 Version:      %{sogo_version}
@@ -132,6 +139,15 @@ SOGo backend for OpenChange
 %prep
 rm -fr ${RPM_BUILD_ROOT}
 %setup -q -n SOGo-%{sogo_version}
+
+# fix python path for python2.4 distro
+%if %{python_sys_pyver} < 33947648
+for pyscript in OpenChange/samba-get-config.py; do
+    mv $pyscript $pyscript.orig
+    sed -e 's!/usr/bin/python!/usr/bin/python2.6!' <$pyscript.orig >$pyscript
+    rm $pyscript.orig
+done
+%endif
 
 # ****************************** build ********************************
 %build
