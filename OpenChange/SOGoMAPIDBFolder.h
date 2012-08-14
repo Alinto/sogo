@@ -1,6 +1,6 @@
-/* SOGoMAPIFSFolder.h - this file is part of SOGo
+/* SOGoMAPIDBFolder.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,41 +20,40 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOMAPIFSFOLDER_H
-#define SOGOMAPIFSFOLDER_H
+#ifndef SOGOMAPIDBFOLDER_H
+#define SOGOMAPIDBFOLDER_H
 
-#import <SOGo/SOGoFolder.h>
+#import "SOGoMAPIDBObject.h"
 
 @class NSArray;
+@class NSMutableString;
 @class NSString;
 @class NSURL;
 
 @class EOQualifier;
 
-@class SOGoMAPIFSMessage;
+@class SOGoMAPIDBMessage;
 
-@interface SOGoMAPIFSFolder : SOGoFolder
+@interface SOGoMAPIDBFolder : SOGoMAPIDBObject
 {
-  NSString *directory;
-  BOOL directoryIsSane;
+  NSString *pathPrefix; /* for root folders */
+  SOGoMAPIDBObject *aclMessage;
 }
 
-+ (id) folderWithURL: (NSURL *) url
-	andTableType: (uint8_t) tableType;
-- (id) initWithURL: (NSURL *) url
-      andTableType: (uint8_t) tableType;
+- (void) setPathPrefix: (NSString *) newPathPrefix;
 
-- (NSString *) directory;
+- (NSMutableString *) pathForChild: (NSString *) childName;
 
-- (SOGoMAPIFSMessage *) newMessage;
-- (void) ensureDirectory;
+- (NSArray *) toOneRelationshipKeys;
+- (NSArray *) toManyRelationshipKeys;
 
-- (NSCalendarDate *) creationTime;
-- (NSCalendarDate *) lastModificationTime;
+- (NSArray *) childKeysOfType: (MAPIDBObjectType) type
+               includeDeleted: (BOOL) includeDeleted
+            matchingQualifier: (EOQualifier *) qualifier
+             andSortOrderings: (NSArray *) sortOrderings;
 
-- (NSArray *) toOneRelationshipKeysMatchingQualifier: (EOQualifier *) qualifier
-                                    andSortOrderings: (NSArray *) sortOrderings;
+- (void) changePathTo: (NSString *) newPath;
 
 @end
 
-#endif /* SOGOMAPIFSFOLDER_H */
+#endif /* SOGOMAPIDBFOLDER_H */

@@ -1,6 +1,6 @@
-/* SOGoMAPIVolatileMessage.m - this file is part of SOGo
+/* SOGoMAPIObject.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -21,16 +21,21 @@
  */
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSCalendarDate.h>
 
-#import "SOGoMAPIVolatileMessage.h"
+#import "SOGoMAPIObject.h"
 
-@implementation SOGoMAPIVolatileMessage
+@implementation SOGoMAPIObject
 
 - (id) init
 {
   if ((self = [super init]))
     {
-      properties = nil;
+      isNew = NO;
+      creationDate = [NSCalendarDate date];
+      [creationDate retain];
+      lastModified = [creationDate copy];
+      properties = [NSMutableDictionary new];
     }
 
   return self;
@@ -38,21 +43,45 @@
 
 - (void) dealloc
 {
+  [creationDate release];
+  [lastModified release];
   [properties release];
   [super dealloc];
 }
 
+- (void) setIsNew: (BOOL) newIsNew
+{
+  isNew = newIsNew;
+}
+
+- (BOOL) isNew
+{
+  return isNew;
+}
+
+- (void) adjustLastModified
+{
+  ASSIGN (lastModified, [NSCalendarDate date]);
+}
+
+- (BOOL) isFolderish
+{
+  return NO;
+}
+
 - (NSMutableDictionary *) properties
 {
-  if (!properties)
-    properties = [NSMutableDictionary new];
-
   return properties;
 }
 
-- (void) appendProperties: (NSDictionary *) newProperties
+- (NSCalendarDate *) creationDate
 {
-  [[self properties] addEntriesFromDictionary: newProperties];
+  return creationDate;
+}
+
+- (NSCalendarDate *) lastModified
+{
+  return lastModified;
 }
 
 @end

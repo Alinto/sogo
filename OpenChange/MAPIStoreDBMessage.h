@@ -1,12 +1,12 @@
-/* MAPIStoreFSBaseContext.h - this file is part of SOGo
+/* MAPIStoreDBMessage.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -20,13 +20,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREFSBASECONTEXT_H
-#define MAPISTOREFSBASECONTEXT_H
+#ifndef MAPISTOREDBMESSAGE_H
+#define MAPISTOREDBMESSAGE_H
 
-#import "MAPIStoreContext.h"
+#import "MAPIStoreMessage.h"
 
-@interface MAPIStoreFSBaseContext : MAPIStoreContext
-
+@interface MAPIStoreDBMessage : MAPIStoreMessage
 @end
 
-#endif /* MAPISTOREFSBASECONTEXT_H */
+#endif /* MAPISTOREDBMESSAGE_H */

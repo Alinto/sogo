@@ -35,6 +35,7 @@
 #import <Mailer/NSString+Mail.h>
 #import <SOGo/SOGoPermissions.h>
 
+#import "MAPIStoreAttachment.h"
 #import "MAPIStoreContactsAttachment.h"
 #import "MAPIStoreContactsFolder.h"
 #import "MAPIStorePropertySelectors.h"
@@ -179,8 +180,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagSubject: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagNormalizedSubject: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidTagDisplayName: data inMemCtx: memCtx];
 }
@@ -767,8 +768,7 @@
           || [encoding isEqualToString: @"BASE64"])
         {
           attachment = [MAPIStoreContactsAttachment
-                         mapiStoreObjectWithSOGoObject: nil
-                                           inContainer: self];
+                         mapiStoreObjectInContainer: self];
           [attachment setAID: 0];
           [attachment setPhoto: photo];
           [attachmentParts setObject: attachment forKey: @"photo"];

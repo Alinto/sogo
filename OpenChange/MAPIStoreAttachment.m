@@ -28,6 +28,7 @@
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreMessage.h"
 #import "MAPIStoreTypes.h"
+#import "NSObject+MAPIStore.h"
 
 #undef DEBUG
 #include <stdbool.h>
@@ -90,6 +91,12 @@
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPidTagAccessLevel: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getLongZero: data inMemCtx: memCtx];
+}
+
 - (int) openEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
                     withMID: (uint64_t *) mid
            withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
@@ -103,20 +110,34 @@
 
   mapping = [self mapping];
 
+  // if (attMessage)
   attMessage = [self openEmbeddedMessage];
   if (attMessage)
     {
       *mid = [mapping idFromURL: [attMessage url]];
+      [mapping registerURL: [attMessage url]
+                    withID: *mid];
       *messagePtr = attMessage;
       *mapistoreMsgPtr = mapistoreMsg;
     }
-  // else if (flags == MAPI_CREATE)
-  //   {
-  //     attMessage = [self createEmbeddedMessage];
-  //     if (attMessage)
-  //       [mapping registerURL: [attMessage url]
-  //                     withID: *mid];
-  //   }
+
+  return (attMessage ? MAPISTORE_SUCCESS : MAPISTORE_ERROR);
+}
+
+- (int) createEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
+             withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
+                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  MAPIStoreEmbeddedMessage *attMessage;
+  struct mapistore_message *mapistoreMsg;
+  
+  mapistoreMsg = talloc_zero (memCtx, struct mapistore_message);
+  attMessage = [self createEmbeddedMessage];
+  if (attMessage)
+    {
+      *messagePtr = attMessage;
+      *mapistoreMsgPtr = mapistoreMsg;
+    }
 
   return (attMessage ? MAPISTORE_SUCCESS : MAPISTORE_ERROR);
 }

@@ -25,11 +25,14 @@
 
 #import "MAPIStoreGCSMessage.h"
 
+@class iCalCalendar;
+@class iCalEvent;
 @class MAPIStoreAppointmentWrapper;
 
 @interface MAPIStoreCalendarMessage : MAPIStoreGCSMessage
 {
-  MAPIStoreAppointmentWrapper *appointmentWrapper;
+  iCalCalendar *calendar;
+  iCalEvent *masterEvent;
 }
 
 @end

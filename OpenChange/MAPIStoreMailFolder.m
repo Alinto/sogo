@@ -54,14 +54,14 @@
 #import "MAPIStoreTypes.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
-#import "SOGoMAPIFSMessage.h"
+#import "SOGoMAPIDBMessage.h"
+#import "SOGoMAPIDBFolder.h"
 
-#import "SOGoMAPIVolatileMessage.h"
 #import "MAPIStoreMailVolatileMessage.h"
 
 #import "MAPIStoreMailFolder.h"
 
-static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
+static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 
 #undef DEBUG
 #include <util/attr.h>
@@ -74,6 +74,7 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
 + (void) initialize
 {
   SOGoMailFolderK = [SOGoMailFolder class];
+  MAPIStoreMailFolderK = [MAPIStoreMailFolder class];
   MAPIStoreOutboxFolderK = [MAPIStoreOutboxFolder class];
   [MAPIStoreAppointmentWrapper class];
 }
@@ -97,8 +98,9 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
 - (void) setupVersionsMessage
 {
   ASSIGN (versionsMessage,
-          [SOGoMAPIFSMessage objectWithName: @"versions.plist"
-                                inContainer: propsFolder]);
+          [SOGoMAPIDBMessage objectWithName: @"versions.plist"
+                                inContainer: dbFolder]);
+  [versionsMessage setObjectType: MAPIDBObjectTypeInternal];
 }
 
 - (BOOL) ensureFolderExists
@@ -119,6 +121,9 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
       && ![[(SOGoMailFolder *) sogoObject displayName]
             isEqualToString: newDisplayName])
     {
+      [NSException raise: @"MAPIStoreIOException"
+                  format: @"renaming a mail folder via OpenChange is"
+                   @" currently a bad idea"];
       [(SOGoMailFolder *) sogoObject renameTo: newDisplayName];
       propsCopy = [newProperties mutableCopy];
       [propsCopy removeObjectForKey: key];
@@ -393,6 +398,11 @@ static Class SOGoMailFolderK, MAPIStoreOutboxFolderK;
   return permissionEntries;
 }
 
+- (BOOL) supportsSubFolders
+{
+  return YES;
+}
+
 /* synchronisation */
 
 /* Tree:
@@ -489,10 +499,8 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   now = [NSCalendarDate date];
   [now setTimeZone: utcTZ];
 
-  currentProperties = [[versionsMessage properties] mutableCopy];
-  if (!currentProperties)
-    currentProperties = [NSMutableDictionary new];
-  [currentProperties autorelease];
+  [versionsMessage reloadIfNeeded];
+  currentProperties = [versionsMessage properties];
   messages = [currentProperties objectForKey: @"Messages"];
   if (!messages)
     {
@@ -613,7 +621,6 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       ti = [NSNumber numberWithDouble: [now timeIntervalSince1970]];
       [currentProperties setObject: ti
                             forKey: @"SyncLastSynchronisationDate"];
-      [versionsMessage appendProperties: currentProperties];
       [versionsMessage save];
     }
 
@@ -1002,21 +1009,65 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   return MAPISTORE_SUCCESS;
 }
 
-- (MAPIStoreMessage *) createMessage
+- (enum mapistore_error) moveToFolder: (MAPIStoreFolder *) targetFolder
+                          withNewName: (NSString *) newFolderName
 {
-  MAPIStoreMailVolatileMessage *newMessage;
-  SOGoMAPIVolatileMessage *newObject;
+  enum mapistore_error rc;
+  NSURL *folderURL, *newFolderURL;
+  SOGoMailFolder *targetSOGoFolder;
+  NSString *newURL, *parentDBFolderPath;
+  NSException *error;
+  MAPIStoreMapping *mapping;
 
-  newObject = [SOGoMAPIVolatileMessage
-                objectWithName: [SOGoObject globallyUniqueObjectId]
-                   inContainer: sogoObject];
-  newMessage
-    = [MAPIStoreMailVolatileMessage mapiStoreObjectWithSOGoObject: newObject
-                                                      inContainer: self];
-  
-  return newMessage;
+  if ([targetFolder isKindOfClass: MAPIStoreMailFolderK])
+    {
+      folderURL = [sogoObject imap4URL];
+      if (!newFolderName)
+        newFolderName = [[sogoObject nameInContainer]
+                          substringFromIndex: 6]; /* length of "folder" */
+      newFolderName = [newFolderName stringByEscapingURL];
+      targetSOGoFolder = [targetFolder sogoObject];
+      newFolderURL = [NSURL URLWithString: newFolderName
+                            relativeToURL: [targetSOGoFolder imap4URL]];
+      error = [[sogoObject imap4Connection]
+                moveMailboxAtURL: folderURL
+                           toURL: newFolderURL];
+      if (error)
+        rc = MAPISTORE_ERR_DENIED;
+      else
+        {
+          rc = MAPISTORE_SUCCESS;
+          mapping = [self mapping];
+          newURL = [NSString stringWithFormat: @"%@folder%@/",
+                             [targetFolder url], newFolderName];
+          [mapping updateID: [self objectId]
+                    withURL: newURL];
+          parentDBFolderPath = [[targetFolder dbFolder] path];
+          if (!parentDBFolderPath)
+            parentDBFolderPath = @"";
+          [dbFolder changePathTo: [NSString stringWithFormat:
+                                              @"%@/folder%@",
+                                            parentDBFolderPath,
+                                            newFolderName]];
+        }
+    }
+  else
+    rc = MAPISTORE_ERR_DENIED;
+
+  return rc;
 }
 
+- (MAPIStoreMessage *) createMessage
+{
+  SOGoMAPIObject *childObject;
+
+  childObject = [SOGoMAPIObject objectWithName: [SOGoMAPIObject
+                                                  globallyUniqueObjectId]
+                                   inContainer: sogoObject];
+  return [MAPIStoreMailVolatileMessage
+           mapiStoreObjectWithSOGoObject: childObject
+                             inContainer: self];
+}
 
 - (NSArray *) rolesForExchangeRights: (uint32_t) rights
 {
@@ -1043,8 +1094,6 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
     [roles addObject: SOGoRole_ObjectViewer];
   if (rights & RightsCreateSubfolders)
     [roles addObject: SOGoRole_FolderCreator];
-  if (rights & RightsCreateSubfolders)
-    [roles addObject: SOGoRole_FolderCreator];
 
   // [self logWithFormat: @"roles for rights %.8x = (%@)", rights, roles];
 
@@ -1067,8 +1116,6 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
     rights |= RightsEditAll;
   if ([roles containsObject: SOGoRole_ObjectViewer])
     rights |= RightsReadItems;
-  if ([roles containsObject: SOGoRole_FolderCreator])
-    rights |= RightsCreateSubfolders;
   if ([roles containsObject: SOGoRole_FolderCreator])
     rights |= RightsCreateSubfolders;
 

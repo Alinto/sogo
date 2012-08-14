@@ -22,6 +22,7 @@
 
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSTimeZone.h>
+#import <WEExtensions/WEResourceManager.h>
 
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoSystemDefaults.h>
@@ -46,17 +47,28 @@ MAPIApplication *MAPIApp = nil;
 {
   if (!MAPIApp)
     {
+      WEResourceManager *rm;
+
       // TODO publish
       [iCalEntityObject initializeSOGoExtensions];
 
       MAPIApp = [super init];
       [MAPIApp retain];
 
+      rm = [[WEResourceManager alloc] init];
+      [self setResourceManager:rm];
+      [rm release];
+
       utcTZ = [NSTimeZone timeZoneWithName: @"UTC"];
       [utcTZ retain];
     }
 
   return MAPIApp;
+}
+
+- (BOOL) shouldSetupSignalHandlers
+{
+  return NO;
 }
 
 - (void) setUserContext: (MAPIStoreUserContext *) newContext

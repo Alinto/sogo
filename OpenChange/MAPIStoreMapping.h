@@ -54,6 +54,8 @@
 - (BOOL) registerURL: (NSString *) urlString
               withID: (uint64_t) idNbr;
 - (void) unregisterURLWithID: (uint64_t) idNbr;
+- (void) updateID: (uint64_t) idNbr
+          withURL: (NSString *) urlString;
 
 @end
 

@@ -1,12 +1,12 @@
-/* SOGoMAPIFSMessage.h - this file is part of SOGo
+/* GCSSpecialQueries+OpenChange.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3, or (at your option)
+ * the Free Software Foundation; either version 2, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -20,28 +20,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOMAPIFSMESSAGE_H
-#define SOGOMAPIFSMESSAGE_H
+#ifndef GCSSPECIALQUERIES_OPENCHANGE_H
+#define GCSSPECIALQUERIES_OPENCHANGE_H
 
-#import "SOGoMAPIVolatileMessage.h"
+#import <GDLContentStore/GCSSpecialQueries.h>
 
-@class NSDate;
-@class NSString;
+@interface GCSSpecialQueries (OpenChangeHelpers)
 
-@interface SOGoMAPIFSMessage : SOGoMAPIVolatileMessage
-{
-  NSString *completeFilename;
-  NSUInteger inode;
-  NSData *lastModificationTime;
-}
-
-- (void) save;
-
-- (NSString *) completeFilename;
-
-- (NSDate *) creationTime;
-- (NSDate *) lastModificationTime;
+- (NSString *) createOpenChangeFSTableWithName: (NSString *) tableName;
 
 @end
 
-#endif /* SOGOMAPIFSMESSAGE_H */
+#endif /* GCSSPECIALQUERIES_OPENCHANGE_H */

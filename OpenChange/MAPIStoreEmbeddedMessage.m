@@ -23,8 +23,12 @@
 #import <Foundation/NSString.h>
 
 #import "MAPIStoreAttachment.h"
+#import "MAPIStoreFolder.h"
+#import "NSObject+MAPIStore.h"
 
 #import "MAPIStoreEmbeddedMessage.h"
+
+#include <mapistore/mapistore_errors.h>
 
 static Class MAPIStoreAttachmentK;
 
@@ -35,30 +39,116 @@ static Class MAPIStoreAttachmentK;
   MAPIStoreAttachmentK = [MAPIStoreAttachment class];
 }
 
-+ (id) embeddedMessageWithAttachment: (id) newAttachment
+- (uint64_t) objectId
 {
-  MAPIStoreEmbeddedMessage *newMessage;
+  NSString *objectKey;
+  MAPIStoreMessage *grandParent;
 
-  newMessage = [[self alloc] initWithAttachment: newAttachment];
-  [newMessage autorelease];
+  grandParent = (MAPIStoreMessage *) [container container];
 
-  return newMessage;
+  /* FIXME: this is a hack */
+  objectKey = [NSString stringWithFormat: @"%@/%@/as-message",
+                        [grandParent nameInContainer],
+                        [container nameInContainer], 
+                        [self nameInContainer]];
+
+  return [(MAPIStoreFolder *) [grandParent container]
+           idForObjectWithKey: objectKey];
 }
 
-- (id) initWithAttachment: (id) newAttachment
+- (int) getPidTagAccessLevel: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  if ((self = [self init]))
-    {
-      if ([newAttachment isKindOfClass: MAPIStoreAttachmentK])
-        ASSIGN (container, newAttachment);
-    }
-
-  return self;
+  return [self getLongZero: data inMemCtx: memCtx];
 }
 
+/* disabled properties */
+- (int) getPidTagFolderId: (void **) data
+                 inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagChangeKey: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagSourceKey: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagParentSourceKey: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagChangeNumber: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagInstID: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagInstanceNum: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagRowType: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagDepth: (void **) data
+              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagIconIndex: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagGenerateExchangeViews: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidTagOriginalMessageClass: (void **) dataa
+                             inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return MAPISTORE_ERR_NOT_FOUND;
+}
+
+/* common methods */
 - (NSString *) nameInContainer
 {
   return @"as-message";
+}
+
+- (uint64_t) objectVersion
+{
+  return ULLONG_MAX;
+}
+
+- (void) save
+{
+  [self subclassResponsibility: _cmd];
 }
 
 @end
