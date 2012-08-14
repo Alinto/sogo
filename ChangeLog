@@ -1,5 +1,9 @@
 2012-08-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreSOGo.m (sogo_folder_move_folder): if
+	"target_folder_object", we do not attempt to access the
+	corresponding instance member.
+
 	* OpenChange/MAPIStoreMailFolder.m (-
 	moveCopyMessagesWithMIDs:andCount:fromFolder:withMIDs:andChangeKeys:wantCopy:):
 	do not attempt to access targetChangeKeys when NULL, to avoid a

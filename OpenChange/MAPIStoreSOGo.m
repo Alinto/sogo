@@ -626,7 +626,10 @@ sogo_folder_move_folder(void *folder_object, void *target_folder_object,
       moveFolder = wrapper->instance;
 
       wrapper = target_folder_object;
-      targetFolder = wrapper->instance;
+      if (wrapper)
+        targetFolder = wrapper->instance;
+      else
+        targetFolder = nil;
 
       GSRegisterCurrentThread ();
       pool = [NSAutoreleasePool new];
