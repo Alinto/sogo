@@ -985,14 +985,17 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
     }
 
   /* Update the change keys */
-  [self synchroniseCache];
-  for (count = 0; count < midCount; count++)
+  if (targetChangeKeys)
     {
-      changeKey = [NSData dataWithBinary: targetChangeKeys[count]];
-      messageKey = [NSString stringWithFormat: @"%@.eml",
-                      [destUIDs objectAtIndex: count]];
-      [self   setChangeKey: changeKey
-         forMessageWithKey: messageKey];
+      [self synchroniseCache];
+      for (count = 0; count < midCount; count++)
+        {
+          changeKey = [NSData dataWithBinary: targetChangeKeys[count]];
+          messageKey = [NSString stringWithFormat: @"%@.eml",
+                                 [destUIDs objectAtIndex: count]];
+          [self   setChangeKey: changeKey
+             forMessageWithKey: messageKey];
+        }
     }
 
   [self postNotificationsForMoveCopyMessagesWithMIDs: srcMids
