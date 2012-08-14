@@ -27,7 +27,7 @@ BUNDLE_INSTALL_DIR = $(SOGO_LIBDIR)
 UNRTF_DIR = unrtf-$(UNRTF_VERSION)
 
 PYTHON = /usr/bin/python
-PYTHON_IS_GOOD = $(shell $(PYTHON) -c 'from sys import version_info; a=version_info; print a.major == 2 and a.minor >= 6')
+PYTHON_IS_GOOD = $(shell $(PYTHON) -c 'from sys import version_info; a=version_info; print a[0] == 2 and a[1] >= 6')
 ifeq (${PYTHON_IS_GOOD},False)
 PYTHON = /usr/bin/python2.6
 endif

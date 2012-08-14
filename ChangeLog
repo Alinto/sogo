@@ -1,3 +1,9 @@
+2012-08-14  Jean Raby  <jraby@inverse.ca>
+
+	* OpenChange/GNUmakefile: use version_info[{0,1}] instead of
+	version_info.{major,minor} when checking for legacy version
+	of python since these named attributes where added in python2.7
+
 2012-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreSOGo.m (sogo_properties_get_uri): removed
