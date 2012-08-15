@@ -49,6 +49,7 @@
 #import "MAPIStoreAppointmentWrapper.h"
 #import "MAPIStoreContext.h"
 #import "MAPIStoreFAIMessage.h"
+#import "MAPIStoreMailContext.h"
 #import "MAPIStoreMailMessageTable.h"
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
@@ -110,7 +111,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 
 - (void) addProperties: (NSDictionary *) newProperties
 {
-  NSString *newDisplayName;
+  NSString *newDisplayName, *newNameInContainer;
   NSMutableDictionary *propsCopy;
   NSNumber *key;
   uint64_t fid;
@@ -124,7 +125,12 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
     {
       fid = [self objectId];
       [(SOGoMailFolder *) sogoObject renameTo: newDisplayName];
+      newNameInContainer = [sogoObject nameInContainer];
+      if (!container)
+        [(MAPIStoreMailContext *) context
+           updateURLWithFolderName: newNameInContainer];
       [[self mapping] updateID: fid withURL: [self url]];
+      [dbFolder setNameInContainer: newNameInContainer];
       [self cleanupCaches];
       
       propsCopy = [newProperties mutableCopy];

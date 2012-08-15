@@ -1,5 +1,9 @@
 2012-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailFolder.m (-addProperties:): make use of
+	the new methods below when a mail folder has been renamed, as this
+	operation affects the url of mail objects.
+
 	* OpenChange/SOGoMAPIDBObject.m (-setNameInContainer): update the
 	object record in the database to reflect the change of folder
 	name.
