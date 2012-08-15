@@ -357,26 +357,6 @@ Class SOGoMAPIDBObjectK = Nil;
 //   return [self _fileAttributeForKey: NSFileModificationDate];
 // }
 
-- (NSException *) delete
-{
-  [self notImplemented: _cmd];
-
-  // NSFileManager *fm;
-  // NSException *error;
-  
-  // fm = [NSFileManager defaultManager];
-
-  // if (![fm removeFileAtPath: directory handler: NULL])
-  //   error = [NSException exceptionWithName: @"MAPIStoreIOException"
-  //                                   reason: @"could not delete folder"
-  //                                 userInfo: nil];
-  // else
-  //   error = nil;
-
-  // return error;
-  return nil;
-}
-
 /* acl */
 - (NSString *) defaultUserID
 {
