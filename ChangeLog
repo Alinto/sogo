@@ -1,5 +1,10 @@
 2012-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailContext.m (-updateURLWithFolderName):
+	change the folder name used in the context url to use the new
+	folder name after a rename operation, so that further invocations
+	of -url will return the right url.
+
 	* OpenChange/MAPIStoreMailFolder.m
 	(-moveCopyToFolder:withNewName:isMove:isRecursive:): implemented
 	IMAP-based copy operation, for speed.

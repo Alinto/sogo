@@ -23,7 +23,8 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
-
+#import <Foundation/NSURL.h>
+#import <NGExtensions/NSString+misc.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailFolder.h>
 
@@ -201,6 +202,31 @@ MakeDisplayFolderName (NSString *folderName)
 - (id) rootSOGoFolder
 {
   return [[userContext rootFolders] objectForKey: @"mail"];
+}
+
+- (void) updateURLWithFolderName: (NSString *) newFolderName
+{
+  NSString *urlString;
+  NSMutableArray *pathComponents;
+  BOOL hasSlash;
+  NSUInteger max, folderNameIdx;
+  NSURL *newURL;
+
+  urlString = [contextUrl absoluteString];
+  hasSlash = [urlString hasSuffix: @"/"];
+  pathComponents = [[urlString componentsSeparatedByString: @"/"]
+                     mutableCopy];
+  [pathComponents autorelease];
+  max = [pathComponents count];
+  if (hasSlash)
+    folderNameIdx = max - 2;
+  else
+    folderNameIdx = max - 1;
+  [pathComponents replaceObjectAtIndex: folderNameIdx
+                            withObject: [newFolderName stringByEscapingURL]];
+  urlString = [pathComponents componentsJoinedByString: @"/"];
+  newURL = [NSURL URLWithString: urlString];
+  ASSIGN (contextUrl, newURL);
 }
 
 @end

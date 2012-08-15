@@ -26,6 +26,9 @@
 #import "MAPIStoreContext.h"
 
 @interface MAPIStoreMailContext : MAPIStoreContext
+
+- (void) updateURLWithFolderName: (NSString *) newFolderName;
+
 @end
 
 @interface MAPIStoreOutboxContext : MAPIStoreMailContext
