@@ -23,6 +23,7 @@
 /* TODO: main key arrays must be initialized */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
@@ -653,13 +654,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   int rc;
   MAPIStoreMessage *sourceMsg, *destMsg;
   TALLOC_CTX *memCtx;
-  struct SPropTagArray *availableProps;
-  bool *exclusions;
-  NSUInteger count;
-  enum MAPITAGS propTag;
-  struct SRow *aRow;
-  int error;
-  void *data;
+  struct SRow aRow;
+  struct SPropValue property;
 
   memCtx = talloc_zero (NULL, TALLOC_CTX);
   rc = [sourceFolder openMessage: &sourceMsg
@@ -669,56 +665,23 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   if (rc != MAPISTORE_SUCCESS)
     goto end;
 
-  rc = [sourceMsg getAvailableProperties: &availableProps
-                                inMemCtx: memCtx];
-  if (rc != MAPISTORE_SUCCESS)
-    goto end;
-
-  exclusions = talloc_array(NULL, bool, 65536);
-  exclusions[PR_ROW_TYPE >> 16] = true;
-  exclusions[PR_INSTANCE_KEY >> 16] = true;
-  exclusions[PR_INSTANCE_NUM >> 16] = true;
-  exclusions[PR_INST_ID >> 16] = true;
-  exclusions[PR_FID >> 16] = true;
-  exclusions[PR_MID >> 16] = true;
-  exclusions[PR_SOURCE_KEY >> 16] = true;
-  exclusions[PR_PARENT_SOURCE_KEY >> 16] = true;
-  exclusions[PR_PARENT_FID >> 16] = true;
-  exclusions[PR_CHANGE_KEY >> 16] = true;
-  exclusions[PR_PREDECESSOR_CHANGE_LIST >> 16] = true;
-
-  aRow = talloc_zero (memCtx, struct SRow);
-  aRow->lpProps = talloc_array (aRow, struct SPropValue, 65535);
-
-  for (count = 0; count < availableProps->cValues; count++)
-    {
-      propTag = availableProps->aulPropTag[count];
-      if (!exclusions[propTag >> 16])
-        {
-          error = [sourceMsg getProperty: &data
-                                 withTag: propTag
-                                inMemCtx: aRow];
-          if (error == MAPISTORE_SUCCESS && data)
-            {
-              set_SPropValue_proptag(&aRow->lpProps[aRow->cValues], propTag, data);
-              aRow->cValues++;
-            }
-        }
-    }
-
-  if (targetChangeKey)
-    {
-      set_SPropValue_proptag(&aRow->lpProps[aRow->cValues], PR_CHANGE_KEY, targetChangeKey);
-      aRow->cValues++;
-    }
-
   rc = [self createMessage: &destMsg withMID: targetMid
               isAssociated: [sourceMsg isKindOfClass: MAPIStoreFAIMessageK]];
   if (rc != MAPISTORE_SUCCESS)
     goto end;
-  rc = [destMsg addPropertiesFromRow: aRow];
-  if (rc != MAPISTORE_SUCCESS)
-    goto end;
+
+  [sourceMsg copyToMessage: destMsg];
+
+  if (targetChangeKey)
+    {
+      property.ulPropTag = PidTagChangeKey;
+      property.value.bin = *targetChangeKey;
+      aRow.cValues = 1;
+      aRow.lpProps = &property;
+      rc = [destMsg addPropertiesFromRow: &aRow];
+      if (rc != MAPISTORE_SUCCESS)
+        goto end;
+    }
   [destMsg save];
   if (!wantCopy)
     rc = [sourceFolder deleteMessageWithMID: srcMid andFlags: 0];
@@ -795,10 +758,118 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (enum mapistore_error) moveToFolder: (MAPIStoreFolder *) targetFolder
-                          withNewName: (NSString *) newFolderName
+- (enum mapistore_error) moveCopyToFolder: (MAPIStoreFolder *) targetFolder
+                              withNewName: (NSString *) newFolderName
+                                   isMove: (BOOL) isMove
+                              isRecursive: (BOOL) isRecursive
 {
-  return MAPISTORE_ERR_DENIED;
+  enum mapistore_error rc;
+  NSAutoreleasePool *pool;
+  struct SRow folderRow;
+  struct SPropValue nameProperty;
+  MAPIStoreFolder *subFolder, *newFolder;
+  NSArray *children;
+  MAPIStoreMapping *mapping;
+  MAPIStoreMessage *message, *targetMessage;
+  NSUInteger count, max;
+  NSString *childKey;
+  uint64_t fmid;
+
+  /* TODO: one possible issue with this algorithm is that moved messages will
+     lack a version number and will all be assigned a new one, even though
+     they have not changed. This also means that they will be transferred
+     again to the client during a sync operation. */
+
+  if ([targetFolder supportsSubFolders])
+    {
+      mapping = [self mapping];
+
+      if (!newFolderName)
+        newFolderName = [sogoObject displayName];
+      nameProperty.ulPropTag = PidTagDisplayName;
+      nameProperty.value.lpszW = [newFolderName UTF8String];
+      folderRow.lpProps = &nameProperty;
+      folderRow.cValues = 1;
+      rc = [targetFolder createFolder: &folderRow
+                              withFID: [self objectId]
+                               andKey: &childKey];
+      if (rc == MAPISTORE_SUCCESS)
+        {
+          newFolder = [targetFolder lookupFolder: childKey];
+          [self copyPropertiesToObject: newFolder];
+
+          pool = [NSAutoreleasePool new];
+          children = [self messageKeys];
+          max = [children count];
+          for (count = 0; count < max; count++)
+            {
+              childKey = [children objectAtIndex: count];
+              message = [self lookupMessage: childKey];
+              targetMessage = [newFolder createMessage: NO];
+              [message copyToMessage: targetMessage];
+              if (isMove)
+                {
+                  fmid = [mapping idFromURL: [message url]];
+                  [self deleteMessageWithMID: fmid andFlags: 0];
+                  [mapping registerURL: [targetMessage url]
+                                withID: fmid];
+                }
+              [targetMessage save];
+            }
+          [pool release];
+
+          pool = [NSAutoreleasePool new];
+          children = [self faiMessageKeys];
+          max = [children count];
+          for (count = 0; count < max; count++)
+            {
+              childKey = [children objectAtIndex: count];
+              message = [self lookupFAIMessage: childKey];
+              targetMessage = [newFolder createMessage: YES];
+              [message copyToMessage: targetMessage];
+              if (isMove)
+                {
+                  fmid = [mapping idFromURL: [message url]];
+                  [self deleteMessageWithMID: fmid andFlags: 0];
+                  [mapping registerURL: [targetMessage url]
+                                withID: fmid];
+                }
+              [targetMessage save];
+            }
+          [pool release];
+
+          if (isRecursive)
+            {
+              pool = [NSAutoreleasePool new];
+              children = [self folderKeys];
+              max = [children count];
+              for (count = 0; count < max; count++)
+                {
+                  childKey = [children objectAtIndex: count];
+                  subFolder = [self lookupFolder: childKey];
+                  [subFolder moveCopyToFolder: newFolder withNewName: nil
+                                       isMove: isMove
+                                  isRecursive: isRecursive];
+                }
+              [pool release];
+            }
+
+          if (isMove)
+            {
+              fmid = [mapping idFromURL: [self url]];
+              [mapping unregisterURLWithID: fmid];
+              [self deleteFolder];
+              [mapping registerURL: [newFolder url]
+                            withID: fmid];
+            }
+          [targetFolder cleanupCaches];
+        }
+      [self cleanupCaches];
+    }
+  else
+    rc = MAPISTORE_ERR_DENIED;
+
+  return rc;
 }
 
 - (enum mapistore_error) copyToFolder: (MAPIStoreFolder *) targetFolder

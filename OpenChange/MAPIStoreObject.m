@@ -315,6 +315,62 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return MAPISTORE_SUCCESS;
 }
 
+/* move and copy operations */
+- (void) copyPropertiesToObject: (MAPIStoreObject *) newObject
+{
+  TALLOC_CTX *memCtx;
+  struct SPropTagArray *availableProps;
+  struct SRow row;
+  enum MAPITAGS propTag;
+  bool *exclusions;
+  NSUInteger count;
+  enum mapistore_error error;
+  void *data;
+
+  memCtx = talloc_zero (NULL, TALLOC_CTX);
+
+  [self getAvailableProperties: &availableProps inMemCtx: memCtx];
+
+  /* We exclude identity and versioning properties to facilitate copy
+     operations. If they need to be set (move operations), the caller will need
+     to take care of them. */
+  exclusions = talloc_array (memCtx, bool, 65536);
+  exclusions[PidTagRowType >> 16] = true;
+  exclusions[PidTagInstanceKey >> 16] = true;
+  exclusions[PidTagInstanceNum >> 16] = true;
+  exclusions[PidTagInstID >> 16] = true;
+  exclusions[PidTagAttachNumber >> 16] = true;
+  exclusions[PidTagFolderId >> 16] = true;
+  exclusions[PidTagMid >> 16] = true;
+  exclusions[PidTagSourceKey >> 16] = true;
+  exclusions[PidTagParentSourceKey >> 16] = true;
+  exclusions[PidTagParentFolderId >> 16] = true;
+  exclusions[PidTagChangeKey >> 16] = true;
+  exclusions[PidTagChangeNumber >> 16] = true;
+  exclusions[PidTagPredecessorChangeList >> 16] = true;
+
+  row.cValues = 0;
+  row.lpProps = talloc_array (memCtx, struct SPropValue, 65535);
+
+  for (count = 0; count < availableProps->cValues; count++)
+    {
+      propTag = availableProps->aulPropTag[count];
+      if (!exclusions[propTag >> 16])
+        {
+          error = [self getProperty: &data withTag: propTag inMemCtx: memCtx];
+          if (error == MAPISTORE_SUCCESS && data)
+            {
+              set_SPropValue_proptag (row.lpProps + row.cValues, propTag, data);
+              row.cValues++;
+            }
+        }
+    }
+  [newObject addPropertiesFromRow: &row];
+
+  talloc_free (memCtx);
+
+}
+
 /* subclasses */
 - (NSString *) nameInContainer
 {

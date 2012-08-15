@@ -90,6 +90,9 @@
 - (int) getPidTagLastModificationTime: (void **) data
                              inMemCtx: (TALLOC_CTX *) memCtx;
 
+/* move and copy operations */
+- (void) copyPropertiesToObject: (MAPIStoreObject *) newObject;
+
 /* subclasses */
 - (NSString *) nameInContainer;
 - (NSDate *) creationTime;

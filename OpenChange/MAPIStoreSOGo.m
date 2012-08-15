@@ -639,8 +639,10 @@ sogo_folder_move_folder(void *folder_object, void *target_folder_object,
       else
         newFolderName = nil;
 
-      rc = [moveFolder moveToFolder: targetFolder
-                        withNewName: newFolderName];
+      rc = [moveFolder moveCopyToFolder: targetFolder
+                            withNewName: newFolderName
+                                 isMove: YES
+                            isRecursive: YES];
       [pool release];
       GSUnregisterCurrentThread ();
     }

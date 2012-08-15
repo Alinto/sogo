@@ -70,6 +70,9 @@
 
 - (NSArray *) activeUserRoles;
 
+/* move & copy internal ops */
+- (void) copyToMessage: (MAPIStoreMessage *) newMessage;
+
 /* subclasses */
 - (void) save;
 

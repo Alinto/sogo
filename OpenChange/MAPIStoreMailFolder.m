@@ -207,7 +207,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 }
 
 - (int) getPidTagContentUnreadCount: (void **) data
-		       inMemCtx: (TALLOC_CTX *) memCtx
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   EOQualifier *searchQualifier;
   uint32_t longValue;
@@ -1012,8 +1012,10 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   return MAPISTORE_SUCCESS;
 }
 
-- (enum mapistore_error) moveToFolder: (MAPIStoreFolder *) targetFolder
-                          withNewName: (NSString *) newFolderName
+- (enum mapistore_error) moveCopyToFolder: (MAPIStoreFolder *) targetFolder
+                              withNewName: (NSString *) newFolderName
+                                   isMove: (BOOL) isMove
+                              isRecursive: (BOOL) isRecursive
 {
   enum mapistore_error rc;
   NSURL *folderURL, *newFolderURL;
@@ -1022,12 +1024,11 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   NSException *error;
   MAPIStoreMapping *mapping;
 
-  if ([targetFolder isKindOfClass: MAPIStoreMailFolderK])
+  if (isMove && [targetFolder isKindOfClass: MAPIStoreMailFolderK])
     {
       folderURL = [sogoObject imap4URL];
       if (!newFolderName)
-        newFolderName = [[sogoObject nameInContainer]
-                          substringFromIndex: 6]; /* length of "folder" */
+        newFolderName = [sogoObject displayName];
       newFolderName = [newFolderName stringByEscapingURL];
       targetSOGoFolder = [targetFolder sogoObject];
       newFolderURL = [NSURL URLWithString: newFolderName
@@ -1053,9 +1054,13 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                                             parentDBFolderPath,
                                             newFolderName]];
         }
+      [targetFolder cleanupCaches];
+      [self cleanupCaches];
     }
   else
-    rc = MAPISTORE_ERR_DENIED;
+    rc = [super moveCopyToFolder: targetFolder withNewName: newFolderName
+                          isMove: isMove
+                     isRecursive: isRecursive];
 
   return rc;
 }

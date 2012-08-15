@@ -47,6 +47,9 @@
 /* helpers */
 - (NSData *) mimeAttachTag;
 
+/* move & copy operations */
+- (void) copyToAttachment: (MAPIStoreAttachment *) newAttachment;
+
 /* subclasses */
 - (MAPIStoreEmbeddedMessage *) openEmbeddedMessage;
 - (MAPIStoreEmbeddedMessage *) createEmbeddedMessage;

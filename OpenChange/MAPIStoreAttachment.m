@@ -158,6 +158,30 @@
   return ULLONG_MAX;
 }
 
+- (void) copyToAttachment: (MAPIStoreAttachment *) newAttachment
+{
+  void *attachMethod;
+  enum mapistore_error error;
+  MAPIStoreEmbeddedMessage *embeddedMessage, *newEmbeddedMessage;
+
+  [self copyPropertiesToObject: newAttachment];
+
+  attachMethod = NULL;
+  error = [self getProperty: &attachMethod
+                    withTag: PidTagAttachMethod
+                   inMemCtx: NULL];
+  if (error == MAPISTORE_SUCCESS && attachMethod)
+    {
+      if (*(uint32_t *) attachMethod == afEmbeddedMessage)
+        {
+          embeddedMessage = [self openEmbeddedMessage];
+          newEmbeddedMessage = [newAttachment createEmbeddedMessage];
+          [embeddedMessage copyToMessage: newEmbeddedMessage];
+        }
+      talloc_free (attachMethod);
+    }
+}
+
 /* subclasses */
 - (MAPIStoreEmbeddedMessage *) openEmbeddedMessage
 {

@@ -123,8 +123,10 @@
                    andChangeKeys: (struct Binary_r **) targetChangeKeys
                         wantCopy: (uint8_t) want_copy;
 
-- (enum mapistore_error) moveToFolder: (MAPIStoreFolder *) targetFolder
-                          withNewName: (NSString *) newFolderName;
+- (enum mapistore_error) moveCopyToFolder: (MAPIStoreFolder *) targetFolder
+                              withNewName: (NSString *) newFolderName
+                                   isMove: (BOOL) isMove
+                              isRecursive: (BOOL) isRecursive;
 - (enum mapistore_error) copyToFolder: (MAPIStoreFolder *) targetFolder
                             recursive: (BOOL) resursive
                           withNewName: (NSString *) newFolderName;

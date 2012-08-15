@@ -126,8 +126,10 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   return rc;
 }
 
-- (enum mapistore_error) moveToFolder: (MAPIStoreFolder *) targetFolder
-                          withNewName: (NSString *) newFolderName
+- (enum mapistore_error) moveCopyToFolder: (MAPIStoreFolder *) targetFolder
+                              withNewName: (NSString *) newFolderName
+                                   isMove: (BOOL) isMove
+                              isRecursive: (BOOL) isRecursive
 {
   enum mapistore_error rc;
   NSString *path, *pathComponent, *targetPath, *newPath;
@@ -135,7 +137,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   MAPIStoreMapping *mapping;
   NSRange slashRange;
 
-  if ([targetFolder isKindOfClass: MAPIStoreDBFolderK])
+  if (isMove && [targetFolder isKindOfClass: MAPIStoreDBFolderK])
     {
       path = [sogoObject path];
       slashRange = [path rangeOfString: @"/" options: NSBackwardsSearch];
@@ -158,7 +160,9 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
       rc = MAPISTORE_SUCCESS;
     }
   else
-    rc = MAPISTORE_ERR_DENIED;
+    rc = [super moveCopyToFolder: targetFolder withNewName: newFolderName
+                          isMove: isMove
+                     isRecursive: isRecursive];
 
   return rc;
 }

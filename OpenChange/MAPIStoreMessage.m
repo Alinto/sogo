@@ -425,6 +425,41 @@ rtf2html (NSData *compressedRTF)
                        andType: MAPISTORE_MESSAGE_TABLE];
 }
 
+- (void) copyToMessage: (MAPIStoreMessage *) newMessage
+  
+{
+  TALLOC_CTX *memCtx;
+  struct mapistore_message *messageData;
+  NSArray *keys;
+  NSUInteger count, max;
+  NSString *key;
+  MAPIStoreAttachment *attachment, *newAttachment;
+
+  memCtx = talloc_zero (NULL, TALLOC_CTX);
+
+  /* message headers and recipients */
+  [self getMessageData: &messageData inMemCtx: memCtx];
+  [newMessage modifyRecipientsWithRecipients: messageData->recipients
+                                    andCount: messageData->recipients_count
+                                  andColumns: messageData->columns];
+
+  /* properties */
+  [self copyPropertiesToObject: newMessage];
+  
+  /* attachments */
+  keys = [self attachmentKeys];
+  max = [keys count];
+  for (count = 0; count < max; count++)
+    {
+      key = [keys objectAtIndex: count];
+      attachment = [self lookupAttachment: key];
+      newAttachment = [newMessage createAttachment];
+      [attachment copyToAttachment: newAttachment];
+    }
+
+  talloc_free (memCtx);
+}
+
 - (enum mapistore_error) saveMessage
 {
   enum mapistore_error rc;
