@@ -14,6 +14,12 @@
 	do not attempt to access targetChangeKeys when NULL, to avoid a
 	SEGFAULT.
 
+2012-08-14  Jean Raby  <jraby@inverse.ca>
+
+	* OpenChange/GNUmakefile: use version_info[{0,1}] instead of
+	version_info.{major,minor} when checking for legacy version
+	of python since these named attributes where added in python2.7
+
 2012-08-13  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreSOGo.m (sogo_properties_get_uri): removed
@@ -128,6 +134,11 @@
 
 	* OpenChange/MAPIStoreSOGoObject.m (-objectId): force generation
 	of objectId by parent, whether it is a folder or not.
+
+2012-08-07  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/Contacts/UIxListEditor.m (-setReferencesValue:): check for
+	duplicates in the new list, not in the previous version.
 
 2012-08-03  Jean Raby  <jraby@inverse.ca>
 

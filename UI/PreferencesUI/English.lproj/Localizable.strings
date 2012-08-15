@@ -282,6 +282,7 @@
 "Label 4" = "Label 4";
 "Label 5" = "Label 5";
 
+"The password was changed successfully." = "The password was changed successfully.";
 "Password must not be empty." = "Password must not be empty.";
 "The passwords do not match. Please try again." = "The passwords do not match. Please try again.";
 "Password change failed" = "Password change failed";

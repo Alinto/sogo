@@ -147,7 +147,7 @@
       for (i = 0; i < count; i++)
         {
           currentReference = [references objectAtIndex: i];
-          if (![self cardReferences: initialReferences 
+          if (![self cardReferences: [list cardReferences] 
                             contain: currentReference])
             {
               // Search contact by vCard UID
