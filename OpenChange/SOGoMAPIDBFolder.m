@@ -215,6 +215,56 @@ Class SOGoMAPIDBObjectK = Nil;
               andSortOrderings: nil];
 }
 
+- (void) setNameInContainer: (NSString *) newName
+{
+  NSMutableString *sql;
+  NSString *oldPath, *newPath, *path, *parentPath;
+  NSMutableArray *queries;
+  NSArray *records;
+  NSDictionary *record;
+  NSUInteger count, max;
+
+  /* change the paths in children records */
+  if (nameInContainer)
+    oldPath = [self path];
+
+  [super setNameInContainer: newName];
+
+  if (nameInContainer)
+    {
+      newPath = [self path];
+
+      sql = [NSMutableString stringWithFormat:
+                               @"SELECT c_path, c_parent_path FROM %@"
+                             @" WHERE c_path LIKE '%@/%%'",
+                             [self tableName], oldPath];
+      records = [self performSQLQuery: sql];
+      max = [records count];
+      queries = [NSMutableArray arrayWithCapacity: max + 1];
+      if (max > 0)
+        {
+          for (count = 0; count < max; count++)
+            {
+              record = [records objectAtIndex: count];
+              path = [record objectForKey: @"c_path"];
+              sql = [NSMutableString stringWithFormat: @"UPDATE %@"
+                                     @" SET c_path = '%@'",
+                                     [self tableName],
+                        [path stringByReplacingPrefix: oldPath
+                                           withPrefix: newPath]];
+              parentPath = [record objectForKey: @"c_parent_path"];
+              if ([parentPath isNotNull])
+                [sql appendFormat: @", c_parent_path = '%@'",
+                     [parentPath stringByReplacingPrefix: oldPath
+                                              withPrefix: newPath]];
+              [sql appendFormat: @" WHERE c_path = '%@'", path];
+              [queries addObject: sql];
+            }
+          [self performBatchSQLQueries: queries];
+        }
+    }
+}
+
 - (void) changePathTo: (NSString *) newPath
 {
   NSMutableString *sql// , *qualifierClause

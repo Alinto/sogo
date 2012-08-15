@@ -260,6 +260,29 @@ static EOAttribute *textColumn = nil;
 }
 
 /* actions */
+- (void) setNameInContainer: (NSString *) newNameInContainer
+{
+  NSMutableString *sql;
+  NSString *oldPath, *newPath;
+
+  if (nameInContainer)
+    oldPath = [self path];
+
+  [super setNameInContainer: newNameInContainer];
+
+  if (nameInContainer)
+    {
+      newPath = [self path];
+      
+      sql = [NSMutableString stringWithFormat: @"UPDATE %@"
+                             @" SET c_path = '%@'",
+                             [self tableName],
+                             newPath];
+      [sql appendFormat: @" WHERE c_path = '%@'", oldPath];
+      [self performBatchSQLQueries: [NSArray arrayWithObject: sql]];
+    }
+}
+
 - (void) changePathTo: (NSString *) newPath
 {
   NSMutableString *sql;

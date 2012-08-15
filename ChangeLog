@@ -1,5 +1,9 @@
 2012-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/SOGoMAPIDBObject.m (-setNameInContainer): update the
+	object record in the database to reflect the change of folder
+	name.
+
 	* OpenChange/MAPIStoreMailContext.m (-updateURLWithFolderName):
 	change the folder name used in the context url to use the new
 	folder name after a rename operation, so that further invocations
