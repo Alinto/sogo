@@ -1,3 +1,9 @@
+2012-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailFolder.m
+	(-moveCopyToFolder:withNewName:isMove:isRecursive:): implemented
+	IMAP-based copy operation, for speed.
+
 2012-08-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFolder.m (-moveToFolder:withNewName:):

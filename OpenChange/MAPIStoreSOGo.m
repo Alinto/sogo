@@ -679,9 +679,10 @@ sogo_folder_copy_folder(void *folder_object, void *target_folder_object,
 
       newFolderName = [NSString stringWithUTF8String: new_folder_name];
 
-      rc = [copyFolder copyToFolder: targetFolder
-                          recursive: recursive
-                        withNewName: newFolderName];
+      rc = [copyFolder moveCopyToFolder: targetFolder
+                            withNewName: newFolderName
+                                 isMove: NO
+                            isRecursive: recursive];
       [pool release];
       GSUnregisterCurrentThread ();
     }

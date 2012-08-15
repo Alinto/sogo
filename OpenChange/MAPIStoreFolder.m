@@ -806,6 +806,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
               childKey = [children objectAtIndex: count];
               message = [self lookupMessage: childKey];
               targetMessage = [newFolder createMessage: NO];
+              [targetMessage setIsNew: YES];
               [message copyToMessage: targetMessage];
               if (isMove)
                 {
@@ -826,6 +827,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
               childKey = [children objectAtIndex: count];
               message = [self lookupFAIMessage: childKey];
               targetMessage = [newFolder createMessage: YES];
+              [targetMessage setIsNew: YES];
               [message copyToMessage: targetMessage];
               if (isMove)
                 {
@@ -870,13 +872,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     rc = MAPISTORE_ERR_DENIED;
 
   return rc;
-}
-
-- (enum mapistore_error) copyToFolder: (MAPIStoreFolder *) targetFolder
-                            recursive: (BOOL) resursive
-                          withNewName: (NSString *) newFolderName
-{
-  return MAPISTORE_ERR_DENIED;
 }
 
 - (SOGoFolder *) aclFolder

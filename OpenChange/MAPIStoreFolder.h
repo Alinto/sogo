@@ -127,9 +127,6 @@
                               withNewName: (NSString *) newFolderName
                                    isMove: (BOOL) isMove
                               isRecursive: (BOOL) isRecursive;
-- (enum mapistore_error) copyToFolder: (MAPIStoreFolder *) targetFolder
-                            recursive: (BOOL) resursive
-                          withNewName: (NSString *) newFolderName;
 
 - (int) getDeletedFMIDs: (struct I8Array_r **) fmidsPtr
                   andCN: (uint64_t *) cnPtr

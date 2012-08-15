@@ -1019,12 +1019,21 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 {
   enum mapistore_error rc;
   NSURL *folderURL, *newFolderURL;
+  struct SRow folderRow;
+  struct SPropValue nameProperty;
+  MAPIStoreMailFolder *newFolder;
   SOGoMailFolder *targetSOGoFolder;
-  NSString *newURL, *parentDBFolderPath;
+  NSMutableArray *uids;
+  NSArray *childKeys;
+  NSUInteger count, max;
+  NGImap4Connection *connection;
+  NGImap4Client *client;
+  NSString *newURL, *parentDBFolderPath, *childKey, *folderIMAPName, *newFolderIMAPName;
   NSException *error;
   MAPIStoreMapping *mapping;
+  NSDictionary *result;
 
-  if (isMove && [targetFolder isKindOfClass: MAPIStoreMailFolderK])
+  if ([targetFolder isKindOfClass: MAPIStoreMailFolderK])
     {
       folderURL = [sogoObject imap4URL];
       if (!newFolderName)
@@ -1033,29 +1042,84 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
       targetSOGoFolder = [targetFolder sogoObject];
       newFolderURL = [NSURL URLWithString: newFolderName
                             relativeToURL: [targetSOGoFolder imap4URL]];
-      error = [[sogoObject imap4Connection]
-                moveMailboxAtURL: folderURL
-                           toURL: newFolderURL];
-      if (error)
-        rc = MAPISTORE_ERR_DENIED;
+      if (isMove)
+        {
+          error = [[sogoObject imap4Connection]
+                    moveMailboxAtURL: folderURL
+                               toURL: newFolderURL];
+          if (error)
+            rc = MAPISTORE_ERR_DENIED;
+          else
+            {
+              rc = MAPISTORE_SUCCESS;
+              mapping = [self mapping];
+              newURL = [NSString stringWithFormat: @"%@folder%@/",
+                                 [targetFolder url], newFolderName];
+              [mapping updateID: [self objectId]
+                        withURL: newURL];
+              parentDBFolderPath = [[targetFolder dbFolder] path];
+              if (!parentDBFolderPath)
+                parentDBFolderPath = @"";
+              [dbFolder changePathTo: [NSString stringWithFormat:
+                                                  @"%@/folder%@",
+                                                parentDBFolderPath,
+                                                newFolderName]];
+            }
+        }
       else
         {
-          rc = MAPISTORE_SUCCESS;
-          mapping = [self mapping];
-          newURL = [NSString stringWithFormat: @"%@folder%@/",
-                             [targetFolder url], newFolderName];
-          [mapping updateID: [self objectId]
-                    withURL: newURL];
-          parentDBFolderPath = [[targetFolder dbFolder] path];
-          if (!parentDBFolderPath)
-            parentDBFolderPath = @"";
-          [dbFolder changePathTo: [NSString stringWithFormat:
-                                              @"%@/folder%@",
-                                            parentDBFolderPath,
-                                            newFolderName]];
+          nameProperty.ulPropTag = PidTagDisplayName;
+          nameProperty.value.lpszW = [newFolderName UTF8String];
+          folderRow.lpProps = &nameProperty;
+          folderRow.cValues = 1;
+          rc = [targetFolder createFolder: &folderRow
+                                  withFID: -1
+                                   andKey: &childKey];
+          if (rc == MAPISTORE_SUCCESS)
+            {
+              newFolder = [targetFolder lookupFolder: childKey];
+
+              connection = [sogoObject imap4Connection];
+              folderIMAPName = [connection
+                                 imap4FolderNameForURL: [sogoObject imap4URL]];
+              newFolderIMAPName = [connection
+                                    imap4FolderNameForURL: [[newFolder sogoObject] imap4URL]];
+              client = [connection client];
+              [client select: folderIMAPName];
+
+              childKeys = [self messageKeys];
+              max = [childKeys count];
+              uids = [NSMutableArray arrayWithCapacity: max];
+              for (count = 0; count < max; count++)
+                {
+                  childKey = [childKeys objectAtIndex: count];
+                  [uids addObject: [self messageUIDFromMessageKey: childKey]];
+                }
+
+              result = [client copyUids: uids 
+                               toFolder: newFolderIMAPName];
+              if ([[result objectForKey: @"result"] boolValue])
+                {
+                  if (isRecursive)
+                    {
+                      childKeys = [self folderKeys];
+                      max = [childKeys count];
+                      for (count = 0; count < max; count++)
+                        {
+                          childKey = [childKeys objectAtIndex: count];
+                          [[self lookupFolder: childKey]
+                              moveCopyToFolder: newFolder
+                                   withNewName: nil
+                                        isMove: NO
+                                   isRecursive: YES];
+                        }
+                    }
+                }
+              else
+                rc = MAPISTORE_ERROR;
+            }
         }
       [targetFolder cleanupCaches];
-      [self cleanupCaches];
     }
   else
     rc = [super moveCopyToFolder: targetFolder withNewName: newFolderName

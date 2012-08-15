@@ -157,6 +157,8 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
       [mapping updateID: [self objectId]
                 withURL: newURL];
 
+      [targetFolder cleanupCaches];
+
       rc = MAPISTORE_SUCCESS;
     }
   else
