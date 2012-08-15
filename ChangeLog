@@ -3,6 +3,8 @@
 	* OpenChange/MAPIStoreMailFolder.m
 	(-moveCopyToFolder:withNewName:isMove:isRecursive:): implemented
 	IMAP-based copy operation, for speed.
+	(-addProperties): restored the ability to rename IMAP folders by
+	properly updating the fid/url mapping with our new methods.
 
 2012-08-14  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

@@ -113,6 +113,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   NSString *newDisplayName;
   NSMutableDictionary *propsCopy;
   NSNumber *key;
+  uint64_t fid;
 
   key = MAPIPropertyKey (PR_DISPLAY_NAME_UNICODE);
   newDisplayName = [newProperties objectForKey: key];
@@ -121,10 +122,11 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
       && ![[(SOGoMailFolder *) sogoObject displayName]
             isEqualToString: newDisplayName])
     {
-      [NSException raise: @"MAPIStoreIOException"
-                  format: @"renaming a mail folder via OpenChange is"
-                   @" currently a bad idea"];
+      fid = [self objectId];
       [(SOGoMailFolder *) sogoObject renameTo: newDisplayName];
+      [[self mapping] updateID: fid withURL: [self url]];
+      [self cleanupCaches];
+      
       propsCopy = [newProperties mutableCopy];
       [propsCopy removeObjectForKey: key];
       [propsCopy autorelease];
