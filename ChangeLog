@@ -1,5 +1,10 @@
 2012-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m
+	(-getMessageData:inMemCtx:): when a "recipients" records is
+	available in the properties, we must return that list instead of
+	the list of attendees since it will be the most recent one.
+
 	* OpenChange/MAPIStoreMapping.m (_updateFolderWithURL:withURL:):
 	we retain and release "oldURL" to avoid releasing it when it
 	is replaced in the list of urls to modify.

@@ -44,6 +44,7 @@
 #import <NGCards/iCalTrigger.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserManager.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
@@ -222,13 +223,91 @@
 - (void) getMessageData: (struct mapistore_message **) dataPtr
                inMemCtx: (TALLOC_CTX *) memCtx
 {
+  static NSString *recTypes[] = {@"orig", @"to", @"cc", @"bcc"};
+  static NSInteger recTypesValue[] = {MAPI_ORIG, MAPI_TO, MAPI_CC, MAPI_BCC};
   struct mapistore_message *msgData;
+  NSDictionary *recipients, *contactInfos;
+  NSString *email;
+  NSArray *attendees;
+  NSDictionary *attendee;
+  SOGoUserManager *mgr;
+  struct mapistore_message_recipient *recipient;
+  NSUInteger nRecType, maxRecTypes, count, max, propCount;
+  NSObject *currentValue;
 
   [super getMessageData: &msgData inMemCtx: memCtx];
-  /* HACK: we know the first (and only) proxy is our appointment wrapper
-     instance, but this might not always be true */
-  [[proxies objectAtIndex: 0] fillMessageData: msgData
-                                     inMemCtx: memCtx];
+
+  /* The presence of the "recipients" meta-property means that our most recent
+     list of recipients has not been saved yet and that we must return that
+     one instead of the one stored in the event. */
+  recipients = [properties objectForKey: @"recipients"];
+  if (recipients)
+    {
+      mgr = [SOGoUserManager sharedUserManager];
+
+      /* TODO: this code might need to be moved into MAPIStoreMessage */
+      msgData->columns = set_SPropTagArray (msgData, 9,
+                                            PR_OBJECT_TYPE,
+                                            PR_DISPLAY_TYPE,
+                                            PR_7BIT_DISPLAY_NAME_UNICODE,
+                                            PR_SMTP_ADDRESS_UNICODE,
+                                            PR_SEND_INTERNET_ENCODING,
+                                            PR_RECIPIENT_DISPLAY_NAME_UNICODE,
+                                            PR_RECIPIENT_FLAGS,
+                                            PR_RECIPIENT_ENTRYID,
+                                            PR_RECIPIENT_TRACKSTATUS);
+
+      maxRecTypes = sizeof(recTypes) / sizeof(recTypes[0]);
+      for (nRecType = 0; nRecType < maxRecTypes; nRecType++)
+        {
+          attendees = [recipients objectForKey: recTypes[nRecType]];
+          max = [attendees count];
+          if (max > 0)
+            {
+              msgData->recipients_count += max;
+              msgData->recipients = talloc_realloc(msgData,
+                                                   msgData->recipients, struct
+                                                   mapistore_message_recipient, msgData->recipients_count);
+              recipient = msgData->recipients;
+              for (count = 0; count < max; count++)
+                {
+                  attendee = [attendees objectAtIndex: count];
+                  recipient->type = recTypesValue[nRecType];
+                  email = [attendee objectForKey: @"email"];
+                  if (email)
+                    {
+                      contactInfos
+                        = [mgr contactInfosForUserWithUIDorEmail: email];
+                      recipient->username = [[contactInfos
+                                               objectForKey: @"c_uid"]
+                                              asUnicodeInMemCtx: msgData];
+                    }
+                  else
+                    recipient->username = NULL;
+
+                  recipient->data = talloc_array(msgData, void *,
+                                                 msgData->columns->cValues);
+                  for (propCount = 0;
+                       propCount < msgData->columns->cValues;
+                       propCount++)
+                    {
+                      currentValue = [attendee objectForKey: MAPIPropertyKey (msgData->columns->aulPropTag[propCount])];
+                      [currentValue getValue: recipient->data + propCount
+                                      forTag: msgData->columns->aulPropTag[propCount]
+                                    inMemCtx: msgData];
+                    }
+                  recipient++;
+                }
+            }
+        }
+    }
+  else
+    {
+      /* HACK: we know the first (and only) proxy is our appointment wrapper
+         instance, but this might not always be true */
+      [[proxies objectAtIndex: 0] fillMessageData: msgData
+                                  inMemCtx: memCtx];
+    }
 
   *dataPtr = msgData;
 }
@@ -368,8 +447,11 @@
   /* reinstantiate the old sogo object and attach it to self */
   woContext = [[self userContext] woContext];
   if (isNew)
-    newObject = [SOGoAppointmentObject objectWithName: cname
-                                          inContainer: folder];
+    {
+      newObject = [SOGoAppointmentObject objectWithName: cname
+                                            inContainer: folder];
+      [newObject setIsNew: YES];
+    }
   else
     {
       /* dissociate the object url from the old object's id */
