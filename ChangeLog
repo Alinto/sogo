@@ -1,3 +1,11 @@
+2012-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m
+	(-getPidTagInternetCodepage:inMemCtx:): new getter for a property
+	that is sometimes requested.
+	(-getPidTagBody:inMemCtx:): we return an empty string when no
+	"description"/"comment" is actually present.
+
 2012-08-15  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailFolder.m (-addProperties:): make use of

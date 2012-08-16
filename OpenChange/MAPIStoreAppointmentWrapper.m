@@ -1269,9 +1269,25 @@ static NSCharacterSet *hexCharacterSet = nil;
   if ([stringValue length] > 0)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
-    rc = MAPISTORE_ERR_NOT_FOUND;
+    *data = [@"" asUnicodeInMemCtx: memCtx];
 
   return rc;
+}
+
+- (int) getPidTagInternetCodepage: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  /* ref:
+     http://msdn.microsoft.com/en-us/library/dd317756%28v=vs.85%29.aspx
+  
+     minimal list that should be handled:
+     us-ascii: 20127
+     iso-8859-1: 28591
+     iso-8859-15: 28605
+     utf-8: 65001 */
+  *data = MAPILongValue(memCtx, 65001);
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) getPidLidRecurring: (void **) data
