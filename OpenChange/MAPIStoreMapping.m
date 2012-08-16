@@ -215,6 +215,8 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   NSNumber *idKey;
   TDB_DATA key, dbuf;
 
+  [oldURL retain];
+
   allKeys = [reverseMapping allKeys];
   max = [allKeys count];
   for (count = 0; count < max; count++)
@@ -243,6 +245,8 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
           talloc_free (dbuf.dptr);
         }
     }
+
+  [oldURL release];
 }
 
 - (void) updateID: (uint64_t) idNbr
