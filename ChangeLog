@@ -4,6 +4,11 @@
 	(-getMessageData:inMemCtx:): when a "recipients" records is
 	available in the properties, we must return that list instead of
 	the list of attendees since it will be the most recent one.
+	(_fixupAppointmentObjectWithUID::): when an appointment had been
+	deleted, we first attempt to resurrect it from the database before
+	reinstantiating it, which allows the event synchronisation to
+	happen properly in [SOGoAppointmentObject
+	updateContentWithCalendar:fromRequest:].
 
 	* OpenChange/MAPIStoreMapping.m (_updateFolderWithURL:withURL:):
 	we retain and release "oldURL" to avoid releasing it when it

@@ -33,8 +33,11 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
+#import <EOControl/EOQualifier.h>
+#import <EOControl/EOFetchSpecification.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <GDLContentStore/GCSFolder.h>
 #import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEvent.h>
@@ -78,6 +81,8 @@
 
 // extern void ndr_print_AppointmentRecurrencePattern(struct ndr_print *ndr, const char *name, const struct AppointmentRecurrencePattern *r);
 
+static Class NSArrayK;
+
 @implementation SOGoAppointmentObject (MAPIStoreExtension)
 
 - (Class) mapistoreMessageClass
@@ -88,6 +93,11 @@
 @end
 
 @implementation MAPIStoreCalendarMessage
+
++ (void) initialize
+{
+  NSArrayK = [NSArray class];
+}
 
 + (enum mapistore_error) getAvailableProperties: (struct SPropTagArray **) propertiesP
                                        inMemCtx: (TALLOC_CTX *) memCtx
@@ -425,14 +435,61 @@
   return uid;
 }
 
+- (SOGoAppointmentObject *) _resurrectRecord: (NSString *) cname
+                                  fromFolder: (SOGoAppointmentFolder *) folder
+{
+  NSArray *records;
+  EOQualifier *qualifier;
+  EOFetchSpecification *fs;
+  GCSFolder *ocsFolder;
+  SOGoAppointmentObject *newObject;
+  NSMutableDictionary *newRecord;
+  static NSArray *childRecordFields = nil;
+
+  if (!childRecordFields)
+    {
+      childRecordFields = [NSArray arrayWithObjects: @"c_name",
+				   @"c_creationdate", @"c_lastmodified",
+				   @"c_content", nil];
+      [childRecordFields retain];
+    }
+
+  ocsFolder = [folder ocsFolder];
+
+  qualifier
+    = [EOQualifier qualifierWithQualifierFormat:
+                     [NSString stringWithFormat: @"c_name='%@'", cname]];
+  fs = [EOFetchSpecification fetchSpecificationWithEntityName: [ocsFolder folderName]
+                                                    qualifier: qualifier
+                                                sortOrderings: nil];
+  records = [ocsFolder fetchFields: childRecordFields
+                fetchSpecification: fs
+                     ignoreDeleted: NO];
+  if ([records isKindOfClass: NSArrayK] && [records count])
+    {
+      newRecord = [[records objectAtIndex: 0] mutableCopy];
+      [newRecord setObject: [NSNumber numberWithInt: 0]
+                    forKey: @"c_version"];
+      newObject = [SOGoAppointmentObject objectWithRecord: newRecord
+                                              inContainer: folder];
+      [newRecord autorelease];
+      [newObject setIsNew: NO];
+    }
+  else
+    newObject = nil;
+
+
+  return newObject;
+}
+
 - (void) _fixupAppointmentObjectWithUID: (NSString *) uid
 {
   NSString *cname, *url;
   MAPIStoreMapping *mapping;
   uint64_t objectId;
+  WOContext *woContext;
   SOGoAppointmentFolder *folder;
   SOGoAppointmentObject *newObject;
-  WOContext *woContext;
 
   cname = [[container sogoObject] resourceNameForEventUID: uid];
   if (cname)
@@ -443,14 +500,20 @@
   mapping = [self mapping];
 
   url = [NSString stringWithFormat: @"%@%@", [container url], cname];
-  folder = [container sogoObject];
+  folder = [sogoObject container];
+
   /* reinstantiate the old sogo object and attach it to self */
   woContext = [[self userContext] woContext];
   if (isNew)
     {
-      newObject = [SOGoAppointmentObject objectWithName: cname
-                                            inContainer: folder];
-      [newObject setIsNew: YES];
+      /* event could have been deleted, let's try to resurrect it */
+      newObject = [self _resurrectRecord: cname fromFolder: folder];
+      if (!newObject)
+        {
+          newObject = [SOGoAppointmentObject objectWithName: cname
+                                                inContainer: folder];
+          [newObject setIsNew: YES];
+        }
     }
   else
     {
