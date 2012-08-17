@@ -1,6 +1,6 @@
 /* MAPIStoreRecurrenceUtils.h - this file is part of $PROJECT_NAME_HERE$
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
