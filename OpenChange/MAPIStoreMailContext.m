@@ -206,12 +206,14 @@ MakeDisplayFolderName (NSString *folderName)
 
 - (void) updateURLWithFolderName: (NSString *) newFolderName
 {
-  NSString *urlString;
+  NSString *urlString, *escapedName;
   NSMutableArray *pathComponents;
   BOOL hasSlash;
   NSUInteger max, folderNameIdx;
   NSURL *newURL;
 
+  /* we do not need to unescape the url here as it will be reassembled later
+     in the method */
   urlString = [contextUrl absoluteString];
   hasSlash = [urlString hasSuffix: @"/"];
   pathComponents = [[urlString componentsSeparatedByString: @"/"]
@@ -222,8 +224,9 @@ MakeDisplayFolderName (NSString *folderName)
     folderNameIdx = max - 2;
   else
     folderNameIdx = max - 1;
+  escapedName = [newFolderName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
   [pathComponents replaceObjectAtIndex: folderNameIdx
-                            withObject: [newFolderName stringByEscapingURL]];
+                            withObject: escapedName];
   urlString = [pathComponents componentsJoinedByString: @"/"];
   newURL = [NSURL URLWithString: urlString];
   ASSIGN (contextUrl, newURL);

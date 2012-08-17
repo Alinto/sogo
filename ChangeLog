@@ -1,3 +1,9 @@
+2012-08-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreContext.m (-getPath:ofFMID:inMemCtx:):
+	properly escape urls containing non-ascii chars.
+	(-getRootFoldeR:withFID:): idem.
+
 2012-08-16  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarMessage.m

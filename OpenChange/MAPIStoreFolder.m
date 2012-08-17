@@ -94,12 +94,14 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   NSURL *folderURL;
   NSMutableString *pathPrefix;
-  NSString *path, *folderName;
+  NSString *path, *escapedURL, *folderName;
   NSArray *parts;
   NSUInteger lastPartIdx;
   MAPIStoreUserContext *userContext;
 
-  folderURL = [NSURL URLWithString: [self url]];
+  escapedURL = [[self url]
+                 stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+  folderURL = [NSURL URLWithString: escapedURL];
   path = [folderURL path];
   path = [path substringFromIndex: 1];
   if ([path length] > 0)
@@ -1495,7 +1497,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     url = [NSString stringWithFormat: @"%@/", [super url]];
   else
     {
-      url = [[context url] absoluteString];
+      url = [[[context url] absoluteString]
+                 stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
       if (![url hasSuffix: @"/"])
         url = [NSString stringWithFormat: @"%@/", url];
     }

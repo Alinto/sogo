@@ -1046,15 +1046,15 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
       folderURL = [sogoObject imap4URL];
       if (!newFolderName)
         newFolderName = [sogoObject displayName];
-      newFolderName = [newFolderName stringByEscapingURL];
       targetSOGoFolder = [targetFolder sogoObject];
-      newFolderURL = [NSURL URLWithString: newFolderName
-                            relativeToURL: [targetSOGoFolder imap4URL]];
       if (isMove)
         {
+          newFolderURL = [NSURL
+                           URLWithString: [newFolderName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]
+                           relativeToURL: [targetSOGoFolder imap4URL]];
           error = [[sogoObject imap4Connection]
-                    moveMailboxAtURL: folderURL
-                               toURL: newFolderURL];
+                      moveMailboxAtURL: folderURL
+                                 toURL: newFolderURL];
           if (error)
             rc = MAPISTORE_ERR_DENIED;
           else
@@ -1063,8 +1063,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
               mapping = [self mapping];
               newURL = [NSString stringWithFormat: @"%@folder%@/",
                                  [targetFolder url], newFolderName];
-              [mapping updateID: [self objectId]
-                        withURL: newURL];
+              [mapping updateID: [self objectId] withURL: newURL];
               parentDBFolderPath = [[targetFolder dbFolder] path];
               if (!parentDBFolderPath)
                 parentDBFolderPath = @"";
