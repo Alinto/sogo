@@ -210,7 +210,13 @@ static Class NSArrayK;
 - (int) getPidTagMessageClass: (void **) data
                      inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = talloc_strdup (memCtx, "IPM.Appointment");
+  SOGoUser *owner;
+
+  owner = [[self userContext] sogoUser];
+  if ([masterEvent userAsAttendee: owner])
+    *data = talloc_strdup (memCtx, "IPM.Schedule.Meeting.Request");
+  else
+    *data = talloc_strdup (memCtx, "IPM.Appointment");
 
   return MAPISTORE_SUCCESS;
 }

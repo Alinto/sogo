@@ -1,5 +1,13 @@
 2012-08-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreCalendarMessage.m
+	(-getPidTagMessageClass:inMemCtx:): return
+	"IPM.Schedule.Meeting.Request" when the owner user is an attendee.
+
+	* OpenChange/MAPIStoreAppointmentWrapper.m
+	(-getPidLidAppointmentNotAllowPropose:inMemCtx): new getter that
+	always return "YES", in order to disallow counter proposals.
+
 	* OpenChange/MAPIStoreContext.m (-getPath:ofFMID:inMemCtx:):
 	properly escape urls containing non-ascii chars.
 	(-getRootFoldeR:withFID:): idem.

@@ -709,6 +709,12 @@ static NSCharacterSet *hexCharacterSet = nil;
 
   return MAPISTORE_SUCCESS;
 }
+ 
+- (int) getPidLidAppointmentNotAllowPropose: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getYes: data inMemCtx: memCtx];
+}
 
 - (int) getPidLidAppointmentStartWhole: (void **) data
                               inMemCtx: (TALLOC_CTX *) memCtx
