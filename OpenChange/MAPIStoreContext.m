@@ -366,7 +366,8 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   NSString *objectURL, *url;
   // TDB_DATA key, dbuf;
 
-  url = [contextUrl absoluteString];
+  url = [[contextUrl absoluteString]
+            stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
   objectURL = [[userContext mapping] urlFromID: fmid];
   if (objectURL)
     {
@@ -417,15 +418,18 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   MAPIStoreFolder *baseFolder;
   SOGoFolder *currentFolder;
   WOContext *woContext;
-  NSString *path;
+  NSString *path, *urlString;
   NSArray *pathComponents;
   NSUInteger count, max;
 
   mapping = [userContext mapping];
   if (![mapping urlFromID: newFid])
-    [mapping registerURL: [contextUrl absoluteString]
-                  withID: newFid];
-
+    {
+      urlString = [[contextUrl absoluteString]
+                      stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+      [mapping registerURL: urlString
+                    withID: newFid];
+    }
   [userContext activateWithUser: activeUser];
   woContext = [userContext woContext];
 
