@@ -169,7 +169,9 @@ DBMSGREADER_TOOL = dbmsgreader
 $(DBMSGREADER_TOOL)_OBJC_FILES += \
 	dbmsgreader.m
 
-$(DBMSGREADER_TOOL)_LIB_DIRS += -L../SoObjects/SOGo/ -lSOGo -lNGObjWeb
+$(DBMSGREADER_TOOL)_LIB_DIRS += \
+        -L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
+	 -lNGObjWeb
 
 TEST_TOOL_NAME += $(PLREADER_TOOL) $(DBMSGREADER_TOOL)
 
