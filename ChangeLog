@@ -1,5 +1,9 @@
 2012-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMessage.m
+	(-getPidTagDeleteAfterSubmit:inMemCtx:): moved from
+	MAPIStoreMailMessage.
+
 	* OpenChange/MAPIStoreContactsMessage.m
 	(-getPidTagAlternateRecipientAllowed:inMemCtx:)
 	(-getPidTagMessageFlags:inMemCtx:)

@@ -801,6 +801,12 @@ rtf2html (NSData *compressedRTF)
   return [self getEmptyString: data inMemCtx: memCtx];
 }
 
+- (int) getPidTagDeleteAfterSubmit: (void **) data // TODO
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getNo: data inMemCtx: memCtx];
+}
+
 - (int) getPidTagDisplayTo: (void **) data
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
