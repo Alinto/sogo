@@ -1,5 +1,10 @@
 2012-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContactsMessage.m
+	(-getPidTagAlternateRecipientAllowed:inMemCtx:)
+	(-getPidTagMessageFlags:inMemCtx:)
+	(-getPidTagDeleteAfterSubmit:inMemCtx:): new getters.
+
 	* OpenChange/MAPIStoreGCSFolder.m
 	(-setChangeKey:forMessageWithKey:): removed useless method.
 	(-updateVersionsForMessageWithKey:withChangeKey:): set the change
