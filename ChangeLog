@@ -1,3 +1,13 @@
+2012-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreGCSFolder.m
+	(-setChangeKey:forMessageWithKey:): removed useless method.
+	(-updateVersionsForMessageWithKey:withChangeKey:): set the change
+	key provided by the client as member of the predecessor
+	changelist, but never as the actual change key for the object.
+	This hopefully fixes the issue where Outlook deletes objects that
+	have a different change list than what they expect.
+
 2012-08-17  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreCalendarMessage.m

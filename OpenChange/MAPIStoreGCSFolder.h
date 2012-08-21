@@ -45,11 +45,8 @@
                            withChangeKey: (NSData *) newChangeKey;
 - (NSNumber *) lastModifiedFromMessageChangeNumber: (NSNumber *) changeNum;
 - (NSNumber *) changeNumberForMessageWithKey: (NSString *) messageKey;
-
 - (NSData *) changeKeyForMessageWithKey: (NSString *) messageKey;
 - (NSData *) predecessorChangeListForMessageWithKey: (NSString *) messageKey;
-- (void) setChangeKey: (NSData *) changeKey
-    forMessageWithKey: (NSString *) messageKey;
 
 - (NSArray *) activeUserRoles;
 
