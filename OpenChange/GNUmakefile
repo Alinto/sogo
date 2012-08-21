@@ -170,9 +170,11 @@ $(DBMSGREADER_TOOL)_OBJC_FILES += \
 	dbmsgreader.m
 
 $(DBMSGREADER_TOOL)_LIB_DIRS += \
-        -L../SoObjects/SOGo/SOGo.framework/ -L../OGoContentStore/obj/ \
-	-L../SOPE/GDLContentStore/obj/ -L../SOPE/NGCards/obj/ -lSOGo \
-	 -lNGObjWeb
+	-L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
+	-L../OGoContentStore/obj/ -lOGoContentStore \
+	-L../SOPE/GDLContentStore/obj/ -lGDLContentStore \
+	-L../SOPE/NGCards/obj/ -lNGCards \
+	-lNGObjWeb
 
 TEST_TOOL_NAME += $(PLREADER_TOOL) $(DBMSGREADER_TOOL)
 
