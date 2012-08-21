@@ -25,6 +25,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
@@ -46,6 +47,7 @@
 #import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreUserContext.h"
+#import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
@@ -1315,7 +1317,51 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (int) getPidTagAccessLevel: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPILongValue (memCtx, 0x01);
+  SOGoUser *ownerUser;
+  BOOL userIsOwner;
+
+  ownerUser = [[self userContext] sogoUser];
+
+  userIsOwner = [[context activeUser] isEqual: ownerUser];
+
+  *data = MAPILongValue (memCtx, (userIsOwner) ? 0x01 : 0x00);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagRights: (void **) data
+               inMemCtx: (TALLOC_CTX *) memCtx
+{
+  uint32_t rights = 0;
+  SOGoUser *ownerUser;
+  BOOL userIsOwner;
+
+  ownerUser = [[self userContext] sogoUser];
+
+  userIsOwner = [[context activeUser] isEqual: ownerUser];
+  if (userIsOwner || [self subscriberCanReadMessages])
+    rights |= RightsReadItems;
+  if (userIsOwner || [self subscriberCanCreateMessages])
+    rights |= RightsCreateItems;
+  if (userIsOwner || [self subscriberCanModifyMessages])
+    rights |= RightsEditOwn | RightsEditAll;
+  if (userIsOwner || [self subscriberCanDeleteMessages])
+    rights |= RightsDeleteOwn | RightsDeleteAll;
+  if ((userIsOwner || [self subscriberCanCreateSubFolders])
+      && [self supportsSubFolders])
+    rights |= RightsCreateSubfolders;
+  if (userIsOwner)
+    rights |= RightsFolderOwner | RightsFolderContact;
+  
+  *data = MAPILongValue (memCtx, rights);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagAccessControlListData: (void **) data
+                              inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [[NSData data] asBinaryInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }

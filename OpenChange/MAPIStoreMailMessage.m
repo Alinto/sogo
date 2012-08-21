@@ -1000,12 +1000,6 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagDeleteAfterSubmit: (void **) data // TODO
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getNo: data inMemCtx: memCtx];
-}
-
 - (int) getPidLidGlobalObjectId: (void **) data
                        inMemCtx: (TALLOC_CTX *) memCtx
 {
