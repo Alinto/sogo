@@ -45,6 +45,8 @@
 + (id) dataWithChangeKeyGUID: (NSString *) guidString
                       andCnt: (NSData *) globCnt;
 
+- (void) hexDumpWithLineSize: (NSUInteger) lineSize;
+
 @end
 
 @interface NSMutableData (MAPIStoreDataTypes)
