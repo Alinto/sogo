@@ -118,8 +118,8 @@
   currentStartDate = [firStart copy];
   [currentStartDate autorelease];
   ranges = [NSMutableArray array];
-  i = 0;
   count = 0;
+  i = [currentStartDate dayOfWeek]; // Set the first day of the week as Sunday and ignore WKST
 
   if (dayMask == nil)
     {
@@ -158,7 +158,7 @@
 	      [startDate compare: currentStartDate] == NSOrderedSame)
 	    {
 	      // If the rule count is defined, stop once the count is reached.
-	      if (i == 0)
+	      if ([currentStartDate compare: firStart] == NSOrderedSame)
 		{
 		  // Always add the start date of the recurring event if within
 		  // the lookup range.
@@ -166,8 +166,6 @@
 		}
 	      else 
 		{
-		  // The following always set the first day of the week as the day
-		  // of the master event start date, ie WKST is ignored.
 		  week = i / 7;
                   
 		  if ((week % interval) == 0 &&

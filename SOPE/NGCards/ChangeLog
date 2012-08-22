@@ -1,3 +1,14 @@
+2012-08-22  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalWeeklyRecurrenceCalculator.m
+	(-recurrenceRangesWithinCalendarDateRange:): fixed validation of
+	the interval when a day mask is used on multiple days.
+
+2012-08-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalRepeatableEntityObject.m (-exceptionDatesWithTimeZone:): we
+	now consider the timezone of the EXDATE, if defined.
+
 2012-07-26  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* iCalTimeZonePeriod.m (-recurrenceRule): new accessor for the
@@ -5,7 +16,7 @@
 	(-startDate): made method public.
 	(-compare:): new method that compare two periods based on their
 	startDate, for timezone definitions which have a "standard" or
-	"daylight" period for more that one years.
+	"daylight" period for more that one year.
 
 2012-05-30  Francis Lachapelle  <flachapelle@inverse.ca>
 
