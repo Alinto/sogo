@@ -1,3 +1,9 @@
+2012-08-22  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalWeeklyRecurrenceCalculator.m
+	(-recurrenceRangesWithinCalendarDateRange:): fixed validation of
+	the interval when a day mask is used on multiple days.
+
 2012-08-21  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalRepeatableEntityObject.m (-exceptionDatesWithTimeZone:): we
