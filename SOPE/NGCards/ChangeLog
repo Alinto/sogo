@@ -1,3 +1,8 @@
+2012-08-21  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalRepeatableEntityObject.m (-exceptionDatesWithTimeZone:): we
+	now consider the timezone of the EXDATE, if defined.
+
 2012-05-30  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalRepeatableEntityObject.m (-exceptionDatesWithTimeZone:)
