@@ -1,3 +1,9 @@
+2012-08-23	Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Mailer/SOGoMailFolder.m - added safety
+	checks around the ACL code so we don't crash if
+	we can't read the ACLs.
+
 2012-08-21  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreFolder.m (-getPidTagAccessLevel)
