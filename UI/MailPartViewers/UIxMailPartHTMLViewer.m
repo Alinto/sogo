@@ -55,7 +55,7 @@
 static NSArray *BannedTags = nil;
 
 /* Tags that can't have any contents (no end tag) */
-static NSArray *VoidTags = nil;
+static NSArray *VoidTags= nil;
 
 static xmlCharEncoding
 _xmlCharsetForCharset (NSString *charset)
@@ -141,14 +141,16 @@ _xmlCharsetForCharset (NSString *charset)
 static NSData* _sanitizeContent(NSData *theData)
 {
   NSMutableData *d;
+  NSString *found_tag, *tag;
+  NSEnumerator *tags;
   const char *bytes;
+  char *buf;
   int i, j, len;
-  BOOL seen_head;
+  BOOL found_delimiter;
 
   d = [NSMutableData dataWithData: theData];
   bytes = [d bytes];
   len = [d length];
-  seen_head = NO;
   i = 0;
 
   while (i < len)
@@ -164,14 +166,14 @@ static NSData* _sanitizeContent(NSData *theData)
 	      (*(bytes+3) == 'a' || *(bytes+3) == 'A') &&
 	      (*(bytes+4) == 'd' || *(bytes+4) == 'D') &&
 	      (*(bytes+7) == '>'))
-	    seen_head = YES;
+          break;
 	}
       
       // We search for something like :
       // 
       // <meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
       //
-      if (!seen_head && i < len-9)
+      if (i < len-9)
 	{
 	  if ((*bytes == 'c' || *bytes == 'C') &&
 	      (*(bytes+1) == 'h' || *(bytes+1) == 'H') &&
@@ -184,6 +186,7 @@ static NSData* _sanitizeContent(NSData *theData)
 	    {
 	      // We search until we find a '"' or a space
 	      j = 8;
+              found_delimiter = YES;
 
 	      while (*(bytes+j) != ' ' && *(bytes+j) != '"')
 		{
@@ -191,15 +194,102 @@ static NSData* _sanitizeContent(NSData *theData)
 		  
 		  // We haven't found anything, let's return the data untouched
 		  if ((i+j) >= len)
-		    return theData;
+                    {
+                      found_delimiter = NO;
+                      break;
+                    }
 		}
-	      
-	      [d replaceBytesInRange: NSMakeRange(i, j)
-		 withBytes: NULL
-		 length: 0];
+
+              if (found_delimiter)
+                [d replaceBytesInRange: NSMakeRange(i, j)
+                             withBytes: NULL
+                                length: 0];
 	      break;
 	    }
 	}
+
+      bytes++;
+      i++;
+    }
+
+  /*
+   * Replace badly formatted void tags
+   *
+   * A void tag that begins with a slash is considered invalid.
+   * We remove the slash from those tags.
+   *
+   * Ex: </br> is replaced by <br>
+   */
+
+  if (!VoidTags)
+    {
+      /* see http://www.w3.org/TR/html4/index/elements.html */
+      VoidTags = [[NSArray alloc] initWithObjects: @"area", @"base",
+                                  @"basefont", @"br", @"col", @"frame", @"hr",
+                                  @"img", @"input", @"isindex", @"link",
+                                  @"meta", @"param", @"", nil];
+    }
+
+  bytes = [d bytes];
+  len = [d length];
+  i = 0;
+  while (i < len)
+    {
+      if (i < len-3)
+	{
+          // Search for ending tags
+	  if ((*bytes == '<') && (*(bytes+1) == '/'))
+            {
+              i += 2;
+              bytes += 2;
+              j = 0;
+              found_delimiter = YES;
+
+              while (*(bytes+j) != '>')
+                {
+                  j++;
+                  if ((i+j) >= len)
+                    {
+                      found_delimiter = NO;
+                      break;
+                    }
+                }
+
+              if (found_delimiter && j > 0)
+                {
+                  // Copy the ending tag to a NSString
+                  buf = malloc((j+1) * sizeof(char));
+                  memset (buf, 0, j+1);
+                  memcpy (buf, bytes, j);
+                  found_tag = [NSString stringWithCString: buf encoding: NSASCIIStringEncoding];
+                  
+                  tags = [VoidTags objectEnumerator];
+                  tag = [tags nextObject];
+                  while (tag)
+                    {
+                      if ([tag caseInsensitiveCompare: found_tag] == NSOrderedSame)
+                        {
+                          // Remove the leading slash
+                          NSLog(@"Found void tag with invalid leading slash: </%@>", found_tag);
+                          i--;
+                          [d replaceBytesInRange: NSMakeRange(i, 1)
+                                       withBytes: NULL
+                                          length: 0];
+                          bytes = [d bytes];
+                          bytes += i;
+                          len = [d length];
+                          break;
+                        }
+                      tag = [tags nextObject];
+                    }
+                  free(buf);
+
+                  // Continue the parsing after end tag
+                  i += j;
+                  bytes += j;
+                }
+            }
+        }
 
       bytes++;
       i++;

@@ -1,3 +1,8 @@
+2012-08-24  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m (_sanitizeContent):
+	fix invalid void tags to insure proper HTML decoding. Fixes #1581.
+
 2012-08-07  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/Contacts/UIxListEditor.m (-setReferencesValue:): check for
