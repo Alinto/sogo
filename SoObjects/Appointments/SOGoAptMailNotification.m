@@ -49,6 +49,7 @@
     {
       apt = nil;
       values = nil;
+      dateFormatter = RETAIN([[context activeUser] dateFormatterInContext: context]);
     }
 
   return self;
@@ -65,6 +66,7 @@
   [newStartDate release];
   [oldEndDate release];
   [newEndDate release];
+  [dateFormatter release];
   [super dealloc];
 }
 
@@ -153,7 +155,105 @@
   return organizerName;
 }
 
-/* Helpers */
+- (NSString *) sentByText
+{
+  NSDictionary *sentByValues;
+  NSString *sentByText;
+  id value;
+  
+  sentByText = @"";
+
+  if (organizerName)
+    {
+      value = [[apt organizer] sentBy];
+      
+      if (value && [value length])
+        {
+          sentByValues = [NSDictionary dictionaryWithObject: value
+                                                     forKey: @"SentBy"];
+          sentByText
+            = [sentByValues keysWithFormat: [self
+                                              labelForKey: @"(sent by %{SentBy}) "
+                                                inContext: context]];
+        }
+    }
+  
+  return sentByText;
+}
+
+- (NSString *) formattedAptStartDate
+{
+  NSString *s;
+  id value;
+  
+  value = [self newStartDate];
+  s = @"";
+  
+  if (value)
+    s = [dateFormatter formattedDate: value];
+  
+  return s;
+}
+
+
+- (NSString *) formattedAptStartTime
+{
+  NSString *s;
+  id value;
+  
+  value = [self newStartDate];
+  s = @"";
+  
+  if (value && ![apt isAllDay])
+    s = [dateFormatter formattedTime: value];
+
+  return s;
+}
+
+- (NSString *) formattedAptEndDate
+{
+  NSString *s;
+  id value;
+  
+  value = [self newEndDate];
+  s = @"";
+  
+  if (value)
+    s = [dateFormatter formattedDate: value];
+  
+  return s;
+}
+
+- (NSString *) formattedAptEndTime
+{
+  NSString *s;
+  id value;
+  
+  value = [self newEndDate];
+  s = @"";
+  
+  if (value && ![apt isAllDay])
+    s = [dateFormatter formattedTime: value];
+
+  return s;
+}
+
+- (void) setupValues
+{
+  SOGoUser *user;
+  id value;
+  
+  user = [context activeUser];
+  viewTZ = [[user userDefaults] timeZone];
+  [viewTZ retain];
+
+  values = [NSMutableDictionary new];
+  value = [self summary];
+  if (!value)
+    value = @"";
+  
+  [values setObject: value forKey: @"Summary"];
+}
 
 /* Generate Response */
 
@@ -169,61 +269,6 @@
   [self subclassResponsibility: _cmd];
 
   return nil;
-}
-
-- (void) setupValues
-{
-  NSString *sentBy, *sentByText, *description;
-  NSCalendarDate *date;
-  NSDictionary *sentByValues;
-  SOGoUser *user;
-  SOGoDateFormatter *dateFormatter;
-
-  user = [context activeUser];
-  viewTZ = [[user userDefaults] timeZone];
-  [viewTZ retain];
-
-  values = [NSMutableDictionary new];
-  [values setObject: [self summary] forKey: @"Summary"];
-  if (organizerName)
-    {
-      [values setObject: organizerName forKey: @"Organizer"];
-
-      sentBy = [[apt organizer] sentBy];
-      if ([sentBy length])
-        {
-          sentByValues = [NSDictionary dictionaryWithObject: sentBy
-                                                     forKey: @"SentBy"];
-          sentByText
-            = [sentByValues keysWithFormat: [self
-                                              labelForKey: @"(sent by %{SentBy}) "
-                                                inContext: context]];
-        }
-      else
-        sentByText = @"";
-      [values setObject: sentByText forKey: @"SentByText"];
-    }
-
-  dateFormatter = [[context activeUser] dateFormatterInContext: context];
-
-  date = [self newStartDate];
-  [values setObject: [dateFormatter shortFormattedDate: date]
-             forKey: @"StartDate"];
-  if (![apt isAllDay])
-    [values setObject: [dateFormatter formattedTime: date]
-               forKey: @"StartTime"];
-
-  date = [self newEndDate];
-  [values setObject: [dateFormatter shortFormattedDate: date]
-             forKey: @"EndDate"];
-  if (![apt isAllDay])
-    [values setObject: [dateFormatter formattedTime: date]
-               forKey: @"EndTime"];
-
-  description = [[self apt] comment];
-  [values setObject: (description ? description : @"")
-	  forKey: @"Description"];
-
 }
 
 @end

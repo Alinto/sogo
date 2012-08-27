@@ -1,3 +1,30 @@
-<?xml version="1.0" standalone="yes"?>
 <!DOCTYPE container>
-<container xmlns="http://www.w3.org/1999/xhtml"></container>
+<html 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+  <head>
+    <style type="text/css">
+.container { max-width: 600px; }
+h1 { font-size: 18px; font-weight: normal; padding-bottom: 9px; border-bottom: 1px solid #ccc; }
+.dl-horizontal dt { float: left; width: 120px; overflow: hidden; clear: left; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
+dt { font-weight: bold; line-height: 17px; }
+dt, dd { font-size: 12px; line-height: 18px; }
+dt { display: block; }
+h1, dd, .dl-list dt { margin-left: 130px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1><var:string value="getSubject" const:escapeHTML="NO"/></h1>
+
+      <dl class="dl-horizontal">
+        <dt></dt>
+        <dd><var:string value="bodyStartText" const:escapeHTML="NO"/></dd>
+      </dl>
+    </div>
+  </body>
+</html>
