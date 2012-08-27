@@ -1,9 +1,10 @@
 /* SOGoCalendarComponent.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2011 Inverse inc.
+ * Copyright (C) 2006-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Francis Lachapelle <flachapelle@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -951,6 +952,9 @@
     }
 }
 
+//
+//
+//
 - (void) sendResponseToOrganizer: (iCalRepeatableEntityObject *) newComponent
 			    from: (SOGoUser *) from
 {
@@ -969,6 +973,9 @@
     }
 }
 
+//
+//
+//
 - (void) sendReceiptEmailForObject: (iCalRepeatableEntityObject *) object
 		    addedAttendees: (NSArray *) theAddedAttendees
 		  deletedAttendees: (NSArray *) theDeletedAttendees
@@ -1069,6 +1076,9 @@
 
 }
 
+//
+//
+//
 - (iCalPerson *) findParticipantWithUID: (NSString *) uid
 {
   iCalEntityObject *component;
@@ -1080,6 +1090,9 @@
   return [component userAsAttendee: user];
 }
 
+//
+//
+//
 - (iCalPerson *) iCalPersonWithUID: (NSString *) uid
 {
   iCalPerson *person;
@@ -1097,6 +1110,9 @@
   return person;
 }
 
+//
+//
+//
 - (NSArray *) getUIDsForICalPersons: (NSArray *) iCalPersons
 {
   iCalPerson *currentPerson;

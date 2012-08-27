@@ -1,8 +1,9 @@
 /* iCalPerson+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,11 +34,23 @@ static SOGoUserManager *um = nil;
 - (NSString *) mailAddress
 {
   NSString *cn, *email, *mailAddress;
+  unsigned int len;
 
   cn = [self cnWithoutQuotes];
   email = [self rfc822Email];
-  if ([cn length])
-    mailAddress = [NSString stringWithFormat:@"%@ <%@>", cn, email];
+  len = [cn length];
+  
+  if (len)
+    {
+      // We must check if we have to double-quote properly the person's name,
+      // in case for example we find a comma
+      if ([cn characterAtIndex: 0] != '"' &&
+	  [cn characterAtIndex: len-1] != '"' &&
+	  [cn rangeOfString: @","].length)
+	mailAddress = [NSString stringWithFormat:@"\"%@\" <%@>", cn, email];
+      else
+	mailAddress = [NSString stringWithFormat:@"%@ <%@>", cn, email];
+    }
   else
     mailAddress = email;
 

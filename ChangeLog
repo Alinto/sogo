@@ -1,3 +1,9 @@
+2012-08-27  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/iCalPerson+SOGo.m (mailAddress):
+	We now properly add double-quotes if we find a comma and
+	the person's name isn't already double-quoted. Fixes #1649
+
 2012-08-24  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/MailPartViewers/UIxMailPartHTMLViewer.m (_sanitizeContent):
