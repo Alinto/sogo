@@ -1,5 +1,9 @@
 2012-08-27  Francis Lachapelle  <flachapelle@inverse.ca>
 
+	* UI/WebServerResources/generic.js (openMailTo): mail addresses
+	must now be separated by semi-colons and not commas. This allow
+	display names to contain commas.
+
 	* UI/WebServerResources/SchedulerUI.js (tasksListCallback): prefix
 	tasks with a color box insted of changing the task's background color.
 

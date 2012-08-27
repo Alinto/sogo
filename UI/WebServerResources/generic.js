@@ -319,7 +319,7 @@ function openMailComposeWindow(url, wId) {
 }
 
 function openMailTo(senderMailTo) {
-    var addresses = senderMailTo.split(",");
+    var addresses = senderMailTo.split(";");
     var sanitizedAddresses = new Array();
     var subject = extractSubject(senderMailTo);
     for (var i = 0; i < addresses.length; i++) {

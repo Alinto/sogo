@@ -143,7 +143,7 @@ function onComposeToAllAttendees()
         }
     });
     if (window.opener)
-        window.opener.openMailTo(addresses.join(","));
+        window.opener.openMailTo(addresses.join(";"));
 }
 
 function onComposeToUndecidedAttendees()
@@ -165,7 +165,7 @@ function onComposeToUndecidedAttendees()
         }
     });
     if (window.opener)
-        window.opener.openMailTo(addresses.join(","));
+        window.opener.openMailTo(addresses.join(";"));
 }
 
 function addContact(tag, fullContactName, contactId, contactName, contactEmail) {
