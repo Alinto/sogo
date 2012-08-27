@@ -3,6 +3,7 @@
 Enhancements
  - mail filters (Sieve) are no longer conditional to each other (all filters are
    executed, no matter if a previous condition matches)
+ - improved tasks list display
  - RPM packages now treat logrotate file as a config file
 
 Bug Fixes

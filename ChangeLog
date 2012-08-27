@@ -1,3 +1,13 @@
+2012-08-27  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (tasksListCallback): prefix
+	tasks with a color box insted of changing the task's background color.
+
+	* UI/Scheduler/UIxCalListingActions.m
+	(-_getStatusClassForStatusCode:andEndDateStamp::): set the
+	timezone of the due date to the user's timezone to properly
+	identify tasks due today.
+
 2012-08-27  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/iCalPerson+SOGo.m (mailAddress):
@@ -6,7 +16,7 @@
 
 2012-08-24  Francis Lachapelle  <flachapelle@inverse.ca>
 
-	* UI/MailPartViewers/UIxMailPartHTMLViewer.m (_sanitizeContent):
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m (-_sanitizeContent):
 	fix invalid void tags to insure proper HTML decoding. Fixes #1581.
 
 2012-08-07  Francis Lachapelle  <flachapelle@inverse.ca>
@@ -16,7 +26,7 @@
 
 2012-08-03  Jean Raby  <jraby@inverse.ca>
 
-	* SoObjects/SOGo/LDAPSource.m (changePasswordForLogin):
+	* SoObjects/SOGo/LDAPSource.m (-changePasswordForLogin):
 	  if userPasswordAlgorithm was not set or was set to "none",
 		use the plaintext password directly instead of using '{none}plaintext'
 		which isn't valid.

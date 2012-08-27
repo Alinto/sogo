@@ -1023,6 +1023,7 @@ _computeBlocksPosition (NSArray *blocks)
           now = [NSCalendarDate calendarDate];
           taskDate
 	    = [NSCalendarDate dateWithTimeIntervalSince1970: endDateStamp];
+          [taskDate setTimeZone: userTimeZone];
           if ([taskDate earlierDate: now] == taskDate)
             statusClass = @"overdue";
           else
@@ -1034,7 +1035,7 @@ _computeBlocksPosition (NSArray *blocks)
             }
         }
       else
-        statusClass = @"duelater";
+        statusClass = @"noduedate";
     }
 
   return statusClass;

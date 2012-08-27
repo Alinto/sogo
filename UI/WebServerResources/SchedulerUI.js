@@ -1027,7 +1027,6 @@ function tasksListCallback(http) {
                 //listItem.addClassName(data[i][5]); // Classification
                 listItem.addClassName(data[i][9]); // status (duelater, completed, etc)
                 listItem.calendar = calendar;
-                listItem.addClassName("calendarFolder" + calendar);
                 listItem.cname = cname;
                 listItem.erasable = data[i][7] || IsSuperUser;
                 var input = createElement("input");
@@ -1043,6 +1042,10 @@ function tasksListCallback(http) {
                 if (data[i][2] == 1)
                     input.setAttribute("checked", "checked");
                 $(input).addClassName("checkBox");
+
+                var colorDiv = createElement("div", false, "colorBox calendarFolder" + calendar);
+                colorDiv.update('OO');
+                listItem.appendChild(colorDiv);
 
                 var t = new Element ("span");
                 t.update(data[i][3]);
