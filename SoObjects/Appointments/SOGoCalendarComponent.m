@@ -845,8 +845,8 @@
 
 		  /* text part */
 		  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
-		  [headerMap setObject: @"text/plain; charset=\"UTF-8\""
-			     forKey: @"content-type"];
+		  [headerMap setObject: @"text/html; charset=utf-8"
+				forKey: @"content-type"];
 		  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
 		  [bodyPart setBody: [text dataUsingEncoding: NSUTF8StringEncoding]];
 
@@ -927,8 +927,8 @@
 
       /* text part */
       headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
-      [headerMap setObject: @"text/plain; charset=utf-8"
-		 forKey: @"content-type"];
+      [headerMap setObject: @"text/html; charset=utf-8"
+		    forKey: @"content-type"];
       bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
       bodyData = [[p getBody] dataUsingEncoding: NSUTF8StringEncoding];
       [bodyPart setBody: bodyData];

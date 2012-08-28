@@ -5,6 +5,7 @@ Enhancements
    executed, no matter if a previous condition matches)
  - improved tasks list display
  - RPM packages now treat logrotate file as a config file
+ - completed the transition from text/plain message templates to HTML
 
 Bug Fixes
  - fixed passwords that would be prefixed with '{none}' when not using a
