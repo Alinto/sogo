@@ -604,6 +604,13 @@ DIV.linked_attachment_frame
   /*background: #F0F0F0;*/
 }
 
+DIV.linked_attachment_frame fieldset
+{
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
 DIV.linked_attachment_frame.file
 { display: inline;
   clear: none;
