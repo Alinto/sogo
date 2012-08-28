@@ -160,11 +160,15 @@
 
 "Full Name:" = "Full Name:";
 "Email:" = "Email:";
+"Reply To Email:" = "Ответить на Email:";
 "Signature:" = "Подпись:";
 "(Click to create)" = "(Click to create)";
 
 "Signature" = "Подпись";
 "Please enter your signature below:" = "Please enter your signature below:";
+
+"Please specify a valid sender address." = "Пожалуйста укажите правильный адрес отправителя.";
+"Please specify a valid reply-to address." = "Пожалуйста укажите правильный адрес для ответа.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Дополнительные параметры";
@@ -278,6 +282,7 @@
 "Label 4" = "Label 4";
 "Label 5" = "Label 5";
 
+"The password was changed successfully." = "Пароль был успешно изменен.";
 "Password must not be empty." = "Пароль не должен быть пустым";
 "The passwords do not match. Please try again." = "Пароли не совпадают. Пожалуйста попробуйте заново.";
 "Password change failed" = "Изменение пароля не удалось";
