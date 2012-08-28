@@ -8,6 +8,7 @@ Enhancements
  - improved tasks list display
  - RPM packages now treat logrotate file as a config file
  - completed the transition from text/plain message templates to HTML
+ - new packages for Debian 7.0 (Wheezy)
 
 Bug Fixes
  - fixed passwords that would be prefixed with '{none}' when not using a
