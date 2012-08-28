@@ -22,10 +22,10 @@
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Activar respuesta automática por vacaciones";
-"Auto reply message :" = "Mensaje de respuesta automática :";
-"Email addresses (separated by commas) :" = "Dirección de correo (separado por comas) :";
+"Auto reply message :" = "Mensaje de respuesta automática:";
+"Email addresses (separated by commas) :" = "Dirección de correo (separado por comas):";
 "Add default email addresses" = "Añadir dirección de correo por defecto";
-"Days between responses :" = "Dias entre respuestas :";
+"Days between responses :" = "Dias entre respuestas:";
 "Do not send responses to mailing lists" = "No enviar respuestas a listas de correo";
 "Disable auto reply on" = "Deshabilitar la autorrespuesta en la siguiente fecha";
 "Please specify your message and your email addresses for which you want to enable auto reply."
@@ -167,6 +167,9 @@
 "Signature" = "Firma";
 "Please enter your signature below:" = "Por favor, escriba su firma abajo:";
 
+"Please specify a valid sender address." = "Por favor, especifique una dirección válida para el remitente.";
+"Please specify a valid reply-to address." = "Por favor, especifique una dirección de respuesta válida.";
+
 /* Additional Parameters */
 "Additional Parameters" = "Parámetros Adicionales";
 
@@ -279,6 +282,7 @@
 "Label 4" = "Etiqueta 4";
 "Label 5" = "Etiqueta 5";
 
+"The password was changed successfully." = "El cambio de clave fue exitoso";
 "Password must not be empty." = "La contraseña no puede estar en blanco";
 "The passwords do not match. Please try again." = "Las contraseñas no coinciden. Por favor intente de nuevo";
 "Password change failed" = "El cambio de contraseña falló";
