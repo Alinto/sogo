@@ -1,3 +1,7 @@
+2012-08-28	Jean Raby  <jraby@inverse.ca>
+	* Scripts/openchange_cleanup.py:
+	New script to clean an openchange user profile
+
 2012-08-23	Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Mailer/SOGoMailFolder.m - added safety

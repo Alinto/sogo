@@ -1,4 +1,5 @@
 NEWS
 TODO
 Scripts/*.sh
+Scripts/*.py
 Scripts/updates.php
