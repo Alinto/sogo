@@ -37,10 +37,16 @@
 
 "Sorry, the user rights can not be configured for that object." = "Els permisos d'accés no es poden configurar per a aquest objecte.";
 
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Qualsevol usuari amb un compte en el sistema tindrà accés a la seua bústia de correu \"%{0}\". Està segur de voler donar accés a qualsevol usuari en el sistema? ";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
      = "Qualsevol altre usuari amb un compte al sistema serà capaç d'accedir al seu calendari \"%{0}\". ¿Està vostè segur de voler permetre aço?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
      = "Potencialment, qualsevol usuari d'Internet podrà accedir al seu calendari \"% {0}\", encara que no tinga un compte en aquest sistema. Aquesta informació és adequada per publicar-la en Internet?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Qualsevol usuari amb un compte en el sistema tindrà accés al seu calendari \"%{0}\". Està segur de voler donar accés a qualsevol usuari en el sistema? ";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Qualsevol usuari amb un compte en el sistema tindrà accés a la seua llibreta d'adreces \"%{0}\". Està segur de voler donar accés a qualsevol usuari en el sistema? ";
 "Give Access" = "Donar accés";
 "Keep Private" = "Mantenir en privat";
 

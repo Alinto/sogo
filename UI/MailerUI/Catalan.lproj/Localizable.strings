@@ -283,9 +283,9 @@
 = "Els missatges no poden traslladar-se a la paperera. Els voleu esborrar immediatament?";
 
 /* Message editing */
-"error_validationfailed" = "Error de validació";
 "error_missingsubject" = "No heu indicat l'assumpte";
 "error_missingrecipients" = "No heu indicat els destinataris";
+"Send Anyway" = "Enviar igualment";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "No s'ha pogut enviar el missatge: tots els destinataris són incorrectes.";
