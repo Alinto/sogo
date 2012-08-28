@@ -1,7 +1,8 @@
-1.3.18 (2012-08-DD)
+1.3.18 (2012-08-28)
 -------------------
 Enhancements
- - updated Catalan, Dutch, German, Hungarian, Russian, Spanish (Argentina) translations
+ - updated Catalan, Dutch, German, Hungarian, Russian, Spanish (Argentina), and
+   Spanish (Spain) translations
  - mail filters (Sieve) are no longer conditional to each other (all filters are
    executed, no matter if a previous condition matches)
  - improved tasks list display

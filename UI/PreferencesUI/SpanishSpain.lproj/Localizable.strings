@@ -167,6 +167,9 @@
 "Signature" = "Firma";
 "Please enter your signature below:" = "Por favor, ponga su firma abajo:";
 
+"Please specify a valid sender address." = "Por favor, especifica una dirección de correo electrónico valida para el remitente.";
+"Please specify a valid reply-to address." = "Por favor, especifica una dirección de correo electrónico valida para responder.";
+
 /* Additional Parameters */
 "Additional Parameters" = "Parámetros Adicionales";
 
@@ -279,6 +282,7 @@
 "Label 4" = "Etiqueta 4";
 "Label 5" = "Etiqueta 5";
 
+"The password was changed successfully." = "La contraseña se ha cambiado correctamente.";
 "Password must not be empty." = "La contraseña no puede estar vacía.";
 "The passwords do not match. Please try again." = "Las contraseñas no coinciden. Por favor, inténtalo de nuevo.";
 "Password change failed" = "Cambio de contraseña fallido";
