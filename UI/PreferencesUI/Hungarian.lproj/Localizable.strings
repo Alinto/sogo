@@ -87,6 +87,7 @@
 "timeFmt_1" = "%I:%M %p";
 "timeFmt_2" = "";
 "timeFmt_3" = "";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "Hét kezdőnapja:";
@@ -159,11 +160,15 @@
 
 "Full Name:" = "Teljes név:";
 "Email:" = "Email cím:";
+"Reply To Email:" = "Válaszlevél";
 "Signature:" = "Aláírás:";
 "(Click to create)" = "(A létrehozáshoz kattintson ide)";
 
 "Signature" = "Aláírás";
 "Please enter your signature below:" = "Kérem itt adja meg az aláírását";
+
+"Please specify a valid sender address." = "Egy érvényes feladó címet adjon meg.";
+"Please specify a valid reply-to address." = "Egy érvényes válaszcímet adjon meg.";
 
 /* Additional Parameters */
 "Additional Parameters" = "További beállítások";
@@ -277,6 +282,7 @@
 "Label 4" = "Címke 4";
 "Label 5" = "Címke 5";
 
+"The password was changed successfully." = "A jelszó megváltoztatása sikeres.";
 "Password must not be empty." = "Le mot de passe ne doit pas être vide.";
 "The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
 "Password change failed" = "Échec au changement";
