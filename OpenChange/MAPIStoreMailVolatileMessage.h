@@ -1,6 +1,6 @@
 /* MAPIStoreMailVolatileMessage.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -23,9 +23,9 @@
 #ifndef MAPISTOREMAILVOLATILEMESSAGE_H
 #define MAPISTOREMAILVOLATILEMESSAGE_H
 
-#import "MAPIStoreVolatileMessage.h"
+#import "MAPIStoreMessage.h"
 
-@interface MAPIStoreMailVolatileMessage : MAPIStoreVolatileMessage
+@interface MAPIStoreMailVolatileMessage : MAPIStoreMessage
 
 - (int) submitWithFlags: (enum SubmitFlags) flags;
 

@@ -1,6 +1,6 @@
 /* MAPIStoreNotesMessage.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -23,9 +23,9 @@
 #ifndef MAPISTORENOTESMESSAGE_H
 #define MAPISTORENOTESMESSAGE_H
 
-#import "MAPIStoreFSMessage.h"
+#import "MAPIStoreDBMessage.h"
 
-@interface MAPIStoreNotesMessage : MAPIStoreFSMessage
+@interface MAPIStoreNotesMessage : MAPIStoreDBMessage
 @end
 
 #endif /* MAPISTORENOTESMESSAGE_H */

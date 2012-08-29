@@ -1,6 +1,6 @@
 /* MAPIStoreMailAttachment.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -30,9 +30,11 @@
 @interface MAPIStoreMailAttachment : MAPIStoreAttachment
 {
   NSDictionary *bodyInfo;
+  SOGoMailBodyPart *bodyPart;
 }
 
 - (void) setBodyInfo: (NSDictionary *) newBodyInfo;
+- (void) setBodyPart: (SOGoMailBodyPart *) newBodyPart;
 
 @end
 

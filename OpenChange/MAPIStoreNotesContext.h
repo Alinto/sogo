@@ -1,6 +1,6 @@
 /* MAPIStoreNotesContext.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2010-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -23,9 +23,9 @@
 #ifndef MAPISTORENOTESCONTEXT_H
 #define MAPISTORENOTESCONTEXT_H
 
-#import "MAPIStoreFSBaseContext.h"
+#import "MAPIStoreDBBaseContext.h"
 
-@interface MAPIStoreNotesContext : MAPIStoreFSBaseContext
+@interface MAPIStoreNotesContext : MAPIStoreDBBaseContext
 
 @end
 

@@ -1,6 +1,6 @@
 /* MAPIStoreGCSFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -40,7 +40,7 @@
 #import "NSData+MAPIStore.h"
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
-#import "SOGoMAPIFSMessage.h"
+#import "SOGoMAPIDBMessage.h"
 
 #import "MAPIStoreGCSFolder.h"
 
@@ -71,8 +71,9 @@ static Class NSNumberK;
 - (void) setupVersionsMessage
 {
   ASSIGN (versionsMessage,
-          [SOGoMAPIFSMessage objectWithName: @"versions.plist"
-                                inContainer: propsFolder]);
+          [SOGoMAPIDBMessage objectWithName: @"versions.plist"
+                                inContainer: dbFolder]);
+  [versionsMessage setObjectType: MAPIDBObjectTypeInternal];
 }
 
 - (void) dealloc
@@ -260,6 +261,7 @@ static Class NSNumberK;
 
 - (void) _setChangeKey: (NSData *) changeKey
        forMessageEntry: (NSMutableDictionary *) messageEntry
+      inChangeListOnly: (BOOL) inChangeListOnly
 {
   struct XID *xid;
   NSString *guid;
@@ -272,12 +274,15 @@ static Class NSNumberK;
   globCnt = [NSData dataWithBytes: xid->Data length: xid->Size];
   talloc_free (xid);
 
-  /* 1. set change key association */
-  changeKeyDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  guid, @"GUID",
-                                globCnt, @"LocalId",
-                                nil];
-  [messageEntry setObject: changeKeyDict forKey: @"ChangeKey"];
+  if (!inChangeListOnly)
+    {
+      /* 1. set change key association */
+      changeKeyDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      guid, @"GUID",
+                                    globCnt, @"LocalId",
+                                    nil];
+      [messageEntry setObject: changeKeyDict forKey: @"ChangeKey"];
+    }
 
   /* 2. append/update predecessor change list */
   changeList = [messageEntry objectForKey: @"PredecessorChangeList"];
@@ -285,7 +290,7 @@ static Class NSNumberK;
     {
       changeList = [NSMutableDictionary new];
       [messageEntry setObject: changeList
-                    forKey: @"PredecessorChangeList"];
+                       forKey: @"PredecessorChangeList"];
       [changeList release];
     }
   [changeList setObject: globCnt forKey: guid];
@@ -349,6 +354,7 @@ static Class NSNumberK;
       [sortOrdering retain];
     }
 
+  [versionsMessage reloadIfNeeded];
   currentProperties = [versionsMessage properties];
 
   lastModificationDate = [currentProperties objectForKey: @"SyncLastModificationDate"];
@@ -430,7 +436,8 @@ static Class NSNumberK;
               [messageEntry setObject: changeNumber forKey: @"version"];
 
               changeKey = [self getReplicaKeyFromGlobCnt: newChangeNum >> 16];
-              [self _setChangeKey: changeKey forMessageEntry: messageEntry];
+              [self _setChangeKey: changeKey forMessageEntry: messageEntry
+                 inChangeListOnly: NO];
 
               [mapping setObject: cLastModified forKey: changeNumber];
 
@@ -451,7 +458,6 @@ static Class NSNumberK;
                                 forKey: @"SyncLastSynchronisationDate"];
           [currentProperties setObject: lastModificationDate
                                 forKey: @"SyncLastModificationDate"];
-          [versionsMessage appendProperties: currentProperties];
           [versionsMessage save];
         }
     }
@@ -462,10 +468,21 @@ static Class NSNumberK;
 - (void) updateVersionsForMessageWithKey: (NSString *) messageKey
                            withChangeKey: (NSData *) newChangeKey
 {
-  [self synchroniseCache];
+  NSMutableDictionary *messages, *messageEntry;
 
+  [self synchroniseCache];
   if (newChangeKey)
-    [self setChangeKey: newChangeKey forMessageWithKey: messageKey];
+    {
+      messages = [[versionsMessage properties] objectForKey: @"Messages"];
+      messageEntry = [messages objectForKey: messageKey];
+      if (!messageEntry)
+        [NSException raise: @"MAPIStoreIOException"
+                    format: @"no version record found for message '%@'",
+                     messageKey];
+      [self _setChangeKey: newChangeKey forMessageEntry: messageEntry
+         inChangeListOnly: YES];
+      [versionsMessage save];
+    }
 }
  
 - (NSNumber *) lastModifiedFromMessageChangeNumber: (NSNumber *) changeNum
@@ -489,26 +506,6 @@ static Class NSNumberK;
                    objectForKey: @"version"];
 
   return changeNumber;
-}
-
-- (void) setChangeKey: (NSData *) changeKey
-    forMessageWithKey: (NSString *) messageKey
-{
-  NSMutableDictionary *messages;
-  NSMutableDictionary *messageEntry;
-
-  messages = [[versionsMessage properties] objectForKey: @"Messages"];
-  messageEntry = [messages objectForKey: messageKey];
-  if (!messageEntry)
-    {
-      [self synchroniseCache];
-      messageEntry = [messages objectForKey: messageKey];
-      if (!messageEntry)
-        abort ();
-    }
-  [self _setChangeKey: changeKey forMessageEntry: messageEntry];
-  
-  [versionsMessage save];
 }
 
 - (NSData *) changeKeyForMessageWithKey: (NSString *) messageKey

@@ -1,6 +1,6 @@
 /* MAPIStoreFAIMessageTable.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -23,9 +23,9 @@
 #ifndef MAPISTOREFAIMESSAGETABLE_H
 #define MAPISTOREFAIMESSAGETABLE_H
 
-#import "MAPIStoreFSMessageTable.h"
+#import "MAPIStoreDBMessageTable.h"
 
-@interface MAPIStoreFAIMessageTable : MAPIStoreFSMessageTable
+@interface MAPIStoreFAIMessageTable : MAPIStoreDBMessageTable
 @end
 
 #endif /* MAPISTOREFAIMESSAGETABLE_H */

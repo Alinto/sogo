@@ -1,6 +1,6 @@
-/* MAPIStoreFSMessage.m - this file is part of SOGo
+/* MAPIStoreDBMessage.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -21,24 +21,25 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "MAPIStoreContext.h"
 #import "MAPIStorePropertySelectors.h"
-#import "SOGoMAPIFSMessage.h"
+#import "SOGoMAPIDBMessage.h"
 
-#import "MAPIStoreFSFolder.h"
-#import "MAPIStoreFSMessage.h"
+#import "MAPIStoreDBFolder.h"
+#import "MAPIStoreDBMessage.h"
 #import "MAPIStoreTypes.h"
-#import "NSData+MAPIStore.h"
+#import "NSObject+MAPIStore.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
-@implementation MAPIStoreFSMessage
+@implementation MAPIStoreDBMessage
 
 + (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
                       inMemCtx: (TALLOC_CTX *) memCtx
@@ -60,11 +61,77 @@
   /* FIXME (hack): append a few undocumented properties that can be added to
      FAI messages */
   for (count = 0; count < 8; count++)
-    properties->aulPropTag[MAPIStoreSupportedPropertiesCount+count] = faiProperties[count];
+    properties->aulPropTag[MAPIStoreSupportedPropertiesCount+count]
+      = faiProperties[count];
 
   *propertiesP = properties;
 
   return MAPISTORE_SUCCESS;
+}
+
+- (id) initWithSOGoObject: (id) newSOGoObject
+              inContainer: (MAPIStoreObject *) newContainer
+{
+  if ((self = [super initWithSOGoObject: newSOGoObject
+                            inContainer: newContainer]))
+    {
+      [properties release];
+      properties = [newSOGoObject properties];
+      [properties retain];
+    }
+
+  return self;
+}
+
+- (uint64_t) objectVersion
+{
+  NSNumber *versionNbr;
+  uint64_t objectVersion;
+
+  [(SOGoMAPIDBMessage *) sogoObject reloadIfNeeded];
+  versionNbr = [properties objectForKey: @"version"];
+  if (versionNbr)
+    objectVersion = [versionNbr unsignedLongLongValue] >> 16;
+  else
+    objectVersion = ULLONG_MAX;
+
+  return objectVersion;
+}
+
+- (int) getProperties: (struct mapistore_property_data *) data
+             withTags: (enum MAPITAGS *) tags
+             andCount: (uint16_t) columnCount
+             inMemCtx: (TALLOC_CTX *) memCtx
+{
+  [sogoObject reloadIfNeeded];
+
+  return [super getProperties: data
+                     withTags: tags
+                     andCount: columnCount
+                     inMemCtx: memCtx];
+}
+
+- (int) getProperty: (void **) data
+            withTag: (enum MAPITAGS) propTag
+           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  id value;
+  int rc;
+ 
+  value = [properties objectForKey: MAPIPropertyKey (propTag)];
+  if (value)
+    rc = [value getValue: data forTag: propTag inMemCtx: memCtx];
+  else
+    rc = [super getProperty: data withTag: propTag inMemCtx: memCtx];
+
+  return rc;
+}
+
+- (void) addProperties: (NSDictionary *) newNewProperties
+{
+  [sogoObject reloadIfNeeded];
+
+  [super addProperties: newNewProperties];
 }
 
 - (void) save
@@ -74,15 +141,13 @@
   if ([attachmentKeys count] > 0)
     [properties setObject: attachmentParts forKey: @"attachments"];
 
-  newVersion = exchange_globcnt ([[self context] getNewChangeNumber] >> 16);
+  newVersion = [[self context] getNewChangeNumber];
   [properties setObject: [NSNumber numberWithUnsignedLongLong: newVersion]
-                    forKey: @"version"];
+                 forKey: @"version"];
 
   [self logWithFormat: @"%d props in dict", [properties count]];
 
-  [sogoObject appendProperties: properties];
   [sogoObject save];
-  [properties removeAllObjects];
 }
 
 - (BOOL) _messageIsFreeBusy
@@ -91,7 +156,7 @@
   
   /* This is a HACK until we figure out how to determine a message position in
      the mailbox hierarchy.... (missing: folderid and role) */
-  msgClass = [[sogoObject properties]
+  msgClass = [properties
                objectForKey: MAPIPropertyKey (PR_MESSAGE_CLASS_UNICODE)];
 
   return [msgClass isEqualToString: @"IPM.Microsoft.ScheduleData.FreeBusy"];
@@ -115,12 +180,12 @@
 
 - (NSDate *) creationTime
 {
-  return [sogoObject creationTime];
+  return [sogoObject creationDate];
 }
 
 - (NSDate *) lastModificationTime
 {
-  return [sogoObject lastModificationTime];
+  return [sogoObject lastModified];
 }
 
 @end

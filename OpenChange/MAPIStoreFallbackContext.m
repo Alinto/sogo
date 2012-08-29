@@ -1,6 +1,6 @@
 /* MAPIStoreFallbackContext.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc.
+ * Copyright (C) 2011-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -26,7 +26,7 @@
 
 #import "MAPIStoreUserContext.h"
 #import "NSString+MAPIStore.h"
-#import "SOGoMAPIFSFolder.h"
+#import "SOGoMAPIDBFolder.h"
 
 #import "MAPIStoreFallbackContext.h"
 
@@ -51,10 +51,11 @@
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *firstContext = NULL, *context;
-  SOGoMAPIFSFolder *root;
+  SOGoMAPIDBFolder *root;
   NSArray *names;
   NSUInteger count, max;
   NSString *baseURL, *url, *name;
+  MAPIStoreUserContext *userContext;
 
   baseURL = [NSString stringWithFormat: @"sogo://%@@fallback/", userName];
 
@@ -67,11 +68,15 @@
 
   DLIST_ADD_END (firstContext, context, void);
 
-
   /* Maybe emsmdbp_provisioning should be fixed in order to only take the uri
      returned above to avoid deleting its entries... */
-  root = [SOGoMAPIFSFolder folderWithURL: [NSURL URLWithString: baseURL]
-                            andTableType: MAPISTORE_MESSAGE_TABLE];
+  root = [SOGoMAPIDBFolder objectWithName: [self MAPIModuleName]
+                              inContainer: nil];
+  [root setOwner: userName];
+  userContext = [MAPIStoreUserContext userContextWithUsername: userName
+                                               andTDBIndexing: indexingTdb];
+  [userContext ensureFolderTableExists];
+  [root setTableUrl: [userContext folderTableURL]];
   names = [root toManyRelationshipKeys];
   max = [names count];
   for (count = 0; count < max; count++)

@@ -1,6 +1,6 @@
 /* MAPIStoreMailMessage.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -373,7 +373,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   if (uid)
     {
       changeNumber = [(MAPIStoreMailFolder *) container
-                     changeNumberForMessageUID: uid];
+                        changeNumberForMessageUID: uid];
       if (!changeNumber)
         {
           [self warnWithFormat: @"attempting to get change number"
@@ -444,19 +444,6 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   else
     longValue = 0;
   *data = MAPILongValue (memCtx, longValue);
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidTagSubject: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSString *stringValue;
-
-  stringValue = [self subject];
-  if (!stringValue)
-    stringValue = @"";
-  *data = [stringValue asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
 }
@@ -1013,12 +1000,6 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagDeleteAfterSubmit: (void **) data // TODO
-                          inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getNo: data inMemCtx: memCtx];
-}
-
 - (int) getPidLidGlobalObjectId: (void **) data
                        inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -1529,8 +1510,8 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
       if (currentPart)
         {
           attachment = [MAPIStoreMailAttachment
-                         mapiStoreObjectWithSOGoObject: currentPart
-                                           inContainer: self];
+                         mapiStoreObjectInContainer: self];
+          [attachment setBodyPart: currentPart];
           [attachment setBodyInfo: [attachmentParts objectForKey: childKey]];
           [attachment setAID: [[self attachmentKeys] indexOfObject: childKey]];
         }

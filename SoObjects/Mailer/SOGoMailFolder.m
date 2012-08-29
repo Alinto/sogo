@@ -1171,6 +1171,9 @@ static NSString *defaultUserID =  @"anyone";
   NSEnumerator *usernames;
   NSString *username;
 
+  if ([mailboxACL isKindOfClass: [NSException class]])
+    return;
+
   newIMAPAcls = [NSMutableDictionary new];
 
   usernames = [[mailboxACL allKeys] objectEnumerator];
@@ -1193,6 +1196,9 @@ static NSString *defaultUserID =  @"anyone";
   NSString *newUsername;
   NSString *imapPrefix;
 
+  if ([mailboxACL isKindOfClass: [NSException class]])
+    return;
+  
   imapPrefix = [[[context activeUser] domainDefaults] imapAclGroupIdPrefix];
   
   newIMAPAcls = [[NSMutableDictionary alloc] init];

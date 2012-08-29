@@ -1,6 +1,6 @@
 /* MAPIStoreTasksMessage.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -91,8 +91,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagSubject: (void **) data // SUMMARY
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagNormalizedSubject: (void **) data // SUMMARY
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   iCalToDo *task;
 

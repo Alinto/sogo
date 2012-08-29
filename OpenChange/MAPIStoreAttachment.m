@@ -1,6 +1,6 @@
 /* MAPIStoreAttachment.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -28,6 +28,7 @@
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreMessage.h"
 #import "MAPIStoreTypes.h"
+#import "NSObject+MAPIStore.h"
 
 #undef DEBUG
 #include <stdbool.h>
@@ -90,6 +91,12 @@
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPidTagAccessLevel: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getLongZero: data inMemCtx: memCtx];
+}
+
 - (int) openEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
                     withMID: (uint64_t *) mid
            withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
@@ -103,20 +110,34 @@
 
   mapping = [self mapping];
 
+  // if (attMessage)
   attMessage = [self openEmbeddedMessage];
   if (attMessage)
     {
       *mid = [mapping idFromURL: [attMessage url]];
+      [mapping registerURL: [attMessage url]
+                    withID: *mid];
       *messagePtr = attMessage;
       *mapistoreMsgPtr = mapistoreMsg;
     }
-  // else if (flags == MAPI_CREATE)
-  //   {
-  //     attMessage = [self createEmbeddedMessage];
-  //     if (attMessage)
-  //       [mapping registerURL: [attMessage url]
-  //                     withID: *mid];
-  //   }
+
+  return (attMessage ? MAPISTORE_SUCCESS : MAPISTORE_ERROR);
+}
+
+- (int) createEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
+             withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
+                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  MAPIStoreEmbeddedMessage *attMessage;
+  struct mapistore_message *mapistoreMsg;
+  
+  mapistoreMsg = talloc_zero (memCtx, struct mapistore_message);
+  attMessage = [self createEmbeddedMessage];
+  if (attMessage)
+    {
+      *messagePtr = attMessage;
+      *mapistoreMsgPtr = mapistoreMsg;
+    }
 
   return (attMessage ? MAPISTORE_SUCCESS : MAPISTORE_ERROR);
 }
@@ -135,6 +156,30 @@
 {
   /* attachments have no version number */
   return ULLONG_MAX;
+}
+
+- (void) copyToAttachment: (MAPIStoreAttachment *) newAttachment
+{
+  void *attachMethod;
+  enum mapistore_error error;
+  MAPIStoreEmbeddedMessage *embeddedMessage, *newEmbeddedMessage;
+
+  [self copyPropertiesToObject: newAttachment];
+
+  attachMethod = NULL;
+  error = [self getProperty: &attachMethod
+                    withTag: PidTagAttachMethod
+                   inMemCtx: NULL];
+  if (error == MAPISTORE_SUCCESS && attachMethod)
+    {
+      if (*(uint32_t *) attachMethod == afEmbeddedMessage)
+        {
+          embeddedMessage = [self openEmbeddedMessage];
+          newEmbeddedMessage = [newAttachment createEmbeddedMessage];
+          [embeddedMessage copyToMessage: newEmbeddedMessage];
+        }
+      talloc_free (attachMethod);
+    }
 }
 
 /* subclasses */

@@ -1,6 +1,6 @@
 /* MAPIStoreMailContext.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2010-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -26,6 +26,9 @@
 #import "MAPIStoreContext.h"
 
 @interface MAPIStoreMailContext : MAPIStoreContext
+
+- (void) updateURLWithFolderName: (NSString *) newFolderName;
+
 @end
 
 @interface MAPIStoreOutboxContext : MAPIStoreMailContext

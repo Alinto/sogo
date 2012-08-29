@@ -1,6 +1,6 @@
 diff -durpN unrtf-0.21.2.old/outputs/html.conf unrtf-0.21.2/outputs/html.conf
 --- unrtf-0.21.2.old/outputs/html.conf	2010-08-15 08:44:09.000000000 -0400
-+++ unrtf-0.21.2/outputs/html.conf	2012-03-13 16:38:53.295941363 -0400
++++ unrtf-0.21.2/outputs/html.conf	2012-08-21 13:33:44.761682724 -0400
 @@ -5,7 +5,7 @@ comment_end
  	-->
  	
@@ -21,7 +21,7 @@ diff -durpN unrtf-0.21.2.old/outputs/html.conf unrtf-0.21.2/outputs/html.conf
  	
 diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 --- unrtf-0.21.2.old/src/attr.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/attr.c	2012-03-13 16:38:41.323940752 -0400
++++ unrtf-0.21.2/src/attr.c	2012-08-21 13:38:56.717688715 -0400
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -504,7 +504,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 +  ++stack->tos;
 +  stack->attr_stack[stack->tos] = attr;
 +  if (param) 
-+    stack->attr_stack_params[stack->tos] = my_strdup(oc->conversion, param);
++    stack->attr_stack_params[stack->tos] = unrtf_strdup(oc->conversion, param);
 +  else
 +    stack->attr_stack_params[stack->tos] = NULL;
  
@@ -641,7 +641,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 +  AttrStack *new_stack;
  
 -	prev_stack = stack_of_stacks_top;
-+  new_stack = (AttrStack*) my_malloc (sizeof (AttrStack));
++  new_stack = (AttrStack*) unrtf_malloc (sizeof (AttrStack));
 +  memset ((void*) new_stack, 0, sizeof (AttrStack));
 +  new_stack->tos = -1;
  
@@ -691,7 +691,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 +      attr_express_end (attr, param, oc);
  
 -		if (param) my_free(param);
-+      if (param) my_free(param);
++      if (param) unrtf_free(param);
 +      stack->attr_stack_params[stack->tos] = NULL;
  
 -		stack->tos--;
@@ -769,7 +769,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 +  while (stack->tos>=0) 
 +    {
 +      char *param=stack->attr_stack_params[stack->tos];
-+      if (param) my_free(param);
++      if (param) unrtf_free(param);
 +      stack->attr_stack_params[stack->tos] = NULL;
 +      stack->tos--;
 +    }
@@ -826,7 +826,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 +    }
 +  }
 +
-+  my_free ((void*) stack);
++  unrtf_free ((void*) stack);
  }
  
  /*========================================================================
@@ -859,7 +859,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 +    int attr=stack->attr_stack[stack->tos];
 +    char *param=stack->attr_stack_params[stack->tos];
 +    attr_express_end (attr,param, oc);
-+    if (param) my_free(param);
++    if (param) unrtf_free(param);
 +    stack->attr_stack_params[stack->tos] = NULL;
 +    stack->tos--;
 +  }
@@ -1102,7 +1102,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 +  if (string == NULL)
 +    return NULL;
 +  else {
-+    s = my_malloc(strlen(string) + 1 + 12/* Number of characters that can be in int type (including '\0') - AF */);
++    s = unrtf_malloc(strlen(string) + 1 + 12/* Number of characters that can be in int type (including '\0') - AF */);
 +    while(string[i] != '\0' && (string[i] != '%' || (string[i] == '%' && (i != 0 && string[i-1] == '\\')))) {
 +      if (string[i] != '\\' || string[i+1] != '%') {
 +        s[j] = string[i];
@@ -1183,7 +1183,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 -				c->text = text;
 +  if (col == NULL)
 +    {
-+      col = (Collection *)my_malloc(sizeof(Collection));
++      col = (Collection *)unrtf_malloc(sizeof(Collection));
 +      col->nr = nr;
 +      col->text = strdup(text);
 +      col->next = NULL;
@@ -1195,7 +1195,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 +          if (c->nr == nr)
 +            {
 +              /* Here is a memory leak but not heavy. Do we need to care about this?
-+                 my_free(a->alias.text);
++                 unrtf_free(a->alias.text);
 +              */
 +              c->text = strdup(text);
  
@@ -1214,7 +1214,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 -		c->next->text = text;
 -		c->next->next = NULL;
 -	}
-+      c->next = (Collection *)my_malloc(sizeof(Collection));
++      c->next = (Collection *)unrtf_malloc(sizeof(Collection));
 +      c->next->nr = nr;
 +      c->next->text = strdup(text);
 +      c->next->next = NULL;
@@ -1265,16 +1265,16 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
 +    {
 +      c2 = c->next;
 +      if (c->text) {
-+        my_free((void *)c->text);
++        unrtf_free((void *)c->text);
 +      }
-+      my_free((void *)c);
++      unrtf_free((void *)c);
 +      c = c2;
 +    }
  }
 -
 diff -durpN unrtf-0.21.2.old/src/attr.h unrtf-0.21.2/src/attr.h
 --- unrtf-0.21.2.old/src/attr.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/attr.h	2012-03-13 16:38:41.323940752 -0400
++++ unrtf-0.21.2/src/attr.h	2012-08-21 13:33:44.785682699 -0400
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -1424,7 +1424,7 @@ diff -durpN unrtf-0.21.2.old/src/attr.h unrtf-0.21.2/src/attr.h
 +#endif /* ATTR_H */
 diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
 --- unrtf-0.21.2.old/src/convert.c	2011-06-07 08:00:23.000000000 -0400
-+++ unrtf-0.21.2/src/convert.c	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/convert.c	2012-08-21 13:38:56.721688436 -0400
 @@ -1,24 +1,24 @@
  
  /*===========================================================================
@@ -2697,7 +2697,7 @@ diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
 -		w=w->next;
 -	}
 +        oc->conversion->font_table[oc->conversion->total_fonts].num=num;
-+        oc->conversion->font_table[oc->conversion->total_fonts].name=my_strdup(oc->conversion, name);
++        oc->conversion->font_table[oc->conversion->total_fonts].name=unrtf_strdup(oc->conversion, name);
 +        if (safe_printf(device, 0, assemble_string(oc->personality->fonttable_fontnr, num))) fprintf(stderr, TOO_MANY_ARGS, "fonttable_fontnr");
 +        if (safe_printf(device, 1, oc->personality->fonttable_fontname, name)) fprintf(stderr, TOO_MANY_ARGS, "fonttable_fontname");
 +        oc->conversion->total_fonts++;
@@ -2747,7 +2747,7 @@ diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
 +
 +  for (i = 0; i < cc->total_fonts; i++) {
 +    if (cc->font_table[i].name) {
-+      my_free(cc->font_table[i].name);
++      unrtf_free(cc->font_table[i].name);
 +      cc->font_table[i].name = NULL;
 +    }
 +  }
@@ -3596,7 +3596,7 @@ diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
 +  } else {
 +    if (oc->personality->fonttable_begin != NULL)
 +      {
-+        name = my_malloc(12);
++        name = unrtf_malloc(12);
 +        sprintf(name, "%d", num);
 +      }
  #if 1 /* daved  0.21.1 */
@@ -6503,7 +6503,7 @@ diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
 -						*doublet = (int)ch;
 -						*(doublet+1) = (int)ch2;
 -						*(doublet+2) = 0;
-+                      doublet = (int *)my_malloc(12);
++                      doublet = (int *)unrtf_malloc(12);
 +                      *doublet = (int)ch;
 +                      *(doublet+1) = (int)ch2;
 +                      *(doublet+2) = 0;
@@ -7058,7 +7058,7 @@ diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
 +
 +  hash_free(&cc);
 +  if (cc.input_str)
-+    my_free(cc.input_str);
++    unrtf_free(cc.input_str);
 +  word_free(word);
 +  fonttable_free(oc.conversion);
 +  if (my_iconv_is_valid(oc.conversion->desc))
@@ -7120,7 +7120,7 @@ diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
  }
 diff -durpN unrtf-0.21.2.old/src/convert.h unrtf-0.21.2/src/convert.h
 --- unrtf-0.21.2.old/src/convert.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/convert.h	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/convert.h	2012-08-21 13:33:44.793682720 -0400
 @@ -36,18 +36,135 @@
  
  #ifndef _CONVERT
@@ -7264,7 +7264,7 @@ diff -durpN unrtf-0.21.2.old/src/convert.h unrtf-0.21.2/src/convert.h
  
 diff -durpN unrtf-0.21.2.old/src/defs.h unrtf-0.21.2/src/defs.h
 --- unrtf-0.21.2.old/src/defs.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/defs.h	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/defs.h	2012-08-21 13:33:44.817682703 -0400
 @@ -64,9 +64,6 @@
  #define SKIP_ONE_WORD	2
  #endif
@@ -7284,7 +7284,7 @@ diff -durpN unrtf-0.21.2.old/src/defs.h unrtf-0.21.2/src/defs.h
 +#define DEFAULT_OUTPUT             "html"
 diff -durpN unrtf-0.21.2.old/src/error.c unrtf-0.21.2/src/error.c
 --- unrtf-0.21.2.old/src/error.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/error.c	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/error.c	2012-08-21 13:38:56.729687967 -0400
 @@ -51,27 +51,11 @@
  #include <stdlib.h>
  #endif
@@ -7329,7 +7329,7 @@ diff -durpN unrtf-0.21.2.old/src/error.c unrtf-0.21.2/src/error.c
  #endif
 diff -durpN unrtf-0.21.2.old/src/error.h unrtf-0.21.2/src/error.h
 --- unrtf-0.21.2.old/src/error.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/error.h	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/error.h	2012-08-21 13:33:44.817682703 -0400
 @@ -37,9 +37,10 @@
  
  #define CHECK_MALLOC_SUCCESS(XX) { if ((XX)==NULL) { fprintf (stderr, "internal error: cannot allocate memory in %s at %d\n", __FILE__, __LINE__); exit (1); }}
@@ -7344,7 +7344,7 @@ diff -durpN unrtf-0.21.2.old/src/error.h unrtf-0.21.2/src/error.h
  
 diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
 --- unrtf-0.21.2.old/src/hash.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/hash.c	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/hash.c	2012-08-21 13:38:56.733687861 -0400
 @@ -53,24 +53,16 @@
  #include <string.h>
  #endif
@@ -7442,12 +7442,12 @@ diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
 -	i <<= 24;
 -	hi->value = i | (hash_value++ & 0xffffff);
 -	hi->next = NULL;
-+  hi=(HashItem*) my_malloc(sizeof(HashItem));
++  hi=(HashItem*) unrtf_malloc(sizeof(HashItem));
 +  if (!hi)
 +    error_handler(cc, "Out of memory");
 +  memset ((void*)hi, 0, sizeof (HashItem));
 +  
-+  hi->str = my_strdup(cc, str);
++  hi->str = unrtf_strdup(cc, str);
 +        
 +  i = *str;
 +  if (i=='\\') i=str[1];
@@ -7529,7 +7529,7 @@ diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
 +{
 +  HashItem *next = item->next;
 +
-+  my_free (item->str);
++  unrtf_free (item->str);
 +  free (item);
 +  if (next)
 +    hashitem_free(next);
@@ -7549,7 +7549,7 @@ diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
 +}
 diff -durpN unrtf-0.21.2.old/src/hash.h unrtf-0.21.2/src/hash.h
 --- unrtf-0.21.2.old/src/hash.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/hash.h	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/hash.h	2012-08-21 13:33:44.817682703 -0400
 @@ -32,11 +32,15 @@
   * 16 Dec 07, daved@physiol.usyd.edu.au: updated to GPL v3
   *--------------------------------------------------------------------*/
@@ -7573,7 +7573,7 @@ diff -durpN unrtf-0.21.2.old/src/hash.h unrtf-0.21.2/src/hash.h
 +#endif /* HASH_H */
 diff -durpN unrtf-0.21.2.old/src/main.c unrtf-0.21.2/src/main.c
 --- unrtf-0.21.2.old/src/main.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/main.c	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/main.c	2012-08-21 13:38:56.737687716 -0400
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -7995,7 +7995,7 @@ diff -durpN unrtf-0.21.2.old/src/main.c unrtf-0.21.2/src/main.c
 -
 diff -durpN unrtf-0.21.2.old/src/main.h unrtf-0.21.2/src/main.h
 --- unrtf-0.21.2.old/src/main.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/main.h	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/main.h	2012-08-21 13:33:44.821682709 -0400
 @@ -35,21 +35,8 @@
   * 17 Jan 10, daved@physiol.usyd.edu.au: change CONFIG_DIR to drop outputs/
   *--------------------------------------------------------------------*/
@@ -8021,7 +8021,7 @@ diff -durpN unrtf-0.21.2.old/src/main.h unrtf-0.21.2/src/main.h
 +#define USAGE "unrtf [--version] [--verbose] [--help] [--nopict|-n] [--noremap] [--html] [--text] [--vt] [--latex] [--rtf] [-P config_search_path]  [-t <file_with_tags>)] <filename>"
 diff -durpN unrtf-0.21.2.old/src/Makefile.am unrtf-0.21.2/src/Makefile.am
 --- unrtf-0.21.2.old/src/Makefile.am	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/Makefile.am	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/Makefile.am	2012-08-21 13:33:44.821682709 -0400
 @@ -13,7 +13,6 @@ unrtf_SOURCES = attr.c attr.h         \
  		malloc.c malloc.h     \
  		output.c output.h     \
@@ -8032,15 +8032,100 @@ diff -durpN unrtf-0.21.2.old/src/Makefile.am unrtf-0.21.2/src/Makefile.am
  		util.c util.h         \
 diff -durpN unrtf-0.21.2.old/src/malloc.c unrtf-0.21.2/src/malloc.c
 --- unrtf-0.21.2.old/src/malloc.c	2010-07-09 01:13:05.000000000 -0400
-+++ unrtf-0.21.2/src/malloc.c	2012-03-13 16:38:41.327940973 -0400
-@@ -135,19 +135,19 @@ total_malloced (void) {
++++ unrtf-0.21.2/src/malloc.c	2012-08-21 13:39:15.329687813 -0400
+@@ -28,6 +28,8 @@
+  *                 much memory is being used.
+  *----------------------------------------------------------------------
+  * Changes:
++ * 21 Aug 12, wsourdeau@inverse.ca: renamed "my_*" to "unrtf_*", to
++ * avoid symbol classes with other libraries
+  * 14 Aug 01, tuorfa@yahoo.com: added Turbo C support.
+  * 16 Aug 01, Lars Unger <l.unger@tu-bs.de>: added Amiga/GCC support.
+  * 22 Sep 01, tuorfa@yahoo.com: added function-level comment blocks 
+@@ -35,7 +37,7 @@
+  * 08 Oct 03, daved@physiol.usyd.edu.au: added stdlib.h for linux
+  * 29 Mar 05, daved@physiol.usyd.edu.au: changes requested by ZT Smith
+  * 16 Dec 07, daved@physiol.usyd.edu.au: updated to GPL v3
+- * 09 Nov 08, arkadiusz.firus@gmail.com: added my_realloc
++ * 09 Nov 08, arkadiusz.firus@gmail.com: added unrtf_realloc
+  *--------------------------------------------------------------------*/
+ 
+ #ifdef HAVE_CONFIG_H
+@@ -60,14 +62,14 @@
+ static unsigned long count=0;
+ 
+ /*========================================================================
+- * Name:	my_malloc
++ * Name:	unrtf_malloc
+  * Purpose:	Internal version of malloc necessary for record keeping.
+  * Args:	Amount.
+  * Returns:	Pointer.
+  *=======================================================================*/
+ 
+ char * 
+-my_malloc (unsigned long size) {
++unrtf_malloc (unsigned long size) {
+ 	char *ptr;
+ 
+ 	ptr = malloc (size);
+@@ -78,14 +80,14 @@ my_malloc (unsigned long size) {
+ }
+ 
+ /*========================================================================
+- * Name:	my_free
++ * Name:	unrtf_free
+  * Purpose:	Internal version of free necessary for record keeping.
+  * Args:	Pointer.
+  * Returns:	None.
+  *=======================================================================*/
+ 
+ void 
+-my_free (char* ptr) {
++unrtf_free (char* ptr) {
+ 	CHECK_PARAM_NOT_NULL(ptr);
+ 
+ 	free (ptr);
+@@ -93,20 +95,20 @@ my_free (char* ptr) {
+ 
+ #if 1 /* AK3 - AF */
+ /*========================================================================
+- * Name:	my_realloc
++ * Name:	unrtf_realloc
+  * Purpose:	Internal version of realloc necessary for record keeping.
+  * Args:	Pointer.
+  * Returns:	None.
+  *=======================================================================*/
+ char *
+-my_realloc(char *ptr, unsigned long old_size, unsigned long new_size)
++unrtf_realloc(char *ptr, unsigned long old_size, unsigned long new_size)
+ {
+-	char *new_ptr = my_malloc(new_size);
++	char *new_ptr = unrtf_malloc(new_size);
+ 
+ 	if (new_ptr != NULL)
+ 		memcpy(new_ptr, ptr, old_size);
+ 
+-	my_free(ptr);
++	unrtf_free(ptr);
+ 
+ 	return new_ptr;
+ }
+@@ -128,26 +130,26 @@ total_malloced (void) {
+ 
+ 
+ /*========================================================================
+- * Name:	my_strdup
++ * Name:	unrtf_strdup
+  * Purpose:	Internal version of strdup necessary for record keeping.
+  * Args:	String.
+  * Returns:	String.
   *=======================================================================*/
  
  char *
 -my_strdup (char *src) {
 -	unsigned long len;
 -	char *ptr;
-+my_strdup (struct ConversionContext *cc, char *src) {
++unrtf_strdup (struct ConversionContext *cc, char *src) {
 +  unsigned long len;
 +  char *ptr;
  
@@ -8052,7 +8137,7 @@ diff -durpN unrtf-0.21.2.old/src/malloc.c unrtf-0.21.2/src/malloc.c
 -	if (!ptr)
 -		error_handler ("out of memory in strdup()");
 +  len = strlen(src);
-+  ptr = my_malloc (len+1);
++  ptr = unrtf_malloc (len+1);
 +  if (!ptr)
 +    error_handler (cc, "out of memory in strdup()");
  
@@ -8063,32 +8148,253 @@ diff -durpN unrtf-0.21.2.old/src/malloc.c unrtf-0.21.2/src/malloc.c
  }
  /* added by daved */
  #include <sys/types.h>
-@@ -163,5 +163,5 @@ rpl_malloc (size_t n)
+@@ -163,5 +165,5 @@ rpl_malloc (size_t n)
  {    
    if (n == 0)
  	   n = 1;
 -return malloc (n);
 +  return malloc (n);
  }    
+diff -durpN unrtf-0.21.2.old/src/malloc.c~ unrtf-0.21.2/src/malloc.c~
+--- unrtf-0.21.2.old/src/malloc.c~	1969-12-31 19:00:00.000000000 -0500
++++ unrtf-0.21.2/src/malloc.c~	2012-08-21 13:38:56.745687548 -0400
+@@ -0,0 +1,169 @@
++/*=============================================================================
++   GNU UnRTF, a command-line program to convert RTF documents to other formats.
++   Copyright (C) 2000,2001,2004 by Zachary Smith
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 3 of the License, or
++   (at your option) any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software
++   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
++
++   The maintainer is reachable by electronic mail at daved@physiol.usyd.edu.au
++=============================================================================*/
++
++
++/*----------------------------------------------------------------------
++ * Module name:    malloc
++ * Author name:    Zachary Smith
++ * Create date:    01 Aug 01
++ * Purpose:        Memory management. Allows us to keep track of how
++ *                 much memory is being used.
++ *----------------------------------------------------------------------
++ * Changes:
++ * 21 Aug 12, wsourdeau@inverse.ca: rename "my_malloc" to "unrtf_malloc", to
++ * avoid symbol classes with other libraries
++ * 14 Aug 01, tuorfa@yahoo.com: added Turbo C support.
++ * 16 Aug 01, Lars Unger <l.unger@tu-bs.de>: added Amiga/GCC support.
++ * 22 Sep 01, tuorfa@yahoo.com: added function-level comment blocks 
++ * 28 Sep 01, tuorfa@yahoo.com: removed Turbo C support.
++ * 08 Oct 03, daved@physiol.usyd.edu.au: added stdlib.h for linux
++ * 29 Mar 05, daved@physiol.usyd.edu.au: changes requested by ZT Smith
++ * 16 Dec 07, daved@physiol.usyd.edu.au: updated to GPL v3
++ * 09 Nov 08, arkadiusz.firus@gmail.com: added unrtf_realloc
++ *--------------------------------------------------------------------*/
++
++#ifdef HAVE_CONFIG_H
++#include <config.h>
++#endif
++
++#ifdef HAVE_STDIO_H
++#include <stdio.h>
++#endif
++
++#ifdef HAVE_STDLIB_H
++#include <stdlib.h>
++#endif
++
++#ifdef HAVE_STRING_H
++#include <string.h>
++#endif
++
++#include "error.h"
++#include "malloc.h"
++
++static unsigned long count=0;
++
++/*========================================================================
++ * Name:	unrtf_malloc
++ * Purpose:	Internal version of malloc necessary for record keeping.
++ * Args:	Amount.
++ * Returns:	Pointer.
++ *=======================================================================*/
++
++char * 
++unrtf_malloc (unsigned long size) {
++	char *ptr;
++
++	ptr = malloc (size);
++	if (ptr)
++		count += size;
++
++	return ptr;
++}
++
++/*========================================================================
++ * Name:	unrtf_free
++ * Purpose:	Internal version of free necessary for record keeping.
++ * Args:	Pointer.
++ * Returns:	None.
++ *=======================================================================*/
++
++void 
++unrtf_free (char* ptr) {
++	CHECK_PARAM_NOT_NULL(ptr);
++
++	free (ptr);
++}
++
++#if 1 /* AK3 - AF */
++/*========================================================================
++ * Name:	unrtf_realloc
++ * Purpose:	Internal version of realloc necessary for record keeping.
++ * Args:	Pointer.
++ * Returns:	None.
++ *=======================================================================*/
++char *
++unrtf_realloc(char *ptr, unsigned long old_size, unsigned long new_size)
++{
++	char *new_ptr = unrtf_malloc(new_size);
++
++	if (new_ptr != NULL)
++		memcpy(new_ptr, ptr, old_size);
++
++	unrtf_free(ptr);
++
++	return new_ptr;
++}
++#endif
++
++/*========================================================================
++ * Name:	total_malloced
++ * Purpose:	Returns total amount of memory thus far allocated. Called at
++ * 			the end of main() when in debug mode.
++ * Args:	None.
++ * Returns:	Amount.
++ *=======================================================================*/
++
++unsigned long 
++total_malloced (void) {
++	return count;
++}
++
++
++
++/*========================================================================
++ * Name:	unrtf_strdup
++ * Purpose:	Internal version of strdup necessary for record keeping.
++ * Args:	String.
++ * Returns:	String.
++ *=======================================================================*/
++
++char *
++unrtf_strdup (struct ConversionContext *cc, char *src) {
++  unsigned long len;
++  char *ptr;
++
++  CHECK_PARAM_NOT_NULL(src);
++
++  len = strlen(src);
++  ptr = unrtf_malloc (len+1);
++  if (!ptr)
++    error_handler (cc, "out of memory in strdup()");
++
++  sprintf (ptr, "%s", src);
++  return ptr;
++}
++/* added by daved */
++#include <sys/types.h>
++#undef malloc
++     
++void *malloc ();
++        
++/* Allocate an N-byte block of memory from the heap.
++If N is zero, allocate a 1-byte block.  */
++
++void *
++rpl_malloc (size_t n)
++{    
++  if (n == 0)
++	   n = 1;
++  return malloc (n);
++}    
 diff -durpN unrtf-0.21.2.old/src/malloc.h unrtf-0.21.2/src/malloc.h
 --- unrtf-0.21.2.old/src/malloc.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/malloc.h	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/malloc.h	2012-08-21 13:38:32.385687262 -0400
 @@ -32,9 +32,10 @@
   * 09 Nov 08, arkadiusz.firus@gmail.com: added my_realloc
   *--------------------------------------------------------------------*/
  
+-extern char * my_malloc (unsigned long);
+-extern void my_free (char*);
+-extern char * my_realloc(char*, unsigned long, unsigned long);
+-extern unsigned long total_malloced (void);
+-extern char * my_strdup (char*);
++struct ConversionContext;
+ 
++extern char * unrtf_malloc (unsigned long);
++extern void unrtf_free (char*);
++extern char * unrtf_realloc(char*, unsigned long, unsigned long);
++extern unsigned long total_malloced (void);
++extern char * unrtf_strdup (struct ConversionContext *, char*);
+diff -durpN unrtf-0.21.2.old/src/malloc.h~ unrtf-0.21.2/src/malloc.h~
+--- unrtf-0.21.2.old/src/malloc.h~	1969-12-31 19:00:00.000000000 -0500
++++ unrtf-0.21.2/src/malloc.h~	2012-08-21 13:33:44.825682713 -0400
+@@ -0,0 +1,41 @@
++/*=============================================================================
++   GNU UnRTF, a command-line program to convert RTF documents to other formats.
++   Copyright (C) 2000,2001,2004 by Zachary Smith
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 3 of the License, or
++   (at your option) any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software
++   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
++
++   The maintainer is reachable by electronic mail at daved@physiol.usyd.edu.au
++=============================================================================*/
++
++
++/*----------------------------------------------------------------------
++ * Module name:    malloc
++ * Author name:    Zachary Smith
++ * Create date:    1 Aug 2001
++ * Purpose:        Definitions for memory management.
++ *----------------------------------------------------------------------
++ * Changes:
++ * 29 Mar 05, daved@physiol.usyd.edu.au: changes requested by ZT Smith
++ * 16 Dec 07, daved@physiol.usyd.edu.au: updated to GPL v3
++ * 09 Nov 08, arkadiusz.firus@gmail.com: added my_realloc
++ *--------------------------------------------------------------------*/
++
 +struct ConversionContext;
 +
- extern char * my_malloc (unsigned long);
- extern void my_free (char*);
- extern char * my_realloc(char*, unsigned long, unsigned long);
- extern unsigned long total_malloced (void);
--extern char * my_strdup (char*);
--
++extern char * my_malloc (unsigned long);
++extern void my_free (char*);
++extern char * my_realloc(char*, unsigned long, unsigned long);
++extern unsigned long total_malloced (void);
 +extern char * my_strdup (struct ConversionContext *, char*);
 diff -durpN unrtf-0.21.2.old/src/my_iconv.c unrtf-0.21.2/src/my_iconv.c
 --- unrtf-0.21.2.old/src/my_iconv.c	2010-08-16 00:12:43.000000000 -0400
-+++ unrtf-0.21.2/src/my_iconv.c	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/my_iconv.c	2012-08-21 13:38:56.753687604 -0400
 @@ -12,154 +12,133 @@
  #include <stdio.h>
  #include <string.h>
@@ -8157,7 +8463,7 @@ diff -durpN unrtf-0.21.2.old/src/my_iconv.c unrtf-0.21.2/src/my_iconv.c
 -#endif
 +  if ((cd.desc = iconv_open(tocode, fromcode)) == (iconv_t) -1)
 +    {
-+      path = my_malloc((strlen(cc->options->config_directory) + strlen(fromcode) + 10) * sizeof(char));
++      path = unrtf_malloc((strlen(cc->options->config_directory) + strlen(fromcode) + 10) * sizeof(char));
 +      sprintf (path, "%s/%s.charmap", cc->options->config_directory, fromcode);
  
 -		if (f != NULL)
@@ -8176,7 +8482,7 @@ diff -durpN unrtf-0.21.2.old/src/my_iconv.c unrtf-0.21.2/src/my_iconv.c
 -			}
 +      if (f != NULL)
 +        {
-+          cd.char_table = (char **)my_malloc(char_table_size * sizeof(char *));
++          cd.char_table = (char **)unrtf_malloc(char_table_size * sizeof(char *));
 +          c = fgetc(f);
  
 -			fclose(f);
@@ -8195,7 +8501,7 @@ diff -durpN unrtf-0.21.2.old/src/my_iconv.c unrtf-0.21.2/src/my_iconv.c
 +        }
  
 -	return cd;
-+      my_free(path);
++      unrtf_free(path);
 +    }
 +
 +  return cd;
@@ -8282,13 +8588,13 @@ diff -durpN unrtf-0.21.2.old/src/my_iconv.c unrtf-0.21.2/src/my_iconv.c
 +    {
 +      for (i = 0; i < char_table_size; i++)
 +        {
-+          my_free(cd.char_table[i]);
++          unrtf_free(cd.char_table[i]);
 +        }
  
 -		my_free((void *)cd.char_table);
 -		cd.char_table = NULL;
 -	}
-+      my_free((void *)cd.char_table);
++      unrtf_free((void *)cd.char_table);
 +      cd.char_table = NULL;
 +    }
  
@@ -8330,7 +8636,7 @@ diff -durpN unrtf-0.21.2.old/src/my_iconv.c unrtf-0.21.2/src/my_iconv.c
  
 diff -durpN unrtf-0.21.2.old/src/my_iconv.h unrtf-0.21.2/src/my_iconv.h
 --- unrtf-0.21.2.old/src/my_iconv.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/my_iconv.h	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/my_iconv.h	2012-08-21 13:33:44.825682713 -0400
 @@ -5,6 +5,9 @@
   * Purpose:    my_conv definitions
   *--------------------------------------------------------------------*/
@@ -8360,7 +8666,7 @@ diff -durpN unrtf-0.21.2.old/src/my_iconv.h unrtf-0.21.2/src/my_iconv.h
 +#endif /* _MY_ICONV */
 diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 --- unrtf-0.21.2.old/src/output.c	2011-06-07 08:04:38.000000000 -0400
-+++ unrtf-0.21.2/src/output.c	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/output.c	2012-08-21 13:38:56.753687604 -0400
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -8432,7 +8738,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 -	new_op = (OutputPersonality*) my_malloc (sizeof(OutputPersonality));
 -	if (!new_op)
 -		error_handler ("cannot allocate output personality");
-+  new_op = (OutputPersonality*) my_malloc (sizeof(OutputPersonality));
++  new_op = (OutputPersonality*) unrtf_malloc (sizeof(OutputPersonality));
 +  if (!new_op)
 +    error_handler (cc, "cannot allocate output personality");
  
@@ -8458,7 +8764,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 +  if (op->aliases)
 +    free_collection(op->aliases);
  
-+  my_free ((void*) op);
++  unrtf_free ((void*) op);
 +}
  
  /*========================================================================
@@ -8502,8 +8808,8 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 +  else
 +    if (result == NULL)
 +      {
-+        originbuf = inbuf = my_malloc(inbytes + 1);
-+        origoutbuf = outbuf = my_malloc(outbytes + 1);
++        originbuf = inbuf = unrtf_malloc(inbytes + 1);
++        origoutbuf = outbuf = unrtf_malloc(outbytes + 1);
  
 -		for (i = inbytes - 1; ch > 255; i--)
 -		{
@@ -8712,12 +9018,12 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 -		*(inbuf+2) = 0;
 -		fprintf(stderr, "inbuf = %o %o\n", *inbuf, *(inbuf+1));
 -		outbuf = my_malloc(outbytes + 1);
-+        inbuf = (char *) my_malloc(inbytes + 1);
++        inbuf = (char *) unrtf_malloc(inbytes + 1);
 +        *inbuf = *doublet;
 +        *(inbuf+1) = (unsigned char *) *(doublet+1);
 +        *(inbuf+2) = 0;
 +        fprintf(stderr, "inbuf = %o %o\n", *inbuf, *(inbuf+1));
-+        outbuf = my_malloc(outbytes + 1);
++        outbuf = unrtf_malloc(outbytes + 1);
  
  #if 0
  
@@ -8925,7 +9231,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 +  else
 +    if (result == NULL)
 +      {
-+        inbuf = (char *) my_malloc(inbytes + 1);
++        inbuf = (char *) unrtf_malloc(inbytes + 1);
 +        *inbuf = ch1;
 +        *(inbuf+1) = ch2;
 +        *(inbuf+2) = 0;
@@ -8934,7 +9240,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 +        fprintf(stderr, "inbuf = %o %o\n", *inbuf, *(inbuf+1));
  #endif
 -		outbuf = my_malloc(outbytes + 1);
-+        outbuf = my_malloc(outbytes + 1);
++        outbuf = unrtf_malloc(outbytes + 1);
  
 -		i = outbytes;
 -		if (!my_iconv_is_valid(cd))
@@ -9544,7 +9850,7 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
 -
 diff -durpN unrtf-0.21.2.old/src/output.h unrtf-0.21.2/src/output.h
 --- unrtf-0.21.2.old/src/output.h	2010-08-11 21:09:02.000000000 -0400
-+++ unrtf-0.21.2/src/output.h	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/output.h	2012-08-21 13:33:44.829682714 -0400
 @@ -44,227 +44,228 @@
  typedef Collection Aliases;
  
@@ -9932,7 +10238,7 @@ diff -durpN unrtf-0.21.2.old/src/output.h unrtf-0.21.2/src/output.h
 -
 diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
 --- unrtf-0.21.2.old/src/parse.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/parse.c	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/parse.c	2012-08-21 13:38:56.765687661 -0400
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -10172,7 +10478,7 @@ diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
 +    error_handler(cc, "No input buffer allocated");
 +  old_length = cc->current_max_length;
 +  cc->current_max_length *= 2;
-+  new_ptr = my_malloc (cc->current_max_length);
++  new_ptr = unrtf_malloc (cc->current_max_length);
 +  if (!new_ptr)
 +    error_handler(cc, "Out of memory while resizing buffer");
  	
@@ -10181,7 +10487,7 @@ diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
 -	input_str = new_ptr;
 -	return TRUE;
 +  memcpy (new_ptr, cc->input_str, old_length);
-+  my_free(cc->input_str);
++  unrtf_free(cc->input_str);
 +  cc->input_str = new_ptr;
 +  return TRUE;
  }
@@ -10220,9 +10526,9 @@ diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
 +  /* Get some storage for a word.
 +   */
 +  if (cc->input_str) {
-+    my_free(cc->input_str);
++    unrtf_free(cc->input_str);
 +  }
-+  cc->input_str = my_malloc (cc->current_max_length);
++  cc->input_str = unrtf_malloc (cc->current_max_length);
 +  if (!cc->input_str)
 +    error_handler(cc, "Cannot allocate word storage");
  
@@ -10600,13 +10906,13 @@ diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
 -		input_str = NULL;
 -	} while (1);
 +    /* Free up the memory allocated by read_word. */
-+    my_free(cc->input_str);
++    unrtf_free(cc->input_str);
 +    cc->input_str = NULL;
 +  } while (1);
  }
 diff -durpN unrtf-0.21.2.old/src/parse.h unrtf-0.21.2/src/parse.h
 --- unrtf-0.21.2.old/src/parse.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/parse.h	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/parse.h	2012-08-21 13:33:44.829682714 -0400
 @@ -38,8 +38,6 @@
  #include "word.h"
  #endif
@@ -10697,9 +11003,81 @@ diff -durpN unrtf-0.21.2.old/src/path.h unrtf-0.21.2/src/path.h
 -
 -int	check_dirs();
 -void	show_dirs();
+diff -durpN unrtf-0.21.2.old/src/unicode.c unrtf-0.21.2/src/unicode.c
+--- unrtf-0.21.2.old/src/unicode.c	2011-06-07 08:06:43.000000000 -0400
++++ unrtf-0.21.2/src/unicode.c	2012-08-21 13:38:56.765687661 -0400
+@@ -55,20 +55,20 @@ unicode_to_string(int uc)
+ 
+ 	if (uc < 0x7f)
+ 	{
+-		string = my_malloc(2 * sizeof(char));
++		string = unrtf_malloc(2 * sizeof(char));
+ 		string[0] = (unsigned char) uc;
+ 		string[1] = '\0';
+ 	}
+ 	else if (uc < 0x7ff)
+ 	{
+-		string = my_malloc(3 * sizeof(char));
++		string = unrtf_malloc(3 * sizeof(char));
+ 		string[0] = (unsigned char) 192 + (uc / 64);
+ 		string[1] = (unsigned char) 128 + (uc % 64);
+ 		string[2] = '\0';
+ 	}
+ 	else if (uc < 0xffff)
+ 	{
+-		string = my_malloc(4 * sizeof(char));
++		string = unrtf_malloc(4 * sizeof(char));
+ 		string[0] = (unsigned char) 224 + (uc / (64 * 64));
+ 		string[1] = (unsigned char) 128 + ((uc / 64) % 64);
+ 		string[2] = (unsigned char) 128 + (uc % 64);
+@@ -76,7 +76,7 @@ unicode_to_string(int uc)
+ 	}
+ 	else if (uc < 0x1FFFFF)
+ 	{
+-		string = my_malloc(5 * sizeof(char));
++		string = unrtf_malloc(5 * sizeof(char));
+ 		string[0] = (unsigned char) 240 + (uc / (64 * 64 * 64));
+ 		string[1] = (unsigned char) 128 + ((uc / (64 * 64)) % 64);
+ 		string[2] = (unsigned char) 128 + ((uc / 64) % 64);
+@@ -85,7 +85,7 @@ unicode_to_string(int uc)
+ 	}
+ 	else if (uc < 0x3FFFFFF)
+ 	{
+-		string = my_malloc(6 * sizeof(char));
++		string = unrtf_malloc(6 * sizeof(char));
+ 		string[0] = (unsigned char) 248 + (uc / (64 * 64 * 64 * 64));
+ 		string[1] = (unsigned char) 128 + ((uc / (64 * 64 * 64)) % 64);
+ 		string[2] = (unsigned char) 128 + ((uc / (64 * 64)) % 64);
+@@ -95,7 +95,7 @@ unicode_to_string(int uc)
+ 	}
+ 	else if (uc < 0x7FFFFFFF)
+ 	{
+-		string = my_malloc(7 * sizeof(char));
++		string = unrtf_malloc(7 * sizeof(char));
+ 		string[0] = (unsigned char) 252 + (uc / (64 * 64 * 64 * 64 * 64));
+ 		string[1] = (unsigned char) 128 + ((uc / (64 * 64 * 64 * 64)) % 64);
+ 		string[2] = (unsigned char) 128 + ((uc / (64 * 64 * 64)) % 64);
+@@ -122,7 +122,7 @@ char *
+ get_unicode_char(FILE *file)
+ {
+ 	int allocated = 5, len = 0, uc;
+-	char c, *unicode_number = my_malloc(allocated * sizeof(char));
++	char c, *unicode_number = unrtf_malloc(allocated * sizeof(char));
+ 
+ 	c = fgetc(file);
+ 
+@@ -139,7 +139,7 @@ get_unicode_char(FILE *file)
+ 		if (len == allocated)
+ 		{
+ 			allocated *= 2;
+-			unicode_number = my_realloc(unicode_number, allocated / 2, allocated);
++			unicode_number = unrtf_realloc(unicode_number, allocated / 2, allocated);
+ 		}
+ 	}
+ 
 diff -durpN unrtf-0.21.2.old/src/unrtf.h unrtf-0.21.2/src/unrtf.h
 --- unrtf-0.21.2.old/src/unrtf.h	1969-12-31 19:00:00.000000000 -0500
-+++ unrtf-0.21.2/src/unrtf.h	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/unrtf.h	2012-08-21 13:33:44.833682714 -0400
 @@ -0,0 +1,55 @@
 +/*===========================================================================
 +   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -10758,7 +11136,7 @@ diff -durpN unrtf-0.21.2.old/src/unrtf.h unrtf-0.21.2/src/unrtf.h
 +#endif /* UNRTF_H */
 diff -durpN unrtf-0.21.2.old/src/user.c unrtf-0.21.2/src/user.c
 --- unrtf-0.21.2.old/src/user.c	2011-06-07 08:08:17.000000000 -0400
-+++ unrtf-0.21.2/src/user.c	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/user.c	2012-08-21 13:38:56.773687616 -0400
 @@ -7,7 +7,7 @@
   *----------------------------------------------------------------------
   * Changes:
@@ -10790,7 +11168,7 @@ diff -durpN unrtf-0.21.2.old/src/user.c unrtf-0.21.2/src/user.c
  
 -	if ((f->file = fopen(file_name, "r")) == NULL || (f->name = my_malloc((strlen(file_name) + 1) * sizeof(char))) == NULL)
 -		return NULL; 
-+  if ((f->file = fopen(file_name, "r")) == NULL || (f->name = my_malloc((strlen(file_name) + 1) * sizeof(char))) == NULL)
++  if ((f->file = fopen(file_name, "r")) == NULL || (f->name = unrtf_malloc((strlen(file_name) + 1) * sizeof(char))) == NULL)
 +    return NULL; 
  
 -	f->line_nr = 1;
@@ -10810,7 +11188,7 @@ diff -durpN unrtf-0.21.2.old/src/user.c unrtf-0.21.2/src/user.c
 -	fclose(f->file);
 -	my_free(f->name);
 +  fclose(f->file);
-+  my_free(f->name);
++  unrtf_free(f->name);
  }
  
  /*========================================================================
@@ -10833,7 +11211,7 @@ diff -durpN unrtf-0.21.2.old/src/user.c unrtf-0.21.2/src/user.c
 +#define ADD_CHAR(char)                                                  \
 +  if (def_buffer_length == chars_nr)                                    \
 +    {                                                                   \
-+      if ((def = my_realloc(def, def_buffer_length, def_buffer_length * 2)) == NULL) \
++      if ((def = unrtf_realloc(def, def_buffer_length, def_buffer_length * 2)) == NULL) \
 +        {                                                               \
 +          perror("Cannot allocate memory.");                            \
 +          return NULL;                                                  \
@@ -10855,7 +11233,7 @@ diff -durpN unrtf-0.21.2.old/src/user.c unrtf-0.21.2/src/user.c
  
 -	if ((def = my_malloc(def_buffer_length)) == NULL)
 -		return NULL;
-+  if ((def = my_malloc(def_buffer_length)) == NULL)
++  if ((def = unrtf_malloc(def_buffer_length)) == NULL)
 +    return NULL;
  
 -	c = fgetc(file->file);
@@ -11060,11 +11438,11 @@ diff -durpN unrtf-0.21.2.old/src/user.c unrtf-0.21.2/src/user.c
 +        add_alias(op, get_unicode(&name[2]), def);
 +      else
 +        {			
-+          my_free (def);
++          unrtf_free (def);
 +          fprintf(stderr, "unrtf: unknown name \"%s\" in line %d of \"%s\"\n", name, file->line_nr, file->name);
 +          return 1;
 +        }
-+      my_free (def);
++      unrtf_free (def);
 +    }
 +  else
 +    if ((*defs[i].variable = give_definition(file)) == NULL)
@@ -11188,7 +11566,7 @@ diff -durpN unrtf-0.21.2.old/src/user.c unrtf-0.21.2/src/user.c
  
 diff -durpN unrtf-0.21.2.old/src/user.h unrtf-0.21.2/src/user.h
 --- unrtf-0.21.2.old/src/user.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/user.h	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/user.h	2012-08-21 13:33:44.833682714 -0400
 @@ -151,9 +151,10 @@
  
  #ifndef _USER
@@ -11202,9 +11580,21 @@ diff -durpN unrtf-0.21.2.old/src/user.h unrtf-0.21.2/src/user.h
  
  #define _USER
  #endif
+diff -durpN unrtf-0.21.2.old/src/util.c unrtf-0.21.2/src/util.c
+--- unrtf-0.21.2.old/src/util.c	2010-08-09 08:05:30.000000000 -0400
++++ unrtf-0.21.2/src/util.c	2012-08-21 13:38:56.777687600 -0400
+@@ -110,7 +110,7 @@ concatenate (const char *s1, const char
+ {
+ 	char *result;
+ 
+-	result = my_malloc((strlen(s1) + strlen(s2) + 1) * sizeof(char));
++	result = unrtf_malloc((strlen(s1) + strlen(s2) + 1) * sizeof(char));
+ 	strcpy(result, s1);
+ 	strcat(result, s2);
+ 
 diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
 --- unrtf-0.21.2.old/src/word.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/word.c	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/word.c	2012-08-21 13:38:56.781687591 -0400
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -11298,7 +11688,7 @@ diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
 -		error_handler ("out of memory");
 -	memset ((void*) w, 0, sizeof(Word));
 -	if (!w) error_handler ("cannot allocate a Word");
-+  w = (Word *) my_malloc(sizeof(Word));
++  w = (Word *) unrtf_malloc(sizeof(Word));
 +  if (!w)
 +    error_handler (cc, "out of memory");
 +  memset ((void*) w, 0, sizeof(Word));
@@ -11346,7 +11736,7 @@ diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
 -	}
 +    prev = w;
 +    w = w->next;
-+    my_free((char*) prev);
++    unrtf_free((char*) prev);
 +  }
  }
  
@@ -11501,7 +11891,7 @@ diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
 +              if (s != NULL && s1 != NULL && !strcmp(s1, s))
 +                {
 +                  w2->next = w->next;
-+                  my_free((char *)w);
++                  unrtf_free((char *)w);
 +                  w = w2;
 +                }
 +              else
@@ -11529,7 +11919,7 @@ diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
  
 diff -durpN unrtf-0.21.2.old/src/word.h unrtf-0.21.2/src/word.h
 --- unrtf-0.21.2.old/src/word.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/word.h	2012-03-13 16:38:41.327940973 -0400
++++ unrtf-0.21.2/src/word.h	2012-08-21 13:33:44.833682714 -0400
 @@ -41,14 +41,15 @@ typedef struct _w {
  	struct _w * child;
  } Word;

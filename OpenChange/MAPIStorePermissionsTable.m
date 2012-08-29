@@ -1,6 +1,6 @@
 /* MAPIStorePermissionsTable.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -23,7 +23,6 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
-
 #import <SOGo/SOGoFolder.h>
 #import <SOGo/SOGoObject.h>
 #import <SOGo/SOGoUser.h>
@@ -50,7 +49,7 @@
   MAPIStorePermissionEntry *newEntry;
 
   newEntry = [[self alloc] initWithUserId: newUserId andMemberId: newMemberId
-                           forFolder: newFolder];
+                                forFolder: newFolder];
   [newEntry autorelease];
 
   return newEntry;
@@ -60,7 +59,7 @@
           andMemberId: (uint64_t) newMemberId
             forFolder: (MAPIStoreFolder *) newFolder
 {
-  if ((self = [self initWithSOGoObject: nil inContainer: newFolder]))
+  if ((self = [self initInContainer: newFolder]))
     {
       ASSIGN (userId, newUserId);
       memberId = newMemberId;
@@ -103,7 +102,7 @@
     entryId = [NSData data];
   else
     {
-      connInfo = [[container context] connectionInfo];
+      connInfo = [(MAPIStoreContext *) [container context] connectionInfo];
       entryId = MAPIStoreInternalEntryId (connInfo->sam_ctx, userId);
     }
   *data = [entryId asBinaryInMemCtx: memCtx];

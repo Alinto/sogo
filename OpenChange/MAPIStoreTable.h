@@ -1,6 +1,6 @@
 /* MAPIStoreTable.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc
+ * Copyright (C) 2010-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -25,7 +25,7 @@
 
 #include <talloc.h>
 
-#import <Foundation/NSObject.h>
+#import "NSObject+MAPIStore.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
@@ -99,8 +99,6 @@ typedef enum {
       inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getRowCount: (uint32_t *) countP
       withQueryType: (enum mapistore_query_type) queryType;
-
-- (void) notifyChangesForChild: (MAPIStoreObject *) child;
 
 /* helpers */
 

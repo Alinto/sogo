@@ -1,6 +1,6 @@
 /* NSDate+MAPIStore.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2010-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -51,7 +51,7 @@ _setupRefDate ()
                   timeZone: [NSTimeZone timeZoneWithName: @"UTC"]];
 }
 
-+ (id) dateFromMinutesSince1601: (uint32_t) minutes
++ (NSCalendarDate *) dateFromMinutesSince1601: (uint32_t) minutes
 {
   NSCalendarDate *result;
 
@@ -129,3 +129,22 @@ _setupRefDate ()
 }
 
 @end
+
+NSComparisonResult
+NSDateCompare (id date1, id date2, void *ctx)
+{
+  NSTimeInterval secs1, secs2;
+  NSComparisonResult result;
+
+  secs1 = [date1 timeIntervalSince1970];
+  secs2 = [date2 timeIntervalSince1970];
+  if (secs1 == secs2)
+    result = NSOrderedSame;
+  else if (secs1 < secs2)
+    result = NSOrderedAscending;
+  else
+    result = NSOrderedDescending;
+
+  return result;
+}
+

@@ -1,6 +1,6 @@
 /* MAPIStoreMapping.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2010-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -29,6 +29,8 @@
 #import <Foundation/NSValue.h>
 
 #import <NGExtensions/NSObject+Logs.h>
+
+#import <SOGo/NSString+Utilities.h>
 
 #import "MAPIStoreTypes.h"
 
@@ -202,6 +204,91 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
     idNbr = NSNotFound;
 
   return idNbr;
+}
+
+- (void) _updateFolderWithURL: (NSString *) oldURL
+                      withURL: (NSString *) urlString
+{
+  NSArray *allKeys;
+  NSUInteger count, max;
+  NSString *currentKey, *newKey;
+  NSNumber *idKey;
+  TDB_DATA key, dbuf;
+
+  [oldURL retain];
+
+  allKeys = [reverseMapping allKeys];
+  max = [allKeys count];
+  for (count = 0; count < max; count++)
+    {
+      currentKey = [allKeys objectAtIndex: count];
+      if ([currentKey hasPrefix: oldURL])
+        {
+          newKey = [currentKey stringByReplacingPrefix: oldURL
+                                            withPrefix: urlString];
+
+          idKey = [reverseMapping objectForKey: currentKey];
+          [mapping setObject: newKey forKey: idKey];
+          [reverseMapping setObject: idKey forKey: newKey];
+          [reverseMapping removeObjectForKey: currentKey];
+
+          /* update the record in the indexing database */
+          key.dptr = (unsigned char *) talloc_asprintf (NULL, "0x%.16"PRIx64,
+                                                        (uint64_t) [idKey unsignedLongLongValue]);
+          key.dsize = strlen ((const char *) key.dptr);
+
+          dbuf.dptr = (unsigned char *) talloc_strdup (NULL,
+                                                       [newKey UTF8String]);
+          dbuf.dsize = strlen ((const char *) dbuf.dptr);
+          tdb_store (indexing->tdb, key, dbuf, TDB_MODIFY);
+          talloc_free (key.dptr);
+          talloc_free (dbuf.dptr);
+        }
+    }
+
+  [oldURL release];
+}
+
+- (void) updateID: (uint64_t) idNbr
+          withURL: (NSString *) urlString
+{
+  NSString *oldURL;
+  NSNumber *idKey;
+  TDB_DATA key, dbuf;
+
+  idKey = [NSNumber numberWithUnsignedLongLong: idNbr];
+  oldURL = [mapping objectForKey: idKey];
+  if (oldURL)
+    {
+      if ([oldURL hasSuffix: @"/"]) /* is container ? */
+        {
+          if (![urlString hasSuffix: @"/"])
+            [NSException raise: NSInvalidArgumentException
+                        format: @"a container url must have an ending '/'"];
+          tdb_transaction_start (indexing->tdb);
+          [self _updateFolderWithURL: oldURL withURL: urlString];
+          tdb_transaction_commit (indexing->tdb);
+        }
+      else
+        {
+          if ([urlString hasSuffix: @"/"])
+            [NSException raise: NSInvalidArgumentException
+                        format: @"a leaf url must not have an ending '/'"];
+          [mapping setObject: urlString forKey: idKey];
+          [reverseMapping setObject: idKey forKey: urlString];
+          [reverseMapping removeObjectForKey: oldURL];
+
+          /* update the record in the indexing database */
+          key.dptr = (unsigned char *) talloc_asprintf(NULL, "0x%.16"PRIx64, idNbr);
+          key.dsize = strlen((const char *) key.dptr);
+
+          dbuf.dptr = (unsigned char *) talloc_strdup (NULL, [urlString UTF8String]);
+          dbuf.dsize = strlen((const char *) dbuf.dptr);
+          tdb_store (indexing->tdb, key, dbuf, TDB_MODIFY);
+          talloc_free (key.dptr);
+          talloc_free (dbuf.dptr);
+        }
+    }
 }
 
 - (BOOL) registerURL: (NSString *) urlString

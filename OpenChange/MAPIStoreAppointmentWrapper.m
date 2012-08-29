@@ -1,6 +1,6 @@
 /* MAPIStoreAppointmentWrapper.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,24 +20,28 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <talloc.h>
+
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
+#import <NGCards/iCalEventChanges.h>
 #import <NGCards/iCalPerson.h>
-#import <NGCards/iCalRecurrenceRule.h>
-#import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalTrigger.h>
 #import <NGCards/NSString+NGCards.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
 
+#import "iCalTimeZone+MAPIStore.h"
 #import "MAPIStoreRecurrenceUtils.h"
 #import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
@@ -49,7 +53,6 @@
 #import "MAPIStoreAppointmentWrapper.h"
 
 #undef DEBUG
-#include <talloc.h>
 #include <stdbool.h>
 #include <gen_ndr/exchange.h>
 #include <gen_ndr/property.h>
@@ -181,11 +184,15 @@ static NSCharacterSet *hexCharacterSet = nil;
               inTimeZone: (NSTimeZone *) newTimeZone
       withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
 {
+  NSArray *events;
+
   if ((self = [self init]))
     {
       connInfo = newConnInfo;
-      ASSIGN (event, newEvent);
-      ASSIGN (calendar, [event parent]);
+      ASSIGN (calendar, [newEvent parent]);
+      event = newEvent;
+      events = [calendar events];
+      firstEvent = [events objectAtIndex: 0];
       ASSIGN (timeZone, newTimeZone);
       ASSIGN (user, newUser);
       ASSIGN (senderEmail, newSenderEmail);
@@ -198,7 +205,6 @@ static NSCharacterSet *hexCharacterSet = nil;
 - (void) dealloc
 {
   [calendar release];
-  [event release];
   [timeZone release];
   [user release];
   [senderEmail release];
@@ -435,7 +441,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 - (int) getPidTagIconIndex: (void **) data // TODO
-              inMemCtx: (TALLOC_CTX *) memCtx
+                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t longValue;
 
@@ -580,7 +586,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 - (int) getPidTagMessageClass: (void **) data
-                 inMemCtx: (TALLOC_CTX *) memCtx
+                     inMemCtx: (TALLOC_CTX *) memCtx
 {
   const char *className;
 
@@ -626,33 +632,18 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPidLidAppointmentMessageClass: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = talloc_strdup (memCtx, "IPM.Appointment");
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (int) getPidLidFInvited: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getYes: data inMemCtx: memCtx];
-}
-
-- (int) getPidTagStartDate: (void **) data
-              inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSCalendarDate *dateValue;
-  NSInteger offset;
-
-  if ([event isRecurrent])
-    dateValue = [event firstRecurrenceStartDate];
-  else
-    dateValue = [event startDate];
-  if ([event isAllDay])
-    {
-      offset = -[timeZone secondsFromGMTForDate: dateValue];
-      dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
-                                         hours: 0 minutes: 0
-                                       seconds: offset];
-    }
-  [dateValue setTimeZone: utcTZ];
-  *data = [dateValue asFileTimeInMemCtx: memCtx];
-  
-  return MAPISTORE_SUCCESS;
 }
 
 - (int) getPidLidAppointmentSequence: (void **) data
@@ -718,17 +709,255 @@ static NSCharacterSet *hexCharacterSet = nil;
 
   return MAPISTORE_SUCCESS;
 }
+ 
+- (int) getPidLidAppointmentNotAllowPropose: (void **) data
+                                   inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getYes: data inMemCtx: memCtx];
+}
 
 - (int) getPidLidAppointmentStartWhole: (void **) data
                               inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPidTagStartDate: data inMemCtx: memCtx];
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+
+  // if ([event isRecurrent])
+  //   dateValue = [event firstRecurrenceStartDate];
+  // else
+  dateValue = [event startDate];
+  if ([event isAllDay])
+    {
+      offset = -[timeZone secondsFromGMTForDate: dateValue];
+      dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                         hours: 0 minutes: 0
+                                       seconds: offset];
+    }
+  [dateValue setTimeZone: utcTZ];
+  *data = [dateValue asFileTimeInMemCtx: memCtx];
+  
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagStartDate: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  /* "The PidTagStartDate property ([MS-OXPROPS] section 2.1077) SHOULD be
+     set, and when set, it MUST be equal to the value of the
+     PidLidAppointmentStartWhole property (section 2.2.1.5).". Not true for
+     exceptions, where it is the normal start date for the day of the
+     exception. */
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+
+  dateValue = [event recurrenceId];
+  if (!dateValue)
+    dateValue = [event startDate];
+  [dateValue setTimeZone: timeZone];
+  if ([event isAllDay])
+    {
+      offset = -[timeZone secondsFromGMTForDate: dateValue];
+      dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                         hours: 0 minutes: 0
+                                       seconds: offset];
+    }
+  [dateValue setTimeZone: utcTZ];
+  *data = [dateValue asFileTimeInMemCtx: memCtx];
+  
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) getPidLidCommonStart: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPidLidAppointmentStartWhole: data inMemCtx: memCtx];
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+
+  dateValue = [firstEvent startDate];
+  if ([firstEvent isAllDay])
+    {
+      offset = -[timeZone secondsFromGMTForDate: dateValue];
+      dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                         hours: 0 minutes: 0
+                                       seconds: offset];
+    }
+  [dateValue setTimeZone: utcTZ];
+  *data = [dateValue asFileTimeInMemCtx: memCtx];
+  
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidClipStart: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  enum mapistore_error rc;
+  NSCalendarDate *dateValue;
+
+  if ([event isRecurrent])
+    {
+      dateValue = [[event startDate] hour: 0 minute: 0 second: 0];
+      *data = [dateValue asFileTimeInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else if ([event recurrenceId] != nil)
+    rc = MAPISTORE_ERR_NOT_FOUND;
+  else
+    rc = [self getPidLidAppointmentStartWhole: data inMemCtx: memCtx];
+
+  return rc;
+}
+
+- (int) getPidTagExceptionStartTime: (void **) data
+                           inMemCtx: (TALLOC_CTX *) localMemCtx
+{
+  enum mapistore_error rc;
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+
+  if ([event recurrenceId] != nil)
+    {
+      dateValue = [event startDate];
+      [dateValue setTimeZone: timeZone];
+      if (![event isAllDay])
+        {
+          offset = [timeZone secondsFromGMTForDate: dateValue];
+          dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                             hours: 0 minutes: 0
+                                           seconds: offset];
+        }
+      *data = [dateValue asFileTimeInMemCtx: localMemCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidLidAppointmentEndWhole: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+
+  // if ([event isRecurrent])
+  //   dateValue = [event firstRecurrenceStartDate];
+  // else
+  dateValue = [event startDate];
+  offset = [event durationAsTimeInterval];
+  if ([event isAllDay])
+    offset -= [timeZone secondsFromGMTForDate: dateValue];
+  dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                     hours: 0 minutes: 0
+                                   seconds: offset];
+  *data = [dateValue asFileTimeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagEndDate: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+
+  dateValue = [event recurrenceId];
+  if (!dateValue)
+    dateValue = [event startDate];
+  [dateValue setTimeZone: timeZone];
+  offset = [firstEvent durationAsTimeInterval];
+  if ([firstEvent isAllDay])
+    offset -= [timeZone secondsFromGMTForDate: dateValue];
+  dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                     hours: 0 minutes: 0
+                                   seconds: offset];
+  *data = [dateValue asFileTimeInMemCtx: memCtx];
+  
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidCommonEnd: (void **) data
+                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+
+  // if ([event isRecurrent])
+  //   dateValue = [event firstRecurrenceStartDate];
+  // else
+  dateValue = [firstEvent startDate];
+  offset = [firstEvent durationAsTimeInterval];
+  if ([event isAllDay])
+    offset -= [timeZone secondsFromGMTForDate: dateValue];
+  dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                     hours: 0 minutes: 0
+                                   seconds: offset];
+  *data = [dateValue asFileTimeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidClipEnd: (void **) data
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  enum mapistore_error rc;
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+  iCalRecurrenceRule *rrule;
+
+  if ([event isRecurrent])
+    {
+      rrule = [[event recurrenceRules] objectAtIndex: 0];
+      dateValue = [rrule untilDate];
+      if (dateValue)
+        {
+          if ([event isAllDay])
+            offset = -[timeZone secondsFromGMTForDate: dateValue];
+          else
+            offset = 0;
+          dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                             hours: 0 minutes: 0
+                                           seconds: offset];
+        }
+      else
+        dateValue = [NSCalendarDate dateWithYear: 4500 month: 8 day: 31
+                                            hour: 23 minute: 59 second: 59
+                                        timeZone: utcTZ];
+      *data = [dateValue asFileTimeInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else if ([event recurrenceId] != nil)
+    rc = MAPISTORE_ERR_NOT_FOUND;
+  else
+    rc = [self getPidLidAppointmentEndWhole: data inMemCtx: memCtx];
+
+  return rc;
+}
+
+- (int) getPidTagExceptionEndTime: (void **) data
+                         inMemCtx: (TALLOC_CTX *) localMemCtx
+{
+  enum mapistore_error rc;
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+
+  if ([event recurrenceId] != nil)
+    {
+      dateValue = [event startDate];
+      [dateValue setTimeZone: timeZone];
+      offset = [event durationAsTimeInterval];
+      if (![event isAllDay])
+        offset += [timeZone secondsFromGMTForDate: dateValue];
+      dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                         hours: 0 minutes: 0
+                                       seconds: offset];
+      *data = [dateValue asFileTimeInMemCtx: localMemCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 - (int) _getEntryIdFromCN: (NSString *) cn
@@ -827,7 +1056,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 
 /* sender (organizer) */
 - (int) getPidTagSenderEmailAddress: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+                           inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getEmailAddress: data
                   forICalPerson: [event organizer]
@@ -835,7 +1064,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 - (int) getPidTagSenderAddressType: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getAddrType: data
               forICalPerson: [event organizer]
@@ -843,7 +1072,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 - (int) getPidTagSenderName: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getName: data
           forICalPerson: [event organizer]
@@ -851,16 +1080,41 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 - (int) getPidTagSenderEntryId: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getEntryId: data
              forICalPerson: [event organizer]
                   inMemCtx: memCtx];
 }
 
+/* sender representing */
+- (int) getPidTagSentRepresentingEmailAddress: (void **) data
+                                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSenderEmailAddress: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagSentRepresentingAddressType: (void **) data
+                                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getSMTPAddrType: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagSentRepresentingName: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSenderName: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagSentRepresentingEntryId: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidTagSenderEntryId: data inMemCtx: memCtx];
+}
+
 /* attendee */
 - (int) getPidTagReceivedByEmailAddress: (void **) data
-                           inMemCtx: (TALLOC_CTX *) memCtx
+                               inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getEmailAddress: data
                   forICalPerson: [event userAsAttendee: user]
@@ -868,7 +1122,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 - (int) getPidTagReceivedByAddressType: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+                              inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getAddrType: data
               forICalPerson: [event userAsAttendee: user]
@@ -876,7 +1130,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 - (int) getPidTagReceivedByName: (void **) data
-                   inMemCtx: (TALLOC_CTX *) memCtx
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getName: data
           forICalPerson: [event userAsAttendee: user]
@@ -884,47 +1138,13 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 - (int) getPidTagReceivedByEntryId: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self _getEntryId: data
              forICalPerson: [event userAsAttendee: user]
                   inMemCtx: memCtx];
 }
 /* /attendee */
-
-- (int) getPidTagEndDate: (void **) data
-            inMemCtx: (TALLOC_CTX *) memCtx
-{
-  NSCalendarDate *dateValue;
-  NSInteger offset;
-
-  if ([event isRecurrent])
-    dateValue = [event firstRecurrenceStartDate];
-  else
-    dateValue = [event startDate];
-  offset = [event durationAsTimeInterval];
-  if ([event isAllDay])
-    offset -= [timeZone secondsFromGMTForDate: dateValue];
-  dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
-                                     hours: 0 minutes: 0
-                                   seconds: offset];
-  [dateValue setTimeZone: utcTZ];
-  *data = [dateValue asFileTimeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidLidAppointmentEndWhole: (void **) data
-                            inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPidTagEndDate: data inMemCtx: memCtx];
-}
-
-- (int) getPidLidCommonEnd: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getPidLidAppointmentEndWhole: data inMemCtx: memCtx];
-}
 
 - (int) getPidLidAppointmentDuration: (void **) data
                             inMemCtx: (TALLOC_CTX *) memCtx
@@ -966,8 +1186,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return [self getPidLidBusyStatus: data inMemCtx: memCtx];
 }
 
-- (int) getPidTagSubject: (void **) data // SUMMARY
-            inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagNormalizedSubject: (void **) data // SUMMARY
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [[event summary] asUnicodeInMemCtx: memCtx];
 
@@ -995,7 +1215,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return [self getPidLidLocation: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidServerProcessed: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidLidServerProcessed: (void **) data
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   /* TODO: we need to check whether the event has been processed internally by
      SOGo or if it was received only by mail. We only assume the SOGo case
@@ -1003,7 +1224,8 @@ static NSCharacterSet *hexCharacterSet = nil;
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (int) getPidLidServerProcessingActions: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidLidServerProcessingActions: (void **) data
+                                inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = MAPILongValue (memCtx,
                          0x00000010 /* cpsCreatedOnPrincipal */
@@ -1020,14 +1242,14 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 - (int) getPidTagSensitivity: (void **) data // not implemented, depends on CLASS
-                inMemCtx: (TALLOC_CTX *) memCtx
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   // normal = 0, personal?? = 1, private = 2, confidential = 3
   return [self getLongZero: data inMemCtx: memCtx];
 }
 
 - (int) getPidTagImportance: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx
+                   inMemCtx: (TALLOC_CTX *) memCtx
 {
   uint32_t v;
   if ([[event priority] isEqualToString: @"9"])
@@ -1043,7 +1265,7 @@ static NSCharacterSet *hexCharacterSet = nil;
 }
 
 - (int) getPidTagBody: (void **) data
-         inMemCtx: (TALLOC_CTX *) memCtx
+             inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc = MAPISTORE_SUCCESS;
   NSString *stringValue;
@@ -1053,15 +1275,23 @@ static NSCharacterSet *hexCharacterSet = nil;
   if ([stringValue length] > 0)
     *data = [stringValue asUnicodeInMemCtx: memCtx];
   else
-    rc = MAPISTORE_ERR_NOT_FOUND;
+    *data = [@"" asUnicodeInMemCtx: memCtx];
 
   return rc;
 }
 
-- (int) getPidLidIsRecurring: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagInternetCodepage: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPIBoolValue (memCtx, [event isRecurrent]);
+  /* ref:
+     http://msdn.microsoft.com/en-us/library/dd317756%28v=vs.85%29.aspx
+  
+     minimal list that should be handled:
+     us-ascii: 20127
+     iso-8859-1: 28591
+     iso-8859-15: 28605
+     utf-8: 65001 */
+  *data = MAPILongValue(memCtx, 65001);
 
   return MAPISTORE_SUCCESS;
 }
@@ -1074,37 +1304,144 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-static void
-_fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
-                                   NSCalendarDate *startDate, NSTimeInterval duration,
-                                   NSCalendarDate * endDate, iCalRecurrenceRule *rule)
+- (int) getPidLidIsRecurring: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
-  uint32_t startMinutes;
+  *data = MAPIBoolValue (memCtx,
+                         [event isRecurrent]
+                         || ([event recurrenceId] != nil));
 
-  [rule fillRecurrencePattern: &arp->RecurrencePattern
-                withStartDate: startDate andEndDate: endDate];
-  arp->ReaderVersion2 = 0x00003006;
-  arp->WriterVersion2 = 0x00003009;
-
-  startMinutes = ([startDate hourOfDay] * 60 + [startDate minuteOfHour]);
-  arp->StartTimeOffset = startMinutes;
-  arp->EndTimeOffset = startMinutes + (uint32_t) (duration / 60);
-
-  arp->ExceptionCount = 0;
-  arp->ReservedBlock1Size = 0;
-
-  /* Currently ignored in property.idl: 
-     arp->ReservedBlock2Size = 0; */
+  return MAPISTORE_SUCCESS;
 }
 
-- (struct SBinary_short *) _computeAppointmentRecurInMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidLidIsException: (void **) data
+                    inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPIBoolValue (memCtx, [event recurrenceId] != nil);
 
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidLidFExceptionalBody: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getNo: data inMemCtx: memCtx];
+}
+
+- (int) getPidLidExceptionReplaceTime: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
+{
+  enum mapistore_error rc;
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+
+  dateValue = [event recurrenceId];
+  if (dateValue)
+    {
+      rc = MAPISTORE_SUCCESS;
+      
+      if ([event isAllDay])
+        {
+          offset = -[timeZone secondsFromGMTForDate: dateValue];
+          dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                             hours: 0 minutes: 0
+                                           seconds: offset];
+        }
+      [dateValue setTimeZone: utcTZ];
+      *data = [dateValue asFileTimeInMemCtx: memCtx];
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (void) _fillExceptionInfo: (struct ExceptionInfo *) exceptionInfo
+       andExtendedException: (struct ExtendedException *) extendedException
+              withException: (iCalEvent *) exceptionEvent
+                   inMemCtx: (TALLOC_CTX *) memCtx
+{
+  iCalEventChanges *changes;
+  NSArray *changedProperties;
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+
+  changes = [iCalEventChanges changesFromEvent: event toEvent: exceptionEvent];
+
+  memset (exceptionInfo, 0, sizeof (struct ExceptionInfo));
+  memset (extendedException, 0, sizeof (struct ExtendedException));
+  extendedException->ChangeHighlight.Size = sizeof (uint32_t);
+
+  dateValue = [exceptionEvent startDate];
+  offset = [timeZone secondsFromGMTForDate: dateValue];
+  dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                     hours: 0 minutes: 0
+                                   seconds: offset];
+  exceptionInfo->StartDateTime = [dateValue asMinutesSince1601];
+  extendedException->ChangeHighlight.Value = BIT_CH_START;
+  extendedException->StartDateTime = exceptionInfo->StartDateTime;
+
+  dateValue = [exceptionEvent endDate];
+  offset = [timeZone secondsFromGMTForDate: dateValue];
+  dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                     hours: 0 minutes: 0
+                                   seconds: offset];
+  exceptionInfo->EndDateTime = [dateValue asMinutesSince1601];
+  extendedException->ChangeHighlight.Value |= BIT_CH_END;
+  extendedException->EndDateTime = exceptionInfo->EndDateTime;
+
+  dateValue = [[exceptionEvent recurrenceId]
+                dateByAddingYears: 0 months: 0 days: 0
+                hours: 0 minutes: 0
+                seconds: offset];
+  exceptionInfo->OriginalStartDate = [dateValue asMinutesSince1601];
+  extendedException->OriginalStartDate = exceptionInfo->OriginalStartDate;
+
+  changedProperties = [changes updatedProperties];
+  if ([changedProperties containsObject: @"summary"])
+    {
+      extendedException->ChangeHighlight.Value |= BIT_CH_SUBJECT;
+      extendedException->Subject
+        = [[exceptionEvent summary] asUnicodeInMemCtx: memCtx];
+
+      exceptionInfo->OverrideFlags |= ARO_SUBJECT;
+      exceptionInfo->Subject.subjectMsg.msg
+        = (uint8_t *) extendedException->Subject;
+      /* FIXME: this will fail with non ascii chars */
+      exceptionInfo->Subject.subjectMsg.msgLength2 = [[exceptionEvent summary] length];
+      exceptionInfo->Subject.subjectMsg.msgLength = exceptionInfo->Subject.subjectMsg.msgLength2 + 1;
+    }
+  if ([changedProperties containsObject: @"location"])
+    {
+      extendedException->ChangeHighlight.Value |= BIT_CH_LOCATION;
+      extendedException->Location
+        = [[exceptionEvent location] asUnicodeInMemCtx: memCtx];
+      exceptionInfo->OverrideFlags |= ARO_LOCATION;
+      exceptionInfo->Location.locationMsg.msg
+        = (uint8_t *) extendedException->Location;
+      /* FIXME: this will fail with non ascii chars */
+      exceptionInfo->Location.locationMsg.msgLength2 = [[exceptionEvent location] length];
+      exceptionInfo->Location.locationMsg.msgLength = exceptionInfo->Location.locationMsg.msgLength2 + 1;
+    }
+  if ([event isAllDay] != [exceptionEvent isAllDay])
+    {
+      exceptionInfo->OverrideFlags |= ARO_SUBTYPE;
+      exceptionInfo->SubType.sType = [exceptionEvent isAllDay];
+    }
+}
+
+// - (struct SBinary_short *) _computeAppointmentRecurInMemCtx: (TALLOC_CTX *) memCtx
+- (struct Binary_r *) _computeAppointmentRecurInMemCtx: (TALLOC_CTX *) memCtx
 {
   struct AppointmentRecurrencePattern *arp;
   struct Binary_r *bin;
-  struct SBinary_short *sBin;
+  // struct SBinary_short *sBin;
   NSCalendarDate *firstStartDate;
   iCalRecurrenceRule *rule;
+  NSUInteger startMinutes;
+  NSArray *events, *exceptions;
+  iCalEvent *exceptionEvent;
+  NSUInteger count, max;
 
   rule = [[event recurrenceRules] objectAtIndex: 0];
 
@@ -1113,15 +1450,47 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
     {
       [firstStartDate setTimeZone: timeZone];
 
-      arp = talloc_zero (memCtx, struct AppointmentRecurrencePattern);
-      _fillAppointmentRecurrencePattern (arp, firstStartDate,
-                                         [event durationAsTimeInterval],
-                                         [event lastPossibleRecurrenceStartDate],
-                                         rule);
-      sBin = talloc_zero (memCtx, struct SBinary_short);
-      bin = set_AppointmentRecurrencePattern (sBin, arp);
-      sBin->cb = bin->cb;
-      sBin->lpb = bin->lpb;
+      arp = talloc_zero (NULL, struct AppointmentRecurrencePattern);
+      [rule fillRecurrencePattern: &arp->RecurrencePattern
+                        withEvent: event
+                       inTimeZone: timeZone
+                         inMemCtx: arp];
+      arp->ReaderVersion2 = 0x00003006;
+      arp->WriterVersion2 = 0x00003008; /* 0x3008 for compatibility with
+                                           ol2003 */
+
+      startMinutes = ([firstStartDate hourOfDay] * 60
+                      + [firstStartDate minuteOfHour]);
+      arp->StartTimeOffset = startMinutes;
+      arp->EndTimeOffset = (startMinutes
+                            + (NSUInteger) ([event durationAsTimeInterval]
+                                            / 60));
+
+      events = [[event parent] events];
+      exceptions
+        = [events subarrayWithRange: NSMakeRange (1, [events count] - 1)];
+      max = [exceptions count];
+      arp->ExceptionCount = max;
+      arp->ExceptionInfo = talloc_array (memCtx, struct ExceptionInfo, max);
+      arp->ExtendedException = talloc_array (memCtx, struct ExtendedException, max);
+      for (count = 0; count < max; count++)
+        {
+          exceptionEvent = [exceptions objectAtIndex: count];
+          [self _fillExceptionInfo: arp->ExceptionInfo + count
+              andExtendedException: arp->ExtendedException + count
+                     withException: exceptionEvent
+                          inMemCtx: arp];
+        }
+      arp->ReservedBlock1Size = 0;
+      arp->ReservedBlock2Size = 0;
+
+      /* Currently ignored in property.idl: arp->ReservedBlock2Size = 0; */
+
+      /* convert struct to blob */
+      // sBin = talloc_zero (memCtx, struct SBinary_short);
+      bin = set_AppointmentRecurrencePattern (memCtx, arp);
+      // sBin->cb = bin->cb;
+      // sBin->lpb = bin->lpb;
       talloc_free (arp);
 
       // DEBUG(5, ("To client:\n"));
@@ -1130,11 +1499,99 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
   else
     {
       [self errorWithFormat: @"no first occurrence found in rule: %@", rule];
-      sBin = NULL;
+      // bin = NULL;
+      bin = NULL;
     }
 
-  return sBin;
+  return bin;
 }
+
+/* exception 12345 + 123456 (exchange):
+  81ad0102 (PT_BINARY): 
+    named prop
+    guid: {00062002-0000-0000-c000-000000000046}
+    dispid: 0x00008216
+         (163 bytes)
+            04 30 04 30 0a 20 00 00  |  \x04   0  \x04   0  \x0a      \x00 \x00 
+            00 00 00 00 00 00 a0 05  |  \x00 \x00 \x00 \x00 \x00 \x00 \xa0 \x05 
+            00 00 00 00 00 00 23 20  |  \x00 \x00 \x00 \x00 \x00 \x00   #       
+            00 00 0a 00 00 00 00 00  |  \x00 \x00 \x0a \x00 \x00 \x00 \x00 \x00 
+            00 00 01 00 00 00 a0 c6  |  \x00 \x00 \x01 \x00 \x00 \x00 \xa0 \xc6 
+            e6 0c 01 00 00 00 a0 c6  |  \xe6 \x0c \x01 \x00 \x00 \x00 \xa0 \xc6 
+            e6 0c 00 c1 e6 0c df 80  |  \xe6 \x0c \x00 \xc1 \xe6 \x0c \xdf \x80 
+            e9 5a 06 30 00 00 08 30  |  \xe9   Z  \x06   0  \x00 \x00 \x08   0  
+            00 00 66 03 00 00 84 03  |  \x00 \x00   f  \x03 \x00 \x00 \x84 \x03 
+            00 00 01 00 e8 c9 e6 0c  |  \x00 \x00 \x01 \x00 \xe8 \xc9 \xe6 \x0c 
+            f6 ca e6 0c 06 ca e6 0c  |  \xf6 \xca \xe6 \x0c \x06 \xca \xe6 \x0c 
+            11 00 06 00 05 00 31 32  |  \x11 \x00 \x06 \x00 \x05 \x00   1    2  
+            33 34 35 07 00 06 00 31  |    3    4    5  \x07 \x00 \x06 \x00   1  
+            32 33 34 35 36 00 00 00  |    2    3    4    5    6  \x00 \x00 \x00 
+            00 00 00 00 00 e8 c9 e6  |  \x00 \x00 \x00 \x00 \x00 \xe8 \xc9 \xe6 
+            0c f6 ca e6 0c 06 ca e6  |  \x0c \xf6 \xca \xe6 \x0c \x06 \xca \xe6 
+            0c 05 00 31 00 32 00 33  |  \x0c \x05 \x00   1  \x00   2  \x00   3  
+            00 34 00 35 00 06 00 31  |  \x00   4  \x00   5  \x00 \x06 \x00   1  
+            00 32 00 33 00 34 00 35  |  \x00   2  \x00   3  \x00   4  \x00   5  
+            00 36 00 00 00 00 00 00  |  \x00   6  \x00 \x00 \x00 \x00 \x00 \x00 
+            00 00 00                 |  \x00 \x00 \x00 
+
+openchange:
+  918b0102 (PT_BINARY): 
+    named prop
+    guid: {00062002-0000-0000-c000-000000000046}
+    dispid: 0x00008216
+         (167 bytes)
+
+
+recurrence pattern
+   readerversion:    04 30
+   writerversion:    04 30
+   recurfrequency:   0a 20  (daily)
+   patterntype:      00 00
+   calendartype:     00 00
+   firstdatetime:    00 00 00 00
+   period:           a0 05 00 00 (1440 minutes)
+   slidingflag:      00 00 00 00
+   patterntypespecific: (0 bytes)
+   endtype:          23 20 00 00
+   occurrencecount:  *00->0a 00 00 00  (meaningless since no enddate)
+   firstdow:         00 00 00 00
+   deletedicount:    01 00 00 00
+   deletedinstancedates: (1)
+     a0 c6 e6 0c
+   modifiedicount:   01 00 00 00
+   modifiedinstancedates: (1)
+     a0 c6 e6 0c
+   startdate:        00 c1 e6 0c
+   enddate:          df 80 e9 5a
+ReaderVersion2:      06 30 00 00
+WriterVersion2:      08 30 00 00
+StartTimeOffset:     66 03 00 00
+EndTimeOffset:       84 03 00 00
+ExceptionCount:      01 00
+ExceptionInfos: (1)
+   StartDateTime:     *e7->e8 *ca->c9 e6 0c
+   EndDateTime:       *e6->f6 *cb->ca e6 0c
+   OriginalStartDate: *a0->06 *c6->ca e6 0c
+   OverrideFlags:     11 00
+   SubjectLength2:    06 00
+   SubjectLength:     05 00
+   Subject:           31 32 33 34 35
+   LocationLength2:   07 00
+   LocationLength:    06 00
+   Location:          31 32 33 34 35 36
+ReservedBlock1Size:   00 00 00 00
+ExtendedException: (1)
+   ReservedBlockEE1Size: 00 00 00 00
+   StartDateTime:       *e7->e8 *ca->c9 e6 0c
+   EndDateTime:         *e6->f6 *cb->ca e6 0c
+   OriginalStartDate:   *a0->06 *c6->ca e6 0c
+   WideCharSubjectLength *06->05
+   WideCharSubject:      00 31 00 32 00 33 00 34 00 35 00 [2bytes sup: 00 00]
+   LocationLength:       *07->06
+   Location              00 31 00 32 00 33 00 34 00 35 00 36 00 00
+   ReservedBlockEE2Size: 00 00 00 00
+ReservedBlockEE2Size: 00 00 00 00
+*/
 
 - (int) getPidLidAppointmentRecur: (void **) data
                          inMemCtx: (TALLOC_CTX *) memCtx
@@ -1513,6 +1970,43 @@ _fillAppointmentRecurrencePattern (struct AppointmentRecurrencePattern *arp,
                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   return MAPISTORE_ERR_NOT_FOUND;
+}
+
+- (int) getPidLidTimeZoneDescription: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  enum mapistore_error rc;
+  NSString *tzid;
+
+  tzid = [(iCalDateTime *) [event firstChildWithTag: @"dtstart"]
+                           value: 0 ofAttribute: @"tzid"];
+  if ([tzid length] > 0)
+    {
+      *data = [tzid asUnicodeInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidLidTimeZoneStruct: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  enum mapistore_error rc;
+  iCalTimeZone *icalTZ;
+
+  icalTZ = [(iCalDateTime *) [event firstChildWithTag: @"dtstart"] timeZone];
+  if (icalTZ)
+    {
+      *data = [icalTZ asTimeZoneStructInMemCtx: memCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
 }
 
 @end

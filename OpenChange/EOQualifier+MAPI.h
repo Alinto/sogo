@@ -1,6 +1,6 @@
 /* EOQualifier+MAPI.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2010-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -25,11 +25,11 @@
 
 #import <EOControl/EOQualifier.h>
 
-@class SOGoMAPIVolatileMessage;
+@class SOGoMAPIDBObject;
 
 @interface EOQualifier (MAPIStoreRestrictions)
 
-- (BOOL) evaluateMAPIVolatileMessage: (SOGoMAPIVolatileMessage *) message;
+- (BOOL) evaluateSOGoMAPIDBObject: (SOGoMAPIDBObject *) object;
 
 @end
 

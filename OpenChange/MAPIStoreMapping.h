@@ -1,6 +1,6 @@
 /* MAPIStoreMapping.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2010-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -54,6 +54,8 @@
 - (BOOL) registerURL: (NSString *) urlString
               withID: (uint64_t) idNbr;
 - (void) unregisterURLWithID: (uint64_t) idNbr;
+- (void) updateID: (uint64_t) idNbr
+          withURL: (NSString *) urlString;
 
 @end
 

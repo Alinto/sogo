@@ -1,6 +1,6 @@
 /* MAPIStoreNotesFolder.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -23,9 +23,9 @@
 #ifndef MAPISTORENOTESFOLDER_H
 #define MAPISTORENOTESFOLDER_H
 
-#import "MAPIStoreFSFolder.h"
+#import "MAPIStoreDBFolder.h"
 
-@interface MAPIStoreNotesFolder : MAPIStoreFSFolder
+@interface MAPIStoreNotesFolder : MAPIStoreDBFolder
 @end
 
 #endif /* MAPISTORENOTESFOLDER_H */

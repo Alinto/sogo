@@ -1,6 +1,6 @@
 /* MAPIStoreFAIMessage.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -23,9 +23,9 @@
 #ifndef MAPISTOREFAIMESSAGE_H
 #define MAPISTOREFAIMESSAGE_H
 
-#import "MAPIStoreFSMessage.h"
+#import "MAPIStoreDBMessage.h"
 
-@interface MAPIStoreFAIMessage : MAPIStoreFSMessage
+@interface MAPIStoreFAIMessage : MAPIStoreDBMessage
 @end
 
 #endif /* MAPISTOREFAIMESSAGE_H */

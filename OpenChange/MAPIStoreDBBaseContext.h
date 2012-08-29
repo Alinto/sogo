@@ -1,6 +1,6 @@
-/* MAPIStoreFSFolderTable.h - this file is part of SOGo
+/* MAPIStoreDBBaseContext.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,12 +20,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef MAPISTOREFSFOLDERTABLE_H
-#define MAPISTOREFSFOLDERTABLE_H
+#ifndef MAPISTOREDBBASECONTEXT_H
+#define MAPISTOREDBBASECONTEXT_H
 
-#import "MAPIStoreFolderTable.h"
+#import "MAPIStoreContext.h"
 
-@interface MAPIStoreFSFolderTable : MAPIStoreFolderTable
+@interface MAPIStoreDBBaseContext : MAPIStoreContext
+
 @end
 
-#endif /* MAPISTOREFSFOLDERTABLE_H */
+#endif /* MAPISTOREDBBASECONTEXT_H */

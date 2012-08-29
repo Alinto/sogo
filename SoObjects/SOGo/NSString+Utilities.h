@@ -31,6 +31,7 @@
 
 @interface NSString (SOGoURLExtension)
 
+/* URL handling */
 - (NSString *) composeURLWithAction: (NSString *) action
 			 parameters: (NSDictionary *) urlParameters
 			    andHash: (BOOL) useHash;
@@ -40,12 +41,20 @@
 
 - (NSString *) stringByDetectingURLs;
 
+/* escaping */
 - (NSString *) doubleQuotedString;
 
-- (NSString *) jsonRepresentation;
-
+/* CSS and URL safety */
 - (NSString *) asCSSIdentifier;
 - (NSString *) fromCSSIdentifier;
+
+/* SQL safety */
+- (NSString *) asSafeSQLString;
+
+/* JSON */
+- (NSString *) jsonRepresentation;
+- (BOOL) isJSONString;
+- (id) objectFromJSONString;
 
 /* bare email addresses */
 - (NSString *) pureEMailAddress;
@@ -54,6 +63,7 @@
 
 - (NSRange) _rangeOfURLInRange: (NSRange) refRange;
 
+/* LDAP */
 - (BOOL) caseInsensitiveMatches: (NSString *) match;
 
 #ifndef GNUSTEP_BASE_LIBRARY
@@ -62,14 +72,10 @@
 
 - (int) timeValue;
 
-- (BOOL) isJSONString;
-
-- (id) objectFromJSONString;
-
-- (NSString *) asSafeSQLString;
-
+/* substrings */
 - (NSUInteger) countOccurrencesOfString: (NSString *) substring;
-
+- (NSString *) stringByReplacingPrefix: (NSString *) oldPrefix
+                            withPrefix: (NSString *) newPrefix;
 
 /* Those methods provide symmetric enc-/decryption via a XOR operation */
 - (NSString *) encryptWithKey: (NSString *) theKey;

@@ -26,6 +26,17 @@ BUNDLE_INSTALL_DIR = $(SOGO_LIBDIR)
 
 UNRTF_DIR = unrtf-$(UNRTF_VERSION)
 
+PYTHON = /usr/bin/python
+PYTHON_IS_GOOD = $(shell $(PYTHON) -c 'from sys import version_info; a=version_info; print a[0] == 2 and a[1] >= 6')
+ifeq (${PYTHON_IS_GOOD},False)
+PYTHON = /usr/bin/python2.6
+endif
+
+all::
+	@echo " Python executable: ${PYTHON}"
+
+SAMBA_PRIVATE_DIR = $(shell $(PYTHON) ./samba-get-config.py "private dir")
+
 $(SOGOBACKEND)_SUBPROJECTS += $(UNRTF_DIR)/src
 
 $(SOGOBACKEND)_PRINCIPAL_CLASS = MAPIApplication
@@ -41,9 +52,11 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreSamDBUtils.m \
 	MAPIStoreUserContext.m \
 	\
-	SOGoMAPIVolatileMessage.m \
-	SOGoMAPIFSFolder.m \
-	SOGoMAPIFSMessage.m \
+	SOGoMAPIObject.m \
+	\
+	SOGoMAPIDBObject.m \
+	SOGoMAPIDBMessage.m \
+	SOGoMAPIDBFolder.m \
 	\
 	MAPIStoreAppointmentWrapper.m \
 	MAPIStoreAttachment.m \
@@ -53,18 +66,18 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreFolder.m \
 	MAPIStoreMessage.m \
 	MAPIStoreObject.m \
+	MAPIStoreObjectProxy.m \
+	MAPIStoreSOGoObject.m \
 	MAPIStoreTable.m \
 	MAPIStoreMessageTable.m \
 	MAPIStoreFolderTable.m \
 	MAPIStorePermissionsTable.m \
 	\
-	MAPIStoreVolatileMessage.m \
-	\
-	MAPIStoreFSBaseContext.m \
-	MAPIStoreFSFolder.m \
-	MAPIStoreFSFolderTable.m \
-	MAPIStoreFSMessage.m \
-	MAPIStoreFSMessageTable.m \
+	MAPIStoreDBBaseContext.m \
+	MAPIStoreDBFolder.m \
+	MAPIStoreDBFolderTable.m \
+	MAPIStoreDBMessage.m \
+	MAPIStoreDBMessageTable.m \
 	\
 	MAPIStoreFAIMessage.m \
 	MAPIStoreFAIMessageTable.m \
@@ -78,6 +91,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreCalendarContext.m \
 	MAPIStoreCalendarFolder.m \
 	MAPIStoreCalendarMessage.m \
+	MAPIStoreCalendarEmbeddedMessage.m \
 	MAPIStoreCalendarMessageTable.m \
 	MAPIStoreRecurrenceUtils.m \
 	\
@@ -112,8 +126,14 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	NSString+MAPIStore.m \
 	NSValue+MAPIStore.m \
 	\
-	EOBitmaskQualifier.m \
+	iCalEvent+MAPIStore.m \
+	iCalTimeZone+MAPIStore.m \
+	\
+	GCSSpecialQueries+OpenChange.m\
+	\
 	EOQualifier+MAPI.m \
+	\
+	EOBitmaskQualifier.m
 
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
@@ -145,7 +165,18 @@ PLREADER_TOOL = plreader
 $(PLREADER_TOOL)_OBJC_FILES += \
 	plreader.m \
 
-TEST_TOOL_NAME += $(PLREADER_TOOL)
+DBMSGREADER_TOOL = dbmsgreader
+$(DBMSGREADER_TOOL)_OBJC_FILES += \
+	dbmsgreader.m
+
+$(DBMSGREADER_TOOL)_LIB_DIRS += \
+	-L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
+	-L../OGoContentStore/obj/ -lOGoContentStore \
+	-L../SOPE/GDLContentStore/obj/ -lGDLContentStore \
+	-L../SOPE/NGCards/obj/ -lNGCards \
+	-lNGObjWeb
+
+TEST_TOOL_NAME += $(PLREADER_TOOL) $(DBMSGREADER_TOOL)
 
 ### cflags and libs
 LIBMAPI_CFLAGS = $(shell pkg-config libmapi --cflags)
@@ -160,7 +191,7 @@ SAMBA_LIB_DIR = $(shell pkg-config libmapistore --variable=libdir)
 LIBMAPI_LIBS = $(shell pkg-config libmapi --libs)
 
 LIBMAPISTORE_CFLAGS = $(shell pkg-config libmapistore --cflags) -DSAMBA_PREFIX="\"$(shell pkg-config libmapistore --variable=prefix)\""
-LIBMAPISTORE_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy
+LIBMAPISTORE_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy -lWEExtensions
 
 $(MAPISTORESOGO)_INSTALL_DIR = $(DESTDIR)/$(SAMBA_LIB_DIR)/mapistore_backends
 $(MAPISTORESOGO)_LIB_DIRS += \
@@ -176,6 +207,7 @@ $(SOGOBACKEND)_LIB_DIRS += \
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-Werror -Wall \
+	-DSAMBA_PRIVATE_DIR=@"\"$(SAMBA_PRIVATE_DIR)\"" \
 	$(LIBMAPI_CFLAGS) \
 	$(LIBMAPISTORE_CFLAGS) \
 	-I$(UNRTF_DIR)/src \

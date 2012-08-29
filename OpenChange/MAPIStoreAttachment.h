@@ -1,6 +1,6 @@
 /* MAPIStoreAttachment.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -40,9 +40,15 @@
                     withMID: (uint64_t *) mid
            withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
                    inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) createEmbeddedMessage: (MAPIStoreEmbeddedMessage **) messagePtr
+             withMAPIStoreMsg: (struct mapistore_message **) mapistoreMsgPtr
+                     inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* helpers */
 - (NSData *) mimeAttachTag;
+
+/* move & copy operations */
+- (void) copyToAttachment: (MAPIStoreAttachment *) newAttachment;
 
 /* subclasses */
 - (MAPIStoreEmbeddedMessage *) openEmbeddedMessage;

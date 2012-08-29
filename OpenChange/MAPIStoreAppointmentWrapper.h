@@ -1,6 +1,6 @@
 /* MAPIStoreAppointmentWrapper.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -23,9 +23,10 @@
 #ifndef MAPISTORECALENDARWRAPPER_H
 #define MAPISTORECALENDARWRAPPER_H
 
-#import <Foundation/NSObject.h>
 #import <NGCards/iCalPerson.h>
 #import <Appointments/iCalEntityObject+SOGo.h>
+
+#import "MAPIStoreObjectProxy.h"
 
 @class NSTimeZone;
 
@@ -35,10 +36,11 @@
 
 @class SOGoUser;
 
-@interface MAPIStoreAppointmentWrapper : NSObject
+@interface MAPIStoreAppointmentWrapper : MAPIStoreObjectProxy
 {
   struct mapistore_connection_info *connInfo;
   iCalCalendar *calendar;
+  iCalEvent *firstEvent;
   iCalEvent *event;
   NSTimeZone *timeZone;
   SOGoUser *user;
@@ -120,8 +122,8 @@
                    inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidIndentedBusyStatus: (void **) data // TODO
                            inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagSubject: (void **) data // SUMMARY
-            inMemCtx: (TALLOC_CTX *) memCtx;
+- (int) getPidTagNormalizedSubject: (void **) data // SUMMARY
+                          inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidLocation: (void **) data // LOCATION
                  inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions

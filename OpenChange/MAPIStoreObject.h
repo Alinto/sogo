@@ -1,6 +1,6 @@
 /* MAPIStoreObject.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -33,60 +33,41 @@
 @class NSMutableArray;
 @class NSMutableDictionary;
 
-@class EOQualifier;
-
 @class MAPIStoreContext;
-@class MAPIStoreFolder;
 @class MAPIStoreMapping;
-@class MAPIStoreTable;
+@class MAPIStoreObjectProxy;
 @class MAPIStoreUserContext;
+@class MAPIStoreSOGoObject;
 
 @interface MAPIStoreObject : NSObject
 {
   const IMP *classGetters;
 
   NSMutableArray *parentContainersBag;
-  MAPIStoreObject *container;
-  id sogoObject;
+  NSMutableArray *proxies;
+  id container;
   NSMutableDictionary *properties;
-  BOOL isNew;
 }
 
-+ (id) mapiStoreObjectWithSOGoObject: (id) newSOGoObject
-                         inContainer: (MAPIStoreObject *) newContainer;
-+ (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-                      inMemCtx: (TALLOC_CTX *) memCtx;
++ (id) mapiStoreObjectInContainer: (MAPIStoreObject *) newContainer;
+- (id) initInContainer: (MAPIStoreObject *) newContainer;
 
-- (id) initWithSOGoObject: (id) newSOGoObject
-              inContainer: (MAPIStoreObject *) newFolder;
+- (void) addProxy: (MAPIStoreObjectProxy *) newProxy;
 
-- (void) setIsNew: (BOOL) newIsNew;
-- (BOOL) isNew;
-
-- (NSString *) nameInContainer;
-
-- (id) sogoObject;
 - (MAPIStoreObject *) container;
 
 - (MAPIStoreContext *) context;
 - (MAPIStoreUserContext *) userContext;
 - (MAPIStoreMapping *) mapping;
 
-- (void) cleanupCaches;
-
-- (uint64_t) objectId;
 - (NSString *) url;
 
 /* properties */
 
-- (BOOL) canGetProperty: (enum MAPITAGS) propTag;
-
 - (void) addProperties: (NSDictionary *) newProperties;
-- (NSDictionary *) properties;
+- (NSMutableDictionary *) properties;
 
 /* ops */
-- (int) getAvailableProperties: (struct SPropTagArray **) propertiesP
-                      inMemCtx: (TALLOC_CTX *) localMemCtx;
 - (int) getProperties: (struct mapistore_property_data *) data
              withTags: (enum MAPITAGS *) tags
              andCount: (uint16_t) columnCount
@@ -104,26 +85,16 @@
           fromGlobCnt: (uint64_t) objectCnt
              inMemCtx: (TALLOC_CTX *) memCtx;
 
-/* implemented getters */
-- (int) getPidTagDisplayName: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagSearchKey: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagGenerateExchangeViews: (void **) data
-                              inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagParentSourceKey: (void **) data
-                        inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagSourceKey: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx;
-- (int) getPidTagChangeKey: (void **) data
-                  inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidTagCreationTime: (void **) data
                      inMemCtx: (TALLOC_CTX *) memCtx;
 - (int) getPidTagLastModificationTime: (void **) data
                              inMemCtx: (TALLOC_CTX *) memCtx;
 
+/* move and copy operations */
+- (void) copyPropertiesToObject: (MAPIStoreObject *) newObject;
+
 /* subclasses */
-- (uint64_t) objectVersion;
+- (NSString *) nameInContainer;
 - (NSDate *) creationTime;
 - (NSDate *) lastModificationTime;
 

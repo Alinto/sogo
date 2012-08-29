@@ -6,7 +6,7 @@
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
+ * the Free Software Foundation; either version 3, or (at your option)
  * any later version.
  *
  * This file is distributed in the hope that it will be useful,
@@ -20,20 +20,27 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSMapTable.h>
+#import <Foundation/NSPropertyList.h>
 #import <Foundation/NSThread.h>
+#import <Foundation/NSTimeZone.h>
+#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <NGImap4/NGImap4Connection.h>
 
+#import <GDLContentStore/GCSChannelManager.h>
+#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
 
+#import "GCSSpecialQueries+OpenChange.h"
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
 #import "MAPIStoreMapping.h"
@@ -80,6 +87,9 @@ static NSMapTable *contextsTable = nil;
 
       mapping = nil;
 
+      userDbTableExists = NO;
+      folderTableURL = nil;
+
       authenticator = nil;
       woContext = [WOContext contextWithRequest: nil];
       [woContext retain];
@@ -88,9 +98,33 @@ static NSMapTable *contextsTable = nil;
   return self;
 }
 
+- (NSString *) _readUserPassword: (NSString *) newUsername
+{
+  NSString *password, *path;
+  NSData *content;
+ 
+  password = nil;
+  
+  path = [NSString stringWithFormat: SAMBA_PRIVATE_DIR
+		   @"/mapistore/%@/password", newUsername];
+
+  content = [NSData dataWithContentsOfFile: path];
+
+  if (content)
+    {
+      password = [[NSString alloc] initWithData: content
+				       encoding: NSUTF8StringEncoding];
+      [password autorelease];
+    }
+
+  return password;
+}
+
 - (id) initWithUsername: (NSString *) newUsername
          andTDBIndexing: (struct tdb_wrap *) indexingTdb
 {
+  NSString *userPassword;
+
   if ((self = [self init]))
     {
       /* "username" will be retained by table */
@@ -102,7 +136,10 @@ static NSMapTable *contextsTable = nil;
       authenticator = [MAPIStoreAuthenticator new];
       [authenticator setUsername: username];
       /* TODO: very hackish (IMAP access) */
-      [authenticator setPassword: username];
+      userPassword = [self _readUserPassword: newUsername];
+      if ([userPassword length] == 0)
+        userPassword = username;
+      [authenticator setPassword: userPassword];
     }
 
   return self;
@@ -116,6 +153,8 @@ static NSMapTable *contextsTable = nil;
 
   [authenticator release];
   [mapping release];
+
+  [folderTableURL release];
 
   [sogoUser release];
 
@@ -213,6 +252,72 @@ static NSMapTable *contextsTable = nil;
   return mapping;
 }
 
+
+/* OpenChange db table */
+
+- (NSURL *) folderTableURL
+{
+  NSString *urlString, *ocFSTableName;
+  NSMutableArray *parts;
+  SOGoUser *user;
+
+  if (!folderTableURL)
+    {
+      user = [self sogoUser];
+      urlString = [[user domainDefaults] folderInfoURL];
+      parts = [[urlString componentsSeparatedByString: @"/"]
+                mutableCopy];
+      [parts autorelease];
+      if ([parts count] == 5)
+        {
+          /* If "OCSFolderInfoURL" is properly configured, we must have 5
+             parts in this url. */
+          ocFSTableName = [NSString stringWithFormat: @"socfs_%@", username];
+          [parts replaceObjectAtIndex: 4 withObject: ocFSTableName];
+          folderTableURL
+            = [NSURL URLWithString: [parts componentsJoinedByString: @"/"]];
+          [folderTableURL retain];
+        }
+      else
+        [NSException raise: @"MAPIStoreIOException"
+                    format: @"'OCSFolderInfoURL' is not set"];
+    }
+
+  return folderTableURL;
+}
+
+- (void) ensureFolderTableExists
+{
+  GCSChannelManager *cm;
+  EOAdaptorChannel *channel;
+  NSString *tableName, *query;
+  GCSSpecialQueries *queries;
+
+  [self folderTableURL];
+
+  cm = [GCSChannelManager defaultChannelManager];
+  channel = [cm acquireOpenChannelForURL: folderTableURL];
+  
+  /* FIXME: make use of [EOChannelAdaptor describeTableNames] instead */
+  tableName = [[folderTableURL path] lastPathComponent];
+  if ([channel evaluateExpressionX:
+        [NSString stringWithFormat: @"SELECT count(*) FROM %@",
+                  tableName]])
+    {
+      queries = [channel specialQueries];
+      query = [queries createOpenChangeFSTableWithName: tableName];
+      if ([channel evaluateExpressionX: query])
+        [NSException raise: @"MAPIStoreIOException"
+                    format: @"could not create special table '%@'", tableName];
+    }
+  else
+    [channel cancelFetch];
+
+
+  [cm releaseChannel: channel]; 
+}
+
+/* SOGo context objects */
 - (WOContext *) woContext
 {
   return woContext;

@@ -2,4 +2,4 @@ all:: MAPIStorePropertySelectors.m MAPIStorePropertySelectors.h
 
 MAPIStorePropertySelectors.m MAPIStorePropertySelectors.h: gen-property-selectors.py code-MAPIStorePropertySelectors.m code-MAPIStorePropertySelectors.h
 	@echo " Auto-generating MAPIStorePropertySelectors.[hm]..."
-	@./gen-property-selectors.py -o MAPIStorePropertySelectors $(LIBMAPISTORE_CFLAGS)
+	@$(PYTHON) ./gen-property-selectors.py -o MAPIStorePropertySelectors $(LIBMAPISTORE_CFLAGS)

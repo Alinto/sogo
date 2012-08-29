@@ -1,6 +1,6 @@
 /* MAPIStoreMessageTable.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc
+ * Copyright (C) 2010-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -28,6 +28,7 @@
 @interface MAPIStoreMessageTable : MAPIStoreTable
 
 - (void) setSortOrder: (const struct SSortOrderSet *) set;
+- (void) notifyChangesForChild: (MAPIStoreMessage *) child;
 
 @end
 

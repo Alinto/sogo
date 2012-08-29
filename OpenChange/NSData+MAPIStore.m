@@ -1,6 +1,6 @@
 /* NSData+MAPIStore.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2010-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -19,6 +19,8 @@
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
+#import <NGExtensions/NSObject+Logs.h>
 
 #import "NSString+MAPIStore.h"
 
@@ -183,6 +185,36 @@ static void _fillFlatUIDWithGUID (struct FlatUID_r *flatUID, const struct GUID *
   [changeKey appendData: globCnt];
 
   return changeKey;
+}
+
+- (void) hexDumpWithLineSize: (NSUInteger) lineSize
+{
+  const char *bytes;
+  NSUInteger lineCount, count, max, charCount, charMax;
+  NSMutableString *line;
+
+  bytes = [self bytes];
+  max = [self length];
+
+  lineCount = 0;
+  for (count = 0; count < max; count++)
+    {
+      line = [NSMutableString stringWithFormat: @"%d: ", lineCount];
+      if (lineSize)
+        {
+          if ((max - count) > lineSize)
+            charMax = lineSize;
+          else
+            charMax = max - count;
+        }
+      else
+        charMax = max;
+      for (charCount = 0; charCount < charMax; charCount++)
+        [line appendFormat: @" %.2x", *(bytes + count + charCount)];
+      [self logWithFormat: @"  %@", line];
+      count += charMax;
+      lineCount++;
+    }
 }
 
 @end

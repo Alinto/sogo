@@ -1,6 +1,6 @@
 /* MAPIStoreContactsMessage.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -35,6 +35,7 @@
 #import <Mailer/NSString+Mail.h>
 #import <SOGo/SOGoPermissions.h>
 
+#import "MAPIStoreAttachment.h"
 #import "MAPIStoreContactsAttachment.h"
 #import "MAPIStoreContactsFolder.h"
 #import "MAPIStorePropertySelectors.h"
@@ -109,6 +110,28 @@
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPidTagAlternateRecipientAllowed: (void **) data
+                                  inMemCtx: (TALLOC_CTX *) memCtx
+
+{
+  return [self getYes: data inMemCtx: memCtx];
+}
+
+- (int) getPidTagMessageFlags: (void **) data
+                     inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = MAPILongValue (memCtx, MSGFLAG_READ);
+
+  return MAPISTORE_SUCCESS;
+}
+
+- (int) getPidTagDeleteAfterSubmit: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+
+{
+  return [self getNo: data inMemCtx: memCtx];
+}
+
 - (int) getPidTagMessageClass: (void **) data
                      inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -179,8 +202,8 @@
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidTagSubject: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+- (int) getPidTagNormalizedSubject: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
 {
   return [self getPidTagDisplayName: data inMemCtx: memCtx];
 }
@@ -188,13 +211,34 @@
 - (int) getPidLidFileUnder: (void **) data
                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPidTagDisplayName: data inMemCtx: memCtx];
+  NSString *surName, *givenName, *middleName;
+  NSMutableString *fileUnder;
+  CardElement *n;
+
+  n = [[sogoObject vCard] n];
+  surName = [n flattenedValueAtIndex: 0
+                              forKey: @""];
+  fileUnder = [surName mutableCopy];
+  [fileUnder autorelease];
+  [fileUnder appendString: @","];
+  givenName = [n flattenedValueAtIndex: 1
+                              forKey: @""];
+  if ([givenName length] > 0)
+    [fileUnder appendFormat: @" %@", givenName];
+  middleName = [n flattenedValueAtIndex: 2
+                                 forKey: @""];
+  if ([middleName length] > 0)
+    [fileUnder appendFormat: @" %@", middleName];
+
+  *data = [fileUnder asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) getPidLidFileUnderId: (void **) data
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
-  *data = MAPILongValue (memCtx, 0xffffffff);
+  *data = MAPILongValue (memCtx, 0x00008017); /* what ol2003 sets */
 
   return MAPISTORE_SUCCESS;
 }
@@ -208,7 +252,7 @@
   vCard = [sogoObject vCard];
   fn = [vCard fn];
   email = [vCard preferredEMail];
-  *data = [[NSString stringWithFormat: @"%@ <%@>", fn, email]
+  *data = [[NSString stringWithFormat: @"%@ (%@)", fn, email]
             asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
@@ -217,7 +261,8 @@
 - (int) getPidLidEmail1OriginalDisplayName: (void **) data
                                   inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getPidLidEmail1DisplayName: data inMemCtx: memCtx];
+  return [self getPidLidEmail1EmailAddress: data
+                                  inMemCtx: memCtx];
 }
 
 - (int) getPidLidEmail1EmailAddress: (void **) data
@@ -767,8 +812,7 @@
           || [encoding isEqualToString: @"BASE64"])
         {
           attachment = [MAPIStoreContactsAttachment
-                         mapiStoreObjectWithSOGoObject: nil
-                                           inContainer: self];
+                         mapiStoreObjectInContainer: self];
           [attachment setAID: 0];
           [attachment setPhoto: photo];
           [attachmentParts setObject: attachment forKey: @"photo"];

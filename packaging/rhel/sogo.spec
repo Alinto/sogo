@@ -3,6 +3,8 @@
 %global oc_build_depends samba4 openchange
 %endif
 
+%{!?python_sys_pyver: %global python_sys_pyver %(/usr/bin/python -c "import sys; print sys.hexversion")}
+
 Summary:      SOGo
 Name:         sogo
 Version:      %{sogo_version}
@@ -17,7 +19,7 @@ Prefix:       /usr
 AutoReqProv:  off
 Requires:     gnustep-base >= 1.23, sope%{sope_major_version}%{sope_minor_version}-core, httpd, sope%{sope_major_version}%{sope_minor_version}-core, sope%{sope_major_version}%{sope_minor_version}-appserver, sope%{sope_major_version}%{sope_minor_version}-ldap, sope%{sope_major_version}%{sope_minor_version}-cards >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-sbjson, libmemcached
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}
-BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel sope%{sope_major_version}%{sope_minor_version}-sbjson-devel libmemcached-devel %{?oc_build_depends}
+BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel sope%{sope_major_version}%{sope_minor_version}-sbjson-devel libmemcached-devel sed %{?oc_build_depends}
 
 
 # Required by MS Exchange freebusy lookups
@@ -133,6 +135,14 @@ SOGo backend for OpenChange
 rm -fr ${RPM_BUILD_ROOT}
 %setup -q -n SOGo-%{sogo_version}
 
+
+# small tweak to the python script for RHEL5
+# if hex(sys.hexversion) < 0x02060000
+%if %{python_sys_pyver} < 33947648
+  sed -i 's!/usr/bin/env python!/usr/bin/env python2.6!' Scripts/openchange_cleanup.py
+%endif
+
+
 # ****************************** build ********************************
 %build
 . /usr/share/GNUstep/Makefiles/GNUstep.sh
@@ -234,7 +244,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %config(noreplace) %{_sysconfdir}/cron.d/sogo
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/SOGo.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/sogo
-%doc ChangeLog NEWS Scripts/*sh Scripts/updates.php
+%doc ChangeLog NEWS Scripts/*sh Scripts/*py Scripts/updates.php
 
 %files -n sogo-tool
 %{_sbindir}/sogo-tool
@@ -312,6 +322,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Tue Aug 28 2012 Jean Raby <jraby@inverse.ca>
+- Add openchange_cleanup.py and tweak it to work on RHEL5
+
 * Tue Jul 31 2012 Jean Raby <jraby@inverse.ca>
 - treat logrotate file as a config file
 

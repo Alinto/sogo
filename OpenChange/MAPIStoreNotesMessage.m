@@ -1,6 +1,6 @@
 /* MAPIStoreNotesMessage.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -51,23 +51,6 @@
   *data = [@"IPM.StickyNote" asUnicodeInMemCtx: memCtx];
 
   return MAPISTORE_SUCCESS;
-}
-
-- (int) getPidTagSubject: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
-{
-  id value;
-  int rc;
- 
-  value = [[sogoObject properties]
-            objectForKey: MAPIPropertyKey (PidTagNormalizedSubject)];
-  if (value)
-    rc = [value getValue: data forTag: PidTagNormalizedSubject
-                inMemCtx: memCtx];
-  else
-    rc = MAPISTORE_ERR_NOT_FOUND;
-
-  return rc;
 }
 
 @end

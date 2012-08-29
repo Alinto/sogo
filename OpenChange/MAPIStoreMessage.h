@@ -1,6 +1,6 @@
 /* MAPIStoreMessage.h - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc
+ * Copyright (C) 2011-2012 Inverse inc
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -35,9 +35,9 @@
 @class MAPIStoreAttachmentTable;
 @class MAPIStoreFolder;
 
-#import "MAPIStoreObject.h"
+#import "MAPIStoreSOGoObject.h"
 
-@interface MAPIStoreMessage : MAPIStoreObject
+@interface MAPIStoreMessage : MAPIStoreSOGoObject
 {
   NSArray *attachmentKeys;
   NSMutableDictionary *attachmentParts;
@@ -66,12 +66,12 @@
 - (int) setReadFlag: (uint8_t) flag;
 - (enum mapistore_error) saveMessage;
 
-/* helper getters */
-- (int) getSMTPAddrType: (void **) data
-               inMemCtx: (TALLOC_CTX *) memCtx;
 - (NSArray *) activeContainerMessageTables;
 
 - (NSArray *) activeUserRoles;
+
+/* move & copy internal ops */
+- (void) copyToMessage: (MAPIStoreMessage *) newMessage;
 
 /* subclasses */
 - (void) save;
