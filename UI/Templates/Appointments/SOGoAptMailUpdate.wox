@@ -10,8 +10,8 @@
     <style type="text/css">
 .container { max-width: 600px; }
 h1 { font-size: 18px; font-weight: normal; padding-bottom: 9px; border-bottom: 1px solid #ccc; }
-.dl-horizontal dt { float: left; width: 120px; overflow: hidden; clear: left; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
 h1 small { font-size: 12px; color: #999; }
+.dl-horizontal dt { float: left; width: 120px; overflow: hidden; clear: left; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
 dt { font-weight: bold; line-height: 17px; }
 dt, dd { font-size: 12px; line-height: 18px; }
 dt { display: block; }
