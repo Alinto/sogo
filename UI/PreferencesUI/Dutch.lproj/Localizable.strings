@@ -167,6 +167,9 @@
 "Signature" = "Ondertekening";
 "Please enter your signature below:" = "Stel de ondertekening hieronder op:";
 
+"Please specify a valid sender address." = "Geef alstublieft een geldig afzendadres aan.";
+"Please specify a valid reply-to address." = "Geef alstublieft een geldig antwoordadres aan.";
+
 /* Additional Parameters */
 "Additional Parameters" = "Extra Parameters";
 
@@ -279,6 +282,7 @@
 "Label 4" = "Label 4";
 "Label 5" = "Label 5";
 
+"The password was changed successfully." = "Het wachtwoord is met succes veranderd.";
 "Password must not be empty." = "Wachtwoord mag niet leeg zijn.";
 "The passwords do not match. Please try again." = "De wachtwoorden komen niet overeen. Probeer opnieuw.";
 "Password change failed" = "Wachtwoord wijzigen mislukt";

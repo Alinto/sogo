@@ -8,21 +8,12 @@ vtodo_class1 = "(Magán feladat)";
 vtodo_class2 = "(Bizalmas feladat)";
 
 /* Receipts */
-"Title:" = "Cím:";
-"Start:" = "Kezdete:";
-"End:" = "Vége:";
-
-"Receipt: users invited to a meeting" = "Visszaigazolás: meghívás találkozóra";
-"You have invited the following attendees(s):" = "Az alábbi résztvevőket hívta meg:";
-"... to attend the following event:" = "... hogy vegyen részt az alábbi eseményen:";
-
-"Receipt: invitation updated" = "Visszaigazolás: meghívás módosítása";
-"The following attendees(s):" = "Az alábbi résztvevők:";
-"... have been notified of the changes to the following event:" = "lettek értesítve az alábbi esemény változásáról:";
-
-"Receipt: attendees removed from an event" = "Visszaigazolás: résztvevők meghívásának visszavonása";
-"You have removed the following attendees(s):" = "Az alábbi résztvevők meghívását vonta vissza:";
-"... from the following event:" = "... az alábbi eseményről:";
+"The event \"%{Summary}\" was created" = "A \"%{Summary}\" esemény létre lett hozva";
+"The event \"%{Summary}\" was deleted" = "A \"%{Summary}\" esemény törölve lett";
+"The event \"%{Summary}\" was updated" = "A \"%{Summary}\" esemény módosítva lett";
+"The following attendees(s) were notified:" = "Az alábbi résztvevők lettek értesítve:";
+"The following attendees(s) were added:" = "Az alábbi résztvevők lettek hozzáadva:";
+"The following attendees(s) were removed:" = "Az alábbi résztvevők lettek eltávolítva:";
 
 /* IMIP messages */
 "startDate_label" = "Kezdete:";
@@ -67,4 +58,5 @@ vtodo_class2 = "(Bizalmas feladat)";
 = "%{Attendee} %{SentByText}még meggondolja a meghívását.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Az egyidejű foglalások száma (%{NumberOfSimultaneousBookings}) elérte a maximumot \"%{Cn} %{SystemEmail}\".";
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Az alábbi elem nem elérhető: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "A maximális egyidejű foglalás számát (%{NumberOfSimultaneousBookings}) elérte a(z)  \"%{Cn} %{SystemEmail}\" elem esetében. Az ütköző esemény a(z)  \"%{EventTitle}\", a kezdeti időpontja %{StartDate}.";

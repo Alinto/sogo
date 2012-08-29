@@ -283,9 +283,9 @@
 = "Сообщения не могут быть помещены в корзину. Хотите ли вы уничтожить их немедленно?";
 
 /* Message editing */
-"error_validationfailed" = "Проверка завершилась неудачей";
 "error_missingsubject" = "Тема сообщения не указана";
 "error_missingrecipients" = "Не указан адрес получателя";
+"Send Anyway" = "Всё равно послать";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Не удается отправить сообщение: всем получателям, все получатели являются недействительными.";

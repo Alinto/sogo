@@ -283,9 +283,9 @@
 = "Az üzeneteket nem lehetett a szemétkosárba helyezni. Kívánja őket közvetlenül törölni?";
 
 /* Message editing */
-"error_validationfailed" = "Az ellenőrzés végrehatása nem sikerült";
 "error_missingsubject" = "Az üzenet tárgya hiányzik";
 "error_missingrecipients" = "Nincsenek címzettek megadva";
+"Send Anyway" = "Így küldöm el";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Az üzenetet nem lehetett elküldeni: az összes címzett érvénytelen.";

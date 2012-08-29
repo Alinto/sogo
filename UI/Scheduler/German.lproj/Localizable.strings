@@ -110,6 +110,7 @@
 "Import Events" = "Termine importieren";
 "Select an iCalendar file (.ics)." = "Wählen Sie eine iCalendar-Datei (.ics).";
 "Upload" = "Hochladen";
+"Uploading" = "Hochladen";
 "Publish Calendar..." = "Kalender publizieren...";
 "Reload Remote Calendars" = "Externe Kalender neu laden";
 "Properties" = "Einstellungen";
@@ -536,6 +537,10 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Show alarms" = "Zeige Erinnerungen";
 "Show tasks" = "Zeige Aufgaben";
 
+"Receive a mail when I modify my calendar" = "E-Mail erhalten, wenn ich meinen Kalender verändere";
+"Receive a mail when someone else modifies my calendar" = "E-Mail erhalten, wenn jemand anderes meinen Kalender verändert";
+"When I modify my calendar, send a mail to:" = "Wenn ich meinen Kalender verändere, schicke eine E-Mail an: ";
+
 "Links to this Calendar" = "Links zu diesem Kalender";
 "Authenticated User Access" = "Zugang für angemeldete Benutzer";
 "CalDAV URL" = "CalDAV-URL";
@@ -564,6 +569,7 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Delete Task" = "Aufgabe löschen";
 "Delete Event" = "Termin löschen";
 "Copy event to my calendar" = "Kopiere diesen Termin in meinen Kalender";
+"View Raw Source" = "Roher Quelltext anzeigen";
 
 "Subscribe to a web calendar..." = "Einen Webkalender abonnieren...";
 "URL of the Calendar" = "URL des Kalenders";

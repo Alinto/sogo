@@ -1,6 +1,40 @@
-2012-08-28	Jean Raby  <jraby@inverse.ca>
+2012-08-28  Jean Raby  <jraby@inverse.ca>
+
 	* Scripts/openchange_cleanup.py:
 	New script to clean an openchange user profile
+
+2012-08-27  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/Appointments/SOGoAptMailInvitation.m,
+	SoObjects/Appointments/SOGoAptMailNotification.m,
+	SoObjects/Appointments/SOGoAptMailDeletion.m,
+	SoObjects/Appointments/SOGoAptMailUpdate.m,
+	SoObjects/Appointments/SOGoAptMailICalReply.m,
+	SoObjects/Appointments/SOGoCalendarComponent.m: send HTML messages
+	instead of text/plain.
+
+	* UI/WebServerResources/generic.js (openMailTo): mail addresses
+	must now be separated by semi-colons and not commas. This allow
+	display names to contain commas.
+
+	* UI/WebServerResources/SchedulerUI.js (tasksListCallback): prefix
+	tasks with a color box instead of changing the task's background color.
+
+	* UI/Scheduler/UIxCalListingActions.m
+	(-_getStatusClassForStatusCode:andEndDateStamp::): set the
+	timezone of the due date to the user's timezone to properly
+	identify tasks due today.
+
+2012-08-27  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* SoObjects/Appointments/iCalPerson+SOGo.m (mailAddress):
+	We now properly add double-quotes if we find a comma and
+	the person's name isn't already double-quoted. Fixes #1649
+
+2012-08-24  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/MailPartViewers/UIxMailPartHTMLViewer.m (-_sanitizeContent):
+	fix invalid void tags to insure proper HTML decoding. Fixes #1581.
 
 2012-08-23	Ludovic Marcotte  <lmarcotte@inverse.ca>
 
@@ -396,8 +430,6 @@
 	(-save): don t swap the bytes of the version number as it would
 	return a wrong change number and a wrong change key for DB objects.
 
-####### Ancestor
-======= end
 2012-07-20  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/NSObject+MAPIStore.m (-getSMTPAddrType:inMemCtx:):
@@ -485,8 +517,6 @@
 	(-save): don t swap the bytes of the version number as it would
 	return a wrong change number and a wrong change key for DB objects.
 
-####### Ancestor
-======= end
 2012-07-18  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAppointmentObject.m

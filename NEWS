@@ -1,3 +1,24 @@
+1.3.18 (2012-08-28)
+-------------------
+Enhancements
+ - updated Catalan, Dutch, German, Hungarian, Russian, Spanish (Argentina), and
+   Spanish (Spain) translations
+ - mail filters (Sieve) are no longer conditional to each other (all filters are
+   executed, no matter if a previous condition matches)
+ - improved tasks list display
+ - RPM packages now treat logrotate file as a config file
+ - completed the transition from text/plain message templates to HTML
+ - new packages for Debian 7.0 (Wheezy)
+
+Bug Fixes
+ - fixed passwords that would be prefixed with '{none}' when not using a
+   password algorithm
+ - fixed handling of duplicated contacts in contact lists
+ - fixed handling of exception dates with timezones in recurrent events
+ - fixed validation of the interval in daily recurrent events with a day mask
+   covering multiple days
+ - fixed name quoting when sending invitations
+
 1.3.17 (2012-07-26)
 -------------------
 New Features

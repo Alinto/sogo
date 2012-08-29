@@ -1,3 +1,44 @@
-<?xml version="1.0" standalone="yes"?>
 <!DOCTYPE container>
-<container xmlns="http://www.w3.org/1999/xhtml"></container>
+<html 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:rsrc="OGo:url"
+  xmlns:label="OGo:label">
+
+  <head>
+    <style type="text/css">
+.container { max-width: 600px; }
+h1 { font-size: 18px; font-weight: normal; padding-bottom: 9px; border-bottom: 1px solid #ccc; }
+h1 small { font-size: 12px; color: #999; }
+.dl-horizontal dt { float: left; width: 120px; overflow: hidden; clear: left; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
+dt { font-weight: bold; line-height: 17px; }
+dt, dd { font-size: 12px; line-height: 18px; color: #999; }
+dt { display: block; }
+h1, dd, .dl-list dt { margin-left: 130px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1><var:string value="getSubject" const:escapeHTML="NO"/>
+      <small><var:string value="organizerName" const:escapeHTML="NO"/><var:string value="sentByText" const:escapeHTML="NO"/></small></h1>
+
+      <dl class="dl-horizontal">
+        <var:if condition="apt.location.length"
+        ><dt><var:string label:value="location_label" const:escapeHTML="NO"/></dt>
+        <dd><var:string value="apt.location" const:escapeHTML="NO"/></dd></var:if>
+        <dt><var:string label:value="startDate_label" const:escapeHTML="NO"/></dt>
+        <dd><var:string value="formattedAptStartDate" const:escapeHTML="NO"
+           /><var:if condition="formattedAptStartTime.length"> - <var:string value="formattedAptStartTime" const:escapeHTML="NO"/> <var:string value="viewTZ" const:escapeHTML="NO"/>
+           </var:if></dd>
+        <dt><var:string label:value="endDate_label" const:escapeHTML="NO"/></dt>
+        <dd><var:string value="formattedAptEndDate" const:escapeHTML="NO"
+           /><var:if condition="formattedAptEndTime.length"> - <var:string value="formattedAptEndTime" const:escapeHTML="NO"/> <var:string value="viewTZ" const:escapeHTML="NO"/>
+           </var:if></dd>
+        <var:if condition="apt.comment.length"
+        ><dt><var:string label:value="comment_label" const:escapeHTML="NO"/></dt>
+        <dd><var:string value="apt.comment" const:escapeHTML="NO"/></dd></var:if>
+      </dl>
+    </div>
+  </body>
+</html>

@@ -604,6 +604,13 @@ DIV.linked_attachment_frame
   /*background: #F0F0F0;*/
 }
 
+DIV.linked_attachment_frame fieldset
+{
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
 DIV.linked_attachment_frame.file
 { display: inline;
   clear: none;
@@ -629,16 +636,33 @@ TABLE.linked_attachment_meta
   font-style: italic;
 }
 
+DIV.linked_attachment_body HR
+{
+  border: 0px;
+  border-top: 1px solid #ddd;
+}
+
 DIV.bodyFields
 { 
-  background: #efefef;
-  font-family: serif;
-  margin: 0.5em;
+  background: #eee;
+  line-height: 1.5em;
+  margin: 0.5em 0px;
+  padding-bottom: 0.5em;
+  padding-top: 0.5em;
   text-align: left;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
 }
 
 DIV.bodyFields SPAN.fieldName
-{ font-weight: bold; }
+{
+  float: left;
+  font-weight: bold;
+  padding-right: 1em;
+  text-align: right;
+  width: 9em;
+}
 
 DIV.bodyAdditionalFields
 { 

@@ -8,21 +8,12 @@ vtodo_class1 = "(Личная задача)";
 vtodo_class2 = "(Конфиденциальная задача)";
 
 /* Receipts */
-"Title:" = "Название:";
-"Start:" = "Начало:";
-"End:" = "Конец:";
-
-"Receipt: users invited to a meeting" = "Подтверждение: пользователей пригласили на встречу";
-"You have invited the following attendees(s):" = "Вы пригласили следующих участников:";
-"... to attend the following event:" = "... участвовать в следующем мероприятии:";
-
-"Receipt: invitation updated" = "Подтверждение: приглашение обновлено";
-"The following attendees(s):" = "Следующие участники:";
-"... have been notified of the changes to the following event:" = "... были уведомлены об изменениях следующего мероприятия:";
-
-"Receipt: attendees removed from an event" = "Подтверждение: участники удалены из мероприятия";
-"You have removed the following attendees(s):" = "Вы удалили следующих приглашенных:";
-"... from the following event:" = "... из списка участников в следующем мероприятии:";
+"The event \"%{Summary}\" was created" = "Было создано мероприятие \"%{Summary}\"";
+"The event \"%{Summary}\" was deleted" = "Мероприятие \"%{Summary}\" было удалено";
+"The event \"%{Summary}\" was updated" = "Мероприятие \"%{Summary}\" было обновлено";
+"The following attendees(s) were notified:" = "Следующие приглашенные были оповещены:";
+"The following attendees(s) were added:" = "Следующие люди были добавлены в список приглашенных:";
+"The following attendees(s) were removed:" = "Следующие люди были исключены из списка приглашенных:";
 
 /* IMIP messages */
 "startDate_label" = "Начало:";
@@ -67,4 +58,5 @@ vtodo_class2 = "(Конфиденциальная задача)";
 = "%{Attendee} %{SentByText}не определился с желанием участвовать в запланированном мероприятии.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Уже подано максимальное количество заявок (%{NumberOfSimultaneousBookings}) на ресурс \"%{Cn} %{SystemEmail}\".";
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Нет доступа к ресурсу: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Достигнуто предельное число заявок (%{NumberOfSimultaneousBookings}) на ресурс \"%{Cn} %{SystemEmail}\". Конкурирующее событие называется \"%{EventTitle}\", оно начинается %{StartDate}.";

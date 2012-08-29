@@ -94,7 +94,7 @@
 "Work:" = "Trabajo:";
 "Home:" = "Casa:";
 "Fax:" = "Fax:";
-"Mobile:" = "Celularl:";
+"Mobile:" = "Celular:";
 "Pager:" = "Buscapersonas:";
 
 /* categories */
@@ -121,7 +121,7 @@
 "Note:" = "Nota:";
 "Timezone:" = "Zona horaria:";
 "Birthday:" = "Fecha de nacimiento:";
-"Birthday (yyyy-mm-dd):" = "Fecha e nacimiento (yyyy-mm-dd):";
+"Birthday (yyyy-mm-dd):" = "Fecha e nacimiento (aaaa-mm-dd):";
 "Freebusy URL:" = "URL de disponibilidad:";
 
 "Add as..." = "Añadir como...";
@@ -162,15 +162,15 @@
 "Public Access" = "Acceso público";
 
 "This person can add cards to this addressbook."
-= "Esta persona puede añadir nuevos contactos a esta libreta de direcciones.";
+= "Esta persona puede añadir nuevos contactos a la libreta de direcciones.";
 "This person can edit the cards of this addressbook."
-= "Esta persona puede modificar los contactos de esta libreta de direcciones.";
+= "Esta persona puede modificar los contactos de la libreta de direcciones.";
 "This person can list the content of this addressbook."
-= "Esta persona puede listar los contactos de esta libreta de direcciones.";
+= "Esta persona puede listar los contactos de la libreta de direcciones.";
 "This person can read the cards of this addressbook."
-= "Esta persona puede leer los contactos de esta libreta de direcciones.";
+= "Esta persona puede leer los contactos de la libreta de direcciones.";
 "This person can erase cards from this addressbook."
-= "Esta persona puede borrar los contactos de esta libreta de direcciones.";
+= "Esta persona puede borrar los contactos de la libreta de direcciones.";
 
 "The selected contact has no email address."
 = "El contacto seleccionado no tiene dirección de correo electrónico.";
@@ -201,8 +201,8 @@
 "Upload" = "Cargar";
 "Uploading" = "Cargando";
 "Done" = "Hecho";
-"An error occured while importing contacts." = "Ha ocurrido un error mientras importaba contactos.";
-"No card was imported." = "El contacto no ha sido importado.";
+"An error occured while importing contacts." = "Ha ocurrido un error mientras se importaban los contactos.";
+"No card was imported." = "No se ha importado ningún contacto.";
 "A total of %{0} cards were imported in the addressbook." = "Un total de %{0} contactos han sido importados a la libreta de direcciones.";
 
 "Reload" = "Recargar";

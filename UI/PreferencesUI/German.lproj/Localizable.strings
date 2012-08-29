@@ -70,7 +70,7 @@
 "shortDateFmt_14" = "";
 
 "shortDateFmt_15" = "";
-
+   
 "longDateFmt_0" = "%A, %d. %B %Y";
 "longDateFmt_1" = "%A, %e. %B %Y";
 "longDateFmt_2" = "%a. %d. %B %Y";
@@ -81,7 +81,6 @@
 "longDateFmt_7" = "%a. %e. %b. %Y";
 "longDateFmt_8" = "%d. %B %Y";
 "longDateFmt_9" = "%e. %B %Y";
-
 "longDateFmt_10" = "";
 
 "timeFmt_0" = "%H:%M";
@@ -161,11 +160,15 @@
 
 "Full Name:" = "Name:";
 "Email:" = "E-Mail-Adresse:";
+"Reply To Email:" = "\"Antworten An\" E-Mail-Adresse (Reply-To):";
 "Signature:" = "Signatur:";
 "(Click to create)" = "(Klick zum Erstellen)";
 
 "Signature" = "Signatur";
 "Please enter your signature below:" = "Bitte fügen Sie die Signatur hier ein:";
+
+"Please specify a valid sender address." = "Bitte geben Sie eine gültige Absenderadresse an.";
+"Please specify a valid reply-to address." = "Bitte geben Sie eine gültige \"Antworten An\"-Adresse (Reply-To) an.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Zusätzliche Einstellungen";
@@ -279,6 +282,7 @@
 "Label 4" = "Label 4";
 "Label 5" = "Label 5";
 
+"The password was changed successfully." = "Das Passwort wurde erfolgreich geändert.";
 "Password must not be empty." = "Das Passwort darf nicht leer sein.";
 "The passwords do not match. Please try again." = "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es noch einmal.";
 "Password change failed" = "Passwortänderung fehlgeschlagen.";

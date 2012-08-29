@@ -1,9 +1,10 @@
 /* SOGoCalendarComponent.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2011 Inverse inc.
+ * Copyright (C) 2006-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Francis Lachapelle <flachapelle@inverse.ca>
+ *         Ludovic Marcotte <lmarcotte@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -844,8 +845,8 @@
 
 		  /* text part */
 		  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
-		  [headerMap setObject: @"text/plain; charset=\"UTF-8\""
-			     forKey: @"content-type"];
+		  [headerMap setObject: @"text/html; charset=utf-8"
+				forKey: @"content-type"];
 		  bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
 		  [bodyPart setBody: [text dataUsingEncoding: NSUTF8StringEncoding]];
 
@@ -926,8 +927,8 @@
 
       /* text part */
       headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
-      [headerMap setObject: @"text/plain; charset=utf-8"
-		 forKey: @"content-type"];
+      [headerMap setObject: @"text/html; charset=utf-8"
+		    forKey: @"content-type"];
       bodyPart = [NGMimeBodyPart bodyPartWithHeader: headerMap];
       bodyData = [[p getBody] dataUsingEncoding: NSUTF8StringEncoding];
       [bodyPart setBody: bodyData];
@@ -951,6 +952,9 @@
     }
 }
 
+//
+//
+//
 - (void) sendResponseToOrganizer: (iCalRepeatableEntityObject *) newComponent
 			    from: (SOGoUser *) from
 {
@@ -969,6 +973,9 @@
     }
 }
 
+//
+//
+//
 - (void) sendReceiptEmailForObject: (iCalRepeatableEntityObject *) object
 		    addedAttendees: (NSArray *) theAddedAttendees
 		  deletedAttendees: (NSArray *) theDeletedAttendees
@@ -1069,6 +1076,9 @@
 
 }
 
+//
+//
+//
 - (iCalPerson *) findParticipantWithUID: (NSString *) uid
 {
   iCalEntityObject *component;
@@ -1080,6 +1090,9 @@
   return [component userAsAttendee: user];
 }
 
+//
+//
+//
 - (iCalPerson *) iCalPersonWithUID: (NSString *) uid
 {
   iCalPerson *person;
@@ -1097,6 +1110,9 @@
   return person;
 }
 
+//
+//
+//
 - (NSArray *) getUIDsForICalPersons: (NSArray *) iCalPersons
 {
   iCalPerson *currentPerson;

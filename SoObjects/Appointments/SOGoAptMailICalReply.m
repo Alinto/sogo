@@ -1,6 +1,6 @@
 /* SOGoAptMailICalReply - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
+ * Copyright (C) 2010-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -19,6 +19,7 @@
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+#import <Foundation/NSCharacterSet.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
@@ -105,13 +106,10 @@
   return [values keysWithFormat: subjectFormat];
 }
 
-- (NSString *) getBody
+- (NSString *) bodyStartText
 {
   NSString *bodyFormat;
   NSString *partStat, *delegate;
-
-  if (!values)
-    [self setupValues];
 
   partStat = [[attendee partStat] lowercaseString];
   if ([partStat isEqualToString: @"accepted"])
@@ -135,7 +133,19 @@
   else
     bodyFormat = @"%{Attendee} %{SentByText}has not yet decided upon your event invitation.";
 
-  return [values keysWithFormat: [self labelForKey: bodyFormat inContext: context]];
+  return  [values keysWithFormat: bodyFormat];
+}
+
+- (NSString *) getBody
+{
+  NSString *body;
+
+  if (!values)
+    [self setupValues];
+
+  body = [[self generateResponse] contentAsString];
+  
+  return [body stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 @end

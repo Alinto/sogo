@@ -82,22 +82,24 @@ UL#tasksList LI
   width: 100%;
   white-space: nowrap; }
 
+UL#tasksList LI.duelater,
+UL#tasksList LI.duetoday,
 UL#tasksList LI.overdue
+{ font-weight: bold; }
+
+UL#tasksList LI.overdue,
+UL#tasksList LI.important
 { color: #f00 !important; }
 
 UL#tasksList LI.duetoday
 { color: #00f !important; }
 
-UL#tasksList LI.completed
+UL#tasksList LI.completed SPAN
 { text-decoration: line-through;
   color: #000; }
 
-UL#tasksList LI.duelater
-{ color: #999 !important; }
-
 UL#tasksList LI.important SPAN
-{ color: #f00 !important;
-  background-image: url(important.png);
+{ background-image: url(important.png);
   background-repeat: no-repeat;
   background-position: 3px 2px;
   padding-left: 10px;
@@ -105,16 +107,16 @@ UL#tasksList LI.important SPAN
 UL#tasksList LI SPAN
 { padding-left: 2px; }
 
-UL#tasksList LI[class~="_selected"].overdue
+UL#tasksList LI._selected.overdue
 { color: #fff !important;
   background-color: #f00 !important; }
 
-UL#tasksList LI[class~="_selected"].duetoday
+UL#tasksList LI._selected.duetoday
 { color: #fff !important;
   background-color: #00f !important; }
 
-UL#tasksList LI[class~="_selected"].duelater,
-UL#tasksList LI[class~="_selected"].completed
+UL#tasksList LI._selected.duelater,
+UL#tasksList LI._selected.completed
 { color: #fff !important;
   background-color: #9ABCD8 !important; }
 
