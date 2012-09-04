@@ -64,9 +64,9 @@ def main():
 
   # cleanup starts here
   try:
-      imapCleanup(username, userpass)
+      imapCleanup(imaphost, imapport, username, userpass)
   except Exception as e:
-      print "Error during imapCleanup, continuing: %s" % (e.value)
+      print "Error during imapCleanup, continuing: %s" % str(e)
 
   try:
       mapistoreCleanup(mapistorefolder, username)
@@ -129,7 +129,7 @@ def cleanupmb(mb, client):
     else:
         print "mailbox '%s' coult NOT be deleted (code = '%s')" % (mb, code)
   
-def imapCleanup(username, userpass) :
+def imapCleanup(imaphost, imapport, username, userpass) :
 
     client = imaplib.IMAP4(imaphost, imapport)
     (code, data) = client.login(username, userpass)
@@ -182,8 +182,10 @@ def postgresqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, username):
   print "table '%s' emptied" % tablename
 
 def getOCSFolderInfoURL():
-  # hack
-    defaultsout = subprocess.check_output(["defaults", "read",  "sogod", "OCSFolderInfoURL"])
+    # hack
+    # this doesn't work in py2.6 ...
+    #defaultsout = subprocess.check_output(["defaults", "read",  "sogod", "OCSFolderInfoURL"])
+    defaultsout = subprocess.Popen(["defaults", "read",  "sogod", "OCSFolderInfoURL"], stdout=subprocess.PIPE).communicate()[0]
 
     OCSFolderInfoURL =  defaultsout.split()[-1]
     return OCSFolderInfoURL
