@@ -1,3 +1,9 @@
+2012-09-04  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/WORequest+SOGo.m (-isMacOSXAddressBookApp):
+	recognize OS X 10.8 useragent.
+	(-isICal4): idem.
+
 2012-08-27  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* SoObjects/Appointments/SOGoAptMailInvitation.m,
