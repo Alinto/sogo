@@ -99,7 +99,7 @@ binary-arch: build-arch install-arch
 #	to let gdb find the symbols for libSOGo
 	( cd debian/sogo-dbg/usr/lib/debug/usr/lib/; \
 	  ln -s GNUstep/Frameworks/SOGo.framework/Versions/*/libSOGo* ./ )
-	dh_compress
+	dh_compress -X.py -X.sh
 	dh_fixperms
 	dh_makeshlibs -X/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends
 	dh_shlibdeps
