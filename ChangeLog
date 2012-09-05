@@ -1,5 +1,9 @@
 2012-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailMessage.m (-getMessageData:inMemCtx:):
+	property return recipients from all the "from", "to", "cc" and
+	"bcc" header fields.
+
 	* OpenChange/MAPIStoreCalendarAttachment.m
 	(-getPidTagDisplayName:inMemCtx:): return an allocated value,
 	since returned values must be assigned to another parent.
