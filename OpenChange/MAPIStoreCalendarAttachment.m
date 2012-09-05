@@ -124,7 +124,7 @@
 - (int) getPidTagDisplayName: (void **) data
                     inMemCtx: (TALLOC_CTX *) localMemCtx
 {
-  *data = "Untitled";
+  *data = [@"Untitled" asUnicodeInMemCtx: localMemCtx];
 
   return MAPISTORE_SUCCESS;
 }
