@@ -6,7 +6,6 @@
 	(+createRootSecondaryFolderWithFID:andName:forUser:): same as
 	above.
 
-
 	* OpenChange/MAPIStoreMailVolatileMessage.m
 	(FillMessageHeadersFromProperties): build a recipient list for the
 	"from" field from the list stored in the value for "orig" in the
