@@ -67,19 +67,38 @@
   return unicode;
 }
 
+- (char) _decodeHexByte: (char) byteChar
+{
+  char newByte;
+
+  if (byteChar >= 48 && byteChar <= 57)
+    newByte = (uint8_t) byteChar - 48;
+  else if (byteChar >= 65 && byteChar <= 70)
+    newByte = (uint8_t) byteChar - 55;
+  else if (byteChar >= 97 && byteChar <= 102)
+    newByte = (uint8_t) byteChar - 87;
+  else
+    newByte = -1;
+
+  return newByte;
+}
+
 - (BOOL) _decodeHexByte: (uint8_t *) byte
                   atPos: (NSUInteger) pos
 {
   BOOL error = NO;
+  char newByte;
   unichar byteChar;
 
   byteChar = [self characterAtIndex: pos];
-  if (byteChar >= 48 && byteChar <= 57)
-    *byte = (uint8_t) byteChar - 48;
-  else if (byteChar >= 65 && byteChar <= 70)
-    *byte = (uint8_t) byteChar - 55;
-  else if (byteChar >= 97 && byteChar <= 102)
-    *byte = (uint8_t) byteChar - 87;
+  if (byteChar < 256)
+    {
+      newByte = [self _decodeHexByte: (char) byteChar];
+      if (newByte == -1)
+        error = YES;
+      else
+        *byte = newByte;
+    }
   else
     error = YES;
 
@@ -130,6 +149,48 @@
     }
 
   return decoded;
+}
+
+- (NSString *) stringByReplacingPercentEscapesUsingEncoding: (NSStringEncoding) encoding
+{
+  NSString *newString;
+  NSData *data;
+  NSUInteger count, length, newCount;
+  const char *bytes;
+  char *newBytes;
+  char newByte0, newByte1;
+
+  data = [self dataUsingEncoding: NSASCIIStringEncoding];
+  length = [data length];
+  bytes = [data bytes];
+  newBytes = NSZoneMalloc (NULL, sizeof (char) * length);
+  newCount = 0;
+  for (count = 0; count < length; count++)
+    {
+      if (bytes[count] == '%')
+        {
+          newByte0 = [self _decodeHexByte: bytes[count+1]];
+          newByte1 = [self _decodeHexByte: bytes[count+2]];
+          if ((newByte0 != -1) && (newByte1 != -1))
+            {
+              newBytes[newCount] = (((newByte0 << 4) & 0xf0)
+                                    | (newByte1 & 0x0f));
+              count += 2;
+            }
+          else
+            newBytes[newCount] = bytes[count];
+        }
+      else
+        newBytes[newCount] = bytes[count];
+      newCount++;
+    }
+
+  data = [NSData dataWithBytesNoCopy: newBytes length: newCount freeWhenDone: YES];
+  newString = [[NSString alloc]
+                initWithData: data encoding: encoding];
+  [newString autorelease];
+
+  return newString;
 }
 
 @end

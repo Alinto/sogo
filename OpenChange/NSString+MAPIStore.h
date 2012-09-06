@@ -34,6 +34,8 @@
 
 - (NSData *) convertHexStringToBytes;
 
+- (NSString *) stringByReplacingPercentEscapesUsingEncoding: (NSStringEncoding) encoding;
+
 @end
 
 #endif /* NSSTRING+MAPISTORE_H */
