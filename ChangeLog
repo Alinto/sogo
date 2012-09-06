@@ -4,6 +4,11 @@
 	(FillMessageHeadersFromProperties): build a recipient list for the
 	"from" field from the list stored in the value for "orig" in the
 	recipients dict.
+	(FillMessageHeadersFromProperties): now take a "withBcc" parameter
+	that defines whether the "bcc" field must be ignored in the header.
+	(_generateMailDataWithBcc:): the above code enables use to remove
+	the search and replace hack required to remove the "bcc" header in
+	the message text.
 
 2012-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 

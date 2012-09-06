@@ -532,7 +532,7 @@ QuoteSpecials (NSString *address)
 
 static inline void
 FillMessageHeadersFromProperties (NGMutableHashMap *headers,
-                                  NSDictionary *mailProperties,
+                                  NSDictionary *mailProperties, BOOL withBcc,
                                   struct mapistore_connection_info *connInfo)
 {
   NSMutableString *subject;
@@ -540,7 +540,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
   NSArray *list;
   NSCalendarDate *date;
   NSDictionary *recipients;
-  NSUInteger type;
+  NSUInteger type, bccLimit;
   SOGoUser *activeUser;
 
   activeUser
@@ -555,7 +555,12 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
   recipients = [mailProperties objectForKey: @"recipients"];
   if (recipients)
     {
-      for (type = MAPI_TO; type <= MAPI_BCC; type++)
+      if (withBcc)
+        bccLimit = MAPI_BCC;
+      else
+        bccLimit = MAPI_CC;
+      bccLimit++;
+      for (type = MAPI_TO; type < bccLimit; type++)
 	{
 	  recId = recTypes[type];
 	  list = MakeRecipientsList ([recipients objectForKey: recId]);
@@ -795,7 +800,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
   return messageBody;
 }
 
-- (NGMimeMessage *) _generateMessage
+- (NGMimeMessage *) _generateMessageWithBcc: (BOOL) withBcc
 {
   NSString *contentType;
   NGMimeMessage *message;  
@@ -803,7 +808,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
   id messageBody;
 
   headers = [[NGMutableHashMap alloc] initWithCapacity: 16];
-  FillMessageHeadersFromProperties (headers, properties,
+  FillMessageHeadersFromProperties (headers, properties, withBcc,
                                     [[self context] connectionInfo]);
   message = [[NGMimeMessage alloc] initWithHeader: headers];
   [message autorelease];
@@ -824,36 +829,12 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
   NGMimeMessage *message;
   NGMimeMessageGenerator *generator;
   NSData *messageData;
-  NSMutableData *cleanedMessage;
-  NSRange r1, r2;
 
   /* mime message generation */
   generator = [NGMimeMessageGenerator new];
-  message = [self _generateMessage];
+  message = [self _generateMessageWithBcc: withBcc];
   messageData = [generator generateMimeFromPart: message];
   [generator release];
-
-  if (!withBcc)
-    {
-      cleanedMessage = [messageData mutableCopy];
-      [cleanedMessage autorelease];
-      r1 = [cleanedMessage rangeOfCString: "\r\n\r\n"];
-      r1 = [cleanedMessage rangeOfCString: "\r\nbcc: "
-                                  options: 0
-                                    range: NSMakeRange(0,r1.location-1)];
-      if (r1.location != NSNotFound)
-        {
-          // We search for the first \r\n AFTER the Bcc: header and
-          // replace the whole thing with \r\n.
-          r2 = [cleanedMessage rangeOfCString: "\r\n"
-                                      options: 0
-                                        range: NSMakeRange(NSMaxRange(r1)+1,[cleanedMessage length]-NSMaxRange(r1)-1)];
-          [cleanedMessage replaceBytesInRange: NSMakeRange(r1.location, NSMaxRange(r2)-r1.location)
-                                    withBytes: "\r\n"
-                                       length: 2];
-        }
-      messageData = cleanedMessage;
-    }
 
   // [messageData writeToFile: @"/tmp/mimegen.eml" atomically: NO];
 
