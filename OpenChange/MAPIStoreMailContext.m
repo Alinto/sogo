@@ -129,8 +129,7 @@ MakeDisplayFolderName (NSString *folderName)
   for (count = 0; count < 3; count++)
     {
       context = talloc_zero (memCtx, struct mapistore_contexts_list);
-      stringData = [NSString stringWithFormat: @"%@%@", urlBase,
-                             [folderName[count] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+      stringData = [NSString stringWithFormat: @"%@%@", urlBase, folderName[count]];
       context->url = [stringData asUnicodeInMemCtx: context];
       /* remove "folder" prefix */
       stringData = MakeDisplayFolderName (folderName[count]);
@@ -153,8 +152,7 @@ MakeDisplayFolderName (NSString *folderName)
     {
       context = talloc_zero (memCtx, struct mapistore_contexts_list);
       currentName = [secondaryFolders objectAtIndex: count];
-      stringData = [NSString stringWithFormat: @"%@%@",
-                             urlBase, [currentName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+      stringData = [NSString stringWithFormat: @"%@%@", urlBase, currentName];
       context->url = [stringData asUnicodeInMemCtx: context];
       stringData = [[currentName substringFromIndex: 6] fromCSSIdentifier];
       context->name = [stringData asUnicodeInMemCtx: context];
@@ -187,8 +185,7 @@ MakeDisplayFolderName (NSString *folderName)
                                  inContainer: accountFolder];
   if ([newFolder create])
     mapistoreURI = [NSString stringWithFormat: @"sogo://%@:%@@mail/%@/",
-                             userName, userName,
-                             [folderName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+                             userName, userName, folderName];
   else
     mapistoreURI = nil;
   [MAPIApp setUserContext: nil];

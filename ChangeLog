@@ -5,6 +5,7 @@
 	url string of non-ascii folder names.
 	(+createRootSecondaryFolderWithFID:andName:forUser:): same as
 	above.
+	(+*): reverted all of the above.
 
 	* OpenChange/MAPIStoreMailVolatileMessage.m
 	(FillMessageHeadersFromProperties): build a recipient list for the
