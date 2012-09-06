@@ -187,7 +187,8 @@ MakeDisplayFolderName (NSString *folderName)
                                  inContainer: accountFolder];
   if ([newFolder create])
     mapistoreURI = [NSString stringWithFormat: @"sogo://%@:%@@mail/%@/",
-                             userName, userName, folderName];
+                             userName, userName,
+                             [folderName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
   else
     mapistoreURI = nil;
   [MAPIApp setUserContext: nil];
