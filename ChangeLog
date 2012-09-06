@@ -1,5 +1,9 @@
 2012-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreMailContext.m
+	(+listContextsForUser:withTDBIndexing:inMemCtx:): we escape the
+	url string of non-ascii folder names.
+
 	* OpenChange/MAPIStoreMailVolatileMessage.m
 	(FillMessageHeadersFromProperties): build a recipient list for the
 	"from" field from the list stored in the value for "orig" in the

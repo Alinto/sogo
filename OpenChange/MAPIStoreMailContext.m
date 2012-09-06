@@ -130,7 +130,7 @@ MakeDisplayFolderName (NSString *folderName)
     {
       context = talloc_zero (memCtx, struct mapistore_contexts_list);
       stringData = [NSString stringWithFormat: @"%@%@", urlBase,
-                      folderName[count]];
+                             [folderName[count] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
       context->url = [stringData asUnicodeInMemCtx: context];
       /* remove "folder" prefix */
       stringData = MakeDisplayFolderName (folderName[count]);
@@ -153,7 +153,8 @@ MakeDisplayFolderName (NSString *folderName)
     {
       context = talloc_zero (memCtx, struct mapistore_contexts_list);
       currentName = [secondaryFolders objectAtIndex: count];
-      stringData = [NSString stringWithFormat: @"%@%@", urlBase, currentName];
+      stringData = [NSString stringWithFormat: @"%@%@",
+                             urlBase, [currentName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
       context->url = [stringData asUnicodeInMemCtx: context];
       stringData = [[currentName substringFromIndex: 6] fromCSSIdentifier];
       context->name = [stringData asUnicodeInMemCtx: context];
