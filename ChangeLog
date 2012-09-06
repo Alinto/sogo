@@ -1,3 +1,10 @@
+2012-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/MAPIStoreMailVolatileMessage.m
+	(FillMessageHeadersFromProperties): build a recipient list for the
+	"from" field from the list stored in the value for "orig" in the
+	recipients dict.
+
 2012-09-05  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreMailMessage.m (-getMessageData:inMemCtx:):

@@ -540,7 +540,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
   NSArray *list;
   NSCalendarDate *date;
   NSDictionary *recipients;
-  NSUInteger count;
+  NSUInteger type;
   SOGoUser *activeUser;
 
   activeUser
@@ -555,12 +555,16 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
   recipients = [mailProperties objectForKey: @"recipients"];
   if (recipients)
     {
-      for (count = 1; count < 3; count++)
+      for (type = MAPI_TO; type <= MAPI_BCC; type++)
 	{
-	  recId = recTypes[count];
+	  recId = recTypes[type];
 	  list = MakeRecipientsList ([recipients objectForKey: recId]);
           [headers setObjects: list forKey: recId];
 	}
+
+      list = MakeRecipientsList ([recipients objectForKey: @"orig"]);
+      if (list)
+        [headers setObjects: list forKey: @"from"];
     }
   else
     NSLog (@"message without recipients");
