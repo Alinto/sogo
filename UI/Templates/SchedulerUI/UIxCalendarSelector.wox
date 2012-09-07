@@ -15,6 +15,7 @@ div.colorBox.calendarFolder<var:string value="currentCalendar.folder" />
     </var:foreach>
   </style>
   <div id="calendarSelector">
+    <h6><var:string label:value="Calendars"/></h6>
     <div id="calendarSelectorButtons">
       <a href="#" class="smallToolbarButton"
         ><span><img rsrc:src="add-calendar.png"
@@ -33,19 +34,17 @@ div.colorBox.calendarFolder<var:string value="currentCalendar.folder" />
             label:title="Remove the selected Calendar"
             /></span></a>
     </div>
-    <div id="calendarListWrapper">
-      <ul id="calendarList">
-        <var:foreach list="calendars" item="currentCalendar"
-          ><li class="denied" var:id="currentCalendar.id"
-            var:owner="currentCalendar.owner" >
-            <input type="checkbox" class="checkBox"
-              const:disabled="disabled"
-              var:checked="currentCalendar.active" />
-            <div var:class="currentCalendarClass">OO</div
-            ><var:string value="currentCalendar.displayName"
-              /></li>
-        </var:foreach>
-      </ul>
-    </div>
+    <ul id="calendarList">
+      <var:foreach list="calendars" item="currentCalendar"
+                   ><li class="denied" var:id="currentCalendar.id"
+                        var:owner="currentCalendar.owner" >
+        <input type="checkbox" class="checkBox"
+               const:disabled="disabled"
+               var:checked="currentCalendar.active" />
+        <div var:class="currentCalendarClass">OO</div
+        ><var:string value="currentCalendar.displayName"
+        /></li>
+      </var:foreach>
+    </ul>
   </div>
 </container>

@@ -502,6 +502,7 @@ validate_endbeforestart    = "Podana data końca jest wcześniejsza niż data po
 "Title" = "Tytuł";
 "Start" = "Początek";
 "End" = "Koniec";
+"Due Date" = "Termin";
 "Location" = "Miejsce";
 "(Private Event)" = "(Wydarzenie prywatne)";
 

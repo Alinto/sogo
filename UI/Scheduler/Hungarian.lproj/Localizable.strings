@@ -503,6 +503,7 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 "Title" = "Cím";
 "Start" = "Kezdés";
 "End" = "Befejezés";
+"Due Date" = "Lejárat";
 "Location" = "Hely";
 "(Private Event)" = "(Magán esemény)";
 

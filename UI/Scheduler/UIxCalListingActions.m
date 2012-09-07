@@ -96,8 +96,10 @@ static NSArray *tasksFields = nil;
   if (!tasksFields)
     {
       tasksFields = [NSArray arrayWithObjects: @"c_name", @"c_folder",
+                             @"calendarName",
 			     @"c_status", @"c_title", @"c_enddate",
-			     @"c_classification", @"editable", @"erasable",
+			     @"c_classification", @"c_location", @"c_category",
+                             @"editable", @"erasable",
                              @"c_priority", nil];
       [tasksFields retain];
     }
@@ -1069,14 +1071,17 @@ _computeBlocksPosition (NSArray *blocks)
 		 forComponentOfType: @"vtodo"] objectEnumerator];
   while ((task = [tasks nextObject]))
     {
-      statusCode = [[task objectAtIndex: 2] intValue];
+      statusCode = [[task objectAtIndex: 3] intValue];
       if (statusCode != 1 || showCompleted)
 	{
 	  filteredTask = [NSMutableArray arrayWithArray: task];
-	  endDateStamp = [[task objectAtIndex: 4] intValue];
+	  endDateStamp = [[task objectAtIndex: 5] intValue];
 	  statusFlag = [self _getStatusClassForStatusCode: statusCode
 			     andEndDateStamp: endDateStamp];
 	  [filteredTask addObject: statusFlag];
+          if (endDateStamp > 0)
+            [filteredTask addObject: [self _formattedDateForSeconds: endDateStamp
+                                                          forAllDay: NO]];
 	  [filteredTasks addObject: filteredTask];
 	}
     }

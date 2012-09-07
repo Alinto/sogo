@@ -503,6 +503,7 @@ validate_endbeforestart    = "La fecha/hora de inicio es posterior a la de fin."
 "Title" = "Título";
 "Start" = "Inicio";
 "End" = "Fin";
+"Due Date" = "Vencimiento";
 "Location" = "Lugar";
 "(Private Event)" = "(Evento privado)";
 

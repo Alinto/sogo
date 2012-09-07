@@ -502,6 +502,7 @@ validate_endbeforestart    = "Angivet slutdatumet inträffar före angivet start
 "Title" = "Titel";
 "Start" = "Start";
 "End" = "Slut";
+"Due Date" = "Datum";
 "Location" = "Plats";
 "(Private Event)" = "(Privat händelse)";
 

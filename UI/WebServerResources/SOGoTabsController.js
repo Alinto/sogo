@@ -83,17 +83,20 @@ SOGoTabsController.prototype = {
                     currentNode.observe("mousedown",
                                         this.onTabMouseDownBound, false);
                     currentNode.observe("click", this.onTabClickBound, false);
+                    if (currentNode.hasClassName("active"))
+                        this.activeTab = currentNode;
                     //$(currentNode.getAttribute("target")).hide();
                 }
 
                 this.firstTab.addClassName("first");
-                this.firstTab.addClassName("active");
-                this.activeTab = this.firstTab;
-
+                if (this.activeTab == null) {
+                    this.activeTab = this.firstTab;
+                    this.activeTab.addClassName("active");
+                }
                 var last = nodes.length - 1;
                 this.lastTab = $(nodes[last]);
 
-                var target = $(this.firstTab.getAttribute("target"));
+                var target = $(this.activeTab.getAttribute("target"));
                 target.addClassName("active");
             }
             this.onWindowResizeBound = this.onWindowResize.bindAsEventListener(this);
@@ -141,6 +144,7 @@ SOGoTabsController.prototype = {
             this.activeTab = $(clickedTab);
             this.activeTab.addClassName("active"); // current LI
             content.addClassName("active");
+            this.activeTab.fire("tabs:click", content.id);
 
             // Prototype alternative
         

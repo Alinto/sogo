@@ -1,3 +1,26 @@
+2012-09-07  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/SchedulerUI.js (tasksListCallback): list
+	the tasks in a table, along the events table.
+	(saveTabState): save which of the events or the tasks tab is
+	selected.
+
+	* UI/WebServerResources/SOGoTabsController.js
+	(attachToTabsContainer): select and show the active tab if it's
+	defined.
+
+	* UI/WebServerResources/HTMLTableElement.js (getSelectedRows):
+	accept calling this method from a "tbody".
+
+	* UI/Scheduler/UIxCalMainView.m (-saveSelectedListAction): new
+	method to save the name of the selected tab (events or tasks).
+	(-eventsTabClass): return "active" if the selected tab was "events".
+	(-tasksTabClass): idem for "tasks".
+
+	* UI/Scheduler/UIxCalListingActions.m (-tasksListAction): added
+	more quick fields, including the calendar name, location, category
+	and a formatted version of the due date.
+
 2012-09-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/MAPIStoreContext.m (CompleteURLFromMapistoreURI):

@@ -1193,7 +1193,7 @@ function initCriteria() {
     var searchValue = $("searchValue");
     var searchOptions = $("searchOptions");
 
-    if (searchValue) {
+    if (searchValue && searchOptions) {
         var firstOption = searchOptions.down("li");
         if (firstOption) {
             searchCriteria.value = firstOption.getAttribute('id');

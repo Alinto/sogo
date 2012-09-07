@@ -241,8 +241,11 @@ function deleteEvent() {
                         }
                         if (sortedNodes[calendar].indexOf(nodes[i].cname) < 0) {
                             sortedNodes[calendar].push(nodes[i].cname);
-                            if (nodes[i].tagName == 'TR')
-                                events.push(nodes[i].down('td').allTextContent()); // extract the first column only
+                            if (nodes[i].tagName == 'TR') {
+                                var cell = nodes[i].down('td span');
+                                var title = cell.allTextContent();
+                                events.push(title); // extract the first column only
+                            }
                             else
                                 events.push(nodes[i].allTextContent());
                         }
@@ -422,7 +425,7 @@ function onMenuRawEvent(event) {
     var calendar = selectedCalendarCell[0].calendar;
     var cname = selectedCalendarCell[0].cname;
 
-    var url = ApplicationBaseURL + calendar + "/" + cname + "/raw"
+    var url = ApplicationBaseURL + calendar + "/" + cname + "/raw";
     openGenericWindow(url);
 }
 
@@ -918,8 +921,8 @@ function eventsListCallback(http) {
 
         var rows = table.select("TBODY TR");
         rows.each(function(e) {
-                e.remove();
-            });
+            e.remove();
+        });
 
         if (http.responseText.length > 0) {
             var data = http.responseText.evalJSON(true);
@@ -927,13 +930,14 @@ function eventsListCallback(http) {
                 var row = createElement("tr");
                 table.tBodies[0].appendChild(row);
                 row.addClassName("eventRow");
+                var calendar = escape(data[i][1]);
                 var rTime = data[i][16];
                 var id = escape(data[i][1] + "-" + data[i][0]);
                 if (rTime)
                     id += "-" + escape(rTime);
                 row.setAttribute("id", id);
                 row.cname = escape(data[i][0]);
-                row.calendar = escape(data[i][1]);
+                row.calendar = calendar;
                 if (rTime)
                     row.recurrenceTime = escape(rTime);
                 row.isException = data[i][17];
@@ -954,8 +958,13 @@ function eventsListCallback(http) {
                 var td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][4])); // title
-
+                var colorDiv = createElement("div", false, "colorBox calendarFolder" + calendar);
+                td.appendChild(colorDiv);
+                colorDiv.update('OO');
+                var span = createElement("span");
+                td.appendChild(span);
+                span.update(data[i][4]); // title
+                
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
@@ -1002,57 +1011,98 @@ function eventsListCallback(http) {
 }
 
 function tasksListCallback(http) {
-    var div = $("tasksListView");
-
     if (http.readyState == 4
         && http.status == 200) {
+        var div = $("tasksListView");
         document.tasksListAjaxRequest = null;
-        var list = $("tasksList");
+        var table = $("tasksList");
+        lastClickedRow = -1; // from generic.js
+
+        var rows = table.select("TBODY TR");
+        rows.each(function(e) {
+            e.remove();
+        });
 
         if (http.responseText.length > 0) {
             var data = http.responseText.evalJSON(true);
-            
-            list.previousScroll = list.scrollTop;
-            while (list.childNodes.length)
-                list.removeChild(list.childNodes[0]);
 
+            // [0] Task ID
+            // [1] Calendar ID
+            // [2] Calendar name
+            // [3] Status (0, 1 = completed, 2)
+            // [4] Title
+            // [5] Due date (int)
+            // [6] Classification (0 = public, 1, = private, 2 = confidential)
+            // [7] Location
+            // [8] Category
+            // [9] Editable?
+            // [10] Erasable?
+            // [11] Priority (0, 1 = important, 9 = low)
+            // [12] Status CSS class (duelater, completed, etc)
+            // (13) Due date (formatted)
+            
             for (var i = 0; i < data.length; i++) {
-                var listItem = createElement("li");
-                list.appendChild(listItem);
-                listItem.on("dblclick", editDoubleClickedEvent);
+                var row = createElement("tr");
+                table.tBodies[0].appendChild(row);
+
+                row.on("dblclick", editDoubleClickedEvent);
 
                 var calendar = escape(data[i][1]);
                 var cname = escape(data[i][0]);
-                listItem.setAttribute("id", calendar + "-" + cname);
+                row.setAttribute("id", calendar + "-" + cname);
                 //listItem.addClassName(data[i][5]); // Classification
-                listItem.addClassName(data[i][9]); // status (duelater, completed, etc)
-                listItem.calendar = calendar;
-                listItem.cname = cname;
-                listItem.erasable = data[i][7] || IsSuperUser;
+                row.addClassName(data[i][12]); // status
+                row.calendar = calendar;
+                row.cname = cname;
+                row.erasable = data[i][10] || IsSuperUser;
+                if (parseInt(data[i][11]) == 1) {
+                  row.addClassName("important");
+                }
+                else if (parseInt(data[i][11]) == 9) {
+                  row.addClassName("low");
+                }
+
+                var cell = createElement("td");
+                row.appendChild(cell);
                 var input = createElement("input");
                 input.setAttribute("type", "checkbox");
-                if (parseInt(data[i][6]) == 0) // editable?
-                  input.setAttribute("disabled", true);
-                if (parseInt(data[i][8]) == 1) {
-                  listItem.addClassName("important");
-                }
-                listItem.appendChild(input);
-                input.observe("click", updateTaskStatus, true);
+                cell.appendChild(input);
                 input.setAttribute("value", "1");
-                if (data[i][2] == 1)
+                if (parseInt(data[i][9]) == 0) // editable?
+                    input.setAttribute("disabled", true);
+                input.addClassName("checkBox");
+                if (parseInt(data[i][3]) == 1) // completed?
                     input.setAttribute("checked", "checked");
-                $(input).addClassName("checkBox");
+                input.observe("click", updateTaskStatus, true);
 
+                cell = createElement("td");
+                row.appendChild(cell);
                 var colorDiv = createElement("div", false, "colorBox calendarFolder" + calendar);
+                cell.appendChild(colorDiv);
                 colorDiv.update('OO');
-                listItem.appendChild(colorDiv);
-
                 var t = new Element ("span");
-                t.update(data[i][3]);
-                listItem.appendChild (t);
+                cell.appendChild(t);
+                t.update(data[i][4]); // title
+
+                cell = createElement("td");
+                row.appendChild(cell);
+                if (data[i][13])
+                    cell.update(data[i][13]); // end date
+
+                cell = createElement("td");
+                row.appendChild(cell);
+                cell.update(data[i][7]); // location
+
+                cell = createElement("td");
+                row.appendChild(cell);
+                cell.update(data[i][8]); // category
+
+                cell = createElement("td");
+                row.appendChild(cell);
+                cell.update(data[i][2]); // calendar name
             }
 
-            list.scrollTop = list.previousScroll;
+            table.scrollTop = table.previousScroll;
 
             if (http.callbackData) {
                 var selectedNodesId = http.callbackData;
@@ -1999,7 +2049,7 @@ function onEventsSelectionChange() {
     tasksList.addClassName("_unfocused");
     deselectAll(tasksList);
 
-    var rows = $(this.tBodies[0]).getSelectedNodes();
+    var rows = $(this).getSelectedNodes();
     if (rows.length == 1) {
         var row = rows[0];
         changeCalendarDisplay( { "day": row.day,
@@ -2412,7 +2462,7 @@ function onShowCompletedTasks(event) {
 
 function updateTaskStatus(event) {
     var newStatus = (this.checked ? 1 : 0);
-    _updateTaskCompletion (this.parentNode, newStatus);
+    _updateTaskCompletion (this.up("tr"), newStatus);
     return false;
 }
 
@@ -2637,7 +2687,7 @@ function newTask () {
 }
 
 function marksTasksAsCompleted () {
-    var selectedTasks = $$("UL#tasksList LI._selected");
+    var selectedTasks = $$("#tasksList ._selected");
 
     for (var i = 0; i < selectedTasks.length; i++) {
         var task = selectedTasks[i];
@@ -2655,7 +2705,7 @@ function _updateTaskCompletion (task, value) {
 }
 
 function onMenuRawTask(event) {
-    var selectedTasks = $$("UL#tasksList LI._selected");
+    var selectedTasks = $$("#tasksList ._selected");
     if (selectedTasks.length != 1) {
       return;
     }
@@ -2706,7 +2756,7 @@ function configureDragHandles() {
     handle = $("rightDragHandle");
     if (handle) {
         handle.addInterface(SOGoDragHandlesInterface);
-        handle.upperBlock = $("eventsListView");
+        handle.upperBlock = $("schedulerTabs");
         handle.lowerBlock = $("calendarView");
     }
 }
@@ -3106,7 +3156,7 @@ function deletePersonalCalendarCallback(http) {
 }
 
 function configureLists() {
-    var list = $("tasksList");
+    var list = $$("#tasksList tbody").first();
     list.multiselect = true;
     list.on("mousedown", onTasksSelectionChange);
     list.on("selectstart", listRowMouseDownHandler);
@@ -3121,7 +3171,7 @@ function configureLists() {
     list.multiselect = true;
     configureSortableTableHeaders(list);
     TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
-    list.observe("mousedown", onEventsSelectionChange);
+    list.down("tbody").on("mousedown", onEventsSelectionChange);
 }
 
 function initDateSelectorEvents() {
@@ -3223,6 +3273,15 @@ function onDocumentKeydown(event) {
     }
 }
 
+function saveTabState(event) {
+    var tab = $(event).memo;
+
+    var url =  ApplicationBaseURL + "saveSelectedList";
+    var params = "list=" + tab;
+    triggerAjaxRequest(url, null, null, params,
+                       { "Content-type": "application/x-www-form-urlencoded" });
+}
+
 function initScheduler() {
     sorting["attribute"] = "start";
     sorting["ascending"] = true;
@@ -3234,6 +3293,7 @@ function initScheduler() {
         var tabsContainer = $("schedulerTabs");
         var controller = new SOGoTabsController();
         controller.attachToTabsContainer(tabsContainer);
+        schedulerTabs.on("tabs:click", saveTabState);
 
         if (UserSettings['ShowCompletedTasks']) {
             showCompletedTasks = parseInt(UserSettings['ShowCompletedTasks']);

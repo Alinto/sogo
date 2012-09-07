@@ -124,8 +124,8 @@
   if (result == NSOrderedSame)
     {
       // End date
-      selfTime = [[self objectAtIndex: 4] intValue];
-      otherTime = [[otherTask objectAtIndex: 4] intValue];
+      selfTime = [[self objectAtIndex: 5] intValue];
+      otherTime = [[otherTask objectAtIndex: 5] intValue];
       if (selfTime && !otherTime)
 	result = NSOrderedAscending;
       else if (!selfTime && otherTime)
@@ -143,8 +143,8 @@
                          compare: [otherTask objectAtIndex: 1]];
               if (result == NSOrderedSame)
                 // Task name
-                result = [[self objectAtIndex: 3]
-                           compare: [otherTask objectAtIndex: 3]
+                result = [[self objectAtIndex: 4]
+                           compare: [otherTask objectAtIndex: 4]
                            options: NSCaseInsensitiveSearch];
             }
 	}

@@ -171,7 +171,8 @@ TABLE.framenocaption
 TABLE.frame TBODY
 { padding: 20px; }
 
-UL#calendarList
+UL#calendarList,
+UL#contactFolders
 { margin-top: 2px; }
 
 A.toolbarButton SPAN,
@@ -179,10 +180,8 @@ A.toolbarButton:hover SPAN {
   height: 50px;
   padding: 5px 2px 6px 5px;
 }
-A.smallToolbarButton, A.smallToolbarButton:hover,
-A.smallToolbarButton SPAN, A.smallToolbarButton:hover SPAN
-{ height: 33px; }
-
+A.smallToolbarButton, A.smallToolbarButton:hover
+{ height: 34px; }
 A.toolbarButton:active SPAN {
   background-position: auto; /*broken*/
 }

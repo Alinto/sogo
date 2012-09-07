@@ -1319,10 +1319,8 @@ function initContacts(event) {
         configureSelectionButtons();
     }
 
-    var tabsContainer = $("smallToolbarContainer");
-    if (tabsContainer) {
-        var controller = new SOGoTabsController();
-        controller.attachToTabsContainer(tabsContainer);
+    var foldersList = $("contactFoldersList");
+    if (foldersList) {
         configureAbToolbar();
 
         // Addressbook import form

@@ -503,6 +503,7 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 "Title" = "Název";
 "Start" = "Začátek";
 "End" = "Konec";
+"Due Date" = "Datum splnění";
 "Location" = "Místo";
 "(Private Event)" = "(Soukromá událost)";
 

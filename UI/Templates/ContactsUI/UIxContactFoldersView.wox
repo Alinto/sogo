@@ -88,36 +88,19 @@
     </ul>
   </div>
 
-  <div class="contactFoldersList" id="contactFoldersList">
-    <div class="tabsContainer" id="smallToolbarContainer">
-      <ul>
-        <li target="abToolbar">
-          <span><var:string label:value="Address Books" /></span>
-        </li>
-      </ul>
-      <div class="tabs">
-        <div id="abToolbar" class="tab">
-          <a href="#" class="smallToolbarButton">
-            <span><img rsrc:src="add-addressbook.png" 
-                label:title="New Addressbook..."/>
-            </span>
-          </a>
-          <a href="#" class="smallToolbarButton">
-            <span>
-              <img rsrc:src="add-user-addressbook.png" 
-                label:title="Subscribe to an Addressbook..." />
-            </span>
-          </a>
-          <a href="#" class="smallToolbarButton">
-            <span>
-              <img rsrc:src="remove-addressbook.png" 
-                label:title="Remove the selected Addressbook"/>
-            </span>
-          </a>
-        </div>
-      </div>
+  <div id="contactFoldersList">
+    <h6><var:string label:value="Address Books" /></h6>
+    <div id="abToolbar">
+      <a href="#" class="smallToolbarButton"
+         ><span><img rsrc:src="add-addressbook.png" label:title="New Addressbook..."
+         /></span></a>
+      <a href="#" class="smallToolbarButton"
+         ><span><img rsrc:src="add-user-addressbook.png" label:title="Subscribe to an Addressbook..."
+         /></span></a>
+      <a href="#" class="smallToolbarButton"
+         ><span><img rsrc:src="remove-addressbook.png" label:title="Remove the selected Addressbook"
+         /></span></a>
     </div>
-
     <ul id="contactFolders">
       <var:foreach list="contactFolders" item="currentFolder"
         ><li var:id="currentContactFolderId"
@@ -129,7 +112,6 @@
           ></var:foreach
         >
     </ul>
-
     <var:if condition="hasContactSelectionButtons">
       <div class="contactSelection">
         <var:component value="selectorComponent" />

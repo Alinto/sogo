@@ -503,6 +503,7 @@ validate_endbeforestart    = "Дата начала позже даты конц
 "Title" = "Название";
 "Start" = "Начало";
 "End" = "Конец";
+"Due Date" = "К дате";
 "Location" = "Место";
 "(Private Event)" = "(Приватное событие)";
 

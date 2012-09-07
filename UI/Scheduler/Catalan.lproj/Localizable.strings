@@ -503,6 +503,7 @@ validate_endbeforestart    = "La data/hora de començament és posterior a la d'
 "Title" = "Títol";
 "Start" = "Inici";
 "End" = "Final";
+"Due Date" = "Data límit";
 "Location" = "Lloc";
 "(Private Event)" = "(Esdeveniment privat)";
 

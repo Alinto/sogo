@@ -502,6 +502,7 @@ validate_endbeforestart    = "Lokadagurinn sem er tilgreindur, er fyrr en byrjun
 "Title" = "Titill";
 "Start" = "Byrjun";
 "End" = "Endir";
+"Due Date" = "Lokadagur";
 "Location" = "Staðsetning";
 "(Private Event)" = "(Einkaviðburður)";
 

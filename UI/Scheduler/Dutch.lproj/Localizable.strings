@@ -1,4 +1,3 @@
-/* this file is in UTF-8 format! */
 
 /* Tooltips */
 
@@ -503,6 +502,7 @@ validate_endbeforestart    = "Het einde is voor de begindatum.";
 "Title" = "Titel";
 "Start" = "Begin";
 "End" = "Eind";
+"Due Date" = "Verloopdatum";
 "Location" = "Plaats";
 "(Private Event)" = "(Privé-afspraak)";
 

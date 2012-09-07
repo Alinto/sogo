@@ -503,6 +503,7 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "Title" = "Title";
 "Start" = "Start";
 "End" = "End";
+"Due Date" = "Due Date";
 "Location" = "Location";
 "(Private Event)" = "(Private Event)";
 

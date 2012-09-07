@@ -502,6 +502,7 @@ validate_endbeforestart    = "A data que você informou ocorre antes da data ini
 "Title" = "Título";
 "Start" = "Início";
 "End" = "Fim";
+"Due Date" = "Data";
 "Location" = "Localização";
 "(Private Event)" = "(Evento Privado)";
 

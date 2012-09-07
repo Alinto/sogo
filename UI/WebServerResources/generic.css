@@ -55,6 +55,14 @@ LABEL
   white-space: nowrap;
   margin-left: .5em; }
 
+H6
+{ font-size: 11px;
+  color: #9ABCD8;
+  color: #627e9c;
+  text-transform: uppercase;
+  margin: 10px 0px 5px 0px;
+  padding-left: 5px; }
+
 TABLE
 { table-layout: fixed;
   border-spacing: 0px; }
@@ -493,7 +501,7 @@ DIV.noJavascriptErrorMessage A
   margin: 0px auto; }
 
 LI.denied
-{ background-color: #fefefe;
+{ n0background-color: #fefefe;
   font-style: italic;
   color: #f33; }
 
@@ -507,7 +515,7 @@ TD._selected
   color: #fff;
 }
 
-LI[class~="_selected"].denied
+LI._selected.denied
 { 
   background-color: #f33;
 }

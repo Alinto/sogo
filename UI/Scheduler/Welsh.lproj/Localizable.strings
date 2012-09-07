@@ -502,6 +502,7 @@ validate_endbeforestart    = "Mae'r dyddiad gorffen sydd wedi'i roi yn digwydd c
 "Title" = "Teitl";
 "Start" = "Dechrau";
 "End" = "Diwedd";
+"Due Date" = "Dyddiad dyledus";
 "Location" = "Lleoliad";
 "(Private Event)" = "(Digwyddiad preifat)";
 

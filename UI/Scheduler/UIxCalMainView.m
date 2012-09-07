@@ -166,7 +166,7 @@
     [self _setupContext];
   height = [moduleSettings objectForKey: @"DragHandleVertical"];
 
-  return ((height && [height intValue] > 0) ? [NSString stringWithFormat: @"%ipx", ([height intValue] - 27)] : nil);
+  return ((height && [height intValue] > 0) ? [NSString stringWithFormat: @"%ipx", [height intValue]] : nil);
 }
 
 - (WOResponse *) saveDragHandleStateAction
@@ -189,6 +189,42 @@
 
   [us synchronize];
 
+  return [self responseWithStatus: 204];
+}
+
+- (NSString *) eventsTabClass
+{
+   NSString *list;
+
+   [self _setupContext];
+   list = [moduleSettings objectForKey: @"SelectedList"];
+   
+   return (list && [list compare: @"eventsListView"] == NSOrderedSame)? @"active" : @"";
+}
+
+- (NSString *) tasksTabClass
+{
+   NSString *list;
+
+   [self _setupContext];
+   list = [moduleSettings objectForKey: @"SelectedList"];
+   
+   return (list && [list compare: @"tasksListView"] == NSOrderedSame)? @"active" : @"";
+}
+
+- (WOResponse *) saveSelectedListAction
+{
+  WORequest *request;
+  NSString *selectedList;
+  
+  [self _setupContext];
+  request = [context request];
+
+  selectedList = [request formValueForKey: @"list"];
+  [moduleSettings setObject: selectedList
+                     forKey: @"SelectedList"];
+  [us synchronize];
+  
   return [self responseWithStatus: 204];
 }
 

@@ -50,6 +50,11 @@
           pageName    = "UIxCalMainView";
           actionName  = "saveDragHandleState";
         };
+        saveSelectedList = {
+          protectedBy = "View";
+          pageName    = "UIxCalMainView";
+          actionName  = "saveSelectedList";
+        };          
         dateselector = {
           protectedBy = "View";
           pageName    = "UIxCalDateSelector"; 

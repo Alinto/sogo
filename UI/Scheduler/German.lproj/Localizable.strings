@@ -503,6 +503,7 @@ validate_endbeforestart    = "Ihr Ende ist vor dem Beginndatum.";
 "Title" = "Titel";
 "Start" = "Beginn";
 "End" = "Ende";
+"Due Date" = "Fällig";
 "Location" = "Ort";
 "(Private Event)" = "(Privater Termin)";
 

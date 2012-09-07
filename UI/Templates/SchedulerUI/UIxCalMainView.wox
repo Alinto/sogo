@@ -26,7 +26,7 @@
     DIV#rightDragHandle, DIV#calendarView
      { top: <var:string value="verticalDragHandleStyle" />; }
   </var:if><var:if condition="eventsListViewStyle">
-    DIV#eventsListView
+    DIV#schedulerTabs
      { height: <var:string value="eventsListViewStyle" />; }
   </var:if>
   </style>
@@ -132,49 +132,60 @@
   </div>
 
   <div id="leftPanel">
-    <div class="tabsContainer" id="schedulerTabs">
-      <ul>
-        <li target="dateSelectorView"
-          ><span><var:string label:value="Date" /></span></li>
-        <li target="calendarSelectorView"
-          ><span><var:string label:value="Calendars" /></span></li>
-      </ul>
-      <div class="tabs">
-        <div id="dateSelectorView" class="tab"
-          ><var:component className="UIxCalDateSelector"
-            selectedDate="thisMonth"
-          /></div>
-        <div id="calendarSelectorView" class="tab"
-          ><var:component className="UIxCalendarSelector"
-            var:calendarFolders="calendarFolders" /></div>
-      </div>
-    </div>
-
-    <div id="tasksListView">
-      <label><input id="showHideCompletedTasks"
-          type="checkbox" class="checkBox"
-          /><var:string label:value="Show completed tasks"/></label>
-      <ul id="tasksList"><!-- space --></ul>
-    </div>
+    <div id="dateSelectorView" class=""
+         ><var:component className="UIxCalDateSelector"
+         selectedDate="thisMonth"
+         /></div>
+    <div id="calendarSelectorView"
+         ><var:component className="UIxCalendarSelector"
+         var:calendarFolders="calendarFolders" /></div>
   </div>
 
   <div id="verticalDragHandle" class="dragHandle"><!-- space --></div>
 
   <div id="rightPanel">
-    <var:component className="UIxCalFilterPanel" />
-    <div id="eventsListView">
-      <table id="eventsList" cellspacing="0">
-        <thead>
-	  <tr>
-	    <td id="titleHeader" class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
-	    <td id="startHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Start"/></td>
-	    <td id="endHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="End"/></td>
-	    <td id="locationHeader" class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
-	    <td id="calendarNameHeader" class="headerCell headerCalendarName sortableTableHeader"><var:string label:value="Calendar"/></td>
-	  </tr>
-        </thead>
-        <tbody><!-- events list --></tbody>
-      </table>
+    <div class="tabsContainer" id="schedulerTabs">
+      <ul>
+        <li target="eventsListView" var:class="eventsTabClass"
+          ><span><var:string label:value="Events" /></span></li>
+        <li target="tasksListView" var:class="tasksTabClass"
+          ><span><var:string label:value="Tasks" /></span></li>
+      </ul>
+      <div class="tabs">
+        <div id="eventsListView" class="tab">
+          <var:component className="UIxCalFilterPanel" />
+          <table id="eventsList" cellspacing="0">
+            <thead>
+              <tr>
+                <td id="titleHeader" class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
+                <td id="startHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Start"/></td>
+                <td id="endHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="End"/></td>
+                <td id="locationHeader" class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
+                <td id="calendarNameHeader" class="headerCell headerCalendarName sortableTableHeader"><var:string label:value="Calendar"/></td>
+              </tr>
+            </thead>
+            <tbody><!-- events list --></tbody>
+          </table>
+        </div>
+        <div id="tasksListView" class="tab">
+          <label>
+            <input id="showHideCompletedTasks" type="checkbox" class="checkBox"/><var:string label:value="Show completed tasks"/>
+          </label>
+          <table id="tasksList" cellspacing="0">
+            <thead>
+              <tr>
+                <td id="completedHeader" class="headerCell"><entity name="nbsp"/></td>
+                <td class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
+                <td class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Due Date"/></td>
+                <td class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
+                <td class="headerCell"><var:string label:value="Category"/></td>
+                <td class="headerCell headerCalendarName sortableTableHeader"><var:string label:value="Calendar"/></td>
+              </tr>
+            </thead>
+            <tbody><!-- tasks list --></tbody>
+          </table>
+        </div>
+      </div>
     </div>
     <div id="rightDragHandle" class="dragHandle"><!-- space --></div>
     <div id="calendarView"><!-- space --></div>

@@ -103,24 +103,17 @@ TABLE.titletable TD.titlecell SELECT
 
 DIV#contactFoldersList
 { position: absolute;
-  top: 84px;
+  top: 82px;
   left: 0px;
   width: 15em;
+  background-color: #CCDDEC;
   bottom: 0px;
   margin: 0px;
   padding: 0px;
   overflow: hidden; }
 
-DIV#smallToolbarContainer
-{ height: 50px;
-  margin: 0px 2px; }
-
-DIV#smallToolbarContainer > .tabs
-{ margin: 0px 2px;
-  height: 40px; }
-
 DIV#abToolbar
-{ height: 38px; }
+{ padding-left: 6px; }
 
 SPAN.toolbarButton
 { float: none;
@@ -130,27 +123,15 @@ A.toolbarButton
 { text-decoration: none; }
 
 UL#contactFolders
-{ display: block;
-  list-style-type: none;
+{ list-style-type: none;
   list-style-image: none;
-  clear: both;
+  clear: left;
   cursor: default;
   color: #000;
-  background: #CCDDEC;
-  position: absolute; /* required for Safari & IE */
-  top: 68px; /* leave space for the mini addressbook */
-  bottom: 0px;
-  left: 0;
-  right: 0;
-  width: auto;
   margin: 0px;
   padding: 0px;
   overflow: auto;
   overflow-x: hidden;
-  border-top: 1px solid #909090;
-  border-left: 1px solid #909090;
-  border-bottom: 1px solid #FFFFFF;
-  border-right: 1px solid #FFFFFF;
   -moz-user-select: none;
   -khtml-user-select: none;
 }
@@ -158,11 +139,10 @@ UL#contactFolders
 UL#contactFolders LI
 {
     background-repeat: no-repeat;
-    background-position: 4px 2px;
+    background-position: 14px 2px;
     cursor: pointer;
-    line-height: 20px;
-    height: 20px;
-    padding-left: 22px;
+    line-height: 2em;
+    padding-left: 34px;
     margin: 0px;
     width: auto;
     white-space: nowrap;
@@ -333,10 +313,6 @@ SPAN.photoFrame:hover {
   -moz-transform: scale(3.0, 3.0) rotate(0deg) translate(33%, 33%);
   -webkit-transform: scale(3.0, 3.0) rotate(0deg) translate(33%, 33%);
   -ms-transform: rotate(0deg) scale(3.0, 3.0); }
-
-SPAN.photoFrame:hover IMG.contactPhoto
-{ 
-  }
 
 /* drag handles */
 DIV#dragHandle

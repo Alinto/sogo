@@ -4,57 +4,44 @@ DIV#leftPanel
   left: 0px;
   width: 19.25em;
   bottom: 0px;
+  background-color: #CCDDEC;
   overflow: hidden; }
 
 DIV#schedulerTabs
 { position: absolute;
   top: 4px;
-  left: 2px;
-  right: 2px;
+  left: 1px;
+  right: 0px;
   height: 186px; }
 
-DIV#tasksListView
-{ position: absolute;
-  top: 200px;
-  bottom: 0px;
-  left: 2px;
-  right: 0px;
-  overflow: hidden; }
+DIV#schedulerTabs .tabs
+{ right: 5px; }
 
-DIV#tasksListView H2
-{ font-size: 10pt;
-  margin: 0px;
-  margin-left: .25em;
-  padding: 0px; }
-
-DIV#tasksListView LABEL
-{ margin: .25em; }
+DIV#schedulerTabs .tab
+{ left: 0px;
+  right: 0px; }
 
 DIV#calendarSelectorView
-{ top: 3px;
-  overflow: hidden; }
+{ overflow: hidden; }
 
-DIV#calendarsList
-{ height: 100%; }
+DIV#calendarSelectorButtons
+{ padding-left: 6px; }
 
 DIV.colorBox
 { display: inline;
-  border: 1px solid #333;
   font-weight: normal;
   margin-right: 3px;
   font-size: 80%;
   width: 1em;
-  height: .75em; }
+  height: .75em;
+  -webkit-border-radius: 2px;
+  border-radius: 2px; }
 
-UL#tasksList, UL#calendarList
+UL#calendarList
 { cursor: default;
+  clear: left;
   margin: 0px;
   padding: 0px;
-  border-top: 1px solid #909090;
-  border-left: 1px solid #909090;
-  border-bottom: 1px solid #FFFFFF;
-  border-right: 1px solid #FFFFFF;
-  background-color: #CCDDEC;
   list-style-type: none;
   list-style-image: none;
   overflow: hidden;
@@ -62,61 +49,51 @@ UL#tasksList, UL#calendarList
   -moz-user-select: none;
   -khtml-user-select: none; }
 
-UL#calendarList
-{ clear: left;
-  height: 115px; }
-
 UL#calendarList LI
 { cursor: pointer;
-  white-space: nowrap; }
-
-UL#tasksList
-{ position: absolute;
-  top: 2em;
-  left: 0px;
-  right: 0px;
-  bottom: .25em; }
-
-UL#tasksList LI
-{ cursor: pointer;
   width: 100%;
-  white-space: nowrap; }
+  white-space: nowrap;
+  line-height: 2em;
+  padding-left: 10px; }
 
-UL#tasksList LI.duelater,
-UL#tasksList LI.duetoday,
-UL#tasksList LI.overdue
+#tasksList .duelater,
+#tasksList .duetoday,
+#tasksList .overdue
 { font-weight: bold; }
 
-UL#tasksList LI.overdue,
-UL#tasksList LI.important
+#tasksList .overdue,
+#tasksList .important
 { color: #f00 !important; }
 
-UL#tasksList LI.duetoday
+#tasksList .low
+{ color: #666 !important; }
+
+#tasksList .duetoday
 { color: #00f !important; }
 
-UL#tasksList LI.completed SPAN
+#tasksList .completed span
 { text-decoration: line-through;
   color: #000; }
 
-UL#tasksList LI.important SPAN
+#tasksList .important SPAN
 { background-image: url(important.png);
   background-repeat: no-repeat;
   background-position: 3px 2px;
   padding-left: 10px;
 }
-UL#tasksList LI SPAN
+#tasksList  SPAN
 { padding-left: 2px; }
 
-UL#tasksList LI._selected.overdue
+#tasksList ._selected.overdue
 { color: #fff !important;
   background-color: #f00 !important; }
 
-UL#tasksList LI._selected.duetoday
+#tasksList ._selected.duetoday
 { color: #fff !important;
   background-color: #00f !important; }
 
-UL#tasksList LI._selected.duelater,
-UL#tasksList LI._selected.completed
+#tasksList ._selected.duelater,
+#tasksList ._selected.completed
 { color: #fff !important;
   background-color: #9ABCD8 !important; }
 
@@ -129,17 +106,12 @@ DIV#rightPanel
   margin-left: 5px;
   overflow: hidden; }
 
-/* top list */
-DIV#eventsListView
+/* top lists in tabs */
+DIV#eventsListView,
+DIV#tasksListView
 { cursor: default;
-  position: absolute;
   background-color: #FFFFFF;
-  top: 2.5em;
-  left: 0px;
-  right: 0px;
-  height: 15.5em;
   overflow: hidden;
-  border-left: 1px solid #9B9B9B;
   overflow-y: auto; }
 
 DIV#calendarView
@@ -174,9 +146,6 @@ DIV#calendarView A
   right: 0px;
   height: 5px; }
 
-#filterPanel
-{ padding-right: .5em; }
-
 DIV#dateSelectorView
 { overflow: hidden; }
 
@@ -184,7 +153,7 @@ DIV#dateSelectorView
 { margin: 0px auto;
   height: 13.5em;
   background-color: #fff;
-  border-top: 1px solid #FFFFFF !important;
+  border-top: 1px solid #909090 !important;
   border-left: 1px solid #FFFFFF !important;
   border-bottom: 1px solid #909090 !important;
   border-right: 1px solid #909090 !important; }
@@ -279,20 +248,44 @@ TABLE#dateSelectorTable TD TABLE TD.dayOfToday
 { visibility: hidden;
   display: none; }
 
-TABLE#eventsList
+TABLE#eventsList,
+TABLE#tasksList
 { width: 100%; }
+
+TABLE#eventsList .colorBox
+{ margin-left: 2px; }
 
 TABLE#eventsList TD.headerTitle,
 TABLE#eventsList TD.headerDateTime
 { width: 30%; }
 
 TABLE#eventsList TD,
-TABLE#eventsList TH
+TABLE#eventsList TH,
+TABLE#tasksList TD,
+TABLE#tasksList TH
 { overflow: hidden;
+  line-height: 1.5em;
   white-space: nowrap; } /* pre, normal, nowrap */
 
-TABLE#eventsList TH
+TABLE#eventsList TH,
+TABLE#tasksList TH
 { white-space: pre; }
+
+TABLE#tasksList TD#completedHeader
+{ text-align: center;
+  width: 20px; }
+
+TABLE#eventsList THEAD TD:last-child,
+TABLE#tasksList THEAD TD:last-child
+{ border-right: 0px; }
+
+#filterPanel,
+.tab label
+{ display: block;
+  margin: 0;
+  padding: 5px;
+  background-color: #eee;
+  background-color: #E6E7E6; }
 
 DIV#eventDialog
 { width: 200px; }

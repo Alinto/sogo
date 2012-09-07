@@ -8,6 +8,9 @@ Element.addMethods({
       
       return $(tbody).getSelectedNodes();
     }
+    else if (element.tagName == 'TBODY') {
+        return element.getSelectedNodes();
+    }
     else if (element.tagName == 'UL') {
       return element.getSelectedNodes();
     }
