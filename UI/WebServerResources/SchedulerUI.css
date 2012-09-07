@@ -280,7 +280,7 @@ TABLE#tasksList THEAD TD:last-child
 { border-right: 0px; }
 
 #filterPanel,
-.tab label
+#schedulerTabs .tab label
 { display: block;
   margin: 0;
   padding: 5px;
