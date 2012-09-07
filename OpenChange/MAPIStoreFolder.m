@@ -96,14 +96,13 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
   NSURL *folderURL;
   NSMutableString *pathPrefix;
-  NSString *path, *escapedURL, *folderName;
+  NSString *path, *folderName;
   NSArray *parts;
   NSUInteger lastPartIdx;
   MAPIStoreUserContext *userContext;
 
-  escapedURL = [[self url]
-                 stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-  folderURL = [NSURL URLWithString: escapedURL];
+  folderURL = [NSURL URLWithString: [self url]];
+  /* note: -[NSURL path] returns an unescaped representation */
   path = [folderURL path];
   path = [path substringFromIndex: 1];
   if ([path length] > 0)
@@ -252,7 +251,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (id) lookupFolderByURL: (NSString *) childURL
 {
   MAPIStoreObject *foundObject = nil;
-  NSString *baseURL, *subURL;
+  NSString *baseURL, *subURL, *part;
   NSArray *parts;
   NSUInteger partsCount;
 
@@ -268,7 +267,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
           partsCount = [parts count];
           if ((partsCount == 1)
               || (partsCount == 2 && [[parts objectAtIndex: 1] length] == 0))
-            foundObject = [self lookupFolder: [parts objectAtIndex: 0]];
+            {
+              part = [[parts objectAtIndex: 0]
+                       stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+              foundObject = [self lookupFolder: part];
+            }
         }
     }
 
@@ -339,7 +342,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
           partsCount = [parts count];
           if (partsCount == 1)
             {
-              key = [parts objectAtIndex: 0];
+              key = [[parts objectAtIndex: 0]
+                      stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
               foundObject = [self lookupFAIMessage: key];
               if (!foundObject)
                 foundObject = [self lookupMessage: key];
@@ -405,7 +409,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
               if (![baseURL hasSuffix: @"/"])
                 baseURL = [NSString stringWithFormat: @"%@/", baseURL];
               childURL = [NSString stringWithFormat: @"%@%@/",
-                                   baseURL, folderKey];
+                                   baseURL,
+                                   [folderKey stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
               [mapping registerURL: childURL withID: fid];
               childFolder = [self lookupFolder: folderKey];
               if (childFolder)
@@ -1543,8 +1548,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     url = [NSString stringWithFormat: @"%@/", [super url]];
   else
     {
-      url = [[[context url] absoluteString]
-                 stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+      url = [[context url] absoluteString];
       if (![url hasSuffix: @"/"])
         url = [NSString stringWithFormat: @"%@/", url];
     }

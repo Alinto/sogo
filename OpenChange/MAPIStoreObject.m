@@ -126,7 +126,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
 
 - (NSString *) url
 {
-  NSString *containerURL, *format;
+  NSString *containerURL, *urlName, *format;
 
   containerURL = (NSString *) [container url];
   if ([containerURL hasSuffix: @"/"])
@@ -134,8 +134,9 @@ static Class NSExceptionK, MAPIStoreFolderK;
   else
     format = @"%@/%@";
 
-  return  [NSString stringWithFormat: format,
-                    containerURL, [self nameInContainer]];
+  urlName = [[self nameInContainer]
+              stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+  return  [NSString stringWithFormat: format, containerURL, urlName];
 }
 
 /* helpers */

@@ -207,7 +207,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
                         [NSString stringWithUTF8String: uri]];
   if (![urlString hasSuffix: @"/"])
     urlString = [urlString stringByAppendingString: @"/"];
-  completeURL = [NSURL URLWithString: [urlString stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+  completeURL = [NSURL URLWithString: urlString];
 
   return completeURL;
 }
@@ -418,25 +418,33 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   MAPIStoreFolder *baseFolder;
   SOGoFolder *currentFolder;
   WOContext *woContext;
-  NSString *path, *urlString;
+  NSString *path;
   NSArray *pathComponents;
   NSUInteger count, max;
 
   mapping = [userContext mapping];
   if (![mapping urlFromID: newFid])
-    {
-      urlString = [[contextUrl absoluteString]
-                      stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-      [mapping registerURL: urlString
-                    withID: newFid];
-    }
+    [mapping registerURL: [contextUrl absoluteString]
+                  withID: newFid];
   [userContext activateWithUser: activeUser];
   woContext = [userContext woContext];
 
   [self ensureContextFolder];
   currentFolder = [self rootSOGoFolder];
   [containersBag addObject: currentFolder];
-  path = [contextUrl path];
+
+  /* HACK:
+     -[NSURL path] returns unescaped strings in theory. In pratice, sometimes
+     it does, sometimes not. Therefore we use the result of our own
+     implementation of -[NSString
+     stringByReplacingPercentEscapeUsingEncoding:], which returns nil if the
+     original string contains non-ascii chars, from which we can determine
+     whether the path was unescaped or not. */
+  path = [[contextUrl path]
+           stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+  if (!path)
+    path = [contextUrl path];
+
   if ([path hasPrefix: @"/"])
     path = [path substringFromIndex: 1];
   if ([path hasSuffix: @"/"])
@@ -515,7 +523,8 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   void *rootObject;
 
   if (key)
-    childURL = [NSString stringWithFormat: @"%@%@", folderURL, key];
+    childURL = [NSString stringWithFormat: @"%@%@", folderURL,
+                  [key stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
   else
     childURL = folderURL;
   mapping = [userContext mapping];

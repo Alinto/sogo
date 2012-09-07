@@ -1036,7 +1036,8 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   NSUInteger count, max;
   NGImap4Connection *connection;
   NGImap4Client *client;
-  NSString *newURL, *parentDBFolderPath, *childKey, *folderIMAPName, *newFolderIMAPName;
+  NSString *newURL, *parentDBFolderPath, *childKey, *folderIMAPName,
+    *urlNamePart, *newFolderIMAPName;
   NSException *error;
   MAPIStoreMapping *mapping;
   NSDictionary *result;
@@ -1049,9 +1050,9 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
       targetSOGoFolder = [targetFolder sogoObject];
       if (isMove)
         {
-          newFolderURL = [NSURL
-                           URLWithString: [newFolderName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]
-                           relativeToURL: [targetSOGoFolder imap4URL]];
+          urlNamePart = [newFolderName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+          newFolderURL = [NSURL URLWithString: urlNamePart
+                                relativeToURL: [targetSOGoFolder imap4URL]];
           error = [[sogoObject imap4Connection]
                       moveMailboxAtURL: folderURL
                                  toURL: newFolderURL];
@@ -1062,7 +1063,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
               rc = MAPISTORE_SUCCESS;
               mapping = [self mapping];
               newURL = [NSString stringWithFormat: @"%@folder%@/",
-                                 [targetFolder url], newFolderName];
+                                 [targetFolder url], urlNamePart];
               [mapping updateID: [self objectId] withURL: newURL];
               parentDBFolderPath = [[targetFolder dbFolder] path];
               if (!parentDBFolderPath)

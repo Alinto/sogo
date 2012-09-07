@@ -1,5 +1,11 @@
 2012-09-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
+	* OpenChange/MAPIStoreContext.m (CompleteURLFromMapistoreURI):
+	mapistore uris are already escaped.
+	(-getRootFolder:withFID:): all urls are now escaped, both in NSURL
+	and in NSString forms, whether they are used to return a mapitore
+	root uri or a indexing record.
+
 	* OpenChange/NSString+MAPIStore.m
 	(-stringByReplacingPercentEscapesUsingEncoding:): we now return
 	nil for non-ascii strings.
