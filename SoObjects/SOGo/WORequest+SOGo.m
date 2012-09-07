@@ -136,21 +136,32 @@
 }
 
 //
-// sogod[22188] -[WEClientCapabilities initWithRequest:]: Unknown WebClient: user-agent='CalendarStore/5.0.1 (1139.14); iCal/5.0.1 (1547.4); Mac OS X/10.7.2 (11C74)'
-//
+// CalendarStore/5.0.1 (1139.14); iCal/5.0.1 (1547.4); Mac OS X/10.7.2 (11C74)
+// CalendarStore/5.0.3 (1204.1); iCal/5.0.3 (1605.3); Mac OS X/10.7.4 (11E53)
+// Mac OS X/10.8 (12A269) Calendar/1639
+// Mac OS X/10.8 (12A269) CalendarAgent/47
+// Mac OS X/10.8.1 (12B19) CalendarAgent/47
 //
 - (BOOL) isICal4
 {
   return ([self isAppleDAVWithSubstring: @"iCal/4."]
           || [self isAppleDAVWithSubstring: @"iCal/5."]
-          || [self isAppleDAVWithSubstring: @"CoreDAV/"]);
+          || [self isAppleDAVWithSubstring: @"CoreDAV/"]
+          || [self isAppleDAVWithSubstring: @"Calendar/"]
+          || [self isAppleDAVWithSubstring: @"CalendarAgent/"]);
 }
 
 
 //
-// Starting from 10.7, we see something like:
+// For 10.7, we see:
 //
-// sogod[27330] -[WEClientCapabilities initWithRequest:]: Unknown WebClient: user-agent='AddressBook/6.1 (1062) CardDAVPlugin/196 CFNetwork/520.2.5 Mac_OS_X/10.7.2 (11C74)'
+// AddressBook/6.1 (1062) CardDAVPlugin/196 CFNetwork/520.2.5 Mac_OS_X/10.7.2 (11C74)
+// AddressBook/6.1.2 (1090) CardDAVPlugin/200 CFNetwork/520.4.3 Mac_OS_X/10.7.4 (11E53)
+//
+// For 10.8, we see:
+//
+// Mac OS X/10.8 (12A269) AddressBook/1143
+// Mac OS X/10.8.1 (12B19) AddressBook/1143
 //
 - (BOOL) isMacOSXAddressBookApp
 {
@@ -159,9 +170,12 @@
 
   cc = [self clientCapabilities];
 
-  b = [[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound &&
-	([[cc userAgent] rangeOfString: @"Darwin"].location != NSNotFound ||
-	[[cc userAgent] rangeOfString: @"AddressBook"].location != NSNotFound);
+  b =  [[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
+    && [[cc userAgent] rangeOfString: @"Darwin"].location != NSNotFound
+    || ( [[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
+      || [[cc userAgent] rangeOfString: @"Mac OS X"].location != NSNotFound )
+    && [[cc userAgent] rangeOfString: @"AddressBook"].location != NSNotFound;
+
 
   return b;
 }

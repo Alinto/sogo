@@ -1,3 +1,9 @@
+2012-08-31  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* iCalWeeklyRecurrenceCalculator.m
+	(-recurrenceRangesWithinCalendarDateRange:): the week counter must
+	start at 0 when there's no day mask.
+
 2012-08-22  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* iCalWeeklyRecurrenceCalculator.m

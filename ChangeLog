@@ -44,6 +44,12 @@
 	(-getPidTagDisplayName:inMemCtx:): return an allocated value,
 	since returned values must be assigned to another parent.
 
+2012-09-04  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* SoObjects/SOGo/WORequest+SOGo.m (-isMacOSXAddressBookApp):
+	recognize OS X 10.8 useragent.
+	(-isICal4): idem.
+
 2012-08-28  Jean Raby  <jraby@inverse.ca>
 
 	* Scripts/openchange_cleanup.py:

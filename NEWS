@@ -1,3 +1,10 @@
+1.3.18a (2012-09-04)
+-------------------
+Bug Fixes
+ - fixed display of weekly events with no day mask
+ - fixed parsing of mail headers
+ - fixed support for OS X 10.8 (Mounting Lion)
+
 1.3.18 (2012-08-28)
 -------------------
 Enhancements

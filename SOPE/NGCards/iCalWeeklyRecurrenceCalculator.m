@@ -119,10 +119,10 @@
   [currentStartDate autorelease];
   ranges = [NSMutableArray array];
   count = 0;
-  i = [currentStartDate dayOfWeek]; // Set the first day of the week as Sunday and ignore WKST
 
   if (dayMask == nil)
     {
+      i = 0;
       while ([currentStartDate compare: endDate] == NSOrderedAscending ||
 	     [currentStartDate compare: endDate] == NSOrderedSame)
 	{
@@ -147,6 +147,7 @@
     {
       NGCalendarDateRange *r;
       
+      i = [currentStartDate dayOfWeek]; // Set the first day of the week as Sunday and ignore WKST
       while ([currentStartDate compare: endDate] == NSOrderedAscending ||
 	     [currentStartDate compare: endDate] == NSOrderedSame)
 	{
@@ -175,7 +176,7 @@
 
 	      if (isRecurrence)
 		{
-		  count++;
+        	  count++;
 		  if (repeatCount > 0 && count > repeatCount)
 		    break;
 		  currentEndDate = [currentStartDate addTimeInterval: [firstRange duration]];
