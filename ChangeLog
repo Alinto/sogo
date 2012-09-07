@@ -1,3 +1,9 @@
+2012-09-07  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
+
+	* OpenChange/NSString+MAPIStore.m
+	(-stringByReplacingPercentEscapesUsingEncoding:): we now return
+	nil for non-ascii strings.
+
 2012-09-06  Wolfgang Sourdeau  <wsourdeau@inverse.ca>
 
 	* OpenChange/NSString+MAPIStore.m

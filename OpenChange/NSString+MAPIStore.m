@@ -161,34 +161,39 @@
   char newByte0, newByte1;
 
   data = [self dataUsingEncoding: NSASCIIStringEncoding];
-  length = [data length];
-  bytes = [data bytes];
-  newBytes = NSZoneMalloc (NULL, sizeof (char) * length);
-  newCount = 0;
-  for (count = 0; count < length; count++)
+  if (data)
     {
-      if (bytes[count] == '%')
+      length = [data length];
+      bytes = [data bytes];
+      newBytes = NSZoneMalloc (NULL, sizeof (char) * length);
+      newCount = 0;
+      for (count = 0; count < length; count++)
         {
-          newByte0 = [self _decodeHexByte: bytes[count+1]];
-          newByte1 = [self _decodeHexByte: bytes[count+2]];
-          if ((newByte0 != -1) && (newByte1 != -1))
+          if (bytes[count] == '%')
             {
-              newBytes[newCount] = (((newByte0 << 4) & 0xf0)
-                                    | (newByte1 & 0x0f));
-              count += 2;
+              newByte0 = [self _decodeHexByte: bytes[count+1]];
+              newByte1 = [self _decodeHexByte: bytes[count+2]];
+              if ((newByte0 != -1) && (newByte1 != -1))
+                {
+                  newBytes[newCount] = (((newByte0 << 4) & 0xf0)
+                                        | (newByte1 & 0x0f));
+                  count += 2;
+                }
+              else
+                newBytes[newCount] = bytes[count];
             }
           else
             newBytes[newCount] = bytes[count];
+          newCount++;
         }
-      else
-        newBytes[newCount] = bytes[count];
-      newCount++;
-    }
 
-  data = [NSData dataWithBytesNoCopy: newBytes length: newCount freeWhenDone: YES];
-  newString = [[NSString alloc]
-                initWithData: data encoding: encoding];
-  [newString autorelease];
+      data = [NSData dataWithBytesNoCopy: newBytes length: newCount freeWhenDone: YES];
+      newString = [[NSString alloc]
+                    initWithData: data encoding: encoding];
+      [newString autorelease];
+    }
+  else
+    newString = nil;
 
   return newString;
 }
