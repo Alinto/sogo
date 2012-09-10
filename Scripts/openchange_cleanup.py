@@ -3,6 +3,7 @@
 import getopt
 import imaplib
 import ldb
+import plistlib
 import os
 import re
 import shutil
@@ -13,6 +14,7 @@ imaphost = '127.0.0.1'
 imapport = 143
 sambaprivate = '/var/lib/samba/private'
 mapistorefolder = "%s/mapistore" % (sambaprivate)
+sogoDefaultsFile = "/home/sogo/GNUstep/Defaults/.GNUstepDefaults"
 
 #  - takes a username and optionally its password
 #  - removes the entry in samba's ldap tree via ldbedit (NOTYET)
@@ -182,19 +184,19 @@ def postgresqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, username):
   print "table '%s' emptied" % tablename
 
 def getOCSFolderInfoURL():
-    # hack
-    # this doesn't work in py2.6 ...
-    #defaultsout = subprocess.check_output(["defaults", "read",  "sogod", "OCSFolderInfoURL"])
-    defaultsout = subprocess.Popen(["defaults", "read",  "sogod", "OCSFolderInfoURL"], stdout=subprocess.PIPE).communicate()[0]
+  global sogoDefaultsFile
+  sogoDefaults = plistlib.readPlist(sogoDefaultsFile)
+  try:
+    OCSFolderInfoURL = sogoDefaults['sogod']['OCSFolderInfoURL']
+  except KeyError:
+    OCSFolderInfoURL = ""
 
-    OCSFolderInfoURL =  defaultsout.split()[-1]
-    return OCSFolderInfoURL
+  return OCSFolderInfoURL
 
 def sqlCleanup(username):
-  try:
-    OCSFolderInfoURL = getOCSFolderInfoURL()
-  except subprocess.CalledProcessError:
-     "Couldn't fetch OCSFolderInfoURL, the socfs_%s table should be truncated manually" % (username)
+  OCSFolderInfoURL = getOCSFolderInfoURL()
+  if (OCSFolderInfoURL is None):
+    raise Exception("Couldn't fetch OCSFolderInfoURL or it is not set. the socfs_%s table should be truncated manually" % (username))
     
   # postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_folder_info
   m = re.search("(.+)://(.+):(.+)@(.+):(\d+)/(.+)/(.+)", OCSFolderInfoURL)
