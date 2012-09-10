@@ -215,6 +215,10 @@ DIV#uploadResults P
 DIV#filtersListWrapper
 { overflow-x: hidden; }
 
+dl.dl-horizontal
+{ margin-top: 2px;
+  margin-bottom: 2px; }
+
 TABLE#filtersList
 { width: auto; }
 

@@ -18,7 +18,10 @@ BODY
   overflow: hidden; }
 
 HR
-{ height: 0px; }
+{ height: 0;
+border: 0;
+border-top: 1px solid #ddd;
+border-bottom: 1px solid #eee; }
 
 TABLE, DIV, IMG
 { font-family: inherit;
@@ -28,7 +31,7 @@ TABLE, DIV, IMG
   padding: 0px; }
 
 FIELDSET
-{ border: 1px solid #999;
+{ border: 1px solid #aaa;
   margin-bottom: 2px; }
 
 IMG#progressIndicator
@@ -191,6 +194,8 @@ SELECT
   margin: 2px;
   padding-right: 1px;
   background-color: #CCDDEC;
+  border: 1px solid #999;
+  border-radius: 4px;
   color: #262B33; }
 
 DIV.contactSelector DIV.contactList
@@ -684,9 +689,10 @@ INPUT[disabled], INPUT[readonly],
 SELECT[disabled], SELECT[readonly],
 TEXTAREA[disabled], TEXTAREA[readonly]
 { background: #E6E7E6;
+  border-color: #ccc;
   color: #9ABCD8; }
 
-INPUT[type="text"], INPUT[type="password"], INPUT[type="file"]
+INPUT[type="text"], INPUT[type="password"], INPUT[type="file"], TEXTAREA
 { background: url("input_bg.gif"); }
 
 TEXTAREA
@@ -781,6 +787,34 @@ A.disabled.button SPAN
 A.disabled.button:active SPAN
 { background-position: top left;
   padding: 5px 2px 5px 5px; }
+
+dt, dd {
+  line-height: 20px;
+}
+dd {
+  margin-left: 9px;
+}
+.dl-horizontal dt {
+  float: left;
+  width: 150px;
+  overflow: hidden;
+  clear: left;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dl-horizontal dd {
+  margin-left: 160px;
+}
+
+.dl-horizontal ul {
+  list-style-type: none;
+  margin: 0px;
+  padding-left: 0px;
+}
+.dl-horizontal li {
+  margin-left: 0;
+}
 
 /* Frames */
 TABLE.frame,

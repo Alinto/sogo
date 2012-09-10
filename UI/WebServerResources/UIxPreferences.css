@@ -49,7 +49,7 @@ DIV.listWrapper
   background: #ccddec;}
 
 #calendarCategoriesListWrapper
-{ top: 170px;
+{ top: 210px;
   bottom: 30px;
   right: 2em;
   left: 2em; }
@@ -106,7 +106,7 @@ SPAN.timeDateControl SPAN
 DIV#filtersListWrapper
 { bottom: 30px;
   right: 2em;
-  top: 174px;
+  top: 185px;
   left: 2em; }
 
 DIV#filtersListWrapper TD,
@@ -149,8 +149,10 @@ P.infoMessage#passwordError
   bottom: 30px;
   left: 140px;
   padding: 0px;
-  padding-top: 5px;
   right: 5px; }
+
+#mailAccountEditor dl
+{ margin: 5px; }
 
 #mailAccountsListWrapper
 { overflow-x: hidden;
@@ -186,7 +188,7 @@ P.infoMessage#passwordError
 #userName, #password
 { width: 180px; }
 
-#fullName, #email
+#fullName, #email, #replyTo
 { width: 180px; }
 
 #actSignature
