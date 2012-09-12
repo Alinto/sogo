@@ -102,6 +102,24 @@
   return MAPISTORE_SUCCESS;
 }
 
+- (int) getPidTagBody: (void **) data
+             inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc = MAPISTORE_SUCCESS;
+  NSString *stringValue;
+  iCalToDo *task;
+  
+  /* FIXME: there is a confusion in NGCards around "comment" and "description" */
+  task = [sogoObject component: NO secure: YES];
+  stringValue = [task comment];
+  if ([stringValue length] > 0)
+    *data = [stringValue asUnicodeInMemCtx: memCtx];
+  else
+    *data = [@"" asUnicodeInMemCtx: memCtx];
+
+  return rc;
+}
+
 - (int) getPidTagImportance: (void **) data
                    inMemCtx: (TALLOC_CTX *) memCtx
 {

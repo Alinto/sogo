@@ -1,3 +1,9 @@
+2012-09-12  Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* OpenChange/MAPIStoreTasksMessage.m: added a way to get
+	the PidTagBody of a task. This could be generalized eventually
+	with the code in MAPIStoreAppointmentWrapper.
+
 2012-09-07  Francis Lachapelle  <flachapelle@inverse.ca>
 
 	* UI/WebServerResources/SchedulerUI.js (tasksListCallback): list
