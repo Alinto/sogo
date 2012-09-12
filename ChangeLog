@@ -3,6 +3,9 @@
 	* OpenChange/MAPIStoreTasksMessage.m: added a way to get
 	the PidTagBody of a task. This could be generalized eventually
 	with the code in MAPIStoreAppointmentWrapper.
+	* OpenChange/MAPIStoreMessage.m (-saveMessage): added a safety
+	check to avoid a crash when first accepting invitations on
+	a newly created profile.
 
 2012-09-07  Francis Lachapelle  <flachapelle@inverse.ca>
 

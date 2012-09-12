@@ -541,8 +541,16 @@ rtf2html (NSData *compressedRTF)
         {
           /* table modified */
           for (count = 0; count < max; count++)
-            [[containerTables objectAtIndex: count]
-              notifyChangesForChild: self];
+	    {
+	      id table;
+
+	      table = [containerTables objectAtIndex: count];
+	      
+	      /* Safety check here as we could have MAPIStorePermissionsTable instances
+		 in our containerTables array. This code might need to be reworked later */
+	      if ([table respondsToSelector: @selector(notifyChangesForChild:)])
+		[table notifyChangesForChild: self];
+	    }
           [container cleanupCaches];
         }
       [self setIsNew: NO];
