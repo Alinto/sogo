@@ -2015,6 +2015,8 @@ function _showAlertDialog(label) {
         document.body.appendChild(dialog);
         dialogs[label] = dialog;
     }
+    if (Prototype.Browser.IE)
+        jQuery('#bgDialogDiv').css('opacity', 0.4);
     jQuery(dialog).fadeIn('fast');
 }
 
@@ -2053,6 +2055,8 @@ function _showConfirmDialog(title, label, callbackYes, callbackNo, yesLabel, noL
         document.body.appendChild(dialog);
         dialogs[key] = dialog;
     }
+    if (Prototype.Browser.IE)
+        jQuery('#bgDialogDiv').css('opacity', 0.4);
     jQuery(dialog).fadeIn('fast');
 }
 
@@ -2092,6 +2096,8 @@ function _showPromptDialog(title, label, callback, defaultValue) {
         document.body.appendChild(dialog);
         dialogs[title+label] = dialog;
     }
+    if (Prototype.Browser.IE)
+        jQuery('#bgDialogDiv').css('opacity', 0.4);
     jQuery(dialog).fadeIn('fast', function () { dialog.down("input").focus(); });
 }
 
@@ -2138,6 +2144,8 @@ function _showSelectDialog(title, label, options, button, callbackFcn, callbackA
     }
     if (defaultValue)
 	defaultOption = dialog.down('option[value="'+defaultValue+'"]').selected = true;
+    if (Prototype.Browser.IE)
+        jQuery('#bgDialogDiv').css('opacity', 0.4);
     jQuery(dialog).fadeIn('fast');
 }
 
@@ -2177,6 +2185,8 @@ function _showAuthenticationDialog(label, callback) {
         document.body.appendChild(dialog);
         dialogs[label] = dialog;
     }
+    if (Prototype.Browser.IE)
+        jQuery('#bgDialogDiv').css('opacity', 0.4);
     jQuery(dialog).fadeIn('fast', function () { dialog.down("input").focus(); });
 }
 
