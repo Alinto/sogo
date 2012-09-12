@@ -214,7 +214,7 @@ function deleteEvent() {
         var nodes = listOfSelection.getSelectedRows();
         if (nodes.length > 0) {
             var label = "";
-            if (listOfSelection == $("tasksList"))
+            if (listOfSelection.parentNode == $("tasksList"))
                 label = _("taskDeleteConfirmation");
             else
                 label = _("eventDeleteConfirmation");
@@ -257,12 +257,11 @@ function deleteEvent() {
                 }
                 if (i > 0) {
                     var p = createElement("p", null, ["list"]);
-                    var str = "";
                     if (Prototype.Browser.IE)
-                        str = label.formatted('<br><br> - <b>' + events.join('</b><br> - <b>') + '</b><br><br>');
+                        label = label.formatted('<br><br> - <b>' + events.join('</b><br> - <b>') + '</b><br><br>');
                     else
-                        str = label.formatted('<ul><li>' + events.join('<li>') + '</ul>');
-                    p.innerHTML = str;
+                        label = label.formatted('<ul><li>' + events.join('<li>') + '</ul>');
+                    p.innerHTML = label;
                     showConfirmDialog(_("Warning"), p, deleteEventFromListConfirm, deleteEventCancel);
                 }
                 else
