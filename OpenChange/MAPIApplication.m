@@ -43,6 +43,11 @@ MAPIApplication *MAPIApp = nil;
   return NO;
 }
 
+- (NSString *) name
+{
+  return @"SOGo";
+}
+
 - (id) init
 {
   if (!MAPIApp)

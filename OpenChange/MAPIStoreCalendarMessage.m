@@ -648,6 +648,7 @@ static Class NSArrayK;
                           inUserContext: [self userContext]
                          withActiveUser: activeUser];
   [self _updateAttachedEvents];
+  [[self userContext] activateWithUser: activeUser];
   [sogoObject updateContentWithCalendar: calendar
                             fromRequest: nil];
 

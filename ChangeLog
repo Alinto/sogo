@@ -1,3 +1,9 @@
+2012-09-13	Ludovic Marcotte  <lmarcotte@inverse.ca>
+
+	* Fixed bug #1942. We now set the app name to "SOGo"
+	for the Samba/OpenChange application so wox are properly
+	found by SOPE.
+
 2012-09-12  Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* OpenChange/MAPIStoreTasksMessage.m: added a way to get
