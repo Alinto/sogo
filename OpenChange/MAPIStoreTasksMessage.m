@@ -102,6 +102,7 @@
   return MAPISTORE_SUCCESS;
 }
 
+/* FIXME: Should be combined somehow with the code in MAPIStoreAppointmentWrapper.m */
 - (int) getPidTagBody: (void **) data
              inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -118,6 +119,20 @@
     *data = [@"" asUnicodeInMemCtx: memCtx];
 
   return rc;
+}
+
+/* FIXME: Should be combined somehow with the code in MAPIStoreAppointmentWrapper.m */
+- (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
+                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  iCalToDo *task;
+  
+  task = [sogoObject component: NO secure: YES];
+
+  if ([task symbolicAccessClass] == iCalAccessPublic)
+    return [self getNo: data inMemCtx: memCtx];
+
+  return [self getYes: data inMemCtx: memCtx];
 }
 
 - (int) getPidTagImportance: (void **) data
@@ -477,6 +492,18 @@
       doubleValue = [value doubleValue];
       [vToDo setPercentComplete:
                [NSString stringWithFormat: @"%d", (int) (doubleValue * 100)]];
+    }
+
+  /* privacy */
+  /* FIXME: this should be combined with the code found in iCalEvent+MAPIStore.m */
+  value = [properties objectForKey: MAPIPropertyKey(PidLidPrivate)];
+  
+  if (value)
+    {
+      if ([value boolValue])
+	[vToDo setAccessClass: @"PRIVATE"];
+      else
+	[vToDo setAccessClass: @"PUBLIC"];
     }
 
   now = [NSCalendarDate date];

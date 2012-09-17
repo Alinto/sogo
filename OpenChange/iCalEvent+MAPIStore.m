@@ -151,6 +151,17 @@
   // else
   //   isException = NO;
 
+  /* privacy */
+  value = [properties objectForKey: MAPIPropertyKey(PidLidPrivate)];
+
+  if (value)
+    {
+      if ([value boolValue])
+	[self setAccessClass: @"PRIVATE"];
+      else
+	[self setAccessClass: @"PUBLIC"];
+    }
+
   userTimeZone = [userContext timeZone];
 
   /* CREATED */

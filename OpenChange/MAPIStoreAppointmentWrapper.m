@@ -1238,7 +1238,10 @@ static NSCharacterSet *hexCharacterSet = nil;
 - (int) getPidLidPrivate: (void **) data // private (bool), should depend on CLASS and permissions
                 inMemCtx: (TALLOC_CTX *) memCtx
 {
-  return [self getNo: data inMemCtx: memCtx];
+  if ([event symbolicAccessClass] == iCalAccessPublic)
+    return [self getNo: data inMemCtx: memCtx];
+
+  return [self getYes: data inMemCtx: memCtx];
 }
 
 - (int) getPidTagSensitivity: (void **) data // not implemented, depends on CLASS
