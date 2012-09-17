@@ -506,9 +506,7 @@ DIV.noJavascriptErrorMessage A
   margin: 0px auto; }
 
 LI.denied
-{ n0background-color: #fefefe;
-  font-style: italic;
-  color: #f33; }
+{ color: #999; }
 
 .popupMenu LI:hover,
 .popupMenu LI.selected,
@@ -526,14 +524,14 @@ LI._selected.denied
 }
 
 .hidden
-{ visibility: hidden; }
+{ display: none; }
 
 /* folder tree (js) )*/
 DIV.dTreeNode A SPAN.nodeName
 {
   margin: 0px .2em;
-  padding-left: .2em;
-  padding-right: .2em;
+  padding: 0px .2em;
+  display: inline-block;
 }
 
 DIV.dTreeNode A._selected SPAN.nodeName
@@ -554,6 +552,8 @@ DIV.dTreeNode SPAN._dragOver
 {
   background-color: #9ABCD8 !important;
   color: #fff !important;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
 }
 
 /* resizable columns */

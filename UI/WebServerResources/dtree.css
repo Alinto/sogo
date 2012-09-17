@@ -12,7 +12,7 @@
 
 .dtree img
 {
-  vertical-align: top;
+  vertical-align: middle;
   border: 0px;
   padding: 0px;
   margin: 0px;
@@ -29,6 +29,7 @@
 {
   white-space: nowrap;
   padding: 1px 2px;
+  line-height: 2em;
 }
 
 .dtree a.node:hover
@@ -41,5 +42,8 @@
   overflow: hidden;
 }
 
-DIV.dTreeNode
-{ height: 18px; }
+.dTreeNode
+{ height: 22px; }
+
+.dTreeNode._selected
+{ background-color: #9ABCD8; }

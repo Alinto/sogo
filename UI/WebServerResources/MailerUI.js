@@ -1930,10 +1930,8 @@ function refreshContacts() {
 function openInbox(node) {
     var done = false;
     openMailbox(node.parentNode.getAttribute("dataname"), false);
-    var tree = $("mailboxTree");
-    tree.selectedEntry = node;
-    node.selectElement();
     mailboxTree.o(1);
+    mailboxTree.s(2);
 }
 
 function initMailer(event) {
@@ -2027,15 +2025,15 @@ function initMailboxTree() {
     mailboxTree.icon.folder = ResourcesURL + "/tbtv_leaf_corner_17x17.png";
     mailboxTree.icon.folderOpen	= ResourcesURL + "/tbtv_leaf_corner_17x17.png";
     mailboxTree.icon.node = ResourcesURL + "/tbtv_leaf_corner_17x17.png";
-    mailboxTree.icon.line = ResourcesURL + "/tbtv_line_17x17.gif";
-    mailboxTree.icon.join = ResourcesURL + "/tbtv_junction_17x17.gif";
-    mailboxTree.icon.joinBottom	= ResourcesURL + "/tbtv_corner_17x17.gif";
-    mailboxTree.icon.plus = ResourcesURL + "/tbtv_plus_17x17.gif";
-    mailboxTree.icon.plusBottom	= ResourcesURL + "/tbtv_corner_plus_17x17.gif";
-    mailboxTree.icon.minus = ResourcesURL + "/tbtv_minus_17x17.gif";
-    mailboxTree.icon.minusBottom = ResourcesURL + "/tbtv_corner_minus_17x17.gif";
-    mailboxTree.icon.nlPlus = ResourcesURL + "/tbtv_corner_plus_17x17.gif";
-    mailboxTree.icon.nlMinus = ResourcesURL + "/tbtv_corner_minus_17x17.gif";
+    mailboxTree.icon.line = ResourcesURL + "/tbtv_line_17x22.png";
+    mailboxTree.icon.join = ResourcesURL + "/tbtv_junction_17x22.png";
+    mailboxTree.icon.joinBottom = ResourcesURL + "/tbtv_corner_17x22.png";
+    mailboxTree.icon.plus = ResourcesURL + "/tbtv_plus_17x22.png";
+    mailboxTree.icon.plusBottom = ResourcesURL + "/tbtv_corner_plus_17x22.png";
+    mailboxTree.icon.minus = ResourcesURL + "/tbtv_minus_17x22.png";
+    mailboxTree.icon.minusBottom = ResourcesURL + "/tbtv_corner_minus_17x22.png";
+    mailboxTree.icon.nlPlus = ResourcesURL + "/tbtv_corner_plus_17x22.png";
+    mailboxTree.icon.nlMinus = ResourcesURL + "/tbtv_corner_minus_17x22.png";
     mailboxTree.icon.empty = ResourcesURL + "/empty.gif";
     mailboxTree.preload ();
 

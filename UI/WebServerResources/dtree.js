@@ -277,9 +277,11 @@ dTree.prototype = {
             if (this.selectedNode || this.selectedNode==0) {
                 eOld = document.getElementById("s" + this.obj + this.selectedNode);
                 eOld.deselect();
+                eOld.parentNode.removeClassName('_selected');
             }
             eNew = document.getElementById("s" + this.obj + id);
             eNew.selectElement();
+            eNew.parentNode.addClassName('_selected');
             this.selectedNode = id;
             if (this.config.useCookies) this.setCookie('cs' + this.obj, cn.id);
         }

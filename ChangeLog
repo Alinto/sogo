@@ -1,4 +1,9 @@
-2012-09-13	Ludovic Marcotte  <lmarcotte@inverse.ca>
+2012-09-16  Francis Lachapelle  <flachapelle@inverse.ca>
+
+	* UI/WebServerResources/dtree.js (s): when selecting a node,
+	also select the parent so the entire row is highlighted.
+
+2012-09-13 Ludovic Marcotte  <lmarcotte@inverse.ca>
 
 	* Fixed bug #1942. We now set the app name to "SOGo"
 	for the Samba/OpenChange application so wox are properly

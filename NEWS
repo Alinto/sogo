@@ -5,6 +5,8 @@ New Features
 Enhancements
  - calendars list and mini-calendar are now always visible
  - tasks list has moved to a table in a tabs view along the events list
+ - rows in tree view are now 4 pixels taller
+ - node selection in trees now highlights entire row
 
 Bug Fixes
 
