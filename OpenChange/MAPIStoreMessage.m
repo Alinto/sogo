@@ -684,14 +684,6 @@ rtf2html (NSData *compressedRTF)
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidNameContentClass: (void **) data
-                      inMemCtx: (TALLOC_CTX *) memCtx
-{
-  *data = [@"Sharing" asUnicodeInMemCtx: memCtx];
-
-  return MAPISTORE_SUCCESS;
-}
-
 - (int) getPidTagFolderId: (void **) data
                  inMemCtx: (TALLOC_CTX *) memCtx
 {
