@@ -1325,6 +1325,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   SOGoUser *ownerUser;
   BOOL userIsOwner;
 
+
+  /* FIXME: from oxcprpt: "This property does not apply to Folder objects and
+     Logon objects", so we should not expose this here. */
   ownerUser = [[self userContext] sogoUser];
 
   userIsOwner = [[context activeUser] isEqual: ownerUser];
