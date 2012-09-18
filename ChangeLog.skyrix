@@ -1,0 +1,5655 @@
+
+2005-03-03  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalWeekOverview.wox: some pretty printing
+
+2005-02-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* common.make: removed dependency to removed libSOGoLogic
+
+2004-10-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* common.make: updates for inline compilation, removed compatibility
+	  for gstep-make < 1.10
+
+2004-09-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* README: Update with information regarding localization
+
+2004-08-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Added "Mailer" product.
+
+2004-08-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Added "Contacts" product.
+
+2004-08-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Added "Anais" product.
+
+2004-07-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Replaced all occurrences of zidestoreui.css with uix.css
+
+2004-06-30  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoUI: moved over from Common to ease build dependencies.
+
+2004-06-30  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Scheduler/UIxAppointmentEditor.m: improved -saveAction. Does
+	  everything in a complete manner now - except for saving which isn't
+	  done at all.
+
+2004-06-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Scheduler/UIxAppointmentEditor.m: made the hack more hackish to work
+	  on MacOSX
+
+2004-06-28  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Common/UIxComponent.[hm]: moved -ownMethodName here.
+
+	* Scheduler/UIxCalView.[hm]: removed -ownMethodName, moved to
+	  UIxComponent (reuse).
+
+	* Scheduler/UIxAppointmentView.[hm]: first "draft" of view component.
+	  The look of OGo is resembled closely, but most features are still
+	  missing.
+
+2004-06-28  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Scheduler/GNUmakefile.preamble: links against libSOGoLogic now.
+
+	* Scheduler/UIxAppointmentView.m, Scheduler/UIxAppointmentView.wox:
+	  test of iCal object.
+
+2004-06-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalMonthOverview.[m,wox]: completed month view. Turned out to
+	  be much more difficult to improve with style sheets than expected.
+	  Requires version 4.2.45 of WEExtensions.
+
+2004-06-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Refactoring: Renamed everything from OGo to UIx in order to avoid
+	  nameclashes (happens on OSX related to NGBundleManager)
+
+	* Refactoring 2: Moved methods from UIxWeekOverview to UIxCalView.
+
+	* Highlighting in UIxWeekOverview works now.
+
+2004-06-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* Common/GNUmakefile.preamble: fixed linking for OGo gstep-make
+
+2004-06-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Scheduler/OGoCalWeekOverview.m: fixed syntax errors
+
+2004-06-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Implemented proper calendar in week overview. Highlighting isn't
+	  enabled, yet.
+
+2004-06-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Common/OGoComponent.[hm]: new component which serves as a base
+	  component for calendar components now. Knows how to deal with
+	  queryParameters and offers url construction method(s).
+
+	* All existing components have been rewritten to use queryParameters
+	  instead of hardcoded strings where this is feasible. This provides
+	  future extensibility and flexibility.
+
+	* Handling of dates has been fixed to center around the use of a
+	  'day' parameter. startDate/endDate are coupled to this, but
+	  don't override it as it's the duty of the individual view to set
+	  its (feasible) ranges accordingly. The new behaviour is noticable
+	  in the calendar selection tabview instantly, as it now replicates
+	  what OGo does.
+
+2004-06-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Common/OGoAppNavView.m: construct URL correctly.
+
+	* Common/OGoPageFrame.m: display login correctly.
+
+	* Common/calendar.css: cosmetic changes.
+
+	* Scheduler/OGoCalSelectTab.m: always display mondayOfWeek.
+
+	* Scheduler/OGoCalBackForthNavView.m: created.
+
+2004-06-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Common/zidestoreui.css: new style for button_auto.
+
+	* Scheduler/OGoCalView.[hm]: API for completing hrefs with necessary
+	  query parts.
+
+	* Scheduler/OGoCalWeekView.m: bugfix for startDate.
+
+	* Scheduler/product.plist: added still missing views -> point to
+	  weekoverview for the time being.
+	
+2004-06-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Common/UIxTabView.m: removed class from <a> tag, removed rendering
+	  of headerFooter (what's that good for anyways?)
+
+	* Several resources which resolved to wrong products added statically
+	  in templates.
+
+	* Cosmetic changes in templates.
+
+2004-06-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Scheduler/OGoCalMonthOverview.wox: added missing rsrc namespace
+
+2004-06-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* Common/common.h: fixed a gcc 3.4 warning
+
+2004-06-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added aggregate project for UI-X
+
+2004-06-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Common/calendar.css: new date_label (unused)
+
+	* Scheduler/OGoCalSelectTab.m: finished all labels
+
+	* Scheduler/OGoCalDateLabel.m, Scheduler/OGoCalDateLabel.wox: new
+	  component for rendering the correct date label based on startDate,
+	  endDate and selection
+
+	* Scheduler/OGoCalMonthView.m: prev/next month corrected
+
+	* Scheduler/OGoCalMonthOverview.wox: uses date label and tabs now
+
+	* Scheduler/OGoCalWeekOverview.wox: completed layout
+
+	* Scheduler/GNUmakefile: new component added
+
+2004-06-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Common/UIxTabView.[hm]: more stylesheet support via headerStyle
+	  and bodyStyle bindings.
+	
+	* Common/zidestoreui.css: styles for tabs, resembling OGo look.
+
+	* Scheduler/OGoCalSelectTab.m: implemented dateLabel (for testing).
+
+	* Scheduler/OGoCalSelectTab.wox: corrected selection binding namespace.
+
+2004-06-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Scheduler/NOTES: added class hierarchy
+
+	* */common.h, GNUmakefile.preamble.: fixed for OSX compile
+
+2004-06-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Common/images: added a bunch of images from OGo
+
+2004-06-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Custom/GNUmakefile: changed ZIDESTORE to include installed version
+	  (ZideStore12). Removed post install hooks.
+
+	* Custom/GNUmakefile.postamble: new file, post install hooks and
+	  xmllint for .wox.
+
+2004-06-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Scheduler/GNUmakefile: changed ZIDESTORE to include installed version
+	  (ZideStore12). Removed post install hooks.
+
+	* Scheduler/GNUmakefile.postamble: post install hooks updated for
+	  GNUSTEP_BUILD_DIR.
+
+2004-06-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* Scheduler/OGoCalWeekOverview.m: moved navigation URL generation to
+	  superclass (now generic because we use the 'ownMethodName'). Could
+	  even be moved to OGoCalView?
+	
+	* Scheduler/OGoCalMonthView.m: added next/prev month URL generation
+	  methods, calculate startdate from form value
+
+	* Scheduler/OGoCalView.m: added -ownMethodName method to return the
+	  last path component of the request URL (the SOPE method), eg
+	  'weekoverview' for OGoCalWeekView, added 
+	  -dateNavigationURLWithNewStartDate: method to calculate 'startDate'
+	  URLs (should be improved to include existing query parameters!)
+
+	* Scheduler/OGoCalWeekOverview.m: minor tweaks ;-)
+
+2004-06-03  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Scheduler/OGoCalWeekView.m: construct startDate from formValue,
+	  otherwise use current week's monday as startDate.
+
+	* Scheduler/OGoCalWeekOverview.wox: switch back/forth
+
+	* Scheduler/OGoCalWeekOverview.m: provide URLs for switching back/forth
+	  weekoverview.
+
+	* Scheduler/OGoCalView.[hm]: methods for converting dates into strings
+	  and vice versa.
+
+	* Scheduler/OGoAppointmentView.m, Scheduler/OGoCalView.m: fixed include
+
+	* ChangeLog: created
+2005-07-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.22
+
+	* UIxKolabPartContactViewer.m: added accessors for multi-value fields
+
+	* UIxKolabPartViewer.m: added item
+
+	* UIxKolabPartViewer.m: cache parsed DOM document (v0.9.21)
+
+	* v0.9.20
+	
+	* UIxMailPartViewer.m: added ability to use a fallback string encoding
+	  in case the default one or the one specified in the content-type did
+	  fail (this can happen with Outlook iCal mails ...).
+
+	* UIxMailPartICalViewer.m: hardened against missing content data, use
+	  Latin-1 as a fallback encoding in case the part encoding didn't work
+	  out.
+	
+	* prepared MIME part viewers for Kolab XML types
+	
+	* UIxMailRenderingContext.m: prepared some support for Kolab types in
+	  IMAP4 (v0.9.19)
+	
+2005-07-27  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* English.lproj/Localizable.strings: added a missing semicolon
+	  (v0.9.18)
+	
+2005-07-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailPartICalViewer.m: fixed include path for new hierarchy
+	  (v0.9.17)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailRenderingContext.m: show text/plain and text/html attachments
+	  which have "filename" set in the content-disposition using the link
+	  viewer (#1468) (v0.9.16)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailRenderingContext.m: map multipart/report mimetype to use the
+	  multipart/mixed viewer, map message/delivery-status mimetype to use
+	  the link viewer (v0.9.15)
+
+	* v0.9.14
+
+	* UIxMailPartICalViewer.m: replaced some methods with label bindings
+
+	* English.lproj/Localizable.strings: added more strings
+
+	* UIxMailPartICalViewer.m: added -attendeeStatusLabel to produce a
+	  readable and localized part-stat (v0.9.13)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailPartICalViewer.m: added code to support iMIP REPLY messages
+	  (v0.9.12)
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.11
+	
+	* added UIxMailPartICalAction for calendar part related link actions
+	  (no actions implemented yet)
+	
+	* UIxMailPartViewer.m: added preferred extensions for iCalendar and
+	  vCard mime types, moved in -pathToAttachment from
+	  UIxMailPartLinkViewer (returns a nice download-link), added
+	  -pathToAttachmentObject method (returns a plain link to the part
+	  SoObject)
+	  
+	* UIxMailPartLinkViewer.m: moved -pathToAttachment method to baseclass
+
+	* UIxMailPartICalViewer.m: added method to retrieve the authorative
+	  event (DB before mail), added a method to return an organizer display
+	  name (with appropriate fallbacks) (v0.9.10)
+
+	* UIxMailPartICalViewer.m: rewrote not to use SOGoAppointment and to
+	  use iCalCalendar instead (v0.9.9)
+
+	* UIxMailSizeFormatter.m, UIxMailPartMixedViewer.m, 
+	  UIxMailPartICalViewer.m, UIxMailPartAlternativeViewer.m,
+	  UIxMailPartViewer.m: fixed gcc 4.0 warnings (v0.9.8)
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailPartICalViewer.m: properly reset part caches when the
+          part-path changes, added methods to check whether the event is
+	  already stored in the calendar of the login-user, added methods to
+	  check whether the login-user is the organizer (v0.9.7)
+
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailPartViewer.m: added '8bit' as a known MIME encoding (v0.9.6)
+
+2005-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailRenderingContext.m: fixed a bug when rendering nested
+	  multiparts (cannot be cached) (v0.9.5)
+
+2005-06-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailPartLinkViewer.m: fixed an exception on Cocoa when a mail is
+	  composed from just the HTML body (v0.9.4)
+
+2005-02-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* prepared HTML and iCal mail part viewers (0.9.3)
+
+2005-02-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved in UIxMailSizeFormatter (v0.9.2)
+
+2005-02-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* created ChangeLog
+2005-08-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* product.plist: moved security declarations of core classes to the
+	  +initialize method of the classes,
+	  add SOGo application object methods in a category (was a class)
+	  (v0.9.2)
+
+	* created UI/MainUI product bundle from sources in Main (v0.9.1)
+
+2005-07-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: use standard 'view' instead of 'tb.view' method
+
+2005-07-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer-toolbar.css: fixed send and attach buttons to use 24x24 images
+
+2005-07-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* mailer.js: added labels for error messages
+
+	* mailer.js: added validation of recipients
+
+	* layout2or3_xlib.js: added (currently used by UIxMailToEditor for
+	  height calculation)
+	  
+	* layout2or3_xlib.txt: added, contains documentation/license for
+	  layout2or3_xlib.js
+
+	* mailer-compose.css: fixed padding for table entries
+
+	* mailer.js: moved layout2or3_xlib JavaScript to own file
+
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.css: moved compose styles to own file, mailer-compose.css
+
+	* mailer-toolbar.css: fixed positioning for 24x24 icons
+
+	* mailer.css: moved toolbar to own file, mailer-toolbar.css
+
+2005-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* tbtb_anais.png: new icon for Anais
+
+	* mailer.css: added tbicon_anais for Anais icon
+
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: fixed a Linux Firefox issue with using POST in
+	  XMLHttpRequest (must pass an empty string for a send, not 'null')
+
+	* mailer.js: fixed a bug with calling the opener on errors
+
+2005-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: use POST instead of GET for toggling the mail read flag,
+	  aded uixDeleteSelectedMessages() function to bulk delete mails from
+	  the selection
+
+	* UIxAppointmentEditor.js: properly use getDate() instead of getDay()
+	  for date comparison (#1478)
+
+	* UIxAppointmentEditor.js: properly validate startdate/enddate so that
+	  startdate is always before the enddate (#1478)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* generic.js: added regex for email field checks
+
+	* uix.css: added .homepagefont class (as it was used in the deprecated
+	  uix.css inside Common
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: increased size of compose panel by 40px to avoid scrolling
+	  when recipients are added
+
+2005-03-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* generic.js: fixed a JS bug
+
+2005-02-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* generic.js: added query dict parsing and generation functions
+
+	* created ChangeLog
+2005-07-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.173
+
+	* product.plist: removed tb.view methods (just use 'view' instead)
+
+2005-07-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailTree.m: improved block debugging (v0.9.172)
+
+2005-07-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.171
+
+	* UIxMailMainFrame.m: disabled Agenor app banner
+
+	* UIxMailToSelection.m, UIxMailFormatter.m: fixed gcc 4.0 warnings
+
+2005-07-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.170
+
+	* UIxMailEditor.m: the mail editor now presets the proper 'from' based
+	  on the 'account' query parameter
+	
+	* UIxMailEditorAction.m: the compose action now adds the current
+	  account as a query parameter when calling the compose panel
+	
+2005-07-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* English.lproj/Localizable.strings: added error labels for JavaScript
+	  (v0.9.169)
+
+2005-07-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: implemented identity based Sent folders (tied to
+	  'from' email address). The old url-attached Sent folder can be
+	  enabled using 'SOGoUseLocationBasedSentFolder') (v0.9.168)
+
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: fixed banner positioning for 24x24 (v0.9.167)
+
+	* UIxMailMainFrame.m: fixed positioning for 24x24 icons (v0.9.166)
+
+2005-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Toolbars/SOGoDraftObject.toolbar: new Anais css (v0.9.165)
+
+	* UIxMailEditor.m: fetch attachment names and provide initial style
+	  information to left/right side of editor component (v0.9.164)
+
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailListView.m: load JavaScript from a file (UIxMailListView.js)
+	  instead of embedding it into the page (v0.9.163)
+
+	* UIxMailView.m: do not fetch full message info for 304 existance
+	  checks but rather call -doesMailExist (v0.9.162)
+
+2005-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* removed 'stop' buttons from toolbars (v0.9.161)
+
+	* v0.9.160
+
+	* Toolbars/SOGoMailFolder.toolbar: added bulk-delete button, removed
+	  expunge button
+
+	* UIxMailView.m: added fragile base class check, send a constant etag
+	  for the mail viewer, do not deliver content in the defaultAction in
+	  case the etag didn't change, added jsonly support to trashAction
+
+	* UIxMailToolbar.m: use -resourceLookupLanguages, use
+	  pageResourceManager instead of the toolbar component resourcemanager
+	  for evaluating labels
+
+	* product.plist: map getMail on the accounts folder to a noop action
+	  (#1491) (v0.9.159)
+	
+	* UIxMailMainFrame.m: added UIxMailPanelFrame class for panels opened
+	  by the main frame (v0.9.158)
+
+	* UIxMailView.m: show delete button if delete is allowed but trashing
+	  isn't (#1444) (v0.9.157)
+
+	* v0.9.156
+
+	* product.plist: moved more complex toolbar configs to own resource
+	  files
+
+	* UIxMailToolbar.m: added ability to place toolbars in separate plist
+	  files
+
+2005-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.155
+
+	* UIxMailToSelection.m: externalized JavaScript
+
+	* product.plist: added new JavaScript files as public resources
+
+2005-07-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: do not complain on drafts not being found when the
+	  delete action is triggered (#1489) (v0.9.154)
+
+	* UIxMailAccountView.m: directly check the ACL of the Inbox to check
+	  permissions (the Inbox will return NO on isCreateAllowed when being
+	  used by altnamespace ...) (#1472) (v0.9.153)
+
+2005-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxMailAddressbook.m: don't restrict the Anais 'nature' flag anymore
+	  (v0.9.152)
+
+2005-07-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.151
+
+	* UIxMailAccountView.m: fixed a warning
+
+	* UIxMailEditor.m: removed SOGoInternetDetectQualifier code (reuse
+	  shared Internet-detect functionality)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: create a proper form action URL which preserves
+	  query parameters (sort field) but removes search/filter values
+	  (v0.9.150)
+
+	* UIxMailSortableTableHeader.m: improved handling of multivalue form
+	  keys (v0.9.149)
+
+	* UIxMailAccountView.m: added method to check whether folder-create
+	  button should be visible on the account folder view (checks INBOX for
+	  the ACL, does check the alt-namespace default),
+	  added method for folder-creation in root (v0.9.148)
+
+2005-07-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.147
+
+	* UIxMailToSelection.m: fixed ordering of parameters for the current
+	  Anais version
+        
+	* UIxMailAddressbook.m: fixed parameters being passed on to Anais for
+	  the current Anais version
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailListView.m: improved error handling (display a JavaScript
+	  alert panel showing the issue instead of SOPE exception rendering)
+	  (v0.9.146)
+
+2005-07-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxMailToSelection.m: changed behavior for adding/removing text
+	  fields and changing focus (v0.9.145)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: properly bind a 'getMail' method to the account
+	  folder (fixes #1470) (v0.9.144)
+
+	* UIxSubjectFormatter.m: fixed a stupid bug in subject handling leading
+	  to an infinite loop in the QP processing, hardened against QP loops
+	  (v0.9.143)
+
+2005-07-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxMailEditor.m: removed -emailForUser usage and replaced with
+	  'official' activeUser API (v0.9.142)
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: only enable folder add/remove buttons when the user
+	  has the 'c' permission on the IMAP folder (#1456) (v0.9.141)
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailAccountView.m: removed methods to detect whether the
+	  clientObject is a shared account (done by the clientObject itself)
+	  (v0.9.140)
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: perform some validation plus error handling prior
+	  trying to send a mail (check whether we have recipients, check
+	  whether the subject is set) (#1451) (v0.9.139)
+
+	* UIxMailEditor.m: properly determine from-email addresses (v0.9.138)
+
+	* UIxMailEditor.m: use new SoUser API instead of AgenorUserManager
+	  (v0.9.137)
+
+2005-07-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: generate proper URLs for jumping to Calendar,
+	  HomePage etc (#1448) (v0.9.136)
+
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: added from-selection popup, list discovery via
+	  AgenorUserManager (aka LDAP) (v0.9.135)
+
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: use WOContext method from libSOGo to detect
+	  Internet access (v0.9.134)
+
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: added help button and extra space for that in the
+	  toolbar (v0.9.133)
+	
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: added "link" banner to jump to the other SOGo
+	  tools, disable the banner in case the tree is disabled (since that
+	  hints that a new window without the frame is being used, eg the
+	  compose panel), added some more CSS classes instead of inline style
+	  declarations (v0.9.132)
+
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* prepared ACL editors (v0.9.131)
+
+2005-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.130
+	
+	* UIxMailListView.m: implemented empty-trash action
+
+	* product.plist: added a reduced toolbar when being on the trash folder
+	  (no reply/fwd etc, but added an empty trash button)
+	
+2005-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.129
+	
+	* UIxMailAccountView.m: added code to better display shared accounts
+
+	* UIxMailTree.m: moved IMAP4 connection string => label code to a
+	  NSString category
+	
+2005-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailTree.m: properly display share names in account list (show
+	  name of share instead of the cut-off account login). Added some
+	  improved heuristics to determine a viably short name (v0.9.128)
+
+2005-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailView.m, product.plist: added -trash button and action
+	  (v0.9.127)
+
+2005-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: hide expunge button on mail folder when deleting is
+	  disallowed (v0.9.126)
+
+2005-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.125
+
+	* UIxMailToolbar.m: added ability to disable toolbar buttons in case an
+	  operation is not allowed (eg an object got deleted)
+
+	* product.plist: added 'isSafe=NO' markers to unsafe HTTP methods in
+	  toolbar, added 'enabled' binding for 'delete' button
+
+	* v0.9.124
+
+	* UIxMailView.m: improved error handling in case the delete flag could
+	  not be set
+
+	* UIxMailMainFrame.m: added -hasErrorText / -errorText / 
+	  -errorAlertJavaScript methods to deal with errors encoded in the
+	  'error' form parameter
+
+2005-03-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.123
+	
+	* UIxMailListView.m: added create/delete folder operations
+	
+	* product.plist: added folder-add/delete buttons in toolbar
+
+2005-03-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* renamed "default.strings" to "Localizable.strings" (v0.9.122)
+
+2005-02-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: split into multiple files (v0.9.121)
+
+2005-02-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: added ability not to generate the HTML frame 
+	  (v0.9.120)
+
+2005-02-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved UIxMailSizeFormatter to MailPartViewers (v0.9.119)
+
+2005-02-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: added HTML escape/unescape functions (v0.9.118)
+
+	* moved mail part viewers to own product (MailPartViewers) (v0.9.117)
+
+2005-02-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailSortableTableHeader.m: properly inherit from SoComponent, so
+	  that resource lookup works (v0.9.116)
+
+2005-02-16  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added automatic search field posting (v0.9.115)
+
+	* mailer.js: fixed a row highlighting bug (v0.9.114)
+
+	* product.plist: fixed compose button in mail viewer (v0.9.113)
+
+2005-02-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailListView.wox: added a pointer cursor for rows and enabled an
+	  on-click message opener on some cells (v0.9.112)
+
+	* UIxMailListView.wox: added message row highlighting (v0.9.111)
+
+	* UIxMailAccountView.wox, UIxMailAccountsView.wox: added a title-div
+	  to fix layout (v0.9.110)
+
+2005-02-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.js: use 'tb.view' instead of 'view' to show a page (v0.9.109)
+
+	* UIxMailTree.m: always stop tree on user folder (v0.9.108)
+	
+	* v0.9.107
+	
+	* product.plist: mapped 'namespaced' "tb.view" SOPE method to the same
+	  methods like "view". This allows us to use "tb.view" inside the
+	  mailer without clashing with other UIs on top of the same SoObjects
+
+	* UIxMailTree.m: use Inbox icon for SOGoMailAccount and
+	  SOGoMailAccounts folders, added ability to specify a
+	  'treeFolderAction' (relative URL to be triggered by clicks)
+
+	* v0.9.106
+	
+	* UIxMailFilterPanel.wox: improved CSS styling of the search field
+
+	* UIxMailTree.wox: fixed display of special mail icons if a folder
+	  has subfolders and is open (in short: the 'cornerIcon' binding is
+	  properly set)
+
+	* v0.9.105
+	
+	* UIxMailTree.m: fixed handling of root nodes (properly display all
+	  children of the root node)
+	
+	* UIxMailTreeBlock.m: generate a description
+	
+	* UIxMailMainFrame.m, UIxMailTree.m: made root class of tree
+	  configurable using 'SOGoMailTreeRootClass' default
+	
+2005-02-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* mailer.css: added left-padding to treecell to make it look better
+	  (v0.9.104)
+
+	* UIxMailListView.wox: added mark read/unread without page refresh
+	  using XMLHttpRequest (v0.9.103)
+
+	* product.plist, UIxMailListView.wox, mailer.js: added bulk
+	  reply/replyall/forward (v0.9.102)
+
+2005-02-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.m: fixed page form processing if the active URL
+	  does not specify a method name (ends with /) (v0.9.101)
+
+	* v0.9.100
+
+	* added support for filter popup (OGo bug #1210)
+	
+	* UIxMailListView: moved filter selection to an own component
+
+	* v0.9.99
+
+	* product.plist: also map index method of mail folder to
+	  UIxMailListView
+
+	* UIxMailListView.m: added subject/sender searching (OGo bug #1209)
+
+2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailPartLinkViewer.wox, UIxMailPartMessageViewer.wox: added
+	  missing 'label' namespace declaration (v0.9.98)
+
+2005-02-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailReplyAction.m: implemented a content-reply (v0.9.97)
+
+2005-02-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.96
+
+	* UIxMailPartMessageViewer.m: fixed for multivalue from fields
+
+	* UIxMailEditorAction.m, product.plist: split editor action in multiple
+	  classes
+
+	* v0.9.95
+
+	* product.plist: do not use clickedEditorDelete() JS function for
+	  draft delete but just call the link
+	
+	* UIxMailEditor.m: a successful draft delete now returns the window
+	  closer and refreshes the opener
+	
+	* mailer.js now reloads the opener for editor-save and editor-delete
+	  functions (does not properly work since the form load is async)
+	
+	* UIxMailEditorAction.m, product.plist: implemented simple
+	  reply/reply-all processing (subject and recipient handling is in
+	  place, content quoting is pending)
+	
+	* v0.9.94
+
+	* UIxMailListView.m: properly show "to" address in tableview for
+	  Sent folder
+
+	* UIxMailView.m: fixed for new 'from' API
+
+	* v0.9.93
+
+	* mailer.js: work on the read-mail marking code, properly change the
+	  icon div
+
+	* UIxMailListView.m: changed handling of unread mail flags
+
+	* UIxMailView.wox: use the new markMailReadInWindow function to mark
+	  a mail read in the mail list
+
+2005-02-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.92
+	
+	* UIxMailView.m: properly refresh mail list after a mail got deleted
+
+	* UIxMailWindowCloser.m: added ability to refresh the opener window
+	  prior closing the panel
+
+	* UIxMailView.wox: triggers opener callback to mark a mail as read
+	
+	* mailer.js: added refreshOpener() function which refreshes the
+	  panel that opened the current window, added triggerOpenerCallback()
+	  function which triggers a URL given in the "openerurl" query
+	  parameter on the opener window
+
+	* UIxMailEditor.m: disabled Internet warning in the mail editor per
+	  default, can be enabled using the 'SOGoShowInternetMarker' default,
+	  made Internet header detection qualifier configurable, see README
+	  (SOGoInternetDetectQualifier string default), when the request is
+	  from the Internet, add headers as specified in the
+	  'SOGoInternetMailHeaders' dictionary default (v0.9.91)
+
+	* UIxMailTree.m: added support for special folder icons (v0.9.90)
+
+	* v0.9.89
+
+	* UIxMailTree.m: made special folder names localizable
+
+	* English.lproj/default.strings: added some folder translations
+
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.88
+
+	* UIxMailTree.m: some code cleanups, does not use -fetchSubfolders of
+	  SOGoObject anymore (to be useful for any object)
+
+	* UIxMailMainFrame.wox: made "Folders" title localizable
+
+	* UIxMailListView.wox: removed some superflous section
+
+2005-01-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailView.m: implemented 'expunge' action (delete button in the
+	  toolbar) (v0.9.87)
+
+	* UIxMailView.m, UIxMailRenderingContext.m: moved more bulk fetching
+	  to SoObject (v0.9.86)
+
+	* UIxMailView.m: moved plain/text bulkfetch method to SoObjects/Mailer,
+	  since its general purpose (v0.9.85)
+
+	* v0.9.84
+
+	* UIxMailView.m: properly recurse into message/rfc822 bodies for flat
+	  content fetches
+
+	* UIxMailView.m, UIxMailPartMessageViewer.m: added links for email
+	  addresses (currently mailto://)
+
+2005-01-30  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* v0.9.83
+	
+	* UIxMailRenderingContext.m: activate UIxMailPartMessageViewer for
+	  message/rfc822 contents
+
+	* added a UIxMailPartMessageViewer for displaying embedded (eg
+	  forwarded) MIME messages
+
+	* v0.9.82
+	
+	* UIxMailPartLinkViewer.m: prefix filenames which start with a digit,
+	  properly escape attachment names
+
+	* UIxMailPartImageViewer.m (UIxMailPartViewer): append image extension
+	  to attachments
+	
+	* v0.9.81
+	
+	* UIxSieveEditor.m: call proper save method in Sieve SoObject
+	
+	* UIxMailEditor.m: added 'SOGoMailEditorKeepTmpFile' default to debug
+	  MIME generation
+
+	* v0.9.80
+
+	* UIxMailEditorAction.m: work on forwarding and reply
+	
+	* UIxFilterList.wox, UIxMailAccountView.wox, UIxMailAccountsView.wox,
+	  UIxSieveEditor.wox: fixed title (needs localization)
+
+	* UIxMailMainFrame.m: always generate title as given by the parent
+	  component (titles need to get fixed!), was fixed to OpenGroupware.org
+	  before unless in debug mode
+	
+	* UIxMailEditor.m: use new storeInfo API, generate a proper panelTitle
+	  (needs localization)
+
+	* UIxMailEditorAttach.m: use new attachment API
+
+	* UIxMailView.wox: remoted link to screenshot, use mail subject as
+	  title
+
+	* UIxMailListView.m: disabled a log
+
+2005-01-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.79
+
+	* UIxMailEditor.wox: localized 'Subject' label, shows 'non-intranet'
+	  marker if 'MinequProvenance' HTTP header is not set to 'intranet'
+
+	* mailer.css: added marker for internet-mails (#1153)
+
+	* v0.9.78
+
+	* UIxMailListView.m: properly mark deleted mails using line-through
+
+	* UIxMailView.m: close mail viewer if mail delete was successful
+
+	* mailer.css: added style classes for deleted cells
+
+	* UIxMailEditor.m: moved some Sent folder lookup to SOGoMailAccount
+
+	* v0.9.77
+
+	* added UIxMailSizeFormatter to render big file size numbers with some
+	  M or K suffix
+
+	* UIxMailPartViewer.m: added methods to retrieve filename, file
+	  extension and file size formatter
+
+	* UIxMailSortableTableHeader.m: minor code cleanups
+
+2005-01-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* started attachment (download) viewer (#1074) (v0.9.76)
+
+2005-01-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.75
+
+	* UIxMailEditor.m: copy sent mails to INBOX/Sent folder, fixes issue
+	  #1054
+
+	* product.plist: disabled unsupported delete button in mailviewer
+
+	* UIxMailListView.wox: removed unused mail checkboxes and folder-tree
+	  popup (#1211) (v0.9.74)
+
+	* disabled some unsupported buttons and template elements (#1209,
+	  #1210, #1207, #1208) (v0.9.73)
+
+2005-01-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * v0.9.72
+
+        * UIxMailWindowCloser.{m,wox}: new component which closes the window
+          in its "onLoad".
+
+        * UIxMailEditor.m: close window after successful send by opening
+          UIxMailWindowCloser. This fixes SOGo Bug #1053.
+
+2005-01-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* {English/French}.lproj/default.strings: changed encoding from
+	  ISO-Latin-1 to UTF-8, which is now the default (v0.9.71)
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * UIxMailTree.m, UIxMailEditor.m, UIxMailPartViewer.m,
+          UIxEnvelopeAddressFormatter.m, UIxMailToolbar.m,
+          UIxMailRenderingContext.m, UIxMailEditorAttach.m,
+          UIxSubjectFormatter.m, UIxMailPartAlternativeViewer.m:
+          changed to use NGLogging (v0.9.70)
+
+2004-12-03  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.69
+
+	* UIxFilterList.m: added support for script creation
+
+	* v0.9.68
+	
+	* UIxFilterList.m: added ability to trigger new editor
+	
+	* started UIxSieveEditor
+	
+	* UIxFilterList.wox: minor fix to table layout (v0.9.67)
+	
+2004-11-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxFilterList.m: use toOneRelationshipKeys to retrieve the filters
+	  being displayed (v0.9.66)
+
+2004-11-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.65
+	
+	* added first (empty) version of filter list page
+	
+	* UIxMailEditorAttach.m: fixed a warning
+
+	* UIxMailAccountView.wox, product.plist: cleaned up account page (links
+	  work now), added a compose button (v0.9.64)
+
+2004-11-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * UIxMailEditor.m: properly set "From" header (v0.9.63)
+
+2004-11-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxMailListView.wox: added sample move popup (v0.9.62)
+
+2004-11-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxMailListView.m: added support for toggling read/unread flags
+	  (v0.9.61)
+
+	* UIxMailTree.m: added tree navigation code from SoObjects (v0.9.60)
+
+	* UIxMailTree.m: removed unused code (v0.9.59)
+
+	* UIxMailListView.m: flush mail caches in the getMail action (v0.9.58)
+
+2004-10-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxMailEditor.m: reenabled deletion of temporary mail files (v0.9.57)
+
+2004-10-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* product.plist: fixed getMail for drafts folder (v0.9.56)
+
+	* UIxMailListView.wox: fixed viewer activation for unread mails
+	  (v0.9.55)
+
+2004-10-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMoveToPopUp.m: fixed header (v0.9.54)
+
+2004-10-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* disabled popup until it uses the proper tree (v0.9.53)
+
+2004-10-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxMailMoveToPopUp.[m|wox]: component which renders a popup
+	  containing possible destinations for a mail move operation (v0.9.52)
+
+2004-10-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: default method returns a redirect to 'edit', added
+	  'delete' action and button (v0.9.51)
+
+	* v0.9.50
+
+	* UIxMailEditor.m: send mail using draft object
+
+	* UIxMailListView.wox: do not wrap title line
+
+	* UIxMailEditor.m: added send related code (v0.9.49)
+
+2004-10-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditorAttach.m: added attachment delete (v0.9.48)
+
+	* UIxMailEditorAttach.wox, mailer.css: work on layout, added delete
+	  action (v0.9.47)
+
+	* added new UIxMailEditorAttach component to manage draft attachments
+	  (v0.9.46)
+
+2004-10-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.45
+
+	* uix.css: replaced invalid "text-color" with "color"
+	
+	* UIxMailEditor.wox: bind subject/text, can load/save info object in
+	  draft
+
+2004-10-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * v0.9.44
+
+        * UIxMailSortableTableHeader.[wox|m]: new component for doing sorting
+
+        * UIxMailListView.wox: uses UIxMailSortableTableHeader for sorting
+
+        * UIxMailListView.wox: bugfixes (v0.9.43)
+
+        * v0.9.42
+
+        * UIxMailListView.wox: sorting, proper handling of sort keys.
+          NOTE: there's still an unidentified bug of sort keys failing to be
+          retained on successive paging.
+
+        * UIxMailListView.m: sorting
+
+        * Images/title_*: corrected alpha values
+
+2004-10-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * v0.9.41
+        
+        * UIxMailListView.wox: localized labels and added some JavaScript
+          templates for doing nifty row selection
+
+        * UIxMailListView.m: added JavaScript method (stub only)
+
+        * English.lproj/default.strings: new localized strings
+
+2004-10-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.40
+
+	* product.plist: exported some missing icons
+
+	* UIxMailToSelection.m: some code cleanup
+
+	* UIxMailEditor.m (UIxComponent): added ivars for values
+
+2004-10-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * UIxMailToSelection.m: sanitize CN's a bit before using them (v0.9.39)
+
+        * v0.9.38
+
+        * UIxMailToSelection.[wox|m]: removed superfluous debug messages
+
+        * UIxMailAdressbook.[wox|m]: redirect cover for Addressbook and Anais
+
+        * mailer.js: new JavaScript to open Addressbook and Anais windows
+
+        * product.plist: added Addressbook/Anais entries
+
+2004-10-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * v0.9.37
+
+        * UIxMailToSelection.[wox|m]: stable version with heavily improved
+          JavaScript code.
+
+        * English.lproj/default.strings: new localizable strings
+
+2004-10-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailEditor.m: enabled -takeValuesFromRequest: (v0.9.36)
+
+2004-10-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * UIxMailToSelection.[m|wox]: parse given arguments and conditionally
+	  split lists. Dynamically create tables and JavaScript. (v0.9.35)
+
+        * UIxMailToSelection.wox: minor update (v0.9.34)
+
+        * v0.9.33
+
+        * UIxMailToSelection.[wox|m]: updated
+
+        * English.lproj/default.strings: new localizable strings
+
+        * v0.9.32
+
+        * UIxMailEditor.wox: changed API for UIxMailToSelection
+        
+        * UIxMailToSelection.[wox|m]: new component template
+
+        * English.lproj/default.strings: new localizable strings
+
+        * README: updated
+
+2004-10-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.31
+
+	* mailer.js: prepared JavaScript functions for editor
+
+	* UIxMailMainFrame.wox: embed all content in a form called 'pageform'
+
+2004-10-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.30
+
+	* UIxMailEditor.wox: moved recipient selection to an own component
+	  (UIxMailToSelection)
+
+	* UIxMailMainFrame.wox: fixed script link
+
+	* v0.9.29
+
+	* product.plist: trigger UIxMailEditorAction for compose instead of
+	  returning the mail editor page, mapped missing toolbar actions
+
+	* UIxMailEditorAction.m: implemented -compose as a redirect to a new
+	  object in the account draft folder
+
+	* UIxMailListView.wox: reduced subject width to 50%
+
+	* mailer.css: added send icon class, icon itself still missing
+
+	* started UIxMailEditorAction object which will contain all the
+	  redirects from the buttons to the mail editor (working on draft
+	  objects in the drafts folder) (v0.9.28)
+
+2004-10-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: added some configuration for the drafts folder
+	  (v0.9.27)
+
+2004-10-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailListView.m: added support for paper clip icon when messages
+	  are bigger than a certain size (v0.9.26)
+
+2004-10-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.25
+
+	* UIxMailListView.m: added sort icons
+
+	* UIxMailEditor.m: more work on editor
+
+	* mailer.css: added compose div classes
+
+	* UIxMailListView: removed href for JavaScript onclick links (v0.9.24)
+
+	* v0.9.23
+	
+	* product.plist: fixed addressbook label
+	
+	* UIxMailToolbar: added support for 'onclick' event handlers
+	
+	* UIxMailEditor: started editor
+
+	* UIxMailListView.m: added sorting to table view
+
+	* v0.9.22
+
+	* UIxMailToolbar.wox: added support for 'target' links
+
+	* UIxMailEditor.wox: use standard mail frame
+
+	* v0.9.21
+
+	* UIxMailTree: made toolbar configurable using 'toolbar' slot on the
+	  clientObject
+
+	* product.plist: added toolbar configurations
+
+	* UIxMailMainFrame.wox: moved toolbar to own component
+
+	* UIxMailListView: added simple navigation (v0.9.20)
+
+	* v0.9.19
+
+	* UIxMailPartViewer.m: added content decoding for QP, base64 and 7bit,
+	  added proper charset decoding
+	
+	* UIxMailPartTextViewer.m: moved content => NSString conversion to
+	  UIxMailPartViewer.m
+	
+	* v0.9.18
+	
+	* UIxMailPartViewer.m: added support methods for caches, added -sleep
+	  method
+	
+	* added multipart/alternative viewer
+	
+	* added Thunderbird message read/unread icons
+
+2004-10-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed fetching of mails with only text content (v0.9.17)
+
+	* added flat body fetches, used in text viewer (v0.9.16)
+
+	* added MIME content viewer infrastructure (v0.9.15)
+
+	* UIxMailView.m: added 'currentAddress' accessors (v0.9.14)
+
+	* UIxMailView.m: use core infos stored in message SoObject for display
+	  (v0.9.13)
+
+2004-10-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.12
+
+	* UIxMailListView.m: fetch size for list
+
+	* UIxMailView.m: cache fetched message for transaction, fetch body
+	  structure
+
+	* work on viewer (v0.9.11)
+
+	* UIxMailMainFrame.wox: made toolbar floating (v0.9.10)
+
+2004-10-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* more work on UI (v0.9.9)
+
+	* added formatters for mail list (v0.9.8)
+
+	* v0.9.7
+
+	* show messages in an IMAP4 folder
+
+	* mailer.css: remote calendar CSS not required in mailer
+
+2004-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added toolbar images (v0.9.6)
+
+	* UIxMailTree.m: use new tree navigation methods in SoObjects (v0.9.5)
+
+2004-09-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* more work on mailer UI, added tree based on WETreeView (v0.9.4)
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added rsrc namespace declaration to templates (v0.9.3)
+
+2004-09-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* work on mailer (v0.9.2)
+
+2004-09-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+        * GNUmakefile.preamble: fixed for gsmake 1.9.2 build (v0.9.1)
+
+2004-08-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* ChangeLog: created
+2005-08-02  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.147
+
+	* UIxComponent+Agenor.m: use SOGoUser methods to get email/cn
+
+	* UIxAppointmentEditor.m: moved status change operation to SoObject
+
+2005-07-23  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentPrintview.m, UIxCalDayListview.m: fixed include pathes
+	  for new src hierarchy (v0.9.146)
+
+2005-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentView.m: fixed -isMyApt and -canAccessApt to do the
+	  proper things (v0.9.145)
+
+	* v0.9.144
+
+	* UIxCalInlineAptView.m: reworked the way styles are produced now.
+	  UIxCalInlineAptView gets a lot more information from the appointment
+	  now in order to produce a suitable style for it
+
+	* UIxCalMonthOverview.m: setup formatter properly for private
+	  appointments
+
+	* UIxCalView.m: don't generate style information at all -
+	  UIxCalInlineAptView does this now
+
+2005-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentEditor.m: added fragile base class check (v0.9.143)
+
+	* added a basic German translation (v0.9.142)
+
+2005-07-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxDatePicker.m: code cleanups (v0.9.141)
+
+2005-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.140
+
+	* UIxCalView.m: reversed shouldAdd logic in filterAppointments to do
+	  the right thing ...
+
+	* v0.9.139
+
+	* UIxAppointmentEditor.m: fixed automatic participants addition
+
+	* v0.9.138
+
+	* UIxCalView.m: renamed 'anaisUIDString' to 'userUIDString' in order
+	  to be independent from the Anais bundle but still provide the same
+	  functionality
+
+2005-07-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentEditor.m: moved iCalRecurrenceRule to separate file
+	  (v0.9.137)
+
+2005-07-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalView.m: provide label "empty title" as -titlePlaceholder for
+	  appointment formatters to enable display of appointments whose
+	  title has not been set (v0.9.136)
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxCalScheduleOverview.m, UIxAppointmentView.m,
+	  UIxAppointmentProposal.m, UIxAppointmentEditor.m: fixed gcc 4.0
+	  warnings (v0.9.135)
+
+	* UIxAppointmentView.h: fixed a Cocoa warning (v0.9.134)
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.133
+
+	* UIxAppointmentView.m: supports accept/decline from participants
+	  tab now
+
+	* UIxAppointmentEditor.m: fixed redirect url after accept/decline
+
+	* UIxCalParticipationStatusView.m: added accessor for partStat, so
+	  partStat isn't accidentaly lost
+
+	* UIxCalScheduleOverview.m: is able to suppress rendering of
+	  rejected and accepted foreign appointments now based on formValue
+
+	* English.lproj/Localizable.strings: new labels for
+	  UIxCalScheduleOverview
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentView.m: fixed a small memory leak when creating the
+	  categories string (v0.9.132)
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.131
+
+	* product.plist: removed 'schedule' method from SOGoAppointmentFolder
+
+	* v0.9.130
+
+	* UIxCalView.m: removed resourcePath stuff as this isn't used
+	  anywhere anymore (and it shouldn't)
+
+2005-07-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* English.lproj/Localizable.strings: "Schedule" maps to
+	  "Appointment propositions" now (v0.9.129)
+
+2005-07-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalView.h: added -setAppointments: to the public API
+	  (for subclassers) (v0.9.128)
+
+2005-07-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.127
+
+	* UIxCalView.[hm]: added -shouldDisplayRejectedAppointments API. Added
+	  toggling of hide/show rejected appointments via form values. Added
+	  new -filterAppointments: method to support filtering of appointments
+	  (currently used for rejected appointments). Fixed -fetchCoreInfos
+	  to use proper accessor method. Fixed aptFlags logic to allow access
+	  to appointments that don't belong to user but which user is invited
+	  to. Cleaned up +initialize a bit.
+	
+	* UIxCalWeekListview.m: added comment and slightly changed
+	  -fetchCoreInfos to do the proper thing
+
+	* English.lproj/Localizable.strings: added labels 'show_rejected_apts'
+	  and 'hide_rejected_apts'
+
+	* v0.9.126
+
+	* UIxComponent+Agenor.[hm]: new method -isAccessRestricted, uses the
+	  implementation from WOContext+Agenor in libSOGo.
+	  
+	* UIxAppointmentView.m: allow editing of appointments that have no
+	  organizer set.
+
+	* UIxAppointmentEditor.m: allow editing of appointments that have no
+	  organizer set. Redirect to 'view' URI in case editor is not the
+	  organizer. Fixed a bug where the organizer got accidentaly deleted.
+
+2005-07-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.125
+
+	* UIxAppointmentEditor.m: Properly preserve organizer of appointments.
+	  This is now also used to validate if user is allowed to edit an
+	  appointment.
+	
+	* UIxAppointmentView.m: changed -isMyApt to test on organizer's email
+	  address and user's email address to decide whether he is allowed
+	  to edit the appointment in question.
+
+2005-07-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentProposal.m: changed implementation of
+	  -proposalSearchAction to use the new SOGoFreeBusyObject API
+	  (v0.9.124)
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.123
+
+	* UIxCalWeekOverview.m, UIxCalWeekColumnsview.m,
+	  UIxCalDayChartview.m, UIxCalDayListview.m,
+	  UIxCalMonthOverview.m, UIxCalDayOverview.m: properly adjust formatter
+
+	* UIxCalDayOverview.m: fixed bugs in -aptsForCurrentDate and properly
+	  override -allDayApts to also display appointments spanning ranges
+
+	* UIxCalWeekChartview.m: fixed bugs in -isRowActive logic
+
+	* UIxCalDayView.m: fixed bugs in filtering and range logic
+
+	* UIxCalView.m: added a deprecation warning, some code cleanup
+
+	* UIxCalInlineAptView.m: added new 'referenceDate' binding which will
+	  be used with the revised appointment formatter to properly display
+	  time ranges. Also adds 'priority' style information when this can
+	  be found in the appointment.
+
+	* GNUmakefile: added new image resource
+
+	* images/apt_icon_private.gif: new resource for private appointments
+
+2005-03-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* renamed "default.strings" to "Localizable.strings" (v0.9.122)
+
+2005-03-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.121
+
+	* UIxCalView.m: removed -calCSSPath (ZideStore specific)
+
+	* UIxCalDayListview.m: minor code cleanups
+
+2005-03-03  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalWeekListview.m: fixed compile warnings (v0.9.120)
+
+	* UIxCalWeekListview.m: view needs to fetch coreInfos instead of just
+	  overviews because it needs information stored in "partmails". Fixes
+	  SOGo Bug #1248. (v0.9.119)
+
+2005-03-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalDateLabel.m: fixed compile warning (v0.9.118)
+
+2005-03-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalDateLabel.m: fixed heuristics for month label (v0.9.117)
+
+2005-02-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.116
+
+	* UIxTimeDateControl.wox: added code to disable time control on
+	  demand. If given date is nil, substitute today for it - nil dates
+	  are not legal/possible for this control.
+
+	* UIxAppointmentEditor.m: correctly (de)serialize until date for
+	  recurrences
+
+	* English.lproj/default.strings: new strings for recurrence selection,
+	  altered previous strings slightly to match the new UI's purpose
+
+2005-02-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.115
+
+	* cycles.plist: added 'weekday' cycle
+
+	* UIxAppointmentEditor.m: added representation for 'BYDAY'
+
+2005-02-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed for removal of SOGoLogic (v0.9.114)
+
+2005-02-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+	
+	* UIxCalView.m: removed dead code (v0.9.113)
+
+2005-02-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.112
+
+	* UIxAppointmentEditor.[wox,m]: added recurrence selection/display.
+	  The current UI is similar to that found in OGo, but inappropriate in
+	  the context of SOGo (SOGo in theory supports all recurrence rules
+	  described in RFC2445, thus needs a more complex UI in order to render
+	  all rules appropriately)
+
+	* cycles.plist: property list with predefined recurrence rules for
+	  the UIxAppointmentEditor
+
+	* English.lproj/default.strings: new labels for cycles and accompanied
+	  UI
+
+	* UIxDatePicker.m: Bugfix for format edge case (when date is nil)
+
+2005-01-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxDatePicker.m: corrected dateFormats for French locale. The
+	  selection mechanism is pretty hackish and should be more generic.
+	  This fixes SOGo Bug #1136. (v0.9.111)
+
+2005-01-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* {English/French}.lproj/default.strings: changed encoding from
+	  ISO-Latin-1 to UTF-8, which is now the default (v0.9.110)
+
+2004-12-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.109
+
+	* UIxCalScheduleOverview.[wox,m]: changed the UI to the final proposal
+	  agreed upon by Laurent.
+	
+	* English.lproj/default.strings: renamed value for "action", suited to
+	  new UI Layout
+
+2004-12-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.108
+
+	* UIxAppointmentEditor.m: added "check for conflict" checkbox and
+	  appropriate logic. This closes SOGo bug #1069. Localized error
+	  messages.
+
+	* UIxAppointmentProposal.m: changed fetchCoreInfos... to new
+	  fetchFreebusy... method.
+
+	* English.lproj/default.strings: provided localized error messages
+
+	* UIxCalView.m: rewrite of _fetchCoreInfosForUIDs: to adapt to the
+	  newer API of SoObjects (this was still some old OCS based code).
+
+2004-12-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.107
+
+	* UIxCalScheduleOverview.wox: only display appropriate buttons for
+	  actions to take
+	
+	* UIxCalScheduleOverview.m: cache userParticipationStatus result
+
+	* English.lproj/default.strings: changed "action" label
+
+	* v0.9.106
+
+	* UIxCalScheduleOverview.wox: different visual representation for
+	  actions (requested by Laurent)
+
+	* UIxCalScheduleOverview.m: bugfix for wrong sort orderings
+
+2004-12-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalScheduleOverview.[wox,m]: removed workaround for NGObjWeb bug,
+	  code cleanup (v0.9.105)
+
+2004-12-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.104
+
+	* GNUmakefile: removed UIxAppointmentFormatter
+
+	* UIxAppointmentFormatter.[hm]: removed, never in use
+
+	* UIxCalParticipationStatusView.[wox,m]: new view to display localized
+	  participation status
+
+	* UIxCalView.m: fetch OverviewInfos instead of CoreInfos (should be
+	  faster)
+
+	* UIxCalScheduleOverview.[wox,m]: completed the schedule overview,
+	  display participation state for all participants.
+
+	* product.plist: renamed "reject" to "decline" and moved from
+	  UIxAppointmentView to UIxAppointmentEditor.
+
+	* UIxAppointmentView.m: removed "accept" and "reject" action stubs
+
+	* UIxAppointmentEditor.[wox,m]: implemented "accept" and "decline".
+	  Changed iCal template a bit, particularly removed getOrganizer -
+	  with every save the organizer was changed also which was horribly
+	  wrong.
+
+2004-12-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.103
+
+	* UIxCalScheduleOverview.[wox,m]: the entry point for agenor,
+	  presenting the upcoming schedule to users. This is still incomplete,
+	  but nevertheless functional.
+
+	* English.lproj/default.strings: new localizations for the schedule
+	  view.
+
+	* product.plist: added new actions and schedule view
+
+	* UIxCalSelectTab.[wox,m]: added new "Schedule" tab
+
+	* UIxAppointmentEditor.m: default participants are selected from
+	  current calendarUIDs - that is, if you've selected multiple calendars
+	  and then create a new appointment, all currently viewed calendar
+	  owners are added to the new appointment as default participants.
+
+	* UIxAppointmentView.m: added "accept" and "reject" actions - no
+	  function yet.
+
+	* UIxAppointmentProposal.m: compile fix (v0.9.102)
+
+2004-12-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.101
+
+	* UIxAppointmentProposal.m: removed inclusion of iCalPerson+UIx.h
+
+	* iCalPerson+UIx.[hm]: removed -rfc822EMail (moved to NGiCal), changed
+	  implementation of -cnForDisplay (just a cover for -cnWithoutQuotes)
+
+	* v0.9.100
+	
+	* UIxAppointmentEditor.m: fixed incorrect redirect location
+
+	* UIxCalWeekListview.m, UIxCalWeekChartview.m: use new formatter option
+	  to correctly format private appointments
+
+	* v0.9.99
+
+	* {English,French}.lproj/default.strings: new label
+	  "private appointment", requested by Laurent for agenor.
+
+	* UIxCalWeekPrintview.m, UIxCalMonthPrintview.m: add label
+	  "private appointment" if apt is not accessible.
+
+	* UIxCalView.m: set label "private appointment" as privateTitle of
+	  private formatters.
+
+2004-12-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.98
+
+	* English.lproj/default.strings: provided additional localizable
+	  strings for event "classification" (private/public).
+
+	* UIxAppointmentView.[wox,m], UIxAppointmentEditor.[wox,m]: added
+	  workaround for SOGo bug #1052, private details are hidden now
+	  from others. Also, apts are not editable by non-owners any longer.
+
+	* UIxCalView.[hm]: added formatters for private appointments. Also,
+	  added flags for caching special information about apts (public,
+	  owned) etc. This outphases the use of tooltip.../shortText...
+	  for all calviews (with the exception of printviews). Subclasses
+	  may need to override -configureFormatters to adjust them according
+	  to their needs.
+
+	* UIxCalInlineAptView.[hm]: new view used by all calviews to render
+	  appointments using formatters.
+
+	* UIxCalDayOverview.wox, UIxCalDayListview.[wox,m],
+	  UIxCalDayChartview.[wox,m], UIxCalDayPrintview.wox,
+	  UIxCalWeekOverview.wox, UIxCalWeekListview.[wox,m],
+	  UIxCalWeekChartview.[wox,m], UIxCalWeekColumnsview.wox,
+	  UIxCalWeekPrintview.[wox.m], UIxCalMonthOverview.wox:
+	  changed to use UIxCalInlineAptView and provided -configureFormatters
+	  which fixes SOGo bug #1052
+
+2004-12-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.97
+
+	* UIxAppointmentEditor.[wox,m]: provided API and UI for marking an
+	  event as being private or public, public being the default.
+
+	* English.lproj/default.strings: provided additional localizable
+	  strings for event "classification" (private/public).
+
+	* UIxAppointmentEditor.m: set 'transparency' of new items to
+	 'TRANSPARENT' instead of 'OPAQUE'. In agenor FreeBusy information is
+	  constrained by a folder flag instead of individual events, however
+	  the intent is to permit retrieval of FreeBusy information in general.
+	  Please note that the according information isn't properly parsed/set
+	  in loadValues/saveValues as of now - the underlying iCalEvent doesn't
+	  handle this as of now.
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.96
+
+	* UIxCalView.h: made -isMyApt and -aptStyle public.
+
+	* UIxAppointmentPrintview.m: implemented -isMyApt and -aptStyle, used
+	  by UIxAppointmentPrintview.wox
+
+	* UIxAppointmentPrintview.wox: print summary, location, start/endtime
+	  in italics - fixes SOGo bug #1070
+
+	* UIxCalWeekPrintview.m, UIxCalMonthPrintview.m: extended
+	  -shortTextForApt to use different css styles, when -isMyApt returns
+	  NO - fixes SOGo bug #1070
+
+	* UIxCalDayPrintview.[m, wox]: use -aptStyle to print appointments not
+	  belonging to user in italics - fixes SOGo bug #1070
+
+	* UIxCalDayOverview.wox, UIxCalDayChartview.wox, UIxCalDayListview.wox
+	  UIxCalWeekOverview.wox, UIxCalWeekListview.wox,
+	  UIxCalWeekChartview.wox, UIxCalWeekColumnsview.wox,
+	  UIxCalMonthOverview.wox, UIxCalYearOverview.wox:
+	  changed layout according to SOGo bug #1071 (v0.9.95)
+
+	* UIxAppointmentView.m, UIxDatePicker.m, UIxCalView.m: changed to use
+	  NGLogging (v0.9.94)
+
+2004-11-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentPrintview.m: fixed a compile warning (v0.9.93)
+
+2004-10-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentProposal.wox: uses dayLabelFormat instead of hardcoded
+	  format - fixes SOGo bug #984 (v0.9.92)
+
+2004-10-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentPrintview.wox: insertBR for comment adedd (v0.9.91)
+
+	* UIxAppointmentEditor.wox: added possibility to add resources from
+	  Addressbook (v0.9.90)
+
+2004-10-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.wox: added "withCN=YES" to resources because
+	  doing otherwise would lead to stripping the CN from resources in
+	  subsequent saves - why would anyone want this to be standard
+	  behavior? (v0.9.89)
+
+2004-10-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentView.wox: insertBR for comments (v0.9.88)
+
+2004-10-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentProposal.wox: use '1' instead of 'YES' in const
+	  bindings, otherwise running into a MacOSX bug (v0.9.87)
+
+2004-10-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.86
+
+	* UIxAppointmentView.[m|wox]: new method to return categories as a
+	  string.
+
+	* UIxAppointmentPrintview.wox: added missing priority and categories.
+
+	* UIxAppointmentProposal.wox: also allow selection from private address
+	  book for resources/participants. This might lead to the fact that
+	  contacts can be selected which do not have a calendar at all - there
+	  should be some way of safeguarding this in the Contacts bundle.
+
+2004-10-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.m: changed iCal template to use RFC2445
+	  conforming line delimiters. Changed the testAction to aid in
+	  debugging our iCal rendering. (v0.9.85)
+
+2004-10-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.84
+
+	* SOGoAppointment+UIx.[hm]: new class providing UIx convenience methods
+
+	* UIxAppointmentView.[m|wox]: added priority and categories
+
+	* UIxAppointmentEditor.[m|wox]: added priority and categories
+
+	* English.lproj/default.strings: new labels
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxCalDateLabel.m: minor code cleanups, fixed compilation on MacOSX
+	  (v0.9.83)
+
+2004-09-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* English.lproj/default.strings: fixed a missing ';' (v0.9.82)
+
+2004-09-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.81
+
+	* GNUmakefile, product.plist: added new image
+
+	* images/invisible_space_2.gif: new transparent image used by
+	  UIxWeekListview.wox
+
+	* UIxCalDayView.m: rewrote -isCurrentDateInApt: to use
+	  NGCalendarDateRange
+	
+	* UIxCalWeekListview.[m|wox]: implemented
+
+	* UIxCalWeekColumnsview.[m|wox]: implemented
+
+	* UIxCalWeekOverview.m: removed impl. of -appointments, moved to
+	  superclass
+
+	* UIxCalWeekView.m: added impl. of -appointments
+
+2004-09-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentPrintview.wox, UIxAppointmentView.wox: added missing
+	  label prefix (v0.9.80)
+
+2004-09-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.79
+
+	* UIxAppointmentEditor.wox: removed debug output of clientObject,
+	  UIxPageFrame.wox is doing this now.
+
+	* UIxCalDayListView.[wox|m]: fixed some wrong assumptions of uid
+	  handling, corrected to use the (now bugfixed) calendarUIDs of
+	  clientObject.
+
+2004-09-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.78
+
+	* UIxCalDayOverview.m, UIxCalDayChartview.m: minor cleanups
+
+	* UIxCalDayOverview.wox, UIxCalDayChartview.wox: added style
+	  information for appointments, used for colorization (doesn't work
+	  due to style problems - needs to get investigated later on)
+
+	* UIxCalDayListview.[m|wox]: started implementation of list view,
+	  not quite finished.
+
+2004-09-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.wox: fixed incorrect label (v0.9.77)
+
+2004-09-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile.preamble: fixed for gsmake 1.9.2 build (v0.9.76)
+
+2004-08-31  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalView.m: fixed stupid bug (v0.9.75)
+
+2004-08-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.74
+
+	* English.lproj/default.plist: more labels
+	
+	* UIxAppointmentView.wox: replaced static strings with labels
+
+	* UIxAppointmentView.h, UIxCalView.h: exposed some methods
+
+	* product.plist: added "printview" method to SOGoAppointmentObject
+
+	* UIxAppointmentPrintview.[m|wox]: new printview for appointments
+
+2004-08-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentEditor.m: prepared to share code with contact editor
+	  (v0.9.73)
+
+	* UIxCalView.m: minor code cleanups (v0.9.72)
+
+2004-08-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile.preamble: removed NGScripting from dependencies - it's no
+	  longer required (v0.9.71)
+
+	* UIxAppointmentProposal.m: changed -isSecondHalfGreen and
+	  -isSlotRangeGreen due to a bugfix in NGExtensions (v0.9.70)
+
+	* v0.9.69
+
+	* UIxAppointmentProposal.m: completed edit functionality. Resources and
+	  participants are now passed as query parameters.
+	
+	* UIxAppointmentEditor.m: Resources and Participants are now properly
+	  constructed from existing query parameters.
+
+2004-08-24  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.68
+
+	* UIxAppointmentEditor.m: added knowledge about "dur" parameter
+
+	* UIxAppointmentProposal.[m|wox]: added edit functionality, still
+	  incomplete
+
+	* UIxCalView.[hm]: remove date related query parameter methods, moved
+	  to UIxComponent
+
+	* GNUmakefile.preamble: changes for linking against SOPE 4.3 (v0.9.67)
+
+2004-08-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* AnaisUidSelector.[wox,m]: Added colorizing of login's uid. (v0.9.66)
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentProposal.m: small bugfix to range processing (v0.9.65)
+
+2004-08-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxTimeDateControl.m: removed a debug log. (v0.9.64)
+
+	* v0.9.63
+
+	* UIxCalView.m: -isMyApt done properly.
+
+	* UIxCalWeekOverview.wox: use extra stylesheet info to colorize other's
+	  appointments differently.
+
+	* UIxDatePicker.m: removed a debug log.
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentProposal.m: first working version of proposal (v0.9.62)
+
+	* UIxAppointmentProposal: proper vertical/horizontal row generation
+	  (v0.9.61)
+
+2004-08-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentView.m: fixed redirect in deleteAction. (v0.9.60)
+
+	* v0.9.59
+
+	* UIxTimeDateControl.m: subclasses from UIxComponent now, hence
+	  -viewTimeZone should work correctly now.
+
+	* UIxAppointmentProposal.wox, UIxAppointmentEditor.wox: fixed
+	  cancel button urls.
+
+	* UIxAppointmentProposal.[wox,m]: fixed date/time fields. (v0.9.58)
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentProposal: added duration popup (v0.9.57)
+
+2004-08-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.56
+
+	* UIxTimeDateControl.m: HACK: added correct timeZone.
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.55
+
+	* UIxAppointmentProposal.m: load default start/enddates
+	
+	* UIxAppointmentEditor.m: add default start/enddates
+	
+2004-08-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.54
+
+	* UIxTimeDateControl.*, UIxTimeSelector.*, UIxDatePicker.*:
+	  fixed. DatePicker expects day, month, year bindings now, 
+	  TimeSelector expects hour, minute, second.
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.53
+
+	* UIxAppointmentProposal: added attendee selectors, added ivars, added
+	  searchProposal action
+
+	* added green_corner.gif
+
+	* iCalPerson+UIx.m: fixed -cnForDisplay to properly check for quotes
+	  prior removing them (v0.9.52)
+
+2004-08-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentEditor.m: fixed for new time fields (v0.9.51)
+
+	* fixed time field controls (v0.9.50)
+
+2004-08-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.49
+
+	* UIxTimeDateControl.[wox,m]: new component.
+
+	* UIxAppointmentProposal.wox: added labels and stuff, work in progress.
+
+	* English.lproj/default.strings: new labels
+
+	* UIxTimeSelector.m, UIxDatePicker.m: correct date bindings.
+
+2004-08-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.48
+
+	* UIxAppointmentEditor.m: minor cleanups
+
+	* UIxAppointmentView.m: added -delete action
+
+	* UIxAppointmentEditor.m: more decoupling from iCal. Added some error
+	  handling UI code (errorText), date selector is broken (v0.9.47)
+
+	* v0.9.46
+	
+	* iCalPerson+UIx.m: changed -cnForDisplay method, znek needs to check
+	  it for correctness
+
+	* UIxAppointmentEditor.m: rewrote not to work directly on the parsed
+	  iCalendar appointment but rather track changes in the appointment
+	  itself
+	
+	* UIxAppointmentEditor.m: removed now unused methods (due to attendee
+	  selector) (v0.9.45)
+
+	* v0.9.44
+
+	* UIxAppointmentEditor.m: use new AnaisAttendeeSelector
+
+	* UIxAppointmentEditor.m: replaced formattedAptStartDate with a
+	  titleDateFormatter (directly bound to the string element)
+
+2004-08-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.43
+	
+	* UIxTimeSelector.[wox,m]: new component for selecting the time part
+	  of a given date.
+
+	* UIxAppointmentEditor.[wox,m]: uses new UIxTimeSelector
+
+2004-08-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.42
+
+	* UIxAppointmentEditor.m: minor cleanups
+
+	* UIxAppointmentProposal.wox: made mockup code dynamic
+
+2004-08-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.41
+
+	* images/*: new images for UIxDatePicker and skycalendar.html.
+
+	* French.lproj/skycalendar.*, English.lproj/skycalendar.*: new js
+	  based date picker taken from OGo.
+	  NOTE: these files are currently NOT used/installed due to a bug
+	  in SOPE. Instead, the non-localized versions are used. This will
+	  go away as soon as the bug in SOPE is fixed.
+
+	* skycalendar.js, skycalendar.html: the non-localized versions as a
+	  workaround to the problem described above.
+
+	* product.plist: added new images and the non-localized js date picker
+	  as public resources.
+
+	* UIxDatePicker.[m,wox], UIxDatePickerScript.[m,wox]: new reusable
+	  component for picking a date fancy style. ;-) Use UIxDatePickerScript
+	  to load the necessary js code once in your component.
+
+2004-08-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.40
+
+	* UIxAppointmentProposal.wox: fixes in mockup code
+
+	* UIxAppointmentEditor.m: some cleanups
+
+	* v0.9.39
+	
+	* UIxAppointmentProposal.wox: work on page layout
+
+	* UIxAppointmentView.wox, UIxCalWeekOverview.wox: minor cleanups
+
+2004-08-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.38
+
+	* UIxComponent+Agenor.[hm]: -cnForUser and -emailForUser require the
+	  AgenorUserManager from Logic.
+
+	* UIxAppointmentEditor.m: refactored -cnForUser and -emailForUser,
+	  moved to extra category.
+
+	* UIxCalWeekView.wox: added custom style if apt belongs to user.
+
+	* UIxCalView.m: added some extra logic in redirect, provided extra
+	  style sheet selector for appointments.
+
+	* GNUmakefile: added new files
+
+2004-08-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.37
+
+	* English.lproj/default.strings: new labels
+
+	* UIxAppointmentEditor.m: after save, return to ".." instead of "view"
+
+	* UIxAppointmentEditor.wox: added "Cancel" button.
+
+	* UIxCalView.m: refined behaviour of redirects according to Helge's
+	  request.
+
+2004-08-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.m: Changed "X-OGo-RESOURCE" into
+	  "NON-PARTICIPANT" (v0.9.36)
+
+2004-08-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentView.[h,m,wox], UIxAppointmentEditor.[h,m,wox]:
+	  general enhancements, use new API. (v0.9.35)
+
+2004-08-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.34
+
+	* UIxCalView.[hm]: use new formatters.
+
+	* UIxCalDayOverview.m: fixed build warnings.
+
+	* UIxAppointmentEditor.m: added warnings.
+
+2004-08-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.33
+
+	* UIxCalView.m: adjusted shortTextForApt to meet the requirements
+	  specifictions.
+
+	* UIxCalDayView.m: removed shortTextForApt (moved to superclass).
+
+	* UIxCal*view.wox: escapeHTML="NO" for shortTextForApt.
+
+2004-08-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.32
+
+	* UIxCalView.m: shouldHideWeekend according to new default,
+	  SOGoShouldDisplayWeekend.
+
+	* UIxCalWeekOverview.wox, UIxCalWeekColumnsview.wox: use new dynamic
+	  value for "hideWeekend" association.
+
+	* NOTES: new "Defaults" section.
+
+2004-08-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxCalWeekColumnsview.wox: hide weekend (requires libWEExtensions 
+	  v4.2.52) (v0.9.31)
+
+2004-08-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.[wox|m]: important fix for testing (v0.9.30)
+
+2004-08-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxCalWeekColumnsview.wox: hide weekend (requires libWEExtensions 
+	  v4.2.52) (v0.9.30)
+
+	* UIxCalWeekOverview.wox: hide weekend (requires libWEExtensions 
+	  v4.2.51) (v0.9.29)
+
+2004-08-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.28
+
+	* iCalPerson+UIx.[hm]: more convenience
+
+	* UIxAppointmentView.[hm]: display CN's as Names
+
+	* UIxAppointmentEditor.[wox|m]: more functionality, but still
+	  unfinished. You can use it to test appointments, though.
+
+2004-08-13  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppointmentEditor.wox: fixed base URL of form not to include
+	  "save" (v0.9.27)
+
+	* UIxAppointmentEditor.m: catch a common programming mistake (invoking
+	  a method on a method) (v0.9.26)
+
+2004-08-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.[m|wox]: participants are added correctly
+	  now, resources are still lacking from save. (v0.9.25)
+
+2004-08-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.24
+
+	* Added AnaisUidSelector to all views. Removed worse named -owner
+	  method from all affected views and instead added
+	  -formattedCalendarUIDs to UIxCalView. This is now used by all
+	  print views in their header.
+
+	* UIxCalWeekOverview.m: adjusted endDate properly, if -displayWeekends
+	  returns NO (the default).
+
+2004-08-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalView.m: fixed problems with redirect (v0.9.23)
+
+2004-08-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.22
+
+	* UIxAppointmentView.m: properly catch invalid appointment references
+	  and return a 404 (because SOGoAppointmentObject's are created even
+	  for invalid IDs for performance reasons)
+
+	* UIxCalView.m: generate appointment URLs using clientObject (the
+	  appointment folder)
+
+	* more cleanups
+
+	* added (still empty) proposal component (v0.9.21)
+
+	* some code reorganizations, fixed some compile warnings (v0.9.20)
+
+2004-08-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.19
+
+	* UIxCalView.m: implements -redirectForUIDsAction to construct a
+	  redirect to a special appointment folder.
+
+	* product.plist: "show" method is mapped to UIxCalView's
+	  -redirectForUIDsAction.
+
+2004-08-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.18
+
+	* UIxCalWeekOverview.wox: added AnaisUidSelector
+
+	* English.lproj/default.strings: more labels
+
+2004-08-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.17
+
+	* product.plist: removed "yearprintview" method - this doesn't exist.
+
+	* English.lproj/default.strings: more labels (these need to be added
+	  to the French version!)
+
+	* UIxAppointmentEditor.[m|wox]: nice Anais integration showing up. ;-)
+
+2004-08-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.16
+
+	* UIxAppointmentEditor.wox: pretty printing, use labels where appropriate.
+
+	* UIxAppointmentEditor.m: uses SOGoDateFormatter now.
+
+	* English.lproj/default.strings: added new labels.
+
+2004-08-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.15
+
+	* UIxCalWeek*view.wox: added missing queryParameters to mode hrefs.
+
+2004-08-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.14
+
+	* UIxCalDayOverview.[hm]: refactored currentDate -> moved to
+	  UIxCalDayView.[hm].
+
+	* UIxCalDayView.[hm]: added currentDate and accompanied functionality.
+
+	* UIxCalView.[hm]: added -tooltipForApt.
+
+	* UIxCalDayChartview.[wox|m]: implemented.
+
+	* UIxCalInlineMonthOverview.wox: cosmetic changes.
+
+	* UIxCalDayOverview.wox, UIxCalWeekOverview.wox, UIxCalMonthOverview.wox:
+	  uses "tooltipForApt" for view hyperlinks.
+
+2004-08-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.13
+	
+	* UIxCalDayPrintview.[m|wox], UIxCalWeekPrintview.[m|wox],
+	  UIxCalMonthPrintview.[m|wox]: finished print views.
+	
+	* UIxCalWeekOverview.wox: added numberformat for days.
+
+2004-08-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.12
+	
+	* UIxCalMonthView.[hm]: fixed a nasty bug. Needed to add -startOfMonth to
+	  overcome the problem associated with -startDate in the context of
+	  month overview. -startDate is necessary for fetching the core infos and
+	  almost always is member of the previous month. Also, -endDate isn't
+	  necessarily in the same month we're talking about. I reworked this and
+	  added some private category to NSCalendarDate which should be moved into
+	  SxCore later on.
+	
+	* UIxCalMonthOverview.m: Use -startOfMonth instead of -startDate for all
+	  calculations.
+
+	* UIxCalMonthOverview.wox: applied some pretty printing and added some
+	  debugging info (commented out).
+
+2004-07-30  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.11
+
+	* UIxCalDayOverview.h, UIxCalWeekOverview.h: new headers for subclassers.
+
+	* UIxCalDayPrintview.[wox|m], UIxCalWeekPrintview.[wox|m],
+	  UIxCalMonthPrintview.[wox|m]: new views for printing.
+
+	* product.plist: mapped "*printview"'s to appropriate new classes
+
+2004-07-29  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.10
+
+	* UIxCalDayView.m, UIxCalWeekView.m, UIxCalMonthView.m: reversed
+	  previous changes to -startDate/-endDate as these were wrong.
+	  Views have to deal on their own if appointments break the
+	  "usual" time range. Nevertheless we should never drop any
+	  appointments!
+
+	* UIxCalDayOverview.[wox|m]: refactored dateRanges (moved to
+	  UIxCalDayView) and completed display of all appropriate attributes
+	  (all day appointments, holiday info).
+
+	* UIxCalDayView.[hm]: fixed dateRanges.
+
+	* UIxCalView.[hm]: implemented -allDayApts and refactored some code.
+
+2004-07-28  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.9
+
+	* UIxCalWeekColumnsview.[m|wox]: implemented.
+
+	* UIxCalWeekCharview.*, UIxCalWeekListview.*, UIxCalDayChartView.*,
+	  UIxCalDayListview.*: enhanced templates.
+
+	* UIxCalDayView.[hm]: removed -thisMonth and -nextMonth.
+
+	* UIxCalView.[hm]: added -thisMonth and -nextMonth
+
+2004-07-28  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.8
+	
+	* Renamed all images/icon_apt_* images into images/icon_view_*. for the
+	  sake of simplicity and consistency.
+
+	* UIxCalInlineMonthOverview.m: fixed problems with a special set of edge
+	  cases where inappropriate style sheets would have been selected.
+
+	* UIxCalDayChartview.*, UIxCalDayListview.*: new templates for respective
+	  view modes.  Used UIxCalDayOverview as the template for these.
+	
+	* UIxCalWeekChartview.*, UIxCalWeekListview.*, UIxCalWeekColumnsview.*:
+	  new templates for respective view modes. Used UIxCalWeekOverview as
+	  the template for these.
+
+	* GNUmakefile: added new templates and classes, changed image names.
+
+	* product.plist: mapped methods to the correct classes.
+
+2004-07-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.7
+
+	* UIxCalView.[hm]: new methods for defaults access, -dayStartHour,
+	  -dayEndHour and -shouldDisplayWeekend.
+
+	* UIxCalDayOverview.[m|wox]: added content. CSS isn't 100% proper, yet.
+
+	* UIxCalWeekView.m, UIxCalMonthView.m: set startDate/endDate properly.
+
+	* UIxAppointmentEditor.m: fixed a subtle bug in -uriAsFormat that
+	  prevented date information from being set properly in newAction:.
+
+2004-07-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.6
+
+	* GNUmakefile: added UIxCalDayView.[hm] and UIxCalDayOverview.[m|wox]
+
+	* UIxCalDayView.[hm]: abstract superclass for all day related views.
+
+	* UIxCalDayOverview.[m|wox]: new component rendering the day overview.
+
+	* UIxCalInlineMonthOverview.[m|wox]: uses new "selectedDayExtraStyle"
+	  binding and implements accompanied logic for its usage.
+
+	* product.plist: added 3 dayview methods, all currently pointing to
+	  UIxCalDayOverview.
+
+2004-07-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.5
+
+	* UIxCalInlineMonthOverview.m: new "style" binding for setting the global
+	  style all elements will inherit from. Makes styling much easier.
+
+	* UIxCalYearOverview.wox: uses all appropriate styles now. Slight fixes
+	  to alignment.
+
+	* UIxCalInlineMonthOverview.wox: uses new "style" binding and fixes a bug
+
+	* UIxCalYearOverview.m: fixed warnings.
+
+2004-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.4
+
+	* UIxCalMonthOverview.h: new header, required by new
+	  UIxCalInlineMonthOverview component.
+
+	* UIxCalInlineMonthOverview.[m|wox]: new component rendering a month
+	  overview suitable for inlining in other views. Several calendar
+	  "modes" require this.
+
+	* UIxCalYearOverview.[m|wox]: new component rendering the year
+	  overview.
+
+	* product.plist: yearoverview -> new method
+
+	* GNUmakefile: added UIxCalInlineMonthOverview.[m|wox] and
+	  UIxCalYearOverview.[m|wox].
+
+2004-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.3
+
+	* *.wox: Use label associations where appropriate
+
+	* UIxCalView.m: Use labels for localization
+
+	* UIxCalMonthOverview.m: removed date specific labels, moved
+	  to SOGoUI/UIxComponent.m.
+
+	* UIxCalDateLabel.m: subclasses from UIxComponent now. Corrected
+	  localization using labels now.
+
+	* *.lproj/default.strings: new entries
+
+2004-07-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.2
+
+	* GNUmakefile: added new .lproj resources.
+
+	* {English,French}.lproj/default.plist: localizable strings for the
+	  Scheduler bundle.
+
+	* UIxCalSelectTab.m, UIxCalWeekOverview.wox,
+	  UIxCalMonthOverview.[m|wox]:  changes for using new localization
+	  features.
+
+2004-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.m: Use -backendTimeZone from UIxComponent.
+
+2004-07-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalWeekOverview.wox: minor correction
+
+	* UIxAppointmentEditor.m: fixed handling in -saveAction:. Also,
+	  added code to correctly convert dates into GMT upon storing.
+
+2004-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: added proper include pathes to allow "inline"
+	  compilation
+
+2004-07-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentView.m: fixup timezone of start/enddate
+
+2004-06-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxCalWeekOverview.wox, UIxCalMonthOverview.wox: some minor tweaks
+
+	* UIxAppointmentView.wox: made the attendee emails clickable
+
+	* UIxCalView.m: removed -fetchGIDs, moved -fetchCoreInfos to client
+	  object
+
+	* all files: removed ZideStore references
+
+	* UIxCalView.h, UIxAppointmentView.h, UIxAppointmentEditor.m,
+	  UIxCalSelectTab.m: include UIxComponent from SOGoUI
+
+	* removed backend stuff from some sources
+
+	* product.plist: bind things on SOGoAppointmentXXX instead of SX...
+
+	* GNUmakefile: changed from ZideStore to SOGo
+
+	* created ChangeLog
+2005-07-30  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* MailerUI/UIxMailView.wox: do not show mail header when accessing a
+	  Kolab mail object
+	
+	* MailPartViewers/UIxMailPartImageViewer.wox: fixed 'title' attribute
+	  of image tag (now displays filename)
+	
+	* MailerUI/UIxMailMainFrame.wox: use 'view' instead of 'tb.view' to
+	  activate links
+	
+2005-07-26  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* ContactsUI/UIxContactEditor.wox: removed copy-from-anais button
+	
+	* UIxAppointmentProposal.wox, UIxAppointmentEditor.wox: do not try to
+	  use Anais attendee selector (must be replaced)
+	
+	* MailerUI: use proper _wosid instead of 'sidinurl' in <form> tags
+	
+2005-07-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+	
+	* UIxMailPanelFrame.wox: added MailerUI.SOGo strings table for error
+	  messages
+	
+	* UIxMailEditor.wox: added inclusion of layout2or3_xlib.js and added
+	  a new id to compose_table
+	
+2005-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+	
+	* UIxCalDayOverview.wox, UIxCalDayChartview.wox, UIxCalDayListview.wox,
+	  UIxCalMonthOverview.wox: reworked the style bindings
+
+	* UIxMailToSelection.wox: commented debug output
+
+	* UIxMailEditor.wox: added inline attachment view which is only
+	  visible if attachments have been added (similar to what is done
+	  in Thunderbird)
+
+	* UIxMailEditorAttach.wox: added JavaScript reference for dynamically
+	  updating UIxMailEditor
+
+	* UIxCalInlineAptView.wox: added indicator to flag recurrent events
+
+2005-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* MailerUI/UIxMailToolbar.wox: properly localize button label
+
+	* MailerUI: use new UIxMailPanelFrame for panel templates (those which
+	  do not show the folder tree)
+
+	* MailerUI/UIxMailView.wox: added support for list headers, for the
+	  organization header, for some spam-assassin and virus scanning fields
+
+	* moved remaining mail templates to Templates/MailerUI/
+
+2005-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxMailToSelection.wox: changed inclusion of JavaScript to resource
+	  lookup (with a little global stub being the exception)
+
+2005-07-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentEditor.wox: import scheduler labels to the client,
+	  moved validation function to UIxAppointmentEditor.js
+
+	* UIxAppointmentEditor.wox: use dateformat specific parsing methods
+	  during validation (#1490)
+
+2005-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* AnaisUidSelector.wox: moved JavaScript into component, renamed quite
+	  a lot of stuff to reflect the current implementation
+
+2005-07-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxAppointmentEditor.wox: use parsing function from skycalendar.js
+	  to check validity of date fields
+
+	* UIxAppointmentEditor.wox: check whether title is set and raise a
+	  confirm panel if not, check if startdate/enddate are 10 chars long
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* ContactsUI/UIxContactEditor.wox: validate email field prior form
+	  submit (#1483)
+
+	* MailerUI/UIxMailMainFrame.wox: removed searchfield.js from <head>
+
+	* UIxPageFrame.wox: added generic.js to <head>
+
+	* ContactsUI/UIxContactsListView.wox: fixed a static reference to
+	  /sogod.woa/
+
+2005-07-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* AnaisUidSelector.wox: added extraAttributes to pass on from
+	  Anais which we need now
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* MailerUI/UIxMailFilterPanel.wox: disabled auto-search field
+
+2005-07-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxContactsSelectionView.wox: fixed targets of sort actions and
+	  form processing
+
+	* UIxMailAddressbook.wox: changed template text explaining why there's
+	  nothing to be rendered
+
+	* UIxMailToSelection.wox: changed JavaScript functions to be more
+	  generic
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* MailPartViewers/UIxMailPartICalViewer.wox: prepared support for iMIP
+	  'method' requests
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalScheduleOverview.wox: removed functionality for v0.8 on
+	  client's request
+
+	* UIxAppointmentView.wox: added accept/decline functionality in
+	  participants tab
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailAccountView.wox: directly access the clientObject to get share
+	  information
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxContactsSelectionView.wox: removed hardcoded stylesheet paths,
+	  provided rsrc: driven paths as this works now
+
+	* UIxCalSelectTab.wox: removed 'Schedule' tab.
+
+	* UIxCalScheduleOverview.wox: rewritten to be a subcomponent instead
+	  of a proper page. This is used by SOGoHomePage now.
+
+2005-07-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* *.wox: fixed all corner_right.gif image resources
+
+	* UIxAppNavView.wox: traversal path is only shown when debugging app,
+	  instead inserted user's CN as requested
+
+2005-07-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* ContactsUI/UIxContactEditor.wox: disable editing when being used on
+	  a vCard contact
+
+	* ContactsUI/UIxContactView.wox: added support for displaying vCard
+	  attributes
+
+	* ContactsUI/UIxContactsListView.wox, UIxMailContactList.wox: changed
+	  to use c_name instead of cName (as required by new GDLContentStore)
+
+2005-07-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxAppointmentEditor.wox: moved the 'checkForConflicts' button near
+	  the 'save' button as requested
+
+2005-07-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalDayOverview.wox, UIxCalWeekOverview.wox,
+	  UIxCalWeekColumnsview.wox, UIxCalDayChartview.wox,
+	  UIxCalDayListview.wox, UIxCalWeekChartview.wox,
+	  UIxCalMonthOverview.wox, UIxCalWeekListview.wox:
+	  added 'hide/show rejected apts' toggle to all views
+
+	* UIxPageFrame.wox: added 'headers' to the debug output
+
+	* UIxAppointmentEditor.wox: removed conditionals from UI as they were
+	  wrongly placed in the template, component does now deal with it
+
+2005-07-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxPageFrame.wox: added 'Home' and 'Administration' hyperlink
+
+	* UIxPageFrame.wox: added 'help' hyperlink
+
+	* UIxPageFrame.wox: added 'isAccessRestricted' debug output
+
+	* AnaisUidSelector.wox: changed layout, added new 'me alone' button
+	  as requested
+
+2005-07-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalInlineAptView.wox: add private appointment icon for non-public
+	  appointments that belong to yourself.
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalDayOverview.wox, UIxCalInlineAptView.wox,
+	  UIxCalWeekOverview.wox, UIxCalWeekColumnsview.wox,
+	  UIxCalDayChartview.wox, UIxCalDayListview.wox,
+	  UIxCalWeekChartview.wox, UIxCalMonthOverview.wox: added referenceDate
+	  bindings for all UIxAptInlineViews
+
+	* UIxAppointmentEditor.wox: added redirect in case user who is not
+	  allowed to edit view tries to do so
+
+2005-07-04  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalDayOverview.wox, UIxCalWeekOverview.wox,
+	  UIxCalWeekColumnsview.wox, UIxCalDayChartview.wox,
+	  UIxAppointmentProposal.wox, UIxCalDayListview.wox,
+	  UIxCalWeekChartview.wox, UIxAppointmentView.wox,
+	  UIxCalMonthOverview.wox, UIxCalWeekListview.wox,
+	  UIxAppointmentEditor.wox: removed printview links (commented out),
+	  removed resources where appropriate (cancelled for version 0.8)
+
+2005-06-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailContactEditor.wox: added a hidden field containing the contact
+	  content
+
+2005-03-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxCalWeekOverview.wox: changed the right corner URL yet again
+
+2005-02-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailMainFrame.wox: removed debug code, use new SOPE container tag
+	  to allow for frameless pages
+
+2005-02-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxTimeDateControl.wox: disable time control on demand
+
+	* UIxAppointmentEditor.m: correctly visualize until date for
+	  recurrences
+
+2005-02-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxMailContactList.wox: added prototypical inline edits in a table
+	  view
+
+	* created ChangeLog
+2005-08-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.28
+	
+	* moved classes from shared library back to bundle
+
+	* UIxContactEditorBase.m, UIxContactView.m: fixed some gcc 4.0 warning
+
+2005-07-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* English.lproj/Localizable.strings: added a missing semicolon
+	  (v0.9.27)
+
+2005-07-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxContactEditorBase.m: moved copyContact JS code to
+	  UIxContactEditor.js file (v0.9.26)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* English.lproj/Localizable.strings: added text for invalid emails
+	  (v0.9.25)
+
+2005-07-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxContactEditorBase.m: added a safeguard for vCard contacts
+	  (v0.9.24)
+
+2005-06-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* created a library containing shared base classes (for
+	  MailerContactsUI) (v0.9.23)
+
+2005-03-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* renamed "default.strings" to "Localizable.strings" (v0.9.22)
+
+2005-02-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxContactEditor.m: moved header file to own file (v0.9.21)
+
+	* UIxContactsListView.m: added ability in code to sort descending if
+	  the desc=1 query parameter is set (v0.9.20)
+
+	* UIxContactsListView.h: properly protected header file (v0.9.19)
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxContactEditor.m: changed to use NGLogging (v0.9.18)
+
+2004-10-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.17
+
+	* UIxContactEditor.[wox|m]: new parameters "mobile", "departmentNumber"
+	  and "l" passed to callback. Provide proper unescaping to the
+	  callback's parameters. (#985, #987)
+
+	* UIxContactView.wox: properly display new properties, suppress
+	  rendering of "Organization". (#985)
+
+	* {English.lproj|French.lproj}/default.strings: needed to change some
+	  labels according to new requirements.
+
+2004-10-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxContactsSelectionView.m: several properties provided to the
+	  callback need to be unescaped properly before being passed back.
+	  This is achieved by using the new SOGoJSStringFormatter in SOGoUI.
+	  (v0.9.16)
+
+2004-10-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxContactSelector.m: fixed wrong method name (v0.9.15)
+
+2004-10-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxContactSelector.m: moved helpers to UIxComponent (v0.9.14)
+
+2004-10-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.13
+
+	* UIxContactsSelectionView.m: pass more (previous empty) parameters
+	  to the JavaScript callback.
+
+	* UIxContactSelector.m: correctly compute the relative path to the
+	  "Contacts" URL.
+
+2004-09-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.12
+
+	* UIxContactEditor.[wox|m]: Copy from Anais functionality
+
+	* UIxContactsSelectionView.m: minor cleanup
+
+	* {English.lproj,French.lproj}/defaults.plist: new localizable string
+
+	* v0.9.11
+
+	* UIxContactSelector.m: changed width of satellite window to 800px
+
+	* UIxContactsSelectionView.m: hardcoded paths to stylesheets due to
+	  resource lookup problems.
+
+	* French.lproj/defaults.plist: copied the English strings here
+
+2004-09-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.10
+
+	* UIxContactsListView.h: new header for subclassers
+
+	* UIxContactsSelectionView.[m|wox]: new subclass of UIxContactsListView
+	  which is basically the same only in its own window frame to mimic
+	  the appearance of Anais.
+
+	* UIxContactSelector.[m|wox]: component for opening
+	  UIxContactsSelectionView in a separate window 
+
+	* product.plist: new method "select"
+
+2004-09-03  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxContactView.wox: added some more properties for display (v0.9.9)
+
+2004-09-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile.preamble: fixed for gsmake 1.9.2 build (v0.9.8)
+	
+2004-08-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.7
+
+	* English.lproj/default.strings: provided labels
+
+	* UIxContactsListView.wox, UIxContactView.wox, UIxContactEditor.wox:
+	  converted static strings into labels
+
+2004-08-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxContactsListView: added simple filtering (v0.9.6)
+
+	* UIxContactsListView: added simple sorting (v0.9.5)
+
+	* first working version of contacts UI (v0.9.4)
+
+	* removed GET from product.plist, the SoObject directly implements GET
+	  now and redirects to the view method (v0.9.3)
+	
+2004-08-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* product.plist: more fixes to product.plist (v0.9.2)
+
+	* product.plist: fixed package dependency, fixed category name (v0.9.1)
+
+2004-08-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* common.h: new file
+
+	* UIxContact*: added template views
+
+	* ChangeLog: created
+2005-07-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxPageFrame.m: workaround for an issue with [page name] (page name
+	  gets reset, so we use the page class instead) (v0.9.46)
+
+	* UIxPageFrame.m: added ability to auto-load per-page JavaScript files
+	  if appropriate resources are available (v0.9.45)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved all images and CSS to WebServerResources (v0.9.44)
+
+	* v0.9.43
+
+	* various minor code cleanups
+
+	* removed deprecated uix.css (lives in WebServerResources!)
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* calendar.css: further refined new css (v0.9.42)
+
+	* calendar.css, uix.css: added homepagefont and added 'title' class
+	  to use in the scheduler overview (v0.9.41)
+
+2005-07-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* English.lproj/Localizable.strings: removed label "You are here" and
+	  provided new label "User" (v0.9.40)
+
+2005-07-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.39
+
+	* UIxPageFrame.m: added new -
+	
+	* English.lproj/Localizable.strings: added new 'Home' and
+	  'Administration' labels
+
+	* English.lproj/Localizable.strings: added new 'Help' label (v0.9.38)
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* calendar.css: added appointment priority styles (v0.9.37)
+
+2005-03-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* renamed "default.strings" to "Localizable.strings" (v0.9.36)
+
+2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: include ../common.make (v0.9.35)
+
+2005-01-24  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxPageFrame.wox: additional debug output (v0.9.34)
+
+2005-01-21  Helge Hess <helge.hess@opengroupware.org>
+
+	* UIxTabView.m: fixed an include of WEExtensions (v0.9.33)
+
+2004-01-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* {English/French}.lproj/default.strings: changed encoding from
+	  ISO-Latin-1 to UTF-8, which is now the default (v0.9.32)
+
+2004-12-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* calendar.css: added CSS for "Schedule" (v0.9.31)
+
+2004-12-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxPageFrame.[wox,m]: added -ownerInContext debug info (v0.9.30)
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* calendar.css: added styles for others' appointments in
+	  printviews, so they are easy to distinguish (v0.9.29)
+
+	* UIxTabItem.m: changed to use NGLogging (v0.9.28)
+
+2004-10-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.27
+
+	* UIxPageFrame.wox: added Mail, fixed relative URL composition
+
+	* UIxPageFrame.m: removed URL processing, instead uses methods from
+	  UIxComponent
+
+	* *.lproj/default.strings: added label "Mail"
+
+2004-09-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxPageFrame.m: added item ivar (v0.9.26)
+
+	* UIxPageFrame.wox: improved debugging section (v0.9.25)
+
+2004-09-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* uix.css: new button_submit style for the Anais selector, looks
+	  similar to the mozilla submit button now (v0.9.24)
+
+2004-09-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxPageFrame.wox: display clientObject and object traversal stack
+	  if isUIxDebugEnabled is set (v0.9.23)
+
+2004-09-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: removed dependency on libNGScripting (v0.9.22)
+
+2004-08-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.21
+
+	* English.lproj/default.strings, French.lproj/default.strings:
+	  dictionaries for labels
+
+	* UIxPageFrame.wox, UIxAppNavView.wox: replaced constant strings with
+	  labels
+
+2004-08-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* started UIxSortButton (v0.9.20)
+
+	* v0.9.19
+
+	* UIxPageFrame.wox: navigation below the line, app selection above
+
+	* uix.css: make 'defaultfont' a generic class
+
+	* UIxPageFrame.wox: added top-level menu with links for Calendar and
+	  Contacts (v0.9.18)
+
+	* removed old components (UIxAppFrame, Header and Navigation) (v0.9.17)
+
+2004-08-24  Maxime Wacker  <mwacker@linagora.com>
+
+	* GNUmakefile.preamble: fixes for the build process (v0.9.16)
+
+2004-08-16  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* calendar.css: additional css for Anais uids (v0.9.15)
+
+	* calendar.css: additional css for other appointments (v0.9.14)
+
+2004-08-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxPageFrame.m: -title returns label for "OpenGroupware.org" when
+	  -isUIxDebugEnabled is NO. (v0.9.13)
+
+2004-08-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxPageFrame.wox: removed left side navigation completely as it
+	  currently doesn't make too much sense and contrasts with the
+	  user interface layout which already has been agreed about (v0.9.12)
+
+2004-08-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxWinClose.wox: removed rendering of (X) on Laurent's request
+	  (v0.9.11)
+
+2004-08-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxPageFrame subclasses from UIxComponent now, removed -SoUser
+	  because it's now in UIxComponent. (v0.9.10)
+
+2004-08-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxPageFrame.wox, UIxAppNavView.m: added labels (v0.9.9)
+
+2004-08-11    <helge@agenor.opengroupware.org>
+
+	* UIxPageFrame: minor fixes to UI (v0.9.8)
+
+2004-08-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* calendar.css: commented some styles out, because they don't really do
+	  what I think they should do. Someone with better knowledge of CSS
+	  should look into this. (v0.9.7)
+
+2004-08-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.6
+
+	* UIxPageFrame.wox: added javascript for onload action, some cosmetics
+
+	* calendar.css: added remaining CSS for printviews
+
+2004-08-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxPageFrame.wox: removed some navigation items to avoid confusion.
+	  Also applied some pretty printing. (v0.9.5)
+
+2004-07-30  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.4
+
+	* calendar.css: added CSS for printviews
+
+	* UIxPrintPageFrame.[wox|m]: new wrapper component for all views that
+	  require printing.
+
+2004-07-28  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* calendar.css: added CSS for weekcolumnsview (v0.9.3)
+
+2004-07-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.2
+
+	* UIxPageFrame.m: added convenience methods to access specific parts
+	  of the URL.
+
+	* UIxPageFrame.wox: fixed navigation URLs. Inserted references to
+	  rootURL where no content is currently available.
+
+	* UIxAppNavView.m: enhanced construction of navigation url path.
+
+2004-07-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* calendar.css: added styles for dayoverview's content.
+
+2004-07-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* calendar.css: added styles for dayoverview's calendar.
+
+2004-07-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* calendar.css: complete style for 'yearoverview' and fixed style in
+	  'monthoverview'.
+
+2004-07-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* UIxAppNavView.m: some fixes to navigation URLs
+
+	* UIxAppNavView.wox: fixed indention
+
+	* product.plist: properly export uix.css as a public resource
+
+2004-07-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxTabView.m: removed JavaScript and the involved access of -session
+
+2004-06-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: make categories on SOGoObject instead of SxFolder
+
+	* GNUmakefile: patches for different build/runtime environment
+
+	* created ChangeLog
+2005-08-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* added FHS installation (v0.9.36)
+
+2005-07-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoDateFormatter.m: hardened against nil arguments (v0.9.35)
+
+2005-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: changed -userFolderPath to generate the path to the
+	  activeUser, _NOT_ the owner (v0.9.34)
+
+2005-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxComponent.m: added fragile base class check (v0.9.33)
+
+2005-07-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: changed language lookup to meet the status quo
+	  (v0.9.32)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxComponent.m: minor code reorgs (v0.9.31)
+
+2005-07-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAptFormatter.[hm]: added -titlePlaceholder API for properly
+	  formatting appointments without titles (v0.9.30)
+
+2005-07-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* WOContext+UIx.[hm]: new category to WOContext, currently provides
+	  -isUIxDebugEnabled (v0.9.29)
+
+2005-07-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: moved -isAccessRestricted method to
+	  UIxComponent+Agenor (v0.9.28)
+
+2005-07-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.27
+	
+	* UIxComponent.m: implicitly set the context's queryPathSeperator
+	  when generating URIs used in redirects
+
+	* v0.9.26
+
+	* UIxComponent.m: added method -isAccessRestricted to indicate whether
+	  certain options might have to be disabled due to restrictions
+	  set by the customer
+
+2005-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxComponent.m: added method -isInvokedBySafeMethod to check whether 
+	  the current HTTP method is a safe one (eg HEAD/GET) (v0.9.25)
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAptFormatter.[hm]: new API. -stringForObjectValue: is deprecated
+	  now and should not be used anymore. Formatting needs a referenceDate
+	  in order to properly display time ranges. Time ranges are currently
+	  rendered in SOGoAptFormatter, but this should probably be delegated
+	  to a natural language aware auxiliary (date-)formatter. Also, some
+	  new formatting options have been introduced. (v0.9.24)
+
+2005-01-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoDateFormatter.[hm]: new method -setFrenchDateFormat: to override
+	  the default ISO format. This will be chosen depending on locale
+	  automatically. The full description uses this setting when generating
+	  the appropriate part of the description. (v0.9.23)
+
+2004-12-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAptFormatter.m: remove "appointment" prefix from tooltips
+	  (v0.9.22)
+
+2004-12-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAptFormatter.[hm]: new option for formatter (v0.9.21)
+
+	* SOGoAptFormatter.[hm]: added ability to set custom title for private
+	  appointments. (v0.9.20)
+
+2004-12-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAptFormatter.[hm]: added formatting for private apts, additional
+	  cleanup (v0.9.19)
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: changed to use NGLogging (v0.9.18)
+
+2004-10-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: rewrote handling of queryParameters, these get
+	  constructed lazily now (v0.9.17)
+
+2004-10-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoJSStringFormatter.[hm]: new formatter to properly escape certain
+	  strings passed to JavaScript (v0.9.16)
+	  
+2004-10-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: changed the implementation of -ownPath and fixed a
+	  bug in -userFolderPath (v0.9.15)
+
+2004-10-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: added some helper methods for computing relative
+	  paths within the application (v0.9.14)
+
+2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxComponent.m: minor code cleanups (v0.9.13)
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.12
+
+	* GNUmakefile.preamble: fixed library dependencies (used wrong project
+	  name)
+
+	* SOGoAptFormatter.m: minor code cleanups, fixed issue on MacOSX
+
+2004-08-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.11
+
+	* SOGoDateFormatter.m: minor cleanups
+
+	* UIxComponent.m: fixed includes to fix warnings
+
+	* added common.h
+
+2004-08-24  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: new date related methods moved here from UIxCalView
+	  (v0.9.10)
+
+2004-08-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: new method -isUIxDebugEnabled, triggered by new
+	  default "SOGoUIxDebugEnabled" (v0.9.9)
+
+2004-08-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.8
+
+	* SOGoAptFormatter.[hm]: added new formatter for appointments.
+
+	* UIxComponent.m: added warning.
+
+	* GNUmakefile: added SOGoAptFormatter.[hm]
+
+2004-08-11  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.[hm]: added -SoUser (v0.9.7)
+
+2004-08-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.6
+	
+	* SOGoDateFormatter.[hm]: added fast localizable date formatter.
+
+	* GNUmakefile: added SOGoDateFormatter.[hm]
+
+2004-07-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: added "hm" queryParameter to add hour/minute part to
+	  selectedDate which is necessary for appointment proposals. Removed
+	  all additional stuff from -dateForDateString: and moved this to
+	  -selectedDate. IMHO this is always high-level behaviour which needs to
+	  be refined in the appropriate high-level method, not at conversion
+	  level. (v0.9.5)
+
+2004-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.[hm]: renamed some of the labels to better reflect the
+	  intention (and to avoid name clashes) (v0.9.4)
+
+2004-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.[hm]: date specific labels (weekday names, month names)
+	  (v0.9.3)
+
+2004-07-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.[hm]: new method -labelForKey: implemented very similar to
+	  new WOLabelAssociation in SOPE. Also implemented -locale. (v0.9.2)
+
+2004-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* UIxComponent.m: new method -backendTimeZone.
+
+2004-07-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* UIxComponent.m: introduced 'viewTimeZone' method and adds some
+	  timezone correction to date methods
+
+2004-06-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: make categories on SOGoObject instead of SxFolder
+
+	* GNUmakefile: patches for different build/runtime environment
+
+	* created ChangeLog
+2005-08-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile: added FHS installation of sogod-0.9 (v0.9.41)
+
+	* SOGo.m: added class security declarations (previously in
+	  product.plist of MainUI), ensure that core SOGo SoClasses are loaded
+	  (v0.9.40)
+
+	* v0.9.39
+
+	* moved MainUI product bundle to UI/MainUI
+
+	* SOGo.m: fixed some gcc 4.0 warnings
+
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: protect homepage using SOPE access control (v0.9.38)
+
+	* SOGoRootPage.m: redirect authenticated users to their login page
+	  (v0.9.37)
+
+2005-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* homepage.js: fixed post to send an empty string instead of null -
+	  this works in Firefox on MacOSX but fails on Windows (v0.9.36)
+
+2005-07-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.35
+
+	* README: updated with new default description
+
+	* SOGoUserHomePage.wox: in case user is not authorized to change the
+	  internet access flag, the rendered text is different now
+
+	* English.lproj/Localizable.strings: provide new label for case that
+	  user is not allowed to change internet access
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: fixed Cocoa compilation (v0.9.34)
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved SOGoUser and SOGoAuthenticator to libSOGo (v0.9.33)
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoUserHomePage.m: vacation message state is now properly being
+	  retrieved from AgenorUserManager (v0.9.32)
+
+	* v0.9.31
+
+	* SOGoUserHomePage.[m, wox]: added internet access lock
+	  display/modification and vacation state (currently only faked)
+
+	* homepage.js: JavaScript in use on the homepage
+
+	* English.lproj/Localizable.strings: removed old labels and added a
+	  bunch of new labels
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* v0.9.30
+	
+	* SOGoAuthenticator.m: create SOGoUser objects
+	
+	* added 'SOGoUser' object/class as a subclass of SoUser, using this
+	  object various Agenor properties like cn or email can be determined
+	  (will use the AgenorUserManager to retrieve such)
+
+2005-07-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* README: updated for new default 'SOGoAllowsUnrestrictedAccess'
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.29
+
+	* README: updated defaults documentation
+
+	* SOGo.m: added new default 'SOGoEnableDoubleReleaseCheck' for
+	  debugging of NSAutoreleasePool issues
+
+2005-03-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoProductLoader.m: do not try to load directories without
+	  extensions (v0.9.28)
+
+2005-03-23  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* renamed "default.strings" to "Localizable.strings" (v0.9.27)
+
+2005-02-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile: properly install bundle in FHS (v0.9.26)
+
+2005-02-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoProductLoader.m: fixed product loader for FHS and Cocoa (0.9.25)
+
+2005-02-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGo.m: added a proper application 'name' for the WEResourceManager,
+	  use WEResourceManager per default (v0.9.24)
+
+2005-02-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGo.m: corrected incorrect use of logging (v0.9.23)
+
+2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* GNUmakefile.preamble: fixed linking on MacOSX (v0.9.22)
+
+	* v0.9.21
+	
+	* SOGoProductLoader.m: perform properly versioned plugin lookups (load
+	  bundles from Library/SOGo-0.9 instead of Library/SOGo)
+	
+	* sogod is now a tool, not a .woa anymore
+
+	* SOGo.m: minor cleanup in locale code, removed some dead code
+	  (v0.9.20)
+
+	* GNUmakefile: some support for tool compilation (does not work yet)
+
+	* sogod.m: moved application class to own file, started to work on
+	  daemon/product separation (v0.9.19)
+
+2004-01-07  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* {English/French}.lproj/default.strings: changed encoding from
+	  ISO-Latin-1 to UTF-8, which is now the default (v0.9.18)
+
+2004-12-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoUserHomePage.m: added defaultAction to redirect to
+	  "Calendar/" (v0.9.17)
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoProductLoader.m, sogod.m: changed to use NGLogging (v0.9.16)
+
+2004-10-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoUserHomePage.[wox|m]: changed hrefs to be computed dynamically
+	  instead of being static (v0.9.15)
+
+2004-10-18  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.14
+
+	* SOGoUserHomePage.wox: Changed label for "eMail" to "Mail" for 
+	  consistency
+	
+	* *.lproj/default.strings: added label "Mail"
+
+2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* sogod.m: return 404 for favicon.ico queries (v0.9.13)
+
+	* fixed title bindings to const: in .wox (should be label:?) (v0.9.12)
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* sogod.m: fixed a compile warning on OSX (v0.9.11)
+
+2004-09-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoUserHomePage.wox: added link to Mail (v0.9.10)
+
+2004-08-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.9
+
+	* English.lproj/default.strings, French.lproj/default.strings:
+	  dictionaries for labels
+
+	* SOGoUserHomePage.wox: replaced constant strings with labels
+
+2004-08-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* GNUmakefile.preamble: fixed superflous libjs (v0.9.8)
+
+2004-08-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* added SOGoGroupPage and SOGoGroupsPage (default views for the group
+	  folders) (v0.9.7)
+
+	* sogod.m: do not set SoRootURL manually (v0.9.6)
+
+2004-08-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* French.lproj/Locale: minor changes to capitalization (v0.9.5)
+
+2004-07-27  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* sogod.m: added static SoRootURL to context (v0.9.4)
+
+2004-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* sogod.m, */Locale: converted to UTF-8 for better editability (v0.9.3)
+
+2004-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.2
+
+	* sogod.m: added localization methods. Current locale is put into 
+	  WOContext upon first request. All locales are cached in the 
+	  application object.
+
+	* [English,French].lproj: created. Put appropriate Locale 
+	  representations here.
+
+	* GNUmakefile: added LANGUAGES and LOCALIZED_RESOURCES.
+
+	* SOGoRootPage.wox: some debug code (for locales).
+
+	* created ChangeLog.
+2005-12-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUMakefile.preamble: provide all necessary library dependencies
+	  for certain broken linkers - this won't harm platforms sporting
+	  more capable linkers (v0.9.33)
+
+2005-08-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* added FHS installation (v0.9.32)
+
+2005-07-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* sql: added missing priority quickfield to SQLite tables (v0.9.31)
+
+2005-07-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OCSContactFieldExtractor.m: do not crash if the content is not a
+	  proper property list, added ability to extract fields from a vCard
+	  (v0.9.30)
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added sql/profile-create.psql to create the user-profile database
+	  table (not strictly related to OCSContentStore)
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* iCalEntityObject+OCS.m: fixed stupid extraction bug (v0.9.29)
+
+2005-07-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.28
+
+	* added test_quick_extract.m tool to test the quick-field extraction
+
+	* OCSiCalFieldExtractor.m: properly deal with the iCal parser returning
+	  just the iCalEvent
+
+2005-07-04  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.27
+
+	* iCalEntityObject+OCS.[hm]: new category used by OCSiCalFieldExtractor
+
+	* OCSiCalFieldExtractor.m: extract priority from iCal event
+
+	* appointment.ocs: added priority
+
+	* sql/generate-folderinfo-sql-for-users.sh: added priority quick field
+
+2005-03-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved most of the code to SOPE 4.5 sope-gdl1/GDLContentStore
+	  (v0.9.26)
+
+2005-03-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* appointment.ocs: added missing 'partstates' field (v0.9.25)
+
+2005-03-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.24
+
+	* ocs_gensql.m: started tool to create SQL CREATE from ocs model file
+
+	* OCSFolderType.m: small change to the factory API, changed to use
+	  NGResourceLocator
+
+2005-03-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OCSFolderManager.m: fixed a bug in subfolder listing (v0.9.23)
+
+2005-03-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.22
+
+	* appointment.ocs: added 'cycleenddate' and 'cycleinfo' to address
+	  previous performance issues
+
+	* OCSiCalFieldExtractor.m: set 'cycleenddate' and 'cycleinfo' for
+	  recurrent events. Reverted setting of 'enddate' to the previous
+	  behaviour since 'cycleenddate' is dedicated to the task now
+	
+	* iCalRepeatableEntityObject+OCS.[hm]: new category used by the
+	  OCSiCalFieldExtractor to extract cycleInfo in an appropriate format
+
+	* sql/generate-folderinfo-sql-for-users.sh,
+	  sql/foldertablecreate-helge-privcal.psql,
+	  sql/foldertablecreate-helge-privcal.sqlite,
+	  sql/generate-folderinfo-sql-for-users-sqlite.sh: adjusted to new
+	  schema
+
+2005-03-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OCSFolder.m: added support for storing content and quick info in
+	  the same table (untested) (v0.9.21)
+
+2005-02-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.20
+
+	* OCSFolderManager.m: removed quoting of SQL table and column names
+	  (breaks with SQLite and isn't necessary for PG), fixed URL pooling
+	  for SQLite
+
+	* NSURL+OCS.m: use tablename for last path component
+
+2005-02-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* OCSiCalFieldExtractor.m: uses new iCalEvent API to determine correct
+	  'enddate' for recurrent events. This is an optimization which can
+	  save quite some time for complex rules. (v0.9.19)
+
+2004-12-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.18
+
+	* OCSiCalFieldExtractor.m: extract participants' state
+
+	* sql/generate-folderinfo-sql-for-user.sh, sql/appointment-create.psql,
+	  sql/foldertablecreate-helge-privcal.psql: updated with new schema.
+
+2004-12-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* OCSiCalFieldExtractor.m: partmails + cn's are concatenated by '\n'
+	  now - this directly eliminates any ambiguities. Also, instead of
+	  using 'email' for partmails and orgmail, the extractor uses the
+	  'rfc822Email' value which strips away any preceeding 'mailto:'
+	  prefix, compacting the representation and speeding up comparison.
+	  Also, "iscycle", "isallday" and "isopaque" are now provided by
+	  NGiCal and thus always extracted (v0.9.17)
+
+2004-12-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* sql/generate-folderinfo-sql-for-user.sh: fixed critical error in
+	  Contacts folder_info, type was 'Appointment' but MUST be 'Contact'
+	  (v0.9.16)
+
+2004-12-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* sql: updated all generation scripts to the latest version (v0.9.15)
+
+2004-12-09  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.14
+
+	* appointment.ocs: added "ispublic", "isopaque", "status" and
+	  "orgmail".
+
+	* OCSiCalFieldExtractor.m: updated to extract new fields (see above)
+
+	* sql: updated generate-folderinfo-sql-for-users.sh
+
+2004-10-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OCSFolder.m: added new method -fetchContentsOfAllFiles method which
+	  fetches the contents of all files stored in the folder (required for
+	  iCal generation, such bulk fetches should be avoided if possible!)
+	  (v0.9.13)
+
+2004-10-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* OCSStringFormatter.[hm]: minor cleanup (v0.9.12)
+
+	* v0.9.11
+
+	* OCSStringFormatter.[hm]: new class to format strings according to
+	  Database requirements (escaping etc.).
+
+	* OCSFolder.m: uses new OCSStringFormatter now.
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed compilation on MacOSX (v0.9.10)
+
+2004-09-10  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.9
+
+	* fixed some gcc warnings
+
+	* GNUmakefile.preamble: added pathes to compile against an FHS SOPE
+
+	* OCSiCalFieldExtractor.m: fixed type of sequence iCalEvent field
+
+2004-09-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile: install type models into $(GNUSTEP_USER_ROOT) (v0.9.8)
+
+2004-08-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.7
+	
+	* OCSChannelManager.m: use PostgreSQL as adaptor, not PostgreSQL72
+	
+	* OCSFolder.m: added support for doing folder sorting in SQL
+
+2004-08-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.6
+
+	* added OCSContactFieldExtractor
+	
+	* sql: added sample contact folder create scripts
+	
+	* OCSFolderType.m: read extractor class name from type model
+
+	* OCSFolderManager.m: added contact type model per default (v0.9.5)
+
+2004-08-25  Helge Hess  <helge.hess@skyrix.com>
+	
+	* GNUmakefile: automatically install OCSTypeModels (v0.9.4)
+	
+2004-08-15  Helge Hess  <helge.hess@skyrix.com>
+	
+	* OCSFolder.m: added content deletion (v0.9.3)
+	
+	* OCSFolder.m: added sanity check to store method (v0.9.2)
+	
+2004-08-14  Helge Hess  <helge.hess@skyrix.com>
+	
+	* v0.9.1
+	
+	* OCSiCalFieldExtractor.m: extract new quick fields: location, 
+	  partmails, sequence (does not yet handle allday and cycle due to
+	  NGiCal restrictions)
+	
+	* appointment.ocs, sql/foldertablecreate-helge-privcal.psql, 
+	  sql/testapt-agenor-helge-privcal.psql, sql/appointment-create.psql:
+	  added quick fields: isallday, iscycle, location, partmails, sequence
+	
+	* started ocs_recreatequick tool intended for recreating a quick table
+	  based on the content table of a folder
+	
+2004-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OCSChannelManager.m: fixed a bug in the channel GC which resulted
+	  in an exception during the GC NSTimer
+
+2004-07-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* improved error handling in various files
+
+2004-07-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OCSChannelManager.m: added garbage collector for channel pools
+
+2004-06-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* OCSChannelManager.m: implemented pooling
+
+	* OCSFolder.m: added quick fetches
+
+	* GNUmakefile.preamble: fix link path
+
+	* GNUmakefile (libOGoContentStore_HEADER_FILES_INSTALL_DIR): install
+	  headers in OGoContentStore
+
+	* GNUmakefile.preamble (ocs_ls_TOOL_LIBS): added static dependencies
+	  for OSX
+
+2004-06-30  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* ocs_cat.m, ocs_ls.m, ocs_mkdir.m: fixed for gnustep compile.
+
+2004-06-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* created ChangeLog
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* common.make: fixed for OSX compilation
+
+2005-07-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* common.make: provide default install dir and bundle extension to
+	  WO bundles
+
+2005-03-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* common.make: link against GDLContentStore instead of OGoContentStore
+
+2005-02-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* common.make (ADDITIONAL_LIB_DIRS): removed SOGoLogic from the linking
+	  path
+
+2005-02-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* common.make: removed dependency to removed libSOGoLogic
+
+2005-02-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.25
+
+	* GNUmakefile.preamble: added libNGiCal as a dependency
+
+	* Appointments/SOGoAppointmentObject.[hm]: added -event as a 
+	  convenience to retrieve a complete iCalEvent from the stored
+	  representation. This is used by SOGoAppointmentFolder to perform
+	  necessary range calculations on recurrent events.
+
+	* Appointments/SOGoAppointmentFolder.[hm]: extended -fixupRecord: and
+	  -fixupRecords: to accept a fetchRange: as second parameter. This
+	  is used for cyclic (recurrent) events to determine the required
+	  'amount' of fixup that needs to be done. During -fixupRecords: its
+	  correctly determined now whether the record describes a recurrent
+	  event - if that's the case, the whole event is retrieved and the
+	  record gets duplicated (memory efficiently) as necessary to resemble
+	  the appropriate fetch information in the desired range.
+
+2004-12-22  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.24
+
+	* Appointments/SOGoAppointmentFolder.[hm]: added -fetchFreebusy...
+	  Removed all -fetchXXXInfosFromFolder: methods. There's a single
+	  method to override now, making the job in SOGoGroupAppointmentFolder
+	  much easier (to understand).
+
+	* Appointments/SOGoGroupAppointmentFolder.m: added necessary fetch
+	  abstraction.
+
+2004-12-17  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Appointments/SOGoAppointmentFolder.[hm]: added "partstates" to
+	  coreInfos for fetching. Also added new API to fetch a stripped down
+	  version of coreInfos, suitable for overviews. (v0.9.23)
+
+2004-12-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Appointments/SOGoAppointmentFolder.m: default redirect is now
+	  "schedule" instead of "weekoverview" (0.9.22)
+
+	* Appointments/SOGoAppointmentFolder.m: cleanup (v0.9.21)
+
+	* Appointments/SOGoAppointmentFolder.m: compile fix (v0.9.20)
+
+2004-12-13  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.19
+
+	* Appointments/SOGoAppointmentFolder.[hm]: new method to fetch generic
+	  fields (better suited for freebusy), fixed some "mailto:" prefix
+	  madness
+
+	* Appointments/SOGoAppointmentFolder.m: fixed bug in
+	  -uidsFromICalPersons: (v0.9.18)
+
+2004-12-10  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Appointments/SOGoAppointmentFolder.m: added new quickinfo attributes
+	  for fetching (v0.9.17)
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* GNUmakefile: added Sieve product
+
+	* Appointments/SOGoGroupAppointmentFolder.m,
+	  Appointments/SOGoAppointmentFolder.m, SOGo/SOGoContentObject.m,
+	  SOGo/SOGoUserFolder.m: changed to NGLogging.
+
+2004-08-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* added "Mailer" product
+
+2004-08-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* added "Contacts" product
+
+	* ChangeLog: created
+2005-08-01  Helge Hess  <helge.hess@skyrix.com>
+
+	* added FHS installation (v0.9.70)
+
+	* SOGoObject.m: added class security declarations (previously in
+	  product.plist of MainUI) (v0.9.69)
+
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoUser.m: added a method to fetch share/emitter address pairs from
+	  the AgenorUserManager (v0.9.68)
+
+	* AgenorUserManager.m: rewrote to use NSMutableDictionary instead of
+	  SOGoLRUCache. Flush caches every hour (configurable using
+	  'AgenorCacheCheckInterval' default). Added method to retrieve the
+	  shares and the emitter emails in one step. (v0.9.67)
+
+2005-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.66
+
+	* SOGoContentObject.m: properly quote etag
+
+	* SOGoObject.m: changed to check etag when the content is accessed in
+	  WebDAV mode and return a 304 if the tag stayed the same.
+	  Do not strip quotes from etags in if-*match headers.
+	  Properly implement if-none-match for GET requests.
+
+	* SOGoContentObject.m: moved generic etag checking to SOGoObject (to
+	  share implementation with Mailer) (v0.9.65)
+
+2005-07-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* AgenorUserManager.m: properly implemented internet/intranet vacation
+	  message status detection (v0.9.64)
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.63
+
+	* SOGoAppointment.[hm]: new API to cancel appointments, NSCopying
+	  support
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.62
+
+	* SOGoGroupFolder.m, SOGoUser.m: fixed a gcc 4.0 warning
+
+	* GNUmakefile.preamble: properly use SYSTEM_LIB_DIR
+
+	* v0.9.61
+
+	* SOGoContentObject.m: fixed a Cocoa warning
+
+	* GNUmakefile.preamble: added proper linking flags for OSX
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.60
+
+	* SOGoAppointment.[hm]: added 'method' and 'userComment' accessors
+
+	* SOGoAppointmentICalRenderer.m: properly render 'method' of
+	  appointment if it's set - otherwise assume 'REQUEST'
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoUser.m: added -homeFolderInContext: and
+	  -schedulingCalendarInContext: methods (v0.9.59)
+
+	* moved in SOGoUser and SOGoAuthenticator from Main (v0.9.58)
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* AgenorUserManager.[hm]: added accessors and cache for the
+	  'mineqMelReponse' flag. Please note that the implementation isn't
+	  fully fleshed out because the technical specification isn't correct.
+	  (v0.9.57)
+
+	* AgenorUserManager.[hm]: added accessors and cache for the
+	  'mineqOgoAccesInternet' flag (v0.9.56)
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContentObject.m: added empty davCopy/davMove methods (v0.9.55)
+
+	* v0.9.54
+	
+	* SOGoContentObject.m: added support for special 'new' key (server will
+	  assign a name and add the new location in a special response header)
+	
+	* SOGoFolder.m: added +globallyUniqueObjectId (previously the method
+	  was duplicated in each subclass)
+	  
+	* SOGoContentObject.m: added transactionally save etag-checks in PUT
+	  (use the etag value as the baseVersion in the content store)
+	  (v0.9.53)
+
+2005-07-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.52
+
+	* SOGoObject.m: properly add etag during a GET (if available)
+	
+	* SOGoContentObject.m: generate etag from content object version, added
+	  methods to check request preconditions, check preconditions prior
+	  running a PUT, added new etag after running a PUT
+	  
+	* SOGoObject.m, SOGoFolder.m: added +version methods to detect fragile
+	  base class issues (v0.9.51)
+
+	* SOGoFolder.m: changed to use plain column names (v0.9.50)
+
+2005-07-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoUserFolder.m: forbid access (403) to SOGoGroupFolders if access
+	  is not from the Intranet (v0.9.49)
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* AgenorUserDefaults.m: added automagic profile row creation (v0.9.48)
+
+	* AgenorUserDefaults.m: implemented saving of changed profiles
+	  (v0.9.47)
+
+2005-07-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* AgenorUserManager.[hm]: new API for extracting UIDs from iCalPersons
+	  (v0.9.46)
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.45
+	
+	* AgenorUserDefaults.m: properly fetch profile contents
+	
+	* agenor_defaults.m: read operation can now return all defined keys
+	
+	* v0.9.44
+
+	* AgenorUserDefaults.m: added typed value accessors and proper
+	  initializers
+	
+	* AgenorUserManager.m: added 'AgenorProfileURL' default to configure
+	  the database location of the user profile table
+	
+	* finished agenor_defaults tool
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.43
+
+	* added agenor_defaults tool to test defaults functionality
+
+	* AgenorUserManager.[hm]: added -getUserDefaultsForUID: method to
+	  retrieve the profile of a user (incomplete)
+
+	* added AgenorUserDefaults class (incomplete) as a wrapper for the
+	  profile data of Agenor users
+
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.42
+	
+	* added agenor_emails4uid tool to check whether the
+	  uid=>allowed-from-mails discovery in AgenorUserManager works
+	
+	* AgenorUserManager.m: added -getSharedMailboxEMailsForUID: method to
+	  discover the shared emails the user is allowed to post from,
+	  added caching of shared emails and Cyrus-logins
+
+	* WOContext+Agenor.m: use SOGoInternetDetectQualifier for detecting
+	  Internet access level (v0.9.41)
+
+2005-07-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* WOContext+Agenor.[hm]: new category for discovering if the current
+	  context is via access from the intranet. (v0.9.40)
+
+2005-07-07  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* added agenor_shares4uid tool to check whether the uid=>shared mailbox
+	  discovery in AgenorUserManager works
+	
+	* AgenorUserManager.m: fixed a major string scanning bug in
+	  _serverCandidatesForMineqMelRoutage: method,
+	  added -getSharedMailboxAccountStringsForUID: method to discover
+	  shared IMAP4 accounts (v0.9.39)
+
+2005-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* AgenorUserManager.m: added a simple -description method (v0.9.38)
+
+	* added agenor_email2uid.m tool to check whether the email=>uid mapping
+	  in AgenorUserManager works
+	  
+2005-07-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.37
+
+	* SOGoUserFolder.m: added 'freebusy.ifb' as an object to the
+	  collection for proper display via DAV.
+
+	* SOGoAppointmentICalRenderer.m: fixed header inclusion
+
+	* AgenorUserManager.[hm]: added proposed future API for discovering
+	  URLs for free/busy information (implementation currently returns
+	  nil)
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointment.m: fixed a wrong -release (v0.9.36)
+
+2005-03-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoObject.m: fixed DELETEAction to return a boolean if the delete
+	  was successful (required by SoObjectRequestHandler) (v0.9.35)
+
+2005-03-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* changed to use GDLContentStore (v0.9.34)
+
+2005-03-03  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoGroupFolder.m: switched logging to NGLogging (v0.9.33)
+
+2005-03-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* NSObject+AptComparison.[hm]: new comparison method. This is used
+	  in SOGoAppointmentFolder currently. (v0.9.32)
+
+2005-02-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* AgenorUserManager.m: refactoring of the LDAP fetch code, added the
+	  'SOGoFallbackIMAP4Server' default to configure the IMAP4 server when
+	  LDAP is disabled (v0.9.31)
+
+2005-02-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* moved in code from libSOGoLogic (unnecessarily a separate library)
+	  (v0.9.30)
+
+2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoObject.m: fixed a warning on MacOSX (v0.9.29)
+
+2005-02-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoObject.h: added prototype for GETAction (v0.9.28)
+
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* added -outlookMessageClass / -outlookFolderClass (v0.9.27)
+
+2004-10-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoFolder: added method -fetchContentStringsAndNamesOfAllObjects
+	  which fetches the contents of all folders objects (avoid to use this
+	  high overhead method!). Required for iCalendar file generation.
+	  (v0.9.26)
+
+2004-10-08  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* SOGoUserFolder.m: enhanced object lookup so that when a Calendar
+	  is opened with an extensions (eg "Calendar.ics") (v0.9.25)
+	
+	* SOGoFolder.m: added facility to define default extensions (v0.9.24)
+
+	* SOGoObject.m: fixed not implemented return status (501, not 502)
+	  (v0.9.23)
+	
+	* SOGoUserFolder.m: do not try to fetch file names in this folder
+	  (v0.9.22)
+
+	* v0.9.21
+
+	* SOGoContentObject.m: added PUTAction:
+
+	* SOGoObject.m: implemented special WebDAV support in GETAction:
+
+	* SOGoFolder.m: added -toOneRelationshipKeys method (enables listing of
+	  contained objects in WebDAV), added container name to logging prefix,
+	  explicitly mark as WebDAV collection
+
+	* SOGoContentObject.m: mark as WebDAV non-collection
+
+2004-10-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoUserFolder.m: added toManyRelationshipKeys, marked as WebDAV
+	  collection (v0.9.20)
+
+2004-09-29  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* SOGoObject.m: added -fetchSubfolders method to resolve all 
+	  toManyRelationshipKeys to SOPE objects (v0.9.19)
+	
+2004-09-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoObject.m: added a default GET method which redirects to
+	  url + "/view" (v0.9.18)
+
+	* SOGoObject.m(-description): added name of container (v0.9.17)
+
+2004-09-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoGroupFolder.m: separate -resetFolderCaches method from -sleep
+	  (v0.9.16)
+
+2004-09-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoUserFolder.m: map "Mail" key to SOGoMailAccounts object (v0.9.15)
+
+2004-09-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.14
+
+	* GNUmakefile.preamble: fixed for gsmake 1.9.2 build
+
+	* GNUmakefile: include ../../Version also
+
+2004-08-26  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoUserFolder.m: added ability to create Contacts folder (v0.9.13)
+
+2004-08-24  Maxime Wacker  <mwacker@linagora.com>
+
+	* GNUmakefile.preamble: fixes for the build process (v0.9.12)
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+	
+	* SOGoCustomGroupFolder.m: added -initWithUIDs:inContainer: for using
+	  the groups folder for internal group fetches (v0.9.11)
+	
+	* SOGoContentObject.m: updated multi-save things (which belong into the
+	  SOGoAppointmentObject class), implement -sleep to release the content
+	  (v0.9.10)
+
+2004-08-15  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoContentObject.m: implement first version of -delete (v0.9.9)
+
+	* SOGoObject.[hm], SOGoUserFolder.[hm]: implemented SOPE 
+	  -ownerInContext: (v0.9.8)
+
+2004-08-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.7
+
+	* SOGoGroupFolder.m: renamed -reset method to -sleep (called by SOPE)
+
+	* SOGoObject.m: added SOPE -sleep method (resets container and can be
+	  called by subclasses)
+
+	* SOGoGroupFolder.m: made the folder found note log a debug log
+
+2004-08-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.6
+
+	* SOGoUserFolder.m: added "Groups" folder name and lookup
+
+	* added: SOGoGroupsFolder, SOGoGroupFolder, SOGoCustomGroupFolder
+
+2004-07-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoObject.m: added -delete method (but not yet implemented)
+
+2004-06-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContentObject.m: added -contentAsString method
+
+	* created ChangeLog
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoSieveScriptObject.m: fixed a gcc 4.0 warning (v0.9.11)
+
+2005-07-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoSieveBaseObject.[hm]: removed unused -imap4Client method
+	  (v0.9.10)
+
+	* SOGoSieveBaseObject.m: updated to use new NGImap4 API (v0.9.9)
+
+2005-02-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoSieveScriptObject.m: fixed a compile warning on MacOSX (v0.9.8)
+
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoSieveScriptObject.m, SOGoSieveScriptsFolder.m: assigned
+	  folder/message class (v0.9.7)
+
+2005-01-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoSieveScriptObject.m: implemented Sieve script upload (v0.9.6)
+
+	* some work on script upload (v0.9.5)
+
+2004-12-03  Helge Hess  <helge.hess@skyrix.com>
+	
+	* SOGoSieveScriptObject.m, SOGoSieveScriptsFolder.m: added script
+	  activation action (v0.9.4)
+	
+	* v0.9.3
+	
+	* SOGoSieveScriptObject.m: added ability to fetch content
+	
+	* SOGoSieveScriptsFolder.m: added ability to lookup/construct
+	  SOGoSieveScriptObject's
+	
+2004-11-28  Helge Hess  <helge.hess@skyrix.com>
+	
+	* added list capability, does not work with 'dotted' logins? (v0.9.2)
+	
+2004-11-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* started Sieve product
+2005-08-02  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoAppointmentObject.[hm]: added method to change participation
+	  status of logged-in user (v0.9.50)
+
+2005-07-21  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentFolder.m: place a hint ('isRecurrent') into flattened
+	  rows created from recurrent events so these can be signaled in the
+	  UI (v0.9.49)
+
+2005-07-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.48
+
+	* SOGoAptMailInvitation.m, SOGoAptMailUpdate.m, SOGoAptMailDeletion.m,
+	  SOGoAptMailRemoval.m: updated to contain new classes for additional
+	  languages
+
+	* SOGoAptMailInvitation.wo, SOGoAptMailUpdate.wo,
+	  SOGoAptMailDeletion.wo, SOGoAptMailRemoval.wo: replaced with language
+	  dependend counterparts
+
+	* SOGoAptMail{English,French}Invitation.wo,
+	  SOGoAptMail{English,French}Update.wo,
+	  SOGoAptMail{English,French}Deletion.wo,
+	  SOGoAptMail{English,French}Removal.wo: new language dependend
+	  templates. Please note that due to an unresolved bug we cannot use
+	  the standard WO lookup mechanism here.
+
+2005-07-15  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.47
+
+	* SOGoAptMailDeletion.[wo,m]: new template being used when appointment
+	  is deleted
+
+	* SOGoAptMailRemoval.[wo,m]: new template being used when attendee is
+	  removed from appointment
+
+	* SOGoAppointmentObject.m: now sends emails for removal of attendees
+	  and deletion of appointment
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.m: fixed Cocoa warnings (v0.9.46)
+
+	* SOGoAppointmentFolder.m: fixed gcc 4.0 warnings (v0.9.45)
+
+2005-07-14  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.44
+
+	* SOGoAppointmentFolder.m: explicitly set encoding for text and
+	  calendar attachment parts
+
+	* SOGoAptMailNotification.m: added -appointmentURL accessor
+
+	* SOGoAptMailInvitation.wo, SOGoAptMailUpdate.wo: display
+	  -appointmentURL instead of -homePageURL
+
+	* v0.9.43
+
+	* SOGoAppointmentFolder.m: changed redirect from 'schedule' to
+	  'weekoverview'
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.m: moved +globallyUniqueObjectId method to
+	  SOGoFolder.m baseclass (v0.9.42)
+
+2005-07-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.m: added a method to determine the resource
+	  name from a vevent UID (v0.9.41)
+
+2005-07-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentObject.m: tries ambitiously to detect the baseURL in
+	  -homePageURLForPerson: now. This code doesn't really belong here
+	  but currently there's no appropriate controller for dealing with it
+	  around. Also removed mail notification testing code. (v0.9.40)
+
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed compilation (v0.9.39)
+
+2005-07-12  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.38
+	
+	* GNUmakefile: changed inclusion of bundle.make to wobundle.make
+	  because of new components
+
+	* v0.9.37
+
+	* SOGoAptMailNotification.[hm]: new component forming the basis for
+	  the mail notification templates
+
+	* SOGoAptMailInvitation.[wo, m]: invitation mail template, sent to all
+	  new attendees of an appointment
+
+	* SOGoAptMailUpdate.[wo, m]: update mail template, sent to all
+	  attendees when appointment time is changed
+
+	* SOGoAppointmentObject.m: rewritten to use the iCalEventChanges object
+	  from NGiCal to discover changes to saved appointments. Additionaly
+	  email notifications are emitted on certain occasions (this is not
+	  full iMip, yet). In case the appointment time changes, state for
+	  all attendees is reset to NEEDS-ACTION.
+
+2005-07-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentFolder.m: added 'partmails' and 'partstates' to
+	  infos returned by -fetchOverviewInfosFrom:to: (v0.9.36)
+
+2005-07-06  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* v0.9.35
+
+	* GNUMakefile: added SOGoFreeBusyObject.m
+
+	* product.plist: added SOGoFreeBusyObject
+
+	* SOGoFreeBusyObject.[hm]: new class resembling free/busy information
+	  for a particular user. Because free/busy information isn't solely
+	  based upon appointments, this is now a part of the user folder.
+	  However the information contained therein is still based on
+	  information provided by appointments, only. This should be fixed in
+	  a later release.
+
+	* SOGoAppointmentFolder.m: new API to lookup freeBusyObjects for an
+	  array of uids.
+
+2005-07-05  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentFolder.m: fetch new priority field in core infos
+	  (v0.9.34)
+
+2005-07-04  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentFolder.m: fetch new priority field in overview infos
+	  (v0.9.33)
+
+2005-03-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.m: changed to use GDLContentStore (v0.9.32)
+
+2005-03-03  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoGroupAppointmentFolder.m: fixed incorrect creation of a mutable
+	  dictionary (was still immutable) (v0.9.31)
+
+2005-03-02  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentFolder.m: make sure fetchedInfos are sorted
+	  ascending - this simplifies client code (v0.9.30)
+
+	* SOGoAppointmentFolder.m: changed debugLog to use NGLogging (v0.9.29)
+
+2005-03-01  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoAppointmentFolder.m: significantly changed handling of cyclic
+	  events. Information for cyclic event calculation is now contained
+	  in the quick info, making full fetches obsolete - performance
+	  should improve significantly this way (v0.9.28)
+
+2005-02-22  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoAppointmentFolder.m: minor code cleanups (v0.9.27)
+
+2005-02-17  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed for removal of SOGoLogic (v0.9.26)
+
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentObject.m, SOGoAppointmentFolder.m: added proper
+	  message/folder class (v0.9.25)
+
+2004-11-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoAppointmentObject.m: improved error handling in save method
+	  (v0.9.16)
+
+2004-10-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.m: fixed a warning on MacOSX (v0.9.15)
+
+	* SOGoAppointmentObject.m(saveContentString:): fixed a warning with new
+	  objects (v0.9.14)
+	
+2004-10-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.h: added -fetchAllSOGoAppointments method
+	  which performs a bulk fetch on all files contained in the folder
+	  and parses all contents into an array of SOGoAppointment objects
+	  (used in the iCal file support, try to avoid this method, expensive!)
+	  (v0.9.13)
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed compilation on MacOSX (v0.9.12)
+
+2004-09-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoGroupAppointmentFolder.m: do not call -sleep in fetch method
+	  (disconnects the folder from the parent folder), instead added a
+	  -resetFolderCaches methods which performs some cleanups before a
+	  fetch (v0.9.11)
+
+2004-08-16  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoAppointmentFolder.m: added method to create a group folder and
+	  a group calendar for a set of IDs (for internal queries) (v0.9.10)
+
+	* SOGoAppointmentObject.m, SOGoAppointmentFolder.m: moved calendar
+	  folder lookup methods to folder class (the object uses its container
+	  to lookup the folder) (v0.9.9)
+
+	* SOGoAppointmentObject.m: finished multi folder storage methods
+	  (v0.9.8)
+
+	* SOGoAppointmentObject.m: added multi folder storage methods (v0.9.7)
+
+2004-08-14  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoGroupAppointmentFolder.m: implemented proper URL generation for
+	  group calendars (will lookup the appointment in the proper "exact"
+	  folder (v0.9.6)
+
+	* SOGoAppointmentFolder.m: fetch location, isallday, iscycle and
+	  partmails fields in -fetchCoreInfo (v0.9.5)
+
+2004-08-12  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.4
+
+	* SOGoAppointmentFolder.m: added -baseURLForAptWithUID:inContext: for
+	  determining the resource URL of an appointment, used by calendar
+	  views to locate the viewer page
+
+2004-08-11  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoGroupAppointmentFolder: can merge input folders, tracks conflicts
+	  in 'conflicts' key of the record (should be displayed somehow in the
+	  UI) (v0.9.3)
+
+	* v0.9.2
+
+	* SOGoAppointmentFolder.m, SOGoGroupAppointmentFolder: added 
+	  -calendarUIDs method which returns the UIDs of the currently 
+	  displayed persons (eg the members of a group)
+
+	* started SOGoGroupAppointmentFolder
+
+2004-07-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoAppointmentFolder.m: added method to fetch core info from other
+	  OCS folders, correct timezone to MET after fetch core info
+
+2004-07-01  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* redirect to weekoverview if GET is run on the folder itself
+	
+	* created ChangeLog
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* product.plist: make addressbook only available to owner (v0.9.15)
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactObject.m: print an error log if a vCard could not be
+	  parsed, cached failed parsing attempts (v0.9.14)
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactFolder.m: fixed a gcc 4.0 warning (v0.9.13)
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactFolder.m: use +globallyUniqueObjectId method from
+	  SOGoFolder.m baseclass (v0.9.12)
+
+2005-07-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactObject.m: hardened against vCard content (v0.9.11)
+
+	* SOGoContactObject.m: removed special GET action, the redirect to
+	  'view' seems to be handled by SOPE now. This also makes WebDAV GET
+	  work (v0.9.10)
+
+2005-03-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactFolder.m: changed to use GDLContentStore (v0.9.9)
+
+2005-02-24  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactObject.m: fixed a MacOSX warning (v0.9.8)
+
+2005-02-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactObject.m: added a REST method to patch a single field of
+	  the contact (v0.9.7)
+
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoContactObject.m, SOGoContactFolder.m: added proper
+	  message/folder class (v0.9.6)
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoContactFolder.m: changed to NGLogging (v0.9.5)
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed compilation on MacOSX (v0.9.4)
+
+2004-08-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.3
+
+	* SOGoContactObject.m: use 'cn' as davDisplayName
+
+	* SOGoContactObject.[hm]: can now decode the property list stored in
+	  the store (v0.9.2)
+	
+	* started implementation of contact folders (v0.9.1)
+
+2004-08-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* Product.m: typo in comment fixed
+
+	* SOGoContactFolder.h, SOGoContactObject.h: changed _Appointments_ to
+	  _Contacts_
+
+2004-08-25  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* ChangeLog: created
+2005-07-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailObject.m: fetch Kolab parts for inline display (v0.9.126)
+
+	* SOGoMailObject.m: added 'outlookMessageClass' property with some
+	  mail tagging for Kolab entities (v0.9.125)
+
+	* SOGoMailBodyPart.m, SOGoMailObject.m: added default to disable etag
+	  delivery/checks for mail objects (SOGoMailDisableETag) (v0.9.124)
+
+2005-07-22  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.123
+
+	* SOGoMailAccount.m: added -preferredIdentity method
+
+	* SOGoUser+Mail.m: added a method to retrieve the primary identity of
+	  an account
+
+	* SOGoSharedMailAccount.m: do not show the drafts folder in share
+	  mailboxes (v0.9.122)
+
+	* SOGoUser+Mail.m: properly set email field of share account identities
+	  (v0.9.121)
+
+	* v0.9.120
+
+	* SOGoMailBaseObject.m: added a method to locate the mail accounts
+	  folderby traversing the container hierarchy
+
+	* SOGoMailIdentity.m: include sent folder in -description
+
+	* SOGoMailAccounts.m: added method to fetch just the identities with
+	  emitter permissions
+
+	* SOGoUser+Mail.m: properly create mail identity objects
+	
+2005-07-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.119
+        
+	* SOGoMailAccounts.m: fetch identities from SoUser
+
+	* added SOGoUser+Mail category for mail specific SoUser fields
+
+	* SOGoMailIdentity.m: added ivars/accessors/description
+
+	* v0.9.118
+
+	* SOGoMailAccounts.m: reject access to the folder in case the name of
+	  the home folder doesn't match the logged in account (a user tries to
+	  access another users Mail application)
+
+	* started work on account based identities
+	
+	* SOGoMailObject.m: added a -davEntityTag (v0.9.117)
+	
+2005-07-20  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailObject.m: improved -doesMailExist check (do not refetch if
+	  the coreinfo is available anyways) (v0.9.116)
+
+	* v0.9.115
+
+	* SOGoMailObject.m: do not use clientObject when fetching the
+	  coreinfos, added a -doesMailExist method to cheaply check for
+	  mail existance
+
+	* SOGoMailBodyPart.m, SOGoMailObject.m: added a constant etag for
+	  content (possible for IMAP4 content), check etag prior delivering 
+	  content (return a 304 in case the constant etag is supplied)
+
+	* SOGoMailObject.m: added handling for some specific headers (v0.9.114)
+
+2005-07-19  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailObject.m: changed to fetch and parse the full mail header,
+	  can be disabled using the 'SOGoDoNotFetchMailHeader' default. The
+	  overhead is about 10ms on the dev-system (v0.9.113)
+
+	* SOGoMailFolder.m: report NO in -isCreateAllowed when the folder is
+	  the INBOX and SOGoSpecialFoldersInRoot (altnamespace) is enabled
+	  (#1472) (v0.9.112)
+	  
+	* SOGoDraftObject.m: made 'SOGoInternetMailSuffix' a pattern which can
+	  access request values (v0.9.111)
+	  
+	* SOGoDraftObject.m: added support for adding a marker to the textpart
+	  of the message in case the client is accessing the server from the
+	  Internet. The text can be specified using the
+	  'SOGoInternetMailSuffix' default (v0.9.110)
+
+	* v0.9.109
+
+	* added fragile base class version checks to most classes
+
+	* SOGoMailBaseObject.m: cache failed login attempts (+ connection) to
+	  improve failed-login behaviour
+
+2005-07-18  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoDraftObject.m: send text/* attachments with disposition 'attach'
+	  instead of 'inline' (inline can still be enabled with the
+	  'SOGoShowTextAttachmentsInline' default, but be aware of the charset
+	  issues with text attachments!) (v0.9.108)
+
+2005-07-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.107
+
+	* SOGoMailBodyPart.m: check lookup key path extension to determine the
+	  part subclass to instantiate (note: the link generator in the UI
+	  must generate proper links including the extension to make this work)
+
+	* added special part subclasses SOGoVCardMailBodyPart and
+	  SOGoCalendarMailBodyPart
+
+	* SOGoMailObject.m: map vcf extension to vcard mime type, added some
+	  debug logging
+
+	* SOGoMailFolder.m: fixed a stupid bug in permission parsing (v0.9.106)
+
+	* SOGoMailFolder.m: added support for more Cyrus permission flags
+	  (v0.9.105)
+
+	* SOGoMailObject.m, SOGoMailBodyPart.m, SOGoDraftObject.m: fixed gcc4.0
+	  warnings (v0.9.104)
+
+	* SOGoMailManager.h: fixed a gcc 4.0 warning (v0.9.103)
+
+2005-07-14  Helge Hess  <helge.hess@opengroupware.org>
+	
+	* v0.9.102
+	
+	* SOGoSharedMailAccount.m: create an object of class
+	  SOGoSharedInboxFolder in case the lookup key is INBOX
+
+	* added SOGoSharedInboxFolder.m for inboxes of shared mail accounts
+	  (which have a different location than standard inboxes and never
+	  contain subfolders)
+
+	* SOGoSharedMailAccount.m: prepared code to support a shared INBOX
+	  folder (v0.9.101)
+
+	* v0.9.100
+	
+	* SOGoMailAccounts.m: create an object of class SOGoSharedMailAccount
+	  in case the lookup-key contains an ".-."
+	
+	* SOGoMailAccount.[hm]: added some functionality to deal with shared
+	  mail accounts
+	
+	* added SOGoSharedMailAccount class for shared mailboxes
+	
+2005-07-12  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailAccounts.m: use new SoUser API instead of AgenorUserManager
+	  (v0.9.99)
+
+2005-07-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.98
+	
+	* use new -imap4Connection API everywhere
+	
+	* SOGoMailBaseObject.m: deprecated -mailManager method, added
+	  -imap4Connection method
+
+	* SOGoMailBaseObject.[hm]: removed unused -imap4Client method (v0.9.97)
+	
+	* moved SOGoMailManager related API to NGImap4 (NGImap4Connection,
+	  NGImap4ConnectionManager, etc) (v0.9.96)
+
+2005-07-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.95
+
+	* SOGoMailBaseObject.m: removed -imapFolderName method
+
+	* SOGoMailManager.m, SOGoMailConnectionEntry.m: moved implementations
+	  of operations to SOGoMailConnectionEntry
+
+2005-07-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailAccounts.m: use WOContext method from libSOGo to detect
+	  Internet access (v0.9.94)
+
+	* SOGoMailAccounts.m: only deliver share-names as subobjects if the
+	  request is not coming from the Internet. Ensure that limitation in
+	  -lookupName:. Can be enabled using SOGoInternetDetectQualifier just
+	  like in UIxMailEditor (v0.9.93)
+
+	* v0.9.92
+
+	* SOGoMailManager.m, SOGoMailConnectionEntry.m: added caching of
+	  per-folder permissions to avoid an IMAP4 query on each folder click
+
+	* SOGoMailFolder.m: fixed an inconsistency in the naming of flags
+
+2005-07-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailManager.m, SOGoMailFolder.m: added methods to "bulk add" 
+	  flags to all messages contained in a folder
+	  (-addFlags:toAllMessagesInURL:password: for the manager,
+	  -addFlagsToAllMessages: for the SOGoFolder) (v0.9.91)
+	
+	* added specific SOGoTrashFolder.m class (subclass of SOGoMailFolder)
+	  to allow hooking up a different UI (v0.9.90)
+
+	* SOGoMailAccounts.m: expose shared mailboxes retrieved via
+	  AgenorUserManager (aka LDAP) in -toManyRelationshipKeys (v0.9.89)
+
+	* SOGoMailObject.m: implemented -trashInContext: method (v0.9.88)
+
+2005-07-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailObject.m: prefetch pgp-signature parts (v0.9.87)
+
+	* SOGoMailObject.m: started -trash action (v0.9.86)
+
+	* v0.9.85
+
+	* SOGoMailFolder.m: added ability to check certain ACL permissions (and
+	  cache them for one invocation)
+
+	* SOGoMailObject.m: implemented -isDeletionAllowed by asking the folder
+	  for deletion
+	  
+	* SOGoMailManager.m: added methods to retrieve the ACL and the myrights
+	  from an IMAP4 mailbox
+
+	* SOGoMailManager.m: detect Cyrus 'permission denied' when changing
+	  flags and deliver a http-code 403 exception (v0.9.84)
+
+2005-03-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.83
+
+	* SOGoMailManager.m: properly select folder prior changing flags
+
+	* SOGoMailObject.m: added a special DELETEAction: for mails, it marks
+	  a mail deleted and expunges the folder to ensure the mail is deleted
+	  (this is different to the -delete method!)
+
+	* SOGoMailFolder.m: implemented content datasource for efficient WebDAV
+	  listings (currently uses hardcoded parts and has inefficient DASL
+	  support) (v0.9.82)
+	
+	* v0.9.81
+	
+	* SOGoMailFolder.m: implemented mailbox renaming using WebDAV MOVE
+	
+	* SOGoMailManager.m: added support for renaming mailboxes
+
+	* v0.9.80
+	
+	* SOGoMailFolder.m: now ensures during lookup that mailboxes actually
+	  exist, this may slow down the lookup if the hierarchy was not fetched
+	  yet
+	
+	* SOGoMailObject.m, SOGoMailFolder.m: prepared for WebDAV move and copy
+	  operations
+	
+	* v0.9.79
+	
+	* SOGoMailFolder.m: ensure that mailbox exists if a DAV depth:0 query
+	  is run on the folder (by selecting the mailbox)
+	
+	* SOGoMailManager.m: added method to retrieve mailbox select info
+	
+	* SOGoMailAccount.m: added ability to create mailboxes at the root
+	  (account) level (v0.9.78)
+
+2005-03-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailManager.m: improved compatibility with Cocoa Foundation
+	  (some weird difference in NGImap4 result processing) (v0.9.77)
+
+2005-02-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailObject.m: generate proper .ics extension for text/calendar
+	  message parts, fetch text/calendar parts as plain content (v0.9.76)
+
+2005-02-15  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailAccount.m: added 'SOGoSpecialFoldersInRoot' default to
+	  make SOGo lookup Sent/Trash in the IMAP4 root instead of under
+	  INBOX (that is, set SOGoSpecialFoldersInRoot to YES if you have
+	  'altnamespace' in Cyrus set to yes) (v0.9.75)
+
+2005-02-14  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.74
+
+	* SOGoMailAccount.m: fetch all root folders from IMAP4, do not assume
+	  "INBOX"
+
+	* SOGoMailManager.m: properly support rootfolders in IMAP4
+
+2005-02-13  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailAccount.m: changed short title creation to use login@host
+	  (v0.9.73)
+
+	* SOGoMailFolder.m: do not fetch message ids on folder traversal
+	  (v0.9.72)
+
+2005-02-09  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.71
+
+	* SOGoMailObject.m: -lookupInfoForBodyPart: can now deal with string
+	  parameters (eg 1.2.3) in addition to arrays and returns the full
+	  body structure for empty strings ("")
+	  added support for fetching parts as NSString's (by applying the
+	  charset in the body structure)
+	
+2005-02-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailObject.m: added method to fetch individual plain/text parts
+	
+	* v0.9.70
+	
+	* SOGoMailManager.m: only perform IMAP4 select if the folder changes
+	  (gives a major speed boost), can be disabled with the
+	  'SOGoAlwaysSelectIMAP4Folder' default
+	
+	* SOGoMailAccount.m: added code to take the IMAP4 login from the
+	  HTTP request
+
+	* v0.9.69
+	
+	* reworked for new NGImap4 v4.5.210 API
+	
+	* SOGoMailObject.m: removed fromEnvelopeAddress in favor of
+	  fromEnvelopeAddresses to match the new NGImap4 v4.5.210 API
+
+2005-02-07  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.68
+
+	* SOGoDraftObject.m: added ability to specify additional headers
+
+	* v0.9.67
+
+	* SOGoMailFolder.m: detect special folder names and return proper
+	  folder type
+
+	* SOGoMailAccount.m: made Sent/Trash folder name configurable using the
+	  'SOGoSentFolderName'/'SOGoTrashFolderName' defaults
+
+2005-02-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailFolder.m, SOGoDraftsFolder.m: added proper folder classes
+	  (v0.9.66)
+
+2005-01-31  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.65
+
+	* SOGoMailManager.m, SOGoMailFolder.m: added expunge method
+
+	* SOGoMailObject.m: improve bulk key collector
+
+	* SOGoMailObject.m: moved more bulk fetching to SoObject (v0.9.64)
+
+	* SOGoMailObject.m: moved in plain/text bulk fetch method from mail
+	  viewer (since it is general purpose) (v0.9.63)
+
+	* SOGoMailObject.m: properly handle part lookup in the context of
+	  embedded message/rfc822 content (v0.9.62)
+
+2005-01-30  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.61
+
+	* SOGoMailObject.m, SOGoMailBodyPart.m, product.plist: added type
+	  specific SOGoMailBodyPart controller objects, reduced debug logs
+
+	* v0.9.60
+	
+	* SOGoDraftObject.m: added -content and -contentAsString methods (Note:
+	  those are expensive operations!), added GETAction: to retrieve the
+	  MIME representation of a draft
+
+	* SOGoDraftsFolder.m: added -toOneRelationshipKeys to support SOPE
+	  WebDAV access
+
+	* v0.9.59
+
+	* SOGoDraftObject.m: improved attachment/info API to return exceptions,
+	  minor improvement to attachment name check, properly generate
+	  message/rfc822 mime type for mail attachments, properly generate
+	  "text/plain; utf8" header
+
+	* SOGoMailAccount.m: use a constant for INBOX folder name, disabled
+	  'Filters' folder unless the 'SOGoEnableSieveFolder' is set (since 
+	  Sieve support is incomplete)
+
+2005-01-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.58
+
+	* SOGoMailObject.m: implemented a simple delete by setting the IMAP4
+	  delete flag
+
+	* SOGoMailManager.m: added method to mark a message deleted
+
+	* SOGoMailFolder.m: just override -delete instead of implementing
+	  -DELETAction: directrly
+
+	* SOGoMailAccount.m: added ability to retrieve Sent/Trash and INBOX
+	  special mail folders
+
+	* v0.9.57
+	
+	* SOGoMailBodyPart.m: enhanced lookup to allow for arbitary filenames
+	  being attached to a body-part name. Improves download behaviour.
+
+	* SOGoMailBaseObject.m, SOGoMailObject.m: moved
+	  -isBodyPartKey:inContext: method to base object for reuse in
+	  SOGoMailBodyPart
+
+	* SOGoMailBodyPart.m: minor code cleanup
+
+2005-01-26  Helge Hess  <helge.hess@skyrix.com>
+	
+	* v0.9.56
+	
+	* SOGoMailManager.m, SOGoMailFolder.m: added method to save new
+	  content in an SOGoMailFolder (to support #1054)
+	
+	* SOGoMailAccount.m: minor code cleanup
+
+2004-12-08  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoMailAccount.m, SOGoMailBaseObject.m, SOGoMailObject.m,
+	  SOGoMailManager.m, SOGoDraftsFolder.m, SOGoMailAccounts.m,
+	  SOGoMailBodyPart.m, SOGoDraftObject.m: changed to use NGLogging
+	  (v0.9.55)
+
+2004-11-27  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoMailAccount.m: added 'Filters' key and lookup of Sieve filters
+	  (v0.9.54)
+
+2004-11-11  Helge Hess  <helge.hess@skyrix.com>
+	
+	* v0.9.53
+	
+	* SOGoMailAccounts.m: added -allFolderPathes methods to retrieve the
+	  names of all folders associated with the account
+	
+	* SOGoMailManager.m: added -allFoldersForURL:password: method
+
+2004-11-09  Helge Hess  <helge.hess@skyrix.com>
+
+	* added support for toggling mail flags (v0.9.52)
+
+	* moved all tree navigation code to UIxMailTree (v0.9.51)
+
+	* SOGoMailBaseObject.m, SOGoMailAccounts.m: moved tree code to separate
+	  file (v0.9.50)
+
+	* SOGoMailBaseObject.m, SOGoMailManager.m, SOGoMailConnectionEntry.m:
+	  added cache flush operations for getmail (v0.9.49)
+
+2004-11-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoMailManager.m: improved a log message (v0.9.48)
+
+2004-10-30  Helge Hess  <helge.hess@skyrix.com>
+
+	* v0.9.47
+	
+	* SOGoMailFolder.m: added ability to create and delete subfolders using
+	  WebDAV
+	
+	* SOGoMailConnectionEntry.m: added method to flush folder hierarchy
+	  cache
+
+	* product.plist: added default role for adding folders (owner)
+
+	* SOGoMailObject.m: added -content and -contentAsString method to
+	  retrieve raw IMAP4 message content, added GETAction to query a
+	  message (v0.9.46)
+
+2004-10-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoDraftObject.m: add 'name' parameter to content-type, properly
+	  encode binary attachments (v0.9.45)
+	
+2004-10-28  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoDraftObject.m: do not patch NGImap4Envelope ivars and use the new
+	  constructor method (v0.9.44)
+
+2004-10-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailManager.m: added 'SOGoIMAP4StringSeparator' default to
+	  configure to folder separator. Default is '/' instead of '.'
+	  (v0.9.43)
+
+	* v0.9.42
+
+	* SOGoDraftObject.m: implements some SOGoMailObject methods
+
+	* SOGoDraftsFolder.m: implemented some draft folder listing
+
+	* SOGoDraftObject.m: added mail send functionality (v0.9.41)
+
+	* SOGoDraftObject.m: added ability to create NGMime objects from draft
+	  (v0.9.40)
+
+2004-10-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoDraftObject.[hm]: added method to delete attachments (v0.9.39)
+
+2004-10-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoDraftObject.h: lF compile fix (v0.9.38)
+
+2004-10-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoDraftObject.m: added ability to manage a draft object folder
+	  (v0.9.37)
+
+2004-10-21  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailBaseObject.m: extract IMAP4 password from HTTP basic
+	  authentication (v0.9.36)
+
+2004-10-20  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoMailAccounts.m: changed methods according to new API of
+	  AgenorUserManager (v0.9.35)
+
+2004-10-19  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* SOGoMailAccounts.m: values for toManyRelationshipKeys are constructed
+	  from information retrieved by the AgenorUserManager now. (v0.9.34)
+
+2004-10-11  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoDraftsFolder.m: added methods to deal with new draft objects
+	  (v0.9.33)
+
+	* started SOGoDraftObject (v0.9.32)
+
+2004-10-10  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoDraftsFolder.m: added methods to be compatible with the mail
+	  folder (v0.9.31)
+
+2004-10-08  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.30
+
+	* SOGoMailObject.m: added support for davContentLength, added
+	  RFC822.SIZE to coreinfo attributes
+
+	* SOGoMailFolder.m: added .mail path extensions to generated
+	  toOneRelationshipKeys
+
+	* SOGoMailObject.m: fixed body part id (starts with 1, not with 0)
+
+	* v0.9.29
+
+	* SOGoMailObject.m: added toOneRelationshipKeys/toManyRelationshipKeys
+	  (return the contained body parts)
+
+	* SOGoMailFolder.m: added toOneRelationshipKeys (returns the message
+	  uids)
+
+	* marked collections as WebDAV collections (v0.9.28)
+
+2004-10-06  Helge Hess  <helge.hess@opengroupware.org>
+
+	* started SOGoDraftsFolder (v0.9.27)
+
+	* v0.9.26
+
+	* SOGoMailConnectionEntry.m: added caching of sorted UIDs sets
+
+	* SOGoMailManager.m: moved SOGoMailConnectionEntry class to own file
+
+2004-10-05  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailManager: removed range argument from -fetchUIDsInURL:..,
+	  since IMAP4 doesn't support ranges anyway ... (v0.9.25)
+
+2004-10-04  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailBodyPart.m: improved MIME type generation (v0.9.24)
+
+	* SOGoMailBodyPart.m, SOGoMailObject.m: finished first part fetching
+	  support (v0.9.23)
+
+	* SOGoMailObject.m: added method to fetch core infos of a mail, added
+	  various methods to retrieve core info data (like subject or date)
+	  (v0.9.22)
+
+2004-10-03  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.21
+	
+	* SOGoMailObject.m: lookup 'number' names as part child objects
+	
+	* added SOGoMailBodyPart as a child object of SOGoMailObject
+	
+	* SOGoMailAccounts.m: changed link generation for active folder
+	
+	* v0.9.20
+	
+	* SOGoMailObject.m: added method to fetch parts
+	
+	* SOGoMailManager.m: properly select folder prior fetch, added method
+	  to fetch parts of a single (message) URL
+
+2004-10-02  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailFolder.[hm]: removed ability to restrict UID fetch range,
+	  need to fetch all (qualifier matching!) UIDs anyway (v0.9.19)
+
+2004-10-01  Helge Hess  <helge.hess@opengroupware.org>
+
+	* more work on fetching mails (v0.9.18)
+
+	* v0.9.17
+
+	* SOGoMailFolder.m: -fetchUIDsMatchingQualifier:sortOrdering:range: was
+	  added to retrieve message UIDs
+
+	* SOGoMailManager.m: added method for fetching message ids with server
+	  side sorting
+
+2004-09-30  Helge Hess  <helge.hess@skyrix.com>
+	
+	* v0.9.16
+	
+	* SOGoMailBaseObject.m: improved debug logging
+	
+	* SOGoMailManager.m: fixed an Apple/libFoundation incompatibility
+
+2004-09-29  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoMailManager.m: minor improvement to error logging (v0.9.15)
+
+2004-09-29  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.14
+
+	* SOGoMailAccounts.m: added tree navigation support
+
+	* SOGoMailBaseObject.m: moved fetchSubfolders method to SOGoObject
+
+	* SOGoMailBaseObject.m: fixed WebDAV include (v0.9.13)
+
+	* v0.9.12
+	
+	* SOGoMailAccount.m: added -shortTitle and use that as the
+	  -davDisplayName
+	
+	* SOGoMailBaseObject.m, SOGoMailAccounts.m: added path tree navigation
+	  support
+
+2004-09-28  Helge Hess  <helge.hess@opengroupware.org>
+
+	* SOGoMailManager.m: added caching of folder hierarchy (v0.9.11)
+
+	* SOGoMailManager.m: added connection pooling (v0.9.10)
+
+	* v0.9.9
+	
+	* SOGoMailBaseObject.m: added -mailManager method to retrieve the
+	  mail manager object for a folder/mail/account
+
+	* added SOGoMailManager class, will probably be moved to SOGoLogic
+	  in the long run
+
+	* SOGoMailBaseObject.m, SOGoMailAccount.m: added -mailAccountFolder
+	  method to find the active root folder along the SOPE chain (v0.9.8)
+
+	* SOGoMailAccount.m: be graceful if the IMAP4 login failed (v0.9.7)
+
+2004-09-27  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.6
+
+	* added basic folder listing
+
+	* SOGoMailAccount.m: list "INBOX" as the sole account subfolder
+
+2004-09-26  Helge Hess  <helge.hess@opengroupware.org>
+
+	* v0.9.5
+
+	* added SOGoMailBaseObject as a base object for the other mailer
+	  SoObjects
+
+	* added -imapURL method to the mail SoObjects (the imapURL is used to
+	  locate the object in the IMAP4 server, just like in Thunderbird)
+
+2004-09-25  Helge Hess  <helge.hess@opengroupware.org>
+
+	* fixed compilation on MacOSX (v0.9.4)
+
+2004-09-20  Helge Hess  <helge.hess@skyrix.com>
+
+	* SOGoMailAccounts.m: added hardcoded mail-account key (v0.9.3)
+
+2004-09-08  Helge Hess  <helge.hess@skyrix.com>
+
+	* added missing account objects (v0.9.2)
+
+2004-08-26  Marcus Mueller  <znek@mulle-kybernetik.com>
+
+	* ChangeLog: created
