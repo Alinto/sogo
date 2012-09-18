@@ -123,6 +123,10 @@ function onValidate(onSuccess) {
 }
 
 function onValidateDone(onSuccess) {
+    // Create "blocking" div to avoid double-clicking on send button
+    var safetyNet = createElement("div", "javascriptSafetyNet");
+    $('pageContent').insert({top: safetyNet});
+
     var input = currentAttachmentInput();
     if (input)
         input.parentNode.removeChild(input);
@@ -137,7 +141,7 @@ function onValidateDone(onSuccess) {
     window.shouldPreserve = true;
     
     document.pageform.action = "send";
-    
+
     AIM.submit($(document.pageform), {'onComplete' : onPostComplete});
     
     if (typeof onSuccess == 'function')
@@ -159,7 +163,7 @@ function onPostComplete(response) {
                 p = window.opener;
             if (p && p.refreshMessage)
                 p.refreshMessage(jsonResponse["sourceFolder"],
-                                 jsonResponse["messageID"]);            
+                                 jsonResponse["messageID"]);
             onCloseButtonClick();
         }
         else {
@@ -170,6 +174,8 @@ function onPostComplete(response) {
                 progressImage.parentNode.removeChild(progressImage);
             }
             showAlertDialog(jsonResponse["message"]);
+            // Remove "blocking" div
+            onFinalLoadHandler(); // from generic.js
         }
     }
     else {
