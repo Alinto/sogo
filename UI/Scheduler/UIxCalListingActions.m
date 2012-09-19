@@ -668,7 +668,7 @@ _userStateInEvent (NSArray *event)
 	  withNumber: (NSNumber *) number
 {
   int currentDayStart, startSecs, endsSecs, currentStart, eventStart,
-    eventEnd, offset, recurrenceTime, swap;
+    eventEnd, computedEventEnd, offset, recurrenceTime, swap;
   NSMutableArray *currentDay;
   NSMutableDictionary *eventBlock;
   iCalPersonPartStat userState;
@@ -738,19 +738,21 @@ _userStateInEvent (NSArray *event)
                   offset++;
                   currentDay = [blocks objectAtIndex: offset];
                 }
-	      if (eventEnd > currentStart)
-		{
-		  eventBlock = [self _eventBlockWithStart: currentStart
-						      end: eventEnd
-						   number: number
-						    onDay: currentDayStart
-					   recurrenceTime: recurrenceTime
-						userState: userState];
-		  [currentDay addObject: eventBlock];
-		}
-	      else
-		[self warnWithFormat: @"event '%@' has end <= start: %d < %d",
-		      [event objectAtIndex: eventNameIndex], eventEnd, currentStart];
+
+	      computedEventEnd = eventEnd;
+
+	      // We add 5 mins to the end date of an event if the end date
+	      // is equal or smaller than the event's start date.
+	      if (eventEnd <= currentStart)
+		computedEventEnd += (5*60);
+	      
+	      eventBlock = [self _eventBlockWithStart: currentStart
+						  end: computedEventEnd
+					       number: number
+						onDay: currentDayStart
+				       recurrenceTime: recurrenceTime
+					    userState: userState];
+	      [currentDay addObject: eventBlock];
 	    }
         }
     }
