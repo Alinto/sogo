@@ -1556,6 +1556,38 @@ ReservedBlockEE2Size: 00 00 00 00
   return rc;
 }
 
+- (int) getPidLidRecurrenceType: (void **) data
+                       inMemCtx: (TALLOC_CTX *) memCtx
+{
+  int rc;
+  iCalRecurrenceFrequency freq;
+  iCalRecurrenceRule *rrule;
+  enum RecurrenceType rectype;
+
+  if ([event isRecurrent])
+    {
+      rrule = [[event recurrenceRules] objectAtIndex: 0];
+      freq = [rrule frequency];
+      if (freq == iCalRecurrenceFrequenceDaily)
+        rectype = rectypeDaily;
+      else if (freq == iCalRecurrenceFrequenceWeekly)
+        rectype = rectypeWeekly;
+      else if (freq == iCalRecurrenceFrequenceMonthly)
+        rectype = rectypeMonthly;
+      else if (freq == iCalRecurrenceFrequenceYearly)
+        rectype = rectypeYearly;
+      else
+        rectype = rectypeNone; /* or "unsupported" */
+
+      *data = MAPILongValue (memCtx, rectype);
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
 // - (int) getPidLidGlobalObjectId: (void **) data
 //                        inMemCtx: (TALLOC_CTX *) memCtx
 // {
@@ -1923,13 +1955,13 @@ ReservedBlockEE2Size: 00 00 00 00
 }
 
 - (int) getPidLidTimeZoneDescription: (void **) data
-                       inMemCtx: (TALLOC_CTX *) memCtx
+                            inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
   NSString *tzid;
 
   tzid = [(iCalDateTime *) [event firstChildWithTag: @"dtstart"]
-                           value: 0 ofAttribute: @"tzid"];
+           value: 0 ofAttribute: @"tzid"];
   if ([tzid length] > 0)
     {
       *data = [tzid asUnicodeInMemCtx: memCtx];
@@ -1957,6 +1989,37 @@ ReservedBlockEE2Size: 00 00 00 00
     rc = MAPISTORE_ERR_NOT_FOUND;
 
   return rc;
+}
+
+- (int) getPidLidAppointmentTimeZoneDefinitionStartDisplay: (void **) data
+                                                  inMemCtx: (TALLOC_CTX *) memCtx
+{
+  enum mapistore_error rc;
+  iCalTimeZone *icalTZ;
+
+  if ([event isRecurrent])
+    {
+      icalTZ = [(iCalDateTime *) [event firstChildWithTag: @"dtstart"] timeZone];
+      if (icalTZ)
+        {
+          *data = [icalTZ asZoneTimeDefinitionWithFlags: TZRULE_FLAG_EFFECTIVE_TZREG | TZRULE_FLAG_RECUR_CURRENT_TZREG
+                                               inMemCtx: memCtx];
+          rc = MAPISTORE_SUCCESS;
+        }
+      else
+        rc = MAPISTORE_ERR_NOT_FOUND;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidLidAppointmentTimeZoneDefinitionEndDisplay: (void **) data
+                                                inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getPidLidAppointmentTimeZoneDefinitionStartDisplay: data
+                                                         inMemCtx: memCtx];
 }
 
 @end
