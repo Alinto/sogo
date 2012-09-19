@@ -657,6 +657,12 @@ rtf2html (NSData *compressedRTF)
   return MAPISTORE_SUCCESS;
 }
 
+- (int ) getPidTagHasNamedProperties: (void **) data
+                            inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getYes: data inMemCtx: memCtx];
+}
+
 - (int) getPidLidSideEffects: (void **) data // TODO
                     inMemCtx: (TALLOC_CTX *) memCtx
 {
