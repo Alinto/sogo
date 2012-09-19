@@ -531,7 +531,8 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   mappingId = [mapping idFromURL: childURL];
   if (mappingId == NSNotFound)
     {
-      [self warnWithFormat: @"no id exist yet, requesting one..."];
+      [self warnWithFormat: @"no id exist yet for '%@', requesting one...",
+            childURL];
       openchangedb_get_new_folderID (connInfo->oc_ctx, &mappingId);
       [mapping registerURL: childURL withID: mappingId];
       contextId = 0;
