@@ -744,7 +744,7 @@ _userStateInEvent (NSArray *event)
 	      // We add 5 mins to the end date of an event if the end date
 	      // is equal or smaller than the event's start date.
 	      if (eventEnd <= currentStart)
-		computedEventEnd += (5*60);
+		computedEventEnd = currentStart + (5*60);
 	      
 	      eventBlock = [self _eventBlockWithStart: currentStart
 						  end: computedEventEnd
