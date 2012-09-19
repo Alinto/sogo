@@ -807,33 +807,6 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
-- (int) getPidTagExceptionStartTime: (void **) data
-                           inMemCtx: (TALLOC_CTX *) localMemCtx
-{
-  enum mapistore_error rc;
-  NSCalendarDate *dateValue;
-  NSInteger offset;
-
-  if ([event recurrenceId] != nil)
-    {
-      dateValue = [event startDate];
-      [dateValue setTimeZone: timeZone];
-      if (![event isAllDay])
-        {
-          offset = [timeZone secondsFromGMTForDate: dateValue];
-          dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
-                                             hours: 0 minutes: 0
-                                           seconds: offset];
-        }
-      *data = [dateValue asFileTimeInMemCtx: localMemCtx];
-      rc = MAPISTORE_SUCCESS;
-    }
-  else
-    rc = MAPISTORE_ERR_NOT_FOUND;
-
-  return rc;
-}
-
 - (int) getPidLidAppointmentEndWhole: (void **) data
                             inMemCtx: (TALLOC_CTX *) memCtx
 {
@@ -930,32 +903,6 @@ static NSCharacterSet *hexCharacterSet = nil;
     rc = MAPISTORE_ERR_NOT_FOUND;
   else
     rc = [self getPidLidAppointmentEndWhole: data inMemCtx: memCtx];
-
-  return rc;
-}
-
-- (int) getPidTagExceptionEndTime: (void **) data
-                         inMemCtx: (TALLOC_CTX *) localMemCtx
-{
-  enum mapistore_error rc;
-  NSCalendarDate *dateValue;
-  NSInteger offset;
-
-  if ([event recurrenceId] != nil)
-    {
-      dateValue = [event startDate];
-      [dateValue setTimeZone: timeZone];
-      offset = [event durationAsTimeInterval];
-      if (![event isAllDay])
-        offset += [timeZone secondsFromGMTForDate: dateValue];
-      dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
-                                         hours: 0 minutes: 0
-                                       seconds: offset];
-      *data = [dateValue asFileTimeInMemCtx: localMemCtx];
-      rc = MAPISTORE_SUCCESS;
-    }
-  else
-    rc = MAPISTORE_ERR_NOT_FOUND;
 
   return rc;
 }

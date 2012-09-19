@@ -52,6 +52,20 @@
   if ((self = [super init]))
     {
       event = nil;
+      timeZone = nil;
+    }
+
+  return self;
+}
+
+- (id) initInContainer: (MAPIStoreObject *) newContainer
+{
+  MAPIStoreUserContext *userContext;
+
+  if ((self = [super initInContainer: newContainer]))
+    {
+      userContext = [newContainer userContext];
+      ASSIGN (timeZone, [userContext timeZone]);
     }
 
   return self;
@@ -60,6 +74,7 @@
 - (void) dealloc
 {
   [event release];
+  [timeZone release];
   [super dealloc];
 }
 
@@ -135,7 +150,86 @@
   return [self getNo: data inMemCtx: memCtx];
 }
 
-// case PidTagExceptionReplaceTime:
+- (int) getPidTagExceptionReplaceTime: (void **) data
+                             inMemCtx: (TALLOC_CTX *) memCtx
+{
+  enum mapistore_error rc;
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+
+  dateValue = [event recurrenceId];
+  if (dateValue)
+    {
+      rc = MAPISTORE_SUCCESS;
+      
+      if ([event isAllDay])
+        {
+          offset = -[timeZone secondsFromGMTForDate: dateValue];
+          dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                             hours: 0 minutes: 0
+                                           seconds: offset];
+        }
+      [dateValue setTimeZone: utcTZ];
+      *data = [dateValue asFileTimeInMemCtx: memCtx];
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidTagExceptionStartTime: (void **) data
+                           inMemCtx: (TALLOC_CTX *) localMemCtx
+{
+  enum mapistore_error rc;
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+
+  if ([event recurrenceId] != nil)
+    {
+      dateValue = [event startDate];
+      [dateValue setTimeZone: timeZone];
+      if (![event isAllDay])
+        {
+          offset = [timeZone secondsFromGMTForDate: dateValue];
+          dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                             hours: 0 minutes: 0
+                                           seconds: offset];
+        }
+      *data = [dateValue asFileTimeInMemCtx: localMemCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
+
+- (int) getPidTagExceptionEndTime: (void **) data
+                         inMemCtx: (TALLOC_CTX *) localMemCtx
+{
+  enum mapistore_error rc;
+  NSCalendarDate *dateValue;
+  NSInteger offset;
+
+  if ([event recurrenceId] != nil)
+    {
+      dateValue = [event startDate];
+      [dateValue setTimeZone: timeZone];
+      offset = [event durationAsTimeInterval];
+      if (![event isAllDay])
+        offset += [timeZone secondsFromGMTForDate: dateValue];
+      dateValue = [dateValue dateByAddingYears: 0 months: 0 days: 0
+                                         hours: 0 minutes: 0
+                                       seconds: offset];
+      *data = [dateValue asFileTimeInMemCtx: localMemCtx];
+      rc = MAPISTORE_SUCCESS;
+    }
+  else
+    rc = MAPISTORE_ERR_NOT_FOUND;
+
+  return rc;
+}
 
 /* subclasses */
 - (MAPIStoreCalendarEmbeddedMessage *) openEmbeddedMessage

@@ -25,11 +25,14 @@
 
 #import "MAPIStoreAttachment.h"
 
+@class NSTimeZone;
+
 @class iCalEvent;
 
 @interface MAPIStoreCalendarAttachment : MAPIStoreAttachment
 {
   iCalEvent *event;
+  NSTimeZone *timeZone;
 }
 
 - (void) setEvent: (iCalEvent *) newEvent;
