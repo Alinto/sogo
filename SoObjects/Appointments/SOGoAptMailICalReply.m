@@ -133,7 +133,7 @@
   else
     bodyFormat = @"%{Attendee} %{SentByText}has not yet decided upon your event invitation.";
 
-  return  [values keysWithFormat: bodyFormat];
+  return  [values keysWithFormat: [self labelForKey: bodyFormat inContext: context]];
 }
 
 - (NSString *) getBody
