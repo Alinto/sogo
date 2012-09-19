@@ -64,6 +64,7 @@ static NSCharacterSet *wsSet = nil;
       addedAttendees = nil;
       deletedAttendees = nil;
       updatedAttendees = nil;
+      calendarName = nil;
     }
 
   return self;
@@ -75,6 +76,7 @@ static NSCharacterSet *wsSet = nil;
   [addedAttendees release];
   [deletedAttendees release];
   [updatedAttendees release];
+  [calendarName release];
   [super dealloc];
 }
 
@@ -138,6 +140,16 @@ static NSCharacterSet *wsSet = nil;
 - (void) setOperation: (SOGoEventOperation) theOperation
 {
   operation = theOperation;
+}
+
+- (void) setCalendarName: (NSString *) theCalendarName
+{
+  ASSIGN (calendarName, theCalendarName);
+}
+
+- (NSString *) calendarName
+{
+  return calendarName;
 }
 
 - (NSString *) aptSummary
