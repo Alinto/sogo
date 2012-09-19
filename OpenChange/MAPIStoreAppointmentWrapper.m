@@ -1217,15 +1217,20 @@ static NSCharacterSet *hexCharacterSet = nil;
 - (int) getPidTagBody: (void **) data
              inMemCtx: (TALLOC_CTX *) memCtx
 {
-  int rc = MAPISTORE_SUCCESS;
+  int rc;
   NSString *stringValue;
 
   /* FIXME: there is a confusion in NGCards around "comment" and "description" */
   stringValue = [event comment];
-  if ([stringValue length] > 0)
-    *data = [stringValue asUnicodeInMemCtx: memCtx];
+  if ([stringValue length] > 0
+      && ![stringValue isEqualToString: @"\r\n"]
+      && ![stringValue isEqualToString: @"\n"])
+    {
+      rc = MAPISTORE_SUCCESS;
+      *data = [stringValue asUnicodeInMemCtx: memCtx];
+    }
   else
-    *data = [@"" asUnicodeInMemCtx: memCtx];
+    rc = MAPISTORE_ERR_NOT_FOUND;
 
   return rc;
 }
