@@ -27,6 +27,8 @@
 #import <NGCards/iCalTimeZonePeriod.h>
 #import <NGCards/iCalRecurrenceRule.h>
 
+#import "NSString+MAPIStore.h"
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <talloc.h>
@@ -111,5 +113,50 @@
 
   return set_TimeZoneStruct (memCtx, &tz);
 }
+
+- (struct Binary_r *) asZoneTimeDefinitionWithFlags: (enum TZRuleFlag) flags
+                                           inMemCtx: (TALLOC_CTX *) memCtx
+{
+  iCalTimeZonePeriod *period;
+  struct TimeZoneDefinition definition;
+  struct TZRule rule;
+  NSString *tzId;
+  int lBias, dlBias;
+
+  memset (&definition, 0, sizeof (struct TimeZoneDefinition));
+  
+  definition.major = 0x02;
+  definition.minor = 0x01;
+  definition.reserved = 0x0002;
+
+  tzId = [self tzId];
+  definition.keyName = [tzId asUnicodeInMemCtx: memCtx];
+  definition.cbHeader = 6 + [tzId length] * 2;
+  
+  definition.cRules = 1;
+  definition.TZRules = &rule;
+
+  memset (&rule, 0, sizeof (struct TZRule));
+  rule.major = 0x02;
+  rule.minor = 0x01;
+  rule.reserved = 0x003e;
+  rule.flags = flags;
+
+  period = [self _mostRecentPeriodWithName: @"STANDARD"];
+  rule.wYear = [[period startDate] yearOfCommonEra];
+  lBias = -[period secondsOffsetFromGMT] / 60;
+  rule.lBias = (uint32_t) lBias;
+  [period _fillTZDate: &rule.stStandardDate];
+  period = [self _mostRecentPeriodWithName: @"DAYLIGHT"];
+  if (!period)
+    rule.stStandardDate.wMonth = 0;
+  dlBias = -([period secondsOffsetFromGMT] / 60) - lBias;
+  rule.lDaylightBias = (uint32_t) (dlBias);
+  [period _fillTZDate: &rule.stDaylightDate];
+
+
+  return set_TimeZoneDefinition (memCtx, &definition);
+}
+
 
 @end
