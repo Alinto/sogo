@@ -151,7 +151,6 @@ DIV#dateSelectorView
 
 #dateSelector
 { margin: 0px auto;
-  height: 13.5em;
   background-color: #fff;
   border-top: 1px solid #909090 !important;
   border-left: 1px solid #FFFFFF !important;
@@ -193,15 +192,15 @@ DIV#dateSelectorView
 #dateSelector .dayOfWeek
 { color: #00f; }
 
-TABLE#dateSelectorTable
-{ padding: 2px; }
-
 #dateSelector TABLE,
 #dateSelector TABLE TABLE
 { border-collapse: collapse;
   text-align: center;
   margin: 0px auto;
   width: 100%; }
+
+TABLE#dateSelectorTable
+{ margin-bottom: 5px; }
 
 TABLE#dateSelectorTable TD TABLE TD
 { width: 5px; /* temp hack */ }
