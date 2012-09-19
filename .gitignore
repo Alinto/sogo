@@ -1,0 +1,10 @@
+config.make
+*/obj/
+*/*/obj/
+*/*/*/obj/
+*/*/*.SOGo/
+*.sax
+*.wox/
+*.swp
+SoObjects/SOGo/SOGo.framework/
+SoObjects/SOGo/derived_src/

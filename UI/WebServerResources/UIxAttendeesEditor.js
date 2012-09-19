@@ -100,6 +100,7 @@ function onContactKeydown(event) {
         preventDefault(event);
         this.scrollLeft = 0;
         $(this).up('DIV').scrollLeft = 0;
+        attendeesEditor.selectedIndex = -1;
         if (this.confirmedValue)
             this.value = this.confirmedValue;
         this.hasfreebusy = false;

@@ -312,7 +312,7 @@ function ensureFieldCustomHeaderRepresentation(container, fieldSpan) {
     }
     if (container.rule.field == "header") {
         if (!headerInput) {
-            headerInput = createElement("input", null, "textField",
+            headerInput = createElement("input", null, null,
                                         { type: "text" }, null, fieldSpan);
             headerInput.rule = container.rule;
             if (!container.rule.custom_header)

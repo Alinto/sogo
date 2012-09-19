@@ -1665,10 +1665,12 @@ function onCloseButtonClick(event) {
         Event.stop(event);
 
     if (window.frameElement && window.frameElement.id) {
-        jQuery(parent$("bgFrameDiv")).fadeOut('fast');
-        var div = parent$("popupFrame");
-        div.hide();
-        div.down("iframe").src = "/SOGo/loading";
+        var bgDiv = parent$("bgFrameDiv");
+        jQuery(bgDiv).fadeOut('fast', function(event) {
+            var div = parent$("popupFrame");
+            div.hide();
+            div.down("iframe").src = "/SOGo/loading";
+        });
     }
     else {
         window.close();
