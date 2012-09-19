@@ -103,20 +103,14 @@
                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   MAPIStoreEmbeddedMessage *attMessage;
-  MAPIStoreMapping *mapping;
   struct mapistore_message *mapistoreMsg;
   
   mapistoreMsg = talloc_zero (memCtx, struct mapistore_message);
 
-  mapping = [self mapping];
-
-  // if (attMessage)
   attMessage = [self openEmbeddedMessage];
   if (attMessage)
     {
-      *mid = [mapping idFromURL: [attMessage url]];
-      [mapping registerURL: [attMessage url]
-                    withID: *mid];
+      *mid = [attMessage objectId];
       *messagePtr = attMessage;
       *mapistoreMsgPtr = mapistoreMsg;
     }
