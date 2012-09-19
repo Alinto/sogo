@@ -30,7 +30,9 @@ SPAN.content
   line-height: 2em;
   top: -.25em;
   left: 8em;
-  right: 1em; }
+  right: 1em;
+  text-overflow: ellipsis;
+  overflow: hidden; }
 
 SPAN.content > INPUT.textField,
 LABEL#commentArea textarea
