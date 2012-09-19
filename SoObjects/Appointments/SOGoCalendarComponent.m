@@ -982,13 +982,15 @@
 		  updatedAttendees: (NSArray *) theUpdatedAttendees
 			 operation: (SOGoEventOperation) theOperation
 {
-  NSString *mailDate, *mailText, *fullSenderEmail, *senderEmail, *fullRecipientEmail, *recipientEmail;
+  NSString *calendarName, *mailDate, *mailText, *fullSenderEmail, *senderEmail, *fullRecipientEmail, *recipientEmail;
   NSDictionary *senderIdentity, *recipientIdentity;
   SOGoAptMailReceipt *page;
   NGMutableHashMap *headerMap;
   NGMimeMessage *msg;
   SOGoUser *currentUser;
   SOGoDomainDefaults *dd;
+
+  calendarName = [[self container] displayName];
 
   // We must handle three cases here:
   // - Receive a mail when I modify my calendar
@@ -1003,6 +1005,7 @@
   [page setDeletedAttendees: theDeletedAttendees];
   [page setUpdatedAttendees: theUpdatedAttendees];
   [page setOperation: theOperation];
+  [page setCalendarName: calendarName];
   
   currentUser = [context activeUser];
   senderIdentity = [currentUser primaryIdentity];

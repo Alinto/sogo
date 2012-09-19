@@ -40,6 +40,7 @@
   NSArray *updatedAttendees;
   iCalPerson *currentRecipient;
   SOGoEventOperation operation;
+  NSString *calendarName;
 }
 
 - (void) setOriginator: (NSString *) newOriginator;
@@ -47,8 +48,10 @@
 - (void) setDeletedAttendees: (NSArray *) theAttendees;
 - (void) setUpdatedAttendees: (NSArray *) theAttendees;
 - (void) setOperation: (SOGoEventOperation) theOperation;
+- (void) setCalendarName: (NSString *) theCalendarName;
 
 - (NSString *) aptSummary;
+- (NSString *) calendarName;
 
 @end
 
