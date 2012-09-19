@@ -35,6 +35,7 @@
 #import "MAPIStoreAttachment.h"
 #import "MAPIStoreAttachmentTable.h"
 #import "MAPIStoreContext.h"
+#import "MAPIStoreEmbeddedMessage.h"
 #import "MAPIStoreFolder.h"
 #import "MAPIStoreMessageTable.h"
 #import "MAPIStorePropertySelectors.h"
@@ -55,8 +56,9 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
+static Class MAPIStoreFolderK, MAPIStoreEmbeddedMessageK;
+
 static NSString *resourcesDir = nil;
-static Class MAPIStoreFolderK = nil;
 
 /* rtf conversion via unrtf */
 static int
@@ -132,6 +134,7 @@ rtf2html (NSData *compressedRTF)
       [resourcesDir retain];
     }
   MAPIStoreFolderK = [MAPIStoreFolder class];
+  MAPIStoreEmbeddedMessageK = [MAPIStoreEmbeddedMessage class];
 }
 
 - (id) init
@@ -474,6 +477,7 @@ rtf2html (NSData *compressedRTF)
   context = [self context];
   ownerUser = [[self userContext] sogoUser];
   if ([[context activeUser] isEqual: ownerUser]
+      || [self isKindOfClass: MAPIStoreEmbeddedMessageK]
       || ((isNew
            && [(MAPIStoreFolder *) container subscriberCanCreateMessages])
           || (!isNew && [self subscriberCanModifyMessage])))
