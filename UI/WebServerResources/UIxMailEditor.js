@@ -104,6 +104,13 @@ function insertContact(inputNode, contactName, contactEmail) {
     inputNode.value = value;
 }
 
+function updateWindowTitleFromSubject(event) {
+    if (this.value) {
+        document.title = this.value;
+    }else{
+        document.title = _("Untitled");
+    }
+}
 
 /* mail editor */
 
@@ -415,6 +422,9 @@ function initMailEditor() {
     initializePriorityMenu();
 
     configureDragHandle();
+
+    // Change the window title when typing the subject
+    $$("div#subjectRow input").first().on("keyup", updateWindowTitleFromSubject);
 
     var composeMode = UserDefaults["SOGoMailComposeMessageType"];
     if (composeMode == "html") {
