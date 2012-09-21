@@ -515,7 +515,7 @@ class CalDAVSchedulingTest(unittest.TestCase):
         attendee.partstat_param = "NEEDS-ACTION"
         attendee.value = self.res_no_ob_email
         # should fail
-        self._putEvent(self.client, "%s%s" % (self.attendee1_calendar, overlap_ics_name), event, exp_status=403)
+        self._putEvent(self.attendee1_client, "%s%s" % (self.attendee1_calendar, overlap_ics_name), event, exp_status=403)
 
         # 3. Create recurring event which _doesn't_ overlap the first event
         #    (should be OK, used to fail pre1.3.17)
