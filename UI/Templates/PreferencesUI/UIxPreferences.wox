@@ -10,7 +10,8 @@
   className="UIxPageFrame"
   title="title"
   const:popup="YES"
-  const:jsFiles="RowEditionController.js,PasswordPolicy.js,ckeditor/ckeditor.js,skycalendar.js"
+  const:cssFiles="datepicker.css"
+  const:jsFiles="RowEditionController.js,PasswordPolicy.js,ckeditor/ckeditor.js,datepicker.js"
   >
   <script type="text/javascript">
     var localeCode = '<var:string value="localeCode"/>';
@@ -418,14 +419,14 @@
 
                 <label class="timeDate"><input var:checked="enableVacationEndDate"
                     const:name="enableVacationEndDate" const:id="enableVacationEndDate" type="checkbox" class="checkBox"
-                /><var:string label:value="Disable auto reply on" /><var:component className="UIxTimeDateControl"
+                /><var:string label:value="Disable auto reply on" /></label><var:component className="UIxTimeDateControl"
                     const:displayTimeControl="0"
                     var:disabled="disableVacationEndDate"
                     const:controlID="vacationEndDate"
                     date="vacationEndDate"
                     const:dayStartHour="0"
                     const:dayEndHour="23"
-                /></label>
+                />
 
               </div>
             </div>

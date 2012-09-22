@@ -240,8 +240,8 @@ function initPreferences() {
 
     button = $("enableVacationEndDate");
     if (button) {
-        assignCalendar('vacationEndDate_date');
-        button.on("change", function(event) {
+        jQuery("#vacationEndDate_date").closest(".date").datepicker({autoclose: true, position: 'above'});
+        button.on("click", function(event) {
             if (this.checked)
                 $("vacationEndDate_date").enable();
             else

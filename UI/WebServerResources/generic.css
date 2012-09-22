@@ -573,35 +573,72 @@ DIV.resize-handle
 DIV.dialog
 { position: absolute;
   width: 350px;
-  z-index: 50; }
+  z-index: 1000;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+  color: #000;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 18px; }
 
 DIV.dialog > DIV
-{ border: 1px solid #444;
-  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.5);
-  box-shadow: 0 5px 10px rgba(0,0,0,.5);
-  background-color: #fff;
-  padding: 5px;
-  padding-bottom: 26px; }
+{ padding: 5px 10px; }
 
-DIV.dialog.left
-{ background-image: url("dialog-left.png");
-  background-repeat: no-repeat;
-  background-position: top left; }
+.dialog.left > DIV:before {
+  content: '';
+  display: inline-block;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 7px solid #ccc;
+  border-right-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  left: -7px;
+  top: 6px;
+}
+.dialog.left > DIV:after {
+  content: '';
+  display: inline-block;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid #ffffff;
+  position: absolute;
+  left: -6px;
+  top: 7px;
+}
 
-DIV.dialog.left DIV
-{ border-left: 0px;
-  margin-left: 19px;
-  text-align: left; }
-
-DIV.dialog.right
-{ background-image: url("dialog-right.png");
-  background-repeat: no-repeat;
-  background-position: top right; }
-
-DIV.dialog.right DIV
-{ border-right: 0px;
-  margin-right: 19px;
-  text-align: right; }
+.dialog.right > DIV:before {
+  content: '';
+  display: inline-block;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 7px solid #ccc;
+  border-left-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  right: -7px;
+  top: 6px;
+}
+.dialog.right > DIV:after {
+  content: '';
+  display: inline-block;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 6px solid #ffffff;
+  position: absolute;
+  right: -6px;
+  top: 7px;
+}
 
 DIV.dialog.none
 { position: relative;
@@ -634,6 +671,11 @@ DIV.dialog.none P.prompt
 DIV.dialog P.list
 { max-height: 200px;
   overflow-y: auto; }
+
+DIV.dialog .button
+{ font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif;
+  font-size: 8pt;
+  margin-top: 10px; }
 
 DIV#bgFrameDiv
 { position: absolute;

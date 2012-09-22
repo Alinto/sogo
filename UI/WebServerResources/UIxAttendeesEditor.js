@@ -1644,16 +1644,17 @@ document.observe("dom:loaded", onFreeBusyLoadHandler);
 function initTimeWidgets(widgets) {
     this.timeWidgets = widgets;
 
-    assignCalendar('startTime_date');
-    assignCalendar('endTime_date');
-
-    widgets['start']['date'].observe("change", this.onAdjustTime, false);
-    widgets['start']['time'].observe("time:change", this.onAdjustTime, false);
+    jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true, position: 'above'});
+    jQuery(widgets['start']['date']).change(onAdjustTime);
+    widgets['start']['time'].on("time:change", onAdjustTime);
     widgets['start']['time'].addInterface(SOGoTimePickerInterface);
+    widgets['start']['time'].setPosition('above');
 
-    widgets['end']['date'].observe("change", this.onAdjustTime, false);
-    widgets['end']['time'].observe("time:change", this.onAdjustTime, false);
+    jQuery(widgets['end']['date']).closest('.date').datepicker({autoclose: true, position: 'above'});
+    jQuery(widgets['end']['date']).change(onAdjustTime);
+    widgets['end']['time'].on("time:change", onAdjustTime);
     widgets['end']['time'].addInterface(SOGoTimePickerInterface);
+    widgets['end']['time'].setPosition('above');
 
     var allDayLabel = $("allDay");
     if (allDayLabel) {

@@ -125,6 +125,8 @@ function onAttendeesMenuPrepareVisibility()
         composeToUndecidedAttendees.addClassName("disabled");
     else
         composeToUndecidedAttendees.removeClassName("disabled");
+
+    return true;
 }
 
 function onComposeToAllAttendees()
@@ -264,8 +266,14 @@ function getShadowEndDate() {
 }
 
 function _setDate(which, newDate) {
-    window.timeWidgets[which]['date'].setInputAsDate(newDate);
-    window.timeWidgets[which]['time'].value = newDate.getDisplayHoursString();
+    if (newDate) {
+        window.timeWidgets[which]['date'].setInputAsDate(newDate);
+        window.timeWidgets[which]['time'].value = newDate.getDisplayHoursString();
+    }
+    // Update date picker
+    var dateComponent = jQuery(window.timeWidgets[which]['date']).closest('.date');
+    dateComponent.data('date', window.timeWidgets[which]['date'].value);
+    dateComponent.datepicker('update');
 }
 
 function setStartDate(newStartDate) {
@@ -283,14 +291,19 @@ function onAdjustTime(event) {
     if ($(this).readAttribute("id").startsWith("start")) {
         // Start date was changed
         var delta = window.getShadowStartDate().valueOf() - startDate.valueOf();
-        var newEndDate = new Date(endDate.valueOf() - delta);
-        window.setEndDate(newEndDate);
+        window.setStartDate();
+        if (delta != 0) {
+            var newEndDate = new Date(endDate.valueOf() - delta);
+            window.setEndDate(newEndDate);
+            window.setStartDate();
     
-        window.timeWidgets['end']['date'].updateShadowValue();
-        window.timeWidgets['end']['time'].updateShadowValue();
-        window.timeWidgets['start']['date'].updateShadowValue();
-        window.timeWidgets['start']['time'].updateShadowValue();
-        if (window.timeWidgets['end']['time'].onChange) window.timeWidgets['end']['time'].onChange(); // method from SOGoTimePicker
+            window.timeWidgets['end']['date'].updateShadowValue();
+            window.timeWidgets['end']['time'].updateShadowValue();
+            window.timeWidgets['start']['date'].updateShadowValue();
+            window.timeWidgets['start']['time'].updateShadowValue();
+            if (window.timeWidgets['end']['time'].onChange)
+                window.timeWidgets['end']['time'].onChange(); // method from SOGoTimePicker
+        }
     }
     else {
         // End date was changed
@@ -304,6 +317,9 @@ function onAdjustTime(event) {
             window.timeWidgets['end']['time'].updateShadowValue();
             window.timeWidgets['end']['time'].onChange(); // method from SOGoTimePicker
         }
+        else {
+            window.setEndDate();
+        }
     }
 }
 
@@ -316,14 +332,16 @@ function initTimeWidgets(widgets) {
     this.timeWidgets = widgets;
 
     if (widgets['start']['date']) {
-        widgets['start']['date'].observe("change", this.onAdjustTime, false);
-        widgets['start']['time'].observe("time:change", this.onAdjustTime, false);
+        jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true});
+        jQuery(widgets['start']['date']).change(onAdjustTime);
+        widgets['start']['time'].on("time:change", onAdjustTime);
         widgets['start']['time'].addInterface(SOGoTimePickerInterface);
     }
 
     if (widgets['end']['date']) {
-        widgets['end']['date'].observe("change", this.onAdjustTime, false);
-        widgets['end']['time'].observe("time:change", this.onAdjustTime, false);
+        jQuery(widgets['end']['date']).closest('.date').datepicker({autoclose: true});
+        jQuery(widgets['end']['date']).change(onAdjustTime);
+        widgets['end']['time'].on("time:change", onAdjustTime);
         widgets['end']['time'].addInterface(SOGoTimePickerInterface);
     }
 
@@ -484,9 +502,6 @@ function getMenus() {
 
 function onAppointmentEditorLoad() {
     if (readOnly == false) {
-        assignCalendar('startTime_date');
-        assignCalendar('endTime_date');
-        
         var widgets = {'start': {'date': $("startTime_date"),
                                  'time': $("startTime_time")},
                        'end': {'date': $("endTime_date"),

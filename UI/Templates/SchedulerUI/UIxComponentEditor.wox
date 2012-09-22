@@ -11,8 +11,8 @@
   const:popup="YES"
   title="name"
   var:toolbar="toolbar"
-  const:cssFiles="UIxComponentEditor.css"
-  const:jsFiles="skycalendar.js,UIxComponentEditor.js,SOGoAutoCompletion.js,SOGoTimePicker.js">
+  const:cssFiles="datepicker.css,SOGoTimePicker.css,UIxComponentEditor.css"
+  const:jsFiles="datepicker.js,UIxComponentEditor.js,SOGoAutoCompletion.js,SOGoTimePicker.js">
 
   <script type="text/javascript">
     var activeCalendar = '<var:string value="componentCalendar.nameInContainer"/>';

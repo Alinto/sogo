@@ -71,15 +71,6 @@ SPAN.timeDateControl INPUT.textField
 { width: 7em;
   vertical-align: text-bottom; }
 
-#vacation LABEL.timeDate,
-#vacation LABEL.timeDate input.checkBox
-{ line-height: 2.0em;
-}
-#vacation LABEL.timeDate,
-#vacation LABEL.timeDate input.checkBox,
-SPAN.timeDateControl SPAN
-{ vertical-align: text-top; }
-
 /* vacation, forward */
 #vacation, #forward
 { padding-left: 2.5em; }
@@ -97,7 +88,8 @@ SPAN.timeDateControl SPAN
 { float: right; }
 #vacation SPAN.timeDateControl,
 #vacation SPAN.timeDateControl SPAN
-{ float: none; }
+{ float: none;
+  vertical-align: middle; }
 #vacation BR,
 #passwordView BR
 { clear: both; }

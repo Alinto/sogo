@@ -11,6 +11,8 @@ var SOGoTimePickerInterface = {
 
     div: null,
     extendedButton: null,
+
+    pos: 'bellow',
     
     minutes: '00',
     hours: '00',
@@ -21,7 +23,7 @@ var SOGoTimePickerInterface = {
 
     bind: function () {
         // Build widget
-        this.div = new Element("div", {'class': 'SOGoTimePickerMenu'});
+        this.div = new Element("div", {'class': 'SOGoTimePickerMenu ' + this.pos});
         this.div.hide();
         document.body.appendChild(this.div);
         var inner = new Element("div");
@@ -99,6 +101,15 @@ var SOGoTimePickerInterface = {
         this.onChange();
     },
 
+    setPosition: function (newPos) {
+        if (newPos == 'bellow' || newPos == 'above') {
+            this.div.removeClassName(this.pos);
+            this.div.addClassName(newPos);
+            this.pos = newPos;
+            this.position();
+        }
+    },
+
     position: function () {
         var inputPosition = this.cumulativeOffset();
         var inputDimensions = this.getDimensions();
@@ -107,10 +118,14 @@ var SOGoTimePickerInterface = {
         var left = inputPosition[0];
         var arrow = -1000 + inputDimensions['width'] - 10;
         if (left + divWidth > windowWidth) {
-            left = windowWidth - divWidth - 2;
+            left = windowWidth - divWidth - 4;
             arrow += (inputPosition[0] - left);
         }
-        var top = inputPosition[1] + 12;
+        var top = inputPosition[1];
+        if (this.pos == 'bellow')
+            top += 22;
+        else
+            top -= this.div.getHeight();
         this.div.setStyle({ top: top+"px",
                             left: left+"px",
                             backgroundPosition: arrow+'px top'});
@@ -143,6 +158,8 @@ var SOGoTimePickerInterface = {
             this.div.select("DIV.min1").invoke('hide');
             this.div.select("DIV.min5").invoke('show');
         }
+        if (this.pos == 'above')
+            this.position();
     },
 
     toggleVisibility: function (event) {

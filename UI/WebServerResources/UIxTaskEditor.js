@@ -264,6 +264,10 @@ this.onAdjustDueTime = function(event) {
 this.initTimeWidgets = function (widgets) {
 	this.timeWidgets = widgets;
    
+        jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true});
+        jQuery(widgets['due']['date']).closest('.date').datepicker({autoclose: true});
+        jQuery('#statusTime_date').closest('.date').datepicker({autoclose: true});
+
 	widgets['start']['date'].observe("change", this.onAdjustDueTime, false);
 	widgets['start']['time'].observe("time:change", this.onAdjustDueTime, false);
         widgets['start']['time'].addInterface(SOGoTimePickerInterface);
@@ -310,10 +314,6 @@ function initializeStatusLine() {
 }
 
 function onTaskEditorLoad() {
-    assignCalendar('startTime_date');
-    assignCalendar('dueTime_date');
-    assignCalendar('statusTime_date');
-    
     if (readOnly == false) {
         var widgets = {'start': {'date': $("startTime_date"),
                                  'time': $("startTime_time")},
