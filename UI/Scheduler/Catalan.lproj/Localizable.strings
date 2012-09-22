@@ -18,31 +18,7 @@
 
 /* Day */
 
-"Sunday" = "Diumenge";
-"Monday" = "Dilluns";
-"Tuesday" = "Dimarts";
-"Wednesday" = "Dimecres";
-"Thursday" = "Dijous";
-"Friday" = "Divendres";
-"Saturday" = "Dissabte";
 "DayOfTheMonth" = "Dia del mes";
-
-"Sun" = "dg";
-"Mon" = "dl";
-"Tue" = "dm";
-"Wed" = "dc";
-"Thu" = "dj";
-"Fri" = "dv";
-"Sat" = "ds";
-
-"a2_Sunday" = "dg";
-"a2_Monday" = "dl";
-"a2_Tuesday" = "dm";
-"a2_Wednesday" = "dc";
-"a2_Thursday" = "dj";
-"a2_Friday" = "dv";
-"a2_Saturday" = "ds";
-
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Avui";
 
@@ -62,32 +38,6 @@
 /* Month */
 
 "this month" = "Aquest mes";
-
-"January" = "gener";
-"February" = "febrer";
-"March" = "març";
-"April" = "abril";
-"May" = "maig";
-"June" = "juny";
-"July" = "juliol";
-"August" = "agost";
-"September" = "setembre";
-"October" = "octubre";
-"November" = "novembre";
-"December" = "desembre";
-
-"a3_January" = "gener";
-"a3_February" = "febrer";
-"a3_March" = "març";
-"a3_April" = "abril";
-"a3_May" = "maig";
-"a3_June" = "juny";
-"a3_July" = "juliol";
-"a3_August" = "agost";
-"a3_September" = "setembre";
-"a3_October" = "octubre";
-"a3_November" = "novembre";
-"a3_December" = "desembre";
 
 "Previous Month" = "Mes anterior";
 "Next Month" = "Mes següent";

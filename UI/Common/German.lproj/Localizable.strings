@@ -99,3 +99,11 @@
 "Start:" = "Beginn:";
 "Due Date:" = "Fällig:";
 "Location:" = "Ort:";
+
+"a2_Sunday" = "So";
+"a2_Monday" = "Mo";
+"a2_Tuesday" = "Di";
+"a2_Wednesday" = "Mi";
+"a2_Thursday" = "Do";
+"a2_Friday" = "Fr";
+"a2_Saturday" = "Sa";

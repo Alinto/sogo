@@ -70,9 +70,7 @@
       item = nil;
 #warning user should be the owner rather than the activeUser
       ASSIGN (user, [context activeUser]);
-      ASSIGN (userDefaults, [user userDefaults]);
       ASSIGN (today, [NSCalendarDate date]);
-      //locale = [context valueForKey: @"locale"];
       language = [userDefaults language];
 
       calendarCategories = nil;
@@ -80,8 +78,6 @@
       defaultCategoryColor = nil;
       category = nil;
 
-      ASSIGN (locale,
-	      [[self resourceManager] localeForLanguageNamed: language]);
       ASSIGN (daysOfWeek, [locale objectForKey: NSWeekDayNameArray]);
 
       dd = [user domainDefaults];
@@ -119,7 +115,6 @@
   [today release];
   [item release];
   [user release];
-  [userDefaults release];
   [sieveFilters release];
   [vacationOptions release];
   [calendarCategories release];
@@ -129,7 +124,6 @@
   [contactsCategories release];
   [forwardOptions release];
   [daysOfWeek release];
-  [locale release];
   [super dealloc];
 }
 

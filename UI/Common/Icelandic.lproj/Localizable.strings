@@ -77,3 +77,11 @@
 "Start:" = "Byrjun:";
 "Due Date:" = "Lokadagur:";
 "Location:" = "Staðsetning:";
+
+"a2_Sunday" = "Su";
+"a2_Monday" = "Má";
+"a2_Tuesday" = "Þr";
+"a2_Wednesday" = "Mi";
+"a2_Thursday" = "Fi";
+"a2_Friday" = "Fö";
+"a2_Saturday" = "La";

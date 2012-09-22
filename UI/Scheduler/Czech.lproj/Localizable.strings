@@ -18,31 +18,7 @@
 
 /* Day */
 
-"Sunday" = "Neděle";
-"Monday" = "Pondělí";
-"Tuesday" = "Úterý";
-"Wednesday" = "Středa";
-"Thursday" = "Čtvrtek";
-"Friday" = "Pátek";
-"Saturday" = "Sobota";
 "DayOfTheMonth" = "DayOfTheMonth";
-
-"Sun" = "Ne";
-"Mon" = "Po";
-"Tue" = "Út";
-"Wed" = "St";
-"Thu" = "čt";
-"Fri" = "Pá";
-"Sat" = "So";
-
-"a2_Sunday" = "Ne";
-"a2_Monday" = "Po";
-"a2_Tuesday" = "Út";
-"a2_Wednesday" = "St";
-"a2_Thursday" = "Čt";
-"a2_Friday" = "Pá";
-"a2_Saturday" = "So";
-
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Dnes";
 
@@ -62,32 +38,6 @@
 /* Month */
 
 "this month" = "tento měsíc";
-
-"January" = "Leden";
-"February" = "Únor";
-"March" = "Březen";
-"April" = "Duben";
-"May" = "Květen";
-"June" = "Červen";
-"July" = "Červenec";
-"August" = "Srpen";
-"September" = "Září";
-"October" = "Říjen";
-"November" = "Listopad";
-"December" = "Prosinec";
-
-"a3_January" = "Leden";
-"a3_February" = "Únor";
-"a3_March" = "Březen";
-"a3_April" = "Duben";
-"a3_May" = "Květen";
-"a3_June" = "Červen";
-"a3_July" = "Červenec";
-"a3_August" = "Srpen";
-"a3_September" = "Září";
-"a3_October" = "Říjen";
-"a3_November" = "Listopad";
-"a3_December" = "Prosinec";
 
 "Previous Month" = "Předchozí měsíc";
 "Next Month" = "Následující měsíc";

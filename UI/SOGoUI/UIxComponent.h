@@ -35,13 +35,18 @@
   TODO: document facilities.
 */
 
-@class NSCalendarDate, NSTimeZone, NSMutableDictionary, SoUser;
+@class NSCalendarDate, NSTimeZone, NSMutableDictionary, SoUser, SOGoUserDefaults;
 
 @interface UIxComponent : SoComponent
 {
   NSMutableDictionary *queryParameters;
   NSCalendarDate *_selectedDate;
+  NSDictionary *locale;
+  SOGoUserDefaults *userDefaults;
 }
+
++ (NSArray *) monthLabelKeys;
++ (NSArray *) abbrMonthLabelKeys;
 
 - (NSString *)queryParameterForKey:(NSString *)_key;
 - (NSDictionary *)queryParameters;
@@ -80,6 +85,9 @@
 
 /* labels */
 - (NSString *) labelForKey:(NSString *)_key;
+- (NSString *) commonLabelForKey:(NSString *)_key;
+- (NSString *) labelForKey: (NSString *) _str
+       withResourceManager: (WOResourceManager *) _rm;
 
 - (NSString *) localizedNameForDayOfWeek:(unsigned)_dayOfWeek;
 - (NSString *) localizedAbbreviatedNameForDayOfWeek:(unsigned)_dayOfWeek;

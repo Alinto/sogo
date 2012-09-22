@@ -77,3 +77,11 @@
 "Start:" = "Dechrau:";
 "Due Date:" = "Dyddiad dyledus:";
 "Location:" = "Lleoliad:";
+
+"a2_Sunday" = "Su";
+"a2_Monday" = "Ll";
+"a2_Tuesday" = "Ma";
+"a2_Wednesday" = "Me";
+"a2_Thursday" = "Ia";
+"a2_Friday" = "Gw";
+"a2_Saturday" = "Sa";

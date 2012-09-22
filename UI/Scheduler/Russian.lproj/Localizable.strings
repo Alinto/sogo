@@ -18,31 +18,7 @@
 
 /* Day */
 
-"Sunday" = "Воскресенье";
-"Monday" = "Понедельник";
-"Tuesday" = "Вторник";
-"Wednesday" = "Среда";
-"Thursday" = "Четверг";
-"Friday" = "Пятница";
-"Saturday" = "Суббота";
 "DayOfTheMonth" = "DayOfTheMonth";
-
-"Sun" = "Вск";
-"Mon" = "Пон";
-"Tue" = "Вт";
-"Wed" = "Ср";
-"Thu" = "Чтв";
-"Fri" = "Пят";
-"Sat" = "Суб";
-
-"a2_Sunday" = "Вс";
-"a2_Monday" = "Пн";
-"a2_Tuesday" = "Вт";
-"a2_Wednesday" = "Ср";
-"a2_Thursday" = "Чт";
-"a2_Friday" = "Пт";
-"a2_Saturday" = "Сб";
-
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Сегодня";
 
@@ -62,32 +38,6 @@
 /* Month */
 
 "this month" = "этот месяц";
-
-"January" = "Январь";
-"February" = "Февраль";
-"March" = "Март";
-"April" = "Апрель";
-"May" = "Май";
-"June" = "Июнь";
-"July" = "Июль";
-"August" = "Август";
-"September" = "Сентябрь";
-"October" = "Октябрь";
-"November" = "Ноябрь";
-"December" = "Декабрь";
-
-"a3_January" = "Января";
-"a3_February" = "Февраля";
-"a3_March" = "Марта";
-"a3_April" = "Апреля";
-"a3_May" = "Мая";
-"a3_June" = "Июня";
-"a3_July" = "Июля";
-"a3_August" = "Августа";
-"a3_September" = "Сентября";
-"a3_October" = "Октября";
-"a3_November" = "Ноября";
-"a3_December" = "Декабря";
 
 "Previous Month" = "Предыдущий месяц";
 "Next Month" = "Следующий месяц";

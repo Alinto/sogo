@@ -26,7 +26,6 @@
 #import <SOGoUI/UIxComponent.h>
 
 @class NSString;
-@class SOGoUserDefaults;
 
 @class SOGoUser;
 
@@ -34,13 +33,11 @@
 {
   id item;
   SOGoUser *user;
-  NSDictionary *locale;
   NSString *category;
   NSArray *calendarCategories;
   NSDictionary *calendarCategoriesColors;
   NSArray *contactsCategories;
   NSString *defaultCategoryColor;
-  SOGoUserDefaults *userDefaults;
   NSCalendarDate *today;
   NSArray *daysOfWeek, *daysBetweenResponsesList;
   NSArray *sieveFilters;

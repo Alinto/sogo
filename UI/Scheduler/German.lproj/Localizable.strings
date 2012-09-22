@@ -18,31 +18,7 @@
 
 /* Day */
 
-"Sunday" = "Sonntag";
-"Monday" = "Montag";
-"Tuesday" = "Dienstag";
-"Wednesday" = "Mittwoch";
-"Thursday" = "Donnerstag";
-"Friday" = "Freitag";
-"Saturday" = "Samstag";
 "DayOfTheMonth" = "Monatstag";
-
-"Sun" = "Son";
-"Mon" = "Mon";
-"Tue" = "Die";
-"Wed" = "Mit";
-"Thu" = "Don";
-"Fri" = "Fre";
-"Sat" = "Sam";
-
-"a2_Sunday" = "So";
-"a2_Monday" = "Mo";
-"a2_Tuesday" = "Di";
-"a2_Wednesday" = "Mi";
-"a2_Thursday" = "Do";
-"a2_Friday" = "Fr";
-"a2_Saturday" = "Sa";
-
 "dayLabelFormat" = "%d.%m.%Y";
 "today" = "Heute";
 
@@ -62,32 +38,6 @@
 /* Month */
 
 "this month" = "dieser Monat";
-
-"January" = "Januar";
-"February" = "Februar";
-"March" = "März";
-"April" = "April";
-"May" = "Mai";
-"June" = "Juni";
-"July" = "Juli";
-"August" = "August";
-"September" = "September";
-"October" = "Oktober";
-"November" = "November";
-"December" = "Dezember";
-
-"a3_January" = "Jan";
-"a3_February" = "Feb";
-"a3_March" = "Mar";
-"a3_April" = "Apr";
-"a3_May" = "Mai";
-"a3_June" = "Jun";
-"a3_July" = "Jul";
-"a3_August" = "Aug";
-"a3_September" = "Sep";
-"a3_October" = "Okt";
-"a3_November" = "Nov";
-"a3_December" = "Dez";
 
 "Previous Month" = "Vorheriger Monat";
 "Next Month" = "Nächster Monat";

@@ -99,3 +99,11 @@
 "Start:" = "Inici:";
 "Due Date:" = "Data límit:";
 "Location:" = "Lloc:";
+
+"a2_Sunday" = "dg";
+"a2_Monday" = "dl";
+"a2_Tuesday" = "dm";
+"a2_Wednesday" = "dc";
+"a2_Thursday" = "dj";
+"a2_Friday" = "dv";
+"a2_Saturday" = "ds";

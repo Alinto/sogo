@@ -99,3 +99,11 @@
 "Start:" = "Початок:";
 "Due Date:" = "Дата початку:";
 "Location:" = "Місце:";
+
+"a2_Sunday" = "Нд";
+"a2_Monday" = "Пн";
+"a2_Tuesday" = "Вт";
+"a2_Wednesday" = "Ср";
+"a2_Thursday" = "Чт";
+"a2_Friday" = "Пт";
+"a2_Saturday" = "Сб";

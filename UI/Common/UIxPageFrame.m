@@ -24,6 +24,7 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h> /* for locale strings */
 
 #import <NGObjWeb/WOResourceManager.h>
 
@@ -210,9 +211,11 @@
 - (NSString *) _stringsForFramework: (NSString *) framework
 {
   NSString *language, *frameworkName;
+  NSMutableDictionary* strings;
   SOGoUserDefaults *ud;
   id table;
 
+  // When no framework is specified, we load the strings from UI/Common
   frameworkName = [NSString stringWithFormat: @"%@.SOGo",
 			    (framework ? framework : [self frameworkName])];
   ud = [[context activeUser] userDefaults];
@@ -225,8 +228,26 @@
 			      inFramework: frameworkName
 			      languages: [NSArray arrayWithObject: language]];
 
+  strings = [NSMutableDictionary dictionaryWithDictionary: table];
+
+  if (!framework)
+    {
+      // Add strings from Locale
+      NSDictionary *moreStrings;
+
+      // Month names
+      moreStrings = [NSDictionary dictionaryWithObjects: [locale objectForKey: NSMonthNameArray]
+                                                forKeys: [UIxComponent monthLabelKeys]];
+      [strings addEntriesFromDictionary: moreStrings];
+
+      // Short month names
+      moreStrings = [NSDictionary dictionaryWithObjects: [locale objectForKey: NSShortMonthNameArray]
+                                                forKeys: [UIxComponent abbrMonthLabelKeys]];
+      [strings addEntriesFromDictionary: moreStrings];
+    }
+
   /* table is not really an NSDictionary but a hackish variation thereof */
-  return [[NSDictionary dictionaryWithDictionary: table] jsonRepresentation];
+  return [strings jsonRepresentation];
 }
 
 - (NSString *) commonLocalizableStrings

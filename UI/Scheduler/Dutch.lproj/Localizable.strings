@@ -17,31 +17,7 @@
 
 /* Day */
 
-"Sunday" = "Zondag";
-"Monday" = "Maandag";
-"Tuesday" = "Dinsdag";
-"Wednesday" = "Woensdag";
-"Thursday" = "Donderdag";
-"Friday" = "Vrijdag";
-"Saturday" = "Zaterdag";
 "DayOfTheMonth" = "Dag van de maand";
-
-"Sun" = "Zo";
-"Mon" = "Ma";
-"Tue" = "Di";
-"Wed" = "Wo";
-"Thu" = "Do";
-"Fri" = "Vr";
-"Sat" = "Za";
-
-"a2_Sunday" = "Zo";
-"a2_Monday" = "Ma";
-"a2_Tuesday" = "Di";
-"a2_Wednesday" = "Wo";
-"a2_Thursday" = "Do";
-"a2_Friday" = "Vr";
-"a2_Saturday" = "Za";
-
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "vandaag";
 
@@ -61,32 +37,6 @@
 /* Month */
 
 "this month" = "deze maand";
-
-"January" = "Januari";
-"February" = "Februari";
-"March" = "Maart";
-"April" = "April";
-"May" = "Mei";
-"June" = "Juni";
-"July" = "Juli";
-"August" = "Augustus";
-"September" = "September";
-"October" = "Oktober";
-"November" = "November";
-"December" = "December";
-
-"a3_January" = "Jan";
-"a3_February" = "Feb";
-"a3_March" = "Maa";
-"a3_April" = "Apr";
-"a3_May" = "Mei";
-"a3_June" = "Jun";
-"a3_July" = "Jul";
-"a3_August" = "Aug";
-"a3_September" = "Sep";
-"a3_October" = "Okt";
-"a3_November" = "Nov";
-"a3_December" = "Dec";
 
 "Previous Month" = "Vorige maand";
 "Next Month" = "Volgende maand";

@@ -18,31 +18,7 @@
 
 /* Day */
 
-"Sunday" = "Domenica";
-"Monday" = "Lunedi";
-"Tuesday" = "Martedi";
-"Wednesday" = "Mercoledi";
-"Thursday" = "Giovedi";
-"Friday" = "Venerdi";
-"Saturday" = "Sabato";
 "DayOfTheMonth" = "Giorno del mese";
-
-"Sun" = "Dom";
-"Mon" = "Lun";
-"Tue" = "Mar";
-"Wed" = "Mer";
-"Thu" = "Gio";
-"Fri" = "Ven";
-"Sat" = "Sab";
-
-"a2_Sunday" = "Do";
-"a2_Monday" = "Lu";
-"a2_Tuesday" = "Ma";
-"a2_Wednesday" = "Me";
-"a2_Thursday" = "Gi";
-"a2_Friday" = "Ve";
-"a2_Saturday" = "Sab";
-
 "dayLabelFormat" = "%d/%m/%Y";
 "today" = "Oggi";
 
@@ -62,32 +38,6 @@
 /* Month */
 
 "this month" = "questo mese";
-
-"January" = "Gennaio";
-"February" = "Febbraio";
-"March" = "Marzo";
-"April" = "Aprile";
-"May" = "Maggio";
-"June" = "Giugno";
-"July" = "Luglio";
-"August" = "Agosto";
-"September" = "Settembre";
-"October" = "Ottobre";
-"November" = "Novembre";
-"December" = "Dicembre";
-
-"a3_January" = "Gennaio";
-"a3_February" = "Febbraio";
-"a3_March" = "Marzo";
-"a3_April" = "Aprile";
-"a3_May" = "Maggio";
-"a3_June" = "Giugno";
-"a3_July" = "Luglio";
-"a3_August" = "Agosto";
-"a3_September" = "Settembre";
-"a3_October" = "Ottobre";
-"a3_November" = "Novembre";
-"a3_December" = "Dicembre";
 
 "Previous Month" = "Mese precedente";
 "Next Month" = "Mese successivo";

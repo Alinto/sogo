@@ -18,31 +18,7 @@
 
 /* Day */
 
-"Sunday" = "Søndag";
-"Monday" = "Mandag";
-"Tuesday" = "Tirsdag";
-"Wednesday" = "Onsdag";
-"Thursday" = "Torsdag";
-"Friday" = "Fredag";
-"Saturday" = "Lørdag";
 "DayOfTheMonth" = "Dag i måneden";
-
-"Sun" = "Søn";
-"Mon" = "Man";
-"Tue" = "Tir";
-"Wed" = "Ons";
-"Thu" = "Tor";
-"Fri" = "Fre";
-"Sat" = "Lør";
-
-"a2_Sunday" = "Sø";
-"a2_Monday" = "Ma";
-"a2_Tuesday" = "Ti";
-"a2_Wednesday" = "On";
-"a2_Thursday" = "To";
-"a2_Friday" = "Fr";
-"a2_Saturday" = "Lø";
-
 "dayLabelFormat" = "%Y-%m-%d";
 "today" = "Idag";
 
@@ -62,32 +38,6 @@
 /* Month */
 
 "this month" = "denne måneden";
-
-"January" = "Januar";
-"February" = "Februar";
-"March" = "Mars";
-"April" = "April";
-"May" = "May";
-"June" = "Juni";
-"July" = "Juli";
-"August" = "August";
-"September" = "September";
-"October" = "Oktober";
-"November" = "November";
-"December" = "Desember";
-
-"a3_January" = "Januar";
-"a3_February" = "Februar";
-"a3_March" = "Mars";
-"a3_April" = "April";
-"a3_May" = "May";
-"a3_June" = "Juni";
-"a3_July" = "Juli";
-"a3_August" = "August";
-"a3_September" = "September";
-"a3_October" = "Oktober";
-"a3_November" = "November";
-"a3_December" = "Desember";
 
 "Previous Month" = "Forrige måned";
 "Next Month" = "Neste måned";

@@ -99,3 +99,11 @@
 "Start:" = "Begin:";
 "Due Date:" = "Verloopdatum:";
 "Location:" = "Plaats:";
+
+"a2_Sunday" = "Zo";
+"a2_Monday" = "Ma";
+"a2_Tuesday" = "Di";
+"a2_Wednesday" = "Wo";
+"a2_Thursday" = "Do";
+"a2_Friday" = "Vr";
+"a2_Saturday" = "Za";

@@ -18,31 +18,7 @@
 
 /* Day */
 
-"Sunday" = "Sul";
-"Monday" = "Llun";
-"Tuesday" = "Mawrth";
-"Wednesday" = "Mercher";
-"Thursday" = "Iau";
-"Friday" = "Gwener";
-"Saturday" = "Sadwrn";
 "DayOfTheMonth" = "DayOfTheMonth";
-
-"Sun" = "Sul";
-"Mon" = "Llu";
-"Tue" = "Maw";
-"Wed" = "Mer";
-"Thu" = "Iau";
-"Fri" = "Gwe";
-"Sat" = "Sad";
-
-"a2_Sunday" = "Su";
-"a2_Monday" = "Ll";
-"a2_Tuesday" = "Ma";
-"a2_Wednesday" = "Me";
-"a2_Thursday" = "Ia";
-"a2_Friday" = "Gw";
-"a2_Saturday" = "Sa";
-
 "dayLabelFormat" = "%m/%d/%Y";
 "today" = "Heddiw";
 
@@ -62,32 +38,6 @@
 /* Month */
 
 "this month" = "mis hon";
-
-"January" = "Ionawr";
-"February" = "Chwefror";
-"March" = "Mawrth";
-"April" = "Ebrill";
-"May" = "Mai";
-"June" = "Mehefin";
-"July" = "Gorffennaf";
-"August" = "Awst";
-"September" = "Medi";
-"October" = "Hydref";
-"November" = "Tachwedd";
-"December" = "Rhagfyr";
-
-"a3_January" = "Ionawr";
-"a3_February" = "Chwefror";
-"a3_March" = "Mawrth";
-"a3_April" = "Ebrill";
-"a3_May" = "Mai";
-"a3_June" = "Mehefin";
-"a3_July" = "Gorffennaf";
-"a3_August" = "Awst";
-"a3_September" = "Medi";
-"a3_October" = "Hydref";
-"a3_November" = "Tachwedd";
-"a3_December" = "Rhagfyr";
 
 "Previous Month" = "Previous Month";
 "Next Month" = "Next Month";

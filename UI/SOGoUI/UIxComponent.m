@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2011 Inverse inc.
+  Copyright (C) 2007-2012 Inverse inc.
   Copyright (C) 2004 SKYRIX Software AG
 
   This file is part of SOGo
@@ -25,10 +25,12 @@
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSPathUtilities.h>
+#import <Foundation/NSUserDefaults.h> /* for locale strings */
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGObjWeb/SoObjects.h>
+#import <NGObjWeb/SoProduct.h>
 #import <NGObjWeb/WOResourceManager.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
@@ -63,6 +65,7 @@ static NSMutableArray *dayLabelKeys       = nil;
 static NSMutableArray *abbrDayLabelKeys   = nil;
 static NSMutableArray *monthLabelKeys     = nil;
 static NSMutableArray *abbrMonthLabelKeys = nil;
+static SoProduct      *commonProduct      = nil;
 
 + (int)version {
   return [super version] + 0 /* v2 */;
@@ -107,27 +110,51 @@ static NSMutableArray *abbrMonthLabelKeys = nil;
     [monthLabelKeys addObject:@"December"];
 
     abbrMonthLabelKeys = [[NSMutableArray alloc] initWithCapacity:12];
-    [abbrMonthLabelKeys addObject:@"a3_January"];
-    [abbrMonthLabelKeys addObject:@"a3_February"];
-    [abbrMonthLabelKeys addObject:@"a3_March"];
-    [abbrMonthLabelKeys addObject:@"a3_April"];
-    [abbrMonthLabelKeys addObject:@"a3_May"];
-    [abbrMonthLabelKeys addObject:@"a3_June"];
-    [abbrMonthLabelKeys addObject:@"a3_July"];
-    [abbrMonthLabelKeys addObject:@"a3_August"];
-    [abbrMonthLabelKeys addObject:@"a3_September"];
-    [abbrMonthLabelKeys addObject:@"a3_October"];
-    [abbrMonthLabelKeys addObject:@"a3_November"];
-    [abbrMonthLabelKeys addObject:@"a3_December"];
+    [abbrMonthLabelKeys addObject:@"Jan"];
+    [abbrMonthLabelKeys addObject:@"Feb"];
+    [abbrMonthLabelKeys addObject:@"Mar"];
+    [abbrMonthLabelKeys addObject:@"Apr"];
+    [abbrMonthLabelKeys addObject:@"May"];
+    [abbrMonthLabelKeys addObject:@"Jun"];
+    [abbrMonthLabelKeys addObject:@"Jul"];
+    [abbrMonthLabelKeys addObject:@"Aug"];
+    [abbrMonthLabelKeys addObject:@"Sep"];
+    [abbrMonthLabelKeys addObject:@"Oct"];
+    [abbrMonthLabelKeys addObject:@"Nov"];
+    [abbrMonthLabelKeys addObject:@"Dec"];
+
+    // @see commonLabelForKey:
+    commonProduct = [[SoProduct alloc] initWithBundle:
+                             [NSBundle bundleForClass: NSClassFromString(@"CommonUIProduct")]];
   }
+}
+
++ (NSArray *) abbrDayLabelKeys
+{
+  return (NSArray *) abbrDayLabelKeys;
+}
+
++ (NSArray *) monthLabelKeys
+{
+  return (NSArray *) monthLabelKeys;
+}
+
++ (NSArray *) abbrMonthLabelKeys
+{
+  return (NSArray *) abbrMonthLabelKeys;
 }
 
 - (id) init
 {
+  NSString *language;
+
   if ((self = [super init]))
     {
       _selectedDate = nil;
       queryParameters = nil;
+      ASSIGN (userDefaults, [[context activeUser] userDefaults]);
+      language = [userDefaults language];
+      ASSIGN (locale, [[self resourceManager] localeForLanguageNamed: language]);
     }
 
   return self;
@@ -137,6 +164,8 @@ static NSMutableArray *abbrMonthLabelKeys = nil;
 {
   [queryParameters release];
   [_selectedDate release];
+  [locale release];
+  [userDefaults release];
   [super dealloc];
 }
 
@@ -393,16 +422,13 @@ static NSMutableArray *abbrMonthLabelKeys = nil;
 
 - (NSCalendarDate *) selectedDate
 {
-  SOGoUserDefaults *ud;
-
   if (!_selectedDate)
     {
-      ud = [[context activeUser] userDefaults];
       _selectedDate
         = [NSCalendarDate
             dateFromShortDateString: [self queryParameterForKey: @"day"]
             andShortTimeString: [self queryParameterForKey: @"hm"]
-            inTimeZone: [ud timeZone]];
+            inTimeZone: [userDefaults timeZone]];
       [_selectedDate retain];
     }
 
@@ -411,10 +437,7 @@ static NSMutableArray *abbrMonthLabelKeys = nil;
 
 - (NSString *) dateStringForDate: (NSCalendarDate *) _date
 {
-  SOGoUserDefaults *ud;
-
-  ud = [[context activeUser] userDefaults];
-  [_date setTimeZone: [ud timeZone]];
+  [_date setTimeZone: [userDefaults timeZone]];
 
   return [_date descriptionWithCalendarFormat: @"%Y%m%d"];
 }
@@ -495,24 +518,39 @@ static NSMutableArray *abbrMonthLabelKeys = nil;
 - (NSString *) labelForKey: (NSString *) _str
 {
   WOResourceManager *rm;
+  /* find resource manager */
+
+  rm = [self pageResourceManager];
+
+  return [self labelForKey: _str withResourceManager: rm];
+}
+
+- (NSString *) commonLabelForKey: (NSString *) _str
+{
+  WOResourceManager *rm;
+
+  rm = [commonProduct resourceManager];
+
+  return [self labelForKey: _str withResourceManager: rm];
+}
+
+- (NSString *) labelForKey: (NSString *) _str
+       withResourceManager: (WOResourceManager *) rm
+{
   NSArray *languages;
   NSString *lKey, *lTable, *lVal;
   NSRange r;
 
   if ([_str length] == 0)
     return nil;
-  
-  /* lookup languages */
-    
-  languages = [context resourceLookupLanguages];
-    
-  /* find resource manager */
-    
-  if ((rm = [self pageResourceManager]) == nil)
-    rm = [[WOApplication application] resourceManager];
+
   if (rm == nil)
     [self warnWithFormat:@"missing resource manager!"];
-    
+
+  /* lookup languages */
+
+  languages = [context resourceLookupLanguages];
+
   /* get parameters */
     
   r = [_str rangeOfString:@"/"];
@@ -541,22 +579,25 @@ static NSMutableArray *abbrMonthLabelKeys = nil;
 
 - (NSString *) localizedNameForDayOfWeek: (unsigned) dayOfWeek
 {
-  return [self labelForKey: [dayLabelKeys objectAtIndex: dayOfWeek % 7]];
+  return [[locale objectForKey: NSWeekDayNameArray] objectAtIndex: dayOfWeek % 7];
 }
 
 - (NSString *) localizedAbbreviatedNameForDayOfWeek: (unsigned) dayOfWeek
 {
-  return [self labelForKey: [abbrDayLabelKeys objectAtIndex: dayOfWeek % 7]];
+  // Defined in Common bundle
+  return [self commonLabelForKey: [abbrDayLabelKeys objectAtIndex: dayOfWeek % 7]];
 }
 
 - (NSString *) localizedNameForMonthOfYear: (unsigned) monthOfYear
 {
-  return [self labelForKey: [monthLabelKeys objectAtIndex: (monthOfYear - 1) % 12]];
+  // Defined in Locale
+  return [[locale objectForKey: NSMonthNameArray] objectAtIndex: (monthOfYear - 1) % 12];
 }
 
 - (NSString *) localizedAbbreviatedNameForMonthOfYear: (unsigned) monthOfYear
 {
-  return [self labelForKey: [abbrMonthLabelKeys objectAtIndex: (monthOfYear - 1) % 12]];
+  // Defined in Locale
+  return [[locale objectForKey: NSShortMonthNameArray] objectAtIndex: (monthOfYear - 1) % 12];
 }
 
 /* HTTP method safety */

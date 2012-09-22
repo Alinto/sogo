@@ -18,31 +18,7 @@
 
 /* Day */
 
-"Sunday" = "Sunday";
-"Monday" = "Monday";
-"Tuesday" = "Tuesday";
-"Wednesday" = "Wednesday";
-"Thursday" = "Thursday";
-"Friday" = "Friday";
-"Saturday" = "Saturday";
 "DayOfTheMonth" = "Day of the month";
-
-"Sun" = "Sun";
-"Mon" = "Mon";
-"Tue" = "Tue";
-"Wed" = "Wed";
-"Thu" = "Thu";
-"Fri" = "Fri";
-"Sat" = "Sat";
-
-"a2_Sunday" = "Su";
-"a2_Monday" = "Mo";
-"a2_Tuesday" = "Tu";
-"a2_Wednesday" = "We";
-"a2_Thursday" = "Th";
-"a2_Friday" = "Fr";
-"a2_Saturday" = "Sa";
-
 "dayLabelFormat" = "%m/%d/%Y";
 "today" = "Today";
 
@@ -62,32 +38,6 @@
 /* Month */
 
 "this month" = "this month";
-
-"January" = "January";
-"February" = "February";
-"March" = "March";
-"April" = "April";
-"May" = "May";
-"June" = "June";
-"July" = "July";
-"August" = "August";
-"September" = "September";
-"October" = "October";
-"November" = "November";
-"December" = "December";
-
-"a3_January" = "January";
-"a3_February" = "February";
-"a3_March" = "March";
-"a3_April" = "April";
-"a3_May" = "May";
-"a3_June" = "June";
-"a3_July" = "July";
-"a3_August" = "August";
-"a3_September" = "September";
-"a3_October" = "October";
-"a3_November" = "November";
-"a3_December" = "December";
 
 "Previous Month" = "Previous Month";
 "Next Month" = "Next Month";

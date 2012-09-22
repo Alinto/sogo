@@ -18,31 +18,7 @@
 
 /* Day */
 
-"Sunday" = "Vasárnap";
-"Monday" = "Hétfő";
-"Tuesday" = "Kedd";
-"Wednesday" = "Szerda";
-"Thursday" = "Csütörtök";
-"Friday" = "Péntek";
-"Saturday" = "Szombat";
 "DayOfTheMonth" = "A hónap napja";
-
-"Sun" = "Vas";
-"Mon" = "Hét";
-"Tue" = "Ked";
-"Wed" = "Sze";
-"Thu" = "Csü";
-"Fri" = "Pén";
-"Sat" = "Szo";
-
-"a2_Sunday" = "Va";
-"a2_Monday" = "Hé";
-"a2_Tuesday" = "Ke";
-"a2_Wednesday" = "Sz";
-"a2_Thursday" = "Cs";
-"a2_Friday" = "Pé";
-"a2_Saturday" = "Sz";
-
 "dayLabelFormat" = "%Y.%m.%d";
 "today" = "Ma";
 
@@ -62,32 +38,6 @@
 /* Month */
 
 "this month" = "aktuális hónap";
-
-"January" = "Január";
-"February" = "Február";
-"March" = "Március";
-"April" = "Április";
-"May" = "Május";
-"June" = "Június";
-"July" = "Július";
-"August" = "Augusztus";
-"September" = "Szeptember";
-"October" = "Október";
-"November" = "November";
-"December" = "December";
-
-"a3_January" = "Január";
-"a3_February" = "Február";
-"a3_March" = "Március";
-"a3_April" = "Április";
-"a3_May" = "Május";
-"a3_June" = "Június";
-"a3_July" = "Július";
-"a3_August" = "Augusztus";
-"a3_September" = "Szeptember";
-"a3_October" = "Október";
-"a3_November" = "November";
-"a3_December" = "December";
 
 "Previous Month" = "Előző hónap";
 "Next Month" = "Következő hónap";

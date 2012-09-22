@@ -92,29 +92,6 @@ Date.prototype.clone = function() {
     return newDate;
 }
 
-Date.prototype.sogoDayName = function() {
-    var dayName = "";
-
-    var day = this.getDay();
-    if (day == 0) {
-        dayName = labels['a2_Sunday'];
-    } else if (day == 1) {
-        dayName = labels['a2_Monday'];
-    } else if (day == 2) {
-        dayName = labels['a2_Tuesday'];
-    } else if (day == 3) {
-        dayName = labels['a2_Wednesday'];
-    } else if (day == 4) {
-        dayName = labels['a2_Thursday'];
-    } else if (day == 5) {
-        dayName = labels['a2_Friday'];
-    } else if (day == 6) {
-        dayName = labels['a2_Saturday'];
-    }
-
-    return dayName;
-};
-
 Date.prototype.deltaDays = function(otherDate) {
     var day1 = this.getTime();
     var day2 = otherDate.getTime();
@@ -208,10 +185,6 @@ Date.prototype.stringWithSeparator = function(separator) {
         str = day + '/' + month + '/' + year;
 
     return str;
-};
-
-Date.prototype.sogoFreeBusyStringWithSeparator = function(separator) {
-    return this.sogoDayName() + ", " + this.stringWithSeparator(separator);
 };
 
 Date.prototype.addDays = function(nbrDays) {

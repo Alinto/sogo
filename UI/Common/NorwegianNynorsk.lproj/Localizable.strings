@@ -77,3 +77,11 @@
 "Start:" = "Start:";
 "Due Date:" = "Forfallsdato:";
 "Location:" = "Lokasjon:";
+
+"a2_Sunday" = "Sø";
+"a2_Monday" = "Ma";
+"a2_Tuesday" = "Ti";
+"a2_Wednesday" = "On";
+"a2_Thursday" = "To";
+"a2_Friday" = "Fr";
+"a2_Saturday" = "Lø";

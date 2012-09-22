@@ -99,3 +99,11 @@
 "Start:" = "Začátek:";
 "Due Date:" = "Do dne:";
 "Location:" = "Místo:";
+
+"a2_Sunday" = "Ne";
+"a2_Monday" = "Po";
+"a2_Tuesday" = "Út";
+"a2_Wednesday" = "St";
+"a2_Thursday" = "Čt";
+"a2_Friday" = "Pá";
+"a2_Saturday" = "So";
