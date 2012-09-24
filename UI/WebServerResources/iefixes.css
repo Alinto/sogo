@@ -205,10 +205,11 @@ DIV#listEditor TABLE TBODY TR TD:first-child
 A#aboutClose
 { top: 25px;}
 
-DIV#uploadDialog P,
-DIV#uploadResults P
-{ margin: 5px;
-  padding: 0; }
+.dialog h3
+{ font-size: 14px; }
+
+.dialog p
+{ margin: 0px; }
 
 /* UIxPreferences */
 

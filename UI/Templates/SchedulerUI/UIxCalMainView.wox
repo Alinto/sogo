@@ -107,27 +107,29 @@
   <div id="uploadDialog" style="display: none" class="dialog left">
     <div>
       <h3><var:string label:value="Import Events"/></h3>
-      <p><var:string label:value="Select an iCalendar file (.ics)."/></p>
+      <p class="prompt"><var:string label:value="Select an iCalendar file (.ics)."/></p>
       <form const:href="" name="uploadForm" id="uploadForm" method="post"
         enctype="multipart/form-data"
         onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm, 
         'onComplete' : uploadCompleted})">
-        <p><input type="file" name="calendarFile" id="calendarFile" /></p>
-        <p><a href="#" class="button actionButton" id="uploadSubmit"
+        <p class="prompt"><input type="file" name="calendarFile" class="textField" id="calendarFile" />
+        <a href="#" class="button actionButton" id="uploadSubmit"
             onclick="if($('uploadForm').onsubmit()) $('uploadForm').submit()">
             <span><var:string label:value="Upload" /></span></a>
-          <a href="#" class="button" const:id="uploadCancel">
-            <span><var:string label:value="Cancel" /></span></a></p>
-      </form>
+        <a href="#" class="button" const:id="uploadCancel">
+            <span><var:string label:value="Cancel" /></span></a>
+      </p></form>
+      <hr/>
     </div>
   </div>
 
   <div id="uploadResults" style="display: none" class="dialog left">
     <div>
       <h3><var:string label:value="Import Events"/></h3>
-      <p id="uploadResultsContent"><!-- empty --></p>
-      <p><a href="#" class="button" const:id="uploadOK">
+      <p><span id="uploadResultsContent"><!-- empty --></span>
+      <a href="#" class="button" const:id="uploadOK">
           <span><var:string label:value="Done" /></span></a></p>
+      <hr/>
     </div>
   </div>
 

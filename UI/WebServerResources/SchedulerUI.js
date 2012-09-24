@@ -701,7 +701,7 @@ function onViewEventCallback(http) {
             var divDimensions = div.getDimensions();
             var view;
             var left = cellPosition[0];
-            var top = cellPosition[1];
+            var top = cellPosition[1] - 5;
 
             if (currentView != "monthview") {
                 view = $("daysView");

@@ -596,6 +596,9 @@ DIV.dialog
 DIV.dialog > DIV
 { padding: 5px 10px; }
 
+.dialog.left > DIV {
+  padding-right: 5px;
+}
 .dialog.left > DIV:before {
   content: '';
   display: inline-block;
@@ -618,6 +621,9 @@ DIV.dialog > DIV
   top: 7px;
 }
 
+.dialog.right > DIV {
+  padding-left: 5px;
+}
 .dialog.right > DIV:before {
   content: '';
   display: inline-block;
@@ -658,14 +664,14 @@ DIV.dialog HR
   color: #fff;
   border: 0px; }
 
-DIV.dialog.none H3
+DIV.dialog H3
 { margin: 0; }
 
 DIV.dialog.none P
 { margin: 0px;
   padding: 5px 0px; }
 
-DIV.dialog.none P.prompt
+DIV.dialog P.prompt
 { text-align: right; }
 
 DIV.dialog P.list
@@ -694,20 +700,6 @@ DIV#bgDialogDiv
   z-index: 2;
   background: -webkit-radial-gradient(ellipse cover,rgba(0, 0, 0, .1) 0,rgba(0, 0, 0, .1) 20%,rgba(0, 0, 0, .7) 80%);
   background: -moz-linear-gradient(top, rgba(0, 0, 0, .5),  rgba(0, 0, 0, .1)); }
-
-DIV#uploadDialog,
-DIV#uploadResults
-{ border-width: 1px;
-  width: 260px; }
-
-DIV#uploadDialog DIV,
-DIV#uploadResults DIV
-{ width: 260px; }
-
-DIV#uploadDialog H3,
-DIV#uploadResults H3
-{ margin-top: 0px;
-  font-size: 1.2em; }
 
 /* INPUT styles */
 TEXTAREA

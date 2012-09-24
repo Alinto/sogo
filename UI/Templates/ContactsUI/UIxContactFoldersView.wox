@@ -31,18 +31,19 @@
   <div id="uploadDialog" style="display: none" class="dialog left">
     <div>
       <h3><var:string label:value="Import Cards"/></h3>
-      <p><var:string label:value="Select a vCard or LDIF file."/></p>
+      <p class="prompt"><var:string label:value="Select a vCard or LDIF file."/></p>
       <form const:href="" name="uploadForm" id="uploadForm" method="post"
         enctype="multipart/form-data"
         onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm, 
         'onComplete' : uploadCompleted})">
-        <p><input type="file" name="contactsFile" id="contactsFile" /></p>
-        <p><a href="#" class="button actionButton" id="uploadSubmit"
+        <p class="prompt"><input type="file" name="contactsFile" id="contactsFile" class="textField" />
+          <a href="#" class="button actionButton" id="uploadSubmit"
             onclick="if($('uploadForm').onsubmit()) $('uploadForm').submit()">
             <span><var:string label:value="Upload" /></span></a>
           <a href="#" class="button" const:id="uploadCancel">
             <span><var:string label:value="Cancel" /></span></a></p>
       </form>
+      <hr/>
     </div>
   </div>
 
@@ -52,6 +53,7 @@
       <p id="uploadResultsContent"><!-- empty --></p>
       <p><a href="#" class="button" const:id="uploadOK">
           <span><var:string label:value="Done" /></span></a></p>
+      <hr/>
     </div>
   </div>
   
