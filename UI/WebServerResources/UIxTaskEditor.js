@@ -18,11 +18,11 @@ function uixEarlierDate(date1, date2) {
   return null;
 }
 
-function validateDate(date, label) {
+function validateDate(which, label) {
   var result, dateValue;
 
-  dateValue = date.calendar.prs_date(date.value);
-  if (date.value.length != 10 || !dateValue) {
+  dateValue = this._getDate(which);
+  if (dateValue == null) {
     alert(label);
     result = false;
   } else
@@ -41,14 +41,14 @@ function validateTaskEditor() {
 
   e = document.getElementById('startTime_date');
   if (!e.disabled) {
-    startdate = validateDate(e, labels.validate_invalid_startdate);
+    startdate = validateDate('start', labels.validate_invalid_startdate);
     if (!startdate)
       return false;
   }
 
   e = document.getElementById('dueTime_date');
   if (!e.disabled) {
-    enddate = validateDate(e, labels.validate_invalid_enddate);
+    enddate = validateDate('due', labels.validate_invalid_enddate);
     if (!enddate)
       return false;
   }
@@ -204,6 +204,9 @@ this._getDate = function(which) {
         date.setHours(time[0]);
         date.setMinutes(time[1]);
 
+        if (isNaN(date.getTime()))
+            return null;
+
 	return date;
 };
 
@@ -235,6 +238,11 @@ this.getShadowDueDate = function() {
 this._setDate = function(which, newDate) {
 	window.timeWidgets[which]['date'].setInputAsDate(newDate);
         window.timeWidgets[which]['time'].value = newDate.getDisplayHoursString();
+
+        // Update date picker
+        var dateComponent = jQuery(window.timeWidgets[which]['date']).closest('.date');
+        dateComponent.data('date', window.timeWidgets[which]['date'].value);
+        dateComponent.datepicker('update');
 };
 
 this.setStartDate = function(newStartDate) {
@@ -242,7 +250,6 @@ this.setStartDate = function(newStartDate) {
 };
 
 this.setDueDate = function(newDueDate) {
-	//   window.alert(newDueDate);
 	this._setDate('due', newDueDate);
 };
 
@@ -268,8 +275,8 @@ this.initTimeWidgets = function (widgets) {
         jQuery(widgets['due']['date']).closest('.date').datepicker({autoclose: true});
         jQuery('#statusTime_date').closest('.date').datepicker({autoclose: true});
 
-	widgets['start']['date'].observe("change", this.onAdjustDueTime, false);
-	widgets['start']['time'].observe("time:change", this.onAdjustDueTime, false);
+        jQuery(widgets['start']['date']).change(onAdjustTime);
+	widgets['start']['time'].on("time:change", onAdjustDueTime);
         widgets['start']['time'].addInterface(SOGoTimePickerInterface);
         widgets['due']['time'].addInterface(SOGoTimePickerInterface);
 };

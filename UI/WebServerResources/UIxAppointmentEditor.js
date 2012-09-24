@@ -55,7 +55,8 @@ function validateAptEditor() {
         alert(labels.validate_invalid_startdate);
         return false;
     }
-    startdate = e.calendar.prs_date(e.value);
+
+    startdate = getStartDate();
     if (startdate == null) {
         alert(labels.validate_invalid_startdate);
         return false;
@@ -66,7 +67,7 @@ function validateAptEditor() {
         alert(labels.validate_invalid_enddate);
         return false;
     }
-    enddate = e.calendar.prs_date(e.value);
+    enddate = getEndDate();
     if (enddate == null) {
         alert(labels.validate_invalid_enddate);
         return false;
@@ -235,6 +236,9 @@ function _getDate(which) {
         date.setMinutes(time[2]);
     }
 
+    if (isNaN(date.getTime()))
+        return null;
+
     return date;
 }
 
@@ -290,35 +294,47 @@ function onAdjustTime(event) {
   
     if ($(this).readAttribute("id").startsWith("start")) {
         // Start date was changed
-        var delta = window.getShadowStartDate().valueOf() - startDate.valueOf();
-        window.setStartDate();
-        if (delta != 0) {
-            var newEndDate = new Date(endDate.valueOf() - delta);
-            window.setEndDate(newEndDate);
+        if (startDate == null) {
+            var oldStartDate = window.getShadowStartDate();
+            window.setStartDate(oldStartDate);
+        }
+        else {
+            var delta = window.getShadowStartDate().valueOf() - startDate.valueOf();
             window.setStartDate();
+            if (delta != 0) {
+                // Increment end date
+                var newEndDate = new Date(endDate.valueOf() - delta);
+                window.setEndDate(newEndDate);
     
-            window.timeWidgets['end']['date'].updateShadowValue();
-            window.timeWidgets['end']['time'].updateShadowValue();
-            window.timeWidgets['start']['date'].updateShadowValue();
-            window.timeWidgets['start']['time'].updateShadowValue();
-            if (window.timeWidgets['end']['time'].onChange)
-                window.timeWidgets['end']['time'].onChange(); // method from SOGoTimePicker
+                window.timeWidgets['end']['date'].updateShadowValue();
+                window.timeWidgets['end']['time'].updateShadowValue();
+                window.timeWidgets['start']['date'].updateShadowValue();
+                window.timeWidgets['start']['time'].updateShadowValue();
+                if (window.timeWidgets['end']['time'].onChange)
+                    window.timeWidgets['end']['time'].onChange(); // method from SOGoTimePicker
+            }
         }
     }
     else {
         // End date was changed
-        var delta = endDate.valueOf() - startDate.valueOf();
-        if (delta < 0) {
-            alert(labels.validate_endbeforestart);
+        if (endDate == null) {
             var oldEndDate = window.getShadowEndDate();
             window.setEndDate(oldEndDate);
-
-            window.timeWidgets['end']['date'].updateShadowValue();
-            window.timeWidgets['end']['time'].updateShadowValue();
-            window.timeWidgets['end']['time'].onChange(); // method from SOGoTimePicker
         }
         else {
-            window.setEndDate();
+            var delta = endDate.valueOf() - startDate.valueOf();
+            if (delta < 0) {
+                alert(labels.validate_endbeforestart);
+                var oldEndDate = window.getShadowEndDate();
+                window.setEndDate(oldEndDate);
+
+                window.timeWidgets['end']['date'].updateShadowValue();
+                window.timeWidgets['end']['time'].updateShadowValue();
+                window.timeWidgets['end']['time'].onChange(); // method from SOGoTimePicker
+            }
+            else {
+                window.setEndDate();
+            }
         }
     }
 }

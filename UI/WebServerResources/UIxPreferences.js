@@ -51,9 +51,9 @@ function savePreferences(sender) {
 	}
         if ($("enableVacationEndDate") && $("enableVacationEndDate").checked) {
             var e = $("vacationEndDate_date");
-            var endDate = e.calendar.prs_date(e.value);
+            var endDate = e.inputAsDate();
             var now = new Date();
-            if (endDate.getTime() < now.getTime()) {
+            if (isNaN(endDate.getTime()) || endDate.getTime() < now.getTime()) {
                 showAlertDialog(_("End date of your auto reply must be in the future."));
                 sendForm = false;
             }
