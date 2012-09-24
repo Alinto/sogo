@@ -82,10 +82,6 @@ function savePreferences(sender) {
     return false;
 }
 
-function onAdjustTime(event) {
-    // unconditionally called from skycalendar.html
-}
-
 function prototypeIfyFilters() {
     var newFilters = $([]);
     for (var i = 0; i < filters.length; i++) {
@@ -555,7 +551,7 @@ function onMailIdentitySignatureClick(event) {
             fields.appendChild(createButton("okBtn", _("OK"),
                                             onMailIdentitySignatureOK));
             fields.appendChild(createButton("cancelBtn", _("Cancel"),
-                                            disposeDialog.bind(document.body, dialogId)));
+                                            disposeDialog));
             var dialog = createDialog(dialogId,
                                       _("Signature"),
                                       label,
@@ -590,13 +586,15 @@ function onMailIdentitySignatureClick(event) {
         else
             area.value = "";
 
-
-        dialog.show();
         $("bgDialogDiv").show();
-        if (CKEDITOR.instances["signature"])
+        if (Prototype.Browser.IE)
+            jQuery('#bgDialogDiv').css('opacity', 0.4);
+        jQuery(dialog).fadeIn('fast', function() {
+            if (CKEDITOR.instances["signature"])
                 focusCKEditor();
-        else
-            area.focus();
+            else
+                area.focus();
+        });
         Event.stop(event);
     }
 }
