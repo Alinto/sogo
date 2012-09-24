@@ -46,6 +46,16 @@
 
 @class WOHTTPURLHandle;
 
+size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *inSelf)
+{
+  size_t total;
+  
+  total = size * nmemb;
+  [((SOGoWebAppointmentFolder *)inSelf)->buffer appendBytes: ptr length: total];
+  
+  return total;
+}
+
 @implementation SOGoWebAppointmentFolder
 
 - (void) deleteAllContent
@@ -107,7 +117,6 @@
 {
   NSString *location, *httpauth;
   NSDictionary *authInfos;
-  NSMutableData *bodyData;
   NSURL *url;
   CURL *curl;
   CURLcode rc;
@@ -142,17 +151,11 @@
               curl_easy_setopt (curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
             }
 
-          bodyData = [NSMutableData data];
-          size_t curlBodyFunction (void *ptr, size_t size, size_t nmemb, void *inSelf)
-          {
-            size_t total;
+	  /* buffering ivar, no need to retain/release */
+	  buffer = [NSMutableData data];
 
-            total = size * nmemb;
-            [bodyData appendBytes: ptr length: total];
-
-            return total;
-          }
-          curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, curlBodyFunction);
+          curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, curl_body_function);
+          curl_easy_setopt(curl, CURLOPT_WRITEDATA, self);
 
           error[0] = 0;
           curl_easy_setopt (curl, CURLOPT_ERRORBUFFER, &error);
@@ -167,10 +170,10 @@
 
               if (status == 200)
                 {
-                  content = [[NSString alloc] initWithData: bodyData
+                  content = [[NSString alloc] initWithData: buffer
                                                   encoding: NSUTF8StringEncoding];
                   if (!content)
-                    content = [[NSString alloc] initWithData: bodyData
+                    content = [[NSString alloc] initWithData: buffer
                                                     encoding: NSISOLatin1StringEncoding];
                   [content autorelease];
                   calendar = [iCalCalendar parseSingleFromSource: content];

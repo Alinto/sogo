@@ -41,7 +41,7 @@
 #import "MSExchangeFreeBusySOAPRequest.h"
 #import "MSExchangeFreeBusy.h"
 
-size_t curlBodyFunction(void *ptr, size_t size, size_t nmemb, void *inSelf)
+size_t curl_body_function_freebusy(void *ptr, size_t size, size_t nmemb, void *inSelf)
 {
   return [(MSExchangeFreeBusy *)inSelf curlWritePtr:ptr size:size number:nmemb];
 }
@@ -139,7 +139,7 @@ size_t curlBodyFunction(void *ptr, size_t size, size_t nmemb, void *inSelf)
           //curl_easy_setopt(curl, CURLOPT_HEADER, 1);
           curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
           curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
-          curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlBodyFunction);
+          curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curl_body_function_freebusy);
           curl_easy_setopt(curl, CURLOPT_WRITEDATA, self);
           curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, &error);
 
