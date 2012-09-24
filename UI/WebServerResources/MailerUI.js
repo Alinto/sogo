@@ -195,6 +195,7 @@ function openMessageWindowsForSelection(action, firstOnly) {
         var url = window.location.href;
         var parts = url.split("/");
         parts[parts.length-1] = action;
+        window.name += "_" + action;
         window.location.href = parts.join("/");
     }
     else {
