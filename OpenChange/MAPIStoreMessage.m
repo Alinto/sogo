@@ -292,11 +292,20 @@ rtf2html (NSData *compressedRTF)
   enum mapistore_error rc;
   MAPIStoreContext *context;
   SOGoUser *ownerUser;
+  BOOL userIsOwner;
+  MAPIStoreMessage *mainMessage;
 
   context = [self context];
   ownerUser = [[self userContext] sogoUser];
-  if ([[context activeUser] isEqual: ownerUser]
-      || [self subscriberCanModifyMessage])
+  userIsOwner = [[context activeUser] isEqual: ownerUser];
+  if (userIsOwner)
+    mainMessage = nil;
+  else if ([self isKindOfClass: MAPIStoreEmbeddedMessageK])
+    mainMessage = (MAPIStoreMessage *) [[self container] container];
+  else
+    mainMessage = self;
+
+  if (userIsOwner || [mainMessage subscriberCanModifyMessage])
     rc = [super addPropertiesFromRow: aRow];
   else
     rc = MAPISTORE_ERR_DENIED;
@@ -473,14 +482,26 @@ rtf2html (NSData *compressedRTF)
   struct mapistore_context *mstoreCtx;
   MAPIStoreContext *context;
   SOGoUser *ownerUser;
+  BOOL userIsOwner;
+  MAPIStoreMessage *mainMessage;
 
   context = [self context];
   ownerUser = [[self userContext] sogoUser];
-  if ([[context activeUser] isEqual: ownerUser]
-      || [self isKindOfClass: MAPIStoreEmbeddedMessageK]
-      || ((isNew
-           && [(MAPIStoreFolder *) container subscriberCanCreateMessages])
-          || (!isNew && [self subscriberCanModifyMessage])))
+  userIsOwner = [[context activeUser] isEqual: ownerUser];
+  if (userIsOwner)
+    mainMessage = nil;
+  else if ([self isKindOfClass: MAPIStoreEmbeddedMessageK])
+    mainMessage = (MAPIStoreMessage *) [[self container] container];
+  else
+    mainMessage = self;
+
+  if (userIsOwner
+      || ([self isKindOfClass: MAPIStoreEmbeddedMessageK]
+          && [mainMessage subscriberCanModifyMessage])
+      || (![self isKindOfClass: MAPIStoreEmbeddedMessageK]
+          && ((isNew
+               && [(MAPIStoreFolder *) container subscriberCanCreateMessages])
+              || (!isNew && [self subscriberCanModifyMessage]))))
     {
       /* notifications */
       if ([container isKindOfClass: MAPIStoreFolderK])
@@ -615,15 +636,27 @@ rtf2html (NSData *compressedRTF)
   BOOL userIsOwner;
   MAPIStoreContext *context;
   SOGoUser *ownerUser;
+  MAPIStoreMessage *mainMessage;
 
   context = [self context];
   ownerUser = [[self userContext] sogoUser];
   userIsOwner = [[context activeUser] isEqual: ownerUser];
-  if (userIsOwner || [self subscriberCanModifyMessage])
+  if (userIsOwner)
+    mainMessage = nil;
+  else if ([self isKindOfClass: MAPIStoreEmbeddedMessageK])
+    mainMessage = (MAPIStoreMessage *) [[self container] container];
+  else
+    mainMessage = self;
+
+  if (userIsOwner || [mainMessage subscriberCanModifyMessage])
     access |= 0x01;
-  if (userIsOwner || [self subscriberCanReadMessage])
+  if (userIsOwner || [mainMessage subscriberCanReadMessage])
     access |= 0x02;
-  if (userIsOwner || [(MAPIStoreFolder *) container subscriberCanDeleteMessages])
+  if (userIsOwner
+      || ([self isKindOfClass: MAPIStoreEmbeddedMessageK]
+          && [mainMessage subscriberCanModifyMessage])
+      || [(MAPIStoreFolder *)
+           [mainMessage container] subscriberCanDeleteMessages])
     access |= 0x04;
   
   *data = MAPILongValue (memCtx, access);
