@@ -1365,7 +1365,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                                                    reason: @"delegate is organizer"];		
               if ([event isAttendee: [[delegate email] rfc822Email]])
                 ex = [NSException exceptionWithHTTPStatus: 403
-                                                   reason: @"delegate is a attendee"];
+                                                   reason: @"delegate is a participant"];
               else if ([SOGoGroup groupWithEmail: [[delegate email] rfc822Email]
                                         inDomain: [ownerUser domain]])
                 ex = [NSException exceptionWithHTTPStatus: 403
