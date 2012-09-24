@@ -46,12 +46,12 @@
 
 @class WOHTTPURLHandle;
 
-size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *inSelf)
+size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
 {
   size_t total;
   
   total = size * nmemb;
-  [((SOGoWebAppointmentFolder *)inSelf)->buffer appendBytes: ptr length: total];
+  [(NSMutableData *)buffer appendBytes: ptr length: total];
   
   return total;
 }
@@ -115,16 +115,17 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *inSelf)
 
 - (NSDictionary *) loadWebCalendar
 {
-  NSString *location, *httpauth;
+  NSString *location, *httpauth, *content, *newDisplayName;
+  NSMutableDictionary *result;
   NSDictionary *authInfos;
+  iCalCalendar *calendar;
+  NSMutableData *buffer;
   NSURL *url;
   CURL *curl;
-  CURLcode rc;
-  char error[CURL_ERROR_SIZE];
-  NSMutableDictionary *result;
-  NSString *content, *newDisplayName;
-  iCalCalendar *calendar;
+
   NSUInteger imported, status;
+  char error[CURL_ERROR_SIZE];
+  CURLcode rc;
 
   result = [NSMutableDictionary dictionary];
 
@@ -155,7 +156,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *inSelf)
 	  buffer = [NSMutableData data];
 
           curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, curl_body_function);
-          curl_easy_setopt(curl, CURLOPT_WRITEDATA, self);
+          curl_easy_setopt(curl, CURLOPT_WRITEDATA, buffer);
 
           error[0] = 0;
           curl_easy_setopt (curl, CURLOPT_ERRORBUFFER, &error);

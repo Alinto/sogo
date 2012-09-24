@@ -27,10 +27,6 @@
 #import "SOGoAppointmentFolder.h"
 
 @interface SOGoWebAppointmentFolder : SOGoAppointmentFolder
-{
-  @public
-    NSMutableData *buffer;
-}
 
 - (void) setUsername: (NSString *) username
          andPassword: (NSString *) password;
