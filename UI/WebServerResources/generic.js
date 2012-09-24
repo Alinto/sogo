@@ -1311,7 +1311,7 @@ function accessToSubscribedFolder(serverFolder) {
         var username = parts[0];
         var paths = parts[1].split("/");
         if (username == UserLogin) {
-            folder = paths[1];
+            folder = "/" + paths[1];
         }
         else {
             folder = "/" + username.asCSSIdentifier() + "_" + paths[1];
