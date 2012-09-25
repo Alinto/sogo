@@ -194,17 +194,22 @@ static NSArray *knownTimeZones;
                                        forDate: (NSCalendarDate *) aDate
 {
   NSArray *periods;
+  NSEnumerator *periodsList;
   iCalTimeZonePeriod *period;
   NSCalendarDate *occurence;
 
+  occurence = nil;
   periods = [self childrenWithTag: pName];
   if ([periods count])
     {
-      period = (iCalTimeZonePeriod *) [periods objectAtIndex: 0];
-      occurence = [period occurenceForDate: aDate];
+      periodsList = [periods objectEnumerator];
+      period = (iCalTimeZonePeriod *) [periodsList nextObject];
+      while (occurence == nil && period)
+        {
+          occurence = [period occurenceForDate: aDate];
+          period = (iCalTimeZonePeriod *) [periodsList nextObject];
+        }
     }
-  else
-    occurence = nil;
 
   return occurence;
 }

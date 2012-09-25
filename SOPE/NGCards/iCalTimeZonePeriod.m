@@ -174,11 +174,13 @@
   NSCalendarDate *tmpDate;
   iCalRecurrenceRule *rrule;
 
+  tmpDate = nil;
   rrule = (iCalRecurrenceRule *) [self uniqueChildWithTag: @"rrule"];
+
   if ([rrule isVoid])
     tmpDate
       = [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"] dateTime];
-  else
+  else if ([rrule untilDate] == nil || [refDate compare: [rrule untilDate]] == NSOrderedAscending)
     tmpDate = [self _occurenceForDate: refDate byRRule: rrule];
 
   return tmpDate;
