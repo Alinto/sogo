@@ -1,21 +1,11 @@
 /* CSS for compose panel */
 
 DIV#leftPanel
-{ position: absolute;
-  top: 52px;
-  left: 0px;
-  width: 15em;
-  bottom: 0px;
-  overflow: hidden; }
+{ top: 52px; }
 
 DIV#rightPanel
-{ position: absolute;
-  top: 48px;
-  left: 0em;
-  right: 0px;
-  bottom: 0px;
-  margin-left: 5px;
-  overflow: hidden; }
+{ top: 48px;
+  left: 0em; }
 
 DIV#hiddenDragHandle
 { cursor: e-resize;

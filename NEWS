@@ -7,8 +7,15 @@ Enhancements
  - tasks list has moved to a table in a tabs view along the events list
  - rows in tree view are now 4 pixels taller
  - node selection in trees now highlights entire row
+ - new inline date picker
+ - improved IE8/9 support
+ - added support for standard/daylight timezone definition with end date
+ - no longer possible to send a message multilpe times
 
 Bug Fixes
+ - fixed translation of invitation replies
+ - fixed vacation message encoding
+ - fixed display of events of no duration
 
 1.3.18a (2012-09-04)
 -------------------

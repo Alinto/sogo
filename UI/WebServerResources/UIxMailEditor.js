@@ -625,7 +625,7 @@ function onWindowResize(event) {
 
     // Resize address fields
     var addresslist = $('addressList');
-    addresslist.setStyle({ width: ($(window).width() - attachmentswidth - 10) + 'px' });
+    addresslist.setStyle({ width: (totalwidth - attachmentswidth - 10) + 'px' });
 
     // Set textarea position
     var hr = headerarea.select("hr").first();

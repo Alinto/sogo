@@ -1910,14 +1910,14 @@ function adjustCalendarHeaderDIV() {
         styleElement.type = "text/css";
         var selectors = ["DIV#calendarHeader DIV.dayLabels",
                          "DIV#calendarHeader DIV.days"];
-        var rule = ("{ right: " + delta + "px; }");
+        var rule = ("right: " + delta + "px");
         if (styleElement.styleSheet && styleElement.styleSheet.addRule) {
             // IE
             styleElement.styleSheet.addRule(selectors[0], rule);
             styleElement.styleSheet.addRule(selectors[1], rule);
         } else {
             // Mozilla + Firefox
-            var styleText = selectors.join(",") + " " + rule;
+            var styleText = selectors.join(",") + " { " + rule + "; }";
             styleElement.appendChild(document.createTextNode(styleText));
         }
         document.getElementsByTagName("head")[0].appendChild(styleElement);
