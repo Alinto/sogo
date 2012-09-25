@@ -4,8 +4,7 @@
  * Drag handle widget interface to be added to a DIV (the drag handle)
  *
  * Available events:
- *   handle:resize -- fired once the value of the input has changed
- *   handle:dragged -- 
+ *   handle:dragged -- fired once the handle has been dropped
  *
  */
 var SOGoDragHandlesInterface = {
@@ -184,31 +183,6 @@ var SOGoDragHandlesInterface = {
         Event.stop(event);
         if (Prototype.Browser.IE && event.button != this.btn)
             this.stopHandleDragging(event);
-    },
-    doubleClick: function (event) {
-        if (!this.dhType)
-            this._determineType();
-        if (this.dhType == 'horizontal') {
-            var lLeft = this.leftBlock.offsetLeft;
-    
-            if (this.offsetLeft > lLeft) {
-                var leftdelta = this.rightBlock.offsetLeft - this.offsetLeft;
-
-                this.setStyle({ left: lLeft + 'px' });
-                this.leftBlock.setStyle({ width: '0px' });
-                this.rightBlock.setStyle({ left: (lLeft + leftdelta) + 'px' });
-            }
-        } else if (this.dhType == 'vertical') {
-            var uTop = this.upperBlock.offsetTop;
-
-            if (this.offsetTop > uTop) {
-                var topdelta = this.lowerBlock.offsetTop - this.offsetTop;
-      
-                this.setStyle({ top: uTop + 'px' });
-                this.upperBlock.setStyle({ width: '0px' });
-                this.lowerBlock.setStyle({ top: (uTop + topdelta) + 'px' });
-            }
-        }
     },
     saveDragHandleState: function (type, position, fcn) {
         if (!$(document.body).hasClassName("popup")) {
