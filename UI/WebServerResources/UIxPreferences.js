@@ -547,7 +547,6 @@ function onMailIdentitySignatureClick(event) {
             var label = _("Please enter your signature below:");
             var fields = createElement("p");
             fields.appendChild(createElement("textarea", "signature"));
-            fields.appendChild(createElement("br"));
             fields.appendChild(createButton("okBtn", _("OK"),
                                             onMailIdentitySignatureOK));
             fields.appendChild(createButton("cancelBtn", _("Cancel"),
