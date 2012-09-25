@@ -153,26 +153,34 @@
   NSURL *srcURL, *destURL;
 
   co = [self clientObject];
-  connection = [co imap4Connection];
-  srcURL = [co imap4URL];
-  destURL = [self _trashedURLOfFolder: srcURL withCO: co];
-  connection = [co imap4Connection];
-  inbox = [[co mailAccountFolder] inboxFolderInContext: context];
-  [[connection client] select: [inbox absoluteImap4Name]];
-  error = [connection moveMailboxAtURL: srcURL toURL: destURL];
-  if (error)
-    {
-      response = [self responseWithStatus: 500];
-      [response appendContentString: @"Unable to move folder."];
-    }
+  if ([co ensureTrashFolder])
+  {
+    connection = [co imap4Connection];
+    srcURL = [co imap4URL];
+    destURL = [self _trashedURLOfFolder: srcURL withCO: co];
+    connection = [co imap4Connection];
+    inbox = [[co mailAccountFolder] inboxFolderInContext: context];
+    [[connection client] select: [inbox absoluteImap4Name]];
+    error = [connection moveMailboxAtURL: srcURL toURL: destURL];
+    if (error)
+      {
+        response = [self responseWithStatus: 500];
+        [response appendContentString: @"Unable to move folder."];
+      }
+    else
+      {
+        // We unsubscribe to the old one, and subscribe back to the new one
+        [[connection client] subscribe: [destURL path]];
+        [[connection client] unsubscribe: [srcURL path]];
+        
+        response = [self responseWith204];
+      }
+  }
   else
-    {
-      // We unsubscribe to the old one, and subscribe back to the new one
-      [[connection client] subscribe: [destURL path]];
-      [[connection client] unsubscribe: [srcURL path]];
-      
-      response = [self responseWith204];
-    }
+  {
+    response = [self responseWithStatus: 500];
+    [response appendContentString: @"Unable to move folder."];
+  }
 
   return response;
 }

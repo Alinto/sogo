@@ -86,6 +86,8 @@
 
 - (BOOL) create;
 
+- (BOOL) ensureTrashFolder;
+
 - (NSException *) expunge;
 
 - (NSException *) renameTo: (NSString *) newName;

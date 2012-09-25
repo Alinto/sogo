@@ -414,17 +414,15 @@ static NSString *defaultUserID =  @"anyone";
                     {
                       // If our Trash folder doesn't exist when we try to copy messages
                       // to it, we create it.
-                      result = [[client status: folderName  flags: [NSArray arrayWithObject: @"UIDVALIDITY"]]
-                                 objectForKey: @"result"];
+                      b = [self ensureTrashFolder];
 		  
-                      if (![result boolValue])
-                        [imap4 createMailbox: folderName
-                                       atURL: [[self mailAccountFolder] imap4URL]];
+                      if (b)
+                      {
+                        result = [[client copyUids: uids toFolder: folderName]
+                                   objectForKey: @"result"];
 		  
-                      result = [[client copyUids: uids toFolder: folderName]
-                                 objectForKey: @"result"];
-		  
-                      b = [result boolValue];
+                        b = [result boolValue];
+                      }
                     }
 		}
               else
@@ -953,6 +951,24 @@ static NSString *defaultUserID =  @"anyone";
   else
     rc = NO;
 
+  return rc;
+}
+
+- (BOOL) ensureTrashFolder
+{
+  SOGoMailFolder *trashFolder;
+  BOOL rc;
+
+  trashFolder = [[self mailAccountFolder] trashFolderInContext: context];
+  rc = NO;
+  if (![trashFolder isKindOfClass: [NSException class]])
+  {
+    rc = [trashFolder exists];
+    if (!rc)
+      rc = [trashFolder create];
+  }
+  if (!rc)
+    [self errorWithFormat: @"Cannot create Trash Mailbox"];
   return rc;
 }
 
