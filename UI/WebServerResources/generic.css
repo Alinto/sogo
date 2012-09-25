@@ -1143,6 +1143,10 @@ DIV.bottomToolbar A.bottomButton SPAN:active
   bottom: 0px;
   left: 0px; }
 
+/* ckeditor */
+span.cke_skin_kama
+{ padding: 0px !important; }
+
 @media print
 {
   BODY
