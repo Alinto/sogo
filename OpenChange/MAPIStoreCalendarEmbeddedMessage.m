@@ -155,6 +155,12 @@
   return MAPISTORE_ERR_NOT_FOUND;
 }
 
+- (int) getPidLidFExceptionalBody: (void **) data
+                         inMemCtx: (TALLOC_CTX *) memCtx
+{
+  return [self getNo: data inMemCtx: memCtx];
+}
+
 - (void) save
 {
 // (gdb) po embeddedMessage->properties

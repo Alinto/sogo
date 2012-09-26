@@ -1277,12 +1277,6 @@ static NSCharacterSet *hexCharacterSet = nil;
   return MAPISTORE_SUCCESS;
 }
 
-- (int) getPidLidFExceptionalBody: (void **) data
-                             inMemCtx: (TALLOC_CTX *) memCtx
-{
-  return [self getNo: data inMemCtx: memCtx];
-}
-
 - (int) getPidLidExceptionReplaceTime: (void **) data
                              inMemCtx: (TALLOC_CTX *) memCtx
 {
