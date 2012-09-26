@@ -1282,8 +1282,6 @@ function onCalendarReload() {
 }
 
 function reloadWebCalendars() {
-    var hasWebCalendars = false;
-
     var remaining = [];
     var refreshOperations = { "remaining": remaining };
     if (UserSettings['Calendar']
