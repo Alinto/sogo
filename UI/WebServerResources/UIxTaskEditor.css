@@ -13,20 +13,6 @@ DIV.appointmentRightLabel
 { display: inline;
   vertical-align: middle; }
 
-LABEL, SPAN.checkBoxList
-{ display: block;
-  position: relative;
-  height: 1.5em;
-  margin-left: .5em;
-  margin-bottom: .5em;
-  width: 100%; }
-
-LABEL#commentArea
-{ height: 15em; }
-
-LABEL#commentArea textarea
-{ height: 15em; }
-
 SPAN.checkBoxList#participantsCB
 { height: 7em; }
 
@@ -38,21 +24,6 @@ DIV#participants UL.contactList
 
 SPAN.checkBoxList SPAN.content LABEL
 { display: inline; }
-
-SPAN.content
-{ position: absolute;
-  top: -.25em;
-  left: 6em;
-  right: 1em; }
-
-TEXTAREA
-{ position: absolute;
-  top: 0px;
-  left: 6em;
-  vertical-align: bottom;
-  bottom: 1em;
-  right: 1em;
-  padding-bottom: 0em; }
 
 A#changeUrlButton
 { margin-left: 1em; }
@@ -91,7 +62,8 @@ SPAN#allDay > INPUT
 { position: static; }
 
 SPAN.content > INPUT.textField
-{ width: 390px; }
+{ width: 390px;
+  width: 97%; }
 
 INPUT#startDateCB,
 INPUT#dueDateCB,
