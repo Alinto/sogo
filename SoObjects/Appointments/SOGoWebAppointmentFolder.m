@@ -168,6 +168,7 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
               curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, &status);
               [result setObject: [NSNumber numberWithUnsignedInt: status]
                          forKey: @"status"];
+              NSLog(@"Load web calendar %@ (%i)", location, status);
 
               if (status == 200)
                 {
