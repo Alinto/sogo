@@ -692,7 +692,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   ngAddress = [[NGMailAddressParser mailAddressParserWithString: fullMail]
                 parse];
   if ([ngAddress isKindOfClass: [NGMailAddress class]])
-    cn = [ngAddress address];
+    cn = [ngAddress displayName];
   else
     cn = @"";
 
