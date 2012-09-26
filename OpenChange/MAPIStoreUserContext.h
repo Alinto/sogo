@@ -58,6 +58,8 @@
 
   WOContext *woContext;
   MAPIStoreAuthenticator *authenticator;
+
+  BOOL inboxHasNoInferiors;
 }
 
 + (id) userContextWithUsername: (NSString *) username
@@ -74,6 +76,8 @@
 - (SOGoUserFolder *) userFolder;
 
 - (NSDictionary *) rootFolders;
+
+- (BOOL) inboxHasNoInferiors;
 
 - (NSURL *) folderTableURL;
 - (MAPIStoreMapping *) mapping;

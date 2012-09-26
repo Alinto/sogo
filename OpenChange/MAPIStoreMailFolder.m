@@ -53,6 +53,7 @@
 #import "MAPIStoreMailMessageTable.h"
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "SOGoMAPIDBMessage.h"
@@ -408,7 +409,18 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 
 - (BOOL) supportsSubFolders
 {
-  return YES;
+  BOOL supportsSubFolders;
+  MAPIStoreUserContext *userContext;
+
+  if ([[self nameInContainer] isEqualToString: @"folderINBOX"])
+    {
+      userContext = [self userContext];
+      supportsSubFolders = ![userContext inboxHasNoInferiors];
+    }
+  else
+    supportsSubFolders = YES;
+  
+  return supportsSubFolders;
 }
 
 /* synchronisation */

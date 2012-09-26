@@ -206,6 +206,9 @@ static NSMapTable *contextsTable = nil;
 {
   SOGoMailAccounts *accountsFolder;
   id currentFolder;
+  NGImap4Connection *connection;
+  NSDictionary *hierarchy;
+  NSArray *flags;
 
   if (!rootFolders)
     {
@@ -236,15 +239,30 @@ static NSMapTable *contextsTable = nil;
       [containersBag addObject: accountsFolder];
       [woContext setClientObject: accountsFolder];
       currentFolder = [accountsFolder lookupName: @"0"
-                                  inContext: woContext
-                                    acquire: NO];
+                                       inContext: woContext
+                                         acquire: NO];
+
       [rootFolders setObject: currentFolder
                       forKey: @"mail"];
-      [[currentFolder imap4Connection]
-        enableExtensions: [NSArray arrayWithObject: @"QRESYNC"]];
+      connection = [currentFolder imap4Connection];
+      [connection enableExtensions: [NSArray arrayWithObject: @"QRESYNC"]];
+
+      /* ensure the folder cache is filled */
+      [currentFolder toManyRelationshipKeysWithNamespaces: YES];
+      hierarchy = [connection
+                    cachedHierarchyResultsForURL: [currentFolder imap4URL]];
+      flags = [[hierarchy  objectForKey: @"list"] objectForKey: @"/INBOX"];
+      inboxHasNoInferiors = [flags containsObject: @"noinferiors"];
     }
 
   return rootFolders;
+}
+
+- (BOOL) inboxHasNoInferiors
+{
+  [self rootFolders];
+
+  return inboxHasNoInferiors;
 }
 
 - (MAPIStoreMapping *) mapping
