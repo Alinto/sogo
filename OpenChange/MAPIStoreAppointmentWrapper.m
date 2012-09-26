@@ -1305,6 +1305,14 @@ static NSCharacterSet *hexCharacterSet = nil;
   return rc;
 }
 
+- (int) getPidLidRecurrencePattern: (void **) data
+                          inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"No description" asUnicodeInMemCtx: memCtx];
+
+  return MAPISTORE_SUCCESS;
+}
+
 - (void) _fillExceptionInfo: (struct ExceptionInfo *) exceptionInfo
        andExtendedException: (struct ExtendedException *) extendedException
               withException: (iCalEvent *) exceptionEvent
