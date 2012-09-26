@@ -46,7 +46,7 @@
 	    <var:popup const:id="language" const:name="language"
 		       list="languages"
 		       item="item"
-		       var:selection="item"
+		       var:selection="locale.NSLanguageName"
 		       var:value="item"
 		       string="languageText"
 		       label:noSelectionString="choose"
