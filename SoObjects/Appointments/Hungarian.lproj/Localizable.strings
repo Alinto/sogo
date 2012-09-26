@@ -16,6 +16,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 "The following attendees(s) were removed:" = "Az alábbi résztvevők lettek eltávolítva:";
 
 /* IMIP messages */
+"calendar_label" = "Naptár:";
 "startDate_label" = "Kezdete:";
 "endDate_label" = "Vége:";
 "due_label" = "Lejárat napja:";
