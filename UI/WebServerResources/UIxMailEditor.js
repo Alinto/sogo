@@ -423,6 +423,12 @@ function initMailEditor() {
 
     configureDragHandle();
 
+    // Set current subject as window title if not set, use '(Untitled)'
+    if (document.pageform.subject.value == "")
+        document.title = '(' + _("Untitled") + ')';
+    else
+        document.title = _(document.pageform.subject.value);
+
     // Change the window title when typing the subject
     $$("div#subjectRow input").first().on("keyup", updateWindowTitleFromSubject);
 

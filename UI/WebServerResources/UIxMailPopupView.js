@@ -16,6 +16,10 @@ function initPopupMailer(event) {
     window.messageUID = mailboxName + "/" + messageName;
 
     handleReturnReceipt();
+
+    var td = $("subject");
+    if (td)
+        document.title = td.allTextContent();
 }
 
 function onICalendarButtonClick(event) {
