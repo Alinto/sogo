@@ -16,6 +16,7 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "The following attendees(s) were removed:" = "Die folgenden Teilnehmer wurden entfernt:";
 
 /* IMIP messages */
+"calendar_label" = "Kalender:";
 "startDate_label" = "Beginn:";
 "endDate_label" = "Ende:";
 "due_label" = "Fälligkeit:";
@@ -34,7 +35,7 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText} hat den folgenden Termin abgesagt: %{Summary}.\n\nBeginn: %{StartDate}\nEnde: %{EndDate}\nBeschreibung: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
-= "%{Organizer} %{SentByText} hat diesen Termin abgesagt: %{Summary}.\n\nBeginn: %{StartDate} um %{StartTime}\nEnde: %{EndDate} um %{EndTime}\nBeschreibung: %{Description}";
+= "%{Organizer} %{SentByText} hat diesen Termin abgesagt: \"%{Summary}\".\n\nBeginn: %{StartDate} um %{StartTime}\nEnde: %{EndDate} um %{EndTime}\nBeschreibung: %{Description}";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
@@ -47,7 +48,7 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 = "Bitte akzeptieren Sie diese Änderung oder lehnen Sie ab.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Antwort auf Termineinladung: %{Summary}";
+"Reply to invitation: \"%{Summary}\"" = "Antwort auf Termineinladung: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText} hat Ihre Termineinladung akzeptiert.";
 "%{Attendee} %{SentByText}has declined your event invitation."

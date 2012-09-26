@@ -16,6 +16,7 @@ vtodo_class2 = "(Конфиденциальная задача)";
 "The following attendees(s) were removed:" = "Следующие люди были исключены из списка приглашенных:";
 
 /* IMIP messages */
+"calendar_label" = "Календарь:";
 "startDate_label" = "Начало:";
 "endDate_label" = "Конец:";
 "due_label" = "Должно быть готово к:";

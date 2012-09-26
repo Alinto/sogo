@@ -16,6 +16,7 @@ vtodo_class2 = "(Tâche confidentielle)";
 "The following attendees(s) were removed:" = "Les invités suivants ont été supprimés :";
 
 /* IMIP messages */
+"calendar_label" = "Agenda :";
 "startDate_label" = "Début :";
 "endDate_label" = "Fin :";
 "due_label" = "Fin prévue :";

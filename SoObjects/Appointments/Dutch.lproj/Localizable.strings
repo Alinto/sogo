@@ -16,6 +16,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "The following attendees(s) were removed:" = "De volgende deelnemers zijn verwijderd:";
 
 /* IMIP messages */
+"calendar_label" = "Agenda:";
 "startDate_label" = "Start:";
 "endDate_label" = "Einde:";
 "due_label" = "Vervaldag:";
