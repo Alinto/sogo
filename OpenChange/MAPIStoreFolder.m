@@ -1313,30 +1313,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return MAPISTORE_SUCCESS;
 }
 
-/*
-  Possible values are:
-
-  0x00000000 Read-Only
-  0x00000001 Modify
-*/
-- (int) getPidTagAccessLevel: (void **) data
-                    inMemCtx: (TALLOC_CTX *) memCtx
-{
-  SOGoUser *ownerUser;
-  BOOL userIsOwner;
-
-
-  /* FIXME: from oxcprpt: "This property does not apply to Folder objects and
-     Logon objects", so we should not expose this here. */
-  ownerUser = [[self userContext] sogoUser];
-
-  userIsOwner = [[context activeUser] isEqual: ownerUser];
-
-  *data = MAPILongValue (memCtx, (userIsOwner) ? 0x01 : 0x00);
-
-  return MAPISTORE_SUCCESS;
-}
-
 - (int) getPidTagRights: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx
 {
