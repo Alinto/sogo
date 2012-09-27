@@ -53,7 +53,7 @@ LABEL, SPAN.checkBoxList
 SELECT
 { margin-left: 1px; }
 
-LABEL#commentArea
+n0LABEL#commentArea
 { height: 17em; }
 
 LABEL#commentArea textarea
@@ -105,7 +105,8 @@ SPAN#categoriesCB LABEL
   margin-right: 1em; }
 
 SPAN.content > INPUT.textField
-{ width: 380px; }
+{ n0width: 380px;
+  width: 97%; }
 
 LABEL#urlArea INPUT
 { position: static; }

@@ -30,13 +30,10 @@ SPAN.content
   line-height: 2em;
   top: -.25em;
   left: 8em;
-  right: 1em;
+  right: 0em;
   text-overflow: ellipsis;
-  overflow: hidden; }
-
-SPAN.content > INPUT.textField,
-LABEL#commentArea textarea
-{ max-width: 380px; }
+  overflow: hidden;
+  min-height: 22px; }
 
 LABEL, SPAN.checkBoxList
 { display: block;
@@ -48,20 +45,12 @@ LABEL, SPAN.checkBoxList
   width: 100%; }
 
 LABEL#commentArea textarea
-{ position: absolute;
-  top: 0;
-  width: 100%;
-  left: 8em;
-  right: 1em;
-  margin: 0px;
-  margin: auto;
-  margin-left: 1px; }
+{ width: 97%; }
 
 SPAN.headerContent
 {
   width: 80%;
   height: 1px;
-  background: #aaaaaa;
   top: 0.9em;
 }
 LABEL.title

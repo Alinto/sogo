@@ -101,7 +101,7 @@
              ><var:string label:value="Edit"/></a></span></label>
       <hr />
       <label id="commentArea"><var:string label:value="Description:"
-	  /><textarea rows="20" name="comment" var:value="comment" /></label>
+	  /><span class="content"><textarea rows="20" name="comment" var:value="comment" /></span></label>
       <label id="documentLabel" style="display: none;"><var:string label:value="Document:"
 	  /><span class="content"
 	  ><a href="#" id="documentHref"><!-- space --></a

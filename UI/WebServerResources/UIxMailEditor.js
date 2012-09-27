@@ -108,7 +108,7 @@ function updateWindowTitleFromSubject(event) {
     if (this.value) {
         document.title = this.value;
     }else{
-        document.title = _("Untitled");
+        document.title = '(' + _("Untitled") + ')';
     }
 }
 
@@ -422,6 +422,12 @@ function initMailEditor() {
     initializePriorityMenu();
 
     configureDragHandle();
+
+    // Set current subject as window title if not set, use '(Untitled)'
+    if (document.pageform.subject.value == "")
+        document.title = '(' + _("Untitled") + ')';
+    else
+        document.title = _(document.pageform.subject.value);
 
     // Change the window title when typing the subject
     $$("div#subjectRow input").first().on("keyup", updateWindowTitleFromSubject);
