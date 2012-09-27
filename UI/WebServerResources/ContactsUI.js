@@ -257,14 +257,16 @@ function _onContactMenuAction(folderItem, action, refresh) {
             }
         }
 
-        var url = ApplicationBaseURL + selectedFolderId + "/" + action 
-            + "?folder=" + folderId + "&uid="
-            + contactIds.join("&uid=");
-    
+        var url = ApplicationBaseURL + selectedFolderId + "/" + action;
         if (refresh)
-            triggerAjaxRequest(url, actionContactCallback, selectedFolderId);
+            triggerAjaxRequest(url, actionContactCallback, selectedFolderId,
+                               ('folder='+ folderId + '&uid=' + contactIds.join('&uid=')),
+                               { "Content-type": "application/x-www-form-urlencoded" });
+
         else
-            triggerAjaxRequest(url, actionContactCallback);
+            triggerAjaxRequest(url, actionContactCallback, null,
+                               ('folder='+ folderId + '&uid=' + contactIds.join('&uid=')),
+                               { "Content-type": "application/x-www-form-urlencoded" });
     }
 }
 
@@ -313,7 +315,7 @@ function actionContactCallback(http) {
             if (parseInt(http.status) == 403)
                 showAlertDialog(_("You don't have the required privileges to perform the operation."));
             else if (error)
-                showAlertDialog(labels[error]);
+                showAlertDialog(_(error));
             refreshCurrentFolder();
         }
 }
@@ -1516,7 +1518,7 @@ function currentFolderIsRemote() {
     var selectedFolders = $("contactFolders").getSelectedNodes();
     if (selectedFolders.length > 0) {
         var fromObject = $(selectedFolders[0]);
-        rc = fromObject.hasClassName ("remote");
+        rc = fromObject.hasClassName("remote");
     }
     return rc;
 }
@@ -1571,19 +1573,19 @@ function dropSelectedContacts(action, toId) {
     if (selectedFolders.length > 0) {
         var contactIds = $('contactsList').getSelectedRowsId();
         for (var i = 0; i < contactIds.length; i++) {
-            if (contactIds[i].endsWith ("vlf")) {
+            if (contactIds[i].endsWith("vlf")) {
                 showAlertDialog(_("Lists can't be moved or copied."));
                 return false;
             }
         }
         var fromId = $(selectedFolders[0]).id;
-        if ((!currentFolderIsRemote () || action != "move")
+        if ((!currentFolderIsRemote() || action != "move")
             && fromId.substring(1) != toId) {
-            var url = ApplicationBaseURL + fromId + "/" + action 
-              + "?folder=" + toId + "&uid="
-              + contactIds.join("&uid=");
 
-            triggerAjaxRequest(url, actionContactCallback, fromId);
+            var url = ApplicationBaseURL + fromId + "/" + action;
+            triggerAjaxRequest(url, actionContactCallback, fromId,
+                                   ('folder='+ toId + '&uid=' + contactIds.join('&uid=')),
+                                   { "Content-type": "application/x-www-form-urlencoded" });
         }
     }
 }
