@@ -108,7 +108,7 @@ function updateWindowTitleFromSubject(event) {
     if (this.value) {
         document.title = this.value;
     }else{
-        document.title = _("Untitled");
+        document.title = '(' + _("Untitled") + ')';
     }
 }
 
