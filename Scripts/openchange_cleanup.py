@@ -2,7 +2,7 @@
 
 import getopt
 import imaplib
-import ldb
+#import ldb
 import plistlib
 import os
 import re
@@ -33,6 +33,8 @@ def usage():
 def main():
   global sambaprivate
   global mapistorefolder
+  global imaphost
+  global imapport
   try:
       opts, args = getopt.getopt(sys.argv[1:], "i:p:s:")
   except getopt.GetoptError, err:
@@ -75,11 +77,11 @@ def main():
   except (shutil.Error, OSError) as e:
       print "Error during mapistoreCleanup, continuing: %s" % str(e)
 
-  try:
-    pass
-    #ldbCleanup(sambaprivate, username)
-  except ldb.LdbError as e:
-    print "Error during ldbCleanup, continuing: %s" % str(e)
+#  try:
+#    pass
+#    #ldbCleanup(sambaprivate, username)
+#  except ldb.LdbError as e:
+#    print "Error during ldbCleanup, continuing: %s" % str(e)
 
   sqlCleanup(username)
 
@@ -157,14 +159,15 @@ def mapistoreCleanup(mapistorefolder, username):
     shutil.rmtree("%s/%s" % (mapistorefolder, username), ignore_errors=True)
     shutil.rmtree("%s/SOGo/%s" % (mapistorefolder, username), ignore_errors=True)
 
-def ldbCleanup(sambaprivate, username):
-  conn = ldb.Ldb("%s/openchange.ldb" % (sambaprivate))
-#  entries = conn.search(None, expression="(|(cn=%s)(MAPIStoreURI=sogo://%s:*)(MAPIStoreURI=sogo://%s@*))" % (username,username,username),
-  entries = conn.search(None, expression="cn=%s" % (username),
-              scope=ldb.SCOPE_SUBTREE)
-  for entry in entries:
-    print "Deleting %s" % (entry.dn)
-    conn.delete(entry.dn)
+# NOTYET
+#def ldbCleanup(sambaprivate, username):
+#  conn = ldb.Ldb("%s/openchange.ldb" % (sambaprivate))
+####  entries = conn.search(None, expression="(|(cn=%s)(MAPIStoreURI=sogo://%s:*)(MAPIStoreURI=sogo://%s@*))" % (username,username,username),
+#  entries = conn.search(None, expression="cn=%s" % (username),
+#              scope=ldb.SCOPE_SUBTREE)
+#  for entry in entries:
+#    print "Deleting %s" % (entry.dn)
+#    conn.delete(entry.dn)
 
 def mysqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, username):
   import MySQLdb
@@ -179,7 +182,7 @@ def mysqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, username):
 def postgresqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, username):
   import pg           
   conn = pg.connect(host=dbhost, port=int(dbport), user=dbuser, passwd=dbpass, dbname=dbname) 
-  tablename = "socfs_%s" % sys.argv[1]
+  tablename = "socfs_%s" % username
   conn.query("DELETE FROM %s" % tablename)
   print "table '%s' emptied" % tablename
 
