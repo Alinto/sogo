@@ -364,8 +364,8 @@ static NSString *defaultUserID =  @"anyone";
       for (count = 0; count < max ; count++)
 	{
 	  infos = [allValues objectAtIndex: count];
-	  [prefetchedInfos setObject: infos
-			   forKey: [infos objectForKey: @"uid"]];
+          key = [NSString stringWithFormat: @"%@", [infos objectForKey: @"uid"]];
+	  [prefetchedInfos setObject: infos forKey: key];
 	}
     }
   else
