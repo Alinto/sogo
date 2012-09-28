@@ -3290,7 +3290,7 @@ function initScheduler() {
         var tabsContainer = $("schedulerTabs");
         var controller = new SOGoTabsController();
         controller.attachToTabsContainer(tabsContainer);
-        schedulerTabs.on("tabs:click", saveTabState);
+        tabsContainer.on("tabs:click", saveTabState);
 
         if (UserSettings['ShowCompletedTasks']) {
             showCompletedTasks = parseInt(UserSettings['ShowCompletedTasks']);
