@@ -298,8 +298,12 @@ DIV#eventDialog P
 DIV#eventDialog SPAN.label
 { color: #444; }
 
-DIV#eventDialog P#description
-{ margin-top: 1em; }
+DIV#eventDialog .description
+{ margin-top: 1em;
+  font-size: 11px;
+  max-height: 125px;
+  overflow: auto;
+  border-top: 1px solid #eee; }
 
 ._unfocused#dateSelector TD._selected,
 UL._unfocused > LI._selected,
