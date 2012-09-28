@@ -952,7 +952,6 @@ function eventsListCallback(http) {
                 if (data[i][3] != null)
                     // Status is defined -- event is readable
                     row.observe("dblclick", editDoubleClickedEvent);
-                row.attachMenu("eventsListMenu");
 
                 var td = createElement("td");
                 row.appendChild(td);
@@ -986,8 +985,8 @@ function eventsListCallback(http) {
                 td.appendChild(document.createTextNode(data[i][2])); // calendar
             }
 
-            if (sorting["attribute"] && sorting["attribute"].length > 0) {
-                var sortHeader = $(sorting["attribute"] + "Header");
+            if (sorting["event-header"] && sorting["event-header"].length > 0) {
+                var sortHeader = $(sorting["event-header"]);
 
                 if (sortHeader) {
                     var sortImages = $(table.tHead).select(".sortImage");
@@ -997,10 +996,10 @@ function eventsListCallback(http) {
 
                     var sortImage = createElement("img", "messageSortImage", "sortImage");
                     sortHeader.insertBefore(sortImage, sortHeader.firstChild);
-                    if (sorting["ascending"])
-                        sortImage.src = ResourcesURL + "/arrow-down.png";
-                    else
+                    if (sorting["event-ascending"])
                         sortImage.src = ResourcesURL + "/arrow-up.png";
+                    else
+                        sortImage.src = ResourcesURL + "/arrow-down.png";
                 }
             }
         }
@@ -1076,6 +1075,10 @@ function tasksListCallback(http) {
 
                 cell = createElement("td");
                 row.appendChild(cell);
+                cell.update(_("prio_" + data[i][11])); // Priority
+
+                cell = createElement("td");
+                row.appendChild(cell);
                 var colorDiv = createElement("div", false, "colorBox calendarFolder" + calendar);
                 cell.appendChild(colorDiv);
                 colorDiv.update('OO');
@@ -1103,6 +1106,23 @@ function tasksListCallback(http) {
 
             table.scrollTop = table.previousScroll;
 
+            if (sorting["task-attribute"] && sorting["task-attribute"].length > 0) {
+                var sortHeader = $(sorting["task-header"]);
+
+                if (sortHeader) {
+                    var sortImages = $(table.tHead).select(".sortImage");
+                    $(sortImages).each(function(item) {
+                            item.remove();
+                        });
+
+                    var sortImage = createElement("img", "messageSortImage", "sortImage");
+                    sortHeader.insertBefore(sortImage, sortHeader.firstChild);
+                    if (sorting["task-ascending"])
+                        sortImage.src = ResourcesURL + "/arrow-up.png";
+                    else
+                        sortImage.src = ResourcesURL + "/arrow-down.png";
+                }
+            }
             if (http.callbackData) {
                 var selectedNodesId = http.callbackData;
                 for (var i = 0; i < selectedNodesId.length; i++) {
@@ -2109,28 +2129,37 @@ function _loadTasksHref(href) {
 }
 
 function onHeaderClick(event) {
-    var headerId = this.getAttribute("id");
     var newSortAttribute;
-    if (headerId == "titleHeader")
-        newSortAttribute = "title";
-    else if (headerId == "startHeader")
-        newSortAttribute = "start";
-    else if (headerId == "endHeader")
-        newSortAttribute = "end";
-    else if (headerId == "locationHeader")
-        newSortAttribute = "location";
-    else if (headerId == "calendarNameHeader")
-        newSortAttribute = "calendarName";
-    else
-        newSortAttribute = "start";
+    var headerId;
 
-    if (sorting["attribute"] == newSortAttribute)
-        sorting["ascending"] = !sorting["ascending"];
-    else {
-        sorting["attribute"] = newSortAttribute;
-        sorting["ascending"] = true;
+    headerId = this.getAttribute("id");
+
+    if (headerId.startsWith('event'))
+    {
+        // This is needed to get the dom object and flip the triangle
+        sorting["event-header"] = headerId;
+        // Take away the 'events' and 'Header' and lowercase the result
+        newSortAttribute = headerId.sub("Header", "").sub("event", "").toLowerCase();
+        if (sorting["event-attribute"] == newSortAttribute)
+            sorting["event-ascending"] = !sorting["event-ascending"];
+        else
+            sorting["event-ascending"] = true;
+        sorting["event-attribute"] = newSortAttribute;
+        refreshEvents();
     }
-    refreshEvents();
+    else // Tasks
+    {
+        // This is needed to get the dom object and flip the triangle
+        sorting["task-header"] = headerId;
+        // Take away the 'tasks' and 'Header' and lowercase the result
+        newSortAttribute = headerId.sub("Header", "").sub("task", "").toLowerCase();
+        if (sorting["task-attribute"] == newSortAttribute)
+            sorting["task-ascending"] = !sorting["task-ascending"];
+        else
+            sorting["task-ascending"] = true;
+        sorting["task-attribute"] = newSortAttribute;
+        refreshTasks();
+    }
 
     Event.stop(event);
 }
@@ -2143,6 +2172,7 @@ function refreshCurrentFolder() {
 function refreshEvents() {
     var titleSearch;
     var value = search["value"];
+
     if (value && value.length)
         titleSearch = "&search=" + escape(value.utf8encode());
     else
@@ -2150,23 +2180,26 @@ function refreshEvents() {
 
     refreshAlarms();
 
-    return _loadEventHref("eventslist?asc=" + sorting["ascending"]
-                          + "&sort=" + sorting["attribute"]
+    return _loadEventHref("eventslist?asc=" + sorting["event-ascending"]
+                          + "&sort=" + sorting["event-attribute"]
                           + "&day=" + currentDay
                           + titleSearch
                           + "&filterpopup=" + listFilter);
 }
 
 function refreshTasks(setUserDefault) {
-    var url = "taskslist?show-completed=" + showCompletedTasks;
+    var setud;
     /* TODO: the logic behind this should be reimplemented properly:
        the "taskslist" method should save the status when the 'show-completed'
        is set to true and revert to the current status when that parameter is
        NOT passed via the url. */
+    setud = "";
     if (setUserDefault == 1)
-      url += "&setud=1";
+      setud = "&setud=1";
     refreshAlarms();
-    return _loadTasksHref(url);
+    return _loadTasksHref("taskslist?show-completed=" + showCompletedTasks
+                          + "&asc=" + sorting["task-ascending"]
+                          + "&sort=" + sorting["task-attribute"]);
 }
 
 function refreshEventsAndDisplay() {
@@ -3153,22 +3186,27 @@ function deletePersonalCalendarCallback(http) {
 }
 
 function configureLists() {
-    var list = $$("#tasksList tbody").first();
+    // TASK LIST
+    var list = $("tasksList");
     list.multiselect = true;
-    list.on("mousedown", onTasksSelectionChange);
-    list.on("selectstart", listRowMouseDownHandler);
-    list.attachMenu("tasksListMenu");
+    configureSortableTableHeaders(list);
+    TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
+    list.down("tbody").on("mousedown", onTasksSelectionChange);
+    list.down("tbody").on("selectstart", listRowMouseDownHandler);
+    list.down("tbody").attachMenu("tasksListMenu");
 
     var input = $("showHideCompletedTasks");
     input.observe("click", onShowCompletedTasks);
     if (showCompletedTasks)
       input.checked = true;
 
+    // EVENT LIST
     list = $("eventsList");
     list.multiselect = true;
     configureSortableTableHeaders(list);
     TableKit.Resizable.init(list, {'trueResize' : true, 'keepWidth' : true});
     list.down("tbody").on("mousedown", onEventsSelectionChange);
+    list.down("tbody").attachMenu("eventsListMenu");
 }
 
 function initDateSelectorEvents() {
@@ -3280,8 +3318,12 @@ function saveTabState(event) {
 }
 
 function initScheduler() {
-    sorting["attribute"] = "start";
-    sorting["ascending"] = true;
+    sorting["event-header"] = "";
+    sorting["task-header"] = "";
+    sorting["event-attribute"] = "start";
+    sorting["task-attribute"] = "end";
+    sorting["event-ascending"] = true;
+    sorting["task-ascending"] = true;
 
     if (!$(document.body).hasClassName("popup")) {
         var node = $("filterpopup");

@@ -254,9 +254,12 @@ TABLE#tasksList
 TABLE#eventsList .colorBox
 { margin-left: 2px; }
 
-TABLE#eventsList TD.headerTitle,
-TABLE#eventsList TD.headerDateTime
+#eventsList TD.headerTitle,
+#eventsList TD.headerDateTime
 { width: 30%; }
+
+#tasksList .headerPriority
+{ width: 80px;}
 
 TABLE#eventsList TD,
 TABLE#eventsList TH,
@@ -270,7 +273,7 @@ TABLE#eventsList TH,
 TABLE#tasksList TH
 { white-space: pre; }
 
-TABLE#tasksList TD#completedHeader
+TABLE#tasksList TD#taskCompletedHeader
 { text-align: center;
   width: 20px; }
 

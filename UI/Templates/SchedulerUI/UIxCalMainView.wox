@@ -159,10 +159,10 @@
           <table id="eventsList" cellspacing="0">
             <thead>
               <tr>
-                <td id="titleHeader" class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
-                <td id="startHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Start"/></td>
-                <td id="endHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="End"/></td>
-                <td id="locationHeader" class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
+                <td id="eventTitleHeader" class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
+                <td id="eventStartHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Start"/></td>
+                <td id="eventEndHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="End"/></td>
+                <td id="eventLocationHeader" class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
                 <td id="calendarNameHeader" class="headerCell headerCalendarName sortableTableHeader"><var:string label:value="Calendar"/></td>
               </tr>
             </thead>
@@ -176,12 +176,13 @@
           <table id="tasksList" cellspacing="0">
             <thead>
               <tr>
-                <td id="completedHeader" class="headerCell"><entity name="nbsp"/></td>
-                <td class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
-                <td class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Due Date"/></td>
-                <td class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
-                <td class="headerCell"><var:string label:value="Category"/></td>
-                <td class="headerCell headerCalendarName sortableTableHeader"><var:string label:value="Calendar"/></td>
+                <td id="taskCompletedHeader" class="headerCell"><entity name="nbsp"/></td>
+                <td id="taskPriorityHeader" class="headerCell headerPriority sortableTableHeader"><var:string label:value="Priority"/></td>
+                <td id="taskTitleHeader" class="headerCell headerTitle sortableTableHeader"><var:string label:value="Title"/></td>
+                <td id="taskEndHeader" class="headerCell headerDateTime sortableTableHeader"><var:string label:value="Due Date"/></td>
+                <td id="taskLocationHeader" class="headerCell headerLocation sortableTableHeader"><var:string label:value="Location"/></td>
+                <td id="taskCategoryHeader" class="headerCell headerLocation sortableTableHeader"><var:string label:value="Category"/></td>
+                <td id="taskCalendarNameHeader" class="headerCell headerCalendarName sortableTableHeader"><var:string label:value="Calendar"/></td>
               </tr>
             </thead>
             <tbody><!-- tasks list --></tbody>

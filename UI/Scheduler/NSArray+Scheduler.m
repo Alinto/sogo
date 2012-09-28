@@ -27,6 +27,7 @@
 #import <Foundation/NSValue.h>
 
 #import <NGExtensions/NGCalendarDateRange.h>
+#import <NGExtensions/NSNull+misc.h>
 
 #import "NSArray+Scheduler.h"
 
@@ -119,38 +120,146 @@
   NSComparisonResult result;
   unsigned int selfTime, otherTime;
 
-  result = [self _compareCompletionWithStatus1: [self objectAtIndex: 2]
-                                    andStatus2: [otherTask objectAtIndex: 2]];
+  result = [self _compareCompletionWithStatus1: [self objectAtIndex: taskCalendarNameIndex]
+                                    andStatus2: [otherTask objectAtIndex: taskCalendarNameIndex]];
   if (result == NSOrderedSame)
+  {
+    // End date
+    selfTime = [[self objectAtIndex: taskEndDateIndex] intValue];
+    otherTime = [[otherTask objectAtIndex: taskEndDateIndex] intValue];
+    if (selfTime && !otherTime)
+      result = NSOrderedAscending;
+    else if (!selfTime && otherTime)
+      result = NSOrderedDescending;
+    else
     {
-      // End date
-      selfTime = [[self objectAtIndex: 5] intValue];
-      otherTime = [[otherTask objectAtIndex: 5] intValue];
-      if (selfTime && !otherTime)
-	result = NSOrderedAscending;
-      else if (!selfTime && otherTime)
-	result = NSOrderedDescending;
+      if (selfTime > otherTime)
+        result = NSOrderedDescending;
+      else if (selfTime < otherTime)
+        result = NSOrderedAscending;
       else
-	{
-	  if (selfTime > otherTime)
-	    result = NSOrderedDescending;
-	  else if (selfTime < otherTime)
-	    result = NSOrderedAscending;
-	  else
-            {
-              // Calendar ID
-              result = [[self objectAtIndex: 1]
-                         compare: [otherTask objectAtIndex: 1]];
-              if (result == NSOrderedSame)
-                // Task name
-                result = [[self objectAtIndex: 4]
-                           compare: [otherTask objectAtIndex: 4]
-                           options: NSCaseInsensitiveSearch];
-            }
-	}
+      {
+        // Calendar ID
+        result = [[self objectAtIndex: taskFolderIndex]
+                    compare: [otherTask objectAtIndex: taskFolderIndex]];
+        if (result == NSOrderedSame)
+          // Task name
+          result = [[self objectAtIndex: taskTitleIndex]
+                      compare: [otherTask objectAtIndex: taskTitleIndex]
+                      options: NSCaseInsensitiveSearch];
+      }
     }
+  }
 
   return result;
+}
+
+- (NSComparisonResult) compareTasksPriorityAscending: (NSArray *) otherTask
+{
+  NSComparisonResult result;
+  int selfPriority, otherPriority;
+
+  selfPriority = [[self objectAtIndex: taskPriorityIndex] intValue];
+  otherPriority = [[otherTask objectAtIndex: taskPriorityIndex] intValue];
+
+  if (selfPriority && !otherPriority)
+    result = NSOrderedAscending;
+  else if (!selfPriority && otherPriority)
+    result = NSOrderedDescending;
+  else
+  {
+    if (selfPriority > otherPriority)
+      result = NSOrderedDescending;
+    else if (selfPriority < otherPriority)
+      result = NSOrderedAscending;
+    else
+      result = NSOrderedSame;
+  }
+  return result;
+}
+
+- (NSComparisonResult) compareTasksTitleAscending: (NSArray *) otherTask
+{
+  NSString *selfTitle, *otherTitle;
+
+  selfTitle = [self objectAtIndex: taskTitleIndex];
+  otherTitle = [otherTask objectAtIndex: taskTitleIndex];
+
+  return [selfTitle caseInsensitiveCompare: otherTitle];
+}
+
+- (NSComparisonResult) compareTasksEndAscending: (NSArray *) otherTask
+{
+  NSComparisonResult result;
+  unsigned int selfTime, otherTime;
+
+  // End date
+  selfTime = [[self objectAtIndex: taskEndDateIndex] intValue];
+  otherTime = [[otherTask objectAtIndex: taskEndDateIndex] intValue];
+  if (selfTime && !otherTime)
+    result = NSOrderedAscending;
+  else if (!selfTime && otherTime)
+    result = NSOrderedDescending;
+  else
+  {
+    if (selfTime > otherTime)
+      result = NSOrderedDescending;
+    else if (selfTime < otherTime)
+      result = NSOrderedAscending;
+    else
+    {
+      // Calendar ID
+      result = [[self objectAtIndex: taskFolderIndex]
+                  compare: [otherTask objectAtIndex: taskFolderIndex]];
+      if (result == NSOrderedSame)
+        // Task name
+        result = [[self objectAtIndex: taskTitleIndex]
+                    compare: [otherTask objectAtIndex: taskTitleIndex]
+                    options: NSCaseInsensitiveSearch];
+    }
+  }
+
+  return result;
+}
+
+- (NSComparisonResult) compareTasksLocationAscending: (NSArray *) otherTask
+{
+  NSString *selfLocation, *otherLocation;
+
+  selfLocation = [self objectAtIndex: taskLocationIndex];
+  otherLocation = [otherTask objectAtIndex: taskLocationIndex];
+
+  return [selfLocation caseInsensitiveCompare: otherLocation];
+}
+
+- (NSComparisonResult) compareTasksCategoryAscending: (NSArray *) otherTask
+{
+  NSString *selfCategory, *otherCategory;
+  NSComparisonResult result;
+
+  selfCategory = [self objectAtIndex: taskCategoryIndex];
+  otherCategory = [otherTask objectAtIndex: taskCategoryIndex];
+
+  if ([selfCategory isNotNull] && [otherCategory isNotNull])
+    result = [selfCategory caseInsensitiveCompare: otherCategory];
+  else if ([selfCategory isNotNull])
+    result = NSOrderedAscending;
+  else if ([otherCategory isNotNull])
+    result = NSOrderedDescending;
+  else
+    result = NSOrderedSame;
+
+  return result;
+}
+
+- (NSComparisonResult) compareTasksCalendarNameAscending: (NSArray *) otherTask
+{
+  NSString *selfCalendarName, *otherCalendarName;
+
+  selfCalendarName = [self objectAtIndex: taskCalendarNameIndex];
+  otherCalendarName = [otherTask objectAtIndex: taskCalendarNameIndex];
+
+  return [selfCalendarName caseInsensitiveCompare: otherCalendarName];
 }
 
 - (NSArray *) reversedArray 

@@ -4,6 +4,8 @@ New Features
  - Microsoft Outlook compatibility layer
 
 Enhancements
+ - Improved Task View, added sortable fields on Title, Due date, 
+   Location, Category and Calendar. Added Priority column, also sortable.
  - updated translations
  - calendars list and mini-calendar are now always visible
  - tasks list has moved to a table in a tabs view along the events list

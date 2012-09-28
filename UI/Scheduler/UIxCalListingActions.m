@@ -1047,14 +1047,16 @@ _computeBlocksPosition (NSArray *blocks)
 
 - (WOResponse *) tasksListAction
 {
+  NSMutableArray *filteredTasks, *filteredTask;
+  NSString *sort, *ascending;
+  NSString *statusFlag;
   SOGoUserSettings *us;
   NSEnumerator *tasks;
-  NSMutableArray *filteredTasks, *filteredTask;
-  BOOL showCompleted;
   NSArray *task;
-  int statusCode;
+
   unsigned int endDateStamp;
-  NSString *statusFlag;
+  BOOL showCompleted;
+  int statusCode;
 
   filteredTasks = [NSMutableArray array];
 
@@ -1087,7 +1089,25 @@ _computeBlocksPosition (NSArray *blocks)
 	  [filteredTasks addObject: filteredTask];
 	}
     }
-  [filteredTasks sortUsingSelector: @selector (compareTasksAscending:)];
+  sort = [[context request] formValueForKey: @"sort"];
+  if ([sort isEqualToString: @"title"])
+    [filteredTasks sortUsingSelector: @selector (compareTasksTitleAscending:)];
+  else if ([sort isEqualToString: @"priority"])
+    [filteredTasks sortUsingSelector: @selector (compareTasksPriorityAscending:)];
+  else if ([sort isEqualToString: @"end"])
+    [filteredTasks sortUsingSelector: @selector (compareTasksEndAscending:)];
+  else if ([sort isEqualToString: @"location"])
+    [filteredTasks sortUsingSelector: @selector (compareTasksLocationAscending:)];
+  else if ([sort isEqualToString: @"category"])
+    [filteredTasks sortUsingSelector: @selector (compareTasksCategoryAscending:)];
+  else if ([sort isEqualToString: @"calendarname"])
+    [filteredTasks sortUsingSelector: @selector (compareTasksCalendarNameAscending:)];
+  else 
+    [filteredTasks sortUsingSelector: @selector (compareTasksAscending:)];
+
+  ascending = [[context request] formValueForKey: @"asc"];
+  if (![ascending boolValue])
+    [filteredTasks reverseArray];
 
   return [self _responseWithData: filteredTasks];
 }

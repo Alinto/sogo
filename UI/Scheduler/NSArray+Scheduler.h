@@ -48,6 +48,20 @@
 #define eventErasableIndex         19
 #define eventOwnerIsOrganizerIndex 20
 
+// See [UIxCalListingActions initialize]
+#define taskNameIndex               0
+#define taskFolderIndex             1
+#define taskCalendarNameIndex       2
+#define taskStatusIndex             3
+#define taskTitleIndex              4
+#define taskEndDateIndex            5
+#define taskClassificationIndex     6
+#define taskLocationIndex           7
+#define taskCategoryIndex           8
+#define taskEditableIndex           9
+#define taskErasableIndex          10
+#define taskPriorityIndex          11
+
 @interface NSArray (SOGoEventComparison)
 
 - (NSComparisonResult) compareEventsStartDateAscending: (NSArray *) otherEvent;
@@ -56,6 +70,12 @@
 - (NSComparisonResult) compareEventsLocationAscending: (NSArray *) otherEvent;
 - (NSComparisonResult) compareEventsCalendarNameAscending: (NSArray *) otherEvent;
 - (NSComparisonResult) compareTasksAscending: (NSArray *) otherTask;
+- (NSComparisonResult) compareTasksPriorityAscending: (NSArray *) otherTask;
+- (NSComparisonResult) compareTasksTitleAscending: (NSArray *) otherTask;
+- (NSComparisonResult) compareTasksEndAscending: (NSArray *) otherTask;
+- (NSComparisonResult) compareTasksLocationAscending: (NSArray *) otherTask;
+- (NSComparisonResult) compareTasksCategoryAscending: (NSArray *) otherTask;
+- (NSComparisonResult) compareTasksCalendarNameAscending: (NSArray *) otherTask;
 - (NSArray *) reversedArray;
 
 @end
