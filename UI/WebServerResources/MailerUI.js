@@ -892,14 +892,9 @@ function messageListCallback(row, data, isNew) {
         row.addClassName('thread' + data['ThreadLevel']);
     }
 
-    var cells;
-    if (Prototype.Browser.IE)
-        cells = row.childNodes;
-    else
-        cells = row.cells;
-
+    var cells = row.childElements();
     for (var j = 0; j < cells.length; j++) {
-        var cell = $(cells[j]);
+        var cell = cells[j];
         var cellType = Mailer.columnsOrder[j];
 
         if (data[cellType]) cell.innerHTML = data[cellType];
