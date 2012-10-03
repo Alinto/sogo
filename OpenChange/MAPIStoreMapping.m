@@ -52,29 +52,36 @@ static NSMutableDictionary *mappingRegistry = nil;
   mappingRegistry = [NSMutableDictionary new];
 }
 
+static inline id
+MAPIStoreMappingKeyFromId (uint64_t idNbr)
+{
+  return [NSString stringWithFormat: @"0x%.16"PRIx64, idNbr];
+}
+
 static int
 MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 			     void *data)
 {
   NSMutableDictionary *mapping;
-  NSNumber *idNbr;
+  id idKey;
   NSString *uri;
   char *idStr, *uriStr;
-  uint64_t idVal;
+  uint64_t idNbr;
 
   // get the key
   // key examples : key(18) = "0x6900000000000001"
   //                key(31) = "SOFT_DELETED:0xb100020000000001"
   //
   idStr = (char *) data1.dptr;
-  idNbr = nil;
+  idKey = nil;
 
   if (strncmp(idStr, "SOFT_DELETED:", 13) != 0)
     { 
       // It's very important here to use strtoull and NOT strtoll as
       // the latter will overflow a long long with typical key values.
-      idVal = strtoull(idStr, NULL, 0);
-      idNbr = [NSNumber numberWithUnsignedLongLong: idVal];
+      idNbr = strtoull(idStr, NULL, 0);
+      // idKey = [NSNumber numberWithUnsignedLongLong: idNbr];
+      idKey = MAPIStoreMappingKeyFromId(idNbr);
     }
   
   // get the value and null-terminate it
@@ -86,9 +93,9 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 
   mapping = data;
 
-  if (uri && idNbr)
+  if (uri && idKey)
     {
-      [mapping setObject: uri forKey: idNbr];
+      [mapping setObject: uri forKey: idKey];
     }
 
   return 0;
@@ -147,8 +154,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 - (id) initForUsername: (NSString *) newUsername
           withIndexing: (struct tdb_wrap *) newIndexing
 {
-  NSNumber *idNbr;
-  NSString *uri;
+  NSString *idNbr, *uri;
   NSArray *keys;
   NSUInteger count, max;
 
@@ -185,21 +191,17 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 
 - (NSString *) urlFromID: (uint64_t) idNbr
 {
-  NSNumber *key;
-  
-  key = [NSNumber numberWithUnsignedLongLong: idNbr];
-  
-  return [mapping objectForKey: key];
+  return [mapping objectForKey: MAPIStoreMappingKeyFromId (idNbr)];
 }
 
 - (uint64_t) idFromURL: (NSString *) url
 {
-  NSNumber *idKey;
+  id key;
   uint64_t idNbr;
 
-  idKey = [reverseMapping objectForKey: url];
-  if (idKey)
-    idNbr = [idKey unsignedLongLongValue];
+  key = [reverseMapping objectForKey: url];
+  if (key)
+    idNbr = [key unsignedLongLongValue];
   else
     idNbr = NSNotFound;
 
@@ -212,7 +214,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   NSArray *allKeys;
   NSUInteger count, max;
   NSString *currentKey, *newKey;
-  NSNumber *idKey;
+  id idKey;
   TDB_DATA key, dbuf;
 
   [oldURL retain];
@@ -253,10 +255,10 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
           withURL: (NSString *) urlString
 {
   NSString *oldURL;
-  NSNumber *idKey;
+  id idKey;
   TDB_DATA key, dbuf;
 
-  idKey = [NSNumber numberWithUnsignedLongLong: idNbr];
+  idKey = MAPIStoreMappingKeyFromId (idNbr);
   oldURL = [mapping objectForKey: idKey];
   if (oldURL)
     {
@@ -294,11 +296,11 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 - (BOOL) registerURL: (NSString *) urlString
               withID: (uint64_t) idNbr
 {
-  NSNumber *idKey;
+  id idKey;
   BOOL rc;
   TDB_DATA key, dbuf;
 
-  idKey = [NSNumber numberWithUnsignedLongLong: idNbr];
+  idKey = MAPIStoreMappingKeyFromId (idNbr);
   if ([mapping objectForKey: idKey]
       || [reverseMapping objectForKey: urlString])
     {
@@ -333,10 +335,10 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 - (void) unregisterURLWithID: (uint64_t) idNbr
 {
   NSString *urlString;
-  NSNumber *idKey;
+  id idKey;
   TDB_DATA key;
 
-  idKey = [NSNumber numberWithUnsignedLongLong: idNbr];
+  idKey = MAPIStoreMappingKeyFromId (idNbr);
   urlString = [mapping objectForKey: idKey];
   if (urlString)
     {
