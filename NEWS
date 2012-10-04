@@ -1,11 +1,21 @@
+2.0.1 (2012-10-DD)
+-------------------
+New Features
+
+Enhancements
+ - improved Task View, added sortable fields on Title, Due date,
+   Location, Category and Calendar. Added Priority column, also sortable.
+ - improved event info dialog box
+
+Bug Fixes
+ - improved support of IE 9
+
 2.0.0 (2012-09-27)
 -------------------
 New Features
  - Microsoft Outlook compatibility layer
 
 Enhancements
- - Improved Task View, added sortable fields on Title, Due date, 
-   Location, Category and Calendar. Added Priority column, also sortable.
  - updated translations
  - calendars list and mini-calendar are now always visible
  - tasks list has moved to a table in a tabs view along the events list
