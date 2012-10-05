@@ -67,6 +67,8 @@
 
 // - (SOGoMAPIDBMessage *) propertiesMessage;
 
+- (NSString *) childKeyFromURL: (NSString *) childURL;
+
 - (id) lookupMessageByURL: (NSString *) messageURL;
 - (id) lookupFolderByURL: (NSString *) folderURL;
 

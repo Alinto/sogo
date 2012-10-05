@@ -250,30 +250,18 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (id) lookupFolderByURL: (NSString *) childURL
 {
-  MAPIStoreObject *foundObject = nil;
-  NSString *baseURL, *subURL, *part;
-  NSArray *parts;
-  NSUInteger partsCount;
+  MAPIStoreObject *foundObject;
+  NSString *key, *slashLessURL;
 
-  baseURL = [self url];
-  if (![baseURL hasSuffix: @"/"])
-    baseURL = [NSString stringWithFormat: @"%@/", baseURL];
-  if ([childURL hasPrefix: baseURL])
-    {
-      subURL = [childURL substringFromIndex: [baseURL length]];
-      if ([subURL length] > 0)
-        {
-          parts = [subURL componentsSeparatedByString: @"/"];
-          partsCount = [parts count];
-          if ((partsCount == 1)
-              || (partsCount == 2 && [[parts objectAtIndex: 1] length] == 0))
-            {
-              part = [[parts objectAtIndex: 0]
-                       stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-              foundObject = [self lookupFolder: part];
-            }
-        }
-    }
+  if ([childURL hasSuffix: @"/"])
+    slashLessURL = [childURL substringToIndex: [childURL length] - 1];
+  else
+    slashLessURL = childURL;
+  key = [self childKeyFromURL: slashLessURL];
+  if (key)
+    foundObject = [self lookupFolder: key];
+  else
+    foundObject = nil;
 
   return foundObject;
 }
@@ -323,10 +311,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return childMessage;
 }
 
-- (id) lookupMessageByURL: (NSString *) childURL
+- (NSString *) childKeyFromURL: (NSString *) childURL
 {
-  MAPIStoreObject *foundObject = nil;
-  NSString *baseURL, *subURL, *key;
+  NSString *baseURL, *subURL, *key = nil;
   NSArray *parts;
   NSUInteger partsCount;
 
@@ -344,12 +331,27 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
             {
               key = [[parts objectAtIndex: 0]
                       stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-              foundObject = [self lookupFAIMessage: key];
-              if (!foundObject)
-                foundObject = [self lookupMessage: key];
             }
         }
     }
+
+  return key;
+}
+
+- (id) lookupMessageByURL: (NSString *) childURL
+{
+  MAPIStoreObject *foundObject;
+  NSString *key;
+
+  key = [self childKeyFromURL: childURL];
+  if (key)
+    {
+      foundObject = [self lookupFAIMessage: key];
+      if (!foundObject)
+        foundObject = [self lookupMessage: key];
+    }
+  else
+    foundObject = nil;
 
   return foundObject;
 }
