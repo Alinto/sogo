@@ -165,8 +165,8 @@
 /* TODO: differentiate between the "Own" and "All" cases */
 - (BOOL) subscriberCanReadMessage
 {
-  return ([(MAPIStoreFolder *) container subscriberCanReadMessages]
-          || [self _messageIsFreeBusy]);
+  return [(MAPIStoreFolder *) container subscriberCanReadMessages];
+          // || [self _messageIsFreeBusy]);
 }
 
 - (BOOL) subscriberCanModifyMessage
@@ -174,8 +174,8 @@
   return ((isNew
            && [(MAPIStoreFolder *) container subscriberCanCreateMessages])
           || (!isNew
-              && [(MAPIStoreFolder *) container subscriberCanModifyMessages])
-          || [self _messageIsFreeBusy]);
+              && [(MAPIStoreFolder *) container subscriberCanModifyMessages]));
+          // || [self _messageIsFreeBusy]);
 }
 
 - (NSDate *) creationTime
