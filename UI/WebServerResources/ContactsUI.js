@@ -9,7 +9,6 @@ var usersRightsWindowWidth = 450;
 var Contact = {
     currentAddressBook: "/personal",
     currentContact: null,
-    deleteContactsRequestCount: null
 };
 
 function openContactsFolder(contactsFolder, reload, idx) {
@@ -492,47 +491,49 @@ function onToolbarDeleteSelectedContacts(event) {
 function onToolbarDeleteSelectedContactsConfirm(dialogId) {
     disposeDialog();
     var contactsList = $('contactsList');
-    var rows = contactsList.getSelectedRowsId();
-    for (var i = 0; i < rows.length; i++) {
-        delete cachedContacts[Contact.currentAddressBook + "/" + rows[i]];
-        var urlstr = (URLForFolderID(Contact.currentAddressBook) + "/"
-                      + rows[i] + "/delete");
-        Contact.deleteContactsRequestCount++;
-        triggerAjaxRequest(urlstr, onContactDeleteEventCallback,
-                           rows[i]);
+    var rowsId = contactsList.getSelectedRowsId();
+    var urlstr = (URLForFolderID(Contact.currentAddressBook) 
+                 + "/batchDelete?ids=" + rowsId.join("/"));
+    for (var i = 0; i < rowsId.length; i++) {
+        delete cachedContacts[Contact.currentAddressBook + "/" + rowsId[i]];
     }
+    triggerAjaxRequest(urlstr, onContactDeleteEventCallback, rowsId);
 }
 
 function onContactDeleteEventCallback(http) {
+    var rowsId = http.callbackData;
     if (http.readyState == 4) {
         if (isHttpStatus204(http.status)) {
-            var row = $(http.callbackData);
-            if (Contact.currentContact == http.callbackData) {
-                $("contactView").update();
-                Contact.currentContact = null;
-            }
-
-            Contact.deleteContactsRequestCount--;
-            if (Contact.deleteContactsRequestCount == 0) {
+            var row;
+            var nextRow = null;
+            for (var i = 0; i < rowsId.length; i++) {
+                row = $(rowsId[i]);
+                var displayName = row.readAttribute("contactname");
+                if (Contact.currentContact == row) {
+                    Contact.currentContact = null;
+                }
                 var nextRow = row.next("tr");
                 if (!nextRow)
                     nextRow = row.previous("tr");
-                if (nextRow) {
-                    Contact.currentContact = nextRow.getAttribute("id");
-                    nextRow.selectElement();
-                    loadContact(Contact.currentContact);
+                if (row) {
+                    row.deselect();
+                    row.parentNode.removeChild(row);
                 }
             }
-            if (row) {
-                row.deselect();
-                row.parentNode.removeChild(row);
+            if (nextRow) {
+                Contact.currentContact = nextRow.getAttribute("id");
+                nextRow.selectElement();
+                loadContact(Contact.currentContact);
             }
+
+            $("contactView").update();
         }
         else if (parseInt(http.status) == 403) {
-            var row = $(http.callbackData);
-            row.show();
+            for (var i = 0; i < rowsId.length; i++) {
+                var row = $(rowsId[i]);
+                row.show();
+            }
             var displayName = row.readAttribute("contactname");
-            Contact.deleteContactsRequestCount--;
             showAlertDialog(_("You cannot delete the card of \"%{0}\".").formatted(displayName));
         }
     }
