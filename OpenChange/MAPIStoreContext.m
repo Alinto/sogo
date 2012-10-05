@@ -537,7 +537,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
       [mapping registerURL: childURL withID: mappingId];
       contextId = 0;
 
-      mapistore_search_context_by_uri (connInfo->mstore_ctx, [folderURL UTF8String] + 7,
+      mapistore_search_context_by_uri (connInfo->mstore_ctx, [folderURL UTF8String],
                                        &contextId, &rootObject);
       owner = [userContext username];
       mapistore_indexing_record_add_mid (connInfo->mstore_ctx, contextId,
