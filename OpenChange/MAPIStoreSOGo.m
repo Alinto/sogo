@@ -797,6 +797,34 @@ sogo_folder_modify_permissions(void *folder_object, uint8_t flags,
 }
 
 static enum mapistore_error
+sogo_folder_preload_message_bodies(void *folder_object, const struct I8Array_r *mids)
+{
+  struct MAPIStoreTallocWrapper *wrapper;
+  NSAutoreleasePool *pool;
+  MAPIStoreFolder *folder;
+  int rc;
+
+  DEBUG (5, ("[SOGo: %s:%d]\n", __FUNCTION__, __LINE__));
+
+  if (folder_object)
+    {
+      wrapper = folder_object;
+      folder = wrapper->instance;
+      GSRegisterCurrentThread ();
+      pool = [NSAutoreleasePool new];
+      rc = [folder preloadMessageBodies: mids];
+      [pool release];
+      GSUnregisterCurrentThread ();
+    }
+  else
+    {
+      rc = sogo_backend_unexpected_error();
+    }
+
+  return rc;
+}
+
+static enum mapistore_error
 sogo_message_get_message_data(void *message_object,
                               TALLOC_CTX *mem_ctx,
                               struct mapistore_message **msg_dataP)
@@ -1506,6 +1534,7 @@ int mapistore_init_backend(void)
       backend.folder.get_child_count = sogo_folder_get_child_count;
       backend.folder.open_table = sogo_folder_open_table;
       backend.folder.modify_permissions = sogo_folder_modify_permissions;
+      backend.folder.preload_message_bodies = sogo_folder_preload_message_bodies;
       backend.message.create_attachment = sogo_message_create_attachment;
       backend.message.get_attachment_table = sogo_message_get_attachment_table;
       backend.message.open_attachment = sogo_message_open_attachment;

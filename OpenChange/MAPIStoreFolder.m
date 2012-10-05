@@ -1751,6 +1751,11 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return MAPISTORE_SUCCESS;
 }
 
+- (enum mapistore_error) preloadMessageBodies: (const struct I8Array_r *) mids
+{
+  return MAPISTORE_SUCCESS;
+}
+
 - (uint64_t) objectId
 {
   uint64_t objectId;

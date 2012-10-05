@@ -142,6 +142,7 @@
 - (int) modifyPermissions: (struct PermissionData *) permissions
                 withCount: (uint16_t) pcount
                  andFlags: (int8_t) flags;
+- (enum mapistore_error) preloadMessageBodies: (const struct I8Array_r *) mids;
 
 /* helpers */
 - (uint64_t) idForObjectWithKey: (NSString *) childKey;
