@@ -128,7 +128,7 @@
                                    isMove: (BOOL) isMove
                               isRecursive: (BOOL) isRecursive;
 
-- (int) getDeletedFMIDs: (struct I8Array_r **) fmidsPtr
+- (int) getDeletedFMIDs: (struct UI8Array_r **) fmidsPtr
                   andCN: (uint64_t *) cnPtr
        fromChangeNumber: (uint64_t) changeNum
             inTableType: (enum mapistore_table_type) tableType
@@ -142,7 +142,7 @@
 - (int) modifyPermissions: (struct PermissionData *) permissions
                 withCount: (uint16_t) pcount
                  andFlags: (int8_t) flags;
-- (enum mapistore_error) preloadMessageBodies: (const struct I8Array_r *) mids;
+- (enum mapistore_error) preloadMessageBodies: (const struct UI8Array_r *) mids;
 
 /* helpers */
 - (uint64_t) idForObjectWithKey: (NSString *) childKey;

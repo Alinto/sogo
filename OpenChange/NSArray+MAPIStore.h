@@ -37,7 +37,7 @@
 + (id) arrayFromMVShort: (const struct ShortArray_r *) mvShort;
 + (id) arrayFromMVLong: (const struct LongArray_r *) mvLong;
 - (struct LongArray_r *) asMVLongInMemCtx: (void *) memCtx;
-+ (id) arrayFromMVI8: (const struct I8Array_r *) mvI8;
++ (id) arrayFromMVUI8: (const struct UI8Array_r *) mvI8;
 + (id) arrayFromMVString: (const struct StringArray_r *) mvString;
 + (id) arrayFromMVUnicode: (const struct StringArrayW_r *) mvUnicode;
 - (struct StringArrayW_r *) asMVUnicodeInMemCtx: (void *) memCtx;

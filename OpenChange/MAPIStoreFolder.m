@@ -1016,7 +1016,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     }
 }
 
-- (int) getDeletedFMIDs: (struct I8Array_r **) fmidsPtr
+- (int) getDeletedFMIDs: (struct UI8Array_r **) fmidsPtr
                   andCN: (uint64_t *) cnPtr
        fromChangeNumber: (uint64_t) changeNum
             inTableType: (enum mapistore_table_type) tableType
@@ -1028,7 +1028,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSNumber *cnNbr;
   NSUInteger count, max;
   MAPIStoreMapping *mapping;
-  struct I8Array_r *fmids;
+  struct UI8Array_r *fmids;
   uint64_t fmid;
 
   keys = [self getDeletedKeysFromChangeNumber: changeNum andCN: &cnNbr
@@ -1039,9 +1039,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
       max = [keys count];
 
-      fmids = talloc_zero (memCtx, struct I8Array_r);
+      fmids = talloc_zero (memCtx, struct UI8Array_r);
       fmids->cValues = 0;
-      fmids->lpi8 = talloc_array (fmids, int64_t, max);
+      fmids->lpui8 = talloc_array (fmids, uint64_t, max);
       *fmidsPtr = fmids;
       if (max > 0)
         *cnPtr = [cnNbr unsignedLongLongValue];
@@ -1061,7 +1061,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                                      "never existed" in the OpenChange
                                      databases */
             {
-              fmids->lpi8[fmids->cValues] = fmid;
+              fmids->lpui8[fmids->cValues] = fmid;
               fmids->cValues++;
             }
         }
@@ -1751,7 +1751,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return MAPISTORE_SUCCESS;
 }
 
-- (enum mapistore_error) preloadMessageBodies: (const struct I8Array_r *) mids
+- (enum mapistore_error) preloadMessageBodies: (const struct UI8Array_r *) mids
 {
   return MAPISTORE_SUCCESS;
 }

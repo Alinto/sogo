@@ -170,16 +170,16 @@
   return list;
 }
 
-+ (id) arrayFromMVI8: (const struct I8Array_r *) mvI8
++ (id) arrayFromMVUI8: (const struct UI8Array_r *) mvUI8
 {
   NSUInteger count;
   NSNumber *subObject;
   NSMutableArray *mvResult;
 
-  mvResult = [NSMutableArray arrayWithCapacity: mvI8->cValues];
-  for (count = 0; count < mvI8->cValues; count++)
+  mvResult = [NSMutableArray arrayWithCapacity: mvUI8->cValues];
+  for (count = 0; count < mvUI8->cValues; count++)
     {
-      subObject = [NSNumber numberWithLongLong: mvI8->lpi8[count]];
+      subObject = [NSNumber numberWithLongLong: mvUI8->lpui8[count]];
       [mvResult addObject: subObject];
     }
 

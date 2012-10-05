@@ -697,7 +697,7 @@ sogo_folder_copy_folder(void *folder_object, void *target_folder_object,
 static enum mapistore_error
 sogo_folder_get_deleted_fmids(void *folder_object, TALLOC_CTX *mem_ctx,
                               enum mapistore_table_type table_type, uint64_t change_num,
-                              struct I8Array_r **fmidsp, uint64_t *cnp)
+                              struct UI8Array_r **fmidsp, uint64_t *cnp)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
@@ -797,7 +797,7 @@ sogo_folder_modify_permissions(void *folder_object, uint8_t flags,
 }
 
 static enum mapistore_error
-sogo_folder_preload_message_bodies(void *folder_object, const struct I8Array_r *mids)
+sogo_folder_preload_message_bodies(void *folder_object, const struct UI8Array_r *mids)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;

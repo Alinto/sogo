@@ -222,7 +222,7 @@ NSObjectFromSPropValue (const struct SPropValue *value)
       result = [NSArray arrayFromMVLong: &value->value.MVl];
       break;
     case PT_MV_I8:
-      result = [NSArray arrayFromMVI8: &value->value.MVi8];
+      result = [NSArray arrayFromMVUI8: &value->value.MVui8];
       break;
     case PT_MV_STRING8:
       result = [NSArray arrayFromMVString: &value->value.MVszA];
