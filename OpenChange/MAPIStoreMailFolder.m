@@ -25,6 +25,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSSet.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -50,6 +51,7 @@
 #import "MAPIStoreContext.h"
 #import "MAPIStoreFAIMessage.h"
 #import "MAPIStoreMailContext.h"
+#import "MAPIStoreMailMessage.h"
 #import "MAPIStoreMailMessageTable.h"
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
@@ -86,6 +88,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   if ((self = [super init]))
     {
       versionsMessage = nil;
+      bodyData = [NSMutableDictionary new];
     }
 
   return self;
@@ -94,6 +97,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 - (void) dealloc
 {
   [versionsMessage release];
+  [bodyData release];
   [super dealloc];
 }
 
@@ -1161,6 +1165,24 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                              inContainer: self];
 }
 
+- (id) lookupMessage: (NSString *) messageKey
+{
+  MAPIStoreMailMessage *message;
+  NSData *rawBodyData;
+  NSNumber *messageUID;
+
+  message = [super lookupMessage: messageKey];
+  if (message)
+    {
+      messageUID = [self messageUIDFromMessageKey: messageKey];
+      rawBodyData = [bodyData objectForKey: messageUID];
+      if (rawBodyData)
+        [message setBodyContentFromRawData: rawBodyData];
+    }
+
+  return message;
+}
+
 - (NSArray *) rolesForExchangeRights: (uint32_t) rights
 {
   NSMutableArray *roles;
@@ -1217,6 +1239,70 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   // [self logWithFormat: @"rights for roles (%@) = %.8x", roles, rights];
  
   return rights;
+}
+
+- (enum mapistore_error) preloadMessageBodiesWithKeys: (NSArray *) keys
+{
+  MAPIStoreMailMessage *message;
+  NSMutableSet *bodyPartKeys;
+  NSMutableDictionary *keyAssoc;
+  NSDictionary *response;
+  NSUInteger count, max;
+  NSString *messageKey, *bodyPartKey;
+  NSNumber *messageUID;
+  NGImap4Client *client;
+  NSArray *fetch;
+  NSData *bodyContent;
+
+  [bodyData removeAllObjects];
+  max = [keys count];
+
+  if (max > 0)
+    {
+      bodyPartKeys = [NSMutableSet setWithCapacity: max];
+
+      keyAssoc = [NSMutableDictionary dictionaryWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          messageKey = [keys objectAtIndex: count];
+          messageUID = [self messageUIDFromMessageKey: messageKey];
+          if (messageUID)
+            {
+              message = [self lookupMessage: messageKey];
+              if (message)
+                {
+                  bodyPartKey = [message bodyContentPartKey];
+                  [bodyPartKeys addObject: bodyPartKey];
+                  [keyAssoc setObject: bodyPartKey forKey: messageUID];
+                }
+            }
+        }
+      
+      client = [[(SOGoMailFolder *) sogoObject imap4Connection] client];
+      [client select: [sogoObject absoluteImap4Name]];
+      response = [client fetchUids: [keyAssoc allKeys]
+                             parts: [bodyPartKeys allObjects]];
+      fetch = [response objectForKey: @"fetch"];
+      max = [fetch count];
+      for (count = 0; count < max; count++)
+        {
+          response = [fetch objectAtIndex: count];
+          messageUID = [response objectForKey: @"uid"];
+          if (messageUID)
+            {
+              bodyPartKey = [keyAssoc objectForKey: messageUID];
+              if (bodyPartKey)
+                {
+                  bodyContent = [[response objectForKey: bodyPartKey]
+                                  objectForKey: @"data"];
+                  if (bodyContent)
+                    [bodyData setObject: bodyContent forKey: messageUID];
+                }
+            }
+        }
+    }
+
+  return MAPISTORE_SUCCESS;
 }
 
 @end

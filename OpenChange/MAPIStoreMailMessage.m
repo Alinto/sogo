@@ -240,7 +240,7 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   if (!headerSetup)
     [self _fetchHeaderData];
 
-  if (mimeKey)
+  if (!bodyContent && mimeKey)
     {
       result = [sogoObject fetchParts: [NSArray arrayWithObject: mimeKey]];
       result = [[result valueForKey: @"RawResponse"] objectForKey: @"fetch"];
@@ -1548,6 +1548,31 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
     [sogoObject addFlags: imapFlag];
 
   return MAPISTORE_SUCCESS;
+}
+
+- (NSString *) bodyContentPartKey
+{
+  NSString *bodyPartKey;
+
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  if ([mimeKey hasPrefix: @"body.peek"])
+    bodyPartKey = [NSString stringWithFormat: @"body[%@]",
+                          [mimeKey _strippedBodyKey]];
+  else
+    bodyPartKey = mimeKey;
+
+  return bodyPartKey;
+}
+
+- (void) setBodyContentFromRawData: (NSData *) rawContent
+{
+  if (!headerSetup)
+    [self _fetchHeaderData];
+
+  ASSIGN (bodyContent, [rawContent bodyDataFromEncoding: headerEncoding]);
+  bodySetup = YES;
 }
 
 - (void) save

@@ -70,6 +70,10 @@
 - (int) getPidTagDisplayBcc: (void **) data
                inMemCtx: (TALLOC_CTX *) memCtx;
 
+/* batch-mode helpers */
+- (NSString *) bodyContentPartKey;
+- (void) setBodyContentFromRawData: (NSData *) rawContent;
+
 @end
 
 #endif /* MAPISTOREMAILMESSAGE_H */

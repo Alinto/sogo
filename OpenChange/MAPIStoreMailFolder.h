@@ -37,6 +37,7 @@
 @interface MAPIStoreMailFolder : MAPIStoreFolder
 {
   SOGoMAPIDBMessage *versionsMessage;
+  NSMutableDictionary *bodyData;
 }
 
 - (BOOL) ensureFolderExists;
