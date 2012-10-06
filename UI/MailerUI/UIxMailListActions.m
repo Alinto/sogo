@@ -299,7 +299,7 @@
 
   hasAttachment = NO;
 
-  parts = [[message objectForKey: @"body"] objectForKey: @"parts"];
+  parts = [[message objectForKey: @"bodystructure"] objectForKey: @"parts"];
   if ([parts count] > 1)
     {
       dispositions = [[parts objectsForKey: @"disposition"

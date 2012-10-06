@@ -253,13 +253,13 @@ static BOOL debugSoParts       = NO;
 
 - (id) bodyStructure
 {
-  id body;
+  id bodyStructure;
 
-  body = [[self fetchCoreInfos] valueForKey: @"body"];
+  bodyStructure = [[self fetchCoreInfos] valueForKey: @"bodystructure"];
   if (debugBodyStructure)
-    [self logWithFormat: @"BODY: %@", body];
+    [self logWithFormat: @"BODYSTRUCTURE: %@", bodyStructure];
 
-  return body;
+  return bodyStructure;
 }
 
 - (NGImap4Envelope *) envelope
@@ -746,7 +746,7 @@ static BOOL debugSoParts       = NO;
   if ([prefix hasSuffix: @"/"])
     prefix = [prefix substringToIndex: [prefix length] - 1];
   [self _feedAttachmentIds: attachmentIds
-	withInfos: [coreInfos objectForKey: @"body"]
+	withInfos: [coreInfos objectForKey: @"bodystructure"]
 	andPrefix: prefix];
 
   return attachmentIds;
