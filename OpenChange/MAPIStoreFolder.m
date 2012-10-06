@@ -1753,7 +1753,31 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return MAPISTORE_SUCCESS;
 }
 
-- (enum mapistore_error) preloadMessageBodies: (const struct UI8Array_r *) mids
+- (enum mapistore_error) preloadMessageBodiesWithMIDs: (const struct UI8Array_r *) mids
+{
+  uint32_t count;
+  NSMutableArray *messageKeys;
+  MAPIStoreMapping *mapping;
+  NSString *messageURL, *messageKey;
+
+  messageKeys = [NSMutableArray arrayWithCapacity: mids->cValues];
+
+  mapping = [self mapping];
+  for (count = 0; count < mids->cValues; count++)
+    {
+      messageURL = [mapping urlFromID: mids->lpui8[count]];
+      if (messageURL)
+        {
+          messageKey = [self childKeyFromURL: messageURL];
+          if (messageKey)
+            [messageKeys addObject: messageKey];
+        }
+    }
+
+  return [self preloadMessageBodiesWithKeys: messageKeys];
+}
+
+- (enum mapistore_error) preloadMessageBodiesWithKeys: (NSArray *) keys
 {
   return MAPISTORE_SUCCESS;
 }

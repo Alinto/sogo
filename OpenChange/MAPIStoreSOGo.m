@@ -812,7 +812,7 @@ sogo_folder_preload_message_bodies(void *folder_object, const struct UI8Array_r 
       folder = wrapper->instance;
       GSRegisterCurrentThread ();
       pool = [NSAutoreleasePool new];
-      rc = [folder preloadMessageBodies: mids];
+      rc = [folder preloadMessageBodiesWithMIDs: mids];
       [pool release];
       GSUnregisterCurrentThread ();
     }

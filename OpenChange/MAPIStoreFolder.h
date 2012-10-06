@@ -144,7 +144,7 @@
 - (int) modifyPermissions: (struct PermissionData *) permissions
                 withCount: (uint16_t) pcount
                  andFlags: (int8_t) flags;
-- (enum mapistore_error) preloadMessageBodies: (const struct UI8Array_r *) mids;
+- (enum mapistore_error) preloadMessageBodiesWithMIDs: (const struct UI8Array_r *) mids;
 
 /* helpers */
 - (uint64_t) idForObjectWithKey: (NSString *) childKey;
@@ -175,6 +175,8 @@
 - (BOOL) subscriberCanCreateSubFolders;
 
 - (BOOL) supportsSubFolders; /* capability */
+
+- (enum mapistore_error) preloadMessageBodiesWithKeys: (NSArray *) keys;
 
 /* subclass helpers */
 - (void) setupVersionsMessage;
