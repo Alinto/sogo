@@ -22,6 +22,7 @@
 
 #import <NGExtensions/NSObject+Logs.h>
 
+#import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 
 #import "NSData+MAPIStore.h"
@@ -42,13 +43,11 @@
 - (struct Binary_r *) asBinaryInMemCtx: (void *) memCtx
 {
   struct Binary_r *binary;
-  uint8_t *lpb;
 
   binary = talloc_zero (memCtx, struct Binary_r);
   binary->cb = [self length];
-  lpb = talloc_array (binary, uint8_t, binary->cb);
-  [self getBytes: lpb];
-  binary->lpb = lpb;
+  binary->lpb = (uint8_t *) [self bytes];
+  [self tallocWrapper: binary];
 
   return binary;
 }
@@ -61,13 +60,11 @@
 - (struct SBinary_short *) asShortBinaryInMemCtx: (void *) memCtx
 {
   struct SBinary_short *binary;
-  uint8_t *lpb;
 
   binary = talloc_zero (memCtx, struct SBinary_short);
   binary->cb = [self length];
-  lpb = talloc_array (binary, uint8_t, binary->cb);
-  [self getBytes: lpb];
-  binary->lpb = lpb;
+  binary->lpb = (uint8_t *) [self bytes];
+  [self tallocWrapper: binary];
 
   return binary;
 }
