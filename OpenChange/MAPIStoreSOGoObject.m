@@ -95,7 +95,7 @@ static Class MAPIStoreFolderK;
 
 - (void) dealloc
 {
-  // [self logWithFormat: @"-dealloc"];
+  [self logWithFormat: @"-dealloc"];
   [sogoObject release];
   [super dealloc];
 }
