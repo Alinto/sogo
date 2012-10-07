@@ -151,6 +151,7 @@ static NSMapTable *contextsTable = nil;
   [containersBag release];
   [rootFolders release];
 
+  [woContext release];
   [authenticator release];
   [mapping release];
 
