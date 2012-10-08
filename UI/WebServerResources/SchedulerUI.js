@@ -699,8 +699,9 @@ function onViewEventCallback(http) {
             var cellDimensions = cell.getDimensions();
             var div = $("eventDialog");
             var divDimensions = div.getDimensions();
+            var viewPosition = $("calendarView").cumulativeOffset();
             var view;
-            var left = cellPosition[0];
+            var left;
             var top = cellPosition[1] - 5;
 
             if (currentView != "monthview") {
@@ -722,14 +723,13 @@ function onViewEventCallback(http) {
                 top -= cell.up("DIV.day").scrollTop;
             }
 
-            if (left > parseInt(window.width()*0.75)) {
-                left = left - divDimensions["width"] + 10;
+            left = cellPosition[0] + cellDimensions["width"] - parseInt(cellDimensions["width"]/3);
+            if (left + divDimensions["width"] > window.width()) {
+                left = cellPosition[0] - divDimensions["width"] + 10;
                 div.removeClassName("left");
                 div.addClassName("right");
             }
             else {
-                //log (" left = " + left + " + " + cellDimensions.width + " - " + parseInt(cellDimensions["width"]/3));
-                left = left + cellDimensions["width"] - parseInt(cellDimensions["width"]/3);
                 div.removeClassName("right");
                 div.addClassName("left");
             }
