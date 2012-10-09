@@ -48,7 +48,6 @@ vtodo_class2 = "(Tarea confidencial)";
 = "Por favor, acepte o rechace estos cambios.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Respuesta a la invitación del evento: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}ha aceptado su invitación al evento.";
 "%{Attendee} %{SentByText}has declined your event invitation."

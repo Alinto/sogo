@@ -51,7 +51,6 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 = "Acceptera eller avböj dessa ändringar.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Svara inbjudan: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}har accepterat din mötesinbjudan.";
 "%{Attendee} %{SentByText}has declined your event invitation."

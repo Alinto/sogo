@@ -56,7 +56,6 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 = "Vennligst godta eller avvis endringene.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Svar til invitasjonen: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText} har godtatt invitasjonen.";
 "%{Attendee} %{SentByText}has declined your event invitation."

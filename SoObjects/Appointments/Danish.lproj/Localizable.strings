@@ -59,7 +59,6 @@ Description: %{Description}";
 = "Venligst acceptér eller afvis disse ændringer.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Svar på invitation: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText} har accepteret din begivenhedsinvitation.";
 "%{Attendee} %{SentByText}has declined your event invitation."

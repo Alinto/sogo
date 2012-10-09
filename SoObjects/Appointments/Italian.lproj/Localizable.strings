@@ -51,7 +51,6 @@ vtodo_class2 = "(Attività confidenziale)";
 = "Prego accettare o rifiutare questi cambiamenti";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Risposta all'invito: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}ha accettato il tuo invito al evento.";
 "%{Attendee} %{SentByText}has declined your event invitation."

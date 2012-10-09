@@ -96,12 +96,25 @@
 - (NSString *) getSubject
 {
   NSString *subjectFormat;
+  NSString *partStat;
 
   if (!values)
     [self setupValues];
 
-  subjectFormat = [self labelForKey: @"Reply to invitation: \"%{Summary}\""
-                          inContext: context];
+  partStat = [[attendee partStat] lowercaseString];
+
+  if ([partStat isEqualToString: @"accepted"])
+    subjectFormat = [self labelForKey: @"Accepted invitation: \"%{Summary}\""
+                            inContext: context];
+  else if ([partStat isEqualToString: @"declined"])
+    subjectFormat = [self labelForKey: @"Declined invitation: \"%{Summary}\""
+                            inContext: context];
+  else if ([partStat isEqualToString: @"delegated"])
+    subjectFormat = [self labelForKey: @"Delegated invitation: \"%{Summary}\""
+                            inContext: context];
+  else
+    subjectFormat = [self labelForKey: @"Not yet decided on invitation: \"%{Summary}\""
+                            inContext: context];
 
   return [values keysWithFormat: subjectFormat];
 }

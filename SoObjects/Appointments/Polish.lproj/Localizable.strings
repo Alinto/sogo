@@ -51,7 +51,6 @@ vtodo_class2 = "(Zadanie poufne)";
 = "Zaakceptuj lub odrzuć te zmiany.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Odpowiedź na zaproszenie: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}zaakceptował(a) twoje zaproszenie na wydarzenie.";
 "%{Attendee} %{SentByText}has declined your event invitation."

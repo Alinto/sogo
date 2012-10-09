@@ -48,7 +48,6 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 = "Bitte akzeptieren Sie diese Änderung oder lehnen Sie ab.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Antwort auf Termineinladung: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText} hat Ihre Termineinladung akzeptiert.";
 "%{Attendee} %{SentByText}has declined your event invitation."

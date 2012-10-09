@@ -51,7 +51,6 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 = "Þessar breytingar þarf að samþykkja eða hafna.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Svara boði: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}hefur samþykkt boð þitt á viðburð.";
 "%{Attendee} %{SentByText}has declined your event invitation."
