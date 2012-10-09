@@ -785,9 +785,12 @@ static Class NSNullK;
   NSString *aUID, *cacheUid, *jsonUser;
   BOOL newUser;
 
+  /* TODO: we need to perform a better validity check on "uid" */
+
   if ([uid isEqualToString: @"anonymous"])
     currentUser = [self _contactInfosForAnonymous];
-  else if ([uid length] > 0)
+  else if ([uid length] > 0
+           && [uid rangeOfString: @" "].location == NSNotFound)
     {
       // Remove the "@" prefix used to identified groups in the ACL tables.
       aUID = [uid hasPrefix: @"@"] ? [uid substringFromIndex: 1] : uid;
