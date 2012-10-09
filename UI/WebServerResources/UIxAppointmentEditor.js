@@ -479,10 +479,7 @@ function setupAttendeeNode(aNode, aAttendee, isDelegate) {
 
 function initializeAttendeesHref() {
     var attendeesHref = $("attendeesHref");
-    var attendeesLabel = $("attendeesLabel");
-    var attendeesNames = $("attendeesNames");
-
-    if (attendeesHref && !attendeesHref.hasClassName ("nomenu"))
+    if (attendeesHref && !attendeesHref.hasClassName("nomenu"))
         attendeesHref.observe("click", onAttendeesHrefClick, false);
     refreshAttendees();
 }
@@ -525,9 +522,13 @@ function onAppointmentEditorLoad() {
         initTimeWidgets(widgets);
     }
 
+    var organizer = $("organizerLabel");
+    if (organizer && organizer.down("a")) {
+        organizer.down("a").on("click", onMailTo);
+    }
+
     // Extend JSON representation of attendees
     attendees = $H(attendees);
-
     initializeAttendeesHref();
 }
 

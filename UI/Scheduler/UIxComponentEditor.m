@@ -768,7 +768,11 @@ iRANGE(2);
 
 - (NSString *) organizerName
 {
-  return [organizer mailAddress];
+  NSDictionary *profile;
+
+  profile = [[[self organizerProfile] allValues] lastObject];
+
+  return [profile objectForKey: @"name"];
 }
 
 // - (BOOL) canBeOrganizer

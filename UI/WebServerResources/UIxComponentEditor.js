@@ -124,7 +124,6 @@ function initializeDocumentHref() {
     var documentUrl = $("attach");
 
     documentHref.observe("click", onPopupDocumentWindow, false);
-    documentHref.setStyle({ textDecoration: "underline", color: "#00f" });
     if (documentUrl.value.length > 0) {
         documentHref.appendChild(document.createTextNode(documentUrl.value));
         documentLabel.setStyle({ display: "block" });

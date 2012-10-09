@@ -68,8 +68,9 @@
       </span></span>
       <var:if condition="hasOrganizer"
 	><label id="organizerLabel"><var:string label:value="Organizer:"
-	    /><span class="content"><var:string
-	      value="organizerName"/></span></label>
+	    /><span class="content"><a var:href="organizer.email" var:email="organizer.email.rfc822Email"
+              ><var:string value="organizerName" /></a
+              ></span></label>
       </var:if>
       <!--<var:if condition="canBeOrganizer"
 	><label id="organizerListLabel"><var:string label:value="Organizer:"
@@ -214,7 +215,9 @@
   </label>
   <var:if condition="hasAttendees">
     <label id="organizerLabel"><var:string label:value="Organizer:"/>
-    <span class="content"><var:string value="organizerName"/></span>
+    <span class="content"><a var:href="organizer.email" var:email="organizer.email.rfc822Email"
+      ><var:string value="organizerName" /></a
+    ></span>
     </label>
   </var:if>
   <var:if condition="userHasRSVP">

@@ -111,10 +111,6 @@ SPAN.content > INPUT.textField
 LABEL#urlArea INPUT
 { position: static; }
 
-A#attendeesHref
-{ color: #00f;
-  text-decoration: underline; }
-
 DIV#attendeesMenu LI
 { padding-left: 10px;
   width: auto; }
