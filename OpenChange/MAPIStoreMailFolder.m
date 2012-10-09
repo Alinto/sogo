@@ -32,6 +32,7 @@
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOSortOrdering.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSObject+Values.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
@@ -507,8 +508,9 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 {
   BOOL rc = YES;
   uint64_t newChangeNum;
-  NSNumber *ti, *changeNumber, *modseq, *initialLastModseq, *lastModseq,
-    *nextModseq, *uid;
+  NSNumber *ti, *modseq, *initialLastModseq, *lastModseq,
+    *nextModseq;
+  NSString *changeNumber, *uid;
   uint64_t lastModseqNbr;
   EOQualifier *kvQualifier, *searchQualifier;
   NSArray *uids;
@@ -520,6 +522,10 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSCalendarDate *now;
   BOOL foundChange = NO;
 
+  /* NOTE: we are using NSString instance for "uid" and "changeNumber" because
+     NSNumber proved to give very bad performances when used as NSDictionary
+     keys with GNUstep 1.22.1. The bug seems to be solved with 1.24 but many
+     distros still ship an older version. */
   now = [NSCalendarDate date];
   [now setTimeZone: utcTZ];
 
@@ -584,10 +590,10 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       for (count = 0; count < max; count++)
         {
           result = [fetchResults objectAtIndex: count];
-          uid = [result objectForKey: @"uid"];
+          uid = [[result objectForKey: @"uid"] stringValue];
           modseq = [result objectForKey: @"modseq"];
           newChangeNum = [[self context] getNewChangeNumber];
-          changeNumber = [NSNumber numberWithUnsignedLongLong: newChangeNum];
+          changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
 
           messageEntry = [NSMutableDictionary new];
           [messages setObject: messageEntry forKey: uid];
@@ -627,7 +633,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
           if ([messages objectForKey: uid])
             {
               newChangeNum = [[self context] getNewChangeNumber];
-              changeNumber = [NSNumber numberWithUnsignedLongLong: newChangeNum];
+              changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
               [messages removeObjectForKey: uid];
               [self logWithFormat: @"removed message entry for uid %@", uid];
             }
@@ -651,7 +657,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   return rc;
 }
  
-- (NSNumber *) modseqFromMessageChangeNumber: (NSNumber *) changeNum
+- (NSNumber *) modseqFromMessageChangeNumber: (NSString *) changeNum
 {
   NSDictionary *mapping;
   NSNumber *modseq;
@@ -662,28 +668,24 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   return modseq;
 }
 
-- (NSNumber *) messageUIDFromMessageKey: (NSString *) messageKey
+- (NSString *) messageUIDFromMessageKey: (NSString *) messageKey
 {
-  NSNumber *messageUid;
-  NSString *uidString;
+  NSString *messageUid;
   NSRange dotRange;
 
   dotRange = [messageKey rangeOfString: @".eml"];
   if (dotRange.location != NSNotFound)
-    {
-      uidString = [messageKey substringToIndex: dotRange.location];
-      messageUid = [NSNumber numberWithInt: [uidString intValue]];
-    }
+    messageUid = [messageKey substringToIndex: dotRange.location];
   else
     messageUid = nil;
 
   return messageUid;
 }
 
-- (NSNumber *) changeNumberForMessageUID: (NSNumber *) messageUid
+- (NSString *) changeNumberForMessageUID: (NSString *) messageUid
 {
   NSDictionary *messages;
-  NSNumber *changeNumber;
+  NSString *changeNumber;
 
   messages = [[versionsMessage properties] objectForKey: @"Messages"];
   changeNumber = [[messages objectForKey: messageUid]
@@ -695,9 +697,8 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 - (void) setChangeKey: (NSData *) changeKey
     forMessageWithKey: (NSString *) messageKey
 {
-  NSMutableDictionary *messages;
-  NSMutableDictionary *messageEntry;
-  NSNumber *messageUid;
+  NSMutableDictionary *messages, *messageEntry;
+  NSString *messageUid;
 
   messageUid = [self messageUIDFromMessageKey: messageKey];
   messages = [[versionsMessage properties] objectForKey: @"Messages"];
@@ -712,8 +713,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 - (NSData *) changeKeyForMessageWithKey: (NSString *) messageKey
 {
   NSDictionary *messages, *changeKeyDict;
-  NSString *guid;
-  NSNumber *messageUid;
+  NSString *guid, *messageUid;
   NSData *globCnt, *changeKey = nil;
 
   messageUid = [self messageUIDFromMessageKey: messageKey];
@@ -738,8 +738,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   NSMutableArray *changeKeys;
   NSUInteger count, max;
   NSData *changeKey;
-  NSString *guid;
-  NSNumber *messageUid;
+  NSString *guid, *messageUid;
   NSData *globCnt;
 
   messageUid = [self messageUIDFromMessageKey: messageKey];
@@ -779,26 +778,27 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
                                  inTableType: (uint8_t) tableType
 {
   NSArray *deletedKeys, *deletedUIDs;
-  NSNumber *changeNumber;
+  NSString *changeNumber;
   uint64_t modseq;
   NSDictionary *versionProperties;
 
   if (tableType == MAPISTORE_MESSAGE_TABLE)
     {
-      changeNumber = [NSNumber numberWithUnsignedLongLong: changeNum];
+      changeNumber = [NSString stringWithUnsignedLongLong: changeNum];
       modseq = [[self modseqFromMessageChangeNumber: changeNumber]
                  unsignedLongLongValue];
       if (modseq > 0)
         {
           deletedUIDs = [(SOGoMailFolder *) sogoObject
-                            fetchUIDsOfVanishedItems: modseq];
+                           fetchUIDsOfVanishedItems: modseq];
           deletedKeys = [deletedUIDs stringsWithFormat: @"%@.eml"];
           if ([deletedUIDs count] > 0)
             {
               versionProperties = [versionsMessage properties];
               changeNumber = [versionProperties
                                   objectForKey: @"SyncLastDeleteChangeNumber"];
-              *cnNbr = changeNumber;
+              *cnNbr = [NSNumber numberWithUnsignedLongLong:
+                                   [changeNumber unsignedLongLongValue]];
               [versionsMessage save];
             }
         }
@@ -920,9 +920,9 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 {
   NGImap4Connection *connection;
   NGImap4Client *client;
-  NSString *sourceFolderName, *targetFolderName, *messageURL, *messageKey, *v;
+  NSString *sourceFolderName, *targetFolderName, *messageURL, *messageKey,
+    *uid, *v;
   NSMutableArray *uids, *oldMessageURLs;
-  NSNumber *uid;
   NSArray *destUIDs;
   MAPIStoreMapping *mapping;
   NSDictionary *result;
@@ -1169,13 +1169,11 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 {
   MAPIStoreMailMessage *message;
   NSData *rawBodyData;
-  NSNumber *messageUID;
 
   message = [super lookupMessage: messageKey];
   if (message)
     {
-      messageUID = [self messageUIDFromMessageKey: messageKey];
-      rawBodyData = [bodyData objectForKey: messageUID];
+      rawBodyData = [bodyData objectForKey: messageKey];
       if (rawBodyData)
         [message setBodyContentFromRawData: rawBodyData];
     }
@@ -1248,8 +1246,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   NSMutableDictionary *keyAssoc;
   NSDictionary *response;
   NSUInteger count, max;
-  NSString *messageKey, *bodyPartKey;
-  NSNumber *messageUID;
+  NSString *messageKey, *messageUid, *bodyPartKey;
   NGImap4Client *client;
   NSArray *fetch;
   NSData *bodyContent;
@@ -1265,16 +1262,13 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
       for (count = 0; count < max; count++)
         {
           messageKey = [keys objectAtIndex: count];
-          messageUID = [self messageUIDFromMessageKey: messageKey];
-          if (messageUID)
+          message = [self lookupMessage: messageKey];
+          if (message)
             {
-              message = [self lookupMessage: messageKey];
-              if (message)
-                {
-                  bodyPartKey = [message bodyContentPartKey];
-                  [bodyPartKeys addObject: bodyPartKey];
-                  [keyAssoc setObject: bodyPartKey forKey: messageUID];
-                }
+              bodyPartKey = [message bodyContentPartKey];
+              [bodyPartKeys addObject: bodyPartKey];
+              messageUid = [self messageUIDFromMessageKey: messageKey];
+              [keyAssoc setObject: bodyPartKey forKey: messageUid];
             }
         }
       
@@ -1287,16 +1281,17 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
       for (count = 0; count < max; count++)
         {
           response = [fetch objectAtIndex: count];
-          messageUID = [response objectForKey: @"uid"];
-          if (messageUID)
+          messageUid = [[response objectForKey: @"uid"] stringValue];
+          bodyPartKey = [keyAssoc objectForKey: messageUid];
+          if (bodyPartKey)
             {
-              bodyPartKey = [keyAssoc objectForKey: messageUID];
-              if (bodyPartKey)
+              bodyContent = [[response objectForKey: bodyPartKey]
+                              objectForKey: @"data"];
+              if (bodyContent)
                 {
-                  bodyContent = [[response objectForKey: bodyPartKey]
-                                  objectForKey: @"data"];
-                  if (bodyContent)
-                    [bodyData setObject: bodyContent forKey: messageUID];
+                  messageKey = [NSString stringWithFormat: @"%@.eml",
+                                         messageUid];
+                  [bodyData setObject: bodyContent forKey: messageKey];
                 }
             }
         }

@@ -26,6 +26,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSObject+Values.h>
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
@@ -366,21 +367,21 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
 - (uint64_t) objectVersion
 {
   uint64_t version = ULLONG_MAX;
-  NSNumber *uid, *changeNumber;
+  NSString *uid, *changeNumber;
 
   uid = [(MAPIStoreMailFolder *)
           container messageUIDFromMessageKey: [self nameInContainer]];
   if (uid)
     {
       changeNumber = [(MAPIStoreMailFolder *) container
-                        changeNumberForMessageUID: uid];
+                         changeNumberForMessageUID: uid];
       if (!changeNumber)
         {
           [self warnWithFormat: @"attempting to get change number"
                 @" by synchronising folder..."];
           [(MAPIStoreMailFolder *) container synchroniseCache];
           changeNumber = [(MAPIStoreMailFolder *) container
-                         changeNumberForMessageUID: uid];
+                             changeNumberForMessageUID: uid];
           if (changeNumber)
             [self logWithFormat: @"got one"];
           else
