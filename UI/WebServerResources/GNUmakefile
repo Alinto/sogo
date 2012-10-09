@@ -2,7 +2,7 @@
 
 include ../common.make
 
-WEBSERVER_RESOURCE_FILES = $(shell ls *css *ico *js *gif *png *html *txt >/dev/null 2>&1)
+WEBSERVER_RESOURCE_FILES = $(shell ls *css *ico *js *gif *png *html *txt 2> /dev/null)
 
 all ::
 
