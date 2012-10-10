@@ -1240,6 +1240,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 }
 
 - (enum mapistore_error) preloadMessageBodiesWithKeys: (NSArray *) keys
+                                          ofTableType: (enum mapistore_table_type) tableType
 {
   MAPIStoreMailMessage *message;
   NSMutableSet *bodyPartKeys;
@@ -1251,47 +1252,50 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   NSArray *fetch;
   NSData *bodyContent;
 
-  [bodyData removeAllObjects];
-  max = [keys count];
-
-  if (max > 0)
+  if (tableType == MAPISTORE_MESSAGE_TABLE)
     {
-      bodyPartKeys = [NSMutableSet setWithCapacity: max];
+      [bodyData removeAllObjects];
+      max = [keys count];
 
-      keyAssoc = [NSMutableDictionary dictionaryWithCapacity: max];
-      for (count = 0; count < max; count++)
+      if (max > 0)
         {
-          messageKey = [keys objectAtIndex: count];
-          message = [self lookupMessage: messageKey];
-          if (message)
+          bodyPartKeys = [NSMutableSet setWithCapacity: max];
+
+          keyAssoc = [NSMutableDictionary dictionaryWithCapacity: max];
+          for (count = 0; count < max; count++)
             {
-              bodyPartKey = [message bodyContentPartKey];
-              [bodyPartKeys addObject: bodyPartKey];
-              messageUid = [self messageUIDFromMessageKey: messageKey];
-              [keyAssoc setObject: bodyPartKey forKey: messageUid];
-            }
-        }
-      
-      client = [[(SOGoMailFolder *) sogoObject imap4Connection] client];
-      [client select: [sogoObject absoluteImap4Name]];
-      response = [client fetchUids: [keyAssoc allKeys]
-                             parts: [bodyPartKeys allObjects]];
-      fetch = [response objectForKey: @"fetch"];
-      max = [fetch count];
-      for (count = 0; count < max; count++)
-        {
-          response = [fetch objectAtIndex: count];
-          messageUid = [[response objectForKey: @"uid"] stringValue];
-          bodyPartKey = [keyAssoc objectForKey: messageUid];
-          if (bodyPartKey)
-            {
-              bodyContent = [[response objectForKey: bodyPartKey]
-                              objectForKey: @"data"];
-              if (bodyContent)
+              messageKey = [keys objectAtIndex: count];
+              message = [self lookupMessage: messageKey];
+              if (message)
                 {
-                  messageKey = [NSString stringWithFormat: @"%@.eml",
-                                         messageUid];
-                  [bodyData setObject: bodyContent forKey: messageKey];
+                  bodyPartKey = [message bodyContentPartKey];
+                  [bodyPartKeys addObject: bodyPartKey];
+                  messageUid = [self messageUIDFromMessageKey: messageKey];
+                  [keyAssoc setObject: bodyPartKey forKey: messageUid];
+                }
+            }
+      
+          client = [[(SOGoMailFolder *) sogoObject imap4Connection] client];
+          [client select: [sogoObject absoluteImap4Name]];
+          response = [client fetchUids: [keyAssoc allKeys]
+                             parts: [bodyPartKeys allObjects]];
+          fetch = [response objectForKey: @"fetch"];
+          max = [fetch count];
+          for (count = 0; count < max; count++)
+            {
+              response = [fetch objectAtIndex: count];
+              messageUid = [[response objectForKey: @"uid"] stringValue];
+              bodyPartKey = [keyAssoc objectForKey: messageUid];
+              if (bodyPartKey)
+                {
+                  bodyContent = [[response objectForKey: bodyPartKey]
+                                  objectForKey: @"data"];
+                  if (bodyContent)
+                    {
+                      messageKey = [NSString stringWithFormat: @"%@.eml",
+                                             messageUid];
+                      [bodyData setObject: bodyContent forKey: messageKey];
+                    }
                 }
             }
         }
