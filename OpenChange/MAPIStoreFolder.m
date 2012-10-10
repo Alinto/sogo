@@ -1754,6 +1754,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 }
 
 - (enum mapistore_error) preloadMessageBodiesWithMIDs: (const struct UI8Array_r *) mids
+                                          ofTableType: (enum mapistore_table_type) tableType
 {
   uint32_t count;
   NSMutableArray *messageKeys;
@@ -1774,10 +1775,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
         }
     }
 
-  return [self preloadMessageBodiesWithKeys: messageKeys];
+  return [self preloadMessageBodiesWithKeys: messageKeys
+                                ofTableType: tableType];
 }
 
 - (enum mapistore_error) preloadMessageBodiesWithKeys: (NSArray *) keys
+                                          ofTableType: (enum mapistore_table_type) tableType
 {
   return MAPISTORE_SUCCESS;
 }

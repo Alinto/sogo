@@ -797,7 +797,7 @@ sogo_folder_modify_permissions(void *folder_object, uint8_t flags,
 }
 
 static enum mapistore_error
-sogo_folder_preload_message_bodies(void *folder_object, const struct UI8Array_r *mids)
+sogo_folder_preload_message_bodies(void *folder_object, enum mapistore_table_type table_type, const struct UI8Array_r *mids)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
@@ -812,7 +812,8 @@ sogo_folder_preload_message_bodies(void *folder_object, const struct UI8Array_r 
       folder = wrapper->instance;
       GSRegisterCurrentThread ();
       pool = [NSAutoreleasePool new];
-      rc = [folder preloadMessageBodiesWithMIDs: mids];
+      rc = [folder preloadMessageBodiesWithMIDs: mids
+                                    ofTableType: table_type];
       [pool release];
       GSUnregisterCurrentThread ();
     }
