@@ -4,7 +4,7 @@
 
 "Username:" = "Felhasználó:";
 "Password:" = "Jelszó:";
-"Domain:" = "Domain:";
+"Domain:" = "Tartomány:";
 "Remember username" = "Felhasználónév megjegyzése";
 
 "Connect" = "Kapcsolódás";
@@ -12,7 +12,7 @@
 "Wrong username or password." = "Hibás felhasználónév vagy jelszó.";
 "cookiesNotEnabled" = "Nem tud bejelentkezni, mivel a böngészőjében a cookie-k ki vannak kapcsolva. Kérem engedélyezze a cookie-kat a böngészője beállításaiban, majd próbálja újra.";
 
-"browserNotCompatible" = "A böngészője nem támogatja ennek az oldalnak a megjelnítését. Javasoljuk a Firefox használatát. Kattintson az alábi linkre a legújabb verzió letöltéséhez.";
+"browserNotCompatible" = "A böngészője nem támogatja ennek az oldalnak a megjelnítését. Javasoljuk a Firefox használatát. Kattintson az alábbi hivatkozásra a legújabb verzió letöltéséhez.";
 "alternativeBrowsers" = "További megoldásként az alábbi, kompatibilis böngészőket használhatja";
 "alternativeBrowserSafari" = "A Safari böngésző is használható.";
 "Download" = "Letöltés";
@@ -41,7 +41,7 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Névjegy";
-"AboutBox" = "Az Inverse által fejlesztett SOGo egy teljes funkcionalitású csoportmunka kiszolgáló, melynek fő célkitűzései az egyszerűség és az igény szerinti növekedés (skálázhtóság).<br/><br/>\nA SOGo egy AJAX alapú modern webes felhasználói felületet biztosít, továbbá szabványos protokolok alkalmazásával, mint pl. CalDAV, CardDAV támogatja telepített alkalmazások használatát is. <br/><br/>\nA SOGo a <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> 2. ill. magasabb verziói, továbbá egyes részei a  GNU LGPL 2. verziója alatt kerül kiadásra. Ez egy ingyenes szoftver, a módosítása és újra kiadása megengedett.NINCS GARANCIA, a törvény által megengedett mértékben.<br/><br/>⏎\nLátogassa meg <a href=\"http://www.sogo.nu/en/support/community.html\">ezt az oldalt</a> a különböző támogatási lehetőségek megismeréséhez. ";
+"AboutBox" = "Az Inverse által fejlesztett SOGo egy teljes funkcionalitású csoportmunka kiszolgáló, melynek fő célkitűzései az egyszerűség és az igény szerinti növekedés (skálázhatóság).<br/><br/>\nA SOGo egy AJAX alapú modern webes felhasználói felületet biztosít, továbbá szabványos protokolok alkalmazásával, mint pl. CalDAV, CardDAV támogatja telepített alkalmazások használatát is. <br/><br/>\nA SOGo a <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> 2. ill. magasabb verziói, továbbá egyes részei a  GNU LGPL 2. verziója alatt kerül kiadásra. Ez egy ingyenes szoftver, a módosítása és újra kiadása megengedett.NINCS GARANCIA, a törvény által megengedett mértékben.<br/><br/>⏎\nLátogassa meg <a href=\"http://www.sogo.nu/en/support/community.html\">ezt az oldalt</a> a különböző támogatási lehetőségek megismeréséhez. ";
 
 "Your account was locked due to too many failed attempts." = "A fiókja zárolva lett a túl sok sikertelen belépési kísérlet miatt.";
 "Your account was locked due to an expired password." = "A fiókja zárolva lett a lejért jelszó miatt.";
@@ -50,7 +50,7 @@
 "The password was changed successfully." = "A jelszó megváltoztatása sikeres.";
 "Your password has expired, please enter a new one below:" = "A jelszava lejárt, kérem adjon meg egy újat:";
 "Password must not be empty." = "A jelszó nem lehet üres.";
-"The passwords do not match. Please try again." = "A jelszavak nem egyeznek meg, kérem próbálja meg újra.";
+"The passwords do not match. Please try again." = "Jelszavak nem egyeznek meg, kérem próbálja meg újra.";
 "Password Grace Period" = "Jelszóváltoztatás türelmi időszak";
 "You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Önnek %{0} bejelentkezése maradt mielőtt a fiókja zárolásra kerül. Kérem változtassa meg a jelszavát a beállítások űrlapon.";
 "Password about to expire" = "A jelszava hamarosan lejár";
@@ -59,12 +59,12 @@
 "hours" = "óra";
 "minutes" = "perc";
 "seconds" = "másodperc";
-"Password change failed" = "A jelszó változtatása sikertelen";
-"Password change failed - Permission denied" = "A jelszó változtatása sikertelen - Hozzáférés megtagadva";
-"Password change failed - Insufficient password quality" = "A jelszó változtatása sikertelen - a jelszó erőssége nem megfelelő";
-"Password change failed - Password is too short" = "A jelszó változtatása sikertelen - a jelszó túl rövid";
-"Password change failed - Password is too young" = "A jelszó változtatása sikertelen - a jelszó túl egyszerű";
-"Password change failed - Password is in history" = "A jelszó változtatása sikertelen - korábbi jelszó nem használható ";
+"Password change failed" = "Jelszó változtatása sikertelen";
+"Password change failed - Permission denied" = "Jelszó változtatása sikertelen - hozzáférés megtagadva";
+"Password change failed - Insufficient password quality" = "Jelszó változtatása sikertelen - a jelszó erőssége nem megfelelő";
+"Password change failed - Password is too short" = "Jelszó változtatása sikertelen - a jelszó túl rövid";
+"Password change failed - Password is too young" = "Jelszó változtatása sikertelen - a jelszó túl egyszerű";
+"Password change failed - Password is in history" = "Jelszó változtatása sikertelen - korábbi jelszó nem használható ";
 "Unhandled policy error: %{0}" = "Nem kezelt jogosultsági hiba: %{0}";
 "Unhandled error response" = "Nem kezelt hiba";
 "Password change is not supported." = "A jelszó megváltoztatása nem támogatott.";

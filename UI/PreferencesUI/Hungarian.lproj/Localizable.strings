@@ -24,7 +24,7 @@
 "Enable vacation auto reply" = "Automatikus távollét üzenet engedélyezése";
 "Auto reply message :" = "Automatikus válasz minden feladónak csak egy alkalommal :";
 "Email addresses (separated by commas) :" = "Email címek (vesszővel elválasztva)";
-"Add default email addresses" = "Alapértelmezett email címek hozzáadása";
+"Add default email addresses" = "Saját email címek hozzáadása";
 "Days between responses :" = "Válaszok közötti napok száma:";
 "Do not send responses to mailing lists" = "Levelező listákra válasz mellőzése";
 "Disable auto reply on" = "Automatikus válasz tiltása";
@@ -144,7 +144,7 @@
 "replyplacement_above" = "Válasz elhelyezése az idézet fölött";
 "replyplacement_below" = "Válasz elhelyezése az idézet alatt";
 "And place my signature" = "Aláírás beszúrása";
-"signatureplacement_above" = "az üzenetem alá";
+"signatureplacement_above" = "a válaszüzenet alá";
 "signatureplacement_below" = "az idézet alá";
 "Compose messages in" = "Üzenet formátuma";
 "composemessagestype_html" = "HTML";
@@ -187,7 +187,7 @@
 
 /* Event+task categories */
 "category_none" = "Nincs";
-"calendar_category_labels" = "Évforduló,Születésnap,Üzleti,Meghívás,Ügyfelek,Versenytársak,Vevő,Kedvencek,Nyomonkövetés,Ajándékozás,Szabadság,Ötletek,Meeting,Ügyek,Egyéb,Személyes,Projektek,Állami ünnep,Állapot,Szállítók,Utazás,Szünidő";
+"calendar_category_labels" = "Évforduló,Születésnap,Üzleti,Meghívás,Ügyfelek,Versenytársak,Vevő,Kedvencek,Nyomonkövetés,Ajándékozás,Szabadság,Ötletek,Megbeszélés,Ügyek,Egyéb,Személyes,Projektek,Állami ünnep,Állapot,Szállítók,Utazás,Szünidő";
 
 /* Default module */
 "Calendar" = "Naptár";
@@ -211,7 +211,7 @@
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
-"SpanishSpain" = "Spanyol";
+"SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
@@ -233,7 +233,7 @@
 "Filters" = "Szűrők";
 "Active" = "Aktív";
 "Move Up" = "Mozgatás fel";
-"Move Down" = "Mzgatás le";
+"Move Down" = "Mozgatás le";
 
 /* Filters - UIxFilterEditor */
 "Filter name:" = "Szűrő neve:";
@@ -283,15 +283,15 @@
 "Label 5" = "Címke 5";
 
 "The password was changed successfully." = "A jelszó megváltoztatása sikeres.";
-"Password must not be empty." = "Le mot de passe ne doit pas être vide.";
-"The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
-"Password change failed" = "Échec au changement";
-"Password change failed - Permission denied" = "Échec au changement - mauvaises permissions";
-"Password change failed - Insufficient password quality" = "Échec au changement - qualité insuffisante";
-"Password change failed - Password is too short" = "Échec au changement - mot de passe trop court";
-"Password change failed - Password is too young" = "Échec au changement - mot de passe trop récent";
-"Password change failed - Password is in history" = "Échec au changement - mot de passe dans l'historique";
-"Unhandled policy error: %{0}" = "Erreur inconnue pour le ppolicy: %{0}";
-"Unhandled error response" = "Erreur inconnue";
-"Password change is not supported." = "Changement de mot de passe non-supporté.";
-"Unhandled HTTP error code: %{0}" = "Code HTTP non-géré: %{0}";
+"Password must not be empty." = "Jelszó nem lehet üres.";
+"The passwords do not match. Please try again." = "Jelszavak nem egyeznek meg. Kérem próbálja meg újra.";
+"Password change failed" = "Jelszó változtatása sikertelen";
+"Password change failed - Permission denied" = "Jelszó változtatása sikertelen - hozzáférés megtagadva";
+"Password change failed - Insufficient password quality" = "Jelszó változtatása sikertelen - a jelszó erőssége nem megfelelő";
+"Password change failed - Password is too short" = "Jelszó változtatása sikertelen - a jelszó túl rövid";
+"Password change failed - Password is too young" = "Jelszó változtatása sikertelen - a jelszó túl egyszerű";
+"Password change failed - Password is in history" = "Jelszó változtatás sikertelen - korábbi jelszó nem használható";
+"Unhandled policy error: %{0}" = "Nem kezelt szabályrendszer hiba: %{0}";
+"Unhandled error response" = "Nem kezelt hiba válasz";
+"Password change is not supported." = "Jelszó változtatása nem támogatott.";
+"Unhandled HTTP error code: %{0}" = "Nem kezelt HTTP hiba kód: %{0}";
