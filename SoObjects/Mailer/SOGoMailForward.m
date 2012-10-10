@@ -170,7 +170,7 @@
 
 - (NSString *) cc
 {
-  id *rc;
+  id rc;
 
   rc = [self _headerField: @"cc"];
   if ([rc isKindOfClass: [NSArray class]])
