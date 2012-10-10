@@ -492,12 +492,13 @@ function onToolbarDeleteSelectedContactsConfirm(dialogId) {
     disposeDialog();
     var contactsList = $('contactsList');
     var rowIds = contactsList.getSelectedRowsId();
-    var urlstr = (URLForFolderID(Contact.currentAddressBook) 
-                 + "/batchDelete?ids=" + rowIds.join("/"));
+    var urlstr = (URLForFolderID(Contact.currentAddressBook) + "/batchDelete");
     for (var i = 0; i < rowIds.length; i++) {
         delete cachedContacts[Contact.currentAddressBook + "/" + rowIds[i]];
     }
-    triggerAjaxRequest(urlstr, onContactDeleteEventCallback, rowIds);
+    triggerAjaxRequest(urlstr, onContactDeleteEventCallback, rowIds,
+                           ('ids=' + rowIds.join("/")),
+                           { "Content-type": "application/x-www-form-urlencoded" });
 }
 
 function onContactDeleteEventCallback(http) {
