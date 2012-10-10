@@ -209,7 +209,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   BOOL canGetProperty;
   NSUInteger count, max;
 
-  propValue = (propTag & 0xffff0000) >> 16;
+  propValue = (propTag >> 16) & 0xffff;
 
   canGetProperty = (classGetters[propValue]
                     || [properties objectForKey: MAPIPropertyKey (propTag)]);
@@ -336,19 +336,19 @@ static Class NSExceptionK, MAPIStoreFolderK;
      operations. If they need to be set (move operations), the caller will need
      to take care of them. */
   exclusions = talloc_array (memCtx, bool, 65536);
-  exclusions[PidTagRowType >> 16] = true;
-  exclusions[PidTagInstanceKey >> 16] = true;
-  exclusions[PidTagInstanceNum >> 16] = true;
-  exclusions[PidTagInstID >> 16] = true;
-  exclusions[PidTagAttachNumber >> 16] = true;
-  exclusions[PidTagFolderId >> 16] = true;
-  exclusions[PidTagMid >> 16] = true;
-  exclusions[PidTagSourceKey >> 16] = true;
-  exclusions[PidTagParentSourceKey >> 16] = true;
-  exclusions[PidTagParentFolderId >> 16] = true;
-  exclusions[PidTagChangeKey >> 16] = true;
-  exclusions[PidTagChangeNumber >> 16] = true;
-  exclusions[PidTagPredecessorChangeList >> 16] = true;
+  exclusions[(PidTagRowType >> 16) & 0xffff] = true;
+  exclusions[(PidTagInstanceKey >> 16) & 0xffff] = true;
+  exclusions[(PidTagInstanceNum >> 16) & 0xffff] = true;
+  exclusions[(PidTagInstID >> 16) & 0xffff] = true;
+  exclusions[(PidTagAttachNumber >> 16) & 0xffff] = true;
+  exclusions[(PidTagFolderId >> 16) & 0xffff] = true;
+  exclusions[(PidTagMid >> 16) & 0xffff] = true;
+  exclusions[(PidTagSourceKey >> 16) & 0xffff] = true;
+  exclusions[(PidTagParentSourceKey >> 16) & 0xffff] = true;
+  exclusions[(PidTagParentFolderId >> 16) & 0xffff] = true;
+  exclusions[(PidTagChangeKey >> 16) & 0xffff] = true;
+  exclusions[(PidTagChangeNumber >> 16) & 0xffff] = true;
+  exclusions[(PidTagPredecessorChangeList >> 16) & 0xffff] = true;
 
   row.cValues = 0;
   row.lpProps = talloc_array (memCtx, struct SPropValue, 65535);
@@ -356,12 +356,13 @@ static Class NSExceptionK, MAPIStoreFolderK;
   for (count = 0; count < availableProps->cValues; count++)
     {
       propTag = availableProps->aulPropTag[count];
-      if (!exclusions[propTag >> 16])
+      if (!exclusions[(propTag >> 16) & 0xffff])
         {
           error = [self getProperty: &data withTag: propTag inMemCtx: memCtx];
           if (error == MAPISTORE_SUCCESS && data)
             {
-              set_SPropValue_proptag (row.lpProps + row.cValues, propTag, data);
+              set_SPropValue_proptag (row.lpProps + row.cValues, propTag,
+                                      data);
               row.cValues++;
             }
         }

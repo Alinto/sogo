@@ -104,11 +104,15 @@ static Class NSArrayK;
 {
   BOOL listedProperties[65536];
   NSUInteger count;
+  uint16_t propId;
 
   memset (listedProperties, NO, 65536 * sizeof (BOOL));
   [super getAvailableProperties: propertiesP inMemCtx: memCtx];
   for (count = 0; count < (*propertiesP)->cValues; count++)
-    listedProperties[(*propertiesP)->aulPropTag[count] >> 16] = YES;
+    {
+      propId = ((*propertiesP)->aulPropTag[count] >> 16) & 0xffff;
+      listedProperties[propId] = YES;
+    }
   [MAPIStoreAppointmentWrapper fillAvailableProperties: *propertiesP
                                         withExclusions: listedProperties];
 

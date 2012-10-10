@@ -186,7 +186,7 @@ MAPIStoreTallocWrapperDestroy (void *data)
   const MAPIStorePropertyGetter *classGetters;
   NSUInteger count;
   enum MAPITAGS propTag;
-  uint16_t propValue;
+  uint16_t propId;
 
   properties = talloc_zero (memCtx, struct SPropTagArray);
   properties->aulPropTag = talloc_array (properties, enum MAPITAGS,
@@ -195,8 +195,8 @@ MAPIStoreTallocWrapperDestroy (void *data)
   for (count = 0; count < MAPIStoreSupportedPropertiesCount; count++)
     {
       propTag = MAPIStoreSupportedProperties[count];
-      propValue = (propTag & 0xffff0000) >> 16;
-      if (classGetters[propValue])
+      propId = (propTag >> 16) & 0xffff;
+      if (classGetters[propId])
         {
           properties->aulPropTag[properties->cValues] = propTag;
           properties->cValues++;
@@ -220,7 +220,7 @@ MAPIStoreTallocWrapperDestroy (void *data)
   [self getAvailableProperties: &subProperties inMemCtx: localMemCtx];
   for (count = 0; count < subProperties->cValues; count++)
     {
-      propId = (subProperties->aulPropTag[count] >> 16);
+      propId = (subProperties->aulPropTag[count] >> 16) & 0xffff;
       if (!exclusions[propId])
         {
           properties->aulPropTag[properties->cValues]
@@ -259,13 +259,13 @@ MAPIStoreTallocWrapperDestroy (void *data)
 
 - (BOOL) canGetProperty: (enum MAPITAGS) propTag
 {
-  uint16_t propValue;
+  uint16_t propId;
   const IMP *classGetters;
 
   classGetters = (IMP *) MAPIStorePropertyGettersForClass (isa);
-  propValue = (propTag & 0xffff0000) >> 16;
+  propId = (propTag >> 16) & 0xffff;
 
-  return (classGetters[propValue] != NULL);
+  return (classGetters[propId] != NULL);
 }
 
 @end
