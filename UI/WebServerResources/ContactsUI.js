@@ -491,23 +491,23 @@ function onToolbarDeleteSelectedContacts(event) {
 function onToolbarDeleteSelectedContactsConfirm(dialogId) {
     disposeDialog();
     var contactsList = $('contactsList');
-    var rowsId = contactsList.getSelectedRowsId();
+    var rowIds = contactsList.getSelectedRowsId();
     var urlstr = (URLForFolderID(Contact.currentAddressBook) 
-                 + "/batchDelete?ids=" + rowsId.join("/"));
-    for (var i = 0; i < rowsId.length; i++) {
-        delete cachedContacts[Contact.currentAddressBook + "/" + rowsId[i]];
+                 + "/batchDelete?ids=" + rowIds.join("/"));
+    for (var i = 0; i < rowIds.length; i++) {
+        delete cachedContacts[Contact.currentAddressBook + "/" + rowIds[i]];
     }
-    triggerAjaxRequest(urlstr, onContactDeleteEventCallback, rowsId);
+    triggerAjaxRequest(urlstr, onContactDeleteEventCallback, rowIds);
 }
 
 function onContactDeleteEventCallback(http) {
-    var rowsId = http.callbackData;
+    var rowIds = http.callbackData;
     if (http.readyState == 4) {
         if (isHttpStatus204(http.status)) {
             var row;
             var nextRow = null;
-            for (var i = 0; i < rowsId.length; i++) {
-                row = $(rowsId[i]);
+            for (var i = 0; i < rowIds.length; i++) {
+                row = $(rowIds[i]);
                 var displayName = row.readAttribute("contactname");
                 if (Contact.currentContactId == row) {
                     Contact.currentContactId = null;
@@ -529,8 +529,8 @@ function onContactDeleteEventCallback(http) {
             $("contactView").update();
         }
         else if (parseInt(http.status) == 403) {
-            for (var i = 0; i < rowsId.length; i++) {
-                var row = $(rowsId[i]);
+            for (var i = 0; i < rowIds.length; i++) {
+                var row = $(rowIds[i]);
                 row.show();
             }
             var displayName = row.readAttribute("contactname");
