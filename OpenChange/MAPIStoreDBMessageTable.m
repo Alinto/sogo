@@ -62,7 +62,8 @@ static Class MAPIStoreDBMessageK = Nil;
   if ((uint32_t) res->ulPropTag == PidTagChangeNumber)
     {
       value = NSObjectFromMAPISPropValue (&res->lpProp);
-      cVersion = exchange_globcnt ([value unsignedLongLongValue] >> 16);
+      cVersion = exchange_globcnt (([value unsignedLongLongValue] >> 16)
+                                   & 0x0000ffffffffffffLL);
       version = [NSNumber numberWithUnsignedLongLong: cVersion];
       [self logWithFormat: @"change number from oxcfxics: %.16lx", [value unsignedLongLongValue]];
       [self logWithFormat: @"  version: %.16lx", cVersion];

@@ -91,7 +91,8 @@
   [(SOGoMAPIDBMessage *) sogoObject reloadIfNeeded];
   versionNbr = [properties objectForKey: @"version"];
   if (versionNbr)
-    objectVersion = [versionNbr unsignedLongLongValue] >> 16;
+    objectVersion = (([versionNbr unsignedLongLongValue] >> 16)
+                     & 0x0000ffffffffffffLL);
   else
     objectVersion = ULLONG_MAX;
 
