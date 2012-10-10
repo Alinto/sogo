@@ -8,7 +8,7 @@ var usersRightsWindowWidth = 450;
 
 var Contact = {
     currentAddressBook: "/personal",
-    currentContact: null,
+    currentContactId: null,
 };
 
 function openContactsFolder(contactsFolder, reload, idx) {
@@ -327,7 +327,7 @@ function loadContact(idx) {
 
     if (cachedContacts[Contact.currentAddressBook + "/" + idx]) {
         var div = $('contactView');
-        Contact.currentContact = idx;
+        Contact.currentContactId = idx;
         div.innerHTML = cachedContacts[Contact.currentAddressBook + "/" + idx];
     }
     else {
@@ -346,7 +346,7 @@ function contactLoadCallback(http) {
         document.contactAjaxRequest = null;
         var content = http.responseText;
         cachedContacts[Contact.currentAddressBook + "/" + http.callbackData] = content;
-        Contact.currentContact = http.callbackData;
+        Contact.currentContactId = http.callbackData;
         div.innerHTML = content;
     }
     else {
@@ -411,7 +411,7 @@ function onContactSelectionChange(event) {
         }
         else if (rows.length > 1) {
             $('contactView').update();
-            Contact.currentContact = null;
+            Contact.currentContactId = null;
         }
     }
 }
@@ -509,8 +509,8 @@ function onContactDeleteEventCallback(http) {
             for (var i = 0; i < rowsId.length; i++) {
                 row = $(rowsId[i]);
                 var displayName = row.readAttribute("contactname");
-                if (Contact.currentContact == row) {
-                    Contact.currentContact = null;
+                if (Contact.currentContactId == row) {
+                    Contact.currentContactId = null;
                 }
                 var nextRow = row.next("tr");
                 if (!nextRow)
@@ -521,9 +521,9 @@ function onContactDeleteEventCallback(http) {
                 }
             }
             if (nextRow) {
-                Contact.currentContact = nextRow.getAttribute("id");
+                Contact.currentContactId = nextRow.getAttribute("id");
                 nextRow.selectElement();
-                loadContact(Contact.currentContact);
+                loadContact(Contact.currentContactId);
             }
 
             $("contactView").update();
@@ -604,7 +604,7 @@ function onFolderSelectionChange(event) {
 
     var nodes = folderList.getSelectedNodes();
     $("contactView").update();
-    Contact.currentContact = null;
+    Contact.currentContactId = null;
 
     if (nodes[0].hasClassName("denied")) {
         var div = $("contactsListContent");
@@ -1271,8 +1271,8 @@ function onDocumentKeydown(event) {
         }
         else if (keyCode == Event.KEY_DOWN ||
                  keyCode == Event.KEY_UP) {
-            if (Contact.currentContact) {
-                var row = $(Contact.currentContact);
+            if (Contact.currentContactId) {
+                var row = $(Contact.currentContactId);
                 var nextRow;
                 if (keyCode == Event.KEY_DOWN)
                     nextRow = row.next("tr");
@@ -1463,8 +1463,8 @@ function onCategoriesMenuItemCallback(http) {
             if (cachedContacts[contact.addressBook + "/" + contact.id])
                 delete cachedContacts[contact.addressBook + "/" + contact.id];
             if (contact.addressBook == Contact.currentAddressBook
-                && contact.id == Contact.currentContact)
-                loadContact(Contact.currentContact);
+                && contact.id == Contact.currentContactId)
+                loadContact(Contact.currentContactId);
         }
         else if (parseInt(http.status) == 403) {
             log("onCategoriesMenuItemCallback failed: error " + http.status + " (" + http.responseText + ")");
