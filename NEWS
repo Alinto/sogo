@@ -1,11 +1,13 @@
-2.0.1 (2012-10-DD)
+2.0.1 (2012-10-10)
 -------------------
-New Features
 
 Enhancements
- - improved Task View, added sortable fields on Title, Due date,
-   Location, Category and Calendar. Added Priority column, also sortable.
- - improved event info dialog box
+ - deletion of contacts is now performed in batch, which speeds up the
+   operation for large numbers of items
+ - scalability enhancements in the OpenChange backend that enables the first
+   synchronization of mailboxes in a more reasonable time and using less
+   memory
+ - the task list is now sortable 
 
 Bug Fixes
  - improved support of IE 9
