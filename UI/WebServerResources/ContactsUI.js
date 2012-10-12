@@ -493,9 +493,8 @@ function onToolbarDeleteSelectedContactsConfirm(dialogId) {
     var contactsList = $('contactsList');
     var rowIds = contactsList.getSelectedRowsId();
     var urlstr = (URLForFolderID(Contact.currentAddressBook) + "/batchDelete");
-    for (var i = 0; i < rowIds.length; i++) {
-        delete cachedContacts[Contact.currentAddressBook + "/" + rowIds[i]];
-    }
+    for (var i = 0; i < rowIds.length; i++)
+        $(rowIds[i]).hide();
     triggerAjaxRequest(urlstr, onContactDeleteEventCallback, rowIds,
                            ('ids=' + rowIds.join("/")),
                            { "Content-type": "application/x-www-form-urlencoded" });
@@ -508,6 +507,7 @@ function onContactDeleteEventCallback(http) {
             var row;
             var nextRow = null;
             for (var i = 0; i < rowIds.length; i++) {
+                delete cachedContacts[Contact.currentAddressBook + "/" + rowIds[i]];
                 row = $(rowIds[i]);
                 var displayName = row.readAttribute("contactname");
                 if (Contact.currentContactId == row) {
