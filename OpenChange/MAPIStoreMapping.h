@@ -53,6 +53,8 @@
 - (uint64_t) idFromURL: (NSString *) url;
 - (BOOL) registerURL: (NSString *) urlString
               withID: (uint64_t) idNbr;
+- (void) registerURLs: (NSArray *) urlString
+              withIDs: (struct UI8Array_r *) idNbrs;
 - (void) unregisterURLWithID: (uint64_t) idNbr;
 - (void) updateID: (uint64_t) idNbr
           withURL: (NSString *) urlString;

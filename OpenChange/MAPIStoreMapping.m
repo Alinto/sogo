@@ -333,6 +333,25 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   return rc;
 }
 
+- (void) registerURLs: (NSArray *) urlStrings
+              withIDs: (struct UI8Array_r *) idNbrs
+{
+  uint64_t count, max;
+
+  max = [urlStrings count];
+  if (max == idNbrs->cValues)
+    {
+      tdb_transaction_start (indexing->tdb);
+      for (count = 0; count < max; count++)
+        [self registerURL: [urlStrings objectAtIndex: count]
+                   withID: idNbrs->lpui8[count]];
+      tdb_transaction_commit (indexing->tdb);
+    }
+  else
+    [NSException raise: NSInvalidArgumentException
+                format: @"number of urls and ids do not match"];
+}
+
 - (void) unregisterURLWithID: (uint64_t) idNbr
 {
   NSString *urlString;
