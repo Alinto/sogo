@@ -27,6 +27,7 @@
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSObject+Values.h>
 
 #import <SOGo/SOGoFolder.h>
 #import <SOGo/SOGoUser.h>
@@ -556,6 +557,33 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
     abort ();
 
   return newVersionNumber;
+}
+
+- (NSArray *) getNewChangeNumbers: (uint64_t) max
+{
+  TALLOC_CTX *memCtx;
+  NSMutableArray *newChangeNumbers;
+  uint64_t count;
+  struct UI8Array_r *numbers;
+  NSString *newNumber;
+
+  memCtx = talloc_zero(NULL, TALLOC_CTX);
+  newChangeNumbers = [NSMutableArray arrayWithCapacity: max];
+  
+  if (openchangedb_get_new_changeNumbers (connInfo->oc_ctx,
+                                          memCtx, max, &numbers)
+      != MAPI_E_SUCCESS || numbers->cValues != max)
+    abort ();
+  for (count = 0; count < max; count++)
+    {
+      newNumber
+        = [NSString stringWithUnsignedLongLong: numbers->lpui8[count]];
+      [newChangeNumbers addObject: newNumber];
+    }
+
+  talloc_free (memCtx);
+
+  return newChangeNumbers;
 }
 
 /* subclasses */
