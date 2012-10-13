@@ -510,14 +510,15 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   uint64_t newChangeNum;
   NSNumber *ti, *modseq, *initialLastModseq, *lastModseq,
     *nextModseq;
-  NSString *changeNumber, *uid;
+  NSString *changeNumber, *uid, *messageKey;
   uint64_t lastModseqNbr;
   EOQualifier *kvQualifier, *searchQualifier;
-  NSArray *uids;
+  NSArray *uids, *changeNumbers;
   NSUInteger count, max;
   NSArray *fetchResults;
   NSDictionary *result;
   NSData *changeKey;
+  NSMutableArray *messageKeys;
   NSMutableDictionary *currentProperties, *messages, *mapping, *messageEntry;
   NSCalendarDate *now;
   BOOL foundChange = NO;
@@ -574,6 +575,17 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
   max = [uids count];
   if (max > 0)
     {
+      messageKeys = [NSMutableArray arrayWithCapacity: max];
+      for (count = 0; count < max; count++)
+        {
+          messageKey = [NSString stringWithFormat: @"%@.eml",
+                                 [uids objectAtIndex: count]];
+          [messageKeys addObject: messageKey];
+        }
+      [self ensureIDsForChildKeys: messageKeys];
+
+      changeNumbers = [[self context] getNewChangeNumbers: max];
+
       fetchResults
         = [(NSDictionary *) [sogoObject fetchUIDs: uids
                                             parts: [NSArray arrayWithObject: @"modseq"]]
@@ -585,14 +597,13 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
         = [fetchResults sortedArrayUsingFunction: _compareFetchResultsByMODSEQ
                                          context: NULL];
       
-      ldb_transaction_start([[self context] connectionInfo]->oc_ctx);
-
       for (count = 0; count < max; count++)
         {
           result = [fetchResults objectAtIndex: count];
           uid = [[result objectForKey: @"uid"] stringValue];
           modseq = [result objectForKey: @"modseq"];
-          newChangeNum = [[self context] getNewChangeNumber];
+          newChangeNum = [[changeNumbers objectAtIndex: count]
+                             unsignedLongLongValue];
           changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
 
           messageEntry = [NSMutableDictionary new];
@@ -615,7 +626,6 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
             lastModseq = modseq;
         }
 
-      ldb_transaction_commit([[self context] connectionInfo]->oc_ctx);
       [currentProperties setObject: lastModseq forKey: @"SyncLastModseq"];
       foundChange = YES;
     }
@@ -626,13 +636,15 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
       fetchResults = [(SOGoMailFolder *) sogoObject
                          fetchUIDsOfVanishedItems: lastModseqNbr];
       max = [fetchResults count];
+      changeNumbers = [[self context] getNewChangeNumbers: max];
       changeNumber = nil;
       for (count = 0; count < max; count++)
         {
           uid = [fetchResults objectAtIndex: count];
           if ([messages objectForKey: uid])
             {
-              newChangeNum = [[self context] getNewChangeNumber];
+              newChangeNum = [[changeNumbers objectAtIndex: count]
+                               unsignedLongLongValue];
               changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
               [messages removeObjectForKey: uid];
               [self logWithFormat: @"removed message entry for uid %@", uid];
@@ -1309,7 +1321,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 @implementation MAPIStoreOutboxFolder
 
 - (int) getPidTagDisplayName: (void **) data
-                inMemCtx: (TALLOC_CTX *) memCtx
+                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   *data = [@"Outbox" asUnicodeInMemCtx: memCtx];
 
