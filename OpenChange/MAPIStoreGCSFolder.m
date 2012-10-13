@@ -326,7 +326,7 @@ static Class NSNumberK;
 
 - (BOOL) synchroniseCache
 {
-  BOOL rc = YES, foundChange = NO;
+  BOOL rc = YES;
   uint64_t newChangeNum;
   NSData *changeKey;
   NSString *cName, *changeNumber;
@@ -334,7 +334,8 @@ static Class NSNumberK;
   EOFetchSpecification *fs;
   EOQualifier *searchQualifier, *fetchQualifier;
   NSUInteger count, max;
-  NSArray *fetchResults;
+  NSArray *fetchResults, *changeNumbers;
+  NSMutableArray *keys, *modifiedEntries;
   NSDictionary *result;
   NSMutableDictionary *currentProperties, *messages, *mapping, *messageEntry;
   NSCalendarDate *now;
@@ -405,12 +406,13 @@ static Class NSNumberK;
           [mapping release];
         }
 
-      ldb_transaction_start([[self context] connectionInfo]->oc_ctx);
-
+      keys = [NSMutableArray arrayWithCapacity: max];
+      modifiedEntries = [NSMutableArray arrayWithCapacity: max];
       for (count = 0; count < max; count++)
         {
           result = [fetchResults objectAtIndex: count];
           cName = [result objectForKey: @"c_name"];
+          [keys addObject: cName];
           cDeleted = [result objectForKey: @"c_deleted"];
           if ([cDeleted isKindOfClass: NSNumberK] && [cDeleted intValue])
             cVersion = [NSNumber numberWithInt: -1];
@@ -431,20 +433,10 @@ static Class NSNumberK;
             {
               [sogoObject removeChildRecordWithName: cName];
 
-              foundChange = YES;
-
-              newChangeNum = [[self context] getNewChangeNumber];
-              changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
+              [modifiedEntries addObject: messageEntry];
 
               [messageEntry setObject: cLastModified forKey: @"c_lastmodified"];
               [messageEntry setObject: cVersion forKey: @"c_version"];
-              [messageEntry setObject: changeNumber forKey: @"version"];
-
-              changeKey = [self getReplicaKeyFromGlobCnt: newChangeNum >> 16];
-              [self _setChangeKey: changeKey forMessageEntry: messageEntry
-                 inChangeListOnly: NO];
-
-              [mapping setObject: cLastModified forKey: changeNumber];
 
               if (!lastModificationDate
                   || ([lastModificationDate compare: cLastModified]
@@ -452,11 +444,29 @@ static Class NSNumberK;
                 lastModificationDate = cLastModified;
             }
         }
-      
-      ldb_transaction_commit([[self context] connectionInfo]->oc_ctx);
-      
-      if (foundChange)
+
+      /* make sure all returned objects have a corresponding mid */
+      [self ensureIDsForChildKeys: keys];
+
+      max = [modifiedEntries count];
+      if (max > 0)
         {
+          changeNumbers = [[self context] getNewChangeNumbers: max];
+          for (count = 0; count < max; count++)
+            {
+              messageEntry = [modifiedEntries objectAtIndex: count];
+
+              changeNumber = [changeNumbers objectAtIndex: count];
+              cLastModified = [messageEntry objectForKey: @"c_lastmodified"];
+              [mapping setObject: cLastModified forKey: changeNumber];
+              [messageEntry setObject: changeNumber forKey: @"version"];
+
+              newChangeNum = [changeNumber unsignedLongValue];
+              changeKey = [self getReplicaKeyFromGlobCnt: newChangeNum >> 16];
+              [self _setChangeKey: changeKey forMessageEntry: messageEntry
+                 inChangeListOnly: NO];
+            }
+
           now = [NSCalendarDate date];
           ti = [NSNumber numberWithDouble: [now timeIntervalSince1970]];
           [currentProperties setObject: ti
