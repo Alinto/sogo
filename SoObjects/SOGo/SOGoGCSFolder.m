@@ -697,15 +697,6 @@ static NSArray *childRecordFields = nil;
   return record;
 }
 
-- (BOOL) nameExistsInFolder: (NSString *) objectName
-{
-  NSDictionary *record;
-
-  record = [self _recordForObjectName: objectName];
-
-  return (record != nil);
-}
-
 - (void) removeChildRecordWithName: (NSString *) childName
 {
   [childRecords removeObjectForKey: childName];

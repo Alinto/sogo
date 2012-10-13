@@ -78,8 +78,6 @@
 			     forUser: (SOGoUser *) theUser;
 
 /* lower level fetches */
-- (BOOL) nameExistsInFolder: (NSString *) objectName;
-
 - (void) deleteEntriesWithIds: (NSArray *) ids;
 
 - (Class) objectClassForComponentName: (NSString *) componentName;
