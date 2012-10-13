@@ -25,6 +25,7 @@
 #import <Foundation/NSValue.h>
 #import <NGObjWeb/SoSecurityManager.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSObject+Values.h>
 #import <SOGo/SOGoContentObject.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
@@ -178,7 +179,7 @@
 - (uint64_t) objectVersion
 {
   uint64_t version = ULLONG_MAX;
-  NSNumber *changeNumber;
+  NSString *changeNumber;
  
   if (!isNew)
     {

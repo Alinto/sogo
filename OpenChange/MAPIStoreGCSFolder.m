@@ -24,6 +24,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSObject+Values.h>
 #import <EOControl/EOQualifier.h>
 #import <EOControl/EOFetchSpecification.h>
 #import <EOControl/EOSortOrdering.h>
@@ -328,9 +329,8 @@ static Class NSNumberK;
   BOOL rc = YES, foundChange = NO;
   uint64_t newChangeNum;
   NSData *changeKey;
-  NSString *cName;
-  NSNumber *ti, *changeNumber, *lastModificationDate, *cVersion,
-    *cLastModified, *cDeleted;
+  NSString *cName, *changeNumber;
+  NSNumber *ti, *lastModificationDate, *cVersion, *cLastModified, *cDeleted;
   EOFetchSpecification *fs;
   EOQualifier *searchQualifier, *fetchQualifier;
   NSUInteger count, max;
@@ -341,6 +341,11 @@ static Class NSNumberK;
   GCSFolder *ocsFolder;
   static NSArray *fields = nil;
   static EOSortOrdering *sortOrdering = nil;
+
+  /* NOTE: we are using NSString instance for "changeNumber" because
+     NSNumber proved to give very bad performances when used as NSDictionary
+     keys with GNUstep 1.22.1. The bug seems to be solved with 1.24 but many
+     distros still ship an older version. */
 
   if (!fields)
     fields = [[NSArray alloc]
@@ -429,7 +434,7 @@ static Class NSNumberK;
               foundChange = YES;
 
               newChangeNum = [[self context] getNewChangeNumber];
-              changeNumber = [NSNumber numberWithUnsignedLongLong: newChangeNum];
+              changeNumber = [NSString stringWithUnsignedLongLong: newChangeNum];
 
               [messageEntry setObject: cLastModified forKey: @"c_lastmodified"];
               [messageEntry setObject: cVersion forKey: @"c_version"];
@@ -485,21 +490,21 @@ static Class NSNumberK;
     }
 }
  
-- (NSNumber *) lastModifiedFromMessageChangeNumber: (NSNumber *) changeNum
+- (NSNumber *) lastModifiedFromMessageChangeNumber: (NSString *) changeNumber
 {
   NSDictionary *mapping;
   NSNumber *modseq;
 
   mapping = [[versionsMessage properties] objectForKey: @"VersionMapping"];
-  modseq = [mapping objectForKey: changeNum];
+  modseq = [mapping objectForKey: changeNumber];
 
   return modseq;
 }
 
-- (NSNumber *) changeNumberForMessageWithKey: (NSString *) messageKey
+- (NSString *) changeNumberForMessageWithKey: (NSString *) messageKey
 {
   NSDictionary *messages;
-  NSNumber *changeNumber;
+  NSString *changeNumber;
 
   messages = [[versionsMessage properties] objectForKey: @"Messages"];
   changeNumber = [[messages objectForKey: messageKey]
@@ -574,8 +579,8 @@ static Class NSNumberK;
                                  inTableType: (uint8_t) tableType
 {
   NSArray *deletedKeys, *deletedCNames, *records;
-  NSNumber *changeNumNbr, *lastModified;
-  NSString *cName;
+  NSNumber *lastModified;
+  NSString *cName, *changeNumber;
   NSDictionary *versionProperties, *messageEntry;
   NSMutableDictionary *messages;
   uint64_t maxChangeNum = changeNum, currentChangeNum;
@@ -589,8 +594,8 @@ static Class NSNumberK;
     {
       deletedKeys = [NSMutableArray array];
 
-      changeNumNbr = [NSNumber numberWithUnsignedLongLong: changeNum];
-      lastModified = [self lastModifiedFromMessageChangeNumber: changeNumNbr];
+      changeNumber = [NSString stringWithUnsignedLongLong: changeNum];
+      lastModified = [self lastModifiedFromMessageChangeNumber: changeNumber];
       if (lastModified)
         {
           versionProperties = [versionsMessage properties];
