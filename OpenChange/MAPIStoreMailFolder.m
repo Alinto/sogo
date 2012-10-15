@@ -1281,9 +1281,12 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
               if (message)
                 {
                   bodyPartKey = [message bodyContentPartKey];
-                  [bodyPartKeys addObject: bodyPartKey];
-                  messageUid = [self messageUIDFromMessageKey: messageKey];
-                  [keyAssoc setObject: bodyPartKey forKey: messageUid];
+                  if (bodyPartKey)
+                    {
+                      [bodyPartKeys addObject: bodyPartKey];
+                      messageUid = [self messageUIDFromMessageKey: messageKey];
+                      [keyAssoc setObject: bodyPartKey forKey: messageUid];
+                    }
                 }
             }
       
