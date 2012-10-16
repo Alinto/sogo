@@ -478,9 +478,11 @@ static NSString *mailETag = nil;
   [generator autorelease];
 
   if (![[SOGoMailer mailerWithDomainDefaults: dd]
-         sendMailData: [generator generateMimeFromPart: message]
-         toRecipients: [NSArray arrayWithObject: email]
-               sender: [self _matchingIdentityEMail]])
+                sendMailData: [generator generateMimeFromPart: message]
+                toRecipients: [NSArray arrayWithObject: email]
+                      sender: [self _matchingIdentityEMail]
+           withAuthenticator: [self authenticatorInContext: context]
+                   inContext: context])
     [self _flagMessageWithMDNSent];
 }
 

@@ -53,6 +53,7 @@
 - (BOOL) vacationEnabled;
 - (NSString *) mailingMechanism;
 - (NSString *) smtpServer;
+- (NSString *) smtpAuthenticationType;
 - (NSString *) mailSpoolPath;
 - (float) softQuotaRatio;
 - (BOOL) mailKeepDraftsAfterSend;

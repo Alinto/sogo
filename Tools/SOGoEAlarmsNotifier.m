@@ -122,9 +122,12 @@
   message = [NGMimeMessage messageWithHeader: headers];
   [message setBody: content];
   to = [attendee rfc822Email];
+
+  /* TODO: SMTP authentication for services */
   [mailer sendMimePart: message
           toRecipients: [NSArray arrayWithObject: to]
-                sender: from];
+                sender: from
+     withAuthenticator: nil inContext: nil];
 }
 
 - (void) _processAlarm: (iCalAlarm *) alarm

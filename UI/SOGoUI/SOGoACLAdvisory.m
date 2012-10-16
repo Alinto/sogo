@@ -234,9 +234,12 @@
   [body release];
 
   mailer = [SOGoMailer mailerWithDomainDefaults: [activeUser domainDefaults]];
-  [mailer sendMimePart: message
+  [mailer
+          sendMimePart: message
           toRecipients: [NSArray arrayWithObject: recipient]
-                sender: from];
+                sender: from
+     withAuthenticator: [self authenticatorInContext: context]
+             inContext: context];
 }
 
 @end

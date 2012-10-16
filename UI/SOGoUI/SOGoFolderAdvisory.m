@@ -205,9 +205,11 @@
 
   dd = [activeUser domainDefaults];
   [[SOGoMailer mailerWithDomainDefaults: dd]
-    sendMimePart: message
-    toRecipients: [NSArray arrayWithObject: recipient]
-          sender: from];
+           sendMimePart: message
+           toRecipients: [NSArray arrayWithObject: recipient]
+                 sender: from
+      withAuthenticator: [self authenticatorInContext: context]
+              inContext: context];
 }
 
 @end

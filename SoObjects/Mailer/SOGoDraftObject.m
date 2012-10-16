@@ -1569,9 +1569,11 @@ static NSString    *userAgent      = nil;
 
   dd = [[context activeUser] domainDefaults];
   error = [[SOGoMailer mailerWithDomainDefaults: dd]
-                sendMailData: cleaned_message
-                toRecipients: [self allBareRecipients]
-                      sender: [self sender]];
+                  sendMailData: cleaned_message
+                  toRecipients: [self allBareRecipients]
+                        sender: [self sender]
+             withAuthenticator: [self authenticatorInContext: context]
+                     inContext: context];
   if (!error && copyToSent)
     {
       sentFolder = [[self mailAccountFolder] sentFolderInContext: context];

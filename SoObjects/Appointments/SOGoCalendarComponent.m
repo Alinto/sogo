@@ -862,9 +862,12 @@
 
 		  /* send the damn thing */
 		  [[SOGoMailer mailerWithDomainDefaults: dd]
-		    sendMimePart: msg
-		    toRecipients: [NSArray arrayWithObject: email]
-		    sender: shortSenderEmail];
+		           sendMimePart: msg
+                           toRecipients: [NSArray arrayWithObject: email]
+                                 sender: shortSenderEmail
+                      withAuthenticator: [self
+                                           authenticatorInContext: context]
+                              inContext: context];
 		}
 	    }
 	}
@@ -946,9 +949,11 @@
       /* send the damn thing */
       email = [recipient rfc822Email];
       [[SOGoMailer mailerWithDomainDefaults: dd]
-	sendMimePart: msg
-	toRecipients: [NSArray arrayWithObject: email]
-	sender: [attendee rfc822Email]];
+	       sendMimePart: msg
+               toRecipients: [NSArray arrayWithObject: email]
+                     sender: [attendee rfc822Email]
+          withAuthenticator: [self authenticatorInContext: context]
+                  inContext: context];
     }
 }
 
@@ -989,6 +994,7 @@
   NGMimeMessage *msg;
   SOGoUser *currentUser;
   SOGoDomainDefaults *dd;
+  id <SOGoAuthenticator> authenticator;
 
   calendarName = [[self container] displayName];
 
@@ -1039,6 +1045,8 @@
   /* text part */
   mailText = [page getBody];
   [msg setBody: [mailText dataUsingEncoding: NSUTF8StringEncoding]];
+
+  authenticator = [self authenticatorInContext: context];
   
   if ([self->owner isEqualToString: [currentUser login]])
     {
@@ -1047,7 +1055,9 @@
 	  [[SOGoMailer mailerWithDomainDefaults: dd]
 		    sendMimePart: msg
 		    toRecipients: [NSArray arrayWithObject: recipientEmail]
-                          sender: senderEmail];
+                          sender: senderEmail
+               withAuthenticator: authenticator
+                       inContext: context];
 	}
       
       if ([[self container] notifyUserOnPersonalModifications])
@@ -1061,7 +1071,9 @@
 	  [[SOGoMailer mailerWithDomainDefaults: dd]
 		    sendMimePart: msg
 		    toRecipients: [NSArray arrayWithObject: recipientEmail]
-                          sender: senderEmail];
+                          sender: senderEmail
+               withAuthenticator: authenticator
+                       inContext: context];
 
 	  [headerMap setObject: o forKey: @"to"];
 	}
@@ -1074,7 +1086,9 @@
       [[SOGoMailer mailerWithDomainDefaults: dd]
 		    sendMimePart: msg
 		    toRecipients: [NSArray arrayWithObject: recipientEmail]
-                          sender: senderEmail];
+                          sender: senderEmail
+               withAuthenticator: authenticator
+                       inContext: context];
     }
 
 }
