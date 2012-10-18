@@ -830,14 +830,23 @@ dd {
 }
 .dl-horizontal dt {
   float: left;
-  width: 150px;
+  width: 225px;
   overflow: hidden;
   clear: left;
   text-align: right;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+fieldset .dl-horizontal dt {
+  width: 150px;
+}
 .dl-horizontal dd {
+  margin-left: 235px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+fieldset .dl-horizontal dd {
   margin-left: 160px;
 }
 

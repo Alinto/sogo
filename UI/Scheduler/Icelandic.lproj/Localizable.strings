@@ -521,3 +521,6 @@ vtodo_class2 = "(Verkefni er trúnaðarmál)";
 "Web Calendar" = "Vefdagatal";
 "Reload on login" = "Sækja allt aftur við innskráningu";
 "Invalid number." = "Ógild tala.";
+
+"Category" = "Flokkun";
+"Priority" = "Mikilvægi";

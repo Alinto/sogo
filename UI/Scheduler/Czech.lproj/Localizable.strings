@@ -527,3 +527,6 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Web Calendar" = "Vzdálený kalendář na webu";
 "Reload on login" = "Aktualizovat při přihlášení";
 "Invalid number." = "Invalid number.";
+
+"Category" = "Kategorie";
+"Priority" = "Priorita";

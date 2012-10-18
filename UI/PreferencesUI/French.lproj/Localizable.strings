@@ -242,6 +242,7 @@
 "match any of the following rules:" = "correspondant à une de ces règles :";
 "match all messages" = "sans distinction";
 "Perform these actions:" = "Effectuez ces opérations :";
+"Untitled Filter" = "Nouveau filtre";
 
 "Subject" = "Sujet";
 "From" = "Expéditeur";
