@@ -380,6 +380,7 @@ validate_invalid_startdate = "Incorrect startdate field!";
 validate_invalid_enddate   = "Incorrect enddate field!";
 validate_endbeforestart    = "The end date that you entered occurs before the start date.";
 
+"Events" = "Events";
 "Tasks" = "Tasks";
 "Show completed tasks" = "Show completed tasks";
 
@@ -455,11 +456,15 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "End" = "End";
 "Due Date" = "Due Date";
 "Location" = "Location";
+
 "(Private Event)" = "(Private Event)";
 
 vevent_class0 = "(Public event)";
 vevent_class1 = "(Private event)";
 vevent_class2 = "(Confidential event)";
+
+"Priority" = "Priority";
+"Category" = "Category";
 
 vtodo_class0 = "(Public task)";
 vtodo_class1 = "(Private task)";

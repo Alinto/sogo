@@ -527,3 +527,6 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Web Calendar" = "Webkalender";
 "Reload on login" = "Neu laden beim Anmelden";
 "Invalid number." = "Ungültige Nummer.";
+
+"Category" = "Kategorie";
+"Priority" = "Priorität";

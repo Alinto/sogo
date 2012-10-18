@@ -518,3 +518,6 @@ vtodo_class2 = "(Tasg gyhoeddus)";
 "Web Calendar" = "Web Calendar";
 "Reload on login" = "Reload on login";
 "Invalid number." = "Invalid number.";
+
+"Category" = "Categori";
+"Priority" = "Blaenoriaeth";

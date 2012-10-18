@@ -521,3 +521,6 @@ vtodo_class2 = "(Konfidentiell uppgift)";
 "Web Calendar" = "Webbkalender";
 "Reload on login" = "Ladda om vid login";
 "Invalid number." = "Ogiltigt nummer.";
+
+"Category" = "Kategori";
+"Priority" = "Prioritet";
