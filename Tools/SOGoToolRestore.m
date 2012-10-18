@@ -521,7 +521,7 @@ typedef enum SOGoToolRestoreMode {
   if (tables)
     {
       NSLog (@"Restorable folders:");
-      folderPrefixLen = 8 + [userID length];
+      folderPrefixLen = 1 + [userID length];
       tableKeys = [[tables allKeys] objectEnumerator];
       while ((key = [tableKeys nextObject]))
         {
