@@ -645,7 +645,8 @@ static NSArray *childRecordFields = nil;
             {
               qualifier = [[EOAndQualifier alloc] initWithQualifiers:
                                                     aclQualifier,
-                                                  componentQualifier];
+                                                  componentQualifier,
+                                                  nil];
               [qualifier autorelease];
             }
           else
