@@ -67,15 +67,7 @@ static NSMutableArray *monthLabelKeys     = nil;
 static NSMutableArray *abbrMonthLabelKeys = nil;
 static SoProduct      *commonProduct      = nil;
 
-+ (int)version {
-  return [super version] + 0 /* v2 */;
-}
-
 + (void)initialize {
-  NSAssert2([super version] == 2,
-            @"invalid superclass (%@) version %i !",
-            NSStringFromClass([self superclass]), [super version]);
-  
   if (dayLabelKeys == nil) {
     dayLabelKeys = [[NSMutableArray alloc] initWithCapacity:7];
     [dayLabelKeys addObject:@"Sunday"];
