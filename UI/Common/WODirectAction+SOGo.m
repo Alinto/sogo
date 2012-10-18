@@ -99,7 +99,7 @@
   NSDictionary *strings;
   SOGoUserDefaults *ud;
   static NSMutableDictionary *bundlesCache = nil;
-  NSMutableDictionary *languagesCache, *stringsCache;
+  NSMutableDictionary *languagesCache;
 
   if (!bundlesCache)
     bundlesCache = [NSMutableDictionary new];
@@ -119,16 +119,8 @@
 
   ud = [[context activeUser] userDefaults];
   userLanguage = [ud language];
-  stringsCache = [languagesCache objectForKey: userLanguage];
-  if (!stringsCache)
-    {
-      stringsCache = [NSMutableDictionary new];
-      [bundlesCache setObject: stringsCache forKey: userLanguage];
-      [stringsCache release];
-    }
-
-  label = [stringsCache objectForKey: key];
-  if (!label)
+  strings = [languagesCache objectForKey: userLanguage];
+  if (!strings)
     {
       paths = [bundle pathsForResourcesOfType: @"strings"
                                   inDirectory: [NSString stringWithFormat: @"%@.lproj",
@@ -138,14 +130,14 @@
         {
           strings = [NSDictionary
                       dictionaryFromStringsFile: [paths objectAtIndex: 0]];
-          label = [strings objectForKey: key];
-          if (!label)
-            label = key;
+          if (strings)
+            [languagesCache setObject: strings forKey: userLanguage];
         }
-      else
-        label = key;
-      [stringsCache setObject: label forKey: key];
     }
+
+  label = [strings objectForKey: key];
+  if (!label)
+    label = key;
   
   return label;
 }
