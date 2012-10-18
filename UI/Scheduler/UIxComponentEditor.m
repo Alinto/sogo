@@ -1794,34 +1794,37 @@ RANGE(2);
 	    {
 	      currentData = [attendees objectAtIndex: count];
 	      currentEmail = [currentData objectForKey: @"email"];
-              role = [[currentData objectForKey: @"role"] uppercaseString];
-              if (!role)
-                role = @"REQ-PARTICIPANT";
-              if ([role isEqualToString: @"NON-PARTICIPANT"])
-                partstat = @"";
-              else
+              if ([currentEmail length] > 0)
                 {
-                  partstat = [[currentData objectForKey: @"partstat"]
-                               uppercaseString];
-                  if (!partstat)
-                    partstat = @"NEEDS-ACTION";
-                }
-	      currentAttendee = [component findAttendeeWithEmail: currentEmail];
-	      if (!currentAttendee)
-		{
-		  currentAttendee = [iCalPerson elementWithTag: @"attendee"];
-		  [currentAttendee setCn: [currentData objectForKey: @"name"]];
-		  [currentAttendee setEmail: currentEmail];
-		  // [currentAttendee
-		  //   setParticipationStatus: iCalPersonPartStatNeedsAction];
-		}
-              [currentAttendee
+                  role = [[currentData objectForKey: @"role"] uppercaseString];
+                  if (!role)
+                    role = @"REQ-PARTICIPANT";
+                  if ([role isEqualToString: @"NON-PARTICIPANT"])
+                    partstat = @"";
+                  else
+                    {
+                      partstat = [[currentData objectForKey: @"partstat"]
+                                   uppercaseString];
+                      if (!partstat)
+                        partstat = @"NEEDS-ACTION";
+                    }
+                  currentAttendee = [component findAttendeeWithEmail: currentEmail];
+                  if (!currentAttendee)
+                    {
+                      currentAttendee = [iCalPerson elementWithTag: @"attendee"];
+                      [currentAttendee setCn: [currentData objectForKey: @"name"]];
+                      [currentAttendee setEmail: currentEmail];
+                      // [currentAttendee
+                      //   setParticipationStatus: iCalPersonPartStatNeedsAction];
+                    }
+                  [currentAttendee
                     setRsvp: ([role isEqualToString: @"NON-PARTICIPANT"]
                               ? @"FALSE"
                               : @"TRUE")];
-              [currentAttendee setRole: role];
-              [currentAttendee setPartStat: partstat];
-	      [newAttendees addObject: currentAttendee];
+                  [currentAttendee setRole: role];
+                  [currentAttendee setPartStat: partstat];
+                  [newAttendees addObject: currentAttendee];
+                }
 	    }
 	  [component setAttendees: newAttendees];
 	}
