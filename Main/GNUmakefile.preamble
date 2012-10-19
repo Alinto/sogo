@@ -25,4 +25,4 @@ $(SOGOD)_TOOL_LIBS += \
 	-lNGObjWeb		\
 	-lNGMime -lNGLdap	\
 	-lNGStreams -lNGExtensions -lEOControl \
-	-lDOM -lXmlRpc -lSaxObjC
+	-lDOM -lSaxObjC
