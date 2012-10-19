@@ -1,6 +1,7 @@
 /* SOGoSystemDefaults.m - this file is part of SOGo
  *
  * Copyright (C) 2009-2011 Inverse inc.
+ * Copyright (C) 2012 Jeroen Dekkers <jeroen@dekkers.ch>
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Francis Lachapelle <flachapelle@inverse.ca>
@@ -95,27 +96,65 @@ BootstrapNSUserDefaults ()
 + (void) prepareUserDefaults
 {
   NSString *redirectURL;
-  NSDictionary *domain;
   NSUserDefaults *ud;
   SOGoStartupLogger *logger;
 
   logger = [SOGoStartupLogger sharedLogger];
 
   ud = [NSUserDefaults standardUserDefaults];
-  domain = [ud persistentDomainForName: @"sogod"];
-  if (![domain count])
+  if ([[NSFileManager defaultManager] fileExistsAtPath: @"/etc/sogo/sogo.conf"])
     {
-      domain = [ud persistentDomainForName: @"sogod-0.9"];
-      if ([domain count])
+      NSMutableDictionary *domain;
+
+      domain = [[NSMutableDictionary alloc] initWithContentsOfFile: @"/etc/sogo/sogo.conf"];
+      if (domain)
 	{
-	  [logger logWithFormat: @"migrating user defaults from sogod-0.9"];
-	  [ud setPersistentDomain: domain forName: @"sogod"];
-	  [ud removePersistentDomainForName: @"sogod-0.9"];
-	  [ud synchronize];
+	  if ([[NSFileManager defaultManager] fileExistsAtPath: @"/etc/sogo/debconf.conf"])
+	    {
+	      NSMutableDictionary *dbconfig;
+
+	      dbconfig = [[NSMutableDictionary alloc] initWithContentsOfFile: @"/etc/sogo/debconf.conf"];
+	      if (dbconfig)
+		{
+		  [domain addEntriesFromDictionary: dbconfig];
+		  [dbconfig autorelease];
+		}
+	      else
+		{
+		  [logger warnWithFormat: @"Can't deserialize /etc/sogo/debconf.conf, exiting."];
+		  exit(1);
+		}
+	    }
+	  [ud removePersistentDomainForName: @"sogod"];
+	  [ud setVolatileDomain: domain forName: @"sogod"];
+	  [domain autorelease];
 	}
       else
-        [logger warnWithFormat: @"No configuration found."
-                @" SOGo will not work properly."];
+	{
+	  [logger errorWithFormat: @"Can't deserialize /etc/sogo/sogo.conf, exiting."];
+	  exit(1);
+	}
+    }
+  else
+    {
+      NSDictionary *domain;
+      domain = [ud persistentDomainForName: @"sogod"];
+      if (![domain count])
+	{
+	  domain = [ud persistentDomainForName: @"sogod-0.9"];
+	  if ([domain count])
+	    {
+	      [logger logWithFormat: @"migrating user defaults from sogod-0.9"];
+	      [ud setPersistentDomain: domain forName: @"sogod"];
+	      [ud removePersistentDomainForName: @"sogod-0.9"];
+	      [ud synchronize];
+	    }
+	  else
+	    {
+	      [logger warnWithFormat: @"No configuration found, exiting."];
+	      exit(1);
+	    }
+	}
     }
   [self injectSOGoDefaults: ud];
 

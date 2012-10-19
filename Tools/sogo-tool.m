@@ -221,8 +221,14 @@ static void
 setupUserDefaults (NSUserDefaults *ud)
 {
   NSMutableDictionary *defaultsOverrides;
+  NSDictionary *domain;
 
-  [ud registerDefaults: [ud persistentDomainForName: @"sogod"]];
+  domain = [ud persistentDomainForName: @"sogod"];
+  if (![domain count])
+    {
+      domain = [ud volatileDomainForName: @"sogod"];
+    }
+  [ud registerDefaults: domain];
   defaultsOverrides = [NSMutableDictionary new];
   [defaultsOverrides setObject: [NSNumber numberWithInt: 0]
                         forKey: @"SOGoLDAPQueryLimit"];
