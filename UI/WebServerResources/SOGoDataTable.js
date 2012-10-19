@@ -25,7 +25,7 @@ var SOGoDataTableInterface = {
 
     // Constants
     overflow: 30,         // must be lower than the overflow of the data source class
-    renderDelay: 0.2,     // delay (in seconds) before which the table is rendered upon scrolling
+    renderDelay: 0.1,     // delay (in seconds) before which the table is rendered upon scrolling
 
     bind: function() {
         this.observe("scroll" , this.render.bind(this));
