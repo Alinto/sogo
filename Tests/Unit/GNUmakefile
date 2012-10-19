@@ -22,6 +22,8 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestSBJsonParser.m \
 	\
 	TestNGMimeAddressHeaderFieldGenerator.m \
+	TestNSData+Crypto.m \
+	TestNSString+Crypto.m \
 	TestNSString+URLEscaping.m \
 	TestNSString+Utilities.m
 
