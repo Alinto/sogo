@@ -116,19 +116,8 @@ SOGoMailDataSource = Class.create({
                 this.delayedGetData = this.getData.bind(this, id, index, count, callbackFunction, delay);
                 return;
             }
-            if (this.delayed_getData) window.clearTimeout(this.delayed_getData);
-            this.delayed_getData = this._getData.bind(this,
-                                                      id,
-                                                      index,
-                                                      count,
-                                                      callbackFunction
-                                                      ).delay(delay);
-        },
 
-        _getData: function(id, index, count, callbackFunction) {
             var start, end;
-            var i, j;
-            var missingUids = new Array();
 
             if (count > 1) {
                 // Compute last index depending on number of UIDs
@@ -149,12 +138,12 @@ SOGoMailDataSource = Class.create({
             }
 //            log ("MailDataSource._getData() from " + index + " to " + (index + count) + " boosted from " + start + " to " + end);
 
-            for (i = 0, j = start; j < end; j++) {
+            var missingUids = [];
+            for (var j = start; j < end; j++) {
                 var uid = this.threaded? this.uids[j][0] : this.uids[j];
                 if (!this.cache.get(uid)) {
 //                    log ("MailDataSource._getData missing headers of uid " + uid + " at index " + j + (this.threaded? " (":" (non-") + "threaded)");
-                    missingUids[i] = uid;
-                    i++;
+                    missingUids.push(uid);
                 }
             }
 
@@ -165,7 +154,7 @@ SOGoMailDataSource = Class.create({
                                                                       { callbackFunction: callbackFunction,
                                                                         start: start, end: end,
                                                                         id: id },
-                                                                      params).delay(0.5);
+                                                                      params).delay(delay);
             }
             else if (callbackFunction)
                 this._returnData(callbackFunction, id, start, end);
