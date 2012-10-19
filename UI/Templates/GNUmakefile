@@ -35,6 +35,8 @@ install ::
 	  tar cf - $(WOXS) | ( cd $(SOGO_TEMPLATESDIR); tar xf -) ;\
 	fi
 
+check ::
+
 clean ::
 
 distclean :: clean
