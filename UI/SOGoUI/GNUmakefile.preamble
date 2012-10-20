@@ -9,8 +9,8 @@ endif
 libSOGoUI_LIBRARIES_DEPEND_UPON += \
 	-lNGObjWeb	\
 	-lNGMime	\
-	-lNGStreams -lNGExtensions -lEOControl \
-	-lXmlRpc -lDOM -lSaxObjC -lWOExtensions
+	-lNGExtensions -lEOControl \
+	-lSaxObjC -lgnustep-base -lSOGo -lobjc
 
 SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
 ADDITIONAL_INCLUDE_DIRS += -I../../SoObjects

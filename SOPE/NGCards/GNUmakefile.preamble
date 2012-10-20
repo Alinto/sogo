@@ -20,9 +20,8 @@ ADDITIONAL_INCLUDE_DIRS += \
 libNGCards_LIBRARIES_DEPEND_UPON += \
 	-lNGExtensions	\
 	-lEOControl	\
-	-lDOM		\
 	-lSaxObjC \
-        -lgnustep-base
+        -lgnustep-base -lobjc -lm
 
 NGCards_LIBRARIES_DEPEND_UPON += \
 	-framework NGExtensions	-framework EOControl \

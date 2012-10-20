@@ -12,8 +12,7 @@ ADDITIONAL_INCLUDE_DIRS += -I. -I..
 libGDLContentStore_LIBRARIES_DEPEND_UPON += \
 	-lGDLAccess			\
 	-lNGExtensions -lEOControl	\
-	-lDOM -lSaxObjC \
-        -lgnustep-base
+        -lgnustep-base -lobjc
 
 GDLContentStore_LIBRARIES_DEPEND_UPON += \
 	-framework GDLAccess	\
