@@ -107,7 +107,7 @@ function updateEventFromDragging(controller, eventCells, eventDelta) {
         var eventCell = eventCells[0];
         // log("  time: " + eventCell.recurrenceTime);
         // log("  exception: " + eventCell.isException);
-        
+
         if (eventCell.recurrenceTime && !eventCell.isException)
             _editRecurrenceDialog(eventCell, "confirmAdjustment", params);
         else {
@@ -307,7 +307,7 @@ function deleteEvent() {
                     }
                 }
             }
-            
+
             for (i = 0; i < calendars.length; i++) {
                 calendarsOfEventsToDelete.push(calendars[i]);
                 eventsToDelete.push(sortedNodes[calendars[i]]);
@@ -347,7 +347,7 @@ function deleteEventFromViewConfirm() {
         document.deleteEventAjaxRequest.aborted = true;
         document.deleteEventAjaxRequest.abort();
     }
-    
+
     selectedCalendarCell = null;
     _batchDeleteEvents();
     disposeDialog();
@@ -546,7 +546,7 @@ function _deleteEventFromTables(calendar, cname, occurenceTime) {
         if (occurences) {
             var occurence = occurences.first();
             var ownerIsOrganizer = occurence[19];
-            
+
             // Delete event from events list
             var table = $("eventsList");
             var rows = table.tBodies[0].rows;
@@ -590,7 +590,7 @@ function _deleteCalendarEventCache(calendar, cname, occurenceTime) {
         if (occurences)
             ownerIsOrganizer = occurences[0][19];
     }
-    
+
     for (var otherCalendar in calendarEvents) {
         if (calendarEvents[otherCalendar]) {
             var occurences = calendarEvents[otherCalendar][cname];
@@ -962,7 +962,7 @@ function eventsListCallback(http) {
                 var span = createElement("span");
                 td.appendChild(span);
                 span.update(data[i][4]); // title
-                
+
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
@@ -1038,7 +1038,7 @@ function tasksListCallback(http) {
             // [11] Priority (0, 1 = important, 9 = low)
             // [12] Status CSS class (duelater, completed, etc)
             // (13) Due date (formatted)
-            
+
             for (var i = 0; i < data.length; i++) {
                 var row = createElement("tr");
                 table.tBodies[0].appendChild(row);
@@ -1181,7 +1181,7 @@ function changeDateSelectorDisplay(day, keepCurrentDay) {
 
     if (!keepCurrentDay)
         currentDay = day;
-    
+
     var month = day.substr(0, 6);
     if (cachedDateSelectors[month]) {
         //       log ("restoring cached selector for month: " + month);
@@ -1307,7 +1307,7 @@ function reloadWebCalendars() {
     if (UserSettings['Calendar']
         && UserSettings['Calendar']['WebCalendars']) {
         var webCalendars = UserSettings['Calendar']['WebCalendars'];
-        
+
         var folders = $("calendarList");
         var calendarNodes = folders.childNodesWithTag("li");
         for (var i = 0; i < calendarNodes.length; i++) {
@@ -1470,12 +1470,12 @@ function scrollDayView(scrollEvent) {
                 var eventBlocks = selectCalendarEvent(eventRow.calendar, eventRow.cname, eventRow.recurrenceTime);
                 if (eventBlocks) {
                     var firstEvent = eventBlocks.first();
-                    
+
                     if (currentView == "monthview")
                         contentView = firstEvent.up("DIV.day");
                     else
                         contentView = $("daysView");
-                    
+
                     // Don't scroll to an all-day event
                     if (typeof eventRow.hour != "undefined") {
                         var top = firstEvent.cumulativeOffset()[1] - contentView.scrollTop;
@@ -1650,7 +1650,7 @@ function resetCategoriesStyles() {
                 selectors[selectors.length] = 'DIV.' + categoriesStyles.get(category);
             }
         });
-    
+
         if (selectors.length > 0) {
             if (categoriesStyleSheet.styleSheet && categoriesStyleSheet.styleSheet.addRule) {
                 // IE
@@ -1748,7 +1748,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
         innerDiv.addClassName(categoryStyle);
     }
     eventCell.observe("contextmenu", onMenuCurrentView);
-    
+
     if (event[3] == null) {
         // Status field is not defined -- user can't read event
         eventCell.observe("selectstart", listRowMouseDownHandler);
@@ -2001,7 +2001,7 @@ function calendarDisplayCallback(http) {
             contentView = $("daysView");
             contentView.observe("scroll", onBodyClickHandler);
             attachDragControllers($("calendarHeader"));
- 
+
             // Create a clone of the contextual menu for the all-day
             // events area
             var allDayViewMenu = Element.clone($("currentViewMenu"), true);
@@ -2331,7 +2331,7 @@ function onSelectAll(event) {
         }
         for (var i = 0; i < selectedBlocks.length; i++)
             selectedBlocks[i].selectElement();
-    
+
         selectedCalendarCell = selectedBlocks;
     }
 
@@ -2372,7 +2372,7 @@ function onCalendarSelectEvent(event, willShowContextualMenu) {
                 alreadySelected = true;
                 break;
             }
-    
+
     if ((isMac() && event.metaKey == 1) || (!isMac() && event.ctrlKey == 1)) {
         // If meta or ctrl key is pressed, inverse the selection
         if (alreadySelected) {
@@ -2626,7 +2626,7 @@ function onCalendarsMenuPrepareVisibility() {
             deleteCalendarOption.update(_("Delete Calendar"));
         else
             deleteCalendarOption.update(_("Unsubscribe Calendar"));
-            
+
         return true;
     }
     return false;
@@ -2842,7 +2842,7 @@ function onCalendarModify(event) {
         }
     }
     if (Prototype.Browser.IE) height += 10;
-    
+
     if (owner == UserLogin) {
         height += 20;
     }
