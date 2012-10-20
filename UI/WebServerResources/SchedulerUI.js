@@ -2902,8 +2902,8 @@ function onCalendarWebAddConfirm() {
     disposeDialog();
     var calendarUrl = this.value;
     if (calendarUrl) {
-        var url = ApplicationBaseURL + "/addWebCalendar"
-        var parameters = "url=" + calendarUrl;
+        var url = ApplicationBaseURL + "/addWebCalendar";
+        var parameters = "url=" + encodeURIComponent(calendarUrl);
         triggerAjaxRequest(url, addWebCalendarCallback, calendarUrl, parameters,
                            { "Content-type": "application/x-www-form-urlencoded" });
     }
