@@ -16,6 +16,8 @@ install ::
 	  rm -rf $(SOGO_WEBSERVERRESOURCESDIR)/ckeditor/_source; \
 	fi
 
+check ::
+
 clean ::
 
 distclean :: clean
