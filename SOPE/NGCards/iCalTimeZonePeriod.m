@@ -120,8 +120,8 @@
  * We assume that a RRULE for a timezone will always be YEARLY with a BYMONTH
  * and a BYDAY rule.
  */
-- (NSCalendarDate *) _occurenceForDate: (NSCalendarDate *) refDate
-			       byRRule: (iCalRecurrenceRule *) rrule
+- (NSCalendarDate *) _occurrenceForDate: (NSCalendarDate *) refDate
+                                byRRule: (iCalRecurrenceRule *) rrule
 {
   NSCalendarDate *tmpDate;
   iCalByDayMask *byDayMask;
@@ -169,7 +169,7 @@
   return tmpDate;
 }
 
-- (NSCalendarDate *) occurenceForDate: (NSCalendarDate *) refDate;
+- (NSCalendarDate *) occurrenceForDate: (NSCalendarDate *) refDate;
 {
   NSCalendarDate *tmpDate;
   iCalRecurrenceRule *rrule;
@@ -181,7 +181,7 @@
     tmpDate
       = [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"] dateTime];
   else if ([rrule untilDate] == nil || [refDate compare: [rrule untilDate]] == NSOrderedAscending)
-    tmpDate = [self _occurenceForDate: refDate byRRule: rrule];
+    tmpDate = [self _occurrenceForDate: refDate byRRule: rrule];
 
   return tmpDate;
 }
