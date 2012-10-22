@@ -63,7 +63,7 @@ static NSString *sessionsFolderURLString = nil;
 
 + (id) sessionsFolderWithFolderManager: (GCSFolderManager *) newFolderManager
 {
-  GCSAlarmsFolder *newFolder;
+  GCSSessionsFolder *newFolder;
 
   if (sessionsFolderURLString)
     {
