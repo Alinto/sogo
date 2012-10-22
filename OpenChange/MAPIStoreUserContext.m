@@ -37,6 +37,7 @@
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
+#import <SOGo/NSString+Utilities.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
 
@@ -291,7 +292,8 @@ static NSMapTable *contextsTable = nil;
         {
           /* If "OCSFolderInfoURL" is properly configured, we must have 5
              parts in this url. */
-          ocFSTableName = [NSString stringWithFormat: @"socfs_%@", username];
+          ocFSTableName = [NSString stringWithFormat: @"socfs_%@",
+                                    [username asCSSIdentifier]];
           [parts replaceObjectAtIndex: 4 withObject: ocFSTableName];
           folderTableURL
             = [NSURL URLWithString: [parts componentsJoinedByString: @"/"]];
