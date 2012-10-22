@@ -23,6 +23,7 @@
 #import <Foundation/NSString.h>
 
 #import "SOGoUser.h"
+#import "SOGoUserFolder.h"
 
 #import "SOGoPublicBaseFolder.h"
 

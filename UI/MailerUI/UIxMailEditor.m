@@ -213,13 +213,6 @@ static NSArray *infoKeys = nil;
 
 - (NSString *) localeCode
 {
-  SOGoUserDefaults *ud;
-  NSDictionary *locale;
-  
-  ud = [[context activeUser] userDefaults];
-  locale = [[self resourceManager]
-	     localeForLanguageNamed: [ud language]];
-
   // WARNING : NSLocaleCode is not defined in <Foundation/NSUserDefaults.h>
   return [locale objectForKey: @"NSLocaleCode"];
 }

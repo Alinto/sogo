@@ -20,6 +20,8 @@
  02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+
 #import <NGObjWeb/WOComponent.h>
 
 @class NSString, NSMutableArray, NSDictionary;

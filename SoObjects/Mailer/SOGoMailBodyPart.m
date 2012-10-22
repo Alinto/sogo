@@ -23,6 +23,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoObject+SoDAV.h>

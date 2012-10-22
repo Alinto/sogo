@@ -37,6 +37,7 @@
 #import <SOGo/SOGoUserDefaults.h>
 #import <Appointments/iCalEvent+SOGo.h>
 #import <Appointments/SOGoAppointmentObject.h>
+#import <Appointments/SOGoAppointmentFolder.h>
 
 #import <Common/WODirectAction+SOGo.h>
 

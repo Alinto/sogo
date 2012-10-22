@@ -576,7 +576,7 @@ static SoSecurityManager *sm = nil;
     {
       NSMutableArray *supportedTypes;
       id <DOMNodeList> children;
-      DOMElement *element;
+      id <DOMElement> element;
       NSException *error;
       NSArray *allTypes;
       id o;
@@ -616,7 +616,7 @@ static SoSecurityManager *sm = nil;
 	{
 	  element = [children objectAtIndex: i];
 	  
-	  if ([element  nodeType] == DOM_ELEMENT_NODE &&
+	  if ([element nodeType] == DOM_ELEMENT_NODE &&
 	      ![supportedTypes containsObject: [element nodeName]])
 	    supported = NO;
 	}

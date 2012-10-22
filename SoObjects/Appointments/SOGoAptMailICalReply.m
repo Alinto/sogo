@@ -19,7 +19,10 @@
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
+
 #import <Foundation/NSCharacterSet.h>
+
+#import <NGObjWeb/WOResponse.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>

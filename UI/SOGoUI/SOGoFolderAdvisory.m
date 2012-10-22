@@ -140,7 +140,7 @@
 
   part = [NGMimeBodyPart bodyPartWithHeader: headerMap];
   body = [[self body] dataUsingEncoding: NSUTF8StringEncoding];
-  [part setBody: [self body]];
+  [part setBody: body];
 
   return part;
 }

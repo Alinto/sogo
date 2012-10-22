@@ -23,8 +23,10 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
+#import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WODirectAction.h>
 #import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResponse.h>
 
 #import <NGCards/NGVCard.h>
 

@@ -392,10 +392,8 @@
 {
   NSString *newCalendar;
   SOGoAppointmentFolder *thisFolder, *newFolder;
-  SOGoAppointmentFolders *parentFolder;
   SOGoTaskObject *co;
   SoSecurityManager *sm;
-  NSException *ex;
 
   co = [self clientObject];
   [co saveComponent: todo];
@@ -410,14 +408,13 @@
 	       onObject: thisFolder
 	       inContext: context])
 	{
-	  parentFolder = [[self container] container];
 	  newFolder = [[thisFolder container] lookupName: newCalendar
-					      inContext: context
-					      acquire: NO];
+                                               inContext: context
+                                                 acquire: NO];
 	  if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
 		   onObject: newFolder
 		   inContext: context])
-	    ex = [co moveToFolder: newFolder];
+            [co moveToFolder: newFolder];
 	}
     }
 

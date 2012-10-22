@@ -24,10 +24,9 @@
 #define SOGOSOCKD_H
 
 #import <Foundation/NSObject.h>
+#import <Foundation/NSRunLoop.h>
 
 @class NGPassiveSocket;
-
-@protocol RunLoopEvents;
 
 @interface SOGoSockD : NSObject <RunLoopEvents>
 {

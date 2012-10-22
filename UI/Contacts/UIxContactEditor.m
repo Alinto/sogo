@@ -185,7 +185,7 @@ static Class SOGoContactGCSEntryK = Nil;
   NSMutableArray *addressBooksList;
   SoSecurityManager *sm;
   SOGoContactFolders *folderContainer;
-  SOGoContactFolder *folder, *currentFolder;
+  id <SOGoContactFolder> folder, currentFolder;
 
   addressBooksList = [NSMutableArray array];
   sm = [SoSecurityManager sharedSecurityManager];
@@ -207,16 +207,12 @@ static Class SOGoContactGCSEntryK = Nil;
   return addressBooksList;
 }
 
-- (SOGoContactFolder *) componentAddressBook
+- (id <SOGoContactFolder>) componentAddressBook
 {
-  SOGoContactFolder *folder;
-  
-  folder = [[self clientObject] container];
-  
-  return folder;
+  return [[self clientObject] container];
 }
 
-- (void) setComponentAddressBook: (SOGoContactFolder *) _componentAddressBook
+- (void) setComponentAddressBook: (id <SOGoContactFolder>) _componentAddressBook
 {
   ASSIGN (componentAddressBook, _componentAddressBook);
 }
@@ -224,7 +220,7 @@ static Class SOGoContactGCSEntryK = Nil;
 - (NSString *) addressBookDisplayName
 {
   NSString *fDisplayName;
-  SOGoContactFolder *folder;
+  SOGoObject <SOGoContactFolder> *folder;
   SOGoContactFolders *parentFolder;
 
   fDisplayName = [addressBookItem displayName];
@@ -372,15 +368,19 @@ static Class SOGoContactGCSEntryK = Nil;
 
   if (componentAddressBook && componentAddressBook != [self componentAddressBook])
     {
-      sm = [SoSecurityManager sharedSecurityManager];
-      if (![sm validatePermission: SoPerm_DeleteObjects
-               onObject: componentAddressBook
-               inContext: context])
+      if ([contact isKindOfClass: SOGoContactGCSEntryK])
         {
-          if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-                   onObject: componentAddressBook
-                   inContext: context])
-            [contact moveToFolder: (SOGoGCSFolder *)componentAddressBook]; // TODO: handle exception
+          sm = [SoSecurityManager sharedSecurityManager];
+          if (![sm validatePermission: SoPerm_DeleteObjects
+                             onObject: componentAddressBook
+                            inContext: context]
+              && ![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+                                onObject: componentAddressBook
+                               inContext: context])
+            [(SOGoContactGCSEntry *) contact
+               moveToFolder: (SOGoGCSFolder *)componentAddressBook]; // TODO:
+                                                                     // handle
+                                                                     // exception
         }
     }
       

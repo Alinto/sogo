@@ -348,9 +348,8 @@ typedef enum SOGoToolRestoreMode {
 {
   NSDictionary *existingRecords, *currentRecord;
   NSString *cName, *cContent;
-  NSException *ex;
-
-  int count, max, version;
+  int count, max;
+  unsigned int version;
   BOOL rc;
 
   if (records)
@@ -367,8 +366,8 @@ typedef enum SOGoToolRestoreMode {
             {
               NSLog (@"restoring record '%@'", cName);
               cContent = [currentRecord objectForKey: @"c_content"];
-              ex = [gcsFolder writeContent: cContent toName: cName
-                               baseVersion: &version];
+              [gcsFolder writeContent: cContent toName: cName
+                          baseVersion: &version];
             }
         }
     }

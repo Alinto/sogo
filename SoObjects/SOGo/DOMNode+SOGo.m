@@ -87,11 +87,11 @@
   return [self childElementsWithTag: tagName inNamespace: nil];
 }
 
-- (DOMElement *) firstElementWithTag: (NSString *) tagName
-                         inNamespace: (NSString *) namespace
+- (id <DOMElement>) firstElementWithTag: (NSString *) tagName
+                            inNamespace: (NSString *) namespace
 {
   id <DOMNodeList> nodes;
-  DOMElement *node, *currentElement;
+  id <DOMElement> node, currentElement;
   unsigned int count, max;
 
   node = nil;
@@ -111,7 +111,7 @@
   return node;
 }
 
-- (DOMElement *) firstElementWithTag: (NSString *) tagName
+- (id <DOMElement>) firstElementWithTag: (NSString *) tagName
 {
   return [self firstElementWithTag: tagName inNamespace: nil];
 }
@@ -120,7 +120,7 @@
 {
   NSMutableArray *propertyNames;
   id <DOMNodeList> children;
-  DOMElement *currentElement;
+  id <DOMElement> currentElement;
   unsigned int count, max;
 
   propertyNames = [NSMutableArray array];
@@ -131,7 +131,8 @@
     {
       currentElement = [children objectAtIndex: count];
       if ([currentElement nodeType] == DOM_ELEMENT_NODE)
-        [propertyNames addObject: [currentElement asPropertyName]];
+        [propertyNames
+          addObject: [(NGDOMElement *) currentElement asPropertyName]];
     }
 
   return propertyNames;

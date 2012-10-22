@@ -20,8 +20,11 @@
 */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSCharacterSet.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOResponse.h>
+
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalEventChanges.h>
 
@@ -59,7 +62,7 @@
 }
 
 - (NSString *) valueForProperty: (NSString *) property
-              withDateFormatter: (SOGoDateFormatter *) dateFormatter
+              withDateFormatter: (SOGoDateFormatter *) _dateFormatter
 {
   static NSDictionary *valueTypes = nil;
   NSString *valueType;
@@ -86,9 +89,9 @@
         {
           [value setTimeZone: viewTZ];
           if ([apt isAllDay])
-            value = [dateFormatter formattedDate: value];
+            value = [_dateFormatter formattedDate: value];
           else
-            value = [dateFormatter formattedDateAndTime: value];
+            value = [_dateFormatter formattedDateAndTime: value];
         }
     }
   else
@@ -97,7 +100,7 @@
   return value;
 }
 
-- (void) _setupBodyContentWithFormatter: (SOGoDateFormatter *) dateFormatter
+- (void) _setupBodyContentWithFormatter: (SOGoDateFormatter *) _dateFormatter
 {
   NSString *property, *label, *value;
   NSArray *updatedProperties;
@@ -111,7 +114,7 @@
     {
       property = [updatedProperties objectAtIndex: count];
       value = [self valueForProperty: property
-                   withDateFormatter: dateFormatter];
+                   withDateFormatter: _dateFormatter];
       /* Unhandled properties will return nil */
       if (value)
         {
@@ -157,21 +160,21 @@
 - (void) setupValues
 {
   NSCalendarDate *date;
-  SOGoDateFormatter *dateFormatter;
+  SOGoDateFormatter *localDateFormatter;
 
   [super setupValues];
 
-  dateFormatter = [[context activeUser] dateFormatterInContext: context];
+  localDateFormatter = [[context activeUser] dateFormatterInContext: context];
 
   date = [self oldStartDate];
-  [values setObject: [dateFormatter shortFormattedDate: date]
+  [values setObject: [localDateFormatter shortFormattedDate: date]
              forKey: @"OldStartDate"];
 
   if (![apt isAllDay])
-    [values setObject: [dateFormatter formattedTime: date]
+    [values setObject: [localDateFormatter formattedTime: date]
                forKey: @"OldStartTime"];
 
-  [self _setupBodyContentWithFormatter: dateFormatter];
+  [self _setupBodyContentWithFormatter: localDateFormatter];
 }
 
 - (NSString *) getSubject

@@ -1,4 +1,4 @@
-/* iCalCalendar+SOGo.m - this file is part of $PROJECT_NAME_HERE$
+/* iCalCalendar+SOGo.m - this file is part of SOGo
  *
  * Copyright (C) 2012 Inverse inc
  *
@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
 
 #import <NGCards/iCalRepeatableEntityObject.h>

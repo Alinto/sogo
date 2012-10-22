@@ -31,7 +31,6 @@
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/SoProduct.h>
-#import <NGObjWeb/WOResourceManager.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -48,7 +47,9 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/WOResourceManager+SOGo.h>
 
 #import "UIxJSClose.h"
 
@@ -146,7 +147,8 @@ static SoProduct      *commonProduct      = nil;
       queryParameters = nil;
       ASSIGN (userDefaults, [[context activeUser] userDefaults]);
       language = [userDefaults language];
-      ASSIGN (locale, [[self resourceManager] localeForLanguageNamed: language]);
+      ASSIGN (locale,
+              [[self resourceManager] localeForLanguageNamed: language]);
     }
 
   return self;

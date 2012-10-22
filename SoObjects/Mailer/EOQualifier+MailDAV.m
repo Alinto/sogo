@@ -35,14 +35,14 @@
 
 @implementation EOQualifier (SOGoMailDAVExtension)
 
-+ (id) qualifierFromMailDAVMailFilters: (DOMElement *) mailFilters
++ (id) qualifierFromMailDAVMailFilters: (id <DOMElement>) mailFilters
 {
   EOQualifier *qualifier;
   NSMutableArray *args, *formats;
   NSArray *flags, *strings, *dates;
   NSString *valueA, *valueB, *tagName, *format, *negate;
   id <DOMNodeList> list;
-  DOMElement *current;
+  id <DOMElement> current;
   NSCalendarDate *startDate, *endDate;
   int count, max;
   BOOL datesAreEqual;

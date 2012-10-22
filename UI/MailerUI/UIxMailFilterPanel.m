@@ -19,6 +19,8 @@
  02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
+
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 #import <EOControl/EOQualifier.h>

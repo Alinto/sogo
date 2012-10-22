@@ -27,14 +27,14 @@
 @class NSString;
 @class NSMutableDictionary;
 
-@class SOGoContactFolder;
+@protocol SOGoContactFolder;
 
 @interface UIxContactEditor : UIxComponent
 {
   id addressBookItem;
   NSString *item;
   NSMutableDictionary *ldifRecord; /* contains the values for editing */
-  SOGoContactFolder *componentAddressBook;
+  id <SOGoContactFolder> componentAddressBook;
 }
 
 - (NSMutableDictionary *) ldifRecord;
@@ -44,7 +44,7 @@
 
 - (BOOL) isNew;
 - (NSArray *) addressBooksList;
-- (SOGoContactFolder *) componentAddressBook;
+- (id <SOGoContactFolder>) componentAddressBook;
 - (NSString *) addressBookDisplayName;
 
 @end

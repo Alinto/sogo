@@ -34,9 +34,9 @@
 @class WOContext;
 @class WOResponse;
 
-@class DOMElement;
-
 @class SOGoUser;
+
+@protocol DOMElement;
 
 /*
   SOGoGCSFolder
@@ -121,7 +121,7 @@
 - (NSURL *) realDavURL;
 
 - (NSDictionary *) davSQLFieldsTable;
-- (NSDictionary *) parseDAVRequestedProperties: (DOMElement *) propElement;
+- (NSDictionary *) parseDAVRequestedProperties: (id <DOMElement>) propElement;
 
 - (NSString *) davCollectionTag;
 

@@ -43,6 +43,7 @@
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoSieveManager.h>
 
 #import "SOGoDraftsFolder.h"

@@ -23,6 +23,9 @@
 #import <Foundation/NSValue.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WORequest.h>
+#import <NGObjWeb/WOResponse.h>
+
+#import <NGCards/iCalCalendar.h>
 
 #import <SOGo/NSDictionary+Utilities.h>
 

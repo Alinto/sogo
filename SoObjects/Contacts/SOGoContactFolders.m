@@ -311,7 +311,7 @@
 {
   SOGoUser *ownerUser;
   NSMutableArray *categories;
-  DOMElement *documentElement, *catNode;
+  id <DOMElement> documentElement, catNode;
   id <DOMDocument> document;
   id <DOMNodeList> catNodes;
   NSUInteger count, max;
@@ -322,14 +322,14 @@
   if ([newCategories length] > 0)
     {
       document = [[context request] contentAsDOMDocument];
-      documentElement = (DOMElement *) [document documentElement];
+      documentElement = [document documentElement];
       catNodes = [documentElement getElementsByTagName: @"category"];
       max = [catNodes length];
       for (count = 0; count < max; count++)
         {
           catNode = [catNodes objectAtIndex: count];
           if ([catNode hasChildNodes])
-            [categories addObject: [catNode textValue]];
+            [categories addObject: [(NGDOMNode *) catNode textValue]];
         }
     }
 

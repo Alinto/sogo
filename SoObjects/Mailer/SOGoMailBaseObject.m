@@ -25,12 +25,15 @@
 #import <Foundation/NSDictionary.h>
 
 #import <NGObjWeb/SoObject+SoDAV.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGExtensions/NSNull+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSURL+misc.h>
+#import <NGImap4/NGImap4Connection.h>
 
 #import <SOGo/SOGoCache.h>
+#import <SOGo/SOGoUser.h>
 
 #import "SOGoMailAccount.h"
 #import "SOGoMailManager.h"

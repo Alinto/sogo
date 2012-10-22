@@ -26,6 +26,7 @@
 */
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOResponse.h>
