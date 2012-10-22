@@ -19,6 +19,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSString.h>
 
 #import "iCalEvent.h"

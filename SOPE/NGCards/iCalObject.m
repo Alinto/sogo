@@ -20,6 +20,7 @@
 */
 
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 
 #import "iCalObject.h"
 
