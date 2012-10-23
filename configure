@@ -21,6 +21,7 @@ ARG_NOCREATE=0
 ARG_PREFIX=""
 ARG_GSMAKE=`gnustep-config --variable=GNUSTEP_MAKEFILES 2>/dev/null`
 ARG_CFGMAKE="$PWD/config.make"
+ARG_CFGSSL="auto"
 ARG_WITH_DEBUG=1
 ARG_WITH_STRIP=0
 ARG_WITH_LDAP_CONFIG=0
@@ -72,6 +73,7 @@ Installation directories:
   --configmake=PATH       path to the config file being created
   --enable-debug          turn on debugging and compile time warnings
   --enable-strip          turn on stripping of debug symbols
+  --with-ssl=SSL          specify ssl library (none, libssl, gnutls, auto) [auto]
 
   --enable-ldap-config    enable LDAP based configuration of SOGo
 
@@ -309,7 +311,13 @@ checkLinking() {
   
   mkdir $tmpdir
   cd $tmpdir
-  cp ../maintenance/dummytool.c .
+  cat > dummytool.c <<EOF
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+  return 0;
+}
+EOF
   
   OLDLIBS=$LIBS
   for LIB in $1;do
@@ -355,9 +363,15 @@ checkLinking() {
 }
 
 checkDependencies() {
-  checkLinking "gnutls"      optional;
-  if test $? != 0; then
-      checkLinking "ssl"      required;
+  if test "x$ARG_CFGSSL" = "xauto"; then
+      checkLinking "ssl"     optional;
+      if test $? != 0; then
+          checkLinking "gnutls"  optional;
+      fi;
+  elif test "x$ARG_CFGSSL" = "xssl"; then
+      checkLinking "ssl"     required;
+  elif test "x$ARG_CFGSSL" = "xgnutls"; then
+      checkLinking "gnutls"  required;
   fi
 }
 
@@ -432,6 +446,10 @@ processOption() {
 	;;
     "x--disable-strip")
         ARG_WITH_STRIP=0
+	;;
+    x--with-ssl=*)
+        extractFuncValue $1;
+        ARG_CFGSSL="$VALUE"
 	;;
 
     "x--enable-ldap-config")
