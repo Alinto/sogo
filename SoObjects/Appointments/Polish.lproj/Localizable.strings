@@ -39,7 +39,7 @@ vtodo_class2 = "(Zadanie poufne)";
 
 /* Update */
 "The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
-= "Wydarzenie \\"%{Summary}\\" z dnia %{OldStartDate} zmieniło się";
+= "Wydarzenie \"%{Summary}\" z dnia %{OldStartDate} zmieniło się";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "Wydarzenie \"%{Summary}\" z dnia %{OldStartDate} z godz. %{OldStartTime} zostało zmienione";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
@@ -63,4 +63,4 @@ vtodo_class2 = "(Zadanie poufne)";
 
 /* Resources */
 "Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Nie ma dostępu do: \"%{Cn} %{SystemEmail}\"";
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Osiągnięto maksymalną liczbę równoległych rezerwacji (%{NumberOfSimultaneousBookings}) dla \\"%{Cn} %{SystemEmail}\\". Problem wywołuje wydarzenie \\"%{EventTitle}\\" zaczynające się w %{StartDate}.";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Osiągnięto maksymalną liczbę równoległych rezerwacji (%{NumberOfSimultaneousBookings}) dla \"%{Cn} %{SystemEmail}\". Problem wywołuje wydarzenie \"%{EventTitle}\" zaczynające się w %{StartDate}.";

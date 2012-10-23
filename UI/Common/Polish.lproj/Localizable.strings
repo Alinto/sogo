@@ -38,15 +38,15 @@
 "Sorry, the user rights can not be configured for that object." = "Uprawnienia użytkownika na tym obiekcie nie mogą być konfigurowane.";
 
 "Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
-     = "Dowolny użytkownik systemu będzie miał dostęp do Twojej skrzynki \\"%{0}\\". Naprawdę ufasz im wszystkim?";
-"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
-     = "Dowolny użytkownik systemu będzie miał dostęp do Twojego kalendarza \\"%{0}\\". Naprawdę ufasz im wszystkim?";
+     = "Dowolny użytkownik systemu będzie miał dostęp do Twojej skrzynki \"%{0}\". Naprawdę ufasz im wszystkim?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?"
+     = "Dowolny użytkownik systemu będzie miał dostęp do Twojego kalendarza \"%{0}\". Naprawdę ufasz im wszystkim?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Twój kalendarz \\"%{0}\\" będzie publiczne dostępny dla każdego w Internecie. Czy te informacje napewno mają być tak upublicznione?";
+     = "Twój kalendarz \"%{0}\" będzie publiczne dostępny dla każdego w Internecie. Czy te informacje napewno mają być tak upublicznione?";
 "Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
-     = "Dowolny użytkownik systemu będzie miał dostęp do Twojej książki adresowej \\"%{0}\\". Naprawdę ufasz im wszystkim?";
+     = "Dowolny użytkownik systemu będzie miał dostęp do Twojej książki adresowej \"%{0}\". Naprawdę ufasz im wszystkim?";
 "Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Twoja książka adresowa \\"%{0}\\" będzie dostępna dla każdego w Internecie. Na pewno chcesz ją tak upublicznić?";
+     = "Twoja książka adresowa \"%{0}\" będzie dostępna dla każdego w Internecie. Na pewno chcesz ją tak upublicznić?";
 "Give Access" = "Udostępnij";
 "Keep Private" = "Nie udostępniaj";
 
