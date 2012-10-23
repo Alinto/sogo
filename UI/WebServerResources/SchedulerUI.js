@@ -1075,7 +1075,12 @@ function tasksListCallback(http) {
 
                 cell = createElement("td");
                 row.appendChild(cell);
-                cell.update(_("prio_" + data[i][11])); // Priority
+                if (data[i][11] != null) {
+                    cell.update(_("prio_" + data[i][11])); // Priority
+                }
+                else {
+                    cell.update(""); // Priority
+                }
 
                 cell = createElement("td");
                 row.appendChild(cell);
