@@ -104,8 +104,6 @@ sogo_backend_init (void)
 
   /* We force the plugin to base its configuration on the SOGo tree. */
   ud = [NSUserDefaults standardUserDefaults];
-  [ud registerDefaults: [ud persistentDomainForName: @"sogod"]];
-
   if (!leakDebugging && [ud boolForKey: @"SOGoDebugLeaks"])
     {
       NSLog (@"  leak debugging on");
