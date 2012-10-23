@@ -218,23 +218,21 @@
 @end
 
 static void
-setupUserDefaults (NSUserDefaults *ud)
+setupUserDefaults ()
 {
   NSMutableDictionary *defaultsOverrides;
-  NSDictionary *domain;
+  NSUserDefaults *ud;
 
-  domain = [ud persistentDomainForName: @"sogod"];
-  if (![domain count])
-    {
-      domain = [ud volatileDomainForName: @"sogod"];
-    }
-  [ud registerDefaults: domain];
+  ud = [NSUserDefaults standardUserDefaults];
+
   defaultsOverrides = [NSMutableDictionary new];
   [defaultsOverrides setObject: [NSNumber numberWithInt: 0]
                         forKey: @"SOGoLDAPQueryLimit"];
   [defaultsOverrides setObject: [NSNumber numberWithInt: 0]
                         forKey: @"SOGoLDAPQueryTimeout"];
-  [ud registerDefaults: defaultsOverrides];
+  [ud setVolatileDomain: defaultsOverrides
+                forName: @"sogo-tool-overrides"];
+  [ud addSuiteNamed: @"sogo-tool-overrides"];
   [defaultsOverrides release];
 }
 
@@ -243,7 +241,6 @@ main (int argc, char **argv, char **env)
 {
   NSAutoreleasePool *pool;
   SOGoToolDispatcher *dispatcher;
-  NSUserDefaults *ud;
   int rc;
 
   rc = 0;
@@ -251,9 +248,7 @@ main (int argc, char **argv, char **env)
   pool = [NSAutoreleasePool new];
 
   [SOGoSystemDefaults sharedSystemDefaults];
-
-  ud = [NSUserDefaults standardUserDefaults];
-  setupUserDefaults (ud);
+  setupUserDefaults ();
 
   dispatcher = [SOGoToolDispatcher new];
   if ([dispatcher run])
