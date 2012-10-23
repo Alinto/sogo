@@ -99,3 +99,11 @@
 "Start:" = "Kezdés:";
 "Due Date:" = "Lejárat dátuma:";
 "Location:" = "Hely:";
+
+"a2_Sunday" = "Va";
+"a2_Monday" = "Hé";
+"a2_Tuesday" = "Ke";
+"a2_Wednesday" = "Sz";
+"a2_Thursday" = "Cs";
+"a2_Friday" = "Pé";
+"a2_Saturday" = "Sz";
