@@ -38,6 +38,11 @@
 @implementation UIxMailPartSignedViewer : UIxMailPartMixedViewer
 
 #ifdef HAVE_OPENSSL
+- (BOOL) supportsSMIME
+{
+  return YES;
+}
+
 - (X509_STORE *) _setupVerify
 {
   X509_STORE *store;
@@ -189,6 +194,11 @@
   return validationMessage;
 }
 #else
+- (BOOL) supportsSMIME
+{
+  return NO;
+}
+
 - (BOOL) validSignature
 {
   return NO;
@@ -196,7 +206,7 @@
 
 - (NSString *) validationMessage
 {
-  return @"Signature verification is not implemented when using GnuTLS";
+  return nil;
 }
 #endif
 

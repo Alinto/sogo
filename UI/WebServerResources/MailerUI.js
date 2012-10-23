@@ -325,18 +325,18 @@ function mailListToggleMessagesFlagged(row) {
     if (selectedRowsId.length > 0) {
         var td = row.down("td.messageFlagColumn");
         var img = td.childElements().first();
-        
+
         var action = "markMessageFlagged";
         var flagged = true;
         if (img.hasClassName("messageIsFlagged")) {
             action = "markMessageUnflagged";
             flagged = false;
         }
-        
+
         for (var i = 0; i < selectedRowsId.length; i++) {
             var msguid = selectedRowsId[i].split("_")[1];
             flagMailInWindow(window, msguid, flagged);
-            
+
             var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
                 + msguid + "/" + action;
             var data = { "msguid": msguid };
@@ -537,7 +537,7 @@ function deleteSelectedMessagesCallback(http) {
         if (http.status == 200) {
             // The answer contains quota information
             var rdata = http.responseText.evalJSON(true);
-            if (rdata.quotas && data["mailbox"].startsWith('/0/'))      
+            if (rdata.quotas && data["mailbox"].startsWith('/0/'))
                 updateQuotas(rdata.quotas);
         }
 	if (data["refreshUnseenCount"])
@@ -746,7 +746,7 @@ function refreshMailbox() {
         topWindow.refreshCurrentFolder();
         topWindow.refreshUnseenCounts();
     }
-    
+
     return false;
 }
 
@@ -1036,7 +1036,7 @@ function onMessageContextMenu(event) {
         onRowClick(event, target);
         selectedNodes = topNode.getSelectedRowsId();
     }
-    
+
     if (selectedNodes.length > 1)
         popupMenu(event, "messagesListMenu", selectedNodes);
     else if (selectedNodes.length == 1)
@@ -1186,7 +1186,7 @@ function onMessageSelectionChange(event) {
 
     // Update rows selection
     onRowClick(event, t);
-    
+
     var messageContent = $("messageContent");
     var rows = this.getSelectedRowsId();
     if (rows.length == 1) {
@@ -1282,30 +1282,36 @@ function configureLoadImagesButton() {
 function configureSignatureFlagImage() {
     var signedPart = $("signedMessage");
     if (signedPart) {
-        var loadImagesButton = $("loadImagesButton");
-        var parentNode = loadImagesButton.parentNode;
-        var valid = parseInt(signedPart.getAttribute("valid"));
-        var flagImage;
+        var supportsSMIME
+            = parseInt(signedPart.getAttribute("supports-smime"));
 
-        if (valid)
-          flagImage = "signature-ok.png";
-        else
-          flagImage = "signature-not-ok.png";
+        if (supportsSMIME) {
+            var loadImagesButton = $("loadImagesButton");
+            var parentNode = loadImagesButton.parentNode;
 
-        var error = signedPart.getAttribute("error");
-        var newImg = createElement("img", "signedImage", null, null,
-                                   { src: ResourcesURL + "/" + flagImage });
+            var valid = parseInt(signedPart.getAttribute("valid"));
+            var flagImage;
 
-        var msgDiv = $("signatureFlagMessage");
-        if (msgDiv && error) {
-            // First line in a h1, others each in a p
-            var formattedMessage = "<h1>" + error.replace(/\n/, "</h1><p>");
-            formattedMessage = formattedMessage.replace(/\n/g, "</p><p>") + "</p>";
-            msgDiv.innerHTML = "<div>" + formattedMessage + "</div>";
-            newImg.observe("mouseover", showSignatureMessage);
-            newImg.observe("mouseout", hideSignatureMessage);
+            if (valid)
+                flagImage = "signature-ok.png";
+            else
+                flagImage = "signature-not-ok.png";
+
+            var error = signedPart.getAttribute("error");
+            var newImg = createElement("img", "signedImage", null, null,
+                                       { src: ResourcesURL + "/" + flagImage });
+
+            var msgDiv = $("signatureFlagMessage");
+            if (msgDiv && error) {
+                // First line in a h1, others each in a p
+                var formattedMessage = "<h1>" + error.replace(/\n/, "</h1><p>");
+                formattedMessage = formattedMessage.replace(/\n/g, "</p><p>") + "</p>";
+                msgDiv.innerHTML = "<div>" + formattedMessage + "</div>";
+                newImg.observe("mouseover", showSignatureMessage);
+                newImg.observe("mouseout", hideSignatureMessage);
+            }
+            loadImagesButton.parentNode.insertBefore(newImg, loadImagesButton.nextSibling);
         }
-        loadImagesButton.parentNode.insertBefore(newImg, loadImagesButton.nextSibling);
     }
 }
 
@@ -1644,7 +1650,7 @@ function loadMessageCallback(http) {
             document.messageAjaxRequest = null;
 	    var msguid = http.callbackData.msguid;
             var mailbox = http.callbackData.mailbox;
-            if (Mailer.currentMailbox == mailbox && 
+            if (Mailer.currentMailbox == mailbox &&
                 Mailer.currentMessages[Mailer.currentMailbox] == msguid) {
                 div.innerHTML = http.responseText;
                 configureLinksInMessage();
@@ -2396,7 +2402,7 @@ function onMenuEmptyTrashCallback(http) {
             var data = http.responseText.evalJSON(true);
             // We currently only show the quota for the first account (0).
             if (data.quotas && http.callbackData.mailbox.startsWith('/0/'))
-                updateQuotas(data.quotas);            
+                updateQuotas(data.quotas);
         }
     }
     else
