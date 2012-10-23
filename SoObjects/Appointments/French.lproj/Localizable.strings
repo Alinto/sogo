@@ -48,6 +48,10 @@ vtodo_class2 = "(Tâche confidentielle)";
 = "Veuillez reconfirmer ou annuler votre présence.";
 
 /* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Invitation acceptée : «%{Summary}»";
+"Declined invitation: \"%{Summary}\"" = "Invitation refusée : «%{Summary}»";
+"Delegated invitation: \"%{Summary}\"" = "Invitation déléguée : «%{Summary}»";
+"Not yet decided on invitation: \"%{Summary}\"" = "Sans décision : «%{Summary}»";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}a accepté votre invitation.";
 "%{Attendee} %{SentByText}has declined your event invitation."

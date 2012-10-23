@@ -48,6 +48,10 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 = "Accepteer deze wijzigingen of wijs ze af.";
 
 /* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Uitnodiging aanvaard: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Uitnodiging afgewezen: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Uitnodiging gedelegeerd: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Nog niet besloten over uitnodiging: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}heeft uw uitnodiging voor de gebeurtenis geaccepteerd.";
 "%{Attendee} %{SentByText}has declined your event invitation."

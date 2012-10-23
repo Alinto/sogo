@@ -43,4 +43,4 @@ reply_info = "Ez egy válasz az ön által kiküldött meghívásra.";
 "From" = "Feladó";
 "Date" = "Dátum";
 "To" = "Címzett";
-"Issuer" = "Tanusító";
+"Issuer" = "Tanúsító";

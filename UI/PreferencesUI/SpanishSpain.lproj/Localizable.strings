@@ -242,6 +242,7 @@
 "match any of the following rules:" = "cumplen algunas de las reglas siguientes:";
 "match all messages" = "cumplen todos los mensajes";
 "Perform these actions:" = "Realiza estas acciones:";
+"Untitled Filter" = "Filtro sin titulo";
 
 "Subject" = "Asunto";
 "From" = "De";

@@ -61,13 +61,13 @@
 "shortDateFmt_7" = "%d. %b. %y";
 "shortDateFmt_8" = "%e. %b. %y";
 
-"shortDateFmt_9" = "";
-"shortDateFmt_10" = "";
-"shortDateFmt_11" = "";
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
 
-"shortDateFmt_12" = "";
-"shortDateFmt_13" = "";
-"shortDateFmt_14" = "";
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
 
 "shortDateFmt_15" = "";
    
@@ -75,17 +75,17 @@
 "longDateFmt_1" = "%A, %e. %B %Y";
 "longDateFmt_2" = "%a. %d. %B %Y";
 "longDateFmt_3" = "%a. %e. %B %Y";
-"longDateFmt_4" = "%A, %d. %b. %Y";
-"longDateFmt_5" = "%A, %e. %b. %Y";
-"longDateFmt_6" = "%a. %d. %b. %Y";
-"longDateFmt_7" = "%a. %e. %b. %Y";
-"longDateFmt_8" = "%d. %B %Y";
-"longDateFmt_9" = "%e. %B %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
 "longDateFmt_10" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%Hh:%Mm";
-"timeFmt_2" = "%Hh %Mm";
+"timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
 
@@ -242,6 +242,7 @@
 "match any of the following rules:" = "mit einer der folgenden Regeln übereinstimmen:";
 "match all messages" = "mit allen Nachrichten übereinstimmen";
 "Perform these actions:" = "Führe folgende Aktionen aus:";
+"Untitled Filter" = "Namenloser Filter";
 
 "Subject" = "Betreff";
 "From" = "Von";

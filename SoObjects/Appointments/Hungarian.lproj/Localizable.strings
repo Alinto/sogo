@@ -48,6 +48,10 @@ vtodo_class2 = "(Bizalmas feladat)";
 = "Kérem fogadja el vagy utasítsa vissza a változásokat.";
 
 /* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Elfogadott meghivás: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Elutasított meghívás: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Átruházott meghívás: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Még nem döntöttek a meghívásról: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}elfogadta a meghívását.";
 "%{Attendee} %{SentByText}has declined your event invitation."

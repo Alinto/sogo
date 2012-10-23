@@ -242,6 +242,7 @@
 "match any of the following rules:" = "legalább egy szabálynak megfelelnek:";
 "match all messages" = "az összes üzenetnek megfelelnek";
 "Perform these actions:" = "Az alábbi műveletek végrehajtása:";
+"Untitled Filter" = "Névtelen szűrő";
 
 "Subject" = "Tárgy";
 "From" = "Feladó";

@@ -380,6 +380,7 @@ validate_invalid_startdate = "Fecha de inicio incorrecta";
 validate_invalid_enddate   = "Fecha de fin incorrecta";
 validate_endbeforestart    = "La fecha/hora de inicio es posterior a la de fin.";
 
+"Events" = "Eventos";
 "Tasks" = "Tareas";
 "Show completed tasks" = "Mostrar tareas completadas";
 
@@ -455,11 +456,15 @@ validate_endbeforestart    = "La fecha/hora de inicio es posterior a la de fin."
 "End" = "Fin";
 "Due Date" = "Vencimiento";
 "Location" = "Lugar";
+
 "(Private Event)" = "(Evento privado)";
 
 vevent_class0 = "(Evento público)";
 vevent_class1 = "(Evento privado)";
 vevent_class2 = "(Evento confidencial)";
+
+"Priority" = "Prioridad";
+"Category" = "Categoria";
 
 vtodo_class0 = "(Tarea pública)";
 vtodo_class1 = "(Tarea privada)";
@@ -527,6 +532,3 @@ vtodo_class2 = "(Tarea confidencial)";
 "Web Calendar" = "Calendario Web";
 "Reload on login" = "Recargar al reconectar";
 "Invalid number." = "número invalido.";
-
-"Category" = "Categoría";
-"Priority" = "Prioridad";
