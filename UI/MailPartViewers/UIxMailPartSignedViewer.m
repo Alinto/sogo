@@ -22,10 +22,12 @@
  */
 
 #include <stdio.h>
+#ifdef HAVE_OPENSSL
 #include <openssl/bio.h>
 #include <openssl/err.h>
 #include <openssl/pkcs7.h>
 #include <openssl/x509.h>
+#endif
 
 #import <Foundation/NSArray.h>
 #import <NGMime/NGPart.h>
@@ -35,6 +37,7 @@
 
 @implementation UIxMailPartSignedViewer : UIxMailPartMixedViewer
 
+#ifdef HAVE_OPENSSL
 - (X509_STORE *) _setupVerify
 {
   X509_STORE *store;
@@ -185,5 +188,16 @@
 
   return validationMessage;
 }
+#else
+- (BOOL) validSignature
+{
+  return NO;
+}
+
+- (NSString *) validationMessage
+{
+  return @"Signature verification is not implemented when using GnuTLS";
+}
+#endif
 
 @end
