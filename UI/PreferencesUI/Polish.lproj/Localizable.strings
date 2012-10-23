@@ -7,10 +7,9 @@
 "Calendar Options" = "Opcje kalendarza";
 "Contacts Options" = "Contacts Options";
 "Mail Options" = "Opcje poczty";
-"Signature" = "Podpis";
+"IMAP Accounts" = "Konta IMAP";
 "Vacation" = "Nieobecność";
 "Forward" = "Przekazywanie";
-"Identities" = "Tożsamości";
 "Password" = "Hasło";
 "Categories" = "Kategorie";
 "Name" = "Nazwa";
@@ -28,8 +27,12 @@
 "Add default email addresses" = "Dodaj domyślne adresy e-mail";
 "Days between responses :" = "Dni pomiędzy odpowiedziami :";
 "Do not send responses to mailing lists" = "Nie wysyłaj odpowiedzi do grup pocztowych";
+"Disable auto reply on" = "Zablokuj autoodpowiedź w";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Podaj treść wiadomości i twoje adresy e-mail, dla których chcesz włączyć autoodpowiedź.";
+"Your vacation message must not end with a single dot on a line." = "Twoja wiadomość nie może kończyć się kropką w pustej linii.";
+"End date of your auto reply must be in the future."
+= "Data zakończenia autoodpowiedzi musi być w przyszłości.";
 
 /* forward messages */
 "Forward incoming messages" = "Przekaż przychodzące wiadomości";
@@ -73,16 +76,25 @@
 "longDateFmt_2" = "%A, %d %B, %Y";
 "longDateFmt_3" = "%d %B, %Y";
 "longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
 
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "Pierwszy dzień tygodnia :";
 "Day start time :" = "Początek dnia :";
 "Day end time :" = "Koniec dnia :";
 "Day start time must be prior to day end time." = "Początek dnia musi wypadać wcześniej niż koniec dnia.";
+"Show time as busy outside working hours" = "Oznacz termin jako zajęty poza godzinami pracy";
 "First week of year :" = "Pierwszy tydzień roku :";
 "Enable reminders for Calendar items" = "Włącz przypomnienia pozycji kalendarza";
 "Play a sound when a reminder comes due"
@@ -92,6 +104,12 @@
 "firstWeekOfYear_January1" = "rozpoczyna się 1 stycznia";
 "firstWeekOfYear_First4DayWeek" = "pierwszy 4-dniowy tydzień";
 "firstWeekOfYear_FirstFullWeek" = "pierwszy pełny tydzień";
+
+/* Default Calendar */
+"Default calendar :" = "Domyślny kalendarz:";
+"selectedCalendar" = "Wybrany kalendarz";
+"personalCalendar" = "Kalendarz osobisty";
+"firstCalendar" = "Pierwszy kalendarz";
 
 "reminderTime_0000" = "0 minut";
 "reminderTime_0005" = "5 minut";
@@ -108,6 +126,7 @@
 
 /* Mailer */
 "Show subscribed mailboxes only" = "Pokaż tylko subskrybowane konta pocztowe";
+"Sort messages by threads" = "Sortuj wiadomości według wątków";
 "Check for new mail:" = "Sprawdzaj nowe wiadomości:";
 "messagecheck_manually" = "ręcznie";
 "messagecheck_every_minute" = "co minutę";
@@ -122,9 +141,6 @@
 "messageforward_inline" = "w treści";
 "messageforward_attached" = "jako załącznik";
 
-/* Identities */
-"Default identity:" = "Domyślna tożsamość:";
-"Manage identities..." = "Zarządzaj tożsamościami...";
 "replyplacement_above" = "Rozpocznij moją odpowiedź powyżej cytatu";
 "replyplacement_below" = "Rozpocznij moją odpowiedź poniżej cytatu";
 "And place my signature" = "i wstaw mój podpis";
@@ -134,7 +150,25 @@
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "czysty tekst";
 
-"composeMessageChanged" = "Zmiana konfiguracji tworzenia wiadomości wymaga natychmiastowego zapisania twoich ustawień. Kontynuować?";
+/* IMAP Accounts */
+"New Mail Account" = "Nowe konto";
+
+"Server Name:" = "Nazwa serwera:";
+"Port:" = "Port:";
+"User Name:" = "Użytkownik:";
+"Password:" = "Hasło:";
+
+"Full Name:" = "Imię i nazwisko:";
+"Email:" = "E-mail:";
+"Reply To Email:" = "Odpowiedź do:";
+"Signature:" = "Sygnatura:";
+"(Click to create)" = "(Kliknij by stworzyć)";
+
+"Signature" = "Podpis";
+"Please enter your signature below:" = "Wprowadź swoją sygnaturę:";
+
+"Please specify a valid sender address." = "Wprowadź poprawny adres nadawcy.";
+"Please specify a valid reply-to address." = "Wprowadź poprawny adres \"Odpowiedź do\"";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatkowe parametry";
@@ -145,11 +179,11 @@
 "Change" = "Zmiana";
 
 /* Event+task classifications */
-"Default events classification :" = "Default events classification :";
-"Default tasks classification :" = "Default tasks classification :";
-"PUBLIC_item" = "Public";
-"CONFIDENTIAL_item" = "Confidential";
-"PRIVATE_item" = "Private";
+"Default events classification :" = "Domyślna klasyfikacja zdarzeń:";
+"Default tasks classification :" = "Domyślna klasyfikacja zadań:";
+"PUBLIC_item" = "Publiczny";
+"CONFIDENTIAL_item" = "Poufny";
+"PRIVATE_item" = "Prywatny";
 
 /* Event+task categories */
 "category_none" = "Brak";
@@ -180,8 +214,8 @@
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
+"Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-"Polish" = "Polski";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "Kiedy otrzymam żądanie potwierdzenia odbioru:";
@@ -208,6 +242,7 @@
 "match any of the following rules:" = "spełnią którąkolwiek z poniższych reguł:";
 "match all messages" = "dopasowanie wszystkich wiadomości";
 "Perform these actions:" = "Wykonaj akcje:";
+"Untitled Filter" = "Filtr bez nazwy";
 
 "Subject" = "Temat";
 "From" = "Od";
@@ -247,3 +282,17 @@
 "Label 3" = "Etykieta 3";
 "Label 4" = "Etykieta 4";
 "Label 5" = "Etykieta 5";
+
+"The password was changed successfully." = "Hasło zostało zmienione.";
+"Password must not be empty." = "Hasło nie może być puste.";
+"The passwords do not match. Please try again." = "Hasła nie są takie same. Spróbuj ponownie.";
+"Password change failed" = "Nie udało się zmienić hasła";
+"Password change failed - Permission denied" = "Nie udało się zmienić hasła - brak uprawnień";
+"Password change failed - Insufficient password quality" = "Nie udało się zmienić hasła - hasło jest za proste";
+"Password change failed - Password is too short" = "Nie udało się zmienić hasła - hasło jest za krótkie";
+"Password change failed - Password is too young" = "Nie udało się zmienić hasła - zmieniasz zbyt wcześnie";
+"Password change failed - Password is in history" = "Nie udało się zmienić hasła - takie hasło już kiedyś było";
+"Unhandled policy error: %{0}" = "Nieznany błąd: %{0}";
+"Unhandled error response" = "Nieznany błąd";
+"Password change is not supported." = "Zmiana hasła jest nieobsługiwana.";
+"Unhandled HTTP error code: %{0}" = "Nieznany kod błędu HTTP: %{0}";
