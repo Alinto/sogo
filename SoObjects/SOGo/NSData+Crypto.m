@@ -35,7 +35,7 @@
 #define _XOPEN_SOURCE 1
 #include <unistd.h>
 
-#ifdef HAVE_GNUTLS
+#if defined(HAVE_GNUTLS)
 #include <stdint.h>
 #include <gnutls/gnutls.h>
 #include <gnutls/crypto.h>
@@ -43,10 +43,12 @@
 #define SHA_DIGEST_LENGTH 20
 #define SHA256_DIGEST_LENGTH 32
 #define SHA512_DIGEST_LENGTH 64
-#else
+#elif defined(HAVE_OPENSSL)
 #include <openssl/evp.h>
 #include <openssl/md5.h>
 #include <openssl/sha.h>
+#else
+#error this module requires either gnutls or openssl
 #endif
 
 #import <Foundation/NSArray.h>
@@ -54,7 +56,7 @@
 #import "NSData+Crypto.h"
 
 static unsigned charTo4Bits(char c);
-#ifdef HAVE_GNUTLS
+#if defined(HAVE_GNUTLS)
 static BOOL check_gnutls_init();
 static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
 #endif
@@ -244,11 +246,11 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   unsigned char md5[MD5_DIGEST_LENGTH];
   memset(md5, 0, MD5_DIGEST_LENGTH);
 
-#ifdef HAVE_GNUTLS
+#if defined(HAVE_GNUTLS)
   if (!check_gnutls_init())
     return nil;
   gnutls_hash_fast (GNUTLS_DIG_MD5, [self bytes], [self length], md5);
-#else
+#elif defined(HAVE_OPENSSL)
   MD5([self bytes], [self length], md5);
 #endif
 
@@ -269,10 +271,10 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
  */
 - (NSData *) asCramMD5
 {
-#ifdef HAVE_GNUTLS
+#if defined(HAVE_GNUTLS)
   const uint32_t init_digest[4] = {0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476};
   uint32_t digest[4];
-#else
+#elif defined(HAVE_OPENSSL)
   MD5_CTX ctx;
 #endif
   unsigned char inner[64];
@@ -312,7 +314,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
     *p = (c) >> 24 & 0xff; p++; \
 }
 
-#ifdef HAVE_GNUTLS
+#if defined(HAVE_GNUTLS)
   // generate first set of context bytes from outer data
   memcpy(digest, init_digest, sizeof(digest));
   _nettle_md5_compress(digest, outer);
@@ -332,7 +334,7 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   CDPUT(r, digest[1]);
   CDPUT(r, digest[2]);
   CDPUT(r, digest[3]);
-#else
+#elif defined(HAVE_OPENSSL)
   // generate first set of context bytes from outer data
   MD5_Init(&ctx);
   MD5_Transform(&ctx, outer);
@@ -366,11 +368,11 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   unsigned char sha[SHA_DIGEST_LENGTH];
   memset(sha, 0, SHA_DIGEST_LENGTH);
 
-#ifdef HAVE_GNUTLS
+#if defined(HAVE_GNUTLS)
   if (!check_gnutls_init())
     return nil;
   gnutls_hash_fast (GNUTLS_DIG_SHA1, [self bytes], [self length], sha);
-#else
+#elif defined(HAVE_OPENSSL)
   SHA1([self bytes], [self length], sha);
 #endif
 
@@ -387,11 +389,11 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   unsigned char sha[SHA256_DIGEST_LENGTH];
   memset(sha, 0, SHA256_DIGEST_LENGTH);
 
-#ifdef HAVE_GNUTLS
+#if defined(HAVE_GNUTLS)
   if (!check_gnutls_init())
     return nil;
   gnutls_hash_fast (GNUTLS_DIG_SHA256, [self bytes], [self length], sha);
-#else
+#elif defined(HAVE_OPENSSL)
   SHA256([self bytes], [self length], sha);
 #endif
 
@@ -408,11 +410,11 @@ static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
   unsigned char sha[SHA512_DIGEST_LENGTH];
   memset(sha, 0, SHA512_DIGEST_LENGTH);
 
-#ifdef HAVE_GNUTLS
+#if defined(HAVE_GNUTLS)
   if (!check_gnutls_init())
     return nil;
   gnutls_hash_fast (GNUTLS_DIG_SHA512, [self bytes], [self length], sha);
-#else
+#elif defined(HAVE_OPENSSL)
   SHA512([self bytes], [self length], sha);
 #endif
 
@@ -685,7 +687,7 @@ static unsigned charTo4Bits(char c)
   return bits;
 }
 
-#ifdef HAVE_GNUTLS
+#if defined(HAVE_GNUTLS)
 static BOOL didGlobalInit = NO;
 
 static BOOL check_gnutls_init() {
