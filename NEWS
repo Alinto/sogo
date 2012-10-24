@@ -14,6 +14,7 @@ Enhancements
  - updated the timezone files to the 2012.g edition
  - openchange backend: miscellaneous speed up of the synchronization
    operations
+ - open file descriptors are now closed when the process starts
 
 Bug fixes
 
