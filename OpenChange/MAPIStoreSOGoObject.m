@@ -77,7 +77,7 @@ static Class MAPIStoreFolderK;
       isNew = NO;
     }
 
-  [self logWithFormat: @"-init"];
+  // [self logWithFormat: @"-init"];
 
   return self;
 }
@@ -95,7 +95,7 @@ static Class MAPIStoreFolderK;
 
 - (void) dealloc
 {
-  [self logWithFormat: @"-dealloc"];
+  // [self logWithFormat: @"-dealloc"];
   [sogoObject release];
   [super dealloc];
 }

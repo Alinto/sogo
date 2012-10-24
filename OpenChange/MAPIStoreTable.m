@@ -274,7 +274,7 @@ static Class NSDataK, NSStringK;
 {
   if ((self = [super init]))
     {
-      [self logWithFormat: @"-init"];
+      // [self logWithFormat: @"-init"];
       tableType = MAPISTORE_MESSAGE_TABLE;
       handleId = -1;
 
@@ -307,21 +307,21 @@ static Class NSDataK, NSStringK;
   return self;
 }
 
-- (id) retain
-{
-  [self logWithFormat: @"-retain"];
-  return [super retain];
-}
+// - (id) retain
+// {
+//   [self logWithFormat: @"-retain"];
+//   return [super retain];
+// }
 
-- (void) release
-{
-  [self logWithFormat: @"-release"];
-  [super release];
-}
+// - (void) release
+// {
+//   [self logWithFormat: @"-release"];
+//   [super release];
+// }
 
 - (void) dealloc
 {
-  [self logWithFormat: @"-dealloc"];
+  // [self logWithFormat: @"-dealloc"];
   if (columns)
     NSZoneFree (NULL, columns);
   [currentChild release];
