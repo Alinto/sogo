@@ -17,7 +17,6 @@ Enhancements
  - open file descriptors are now closed when the process starts
 
 Bug fixes
-
  - the parameters included in the url of remote calendars are now taken into
    account
  - fixed an issue occurring with timezone definitions providing multiple entries
