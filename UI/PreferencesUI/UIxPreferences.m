@@ -759,6 +759,28 @@
   [userDefaults setMailComposeMessageType: newType];
 }
 
+/* Display remote inline images */
+- (NSArray *) displayRemoteInlineImages
+{
+  return [NSArray arrayWithObjects: @"never", @"always", nil];
+}
+
+- (NSString *) itemDisplayRemoteInlineImagesText
+{
+  return [self labelForKey: [NSString stringWithFormat:
+                                        @"displayremoteinlineimages_%@", item]];
+}
+
+- (NSString *) userDisplayRemoteInlineImages
+{
+  return [userDefaults mailDisplayRemoteInlineImages];
+}
+
+- (void) setUserDisplayRemoteInlineImages: (NSString *) newType
+{
+  [userDefaults setMailDisplayRemoteInlineImages: newType];
+}
+
 /* mail autoreply (vacation) */
 
 - (BOOL) isSieveScriptsEnabled

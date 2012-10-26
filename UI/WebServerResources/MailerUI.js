@@ -1240,8 +1240,12 @@ function loadMessage(msguid) {
         }
     }
 
+
     configureLoadImagesButton();
     configureSignatureFlagImage();
+
+    if (UserDefaults["SOGoMailDisplayRemoteInlineImages"] == 'always')
+        loadRemoteImages();
 
     return seenStateHasChanged;
 }
@@ -1563,6 +1567,11 @@ function onMessageEditDraft(event) {
 }
 
 function onMessageLoadImages(event) {
+    loadRemoteImages();
+    Event.stop(event);
+}
+
+function loadRemoteImages() {
     var content = $("messageContent");
     $(content.hiddenImgs).each(function(img) {
             var unSafeSrc = img.getAttribute("unsafe-src");
@@ -1582,11 +1591,8 @@ function onMessageLoadImages(event) {
         });
     content.hiddenObjects = null;
 
-
     var loadImagesButton = $("loadImagesButton");
     loadImagesButton.setStyle({ display: 'none' });
-
-    Event.stop(event);
 }
 
 function onEmailAddressClick(event) {
@@ -1656,6 +1662,8 @@ function loadMessageCallback(http) {
                 configureLinksInMessage();
                 resizeMailContent();
                 configureLoadImagesButton();
+                if (UserDefaults["SOGoMailDisplayRemoteInlineImages"] == 'always')
+                    loadRemoteImages();
                 configureSignatureFlagImage();
                 handleReturnReceipt();
 	        // Warning: If the user can't set the read/unread flag, it won't

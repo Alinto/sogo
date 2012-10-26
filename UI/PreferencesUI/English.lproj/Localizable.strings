@@ -149,6 +149,8 @@
 "Compose messages in" = "Compose messages in";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Plain text";
+"displayremoteinlineimages_never" = "Never";
+"displayremoteinlineimages_always" = "Always";
 
 /* IMAP Accounts */
 "New Mail Account" = "New Mail Account";

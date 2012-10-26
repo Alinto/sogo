@@ -241,6 +241,12 @@
                     const:name="composeMessagesType"
                     string="itemComposeMessagesText"
                     selection="userComposeMessagesType"/></dd>
+              <dt><var:string label:value="Display remote inline images"/></dt>
+              <dd><var:popup list="displayRemoteInlineImages" item="item"
+                    const:id="displayRemoteInlineImages"
+                    const:name="displayRemoteInlineImages"
+                    string="itemDisplayRemoteInlineImagesText"
+                    selection="userDisplayRemoteInlineImages"/></dd>
             </dl>
             <var:if condition="isSieveScriptsEnabled"
               ><label><var:string label:value="Filters"/></label>

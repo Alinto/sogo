@@ -493,6 +493,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringForKey: @"SOGoMailComposeMessageType"];
 }
 
+- (void) setMailDisplayRemoteInlineImages: (NSString *) newValue;
+{
+  [self setObject: newValue forKey: @"SOGoMailDisplayRemoteInlineImages"];
+}
+
+- (NSString *) mailDisplayRemoteInlineImages;
+{
+  return [self stringForKey: @"SOGoMailDisplayRemoteInlineImages"];
+}
+
 - (void) setMailMessageForwarding: (NSString *) newValue
 {
   [self setObject: newValue forKey: @"SOGoMailMessageForwarding"];
