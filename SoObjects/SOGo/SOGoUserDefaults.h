@@ -35,6 +35,9 @@ extern NSString *SOGoWeekStartFirst4DayWeek;
 extern NSString *SOGoWeekStartFirstFullWeek;
 
 @interface SOGoUserDefaults : SOGoDefaultsSource
+{
+  NSString *userLanguage;
+}
 
 + (SOGoUserDefaults *) defaultsForUser: (NSString *) userId
                               inDomain: (NSString *) domainId;
