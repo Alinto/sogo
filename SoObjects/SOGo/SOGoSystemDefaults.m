@@ -379,7 +379,15 @@ _injectConfigurationFromFile (NSUserDefaults *ud,
 
 - (NSArray *) supportedLanguages
 {
-  return [self stringArrayForKey: @"SOGoSupportedLanguages"];
+  static NSArray *supportedLanguages = nil;
+
+  if (!supportedLanguages)
+    {
+      supportedLanguages = [self stringArrayForKey: @"SOGoSupportedLanguages"];
+      [supportedLanguages retain];
+    }
+
+  return supportedLanguages;
 }
 
 - (BOOL) userCanChangePassword
