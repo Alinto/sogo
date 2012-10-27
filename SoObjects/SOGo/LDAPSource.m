@@ -110,7 +110,7 @@ static Class NSStringK;
       bindFields = nil;
       _scope = @"sub";
       _filter = nil;
-	  _userPasswordAlgorithm = nil;
+      _userPasswordAlgorithm = nil;
       listRequiresDot = YES;
 
       searchAttributes = nil;
