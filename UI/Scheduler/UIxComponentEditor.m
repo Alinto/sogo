@@ -1462,14 +1462,12 @@ RANGE(2);
 ////////////////////////////////// JUNK ////////////////////////////////////////
 - (NSArray *) cycles
 {
-  NSBundle *bundle;
   NSString *path;
   static NSArray *cycles = nil;
   
   if (!cycles)
     {
-      bundle = [NSBundle bundleForClass:[self class]];
-      path   = [bundle pathForResource: @"cycles" ofType: @"plist"];
+      path = [[self componentBundle] pathForResource: @"cycles" ofType: @"plist"];
       NSAssert(path != nil, @"Cannot find cycles.plist!");
       cycles = [[NSArray arrayWithContentsOfFile:path] retain];
       NSAssert(cycles != nil, @"Cannot instantiate cycles from cycles.plist!");
