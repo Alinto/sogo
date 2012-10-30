@@ -134,15 +134,16 @@ static int cssEscapingCount;
     start--;
   start++;
 
+  length = [self length];
   // In [UIxMailPartTextViewer flatContentAsString], we first escape HTML entities and then
   // add URLs. Therefore, the brackets (inequality signs <>) have been encoded at this point.
-  if ([[self substringWithRange: NSMakeRange (start, 4)] compare: @"&lt;"] == NSOrderedSame)
+  if (length > (start + 4)
+      && [[self substringWithRange: NSMakeRange (start, 4)] compare: @"&lt;"] == NSOrderedSame)
     start += 4;
 
-  length = [self length] - start;
-  workRange = NSMakeRange (start, length);
+  length -= start;
   workRange = [self rangeOfCharacterFromSet: urlAfterEndingChars
-		    options: NSLiteralSearch range: workRange];
+		    options: NSLiteralSearch range: NSMakeRange (start, length)];
   if (workRange.location != NSNotFound)
     length = workRange.location - start;
   while
