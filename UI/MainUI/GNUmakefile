@@ -13,6 +13,7 @@ MainUI_OBJC_FILES += \
 	SOGoRootPage.m		\
 	SOGoUserHomePage.m	\
 	SOGoBrowsersPanel.m	\
+	SOGoSAML2Actions.m	\
 	UIxLoading.m		\
 
 MainUI_RESOURCE_FILES += 	\

@@ -119,6 +119,11 @@
           pageName = "SOGoRootPage"; 
           actionName = "casProxy";
         };
+        saml2-metadata = {
+          protectedBy = "<public>";
+          actionClass = "SOGoSAML2Actions"; 
+          actionName = "saml2Metadata";
+        };
         /*	crash = {
                 protectedBy = "<public>";
                 pageName = "SOGoRootPage";
