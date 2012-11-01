@@ -146,6 +146,8 @@ static SoProduct      *commonProduct      = nil;
       _selectedDate = nil;
       queryParameters = nil;
       ASSIGN (userDefaults, [[context activeUser] userDefaults]);
+      if (!userDefaults)
+        ASSIGN (userDefaults, [SOGoSystemDefaults sharedSystemDefaults]);
       language = [userDefaults language];
       ASSIGN (locale,
               [[self resourceManager] localeForLanguageNamed: language]);
