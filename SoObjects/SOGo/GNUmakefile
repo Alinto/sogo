@@ -53,7 +53,6 @@ SOGo_HEADER_FILES = \
 	SOGoAuthenticator.h		\
 	SOGoSession.h			\
 	SOGoCASSession.h		\
-	SOGoSAML2Session.h		\
 	SOGoDAVAuthenticator.h		\
 	SOGoProxyAuthenticator.h	\
 	SOGoWebAuthenticator.h		\
@@ -123,7 +122,6 @@ SOGo_OBJC_FILES = \
 	\
 	SOGoSession.m			\
 	SOGoCASSession.m		\
-	SOGoSAML2Session.m		\
 	SOGoDAVAuthenticator.m		\
 	SOGoProxyAuthenticator.m	\
 	SOGoWebAuthenticator.m		\
@@ -142,8 +140,13 @@ SOGo_OBJC_FILES = \
 
 SOGo_RESOURCE_FILES = \
 	SOGoDefaults.plist \
-	DAVReportMap.plist \
-	SOGoSAML2Metadata.xml
+	DAVReportMap.plist
+
+ifeq ($(saml2_config), yes)
+	SOGo_HEADER_FILES += SOGoSAML2Session.h
+	SOGo_OBJC_FILES += SOGoSAML2Session.m
+	SOGo_RESOURCE_FILES += SOGoSAML2Metadata.xml
+endif
 
 ifeq ($(ldap_config),yes)
 

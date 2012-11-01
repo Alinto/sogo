@@ -13,8 +13,11 @@ MainUI_OBJC_FILES += \
 	SOGoRootPage.m		\
 	SOGoUserHomePage.m	\
 	SOGoBrowsersPanel.m	\
-	SOGoSAML2Actions.m	\
 	UIxLoading.m		\
+
+ifeq ($(saml2_config), yes)
+	MainUI_OBJC_FILES += SOGoSAML2Actions.m
+endif
 
 MainUI_RESOURCE_FILES += 	\
 	product.plist		\
