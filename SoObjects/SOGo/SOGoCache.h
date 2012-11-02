@@ -111,6 +111,11 @@
 - (void) setCASPGTId: (NSString *) pgtId
            forPGTIOU: (NSString *) pgtIou;
 
+// SAML2 support
+- (NSDictionary *) saml2LoginDumpsForIdentifier: (NSString *) identifier;
+- (void) setSaml2LoginDumps: (NSDictionary *) dump
+              forIdentifier: (NSString *) identifier;
+
 //
 // ACL caching support
 //
