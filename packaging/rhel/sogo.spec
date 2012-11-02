@@ -146,7 +146,7 @@ rm -fr ${RPM_BUILD_ROOT}
 # ****************************** build ********************************
 %build
 . /usr/share/GNUstep/Makefiles/GNUstep.sh
-./configure
+./configure --enable-saml2
 
 case %{_target_platform} in
 ppc64-*) 
@@ -322,6 +322,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Fri Nov 02 2012 Jean Raby <jraby@inverse.ca>
+- Enable saml2
+
 * Tue Aug 28 2012 Jean Raby <jraby@inverse.ca>
 - Add openchange_cleanup.py and tweak it to work on RHEL5
 
