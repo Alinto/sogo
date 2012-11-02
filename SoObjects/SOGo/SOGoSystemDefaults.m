@@ -425,6 +425,37 @@ _injectConfigurationFromFile (NSUserDefaults *ud,
   return [self boolForKey: @"SOGoCASLogoutEnabled"];
 }
 
+/* SAML2 support */
+- (NSString *) SAML2PrivateKeyLocation
+{
+  return [self stringForKey: @"SOGoSAML2PrivateKeyLocation"];
+}
+
+- (NSString *) SAML2CertificateLocation;
+{
+  return [self stringForKey: @"SOGoSAML2CertificateLocation"];
+}
+
+- (NSString *) SAML2IdpMetadataLocation
+{
+  return [self stringForKey: @"SOGoSAML2IdpMetadataLocation"];
+}
+
+- (NSString *) SAML2IdpPublicKeyLocation
+{
+  return [self stringForKey: @"SOGoSAML2IdpPublicKeyLocation"];
+}
+
+- (NSString *) SAML2IdpCertificateLocation
+{
+  return [self stringForKey: @"SOGoSAML2IdpCertificateLocation"];
+}
+
+- (BOOL) SAML2LogoutEnabled
+{
+  return [self boolForKey: @"SOGoSAML2LogoutEnabled"];
+}
+
 - (BOOL) enablePublicAccess
 {
   return [self boolForKey: @"SOGoEnablePublicAccess"];
