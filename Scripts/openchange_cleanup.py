@@ -196,6 +196,29 @@ def getOCSFolderInfoURL():
 
   return OCSFolderInfoURL
 
+def asCSSIdentifier(inputString):
+  cssEscapingCharMap = {"_" : "_U_",
+                        "." : "_D_",
+                        "#" : "_H_",
+                        "@" : "_A_",
+                        "*" : "_S_",
+                        ":" : "_C_",
+                        "," : "_CO_",
+                        " " : "_SP_",
+                        "'" : "_SQ_",
+                        "&" : "_AM_",
+                        "+" : "_P_"
+                       }
+
+  encodedString = ""
+
+  for c in inputString:
+    if c in cssEscapingCharMap:
+      encodedString += cssEscapingCharMap[c]
+    else:
+      encodedString += c
+  return encodedString
+
 def sqlCleanup(username):
   OCSFolderInfoURL = getOCSFolderInfoURL()
   if (OCSFolderInfoURL is None):
@@ -212,10 +235,12 @@ def sqlCleanup(username):
   dbname = m.group(6)
   # 7 is folderinfo table 
 
+  encodedUserName = asCSSIdentifier(username)
+
   if (proto == "postgresql"):
-    postgresqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, username)
+    postgresqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, encodedUserName)
   elif (proto == "mysql"):
-    mysqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, username)
+    mysqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, encodedUserName)
   else:
     raise Exception("Unknown sql proto: " % (proto))
 
