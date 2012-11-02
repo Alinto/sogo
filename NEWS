@@ -1,3 +1,9 @@
+2.0.2 (2012-11-xx)
+------------------
+
+New features
+ - support for SAML2 for single sign-on, with the help of the lasso library
+
 2.0.2 (2012-10-24)
 ------------------
 
