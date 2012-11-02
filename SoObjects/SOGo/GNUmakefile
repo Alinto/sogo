@@ -143,9 +143,13 @@ SOGo_RESOURCE_FILES = \
 	DAVReportMap.plist
 
 ifeq ($(saml2_config), yes)
-	SOGo_HEADER_FILES += SOGoSAML2Session.h
-	SOGo_OBJC_FILES += SOGoSAML2Session.m
+	SOGo_HEADER_FILES += SOGoSAML2Session.h SOGoSAML2Exceptions.h
+	SOGo_OBJC_FILES += SOGoSAML2Session.m SOGoSAML2Exceptions.m
 	SOGo_RESOURCE_FILES += SOGoSAML2Metadata.xml
+
+SOGoSAML2Exceptions.h SOGoSAML2Exceptions.m: gen-saml2-exceptions.py
+	$(ECHO_CREATING) ./gen-saml2-exceptions.py $(LASSO_CFLAGS) $(END_ECHO)
+
 endif
 
 ifeq ($(ldap_config),yes)
