@@ -43,6 +43,7 @@
                login: (NSString **) theLogin
               domain: (NSString **) theDomain
             password: (NSString **) thePassword;
+
 @end
 
 #endif

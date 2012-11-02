@@ -32,6 +32,9 @@
 
 @class NSString;
 
+@class WOContext;
+@class WOCookie;
+
 @class SOGoUser;
 
 @interface SOGoWebAuthenticator : SoCookieAuthenticator <SOGoAuthenticator>
@@ -44,6 +47,10 @@
 	       perr: (SOGoPasswordPolicyError *) _perr
 	     expire: (int *) _expire
 	      grace: (int *) _grace;
+
+- (WOCookie *) cookieWithUsername: (NSString *) username
+                      andPassword: (NSString *) password
+                        inContext: (WOContext *) context;
 
 @end
 

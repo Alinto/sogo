@@ -32,6 +32,7 @@
 #import <NGObjWeb/WOCookie.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSNull+misc.h>
@@ -47,7 +48,9 @@
 #import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
 #import "SOGoUserManager.h"
-
+#if defined(SAML2_CONFIG)
+#import "SOGoSAML2Session.h"
+#endif
 #import "SOGoWebAuthenticator.h"
 
 @implementation SOGoWebAuthenticator
@@ -107,11 +110,13 @@
 {
   SOGoCASSession *session;
   SOGoSystemDefaults *sd;
+  NSString *authenticationType;
   BOOL rc;
 
   sd = [SOGoSystemDefaults sharedSystemDefaults];
 
-  if ([[sd authenticationType] isEqualToString: @"cas"])
+  authenticationType = [sd authenticationType];
+  if ([authenticationType isEqualToString: @"cas"])
     {
       session = [SOGoCASSession CASSessionWithIdentifier: _pwd fromProxy: NO];
       if (session)
@@ -119,6 +124,18 @@
       else
         rc = NO;
     }
+#if defined(SAML2_CONFIG)
+  else if ([authenticationType isEqualToString: @"saml2"])
+    {
+      SOGoSAML2Session *saml2Session;
+      WOContext *context;
+
+      context = [[WOApplication application] context];
+      saml2Session = [SOGoSAML2Session SAML2SessionWithIdentifier: _pwd
+                                                        inContext: context];
+      rc = [[saml2Session login] isEqualToString: _login];
+    }
+#endif /* SAML2_CONFIG */
   else
     rc = [[SOGoUserManager sharedUserManager] checkLogin: _login
                                                 password: _pwd
@@ -312,6 +329,46 @@
   date = [NSCalendarDate calendarDate];
   [authCookie setExpires: [date yesterday]];
   [response addCookie: authCookie];
+}
+
+- (WOCookie *) cookieWithUsername: (NSString *) username
+                      andPassword: (NSString *) password
+                        inContext: (WOContext *) context
+{
+  WOCookie *authCookie;
+  NSString *cookieValue, *cookieString, *appName, *sessionKey, *userKey, *securedPassword;
+
+  //
+  // We create a new cookie - thus we create a new session
+  // associated to the user. For security, we generate:
+  //
+  // A- a session key
+  // B- a user key
+  //
+  // In memcached, the session key will be associated to the user's password
+  // which will be XOR'ed with the user key.
+  //
+  sessionKey = [SOGoSession generateKeyForLength: 16];
+  userKey = [SOGoSession generateKeyForLength: 64];
+
+  NSString *value = [NSString stringWithFormat: @"%@:%@", username, password];
+  securedPassword = [SOGoSession securedValue: value  usingKey: userKey];
+
+
+  [SOGoSession setValue: securedPassword  forSessionKey: sessionKey];
+
+  //cookieString = [NSString stringWithFormat: @"%@:%@",
+  //                         username, password];
+  cookieString = [NSString stringWithFormat: @"%@:%@",
+                           userKey, sessionKey];
+  cookieValue = [NSString stringWithFormat: @"basic %@",
+                          [cookieString stringByEncodingBase64]];
+  authCookie = [WOCookie cookieWithName: [self cookieNameInContext: context]
+                                  value: cookieValue];
+  appName = [[context request] applicationName];
+  [authCookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
+  
+  return authCookie;
 }
 
 @end /* SOGoWebAuthenticator */

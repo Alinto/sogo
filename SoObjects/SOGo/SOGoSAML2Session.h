@@ -28,13 +28,30 @@
 
 #import <Foundation/NSObject.h>
 
+#include <lasso/lasso.h>
+
 @class NSString;
 
 @interface SOGoSAML2Session : NSObject
 {
+  LassoLogin *lassoLogin;
+
+  NSString *login;
+  NSString *identifier;
 }
 
 + (NSString *) metadataInContext: (WOContext *) context;
++ (NSString *) authenticationURLInContext: (WOContext *) context;
+
++ (SOGoSAML2Session *) SAML2SessionInContext: (WOContext *) context;
+
++ (SOGoSAML2Session *) SAML2SessionWithIdentifier: (NSString *) newIdentifier
+                                        inContext: (WOContext *) context;
+
+- (void) processAuthnResponse: (NSString *) authnResponse;
+
+- (NSString *) login;
+- (NSString *) identifier;
 
 @end
 

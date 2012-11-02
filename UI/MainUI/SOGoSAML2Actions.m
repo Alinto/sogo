@@ -20,11 +20,22 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSTimeZone.h>
+
+#import <NGObjWeb/SoApplication.h>
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/SoObject.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOCookie.h>
 #import <NGObjWeb/WODirectAction.h>
+#import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSString+misc.h>
 
 #import <SOGo/SOGoSAML2Session.h>
+#import <SOGo/SOGoWebAuthenticator.h>
 
 @interface SOGoSAML2Actions : WODirectAction
 @end
@@ -43,6 +54,62 @@
   metadata = [SOGoSAML2Session metadataInContext: context];
   [response setContentEncoding: NSUTF8StringEncoding];
   [response appendContentString: metadata];
+
+  return response;
+}
+
+- (WOCookie *) _authLocationResetCookieWithName: (NSString *) cookieName
+{
+  WOCookie *locationCookie;
+  NSString *appName;
+  WORequest *rq;
+  NSCalendarDate *date;
+
+  rq = [context request];
+  locationCookie = [WOCookie cookieWithName: cookieName value: [rq uri]];
+  appName = [rq applicationName];
+  [locationCookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
+  date = [NSCalendarDate calendarDate];
+  [date setTimeZone: [NSTimeZone timeZoneWithAbbreviation: @"GMT"]];
+  [locationCookie setExpires: [date yesterday]];
+
+  return locationCookie;
+}
+
+- (WOResponse *) saml2SignOnPOSTAction
+{
+  WORequest *rq;
+  WOResponse *response;
+  SoApplication *application;
+  SOGoSAML2Session *newSession;
+  WOCookie *authCookie;
+  NSString *login, *oldLocation, *newLocation;
+  SOGoWebAuthenticator *auth;
+
+  rq = [context request];
+  if ([[rq method] isEqualToString: @"POST"])
+    {
+      newSession = [SOGoSAML2Session SAML2SessionInContext: context];
+      [newSession processAuthnResponse: [rq formValueForKey: @"SAMLResponse"]];
+      login = [newSession login];
+
+      application = [SoApplication application];
+      auth = [application authenticatorInContext: context];
+      authCookie = [auth cookieWithUsername: login
+                                andPassword: [newSession identifier]
+                                  inContext: context];
+
+      oldLocation = [[context clientObject] baseURLInContext: context];
+      newLocation = [NSString stringWithFormat: @"%@/%@",
+                              oldLocation, [login stringByEscapingURL]];
+
+      response = [context response];
+      [response setStatus: 302];
+      [response setHeader: @"text/plain; charset=utf-8"
+                   forKey: @"content-type"];
+      [response setHeader: newLocation forKey: @"location"];
+      [response addCookie: authCookie];
+    }
 
   return response;
 }
