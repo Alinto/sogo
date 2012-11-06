@@ -1,7 +1,7 @@
 /* SOGoGCSFolder.m - this file is part of SOGo
  *
  * Copyright (C) 2004-2005 SKYRIX Software AG
- * Copyright (C) 2006-2010 Inverse inc.
+ * Copyright (C) 2006-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -835,7 +835,7 @@ static NSArray *childRecordFields = nil;
 - (BOOL) subscribeUserOrGroup: (NSString *) theIdentifier
 		     reallyDo: (BOOL) reallyDo
 {
-  NSMutableDictionary *moduleSettings;
+  NSMutableDictionary *moduleSettings, *folderShowAlarms;
   NSMutableArray *folderSubscription;
   NSString *subscriptionPointer;
   NSMutableArray *allUsers;
@@ -886,6 +886,8 @@ static NSArray *childRecordFields = nil;
       folderSubscription
         = [moduleSettings objectForKey: @"SubscribedFolders"];
       subscriptionPointer = [self folderReference];
+      
+      folderShowAlarms = [moduleSettings objectForKey: @"FolderShowAlarms"];
 
       if (reallyDo)
         {
@@ -897,14 +899,26 @@ static NSArray *childRecordFields = nil;
                                  forKey: @"SubscribedFolders"];
             }
 
+	  if (!(folderShowAlarms
+                && [folderShowAlarms isKindOfClass: [NSMutableDictionary class]]))
+            {
+              folderShowAlarms = [NSMutableDictionary dictionary];
+              [moduleSettings setObject: folderShowAlarms
+                                 forKey: @"FolderShowAlarms"];
+            }
+
           [folderSubscription addObjectUniquely: subscriptionPointer];
+	  
+	  // By default, we disable alarms on subscribed calendars
+	  [folderShowAlarms setObject: [NSNumber numberWithBool: NO]
+			       forKey: subscriptionPointer];
         }
       else
         {
           [self removeFolderSettings: moduleSettings
                        withReference: subscriptionPointer];
           [folderSubscription removeObject: subscriptionPointer];
-        
+	  [folderShowAlarms removeObjectForKey: subscriptionPointer];
 	}
 
       [us synchronize];
