@@ -3,6 +3,7 @@
 
 New features
  - support for SAML2 for single sign-on, with the help of the lasso library
+ - added support for the "AUTHENTICATE" command and SASL mechanisms
 
 2.0.2 (2012-10-24)
 ------------------
