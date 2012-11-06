@@ -71,8 +71,7 @@
 {
   NSString *scheme;
   NSString *pass;
-  NSArray *schemeComps;
-  keyEncoding encoding;
+  NSArray *encodingAndScheme;
   
   NSRange range;
   int selflen, len;
@@ -88,32 +87,11 @@
   if (len == 0)
     scheme = defaultScheme;
 
-  encoding = [NSString getDefaultEncodingForScheme: scheme];
-
-  // get the encoding which may be part of the scheme
-  // e.g. ssha.hex forces a hex encoded ssha scheme
-  // possible is "b64" or "hex"
-  schemeComps = [scheme componentsSeparatedByString: @"."];
-  if ([schemeComps count] == 2)
-    {
-      NSString *stringEncoding;
-      // scheme without encoding string is the first item
-      scheme = [schemeComps objectAtIndex: 0];
-      // encoding string is second item
-      stringEncoding = [schemeComps objectAtIndex: 1];
-      if ([stringEncoding caseInsensitiveCompare: @"hex"] == NSOrderedSame)
-        {
-          encoding = encHex;
-        }
-      else if ([stringEncoding caseInsensitiveCompare: @"b64"] == NSOrderedSame ||
-               [stringEncoding caseInsensitiveCompare: @"base64"] == NSOrderedSame)
-        {
-          encoding = encBase64;
-        }
-    }
+  encodingAndScheme = [NSString getDefaultEncodingForScheme: scheme];
 
   pass = [self substringWithRange: range];
-  return [NSArray arrayWithObjects: scheme, pass, [NSNumber numberWithInt: encoding], nil];
+  // return array with [scheme, password, encoding]
+  return [NSArray arrayWithObjects: [encodingAndScheme objectAtIndex: 1], pass, [encodingAndScheme objectAtIndex: 0], nil];
 }
 
 /**
@@ -147,7 +125,7 @@
   if (encoding == encHex)
     {
       decodedData = [NSData decodeDataFromHexString: pass];
-      
+
       if(decodedData == nil)
         {
           decodedData = [NSData data];
@@ -208,8 +186,10 @@
  *
  * @param passwordScheme The scheme to use
  * @param theSalt The binary data of the salt
- * @param userEncoding The encoding (plain, hex, base64) to be used
- * @return If successful, the encrypted and encoded NSString of the format {scheme}pass, or nil if the scheme did not exists or an error occured
+ * @param userEncoding The encoding (plain, hex, base64) to be used. If set to
+ *        encDefault, the encoding will be detected from scheme name.
+ * @return If successful, the encrypted and encoded NSString of the format {scheme}pass,
+ *         or nil if the scheme did not exists or an error occured.
  */
 - (NSString *) asCryptedPassUsingScheme: (NSString *) passwordScheme
                                withSalt: (NSData *) theSalt
@@ -217,18 +197,28 @@
 {
   keyEncoding dataEncoding;
   NSData* cryptedData;
+
+  // use default encoding scheme, when set to default
+  if (userEncoding == encDefault)
+    {
+      // the encoding needs to be detected before crypting,
+      // to get the plain scheme (without encoding identifier)
+      NSArray* encodingAndScheme;
+      encodingAndScheme = [NSString getDefaultEncodingForScheme: passwordScheme];
+      dataEncoding = [[encodingAndScheme objectAtIndex: 0] intValue];
+      passwordScheme = [encodingAndScheme objectAtIndex: 1];
+    }
+  else
+    {
+      dataEncoding = userEncoding;
+    }
+
   // convert NSString to NSData and apply encryption scheme
   cryptedData = [self dataUsingEncoding: NSUTF8StringEncoding];
   cryptedData = [cryptedData asCryptedPassUsingScheme: passwordScheme  withSalt: theSalt];
   // abort on unsupported scheme or error
   if (cryptedData == nil)
     return nil;
-
-  // use default encoding scheme, when set to default
-  if (userEncoding == encDefault)
-    dataEncoding = [NSString getDefaultEncodingForScheme: passwordScheme];
-  else
-    dataEncoding = userEncoding;
 
   if (dataEncoding == encHex)
     {
@@ -250,19 +240,49 @@
 /**
  * Returns the encoding for a specified scheme
  *
- * @param passwordScheme The scheme for which to get the encoding.
+ * @param passwordScheme The scheme for which to get the encoding. Can be "scheme.encoding" in which case the encoding is returned
  * @see keyEncoding
- * @return returns the encoding, if unknown returns encPlain
+ * @return returns NSArray with elements {NSNumber encoding, NSString* scheme} where scheme is the 'real' scheme without the ".encoding" part.
+ * 'encoding' is stored as NSNumber in the array. If the encoding was not detected, encPlain is used for encoding.
  */
-+ (keyEncoding) getDefaultEncodingForScheme: (NSString *) passwordScheme
++ (NSArray *) getDefaultEncodingForScheme: (NSString *) passwordScheme
 {
+  NSArray *schemeComps;
+  NSString *trueScheme;
+  keyEncoding encoding = encPlain;
+
+  // get the encoding which may be part of the scheme
+  // e.g. ssha.hex forces a hex encoded ssha scheme
+  // possible is "b64" or "hex"
+  schemeComps = [passwordScheme componentsSeparatedByString: @"."];
+  if ([schemeComps count] == 2)
+    {
+      trueScheme = [schemeComps objectAtIndex: 0];
+      NSString *stringEncoding;
+      // encoding string is second item
+      stringEncoding = [schemeComps objectAtIndex: 1];
+      if ([stringEncoding caseInsensitiveCompare: @"hex"] == NSOrderedSame)
+        {
+          encoding = encHex;
+        }
+      else if ([stringEncoding caseInsensitiveCompare: @"b64"] == NSOrderedSame ||
+               [stringEncoding caseInsensitiveCompare: @"base64"] == NSOrderedSame)
+        {
+          encoding = encBase64;
+        }
+    }
+   else
+    {
+      trueScheme = passwordScheme;
+    }
+
   // in order to keep backwards-compatibility, hex encoding is used for sha1 here
   if ([passwordScheme caseInsensitiveCompare: @"md5"] == NSOrderedSame ||
       [passwordScheme caseInsensitiveCompare: @"plain-md5"] == NSOrderedSame ||
       [passwordScheme caseInsensitiveCompare: @"sha"] == NSOrderedSame ||
       [passwordScheme caseInsensitiveCompare: @"cram-md5"] == NSOrderedSame)
     {
-      return encHex;
+      encoding = encHex;
     }
   else if ([passwordScheme caseInsensitiveCompare: @"smd5"] == NSOrderedSame ||
            [passwordScheme caseInsensitiveCompare: @"ldap-md5"] == NSOrderedSame ||
@@ -272,9 +292,9 @@
            [passwordScheme caseInsensitiveCompare: @"sha512"] == NSOrderedSame ||
            [passwordScheme caseInsensitiveCompare: @"ssha512"] == NSOrderedSame)
     {
-      return encBase64;
+      encoding = encBase64;
     }
-  return encPlain;
+  return [NSArray arrayWithObjects: [NSNumber numberWithInt: encoding], trueScheme, nil];
 }
 
 /**

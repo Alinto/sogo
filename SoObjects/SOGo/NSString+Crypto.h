@@ -56,7 +56,7 @@ typedef enum {
 - (NSString *) asSHA1String;
 - (NSString *) asMD5String;
 
-+ (keyEncoding) getDefaultEncodingForScheme: (NSString *) passwordScheme;
++ (NSArray *) getDefaultEncodingForScheme: (NSString *) passwordScheme;
 
 @end
 

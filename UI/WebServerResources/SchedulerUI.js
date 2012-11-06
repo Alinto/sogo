@@ -1986,8 +1986,8 @@ function calendarDisplayCallback(http) {
                              "-",
                              deleteEvent,
                              copyEventToPersonalCalendar,
-			     onMenuRawEvent
-			     );
+                             onMenuRawEvent
+                            );
         var observer;
         if (currentView == 'dayview') {
             observer = $("daysView");
@@ -2669,7 +2669,7 @@ function onTasksListMenuPrepareVisibility() {
     var options = $(this).down("ul");
     var rawOption = options.down("li", 6);
 
-    var selectedTasks = $$("UL#tasksList LI._selected");
+    var selectedTasks = $$("#tasksList ._selected");
     if (selectedTasks.length == 1)
         rawOption.removeClassName("disabled");
     else
