@@ -285,7 +285,9 @@
                                                        inContext: context];
           assertion = [[session assertion]
                         dataUsingEncoding: NSUTF8StringEncoding];
-          password = [[assertion gzip] stringByEncodingBase64];
+          password = [[[assertion compress] stringByEncodingBase64]
+                       stringByReplacingString: @"\n"
+                                    withString: @""];
         }
 #endif
     }
