@@ -34,8 +34,10 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSData+gzip.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <NGExtensions/NSNull+misc.h>
+#import <NGExtensions/NSString+Ext.h>
 #import <NGLdap/NGLdapConnection.h>
 
 #import <MainUI/SOGoRootPage.h>
@@ -242,16 +244,18 @@
                               forURL: (NSURL *) server
                           forceRenew: (BOOL) renew
 {
-  NSString *password, *service, *scheme;
-  SOGoCASSession *session;
-  SOGoSystemDefaults *sd;
+  NSString *authType, *password;
  
   password = [self passwordInContext: context];
   if ([password length])
     {
-      sd = [SOGoSystemDefaults sharedSystemDefaults];
-      if ([[sd authenticationType] isEqualToString: @"cas"])
+      authType = [[SOGoSystemDefaults sharedSystemDefaults]
+                   authenticationType];
+      if ([authType isEqualToString: @"cas"])
         {
+          SOGoCASSession *session;
+          NSString *service, *scheme;
+
           session = [SOGoCASSession CASSessionWithIdentifier: password
                                                    fromProxy: NO];
 
@@ -269,6 +273,21 @@
           if ([password length] || renew)
             [session updateCache];
         }
+#if defined(SAML2_CONFIG)
+      else if ([authType isEqualToString: @"saml2"])
+        {
+          SOGoSAML2Session *session;
+          WOContext *context;
+          NSData *assertion;
+
+          context = [[WOApplication application] context];
+          session = [SOGoSAML2Session SAML2SessionWithIdentifier: password
+                                                       inContext: context];
+          assertion = [[session assertion]
+                        dataUsingEncoding: NSUTF8StringEncoding];
+          password = [[assertion gzip] stringByEncodingBase64];
+        }
+#endif
     }
 
   return password;
