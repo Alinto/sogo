@@ -203,6 +203,9 @@ LassoServerInContext (WOContext *context)
   if ((self = [super init]))
     {
       lassoLogin = NULL;
+      login = nil;
+      identifier = nil;
+      assertion = nil;
     }
 
   return self;
@@ -211,24 +214,24 @@ LassoServerInContext (WOContext *context)
 - (void) _updateDataFromLogin
 {
   // LassoSamlp2Response *response;
-  LassoSaml2Assertion *assertion;
+  LassoSaml2Assertion *saml2Assertion;
   GList *statementList, *attributeList;
   LassoSaml2AttributeStatement *statement;
   LassoSaml2Attribute *attribute;
   LassoSaml2AttributeValue *value;
   LassoMiscTextNode *textNode;
   LassoSaml2NameID *nameIdentifier;
+  gchar *dump;
                   
-  NSLog (@"lassoLogin: class = %s", g_type_name_from_instance (lassoLogin));
-
-  assertion = LASSO_SAML2_ASSERTION (lasso_login_get_assertion (lassoLogin));
-  if (assertion)
+  saml2Assertion
+    = LASSO_SAML2_ASSERTION (lasso_login_get_assertion (lassoLogin));
+  if (saml2Assertion)
     {
       /* deduce user login */
       [login release];
       login = nil;
 
-      statementList = assertion->AttributeStatement;
+      statementList = saml2Assertion->AttributeStatement;
       while (!login && statementList)
         {
           statement = LASSO_SAML2_ATTRIBUTE_STATEMENT (statementList->data);
@@ -248,6 +251,18 @@ LassoServerInContext (WOContext *context)
             }
           statementList = statementList->next;
         }
+
+      /* serialize assertion */
+      [assertion release];
+      dump = lasso_node_export_to_xml (LASSO_NODE (saml2Assertion));
+      if (dump)
+        {
+          assertion = [NSString stringWithUTF8String: dump];
+          [assertion retain];
+          g_free (dump);
+        }
+      else
+        assertion = nil;
     }
 
   nameIdentifier
@@ -278,6 +293,7 @@ LassoServerInContext (WOContext *context)
           profile = LASSO_PROFILE (lassoLogin);
           ASSIGN (login, [saml2Dump objectForKey: @"login"]);
           ASSIGN (identifier, [saml2Dump objectForKey: @"identifier"]);
+          ASSIGN (assertion, [saml2Dump objectForKey: @"assertion"]);
           dump = [[saml2Dump objectForKey: @"identity"] UTF8String];
           if (dump)
             lasso_profile_set_identity_from_dump (profile, dump);
@@ -300,6 +316,7 @@ LassoServerInContext (WOContext *context)
     g_object_unref (lassoLogin);
   [login release];
   [identifier release];
+  [assertion release];
   [super dealloc];
 }
 
@@ -347,6 +364,11 @@ LassoServerInContext (WOContext *context)
   return identifier;
 }
 
+- (NSString *) assertion
+{
+  return assertion;
+}
+
 - (void) processAuthnResponse: (NSString *) authnResponse
 {
   lasso_error_t rc;
@@ -372,6 +394,7 @@ LassoServerInContext (WOContext *context)
   saml2Dump = [NSMutableDictionary dictionary];
   [saml2Dump setObject: login forKey: @"login"];
   [saml2Dump setObject: identifier forKey: @"identifier"];
+  [saml2Dump setObject: assertion forKey: @"assertion"];
 
   profile = LASSO_PROFILE (lassoLogin);
 

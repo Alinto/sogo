@@ -38,6 +38,7 @@
 
   NSString *login;
   NSString *identifier;
+  NSString *assertion;
 }
 
 + (NSString *) metadataInContext: (WOContext *) context;
@@ -52,6 +53,7 @@
 
 - (NSString *) login;
 - (NSString *) identifier;
+- (NSString *) assertion;
 
 @end
 
