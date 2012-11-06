@@ -586,7 +586,10 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   pass = [plainPassword asCryptedPassUsingScheme: _userPasswordAlgorithm];
 
   if (pass == nil)
-    [self errorWithFormat: @"Unsupported user-password algorithm: %@", _userPasswordAlgorithm];
+    {
+      [self errorWithFormat: @"Unsupported user-password algorithm: %@", _userPasswordAlgorithm];
+      return nil;
+    }
 
   return [NSString stringWithFormat: @"{%@}%@", _userPasswordAlgorithm, pass];
 }
@@ -629,24 +632,34 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 		    NGLdapModification *mod;
 		    NGLdapAttribute *attr;
 		    NSArray *changes;
+           NSString* encryptedPass;
 		    
 		    attr = [[NGLdapAttribute alloc] initWithAttributeName: @"userPassword"];
 		    if ([_userPasswordAlgorithm isEqualToString: @"none"])
-		      [attr addStringValue:  newPassword];
-		    else
-		      [attr addStringValue: [self _encryptPassword: newPassword]];
-		    
-		    mod = [NGLdapModification replaceModification: attr];
-		    changes = [NSArray arrayWithObject: mod];
-		    *perr = PolicyNoError;
+             {
+               encryptedPass = newPassword;
+             }
+           else
+             {
+               encryptedPass = [self _encryptPassword: newPassword];
+             }
+           if(encryptedPass != nil)
+             {
+               [attr addStringValue: encryptedPass];
+               mod = [NGLdapModification replaceModification: attr];
+               changes = [NSArray arrayWithObject: mod];
+               *perr = PolicyNoError;
 
-		    if ([bindConnection bindWithMethod: @"simple"
-					binddn: userDN
-					credentials: oldPassword])
-		      didChange = [bindConnection modifyEntryWithDN: userDN
-						  changes: changes]; 
-		    else
-		      didChange = NO;
+               if ([bindConnection bindWithMethod: @"simple"
+                        binddn: userDN
+                        credentials: oldPassword])
+                 {
+                   didChange = [bindConnection modifyEntryWithDN: userDN
+                                changes: changes];
+                 }
+                else
+                  didChange = NO;
+              }
 		  }
 	      else
 		didChange = [bindConnection changePasswordAtDn: userDN
