@@ -17,11 +17,13 @@ ADDITIONAL_INCLUDE_DIRS += \
 
 # dependencies
 
+BASE_LIBS := $(shell gnustep-config --base-libs)
+
 libNGCards_LIBRARIES_DEPEND_UPON += \
 	-lNGExtensions	\
 	-lEOControl	\
 	-lSaxObjC \
-        -lgnustep-base -lobjc -lm
+        $(BASE_LIBS)
 
 NGCards_LIBRARIES_DEPEND_UPON += \
 	-framework NGExtensions	-framework EOControl \

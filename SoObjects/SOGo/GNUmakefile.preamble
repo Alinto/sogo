@@ -24,7 +24,8 @@ SOGo_LIBRARIES_DEPEND_UPON += \
 	-lNGStreams -lNGExtensions -lEOControl \
 	-lDOM -lSaxObjC \
 	-lNGLdap -lSBJson \
-        -lGDLContentStore -lgnustep-base -lobjc -ldl
+        -lGDLContentStore \
+        $(BASE_LIBS)
 
 ifeq ($(HAS_LIBRARY_gnutls),yes)
 ADDITIONAL_CPPFLAGS += -DHAVE_GNUTLS=1

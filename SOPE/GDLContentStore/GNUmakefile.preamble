@@ -8,11 +8,12 @@ ADDITIONAL_INCLUDE_DIRS += -I. -I..
 
 
 # dependencies
+BASE_LIBS := $(shell gnustep-config --base-libs)
 
 libGDLContentStore_LIBRARIES_DEPEND_UPON += \
 	-lGDLAccess			\
 	-lNGExtensions -lEOControl	\
-        -lgnustep-base -lobjc
+        $(BASE_LIBS)
 
 GDLContentStore_LIBRARIES_DEPEND_UPON += \
 	-framework GDLAccess	\
@@ -25,7 +26,7 @@ GCS_TOOL_LIBS += \
 	-lGDLContentStore -lGDLAccess	\
 	-lNGExtensions -lEOControl	\
 	-lDOM -lSaxObjC \
-        -lgnustep-base
+        $(BASE_LIBS)
 else
 GCS_TOOL_LIBS += \
 	-framework GDLContentStore -framework GDLAccess	\

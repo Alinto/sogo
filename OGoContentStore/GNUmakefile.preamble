@@ -7,8 +7,7 @@ libOGoContentStore_LIBRARIES_DEPEND_UPON += \
 	-lNGExtensions	\
 	-lEOControl	\
 	-lSaxObjC	\
-	-lgnustep-base	\
-	-lobjc
+	$(BASE_LIBS)
 
 ADDITIONAL_INCLUDE_DIRS += -I. -I.. -I../SOPE -I../SoObjects
 
@@ -29,4 +28,5 @@ test_quick_extract_TOOL_LIBS += \
 	-lNGCards		\
 	-lGDLContentStore	\
 	-lGDLAccess		\
-	-lOGoContentStore
+	-lOGoContentStore       \
+	$(BASE_LIBS)
