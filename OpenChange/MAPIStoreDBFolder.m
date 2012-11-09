@@ -337,7 +337,18 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 
 - (BOOL) subscriberCanReadMessages
 {
-  return [self _testRoleForActiveUser: MAPIStoreRightReadItems];
+  NSString *displayName;
+
+  /* when this folder is the "Freebusy Data" folder, we need to allow
+     subscribed to read an open contained messages in order to enable them to
+     find the "LocalFreebusy" message */
+  [sogoObject reloadIfNeeded];
+  
+  displayName = [[sogoObject properties]
+                  objectForKey: MAPIPropertyKey (PidTagDisplayName)];
+
+  return ([displayName isEqualToString: @"Freebusy Data"]
+          || [self _testRoleForActiveUser: MAPIStoreRightReadItems]);
 }
 
 - (BOOL) subscriberCanDeleteMessages
