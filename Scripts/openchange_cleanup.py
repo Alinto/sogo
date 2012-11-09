@@ -207,17 +207,17 @@ def asCSSIdentifier(inputString):
                         " " : "_SP_",
                         "'" : "_SQ_",
                         "&" : "_AM_",
-                        "+" : "_P_"
-                       }
+                        "+" : "_P_"}
 
-  encodedString = ""
+  newChars = []
 
   for c in inputString:
     if c in cssEscapingCharMap:
-      encodedString += cssEscapingCharMap[c]
+      newChars.append(cssEscapingCharMap[c])
     else:
-      encodedString += c
-  return encodedString
+      newChars.append(c)
+
+  return "".join(newChars)
 
 def sqlCleanup(username):
   OCSFolderInfoURL = getOCSFolderInfoURL()
