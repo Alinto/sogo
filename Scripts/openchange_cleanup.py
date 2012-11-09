@@ -12,9 +12,11 @@ import sys
 
 imaphost = '127.0.0.1'
 imapport = 143
+
 sambaprivate = '/var/lib/samba/private'
 mapistorefolder = "%s/mapistore" % (sambaprivate)
-sogoDefaultsFile = "/home/sogo/GNUstep/Defaults/.GNUstepDefaults"
+sogoSysDefaultsFile = "/etc/sogo/sogo.conf"
+sogoUserDefaultsFile = "/home/sogo/GNUstep/Defaults/.GNUstepDefaults"
 
 #  - takes a username and optionally its password
 #  - removes the entry in samba's ldap tree via ldbedit (NOTYET)
@@ -187,12 +189,21 @@ def postgresqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, username):
   print "table '%s' emptied" % tablename
 
 def getOCSFolderInfoURL():
-  global sogoDefaultsFile
-  sogoDefaults = plistlib.readPlist(sogoDefaultsFile)
-  try:
-    OCSFolderInfoURL = sogoDefaults['sogod']['OCSFolderInfoURL']
-  except KeyError:
-    OCSFolderInfoURL = ""
+  global sogoSysDefaultsFile, sogoUserDefaultsFile
+
+  OCSFolderInfoURL = ""
+
+  # read defaults from /etc/sogo/sogo.conf
+  if os.path.exists(sogoSysDefaultsFile):
+    sogoDefaults = plistlib.readPlist(sogoSysDefaultsFile)
+    if "OCSFolderInfoURL" in sogoDefaults:
+      OCSFolderInfoURL = sogoDefaults["OCaSFolderInfoURL"]
+
+  # defaults from user directory must have precedence
+  if os.path.exists(sogoUserDefaultsFile):
+    sogoDefaults = plistlib.readPlist(sogoUserDefaultsFile)
+    if "sogo" in sogoDefaults and "OCSFolderInfoURL" in sogoDefaults["sogo"]:
+      OCSFolderInfoURL = sogoDefaults['sogod']['OCaSFolderInfoURL']
 
   return OCSFolderInfoURL
 
@@ -221,7 +232,7 @@ def asCSSIdentifier(inputString):
 
 def sqlCleanup(username):
   OCSFolderInfoURL = getOCSFolderInfoURL()
-  if (OCSFolderInfoURL is None):
+  if OCSFolderInfoURL is None:
     raise Exception("Couldn't fetch OCSFolderInfoURL or it is not set. the socfs_%s table should be truncated manually" % (username))
     
   # postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_folder_info
@@ -246,4 +257,4 @@ def sqlCleanup(username):
 
 
 if __name__ == "__main__":
-    main() 
+  main()
