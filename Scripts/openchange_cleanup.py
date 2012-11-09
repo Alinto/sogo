@@ -149,8 +149,6 @@ def imapCleanup(imaphost, imapport, username, userpass) :
         if code == "OK":
             for si in data:
                 if si is not None:
-                    print si
-                    continue
                     mb = extractmb(si)
                     cleanupmb(mb, client)
     client.logout()
