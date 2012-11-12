@@ -110,7 +110,8 @@ DIV#contactFoldersList
   bottom: 0px;
   margin: 0px;
   padding: 0px;
-  overflow: hidden; }
+  overflow: auto;
+  overflow-x: hidden; }
 
 DIV#abToolbar
 { padding-left: 6px; }
