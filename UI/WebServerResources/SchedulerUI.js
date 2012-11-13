@@ -3239,23 +3239,23 @@ function onWindowResize(event) {
         handle.adjust();
 
     if (!$(document.body).hasClassName("popup"))
-        drawNowLine ();
+        drawNowLine();
 }
 
-function drawNowLine () {
+function drawNowLine() {
   var d = new Date();
   var hours = d.getHours();
   var minutes = d.getMinutes();
 
   if (currentView == "dayview") {
-    var today = new Date ();
-    var m = parseInt(today.getMonth ()) + 1;
-    var d = today.getDate ();
+    var today = new Date();
+    var m = parseInt(today.getMonth()) + 1;
+    var d = today.getDate();
     if (m < 10)
       m = "0" + m;
     if (d < 10)
       d = "0" + d;
-    var day = today.getFullYear () + "" + m + "" + d;
+    var day = today.getFullYear() + "" + m + "" + d;
     var targets = $$("DIV#daysView DIV.days DIV.day[day=" + day
                      + "] DIV.clickableHourCell");
   }
@@ -3268,12 +3268,12 @@ function drawNowLine () {
     if (target) {
       var div = $("nowLineDisplay");
       if (!div)
-        div = new Element ("div", {'id': 'nowLineDisplay'});
+        div = new Element("div", {'id': 'nowLineDisplay'});
 
-      div.style.top = parseInt (((minutes * target.offsetHeight) / 60) - 1) + "px";
-      target.appendChild (div);
+      div.style.top = parseInt(((minutes * target.offsetHeight) / 60) - 1) + "px";
+      target.appendChild(div);
 
-      setTimeout ("drawNowLine ();", 60000); // 1 min.
+      setTimeout("drawNowLine ();", 60000); // 1 min.
     }
   }
 }

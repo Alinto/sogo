@@ -269,7 +269,7 @@ static NSString    *userAgent      = nil;
 {
   id headerValue;
   unsigned int count;
-  NSString *messageID, *priority, *pureSender,*replyTo;
+  NSString *messageID, *priority, *pureSender, *replyTo;
 
   for (count = 0; count < 8; count++)
     {
@@ -314,8 +314,8 @@ static NSString    *userAgent      = nil;
   if ([replyTo length] > 0)
     {
       [headers setObject: replyTo forKey: @"reply-to"];
-      [headers removeObjectForKey: @"replyTo"];
     }
+  [headers removeObjectForKey: @"replyTo"];
 
   if ([[newHeaders objectForKey: @"receipt"] isEqualToString: @"true"])
     {

@@ -5,7 +5,8 @@ DIV#leftPanel
   width: 19.25em;
   bottom: 0px;
   background-color: #CCDDEC;
-  overflow: hidden; }
+  overflow: auto;
+  overflow-x: hidden; }
 
 DIV#schedulerTabs
 { position: absolute;
@@ -20,9 +21,6 @@ DIV#schedulerTabs .tabs
 DIV#schedulerTabs .tab
 { left: 0px;
   right: 0px; }
-
-DIV#calendarSelectorView
-{ overflow: hidden; }
 
 DIV#calendarSelectorButtons
 { padding-left: 6px; }
@@ -44,8 +42,6 @@ UL#calendarList
   padding: 0px;
   list-style-type: none;
   list-style-image: none;
-  overflow: hidden;
-  overflow-y: auto;
   -moz-user-select: none;
   -khtml-user-select: none; }
 
