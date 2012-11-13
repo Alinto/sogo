@@ -75,6 +75,8 @@
 - (void) replaceThisElement: (CardElement *) oldElement
                 withThisOne: (CardElement *) newElement;
 
+- (NSArray *) orderOfElements;
+
 @end
 
 #endif /* CARDGROUP_H */

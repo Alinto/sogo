@@ -1,6 +1,6 @@
 /* CardVersitRenderer.m - this file is part of SOPE
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -107,6 +107,7 @@
   CardElement *currentChild;
   NSMutableString *rendering;
   NSString *groupTag;
+  NSArray *order;
 
   rendering = [NSMutableString string];
 
@@ -120,7 +121,30 @@
 
   groupTag = [groupTag uppercaseString];
   [rendering appendFormat: @"BEGIN:%@\r\n", groupTag];
-  children = [[aGroup children] objectEnumerator];
+
+  // We reorder the group elemments, if necessary
+  order = [aGroup orderOfElements];
+
+  if (order)
+    {
+      NSMutableArray *orderedElements;
+      int i, c;
+
+      orderedElements = [NSMutableArray array];
+      c = [order count];
+      
+      for (i = 0; i < c; i++)
+        {
+          [orderedElements addObjectsFromArray: [aGroup childrenWithTag: [order objectAtIndex: i]]];
+        }
+      
+      children = [orderedElements objectEnumerator];
+    }
+  else
+    {
+      children = [[aGroup children] objectEnumerator];
+    }
+
   while ((currentChild = [children nextObject]))
     [rendering appendString: [self render: currentChild]];
   [rendering appendFormat: @"END:%@\r\n", groupTag];

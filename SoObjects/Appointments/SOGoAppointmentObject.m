@@ -410,14 +410,6 @@
                      previousObject: oldEvent
                         toAttendees: updateAttendees
                            withType: @"calendar:invitation-update"];
-
-#if 0
-  // DELETE CODE
-  [self sendReceiptEmailForObject: newEvent
-		   addedAttendees: nil
-		 deletedAttendees: nil
-		 updatedAttendees: updateAttendees];
-#endif
 }
 
 //

@@ -1,6 +1,6 @@
 /* CardElement.m - this file is part of SOPE
  *
- * Copyright (C) 2006 Inverse inc.
+ * Copyright (C) 2006-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
