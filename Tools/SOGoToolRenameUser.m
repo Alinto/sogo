@@ -35,6 +35,7 @@
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <GDLContentStore/GCSFolderManager.h>
+#import <GDLContentStore/GCSSpecialQueries.h>
 #import <GDLContentStore/NSURL+GCS.h>
 
 #import <SOGo/NSString+Utilities.h>
@@ -113,6 +114,7 @@
   BOOL rc = NO;
   GCSFolderManager *fm;
   GCSChannelManager *cm;
+  GCSSpecialQueries *specialQueries;
   NSURL *folderLocation;
   EOAdaptorContext *ac;
   EOAdaptorChannel *fc;
@@ -125,6 +127,7 @@
   folderLocation = [fm folderInfoLocation];
   fc = [cm acquireOpenChannelForURL: folderLocation];
   ac = [fc adaptorContext];
+  specialQueries = [fc specialQueries];
   sqlFromUserID = [fromUserID asSafeSQLString];
   sqlToUserID = [toUserID asSafeSQLString];
       
@@ -137,15 +140,16 @@
   if (!sqlError)
     {
       sql
-        = [NSString stringWithFormat: @"UPDATE %@"
-                    @" SET c_path = '/'||c_path1||'/'||c_path2||'/'||c_path3||'/'||c_path4"
-                    @" WHERE c_path2 = '%@'",
-                    [folderLocation gcsTableName], sqlToUserID];
+        = [specialQueries updateCPathInFolderInfo: [folderLocation gcsTableName]
+                                       withCPath2: sqlToUserID];
       sqlError = [fc evaluateExpressionX: sql];
     }
   
   if (sqlError)
-    [ac rollbackTransaction];
+    {
+      [ac rollbackTransaction];
+      NSLog([sqlError reason]);
+    }
   else
     rc = [ac commitTransaction];
   
@@ -195,7 +199,10 @@
                   [profileLocation gcsTableName], sqlToUserID, sqlFromUserID];
   sqlError = [fc evaluateExpressionX: sql];
   if (sqlError)
-    [ac rollbackTransaction];
+    {
+      [ac rollbackTransaction];
+      NSLog([sqlError reason]);
+    }
   else
     rc = [ac commitTransaction];
   
