@@ -29,7 +29,7 @@ DIV.basicUserRights
 
 DIV.calendarUserRights SPAN
 { float: left;
-  clear: right;
+  clear: both;
   line-height: 2em;
   margin-right: 1em;
   text-align: right;
