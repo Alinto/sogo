@@ -208,8 +208,8 @@ class DAVAclTest(unittest.TestCase):
         return versitStruct
 
 event_template = """BEGIN:VCALENDAR
-VERSION:2.0
 PRODID:-//Inverse//Event Generator//EN
+VERSION:2.0
 BEGIN:VEVENT
 SEQUENCE:0
 TRANSP:OPAQUE
