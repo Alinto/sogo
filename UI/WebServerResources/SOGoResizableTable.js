@@ -40,13 +40,14 @@ var SOGoResizableTableInterface = {
     },
 
     restore: function(relativeWidths) {
-        if (Prototype.Browser.IE)
-            while (SOGoResizableTable._stylesheet.styleSheet.rules.length)
-                SOGoResizableTable._stylesheet.styleSheet.removeRule(0);
-        else
-            while (SOGoResizableTable._stylesheet.firstChild)
-                SOGoResizableTable._stylesheet.removeChild(SOGoResizableTable._stylesheet.firstChild);
-        
+        if (SOGoResizableTable._stylesheet != null)
+            if (Prototype.Browser.IE)
+                while (SOGoResizableTable._stylesheet.styleSheet.rules.length)
+                    SOGoResizableTable._stylesheet.styleSheet.removeRule(0);
+            else
+                while (SOGoResizableTable._stylesheet.firstChild)
+                    SOGoResizableTable._stylesheet.removeChild(SOGoResizableTable._stylesheet.firstChild);
+
         if (relativeWidths)
             this.ratios = relativeWidths;
         var tableWidth = this.getWidth()/100;

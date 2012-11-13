@@ -34,7 +34,7 @@ Element.addMethods({
                 if (node.nodeType == Node.TEXT_NODE) {
                     content += node.nodeValue;
                 }
-                else if (node.nodeType == Node.ELEMENT_NODE) {
+                else if (node.nodeType === Node.ELEMENT_NODE) {
                     content += Element.allTextContent(node);
                 }
             }

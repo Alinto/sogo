@@ -186,8 +186,8 @@ function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
     var pos = name.lastIndexOf(' (');
     if (pos > -1)
         name = name.substring(0, pos); // strip the part with fullname and email
-    var node = new Node(subId, nodeId, name, 0, '#', folderId,
-                        folderInfos[2] + '-folder', '', '', icon, icon);
+    var node = new dTreeNode(subId, nodeId, name, 0, '#', folderId,
+                             folderInfos[2] + '-folder', '', '', icon, icon);
     node._ls = isLast;
     var content = tree.node(node, (nodeId + subId), null);
 
@@ -196,8 +196,8 @@ function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
 
 function addFolderNotFoundNode (tree, nodeId) {
     var icon = ResourcesURL + '/dot.png';
-    var node = new Node(1, nodeId, _("No possible subscription"), 0, '#',
-                        null, null, '', '', icon, icon);
+    var node = new dTreeNode(1, nodeId, _("No possible subscription"), 0, '#',
+                             null, null, '', '', icon, icon);
     node._ls = true;
     return tree.node(node, (nodeId + 1));
 }

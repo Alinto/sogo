@@ -896,7 +896,6 @@ function messageListCallback(row, data, isNew) {
     for (var j = 0; j < cells.length; j++) {
         var cell = cells[j];
         var cellType = Mailer.columnsOrder[j];
-
         if (data[cellType]) cell.innerHTML = data[cellType];
         else cell.innerHTML = '&nbsp;';
     }
@@ -2718,7 +2717,7 @@ function onMarkMenuPrepareVisibility() {
             isRead = !row.hasClassName("mailer_unreadmail");
         }
 
-        var menuUL = this.childElements()[0];
+        var menuUL = this.down();
         var menuLIS = menuUL.childElements();
 
         if (isRead) {
