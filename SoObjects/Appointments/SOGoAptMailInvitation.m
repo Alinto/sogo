@@ -19,9 +19,13 @@
   02111-1307, USA.
 */
 
-#import <NGCards/iCalEvent.h>
+#import <Foundation/NSCharacterSet.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOResponse.h>
+
+#import <NGCards/iCalEvent.h>
+
 #import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSObject+Utilities.h>
 #import <SOGo/SOGoUser.h>

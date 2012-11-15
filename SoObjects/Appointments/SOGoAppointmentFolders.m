@@ -44,6 +44,7 @@
 #import <SOGo/SOGoParentFolder.h>
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoWebDAVValue.h>
 #import <SOGo/SOGoWebDAVAclManager.h>

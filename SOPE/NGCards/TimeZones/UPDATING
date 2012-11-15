@@ -11,7 +11,7 @@ To updated the timezone files:
 
 3- run the conversion tool and adjust the PRODID
 
-  vzic --olson-dir /tmp/zones/ --output-dir SOGo/SOPE/NGCards/TimeZones/
+  vzic --pure --olson-dir /tmp/zones/ --output-dir SOGo/SOPE/NGCards/TimeZones/
   cd SOGo/SOPE/NGCards/TimeZones/
   rm -f zones.h zones.tab
 

@@ -44,10 +44,12 @@
 #import <Contacts/SOGoContactFolders.h>
 #import <Contacts/SOGoContactLDIFEntry.h>
 
-#import <Mailer/SOGoMailObject.h>
+#import <Mailer/SOGoDraftsFolder.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
 #import <Mailer/SOGoMailFolder.h>
+#import <Mailer/SOGoMailObject.h>
+#import <Mailer/SOGoSentFolder.h>
 #import <SOGo/NSDictionary+URL.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>

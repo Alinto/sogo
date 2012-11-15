@@ -33,6 +33,7 @@
 #import <GDLContentStore/GCSChannelManager.h>
 #import <GDLContentStore/GCSFolderManager.h>
 #import <GDLContentStore/GCSAlarmsFolder.h>
+#import <GDLContentStore/GCSSessionsFolder.h>
 
 #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/WOContext.h>

@@ -37,6 +37,7 @@
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/NSString+DAV.h>
 #import <SOGo/NSObject+Utilities.h>
+#import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoGCSFolder.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>

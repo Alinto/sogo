@@ -19,6 +19,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/WORequest.h>
@@ -478,9 +479,11 @@ static NSString *mailETag = nil;
   [generator autorelease];
 
   if (![[SOGoMailer mailerWithDomainDefaults: dd]
-         sendMailData: [generator generateMimeFromPart: message]
-         toRecipients: [NSArray arrayWithObject: email]
-               sender: [self _matchingIdentityEMail]])
+                sendMailData: [generator generateMimeFromPart: message]
+                toRecipients: [NSArray arrayWithObject: email]
+                      sender: [self _matchingIdentityEMail]
+           withAuthenticator: [self authenticatorInContext: context]
+                   inContext: context])
     [self _flagMessageWithMDNSent];
 }
 

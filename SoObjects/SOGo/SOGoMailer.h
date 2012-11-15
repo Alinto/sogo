@@ -29,14 +29,17 @@
 @class NSException;
 @class NSString;
 
+@class WOContext;
 @class SOGoDomainDefaults;
 
 @protocol NGMimePart;
+@protocol SOGoAuthenticator;
 
 @interface SOGoMailer : NSObject
 {
   NSString *mailingMechanism;
   NSString *smtpServer;
+  NSString *authenticationType;
 }
 
 + (SOGoMailer *) mailerWithDomainDefaults: (SOGoDomainDefaults *) dd;
@@ -45,13 +48,19 @@
 
 - (NSException *) sendMailData: (NSData *) data
 		  toRecipients: (NSArray *) recipients
-			sender: (NSString *) sender;
+			sender: (NSString *) sender
+             withAuthenticator: (id <SOGoAuthenticator>) authenticator
+                     inContext: (WOContext *) woContext;
 - (NSException *) sendMailAtPath: (NSString *) filename
 		    toRecipients: (NSArray *) recipients
-			  sender: (NSString *) sender;
+			  sender: (NSString *) sender
+               withAuthenticator: (id <SOGoAuthenticator>) authenticator
+                       inContext: (WOContext *) woContext;
 - (NSException *) sendMimePart: (id <NGMimePart>) part
 		  toRecipients: (NSArray *) recipients
-			sender: (NSString *) sender;
+			sender: (NSString *) sender
+             withAuthenticator: (id <SOGoAuthenticator>) authenticator
+                     inContext: (WOContext *) woContext;
 
 @end
 

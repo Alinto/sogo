@@ -1,17 +1,17 @@
 /* -*- Mode: js2; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 SOGoMailDataSource = Class.create({
-        
+
         initialize: function(dataTable, url) {
             // Instance variables
             this.dataTable = dataTable;
             this.id = url;
             this.url = url;
-            
+
             this.uids = new Array();
             this.threaded = false;
             this.cache = new Hash();
-            
+
             this.loaded = false;
             this.delayedGetData = false;
             this.ajaxGetData = false;
@@ -19,7 +19,7 @@ SOGoMailDataSource = Class.create({
             // Constants
             this.overflow = 50;   // must be higher or equal to the overflow of the data table class
         },
-        
+
         destroy: function() {
             this.uids.clear();
             var keys = this.cache.keys();
@@ -71,7 +71,7 @@ SOGoMailDataSource = Class.create({
             this.loaded = true;
 //            log ("MailDataSource.init() " + this.uids.length + " UIDs, " + this.cache.keys().length + " headers");
         },
-        
+
         load: function(urlParams) {
             var params;
             this.loaded = false;
@@ -89,7 +89,7 @@ SOGoMailDataSource = Class.create({
                                params,
                                { "Content-type": "application/x-www-form-urlencoded" });
         },
-    
+
         _loadCallback: function(http) {
             if (http.status == 200) {
                 if (http.responseText.length > 0) {
@@ -108,7 +108,7 @@ SOGoMailDataSource = Class.create({
                 log("SOGoMailDataSource._loadCallback Error " + http.status + ": " + http.responseText);
             }
         },
-        
+
         getData: function(id, index, count, callbackFunction, delay) {
             if (this.loaded == false) {
                 // UIDs are not yet loaded -- delay the call until loading the data is completed.
@@ -116,20 +116,9 @@ SOGoMailDataSource = Class.create({
                 this.delayedGetData = this.getData.bind(this, id, index, count, callbackFunction, delay);
                 return;
             }
-            if (this.delayed_getData) window.clearTimeout(this.delayed_getData);
-            this.delayed_getData = this._getData.bind(this,
-                                                      id,
-                                                      index,
-                                                      count,
-                                                      callbackFunction
-                                                      ).delay(delay);
-        },
-        
-        _getData: function(id, index, count, callbackFunction) {
+
             var start, end;
-            var i, j;
-            var missingUids = new Array();
-            
+
             if (count > 1) {
                 // Compute last index depending on number of UIDs
                 start = index - (this.overflow/2);
@@ -149,12 +138,12 @@ SOGoMailDataSource = Class.create({
             }
 //            log ("MailDataSource._getData() from " + index + " to " + (index + count) + " boosted from " + start + " to " + end);
 
-            for (i = 0, j = start; j < end; j++) {
+            var missingUids = [];
+            for (var j = start; j < end; j++) {
                 var uid = this.threaded? this.uids[j][0] : this.uids[j];
                 if (!this.cache.get(uid)) {
 //                    log ("MailDataSource._getData missing headers of uid " + uid + " at index " + j + (this.threaded? " (":" (non-") + "threaded)");
-                    missingUids[i] = uid;
-                    i++;
+                    missingUids.push(uid);
                 }
             }
 
@@ -165,12 +154,12 @@ SOGoMailDataSource = Class.create({
                                                                       { callbackFunction: callbackFunction,
                                                                         start: start, end: end,
                                                                         id: id },
-                                                                      params).delay(0.5);
+                                                                      params).delay(delay);
             }
             else if (callbackFunction)
                 this._returnData(callbackFunction, id, start, end);
         },
-        
+
         _getRemoteData: function(callbackData, urlParams) {
             if (this.ajaxGetData) {
                 this.ajaxGetData.aborted = true;
@@ -184,7 +173,7 @@ SOGoMailDataSource = Class.create({
                                                   urlParams,
                                                   { "Content-type": "application/x-www-form-urlencoded" });
         },
-    
+
         _getRemoteDataCallback: function(http) {
             if (http.status == 200) {
                 if (http.responseText.length > 0) {
@@ -207,7 +196,7 @@ SOGoMailDataSource = Class.create({
                 log("SOGoMailDataSource._getRemoteDataCallback Error " + http.status + ": " + http.responseText);
             }
         },
-        
+
         _returnData: function(callbackFunction, id, start, end) {
             var i, j;
             var data = new Array();

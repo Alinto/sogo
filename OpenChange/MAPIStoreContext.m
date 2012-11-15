@@ -559,31 +559,58 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   return newVersionNumber;
 }
 
-- (NSArray *) getNewChangeNumbers: (NSUInteger) max
+- (NSArray *) getNewChangeNumbers: (uint64_t) max
 {
   TALLOC_CTX *memCtx;
-  struct UI8Array_r *changeNumbers;
-  NSUInteger count;
   NSMutableArray *newChangeNumbers;
-  NSString *newChangeNumber;
+  uint64_t count;
+  struct UI8Array_r *numbers;
+  NSString *newNumber;
 
   memCtx = talloc_zero(NULL, TALLOC_CTX);
-
-  if (openchangedb_get_new_changeNumbers (connInfo->oc_ctx,
-                                          memCtx, max, &changeNumbers)
-      != MAPI_E_SUCCESS || changeNumbers->cValues != max)
-    abort ();
-
   newChangeNumbers = [NSMutableArray arrayWithCapacity: max];
+  
+  if (openchangedb_get_new_changeNumbers (connInfo->oc_ctx,
+                                          memCtx, max, &numbers)
+      != MAPI_E_SUCCESS || numbers->cValues != max)
+    abort ();
   for (count = 0; count < max; count++)
     {
-      newChangeNumber = [NSString stringWithUnsignedLongLong: changeNumbers->lpui8[count]];
-      [newChangeNumbers addObject: newChangeNumber];
+      newNumber
+        = [NSString stringWithUnsignedLongLong: numbers->lpui8[count]];
+      [newChangeNumbers addObject: newNumber];
     }
 
   talloc_free (memCtx);
 
   return newChangeNumbers;
+}
+
+- (NSArray *) getNewFMIDs: (uint64_t) max
+{
+  TALLOC_CTX *memCtx;
+  NSMutableArray *newFMIDs;
+  uint64_t count;
+  struct UI8Array_r *numbers;
+  NSString *newNumber;
+
+  memCtx = talloc_zero(NULL, TALLOC_CTX);
+  newFMIDs = [NSMutableArray arrayWithCapacity: max];
+  
+  if (openchangedb_get_new_folderIDs (connInfo->oc_ctx,
+                                      memCtx, max, &numbers)
+      != MAPI_E_SUCCESS || numbers->cValues != max)
+    abort ();
+  for (count = 0; count < max; count++)
+    {
+      newNumber
+        = [NSString stringWithUnsignedLongLong: numbers->lpui8[count]];
+      [newFMIDs addObject: newNumber];
+    }
+
+  talloc_free (memCtx);
+
+  return newFMIDs;
 }
 
 /* subclasses */

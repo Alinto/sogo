@@ -28,6 +28,7 @@
 #import <SaxObjC/XMLNamespaces.h>
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserSettings.h>
 
 #import <SOGo/NSObject+DAV.h>

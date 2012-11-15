@@ -26,7 +26,7 @@ Tentative = "Niepewny";
 "Delegate ..." = "Przekaż ...";
 "Delegated to" = "Przekazane do";
 "Update status in calendar" = "Zaktualizuj status w kalendarzu";
-"delegated from" = "delegated from";
+"delegated from" = "przekazane z";
 
 reply_info_no_attendee = "Otrzymałeś odpowiedź do wydarzenia ale nadawca nie jest uczestnikiem.";
 reply_info = "To jest odpowiedź do utworzonego przez ciebie wydarzenia";

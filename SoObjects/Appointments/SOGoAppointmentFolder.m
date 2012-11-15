@@ -1481,7 +1481,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   [filter setObject: textMatch forKey: propName];
 }
 
-- (NSDictionary *) _parseCalendarFilter: (DOMElement *) filterElement
+- (NSDictionary *) _parseCalendarFilter: (id <DOMElement>) filterElement
 {
   NSMutableDictionary *filterData;
   id <DOMElement> parentNode;
@@ -1536,10 +1536,10 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return rc;
 }
 
-- (NSArray *) _parseCalendarFilters: (DOMElement *) parentNode
+- (NSArray *) _parseCalendarFilters: (id <DOMElement>) parentNode
 {
   id <DOMNodeList> children;
-  DOMElement *element;
+  id <DOMElement>element;
   NSMutableArray *filters;
   NSDictionary *filter;
   unsigned int count, max;
@@ -1794,7 +1794,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   WOResponse *r;
   id <DOMDocument> document;
-  DOMElement *documentElement, *propElement;
+  id <DOMElement> documentElement, propElement;
 
   r = [context response];
   [r prepareDAVResponse];
@@ -1802,9 +1802,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                 @" xmlns:C=\"urn:ietf:params:xml:ns:caldav\">"];
 
   document = [[context request] contentAsDOMDocument];
-  documentElement = (DOMElement *) [document documentElement];
-  propElement = [documentElement firstElementWithTag: @"prop"
-                                         inNamespace: XMLNS_WEBDAV];
+  documentElement = (id <DOMElement>) [document documentElement];
+  propElement = [(NGDOMNodeWithChildren *) documentElement
+                    firstElementWithTag: @"prop" inNamespace: XMLNS_WEBDAV];
 
   [self _appendComponentProperties: [self parseDAVRequestedProperties: propElement]
                    matchingFilters: [self _parseCalendarFilters: documentElement]

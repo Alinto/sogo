@@ -40,9 +40,6 @@
 
 - (id) init
 {
-  NSDictionary *locale;
-  SOGoUserDefaults *ud;
-
   if ((self = [super init]))
     {
 //       monthAptFormatter
@@ -50,8 +47,6 @@
 //       [monthAptFormatter setShortMonthTitleOnly];
 //       dateFormatter = [[SOGoDateFormatter alloc]
 //                         initWithLocale: [self locale]];
-      ud = [[context activeUser] userDefaults];
-      locale = [[self resourceManager] localeForLanguageNamed: [ud language]];
       dayNames = [locale objectForKey: NSWeekDayNameArray];
       [dayNames retain];
       monthNames = [locale objectForKey: NSMonthNameArray];

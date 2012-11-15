@@ -21,6 +21,7 @@ ARG_NOCREATE=0
 ARG_PREFIX=""
 ARG_GSMAKE=`gnustep-config --variable=GNUSTEP_MAKEFILES 2>/dev/null`
 ARG_CFGMAKE="$PWD/config.make"
+ARG_CFGSSL="auto"
 ARG_WITH_DEBUG=1
 ARG_WITH_STRIP=0
 ARG_WITH_LDAP_CONFIG=0
@@ -72,6 +73,7 @@ Installation directories:
   --configmake=PATH       path to the config file being created
   --enable-debug          turn on debugging and compile time warnings
   --enable-strip          turn on stripping of debug symbols
+  --with-ssl=SSL          specify ssl library (none, libssl, gnutls, auto) [auto]
 
   --enable-ldap-config    enable LDAP based configuration of SOGo
 
@@ -303,27 +305,45 @@ genConfigMake() {
 }
 
 checkLinking() {
+  # library-name => $1, type => $2
   local oldpwd=$PWD
   local tmpdir=".configure-test-$$"
   
   mkdir $tmpdir
   cd $tmpdir
-  cp ../maintenance/dummytool.m .
+  cat > dummytool.c <<EOF
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+  return 0;
+}
+EOF
   
+  OLDLIBS=$LIBS
+  for LIB in $1;do
+    LIBS="$LIBS -l${LIB}"
+  done
+
   tmpmake="GNUmakefile"
-  echo  >$tmpmake "include ../config.make"
+  echo  >$tmpmake "-include ../config.make"
   echo >>$tmpmake "include \$(GNUSTEP_MAKEFILES)/common.make"
-  echo >>$tmpmake "TOOL_NAME           := linktest"
-  echo >>$tmpmake "linktest_OBJC_FILES := dummytool.m"
-  echo >>$tmpmake "linktest_TOOL_LIBS  += -l$1"
+  echo >>$tmpmake "CTOOL_NAME           := linktest"
+  echo >>$tmpmake "linktest_C_FILES := dummytool.c"
+  echo >>$tmpmake "ifeq (\$(findstring openbsd, \$(GNUSTEP_HOST_OS)), openbsd)"
+  echo >>$tmpmake "linktest_TOOL_LIBS  += $LIBS -liconv"
+  echo >>$tmpmake "else"
+  echo >>$tmpmake "linktest_TOOL_LIBS  += $LIBS"
+  echo >>$tmpmake "endif"
+  echo >>$tmpmake "SYSTEM_LIB_DIR += \$(CONFIGURE_SYSTEM_LIB_DIR)"
   echo >>$tmpmake "SYSTEM_LIB_DIR      += ${LINK_SYSLIBDIRS}"
-  echo >>$tmpmake "include \$(GNUSTEP_MAKEFILES)/tool.make"
+  echo >>$tmpmake "include \$(GNUSTEP_MAKEFILES)/ctool.make"
   
   $MAKE -s messages=yes -f $tmpmake linktest >out.log 2>err.log
   LINK_RESULT=$?
 
   if test $LINK_RESULT = 0; then
     echo "$2 library found: $1"
+    cfgwrite "HAS_LIBRARY_$1=yes"
   else
     if test "x$2" = "xrequired"; then
       echo "failed to link $2 library: $1"
@@ -331,16 +351,28 @@ checkLinking() {
       exit 1
     else
       echo "failed to link $2 library: $1"
+      cfgwrite "HAS_LIBRARY_$1=no"
+      LIBS=$OLDLIBS
     fi
   fi
   
   cd $oldpwd
   rm -rf $tmpdir
+
+  return $LINK_RESULT
 }
 
 checkDependencies() {
-  checkLinking "SaxObjC" required;
-  checkLinking "NGLdap"  required;
+  if test "x$ARG_CFGSSL" = "xauto"; then
+      checkLinking "ssl"     optional;
+      if test $? != 0; then
+          checkLinking "gnutls"  optional;
+      fi;
+  elif test "x$ARG_CFGSSL" = "xssl"; then
+      checkLinking "ssl"     required;
+  elif test "x$ARG_CFGSSL" = "xgnutls"; then
+      checkLinking "gnutls"  required;
+  fi
 }
 
 runIt() {
@@ -363,7 +395,7 @@ runIt() {
     fi
   else
     genConfigMake;
-    #checkDependencies;
+    checkDependencies;
     
     if test -x $NGSTREAMS_DIR/configure; then
       if test $ARG_BEQUIET != 1; then
@@ -414,6 +446,10 @@ processOption() {
 	;;
     "x--disable-strip")
         ARG_WITH_STRIP=0
+	;;
+    x--with-ssl=*)
+        extractFuncValue $1;
+        ARG_CFGSSL="$VALUE"
 	;;
 
     "x--enable-ldap-config")

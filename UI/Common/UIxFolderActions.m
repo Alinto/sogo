@@ -244,11 +244,9 @@
   SOGoGCSFolder *sourceFolder, *destinationFolder;
   SOGoParentFolder *folders;
   SoSecurityManager *sm;
-  WORequest *request;
   unsigned int errorCount;
 
   sm = [SoSecurityManager sharedSecurityManager];
-  request = [context request];
   ex = nil;
   errorCount = 0;
 

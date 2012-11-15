@@ -1,6 +1,6 @@
 /* WODirectAction+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2009 Inverse inc.
+ * Copyright (C) 2007-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSBundle.h>
 
 #import <NGObjWeb/SoObjects.h>
@@ -92,31 +93,50 @@
 
 - (NSString *) labelForKey: (NSString *) key
 {
-  NSString *userLanguage, *label;
+  NSString *bundleId, *userLanguage, *label;
   NSArray *paths;
   NSBundle *bundle;
   NSDictionary *strings;
   SOGoUserDefaults *ud;
+  static NSMutableDictionary *bundlesCache = nil;
+  NSMutableDictionary *languagesCache;
+
+  if (!bundlesCache)
+    bundlesCache = [NSMutableDictionary new];
 
   bundle = [NSBundle bundleForClass: [self class]];
   if (!bundle)
     bundle = [NSBundle mainBundle];
 
+  bundleId = [bundle executablePath];
+  languagesCache = [bundlesCache objectForKey: bundleId];
+  if (!languagesCache)
+    {
+      languagesCache = [NSMutableDictionary new];
+      [bundlesCache setObject: languagesCache forKey: bundleId];
+      [languagesCache release];
+    }
+
   ud = [[context activeUser] userDefaults];
   userLanguage = [ud language];
-  paths = [bundle pathsForResourcesOfType: @"strings"
-		  inDirectory: [NSString stringWithFormat: @"%@.lproj",
-					 userLanguage]
-		  forLocalization: userLanguage];
-  if ([paths count] > 0)
+  strings = [languagesCache objectForKey: userLanguage];
+  if (!strings)
     {
-      strings = [NSDictionary
-		  dictionaryFromStringsFile: [paths objectAtIndex: 0]];
-      label = [strings objectForKey: key];
-      if (!label)
-	label = key;
+      paths = [bundle pathsForResourcesOfType: @"strings"
+                                  inDirectory: [NSString stringWithFormat: @"%@.lproj",
+                                                         userLanguage]
+                              forLocalization: userLanguage];
+      if ([paths count] > 0)
+        {
+          strings = [NSDictionary
+                      dictionaryFromStringsFile: [paths objectAtIndex: 0]];
+          if (strings)
+            [languagesCache setObject: strings forKey: userLanguage];
+        }
     }
-  else
+
+  label = [strings objectForKey: key];
+  if (!label)
     label = key;
   
   return label;

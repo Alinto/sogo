@@ -30,7 +30,7 @@
 
 @interface EOQualifier (SOGoMailDAVExtension)
 
-+ (id) qualifierFromMailDAVMailFilters: (DOMElement *) mailFilters;
++ (id) qualifierFromMailDAVMailFilters: (id <DOMElement>) mailFilters;
 
 @end
 

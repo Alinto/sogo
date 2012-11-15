@@ -41,9 +41,9 @@
 - (id <DOMNodeList>) childElementsWithTag: (NSString *) tagName
                               inNamespace: (NSString *) namespace;
 
-- (DOMElement *) firstElementWithTag: (NSString *) tagName;
-- (DOMElement *) firstElementWithTag: (NSString *) tagName
-                         inNamespace: (NSString *) namespace;
+- (id <DOMElement>) firstElementWithTag: (NSString *) tagName;
+- (id <DOMElement>) firstElementWithTag: (NSString *) tagName
+                            inNamespace: (NSString *) namespace;
 
 - (NSArray *) flatPropertyNameOfSubElements;
 

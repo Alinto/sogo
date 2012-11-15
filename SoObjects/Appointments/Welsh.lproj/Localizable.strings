@@ -51,7 +51,6 @@ vtodo_class2 = "(Tasg gyfrinachol)";
 = "Please accept or decline those changes.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Ymateb i wahoddiad: %{Summary}";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}wedi derbyn.";
 "%{Attendee} %{SentByText}has declined your event invitation."

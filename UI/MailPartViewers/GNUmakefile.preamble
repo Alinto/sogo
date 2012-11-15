@@ -1,0 +1,4 @@
+ifeq ($(HAS_LIBRARY_ssl),yes)
+ADDITIONAL_CPPFLAGS += -DHAVE_OPENSSL=1
+BUNDLE_LIBS += -lcrypto
+endif

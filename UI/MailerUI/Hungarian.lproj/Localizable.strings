@@ -12,7 +12,7 @@
 "Reply All"   = "Válasz mindenkinek";
 "Print"       = "Nyomtatás";
 "Stop"        = "Leállítás";
-"Write"       = "Írás";
+"Write"       = "Levélírás";
 
 "Send" = "Küldés";
 "Contacts" = "Kapcsolatok";
@@ -79,7 +79,7 @@
 "Remove this folder" = "Mappa törlése";
 "Erase mails from this folder" = "Üzenetek törlése a mappából";
 "Expunge this folder" = "Mappa megjelölése töröltként";
-"Archive This Folder" = "Archive This Folder";
+"Archive This Folder" = "Mappa archiválása";
 "Modify the acl of this folder" = "Mappa jogosultságainak szerkesztése";
 
 "Saved Messages.zip" = "Messages.zip elmentve";

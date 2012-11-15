@@ -103,8 +103,9 @@
 
 - (uint64_t) idForObjectWithKey: (NSString *) key
                     inFolderURL: (NSString *) folderURL;
+- (NSArray *) getNewFMIDs: (uint64_t) max;
 - (uint64_t) getNewChangeNumber;
-- (NSArray *) getNewChangeNumbers: (NSUInteger) max;
+- (NSArray *) getNewChangeNumbers: (uint64_t) max;
 
 /* subclass methods */
 + (NSString *) MAPIModuleName;

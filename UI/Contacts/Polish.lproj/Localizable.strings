@@ -76,7 +76,6 @@
 "No possible subscription" = "Brak możliwej subskrypcji";
 
 "Preferred" = "Preferowane";
-"Card for %@" = "Kontakt %@";
 "Display:" = "Wyświetl:";
 "Display Name:" = "Nazwa wyświetlana:";
 "Email:" = "E-mail:";
@@ -155,7 +154,9 @@
 "Unable to subscribe to that folder!"
 = "Nie można włączyć subskrypcji tego foldera.";
 
-"User rights for:" = "Uprawnienia użytkownika:";
+/* acls */
+"Access rights to" = "Uprawnienia dla";
+"For user" = "Dla użytkownika";
 
 "Any Authenticated User" = "Każdy zalogowany użytkownik";
 "Public Access" = "Dostęp publiczny";
@@ -194,9 +195,11 @@
 "Lists can't be moved or copied." = "Listy nie mogą być przeniesione ani skopiowane.";
 "Export" = "Eksport";
 "Export Address Book..." = "Eksportuj książkę adresową...";
+"View Raw Source" = "Obejrzyj źródło";
 "Import Cards" = "Importuj kontakty";
 "Select a vCard or LDIF file." = "Wskaż plik vCard lub LDIF.";
 "Upload" = "Wyślij";
+"Uploading" = "Wysyłanie";
 "Done" = "Zrobione";
 "An error occured while importing contacts." = "W trakcie importu kontaktów pojawił się błąd.";
 "No card was imported." = "Nie zaimportowano żadnego kontaktu.";

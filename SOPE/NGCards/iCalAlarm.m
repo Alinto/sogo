@@ -26,6 +26,7 @@
 
 #import "iCalAttachment.h"
 #import "iCalEvent.h"
+#import "iCalPerson.h"
 #import "iCalRecurrenceRule.h"
 #import "iCalTrigger.h"
 #import "iCalToDo.h"

@@ -8,23 +8,15 @@ vtodo_class1 = "(Zadanie prywatne)";
 vtodo_class2 = "(Zadanie poufne)";
 
 /* Receipts */
-"Title:" = "Tytuł:";
-"Start:" = "Początek:";
-"End:" = "Koniec:";
-
-"Receipt: users invited to a meeting" = "Potwierdzenie: użytkownicy zaproszeni na spotkanie";
-"You have invited the following attendees(s):" = "Następujący uczestnicy zostali zaproszeni przez Ciebie:";
-"... to attend the following event:" = "... aby wziąć udział w następującym wydarzeniu:";
-
-"Receipt: invitation updated" = "Potwierdzenie: aktualizacja zaproszenia";
-"The following attendees(s):" = "Następujący uczestnicy:";
-"... have been notified of the changes to the following event:" = "... zostali poinformowani o zmianach następującego wydarzenia:";
-
-"Receipt: attendees removed from an event" = "Potwierdzenie: urzestnicy usunięci z wydarzenia";
-"You have removed the following attendees(s):" = "Następujący użytkownicy zostali usunięci przez ciebie:";
-"... from the following event:" = "... z następującego wydarzenia:";
+"The event \"%{Summary}\" was created" = "Utworzono wydarzenie \"%{Summary}\"";
+"The event \"%{Summary}\" was deleted" = "Skasowano wydarzenie \"%{Summary}\"";
+"The event \"%{Summary}\" was updated" = "Zaktualizowano wydarzenie \"%{Summary}\"";
+"The following attendees(s) were notified:" = "Następujący uczestnicy zostali powiadomieni:";
+"The following attendees(s) were added:" = "Następujący uczestnicy zostali dodani:";
+"The following attendees(s) were removed:" = "Następujący uczestnicy zostali usunięci:";
 
 /* IMIP messages */
+"calendar_label" = "Kalendarz:";
 "startDate_label" = "Początek:";
 "endDate_label" = "Koniec:";
 "due_label" = "Termin:";
@@ -35,14 +27,19 @@ vtodo_class2 = "(Zadanie poufne)";
 /* Invitation */
 "Event Invitation: \"%{Summary}\"" = "Zaproszenie na wydarzenie: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(wysłane przez %{SentBy}) ";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}zaprosił Cię na %{Summary}.⏎ ⏎ Początek: %{StartDate}⏎ Koniec: %{EndDate}⏎ Opis: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}zaprosił cię na %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
 
 /* Deletion */
 "Event Cancelled: \"%{Summary}\"" = "Wydarzenie anulowane: \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText} anulował(a) to wydarzenie: %{Summary}.⏎⏎ Początek: %{StartDate}⏎ Koniec: %{EndDate}⏎ Opis: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}anulował(a) to wydarzenie: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}";
 
 /* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "Wydarzenie \"%{Summary}\" z dnia %{OldStartDate} zmieniło się";
 "The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
 = "Wydarzenie \"%{Summary}\" z dnia %{OldStartDate} z godz. %{OldStartTime} zostało zmienione";
 "The following parameters have changed in the \"%{Summary}\" meeting:"
@@ -51,7 +48,10 @@ vtodo_class2 = "(Zadanie poufne)";
 = "Zaakceptuj lub odrzuć te zmiany.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Odpowiedź na zaproszenie: \"%{Summary}\"";
+"Accepted invitation: \"%{Summary}\"" = "Zaakceptowano zaproszenie: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Odrzucono zaproszenie: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Oddelegowano zaproszenie: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Zaproszenie czekające na decyzję: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}zaakceptował(a) twoje zaproszenie na wydarzenie.";
 "%{Attendee} %{SentByText}has declined your event invitation."
@@ -62,4 +62,5 @@ vtodo_class2 = "(Zadanie poufne)";
 = "%{Attendee} %{SentByText}jeszcze nie zdecydował(a) o obecności na twoim wydarzeniu.";
 
 /* Resources */
-"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\"." = "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\".";
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Nie ma dostępu do: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Osiągnięto maksymalną liczbę równoległych rezerwacji (%{NumberOfSimultaneousBookings}) dla \"%{Cn} %{SystemEmail}\". Problem wywołuje wydarzenie \"%{EventTitle}\" zaczynające się w %{StartDate}.";

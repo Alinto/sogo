@@ -218,6 +218,11 @@
   return [self stringForKey: @"SOGoSMTPServer"];
 }
 
+- (NSString *) smtpAuthenticationType
+{
+  return [self stringForKey: @"SOGoSMTPAuthenticationType"];
+}
+
 - (NSString *) mailSpoolPath
 {
   return [self stringForKey: @"SOGoMailSpoolPath"];

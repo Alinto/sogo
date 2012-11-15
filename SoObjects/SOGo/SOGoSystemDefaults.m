@@ -1,6 +1,7 @@
 /* SOGoSystemDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2011 Inverse inc.
+ * Copyright (C) 2009-2012 Inverse inc.
+ * Copyright (C) 2012 Jeroen Dekkers <jeroen@dekkers.ch>
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Francis Lachapelle <flachapelle@inverse.ca>
@@ -67,58 +68,79 @@ BootstrapNSUserDefaults ()
     }
 }
 
-+ (void) injectSOGoDefaults: (NSUserDefaults *) ud
+static void
+_migrateSOGo09Configuration (NSUserDefaults *ud, NSObject *logger)
 {
-  NSBundle *bundle;
-  NSDictionary *baseSOGoDefaults;
-  NSString *filename;
+  NSDictionary *domain;
 
-  bundle = [NSBundle bundleForClass: self];
-  filename = [bundle pathForResource: @"SOGoDefaults" ofType: @"plist"];
-  if (filename
-      && [[NSFileManager defaultManager] fileExistsAtPath: filename])
+  domain = [ud persistentDomainForName: @"sogod-0.9"];
+  if ([domain count])
     {
-      baseSOGoDefaults
-        = [[NSDictionary alloc] initWithContentsOfFile: filename];
-      if (baseSOGoDefaults)
-        {
-          [ud registerDefaults: baseSOGoDefaults];
-          [baseSOGoDefaults autorelease];
-        }
-      else
-        [bundle errorWithFormat: @"Unable to deserialize SOGoDefaults.plist"];
+      [logger logWithFormat: @"migrating user defaults from sogod-0.9"];
+      [ud setPersistentDomain: domain forName: @"sogod"];
+      [ud removePersistentDomainForName: @"sogod-0.9"];
+      [ud synchronize];
     }
-  else
-    [bundle errorWithFormat: @"SOGoDefaults.plist not found"];
+}
+
+static void
+_injectConfigurationFromFile (NSUserDefaults *ud,
+                              NSString *filename, NSObject *logger)
+{
+  NSFileManager *fm;
+  NSDictionary *newConfig;
+
+  fm = [NSFileManager defaultManager];
+  if ([fm fileExistsAtPath: filename])
+    {
+      newConfig = [NSDictionary dictionaryWithContentsOfFile: filename];
+      if (newConfig)
+        [ud registerDefaults: newConfig];
+      else
+        {
+          [logger errorWithFormat: @"Cannot read configuration from '%@'.",
+                  filename];
+          exit (1);
+        }
+    }
 }
 
 + (void) prepareUserDefaults
 {
-  NSString *redirectURL;
-  NSDictionary *domain;
   NSUserDefaults *ud;
   SOGoStartupLogger *logger;
+  NSBundle *bundle;
+  NSString *confFiles[] = {@"/etc/sogo/debconf.conf",
+                           @"/etc/sogo/sogo.conf"};
+  NSString *filename, *redirectURL;
+  NSUInteger count;
 
   logger = [SOGoStartupLogger sharedLogger];
 
+  /* we load the configuration from the standard user default files */
   ud = [NSUserDefaults standardUserDefaults];
-  domain = [ud persistentDomainForName: @"sogod"];
-  if (![domain count])
-    {
-      domain = [ud persistentDomainForName: @"sogod-0.9"];
-      if ([domain count])
-	{
-	  [logger logWithFormat: @"migrating user defaults from sogod-0.9"];
-	  [ud setPersistentDomain: domain forName: @"sogod"];
-	  [ud removePersistentDomainForName: @"sogod-0.9"];
-	  [ud synchronize];
-	}
-      else
-        [logger warnWithFormat: @"No configuration found."
-                @" SOGo will not work properly."];
-    }
-  [self injectSOGoDefaults: ud];
 
+  /* if "sogod" does not exist, maybe "sogod-0.9" still exists from an old
+     configuration */
+  if (![[ud persistentDomainForName: @"sogod"] count])
+    _migrateSOGo09Configuration (ud, logger);
+
+  /* reregister defaults from domain "sogod" into default domain, for
+     non-sogod processes */
+  [ud addSuiteNamed: @"sogod"];
+
+  /* we populate the configuration with the values from SOGoDefaults.plist */
+  bundle = [NSBundle bundleForClass: self];
+  filename = [bundle pathForResource: @"SOGoDefaults" ofType: @"plist"];
+  if (filename)
+    _injectConfigurationFromFile (ud, filename, logger);
+
+  /* fill the possibly missing values with the configuration stored
+     in "/etc" */
+  for (count = 0; count < sizeof(confFiles)/sizeof(confFiles[0]); count++)
+    _injectConfigurationFromFile (ud, confFiles[count], logger);
+
+  /* issue a warning if WOApplicationRedirectURL is used */
   redirectURL = [ud stringForKey: @"WOApplicationRedirectURL"];
   if (redirectURL)
     {

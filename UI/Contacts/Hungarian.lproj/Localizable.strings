@@ -1,11 +1,11 @@
 /* this file is in UTF-8 format! */
 
-"Contact" = "Contact";
-"Address" = "Address";
-"Photos" = "Photos";
-"Other" = "Other";
+"Contact" = "Kapcsolat";
+"Address" = "Címek";
+"Photos" = "Képek";
+"Other" = "Egyéb";
 
-"Address Books" = "Addressbooks";
+"Address Books" = "Címjegyzékek";
 "Addressbook" = "Címjegyzék";
 "Addresses" = "Címek";
 "Update" = "Mentés";
@@ -35,8 +35,8 @@
 "Unit" = "Egység";
 "delete" = "Töröl";
 "edit" = "Szerkeszt";
-"invalidemailwarn" = "A megadótt emailcím érvénytelen";
-"invaliddatewarn" = "The specified date is invalid.";
+"invalidemailwarn" = "A megadott email cím érvénytelen";
+"invaliddatewarn" = "A megadott dátum érvénytelen.";
 "new" = "új";
 "Preferred Phone" = "Preferált telefon";
 
@@ -51,14 +51,14 @@
 "Edit the selected card" = "A kijelölt névjegy szerkesztése";
 "Send a mail message" = "Email üzenet küldése";
 "Delete selected card or address book" = "Kijelölt névjegy vagy címjegyzék törlése";
-"Reload all contacts" = "Reload all contacts";
+"Reload all contacts" = "Minden kapcsolat újratöltése";
 
 "htmlMailFormat_UNKNOWN" = "Ismeretlen";
 "htmlMailFormat_FALSE" = "Egyszerű szöveg";
 "htmlMailFormat_TRUE" = "HTML";
 
 "Name or Email" = "Név vagy email";
-"Category" = "Category";
+"Category" = "Kategória";
 "Personal Addressbook" = "Személyes címjegyzék";
 "Search in Addressbook" = "Keresés a címjegyzékben";
 
@@ -79,12 +79,12 @@
 "Display:" = "Megjelenítendő név:";
 "Display Name:" = "Megjelenítendő név:";
 "Email:" = "Email cím:";
-"Additional Email:" = "Additional Email:";
+"Additional Email:" = "További email:";
 
-"Phone Number:" = "Phone Number:";
-"Prefers to receive messages formatted as:" = "Prefers to receive messages formatted as:";
+"Phone Number:" = "Telefon:";
+"Prefers to receive messages formatted as:" = "Előnyben részesített üzenet formátum:";
 "Screen Name:" = "Fedőnév:";
-"Categories:" = "Categories:";
+"Categories:" = "Kategóriák:";
 
 "First:" = "Keresztnév:";
 "Last:" = "Vezetéknév:";
@@ -98,16 +98,16 @@
 "Pager:" = "Személyhívó:";
 
 /* categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
-"Categories" = "Categories";
-"New category" = "New category";
+"contacts_category_labels" = "Munkatárs, Versenytárs, Felhasználó, Barát, Család, Üzleti partner, Szolgáltató, Sajtó, VIP";
+"Categories" = "Kategóriák";
+"New category" = "Új kategória";
 
 /* adresses */
 "Title:" = "Cím:";
 "Service:" = "Szolgáltatás:";
 "Company:" = "Vállalat:";
-"Department:" = "Department:";
-"Organization:" = "Organization:";
+"Department:" = "Részleg:";
+"Organization:" = "Szervezet:";
 "Address:" = "Cím:";
 "City:" = "Város:";
 "State_Province:" = "Állam/tartomány:";
@@ -121,7 +121,7 @@
 "Note:" = "Megjegyzés:";
 "Timezone:" = "Időzóna:";
 "Birthday:" = "Születésnap:";
-"Birthday (yyyy-mm-dd):" = "Születésnap (yyyy-mm-dd):";
+"Birthday (yyyy-mm-dd):" = "Születésnap (éééé-hh-nn):";
 "Freebusy URL:" = "Foglaltság URL:";
 
 "Add as..." = "Hozzáadás mint...";
@@ -158,8 +158,8 @@
 "Access rights to" = "Hozzáférés az alábbiaknak:";
 "For user" = "Felhasználónak";
 
-"Any Authenticated User" = "Any Authenticated User";
-"Public Access" = "Public Access";
+"Any Authenticated User" = "Bármely azonosított felhasználó";
+"Public Access" = "Nyilvános hozzáférés";
 
 "This person can add cards to this addressbook."
 = "Az alábbi személy hozzáadhat névjegyeket ehhez a címjegyzékhez.";
@@ -185,24 +185,24 @@
 "Unknown Destination Folder" = "A kijelölt címjegyzék már nem elérhető.";
 
 /* Lists */
-"List details" = "List details";
-"List name:" = "List name:";
-"List nickname:" = "List nickname:";
-"List description:" = "List description:";
-"Members" = "Members";
-"Contacts" = "Contacts";
-"Add" = "Add";
-"Lists can't be moved or copied." = "Lists can't be moved or copied.";
-"Export" = "Export";
-"Export Address Book..." = "Export Address Book...";
+"List details" = "Lista részletek";
+"List name:" = "Lista név:";
+"List nickname:" = "Lista becenév:";
+"List description:" = "Lista leírás:";
+"Members" = "Tagok";
+"Contacts" = "Kapcsolatok";
+"Add" = "Hozzáad";
+"Lists can't be moved or copied." = "Listákat nem lehet mozgatni vagy másolni.";
+"Export" = "Exportálás";
+"Export Address Book..." = "Címjegyzék exportálása...";
 "View Raw Source" = "Forrás megtekintése";
-"Import Cards" = "Import Cards";
-"Select a vCard or LDIF file." = "Select LDIF or vCard file.";
-"Upload" = "Upload";
+"Import Cards" = "Névjegyek importálása";
+"Select a vCard or LDIF file." = "Válasszon LDIF vagy vCard állományt.";
+"Upload" = "Feltöltés";
 "Uploading" = "Feltöltés";
-"Done" = "Done";
-"An error occured while importing contacts." = "An error occured while importing contacts.";
-"No card was imported." = "No card was imported.";
-"A total of %{0} cards were imported in the addressbook." = "A total of %{0} cards were imported in the addressbook.";
+"Done" = "Kész";
+"An error occured while importing contacts." = "Hiba lépett fel a kapcsolatok importálása során.";
+"No card was imported." = "Névjegy nem került importálásra.";
+"A total of %{0} cards were imported in the addressbook." = "Az összes %{0} névjegy importálástra került a címjegyzékbe.";
 
-"Reload" = "Reload";
+"Reload" = "Újratöltés";

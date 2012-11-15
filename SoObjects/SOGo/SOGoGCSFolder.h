@@ -34,9 +34,9 @@
 @class WOContext;
 @class WOResponse;
 
-@class DOMElement;
-
 @class SOGoUser;
+
+@protocol DOMElement;
 
 /*
   SOGoGCSFolder
@@ -78,8 +78,6 @@
 			     forUser: (SOGoUser *) theUser;
 
 /* lower level fetches */
-- (BOOL) nameExistsInFolder: (NSString *) objectName;
-
 - (void) deleteEntriesWithIds: (NSArray *) ids;
 
 - (Class) objectClassForComponentName: (NSString *) componentName;
@@ -123,7 +121,7 @@
 - (NSURL *) realDavURL;
 
 - (NSDictionary *) davSQLFieldsTable;
-- (NSDictionary *) parseDAVRequestedProperties: (DOMElement *) propElement;
+- (NSDictionary *) parseDAVRequestedProperties: (id <DOMElement>) propElement;
 
 - (NSString *) davCollectionTag;
 

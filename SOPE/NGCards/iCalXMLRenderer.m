@@ -33,6 +33,7 @@
 
 #import "CardElement.h"
 #import "CardGroup.h"
+#import "iCalCalendar.h"
 #import "iCalDateTime.h"
 #import "iCalPerson.h"
 #import "iCalRecurrenceRule.h"

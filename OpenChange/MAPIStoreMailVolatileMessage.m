@@ -58,6 +58,7 @@
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreSamDBUtils.h"
 #import "MAPIStoreTypes.h"
+#import "MAPIStoreUserContext.h"
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
@@ -850,10 +851,10 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
   NSString *recId, *from, *msgClass;
   NSUInteger count;
   SOGoUser *activeUser;
-  // SOGoMailFolder *sentFolder;
   SOGoDomainDefaults *dd;
   NSException *error;
-  // MAPIStoreMapping *mapping;
+  WOContext *woContext;
+  id <SOGoAuthenticator> authenticator;
 
   msgClass = [properties objectForKey: MAPIPropertyKey (PidTagMessageClass)];
   if ([msgClass isEqualToString: @"IPM.Note"]) /* we skip invitation replies */
@@ -878,10 +879,15 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
       [self logWithFormat: @"recipients: %@", recipientEmails];
       dd = [activeUser domainDefaults];
       from = [[activeUser allEmails] objectAtIndex: 0];
+
+      woContext = [[self userContext] woContext];
+      authenticator = [sogoObject authenticatorInContext: woContext];
       error = [[SOGoMailer mailerWithDomainDefaults: dd]
-                sendMailData: messageData
-                toRecipients: recipientEmails
-                      sender: from];
+                       sendMailData: messageData
+                       toRecipients: recipientEmails
+                             sender: from
+                  withAuthenticator: authenticator
+                          inContext: woContext];
       if (error)
         [self logWithFormat: @"an error occurred: '%@'", error];
 

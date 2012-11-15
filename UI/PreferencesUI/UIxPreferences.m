@@ -46,6 +46,7 @@
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <Mailer/SOGoMailAccount.h>
+#import <Mailer/SOGoMailAccounts.h>
 
 #import "UIxPreferences.h"
 
@@ -63,7 +64,6 @@
 {
   //NSDictionary *locale;
   SOGoDomainDefaults *dd;
-  NSString *language;
   
   if ((self = [super init]))
     {
@@ -71,7 +71,6 @@
 #warning user should be the owner rather than the activeUser
       ASSIGN (user, [context activeUser]);
       ASSIGN (today, [NSCalendarDate date]);
-      language = [userDefaults language];
 
       calendarCategories = nil;
       calendarCategoriesColors = nil;

@@ -22,9 +22,19 @@ SOGo_LIBRARIES_DEPEND_UPON += \
 	-lNGCards		\
 	-lNGMime		\
 	-lNGStreams -lNGExtensions -lEOControl \
-	-lXmlRpc -lDOM -lSaxObjC \
+	-lDOM -lSaxObjC \
 	-lNGLdap -lSBJson \
-        -lGDLContentStore
+        -lGDLContentStore -lgnustep-base -lobjc -ldl
+
+ifeq ($(HAS_LIBRARY_gnutls),yes)
+ADDITIONAL_CPPFLAGS += -DHAVE_GNUTLS=1
+SOGo_LIBRARIES_DEPEND_UPON += -lgnutls
+else
+ifeq ($(HAS_LIBRARY_ssl),yes)
+ADDITIONAL_CPPFLAGS += -DHAVE_OPENSSL=1
+SOGo_LIBRARIES_DEPEND_UPON += -lcrypto
+endif
+endif
 
 ifeq ($(findstring openbsd, $(GNUSTEP_HOST_OS)), openbsd)
 SOGo_LIBRARIES_DEPEND_UPON += -lcrypto

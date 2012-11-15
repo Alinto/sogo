@@ -48,7 +48,10 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 = "Bitte akzeptieren Sie diese Änderung oder lehnen Sie ab.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Antwort auf Termineinladung: \"%{Summary}\"";
+"Accepted invitation: \"%{Summary}\"" = "Einladung zugestimmt: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Einladung abgelehnt: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Einladung delegiert: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Noch nicht entschieden über Einladung: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText} hat Ihre Termineinladung akzeptiert.";
 "%{Attendee} %{SentByText}has declined your event invitation."

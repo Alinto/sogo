@@ -85,7 +85,7 @@
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
-"timeFmt_2" = "%H h. %M";
+"timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
 
@@ -242,6 +242,7 @@
 "match any of the following rules:" = "met een van de volgende regels overeenkomen:";
 "match all messages" = "met alle berichten overeenkomen";
 "Perform these actions:" = "Doe de volgende bewerkingen:";
+"Untitled Filter" = "Naamloos filter";
 
 "Subject" = "Onderwerp";
 "From" = "van";

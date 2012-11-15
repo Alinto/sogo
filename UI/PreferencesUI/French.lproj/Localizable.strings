@@ -127,7 +127,7 @@
 /* Mailer */
 "Show subscribed mailboxes only" = "Afficher seulement les abonnements";
 "Sort messages by threads" = "Grouper les discussions";
-"Check for new mail:" = "Vérifier l'arrivée de messages:";
+"Check for new mail:" = "Vérifier l'arrivée de messages :";
 "messagecheck_manually" = "Manuellement";
 "messagecheck_every_minute" = "Chaque minute";
 "messagecheck_every_2_minutes" = "Toutes les 2 minutes";
@@ -144,7 +144,7 @@
 "replyplacement_above" = "Placer ma réponse avant la citation";
 "replyplacement_below" = "Placer ma réponse après la citation";
 "And place my signature" = "Et placer ma signature";
-"signatureplacement_above" = "après ma reponse";
+"signatureplacement_above" = "après ma réponse";
 "signatureplacement_below" = "après la citation";
 "Compose messages in" = "Composer les messages en";
 "composemessagestype_html" = "HTML";
@@ -242,6 +242,7 @@
 "match any of the following rules:" = "correspondant à une de ces règles :";
 "match all messages" = "sans distinction";
 "Perform these actions:" = "Effectuez ces opérations :";
+"Untitled Filter" = "Nouveau filtre";
 
 "Subject" = "Sujet";
 "From" = "Expéditeur";

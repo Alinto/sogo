@@ -22,16 +22,24 @@ $(TEST_TOOL)_OBJC_FILES += \
 	TestSBJsonParser.m \
 	\
 	TestNGMimeAddressHeaderFieldGenerator.m \
+	TestNSData+Crypto.m \
+	TestNSString+Crypto.m \
 	TestNSString+URLEscaping.m \
 	TestNSString+Utilities.m
 
 TEST_TOOL_NAME = $(TEST_TOOL)
 
-TEST_TOOL_CPPFLAGS += \
-	-Wall -D_GNU_SOURCE -I../SOPE/ -I../SoObjects/ -I../UI/
+$(TEST_TOOL)_CPPFLAGS += \
+	-Wall -D_GNU_SOURCE -I../../SOPE/ -I../../SoObjects/ -I../../UI/
 
 ADDITIONAL_LIB_DIRS += \
-	-L../SoObjects/SOGo -lSOGo -lNGMime -lNGCards -lGDLContentStore -lNGExtensions -lSBJson -lobjc -L/usr/local/lib  -lSaxObjC
+	-L../../SoObjects/SOGo/SOGo.framework/Versions/Current -L../../SOPE/NGCards/obj -L../../SOPE/GDLContentStore/obj -lSOGo -lNGMime -lNGCards -lGDLContentStore -lNGExtensions -lSBJson -lobjc \
+	-L/usr/local/lib  -lSaxObjC \
+	-Wl,-rpath,../../SoObjects/SOGo/SOGo.framework/Versions/Current -Wl,-rpath,../../SOPE/NGCards/obj -Wl,-rpath,../../SOPE/GDLContentStore/obj -Wl,-rpath,../../OGoContentStore/obj
+ADDITIONAL_LDFLAGS += -Wl,--no-as-needed
+
+check ::
+	./obj/sogo-tests
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/test-tool.make

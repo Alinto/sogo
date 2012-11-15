@@ -4,7 +4,8 @@
 
 "Username:" = "Nazwa użytkownika:";
 "Password:" = "Hasło:";
-"Domain:" = "Domain:";
+"Domain:" = "Domena:";
+"Remember username" = "Pamiętaj nazwę użytkownika";
 
 "Connect" = "Zaloguj";
 
@@ -40,16 +41,13 @@
 "Welsh" = "Cymraeg";
 
 "About" = "O programie";
-"AboutBox" = "Developed by Inverse, SOGo is a fully-featured groupware server with a focus on scalability and simplicity.<br/><br/>
-SOGo provides a rich AJAX-based Web interface and supports multiple native clients through the use of standard protocols such as CalDAV and CardDAV.<br/><br/>
-SOGo is distributed under the <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> version 2 or later and parts are distributed under the GNU LGPL version 2. This is free software: you are free to change and redistribute it. There is NO WARRANTY, to the extent permitted by law.<br/><br/>
-See <a href=\"http://www.sogo.nu/en/support/community.html\">this page</a> for various support options.";
+"AboutBox" = "SOGo, opracowane przez Inverse, jest bogato wyposażonym serwerem dla grup roboczych, w którym szczególną uwagę zwrócono na prostotę obsługi i skalowalność.<br/><br/>⏎SOGo udostępnia rozbudowany interfejs WWW, oparty na technologii AJAX i wspierający różne aplikacje pocztowe poprzez standardowe protokoły takie jak CalDAV i CardDAV.<br/><br/>⏎SOGo udostępnione jest na licencji <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> w wersji 2 lub nowszej, a niektóre fragmenty na licencji GNU LGPL w wersji 2. To jest wolne oprogramowanie - możesz je dowolnie modyfikować oraz rozpowszechniać. Oprogramowanie to NIE MA GWARANCJI, w zakresie dopuszczalnym przez prawo.<br/><br/>⏎ W poszukiwaniu pomocy technicznej sprawdź <a href=\"http://www.sogo.nu/en/support/community.html\">tą stronę</a>.";
 
 "Your account was locked due to too many failed attempts." = "Twoje konto zostało zablokowane wkutek zbyt wielu nieudanych prób logowania.";
 "Your account was locked due to an expired password." = "Twoje konto zostało zblokowane z powodu wygaśnięcia ważności hasła.";
 "Login failed due to unhandled error case: " = "Logowanie nie powiodło się z powodu niezidentyfikowanego błędu: ";
 "Change your Password" = "Zmień swoje hasło";
-"The password was changed successfully." = "The password was changed successfully.";
+"The password was changed successfully." = "Hasło zostało zmienione.";
 "Your password has expired, please enter a new one below:" = "Ważność twojego hasła wygasła, wprowadź niżej nowe hasło:";
 "Password must not be empty." = "Hasło nie może być puste.";
 "The passwords do not match. Please try again." = "Hasła nie są zgodne. Spróbuj jeszcze raz.";

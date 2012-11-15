@@ -31,7 +31,6 @@
 #import <NGObjWeb/SoHTTPAuthenticator.h>
 #import <NGObjWeb/SoObjects.h>
 #import <NGObjWeb/SoProduct.h>
-#import <NGObjWeb/WOResourceManager.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
@@ -48,7 +47,9 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/WOResourceManager+SOGo.h>
 
 #import "UIxJSClose.h"
 
@@ -67,15 +68,7 @@ static NSMutableArray *monthLabelKeys     = nil;
 static NSMutableArray *abbrMonthLabelKeys = nil;
 static SoProduct      *commonProduct      = nil;
 
-+ (int)version {
-  return [super version] + 0 /* v2 */;
-}
-
 + (void)initialize {
-  NSAssert2([super version] == 2,
-            @"invalid superclass (%@) version %i !",
-            NSStringFromClass([self superclass]), [super version]);
-  
   if (dayLabelKeys == nil) {
     dayLabelKeys = [[NSMutableArray alloc] initWithCapacity:7];
     [dayLabelKeys addObject:@"Sunday"];
@@ -154,7 +147,8 @@ static SoProduct      *commonProduct      = nil;
       queryParameters = nil;
       ASSIGN (userDefaults, [[context activeUser] userDefaults]);
       language = [userDefaults language];
-      ASSIGN (locale, [[self resourceManager] localeForLanguageNamed: language]);
+      ASSIGN (locale,
+              [[self resourceManager] localeForLanguageNamed: language]);
     }
 
   return self;

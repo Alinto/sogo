@@ -911,6 +911,35 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 {
 }
 
+- (void) ensureIDsForChildKeys: (NSArray *) keys
+{
+  NSMutableArray *missingURLs;
+  MAPIStoreMapping *mapping;
+  NSUInteger count, max;
+  NSString *baseURL, *URL, *key;
+  NSArray *newIDs;
+  uint64_t idNbr;
+  
+  baseURL = [self url];
+
+  mapping = [self mapping];
+  max = [keys count];
+  missingURLs = [NSMutableArray arrayWithCapacity: max];
+  for (count = 0; count < max; count++)
+    {
+      key = [keys objectAtIndex: count];
+      URL = [NSString stringWithFormat: @"%@%@", baseURL, key];
+      idNbr = [mapping idFromURL: URL];
+      if (idNbr == NSNotFound)
+        [missingURLs addObject: URL];
+    }
+
+  max = [missingURLs count];
+  newIDs = [[self context] getNewFMIDs: max];
+  [mapping registerURLs: missingURLs
+                withIDs: newIDs];
+}
+
 - (void) postNotificationsForMoveCopyMessagesWithMIDs: (uint64_t *) srcMids
                                        andMessageURLs: (NSArray *) oldMessageURLs
                                              andCount: (uint32_t) midCount

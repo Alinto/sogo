@@ -48,7 +48,10 @@ vtodo_class2 = "(Tarea confidencial)";
 = "Por favor, acepta o rechaza estos cambios.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Respuesta a la invitación del evento: \"%{Summary}\"";
+"Accepted invitation: \"%{Summary}\"" = "Invitación aceptada: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Invitación rechazada: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Invitación delegada: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Invitación sin decisión: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}ha aceptado su invitación al evento.";
 "%{Attendee} %{SentByText}has declined your event invitation."

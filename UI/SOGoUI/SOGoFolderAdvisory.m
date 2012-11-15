@@ -140,7 +140,7 @@
 
   part = [NGMimeBodyPart bodyPartWithHeader: headerMap];
   body = [[self body] dataUsingEncoding: NSUTF8StringEncoding];
-  [part setBody: [self body]];
+  [part setBody: body];
 
   return part;
 }
@@ -205,9 +205,11 @@
 
   dd = [activeUser domainDefaults];
   [[SOGoMailer mailerWithDomainDefaults: dd]
-    sendMimePart: message
-    toRecipients: [NSArray arrayWithObject: recipient]
-          sender: from];
+           sendMimePart: message
+           toRecipients: [NSArray arrayWithObject: recipient]
+                 sender: from
+      withAuthenticator: [self authenticatorInContext: context]
+              inContext: context];
 }
 
 @end

@@ -322,7 +322,7 @@
 /* Appointment categories */
 
 "category_none" = "Nincs";
-"category_labels" = "Évforduló,Születésnap,Üzleti,Meghívás,Ügyfelek,Versenytársak,Vevő,Kedvencek,Nyomonkövetés,Ajándékozás,Szabadság,Ötletek,Meeting,Ügyek,Egyéb,Személyes,Projektek,Állami ünnep,Állapot,Szállítók,Utazás,Szünidő";
+"category_labels" = "Évforduló,Születésnap,Üzleti,Meghívás,Ügyfelek,Versenytársak,Vevő,Kedvencek,Nyomonkövetés,Ajándékozás,Szabadság,Ötletek,Megbeszélés,Ügyek,Egyéb,Személyes,Projektek,Állami ünnep,Állapot,Szállítók,Utazás,Szünidő";
 
 "repeat_NEVER" = "Nem ismétlődik";
 "repeat_DAILY" = "Naponta";
@@ -380,6 +380,7 @@ validate_invalid_startdate = "Événytelen kezdődátum!";
 validate_invalid_enddate   = "Érvénytelen befejező dátum!";
 validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezdődátum.";
 
+"Events" = "Események";
 "Tasks" = "Feladatok";
 "Show completed tasks" = "Befejezett feladatok megjelenítése";
 
@@ -455,11 +456,15 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 "End" = "Befejezés";
 "Due Date" = "Lejárat";
 "Location" = "Hely";
+
 "(Private Event)" = "(Magán esemény)";
 
 vevent_class0 = "(Nyilvános esemény)";
 vevent_class1 = "(Magán esemény)";
 vevent_class2 = "(Bizalmas esemény)";
+
+"Priority" = "Fontosság";
+"Category" = "Kategória";
 
 vtodo_class0 = "(Nyilvános feladat)";
 vtodo_class1 = "(Magán feladat)";

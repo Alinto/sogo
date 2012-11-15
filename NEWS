@@ -1,11 +1,39 @@
-2.0.1 (2012-10-DD)
--------------------
-New Features
+2.0.2 (2012-10-24)
+------------------
+
+New features
+ - added support for SMTP AUTH
+ - sogo configuration can now be set in /etc/sogo/sogo.conf
+ - added support for GNU TLS
 
 Enhancements
- - improved Task View, added sortable fields on Title, Due date,
-   Location, Category and Calendar. Added Priority column, also sortable.
- - improved event info dialog box
+ - speed up of the parsing of IMAP traffic
+ - minor speed up of the web interface
+ - speed up the scrolling of the message list in the mail module
+ - speed up the deletion of a large amounts of entries in the contacts module
+ - updated the timezone files to the 2012.g edition
+ - openchange backend: miscellaneous speed up of the synchronization
+   operations
+ - open file descriptors are now closed when the process starts
+
+Bug fixes
+ - the parameters included in the url of remote calendars are now taken into
+   account
+ - fixed an issue occurring with timezone definitions providing multiple entries
+ - openchange backend: miscellaneous crashes during certain Outlook
+   operations, which have appeared in version 2.0.0, have been fixed
+ - fixed issues occuring on OpenBSD and potentially other BSD flavours
+
+2.0.1 (2012-10-10)
+-------------------
+
+Enhancements
+ - deletion of contacts is now performed in batch, which speeds up the
+   operation for large numbers of items
+ - scalability enhancements in the OpenChange backend that enables the first
+   synchronization of mailboxes in a more reasonable time and using less
+   memory
+ - the task list is now sortable 
 
 Bug Fixes
  - improved support of IE 9

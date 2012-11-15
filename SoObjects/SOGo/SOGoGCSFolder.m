@@ -645,7 +645,8 @@ static NSArray *childRecordFields = nil;
             {
               qualifier = [[EOAndQualifier alloc] initWithQualifiers:
                                                     aclQualifier,
-                                                  componentQualifier];
+                                                  componentQualifier,
+                                                  nil];
               [qualifier autorelease];
             }
           else
@@ -695,15 +696,6 @@ static NSArray *childRecordFields = nil;
     record = nil;
 
   return record;
-}
-
-- (BOOL) nameExistsInFolder: (NSString *) objectName
-{
-  NSDictionary *record;
-
-  record = [self _recordForObjectName: objectName];
-
-  return (record != nil);
 }
 
 - (void) removeChildRecordWithName: (NSString *) childName
@@ -1049,12 +1041,12 @@ static NSArray *childRecordFields = nil;
   return davSQLFields;
 }
 
-- (NSDictionary *) parseDAVRequestedProperties: (DOMElement *) propElement
+- (NSDictionary *) parseDAVRequestedProperties: (id <DOMElement>) propElement
 {
   NSArray *properties;
   NSDictionary *sqlFieldsTable;
 
-  properties = [propElement flatPropertyNameOfSubElements];
+  properties = [(NGDOMNodeWithChildren *) propElement flatPropertyNameOfSubElements];
   sqlFieldsTable = [self _davSQLFieldsForProperties: properties];
 
   return sqlFieldsTable;
@@ -1339,7 +1331,7 @@ static NSArray *childRecordFields = nil;
 {
   WOResponse *r;
   id <DOMDocument> document;
-  DOMElement *documentElement, *propElement;
+  id <DOMElement> documentElement, propElement;
   NSString *syncToken;
   NSDictionary *properties;
   NSArray *records;
@@ -1348,13 +1340,16 @@ static NSArray *childRecordFields = nil;
   [r prepareDAVResponse];
 
   document = [[context request] contentAsDOMDocument];
-  documentElement = (DOMElement *) [document documentElement];
-  syncToken = [[documentElement firstElementWithTag: @"sync-token"
-                                        inNamespace: XMLNS_WEBDAV] textValue];
+  documentElement = [document documentElement];
+  syncToken = [(NGDOMNode *)
+                [(NGDOMNodeWithChildren *)
+                 documentElement firstElementWithTag: @"sync-token"
+                                         inNamespace: XMLNS_WEBDAV]
+                textValue];
   if ([self _isValidSyncToken: syncToken])
     {
-      propElement = [documentElement firstElementWithTag: @"prop"
-                                             inNamespace: XMLNS_WEBDAV];
+      propElement = [(NGDOMNodeWithChildren *) documentElement
+                       firstElementWithTag: @"prop" inNamespace: XMLNS_WEBDAV];
       properties = [self parseDAVRequestedProperties: propElement];
       records = [self _fetchSyncTokenFields: properties
                           matchingSyncToken: syncToken];
@@ -2097,7 +2092,7 @@ static NSArray *childRecordFields = nil;
 {
   WOResponse *r;
   id <DOMDocument> document;
-  DOMElement *documentElement, *propElement;
+  id <DOMElement> documentElement, propElement;
 
   r = [context response];
   [r prepareDAVResponse];
@@ -2105,9 +2100,10 @@ static NSArray *childRecordFields = nil;
        [NSString stringWithFormat: @"<D:multistatus xmlns:D=\"DAV:\""
                          @" xmlns:C=\"%@\">", namespace]];
   document = [[queryContext request] contentAsDOMDocument];
-  documentElement = (DOMElement *) [document documentElement];
-  propElement = [documentElement firstElementWithTag: @"prop"
-                                         inNamespace: @"DAV:"];
+  documentElement = [document documentElement];
+  propElement = [(NGDOMNodeWithChildren *)
+                  documentElement firstElementWithTag: @"prop"
+                                          inNamespace: @"DAV:"];
   [self _appendComponentProperties: [self parseDAVRequestedProperties: propElement]
                       matchingURLs: [documentElement getElementsByTagName: @"href"]
                         toResponse: r];

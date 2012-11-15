@@ -48,7 +48,6 @@ vtodo_class2 = "(Конфиденциальная задача)";
 = "Пожалуйста подтвердите или отмените эти изменения.";
 
 /* Reply */
-"Reply to invitation: \"%{Summary}\"" = "Ответ на приглашение: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}согласился участвовать в запланированном мероприятии.";
 "%{Attendee} %{SentByText}has declined your event invitation."

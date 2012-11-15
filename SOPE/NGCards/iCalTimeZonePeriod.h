@@ -34,7 +34,7 @@
 - (NSCalendarDate *) startDate;
 - (iCalRecurrenceRule *) recurrenceRule;
 
-- (NSCalendarDate *) occurenceForDate: (NSCalendarDate *) refDate;
+- (NSCalendarDate *) occurrenceForDate: (NSCalendarDate *) refDate;
 - (int) secondsOffsetFromGMT;
 
 - (NSComparisonResult) compare: (iCalTimeZonePeriod *) otherPeriod;

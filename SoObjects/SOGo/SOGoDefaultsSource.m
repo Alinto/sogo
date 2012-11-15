@@ -318,7 +318,7 @@ static Class NSStringKlass = Nil;
 - (BOOL) migrateOldDefaultsWithDictionary: (NSDictionary *) migratedKeys
 {
   NSArray *allKeys;
-  id currentValue, existingValue;
+  id currentValue;
   NSString *oldName, *newName;
   int count, max;
   BOOL requireSync;
@@ -334,7 +334,6 @@ static Class NSStringKlass = Nil;
       if (currentValue)
         {
           newName = [migratedKeys objectForKey: oldName];
-          existingValue = [source objectForKey: newName];
           requireSync = YES;
           [source setObject: currentValue forKey: newName];
           [source removeObjectForKey: oldName];

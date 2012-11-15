@@ -183,6 +183,7 @@
 
 /* subclass helpers */
 - (void) setupVersionsMessage;
+- (void) ensureIDsForChildKeys: (NSArray *) keys;
 - (void) postNotificationsForMoveCopyMessagesWithMIDs: (uint64_t *) srcMids
                                        andMessageURLs: (NSArray *) oldMessageURLs
                                              andCount: (uint32_t) midCount

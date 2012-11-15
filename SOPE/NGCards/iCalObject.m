@@ -20,14 +20,11 @@
 */
 
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 
 #import "iCalObject.h"
 
 @implementation iCalObject
-
-+ (int)version {
-  return 0;
-}
 
 // what shall we take, if no timeZone is specified in dateValues
 static NSTimeZone *defTZ = nil;

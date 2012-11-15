@@ -598,7 +598,7 @@
 {
   WOResponse *r;
   id <DOMDocument> document;
-  DOMElement *documentElement, *propElement;
+  id <DOMElement> documentElement, propElement;
 
   r = [context response];
   [r prepareDAVResponse];
@@ -606,10 +606,11 @@
        [NSString stringWithFormat: @"<D:multistatus xmlns:D=\"DAV:\""
                          @" xmlns:C=\"%@\">", namespace]];
   document = [[queryContext request] contentAsDOMDocument];
-  documentElement = (DOMElement *) [document documentElement];
-  propElement = [documentElement firstElementWithTag: @"prop"
-                                         inNamespace: @"DAV:"];
-  [self _appendComponentProperties: [propElement flatPropertyNameOfSubElements]
+  documentElement = [document documentElement];
+  propElement = [(NGDOMNodeWithChildren *) documentElement
+                    firstElementWithTag: @"prop"
+                            inNamespace: @"DAV:"];
+  [self _appendComponentProperties: [(NGDOMNodeWithChildren *) propElement flatPropertyNameOfSubElements]
                       matchingURLs: [documentElement getElementsByTagName: @"href"]
                         toResponse: r];
   [r appendContentString:@"</D:multistatus>"];

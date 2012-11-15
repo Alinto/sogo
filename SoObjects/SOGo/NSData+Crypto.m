@@ -2,6 +2,7 @@
  *
  * Copyright (C) 2012 Nicolas Höft
  * Copyright (C) 2012 Inverse inc.
+ * Copyright (C) 2012 Jeroen Dekkers
  *
  * Author: Nicolas Höft
  *         Inverse inc.
@@ -33,15 +34,32 @@
 
 #define _XOPEN_SOURCE 1
 #include <unistd.h>
+
+#if defined(HAVE_GNUTLS)
+#include <stdint.h>
+#include <gnutls/gnutls.h>
+#include <gnutls/crypto.h>
+#define MD5_DIGEST_LENGTH 16
+#define SHA_DIGEST_LENGTH 20
+#define SHA256_DIGEST_LENGTH 32
+#define SHA512_DIGEST_LENGTH 64
+#elif defined(HAVE_OPENSSL)
 #include <openssl/evp.h>
 #include <openssl/md5.h>
 #include <openssl/sha.h>
+#else
+#error this module requires either gnutls or openssl
+#endif
 
 #import <Foundation/NSArray.h>
 #import <NGExtensions/NGBase64Coding.h>
 #import "NSData+Crypto.h"
 
-unsigned charTo4Bits(char c);
+static unsigned charTo4Bits(char c);
+#if defined(HAVE_GNUTLS)
+static BOOL check_gnutls_init();
+static void _nettle_md5_compress(uint32_t *digest, const uint8_t *input);
+#endif
 
 
 @implementation NSData (SOGoCryptoExtension)
@@ -228,7 +246,13 @@ unsigned charTo4Bits(char c);
   unsigned char md5[MD5_DIGEST_LENGTH];
   memset(md5, 0, MD5_DIGEST_LENGTH);
 
+#if defined(HAVE_GNUTLS)
+  if (!check_gnutls_init())
+    return nil;
+  gnutls_hash_fast (GNUTLS_DIG_MD5, [self bytes], [self length], md5);
+#elif defined(HAVE_OPENSSL)
   MD5([self bytes], [self length], md5);
+#endif
 
   return [NSData dataWithBytes: md5  length: MD5_DIGEST_LENGTH];
 }
@@ -247,8 +271,12 @@ unsigned charTo4Bits(char c);
  */
 - (NSData *) asCramMD5
 {
-  
+#if defined(HAVE_GNUTLS)
+  const uint32_t init_digest[4] = {0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476};
+  uint32_t digest[4];
+#elif defined(HAVE_OPENSSL)
   MD5_CTX ctx;
+#endif
   unsigned char inner[64];
   unsigned char outer[64];
   unsigned char result[32];
@@ -286,6 +314,27 @@ unsigned charTo4Bits(char c);
     *p = (c) >> 24 & 0xff; p++; \
 }
 
+#if defined(HAVE_GNUTLS)
+  // generate first set of context bytes from outer data
+  memcpy(digest, init_digest, sizeof(digest));
+  _nettle_md5_compress(digest, outer);
+
+  r = result;
+  // convert this to correct binary data according to RFC 1321
+  CDPUT(r, digest[0]);
+  CDPUT(r, digest[1]);
+  CDPUT(r, digest[2]);
+  CDPUT(r, digest[3]);
+
+  // second set with inner data is appended to result string
+  memcpy(digest, init_digest, sizeof(digest));
+  _nettle_md5_compress(digest, inner);
+  // convert this to correct binary data
+  CDPUT(r, digest[0]);
+  CDPUT(r, digest[1]);
+  CDPUT(r, digest[2]);
+  CDPUT(r, digest[3]);
+#elif defined(HAVE_OPENSSL)
   // generate first set of context bytes from outer data
   MD5_Init(&ctx);
   MD5_Transform(&ctx, outer);
@@ -304,6 +353,7 @@ unsigned charTo4Bits(char c);
   CDPUT(r, ctx.B);
   CDPUT(r, ctx.C);
   CDPUT(r, ctx.D);
+#endif
 
   return [NSData dataWithBytes: result length: 32];
 }
@@ -318,7 +368,13 @@ unsigned charTo4Bits(char c);
   unsigned char sha[SHA_DIGEST_LENGTH];
   memset(sha, 0, SHA_DIGEST_LENGTH);
 
+#if defined(HAVE_GNUTLS)
+  if (!check_gnutls_init())
+    return nil;
+  gnutls_hash_fast (GNUTLS_DIG_SHA1, [self bytes], [self length], sha);
+#elif defined(HAVE_OPENSSL)
   SHA1([self bytes], [self length], sha);
+#endif
 
   return [NSData dataWithBytes: sha  length: SHA_DIGEST_LENGTH];
 }
@@ -333,7 +389,13 @@ unsigned charTo4Bits(char c);
   unsigned char sha[SHA256_DIGEST_LENGTH];
   memset(sha, 0, SHA256_DIGEST_LENGTH);
 
+#if defined(HAVE_GNUTLS)
+  if (!check_gnutls_init())
+    return nil;
+  gnutls_hash_fast (GNUTLS_DIG_SHA256, [self bytes], [self length], sha);
+#elif defined(HAVE_OPENSSL)
   SHA256([self bytes], [self length], sha);
+#endif
 
   return [NSData dataWithBytes: sha  length: SHA256_DIGEST_LENGTH];
 }
@@ -348,7 +410,13 @@ unsigned charTo4Bits(char c);
   unsigned char sha[SHA512_DIGEST_LENGTH];
   memset(sha, 0, SHA512_DIGEST_LENGTH);
 
+#if defined(HAVE_GNUTLS)
+  if (!check_gnutls_init())
+    return nil;
+  gnutls_hash_fast (GNUTLS_DIG_SHA512, [self bytes], [self length], sha);
+#elif defined(HAVE_OPENSSL)
   SHA512([self bytes], [self length], sha);
+#endif
 
   return [NSData dataWithBytes: sha  length: SHA512_DIGEST_LENGTH];
 }
@@ -597,7 +665,7 @@ unsigned charTo4Bits(char c);
 
 @end
 
-unsigned charTo4Bits(char c)
+static unsigned charTo4Bits(char c)
 {
   unsigned bits = 0;
   if (c > '/' && c < ':')
@@ -618,3 +686,147 @@ unsigned charTo4Bits(char c)
     }
   return bits;
 }
+
+#if defined(HAVE_GNUTLS)
+static BOOL didGlobalInit = NO;
+
+static BOOL check_gnutls_init() {
+  if (!didGlobalInit) {
+    /* Global system initialization*/
+    if (gnutls_global_init()) {
+      return NO;
+    }
+
+    didGlobalInit = YES;
+  }
+
+  return YES;
+}
+
+/* nettle, low-level cryptographics library
+ *
+ * Copyright (C) 2001, 2005 Niels Möller
+ *
+ * The nettle library is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
+ *
+ * The nettle library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with the nettle library; see the file COPYING.LIB.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+ * MA 02111-1307, USA.
+ */
+
+/* Based on public domain code hacked by Colin Plumb, Andrew Kuchling, and
+ * Niels Möller. */
+
+#define LE_READ_UINT32(p)			\
+(  (((uint32_t) (p)[3]) << 24)			\
+ | (((uint32_t) (p)[2]) << 16)			\
+ | (((uint32_t) (p)[1]) << 8)			\
+ |  ((uint32_t) (p)[0]))
+
+/* MD5 functions */
+#define F1(x, y, z) ((z) ^ ((x) & ((y) ^ (z))))
+#define F2(x, y, z) F1((z), (x), (y))
+#define F3(x, y, z) ((x) ^ (y) ^ (z))
+#define F4(x, y, z) ((y) ^ ((x) | ~(z)))
+
+#define ROUND(f, w, x, y, z, data, s) \
+( w += f(x, y, z) + data,  w = w<<s | w>>(32-s),  w += x )
+
+static void
+_nettle_md5_compress(uint32_t *digest, const uint8_t *input)
+{
+  uint32_t data[MD5_DIGEST_LENGTH];
+  uint32_t a, b, c, d;
+  unsigned i;
+
+  for (i = 0; i < MD5_DIGEST_LENGTH; i++, input += 4)
+    data[i] = LE_READ_UINT32(input);
+
+  a = digest[0];
+  b = digest[1];
+  c = digest[2];
+  d = digest[3];
+
+  ROUND(F1, a, b, c, d, data[ 0] + 0xd76aa478, 7);
+  ROUND(F1, d, a, b, c, data[ 1] + 0xe8c7b756, 12);
+  ROUND(F1, c, d, a, b, data[ 2] + 0x242070db, 17);
+  ROUND(F1, b, c, d, a, data[ 3] + 0xc1bdceee, 22);
+  ROUND(F1, a, b, c, d, data[ 4] + 0xf57c0faf, 7);
+  ROUND(F1, d, a, b, c, data[ 5] + 0x4787c62a, 12);
+  ROUND(F1, c, d, a, b, data[ 6] + 0xa8304613, 17);
+  ROUND(F1, b, c, d, a, data[ 7] + 0xfd469501, 22);
+  ROUND(F1, a, b, c, d, data[ 8] + 0x698098d8, 7);
+  ROUND(F1, d, a, b, c, data[ 9] + 0x8b44f7af, 12);
+  ROUND(F1, c, d, a, b, data[10] + 0xffff5bb1, 17);
+  ROUND(F1, b, c, d, a, data[11] + 0x895cd7be, 22);
+  ROUND(F1, a, b, c, d, data[12] + 0x6b901122, 7);
+  ROUND(F1, d, a, b, c, data[13] + 0xfd987193, 12);
+  ROUND(F1, c, d, a, b, data[14] + 0xa679438e, 17);
+  ROUND(F1, b, c, d, a, data[15] + 0x49b40821, 22);
+
+  ROUND(F2, a, b, c, d, data[ 1] + 0xf61e2562, 5);
+  ROUND(F2, d, a, b, c, data[ 6] + 0xc040b340, 9);
+  ROUND(F2, c, d, a, b, data[11] + 0x265e5a51, 14);
+  ROUND(F2, b, c, d, a, data[ 0] + 0xe9b6c7aa, 20);
+  ROUND(F2, a, b, c, d, data[ 5] + 0xd62f105d, 5);
+  ROUND(F2, d, a, b, c, data[10] + 0x02441453, 9);
+  ROUND(F2, c, d, a, b, data[15] + 0xd8a1e681, 14);
+  ROUND(F2, b, c, d, a, data[ 4] + 0xe7d3fbc8, 20);
+  ROUND(F2, a, b, c, d, data[ 9] + 0x21e1cde6, 5);
+  ROUND(F2, d, a, b, c, data[14] + 0xc33707d6, 9);
+  ROUND(F2, c, d, a, b, data[ 3] + 0xf4d50d87, 14);
+  ROUND(F2, b, c, d, a, data[ 8] + 0x455a14ed, 20);
+  ROUND(F2, a, b, c, d, data[13] + 0xa9e3e905, 5);
+  ROUND(F2, d, a, b, c, data[ 2] + 0xfcefa3f8, 9);
+  ROUND(F2, c, d, a, b, data[ 7] + 0x676f02d9, 14);
+  ROUND(F2, b, c, d, a, data[12] + 0x8d2a4c8a, 20);
+
+  ROUND(F3, a, b, c, d, data[ 5] + 0xfffa3942, 4);
+  ROUND(F3, d, a, b, c, data[ 8] + 0x8771f681, 11);
+  ROUND(F3, c, d, a, b, data[11] + 0x6d9d6122, 16);
+  ROUND(F3, b, c, d, a, data[14] + 0xfde5380c, 23);
+  ROUND(F3, a, b, c, d, data[ 1] + 0xa4beea44, 4);
+  ROUND(F3, d, a, b, c, data[ 4] + 0x4bdecfa9, 11);
+  ROUND(F3, c, d, a, b, data[ 7] + 0xf6bb4b60, 16);
+  ROUND(F3, b, c, d, a, data[10] + 0xbebfbc70, 23);
+  ROUND(F3, a, b, c, d, data[13] + 0x289b7ec6, 4);
+  ROUND(F3, d, a, b, c, data[ 0] + 0xeaa127fa, 11);
+  ROUND(F3, c, d, a, b, data[ 3] + 0xd4ef3085, 16);
+  ROUND(F3, b, c, d, a, data[ 6] + 0x04881d05, 23);
+  ROUND(F3, a, b, c, d, data[ 9] + 0xd9d4d039, 4);
+  ROUND(F3, d, a, b, c, data[12] + 0xe6db99e5, 11);
+  ROUND(F3, c, d, a, b, data[15] + 0x1fa27cf8, 16);
+  ROUND(F3, b, c, d, a, data[ 2] + 0xc4ac5665, 23);
+
+  ROUND(F4, a, b, c, d, data[ 0] + 0xf4292244, 6);
+  ROUND(F4, d, a, b, c, data[ 7] + 0x432aff97, 10);
+  ROUND(F4, c, d, a, b, data[14] + 0xab9423a7, 15);
+  ROUND(F4, b, c, d, a, data[ 5] + 0xfc93a039, 21);
+  ROUND(F4, a, b, c, d, data[12] + 0x655b59c3, 6);
+  ROUND(F4, d, a, b, c, data[ 3] + 0x8f0ccc92, 10);
+  ROUND(F4, c, d, a, b, data[10] + 0xffeff47d, 15);
+  ROUND(F4, b, c, d, a, data[ 1] + 0x85845dd1, 21);
+  ROUND(F4, a, b, c, d, data[ 8] + 0x6fa87e4f, 6);
+  ROUND(F4, d, a, b, c, data[15] + 0xfe2ce6e0, 10);
+  ROUND(F4, c, d, a, b, data[ 6] + 0xa3014314, 15);
+  ROUND(F4, b, c, d, a, data[13] + 0x4e0811a1, 21);
+  ROUND(F4, a, b, c, d, data[ 4] + 0xf7537e82, 6);
+  ROUND(F4, d, a, b, c, data[11] + 0xbd3af235, 10);
+  ROUND(F4, c, d, a, b, data[ 2] + 0x2ad7d2bb, 15);
+  ROUND(F4, b, c, d, a, data[ 9] + 0xeb86d391, 21);
+
+  digest[0] += a;
+  digest[1] += b;
+  digest[2] += c;
+  digest[3] += d;
+}
+#endif

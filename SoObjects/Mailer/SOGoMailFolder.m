@@ -1494,7 +1494,7 @@ static NSString *defaultUserID =  @"anyone";
   return davIMAPFieldsTable;
 }
 
-- (BOOL) _sortElementIsAscending: (DOMElement *) sortElement
+- (BOOL) _sortElementIsAscending: (NGDOMNodeWithChildren <DOMElement> *) sortElement
 {
   NSString *davReverseAttr;
   BOOL orderIsAscending;
@@ -1512,7 +1512,7 @@ static NSString *defaultUserID =  @"anyone";
   return orderIsAscending;
 }
 
-- (NSArray *) _sortOrderingsFromSortElement: (DOMElement *) sortElement
+- (NSArray *) _sortOrderingsFromSortElement: (NGDOMNodeWithChildren *) sortElement
 {
   static NSMutableDictionary *criteriasMap = nil;
   NSArray *davSortCriterias;
@@ -1727,7 +1727,7 @@ static NSString *defaultUserID =  @"anyone";
   return davIMAPFields;
 }
 
-- (NSDictionary *) parseDAVRequestedProperties: (DOMElement *) propElement
+- (NSDictionary *) parseDAVRequestedProperties: (NGDOMNodeWithChildren *) propElement
 {
   NSArray *properties;
   NSDictionary *imapFieldsTable;
@@ -1747,7 +1747,8 @@ static NSString *defaultUserID =  @"anyone";
 {
   WOResponse *r;
   id <DOMDocument> document;
-  DOMElement *documentElement, *propElement, *filterElement, *sortElement;
+  id <DOMElement> filterElement;
+  NGDOMNodeWithChildren *documentElement, *propElement, *sortElement;
   NSDictionary *properties;
   NSArray *messages, *sortOrderings;
   EOQualifier *searchQualifier;
@@ -1756,17 +1757,19 @@ static NSString *defaultUserID =  @"anyone";
   [r prepareDAVResponse];
 
   document = [[context request] contentAsDOMDocument];
-  documentElement = (DOMElement *) [document documentElement];
+  documentElement = [document documentElement];
 
-  propElement = [documentElement firstElementWithTag: @"prop"
-                                         inNamespace: XMLNS_WEBDAV];
+  propElement = (NGDOMNodeWithChildren *) [documentElement
+                                            firstElementWithTag: @"prop"
+                                                    inNamespace: XMLNS_WEBDAV];
   properties = [self parseDAVRequestedProperties: propElement];
   filterElement = [documentElement firstElementWithTag: @"mail-filters"
                                            inNamespace: XMLNS_INVERSEDAV];
   searchQualifier = [EOQualifier
                       qualifierFromMailDAVMailFilters: filterElement];
-  sortElement = [documentElement firstElementWithTag: @"sort"
-                                         inNamespace: XMLNS_INVERSEDAV];
+  sortElement = (NGDOMNodeWithChildren *) [documentElement
+                                            firstElementWithTag: @"sort"
+                                                    inNamespace: XMLNS_INVERSEDAV];
   sortOrderings = [self _sortOrderingsFromSortElement: sortElement];
 
   messages = [self _fetchMessageProperties: [properties allKeys]

@@ -8,7 +8,7 @@
 "Home" = "Nyitólap";
 "Calendar" = "Naptár";
 "Address Book"	= "Címjegyzék";
-"Mail" = "Üzenetek";
+"Mail" = "Levelezés";
 "Preferences" = "Beállítások";
 "Administration" = "Rendszerfelügyelet";
 "Disconnect" = "Kilépés";
@@ -31,7 +31,7 @@
 "Subscribe User" = "Felíratkozott felhasználók";
 
 "Any Authenticated User" = "Bejelentkezett felhasználók";
-"Public Access" = "Publikus hozzáférés";
+"Public Access" = "Nyilvános hozzáférés";
 "Any user not listed above" = "Az összes fel nem sorolt felhasználó";
 "Anybody accessing this resource from the public area" = "Bárki, aki a publikus tartományból az erőforrást elérheti";
 
@@ -92,7 +92,7 @@
 "OK" = "Ok";
 "Cancel" = "Mégse";
 "Yes" = "Igen";
-"No" = "No";
+"No" = "Nem";
 
 /* alarms */
 "Reminder:" = "Emlékeztető:";

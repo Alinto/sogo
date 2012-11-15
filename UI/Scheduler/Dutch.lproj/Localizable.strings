@@ -1,3 +1,4 @@
+/* this file is in UTF-8 format! */
 
 /* Tooltips */
 
@@ -379,6 +380,7 @@ validate_invalid_startdate = "Ongeldige begindatum!";
 validate_invalid_enddate   = "Ongeldige einddatum!";
 validate_endbeforestart    = "Het einde is voor de begindatum.";
 
+"Events" = "Afspraken";
 "Tasks" = "Taken";
 "Show completed tasks" = "Voltooide taken weergeven";
 
@@ -454,11 +456,15 @@ validate_endbeforestart    = "Het einde is voor de begindatum.";
 "End" = "Eind";
 "Due Date" = "Verloopdatum";
 "Location" = "Plaats";
+
 "(Private Event)" = "(Privé-afspraak)";
 
 vevent_class0 = "(Publieke afspraak)";
 vevent_class1 = "(Privé-afspraak)";
 vevent_class2 = "(Vertrouwelijke afspraak)";
+
+"Priority" = "Prioriteit";
+"Category" = "Categorie";
 
 vtodo_class0 = "(Publieke taak)";
 vtodo_class1 = "(Privétaak)";

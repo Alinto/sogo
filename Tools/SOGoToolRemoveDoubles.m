@@ -24,6 +24,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSException.h>
@@ -511,7 +512,7 @@
       rc = NO;
     }
 
-  return NO;
+  return rc;
 }
 
 - (BOOL) processFolder: (NSString *) folderId

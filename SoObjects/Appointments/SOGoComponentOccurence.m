@@ -27,6 +27,7 @@
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalEvent.h>
 #import <NGCards/iCalTimeZone.h>
 #import <NGCards/iCalRepeatableEntityObject.h>
 

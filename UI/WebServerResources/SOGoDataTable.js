@@ -8,13 +8,13 @@
  *
  */
 var SOGoDataTableInterface = {
-  
+
     // Object variables initialized with "bind"
     columnsCount: null,
     rowModel: null,
     rowHeight: 0,
     body: null,
- 
+
     // Object variables
     dataSource: null,
     rowTop: null,
@@ -22,14 +22,14 @@ var SOGoDataTableInterface = {
     renderedIndex: -1,
     renderedCount: 0,
     rowRenderCallback: null,
-    
+
     // Constants
     overflow: 30,         // must be lower than the overflow of the data source class
-    renderDelay: 0.2,     // delay (in seconds) before which the table is rendered upon scrolling
-    
+    renderDelay: 0.1,     // delay (in seconds) before which the table is rendered upon scrolling
+
     bind: function() {
         this.observe("scroll" , this.render.bind(this));
-        
+
         this.body = this.down("tbody");
         this.rowModel = this.body.down("tr");
 
@@ -87,12 +87,12 @@ var SOGoDataTableInterface = {
 
         this.rowBottom = new Element('tr', {'id': 'rowBottom'}).update(new Element('td'));
         this.body.insertBefore(this.rowBottom, this.rowModel);
- 
+
         this.columnsCount = this.rowModel.select("td").length;
         this.rowHeight = this.rowModel.getHeight();
 //         log ("DataTable.bind() row height = " + this.rowHeight + "px");
     },
-    
+
     setRowRenderCallback: function(callbackFunction) {
         // Each time a row is created or updated with new data, this callback
         // function will be called.
@@ -121,20 +121,20 @@ var SOGoDataTableInterface = {
         if (Object.isHash(urlParams) && urlParams.keys().length > 0) this.dataSource.load(urlParams);
         else this.dataSource.load(new Hash());
     },
-    
+
     visibleRowCount: function() {
         var divHeight = this.getHeight();
         var visibleRowCount = Math.ceil(divHeight/this.rowHeight);
 
         return visibleRowCount;
     },
- 
+
     firstVisibleRowIndex: function() {
         var firstRowIndex = Math.floor(this.scrollTop/this.rowHeight);
-        
+
         return firstRowIndex;
     },
-    
+
     refresh: function() {
         this.render(true);
     },
@@ -161,7 +161,7 @@ var SOGoDataTableInterface = {
 
         // Query the data source only if at least one row is not loaded
         if (refresh === true ||
-            this.renderedIndex < 0 || 
+            this.renderedIndex < 0 ||
             this.renderedIndex > index ||
             this.renderedCount < count ||
             (index + count) > (this.renderedIndex + this.renderedCount)) {
@@ -199,7 +199,7 @@ var SOGoDataTableInterface = {
         if (Prototype.Browser.IE)
             this.rowBottom.setStyle({ 'height': h + 'px', 'line-height': h + 'px' });
         this.rowBottom.firstChild.setStyle({ 'height': h + 'px', 'line-height': h + 'px' });
-        
+
         if (this.renderedIndex < 0) {
             this.renderedIndex = 0;
             this.renderedCount = 0;
@@ -242,7 +242,7 @@ var SOGoDataTableInterface = {
             for (i = start; i > this.renderedIndex; i--) {
                 this.body.removeChild(rows[i - this.renderedIndex]);
             }
-            
+
             // Add bottom rows
             for (j = this.renderedIndex + this.renderedCount - start, i = this.renderedIndex + this.renderedCount;
                  j < data.length;
@@ -277,7 +277,7 @@ var SOGoDataTableInterface = {
         // Update references to selected rows
         this.body.refreshSelectionByIds();
 //        log ("DataTable._render() top gap/bottom gap/total rows = " + this.rowTop.getStyle('height') + "/" + this.rowBottom.getStyle('height') + "/" + this.body.select("tr").length + " (height = " + this.down("table").getHeight() + "px)");
-        
+
         // Save current rendered view index and count
         this.renderedIndex = start;
         this.renderedCount = data.length;
@@ -326,18 +326,18 @@ var SOGoDataTableInterface = {
         }
         return index;
     },
- 
+
     _emptyTable: function() {
         var rows = this.body.select("tr");
         var currentCount = rows.length;
-        
+
         for (var i = currentCount - 1; i >= 0; i--) {
             if (rows[i] != this.rowModel &&
                 rows[i] != this.rowTop &&
                 rows[i] != this.rowBottom)
                 this.body.removeChild(rows[i]);
         }
-        
+
         this.body.deselectAll();
         this.renderedIndex = -1;
         this.renderedCount = 0;

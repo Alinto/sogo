@@ -60,6 +60,7 @@
 "Import Events" = "Importuj wydarzenia";
 "Select an iCalendar file (.ics)." = "Wybierz plik iCalendar (.ics).";
 "Upload" = "Wyślij";
+"Uploading" = "Wysyłanie";
 "Publish Calendar..." = "Opublikuj kalendarz...";
 "Reload Remote Calendars" = "Przeładuj zdalne kalendarze";
 "Properties" = "Właściwości";
@@ -81,7 +82,8 @@
 
 /* acls */
 
-"User rights for:" = "Uprawnienia użytkownika:";
+"Access rights to" = "Uprawnienia dla";
+"For user" = "Dla użytkownika";
 
 "Any Authenticated User" = "Każdy zalogowany użytkownik";
 "Public Access" = "Dostęp publiczny";
@@ -109,7 +111,6 @@
 
 /* Button Titles */
 
-"New Calendar..." = "Nowy kalendarz...";
 "Subscribe to a Calendar..." = "Subskrybuj kalendarz...";
 "Remove the selected Calendar" = "Usuń zaznaczony kalendarz";
 
@@ -302,10 +303,10 @@
 "Week(s)" = "Tygodni(e)";
 "On" = "w";
 "Month(s)" = "Miesiące(ęcy)";
-"The" = "";
+"The" = " ";
 "Recur on day(s)" = "Powtarzaj w dni";
 "Year(s)" = "Lat(a)";
-"cycle_of" = "";
+"cycle_of" = " ";
 "No end date" = "Bez daty końcowej";
 "Create" = "Utwórz";
 "appointment(s)" = "spotkanie(a)";
@@ -379,6 +380,7 @@ validate_invalid_startdate = "Niepoprawna wartość w polu daty początkowej!";
 validate_invalid_enddate   = "Niepoprawna wartość w polu daty końcowej!";
 validate_endbeforestart    = "Podana data końca jest wcześniejsza niż data początku.";
 
+"Events" = "Wydarzenia";
 "Tasks" = "Zadania";
 "Show completed tasks" = "Pokaż ukończone zadania";
 
@@ -452,13 +454,17 @@ validate_endbeforestart    = "Podana data końca jest wcześniejsza niż data po
 "Title" = "Tytuł";
 "Start" = "Początek";
 "End" = "Koniec";
-"Due Date" = "Termin";
+"Due Date" = "Termin:";
 "Location" = "Miejsce";
+
 "(Private Event)" = "(Wydarzenie prywatne)";
 
 vevent_class0 = "(Wydarzenie publiczne)";
 vevent_class1 = "(Wydarzenie prywatne)";
 vevent_class2 = "(Wydarzenie poufne)";
+
+"Priority" = "Priorytet";
+"Category" = "Kategoria";
 
 vtodo_class0 = "(Zadanie publiczne)";
 vtodo_class1 = "(Zadanie prywatne)";
@@ -486,6 +492,10 @@ vtodo_class2 = "(Zadanie poufne)";
 "Display" = "Pokaż";
 "Show alarms" = "Pokaż alarmy";
 "Show tasks" = "Pokaż zadania";
+
+"Receive a mail when I modify my calendar" = "Przyślij e-mail, gdy zmieniam swój kalendarz";
+"Receive a mail when someone else modifies my calendar" = "Przyślij e-mail, gdy ktoś zmienia mój kalendarz";
+"When I modify my calendar, send a mail to:" = "Gdy zmieniam swój kalendarz, wyślij e-mail do:";
 
 "Links to this Calendar" = "Odnośniki do tego kalendarza";
 "Authenticated User Access" = "Dostęp dla zalogowanych użytkowników";
@@ -515,6 +525,7 @@ vtodo_class2 = "(Zadanie poufne)";
 "Delete Task" = "Usuń zadanie";
 "Delete Event" = "Usuń wydarzenie";
 "Copy event to my calendar" = "Copy event to my calendar";
+"View Raw Source" = "Obejrzyj źródło";
 
 "Subscribe to a web calendar..." = "Subskrybuj kalendarz...";
 "URL of the Calendar" = "URL do kalendarza";

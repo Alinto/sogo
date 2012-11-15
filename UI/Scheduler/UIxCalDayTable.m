@@ -45,8 +45,6 @@
 
 - (id) init
 {
-  NSDictionary *locale;
-  NSString *language;
   SOGoUser *user;
   SOGoUserDefaults *ud;
 
@@ -55,8 +53,6 @@
       user = [context activeUser];
       ud = [user userDefaults];
       ASSIGN (timeFormat, [ud timeFormat]);
-      language = [ud language];
-      locale = [[self resourceManager] localeForLanguageNamed: language];
 
       daysToDisplay = nil;
       hoursToDisplay = nil;

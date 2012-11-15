@@ -22,10 +22,12 @@
  */
 
 #include <stdio.h>
+#ifdef HAVE_OPENSSL
 #include <openssl/bio.h>
 #include <openssl/err.h>
 #include <openssl/pkcs7.h>
 #include <openssl/x509.h>
+#endif
 
 #import <Foundation/NSArray.h>
 #import <NGMime/NGPart.h>
@@ -34,6 +36,12 @@
 #import "UIxMailPartSignedViewer.h"
 
 @implementation UIxMailPartSignedViewer : UIxMailPartMixedViewer
+
+#ifdef HAVE_OPENSSL
+- (BOOL) supportsSMIME
+{
+  return YES;
+}
 
 - (X509_STORE *) _setupVerify
 {
@@ -185,5 +193,21 @@
 
   return validationMessage;
 }
+#else
+- (BOOL) supportsSMIME
+{
+  return NO;
+}
+
+- (BOOL) validSignature
+{
+  return NO;
+}
+
+- (NSString *) validationMessage
+{
+  return nil;
+}
+#endif
 
 @end

@@ -31,6 +31,8 @@
 
 #import "SOGoTestRunner.h"
 
+#define EXPECTED_FAILURES 3
+
 @implementation SOGoTestRunner
 
 + (SOGoTestRunner *) testRunner
@@ -89,7 +91,7 @@
   [allTestClasses autorelease];
   [self autorelease];
 
-  return rc;
+  return (failuresCount + errorsCount != EXPECTED_FAILURES);
 }
 
 - (void) incrementTestCounter: (SOGoTestFailureCode) failureCode

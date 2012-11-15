@@ -32,8 +32,8 @@
 
 @interface iCalTimeZonePeriod (private)
 
-- (NSCalendarDate *) _occurenceForDate: (NSCalendarDate *) refDate
-			       byRRule: (iCalRecurrenceRule *) rrule;
+- (NSCalendarDate *) _occurrenceForDate: (NSCalendarDate *) refDate
+                                byRRule: (iCalRecurrenceRule *) rrule;
 
 @end
 
@@ -42,9 +42,9 @@
 
 @implementation TestiCalTimeZonePeriod
 
-/* TODO: this test fails for obscure reasons, but test__occurenceForDate_byRRule_ does not, which
+/* TODO: this test fails for obscure reasons, but test__occurrenceForDate_byRRule_ does not, which
    is a good sign */
-- (void) test_occurenceForDate_
+- (void) test_occurrenceForDate_
 {
   NSString *periods[] = { (@"BEGIN:DAYLIGHT\r\n"
                            @"TZOFFSETFROM:-0500\r\n"
@@ -75,17 +75,17 @@
   for (count = 0; count < 2; count++)
     {
       period = [iCalTimeZonePeriod parseSingleFromSource: periods[count]];
-      testDate = [period occurenceForDate: [dateStrings[count] asCalendarDate]];
+      testDate = [period occurrenceForDate: [dateStrings[count] asCalendarDate]];
       delta = (NSInteger) [testDate timeIntervalSince1970] - occurrenceSeconds[count];
       testWithMessage ((NSInteger) [testDate timeIntervalSince1970]
                        == occurrenceSeconds[count],
                        ([NSString stringWithFormat:
-                                         @"test %d: seconds do not match:"
+                                    @"test %d: seconds do not match:"
                                   @" delta = %d", count, delta]));
     }
 }
 
-- (void) test__occurenceForDate_byRRule_
+- (void) test__occurrenceForDate_byRRule_
 {
   /* all rules are happening on 2010-03-14 */
   NSString *periods[] = { @"20100307T120000Z",
@@ -144,8 +144,8 @@
       while (*currentDate)
         {
           testDate = [*currentDate asCalendarDate];
-          resultDate = [testPeriod _occurenceForDate: testDate
-                                             byRRule: (iCalRecurrenceRule *) [testPeriod uniqueChildWithTag: @"rrule"]];
+          resultDate = [testPeriod _occurrenceForDate: testDate
+                                              byRRule: (iCalRecurrenceRule *) [testPeriod uniqueChildWithTag: @"rrule"]];
           
           error = [NSString stringWithFormat: @"time change date for date '%@' does not occur on expected date (result: %@, exp.: %@)",
                             *currentDate, resultDate, timeChangeDate];
