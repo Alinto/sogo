@@ -1,3 +1,22 @@
+2.0.2a (2012-11-15)
+-------------------
+
+Enhancements
+ - improved user rights editor in calendar module
+ - disable alarms for newly subsribed calendars
+
+Bug fixes
+ - fixed typos in Spanish (Spain) translation
+ - fixed display of raw source for tasks
+ - fixed title display of cards with a photo
+ - fixed null address in reply-to header of messages
+ - fixed scrolling for calendar/addressbooks lists
+ - fixed display of invitations on BlackBerry devices
+ - fixed sogo-tool rename-user for MySQL database
+ - fixed corrupted attachments in Webmail
+ - fixed parsing of URLs that can throw an exception
+ - fixed password encoding in user sources
+
 2.0.2 (2012-10-24)
 ------------------
 
