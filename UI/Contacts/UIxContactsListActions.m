@@ -1,8 +1,8 @@
 /*
-  Copyright (C) 2006-2011 Inverse inc.
+  Copyright (C) 2006-2012 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo.
 
   SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the

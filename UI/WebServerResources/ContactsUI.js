@@ -1227,7 +1227,7 @@ getMenus = function() {
                                      "-", onMenuDeleteContact, "-",
                                      "moveContactMenu", "copyContactMenu", 
                                      onMenuExportContact, onMenuRawContact);
-    menus["searchMenu"] = new Array(setSearchCriteria, setSearchCriteria);
+    menus["searchMenu"] = new Array(setSearchCriteria, setSearchCriteria, setSearchCriteria);
    
     var contactFoldersMenu = $("contactFoldersMenu");
     if (contactFoldersMenu)

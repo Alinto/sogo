@@ -10,6 +10,7 @@
         <li id="name_or_address"><var:string
 	    label:value="Name or Email"/></li>
         <li id="category"><var:string label:value="Category"/></li>
+        <li id="organization"><var:string label:value="Organization"/></li>
       </ul>
     </div>
 

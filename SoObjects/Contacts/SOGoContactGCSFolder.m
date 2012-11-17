@@ -191,6 +191,10 @@ static NSArray *folderListingFields = nil;
         qs = [NSString stringWithFormat:
                          @"(c_categories isCaseInsensitiveLike: '%%%@%%')",
                        filter];
+      else if ([criteria isEqualToString: @"organization"])
+        qs = [NSString stringWithFormat:
+                         @"(c_o isCaseInsensitiveLike: '%%%@%%')",
+                       filter];
       else
         qs = @"(1 == 0)";
 
