@@ -424,16 +424,19 @@
 }
 
 static inline BOOL
-_subValuesAreVoid (NSArray *subValues)
+_subValuesAreVoid (id subValues)
 {
   BOOL result = YES;
   NSUInteger count, max;
 
   result = YES;
 
-  max = [subValues count];
-  for (count = 0; result && count < max; count++)
-    result = ([[subValues objectAtIndex: count] length] == 0);
+  if ([subValues isKindOfClass: [NSArray class]])
+    {
+      max = [subValues count];
+      for (count = 0; result && count < max; count++)
+        result = ([[subValues objectAtIndex: count] length] == 0);
+    }
 
   return result;
 }

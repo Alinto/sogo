@@ -227,7 +227,7 @@ convention:
             additional: nil prefixes: nil suffixes: nil];
   [self setNickname: [ldifRecord objectForKey: @"mozillanickname"]];
   [self setFn: [ldifRecord objectForKey: @"displayname"]];
-  [self setTitle: [ldifRecord objectForKey: @"title"]];
+  [self setTitle: [ldifRecord objectForKey: @"title"]];  
 
   element = [self _elementWithTag: @"adr" ofType: @"home"];
   [element setSingleValue: [ldifRecord objectForKey: @"mozillahomestreet2"]
@@ -303,7 +303,8 @@ convention:
             forKey: @""];
 
   [self setNote: [ldifRecord objectForKey: @"description"]];
-  [self setCategories: [ldifRecord objectForKey: @"vcardcategories"]];
+  [self setCategories: [[ldifRecord objectForKey: @"vcardcategories"]
+                         componentsSeparatedByString: @","]];
 
   [self cleanupEmptyChildren];
 }
