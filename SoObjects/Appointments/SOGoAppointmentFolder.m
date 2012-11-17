@@ -2885,11 +2885,26 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                       timezone: (iCalTimeZone *) timezone
 {
   SOGoAppointmentObject *object;
-  NSString *uid;
   NSMutableString *content;
+  NSString *uid;
 
   uid =  [self globallyUniqueObjectId];
   [event setUid: uid];
+
+  // We first look if there's an event with the same UID in our calendar. If not,
+  // let's reuse what is in the event, otherwise generate a new GUID and use it.
+  uid = [event uid];
+
+  object = [self lookupName: uid
+                  inContext: context
+                    acquire: NO];
+ 
+  if (object && ![object isKindOfClass: [NSException class]])
+    {
+      uid = [self globallyUniqueObjectId];
+      [event setUid: uid];
+    }
+
   object = [SOGoAppointmentObject objectWithName: uid
                                     inContainer: self];
   [object setIsNew: YES];
@@ -3024,7 +3039,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                                                                    acquire: NO];
                           if (master)
                             {
-                              // Associate the occurrence to the master event
+                              // Associate the occurrence to the master event and skip the actual import process
                               masterCalendar = [master calendar: NO secure: NO];
                               [masterCalendar addToEvents: event];
                               if (timezone)
