@@ -104,6 +104,7 @@
       if ([event hasRecurrenceRules])
 	[event updateRecurrenceRulesUntilDate: end];
 
+      [event setLastModified: [NSCalendarDate calendarDate]];
       [co saveComponent: event];
 
       response = [self responseWith204];
