@@ -127,17 +127,23 @@
 
   if (order)
     {
-      NSMutableArray *orderedElements;
+      NSMutableArray *orderedElements, *originalElements;
+      NSArray *currentChildren;
       int i, c;
 
+      originalElements = [NSMutableArray arrayWithArray: [aGroup children]];
       orderedElements = [NSMutableArray array];
       c = [order count];
       
       for (i = 0; i < c; i++)
         {
-          [orderedElements addObjectsFromArray: [aGroup childrenWithTag: [order objectAtIndex: i]]];
+          currentChildren = [aGroup childrenWithTag: [order objectAtIndex: i]];
+          [orderedElements addObjectsFromArray: currentChildren];
+          [originalElements removeObjectsInArray: currentChildren];
         }
       
+      // We add the remaining, unordered elements
+      [orderedElements addObjectsFromArray: originalElements];
       children = [orderedElements objectEnumerator];
     }
   else

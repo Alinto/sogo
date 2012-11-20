@@ -212,7 +212,7 @@
 
 - (NSArray *) orderOfElements
 {
-  return [NSArray arrayWithObjects: @"prodid", @"version", @"method", @"calscale", @"x-wr-calname",
+  return [NSArray arrayWithObjects: @"prodid", @"version", @"method", @"calscale",
                   @"vtimezone", @"vevent", @"vtodo", @"vjournal", @"vfreebusy", nil];
 }
 
