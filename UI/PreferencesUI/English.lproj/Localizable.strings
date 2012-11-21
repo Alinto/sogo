@@ -141,6 +141,7 @@
 "messageforward_inline" = "Inline";
 "messageforward_attached" = "As Attachment";
 
+"When replying to a message:" = "When replying to a message:";
 "replyplacement_above" = "Start my reply above the quote";
 "replyplacement_below" = "Start my reply below the quote";
 "And place my signature" = "And place my signature";

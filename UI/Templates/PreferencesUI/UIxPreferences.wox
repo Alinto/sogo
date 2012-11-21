@@ -223,7 +223,7 @@
                     const:name="messageForwarding"
                     string="itemMessageForwardingText"
                     selection="userMessageForwarding"/></dd>
-              <dt></dt>
+              <dt><var:string label:value="When replying to a message:"/></dt>
               <dd><var:popup list="replyPlacementList" item="item"
                     const:id="replyPlacementList"
                     const:name="replyPlacementList"
