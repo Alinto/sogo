@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2010 Inverse inc.
+  Copyright (C) 2007-2012 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -804,8 +804,8 @@ static NSString    *userAgent      = nil;
 - (void) fetchMailForForwarding: (SOGoMailObject *) sourceMail
 {
   NSDictionary *info, *attachment;
+  NSString *signature, *nl;
   SOGoUserDefaults *ud;
-  NSString *signature;
 
   [sourceMail fetchCoreInfos];
   
@@ -831,11 +831,14 @@ static NSString    *userAgent      = nil;
     }
   else
     {
-  // TODO: use subject for filename?
-//   error = [newDraft saveAttachment:content withName:@"forward.eml"];
+      // TODO: use subject for filename?
+      // error = [newDraft saveAttachment:content withName:@"forward.eml"];
       signature = [[self mailAccountFolder] signature];
       if ([signature length])
-	[self setText: [NSString stringWithFormat: @"\n-- \n%@", signature]];
+        {
+          nl = (isHTML ? @"<br/>" : @"\n");
+          [self setText: [NSString stringWithFormat: @"%@-- %@%@", nl, nl, signature]];
+        }
       attachment = [NSDictionary dictionaryWithObjectsAndKeys:
 				   [sourceMail filenameForForward], @"filename",
 				 @"message/rfc822", @"mimetype",

@@ -1,6 +1,6 @@
 /* SOGoMailForward.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -226,11 +226,15 @@
 
 - (NSString *) signature
 {
-  NSString *signature, *mailSignature;
-
+  NSString *signature, *mailSignature, *nl;
+  
   signature = [[sourceMail mailAccountFolder] signature];
+
   if ([signature length])
-    mailSignature = [NSString stringWithFormat: @"-- \n%@", signature];
+    {
+      nl = (htmlComposition ? @"<br/>" : @"\n");
+      mailSignature = [NSString stringWithFormat: @"-- %@%@", nl, signature];
+    }
   else
     mailSignature = @"";
 
