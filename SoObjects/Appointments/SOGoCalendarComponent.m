@@ -725,7 +725,8 @@
   header = [NSString stringWithFormat: @"text/calendar; method=%@;"
                      @" charset=\"%@\"",
                      [(iCalCalendar *) [object parent] method], charset];
-  headerMap = [NGMutableHashMap hashMapWithCapacity: 1];
+  headerMap = [NGMutableHashMap hashMapWithCapacity: 3];
+  [headerMap setObject: @"urn:content-classes:calendarmessage"  forKey: @"Content-Class"];
   [headerMap setObject: header forKey: @"content-type"];
   [headerMap setObject: @"quoted-printable"
                 forKey: @"content-transfer-encoding"];
