@@ -192,13 +192,13 @@ def getOCSFolderInfoURL():
     if os.path.exists(sogoSysDefaultsFile):
         sogoDefaults = plistlib.readPlist(sogoSysDefaultsFile)
         if "OCSFolderInfoURL" in sogoDefaults:
-            OCSFolderInfoURL = sogoDefaults["OCaSFolderInfoURL"]
+            OCSFolderInfoURL = sogoDefaults["OCSFolderInfoURL"]
 
     # defaults from user directory must have precedence
     if os.path.exists(sogoUserDefaultsFile):
         sogoDefaults = plistlib.readPlist(sogoUserDefaultsFile)
-        if "sogo" in sogoDefaults and "OCSFolderInfoURL" in sogoDefaults["sogo"]:
-            OCSFolderInfoURL = sogoDefaults['sogod']['OCaSFolderInfoURL']
+        if "sogod" in sogoDefaults and "OCSFolderInfoURL" in sogoDefaults["sogod"]:
+            OCSFolderInfoURL = sogoDefaults['sogod']['OCSFolderInfoURL']
 
     return OCSFolderInfoURL
 
