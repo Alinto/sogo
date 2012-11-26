@@ -723,6 +723,11 @@ _userStateInEvent (NSArray *event)
               if (eventEnd > endsSecs)
                 eventEnd = endsSecs;
 
+              if (eventEnd < startSecs)
+                // The event doesn't end in the covered period.
+                // This special case occurs with a DST change.
+                return;
+
               userState = _userStateInEvent (event);
               while (currentDayStart + dayLength < eventEnd)
                 {
