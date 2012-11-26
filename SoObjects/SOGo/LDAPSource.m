@@ -107,6 +107,7 @@ static Class NSStringK;
       [searchFields retain];
       IMAPHostField = nil;
       IMAPLoginField = nil;
+      SieveHostField = nil;
       bindFields = nil;
       _scope = @"sub";
       _filter = nil;
@@ -149,6 +150,7 @@ static Class NSStringK;
   [searchFields release];
   [IMAPHostField release];
   [IMAPLoginField release];
+  [SieveHostField release];
   [bindFields release];
   [_filter release];
   [_userPasswordAlgorithm release];
@@ -194,6 +196,7 @@ static Class NSStringK;
 	 searchFields: [udSource objectForKey: @"SearchFieldNames"]
 	IMAPHostField: [udSource objectForKey: @"IMAPHostFieldName"]
        IMAPLoginField: [udSource objectForKey: @"IMAPLoginFieldName"]
+       SieveHostField: [udSource objectForKey: @"SieveHostFieldName"]
 	   bindFields: [udSource objectForKey: @"bindFields"]
 	    kindField: [udSource objectForKey: @"KindFieldName"]
             andMultipleBookingsField: [udSource objectForKey: @"MultipleBookingsFieldName"]];
@@ -311,6 +314,7 @@ static Class NSStringK;
       searchFields: (NSArray *) newSearchFields
      IMAPHostField: (NSString *) newIMAPHostField
     IMAPLoginField: (NSString *) newIMAPLoginField
+    SieveHostField: (NSString *) newSieveHostField
 	bindFields: (id) newBindFields
 	 kindField: (NSString *) newKindField
 andMultipleBookingsField: (NSString *) newMultipleBookingsField
@@ -326,6 +330,8 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
     ASSIGN(IMAPHostField, [newIMAPHostField lowercaseString]);
   if (newIMAPLoginField)
     ASSIGN(IMAPLoginField, [newIMAPLoginField lowercaseString]);
+  if (newSieveHostField)
+    ASSIGN(SieveHostField, [newSieveHostField lowercaseString]);
   if (newMailFields)
     ASSIGN(mailFields, newMailFields);
   if (newSearchFields)
@@ -847,6 +853,13 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
       ldapValue = [[ldapEntry attributeWithName: IMAPLoginField] stringValueAtIndex: 0];
       if ([ldapValue length] > 0)
 	[ldifRecord setObject: ldapValue forKey: @"c_imaplogin"];
+    }
+
+  if (SieveHostField)
+    {
+      ldapValue = [[ldapEntry attributeWithName: SieveHostField] stringValueAtIndex: 0];
+      if ([ldapValue length] > 0)
+	[ldifRecord setObject: ldapValue forKey: @"c_sievehostname"];
     }
 }
 
@@ -1609,6 +1622,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                                    searchFields: nil
                                   IMAPHostField: nil
                                  IMAPLoginField: nil
+                                 SieveHostField: nil
                                      bindFields: nil
                                       kindField: nil
                        andMultipleBookingsField: nil];

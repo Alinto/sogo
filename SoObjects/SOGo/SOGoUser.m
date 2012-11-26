@@ -577,7 +577,7 @@
 - (void) _appendSystemMailAccount
 {
   NSString *fullName, *replyTo, *imapLogin, *imapServer, *signature,
-    *encryption, *scheme, *action, *query, *customEmail;
+    *encryption, *scheme, *action, *query, *customEmail, *sieveServer;
   NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts;
   NSNumber *port;
   NSMutableArray *identities;
@@ -636,6 +636,15 @@
     port = [NSNumber numberWithInt: defaultPort];
   [mailAccount setObject: port forKey: @"port"];
   [mailAccount setObject: encryption forKey: @"encryption"];
+
+  // Sieve server
+  sieveServer = [self _fetchFieldForUser: @"c_sievehostname"];
+
+  if (sieveServer)
+    {
+      [mailAccount setObject: sieveServer  forKey: @"sieveServerName"];
+    }
+  
 
   /* identities */
   identities = [NSMutableArray new];

@@ -43,6 +43,7 @@
   NSArray *_mailFields;
   NSString *_imapLoginField;
   NSString *_imapHostField;
+  NSString *_sieveHostField;
   NSString *_userPasswordAlgorithm;
   NSURL *_viewURL;
   BOOL _prependPasswordScheme;

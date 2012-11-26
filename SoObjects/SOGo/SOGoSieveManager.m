@@ -736,7 +736,12 @@ static NSString *sieveScriptName = @"sogo";
   //
   // Values such as "localhost" or "localhost:2000" are NOT supported.
   //
-  sieveServer = [dd sieveServer];
+  // We first try to get the user's preferred Sieve server
+  sieveServer = [[[user mailAccounts] objectAtIndex: 0] objectForKey: @"sieveServerName"];
+
+  if (!sieveServer)
+    sieveServer = [dd sieveServer];
+  
   sievePort = 2000;
   url = nil;
       

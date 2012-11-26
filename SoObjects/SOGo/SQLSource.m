@@ -98,6 +98,7 @@
       _kindField = nil;
       _multipleBookingsField = nil;
       _imapHostField = nil;
+      _sieveHostField = nil;
     }
 
   return self;
@@ -115,6 +116,7 @@
   [_multipleBookingsField release];
   [_domainField release];
   [_imapHostField release];
+  [_sieveHostField release];
    
   [super dealloc];
 }
@@ -131,6 +133,7 @@
   ASSIGN(_userPasswordAlgorithm, [udSource objectForKey: @"userPasswordAlgorithm"]);
   ASSIGN(_imapLoginField, [udSource objectForKey: @"IMAPLoginFieldName"]);
   ASSIGN(_imapHostField, [udSource objectForKey:  @"IMAPHostFieldName"]);
+  ASSIGN(_sieveHostField, [udSource objectForKey:  @"SieveHostFieldName"]);
   ASSIGN(_kindField, [udSource objectForKey: @"KindFieldName"]);
   ASSIGN(_multipleBookingsField, [udSource objectForKey: @"MultipleBookingsFieldName"]);
   ASSIGN(_domainField, [udSource objectForKey: @"DomainFieldName"]);
@@ -522,6 +525,13 @@
               value = [response objectForKey: _imapHostField];
               if ([value isNotNull])
                 [response setObject: value forKey: @"c_imaphostname"];
+            }
+
+          if (_sieveHostField)
+            {
+              value = [response objectForKey: _sieveHostField];
+              if ([value isNotNull])
+                [response setObject: value forKey: @"c_sievehostname"];
             }
 
           // We check if the user can authenticate
