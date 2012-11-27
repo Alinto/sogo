@@ -4,11 +4,11 @@
 New features
  - support for SAML2 for single sign-on, with the help of the lasso library
  - added support for the "AUTHENTICATE" command and SASL mechanisms
+ - added domain default SieveHostFieldName
 
 Enhancements
  - search the contacts for the organization attribute
  - in HTML mode, optionally place answer after the quoted text
- - added domain default SieveHostFieldName
  - improved memory usage of "sogo-tool restore"
 
 Bug fixes
