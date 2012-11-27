@@ -59,6 +59,7 @@
   NSTimeInterval anInterval;
   id grandParent;
 
+  nextAlarmDate = nil;
   triggerValue = [[self valueType] uppercaseString];
   if ([triggerValue length] == 0)
     triggerValue = @"DURATION";
@@ -88,8 +89,6 @@
     }
   else if ([triggerValue isEqualToString: @"DATE-TIME"])
     nextAlarmDate = [[self flattenedValuesForKey: @""] asCalendarDate];
-  else
-    nextAlarmDate = nil;
 
   return nextAlarmDate;
 }
