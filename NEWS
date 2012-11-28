@@ -14,7 +14,7 @@ Enhancements
 Bug fixes
  - fixed LDIF import with categories
  - imported events now keep their UID when possible
- - fixed importation of multuple calendars
+ - fixed importation of multiple calendars
  - fixed modification date when drag'n'droping events
  - fixed missing 'from' header in Outlook
  - fixed invitations in Outlook
