@@ -1,0 +1,75 @@
+/* this file is in UTF-8 format! */
+
+"title" = "SOGo";
+
+"Username:" = "Uživateľské meno:";
+"Password:" = "Heslo:";
+"Domain:" = "Doména:";
+"Remember username" = "Zapamätať uživateľské meno";
+
+"Connect" = "Pripojiť";
+
+"Wrong username or password." = "Nesprávne uživateľské meno, alebo heslo.";
+"cookiesNotEnabled" = "Nemôžete sa prihlásiť, pretože vo svojom prehliadači máte zakázané cookies. Prosím povoľte cookies vo vašom prehliadači a skúste to znova.";
+
+"browserNotCompatible" = "Zistili sme že Váš prehliadač nie je našou stránkou  momentálne podporovaný. Odporúčame používať Firefox. Kliknite na odkaz nižšie a stiahnite si aktuálnu verziu tohoto prehliadača";
+"alternativeBrowsers" = "Prípadne môžete tiež použiť nasledujúce kompatibilné prehliadače";
+"alternativeBrowserSafari" = "Alternatívne je možné použiť aj Safari.";
+"Download" = "Stiahnuť";
+
+"Language:" = "Jazyk:";
+"choose" = "Výber ...";
+"Catalan" = "Katalánsky";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Holandsky";
+"English" = "Anglicky";
+"French" = "Francúzsky";
+"German" = "Nemecky";
+"Hungarian" = "Maďarsky";
+"Icelandic" = "Islandčina";
+"Italian" = "Taliansky";
+"NorwegianBokmal" = "Nórčina bokmål";
+"NorwegianNynorsk" = "Nórčina nynorsk";
+"Polish" = "Poľština";
+"BrazilianPortuguese" = "Portugalská brazílština";
+"Russian" = "Ruština";
+"SpanishSpain" = "Španielčina (Španielsko)";
+"SpanishArgentina" = "Španielčina (Argentína)";
+"Swedish" = "Švédčina";
+"Ukrainian" = "Ukrajinčina";
+"Welsh" = "Galčina";
+
+"About" = "O";
+"AboutBox" = "Vyvinuté Inverse, SOGo je plne vybavený groupware server s dôrazom na škálovateľnosť a jednoduchosť.<br/><br/>\nSOGo ponúka bohaté Web rozhranie na báze AJAX-u a natívne podporuje mnoho klientov použitím štandardov ako sú CalDAV a CardDAV.<br/><br/>\nSOGo je distribuované pod licenciou <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> verzie 2 alebo novšej a niektoré časti pod licenciou GNU LGPL verzie 2. Toto je voľne šíritelný softvér: môžete ho meniť a šíriť ďalej. Neexistuje ŽIADNA ZÁRUKA, v rozsahu povolenom zákonom.<br/><br/>\nPozrite si <a href=\"http://www.sogo.nu/en/support/community.html\">túto stránku</a> pre rôzne možnosti podpory.";
+
+"Your account was locked due to too many failed attempts." = "Váš účet bol uzamknutý kvôli príliš mnohých neúspešným pokusom.";
+"Your account was locked due to an expired password." = "Váš účet bol uzamknutý kvôli neplatnému heslu.";
+"Login failed due to unhandled error case: " = "Prihlásenie zlyhalo kvôli neošetrenej prípade chyby:";
+"Change your Password" = "Zmeniť heslo";
+"The password was changed successfully." = "Vaše heslo bolo zmené.";
+"Your password has expired, please enter a new one below:" = "Vaše heslo vypršalo, zadajte prosím nové nižšie:";
+"Password must not be empty." = "Heslo nesmie byť prázdne.";
+"The passwords do not match. Please try again." = "Heslá sa nezhodujú. Skúste to znova.";
+"Password Grace Period" = "Doba platnosti hesla";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Ostáva Vám %{0} prihlásení do uzamknutia Vášho účtu. Zmeňte prosím Vaše heslo.";
+"Password about to expire" = "Heslo čoskoro skončí";
+"Your password is going to expire in %{0} %{1}." = "Vaše heslo vyprší za %{0} %{1}.";
+"days" = "dni";
+"hours" = "hodiny";
+"minutes" = "minúty";
+"seconds" = "sekundy";
+"Password change failed" = "Zmena hesla zlyhala";
+"Password change failed - Permission denied" = "Zmena hesla zlyhala - oprávnenie bolo odopreté";
+"Password change failed - Insufficient password quality" = "Zmena hesla zlyhala - nedostatočná kvalita hesla";
+"Password change failed - Password is too short" = "Zmena hesla zlyhala - heslo je príliš krátke";
+"Password change failed - Password is too young" = "Zmena hesla nebola úspešná - heslo sa nesmie opakovať";
+"Password change failed - Password is in history" = "Zmena hesla zlyhala - heslo je v histórii";
+"Unhandled policy error: %{0}" = "Nespracovaná politika. Chyba: %{0}";
+"Unhandled error response" = "Nespracované chyby na odpoveď";
+"Password change is not supported." = "Zmena hesla nieje povolená.";
+"Unhandled HTTP error code: %{0}" = "Nespracované HTTP. Kód chyby: %{0}";
+"New password:" = "Nové heslo:";
+"Confirmation:" = "Potvrdiť:";
+"Cancel" = "Zrušiť";
+"Please wait..." = "Prosím čakajte ...";

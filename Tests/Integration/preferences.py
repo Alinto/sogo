@@ -13,7 +13,7 @@ import sogoLogin
 SOGoSupportedLanguages = [ "Catalan", "Czech", "Dutch", "Danish", "Welsh", "English",
                            "SpanishSpain", "SpanishArgentina", "French", "German",
                            "Icelandic", "Italian", "Hungarian", "BrazilianPortuguese",
-                           "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Russian",
+                           "NorwegianBokmal", "NorwegianNynorsk", "Polish", "Russian", "Slovak",
                            "Ukrainian", "Swedish" ];
 daysBetweenResponseList=[1,2,3,5,7,14,21,30]
 
