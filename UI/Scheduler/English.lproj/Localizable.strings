@@ -493,6 +493,7 @@ vtodo_class2 = "(Confidential task)";
 "Show alarms" = "Show alarms";
 "Show tasks" = "Show tasks";
 
+"Notifications" = "Notifications";
 "Receive a mail when I modify my calendar" = "Receive a mail when I modify my calendar";
 "Receive a mail when someone else modifies my calendar" = "Receive a mail when someone else modifies my calendar";
 "When I modify my calendar, send a mail to:" = "When I modify my calendar, send a mail to:";
