@@ -1897,8 +1897,8 @@ function _(key) {
 
 AIM = {
     frame: function(c) {
-        var d = new Element ('div');
-        var n = d.identify ();
+        var d = new Element('div');
+        var n = d.identify();
         d.innerHTML = '<iframe class="hidden" src="about:blank" id="'
             + n + '" name="' + n + '" onload="AIM.loaded(\'' + n + '\')"></iframe>';
         document.body.appendChild(d);

@@ -127,10 +127,10 @@ function _setupEvents() {
     // We check for non-null elements as replyPlacementList and composeMessagesType
     // might not be present if ModulesConstraints disable those elements
     if ($("replyPlacementList"))
-    	$("replyPlacementList").observe("change", onReplyPlacementListChange);
+        $("replyPlacementList").on("change", onReplyPlacementListChange);
 
     if ($("composeMessagesType"))
-    	$("composeMessagesType").observe("change", onComposeMessagesTypeChange);
+        $("composeMessagesType").on("change", onComposeMessagesTypeChange);
 
     // Note: we also monitor changes to the calendar categories.
     // See functions endEditable and onColorPickerChoice.
@@ -205,25 +205,9 @@ function initPreferences() {
         $("contactsCategoryDelete").observe("click", onContactsCategoryDelete);
     }
 
-    // Disable placement (after) if composing in HTML
-    var button = $("composeMessagesType");
-    if (button) {
-        if (button.value == 1) {
-            $("replyPlacementList").value = 0;
-            $("replyPlacementList").disabled = true;
-        }
-        onReplyPlacementListChange();
-        button.on("change", function(event) {
-            if (this.value == 0)
-                $("replyPlacementList").disabled = false;
-            else {
-                $("replyPlacementList").value = 0;
-                $("replyPlacementList").disabled = true;
-            }
-        });
-    }
+    onReplyPlacementListChange();
 
-    button = $("addDefaultEmailAddresses");
+    var button = $("addDefaultEmailAddresses");
     if (button)
         button.observe("click", addDefaultEmailAddresses);
 
@@ -1029,13 +1013,14 @@ function serializeContactsCategories() {
 
 
 function onReplyPlacementListChange() {
-    // above = 0
     if ($("replyPlacementList").value == 0) {
-        $("signaturePlacementList").disabled=false;
+        // Reply placement is above quote, signature can be place before of after quote
+        $("signaturePlacementList").disabled = false;
     }
     else {
-        $("signaturePlacementList").value=1;
-        $("signaturePlacementList").disabled=true;
+        // Reply placement is bellow quote, signature is unconditionally placed after quote
+        $("signaturePlacementList").value = 1;
+        $("signaturePlacementList").disabled = true;
     }
 }
 

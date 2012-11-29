@@ -8,7 +8,7 @@ var usersRightsWindowWidth = 450;
 
 var Contact = {
     currentAddressBook: "/personal",
-    currentContactId: null,
+    currentContactId: null
 };
 
 function openContactsFolder(contactsFolder, reload, idx) {

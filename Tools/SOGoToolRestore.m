@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSError.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSString.h>
@@ -346,6 +347,7 @@ typedef enum SOGoToolRestoreMode {
 - (BOOL) restoreRecords: (NSArray *) records
                ofFolder: (GCSFolder *) gcsFolder
 {
+  NSAutoreleasePool *pool;
   NSDictionary *existingRecords, *currentRecord;
   NSString *cName, *cContent;
   int count, max;
@@ -354,12 +356,18 @@ typedef enum SOGoToolRestoreMode {
 
   if (records)
     {
+      existingRecords = [self fetchExistingRecordsFromFolder: gcsFolder];
+      pool = [[NSAutoreleasePool alloc] init];
       version = 0;
       rc = YES;
-      existingRecords = [self fetchExistingRecordsFromFolder: gcsFolder];
       max = [records count];
       for (count = 0; count < max; count++)
         {
+          if (count > 0 && count%100 == 0)
+            {
+              DESTROY(pool);
+              pool = [[NSAutoreleasePool alloc] init];
+            }
           currentRecord = [records objectAtIndex: count];
           cName = [currentRecord objectForKey: @"c_name"];
           if (![existingRecords objectForKey: cName])
@@ -370,6 +378,7 @@ typedef enum SOGoToolRestoreMode {
                           baseVersion: &version];
             }
         }
+      DESTROY(pool);
     }
   else
     {
