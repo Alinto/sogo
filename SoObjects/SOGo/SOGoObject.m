@@ -1236,7 +1236,7 @@
 - (SOGoWebDAVValue *) davCurrentUserPrincipal
 {
   NSDictionary *userHREF;
-  NSString *login;
+  NSString *login, *s;
   SOGoUser *activeUser;
   SOGoWebDAVValue *davCurrentUserPrincipal;
 
@@ -1246,7 +1246,8 @@
     davCurrentUserPrincipal = nil;
   else
     {
-      userHREF = davElementWithContent (@"href", XMLNS_WEBDAV, [self davURLAsString]);
+      s = [NSString stringWithFormat: @"/SOGo/dav/%@", login];
+      userHREF = davElementWithContent (@"href", XMLNS_WEBDAV, s);
       davCurrentUserPrincipal
         = [davElementWithContent (@"current-user-principal",
                                   XMLNS_WEBDAV,
