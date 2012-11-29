@@ -10,6 +10,7 @@ Enhancements
  - search the contacts for the organization attribute
  - in HTML mode, optionally place answer after the quoted text
  - improved memory usage of "sogo-tool restore"
+ - added Slovak translation - thanks to Martin Pastor
 
 Bug fixes
  - fixed LDIF import with categories
