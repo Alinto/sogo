@@ -193,62 +193,46 @@
       </var:if>
       
       <div class="linked_attachment_meta" style="background-color: white;">
-	<table border="0" class="linked_attachment_meta">
-	  <tr>
-	    <td><var:string label:value="Time"/>:</td>
-	    <td>
-	      <!-- TODO: we need a better viewer for that -->
-	      <var:string value="startDate" /> 
-	      <var:if condition="inEvent.isAllDay" const:negate="YES">
-		<var:string value="startTime" />
-	      </var:if>
-	      <var:if condition="isEndDateOnSameDay">
-		<var:if condition="inEvent.isAllDay" const:negate="YES">
-		  <var:string label:value="to" />
-		  <var:string value="endTime" />
-		</var:if>
-	      </var:if>
-	      <var:if condition="isEndDateOnSameDay" const:negate="YES">
-		<var:string label:value="to" />
-		<var:string value="endDate" />
-		<var:if condition="inEvent.isAllDay" const:negate="YES">
-		  <var:string value="endTime" />
-		</var:if>
-	      </var:if>
-	    </td>
-	  </tr>
+        <dl id="iCalAttendees" class="dl-horizontal">
+          <dt><var:string label:value="Time"/>:</dt>
+          <dd><var:string value="startDate" />
+            <var:if condition="inEvent.isAllDay" const:negate="YES">
+              <var:string value="startTime" />
+            </var:if>
+            <var:if condition="isEndDateOnSameDay">
+              <var:if condition="inEvent.isAllDay" const:negate="YES">
+                <var:string label:value="to" />
+                <var:string value="endTime" />
+              </var:if>
+            </var:if>
+            <var:if condition="isEndDateOnSameDay" const:negate="YES">
+              <var:string label:value="to" />
+              <var:string value="endDate" />
+              <var:if condition="inEvent.isAllDay" const:negate="YES">
+                <var:string value="endTime" />
+              </var:if>
+            </var:if>
+          </dd>
 
-	  <tr>
-	    <td><var:string label:value="Organizer"/>:</td>
-	    <td>
-	      <a var:href="authorativeEvent.organizer.email"
+          <dt><var:string label:value="Organizer"/>:</dt>
+          <dd><a var:href="authorativeEvent.organizer.email"
 		><var:string value="organizerDisplayName" /></a>
-	    </td>
-	  </tr>
-	  
-	  <tr>
-	    <td valign="top"><var:string label:value="Attendees"/>:</td>
-	    <td id="iCalAttendees">
+          </dd>
+          <dt><var:string label:value="Attendees"/>:</dt>
 	      <var:foreach list="authorativeEvent.participants" item="attendee">
-		<var:if condition="attendee.delegatedTo" const:negate="YES"><!-- don't show attendees that delegated the invitation --><span var:class="currentAttendeeClass"
+		<var:if condition="attendee.delegatedTo" const:negate="YES"><!-- don't show attendees that delegated the invitation -->                 <dd><span var:class="currentAttendeeClass"
                     ><div class="status-icon"><!-- space --></div
                       ><a var:href="attendee.email">
 		  <var:string value="attendeeForDisplay"/></a>
 		(<var:string label:value="$attendee.partStatWithDefault" /><var:if condition="attendee.delegatedTo"> <var:string label:value="to" /> <var:string value="attendee.delegatedTo.rfc822Email" /></var:if><var:if condition="attendee.delegatedFrom.length">, <var:string label:value="delegated from" /> <var:string value="attendee.delegatedFrom.rfc822Email" /></var:if>)</span>
-		<br /></var:if>
+              </dd></var:if>
 	      </var:foreach>
-	    </td>
-	  </tr>
 
-	  <var:if condition="authorativeEvent.comment.isNotEmpty">
-	    <tr> <!-- description in iCal -->
-	      <td valign="top"><var:string label:value="Comment"/>:</td>
-	      <td>
-		<var:string value="authorativeEvent.comment" const:insertBR="1" />
-	      </td>
-	    </tr>
-	  </var:if>
-	</table>
+          <var:if condition="authorativeEvent.comment.isNotEmpty">
+          <dt><var:string label:value="Comment"/>:</dt>
+          <dd><var:string value="authorativeEvent.comment" const:insertBR="1" /></dd>
+          </var:if>
+	</dl>
       </div>
     </fieldset>
   </var:if><!-- could parse -->
