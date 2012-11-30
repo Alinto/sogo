@@ -1147,10 +1147,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       ownerUser = [SOGoUser userWithLogin: owner];
       if (!(ex || [event userIsOrganizer: ownerUser]))
 	{
-	  if ([[attendee rsvp] isEqualToString: @"true"]
-	      && [event isStillRelevant])
+	  if ([event isStillRelevant])
 	    [self sendResponseToOrganizer: event
-		  from: ownerUser];
+                                     from: ownerUser];
 	  
 	  organizerUID = [[event organizer] uid];
 

@@ -2393,12 +2393,7 @@ RANGE(2);
     {
       ownerAttendee = [component userAsAttendee: ownerUser];
       if (ownerAttendee)
-        {
-          if ([[ownerAttendee rsvp] isEqualToString: @"true"])
-            rc = 1;
-          else
-            rc = 2;
-        }
+        rc = 1;
     }
 
   return rc;
