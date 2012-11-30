@@ -51,7 +51,7 @@ static NSMutableDictionary *fieldTypes = nil;
 static NSDictionary *sieveFields = nil;
 static NSDictionary *sieveFlags = nil;
 static NSDictionary *operatorRequirements = nil;
-static NSDictionary *methodRequirements = nil;
+static NSMutableDictionary *methodRequirements = nil;
 static NSString *sieveScriptName = @"sogo";
 
 
@@ -188,16 +188,16 @@ static NSString *sieveScriptName = @"sogo";
   if (!methodRequirements)
     {
       methodRequirements
-        = [NSDictionary dictionaryWithObjectsAndKeys:
-                          @"imapflags", @"addflag",
-                        @"imapflags", @"removeflag",
-                        @"imapflags", @"flag",
-                        @"vacation", @"vacation",
-                        @"notify", @"notify",
-                        @"fileinto", @"fileinto",
-                        @"reject", @"reject",
-                        @"regex", @"regex",
-                        nil];
+        = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 @"imapflags", @"addflag",
+                               @"imapflags", @"removeflag",
+                               @"imapflags", @"flag",
+                               @"vacation", @"vacation",
+                               @"notify", @"notify",
+                               @"fileinto", @"fileinto",
+                               @"reject", @"reject",
+                               @"regex", @"regex",
+                               nil];
       [methodRequirements retain];
     }
 }
@@ -631,102 +631,9 @@ static NSString *sieveScriptName = @"sogo";
   connected = YES;
   b = NO;
 
-  script = [NSMutableString string];
-
-  // We first handle filters
-  filterScript = [self sieveScriptWithRequirements: req];
-  if (filterScript)
-    {
-      if ([filterScript length])
-        {
-          b = YES;
-          [script appendString: filterScript];
-        }
-    }
-  else
-    {
-      NSLog(@"Sieve generation failure: %@", [self lastScriptError]);
-      return NO;
-    }
-
-  // We handle vacation messages.
-  // See http://ietfreport.isoc.org/idref/draft-ietf-sieve-vacation/
-  values = [ud vacationOptions];
-
-  if (values && [[values objectForKey: @"enabled"] boolValue])
-    {
-      NSArray *addresses;
-      NSString *text;
-      BOOL ignore;
-      int days, i;
-            
-      days = [[values objectForKey: @"daysBetweenResponse"] intValue];
-      addresses = [values objectForKey: @"autoReplyEmailAddresses"];
-      ignore = [[values objectForKey: @"ignoreLists"] boolValue];
-      text = [values objectForKey: @"autoReplyText"];
-      b = YES;
-
-      if (days == 0)
-	days = 7;
-
-      [req addObjectUniquely: @"vacation"];
-
-      // Skip mailing lists
-      if (ignore)
-	[script appendString: @"if allof ( not exists [\"list-help\", \"list-unsubscribe\", \"list-subscribe\", \"list-owner\", \"list-post\", \"list-archive\", \"list-id\", \"Mailing-List\"], not header :comparator \"i;ascii-casemap\" :is \"Precedence\" [\"list\", \"bulk\", \"junk\"], not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\" ) {"];
-      
-      [script appendFormat: @"vacation :days %d :addresses [", days];
-
-      for (i = 0; i < [addresses count]; i++)
-	{
-	  [script appendFormat: @"\"%@\"", [addresses objectAtIndex: i]];
-	  
-	  if (i == [addresses count]-1)
-	    [script appendString: @"] "];
-	  else
-	    [script appendString: @", "];
-	}
-      
-      [script appendFormat: @"text:\r\n%@\r\n.\r\n;\r\n", text];
-      
-      if (ignore)
-	[script appendString: @"}\r\n"];
-    }
-
-
-  // We handle mail forward
-  values = [ud forwardOptions];
-
-  if (values && [[values objectForKey: @"enabled"] boolValue])
-    {
-      id addresses;
-      int i;
-
-      b = YES;
-      
-      addresses = [values objectForKey: @"forwardAddress"];
-      if ([addresses isKindOfClass: [NSString class]])
-        addresses = [NSArray arrayWithObject: addresses];
-
-      for (i = 0; i < [addresses count]; i++)
-	{
-          v = [addresses objectAtIndex: i];
-          if (v && [v length] > 0)
-            [script appendFormat: @"redirect \"%@\";\r\n", v];
-        }
-      
-      if ([[values objectForKey: @"keepCopy"] boolValue])
-	[script appendString: @"keep;\r\n"];
-    }
   
-  if ([req count])
-    {
-      header = [NSString stringWithFormat: @"require [\"%@\"];\r\n",
-                         [req componentsJoinedByString: @"\",\""]];
-      [script insertString: header  atIndex: 0];
-    }
-
-  // We connect to our Sieve server and upload the script.
+  // We connect to our Sieve server and check capabilities, in order
+  // to generate the right script, based on capabilities
   //
   // sieveServer might have the following format:
   //
@@ -812,6 +719,116 @@ static NSString *sieveScriptName = @"sogo";
     [client closeConnection];
     return NO;
   }
+  
+  // We adjust the "methodRequirements" based on the server's 
+  // capabilities. Cyrus exposes "imapflags" while Dovecot (and
+  // potentially others) expose "imap4flags" as specified in RFC5332
+  if ([client hasCapability: @"imap4flags"])
+    {
+      [methodRequirements setObject: @"imap4flags"  forKey: @"addflag"];
+      [methodRequirements setObject: @"imap4flags"  forKey: @"removeflag"];
+      [methodRequirements setObject: @"imap4flags"  forKey: @"flag"];
+    }
+  
+  //
+  // Now let's generate the script
+  //
+  script = [NSMutableString string];
+
+  // We first handle filters
+  filterScript = [self sieveScriptWithRequirements: req];
+  if (filterScript)
+    {
+      if ([filterScript length])
+        {
+          b = YES;
+          [script appendString: filterScript];
+        }
+    }
+  else
+    {
+      NSLog(@"Sieve generation failure: %@", [self lastScriptError]);
+      [client closeConnection];
+      return NO;
+    }
+
+  // We handle vacation messages.
+  // See http://ietfreport.isoc.org/idref/draft-ietf-sieve-vacation/
+  values = [ud vacationOptions];
+
+  if (values && [[values objectForKey: @"enabled"] boolValue])
+    {
+      NSArray *addresses;
+      NSString *text;
+      BOOL ignore;
+      int days, i;
+            
+      days = [[values objectForKey: @"daysBetweenResponse"] intValue];
+      addresses = [values objectForKey: @"autoReplyEmailAddresses"];
+      ignore = [[values objectForKey: @"ignoreLists"] boolValue];
+      text = [values objectForKey: @"autoReplyText"];
+      b = YES;
+
+      if (days == 0)
+	days = 7;
+
+      [req addObjectUniquely: @"vacation"];
+
+      // Skip mailing lists
+      if (ignore)
+	[script appendString: @"if allof ( not exists [\"list-help\", \"list-unsubscribe\", \"list-subscribe\", \"list-owner\", \"list-post\", \"list-archive\", \"list-id\", \"Mailing-List\"], not header :comparator \"i;ascii-casemap\" :is \"Precedence\" [\"list\", \"bulk\", \"junk\"], not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\" ) {"];
+      
+      [script appendFormat: @"vacation :days %d :addresses [", days];
+
+      for (i = 0; i < [addresses count]; i++)
+	{
+	  [script appendFormat: @"\"%@\"", [addresses objectAtIndex: i]];
+	  
+	  if (i == [addresses count]-1)
+	    [script appendString: @"] "];
+	  else
+	    [script appendString: @", "];
+	}
+      
+      [script appendFormat: @"text:\r\n%@\r\n.\r\n;\r\n", text];
+      
+      if (ignore)
+	[script appendString: @"}\r\n"];
+    }
+
+
+  // We handle mail forward
+  values = [ud forwardOptions];
+
+  if (values && [[values objectForKey: @"enabled"] boolValue])
+    {
+      id addresses;
+      int i;
+
+      b = YES;
+      
+      addresses = [values objectForKey: @"forwardAddress"];
+      if ([addresses isKindOfClass: [NSString class]])
+        addresses = [NSArray arrayWithObject: addresses];
+
+      for (i = 0; i < [addresses count]; i++)
+	{
+          v = [addresses objectAtIndex: i];
+          if (v && [v length] > 0)
+            [script appendFormat: @"redirect \"%@\";\r\n", v];
+        }
+      
+      if ([[values objectForKey: @"keepCopy"] boolValue])
+	[script appendString: @"keep;\r\n"];
+    }
+  
+  if ([req count])
+    {
+      header = [NSString stringWithFormat: @"require [\"%@\"];\r\n",
+                         [req componentsJoinedByString: @"\",\""]];
+      [script insertString: header  atIndex: 0];
+    }
+
 
   /* We ensure to deactive the current active script since it could prevent
      its deletion from the server. */
