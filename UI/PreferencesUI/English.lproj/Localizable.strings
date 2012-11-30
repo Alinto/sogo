@@ -159,6 +159,8 @@
 
 "Server Name:" = "Server Name:";
 "Port:" = "Port:";
+"Encryption:" = "Encryption:";
+"None" = "None";
 "User Name:" = "User Name:";
 "Password:" = "Password:";
 
