@@ -576,13 +576,13 @@
 
 - (void) _appendSystemMailAccount
 {
-  NSString *fullName, *replyTo, *imapLogin, *imapServer, *signature,
+  NSString *fullName, *replyTo, *imapLogin, *imapServer, *cImapServer, *signature,
     *encryption, *scheme, *action, *query, *customEmail, *sieveServer;
   NSMutableDictionary *mailAccount, *identity, *mailboxes, *receipts;
   NSNumber *port;
   NSMutableArray *identities;
   NSArray *mails;
-  NSURL *url;
+  NSURL *url, *cUrl;
   unsigned int count, max;
   NSInteger defaultPort;
 
@@ -606,16 +606,22 @@
   // imaps://localhost:143/?tls=YES
   // imaps://localhost/?tls=YES
 
-  imapServer = [self _fetchFieldForUser: @"c_imaphostname"];
-  if (!imapServer)
-    imapServer = [[self domainDefaults] imapServer];
+  cImapServer = [self _fetchFieldForUser: @"c_imaphostname"];
+  imapServer = [[self domainDefaults] imapServer];
+  cUrl = [NSURL URLWithString: (cImapServer ? cImapServer : @"")];
   url = [NSURL URLWithString: imapServer];
-  if ([url host])
-    imapServer = [url host];
+  if([cUrl host])
+    imapServer = [cUrl host];
+  else
+    if(cImapServer)
+      imapServer = cImapServer;
+    else
+      if([url host])
+        imapServer = [url host];
   [mailAccount setObject: imapServer forKey: @"serverName"];
 
   // 3. port & encryption
-  scheme = [url scheme];
+  scheme = [cUrl scheme] ? [cUrl scheme] : [url scheme];
   if (scheme
       && [scheme caseInsensitiveCompare: @"imaps"] == NSOrderedSame)
     {
@@ -624,14 +630,14 @@
     }
   else
     {
-      query = [url query];
+      query = [cUrl query] ? [cUrl query] : [url query];
       if (query && [query caseInsensitiveCompare: @"tls=YES"] == NSOrderedSame)
         encryption = @"tls";
       else
         encryption = @"none";
       defaultPort = 143;
     }
-  port = [url port];
+  port = [cUrl port] ? [cUrl port] : [url port];
   if ([port intValue] == 0) /* port is nil or intValue == 0 */
     port = [NSNumber numberWithInt: defaultPort];
   [mailAccount setObject: port forKey: @"port"];

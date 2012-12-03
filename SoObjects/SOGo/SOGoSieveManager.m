@@ -615,8 +615,8 @@ static NSString *sieveScriptName = @"sogo";
   SOGoUserDefaults *ud;
   SOGoDomainDefaults *dd;
   NGSieveClient *client;
-  NSString *filterScript, *v, *sieveServer;
-  NSURL *url;
+  NSString *filterScript, *v, *sieveServer, *sieveScheme, *sieveQuery, *imapServer;
+  NSURL *url, *cUrl;
   
   int sievePort;
   BOOL b, connected;
@@ -645,39 +645,42 @@ static NSString *sieveScriptName = @"sogo";
   //
   // We first try to get the user's preferred Sieve server
   sieveServer = [[[user mailAccounts] objectAtIndex: 0] objectForKey: @"sieveServerName"];
+  imapServer = [[[user mailAccounts] objectAtIndex: 0] objectForKey: @"serverName"];
 
-  if (!sieveServer)
+  cUrl = [NSURL URLWithString: (sieveServer ? sieveServer : @"") ];
+  url = [NSURL URLWithString: [dd sieveServer] ];
+
+  if ([cUrl host])
+    sieveServer = [cUrl host];
+  if (!sieveServer && [url host])
+    sieveServer = [url host];
+  if (!sieveServer && [dd sieveServer])
     sieveServer = [dd sieveServer];
-  
-  sievePort = 2000;
-  url = nil;
-      
+  if (!sieveServer && imapServer)
+    sieveServer = imapServer;
   if (!sieveServer)
-    {
-      NSString *s;
-      
-      s = [dd imapServer];
-      
-      if (s)
-	{
-	  NSURL *url;
-	  
-	  url = [NSURL URLWithString: s];
+    sieveServer = @"localhost";
 
-	  if ([url host])
-	    sieveServer = [url host];
-	  else
-	    sieveServer = s;
-	}
-      else
-	sieveServer = @"localhost";
-      
-      url = [NSURL URLWithString: [NSString stringWithFormat: @"%@:%d", sieveServer, sievePort]];
-    }
+  sieveScheme = [cUrl scheme] ? [cUrl scheme] : [url scheme];
+  if (!sieveScheme)
+    sieveScheme = @"sieve";
+
+  if ([cUrl port])
+    sievePort = [[cUrl port] intValue];
   else
-    {
-      url = [NSURL URLWithString: sieveServer];
-    }
+    if ([url port])
+      sievePort = [[url port] intValue];
+    else
+      sievePort = 2000;
+
+  sieveQuery = [cUrl query] ? [cUrl query] : [url query];
+  if (sieveQuery)
+    sieveQuery = [NSString stringWithFormat: @"/?%@", sieveQuery];
+  else
+    sieveQuery = @"";
+
+  url = [NSURL URLWithString: [NSString stringWithFormat: @"%@://%@:%d%@",
+                               sieveScheme, sieveServer, sievePort, sieveQuery]];
 
   client = [[NGSieveClient alloc] initWithURL: url];
   
