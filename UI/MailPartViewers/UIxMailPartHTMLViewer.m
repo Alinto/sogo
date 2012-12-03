@@ -63,6 +63,7 @@ _xmlCharsetForCharset (NSString *charset)
   struct { NSString *name; xmlCharEncoding encoding; } xmlEncodings[] = {
     { @"us-ascii", XML_CHAR_ENCODING_ASCII},
     { @"utf-8", XML_CHAR_ENCODING_UTF8},
+    { @"utf8", XML_CHAR_ENCODING_UTF8},		// broken mailers
     { @"utf-16le", XML_CHAR_ENCODING_UTF16LE},
     { @"utf-16be",  XML_CHAR_ENCODING_UTF16BE},
     { @"ucs-4le", XML_CHAR_ENCODING_UCS4LE},
