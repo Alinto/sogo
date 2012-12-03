@@ -63,6 +63,8 @@
   SOGoAppointmentObject *newEntry;
   NSString *name;
 
+  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+
   name = [NSString stringWithFormat: @"%@.ics",
                    [SOGoObject globallyUniqueObjectId]];
   newEntry = [SOGoAppointmentObject objectWithName: name

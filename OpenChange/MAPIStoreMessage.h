@@ -71,7 +71,7 @@
 - (NSArray *) activeUserRoles;
 
 /* move & copy internal ops */
-- (void) copyToMessage: (MAPIStoreMessage *) newMessage;
+- (void) copyToMessage: (MAPIStoreMessage *) newMessage  inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* subclasses */
 - (void) save;

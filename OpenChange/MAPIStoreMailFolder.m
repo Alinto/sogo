@@ -929,6 +929,8 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                         withMIDs: (uint64_t *) targetMids
                    andChangeKeys: (struct Binary_r **) targetChangeKeys
                         wantCopy: (uint8_t) wantCopy
+                        inMemCtx: (TALLOC_CTX *) memCtx
+
 {
   NGImap4Connection *connection;
   NGImap4Client *client;
@@ -946,7 +948,8 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
     return [super moveCopyMessagesWithMIDs: srcMids andCount: midCount
                                 fromFolder: sourceFolder withMIDs: targetMids
                              andChangeKeys: targetChangeKeys
-                                  wantCopy: wantCopy];
+                                  wantCopy: wantCopy
+                                  inMemCtx: memCtx];
 
   /* Conversion of mids to IMAP uids */
   mapping = [self mapping];

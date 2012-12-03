@@ -95,6 +95,7 @@ sogo_backend_init (void)
      defaults using the system encoding rather than honouring
      the encoding specified in the file. */
   putenv ("GNUSTEP_STRING_ENCODING=NSUTF8StringEncoding");
+  //putenv ("NSZombieEnabled=YES");
 
   [NSProcessInfo initializeWithArguments: argv
                                    count: 1
@@ -565,7 +566,8 @@ sogo_folder_delete_message(void *folder_object, uint64_t mid, uint8_t flags)
 }
 
 static enum mapistore_error
-sogo_folder_move_copy_messages(void *folder_object,
+sogo_folder_move_copy_messages(TALLOC_CTX *mem_ctx,
+                               void *folder_object,
                                void *source_folder_object,
                                uint32_t mid_count,
                                uint64_t *src_mids, uint64_t *t_mids,
@@ -594,7 +596,8 @@ sogo_folder_move_copy_messages(void *folder_object,
                                        fromFolder: sourceFolder
                                          withMIDs: t_mids
                                     andChangeKeys: target_change_keys
-                                         wantCopy: want_copy];
+                                         wantCopy: want_copy
+                                         inMemCtx: mem_ctx];
       [pool release];
       GSUnregisterCurrentThread ();
     }

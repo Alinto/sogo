@@ -152,13 +152,13 @@
   return ULLONG_MAX;
 }
 
-- (void) copyToAttachment: (MAPIStoreAttachment *) newAttachment
+- (void) copyToAttachment: (MAPIStoreAttachment *) newAttachment  inMemCtx: (TALLOC_CTX *) memCtx
 {
   void *attachMethod;
   enum mapistore_error error;
   MAPIStoreEmbeddedMessage *embeddedMessage, *newEmbeddedMessage;
 
-  [self copyPropertiesToObject: newAttachment];
+  [self copyPropertiesToObject: newAttachment  inMemCtx: memCtx];
 
   attachMethod = NULL;
   error = [self getProperty: &attachMethod
@@ -170,7 +170,7 @@
         {
           embeddedMessage = [self openEmbeddedMessage];
           newEmbeddedMessage = [newAttachment createEmbeddedMessage];
-          [embeddedMessage copyToMessage: newEmbeddedMessage];
+          [embeddedMessage copyToMessage: newEmbeddedMessage  inMemCtx: memCtx];
         }
       talloc_free (attachMethod);
     }

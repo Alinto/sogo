@@ -317,9 +317,9 @@ static Class NSExceptionK, MAPIStoreFolderK;
 }
 
 /* move and copy operations */
-- (void) copyPropertiesToObject: (MAPIStoreObject *) newObject
+- (void) copyPropertiesToObject: (MAPIStoreObject *) newObject  inMemCtx: (TALLOC_CTX *) memCtx
 {
-  TALLOC_CTX *memCtx;
+  //TALLOC_CTX *memCtx;
   struct SPropTagArray *availableProps;
   struct SRow row;
   enum MAPITAGS propTag;
@@ -328,7 +328,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   enum mapistore_error error;
   void *data;
 
-  memCtx = talloc_zero (NULL, TALLOC_CTX);
+  //memCtx = talloc_zero (NULL, TALLOC_CTX);
 
   [self getAvailableProperties: &availableProps inMemCtx: memCtx];
 
@@ -369,8 +369,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
     }
   [newObject addPropertiesFromRow: &row];
 
-  talloc_free (memCtx);
-
+  //talloc_free (memCtx);
 }
 
 /* subclasses */

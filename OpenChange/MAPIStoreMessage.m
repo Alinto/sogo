@@ -139,6 +139,8 @@ rtf2html (NSData *compressedRTF)
 
 - (id) init
 {
+  [self logWithFormat: @"METHOD '%s' (%d) (%d)", __FUNCTION__, __LINE__, self];
+
   if ((self = [super init]))
     {
       attachmentParts = [NSMutableDictionary new];
@@ -151,6 +153,7 @@ rtf2html (NSData *compressedRTF)
 
 - (void) dealloc
 {
+  [self logWithFormat: @"METHOD '%s' (%d) (%d)", __FUNCTION__, __LINE__, self];
   [activeUserRoles release];
   [attachmentKeys release];
   [attachmentParts release];
@@ -437,17 +440,19 @@ rtf2html (NSData *compressedRTF)
                        andType: MAPISTORE_MESSAGE_TABLE];
 }
 
-- (void) copyToMessage: (MAPIStoreMessage *) newMessage
+- (void) copyToMessage: (MAPIStoreMessage *) newMessage  inMemCtx: (TALLOC_CTX *) memCtx;
   
 {
-  TALLOC_CTX *memCtx;
+  //TALLOC_CTX *memCtx;
   struct mapistore_message *messageData;
   NSArray *keys;
   NSUInteger count, max;
   NSString *key;
   MAPIStoreAttachment *attachment, *newAttachment;
 
-  memCtx = talloc_zero (NULL, TALLOC_CTX);
+  [self logWithFormat: @"METHOD '%s' (%d) (%d)", __FUNCTION__, __LINE__, self];
+  
+  //memCtx = talloc_zero (NULL, TALLOC_CTX);
 
   /* message headers and recipients */
   [self getMessageData: &messageData inMemCtx: memCtx];
@@ -456,7 +461,7 @@ rtf2html (NSData *compressedRTF)
                                   andColumns: messageData->columns];
 
   /* properties */
-  [self copyPropertiesToObject: newMessage];
+  [self copyPropertiesToObject: newMessage  inMemCtx: memCtx];
   
   /* attachments */
   keys = [self attachmentKeys];
@@ -466,10 +471,10 @@ rtf2html (NSData *compressedRTF)
       key = [keys objectAtIndex: count];
       attachment = [self lookupAttachment: key];
       newAttachment = [newMessage createAttachment];
-      [attachment copyToAttachment: newAttachment];
+      [attachment copyToAttachment: newAttachment  inMemCtx: memCtx];
     }
 
-  talloc_free (memCtx);
+  //talloc_free (memCtx);
 }
 
 - (enum mapistore_error) saveMessage
@@ -485,6 +490,8 @@ rtf2html (NSData *compressedRTF)
   BOOL userIsOwner;
   MAPIStoreMessage *mainMessage;
 
+  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  
   context = [self context];
   ownerUser = [[self userContext] sogoUser];
   userIsOwner = [[context activeUser] isEqual: ownerUser];
