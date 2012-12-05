@@ -443,7 +443,7 @@ DIV.dragHandle:active
 { background-color: #99a; }
 
 /* search fields */
-DIV#filterPanel
+DIV.filterPanel
 { height: 2em;
   vertical-align: middle;
   width: 100%;
@@ -770,7 +770,7 @@ BUTTON.comboBoxButton:active
   background-color: #d6d7d6;
 }
 
-INPUT#searchValue
+INPUT[name="search"]
 { margin-right: 1em;
   width: 20em;
   padding-left: 24px;

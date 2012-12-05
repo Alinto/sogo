@@ -6,8 +6,8 @@ var usersRightsWindowWidth = 450;
 
 /* ACLs module */
 
-function onSearchFormSubmit() {
-    var searchValue = $("searchValue");
+function onSearchFormSubmit(panel) {
+    var searchValue = panel.down('[name="search"]');
     var encodedValue = encodeURI(searchValue.value);
     
     if (encodedValue.blank()) {
@@ -61,20 +61,18 @@ function buildUsersTree(treeDiv, response) {
     var isUserDialog = false;
     var multiplier = ((isUserDialog) ? 1 : 2);
     
-    if (response.length > 0) {
-        for (var i = 0; i < response.length; i++)
-            addUserLineToTree(d, 1 + i * multiplier, response[i]);
-        treeDiv.innerHTML = "";
-        treeDiv.appendChild(d.domObject ());
-        treeDiv.clean = false;
-        for (var i = 0; i < response.length; i++) {
-            if (!isUserDialog) {
-                var toggle = $("tgd" + (1 + i * 2));
-                toggle.observe ("click", onUserNodeToggle);
-            }
-            var sd = $("sd" + (1 + i * multiplier));
-            sd.observe("click", onTreeItemClick);
+    for (var i = 0; i < response.length; i++)
+        addUserLineToTree(d, 1 + i * multiplier, response[i]);
+    treeDiv.innerHTML = "";
+    treeDiv.appendChild(d.domObject());
+    treeDiv.clean = false;
+    for (var i = 0; i < response.length; i++) {
+        if (!isUserDialog) {
+            var toggle = $("tgd" + (1 + i * 2));
+            toggle.observe ("click", onUserNodeToggle);
         }
+        var sd = $("sd" + (1 + i * multiplier));
+        sd.observe("click", onTreeItemClick);
     }
 }
 
@@ -220,7 +218,7 @@ function initAdministration() {
             $("helpDialog").hide();
         });
 
-    var searchValue = $("searchValue");
+    var searchValue = $$('[data-search="admin"] [name="search"]').first();
     searchValue.focus();
 }
 

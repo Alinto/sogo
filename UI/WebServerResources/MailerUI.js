@@ -784,9 +784,9 @@ function openMailbox(mailbox, reload) {
             lastClickedRow = -1; // from generic.js
         }
 
-        var searchValue = search["value"];
+        var searchValue = search["mail"]["value"];
         if (searchValue && searchValue.length > 0) {
-            urlParams.set("search", search["criteria"]);
+            urlParams.set("search", search["mail"]["criteria"]);
             urlParams.set("value", escape(searchValue.utf8encode()));
         }
         var sortAttribute = sorting["attribute"];

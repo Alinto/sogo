@@ -211,11 +211,11 @@ static NSArray *tasksFields = nil;
   user = [context activeUser];
   userLogin = [user login];
 
+  title = [request formValueForKey: @"search"];
   param = [request formValueForKey: @"filterpopup"];
   if ([param length])
     {
       [self _setupDatesWithPopup: param andUserTZ: userTimeZone];
-      title = [request formValueForKey: @"search"];
     }
   else
     {

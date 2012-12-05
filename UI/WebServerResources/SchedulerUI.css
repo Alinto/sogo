@@ -277,11 +277,11 @@ TABLE#eventsList THEAD TD:last-child,
 TABLE#tasksList THEAD TD:last-child
 { border-right: 0px; }
 
-#filterPanel,
+.filterPanel,
 #schedulerTabs .tab label
 { display: block;
   margin: 0;
-  padding: 5px;
+  padding: 0 0 5px 5px;
   background-color: #eee;
   background-color: #E6E7E6; }
 

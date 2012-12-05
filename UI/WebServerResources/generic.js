@@ -1073,14 +1073,15 @@ function popupSearchMenu(event) {
 }
 
 function setSearchCriteria(event) {
-    var searchValue = $("searchValue");
-    var searchCriteria = $("searchCriteria");
+    var panel = $(this).up('.filterPanel');
+    var searchValue = panel.down('[name="search"]');
+    var searchCriteria = panel.down('[name="criteria"]');
 
     if (searchValue.ghostPhrase == searchValue.value)
         searchValue.value = "";
 
     searchValue.ghostPhrase = this.innerHTML;
-    searchCriteria.value = this.getAttribute('id');
+    searchCriteria.value = this.readAttribute('data-option');
 
     if (this.parentNode.chosenNode)
         this.parentNode.chosenNode.removeClassName("_chosen");
@@ -1092,20 +1093,18 @@ function setSearchCriteria(event) {
         searchValue.lastSearch = "";
         this.parentNode.chosenNode = this;
 
-        onSearchFormSubmit();
+        onSearchFormSubmit(panel);
     }
 }
 
 function configureSearchField() {
-    var searchValue = $("searchValue");
-
-    if (searchValue) {
-        searchValue.observe("click", popupSearchMenu);
-        searchValue.observe("blur", onSearchBlur);
-        searchValue.observe("focus", onSearchFocus);
-        searchValue.observe("keydown", onSearchKeyDown);
-        searchValue.observe("mousedown", onSearchMouseDown);
-    }
+    $$('.searchBox [name="search"]').each(function(searchValue) {
+        searchValue.on("click", popupSearchMenu);
+        searchValue.on("blur", onSearchBlur);
+        searchValue.on("focus", onSearchFocus);
+        searchValue.on("keydown", onSearchKeyDown);
+        searchValue.on("mousedown", onSearchMouseDown);
+    });
 }
 
 function onSearchMouseDown(event) {
@@ -1118,7 +1117,7 @@ function onSearchMouseDown(event) {
 }
 
 function onSearchFocus(event) {
-    ghostPhrase = this.ghostPhrase;
+    var ghostPhrase = this.ghostPhrase;
     if (this.value == ghostPhrase) {
         this.value = "";
         this.setAttribute("modified", "");
@@ -1130,15 +1129,16 @@ function onSearchFocus(event) {
 
 function onSearchBlur(event) {
     if (!this.value || this.value.blank()) {
+        var id = $(this).up('[data-search]').readAttribute('data-search');
         this.setAttribute("modified", "");
         this.setStyle({ color: "#909090" });
         this.value = this.ghostPhrase;
         if (this.timer)
             clearTimeout(this.timer);
-        search["value"] = "";
+        search[id]["value"] = "";
         if (this.lastSearch != "") {
             this.lastSearch = "";
-            refreshCurrentFolder();
+            refreshCurrentFolder(id);
         }
     } else if (this.value == this.ghostPhrase) {
         this.setAttribute("modified", "");
@@ -1160,43 +1160,47 @@ function IsCharacterKey(keyCode) {
 
 function onSearchKeyDown(event) {
     if (event.keyCode == Event.KEY_RETURN) {
+        var panel = $(this).up('.filterPanel');
         if (this.timer)
             clearTimeout(this.timer);
-        onSearchFormSubmit();
+        onSearchFormSubmit(panel);
         preventDefault(event);
     }
     else if (event.keyCode == Event.KEY_BACKSPACE
              || IsCharacterKey(event.keyCode)) {
+        var panel = $(this).up('.filterPanel');
         if (this.timer)
             clearTimeout(this.timer);
-        this.timer = setTimeout("onSearchFormSubmit()", 500);
+        this.timer = onSearchFormSubmit.delay(0.5, panel);
     }
 }
 
-function onSearchFormSubmit(event) {
-    var searchValue = $("searchValue");
-    var searchCriteria = $("searchCriteria");
+function onSearchFormSubmit(filterPanel) {
+    var id = filterPanel.readAttribute('data-search');
+    var searchValue = filterPanel.down('[name="search"]');
+    var searchCriteria = filterPanel.down('[name="criteria"]');
 
     if (searchValue.value != searchValue.ghostPhrase
         && (searchValue.value != searchValue.lastSearch
             && (searchValue.value.strip().length > minimumSearchLength
                 || searchValue.value.strip() == "." ))) {
-        search["criteria"] = searchCriteria.value;
-        search["value"] = searchValue.value;
+        search[id]["criteria"] = searchCriteria.value;
+        search[id]["value"] = searchValue.value;
         searchValue.lastSearch = searchValue.value;
-        refreshCurrentFolder();
+        refreshCurrentFolder(id);
     }
 }
 
 function initCriteria() {
-    var searchCriteria = $("searchCriteria");
-    var searchValue = $("searchValue");
-    var searchOptions = $("searchOptions");
-
-    if (searchValue && searchOptions) {
+    $$('[data-search]').each(function(element) {
+        var box = $(element);
+        var id = box.readAttribute('data-search');
+        var searchCriteria = box.down('[name="criteria"]');
+        var searchValue = box.down('[name="search"]');
+        var searchOptions = box.down('.choiceMenu');
         var firstOption = searchOptions.down("li");
         if (firstOption) {
-            searchCriteria.value = firstOption.getAttribute('id');
+            searchCriteria.value = firstOption.readAttribute('data-option');
             searchValue.ghostPhrase = firstOption.innerHTML;
             searchValue.lastSearch = "";
             if (searchValue.value == '') {
@@ -1209,9 +1213,11 @@ function initCriteria() {
                 searchOptions.chosenNode.removeClassName("_chosen");
             firstOption.addClassName("_chosen");
             searchOptions.chosenNode = firstOption;
+            // Initialize global array
+            search[id] = {};
         }
         searchValue.blur();
-    }
+    });
 }
 
 /* toolbar buttons */
@@ -1657,6 +1663,9 @@ function onLoadHandler(event) {
         progressImage.parentNode.removeChild(progressImage);
     $(document.body).observe("contextmenu", onBodyClickContextMenu);
 
+    // Some module are initialized only once this method is completed
+    document.fire('generic:loaded');
+
     onFinalLoadHandler();
 }
 
@@ -1862,7 +1871,7 @@ function parent$(element) {
 }
 
 /* stubs */
-function refreshCurrentFolder() {
+function refreshCurrentFolder(id) {
 }
 
 function configureDragHandles() {

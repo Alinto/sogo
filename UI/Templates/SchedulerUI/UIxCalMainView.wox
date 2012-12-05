@@ -170,9 +170,20 @@
           </table>
         </div>
         <div id="tasksListView" class="tab">
-          <label>
+          <div class="filterPanel" data-search="tasks">
+            <div class="menu" id="taskSearchMenu">
+              <ul class="choiceMenu">
+                <li data-option="title"><var:string label:value="Title or Description"/></li>
+              </ul>
+            </div>
+            <span class="searchBox" style="float: right">
+              <input name="criteria" type="hidden" />
+              <input name="search" class="textField"
+                     autocomplete="off" type="text"
+                     menuid="taskSearchMenu" />
+            </span>
             <input id="showHideCompletedTasks" type="checkbox" class="checkBox"/><var:string label:value="Show completed tasks"/>
-          </label>
+          </div>
           <table id="tasksList" cellspacing="0">
             <thead>
               <tr>

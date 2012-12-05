@@ -2169,14 +2169,17 @@ function onHeaderClick(event) {
     Event.stop(event);
 }
 
-function refreshCurrentFolder() {
-    refreshEvents();
+function refreshCurrentFolder(id) {
+    if (id == 'tasks')
+        refreshTasks();
+    else
+        refreshEvents();
 }
 
 /* refreshes the "unifinder" list */
 function refreshEvents() {
     var titleSearch;
-    var value = search["value"];
+    var value = search["events"]["value"];
 
     if (value && value.length)
         titleSearch = "&search=" + escape(value.utf8encode());
@@ -2193,7 +2196,15 @@ function refreshEvents() {
 }
 
 function refreshTasks(setUserDefault) {
+    var titleSearch;
+    var value = search["tasks"]["value"];
     var setud;
+
+    if (value && value.length)
+        titleSearch = "&search=" + escape(value.utf8encode());
+    else
+        titleSearch = "";
+
     /* TODO: the logic behind this should be reimplemented properly:
        the "taskslist" method should save the status when the 'show-completed'
        is set to true and revert to the current status when that parameter is
@@ -2201,10 +2212,13 @@ function refreshTasks(setUserDefault) {
     setud = "";
     if (setUserDefault == 1)
       setud = "&setud=1";
+
     refreshAlarms();
+
     return _loadTasksHref("taskslist?show-completed=" + showCompletedTasks
                           + "&asc=" + sorting["task-ascending"]
-                          + "&sort=" + sorting["task-attribute"]);
+                          + "&sort=" + sorting["task-attribute"]
+                          + titleSearch);
 }
 
 function refreshEventsAndDisplay() {
@@ -2700,11 +2714,12 @@ function getMenus() {
                                        onCalendarNew, onCalendarRemove,
                                        "-", onCalendarExport, onCalendarImport,
                                        null, "-", null, "-", onMenuSharing);
-    menus["searchMenu"] = new Array(setSearchCriteria);
+    menus["eventSearchMenu"] = new Array(setSearchCriteria);
 
     menus["tasksListMenu"] = new Array (editEvent, newTask, "-",
                                         marksTasksAsCompleted, deleteEvent, "-",
 					onMenuRawTask);
+    menus["taskSearchMenu"] = new Array(setSearchCriteria);
 
     var calendarsMenu = $("calendarsMenu");
     if (calendarsMenu)
@@ -3361,4 +3376,4 @@ function initScheduler() {
     Event.observe(window, "resize", onWindowResize);
 }
 
-document.observe("dom:loaded", initScheduler);
+document.observe("generic:loaded", initScheduler);
