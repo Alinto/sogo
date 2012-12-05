@@ -566,9 +566,9 @@ sogo_folder_delete_message(void *folder_object, uint64_t mid, uint8_t flags)
 }
 
 static enum mapistore_error
-sogo_folder_move_copy_messages(TALLOC_CTX *mem_ctx,
-                               void *folder_object,
+sogo_folder_move_copy_messages(void *folder_object,
                                void *source_folder_object,
+                               TALLOC_CTX *mem_ctx,
                                uint32_t mid_count,
                                uint64_t *src_mids, uint64_t *t_mids,
                                struct Binary_r **target_change_keys,
