@@ -1929,6 +1929,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 		return [NSException exceptionWithHTTPStatus:403
 				    reason: @"sequences don't match"];
 	      
+              // Remove the RSVP attribute, as an action from the attendee
+              // was actually performed, and this confuses iCal (bug #1850)
+              [[attendee attributes] removeObjectForKey: @"RSVP"]; 
 
 	      delegate = nil;
 	      delegateEmail = [attendee delegatedTo];
