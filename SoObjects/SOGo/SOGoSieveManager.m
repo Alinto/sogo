@@ -647,8 +647,12 @@ static NSString *sieveScriptName = @"sogo";
   sieveServer = [[[user mailAccounts] objectAtIndex: 0] objectForKey: @"sieveServerName"];
   imapServer = [[[user mailAccounts] objectAtIndex: 0] objectForKey: @"serverName"];
 
-  cUrl = [NSURL URLWithString: (sieveServer ? sieveServer : @"") ];
-  url = [NSURL URLWithString: [dd sieveServer] ];
+  cUrl = [NSURL URLWithString: (sieveServer ? sieveServer : @"")];
+
+  if ([dd sieveServer] && [dd sieveServer].length > 0)
+    url = [NSURL URLWithString: [dd sieveServer]];
+  else
+    url = [NSURL URLWithString: @"localhost"];
 
   if ([cUrl host])
     sieveServer = [cUrl host];
@@ -657,7 +661,7 @@ static NSString *sieveScriptName = @"sogo";
   if (!sieveServer && [dd sieveServer])
     sieveServer = [dd sieveServer];
   if (!sieveServer && imapServer)
-    sieveServer = imapServer;
+    sieveServer = [[NSURL URLWithString: imapServer] host];
   if (!sieveServer)
     sieveServer = @"localhost";
 
