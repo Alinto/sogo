@@ -649,7 +649,7 @@ static NSString *sieveScriptName = @"sogo";
 
   cUrl = [NSURL URLWithString: (sieveServer ? sieveServer : @"")];
 
-  if ([dd sieveServer] && [dd sieveServer].length > 0)
+  if ([dd sieveServer] && [[dd sieveServer] length] > 0)
     url = [NSURL URLWithString: [dd sieveServer]];
   else
     url = [NSURL URLWithString: @"localhost"];
