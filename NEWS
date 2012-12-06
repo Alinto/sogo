@@ -1,4 +1,4 @@
-2.0.3 (2012-12-xx)
+2.0.3 (2012-12-06)
 ------------------
 
 New features
@@ -11,9 +11,10 @@ Enhancements
  - search the contacts for the organization attribute
  - in HTML mode, optionally place answer after the quoted text
  - improved memory usage of "sogo-tool restore"
- - added Slovak translation - thanks to Martin Pastor
  - fixed invitations status in OSX iCal.app/Calendar.app (cleanup RSVP attribute)
  - now uses "imap4flags" instead of the deprecated "imapflags"
+ - added Slovak translation - thanks to Martin Pastor
+ - updated translations
 
 Bug fixes
  - fixed LDIF import with categories
