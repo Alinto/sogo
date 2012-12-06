@@ -141,6 +141,7 @@
 "messageforward_inline" = "intégrés";
 "messageforward_attached" = "en pièces jointes";
 
+"When replying to a message:" = "En répondant à un message";
 "replyplacement_above" = "Placer ma réponse avant la citation";
 "replyplacement_below" = "Placer ma réponse après la citation";
 "And place my signature" = "Et placer ma signature";
@@ -149,12 +150,17 @@
 "Compose messages in" = "Composer les messages en";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Texte";
+"Display remote inline images" = "Afficher les images externes";
+"displayremoteinlineimages_never" = "Jamais";
+"displayremoteinlineimages_always" = "Toujours";
 
 /* IMAP Accounts */
 "New Mail Account" = "Nouveau compte";
 
 "Server Name:" = "Serveur :";
 "Port:" = "Port :";
+"Encryption:" = "Chiffrement :";
+"None" = "Aucun";
 "User Name:" = "Utilisateur :";
 "Password:" = "Mot de passe :";
 

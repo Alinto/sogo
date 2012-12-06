@@ -70,17 +70,17 @@
 "Any Authenticated User" = "Dowolny zalogowany użytkownik";
 
 "List and see this folder" = "Wylistuj i zobacz ten folder";
-"Read mails from this folder" = "Czytaj wiadomości z tego foldera";
+"Read mails from this folder" = "Czytaj wiadomości z tego folderu";
 "Mark mails read and unread" = "Zaznacz wiadomości jako przeczytane lub nie przeczytane";
 "Modify the flags of the mails in this folder" = "Zmień oflagowanie wiadomości w tym folderze";
-"Insert, copy and move mails into this folder" = "Wstaw, kopiuj lub przenieś wiadomości do tego foldera";
+"Insert, copy and move mails into this folder" = "Wstaw, kopiuj lub przenieś wiadomości do tego folderu";
 "Post mails" = "Wyślij wiadomości";
 "Add subfolders to this folder" = "Utwórz podfoldery w tym folderze";
 "Remove this folder" = "Usuń ten folder";
-"Erase mails from this folder" = "Usuń wiadomości z tego foldera";
+"Erase mails from this folder" = "Usuń wiadomości z tego folderu";
 "Expunge this folder" = "Wyczyść ostatecznie ten folder";
 "Archive This Folder" = "Zarchiwizuj ten folder";
-"Modify the acl of this folder" = "Modyfikuj uprawnienia ACL tego foldera";
+"Modify the acl of this folder" = "Modyfikuj uprawnienia ACL tego folderu";
 
 "Saved Messages.zip" = "Zapisano Messages.zip";
 
@@ -100,20 +100,20 @@
 "Attachments:" = "Załączniki:";
 "Open" = "Otwórz";
 "Select All" = "Zaznacz wszystkie";
-"Attach Web Page..." = "Załącz stronę Web...";
-"Attach File(s)..." = "Załącz plik(i)...";
+"Attach Web Page..." = "Załącz stronę Web";
+"Attach File(s)..." = "Załącz plik(i)";
 
 "to"            = "Do";
 "cc"            = "DW";
 "bcc"           = "UDW";
 
-"Edit Draft..." = "Edytuj szkic...";
+"Edit Draft..." = "Edytuj szkic";
 "Load Images" = "Załaduj obrazki";
 
 "Return Receipt" = "Potwierdzenie";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Nadawca maila prosi o powiadomienie odczytania wiadomości. Czy chcesz je wysłać?";
 "Return Receipt (displayed) - %@"= "Potwierdzenie (wyświetlone) - %@";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "To jest potwierdzenie dla e-maila, który był wysłany do %@.⏎ ⏎Uwaga: To jest potwierdzenie otwarcia maila. Nie gwarantuje ono, że odbiorca przeczytał wiadomość i ją zrozumiał.";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "To jest potwierdzenie dla e-maila, który był wysłany do %@.\n\nUwaga: To jest potwierdzenie otwarcia maila. Nie gwarantuje ono, że odbiorca przeczytał wiadomość i ją zrozumiał.";
 
 "Priority" = "Priorytet";
 "highest" = "Najwyższy";
@@ -124,7 +124,7 @@
 
 "This mail is being sent from an unsecure network!" = "Ta wiadomość jest wysyłana z niezabezpieczonej sieci!";
 
-"Address Book:" = "Książka adresowa";
+"Address Book:" = "Książka adresowa:";
 "Search For:" = "Szukaj:";
 
 /* Popup "show" */
@@ -177,9 +177,9 @@
 "MoveTo"        = "Przenieś &hellip;";
 
 /* Address Popup menu */
-"Add to Address Book..." = "Dodaj do książki adresowej...";
+"Add to Address Book..." = "Dodaj do książki adresowej";
 "Compose Mail To" = "Utwórz wiadomość do";
-"Create Filter From Message..." = "Utwórz filtr z wiadomości...";
+"Create Filter From Message..." = "Utwórz filtr z wiadomości";
 
 /* Image Popup menu */
 "Save Image" = "Zapisz obrazek";
@@ -188,14 +188,14 @@
 /* Mailbox popup menus */
 "Open in New Mail Window" = "Otwórz w nowym oknie";
 "Copy Folder Location" = "Kopiuj położenie foldera";
-"Subscribe..." = "Subskrybuj...";
-"Mark Folder Read..." = "Oznacz folder jako przeczytany...";
-"New Folder..." = "Nowy folder...";
+"Subscribe..." = "Subskrybuj";
+"Mark Folder Read..." = "Oznacz folder jako przeczytany";
+"New Folder..." = "Nowy folder";
 "Compact This Folder" = "Kompaktuj ten folder";
-"Search Messages..." = "Szukaj wiadomości...";
-"Sharing..." = "Udostępnianie...";
-"New Subfolder..." = "Nowy podfolder...";
-"Rename Folder..." = "Zmień nazwę foldera...";
+"Search Messages..." = "Szukaj wiadomości";
+"Sharing..." = "Udostępnianie";
+"New Subfolder..." = "Nowy podfolder";
+"Rename Folder..." = "Zmień nazwę foldera";
 "Delete Folder" = "Usuń folder";
 "Use This Folder For" = "Użyj tego foldera do";
 "Get Messages for Account" = "Pobierz wiadomości z konta";
@@ -211,12 +211,12 @@
 "Open Message In New Window" = "Otwórz wiadomość w nowym oknie";
 "Reply to Sender Only" = "Odpowiedz tylko nadawcy";
 "Reply to All" = "Odpowiedz wszystkim";
-"Edit As New..." = "Edytuj jako nową...";
+"Edit As New..." = "Edytuj jako nową";
 "Move To" = "Przenieś do";
 "Copy To" = "Kopiuj do";
 "Label" = "Etykieta";
 "Mark" = "Oznacz";
-"Save As..." = "Zapisz jako...";
+"Save As..." = "Zapisz jako";
 "Print Preview" = "Podgląd wydruku";
 "View Message Source" = "Pokaż źródło wiadomości";
 "Print..." = "Drukuj...";
@@ -236,7 +236,7 @@
 /* Mark popup menu */
 "As Read" = "Jako przeczytane";
 "Thread As Read" = "Wątek jako przeczytany";
-"As Read By Date..." = "jako przeczytane do daty...";
+"As Read By Date..." = "jako przeczytane do daty";
 "All Read" = "wszystkie przeczytane";
 "Flag" = "Flaga";
 "As Junk" = "Jako śmieć";
@@ -246,7 +246,7 @@
 /* Folder operations */
 "Name :" = "Nazwa :";
 "Enter the new name of your folder :"
- = "Wprowadź nową nazwę twojego foldera :";
+ = "Wprowadź nową nazwę twojego folderu:";
 "Do you really want to move this folder into the trash ?"
  = "Czy na pewno chcesz przenieść ten folder do kosza ?";
 "Operation failed" = "Operacja nie powiodła się";
@@ -261,22 +261,22 @@
 
 
 "The folder with name \"%{0}\" could not be created."
-= "Nie można było utworzyć foldera o nazwie \"%{0}\".";
+= "Nie można było utworzyć folderu o nazwie \"%{0}\".";
 "This folder could not be renamed to \"%{0}\"."
-= "Nie można było zmienić nazwy foldera na \"%{0}\".";
+= "Nie można było zmienić nazwy folderau{0}\".";
 "The folder could not be deleted."
-= "Nie można było usunąć foldera.";
+= "Nie można było usunąć folderu.";
 "The trash could not be emptied."
 = "Nie można było opróżnić kosza.";
 "The folder functionality could not be changed."
-= "Nie można było zmienić funkcjonalności foldera.";
+= "Nie można było zmienić funkcjonalności folderu.";
 
 "You need to choose a non-virtual folder!" = "Musisz wybrać folder, który nie jest wirtualny!";
 
 "Moving a message into its own folder is impossible!"
-= "Przenoszenie wiadomości do jej obecnego foldera nie jest możliwe!";
+= "Przenoszenie wiadomości do jej obecnego folderu nie jest możliwe!";
 "Copying a message into its own folder is impossible!"
-= "Kopiowanie wiadomości do jej obecnego foldera nie jest możliwe!";
+= "Kopiowanie wiadomości do jej obecnego folderu nie jest możliwe!";
 
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"

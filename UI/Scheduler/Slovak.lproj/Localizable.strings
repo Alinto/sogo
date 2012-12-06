@@ -159,7 +159,7 @@
 "Calendar:" = "Kalendár:";
 "Name" = "Meno";
 "Email" = "E-Mail";
-"Status:" = "Status:";
+"Status:" = "Stav:";
 "% complete" = "% hotovo";
 "Location:" = "Miesto:";
 "Priority:" = "Priorita:";
@@ -180,7 +180,7 @@
 "General:" = "Hlavný:";
 "Reply:" = "Odpoveď:";
 
-"Target:" = "Vložte adresu webovej stránky alebo dokumentu.";
+"Target:" = "Cieľ:";
 
 "attributes" = "atribúty";
 "attendees" = "účastníci";
@@ -208,8 +208,8 @@
 
 /* Appointments (error messages) */
 
-"Conflicts found!" = "Nájdený konflikt!";
-"Invalid iCal data!" = "Neplatné iCal údaje";
+"Conflicts found!" = "Boli nájdené konflikty!";
+"Invalid iCal data!" = "Neplatné iCal údaje!";
 "Could not create iCal data!" = "Nebolo možné vytvoriť iCal údaje!";
 
 /* Searching */
@@ -327,7 +327,7 @@
 "repeat_NEVER" = "Neopakuje sa";
 "repeat_DAILY" = "Denne";
 "repeat_WEEKLY" = "Týždenne";
-"repeat_BI-WEEKLY" = "Každý druhý týždeň";
+"repeat_BI-WEEKLY" = "Každé dva týždne";
 "repeat_EVERY WEEKDAY" = "Každý pracovný deň";
 "repeat_MONTHLY" = "Mesačne";
 "repeat_YEARLY" = "Ročne";
@@ -359,7 +359,7 @@
 
 "Choose a Reminder Action" = "Zvoliť akciu";
 "Show an Alert" = "Zobraziť výstrahu";
-"Send an E-mail" = "Poslať e-mai";
+"Send an E-mail" = "Poslať e-mail";
 "Email Organizer" = "E-mail organizátorovi";
 "Email Attendees" = "E-mail účastníkom";
 
@@ -411,8 +411,8 @@ validate_endbeforestart    = "Zadaný dátum konca je pred začiatkom udalosti."
 "Workweek days only" = "Len pracovné dni";
 "Tasks in View" = "Zobrazené úlohy";
 
-"eventDeleteConfirmation" = "Táto udalosť(i) bude odstránená:\n%{0}\nChcete pokračovať?";
-"taskDeleteConfirmation" = "Odstránenie tejto úlohy je nevratné.\nChcete pokračovať?";
+"eventDeleteConfirmation" = "Nasledujúca udalosť(i) bude odstránená:\n%{0}\nChcete pokračovať?";
+"taskDeleteConfirmation" = "Odstránenie nasledujúcej úlohy(oh) je nevratné.\n%{0}\nChcete pokračovať?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Nemôžete odstrániť ani sa odhlásiť z odoberania svojho vlastného kalendára.";
@@ -438,8 +438,8 @@ validate_endbeforestart    = "Zadaný dátum konca je pred začiatkom udalosti."
 /* FreeBusy panel buttons and labels */
 "Suggest time slot:" = "Navrhnúť čas";
 "Zoom:" = "Priblížiť:";
-"Previous slot" = "Predchádzajúce miesto";
-"Next slot" = "Nasledujúce miesto";
+"Previous slot" = "Predchádzajúci čas";
+"Next slot" = "Nasledujúci čas";
 "Previous hour" = "Predchádzajúca hodina";
 "Next hour" = "Nasledujúca hodina";
 "Work days only" = "Len pracovné dni";
@@ -493,6 +493,7 @@ vtodo_class2 = "(Dôverná úloha)";
 "Show alarms" = "Zobraziť pripomenutie";
 "Show tasks" = "Zobraziť úlohy";
 
+"Notifications" = "Oznámenia";
 "Receive a mail when I modify my calendar" = "Informuj emailom keď upravím môj kalendár";
 "Receive a mail when someone else modifies my calendar" = "Informuj emailom keď niekto iný upraví môj kalendár";
 "When I modify my calendar, send a mail to:" = "Keď upravím svoj kalendár, pošli email:";

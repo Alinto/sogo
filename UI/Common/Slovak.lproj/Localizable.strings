@@ -72,7 +72,7 @@
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Nemate dovolený prístup k tomuto modulu alebo tento systém. Obráťte sa na správcu systému.";
 "You don't have the required privileges to perform the operation."
-= "You don't have the required privileges to perform the operation.";
+= "Nemáte potrebné oprávnenia na vykonanie operácie.";
 
 "noEmailForDelegation" = "Musíte zadať adresu, na ktorú chcete delegovať vaše pozvanie.";
 "delegate is organizer" = "Delegát je organizátorom. Zadajte prosím iného delegáta.";

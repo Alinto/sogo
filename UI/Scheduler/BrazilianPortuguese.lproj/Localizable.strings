@@ -60,6 +60,7 @@
 "Import Events" = "Importar Eventos";
 "Select an iCalendar file (.ics)." = "Selecione um arquivo iCalendar (.ics).";
 "Upload" = "Carregar";
+"Uploading" = "Carregando";
 "Publish Calendar..." = "Publicar Calendário...";
 "Reload Remote Calendars" = "Recarregar Calendários Remotos";
 "Properties" = "Propriedades";
@@ -379,6 +380,7 @@ validate_invalid_startdate = "Campo Data Inicial incorreto!";
 validate_invalid_enddate   = "Campo Data Final incorreto!";
 validate_endbeforestart    = "A data que você informou ocorre antes da data inicial.";
 
+"Events" = "Eventos";
 "Tasks" = "Tarefas";
 "Show completed tasks" = "Exibir tarefas completadas";
 
@@ -452,13 +454,17 @@ validate_endbeforestart    = "A data que você informou ocorre antes da data ini
 "Title" = "Título";
 "Start" = "Início";
 "End" = "Fim";
-"Due Date" = "Data";
+"Due Date" = "Data de Vencimento";
 "Location" = "Localização";
+
 "(Private Event)" = "(Evento Privado)";
 
 vevent_class0 = "(Evento Público)";
 vevent_class1 = "(Evento Privado)";
 vevent_class2 = "(Evento Confidencial)";
+
+"Priority" = "Prioridade";
+"Category" = "Categoria";
 
 vtodo_class0 = "(Tarefa Pública)";
 vtodo_class1 = "(Tarefa Privada)";
@@ -486,6 +492,11 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "Display" = "Exibir";
 "Show alarms" = "Exibir alarmes";
 "Show tasks" = "Exibir tarefas";
+
+"Notifications" = "Notificações";
+"Receive a mail when I modify my calendar" = "Receber um email quando eu modificar meu calendário";
+"Receive a mail when someone else modifies my calendar" = "Receber um email quando alguem modificar meu calendário";
+"When I modify my calendar, send a mail to:" = "Quando eu modificar meu calendário, enviar um email para:";
 
 "Links to this Calendar" = "Links para este Calendário";
 "Authenticated User Access" = "Acesso a Usuário Autenticado";
@@ -515,12 +526,10 @@ vtodo_class2 = "(Tarefa Confidencial)";
 "Delete Task" = "Remover Tarefa";
 "Delete Event" = "Remover Evento";
 "Copy event to my calendar" = "Copiar evento para o meu calendário";
+"View Raw Source" = "Visualizar Fonte";
 
 "Subscribe to a web calendar..." = "Inscrever-se a um calendário web...";
 "URL of the Calendar" = "URL do Calendário";
 "Web Calendar" = "Calendário Web";
 "Reload on login" = "Recarregar no login";
 "Invalid number." = "Número inválido.";
-
-"Category" = "Categoria";
-"Priority" = "Prioridade";

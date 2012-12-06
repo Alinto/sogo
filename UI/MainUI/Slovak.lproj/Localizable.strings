@@ -2,14 +2,14 @@
 
 "title" = "SOGo";
 
-"Username:" = "Uživateľské meno:";
+"Username:" = "Užívateľské meno:";
 "Password:" = "Heslo:";
 "Domain:" = "Doména:";
 "Remember username" = "Zapamätať uživateľské meno";
 
 "Connect" = "Pripojiť";
 
-"Wrong username or password." = "Nesprávne uživateľské meno, alebo heslo.";
+"Wrong username or password." = "Nesprávne uživateľské meno alebo heslo.";
 "cookiesNotEnabled" = "Nemôžete sa prihlásiť, pretože vo svojom prehliadači máte zakázané cookies. Prosím povoľte cookies vo vašom prehliadači a skúste to znova.";
 
 "browserNotCompatible" = "Zistili sme že Váš prehliadač nie je našou stránkou  momentálne podporovaný. Odporúčame používať Firefox. Kliknite na odkaz nižšie a stiahnite si aktuálnu verziu tohoto prehliadača";
@@ -52,9 +52,9 @@
 "Password must not be empty." = "Heslo nesmie byť prázdne.";
 "The passwords do not match. Please try again." = "Heslá sa nezhodujú. Skúste to znova.";
 "Password Grace Period" = "Doba platnosti hesla";
-"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Ostáva Vám %{0} prihlásení do uzamknutia Vášho účtu. Zmeňte prosím Vaše heslo.";
-"Password about to expire" = "Heslo čoskoro skončí";
-"Your password is going to expire in %{0} %{1}." = "Vaše heslo vyprší za %{0} %{1}.";
+"You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Ostáva Vám % {0} prihlásení do uzamknutia Vášho účtu. Zmeňte prosím Vaše heslo.";
+"Password about to expire" = "Heslo čoskoro vyprší";
+"Your password is going to expire in %{0} %{1}." = "Vaše heslo vyprší za % {0} {1}%.";
 "days" = "dni";
 "hours" = "hodiny";
 "minutes" = "minúty";
@@ -65,10 +65,10 @@
 "Password change failed - Password is too short" = "Zmena hesla zlyhala - heslo je príliš krátke";
 "Password change failed - Password is too young" = "Zmena hesla nebola úspešná - heslo sa nesmie opakovať";
 "Password change failed - Password is in history" = "Zmena hesla zlyhala - heslo je v histórii";
-"Unhandled policy error: %{0}" = "Nespracovaná politika. Chyba: %{0}";
+"Unhandled policy error: %{0}" = "Nespracovaná politika. Chyba:% {0}";
 "Unhandled error response" = "Nespracované chyby na odpoveď";
 "Password change is not supported." = "Zmena hesla nieje povolená.";
-"Unhandled HTTP error code: %{0}" = "Nespracované HTTP. Kód chyby: %{0}";
+"Unhandled HTTP error code: %{0}" = "Nespracované HTTP. Kód chyby:% {0}";
 "New password:" = "Nové heslo:";
 "Confirmation:" = "Potvrdiť:";
 "Cancel" = "Zrušiť";

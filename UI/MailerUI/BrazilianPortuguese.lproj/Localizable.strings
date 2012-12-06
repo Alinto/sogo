@@ -107,8 +107,6 @@
 "cc"            = "Cc";
 "bcc"           = "Bcc";
 
-"Addressbook"   = "74dac49ea10c32f4141ab15f89148aa0_tr";
-
 "Edit Draft..." = "Editar Rascunho...";
 "Load Images" = "Carregar Imagens";
 
@@ -285,9 +283,9 @@
 = "As mensagens não podem ser movidas para a lixeira. Gostaria de excluí-las imediatamente?";
 
 /* Message editing */
-"error_validationfailed" = "Validação falhou";
 "error_missingsubject" = "Está faltando o Assunto";
 "error_missingrecipients" = "Sem destinatários selecionados";
+"Send Anyway" = "Enviar assim mesmo";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Não é possível enviar a mensagem: todos os destinatários são inválidos.";

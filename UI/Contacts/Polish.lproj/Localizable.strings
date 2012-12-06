@@ -65,11 +65,11 @@
 "New Card" = "Nowy kontakt";
 "New List" = "Nowa lista";
 "Properties" = "Właściwości";
-"Sharing..." = "Udostępnianie...";
+"Sharing..." = "Udostępnianie";
 "Write" = "Napisz";
 "Delete" = "Usuń";
 "Instant Message" = "Szybka wiadomość";
-"Add..." = "Dodaj...";
+"Add..." = "Dodaj";
 "Remove" = "Usuń";
 
 "Please wait..." = "Zaczekaj chwilę...";
@@ -84,7 +84,7 @@
 "Phone Number:" = "Numer telefonu:";
 "Prefers to receive messages formatted as:" = "Preferuje wiadomości w formacie:";
 "Screen Name:" = "Nazwa ekranowa:";
-"Categories:" = "Categories:";
+"Categories:" = "Kategorie:";
 
 "First:" = "Imię:";
 "Last:" = "Nazwisko:";
@@ -98,9 +98,9 @@
 "Pager:" = "Pager:";
 
 /* categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
-"Categories" = "Categories";
-"New category" = "New category";
+"contacts_category_labels" = "Kolega, Konkurencja, Klient, Przyjaciel, Rodzina, Biznes, Dostawca, Prasa, VIP";
+"Categories" = "Kategorie";
+"New category" = "Nowa kategoria";
 
 /* adresses */
 "Title:" = "Tytuł:";
@@ -124,13 +124,13 @@
 "Birthday (yyyy-mm-dd):" = "Urodziny (yyyy-mm-dd):";
 "Freebusy URL:" = "URL statusu wolny-zajęty:";
 
-"Add as..." = "Dodaj jako...";
+"Add as..." = "Dodaj jako";
 "Recipient" = "Odbiorca";
 "Carbon Copy" = "Do wiadomości";
 "Blind Carbon Copy" = "Ukryte do wiadomości";
 
-"New Addressbook..." = "Nowa książka adresowa...";
-"Subscribe to an Addressbook..." = "Subskrybuj książkę adresową...";
+"New Addressbook..." = "Nowa książka adresowa";
+"Subscribe to an Addressbook..." = "Subskrybuj książkę adresową";
 "Remove the selected Addressbook" = "Usuń zaznaczoną książkę adresową";
 
 "Name of the Address Book" = "Nazwa książki adresowej";
@@ -194,7 +194,7 @@
 "Add" = "Dodaj";
 "Lists can't be moved or copied." = "Listy nie mogą być przeniesione ani skopiowane.";
 "Export" = "Eksport";
-"Export Address Book..." = "Eksportuj książkę adresową...";
+"Export Address Book..." = "Eksportuj książkę adresową";
 "View Raw Source" = "Obejrzyj źródło";
 "Import Cards" = "Importuj kontakty";
 "Select a vCard or LDIF file." = "Wskaż plik vCard lub LDIF.";

@@ -141,7 +141,7 @@
 "messageforward_inline" = "Vrade";
 "messageforward_attached" = "Ako prílohu";
 
-"When replying to a message:" = "When replying to a message:";
+"When replying to a message:" = "Pri odpovedaní na správu:";
 "replyplacement_above" = "Odpoveď začína nad citáciou";
 "replyplacement_below" = "Odpoveď začína pod citáciou";
 "And place my signature" = "A vlož môj podpis";
@@ -150,7 +150,7 @@
 "Compose messages in" = "Vytvor správu v ";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Čistý text";
-"Display remote inline images" = "Display remote inline images";
+"Display remote inline images" = "Zobraziť externe pripojené obrázky";
 "displayremoteinlineimages_never" = "Nikdy";
 "displayremoteinlineimages_always" = "Vždy";
 
@@ -159,6 +159,8 @@
 
 "Server Name:" = "Meno servera:";
 "Port:" = "Port:";
+"Encryption:" = "Šifrovanie:";
+"None" = "Žiadne";
 "User Name:" = "Užívateľské meno:";
 "Password:" = "Heslo:";
 
@@ -215,6 +217,7 @@
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Slovak" = "Slovensky";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
