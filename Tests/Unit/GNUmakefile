@@ -38,10 +38,9 @@ ADDITIONAL_LIB_DIRS += \
 	-Wl,-rpath,../../SoObjects/SOGo/SOGo.framework/Versions/Current -Wl,-rpath,../../SOPE/NGCards/obj -Wl,-rpath,../../SOPE/GDLContentStore/obj -Wl,-rpath,../../OGoContentStore/obj
 ADDITIONAL_LDFLAGS += -Wl,--no-as-needed
 
-check ::
-	./obj/sogo-tests
-
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/test-tool.make
 -include GNUmakefile.postamble
 
+check ::
+	./obj/sogo-tests

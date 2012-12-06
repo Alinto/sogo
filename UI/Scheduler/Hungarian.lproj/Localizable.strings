@@ -493,6 +493,7 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Show alarms" = "Riasztások megjelenítése";
 "Show tasks" = "Feladatok megjelenítése";
 
+"Notifications" = "Értesítések";
 "Receive a mail when I modify my calendar" = "Kapjak email értesítést, amikor módosítok a naptáramon";
 "Receive a mail when someone else modifies my calendar" = "Kapjak email értesítést, amikor mások módosítják a naptáramat";
 "When I modify my calendar, send a mail to:" = "Email értesítés küldése az alábbi címre a naptáram módosításakor";

@@ -784,9 +784,9 @@ function openMailbox(mailbox, reload) {
             lastClickedRow = -1; // from generic.js
         }
 
-        var searchValue = search["value"];
+        var searchValue = search["mail"]["value"];
         if (searchValue && searchValue.length > 0) {
-            urlParams.set("search", search["criteria"]);
+            urlParams.set("search", search["mail"]["criteria"]);
             urlParams.set("value", escape(searchValue.utf8encode()));
         }
         var sortAttribute = sorting["attribute"];
@@ -896,7 +896,6 @@ function messageListCallback(row, data, isNew) {
     for (var j = 0; j < cells.length; j++) {
         var cell = cells[j];
         var cellType = Mailer.columnsOrder[j];
-
         if (data[cellType]) cell.innerHTML = data[cellType];
         else cell.innerHTML = '&nbsp;';
     }
@@ -1240,8 +1239,12 @@ function loadMessage(msguid) {
         }
     }
 
+
     configureLoadImagesButton();
     configureSignatureFlagImage();
+
+    if (UserDefaults["SOGoMailDisplayRemoteInlineImages"] == 'always')
+        loadRemoteImages();
 
     return seenStateHasChanged;
 }
@@ -1563,6 +1566,11 @@ function onMessageEditDraft(event) {
 }
 
 function onMessageLoadImages(event) {
+    loadRemoteImages();
+    Event.stop(event);
+}
+
+function loadRemoteImages() {
     var content = $("messageContent");
     $(content.hiddenImgs).each(function(img) {
             var unSafeSrc = img.getAttribute("unsafe-src");
@@ -1582,11 +1590,8 @@ function onMessageLoadImages(event) {
         });
     content.hiddenObjects = null;
 
-
     var loadImagesButton = $("loadImagesButton");
     loadImagesButton.setStyle({ display: 'none' });
-
-    Event.stop(event);
 }
 
 function onEmailAddressClick(event) {
@@ -1656,6 +1661,8 @@ function loadMessageCallback(http) {
                 configureLinksInMessage();
                 resizeMailContent();
                 configureLoadImagesButton();
+                if (UserDefaults["SOGoMailDisplayRemoteInlineImages"] == 'always')
+                    loadRemoteImages();
                 configureSignatureFlagImage();
                 handleReturnReceipt();
 	        // Warning: If the user can't set the read/unread flag, it won't
@@ -2710,7 +2717,7 @@ function onMarkMenuPrepareVisibility() {
             isRead = !row.hasClassName("mailer_unreadmail");
         }
 
-        var menuUL = this.childElements()[0];
+        var menuUL = this.down();
         var menuLIS = menuUL.childElements();
 
         if (isRead) {

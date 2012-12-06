@@ -351,15 +351,12 @@ static GCSStringFormatter *stringFormatter = nil;
 - (NSString *) _selectedFields: (NSArray *) fields
 		   requirement: (GCSTableRequirement) requirement
 {
-  NSMutableString *selectedFields;
-
-  selectedFields = [NSMutableString string];
+  NSString *selectedFields;
   
-  if (requirement == bothTableRequired
-      && [fields containsObject: @"c_name"])
-    [selectedFields appendString: [self _dottedFields: fields]];
+  if (requirement == bothTableRequired && [fields containsObject: @"c_name"])
+    selectedFields = [self _dottedFields: fields];
   else
-    [selectedFields appendString: [fields componentsJoinedByString: @", "]];
+    selectedFields = [fields componentsJoinedByString: @", "];
 
   return selectedFields;
 }

@@ -38,18 +38,6 @@
 @class iCalTimeZone;
 
 @interface iCalCalendar : CardGroup
-// {
-//   NSString *version;
-//   NSString *calscale;
-//   NSString *prodId;
-//   NSString *method;
-
-//   NSMutableArray *todos;
-//   NSMutableArray *events;
-//   NSMutableArray *journals;
-//   NSMutableArray *freeBusys;
-//   NSMutableDictionary *timezones;
-// }
 
 /* accessors */
 

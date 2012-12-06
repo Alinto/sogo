@@ -24,6 +24,7 @@ ARG_CFGMAKE="$PWD/config.make"
 ARG_CFGSSL="auto"
 ARG_WITH_DEBUG=1
 ARG_WITH_STRIP=0
+ARG_ENABLE_SAML2=0
 ARG_WITH_LDAP_CONFIG=0
 
 GNUSTEP_INSTALLATION_DOMAIN="LOCAL"
@@ -74,6 +75,7 @@ Installation directories:
   --enable-debug          turn on debugging and compile time warnings
   --enable-strip          turn on stripping of debug symbols
   --with-ssl=SSL          specify ssl library (none, libssl, gnutls, auto) [auto]
+  --enable-saml2          enable support for SAML2 authentication (requires liblasso)
 
   --enable-ldap-config    enable LDAP based configuration of SOGo
 
@@ -98,6 +100,11 @@ printParas() {
     echo "  strip:  yes";
   else
     echo "  strip:  no";
+  fi
+  if test $ARG_ENABLE_SAML2 = 1; then 
+    echo "  saml2 support:  yes";
+  else
+    echo "  saml2 support:  no";
   fi
   if test $ARG_WITH_LDAP_CONFIG = 1; then 
     echo "  ldap-based configuration:  yes";
@@ -296,10 +303,15 @@ genConfigMake() {
   cfgwrite "LIBRARY_COMBO=$LIBRARY_COMBO"
   cfgwrite ""
 
+  if test $ARG_ENABLE_SAML2 = 1; then
+      cfgwrite "ADDITIONAL_CPPFLAGS += -DSAML2_CONFIG=1"
+      cfgwrite "saml2_config:=yes"
+  fi
+
   if test $ARG_WITH_LDAP_CONFIG = 1; then
       cfgwrite "ADDITIONAL_CPPFLAGS += -DLDAP_CONFIG=1"
       cfgwrite "ldap_config:=yes"
-  fi  
+  fi
 
   cfgwrite "include \$(TOPDIR)/general.make"
 }
@@ -363,6 +375,16 @@ EOF
 }
 
 checkDependencies() {
+  cfgwrite "BASE_LIBS := `gnustep-config --base-libs`"
+  if test "x$ARG_ENABLE_SAML2" = "x1"; then
+      checkLinking "lasso"   required;
+      if test $? = 0; then
+          lasso_cflags="`pkg-config lasso --cflags`"
+          cfgwrite "LASSO_CFLAGS := $lasso_cflags"
+          lasso_libs="`pkg-config lasso --libs`"
+          cfgwrite "LASSO_LIBS := $lasso_libs"
+      fi;
+  fi
   if test "x$ARG_CFGSSL" = "xauto"; then
       checkLinking "ssl"     optional;
       if test $? != 0; then
@@ -450,6 +472,9 @@ processOption() {
     x--with-ssl=*)
         extractFuncValue $1;
         ARG_CFGSSL="$VALUE"
+	;;
+    "x--enable-saml2")
+        ARG_ENABLE_SAML2=1
 	;;
 
     "x--enable-ldap-config")

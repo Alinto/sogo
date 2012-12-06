@@ -69,6 +69,11 @@
 #import <NGLdap/NGLdapAttribute.h>
 #import <NGLdap/NGLdapEntry.h>
 
+#define CHECK_CLASS(o) ({ \
+  if ([o isKindOfClass: [NSString class]]) \
+    o = [NSArray arrayWithObject: o]; \
+})
+
 @implementation SOGoGroup
 
 - (id) initWithIdentifier: (NSString *) theID
@@ -232,14 +237,17 @@
       // Fetch "members" - we get DNs
       d = [_entry asDictionary];
       o = [d objectForKey: @"member"];
+      CHECK_CLASS(o);
       if (o) [dns addObjectsFromArray: o];
 
       // Fetch "uniqueMembers" - we get DNs
       o = [d objectForKey: @"uniquemember"];
+      CHECK_CLASS(o);
       if (o) [dns addObjectsFromArray: o];
   
       // Fetch "memberUid" - we get UID (like login names)
       o = [d objectForKey: @"memberuid"];
+      CHECK_CLASS(o);
       if (o) [uids addObjectsFromArray: o];
 
       c = [dns count] + [uids count];

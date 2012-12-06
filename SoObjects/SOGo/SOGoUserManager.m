@@ -595,7 +595,7 @@ static Class NSNullK;
 		   withUIDorEmail: (NSString *) uid
                          inDomain: (NSString *) domain
 {
-  NSString *sourceID, *cn, *c_domain, *c_uid, *c_imaphostname, *c_imaplogin;
+  NSString *sourceID, *cn, *c_domain, *c_uid, *c_imaphostname, *c_imaplogin, *c_sievehostname;
   NSObject <SOGoSource> *currentSource;
   NSEnumerator *sogoSources;
   NSDictionary *userEntry;
@@ -610,6 +610,7 @@ static Class NSNullK;
   c_domain = nil;
   c_imaphostname = nil;
   c_imaplogin = nil;
+  c_sievehostname = nil;
 
   [currentUser setObject: [NSNumber numberWithBool: YES]
 	       forKey: @"CalendarAccess"];
@@ -640,6 +641,8 @@ static Class NSNullK;
 	    c_imaphostname = [userEntry objectForKey: @"c_imaphostname"];
           if (!c_imaplogin)
             c_imaplogin = [userEntry objectForKey: @"c_imaplogin"];
+          if (!c_sievehostname)
+            c_sievehostname = [userEntry objectForKey: @"c_sievehostname"];
 	  access = [[userEntry objectForKey: @"CalendarAccess"] boolValue];
 	  if (!access)
 	    [currentUser setObject: [NSNumber numberWithBool: NO]
@@ -675,6 +678,8 @@ static Class NSNullK;
     [currentUser setObject: c_imaphostname forKey: @"c_imaphostname"];
   if (c_imaplogin)
     [currentUser setObject: c_imaplogin forKey: @"c_imaplogin"];
+  if (c_sievehostname)
+    [currentUser setObject: c_sievehostname forKey: @"c_sievehostname"];
 
   [currentUser setObject: emails forKey: @"emails"];
   [currentUser setObject: cn forKey: @"cn"];

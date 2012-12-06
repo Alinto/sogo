@@ -1,8 +1,6 @@
  /* SOGoAppointmentFolderICS.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2010-2012 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +20,7 @@
 
 #import <Foundation/NSString.h>
 
+#import <NGCards/CardElement.h>
 #import <NGCards/iCalCalendar.h>
 
 #import "SOGoAppointmentFolderICS.h"
@@ -30,7 +29,19 @@
 
 - (NSString *) contentAsString
 {
-  return [[self contentCalendar] versitString];
+  iCalCalendar *cal;
+  CardElement *e;
+  NSString *s;
+
+  cal = [self contentCalendar];
+  
+  e = [CardElement simpleElementWithTag: @"x-wr-calname"
+                                  value: [self displayName]];
+  [cal addChild: e];
+  s = [cal versitString];
+  [cal removeChild: e];
+
+  return s;
 }
 
 - (NSString *) davContentType

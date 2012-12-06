@@ -141,6 +141,7 @@
 "messageforward_inline" = "Levélként";
 "messageforward_attached" = "Mellékletként";
 
+"When replying to a message:" = "Amikor válaszol egy üzenetre:";
 "replyplacement_above" = "Válasz elhelyezése az idézet fölött";
 "replyplacement_below" = "Válasz elhelyezése az idézet alatt";
 "And place my signature" = "Aláírás beszúrása";
@@ -149,12 +150,17 @@
 "Compose messages in" = "Üzenet formátuma";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Egyszerű szöveg";
+"Display remote inline images" = "Távoli beágyazott képek megjelenítése";
+"displayremoteinlineimages_never" = "Soha";
+"displayremoteinlineimages_always" = "Mindig";
 
 /* IMAP Accounts */
 "New Mail Account" = "Új email fiók";
 
 "Server Name:" = "Kiszolgáló neve:";
 "Port:" = "Port:";
+"Encryption:" = "Titkosítás:";
+"None" = "Nincs";
 "User Name:" = "Felhasználónév:";
 "Password:" = "Jelszó:";
 
@@ -211,6 +217,7 @@
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Slovak" = "Szlovén";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";

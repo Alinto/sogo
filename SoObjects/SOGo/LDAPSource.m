@@ -107,10 +107,11 @@ static Class NSStringK;
       [searchFields retain];
       IMAPHostField = nil;
       IMAPLoginField = nil;
+      SieveHostField = nil;
       bindFields = nil;
       _scope = @"sub";
       _filter = nil;
-	  _userPasswordAlgorithm = nil;
+      _userPasswordAlgorithm = nil;
       listRequiresDot = YES;
 
       searchAttributes = nil;
@@ -149,6 +150,7 @@ static Class NSStringK;
   [searchFields release];
   [IMAPHostField release];
   [IMAPLoginField release];
+  [SieveHostField release];
   [bindFields release];
   [_filter release];
   [_userPasswordAlgorithm release];
@@ -194,6 +196,7 @@ static Class NSStringK;
 	 searchFields: [udSource objectForKey: @"SearchFieldNames"]
 	IMAPHostField: [udSource objectForKey: @"IMAPHostFieldName"]
        IMAPLoginField: [udSource objectForKey: @"IMAPLoginFieldName"]
+       SieveHostField: [udSource objectForKey: @"SieveHostFieldName"]
 	   bindFields: [udSource objectForKey: @"bindFields"]
 	    kindField: [udSource objectForKey: @"KindFieldName"]
             andMultipleBookingsField: [udSource objectForKey: @"MultipleBookingsFieldName"]];
@@ -311,6 +314,7 @@ static Class NSStringK;
       searchFields: (NSArray *) newSearchFields
      IMAPHostField: (NSString *) newIMAPHostField
     IMAPLoginField: (NSString *) newIMAPLoginField
+    SieveHostField: (NSString *) newSieveHostField
 	bindFields: (id) newBindFields
 	 kindField: (NSString *) newKindField
 andMultipleBookingsField: (NSString *) newMultipleBookingsField
@@ -326,6 +330,8 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
     ASSIGN(IMAPHostField, [newIMAPHostField lowercaseString]);
   if (newIMAPLoginField)
     ASSIGN(IMAPLoginField, [newIMAPLoginField lowercaseString]);
+  if (newSieveHostField)
+    ASSIGN(SieveHostField, [newSieveHostField lowercaseString]);
   if (newMailFields)
     ASSIGN(mailFields, newMailFields);
   if (newSearchFields)
@@ -586,7 +592,10 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
   pass = [plainPassword asCryptedPassUsingScheme: _userPasswordAlgorithm];
 
   if (pass == nil)
-    [self errorWithFormat: @"Unsupported user-password algorithm: %@", _userPasswordAlgorithm];
+    {
+      [self errorWithFormat: @"Unsupported user-password algorithm: %@", _userPasswordAlgorithm];
+      return nil;
+    }
 
   return [NSString stringWithFormat: @"{%@}%@", _userPasswordAlgorithm, pass];
 }
@@ -629,24 +638,34 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
 		    NGLdapModification *mod;
 		    NGLdapAttribute *attr;
 		    NSArray *changes;
+           NSString* encryptedPass;
 		    
 		    attr = [[NGLdapAttribute alloc] initWithAttributeName: @"userPassword"];
 		    if ([_userPasswordAlgorithm isEqualToString: @"none"])
-		      [attr addStringValue:  newPassword];
-		    else
-		      [attr addStringValue: [self _encryptPassword: newPassword]];
-		    
-		    mod = [NGLdapModification replaceModification: attr];
-		    changes = [NSArray arrayWithObject: mod];
-		    *perr = PolicyNoError;
+             {
+               encryptedPass = newPassword;
+             }
+           else
+             {
+               encryptedPass = [self _encryptPassword: newPassword];
+             }
+           if(encryptedPass != nil)
+             {
+               [attr addStringValue: encryptedPass];
+               mod = [NGLdapModification replaceModification: attr];
+               changes = [NSArray arrayWithObject: mod];
+               *perr = PolicyNoError;
 
-		    if ([bindConnection bindWithMethod: @"simple"
-					binddn: userDN
-					credentials: oldPassword])
-		      didChange = [bindConnection modifyEntryWithDN: userDN
-						  changes: changes]; 
-		    else
-		      didChange = NO;
+               if ([bindConnection bindWithMethod: @"simple"
+                        binddn: userDN
+                        credentials: oldPassword])
+                 {
+                   didChange = [bindConnection modifyEntryWithDN: userDN
+                                changes: changes];
+                 }
+                else
+                  didChange = NO;
+              }
 		  }
 	      else
 		didChange = [bindConnection changePasswordAtDn: userDN
@@ -834,6 +853,13 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField
       ldapValue = [[ldapEntry attributeWithName: IMAPLoginField] stringValueAtIndex: 0];
       if ([ldapValue length] > 0)
 	[ldifRecord setObject: ldapValue forKey: @"c_imaplogin"];
+    }
+
+  if (SieveHostField)
+    {
+      ldapValue = [[ldapEntry attributeWithName: SieveHostField] stringValueAtIndex: 0];
+      if ([ldapValue length] > 0)
+	[ldifRecord setObject: ldapValue forKey: @"c_sievehostname"];
     }
 }
 
@@ -1596,6 +1622,7 @@ _makeLDAPChanges (NGLdapConnection *ldapConnection,
                                    searchFields: nil
                                   IMAPHostField: nil
                                  IMAPLoginField: nil
+                                 SieveHostField: nil
                                      bindFields: nil
                                       kindField: nil
                        andMultipleBookingsField: nil];

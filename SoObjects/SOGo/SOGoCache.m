@@ -520,6 +520,27 @@ static memcached_st *handle = NULL;
           forKey: [NSString stringWithFormat: @"cas-pgtiou:%@", pgtIou]];
 }
 
+// SAML2 support
+- (NSDictionary *) saml2LoginDumpsForIdentifier: (NSString *) identifier
+{
+  NSString *key, *jsonString;
+
+  key = [NSString stringWithFormat: @"saml2-login:%@", identifier];
+  jsonString = [self valueForKey: key];
+
+  return [jsonString objectFromJSONString];
+}
+
+- (void) setSaml2LoginDumps: (NSDictionary *) dump
+              forIdentifier: (NSString *) identifier
+{
+  NSString *key;
+
+  key = [NSString stringWithFormat: @"saml2-login:%@", identifier];
+
+  [self setValue: [dump jsonRepresentation] forKey: key];
+}
+
 //
 // ACL caching code
 //

@@ -625,7 +625,6 @@ DIV.linked_attachment_body
 DIV.linked_attachment_meta
 {
   color: #444444;
-  font-style: italic;
   border-width: 0;
   padding: 2px;
 }
@@ -633,7 +632,6 @@ DIV.linked_attachment_meta
 TABLE.linked_attachment_meta
 {
   color: #444444;
-  font-style: italic;
 }
 
 DIV.linked_attachment_body HR
@@ -853,6 +851,9 @@ TR#messageCountHeader TD
 /* UIxMailPartICalViewer */
 #iCalAttendees
 { padding: 0; }
+
+#iCalAttendees dt
+{ font-weight: bold; }
 
 #iCalAttendees SPAN
 { line-height: 19px; }

@@ -62,8 +62,11 @@
   NSString *IDField;     // the first part of a user DN
   NSString *CNField;
   NSString *UIDField;
-  NSArray *mailFields, *searchFields;
-  NSString *IMAPHostField, *IMAPLoginField;
+  NSArray *mailFields;
+  NSArray *searchFields;
+  NSString *IMAPHostField;
+  NSString *IMAPLoginField;
+  NSString *SieveHostField;
   NSArray *bindFields;
 
   BOOL listRequiresDot;
@@ -110,6 +113,7 @@
       searchFields: (NSArray *) newSearchFields
      IMAPHostField: (NSString *) newIMAPHostField
     IMAPLoginField: (NSString *) newIMAPLoginField
+    SieveHostField: (NSString *) newSieveHostField
         bindFields: (id) newBindFields
 	 kindField: (NSString *) newKindField
 andMultipleBookingsField: (NSString *) newMultipleBookingsField;

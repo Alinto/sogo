@@ -1,6 +1,6 @@
 /* UIxComponentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2011 Inverse inc.
+ * Copyright (C) 2006-2012 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Francis Lachapelle <flachapelle@inverse.ca>
@@ -1462,14 +1462,12 @@ RANGE(2);
 ////////////////////////////////// JUNK ////////////////////////////////////////
 - (NSArray *) cycles
 {
-  NSBundle *bundle;
   NSString *path;
   static NSArray *cycles = nil;
   
   if (!cycles)
     {
-      bundle = [NSBundle bundleForClass:[self class]];
-      path   = [bundle pathForResource: @"cycles" ofType: @"plist"];
+      path = [[self componentBundle] pathForResource: @"cycles" ofType: @"plist"];
       NSAssert(path != nil, @"Cannot find cycles.plist!");
       cycles = [[NSArray arrayWithContentsOfFile:path] retain];
       NSAssert(cycles != nil, @"Cannot instantiate cycles from cycles.plist!");
@@ -2395,12 +2393,7 @@ RANGE(2);
     {
       ownerAttendee = [component userAsAttendee: ownerUser];
       if (ownerAttendee)
-        {
-          if ([[ownerAttendee rsvp] isEqualToString: @"true"])
-            rc = 1;
-          else
-            rc = 2;
-        }
+        rc = 1;
     }
 
   return rc;

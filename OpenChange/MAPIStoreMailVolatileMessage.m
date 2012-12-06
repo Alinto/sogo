@@ -569,7 +569,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
 	}
 
       list = MakeRecipientsList ([recipients objectForKey: @"orig"]);
-      if (list)
+      if ([list count])
         [headers setObjects: list forKey: @"from"];
     }
   else

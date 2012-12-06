@@ -6,7 +6,7 @@ BUNDLE_NAME = MainUI
 
 MainUI_PRINCIPAL_CLASS = MainUIProduct
 
-MainUI_LANGUAGES = BrazilianPortuguese Catalan Czech Danish Dutch English French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
+MainUI_LANGUAGES = BrazilianPortuguese Catalan Czech Danish Dutch English French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian Slovak SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
 
 MainUI_OBJC_FILES += \
 	MainUIProduct.m		\
@@ -14,6 +14,10 @@ MainUI_OBJC_FILES += \
 	SOGoUserHomePage.m	\
 	SOGoBrowsersPanel.m	\
 	UIxLoading.m		\
+
+ifeq ($(saml2_config), yes)
+	MainUI_OBJC_FILES += SOGoSAML2Actions.m
+endif
 
 MainUI_RESOURCE_FILES += 	\
 	product.plist		\

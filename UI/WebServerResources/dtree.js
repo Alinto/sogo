@@ -20,8 +20,8 @@ function dTreeQuote(str) {
 }
 
 // Node object
-function Node(id, pid, name, isParent, url, dataname, datatype, title, target,
-              icon, iconOpen, open) {
+function dTreeNode(id, pid, name, isParent, url, dataname, datatype, title, target,
+                   icon, iconOpen, open) {
     this.isParent = isParent;
     this.id = id;
     this.pid = pid;
@@ -68,7 +68,7 @@ function dTree(objName) {
     this.objects = {};
     this.aNodes = [];
     this.aIndent = [];
-    this.root = new Node(-1);
+    this.root = new dTreeNode(-1);
     this.selectedNode = null;
     this.selectedFound = false;
     this.completed = false;
@@ -90,7 +90,7 @@ dTree.prototype = {
     // Adds a new node to the node array
     add: function(id, pid, name, isParent, url, datatype,
                   title, target, icon, iconOpen, open) {
-        this.aNodes[this.aNodes.length] = new Node(id, pid, name, isParent, url,
+        this.aNodes[this.aNodes.length] = new dTreeNode(id, pid, name, isParent, url,
                                                    datatype, title, target, icon,
                                                    iconOpen, open, false);
     },

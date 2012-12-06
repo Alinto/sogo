@@ -5,20 +5,20 @@
     xmlns:const="http://www.skyrix.com/od/constant"
     xmlns:label="OGo:label"
     >
-    <div class="menu" id="searchMenu">
-      <ul id="searchOptions" class="choiceMenu">
-        <li id="name_or_address"><var:string
-	    label:value="Name or Email"/></li>
-        <li id="category"><var:string label:value="Category"/></li>
-      </ul>
-    </div>
-
-    <div id="filterPanel">
+    <div class="filterPanel" data-search="contacts">
+      <div class="menu" id="searchMenu">
+        <ul id="searchOptions" class="choiceMenu">
+          <li data-option="name_or_address"><var:string
+            label:value="Name or Email"/></li>
+          <li data-option="category"><var:string label:value="Category"/></li>
+          <li data-option="organization"><var:string label:value="Organization"/></li>
+        </ul>
+      </div>
       <span class="searchBox" style="float: right;">
-        <input id="searchCriteria" name="criteria" type="hidden" var:value="searchCriteria" />
-        <input id="searchValue" class="textField" autocomplete="off" name="search"
-	  menuid="searchMenu"
-	  type="text" var:value="searchText" />
+        <input name="criteria" type="hidden" var:value="searchCriteria" />
+        <input name="search" class="textField" autocomplete="off"
+               menuid="searchMenu"
+               type="text" var:value="searchText" />
       </span>
     </div>
   </container>

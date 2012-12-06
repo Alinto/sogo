@@ -180,6 +180,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (void) dealloc
 {
+  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+
   // [messageKeys release];
   // [faiMessageKeys release];
   // [folderKeys release];
@@ -656,19 +658,23 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   return rc;
 }
 
-- (int) moveCopyMessageWithMID: (uint64_t) srcMid
-                    fromFolder: (MAPIStoreFolder *) sourceFolder
-                       withMID: (uint64_t) targetMid
-                  andChangeKey: (struct Binary_r *) targetChangeKey
-                      wantCopy: (uint8_t) wantCopy
+// private method
+- (int) _moveCopyMessageWithMID: (uint64_t) srcMid
+                     fromFolder: (MAPIStoreFolder *) sourceFolder
+                        withMID: (uint64_t) targetMid
+                   andChangeKey: (struct Binary_r *) targetChangeKey
+                       wantCopy: (uint8_t) wantCopy
+                       inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc;
   MAPIStoreMessage *sourceMsg, *destMsg;
-  TALLOC_CTX *memCtx;
+  //TALLOC_CTX *memCtx;
   struct SRow aRow;
   struct SPropValue property;
 
-  memCtx = talloc_zero (NULL, TALLOC_CTX);
+  [self logWithFormat: @"-moveCopyMessageWithMID: 0x%.16llx .. withMID: 0x%.16llx .. wantCopy: %d", srcMid, targetMid, wantCopy];
+
+  //memCtx = talloc_zero (NULL, TALLOC_CTX);
   rc = [sourceFolder openMessage: &sourceMsg
                          withMID: srcMid
                       forWriting: NO
@@ -681,7 +687,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   if (rc != MAPISTORE_SUCCESS)
     goto end;
 
-  [sourceMsg copyToMessage: destMsg];
+  [sourceMsg copyToMessage: destMsg  inMemCtx: memCtx];
 
   if (targetChangeKey)
     {
@@ -698,7 +704,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     rc = [sourceFolder deleteMessageWithMID: srcMid andFlags: 0];
 
  end:
-  talloc_free (memCtx);
+  //talloc_free (memCtx);
 
   return rc;
 }
@@ -709,6 +715,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                         withMIDs: (uint64_t *) targetMids
                    andChangeKeys: (struct Binary_r **) targetChangeKeys
                         wantCopy: (uint8_t) wantCopy
+                        inMemCtx: (TALLOC_CTX *) memCtx
 {
   int rc = MAPISTORE_SUCCESS;
   NSUInteger count;
@@ -717,6 +724,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   MAPIStoreMapping *mapping;
   SOGoUser *ownerUser;
   struct Binary_r *targetChangeKey;
+  //TALLOC_CTX *memCtx;
+
+  //memCtx = talloc_zero (NULL, TALLOC_CTX);
 
   ownerUser = [[self userContext] sogoUser];
 
@@ -738,11 +748,12 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                 targetChangeKey = targetChangeKeys[count];
               else
                 targetChangeKey = NULL;
-              rc = [self moveCopyMessageWithMID: srcMids[count]
-                                     fromFolder: sourceFolder
-                                        withMID: targetMids[count]
-                                   andChangeKey: targetChangeKey
-                                       wantCopy: wantCopy];
+              rc = [self _moveCopyMessageWithMID: srcMids[count]
+                                      fromFolder: sourceFolder
+                                         withMID: targetMids[count]
+                                    andChangeKey: targetChangeKey
+                                        wantCopy: wantCopy
+                                        inMemCtx: memCtx];
             }
           else
             rc = MAPISTORE_ERR_NOT_FOUND;
@@ -765,7 +776,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     }
   else
     rc = MAPISTORE_ERR_DENIED;
-
+  
+  //talloc_free (memCtx);
+  
   return rc;
 }
 
@@ -785,6 +798,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSUInteger count, max;
   NSString *childKey;
   uint64_t fmid;
+  TALLOC_CTX *memCtx;
+
+  memCtx = talloc_zero (NULL, TALLOC_CTX);
 
   /* TODO: one possible issue with this algorithm is that moved messages will
      lack a version number and will all be assigned a new one, even though
@@ -807,7 +823,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       if (rc == MAPISTORE_SUCCESS)
         {
           newFolder = [targetFolder lookupFolder: childKey];
-          [self copyPropertiesToObject: newFolder];
+          [self copyPropertiesToObject: newFolder  inMemCtx: memCtx];
 
           pool = [NSAutoreleasePool new];
           children = [self messageKeys];
@@ -818,7 +834,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
               message = [self lookupMessage: childKey];
               targetMessage = [newFolder createMessage: NO];
               [targetMessage setIsNew: YES];
-              [message copyToMessage: targetMessage];
+              [message copyToMessage: targetMessage  inMemCtx: memCtx];
               if (isMove)
                 {
                   fmid = [mapping idFromURL: [message url]];
@@ -839,7 +855,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
               message = [self lookupFAIMessage: childKey];
               targetMessage = [newFolder createMessage: YES];
               [targetMessage setIsNew: YES];
-              [message copyToMessage: targetMessage];
+              [message copyToMessage: targetMessage  inMemCtx: memCtx];
               if (isMove)
                 {
                   fmid = [mapping idFromURL: [message url]];
@@ -881,6 +897,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
     }
   else
     rc = MAPISTORE_ERR_DENIED;
+
+  talloc_free (memCtx);
 
   return rc;
 }

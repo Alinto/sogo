@@ -48,7 +48,7 @@
 - (NSData *) mimeAttachTag;
 
 /* move & copy operations */
-- (void) copyToAttachment: (MAPIStoreAttachment *) newAttachment;
+- (void) copyToAttachment: (MAPIStoreAttachment *) newAttachment  inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* subclasses */
 - (MAPIStoreEmbeddedMessage *) openEmbeddedMessage;

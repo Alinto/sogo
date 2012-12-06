@@ -493,6 +493,7 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Show alarms" = "Alarmen tonen";
 "Show tasks" = "Taken tonen";
 
+"Notifications" = "Notificaties";
 "Receive a mail when I modify my calendar" = "Ontvang een e-mail als ik mijn agenda verander";
 "Receive a mail when someone else modifies my calendar" = "Ontvang een e-mail als iemand anders mijn agenda verandert";
 "When I modify my calendar, send a mail to:" = "Als ik mijn agenda verader, stuur een e-mail naar:";

@@ -47,6 +47,9 @@
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoCASSession.h>
 #import <SOGo/SOGoDomainDefaults.h>
+#if defined(SAML2_CONFIG)
+#import <SOGo/SOGoSAML2Session.h>
+#endif /* SAML2_ENABLE */
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
@@ -101,46 +104,6 @@
 }
 
 - (WOCookie *) _cookieWithUsername: (NSString *) username
-                       andPassword: (NSString *) password
-                  forAuthenticator: (SOGoWebAuthenticator *) auth
-{
-  WOCookie *authCookie;
-  NSString *cookieValue, *cookieString, *appName, *sessionKey, *userKey, *securedPassword;
-
-  //
-  // We create a new cookie - thus we create a new session
-  // associated to the user. For security, we generate:
-  //
-  // A- a session key
-  // B- a user key
-  //
-  // In memcached, the session key will be associated to the user's password
-  // which will be XOR'ed with the user key.
-  //
-  sessionKey = [SOGoSession generateKeyForLength: 16];
-  userKey = [SOGoSession generateKeyForLength: 64];
-
-  NSString *value = [NSString stringWithFormat: @"%@:%@", username, password];
-  securedPassword = [SOGoSession securedValue: value  usingKey: userKey];
-
-
-  [SOGoSession setValue: securedPassword  forSessionKey: sessionKey];
-
-  //cookieString = [NSString stringWithFormat: @"%@:%@",
-  //                         username, password];
-  cookieString = [NSString stringWithFormat: @"%@:%@",
-                           userKey, sessionKey];
-  cookieValue = [NSString stringWithFormat: @"basic %@",
-                          [cookieString stringByEncodingBase64]];
-  authCookie = [WOCookie cookieWithName: [auth cookieNameInContext: context]
-                                  value: cookieValue];
-  appName = [[context request] applicationName];
-  [authCookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
-  
-  return authCookie;
-}
-
-- (WOCookie *) _cookieWithUsername: (NSString *) username
 {
   WOCookie *loginCookie;
   NSString *appName;
@@ -172,7 +135,8 @@
   return loginCookie;
 }
 
-- (WOCookie *) _casLocationCookie: (BOOL) cookieReset
+- (WOCookie *) _authLocationCookie: (BOOL) cookieReset
+                          withName: (NSString *) cookieName
 {
   WOCookie *locationCookie;
   NSString *appName;
@@ -180,7 +144,7 @@
   NSCalendarDate *date;
 
   rq = [context request];
-  locationCookie = [WOCookie cookieWithName: @"cas-location" value: [rq uri]];
+  locationCookie = [WOCookie cookieWithName: cookieName value: [rq uri]];
   appName = [rq applicationName];
   [locationCookie setPath: [NSString stringWithFormat: @"/%@/", appName]];
   if (cookieReset)
@@ -261,9 +225,9 @@
             username = [NSString stringWithFormat: @"%@@%@", username, domain];
         }
 
-      authCookie = [self _cookieWithUsername: username
-                                 andPassword: password
-                            forAuthenticator: auth];
+      authCookie = [auth cookieWithUsername: username
+                                andPassword: password
+                                  inContext: context];
       [response addCookie: authCookie];
 
       supportedLanguages = [[SOGoSystemDefaults sharedSystemDefaults]
@@ -357,14 +321,15 @@
             {
               auth = [[WOApplication application]
                        authenticatorInContext: context];
-              casCookie = [self _cookieWithUsername: login
-                                        andPassword: [casSession identifier]
-                                   forAuthenticator: auth];
+              casCookie = [auth cookieWithUsername: login
+                                       andPassword: [casSession identifier]
+                                         inContext: context];
               [casSession updateCache];
               newLocation = [rq cookieValueForKey: @"cas-location"];
               /* login callback, we expire the "cas-location" cookie, created
                  below */
-              casLocationCookie = [self _casLocationCookie: YES];
+              casLocationCookie = [self _authLocationCookie: YES
+                                                   withName: @"cas-location"];
             }
         }
     }
@@ -388,7 +353,8 @@
       newLocation
         = [SOGoCASSession CASURLWithAction: @"login"
                              andParameters: [self _casRedirectKeys]];
-      casLocationCookie = [self _casLocationCookie: NO];
+      casLocationCookie = [self _authLocationCookie: NO
+                                           withName: @"cas-location"];
     }
   response = [self redirectToLocation: newLocation];
   if (casCookie)
@@ -398,6 +364,51 @@
 
   return response;
 }
+
+#if defined(SAML2_CONFIG)
+- (id <WOActionResults>) _saml2DefaultAction
+{
+  WOResponse *response;
+  NSString *login, *newLocation, *oldLocation;
+  WOCookie *saml2LocationCookie;
+  WORequest *rq;
+
+  saml2LocationCookie = nil;
+
+  newLocation = nil;
+
+  login = [[context activeUser] login];
+  if ([login isEqualToString: @"anonymous"])
+    login = nil;
+
+  if (login)
+    {
+      rq = [context request];
+      newLocation = [rq cookieValueForKey: @"saml2-location"];
+      if (newLocation)
+        saml2LocationCookie = [self _authLocationCookie: YES
+                                               withName: @"saml2-location"];
+      else
+        {
+          oldLocation = [[self clientObject] baseURLInContext: context];
+          newLocation = [NSString stringWithFormat: @"%@%@",
+                                  oldLocation, [login stringByEscapingURL]];
+        }
+    }
+  else
+    {
+      newLocation = [SOGoSAML2Session authenticationURLInContext: context];
+      saml2LocationCookie = [self _authLocationCookie: NO
+                                             withName: @"saml2-location"];
+    }
+
+  response = [self redirectToLocation: newLocation];
+  if (saml2LocationCookie)
+    [response addCookie: saml2LocationCookie];
+
+  return response;
+}
+#endif /* SAML2_CONFIG */
 
 - (id <WOActionResults>) _standardDefaultAction
 {
@@ -433,13 +444,21 @@
 
 - (id <WOActionResults>) defaultAction
 {
-  SOGoSystemDefaults *sd;
+  NSString *authenticationType;
+  id <WOActionResults> result;
 
-  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  authenticationType = [[SOGoSystemDefaults sharedSystemDefaults]
+                         authenticationType];
+  if ([authenticationType isEqualToString: @"cas"])
+    result = [self _casDefaultAction];
+#if defined(SAML2_CONFIG)
+  else if ([authenticationType isEqualToString: @"saml2"])
+    result = [self _saml2DefaultAction];
+#endif /* SAML2_CONFIG */
+  else
+    result = [self _standardDefaultAction];
 
-  return ([[sd authenticationType] isEqualToString: @"cas"]
-          ? [self _casDefaultAction]
-          : [self _standardDefaultAction]);
+  return result;
 }
 
 - (BOOL) isPublicInContext: (WOContext *) localContext
@@ -553,9 +572,9 @@
         }
       
       response = [self responseWith204];
-      authCookie = [self _cookieWithUsername: username
-                                 andPassword: newPassword
-                            forAuthenticator: auth];
+      authCookie = [auth cookieWithUsername: username
+                                andPassword: newPassword
+                                  inContext: context];
       [response addCookie: authCookie];
     }
   else

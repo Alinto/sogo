@@ -32,15 +32,6 @@
 
 @implementation UIxContactsFilterPanel
 
-static NSMutableArray *filters = nil;
-
-+ (void) initialize
-{
-#warning how useful is this?
-  if (!filters)
-    filters = [[NSMutableArray alloc] initWithCapacity:4];
-}
-
 - (id) init
 {
   if ((self = [super init]))
@@ -85,13 +76,6 @@ static NSMutableArray *filters = nil;
     searchCriteria = [[self queryParameterForKey: @"criteria"] copy];
 
   return searchCriteria;
-}
-
-/* filters */
-
-- (NSArray *) filters
-{
-  return filters;
 }
 
 /* qualifiers */

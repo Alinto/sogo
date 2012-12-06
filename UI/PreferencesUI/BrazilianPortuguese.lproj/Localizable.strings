@@ -141,6 +141,7 @@
 "messageforward_inline" = "No corpo da mensagem";
 "messageforward_attached" = "Como anexo";
 
+"When replying to a message:" = "Ao responder a uma mensagem:";
 "replyplacement_above" = "Começar minha resposta acima das citações";
 "replyplacement_below" = "Começar minha resposta abaixo das citações";
 "And place my signature" = "E colocar minha assinatura";
@@ -149,22 +150,31 @@
 "Compose messages in" = "Escrever mensagens em";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Texto puro";
+"Display remote inline images" = "Exibir imagens remotas";
+"displayremoteinlineimages_never" = "Nunca";
+"displayremoteinlineimages_always" = "Sempre";
 
 /* IMAP Accounts */
 "New Mail Account" = "Nova conta de e-mail";
 
 "Server Name:" = "Nome do Servidor:";
 "Port:" = "Porta:";
+"Encryption:" = "Encriptação:";
+"None" = "Nenhum";
 "User Name:" = "Nome do Usuário:";
 "Password:" = "Senha:";
 
 "Full Name:" = "Nome Compelto:";
 "Email:" = "E-mail:";
+"Reply To Email:" = "Responder para o Email:";
 "Signature:" = "Assinatura:";
 "(Click to create)" = "(Click para criar)";
 
 "Signature" = "Assinatura";
 "Please enter your signature below:" = "Por favor, digite sua assinatura abaixo:";
+
+"Please specify a valid sender address." = "Por favor, especifique um endereço de email válido.";
+"Please specify a valid reply-to address." = "Por favor,especifique um endereço de resposta válido.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Parâmetros Adicionais";
@@ -207,6 +217,7 @@
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Slovak" = "Eslovaco";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
@@ -238,6 +249,7 @@
 "match any of the following rules:" = "corresponde a nenhuma das seguintes regras:";
 "match all messages" = "corresponder a todas as mensagens";
 "Perform these actions:" = "Realizar essas ações:";
+"Untitled Filter" = "Filtro sem título";
 
 "Subject" = "Assunto";
 "From" = "De";
@@ -278,6 +290,7 @@
 "Label 4" = "Rótulo 4";
 "Label 5" = "Rótulo 5";
 
+"The password was changed successfully." = "Senha alterada com sucesso.";
 "Password must not be empty." = "Le mot de passe ne doit pas être vide.";
 "The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";
 "Password change failed" = "Échec au changement";

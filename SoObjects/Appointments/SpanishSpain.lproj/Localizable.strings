@@ -25,13 +25,13 @@ vtodo_class2 = "(Tarea confidencial)";
 "comment_label" = "Comentario:";
 
 /* Invitation */
-"Event Invitation: \"%{Summary}\"" = "Invitación al evento: \"% {Summary}\"";
+"Event Invitation: \"%{Summary}\"" = "Invitación al evento: \"%{Summary}\"";
 "(sent by %{SentBy}) " = "(enviado por %{SentBy}) ";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "%{Organizer} %{SentByText}le ha invitado a %{Summary}.\n\nInicio: %{StartDate}\nFin: %{EndDate}\nDescripción: %{Description}";
 "%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}le ha invitado a %{Summary}.\n\nInicio: %{StartDate} a las %{StartTime}\nFin: %{EndDate} a las %{EndTime}\nDescripción: %{Description}";
 
 /* Deletion */
-"Event Cancelled: \"%{Summary}\"" = "Evento Cancelado: \"% {Summary}\"";
+"Event Cancelled: \"%{Summary}\"" = "Evento Cancelado: \"%{Summary}\"";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
 = "%{Organizer} %{SentByText}ha cancelado este evento: %{Summary}.\n\nInicio: %{StartDate}\nFin: %{EndDate}\nDescripción: %{Description}";
 "%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"

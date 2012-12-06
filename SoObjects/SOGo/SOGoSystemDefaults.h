@@ -76,6 +76,13 @@
 - (NSString *) CASServiceURL;
 - (BOOL) CASLogoutEnabled;
 
+- (NSString *) SAML2PrivateKeyLocation;
+- (NSString *) SAML2CertificateLocation;
+- (NSString *) SAML2IdpMetadataLocation;
+- (NSString *) SAML2IdpPublicKeyLocation;
+- (NSString *) SAML2IdpCertificateLocation;
+- (BOOL) SAML2LogoutEnabled;
+
 - (BOOL) enablePublicAccess;
 
 @end

@@ -410,14 +410,6 @@
                      previousObject: oldEvent
                         toAttendees: updateAttendees
                            withType: @"calendar:invitation-update"];
-
-#if 0
-  // DELETE CODE
-  [self sendReceiptEmailForObject: newEvent
-		   addedAttendees: nil
-		 deletedAttendees: nil
-		 updatedAttendees: updateAttendees];
-#endif
 }
 
 //
@@ -968,6 +960,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
           [otherAttendee setDelegatedTo: [attendee delegatedTo]];
           [otherAttendee setDelegatedFrom: [attendee delegatedFrom]];
 
+          // Remove the RSVP attribute, as an action from the attendee
+          // was actually performed, and this confuses iCal (bug #1850)
+          [[otherAttendee attributes] removeObjectForKey: @"RSVP"];
+
 	  // If one has accepted / declined an invitation on behalf of
 	  // the attendee, we add the user to the SENT-BY attribute.
 	  if (b && ![[currentUser login] isEqualToString: [theOwnerUser login]])
@@ -999,7 +995,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 
 
 //
-// This method is invoked from the SOGo Web interface.
+// This method is invoked from the SOGo Web interface or from the DAV interface.
 //
 // - theOwnerUser is owner of the calendar where the attendee
 //   participation state has changed.
@@ -1063,6 +1059,10 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       || [currentStatus caseInsensitiveCompare: newStatus]
       != NSOrderedSame)
     {
+      NSMutableArray *delegates;
+      NSString *delegatedUID;
+
+      delegatedUID = nil;
       [attendee setPartStat: newStatus];
       
       // If one has accepted / declined an invitation on behalf of
@@ -1086,9 +1086,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	}
  
       [attendee setDelegatedTo: [delegate email]];
-
-      NSString *delegatedUID = nil;
-      NSMutableArray *delegates;
 
       if (removeDelegate)
 	{
@@ -1123,13 +1120,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 			     previousObject: nil
 				toAttendees: delegates
                                    withType: @"calendar:cancellation"];
-#if 0
-	  // DELETE CODE
-	  [self sendReceiptEmailUsingTemplateNamed: @"Deletion"
-					 forObject: event
-						to: delegates];
-#endif
-	}
+	} // if (removeDelegate)
 
       if (addDelegate)
 	{
@@ -1148,12 +1139,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 			     previousObject: nil
 				toAttendees: delegates
                                    withType: @"calendar:invitation"];
-#if 0
-	  // DELETE CODE
-	  [self sendReceiptEmailUsingTemplateNamed: @"Invitation"
-					 forObject: event to: delegates];
-#endif
-	}
+	} // if (addDelegate)
       
       // If the current user isn't the organizer of the event
       // that has just been updated, we update the event and
@@ -1161,10 +1147,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       ownerUser = [SOGoUser userWithLogin: owner];
       if (!(ex || [event userIsOrganizer: ownerUser]))
 	{
-	  if ([[attendee rsvp] isEqualToString: @"true"]
-	      && [event isStillRelevant])
+	  if ([event isStillRelevant])
 	    [self sendResponseToOrganizer: event
-		  from: ownerUser];
+                                     from: ownerUser];
 	  
 	  organizerUID = [[event organizer] uid];
 
@@ -1372,22 +1357,22 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
                                                    reason: @"delegate is a group"];
             }
           if (ex == nil)
-            ex = [self _handleAttendee: attendee
-                          withDelegate: delegate
-                             ownerUser: ownerUser
-                          statusChange: _status
-                               inEvent: event];
+            {
+              // Remove the RSVP attribute, as an action from the attendee
+              // was actually performed, and this confuses iCal (bug #1850)
+              [[attendee attributes] removeObjectForKey: @"RSVP"];
+              ex = [self _handleAttendee: attendee
+                            withDelegate: delegate
+                               ownerUser: ownerUser
+                            statusChange: _status
+                                 inEvent: event];
+            }
           if (ex == nil)
             {
               // We generate the updated iCalendar file and we save it in
               // the database. We do this ONLY when using SOGo from the
               // Web interface. Over DAV, it'll be handled directly in
               // PUTAction:
-
-              /* FIXME: this is a hack caused by the fact that
-                 updateContentWithCalendar:fromRequest: invokes
-                 changeParticipationStatusblabla, while the latter was
-                 actually designed to be invoked by web methods only */
               if (![context request] || [[context request] handledByDefaultHandler])
                 ex = [self saveContentString: [calendar versitString]];
             }
@@ -1944,6 +1929,9 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 		return [NSException exceptionWithHTTPStatus:403
 				    reason: @"sequences don't match"];
 	      
+              // Remove the RSVP attribute, as an action from the attendee
+              // was actually performed, and this confuses iCal (bug #1850)
+              [[attendee attributes] removeObjectForKey: @"RSVP"]; 
 
 	      delegate = nil;
 	      delegateEmail = [attendee delegatedTo];

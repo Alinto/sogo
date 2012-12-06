@@ -223,7 +223,7 @@
                     const:name="messageForwarding"
                     string="itemMessageForwardingText"
                     selection="userMessageForwarding"/></dd>
-              <dt></dt>
+              <dt><var:string label:value="When replying to a message:"/></dt>
               <dd><var:popup list="replyPlacementList" item="item"
                     const:id="replyPlacementList"
                     const:name="replyPlacementList"
@@ -241,6 +241,12 @@
                     const:name="composeMessagesType"
                     string="itemComposeMessagesText"
                     selection="userComposeMessagesType"/></dd>
+              <dt><var:string label:value="Display remote inline images"/></dt>
+              <dd><var:popup list="displayRemoteInlineImages" item="item"
+                    const:id="displayRemoteInlineImages"
+                    const:name="displayRemoteInlineImages"
+                    string="itemDisplayRemoteInlineImagesText"
+                    selection="userDisplayRemoteInlineImages"/></dd>
             </dl>
             <var:if condition="isSieveScriptsEnabled"
               ><label><var:string label:value="Filters"/></label>
@@ -329,7 +335,7 @@
                   <dt><var:string label:value="Email:"/></dt>
                   <dd><input const:name="email" const:id="email" type="text" const:value=""/></dd>
                   <dt><var:string label:value="Reply To Email:"/></dt>
-                  <dd><input const:name="replyTo" const:id="replyTo" type="text" const:value=""/></dd>
+                  <dd><input const:name="replyTo" const:id="replyTo" type="text" autocomplete="off" const:value=""/></dd>
                   <dt><var:string label:value="Signature:"/></dt>
                   <dd><span id="actSignature"><!--space --></span></dd>
                 </dl>

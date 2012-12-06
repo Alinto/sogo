@@ -211,11 +211,11 @@ static NSArray *tasksFields = nil;
   user = [context activeUser];
   userLogin = [user login];
 
+  title = [request formValueForKey: @"search"];
   param = [request formValueForKey: @"filterpopup"];
   if ([param length])
     {
       [self _setupDatesWithPopup: param andUserTZ: userTimeZone];
-      title = [request formValueForKey: @"search"];
     }
   else
     {
@@ -722,6 +722,11 @@ _userStateInEvent (NSArray *event)
 
               if (eventEnd > endsSecs)
                 eventEnd = endsSecs;
+
+              if (eventEnd < startSecs)
+                // The event doesn't end in the covered period.
+                // This special case occurs with a DST change.
+                return;
 
               userState = _userStateInEvent (event);
               while (currentDayStart + dayLength < eventEnd)

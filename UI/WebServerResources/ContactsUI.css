@@ -110,7 +110,8 @@ DIV#contactFoldersList
   bottom: 0px;
   margin: 0px;
   padding: 0px;
-  overflow: hidden; }
+  overflow: auto;
+  overflow-x: hidden; }
 
 DIV#abToolbar
 { padding-left: 6px; }
@@ -237,7 +238,6 @@ DIV#contactView H3.contactCardTitle
   padding: .2em 0px;
   font-size: large;
   font-weight: bold;
-  width: 300px;
   text-decoration: underline; }
 
 DIV.contactColumn

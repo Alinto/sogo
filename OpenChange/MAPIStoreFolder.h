@@ -123,7 +123,8 @@
                       fromFolder: (MAPIStoreFolder *) sourceFolder
                         withMIDs: (uint64_t *) targetMids
                    andChangeKeys: (struct Binary_r **) targetChangeKeys
-                        wantCopy: (uint8_t) want_copy;
+                        wantCopy: (uint8_t) want_copy
+                        inMemCtx: (TALLOC_CTX *) memCtx;
 
 - (enum mapistore_error) moveCopyToFolder: (MAPIStoreFolder *) targetFolder
                               withNewName: (NSString *) newFolderName

@@ -216,18 +216,19 @@ convention:
 
 - (void) updateFromLDIFRecord: (NSDictionary *) ldifRecord
 {
-  CardElement *element;
-  NSArray *units;
   NSInteger year, yearOfToday, month, day;
+  CardElement *element;
   NSCalendarDate *now;
+  NSArray *units;
   NSString *ou;
+  id o;
 
   [self setNWithFamily: [ldifRecord objectForKey: @"sn"]
                  given: [ldifRecord objectForKey: @"givenname"]
             additional: nil prefixes: nil suffixes: nil];
   [self setNickname: [ldifRecord objectForKey: @"mozillanickname"]];
   [self setFn: [ldifRecord objectForKey: @"displayname"]];
-  [self setTitle: [ldifRecord objectForKey: @"title"]];
+  [self setTitle: [ldifRecord objectForKey: @"title"]];  
 
   element = [self _elementWithTag: @"adr" ofType: @"home"];
   [element setSingleValue: [ldifRecord objectForKey: @"mozillahomestreet2"]
@@ -303,7 +304,15 @@ convention:
             forKey: @""];
 
   [self setNote: [ldifRecord objectForKey: @"description"]];
-  [self setCategories: [ldifRecord objectForKey: @"vcardcategories"]];
+
+  o = [ldifRecord objectForKey: @"vcardcategories"];
+
+  // We can either have an array (from SOGo's web gui) or a 
+  // string (from a LDIF import) as the value here.
+  if ([o isKindOfClass: [NSArray class]])
+    [self setCategories: o];
+  else
+    [self setCategories: [o componentsSeparatedByString: @","]];
 
   [self cleanupEmptyChildren];
 }

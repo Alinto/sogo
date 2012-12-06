@@ -209,11 +209,11 @@
 
 - (WOResponse *) composeAction
 {
-  SOGoDraftsFolder *drafts;
+  NSString *urlBase, *url, *value, *signature, *nl;
   SOGoDraftObject *newDraftMessage;
-  NSString *urlBase, *url, *value, *signature;
-  id mailTo;
   NSMutableDictionary *headers;
+  SOGoDraftsFolder *drafts;
+  id mailTo;
   BOOL save;
 
   drafts = [[self clientObject] draftsFolderInContext: context];
@@ -246,8 +246,10 @@
   signature = [[self clientObject] signature];
   if ([signature length])
     {
+      nl = ([[[[context activeUser] userDefaults] mailComposeMessageType] isEqualToString: @"html"] ? @"<br/>" : @"\n");
+
       [newDraftMessage
-	setText: [NSString stringWithFormat: @"\n\n-- \n%@", signature]];
+	setText: [NSString stringWithFormat: @"%@%@-- %@%@", nl, nl, nl, signature]];
       save = YES;
     }
   if (save)

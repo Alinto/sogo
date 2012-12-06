@@ -75,17 +75,17 @@
 "longDateFmt_1" = "%A, %e. %B %Y";
 "longDateFmt_2" = "%a. %d. %B %Y";
 "longDateFmt_3" = "%a. %e. %B %Y";
-"longDateFmt_4" = "%A, %d. %b. %Y";
-"longDateFmt_5" = "%A, %e. %b. %Y";
-"longDateFmt_6" = "%a. %d. %b. %Y";
-"longDateFmt_7" = "%a. %e. %b. %Y";
-"longDateFmt_8" = "%d. %B %Y";
-"longDateFmt_9" = "%e. %B %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
 "longDateFmt_10" = "";
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%Hh:%Mm";
-"timeFmt_2" = "%Hh %Mm";
+"timeFmt_2" = "";
 "timeFmt_3" = "";
 "timeFmt_4" = "";
 
@@ -141,6 +141,7 @@
 "messageforward_inline" = "Eingebunden";
 "messageforward_attached" = "Als Anhang";
 
+"When replying to a message:" = "Wenn auf eine Nachricht geantwortet wird: ";
 "replyplacement_above" = "Antwort oberhalb des Zitates beginnen";
 "replyplacement_below" = "Antwort unterhalb des Zitates beginnen";
 "And place my signature" = "Und setze meine Signatur";
@@ -149,12 +150,17 @@
 "Compose messages in" = "Nachrichten verfassen in";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Reintext";
+"Display remote inline images" = "Entfernte eingebettete Bilder anzeigen";
+"displayremoteinlineimages_never" = "Niemals";
+"displayremoteinlineimages_always" = "Immer";
 
 /* IMAP Accounts */
 "New Mail Account" = "Neues E-Mail-Konto";
 
 "Server Name:" = "Servername:";
 "Port:" = "Port:";
+"Encryption:" = "Verschlüsselung:";
+"None" = "Keine";
 "User Name:" = "Benutzername:";
 "Password:" = "Passwort:";
 
@@ -211,6 +217,7 @@
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Slovak" = "Slowenisch";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";

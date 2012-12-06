@@ -7,9 +7,9 @@
 "Edit this event or task" = "Edytuj to wydarzenie lub zadanie";
 "Delete this event or task" = "Usuń to wydarzenie lub zadanie";
 "Go to today" = "Przejdź do dnia dzisiejszego";
-"Switch to day view" = "Przełącz do widoku dnia";
-"Switch to week view" = "Przełącz do widoku tygodnia";
-"Switch to month view" = "Przełącz do widoku miesiąca";
+"Switch to day view" = "Przełącz na widok dnia";
+"Switch to week view" = "Przełącz na widok tygodnia";
+"Switch to month view" = "Przełącz na widok miesiąca";
 "Reload all calendars" = "Przeładuj wszystkie kalendarze";
 
 /* Tabs */
@@ -19,7 +19,7 @@
 /* Day */
 
 "DayOfTheMonth" = "Dzień miesiąca";
-"dayLabelFormat" = "%Y-%m-%d";
+"dayLabelFormat" = "%d.%m.%Y";
 "today" = "Dzisiaj";
 
 "Previous Day" = "Poprzedni dzień";
@@ -51,17 +51,17 @@
 "Calendar" = "Kalendarz";
 "Contacts" = "Kontakty";
 
-"New Calendar..." = "Nowy kalendarz...";
-"Delete Calendar" = "Usuń kalendarz...";
+"New Calendar..." = "Nowy kalendarz";
+"Delete Calendar" = "Usuń kalendarz";
 "Unsubscribe Calendar" = "Wyłącz subskrypcję kalendarza";
-"Sharing..." = "Udostępnianie...";
-"Export Calendar..." = "Eksportuj kalendarz...";
-"Import Events..." = "Importuj wydarzenia...";
-"Import Events" = "Importuj wydarzenia";
+"Sharing..." = "Udostępnianie";
+"Export Calendar..." = "Eksportuj kalendarz";
+"Import Events..." = "Importuj wydarzenia";
+"Import Events" = "Importowanie wydarzeń";
 "Select an iCalendar file (.ics)." = "Wybierz plik iCalendar (.ics).";
 "Upload" = "Wyślij";
 "Uploading" = "Wysyłanie";
-"Publish Calendar..." = "Opublikuj kalendarz...";
+"Publish Calendar..." = "Opublikuj kalendarz";
 "Reload Remote Calendars" = "Przeładuj zdalne kalendarze";
 "Properties" = "Właściwości";
 "Done" = "Zrobione";
@@ -111,7 +111,7 @@
 
 /* Button Titles */
 
-"Subscribe to a Calendar..." = "Subskrybuj kalendarz...";
+"Subscribe to a Calendar..." = "Subskrybuj kalendarz użytkownika";
 "Remove the selected Calendar" = "Usuń zaznaczony kalendarz";
 
 "Name of the Calendar" = "Nazwa kalendarza";
@@ -137,7 +137,7 @@
 "No appointments found" = "Brak spotkań";
 "Meetings proposed by you" = "Spotkania zaproponowane przez ciebie";
 "Meetings proposed to you" = "Spotkania zaproponowane tobie";
-"sched_startDateFormat" = "%m/%d %H:%M";
+"sched_startDateFormat" = "%d.%m %H:%M";
 "action" = "Akcja";
 "accept" = "Zaakceptuj";
 "decline" = "Odmów";
@@ -195,7 +195,7 @@
 "empty title" = "Pusty tytuł";
 "private appointment" = "Spotkanie prywatne";
 
-"Change..." = "Zmień...";
+"Change..." = "Zmień";
 
 /* Appointments (participation state) */
 
@@ -228,7 +228,7 @@
 
 "Search" = "Szukaj";
 "Search attendees" = "Szukaj uczestników";
-"Search resources" = "Szukaj zasoby";
+"Search resources" = "Szukaj zasobów";
 "Search appointments" = "Szukaj spotkania";
 
 "All day Event" = "Wydarzenie całodniowe";
@@ -302,7 +302,7 @@
 "Days" = "Dni";
 "Week(s)" = "Tygodni(e)";
 "On" = "w";
-"Month(s)" = "Miesiące(ęcy)";
+"Month(s)" = "Miesiące(cy)";
 "The" = " ";
 "Recur on day(s)" = "Powtarzaj w dni";
 "Year(s)" = "Lat(a)";
@@ -331,7 +331,7 @@
 "repeat_EVERY WEEKDAY" = "W dni powszednie";
 "repeat_MONTHLY" = "Co miesiąc";
 "repeat_YEARLY" = "Co rok";
-"repeat_CUSTOM" = "Inaczej...";
+"repeat_CUSTOM" = "Inaczej";
 
 "reminder_NONE" = "Bez przypomnienia";
 "reminder_5_MINUTES_BEFORE" = "5 minut przed";
@@ -346,7 +346,7 @@
 "reminder_1_DAY_BEFORE" = "1 dzień przed";
 "reminder_2_DAYS_BEFORE" = "2 dni przed";
 "reminder_1_WEEK_BEFORE" = "1 tydzień przed";
-"reminder_CUSTOM" = "Inaczej...";
+"reminder_CUSTOM" = "Inaczej";
 
 "reminder_MINUTES" = "minut(y)";
 "reminder_HOURS" = "godzin(y)";
@@ -357,11 +357,11 @@
 "reminder_END" = "końcem wydarzenia";
 "Reminder Details" = "Szczegóły przypomnienia";
 
-"Choose a Reminder Action" = "Choose a Reminder Action";
-"Show an Alert" = "Show an Alert";
-"Send an E-mail" = "Send an E-mail";
-"Email Organizer" = "Email Organizer";
-"Email Attendees" = "Email Attendees";
+"Choose a Reminder Action" = "Wybierz sposób przypomnienia";
+"Show an Alert" = "Pokaż ostrzeżenie";
+"Send an E-mail" = "Wyślij e-mail";
+"Email Organizer" = "E-mail do organizatora";
+"Email Attendees" = "E-mail do uczestników";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -403,9 +403,9 @@ validate_endbeforestart    = "Podana data końca jest wcześniejsza niż data po
 "eventPartStatModificationError" = "Twój status uczestnictwa nie mógł być zmodyfikowany.";
 
 /* menu */
-"New Event..." = "Nowe wydarzenie...";
-"New Task..." = "Nowe zadanie...";
-"Edit Selected Event..." = "Edytuj zaznaczone wydarzenie...";
+"New Event..." = "Nowe wydarzenie";
+"New Task..." = "Nowe zadanie";
+"Edit Selected Event..." = "Edytuj zaznaczone wydarzenie";
 "Delete Selected Event" = "Usuń zaznaczone wydarzenie";
 "Select All" = "Zaznacz wszystkie";
 "Workweek days only" = "Tylko dni powszednie";
@@ -454,7 +454,7 @@ validate_endbeforestart    = "Podana data końca jest wcześniejsza niż data po
 "Title" = "Tytuł";
 "Start" = "Początek";
 "End" = "Koniec";
-"Due Date" = "Termin:";
+"Due Date" = "Termin";
 "Location" = "Miejsce";
 
 "(Private Event)" = "(Wydarzenie prywatne)";
@@ -493,6 +493,7 @@ vtodo_class2 = "(Zadanie poufne)";
 "Show alarms" = "Pokaż alarmy";
 "Show tasks" = "Pokaż zadania";
 
+"Notifications" = "Powiadomienia";
 "Receive a mail when I modify my calendar" = "Przyślij e-mail, gdy zmieniam swój kalendarz";
 "Receive a mail when someone else modifies my calendar" = "Przyślij e-mail, gdy ktoś zmienia mój kalendarz";
 "When I modify my calendar, send a mail to:" = "Gdy zmieniam swój kalendarz, wyślij e-mail do:";
@@ -511,24 +512,24 @@ vtodo_class2 = "(Zadanie poufne)";
 "yearFieldInvalid" = "W polu Lata wprowadź liczbę równą lub większą od 1.";
 "appointmentFieldInvalid" = "W polu Spotkania wprowadź liczbę równą lub większą od 1.";
 "recurrenceUnsupported" = "Ten typ powtórzeń obecnie nie jest obsługiwany.";
-"Please specify a calendar name." = "Please specify a calendar name.";
+"Please specify a calendar name." = "Proszę podać nazwę kalendarza.";
 "tagNotDefined" = "Musisz podać znacznik, jeśli chcesz synchronizować ten kalendarz.";
 "tagAlreadyExists" = "Podany znacznik jest już skojarzony z innym kalendarzem.";
 "tagHasChanged" = "Jeśli zmienisz znacznik kalendarza, musisz przeładować dane na swoim urządzeniu mobilnym.\nKontynuować?";
 "tagWasAdded" = "Jeśli chesz synchronizować ten kalendarz, będziesz musiał(a) przeładować dane na swoim urządzeniu mobilnym.\nKontynuować?";
 "tagWasRemoved" = "Jeśli usuniesz ten kalendarz z synchronizacji, będziesz musiał(a) przeładować dane na swoim urządzeniu mobilnym.\nKontynuować?";
-"DestinationCalendarError" = "The source and destination calendars are the same. Please try to copy to a different calendar.";
-"EventCopyError" = "The copy failed. Please try to copy to a difference calendar.";
+"DestinationCalendarError" = "Chcesz kopiować do tego samego kalendarza. Musisz wybrać inny kalendarz.";
+"EventCopyError" = "Kopiowanie nie udało się. Wybierz inny kalendarz.";
 
-"Open Task..." = "Otwórz zadanie...";
+"Open Task..." = "Otwórz zadanie";
 "Mark Completed" = "Oznacz jako ukończone";
 "Delete Task" = "Usuń zadanie";
 "Delete Event" = "Usuń wydarzenie";
-"Copy event to my calendar" = "Copy event to my calendar";
+"Copy event to my calendar" = "Kopiuj wydarzenie do mojego kalendarza";
 "View Raw Source" = "Obejrzyj źródło";
 
-"Subscribe to a web calendar..." = "Subskrybuj kalendarz...";
+"Subscribe to a web calendar..." = "Subskrybuj sieciowy kalendarz";
 "URL of the Calendar" = "URL do kalendarza";
-"Web Calendar" = "Kalendarz Web";
+"Web Calendar" = "Kalendarz sieciowy";
 "Reload on login" = "Przeładuj przy logowaniu";
-"Invalid number." = "Invalid number.";
+"Invalid number." = "Błędna liczba.";

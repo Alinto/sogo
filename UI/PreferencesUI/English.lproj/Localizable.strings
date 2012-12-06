@@ -141,6 +141,7 @@
 "messageforward_inline" = "Inline";
 "messageforward_attached" = "As Attachment";
 
+"When replying to a message:" = "When replying to a message:";
 "replyplacement_above" = "Start my reply above the quote";
 "replyplacement_below" = "Start my reply below the quote";
 "And place my signature" = "And place my signature";
@@ -149,12 +150,17 @@
 "Compose messages in" = "Compose messages in";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Plain text";
+"Display remote inline images" = "Display remote inline images";
+"displayremoteinlineimages_never" = "Never";
+"displayremoteinlineimages_always" = "Always";
 
 /* IMAP Accounts */
 "New Mail Account" = "New Mail Account";
 
 "Server Name:" = "Server Name:";
 "Port:" = "Port:";
+"Encryption:" = "Encryption:";
+"None" = "None";
 "User Name:" = "User Name:";
 "Password:" = "Password:";
 
@@ -211,6 +217,7 @@
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Slovak" = "Slovensky";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";

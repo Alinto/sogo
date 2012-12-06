@@ -30,6 +30,9 @@
 @class iCalRecurrenceRule;
 
 @interface iCalTimeZonePeriod : CardGroup
+{
+  NSCalendarDate *startDate;
+}
 
 - (NSCalendarDate *) startDate;
 - (iCalRecurrenceRule *) recurrenceRule;

@@ -59,12 +59,14 @@
 {
   SOGoAppointmentFolder *folder;
   NSMutableDictionary *rc;
-  WORequest *request;
-  WOResponse *response;
-  NSString *fileContent;
-  id data;
   iCalCalendar *additions;
-  int imported;
+  NSString *fileContent;
+  WOResponse *response;
+  WORequest *request;
+  NSArray *cals;
+  id data;
+
+  int i, imported;
 
   imported = 0;
   rc = [NSMutableDictionary dictionary];
@@ -86,8 +88,13 @@
   if (fileContent && [fileContent length] 
       && [fileContent hasPrefix: @"BEGIN:"])
     {
-      additions = [iCalCalendar parseSingleFromSource: fileContent];
-      imported = [folder importCalendar: additions];
+      cals = [iCalCalendar parseFromSource: fileContent];
+
+      for (i = 0; i < [cals count]; i++)
+        {
+          additions = [cals objectAtIndex: i];
+          imported += [folder importCalendar: additions];
+        }
     }
 
   [rc setObject: [NSNumber numberWithInt: imported]

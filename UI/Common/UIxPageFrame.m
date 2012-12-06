@@ -485,13 +485,17 @@
   BOOL canLogoff;
   id auth;
   SOGoSystemDefaults *sd;
+  NSString *authType;
 
   auth = [[self clientObject] authenticatorInContext: context];
   if ([auth respondsToSelector: @selector (cookieNameInContext:)])
     {
       sd = [SOGoSystemDefaults sharedSystemDefaults];
-      if ([[sd authenticationType] isEqualToString: @"cas"])
+      authType = [sd authenticationType];
+      if ([authType isEqualToString: @"cas"])
 	canLogoff = [sd CASLogoutEnabled];
+      else if ([authType isEqualToString: @"saml2"])
+	canLogoff = [sd SAML2LogoutEnabled];
       else
 	canLogoff = [[auth cookieNameInContext: context] length] > 0;
     }

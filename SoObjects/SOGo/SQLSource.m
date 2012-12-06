@@ -98,6 +98,7 @@
       _kindField = nil;
       _multipleBookingsField = nil;
       _imapHostField = nil;
+      _sieveHostField = nil;
     }
 
   return self;
@@ -115,6 +116,7 @@
   [_multipleBookingsField release];
   [_domainField release];
   [_imapHostField release];
+  [_sieveHostField release];
    
   [super dealloc];
 }
@@ -131,6 +133,7 @@
   ASSIGN(_userPasswordAlgorithm, [udSource objectForKey: @"userPasswordAlgorithm"]);
   ASSIGN(_imapLoginField, [udSource objectForKey: @"IMAPLoginFieldName"]);
   ASSIGN(_imapHostField, [udSource objectForKey:  @"IMAPHostFieldName"]);
+  ASSIGN(_sieveHostField, [udSource objectForKey:  @"SieveHostFieldName"]);
   ASSIGN(_kindField, [udSource objectForKey: @"KindFieldName"]);
   ASSIGN(_multipleBookingsField, [udSource objectForKey: @"MultipleBookingsFieldName"]);
   ASSIGN(_domainField, [udSource objectForKey: @"DomainFieldName"]);
@@ -187,7 +190,10 @@
   pass = [plainPassword asCryptedPassUsingScheme: _userPasswordAlgorithm];
 
   if (pass == nil)
-    [self errorWithFormat: @"Unsupported user-password algorithm: %@", _userPasswordAlgorithm];
+    {
+      [self errorWithFormat: @"Unsupported user-password algorithm: %@", _userPasswordAlgorithm];
+      return nil;
+    }
 
   if (_prependPasswordScheme)
     result = [NSString stringWithFormat: @"{%@}%@", _userPasswordAlgorithm, pass];
@@ -308,18 +314,20 @@
   NSString *sqlstr;
   BOOL didChange;
   BOOL isOldPwdOk;
-  
+
   isOldPwdOk = NO;
   didChange = NO;
-  
+
   // Verify current password
   isOldPwdOk = [self checkLogin:login password:oldPassword perr:perr expire:0 grace:0];
-  
+
   if (isOldPwdOk)
     {
       // Encrypt new password
       NSString *encryptedPassword = [self _encryptPassword: newPassword];
-      
+      if(encryptedPassword == nil)
+        return NO;
+
       // Save new password
       login = [login stringByReplacingString: @"'"  withString: @"''"];
       cm = [GCSChannelManager defaultChannelManager];
@@ -517,6 +525,13 @@
               value = [response objectForKey: _imapHostField];
               if ([value isNotNull])
                 [response setObject: value forKey: @"c_imaphostname"];
+            }
+
+          if (_sieveHostField)
+            {
+              value = [response objectForKey: _sieveHostField];
+              if ([value isNotNull])
+                [response setObject: value forKey: @"c_sievehostname"];
             }
 
           // We check if the user can authenticate

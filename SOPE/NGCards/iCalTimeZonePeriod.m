@@ -103,10 +103,21 @@
 //   return dayOfWeek;
 // }
 
+- (void) dealloc
+{
+  [startDate release];
+  [super dealloc];
+}
+
 - (NSCalendarDate *) startDate
 {
-  return [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"]
-			   dateTime];
+  if (!startDate)
+    {
+      startDate =  [(iCalDateTime *) [self uniqueChildWithTag: @"dtstart"]
+                                     dateTime];
+      [startDate retain];
+    }
+  return startDate;
 }
 
 - (iCalRecurrenceRule *) recurrenceRule

@@ -42,5 +42,5 @@ endif
 SYSTEM_LIB_DIR += -L/usr/local/lib -L/usr/lib
 
 BUNDLE_LIBS += \
-	-lSOGoUI				\
+	-lSOGoUI	\
 	-lSOGo

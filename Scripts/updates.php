@@ -28,22 +28,22 @@ $plugins
 = array(
         "sogo-connector@inverse.ca"
          => array( "application" => "thunderbird",
-                   "version" => "10.0.3",
-                   "filename" => "sogo-connector-10.0.3.xpi" ),
+                   "version" => "17.0.2",
+                   "filename" => "sogo-connector-17.0.2.xpi" ),
         "sogo-integrator@inverse.ca"
          => array( "application" => "thunderbird",
-                   "version" => "10.0.3",
-                   "filename" => "sogo-integrator-10.0.3.xpi" ),
+                   "version" => "17.0.2",
+                   "filename" => "sogo-integrator-17.0.2.xpi" ),
 	"{e2fda1a4-762b-4020-b5ad-a41df1933103}"
 	=> array( "application" => "thunderbird",
-		   "version" => "1.2.3",
-		   "filename" => "lightning.xpi" )
+		   "version" => "1.9",
+		   "filename" => "lightning-1.9.xpi" )
 );
 
 $applications
 = array( "thunderbird" => "<em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
-                <em:minVersion>10.0</em:minVersion>
-                <em:maxVersion>10.*</em:maxVersion>" );
+                <em:minVersion>17.0</em:minVersion>
+                <em:maxVersion>17.*</em:maxVersion>" );
 
 $pluginname = $_GET["plugin"];
 $plugin =& $plugins[$pluginname];

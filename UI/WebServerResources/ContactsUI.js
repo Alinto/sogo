@@ -8,7 +8,7 @@ var usersRightsWindowWidth = 450;
 
 var Contact = {
     currentAddressBook: "/personal",
-    currentContactId: null,
+    currentContactId: null
 };
 
 function openContactsFolder(contactsFolder, reload, idx) {
@@ -18,9 +18,9 @@ function openContactsFolder(contactsFolder, reload, idx) {
         var url = URLForFolderID(Contact.currentAddressBook, "Contacts") +
             "/view?noframe=1";
 
-        var searchValue = search["value"];
+        var searchValue = search["contacts"]["value"];
         if (searchValue && searchValue.length > 0)
-            url += ("&search=" + search["criteria"]
+            url += ("&search=" + search["contacts"]["criteria"]
                     + "&value=" + escape(searchValue.utf8encode()));
         var sortAttribute = sorting["attribute"];
         if (sortAttribute && sortAttribute.length > 0)
@@ -613,7 +613,7 @@ function onFolderSelectionChange(event) {
     }
     else {
         search = {};
-        $("searchValue").value = "";
+        $$('[name="search"]').each(function(input) { input.value = "" });
         initCriteria();
         openContactsFolder(nodes[0].getAttribute("id"));
     }
@@ -1227,7 +1227,7 @@ getMenus = function() {
                                      "-", onMenuDeleteContact, "-",
                                      "moveContactMenu", "copyContactMenu", 
                                      onMenuExportContact, onMenuRawContact);
-    menus["searchMenu"] = new Array(setSearchCriteria, setSearchCriteria);
+    menus["searchMenu"] = new Array(setSearchCriteria, setSearchCriteria, setSearchCriteria);
    
     var contactFoldersMenu = $("contactFoldersMenu");
     if (contactFoldersMenu)

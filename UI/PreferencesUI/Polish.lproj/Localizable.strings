@@ -5,7 +5,7 @@
 /* tabs */
 "General" = "Ogólne";
 "Calendar Options" = "Opcje kalendarza";
-"Contacts Options" = "Contacts Options";
+"Contacts Options" = "Opcje kontaktów";
 "Mail Options" = "Opcje poczty";
 "IMAP Accounts" = "Konta IMAP";
 "Vacation" = "Nieobecność";
@@ -18,7 +18,7 @@
 "Delete" = "Usuń";
 
 /* contacts categories */
-"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
+"contacts_category_labels" = "Kolega, Konkurencja, Klient, Przyjaciel, Rodzina, Biznes, Dostawca, Prasa, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Włącz autoodpowiedź podczas nieobecności";
@@ -141,6 +141,7 @@
 "messageforward_inline" = "w treści";
 "messageforward_attached" = "jako załącznik";
 
+"When replying to a message:" = "Gdy odpowiadam na wiadomość:";
 "replyplacement_above" = "Rozpocznij moją odpowiedź powyżej cytatu";
 "replyplacement_below" = "Rozpocznij moją odpowiedź poniżej cytatu";
 "And place my signature" = "i wstaw mój podpis";
@@ -149,12 +150,17 @@
 "Compose messages in" = "Twórz wiadomości";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "czysty tekst";
+"Display remote inline images" = "Pokazuj podlinkowane zdalne obrazy";
+"displayremoteinlineimages_never" = "Nigdy";
+"displayremoteinlineimages_always" = "Zawsze";
 
 /* IMAP Accounts */
 "New Mail Account" = "Nowe konto";
 
 "Server Name:" = "Nazwa serwera:";
 "Port:" = "Port:";
+"Encryption:" = "Szyfrowanie:";
+"None" = "Brak";
 "User Name:" = "Użytkownik:";
 "Password:" = "Hasło:";
 
@@ -194,10 +200,10 @@
 "Contacts" = "Książka adresowa";
 "Mail" = "Poczta";
 "Last" = "Ostatnio używane";
-"Default module :" = "Tryb domyślny :";
+"Default module :" = "Tryb domyślny:";
 
-"Language :" = "Język :";
-"choose" = "Wybierz ...";
+"Language :" = "Język:";
+"choose" = "Wybierz";
 "Catalan" = "Català";
 "Czech" = "Česky";
 "Danish" = "Dansk (Danmark)";
@@ -211,6 +217,7 @@
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Slovak" = "Slovenská";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
@@ -268,8 +275,8 @@
 "does not contain" = "nie zawiera";
 "matches" = "pasuje do";
 "does not match" = "nie pasuje do";
-"matches regex" = "pasuje do regex";
-"does not match regex" = "nie pasuje do regex";
+"matches regex" = "pasuje do wzorca";
+"does not match regex" = "nie pasuje do wzorca";
 
 "Seen" = "Obejrzane";
 "Deleted" = "Usunięte";

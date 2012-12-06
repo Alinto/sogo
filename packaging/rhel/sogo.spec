@@ -28,6 +28,12 @@ BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{so
 %{?el6:Requires: libcurl}
 %{?el6:BuildRequires: libcurl-devel}
 
+# saml is enabled everywhere except on el5 since its glib2 is prehistoric
+%define saml2_cfg_opts "--enable-saml2"
+%{?el5:%define saml2_cfg_opts ""}
+%{?!el5:Requires: lasso}
+%{?!el5:BuildRequires: lasso-devel}
+
 %description
 SOGo is a groupware server built around OpenGroupware.org (OGo) and
 the SOPE application server.  It focuses on scalability.
@@ -146,7 +152,7 @@ rm -fr ${RPM_BUILD_ROOT}
 # ****************************** build ********************************
 %build
 . /usr/share/GNUstep/Makefiles/GNUstep.sh
-./configure
+./configure %saml2_cfg_opts
 
 case %{_target_platform} in
 ppc64-*) 
@@ -322,6 +328,15 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Mon Nov 12 2012 Jean Raby <jraby@inverse.ca>
+- Add missing dependency on lasso and lasso-devel
+
+* Mon Nov 05 2012 Jean Raby <jraby@inverse.ca>
+- Disable saml2 on rhel5 - glib2 too old
+
+* Fri Nov 02 2012 Jean Raby <jraby@inverse.ca>
+- Enable saml2
+
 * Tue Aug 28 2012 Jean Raby <jraby@inverse.ca>
 - Add openchange_cleanup.py and tweak it to work on RHEL5
 

@@ -141,6 +141,7 @@
 "messageforward_inline" = "In het bericht";
 "messageforward_attached" = "Als bijlage";
 
+"When replying to a message:" = "Bij het beantwoorden van een bericht:";
 "replyplacement_above" = "Reactie boven orginele tekst";
 "replyplacement_below" = "Reactie onder orginele tekst";
 "And place my signature" = "Ondertekening plaatsen";
@@ -149,12 +150,17 @@
 "Compose messages in" = "Berichten opstellen in";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Platte tekst";
+"Display remote inline images" = "Externe afbeeldingen tonen";
+"displayremoteinlineimages_never" = "Nooit";
+"displayremoteinlineimages_always" = "Altijd";
 
 /* IMAP Accounts */
 "New Mail Account" = "Nieuw mailaccount";
 
 "Server Name:" = "Servernaam:";
 "Port:" = "Poort:";
+"Encryption:" = "Encryptie:";
+"None" = "Geen";
 "User Name:" = "Gebruikersnaam:";
 "Password:" = "Wachtwoord:";
 
@@ -211,6 +217,7 @@
 "NorwegianNynorsk" = "Norsk Nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
 "Russian" = "Русский";
+"Slovak" = "Slovensky";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentinië)";
 "Swedish" = "Svenska";

@@ -91,7 +91,7 @@
                              inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* move and copy operations */
-- (void) copyPropertiesToObject: (MAPIStoreObject *) newObject;
+- (void) copyPropertiesToObject: (MAPIStoreObject *) newObject  inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* subclasses */
 - (NSString *) nameInContainer;

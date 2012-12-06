@@ -1986,8 +1986,8 @@ function calendarDisplayCallback(http) {
                              "-",
                              deleteEvent,
                              copyEventToPersonalCalendar,
-			     onMenuRawEvent
-			     );
+                             onMenuRawEvent
+                            );
         var observer;
         if (currentView == 'dayview') {
             observer = $("daysView");
@@ -2169,14 +2169,17 @@ function onHeaderClick(event) {
     Event.stop(event);
 }
 
-function refreshCurrentFolder() {
-    refreshEvents();
+function refreshCurrentFolder(id) {
+    if (id == 'tasks')
+        refreshTasks();
+    else
+        refreshEvents();
 }
 
 /* refreshes the "unifinder" list */
 function refreshEvents() {
     var titleSearch;
-    var value = search["value"];
+    var value = search["events"]["value"];
 
     if (value && value.length)
         titleSearch = "&search=" + escape(value.utf8encode());
@@ -2193,7 +2196,15 @@ function refreshEvents() {
 }
 
 function refreshTasks(setUserDefault) {
+    var titleSearch;
+    var value = search["tasks"]["value"];
     var setud;
+
+    if (value && value.length)
+        titleSearch = "&search=" + escape(value.utf8encode());
+    else
+        titleSearch = "";
+
     /* TODO: the logic behind this should be reimplemented properly:
        the "taskslist" method should save the status when the 'show-completed'
        is set to true and revert to the current status when that parameter is
@@ -2201,10 +2212,13 @@ function refreshTasks(setUserDefault) {
     setud = "";
     if (setUserDefault == 1)
       setud = "&setud=1";
+
     refreshAlarms();
+
     return _loadTasksHref("taskslist?show-completed=" + showCompletedTasks
                           + "&asc=" + sorting["task-ascending"]
-                          + "&sort=" + sorting["task-attribute"]);
+                          + "&sort=" + sorting["task-attribute"]
+                          + titleSearch);
 }
 
 function refreshEventsAndDisplay() {
@@ -2669,7 +2683,7 @@ function onTasksListMenuPrepareVisibility() {
     var options = $(this).down("ul");
     var rawOption = options.down("li", 6);
 
-    var selectedTasks = $$("UL#tasksList LI._selected");
+    var selectedTasks = $$("#tasksList ._selected");
     if (selectedTasks.length == 1)
         rawOption.removeClassName("disabled");
     else
@@ -2700,11 +2714,12 @@ function getMenus() {
                                        onCalendarNew, onCalendarRemove,
                                        "-", onCalendarExport, onCalendarImport,
                                        null, "-", null, "-", onMenuSharing);
-    menus["searchMenu"] = new Array(setSearchCriteria);
+    menus["eventSearchMenu"] = new Array(setSearchCriteria);
 
     menus["tasksListMenu"] = new Array (editEvent, newTask, "-",
                                         marksTasksAsCompleted, deleteEvent, "-",
 					onMenuRawTask);
+    menus["taskSearchMenu"] = new Array(setSearchCriteria);
 
     var calendarsMenu = $("calendarsMenu");
     if (calendarsMenu)
@@ -3239,23 +3254,23 @@ function onWindowResize(event) {
         handle.adjust();
 
     if (!$(document.body).hasClassName("popup"))
-        drawNowLine ();
+        drawNowLine();
 }
 
-function drawNowLine () {
+function drawNowLine() {
   var d = new Date();
   var hours = d.getHours();
   var minutes = d.getMinutes();
 
   if (currentView == "dayview") {
-    var today = new Date ();
-    var m = parseInt(today.getMonth ()) + 1;
-    var d = today.getDate ();
+    var today = new Date();
+    var m = parseInt(today.getMonth()) + 1;
+    var d = today.getDate();
     if (m < 10)
       m = "0" + m;
     if (d < 10)
       d = "0" + d;
-    var day = today.getFullYear () + "" + m + "" + d;
+    var day = today.getFullYear() + "" + m + "" + d;
     var targets = $$("DIV#daysView DIV.days DIV.day[day=" + day
                      + "] DIV.clickableHourCell");
   }
@@ -3268,12 +3283,12 @@ function drawNowLine () {
     if (target) {
       var div = $("nowLineDisplay");
       if (!div)
-        div = new Element ("div", {'id': 'nowLineDisplay'});
+        div = new Element("div", {'id': 'nowLineDisplay'});
 
-      div.style.top = parseInt (((minutes * target.offsetHeight) / 60) - 1) + "px";
-      target.appendChild (div);
+      div.style.top = parseInt(((minutes * target.offsetHeight) / 60) - 1) + "px";
+      target.appendChild(div);
 
-      setTimeout ("drawNowLine ();", 60000); // 1 min.
+      setTimeout("drawNowLine ();", 60000); // 1 min.
     }
   }
 }
@@ -3361,4 +3376,4 @@ function initScheduler() {
     Event.observe(window, "resize", onWindowResize);
 }
 
-document.observe("dom:loaded", initScheduler);
+document.observe("generic:loaded", initScheduler);

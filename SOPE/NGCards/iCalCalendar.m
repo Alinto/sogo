@@ -210,6 +210,13 @@
   return [super versitString];
 }
 
+- (NSArray *) orderOfElements
+{
+  return [NSArray arrayWithObjects: @"prodid", @"version", @"method", @"calscale",
+                  @"vtimezone", @"vevent", @"vtodo", @"vjournal", @"vfreebusy", nil];
+}
+
+
 /* ical typing */
 
 - (NSString *) entityName

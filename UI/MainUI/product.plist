@@ -119,21 +119,41 @@
           pageName = "SOGoRootPage"; 
           actionName = "casProxy";
         };
-        /*	crash = {
-                protectedBy = "<public>";
-                pageName = "SOGoRootPage";
-                actionName = "crash";
-                };
-                exception = {
-                protectedBy = "<public>";
-                pageName = "SOGoRootPage";
-                actionName = "exception";
-                };
-                raisedException = {
-                protectedBy = "<public>";
-                pageName = "SOGoRootPage";
-                actionName = "raisedException";
-                }; */
+        saml2-metadata = {
+          protectedBy = "<public>";
+          actionClass = "SOGoSAML2Actions"; 
+          actionName = "saml2Metadata";
+        };
+        saml2-signon-post = {
+          protectedBy = "<public>";
+          actionClass = "SOGoSAML2Actions"; 
+          actionName = "saml2SignOnPOST";
+        };
+        /*  saml2-signon-redirect = {
+            protectedBy = "<public>";
+            actionClass = "SOGoSAML2Actions"; 
+            actionName = "saml2SignOnRedirect";
+            };
+            saml2-signon-soap = {
+            protectedBy = "<public>";
+            actionClass = "SOGoSAML2Actions"; 
+            actionName = "saml2SignOnSOAP";
+            };
+            crash = {
+            protectedBy = "<public>";
+            pageName = "SOGoRootPage";
+            actionName = "crash";
+            };
+            exception = {
+            protectedBy = "<public>";
+            pageName = "SOGoRootPage";
+            actionName = "exception";
+            };
+            raisedException = {
+            protectedBy = "<public>";
+            pageName = "SOGoRootPage";
+            actionName = "raisedException";
+        }; */
         connect = {
           protectedBy = "<public>";
           pageName = "SOGoRootPage";

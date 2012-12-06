@@ -205,7 +205,7 @@
       mailingMechanism = nil;
     }
 
-  return mailingMechanism;
+  return [mailingMechanism lowercaseString];
 }
 
 - (NSArray *) mailPollingIntervals
@@ -220,7 +220,7 @@
 
 - (NSString *) smtpAuthenticationType
 {
-  return [self stringForKey: @"SOGoSMTPAuthenticationType"];
+  return [[self stringForKey: @"SOGoSMTPAuthenticationType"] lowercaseString];
 }
 
 - (NSString *) mailSpoolPath

@@ -9,7 +9,7 @@
 "Get Mail"    = "E-mail ophalen";
 "Junk"        = "Ongewenst";
 "Reply"       = "Beantwoorden";
-"Reply All"   = "Allen beantwoorden";
+"Reply All"   = "Allen antwoorden";
 "Print"       = "Afdrukken";
 "Stop"        = "Stoppen";
 "Write"       = "Opstellen";
@@ -32,7 +32,7 @@
 "Create a new message" = "Maak een nieuw bericht";
 "Go to address book" = "Ga naar adresboek";
 "Reply to the message" = "Beantwoord het bericht";
-"Reply to sender and all recipients" = "Antwoord naar verzender en alle ontvangers";
+"Reply to sender and all recipients" = "Antwoord aan verzender en alle ontvangers";
 "Forward selected message" = "Geselecteerd bericht doorsturen";
 "Delete selected message or folder" = "Verwijder geselecteerd bericht of map";
 "Mark the selected messages as junk" = "Markeer de geselecteerde berichten als ongewenst";
@@ -210,7 +210,7 @@
 /* Message list popup menu */
 "Open Message In New Window" = "In nieuw venster openen";
 "Reply to Sender Only" = "Beantwoorden";
-"Reply to All" = "Allen beantwoorden";
+"Reply to All" = "Allen antwoorden";
 "Edit As New..." = "Als nieuw bewerken";
 "Move To" = "Verplaatsen naar";
 "Copy To" = "Kopiëren naar";
@@ -248,7 +248,7 @@
 "Enter the new name of your folder :"
  = "Geef de nieuw naam van de map op:";
 "Do you really want to move this folder into the trash ?"
- = "Weet u zeker dat u deze map wilt verplaatsen naar de prullenbak";
+ = "Weet u zeker dat u deze map naar de prullenbak wilt verplaatsen?";
 "Operation failed" = "Bewerking mislukt.";
 
 "Quota" = "Quota:";

@@ -110,6 +110,14 @@
   return nil;
 }
 
+- (NSString *) updateCPathInFolderInfo: (NSString *) tableName
+                            withCPath2: (NSString *) c_path2
+{
+  [self subclassResponsibility: _cmd];
+
+  return nil;
+}
+
 
 @end
 
@@ -203,6 +211,17 @@
     }
 
   return types;
+}
+
+- (NSString *) updateCPathInFolderInfo: (NSString *) tableName
+                            withCPath2: (NSString *) c_path2
+{
+  static NSString *sqlFolderFormat
+    = (@"UPDATE %@"
+       @" SET c_path = '/'||c_path1||'/'||c_path2||'/'||c_path3||'/'||c_path4"
+       @" WHERE c_path2 = '%@'");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName, c_path2];
 }
 
 @end
@@ -299,6 +318,17 @@
   return types;
 }
 
+- (NSString *) updateCPathInFolderInfo: (NSString *) tableName
+                            withCPath2: (NSString *) c_path2
+{
+  static NSString *sqlFolderFormat
+    = (@"UPDATE %@"
+       @" SET c_path = CONCAT('/', c_path1, '/', c_path2, '/', c_path3, '/', c_path4)"
+       @" WHERE c_path2 = '%@'");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName, c_path2];
+}
+
 @end
 
 //
@@ -390,6 +420,17 @@
     }
 
   return types;
+}
+
+- (NSString *) updateCPathInFolderInfo: (NSString *) tableName
+                            withCPath2: (NSString *) c_path2
+{
+  static NSString *sqlFolderFormat
+    = (@"UPDATE %@"
+       @" SET c_path = '/'||c_path1||'/'||c_path2||'/'||c_path3||'/'||c_path4"
+       @" WHERE c_path2 = '%@'");
+
+  return [NSString stringWithFormat: sqlFolderFormat, tableName, c_path2];
 }
 
 @end
