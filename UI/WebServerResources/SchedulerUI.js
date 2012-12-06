@@ -3096,21 +3096,15 @@ function appendStyleElement(folderPath, color) {
         var fgColor = getContrastingTextColor(color);
         var styleElement = document.createElement("style");
         styleElement.type = "text/css";
-        var selectors = [
-                         'DIV.calendarFolder' + folderPath.substr(1),
-                         'LI.calendarFolder' + folderPath.substr(1),
-                         'UL#calendarList DIV.calendarFolder' + folderPath.substr(1)
-                         ];
-        var rules = [
-                     ' { background-color: ' + color + ' !important;' + ' color: ' + fgColor + ' !important; }',
-                     ' { background-color: ' + color + ' !important;' + ' color: ' + fgColor + ' !important; }',
-                     ' { color: ' + color + ' !important; }'
-                     ];
-        for (var i = 0; i < rules.length; i++)
-            if (styleElement.styleSheet && styleElement.styleSheet.addRule)
-                styleElement.styleSheet.addRule(selectors[i], rules[i]); // IE
-            else
-                styleElement.appendChild(document.createTextNode(selectors[i] + rules[i])); // Mozilla + Safari
+
+        var styles = ' .calendarFolder' + folderPath.substr(1)
+            + ' { background-color: ' + color + ' !important;' + ' color: ' + fgColor + ' !important; }'
+            + ' div.colorBox.calendarFolder' + folderPath.substr(1)
+            + ' { color: ' + color + ' !important; }';
+
+        if (styleElement.styleSheet) styleElement.styleSheet.cssText = styles; // IE
+        else styleElement.appendChild(document.createTextNode(styles));        // Mozilla + Webkit
+
         document.getElementsByTagName("head")[0].appendChild(styleElement);
     }
 }
