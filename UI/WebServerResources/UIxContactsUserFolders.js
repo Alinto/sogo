@@ -1,7 +1,7 @@
 var d;
 
-function onSearchFormSubmit() {
-    var searchValue = $("searchValue");
+function onSearchFormSubmit(filterPanel) {
+    var searchValue = filterPanel.down('[name="search"]');
     var encodedValue = encodeURI(searchValue.value);
 
     if (encodedValue.blank()) {
@@ -15,7 +15,7 @@ function onSearchFormSubmit() {
             document.userFoldersRequest.abort();
         }
 	if (encodedValue.trim().length > minimumSearchLength) {
-	    startAnimation($("pageContent"), $("filterPanel"));
+	    startAnimation($("pageContent"), filterPanel);
             document.userFoldersRequest
                 = triggerAjaxRequest(url, usersSearchCallback);
 	}
@@ -93,14 +93,14 @@ function buildUsersTree(treeDiv, response) {
         for (var i = 0; i < response.length; i++) {
             if (!isUserDialog) {
                 var toggle = $("tgd" + (1 + i * 2));
-                toggle.observe ("click", onUserNodeToggle);
+                toggle.on("click", onUserNodeToggle);
             }
             var sd = $("sd" + (1 + i * multiplier));
-            sd.observe("click", onTreeItemClick);
+            sd.on("click", onTreeItemClick);
         }
     }
     else {
-        $("searchValue").addClassName("notfound");
+        $$('[name="searchValue"]').first().addClassName("notfound");
     }
 }
 
@@ -160,14 +160,14 @@ function foldersSearchCallback(http) {
             //dd.update(str);
             for (var i = 1; i < folders.length; i++) {
                 var sd = $("sd" + (nodeId + i));
-                sd.observe("click", onTreeItemClick);
+                sd.on("click", onTreeItemClick);
             }
         }
         else {
             dd.innerHTML = '';
             dd.appendChild(addFolderNotFoundNode (d, nodeId, null));
             var sd = $("sd" + (nodeId + 1));
-            sd.observe("click", onTreeItemClick);
+            sd.on("click", onTreeItemClick);
         }
 
         d.aIndent.pop();
@@ -241,7 +241,7 @@ function onConfirmFolderSelection(event) {
 function onFolderSearchKeyDown(event) {
     if (event.keyCode == Event.KEY_BACKSPACE
         || IsCharacterKey(event.keyCode)) {
-        $("searchValue").removeClassName("notfound");
+        $(this).removeClassName("notfound");
         var div = $("folders");
         if (!div.clean) {
             var oldD = $("d"); // the folders tree
@@ -256,11 +256,11 @@ function onFolderSearchKeyDown(event) {
 }
 
 function initUserFoldersWindow() {
-    var searchValue = $("searchValue");
-    searchValue.observe("keydown", onFolderSearchKeyDown);
+    var searchValue = $$('[name="search"]').first();
+    searchValue.on("keydown", onFolderSearchKeyDown);
 
-    $("addButton").observe("click", onConfirmFolderSelection);
-    $("doneButton").observe("click", onCloseButtonClick);
+    $("addButton").on("click", onConfirmFolderSelection);
+    $("doneButton").on("click", onCloseButtonClick);
 
     searchValue.focus();
 }
