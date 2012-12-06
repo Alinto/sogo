@@ -5,12 +5,15 @@ New features
  - support for SAML2 for single sign-on, with the help of the lasso library
  - added support for the "AUTHENTICATE" command and SASL mechanisms
  - added domain default SieveHostFieldName
+ - added a search field for tasks
 
 Enhancements
  - search the contacts for the organization attribute
  - in HTML mode, optionally place answer after the quoted text
  - improved memory usage of "sogo-tool restore"
  - added Slovak translation - thanks to Martin Pastor
+ - fixed invitations status in OSX iCal.app/Calendar.app (cleanup RSVP attribute)
+ - now uses "imap4flags" instead of the deprecated "imapflags"
 
 Bug fixes
  - fixed LDIF import with categories
@@ -23,6 +26,8 @@ Bug fixes
  - fixed JavaScript syntax for IE7
  - fixed all-day event display in day/week view
  - fixed parsing of alarm
+ - fixed Sieve server URL fallback
+ - fixed Debian cronjob (spool directory cleanup)
 
 2.0.2a (2012-11-15)
 -------------------
