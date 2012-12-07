@@ -786,6 +786,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                               withNewName: (NSString *) newFolderName
                                    isMove: (BOOL) isMove
                               isRecursive: (BOOL) isRecursive
+                                 inMemCtx: (TALLOC_CTX *) memCtx
+
 {
   enum mapistore_error rc;
   NSAutoreleasePool *pool;
@@ -798,9 +800,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSUInteger count, max;
   NSString *childKey;
   uint64_t fmid;
-  TALLOC_CTX *memCtx;
+  //TALLOC_CTX *memCtx;
 
-  memCtx = talloc_zero (NULL, TALLOC_CTX);
+  //memCtx = talloc_zero (NULL, TALLOC_CTX);
 
   /* TODO: one possible issue with this algorithm is that moved messages will
      lack a version number and will all be assigned a new one, even though
@@ -878,7 +880,9 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                   subFolder = [self lookupFolder: childKey];
                   [subFolder moveCopyToFolder: newFolder withNewName: nil
                                        isMove: isMove
-                                  isRecursive: isRecursive];
+                                  isRecursive: isRecursive
+                                     inMemCtx: memCtx];
+
                 }
               [pool release];
             }
@@ -898,7 +902,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   else
     rc = MAPISTORE_ERR_DENIED;
 
-  talloc_free (memCtx);
+  //talloc_free (memCtx);
 
   return rc;
 }

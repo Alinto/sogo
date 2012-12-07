@@ -1055,6 +1055,7 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                               withNewName: (NSString *) newFolderName
                                    isMove: (BOOL) isMove
                               isRecursive: (BOOL) isRecursive
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
   NSURL *folderURL, *newFolderURL;
@@ -1150,7 +1151,8 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
                               moveCopyToFolder: newFolder
                                    withNewName: nil
                                         isMove: NO
-                                   isRecursive: YES];
+                                   isRecursive: YES
+                                      inMemCtx: memCtx];
                         }
                     }
                 }
@@ -1163,7 +1165,8 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
   else
     rc = [super moveCopyToFolder: targetFolder withNewName: newFolderName
                           isMove: isMove
-                     isRecursive: isRecursive];
+                     isRecursive: isRecursive
+                        inMemCtx: memCtx];
 
   return rc;
 }
