@@ -8,7 +8,7 @@
   xmlns:label="OGo:label">
 
 <var:if condition="isSubject">
-    <var:string value="currentUserName" const:escapeHTML="NO"/> a modifié les droits
+    <var:string value="currentUserName" const:escapeHTML="NO"/> vous a ajouté
 </var:if>
 
 <var:if condition="isBody">
