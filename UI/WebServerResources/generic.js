@@ -1183,7 +1183,8 @@ function onSearchFormSubmit(filterPanel) {
     if (searchValue.value != searchValue.ghostPhrase
         && (searchValue.value != searchValue.lastSearch
             && (searchValue.value.strip().length > minimumSearchLength
-                || searchValue.value.strip() == "." ))) {
+                || searchValue.value.strip() == "."
+                || searchValue.value.length == 0))) {
         search[id]["criteria"] = searchCriteria.value;
         search[id]["value"] = searchValue.value;
         searchValue.lastSearch = searchValue.value;

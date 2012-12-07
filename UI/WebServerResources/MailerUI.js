@@ -623,7 +623,7 @@ function onMailboxTreeItemClick(event) {
     topNode.selectedEntry = this;
 
     search = {};
-    $("searchValue").value = "";
+    $$('[name="search"]').first().value = "";
     initCriteria();
 
     Mailer.currentMailboxType = this.parentNode.getAttribute("datatype");
