@@ -75,7 +75,7 @@ if ( $plugin ) {
             <em:version><?php echo $plugin["version"] ?></em:version>
             <em:targetApplication>
               <Description><?php echo $applications[$plugin["application"]] ?>
-		<em:updateLink>http://inverse.ca/downloads/extensions/<?php echo $plugin["filename"] ?></em:updateLink>
+		<em:updateLink><?php echo dirname(getenv('SCRIPT_URI')) . '/' . $plugin["filename"] ?></em:updateLink>
 	      </Description>
             </em:targetApplication>
           </Description>
