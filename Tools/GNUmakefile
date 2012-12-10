@@ -12,14 +12,15 @@ $(SOGO_TOOL)_OBJC_FILES += \
 	\
 	SOGoTool.m \
 	SOGoToolBackup.m \
-	SOGoToolRestore.m \
 	SOGoToolCheckDoubles.m \
-	SOGoToolRemoveDoubles.m \
-	SOGoToolRemove.m \
-	SOGoToolRenameUser.m \
-	SOGoToolUserPreferences.m \
+	SOGoToolDumpDefaults.m \
 	SOGoToolExpireAutoReply.m \
-	SOGoToolExpireUserSessions.m
+	SOGoToolExpireUserSessions.m \
+	SOGoToolRemove.m \
+	SOGoToolRemoveDoubles.m \
+	SOGoToolRenameUser.m \
+	SOGoToolRestore.m \
+	SOGoToolUserPreferences.m
 TOOL_NAME += $(SOGO_TOOL)
 
 ###
