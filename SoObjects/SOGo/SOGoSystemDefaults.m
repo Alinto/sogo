@@ -87,20 +87,19 @@ static void
 _injectConfigurationFromFile (NSUserDefaults *ud,
                               NSString *filename, NSObject *logger)
 {
-  NSDictionary *newConfig,*fileAttrs;
-  NSError *fmError = nil;
+  NSDictionary *newConfig, *fileAttrs;
   NSFileManager *fm;
 
   fm = [NSFileManager defaultManager];
   if ([fm fileExistsAtPath: filename])
     {
-      fileAttrs = [fm attributesOfItemAtPath: filename
-                                       error: &fmError];
+      fileAttrs = [fm fileAttributesAtPath: filename
+                                       traverseLink: YES];
       if (![fileAttrs objectForKey: @"NSFileSize"])
         {
           [logger errorWithFormat:
-	          @"Can't get file attributes from '%@': %@",
-		  filename, [fmError description]];
+	          @"Can't get file attributes from '%@'",
+		  filename];
           exit(1);
 	}
       if ([[fileAttrs objectForKey: @"NSFileSize"] intValue] == 0 )
