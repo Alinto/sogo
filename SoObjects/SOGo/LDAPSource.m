@@ -440,6 +440,7 @@ static Class NSStringK;
     {
       [self errorWithFormat: @"Could not bind to the LDAP server %@ (%d) "
                              @"using the bind DN: %@", hostname, port, bindDN];
+      [self errorWithFormat: @"%@", localException];
       ldapConnection = nil;
     }
   NS_ENDHANDLER;
@@ -521,60 +522,61 @@ static Class NSStringK;
 
   didBind = NO;
 
-  if ([_login length] > 0 && [_pwd length] > 0)
-    {
-      bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
+  NS_DURING
+    if ([_login length] > 0 && [_pwd length] > 0)
+      {
+        bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
                                                              port: port];
-      if (![encryption length] || [self _setupEncryption: bindConnection])
-        {
-          if (queryTimeout > 0)
-            [bindConnection setQueryTimeLimit: queryTimeout];
+        if (![encryption length] || [self _setupEncryption: bindConnection])
+          {
+            if (queryTimeout > 0)
+              [bindConnection setQueryTimeLimit: queryTimeout];
 
-          userDN = [_dnCache objectForKey: _login];
+            userDN = [_dnCache objectForKey: _login];
 
-          if (!userDN)
-            {
-              if (bindFields)
-                {
-                  // We MUST always use the source's bindDN/password in
-                  // order to lookup the user's DN. This is important since
-                  // if we use bindAsCurrentUser, we could stay bound and
-                  // lookup the user's DN (for an other user that is trying
-                  // to log in) but not be able to do so due to ACLs in LDAP.
-                  [self setBindDN: sourceBindDN];
-                  [self setBindPassword: sourceBindPassword];
-                  userDN = [self _fetchUserDNForLogin: _login];
-                }
-              else
-                userDN = [NSString stringWithFormat: @"%@=%@,%@",
+            if (!userDN)
+              {
+                if (bindFields)
+                  {
+                    // We MUST always use the source's bindDN/password in
+                    // order to lookup the user's DN. This is important since
+                    // if we use bindAsCurrentUser, we could stay bound and
+                    // lookup the user's DN (for an other user that is trying
+                    // to log in) but not be able to do so due to ACLs in LDAP.
+                    [self setBindDN: sourceBindDN];
+                    [self setBindPassword: sourceBindPassword];
+                    userDN = [self _fetchUserDNForLogin: _login];
+                  }
+                else
+                  userDN = [NSString stringWithFormat: @"%@=%@,%@",
                                    IDField, [_login escapedForLDAPDN], baseDN];
-            }
+              }
 
-          if (userDN)
-            {
-              // We cache the _login <-> userDN entry to speed up things
-              [_dnCache setObject: userDN  forKey: _login];
-
-              NS_DURING
+            if (userDN)
+              {
+                // We cache the _login <-> userDN entry to speed up things
+                [_dnCache setObject: userDN  forKey: _login];
+  
                 if (!passwordPolicy)
                   didBind = [bindConnection bindWithMethod: @"simple"
-                    binddn: userDN
-                    credentials: _pwd];
+                                                    binddn: userDN
+                                               credentials: _pwd];
                 else  
                   didBind = [bindConnection bindWithMethod: @"simple"
-                    binddn: userDN
-                    credentials: _pwd
-                    perr: (void *)_perr
-                    expire: _expire
-                    grace: _grace];
-              NS_HANDLER
-                ;
-              NS_ENDHANDLER
-                ;
-            }
-        }
-      [bindConnection release];
+                                                    binddn: userDN
+                                               credentials: _pwd
+                                                      perr: (void *)_perr
+                                                    expire: _expire
+                                                     grace: _grace];
+              }
+          }
+        [bindConnection release];
+      }
+  NS_HANDLER
+    {
+      [self logWithFormat: @"%@", localException];
     }
+  NS_ENDHANDLER;
   
   return didBind;
 }
@@ -614,22 +616,22 @@ static Class NSStringK;
 
   didChange = NO;
 
-  if ([login length] > 0)
-    {
-      bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
+  NS_DURING
+    if ([login length] > 0)
+      {
+        bindConnection = [[NGLdapConnection alloc] initWithHostName: hostname
                                                              port: port];
-      if (![encryption length] || [self _setupEncryption: bindConnection])
-        {
-          if (queryTimeout > 0)
-            [bindConnection setQueryTimeLimit: queryTimeout];
-          if (bindFields)
-            userDN = [self _fetchUserDNForLogin: login];
-          else
-            userDN = [NSString stringWithFormat: @"%@=%@,%@",
-                   IDField, [login escapedForLDAPDN], baseDN];
-          if (userDN)
-            {
-              NS_DURING
+        if (![encryption length] || [self _setupEncryption: bindConnection])
+          {
+            if (queryTimeout > 0)
+              [bindConnection setQueryTimeLimit: queryTimeout];
+            if (bindFields)
+              userDN = [self _fetchUserDNForLogin: login];
+            else
+              userDN = [NSString stringWithFormat: @"%@=%@,%@",
+                     IDField, [login escapedForLDAPDN], baseDN];
+            if (userDN)
+              {
                 if (!passwordPolicy)
                   {
                     // We don't use a password policy - we simply use
@@ -671,14 +673,15 @@ static Class NSStringK;
                                                      oldPassword: oldPassword
                                                      newPassword: newPassword
                                                             perr: (void *)perr];
-              NS_HANDLER
-                ;
-              NS_ENDHANDLER
-                ;
-            }
-        }
-      [bindConnection release];
+              }
+          }
+        [bindConnection release];
+      }
+  NS_HANDLER
+    {
+      [self logWithFormat: @"%@", localException];
     }
+  NS_ENDHANDLER ;
   
   return didChange;
 }
