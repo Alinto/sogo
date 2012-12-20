@@ -5,7 +5,7 @@ New features
  - sogo-tool: new "dump-defaults" command
 
 Enhancements
- - 
+ - Added basic support for ldap URL in user sources
 
 Bug fixes
  - fixed French templates encoding
