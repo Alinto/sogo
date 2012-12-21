@@ -67,7 +67,7 @@ static NSString *mailETag = nil;
 
 + (void) initialize
 {
-  mailETag = [[NSString alloc] initWithFormat:@"\"imap4url_%d_%d_%03d\"",
+  mailETag = [[NSString alloc] initWithFormat:@"\"imap4url_%@_%@_%@\"",
                                SOGO_MAJOR_VERSION,
                                SOGO_MINOR_VERSION,
                                SOGO_SUBMINOR_VERSION];
