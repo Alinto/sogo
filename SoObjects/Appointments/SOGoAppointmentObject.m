@@ -1374,7 +1374,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               // Web interface. Over DAV, it'll be handled directly in
               // PUTAction:
               if (![context request] || [[context request] handledByDefaultHandler])
-                ex = [self saveContentString: [calendar versitString]];
+                ex = [self saveContentString: [[event parent] versitString]];
             }
         }
       else
