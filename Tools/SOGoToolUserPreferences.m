@@ -63,12 +63,12 @@ typedef enum
 - (void) usage
 {
   fprintf (stderr, "user-preferences get|set|unset defaults|settings user [authname:authpassword] key [value|-f filename]\n\n"
-	   "       user       the user of whom to set the defaults/settings key/value\n"
-	   "       value      the JSON-formatted value of the key\n\n"
-	   "  Examples:\n"
-           "       sogo-tool user-preferences get defaults janedoe SOGoLanguage\n"
-           "       sogo-tool user-preferences unset settings janedoe Mail\n"
-           "       sogo-tool user-preferences set defaults janedoe SOGoTimeFormat '{\"SOGoTimeFormat\":\"%%I:%%M %%p\"}'\n");
+      "       user       the user of whom to set the defaults/settings key/value\n"
+      "       value      the JSON-formatted value of the key\n\n"
+      "  Examples:\n"
+      "       sogo-tool user-preferences get defaults janedoe SOGoLanguage\n"
+      "       sogo-tool user-preferences unset settings janedoe Mail\n"
+      "       sogo-tool user-preferences set defaults janedoe SOGoTimeFormat '{\"SOGoTimeFormat\":\"%%I:%%M %%p\"}'\n");
 }
 
 //
@@ -79,11 +79,12 @@ typedef enum
   if ([theString length] > 2)
     {
       if ([theString caseInsensitiveCompare: @"get"] == NSOrderedSame)
-	return UserPreferencesGet;
+        return UserPreferencesGet;
       else if  ([theString caseInsensitiveCompare: @"set"] == NSOrderedSame)
-	return UserPreferencesSet;
+        return UserPreferencesSet;
       else if ([theString caseInsensitiveCompare: @"unset"] == NSOrderedSame)
-	return UserPreferencesUnset;    }
+        return UserPreferencesUnset;
+    }
 
   return UserPreferencesUnknown;
 }
@@ -96,29 +97,28 @@ typedef enum
 //
 - (BOOL) _updateSieveScripsForkey: (NSString *) theKey
                           manager: (SOGoSieveManager *) theManager
-			    login: (NSString *) theLogin
-			 authname: (NSString *) theAuthName
-			 password: (NSString *) thePassword
+                            login: (NSString *) theLogin
+                         authname: (NSString *) theAuthName
+                         password: (NSString *) thePassword
 {
   if ([theKey caseInsensitiveCompare: @"Forward"] == NSOrderedSame ||
       [theKey caseInsensitiveCompare: @"SOGoSieveFilters"] == NSOrderedSame ||
       [theKey caseInsensitiveCompare: @"Vacation"] == NSOrderedSame)
     {
       if ([theAuthName length] == 0 || [thePassword length] == 0)
-	{
-	  NSLog(@"To update Sieve scripts, you must provide the \"authname:password\" parameter");
-	  return NO;
-	}
+        {
+          NSLog(@"To update Sieve scripts, you must provide the \"authname:password\" parameter");
+          return NO;
+        }
       
       return [theManager updateFiltersForLogin: theLogin
-			 authname: theAuthName
-			 password: thePassword
-			 account: nil];
+                                      authname: theAuthName
+                                      password: thePassword
+                                       account: nil];
     }
   
   return YES;
 }
-		       
 
 
 - (BOOL) run
@@ -143,43 +143,43 @@ typedef enum
       cmd = [self _cmdFromString: [arguments objectAtIndex: 0]];
 
       if (cmd != UserPreferencesUnknown)
-	{
-	  type = [arguments objectAtIndex: 1];
-	  userId = [arguments objectAtIndex: 2];
-	  key = [arguments objectAtIndex: 3];
+        {
+          type = [arguments objectAtIndex: 1];
+          userId = [arguments objectAtIndex: 2];
+          key = [arguments objectAtIndex: 3];
 
-	  user = [SOGoUser userWithLogin: userId];
-	  manager = [SOGoSieveManager sieveManagerForUser: user];
+          user = [SOGoUser userWithLogin: userId];
+          manager = [SOGoSieveManager sieveManagerForUser: user];
 
-	  if ([type caseInsensitiveCompare: @"defaults"] == NSOrderedSame)
-	    source = [user userDefaults];
-	  else
-	    source = [user userSettings];
+          if ([type caseInsensitiveCompare: @"defaults"] == NSOrderedSame)
+            source = [user userDefaults];
+          else
+            source = [user userSettings];
 
-	  if (cmd == UserPreferencesGet)
-	    {
-	      o = [source objectForKey: key];
+          if (cmd == UserPreferencesGet)
+            {
+              o = [source objectForKey: key];
 
-	      if (o)
-		printf("%s: %s\n", [key UTF8String], [[o jsonRepresentation] UTF8String]);
-	      else
-		NSLog(@"Value for key \"%@\" not found in %@", key, type);
+              if (o)
+                printf("%s: %s\n", [key UTF8String], [[o jsonRepresentation] UTF8String]);
+              else
+                NSLog(@"Value for key \"%@\" not found in %@", key, type);
 
-	      rc = YES;
-	    }
-	  else
-	    {
-	      NSString *authname, *authpwd, *value;
+              rc = YES;
+            }
+          else
+            {
+              NSString *authname, *authpwd, *value;
               NSData *data;
               int i;
-              
-	      authname = @"";
-	      authpwd = @"";
-	      value = @"";
- 
-	      if (max > 4)
-		{
-		  r = [[arguments objectAtIndex: 3] rangeOfString: @":"];
+
+              authname = @"";
+              authpwd = @"";
+              value = @"";
+
+              if (max > 4)
+                {
+                  r = [[arguments objectAtIndex: 3] rangeOfString: @":"];
                   if (r.location == NSNotFound)
                     {
                       i = 3;
@@ -193,7 +193,7 @@ typedef enum
 
                   key = [arguments objectAtIndex: i++];
 
-		  if (max > i)
+                  if (max > i)
                     {
                       value = [arguments objectAtIndex: i++];
                       if ([value caseInsensitiveCompare: @"-f"] == NSOrderedSame)
@@ -206,62 +206,62 @@ typedef enum
                             }
                         }
                     }
-		}
-	      else
-		{
-		  if (cmd == UserPreferencesUnset)
-		    {
-		      key = [arguments objectAtIndex: 3];
-		    }
-		  else
-		    {
-		      key = [arguments objectAtIndex: 3];
-		      value = [arguments objectAtIndex: 4];
-		    }
-		}
-	      
-	      if (cmd == UserPreferencesUnset)
-		[source removeObjectForKey: key];
-	      else
-		{
-		  o = [value objectFromJSONString];
-		  
-		  //
-		  // We support setting only "values" - for example, setting :
-		  //
-		  // SOGoDayStartTime to 9:00
-		  //
-		  // Values in JSON must be a dictionary so we must support passing:
-		  // 
-		  // key == SOGoDayStartTime
-		  // value == '{"SOGoDayStartTime":  "09:00"}'
-		  //
-		  // to achieve what we want.
-		  //
-		  if (o && [o count] == 1)
-		    {
-		      [source setObject: [[o allValues] lastObject] forKey: key];
-		    }
-		  //
-		  // We also support passing values that are already dictionaries so in this
-		  // case, we simply set it to the passed key.
-		  //
-		  else if (o)
-		    {
-		      [source setObject: o  forKey: key];
-		    }
-		  else
-		    NSLog(@"Invalid JSON input - no changes performed in the database. The supplied value was: %@", value);
-		}
-		  
-	      [source synchronize];
-	      rc = [self _updateSieveScripsForkey: key
-			 manager: manager
-			 login: userId
-			 authname: authname
-			 password: authpwd];
-	    }
-	}
+                }
+              else
+                {
+                  if (cmd == UserPreferencesUnset)
+                    {
+                      key = [arguments objectAtIndex: 3];
+                    }
+                  else
+                    {
+                      key = [arguments objectAtIndex: 3];
+                      value = [arguments objectAtIndex: 4];
+                    }
+                }
+
+              if (cmd == UserPreferencesUnset)
+                [source removeObjectForKey: key];
+              else
+                {
+                  o = [value objectFromJSONString];
+
+                  //
+                  // We support setting only "values" - for example, setting :
+                  //
+                  // SOGoDayStartTime to 9:00
+                  //
+                  // Values in JSON must be a dictionary so we must support passing:
+                  // 
+                  // key == SOGoDayStartTime
+                  // value == '{"SOGoDayStartTime":  "09:00"}'
+                  //
+                  // to achieve what we want.
+                  //
+                  if (o && [o count] == 1)
+                    {
+                      [source setObject: [[o allValues] lastObject] forKey: key];
+                    }
+                  //
+                  // We also support passing values that are already dictionaries so in this
+                  // case, we simply set it to the passed key.
+                  //
+                  else if (o)
+                    {
+                      [source setObject: o  forKey: key];
+                    }
+                  else
+                    NSLog(@"Invalid JSON input - no changes performed in the database. The supplied value was: %@", value);
+                }
+
+              [source synchronize];
+              rc = [self _updateSieveScripsForkey: key
+                                          manager: manager
+                                            login: userId
+                                         authname: authname
+                                         password: authpwd];
+            }
+        }
     }
 
   if (!rc)
