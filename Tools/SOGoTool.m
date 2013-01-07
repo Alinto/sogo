@@ -21,7 +21,9 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import "SOGoTool.h"
 
@@ -49,6 +51,7 @@
   [instance autorelease];
 
   [instance setArguments: toolArguments];
+  [instance setSanitizedArguments: toolArguments];
   [instance setVerbose: isVerbose];
 
   return [instance run];
@@ -59,6 +62,7 @@
   if ((self = [super init]))
     {
       arguments = nil;
+      sanitizedArguments = nil;
       verbose = NO;
     }
 
@@ -68,6 +72,44 @@
 - (void) setArguments: (NSArray *) newArguments
 {
   ASSIGN (arguments, newArguments);
+}
+
+- (void) setSanitizedArguments: (NSArray *) newArguments
+{
+  NSCharacterSet *whitespaces = [NSCharacterSet whitespaceCharacterSet];
+  NSString *argsString = [newArguments componentsJoinedByString:@" "];
+  NSDictionary   *cliArguments;
+
+  /* Remove NSArgumentDomain -key value from the arguments */
+  cliArguments = [[NSUserDefaults standardUserDefaults]
+                                 volatileDomainForName:NSArgumentDomain];
+  for (NSString *k in cliArguments)
+    {
+      NSString *v = [cliArguments objectForKey:k];
+      NSString *argPair = [NSString stringWithFormat:@"-%@ %@", k, v];
+      argsString = [argsString stringByReplacingOccurrencesOfString: argPair
+                                                         withString: @""];
+    }
+  if ([argsString length])
+    {
+      /* dance to compact whitespace */
+      NSArray *wordsWP = [argsString componentsSeparatedByCharactersInSet: whitespaces];
+      NSMutableArray *words = [NSMutableArray array];
+      for (NSString *word in wordsWP)
+        {
+          if([word length] > 1) 
+            {
+              [words addObject:word];
+            }
+        }
+      argsString = [words componentsJoinedByString:@" "];
+      ASSIGN (sanitizedArguments, [argsString componentsSeparatedByString:@" "]);
+    }
+  else
+    {
+      ASSIGN (sanitizedArguments, nil);
+    }
+
 }
 
 - (void) setVerbose: (BOOL) newVerbose
