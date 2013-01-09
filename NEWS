@@ -9,6 +9,7 @@ Enhancements
 
 Bug fixes
  - fixed French templates encoding
+ - fixed CardDAV collections for OS X
 
 2.0.3 (2012-12-06)
 ------------------
