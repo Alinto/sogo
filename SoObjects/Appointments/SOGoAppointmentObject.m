@@ -534,7 +534,10 @@
 		  // overlapping events
 		  if ([user numberOfSimultaneousBookings] == 0 ||
 		      [user numberOfSimultaneousBookings] > [fbInfo count])
-		    [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+                    {
+                      [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
+                      [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+                    }
 		  else
 		    {
 		      iCalCalendar *calendar;
@@ -564,6 +567,7 @@
 		  // No conflict, we auto-accept. We do this for resources automatically if no
 		  // double-booking is observed. If it's not the desired behavior, just don't
 		  // set the resource as one!
+                  [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
 		  [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
 		}
   	    }
