@@ -10,7 +10,8 @@
   className="UIxPageFrame"
   const:toolbar="none"
   const:popup="YES"
-  const:jsFiles="skycalendar.js">
+  const:cssFiles="datepicker.css"
+  const:jsFiles="datepicker.js">
 
   <script type="text/javascript">
     var dayFieldInvalid = '<var:string label:value="dayFieldInvalid"/>';

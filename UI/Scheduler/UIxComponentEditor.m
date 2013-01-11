@@ -1917,10 +1917,20 @@ RANGE(2);
   else if (range == 2)
     {
       NSCalendarDate *date;
+      SOGoUserDefaults *ud;
 
       date = [NSCalendarDate dateWithString: [self range2]
 			     calendarFormat: dateFormat
                                      locale: locale];
+
+      // Adjust timezone
+      ud = [[context activeUser] userDefaults];
+      date = [NSCalendarDate dateWithYear: [date yearOfCommonEra]
+                                    month: [date monthOfYear]
+                                      day: [date dayOfYear]
+                                     hour: 0 minute: 0 second: 0
+                                 timeZone: [ud timeZone]];
+
       [theRule setUntilDate: date];
     }
   // No end date.

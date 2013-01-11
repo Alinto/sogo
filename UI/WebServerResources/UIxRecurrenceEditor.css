@@ -20,7 +20,7 @@ DIV#windowButtons
 DIV#pageContent
 { padding: 1em; }
 
-TABLE TH
+TABLE.frame TH
 { font-weight: normal;
   text-align: right;
   width: 5em; }
