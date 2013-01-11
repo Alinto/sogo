@@ -5,11 +5,14 @@ New features
  - sogo-tool: new "dump-defaults" command
 
 Enhancements
- - Added basic support for ldap URL in user sources
+ - added basic support for LDAP URL in user sources
+ - renamed default SOGoForceIMAPLoginWithEmail to
+   SOGoForceExternalLoginWithEmail and extended it to SMTP authentication
 
 Bug fixes
  - fixed French templates encoding
  - fixed CardDAV collections for OS X
+ - fixed event recurrence editor (until date)
 
 2.0.3 (2012-12-06)
 ------------------
