@@ -232,3 +232,22 @@ BODY.popup DIV.dialog.none
 .safetyBlock
 {  background-color: #fff;
    filter: alpha(opacity=0); }
+
+/* datepicker pseudo-elements fix for IE7 */
+.datepicker .prev,
+.datepicker .next {
+    *zoom: expression(
+          this.runtimeStyle.zoom="1",
+          this.appendChild( document.createElement("small") ).className="ie-after"
+         );
+}
+.datepicker .prev .ie-after {
+    zoom: expression(
+        this.runtimeStyle['zoom'] = '1',
+        this.innerHTML = '«');
+}
+.datepicker .next .ie-after {
+    zoom: expression(
+        this.runtimeStyle['zoom'] = '1',
+        this.innerHTML = '»');
+}
