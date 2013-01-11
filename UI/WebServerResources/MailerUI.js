@@ -1591,7 +1591,8 @@ function loadRemoteImages() {
     content.hiddenObjects = null;
 
     var loadImagesButton = $("loadImagesButton");
-    loadImagesButton.setStyle({ display: 'none' });
+    if (loadImagesButton)
+        loadImagesButton.setStyle({ display: 'none' });
 }
 
 function onEmailAddressClick(event) {
