@@ -10,9 +10,13 @@ Enhancements
    SOGoForceExternalLoginWithEmail and extended it to SMTP authentication
 
 Bug fixes
+ - fixed usage of browser's language for the login page
+ - fixed partstat of attendee in her/his calendar
  - fixed French templates encoding
  - fixed CardDAV collections for OS X
  - fixed event recurrence editor (until date)
+ - fixed column display for subfolders of draft & sent
+ - improved IE7 support
 
 2.0.3 (2012-12-06)
 ------------------
