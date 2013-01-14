@@ -22,6 +22,7 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 
@@ -76,15 +77,21 @@
 
 - (void) setSanitizedArguments: (NSArray *) newArguments
 {
-  NSCharacterSet *whitespaces = [NSCharacterSet whitespaceCharacterSet];
   NSString *argsString = [newArguments componentsJoinedByString:@" "];
   NSDictionary   *cliArguments;
+  NSArray *keys;
+
+  int i;
+
+  argsString = [newArguments componentsJoinedByString:@" "];
 
   /* Remove NSArgumentDomain -key value from the arguments */
   cliArguments = [[NSUserDefaults standardUserDefaults]
                                  volatileDomainForName:NSArgumentDomain];
-  for (NSString *k in cliArguments)
+  keys = [cliArguments allKeys];
+  for (i=0; i < [keys count]; i++)
     {
+      NSString *k = [keys objectAtIndex: i];
       NSString *v = [cliArguments objectForKey:k];
       NSString *argPair = [NSString stringWithFormat:@"-%@ %@", k, v];
       argsString = [argsString stringByReplacingOccurrencesOfString: argPair
@@ -93,7 +100,8 @@
   if ([argsString length])
     {
       /* dance to compact whitespace */
-      NSArray *wordsWP = [argsString componentsSeparatedByCharactersInSet: whitespaces];
+      NSArray *wordsWP = [argsString componentsSeparatedByCharactersInSet:
+                                       [NSCharacterSet whitespaceCharacterSet]];
       NSMutableArray *words = [NSMutableArray array];
       for (NSString *word in wordsWP)
         {
@@ -107,7 +115,7 @@
     }
   else
     {
-      ASSIGN (sanitizedArguments, nil);
+      DESTROY(sanitizedArguments);
     }
 
 }
@@ -120,6 +128,7 @@
 - (void) dealloc
 {
   [arguments release];
+  [sanitizedArguments release];
   [super dealloc];
 }
 
