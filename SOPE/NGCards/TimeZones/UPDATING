@@ -1,19 +1,22 @@
 To updated the timezone files:
 
 1- get the vzic or tzurl tool from http://code.google.com/p/tzurl/source/checkout and compile it
+   (update the Makefile to use PRODUCT_ID = -//Inverse inc.//NONSGML Olson 2012j//EN)
 
 2- get the zone files, for example:
   
   mkdir /tmp/zones
   cd /tmp/zones
-  wget ftp://munnari.oz.au/pub/oldtz/tzdata2011n.tar.gz
-  tar -zxvf tzdata2011n.tar.gz
+  wget ftp://munnari.oz.au/pub/oldtz/tzdata2012j.tar.gz
+  tar -zxvf tzdata2012j.tar.gz
 
-3- run the conversion tool and adjust the PRODID
+3- run the conversion tool
 
-  vzic --pure --olson-dir /tmp/zones/ --output-dir SOGo/SOPE/NGCards/TimeZones/
+  vzic --olson-dir /tmp/zones/ --output-dir SOGo/SOPE/NGCards/TimeZones/
   cd SOGo/SOPE/NGCards/TimeZones/
   rm -f zones.h zones.tab
+
+4- if necessary, adjust the PRODID:
 
   find . -name "*.ics" | xargs -ti sed -i s/'My Organization\/\/NONSGML My Product'/'Inverse inc.\/\/NONSGML SOGo'/ {}
   find . -name "*.ics" | xargs -ti sed -i s/'\/myorganization.org\/20120508_1\/'// {}
