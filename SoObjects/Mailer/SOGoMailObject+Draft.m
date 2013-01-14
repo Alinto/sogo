@@ -257,6 +257,33 @@
   filename = [[disposition objectForKey: @"parameterList"]
 	       objectForKey: @"filename"];
 
+  // We might have something like filename*=UTF-8''foobar
+  // See RFC2231 for details. If it was folded before, it will
+  // be unfolded when we get here.
+  if (!filename)
+    {
+      filename = [[disposition objectForKey: @"parameterList"]
+                   objectForKey: @"filename*"];
+      
+      if (filename)
+        {
+          NSRange r;
+
+          filename = [filename stringByUnescapingURL];
+          
+          // We skip up to the language
+          r = [filename rangeOfString: @"'"];
+          
+          if (r.length)
+            {
+              r = [filename rangeOfString: @"'"  options: 0  range: NSMakeRange(r.location+1, [filename length]-r.location-1)];
+              
+              if (r.length)
+                filename = [filename substringFromIndex: r.location+1];
+            }
+        }
+    }
+
   mimeType = [NSString stringWithFormat: @"%@/%@",
 		       [part objectForKey: @"type"],
 		       [part objectForKey: @"subtype"]];
