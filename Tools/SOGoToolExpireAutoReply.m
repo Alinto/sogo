@@ -129,7 +129,7 @@
   profileURL = [sd profileURL];
   if (!profileURL)
     {
-      NSLog(@"No profileURL");
+      NSLog(@"Couldn't obtain the profileURL. (Hint: SOGoProfileURL)");
     }
   else
     {
@@ -198,7 +198,7 @@
       creds = [NSString stringWithContentsOfFile: credsFile
                                         encoding: NSUTF8StringEncoding
                                            error: &err];
-      if (creds == nil)
+      if (!creds)
         {
           NSLog(@"Error reading credential file '%@': %@", credsFile, err);
         }
@@ -212,7 +212,7 @@
       creds = [sanitizedArguments objectAtIndex: 0];
     }
 
-  if (creds != nil)
+  if (creds)
    {
      r = [creds rangeOfString: @":"];
      if (r.location == NSNotFound)
@@ -226,7 +226,7 @@
       }
    }
 
-  if (authname != nil && authpwd != nil)
+  if (authname && authpwd)
    {
      [self expireAutoReplyWithUsername: authname andPassword: authpwd];
      rc = YES;
