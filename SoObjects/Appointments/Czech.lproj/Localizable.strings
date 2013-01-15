@@ -8,23 +8,15 @@ vtodo_class1 = "(Soukromý úkol)";
 vtodo_class2 = "(Skrytý úkol)";
 
 /* Receipts */
-"Title:" = "Název:";
-"Start:" = "Začátek:";
-"End:" = "Konec:";
-
-"Receipt: users invited to a meeting" = "Potvrzení: uživatelé pozvaní na setkání";
-"You have invited the following attendees(s):" = "Pozval/a jste tyto účastníky:";
-"... to attend the following event:" = "... k účasti na následující události:";
-
-"Receipt: invitation updated" = "Potvrzení: pozvánka byla aktualizována";
-"The following attendees(s):" = "Následující účastník/ci:";
-"... have been notified of the changes to the following event:" = "... byl informován o změně v následující události:";
-
-"Receipt: attendees removed from an event" = "Potvrzení: účastníci odstranění z události";
-"You have removed the following attendees(s):" = "Odstranil/a jste následující účastníky:";
-"... from the following event:" = "... z následující události:";
+"The event \"%{Summary}\" was created" = "Událost \"%{Summary}\" byla vytvořena";
+"The event \"%{Summary}\" was deleted" = "Událost \"%{Summary}\" byla smazána";
+"The event \"%{Summary}\" was updated" = "Událost \"%{Summary}\" byla upravena";
+"The following attendees(s) were notified:" = "Následující účastníci byli upozorněni:";
+"The following attendees(s) were added:" = "Následující účastníci byli přidáni:";
+"The following attendees(s) were removed:" = "Následující účastníci byli odebráni:";
 
 /* IMIP messages */
+"calendar_label" = "Kalendář:";
 "startDate_label" = "Začátek:";
 "endDate_label" = "Konec:";
 "due_label" = "Termín:";
@@ -56,14 +48,19 @@ vtodo_class2 = "(Skrytý úkol)";
 = "Prosím přijměte nebo odmítněte tyto změny.";
 
 /* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Přijaté pozvání: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Odmítnuté pozvání: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Delegované pozvání: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "O pozvání dosud nebylo rozhodnuto: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
-= "%{Attendee} %{SentByText}přijal/a Vaši pozvánku.";
+= "%{Attendee} %{SentByText}přijal/a Vaše pozvání.";
 "%{Attendee} %{SentByText}has declined your event invitation."
-= "%{Attendee} %{SentByText}odmítnul/a Vaši pozvánku.";
+= "%{Attendee} %{SentByText}odmítnul/a Vaše pozvání.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText}delegoval/a Vaši pozvánku na %{Delegate}.";
+= "%{Attendee} %{SentByText}delegoval/a Vaše pozvání na %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
-= "%{Attendee} %{SentByText}dosud o Vaší pozvánce k události nerozhodl/a.";
+= "%{Attendee} %{SentByText}dosud o Vašem pozvání k události nerozhodl/a.";
 
 /* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "Nedostupný zdroj: \"%{Cn} %{SystemEmail}\"";
 "Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "Byl dosažen maximální počet současných rezervací\n(%{NumberOfSimultaneousBookings})  pro zdroj \"%{Cn} %{SystemEmail}\". Konfliktní událost je \"%{EventTitle}\" a začíná %{StartDate}.";

@@ -493,6 +493,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "Show alarms" = "Mostrar alarmas";
 "Show tasks" = "Mostrar tareas";
 
+"Notifications" = "Notificaciones";
 "Receive a mail when I modify my calendar" = "Recibir un correo de notificación cuando modifique mi calendario";
 "Receive a mail when someone else modifies my calendar" = "Recibir un correo de notificación cuando otra persona modifique mi calendario";
 "When I modify my calendar, send a mail to:" = "Cuando modifique mi calendario enviar un correo a: ";
