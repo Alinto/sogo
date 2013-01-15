@@ -31,6 +31,7 @@
 {
   BOOL verbose;
   NSArray *arguments;
+  NSArray *sanitizedArguments; /* arguments w/o args from NSArgumentDomain */
 }
 
 + (NSString *) command;
@@ -40,6 +41,7 @@
                       verbose: (BOOL) isVerbose;
 
 - (void) setArguments: (NSArray *) newArguments;
+- (void) setSanitizedArguments: (NSArray *) newArguments;
 - (void) setVerbose: (BOOL) newVerbose;
 - (BOOL) run;
 

@@ -21,9 +21,11 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
@@ -62,13 +64,16 @@ typedef enum
 
 - (void) usage
 {
-  fprintf (stderr, "user-preferences get|set|unset defaults|settings user [authname:authpassword] key [value|-f filename]\n\n"
-	   "       user       the user of whom to set the defaults/settings key/value\n"
-	   "       value      the JSON-formatted value of the key\n\n"
-	   "  Examples:\n"
-           "       sogo-tool user-preferences get defaults janedoe SOGoLanguage\n"
-           "       sogo-tool user-preferences unset settings janedoe Mail\n"
-           "       sogo-tool user-preferences set defaults janedoe SOGoTimeFormat '{\"SOGoTimeFormat\":\"%%I:%%M %%p\"}'\n");
+  fprintf (stderr, "user-preferences get|set|unset defaults|settings user [-p credentialFile] key [value|-f filename]\n\n"
+      "     user              the user of whom to set the defaults/settings key/value\n"
+      "     value             the JSON-formatted value of the key\n\n"
+      "  -p credentialFile    Specify the file containing the sieve admin credentials\n"
+      "                       The file should contain a single line:\n"
+      "                         username:password\n"
+      "  Examples:\n"
+      "       sogo-tool user-preferences get defaults janedoe SOGoLanguage\n"
+      "       sogo-tool user-preferences unset settings janedoe Mail\n"
+      "       sogo-tool user-preferences set defaults janedoe SOGoTimeFormat '{\"SOGoTimeFormat\":\"%%I:%%M %%p\"}'\n");
 }
 
 //
@@ -79,11 +84,12 @@ typedef enum
   if ([theString length] > 2)
     {
       if ([theString caseInsensitiveCompare: @"get"] == NSOrderedSame)
-	return UserPreferencesGet;
+        return UserPreferencesGet;
       else if  ([theString caseInsensitiveCompare: @"set"] == NSOrderedSame)
-	return UserPreferencesSet;
+        return UserPreferencesSet;
       else if ([theString caseInsensitiveCompare: @"unset"] == NSOrderedSame)
-	return UserPreferencesUnset;    }
+        return UserPreferencesUnset;
+    }
 
   return UserPreferencesUnknown;
 }
@@ -96,42 +102,64 @@ typedef enum
 //
 - (BOOL) _updateSieveScripsForkey: (NSString *) theKey
                           manager: (SOGoSieveManager *) theManager
-			    login: (NSString *) theLogin
-			 authname: (NSString *) theAuthName
-			 password: (NSString *) thePassword
+                            login: (NSString *) theLogin
 {
   if ([theKey caseInsensitiveCompare: @"Forward"] == NSOrderedSame ||
       [theKey caseInsensitiveCompare: @"SOGoSieveFilters"] == NSOrderedSame ||
       [theKey caseInsensitiveCompare: @"Vacation"] == NSOrderedSame)
     {
-      if ([theAuthName length] == 0 || [thePassword length] == 0)
-	{
-	  NSLog(@"To update Sieve scripts, you must provide the \"authname:password\" parameter");
-	  return NO;
-	}
+      /* credentials file handling */
+      NSRange r;
+      NSString *credsFile, *creds, *authname, *authpwd;
+      authname = nil;
+      authpwd = nil;
+
+      credsFile = [[NSUserDefaults standardUserDefaults] stringForKey: @"p"];
+      if (credsFile)
+        {
+          /* TODO: add back support for user:pwd here? */
+          creds = [NSString stringWithContentsOfFile: credsFile
+                                            encoding: NSUTF8StringEncoding
+                                               error: NULL];
+          if (creds == nil)
+            {
+              NSLog(@"Error reading credential file '%@'", credsFile);
+              return NO;
+            }
+          creds = [creds stringByTrimmingCharactersInSet:
+                           [NSCharacterSet newlineCharacterSet]];
+          r = [creds rangeOfString: @":"];
+          authname = [creds substringToIndex: r.location];
+          authpwd = [creds substringFromIndex: r.location+1];
+        }
+      if (authname == nil || authpwd == nil)
+        {
+          NSLog(@"To update Sieve scripts, you must provide the \"-p credentialFile\" parameter");
+          return NO;
+        }
       
       return [theManager updateFiltersForLogin: theLogin
-			 authname: theAuthName
-			 password: thePassword
-			 account: nil];
+                                      authname: authname
+                                      password: authpwd
+                                       account: nil];
     }
   
   return YES;
 }
-		       
+
 
 
 - (BOOL) run
 {
-  NSString *userId, *type, *key;
+  NSString *userId, *type, *key, *value;
+  NSString *jsonValueFile;
   SOGoUserPreferencesCommand cmd;
   id o;
   
-  NSRange r;
   BOOL rc;
   int max;
   
-  max = [arguments count];
+  max = [sanitizedArguments count];
   rc = NO;
 
   if (max > 3)
@@ -140,128 +168,126 @@ typedef enum
       SOGoSieveManager *manager;
       SOGoUser *user;
 
-      cmd = [self _cmdFromString: [arguments objectAtIndex: 0]];
+      cmd = [self _cmdFromString: [sanitizedArguments objectAtIndex: 0]];
 
-      if (cmd != UserPreferencesUnknown)
-	{
-	  type = [arguments objectAtIndex: 1];
-	  userId = [arguments objectAtIndex: 2];
-	  key = [arguments objectAtIndex: 3];
+      type = [sanitizedArguments objectAtIndex: 1];
+      userId = [sanitizedArguments objectAtIndex: 2];
+      key = [sanitizedArguments objectAtIndex: 3];
 
-	  user = [SOGoUser userWithLogin: userId];
-	  manager = [SOGoSieveManager sieveManagerForUser: user];
+      user = [SOGoUser userWithLogin: userId];
+      manager = [SOGoSieveManager sieveManagerForUser: user];
 
-	  if ([type caseInsensitiveCompare: @"defaults"] == NSOrderedSame)
-	    source = [user userDefaults];
-	  else
-	    source = [user userSettings];
+      if ([type caseInsensitiveCompare: @"defaults"] == NSOrderedSame)
+        source = [user userDefaults];
+      else
+        source = [user userSettings];
 
-	  if (cmd == UserPreferencesGet)
-	    {
-	      o = [source objectForKey: key];
+      switch (cmd)
+        {
+          case UserPreferencesGet:
+                 o = [source objectForKey: key];
 
-	      if (o)
-		printf("%s: %s\n", [key UTF8String], [[o jsonRepresentation] UTF8String]);
-	      else
-		NSLog(@"Value for key \"%@\" not found in %@", key, type);
+                 if (o)
+                   {
+                     printf("%s: %s\n", [key UTF8String], [[o jsonRepresentation] UTF8String]);
+                     rc = YES;
+                   }
+                 else
+                   {
+                     NSLog(@"Value for key \"%@\" not found in %@", key, type);
+                     return rc;
+                   }
+                 break;
 
-	      rc = YES;
-	    }
-	  else
-	    {
-	      NSString *authname, *authpwd, *value;
-              NSData *data;
-              int i;
-              
-	      authname = @"";
-	      authpwd = @"";
-	      value = @"";
- 
-	      if (max > 4)
-		{
-		  r = [[arguments objectAtIndex: 3] rangeOfString: @":"];
-                  if (r.location == NSNotFound)
-                    {
-                      i = 3;
-                    }
-                  else
-                    {
-                      authname = [[arguments objectAtIndex: 3] substringToIndex: r.location];
-                      authpwd = [[arguments objectAtIndex: 3] substringFromIndex: r.location+1];
-                      i = 4;
-                    }
+          case UserPreferencesSet:
+                 if (max > 4)
+                   {
+                     /* value specified on command line */
+                     value = [sanitizedArguments objectAtIndex: 4];
+                   }
+                 else
+                   {
+                     /* value is to be found in file specified with -f filename */
+                     jsonValueFile = [[NSUserDefaults standardUserDefaults]
+                                                       stringForKey: @"f"];
 
-                  key = [arguments objectAtIndex: i++];
+                     if (jsonValueFile == nil)
+                       {
+                         NSLog(@"No value specified, aborting");
+                         [self usage];
+                         return rc;
+                       }
+                     else
+                       {
 
-		  if (max > i)
-                    {
-                      value = [arguments objectAtIndex: i++];
-                      if ([value caseInsensitiveCompare: @"-f"] == NSOrderedSame)
-                        {
-                          if (max > i)
-                            {
-                              data = [NSData dataWithContentsOfFile: [arguments objectAtIndex: i]];
-                              value = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-                              [value autorelease];
-                            }
-                        }
-                    }
-		}
-	      else
-		{
-		  if (cmd == UserPreferencesUnset)
-		    {
-		      key = [arguments objectAtIndex: 3];
-		    }
-		  else
-		    {
-		      key = [arguments objectAtIndex: 3];
-		      value = [arguments objectAtIndex: 4];
-		    }
-		}
-	      
-	      if (cmd == UserPreferencesUnset)
-		[source removeObjectForKey: key];
-	      else
-		{
-		  o = [value objectFromJSONString];
-		  
-		  //
-		  // We support setting only "values" - for example, setting :
-		  //
-		  // SOGoDayStartTime to 9:00
-		  //
-		  // Values in JSON must be a dictionary so we must support passing:
-		  // 
-		  // key == SOGoDayStartTime
-		  // value == '{"SOGoDayStartTime":  "09:00"}'
-		  //
-		  // to achieve what we want.
-		  //
-		  if (o && [o count] == 1)
-		    {
-		      [source setObject: [[o allValues] lastObject] forKey: key];
-		    }
-		  //
-		  // We also support passing values that are already dictionaries so in this
-		  // case, we simply set it to the passed key.
-		  //
-		  else if (o)
-		    {
-		      [source setObject: o  forKey: key];
-		    }
-		  else
-		    NSLog(@"Invalid JSON input - no changes performed in the database. The supplied value was: %@", value);
-		}
-		  
-	      [source synchronize];
-	      rc = [self _updateSieveScripsForkey: key
-			 manager: manager
-			 login: userId
-			 authname: authname
-			 password: authpwd];
-	    }
-	}
+                         NSData *data = [NSData dataWithContentsOfFile: jsonValueFile];
+                         if (data == nil)
+                           {
+                             NSLog(@"Error reading file '%@'", jsonValueFile);
+                             [self usage];
+                             return rc;
+                           }
+                         value = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+                         [value autorelease];
+                       }
+                   }
+                 o = [value objectFromJSONString];
+
+                 //
+                 // We support setting only "values" - for example, setting :
+                 //
+                 // SOGoDayStartTime to 9:00
+                 //
+                 // Values in JSON must be a dictionary so we must support passing:
+                 // 
+                 // key == SOGoDayStartTime
+                 // value == '{"SOGoDayStartTime":  "09:00"}'
+                 //
+                 // to achieve what we want.
+                 //
+                 if (o && [o count] == 1)
+                  {
+                    [source setObject: [[o allValues] lastObject] forKey: key];
+                  }
+                 //
+                 // We also support passing values that are already dictionaries so in this
+                 // case, we simply set it to the passed key.
+                 //
+                 else if (o)
+                   {
+                     [source setObject: o  forKey: key];
+                   }
+                 else
+                   {
+                     NSLog(@"Invalid JSON input - no changes performed in the database. The supplied value was: %@", value);
+                     [self usage];
+                     return rc;
+                   }
+
+                 rc = [self _updateSieveScripsForkey: key
+                                             manager: manager
+                                               login: userId];
+                 if (rc)
+                   [source synchronize];
+                 else
+                   NSLog(@"Error updating sieve script, not updating database");
+
+                 break;
+
+          case UserPreferencesUnset:
+                 [source removeObjectForKey: key];
+                 rc = [self _updateSieveScripsForkey: key
+                                             manager: manager
+                                               login: userId];
+                 if (rc)
+                   [source synchronize];
+                 else
+                   NSLog(@"Error updating sieve script, not updating database");
+
+                 break;
+          case UserPreferencesUnknown:
+                 break;
+        }
     }
 
   if (!rc)
