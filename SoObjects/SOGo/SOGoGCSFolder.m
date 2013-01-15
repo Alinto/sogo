@@ -1559,7 +1559,7 @@ static NSArray *childRecordFields = nil;
 
   // If we still don't have ACLs defined for this particular resource,
   // let's go get the domain defaults, if any.
-  if (![acls count])
+  if (![acls count] && ![uid isEqualToString: @"anonymous"])
     {
       dd = [[context activeUser] domainDefaults];
       module = [container nameInContainer];
