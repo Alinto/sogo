@@ -583,21 +583,17 @@ function onMailIdentitySignatureClick(event) {
 }
 
 function focusCKEditor() {
-    if (CKEDITOR.status != 'basic_ready')
+    if (CKEDITOR.status != 'loaded')
         setTimeout("focusCKEditor()", 100);
     else
-        // CKEditor reports being ready but it's still not focusable;
-        // we wait for a few more milliseconds
-        setTimeout("CKEDITOR.instances.signature.focus()", 500);
+        CKEDITOR.instances.signature.focus()
 }
 
 function hideSignature() {
-    if (CKEDITOR.status != 'basic_ready')
+    if (CKEDITOR.status != 'loaded')
         setTimeout("hideSignature()", 100);
     else
-        // CKEditor reports being ready but it's not;
-        // we wait for a few more milliseconds
-        setTimeout('disposeDialog("signatureDialog")', 200);
+        disposeDialog("signatureDialog");
 }
 
 function onMailIdentitySignatureOK(event) {
