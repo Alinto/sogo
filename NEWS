@@ -9,6 +9,9 @@ Enhancements
  - renamed default SOGoForceIMAPLoginWithEmail to
    SOGoForceExternalLoginWithEmail and extended it to SMTP authentication
  - updated the timezone files to the 2012j edition and removed RRDATES
+ - updated CKEditor to version 4.0.1
+ - added Finnish translation - thanks to Kari Salmu
+ - updated translations
 
 Bug fixes
  - fixed usage of browser's language for the login page
