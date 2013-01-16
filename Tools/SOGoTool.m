@@ -77,9 +77,9 @@
 
 - (void) setSanitizedArguments: (NSArray *) newArguments
 {
-  NSString *argsString = [newArguments componentsJoinedByString:@" "];
+  NSString *argPair, *argsString, *k, *v;
   NSDictionary   *cliArguments;
-  NSArray *keys;
+  NSArray *keys, *wordsWP;
 
   int i;
 
@@ -91,23 +91,25 @@
   keys = [cliArguments allKeys];
   for (i=0; i < [keys count]; i++)
     {
-      NSString *k = [keys objectAtIndex: i];
-      NSString *v = [cliArguments objectForKey:k];
-      NSString *argPair = [NSString stringWithFormat:@"-%@ %@", k, v];
+      k = [keys objectAtIndex: i];
+      v = [cliArguments objectForKey:k];
+      argPair = [NSString stringWithFormat:@"-%@ %@", k, v];
       argsString = [argsString stringByReplacingOccurrencesOfString: argPair
                                                          withString: @""];
     }
   if ([argsString length])
     {
       /* dance to compact whitespace */
-      NSArray *wordsWP = [argsString componentsSeparatedByCharactersInSet:
-                                       [NSCharacterSet whitespaceCharacterSet]];
       NSMutableArray *words = [NSMutableArray array];
-      for (NSString *word in wordsWP)
+      wordsWP = [argsString componentsSeparatedByCharactersInSet:
+                              [NSCharacterSet whitespaceCharacterSet]];
+      for (i=0; i < [wordsWP count]; i++)
         {
-          if([word length] > 1) 
+          v = [wordsWP objectAtIndex: i];
+
+          if([v length] > 1) 
             {
-              [words addObject:word];
+              [words addObject:v];
             }
         }
       argsString = [words componentsJoinedByString:@" "];
