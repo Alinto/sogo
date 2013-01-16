@@ -191,7 +191,7 @@ DIV#contactsSearch LABEL
 SELECT#contactFolder
 { margin-bottom: 5px; }
 
-INPUT#searchValue
+INPUT[name="search"]
 { position: absolute;
   top: 6.2em;
   left: 5px;

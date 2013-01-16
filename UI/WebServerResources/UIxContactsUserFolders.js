@@ -14,11 +14,11 @@ function onSearchFormSubmit(filterPanel) {
             document.userFoldersRequest.aborted = true;
             document.userFoldersRequest.abort();
         }
-	if (encodedValue.trim().length > minimumSearchLength) {
-	    startAnimation($("pageContent"), filterPanel);
+        if (encodedValue.trim().length > minimumSearchLength) {
+            startAnimation($("pageContent"), filterPanel);
             document.userFoldersRequest
                 = triggerAjaxRequest(url, usersSearchCallback);
-	}
+        }
     }
 
     return false;
@@ -63,6 +63,16 @@ function addUserLineToTree(tree, parent, line) {
 }
 
 function buildUsersTree(treeDiv, response) {
+    if (!treeDiv.clean) {
+        var oldD = $("d"); // the folders tree
+        if (oldD) {
+            oldD.remove();
+            delete d;
+        }
+        treeDiv.clean = true;
+        $("addButton").addClassName("disabled");
+    }
+
     d = new dTree("d");
     d.config.hideRoot = true;
     d.icon.root = ResourcesURL + '/tbtv_account_17x17.gif';
@@ -79,7 +89,7 @@ function buildUsersTree(treeDiv, response) {
     d.icon.nlPlus = ResourcesURL + '/tbtv_corner_plus_17x22.png';
     d.icon.nlMinus = ResourcesURL + '/tbtv_corner_minus_17x22.png';
     d.icon.empty = ResourcesURL + '/empty.gif';
-    d.preload ();
+    d.preload();
     d.add(0, -1, '');
 
     var isUserDialog = (window.opener.userFolderType == "user");
@@ -100,7 +110,7 @@ function buildUsersTree(treeDiv, response) {
         }
     }
     else {
-        $$('[name="searchValue"]').first().addClassName("notfound");
+        $$('[name="search"]').first().addClassName("notfound");
     }
 }
 
@@ -154,9 +164,9 @@ function foldersSearchCallback(http) {
 
             dd.innerHTML = '';
             for (var i = 1; i < folders.length - 1; i++)
-                dd.appendChild (addFolderBranchToTree (d, user, folders[i], nodeId, i, false));
-            dd.appendChild (addFolderBranchToTree (d, user, folders[folders.length-1], nodeId,
-                                                   (folders.length - 1), true));
+                dd.appendChild (addFolderBranchToTree(d, user, folders[i], nodeId, i, false));
+            dd.appendChild (addFolderBranchToTree(d, user, folders[folders.length-1], nodeId,
+                                                  (folders.length - 1), true));
             //dd.update(str);
             for (var i = 1; i < folders.length; i++) {
                 var sd = $("sd" + (nodeId + i));
@@ -165,7 +175,7 @@ function foldersSearchCallback(http) {
         }
         else {
             dd.innerHTML = '';
-            dd.appendChild(addFolderNotFoundNode (d, nodeId, null));
+            dd.appendChild(addFolderNotFoundNode(d, nodeId, null));
             var sd = $("sd" + (nodeId + 1));
             sd.on("click", onTreeItemClick);
         }
@@ -194,7 +204,7 @@ function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
     return content;
 }
 
-function addFolderNotFoundNode (tree, nodeId) {
+function addFolderNotFoundNode(tree, nodeId) {
     var icon = ResourcesURL + '/dot.png';
     var node = new dTreeNode(1, nodeId, _("No possible subscription"), 0, '#',
                              null, null, '', '', icon, icon);
