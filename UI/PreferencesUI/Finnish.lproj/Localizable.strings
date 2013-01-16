@@ -1,0 +1,307 @@
+/* toolbar */
+"Save and Close" = "Tallenna ja sulje";
+"Close" = "Sulje";
+
+/* tabs */
+"General" = "Yleiset";
+"Calendar Options" = "Kalenteriasetukset";
+"Contacts Options" = "Yhteystietoasetukset";
+"Mail Options" = "Sähköpostiasetukset";
+"IMAP Accounts" = "IMAP -tilit";
+"Vacation" = "Lomaviesti";
+"Forward" = "Edelleenlähetys";
+"Password" = "Salasana";
+"Categories" = "Luokat";
+"Name" = "Nimi";
+"Color" = "Väri";
+"Add" = "Lisää";
+"Delete" = "Poista";
+
+/* contacts categories */
+"contacts_category_labels" = "Kollega, Kilpailija, Asiakas, Ystävä, Perhe, Liiketuttu, Toimittaja, Lehdistö, VIP";
+
+/* vacation (auto-reply) */
+"Enable vacation auto reply" = "Laita automaattinen lomavastaaja päälle";
+"Auto reply message :" = "Automaattivastaus:";
+"Email addresses (separated by commas) :" = "Sähköpostiosoitteet (eroteltuna pilkuin)";
+"Add default email addresses" = "Syötä oletussähköpostiosoite";
+"Days between responses :" = "Päivät vastausten välillä:";
+"Do not send responses to mailing lists" = "Älä lähetä vastauksia postituslistoille";
+"Disable auto reply on" = "Poista automaattivastaus käytöstä";
+"Please specify your message and your email addresses for which you want to enable auto reply."
+= "Ole hyvä ja määritä viesti sekä sähköpostiosoitteet joille haluat aktivoida automaattivastauksen.";
+"Your vacation message must not end with a single dot on a line." = "Lomaviestisi ei saa päättyä yksittäiseen pisteeseen viimeisellä rivillä.";
+"End date of your auto reply must be in the future."
+= "Automaattivastauksen loppupäivä on oltava tulevaisuudessa.";
+
+/* forward messages */
+"Forward incoming messages" = "Edelleenlähetä saapuvat viestit";
+"Keep a copy" = "Pidä kopio";
+"Please specify an address to which you want to forward your messages."
+= "Ole hyvä ja määritä sähköpostiosoite johon haluat edelleenlähettää viestisi.";
+
+/* d & t */
+"Current Time Zone :" = "Nykyinen aikavyöhyke:";
+"Short Date Format :" = "Lyhyt ajan esitysmuoto:";
+"Long Date Format :" = "Pitkä ajan esitysmuoto:";
+"Time Format :" = "Ajan esitysmuoto:";
+
+"default" = "Oletus";
+
+"shortDateFmt_0" = "%d-%b-%y";
+
+"shortDateFmt_1" = "%d-%m-%y";
+"shortDateFmt_2" = "%d/%m/%y";
+"shortDateFmt_3" = "%e/%m/%y";
+
+"shortDateFmt_4" = "%d-%m-%Y";
+"shortDateFmt_5" = "%d/%m/%Y";
+
+"shortDateFmt_6" = "%m-%d-%y";
+"shortDateFmt_7" = "%m/%d/%y";
+"shortDateFmt_8" = "%m/%e/%y";
+
+"shortDateFmt_9" = "%y-%m-%d";
+"shortDateFmt_10" = "%y/%m/%d";
+"shortDateFmt_11" = "%y.%m.%d";
+
+"shortDateFmt_12" = "%Y-%m-%d";
+"shortDateFmt_13" = "%Y/%m/%d";
+"shortDateFmt_14" = "%Y.%m.%d";
+
+"shortDateFmt_15" = "";
+   
+"longDateFmt_0" = "%A, %B %d, %Y";
+"longDateFmt_1" = "%B %d, %Y";
+"longDateFmt_2" = "%A, %d %B, %Y";
+"longDateFmt_3" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
+
+"timeFmt_0" = "%I:%M %p";
+"timeFmt_1" = "%H:%M";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
+
+/* calendar */
+"Week begins on :" = "Viikon alkupäivä:";
+"Day start time :" = "Päivä alkaa klo:";
+"Day end time :" = "Päivä päättyy klo:";
+"Day start time must be prior to day end time." = "Päivän alkuajan tulee olla ennen päättymisaikaa.";
+"Show time as busy outside working hours" = "Näytä työajan ulkopuolinen aika varattuna";
+"First week of year :" = "Vuoden ensimmäinen viikko:";
+"Enable reminders for Calendar items" = "Ota käyttöön kalenterimerkintöjen muistuttajat";
+"Play a sound when a reminder comes due"
+= "Soita äänimerkki kun muistuttaja aktivoituu";
+"Default reminder :" = "Oletusmuistuttaja";
+
+"firstWeekOfYear_January1" = "Alkaa Tammikuun 1.";
+"firstWeekOfYear_First4DayWeek" = "Ensimmäinen nelipäiväinen viikko";
+"firstWeekOfYear_FirstFullWeek" = "Ensimmäinen täysi viikko";
+
+/* Default Calendar */
+"Default calendar :" = "Oletuskalenteri";
+"selectedCalendar" = "Valittu kalenteri";
+"personalCalendar" = "Henkilökohtainen kalenteri";
+"firstCalendar" = "Ensimmäinen käyttöönotettu kalenteri";
+
+"reminderTime_0000" = "0 minuuttia";
+"reminderTime_0005" = "5 minuuttia";
+"reminderTime_0010" = "10 minuuttia";
+"reminderTime_0015" = "15 minuuttia";
+"reminderTime_0030" = "30 minuuttia";
+"reminderTime_0100" = "1 tunti";
+"reminderTime_0200" = "2 tuntia";
+"reminderTime_0400" = "4 tuntia";
+"reminderTime_0800" = "8 tuntia";
+"reminderTime_1200" = "puoli päivää";
+"reminderTime_2400" = "1 päivä";
+"reminderTime_4800" = "2 päivää";
+
+/* Mailer */
+"Show subscribed mailboxes only" = "Näytä vain tilatut sähköpostikansiot";
+"Sort messages by threads" = "Järjestä viestit ketjuiksi";
+"Check for new mail:" = "Hae uudet sähköpostit";
+"messagecheck_manually" = "Manuaalisesti";
+"messagecheck_every_minute" = "Joka minuutti";
+"messagecheck_every_2_minutes" = "Joka toinen minuutti";
+"messagecheck_every_5_minutes" = "Viiden minuutin välein";
+"messagecheck_every_10_minutes" = "10 minuutin välein";
+"messagecheck_every_20_minutes" = "20 minuutin välein";
+"messagecheck_every_30_minutes" = "Puolen tunnin välein";
+"messagecheck_once_per_hour" = "Kerran tunnissa ";
+
+"Forward messages:" = "Edelleenlähetä viestit:";
+"messageforward_inline" = "Tekstisisällössä";
+"messageforward_attached" = "Liitteinä";
+
+"When replying to a message:" = "Kun vastaan viestiin:";
+"replyplacement_above" = "Aloita vastaukseni lainauksen yläpuolelta";
+"replyplacement_below" = "Aloita vastaukseni lainauksen alapuolelta";
+"And place my signature" = "Ja sijoita allekirjoitukseni";
+"signatureplacement_above" = "Vastaukseni alle";
+"signatureplacement_below" = "Lainauksen alle";
+"Compose messages in" = "Luo viestejä";
+"composemessagestype_html" = "HTML";
+"composemessagestype_text" = "Pelkkä teksti";
+"Display remote inline images" = "Näytä etäsisällön kuvat";
+"displayremoteinlineimages_never" = "Ei koskaan";
+"displayremoteinlineimages_always" = "Aina";
+
+/* IMAP Accounts */
+"New Mail Account" = "Uusi sähköpostitili";
+
+"Server Name:" = "Palvelinnimi:";
+"Port:" = "Portti:";
+"Encryption:" = "Salaus";
+"None" = "Ei mitään";
+"User Name:" = "Käyttäjätunnus:";
+"Password:" = "Salasana:";
+
+"Full Name:" = "Koko nimi:";
+"Email:" = "Sähköposti:";
+"Reply To Email:" = "Vastaa sähköpostiin:";
+"Signature:" = "Allekirjoitus:";
+"(Click to create)" = "(Napsauta luodaksesi)";
+
+"Signature" = "Allekirjoitus";
+"Please enter your signature below:" = "Ole hyvä ja syötä allekirjoituksesi alle:";
+
+"Please specify a valid sender address." = "Ole hyvä ja syötä kelvollinen lähettäjäosoite";
+"Please specify a valid reply-to address." = "Ole hyvä ja syötä kelvollinen vastausosoite";
+
+/* Additional Parameters */
+"Additional Parameters" = "Lisäparametrit";
+
+/* password */
+"New password:" = "Uusi salasana";
+"Confirmation:" = "Vahvistus:";
+"Change" = "Vaihda";
+
+/* Event+task classifications */
+"Default events classification :" = "Oletus tapahtumaluokittelu:";
+"Default tasks classification :" = "Oletus tehtäväluokittelu:";
+"PUBLIC_item" = "Julkinen";
+"CONFIDENTIAL_item" = "Luottamuksellinen";
+"PRIVATE_item" = "Yksityinen";
+
+/* Event+task categories */
+"category_none" = "Ei mitään";
+"calendar_category_labels" = "Vuosipäivä,Syntymäpäivä,Kaupankäynti,Puhelut,Toimeksiantajat,Kilpailu,Asiakas,Suosikit,Seuranta,Lahjat,Juhlapyhät,Ideat,Kokous,Asiat,Muut,Henkilökohtaiset,Projektit,Yleinen vapaapäivä,Tilanne,Tavarantoimittajat,Matkailu,Loma";
+
+/* Default module */
+"Calendar" = "Kalenteri";
+"Contacts" = "Osoitekirja";
+"Mail" = "Sähköposti";
+"Last" = "Viimeksi käytetty";
+"Default module :" = "Oletusmoduli:";
+
+"Language :" = "Kieli:";
+"choose" = "Valitse...";
+"Catalan" = "Català";
+"Czech" = "Česky";
+"Danish" = "Dansk (Danmark)";
+"Dutch" = "Nederlands";
+"English" = "English";
+"French" = "Français";
+"German" = "Deutsch";
+"Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
+"Italian" = "Italiano";
+"NorwegianBokmal" = "Norsk bokmål";
+"NorwegianNynorsk" = "Norsk nynorsk";
+"BrazilianPortuguese" = "Português brasileiro";
+"Polish" = "Polski";
+"Russian" = "Русский";
+"Slovak" = "Slovensky";
+"SpanishSpain" = "Español (España)";
+"SpanishArgentina" = "Español (Argentina)";
+"Swedish" = "Svenska";
+"Ukrainian" = "Українська";
+"Welsh" = "Cymraeg";
+
+/* Return receipts */
+"When I receive a request for a return receipt:" = "Kun saan kuittauspyynnön:";
+"Never send a return receipt" = "Alä koskaan lähetä kuittausta";
+"Allow return receipts for some messages" = "Salli kuittaukset joillekin viesteille";
+"If I'm not in the To or Cc of the message:" = "Jos en ole viestin To tai Cc -kentissä: ";
+"If the sender is outside my domain:" = "Jos lähettäjä on oman toimialueeni ulkopuolelta:";
+"In all other cases:" = "Kaikissa muissa tapauksissa:";
+
+"Never send" = "Älä koskaan lähetä";
+"Always send" = "Lähetä aina";
+"Ask me" = "Kysy minulta";
+
+/* Filters - UIxPreferences */
+"Filters" = "Suodattimet";
+"Active" = "Aktiivinen";
+"Move Up" = "Siirry ylös";
+"Move Down" = "Siirry alas";
+
+/* Filters - UIxFilterEditor */
+"Filter name:" = "Suodattimen nimi:";
+"For incoming messages that" = "Saapuville viesteille jotka";
+"match all of the following rules:" = "täsmäävät kaikkiin seuraaviin sääntöihin:";
+"match any of the following rules:" = "täsmäävät johonkin seuraavista säännöistä";
+"match all messages" = "täsmäävät kaikkiin viesteihin";
+"Perform these actions:" = "Suorita nämä toiminnot:";
+"Untitled Filter" = "Nimetön suodatin";
+
+"Subject" = "Aihe:";
+"From" = "Keneltä:";
+"To" = "Kenelle:";
+"Cc" = "Kopio:";
+"To or Cc" = "Kenelle tai Kopio";
+"Size (Kb)" = "Koko (Kb)";
+"Header" = "Otsikko";
+"Flag the message with:" = "Merkitse viesti:";
+"Discard the message" = "Hylkää viesti";
+"File the message in:" = "Arkistoi viesti:";
+"Keep the message" = "Pidä viesti";
+"Forward the message to:" = "Lähetä viesti edelleen:";
+"Send a reject message:" = "Lähetä hylkäysviesti:";
+"Send a vacation message" = "Lähetä lomaviesti";
+"Stop processing filter rules" = "Pysäytä suodatinsääntöjen suoritus";
+
+"is under" = "on alle";
+"is over" = "on yli";
+"is" = "on";
+"is not" = "ei ole";
+"contains" = "sisältää";
+"does not contain" = "ei sisällä";
+"matches" = "täsmää";
+"does not match" = "ei täsmää";
+"matches regex" = "täsmää ehtoon";
+"does not match regex" = "ei täsmää ehtoon";
+
+"Seen" = "Nähty";
+"Deleted" = "Poistettu";
+"Answered" = "Vastattu";
+"Flagged" = "Merkitty";
+"Junk" = "Roskaa";
+"Not Junk" = "Ei roskaa";
+"Label 1" = "Merkki 1";
+"Label 2" = "Merkki 2";
+"Label 3" = "Merkki 3";
+"Label 4" = "Merkki 4";
+"Label 5" = "Merkki 5";
+
+"The password was changed successfully." = "Salasana vaihdettu onnistuneesti.";
+"Password must not be empty." = "Salasana ei saa olla tyhjä";
+"The passwords do not match. Please try again." = "Salasanat eivät täsmää. Ole hyvä ja yritä uudelleen.";
+"Password change failed" = "Salasanan vaihto epäonnistui";
+"Password change failed - Permission denied" = "Salasanan vaihto epäonnistui - Lupa evätty";
+"Password change failed - Insufficient password quality" = "Salasanan vaihto epäonnistui - Salasanan laatu riittämätön";
+"Password change failed - Password is too short" = "Salasanan vaihto epäonnistui - Liian lyhyt salasana";
+"Password change failed - Password is too young" = "Salasanan vaihto epäonnistui - Salasana on liian nuori";
+"Password change failed - Password is in history" = "Salasanan vaihto epäonnistui - Salasanaa on käytetty aiemmin";
+"Unhandled policy error: %{0}" = "Käsittelemätön sääntövirhe: %{0} ";
+"Unhandled error response" = "Käsittelemätön virhevastaus";
+"Password change is not supported." = "Salasanan vaihto ei ole tuettu.";
+"Unhandled HTTP error code: %{0}" = "Käsittelämätön HTTP virhekoodi: %{0}";

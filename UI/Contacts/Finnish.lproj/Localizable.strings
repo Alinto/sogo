@@ -1,0 +1,208 @@
+/* this file is in UTF-8 format! */
+
+"Contact" = "Yhteystieto";
+"Address" = "Osoite";
+"Photos" = "Valokuvat";
+"Other" = "Muuta";
+
+"Address Books" = "Osoitekirjat";
+"Addressbook" = "Osoitekirja";
+"Addresses" = "Osoitteet";
+"Update" = "Päivitä";
+"Cancel" = "Peruuta";
+"Common" = "Yleinen";
+"Contact editor" = "Contact editor";
+"Contact viewer" = "Contact viewer";
+"Email" = "Email";
+"Screen Name" = "Screen Name";
+"Extended" = "Extended";
+"Fax" = "Fax";
+"Firstname" = "Etunimi";
+"Home" = "Koti";
+"HomePhone" = "Kotipuhelin";
+"Lastname" = "Sukunimi";
+"Location" = "Sijainti";
+"MobilePhone" = "Matkapuhelin";
+"Name" = "Nimi";
+"OfficePhone" = "Toimistopuhelin";
+"Organization" = "Organisaatio";
+"Work Phone" = "Työpuhelin";
+"Phone" = "Puhelin";
+"Phones" = "Puhelimet";
+"Postal" = "Postal";
+"Save" = "Tallenna";
+"Internet" = "Internet";
+"Unit" = "Yksikkö";
+"delete" = "poista";
+"edit" = "muokkaa";
+"invalidemailwarn" = "Määritetty sähköpostiosoite on virheellinen.";
+"invaliddatewarn" = "Määritetty päivämäärä on virheellinen.";
+"new" = "uusi";
+"Preferred Phone" = "Preferred Phone";
+
+"Move To" = "Siirrä";
+"Copy To" = "Kopioi";
+"Add to:" = "Lisää";
+
+/* Tooltips */
+
+"Create a new address book card" = "Create a new address book card";
+"Create a new list" = "Create a new list";
+"Edit the selected card" = "Edit the selected card";
+"Send a mail message" = "Send a mail message";
+"Delete selected card or address book" = "Delete selected card or address book";
+"Reload all contacts" = "Reload all contacts";
+
+"htmlMailFormat_UNKNOWN" = "Unknown";
+"htmlMailFormat_FALSE" = "Plain Text";
+"htmlMailFormat_TRUE" = "HTML";
+
+"Name or Email" = "Name or Email";
+"Category" = "Category";
+"Personal Addressbook" = "Personal Addressbook";
+"Search in Addressbook" = "Search in Addressbook";
+
+"New Card" = "Uusi yhteystietokortti";
+"New List" = "Uusi lista";
+"Properties" = "Properties";
+"Sharing..." = "Jakaminen...";
+"Write" = "Kirjoita";
+"Delete" = "Poista";
+"Instant Message" = "Pikaviesti";
+"Add..." = "Lisää...";
+"Remove" = "Poista";
+
+"Please wait..." = "Odota hetki...";
+"No possible subscription" = "No possible subscription";
+
+"Preferred" = "Preferred";
+"Display:" = "Display:";
+"Display Name:" = "Display Name:";
+"Email:" = "Email:";
+"Additional Email:" = "Additional Email:";
+
+"Phone Number:" = "Puhelinnumero:";
+"Prefers to receive messages formatted as:" = "Prefers to receive messages formatted as:";
+"Screen Name:" = "Screen Name:";
+"Categories:" = "Kategoriat:";
+
+"First:" = "Ensimmäinen:";
+"Last:" = "Viimeinen:";
+"Nickname:" = "Lempinimi:";
+
+"Telephone" = "Puhelin";
+"Work:" = "Työ:";
+"Home:" = "Koti:";
+"Fax:" = "Fax:";
+"Mobile:" = "GSM:";
+"Pager:" = "Pager:";
+
+/* categories */
+"contacts_category_labels" = "Colleague, Competitor, Customer, Friend, Family, Business Partner, Provider, Press, VIP";
+"Categories" = "Kategoriat";
+"New category" = "Uusi kategoria";
+
+/* adresses */
+"Title:" = "Title:";
+"Service:" = "Service:";
+"Company:" = "Yritys:";
+"Department:" = "Osasto:";
+"Organization:" = "Organisaatio:";
+"Address:" = "Osoite:";
+"City:" = "Kaupunki: ";
+"State_Province:" = "Maakunta:";
+"ZIP_Postal Code:" = "Postinumero:";
+"Country:" = "Maa:";
+"Web Page:" = "Web sivu:";
+
+"Work" = "Work";
+"Other Infos" = "Other Infos";
+
+"Note:" = "Note:";
+"Timezone:" = "Timezone:";
+"Birthday:" = "Birthday:";
+"Birthday (yyyy-mm-dd):" = "Birthday (yyyy-mm-dd):";
+"Freebusy URL:" = "Freebusy URL:";
+
+"Add as..." = "Add as...";
+"Recipient" = "Recipient";
+"Carbon Copy" = "Carbon Copy";
+"Blind Carbon Copy" = "Blind Carbon Copy";
+
+"New Addressbook..." = "New Addressbook...";
+"Subscribe to an Addressbook..." = "Subscribe to an Addressbook...";
+"Remove the selected Addressbook" = "Remove the selected Addressbook";
+
+"Name of the Address Book" = "Name of the Address Book";
+"Are you sure you want to delete the selected address book?"
+= "Are you sure you want to delete the selected address book?";
+"You cannot remove nor unsubscribe from a public addressbook."
+= "You cannot remove nor unsubscribe from a public addressbook.";
+"You cannot remove nor unsubscribe from your personal addressbook."
+= "You cannot remove nor unsubscribe from your personal addressbook.";
+
+"Are you sure you want to delete the selected contacts?"
+= "Are you sure you want to delete the selected contacts?";
+
+"You cannot delete the card of \"%{0}\"."
+= "You cannot delete the card of \"%{0}\".";
+
+"Address Book Name" = "Address Book Name";
+
+"You cannot subscribe to a folder that you own!"
+= "You cannot subscribe to a folder that you own.";
+"Unable to subscribe to that folder!"
+= "Unable to subscribe to that folder.";
+
+/* acls */
+"Access rights to" = "Access rights to";
+"For user" = "For user";
+
+"Any Authenticated User" = "Any Authenticated User";
+"Public Access" = "Public Access";
+
+"This person can add cards to this addressbook."
+= "This person can add cards to this addressbook.";
+"This person can edit the cards of this addressbook."
+= "This person can edit the cards of this addressbook.";
+"This person can list the content of this addressbook."
+= "This person can list the content of this addressbook.";
+"This person can read the cards of this addressbook."
+= "This person can read the cards of this addressbook.";
+"This person can erase cards from this addressbook."
+= "This person can erase cards from this addressbook.";
+
+"The selected contact has no email address."
+= "The selected contact has no email address.";
+
+"Please select a contact." = "Please select a contact.";
+
+/* Error messages for move and copy */
+
+"SoAccessDeniedException" = "You cannot write to this address book.";
+"Forbidden" = "You cannot write to this address book.";
+"Invalid Contact" = "The selected contact no longer exists.";
+"Unknown Destination Folder" = "The chosen destination address book no longer exists.";
+
+/* Lists */
+"List details" = "List details";
+"List name:" = "List name:";
+"List nickname:" = "List nickname:";
+"List description:" = "List description:";
+"Members" = "Members";
+"Contacts" = "Contacts";
+"Add" = "Add";
+"Lists can't be moved or copied." = "Lists can't be moved or copied.";
+"Export" = "Export";
+"Export Address Book..." = "Export Address Book...";
+"View Raw Source" = "View Raw Source";
+"Import Cards" = "Import Cards";
+"Select a vCard or LDIF file." = "Select a vCard or LDIF file.";
+"Upload" = "Upload";
+"Uploading" = "Uploading";
+"Done" = "Done";
+"An error occured while importing contacts." = "An error occured while importing contacts.";
+"No card was imported." = "No card was imported.";
+"A total of %{0} cards were imported in the addressbook." = "A total of %{0} cards were imported in the addressbook.";
+
+"Reload" = "Reload";
