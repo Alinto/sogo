@@ -139,7 +139,7 @@
 
 "Sender" = "Lähettäjä";
 "Subject or Sender" = "Aihe tai lähettäjä";
-"To or Cc" = "To tai Cc";
+"To or Cc" = "Vastaanottaja tai kopio";
 "Entire Message" = "Koko viesti";
 
 "Date"          = "Päiväys";
@@ -174,7 +174,7 @@
 
 /* MailMoveToPopUp */
 
-"MoveTo"        = "Siirrä @hellip;";
+"MoveTo"        = "Siirrä &hellip;";
 
 /* Address Popup menu */
 "Add to Address Book..." = "Lisää osoitekirjaan...";
@@ -238,7 +238,7 @@
 "Thread As Read" = "Ketju luetuksi";
 "As Read By Date..." = "Luetuksi pvm...";
 "All Read" = "Kaikki luetuksi";
-"Flag" = "MErkitse";
+"Flag" = "Merkitse";
 "As Junk" = "Roskaksi";
 "As Not Junk" = "Ei roskaksi";
 "Run Junk Mail Controls" = "Käynnistä roskapostien hallinta";

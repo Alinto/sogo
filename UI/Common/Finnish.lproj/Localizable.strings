@@ -11,7 +11,7 @@
 "Mail" = "Sähköposti";
 "Preferences" = "Asetukset";
 "Administration" = "Hallinto";
-"Disconnect" = "Katkaise yhteys";
+"Disconnect" = "Kirjaudu ulos";
 "Right Administration" = "Oikeuksien hallinta";
 "Log Console (dev.)" = "Lokikonsoli (laite)";
 
@@ -75,10 +75,10 @@
 "You don't have the required privileges to perform the operation."
 = "Sinulla ei ole vaadittavia oikeuksia toiminnon suorittamiseksi.";
 
-"noEmailForDelegation" = "Sinun tarvitsee määrittää kutsullesi vastaanottaja.";
-"delegate is organizer" = "Vastaanottaja on järjestäjä. Ole hyvä ja valitse toinen vastaanottaja.";
-"delegate is a participant" = "Vastaanottaja on jo osallistuja.";
-"delegate is a group" = "Annettu osoite on ryhmäosoite. Voit lähettää kutsuja vain yksittäisille henkilöille.";
+"noEmailForDelegation" = "Sinun tarvitsee antaa osoite johon haluat lähettää valtuutuksen.";
+"delegate is organizer" = "Valtuutettu on järjestäjä. Ole hyvä ja valitse toinen valtuutettu.";
+"delegate is a participant" = "Valtuutettu on jo osallistuja.";
+"delegate is a group" = "Annettu osoite on ryhmäosoite. Voit valtuuttaa vain yksittäisiä henkilöitä.";
 
 "Snooze for " = "Torku";
 "5 minutes" = "5 minuuttia";

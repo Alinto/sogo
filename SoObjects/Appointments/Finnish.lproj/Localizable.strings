@@ -50,14 +50,14 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 /* Reply */
 "Accepted invitation: \"%{Summary}\"" = "Hyväksytty kutsu: \"%{Summary}\"";
 "Declined invitation: \"%{Summary}\"" = "Hylätty kutsu: \"%{Summary}\"";
-"Delegated invitation: \"%{Summary}\"" = "Edelleenlähetetty kutsu: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Valtuutus kutsuun: \"%{Summary}\"";
 "Not yet decided on invitation: \"%{Summary}\"" = "Harkinnassa oleva kutsu: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText} on hyväksynyt tapahtumakutsusi.";
 "%{Attendee} %{SentByText}has declined your event invitation."
 = "%{Attendee} %{SentByText} on hylännyt tapahtumakutsusi.";
 "%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
-= "%{Attendee} %{SentByText} on hyväksynyt lähettänyt kutsusi edelleen osoitteeseen %{Delegate}.";
+= "%{Attendee} %{SentByText} on  lähettänyt kutsusi edelleen osoitteeseen %{Delegate}.";
 "%{Attendee} %{SentByText}has not yet decided upon your event invitation."
 = "%{Attendee} %{SentByText} ei vielä ole tehnyt päätöstä tapahtumakutsustasi.";
 

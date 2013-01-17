@@ -184,7 +184,7 @@
 
 "attributes" = "ominaisuudet";
 "attendees" = "osallistujat";
-"delegated from" = "edelleenlähetetty";
+"delegated from" = "valtuuttaja";
 
 /* checkbox title */
 "is private" = "on yksityinen";
@@ -203,7 +203,7 @@
 "partStat_ACCEPTED" = "Osallistun";
 "partStat_DECLINED" = "En osallistu";
 "partStat_TENTATIVE" = "Osallistun ehkä";
-"partStat_DELEGATED" = "Lähetän edelleen";
+"partStat_DELEGATED" = "valtuutan";
 "partStat_OTHER" = "Muuta";
 
 /* Appointments (error messages) */
