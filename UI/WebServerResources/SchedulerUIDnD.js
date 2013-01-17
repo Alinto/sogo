@@ -778,6 +778,9 @@ SOGoEventDragPointerHandler.prototype = {
         var coordinates = this.currentCoordinates.getDelta(this.containerCoordinates);
         var container = SOGoEventDragUtilities().getEventsViewNode();
 
+        if (container.clientWidth == 0)
+            /* a hack for Safari */
+            container = $(container.id);
         if (coordinates.x < 0 || coordinates.x > container.clientWidth
             || coordinates.y < 0 || coordinates.y > container.clientHeight)
             coordinates = null;
