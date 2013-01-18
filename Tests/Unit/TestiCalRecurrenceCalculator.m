@@ -165,7 +165,7 @@
 				     @"19980109T090000Z",
 				     @"19980213T090000Z",
 				     @"19980313T090000Z",
-				     @"19980410fT090000Z",
+				     @"19980410T090000Z",
 				     nil],
 			    // Last friday of the month, until Feb 26 1998
 			    [NSArray arrayWithObjects: @"19980101T090000Z",
