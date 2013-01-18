@@ -990,13 +990,13 @@
 {
   NSString *calendarName, *mailDate, *mailText, *fullSenderEmail, *senderEmail, *fullRecipientEmail, *recipientEmail;
   NSDictionary *senderIdentity, *recipientIdentity;
-  SOGoAptMailReceipt *page;
+  id <SOGoAuthenticator> authenticator;  
+  SOGoUser *currentUser, *ownerUser;
   NGMutableHashMap *headerMap;
-  NGMimeMessage *msg;
-  SOGoUser *currentUser;
+  SOGoAptMailReceipt *page;
   SOGoDomainDefaults *dd;
-  id <SOGoAuthenticator> authenticator;
-
+  NGMimeMessage *msg;
+  
   calendarName = [[self container] displayName];
 
   // We must handle three cases here:
@@ -1028,8 +1028,8 @@
   [headerMap setObject: fullSenderEmail forKey: @"from"];
 
   // Recipient is fixed, which is the calendar owner
-  currentUser = [SOGoUser userWithLogin: self->owner];
-  recipientIdentity = [currentUser primaryIdentity];
+  ownerUser = [SOGoUser userWithLogin: self->owner];
+  recipientIdentity = [ownerUser primaryIdentity];
   recipientEmail = [recipientIdentity objectForKey: @"email"];
   fullRecipientEmail = [recipientIdentity keysWithFormat: @"%{fullName} <%{email}>"];
   
