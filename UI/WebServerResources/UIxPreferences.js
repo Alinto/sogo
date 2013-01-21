@@ -220,7 +220,8 @@ function initPreferences() {
 
     button = $("enableVacationEndDate");
     if (button) {
-        jQuery("#vacationEndDate_date").closest(".date").datepicker({autoclose: true, position: 'above'});
+        jQuery("#vacationEndDate_date").closest(".date").datepicker(
+            { autoclose: true, position: 'above', weekStart: $('weekStartDay').getValue() });
         button.on("click", function(event) {
             if (this.checked)
                 $("vacationEndDate_date").enable();

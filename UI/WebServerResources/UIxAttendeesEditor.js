@@ -1644,13 +1644,15 @@ document.observe("dom:loaded", onFreeBusyLoadHandler);
 function initTimeWidgets(widgets) {
     this.timeWidgets = widgets;
 
-    jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true, position: 'above'});
+    jQuery(widgets['start']['date']).closest('.date').datepicker(
+        { autoclose: true, position: 'above', weekStart: parentvar('firstDayOfWeek') });
     jQuery(widgets['start']['date']).change(onAdjustTime);
     widgets['start']['time'].on("time:change", onAdjustTime);
     widgets['start']['time'].addInterface(SOGoTimePickerInterface);
     widgets['start']['time'].setPosition('above');
 
-    jQuery(widgets['end']['date']).closest('.date').datepicker({autoclose: true, position: 'above'});
+    jQuery(widgets['end']['date']).closest('.date').datepicker(
+        { autoclose: true, position: 'above', weekStart: parentvar('firstDayOfWeek') });
     jQuery(widgets['end']['date']).change(onAdjustTime);
     widgets['end']['time'].on("time:change", onAdjustTime);
     widgets['end']['time'].addInterface(SOGoTimePickerInterface);

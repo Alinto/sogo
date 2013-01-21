@@ -2532,6 +2532,15 @@ RANGE(2);
   return [[self clientObject] ownerInContext: context];
 }
 
+- (unsigned int) firstDayOfWeek
+{
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+
+  return [ud firstDayOfWeek];
+}
+
 // returns the raw content of the object
 - (WOResponse *) rawAction
 {

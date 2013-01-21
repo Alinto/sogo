@@ -271,9 +271,9 @@ this.onAdjustDueTime = function(event) {
 this.initTimeWidgets = function (widgets) {
 	this.timeWidgets = widgets;
    
-        jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true});
-        jQuery(widgets['due']['date']).closest('.date').datepicker({autoclose: true});
-        jQuery('#statusTime_date').closest('.date').datepicker({autoclose: true});
+        jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true, weekStart: firstDayOfWeek});
+        jQuery(widgets['due']['date']).closest('.date').datepicker({autoclose: true, weekStart: firstDayOfWeek});
+        jQuery('#statusTime_date').closest('.date').datepicker({autoclose: true, weekStart: firstDayOfWeek});
 
         jQuery(widgets['start']['date']).change(onAdjustTime);
 	widgets['start']['time'].on("time:change", onAdjustDueTime);

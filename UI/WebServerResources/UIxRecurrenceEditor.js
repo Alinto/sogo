@@ -396,7 +396,8 @@ function onRecurrenceLoadHandler() {
     initializeFormValues();
     initializeSelectors();
     initializeWindowButtons();
-    jQuery('#endDate_date').closest('.date').datepicker({autoclose: true});
+    jQuery('#endDate_date').closest('.date').datepicker(
+        { autoclose: true, weekStart: parentvar('firstDayOfWeek') });
     escapeAlertMessages();
 }
 

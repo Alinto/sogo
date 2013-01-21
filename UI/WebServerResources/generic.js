@@ -1871,6 +1871,19 @@ function parent$(element) {
     return (p ? p.getElementById(element) : null);
 }
 
+function parentvar(name) {
+    var div = $("popupFrame");
+
+    if (div)
+        p = parent;
+    else if (this.opener)
+        p = this.opener;
+    else
+        p = null;
+
+    return (p ? p[name] : null);
+}
+
 /* stubs */
 function refreshCurrentFolder(id) {
 }

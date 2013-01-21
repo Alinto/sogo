@@ -348,14 +348,14 @@ function initTimeWidgets(widgets) {
     this.timeWidgets = widgets;
 
     if (widgets['start']['date']) {
-        jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true});
+        jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true, weekStart: firstDayOfWeek});
         jQuery(widgets['start']['date']).change(onAdjustTime);
         widgets['start']['time'].on("time:change", onAdjustTime);
         widgets['start']['time'].addInterface(SOGoTimePickerInterface);
     }
 
     if (widgets['end']['date']) {
-        jQuery(widgets['end']['date']).closest('.date').datepicker({autoclose: true});
+        jQuery(widgets['end']['date']).closest('.date').datepicker({autoclose: true, weekStart: firstDayOfWeek});
         jQuery(widgets['end']['date']).change(onAdjustTime);
         widgets['end']['time'].on("time:change", onAdjustTime);
         widgets['end']['time'].addInterface(SOGoTimePickerInterface);

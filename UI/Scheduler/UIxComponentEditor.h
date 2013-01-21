@@ -178,6 +178,7 @@
 /* access */
 - (BOOL) isMyComponent;
 - (BOOL) canEditComponent;
+- (unsigned int) firstDayOfWeek;
 
 /* helpers */
 - (NSString *) completeURIForMethod: (NSString *) _method;
