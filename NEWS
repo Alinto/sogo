@@ -1,4 +1,4 @@
-2.0.4 (YYYY-MM-DD)
+2.0.4 (2013-01-DD)
 ------------------
 
 New features
@@ -12,6 +12,7 @@ Enhancements
  - updated CKEditor to version 4.0.1
  - added Finnish translation - thanks to Kari Salmu
  - updated translations
+ - recurrence-id of all-day events is now set as a proper date with no time
 
 Bug fixes
  - fixed usage of browser's language for the login page
@@ -21,6 +22,9 @@ Bug fixes
  - fixed event recurrence editor (until date)
  - fixed column display for subfolders of draft & sent
  - improved IE7 support
+ - fixed drag'n'drop of events with Safari
+ - fixed first day of the week in datepickers
+ - fixed exceptions of recurring all-day events
 
 2.0.3 (2012-12-06)
 ------------------
