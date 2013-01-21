@@ -29,6 +29,7 @@
 #import "iCalAlarm.h"
 #import "iCalDateTime.h"
 #import "iCalEntityObject.h"
+#import "iCalEvent.h"
 #import "iCalPerson.h"
 
 @interface iCalEntityObject (PrivateAPI)
@@ -266,8 +267,13 @@
 
 - (void) setRecurrenceId: (NSCalendarDate *) newRecId
 {
-  [(iCalDateTime *) [self uniqueChildWithTag: @"recurrence-id"]
-		    setDateTime: newRecId];
+  iCalDateTime* recurrenceId;
+
+  recurrenceId = (iCalDateTime *) [self uniqueChildWithTag: @"recurrence-id"];
+  if ([self isKindOfClass: [iCalEvent class]] && [(iCalEvent *)self isAllDay])
+    [recurrenceId setDate: newRecId];
+  else
+    [recurrenceId setDateTime: newRecId];
 }
 
 - (NSCalendarDate *) recurrenceId
