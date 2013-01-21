@@ -300,7 +300,7 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # **************************** pkgscripts *****************************
 %post
-if ! id sogo >& /dev/null; then /usr/sbin/adduser sogo > /dev/null 2>&1; fi
+if ! id sogo >& /dev/null; then /usr/sbin/useradd -m -k /var/empty -r sogo > /dev/null 2>&1; fi
 /bin/chown sogo /var/run/sogo
 /bin/chown sogo /var/log/sogo
 /bin/chown sogo /var/spool/sogo
