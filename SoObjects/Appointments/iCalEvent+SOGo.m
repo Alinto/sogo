@@ -1,6 +1,6 @@
 /* iCalEvent+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2011 Inverse inc.
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Francis Lachapelle <flachapelle@inverse.ca>
@@ -282,7 +282,7 @@
   dates = [[[self uniqueChildWithTag: @"dtstart"] valuesForKey: @""] lastObject];
   if ([dates count] > 0)
     {
-      start = [[dates lastObject] asCalendarDate];
+      start = [[dates lastObject] asCalendarDate]; // ignores timezone
       end = [start addTimeInterval: [self occurenceInterval]];
 
       firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: start

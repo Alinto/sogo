@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2008-2011 Inverse inc.
+  Copyright (C) 2008-2013 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of OpenGroupware.org.
@@ -133,35 +133,15 @@
   if (doesOccur)
     {
       // Retrieve the range of the first event
-      firstRange = [self firstOccurenceRange];
+      firstRange = [self firstOccurenceRange]; // returns GMT dates
 
       // Set the range to check with respect to the event timezone (extracted from the start date)
       firstStartDate = (iCalDateTime *)[self uniqueChildWithTag: @"dtstart"];
       timeZone = [(iCalDateTime *)firstStartDate timeZone];
       if (timeZone)
-        {
           startDate = [(iCalTimeZone *)timeZone computedDateForDate: theOccurenceDate];
-        }
       else
-	{
 	  startDate = theOccurenceDate;
-	  if ([self isKindOfClass: [iCalEvent class]] && [(iCalEvent *) self isAllDay])
-	    {
-	      // The event lasts all-day and has no timezone (floating); we convert the range of the first event
-	      // to the occurence's timezone.
-	      timeZone = [theOccurenceDate timeZone];
-	      offset = [(NSTimeZone *)timeZone secondsFromGMTForDate: [firstRange startDate]];
-	      firstStartDate = (NSCalendarDate *)[[firstRange startDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-										   seconds:-offset];
-	      firstEndDate = (NSCalendarDate *)[[firstRange endDate] dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-									       seconds:-offset];
-	      [(NSCalendarDate *)firstStartDate setTimeZone: timeZone];
-	      [(NSCalendarDate *)firstEndDate setTimeZone: timeZone];
-
-	      firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
-								       endDate: firstEndDate];
-	    }
-	}
       endDate = [startDate addTimeInterval: [self occurenceInterval]];
       checkRange = [NGCalendarDateRange calendarDateRangeWithStartDate: startDate
 							       endDate: endDate];
