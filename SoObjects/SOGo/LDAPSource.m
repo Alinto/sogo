@@ -570,14 +570,14 @@ static Class NSStringK;
                                                      grace: _grace];
               }
           }
-        [bindConnection release];
       }
   NS_HANDLER
     {
       [self logWithFormat: @"%@", localException];
     }
   NS_ENDHANDLER;
-  
+
+  [bindConnection release];
   return didBind;
 }
 
@@ -675,7 +675,6 @@ static Class NSStringK;
                                                             perr: (void *)perr];
               }
           }
-        [bindConnection release];
       }
   NS_HANDLER
     {
@@ -683,6 +682,7 @@ static Class NSStringK;
     }
   NS_ENDHANDLER ;
   
+  [bindConnection release];
   return didChange;
 }
 
