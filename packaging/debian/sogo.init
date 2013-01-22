@@ -62,10 +62,10 @@ case "$1" in
   start)
 	log_daemon_msg "Starting $DESC" "$NAME"
 
-        # Ensure directory's existence and permissions
-        install -o $USER -g adm -m 755 -d /var/run/$NAME
-        install -o $USER -g adm -m 750 -d /var/spool/$NAME
-        install -o $USER -g adm -m 750 -d /var/log/$NAME
+        # Enforce directory existence and permissions
+        install -o $USER -g $USER -m 755 -d /var/run/$NAME
+        install -o $USER -g $USER -m 750 -d /var/spool/$NAME
+        install -o $USER -g $USER -m 750 -d /var/log/$NAME
 
 	if ! start-stop-daemon -c $USER --quiet --start --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS 
 	then
