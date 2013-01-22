@@ -18,8 +18,8 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin
 
 case "$1" in
     configure)
-	  # update timestamp on imgs,css,js to let apache know the files changed
-	  find /usr/lib/GNUstep/SOGo/WebServerResources  -exec touch {} \;
+          # update timestamp on imgs,css,js to let apache know the files changed
+          find /usr/lib/GNUstep/SOGo/WebServerResources  -exec touch {} \;
         ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
