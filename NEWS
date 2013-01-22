@@ -5,6 +5,9 @@ New features
  - sogo-tool: new "dump-defaults" command to easily create /etc/sogo.conf
 
 Enhancements
+ - The sogo user is now a system user.
+   For new installs, this means that 'su - sogo' won't work anymore.
+   Please use 'sudo -u sogo cmd' instead
  - added basic support for LDAP URL in user sources
  - renamed default SOGoForceIMAPLoginWithEmail to
    SOGoForceExternalLoginWithEmail and extended it to SMTP authentication
