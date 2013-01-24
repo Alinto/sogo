@@ -300,7 +300,11 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # **************************** pkgscripts *****************************
 %post
-if ! id sogo >& /dev/null; then /usr/sbin/useradd -m -k /var/empty -r sogo > /dev/null 2>&1; fi
+if ! id sogo >& /dev/null; then 
+	/usr/sbin/useradd -c "SOGo system user" -d /var/sogo -r -s /sbin/nologin sogo > /dev/null 2>&1; 
+	mkdir -p /var/sogo
+	/bin/chown sogo /var/sogo
+fi
 /bin/chown sogo /var/run/sogo
 /bin/chown sogo /var/log/sogo
 /bin/chown sogo /var/spool/sogo
