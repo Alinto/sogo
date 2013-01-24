@@ -182,7 +182,7 @@
                      autocomplete="off" type="text"
                      menuid="taskSearchMenu" />
             </span>
-            <input id="showHideCompletedTasks" type="checkbox" class="checkBox"/><var:string label:value="Show completed tasks"/>
+            <input id="showHideCompletedTasks" type="checkbox" class="checkBox" var:checked="showCompletedTasks"/><var:string label:value="Show completed tasks"/>
           </div>
           <table id="tasksList" cellspacing="0">
             <thead>

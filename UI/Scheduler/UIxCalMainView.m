@@ -212,6 +212,15 @@
    return (list && [list compare: @"tasksListView"] == NSOrderedSame)? @"active" : @"";
 }
 
+- (BOOL) showCompletedTasks
+{
+  BOOL show;
+
+  [self _setupContext];
+
+  return [[us objectForKey: @"ShowCompletedTasks"] boolValue];
+}
+
 - (WOResponse *) saveSelectedListAction
 {
   WORequest *request;
