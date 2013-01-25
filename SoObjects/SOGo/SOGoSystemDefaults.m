@@ -69,21 +69,6 @@ BootstrapNSUserDefaults ()
 }
 
 static void
-_migrateSOGo09Configuration (NSUserDefaults *ud, NSObject *logger)
-{
-  NSDictionary *domain;
-
-  domain = [ud persistentDomainForName: @"sogod-0.9"];
-  if ([domain count])
-    {
-      [logger logWithFormat: @"migrating user defaults from sogod-0.9"];
-      [ud setPersistentDomain: domain forName: @"sogod"];
-      [ud removePersistentDomainForName: @"sogod-0.9"];
-      [ud synchronize];
-    }
-}
-
-static void
 _injectConfigurationFromFile (NSUserDefaults *ud,
                               NSString *filename, NSObject *logger)
 {
@@ -138,11 +123,6 @@ _injectConfigurationFromFile (NSUserDefaults *ud,
 
   /* we load the configuration from the standard user default files */
   ud = [NSUserDefaults standardUserDefaults];
-
-  /* if "sogod" does not exist, maybe "sogod-0.9" still exists from an old
-     configuration */
-  if (![[ud persistentDomainForName: @"sogod"] count])
-    _migrateSOGo09Configuration (ud, logger);
 
   /* reregister defaults from domain "sogod" into default domain, for
      non-sogod processes */
