@@ -2,7 +2,7 @@
 ------------------
 
 New features
- - sogo-tool: new "dump-defaults" command to easily create /etc/sogo.conf
+ - sogo-tool: new "dump-defaults" command to easily create /etc/sogo/sogo.conf
 
 Enhancements
  - The sogo user is now a system user.
@@ -17,6 +17,7 @@ Enhancements
  - added Finnish translation - thanks to Kari Salmu
  - updated translations
  - recurrence-id of all-day events is now set as a proper date with no time
+ - 'show completed tasks' is now persistent
 
 Bug fixes
  - fixed usage of browser's language for the login page

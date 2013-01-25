@@ -2198,20 +2198,14 @@ function refreshEvents() {
 function refreshTasks(setUserDefault) {
     var titleSearch;
     var value = search["tasks"]["value"];
-    var setud;
 
     if (value && value.length)
         titleSearch = "&search=" + escape(value.utf8encode());
     else
         titleSearch = "";
 
-    /* TODO: the logic behind this should be reimplemented properly:
-       the "taskslist" method should save the status when the 'show-completed'
-       is set to true and revert to the current status when that parameter is
-       NOT passed via the url. */
-    setud = "";
     if (setUserDefault == 1)
-      setud = "&setud=1";
+      titleSearch += "&setud=1";
 
     refreshAlarms();
 
