@@ -41,7 +41,7 @@ function addUser(userName, userID, type) {
         var url = window.location.href;
         var elements = url.split("/");
         elements[elements.length-1] = ("addUserInAcls?uid="
-                                       + userID);
+                                       + encodeURIComponent(userID));
         triggerAjaxRequest(elements.join("/"), addUserCallback, newNode);
         result = true;
     }
