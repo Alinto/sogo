@@ -79,7 +79,7 @@ _injectConfigurationFromFile (NSUserDefaults *ud,
   if ([fm fileExistsAtPath: filename])
     {
       fileAttrs = [fm fileAttributesAtPath: filename
-                                       traverseLink: YES];
+                              traverseLink: YES];
       if (![fileAttrs objectForKey: @"NSFileSize"])
         {
           [logger errorWithFormat:
@@ -111,6 +111,25 @@ _injectConfigurationFromFile (NSUserDefaults *ud,
 
 + (void) prepareUserDefaults
 {
+  /* Load settings from configuration files and
+   * enforce the following order of precedence.
+   * First match wins
+   *   1. Command line arguments
+   *   2. .GNUstepDefaults
+   *   3. /etc/sogo/{debconf,sogo}.conf
+   *   4. SOGoDefaults.plist
+   *
+   * The default standardUserDefaults search list is as follows:
+   *   GSPrimaryDomain
+   *   NSArgumentDomain (command line arguments)
+   *   applicationDomain (sogod)
+   *   NSGlobalDomain
+   *   GSConfigDomain
+   *   (languages)
+   *   NSRegistrationDomain
+   */
+
+  NSDictionary *sogodDomain;
   NSUserDefaults *ud;
   SOGoStartupLogger *logger;
   NSBundle *bundle;
@@ -121,23 +140,31 @@ _injectConfigurationFromFile (NSUserDefaults *ud,
 
   logger = [SOGoStartupLogger sharedLogger];
 
-  /* we load the configuration from the standard user default files */
+  /* Load the configuration from the standard user default files
+   * into the 'sogod' domain */
   ud = [NSUserDefaults standardUserDefaults];
 
-  /* reregister defaults from domain "sogod" into default domain, for
-     non-sogod processes */
-  [ud addSuiteNamed: @"sogod"];
-
-  /* we populate the configuration with the values from SOGoDefaults.plist */
+  /* Populate NSRegistrationDomain with default values from SOGoDefaults.plist */
   bundle = [NSBundle bundleForClass: self];
   filename = [bundle pathForResource: @"SOGoDefaults" ofType: @"plist"];
   if (filename)
     _injectConfigurationFromFile (ud, filename, logger);
 
-  /* fill the possibly missing values with the configuration stored
-     in "/etc" */
+  /* Fill/Override NSRegistrationDomain values with configuration stored
+   *  in "/etc" */
   for (count = 0; count < sizeof(confFiles)/sizeof(confFiles[0]); count++)
     _injectConfigurationFromFile (ud, confFiles[count], logger);
+
+  /* This dance is required to let other appplications (sogo-tool) use
+   * options from the sogod domain while preserving the order of precedence
+   *  - remove the 'sogod' domain from the user defaults search list 
+   *  - register the content of the sogod domain into the NSRegistrationDomain
+   *    Thereby overriding values from the config files loaded above
+   */
+  [ud removeSuiteNamed: @"sogod"];
+  sogodDomain = [ud persistentDomainForName: @"sogod"];
+  if ([sogodDomain count])
+    [ud registerDefaults: sogodDomain];
 
   /* issue a warning if WOApplicationRedirectURL is used */
   redirectURL = [ud stringForKey: @"WOApplicationRedirectURL"];
