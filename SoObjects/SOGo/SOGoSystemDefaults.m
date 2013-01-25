@@ -62,9 +62,9 @@ BootstrapNSUserDefaults ()
   if (handle)
     {
       SOGoNSUserDefaultsBootstrap = dlsym (handle,
-					   "SOGoNSUserDefaultsBootstrap");
+                                             "SOGoNSUserDefaultsBootstrap");
       if (SOGoNSUserDefaultsBootstrap)
-	SOGoNSUserDefaultsBootstrap ();
+        SOGoNSUserDefaultsBootstrap ();
     }
 }
 
@@ -98,10 +98,10 @@ _injectConfigurationFromFile (NSUserDefaults *ud,
       if (![fileAttrs objectForKey: @"NSFileSize"])
         {
           [logger errorWithFormat:
-	          @"Can't get file attributes from '%@'",
-		  filename];
+                  @"Can't get file attributes from '%@'",
+                  filename];
           exit(1);
-	}
+        }
       if ([[fileAttrs objectForKey: @"NSFileSize"] intValue] == 0 )
         {
           [logger warnWithFormat:
