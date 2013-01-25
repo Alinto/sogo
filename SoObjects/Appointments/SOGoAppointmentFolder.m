@@ -20,6 +20,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
@@ -98,6 +99,7 @@
 @implementation SOGoAppointmentFolder
 
 static NSNumber *sharedYes = nil;
+static iCalEvent *iCalEventK = nil;
 
 + (void) initialize
 {
@@ -108,6 +110,8 @@ static NSNumber *sharedYes = nil;
       didInit = YES;
       sharedYes = [[NSNumber numberWithBool: YES] retain];
       [iCalEntityObject initializeSOGoExtensions];
+
+      iCalEventK  = [iCalEvent class];
     }
 }
 
@@ -2928,6 +2932,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   iCalTimeZone *timezone;
   iCalCalendar *masterCalendar;
   iCalEvent *event;
+  NSAutoreleasePool *pool;
 
   int imported, count, i;
 
@@ -2954,8 +2959,17 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       // [components addObjectsFromArray: [calendar journals]];
       // [components addObjectsFromArray: [calendar freeBusys]];
       count = [components count];
+
+      pool = [[NSAutoreleasePool alloc] init];
+
       for (i = 0; i < count; i++)
         {
+          if (i % 10 == 0)
+            {
+              DESTROY(pool);
+              pool = [[NSAutoreleasePool alloc] init];
+            }
+          
           timezone = nil;
           element = [components objectAtIndex: i];
           // Use the timezone of the start date.
@@ -2973,7 +2987,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		  
 		  s = [[startDate valuesAtIndex: 0 forKey: @""] objectAtIndex: 0];
 		  
-		  if ([element isKindOfClass: [iCalEvent class]] &&
+		  if ([element isKindOfClass: iCalEventK] &&
 		      ![(iCalEvent *)element isAllDay] &&
 		      ![s hasSuffix: @"Z"] &&
 		      ![s hasSuffix: @"z"])
@@ -3000,7 +3014,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		    }
 		}
 	      
-              if ([element isKindOfClass: [iCalEvent class]])
+              if ([element isKindOfClass: iCalEventK])
                 {
                   event = (iCalEvent *)element;
                   if (![event hasEndDate] && ![event hasDuration])
@@ -3057,6 +3071,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                       forKey: originalUid];
             }
         }
+      
+      DESTROY(pool);
     }
   
   return imported;
