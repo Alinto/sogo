@@ -21,7 +21,10 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import "SOGoTool.h"
 
@@ -49,6 +52,7 @@
   [instance autorelease];
 
   [instance setArguments: toolArguments];
+  [instance setSanitizedArguments: toolArguments];
   [instance setVerbose: isVerbose];
 
   return [instance run];
@@ -59,6 +63,7 @@
   if ((self = [super init]))
     {
       arguments = nil;
+      sanitizedArguments = nil;
       verbose = NO;
     }
 
@@ -70,6 +75,53 @@
   ASSIGN (arguments, newArguments);
 }
 
+- (void) setSanitizedArguments: (NSArray *) newArguments
+{
+  NSString *argPair, *argsString, *k, *v;
+  NSDictionary   *cliArguments;
+  NSArray *keys, *wordsWP;
+
+  int i;
+
+  argsString = [newArguments componentsJoinedByString:@" "];
+
+  /* Remove NSArgumentDomain -key value from the arguments */
+  cliArguments = [[NSUserDefaults standardUserDefaults]
+                                 volatileDomainForName:NSArgumentDomain];
+  keys = [cliArguments allKeys];
+  for (i=0; i < [keys count]; i++)
+    {
+      k = [keys objectAtIndex: i];
+      v = [cliArguments objectForKey:k];
+      argPair = [NSString stringWithFormat:@"-%@ %@", k, v];
+      argsString = [argsString stringByReplacingOccurrencesOfString: argPair
+                                                         withString: @""];
+    }
+  if ([argsString length])
+    {
+      /* dance to compact whitespace */
+      NSMutableArray *words = [NSMutableArray array];
+      wordsWP = [argsString componentsSeparatedByCharactersInSet:
+                              [NSCharacterSet whitespaceCharacterSet]];
+      for (i=0; i < [wordsWP count]; i++)
+        {
+          v = [wordsWP objectAtIndex: i];
+
+          if([v length] > 1) 
+            {
+              [words addObject:v];
+            }
+        }
+      argsString = [words componentsJoinedByString:@" "];
+      ASSIGN (sanitizedArguments, [argsString componentsSeparatedByString:@" "]);
+    }
+  else
+    {
+      DESTROY(sanitizedArguments);
+    }
+
+}
+
 - (void) setVerbose: (BOOL) newVerbose
 {
   verbose = newVerbose;
@@ -78,6 +130,7 @@
 - (void) dealloc
 {
   [arguments release];
+  [sanitizedArguments release];
   [super dealloc];
 }
 

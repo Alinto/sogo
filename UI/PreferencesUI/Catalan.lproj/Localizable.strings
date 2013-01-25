@@ -141,6 +141,7 @@
 "messageforward_inline" = "Incorporats";
 "messageforward_attached" = "Com a adjunts";
 
+"When replying to a message:" = "En contestar a un missatge";
 "replyplacement_above" = "amb la resposta abans";
 "replyplacement_below" = "amb la resposta després";
 "And place my signature" = "Col·locant la signatura";
@@ -149,12 +150,17 @@
 "Compose messages in" = "Compondre els missatges en";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Text net";
+"Display remote inline images" = "Mostrar imatges remotes embegudes";
+"displayremoteinlineimages_never" = "Mai";
+"displayremoteinlineimages_always" = "Sempre";
 
 /* IMAP Accounts */
 "New Mail Account" = "Compte de correu nou";
 
 "Server Name:" = "Servidor:";
 "Port:" = "Port:";
+"Encryption:" = "Encriptació:";
+"None" = "Cap";
 "User Name:" = "Usuari:";
 "Password:" = "Contrasenya:";
 
@@ -203,13 +209,16 @@
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
 "English" = "English";
+"Finnish" = "Suomi";
 "French" = "Français";
 "German" = "Deutsch";
 "Hungarian" = "Magyar";
+"Icelandic" = "Íslenska";
 "Italian" = "Italiano";
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
+"Polish" = "Polski";
 "Russian" = "Русский";
 "Slovak" = "Slovensky";
 "SpanishSpain" = "Español (España)";
@@ -243,6 +252,7 @@
 "match any of the following rules:" = "compleixin ALGUNA d'aquestes regles:";
 "match all messages" = "tots els missatges";
 "Perform these actions:" = "Realitzar aquestes accions:";
+"Untitled Filter" = "Filtre sense títol";
 
 "Subject" = "Assumpte";
 "From" = "De";

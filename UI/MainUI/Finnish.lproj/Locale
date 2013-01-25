@@ -1,0 +1,35 @@
+/* Finnish */
+{
+  NSLanguageName = "Finnish";
+  NSFormalName = "Suomi";
+  NSLocaleCode = "fi"; /* ISO 639-1 */
+  NSLanguageCode = "fin"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSAMPMDesignation = (AP, IP);
+  NSCurrencySymbol = "$";
+  NSDateFormatString = "%A, %B %e, %Y";
+  NSDateTimeOrdering = MDYH;
+  NSDecimalDigits = ("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+  NSDecimalSeparator = ".";
+  NSEarlierTimeDesignations = (ennen, viimeksi, yli, sitten);
+  NSHourNameDesignations = ((0, "keskiyö"), (10, aamu), (12, "keskipäivä", "lounas"), (14, "iltapäivä"), (19, "päivällinen"));
+  NSInternationalCurrencyString = EUR; /* ISO 4217 */
+  NSLaterTimeDesignations = (seuraava);
+  NSMonthNameArray = (Tammikuu, Helmikuu, Maaliskuu, Huhtikuu, Toukokuu, "Kesäkuu", "Heinäkuu", Elokuu, Syyskuu, Lokakuu, Marraskuu, Joulukuu);
+  NSNextDayDesignations = (huomenna);
+  NSNextNextDayDesignations = ("seuraava päivä");
+  NSPriorDayDesignations = (eilen);
+  NSShortDateFormatString = "%m/%e/%y";
+  NSShortMonthNameArray = (Tammi, Helmi, Maalis, Huhti, Touko, "Kesä", "Heinä", Elo, Syys, Loka, Marras, Joulu);
+  NSShortTimeDateFormatString = "%m/%e/%y %I:%M %p";
+  NSShortWeekDayNameArray = (Su, Ma, Ti, Ke, To, Pe, La);
+  NSThisDayDesignations = ("tänään", nyt);
+  NSThousandsSeparator = ",";
+  NSTimeDateFormatString = "%A, %B %e, %Y %I:%M:%S %p %Z";
+  NSTimeFormatString = "%I:%M:%S %p";
+  NSWeekDayNameArray = (Sunnuntai, Maanantai, Tiistai, Keskiviikko, Torstai, Perjantai, Lauantai);
+  NSYearMonthWeekDesignations = (vuosi, kuukausi, viikko);
+  NSPositiveCurrencyFormatString = "$9,999.00";
+  NSNegativeCurrencyFormatString = "-$9,999.00";
+}

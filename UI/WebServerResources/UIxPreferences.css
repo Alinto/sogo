@@ -201,6 +201,9 @@ P.infoMessage#passwordError
   right: 10px;
   top: 50px; }
 
+#cke_signature, #cke_signature div
+{ padding: 0px; }
+
 #signature
 { width: 100%;
   height: 90px;

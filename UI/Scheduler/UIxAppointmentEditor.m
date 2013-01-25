@@ -110,7 +110,7 @@
 - (NSString *) saveURL
 {
   return [NSString stringWithFormat: @"%@/saveAsAppointment",
-		   [[self clientObject] baseURL]];
+                   [[self clientObject] baseURL]];
 }
 
 /* icalendar values */
@@ -121,7 +121,7 @@
   hm = [self queryParameterForKey: @"hm"];
 
   return (isAllDay
-	  || [hm isEqualToString: @"allday"]);
+          || [hm isEqualToString: @"allday"]);
 }
 
 - (void) setIsAllDay: (BOOL) newIsAllDay
@@ -225,7 +225,7 @@
       uStart = [ud dayStartHour];
       if ([now isDateOnSameDay: newStartDate])
         {
-	  uEnd = [ud dayEndHour];
+          uEnd = [ud dayEndHour];
           hour = [now hourOfDay];
           minute = [now minuteOfHour];
           if (minute % 15)
@@ -287,21 +287,21 @@
       isAllDay = [event isAllDay];
       endDate = [event endDate];
       if (isAllDay)
-	{
-	  endDate = [endDate dateByAddingYears: 0 months: 0 days: -1];
-	  
-	  // Verify if the start date is "floating" (no timezone). In this case, convert it
-	  // to the user's timezone.
-	  eventTimeZone = [(iCalDateTime*)[event uniqueChildWithTag: @"dtstart"] timeZone];
-	  if (eventTimeZone == nil)
-	    {
-	      offset = [timeZone secondsFromGMTForDate: startDate];
-	      startDate = [startDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-					       seconds:-offset];
-	      endDate = [endDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-					   seconds:-offset];
-	    }
-	}
+        {
+          endDate = [endDate dateByAddingYears: 0 months: 0 days: -1];
+
+          // Verify if the start date is "floating" (no timezone). In this case, convert it
+          // to the user's timezone.
+          eventTimeZone = [(iCalDateTime*)[event uniqueChildWithTag: @"dtstart"] timeZone];
+          if (eventTimeZone == nil)
+            {
+              offset = [timeZone secondsFromGMTForDate: startDate];
+              startDate = [startDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                               seconds:-offset];
+              endDate = [endDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                           seconds:-offset];
+            }
+        }
       isTransparent = ![event isOpaque];
     }
 
@@ -360,21 +360,22 @@
     {
       untilDate = [rule untilDate];
       if (untilDate)
-	{
-	  // The until date must match the time of the end date
-	  NSCalendarDate *date;
+        {
+          // The until date must match the time of the end date
+          NSCalendarDate *date;
 
-	  date = [[event endDate] copy];
-	  [date setTimeZone: timeZone];
-	  untilDate = [untilDate dateByAddingYears:0
-				 months:0
-				 days:0
-				 hours:[date hourOfDay]
-				 minutes:[date minuteOfHour]
-				 seconds:0];
-	  [rule setUntilDate: untilDate];
-	  [date release];
-	}
+          date = [[event endDate] copy];
+          [date setTimeZone: timeZone];
+          [untilDate setTimeZone: timeZone];
+          untilDate = [untilDate dateByAddingYears:0
+                                 months:0
+                                 days:0
+                                 hours:[date hourOfDay]
+                                 minutes:[date minuteOfHour]
+                                 seconds:0];
+          [rule setUntilDate: untilDate];
+          [date release];
+        }
     }
 }
 
@@ -401,18 +402,18 @@
       if (componentCalendar
           && ![[componentCalendar ocsPath]
                 isEqualToString: [previousCalendar ocsPath]])
-	{
-	  // New event in a different calendar -- make sure the user can
-	  // write to the selected calendar since the rights were verified
-	  // on the calendar specified in the URL, not on the selected
-	  // calendar of the popup menu.
-	  if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-		   onObject: componentCalendar
-		   inContext: context])
-	    co = [componentCalendar lookupName: [co nameInContainer]
-				    inContext: context
-				    acquire: NO];
-	}
+        {
+          // New event in a different calendar -- make sure the user can
+          // write to the selected calendar since the rights were verified
+          // on the calendar specified in the URL, not on the selected
+          // calendar of the popup menu.
+          if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+                   onObject: componentCalendar
+                   inContext: context])
+            co = [componentCalendar lookupName: [co nameInContainer]
+                                    inContext: context
+                                    acquire: NO];
+        }
       
       // Save the event.
       ex = [co saveComponent: event];
@@ -425,32 +426,32 @@
       if (componentCalendar
           && ![[componentCalendar ocsPath]
                 isEqualToString: [previousCalendar ocsPath]])
-	{
-	  // The event was moved to a different calendar.
-	  if (![sm validatePermission: SoPerm_DeleteObjects
-		   onObject: previousCalendar
-		   inContext: context])
-	    {
-	      if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
-		       onObject: componentCalendar
-		       inContext: context])
-		ex = [co moveToFolder: componentCalendar];
-	    }
-	}
+        {
+          // The event was moved to a different calendar.
+          if (![sm validatePermission: SoPerm_DeleteObjects
+                   onObject: previousCalendar
+                   inContext: context])
+            {
+              if (![sm validatePermission: SoPerm_AddDocumentsImagesAndFiles
+                       onObject: componentCalendar
+                       inContext: context])
+                ex = [co moveToFolder: componentCalendar];
+            }
+        }
     }
 
   if (ex)
     jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
-				   @"failure", @"status",
-				 [ex reason],
-				 @"message",
-				 nil];
+                                   @"failure", @"status",
+                                 [ex reason],
+                                 @"message",
+                                 nil];
   else
     jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
-				   @"success", @"status", nil];
+                                   @"success", @"status", nil];
   
   return [self responseWithStatus: 200
-	       andString: [jsonResponse jsonRepresentation]];
+               andString: [jsonResponse jsonRepresentation]];
 }
 
 - (id <WOActionResults>) viewAction
@@ -479,7 +480,7 @@
     {
       componentCalendar = [co container];
       if ([componentCalendar isKindOfClass: [SOGoCalendarComponent class]])
-	componentCalendar = [componentCalendar container];
+        componentCalendar = [componentCalendar container];
       [componentCalendar retain];
     }
   
@@ -507,18 +508,18 @@
     }
 
   data = [NSDictionary dictionaryWithObjectsAndKeys:
-		       [componentCalendar displayName], @"calendar",
-		       [event tag], @"component",
-		       [dateFormatter formattedDate: eventStartDate], @"startDate",
-		       [dateFormatter formattedTime: eventStartDate], @"startTime",
-		       [dateFormatter formattedDate: eventEndDate], @"endDate",
-		       [dateFormatter formattedTime: eventEndDate], @"endTime",
+                       [componentCalendar displayName], @"calendar",
+                       [event tag], @"component",
+                       [dateFormatter formattedDate: eventStartDate], @"startDate",
+                       [dateFormatter formattedTime: eventStartDate], @"startTime",
+                       [dateFormatter formattedDate: eventEndDate], @"endDate",
+                       [dateFormatter formattedTime: eventEndDate], @"endTime",
                      //([event hasRecurrenceRules] ? @"1": @"0"), @"isRecurring",
-		       ([event isAllDay] ? @"1": @"0"), @"isAllDay",
-		       [event summary], @"summary",
-		       [event location], @"location",
-		       [event comment], @"description",
-		       nil];
+                       ([event isAllDay] ? @"1": @"0"), @"isAllDay",
+                       [event summary], @"summary",
+                       [event location], @"location",
+                       [event comment], @"description",
+                       nil];
   
   [result appendContentString: [data jsonRepresentation]];
 
@@ -533,7 +534,7 @@
   actionName = [[request requestHandlerPath] lastPathComponent];
 
   return ([[self clientObject] conformsToProtocol: @protocol (SOGoComponentOccurence)]
-	  && [actionName hasPrefix: @"save"]);
+          && [actionName hasPrefix: @"save"]);
 }
 
 - (void) takeValuesFromRequest: (WORequest *) _rq
@@ -550,7 +551,7 @@
   if (isAllDay)
     {
       nbrDays = ((float) abs ([aptEndDate timeIntervalSinceDate: aptStartDate])
-		 / 86400) + 1;
+                 / 86400) + 1;
       [event setAllDayWithStartDate: aptStartDate
                            duration: nbrDays];
     }
@@ -640,28 +641,28 @@
       [delegatedAttendee setEmail: delegatedEmail];
       delegatedUid = [delegatedAttendee uid];
       if (delegatedUid)
-	{
-	  SOGoUser *delegatedUser;
-	  delegatedUser = [SOGoUser userWithLogin: delegatedUid];
-	  [delegatedAttendee setCn: [delegatedUser cn]];
-	}
+        {
+          SOGoUser *delegatedUser;
+          delegatedUser = [SOGoUser userWithLogin: delegatedUid];
+          [delegatedAttendee setCn: [delegatedUser cn]];
+        }
       
       [delegatedAttendee setRole: @"REQ-PARTICIPANT"];
       [delegatedAttendee setRsvp: @"TRUE"];
       [delegatedAttendee setParticipationStatus: iCalPersonPartStatNeedsAction];
       [delegatedAttendee setDelegatedFrom:
-	       [NSString stringWithFormat: @"mailto:%@", [[user allEmails] objectAtIndex: 0]]];
+               [NSString stringWithFormat: @"mailto:%@", [[user allEmails] objectAtIndex: 0]]];
       
 //      receiveUpdates = [[request formValueForKey: @"receiveUpdates"] boolValue];
 //      if (receiveUpdates)
-//	[delegatedAttendee setRole: @"NON-PARTICIPANT"];
+//      [delegatedAttendee setRole: @"NON-PARTICIPANT"];
 
       response = (WOResponse*)[[self clientObject] changeParticipationStatus: @"DELEGATED"
-						   withDelegate: delegatedAttendee];
+                                                   withDelegate: delegatedAttendee];
     }
   else
     response = [NSException exceptionWithHTTPStatus: 400
-					     reason: @"missing 'to' parameter"];
+                                             reason: @"missing 'to' parameter"];
 
   if (!response)
     response = [self responseWith204];

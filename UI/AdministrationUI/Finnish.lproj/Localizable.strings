@@ -1,0 +1,15 @@
+/* this file is in UTF-8 format! */
+
+"Help" = "Apua";
+"Close" = "Sulje";
+
+"Modules" = "Modulit";
+
+/* Modules short names */
+"ACLs" = "ACL:t";
+
+/* Modules titles */
+"ACLs_title" = "Käyttäjähakemistojen oikeuksien hallinta ACL";
+
+/* Modules descriptions */
+"ACLs_description" = "<p>Access Control Lists hallintamoduli mahdollistaa käyttäjien kalentereiden ja osoitekirjojen muuttamisen.</p><p>Muokataksesi käyttäjähakemiston oikeuksia, kirjoita käyttäjän nimi sivun ylälaidan hakukenttään ja kaksoisnapsauta haluamaasi hakemistoa.</p>";

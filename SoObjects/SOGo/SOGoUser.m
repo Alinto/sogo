@@ -592,8 +592,8 @@
 
   // 1. login
   imapLogin = [[SOGoUserManager sharedUserManager]
-                     getImapLoginForUID: [self loginInDomain]
-                               inDomain: [self domain]];
+                     getExternalLoginForUID: [self loginInDomain]
+                                   inDomain: [self domain]];
   [mailAccount setObject: imapLogin forKey: @"userName"];
 
   // 2. server

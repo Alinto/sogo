@@ -200,7 +200,7 @@
 "Select a vCard or LDIF file." = "Zvolte LDIF nebo vCard soubor.";
 "Upload" = "Upload";
 "Uploading" = "Nahrávání";
-"Done" = "Done";
+"Done" = "Hotovo";
 "An error occured while importing contacts." = "Při importu došlo k chybě.";
 "No card was imported." = "Nebyl importován žádný kontakt.";
 "A total of %{0} cards were imported in the addressbook." = "Do adresáře bylo importováno %{0} kontaktů.";

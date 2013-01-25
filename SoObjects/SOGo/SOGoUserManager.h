@@ -1,6 +1,6 @@
 /* SOGoUserManager.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2011 Inverse inc.
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Francis Lachapelle <flachapelle@inverse.ca>
@@ -76,8 +76,8 @@
 - (NSString *) getCNForUID: (NSString *) uid;
 - (NSString *) getEmailForUID: (NSString *) uid;
 - (NSString *) getFullEmailForUID: (NSString *) uid;
-- (NSString *) getImapLoginForUID: (NSString *) uid
-                         inDomain: (NSString *) domain;
+- (NSString *) getExternalLoginForUID: (NSString *) uid
+                             inDomain: (NSString *) domain;
 - (NSString *) getUIDForEmail: (NSString *) email;
 - (NSString *) getLoginForDN: (NSString *) theDN;
 

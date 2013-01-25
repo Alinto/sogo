@@ -48,6 +48,10 @@ vtodo_class2 = "(Tasca confidencial)";
 = "Si us plau, accepteu o rebutgeu aquests canvis.";
 
 /* Reply */
+"Accepted invitation: \"%{Summary}\"" = "Invitació acceptada: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "Invitació rebutjada; \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "Invitació delegada: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "Encara no decidit sobre la invitació: \"%{Summary}\"";
 "%{Attendee} %{SentByText}has accepted your event invitation."
 = "%{Attendee} %{SentByText}ha acceptat la invitació a l'esdeveniment.";
 "%{Attendee} %{SentByText}has declined your event invitation."

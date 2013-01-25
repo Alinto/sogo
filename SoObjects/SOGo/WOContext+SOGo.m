@@ -44,17 +44,17 @@
   
   languages = [NSMutableArray array];
   user = [self activeUser];
-  if ([user isKindOfClass: [SOGoUser class]])
+  if (!user || [[user login] isEqualToString: @"anonymous"])
+    {
+      browserLanguages = [[self request] browserLanguages];
+      [languages addObjectsFromArray: browserLanguages];
+    }
+  else
     {
       language = [[user userDefaults] language];
       [languages addObject: language];
       language = [[user domainDefaults] language];
       [languages addObject: language];
-    }
-  else
-    {
-      browserLanguages = [[self request] browserLanguages];
-      [languages addObjectsFromArray: browserLanguages];
     }
 
   // if (activeUser && [activeUser language])

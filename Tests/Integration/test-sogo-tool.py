@@ -32,7 +32,7 @@ class sogoToolTest(unittest.TestCase):
       self.assertEqual(os.getuid(), 0, "this test must run as root...")
 
       os.chown(self.backupdir, uid, gid)
-      status = os.system("su - %s -c \"(cd %s && %s backup . ALL >/dev/null 2>&1)\""
+      status = os.system("sudo -u %s bash -c \"(cd %s && %s backup . ALL >/dev/null 2>&1)\""
                           % (sogo_user, self.backupdir, sogo_tool_path))
 
       rc=os.WEXITSTATUS(status)

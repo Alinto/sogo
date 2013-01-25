@@ -87,20 +87,39 @@ static void
 _injectConfigurationFromFile (NSUserDefaults *ud,
                               NSString *filename, NSObject *logger)
 {
+  NSDictionary *newConfig, *fileAttrs;
   NSFileManager *fm;
-  NSDictionary *newConfig;
 
   fm = [NSFileManager defaultManager];
   if ([fm fileExistsAtPath: filename])
     {
-      newConfig = [NSDictionary dictionaryWithContentsOfFile: filename];
-      if (newConfig)
-        [ud registerDefaults: newConfig];
+      fileAttrs = [fm fileAttributesAtPath: filename
+                                       traverseLink: YES];
+      if (![fileAttrs objectForKey: @"NSFileSize"])
+        {
+          [logger errorWithFormat:
+	          @"Can't get file attributes from '%@'",
+		  filename];
+          exit(1);
+	}
+      if ([[fileAttrs objectForKey: @"NSFileSize"] intValue] == 0 )
+        {
+          [logger warnWithFormat:
+                  @"Empty file: '%@'. Skipping",
+                  filename];
+        }
       else
         {
-          [logger errorWithFormat: @"Cannot read configuration from '%@'.",
-                  filename];
-          exit (1);
+          newConfig = [NSDictionary dictionaryWithContentsOfFile: filename];
+          if (newConfig)
+            [ud registerDefaults: newConfig];
+          else
+            {
+              [logger errorWithFormat:
+                      @"Cannot read configuration from '%@'. Aborting",
+                      filename];
+              exit(1);
+            }
         }
     }
 }

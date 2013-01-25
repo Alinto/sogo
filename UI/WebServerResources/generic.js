@@ -118,7 +118,7 @@ function extractEmailAddress(mailTo) {
     var email = "";
 
     var emailre
-        = /([a-zA-Z0-9\._-]*[a-zA-Z0-9_-]+@[a-zA-Z0-9\._-]*[a-zA-Z0-9])/;
+        = /([a-zA-Z0-9\._\-]*[a-zA-Z0-9_\-]+@[a-zA-Z0-9\._\-]*[a-zA-Z0-9])/;
     if (emailre.test(mailTo)) {
         emailre.exec(mailTo);
         email = RegExp.$1;
@@ -1869,6 +1869,19 @@ function parent$(element) {
         p = null;
 
     return (p ? p.getElementById(element) : null);
+}
+
+function parentvar(name) {
+    var div = $("popupFrame");
+
+    if (div)
+        p = parent;
+    else if (this.opener)
+        p = this.opener;
+    else
+        p = null;
+
+    return (p ? p[name] : null);
 }
 
 /* stubs */

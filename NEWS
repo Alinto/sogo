@@ -1,3 +1,36 @@
+2.0.4 (2013-01-DD)
+------------------
+
+New features
+ - sogo-tool: new "dump-defaults" command to easily create /etc/sogo/sogo.conf
+
+Enhancements
+ - The sogo user is now a system user.
+   For new installs, this means that 'su - sogo' won't work anymore.
+   Please use 'sudo -u sogo cmd' instead
+   If used in scripts from cronjobs, 'requiretty' must be disabled in sudoers
+ - added basic support for LDAP URL in user sources
+ - renamed default SOGoForceIMAPLoginWithEmail to
+   SOGoForceExternalLoginWithEmail and extended it to SMTP authentication
+ - updated the timezone files to the 2012j edition and removed RRDATES
+ - updated CKEditor to version 4.0.1
+ - added Finnish translation - thanks to Kari Salmu
+ - updated translations
+ - recurrence-id of all-day events is now set as a proper date with no time
+ - 'show completed tasks' is now persistent
+
+Bug fixes
+ - fixed usage of browser's language for the login page
+ - fixed partstat of attendee in her/his calendar
+ - fixed French templates encoding
+ - fixed CardDAV collections for OS X
+ - fixed event recurrence editor (until date)
+ - fixed column display for subfolders of draft & sent
+ - improved IE7 support
+ - fixed drag'n'drop of events with Safari
+ - fixed first day of the week in datepickers
+ - fixed exceptions of recurring all-day events
+
 2.0.3 (2012-12-06)
 ------------------
 

@@ -637,7 +637,7 @@ function onMailboxTreeItemClick(event) {
     }
     else {
         var datatype = this.parentNode.getAttribute("datatype");
-        if (datatype == 'draft' || datatype == 'sent')
+        if (datatype == 'draft' || datatype == 'draft/folder' || datatype == 'sent' || datatype == 'sent/folder')
             toggleAddressColumn("from", "to");
         else
             toggleAddressColumn("to", "from");
@@ -1591,7 +1591,8 @@ function loadRemoteImages() {
     content.hiddenObjects = null;
 
     var loadImagesButton = $("loadImagesButton");
-    loadImagesButton.setStyle({ display: 'none' });
+    if (loadImagesButton)
+        loadImagesButton.setStyle({ display: 'none' });
 }
 
 function onEmailAddressClick(event) {

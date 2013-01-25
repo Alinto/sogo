@@ -44,18 +44,19 @@
 #import <Appointments/SOGoAppointmentFolders.h>
 
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoBuild.h>
 #import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoCASSession.h>
+#import <SOGo/SOGoConstants.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #if defined(SAML2_CONFIG)
 #import <SOGo/SOGoSAML2Session.h>
 #endif /* SAML2_ENABLE */
+#import <SOGo/SOGoSession.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoWebAuthenticator.h>
-#import <SOGo/SOGoSession.h>
-#import <SOGo/SOGoConstants.h>
 
 #import "SOGoRootPage.h"
 
@@ -514,10 +515,7 @@
 {
   NSString *aString;
 
-  aString = [NSString stringWithFormat: @"%d.%d.%d",
-		      SOGO_MAJOR_VERSION,
-		      SOGO_MINOR_VERSION,
-		      SOGO_SUBMINOR_VERSION];
+  aString = [NSString stringWithString: SOGoVersion ];
 
   return aString;
 }

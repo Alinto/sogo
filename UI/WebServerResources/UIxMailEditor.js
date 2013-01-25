@@ -464,13 +464,6 @@ function initMailEditor() {
         // HTML mode
         CKEDITOR.replace('text',
                          {
-                             toolbar :
-                             [['Bold', 'Italic', '-', 'NumberedList', 
-                               'BulletedList', '-', 'Link', 'Unlink', 'Image', 
-                               'JustifyLeft','JustifyCenter','JustifyRight',
-                               'JustifyBlock','Font','FontSize','-','TextColor',
-                               'BGColor','-','SpellChecker','Scayt']
-                             ],
                              language : localeCode,
 			     scayt_sLang : localeCode
                           }

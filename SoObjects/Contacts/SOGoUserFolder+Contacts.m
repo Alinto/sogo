@@ -61,7 +61,7 @@
 
 - (NSArray *) davDirectoryGateway
 {
-  NSArray *tag, *sources;
+  NSArray *tag, *sources, *sorted_sources;
   SOGoContactFolders *parent;
   SOGoUserManager *um;
   NSString *domain, *url;
@@ -71,9 +71,11 @@
   sources = [um addressBookSourceIDsInDomain: domain];
   if ([sources count] > 0)
     {
+      // Only return the first ID from the sorted list of sources
       parent = [self privateContacts: @"Contacts" inContext: context];
+      sorted_sources = [sources sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
       url = [NSString stringWithFormat: @"%@%@/", [parent davURLAsString],
-                      [sources objectAtIndex: 0]];
+                      [sorted_sources objectAtIndex: 0]];
       tag = [NSArray arrayWithObject:
                        [NSArray arrayWithObjects: @"href", @"DAV:", @"D",
                                 url, nil]];

@@ -383,21 +383,22 @@ function onEditorCancelClick(event) {
 }
 
 function escapeAlertMessages () {
-    dayFieldInvalid = dayFieldInvalid.decodeEntities ();
-    weekFieldInvalid = weekFieldInvalid.decodeEntities ();
-    monthFieldInvalid = monthFieldInvalid.decodeEntities ();
-    monthDayFieldInvalid = monthDayFieldInvalid.decodeEntities ();
-    yearFieldInvalid = yearFieldInvalid.decodeEntities ();
-    appointmentFieldInvalid = appointmentFieldInvalid.decodeEntities ();
-    recurrenceUnsupported = recurrenceUnsupported.decodeEntities ();
+    dayFieldInvalid = dayFieldInvalid.decodeEntities();
+    weekFieldInvalid = weekFieldInvalid.decodeEntities();
+    monthFieldInvalid = monthFieldInvalid.decodeEntities();
+    monthDayFieldInvalid = monthDayFieldInvalid.decodeEntities();
+    yearFieldInvalid = yearFieldInvalid.decodeEntities();
+    appointmentFieldInvalid = appointmentFieldInvalid.decodeEntities();
+    recurrenceUnsupported = recurrenceUnsupported.decodeEntities();
 }
 
 function onRecurrenceLoadHandler() {
     initializeFormValues();
     initializeSelectors();
     initializeWindowButtons();
-    assignCalendar('endDate_date');
-    escapeAlertMessages ();
+    jQuery('#endDate_date').closest('.date').datepicker(
+        { autoclose: true, weekStart: parentvar('firstDayOfWeek') });
+    escapeAlertMessages();
 }
 
 document.observe("dom:loaded", onRecurrenceLoadHandler);

@@ -1,0 +1,46 @@
+ACCEPTED = "hyväksytty";
+COMPLETED = "valmistunut";
+DECLINED = "hylätty";
+DELEGATED = "valtuutettu";
+"IN-PROCESS" = "meneillään";
+"NEEDS-ACTION" = "vaatii toimenpiteitä";
+TENTATIVE = "alustava";
+organized_by_you = "sinun järjestämä";
+you_are_an_attendee = "olet osallistuja";
+add_info_text = "SOGo ei vielä tue iMIP 'ADD' pyyntöjä.";
+publish_info_text = "Lähettäjä ilmoittaa sinulle liitteenä olevan tapahtuman.";
+cancel_info_text = "Kutsusi tai tapahtuma on peruttu.";
+request_info_no_attendee = "ehdottaa kokousta osallistujille. Saat tämän sähköpostin ilmoituksena, et osallistujana.";
+Appointment = "Tapahtuma";
+
+Organizer = "Järjestäjä";
+Time = "Aika";
+Attendees = "Osallistujat";
+request_info = "kutsuu sinut osallistumaan tapaamiseen.";
+"Add to calendar" = "Lisää kalenteriin";
+"Delete from calendar" = "Poista kalenterista";
+"Update status" = "Päivitä tila";
+Accept = "Hylkää";
+Decline = "Hylkää";
+Tentative = "Alustava";
+"Delegate ..." = "Valtuuta ...";
+"Delegated to" = "Valtuutettu";
+"Update status in calendar" = "Päivitä tila kalenterissa";
+"delegated from" = "valtuuttaja";
+
+reply_info_no_attendee = "Olet saanut vastauksen kalenteritapahtumaan, mutta vastaaja ei ole osallistuja.";
+reply_info = "Tämä on vastaus tapahtumakutsuusi.";
+
+"to" = " ";
+
+"Untitled" = "Nimetön";
+
+"Size" = "Koko";
+
+"Digital signature is not valid" = "Digitaalinen allekirjoitus ei kelpaa";
+"Message is signed" = "Viesti on allekirjoitettu";
+"Subject" = "Aihe";
+"From" = "Lähettäjä";
+"Date" = "Päiväys";
+"To" = "Vastaanottaja";
+"Issuer" = "Julkaisija";

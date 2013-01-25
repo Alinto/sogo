@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2012 Inverse inc.
+  Copyright (C) 2007-2013 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -20,6 +20,7 @@
   02111-1307, USA.
 */
 
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
@@ -98,6 +99,7 @@
 @implementation SOGoAppointmentFolder
 
 static NSNumber *sharedYes = nil;
+static iCalEvent *iCalEventK = nil;
 
 + (void) initialize
 {
@@ -108,6 +110,8 @@ static NSNumber *sharedYes = nil;
       didInit = YES;
       sharedYes = [[NSNumber numberWithBool: YES] retain];
       [iCalEntityObject initializeSOGoExtensions];
+
+      iCalEventK  = [iCalEvent class];
     }
 }
 
@@ -697,8 +701,10 @@ static NSNumber *sharedYes = nil;
   unsigned int count;
   NSCalendarDate *date;
   NSNumber *dateValue;
+  BOOL isAllDay;
   unsigned int offset;
 
+  isAllDay = [[theRecord objectForKey: @"c_isallday"] boolValue];
   record = [[theRecord mutableCopy] autorelease];
   for (count = 0; count < 2; count++)
     {
@@ -709,7 +715,7 @@ static NSNumber *sharedYes = nil;
 	  if (date)
 	    {
 	      [date setTimeZone: timeZone];
-	      if ([[theRecord objectForKey: @"c_isallday"] boolValue])
+              if (isAllDay)
 		{
 		  // Since there's no timezone associated to all-day events,
 		  // their time must be adjusted for the user's timezone.
@@ -788,6 +794,15 @@ static NSNumber *sharedYes = nil;
   [record setObject: date forKey: @"startDate"];
   dateSecs = [NSNumber numberWithInt: [date timeIntervalSince1970]];
   [record setObject: dateSecs forKey: @"c_startdate"];
+
+  if ([[record valueForKey: @"c_isallday"] boolValue])
+    {
+      // Refer to all-day recurrence id by their GMT-based start date
+      date = [theCycle startDate];
+      secondsOffsetFromGMT = (int) [[date timeZone] secondsFromGMTForDate: date];
+      date = [date dateByAddingYears: 0 months: 0 days: 0 hours: 0 minutes: 0 seconds: secondsOffsetFromGMT];
+      dateSecs = [NSNumber numberWithInt: [date timeIntervalSince1970]];
+    }
   [record setObject: dateSecs forKey: @"c_recurrence_id"];
 
   date = [theCycle endDate];
@@ -851,18 +866,18 @@ static NSNumber *sharedYes = nil;
 firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		       fromRow: (NSDictionary *) row
 		      forRange: (NGCalendarDateRange *) dateRange
-                  withTimeZone: (NSTimeZone *) tz
+                      withTimeZone: (NSTimeZone *) tz
 		       toArray: (NSMutableArray *) ma
 {
-  NSCalendarDate *startDate, *recurrenceId;
+  NSCalendarDate *recurrenceId;
   NSMutableDictionary *newRecord;
   NSDictionary *oldRecord;
   NGCalendarDateRange *newRecordRange;
-  NSComparisonResult compare;
   int recordIndex, secondsOffsetFromGMT;
 
   newRecord = nil;
   recurrenceId = [component recurrenceId];
+
   if (!recurrenceId)
     {
       [self errorWithFormat: @"ignored component with an empty EXCEPTION-ID"];
@@ -877,40 +892,32 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       secondsOffsetFromGMT = [tz secondsFromGMTForDate: recurrenceId];
       recurrenceId = (NSCalendarDate *) [recurrenceId dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
                                                                 seconds:-secondsOffsetFromGMT];
+      [recurrenceId setTimeZone: tz];
     }
 
-  compare = [[dateRange startDate] compare: recurrenceId];
-  if ((compare == NSOrderedAscending || compare == NSOrderedSame) &&
-      [[dateRange endDate] compare: recurrenceId] == NSOrderedDescending)
+  if ([dateRange containsDate: [component startDate]] ||
+      [dateRange containsDate: [component endDate]])
     {
       recordIndex = [self _indexOfRecordMatchingDate: recurrenceId
 					     inArray: ma];
       if (recordIndex > -1)
 	{
-	  startDate = [component startDate];
-	  if ([dateRange containsDate: startDate])
-	    {
-	      newRecord = [self fixupRecord: [component quickRecord]];
-	      [newRecord setObject: [NSNumber numberWithInt: 1]
-			    forKey: @"c_iscycle"];
-	      oldRecord = [ma objectAtIndex: recordIndex];
-	      [newRecord setObject: [oldRecord objectForKey: @"c_recurrence_id"]
-			    forKey: @"c_recurrence_id"];
-//              [newRecord setObject: [NSNumber numberWithInt: [recurrenceId timeIntervalSince1970]]
-//			    forKey: @"c_recurrence_id"];
+          newRecord = [self fixupRecord: [component quickRecord]];
+          [newRecord setObject: [NSNumber numberWithInt: 1]
+                        forKey: @"c_iscycle"];
+          oldRecord = [ma objectAtIndex: recordIndex];
+          [newRecord setObject: [oldRecord objectForKey: @"c_recurrence_id"]
+                        forKey: @"c_recurrence_id"];
 
-	      // The first instance date is added to the dictionary so it can
-	      // be used by UIxCalListingActions to compute the DST offset.
-	      [newRecord setObject: [fir startDate] forKey: @"cycleStartDate"];
+          // The first instance date is added to the dictionary so it can
+          // be used by UIxCalListingActions to compute the DST offset.
+          [newRecord setObject: [fir startDate] forKey: @"cycleStartDate"];
 	      
-	      // We identified the record as an exception.
-	      [newRecord setObject: [NSNumber numberWithInt: 1]
-			    forKey: @"isException"];
-	      
-	      [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
-	    }
-	  else
-	    [ma removeObjectAtIndex: recordIndex];
+          // We identified the record as an exception.
+          [newRecord setObject: [NSNumber numberWithInt: 1]
+                        forKey: @"isException"];
+
+          [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
 	}
       else
 	[self errorWithFormat:
@@ -1030,14 +1037,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	      // Retrieve the range of the first/master event
 	      component = [components objectAtIndex: 0];
               dtstart = (iCalDateTime *) [component uniqueChildWithTag: @"dtstart"];
-              firstStartDate = [[[[dtstart valuesForKey: @""]
-                                   lastObject]
-                                  lastObject]
-                                 asCalendarDate];
-              firstEndDate = [firstStartDate addTimeInterval: [component occurenceInterval]];
-              
-              firstRange = [NGCalendarDateRange calendarDateRangeWithStartDate: firstStartDate
-                                                                       endDate: firstEndDate];
+              firstRange = [component firstOccurenceRange]; // ignores timezone
 
               eventTimeZone = [dtstart timeZone];
               if (eventTimeZone)
@@ -2932,6 +2932,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   iCalTimeZone *timezone;
   iCalCalendar *masterCalendar;
   iCalEvent *event;
+  NSAutoreleasePool *pool;
 
   int imported, count, i;
 
@@ -2958,8 +2959,17 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       // [components addObjectsFromArray: [calendar journals]];
       // [components addObjectsFromArray: [calendar freeBusys]];
       count = [components count];
+
+      pool = [[NSAutoreleasePool alloc] init];
+
       for (i = 0; i < count; i++)
         {
+          if (i % 10 == 0)
+            {
+              DESTROY(pool);
+              pool = [[NSAutoreleasePool alloc] init];
+            }
+          
           timezone = nil;
           element = [components objectAtIndex: i];
           // Use the timezone of the start date.
@@ -2977,7 +2987,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		  
 		  s = [[startDate valuesAtIndex: 0 forKey: @""] objectAtIndex: 0];
 		  
-		  if ([element isKindOfClass: [iCalEvent class]] &&
+		  if ([element isKindOfClass: iCalEventK] &&
 		      ![(iCalEvent *)element isAllDay] &&
 		      ![s hasSuffix: @"Z"] &&
 		      ![s hasSuffix: @"z"])
@@ -3004,7 +3014,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 		    }
 		}
 	      
-              if ([element isKindOfClass: [iCalEvent class]])
+              if ([element isKindOfClass: iCalEventK])
                 {
                   event = (iCalEvent *)element;
                   if (![event hasEndDate] && ![event hasDuration])
@@ -3061,6 +3071,8 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                       forKey: originalUid];
             }
         }
+      
+      DESTROY(pool);
     }
   
   return imported;

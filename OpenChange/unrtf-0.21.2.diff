@@ -1,6 +1,18 @@
+diff -durpN unrtf-0.21.2.old/configure.ac unrtf-0.21.2/configure.ac
+--- unrtf-0.21.2.old/configure.ac	2010-08-15 03:59:52.000000000 +0200
++++ unrtf-0.21.2/configure.ac	2013-01-17 02:42:10.681861561 +0100
+@@ -33,7 +33,7 @@ AC_HEADER_STDC
+ 
+ # following is not really necessary, since it is already done by preceding
+ # macro, but it shows how to extend HAVE_ macros to other headers.
+-AC_CHECK_HEADERS([stdlib.h stdio.h ctype.h string.h])
++AC_CHECK_HEADERS([stdlib.h stdio.h ctype.h string.h stdint.h])
+ 
+ # Checks for typedefs, structures, and compiler characteristics.
+ 
 diff -durpN unrtf-0.21.2.old/outputs/html.conf unrtf-0.21.2/outputs/html.conf
---- unrtf-0.21.2.old/outputs/html.conf	2010-08-15 08:44:09.000000000 -0400
-+++ unrtf-0.21.2/outputs/html.conf	2012-08-21 13:33:44.761682724 -0400
+--- unrtf-0.21.2.old/outputs/html.conf	2010-08-15 14:44:09.000000000 +0200
++++ unrtf-0.21.2/outputs/html.conf	2013-01-17 02:41:09.681864239 +0100
 @@ -5,7 +5,7 @@ comment_end
  	-->
  	
@@ -20,8 +32,8 @@ diff -durpN unrtf-0.21.2.old/outputs/html.conf unrtf-0.21.2/outputs/html.conf
  	<br>
  	
 diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
---- unrtf-0.21.2.old/src/attr.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/attr.c	2012-08-21 13:38:56.717688715 -0400
+--- unrtf-0.21.2.old/src/attr.c	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/attr.c	2013-01-17 02:41:09.681864239 +0100
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -1273,8 +1285,8 @@ diff -durpN unrtf-0.21.2.old/src/attr.c unrtf-0.21.2/src/attr.c
  }
 -
 diff -durpN unrtf-0.21.2.old/src/attr.h unrtf-0.21.2/src/attr.h
---- unrtf-0.21.2.old/src/attr.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/attr.h	2012-08-21 13:33:44.785682699 -0400
+--- unrtf-0.21.2.old/src/attr.h	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/attr.h	2013-01-17 02:41:09.681864239 +0100
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -1423,8 +1435,8 @@ diff -durpN unrtf-0.21.2.old/src/attr.h unrtf-0.21.2/src/attr.h
  
 +#endif /* ATTR_H */
 diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
---- unrtf-0.21.2.old/src/convert.c	2011-06-07 08:00:23.000000000 -0400
-+++ unrtf-0.21.2/src/convert.c	2012-08-21 13:38:56.721688436 -0400
+--- unrtf-0.21.2.old/src/convert.c	2011-06-07 14:00:23.000000000 +0200
++++ unrtf-0.21.2/src/convert.c	2013-01-17 02:41:09.685864239 +0100
 @@ -1,24 +1,24 @@
  
  /*===========================================================================
@@ -7119,8 +7131,8 @@ diff -durpN unrtf-0.21.2.old/src/convert.c unrtf-0.21.2/src/convert.c
 +  return rc;
  }
 diff -durpN unrtf-0.21.2.old/src/convert.h unrtf-0.21.2/src/convert.h
---- unrtf-0.21.2.old/src/convert.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/convert.h	2012-08-21 13:33:44.793682720 -0400
+--- unrtf-0.21.2.old/src/convert.h	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/convert.h	2013-01-17 02:41:09.685864239 +0100
 @@ -36,18 +36,135 @@
  
  #ifndef _CONVERT
@@ -7263,8 +7275,8 @@ diff -durpN unrtf-0.21.2.old/src/convert.h unrtf-0.21.2/src/convert.h
  #define FONT_SYMBOL "SYMBOL"
  
 diff -durpN unrtf-0.21.2.old/src/defs.h unrtf-0.21.2/src/defs.h
---- unrtf-0.21.2.old/src/defs.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/defs.h	2012-08-21 13:33:44.817682703 -0400
+--- unrtf-0.21.2.old/src/defs.h	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/defs.h	2013-01-17 02:41:09.685864239 +0100
 @@ -64,9 +64,6 @@
  #define SKIP_ONE_WORD	2
  #endif
@@ -7282,9 +7294,79 @@ diff -durpN unrtf-0.21.2.old/src/defs.h unrtf-0.21.2/src/defs.h
 +/* This one should be deduce from the configure script */
 +#define DEFAULT_UNRTF_SEARCH_PATH  "/usr/local/lib/unrtf/"
 +#define DEFAULT_OUTPUT             "html"
+diff -durpN unrtf-0.21.2.old/src/.deps/attr.Po unrtf-0.21.2/src/.deps/attr.Po
+--- unrtf-0.21.2.old/src/.deps/attr.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/attr.Po	2013-01-17 02:47:40.017847101 +0100
+@@ -0,0 +1 @@
++# dummy
+diff -durpN unrtf-0.21.2.old/src/.deps/convert.Po unrtf-0.21.2/src/.deps/convert.Po
+--- unrtf-0.21.2.old/src/.deps/convert.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/convert.Po	2013-01-17 02:47:40.021847101 +0100
+@@ -0,0 +1 @@
++# dummy
+diff -durpN unrtf-0.21.2.old/src/.deps/error.Po unrtf-0.21.2/src/.deps/error.Po
+--- unrtf-0.21.2.old/src/.deps/error.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/error.Po	2013-01-17 02:47:40.025847101 +0100
+@@ -0,0 +1 @@
++# dummy
+diff -durpN unrtf-0.21.2.old/src/.deps/hash.Po unrtf-0.21.2/src/.deps/hash.Po
+--- unrtf-0.21.2.old/src/.deps/hash.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/hash.Po	2013-01-17 02:47:40.029847100 +0100
+@@ -0,0 +1 @@
++# dummy
+diff -durpN unrtf-0.21.2.old/src/.deps/main.Po unrtf-0.21.2/src/.deps/main.Po
+--- unrtf-0.21.2.old/src/.deps/main.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/main.Po	2013-01-17 02:47:40.033847100 +0100
+@@ -0,0 +1 @@
++# dummy
+diff -durpN unrtf-0.21.2.old/src/.deps/malloc.Po unrtf-0.21.2/src/.deps/malloc.Po
+--- unrtf-0.21.2.old/src/.deps/malloc.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/malloc.Po	2013-01-17 02:47:40.033847100 +0100
+@@ -0,0 +1 @@
++# dummy
+diff -durpN unrtf-0.21.2.old/src/.deps/my_iconv.Po unrtf-0.21.2/src/.deps/my_iconv.Po
+--- unrtf-0.21.2.old/src/.deps/my_iconv.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/my_iconv.Po	2013-01-17 02:47:40.037847100 +0100
+@@ -0,0 +1 @@
++# dummy
+diff -durpN unrtf-0.21.2.old/src/.deps/output.Po unrtf-0.21.2/src/.deps/output.Po
+--- unrtf-0.21.2.old/src/.deps/output.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/output.Po	2013-01-17 02:47:40.041847100 +0100
+@@ -0,0 +1 @@
++# dummy
+diff -durpN unrtf-0.21.2.old/src/.deps/parse.Po unrtf-0.21.2/src/.deps/parse.Po
+--- unrtf-0.21.2.old/src/.deps/parse.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/parse.Po	2013-01-17 02:47:40.045847100 +0100
+@@ -0,0 +1 @@
++# dummy
+diff -durpN unrtf-0.21.2.old/src/.deps/path.Po unrtf-0.21.2/src/.deps/path.Po
+--- unrtf-0.21.2.old/src/.deps/path.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/path.Po	2013-01-17 02:47:40.049847100 +0100
+@@ -0,0 +1 @@
++# dummy
+diff -durpN unrtf-0.21.2.old/src/.deps/unicode.Po unrtf-0.21.2/src/.deps/unicode.Po
+--- unrtf-0.21.2.old/src/.deps/unicode.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/unicode.Po	2013-01-17 02:47:40.053847099 +0100
+@@ -0,0 +1 @@
++# dummy
+diff -durpN unrtf-0.21.2.old/src/.deps/user.Po unrtf-0.21.2/src/.deps/user.Po
+--- unrtf-0.21.2.old/src/.deps/user.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/user.Po	2013-01-17 02:47:40.057847099 +0100
+@@ -0,0 +1 @@
++# dummy
+diff -durpN unrtf-0.21.2.old/src/.deps/util.Po unrtf-0.21.2/src/.deps/util.Po
+--- unrtf-0.21.2.old/src/.deps/util.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/util.Po	2013-01-17 02:47:40.061847099 +0100
+@@ -0,0 +1 @@
++# dummy
+diff -durpN unrtf-0.21.2.old/src/.deps/word.Po unrtf-0.21.2/src/.deps/word.Po
+--- unrtf-0.21.2.old/src/.deps/word.Po	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/.deps/word.Po	2013-01-17 02:47:40.061847099 +0100
+@@ -0,0 +1 @@
++# dummy
 diff -durpN unrtf-0.21.2.old/src/error.c unrtf-0.21.2/src/error.c
---- unrtf-0.21.2.old/src/error.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/error.c	2012-08-21 13:38:56.729687967 -0400
+--- unrtf-0.21.2.old/src/error.c	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/error.c	2013-01-17 02:41:09.685864239 +0100
 @@ -51,27 +51,11 @@
  #include <stdlib.h>
  #endif
@@ -7328,8 +7410,8 @@ diff -durpN unrtf-0.21.2.old/src/error.c unrtf-0.21.2/src/error.c
  	fprintf(stderr, "Error: %s\n", message);
  #endif
 diff -durpN unrtf-0.21.2.old/src/error.h unrtf-0.21.2/src/error.h
---- unrtf-0.21.2.old/src/error.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/error.h	2012-08-21 13:33:44.817682703 -0400
+--- unrtf-0.21.2.old/src/error.h	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/error.h	2013-01-17 02:41:09.685864239 +0100
 @@ -37,9 +37,10 @@
  
  #define CHECK_MALLOC_SUCCESS(XX) { if ((XX)==NULL) { fprintf (stderr, "internal error: cannot allocate memory in %s at %d\n", __FILE__, __LINE__); exit (1); }}
@@ -7342,15 +7424,57 @@ diff -durpN unrtf-0.21.2.old/src/error.h unrtf-0.21.2/src/error.h
  extern void warning_handler (char*);
  
  
+diff -durpN unrtf-0.21.2.old/src/GNUmakefile unrtf-0.21.2/src/GNUmakefile
+--- unrtf-0.21.2.old/src/GNUmakefile	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/GNUmakefile	2013-01-17 02:43:38.797857692 +0100
+@@ -0,0 +1,34 @@
++# -*-makefile-*-
++
++# GNUstep makefile
++
++include $(GNUSTEP_MAKEFILES)/common.make
++
++UNRTF = unrtf
++
++SUBPROJECT_NAME = $(UNRTF)
++
++$(UNRTF)_C_FILES = \
++	attr.c \
++	convert.c \
++	error.c \
++	hash.c \
++	malloc.c \
++	my_iconv.c \
++	output.c \
++	parse.c \
++	unicode.c \
++	user.c \
++	util.c \
++	word.c
++
++$(UNRTF)_CFLAGS = -DHAVE_CONFIG_H=1 -I. -I../
++
++# Option include to set any additional variables
++-include GNUmakefile.preamble
++
++# Include in the rules for making libraries
++include $(GNUSTEP_MAKEFILES)/subproject.make
++
++# Option include to define any additional rules
++-include GNUmakefile.postamble
 diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
---- unrtf-0.21.2.old/src/hash.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/hash.c	2012-08-21 13:38:56.733687861 -0400
-@@ -53,24 +53,16 @@
+--- unrtf-0.21.2.old/src/hash.c	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/hash.c	2013-01-17 02:43:16.581858668 +0100
+@@ -53,24 +53,20 @@
  #include <string.h>
  #endif
  
 +#ifdef HAVE_STDLIB_H
 +#include <stdlib.h>
++#endif
++
++#ifdef HAVE_STDINT_H
++#include <stdint.h>
 +#endif
 +
 +#include "convert.h"
@@ -7376,7 +7500,7 @@ diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
  
  /*========================================================================
   * Name:	hash_init
-@@ -80,13 +72,13 @@ static unsigned long hash_value=0;
+@@ -80,13 +76,13 @@ static unsigned long hash_value=0;
   *=======================================================================*/
  
  void
@@ -7396,7 +7520,7 @@ diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
  }
  
  
-@@ -101,14 +93,14 @@ hash_init ()
+@@ -101,14 +97,14 @@ hash_init ()
   *=======================================================================*/
  
  unsigned long
@@ -7418,7 +7542,7 @@ diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
  }
  
  
-@@ -121,32 +113,32 @@ hash_stats ()
+@@ -121,32 +117,32 @@ hash_stats ()
   *=======================================================================*/
  
  static HashItem *
@@ -7471,7 +7595,7 @@ diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
  }
  
  
-@@ -158,7 +150,7 @@ hashitem_new (char *str)
+@@ -158,7 +154,7 @@ hashitem_new (char *str)
   *=======================================================================*/
  
  unsigned long
@@ -7480,7 +7604,7 @@ diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
  {
  #if 1 /* daved - 0.19.1 */
  	unsigned short index;
-@@ -177,17 +169,17 @@ hash_get_index (char *str)
+@@ -177,17 +173,17 @@ hash_get_index (char *str)
  	if (ch=='\\' && *(str+1))
  		ch = *(str+1); 
  	index = ch;
@@ -7503,23 +7627,25 @@ diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
  	return hi->value;
  }
  
-@@ -201,13 +193,13 @@ hash_get_index (char *str)
+@@ -201,13 +197,13 @@ hash_get_index (char *str)
   *=======================================================================*/
  
  char*
 -hash_get_string (unsigned long value)
 +hash_get_string (const struct ConversionContext *cc, unsigned long value)
  {
- 	int index;
+-	int index;
++	uint8_t index;
  	HashItem *hi;
  
- 	index = value >> 24;
+-	index = value >> 24;
 -	hi = hash[index];
++	index = (uint8_t)(value >> 24);
 +	hi = cc->hash[index];
  	while (hi) {
  		if (hi->value == value)
  			return hi->str;
-@@ -216,3 +208,27 @@ hash_get_string (unsigned long value)
+@@ -216,3 +212,27 @@ hash_get_string (unsigned long value)
  	warning_handler("Word not in hash");
  	return NULL;
  }
@@ -7548,8 +7674,8 @@ diff -durpN unrtf-0.21.2.old/src/hash.c unrtf-0.21.2/src/hash.c
 +  }
 +}
 diff -durpN unrtf-0.21.2.old/src/hash.h unrtf-0.21.2/src/hash.h
---- unrtf-0.21.2.old/src/hash.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/hash.h	2012-08-21 13:33:44.817682703 -0400
+--- unrtf-0.21.2.old/src/hash.h	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/hash.h	2013-01-17 02:41:09.685864239 +0100
 @@ -32,11 +32,15 @@
   * 16 Dec 07, daved@physiol.usyd.edu.au: updated to GPL v3
   *--------------------------------------------------------------------*/
@@ -7572,8 +7698,8 @@ diff -durpN unrtf-0.21.2.old/src/hash.h unrtf-0.21.2/src/hash.h
  
 +#endif /* HASH_H */
 diff -durpN unrtf-0.21.2.old/src/main.c unrtf-0.21.2/src/main.c
---- unrtf-0.21.2.old/src/main.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/main.c	2012-08-21 13:38:56.737687716 -0400
+--- unrtf-0.21.2.old/src/main.c	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/main.c	2013-01-17 02:41:09.685864239 +0100
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -7994,8 +8120,8 @@ diff -durpN unrtf-0.21.2.old/src/main.c unrtf-0.21.2/src/main.c
  }
 -
 diff -durpN unrtf-0.21.2.old/src/main.h unrtf-0.21.2/src/main.h
---- unrtf-0.21.2.old/src/main.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/main.h	2012-08-21 13:33:44.821682709 -0400
+--- unrtf-0.21.2.old/src/main.h	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/main.h	2013-01-17 02:41:09.685864239 +0100
 @@ -35,21 +35,8 @@
   * 17 Jan 10, daved@physiol.usyd.edu.au: change CONFIG_DIR to drop outputs/
   *--------------------------------------------------------------------*/
@@ -8019,9 +8145,507 @@ diff -durpN unrtf-0.21.2.old/src/main.h unrtf-0.21.2/src/main.h
 -
 -
 +#define USAGE "unrtf [--version] [--verbose] [--help] [--nopict|-n] [--noremap] [--html] [--text] [--vt] [--latex] [--rtf] [-P config_search_path]  [-t <file_with_tags>)] <filename>"
+diff -durpN unrtf-0.21.2.old/src/Makefile unrtf-0.21.2/src/Makefile
+--- unrtf-0.21.2.old/src/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/Makefile	2013-01-17 02:52:06.525835400 +0100
+@@ -0,0 +1,494 @@
++# Makefile.in generated by automake 1.11.1 from Makefile.am.
++# src/Makefile.  Generated from Makefile.in by configure.
++
++# Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
++# 2003, 2004, 2005, 2006, 2007, 2008, 2009  Free Software Foundation,
++# Inc.
++# This Makefile.in is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
++
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
++# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
++# PARTICULAR PURPOSE.
++
++
++
++# This is the Makefile.am that deals with the program proper.
++# It all works automagically.
++
++
++pkgdatadir = $(datadir)/unrtf
++pkgincludedir = $(includedir)/unrtf
++pkglibdir = $(libdir)/unrtf
++pkglibexecdir = $(libexecdir)/unrtf
++am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
++install_sh_DATA = $(install_sh) -c -m 644
++install_sh_PROGRAM = $(install_sh) -c
++install_sh_SCRIPT = $(install_sh) -c
++INSTALL_HEADER = $(INSTALL_DATA)
++transform = $(program_transform_name)
++NORMAL_INSTALL = :
++PRE_INSTALL = :
++POST_INSTALL = :
++NORMAL_UNINSTALL = :
++PRE_UNINSTALL = :
++POST_UNINSTALL = :
++build_triplet = x86_64-unknown-linux-gnu
++host_triplet = x86_64-unknown-linux-gnu
++bin_PROGRAMS = unrtf$(EXEEXT)
++subdir = src
++DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
++ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
++am__aclocal_m4_deps = $(top_srcdir)/configure.ac
++am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
++	$(ACLOCAL_M4)
++mkinstalldirs = $(install_sh) -d
++CONFIG_HEADER = $(top_builddir)/config.h
++CONFIG_CLEAN_FILES =
++CONFIG_CLEAN_VPATH_FILES =
++am__installdirs = "$(DESTDIR)$(bindir)"
++PROGRAMS = $(bin_PROGRAMS)
++am_unrtf_OBJECTS = attr.$(OBJEXT) convert.$(OBJEXT) error.$(OBJEXT) \
++	hash.$(OBJEXT) my_iconv.$(OBJEXT) main.$(OBJEXT) \
++	malloc.$(OBJEXT) output.$(OBJEXT) parse.$(OBJEXT) \
++	path.$(OBJEXT) unicode.$(OBJEXT) user.$(OBJEXT) util.$(OBJEXT) \
++	word.$(OBJEXT)
++unrtf_OBJECTS = $(am_unrtf_OBJECTS)
++unrtf_LDADD = $(LDADD)
++DEFAULT_INCLUDES = -I. -I$(top_builddir)
++depcomp = $(SHELL) $(top_srcdir)/config/depcomp
++am__depfiles_maybe = depfiles
++am__mv = mv -f
++COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
++	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
++CCLD = $(CC)
++LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++SOURCES = $(unrtf_SOURCES)
++DIST_SOURCES = $(unrtf_SOURCES)
++ETAGS = etags
++CTAGS = ctags
++DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
++ACLOCAL = ${SHELL} /home/jkerihuel/Projects/sogo/OpenChange/unrtf-0.21.2/config/missing --run aclocal-1.11
++AMTAR = ${SHELL} /home/jkerihuel/Projects/sogo/OpenChange/unrtf-0.21.2/config/missing --run tar
++AUTOCONF = ${SHELL} /home/jkerihuel/Projects/sogo/OpenChange/unrtf-0.21.2/config/missing --run autoconf
++AUTOHEADER = ${SHELL} /home/jkerihuel/Projects/sogo/OpenChange/unrtf-0.21.2/config/missing --run autoheader
++AUTOMAKE = ${SHELL} /home/jkerihuel/Projects/sogo/OpenChange/unrtf-0.21.2/config/missing --run automake-1.11
++AWK = mawk
++CC = gcc
++CCDEPMODE = depmode=gcc3
++CFLAGS = -g -O2
++CPP = gcc -E
++CPPFLAGS = 
++CYGPATH_W = echo
++DEFS = -DHAVE_CONFIG_H
++DEPDIR = .deps
++ECHO_C = 
++ECHO_N = -n
++ECHO_T = 
++EGREP = /bin/grep -E
++EXEEXT = 
++GREP = /bin/grep
++INSTALL = /usr/bin/install -c
++INSTALL_DATA = ${INSTALL} -m 644
++INSTALL_PROGRAM = ${INSTALL}
++INSTALL_SCRIPT = ${INSTALL}
++INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
++LDFLAGS = 
++LIBOBJS = 
++LIBS = 
++LTLIBOBJS = 
++MAINT = #
++MAKEINFO = ${SHELL} /home/jkerihuel/Projects/sogo/OpenChange/unrtf-0.21.2/config/missing --run makeinfo
++MKDIR_P = /bin/mkdir -p
++OBJEXT = o
++PACKAGE = unrtf
++PACKAGE_BUGREPORT = bug-unrtf@gnu.org
++PACKAGE_NAME = unrtf
++PACKAGE_STRING = unrtf 0.21.2
++PACKAGE_TARNAME = unrtf
++PACKAGE_VERSION = 0.21.2
++PATH_SEPARATOR = :
++SET_MAKE = 
++SHELL = /bin/bash
++STRIP = 
++VERSION = 0.21.2
++abs_builddir = /home/jkerihuel/Projects/sogo/OpenChange/unrtf-0.21.2/src
++abs_srcdir = /home/jkerihuel/Projects/sogo/OpenChange/unrtf-0.21.2/src
++abs_top_builddir = /home/jkerihuel/Projects/sogo/OpenChange/unrtf-0.21.2
++abs_top_srcdir = /home/jkerihuel/Projects/sogo/OpenChange/unrtf-0.21.2
++ac_ct_CC = gcc
++am__include = include
++am__leading_dot = .
++am__quote = 
++am__tar = ${AMTAR} chof - "$$tardir"
++am__untar = ${AMTAR} xf -
++bindir = ${exec_prefix}/bin
++build = x86_64-unknown-linux-gnu
++build_alias = 
++build_cpu = x86_64
++build_os = linux-gnu
++build_vendor = unknown
++builddir = .
++datadir = ${datarootdir}
++datarootdir = ${prefix}/share
++docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
++dvidir = ${docdir}
++exec_prefix = ${prefix}
++host = x86_64-unknown-linux-gnu
++host_alias = 
++host_cpu = x86_64
++host_os = linux-gnu
++host_vendor = unknown
++htmldir = ${docdir}
++includedir = ${prefix}/include
++infodir = ${datarootdir}/info
++install_sh = ${SHELL} /home/jkerihuel/Projects/sogo/OpenChange/unrtf-0.21.2/config/install-sh
++libdir = ${exec_prefix}/lib
++libexecdir = ${exec_prefix}/libexec
++localedir = ${datarootdir}/locale
++localstatedir = ${prefix}/var
++mandir = ${datarootdir}/man
++mkdir_p = /bin/mkdir -p
++oldincludedir = /usr/include
++pdfdir = ${docdir}
++prefix = /usr/local
++program_transform_name = s,x,x,
++psdir = ${docdir}
++sbindir = ${exec_prefix}/sbin
++sharedstatedir = ${prefix}/com
++srcdir = .
++sysconfdir = ${prefix}/etc
++target_alias = 
++top_build_prefix = ../
++top_builddir = ..
++top_srcdir = ..
++unrtf_SOURCES = attr.c attr.h         \
++		convert.c convert.h   \
++		defs.h 		      \
++		error.c error.h       \
++	        hash.c hash.h         \
++		my_iconv.c my_iconv.h \
++		main.c main.h         \
++		malloc.c malloc.h     \
++		output.c output.h     \
++		parse.c	parse.h       \
++		path.c path.h \
++		unicode.c unicode.h   \
++		user.c user.h         \
++		util.c util.h         \
++		word.c word.h
++
++all: all-am
++
++.SUFFIXES:
++.SUFFIXES: .c .o .obj
++$(srcdir)/Makefile.in: # $(srcdir)/Makefile.am  $(am__configure_deps)
++	@for dep in $?; do \
++	  case '$(am__configure_deps)' in \
++	    *$$dep*) \
++	      ( cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh ) \
++	        && { if test -f $@; then exit 0; else break; fi; }; \
++	      exit 1;; \
++	  esac; \
++	done; \
++	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile'; \
++	$(am__cd) $(top_srcdir) && \
++	  $(AUTOMAKE) --gnu src/Makefile
++.PRECIOUS: Makefile
++Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
++	@case '$?' in \
++	  *config.status*) \
++	    cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh;; \
++	  *) \
++	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)'; \
++	    cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe);; \
++	esac;
++
++$(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
++	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
++
++$(top_srcdir)/configure: # $(am__configure_deps)
++	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
++$(ACLOCAL_M4): # $(am__aclocal_m4_deps)
++	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
++$(am__aclocal_m4_deps):
++install-binPROGRAMS: $(bin_PROGRAMS)
++	@$(NORMAL_INSTALL)
++	test -z "$(bindir)" || $(MKDIR_P) "$(DESTDIR)$(bindir)"
++	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
++	for p in $$list; do echo "$$p $$p"; done | \
++	sed 's/$(EXEEXT)$$//' | \
++	while read p p1; do if test -f $$p; \
++	  then echo "$$p"; echo "$$p"; else :; fi; \
++	done | \
++	sed -e 'p;s,.*/,,;n;h' -e 's|.*|.|' \
++	    -e 'p;x;s,.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/' | \
++	sed 'N;N;N;s,\n, ,g' | \
++	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1 } \
++	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
++	    if ($$2 == $$4) files[d] = files[d] " " $$1; \
++	    else { print "f", $$3 "/" $$4, $$1; } } \
++	  END { for (d in files) print "f", d, files[d] }' | \
++	while read type dir files; do \
++	    if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
++	    test -z "$$files" || { \
++	      echo " $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
++	      $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
++	    } \
++	; done
++
++uninstall-binPROGRAMS:
++	@$(NORMAL_UNINSTALL)
++	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
++	files=`for p in $$list; do echo "$$p"; done | \
++	  sed -e 'h;s,^.*/,,;s/$(EXEEXT)$$//;$(transform)' \
++	      -e 's/$$/$(EXEEXT)/' `; \
++	test -n "$$list" || exit 0; \
++	echo " ( cd '$(DESTDIR)$(bindir)' && rm -f" $$files ")"; \
++	cd "$(DESTDIR)$(bindir)" && rm -f $$files
++
++clean-binPROGRAMS:
++	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
++unrtf$(EXEEXT): $(unrtf_OBJECTS) $(unrtf_DEPENDENCIES) 
++	@rm -f unrtf$(EXEEXT)
++	$(LINK) $(unrtf_OBJECTS) $(unrtf_LDADD) $(LIBS)
++
++mostlyclean-compile:
++	-rm -f *.$(OBJEXT)
++
++distclean-compile:
++	-rm -f *.tab.c
++
++include ./$(DEPDIR)/attr.Po
++include ./$(DEPDIR)/convert.Po
++include ./$(DEPDIR)/error.Po
++include ./$(DEPDIR)/hash.Po
++include ./$(DEPDIR)/main.Po
++include ./$(DEPDIR)/malloc.Po
++include ./$(DEPDIR)/my_iconv.Po
++include ./$(DEPDIR)/output.Po
++include ./$(DEPDIR)/parse.Po
++include ./$(DEPDIR)/path.Po
++include ./$(DEPDIR)/unicode.Po
++include ./$(DEPDIR)/user.Po
++include ./$(DEPDIR)/util.Po
++include ./$(DEPDIR)/word.Po
++
++.c.o:
++	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
++	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
++#	source='$<' object='$@' libtool=no \
++#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
++#	$(COMPILE) -c $<
++
++.c.obj:
++	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
++	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
++#	source='$<' object='$@' libtool=no \
++#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
++#	$(COMPILE) -c `$(CYGPATH_W) '$<'`
++
++ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
++	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
++	unique=`for i in $$list; do \
++	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
++	  done | \
++	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
++	      END { if (nonempty) { for (i in files) print i; }; }'`; \
++	mkid -fID $$unique
++tags: TAGS
++
++TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
++		$(TAGS_FILES) $(LISP)
++	set x; \
++	here=`pwd`; \
++	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
++	unique=`for i in $$list; do \
++	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
++	  done | \
++	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
++	      END { if (nonempty) { for (i in files) print i; }; }'`; \
++	shift; \
++	if test -z "$(ETAGS_ARGS)$$*$$unique"; then :; else \
++	  test -n "$$unique" || unique=$$empty_fix; \
++	  if test $$# -gt 0; then \
++	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
++	      "$$@" $$unique; \
++	  else \
++	    $(ETAGS) $(ETAGSFLAGS) $(AM_ETAGSFLAGS) $(ETAGS_ARGS) \
++	      $$unique; \
++	  fi; \
++	fi
++ctags: CTAGS
++CTAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) \
++		$(TAGS_FILES) $(LISP)
++	list='$(SOURCES) $(HEADERS)  $(LISP) $(TAGS_FILES)'; \
++	unique=`for i in $$list; do \
++	    if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
++	  done | \
++	  $(AWK) '{ files[$$0] = 1; nonempty = 1; } \
++	      END { if (nonempty) { for (i in files) print i; }; }'`; \
++	test -z "$(CTAGS_ARGS)$$unique" \
++	  || $(CTAGS) $(CTAGSFLAGS) $(AM_CTAGSFLAGS) $(CTAGS_ARGS) \
++	     $$unique
++
++GTAGS:
++	here=`$(am__cd) $(top_builddir) && pwd` \
++	  && $(am__cd) $(top_srcdir) \
++	  && gtags -i $(GTAGS_ARGS) "$$here"
++
++distclean-tags:
++	-rm -f TAGS ID GTAGS GRTAGS GSYMS GPATH tags
++
++distdir: $(DISTFILES)
++	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
++	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
++	list='$(DISTFILES)'; \
++	  dist_files=`for file in $$list; do echo $$file; done | \
++	  sed -e "s|^$$srcdirstrip/||;t" \
++	      -e "s|^$$topsrcdirstrip/|$(top_builddir)/|;t"`; \
++	case $$dist_files in \
++	  */*) $(MKDIR_P) `echo "$$dist_files" | \
++			   sed '/\//!d;s|^|$(distdir)/|;s,/[^/]*$$,,' | \
++			   sort -u` ;; \
++	esac; \
++	for file in $$dist_files; do \
++	  if test -f $$file || test -d $$file; then d=.; else d=$(srcdir); fi; \
++	  if test -d $$d/$$file; then \
++	    dir=`echo "/$$file" | sed -e 's,/[^/]*$$,,'`; \
++	    if test -d "$(distdir)/$$file"; then \
++	      find "$(distdir)/$$file" -type d ! -perm -700 -exec chmod u+rwx {} \;; \
++	    fi; \
++	    if test -d $(srcdir)/$$file && test $$d != $(srcdir); then \
++	      cp -fpR $(srcdir)/$$file "$(distdir)$$dir" || exit 1; \
++	      find "$(distdir)/$$file" -type d ! -perm -700 -exec chmod u+rwx {} \;; \
++	    fi; \
++	    cp -fpR $$d/$$file "$(distdir)$$dir" || exit 1; \
++	  else \
++	    test -f "$(distdir)/$$file" \
++	    || cp -p $$d/$$file "$(distdir)/$$file" \
++	    || exit 1; \
++	  fi; \
++	done
++check-am: all-am
++check: check-am
++all-am: Makefile $(PROGRAMS)
++installdirs:
++	for dir in "$(DESTDIR)$(bindir)"; do \
++	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
++	done
++install: install-am
++install-exec: install-exec-am
++install-data: install-data-am
++uninstall: uninstall-am
++
++install-am: all-am
++	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
++
++installcheck: installcheck-am
++install-strip:
++	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
++	  install_sh_PROGRAM="$(INSTALL_STRIP_PROGRAM)" INSTALL_STRIP_FLAG=-s \
++	  `test -z '$(STRIP)' || \
++	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
++mostlyclean-generic:
++
++clean-generic:
++
++distclean-generic:
++	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
++	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
++
++maintainer-clean-generic:
++	@echo "This command is intended for maintainers to use"
++	@echo "it deletes files that may require special tools to rebuild."
++clean: clean-am
++
++clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
++
++distclean: distclean-am
++	-rm -rf ./$(DEPDIR)
++	-rm -f Makefile
++distclean-am: clean-am distclean-compile distclean-generic \
++	distclean-tags
++
++dvi: dvi-am
++
++dvi-am:
++
++html: html-am
++
++html-am:
++
++info: info-am
++
++info-am:
++
++install-data-am:
++
++install-dvi: install-dvi-am
++
++install-dvi-am:
++
++install-exec-am: install-binPROGRAMS
++
++install-html: install-html-am
++
++install-html-am:
++
++install-info: install-info-am
++
++install-info-am:
++
++install-man:
++
++install-pdf: install-pdf-am
++
++install-pdf-am:
++
++install-ps: install-ps-am
++
++install-ps-am:
++
++installcheck-am:
++
++maintainer-clean: maintainer-clean-am
++	-rm -rf ./$(DEPDIR)
++	-rm -f Makefile
++maintainer-clean-am: distclean-am maintainer-clean-generic
++
++mostlyclean: mostlyclean-am
++
++mostlyclean-am: mostlyclean-compile mostlyclean-generic
++
++pdf: pdf-am
++
++pdf-am:
++
++ps: ps-am
++
++ps-am:
++
++uninstall-am: uninstall-binPROGRAMS
++
++.MAKE: install-am install-strip
++
++.PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
++	clean-generic ctags distclean distclean-compile \
++	distclean-generic distclean-tags distdir dvi dvi-am html \
++	html-am info info-am install install-am install-binPROGRAMS \
++	install-data install-data-am install-dvi install-dvi-am \
++	install-exec install-exec-am install-html install-html-am \
++	install-info install-info-am install-man install-pdf \
++	install-pdf-am install-ps install-ps-am install-strip \
++	installcheck installcheck-am installdirs maintainer-clean \
++	maintainer-clean-generic mostlyclean mostlyclean-compile \
++	mostlyclean-generic pdf pdf-am ps ps-am tags uninstall \
++	uninstall-am uninstall-binPROGRAMS
++
++
++# Tell versions [3.59,3.63) of GNU make to not export all variables.
++# Otherwise a system limit (for SysV at least) may be exceeded.
++.NOEXPORT:
 diff -durpN unrtf-0.21.2.old/src/Makefile.am unrtf-0.21.2/src/Makefile.am
---- unrtf-0.21.2.old/src/Makefile.am	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/Makefile.am	2012-08-21 13:33:44.821682709 -0400
+--- unrtf-0.21.2.old/src/Makefile.am	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/Makefile.am	2013-01-17 02:41:09.685864239 +0100
 @@ -13,7 +13,6 @@ unrtf_SOURCES = attr.c attr.h         \
  		malloc.c malloc.h     \
  		output.c output.h     \
@@ -8031,8 +8655,8 @@ diff -durpN unrtf-0.21.2.old/src/Makefile.am unrtf-0.21.2/src/Makefile.am
  		user.c user.h         \
  		util.c util.h         \
 diff -durpN unrtf-0.21.2.old/src/malloc.c unrtf-0.21.2/src/malloc.c
---- unrtf-0.21.2.old/src/malloc.c	2010-07-09 01:13:05.000000000 -0400
-+++ unrtf-0.21.2/src/malloc.c	2012-08-21 13:39:15.329687813 -0400
+--- unrtf-0.21.2.old/src/malloc.c	2010-07-09 07:13:05.000000000 +0200
++++ unrtf-0.21.2/src/malloc.c	2013-01-17 02:41:09.685864239 +0100
 @@ -28,6 +28,8 @@
   *                 much memory is being used.
   *----------------------------------------------------------------------
@@ -8155,182 +8779,165 @@ diff -durpN unrtf-0.21.2.old/src/malloc.c unrtf-0.21.2/src/malloc.c
 -return malloc (n);
 +  return malloc (n);
  }    
-diff -durpN unrtf-0.21.2.old/src/malloc.c~ unrtf-0.21.2/src/malloc.c~
---- unrtf-0.21.2.old/src/malloc.c~	1969-12-31 19:00:00.000000000 -0500
-+++ unrtf-0.21.2/src/malloc.c~	2012-08-21 13:38:56.745687548 -0400
-@@ -0,0 +1,169 @@
-+/*=============================================================================
-+   GNU UnRTF, a command-line program to convert RTF documents to other formats.
-+   Copyright (C) 2000,2001,2004 by Zachary Smith
-+
-+   This program is free software; you can redistribute it and/or modify
-+   it under the terms of the GNU General Public License as published by
-+   the Free Software Foundation; either version 3 of the License, or
-+   (at your option) any later version.
-+
-+   This program is distributed in the hope that it will be useful,
-+   but WITHOUT ANY WARRANTY; without even the implied warranty of
-+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+   GNU General Public License for more details.
-+
-+   You should have received a copy of the GNU General Public License
-+   along with this program; if not, write to the Free Software
-+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-+
-+   The maintainer is reachable by electronic mail at daved@physiol.usyd.edu.au
-+=============================================================================*/
-+
-+
-+/*----------------------------------------------------------------------
-+ * Module name:    malloc
-+ * Author name:    Zachary Smith
-+ * Create date:    01 Aug 01
-+ * Purpose:        Memory management. Allows us to keep track of how
-+ *                 much memory is being used.
-+ *----------------------------------------------------------------------
-+ * Changes:
-+ * 21 Aug 12, wsourdeau@inverse.ca: rename "my_malloc" to "unrtf_malloc", to
-+ * avoid symbol classes with other libraries
-+ * 14 Aug 01, tuorfa@yahoo.com: added Turbo C support.
-+ * 16 Aug 01, Lars Unger <l.unger@tu-bs.de>: added Amiga/GCC support.
-+ * 22 Sep 01, tuorfa@yahoo.com: added function-level comment blocks 
-+ * 28 Sep 01, tuorfa@yahoo.com: removed Turbo C support.
-+ * 08 Oct 03, daved@physiol.usyd.edu.au: added stdlib.h for linux
-+ * 29 Mar 05, daved@physiol.usyd.edu.au: changes requested by ZT Smith
-+ * 16 Dec 07, daved@physiol.usyd.edu.au: updated to GPL v3
-+ * 09 Nov 08, arkadiusz.firus@gmail.com: added unrtf_realloc
-+ *--------------------------------------------------------------------*/
-+
-+#ifdef HAVE_CONFIG_H
-+#include <config.h>
-+#endif
-+
-+#ifdef HAVE_STDIO_H
-+#include <stdio.h>
-+#endif
-+
-+#ifdef HAVE_STDLIB_H
-+#include <stdlib.h>
-+#endif
-+
-+#ifdef HAVE_STRING_H
-+#include <string.h>
-+#endif
-+
-+#include "error.h"
-+#include "malloc.h"
-+
-+static unsigned long count=0;
-+
-+/*========================================================================
-+ * Name:	unrtf_malloc
-+ * Purpose:	Internal version of malloc necessary for record keeping.
-+ * Args:	Amount.
-+ * Returns:	Pointer.
-+ *=======================================================================*/
-+
-+char * 
-+unrtf_malloc (unsigned long size) {
-+	char *ptr;
-+
-+	ptr = malloc (size);
-+	if (ptr)
-+		count += size;
-+
-+	return ptr;
-+}
-+
-+/*========================================================================
-+ * Name:	unrtf_free
-+ * Purpose:	Internal version of free necessary for record keeping.
-+ * Args:	Pointer.
-+ * Returns:	None.
-+ *=======================================================================*/
-+
-+void 
-+unrtf_free (char* ptr) {
-+	CHECK_PARAM_NOT_NULL(ptr);
-+
-+	free (ptr);
-+}
-+
-+#if 1 /* AK3 - AF */
-+/*========================================================================
-+ * Name:	unrtf_realloc
-+ * Purpose:	Internal version of realloc necessary for record keeping.
-+ * Args:	Pointer.
-+ * Returns:	None.
-+ *=======================================================================*/
-+char *
-+unrtf_realloc(char *ptr, unsigned long old_size, unsigned long new_size)
-+{
-+	char *new_ptr = unrtf_malloc(new_size);
-+
-+	if (new_ptr != NULL)
-+		memcpy(new_ptr, ptr, old_size);
-+
-+	unrtf_free(ptr);
-+
-+	return new_ptr;
-+}
-+#endif
-+
-+/*========================================================================
-+ * Name:	total_malloced
-+ * Purpose:	Returns total amount of memory thus far allocated. Called at
-+ * 			the end of main() when in debug mode.
-+ * Args:	None.
-+ * Returns:	Amount.
-+ *=======================================================================*/
-+
-+unsigned long 
-+total_malloced (void) {
-+	return count;
-+}
-+
-+
-+
-+/*========================================================================
-+ * Name:	unrtf_strdup
-+ * Purpose:	Internal version of strdup necessary for record keeping.
-+ * Args:	String.
-+ * Returns:	String.
-+ *=======================================================================*/
-+
-+char *
-+unrtf_strdup (struct ConversionContext *cc, char *src) {
-+  unsigned long len;
-+  char *ptr;
-+
-+  CHECK_PARAM_NOT_NULL(src);
-+
-+  len = strlen(src);
-+  ptr = unrtf_malloc (len+1);
-+  if (!ptr)
-+    error_handler (cc, "out of memory in strdup()");
-+
-+  sprintf (ptr, "%s", src);
-+  return ptr;
-+}
-+/* added by daved */
-+#include <sys/types.h>
-+#undef malloc
-+     
-+void *malloc ();
-+        
-+/* Allocate an N-byte block of memory from the heap.
-+If N is zero, allocate a 1-byte block.  */
-+
-+void *
-+rpl_malloc (size_t n)
-+{    
-+  if (n == 0)
-+	   n = 1;
-+  return malloc (n);
-+}    
+diff -durpN unrtf-0.21.2.old/src/malloc.c.orig unrtf-0.21.2/src/malloc.c.orig
+--- unrtf-0.21.2.old/src/malloc.c.orig	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/malloc.c.orig	1970-01-01 01:00:00.000000000 +0100
+@@ -1,152 +0,0 @@
+-/*=============================================================================
+-   GNU UnRTF, a command-line program to convert RTF documents to other formats.
+-   Copyright (C) 2000,2001,2004 by Zachary Smith
+-
+-   This program is free software; you can redistribute it and/or modify
+-   it under the terms of the GNU General Public License as published by
+-   the Free Software Foundation; either version 3 of the License, or
+-   (at your option) any later version.
+-
+-   This program is distributed in the hope that it will be useful,
+-   but WITHOUT ANY WARRANTY; without even the implied warranty of
+-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-   GNU General Public License for more details.
+-
+-   You should have received a copy of the GNU General Public License
+-   along with this program; if not, write to the Free Software
+-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+-
+-   The maintainer is reachable by electronic mail at daved@physiol.usyd.edu.au
+-=============================================================================*/
+-
+-
+-/*----------------------------------------------------------------------
+- * Module name:    malloc
+- * Author name:    Zachary Smith
+- * Create date:    01 Aug 01
+- * Purpose:        Memory management. Allows us to keep track of how
+- *                 much memory is being used.
+- *----------------------------------------------------------------------
+- * Changes:
+- * 14 Aug 01, tuorfa@yahoo.com: added Turbo C support.
+- * 16 Aug 01, Lars Unger <l.unger@tu-bs.de>: added Amiga/GCC support.
+- * 22 Sep 01, tuorfa@yahoo.com: added function-level comment blocks 
+- * 28 Sep 01, tuorfa@yahoo.com: removed Turbo C support.
+- * 08 Oct 03, daved@physiol.usyd.edu.au: added stdlib.h for linux
+- * 29 Mar 05, daved@physiol.usyd.edu.au: changes requested by ZT Smith
+- * 16 Dec 07, daved@physiol.usyd.edu.au: updated to GPL v3
+- * 09 Nov 08, arkadiusz.firus@gmail.com: added my_realloc
+- *--------------------------------------------------------------------*/
+-
+-#ifdef HAVE_CONFIG_H
+-#include <config.h>
+-#endif
+-
+-#ifdef HAVE_STDIO_H
+-#include <stdio.h>
+-#endif
+-
+-#ifdef HAVE_STDLIB_H
+-#include <stdlib.h>
+-#endif
+-
+-#ifdef HAVE_STRING_H
+-#include <string.h>
+-#endif
+-
+-#include "error.h"
+-#include "malloc.h"
+-
+-static unsigned long count=0;
+-
+-/*========================================================================
+- * Name:	my_malloc
+- * Purpose:	Internal version of malloc necessary for record keeping.
+- * Args:	Amount.
+- * Returns:	Pointer.
+- *=======================================================================*/
+-
+-char * 
+-my_malloc (unsigned long size) {
+-	char *ptr;
+-
+-	ptr = malloc (size);
+-	if (ptr)
+-		count += size;
+-
+-	return ptr;
+-}
+-
+-/*========================================================================
+- * Name:	my_free
+- * Purpose:	Internal version of free necessary for record keeping.
+- * Args:	Pointer.
+- * Returns:	None.
+- *=======================================================================*/
+-
+-void 
+-my_free (char* ptr) {
+-	CHECK_PARAM_NOT_NULL(ptr);
+-
+-	free (ptr);
+-}
+-
+-#if 1 /* AK3 - AF */
+-/*========================================================================
+- * Name:	my_realloc
+- * Purpose:	Internal version of realloc necessary for record keeping.
+- * Args:	Pointer.
+- * Returns:	None.
+- *=======================================================================*/
+-char *
+-my_realloc(char *ptr, unsigned long old_size, unsigned long new_size)
+-{
+-	char *new_ptr = my_malloc(new_size);
+-
+-	if (new_ptr != NULL)
+-		memcpy(new_ptr, ptr, old_size);
+-
+-	my_free(ptr);
+-
+-	return new_ptr;
+-}
+-#endif
+-
+-/*========================================================================
+- * Name:	total_malloced
+- * Purpose:	Returns total amount of memory thus far allocated. Called at
+- * 			the end of main() when in debug mode.
+- * Args:	None.
+- * Returns:	Amount.
+- *=======================================================================*/
+-
+-unsigned long 
+-total_malloced (void) {
+-	return count;
+-}
+-
+-
+-
+-/*========================================================================
+- * Name:	my_strdup
+- * Purpose:	Internal version of strdup necessary for record keeping.
+- * Args:	String.
+- * Returns:	String.
+- *=======================================================================*/
+-
+-char *
+-my_strdup (char *src) {
+-	unsigned long len;
+-	char *ptr;
+-
+-	CHECK_PARAM_NOT_NULL(src);
+-
+-	len = strlen(src);
+-	ptr = my_malloc (len+1);
+-	if (!ptr)
+-		error_handler ("out of memory in strdup()");
+-
+-	strcpy (ptr, src);
+-	return ptr;
+-}
+-
 diff -durpN unrtf-0.21.2.old/src/malloc.h unrtf-0.21.2/src/malloc.h
---- unrtf-0.21.2.old/src/malloc.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/malloc.h	2012-08-21 13:38:32.385687262 -0400
+--- unrtf-0.21.2.old/src/malloc.h	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/malloc.h	2013-01-17 02:41:09.685864239 +0100
 @@ -32,9 +32,10 @@
   * 09 Nov 08, arkadiusz.firus@gmail.com: added my_realloc
   *--------------------------------------------------------------------*/
@@ -8347,54 +8954,9 @@ diff -durpN unrtf-0.21.2.old/src/malloc.h unrtf-0.21.2/src/malloc.h
 +extern char * unrtf_realloc(char*, unsigned long, unsigned long);
 +extern unsigned long total_malloced (void);
 +extern char * unrtf_strdup (struct ConversionContext *, char*);
-diff -durpN unrtf-0.21.2.old/src/malloc.h~ unrtf-0.21.2/src/malloc.h~
---- unrtf-0.21.2.old/src/malloc.h~	1969-12-31 19:00:00.000000000 -0500
-+++ unrtf-0.21.2/src/malloc.h~	2012-08-21 13:33:44.825682713 -0400
-@@ -0,0 +1,41 @@
-+/*=============================================================================
-+   GNU UnRTF, a command-line program to convert RTF documents to other formats.
-+   Copyright (C) 2000,2001,2004 by Zachary Smith
-+
-+   This program is free software; you can redistribute it and/or modify
-+   it under the terms of the GNU General Public License as published by
-+   the Free Software Foundation; either version 3 of the License, or
-+   (at your option) any later version.
-+
-+   This program is distributed in the hope that it will be useful,
-+   but WITHOUT ANY WARRANTY; without even the implied warranty of
-+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+   GNU General Public License for more details.
-+
-+   You should have received a copy of the GNU General Public License
-+   along with this program; if not, write to the Free Software
-+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-+
-+   The maintainer is reachable by electronic mail at daved@physiol.usyd.edu.au
-+=============================================================================*/
-+
-+
-+/*----------------------------------------------------------------------
-+ * Module name:    malloc
-+ * Author name:    Zachary Smith
-+ * Create date:    1 Aug 2001
-+ * Purpose:        Definitions for memory management.
-+ *----------------------------------------------------------------------
-+ * Changes:
-+ * 29 Mar 05, daved@physiol.usyd.edu.au: changes requested by ZT Smith
-+ * 16 Dec 07, daved@physiol.usyd.edu.au: updated to GPL v3
-+ * 09 Nov 08, arkadiusz.firus@gmail.com: added my_realloc
-+ *--------------------------------------------------------------------*/
-+
-+struct ConversionContext;
-+
-+extern char * my_malloc (unsigned long);
-+extern void my_free (char*);
-+extern char * my_realloc(char*, unsigned long, unsigned long);
-+extern unsigned long total_malloced (void);
-+extern char * my_strdup (struct ConversionContext *, char*);
 diff -durpN unrtf-0.21.2.old/src/my_iconv.c unrtf-0.21.2/src/my_iconv.c
---- unrtf-0.21.2.old/src/my_iconv.c	2010-08-16 00:12:43.000000000 -0400
-+++ unrtf-0.21.2/src/my_iconv.c	2012-08-21 13:38:56.753687604 -0400
+--- unrtf-0.21.2.old/src/my_iconv.c	2010-08-16 06:12:43.000000000 +0200
++++ unrtf-0.21.2/src/my_iconv.c	2013-01-17 02:41:09.685864239 +0100
 @@ -12,154 +12,133 @@
  #include <stdio.h>
  #include <string.h>
@@ -8635,8 +9197,8 @@ diff -durpN unrtf-0.21.2.old/src/my_iconv.c unrtf-0.21.2/src/my_iconv.c
  }
  
 diff -durpN unrtf-0.21.2.old/src/my_iconv.h unrtf-0.21.2/src/my_iconv.h
---- unrtf-0.21.2.old/src/my_iconv.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/my_iconv.h	2012-08-21 13:33:44.825682713 -0400
+--- unrtf-0.21.2.old/src/my_iconv.h	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/my_iconv.h	2013-01-17 02:41:09.685864239 +0100
 @@ -5,6 +5,9 @@
   * Purpose:    my_conv definitions
   *--------------------------------------------------------------------*/
@@ -8665,8 +9227,8 @@ diff -durpN unrtf-0.21.2.old/src/my_iconv.h unrtf-0.21.2/src/my_iconv.h
  
 +#endif /* _MY_ICONV */
 diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
---- unrtf-0.21.2.old/src/output.c	2011-06-07 08:04:38.000000000 -0400
-+++ unrtf-0.21.2/src/output.c	2012-08-21 13:38:56.753687604 -0400
+--- unrtf-0.21.2.old/src/output.c	2011-06-07 14:04:38.000000000 +0200
++++ unrtf-0.21.2/src/output.c	2013-01-17 02:41:09.685864239 +0100
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -9849,8 +10411,8 @@ diff -durpN unrtf-0.21.2.old/src/output.c unrtf-0.21.2/src/output.c
  #endif
 -
 diff -durpN unrtf-0.21.2.old/src/output.h unrtf-0.21.2/src/output.h
---- unrtf-0.21.2.old/src/output.h	2010-08-11 21:09:02.000000000 -0400
-+++ unrtf-0.21.2/src/output.h	2012-08-21 13:33:44.829682714 -0400
+--- unrtf-0.21.2.old/src/output.h	2010-08-12 03:09:02.000000000 +0200
++++ unrtf-0.21.2/src/output.h	2013-01-17 02:41:09.685864239 +0100
 @@ -44,227 +44,228 @@
  typedef Collection Aliases;
  
@@ -10237,8 +10799,8 @@ diff -durpN unrtf-0.21.2.old/src/output.h unrtf-0.21.2/src/output.h
  #endif
 -
 diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
---- unrtf-0.21.2.old/src/parse.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/parse.c	2012-08-21 13:38:56.765687661 -0400
+--- unrtf-0.21.2.old/src/parse.c	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/parse.c	2013-01-17 02:41:09.685864239 +0100
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -10911,8 +11473,8 @@ diff -durpN unrtf-0.21.2.old/src/parse.c unrtf-0.21.2/src/parse.c
 +  } while (1);
  }
 diff -durpN unrtf-0.21.2.old/src/parse.h unrtf-0.21.2/src/parse.h
---- unrtf-0.21.2.old/src/parse.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/parse.h	2012-08-21 13:33:44.829682714 -0400
+--- unrtf-0.21.2.old/src/parse.h	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/parse.h	2013-01-17 02:41:09.685864239 +0100
 @@ -38,8 +38,6 @@
  #include "word.h"
  #endif
@@ -10925,8 +11487,8 @@ diff -durpN unrtf-0.21.2.old/src/parse.h unrtf-0.21.2/src/parse.h
 -
 +extern Word *word_read(struct ConversionContext *cc);
 diff -durpN unrtf-0.21.2.old/src/path.c unrtf-0.21.2/src/path.c
---- unrtf-0.21.2.old/src/path.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/path.c	1969-12-31 19:00:00.000000000 -0500
+--- unrtf-0.21.2.old/src/path.c	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/path.c	1970-01-01 01:00:00.000000000 +0100
 @@ -1,55 +0,0 @@
 -#include <stdio.h>
 -#include <string.h>
@@ -10984,8 +11546,8 @@ diff -durpN unrtf-0.21.2.old/src/path.c unrtf-0.21.2/src/path.c
 -}
 -
 diff -durpN unrtf-0.21.2.old/src/path.h unrtf-0.21.2/src/path.h
---- unrtf-0.21.2.old/src/path.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/path.h	1969-12-31 19:00:00.000000000 -0500
+--- unrtf-0.21.2.old/src/path.h	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/path.h	1970-01-01 01:00:00.000000000 +0100
 @@ -1,16 +0,0 @@
 -#define DEFAULT_UNRTF_SEARCH_PATH	"/usr/local/lib/unrtf/"
 -
@@ -11004,8 +11566,8 @@ diff -durpN unrtf-0.21.2.old/src/path.h unrtf-0.21.2/src/path.h
 -int	check_dirs();
 -void	show_dirs();
 diff -durpN unrtf-0.21.2.old/src/unicode.c unrtf-0.21.2/src/unicode.c
---- unrtf-0.21.2.old/src/unicode.c	2011-06-07 08:06:43.000000000 -0400
-+++ unrtf-0.21.2/src/unicode.c	2012-08-21 13:38:56.765687661 -0400
+--- unrtf-0.21.2.old/src/unicode.c	2011-06-07 14:06:43.000000000 +0200
++++ unrtf-0.21.2/src/unicode.c	2013-01-17 02:41:09.685864239 +0100
 @@ -55,20 +55,20 @@ unicode_to_string(int uc)
  
  	if (uc < 0x7f)
@@ -11076,8 +11638,8 @@ diff -durpN unrtf-0.21.2.old/src/unicode.c unrtf-0.21.2/src/unicode.c
  	}
  
 diff -durpN unrtf-0.21.2.old/src/unrtf.h unrtf-0.21.2/src/unrtf.h
---- unrtf-0.21.2.old/src/unrtf.h	1969-12-31 19:00:00.000000000 -0500
-+++ unrtf-0.21.2/src/unrtf.h	2012-08-21 13:33:44.833682714 -0400
+--- unrtf-0.21.2.old/src/unrtf.h	1970-01-01 01:00:00.000000000 +0100
++++ unrtf-0.21.2/src/unrtf.h	2013-01-17 02:41:09.689864239 +0100
 @@ -0,0 +1,55 @@
 +/*===========================================================================
 +   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -11135,8 +11697,8 @@ diff -durpN unrtf-0.21.2.old/src/unrtf.h unrtf-0.21.2/src/unrtf.h
 +
 +#endif /* UNRTF_H */
 diff -durpN unrtf-0.21.2.old/src/user.c unrtf-0.21.2/src/user.c
---- unrtf-0.21.2.old/src/user.c	2011-06-07 08:08:17.000000000 -0400
-+++ unrtf-0.21.2/src/user.c	2012-08-21 13:38:56.773687616 -0400
+--- unrtf-0.21.2.old/src/user.c	2011-06-07 14:08:17.000000000 +0200
++++ unrtf-0.21.2/src/user.c	2013-01-17 02:41:09.689864239 +0100
 @@ -7,7 +7,7 @@
   *----------------------------------------------------------------------
   * Changes:
@@ -11565,8 +12127,8 @@ diff -durpN unrtf-0.21.2.old/src/user.c unrtf-0.21.2/src/user.c
  }
  
 diff -durpN unrtf-0.21.2.old/src/user.h unrtf-0.21.2/src/user.h
---- unrtf-0.21.2.old/src/user.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/user.h	2012-08-21 13:33:44.833682714 -0400
+--- unrtf-0.21.2.old/src/user.h	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/user.h	2013-01-17 02:41:09.689864239 +0100
 @@ -151,9 +151,10 @@
  
  #ifndef _USER
@@ -11581,8 +12143,8 @@ diff -durpN unrtf-0.21.2.old/src/user.h unrtf-0.21.2/src/user.h
  #define _USER
  #endif
 diff -durpN unrtf-0.21.2.old/src/util.c unrtf-0.21.2/src/util.c
---- unrtf-0.21.2.old/src/util.c	2010-08-09 08:05:30.000000000 -0400
-+++ unrtf-0.21.2/src/util.c	2012-08-21 13:38:56.777687600 -0400
+--- unrtf-0.21.2.old/src/util.c	2010-08-09 14:05:30.000000000 +0200
++++ unrtf-0.21.2/src/util.c	2013-01-17 02:41:09.689864239 +0100
 @@ -110,7 +110,7 @@ concatenate (const char *s1, const char
  {
  	char *result;
@@ -11593,8 +12155,8 @@ diff -durpN unrtf-0.21.2.old/src/util.c unrtf-0.21.2/src/util.c
  	strcat(result, s2);
  
 diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
---- unrtf-0.21.2.old/src/word.c	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/word.c	2012-08-21 13:38:56.781687591 -0400
+--- unrtf-0.21.2.old/src/word.c	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/word.c	2013-01-17 02:41:09.689864239 +0100
 @@ -1,23 +1,23 @@
  /*=============================================================================
 -   GNU UnRTF, a command-line program to convert RTF documents to other formats.
@@ -11918,8 +12480,8 @@ diff -durpN unrtf-0.21.2.old/src/word.c unrtf-0.21.2/src/word.c
  #endif
  
 diff -durpN unrtf-0.21.2.old/src/word.h unrtf-0.21.2/src/word.h
---- unrtf-0.21.2.old/src/word.h	2010-07-03 22:30:58.000000000 -0400
-+++ unrtf-0.21.2/src/word.h	2012-08-21 13:33:44.833682714 -0400
+--- unrtf-0.21.2.old/src/word.h	2010-07-04 04:30:58.000000000 +0200
++++ unrtf-0.21.2/src/word.h	2013-01-17 02:41:09.689864239 +0100
 @@ -41,14 +41,15 @@ typedef struct _w {
  	struct _w * child;
  } Word;

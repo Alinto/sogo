@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2012 Inverse inc.
+  Copyright (C) 2007-2013 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo
@@ -107,7 +107,7 @@
                timeIntervalSinceDate: firstDate];
   if ([newOccurence isAllDay])
     {
-      nbrDays = ((float) abs (interval) / 86400) + 1;
+      nbrDays = ((float) abs (interval) / 86400);
       [newOccurence setAllDayWithStartDate: date
                                   duration: nbrDays];
     }
@@ -534,7 +534,10 @@
 		  // overlapping events
 		  if ([user numberOfSimultaneousBookings] == 0 ||
 		      [user numberOfSimultaneousBookings] > [fbInfo count])
-		    [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+                    {
+                      [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
+                      [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+                    }
 		  else
 		    {
 		      iCalCalendar *calendar;
@@ -564,6 +567,7 @@
 		  // No conflict, we auto-accept. We do this for resources automatically if no
 		  // double-booking is observed. If it's not the desired behavior, just don't
 		  // set the resource as one!
+                  [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
 		  [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
 		}
   	    }
@@ -1374,7 +1378,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
               // Web interface. Over DAV, it'll be handled directly in
               // PUTAction:
               if (![context request] || [[context request] handledByDefaultHandler])
-                ex = [self saveContentString: [calendar versitString]];
+                ex = [self saveContentString: [[event parent] versitString]];
             }
         }
       else

@@ -1,6 +1,6 @@
 /* SOGoMailer.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -37,6 +37,7 @@
 #import "SOGoDomainDefaults.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
+#import "SOGoUserManager.h"
 
 #import "SOGoMailer.h"
 
@@ -121,17 +122,18 @@
               withAuthenticator: (id <SOGoAuthenticator>) authenticator
                       inContext: (WOContext *) woContext
 {
-  NGInternetSocketAddress *addr;
   NSString *currentTo, *host, *login, *password;
+  NGInternetSocketAddress *addr;
   NSMutableArray *toErrors;
   NSEnumerator *addresses; 
   NGSmtpClient *client;
-  NSException *result = nil;
+  NSException *result;
   NSRange r;
   unsigned int port;
 
   client = [NGSmtpClient smtpClient];
   host = smtpServer;
+  result = nil;
   port = 25;
 
   // We check if there is a port specified in the smtpServer ivar value
@@ -151,7 +153,10 @@
       [client connectToAddress: addr];
       if ([authenticationType isEqualToString: @"plain"])
         {
-          login = [[authenticator userInContext: woContext] login];
+          login = [[SOGoUserManager sharedUserManager]
+                     getExternalLoginForUID: [[authenticator userInContext: woContext] loginInDomain]
+                                   inDomain: [[authenticator userInContext: woContext] domain]];
+
           password = [authenticator passwordInContext: woContext];
           if ([login length] == 0
               || [login isEqualToString: @"anonymous"]

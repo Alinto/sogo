@@ -10,7 +10,8 @@
   className="UIxPageFrame"
   const:toolbar="none"
   const:popup="YES"
-  const:jsFiles="skycalendar.js">
+  const:cssFiles="datepicker.css"
+  const:jsFiles="datepicker.js">
 
   <script type="text/javascript">
     var dayFieldInvalid = '<var:string label:value="dayFieldInvalid"/>';
@@ -69,13 +70,9 @@
           </td>
           <td>
             <div id="week"><span class="week">
-              <div id="weekDay1"><p><var:string label:value="Mon"/></p></div>
-              <div id="weekDay2"><p><var:string label:value="Tue"/></p></div>
-              <div id="weekDay3"><p><var:string label:value="Wed"/></p></div>
-              <div id="weekDay4"><p><var:string label:value="Thu"/></p></div>
-              <div id="weekDay5"><p><var:string label:value="Fri"/></p></div>
-              <div id="weekDay6"><p><var:string label:value="Sat"/></p></div>
-              <div id="weekDay0"><p><var:string label:value="Sun"/></p></div>
+              <var:foreach list="shortWeekDaysList" item="item"
+              ><div var:id="idForWeekDay"><p><var:string value="labelForWeekDay"/></p></div>
+              </var:foreach>
               </span><span class="week"><!-- space --></span>
             </div>
           </td>
@@ -97,9 +94,9 @@
             <input name="monthlyRadioButtonName" value="0" id="monthlyRadioButton" type="radio"
             /><var:string label:value="The"
             /><var:popup list="monthlyRepeatList" const:id="monthlyRepeat" item="item"
-          	string="itemText" selection="First"
+                string="itemText"
             /><var:popup list="monthlyDayList" const:id="monthlyDay" item="item"
-          	string="itemText" selection="Monday"
+                string="itemText"
             />
           </td>
         </tr>
@@ -176,7 +173,7 @@
               class="textField"
               var:value="title"
             /><var:popup list="yearlyMonthList" const:id="yearlyMonth1" item="item"
-          	string="itemText" selection="January"/>
+                string="itemText"/>
           </td>
         </tr>
         <tr class="recurrenceYearly" style="display:none;">
@@ -189,7 +186,7 @@
             <var:popup list="monthlyRepeatList" const:id="yearlyRepeat" item="item"
                  string="itemText" selection="First"
             /><var:popup list="yearlyDayList" const:id="yearlyDay" item="item"
-                   string="itemText" selection="Monday"/>
+                   string="itemText"/>
           </td>
         </tr>
         <tr class="recurrenceYearly" style="display:none;">
@@ -199,7 +196,7 @@
           </td>
           <td>
   	  <var:popup list="yearlyMonthList" const:id="yearlyMonth2" item="item"
-                 string="itemText" selection="January"/>
+                 string="itemText"/>
           </td>
         </tr>
       </table>

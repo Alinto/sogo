@@ -1,16 +1,17 @@
 # compilation settings
 
-SOGo_INCLUDE_DIRS += -I.. -I../../UI \
-	-DSOGO_MAJOR_VERSION="@\"$(MAJOR_VERSION)\"" \
-	-DSOGO_MINOR_VERSION="@\"$(MINOR_VERSION)\"" \
-	-DSOGO_SUBMINOR_VERSION="@\"$(SUBMINOR_VERSION)\""
+SOGo_INCLUDE_DIRS += -I.. -I../../UI 
 
 HOSTNAME ?= $(shell hostname -f)
 BUILD_DATE = $(shell echo $$USER@$(HOSTNAME); date +"%Y%m%d%H%M")
 
 ADDITIONAL_CPPFLAGS += \
         -DSOGO_BUILD_DATE="@\"$(BUILD_DATE)\"" \
-        -DSOGO_LIBDIR="\"$(SOGO_LIBDIR)\""
+        -DSOGO_LIBDIR="\"$(SOGO_LIBDIR)\"" \
+        -DSOGO_MAJOR_VERSION="@\"$(MAJOR_VERSION)\"" \
+        -DSOGO_MINOR_VERSION="@\"$(MINOR_VERSION)\"" \
+        -DSOGO_SUBMINOR_VERSION="@\"$(SUBMINOR_VERSION)\""
+
 
 SOGo_LIBRARIES_DEPEND_UPON += \
         -Wl,--no-as-needed \

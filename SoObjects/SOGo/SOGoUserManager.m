@@ -358,8 +358,8 @@ static Class NSNullK;
   return fullEmail;
 }
 
-- (NSString *) getImapLoginForUID: (NSString *) uid
-                         inDomain: (NSString *) domain
+- (NSString *) getExternalLoginForUID: (NSString *) uid
+                             inDomain: (NSString *) domain
 {
   NSDictionary *contactInfos;
   NSString *login;
@@ -375,7 +375,7 @@ static Class NSNullK;
       else
         dd = [SOGoSystemDefaults sharedSystemDefaults];
       
-      login = [dd forceIMAPLoginWithEmail] ? [self getEmailForUID: uid] : uid;
+      login = [dd forceExternalLoginWithEmail] ? [self getEmailForUID: uid] : uid;
     }
   
   return login;

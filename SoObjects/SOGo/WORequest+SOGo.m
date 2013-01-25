@@ -151,17 +151,23 @@
           || [self isAppleDAVWithSubstring: @"CalendarAgent/"]);
 }
 
-
+// For 10.6, we see:
+//
+// Address%20Book/883 CFNetwork/454.12.4 Darwin/10.8.0 (i386) (iMac11%2C3)
 //
 // For 10.7, we see:
 //
+// AddressBook/6.0 (1043) CardDAVPlugin/182 CFNetwork/520.0.13 Mac_OS_X/10.7.1 (11B26)
 // AddressBook/6.1 (1062) CardDAVPlugin/196 CFNetwork/520.2.5 Mac_OS_X/10.7.2 (11C74)
+// AddressBook/6.1 (1083) CardDAVPlugin/200 CFNetwork/520.3.2 Mac_OS_X/10.7.3 (11D50d)
 // AddressBook/6.1.2 (1090) CardDAVPlugin/200 CFNetwork/520.4.3 Mac_OS_X/10.7.4 (11E53)
+// AddressBook/6.1.3 (1091) CardDAVPlugin/200 CFNetwork/520.5.1 Mac_OS_X/10.7.5 (11G56)
 //
 // For 10.8, we see:
 //
 // Mac OS X/10.8 (12A269) AddressBook/1143
 // Mac OS X/10.8.1 (12B19) AddressBook/1143
+// Mac OS X/10.8.2 (12C60) AddressBook/1167
 //
 - (BOOL) isMacOSXAddressBookApp
 {
@@ -170,10 +176,15 @@
 
   cc = [self clientCapabilities];
 
-  b =  ([[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
-        && ([[cc userAgent] rangeOfString: @"Darwin"].location != NSNotFound
-            || [[cc userAgent] rangeOfString: @"Mac OS X"].location != NSNotFound)
-        && [[cc userAgent] rangeOfString: @"AddressBook"].location != NSNotFound);
+  b = (
+       [[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
+       && [[cc userAgent] rangeOfString: @"Darwin"].location != NSNotFound
+       || (
+           [[cc userAgent] rangeOfString: @"CFNetwork"].location != NSNotFound
+            || [[cc userAgent] rangeOfString: @"Mac OS X"].location != NSNotFound
+           )
+       && [[cc userAgent] rangeOfString: @"AddressBook"].location != NSNotFound
+       );
 
   return b;
 }

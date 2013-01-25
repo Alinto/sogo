@@ -1,6 +1,6 @@
 /* UIxComponentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2012 Inverse inc.
+ * Copyright (C) 2006-2013 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Francis Lachapelle <flachapelle@inverse.ca>
@@ -1917,10 +1917,20 @@ RANGE(2);
   else if (range == 2)
     {
       NSCalendarDate *date;
+      SOGoUserDefaults *ud;
 
       date = [NSCalendarDate dateWithString: [self range2]
 			     calendarFormat: dateFormat
                                      locale: locale];
+
+      // Adjust timezone
+      ud = [[context activeUser] userDefaults];
+      date = [NSCalendarDate dateWithYear: [date yearOfCommonEra]
+                                    month: [date monthOfYear]
+                                      day: [date dayOfYear]
+                                     hour: 0 minute: 0 second: 0
+                                 timeZone: [ud timeZone]];
+
       [theRule setUntilDate: date];
     }
   // No end date.
@@ -2520,6 +2530,15 @@ RANGE(2);
 - (NSString *) ownerLogin
 {
   return [[self clientObject] ownerInContext: context];
+}
+
+- (unsigned int) firstDayOfWeek
+{
+  SOGoUserDefaults *ud;
+
+  ud = [[context activeUser] userDefaults];
+
+  return [ud firstDayOfWeek];
 }
 
 // returns the raw content of the object

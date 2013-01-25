@@ -15,10 +15,10 @@ IMG#progressIndicator
   right: 1em;
   margin: 7px 5px; }}
 
-INPUT#searchValue
+INPUT[name="search"]
 { margin: 0px; }
 
-INPUT#searchValue.notfound
+INPUT[name="search"].notfound
 { color: #f00 !important; }
 
 

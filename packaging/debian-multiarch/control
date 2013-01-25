@@ -11,6 +11,7 @@ Multi-Arch: same
 Section: web
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, tmpreaper, sope4.9-libxmlsaxdriver, sope4.9-db-connector, gnustep-make, libcurl3
+Recommends: memcached
 Suggests: nginx
 Description: a modern and scalable groupware
  SOGo is a groupware server built around OpenGroupware.org (OGo) and

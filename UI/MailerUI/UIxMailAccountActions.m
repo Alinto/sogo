@@ -111,6 +111,10 @@
     folderType = @"sent";
   else if ([folderName isEqualToString: trashFolderName])
     folderType = @"trash";
+  else if ([folderName hasPrefix: [NSString stringWithFormat: @"%@/", draftsFolderName]])
+    folderType = @"draft/folder";
+  else if ([folderName hasPrefix: [NSString stringWithFormat: @"%@/", sentFolderName]])
+    folderType = @"sent/folder";
   else
     folderType = @"folder";
 

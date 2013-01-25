@@ -380,6 +380,7 @@ validate_invalid_startdate = "Data de començament incorrecta";
 validate_invalid_enddate   = "Data d'acabament incorrecta";
 validate_endbeforestart    = "La data/hora de començament és posterior a la d'acabament.";
 
+"Events" = "Esdeveniments";
 "Tasks" = "Tasques";
 "Show completed tasks" = "Mostrar tasques completades";
 
@@ -455,11 +456,15 @@ validate_endbeforestart    = "La data/hora de començament és posterior a la d'
 "End" = "Final";
 "Due Date" = "Data límit";
 "Location" = "Lloc";
+
 "(Private Event)" = "(Esdeveniment privat)";
 
 vevent_class0 = "(Esdeveniment públic)";
 vevent_class1 = "(Esdeveniment privat)";
 vevent_class2 = "(Esdeveniment confidencial)";
+
+"Priority" = "Prioritat";
+"Category" = "Categoria";
 
 vtodo_class0 = "(Tasca pública)";
 vtodo_class1 = "(Tasca privada)";
@@ -488,6 +493,7 @@ vtodo_class2 = "(Tasca confidencial)";
 "Show alarms" = "Mostra les alarmes";
 "Show tasks" = "Mostra les tasques";
 
+"Notifications" = "Notificacions";
 "Receive a mail when I modify my calendar" = "Rebre un correu de notificació quan modifique el meu calendari";
 "Receive a mail when someone else modifies my calendar" = "Rebre un correu de notificació quan altra persona modifique el meu calendari ";
 "When I modify my calendar, send a mail to:" = "Quan modifique el meu calendari, enviar un correu a: ";
@@ -527,6 +533,3 @@ vtodo_class2 = "(Tasca confidencial)";
 "Web Calendar" = "Calendari Web";
 "Reload on login" = "Actualitzar en connectar-se";
 "Invalid number." = "Número incorrecte";
-
-"Category" = "Categoria";
-"Priority" = "Prioritat";

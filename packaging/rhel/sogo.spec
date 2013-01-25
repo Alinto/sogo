@@ -17,7 +17,7 @@ Group:        Productivity/Groupware
 Source:       SOGo-%{sogo_version}.tar.gz
 Prefix:       /usr
 AutoReqProv:  off
-Requires:     gnustep-base >= 1.23, sope%{sope_major_version}%{sope_minor_version}-core, httpd, sope%{sope_major_version}%{sope_minor_version}-core, sope%{sope_major_version}%{sope_minor_version}-appserver, sope%{sope_major_version}%{sope_minor_version}-ldap, sope%{sope_major_version}%{sope_minor_version}-cards >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-sbjson, libmemcached
+Requires:     gnustep-base >= 1.23, sope%{sope_major_version}%{sope_minor_version}-core, httpd, sope%{sope_major_version}%{sope_minor_version}-core, sope%{sope_major_version}%{sope_minor_version}-appserver, sope%{sope_major_version}%{sope_minor_version}-ldap, sope%{sope_major_version}%{sope_minor_version}-cards >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-gdl1-contentstore >= %{sogo_version}, sope%{sope_major_version}%{sope_minor_version}-sbjson, libmemcached, memcached
 BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}
 BuildRequires:  gcc-objc gnustep-base gnustep-make sope%{sope_major_version}%{sope_minor_version}-appserver-devel sope%{sope_major_version}%{sope_minor_version}-core-devel sope%{sope_major_version}%{sope_minor_version}-ldap-devel sope%{sope_major_version}%{sope_minor_version}-mime-devel sope%{sope_major_version}%{sope_minor_version}-xml-devel sope%{sope_major_version}%{sope_minor_version}-gdl1-devel sope%{sope_major_version}%{sope_minor_version}-sbjson-devel libmemcached-devel sed %{?oc_build_depends}
 
@@ -195,8 +195,9 @@ mkdir -p ${RPM_BUILD_ROOT}/etc/logrotate.d
 mkdir -p ${RPM_BUILD_ROOT}/etc/sysconfig
 mkdir -p ${RPM_BUILD_ROOT}/etc/httpd/conf.d
 mkdir -p ${RPM_BUILD_ROOT}/usr/sbin
-mkdir -p ${RPM_BUILD_ROOT}/var/run/sogo
+mkdir -p ${RPM_BUILD_ROOT}/var/lib/sogo
 mkdir -p ${RPM_BUILD_ROOT}/var/log/sogo
+mkdir -p ${RPM_BUILD_ROOT}/var/run/sogo
 mkdir -p ${RPM_BUILD_ROOT}/var/spool/sogo
 cat Apache/SOGo.conf | sed -e "s@/lib/@/%{_lib}/@g" > ${RPM_BUILD_ROOT}/etc/httpd/conf.d/SOGo.conf
 install -m 600 Scripts/sogo.cron ${RPM_BUILD_ROOT}/etc/cron.d/sogo
@@ -228,9 +229,10 @@ rm -fr ${RPM_BUILD_ROOT}
 
 /etc/init.d/sogod
 /etc/cron.daily/sogo-tmpwatch
-/var/run/sogo
-/var/log/sogo
-/var/spool/sogo
+%dir %attr(0700, sogo, sogo) %{_var}/lib/sogo
+%dir %attr(0700, sogo, sogo) %{_var}/log/sogo
+%dir %attr(0755, sogo, sogo) %{_var}/run/sogo
+%dir %attr(0700, sogo, sogo) %{_var}/spool/sogo
 %{_sbindir}/sogod
 %{_libdir}/libSOGo.so.*
 %{_libdir}/libSOGoUI.so.*
@@ -299,12 +301,12 @@ rm -fr ${RPM_BUILD_ROOT}
 %endif
 
 # **************************** pkgscripts *****************************
+%pre
+if ! id sogo >& /dev/null; then
+  /usr/sbin/useradd -d %{_var}/lib/sogo -c "SOGo daemon" -s /sbin/nologin -M -r sogo
+fi
+
 %post
-if ! id sogo >& /dev/null; then /usr/sbin/adduser sogo > /dev/null 2>&1; fi
-/bin/chown sogo /var/run/sogo
-/bin/chown sogo /var/log/sogo
-/bin/chown sogo /var/spool/sogo
-/bin/chmod 700 /var/spool/sogo
 # update timestamp on imgs,css,js to let apache know the files changed
 find %{_libdir}/GNUstep/SOGo/WebServerResources  -exec touch {} \;
 /sbin/chkconfig --add sogod
@@ -322,12 +324,17 @@ if test "$1" = "0"
 then
   /usr/sbin/userdel sogo
   /usr/sbin/groupdel sogo > /dev/null 2>&1
-  /bin/rm -rf /var/run/sogo
-  /bin/rm -rf /var/spool/sogo
+  /bin/rm -rf %{_var}/run/sogo
+  /bin/rm -rf %{_var}/spool/sogo
+  # not removing /var/lib/sogo to keep .GNUstepDefaults
 fi
 
 # ********************************* changelog *************************
 %changelog
+* Tue Jan 22 2013 Jean Raby <jraby@inverse.ca>
+- Create the sogo user as a system user
+- Use %attr() to set directory permissions instead of chown/chmod
+
 * Mon Nov 12 2012 Jean Raby <jraby@inverse.ca>
 - Add missing dependency on lasso and lasso-devel
 

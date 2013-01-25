@@ -611,7 +611,7 @@ sogo_folder_move_copy_messages(void *folder_object,
 
 static enum mapistore_error
 sogo_folder_move_folder(void *folder_object, void *target_folder_object,
-                        const char *new_folder_name)
+                        TALLOC_CTX *mem_ctx, const char *new_folder_name)
 {
   NSAutoreleasePool *pool;
   MAPIStoreFolder *moveFolder, *targetFolder;
@@ -643,7 +643,9 @@ sogo_folder_move_folder(void *folder_object, void *target_folder_object,
       rc = [moveFolder moveCopyToFolder: targetFolder
                             withNewName: newFolderName
                                  isMove: YES
-                            isRecursive: YES];
+                            isRecursive: YES
+                               inMemCtx: mem_ctx];
+
       [pool release];
       GSUnregisterCurrentThread ();
     }
@@ -656,7 +658,7 @@ sogo_folder_move_folder(void *folder_object, void *target_folder_object,
 }
 
 static enum mapistore_error
-sogo_folder_copy_folder(void *folder_object, void *target_folder_object,
+sogo_folder_copy_folder(void *folder_object, void *target_folder_object, TALLOC_CTX *mem_ctx,
                         bool recursive, const char *new_folder_name)
 {
   NSAutoreleasePool *pool;
@@ -683,7 +685,9 @@ sogo_folder_copy_folder(void *folder_object, void *target_folder_object,
       rc = [copyFolder moveCopyToFolder: targetFolder
                             withNewName: newFolderName
                                  isMove: NO
-                            isRecursive: recursive];
+                            isRecursive: recursive
+                               inMemCtx: mem_ctx];
+ 
       [pool release];
       GSUnregisterCurrentThread ();
     }

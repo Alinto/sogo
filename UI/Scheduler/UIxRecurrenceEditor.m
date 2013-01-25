@@ -22,12 +22,26 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h> /* for locale string constants */
 
 #import <Common/UIxPageFrame.h>
 
 #import "UIxRecurrenceEditor.h"
 
 @implementation UIxRecurrenceEditor
+
+- (NSArray *) shortWeekDaysList
+{
+  static NSArray *shortWeekDaysList = nil;
+
+  if (!shortWeekDaysList)
+    {
+      shortWeekDaysList = [locale objectForKey: NSShortWeekDayNameArray];
+      [shortWeekDaysList retain];
+    }
+
+  return shortWeekDaysList;
+}
 
 - (NSArray *) monthlyRepeatList
 {
@@ -45,13 +59,12 @@
 
 - (NSArray *) monthlyDayList
 {
-  static NSArray *monthlyDayList = nil;
+  static NSMutableArray *monthlyDayList = nil;
 
   if (!monthlyDayList)
     {
-      monthlyDayList = [NSArray arrayWithObjects: @"Sunday", @"Monday", @"Tuesday",
-				@"Wednesday", @"Thursday", @"Friday",
-				@"Saturday", @"DayOfTheMonth", nil];
+      monthlyDayList = [NSMutableArray arrayWithArray: [locale objectForKey: NSWeekDayNameArray]];
+      [monthlyDayList addObject: @"DayOfTheMonth"];
       [monthlyDayList retain];
     }
   
@@ -64,9 +77,7 @@
 
   if (!yearlyMonthList)
     {
-      yearlyMonthList = [NSArray arrayWithObjects: @"January", @"February", @"March",
-				 @"April", @"May", @"June", @"July", @"August",
-				 @"September", @"October", @"November", @"December", nil];
+      yearlyMonthList = [locale objectForKey: NSMonthNameArray];
       [yearlyMonthList retain];
     }
   
@@ -79,9 +90,7 @@
 
   if (!yearlyDayList)
     {
-      yearlyDayList = [NSArray arrayWithObjects: @"Sunday", @"Monday", @"Tuesday",
-			       @"Wednesday", @"Thursday", @"Friday",
-			       @"Saturday", nil];
+      yearlyDayList = [locale objectForKey: NSWeekDayNameArray];
       [yearlyDayList retain];
     }
   
@@ -126,6 +135,27 @@
   text = [self labelForKey: item];
 
   return text;
+}
+
+- (NSString *) idForWeekDay
+{
+  static NSArray *shortWeekDaysList = nil;
+  NSString *id;
+
+  if (!shortWeekDaysList)
+    {
+      shortWeekDaysList = [locale objectForKey: NSShortWeekDayNameArray];
+      [shortWeekDaysList retain];
+    }
+
+  id = [NSString stringWithFormat: @"weekDay%i", [shortWeekDaysList indexOfObject: item]];
+
+  return id;
+}
+
+- (NSString *) labelForWeekDay
+{
+  return item;
 }
 
 @end

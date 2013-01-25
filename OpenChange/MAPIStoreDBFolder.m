@@ -130,6 +130,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
                               withNewName: (NSString *) newFolderName
                                    isMove: (BOOL) isMove
                               isRecursive: (BOOL) isRecursive
+                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
   NSString *path, *pathComponent, *targetPath, *newPath;
@@ -164,7 +165,8 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   else
     rc = [super moveCopyToFolder: targetFolder withNewName: newFolderName
                           isMove: isMove
-                     isRecursive: isRecursive];
+                     isRecursive: isRecursive
+                        inMemCtx: memCtx];
 
   return rc;
 }

@@ -22,6 +22,7 @@
     var attendees = <var:string value="jsonAttendees" const:escapeHTML="NO"/>;
     var ownerLogin = '<var:string value="ownerLogin"/>';
     var emailAlarmsEnabled = <var:string value="emailAlarmsEnabled"/>;
+    var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
     <var:if condition="eventIsReadOnly" const:negate="YES"
 	    ><var:if condition="hasOrganizer">var organizer = <var:string value="jsonOrganizer" const:escapeHTML="NO"/>;</var:if
 	    >var owners = <var:string value="calendarOwnerList.jsonRepresentation" const:escapeHTML="NO"/>;</var:if

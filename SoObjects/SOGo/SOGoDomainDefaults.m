@@ -171,8 +171,15 @@
   return [self stringArrayForKey: @"SOGoContactsDefaultRoles"];
 }
 
-- (BOOL) forceIMAPLoginWithEmail
+//
+// In v2.0.4, SOGoForceIMAPLoginWithEmail was renamed to SOGoForceExternalLoginWithEmail
+// but we keep backward compatbility for now with previous versions.
+//
+- (BOOL) forceExternalLoginWithEmail
 {
+  if ([self stringForKey: @"SOGoForceExternalLoginWithEmail"])
+    return [self boolForKey: @"SOGoForceExternalLoginWithEmail"];
+
   return [self boolForKey: @"SOGoForceIMAPLoginWithEmail"];
 }
 

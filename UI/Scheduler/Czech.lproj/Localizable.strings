@@ -380,6 +380,7 @@ validate_invalid_startdate = "Chybné datum začátku!";
 validate_invalid_enddate   = "Chybné datum konce!";
 validate_endbeforestart    = "Zadané datum konce je před začátkem události.";
 
+"Events" = "Události";
 "Tasks" = "Úkoly";
 "Show completed tasks" = "Zobrazit dokončené úkoly";
 
@@ -455,11 +456,15 @@ validate_endbeforestart    = "Zadané datum konce je před začátkem události.
 "End" = "Konec";
 "Due Date" = "Datum splnění";
 "Location" = "Místo";
+
 "(Private Event)" = "(Soukromá událost)";
 
 vevent_class0 = "(Veřejná událost)";
 vevent_class1 = "(Soukromá událost)";
 vevent_class2 = "(Důvěrná událost)";
+
+"Priority" = "Priorita";
+"Category" = "Kategorie";
 
 vtodo_class0 = "(Veřejný úkol)";
 vtodo_class1 = "(Soukromý úkol)";
@@ -488,6 +493,7 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Show alarms" = "Zobrazit připomenutí";
 "Show tasks" = "Zobrazit úkoly";
 
+"Notifications" = "Připomenutí";
 "Receive a mail when I modify my calendar" = "Obdržet zprávu když upravím svůj kalendář";
 "Receive a mail when someone else modifies my calendar" = "Obdržet zprávu když někdo jiný upraví můj kalendář";
 "When I modify my calendar, send a mail to:" = "Když upravím svůj kalendář, poslat zprávu na:";
@@ -527,6 +533,3 @@ vtodo_class2 = "(Důvěrný úkol)";
 "Web Calendar" = "Vzdálený kalendář na webu";
 "Reload on login" = "Aktualizovat při přihlášení";
 "Invalid number." = "Invalid number.";
-
-"Category" = "Kategorie";
-"Priority" = "Priorita";

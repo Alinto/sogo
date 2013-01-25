@@ -122,15 +122,13 @@
       else
         {
           tmpTime = [dateTime copy];
+          utcTZ = [NSTimeZone timeZoneWithName: @"GMT"];
+          [tmpTime setTimeZone: utcTZ];
 	  if (forAllDayEntity)
 	    timeString = [tmpTime iCalFormattedDateString];
 	  else
-	    {
-	      utcTZ = [NSTimeZone timeZoneWithName: @"GMT"];
-	      [tmpTime setTimeZone: utcTZ];
-	      timeString = [NSString stringWithFormat: @"%@Z",
-				     [tmpTime iCalFormattedDateTimeString]];
-	    }
+            timeString = [NSString stringWithFormat: @"%@Z",
+                                   [tmpTime iCalFormattedDateTimeString]];
           [tmpTime release];
         }
     }
