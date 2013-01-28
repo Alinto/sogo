@@ -1,6 +1,6 @@
 /* UIxAppointmentEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2011 Inverse inc.
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Francis Lachapelle <flachapelle@inverse.ca>
@@ -543,7 +543,10 @@
   int nbrDays;
   iCalDateTime *startDate;
   iCalTimeZone *tz;
+  NSCalendarDate *allDayStartDate;
+  NSTimeZone *timeZone;
   SOGoUserDefaults *ud;
+  signed int offset;
   
   [self event];  
   [super takeValuesFromRequest: _rq inContext: _ctx];
@@ -552,7 +555,13 @@
     {
       nbrDays = ((float) abs ([aptEndDate timeIntervalSinceDate: aptStartDate])
                  / 86400) + 1;
-      [event setAllDayWithStartDate: aptStartDate
+      // Convert start date to GMT
+      ud = [[context activeUser] userDefaults];
+      timeZone = [ud timeZone];
+      offset = [timeZone secondsFromGMTForDate: aptStartDate];
+      allDayStartDate = [aptStartDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                                seconds:offset];
+      [event setAllDayWithStartDate: allDayStartDate
                            duration: nbrDays];
     }
   else
