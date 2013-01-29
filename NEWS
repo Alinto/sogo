@@ -1,4 +1,4 @@
-2.0.4 (2013-01-DD)
+2.0.4 (2013-01-25)
 ------------------
 
 New features
@@ -18,6 +18,7 @@ Enhancements
  - updated translations
  - recurrence-id of all-day events is now set as a proper date with no time
  - 'show completed tasks' is now persistent
+ - fixed memory usage consumption for remote ICS subscriptions
 
 Bug fixes
  - fixed usage of browser's language for the login page
