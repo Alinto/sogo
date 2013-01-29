@@ -1,3 +1,17 @@
+2.0.4a (2013-01-30)
+------------------
+
+Enhancements
+ - updated Czech translation
+
+Bug fixes
+ - fixed handling of groups with spaces in their UID
+ - fixed possible infinite loop in repeatable object
+ - fixed until date in component editor
+ - fixed saving all-day event in appointment editor
+ - fixed handling of decoding contacts UID
+ - fixed support of GNUstep 1.20 / Debian Squeeze
+
 2.0.4 (2013-01-25)
 ------------------
 
