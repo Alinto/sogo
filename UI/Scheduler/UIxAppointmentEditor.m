@@ -253,7 +253,6 @@
   signed int offset;
   SOGoObject <SOGoComponentOccurence> *co;
   SOGoUserDefaults *ud;
-  iCalTimeZone *eventTimeZone;
 
   [self event];
   co = [self clientObject];
@@ -290,17 +289,12 @@
         {
           endDate = [endDate dateByAddingYears: 0 months: 0 days: -1];
 
-          // Verify if the start date is "floating" (no timezone). In this case, convert it
-          // to the user's timezone.
-          eventTimeZone = [(iCalDateTime*)[event uniqueChildWithTag: @"dtstart"] timeZone];
-          if (eventTimeZone == nil)
-            {
-              offset = [timeZone secondsFromGMTForDate: startDate];
-              startDate = [startDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
-                                               seconds:-offset];
-              endDate = [endDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+          // Convert the dates to the user's timezone
+          offset = [timeZone secondsFromGMTForDate: startDate];
+          startDate = [startDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
                                            seconds:-offset];
-            }
+          endDate = [endDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
+                                       seconds:-offset];
         }
       isTransparent = ![event isOpaque];
     }
@@ -555,7 +549,7 @@
     {
       nbrDays = ((float) abs ([aptEndDate timeIntervalSinceDate: aptStartDate])
                  / 86400) + 1;
-      // Convert start date to GMT
+      // Convert all-day start date to GMT (floating date)
       ud = [[context activeUser] userDefaults];
       timeZone = [ud timeZone];
       offset = [timeZone secondsFromGMTForDate: aptStartDate];
