@@ -30,6 +30,9 @@
 #import <NGCards/NSArray+NGCards.h>
 #import <NGExtensions/NSString+Ext.h>
 
+#import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/SOGoDateFormatter.h>
+#import <SOGo/SOGoUser.h>
 #import <Contacts/SOGoContactObject.h>
 
 #import "UIxContactView.h"
@@ -612,7 +615,23 @@
 
 - (NSString *) bday
 {
-  return [self _cardStringWithLabel: @"Birthday:" value: [card bday]];
+  NSString *bday, *value;
+  NSCalendarDate *date;
+  SOGoDateFormatter *dateFormatter;
+
+  bday = [card bday];
+  if (bday)
+    {
+      // Expected format of BDAY is YYYY[-]MM[-]DD
+      value = [bday stringByReplacingString: @"-" withString: @""];
+      date = [NSCalendarDate dateFromShortDateString: value
+                                  andShortTimeString: nil
+                                          inTimeZone: nil];
+      dateFormatter = [[[self context] activeUser] dateFormatterInContext: context];
+      bday = [dateFormatter formattedDate: date];
+    }
+
+  return [self _cardStringWithLabel: @"Birthday:" value: bday];
 }
 
 - (NSString *) tz

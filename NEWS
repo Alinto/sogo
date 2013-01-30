@@ -3,6 +3,7 @@
 
 Enhancements
  - updated Czech translation
+ - birthday is now properly formatted in addressbook module
 
 Bug fixes
  - fixed handling of groups with spaces in their UID
