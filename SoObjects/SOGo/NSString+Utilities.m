@@ -260,7 +260,6 @@ static int cssEscapingCount;
   [representation replaceString: @"\\" withString: @"\\\\"];
   [representation replaceString: @"\"" withString: @"\\\""];
   [representation replaceString: @"/" withString: @"\\/"];
-  [representation replaceString: @"\b" withString: @"\\b"];
   [representation replaceString: @"\f" withString: @"\\f"];
   [representation replaceString: @"\n" withString: @"\\n"];
   [representation replaceString: @"\r" withString: @"\\r"];
@@ -271,7 +270,33 @@ static int cssEscapingCount;
 
 - (NSString *) jsonRepresentation
 {
-  return [self doubleQuotedString];
+  static char thisCharCode[28];
+  static NSString *controlCharString = nil;
+  static NSCharacterSet *controlCharSet = nil;
+  NSString *cleanedString;
+  int i;
+
+  if (!controlCharSet)
+    {
+      // Create an array of chars for all control characters between 0x00 and 0x1F,
+      // apart from \t, \n, \f and \r (0x08, 0x09, 0x0A, 0x0C and 0x0D)
+      for (i = 0x00; i <= 0x08; i++) {
+        thisCharCode[i] = i;
+      }
+      thisCharCode[9] = 0x0B;
+      for (i = 0x0E; i <= 0x1F; i++) {
+        thisCharCode[i - 4] = i;
+      }
+      controlCharString = [NSString stringWithCString: thisCharCode length: 28];
+      controlCharSet = [NSCharacterSet characterSetWithCharactersInString: controlCharString];
+      [controlCharSet retain];
+    }
+
+  // Escape double quotes and remove control characters
+  cleanedString = [[[self doubleQuotedString] componentsSeparatedByCharactersInSet: controlCharSet]
+                              componentsJoinedByString: @""];
+
+  return cleanedString;
 }
 
 - (void) _setupCSSEscaping
