@@ -197,7 +197,7 @@
 "Export Address Book..." = "Exporter le carnet d'adresses...";
 "View Raw Source" = "Afficher le contenu original";
 "Import Cards" = "Importer des contacts";
-"Select a vCard or LDIF file." = "Sélectionner un fichier. LDIF ou vCard.";
+"Select a vCard or LDIF file." = "Sélectionner un fichier LDIF ou vCard.";
 "Upload" = "Ajouter";
 "Uploading" = "Téléversement en cours";
 "Done" = "Terminer";
