@@ -330,14 +330,15 @@ lastPossibleRecurrenceStartDateUsingFirstInstanceCalendarDateRange: (NGCalendarD
 
   rRules = [[self recurrenceRules] objectEnumerator];
   rule = [rRules nextObject];
-  while (rule && ![rule isInfinite] & !date)
+  while (rule && ![rule isInfinite] && !date)
     {
       calc = [iCalRecurrenceCalculator
                recurrenceCalculatorForRecurrenceRule: rule
-               withFirstInstanceCalendarDateRange: _r];
+                  withFirstInstanceCalendarDateRange: _r];
       rdate = [[calc lastInstanceCalendarDateRange] startDate];
-      if (!date
-          || ([date compare: rdate] == NSOrderedAscending))
+      if (!rdate)
+        date = [_r startDate];
+      else if (!date || ([date compare: rdate] == NSOrderedAscending))
         date = rdate;
       else
         rule = [rRules nextObject];

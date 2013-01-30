@@ -12,11 +12,7 @@
 /* The content of attribute values should be quoted properly by using the
  equivalent entities. */
 function dTreeQuote(str) {
-    return (str
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/\"/g, "&quot;")
-            .replace(/\'/g, "&apos;"));
+    return str.escapeHTML();
 }
 
 // Node object

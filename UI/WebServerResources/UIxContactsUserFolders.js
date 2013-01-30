@@ -117,7 +117,7 @@ function buildUsersTree(treeDiv, response) {
 function onUserNodeToggle(event) {
     this.stopObserving("click", onUserNodeToggle);
 
-    var person = this.parentNode.getAttribute("dataname");
+    var person = this.parentNode.getAttribute("dataname").unescapeHTML();
 
     var url = (UserFolderURLForUser(person) + "foldersSearch"
                + "?type=" + window.opener.userFolderType);

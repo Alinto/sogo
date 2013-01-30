@@ -83,10 +83,9 @@
       defaultsDict = [ud persistentDomainForName: @"sogod"];
     }
 
-  plistData = [NSPropertyListSerialization dataWithPropertyList: (id) defaultsDict
+  plistData = [NSPropertyListSerialization dataFromPropertyList: (id) defaultsDict
                                          format: NSPropertyListOpenStepFormat
-                                        options: 0
-					  error: 0 ];
+                               errorDescription: 0 ];
   return [[[NSString alloc] initWithData:plistData encoding:NSUTF8StringEncoding] autorelease];
 }
 
@@ -94,7 +93,7 @@
 - (NSString *) defaultsFromFilename: (NSString *)filename
 {
   NSData *rawData, *plistRawData, *plistDataOpenStep;
-  NSError *err;
+  NSString *errstr;
 
   rawData = [NSData dataWithContentsOfFile: filename];
   if (rawData == nil)
@@ -104,23 +103,22 @@
       return @"";
     }
 
-  plistRawData = [NSPropertyListSerialization propertyListWithData: rawData
-                                                           options: 0
+  plistRawData = [NSPropertyListSerialization propertyListFromData: rawData
+                                                  mutabilityOption: 0
                                                             format: 0
-                                                             error: &err];
+                                                  errorDescription: &errstr];
   if (plistRawData == nil)
     {
-      NSLog(@"Error converting '%s' to plist: %@", [filename UTF8String], err);
+      NSLog(@"Error converting '%s' to plist: %@", [filename UTF8String], errstr);
       return @"";
     }
   
-  plistDataOpenStep = [NSPropertyListSerialization dataWithPropertyList: (id) plistRawData
+  plistDataOpenStep = [NSPropertyListSerialization dataFromPropertyList: (id) plistRawData
                                          format: NSPropertyListOpenStepFormat
-                                        options: 0
-                                          error: &err ];
+                               errorDescription: &errstr ];
   if (!plistDataOpenStep)
     {
-      NSLog(@"Error converting plist to OpenStep format: %@", err);
+      NSLog(@"Error converting plist to OpenStep format: %@", errstr);
       return @"";
     }
 

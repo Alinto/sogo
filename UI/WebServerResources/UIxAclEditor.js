@@ -41,7 +41,7 @@ function addUser(userName, userID, type) {
         var url = window.location.href;
         var elements = url.split("/");
         elements[elements.length-1] = ("addUserInAcls?uid="
-                                       + encodeURIComponent(userID));
+                                       + encodeURIComponent(userID.unescapeHTML()));
         triggerAjaxRequest(elements.join("/"), addUserCallback, newNode);
         result = true;
     }
@@ -91,7 +91,7 @@ function nodeForUser(userName, userId, canSubscribe) {
 
     var span = createElement("span");
     span.addClassName("userFullName");
-    span.appendChild(document.createTextNode(" " + userName));
+    span.appendChild(document.createTextNode(" " + userName.unescapeHTML()));
     node.appendChild(span);
 
     if (canSubscribe) {
@@ -135,9 +135,9 @@ function onUserRemove(event) {
     var baseURL = elements.join("/");
 
     for (var i = 0; i < nodes.length; i++) {
-        var userId = nodes[i].id;
+        var userId = nodes[i].id.unescapeHTML();
         if (userId != defaultUserID && userId != "anonymous") {
-            triggerAjaxRequest(baseURL + userId, removeUserCallback,
+            triggerAjaxRequest(baseURL + encodeURIComponent(userId), removeUserCallback,
                                nodes[i]);
         }
     }
@@ -159,7 +159,7 @@ function subscribeToFolder(refreshCallback, refreshCallbackData) {
 function openRightsForUserID(userID) {
     var url = window.location.href;
     var elements = url.split("/");
-    elements[elements.length-1] = "userRights?uid=" + userID;
+    elements[elements.length-1] = "userRights?uid=" + encodeURIComponent(userID);
 
     var height = AclEditor.userRightsHeight;
     if (userID == "anonymous") {
@@ -178,7 +178,7 @@ function openRightsForUserID(userID) {
 function openRightsForUser(button) {
     var nodes = $("userList").getSelectedRows();
     if (nodes.length > 0)
-        openRightsForUserID(nodes[0].getAttribute("id"));
+        openRightsForUserID(nodes[0].getAttribute("id").unescapeHTML());
 
     return false;
 }

@@ -38,7 +38,7 @@
         </div>
 	<ul id="userList">
 	  <var:foreach list="usersForObject" item="currentUser"
-            ><li var:id="currentUser" var:class="currentUserClass">
+            ><li var:id="currentUser.stringByEscapingHTMLString" var:class="currentUserClass">
               <span class="userFullName"
                  ><var:string value="currentUserDisplayName"
                  /></span>

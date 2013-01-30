@@ -1927,7 +1927,7 @@ RANGE(2);
       ud = [[context activeUser] userDefaults];
       date = [NSCalendarDate dateWithYear: [date yearOfCommonEra]
                                     month: [date monthOfYear]
-                                      day: [date dayOfYear]
+                                      day: [date dayOfMonth]
                                      hour: 0 minute: 0 second: 0
                                  timeZone: [ud timeZone]];
 

@@ -141,6 +141,7 @@
 "messageforward_inline" = "Do řady";
 "messageforward_attached" = "Jako přílohu";
 
+"When replying to a message:" = "Při odpovědi na zprávu:";
 "replyplacement_above" = "Začít mojí odpověď nad citací";
 "replyplacement_below" = "Začít mojí odpověď pod citací";
 "And place my signature" = "A umístit můj podpis";
@@ -149,12 +150,17 @@
 "Compose messages in" = "Vytvářet zprávy ve formátu";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Prostý text";
+"Display remote inline images" = "Zobrazit vzdálené inline obrázky";
+"displayremoteinlineimages_never" = "Nikdy";
+"displayremoteinlineimages_always" = "Vždy";
 
 /* IMAP Accounts */
 "New Mail Account" = "Nový poštovní účet";
 
 "Server Name:" = "Adresa serveru:";
 "Port:" = "Port:";
+"Encryption:" = "Zabezpečení spojení:";
+"None" = "Žádné";
 "User Name:" = "Uživatelské jméno:";
 "Password:" = "Heslo:";
 
@@ -166,6 +172,9 @@
 
 "Signature" = "Podpis";
 "Please enter your signature below:" = "Text podpisu:";
+
+"Please specify a valid sender address." = "Prosím zadejte správnou adresu odesílatele.";
+"Please specify a valid reply-to address." = "Prosím zadejte správnou adresu pro odpověď.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Dodatečné parametry";
@@ -243,6 +252,7 @@
 "match any of the following rules:" = "match any of the following rules:";
 "match all messages" = "match all messages";
 "Perform these actions:" = "Perform these actions:";
+"Untitled Filter" = "Nepojmenovaný filtr";
 
 "Subject" = "Subject";
 "From" = "From";
@@ -283,6 +293,7 @@
 "Label 4" = "Label 4";
 "Label 5" = "Label 5";
 
+"The password was changed successfully." = "Heslo bylo úspěšně změněno.";
 "Password must not be empty." = "Heslo nesmí být prázdné.";
 "The passwords do not match. Please try again." = "Hesla se neshodují. Prosím zadejte je znovu.";
 "Password change failed" = "Změna hesla selhala";
