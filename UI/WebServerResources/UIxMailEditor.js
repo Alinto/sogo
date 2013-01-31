@@ -121,7 +121,7 @@ function onValidate(onSuccess) {
             showAlertDialog(_("error_missingrecipients"));
         }
         else if (document.pageform.subject.value == "") {
-            showConfirmDialog(_("Warning"), _("error_missingsubject"), onValidateDone.bind(this, onSuccess), null, _("Send anyway"), _("Cancel"));
+            showConfirmDialog(_("Warning"), _("error_missingsubject"), onValidateDone.bind(this, onSuccess), null, _("Send Anyway"), _("Cancel"));
         }
         else {
             onValidateDone(onSuccess);
