@@ -77,15 +77,17 @@
 
 - (void) setSanitizedArguments: (NSArray *) newArguments
 {
-  NSString *argPair, *argsString, *k, *v;
-  NSDictionary   *cliArguments;
-  NSArray *keys, *wordsWP;
-
   int i;
 
-  argsString = [newArguments componentsJoinedByString:@" "];
+  NSArray *keys;
+  NSDictionary   *cliArguments;
+  NSMutableArray *mutArguments;
+  NSString *kArg, *k, *v;
+  NSUInteger kArgPos;
 
-  /* Remove NSArgumentDomain -key value from the arguments */
+  mutArguments = [NSMutableArray arrayWithArray: newArguments];
+
+  /* Remove NSArgumentDomain '-key value' from the arguments */
   cliArguments = [[NSUserDefaults standardUserDefaults]
                                  volatileDomainForName:NSArgumentDomain];
   keys = [cliArguments allKeys];
@@ -93,27 +95,33 @@
     {
       k = [keys objectAtIndex: i];
       v = [cliArguments objectForKey:k];
-      argPair = [NSString stringWithFormat:@"-%@ %@", k, v];
-      argsString = [argsString stringByReplacingOccurrencesOfString: argPair
-                                                         withString: @""];
-    }
-  if ([argsString length])
-    {
-      /* dance to compact whitespace */
-      NSMutableArray *words = [NSMutableArray array];
-      wordsWP = [argsString componentsSeparatedByCharactersInSet:
-                              [NSCharacterSet whitespaceCharacterSet]];
-      for (i=0; i < [wordsWP count]; i++)
-        {
-          v = [wordsWP objectAtIndex: i];
 
-          if([v length] > 1) 
+      /* -p will be 'p' in NSArgumentDomain */
+      kArg = [NSString stringWithFormat:@"-%@", k];
+      kArgPos = [mutArguments indexOfObject: kArg];
+
+      if (kArgPos != NSNotFound)
+        {
+          /* Remove arguments at kArgPos+1 and kArgPos
+           * if their sequence matches that of the ArgumentDomain data: -k v
+           */
+          if (kArgPos < ([mutArguments count] - 1) &&
+                [[mutArguments objectAtIndex: kArgPos+1] isEqualToString: v])
             {
-              [words addObject:v];
+              [mutArguments removeObjectAtIndex: kArgPos+1];
+              [mutArguments removeObjectAtIndex: kArgPos];
+            }
+          else
+            {
+              /* this should not happen unless the argument is the last one */
+              [mutArguments removeObjectAtIndex: kArgPos];
             }
         }
-      argsString = [words componentsJoinedByString:@" "];
-      ASSIGN (sanitizedArguments, [argsString componentsSeparatedByString:@" "]);
+    }
+
+  if ([mutArguments count])
+    {
+      ASSIGN (sanitizedArguments, mutArguments);
     }
   else
     {
