@@ -1,3 +1,19 @@
+2.0.4b (2013-02-dd)
+------------------
+
+Enhancements
+ - 
+
+Bug fixes
+ - Fixed order of precedence for options (#2166)
+   The following order is enforced - first match wins
+     1. Command line arguments
+     2. .GNUstepDefaults
+     3. /etc/sogo/{debconf,sogo}.conf
+     4. SOGoDefaults.plist
+ - Fixed handling of LDAP DN containing special characters (#2152, #2207)
+ - Fixed handling of credential files for older GNUsteps (#2216)
+
 2.0.4a (2013-01-30)
 ------------------
 
