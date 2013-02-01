@@ -29,6 +29,7 @@
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSFileManager.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSUserDefaults.h>
 
 #import <NGExtensions/NSObject+Logs.h>
@@ -69,7 +70,7 @@ BootstrapNSUserDefaults ()
 }
 
 static void
-_injectConfigurationFromFile (NSUserDefaults *ud,
+_injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
                               NSString *filename, NSObject *logger)
 {
   NSDictionary *newConfig, *fileAttrs;
@@ -97,7 +98,7 @@ _injectConfigurationFromFile (NSUserDefaults *ud,
         {
           newConfig = [NSDictionary dictionaryWithContentsOfFile: filename];
           if (newConfig)
-            [ud registerDefaults: newConfig];
+              [defaultsDict addEntriesFromDictionary: newConfig];
           else
             {
               [logger errorWithFormat:
@@ -127,9 +128,19 @@ _injectConfigurationFromFile (NSUserDefaults *ud,
    *   GSConfigDomain
    *   (languages)
    *   NSRegistrationDomain
+   *
+   * We'll end up with this search list:
+   *   NSArgumentDomain (command line arguments)
+   *   sogodRuntimeDomain (config from all config files)
+   *   GSPrimaryDomain
+   *   NSGlobalDomain
+   *   GSConfigDomain
+   *   (languages)
+   *   NSRegistrationDomain (SOPE loads its defaults in this one)
    */
 
   NSDictionary *sogodDomain;
+  NSMutableDictionary *configFromFiles;
   NSUserDefaults *ud;
   SOGoStartupLogger *logger;
   NSBundle *bundle;
@@ -140,31 +151,41 @@ _injectConfigurationFromFile (NSUserDefaults *ud,
 
   logger = [SOGoStartupLogger sharedLogger];
 
-  /* Load the configuration from the standard user default files
-   * into the 'sogod' domain */
+  /* Load the configuration from the standard user default files */
   ud = [NSUserDefaults standardUserDefaults];
 
-  /* Populate NSRegistrationDomain with default values from SOGoDefaults.plist */
+  /* Populate configFromFiles with default values from SOGoDefaults.plist */
+  configFromFiles = [NSMutableDictionary dictionaryWithCapacity:0];
   bundle = [NSBundle bundleForClass: self];
   filename = [bundle pathForResource: @"SOGoDefaults" ofType: @"plist"];
   if (filename)
-    _injectConfigurationFromFile (ud, filename, logger);
+    _injectConfigurationFromFile (configFromFiles, filename, logger);
 
-  /* Fill/Override NSRegistrationDomain values with configuration stored
+  /* Fill/Override configFromFiles values with configuration stored
    *  in "/etc" */
   for (count = 0; count < sizeof(confFiles)/sizeof(confFiles[0]); count++)
-    _injectConfigurationFromFile (ud, confFiles[count], logger);
+    _injectConfigurationFromFile (configFromFiles, confFiles[count], logger);
 
   /* This dance is required to let other appplications (sogo-tool) use
    * options from the sogod domain while preserving the order of precedence
    *  - remove the 'sogod' domain from the user defaults search list 
-   *  - register the content of the sogod domain into the NSRegistrationDomain
+   *  - Load the content of the sogod domain into configFromFiles
    *    Thereby overriding values from the config files loaded above
    */
   [ud removeSuiteNamed: @"sogod"];
   sogodDomain = [ud persistentDomainForName: @"sogod"];
   if ([sogodDomain count])
-    [ud registerDefaults: sogodDomain];
+    [configFromFiles addEntriesFromDictionary: sogodDomain];
+
+  /* Add a volatile domain containing the config to the search list.
+   * The domain is added at the very front of the search list
+   */
+  [ud setVolatileDomain: configFromFiles
+                forName: @"sogodRuntimeDomain"];
+  [ud addSuiteNamed: @"sogodRuntimeDomain"];
+
+  /* NSArgumentsDomain goes back in front of the search list */
+  [ud addSuiteNamed: @"NSArgumentDomain"];
 
   /* issue a warning if WOApplicationRedirectURL is used */
   redirectURL = [ud stringForKey: @"WOApplicationRedirectURL"];
