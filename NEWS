@@ -13,6 +13,9 @@ Bug fixes
      4. SOGoDefaults.plist
  - Fixed handling of LDAP DN containing special characters (#2152, #2207)
  - Fixed handling of credential files for older GNUsteps (#2216)
+ - fixed tooltips in contacts list
+ - fixed classification menu in component editor
+ - fixed link to ACL editor for 'any authenticated user'
 
 2.0.4a (2013-01-30)
 ------------------
