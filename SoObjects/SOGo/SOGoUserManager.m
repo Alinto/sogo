@@ -448,11 +448,28 @@ static Class NSNullK;
 }
 
 - (BOOL) checkLogin: (NSString *) _login
-	   password: (NSString *) _pwd
+           password: (NSString *) _pwd
              domain: (NSString **) _domain
-	       perr: (SOGoPasswordPolicyError *) _perr
-	     expire: (int *) _expire
-	      grace: (int *) _grace
+               perr: (SOGoPasswordPolicyError *) _perr
+             expire: (int *) _expire
+              grace: (int *) _grace
+{
+  return [self checkLogin: _login
+                   password: _pwd
+                   domain: _domain
+                   perr: _perr
+                   expire: _expire
+                   grace: _grace
+                   useCache: YES];
+}
+
+- (BOOL) checkLogin: (NSString *) _login
+           password: (NSString *) _pwd
+             domain: (NSString **) _domain
+               perr: (SOGoPasswordPolicyError *) _perr
+             expire: (int *) _expire
+              grace: (int *) _grace
+           useCache: (BOOL) useCache
 {
   NSString *dictPassword, *username, *jsonUser;
   NSMutableDictionary *currentUser;
@@ -468,7 +485,7 @@ static Class NSNullK;
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: username];
   currentUser = [jsonUser objectFromJSONString];
   dictPassword = [currentUser objectForKey: @"password"];
-  if (currentUser && dictPassword)
+  if (useCache && currentUser && dictPassword)
     {
       checkOK = ([dictPassword isEqualToString: [_pwd asSHA1String]]);
       //NSLog(@"Password cache hit for user %@", _login);
@@ -482,9 +499,9 @@ static Class NSNullK;
     {
       checkOK = YES;
       if (!currentUser)
-	{
-	  currentUser = [NSMutableDictionary dictionary];
-	}
+        {
+          currentUser = [NSMutableDictionary dictionary];
+        }
 
       // It's important to cache the password here as we might have cached the
       // user's entry in -contactInfosForUserWithUIDorEmail: and if we don't

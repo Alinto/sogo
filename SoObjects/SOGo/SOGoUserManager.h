@@ -82,11 +82,19 @@
 - (NSString *) getLoginForDN: (NSString *) theDN;
 
 - (BOOL) checkLogin: (NSString *) _login
-	   password: (NSString *) _pwd
+           password: (NSString *) _pwd
              domain: (NSString **) _domain
-	       perr: (SOGoPasswordPolicyError *) _perr
-	     expire: (int *) _expire
-	      grace: (int *) _grace;
+               perr: (SOGoPasswordPolicyError *) _perr
+             expire: (int *) _expire
+              grace: (int *) _grace;
+
+- (BOOL) checkLogin: (NSString *) _login
+           password: (NSString *) _pwd
+             domain: (NSString **) _domain
+               perr: (SOGoPasswordPolicyError *) _perr
+             expire: (int *) _expire
+              grace: (int *) _grace
+           useCache: (BOOL) _useCache;
 
 - (BOOL) changePasswordForLogin: (NSString *) login
                        inDomain: (NSString *) domain
