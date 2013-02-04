@@ -1,8 +1,5 @@
-2.0.4b (2013-02-dd)
+2.0.4b (2013-02-04)
 ------------------
-
-Enhancements
- - 
 
 Bug fixes
  - Fixed order of precedence for options (#2166)
