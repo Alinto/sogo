@@ -17,15 +17,17 @@ function savePreferences(sender) {
         serializeContactsCategories();
     }
 
-    if (mailCustomFromEnabled && !emailRE.test($("email").value)) {
+    if (typeof mailCustomFromEnabled !== "undefined" && !emailRE.test($("email").value)) {
         showAlertDialog(_("Please specify a valid sender address."));
         sendForm = false;
     }
 
-    var replyTo = $("replyTo").value;
-    if (!replyTo.blank() && !emailRE.test(replyTo)) {
-        showAlertDialog(_("Please specify a valid reply-to address."));
-        sendForm = false;
+    if ($("replyTo")) {
+        var replyTo = $("replyTo").value;
+        if (!replyTo.blank() && !emailRE.test(replyTo)) {
+            showAlertDialog(_("Please specify a valid reply-to address."));
+            sendForm = false;
+        }
     }
 
     if ($("dayStartTime")) {
@@ -205,7 +207,8 @@ function initPreferences() {
         $("contactsCategoryDelete").observe("click", onContactsCategoryDelete);
     }
 
-    onReplyPlacementListChange();
+    if ($("replyPlacementList"))
+        onReplyPlacementListChange();
 
     var button = $("addDefaultEmailAddresses");
     if (button)
@@ -216,7 +219,8 @@ function initPreferences() {
         button.observe("click", onChangePasswordClick);
 
     initSieveFilters();
-    initMailAccounts();
+    if ($('mailOptionsView'))
+        initMailAccounts();
 
     button = $("enableVacationEndDate");
     if (button) {
