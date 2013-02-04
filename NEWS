@@ -11,11 +11,13 @@ Bug fixes
      2. .GNUstepDefaults
      3. /etc/sogo/{debconf,sogo}.conf
      4. SOGoDefaults.plist
- - Fixed handling of LDAP DN containing special characters (#2152, #2207)
- - Fixed handling of credential files for older GNUsteps (#2216)
- - fixed tooltips in contacts list
- - fixed classification menu in component editor
- - fixed link to ACL editor for 'any authenticated user'
+ - fixed handling of LDAP DN containing special characters (#2152, #2207)
+ - fixed handling of credential files for older GNUsteps (#2216)
+ - fixed display of messages with control characters (#2079, #2177)
+ - fixed tooltips in contacts list (#2211)
+ - fixed classification menu in component editor (#2223)
+ - fixed link to ACL editor for 'any authenticated user' (#2222, #2224)
+ - fixed saving preferences when mail module is disabled
 
 2.0.4a (2013-01-30)
 ------------------
