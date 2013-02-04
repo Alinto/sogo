@@ -291,3 +291,6 @@
 "cannot send message: (smtp) all recipients discarded" = "Kan bericht niet sturen: alle ontvangers zijn ongeldig.";
 "cannot send message (smtp) - recipients discarded:" = "Kan bericht niet sturen: de volgende adressen zijn ongeldig:";
 "cannot send message: (smtp) error when connecting" = "Kan bericht niet sturen: fout bij verbinden met de SMTP server.";
+
+"Name" = "Naam";
+"Email" = "E-mail";

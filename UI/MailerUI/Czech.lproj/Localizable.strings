@@ -291,3 +291,6 @@
 "cannot send message: (smtp) all recipients discarded" = "Zprávu nelze odeslat: adresy všech příjemců jsou neplatné.";
 "cannot send message (smtp) - recipients discarded:" = "Zprávu nelze odeslat: následující adresy jsou neplatné:";
 "cannot send message: (smtp) error when connecting" = "Zprávu nelze odeslat: při spojení se SMTP serverem došlo k chybě.";
+
+"Name" = "Jméno";
+"Email" = "E-mail";

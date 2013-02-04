@@ -289,3 +289,6 @@
 "cannot send message: (smtp) all recipients discarded" = "Ekki var hægt að senda tölvubréfið: enginn gildur móttakandi.";
 "cannot send message (smtp) - recipients discarded:" = "Ekki var hægt að senda tölvubréfið: Eftirfarandi móttakendur eru ógildir:";
 "cannot send message: (smtp) error when connecting" = "Ekki var hægt að senda tölvubréfið: ekki tókst að tengjast SMTP póstþjóni.";
+
+"Name" = "Nafn";
+"Email" = "Tölvupóstur";

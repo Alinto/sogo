@@ -291,3 +291,6 @@
 "cannot send message: (smtp) all recipients discarded" = "No s'ha pogut enviar el missatge: tots els destinataris són incorrectes.";
 "cannot send message (smtp) - recipients discarded:" = "No s'ha pogut enviar el missatge. Les següents adreces són incorrectes:";
 "cannot send message: (smtp) error when connecting" = "No s'ha pogut enviar el missatge. Error al connectar amb el servidor SMTP.";
+
+"Name" = "Nom";
+"Email" = "Correu electrònic";

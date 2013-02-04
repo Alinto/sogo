@@ -259,7 +259,6 @@
 "Please select only one message to print." = "Please select only one message to print.";
 "The message you have selected doesn't exist anymore." = "The message you have selected doesn't exist anymore.";
 
-
 "The folder with name \"%{0}\" could not be created."
 = "The folder with name \"%{0}\" could not be created.";
 "This folder could not be renamed to \"%{0}\"."
@@ -291,3 +290,7 @@
 "cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
 "cannot send message (smtp) - recipients discarded:" = "Cannot send message. The following addresses are invalid:";
 "cannot send message: (smtp) error when connecting" = "Cannot send message: error when connecting to the SMTP server.";
+
+/* Contacts list in mail editor */
+"Email" = "Email";
+"Name" = "Name";

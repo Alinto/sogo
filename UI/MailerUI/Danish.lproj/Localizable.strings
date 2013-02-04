@@ -293,3 +293,6 @@ Bemærk:. Denne kvittering anerkender kun, at budskabet blev vist på modtageren
 "cannot send message: (smtp) all recipients discarded" = "Kan ikke sende besked: alle modtagere er ugyldige.";
 "cannot send message (smtp) - recipients discarded:" = "Kan ikke sende besked. Følgende adresser er ugyldige:";
 "cannot send message: (smtp) error when connecting" = "Kan ikke sende besked: Fejl ved oprettelse til SMTP-server.";
+
+"Name" = "Navn";
+"Email" = "E-mail";
