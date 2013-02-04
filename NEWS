@@ -18,6 +18,7 @@ Bug fixes
  - fixed classification menu in component editor (#2223)
  - fixed link to ACL editor for 'any authenticated user' (#2222, #2224)
  - fixed saving preferences when mail module is disabled
+ - fixed handling for long credential strings (#2212)
 
 2.0.4a (2013-01-30)
 ------------------
