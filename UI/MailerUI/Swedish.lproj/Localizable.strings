@@ -289,3 +289,6 @@
 "cannot send message: (smtp) all recipients discarded" = "Meddelandet kan inte skickas: alla mottagaradresserna är felaktiga.";
 "cannot send message (smtp) - recipients discarded:" = "Meddelandet kan inte skickas. Följande mottagaradresser är felaktiga:";
 "cannot send message: (smtp) error when connecting" = "Meddelandet kan inte skickas: ett fel uppstod i uppkopplingen mot SMTP servern.";
+
+"Name" = "Namn";
+"Email" = "E-post";

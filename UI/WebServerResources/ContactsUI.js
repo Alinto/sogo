@@ -77,7 +77,9 @@ function contactsListCallback(http) {
                     row.setAttribute("contactname", contact["c_cn"]);
                     var cells = row.getElementsByTagName("TD");
                     $(cells[0]).update(contact["c_cn"]);
+                    cells[0].title = contact["c_cn"];
                     $(cells[1]).update(contact["c_mail"]);
+                    cells[1].title = contact["c_mail"];
                     if (fullView) {
                         $(cells[2]).update(contact["c_screenname"]);
                         $(cells[3]).update(contact["c_o"]);

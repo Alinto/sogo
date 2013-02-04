@@ -200,9 +200,7 @@ function onComponentEditorLoad(event) {
     if (tmp) {
         var menuItems = tmp.childNodesWithTag("li");
         for (var i = 0; i < menuItems.length; i++)
-            menuItems[i].on("mousedown",
-                            onMenuSetClassification.bindAsEventListener(menuItems[i]),
-                            false);
+            menuItems[i].on("mousedown", onMenuSetClassification);
     }
 
     tmp = $("replyList");

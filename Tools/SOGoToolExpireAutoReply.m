@@ -180,7 +180,7 @@
 
 - (BOOL) run
 {
-  NSError *err;
+  NSData *credsData;
   NSRange r;
   NSString *creds, *credsFile, *authname, *authpwd;
   BOOL rc;
@@ -195,15 +195,17 @@
   credsFile = [[NSUserDefaults standardUserDefaults] stringForKey: @"p"];
   if (credsFile)
     {
-      creds = [NSString stringWithContentsOfFile: credsFile
-                                        encoding: NSUTF8StringEncoding
-                                           error: &err];
-      if (!creds)
+      credsData = [NSData dataWithContentsOfFile: credsFile];
+      if (credsData == nil)
         {
-          NSLog(@"Error reading credential file '%@': %@", credsFile, err);
+          NSLog(@"Error reading credential file '%@'", credsFile);
+          return NO;
         }
-      creds = [creds stringByTrimmingCharactersInSet:
-                     [NSCharacterSet newlineCharacterSet]];
+      creds = [[NSString alloc] initWithData: credsData
+                                    encoding: NSUTF8StringEncoding];
+      [creds autorelease];
+      creds = [creds stringByTrimmingCharactersInSet: 
+                 [NSCharacterSet characterSetWithCharactersInString: @"\r\n"]];
     }
 
   if (max > 0)

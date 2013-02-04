@@ -109,25 +109,30 @@ typedef enum
       [theKey caseInsensitiveCompare: @"Vacation"] == NSOrderedSame)
     {
       /* credentials file handling */
+      NSData *credsData;
       NSRange r;
       NSString *credsFile, *creds, *authname, *authpwd;
       authname = nil;
       authpwd = nil;
 
+
       credsFile = [[NSUserDefaults standardUserDefaults] stringForKey: @"p"];
       if (credsFile)
         {
           /* TODO: add back support for user:pwd here? */
-          creds = [NSString stringWithContentsOfFile: credsFile
-                                            encoding: NSUTF8StringEncoding
-                                               error: NULL];
-          if (creds == nil)
+          credsData = [NSData dataWithContentsOfFile: credsFile];
+          if (credsData == nil)
             {
               NSLog(@"Error reading credential file '%@'", credsFile);
               return NO;
             }
-          creds = [creds stringByTrimmingCharactersInSet:
-                           [NSCharacterSet newlineCharacterSet]];
+
+          creds = [[NSString alloc] initWithData: credsData
+                                        encoding: NSUTF8StringEncoding];
+          [creds autorelease];
+          creds = [creds stringByTrimmingCharactersInSet: 
+                    [NSCharacterSet characterSetWithCharactersInString: @"\r\n"]];
+
           r = [creds rangeOfString: @":"];
           authname = [creds substringToIndex: r.location];
           authpwd = [creds substringFromIndex: r.location+1];

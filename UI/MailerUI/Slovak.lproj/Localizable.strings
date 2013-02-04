@@ -291,3 +291,6 @@
 "cannot send message: (smtp) all recipients discarded" = "Správa sa nedá odoslať: žiadny príjemca nie je platný.";
 "cannot send message (smtp) - recipients discarded:" = "Správa sa nedá odoslať: Nasledujúci príjemcovia nemajú platnú adresu:";
 "cannot send message: (smtp) error when connecting" = "Správa sa nedá odoslať: chyba pri pripájaní na SMTP server.";
+
+"Name" = "Meno";
+"Email" = "Email";

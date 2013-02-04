@@ -178,7 +178,7 @@ function openRightsForUserID(userID) {
 function openRightsForUser(button) {
     var nodes = $("userList").getSelectedRows();
     if (nodes.length > 0)
-        openRightsForUserID(nodes[0].getAttribute("id").unescapeHTML());
+        openRightsForUserID(nodes[0].id.unescapeHTML());
 
     return false;
 }
@@ -198,7 +198,7 @@ function onAclLoadHandler() {
     if (input) {
         defaultUserID = $("defaultUserID").value;
         var userNode = nodeForUser(_("Any Authenticated User"),
-                                   defaultUserID);
+                                   defaultUserID.escapeHTML());
         userNode.addClassName("any-user");
         userNode.setAttribute("title",
                               _("Any user not listed above"));

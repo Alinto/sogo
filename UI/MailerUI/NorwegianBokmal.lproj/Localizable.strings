@@ -291,3 +291,6 @@
 "cannot send message: (smtp) all recipients discarded" = "Kan ikke sende melding: alle mottakeradresser er ugyldige.";
 "cannot send message (smtp) - recipients discarded:" = "Kan ikke sende melding. Følgende mottakeradresser er ugyldige:";
 "cannot send message: (smtp) error when connecting" = "Kan ikke sende melding: problem med å prate med SMTP-tjener.";
+
+"Name" = "Navn";
+"Email" = "E-post";

@@ -291,3 +291,6 @@
 "cannot send message: (smtp) all recipients discarded" = "Az üzenetet nem lehetett elküldeni: az összes címzett érvénytelen.";
 "cannot send message (smtp) - recipients discarded:" = "Az üzenetet nem lehetett elküldeni: az alábbi címzettek érvénytelenek:";
 "cannot send message: (smtp) error when connecting" = "Az üzenetet nem lehetett elküldeni: hiba az SMTP kiszolgálóhoz történő csatlakozáskor.";
+
+"Name" = "Név";
+"Email" = "Email";

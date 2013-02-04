@@ -291,3 +291,6 @@
 "cannot send message: (smtp) all recipients discarded" = "Impossibile inviare il messaggio: tutti i destinatari non sono validi.";
 "cannot send message (smtp) - recipients discarded:" = "Impossibile inviare il messaggio. Il seguente indirizzo non è valido:";
 "cannot send message: (smtp) error when connecting" = "Impossibile inviare il messaggio: si è verificato un errore durante la connessione al server SMTP.";
+
+"Name" = "Nome";
+"Email" = "Email";

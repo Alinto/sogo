@@ -291,3 +291,6 @@
 "cannot send message: (smtp) all recipients discarded" = "Помилка під час відправлення повідомлення: некоректні адреси всіх отримувачів.";
 "cannot send message (smtp) - recipients discarded:" = "Помила під час відправлення повідомлення: такі адреси некоректні:";
 "cannot send message: (smtp) error when connecting" = "Помилка під час відправлення повідомлення: SMTP-сервер не відповідає.";
+
+"Name" = "Ім’я";
+"Email" = "Електронна пошта";

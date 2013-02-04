@@ -291,3 +291,6 @@
 "cannot send message: (smtp) all recipients discarded" = "Viestiä ei voi lähettää: kaikki vastaanottajat ovat virheellisiä.";
 "cannot send message (smtp) - recipients discarded:" = "Viestiä ei voi lähettää: seuraavat osoitteet ovat virheellisiä:";
 "cannot send message: (smtp) error when connecting" = "Viestiä ei voi lähettää: virhe yhdistettäessä SMTP -palvelimeen.";
+
+"Name" = "Nimi";
+"Email" = "Sähköposti";

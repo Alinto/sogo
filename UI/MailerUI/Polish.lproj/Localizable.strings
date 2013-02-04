@@ -291,3 +291,6 @@
 "cannot send message: (smtp) all recipients discarded" = "Nie można wysłać wiadomości - wszyscy odbiorcy zostali odrzuceni.";
 "cannot send message (smtp) - recipients discarded:" = "Nie można wysłać wiadomości - poniźsi odbiorcy zostali odrzuceni:";
 "cannot send message: (smtp) error when connecting" = "Nie można wysłać wiadomości - błąd połączenia z serwerem SMTP";
+
+"Name" = "Nazwa";
+"Email" = "E-mail";

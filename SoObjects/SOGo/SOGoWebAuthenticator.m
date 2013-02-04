@@ -55,6 +55,12 @@
 #endif
 #import "SOGoWebAuthenticator.h"
 
+#define COOKIE_SESSIONKEY_LEN 16
+/* the key b64 encoded key XORed with the cookie value
+ * must fit in the database field which is 255 char long at the moment
+ */
+#define COOKIE_USERKEY_LEN    160
+
 @implementation SOGoWebAuthenticator
 
 + (id) sharedSOGoWebAuthenticator
@@ -369,8 +375,8 @@
   // In memcached, the session key will be associated to the user's password
   // which will be XOR'ed with the user key.
   //
-  sessionKey = [SOGoSession generateKeyForLength: 16];
-  userKey = [SOGoSession generateKeyForLength: 64];
+  sessionKey = [SOGoSession generateKeyForLength: COOKIE_SESSIONKEY_LEN];
+  userKey = [SOGoSession generateKeyForLength: COOKIE_USERKEY_LEN];
 
   NSString *value = [NSString stringWithFormat: @"%@:%@", username, password];
   securedPassword = [SOGoSession securedValue: value  usingKey: userKey];

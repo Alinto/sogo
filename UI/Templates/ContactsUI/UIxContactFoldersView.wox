@@ -152,8 +152,8 @@
           var:categories="currentContact.c_categories"
           var:id="currentContact.c_name"
           var:contactname="currentContact.c_cn">
-          <td class="displayName"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>
-          <td><var:string value="currentContact.c_mail"/></td>
+          <td class="displayName" var:title="currentContact.c_cn"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>
+          <td var:title="currentContact.c_mail"><var:string value="currentContact.c_mail"/></td>
           <td><var:string value="currentContact.c_screenname"/></td>
           <td><var:string value="currentContact.c_o"/></td>
           <td><var:string value="currentContact.c_telephonenumber"/></td>

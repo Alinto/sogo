@@ -1238,7 +1238,7 @@ function popupToolbarMenu(node, menuId) {
                      visibility: "visible" });
 
     document.currentPopupMenu = popup;
-    $(document.body).observe("mouseup", onBodyClickMenuHandler);
+    $(document.body).on("mouseup", onBodyClickMenuHandler);
 }
 
 /* contact selector */
