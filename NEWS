@@ -1,3 +1,12 @@
+2.0.5 (2013-02-dd)
+------------------
+
+Enhancements
+ - 
+
+Bug fixes
+ - Don't use the cache for password lookups from login page (#2169)
+
 2.0.4b (2013-02-04)
 ------------------
 
