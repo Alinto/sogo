@@ -2,7 +2,7 @@
 ------------------
 
 Enhancements
- - 
+ - Added logging of the X-Forwarded-For HTTP header (#2229)
 
 Bug fixes
  - Don't use the cache for password lookups from login page (#2169)
