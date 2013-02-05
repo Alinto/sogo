@@ -867,6 +867,7 @@ static NSString *sieveScriptName = @"sogo";
       }
   }
 
+  [client closeConnection];
   return YES;
 }
 
