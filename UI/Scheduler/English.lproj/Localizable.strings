@@ -533,3 +533,4 @@ vtodo_class2 = "(Confidential task)";
 "Web Calendar" = "Web Calendar";
 "Reload on login" = "Reload on login";
 "Invalid number." = "Invalid number.";
+"Please identify yourself to %{0}" = "Please identify yourself to %{0}";

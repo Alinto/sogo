@@ -1441,7 +1441,7 @@ function reauthenticateWebCalendar(folderID, refreshCBData) {
         triggerAjaxRequest(url, authenticateWebCalendarCallback, refreshCBData, parameters,
                            { "Content-type": "application/x-www-form-urlencoded" });
     }
-    showAuthenticationDialog(_("Please identify yourself to \"%{0}\"...")
+    showAuthenticationDialog(_("Please identify yourself to %{0}")
                              .formatted(hostname),
                              authenticate);
 }
