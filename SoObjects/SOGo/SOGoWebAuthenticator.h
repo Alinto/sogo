@@ -42,11 +42,19 @@
 + (id) sharedSOGoWebAuthenticator;
 
 - (BOOL) checkLogin: (NSString *) _login
-	   password: (NSString *) _pwd
+           password: (NSString *) _pwd
              domain: (NSString **) _domain
-	       perr: (SOGoPasswordPolicyError *) _perr
-	     expire: (int *) _expire
-	      grace: (int *) _grace;
+               perr: (SOGoPasswordPolicyError *) _perr
+             expire: (int *) _expire
+              grace: (int *) _grace;
+
+- (BOOL) checkLogin: (NSString *) _login
+           password: (NSString *) _pwd
+             domain: (NSString **) _domain
+               perr: (SOGoPasswordPolicyError *) _perr
+             expire: (int *) _expire
+              grace: (int *) _grace
+           useCache: (BOOL) useCache;
 
 - (WOCookie *) cookieWithUsername: (NSString *) username
                       andPassword: (NSString *) password

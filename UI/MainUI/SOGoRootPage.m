@@ -202,7 +202,7 @@
   domain = [request formValueForKey: @"domain"];
   
   if ((b = [auth checkLogin: username password: password domain: &domain
-		 perr: &err expire: &expire grace: &grace])
+		 perr: &err expire: &expire grace: &grace useCache: NO])
       && (err == PolicyNoError)  
       // no password policy
       && ((expire < 0 && grace < 0)     // no password policy or everything is alright
