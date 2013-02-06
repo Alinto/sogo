@@ -182,7 +182,7 @@
   SOGoUserDefaults *ud;
   SOGoSystemDefaults *sd;
   SOGoUser *loggedInUser;
-  NSString *username, *password, *language, *domain;
+  NSString *username, *password, *language, *domain, *remoteHost;
   NSArray *supportedLanguages;
   
   SOGoPasswordPolicyError err;
@@ -200,6 +200,9 @@
   language = [request formValueForKey: @"language"];
   rememberLogin = [[request formValueForKey: @"rememberLogin"] boolValue];
   domain = [request formValueForKey: @"domain"];
+  /* this will always be set to something more or less useful by
+   * [WOHttpTransaction applyAdaptorHeadersWithHttpRequest] */
+  remoteHost = [request headerForKey:@"x-webobjects-remote-host"];
   
   if ((b = [auth checkLogin: username password: password domain: &domain
 		 perr: &err expire: &expire grace: &grace useCache: NO])
@@ -211,7 +214,7 @@
     {
       NSDictionary *json;
 
-      [self logWithFormat: @"successful login for user '%@' - expire = %d  grace = %d", username, expire, grace];
+      [self logWithFormat: @"successful login from '%@' for user '%@' - expire = %d  grace = %d", remoteHost, username, expire, grace];
       
       json = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithInt: expire], @"expire",
                                 [NSNumber numberWithInt: grace], @"grace", nil];
@@ -248,7 +251,8 @@
     }
   else
     {
-      [self logWithFormat: @"Login for user '%@' might not have worked - password policy: %d  grace: %d  expire: %d  bound: %d", username, err, grace, expire, b];
+      [self logWithFormat:@"Login from '%@' for user '%@' might not have worked - password policy: %d  grace: %d  expire: %d  bound: %d",
+                          remoteHost, username, err, grace, expire, b];
 
       response = [self _responseWithLDAPPolicyError: err];
     }
