@@ -1,0 +1,9 @@
+[SOGo]
+enabled = true
+port = http,https
+# in proxy-free setup this would be:
+# port = 20000
+filter = sogo
+logpath = /var/log/sogo/sogo.log
+maxretry = 5
+
