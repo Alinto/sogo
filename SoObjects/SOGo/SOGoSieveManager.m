@@ -278,7 +278,7 @@ static NSString *sieveScriptName = @"sogo";
       else
         scriptError
           = [NSString stringWithFormat: @"Rule based on unknown field '%@'",
-                      *field];
+                      jsonField];
     }
   else
     scriptError = @"Rule without any specified field.";
