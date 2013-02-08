@@ -23,13 +23,14 @@
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSUserDefaults.h>
 
+#import <SOGo/SOGoSystemDefaults.h>
+
 #import "SOGoSockD.h"
 
 int
 main (int argc, char **argv, char **env)
 {
   NSAutoreleasePool *pool;
-  NSUserDefaults *ud;
   SOGoSockD *sockd;
   int rc;
 
@@ -37,8 +38,7 @@ main (int argc, char **argv, char **env)
 
   pool = [NSAutoreleasePool new];
 
-  ud = [NSUserDefaults standardUserDefaults];
-  [ud addSuiteNamed: @"sogod"];
+  [SOGoSystemDefaults sharedSystemDefaults];
 
   sockd = [SOGoSockD new];
   if ([sockd run])
