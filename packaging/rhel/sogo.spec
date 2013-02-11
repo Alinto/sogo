@@ -252,7 +252,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %config(noreplace) %{_sysconfdir}/cron.d/sogo
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/SOGo.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/sogo
-%doc ChangeLog NEWS Scripts/*sh Scripts/*py Scripts/updates.php
+%doc ChangeLog NEWS Scripts/*sh Scripts/*py Scripts/updates.php Apache/SOGo-apple-ab.conf
 
 %files -n sogo-tool
 %{_sbindir}/sogo-tool
