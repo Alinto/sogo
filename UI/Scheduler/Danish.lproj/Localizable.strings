@@ -60,6 +60,7 @@
 "Import Events" = "Importér begivenheder";
 "Select an iCalendar file (.ics)." = "Vælg en iCalendar-fil (.ics).";
 "Upload" = "Indlæs";
+"Uploading" = "Uploader";
 "Publish Calendar..." = "Publicér kalender ...";
 "Reload Remote Calendars" = "Opdatér kalendere";
 "Properties" = "Egenskaber";
@@ -81,7 +82,8 @@
 
 /* acls */
 
-"User rights for:" = "Brugerrettigheder:";
+"Access rights to" = "Adgangsrettigheder til";
+"For user" = "For bruger";
 
 "Any Authenticated User" = "Enhver godkendt bruger";
 "Public Access" = "Offentlig adgang";
@@ -109,7 +111,6 @@
 
 /* Button Titles */
 
-"New Calendar..." = "Ny kalender ...";
 "Subscribe to a Calendar..." = "Abonnér på en kalender ...";
 "Remove the selected Calendar" = "Fjern den valgte kalender";
 
@@ -290,7 +291,7 @@
 "cycle_end_until" = "cycle_end_until";
 
 "Recurrence pattern" = "Gentagelsesmønster";
-"Range of recurrence" = "gentagelsesinterval";
+"Range of recurrence" = "Gentagelsesinterval";
 
 "Repeat" = "Gentag";
 "Daily" = "Dagligt";
@@ -379,6 +380,7 @@ validate_invalid_startdate = "Forkert startdato!";
 validate_invalid_enddate   = "Forkert slutdato!";
 validate_endbeforestart    = "Indtastet slutdato ligger før startdato.";
 
+"Events" = "Opgaver";
 "Tasks" = "Opgaver";
 "Show completed tasks" = "Vis udførte opgaver";
 
@@ -409,12 +411,8 @@ validate_endbeforestart    = "Indtastet slutdato ligger før startdato.";
 "Workweek days only" = "Arbejdsuge dage kun";
 "Tasks in View" = "Opgaver i visning";
 
-"eventDeleteConfirmation" = "Følgende begivenhed er/bliver slettet: 
-%{0}
-Fortsæt?";
-"taskDeleteConfirmation" = "Følgende opgave(r) bliver slettet: 
-%{0}
-Fortsæt?";
+"eventDeleteConfirmation" = "Følgende begivenhed er/bliver slettet: \n%{0}\nFortsæt?";
+"taskDeleteConfirmation" = "Følgende opgave(r) bliver slettet: \n%{0}\nFortsæt?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Du kan ikke fjerne eller afmelde din personlige kalender.";
@@ -450,8 +448,7 @@ Fortsæt?";
 "and" = "og";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "En tidskonflikt med en eller flere deltagere. 
-Behold de aktuelle indstillinger alligevel?";
+= "En tidskonflikt med en eller flere deltagere. \nBehold de aktuelle indstillinger alligevel?";
 
 /* apt list */
 "Title" = "Titel";
@@ -459,11 +456,15 @@ Behold de aktuelle indstillinger alligevel?";
 "End" = "Slut";
 "Due Date" = "Forfaldsdato";
 "Location" = "Sted";
+
 "(Private Event)" = "(Privat begivenhed)";
 
 vevent_class0 = "(Offentlig begivenhed)";
 vevent_class1 = "(Privat begivenhed)";
 vevent_class2 = "(Hemmelig begivenhed)";
+
+"Priority" = "Prioritet";
+"Category" = "Kategori";
 
 vtodo_class0 = "(Offentlig opgave)";
 vtodo_class1 = "(Privat opgave)";
@@ -492,6 +493,11 @@ vtodo_class2 = "(Hemmelig opgave)";
 "Show alarms" = "Vis alarmer";
 "Show tasks" = "Vis opgaver";
 
+"Notifications" = "Notifikationer";
+"Receive a mail when I modify my calendar" = "Modtag en mail, når jeg ændrer min kalender";
+"Receive a mail when someone else modifies my calendar" = "Modtag en mail, når andre ændrer min kalender";
+"When I modify my calendar, send a mail to:" = "Når jeg ændrer min kalender, så send en mail til:";
+
 "Links to this Calendar" = "Links til denne kalender";
 "Authenticated User Access" = "Godkendt brugeradgang";
 "CalDAV URL" = "CalDAV URL";
@@ -509,12 +515,9 @@ vtodo_class2 = "(Hemmelig opgave)";
 "Please specify a calendar name." = "Angiv venligst et kalender navn.";
 "tagNotDefined" = "Du skal angive et mærkat, hvis du ønsker at synkronisere denne kalender.";
 "tagAlreadyExists" = "Mærkatet du har angivet er allerede knyttet til en anden kalender.";
-"tagHasChanged" = "Hvis du ændrer din kalenders mærkat, skal du genindlæse data på din mobile enhed.
-Fortsæt?";
-"tagWasAdded" = "Hvis du ønsker at synkronisere denne kalender, skal du genindlæse data på din mobile enhed.
-Fortsæt?";
-"tagWasRemoved" = "Hvis du fjerner denne kalender fra synkronisering, skal du genindlæse data på din mobile enhed.
-Fortsæt?";
+"tagHasChanged" = "Hvis du ændrer din kalenders mærkat, skal du genindlæse data på din mobile enhed.\nFortsæt?";
+"tagWasAdded" = "Hvis du ønsker at synkronisere denne kalender, skal du genindlæse data på din mobile enhed.\nFortsæt?";
+"tagWasRemoved" = "Hvis du fjerner denne kalender fra synkronisering, skal du genindlæse data på din mobile enhed.\nFortsæt?";
 "DestinationCalendarError" = "Kilde og destination kalendere er de samme. Prøv at kopiere til en anden kalender.";
 "EventCopyError" = "Kopieringen mislykkedes. Prøv at kopiér til en anden kalender.";
 
@@ -523,12 +526,11 @@ Fortsæt?";
 "Delete Task" = "Slet opgave";
 "Delete Event" = "Slet begivenhed";
 "Copy event to my calendar" = "Kopiér begivenhed til min kalender";
+"View Raw Source" = "Vis kilde";
 
 "Subscribe to a web calendar..." = "Abonnér på en online kalender ...";
 "URL of the Calendar" = "Kalenderens URL";
 "Web Calendar" = "Online kalender";
 "Reload on login" = "Genindlæs ved login";
 "Invalid number." = "Ugyldigt nummer.";
-
-"Category" = "Kategori";
-"Priority" = "Prioritet";
+"Please identify yourself to %{0}" = "Identificer dig selv til %{0}";

@@ -154,7 +154,9 @@
 "Unable to subscribe to that folder!"
 = "Det er ikke muligt at abonnere på denne mappe.";
 
-"User rights for:" = "Brugerrettigheder:";
+/* acls */
+"Access rights to" = "Adgangsrettigheder til";
+"For user" = "For bruger";
 
 "Any Authenticated User" = "Enhver godkendt bruger";
 "Public Access" = "Offentlig adgang";
@@ -193,9 +195,11 @@
 "Lists can't be moved or copied." = "Lister kan ikke flyttes eller kopieres.";
 "Export" = "Eksportér";
 "Export Address Book..." = "Eksportér adressebog ...";
+"View Raw Source" = "Vis kilde";
 "Import Cards" = "Importér kort";
 "Select a vCard or LDIF file." = "Vælg en vCard - eller LDIF-fil.";
 "Upload" = "Indlæs";
+"Uploading" = "Uploader";
 "Done" = "Udført";
 "An error occured while importing contacts." = "Der opstod en fejl under importering af kontaktpersoner.";
 "No card was imported." = "Intet kort blev importeret.";

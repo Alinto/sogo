@@ -30,6 +30,7 @@
 "Disable auto reply on" = "Deaktiver Autosvar til";
 "Please specify your message and your email addresses for which you want to enable auto reply."
 = "Angiv venligst din besked og de e-mail-adresser, som du vil aktivere autosvar for.";
+"Your vacation message must not end with a single dot on a line." = "Din ferie meddelelse må ikke slutte med et enkelt punktum på en linje.";
 "End date of your auto reply must be in the future."
 = "Sluttidspunkt for dit autosvar skal være i fremtiden.";
 
@@ -75,10 +76,18 @@
 "longDateFmt_2" = "%A, %d %B, %Y";
 "longDateFmt_3" = "%d %B, %Y";
 "longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
+"longDateFmt_7" = "";
+"longDateFmt_8" = "";
+"longDateFmt_9" = "";
+"longDateFmt_10" = "";
 
 "timeFmt_0" = "%I:%M %p";
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
+"timeFmt_3" = "";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "Uge start tidspunkt:";
@@ -132,6 +141,7 @@
 "messageforward_inline" = "På linie";
 "messageforward_attached" = "Som vedhæftet fil";
 
+"When replying to a message:" = "Når du besvarer en besked:";
 "replyplacement_above" = "Start mit svar over citat";
 "replyplacement_below" = "Start mit svar under citat";
 "And place my signature" = "Og placér min signatur";
@@ -140,22 +150,31 @@
 "Compose messages in" = "Skriv beskeder i";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Almindelig tekst";
+"Display remote inline images" = "Vis eksterne indlejrede billeder";
+"displayremoteinlineimages_never" = "Aldrig";
+"displayremoteinlineimages_always" = "Altid";
 
 /* IMAP Accounts */
 "New Mail Account" = "Ny mail-konto";
 
 "Server Name:" = "Server Navn:";
 "Port:" = "Port:";
+"Encryption:" = "Krypteret:";
+"None" = "Ingen";
 "User Name:" = "Brugernavn:";
 "Password:" = "Adgangskode:";
 
 "Full Name:" = "Fulde navn:";
 "Email:" = "E-mail:";
+"Reply To Email:" = "Besvar på mail:";
 "Signature:" = "Signatur:";
 "(Click to create)" = "(Klik for at oprette)";
 
 "Signature" = "Signatur:";
 "Please enter your signature below:" = "Indsæt venligst din signatur nedenfor:";
+
+"Please specify a valid sender address." = "Angiv venligst en gyldig afsenderadresse.";
+"Please specify a valid reply-to address." = "Angiv venligst en gyldig svar-til adresse.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Yderligere parametre";
@@ -166,11 +185,11 @@
 "Change" = "Skift";
 
 /* Event+task classifications */
-"Default events classification :" = "Default events classification :";
-"Default tasks classification :" = "Default tasks classification :";
-"PUBLIC_item" = "Public";
-"CONFIDENTIAL_item" = "Confidential";
-"PRIVATE_item" = "Private";
+"Default events classification :" = "Standard begivenhedsklassifikation:";
+"Default tasks classification :" = "Standard opgaveklassifikation:";
+"PUBLIC_item" = "Offentlig";
+"CONFIDENTIAL_item" = "Fortrolig";
+"PRIVATE_item" = "Privat";
 
 /* Event+task categories */
 "category_none" = "Ingen";
@@ -190,35 +209,23 @@
 "Danish" = "Dansk (Danmark)";
 "Dutch" = "Nederlands";
 "English" = "English";
-"Finnish" = "Suomi";
+"Finnish" = "Finsk";
 "French" = "Français";
 "German" = "Deutsch";
 "Hungarian" = "Magyar";
-"Icelandic" = "Íslenska";
+"Icelandic" = "Islandsk";
 "Italian" = "Italiano";
 "NorwegianBokmal" = "Norsk";
 "NorwegianNynorsk" = "Nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
-"Polish" = "Polski";
+"Polish" = "Polsk";
 "Russian" = "Русский";
-"Slovak" = "Slovensky";
+"Slovak" = "Slovensk";
 "SpanishSpain" = "Spansk (Spanien)";
 "SpanishArgentina" = "Spansk (Argentina)";
 "Swedish" = "Svenska";
 "Ukrainian" = "Українська";
 "Welsh" = "Cymraeg";
-
-/* Return receipts */
-"When I receive a request for a return receipt:" = "Når jeg modtager en anmodning om en kvittering:";
-"Never send a return receipt" = "Send aldrig en kvittering";
-"Allow return receipts for some messages" = "Tillad kvitteringer for nogle beskeder";
-"If I'm not in the To or Cc of the message:" = "Hvis jeg ikke er i feltet Til eller Cc i meddelelsen:";
-"If the sender is outside my domain:" = "Hvis afsenderen er uden for mit domæne:";
-"In all other cases:" = "I alle andre tilfælde:";
-
-"Never send" = "Send aldrig";
-"Always send" = "Send altid";
-"Ask me" = "Spørg mig";
 
 /* Return receipts */
 "When I receive a request for a return receipt:" = "Når jeg modtager en anmodning om en kvittering:";
@@ -245,6 +252,7 @@
 "match any of the following rules:" = "match enhver af følgende regler:";
 "match all messages" = "match alle beskeder";
 "Perform these actions:" = "Udføre disse handlinger:";
+"Untitled Filter" = "Unavngivet filter";
 
 "Subject" = "Emne";
 "From" = "Fra";
@@ -285,6 +293,7 @@
 "Label 4" = "Mærkat 4";
 "Label 5" = "Mærkat 5";
 
+"The password was changed successfully." = "Adgangskoden er ændret.";
 "Password must not be empty." = "Adgangskode skal ikke.";
 "The passwords do not match. Please try again." = "Adgangskoderne stemmer ikke overens. Prøv venligst igen.";
 "Password change failed" = "Ændring af adgangskode mislykkedes";
@@ -297,5 +306,3 @@
 "Unhandled error response" = "fejlreaktion";
 "Password change is not supported." = "Adgangskodeændring er ikke understøttet.";
 "Unhandled HTTP error code: %{0}" = "HTTP fejlkode:%{0}";
-"New password:" = "Ny adgangskode:";
-"Confirmation:" = "Bekræftelse:";

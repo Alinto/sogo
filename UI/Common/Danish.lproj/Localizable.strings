@@ -16,6 +16,7 @@
 "Log Console (dev.)" = "Log konsol (dev.)";
 
 "User" = "Bruger";
+"Vacation message is enabled" = "Ferie meddelelse er aktiv";
 
 "Help" = "Hjælp";
 
@@ -36,6 +37,19 @@
 "Anybody accessing this resource from the public area" = "Enhver adgang til denne ressource fra det offentlige rum";
 
 "Sorry, the user rights can not be configured for that object." = "Beklager, brugerrettighederne kan ikke konfigureres for dette emne";
+
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Alle brugere med en konto på dette system vil få adgang til din mail \"%{0}\". Er du sikker på at du har tillid til dem alle?";
+"Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
+     = "Alle brugere med en konto på dette system vil få adgang til din kalender \"%{0}\". Er du sikker på at du har tillid til dem alle?";
+"Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Potentielt alle på internettet vil være i stand til at få adgang til din kalender \"%{0}\", selv om de ikke har en konto på dette system. Er disse oplysninger egnet til det offentlige internet?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Alle brugere med en konto på dette system vil få adgang til din adressebog \"%{0}\". Er du sikker på at du har tillid til dem alle?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Potentielt alle på internettet vil være i stand til at få adgang til din adressebog \"%{0}\", selv om de ikke har en konto på dette system. Er disse oplysninger egnet til det offentlige internet?";
+"Give Access" = "Giv adgang";
+"Keep Private" = "Forbliv privat";
 
 /* generic.js */
 "Unable to subscribe to that folder!"
@@ -65,6 +79,15 @@
 "delegate is organizer" = "Den inviterede er arrangør. Angiv en anden.";
 "delegate is a participant" = "Den inviterede er allerede en deltager.";
 "delegate is a group" = "Den angivne adresse svarer til en gruppe. Du kan kun invitere en enkelt person.";
+
+"Snooze for " = "Udsæt i ";
+"5 minutes" = "5 minutter";
+"10 minutes" = "10 minutter";
+"15 minutes" = "15 minutter";
+"30 minutes" = "30 minutter";
+"45 minutes" = "45 minutter";
+"1 hour" = "1 time";
+
 
 /* common buttons */
 "OK" = "OK";
