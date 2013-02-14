@@ -155,6 +155,7 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
 
     case PidTagChangeNumber:
       {
+        value = [NSString stringWithFormat: @"0x%.16llx", [value unsignedLongLongValue]];
         modseq = [(MAPIStoreMailFolder *)
                    container modseqFromMessageChangeNumber: value];
         [self logWithFormat: @"change number from oxcfxics: %.16lx", [value unsignedLongLongValue]];
