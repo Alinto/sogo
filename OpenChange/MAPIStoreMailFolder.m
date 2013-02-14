@@ -796,7 +796,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
   if (tableType == MAPISTORE_MESSAGE_TABLE)
     {
-      changeNumber = [NSString stringWithUnsignedLongLong: changeNum];
+      changeNumber = [NSString stringWithFormat: @"0x%.16llx", changeNum];
       modseq = [[self modseqFromMessageChangeNumber: changeNumber]
                  unsignedLongLongValue];
       if (modseq > 0)
