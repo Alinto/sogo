@@ -13,8 +13,10 @@
 
 #define BSONTYPE(tag,className) [className class], [NSNumber numberWithChar: (tag)]
 
+#ifndef objc_msgSend
 #define objc_msgSend(obj, sel, ...) \
 	objc_msg_lookup(obj, sel)(obj, sel, ## __VA_ARGS__)
+#endif
 
 static NSDictionary *BSONTypes()
 {
