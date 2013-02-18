@@ -133,7 +133,9 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	EOQualifier+MAPI.m \
 	\
-	EOBitmaskQualifier.m
+	EOBitmaskQualifier.m \
+	\
+	BSONCodec.m
 
 
 $(SOGOBACKEND)_RESOURCE_FILES += \

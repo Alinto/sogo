@@ -52,9 +52,9 @@ static inline NSNumber *
 MAPIPropertyKey (enum MAPITAGS propTag)
 {
 #if (GS_SIZEOF_LONG == 4)
-  return [NSNumber numberWithUnsignedLong: propTag];
+  return [NSString stringWithFormat: @"%ul", propTag];
 #elif (GS_SIZEOF_INT == 4)
-  return [NSNumber numberWithUnsignedInt: propTag];
+  return [NSString stringWithFormat: @"%u", propTag];
 #else
 #error No suitable type for 4 bytes integers
 #endif

@@ -46,6 +46,7 @@
 #import "GCSSpecialQueries+OpenChange.h"
 #import "MAPIStoreTypes.h"
 #import "SOGoMAPIDBFolder.h"
+#import "BSONCodec.h"
 
 #import "SOGoMAPIDBObject.h"
 
@@ -156,9 +157,9 @@ static EOAttribute *textColumn = nil;
 - (void) setupFromRecord: (NSDictionary *) record
 {
   NSInteger intValue;
-  NSString *propsValue, *error;
+  NSString *propsValue;//, *error;
   NSDictionary *newValues;
-  NSPropertyListFormat format;
+  //NSPropertyListFormat format;
 
   objectType = [[record objectForKey: @"c_type"] intValue];
   intValue = [[record objectForKey: @"c_creationdate"] intValue];
@@ -174,13 +175,8 @@ static EOAttribute *textColumn = nil;
   propsValue = [record objectForKey: @"c_content"];
   if ([propsValue isNotNull])
     {
-      newValues = [NSPropertyListSerialization propertyListFromData: [propsValue dataByDecodingBase64]
-                                                   mutabilityOption: NSPropertyListMutableContainers
-                                                             format: &format
-                                                   errorDescription: &error];
+      newValues = [[propsValue dataByDecodingBase64] BSONValue];
       [properties addEntriesFromDictionary: newValues];
-      // [properties addEntriesFromDictionary: [propsValue
-      // objectFromJSONString]];
     }
   else
     [properties removeAllObjects];
@@ -526,10 +522,7 @@ static EOAttribute *textColumn = nil;
 
   if ([properties count] > 0)
     {
-      content = [NSPropertyListSerialization
-                      dataFromPropertyList: properties
-                                    format: plistFormat
-                          errorDescription: NULL];
+      content = [properties BSONRepresentation];
       propsValue = [adaptor formatValue: [content stringByEncodingBase64]
                            forAttribute: textColumn];
     }

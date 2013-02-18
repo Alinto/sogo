@@ -33,6 +33,8 @@
 #import <Foundation/NSValue.h>
 #import <NGExtensions/NSNull+misc.h>
 
+#import "BSONCodec.h"
+
 const char *indentationStep = "  ";
 
 @interface NSObject (plext)
@@ -142,41 +144,43 @@ const char *indentationStep = "  ";
 static void
 OCDumpPListData (NSData *content)
 {
-  NSDictionary *d;
-  NSPropertyListFormat format;
-  NSString *error = nil;
-  const char *formatName;
+  //NSDictionary *d;
+  //NSPropertyListFormat format;
+  //NSString *error = nil;
+  //const char *formatName;
 
-  d = [NSPropertyListSerialization propertyListFromData: content
-                                       mutabilityOption: NSPropertyListImmutable
-                                                 format: &format
-                                       errorDescription: &error];
-  if (d)
-    {
-      switch (format)
-        {
-        case  NSPropertyListOpenStepFormat:
-          formatName = "OpenStep";
-          break;
-        case NSPropertyListXMLFormat_v1_0:
-          formatName = "XML";
-          break;
-        case NSPropertyListBinaryFormat_v1_0:
-          formatName = "Binary";
-          break;
-        case NSPropertyListGNUstepFormat:
-          formatName = "GNUstep";
-          break;
-        case NSPropertyListGNUstepBinaryFormat:
-          formatName = "GNUstep binary";
-          break;
-        default: formatName = "unknown";
-        }
+  //d = [NSPropertyListSerialization propertyListFromData: content
+  //                                     mutabilityOption: NSPropertyListImmutable
+  //                                               format: &format
+  //                                     errorDescription: &error];
+  //d = [content BSONValue];
 
-      printf ("File format is: %s\n", formatName);
-      [d displayWithIndentation: 0];
-      printf ("\n");
-    }
-  else
-    printf ("an error occurred: %s\n", [error UTF8String]);
+  // if (d)
+  //   {
+  //     switch (format)
+  //       {
+  //       case  NSPropertyListOpenStepFormat:
+  //         formatName = "OpenStep";
+  //         break;
+  //       case NSPropertyListXMLFormat_v1_0:
+  //         formatName = "XML";
+  //         break;
+  //       case NSPropertyListBinaryFormat_v1_0:
+  //         formatName = "Binary";
+  //         break;
+  //       case NSPropertyListGNUstepFormat:
+  //         formatName = "GNUstep";
+  //         break;
+  //       case NSPropertyListGNUstepBinaryFormat:
+  //         formatName = "GNUstep binary";
+  //         break;
+  //       default: formatName = "unknown";
+  //       }
+
+  //     printf ("File format is: %s\n", formatName);
+  //     [d displayWithIndentation: 0];
+  //     printf ("\n");
+  //   }
+  // else
+  //   printf ("an error occurred: %s\n", [error UTF8String]);
 }
