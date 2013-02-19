@@ -69,6 +69,9 @@
   return unicode;
 }
 
+// FIXME: This should go away at some point, when BSONCoder
+//        will correctly decode dates as NSCalendarDate objects
+//        instead of strings (because we first encode them as strings...)
 - (struct FILETIME *) asFileTimeInMemCtx: (void *) memCtx
 {
   NSCalendarDate *d;
