@@ -24,10 +24,8 @@
 #include <stdbool.h>
 
 #import <Foundation/NSData.h>
-#import <Foundation/NSCalendarDate.h>
 
 #import "NSString+MAPIStore.h"
-#import "NSDate+MAPIStore.h"
 
 #undef DEBUG
 #include <talloc.h>
@@ -67,19 +65,6 @@
     unicode = talloc_memdup (memCtx, "", 1);
 
   return unicode;
-}
-
-// FIXME: This should go away at some point, when BSONCoder
-//        will correctly decode dates as NSCalendarDate objects
-//        instead of strings (because we first encode them as strings...)
-- (struct FILETIME *) asFileTimeInMemCtx: (void *) memCtx
-{
-  NSCalendarDate *d;
-
-  d = [NSCalendarDate dateWithString: self
-                      calendarFormat: @"%Y-%m-%d %H:%M:%S %Z"];
-
-  return [d asFileTimeInMemCtx: memCtx];
 }
 
 - (char) _decodeHexByte: (char) byteChar

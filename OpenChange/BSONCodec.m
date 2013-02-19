@@ -33,6 +33,7 @@ static NSDictionary *BSONTypes()
 				  BSONTYPE(0x08, NSNumber),
 				  BSONTYPE(0x0A, NSNull),
 				  BSONTYPE(0x10, NSNumber),
+                                  BSONTYPE(0x11, NSCalendarDate),
 				  BSONTYPE(0x12, NSNumber),
 				  nil] retain];
 	}
@@ -547,7 +548,7 @@ static NSDictionary *BSONTypes()
 @implementation NSCalendarDate (BSON)
 - (uint8_t) BSONTypeID
 {
-  return 0x02;
+  return 0x11;
 }
 
 - (NSData *) BSONEncode
