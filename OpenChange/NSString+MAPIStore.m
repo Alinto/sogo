@@ -24,8 +24,10 @@
 #include <stdbool.h>
 
 #import <Foundation/NSData.h>
+#import <Foundation/NSCalendarDate.h>
 
 #import "NSString+MAPIStore.h"
+#import "NSDate+MAPIStore.h"
 
 #undef DEBUG
 #include <talloc.h>
@@ -65,6 +67,16 @@
     unicode = talloc_memdup (memCtx, "", 1);
 
   return unicode;
+}
+
+- (struct FILETIME *) asFileTimeInMemCtx: (void *) memCtx
+{
+  NSCalendarDate *d;
+
+  d = [NSCalendarDate dateWithString: self
+                      calendarFormat: @"%Y-%m-%d %H:%M:%S %Z"];
+
+  return [d asFileTimeInMemCtx: memCtx];
 }
 
 - (char) _decodeHexByte: (char) byteChar
