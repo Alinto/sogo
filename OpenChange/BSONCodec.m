@@ -307,41 +307,41 @@ static NSDictionary *BSONTypes()
 
 - (NSData *) BSONEncode
 {
-	const char encoding = tolower(*([self objCType]));
+	const char encoding = *([self objCType]);
 
-	if (encoding == 'd')
+	if (encoding == 'd' || encoding == 'D')
 	{
 		double value = [self doubleValue];
 		return [NSData dataWithBytes: &value length: 8];
 	}
 
-	if (encoding == 'f')
+	if (encoding == 'f' || encoding == 'F')
 	{
 		double value = [self floatValue];
 		return [NSData dataWithBytes: &value length: 8];
 	}
 
-	if (encoding == 'b')
+	if (encoding == 'b' || encoding == 'B')
 	{
 		char value = [self boolValue];
 		return [NSData dataWithBytes: &value length: 1];
 	}
 
-	if (encoding == 'c')
+	if (encoding == 'c' || encoding == 'C')
 	{
 		int32_t value = [self charValue];
 		value = HOSTTOBSON32(value);
 		return [NSData dataWithBytes: &value length: 4];
 	}
 
-	if (encoding == 's')
+	if (encoding == 's' || encoding == 'S')
 	{
 		int32_t value = [self shortValue];
 		value = HOSTTOBSON32(value);
 		return [NSData dataWithBytes: &value length: 4];
 	}
 
-	if (encoding == 'i')
+	if (encoding == 'i' || encoding == 'I')
 	{
 		int value = [self intValue];
 		if (sizeof(int) == 4)
@@ -351,7 +351,7 @@ static NSDictionary *BSONTypes()
 		return [NSData dataWithBytes: &value length: sizeof(int)];
 	}
 
-	if (encoding == 'l')
+	if (encoding == 'l' || encoding == 'L')
 	{
 		long value = [self longValue];
 		if (sizeof(long) == 4)
@@ -367,6 +367,13 @@ static NSDictionary *BSONTypes()
 		long long value = HOSTTOBSON64([self longLongValue]);
 		return [NSData dataWithBytes: &value length: 8];
 	}
+
+	if (encoding == 'Q')
+	{
+		long long value = HOSTTOBSON64([self unsignedLongLongValue]);
+		return [NSData dataWithBytes: &value length: 8];
+	}
+
 
 	[NSException raise: NSInvalidArgumentException format: @"%@::%s - invalid encoding type '%c'", [self class], _cmd, encoding];
 	return nil;
@@ -412,7 +419,7 @@ static NSDictionary *BSONTypes()
 		int64_t value = BSONTOHOST64(((int64_t *) *base)[0]);
 		*base += 8;
 
-		return [NSNumber numberWithLongLong: value];
+		return [NSNumber numberWithUnsignedLongLong: value];
 	}
 
 	return nil;
