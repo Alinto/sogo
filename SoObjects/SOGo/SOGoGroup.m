@@ -264,10 +264,10 @@
               login = [um getLoginForDN: [dn lowercaseString]];
               user = [SOGoUser userWithLogin: login  roles: nil];
               if (user)
-		{
-		  [logins addObject: login];
-		  [_members addObject: user];
-		}
+                {
+                  [logins addObject: login];
+                  [_members addObject: user];
+                }
             }
 
           // We add members for whom we have their associated login name
@@ -277,17 +277,17 @@
               user = [SOGoUser userWithLogin: login  roles: nil];
               
               if (user)
-		{
-		  [logins addObject: login];
-		  [_members addObject: user];
-		}
+                {
+                  [logins addObject: login];
+                  [_members addObject: user];
+                }
             }
 
 
-	  // We are done fetching members, let's cache the members of the group
-	  // (ie., their UIDs) in memcached to speed up -hasMemberWithUID.
-	  [[SOGoCache sharedCache] setValue: [logins componentsJoinedByString: @","]
-				   forKey: [NSString stringWithFormat: @"%@+%@", _identifier, _domain]];
+          // We are done fetching members, let's cache the members of the group
+          // (ie., their UIDs) in memcached to speed up -hasMemberWithUID.
+          [[SOGoCache sharedCache] setValue: [logins componentsJoinedByString: @","]
+            forKey: [NSString stringWithFormat: @"%@+%@", _identifier, _domain]];
         }
       else
         {
