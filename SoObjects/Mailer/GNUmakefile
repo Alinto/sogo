@@ -72,6 +72,8 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailPolishReply.wo \
 	SOGoMailRussianForward.wo \
 	SOGoMailRussianReply.wo \
+	SOGoMailSlovakForward.wo \
+	SOGoMailSlovakReply.wo \
 	SOGoMailSpanishSpainForward.wo \
 	SOGoMailSpanishSpainReply.wo \
 	SOGoMailSpanishArgentinaForward.wo \
