@@ -1798,20 +1798,18 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       iCalCalendar *oldCalendar;
       iCalEvent *oldEvent, *newEvent;
       iCalEventChanges *changes;
-      NSArray *oldEvents, *newEvents;
+      NSMutableArray *oldEvents, *newEvents;
       NSCalendarDate *recurrenceId;
-      BOOL master;
       int i;
 
       //
       // We check what has changed in the event and react accordingly.
       //
-      newEvents = [calendar events];
+      newEvents = [NSMutableArray arrayWithArray: [calendar events]];
 
       oldCalendar = [self calendar: NO secure: NO];
-      oldEvents = [oldCalendar events];
+      oldEvents = [NSMutableArray arrayWithArray: [oldCalendar events]];
       recurrenceId = nil;
-      master = NO;
 
       for (i = [newEvents count]-1; i >= 0; i--)
 	{
@@ -1842,8 +1840,8 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 		}
 	      else
 		{
-                  [calendar removeChild: oldEvent];
-                  [oldCalendar removeChild: newEvent];
+                  [newEvents removeObject: newEvent];
+                  [oldEvents removeObject: oldEvent];
 		}
 	    }
 	  
@@ -1860,7 +1858,6 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 	    {
 	      oldEvent = [oldEvents objectAtIndex: 0];
 	      newEvent = [newEvents objectAtIndex: 0];
-	      master = YES;
 	    }
 	  // A RECURRENCE-ID was added
 	  else if ([newEvents count] > [oldEvents count])
@@ -1892,25 +1889,38 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
       if ([[newEvent attendees] count] || [[oldEvent attendees] count])
 	{
 	  NSString *uid;
-	  
+          
+          // newEvent might be nil here, if we're deleting a RECURRENCE-ID with attendees
+          // If that's the case, we use the oldEvent for now just to obtain the organizer
+          // and we'll swap it back to nil once we're done.
+          if (!newEvent)
+            newEvent = oldEvent;
+
 	  // We fetch the organizer's uid. Sometimes, the recurrence-id will
 	  // have it, sometimes not. If it doesn't, we fetch it from the master event.
 	  uid = [[newEvent organizer] uid];
 	  
-	  if (!uid && !master)
+	  if (!uid && !recurrenceId)
 	    uid = [[[[[newEvent parent] events] objectAtIndex: 0] organizer] uid];
 	  	  
 	  // With Thunderbird 10, if you create a recurring event with an exception
 	  // occurence, and invite someone, the PUT will have the organizer in the
 	  // recurrence-id and not in the master event. We must fix this, otherwise
 	  // SOGo will break.
-	  if (!master && ![[[[[newEvent parent] events] objectAtIndex: 0] organizer] uid])
+	  if (!recurrenceId && ![[[[[newEvent parent] events] objectAtIndex: 0] organizer] uid])
 	    [[[[newEvent parent] events] objectAtIndex: 0]
 	      setOrganizer: [newEvent organizer]];
 
+          if (newEvent == oldEvent)
+            newEvent = nil;
+
 	  if (uid && [uid caseInsensitiveCompare: owner] == NSOrderedSame)
 	    {
-	      if ((ex = [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent]))
+              // A RECCURENCE-ID was removed
+              if (!newEvent && oldEvent)
+                [self prepareDeleteOccurence: oldEvent];
+              // The master event was changed, A RECCURENCE-ID was added or modified
+              else if ((ex = [self _handleUpdatedEvent: newEvent  fromOldEvent: oldEvent]))
 		return ex;
 	    }
 	  //
