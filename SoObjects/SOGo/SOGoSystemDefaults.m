@@ -349,6 +349,11 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"SOGoTrustProxyAuthentication"];
 }
 
+- (NSString *) encryptionKey;
+{
+  return [self stringForKey: @"SOGoEncryptionKey"];
+}
+
 - (BOOL) useRelativeURLs
 {
   return [self boolForKey: @"WOUseRelativeURLs"];

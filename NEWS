@@ -1,8 +1,9 @@
-2.0.5 (2013-02-dd)
+2.0.5 (2013-03-dd)
 ------------------
 
 New features
- - 
+ - new system default SOGoEncryptionKey to be used to encrypt the passwords of
+   remote Web calendars when SOGoTrustProxyAuthentication is enabled
 
 Enhancements
  - Added logging of the X-Forwarded-For HTTP header (#2229)

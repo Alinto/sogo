@@ -43,6 +43,7 @@
 - (BOOL) debugLeaks;
 - (int) vmemLimit;
 - (BOOL) trustProxyAuthentication;
+- (NSString *) encryptionKey;
 - (BOOL) useRelativeURLs;
 
 - (BOOL) isWebAccessEnabled;
