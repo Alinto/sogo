@@ -1,8 +1,8 @@
 # Sogod cronjobs
 
 # Vacation messages expiration
-# Make sure to set authname and authpassword with the credentials of a sieve admin
-#0 0 * * *      sogo	/usr/sbin/sogo-tool expire-autoreply authname:authpassword
+# The credentials file should contain the sieve admin credentials (username:passwd)
+#0 0 * * *      sogo	/usr/sbin/sogo-tool expire-autoreply -p /etc/sogo/sieve.creds
 
 # Session cleanup - runs every minute
 #   - Ajust the nbMinutes parameter to suit your needs
