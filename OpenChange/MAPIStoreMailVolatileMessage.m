@@ -904,7 +904,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
   return MAPISTORE_SUCCESS;
 }
 
-- (void) save
+- (void) save: (TALLOC_CTX *) memCtx
 {
   NSString *folderName, *flag, *newIdString, *messageKey;
   NSData *changeKey, *messageData;

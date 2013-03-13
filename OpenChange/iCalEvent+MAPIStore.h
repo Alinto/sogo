@@ -23,6 +23,8 @@
 #ifndef ICALEVENT_MAPISTORE_H
 #define ICALEVENT_MAPISTORE_H
 
+#include <talloc.h>
+
 #import <NGCards/iCalEvent.h>
 
 @class MAPIStoreUserContext;
@@ -34,8 +36,8 @@
 
 - (void) updateFromMAPIProperties: (NSDictionary *) properties
                     inUserContext: (MAPIStoreUserContext *) userContext
-                   withActiveUser: (SOGoUser *) activeUser;
-
+                   withActiveUser: (SOGoUser *) activeUser
+                         inMemCtx: (TALLOC_CTX *) memCtx;
 @end
 
 #endif /* ICALEVENT_MAPISTORE_H */

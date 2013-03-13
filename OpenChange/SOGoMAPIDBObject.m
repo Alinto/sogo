@@ -251,13 +251,13 @@ static EOAttribute *textColumn = nil;
             className = @"MAPIStoreNotesMessage";
           else
             className = @"MAPIStoreDBMessage";
-          [self logWithFormat: @"PidTagMessageClass = '%@', returning '%@'",
-                mapiMsgClass, className];
+          //[self logWithFormat: @"PidTagMessageClass = '%@', returning '%@'",
+          //      mapiMsgClass, className];
         }
       else
         {
-          [self warnWithFormat: @"PidTagMessageClass is not set, falling back"
-                @" to 'MAPIStoreDBMessage'"];
+          //[self warnWithFormat: @"PidTagMessageClass is not set, falling back"
+          //      @" to 'MAPIStoreDBMessage'"];
           className = @"MAPIStoreDBMessage";
         }
       break;

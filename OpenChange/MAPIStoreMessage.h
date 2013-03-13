@@ -64,7 +64,7 @@
 - (int) getAttachmentTable: (MAPIStoreAttachmentTable **) tablePtr
                andRowCount: (uint32_t *) countPtr;
 - (int) setReadFlag: (uint8_t) flag;
-- (enum mapistore_error) saveMessage;
+- (enum mapistore_error) saveMessage: (TALLOC_CTX *) memCtx;
 
 - (NSArray *) activeContainerMessageTables;
 
@@ -74,7 +74,7 @@
 - (void) copyToMessage: (MAPIStoreMessage *) newMessage  inMemCtx: (TALLOC_CTX *) memCtx;
 
 /* subclasses */
-- (void) save;
+- (void) save: (TALLOC_CTX *) memCtx;
 
 /* attachments (subclasses) */
 - (MAPIStoreAttachment *) createAttachment;

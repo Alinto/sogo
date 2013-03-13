@@ -236,7 +236,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   messageKeys = [self messageKeys];
 
   date = [NSCalendarDate date];
-  [self logWithFormat: @"current date: %@", date];
+  //[self logWithFormat: @"current date: %@", date];
 
   max = [messageKeys count];
   for (count = 0; count < max; count++)
@@ -245,7 +245,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
       fileDate = [msg lastModificationTime];
       if ([date laterDate: fileDate] == fileDate)
         {
-          [self logWithFormat: @"current date: %@", date];
+          //[self logWithFormat: @"current date: %@", date];
           
           date = fileDate;
         }

@@ -146,7 +146,7 @@ static Class MAPIStoreAttachmentK;
   return ULLONG_MAX;
 }
 
-- (void) save
+- (void) save: (TALLOC_CTX *) memCtx
 {
   [self subclassResponsibility: _cmd];
 }

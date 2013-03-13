@@ -92,8 +92,8 @@
       value = NSObjectFromMAPISPropValue (&res->lpProp);
       lastModified = [(MAPIStoreGCSFolder *)
                        container lastModifiedFromMessageChangeNumber: value];
-      [self logWithFormat: @"change number from oxcfxics: %.16lx", [value unsignedLongLongValue]];
-      [self logWithFormat: @"  c_lastmodified: %@", lastModified];
+      //[self logWithFormat: @"change number from oxcfxics: %.16lx", [value unsignedLongLongValue]];
+      //[self logWithFormat: @"  c_lastmodified: %@", lastModified];
       if (lastModified)
         {
           *qualifier = [[EOKeyValueQualifier alloc] initWithKey: @"c_lastmodified"

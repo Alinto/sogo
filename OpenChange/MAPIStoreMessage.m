@@ -139,7 +139,7 @@ rtf2html (NSData *compressedRTF)
 
 - (id) init
 {
-  [self logWithFormat: @"METHOD '%s' (%d) (%d)", __FUNCTION__, __LINE__, self];
+  //[self logWithFormat: @"METHOD '%s' (%d) (%d)", __FUNCTION__, __LINE__, self];
 
   if ((self = [super init]))
     {
@@ -153,7 +153,7 @@ rtf2html (NSData *compressedRTF)
 
 - (void) dealloc
 {
-  [self logWithFormat: @"METHOD '%s' (%d) (%d)", __FUNCTION__, __LINE__, self];
+  //[self logWithFormat: @"METHOD '%s' (%d) (%d)", __FUNCTION__, __LINE__, self];
   [activeUserRoles release];
   [attachmentKeys release];
   [attachmentParts release];
@@ -260,7 +260,7 @@ rtf2html (NSData *compressedRTF)
   struct mapistore_message_recipient *recipient;
   NSUInteger count;
 
-  [self logWithFormat: @"METHOD '%s'", __FUNCTION__];
+  //[self logWithFormat: @"METHOD '%s'", __FUNCTION__];
 
   recipients = [NSMutableDictionary new];
   recipientProperties = [NSDictionary dictionaryWithObject: recipients
@@ -450,7 +450,7 @@ rtf2html (NSData *compressedRTF)
   NSString *key;
   MAPIStoreAttachment *attachment, *newAttachment;
 
-  [self logWithFormat: @"METHOD '%s' (%d) (%d)", __FUNCTION__, __LINE__, self];
+  //[self logWithFormat: @"METHOD '%s' (%d) (%d)", __FUNCTION__, __LINE__, self];
   
   //memCtx = talloc_zero (NULL, TALLOC_CTX);
 
@@ -477,7 +477,7 @@ rtf2html (NSData *compressedRTF)
   //talloc_free (memCtx);
 }
 
-- (enum mapistore_error) saveMessage
+- (enum mapistore_error) saveMessage: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
   NSArray *containerTables;
@@ -490,7 +490,7 @@ rtf2html (NSData *compressedRTF)
   BOOL userIsOwner;
   MAPIStoreMessage *mainMessage;
 
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  //[self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
   
   context = [self context];
   ownerUser = [[self userContext] sogoUser];
@@ -518,7 +518,7 @@ rtf2html (NSData *compressedRTF)
 
           /* folder modified */
           notif_parameters
-            = talloc_zero(NULL, struct mapistore_object_notification_parameters);
+            = talloc_zero(memCtx, struct mapistore_object_notification_parameters);
           notif_parameters->object_id = folderId;
           if (isNew)
             {
@@ -542,7 +542,7 @@ rtf2html (NSData *compressedRTF)
           if (isNew)
             {
               notif_parameters
-                = talloc_zero(NULL,
+                = talloc_zero(memCtx,
                               struct mapistore_object_notification_parameters);
               notif_parameters->object_id = [self objectId];
               notif_parameters->folder_id = folderId;
@@ -562,7 +562,7 @@ rtf2html (NSData *compressedRTF)
             [[containerTables objectAtIndex: count] restrictedChildKeys];
         }
   
-      [self save];
+      [self save: memCtx];
       /* We make sure that any change-related properties are removes from the
          properties dictionary, to make sure that related methods will be
          invoked the next time they are requested. */
@@ -937,7 +937,7 @@ rtf2html (NSData *compressedRTF)
   return MAPISTORE_ERROR;
 }
 
-- (void) save
+- (void) save: (TALLOC_CTX *) memCtx
 {
   [self subclassResponsibility: _cmd];
 }

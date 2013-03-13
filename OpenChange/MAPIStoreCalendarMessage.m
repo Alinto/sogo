@@ -200,6 +200,7 @@ static Class NSArrayK;
 
 - (void) dealloc
 {
+  //NSLog(@"MAPIStoreCalendarMessage: -dealloc (%p)", self);
   [calendar release];
   [super dealloc];
 }
@@ -417,7 +418,7 @@ static Class NSArrayK;
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (NSString *) _uidFromGlobalObjectId
+- (NSString *) _uidFromGlobalObjectId: (TALLOC_CTX *) memCtx 
 {
   NSData *objectId;
   NSString *uid = nil;
@@ -431,7 +432,7 @@ static Class NSArrayK;
   if (objectId)
     {
       length = [objectId length];
-      bytesDup = talloc_array (NULL, char, length + 1);
+      bytesDup = talloc_array (memCtx, char, length + 1);
       memcpy (bytesDup, [objectId bytes], length);
       bytesDup[length] = 0;
       uidStart = bytesDup + length - 1;
@@ -596,7 +597,7 @@ static Class NSArrayK;
     }
 }
 
-- (void) save
+- (void) save: (TALLOC_CTX *) memCtx 
 {
   // iCalCalendar *vCalendar;
   // NSCalendarDate *now;
@@ -608,7 +609,7 @@ static Class NSArrayK;
 
   if (isNew)
     {
-      uid = [self _uidFromGlobalObjectId];
+      uid = [self _uidFromGlobalObjectId: memCtx];
       if (uid)
         {
           /* Hack required because of what's explained in oxocal 3.1.4.7.1:
@@ -650,12 +651,12 @@ static Class NSArrayK;
   activeUser = [[self context] activeUser];
   [masterEvent updateFromMAPIProperties: properties
                           inUserContext: [self userContext]
-                         withActiveUser: activeUser];
+                         withActiveUser: activeUser
+	                       inMemCtx: memCtx];
   [self _updateAttachedEvents];
   [[self userContext] activateWithUser: activeUser];
   [sogoObject updateContentWithCalendar: calendar
                             fromRequest: nil];
-
   [self updateVersions];
 }
 

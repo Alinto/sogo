@@ -120,7 +120,7 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
     case PidLidAppointmentStartWhole:
     case PidLidAppointmentEndWhole:
     case PidLidRecurring:
-      [self logWithFormat: @"apt restriction on mail folder?"];
+      //[self logWithFormat: @"apt restriction on mail folder?"];
       rc = MAPIRestrictionStateAlwaysFalse;
       break;
 
@@ -158,8 +158,8 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
         value = [NSString stringWithFormat: @"0x%.16llx", [value unsignedLongLongValue]];
         modseq = [(MAPIStoreMailFolder *)
                    container modseqFromMessageChangeNumber: value];
-        [self logWithFormat: @"change number from oxcfxics: %.16lx", [value unsignedLongLongValue]];
-        [self logWithFormat: @"  modseq: %.16lx", [modseq unsignedLongLongValue]];
+        //[self logWithFormat: @"change number from oxcfxics: %.16lx", [value unsignedLongLongValue]];
+        //[self logWithFormat: @"  modseq: %.16lx", [modseq unsignedLongLongValue]];
         if (modseq)
           modseq = [NSNumber numberWithUnsignedLongLong:
                                [modseq unsignedLongLongValue] + 1];
@@ -317,7 +317,7 @@ static Class MAPIStoreMailMessageK, NSDataK, NSStringK;
         ASSIGN (sortOrderings, newSortOrderings);
       else
         ASSIGN (sortOrderings, [NSArray arrayWithObject: @"ARRIVAL"]);
-      [self logWithFormat: @"new sort orderings: '%@'", sortOrderings];
+      //[self logWithFormat: @"new sort orderings: '%@'", sortOrderings];
     }
   else
     ASSIGN (sortOrderings, [NSArray arrayWithObject: @"ARRIVAL"]);

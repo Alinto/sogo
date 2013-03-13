@@ -375,12 +375,12 @@ static Class NSDataK, NSStringK;
 
 - (void) setRestrictions: (const struct mapi_SRestriction *) res
 {
-  EOQualifier *oldRestriction;
+  //EOQualifier *oldRestriction;
 
   // [self logWithFormat: @"set restriction to (table type: %d): %@",
   // 	type, MAPIStringForRestriction (res)];
 
-  oldRestriction = restriction;
+  //oldRestriction = restriction;
   [restriction autorelease];
   if (res)
     restrictionState = [self evaluateRestriction: res
@@ -396,11 +396,11 @@ static Class NSDataK, NSStringK;
   // FIXME: we should not flush the caches if the restrictions matches
   [self cleanupCaches];
   
-  if (restriction)
-    [self logWithFormat: @"restriction set to EOQualifier: %@",
-	  restriction];
-  else if (oldRestriction)
-    [self logWithFormat: @"restriction unset (was %@)", oldRestriction];
+  //if (restriction)
+  //  [self logWithFormat: @"restriction set to EOQualifier: %@",
+//	  restriction];
+ // else if (oldRestriction)
+   // [self logWithFormat: @"restriction unset (was %@)", oldRestriction];
 }
 
 - (MAPIRestrictionState) evaluateNotRestriction: (struct mapi_SNotRestriction *) res
