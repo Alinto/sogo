@@ -288,4 +288,4 @@
   return rc;
 }
 
-@end /* UIxContactsListView */
+@end /* UIxContactFolderActions */
