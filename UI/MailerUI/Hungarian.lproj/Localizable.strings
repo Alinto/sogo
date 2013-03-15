@@ -189,7 +189,7 @@
 "Open in New Mail Window" = "Megnyitás új üzenet ablakban";
 "Copy Folder Location" = "Mappa helyének másolása";
 "Subscribe..." = "Feliratkozás...";
-"Mark Folder Read..." = "Mappa megjelölése olvasottként...";
+"Mark Folder Read" = "Mappa megjelölése olvasottként...";
 "New Folder..." = "Új mappa...";
 "Compact This Folder" = "Mappa tömörítése";
 "Search Messages..." = "Üzenetek keresése...";

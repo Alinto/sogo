@@ -4,14 +4,15 @@
 New features
  - new system default SOGoEncryptionKey to be used to encrypt the passwords of
    remote Web calendars when SOGoTrustProxyAuthentication is enabled
+ - activated the menu option "Mark Folder Read" in the Webmail (#1473)
 
 Enhancements
- - Added logging of the X-Forwarded-For HTTP header (#2229)
+ - added logging of the X-Forwarded-For HTTP header (#2229)
 
 Bug fixes
- - Don't use the cache for password lookups from login page (#2169)
+ - don't use the cache for password lookups from login page (#2169)
  - fixed issue with exceptions in repeating events
- - Avoid data truncation issue in OpenChange with mysql backend
+ - avoid data truncation issue in OpenChange with mysql backend
    run sql-update-2.0.4b_to_2.0.5-mysql.sh to update existing tables
 
 2.0.4b (2013-02-04)

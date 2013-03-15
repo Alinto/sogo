@@ -912,7 +912,7 @@ function refreshUnseenCounts() {
 }
 
 function getUnseenCountForFolder(mailbox) {
-    var url = ApplicationBaseURL + encodeURI(mailbox) + '/unseenCount';
+    var url = URLForFolderID(mailbox) + '/unseenCount';
     triggerAjaxRequest(url, unseenCountCallback, mailbox);
 }
 
@@ -2353,17 +2353,37 @@ function onMenuRenameFolderConfirm() {
 }
 
 function onMenuDeleteFolder(event) {
-    showConfirmDialog(_("Confirmation"),
-                     _("Do you really want to move this folder into the trash ?"),
-                     onMenuDeleteFolderConfirm);
-}
-
-function onMenuDeleteFolderConfirm() {
     var folderID = document.menuTarget.getAttribute("dataname");
     var urlstr = URLForFolderID(folderID) + "/delete";
     var errorLabel = _("The folder could not be deleted.");
-    triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
-    disposeDialog();
+    showConfirmDialog(_("Confirmation"),
+                     _("Do you really want to move this folder into the trash ?"),
+                      function(event) {
+                          triggerAjaxRequest(urlstr, folderOperationCallback, errorLabel);
+                          disposeDialog();
+                      });
+}
+
+function onMenuMarkFolderRead(event) {
+    var folderID = document.menuTarget.getAttribute("dataname");
+    var urlstr = URLForFolderID(folderID) + "/markRead";
+
+    // Delete the associated data sources
+    deleteCachedMailbox(folderID);
+
+    if (folderID == Mailer.currentMailbox) {
+        // Reset the data source so the message headers are reloaded in the callback function
+        Mailer.dataTable.dataSource.destroy();
+    }
+    else {
+        // Reset the unseen count of the mailbox
+        var node = mailboxTree.getMailboxNode(folderID);
+        if (node) {
+            updateUnseenCount(node, 0, false);
+        }
+    }
+
+    triggerAjaxRequest(urlstr, folderRefreshCallback, { "mailbox": folderID, "refresh": true });
 }
 
 function onMenuExpungeFolder(event) {
@@ -2767,22 +2787,19 @@ function onMenuAccountDelegation(event) {
 function getMenus() {
     var menus = {
         accountIconMenu: [ null, null, onMenuCreateFolder, null, null, onMenuAccountDelegation ],
-        inboxIconMenu: [ null, null, null, "-", null,
+        inboxIconMenu: [ null, null, null, "-", onMenuMarkFolderRead,
                          onMenuCreateFolder, onMenuExpungeFolder,
                          onMenuArchiveFolder, "-", null,
                          onMenuSharing ],
-        trashIconMenu: [ null, null, null, "-", null,
+        trashIconMenu: [ null, null, null, "-", onMenuMarkFolderRead,
                          onMenuCreateFolder, onMenuExpungeFolder,
                          onMenuArchiveFolder, onMenuEmptyTrash,
                          "-", null,
                          onMenuSharing ],
-        mailboxIconMenu: [ null, null, null, "-", null,
-                           onMenuCreateFolder,
-                           onMenuRenameFolder,
-                           onMenuExpungeFolder,
-                           onMenuArchiveFolder,
-                           onMenuDeleteFolder,
-                           "folderTypeMenu",
+        mailboxIconMenu: [ null, null, null, "-", onMenuMarkFolderRead,
+                           onMenuCreateFolder, onMenuRenameFolder,
+                           onMenuExpungeFolder, onMenuArchiveFolder,
+                           onMenuDeleteFolder, "folderTypeMenu",
                            "-", null,
                            onMenuSharing ],
         addressMenu: [ newContactFromEmail, newEmailTo ],
