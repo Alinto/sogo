@@ -2,7 +2,7 @@
 
 import getopt
 import imaplib
-#import ldb
+import ldb
 import plistlib
 import os
 import re
@@ -16,7 +16,7 @@ imapport = 143
 sambaprivate = '/var/lib/samba/private'
 mapistorefolder = "%s/mapistore" % (sambaprivate)
 sogoSysDefaultsFile = "/etc/sogo/sogo.conf"
-sogoUserDefaultsFile = "/home/sogo/GNUstep/Defaults/.GNUstepDefaults"
+sogoUserDefaultsFile = os.path.expanduser("~sogo/GNUstep/Defaults/.GNUstepDefaults")
 
 #  - takes a username and optionally its password
 #  - removes the entry in samba's ldap tree via ldbedit (NOTYET)
@@ -79,13 +79,15 @@ def main():
     except (shutil.Error, OSError) as e:
         print "Error during mapistoreCleanup, continuing: %s" % str(e)
 
-    #  try:
-    #    pass
-    #    #ldbCleanup(sambaprivate, username)
-    #  except ldb.LdbError as e:
-    #    print "Error during ldbCleanup, continuing: %s" % str(e)
+    try:
+        ldbCleanup(sambaprivate, username)
+    except ldb.LdbError as e:
+       print "Error during ldbCleanup, continuing: %s" % str(e)
 
-    sqlCleanup(username)
+    try:
+        sqlCleanup(username)
+    except Exception as e:
+        print "Error during sqlCleanup, continuing: %s" % str(e)
 
 def extractmb(si):
     inparen = False
@@ -135,6 +137,7 @@ def cleanupmb(mb, client):
         print "mailbox '%s' coult NOT be deleted (code = '%s')" % (mb, code)
   
 def imapCleanup(imaphost, imapport, username, userpass):
+    print "Starting IMAP cleanup"
     client = imaplib.IMAP4(imaphost, imapport)
     (code, data) = client.login(username, userpass)
     if code != "OK":
@@ -152,24 +155,43 @@ def imapCleanup(imaphost, imapport, username, userpass):
     client.logout()
 
 def mapistoreCleanup(mapistorefolder, username):
+    print "Starting MAPIstore cleanup"
+
     # delete the user's folder under the mapistore and under mapistore/SOGo
-    shutil.rmtree("%s/%s" % (mapistorefolder, username), ignore_errors=True)
+    mapistoreUserDir = "%s/%s" % (mapistorefolder, username)
+    for dirpath, dirnames, filenames in os.walk(mapistoreUserDir):
+      for f in filenames:
+        if f != "password":
+          os.unlink("%s/%s" % (dirpath,f))
+      break #one level only 
+
     shutil.rmtree("%s/SOGo/%s" % (mapistorefolder, username), ignore_errors=True)
 
-    # NOTYET
-    #def ldbCleanup(sambaprivate, username):
-    #  conn = ldb.Ldb("%s/openchange.ldb" % (sambaprivate))
-    ####  entries = conn.search(None, expression="(|(cn=%s)(MAPIStoreURI=sogo://%s:*)(MAPIStoreURI=sogo://%s@*))" % (username,username,username),
-    #  entries = conn.search(None, expression="cn=%s" % (username),
-    #              scope=ldb.SCOPE_SUBTREE)
-    #  for entry in entries:
-    #    print "Deleting %s" % (entry.dn)
-    #    conn.delete(entry.dn)
+def ldbCleanup(sambaprivate, username):
+    conn = ldb.Ldb("%s/openchange.ldb" % (sambaprivate))
+    # find the DN of the user
+    entries = conn.search(None, expression="(cn=%s)" % (username), scope=ldb.SCOPE_SUBTREE)
+    if not entries:
+      print "cn = %s not found in openchange.ldb" %(username)
+      return
+
+    for entry in entries:
+      # search again, but with the user's DN as a base
+      subentries = conn.search(entry.dn.extended_str(), expression="(distinguishedName=*)", scope=ldb.SCOPE_SUBTREE)
+      for subentry in subentries:
+        print "Deleting %s" % (subentry.dn)
+        conn.delete(subentry.dn)
 
 def mysqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, username):
-    import MySQLdb
+    try:
+        import MySQLdb
+    except ImportError:
+        msg ="""The python 'MySQLdb' module is not available
+On Debian based distro, install it using 'apt-get install python-mysqlbd'
+On RHEL, install it using 'yum install MySQL-python'"""
+        raise Exception(msg)
 
-    conn= MySQLdb.connect(host=dbhost, port=int(dbport), user=dbuser, passwd=dbpass, db=dbname)
+    conn = MySQLdb.connect(host=dbhost, port=int(dbport), user=dbuser, passwd=dbpass, db=dbname)
     c=conn.cursor()
     tablename="socfs_%s" % (username)
     c.execute("TRUNCATE TABLE %s" % tablename)
@@ -177,28 +199,33 @@ def mysqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, username):
 
 
 def postgresqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, username):
-    import pg           
+    try:
+        import pg           
+    except ImportError:
+        msg ="""The python 'pg' module is not available
+On Debian based distro, install it using 'apt-get install python-pygresql'
+On RHEL, install it using 'yum install python-pgsql'"""
+        raise Exception(msg)
+
     conn = pg.connect(host=dbhost, port=int(dbport), user=dbuser, passwd=dbpass, dbname=dbname) 
     tablename = "socfs_%s" % username
     conn.query("DELETE FROM %s" % tablename)
-    print "table '%s' emptied" % tablename
+    print "Table '%s' emptied" % tablename
 
 def getOCSFolderInfoURL():
     global sogoSysDefaultsFile, sogoUserDefaultsFile
 
     OCSFolderInfoURL = ""
 
-    # read defaults from /etc/sogo/sogo.conf
-    if os.path.exists(sogoSysDefaultsFile):
-        sogoDefaults = plistlib.readPlist(sogoSysDefaultsFile)
-        if "OCSFolderInfoURL" in sogoDefaults:
-            OCSFolderInfoURL = sogoDefaults["OCSFolderInfoURL"]
-
-    # defaults from user directory must have precedence
-    if os.path.exists(sogoUserDefaultsFile):
-        sogoDefaults = plistlib.readPlist(sogoUserDefaultsFile)
-        if "sogod" in sogoDefaults and "OCSFolderInfoURL" in sogoDefaults["sogod"]:
-            OCSFolderInfoURL = sogoDefaults['sogod']['OCSFolderInfoURL']
+    # read defaults from defaults files
+    # order is important, user defaults must have precedence
+    for f in [sogoSysDefaultsFile, sogoUserDefaultsFile]:
+      if os.path.exists(f):
+        # FIXME: this is ugly, we should have a python plist parser
+        #        plistlib only supports XML plists.
+        pipeline = """sogo-tool dump-defaults -f %s | grep -w OCSFolderInfoURL | awk -F\\" '{print $2}'""" % f
+        tmp = subprocess.check_output(pipeline, shell=True)
+        if tmp: OCSFolderInfoURL = tmp
 
     return OCSFolderInfoURL
 
@@ -226,12 +253,16 @@ def asCSSIdentifier(inputString):
     return "".join(newChars)
 
 def sqlCleanup(username):
+    print "Starting SQL cleanup"
     OCSFolderInfoURL = getOCSFolderInfoURL()
     if OCSFolderInfoURL is None:
         raise Exception("Couldn't fetch OCSFolderInfoURL or it is not set. the socfs_%s table should be truncated manually" % (username))
     
     # postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_folder_info
     m = re.search("(.+)://(.+):(.+)@(.+):(\d+)/(.+)/(.+)", OCSFolderInfoURL)
+
+    if not m:
+        raise Exception("Unable to parse OCSFolderInfoURL: %s" % OCSFolderInfoURL)
 
     proto = m.group(1)
     dbuser = m.group(2)
@@ -248,7 +279,7 @@ def sqlCleanup(username):
     elif (proto == "mysql"):
         mysqlCleanup(dbhost, dbport, dbuser, dbpass, dbname, encodedUserName)
     else:
-        raise Exception("Unknown sql proto: " % (proto))
+        raise Exception("Unknown sql proto: %s" % (proto))
 
 if __name__ == "__main__":
     main()
