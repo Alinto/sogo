@@ -77,7 +77,7 @@ static NSMapTable *serverTable = nil;
 {
   if (!serverTable)
     {
-      serverTable = [NSMapTable mapTableWithStrongToWeakObjects];
+      serverTable = NSCreateMapTable(NSObjectMapKeyCallBacks, NSNonRetainedObjectMapValueCallBacks, 128);
       [serverTable retain];
     }
   lasso_init ();
