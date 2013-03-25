@@ -223,8 +223,13 @@ def getOCSFolderInfoURL():
       if os.path.exists(f):
         # FIXME: this is ugly, we should have a python plist parser
         #        plistlib only supports XML plists.
-        pipeline = """sogo-tool dump-defaults -f %s | grep -w OCSFolderInfoURL | awk -F\\" '{print $2}'""" % f
-        tmp = subprocess.check_output(pipeline, shell=True)
+        # the following magic replaces this shell pipeline:
+        #   sogo-tool dump-defaults -f %s | awk -F\\" '/ OCSFolderInfoURL =/ {print $2}'
+        p1 = subprocess.Popen(["sogo-tool", "dump-defaults", "-f", f], stdout=subprocess.PIPE)
+        p2 = subprocess.Popen(["awk", "-F\"", "/ OCSFolderInfoURL =/ {print $2}"], stdin=p1.stdout, stdout=subprocess.PIPE)
+        p1.stdout.close()  # Allow p1 to receive a SIGPIPE if p2 exits.
+        tmp = p2.communicate()[0]
+
         if tmp: OCSFolderInfoURL = tmp
 
     return OCSFolderInfoURL
