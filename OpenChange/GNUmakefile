@@ -24,8 +24,6 @@ BUNDLE_NAME = $(SOGOBACKEND)
 BUNDLE_EXTENSION = .MAPIStore
 BUNDLE_INSTALL_DIR = $(SOGO_LIBDIR)
 
-UNRTF_DIR = unrtf-$(UNRTF_VERSION)
-
 PYTHON = /usr/bin/python
 PYTHON_IS_GOOD = $(shell $(PYTHON) -c 'from sys import version_info; a=version_info; print a[0] == 2 and a[1] >= 6')
 ifeq (${PYTHON_IS_GOOD},False)
@@ -36,8 +34,6 @@ all::
 	@echo " Python executable: ${PYTHON}"
 
 SAMBA_PRIVATE_DIR = $(shell $(PYTHON) ./samba-get-config.py "private dir")
-
-$(SOGOBACKEND)_SUBPROJECTS += $(UNRTF_DIR)/src
 
 $(SOGOBACKEND)_PRINCIPAL_CLASS = MAPIApplication
 
@@ -142,25 +138,6 @@ $(SOGOBACKEND)_RESOURCE_FILES += \
 	product.plist \
 	$(UNRTF_DIR)/charmaps/SYMBOL.charmap \
 	$(UNRTF_DIR)/outputs/html.conf
-
-### unrtf
-all:: $(UNRTF_DIR)/config.h $(UNRTF_DIR)/src/GNUmakefile
-
-$(UNRTF_DIR): $(UNRTF_DIR).tar.gz $(UNRTF_DIR).diff
-	@echo " Extracting and patching $(UNRTF_DIR)..."
-	@rm -rf $(UNRTF_DIR)
-	@$(TAR) -xvzf $< > /dev/null
-	@(cd $(UNRTF_DIR) && patch -p1 < ../$(UNRTF_DIR).diff) > /dev/null
-	@touch $(UNRTF_DIR)
-
-$(UNRTF_DIR)-stamp: $(UNRTF_DIR)
-	@touch $@
-
-$(UNRTF_DIR)/config.h: $(UNRTF_DIR)-stamp unrtf_config_h
-	@cp unrtf_config_h $(UNRTF_DIR)/config.h
-
-$(UNRTF_DIR)/src/GNUmakefile: $(UNRTF_DIR)-stamp GNUmakefile.unrtf
-	@cp GNUmakefile.unrtf $@
 
 ### pl reader
 PLREADER_TOOL = plreader

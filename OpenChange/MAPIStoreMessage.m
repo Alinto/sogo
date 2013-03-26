@@ -45,10 +45,9 @@
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
+#import "RTFHandler.h"
 
 #import "MAPIStoreMessage.h"
-
-#include <unrtf.h>
 
 #undef DEBUG
 #include <stdbool.h>
@@ -59,17 +58,6 @@
 static Class MAPIStoreFolderK, MAPIStoreEmbeddedMessageK;
 
 static NSString *resourcesDir = nil;
-
-/* rtf conversion via unrtf */
-static int
-unrtf_data_output (void *data, const char *str, size_t str_len)
-{
-  NSMutableData *rtfData = data;
-
-  [rtfData appendBytes: str length: str_len];
-
-  return str_len;
-}
 
 static NSData *
 uncompressRTF (NSData *compressedRTF)
@@ -97,22 +85,17 @@ rtf2html (NSData *compressedRTF)
 {
   NSData *rtf;
   NSMutableData *html = nil;
-  int rc;
-  struct unRTFOptions unrtfOptions;
 
   rtf = uncompressRTF (compressedRTF);
   if (rtf)
     {
-      html = [NSMutableData data];
-      memset (&unrtfOptions, 0, sizeof (struct unRTFOptions));
-      unrtf_set_output_device (&unrtfOptions, unrtf_data_output, html);
-      unrtfOptions.config_directory = [resourcesDir UTF8String];
-      unrtfOptions.output_format = "html";
-      unrtfOptions.nopict_mode = YES;
-      rc = unrtf_convert_from_string (&unrtfOptions,
-                                      [rtf bytes], [rtf length]);
-      if (!rc)
-        html = nil;
+      //html = [NSMutableData data];
+      RTFHandler *handler;
+
+      handler = [[RTFHandler alloc] initWithData: rtf];
+      AUTORELEASE(handler);
+
+      html = [handler parse];
     }
 
   return html;
