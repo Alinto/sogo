@@ -6,7 +6,7 @@ import re
 import string
 import sys
 
-h_template = """unsigned short %(charsetName)s[%(len)d] = { %(values)s }"""
+h_template = """unsigned short %(charsetName)s[%(len)d] = { %(values)s };"""
 CHAR_UNDEF = "0x0000"
 MAP_LEN = 256
 itemsPerLine = 16
