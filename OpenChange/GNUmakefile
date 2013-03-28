@@ -131,7 +131,8 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	EOBitmaskQualifier.m \
 	\
-	BSONCodec.m
+	BSONCodec.m \
+	RTFHandler.m
 
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
