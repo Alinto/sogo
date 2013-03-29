@@ -37,6 +37,8 @@
 #import <GDLContentStore/EOQualifier+GCS.h>
 #import <GDLAccess/EOAdaptorChannel.h>
 
+#import <SOGo/SOGoSystemDefaults.h>
+
 #import "SOGoConstants.h"
 #import "NSString+Utilities.h"
 #import "NSString+Crypto.h"
@@ -626,22 +628,93 @@
   return [self _lookupContactEntry: entryID  considerEmail: YES inDomain: domain];
 }
 
-- (NSArray *) allEntryIDs
+/* Returns an EOQualifier of the following form:
+ * (_domainField = domain OR _domainField = visibleDomain1 [...])
+ * Should only be called on SQL sources using _domainField name.
+ */
+- (EOQualifier *) _visibleDomainsQualifierFromDomain: (NSString *) domain
+{
+  int i;
+  EOQualifier *qualifier, *domainQualifier;
+  NSArray *visibleDomains;
+  NSMutableArray *qualifiers;
+  NSString *currentDomain;
+
+  SOGoSystemDefaults *sd;
+
+  /* Return early if no domain or if being called on a 'static' sql source */
+  if (!domain || !_domainField)
+    return nil;
+
+  sd = [SOGoSystemDefaults sharedSystemDefaults];
+  visibleDomains = [sd visibleDomainsForDomain: domain];
+  qualifier = nil;
+
+  domainQualifier =
+    [[EOKeyValueQualifier alloc] initWithKey: _domainField
+                            operatorSelector: EOQualifierOperatorEqual
+                                       value: domain];
+  [domainQualifier autorelease];
+
+  if ([visibleDomains count])
+    {
+      qualifiers = [NSMutableArray arrayWithCapacity: [visibleDomains count] + 1];
+      [qualifiers addObject: domainQualifier];
+      for(i = 0; i < [visibleDomains count]; i++)
+        {
+          currentDomain = [visibleDomains objectAtIndex: i];
+          qualifier =
+            [[EOKeyValueQualifier alloc] initWithKey: _domainField
+                                    operatorSelector: EOQualifierOperatorEqual
+                                               value: currentDomain];
+          [qualifier autorelease];
+          [qualifiers addObject: qualifier];
+        }
+      qualifier = [[EOOrQualifier alloc] initWithQualifierArray: qualifiers];
+      [qualifier autorelease];
+    }
+
+  return qualifier ? qualifier : domainQualifier;
+}
+
+
+- (NSArray *) allEntryIDsVisibleFromDomain: (NSString *) domain
 {
   EOAdaptorChannel *channel;
-  NSMutableArray *results;
+  EOQualifier *domainQualifier;
   GCSChannelManager *cm;
   NSException *ex;
-  NSString *sql;
-  
+  NSMutableArray *results;
+  NSMutableString *sql;
+
   results = [NSMutableArray array];
 
   cm = [GCSChannelManager defaultChannelManager];
   channel = [cm acquireOpenChannelForURL: _viewURL];
   if (channel)
     {
-      sql = [NSString stringWithFormat: @"SELECT c_uid FROM %@",
+      sql = [NSMutableString stringWithFormat: @"SELECT c_uid FROM %@",
                       [_viewURL gcsTableName]];
+
+      if (_domainField)
+        {
+          if ([domain length])
+            {
+              domainQualifier =
+                [self _visibleDomainsQualifierFromDomain: domain];
+              if (domainQualifier)
+                {
+                  [sql appendString: @" WHERE "];
+                  [domainQualifier _gcsAppendToString: sql];
+                }
+            }
+          else
+            {
+              /* Should not happen but avoid returning the whole table
+               * if a domain should have been defined */
+              [sql appendFormat: @" WHERE %@ is NULL", _domainField];
+            }
+        }
 
       ex = [channel evaluateExpressionX: sql];
       if (!ex)
@@ -669,6 +742,11 @@
 
   
   return results;
+}
+
+- (NSArray *) allEntryIDs
+{
+  return [self allEntryIDsVisibleFromDomain: nil];
 }
 
 - (NSArray *) fetchContactsMatching: (NSString *) filter
@@ -699,16 +777,26 @@
                       lowerFilter, lowerFilter];
       
       if (_mailFields && [_mailFields count] > 0)
-	{
-	  [sql appendString: [self _whereClauseFromArray: _mailFields  value: lowerFilter  exact: NO]];
-	}
+        {
+          [sql appendString: [self _whereClauseFromArray: _mailFields  value: lowerFilter  exact: NO]];
+        }
 
       [sql appendString: @")"];
 
       if (_domainField)
         {
           if ([domain length])
-            [sql appendFormat: @" AND %@ = '%@'", _domainField, domain];
+            {
+              EOQualifier *domainQualifier;
+              domainQualifier =
+                [self _visibleDomainsQualifierFromDomain: domain];
+              if (domainQualifier)
+                {
+                  [sql appendFormat: @" AND ("];
+                  [domainQualifier _gcsAppendToString: sql];
+                  [sql appendFormat: @")"];
+                }
+            }
           else
             [sql appendFormat: @" AND %@ IS NULL", _domainField];
         }

@@ -200,7 +200,10 @@
 
 - (NSArray *) toOneRelationshipKeys
 {
-  return [source allEntryIDs];
+  NSString *userDomain;
+
+  userDomain = [[context activeUser] domain];
+  return [source allEntryIDsVisibleFromDomain: userDomain];
 }
 
 - (NSException *) saveLDIFEntry: (SOGoContactLDIFEntry *) ldifEntry
