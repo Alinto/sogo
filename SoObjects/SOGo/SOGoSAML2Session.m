@@ -43,6 +43,8 @@
 #import "SOGoCache.h"
 #import "SOGoSAML2Exceptions.h"
 #import "SOGoSystemDefaults.h"
+#import "SOGoUserManager.h"
+
 
 #import "SOGoSAML2Session.h"
 
@@ -244,6 +246,13 @@ LassoServerInContext (WOContext *context)
                   value = LASSO_SAML2_ATTRIBUTE_VALUE (attribute->AttributeValue->data);
                   textNode = value->any->data;
                   login = [NSString stringWithUTF8String: textNode->content];
+                  [login retain];
+                }
+              else if (strcmp (attribute->Name, "mail") == 0)
+                {
+                  value = LASSO_SAML2_ATTRIBUTE_VALUE (attribute->AttributeValue->data);
+                  textNode = value->any->data;
+                  login = [[SOGoUserManager sharedUserManager] getUIDForEmail: [NSString stringWithUTF8String: textNode->content]];
                   [login retain];
                 }
               else
