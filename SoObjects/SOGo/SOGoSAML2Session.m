@@ -162,7 +162,7 @@ LassoServerInContext (WOContext *context)
   }
   request->NameIDPolicy->Format = g_strdup(LASSO_SAML2_NAME_IDENTIFIER_FORMAT_PERSISTENT);
   request->NameIDPolicy->AllowCreate = 1;
-  request->ForceAuthn = TRUE;
+  request->ForceAuthn = FALSE;
   request->IsPassive = FALSE;
   if (request->ProtocolBinding) {
     g_free (request->ProtocolBinding);
