@@ -241,6 +241,9 @@
 
 @end
 
+@implementation SOGoMailArabicForward
+@end
+
 @implementation SOGoMailBrazilianPortugueseForward
 @end
 

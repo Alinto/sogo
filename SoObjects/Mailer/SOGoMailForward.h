@@ -37,6 +37,9 @@
 
 @end
 
+@interface SOGoMailArabicForward : SOGoMailForward
+@end
+
 @interface SOGoMailBrazilianPortugueseForward : SOGoMailForward
 @end
 

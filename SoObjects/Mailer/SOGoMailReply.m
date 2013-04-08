@@ -99,6 +99,9 @@
 
 @end
 
+@implementation SOGoMailArabicReply
+@end
+
 @implementation SOGoMailBrazilianPortugueseReply
 @end
 

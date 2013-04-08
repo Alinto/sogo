@@ -42,6 +42,8 @@ Mailer_RESOURCE_FILES += \
 	product.plist	\
 
 Mailer_RESOURCE_FILES += \
+	SOGoMailArabicForward.wo \
+	SOGoMailArabicReply.wo \
 	SOGoMailBrazilianPortugueseForward.wo \
 	SOGoMailBrazilianPortugueseReply.wo \
 	SOGoMailCatalanForward.wo \

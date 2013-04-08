@@ -1,0 +1,35 @@
+/* Arabic */
+{
+  NSLanguageName = "Arabic";
+  NSFormalName = "العربية";
+  NSLocaleCode = "ar"; /* ISO 639-1 */
+  NSLanguageCode = "ara"; /* ISO 639-2 */
+  NSParentContext = "";
+
+  NSAMPMDesignation = ("ص", "م");
+  NSCurrencySymbol = "$";
+  NSDateFormatString = "%A, %B %e, %Y";
+  NSDateTimeOrdering = MDYH;
+  NSDecimalDigits = ("٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩");
+  NSDecimalSeparator = ".";
+  NSEarlierTimeDesignations = ("قبل", "آخر", "الماضي", "منذ");
+  NSHourNameDesignations = ((0, "منتصف الليل"), (10, "صباحاُ"), (12, "ظهراُ", "الغداء"), (14, "عصراُ"), (19, "عشاءاُ"));
+  NSInternationalCurrencyString = EGP; /* ISO 4217 */
+  NSLaterTimeDesignations = ("التالي");
+  NSMonthNameArray = ("يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر");
+  NSNextDayDesignations = ("غدا");
+  NSNextNextDayDesignations = ("اليوم التالي");
+  NSPriorDayDesignations = ("أمس");
+  NSShortDateFormatString = "%m/%e/%y";
+  NSShortMonthNameArray = ("يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر");
+  NSShortTimeDateFormatString = "%m/%e/%y %I:%M %p";
+  NSShortWeekDayNameArray = ("ح", "ن", "ث", "ر", "خ", "ج", "س");
+  NSThisDayDesignations = ("اليوم", "الآن");
+  NSThousandsSeparator = ",";
+  NSTimeDateFormatString = "%A, %B %e, %Y %I:%M:%S %p %Z";
+  NSTimeFormatString = "%I:%M:%S %p";
+  NSWeekDayNameArray = ("الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت");
+  NSYearMonthWeekDesignations = ("سنة", "شهر", "أسبوع");
+  NSPositiveCurrencyFormatString = "$9,999.00";
+  NSNegativeCurrencyFormatString = "-$9,999.00";
+}

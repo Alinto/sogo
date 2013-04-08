@@ -1,0 +1,296 @@
+/* this file is in UTF-8 format! */
+
+/* Icon's label */
+"Create"      = "أنشئ";
+"Empty Trash" = "أفرِغ سلة المهملات";
+"Delete"      = "احذف";
+"Expunge"     = "محا";
+"Forward"     = "ارسال الى";
+"Get Mail"    = "الحصول على البريد";
+"Junk"        = "تافه";
+"Reply"       = "رد";
+"Reply All"   = "رد للكل";
+"Print"       = "طباعة";
+"Stop"        = "توقف";
+"Write"       = "كتابة";
+
+"Send" = "ارسال";
+"Contacts" = "عناوين";
+"Attach" = "إضافة مرفق";
+"Save" = "حفظ";
+"Options" = "خيارات";
+"Close" = "إغلاق";
+"Size" = "حجم";
+
+/* Tooltips */
+
+"Send this message now" = "إرسال هذه الرسالة الآن";
+"Select a recipient from an Address Book" = "حدد المستلم من دفتر العناوين";
+"Include an attachment" = "تضمين مرفق";
+"Save this message" = "حفظ هذه الرسالة";
+"Get new messages" = "الحصول على رسائل جديدة";
+"Create a new message" = "إنشاء رسالة جديدة";
+"Go to address book" = "انتقل إلى دفتر العناوين";
+"Reply to the message" = "الرد على الرسالة";
+"Reply to sender and all recipients" = "الرد للمرسل وجميع المتلقين";
+"Forward selected message" = "إرسال الرسالة المحددة";
+"Delete selected message or folder" = "مسح الرسالة او المجلد المحدد";
+"Mark the selected messages as junk" = "سجل الرسائل المحددة على انها تافهة";
+"Print this message" = "اطبع هذه الرسالة";
+"Stop the current transfer" = "وقف النقل الحالي";
+"Attachment" = "مرفق";
+"Unread" = "غير مقروء";
+"Flagged" = "تم وضع علامة عليه";
+
+/* Main Frame  */
+
+"Home"                 = "الصفحة الرئيسية"; 
+"Calendar"             = "التقويم";
+"Addressbook"          = "دفتر العناوين";
+"Mail"                 = "البريد";
+"Right Administration" = "حق الإدارة";
+
+"Help" = "مساعدة";
+
+/* Mail account main windows */
+
+"Welcome to the SOGo Mailer. Use the folder tree on the left to browse your mail accounts!" = "مرحبا بكم في خدمة سوجو البريدية. استخدم شجرة المجلد على اليسار لتصفح حسابات البريد الإلكتروني الخاص بك!";
+
+"Read messages"       = "قراءة الرسائل";
+"Write a new message" = "كتابة رسالة جديدة";
+
+"Share: " = "مشاركة :";
+"Account: " = "حساب:";
+"Shared Account: " = "حساب مشاركة:";
+
+/* acls */
+"Access rights to" = "حقوق الوصول إلى";
+"For user" = "الى مستخدم";
+
+"Any Authenticated User" = "أي مستخدم مسجل";
+
+"List and see this folder" = "فتح ورؤية هذا المجلد";
+"Read mails from this folder" = "قراءة الرسائل من هذا المجلد";
+"Mark mails read and unread" = "وضع علامة مقروء او غير مقروء على الرسائل";
+"Modify the flags of the mails in this folder" = "تعديل علامات الرسائل بهذا المجلد";
+"Insert, copy and move mails into this folder" = "إدراج، نسخ ونقل الرسائل في هذا المجلد";
+"Post mails" = "إضافة رسائل";
+"Add subfolders to this folder" = "إضافة مجلدات فرعية إلى هذا المجلد";
+"Remove this folder" = "مسح المجلد";
+"Erase mails from this folder" = "مسح الرسائل من هذا المجلد";
+"Expunge this folder" = "محو هذا المجلد";
+"Archive This Folder" = "أرشفة هذا المجلد";
+"Modify the acl of this folder" = "تعديل قائمة الصلاحيات لهذا المجلد";
+
+"Saved Messages.zip" = "حفظ Messages.zip";
+
+"Update" = "تحديث";
+"Cancel" = "إلغاء";
+
+/* Mail edition */
+
+"From"          = "من";
+"Subject"       = "الموضوع";
+"To"            = "إلى";
+"Cc"            = "نسخة الى";
+"Bcc"           = "نسخة مخفية إلى";
+"Reply-To"	= "الرد إلى";
+"Add address"   = "إضافة عنوان";
+
+"Attachments:" = "مرفقات:";
+"Open" = "فتح";
+"Select All" = "إختيار الكل";
+"Attach Web Page..." = "إرفاق صفحة ويب ...";
+"Attach File(s)..." = "إرفاق ملف (ملفات)  ...";
+
+"to"            = "إلى";
+"cc"            = "نسخة الى";
+"bcc"           = "نسخة مخفية إلى";
+
+"Edit Draft..." = "تعديل مسودة ...";
+"Load Images" = "تحميل صور";
+
+"Return Receipt" = "عودة الإيصال";
+"The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "طلب مرسل هذه الرسالة أن يتم إعلامه عند قراءة هذه الرسالة. هل ترغب في إبلاغ المرسل؟";
+"Return Receipt (displayed) - %@"= "إيصال عودة (عرض) -٪ @";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "هذا هو الإيصال مقابل الرسالة الإلكترونية التي أرسلت إلى @٪\n\nملاحظة: هذا الإشعار بالاستلام لا يقر سوى أنه تم عرض رسالة على الكمبيوتر المستلم. ليس هناك ما يضمن أن المتلقي قد قرأ أو فهم محتويات الرسالة.";
+
+"Priority" = " الأولوية";
+"highest" = "قصوي";
+"high" = "أعلى";
+"normal" = "عادي";
+"low" = "قليلة";
+"lowest" = "دنيا";
+
+"This mail is being sent from an unsecure network!" = "يتم إرسال هذا البريد من شبكة غير آمن!";
+
+"Address Book:" = "دفتر العناوين:";
+"Search For:" = "البحث عن :";
+
+/* Popup "show" */
+
+"all"     = "الكل";
+"read"    = "قرأ";
+"unread"  = "لم يقرأ";
+"deleted" = "مسح";
+"flagged" = "معلم";
+
+/* MailListView */
+
+"Sender" = "الراسل";
+"Subject or Sender" = "الموضوع أو المرسل";
+"To or Cc" = "إلى أو نسخة الى";
+"Entire Message" = "الرسالة كاملة";
+
+"Date"          = "التاريخ";
+"View"          = "عرض";
+"All"           = "الكل";
+"No message"    = "لا يوجد رسالة";
+"messages"      = "رسائل";
+
+"first"         = "الأول";
+"previous"      = "السابق";
+"next"          = "التالي";
+"last"          = "آخر";
+
+"msgnumber_to"  = "إلى";
+"msgnumber_of"  = "من";
+
+"Mark Unread" = "سجل غير مقروء";
+"Mark Read"   = "سجل مقروء";
+
+"Untitled" = "بدون عنوان";
+
+/* Tree */
+
+"SentFolderName"   = "البريد الصادر";
+"TrashFolderName"  = "المهملات";
+"InboxFolderName"  = "البريد الوارد";
+"DraftsFolderName" = "مسودات";
+"SieveFolderName"  = "فلاتر";
+"OtherUsersFolderName"   = "مستخدمين أخرين";
+"SharedFoldersName" = "مجلدات مشتركة";
+"Folders"          = "مجلدات"; /* title line */
+
+/* MailMoveToPopUp */
+
+"MoveTo"        = "نقل ومساعدة؛";
+
+/* Address Popup menu */
+"Add to Address Book..." = "إضافة الى دفتر العناوين";
+"Compose Mail To" = "إنشاء بريد الى";
+"Create Filter From Message..." = "إنشاء فلتر من الرسالة ...";
+
+/* Image Popup menu */
+"Save Image" = "حفظ الصورة";
+"Save Attachment" = "حفظ المرفقات";
+
+/* Mailbox popup menus */
+"Open in New Mail Window" = "فتح في نافذة بريد جديدة";
+"Copy Folder Location" = "نسخ موقع المجلد";
+"Subscribe..." = "إشترك...";
+"Mark Folder Read" = "اجعل رسائل المجلد مقروءة";
+"New Folder..." = "مجلد جديد...";
+"Compact This Folder" = "ضغط هذا المجلد";
+"Search Messages..." = "ابحث عن رسائل ...";
+"Sharing..." = "مشاركة...";
+"New Subfolder..." = "مجلد فرعي جديد ...";
+"Rename Folder..." = "إعادة تسمية مجلد ...";
+"Delete Folder" = "مسح المجلد";
+"Use This Folder For" = "استخدم هذا المجلد لى";
+"Get Messages for Account" = "الحصول على الرسائل من حساب";
+"Properties..." = "خصائص ...";
+"Delegation..." = "تفويض...";
+
+/* Use This Folder menu */
+"Sent Messages" = "الرسالة المرسلة";
+"Drafts" = "المسودات";
+"Deleted Messages" = "الرسائل المحذوفة";
+
+/* Message list popup menu */
+"Open Message In New Window" = "إفنح الرسالة في نافذة جديدة";
+"Reply to Sender Only" = "الرد على المرسل فقط";
+"Reply to All" = "الرد على الكل";
+"Edit As New..." = "تعديل كالجديد ...";
+"Move To" = "نقل إلى";
+"Copy To" = "نسخ إلى";
+"Label" = "ملصق";
+"Mark" = "وضع علامة";
+"Save As..." = "حفظ باسم ...";
+"Print Preview" = "معاينة قبل الطباعة";
+"View Message Source" = "عرض مصدر الرسالة";
+"Print..." = "طباعة...";
+"Delete Message" = "مسح الرسالة";
+"Delete Selected Messages" = "مسح الرسائل المختارة";
+
+"This Folder" = "هذا المجلد";
+
+/* Label popup menu */
+"None" = "لا شيء";
+"Important" = "مهم";
+"Work" = "عمل";
+"Personal" = "شخصي";
+"To Do" = "تفعل";
+"Later" = "لاحقا";
+
+/* Mark popup menu */
+"As Read" = "مقروء";
+"Thread As Read" = "الموضوع مقروء";
+"As Read By Date..." = "كما يقرأ من التاريخ";
+"All Read" = "الكل مقروء";
+"Flag" = "علم";
+"As Junk" = "غير هام";
+"As Not Junk" = "ليس غير هام";
+"Run Junk Mail Controls" = "تشغيل عناصر تحكم البريد غير المرغوب فيه";
+
+/* Folder operations */
+"Name :" = "أسم:";
+"Enter the new name of your folder :"
+ = "أدخل اسم جديد للمجلد:";
+"Do you really want to move this folder into the trash ?"
+ = "هل تريد حقا نقل هذا المجلد إلى سلة المهملات؟";
+"Operation failed" = "فشلت عملية";
+
+"Quota" = "مساحة تخزين:";
+"quotasFormat" = "%{0}% المستخدمة في %{1} ميغابايت";
+
+"Please select a message." = "الرجاء اختيار رسالة.";
+"Please select a message to print." = "الرجاء اختيار رسالة للطباعة.";
+"Please select only one message to print." = "الرجاء اختيار رسالة واحدة فقط للطباعة.";
+"The message you have selected doesn't exist anymore." = "الرسالة التي اخترتها لا وجود لها بعد الآن.";
+
+"The folder with name \"%{0}\" could not be created."
+= "المجلد الذي اسمه \"٪ {0}\" لا يمكن أن ينشأ.";
+"This folder could not be renamed to \"%{0}\"."
+= "لا يمكن تغييراسم هذا المجلد إلى \"٪ {0}\".";
+"The folder could not be deleted."
+= "لا يمكن حذف المجلد.";
+"The trash could not be emptied."
+= "لا يمكن تفريغ القمامة.";
+"The folder functionality could not be changed."
+= "لا يمكن تغيير وظيفة المجلد .";
+
+"You need to choose a non-virtual folder!" = "تحتاج إلى اختيار مجلد غير ظاهري!";
+
+"Moving a message into its own folder is impossible!"
+= "لا يمكن نقل رسالة إلى المجلد الخاص بها!";
+"Copying a message into its own folder is impossible!"
+= "لا يمكن نسخ رسالة إلى المجلد الخاص بها !";
+
+/* Message operations */
+"The messages could not be moved to the trash folder. Would you like to delete them immediately?"
+= "لا يمكن نقل الرسائل إلى مجلد سلة المهملات. هل ترغب في حذفها فورا؟";
+
+/* Message editing */
+"error_missingsubject" = "الرسالة ليس بها موضوع. هل أنت متأكد من أنك تريد إرسالها؟";
+"error_missingrecipients" = "يرجى تحديد مستلم واحد على الأقل.";
+"Send Anyway" = "إرسال على أي حال";
+
+/* Message sending */
+"cannot send message: (smtp) all recipients discarded" = "لا يمكن إرسال الرسالة: جميع العناوين خاطئة.";
+"cannot send message (smtp) - recipients discarded:" = "لا يمكن إرسال رسالة. العناوين التالية غير صالحة:";
+"cannot send message: (smtp) error when connecting" = "لا يمكن إرسال الرسالة: خطأ عند الاتصال إلى خادم SMTP.";
+
+/* Contacts list in mail editor */
+"Email" = "بريد إلكتروني";
+"Name" = "الاسم";
