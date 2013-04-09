@@ -257,7 +257,7 @@
                   grace: &grace])
     return nil;
   
-  if (domain)
+  if (domain && [login rangeOfString: @"@"].location == NSNotFound)
     login = [NSString stringWithFormat: @"%@@%@", login, domain];
 
   return login;
