@@ -25,7 +25,7 @@ case "$1" in
           chmod 750 /etc/sogo
           chown root:sogo /etc/sogo
           chmod 640 /etc/sogo/sogo.conf
-          chown root:sogo /etc/sogo.conf
+          chown root:sogo /etc/sogo/sogo.conf
         ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
