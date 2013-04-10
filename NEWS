@@ -1,4 +1,4 @@
-2.0.5 (2013-03-dd)
+2.0.5 (2013-04-dd)
 ------------------
 
 New features
@@ -8,12 +8,21 @@ New features
 
 Enhancements
  - added logging of the X-Forwarded-For HTTP header (#2229)
+ - initial Arabic translation
+ - now use BSON instead of GNUstep's binary format for serializing
+    Outlook related cache files
+ - updated Danish, Finnish, Polish and Slovak translations
 
 Bug fixes
  - don't use the cache for password lookups from login page (#2169)
  - fixed issue with exceptions in repeating events
  - avoid data truncation issue in OpenChange with mysql backend
    run sql-update-2.0.4b_to_2.0.5-mysql.sh to update existing tables
+ - avoid random crashes in OpenChange due to RTF conversion
+ - fixed issue when modifying/deleting exceptions of recurring events
+ - fixed major cache miss issue leading to slow Outlook
+ resynchronizations
+ - fixed major memory corruption issue when Outlook was saving "messages"
 
 2.0.4b (2013-02-04)
 ------------------
