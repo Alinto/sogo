@@ -77,14 +77,13 @@ install-arch: build-arch
 	           $(DESTDIR)/usr/lib/mapistore_backends/SOGo.so; \
 	fi
 
-	mkdir -p debian/tmp/etc/default
-	cp Scripts/sogo-default debian/tmp/etc/default/sogo
-	mkdir -p debian/tmp/usr/share/lintian/overrides
-	cp debian/sogo.overrides debian/tmp/usr/share/lintian/overrides/sogo
-	mkdir -p debian/tmp/etc/apache2/conf.d
-	cp Apache/SOGo.conf debian/tmp/etc/apache2/conf.d/SOGo.conf
+	install -D Scripts/sogo-default debian/tmp/etc/default/sogo
+	install -D debian/sogo.overrides debian/tmp/usr/share/lintian/overrides/sogo
+	install -D Apache/SOGo.conf debian/tmp/etc/apache2/conf.d/SOGo.conf
 	install -D -m 644 Scripts/sogo.cron debian/tmp/etc/cron.d/sogo
 	install -D -m 644 Scripts/logrotate debian/tmp/etc/logrotate.d/sogo
+	install -d -m 750 debian/tmp/etc/
+	install -D -m 640 Scripts/sogo.conf debian/tmp/etc/sogo.conf
 
 # Build architecture dependant packages using the common target.
 binary-arch: build-arch install-arch
