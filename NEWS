@@ -8,10 +8,10 @@ New features
 
 Enhancements
  - added logging of the X-Forwarded-For HTTP header (#2229)
- - initial Arabic translation
  - now use BSON instead of GNUstep's binary format for serializing
     Outlook related cache files
  - updated Danish, Finnish, Polish and Slovak translations
+ - added Arabic translation - thanks to Anass Ahmed
 
 Bug fixes
  - don't use the cache for password lookups from login page (#2169)
