@@ -20,9 +20,11 @@ Bug fixes
    run sql-update-2.0.4b_to_2.0.5-mysql.sh to update existing tables
  - avoid random crashes in OpenChange due to RTF conversion
  - fixed issue when modifying/deleting exceptions of recurring events
- - fixed major cache miss issue leading to slow Outlook
- resynchronizations
+ - fixed major cache miss issue leading to slow Outlook resynchronizations
  - fixed major memory corruption issue when Outlook was saving "messages"
+ - fixed filtering of sql contact entries when using dynamic domains (#2269)
+ - sogo.conf can now be used by all tools (#2226)
+
 
 2.0.4b (2013-02-04)
 ------------------
