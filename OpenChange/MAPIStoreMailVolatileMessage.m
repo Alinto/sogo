@@ -943,7 +943,10 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
       [mapping registerURL: [self url] withID: mid];
 
       /* synchronise the cache and update the change key with the one provided
-         by the client */
+         by the client. Before doing this, lets issue a noop because of timing
+         issues with Dovecot. */
+      [client noop];
+
       [(MAPIStoreMailFolder *) container synchroniseCache];
       changeKey = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
       if (changeKey)
