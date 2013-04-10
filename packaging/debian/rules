@@ -82,8 +82,8 @@ install-arch: build-arch
 	install -D Apache/SOGo.conf debian/tmp/etc/apache2/conf.d/SOGo.conf
 	install -D -m 644 Scripts/sogo.cron debian/tmp/etc/cron.d/sogo
 	install -D -m 644 Scripts/logrotate debian/tmp/etc/logrotate.d/sogo
-	install -d -m 750 debian/tmp/etc/
-	install -D -m 640 Scripts/sogo.conf debian/tmp/etc/sogo.conf
+	install -d -m 750 debian/tmp/etc/sogo
+	install -D -m 640 Scripts/sogo.conf debian/tmp/etc/sogo/sogo.conf
 
 # Build architecture dependant packages using the common target.
 binary-arch: build-arch install-arch
