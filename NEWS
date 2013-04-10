@@ -24,6 +24,11 @@ Bug fixes
  - fixed major memory corruption issue when Outlook was saving "messages"
  - fixed filtering of sql contact entries when using dynamic domains (#2269)
  - sogo.conf can now be used by all tools (#2226)
+ - SOPE: fixed handling of sieve capabilities after starttls (#2132)
+ - OpenChange: fixed 'stuck email' problem when sending a mail
+ - OpenChange NTLMAuthHandler: avoid tightloop when samba isn't available.
+ - OpenChange NTLMAuthHandler: avoid crash while parsing cookies
+ - OpenChange ocsmanager: a LOT of fixes, see git log
 
 
 2.0.4b (2013-02-04)
