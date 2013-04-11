@@ -20,7 +20,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <talloc.h>
 #include <util/attr.h>
 
 #import <Foundation/NSArray.h>
@@ -75,16 +74,17 @@
 @implementation iCalEvent (MAPIStoreProperties)
 
 - (void) _setupEventRecurrence: (NSData *) mapiRecurrenceData
+                      inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct Binary_r *blob;
   struct AppointmentRecurrencePattern *pattern;
 
-  blob = [mapiRecurrenceData asBinaryInMemCtx: NULL];
-  pattern = get_AppointmentRecurrencePattern (blob, blob);
+  blob = [mapiRecurrenceData asBinaryInMemCtx: memCtx];
+  pattern = get_AppointmentRecurrencePattern (memCtx, blob);
   [(iCalCalendar *) parent
     setupRecurrenceWithMasterEntity: self
               fromRecurrencePattern: &pattern->RecurrencePattern];
-  talloc_free (blob);
+  //talloc_free (blob);
 }
 
 - (void) _setupEventAlarmFromProperties: (NSDictionary *) properties
@@ -134,6 +134,7 @@
 - (void) updateFromMAPIProperties: (NSDictionary *) properties
                     inUserContext: (MAPIStoreUserContext *) userContext
                    withActiveUser: (SOGoUser *) activeUser
+                         inMemCtx: (TALLOC_CTX *) memCtx
 {
   BOOL isAllDay;
   iCalDateTime *start, *end;
@@ -328,7 +329,7 @@
   value = [properties
                 objectForKey: MAPIPropertyKey (PidLidAppointmentRecur)];
   if (value)
-    [self _setupEventRecurrence: value];
+    [self _setupEventRecurrence: value  inMemCtx: memCtx];
 
   /* alarm */
   [self _setupEventAlarmFromProperties: properties];

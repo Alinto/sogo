@@ -15,7 +15,7 @@
 "Write"       = "Kirjoita";
 
 "Send" = "Lähetä";
-"Contacts" = "Kontaktit";
+"Contacts" = "Yhteystiedot";
 "Attach" = "Liitä";
 "Save" = "Tallenna";
 "Options" = "Asetukset";
@@ -189,7 +189,7 @@
 "Open in New Mail Window" = "Avaa uudessa viesti-ikkunassa";
 "Copy Folder Location" = "Kopioi kansion sijainti";
 "Subscribe..." = "Liity...";
-"Mark Folder Read..." = "Merkitse kansio luetuksi...";
+"Mark Folder Read" = "Merkitse kansio luetuksi...";
 "New Folder..." = "Uusi kansio...";
 "Compact This Folder" = "Pakkaa tämä kansio";
 "Search Messages..." = "Etsi viestejä...";
@@ -259,7 +259,6 @@
 "Please select only one message to print." = "Ole hyvä ja valitse vain yksi viesti tulostettavaksi.";
 "The message you have selected doesn't exist anymore." = "Valitsemaasi viestiä ei ole enää olemassa.";
 
-
 "The folder with name \"%{0}\" could not be created."
 = "Kansiota \"%{0}\" ei voitu luoda.";
 "This folder could not be renamed to \"%{0}\"."
@@ -292,5 +291,6 @@
 "cannot send message (smtp) - recipients discarded:" = "Viestiä ei voi lähettää: seuraavat osoitteet ovat virheellisiä:";
 "cannot send message: (smtp) error when connecting" = "Viestiä ei voi lähettää: virhe yhdistettäessä SMTP -palvelimeen.";
 
-"Name" = "Nimi";
+/* Contacts list in mail editor */
 "Email" = "Sähköposti";
+"Name" = "Nimi";

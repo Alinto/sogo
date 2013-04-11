@@ -132,6 +132,11 @@
           actionClass = "UIxMailFolderActions";
           actionName = "saveMessages";
         };
+        markRead = {
+          protectedBy = "View";
+          actionClass = "UIxMailFolderActions";
+          actionName = "markFolderRead";
+        };
         exportFolder = {
           protectedBy = "View";
           actionClass = "UIxMailFolderActions";

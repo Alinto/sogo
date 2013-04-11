@@ -681,9 +681,10 @@ class DAVCalendarAclTest(DAVAclTest):
                                               "organizer_line": "ORGANIZER:mailto:someone@nowhere.com\n",
                                               "attendee_line": att_line}
             event = self._getEvent(event_class, True)
-            self.assertEquals(exp_event.strip(), event.strip(),
-                              "'respond to' event does not match:\nreceived:\n"
-                              "/%s/\nexpected:\n/%s/" % (event, exp_event))
+            ics_diff = utilities.ics_compare(exp_event, event)
+            self.assertTrue(ics_diff.areEqual(),
+                            "'respond to' event does not match:\n"
+                            "Diff(expected, got):\n %s" % ics_diff.textDiff())
 
 class DAVAddressBookAclTest(DAVAclTest):
     resource = '/SOGo/dav/%s/Contacts/test-dav-acl/' % username

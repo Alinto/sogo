@@ -224,7 +224,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   NSURL *baseURL;
   int rc = MAPISTORE_ERR_NOT_FOUND;
 
-  NSLog (@"METHOD '%s' (%d) -- uri: '%s'", __FUNCTION__, __LINE__, newUri);
+  //NSLog (@"METHOD '%s' (%d) -- uri: '%s'", __FUNCTION__, __LINE__, newUri);
 
   context = nil;
 
@@ -532,8 +532,8 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   mappingId = [mapping idFromURL: childURL];
   if (mappingId == NSNotFound)
     {
-      [self warnWithFormat: @"no id exist yet for '%@', requesting one...",
-            childURL];
+      //[self warnWithFormat: @"no id exist yet for '%@', requesting one...",
+      //      childURL];
       openchangedb_get_new_folderID (connInfo->oc_ctx, &mappingId);
       [mapping registerURL: childURL withID: mappingId];
       contextId = 0;

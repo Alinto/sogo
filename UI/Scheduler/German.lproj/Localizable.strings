@@ -533,3 +533,4 @@ vtodo_class2 = "(Vertrauliche Aufgabe)";
 "Web Calendar" = "Webkalender";
 "Reload on login" = "Neu laden beim Anmelden";
 "Invalid number." = "Ungültige Nummer.";
+"Please identify yourself to %{0}" = "Bitte identifizieren Sie sich gegenüber %{0}";

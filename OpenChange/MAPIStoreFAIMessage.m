@@ -51,7 +51,7 @@
   return [self getYes: data inMemCtx: memCtx];
 }
 
-- (enum mapistore_error) saveMessage
+- (enum mapistore_error) saveMessage: (TALLOC_CTX *) memCtx;
 {
   enum mapistore_error rc;
   MAPIStoreContext *context;
@@ -60,7 +60,7 @@
   context = [self context];
   ownerUser = [[self userContext] sogoUser];
   if ([[context activeUser] isEqual: ownerUser])
-    rc = [super saveMessage];
+    rc = [super saveMessage: memCtx];
   else
     rc = MAPISTORE_ERR_DENIED;
 

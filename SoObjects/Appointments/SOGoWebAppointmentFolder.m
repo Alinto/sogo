@@ -1,6 +1,6 @@
 /* SOGoWebAppointmentFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2010 Inverse inc.
+ * Copyright (C) 2009-2013 Inverse inc.
  *
  * Author: Cyril Robert <crobert@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -37,6 +37,7 @@
 #import <NGCards/iCalCalendar.h>
 #import <GDLContentStore/GCSFolder.h>
 #import <SOGo/SOGoAuthenticator.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/NSDictionary+Utilities.h>
@@ -69,27 +70,23 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
   NSString *authValue, *userPassword;
   NSArray *parts, *keys;
   
-  userPassword = [[self authenticatorInContext: context]
-                   passwordInContext: context];
+  userPassword = [[self authenticatorInContext: context] passwordInContext: context];
   if ([userPassword length] == 0)
     {
-      authData = nil;
+      userPassword = [[SOGoSystemDefaults sharedSystemDefaults] encryptionKey];
+    }
+  authValue
+    = [[self folderPropertyValueInCategory: @"WebCalendarsAuthentication"]
+            decryptWithKey: userPassword];
+  parts = [authValue componentsSeparatedByString: @":"];
+  if ([parts count] == 2)
+    {
+      keys = [NSArray arrayWithObjects: @"username",  @"password", nil];
+      authData = [NSDictionary dictionaryWithObjects: parts
+                                             forKeys: keys];
     }
   else
-    {
-      authValue
-        = [[self folderPropertyValueInCategory: @"WebCalendarsAuthentication"]
-            decryptWithKey: userPassword];
-      parts = [authValue componentsSeparatedByString: @":"];
-      if ([parts count] == 2)
-        {
-          keys = [NSArray arrayWithObjects: @"username",  @"password", nil];
-          authData = [NSDictionary dictionaryWithObjects: parts
-                                                 forKeys: keys];
-        }
-      else
-        authData = nil;
-    }
+    authData = nil;
 
   return authData;
 }
@@ -99,18 +96,18 @@ size_t curl_body_function(void *ptr, size_t size, size_t nmemb, void *buffer)
 {
   NSString *authValue, *userPassword;
 
-  userPassword = [[self authenticatorInContext: context]
-                   passwordInContext: context];
-  if ([userPassword length] > 0)
-    {
-      if (!username)
-        username = @"";
-      if (!password)
-        password = @"";
-      authValue = [NSString stringWithFormat: @"%@:%@", username, password];
-      [self setFolderPropertyValue: [authValue encryptWithKey: userPassword]
-                        inCategory: @"WebCalendarsAuthentication"];
-    }
+  userPassword = [[self authenticatorInContext: context] passwordInContext: context];
+  if ([userPassword length] == 0) {
+    userPassword = [[SOGoSystemDefaults sharedSystemDefaults] encryptionKey];
+  }
+
+  if (!username)
+    username = @"";
+  if (!password)
+    password = @"";
+  authValue = [NSString stringWithFormat: @"%@:%@", username, password];
+  [self setFolderPropertyValue: [authValue encryptWithKey: userPassword]
+                    inCategory: @"WebCalendarsAuthentication"];
 }
 
 - (NSDictionary *) loadWebCalendar

@@ -57,6 +57,7 @@
 #include "SOGoGroup.h"
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
@@ -224,6 +225,7 @@
   NSDictionary *d;
   SOGoUser *user;
   NSArray *o;
+  NSAutoreleasePool *pool;
   int i, c;
 
   if (!_members)
@@ -259,35 +261,39 @@
 
           // We add members for whom we have their associated DN
           for (i = 0; i < [dns count]; i++)
-            {
+            { 
+              pool = [NSAutoreleasePool new];
               dn = [dns objectAtIndex: i];
               login = [um getLoginForDN: [dn lowercaseString]];
               user = [SOGoUser userWithLogin: login  roles: nil];
               if (user)
-		{
-		  [logins addObject: login];
-		  [_members addObject: user];
-		}
+                {
+                  [logins addObject: login];
+                  [_members addObject: user];
+                }
+              [pool release];
             }
 
           // We add members for whom we have their associated login name
           for (i = 0; i < [uids count]; i++)
             {
+              pool = [NSAutoreleasePool new];
               login = [uids objectAtIndex: i];
               user = [SOGoUser userWithLogin: login  roles: nil];
               
               if (user)
-		{
-		  [logins addObject: login];
-		  [_members addObject: user];
-		}
+                {
+                  [logins addObject: login];
+                  [_members addObject: user];
+                }
+              [pool release];
             }
 
 
-	  // We are done fetching members, let's cache the members of the group
-	  // (ie., their UIDs) in memcached to speed up -hasMemberWithUID.
-	  [[SOGoCache sharedCache] setValue: [logins componentsJoinedByString: @","]
-				   forKey: [NSString stringWithFormat: @"%@+%@", _identifier, _domain]];
+          // We are done fetching members, let's cache the members of the group
+          // (ie., their UIDs) in memcached to speed up -hasMemberWithUID.
+          [[SOGoCache sharedCache] setValue: [logins componentsJoinedByString: @","]
+            forKey: [NSString stringWithFormat: @"%@+%@", _identifier, _domain]];
         }
       else
         {

@@ -68,7 +68,7 @@ sogo_backend_atexit (void)
 
   GSRegisterCurrentThread ();
   pool = [NSAutoreleasePool new];
-  NSLog (@"allocated classes:\n%s", GSDebugAllocationList (YES));
+  //NSLog (@"allocated classes:\n%s", GSDebugAllocationList (YES));
   [pool release];
   GSUnregisterCurrentThread ();
 }
@@ -1024,7 +1024,7 @@ sogo_message_set_read_flag (void *message_object, uint8_t flag)
 }
 
 static enum mapistore_error
-sogo_message_save (void *message_object)
+sogo_message_save (void *message_object, TALLOC_CTX *mem_ctx)
 {
   struct MAPIStoreTallocWrapper *wrapper;
   NSAutoreleasePool *pool;
@@ -1039,7 +1039,7 @@ sogo_message_save (void *message_object)
       message = wrapper->instance;
       GSRegisterCurrentThread ();
       pool = [NSAutoreleasePool new];
-      rc = [message saveMessage];
+      rc = [message saveMessage: mem_ctx];
       // [context tearDownRequest];
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1229,7 +1229,7 @@ sogo_table_set_restrictions (void *table_object, struct mapi_SRestriction *restr
       GSRegisterCurrentThread ();
       pool = [NSAutoreleasePool new];
       [table setRestrictions: restrictions];
-      [table cleanupCaches];
+      //[table cleanupCaches];
       rc = MAPISTORE_SUCCESS;
       *table_status = TBLSTAT_COMPLETE;
       [pool release];

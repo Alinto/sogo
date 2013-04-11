@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSMapTable.h>
@@ -107,15 +108,17 @@ static NSMapTable *contextsTable = nil;
   password = nil;
   
   path = [NSString stringWithFormat: SAMBA_PRIVATE_DIR
-		   @"/mapistore/%@/password", newUsername];
+                   @"/mapistore/%@/password", newUsername];
 
   content = [NSData dataWithContentsOfFile: path];
 
   if (content)
     {
       password = [[NSString alloc] initWithData: content
-				       encoding: NSUTF8StringEncoding];
+                                       encoding: NSUTF8StringEncoding];
       [password autorelease];
+      password = [password stringByTrimmingCharactersInSet:
+                  [NSCharacterSet characterSetWithCharactersInString: @"\r\n"]];
     }
 
   return password;

@@ -18,7 +18,7 @@ if [ "$1" == "install" ] || [ "$1" == "upgrade" ]; then
     useradd -d /var/lib/sogo -g sogo -c "SOGo daemon" -s /usr/sbin/nologin -M -r sogo
   fi
 
-  # create mandatory dirs and enforce owner/perms
+  # create mandatory dirs and enforce owner+mode
   for dir in lib log run spool; do
     install -m 750 -o sogo -g sogo -d /var/$dir/sogo
   done

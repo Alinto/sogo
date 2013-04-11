@@ -189,7 +189,7 @@
 "Open in New Mail Window" = "Otvoriť v novom okne";
 "Copy Folder Location" = "Kopírovať adresu priečinka";
 "Subscribe..." = "Potvrď odber...";
-"Mark Folder Read..." = "Označ priečinok ako prečítaný...";
+"Mark Folder Read" = "Označ priečinok ako prečítaný...";
 "New Folder..." = "Nový adresár";
 "Compact This Folder" = "Vykonaj údržbu tohoto priečinku";
 "Search Messages..." = "Hľadať správy";
@@ -259,7 +259,6 @@
 "Please select only one message to print." = "Prosím vyberte iba jednu správu ktorú chcete tlačiť.";
 "The message you have selected doesn't exist anymore." = "Správa ktorú ste vybrali už neexistuje.";
 
-
 "The folder with name \"%{0}\" could not be created."
 = "Priečinok s menom \"%{0}\" nemôže byť vytvorení.";
 "This folder could not be renamed to \"%{0}\"."
@@ -292,5 +291,6 @@
 "cannot send message (smtp) - recipients discarded:" = "Správa sa nedá odoslať: Nasledujúci príjemcovia nemajú platnú adresu:";
 "cannot send message: (smtp) error when connecting" = "Správa sa nedá odoslať: chyba pri pripájaní na SMTP server.";
 
-"Name" = "Meno";
+/* Contacts list in mail editor */
 "Email" = "Email";
+"Name" = "Meno";

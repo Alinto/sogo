@@ -7,8 +7,6 @@ include ../Version
 
 BACKEND_VERSION = 1.0.0
 
-UNRTF_VERSION = 0.21.2
-
 ### bootstrap library
 MAPISTORESOGO = MAPIStoreSOGo
 LIBRARY_NAME = $(MAPISTORESOGO)
@@ -24,8 +22,6 @@ BUNDLE_NAME = $(SOGOBACKEND)
 BUNDLE_EXTENSION = .MAPIStore
 BUNDLE_INSTALL_DIR = $(SOGO_LIBDIR)
 
-UNRTF_DIR = unrtf-$(UNRTF_VERSION)
-
 PYTHON = /usr/bin/python
 PYTHON_IS_GOOD = $(shell $(PYTHON) -c 'from sys import version_info; a=version_info; print a[0] == 2 and a[1] >= 6')
 ifeq (${PYTHON_IS_GOOD},False)
@@ -36,8 +32,6 @@ all::
 	@echo " Python executable: ${PYTHON}"
 
 SAMBA_PRIVATE_DIR = $(shell $(PYTHON) ./samba-get-config.py "private dir")
-
-$(SOGOBACKEND)_SUBPROJECTS += $(UNRTF_DIR)/src
 
 $(SOGOBACKEND)_PRINCIPAL_CLASS = MAPIApplication
 
@@ -133,32 +127,14 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	\
 	EOQualifier+MAPI.m \
 	\
-	EOBitmaskQualifier.m
+	EOBitmaskQualifier.m \
+	\
+	BSONCodec.m \
+	RTFHandler.m
 
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
-	product.plist \
-	$(UNRTF_DIR)/charmaps/SYMBOL.charmap \
-	$(UNRTF_DIR)/outputs/html.conf
-
-### unrtf
-all:: $(UNRTF_DIR)/config.h $(UNRTF_DIR)/src/GNUmakefile
-
-$(UNRTF_DIR): $(UNRTF_DIR).tar.gz $(UNRTF_DIR).diff
-	@echo " Extracting and patching $(UNRTF_DIR)..."
-	@rm -rf $(UNRTF_DIR)
-	@$(TAR) -xvzf $< > /dev/null
-	@(cd $(UNRTF_DIR) && patch -p1 < ../$(UNRTF_DIR).diff) > /dev/null
-	@touch $(UNRTF_DIR)
-
-$(UNRTF_DIR)-stamp: $(UNRTF_DIR)
-	@touch $@
-
-$(UNRTF_DIR)/config.h: $(UNRTF_DIR)-stamp unrtf_config_h
-	@cp unrtf_config_h $(UNRTF_DIR)/config.h
-
-$(UNRTF_DIR)/src/GNUmakefile: $(UNRTF_DIR)-stamp GNUmakefile.unrtf
-	@cp GNUmakefile.unrtf $@
+	product.plist
 
 ### pl reader
 PLREADER_TOOL = plreader
@@ -210,7 +186,6 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-DSAMBA_PRIVATE_DIR=@"\"$(SAMBA_PRIVATE_DIR)\"" \
 	$(LIBMAPI_CFLAGS) \
 	$(LIBMAPISTORE_CFLAGS) \
-	-I$(UNRTF_DIR)/src \
 	-I../SoObjects -I../SOPE \
 	-DBACKEND_BUNDLE_NAME="@\"$(BUNDLE_NAME)$(BUNDLE_EXTENSION)\"" \
 	-DSOGO_BUNDLES_DIR="@\"$(BUNDLE_INSTALL_DIR)\""

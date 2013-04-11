@@ -873,7 +873,9 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableDictionary *newRecord;
   NSDictionary *oldRecord;
   NGCalendarDateRange *newRecordRange;
+  NSComparisonResult compare;
   int recordIndex, secondsOffsetFromGMT;
+  NSNumber *dateSecs;
 
   newRecord = nil;
   recurrenceId = [component recurrenceId];
@@ -895,30 +897,24 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [recurrenceId setTimeZone: tz];
     }
 
-  if ([dateRange containsDate: [component startDate]] ||
-      [dateRange containsDate: [component endDate]])
+  compare = [[dateRange startDate] compare: recurrenceId];
+  if ((compare == NSOrderedAscending || compare == NSOrderedSame) &&
+      [[dateRange endDate] compare: recurrenceId] == NSOrderedDescending)
     {
-      recordIndex = [self _indexOfRecordMatchingDate: recurrenceId
-					     inArray: ma];
+      // The recurrence exception intersects with the date range;
+      // find the occurence and replace it with the new record
+      recordIndex = [self _indexOfRecordMatchingDate: recurrenceId inArray: ma];
       if (recordIndex > -1)
 	{
-          newRecord = [self fixupRecord: [component quickRecord]];
-          [newRecord setObject: [NSNumber numberWithInt: 1]
-                        forKey: @"c_iscycle"];
-          oldRecord = [ma objectAtIndex: recordIndex];
-          [newRecord setObject: [oldRecord objectForKey: @"c_recurrence_id"]
-                        forKey: @"c_recurrence_id"];
-
-          // The first instance date is added to the dictionary so it can
-          // be used by UIxCalListingActions to compute the DST offset.
-          [newRecord setObject: [fir startDate] forKey: @"cycleStartDate"];
-	      
-          // We identified the record as an exception.
-          [newRecord setObject: [NSNumber numberWithInt: 1]
-                        forKey: @"isException"];
-
-          [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
-	}
+          if ([dateRange containsDate: [component startDate]])
+            {
+              newRecord = [self fixupRecord: [component quickRecord]];
+              [ma replaceObjectAtIndex: recordIndex withObject: newRecord];
+            }
+          else
+            // The range doesn't cover the exception; remove it from the records
+            [ma removeObjectAtIndex: recordIndex];
+        }
       else
 	[self errorWithFormat:
 		@"missing exception record for recurrence-id %@ (uid %@)",
@@ -926,16 +922,33 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
     }
   else
     {
+      // The recurrence id of the exception is outside the date range;
+      // simply add the exception to the records array
       newRecord = [self fixupRecord: [component quickRecord]];
       newRecordRange = [NGCalendarDateRange 
 			 calendarDateRangeWithStartDate: [newRecord objectForKey: @"startDate"]
 			 endDate: [newRecord objectForKey: @"endDate"]];
       if ([dateRange doesIntersectWithDateRange: newRecordRange])
-	[ma addObject: newRecord];
+          [ma addObject: newRecord];
+      else
+        newRecord = nil;
     }
 
   if (newRecord)
-    [self _fixExceptionRecord: newRecord fromRow: row];
+    {
+      recurrenceId = [component recurrenceId];
+      dateSecs = [NSNumber numberWithInt: [recurrenceId timeIntervalSince1970]];
+
+      [newRecord setObject: dateSecs forKey: @"c_recurrence_id"];
+      [newRecord setObject: [NSNumber numberWithInt: 1] forKey: @"c_iscycle"];
+      // The first instance date is added to the dictionary so it can
+      // be used by UIxCalListingActions to compute the DST offset.
+      [newRecord setObject: [fir startDate] forKey: @"cycleStartDate"];
+      // We identified the record as an exception.
+      [newRecord setObject: [NSNumber numberWithInt: 1] forKey: @"isException"];
+
+      [self _fixExceptionRecord: newRecord fromRow: row];
+    }
 }
 
 //
@@ -961,7 +974,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 	{
 	  components = [[elements objectAtIndex: 0] allObjects];
 	  max = [components count];
-	  for (count = 1; count < max; count++)
+	  for (count = 1; count < max; count++) // skip master event
 	    [self _appendCycleException: [components objectAtIndex: count]
 		  firstInstanceCalendarDateRange: fir
 				fromRow: row

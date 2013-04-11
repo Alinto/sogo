@@ -533,3 +533,4 @@ vtodo_class2 = "(Dôverná úloha)";
 "Web Calendar" = "Vzdialený kalendár na webe";
 "Reload on login" = "Aktualizovať pri prihlásení";
 "Invalid number." = "Neplatné číslo.";
+"Please identify yourself to %{0}" = "Identifikujte sa na %{0}";

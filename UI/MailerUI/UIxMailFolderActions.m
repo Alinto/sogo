@@ -256,6 +256,17 @@
   return response;
 }
 
+- (id) markFolderReadAction
+{
+  id response;
+
+  response = [[self clientObject] addFlagsToAllMessages: @"seen"];
+  if (!response)
+    response = [self responseWith204];
+
+  return response;
+}
+
 - (WOResponse *) exportFolderAction
 {
   WOResponse *response;

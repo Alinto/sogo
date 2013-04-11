@@ -195,18 +195,27 @@ static int cssEscapingCount;
 	startLocation--;
       matchRange.location = startLocation + 1;
 
-      currentUrlRange = [selfCopy _rangeOfURLInRange: matchRange];
-      if (![ranges hasRangeIntersection: currentUrlRange])
-	if (currentUrlRange.length > matchLength)
-	  [newRanges addNonNSObject: &currentUrlRange
-			   withSize: sizeof (NSRange)
-			       copy: YES];
-      
-      rest.location = NSMaxRange (currentUrlRange);
-      length = [selfCopy length];
-      rest.length = length - rest.location;
-      matchRange = [selfCopy rangeOfString: match
-			     options: 0 range: rest];
+      // We avoid going out of bounds if the mail content actually finishes
+      // with the @ (or something else) character
+      if (matchRange.location < [selfCopy length])
+        {
+          currentUrlRange = [selfCopy _rangeOfURLInRange: matchRange];
+          if (![ranges hasRangeIntersection: currentUrlRange])
+            if (currentUrlRange.length > matchLength)
+              [newRanges addNonNSObject: &currentUrlRange
+                               withSize: sizeof (NSRange)
+                                   copy: YES];
+          
+          rest.location = NSMaxRange (currentUrlRange);
+          length = [selfCopy length];
+          rest.length = length - rest.location;
+          matchRange = [selfCopy rangeOfString: match
+                                       options: 0 range: rest];
+        }
+      else
+        {
+          matchRange.location = NSNotFound;
+        }
     }
 
   // Make the substitutions, keep track of the new offset

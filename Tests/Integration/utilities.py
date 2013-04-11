@@ -1,8 +1,59 @@
 #!/usr/bin/python
 
+import StringIO
+import sys
 import unittest
+import vobject
+import vobject.ics_diff
 import webdavlib
 import xml.sax.saxutils
+
+class ics_compare():
+
+    def __init__(self, event1, event2):
+      self.event1 = event1
+      self.event2 = event2
+      self.diffs = None
+
+    def _vcalendarComponent(self, event):
+      event_component = None
+      for item in vobject.readComponents(event):
+        if item.name == "VCALENDAR":
+          event_component = item
+      return event_component
+
+    def areEqual(self):
+        s_event1 = StringIO.StringIO(self.event1)
+        s_event2 = StringIO.StringIO(self.event2)
+
+        event1_vcalendar = self._vcalendarComponent(s_event1)
+        if event1_vcalendar is None:
+            raise Exception("No VCALENDAR component in event1")
+
+        event2_vcalendar = self._vcalendarComponent(s_event2)
+        if event2_vcalendar is None:
+            raise Exception("No VCALENDAR component in event2")
+
+        self.diffs = vobject.ics_diff.diff(event1_vcalendar, event2_vcalendar)
+        if not self.diffs:
+            return True
+        else:
+            return False
+
+    def textDiff(self):
+        saved_stdout = sys.stdout
+        out = StringIO.StringIO()
+        sys.stdout = out
+        try :
+            if self.diffs is not None:
+                for (left, right) in self.diffs:
+                    left.prettyPrint()
+                    right.prettyPrint()
+        finally:
+            sys.stdout = saved_stdout
+
+        return out.getvalue().strip()
+
 
 class TestUtility():
     def __init__(self, test, client, resource = None):
@@ -144,3 +195,5 @@ class TestAddressBookACLUtility(TestACLUtility):
             sogoRights.append(sogoRightsTable[k])
 
         return sogoRights
+
+

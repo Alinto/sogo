@@ -278,7 +278,7 @@ static NSString *sieveScriptName = @"sogo";
       else
         scriptError
           = [NSString stringWithFormat: @"Rule based on unknown field '%@'",
-                      *field];
+                      jsonField];
     }
   else
     scriptError = @"Rule without any specified field.";
@@ -474,8 +474,8 @@ static NSString *sieveScriptName = @"sogo";
                 sieveAction = [NSString stringWithFormat: @"%@ %@",
                                         method, [argument asSieveQuotedString]];
               else if ([method isEqualToString: @"reject"])
-		sieveAction = [NSString stringWithFormat: @"%@ %@",
-					method, [argument asSieveQuotedString]];
+                sieveAction = [NSString stringWithFormat: @"%@ %@",
+                                method, [argument asSieveQuotedString]];
               else
                 scriptError
                   = [NSString stringWithFormat: @"Action has unknown method '%@'",
@@ -605,9 +605,9 @@ static NSString *sieveScriptName = @"sogo";
 //
 //
 - (BOOL) updateFiltersForLogin: (NSString *) theLogin
-		      authname: (NSString *) theAuthName
-		      password: (NSString *) thePassword
-		       account: (SOGoMailAccount *) theAccount
+                      authname: (NSString *) theAuthName
+                      password: (NSString *) thePassword
+                       account: (SOGoMailAccount *) theAccount
 {
   NSMutableArray *req;
   NSMutableString *script, *header;
@@ -777,30 +777,30 @@ static NSString *sieveScriptName = @"sogo";
       b = YES;
 
       if (days == 0)
-	days = 7;
+        days = 7;
 
       [req addObjectUniquely: @"vacation"];
 
       // Skip mailing lists
       if (ignore)
-	[script appendString: @"if allof ( not exists [\"list-help\", \"list-unsubscribe\", \"list-subscribe\", \"list-owner\", \"list-post\", \"list-archive\", \"list-id\", \"Mailing-List\"], not header :comparator \"i;ascii-casemap\" :is \"Precedence\" [\"list\", \"bulk\", \"junk\"], not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\" ) {"];
+        [script appendString: @"if allof ( not exists [\"list-help\", \"list-unsubscribe\", \"list-subscribe\", \"list-owner\", \"list-post\", \"list-archive\", \"list-id\", \"Mailing-List\"], not header :comparator \"i;ascii-casemap\" :is \"Precedence\" [\"list\", \"bulk\", \"junk\"], not header :comparator \"i;ascii-casemap\" :matches \"To\" \"Multiple recipients of*\" ) {"];
       
       [script appendFormat: @"vacation :days %d :addresses [", days];
 
       for (i = 0; i < [addresses count]; i++)
-	{
-	  [script appendFormat: @"\"%@\"", [addresses objectAtIndex: i]];
+        {
+          [script appendFormat: @"\"%@\"", [addresses objectAtIndex: i]];
 	  
-	  if (i == [addresses count]-1)
-	    [script appendString: @"] "];
-	  else
-	    [script appendString: @", "];
-	}
+          if (i == [addresses count]-1)
+            [script appendString: @"] "];
+          else
+            [script appendString: @", "];
+        }
       
       [script appendFormat: @"text:\r\n%@\r\n.\r\n;\r\n", text];
       
       if (ignore)
-	[script appendString: @"}\r\n"];
+        [script appendString: @"}\r\n"];
     }
 
 
@@ -819,14 +819,14 @@ static NSString *sieveScriptName = @"sogo";
         addresses = [NSArray arrayWithObject: addresses];
 
       for (i = 0; i < [addresses count]; i++)
-	{
+        {
           v = [addresses objectAtIndex: i];
           if (v && [v length] > 0)
             [script appendFormat: @"redirect \"%@\";\r\n", v];
         }
       
       if ([[values objectForKey: @"keepCopy"] boolValue])
-	[script appendString: @"keep;\r\n"];
+        [script appendString: @"keep;\r\n"];
     }
   
   if ([req count])
@@ -854,19 +854,20 @@ static NSString *sieveScriptName = @"sogo";
       result = [client putScript: sieveScriptName  script: script];
       
       if (![[result valueForKey:@"result"] boolValue]) {
-	NSLog(@"Could not upload Sieve script: %@", result);
-	[client closeConnection];	
-	return NO;
+        NSLog(@"Could not upload Sieve script: %@", result);
+        [client closeConnection];	
+        return NO;
       }
       
       result = [client setActiveScript: sieveScriptName];
       if (![[result valueForKey:@"result"] boolValue]) {
-	NSLog(@"Could not enable Sieve script: %@", result);
-	[client closeConnection];
-	return NO;
+        NSLog(@"Could not enable Sieve script: %@", result);
+        [client closeConnection];
+        return NO;
       }
   }
 
+  [client closeConnection];
   return YES;
 }
 

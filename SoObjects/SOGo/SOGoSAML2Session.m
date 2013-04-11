@@ -43,6 +43,8 @@
 #import "SOGoCache.h"
 #import "SOGoSAML2Exceptions.h"
 #import "SOGoSystemDefaults.h"
+#import "SOGoUserManager.h"
+
 
 #import "SOGoSAML2Session.h"
 
@@ -77,7 +79,7 @@ static NSMapTable *serverTable = nil;
 {
   if (!serverTable)
     {
-      serverTable = [NSMapTable mapTableWithStrongToWeakObjects];
+      serverTable = NSCreateMapTable(NSObjectMapKeyCallBacks, NSNonRetainedObjectMapValueCallBacks, 128);
       [serverTable retain];
     }
   lasso_init ();
@@ -160,7 +162,7 @@ LassoServerInContext (WOContext *context)
   }
   request->NameIDPolicy->Format = g_strdup(LASSO_SAML2_NAME_IDENTIFIER_FORMAT_PERSISTENT);
   request->NameIDPolicy->AllowCreate = 1;
-  request->ForceAuthn = TRUE;
+  request->ForceAuthn = FALSE;
   request->IsPassive = FALSE;
   if (request->ProtocolBinding) {
     g_free (request->ProtocolBinding);
@@ -244,6 +246,13 @@ LassoServerInContext (WOContext *context)
                   value = LASSO_SAML2_ATTRIBUTE_VALUE (attribute->AttributeValue->data);
                   textNode = value->any->data;
                   login = [NSString stringWithUTF8String: textNode->content];
+                  [login retain];
+                }
+              else if (strcmp (attribute->Name, "mail") == 0)
+                {
+                  value = LASSO_SAML2_ATTRIBUTE_VALUE (attribute->AttributeValue->data);
+                  textNode = value->any->data;
+                  login = [[SOGoUserManager sharedUserManager] getUIDForEmail: [NSString stringWithUTF8String: textNode->content]];
                   [login retain];
                 }
               else
@@ -381,6 +390,7 @@ LassoServerInContext (WOContext *context)
 
   responseData = strdup ([authnResponse UTF8String]);
 
+  lasso_profile_set_signature_verify_hint(lassoLogin, LASSO_PROFILE_SIGNATURE_VERIFY_HINT_IGNORE);
   rc = lasso_login_process_authn_response_msg (lassoLogin, responseData);
   if (rc)
     [NSException raiseSAML2Exception: rc];

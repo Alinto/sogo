@@ -779,6 +779,13 @@ static Class NSStringK;
   return fields;
 }
 
+/* This is required for SQL sources when DomainFieldName is enabled.
+ * For LDAP, simply discard the domain and call the original method */
+- (NSArray *) allEntryIDsVisibleFromDomain: (NSString *) domain
+{
+  return [self allEntryIDs];
+}
+
 - (NSArray *) allEntryIDs
 {
   NSEnumerator *entries;

@@ -180,7 +180,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (void) dealloc
 {
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  //[self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
   // [messageKeys release];
   // [faiMessageKeys release];
@@ -366,7 +366,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   MAPIStoreMapping *mapping;
   NSString *childURL;
 
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  //[self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
   mapping = [self mapping];
   childURL = [mapping urlFromID: fid];
@@ -393,7 +393,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   MAPIStoreFolder *childFolder;
   SOGoUser *ownerUser;
 
-  [self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
+  //[self logWithFormat: @"METHOD '%s' (%d)", __FUNCTION__, __LINE__];
 
   ownerUser = [[self userContext] sogoUser];
   if ([[context activeUser] isEqual: ownerUser]
@@ -450,8 +450,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSArray *keys;
   int rc = MAPISTORE_SUCCESS;
 
-  [self logWithFormat: @"METHOD '%s' (%d) -- tableType: %d",
-	__FUNCTION__, __LINE__, tableType];
+  //[self logWithFormat: @"METHOD '%s' (%d) -- tableType: %d",
+	//__FUNCTION__, __LINE__, tableType];
 
   if (tableType == MAPISTORE_MESSAGE_TABLE)
     keys = [self messageKeys];
@@ -513,8 +513,8 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   MAPIStoreMapping *mapping;
   SOGoUser *ownerUser;
 
-  [self logWithFormat: @"METHOD '%s' -- mid: 0x%.16llx  associated: %d",
-	__FUNCTION__, mid, isAssociated];
+  //[self logWithFormat: @"METHOD '%s' -- mid: 0x%.16llx  associated: %d",
+  //	__FUNCTION__, mid, isAssociated];
 
   context = [self context];
   ownerUser = [[self userContext] sogoUser];
@@ -699,7 +699,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
       if (rc != MAPISTORE_SUCCESS)
         goto end;
     }
-  [destMsg save];
+  [destMsg save: memCtx];
   if (!wantCopy)
     rc = [sourceFolder deleteMessageWithMID: srcMid andFlags: 0];
 
@@ -844,7 +844,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                   [mapping registerURL: [targetMessage url]
                                 withID: fmid];
                 }
-              [targetMessage save];
+              [targetMessage save: memCtx];
             }
           [pool release];
 
@@ -865,7 +865,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                   [mapping registerURL: [targetMessage url]
                                 withID: fmid];
                 }
-              [targetMessage save];
+              [targetMessage save: memCtx];
             }
           [pool release];
 

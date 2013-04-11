@@ -390,7 +390,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   else
     value = [NSDate date];
 
-  [self logWithFormat: @"lastMessageModificationTime: %@", value];
+  //[self logWithFormat: @"lastMessageModificationTime: %@", value];
 
   return value;
 }
@@ -613,8 +613,8 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
           [messageEntry setObject: modseq forKey: @"modseq"];
           [messageEntry setObject: changeNumber forKey: @"version"];
 
-          [self logWithFormat: @"added message entry for uid %@, modseq %@,"
-                @" version %@", uid, modseq, changeNumber];
+          //[self logWithFormat: @"added message entry for uid %@, modseq %@,"
+          //      @" version %@", uid, modseq, changeNumber];
 
           changeKey = [self getReplicaKeyFromGlobCnt: newChangeNum >> 16];
           [self _setChangeKey: changeKey forMessageEntry: messageEntry];
@@ -796,7 +796,7 @@ _compareFetchResultsByMODSEQ (id entry1, id entry2, void *data)
 
   if (tableType == MAPISTORE_MESSAGE_TABLE)
     {
-      changeNumber = [NSString stringWithUnsignedLongLong: changeNum];
+      changeNumber = [NSString stringWithFormat: @"0x%.16llx", changeNum];
       modseq = [[self modseqFromMessageChangeNumber: changeNumber]
                  unsignedLongLongValue];
       if (modseq > 0)

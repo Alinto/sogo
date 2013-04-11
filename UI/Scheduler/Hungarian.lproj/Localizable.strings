@@ -533,3 +533,4 @@ vtodo_class2 = "(Bizalmas feladat)";
 "Web Calendar" = "Internetes naptár";
 "Reload on login" = "Frissítés bejelentkezéskor";
 "Invalid number." = "Érvénytelen szám";
+"Please identify yourself to %{0}" = "A %{0} kérésére adja meg azonosító adatait";

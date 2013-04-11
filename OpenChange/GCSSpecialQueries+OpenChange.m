@@ -79,7 +79,7 @@
        @" c_lastmodified INT NOT NULL,"
        @" c_version INT NOT NULL DEFAULT 0,"
        @" c_deleted TINYINT NOT NULL DEFAULT 0,"
-       @" c_content TEXT)");
+       @" c_content LONGTEXT)");
 
   return [NSString stringWithFormat: sqlFolderFormat, tableName];
 }

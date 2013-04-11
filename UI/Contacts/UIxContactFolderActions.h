@@ -19,8 +19,8 @@
  02111-1307, USA.
 */
 
-#ifndef __UIxContactsListView_H__
-#define __UIxContactsListView_H__
+#ifndef __UIxContactFolderActions_H__
+#define __UIxContactFolderActions_H__
 
 #import <SOGoUI/UIxComponent.h>
 
@@ -39,4 +39,4 @@
 
 @end
 
-#endif /* __UIxContactsListView_H__ */
+#endif /* __UIxContactFolderActions_H__ */

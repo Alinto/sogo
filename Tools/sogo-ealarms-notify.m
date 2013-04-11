@@ -23,28 +23,29 @@
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSUserDefaults.h>
 
+#import <SOGo/SOGoSystemDefaults.h>
+
 #import "SOGoEAlarmsNotifier.h"
 
 int
 main (int argc, char **argv, char **env)
 {
   NSAutoreleasePool *pool;
-  NSUserDefaults *ud;
   SOGoEAlarmsNotifier *notifier;
+  SOGoSystemDefaults *sogoDefaults;
   int rc;
 
   rc = 0;
 
   pool = [NSAutoreleasePool new];
 
-  ud = [NSUserDefaults standardUserDefaults];
-  [ud addSuiteNamed: @"sogod"];
+  sogoDefaults = [SOGoSystemDefaults sharedSystemDefaults];
 
-  if ([ud objectForKey: @"SOGoEnableEMailAlarms"])
+  if ([sogoDefaults objectForKey: @"SOGoEnableEMailAlarms"])
     {
       notifier = [SOGoEAlarmsNotifier new];
       if (![notifier run])
-	rc = -1;
+      rc = -1;
       [notifier release];
     }
   else

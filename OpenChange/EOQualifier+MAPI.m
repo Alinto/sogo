@@ -46,12 +46,12 @@
   NSDictionary *properties;
   BOOL rc;
 
-  [self logWithFormat: @"evaluating object '%@'", object];
+  //[self logWithFormat: @"evaluating object '%@'", object];
 
   properties = [object properties];
   rc = [self _evaluateSOGoMAPIDBObject: properties];
 
-  [self logWithFormat: @"  evaluation result: %d", rc];
+  //[self logWithFormat: @"  evaluation result: %d", rc];
   
   return rc;
 }
@@ -150,9 +150,9 @@ typedef BOOL (*EOComparator) (id, SEL, id);
   rc = ((isZero && (intValue & mask) == 0)
 	|| (!isZero && (intValue & mask) != 0));
 
-  [self logWithFormat: @"evaluation of bitmask qualifier:"
-	@" (%.8x & %.8x) %s 0: %d",
-	intValue, mask, (isZero ? "==" : "!="), rc];
+  //[self logWithFormat: @"evaluation of bitmask qualifier:"
+  //	@" (%.8x & %.8x) %s 0: %d",
+  //	intValue, mask, (isZero ? "==" : "!="), rc];
 
   return rc;
 }

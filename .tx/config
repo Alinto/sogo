@@ -4,6 +4,7 @@ host = https://www.transifex.net
 [sogo.ui-mailerui]
 source_file = UI/MailerUI/English.lproj/Localizable.strings
 source_lang = en
+trans.ar = UI/MailerUI/Arabic.lproj/Localizable.strings
 trans.ca = UI/MailerUI/Catalan.lproj/Localizable.strings
 trans.cs = UI/MailerUI/Czech.lproj/Localizable.strings
 trans.cy = UI/MailerUI/Welsh.lproj/Localizable.strings
@@ -29,6 +30,7 @@ trans.uk = UI/MailerUI/Ukrainian.lproj/Localizable.strings
 [sogo.ui-preferencesui]
 source_file = UI/PreferencesUI/English.lproj/Localizable.strings
 source_lang = en
+trans.ar = UI/PreferencesUI/Arabic.lproj/Localizable.strings
 trans.ca = UI/PreferencesUI/Catalan.lproj/Localizable.strings
 trans.cs = UI/PreferencesUI/Czech.lproj/Localizable.strings
 trans.cy = UI/PreferencesUI/Welsh.lproj/Localizable.strings
@@ -54,6 +56,7 @@ trans.uk = UI/PreferencesUI/Ukrainian.lproj/Localizable.strings
 [sogo.ui-scheduler]
 source_file = UI/Scheduler/English.lproj/Localizable.strings
 source_lang = en
+trans.ar = UI/Scheduler/Arabic.lproj/Localizable.strings
 trans.ca = UI/Scheduler/Catalan.lproj/Localizable.strings
 trans.cs = UI/Scheduler/Czech.lproj/Localizable.strings
 trans.cy = UI/Scheduler/Welsh.lproj/Localizable.strings
@@ -79,6 +82,7 @@ trans.uk = UI/Scheduler/Ukrainian.lproj/Localizable.strings
 [sogo.ui-contacts]
 source_file = UI/Contacts/English.lproj/Localizable.strings
 source_lang = en
+trans.ar = UI/Contacts/Arabic.lproj/Localizable.strings
 trans.ca = UI/Contacts/Catalan.lproj/Localizable.strings
 trans.cs = UI/Contacts/Czech.lproj/Localizable.strings
 trans.cy = UI/Contacts/Welsh.lproj/Localizable.strings
@@ -104,6 +108,7 @@ trans.uk = UI/Contacts/Ukrainian.lproj/Localizable.strings
 [sogo.ui-mainui]
 source_file = UI/MainUI/English.lproj/Localizable.strings
 source_lang = en
+trans.ar = UI/MainUI/Arabic.lproj/Localizable.strings
 trans.ca = UI/MainUI/Catalan.lproj/Localizable.strings
 trans.cs = UI/MainUI/Czech.lproj/Localizable.strings
 trans.cy = UI/MainUI/Welsh.lproj/Localizable.strings
@@ -129,6 +134,7 @@ trans.uk = UI/MainUI/Ukrainian.lproj/Localizable.strings
 [sogo.ui-common]
 source_file = UI/Common/English.lproj/Localizable.strings
 source_lang = en
+trans.ar = UI/Common/Arabic.lproj/Localizable.strings
 trans.ca = UI/Common/Catalan.lproj/Localizable.strings
 trans.cs = UI/Common/Czech.lproj/Localizable.strings
 trans.cy = UI/Common/Welsh.lproj/Localizable.strings
@@ -154,6 +160,7 @@ trans.uk = UI/Common/Ukrainian.lproj/Localizable.strings
 [sogo.ui-administrationui]
 source_file = UI/AdministrationUI/English.lproj/Localizable.strings
 source_lang = en
+trans.ar = UI/AdministrationUI/Arabic.lproj/Localizable.strings
 trans.ca = UI/AdministrationUI/Catalan.lproj/Localizable.strings
 trans.cs = UI/AdministrationUI/Czech.lproj/Localizable.strings
 trans.cy = UI/AdministrationUI/Welsh.lproj/Localizable.strings
@@ -179,6 +186,7 @@ trans.uk = UI/AdministrationUI/Ukrainian.lproj/Localizable.strings
 [sogo.soobjects-appointments]
 source_file = SoObjects/Appointments/English.lproj/Localizable.strings
 source_lang = en
+trans.ar = SoObjects/Appointments/Arabic.lproj/Localizable.strings
 trans.ca = SoObjects/Appointments/Catalan.lproj/Localizable.strings
 trans.cs = SoObjects/Appointments/Czech.lproj/Localizable.strings
 trans.cy = SoObjects/Appointments/Welsh.lproj/Localizable.strings
@@ -204,6 +212,7 @@ trans.uk = SoObjects/Appointments/Ukrainian.lproj/Localizable.strings
 [sogo.soobjects-contacts]
 source_file = SoObjects/Contacts/English.lproj/Localizable.strings
 source_lang = en
+trans.ar = SoObjects/Contacts/Arabic.lproj/Localizable.strings
 trans.ca = SoObjects/Contacts/Catalan.lproj/Localizable.strings
 trans.cs = SoObjects/Contacts/Czech.lproj/Localizable.strings
 trans.cy = SoObjects/Contacts/Welsh.lproj/Localizable.strings
@@ -229,6 +238,7 @@ trans.uk = SoObjects/Contacts/Ukrainian.lproj/Localizable.strings
 [sogo.ui-mailpartviewers]
 source_file = UI/MailPartViewers/English.lproj/Localizable.strings
 source_lang = en
+trans.ar = UI/MailPartViewers/Arabic.lproj/Localizable.strings
 trans.ca = UI/MailPartViewers/Catalan.lproj/Localizable.strings
 trans.cs = UI/MailPartViewers/Czech.lproj/Localizable.strings
 trans.cy = UI/MailPartViewers/Welsh.lproj/Localizable.strings

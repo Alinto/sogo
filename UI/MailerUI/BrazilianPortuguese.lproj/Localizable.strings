@@ -189,7 +189,7 @@
 "Open in New Mail Window" = "Abrir em uma Nova Janela";
 "Copy Folder Location" = "Copiar o Local da Pasta";
 "Subscribe..." = "Inscrever-se...";
-"Mark Folder Read..." = "Marcar Pasta como Lido...";
+"Mark Folder Read" = "Marcar Pasta como Lido...";
 "New Folder..." = "Nova Pasta...";
 "Compact This Folder" = "Compactar Esta Pasta";
 "Search Messages..." = "Procurar Mensagens...";
@@ -259,7 +259,6 @@
 "Please select only one message to print." = "Por favor, selecione somente uma mensagem para imprimir.";
 "The message you have selected doesn't exist anymore." = "A mensagem que você selecionou não existe mais.";
 
-
 "The folder with name \"%{0}\" could not be created."
 = "A pasta com o nome \"%{0}\" não pode ser criada.";
 "This folder could not be renamed to \"%{0}\"."
@@ -292,5 +291,6 @@
 "cannot send message (smtp) - recipients discarded:" = "Não é possível enviar a mensagem. Os seguintes endereços estão inválidos:";
 "cannot send message: (smtp) error when connecting" = "Não é possível enviar a mensagem: erro ao conectar ao servidor SMTP.";
 
-"Name" = "Nome";
+/* Contacts list in mail editor */
 "Email" = "Email";
+"Name" = "Nome";

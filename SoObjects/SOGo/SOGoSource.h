@@ -61,6 +61,7 @@
                                            inDomain: (NSString *) domain;
 
 - (NSArray *) allEntryIDs;
+- (NSArray *) allEntryIDsVisibleFromDomain: (NSString *) domain;
 - (NSArray *) fetchContactsMatching: (NSString *) filter
                            inDomain: (NSString *) domain;
 

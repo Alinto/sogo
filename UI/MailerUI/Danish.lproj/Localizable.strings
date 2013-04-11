@@ -19,6 +19,7 @@
 "Attach" = "Vedhæft";
 "Save" = "Gem";
 "Options" = "Indstillinger";
+"Close" = "Luk";
 "Size" = "Størrelse";
 
 /* Tooltips */
@@ -63,8 +64,10 @@
 "Shared Account: " = "Delt konto:";
 
 /* acls */
-"Default Roles" = "Standard Roller";
-"User rights for:" = "Bruger rettigheder for:";
+"Access rights to" = "Adgangsrettigheder til";
+"For user" = "For bruger";
+
+"Any Authenticated User" = "Alle godkendte brugere";
 
 "List and see this folder" = "Udvid og se denne mappe";
 "Read mails from this folder" = "Læs beskeder fra denne mappe";
@@ -104,16 +107,13 @@
 "cc"            = "Cc";
 "bcc"           = "Bcc";
 
-"Addressbook"   = "Adressebog";
-
 "Edit Draft..." = "Redigér kladde ...";
 "Load Images" = "Indlæs billeder";
 
 "Return Receipt" = "Kvittering";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Afsenderen af ​​denne besked har bedt om at blive underrettet, når du læser denne besked. Vil du underrette afsenderen?";
-"Return Receipt (displayed) - %@"= "Kvittering (vist) -% @";
-"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dette er en kvittering for den besked, du har sendt til% @ \ n \ n 
-Bemærk:. Denne kvittering anerkender kun, at budskabet blev vist på modtagerens computer. Der er ingen garanti for, at modtageren har læst eller forstået indholdet i beskeden.";
+"Return Receipt (displayed) - %@"= "Kvittering (vist) - %@";
+"This is a Return Receipt for the mail that you sent to %@.\n\nNote: This Return Receipt only acknowledges that the message was displayed on the recipient's computer. There is no guarantee that the recipient has read or understood the message contents." = "Dette er en kvittering for den besked, du har sendt til %@\n\nBemærk:. Denne kvittering anerkender kun, at budskabet blev vist på modtagerens computer. Der er ingen garanti for, at modtageren har læst eller forstået indholdet i beskeden.";
 
 "Priority" = "Prioritet";
 "highest" = "Højeste";
@@ -124,8 +124,8 @@ Bemærk:. Denne kvittering anerkender kun, at budskabet blev vist på modtageren
 
 "This mail is being sent from an unsecure network!" = "Denne besked bliver sendt fra et usikkert netværk!";
 
-"Address Book:" = "";
-"Search For:" = "";
+"Address Book:" = "Adressebog:";
+"Search For:" = "Søg efter:";
 
 /* Popup "show" */
 
@@ -145,7 +145,6 @@ Bemærk:. Denne kvittering anerkender kun, at budskabet blev vist på modtageren
 "Date"          = "Dato";
 "View"          = "Vis";
 "All"           = "Alle";
-"Unread"        = "Ulæst";
 "No message"    = "Ingen besked";
 "messages"      = "Beskeder";
 
@@ -190,7 +189,7 @@ Bemærk:. Denne kvittering anerkender kun, at budskabet blev vist på modtageren
 "Open in New Mail Window" = "Åben i nyt vindue";
 "Copy Folder Location" = "Kopier mappens lokation";
 "Subscribe..." = "Abonnér ...";
-"Mark Folder Read..." = "Mark mappe som Læst ...";
+"Mark Folder Read" = "Mark mappe som Læst ...";
 "New Folder..." = "Ny mappe ...";
 "Compact This Folder" = "Komprimér denne mappe";
 "Search Messages..." = "Søg beskeder ...";
@@ -212,7 +211,6 @@ Bemærk:. Denne kvittering anerkender kun, at budskabet blev vist på modtageren
 "Open Message In New Window" = "Åben besked i nyt vindue";
 "Reply to Sender Only" = "Svar kun afsenderen";
 "Reply to All" = "Svar alle";
-"Forward" = "Videresend";
 "Edit As New..." = "Redigér som ...";
 "Move To" = "Flyt til";
 "Copy To" = "Kopier til";
@@ -261,11 +259,10 @@ Bemærk:. Denne kvittering anerkender kun, at budskabet blev vist på modtageren
 "Please select only one message to print." = "Vælg kun én besked til at udskrive.";
 "The message you have selected doesn't exist anymore." = "Den besked du har valgt findes ikke længere.";
 
-
 "The folder with name \"%{0}\" could not be created."
-= "Mappen med navnet \"% {0}\" kunne ikke oprettes.";
+= "Mappen med navnet \"%{0}\" kunne ikke oprettes.";
 "This folder could not be renamed to \"%{0}\"."
-= "Denne mappe kan ikke omdøbes til \"% {0}\".";
+= "Denne mappe kan ikke omdøbes til \"%{0}\".";
 "The folder could not be deleted."
 = "Mappen kunne ikke slettes.";
 "The trash could not be emptied."
@@ -285,14 +282,15 @@ Bemærk:. Denne kvittering anerkender kun, at budskabet blev vist på modtageren
 = "Beskederne kunne ikke flyttes til papirkurven. Vil du slette dem med det samme?";
 
 /* Message editing */
-"error_validationfailed" = "Validering mislykkedes";
 "error_missingsubject" = "Emne mangler";
 "error_missingrecipients" = "Ingen modtagere angivet";
+"Send Anyway" = "Send alligevel";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Kan ikke sende besked: alle modtagere er ugyldige.";
 "cannot send message (smtp) - recipients discarded:" = "Kan ikke sende besked. Følgende adresser er ugyldige:";
 "cannot send message: (smtp) error when connecting" = "Kan ikke sende besked: Fejl ved oprettelse til SMTP-server.";
 
+/* Contacts list in mail editor */
+"Email" = "Mail";
 "Name" = "Navn";
-"Email" = "E-mail";

@@ -189,7 +189,7 @@
 "Open in New Mail Window" = "Otevřít v novém mailovém okně";
 "Copy Folder Location" = "Kopírovat adresu složky";
 "Subscribe..." = "Odebírat...";
-"Mark Folder Read..." = "Označit složku jako přečtenou...";
+"Mark Folder Read" = "Označit složku jako přečtenou...";
 "New Folder..." = "Nová složka...";
 "Compact This Folder" = "Provést údržbu složky";
 "Search Messages..." = "Vyhledat zprávy...";
@@ -259,7 +259,6 @@
 "Please select only one message to print." = "Zvolte pouze jednu zprávu, kterou chcete tisknout.";
 "The message you have selected doesn't exist anymore." = "Zpráva, kterou jste zvolili, již neexistuje.";
 
-
 "The folder with name \"%{0}\" could not be created."
 = "Složka s názvem \"%{0}\" nemohla být vytvořena.";
 "This folder could not be renamed to \"%{0}\"."
@@ -292,5 +291,6 @@
 "cannot send message (smtp) - recipients discarded:" = "Zprávu nelze odeslat: následující adresy jsou neplatné:";
 "cannot send message: (smtp) error when connecting" = "Zprávu nelze odeslat: při spojení se SMTP serverem došlo k chybě.";
 
-"Name" = "Jméno";
+/* Contacts list in mail editor */
 "Email" = "E-mail";
+"Name" = "Jméno";

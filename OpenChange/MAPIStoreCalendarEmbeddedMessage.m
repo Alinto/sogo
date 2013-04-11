@@ -161,7 +161,7 @@
   return [self getNo: data inMemCtx: memCtx];
 }
 
-- (void) save
+- (void) save: (TALLOC_CTX *) memCtx
 {
 // (gdb) po embeddedMessage->properties
 // 2442592320 = "2012-07-11 22:30:00 +0000";
@@ -208,7 +208,8 @@
 
   [[container event] updateFromMAPIProperties: properties
                                 inUserContext: [self userContext]
-                               withActiveUser: activeUser];
+                               withActiveUser: activeUser
+				     inMemCtx: memCtx];
 }
 
 @end

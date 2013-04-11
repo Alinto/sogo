@@ -5,12 +5,14 @@
 
 %{!?python_sys_pyver: %global python_sys_pyver %(/usr/bin/python -c "import sys; print sys.hexversion")}
 
+%define sogo_user sogo
+
 Summary:      SOGo
 Name:         sogo
 Version:      %{sogo_version}
 Release:      %{dist_suffix}%{?dist}
 Vendor:       http://www.inverse.ca/
-Packager:     Wolfgang Sourdeau <wsourdeau@inverse.ca>
+Packager:     Wolfgang Sourdeau <support@inverse.ca>
 License:      GPL
 URL:          http://www.inverse.ca/contributions/sogo.html
 Group:        Productivity/Groupware
@@ -188,17 +190,19 @@ make DESTDIR=${RPM_BUILD_ROOT} \
      GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
      CC="$cc" LDFLAGS="$ldflags" \
      install
-mkdir -p ${RPM_BUILD_ROOT}/etc/init.d
-mkdir -p ${RPM_BUILD_ROOT}/etc/cron.d
-mkdir -p ${RPM_BUILD_ROOT}/etc/cron.daily
-mkdir -p ${RPM_BUILD_ROOT}/etc/logrotate.d
-mkdir -p ${RPM_BUILD_ROOT}/etc/sysconfig
-mkdir -p ${RPM_BUILD_ROOT}/etc/httpd/conf.d
-mkdir -p ${RPM_BUILD_ROOT}/usr/sbin
-mkdir -p ${RPM_BUILD_ROOT}/var/lib/sogo
-mkdir -p ${RPM_BUILD_ROOT}/var/log/sogo
-mkdir -p ${RPM_BUILD_ROOT}/var/run/sogo
-mkdir -p ${RPM_BUILD_ROOT}/var/spool/sogo
+install -d  ${RPM_BUILD_ROOT}/etc/init.d
+install -d  ${RPM_BUILD_ROOT}/etc/cron.d
+install -d ${RPM_BUILD_ROOT}/etc/cron.daily
+install -d ${RPM_BUILD_ROOT}/etc/logrotate.d
+install -d ${RPM_BUILD_ROOT}/etc/sysconfig
+install -d ${RPM_BUILD_ROOT}/etc/httpd/conf.d
+install -d ${RPM_BUILD_ROOT}/usr/sbin
+install -d ${RPM_BUILD_ROOT}/var/lib/sogo
+install -d ${RPM_BUILD_ROOT}/var/log/sogo
+install -d ${RPM_BUILD_ROOT}/var/run/sogo
+install -d ${RPM_BUILD_ROOT}/var/spool/sogo
+install -d -m 750 -o %sogo_user -g %sogo_user ${RPM_BUILD_ROOT}/etc/sogo
+install -m 640 -o %sogo_user -g %sogo_user Scripts/sogo.conf ${RPM_BUILD_ROOT}/etc/sogo/
 cat Apache/SOGo.conf | sed -e "s@/lib/@/%{_lib}/@g" > ${RPM_BUILD_ROOT}/etc/httpd/conf.d/SOGo.conf
 install -m 600 Scripts/sogo.cron ${RPM_BUILD_ROOT}/etc/cron.d/sogo
 cp Scripts/tmpwatch ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
@@ -229,10 +233,11 @@ rm -fr ${RPM_BUILD_ROOT}
 
 /etc/init.d/sogod
 /etc/cron.daily/sogo-tmpwatch
-%dir %attr(0700, sogo, sogo) %{_var}/lib/sogo
-%dir %attr(0700, sogo, sogo) %{_var}/log/sogo
-%dir %attr(0755, sogo, sogo) %{_var}/run/sogo
-%dir %attr(0700, sogo, sogo) %{_var}/spool/sogo
+%dir %attr(0700, %sogo_user, %sogo_user) %{_var}/lib/sogo
+%dir %attr(0700, %sogo_user, %sogo_user) %{_var}/log/sogo
+%dir %attr(0755, %sogo_user, %sogo_user) %{_var}/run/sogo
+%dir %attr(0700, %sogo_user, %sogo_user) %{_var}/spool/sogo
+%dir %attr(0750, root, %sogo_user) %{_sysconfdir}/sogo
 %{_sbindir}/sogod
 %{_libdir}/libSOGo.so.*
 %{_libdir}/libSOGoUI.so.*
@@ -248,11 +253,12 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/GNUstep/OCSTypeModels
 %{_libdir}/GNUstep/WOxElemBuilders-*
 
+%config(noreplace) %attr(0640, root, %sogo_user) %{_sysconfdir}/sogo/sogo.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/sogo
 %config(noreplace) %{_sysconfdir}/cron.d/sogo
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/SOGo.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/sogo
-%doc ChangeLog NEWS Scripts/*sh Scripts/*py Scripts/updates.php
+%doc ChangeLog NEWS Scripts/*sh Scripts/*py Scripts/updates.php Apache/SOGo-apple-ab.conf
 
 %files -n sogo-tool
 %{_sbindir}/sogo-tool
@@ -302,8 +308,8 @@ rm -fr ${RPM_BUILD_ROOT}
 
 # **************************** pkgscripts *****************************
 %pre
-if ! id sogo >& /dev/null; then
-  /usr/sbin/useradd -d %{_var}/lib/sogo -c "SOGo daemon" -s /sbin/nologin -M -r sogo
+if ! id %sogo_user >& /dev/null; then
+  /usr/sbin/useradd -d %{_var}/lib/sogo -c "SOGo daemon" -s /sbin/nologin -M -r %sogo_user
 fi
 
 %post
@@ -322,8 +328,8 @@ fi
 %postun
 if test "$1" = "0"
 then
-  /usr/sbin/userdel sogo
-  /usr/sbin/groupdel sogo > /dev/null 2>&1
+  /usr/sbin/userdel %sogo_user
+  /usr/sbin/groupdel %sogo_user > /dev/null 2>&1
   /bin/rm -rf %{_var}/run/sogo
   /bin/rm -rf %{_var}/spool/sogo
   # not removing /var/lib/sogo to keep .GNUstepDefaults
@@ -331,6 +337,10 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Wed Apr 10 2013 Jean Raby <jraby@inverse.ca>
+- use %sogo_user instead of 'sogo'
+- install a sample sogo.conf in /etc/sogo
+
 * Tue Jan 22 2013 Jean Raby <jraby@inverse.ca>
 - Create the sogo user as a system user
 - Use %attr() to set directory permissions instead of chown/chmod

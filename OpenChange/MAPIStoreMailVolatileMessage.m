@@ -904,7 +904,7 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
   return MAPISTORE_SUCCESS;
 }
 
-- (void) save
+- (void) save: (TALLOC_CTX *) memCtx
 {
   NSString *folderName, *flag, *newIdString, *messageKey;
   NSData *changeKey, *messageData;
@@ -943,7 +943,14 @@ MakeMessageBody (NSDictionary *mailProperties, NSDictionary *attachmentParts, NS
       [mapping registerURL: [self url] withID: mid];
 
       /* synchronise the cache and update the change key with the one provided
-         by the client */
+         by the client. Before doing this, lets issue a unselect/select combo 
+         because of timing issues with Dovecot in obtaining the latest modseq.
+         Sometimes, Dovecot doesn't return the newly appended UID if we do
+         a "UID SORT (DATE) UTF-8 (MODSEQ XYZ) (NOT DELETED)" command (where
+         XYZ is the HIGHESTMODSEQ+1) immediately after IMAP APPEND */
+      [client unselect];
+      [client select: folderName];
+
       [(MAPIStoreMailFolder *) container synchroniseCache];
       changeKey = [properties objectForKey: MAPIPropertyKey (PR_CHANGE_KEY)];
       if (changeKey)

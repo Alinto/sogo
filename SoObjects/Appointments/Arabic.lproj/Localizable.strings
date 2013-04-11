@@ -1,0 +1,66 @@
+"Personal Calendar" = "التقويم الشخصي";
+vevent_class0 = "(حدث عام)";
+vevent_class1 = "(حدث خاص)";
+vevent_class2 = "(حدث سري)";
+
+vtodo_class0 = "(مهمة عامة)";
+vtodo_class1 = "(مهمة خاصة)";
+vtodo_class2 = "(مهمة سرية)";
+
+/* Receipts */
+"The event \"%{Summary}\" was created" = "أُنشِئ الحدث \"%{Summary}\"";
+"The event \"%{Summary}\" was deleted" = "حُذِفَ الحدث \"%{Summary}\"";
+"The event \"%{Summary}\" was updated" = "حُدِّث الحدث \"%{Summary}\"";
+"The following attendees(s) were notified:" = "تم ابلاغ المدعو (المدعويين)  الأتي أسماءهم:";
+"The following attendees(s) were added:" = "تم أضافة المدعو (المدعويين) الأتي أسماءهم:";
+"The following attendees(s) were removed:" = "تم مسح المدعو (المدعويين) الأتي أسماءهم:";
+
+/* IMIP messages */
+"calendar_label" = "التقويم:";
+"startDate_label" = "البداية:";
+"endDate_label" = "النهاية:";
+"due_label" = "تاريخ الاستحقاق:";
+"location_label" = "المكان:";
+"summary_label" = "الملخص:";
+"comment_label" = "التعليق:";
+
+/* Invitation */
+"Event Invitation: \"%{Summary}\"" = "دعوة الحدث: \"%{Summary}\"";
+"(sent by %{SentBy}) " = "(أرسلت بواسطة٪ {SentBy})";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}" = "وقد دعت%{Organizer} %{SentByText} الى %{Summary} . ⏎\n⏎\nبداية:٪ {StartDate} ⏎\nنهاية:%{EndDate}⏎\nالوصف:%{Description}\n";
+"%{Organizer} %{SentByText}has invited you to %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}" = "%{Organizer} %{SentByText}قام بدعوتك %{Summary}. ⏎\n⏎\nبداية:٪ {StartDate} في {٪ StartTime} ⏎\nالغاية: {٪ EndDate} في {٪ EndTime} ⏎\nالوصف:%{Description}\n";
+
+/* Deletion */
+"Event Cancelled: \"%{Summary}\"" = "الحدث الغي : \"%{Summary}\"";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate}\nEnd: %{EndDate}\nDescription: %{Description}"
+= "ألغى%{Organizer} %{SentByText} هذا الحدث:.%{Summary} ⏎\n⏎\nبداية:٪ {StartDate} ⏎\nنهاية:%{EndDate} ⏎\nالوصف:%{Description}";
+"%{Organizer} %{SentByText}has cancelled this event: %{Summary}.\n\nStart: %{StartDate} at %{StartTime}\nEnd: %{EndDate} at %{EndTime}\nDescription: %{Description}"
+= "%{Organizer} %{SentByText}قام بإلغاء هذا الحدث: %{Summary}.⏎\n⏎\nبداية:٪ {StartDate} في {٪ StartTime} ⏎\nالغاية: {٪ EndDate} في {٪ EndTime} ⏎\nالوصف:%{Description}";
+
+/* Update */
+"The appointment \"%{Summary}\" for the %{OldStartDate} has changed"
+= "موعد \"%{Summary}\"   بتاريخ  %{OldStartDate}  قد تغير";
+"The appointment \"%{Summary}\" for the %{OldStartDate} at %{OldStartTime} has changed"
+= "تعيين \"%{Summary}\" ل٪ {OldStartDate} في {٪ OldStartTime} قد تغيرت";
+"The following parameters have changed in the \"%{Summary}\" meeting:"
+= " لقد تغيرت المحددات التالية في الاجتماع \"%{Summary}\":";
+"Please accept or decline those changes."
+= "يرجى قبول أو رفض تلك التغييرات.";
+
+/* Reply */
+"Accepted invitation: \"%{Summary}\"" = "دعوةٌ مقبولة: \"%{Summary}\"";
+"Declined invitation: \"%{Summary}\"" = "دعوةٌ مرفوضة: \"%{Summary}\"";
+"Delegated invitation: \"%{Summary}\"" = "دعوة تفويض: \"%{Summary}\"";
+"Not yet decided on invitation: \"%{Summary}\"" = "دعوةٌ لم تقرر بشأنها: \"%{Summary}\"";
+"%{Attendee} %{SentByText}has accepted your event invitation."
+= "وقد قبلت%{Attendee} %{SentByText}  دعوتك الحدث.";
+"%{Attendee} %{SentByText}has declined your event invitation."
+= "وقد رفض %{Attendee} %{SentByText} دعوتك للحدث";
+"%{Attendee} %{SentByText}has delegated the invitation to %{Delegate}."
+= "وقد فوض%{Attendee} %{SentByText} الدعوة إلى %{Delegate}.";
+"%{Attendee} %{SentByText}has not yet decided upon your event invitation."
+= "%{Attendee} %{SentByText} لم يقرر حتى الآن حضورهذا الحدث الخاص بك.";
+
+/* Resources */
+"Cannot access resource: \"%{Cn} %{SystemEmail}\"" = "لا يمكن الوصول إلى الموارد: \"%{Cn} %{SystemEmail}\"";
+"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}." = "الحد الأقصى لعدد الحجوزات في وقت واحد  (%{NumberOfSimultaneousBookings}) وصلت للموارد \"%{Cn} %{SystemEmail}\" . الحدث المتضارب في الموعد هو \"٪ {EventTitle}\"، ويبدأ فى٪ {StartDate}.";

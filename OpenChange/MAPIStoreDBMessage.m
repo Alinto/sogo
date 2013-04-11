@@ -135,7 +135,7 @@
   [super addProperties: newNewProperties];
 }
 
-- (void) save
+- (void) save: (TALLOC_CTX *) memCtx
 {
   uint64_t newVersion;
 

@@ -342,7 +342,8 @@ MAPIStoreDumpMessageProperties (NSDictionary *properties)
 {
   NSNumber *key;
   NSArray *allKeys;
-  NSUInteger keyAsInt, count, max;
+  NSUInteger count, max;
+  NSUInteger keyAsInt;
   id value;
 
   allKeys = [properties allKeys];
@@ -351,7 +352,7 @@ MAPIStoreDumpMessageProperties (NSDictionary *properties)
   NSLog (@"message properties (%d):", max);
 
   value = [properties objectForKey: @"recipients"];
-  if (value)
+   if (value)
     NSLog (@"  recipients: %@", value);
 
   for (count = 0; count < max; count++)
@@ -363,7 +364,7 @@ MAPIStoreDumpMessageProperties (NSDictionary *properties)
           value = [properties objectForKey: key];
           NSLog (@"  0x%.4x: %@ (%@)",
                  keyAsInt, value,
-		 NSStringFromClass ([value class]));
+	  	 NSStringFromClass ([value class]));
         }
     }
 }

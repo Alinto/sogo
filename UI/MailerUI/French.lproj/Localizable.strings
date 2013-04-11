@@ -189,7 +189,7 @@
 "Open in New Mail Window" = "Ouvrir dans une nouvelle fenétre";
 "Copy Folder Location" = "Copier l'adresse du dossier";
 "Subscribe..." = "S'abonner...";
-"Mark Folder Read..." = "Marquer le dossier comme lu";
+"Mark Folder Read" = "Marquer le dossier comme lu";
 "New Folder..." = "Nouveau dossier...";
 "Compact This Folder" = "Compacter ce dossier";
 "Search Messages..." = "Rechercher dans les messages...";
@@ -259,7 +259,6 @@
 "Please select only one message to print." = "Veuillez ne sélectionner qu'un seul message à imprimer.";
 "The message you have selected doesn't exist anymore." = "Le message que vous avez selectionné n'existe plus.";
 
-
 "The folder with name \"%{0}\" could not be created."
 = "Le dossier intitulé \"%{0}\" n'a pas pu être créé.";
 "This folder could not be renamed to \"%{0}\"."
@@ -292,5 +291,6 @@
 "cannot send message (smtp) - recipients discarded:" = "Le message n'a pas pu être envoyé car les adresses suivantes sont invalides :";
 "cannot send message: (smtp) error when connecting" = "Le message n'a pas pu être envoyé: une erreur est survenue en tentant de rejoindre le serveur SMTP.";
 
-"Name" = "Identité";
+/* Contacts list in mail editor */
 "Email" = "Adresse électronique";
+"Name" = "Identité";
