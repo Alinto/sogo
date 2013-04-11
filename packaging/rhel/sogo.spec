@@ -5,7 +5,7 @@
 
 %{!?python_sys_pyver: %global python_sys_pyver %(/usr/bin/python -c "import sys; print sys.hexversion")}
 
-%define sogo_user "sogo"
+%define sogo_user sogo
 
 Summary:      SOGo
 Name:         sogo
