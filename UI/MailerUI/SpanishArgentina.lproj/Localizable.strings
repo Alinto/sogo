@@ -259,7 +259,6 @@
 "Please select only one message to print." = "Para imprimir, seleccione sólo un mensaje.";
 "The message you have selected doesn't exist anymore." = "El mensaje seleccionado ya no existe.";
 
-
 "The folder with name \"%{0}\" could not be created."
 = "La carpeta llamada \"%{0}\" no puede ser creada.";
 "This folder could not be renamed to \"%{0}\"."
@@ -292,5 +291,6 @@
 "cannot send message (smtp) - recipients discarded:" = "No se puede enviar el mensaje: (smtp) destinatarios descartados:";
 "cannot send message: (smtp) error when connecting" = "No se puede enviar el mensaje: (smtp) error de conexión";
 
-"Name" = "Nombre Completo";
+/* Contacts list in mail editor */
 "Email" = "Correo";
+"Name" = "Nombre Completo";

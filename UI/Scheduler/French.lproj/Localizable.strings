@@ -533,3 +533,4 @@ vtodo_class2 = "(Tâche confidentielle)";
 "Web Calendar" = "Calendrier web";
 "Reload on login" = "Rafraîchir à la connexion";
 "Invalid number." = "Nombre invalide.";
+"Please identify yourself to %{0}" = "Veuillez vous authentifier à %{0}";

@@ -533,3 +533,4 @@ vtodo_class2 = "(Zadanie poufne)";
 "Web Calendar" = "Kalendarz sieciowy";
 "Reload on login" = "Przeładuj przy logowaniu";
 "Invalid number." = "Błędna liczba.";
+"Please identify yourself to %{0}" = "Zaloguj się w %{0}";

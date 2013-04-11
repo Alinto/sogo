@@ -533,3 +533,4 @@ vtodo_class2 = "(Vertrouwelijke taak)";
 "Web Calendar" = "Web Agenda";
 "Reload on login" = "Herladen bij inloggen";
 "Invalid number." = "Ongeldig nummer.";
+"Please identify yourself to %{0}" = "Identificeer u alstublieft tegenover %{0}";

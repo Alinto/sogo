@@ -380,6 +380,7 @@ validate_invalid_startdate = "Неверное дата начала!";
 validate_invalid_enddate   = "Неверная дата конца!";
 validate_endbeforestart    = "Дата начала позже даты конца";
 
+"Events" = "События";
 "Tasks" = "Задачи";
 "Show completed tasks" = "Показать выполненные задачи";
 
@@ -455,11 +456,15 @@ validate_endbeforestart    = "Дата начала позже даты конц
 "End" = "Конец";
 "Due Date" = "К дате";
 "Location" = "Место";
+
 "(Private Event)" = "(Приватное событие)";
 
 vevent_class0 = "(Публичное событие)";
 vevent_class1 = "(Приватное событие)";
 vevent_class2 = "(Конфиденциальное событие)";
+
+"Priority" = "Важность";
+"Category" = "Категория";
 
 vtodo_class0 = "(Публичное задание)";
 vtodo_class1 = "(Приватное задание)";
@@ -488,6 +493,7 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Show alarms" = "Показать сигналы";
 "Show tasks" = "Показать задания";
 
+"Notifications" = "Напоминания";
 "Receive a mail when I modify my calendar" = "Получать письмо в случае если я изменю свой календарь";
 "Receive a mail when someone else modifies my calendar" = "Получать письмо если кто-то изменит мой календарь";
 "When I modify my calendar, send a mail to:" = "Если я изменю свой календарь, отправить письмо на адрес: ";
@@ -527,6 +533,4 @@ vtodo_class2 = "(Конфиденциальное задание)";
 "Web Calendar" = "Web Calendar";
 "Reload on login" = "Перезагружать при входе";
 "Invalid number." = "Число неверно.";
-
-"Category" = "Категория";
-"Priority" = "Приоритет";
+"Please identify yourself to %{0}" = "Пожалуйста, представьте себя %{0}";

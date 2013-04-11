@@ -533,3 +533,4 @@ vtodo_class2 = "(Luottamuksellinen tehtävä)";
 "Web Calendar" = "Web kalenteri";
 "Reload on login" = "Päivitä kirjauduttaessa";
 "Invalid number." = "Virheellinen numero.";
+"Please identify yourself to %{0}" = "Ole hyvä ja tunnistaudu kohteeseen %{0}";

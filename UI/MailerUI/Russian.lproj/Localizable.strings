@@ -259,7 +259,6 @@
 "Please select only one message to print." = "Пожалуйста выберите только одно сообщение для печати.";
 "The message you have selected doesn't exist anymore." = "Сообщение, которое вы выбрали, не существует больше.";
 
-
 "The folder with name \"%{0}\" could not be created."
 = "Не могу создать папку с именем \"%{0}\".";
 "This folder could not be renamed to \"%{0}\"."
@@ -292,5 +291,6 @@
 "cannot send message (smtp) - recipients discarded:" = "Не удается отправить сообщение. Следующие адреса неверны:";
 "cannot send message: (smtp) error when connecting" = "Не удается отправить сообщение: ошибка при соединении с сервером SMTP.";
 
-"Name" = "ПолноеИмя";
+/* Contacts list in mail editor */
 "Email" = "Email";
+"Name" = "ПолноеИмя";

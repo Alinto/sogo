@@ -259,7 +259,6 @@
 "Please select only one message to print." = "Selecteer een enkel bericht om af te drukken.";
 "The message you have selected doesn't exist anymore." = "Het bericht dat u selecteerde bestaat niet meer.";
 
-
 "The folder with name \"%{0}\" could not be created."
 = "De map met naam \"%{0}\" kan niet gemaakt worden.";
 "This folder could not be renamed to \"%{0}\"."
@@ -292,5 +291,6 @@
 "cannot send message (smtp) - recipients discarded:" = "Kan bericht niet sturen: de volgende adressen zijn ongeldig:";
 "cannot send message: (smtp) error when connecting" = "Kan bericht niet sturen: fout bij verbinden met de SMTP server.";
 
-"Name" = "Naam";
+/* Contacts list in mail editor */
 "Email" = "E-mail";
+"Name" = "Naam";

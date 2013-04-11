@@ -259,7 +259,6 @@
 "Please select only one message to print." = "Kérem csak egy üzenetet válasszon a nyomtatáshoz.";
 "The message you have selected doesn't exist anymore." = "A kijelölt üzenet már nem létezik.";
 
-
 "The folder with name \"%{0}\" could not be created."
 = "\"%{0}\" néven nem hozható létre a mappa.";
 "This folder could not be renamed to \"%{0}\"."
@@ -292,5 +291,6 @@
 "cannot send message (smtp) - recipients discarded:" = "Az üzenetet nem lehetett elküldeni: az alábbi címzettek érvénytelenek:";
 "cannot send message: (smtp) error when connecting" = "Az üzenetet nem lehetett elküldeni: hiba az SMTP kiszolgálóhoz történő csatlakozáskor.";
 
-"Name" = "Név";
+/* Contacts list in mail editor */
 "Email" = "Email";
+"Name" = "Név";

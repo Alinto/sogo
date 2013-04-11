@@ -259,7 +259,6 @@
 "Please select only one message to print." = "Bitte wählen Sie nur eine Nachricht zum Drucken aus.";
 "The message you have selected doesn't exist anymore." = "Die gewählte Nachricht existiert nicht mehr.";
 
-
 "The folder with name \"%{0}\" could not be created."
 = "Der Ordner mit dem Namen \"%{0}\" konnte nicht erzeugt werden.";
 "This folder could not be renamed to \"%{0}\"."
@@ -283,7 +282,7 @@
 = "Die Nachricht(en) können nicht in den Papierkorb verschoben werden. Wollen Sie diese endgültig löschen?";
 
 /* Message editing */
-"error_missingsubject" = "Der Betreff fehlt";
+"error_missingsubject" = "Der Betreff fehlt. Sind Sie sicher, dass Sie dies so senden möchten?";
 "error_missingrecipients" = "Der Empfänger fehlt";
 "Send Anyway" = "Trotzdem versenden";
 
@@ -292,5 +291,6 @@
 "cannot send message (smtp) - recipients discarded:" = "Kann Nachricht nicht versenden: Die folgenden Addressen sind ungültig:";
 "cannot send message: (smtp) error when connecting" = "Kann Nachricht nicht versenden: Fehler beim Verbinden mit dem SMTP-Server.";
 
-"Name" = "Name";
+/* Contacts list in mail editor */
 "Email" = "E-Mail";
+"Name" = "Name";
