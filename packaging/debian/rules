@@ -45,8 +45,6 @@ clean:
 	  make clean; \
 	fi
 	-rm -f OpenChange/MAPIStorePropertySelectors.*
-	-find OpenChange -type d -name "unrtf-*" -exec rm -rf {} \;
-	-rm -f OpenChange/unrtf*-stamp
 	-rm -f config.make
 	dh_clean 
 

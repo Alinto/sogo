@@ -7,8 +7,6 @@ include ../Version
 
 BACKEND_VERSION = 1.0.0
 
-UNRTF_VERSION = 0.21.2
-
 ### bootstrap library
 MAPISTORESOGO = MAPIStoreSOGo
 LIBRARY_NAME = $(MAPISTORESOGO)
@@ -136,9 +134,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 
 
 $(SOGOBACKEND)_RESOURCE_FILES += \
-	product.plist \
-	$(UNRTF_DIR)/charmaps/SYMBOL.charmap \
-	$(UNRTF_DIR)/outputs/html.conf
+	product.plist
 
 ### pl reader
 PLREADER_TOOL = plreader
@@ -190,7 +186,6 @@ ADDITIONAL_INCLUDE_DIRS += \
 	-DSAMBA_PRIVATE_DIR=@"\"$(SAMBA_PRIVATE_DIR)\"" \
 	$(LIBMAPI_CFLAGS) \
 	$(LIBMAPISTORE_CFLAGS) \
-	-I$(UNRTF_DIR)/src \
 	-I../SoObjects -I../SOPE \
 	-DBACKEND_BUNDLE_NAME="@\"$(BUNDLE_NAME)$(BUNDLE_EXTENSION)\"" \
 	-DSOGO_BUNDLES_DIR="@\"$(BUNDLE_INSTALL_DIR)\""
