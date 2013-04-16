@@ -1,3 +1,9 @@
+2.0.5a (2013-04-17)
+
+Bug fixes
+ - Fixed an issue when parsing user CN with leading or trailing spaces (#2287)
+ - Fixed a crash that occured when saving contacts or tasks via Outlook
+
 2.0.5 (2013-04-11)
 ------------------
 
