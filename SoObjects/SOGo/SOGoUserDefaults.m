@@ -558,7 +558,8 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 {
   if ([newValue length] == 0)
     newValue = nil;
-  [self setObject: newValue forKey: @"SOGoMailCustomFullName"];
+  [self setObject: [newValue stringByTrimmingSpaces]
+           forKey: @"SOGoMailCustomFullName"];
 }
 
 - (NSString *) mailCustomFullName
@@ -570,7 +571,8 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 {
   if ([newValue length] == 0)
     newValue = nil;
-  [self setObject: newValue forKey: @"SOGoMailCustomEmail"];
+  [self setObject: [newValue stringByTrimmingSpaces]
+           forKey: @"SOGoMailCustomEmail"];
 }
 
 - (NSString *) mailCustomEmail
@@ -582,7 +584,8 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 {
   if ([newValue length] == 0)
     newValue = nil;
-  [self setObject: newValue forKey: @"SOGoMailReplyTo"];
+  [self setObject: [newValue stringByTrimmingSpaces]
+           forKey: @"SOGoMailReplyTo"];
 }
 
 - (NSString *) mailReplyTo

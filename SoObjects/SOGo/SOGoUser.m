@@ -277,7 +277,7 @@
 
 - (void) _fetchCN
 {
-  cn = [self _fetchFieldForUser: @"cn"];
+  cn = [[self _fetchFieldForUser: @"cn"] stringByTrimmingSpaces];
   [cn retain];
 }
 
@@ -703,7 +703,8 @@
       if (![fullName length])
         fullName = login;
       [identity setObject: fullName forKey: @"fullName"];
-      [identity setObject: [mails objectAtIndex: count] forKey: @"email"];
+      [identity setObject: [[mails objectAtIndex: count] stringByTrimmingSpaces]
+                   forKey: @"email"];
 
       if ([replyTo length] > 0)
         [identity setObject: replyTo forKey: @"replyTo"];
