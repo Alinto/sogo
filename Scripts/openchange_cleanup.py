@@ -89,6 +89,16 @@ def main():
     except Exception as e:
         print "Error during sqlCleanup, continuing: %s" % str(e)
 
+def getsep(client):
+  seq = None
+  (code, data) = client.list("", "")
+  if code == "OK" and data is not None:
+      # yes this is ugly but it works on cyrus and dovecot.
+      # (\\Noinferiors \\HasNoChildren) "/" INBOX
+      m = re.search(".*\s+[\"\']?(.)[\"\']?\s+[\"\']?.*[\"\']?$", data[0])
+      sep = m.group(1)
+  return sep
+
 def extractmb(si):
     inparen = False
     inquote = False
@@ -120,13 +130,13 @@ def extractmb(si):
 
     return parts[-1]
 
-def cleanupmb(mb, client):
-    (code, data) = client.list("%s/" % mb, "%")
+def cleanupmb(mb, sep, client):
+    (code, data) = client.list("%s%s" % (mb, sep), "%")
     if code == "OK":
         for si in data:
             if si is not None:
                 submb = extractmb(si)
-                cleanupmb(submb, client)
+                cleanupmb(submb, sep, client)
     else:
         raise Exception, "Failure while cleaning up '%s'" % mb
     client.unsubscribe(mb)
@@ -145,13 +155,18 @@ def imapCleanup(imaphost, imapport, username, userpass):
 
     print "Logged in as '%s'" % username
 
+    sep = getsep(client)
+    if not sep:
+        client.logout()
+        return
+
     for foldername in ("Sync Issues", "Junk E-mail"):
         (code, data) = client.list(foldername, "%")
         if code == "OK":
             for si in data:
                 if si is not None:
                     mb = extractmb(si)
-                    cleanupmb(mb, client)
+                    cleanupmb(mb, sep, client)
     client.logout()
 
 def mapistoreCleanup(mapistorefolder, username):
