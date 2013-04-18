@@ -160,7 +160,8 @@ def imapCleanup(imaphost, imapport, username, userpass):
         client.logout()
         return
 
-    for foldername in ("Sync Issues", "Junk E-mail"):
+    for foldername in ("Sync Issues", "Junk E-mail",
+                       "INBOX%sSync Issues" % sep, "INBOX%sJunk E-mail" % sep):
         (code, data) = client.list(foldername, "%")
         if code == "OK":
             for si in data:
