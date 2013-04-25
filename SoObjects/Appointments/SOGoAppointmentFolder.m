@@ -2901,9 +2901,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   NSMutableString *content;
   NSString *uid;
 
-  uid =  [self globallyUniqueObjectId];
-  [event setUid: uid];
-
   // We first look if there's an event with the same UID in our calendar. If not,
   // let's reuse what is in the event, otherwise generate a new GUID and use it.
   uid = [event uid];
