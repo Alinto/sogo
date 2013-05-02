@@ -5,12 +5,11 @@
 
 CKEDITOR.editorConfig = function( config ) {
     config.toolbarGroups = [
-	{ name: 'basicstyles', groups: [ 'basicstyles' ] },
-	{ name: 'paragraph',   groups: [ 'list', 'align' ] },
+        [ 'Bold', 'Italic', 'TextColor' ],
+        ['Font', 'FontSize'],
+	{ name: 'paragraph',   groups: [ 'list', 'indent', 'align' ] },
 	{ name: 'links' },
 	{ name: 'insert' },
-        ['Font', 'FontSize'],
-        { name: 'colors' },
         ['SpellChecker','Scayt']
     ];
 
