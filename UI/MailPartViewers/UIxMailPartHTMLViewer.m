@@ -158,16 +158,16 @@ static NSData* _sanitizeContent(NSData *theData)
     {
       // We check if we see </head> in which case, we don't do any kind
       // of substitution there after.
-      if (i < len-5)
+      if (i < len-6)
 	{
 	  if ((*bytes == '<') &&
 	      (*(bytes+1) == '/') &&
-	      (*(bytes+1) == 'h' || *(bytes+1) == 'H') &&
-	      (*(bytes+2) == 'e' || *(bytes+2) == 'E') &&
-	      (*(bytes+3) == 'a' || *(bytes+3) == 'A') &&
-	      (*(bytes+4) == 'd' || *(bytes+4) == 'D') &&
-	      (*(bytes+7) == '>'))
-          break;
+	      (*(bytes+2) == 'h' || *(bytes+2) == 'H') &&
+	      (*(bytes+3) == 'e' || *(bytes+3) == 'E') &&
+	      (*(bytes+4) == 'a' || *(bytes+4) == 'A') &&
+	      (*(bytes+5) == 'd' || *(bytes+5) == 'D') &&
+	      (*(bytes+6) == '>'))
+            break;
 	}
       
       // We search for something like :
