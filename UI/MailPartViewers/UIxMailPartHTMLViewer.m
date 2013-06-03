@@ -189,7 +189,7 @@ static NSData* _sanitizeContent(NSData *theData)
 	      j = 8;
               found_delimiter = YES;
 
-	      while (*(bytes+j) != ' ' && *(bytes+j) != '"')
+	      while (*(bytes+j) != ' ' && *(bytes+j) != '"' && *(bytes+j) != '\'')
 		{
 		  j++;
 		  

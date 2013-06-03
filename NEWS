@@ -1,4 +1,11 @@
+2.0.6 (2013-MM-DD)
+------------------
+
+Bug fixes
+ - Fixed decoding of the charset parameter when using single quotes (#2306)
+
 2.0.5a (2013-04-17)
+------------------
 
 Bug fixes
  - Fixed an issue when parsing user CN with leading or trailing spaces (#2287)
