@@ -3,6 +3,7 @@
 
 Bug fixes
  - Fixed decoding of the charset parameter when using single quotes (#2306)
+ - Fixed potential crash when sending MDN from Sent folder (#2209)
 
 2.0.5a (2013-04-17)
 ------------------

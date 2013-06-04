@@ -1,14 +1,15 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
+  Copyright (C) 2005-2013 Inverse inc.
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo.
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -30,6 +31,8 @@
 
 #import <NGMime/NGMimeBodyPart.h>
 #import <NGMime/NGMimeMultipartBody.h>
+#import <NGMail/NGMailAddress.h>
+#import <NGMail/NGMailAddressParser.h>
 #import <NGMail/NGMimeMessage.h>
 #import <NGMail/NGMimeMessageGenerator.h>
 
@@ -216,7 +219,7 @@ static NSString *mailETag = nil;
     {
       identityEmail = [[identities objectAtIndex: count]
                         objectForKey: @"email"];
-      rc = [identityEmail isEqualToString: email];
+      rc = ([identityEmail caseInsensitiveCompare: email] == NSOrderedSame);
     }
 
   return rc;
@@ -489,6 +492,7 @@ static NSString *mailETag = nil;
 
 - (NSString *) shouldAskReceipt
 {
+  NGMailAddress *mailAddress;
   NSDictionary *mailHeaders;
   NSString *email, *action;
 
@@ -504,6 +508,15 @@ static NSString *mailETag = nil;
             email = [mailHeaders objectForKey: @"return-receipt-to"];
         }
 
+      // email here can be "foo@bar.com" or "Foo Bar <foo@bar.com>"
+      // we must extract the actual email address
+      mailAddress = [[NGMailAddressParser mailAddressParserWithString: email] parse];
+      
+      if ([mailAddress isKindOfClass: [NGMailAddress class]])
+        email = [mailAddress address];
+      else
+        email = nil;
+      
       if (email)
         {
           if (![self _userHasEMail: email]
