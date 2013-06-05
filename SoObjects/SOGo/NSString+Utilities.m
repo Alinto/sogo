@@ -1,6 +1,6 @@
 /* NSString+Utilities.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2011 Inverse inc.
+ * Copyright (C) 2006-2013 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -279,24 +279,28 @@ static int cssEscapingCount;
 
 - (NSString *) jsonRepresentation
 {
-  static char thisCharCode[28];
+  static unichar thisCharCode[29];
   static NSString *controlCharString = nil;
   static NSCharacterSet *controlCharSet = nil;
   NSString *cleanedString;
-  int i;
+  int i, j;
 
   if (!controlCharSet)
     {
       // Create an array of chars for all control characters between 0x00 and 0x1F,
       // apart from \t, \n, \f and \r (0x08, 0x09, 0x0A, 0x0C and 0x0D)
-      for (i = 0x00; i <= 0x08; i++) {
-        thisCharCode[i] = i;
+      for (i = 0, j = 0x00; j < 0x08; i++, j++) {
+        thisCharCode[i] = j;
       }
-      thisCharCode[9] = 0x0B;
-      for (i = 0x0E; i <= 0x1F; i++) {
-        thisCharCode[i - 4] = i;
+      thisCharCode[i++] = 0x0B;
+      for (j = 0x0E; j <= 0x1F; i++, j++) {
+        thisCharCode[i] = j;
       }
-      controlCharString = [NSString stringWithCString: thisCharCode length: 28];
+
+      // Also add some unicode separators
+      thisCharCode[i++] = 0x2028; // line separator
+      thisCharCode[i++] = 0x2029; // paragraph separator
+      controlCharString = [NSString stringWithCharacters:thisCharCode length:i];
       controlCharSet = [NSCharacterSet characterSetWithCharactersInString: controlCharString];
       [controlCharSet retain];
     }
@@ -304,7 +308,6 @@ static int cssEscapingCount;
   // Escape double quotes and remove control characters
   cleanedString = [[[self doubleQuotedString] componentsSeparatedByCharactersInSet: controlCharSet]
                               componentsJoinedByString: @""];
-
   return cleanedString;
 }
 
