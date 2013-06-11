@@ -5,7 +5,10 @@ Enhancements
  - updated CKEditor to version 4.1.1 (#2333)
  - new failed login attemps rate-limiting options. See the new
    SOGoMaximumFailedLoginCount, SOGoMaximumFailedLoginInterval and
-   SOGoFailedLoginBlockInterval defaults 
+   SOGoFailedLoginBlockInterval defaults
+ - new message submissions rate-limiting options. See the new
+   SOGoMaximumMessageSubmissionCount, SOGoMaximumRecipientCount,
+   SOGoMaximumSubmissionInterval and SOGoMessageSubmissionBlockInterval defaults 
 
 Bug fixes
  - Fixed decoding of the charset parameter when using single quotes (#2306)

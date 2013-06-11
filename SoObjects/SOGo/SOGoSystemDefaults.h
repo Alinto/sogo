@@ -88,7 +88,12 @@
 
 - (int) maximumFailedLoginCount;
 - (int) maximumFailedLoginInterval;
-- (int) failedLoginBlockInternval;
+- (int) failedLoginBlockInterval;
+
+- (int) maximumMessageSubmissionCount;
+- (int) maximumRecipientCount;
+- (int) maximumSubmissionInterval;
+- (int) messageSubmissionBlockInterval;
 
 @end
 

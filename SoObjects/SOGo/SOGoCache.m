@@ -24,23 +24,24 @@
 /*
  * [ Cache Structure ]
  *
- * users                 value = instances of SOGoUser > flushed after the completion of every SOGo requests
- * groups                value = instances of SOGoGroup > flushed after the completion of every SOGo requests
- * imap4Connections      value = 
- * localCache            value = any value of what's in memcached - this is used to NOT query memcached within the same sogod instance
+ * users                    value = instances of SOGoUser > flushed after the completion of every SOGo requests
+ * groups                   value = instances of SOGoGroup > flushed after the completion of every SOGo requests
+ * imap4Connections         value = 
+ * localCache               value = any value of what's in memcached - this is used to NOT query memcached within the same sogod instance
  * 
  * [ Distributed (using memcached) cache structure ]
  *
- * <uid>+defaults        value = NSDictionary instance > user's defaults
- * <uid>+settings        value = NSDictionary instance > user's settings
- * <uid>+attributes      value = NSMutableDictionary instance > user's LDAP attributes
- * <object path>+acl     value = NSDictionary instance > ACLs on an object at specified path
- * <groupname>+<domain>  value = NSString instance (array components separated by ",") or group member logins for a specific group in domain
- * cas-id:< >            value = 
- * cas-ticket:< >        value =
- * cas-pgtiou:< >        value =
- * session:< >           value =
- * <uid>+failedlogins    value = NSDictionary instance holding the failed count and the date of the first failed authentication
+ * <uid>+defaults           value = NSDictionary instance > user's defaults
+ * <uid>+settings           value = NSDictionary instance > user's settings
+ * <uid>+attributes         value = NSMutableDictionary instance > user's LDAP attributes
+ * <object path>+acl        value = NSDictionary instance > ACLs on an object at specified path
+ * <groupname>+<domain>     value = NSString instance (array components separated by ",") or group member logins for a specific group in domain
+ * cas-id:< >               value = 
+ * cas-ticket:< >           value =
+ * cas-pgtiou:< >           value =
+ * session:< >              value =
+ * <uid>+failedlogins       value = NSDictionary instance holding the failed count and the date of the first failed authentication
+ * <uid>+messagesubmissions value = NSDictionary instance holding the number of messages sent, and number of recipients
  */
 
 
@@ -535,6 +536,62 @@ static memcached_st *handle = NULL;
   NSString *s;
   
   s = [self _valuesOfType: @"failedlogins" forKey: theLogin];
+  d = nil;
+
+  if (s)
+    {
+      d = [s objectFromJSONString];
+    }
+  
+  return d;
+}
+
+//
+//
+//
+- (void) setMessageSubmissionsCount: (int) theCount
+                    recipientsCount: (int) theRecipientsCount
+                           forLogin: (NSString *) theLogin
+{
+  NSNumber *messages_count, *recipients_count;
+  NSMutableDictionary *d;
+
+  if (theCount)
+    {
+      messages_count = [NSNumber numberWithInt: theCount];
+      recipients_count = [NSNumber numberWithInt: theRecipientsCount];
+
+      d = [NSMutableDictionary dictionaryWithDictionary: [self messageSubmissionsCountForLogin: theLogin]];
+
+      if (![d objectForKey: @"InitialDate"])
+        {
+          [d setObject: [NSNumber numberWithUnsignedInt: [[NSCalendarDate date] timeIntervalSince1970]] forKey: @"InitialDate"];
+        }
+      
+      [d setObject: messages_count  forKey: @"MessagesCount"];
+      [d setObject: recipients_count  forKey: @"RecipientsCount"];
+      
+      [self _cacheValues: [d jsonRepresentation]
+                  ofType:  @"messagesubmissions"
+                  forKey: theLogin];
+    }
+  else
+    {
+      [self removeValueForKey: [NSString stringWithFormat: @"%@+messagesubmissions", theLogin]];
+    }
+}
+
+//
+// MessagesCount ->
+// RecipientsCount ->
+// InitialDate ->
+//
+- (NSDictionary *) messageSubmissionsCountForLogin: (NSString *) theLogin
+{
+  NSDictionary *d;
+  NSString *s;
+  
+  s = [self _valuesOfType: @"messagesubmissions" forKey: theLogin];
   d = nil;
 
   if (s)

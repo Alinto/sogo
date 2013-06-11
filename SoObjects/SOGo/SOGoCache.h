@@ -103,6 +103,12 @@
 
 - (NSDictionary *) failedCountForLogin: (NSString *) login;
 
+- (void) setMessageSubmissionsCount: (int) theCount
+                    recipientsCount: (int) theRecipientsCount
+                           forLogin: (NSString *) theLogin;
+
+- (NSDictionary *) messageSubmissionsCountForLogin: (NSString *) theLogin;
+
 //
 // CAS support
 //

@@ -513,6 +513,9 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"SOGoEnablePublicAccess"];
 }
 
+//
+//
+//
 - (int) maximumFailedLoginCount
 {
   return [self integerForKey: @"SOGoMaximumFailedLoginCount"];
@@ -535,6 +538,43 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   int v;
 
   v = [self integerForKey: @"SOGoFailedLoginBlockInterval"];
+
+  if (!v)
+    v = 300;
+
+  return v;
+}
+
+//
+//
+//
+- (int) maximumMessageSubmissionCount
+{
+  return [self integerForKey: @"SOGoMaximumMessageSubmissionCount"];
+}
+
+- (int) maximumRecipientCount
+{
+  return [self integerForKey: @"SOGoMaximumRecipientCount"];
+}
+
+- (int) maximumSubmissionInterval
+{
+  int v;
+
+  v = [self integerForKey: @"SOGoMaximumSubmissionInterval"];
+
+  if (!v)
+    v = 30;
+
+  return v;
+}
+
+- (int) messageSubmissionBlockInterval
+{
+  int v;
+
+  v = [self integerForKey: @"SOGoMessageSubmissionBlockInterval"];
 
   if (!v)
     v = 300;
