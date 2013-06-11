@@ -1,6 +1,6 @@
 /* SOGoCache.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2010 Inverse inc.
+ * Copyright (C) 2008-2013 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -40,6 +40,7 @@
  * cas-ticket:< >        value =
  * cas-pgtiou:< >        value =
  * session:< >           value =
+ * <uid>+failedlogins    value = NSDictionary instance holding the failed count and the date of the first failed authentication
  */
 
 
@@ -47,6 +48,7 @@
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSLock.h>
+#import <Foundation/NSValue.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimer.h>
 
@@ -327,6 +329,9 @@ static memcached_st *handle = NULL;
                              " no handle exists"), key];
 }
 
+//
+//
+//
 - (void) setValue: (NSString *) value
            forKey: (NSString *) key
 {
@@ -334,6 +339,9 @@ static memcached_st *handle = NULL;
           expire: cleanupInterval];
 }
 
+//
+//
+//
 - (NSString *) valueForKey: (NSString *) key
 {
   NSString *valueString;
@@ -372,6 +380,9 @@ static memcached_st *handle = NULL;
   return valueString;
 }
 
+//
+//
+//
 - (void) removeValueForKey: (NSString *) key
 {
   NSData *keyData;
@@ -420,6 +431,9 @@ static memcached_st *handle = NULL;
     }
 }
 
+//
+//
+//
 - (NSString *) _valuesOfType: (NSString *) theType
                       forKey: (NSString *) theKey
 {
@@ -439,6 +453,9 @@ static memcached_st *handle = NULL;
   return valueString;
 }
 
+//
+//
+//
 - (void) setUserAttributes: (NSString *) theAttributes
                   forLogin: (NSString *) login
 {
@@ -474,6 +491,60 @@ static memcached_st *handle = NULL;
 {
   return [self _valuesOfType: @"settings" forKey: theLogin];
 }
+
+//
+// SOGo password failed counts
+//
+- (void) setFailedCount: (int) theCount
+               forLogin: (NSString *) theLogin
+{
+  NSMutableDictionary *d;
+  NSNumber *count;
+
+  if (theCount)
+    {
+      count = [NSNumber numberWithInt: theCount];
+
+      d = [NSMutableDictionary dictionaryWithDictionary: [self failedCountForLogin: theLogin]];
+
+      if (![d objectForKey: @"InitialDate"])
+        {
+          [d setObject: [NSNumber numberWithUnsignedInt: [[NSCalendarDate date] timeIntervalSince1970]] forKey: @"InitialDate"];
+        }
+      
+      [d setObject: count  forKey: @"FailedCount"];
+      [self _cacheValues: [d jsonRepresentation]
+                  ofType:  @"failedlogins"
+                  forKey: theLogin];
+    }
+  else
+    {
+      [self removeValueForKey: [NSString stringWithFormat: @"%@+failedlogins", theLogin]];
+    }
+}
+
+//
+// Returns a dictionary with two keys/values
+//
+// FailedCount -> 
+// InitialDate ->
+//
+- (NSDictionary *) failedCountForLogin: (NSString *) theLogin
+{
+  NSDictionary *d;
+  NSString *s;
+  
+  s = [self _valuesOfType: @"failedlogins" forKey: theLogin];
+  d = nil;
+
+  if (s)
+    {
+      d = [s objectFromJSONString];
+    }
+  
+  return d;
+}
+
 
 //
 // CAS session support

@@ -1,6 +1,6 @@
 /* SOGoCache.h - this file is part of SOGo
  *
- * Copyright (C) 2008-2011 Inverse inc.
+ * Copyright (C) 2008-2013 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -97,6 +97,11 @@
 - (void) setUserSettings: (NSString *) attributes
                 forLogin: (NSString *) login;
 - (NSString *) userSettingsForLogin: (NSString *) theLogin;
+
+- (void) setFailedCount: (int) theCount
+               forLogin: (NSString *) theLogin;
+
+- (NSDictionary *) failedCountForLogin: (NSString *) login;
 
 //
 // CAS support

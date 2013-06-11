@@ -1,6 +1,6 @@
 /* SOGoSystemDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2012 Inverse inc.
+ * Copyright (C) 2009-2013 Inverse inc.
  * Copyright (C) 2012 Jeroen Dekkers <jeroen@dekkers.ch>
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
@@ -511,6 +511,35 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 - (BOOL) enablePublicAccess
 {
   return [self boolForKey: @"SOGoEnablePublicAccess"];
+}
+
+- (int) maximumFailedLoginCount
+{
+  return [self integerForKey: @"SOGoMaximumFailedLoginCount"];
+}
+
+- (int) maximumFailedLoginInterval
+{
+  int v;
+
+  v = [self integerForKey: @"SOGoMaximumFailedLoginInterval"];
+
+  if (!v)
+    v = 10;
+
+  return v;
+}
+
+- (int) failedLoginBlockInterval
+{
+  int v;
+
+  v = [self integerForKey: @"SOGoFailedLoginBlockInterval"];
+
+  if (!v)
+    v = 300;
+
+  return v;
 }
 
 @end
