@@ -8,7 +8,7 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'basicstyles', items: [ 'Bold', 'Italic', 'TextColor' ] },
         { name: 'paragraph', items: [ 'NumberedList', 'BulletedList',
                                       '-',
-                                      'Outdent', 'Indent',
+                                      'Blockquote', 'Outdent', 'Indent',
                                       '-',
                                       'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
         { name: 'links', items: [ 'Link', 'Unlink' ] },

@@ -56,7 +56,8 @@ var CKBUILDER_CONFIG = {
 		'justify' : 1,
 		'wsc' : 1,
 		'colordialog' : 1,
-		'contextmenu' : 1
+		'contextmenu' : 1,
+		'blockquote' : 1
 	},
 	languages : {
 		'ar' : 1,
