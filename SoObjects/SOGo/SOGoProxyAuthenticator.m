@@ -49,7 +49,7 @@
 }
 
 - (BOOL) checkLogin: (NSString *) _login
-	   password: (NSString *) _pwd
+           password: (NSString *) _pwd
 {
   return YES;
 }
