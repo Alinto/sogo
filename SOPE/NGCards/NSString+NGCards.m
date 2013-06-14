@@ -155,20 +155,41 @@
 
 - (NSString *) escapedForCards
 {
-  NSString *string;
+  NSMutableString *string;
+  unsigned int len, i;
+  unichar c;
 
-  string = [self stringByReplacingString: @"\\"
-                 withString: @"\\\\"];
-  string = [string stringByReplacingString: @","
-                   withString: @"\\,"];
-  //  string = [string stringByReplacingString: @":"
-  //                withString: @"\\:"];
-  string = [string stringByReplacingString: @";"
-                   withString: @"\\;"];
-  string = [string stringByReplacingString: @"\n"
-                   withString: @"\\n"];
-  string = [string stringByReplacingString: @"\r"
-                   withString: @"\\r"];
+  len = [self length];
+  string = [NSMutableString stringWithCapacity: len * 1.5];
+
+  for (i = 0; i < len; i++)
+    {
+      c = [self characterAtIndex: i];
+
+      switch (c)
+        {
+        case '\\':
+          [string appendString: @"\\\\"];
+          break;
+        case ',':
+          [string appendString: @"\\,"];
+          break;
+          //case ':':
+          // [string appendString: @"\\:"];
+          //break;
+        case ';':
+          [string appendString:  @"\\;"];
+          break;
+        case'\n':
+          [string appendString: @"\\n"];
+          break;
+        case'\r':
+          [string appendString: @"\\r"];
+          break;
+        default:
+          [string appendFormat: @"%C", c];
+        }
+    }
 
   return string;
 }
