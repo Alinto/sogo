@@ -269,12 +269,13 @@
                           forceRenew: (BOOL) renew
 {
   NSString *authType, *password;
+  SOGoSystemDefaults *sd;
  
   password = [self passwordInContext: context];
   if ([password length])
     {
-      authType = [[SOGoSystemDefaults sharedSystemDefaults]
-                   authenticationType];
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      authType = [sd authenticationType];
       if ([authType isEqualToString: @"cas"])
         {
           SOGoCASSession *session;
@@ -283,13 +284,18 @@
           session = [SOGoCASSession CASSessionWithIdentifier: password
                                                    fromProxy: NO];
 
-          // We must NOT assume the scheme exists
-          scheme = [server scheme];
+          service = [sd imapCASServiceName]; // try configured service first
+          if (!service)
+            {
+              // We must NOT assume the scheme exists
+              scheme = [server scheme];
 
-          if (!scheme)
-            scheme = @"imap";
+              if (!scheme)
+                scheme = @"imap";
 
-          service = [NSString stringWithFormat: @"%@://%@", scheme, [server host]];
+              service = [NSString stringWithFormat: @"%@://%@",
+                         scheme, [server host]];
+            }
 
           if (renew)
             [session invalidateTicketForService: service];
