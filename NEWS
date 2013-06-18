@@ -9,6 +9,7 @@ Enhancements
  - new message submissions rate-limiting options. See the new
    SOGoMaximumMessageSubmissionCount, SOGoMaximumRecipientCount,
    SOGoMaximumSubmissionInterval and SOGoMessageSubmissionBlockInterval defaults 
+ - now possible to send or not event notifications on a per-event basis
 
 Bug fixes
  - Fixed decoding of the charset parameter when using single quotes (#2306)

@@ -373,6 +373,9 @@
 
 "Show Time as Free" = "Show Time as Free";
 
+/* email notifications */
+"Send Appointment Notifications" = "Send Appointment Notifications";
+
 /* validation errors */
 
 validate_notitle           = "No title is set, continue?";
