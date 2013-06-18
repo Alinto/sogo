@@ -43,6 +43,7 @@
 - (NSString *) mailDomain;
 - (NSString *) imapServer;
 - (NSString *) sieveServer;
+- (NSString *) imapCASServiceName;
 - (NSString *) imapAclStyle;
 - (NSString *) imapAclGroupIdPrefix;
 - (NSString *) imapFolderSeparator;

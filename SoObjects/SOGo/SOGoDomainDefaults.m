@@ -123,6 +123,11 @@
   return [self stringForKey: @"SOGoSieveServer"];
 }
 
+- (NSString *) imapCASServiceName
+{
+  return [self objectForKey: @"SOGoIMAPCASServiceName"];
+}
+
 #warning should be removed when we make use of imap namespace
 - (NSString *) imapAclStyle
 {
