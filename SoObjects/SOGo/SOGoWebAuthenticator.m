@@ -279,12 +279,15 @@
       if ([authType isEqualToString: @"cas"])
         {
           SOGoCASSession *session;
+          SOGoUser *user;
           NSString *service, *scheme;
 
           session = [SOGoCASSession CASSessionWithIdentifier: password
                                                    fromProxy: NO];
 
-          service = [sd imapCASServiceName]; // try configured service first
+          user = [self userInContext: context];
+          // Try configured CAS service name first
+          service = [[user domainDefaults] imapCASServiceName];
           if (!service)
             {
               // We must NOT assume the scheme exists
