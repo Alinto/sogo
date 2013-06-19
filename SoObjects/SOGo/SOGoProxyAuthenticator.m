@@ -59,15 +59,14 @@
 {
   NSString *remoteUser;
 
-  if ([[SOGoSystemDefaults sharedSystemDefaults] trustProxyAuthentication])
+
+  /* If such a header is not provided by the proxy, SOPE will attempt to
+     deduce it from the "Authorization" header. */
+  remoteUser = [[context request] headerForKey: @"x-webobjects-remote-user"];
+   
+  if ([remoteUser length] == 0 && [[SOGoSystemDefaults sharedSystemDefaults] trustProxyAuthentication])
     {
       remoteUser = @"anonymous";
-    }
-  else 
-    {
-      /* If such a header is not provided by the proxy, SOPE will attempt to
-	 deduce it from the "Authorization" header. */
-      remoteUser = [[context request] headerForKey: @"x-webobjects-remote-user"];
     }
   
   return remoteUser;
