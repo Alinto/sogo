@@ -16,6 +16,9 @@ Bug fixes
  - Fixed decoding of the charset parameter when using single quotes (#2306)
  - Fixed potential crash when sending MDN from Sent folder (#2209)
  - Fixed handling of unicode separators (#2309)
+ - Fixed public access when SOGoTrustProxyAuthentication is used (#2237)
+ - Fixed access right issues with import feature (#2294)
+ - Fixed IMAP ACL issue when SOGoForceExternalLoginWithEmail is used (#2313)
 
 2.0.5a (2013-04-17)
 ------------------
