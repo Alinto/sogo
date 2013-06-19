@@ -1,8 +1,6 @@
 /* SOGoProxyAuthenticator.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2009-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +30,7 @@
 #import <NGExtensions/NSObject+Logs.h>
 
 #import "SOGoPermissions.h"
+#import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
 
 #import "SOGoProxyAuthenticator.h"
@@ -60,10 +59,17 @@
 {
   NSString *remoteUser;
 
-  /* If such a header is not provided by the proxy, SOPE will attempt to
-     deduce it from the "Authorization" header. */
-  remoteUser = [[context request] headerForKey: @"x-webobjects-remote-user"];
-
+  if ([[SOGoSystemDefaults sharedSystemDefaults] trustProxyAuthentication])
+    {
+      remoteUser = @"anonymous";
+    }
+  else 
+    {
+      /* If such a header is not provided by the proxy, SOPE will attempt to
+	 deduce it from the "Authorization" header. */
+      remoteUser = [[context request] headerForKey: @"x-webobjects-remote-user"];
+    }
+  
   return remoteUser;
 }
 
