@@ -3013,19 +3013,25 @@ function validateUploadForm() {
     return rc;
 }
 function uploadCompleted(response) {
-    data = response.evalJSON(true);
     jQuery('#uploadCancel').show();
     var btn = jQuery('#uploadSubmit');
     btn.removeClass("disabled");
     btn.children('span').text(_('Upload'));
     var div = $("uploadResults");
-    if (data.imported < 0)
-        $("uploadResultsContent").update(_("An error occurred while importing calendar."));
-    else if (data.imported == 0)
-        $("uploadResultsContent").update(_("No event was imported."));
-    else {
-        $("uploadResultsContent").update(_("A total of %{0} events were imported in the calendar.").formatted(data.imported));
-        refreshEventsAndDisplay();
+
+    try {
+	data = response.evalJSON(true);
+
+	if (data.imported < 0)
+            $("uploadResultsContent").update(_("An error occurred while importing calendar."));
+	else if (data.imported == 0)
+            $("uploadResultsContent").update(_("No event was imported."));
+	else {
+            $("uploadResultsContent").update(_("A total of %{0} events were imported in the calendar.").formatted(data.imported));
+            refreshEventsAndDisplay();
+	}
+    } catch (e) {
+	$("uploadResultsContent").update(_("An error occurred while importing calendar."));
     }
 
     hideCalendarImport();
