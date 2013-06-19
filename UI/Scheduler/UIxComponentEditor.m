@@ -834,6 +834,41 @@ iRANGE(2);
   return organizerProfile;
 }
 
+
+- (BOOL) hasCreatedBy 
+{
+  return ([[[component firstChildWithTag: @"X-SOGo-Component-Created-By"] flattenedValuesForKey: @""] length] > 0);
+}
+
+- (NSString *) createdBy
+{
+  return [[component firstChildWithTag: @"X-SOGo-Component-Created-By"] flattenedValuesForKey: @""];
+}
+
+- (NSString *) createdByLink
+{
+  return [NSString stringWithFormat: @"mailto:%@",
+		   [[component firstChildWithTag: @"X-SOGo-Component-Created-By"] flattenedValuesForKey: @""]];
+}
+
+- (NSString *) createdByName
+{
+  NSString *login;
+  SOGoUser *user;
+  
+  login = [[SOGoUserManager sharedUserManager] getUIDForEmail: [self createdBy]];
+
+  if (login)
+    {
+      user = [SOGoUser userWithLogin: login];
+
+      if (user)
+	return [user cn];
+    }
+
+  return @"";
+}
+
 - (NSString *) organizerName
 {
   NSDictionary *profile;
@@ -1834,7 +1869,7 @@ RANGE(2);
 
 - (void) _handleOrganizer
 {
-  NSString *owner, *login;
+  NSString *owner, *login, *currentEmail;
   BOOL isOwner, hasAttendees;
 
   //owner = [[self clientObject] ownerInContext: context];
@@ -1842,8 +1877,8 @@ RANGE(2);
   login = [[context activeUser] login];
   isOwner = [owner isEqualToString: login];
   hasAttendees = [self hasAttendees];
+  currentEmail = [[[context activeUser] allEmails] objectAtIndex: 0];
 
-#if 1
   if (hasAttendees)
     {
       SOGoUser *user;
@@ -1859,9 +1894,8 @@ RANGE(2);
 
       if (!isOwner)
 	{
-	  NSString *currentEmail, *quotedEmail;
+	  NSString *quotedEmail;
 	  
-	  currentEmail = [[[context activeUser] allEmails] objectAtIndex: 0];
           quotedEmail = [NSString stringWithFormat: @"\"MAILTO:%@\"",
                                   currentEmail];
           [organizer setValue: 0 ofAttribute: @"SENT-BY"
@@ -1873,30 +1907,17 @@ RANGE(2);
       organizer = nil;
     }
   [component setOrganizer: organizer];
-#else 
-  NSString *organizerEmail;
-  BOOL hasOrganizer;
-  organizerEmail = [[component organizer] email];
-  hasOrganizer = ([organizerEmail length] > 0);
-  if (hasOrganizer)
+
+  // In case of a new component, if the current user isn't the owner of the calendar, we
+  // add the "X-SOGo-Component-Created-By: <email address>" attribute
+  if ([[self clientObject] isNew] &&
+      !isOwner &&
+      [currentEmail length])
     {
-      if (isOwner && !hasAttendees)
-	{
-	  ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
-	  [component setOrganizer: organizer];
-	}
+      [component addChild: [CardElement simpleElementWithTag: @"X-SOGo-Component-Created-By"
+						       value: currentEmail]];
     }
-  else
-    {
-      if (!isOwner || hasAttendees)
-	{
-	  ASSIGN (organizer, [iCalPerson elementWithTag: @"organizer"]);
-	  [organizer setCn: [organizerIdentity objectForKey: @"fullName"]];
-	  [organizer setEmail: [organizerIdentity objectForKey: @"email"]];
-	  [component setOrganizer: organizer];
-	}
-    }
-#endif
+
 }
 
 - (void) _handleCustomRRule: (iCalRecurrenceRule *) theRule

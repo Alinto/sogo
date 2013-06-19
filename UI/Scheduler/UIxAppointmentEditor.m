@@ -48,6 +48,7 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/iCalPerson+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
@@ -467,6 +468,8 @@
   NSTimeZone *timeZone;
   SOGoUserDefaults *ud;
   SOGoCalendarComponent *co;
+  NSString *created_by;
+
   BOOL resetAlarm;
   unsigned int snoozeAlarm;
 
@@ -512,6 +515,8 @@
         }
     }
 
+  created_by = [event createdBy];
+
   data = [NSDictionary dictionaryWithObjectsAndKeys:
                        [componentCalendar displayName], @"calendar",
                        [event tag], @"component",
@@ -523,6 +528,7 @@
                        ([event isAllDay] ? @"1": @"0"), @"isAllDay",
                        [event summary], @"summary",
                        [event location], @"location",
+		       created_by, @"created_by",
                        [event comment], @"description",
                        nil];
   

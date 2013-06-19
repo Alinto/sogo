@@ -73,6 +73,12 @@
               ><var:string value="organizerName" /></a
               ></span></label>
       </var:if>
+      <var:if condition="hasCreatedBy"
+	><label id="createdByLabel"><var:string label:value="Created by:"
+	    /><span class="content"><a var:href="createdByLink" var:email="createdBy"
+	      ><var:string value="createdByName" /></a
+	      ></span></label>
+      </var:if>
       <!--<var:if condition="canBeOrganizer"
 	><label id="organizerListLabel"><var:string label:value="Organizer:"
 	    /><span class="content"><var:popup list="organizerList"
@@ -218,6 +224,13 @@
     <label id="organizerLabel"><var:string label:value="Organizer:"/>
     <span class="content"><a var:href="organizer.email" var:email="organizer.email.rfc822Email"
       ><var:string value="organizerName" /></a
+    ></span>
+    </label>
+  </var:if>
+  <var:if condition="hasCreatedBy">
+    <label id="createdByLabel"><var:string label:value="Created by:"/>
+    <span class="content"><a var:href="createdBy" var:email="createdBy"
+      ><var:string value="createdByName" /></a
     ></span>
     </label>
   </var:if>

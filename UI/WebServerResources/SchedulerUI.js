@@ -760,7 +760,14 @@ function onViewEventCallback(http) {
             } else
                 para.hide();
 
-            para = $(paras[3]);
+	    para = $(paras[3]);
+            if (data["created_by"].length) {
+		para.down("SPAN", 1).update(data["created_by"]);
+                para.show();
+            } else
+                para.hide();
+
+            para = $(paras[4]);
             if (data["description"].length) {
                 para.update(data["description"].replace(/\r?\n/g, "<BR/>"));
                 para.show();

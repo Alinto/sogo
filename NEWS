@@ -10,6 +10,7 @@ Enhancements
    SOGoMaximumMessageSubmissionCount, SOGoMaximumRecipientCount,
    SOGoMaximumSubmissionInterval and SOGoMessageSubmissionBlockInterval defaults 
  - now possible to send or not event notifications on a per-event basis
+ - now possible to see who created an event/task in a delegated calendar
 
 Bug fixes
  - Fixed decoding of the charset parameter when using single quotes (#2306)
