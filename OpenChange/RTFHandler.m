@@ -777,6 +777,10 @@ const unsigned short ansicpg874[256] = {
               [_html appendBytes: v  length: strlen(v)];
               free(v);
             }
+          else if ([s hasPrefix: @"fcs"])
+            {
+              // ignore
+            }
           else if ([s hasPrefix: @"fs"])
             {
               // ignore
