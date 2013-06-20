@@ -648,6 +648,17 @@ static memcached_st *handle = NULL;
           forKey: [NSString stringWithFormat: @"cas-pgtiou:%@", pgtIou]];
 }
 
+- (void) removeCASSessionWithTicket: (NSString *) ticket
+{
+  NSString *key, *session;
+  if ((session = [self CASSessionWithTicket: ticket]))
+    {
+      key = [NSString stringWithFormat: @"cas-ticket:%@", ticket];
+      [self removeValueForKey: key];
+      [self debugWithFormat: @"Removed session: %@", session];
+    }
+}
+
 // SAML2 support
 - (NSDictionary *) saml2LoginDumpsForIdentifier: (NSString *) identifier
 {

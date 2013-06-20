@@ -122,6 +122,8 @@
 - (void) setCASPGTId: (NSString *) pgtId
            forPGTIOU: (NSString *) pgtIou;
 
+- (void) removeCASSessionWithTicket: (NSString *) ticket;
+
 // SAML2 support
 - (NSDictionary *) saml2LoginDumpsForIdentifier: (NSString *) identifier;
 - (void) setSaml2LoginDumps: (NSDictionary *) dump

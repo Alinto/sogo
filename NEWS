@@ -20,6 +20,7 @@ Bug fixes
  - fixed public access when SOGoTrustProxyAuthentication is used (#2237)
  - fixed access right issues with import feature (#2294)
  - fixed IMAP ACL issue when SOGoForceExternalLoginWithEmail is used (#2313)
+ - fixed handling of CAS logoutRequest (#2346)
  - OpenChange stability fixes
 
 2.0.5a (2013-04-17)
