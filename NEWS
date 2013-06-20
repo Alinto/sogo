@@ -11,14 +11,16 @@ Enhancements
    SOGoMaximumSubmissionInterval and SOGoMessageSubmissionBlockInterval defaults 
  - now possible to send or not event notifications on a per-event basis
  - now possible to see who created an event/task in a delegated calendar
+ - multi-domain support in OpenChange (implemented as a workaround)
 
 Bug fixes
- - Fixed decoding of the charset parameter when using single quotes (#2306)
- - Fixed potential crash when sending MDN from Sent folder (#2209)
- - Fixed handling of unicode separators (#2309)
- - Fixed public access when SOGoTrustProxyAuthentication is used (#2237)
- - Fixed access right issues with import feature (#2294)
- - Fixed IMAP ACL issue when SOGoForceExternalLoginWithEmail is used (#2313)
+ - fixed decoding of the charset parameter when using single quotes (#2306)
+ - fixed potential crash when sending MDN from Sent folder (#2209)
+ - fixed handling of unicode separators (#2309)
+ - fixed public access when SOGoTrustProxyAuthentication is used (#2237)
+ - fixed access right issues with import feature (#2294)
+ - fixed IMAP ACL issue when SOGoForceExternalLoginWithEmail is used (#2313)
+ - OpenChange stability fixes
 
 2.0.5a (2013-04-17)
 ------------------
