@@ -461,7 +461,7 @@ static Class NSNumberK;
               [mapping setObject: cLastModified forKey: changeNumber];
               [messageEntry setObject: changeNumber forKey: @"version"];
 
-              newChangeNum = [changeNumber unsignedLongValue];
+              newChangeNum = [changeNumber unsignedLongLongValue];
               changeKey = [self getReplicaKeyFromGlobCnt: newChangeNum >> 16];
               [self _setChangeKey: changeKey forMessageEntry: messageEntry
                  inChangeListOnly: NO];
