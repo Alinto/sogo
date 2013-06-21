@@ -11,7 +11,7 @@ Enhancements
    SOGoMaximumSubmissionInterval and SOGoMessageSubmissionBlockInterval defaults 
  - now possible to send or not event notifications on a per-event basis
  - now possible to see who created an event/task in a delegated calendar
- - multi-domain support in OpenChange (implemented as a workaround)
+ - multi-domain support in OpenChange (implemented using a trick)
 
 Bug fixes
  - fixed decoding of the charset parameter when using single quotes (#2306)
