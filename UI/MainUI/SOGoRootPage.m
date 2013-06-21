@@ -172,6 +172,9 @@
             andJSONRepresentation: jsonError];
 }
 
+//
+//
+//
 - (id <WOActionResults>) connectAction
 {
   WOResponse *response;
@@ -269,10 +272,13 @@
 {
   NSDictionary *redirectKeys;
   NSURL *soURL;
+  NSString *serviceURL;
 
   soURL = [[WOApplication application] soURL];
+  // appending 'index' to /SOGo/so/. Matches serviceURL sent by _pgtUrlFromURL
+  serviceURL = [NSString stringWithFormat: @"%@index", [soURL absoluteString]];
 
-  redirectKeys = [NSDictionary dictionaryWithObject: [soURL absoluteString]
+  redirectKeys = [NSDictionary dictionaryWithObject: serviceURL
                                              forKey: @"service"];
 
   return redirectKeys;
@@ -299,7 +305,7 @@
 - (id <WOActionResults>) _casDefaultAction
 {
   WOResponse *response;
-  NSString *login, *newLocation, *oldLocation, *ticket;
+  NSString *login, *logoutRequest, *newLocation, *oldLocation, *ticket;
   SOGoCASSession *casSession;
   SOGoWebAuthenticator *auth;
   WOCookie *casCookie, *casLocationCookie;
@@ -335,6 +341,18 @@
                  below */
               casLocationCookie = [self _authLocationCookie: YES
                                                    withName: @"cas-location"];
+            }
+        }
+      else
+        {
+          /* anonymous and no ticket, possibly a logout request from CAS
+           * See: https://wiki.jasig.org/display/CASUM/Single+Sign+Out
+           */
+          logoutRequest = [rq formValueForKey: @"logoutRequest"];
+          if ([logoutRequest length])
+            {
+              [SOGoCASSession handleLogoutRequest: logoutRequest];
+              return [self responseWithStatus: 200];
             }
         }
     }

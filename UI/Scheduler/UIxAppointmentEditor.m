@@ -2,9 +2,6 @@
  *
  * Copyright (C) 2007-2013 Inverse inc.
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
- *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -51,6 +48,7 @@
 #import <SOGo/SOGoPermissions.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <Appointments/iCalEntityObject+SOGo.h>
 #import <Appointments/iCalPerson+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentObject.h>
@@ -75,6 +73,7 @@
       event = nil;
       isAllDay = NO;
       isTransparent = NO;
+      sendAppointmentNotifications = YES;
       componentCalendar = nil;
 
       user = [[self context] activeUser];
@@ -138,6 +137,17 @@
 {
   isTransparent = newIsTransparent;
 }
+
+- (void) setSendAppointmentNotifications: (BOOL) theBOOL
+{
+  sendAppointmentNotifications = theBOOL;
+}
+
+- (BOOL) sendAppointmentNotifications
+{
+  return sendAppointmentNotifications;
+}
+
 
 - (void) setAptStartDate: (NSCalendarDate *) newAptStartDate
 {
@@ -279,6 +289,7 @@
       endDate
         = [startDate dateByAddingYears: 0 months: 0 days: 0
                                  hours: hours minutes: minutes seconds: 0];
+      sendAppointmentNotifications = YES;
     }
   else
     {
@@ -296,7 +307,8 @@
           endDate = [endDate dateByAddingYears:0 months:0 days:0 hours:0 minutes:0
                                        seconds:-offset];
         }
-      isTransparent = ![event isOpaque];
+      isTransparent = ![event isOpaque]; 
+      sendAppointmentNotifications = ([event firstChildWithTag: @"X-SOGo-Send-Appointment-Notifications"] ? NO : YES);
     }
 
   [startDate setTimeZone: timeZone];
@@ -456,6 +468,8 @@
   NSTimeZone *timeZone;
   SOGoUserDefaults *ud;
   SOGoCalendarComponent *co;
+  NSString *created_by;
+
   BOOL resetAlarm;
   unsigned int snoozeAlarm;
 
@@ -501,6 +515,8 @@
         }
     }
 
+  created_by = [event createdBy];
+
   data = [NSDictionary dictionaryWithObjectsAndKeys:
                        [componentCalendar displayName], @"calendar",
                        [event tag], @"component",
@@ -512,6 +528,7 @@
                        ([event isAllDay] ? @"1": @"0"), @"isAllDay",
                        [event summary], @"summary",
                        [event location], @"location",
+		       created_by, @"created_by",
                        [event comment], @"description",
                        nil];
   
@@ -541,6 +558,7 @@
   NSTimeZone *timeZone;
   SOGoUserDefaults *ud;
   signed int offset;
+  id o;
   
   [self event];  
   [super takeValuesFromRequest: _rq inContext: _ctx];
@@ -594,6 +612,14 @@
     }
 
   [event setTransparency: (isTransparent? @"TRANSPARENT" : @"OPAQUE")];
+
+  o = [event firstChildWithTag: @"X-SOGo-Send-Appointment-Notifications"];
+
+  if (!sendAppointmentNotifications && !o)
+    [event addChild: [CardElement simpleElementWithTag: @"X-SOGo-Send-Appointment-Notifications"  value: @"NO"]];
+  else if (sendAppointmentNotifications && o)
+    [event removeChild: o];
+  
 }
 
 - (id) _statusChangeAction: (NSString *) newStatus

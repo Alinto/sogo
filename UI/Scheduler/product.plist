@@ -150,7 +150,7 @@
           actionName  = "redirectForUIDs";
         };
         import = {
-          protectedBy = "View";
+          protectedBy = "Add Documents, Images, and Files";
           actionClass = "UIxCalFolderActions";
           actionName  = "import";
         };

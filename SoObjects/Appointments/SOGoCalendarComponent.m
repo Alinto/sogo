@@ -760,6 +760,10 @@
   SOGoUser *ownerUser;
   SOGoDomainDefaults *dd;
 
+  // If defined, we return immediately. When not defined, we send the notifications correctly
+  if ([object firstChildWithTag: @"X-SOGo-Send-Appointment-Notifications"])
+    return;
+
   ownerUser = [SOGoUser userWithLogin: owner];
   dd = [ownerUser domainDefaults];
   if ([dd appointmentSendEMailNotifications] && [object isStillRelevant])

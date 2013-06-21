@@ -1,4 +1,30 @@
+2.0.6 (2013-06-21)
+------------------
+
+Enhancements
+ - updated CKEditor to version 4.1.1 (#2333)
+ - new failed login attemps rate-limiting options. See the new
+   SOGoMaximumFailedLoginCount, SOGoMaximumFailedLoginInterval and
+   SOGoFailedLoginBlockInterval defaults
+ - new message submissions rate-limiting options. See the new
+   SOGoMaximumMessageSubmissionCount, SOGoMaximumRecipientCount,
+   SOGoMaximumSubmissionInterval and SOGoMessageSubmissionBlockInterval defaults 
+ - now possible to send or not event notifications on a per-event basis
+ - now possible to see who created an event/task in a delegated calendar
+ - multi-domain support in OpenChange (implemented using a trick)
+
+Bug fixes
+ - fixed decoding of the charset parameter when using single quotes (#2306)
+ - fixed potential crash when sending MDN from Sent folder (#2209)
+ - fixed handling of unicode separators (#2309)
+ - fixed public access when SOGoTrustProxyAuthentication is used (#2237)
+ - fixed access right issues with import feature (#2294)
+ - fixed IMAP ACL issue when SOGoForceExternalLoginWithEmail is used (#2313)
+ - fixed handling of CAS logoutRequest (#2346)
+ - fixed many major OpenChange stability issues
+
 2.0.5a (2013-04-17)
+------------------
 
 Bug fixes
  - Fixed an issue when parsing user CN with leading or trailing spaces (#2287)

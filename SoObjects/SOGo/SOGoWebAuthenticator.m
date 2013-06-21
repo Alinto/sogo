@@ -74,7 +74,7 @@
 }
 
 - (BOOL) checkLogin: (NSString *) _login
-	   password: (NSString *) _pwd
+           password: (NSString *) _pwd
 { 
   NSString *username, *password, *domain, *value;
   SOGoPasswordPolicyError perr;
@@ -168,7 +168,7 @@
                                                     perr: _perr
                                                   expire: _expire
                                                    grace: _grace
-                                                   useCache: _useCache];
+                                                useCache: _useCache];
   
   //[self logWithFormat: @"Checked login with ppolicy enabled: %d %d %d", *_perr, *_expire, *_grace];
   
@@ -269,31 +269,42 @@
                           forceRenew: (BOOL) renew
 {
   NSString *authType, *password;
+  SOGoSystemDefaults *sd;
  
   password = [self passwordInContext: context];
   if ([password length])
     {
-      authType = [[SOGoSystemDefaults sharedSystemDefaults]
-                   authenticationType];
+      sd = [SOGoSystemDefaults sharedSystemDefaults];
+      authType = [sd authenticationType];
       if ([authType isEqualToString: @"cas"])
         {
           SOGoCASSession *session;
+          SOGoUser *user;
           NSString *service, *scheme;
 
           session = [SOGoCASSession CASSessionWithIdentifier: password
                                                    fromProxy: NO];
 
-	  // We must NOT assume the scheme exists
-	  scheme = [server scheme];
+          user = [self userInContext: context];
+          // Try configured CAS service name first
+          service = [[user domainDefaults] imapCASServiceName];
+          if (!service)
+            {
+              // We must NOT assume the scheme exists
+              scheme = [server scheme];
 
-	  if (!scheme)
-	    scheme = @"imap";
+              if (!scheme)
+                scheme = @"imap";
 
-	  service = [NSString stringWithFormat: @"%@://%@", scheme, [server host]];
+              service = [NSString stringWithFormat: @"%@://%@",
+                         scheme, [server host]];
+            }
 
           if (renew)
             [session invalidateTicketForService: service];
+
           password = [session ticketForService: service];
+
           if ([password length] || renew)
             [session updateCache];
         }
@@ -322,8 +333,8 @@
 /* create SOGoUser */
 
 - (SOGoUser *) userWithLogin: (NSString *) login
-		    andRoles: (NSArray *) roles
-		   inContext: (WOContext *) ctx
+                    andRoles: (NSArray *) roles
+                   inContext: (WOContext *) ctx
 {
   /* the actual factory method */
   return [SOGoUser userWithLogin: login roles: roles];
@@ -339,7 +350,7 @@
   NSString *auth;
 
   auth = [[context request]
-	   cookieValueForKey: [self cookieNameInContext:context]];
+           cookieValueForKey: [self cookieNameInContext:context]];
   if ([auth isEqualToString: @"discard"])
     {
       [context setObject: [NSArray arrayWithObject: SoRole_Anonymous]
@@ -353,8 +364,8 @@
 }
 
 - (void) setupAuthFailResponse: (WOResponse *) response
-		    withReason: (NSString *) reason
-		     inContext: (WOContext *) context
+                    withReason: (NSString *) reason
+                     inContext: (WOContext *) context
 {
   WOComponent *page;
   WORequest *request;

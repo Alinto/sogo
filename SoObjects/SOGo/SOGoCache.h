@@ -1,6 +1,6 @@
 /* SOGoCache.h - this file is part of SOGo
  *
- * Copyright (C) 2008-2011 Inverse inc.
+ * Copyright (C) 2008-2013 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Ludovic Marcotte <lmarcotte@inverse.ca>
@@ -98,6 +98,17 @@
                 forLogin: (NSString *) login;
 - (NSString *) userSettingsForLogin: (NSString *) theLogin;
 
+- (void) setFailedCount: (int) theCount
+               forLogin: (NSString *) theLogin;
+
+- (NSDictionary *) failedCountForLogin: (NSString *) login;
+
+- (void) setMessageSubmissionsCount: (int) theCount
+                    recipientsCount: (int) theRecipientsCount
+                           forLogin: (NSString *) theLogin;
+
+- (NSDictionary *) messageSubmissionsCountForLogin: (NSString *) theLogin;
+
 //
 // CAS support
 //
@@ -110,6 +121,8 @@
 - (NSString *) CASPGTIdFromPGTIOU: (NSString *) pgtIou;
 - (void) setCASPGTId: (NSString *) pgtId
            forPGTIOU: (NSString *) pgtIou;
+
+- (void) removeCASSessionWithTicket: (NSString *) ticket;
 
 // SAML2 support
 - (NSDictionary *) saml2LoginDumpsForIdentifier: (NSString *) identifier;

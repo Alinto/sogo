@@ -54,9 +54,13 @@ var CKBUILDER_CONFIG = {
 		'scayt' : 1,
 		'format' : 1,
 		'justify' : 1,
-		'wsc' : 1
+		'wsc' : 1,
+		'colordialog' : 1,
+		'contextmenu' : 1,
+		'blockquote' : 1
 	},
 	languages : {
+		'ar' : 1,
 		'ca' : 1,
 		'cs' : 1,
 		'da' : 1,
@@ -71,7 +75,7 @@ var CKBUILDER_CONFIG = {
 		'no' : 1,
 		'nb' : 1,
 		'pl' : 1,
-		'pt' : 1,
+		'pt-br' : 1,
 		'ru' : 1,
 		'sk' : 1,
 		'es' : 1,

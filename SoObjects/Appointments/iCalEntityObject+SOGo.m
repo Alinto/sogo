@@ -242,4 +242,19 @@ NSNumber *iCalDistantFutureNumber = nil;
   return priorityNumber;
 }
 
+- (NSString *) createdBy
+{
+  NSString *created_by;
+
+  created_by = [[self firstChildWithTag: @"X-SOGo-Component-Created-By"] flattenedValuesForKey: @""];
+  
+  // We consider "SENT-BY" in case our custom header isn't found
+  if (![created_by length])
+    {
+      created_by = [[self organizer] sentBy];
+    }
+
+  return created_by;
+}
+
 @end

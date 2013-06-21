@@ -1,8 +1,6 @@
 /* UIxAppointmentEditor.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +29,7 @@
 @interface UIxAppointmentEditor : UIxComponent
 {
   iCalEvent *event;
-  BOOL isAllDay, isTransparent;
+  BOOL isAllDay, isTransparent, sendAppointmentNotifications;
   NSCalendarDate *aptStartDate;
   NSCalendarDate *aptEndDate;
   NSString *item;
@@ -49,6 +47,9 @@
 
 - (void) setIsTransparent: (BOOL) newIsOpaque;
 - (BOOL) isTransparent;
+
+- (void) setSendAppointmentNotifications: (BOOL) theBOOL;
+- (BOOL) sendAppointmentNotifications;
 
 - (void) setAptStartDate: (NSCalendarDate *) newAptStartDate;
 - (NSCalendarDate *) aptStartDate;

@@ -51,6 +51,8 @@
 + (SOGoCASSession *) CASSessionWithIdentifier: (NSString *) newIdentifier
                                 fromProxy: (BOOL) fromProxy;
 
++ (void) handleLogoutRequest: (NSString *) logoutRequest;
+
 - (NSString *) identifier;
 
 - (NSString *) ticket;
@@ -62,6 +64,15 @@
 - (void) invalidateTicketForService: (NSString *) service;
 
 - (void) updateCache;
+
+@end
+
+@interface CASLogoutRequest : NSObject
+{
+  NSString *sessionIndex;
+}
+
+- (NSString *) sessionIndex;
 
 @end
 

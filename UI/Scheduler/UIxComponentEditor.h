@@ -143,6 +143,10 @@
 - (NSString *) attach;
 
 - (BOOL) hasAttendees;
+- (BOOL) hasCreatedBy;
+- (NSString *) createdBy;
+- (NSString *) createdByLink;
+- (NSString *) createdByName;
 
 - (NSString *) jsonAttendees;
 

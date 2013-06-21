@@ -1,6 +1,6 @@
 /* SOGoSystemDefaults.h - this file is part of SOGo
  *
- * Copyright (C) 2009-2011 Inverse inc.
+ * Copyright (C) 2009-2013 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Francis Lachapelle <flachapelle@inverse.ca>
@@ -85,6 +85,15 @@
 - (BOOL) SAML2LogoutEnabled;
 
 - (BOOL) enablePublicAccess;
+
+- (int) maximumFailedLoginCount;
+- (int) maximumFailedLoginInterval;
+- (int) failedLoginBlockInterval;
+
+- (int) maximumMessageSubmissionCount;
+- (int) maximumRecipientCount;
+- (int) maximumSubmissionInterval;
+- (int) messageSubmissionBlockInterval;
 
 @end
 

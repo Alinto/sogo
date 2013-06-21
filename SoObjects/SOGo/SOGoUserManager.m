@@ -1,6 +1,6 @@
 /* SOGoUserManager.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2011 Inverse inc.
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *         Francis Lachapelle <flachapelle@inverse.ca>
@@ -447,6 +447,9 @@ static Class NSNullK;
   return checkOK;
 }
 
+//
+//
+//
 - (BOOL) checkLogin: (NSString *) _login
            password: (NSString *) _pwd
              domain: (NSString **) _domain
@@ -463,6 +466,9 @@ static Class NSNullK;
                    useCache: YES];
 }
 
+//
+//
+//
 - (BOOL) checkLogin: (NSString *) _login
            password: (NSString *) _pwd
              domain: (NSString **) _domain
@@ -471,8 +477,9 @@ static Class NSNullK;
               grace: (int *) _grace
            useCache: (BOOL) useCache
 {
+  NSMutableDictionary *currentUser, *failedCount;
   NSString *dictPassword, *username, *jsonUser;
-  NSMutableDictionary *currentUser;
+  SOGoSystemDefaults *dd;
   BOOL checkOK;
  
   // We check for cached passwords. If the entry is cached, we 
@@ -482,6 +489,41 @@ static Class NSNullK;
     username = [NSString stringWithFormat: @"%@@%@", _login, *_domain];
   else
     username = _login;
+
+  failedCount = [[SOGoCache sharedCache] failedCountForLogin: username];
+  dd = [SOGoSystemDefaults sharedSystemDefaults];
+
+  //
+  // We check the fail count per user in memcache (per server). If the
+  // fail count reaches X in Y minutes, we deny immediately the
+  // authentications for Z minutes
+  //
+  if (failedCount)
+    {
+      unsigned int current_time, start_time, delta, block_time;
+
+      current_time = [[NSCalendarDate date] timeIntervalSince1970];
+      start_time = [[failedCount objectForKey: @"InitialDate"] unsignedIntValue];
+      delta = current_time - start_time;
+
+      block_time = [dd failedLoginBlockInterval];
+      
+      if ([[failedCount objectForKey: @"FailedCount"] intValue] >= [dd maximumFailedLoginCount] &&
+          delta >= [dd maximumFailedLoginInterval] &&
+          delta <= block_time )
+        {
+          *_perr = PolicyAccountLocked;
+          return NO;
+        }
+      
+      if (delta > block_time)
+        {
+          [[SOGoCache sharedCache] setFailedCount: 0
+                                         forLogin: username];
+        }
+    }
+
+
   jsonUser = [[SOGoCache sharedCache] userAttributesForLogin: username];
   currentUser = [jsonUser objectFromJSONString];
   dictPassword = [currentUser objectForKey: @"password"];
@@ -514,7 +556,16 @@ static Class NSNullK;
                  forLogin: username];
     }
   else
-    checkOK = NO;
+    {
+      // If failed login "rate-limiting" is enabled, we adjust the stats
+      if ([dd maximumFailedLoginCount])
+        {
+          [[SOGoCache sharedCache] setFailedCount: ([[failedCount objectForKey: @"FailedCount"] intValue] + 1)
+                                         forLogin: username];
+        }
+      
+      checkOK = NO;
+    }
 
   // We MUST, for all LDAP sources, update the bindDN and bindPassword
   // to the user's value if bindAsCurrentUser is set to true in the
@@ -538,6 +589,9 @@ static Class NSNullK;
   return checkOK;
 }
 
+//
+//
+//
 - (BOOL) changePasswordForLogin: (NSString *) login
                        inDomain: (NSString *) domain
 		    oldPassword: (NSString *) oldPassword

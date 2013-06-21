@@ -140,7 +140,8 @@ SOGo_OBJC_FILES = \
 
 SOGo_RESOURCE_FILES = \
 	SOGoDefaults.plist \
-	DAVReportMap.plist
+	DAVReportMap.plist \
+	CASLogoutRequestMap.plist
 
 ifeq ($(saml2_config), yes)
 	SOGo_HEADER_FILES += SOGoSAML2Session.h SOGoSAML2Exceptions.h

@@ -693,7 +693,15 @@ _compareBodyKeysByPriority (id entry1, id entry2, void *data)
   ngAddress = [[NGMailAddressParser mailAddressParserWithString: fullMail]
                 parse];
   if ([ngAddress isKindOfClass: [NGMailAddress class]])
-    cn = [ngAddress displayName];
+    {
+      cn = [ngAddress displayName];
+      
+      // If we don't have a displayName, we use the email address instead. This
+      // avoid bug #2119 - where Outlook won't display anything in the "From" field,
+      // nor in the recipient field if we reply to the email.
+      if (![cn length])
+	cn = [ngAddress address];
+    }
   else
     cn = @"";
 

@@ -53,6 +53,13 @@
             var:checked="isTransparent"
             /> <var:string label:value="Show Time as Free"
             /></span></span></label>
+    <label><span class="content">
+        <span id="sendAppointmentNotifications"><input class="checkBox"
+            type="checkbox" name="sendAppointmentNotifications" var:selection="sendAppointmentNotifications"
+            var:checked="sendAppointmentNotifications"
+            /> <var:string label:value="Send Appointment Notifications"
+            /></span></span></label>
+
   </var:if>
   <var:if condition="eventIsReadOnly">
     <var:if condition="isAllDay">

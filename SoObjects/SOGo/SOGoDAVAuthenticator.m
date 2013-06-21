@@ -51,7 +51,7 @@
 }
 
 - (BOOL) checkLogin: (NSString *) _login
-	   password: (NSString *) _pwd
+           password: (NSString *) _pwd
 {
   NSString *domain;
   SOGoSystemDefaults *sd;
@@ -66,7 +66,7 @@
           checkLogin: [_login stringByReplacingString: @"%40"
                                            withString: @"@"]
             password: _pwd
-	      domain: &domain
+              domain: &domain
                 perr: &perr
               expire: &expire
                grace: &grace]
@@ -99,7 +99,7 @@
     {
       creds = [self parseCredentials: auth];
       if ([creds count] > 1)
-	password = [creds objectAtIndex: 1];
+        password = [creds objectAtIndex: 1];
     }
 
   return password;
@@ -122,17 +122,19 @@
           session = [SOGoCASSession CASSessionWithTicket: password
                                                fromProxy: YES];
 
-	  // We must NOT assume the scheme exists
-	  scheme = [server scheme];
+          // We must NOT assume the scheme exists
+          scheme = [server scheme];
 
-	  if (!scheme)
-	    scheme = @"imap";
+          if (!scheme)
+            scheme = @"imap";
 
-	  service = [NSString stringWithFormat: @"%@://%@", scheme, [server host]];
+          service = [NSString stringWithFormat: @"%@://%@", scheme, [server host]];
 
           if (renew)
             [session invalidateTicketForService: service];
+
           password = [session ticketForService: service];
+
           if ([password length] || renew)
             [session updateCache];
         }

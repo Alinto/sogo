@@ -1,6 +1,6 @@
 /* SOGoSystemDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2012 Inverse inc.
+ * Copyright (C) 2009-2013 Inverse inc.
  * Copyright (C) 2012 Jeroen Dekkers <jeroen@dekkers.ch>
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
@@ -511,6 +511,75 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
 - (BOOL) enablePublicAccess
 {
   return [self boolForKey: @"SOGoEnablePublicAccess"];
+}
+
+//
+//
+//
+- (int) maximumFailedLoginCount
+{
+  return [self integerForKey: @"SOGoMaximumFailedLoginCount"];
+}
+
+- (int) maximumFailedLoginInterval
+{
+  int v;
+
+  v = [self integerForKey: @"SOGoMaximumFailedLoginInterval"];
+
+  if (!v)
+    v = 10;
+
+  return v;
+}
+
+- (int) failedLoginBlockInterval
+{
+  int v;
+
+  v = [self integerForKey: @"SOGoFailedLoginBlockInterval"];
+
+  if (!v)
+    v = 300;
+
+  return v;
+}
+
+//
+//
+//
+- (int) maximumMessageSubmissionCount
+{
+  return [self integerForKey: @"SOGoMaximumMessageSubmissionCount"];
+}
+
+- (int) maximumRecipientCount
+{
+  return [self integerForKey: @"SOGoMaximumRecipientCount"];
+}
+
+- (int) maximumSubmissionInterval
+{
+  int v;
+
+  v = [self integerForKey: @"SOGoMaximumSubmissionInterval"];
+
+  if (!v)
+    v = 30;
+
+  return v;
+}
+
+- (int) messageSubmissionBlockInterval
+{
+  int v;
+
+  v = [self integerForKey: @"SOGoMessageSubmissionBlockInterval"];
+
+  if (!v)
+    v = 300;
+
+  return v;
 }
 
 @end

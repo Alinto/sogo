@@ -147,7 +147,7 @@ rm -fr ${RPM_BUILD_ROOT}
 # small tweak to the python script for RHEL5
 # if hex(sys.hexversion) < 0x02060000
 %if %{python_sys_pyver} < 33947648
-  sed -i 's!/usr/bin/env python!/usr/bin/env python2.6!' Scripts/openchange_cleanup.py
+  sed -i 's!/usr/bin/env python!/usr/bin/env python2.6!' Scripts/openchange_user_cleanup
 %endif
 
 
@@ -203,6 +203,7 @@ install -d ${RPM_BUILD_ROOT}/var/run/sogo
 install -d ${RPM_BUILD_ROOT}/var/spool/sogo
 install -d -m 750 -o %sogo_user -g %sogo_user ${RPM_BUILD_ROOT}/etc/sogo
 install -m 640 -o %sogo_user -g %sogo_user Scripts/sogo.conf ${RPM_BUILD_ROOT}/etc/sogo/
+install -m 755 Scripts/openchange_user_cleanup ${RPM_BUILD_ROOT}/%{_sbindir}
 cat Apache/SOGo.conf | sed -e "s@/lib/@/%{_lib}/@g" > ${RPM_BUILD_ROOT}/etc/httpd/conf.d/SOGo.conf
 install -m 600 Scripts/sogo.cron ${RPM_BUILD_ROOT}/etc/cron.d/sogo
 cp Scripts/tmpwatch ${RPM_BUILD_ROOT}/etc/cron.daily/sogo-tmpwatch
@@ -239,6 +240,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %dir %attr(0700, %sogo_user, %sogo_user) %{_var}/spool/sogo
 %dir %attr(0750, root, %sogo_user) %{_sysconfdir}/sogo
 %{_sbindir}/sogod
+%{_sbindir}/openchange_user_cleanup
 %{_libdir}/libSOGo.so.*
 %{_libdir}/libSOGoUI.so.*
 %{_libdir}/libOGoContentStore.so*
@@ -258,7 +260,7 @@ rm -fr ${RPM_BUILD_ROOT}
 %config(noreplace) %{_sysconfdir}/cron.d/sogo
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/SOGo.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/sogo
-%doc ChangeLog NEWS Scripts/*sh Scripts/*py Scripts/updates.php Apache/SOGo-apple-ab.conf
+%doc ChangeLog NEWS Scripts/*sh Scripts/updates.php Apache/SOGo-apple-ab.conf
 
 %files -n sogo-tool
 %{_sbindir}/sogo-tool
@@ -337,6 +339,9 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Thu Apr 17 2013 Jean Raby <jraby@inverse.ca>
+- Install openchange_user_cleanup in sbindir instead of doc
+
 * Wed Apr 10 2013 Jean Raby <jraby@inverse.ca>
 - use %sogo_user instead of 'sogo'
 - install a sample sogo.conf in /etc/sogo

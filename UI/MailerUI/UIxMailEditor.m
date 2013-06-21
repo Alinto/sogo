@@ -46,6 +46,8 @@
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMime/NGMimeType.h>
 
+#import <SOGo/SOGoCache.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
@@ -659,12 +661,57 @@ static NSArray *infoKeys = nil;
   return error;
 }
 
+//
+//
+//
 - (WOResponse *) sendAction
 {
   SOGoDraftObject *co;
   NSDictionary *jsonResponse;
   NSException *error;
   NSMutableArray *errorMsg;
+  NSDictionary *messageSubmissions;
+  SOGoSystemDefaults *dd;
+
+  int messages_count, recipients_count;
+
+  messageSubmissions = [[SOGoCache sharedCache] messageSubmissionsCountForLogin: [[context activeUser] login]];
+  dd = [SOGoSystemDefaults sharedSystemDefaults];
+  messages_count = recipients_count = 0;
+
+  if (messageSubmissions)
+    {
+      unsigned int current_time, start_time, delta, block_time;
+
+      current_time = [[NSCalendarDate date] timeIntervalSince1970];
+      start_time = [[messageSubmissions objectForKey: @"InitialDate"] unsignedIntValue];
+      delta = current_time - start_time;
+
+      block_time = [dd messageSubmissionBlockInterval];
+      messages_count = [[messageSubmissions objectForKey: @"MessagesCount"] intValue];
+      recipients_count =  [[messageSubmissions objectForKey: @"RecipientsCount"] intValue];
+      
+      if ((messages_count >= [dd maximumMessageSubmissionCount] || recipients_count >= [dd maximumRecipientCount]) &&
+          delta >= [dd maximumSubmissionInterval] &&
+          delta <= block_time )
+        {
+          jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                         @"failure", @"status",
+                                       [self labelForKey: @"Tried to send too many mails. Please wait."],
+                                       @"message",
+                                       nil];
+          return [self responseWithStatus: 200
+                                andString: [jsonResponse jsonRepresentation]];
+        }
+      
+      if (delta > block_time)
+        {
+          [[SOGoCache sharedCache] setMessageSubmissionsCount: 0
+                                              recipientsCount: 0
+                                                     forLogin: [[context activeUser] login]];
+        }
+
+    }
 
   co = [self clientObject];
 
@@ -691,11 +738,23 @@ static NSArray *infoKeys = nil;
 				   nil];
     }
   else
-    jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
-                                   @"success", @"status",
-                                 [co sourceFolder], @"sourceFolder",
-                                 [NSNumber numberWithInt: [co IMAP4ID]], @"messageID",
-                                 nil];
+    {
+      jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     @"success", @"status",
+                                   [co sourceFolder], @"sourceFolder",
+                                        [NSNumber numberWithInt: [co IMAP4ID]], @"messageID",
+                                   nil];
+     
+      recipients_count += [[co allRecipients] count];
+      messages_count += 1;
+      
+      if ([dd maximumMessageSubmissionCount] > 0 && [dd maximumRecipientCount] > 0)
+        {
+          [[SOGoCache sharedCache] setMessageSubmissionsCount: messages_count
+                                              recipientsCount: recipients_count
+                                                     forLogin: [[context activeUser] login]];
+        }
+    }
 
   return [self responseWithStatus: 200
                         andString: [jsonResponse jsonRepresentation]];

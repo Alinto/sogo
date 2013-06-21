@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# SOGOSPOOL must match the value of the configuration parameter SOGoMailSpoolPath
 SOGOSPOOL=/var/spool/sogo
 
 /usr/sbin/tmpwatch 24 "$SOGOSPOOL"
