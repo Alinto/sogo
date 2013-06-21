@@ -117,7 +117,6 @@
   CASLogoutRequest *rq;
   SOGoCache *cache;
   NSBundle *bundle;
-  NSDictionary *root;
   NSString *mapFile, *sessionIndex;
 
   bundle = [NSBundle bundleForClass: [self class]];
@@ -144,8 +143,7 @@
 
   if ([sessionIndex length])
     {
-      cache = [SOGoCache sharedCache];
-      [cache removeCASSessionWithTicket: sessionIndex];
+      [[SOGoCache sharedCache] removeCASSessionWithTicket: sessionIndex];
     }
 }
 

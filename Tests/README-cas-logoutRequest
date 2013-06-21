@@ -1,0 +1,23 @@
+Sample HTTP request to exercise the CAS handleLogoutRequest code.
+Can be fed to sogo using nc or openssl s_client:
+  nc devsogo 80 <postdata
+
+
+POST /SOGo/so/index HTTP/1.1
+Host: devsogo.inverse
+Content-Type: application/x-www-form-urlencoded
+Cache-Control: no-cache
+Pragma: no-cache
+User-Agent: Java/1.6.0_27
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+x-webobjects-server-port: 80
+x-webobjects-server-name: devsogo.inverse
+x-webobjects-server-url: https://devsogo.inverse
+x-webobjects-server-protocol: HTTP/1.0
+X-Forwarded-For: 127.0.0.1
+X-Forwarded-Host: devsogo.inverse
+X-Forwarded-Server: sogo.example.com
+Connection: close
+Content-Length: 488
+
+logoutRequest=%3Csamlp%3ALogoutRequest+xmlns%3Asamlp%3D%22urn%3Aoasis%3Anames%3Atc%3ASAML%3A2.0%3Aprotocol%22+ID%3D%22LR-235-vSfcLm3toF5lI1fithokTkBJqtAvo2JeI4X%22+Version%3D%222.0%22+IssueInstant%3D%222013-06-20T16%3A16%3A23Z%22%3E%3Csaml%3ANameID+xmlns%3Asaml%3D%22urn%3Aoasis%3Anames%3Atc%3ASAML%3A2.0%3Aassertion%22%3E%40NOT_USED%40%3C%2Fsaml%3ANameID%3E%3Csamlp%3ASessionIndex%3EST-242-MNlCHMMTJthSzx7oJEgI-cas01.example.org%3C%2Fsamlp%3ASessionIndex%3E%3C%2Fsamlp%3ALogoutRequest%3E
