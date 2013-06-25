@@ -1,0 +1,22 @@
+{
+  /*  <samlp:LogoutRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="LR-101-ukLsAdi2dgeqM79coNFdFYxhlODDilY7ALx" Version="2.0" IssueInstant="2013-06-19T11:10:23Z">
+   *    <saml:NameID xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">@NOT_USED@</saml:NameID>
+   *    <samlp:SessionIndex>ST-114-ypmWHaklq3vPxByAIgdc-cas01.example.org</samlp:SessionIndex>
+   *  </samlp:LogoutRequest>
+   */
+
+  "urn:oasis:names:tc:SAML:2.0:protocol" = {
+     LogoutRequest = {
+       class = CASLogoutRequest;
+       attributes = {
+         SessionIndex = sessionIndex;
+       };
+     };
+
+    SessionIndex = {
+      class = NSString;
+      key = sessionIndex;
+    };
+  };
+
+}
