@@ -50,7 +50,7 @@ Appointments_OBJC_FILES = \
 
 Appointments_RESOURCE_FILES +=		\
 	product.plist			\
-	\
+	MSExchangeFreeBusySOAPResponseMap.plist \
 	MSExchangeFreeBusySOAPRequest.wo
 
 Appointments_LANGUAGES = Arabic BrazilianPortuguese Catalan Czech Danish Dutch English Finnish French German Hungarian Icelandic Italian NorwegianBokmal NorwegianNynorsk Polish Russian Slovak SpanishSpain SpanishArgentina Swedish Ukrainian Welsh
