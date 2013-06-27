@@ -20,6 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSBundle.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 
@@ -97,8 +98,10 @@ size_t curl_body_function_freebusy(void *ptr, size_t size, size_t nmemb, void *i
   MSExchangeFreeBusySOAPRequest *soapRequest;
   MSExchangeFreeBusyResponse *freeBusyResponse;
   NSString *rawRequest, *url, *body, *hostname, *httpauth, *authname, *password;
+  NSString *mapFile;
   NSArray *infos = nil;
   NSDictionary *root;
+  NSBundle *bundle;
   
   CURL *curl;
   struct curl_slist *headerlist=NULL;
@@ -161,7 +164,13 @@ size_t curl_body_function_freebusy(void *ptr, size_t size, size_t nmemb, void *i
                 }            
               if (sax == nil && parser != nil)
                 {
-                  sax = [[SaxObjectDecoder alloc] initWithMappingAtPath:@"./MSExchangeFreeBusySOAPResponseMap.plist"];
+                  bundle = [NSBundle bundleForClass: [self class]];
+                  mapFile = [bundle pathForResource: @"MSExchangeFreeBusySOAPResponseMap" ofType: @"plist"];
+                  if (![mapFile length])
+                  {
+                    [self errorWithFormat: @"mapFile not found (MSExchangeFreeBusySOAPResponseMap.plist)"];
+                  }
+                  sax = [[SaxObjectDecoder alloc] initWithMappingAtPath: mapFile];
                   [parser setContentHandler:sax];
                   //[parser setErrorHandler:sax];
                 }

@@ -3076,9 +3076,7 @@ function appendCalendar(folderName, folderPath) {
 
         var colorBox = document.createElement("div");
         li.appendChild(colorBox);
-        li.appendChild(document.createTextNode(folderName
-                                               .replace("&lt;", "<", "g")
-                                               .replace("&gt;", ">", "g")));
+        li.appendChild(document.createTextNode(folderName));
         colorBox.appendChild(document.createTextNode("OO"));
 
         $(colorBox).addClassName("colorBox");
@@ -3119,7 +3117,7 @@ function appendStyleElement(folderPath, color) {
 function onFolderSubscribeCB(folderData) {
     var folder = $(folderData["folder"]);
     if (!folder) {
-        appendCalendar(folderData["folderName"], folderData["folder"]);
+        appendCalendar(folderData["folderName"].unescapeHTML(), folderData["folder"]);
         refreshEvents();
         refreshTasks();
         changeCalendarDisplay();
