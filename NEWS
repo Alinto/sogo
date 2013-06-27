@@ -1,3 +1,10 @@
+2.0.6b (2013-06-27)
+------------------
+
+Bug fixes
+ - Properly escape the foldername to avoid XSS issues
+ - Fix loading of MSExchangeFreeBusySOAPResponseMap
+
 2.0.6a (2013-06-25)
 ------------------
 
