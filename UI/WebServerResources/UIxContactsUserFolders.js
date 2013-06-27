@@ -192,7 +192,11 @@ function addFolderBranchToTree(tree, user, folder, nodeId, subId, isLast) {
     else
         icon += 'calendar-folder-16x16.png';
     var folderId = user + ":" + folderInfos[1].substr(1);
-    var name = folderInfos[0]; // name has the format "Folername (Firstname Lastname <email>)"
+
+    // name has the format "Foldername (Firstname Lastname <email>)"
+    // We sanitize the value to avoid XSS issues
+    var name = folderInfos[0].escapeHTML(); 
+
     var pos = name.lastIndexOf(' (');
     if (pos > -1)
         name = name.substring(0, pos); // strip the part with fullname and email
