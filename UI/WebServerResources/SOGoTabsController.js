@@ -67,6 +67,7 @@ SOGoTabsController.prototype = {
 
     attachToTabsContainer: function STC_attachToTabsContainer(container) {
         this.container = container;
+        container.controller = this;
         this.onTabMouseDownBound
         = this.onTabMouseDown.bindAsEventListener(this);
         this.onTabClickBound

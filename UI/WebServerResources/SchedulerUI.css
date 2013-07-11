@@ -319,23 +319,23 @@ SPAN.weeksHeader,
 SPAN.monthsHeader
 { display: block;
   white-space: nowrap;
+  text-align: center;
   background-color: #DFDFDF;
   overflow: hidden;
   width: 100%;
   margin: 0px;
   height: 3em;
-  padding: 2px 1.5em;
+  padding: 2px 0px;
   border-bottom: 1px solid #ccc; }
 
 SPAN.daysHeader SPAN,
 SPAN.weeksHeader SPAN,
 SPAN.monthsHeader SPAN
-{ display: block;
+{ font-size: large;
   margin: .1em;
-  float: left;
-  width: 18%;
-  padding: 0px;
+  padding: 6px 12px;
   text-align: center;
+  line-height: 1.5em;
   border: 1px solid transparent;
   vertical-align: top; }
 
@@ -343,67 +343,51 @@ SPAN.daysHeader A,
 SPAN.weeksHeader A,
 SPAN.monthsHeader A
 { border: 1px solid transparent;
-  color: #000;
   line-height: 1.5em;
-  padding: 0px .5em; }
+  padding: 0px 0.7em; }
 
-A.leftNavigationArrow,
-A.rightNavigationArrow
-{ border: 1px solid transparent;
-  padding: .5em;
-  text-align: center;
-  vertical-align: bottom; }
-
-A.leftNavigationArrow:hover,
-A.rightNavigationArrow:hover,
-SPAN.daysHeader A:hover,
-SPAN.weeksHeader A:hover,
-SPAN.monthsHeader A:hover
+.day1 A:hover,
+.week1 A:hover,
+.month1 A:hover
 { border-top: 1px solid #fff;
   border-left: 1px solid #fff;
   border-bottom: 1px solid #828482;
   border-right: 1px solid #828482; }
 
-A.leftNavigationArrow:active,
-A.rightNavigationArrow:active,
-SPAN.daysHeader A:active,
-SPAN.weeksHeader A:active,
-SPAN.monthsHeader A:active
+.day1 A:active,
+.week1 A:active,
+.month1 A:active
 { border-top: 1px solid #828482;
   border-left: 1px solid #828482;
   border-bottom: 1px solid #fff;
   border-right: 1px solid #fff; }
 
-SPAN.week2, SPAN.month2
-{ font-size: small; }
-
-SPAN.day2, SPAN.week1, SPAN.month1
-{ font-size: medium; }
-
-SPAN.day1, SPAN.week0, SPAN.month0
-{ font-size: large; }
-
-SPAN.day0
-{ font-size: x-large; }
-
-SPAN.day0, SPAN.week0, SPAN.month0
-{ border-top: 1px solid #909090 !important;
-  border-left: 1px solid #909090 !important;
-  border-bottom: 1px solid #FFFFFF !important;
-  border-right: 1px solid #FFFFFF !important;
-  background-color: #ddd; }
-
-A.leftNavigationArrow
+#listCollapse
 { position: absolute;
-  display: block;
-  top: .5em;
-  left: .5em; }
+  top: .2em;
+  right: 0;
+  margin: 0.5em 1em; }
 
-A.rightNavigationArrow
-{ position: absolute;
-  display: block;
-  top: .5em;
-  right: .5em; }
+#listCollapse img
+{ position: absolute; }
+
+#listCollapse img.collapse
+{ clip: rect(0 18px 18px 0);
+  left: 0;
+  top: 0; }
+
+#listCollapse img.collapse:hover
+{ clip: rect(0 36px 18px 18px);
+  left: -18px; }
+
+#listCollapse img.rise
+{ clip: rect(18px 18px 36px 0);
+  left: 0;
+  top: -18px; }
+
+#listCollapse img.rise:hover
+{ clip: rect(18px 36px 36px 18px);
+  left: -18px; }
 
 DIV#calendarHeader,
 DIV#daysView

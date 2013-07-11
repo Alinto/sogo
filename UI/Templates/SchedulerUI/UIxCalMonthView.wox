@@ -1,77 +1,58 @@
 <?xml version="1.0" standalone="yes"?>
 <!DOCTYPE container>
-<container
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:var="http://www.skyrix.com/od/binding"
-  xmlns:const="http://www.skyrix.com/od/constant"
-  xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label">
+  <container
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+      xmlns:label="OGo:label">
 
-  <div class="menu" id="currentViewMenu">
-    <ul>
-      <li><var:string label:value="New Event..."/></li>
-      <li><var:string label:value="New Task..."/></li>
-      <li><!-- separator --></li>
-      <li><var:string label:value="Previous Month"/></li>
-      <li><var:string label:value="Next Month"/></li>
-      <li><!-- separator --></li>
-      <li><var:string label:value="Delete Event"/></li>
-      <li><var:string label:value="Copy event to my calendar"/></li>
-      <li><var:string label:value="View Raw Source"/></li>
-    </ul>
-  </div>
-  <a href="#"
-    class="leftNavigationArrow"
-    var:date="prevMonthQueryParameters.month"
-    onclick="return onCalendarGotoDay(this);"
-    ><img rsrc:src="arrow-left.png"/></a>
-  <span class="monthsHeader">
-    <span class="month2"><a href="#"
-        var:date="monthBeforePrevMonthQueryParameters.month"
-        onclick="return onCalendarGotoDay(this);"
-        ><var:string value="monthNameOfTwoMonthAgo"
-          /></a></span
-      ><span class="month1"><a href="#"
-        var:date="prevMonthQueryParameters.month"
-        onclick="return onCalendarGotoDay(this);"
-        ><var:string value="monthNameOfOneMonthAgo"
-          /></a></span
-      ><span class="month0"><var:string value="monthNameOfThisMonth" /></span
-      ><span class="month1"><a href="#"
-        var:date="nextMonthQueryParameters.month"
-        onclick="return onCalendarGotoDay(this);"
-        ><var:string value="monthNameOfNextMonth"
-          /></a></span
-      ><span class="month2"><a href="#"
-        var:date="monthAfterNextMonthQueryParameters.month"
-        onclick="return onCalendarGotoDay(this);"
-        ><var:string value="monthNameOfTheMonthAfterNextMonth"
-          /></a></span
-      ></span>
-  <a href="#"
-    class="rightNavigationArrow"
-    var:date="nextMonthQueryParameters.month"
-    onclick="return onCalendarGotoDay(this);"
-    ><img rsrc:src="arrow-right.png"/></a>
-
-  <div id="calendarContent">
-    <div class="monthView">
-      <var:foreach list="headerDaysToDisplay" item="currentTableDay"
-        ><div var:class="headerDayCellClasses"
-          ><var:string value="labelForCurrentDayToDisplay"
-            /></div></var:foreach>
-      <div class="days" const:id="monthDaysView"
-        ><var:foreach list="weeksToDisplay" item="currentWeek"
-          ><var:foreach list="currentWeek" item="currentTableDay"
-            ><div var:class="dayCellClasses"
-              var:day="currentTableDay.shortDateString"
-              var:day-number="currentDayNumber"
-              var:id="currentDayId"
+    <div class="menu" id="currentViewMenu">
+      <ul>
+        <li><var:string label:value="New Event..."/></li>
+        <li><var:string label:value="New Task..."/></li>
+        <li><!-- separator --></li>
+        <li><var:string label:value="Previous Month"/></li>
+        <li><var:string label:value="Next Month"/></li>
+        <li><!-- separator --></li>
+        <li><var:string label:value="Delete Event"/></li>
+        <li><var:string label:value="Copy event to my calendar"/></li>
+        <li><var:string label:value="View Raw Source"/></li>
+      </ul>
+    </div>
+    <span class="monthsHeader">
+      <span class="month1">
+        <a href="#"
+           var:date="prevMonthQueryParameters.month"
+           onclick="return onCalendarGotoDay(this);"
+           ><img rsrc:src="arrow-left.png"/></a>
+      </span>
+      <span class="month0"><var:string value="monthNameOfThisMonth" /></span>
+      <span class="month1">
+        <a href="#"
+           var:date="nextMonthQueryParameters.month"
+           onclick="return onCalendarGotoDay(this);"><img rsrc:src="arrow-right.png"/></a>
+      </span>
+      <a href="#" id="listCollapse"><img var:class="collapseBtnClass" rsrc:src="collapse.png"/></a>
+    </span>
+    <div id="calendarContent">
+      <div class="monthView">
+        <var:foreach list="headerDaysToDisplay" item="currentTableDay"
+                     ><div var:class="headerDayCellClasses"
+                           ><var:string value="labelForCurrentDayToDisplay"
+                           /></div></var:foreach>
+        <div class="days" const:id="monthDaysView"
+          ><var:foreach list="weeksToDisplay" item="currentWeek"
+            ><var:foreach list="currentWeek" item="currentTableDay"
+              ><div var:class="dayCellClasses"
+                    var:day="currentTableDay.shortDateString"
+                    var:day-number="currentDayNumber"
+                    var:id="currentDayId"
               ><div class="dayHeader"><var:string value="dayHeaderNumber"/></div
-		></div>
+              ></div>
+            </var:foreach>
           </var:foreach>
-        </var:foreach>
+        </div>
       </div>
     </div>
-  </div>
-</container>
+  </container>

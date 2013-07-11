@@ -214,8 +214,6 @@
 
 - (BOOL) showCompletedTasks
 {
-  BOOL show;
-
   [self _setupContext];
 
   return [[us objectForKey: @"ShowCompletedTasks"] boolValue];
@@ -235,6 +233,32 @@
   [us synchronize];
   
   return [self responseWithStatus: 204];
+}
+
+- (WOResponse *) saveListStateAction
+{
+  WORequest *request;
+  NSString *state;
+
+  [self _setupContext];
+  request = [context request];
+
+  state = [request formValueForKey: @"state"];
+  [moduleSettings setObject: state
+                     forKey: @"ListState"];
+  [us synchronize];
+
+  return [self responseWithStatus: 204];
+}
+
+- (NSString *) listStateStyle
+{
+  NSString *state;
+
+  [self _setupContext];
+  state = [moduleSettings objectForKey: @"ListState"];
+
+  return (state && [state compare: @"collapse"] == NSOrderedSame)? @"display: none;" : @"";
 }
 
 - (unsigned int) firstDayOfWeek

@@ -147,7 +147,7 @@
   <div id="verticalDragHandle" class="dragHandle"><!-- space --></div>
 
   <div id="rightPanel">
-    <div class="tabsContainer" id="schedulerTabs">
+    <div class="tabsContainer" id="schedulerTabs" var:style="listStateStyle">
       <ul>
         <li target="eventsListView" var:class="eventsTabClass"
           ><span><var:string label:value="Events" /></span></li>
@@ -202,7 +202,7 @@
         </div>
       </div>
     </div>
-    <div id="rightDragHandle" class="dragHandle"><!-- space --></div>
-    <div id="calendarView"><!-- space --></div>
+    <div id="rightDragHandle" class="dragHandle" var:style="listStateStyle"><!-- space --></div>
+    <div id="calendarView" var:style="listStateStyle"><!-- space --></div>
   </div>
 </var:component>
