@@ -9,7 +9,8 @@ Enhancements
  - 
 
 Bug fixes
- - 
+ - properly handle RFC2231 everywhere
+ - fixed minor XSS issues 
 
 2.0.6b (2013-06-27)
 ------------------
