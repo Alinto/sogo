@@ -34,6 +34,7 @@
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 
+#import "NSDictionary+Mail.h"
 #import "NSString+Mail.h"
 #import "SOGoMailForward.h"
 #import "SOGoMailObject+Draft.h"
@@ -250,39 +251,10 @@
 		       intoArray: (NSMutableArray *) keys
 		        withPath: (NSString *) path
 {
-  NSDictionary *disposition, *currentFile;
   NSString *filename, *mimeType;
+  NSDictionary *currentFile;
 
-  disposition = [part objectForKey: @"disposition"];
-  filename = [[disposition objectForKey: @"parameterList"]
-	       objectForKey: @"filename"];
-
-  // We might have something like filename*=UTF-8''foobar
-  // See RFC2231 for details. If it was folded before, it will
-  // be unfolded when we get here.
-  if (!filename)
-    {
-      filename = [[disposition objectForKey: @"parameterList"]
-                   objectForKey: @"filename*"];
-      
-      if (filename)
-        {
-          NSRange r;
-
-          filename = [filename stringByUnescapingURL];
-          
-          // We skip up to the language
-          r = [filename rangeOfString: @"'"];
-          
-          if (r.length)
-            {
-              r = [filename rangeOfString: @"'"  options: 0  range: NSMakeRange(r.location+1, [filename length]-r.location-1)];
-              
-              if (r.length)
-                filename = [filename substringFromIndex: r.location+1];
-            }
-        }
-    }
+  filename = [part filename];
 
   mimeType = [NSString stringWithFormat: @"%@/%@",
 		       [part objectForKey: @"type"],

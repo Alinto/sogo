@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2009 Inverse inc.
+  Copyright (C) 2007-2013 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -33,6 +33,7 @@
 
 #import <SOGo/NSString+Utilities.h>
 #import <Mailer/NSData+Mail.h>
+#import <Mailer/NSDictionary+Mail.h>
 #import <Mailer/SOGoMailBodyPart.h>
 
 #import "MailerUI/WOContext+UIxMailer.h"
@@ -210,22 +211,7 @@
 
 - (NSString *) filename
 {
-  NSDictionary *parameters;
-  NSString *filename;
-
-  filename = nil;
-  parameters = [bodyInfo valueForKey: @"parameterList"];
-  if (parameters)
-    filename = [parameters valueForKey: @"name"];
-
-  if (!filename)
-    {
-      parameters = [[bodyInfo valueForKey: @"disposition"]
-		     valueForKey: @"parameterList"];
-      filename = [parameters valueForKey: @"filename"];
-    }
-
-  return filename;
+  return [bodyInfo filename];
 }
 
 - (NSString *) filenameForDisplay
@@ -280,7 +266,7 @@
   NSMutableString *filename;
   NSString *extension;
 
-  filename = [NSMutableString stringWithString: [bodyPart filename]];
+  filename = [self filename];
   if (![filename length])
     [filename appendFormat: @"%@-%@",
 	      [self labelForKey: @"Untitled"],
@@ -323,22 +309,22 @@
   NSString *mimeImageFile, *mimeImageUrl;
     
   mimeImageFile = [NSString stringWithFormat: @"mime-%@-%@.png", 
-    [bodyInfo objectForKey: @"type"], 
-    [bodyInfo objectForKey: @"subtype"]];
+		      [bodyInfo objectForKey: @"type"], 
+		      [bodyInfo objectForKey: @"subtype"]];
   
   mimeImageUrl = [self urlForResourceFilename: mimeImageFile];
   
-  if ( [mimeImageUrl length] == 0 ) 
-  {
-    mimeImageFile = [NSString stringWithFormat: @"mime-%@.png", 
-      [bodyInfo objectForKey: @"type"]];
-    mimeImageUrl = [self urlForResourceFilename: mimeImageFile];
-  }
+  if ([mimeImageUrl length] == 0) 
+    {
+      mimeImageFile = [NSString stringWithFormat: @"mime-%@.png", 
+			  [bodyInfo objectForKey: @"type"]];
+      mimeImageUrl = [self urlForResourceFilename: mimeImageFile];
+    }
   
-  if ( [mimeImageUrl length] == 0 ) 
-  {
-    mimeImageUrl = [self urlForResourceFilename: @"mime-unknown.png"];
-  }
+  if ([mimeImageUrl length] == 0) 
+    {
+      mimeImageUrl = [self urlForResourceFilename: @"mime-unknown.png"];
+    }
   
   return mimeImageUrl;
 }

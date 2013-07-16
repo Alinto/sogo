@@ -38,6 +38,7 @@
 
 #import <SoObjects/SOGo/NSDictionary+Utilities.h>
 
+#import "NSDictionary+Mail.h"
 #import "SOGoMailObject.h"
 #import "SOGoMailManager.h"
 
@@ -201,21 +202,9 @@ static BOOL debugOn = NO;
 
 - (NSString *) filename
 {
-  NSString *filename;
-  NSDictionary *parameters;
-
   [self partInfo];
-
-  filename = [[partInfo objectForKey: @"parameterList"]
-	       objectForKey: @"name"];
-  if (!filename)
-    {
-      parameters = [[partInfo objectForKey: @"disposition"]
-		     objectForKey: @"parameterList"];
-      filename = [parameters objectForKey: @"filename"];
-    }
-
-  return filename;
+  
+  return [partInfo filename];
 }
 
 /* We overwrite the super's class method in order to make sure
