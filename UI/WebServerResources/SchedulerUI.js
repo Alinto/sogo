@@ -748,14 +748,14 @@ function onViewEventCallback(http) {
             para = $(paras[1]);
             if (data["calendar"].length) {
  		// Remove owner email from calendar's name
-                para.down("SPAN", 1).update(data["calendar"].replace(/ \<.*\>/, ""));
+                para.down("SPAN", 1).update(data["calendar"].escapeHTML());
                 para.show();
             } else
                 para.hide();
 
             para = $(paras[2]);
             if (data["location"].length) {
-                para.down("SPAN", 1).update(data["location"]);
+                para.down("SPAN", 1).update(data["location"].escapeHTML());
                 para.show();
             } else
                 para.hide();
