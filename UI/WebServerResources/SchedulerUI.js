@@ -723,9 +723,9 @@ function onViewEventCallback(http) {
                 top -= cell.up("DIV.day").scrollTop;
             }
 
-            left = cellPosition[0] + cellDimensions["width"] - parseInt(cellDimensions["width"]/3);
+            left = cellPosition[0] + cellDimensions["width"] + 4;
             if (left + divDimensions["width"] > window.width()) {
-                left = cellPosition[0] - divDimensions["width"] + 10;
+                left = cellPosition[0] - divDimensions["width"];
                 div.removeClassName("left");
                 div.addClassName("right");
             }

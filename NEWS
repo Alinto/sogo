@@ -6,7 +6,7 @@ New features
  - allow the events/tasks lists to be collapsable
 
 Enhancements
- - 
+ - bubble box of events no longer overlaps the current event
 
 Bug fixes
  - properly handle RFC2231 everywhere
