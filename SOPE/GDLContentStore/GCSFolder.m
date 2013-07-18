@@ -44,10 +44,6 @@
 #import "EOQualifier+GCS.h"
 #import "GCSStringFormatter.h"
 
-#if __GNU_LIBOBJC__ >= 20100911
-#  define sel_eq(__A__,__B__) sel_isEqual(__A__,__B__)
-#endif
-
 typedef enum {
   noTableRequired = 0,
   quickTableRequired = 1,
@@ -395,20 +391,20 @@ static GCSStringFormatter *stringFormatter = nil;
     
     if (i > 0) [sql appendString:@", "];
     
-    if (sel_eq(sel, EOCompareAscending)) {
+    if (sel_isEqual(sel, EOCompareAscending)) {
       [sql appendString:column];
       [sql appendString:@" ASC"];
     }
-    else if (sel_eq(sel, EOCompareDescending)) {
+    else if (sel_isEqual(sel, EOCompareDescending)) {
       [sql appendString:column];
       [sql appendString:@" DESC"];
     }
-    else if (sel_eq(sel, EOCompareCaseInsensitiveAscending)) {
+    else if (sel_isEqual(sel, EOCompareCaseInsensitiveAscending)) {
       [sql appendString:@"UPPER("];
       [sql appendString:column];
       [sql appendString:@") ASC"];
     }
-    else if (sel_eq(sel, EOCompareCaseInsensitiveDescending)) {
+    else if (sel_isEqual(sel, EOCompareCaseInsensitiveDescending)) {
       [sql appendString:@"UPPER("];
       [sql appendString:column];
       [sql appendString:@") DESC"];
