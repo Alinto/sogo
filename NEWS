@@ -4,9 +4,10 @@
 New features
  - print gridlines of calendar in 15-minute intervals
  - allow the events/tasks lists to be collapsable
-
+ 
 Enhancements
  - bubble box of events no longer overlaps the current event
+ - now pass the x-originating-ip using the IMAP ID extension
 
 Bug fixes
  - properly handle RFC2231 everywhere

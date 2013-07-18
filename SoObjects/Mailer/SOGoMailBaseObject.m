@@ -151,6 +151,22 @@ static BOOL debugOn = YES;
       newConnection = (NGImap4Connection *) [NSNull null];
       [self errorWithFormat:@"Could not connect IMAP4"];
     }
+  else
+    {
+      // If the server has the ID capability (RFC 2971), we set the x-originating-ip
+      // accordingly for the IMAP connection.
+      NSString *remoteHost;
+
+      remoteHost = [[context request] headerForKey: @"x-webobjects-remote-host"];
+
+      if (remoteHost)
+	{
+	  if ([[[[newConnection client] capability] objectForKey: @"capability"] containsObject: @"id"])
+	    {
+	      [[newConnection client] processCommand: [NSString stringWithFormat: @"ID (\"x-originating-ip\" \"%@\")", remoteHost]];
+	    }
+	}
+    }
 
   return newConnection;
 }
