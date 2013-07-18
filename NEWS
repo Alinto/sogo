@@ -11,6 +11,7 @@ Enhancements
 Bug fixes
  - properly handle RFC2231 everywhere
  - fixed minor XSS issues 
+ - fixed jquery-ui not bluring the active element when clicking on a draggable
 
 2.0.6b (2013-06-27)
 ------------------
