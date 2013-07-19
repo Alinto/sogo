@@ -1,4 +1,4 @@
-2.0.7 (2013-MM-DD)
+2.0.7 (2013-07-19)
 ------------------
 
 New features
@@ -7,7 +7,7 @@ New features
  
 Enhancements
  - bubble box of events no longer overlaps the current event
- - now pass the x-originating-ip using the IMAP ID extension
+ - now pass the x-originating-ip using the IMAP ID extension (#2366)
 
 Bug fixes
  - properly handle RFC2231 everywhere
