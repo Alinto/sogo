@@ -179,6 +179,8 @@
 "Reminder:" = "Напоминание:";
 "General:" = "Общее:";
 "Reply:" = "Ответ:";
+"Created by:" = "Создано:";
+
 
 "Target:" = "Цель:";
 
@@ -372,6 +374,9 @@
 /* transparency */
 
 "Show Time as Free" = "Отображать время как свободное";
+
+/* email notifications */
+"Send Appointment Notifications" = "Отправлять напоминания о встречах";
 
 /* validation errors */
 

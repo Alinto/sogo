@@ -18,7 +18,7 @@
 "Delete" = "Löschen";
 
 /* contacts categories */
-"contacts_category_labels" = "Geschäftspartner, Familie, Freund, Kollegin, Konkurrenten, Kunden, Lieferant, Presse, VIP";
+"contacts_category_labels" = "Familie, Freund, Geschäftspartner, Kollegin, Konkurrenten, Kunden, Lieferant, Presse, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Automatische Abwesenheitsnachricht aktivieren";
@@ -36,7 +36,7 @@
 
 /* forward messages */
 "Forward incoming messages" = "Ankommende Nachrichten weiterleiten";
-"Keep a copy" = "Kopie behalten";
+"Keep a copy" = "Eine Kopie behalten";
 "Please specify an address to which you want to forward your messages."
 = "Bitte Adresse angeben, an die Ihre Nachrichten weitergeleitet werden sollen.";
 
@@ -96,12 +96,12 @@
 "Day start time must be prior to day end time." = "Der Tagesanfang muss vor dem Tagesende liegen.";
 "Show time as busy outside working hours" = "Zeiten außerhalb der Arbeitszeit als belegt anzeigen";
 "First week of year :" = "Erste Woche des Jahres:";
-"Enable reminders for Calendar items" = "Terminerinnerung aktivieren";
+"Enable reminders for Calendar items" = "Termin- und Aufgabenerinnerungen aktivieren";
 "Play a sound when a reminder comes due"
 = "Akustisches Signal zur Terminerinnerung";
 "Default reminder :" = "Standard Terminerinnerung:";
 
-"firstWeekOfYear_January1" = "Beginnt am 1.Januar";
+"firstWeekOfYear_January1" = "Beginnt am 1. Januar";
 "firstWeekOfYear_First4DayWeek" = "Erste 4 Tage Woche";
 "firstWeekOfYear_FirstFullWeek" = "Erste ganze Woche";
 
@@ -168,7 +168,7 @@
 "Email:" = "E-Mail-Adresse:";
 "Reply To Email:" = "\"Antworten An\" E-Mail-Adresse (Reply-To):";
 "Signature:" = "Signatur:";
-"(Click to create)" = "(Klick zum Erstellen)";
+"(Click to create)" = "(Zum Erstellen klicken)";
 
 "Signature" = "Signatur";
 "Please enter your signature below:" = "Bitte fügen Sie die Signatur hier ein:";
@@ -193,17 +193,17 @@
 
 /* Event+task categories */
 "category_none" = "Keine";
-"calendar_category_labels" = "Jubiläum,Geburtstag,Geschäft,Anrufe,Klienten,Konkurrenz,Kunde,Favoriten,Fortsetzung,Geschenke,Ferien,Ideen,Besprechung,Fragen,Verschiedenes,Persönlich,Projekte,Feiertag,Status,Lieferanten,Reise,Urlaub";
+"calendar_category_labels" = "Anrufe,Besprechung,Favoriten,Feiertag,Ferien,Fortsetzung,Fragen,Geburtstag,Geschäft,Geschenke,Ideen,Jubiläum,Klienten,Konkurrenz,Kunde,Lieferanten,Persönlich,Projekte,Reise,Status,Urlaub,Verschiedenes";
 
 /* Default module */
 "Calendar" = "Kalender";
 "Contacts" = "Adressbuch";
-"Mail" = "Mail";
+"Mail" = "E-Mail";
 "Last" = "Zuletzt benutztes";
 "Default module :" = "Vorgegebenes Modul:";
 
 "Language :" = "Sprache :";
-"choose" = "Auswählen";
+"choose" = "Auswählen ...";
 "Arabic" = "العربية";
 "Catalan" = "Català";
 "Czech" = "Česky";

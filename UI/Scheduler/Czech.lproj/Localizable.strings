@@ -179,6 +179,8 @@
 "Reminder:" = "Připomenutí:";
 "General:" = "Obecný:";
 "Reply:" = "Odpověď:";
+"Created by:" = "Vytvořeno:";
+
 
 "Target:" = "Vložte adresu webové stránky nebo dokumentu.";
 
@@ -372,6 +374,9 @@
 /* transparency */
 
 "Show Time as Free" = "Čas zobrazit jako volný";
+
+/* email notifications */
+"Send Appointment Notifications" = "Poslat připomenutí";
 
 /* validation errors */
 

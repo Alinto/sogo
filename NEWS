@@ -8,6 +8,7 @@ New features
 Enhancements
  - bubble box of events no longer overlaps the current event
  - now pass the x-originating-ip using the IMAP ID extension (#2366)
+ - updated BrazilianPortuguese, Czech, Dutch, German, Polish and Russian translations
 
 Bug fixes
  - properly handle RFC2231 everywhere
