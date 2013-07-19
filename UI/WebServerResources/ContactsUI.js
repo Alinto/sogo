@@ -1502,18 +1502,18 @@ function unsetCategoryOnNode(contactNode, category) {
 function configureDraggables() {
     if ($("contactFolders")) {
         var rows = jQuery("tr.vcard");
-        rows.draggable("destroy");
+        try { rows.draggable("destroy"); } catch (e) {}
         rows.draggable({
-                    helper: function (event) { return '<div id="dragDropVisual"></div>'; },
-                    start: startDragging,
-                    drag: whileDragging,
-                    stop: stopDragging,
-                    appendTo: 'body',
-                    cursorAt: { right: 25 },
-                    scroll: false,
-                    distance: 4,
-                    zIndex: 20
-                    });
+            helper: function (event) { return '<div id="dragDropVisual"></div>'; },
+            start: startDragging,
+            drag: whileDragging,
+            stop: stopDragging,
+            appendTo: 'body',
+            cursorAt: { right: 25 },
+            scroll: false,
+            distance: 4,
+            zIndex: 20
+        });
     }
 }
 
