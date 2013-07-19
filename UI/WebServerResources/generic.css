@@ -60,7 +60,6 @@ LABEL
 
 H6
 { font-size: 11px;
-  color: #9ABCD8;
   color: #627e9c;
   text-transform: uppercase;
   margin: 10px 0px 5px 0px;
@@ -1168,6 +1167,7 @@ span.cke_skin_kama
   DIV#linkBanner,
   DIV#toolbar,
   DIV.menu,
+  DIV.filterPanel,
   DIV.tabsContainer
   { display: none; }
 }
