@@ -45,7 +45,10 @@
               ><div var:class="clickableHourCellClass"
         	var:day="currentTableDay.shortDateString"
         	var:hour="currentAppointmentHour">
-              </div></var:foreach></div>
+              <span class="minutes15"><!-- space --></span>
+              <span class="minutes30"><!-- space --></span>
+              <span class="minutes45"><!-- space --></span>
+            </div></var:foreach></div>
           <div class="events"><!-- space --></div>
         </div>
       </var:foreach>

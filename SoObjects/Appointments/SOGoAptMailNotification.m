@@ -140,9 +140,14 @@
   return newEndDate;
 }
 
+- (NSString *) location
+{
+  return [[apt location] stringByEscapingHTMLString];
+}
+
 - (NSString *) summary
 {
-  return [apt summary];
+  return [[apt summary] stringByEscapingHTMLString];
 }
 
 - (void) setOrganizerName: (NSString *) theString

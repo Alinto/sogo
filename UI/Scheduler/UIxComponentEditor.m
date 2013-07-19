@@ -872,10 +872,16 @@ iRANGE(2);
 - (NSString *) organizerName
 {
   NSDictionary *profile;
+  NSString *s;
 
   profile = [[[self organizerProfile] allValues] lastObject];
+  
+  s = [profile objectForKey: @"name"];
 
-  return [profile objectForKey: @"name"];
+  if ([s length] == 0)
+    s = [profile objectForKey: @"email"];
+  
+  return s;
 }
 
 - (NSString *) jsonOrganizer

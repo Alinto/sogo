@@ -141,6 +141,7 @@
 "messageforward_inline" = "В теле письма";
 "messageforward_attached" = "Приложенным файлом";
 
+"When replying to a message:" = "При ответе на сообщение:";
 "replyplacement_above" = "Начинать мой ответ над цитируемым текстом";
 "replyplacement_below" = "Начинать мой ответ под цитируемым текстом";
 "And place my signature" = "И поместить мою подпись";
@@ -149,12 +150,17 @@
 "Compose messages in" = "Compose messages in";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Plain text";
+"Display remote inline images" = "Показать встроенные изображения из сети";
+"displayremoteinlineimages_never" = "Никогда";
+"displayremoteinlineimages_always" = "Всегда";
 
 /* IMAP Accounts */
 "New Mail Account" = "New Mail Account";
 
 "Server Name:" = "Server Name:";
 "Port:" = "Port:";
+"Encryption:" = "Шифрование:";
+"None" = "Нет";
 "User Name:" = "User Name:";
 "Password:" = "Пароль:";
 
@@ -247,6 +253,7 @@
 "match any of the following rules:" = "отвечают любому из следующих правил:";
 "match all messages" = "все сообщения";
 "Perform these actions:" = "Произвести следующие действия:";
+"Untitled Filter" = "Фильтр без названия";
 
 "Subject" = "Subject";
 "From" = "From";

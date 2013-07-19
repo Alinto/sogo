@@ -35,6 +35,7 @@ Mailer_OBJC_FILES += \
 	\
 	EOQualifier+MailDAV.m		\
 	NSData+Mail.m			\
+	NSDictionary+Mail.m		\
 	NSString+Mail.m			\
 	SOGoUser+Mailer.m
 

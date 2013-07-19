@@ -753,7 +753,7 @@
       // To
       to = [[message objectForKey: @"envelope"] to];
       if ([to count] > 0)
-	[msg addObject: [addressFormatter stringForArray: to]];
+	[msg addObject: [[addressFormatter stringForArray: to] stringByEscapingHTMLString]];
       else
 	[msg addObject: @""];
 
@@ -778,7 +778,7 @@
       // From
       from = [[message objectForKey: @"envelope"] from];
       if ([from count] > 0)
-	[msg addObject: [addressFormatter stringForArray: from]];
+	[msg addObject: [[addressFormatter stringForArray: from] stringByEscapingHTMLString]];
       else
 	[msg addObject: @""];
       

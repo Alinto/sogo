@@ -179,6 +179,8 @@
 "Reminder:" = "Erinnerung:";
 "General:" = "Generell:";
 "Reply:" = "Antwort:";
+"Created by:" = "Erstellt von:";
+
 
 "Target:" = "Ziel:";
 
@@ -372,6 +374,9 @@
 /* transparency */
 
 "Show Time as Free" = "Zeige Zeit als Verfügbar";
+
+/* email notifications */
+"Send Appointment Notifications" = "Verabredungsbenachrichtigungen senden";
 
 /* validation errors */
 

@@ -1,5 +1,5 @@
 [main]
-host = https://www.transifex.net
+host = https://www.transifex.com
 
 [sogo.ui-mailerui]
 source_file = UI/MailerUI/English.lproj/Localizable.strings

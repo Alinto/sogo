@@ -1,63 +1,43 @@
 <?xml version="1.0" standalone="yes"?>
   <container
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:var="http://www.skyrix.com/od/binding"
-    xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:rsrc="OGo:url"
-    xmlns:label="OGo:label">
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:var="http://www.skyrix.com/od/binding"
+      xmlns:const="http://www.skyrix.com/od/constant"
+      xmlns:rsrc="OGo:url"
+      xmlns:label="OGo:label">
 
-  <div class="menu" id="currentViewMenu">
-    <ul>
-      <li><var:string label:value="New Event..."/></li>
-      <li><var:string label:value="New Task..."/></li>
-      <li><!-- separator --></li>
-      <li><var:string label:value="Previous Week"/></li>
-      <li><var:string label:value="Next Week"/></li>
-      <li><!-- separator --></li>
-      <li><var:string label:value="Delete Event"/></li>
-      <li><var:string label:value="Copy event to my calendar"/></li>
-      <li><var:string label:value="View Raw Source"/></li>
-    </ul>
-  </div>
-    <a href="#"
-      class="leftNavigationArrow"
-      var:date="prevWeekQueryParameters.day"
-      onclick="return onCalendarGotoDay(this);"
-      ><img rsrc:src="arrow-left.png"/></a>
+    <div class="menu" id="currentViewMenu">
+      <ul>
+        <li><var:string label:value="New Event..."/></li>
+        <li><var:string label:value="New Task..."/></li>
+        <li><!-- separator --></li>
+        <li><var:string label:value="Previous Week"/></li>
+        <li><var:string label:value="Next Week"/></li>
+        <li><!-- separator --></li>
+        <li><var:string label:value="Delete Event"/></li>
+        <li><var:string label:value="Copy event to my calendar"/></li>
+        <li><var:string label:value="View Raw Source"/></li>
+      </ul>
+    </div>
     <span class="weeksHeader">
-      <span class="week2"><a href="#"
-          var:date="weekBeforePrevWeekQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="weekBeforeLastWeekName"
-            /></a></span
-        ><span class="week1"><a href="#"
-          var:date="prevWeekQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="lastWeekName"
-            /></a></span
-        ><span class="week0"><var:string value="currentWeekName" /></span
-        ><span class="week1"><a href="#"
-          var:date="nextWeekQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="nextWeekName"
-            /></a></span
-        ><span class="week2"><a href="#"
-          var:date="weekAfterNextWeekQueryParameters.day"
-          onclick="return onCalendarGotoDay(this);"
-          ><var:string value="weekAfterNextWeekName"
-            /></a></span
-        ></span>
-    <a href="#"
-      class="rightNavigationArrow"
-      var:date="nextWeekQueryParameters.day"
-      onclick="return onCalendarGotoDay(this);"
-      ><img rsrc:src="arrow-right.png"/></a>
-
+      <span class="week1">
+        <a href="#"
+           var:date="prevWeekQueryParameters.day"
+           onclick="return onCalendarGotoDay(this);"><img rsrc:src="arrow-left.png"/></a>
+      </span>
+      <span class="week0"><var:string value="currentWeekName" /></span>
+      <span class="week1">
+        <a href="#"
+           var:date="nextWeekQueryParameters.day"
+           onclick="return onCalendarGotoDay(this);"><img rsrc:src="arrow-right.png"/></a>
+      </span>
+      <a href="#" id="listCollapse"><img var:class="collapseBtnClass" rsrc:src="collapse.png"/></a>
+    </span>
     <div id="calendarContent">
       <var:component
-        className="UIxCalDayTable"
-        startDate="startDate"
-        const:CSSClass="weekOverview"
-        const:numberOfDays="7" />
+          className="UIxCalDayTable"
+          startDate="startDate"
+          const:CSSClass="weekOverview"
+          const:numberOfDays="7" />
     </div>
   </container>

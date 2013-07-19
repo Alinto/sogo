@@ -343,6 +343,26 @@
     }
 }
 
+- (NSString *) collapseBtnClass
+{
+  NSString *module, *state;
+  NSMutableDictionary *moduleSettings;
+  SOGoUser *activeUser;
+  SOGoAppointmentFolders *clientObject;
+  SOGoUserSettings *us;
+
+  activeUser = [context activeUser];
+  clientObject = [self clientObject];
+
+  module = [clientObject nameInContainer];
+
+  us = [activeUser userSettings];
+  moduleSettings = [us objectForKey: module];
+  state = [moduleSettings objectForKey: @"ListState"];
+
+  return (state && [state compare: @"collapse"] == NSOrderedSame)? @"rise" : @"collapse";
+}
+
 /* current day related */
 
 - (void) setCurrentDay:(NSCalendarDate *) _day

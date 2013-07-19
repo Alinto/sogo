@@ -723,9 +723,9 @@ function onViewEventCallback(http) {
                 top -= cell.up("DIV.day").scrollTop;
             }
 
-            left = cellPosition[0] + cellDimensions["width"] - parseInt(cellDimensions["width"]/3);
+            left = cellPosition[0] + cellDimensions["width"] + 4;
             if (left + divDimensions["width"] > window.width()) {
-                left = cellPosition[0] - divDimensions["width"] + 10;
+                left = cellPosition[0] - divDimensions["width"];
                 div.removeClassName("left");
                 div.addClassName("right");
             }
@@ -748,14 +748,14 @@ function onViewEventCallback(http) {
             para = $(paras[1]);
             if (data["calendar"].length) {
  		// Remove owner email from calendar's name
-                para.down("SPAN", 1).update(data["calendar"].replace(/ \<.*\>/, ""));
+                para.down("SPAN", 1).update(data["calendar"].escapeHTML());
                 para.show();
             } else
                 para.hide();
 
             para = $(paras[2]);
             if (data["location"].length) {
-                para.down("SPAN", 1).update(data["location"]);
+                para.down("SPAN", 1).update(data["location"].escapeHTML());
                 para.show();
             } else
                 para.hide();
@@ -3205,6 +3205,11 @@ function deletePersonalCalendarCallback(http) {
 }
 
 function configureLists() {
+    // Move calendar view if lists are collapsed
+    if (!$("schedulerTabs").visible()) {
+        $('calendarView').setStyle({ top: '0' }).show();
+    }
+
     // TASK LIST
     var list = $("tasksList");
     list.multiselect = true;
@@ -3292,6 +3297,37 @@ function drawNowLine() {
   }
 }
 
+function onListCollapse(event, element) {
+    var img = element.select('img').first();
+    var tabs = $("schedulerTabs");
+    var handle = $("rightDragHandle");
+    var view = jQuery("#calendarView");
+    var state = 'collapse';
+
+    if (tabs.visible()) {
+        img.removeClassName('collapse').addClassName('rise');
+        handle.hide();
+        view.animate({ top: '0' }, 200, function() {
+            tabs.hide();
+        });
+    }
+    else {
+        state = 'rise';
+        img.removeClassName('rise').addClassName('collapse');
+        tabs.show();
+        tabs.controller.onWindowResize();
+        view.animate({ top: handle.getStyle('top') }, 200, function() {
+            handle.show();
+        });
+    }
+
+    var url =  ApplicationBaseURL + "saveListState";
+    var params = "state=" + state;
+    triggerAjaxRequest(url, null, null, params,
+                       { "Content-type": "application/x-www-form-urlencoded" });
+
+}
+
 function onDocumentKeydown(event) {
     var target = Event.element(event);
     if (target.tagName != "INPUT") {
@@ -3367,7 +3403,7 @@ function initScheduler() {
         // Calendar import form
         $("uploadCancel").observe("click", hideCalendarImport);
         $("uploadOK").observe("click", hideImportResults);
-
+        $("calendarView").on("click", "#listCollapse", onListCollapse);
         Event.observe(document, "keydown", onDocumentKeydown);
     }
 

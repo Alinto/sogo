@@ -1007,6 +1007,10 @@ SOGoEventDragController.prototype = {
     onDragStart: function SEDC_onDragStart(event) {
         var target = getTarget(event);
         if (eventIsLeftClick(event) && (target.nodeType == 1)) {
+            if (target.hasClassName("minutes15") ||
+                target.hasClassName("minutes30") ||
+                target.hasClassName("minutes45"))
+                target = target.parentNode;
             if ((!this.eventCells
                  && (target.hasClassName("clickableHourCell")
                      || target.hasClassName("day"))

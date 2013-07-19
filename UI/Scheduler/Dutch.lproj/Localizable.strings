@@ -179,6 +179,8 @@
 "Reminder:" = "Alarm:";
 "General:" = "Algemeen:";
 "Reply:" = "Antwoord:";
+"Created by:" = "Aangemaakt door:";
+
 
 "Target:" = "Bestemming:";
 
@@ -372,6 +374,9 @@
 /* transparency */
 
 "Show Time as Free" = "Toon tijd als vrij";
+
+/* email notifications */
+"Send Appointment Notifications" = "Stuur afspraakmeldingen";
 
 /* validation errors */
 
