@@ -27,6 +27,10 @@
 
 #import "EOQualifier+GCS.h"
 
+#if __GNU_LIBOBJC__ >= 20100911
+#  define sel_eq(__A__,__B__) sel_isEqual(__A__,__B__)
+#endif
+
 @implementation EOQualifier(GCS)
 
 - (void)_appendAndQualifier:(EOAndQualifier *)_q 
@@ -88,21 +92,21 @@
 
   val = [_q value];
   if (val && [val isNotNull]) {
-    if (sel_isEqual(op, EOQualifierOperatorEqual))
+    if (sel_eq(op, EOQualifierOperatorEqual))
       qOperator = @"=";
-    else if (sel_isEqual(op, EOQualifierOperatorNotEqual))
+    else if (sel_eq(op, EOQualifierOperatorNotEqual))
       qOperator = @"!=";
-    else if (sel_isEqual(op, EOQualifierOperatorLessThan))
+    else if (sel_eq(op, EOQualifierOperatorLessThan))
       qOperator = @"<";
-    else if (sel_isEqual(op, EOQualifierOperatorGreaterThan))
+    else if (sel_eq(op, EOQualifierOperatorGreaterThan))
       qOperator = @">";
-    else if (sel_isEqual(op, EOQualifierOperatorLessThanOrEqualTo))
+    else if (sel_eq(op, EOQualifierOperatorLessThanOrEqualTo))
       qOperator = @"<=";
-    else if (sel_isEqual(op, EOQualifierOperatorGreaterThanOrEqualTo))
+    else if (sel_eq(op, EOQualifierOperatorGreaterThanOrEqualTo))
       qOperator = @">=";
-    else if (sel_isEqual(op, EOQualifierOperatorLike))
+    else if (sel_eq(op, EOQualifierOperatorLike))
       qOperator = @"LIKE";
-    else if (sel_isEqual(op, EOQualifierOperatorCaseInsensitiveLike)) {
+    else if (sel_eq(op, EOQualifierOperatorCaseInsensitiveLike)) {
       isCI = YES;
       qOperator = @"LIKE";
     }
@@ -124,11 +128,11 @@
     }
   }
   else {
-    if (sel_isEqual(op, EOQualifierOperatorEqual)) {
+    if (sel_eq(op, EOQualifierOperatorEqual)) {
       qOperator = @"IS";
       qValue = @"NULL";
     }
-    else if (sel_isEqual(op, EOQualifierOperatorNotEqual)) {
+    else if (sel_eq(op, EOQualifierOperatorNotEqual)) {
       qOperator = @"IS NOT";
       qValue = @"NULL";
     }
