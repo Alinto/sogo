@@ -25,25 +25,7 @@ MailPartViewers_OBJC_FILES += \
 	UIxMailPartMessageViewer.m	\
 	UIxMailPartICalViewer.m		\
 	\
-	UIxMailPartICalActions.m	\
-	../../SoObjects/Mailer/SOGoMailBodyPart.m \
-	../../SoObjects/Mailer/SOGoHTMLMailBodyPart.m \
-	../../SoObjects/Mailer/SOGoCalendarMailBodyPart.m \
-	../../SoObjects/Mailer/SOGoMailAccounts.m \
-	../../SoObjects/Mailer/SOGoMailBaseObject.m \
-	../../SoObjects/Mailer/SOGoMailAccount.m \
-	../../SoObjects/Mailer/SOGoMailNamespace.m \
-	../../SoObjects/Mailer/SOGoDraftsFolder.m \
-	../../SoObjects/Mailer/SOGoSentFolder.m \
-	../../SoObjects/Mailer/SOGoTrashFolder.m \
-	../../SoObjects/Mailer/SOGoMailFolder.m \
-	../../SoObjects/Mailer/SOGoDraftObject.m \
-	../../SoObjects/Mailer/SOGoMailObject.m \
-	../../SoObjects/Appointments/SOGoEMailAlarmsManager.m \
-	../../SoObjects/Appointments/SOGoAppointmentObject.m \
-	../../SoObjects/Appointments/SOGoComponentOccurence.m \
-	../../SoObjects/Appointments/SOGoAppointmentOccurence.m \
-	../../SoObjects/Appointments/SOGoCalendarComponent.m
+	UIxMailPartICalActions.m
 
 MailPartViewers_RESOURCE_FILES += \
 	product.plist		\
@@ -54,7 +36,7 @@ MailPartViewers_LOCALIZED_RESOURCE_FILES += \
 # make
 
 ADDITIONAL_INCLUDE_DIRS += $(shell xml2-config --cflags)
-ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
+ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/ -L../../SoObjects/Mailer/obj -L../../SoObjects/Appointments/obj
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
