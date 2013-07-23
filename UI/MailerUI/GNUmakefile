@@ -32,12 +32,7 @@ MailerUI_OBJC_FILES += \
 	UIxMailWindowCloser.m		\
 	\
 	UIxMailUserRightsEditor.m	\
-	../MailPartViewers/UIxMailRenderingContext.m \
-	UIxMailUserDelegationEditor.m	\
-#	UIxMailEditorAction.m		\
-#	UIxMailReplyAction.m		\
-#	UIxMailForwardAction.m		\
-# 	UIxFilterList.m			\
+	UIxMailUserDelegationEditor.m
 
 MailerUI_RESOURCE_FILES += \
 	product.plist	\
@@ -49,7 +44,7 @@ MailerUI_LOCALIZED_RESOURCE_FILES += \
 # make
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
-ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
+ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/ -L../MailPartViewers/obj/
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
