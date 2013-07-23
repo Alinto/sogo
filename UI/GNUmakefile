@@ -8,8 +8,8 @@ SUBPROJECTS += \
 	SOGoElements		\
 	Common			\
 	Contacts		\
+	MailPartViewers         \
 	MailerUI		\
-	MailPartViewers		\
 	MainUI			\
 	PreferencesUI		\
 	Scheduler		\
