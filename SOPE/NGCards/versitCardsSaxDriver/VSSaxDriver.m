@@ -904,6 +904,7 @@ static NSCharacterSet *whitespaceCharSet = nil;
     ; be unfolded
   */
   NSMutableString *line;
+  NSAutoreleasePool *pool;
   unsigned pos, length;
   NSRange  r;
 
@@ -914,11 +915,18 @@ static NSCharacterSet *whitespaceCharSet = nil;
   length = [_rawString length];
   r = NSMakeRange(0, 0);
   line = [[NSMutableString alloc] initWithCapacity: 75 + 2];
-  
+  pool = [[NSAutoreleasePool alloc] init];
+
   for (pos = 0; pos < length; pos++)
     {
       unichar c;
     
+      if (pos % 10 == 0)
+	{
+	  RELEASE(pool);
+	  pool = [[NSAutoreleasePool alloc] init];
+	}
+
       c = [_rawString characterAtIndex: pos];
     
       if (c == '\r')
@@ -1011,6 +1019,9 @@ static NSCharacterSet *whitespaceCharSet = nil;
           r.length += 1;
         }
     }
+
+  RELEASE(pool);
+
   if (r.length > 0)
     {
       [self warn: @"Last line of parse string is not properly terminated!"];
