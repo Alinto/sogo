@@ -266,7 +266,7 @@
   NSMutableString *filename;
   NSString *extension;
 
-  filename = [self filename];
+  filename = [NSMutableString stringWithString: [self filename]];
   if (![filename length])
     [filename appendFormat: @"%@-%@",
 	      [self labelForKey: @"Untitled"],
