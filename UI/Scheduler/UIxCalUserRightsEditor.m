@@ -133,10 +133,10 @@
 - (NSArray *) objectRights
 {
   return ([uid isEqualToString: @"anonymous"]
-          ? [NSArray arrayWithObjects: @"Viewer", @"DAndTViewer", @"None",
+          ? [NSArray arrayWithObjects: @"None", @"DAndTViewer", @"Viewer",
                      nil]
-          : [NSArray arrayWithObjects: @"Viewer", @"DAndTViewer", @"Modifier",
-                     @"Responder", @"None", nil]);
+          : [NSArray arrayWithObjects: @"None", @"DAndTViewer", @"Viewer",
+		     @"Responder", @"Modifier", nil]);
 }
 
 - (void) setCurrentRight: (NSString *) newCurrentRight
