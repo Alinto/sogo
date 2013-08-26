@@ -262,6 +262,9 @@
 @implementation SOGoMailEnglishForward
 @end
 
+@implementation SOGoMailFinnishForward
+@end
+
 @implementation SOGoMailFrenchForward
 @end
 
