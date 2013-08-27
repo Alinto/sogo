@@ -55,6 +55,7 @@ SOGo_HEADER_FILES = \
 	SOGoCASSession.h		\
 	SOGoDAVAuthenticator.h		\
 	SOGoProxyAuthenticator.h	\
+	SOGoStaticAuthenticator.h	\
 	SOGoWebAuthenticator.h		\
 	SOGoWebDAVAclManager.h		\
 	SOGoWebDAVValue.h		\
@@ -67,7 +68,9 @@ SOGo_HEADER_FILES = \
 	WORequest+SOGo.h		\
 	WOResourceManager+SOGo.h	\
 	WOResponse+SOGo.h		\
-	WOContext+SOGo.h
+	WOContext+SOGo.h	\
+	\
+	SOGoCredentialsFile.h
 
 # daemon tool
 all::
@@ -124,6 +127,7 @@ SOGo_OBJC_FILES = \
 	SOGoCASSession.m		\
 	SOGoDAVAuthenticator.m		\
 	SOGoProxyAuthenticator.m	\
+	SOGoStaticAuthenticator.m	\
 	SOGoWebAuthenticator.m		\
 	SOGoWebDAVAclManager.m		\
 	SOGoWebDAVValue.m		\
@@ -136,7 +140,10 @@ SOGo_OBJC_FILES = \
 	WORequest+SOGo.m		\
 	WOResourceManager+SOGo.m	\
 	WOResponse+SOGo.m		\
-	WOContext+SOGo.m
+	WOContext+SOGo.m	\
+	\
+	SOGoCredentialsFile.m
+
 
 SOGo_RESOURCE_FILES = \
 	SOGoDefaults.plist \

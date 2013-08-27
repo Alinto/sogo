@@ -1,6 +1,6 @@
 /* SOGoEAlarmsNotifier.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc.
+ * Copyright (C) 2011-2013 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -27,6 +27,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSUserDefaults.h>
 
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NGQuotedPrintableCoding.h>
@@ -38,12 +39,14 @@
 #import <NGCards/iCalEntityObject.h>
 #import <NGCards/iCalPerson.h>
 
+#import "SOGo/SOGoCredentialsFile.h"
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
-#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoProductLoader.h>
+#import <SOGo/SOGoStaticAuthenticator.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <Appointments/iCalPerson+SOGo.h>
 #import <Appointments/SOGoEMailAlarmsManager.h>
@@ -51,6 +54,21 @@
 #import "SOGoEAlarmsNotifier.h"
 
 @implementation SOGoEAlarmsNotifier
+
+- (id) init
+{
+  if ((self = [super init]))
+    {
+      staticAuthenticator = nil;
+    }
+  return self;
+}
+
+- (void) dealloc
+{
+  [staticAuthenticator release];
+  [super dealloc];
+}
 
 - (NSString *) _messageID
 {
@@ -124,11 +142,10 @@
   [message setBody: content];
   to = [attendee rfc822Email];
 
-  /* TODO: SMTP authentication for services */
   [mailer sendMimePart: message
           toRecipients: [NSArray arrayWithObject: to]
                 sender: from
-     withAuthenticator: nil inContext: nil];
+     withAuthenticator: staticAuthenticator inContext: nil];
 }
 
 - (void) _processAlarm: (iCalAlarm *) alarm
@@ -160,13 +177,44 @@
                        withMailer: mailer];
 }
 
+- (void) usage
+{
+  fprintf (stderr, "sogo-ealarms-notify [-p credentialFile] [-h]\n\n"
+     "  -p credentialFile    Specify the file containing credentials to use for SMTP AUTH\n"
+     "                       The file should contain a single line:\n"
+     "                         username:password\n"
+     "  -h                   This message\n"
+     "\n"
+     "This program should be configured to run every minute from a crontab.\n");
+}
+
 - (BOOL) run
 {
   SOGoEMailAlarmsManager *eaMgr;
+  SOGoCredentialsFile *cf;
   NSCalendarDate *startDate, *toDate;
   NSArray *alarms;
   NSMutableArray *owners;
+  NSString *credsFilename;
   int count, max;
+
+  if ([[NSUserDefaults standardUserDefaults] stringForKey: @"h"])
+    {
+      [self usage];
+      return YES;
+    }
+
+  credsFilename = [[NSUserDefaults standardUserDefaults] stringForKey: @"p"];
+  if (credsFilename)
+    {
+      cf = [SOGoCredentialsFile credentialsFromFile: credsFilename];
+      if (!cf)
+        return NO;
+      staticAuthenticator =
+          [SOGoStaticAuthenticator authenticatorWithUser: [cf username]
+                                             andPassword: [cf password]];
+      [staticAuthenticator retain];
+    }
 
   [[SOGoProductLoader productLoader]
     loadProducts: [NSArray arrayWithObject: @"Appointments.SOGo"]];

@@ -1,6 +1,6 @@
 /* SOGoToolUserPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc.
+ * Copyright (C) 2011-2013 Inverse inc.
  *
  * Author: Francis Lachapelle <flachapelle@inverse.ca>
  *
@@ -37,10 +37,11 @@
 #import <NGExtensions/NSNull+misc.h>
 
 #import <SOGo/NSString+Utilities.h>
-#import <SOGo/SOGoUser.h>
-#import <SOGo/SOGoSystemDefaults.h>
-#import <SOGo/SOGoUserDefaults.h>
+#import "SOGo/SOGoCredentialsFile.h"
 #import <SOGo/SOGoSieveManager.h>
+#import <SOGo/SOGoSystemDefaults.h>
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import "SOGoTool.h"
 
@@ -180,9 +181,9 @@
 
 - (BOOL) run
 {
-  NSData *credsData;
   NSRange r;
-  NSString *creds, *credsFile, *authname, *authpwd;
+  NSString *creds, *credsFilename, *authname, *authpwd;
+  SOGoCredentialsFile *cf;
   BOOL rc;
   int max;
   
@@ -192,41 +193,34 @@
   authpwd = nil;
   rc = NO;
 
-  credsFile = [[NSUserDefaults standardUserDefaults] stringForKey: @"p"];
-  if (credsFile)
+  credsFilename = [[NSUserDefaults standardUserDefaults] stringForKey: @"p"];
+  if (credsFilename)
     {
-      credsData = [NSData dataWithContentsOfFile: credsFile];
-      if (credsData == nil)
-        {
-          NSLog(@"Error reading credential file '%@'", credsFile);
-          return NO;
-        }
-      creds = [[NSString alloc] initWithData: credsData
-                                    encoding: NSUTF8StringEncoding];
-      [creds autorelease];
-      creds = [creds stringByTrimmingCharactersInSet: 
-                 [NSCharacterSet characterSetWithCharactersInString: @"\r\n"]];
+      cf = [SOGoCredentialsFile credentialsFromFile: credsFilename];
+      authname = [cf username];
+      authpwd = [cf password];
     }
 
+  /* DEPRECATED: this is only kept around to avoid breaking existing setups */
   if (max > 0)
     {
       /* assume we got the creds directly on the cli */
       creds = [sanitizedArguments objectAtIndex: 0];
+      if (creds)
+        {
+          r = [creds rangeOfString: @":"];
+          if (r.location == NSNotFound)
+            {
+              NSLog(@"Invalid credential string format (user:pass)");
+            }
+          else
+            {
+              authname = [creds substringToIndex: r.location];
+              authpwd = [creds substringFromIndex: r.location+1];
+            }
+        }
     }
 
-  if (creds)
-   {
-     r = [creds rangeOfString: @":"];
-     if (r.location == NSNotFound)
-      {
-        NSLog(@"Invalid credential string format (user:pass)");
-      }
-     else
-      {
-        authname = [creds substringToIndex: r.location];
-        authpwd = [creds substringFromIndex: r.location+1];
-      }
-   }
 
   if (authname && authpwd)
    {

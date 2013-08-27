@@ -1,8 +1,6 @@
-/* SOGoEAlarmsNotifier.h - this file is part of SOGo
+/* SOGoCredentialsFile.h - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,20 +18,26 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOEALARMSNOTIFIER_H
-#define SOGOEALARMSNOTIFIER_H
+#ifndef SOGOCREDENTIALSFILE_H
+#define SOGOCREDENTIALSFILE_H
 
 #import <Foundation/NSObject.h>
 
-#import <SOGo/SOGoStaticAuthenticator.h>
-
-@interface SOGoEAlarmsNotifier : NSObject
+@interface SOGoCredentialsFile : NSObject
 {
-  SOGoStaticAuthenticator *staticAuthenticator;
+  NSString *_credentialsFile;
+  NSString *_username, *_password;
 }
 
-- (BOOL) run;
++ (id) credentialsFromFile: (NSString *) file;
+
+- (id) initFromFile: (NSString *) file
+                 withEncoding: (NSStringEncoding) enc;
+
+- (NSString *) username;
+- (NSString *) password;
+- (NSString *) credentialsFile;
 
 @end
 
-#endif /* SOGOEALARMSNOTIFIER_H */
+#endif /* SOGOCREDENTIALSFILE_H */
