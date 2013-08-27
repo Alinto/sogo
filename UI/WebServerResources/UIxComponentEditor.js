@@ -371,7 +371,7 @@ function onPopupReminderWindow(event) {
             if (ComponentEditor.reminderWindow && ComponentEditor.reminderWindow.open && !ComponentEditor.reminderWindow.closed)
                 ComponentEditor.reminderWindow.focus();
             else {
-                var height = (emailAlarmsEnabled ? 215 : 150);
+                var height = (emailAlarmsEnabled ? 235 : 150);
                 ComponentEditor.reminderWindow
                     = window.open(ApplicationBaseURL + "editReminder",
                                   sanitizeWindowName(activeCalendar + activeComponent + "Reminder"),
