@@ -1,6 +1,6 @@
 /* SOGoToolUserPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc.
+ * Copyright (C) 2011-2013 Inverse inc.
  *
  * Author: Ludovic Marcotte  <lmarcotte@inverse.ca>
  *
