@@ -28,6 +28,7 @@
 #import <Foundation/NSUserDefaults.h>
 
 #import <SOGo/NSString+Utilities.h>
+#import "SOGo/SOGoCredentialsFile.h"
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
@@ -109,34 +110,17 @@ typedef enum
       [theKey caseInsensitiveCompare: @"Vacation"] == NSOrderedSame)
     {
       /* credentials file handling */
-      NSData *credsData;
-      NSRange r;
-      NSString *credsFile, *creds, *authname, *authpwd;
-      authname = nil;
-      authpwd = nil;
+      NSString *credsFilename, *authname, *authpwd;
+      SOGoCredentialsFile *cf;
 
-
-      credsFile = [[NSUserDefaults standardUserDefaults] stringForKey: @"p"];
-      if (credsFile)
+      credsFilename = [[NSUserDefaults standardUserDefaults] stringForKey: @"p"];
+      if (credsFilename)
         {
-          /* TODO: add back support for user:pwd here? */
-          credsData = [NSData dataWithContentsOfFile: credsFile];
-          if (credsData == nil)
-            {
-              NSLog(@"Error reading credential file '%@'", credsFile);
-              return NO;
-            }
-
-          creds = [[NSString alloc] initWithData: credsData
-                                        encoding: NSUTF8StringEncoding];
-          [creds autorelease];
-          creds = [creds stringByTrimmingCharactersInSet: 
-                    [NSCharacterSet characterSetWithCharactersInString: @"\r\n"]];
-
-          r = [creds rangeOfString: @":"];
-          authname = [creds substringToIndex: r.location];
-          authpwd = [creds substringFromIndex: r.location+1];
+          cf = [SOGoCredentialsFile credentialsFromFile: credsFilename];
+          authname = [cf username];
+          authpwd = [cf password];
         }
+
       if (authname == nil || authpwd == nil)
         {
           NSLog(@"To update Sieve scripts, you must provide the \"-p credentialFile\" parameter");
