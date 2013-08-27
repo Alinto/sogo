@@ -5,11 +5,12 @@ New features
  - 
  
 Enhancements
- - 
+ - Added SMTP AUTH support for sogo-ealarms-notify
 
 Bug fixes
  - fixed Finnish mail reply/forward templates
  - fixed position of red line of current time
+ - disabled verbose logging of smtp sessions by default
 
 2.0.7 (2013-07-19)
 ------------------
