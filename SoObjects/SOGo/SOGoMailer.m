@@ -35,6 +35,7 @@
 #import "NSString+Utilities.h"
 #import "SOGoAuthenticator.h"
 #import "SOGoDomainDefaults.h"
+#import "SOGoStaticAuthenticator.h"
 #import "SOGoSystemDefaults.h"
 #import "SOGoUser.h"
 #import "SOGoUserManager.h"
@@ -153,9 +154,13 @@
       [client connectToAddress: addr];
       if ([authenticationType isEqualToString: @"plain"])
         {
-          login = [[SOGoUserManager sharedUserManager]
-                     getExternalLoginForUID: [[authenticator userInContext: woContext] loginInDomain]
-                                   inDomain: [[authenticator userInContext: woContext] domain]];
+          /* XXX Allow static credentials by peeking at the classname */
+          if ([authenticator isKindOfClass: [SOGoStaticAuthenticator class]])
+            login = [(SOGoStaticAuthenticator *)authenticator username];
+          else
+            login = [[SOGoUserManager sharedUserManager]
+                       getExternalLoginForUID: [[authenticator userInContext: woContext] loginInDomain]
+                                     inDomain: [[authenticator userInContext: woContext] domain]];
 
           password = [authenticator passwordInContext: woContext];
           if ([login length] == 0
