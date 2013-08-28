@@ -632,7 +632,25 @@ static Class NSStringK;
                      IDField, [login escapedForLDAPDN], baseDN];
             if (userDN)
               {
-                if (!passwordPolicy)
+                if ([bindConnection isADCompatible])
+                  {
+                    if ([bindConnection bindWithMethod: @"simple"
+                                                binddn: userDN
+                                           credentials: oldPassword])
+                      {
+                        didChange = [bindConnection changeADPasswordAtDn: userDN
+                                                             oldPassword: oldPassword
+                                                             newPassword: newPassword];
+                      }
+                  }
+                else if (passwordPolicy)
+                  {
+                    didChange = [bindConnection changePasswordAtDn: userDN
+                                                       oldPassword: oldPassword
+                                                       newPassword: newPassword
+                                                              perr: (void *)perr];
+                  }
+                else
                   {
                     // We don't use a password policy - we simply use
                     // a modify-op to change the password
@@ -668,11 +686,6 @@ static Class NSStringK;
                           didChange = NO;
                       }
                   }
-                else
-                  didChange = [bindConnection changePasswordAtDn: userDN
-                                                     oldPassword: oldPassword
-                                                     newPassword: newPassword
-                                                            perr: (void *)perr];
               }
           }
       }
