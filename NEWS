@@ -6,6 +6,7 @@ New features
  
 Enhancements
  - Added SMTP AUTH support for sogo-ealarms-notify
+ - Added support for LDAP password change against AD/Samba4
 
 Bug fixes
  - fixed Finnish mail reply/forward templates
