@@ -24,9 +24,9 @@ h1, dd, .dl-list dt { margin-left: 130px; }
       <small><var:string value="organizerName" const:escapeHTML="NO"/><var:string value="sentByText" const:escapeHTML="NO"/></small></h1>
 
       <dl class="dl-horizontal">
-        <var:if condition="apt.location.length"
+        <var:if condition="location.length"
         ><dt><var:string label:value="location_label" const:escapeHTML="NO"/></dt>
-        <dd><var:string value="apt.location" const:escapeHTML="NO"/></dd></var:if>
+        <dd><var:string value="location" const:escapeHTML="NO"/></dd></var:if>
         <dt><var:string label:value="startDate_label" const:escapeHTML="NO"/></dt>
         <dd><var:string value="formattedAptStartDate" const:escapeHTML="NO"
            /><var:if condition="formattedAptStartTime.length"> - <var:string value="formattedAptStartTime" const:escapeHTML="NO"/> <var:string value="viewTZ" const:escapeHTML="NO"/>
