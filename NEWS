@@ -12,6 +12,7 @@ Bug fixes
  - fixed Finnish mail reply/forward templates
  - fixed position of red line of current time
  - disabled verbose logging of smtp sessions by default
+ - fixed high CPU usage when there are no available child processes
 
 2.0.7 (2013-07-19)
 ------------------
