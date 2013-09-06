@@ -793,6 +793,10 @@ const unsigned short ansicpg874[256] = {
             {
               // ignore
             }
+         else if ([s hasPrefix: @"fromtext"])
+            {
+              // ignore
+            }
           else if ([s hasPrefix: @"f"] && [s length] > 1)
             {
               RTFFontInfo *fontInfo;
