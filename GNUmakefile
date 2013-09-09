@@ -9,9 +9,11 @@ SUBPROJECTS = \
 	OGoContentStore	\
 	SoObjects	\
 	Main		\
-	UI		\
 	Tools		\
 	Tests/Unit	\
 
+ifeq ($(webui),yes)
+SUBPROJECTS += UI
+endif
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make

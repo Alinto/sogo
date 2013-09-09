@@ -26,6 +26,7 @@ ARG_WITH_DEBUG=1
 ARG_WITH_STRIP=0
 ARG_ENABLE_SAML2=0
 ARG_WITH_LDAP_CONFIG=0
+ARG_ENABLE_WEBUI=1
 
 GNUSTEP_INSTALLATION_DOMAIN="LOCAL"
 
@@ -74,6 +75,7 @@ Installation directories:
   --configmake=PATH       path to the config file being created
   --enable-debug          turn on debugging and compile time warnings
   --enable-strip          turn on stripping of debug symbols
+  --disable-webui         disable the build and installation of the web UI
   --with-ssl=SSL          specify ssl library (none, libssl, gnutls, auto) [auto]
   --enable-saml2          enable support for SAML2 authentication (requires liblasso)
 
@@ -100,6 +102,11 @@ printParas() {
     echo "  strip:  yes";
   else
     echo "  strip:  no";
+  fi
+  if test $ARG_ENABLE_WEBUI = 1; then 
+    echo "  webui:  yes";
+  else
+    echo "  webui:  no";
   fi
   if test $ARG_ENABLE_SAML2 = 1; then 
     echo "  saml2 support:  yes";
@@ -238,6 +245,7 @@ genConfigMake() {
   cfgwrite "TOPDIR:=$TOPDIR"
   cfgwrite ""
 
+  # disbable GNUstep gui libraries if present
   cfgwrite "NEEDS_GUI=no"
 
   # SOPE version
@@ -256,6 +264,15 @@ genConfigMake() {
     cfgwrite "# configured to produce non-debugging code";
     cfgwrite "debug:=no"
   fi
+
+  if test $ARG_ENABLE_WEBUI = 1; then
+    cfgwrite "# configured to build webui";
+    cfgwrite "webui:=yes"
+  else
+    cfgwrite "# configured to ignore build webui";
+    cfgwrite "webui:=no"
+  fi
+
   cfgwrite ""
   UNAME=`uname`
   if [ "X${UNAME}" = "XLinux" ];then
@@ -468,6 +485,12 @@ processOption() {
 	;;
     "x--disable-strip")
         ARG_WITH_STRIP=0
+	;;
+    "x--enable-webui")
+        ARG_ENABLE_WEBUI=1
+	;;
+    "x--disable-webui")
+        ARG_ENABLE_WEBUI=0
 	;;
     x--with-ssl=*)
         extractFuncValue $1;

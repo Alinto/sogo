@@ -61,7 +61,6 @@
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoSystemDefaults.h>
-#import <SOGo/SOGoWebAuthenticator.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <SOGo/NSObject+DAV.h>
@@ -169,13 +168,20 @@ static BOOL debugLeaks;
 		    andFileSuffix: (NSString *) fileSuffix
 {
   NSString *tableFile, *descFile;
-  NGBundleManager *bm;
   NSBundle *bundle;
   unsigned int length;
 
-  bm = [NGBundleManager defaultBundleManager];
+  bundle = [NSBundle bundleForClass: [SOGoSystemDefaults class]];
+  // filename = [bundle pathForResource: @"SOGoDefaults" ofType: @"plist"];
 
-  bundle = [bm bundleWithName: @"MainUI" type: @"SOGo"];
+  // bundle = [NSBundle bundleWithIdentifier: @"SOGo.framework"];
+
+  // Class SOGoFramework = NSClassFromString (@"NSFramework_SOGo");
+  // bundle = [NSBundle bundleForClass: SOGoFramework];
+  if (!bundle)
+    [NSException raise: @"IOException"
+                format: @"did not find SOGo framework!"];
+
   length = [tableType length] - 3;
   tableFile = [tableType substringToIndex: length];
   descFile
@@ -184,6 +190,10 @@ static BOOL debugLeaks;
 	      ofType: @"sql"];
   if (!descFile)
     descFile = [bundle pathForResource: tableFile ofType: @"sql"];
+
+  if (!descFile)
+    [NSException raise: @"IOException"
+                format: @"did not find sql file for '%@'", tableName];
 
   return [[NSString stringWithContentsOfFile: descFile]
 	   stringByReplacingString: @"@{tableName}"
@@ -282,13 +292,28 @@ static BOOL debugLeaks;
 - (id) authenticatorInContext: (WOContext *) context
 {
   id authenticator;
+  static id webAuthenticator = nil;
 
   if (trustProxyAuthentication)
     authenticator = [SOGoProxyAuthenticator sharedSOGoProxyAuthenticator];
   else
     {
       if ([[context request] handledByDefaultHandler])
-        authenticator = [SOGoWebAuthenticator sharedSOGoWebAuthenticator];
+        {
+          if (!webAuthenticator)
+            {
+              Class SOGoWebAuthenticator = NSClassFromString(@"SOGoWebAuthenticator");
+              webAuthenticator = [SOGoWebAuthenticator
+                                   performSelector: @selector(sharedSOGoWebAuthenticator)];
+              if (!webAuthenticator)
+                webAuthenticator = [NSNull null];
+            }
+
+          if ([webAuthenticator isNotNull])
+            authenticator = webAuthenticator;
+          else
+            authenticator = nil;
+        }
       else
         authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
     }
