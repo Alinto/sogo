@@ -8,9 +8,12 @@ SUBPROJECTS = \
 	SOPE/GDLContentStore \
 	OGoContentStore	\
 	SoObjects	\
-	Main		\
 	Tools		\
-	Tests/Unit	\
+	Tests/Unit
+
+ifeq ($(daemon),yes)
+SUBPROJECTS += Main
+endif
 
 ifeq ($(webui),yes)
 SUBPROJECTS += UI
