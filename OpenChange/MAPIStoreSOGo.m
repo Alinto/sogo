@@ -31,6 +31,7 @@
 #import <NGObjWeb/SoProductRegistry.h>
 #import <NGExtensions/NSObject+Logs.h>
 #import <SOGo/SOGoCache.h>
+#import <SOGo/SOGoSQLInit.h>
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoSystemDefaults.h>
 
@@ -127,6 +128,8 @@ sogo_backend_init (void)
   [[SOGoCache sharedCache] disableLocalCache];
 
   MAPIStoreContextK = NSClassFromString (@"MAPIStoreContext");
+
+  SOGoEnsureMandatoryTables ();
 
   [pool release];
 

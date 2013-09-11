@@ -83,6 +83,7 @@ all::
 SOGo_OBJC_FILES = \
 	SOGoBuild.m \
 	SOGoProductLoader.m		\
+	SOGoSQLInit.m			\
 	\
 	SOGoCache.m			\
 	SOGoConstants.m			\
