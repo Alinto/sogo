@@ -115,7 +115,7 @@ function prototypeIfyFilters() {
 function _setupEvents() {
     var widgets = [ "timezone", "shortDateFormat", "longDateFormat",
                     "timeFormat", "weekStartDay", "dayStartTime", "dayEndTime",
-                    "firstWeek", "messageCheck", "sortByThreads",
+                    "firstWeek", "messageCheck", "sortByThreads", "displayRemoteInlineImages",
                     "subscribedFoldersOnly", "language", "defaultCalendar",
                     "enableVacation" ];
     for (var i = 0; i < widgets.length; i++) {
