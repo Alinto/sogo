@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 
@@ -91,7 +92,8 @@
                                toResponse: (WOResponse *) response
                                   context: (id) localContext
 {
-  unsigned int count, max;
+  unsigned int count,i , max;
+  NSAutoreleasePool *pool;
   NSDictionary *currentFilter, *contact;
   NSEnumerator *contacts;
   NSString *baseURL, *domain;
@@ -103,16 +105,27 @@
   for (count = 0; count < max; count++)
     {
       currentFilter = [filters objectAtIndex: count];
-      contacts = [[(id<SOGoContactFolder>)self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
-                                                             onCriteria: @"name_or_address"
-                                                                 sortBy: @"c_givenname"
-                                                               ordering: NSOrderedDescending
-                                                               inDomain: domain]
-		   objectEnumerator];
-      
+      contacts =
+        [[(id<SOGoContactFolder>)self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
+                                                    onCriteria: @"name_or_address"
+                                                        sortBy: @"c_givenname"
+                                                      ordering: NSOrderedDescending
+                                                      inDomain: domain] objectEnumerator];
+
+      pool = [[NSAutoreleasePool alloc] init];
+      i = 0;
       while ((contact = [contacts nextObject]))
-	[self _appendObject: contact withBaseURL: baseURL
-           toREPORTResponse: response];
+        {
+          [self _appendObject: contact withBaseURL: baseURL
+            toREPORTResponse: response];
+          if (i % 10 == 0)
+            {
+              RELEASE(pool);
+              pool = [[NSAutoreleasePool alloc] init];
+            }
+          i++;
+        }
+      RELEASE(pool);
     }
 }
 
