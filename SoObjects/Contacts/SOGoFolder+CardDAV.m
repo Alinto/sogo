@@ -65,7 +65,7 @@
                         @"<D:href>"];
       [r appendContentString: baseURL];
       if (![baseURL hasSuffix: @"/"])
-	[r appendContentString: @"/"];
+        [r appendContentString: @"/"];
       [r appendContentString: name];
       [r appendContentString: @"</D:href>"
                         @"<D:propstat>"
@@ -89,7 +89,7 @@
 
 - (void) _appendComponentsMatchingFilters: (NSArray *) filters
                                toResponse: (WOResponse *) response
-				  context: (id) localContext
+                                  context: (id) localContext
 {
   unsigned int count, max;
   NSDictionary *currentFilter, *contact;
@@ -123,10 +123,10 @@
   newString = [theString lowercaseString];
 
   return ([newString isEqualToString: @"sn"]
-	  || [newString isEqualToString: @"givenname"]
-	  || [newString isEqualToString: @"email"]
-	  || [newString isEqualToString: @"mail"]
-	  || [newString isEqualToString: @"telephonenumber"]);
+          || [newString isEqualToString: @"givenname"]
+          || [newString isEqualToString: @"email"]
+          || [newString isEqualToString: @"mail"]
+          || [newString isEqualToString: @"telephonenumber"]);
 }
 
 - (NSDictionary *) _parseContactFilter: (id <DOMElement>) filterElement
@@ -145,12 +145,12 @@
       ranges = [filterElement getElementsByTagName: @"text-match"];
 
       if ([(NSArray *) ranges count]
-	  && [(NSArray *) [[ranges objectAtIndex: 0] childNodes] count])
-	{
-	  filterData = [NSMutableDictionary dictionary];
-	  [filterData setObject: [(NGDOMNode *)[ranges objectAtIndex: 0] textValue]
-			 forKey: [filterElement attribute: @"name"]];
-	}
+          && [(NSArray *) [[ranges objectAtIndex: 0] childNodes] count])
+        {
+          filterData = [NSMutableDictionary dictionary];
+          [filterData setObject: [(NGDOMNode *)[ranges objectAtIndex: 0] textValue]
+            forKey: [filterElement attribute: @"name"]];
+        }
     }
 
   return filterData;
@@ -166,7 +166,7 @@
   filters = [NSMutableArray array];
 
   children = [(NSArray *)[parentNode getElementsByTagName: @"prop-filter"]
-			 objectEnumerator];
+               objectEnumerator];
   while ((node = [children nextObject]))
     {
       filter = [self _parseContactFilter: node];
@@ -193,7 +193,7 @@
 
   [self _appendComponentsMatchingFilters: filters
         toResponse: r
-	context: queryContext];
+           context: queryContext];
   [r appendContentString: @"</D:multistatus>"];
 
   return r;
