@@ -13,6 +13,9 @@ function initPopupMailer(event) {
     configureLoadImagesButton();
     configureSignatureFlagImage();
 
+    if (UserDefaults["SOGoMailDisplayRemoteInlineImages"] == 'always')
+        loadRemoteImages();
+
     window.messageUID = mailboxName + "/" + messageName;
 
     handleReturnReceipt();
