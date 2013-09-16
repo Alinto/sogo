@@ -192,7 +192,7 @@ function onComponentEditorLoad(event) {
     initializeClassificationMenu();
     var list = $("calendarList");
     if (list) {
-        list.on("change", onChangeCalendar, false);
+        list.on("change", onChangeCalendar);
         list.fire("mousedown");
     }
     

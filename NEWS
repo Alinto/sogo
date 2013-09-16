@@ -13,6 +13,8 @@ Bug fixes
  - fixed position of red line of current time
  - disabled verbose logging of smtp sessions by default
  - fixed high CPU usage when there are no available child processes
+ - fixed crash in dav f/b lookups when using SQL addressbooks (#2418)
+ - fixed memory consumption issues when doing dav lookups with huge result set
 
 2.0.7 (2013-07-19)
 ------------------
