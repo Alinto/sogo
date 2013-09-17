@@ -11,8 +11,9 @@ Enhancements
  - The init scripts now start 3 sogod processes by default instead of 1
 
 Bug fixes
- - Fixed Finnish mail reply/forward templates
- - Fixed position of red line of current time
+ - Fixed Finnish mail reply/forward templates (#2401)
+ - Fixed position of red line of current time (#2373)
+ - Removed HTML encoding in subjects of invitations (#2402)
  - Disabled verbose logging of smtp sessions by default
  - Fixed high CPU usage when there are no available child processes
    Added logging when such a condition occurs
