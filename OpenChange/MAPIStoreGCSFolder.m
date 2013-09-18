@@ -259,7 +259,6 @@ static Class NSNumberK;
   }
 }
  */
-
 - (void) _setChangeKey: (NSData *) changeKey
        forMessageEntry: (NSMutableDictionary *) messageEntry
       inChangeListOnly: (BOOL) inChangeListOnly
@@ -462,6 +461,9 @@ static Class NSNumberK;
               [messageEntry setObject: changeNumber forKey: @"version"];
 
               newChangeNum = [changeNumber unsignedLongLongValue];
+	      
+	      // A GLOBCNT structure is a 6-byte global namespace counter,
+	      // we strip the first 2 bytes. The first two bytes is the ReplicaId
               changeKey = [self getReplicaKeyFromGlobCnt: newChangeNum >> 16];
               [self _setChangeKey: changeKey forMessageEntry: messageEntry
                  inChangeListOnly: NO];

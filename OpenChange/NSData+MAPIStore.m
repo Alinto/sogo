@@ -148,6 +148,7 @@ static void _fillFlatUIDWithGUID (struct FlatUID_r *flatUID, const struct GUID *
 - (struct XID *) asXIDInMemCtx: (void *) memCtx
 {
   struct XID *xid;
+  uint8_t *bytes;
   NSUInteger max;
 
   max = [self length];
@@ -158,7 +159,9 @@ static void _fillFlatUIDWithGUID (struct FlatUID_r *flatUID, const struct GUID *
       [self _extractGUID: &xid->GUID];
 
       xid->Size = max - 16;
-      xid->Data = talloc_memdup (xid, [self bytes] + 16, xid->Size);
+
+      bytes = (uint8_t *) [self bytes];
+      xid->Data = talloc_memdup (xid, (bytes+16), xid->Size);
     }
   else
     {
