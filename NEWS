@@ -23,6 +23,7 @@ Bug fixes
  - Worked around an issue with chunked encoding of CAS replies (#2408)
  - Avoid crash when handling malformed or non-ASCII http credentials (#2358)
  - Fixed crontab error (#2372)
+ - Avoid using too many LDAP connections while looping through ldap results
 
 2.0.7 (2013-07-19)
 ------------------
