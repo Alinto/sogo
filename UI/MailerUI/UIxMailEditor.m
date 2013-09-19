@@ -567,8 +567,8 @@ static NSArray *infoKeys = nil;
     {
       info = [self storeInfo];
       [co setHeaders: info];
-      [co setText: text];
       [co setIsHTML: isHTML];
+      [co setText: (isHTML ? [NSString stringWithFormat: @"<html>%@</html>", text] : text)];;
       error = [co storeInfo];
       if (error)
 	{
