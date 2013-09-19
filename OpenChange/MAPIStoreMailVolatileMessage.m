@@ -543,6 +543,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
   NSDictionary *recipients;
   NSUInteger type, bccLimit;
   SOGoUser *activeUser;
+  NSNumber *priority;
 
   activeUser
     = [SOGoUser
@@ -596,6 +597,21 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
       [headers addObject: [date rfc822DateString] forKey: @"date"];
     }
   [headers addObject: @"1.0" forKey: @"MIME-Version"];
+
+  priority = [mailProperties objectForKey: MAPIPropertyKey (PidTagImportance)];
+  
+  if ([priority intValue] == 2)
+    {
+      [headers addObject: @"1 (Highest)"  forKey: @"X-Priority"];
+    }
+  else if ([priority intValue] == 1)
+    {
+      [headers removeAllObjectsForKey: @"X-Priority"];
+    }
+  else
+    {
+      [headers addObject: @"5 (Lowest)"  forKey: @"X-Priority"];
+    }
 }
 
 static NSArray *
