@@ -23,6 +23,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 #import <NGExtensions/NSObject+Logs.h>
 
@@ -34,6 +35,7 @@
 #import "MAPIStoreDBMessage.h"
 #import "MAPIStoreTypes.h"
 #import "NSObject+MAPIStore.h"
+#import "NSString+MAPIStore.h"
 
 #undef DEBUG
 #include <mapistore/mapistore.h>
@@ -97,6 +99,21 @@
     objectVersion = ULLONG_MAX;
 
   return objectVersion;
+}
+
+//
+// FIXME: how this can happen?
+//
+// We might get there if for some reasons, all classes weren't able
+// to tell us the message class.
+//
+- (int) getPidTagMessageClass: (void **) data inMemCtx: (TALLOC_CTX *) memCtx
+{
+  *data = [@"IPM.Note" asUnicodeInMemCtx: memCtx];
+
+  [self logWithFormat: @"METHOD '%s' - unable to determine message class. Falling back to IPM.Note", __FUNCTION__];
+
+  return MAPISTORE_SUCCESS;
 }
 
 - (int) getProperties: (struct mapistore_property_data *) data
