@@ -10,6 +10,7 @@ Enhancements
  - Added apache configuration for Apple autoconfiguration (#2248)
  - The init scripts now start 3 sogod processes by default instead of 1
  - SOGo now also sends a plain/text parts when sending HTML mails (#2217)
+ - SOGo now listens on 127.0.0.1:20000 by default (instead of *:20000)
 
 Bug fixes
  - Fixed Finnish mail reply/forward templates (#2401)
