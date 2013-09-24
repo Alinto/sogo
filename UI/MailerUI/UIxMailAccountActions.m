@@ -32,6 +32,7 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
+#import <NGImap4/NSString+Imap4.h>
 #import <NGExtensions/NSString+misc.h>
 
 #import <Mailer/SOGoMailAccount.h>
@@ -123,7 +124,7 @@
 
 - (NSArray *) _jsonFolders: (NSEnumerator *) rawFolders
 {
-  NSString *currentFolder, *currentDisplayName, *currentFolderType, *login, *fullName;
+  NSString *currentFolder, *currentDecodedFolder, *currentDisplayName, *currentFolderType, *login, *fullName;
   NSMutableArray *pathComponents;
   SOGoUserManager *userManager;
   NSDictionary *folderData;
@@ -138,17 +139,19 @@
       // are never reused and "autoreleased" at the end. This loop would consume
       // lots of LDAP connections during its execution.
       pool = [[NSAutoreleasePool alloc] init];
-      currentFolderType = [self _folderType: currentFolder];
+
+      currentDecodedFolder = [currentFolder stringByDecodingImap4FolderName];
+      currentFolderType = [self _folderType: currentDecodedFolder];
 
       // We translate the "Other Users" and "Shared Folders" namespaces.
       // While we're at it, we also translate the user's mailbox names
       // to the full name of the person.
-      if (otherUsersFolderName && [currentFolder hasPrefix: otherUsersFolderName])
+      if (otherUsersFolderName && [currentDecodedFolder hasPrefix: otherUsersFolderName])
 	{
 	  // We have a string like /Other Users/lmarcotte/... under Cyrus, but we could
 	  // also have something like /shared under Dovecot. So we swap the username only
 	  // if we have one, of course.
-	  pathComponents = [NSMutableArray arrayWithArray: [currentFolder pathComponents]];
+	  pathComponents = [NSMutableArray arrayWithArray: [currentDecodedFolder pathComponents]];
 	  
 	  if ([pathComponents count] > 2) 
 	    {
@@ -166,14 +169,14 @@
 	  else
 	    {
 	      currentDisplayName = [NSString stringWithFormat: @"/%@%@", [self labelForKey: @"OtherUsersFolderName"],
-					     [currentFolder substringFromIndex: [otherUsersFolderName length]]];
+					     [currentDecodedFolder substringFromIndex: [otherUsersFolderName length]]];
 	    }
 	}
-      else if (sharedFoldersName && [currentFolder hasPrefix: sharedFoldersName])
+      else if (sharedFoldersName && [currentDecodedFolder hasPrefix: sharedFoldersName])
 	currentDisplayName = [NSString stringWithFormat: @"/%@%@", [self labelForKey: @"SharedFoldersName"],
-				       [currentFolder substringFromIndex: [sharedFoldersName length]]];
+				       [currentDecodedFolder substringFromIndex: [sharedFoldersName length]]];
       else
-	currentDisplayName = currentFolder;
+	currentDisplayName = currentDecodedFolder;
       
       folderData = [NSDictionary dictionaryWithObjectsAndKeys:
 				   currentFolder, @"path",

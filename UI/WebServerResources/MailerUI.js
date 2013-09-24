@@ -774,7 +774,7 @@ function composeNewMessage() {
 
 function openMailbox(mailbox, reload) {
     if (mailbox != Mailer.currentMailbox || reload) {
-        var url = ApplicationBaseURL + encodeURI(mailbox);
+        var url = ApplicationBaseURL + encodeURI(mailbox.unescapeHTML());
         var urlParams = new Hash();
 
         if (!reload) {

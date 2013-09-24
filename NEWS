@@ -11,6 +11,7 @@ Enhancements
  - The init scripts now start 3 sogod processes by default instead of 1
  - SOGo now also sends a plain/text parts when sending HTML mails (#2217)
  - SOGo now listens on 127.0.0.1:20000 by default (instead of *:20000)
+ - SOGo new uses the latest WebDAV sync response type (#1275)
 
 Bug fixes
  - Fixed Finnish mail reply/forward templates (#2401)
@@ -25,8 +26,9 @@ Bug fixes
  - Worked around an issue with chunked encoding of CAS replies (#2408)
  - Avoid crash when handling malformed or non-ASCII http credentials (#2358)
  - Fixed crontab error (#2372)
- - Fixed OpenChange corruption issue regarding predecessors change list
+ - Fixed OpenChange corruption issue regarding predecessors change list (#2405)
  - Avoid using too many LDAP connections while looping through ldap results
+ - Avoid unnecessary UTF-7 conversions (#2318) 
 
 2.0.7 (2013-07-19)
 ------------------
