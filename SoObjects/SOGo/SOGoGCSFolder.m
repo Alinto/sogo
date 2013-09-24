@@ -1195,6 +1195,41 @@ static NSArray *childRecordFields = nil;
   return propstats;
 }
 
+/*
+  draft-1:
+
+        <?xml version="1.0" encoding="utf-8"?>
+        <D:multistatus xmlns:D="DAV:">
+         <D:sync-response>
+          <D:href>/SOGo/dav/sogo2/Calendar/personal/351dc1af-2aa3-4d14-9704-eadbcfecaf7e.ics</D:href>
+          <D:status>HTTP/1.1 200 OK</D:status>
+          <D:propstat>
+           <D:prop>
+           <D:getetag>&quot;gcs00000001&quot;</D:getetag></D:prop>
+           <D:status>HTTP/1.1 200 OK</D:status>
+          </D:propstat>
+         </D:sync-response>
+         <D:sync-token>1322100412</D:sync-token>
+        </D:multistatus>
+	
+  draft-2 and up:
+
+        <?xml version="1.0" encoding="utf-8" ?>
+        <multistatus xmlns="DAV:">
+         <response>
+          <href>/caldav.php/user1/home/DAYPARTY-77C6-4FB7-BDD3-6882E2F1BE74.ics</href>
+          <propstat>
+           <prop>
+            <getetag>"165746adbab8bc0c8336a63cc5332ff2"</getetag>
+            <getlastmodified>Dow, 01 Jan 2000 00:00:00 GMT</getlastmodified>
+           </prop>
+           <status>HTTP/1.1 200 OK</status>
+          </propstat>
+         </response>
+         <sync-token>urn:,1322100412</sync-token>
+        </multistatus>
+*/
+
 - (NSDictionary *) _syncResponseWithProperties: (NSArray *) properties
                             andMethodSelectors: (SEL *) selectors
                                     fromRecord: (NSDictionary *) record
@@ -1238,7 +1273,7 @@ static NSArray *childRecordFields = nil;
                                           andMethodSelectors: selectors
                                                   fromRecord: record]];
 
-  return davElementWithContent (@"sync-response", XMLNS_WEBDAV, children);
+  return davElementWithContent (@"response", XMLNS_WEBDAV, children);
 }
 
 - (void) _appendComponentProperties: (NSArray *) properties
