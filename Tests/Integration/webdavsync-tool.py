@@ -43,7 +43,7 @@ def changedItemsFromCollection(client, collection, synctoken=None):
   doc = syncquery.response["document"]
 
   # extract all hrefs
-  for syncResponse in doc.iter("{DAV:}sync-response"):
+  for syncResponse in doc.iter("{DAV:}response"):
     href = syncResponse.find("{DAV:}href")
     if href is not None:
       hrefs.append(href.text)

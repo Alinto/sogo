@@ -110,7 +110,7 @@ class DAVCalendarSuperUserAclTest(unittest.TestCase):
                                                ["{urn:ietf:params:xml:ns:caldav}calendar-data"])
         self.client.execute(sync_query)
         if sync_query.response["status"] != 404:
-            event = self._calendarDataInMultistatus(sync_query, "{DAV:}sync-response")
+            event = self._calendarDataInMultistatus(sync_query, "{DAV:}response")
 
         return event
 
@@ -581,7 +581,7 @@ class DAVCalendarAclTest(DAVAclTest):
         self.subscriber_client.execute(sync_query)
         if sync_query.response["status"] != 404:
             event = self._calendarDataInMultistatus(sync_query, url,
-                                                    "{DAV:}sync-response")
+                                                    "{DAV:}response")
 
         return event
 
