@@ -2236,10 +2236,39 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   return @"";
 }
 
+/*
+  RFC5842 states:
+
+  3.1.  DAV:resource-id Property
+
+   The DAV:resource-id property is a REQUIRED property that enables
+   clients to determine whether two bindings are to the same resource.
+   The value of DAV:resource-id is a URI, and may use any registered URI
+   scheme that guarantees the uniqueness of the value across all
+   resources for all time (e.g., the urn:uuid: URN namespace defined in
+   [RFC4122] or the opaquelocktoken: URI scheme defined in [RFC4918]).
+
+   <!ELEMENT resource-id (href)>
+
+   ...
+
+   so we must STRIP any username prefix, to make the ID global.
+   
+*/
 - (NSString *) davResourceId
 {
+  NSString *name, *prefix;
+
+  prefix = [NSString stringWithFormat: @"%@_", [self ownerInContext: context]];
+  name = [self nameInContainer];
+  
+  if ([name hasPrefix: prefix])
+    {
+      name = [name substringFromIndex: [prefix length]];
+    }
+  
   return [NSString stringWithFormat: @"urn:uuid:%@:calendars:%@",
-                   [self ownerInContext: context], [self nameInContainer]];
+                   [self ownerInContext: context], name];
 }
 
 - (NSArray *) davScheduleCalendarTransparency
