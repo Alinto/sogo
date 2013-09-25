@@ -36,6 +36,7 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
+#import <NGImap4/NSString+Imap4.h>
 #import <Mailer/SOGoDraftsFolder.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
@@ -177,7 +178,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   if (folderName)
     {
       nameInContainer = [NSString stringWithFormat: @"folder%@",
-                                  [folderName asCSSIdentifier]];
+                                  [[folderName stringByEncodingImap4FolderName] asCSSIdentifier]];
       newFolder = [SOGoMailFolderK objectWithName: nameInContainer
                                       inContainer: sogoObject];
       if ([newFolder create])
@@ -315,7 +316,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
 
   if (![subfolderName hasPrefix: @"folder"])
     abort ();
-  strippedName = [subfolderName substringFromIndex: 6];
+  strippedName = [[subfolderName substringFromIndex: 6] stringByDecodingImap4FolderName];
   [representation appendFormat: @"/%@", strippedName];
 
   return representation;
