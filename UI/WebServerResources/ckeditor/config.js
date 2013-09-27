@@ -5,7 +5,7 @@
 
 CKEDITOR.editorConfig = function( config ) {
     config.toolbar = [
-        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'TextColor' ] },
+        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'TextColor' ] },
         { name: 'paragraph', items: [ 'NumberedList', 'BulletedList',
                                       '-',
                                       'Blockquote', 'Outdent', 'Indent',
