@@ -12,7 +12,7 @@ CKEDITOR.editorConfig = function( config ) {
                                       '-',
                                       'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
         { name: 'links', items: [ 'Link', 'Unlink' ] },
-        { name: 'insert', items: [ 'Image' ] },
+        { name: 'insert', items: [ 'Image', 'Table' ] },
         { name: 'editing', items: [ 'Font', 'FontSize', 'Scayt' ] }
     ];
     config.toolbarGroups = [

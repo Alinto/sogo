@@ -12,6 +12,7 @@ Enhancements
  - SOGo now also sends a plain/text parts when sending HTML mails (#2217)
  - SOGo now listens on 127.0.0.1:20000 by default (instead of *:20000)
  - SOGo new uses the latest WebDAV sync response type (#1275)
+ - updated CKEditor to version 4.2.1 and added the tables-related modules (#2410)
 
 Bug fixes
  - Fixed Finnish mail reply/forward templates (#2401)
