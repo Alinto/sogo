@@ -1404,10 +1404,6 @@ function reloadWebCalendarCallback(http) {
                     refreshEventsAndTasks();
                     changeCalendarDisplay();
                 }
-                else {
-                    var newFolderID = remaining[0];
-                    reloadWebCalendar(newFolderID, refreshOperations);
-                }
             }
             else {
                 if (success) {
