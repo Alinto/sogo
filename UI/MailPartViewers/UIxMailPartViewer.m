@@ -304,7 +304,7 @@
   return url;
 }
 
-- (NSString *) mimeImageUrl
+- (NSString *) mimeImageURL
 {
   NSString *mimeImageFile, *mimeImageUrl;
     

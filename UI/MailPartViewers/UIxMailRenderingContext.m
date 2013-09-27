@@ -213,8 +213,10 @@ static BOOL showNamedTextAttachmentsInline = NO;
 	return [self iCalViewer];
     }
   
-  // Tiffs aren't well-supported
-  if ([mt isEqualToString:@"image"] && ![st isEqualToString: @"tiff"])
+  // TIFF files aren't well-supported and Thunderbird sometimes send PDF
+  // files over as image/pdf !
+  if ([mt isEqualToString:@"image"] &&
+      !([st isEqualToString: @"tiff"] || [st isEqualToString: @"pdf"]))
     {
       if ([self _shouldDisplayAsAttachment: _info textPart: NO])
 	return [self linkViewer];
