@@ -364,7 +364,11 @@ static SoSecurityManager *sm = nil;
   NSString *newFolderID;
   NSException *error;
 
-  newFolderID = [self globallyUniqueObjectId];
+  newFolderID = *newNameInContainer;
+  
+  if (!newFolderID)
+    newFolderID = [self globallyUniqueObjectId];
+  
   error = [self newFolderWithName: name
 		andNameInContainer: newFolderID];
   if (error)
