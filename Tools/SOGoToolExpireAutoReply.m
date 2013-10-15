@@ -150,6 +150,8 @@
           while ((infos = [channel fetchAttributes: attrs withZone: NULL]))
             {
               user = [infos objectForKey: @"c_uid"];
+              if (verbose)
+                NSLog(@"Checking user %@\n", user);
               c_defaults = [infos objectForKey: @"c_defaults"];
               if ([c_defaults isNotNull])
                 {
