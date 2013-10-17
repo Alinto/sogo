@@ -1,3 +1,9 @@
+sogo (2.1.0-zentyal1) precise; urgency=low
+
+  * New upstream release
+
+ -- José A. Calvo <jacalvo@zentyal.com>  Thu, 17 Oct 2013 18:09:13 +0200
+
 sogo (2.0.8-zentyal2) precise; urgency=low
 
   * New upstream release
