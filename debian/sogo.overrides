@@ -1,0 +1,4 @@
+sogo: embedded-javascript-library usr/lib/GNUstep/SOGo/WebServerResources/prototype.js
+sogo: extra-license-file usr/lib/GNUstep/SOGo/WebServerResources/scriptaculous/MIT-LICENSE
+sogo: embedded-javascript-library usr/lib/GNUstep/SOGo/WebServerResources/scriptaculous/scriptaculous.js
+sogo: package-name-doesnt-match-sonames libGDLContentStore4.9 libNGCards4.9 libOGoContentStore0.9 libSOGoUI1.0

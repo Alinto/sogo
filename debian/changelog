@@ -1,0 +1,27 @@
+sogo (2.0.8-zentyal2) precise; urgency=low
+
+  * New upstream release
+
+ -- José A. Calvo <jacalvo@zentyal.com>  Tue, 01 Oct 2013 17:24:35 +0200
+
+sogo (2.0.8-zentyal1) precise; urgency=low
+
+  * New upstream release
+
+ -- Samuel Cabrero <scabrero@zentyal.com>  Mon, 23 Sep 2013 15:22:15 +0200
+
+sogo (2.0.7-1zentyal2) precise; urgency=low
+
+  * Set PKG_CONFIG_PATH in debian/rules
+
+ -- Samuel Cabrero <scabrero@zentyal.com>  Wed, 21 Aug 2013 13:36:11 +0200
+
+sogo (2.0.7-1zentyal1) precise; urgency=low
+
+  [ Inverse Support ]
+  * updated to 2.0.7 
+
+  [ Zentyal ]
+  * Adapted for PPA.
+
+ --  <cperello@zentyal.com>  Wed, 07 Aug 2013 16:56:13 +0200
