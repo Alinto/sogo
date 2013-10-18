@@ -262,7 +262,7 @@ static NSData* _sanitizeContent(NSData *theData)
                   buf = malloc((j+1) * sizeof(char));
                   memset (buf, 0, j+1);
                   memcpy (buf, bytes, j);
-                  found_tag = [NSString stringWithCString: buf encoding: NSASCIIStringEncoding];
+                  found_tag = [NSString stringWithCString: buf encoding: NSUTF8StringEncoding];
                   
                   tags = [VoidTags objectEnumerator];
                   tag = [tags nextObject];
