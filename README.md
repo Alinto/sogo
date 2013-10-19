@@ -1,5 +1,4 @@
-SOGo
-====
+![SOGo Logo](http://www.sogo.nu/fileadmin/sogo/logos/sogo.logo.v2.final.png)
 
 Share your calendars, address books and mails in your community with a completely free and open source solution.
 
@@ -13,6 +12,8 @@ SOGo provides a rich AJAX-based Web interface and supports multiple native clien
 
 SOGo is the missing component of your infrastructure; it sits in the middle of your servers to offer your users an uniform and complete interface to access their information. It has been deployed in production environments where thousands of users are involved.
 
+![Sogo diagram](http://www.sogo.nu/uploads/pics/sogo.png)
+
 [Learn more...](http://www.sogo.nu/about/overview.html)
 
 ## Microsoft Outlook Compatible
@@ -21,4 +22,4 @@ SOGo offers native Microsoft Outlook compatibility using the [OpenChange](http:/
 
 The following screencast shows Outlook 2010 connected to SOGo as if it was an Exchange server, along the Web interface of SOGo.
 
-![Screencast](http://youtu.be/1hcBSB4Kxww)
+[![SOGo Screencast](http://img.youtube.com/vi/1hcBSB4Kxww/0.jpg)](http://www.youtube.com/watch?v=1hcBSB4Kxww)
