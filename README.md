@@ -1,4 +1,4 @@
-![SOGo Logo](http://www.sogo.nu/fileadmin/sogo/logos/sogo.logo.v2.final.png)
+[![SOGo Logo](http://www.sogo.nu/fileadmin/sogo/logos/sogo.logo.v2.final.png)](http://www.sogo.nu/)
 
 Share your calendars, address books and mails in your community with a completely free and open source solution.
 
@@ -12,7 +12,7 @@ SOGo provides a rich AJAX-based Web interface and supports multiple native clien
 
 SOGo is the missing component of your infrastructure; it sits in the middle of your servers to offer your users an uniform and complete interface to access their information. It has been deployed in production environments where thousands of users are involved.
 
-![Sogo diagram](http://www.sogo.nu/uploads/pics/sogo.png)
+[![Sogo diagram](http://www.sogo.nu/uploads/pics/sogo.png)](http://www.sogo.nu/)
 
 [Learn more...](http://www.sogo.nu/about/overview.html)
 
