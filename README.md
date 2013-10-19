@@ -23,3 +23,5 @@ SOGo offers native Microsoft Outlook compatibility using the [OpenChange](http:/
 The following screencast shows Outlook 2010 connected to SOGo as if it was an Exchange server, along the Web interface of SOGo.
 
 [![SOGo Screencast](http://img.youtube.com/vi/1hcBSB4Kxww/0.jpg)](http://www.youtube.com/watch?v=1hcBSB4Kxww)
+
+[![SOGo on GitHub](http://www.sogo.nu/fileadmin/images/icon.github.png)](https://github.com/inverse-inc/sogo/) [![SOGo Ohloh](http://www.sogo.nu/fileadmin/images/icon.ohloh.png)](https://www.ohloh.net/p/sogo) [![SOGo on Twitter](http://www.sogo.nu/fileadmin/images/icon.twitter.png)](http://twitter.com/scalableogo) [![SOGo on SourceForge](http://www.sogo.nu/fileadmin/images/icon.sourceforge.png)](http://sourceforge.net/projects/sogo-zeg) [![SOGo on free code](http://www.sogo.nu/fileadmin/images/icon.freecode.png)](https://freecode.com/projects/sogo-inverse) [![SOGo on LinkedIn](http://www.sogo.nu/fileadmin/images/icon.linkedin.png)](http://www.linkedin.com/groups/SOGo-Groupware-4164805)
