@@ -1,5 +1,5 @@
 # ~~~~~~~~~~ DRAFT ~~~~~~~~~~
-*[Pull Requests](https://github.com/DigitalOcean-User-Projects/Articles-and-Tutorials/pulls) gladly accepted* 
+*[Pull Requests](https://github.com/vDevices/sogo/pulls) gladly accepted* 
 How To Install & Configure SOGo - an Open-Source Alternative to Microsoft Exchange
 =====
 
@@ -25,9 +25,9 @@ To install and configure the native Microsoft Outlook compatibility layer, pleas
 
 SOGo reuses many components in an infrastructure. Thus, it requires the following:
 
-* Database server (e.g. [MySQL](https://www.digitalocean.com/community/community_tags/mysql) or [PostgreSQL](https://www.digitalocean.com/community/community_tags/postgresql));
+* Database server (e.g. MySQL or PostgreSQL;
 * LDAP server (e.g. OpenLDAP);
-* SMTP server (e.g. [Postfix](https://www.digitalocean.com/community/articles/how-to-install-and-setup-postfix-on-ubuntu-12-04));
+* SMTP server (e.g. Postfix;
 * IMAP server (e.g. Dovecot).
 
 This guide  assumes that (i.) all of those components are running on the same server (i.e. "localhost" or "127.0.0.1") (ii.) on which you will install SOGo.
@@ -67,7 +67,7 @@ Finally, execute:
 
 Next, install the following additional packages:
 
-	sudo apt-get -y install binutils-doc gcc-4.6-locales gcc-4.6-multilib libmudflap0-4.6-dev gcc-4.6-doc libgcc1-dbg libgomp1-dbg libquadmath0-dbg libmudflap0-dbg binutils-gold gnustep-base-doc gnustep-make-doc gobjc-4.6-multilib libobjc3-dbg glibc-doc libcache-memcached-perl nginx mysql-server
+	sudo apt-get -y install binutils-doc gcc-4.6-locales gcc-4.6-multilib libmudflap0-4.6-dev gcc-4.6-doc libgcc1-dbg libgomp1-dbg libquadmath0-dbg libmudflap0-dbg binutils-gold gnustep-base-doc gnustep-make-doc gobjc-4.6-multilib libobjc3-dbg glibc-doc libcache-memcached-perl nginx
 
 Then, create a custom nginx config file for SOGo. To do so, execute:
 
@@ -134,29 +134,7 @@ Next, copy the following and paste it into the newly-created file (replace `sogo
 		}
 	}
 
-Nginx will rewrite all unsecured requests on port 80 to https on port 443. Consequently, ensure that these two ports are open if you have deployed a firewall. *See* [How to Setup a Firewall with UFW on an Ubuntu and Debian Cloud Server](https://www.digitalocean.com/community/articles/how-to-setup-a-firewall-with-ufw-on-an-ubuntu-and-debian-cloud-server); or [How To Setup a Basic IP Tables Configuration on Centos 6](https://www.digitalocean.com/community/articles/how-to-setup-a-basic-ip-tables-configuration-on-centos-6).
-
-### RPM-based Distributions: Red Hat or CentOS
-
-SOGo can be installed using the yum utility. To do so, first create the 
-`/etc/yum.repos.d/inverse.repo` configuration file with the following content:
- 
-	[SOGo]
-	name=Inverse SOGo Repository
-	baseurl=http://inverse.ca/downloads/SOGo/RHEL6/$basearch
-	gpgcheck=0
-
-Some of the softwares on which SOGo depends are available from the repository of RepoForge (previously known as RPMforge). To add RepoForge to your packages sources, download and install the appropriate RPM package from [http://packages.sw.be/rpmforge-release/](http://packages.sw.be/rpmforge-release/). Also make sure you enabled the “rpmforge-extras” repository. For more information on using RepoForge, visit [http://repoforge.org/use/](http://repoforge.org/use/)
-
-Once the yum configuration file has been created, you are now ready to install SOGo and its dependencies. To do so, proceed with the following command:
-
-	yum install sogo
-
-This will install SOGo and its dependencies such as GNUstep, the SOPE packages and memcached. Once the base packages are installed, you need to install the proper database connector suitable for your environment.
-
-You need to install `sope49-gdl1-postgresql` for the PostgreSQL database system or `sope49-gdl1-mysql` for MySQL. The installation command will thus look like this:
-
-	yum install sope49-gdl1-postgresql
+Nginx will rewrite all unsecured requests on port 80 to https on port 443. Consequently, ensure that these two ports are open if you have deployed a firewall.
 
 Once completed, SOGo will be fully installed on your server. You are now ready to configure it.
 
@@ -171,4 +149,4 @@ In SOGo, users' applications settings are stored in `/etc/sogo/sogo.conf`. You c
 * [Link3]().
 
 # ~~~~~~~~~~ DRAFT ~~~~~~~~~~
-*[Pull Requests](https://github.com/DigitalOcean-User-Projects/Articles-and-Tutorials/pulls) gladly accepted* 
+*[Pull Requests](https://github.com/vDevices/sogo/pulls) gladly accepted* 
