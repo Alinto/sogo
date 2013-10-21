@@ -92,6 +92,7 @@ Mailer_RESOURCE_FILES += \
 
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
+ADDITIONAL_INCLUDE_DIRS += $(shell xml2-config --cflags)
 ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
 
 -include GNUmakefile.preamble

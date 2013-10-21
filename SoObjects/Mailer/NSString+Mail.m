@@ -1,8 +1,6 @@
 /* NSString+Mail.m - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2008-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,10 +31,12 @@
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
 
+#include <libxml/encoding.h>
+
 #import "NSString+Mail.h"
 #import "NSData+Mail.h"
 
-#if 1
+#if 0
 #define showWhoWeAre() \
   [self logWithFormat: @"invoked '%@'", NSStringFromSelector (_cmd)]
 #else
@@ -95,6 +95,11 @@
     }
 
   return self;
+}
+
+- (xmlCharEncoding) contentEncoding
+{
+  return XML_CHAR_ENCODING_UTF8;
 }
 
 - (void) dealloc
@@ -234,11 +239,12 @@
 }
 
 - (void) characters: (unichar *) characters
-             length: (int) length
+             length: (NSUInteger) length
 {
   if (!ignoreContent)
-    [result appendString: [NSString stringWithCharacters: characters
-				    length: length]];
+    {
+      [result appendString: [NSString stringWithCharacters: characters  length: length]];
+    }
 }
 
 - (void) ignorableWhitespace: (unichar *) whitespaces
@@ -339,14 +345,17 @@
 
 - (NSString *) htmlToText
 {
-  id <NSObject, SaxXMLReader> parser;
   _SOGoHTMLToTextContentHandler *handler;
+  id <NSObject, SaxXMLReader> parser;
+  NSData *d;
 
   parser = [[SaxXMLReaderFactory standardXMLReaderFactory]
              createXMLReaderForMimeType: @"text/html"];
   handler = [_SOGoHTMLToTextContentHandler htmlToTextContentHandler];
   [parser setContentHandler: handler];
-  [parser parseFromSource: self];
+
+  d = [self dataUsingEncoding: NSUTF8StringEncoding];
+  [parser parseFromSource: d];
 
   return [handler result];
 }
