@@ -562,8 +562,36 @@ static NSData* _sanitizeContent(NSData *theData)
                                    && ![value hasPrefix: @"mailto:"]
                                    && ![value hasPrefix: @"#"]);
                 }
-	      else if ([name isEqualToString: @"onload"] 
-		       || [name isEqualToString: @"onclick"])
+	      else if (
+		       // Mouse Events
+		       [name isEqualToString: @"onclick"] ||
+		       [name isEqualToString: @"ondblclick"] ||
+		       [name isEqualToString: @"onmousedown"] ||
+		       [name isEqualToString: @"onmousemove"] ||
+		       [name isEqualToString: @"onmouseout"] ||
+		       [name isEqualToString: @"onmouseup"] ||
+		       [name isEqualToString: @"onmouseover"] ||
+
+		       // Keyboard Events
+		       [name isEqualToString: @"onkeydown"] ||
+		       [name isEqualToString: @"onkeypress"] ||
+		       [name isEqualToString: @"onkeyup"] ||
+
+		       // Frame/Object Events
+		       [name isEqualToString: @"onabort"] ||
+		       [name isEqualToString: @"onerror"] ||
+		       [name isEqualToString: @"onload"] ||
+		       [name isEqualToString: @"onresize"] ||
+		       [name isEqualToString: @"onscroll"]  ||
+		       [name isEqualToString: @"onunload"] ||
+
+		       // Form Events
+		       [name isEqualToString: @"onblur"] ||
+		       [name isEqualToString: @"onchange"] ||
+		       [name isEqualToString: @"onfocus"] ||
+		       [name isEqualToString: @"onreset"] ||
+		       [name isEqualToString: @"onselect"] ||
+		       [name isEqualToString: @"onsubmit"]) 
 		{
 		  skipAttribute = YES;
 		}
