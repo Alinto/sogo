@@ -562,6 +562,11 @@ static NSData* _sanitizeContent(NSData *theData)
                                    && ![value hasPrefix: @"mailto:"]
                                    && ![value hasPrefix: @"#"]);
                 }
+	      else if ([name isEqualToString: @"onload"] 
+		       || [name isEqualToString: @"onclick"])
+		{
+		  skipAttribute = YES;
+		}
               else
                 value = [_attributes valueAtIndex: count];
               if (!skipAttribute)
