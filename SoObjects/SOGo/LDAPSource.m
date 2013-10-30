@@ -1223,13 +1223,19 @@ static Class NSStringK;
 {
   NGLdapConnection *ldapConnection;
   NGLdapEntry *entry;
+  NSEnumerator *e;
   NSString *login;
+  EOQualifier *qualifier;
   
   login = nil;
 
   ldapConnection = [self _ldapConnection];
-  entry = [ldapConnection entryAtDN: theDN
-                         attributes: [NSArray arrayWithObject: UIDField]];
+  qualifier = [self _qualifierForFilter: @"."];
+  e = [ldapConnection baseSearchAtBaseDN: theDN
+        qualifier: qualifier
+      attributes: [NSArray arrayWithObject: UIDField]];
+  entry = [e nextObject]; //just always use the base object, is the DN of the entry
+
   if (entry)
     login = [[entry attributeWithName: UIDField] stringValueAtIndex: 0];
 
