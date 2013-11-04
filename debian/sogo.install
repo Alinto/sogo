@@ -9,5 +9,7 @@ usr/lib/GNUstep/OCSTypeModels/*
 usr/lib/GNUstep/SaxDrivers-4.9/*
 usr/lib/GNUstep/SaxMappings/*
 usr/lib/GNUstep/SOGo/*.SOGo
+usr/lib/GNUstep/SOGo/Templates
+usr/lib/GNUstep/SOGo/WebServerResources
 usr/lib/lib*.so.*
 usr/share/lintian/*

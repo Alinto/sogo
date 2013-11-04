@@ -13,7 +13,7 @@ include /usr/share/GNUstep/Makefiles/common.make
 
 config.make: configure
 	dh_testdir
-	./configure --prefix=$(GNUSTEP_SYSTEM_ROOT) --disable-webui --disable-daemon
+	./configure --prefix=$(GNUSTEP_SYSTEM_ROOT)
 
 #Architecture
 build: build-arch
@@ -85,7 +85,7 @@ install-arch: build-arch
 binary-arch: build-arch install-arch
 	dh_testdir
 	dh_testroot
-#	dh_installinit -R
+	dh_installinit -R
 	dh_installcron
 	dh_installchangelogs ChangeLog
 	dh_installdocs

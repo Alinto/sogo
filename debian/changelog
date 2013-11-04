@@ -1,3 +1,9 @@
+sogo (2.1.0-zentyal3) precise; urgency=low
+
+  * Include SOGo webui and daemon
+
+ -- José A. Calvo <jacalvo@zentyal.com>  Mon, 04 Nov 2013 16:16:51 +0100
+
 sogo (2.1.0-zentyal2) precise; urgency=low
 
   * Force memcache dependency.
