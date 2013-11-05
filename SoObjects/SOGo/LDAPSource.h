@@ -1,10 +1,6 @@
 /* LDAPSource.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -125,8 +121,6 @@ andMultipleBookingsField: (NSString *) newMultipleBookingsField;
 
 - (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID;
 - (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail;
-- (NGLdapEntry *) lookupGroupEntryByAttribute: (NSString *) theAttribute 
-				     andValue: (NSString *) theValue;
 
 @end
 

@@ -1179,7 +1179,7 @@ static NSString *defaultUserID =  @"anyone";
              stringByAppendingString: [uid substringFromIndex: 1]];
   else if ([[[context activeUser] domainDefaults] forceExternalLoginWithEmail])
     {
-      return [[[context activeUser] primaryIdentity] objectForKey: @"email"];
+      return [[[SOGoUser userWithLogin: uid] primaryIdentity] objectForKey: @"email"];
     }
   else
     return uid;

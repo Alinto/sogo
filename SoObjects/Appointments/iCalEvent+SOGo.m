@@ -64,6 +64,9 @@
   return isStillRelevent;
 }
 
+//
+//
+//
 - (NSMutableDictionary *) quickRecord
 {
   NSMutableDictionary *row;
@@ -88,7 +91,15 @@
   title = [self summary];
   if (![title isNotNull])
     title = @"";
+
+  if ([title length] > 1000)
+    title = [title substringToIndex: 1000];
+
   location = [self location];
+
+  if ([location length] > 255)
+    location = [location substringToIndex: 255];
+
   sequence = [self sequence];
   accessClass = [self symbolicAccessClass];
   isAllDay = [self isAllDay];
