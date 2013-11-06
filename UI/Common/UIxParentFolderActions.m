@@ -40,6 +40,8 @@
   NSString *name, *nameInContainer;
 
   name = [[context request] formValueForKey: @"name"];
+  nameInContainer = nil;
+
   if ([name length] > 0)
     {
       if (![[self clientObject] hasLocalSubFolderNamed: name])
