@@ -85,6 +85,6 @@ var CKBUILDER_CONFIG = {
 		'es' : 1,
 		'sv' : 1,
 		'uk' : 1,
-		'cy' : 1,
+		'cy' : 1
 	}
 };
