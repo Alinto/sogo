@@ -1,3 +1,9 @@
+sogo (2.1.0-zentyal6) precise; urgency=low
+
+  * Disable sogo daemon by default
+
+ -- José A. Calvo <jacalvo@zentyal.com>  Wed, 06 Nov 2013 11:09:32 +0100
+
 sogo (2.1.0-zentyal5) precise; urgency=low
 
   * Added WOxElemBuilders

@@ -39,6 +39,8 @@ case "$1" in
     ;;
 esac
 
+update-rc.d sogo disable || true
+
 #DEBHELPER#
 
 exit 0
