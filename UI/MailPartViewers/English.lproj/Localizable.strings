@@ -12,6 +12,8 @@ publish_info_text = "The sender informs you of the attached event.";
 cancel_info_text = "Your invitation or the whole event was canceled.";
 request_info_no_attendee = "is proposing a meeting to the attendees. You receive this mail as a notification, you are not scheduled as a participant.";
 Appointment = "Appointment";
+"Status Update" = "Status Update";
+was = "was";
 
 Organizer = "Organizer";
 Time = "Time";
