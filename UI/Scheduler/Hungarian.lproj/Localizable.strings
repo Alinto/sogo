@@ -180,6 +180,7 @@
 "General:" = "Általános:";
 "Reply:" = "Válasz:";
 
+
 "Target:" = "Cél:";
 
 "attributes" = "tulajdonságok";
@@ -372,6 +373,8 @@
 /* transparency */
 
 "Show Time as Free" = "Ne jelezzen foglaltságot";
+
+/* email notifications */
 
 /* validation errors */
 

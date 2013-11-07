@@ -282,7 +282,7 @@
 = "Les messages ne peuvent être déplacés dans la corbeille. Voulez-vous les supprimer immédiatement?";
 
 /* Message editing */
-"error_missingsubject" = "Le message n'as pas de sujet. Êtes-vous certain de vouloir l'envoyer?";
+"error_missingsubject" = "Le message n'a pas de sujet. Êtes-vous certain de vouloir l'envoyer?";
 "error_missingrecipients" = "Veuillez spécifier au moins un destinataire.";
 "Send Anyway" = "Envoyer sans sujet";
 
