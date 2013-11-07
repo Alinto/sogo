@@ -1,10 +1,6 @@
 /* LDAPSource.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -632,7 +628,25 @@ static Class NSStringK;
                      IDField, [login escapedForLDAPDN], baseDN];
             if (userDN)
               {
-                if (!passwordPolicy)
+                if ([bindConnection isADCompatible])
+                  {
+                    if ([bindConnection bindWithMethod: @"simple"
+                                                binddn: userDN
+                                           credentials: oldPassword])
+                      {
+                        didChange = [bindConnection changeADPasswordAtDn: userDN
+                                                             oldPassword: oldPassword
+                                                             newPassword: newPassword];
+                      }
+                  }
+                else if (passwordPolicy)
+                  {
+                    didChange = [bindConnection changePasswordAtDn: userDN
+                                                       oldPassword: oldPassword
+                                                       newPassword: newPassword
+                                                              perr: (void *)perr];
+                  }
+                else
                   {
                     // We don't use a password policy - we simply use
                     // a modify-op to change the password
@@ -668,11 +682,6 @@ static Class NSStringK;
                           didChange = NO;
                       }
                   }
-                else
-                  didChange = [bindConnection changePasswordAtDn: userDN
-                                                     oldPassword: oldPassword
-                                                     newPassword: newPassword
-                                                            perr: (void *)perr];
               }
           }
       }
@@ -1232,46 +1241,49 @@ static Class NSStringK;
   return [_dnCache objectForKey: theLogin];
 }
 
-- (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID
-{
-  return [self lookupGroupEntryByAttribute: UIDField
-                                  andValue: theUID];
-}
-
-- (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail
-{
-#warning We should support MailFieldNames
-  return [self lookupGroupEntryByAttribute: @"mail"
-                                  andValue: theEmail];
-}
-
-// This method should accept multiple attributes
-- (NGLdapEntry *) lookupGroupEntryByAttribute: (NSString *) theAttribute 
-                                     andValue: (NSString *) theValue
+- (NGLdapEntry *) _lookupGroupEntryByAttributes: (NSArray *) theAttributes
+                                       andValue: (NSString *) theValue
 {
   EOQualifier *qualifier;
-  NSString *s;
   NGLdapEntry *ldapEntry;
-
-  if ([theValue length] > 0)
+  NSString *s;
+    
+  if ([theValue length] > 0 && [theAttributes count] > 0)
     {
-      s = [NSString stringWithFormat: @"(%@='%@')",
-                    theAttribute, SafeLDAPCriteria(theValue)];
+      if ([theAttributes count] == 1)
+	{
+	    s = [NSString stringWithFormat: @"(%@='%@')",
+			  [theAttributes lastObject], SafeLDAPCriteria(theValue)];
+	    
+	}
+      else
+	{
+	  NSString *fieldFormat;
+	  
+	  fieldFormat = [NSString stringWithFormat: @"(%%@='%@')", SafeLDAPCriteria(theValue)];
+	  s = [[theAttributes stringsWithFormat: fieldFormat]
+			 componentsJoinedByString: @" OR "];
+	}
+      
       qualifier = [EOQualifier qualifierWithQualifierFormat: s];
-
-      // We look for additional attributes - the ones related to group
-      // membership
-      // attributes = [NSMutableArray arrayWithArray: [self _searchAttributes]];
-      // [attributes addObject: @"member"];
-      // [attributes addObject: @"uniqueMember"];
-      // [attributes addObject: @"memberUid"];
-      // [attributes addObject: @"memberOf"];
       ldapEntry = [self _lookupLDAPEntry: qualifier];
     }
   else
     ldapEntry = nil;
 
   return ldapEntry;
+}
+
+- (NGLdapEntry *) lookupGroupEntryByUID: (NSString *) theUID
+{
+  return [self _lookupGroupEntryByAttributes: [NSArray arrayWithObject: UIDField]
+				    andValue: theUID];
+}
+
+- (NGLdapEntry *) lookupGroupEntryByEmail: (NSString *) theEmail
+{
+  return [self _lookupGroupEntryByAttributes: mailFields
+				    andValue: theEmail];
 }
 
 - (void) setSourceID: (NSString *) newSourceID

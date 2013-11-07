@@ -12,6 +12,8 @@ publish_info_text = "Ez az üzenet egy eseményről szóló meghívót tartalmaz
 cancel_info_text = "A meghívást vagy az eseményt törölték.";
 request_info_no_attendee = "javasol egy találkozót a résztvevőknek. Ön tájékoztatásul kapja ezt az üzenetet, nincs a résztvevők között.";
 Appointment = "Találkozó";
+"Status Update" = "Állapot frissítés";
+was = "előző";
 
 Organizer = "Szervező";
 Time = "Idő";
@@ -19,7 +21,7 @@ Attendees = "Résztvevők";
 request_info = "meghívja önt résztvevőnek egy találkozóra.";
 "Add to calendar" = "Hozzáadás a naptárhoz";
 "Delete from calendar" = "Törlés a naptárból";
-"Update status" = "Állapot frissítése";
+"Update status" = "Frissítés állapota";
 Accept = "Elfogad";
 Decline = "Elutasít";
 Tentative = "Bizonytalan";

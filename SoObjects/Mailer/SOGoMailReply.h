@@ -63,6 +63,9 @@
 @interface SOGoMailEnglishReply : SOGoMailReply
 @end
 
+@interface SOGoMailFinnishReply : SOGoMailReply
+@end
+
 @interface SOGoMailFrenchReply : SOGoMailReply
 @end
 

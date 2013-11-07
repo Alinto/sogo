@@ -120,6 +120,9 @@
 @implementation SOGoMailEnglishReply
 @end
 
+@implementation SOGoMailFinnishReply
+@end
+
 @implementation SOGoMailFrenchReply
 @end
 

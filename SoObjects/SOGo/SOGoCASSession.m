@@ -390,7 +390,7 @@
       [httpConnection autorelease];
       request = [[WORequest alloc] initWithMethod: @"GET"
                                               uri: [requestURL hostlessURL]
-                                      httpVersion: @"HTTP/1.1"
+                                      httpVersion: @"HTTP/1.0"
                                           headers: nil content: nil
                                          userInfo: nil];
       [request autorelease];

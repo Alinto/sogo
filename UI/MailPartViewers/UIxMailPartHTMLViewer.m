@@ -262,7 +262,7 @@ static NSData* _sanitizeContent(NSData *theData)
                   buf = malloc((j+1) * sizeof(char));
                   memset (buf, 0, j+1);
                   memcpy (buf, bytes, j);
-                  found_tag = [NSString stringWithCString: buf encoding: NSASCIIStringEncoding];
+                  found_tag = [NSString stringWithCString: buf encoding: NSUTF8StringEncoding];
                   
                   tags = [VoidTags objectEnumerator];
                   tag = [tags nextObject];
@@ -562,6 +562,39 @@ static NSData* _sanitizeContent(NSData *theData)
                                    && ![value hasPrefix: @"mailto:"]
                                    && ![value hasPrefix: @"#"]);
                 }
+	      else if (
+		       // Mouse Events
+		       [name isEqualToString: @"onclick"] ||
+		       [name isEqualToString: @"ondblclick"] ||
+		       [name isEqualToString: @"onmousedown"] ||
+		       [name isEqualToString: @"onmousemove"] ||
+		       [name isEqualToString: @"onmouseout"] ||
+		       [name isEqualToString: @"onmouseup"] ||
+		       [name isEqualToString: @"onmouseover"] ||
+
+		       // Keyboard Events
+		       [name isEqualToString: @"onkeydown"] ||
+		       [name isEqualToString: @"onkeypress"] ||
+		       [name isEqualToString: @"onkeyup"] ||
+
+		       // Frame/Object Events
+		       [name isEqualToString: @"onabort"] ||
+		       [name isEqualToString: @"onerror"] ||
+		       [name isEqualToString: @"onload"] ||
+		       [name isEqualToString: @"onresize"] ||
+		       [name isEqualToString: @"onscroll"]  ||
+		       [name isEqualToString: @"onunload"] ||
+
+		       // Form Events
+		       [name isEqualToString: @"onblur"] ||
+		       [name isEqualToString: @"onchange"] ||
+		       [name isEqualToString: @"onfocus"] ||
+		       [name isEqualToString: @"onreset"] ||
+		       [name isEqualToString: @"onselect"] ||
+		       [name isEqualToString: @"onsubmit"]) 
+		{
+		  skipAttribute = YES;
+		}
               else
                 value = [_attributes valueAtIndex: count];
               if (!skipAttribute)

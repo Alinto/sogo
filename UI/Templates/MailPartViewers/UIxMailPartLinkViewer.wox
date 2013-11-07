@@ -10,7 +10,7 @@
     <a var:href="pathToAttachment"
       var:title="filenameForDisplay"
       const:absolute="YES"
-      ><img var:src="mimeImageUrl" />
+      ><img var:src="mimeImageURL" />
     </a>
     <div class="linked_attachment_meta">
       <var:string value="filenameForDisplay" 

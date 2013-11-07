@@ -694,10 +694,18 @@ const unsigned short ansicpg874[256] = {
             }
           else if (*(_bytes+1) == '*')
             {
-              while (*_bytes != '}')
+	      int cc = 1;
+	      
+	      do
                 {
+                  if (*_bytes == '{')
+                    cc++;
+                  if (*_bytes == '}')
+                    cc--;
+                  
                   ADVANCE;
                 }
+              while (cc != 0);
 
               continue;
             }
@@ -790,6 +798,10 @@ const unsigned short ansicpg874[256] = {
               // ignore
             }
           else if ([s hasPrefix: @"fromhtml"])
+            {
+              // ignore
+            }
+         else if ([s hasPrefix: @"fromtext"])
             {
               // ignore
             }

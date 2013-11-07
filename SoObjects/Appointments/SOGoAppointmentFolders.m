@@ -1,9 +1,7 @@
 
 /* SOGoAppointmentFolders.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -133,18 +131,29 @@ static SoSecurityManager *sm = nil;
   return [self labelForKey: @"Personal Calendar" inContext: context];
 }
 
-- (SOGoWebAppointmentFolder *)
- newWebCalendarWithName: (NSString *) folderDisplayName
-                  atURL: (NSString *) urlString
+
+
+- (SOGoWebAppointmentFolder *) newWebCalendarWithURL: (NSString *) urlString
+				     nameInContainer: (NSString *) name
 {
-  NSException *error;
-  SOGoAppointmentFolder *aptFolder;
+  NSString *folderDisplayName, *tmp;
   SOGoWebAppointmentFolder *webCalendar;
-  NSString *name;
+  SOGoAppointmentFolder *aptFolder;
+  NSException *error;
   NSURL *url;
 
+  folderDisplayName = [self labelForKey: @"Web Calendar"];
   webCalendar = nil;
 
+  tmp = [urlString lastPathComponent];
+  if (tmp)
+    {
+      if ([[tmp pathExtension] caseInsensitiveCompare: @"ics"] == NSOrderedSame)
+	folderDisplayName = [tmp substringToIndex: [tmp length] - 4];
+      else
+	folderDisplayName = tmp;
+    }
+  
   if ([folderDisplayName length] > 0 && [urlString length] > 0)
     {
       url = [NSURL URLWithString: urlString];
@@ -154,6 +163,10 @@ static SoSecurityManager *sm = nil;
                           nameInContainer: &name];
           if (!error)
             {
+	      // We make sure we initialized our subfolfers list. This can happen
+	      // when auto-creating Web calendars during the logon process.
+	      [self subFolders];
+
               aptFolder = [subFolders objectForKey: name];
               [aptFolder setFolderPropertyValue: urlString
                                      inCategory: @"WebCalendars"];
@@ -561,9 +574,25 @@ static SoSecurityManager *sm = nil;
       folder = [SOGoWebAppointmentFolder
                  folderWithSubscriptionReference: ref
                                      inContainer: self];
-      if (folder
-          && (forceReload || [folder reloadOnLogin]))
-        [folder loadWebCalendar];
+
+      if (forceReload || [folder reloadOnLogin] || !folder)
+	{
+	  if (!folder)
+	    {
+	      NSString *s, *urlString;
+	      
+	      urlString = [[calSettings objectForKey: @"WebCalendars"] objectForKey: ref];
+	      s = [ref lastPathComponent];
+
+	      // See bug #2007. Some admins want to subscribe users to Web calendars
+	      // using sogo-tool. If they do that, the db tables won't be created
+	      // so we must detect that here and create them upon login.
+	      folder = [self newWebCalendarWithURL: urlString
+				   nameInContainer: s];
+	    }
+	  
+	  [folder loadWebCalendar];
+	}
     }
 }
 

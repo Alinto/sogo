@@ -7,12 +7,12 @@
 "Domain:" = "Domene:";
 "Remember username" = "Husk brukernavn";
 
-"Connect" = "Logg inn";
+"Connect" = "Koble til";
 
 "Wrong username or password." = "Feil brukernavn eller passord.";
-"cookiesNotEnabled" = "Du kan ikke logge inn fordi nettleser ikke har aktivert infokapsler (cookies). Endre innstillinger i nettleseren din slik at infokapsler (cookies) er tillatt.";
+"cookiesNotEnabled" = "Du kan ikke logge inn fordi nettleser ikke har aktivert infokapsler (cookies). Endre innstillinger i nettleseren din slik at infokapsler er tillatt.";
 
-"browserNotCompatible" = "Versjonen av nettleseren du anvender støttes ikke av denne webmailen. Vi anbefaler at du bruker Firefox. Klikk på linken under for  å laste ned den siste versionen av Firefox.";
+"browserNotCompatible" = "Versjonen av nettleseren du anvender støttes ikke av denne webmailen. Vi anbefaler at du bruker Firefox. Klikk på lenken under for å laste ned den siste versjonen av Firefox.";
 "alternativeBrowsers" = "Alternativt kan du også forsøke følgende kompatible nettlesere";
 "alternativeBrowserSafari" = "Alternativt kan du også bruke Safari.";
 "Download" = "Last ned";
@@ -44,19 +44,19 @@
 "Welsh" = "Cymraeg";
 
 "About" = "Om";
-"AboutBox" = "Utviklet av Inverse, SOGo er en komplett gruppevaretjener med foks på skalerbarhet og enkel bruk.<br/><br/>\nSOGo tilbyr ett rikt AJAX-basert webgrensesnitt, og støtter mange 3. parts klienter gjennom standardprotokoller som CalDAV og CardDAV.<br/><br/>\nSOGo er distribuert under <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versjon 2 eller senere, og enkelte deler er distribuert under GNU LGPL versjon 2. Dette er fri programvare: du står fritt til å endre og videredistribuere den. Den kommer med ABSOLUTT INGEN GARANTI, i det omfang som er tillatt av anvendelig lov.  Sjekk <a href=\"http://www.sogo.nu/en/support/community.html\">denne siden</a> for support-muligheter.";
+"AboutBox" = "Utviklet av Inverse, SOGo er en komplett gruppevaretjener med fokus på skalerbarhet og enkel bruk.<br/><br/>\nSOGo tilbyr ett rikt AJAX-basert webgrensesnitt, og støtter mange 3. parts klienter gjennom standardprotokoller som CalDAV og CardDAV.<br/><br/>\nSOGo er distribuert under <a href=\"http://gnu.org/licenses/gpl.html\">GNU GPL</a> versjon 2 eller senere, og enkelte deler er distribuert under GNU LGPL versjon 2. Dette er fri programvare: du står fritt til å endre og videredistribuere den. Den kommer med ABSOLUTT INGEN GARANTI, i det omfang som er tillatt av anvendelig lov.  Sjekk <a href=\"http://www.sogo.nu/en/support/community.html\">denne siden</a> for support-muligheter.";
 
-"Your account was locked due to too many failed attempts." = "Din konto har blitt låst på grunn av for mange misslykkete innlogginger.";
+"Your account was locked due to too many failed attempts." = "Din konto har blitt låst på grunn av for mange mislykkede innlogginger.";
 "Your account was locked due to an expired password." = "Din konto har blitt låst fordi ditt passord er utløpt.";
-"Login failed due to unhandled error case: " = "Login feilet av uventet årsak:";
+"Login failed due to unhandled error case: " = "Innlogging feilet av uventet årsak:";
 "Change your Password" = "Endre ditt passord";
 "The password was changed successfully." = "Passordet ble endret.";
 "Your password has expired, please enter a new one below:" = "Ditt passord har utløpt, vennligst fyll ut et nytt under:";
 "Password must not be empty." = "Passordet må ikke være tomt.";
 "The passwords do not match. Please try again." = "Passordene stemmer ikke overens. Vennligst prøv igjen.";
-"Password Grace Period" = "";
+"Password Grace Period" = "Sett forvarsel før passordet må byttes";
 "You have %{0} logins remaining before your account is locked. Please change your password in the preference dialog." = "Du har %{0} gjenværende innlogginger før din konto blir låst. Vennligst endre ditt passord i preferanse-dialogen.";
-"Password about to expire" = "Passordet er på tur til å utløpe";
+"Password about to expire" = "Passordet utløper snart";
 "Your password is going to expire in %{0} %{1}." = "Ditt passord vil utløpe om %{0} %{1}.";
 "days" = "dager";
 "hours" = "timer";
@@ -66,12 +66,12 @@
 "Password change failed - Permission denied" = "Feil ved endring av passord - tillatelse nektet";
 "Password change failed - Insufficient password quality" = "Feil ved endring av passord - Utilstrekkelig passordkvalitet";
 "Password change failed - Password is too short" = "Feil ved endring av passord - Passordet er for kort";
-"Password change failed - Password is too young" = "Feil ved endring av passord - Password is too young";
-"Password change failed - Password is in history" = "Feil ved endring av passord - Password is in history";
-"Unhandled policy error: %{0}" = "";
-"Unhandled error response" = "";
+"Password change failed - Password is too young" = "Feil ved endring av passord - Passordet er nylig brukt";
+"Password change failed - Password is in history" = "Feil ved endring av passord - Passordet har blitt brukt før";
+"Unhandled policy error: %{0}" = "Uhåndtert policyfeil: %{0}";
+"Unhandled error response" = "Uhåndtert feilmelding.";
 "Password change is not supported." = "Passordendring er ikke støttet.";
-"Unhandled HTTP error code: %{0}" = "";
+"Unhandled HTTP error code: %{0}" = "Uhåndtert HTTP-feilkode: %{0}";
 "New password:" = "Nytt passord:";
 "Confirmation:" = "Bekreftelse:";
 "Cancel" = "Avbryt";

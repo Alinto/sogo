@@ -1404,10 +1404,6 @@ function reloadWebCalendarCallback(http) {
                     refreshEventsAndTasks();
                     changeCalendarDisplay();
                 }
-                else {
-                    var newFolderID = remaining[0];
-                    reloadWebCalendar(newFolderID, refreshOperations);
-                }
             }
             else {
                 if (success) {
@@ -3262,39 +3258,39 @@ function onWindowResize(event) {
 }
 
 function drawNowLine() {
-  var d = new Date();
-  var hours = d.getHours();
-  var minutes = d.getMinutes();
+    var d = new Date();
+    var hours = d.getHours();
+    var minutes = d.getMinutes();
 
-  if (currentView == "dayview") {
-    var today = new Date();
-    var m = parseInt(today.getMonth()) + 1;
-    var d = today.getDate();
-    if (m < 10)
-      m = "0" + m;
-    if (d < 10)
-      d = "0" + d;
-    var day = today.getFullYear() + "" + m + "" + d;
-    var targets = $$("DIV#daysView DIV.days DIV.day[day=" + day
-                     + "] DIV.clickableHourCell");
-  }
-  else if (currentView == "weekview")
-    var targets = $$("DIV#daysView DIV.days DIV.dayOfToday DIV.clickableHourCell");
-
-  if (targets) {
-    var target = targets[hours];
-
-    if (target) {
-      var div = $("nowLineDisplay");
-      if (!div)
-        div = new Element("div", {'id': 'nowLineDisplay'});
-
-      div.style.top = parseInt(((minutes * target.offsetHeight) / 60) - 1) + "px";
-      target.appendChild(div);
-
-      setTimeout("drawNowLine ();", 60000); // 1 min.
+    if (currentView == "dayview") {
+        var today = new Date();
+        var m = parseInt(today.getMonth()) + 1;
+        var d = today.getDate();
+        if (m < 10)
+            m = "0" + m;
+        if (d < 10)
+            d = "0" + d;
+        var day = today.getFullYear() + "" + m + "" + d;
+        var targets = $$("DIV#daysView DIV.days DIV.day[day=" + day
+                         + "] DIV.clickableHourCell");
     }
-  }
+    else if (currentView == "weekview")
+        var targets = $$("DIV#daysView DIV.days DIV.dayOfToday DIV.clickableHourCell");
+
+    if (targets) {
+        var target = targets[hours];
+
+        if (target) {
+            var div = $("nowLineDisplay");
+            if (!div)
+                div = new Element("div", {'id': 'nowLineDisplay'});
+
+            div.style.top = parseInt((minutes * target.offsetHeight / 60) - 1) + "px";
+            target.insertBefore(div, target.firstChild);
+
+            setTimeout("drawNowLine ();", 60000); // 1 min.
+        }
+    }
 }
 
 function onListCollapse(event, element) {

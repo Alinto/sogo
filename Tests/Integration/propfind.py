@@ -6,7 +6,7 @@ import webdavlib
 
 import sys
 import getopt
-import xml.dom.ext
+import xml.dom.minidom
 
 def parseArguments():
     arguments = {}
@@ -43,4 +43,7 @@ print propfind.response["body"]
 
 if propfind.response.has_key("document"):
     sys.stderr.write("document tree:\n")
-    xml.dom.ext.PrettyPrint(propfind.response["document"])
+    elem = propfind.response["document"]
+    dom = xml.dom.minidom.parseString(xml.etree.ElementTree.tostring(elem))
+    print dom.toprettyxml()
+

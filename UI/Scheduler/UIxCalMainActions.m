@@ -37,24 +37,6 @@
 
 @implementation UIxCalMainActions
 
-- (NSString *) displayNameForUrl: (NSString *) calendarURL
-{
-  NSString *rc, *tmp;
-
-  tmp = [calendarURL lastPathComponent];
-  if (tmp)
-    {
-      if ([[tmp pathExtension] caseInsensitiveCompare: @"ics"] == NSOrderedSame)
-	rc = [tmp substringToIndex: [tmp length] - 4];
-      else
-	rc = tmp;
-    }
-  else
-    rc = [self labelForKey: @"Web Calendar"];
-
-  return rc;
-}
-
 - (WOResponse *) addWebCalendarAction
 {
   WORequest *r;
@@ -70,11 +52,12 @@
   if ([urlString length] > 0)
     {
       folders = [self clientObject];
-      displayName = [self displayNameForUrl: urlString];
-      folder = [folders newWebCalendarWithName: displayName
-                                         atURL: urlString];
+      folder = [folders newWebCalendarWithURL: urlString
+			      nameInContainer: nil];
+      
       if (folder)
         {
+	  displayName = [folder displayName];
           response = [self responseWithStatus: 200];
           [response setHeader: @"application/json" forKey: @"content-type"];
           

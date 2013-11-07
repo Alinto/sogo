@@ -24,6 +24,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSURL.h>
+#import <NGImap4/NSString+Imap4.h>
 #import <NGExtensions/NSString+misc.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailFolder.h>
@@ -156,7 +157,7 @@ MakeDisplayFolderName (NSString *folderName)
       stringData = [NSString stringWithFormat: @"%@%@",
                              urlBase, [currentName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
       context->url = [stringData asUnicodeInMemCtx: context];
-      stringData = [[currentName substringFromIndex: 6] fromCSSIdentifier];
+      stringData = [[[currentName substringFromIndex: 6] fromCSSIdentifier] stringByDecodingImap4FolderName];
       context->name = [stringData asUnicodeInMemCtx: context];
       context->main_folder = false;
       context->role = MAPISTORE_MAIL_ROLE;
@@ -188,7 +189,7 @@ MakeDisplayFolderName (NSString *folderName)
   if ([newFolder create])
     mapistoreURI = [NSString stringWithFormat: @"sogo://%@:%@@mail/%@/",
                              userName, userName,
-                             [folderName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+                             [[folderName stringByEncodingImap4FolderName] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
   else
     mapistoreURI = nil;
   [MAPIApp setUserContext: nil];

@@ -52,6 +52,8 @@
   success = NO;
 
   store = X509_STORE_new ();
+  OpenSSL_add_all_algorithms ();
+
   if (store)
     {
       lookup = X509_STORE_add_lookup (store, X509_LOOKUP_file());
@@ -92,8 +94,7 @@
   PKCS7 *p7;
   int err, i;
  
-
-  *sslError = 0;
+  memset(sslError, 0, 1024);
 
   ERR_clear_error();
 

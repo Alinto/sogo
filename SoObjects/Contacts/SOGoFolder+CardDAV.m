@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 
@@ -65,7 +66,7 @@
                         @"<D:href>"];
       [r appendContentString: baseURL];
       if (![baseURL hasSuffix: @"/"])
-	[r appendContentString: @"/"];
+        [r appendContentString: @"/"];
       [r appendContentString: name];
       [r appendContentString: @"</D:href>"
                         @"<D:propstat>"
@@ -89,9 +90,10 @@
 
 - (void) _appendComponentsMatchingFilters: (NSArray *) filters
                                toResponse: (WOResponse *) response
-				  context: (id) localContext
+                                  context: (id) localContext
 {
-  unsigned int count, max;
+  unsigned int count,i , max;
+  NSAutoreleasePool *pool;
   NSDictionary *currentFilter, *contact;
   NSEnumerator *contacts;
   NSString *baseURL, *domain;
@@ -103,16 +105,27 @@
   for (count = 0; count < max; count++)
     {
       currentFilter = [filters objectAtIndex: count];
-      contacts = [[(id<SOGoContactFolder>)self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
-                                                             onCriteria: @"name_or_address"
-                                                                 sortBy: @"c_givenname"
-                                                               ordering: NSOrderedDescending
-                                                               inDomain: domain]
-		   objectEnumerator];
-      
+      contacts =
+        [[(id<SOGoContactFolder>)self lookupContactsWithFilter: [[currentFilter allValues] lastObject]
+                                                    onCriteria: @"name_or_address"
+                                                        sortBy: @"c_givenname"
+                                                      ordering: NSOrderedDescending
+                                                      inDomain: domain] objectEnumerator];
+
+      pool = [[NSAutoreleasePool alloc] init];
+      i = 0;
       while ((contact = [contacts nextObject]))
-	[self _appendObject: contact withBaseURL: baseURL
-           toREPORTResponse: response];
+        {
+          [self _appendObject: contact withBaseURL: baseURL
+            toREPORTResponse: response];
+          if (i % 10 == 0)
+            {
+              RELEASE(pool);
+              pool = [[NSAutoreleasePool alloc] init];
+            }
+          i++;
+        }
+      RELEASE(pool);
     }
 }
 
@@ -123,10 +136,10 @@
   newString = [theString lowercaseString];
 
   return ([newString isEqualToString: @"sn"]
-	  || [newString isEqualToString: @"givenname"]
-	  || [newString isEqualToString: @"email"]
-	  || [newString isEqualToString: @"mail"]
-	  || [newString isEqualToString: @"telephonenumber"]);
+          || [newString isEqualToString: @"givenname"]
+          || [newString isEqualToString: @"email"]
+          || [newString isEqualToString: @"mail"]
+          || [newString isEqualToString: @"telephonenumber"]);
 }
 
 - (NSDictionary *) _parseContactFilter: (id <DOMElement>) filterElement
@@ -145,12 +158,12 @@
       ranges = [filterElement getElementsByTagName: @"text-match"];
 
       if ([(NSArray *) ranges count]
-	  && [(NSArray *) [[ranges objectAtIndex: 0] childNodes] count])
-	{
-	  filterData = [NSMutableDictionary dictionary];
-	  [filterData setObject: [(NGDOMNode *)[ranges objectAtIndex: 0] textValue]
-			 forKey: [filterElement attribute: @"name"]];
-	}
+          && [(NSArray *) [[ranges objectAtIndex: 0] childNodes] count])
+        {
+          filterData = [NSMutableDictionary dictionary];
+          [filterData setObject: [(NGDOMNode *)[ranges objectAtIndex: 0] textValue]
+            forKey: [filterElement attribute: @"name"]];
+        }
     }
 
   return filterData;
@@ -166,7 +179,7 @@
   filters = [NSMutableArray array];
 
   children = [(NSArray *)[parentNode getElementsByTagName: @"prop-filter"]
-			 objectEnumerator];
+               objectEnumerator];
   while ((node = [children nextObject]))
     {
       filter = [self _parseContactFilter: node];
@@ -193,7 +206,7 @@
 
   [self _appendComponentsMatchingFilters: filters
         toResponse: r
-	context: queryContext];
+           context: queryContext];
   [r appendContentString: @"</D:multistatus>"];
 
   return r;

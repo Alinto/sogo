@@ -284,6 +284,9 @@ static Class NSExceptionK, MAPIStoreFolderK;
   return MAPISTORE_SUCCESS;
 }
 
+//
+// The GlobCnt is 6 bytes long.
+//
 - (NSData *) getReplicaKeyFromGlobCnt: (uint64_t) objectCnt
 {
   struct mapistore_connection_info *connInfo;

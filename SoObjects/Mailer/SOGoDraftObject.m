@@ -171,12 +171,17 @@ static NSString *headerKeys[] = {@"subject", @"to", @"cc", @"bcc",
 @implementation SOGoDraftObject
 
 static NGMimeType  *MultiMixedType = nil;
+static NGMimeType  *MultiAlternativeType = nil;
 static NSString    *userAgent      = nil;
 
 + (void) initialize
 {
   MultiMixedType = [NGMimeType mimeType: @"multipart" subType: @"mixed"];
   [MultiMixedType retain];
+
+  MultiAlternativeType = [NGMimeType mimeType: @"multipart" subType: @"alternative"];
+  [MultiAlternativeType retain];
+
   userAgent      = [NSString stringWithFormat: @"SOGoMail %@",
 			     SOGoVersion];
   [userAgent retain];
@@ -981,8 +986,33 @@ static NSString    *userAgent      = nil;
   return error;  
 }
 
-/* NGMime representations */
+//
+// Only called when converting text/html to text/plain parts
+//
+- (NGMimeBodyPart *) plainTextBodyPartForText
+{
+  NGMutableHashMap *map;
+  NGMimeBodyPart   *bodyPart;
+  NSString *plainText;
 
+  /* prepare header of body part */
+  map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
+  
+  [map setObject: contentTypeValue forKey: @"content-type"];
+  
+   /* prepare body content */
+  bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
+
+  plainText = [text htmlToText];
+  [bodyPart setBody: plainText];
+
+  return bodyPart;
+}
+
+
+//
+//
+//
 - (NGMimeBodyPart *) bodyPartForText
 {
   /*
@@ -992,25 +1022,14 @@ static NSString    *userAgent      = nil;
   NGMimeBodyPart   *bodyPart;
   
   /* prepare header of body part */
-
   map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
 
   // TODO: set charset in header!
-  [map setObject: @"text/plain" forKey: @"content-type"];
   if (text)
     [map setObject: (isHTML ? htmlContentTypeValue : contentTypeValue)
             forKey: @"content-type"];
-
-//   if ((body = text) != nil) {
-//     if ([body isKindOfClass: [NSString class]]) {
-//       [map setObject: contentTypeValue
-// 	   forKey: @"content-type"];
-// //       body = [body dataUsingEncoding:NSUTF8StringEncoding];
-//     }
-//   }
   
   /* prepare body content */
-  
   bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
   [bodyPart setBody: text];
 
@@ -1020,32 +1039,29 @@ static NSString    *userAgent      = nil;
 - (NGMimeMessage *) mimeMessageForContentWithHeaderMap: (NGMutableHashMap *) map
 {
   NGMimeMessage *message;  
-//   BOOL     addSuffix;
-  id       body;
+  id body;
 
-  [map setObject: @"text/plain" forKey: @"content-type"];
-  body = text;
-  if (body)
+  message = [[[NGMimeMessage alloc] initWithHeader:map] autorelease];
+  
+  if (!isHTML)
     {
-//       if ([body isKindOfClass:[NSString class]])
-	/* Note: just 'utf8' is displayed wrong in Mail.app */
-      [map setObject: (isHTML ? htmlContentTypeValue : contentTypeValue)
-              forKey: @"content-type"];
-//       body = [body dataUsingEncoding:NSUTF8StringEncoding];
-//       else if ([body isKindOfClass:[NSData class]] && addSuffix) {
-// 	body = [[body mutableCopy] autorelease];
-//       }
-//       else if (addSuffix) {
-// 	[self warnWithFormat: @"Note: cannot add Internet marker to body: %@",
-// 	      NSStringFromClass([body class])];
-//       }
-
-      message = [[[NGMimeMessage alloc] initWithHeader:map] autorelease];
-      [message setBody: body];
+      [map setObject: contentTypeValue  forKey: @"content-type"];
+      body = text;
     }
   else
-    message = nil;
+    {
+      body = [[[NGMimeMultipartBody alloc] initWithPart: message] autorelease];
+      [map addObject: MultiAlternativeType forKey: @"content-type"];
 
+      // Add the HTML part
+      [body addBodyPart: [self bodyPartForText]];
+      
+      // Get the text part from it and add it too
+      [body addBodyPart: [self plainTextBodyPartForText]];
+    }
+  
+  [message setBody: body];
+  
   return message;
 }
 
@@ -1232,21 +1248,54 @@ static NSString    *userAgent      = nil;
   return bodyParts;
 }
 
+- (NGMimeBodyPart *) mimeMultipartAlternative
+{
+  NGMimeMultipartBody *textParts;
+  NGMutableHashMap *header;
+  NGMimeBodyPart *part;
+  
+  header = [NGMutableHashMap hashMap];
+  [header addObject: MultiAlternativeType forKey: @"content-type"];
+  
+  part = [NGMimeBodyPart bodyPartWithHeader: header];
+  
+  textParts = [[NGMimeMultipartBody alloc] initWithPart: part];
+  
+  // Add the HTML part
+  [textParts addBodyPart: [self bodyPartForText]];
+  
+  // Get the text part from it and add it too
+  [textParts addBodyPart: [self plainTextBodyPartForText]];
+
+  [part setBody: textParts];
+  RELEASE(textParts);
+
+  return part;
+}
+
 - (NGMimeMessage *) mimeMultiPartMessageWithHeaderMap: (NGMutableHashMap *) map
 					 andBodyParts: (NSArray *) _bodyParts
 {
   NGMimeMessage       *message;  
   NGMimeMultipartBody *mBody;
-  NGMimeBodyPart      *part;
   NSEnumerator        *e;
+  id                  part;
   
   [map addObject: MultiMixedType forKey: @"content-type"];
 
   message = [[NGMimeMessage alloc] initWithHeader: map];
   [message autorelease];
   mBody = [[NGMimeMultipartBody alloc] initWithPart: message];
+  
+  if (!isHTML)
+    {
+      part = [self bodyPartForText];
+    }
+  else
+    {
+      part = [self mimeMultipartAlternative];
+    }
 
-  part = [self bodyPartForText];
   [mBody addBodyPart: part];
 
   e = [_bodyParts objectEnumerator];

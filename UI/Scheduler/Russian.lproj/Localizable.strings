@@ -90,7 +90,7 @@
 
 "label_Public" = "Публичное событие";
 "label_Private" = "Личное событие";
-"label_Confidential" = "Показывать только время и дату";
+"label_Confidential" = "Конфиденциальное";
 
 "label_Viewer" = "Показать все";
 "label_DAndTViewer" = "Показать дату и время";

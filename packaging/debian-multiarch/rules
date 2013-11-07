@@ -71,9 +71,9 @@ install-arch: build-arch
 	           $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/mapistore_backends/SOGo.so; \
 	fi
 
-	install -D Scripts/sogo-default debian/tmp/etc/default/sogo
-	install -D debian/sogo.overrides debian/tmp/usr/share/lintian/overrides/sogo
-	install -D Apache/SOGo.conf debian/tmp/etc/apache2/conf.d/SOGo.conf
+	install -D -m 644 Scripts/sogo-default debian/tmp/etc/default/sogo
+	install -D -m 644 debian/sogo.overrides debian/tmp/usr/share/lintian/overrides/sogo
+	install -D -m 644 Apache/SOGo.conf debian/tmp/etc/apache2/conf.d/SOGo.conf
 	install -D -m 644 Scripts/sogo.cron debian/tmp/etc/cron.d/sogo
 	install -D -m 644 Scripts/logrotate debian/tmp/etc/logrotate.d/sogo
 	install -d -m 750 debian/tmp/etc/sogo/

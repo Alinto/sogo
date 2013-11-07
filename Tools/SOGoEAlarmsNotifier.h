@@ -25,8 +25,11 @@
 
 #import <Foundation/NSObject.h>
 
+#import <SOGo/SOGoStaticAuthenticator.h>
+
 @interface SOGoEAlarmsNotifier : NSObject
 {
+  SOGoStaticAuthenticator *staticAuthenticator;
 }
 
 - (BOOL) run;

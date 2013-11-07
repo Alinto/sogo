@@ -27,7 +27,7 @@
 
 #import "EOQualifier+GCS.h"
 
-#if __GNU_LIBOBJC__ >= 20100911
+#if (defined(__GNU_LIBOBJC__) && (__GNU_LIBOBJC__ >= 20100911)) || defined(APPLE_RUNTIME) || defined(__GNUSTEP_RUNTIME__)
 #  define sel_eq(__A__,__B__) sel_isEqual(__A__,__B__)
 #endif
 

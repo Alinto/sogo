@@ -109,7 +109,6 @@
 	</var:if>
       </var:if>
 
-      
       <var:if condition="inCalendar.method.uppercaseString" const:value="REPLY">
 	<!-- sent to organizer to update the status of the participant -->
 	<var:if condition="isReplySenderAnAttendee" const:negate="1">
@@ -118,51 +117,42 @@
 
 	<var:if condition="isReplySenderAnAttendee">
 	  <var:if condition="canOriginalEventBeUpdated"
-	    ><p class="uix_ical_toolbar">
-	      <input id="iCalendarUpdateUserStatus" class="button"
-		type="button" label:value="Update status"/>
-	    </p>
-	    
-	    <!-- TODO: replies to events not in the calendar? -->
-
-	    <p>
-	      Status Update:
-	      <var:string label:value="$inReplyAttendee.partStatWithDefault" />,
-	      was:
-	      <var:string
-		label:value="$storedReplyAttendee.partStatWithDefault" />.
-	    </p></var:if>
+	    ><dl class="dl-horizontal">
+              <dt><var:string label:value="Status Update" />:</dt>
+	      <dd><i><var:string label:value="$inReplyAttendee.partStatWithDefault" /></i>,
+	      <var:string label:value="was" />
+	      <i><var:string label:value="$storedReplyAttendee.partStatWithDefault" /></i>.
+              <br/><input id="iCalendarUpdateUserStatus" class="button"
+		type="button" label:value="Update status"/></dd>
+	    </dl></var:if>
 	</var:if>
       </var:if>
 
       <var:if condition="inCalendar.method.uppercaseString" const:value="CANCEL">
 	<!-- sent to attendees to notify of the attendee being removed or the
 	event being deleted -->
+        <dl class="dl-horizontal">
+          <dd><var:string label:value="cancel_info_text" />
 	<var:if condition="isEventStoredInCalendar">
-	  <div class="uix_ical_toolbar">
-	    <a href="#" id="iCalendarDeleteFromCalendar" class="button">
+	  <br/><a href="#" id="iCalendarDeleteFromCalendar" class="button">
 	    <span><var:string label:value="Delete from calendar" /></span></a>
-	  </div>
-	</var:if>
-	
-	<p class="clear">
-	  <!-- todo: if there are no attendees, the whole meeting was stopped -->
-	  <var:string label:value="cancel_info_text" />
-	</p>
+	</var:if></dd>
+        </dl>
       </var:if>
-
 
       <var:if condition="inCalendar.method.uppercaseString" const:value="ADD">
 	<!-- TODO -->
-	<p><var:string label:value="add_info_text" /></p>
+        <dl class="dl-horizontal">
+          <dd><var:string label:value="add_info_text" /></dd>
+        </dl>
       </var:if>
-
 
       <var:if condition="inCalendar.method.uppercaseString" const:value="PUBLISH">
 	<!-- none-scheduling event sent to someone for adding to the calendar -->
-	<p><var:string label:value="publish_info_text" /></p>
+        <dl class="dl-horizontal">
+          <dd><var:string label:value="publish_info_text" /></dd>
+        </dl>
       </var:if>
-      
       
       <var:if condition="isLoggedInUserTheOrganizer">
 	<!--

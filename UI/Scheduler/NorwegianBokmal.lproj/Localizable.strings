@@ -1,3 +1,4 @@
+/* this file is in UTF-8 format! */
 
 /* Tooltips */
 
@@ -51,15 +52,16 @@
 "Contacts" = "Kontakter";
 
 "New Calendar..." = "Ny kalender...";
-"Delete Calendar" = "Slett kalender";
+"Delete Calendar" = "Slett kalender...";
 "Unsubscribe Calendar" = "Avslutt abonnement på kalender";
 "Sharing..." = "Deling...";
-"Export Calendar..." = "Eksorter kalender...";
+"Export Calendar..." = "Eksporter kalender...";
 "Import Events..." = "Importer hendelser...";
 "Import Events" = "Importer hendelser";
-"Select an iCalendar file (.ics)." = "Velg en iCalendar fil (.ics).";
+"Select an iCalendar file (.ics)." = "Velg en iCalendar-fil (.ics).";
 "Upload" = "Last opp";
-"Publish Calendar..." = "Publiser Kalender...";
+"Uploading" = "Laster opp";
+"Publish Calendar..." = "Publiser kalender...";
 "Reload Remote Calendars" = "Last på nytt fjernkalendre";
 "Properties" = "Egenskaper";
 "Done" = "Klar";
@@ -98,14 +100,14 @@
 
 "View All" = "Vis alle";
 "View the Date & Time" = "Vis tid og dato";
-"Modify" = "Endra";
+"Modify" = "Endre";
 "Respond To" = "Svar";
 "None" = "Ingen";
 
 "This person can create objects in my calendar."
-= "Personen kan opprette objekt i min kalender.";
+= "Personen kan opprette objekter i min kalender.";
 "This person can erase objects from my calendar."
-= "Personen kan fjerne objekt i min kalender.";
+= "Personen kan fjerne objekter i min kalender.";
 
 /* Button Titles */
 
@@ -159,7 +161,7 @@
 "Email" = "E-post";
 "Status:" = "Status:";
 "% complete" = "% utført";
-"Location:" = "Plass:";
+"Location:" = "Sted:";
 "Priority:" = "Prioritet:";
 "Privacy" = "Personvern";
 "Cycle" = "Intervall";
@@ -169,7 +171,7 @@
 "Duration" = "Varighet";
 "Attendees:" = "Deltakere:";
 "Resources" = "Ressurser";
-"Organizer:" = "Organisatør:";
+"Organizer:" = "Organisator:";
 "Description:" = "Beskrivelse:";
 "Document:" = "Dokument:";
 "Category:" = "Kategori:";
@@ -177,6 +179,7 @@
 "Reminder:" = "Påminnelse:";
 "General:" = "Generell:";
 "Reply:" = "Svar:";
+
 
 "Target:" = "Mål:";
 
@@ -193,22 +196,22 @@
 "empty title" = "Ingen tittel";
 "private appointment" = "Privat møte";
 
-"Change..." = "Endra...";
+"Change..." = "Endre...";
 
 /* Appointments (participation state) */
 
-"partStat_NEEDS-ACTION" = "Trenger handling";
-"partStat_ACCEPTED" = "Jeg kan delta";
+"partStat_NEEDS-ACTION" = "Jeg vil bekrefte senere";
+"partStat_ACCEPTED" = "Jeg vil delta";
 "partStat_DECLINED" = "Jeg kan ikke delta";
-"partStat_TENTATIVE" = "Jeg kommer tilbake";
+"partStat_TENTATIVE" = "Jeg kommer kanskje";
 "partStat_DELEGATED" = "Jeg delegerer";
 "partStat_OTHER" = "Annet";
 
 /* Appointments (error messages) */
 
 "Conflicts found!" = "Konflikter funnet!";
-"Invalid iCal data!" = "Ugyldig iCal data!";
-"Could not create iCal data!" = "Kunne ikke opprette iCal data!";
+"Invalid iCal data!" = "Ugyldig iCal-data!";
+"Could not create iCal data!" = "Kunne ikke opprette iCal-data!";
 
 /* Searching */
 
@@ -301,12 +304,12 @@
 "Week(s)" = "Uke(r)";
 "On" = "På";
 "Month(s)" = "Måned(er)";
-"The" = "";
+"The" = " Den";
 "Recur on day(s)" = "Gjentas på dag(er)";
 "Year(s)" = "År";
 "cycle_of" = "av";
 "No end date" = "Ingen sluttdato";
-"Create" = "Oprett";
+"Create" = "Opprett";
 "appointment(s)" = "avtale(r)";
 "Repeat until" = "Gjenta til";
 
@@ -322,7 +325,7 @@
 "category_none" = "Ingen";
 "category_labels" = "Arbeid,Diverse,Favoritter,Fødselsdager,Helgdager,Idéer,Konkurranser,Kunder,Ledighet,Leverandører,Oppfølging,Personlig,Presenter,Prosjekt,Møter,Reiser,Status,Telefonsamtaler,Ærend";
 
-"repeat_NEVER" = "Ikke gjenta";
+"repeat_NEVER" = "Gjentas ikke";
 "repeat_DAILY" = "Daglig";
 "repeat_WEEKLY" = "Ukentlig";
 "repeat_BI-WEEKLY" = "Annenhver uke";
@@ -351,15 +354,15 @@
 "reminder_DAYS" = "dager";
 "reminder_BEFORE" = "før";
 "reminder_AFTER" = "etter";
-"reminder_START" = "hendelser starter";
-"reminder_END" = "hendelser slutter";
+"reminder_START" = "hendelsen starter";
+"reminder_END" = "hendelsen slutter";
 "Reminder Details" = "Påminnelsedetaljer";
 
 "Choose a Reminder Action" = "Velg en påminnelsesmåte";
 "Show an Alert" = "Vis en alarm";
 "Send an E-mail" = "Send en E-post";
-"Email Organizer" = "E-post organisator";
-"Email Attendees" = "E-post deltakere";
+"Email Organizer" = "E-post-organisator";
+"Email Attendees" = "E-post-deltakere";
 
 "zoom_400" = "400%";
 "zoom_200" = "200%";
@@ -371,6 +374,8 @@
 
 "Show Time as Free" = "Vis tid som ledig";
 
+/* email notifications */
+
 /* validation errors */
 
 validate_notitle           = "Ingen tittel er angitt, fortsette?";
@@ -378,6 +383,7 @@ validate_invalid_startdate = "Feil startdato!";
 validate_invalid_enddate   = "Feil sluttdato!";
 validate_endbeforestart    = "Angitt sluttdato inntreffer før angitt startdato.";
 
+"Events" = "Hendelser";
 "Tasks" = "Oppgaver";
 "Show completed tasks" = "Vis utførte oppgave";
 
@@ -403,7 +409,7 @@ validate_endbeforestart    = "Angitt sluttdato inntreffer før angitt startdato.
 "New Event..." = "Ny hendelse...";
 "New Task..." = "Ny oppgave...";
 "Edit Selected Event..." = "Endre hendelse...";
-"Delete Selected Event" = "Slett hendelse";
+"Delete Selected Event" = "Slett valgt hendelse";
 "Select All" = "Velg alle";
 "Workweek days only" = "Bare arbeidsdager";
 "Tasks in View" = "Oppgaver i visning";
@@ -412,14 +418,14 @@ validate_endbeforestart    = "Angitt sluttdato inntreffer før angitt startdato.
 "taskDeleteConfirmation" = "Sletting av oppgaven er permanent.\nVil du fortsette?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
-= "Du kan ikke slette eller avbryta abonnement på en personlig kalender.";
+= "Du kan ikke slette eller avbryte abonnement på en personlig kalender.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
 = "Er du sikker på at du vil slette kalenderen \"%{0}\"?";
 
 /* Legend */
 "Participant" = "Deltakelse kreves";
 "Optional Participant" = "Deltakelse valgfritt";
-"Non Participant" = "Ingen deltaker";
+"Non Participant" = "Ingen deltakelse";
 "Chair" = "Stol";
 
 "Needs action" = "Trenger handling";
@@ -430,13 +436,13 @@ validate_endbeforestart    = "Angitt sluttdato inntreffer før angitt startdato.
 "Free" = "Ledig";
 "Busy" = "Opptatt";
 "Maybe busy" = "Kanskje opptatt";
-"No free-busy information" = "Ingen ledig/opptatt informasjon";
+"No free-busy information" = "Ingen ledig/opptatt-informasjon";
 
 /* FreeBusy panel buttons and labels */
 "Suggest time slot:" = "Foreslå tid:";
 "Zoom:" = "Forstørr:";
-"Previous slot" = "Forrige spor";
-"Next slot" = "Neste spor";
+"Previous slot" = "Forrige tidspunkt";
+"Next slot" = "Neste tidspunkt";
 "Previous hour" = "Forrige time";
 "Next hour" = "Neste time";
 "Work days only" = "Bare arbeidsdager";
@@ -445,28 +451,32 @@ validate_endbeforestart    = "Angitt sluttdato inntreffer før angitt startdato.
 "and" = "og";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "En tidskonflikt eksisterer med en eller flere detakere.\nVil du likevel beholde de nåværende innstillingene?";
+= "En tidskonflikt eksisterer med en eller flere deltakere.\nVil du likevel beholde de nåværende innstillingene?";
 
 /* apt list */
 "Title" = "Tittel";
 "Start" = "Start";
 "End" = "Slutt";
-"Due Date" = "Dato";
-"Location" = "Plass";
+"Due Date" = "Forfallsdato";
+"Location" = "Sted";
+
 "(Private Event)" = "(Privat hendelse)";
 
 vevent_class0 = "(Offentlig hendelse)";
 vevent_class1 = "(Privat hendelse)";
 vevent_class2 = "(Konfidensiell hendelse)";
 
+"Priority" = "Prioritet";
+"Category" = "Kategori";
+
 vtodo_class0 = "(Offentlig oppgave)";
 vtodo_class1 = "(Privat oppgave)";
 vtodo_class2 = "(Konfidensiell oppgave)";
 
-"closeThisWindowMessage" = "Takk! Du kan lukke vinduet eller din visning";
+"closeThisWindowMessage" = "Takk! Du kan nå lukke vinduet eller se din";
 "Multicolumn Day View" = "Flerkolonne dagsvisning";
 
-"Please select an event or a task." = "Marker en hendelse eller oppgave.";
+"Please select an event or a task." = "Markér en hendelse eller oppgave.";
 
 "editRepeatingItem" = "Objektet du redigerer har gjentakelser. Vil du redigere alle forekomster eller bare denne forekomsten?";
 "button_thisOccurrenceOnly" = "Bare denne forekomsten";
@@ -483,8 +493,13 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "Tag:" = "Merkelapp:";
 
 "Display" = "Vis";
-"Show alarms" = "Vis alarm";
+"Show alarms" = "Vis alarmer";
 "Show tasks" = "Vis oppgaver";
+
+"Notifications" = "Varslinger";
+"Receive a mail when I modify my calendar" = "Motta e-post når jeg oppdaterer kalenderen min";
+"Receive a mail when someone else modifies my calendar" = "Motta e-post når andre oppdaterer kalenderen min";
+"When I modify my calendar, send a mail to:" = "Når jeg endrer kalenderen, send e-post til:";
 
 "Links to this Calendar" = "Linker til denne kalenderen";
 "Authenticated User Access" = "Autentisert brukertilgang";
@@ -500,12 +515,12 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "yearFieldInvalid" = "Angi en numerisk verdi i årsfeltet større enn eller lik 1.";
 "appointmentFieldInvalid" = "Angi en numerisk verdi i møtesfeltet større enn eller lik 1.";
 "recurrenceUnsupported" = "Denne type gjentakelse støttes ikke i dag.";
-"Please specify a calendar name." = "Vennligst angi ett kalendernavn.";
+"Please specify a calendar name." = "Vennligst angi et kalendernavn.";
 "tagNotDefined" = "Du må angi en merkelapp om du vil synkronisere kalenderen.";
 "tagAlreadyExists" = "Merkelappen du spesifiserte er allerede knyttet til en annen kalender.";
-"tagHasChanged" = "Om du endrer merkelappen på din kalender trenger du å laste dataene i din mobiltelefon på nytt.\nFortsätta?";
+"tagHasChanged" = "Om du endrer merkelappen på din kalender trenger du å laste dataene i din mobiltelefon på nytt.\nFortsette?";
 "tagWasAdded" = "Om du vil synkronisere kalenderen trenger du å laste dataene i din mobiltelefon på nytt.\nFortsette?";
-"tagWasRemoved" = "Om fjerner kalenderen fra synkronisering trenger du å laste dataene i din mobiltelefon på nytt.\nFortsetta?";
+"tagWasRemoved" = "Om du fjerner kalenderen fra synkronisering trenger du å laste dataene i din mobiltelefon på nytt.\nFortsette?";
 "DestinationCalendarError" = "Kilde- og målkalendere er de samme. Prøv å kopiere til en annen kalender.";
 "EventCopyError" = "Kopiering feilet. Vennligst prøv å kopiere til en annen kalender.";
 
@@ -514,12 +529,11 @@ vtodo_class2 = "(Konfidensiell oppgave)";
 "Delete Task" = "Slett oppgave";
 "Delete Event" = "Slett hendelse";
 "Copy event to my calendar" = "Kopier hendelse til min kalender";
+"View Raw Source" = "Vis kilde";
 
 "Subscribe to a web calendar..." = "Abonnere på en internett-kalender...";
 "URL of the Calendar" = "URL til kalenderen";
 "Web Calendar" = "Internett-kalender";
 "Reload on login" = "Last på nytt ved innlogging";
 "Invalid number." = "Ugyldig tall.";
-
-"Category" = "Kategori";
-"Priority" = "Prioritet";
+"Please identify yourself to %{0}" = "Vennligst identifiser deg for %{0}";

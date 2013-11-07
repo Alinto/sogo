@@ -379,8 +379,8 @@ class CalDAVPOST(WebDAVQuery):
         return self.content
 
 class CalDAVCalendarMultiget(WebDAVREPORT):
-    def __init__(self, url, properties, hrefs):
-        WebDAVQuery.__init__(self, url)
+    def __init__(self, url, properties, hrefs, depth = None):
+        WebDAVQuery.__init__(self, url, depth)
         multiget_tag = self.ns_mgr.register("calendar-multiget", xmlns_caldav)
         self.top_node = _WD_XMLTreeElement(multiget_tag)
         if properties is not None and len(properties) > 0:

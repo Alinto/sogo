@@ -6,8 +6,8 @@
 "General" = "Generelt";
 "Calendar Options" = "Kalenderinnstillinger";
 "Contacts Options" = "Kontaktinnstillinger";
-"Mail Options" = "E-post innstillinger";
-"IMAP Accounts" = "IMAP kontoer";
+"Mail Options" = "E-postinnstillinger";
+"IMAP Accounts" = "IMAP-kontoer";
 "Vacation" = "Fravær";
 "Forward" = "Videresend";
 "Password" = "Passord";
@@ -18,7 +18,7 @@
 "Delete" = "Fjern";
 
 /* contacts categories */
-"contacts_category_labels" = "Familie, Foretningspartner, Kollega, Konkurrent, Kunde, Leverandør, Presse, Venn, VIP";
+"contacts_category_labels" = "Kollega, Konkurrent, Kunde, Venn, Familie, Foretningspartner, Leverandør, Presse, VIP";
 
 /* vacation (auto-reply) */
 "Enable vacation auto reply" = "Aktiver auto-svar ved fravær";
@@ -29,10 +29,10 @@
 "Do not send responses to mailing lists" = "Ikke send svar til e-postlister";
 "Disable auto reply on" = "Skru av auto-svar";
 "Please specify your message and your email addresses for which you want to enable auto reply."
-= "Skriv melding og angi din e-postadresse som du vil aktivera auto-svar på.";
+= "Skriv melding og angi din e-postadresse som du vil aktivere auto-svar for.";
 "Your vacation message must not end with a single dot on a line." = "Fraværsmeldingen kan ikke slutte med ett ensomt punktum på en linje. ";
 "End date of your auto reply must be in the future."
-= "Slutt-dato for auto-svar må være i fremtiden.";
+= "Slutt-dato for auto-svar må være i framtiden.";
 
 /* forward messages */
 "Forward incoming messages" = "Videresend innkommende e-post";
@@ -87,6 +87,7 @@
 "timeFmt_1" = "%H:%M";
 "timeFmt_2" = "";
 "timeFmt_3" = "";
+"timeFmt_4" = "";
 
 /* calendar */
 "Week begins on :" = "Uken begynner med:";
@@ -101,11 +102,11 @@
 "Default reminder :" = "Standardpåminnelse:";
 
 "firstWeekOfYear_January1" = "Begynner den 1. januar";
-"firstWeekOfYear_First4DayWeek" = "Første 4-dagersuken i året";
+"firstWeekOfYear_First4DayWeek" = "Første firedagersuken i året";
 "firstWeekOfYear_FirstFullWeek" = "Første hele uken i året";
 
 /* Default Calendar */
-"Default calendar :" = "Standard kalender";
+"Default calendar :" = "Standard kalender:";
 "selectedCalendar" = "Valgte kalender";
 "personalCalendar" = "Personlig kalender";
 "firstCalendar" = "Første aktiverte kalender";
@@ -129,17 +130,18 @@
 "Check for new mail:" = "Hent ny post:";
 "messagecheck_manually" = "Manuelt";
 "messagecheck_every_minute" = "Hvert minutt";
-"messagecheck_every_2_minutes" = "Hvert 2 minutt";
-"messagecheck_every_5_minutes" = "Hvert 5 minutt";
-"messagecheck_every_10_minutes" = "Hvert 10 minutt";
-"messagecheck_every_20_minutes" = "Hvert 20 minutt";
-"messagecheck_every_30_minutes" = "Hvert 30 minutt";
+"messagecheck_every_2_minutes" = "Hvert 2. minutt";
+"messagecheck_every_5_minutes" = "Hvert 5. minutt";
+"messagecheck_every_10_minutes" = "Hvert 10. minutt";
+"messagecheck_every_20_minutes" = "Hvert 20. minutt";
+"messagecheck_every_30_minutes" = "Hvert 30. minutt";
 "messagecheck_once_per_hour" = "Hver time";
 
-"Forward messages:" = "Videresend melding:";
+"Forward messages:" = "Videresend meldinger:";
 "messageforward_inline" = "Innsatt";
 "messageforward_attached" = "Vedlegg";
 
+"When replying to a message:" = "Ved svar på melding: ";
 "replyplacement_above" = "Start svaret ovenfor";
 "replyplacement_below" = "Start svaret under";
 "And place my signature" = "Legg til min signatur";
@@ -148,22 +150,31 @@
 "Compose messages in" = "Opprett melding i";
 "composemessagestype_html" = "HTML";
 "composemessagestype_text" = "Ren text";
+"Display remote inline images" = "Vis bilder lenket til fra andre nettsteder";
+"displayremoteinlineimages_never" = "Aldri";
+"displayremoteinlineimages_always" = "Alltid";
 
 /* IMAP Accounts */
-"New Mail Account" = "Ny epostkonto";
+"New Mail Account" = "Ny e-postkonto";
 
 "Server Name:" = "Servernavn:";
 "Port:" = "Port:";
+"Encryption:" = "Kryptering:";
+"None" = "Ingen";
 "User Name:" = "Brukernavn:";
 "Password:" = "Passord:";
 
-"Full Name:" = "Fullt Navn:";
+"Full Name:" = "Fullt navn:";
 "Email:" = "E-post:";
+"Reply To Email:" = "Svar til e-post:";
 "Signature:" = "Signatur:";
 "(Click to create)" = "(Klikk for å opprette)";
 
 "Signature" = "Signatur";
 "Please enter your signature below:" = "Vennligst fyll ut signatur under:";
+
+"Please specify a valid sender address." = "Vennligst angi en gyldig avsenderadresse.";
+"Please specify a valid reply-to address." = "Vennligst angi en gyldig svar-til-adresse.";
 
 /* Additional Parameters */
 "Additional Parameters" = "Øvrige parametre";
@@ -174,11 +185,11 @@
 "Change" = "Endre";
 
 /* Event+task classifications */
-"Default events classification :" = "Default events classification :";
-"Default tasks classification :" = "Default tasks classification :";
-"PUBLIC_item" = "Public";
-"CONFIDENTIAL_item" = "Confidential";
-"PRIVATE_item" = "Private";
+"Default events classification :" = "Standard hendelsesklassifikasjon:";
+"Default tasks classification :" = "Standard oppgaveklassifisering";
+"PUBLIC_item" = "Offentlig";
+"CONFIDENTIAL_item" = "Konfidensiell";
+"PRIVATE_item" = "Privat";
 
 /* Event+task categories */
 "category_none" = "Ingen";
@@ -208,9 +219,9 @@
 "NorwegianBokmal" = "Norsk bokmål";
 "NorwegianNynorsk" = "Norsk nynorsk";
 "BrazilianPortuguese" = "Português brasileiro";
-"Polish" = "Polski";
+"Polish" = "Polsk";
 "Russian" = "Русский";
-"Slovak" = "Slovensky";
+"Slovak" = "Slovensk";
 "SpanishSpain" = "Español (España)";
 "SpanishArgentina" = "Español (Argentina)";
 "Swedish" = "Svenska";
@@ -221,12 +232,12 @@
 "When I receive a request for a return receipt:" = "Når jeg mottar anmodning om en returkvittering:";
 "Never send a return receipt" = "Send aldri en returkvittering";
 "Allow return receipts for some messages" = "Tillat returkvittering for noen meldinger";
-"If I'm not in the To or Cc of the message:" = "Hvis jeg ikke er i Til eller Cc feltet i meldingen:";
+"If I'm not in the To or Cc of the message:" = "Hvis jeg ikke er i Til- eller Cc-feltet i meldingen:";
 "If the sender is outside my domain:" = "Hvis senderen er utenfor mitt domene:";
 "In all other cases:" = "I alle andre tilfeller:";
 
-"Never send" = "Send aldri";
-"Always send" = "Send alltid";
+"Never send" = "Aldri send";
+"Always send" = "Alltid send";
 "Ask me" = "Spør meg";
 
 /* Filters - UIxPreferences */
@@ -242,6 +253,7 @@
 "match any of the following rules:" = "samsvarer med en av følgende regler:";
 "match all messages" = "samsvarer med alle meldinger";
 "Perform these actions:" = "Utfør disse handlingene:";
+"Untitled Filter" = "Ikke navngitt filter";
 
 "Subject" = "Emne";
 "From" = "Fra";
@@ -264,11 +276,11 @@
 "is" = "er";
 "is not" = "er ikke";
 "contains" = "inneholder";
-"does not contain" = "inneholder ikker";
-"matches" = "samsvarer";
-"does not match" = "samsvarer ikke";
-"matches regex" = "samsvarer regex";
-"does not match regex" = "samvarer ikke regex";
+"does not contain" = "inneholder ikke";
+"matches" = "samsvarer med";
+"does not match" = "samsvarer ikke med";
+"matches regex" = "samsvarer med regex";
+"does not match regex" = "samvarer ikke med regex";
 
 "Seen" = "Sett";
 "Deleted" = "Slettet";
@@ -282,15 +294,16 @@
 "Label 4" = "Etikett 4";
 "Label 5" = "Etikett 5";
 
+"The password was changed successfully." = "Passordet ble endret.";
 "Password must not be empty." = "Passord kan ikke være tomme.";
 "The passwords do not match. Please try again." = "Passordene er ikke like. Prøv igjen.";
 "Password change failed" = "Passordendring feilet";
-"Password change failed - Permission denied" = "Passordendring feilet -- ikke tilgang";
-"Password change failed - Insufficient password quality" = "Passordendring feilet -- for dårlig passord";
-"Password change failed - Password is too short" = "Passordendring feilet -- passordet er for kort";
-"Password change failed - Password is too young" = "Passordendring feilet -- passordet er nylig brukt før";
-"Password change failed - Password is in history" = "Passordendring feilet -- passordet er brukt før";
-"Unhandled policy error: %{0}" = "";
-"Unhandled error response" = "";
+"Password change failed - Permission denied" = "Passordendring feilet - ikke tilgang";
+"Password change failed - Insufficient password quality" = "Passordendring feilet - for dårlig passord";
+"Password change failed - Password is too short" = "Passordendring feilet - passordet er for kort";
+"Password change failed - Password is too young" = "Passordendring feilet - passordet er nylig brukt før";
+"Password change failed - Password is in history" = "Passordendring feilet - passordet er brukt før";
+"Unhandled policy error: %{0}" = "Uhåndtert policy-feil: %{0}";
+"Unhandled error response" = "Uhåndtert feilrespons";
 "Password change is not supported." = "Passordendring er ikke støttet.";
-"Unhandled HTTP error code: %{0}" = "";
+"Unhandled HTTP error code: %{0}" = "Uhåndtert HTTP feilkode: %{0}";

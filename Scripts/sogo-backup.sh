@@ -4,7 +4,7 @@ set -o pipefail
 #set -x
 PROGNAME="$(basename $0)"
 
-BACKUP_DIR=/home/sogo/backups
+BACKUP_DIR=~sogo/backups
 SOGO_TOOL=/usr/sbin/sogo-tool
 DAYS_TO_KEEP="30"
 

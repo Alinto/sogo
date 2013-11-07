@@ -179,6 +179,8 @@
 "Reminder:" = "Emlékeztető:";
 "General:" = "Általános:";
 "Reply:" = "Válasz:";
+"Created by:" = "Létrehozta:";
+
 
 "Target:" = "Cél:";
 
@@ -372,6 +374,9 @@
 /* transparency */
 
 "Show Time as Free" = "Ne jelezzen foglaltságot";
+
+/* email notifications */
+"Send Appointment Notifications" = "Találkozó értesítések küldése";
 
 /* validation errors */
 

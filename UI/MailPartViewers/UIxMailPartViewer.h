@@ -83,6 +83,8 @@
 - (NSString *)pathToAttachmentObject; /* link to SoObject */
 - (NSString *)pathToAttachment;       /* download link */
 
+- (NSString *) mimeImageURL;
+
 @end
 
 #endif /* __Mailer_UIxMailPartViewer_H__ */

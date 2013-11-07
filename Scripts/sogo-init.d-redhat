@@ -34,7 +34,7 @@ DAEMON=/usr/sbin/sogod
 DESC="SOGo"
 
 USER=$NAME
-PREFORK=1
+PREFORK=3
 
 PIDFILE=/var/run/$NAME/$NAME.pid
 LOGFILE=/var/log/$NAME/$NAME.log

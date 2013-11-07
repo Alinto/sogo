@@ -9,3 +9,5 @@ tags
 *.swp
 SoObjects/SOGo/SOGo.framework/
 SoObjects/SOGo/derived_src/
+Tests/*/config.py
+*.pyc

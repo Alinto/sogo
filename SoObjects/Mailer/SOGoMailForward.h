@@ -58,6 +58,9 @@
 @interface SOGoMailEnglishForward : SOGoMailForward
 @end
 
+@interface SOGoMailFinnishForward : SOGoMailForward
+@end
+
 @interface SOGoMailFrenchForward : SOGoMailForward
 @end
 

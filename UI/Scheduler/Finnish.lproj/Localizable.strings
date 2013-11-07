@@ -179,6 +179,8 @@
 "Reminder:" = "Muistuttaja:";
 "General:" = "Yleinen:";
 "Reply:" = "Vastaus:";
+"Created by:" = "Luonut:";
+
 
 "Target:" = "Kohde:";
 
@@ -372,6 +374,9 @@
 /* transparency */
 
 "Show Time as Free" = "Näytä aika vapaana";
+
+/* email notifications */
+"Send Appointment Notifications" = "Lähetä tapaamismuistutukset";
 
 /* validation errors */
 

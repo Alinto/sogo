@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2012 Inverse inc.
+  Copyright (C) 2006-2013 Inverse inc.
   Copyright (C) 2000-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -142,12 +142,12 @@
 
 - (NSString *) location
 {
-  return [[apt location] stringByEscapingHTMLString];
+  return [apt location];
 }
 
 - (NSString *) summary
 {
-  return [[apt summary] stringByEscapingHTMLString];
+  return [apt summary];
 }
 
 - (void) setOrganizerName: (NSString *) theString

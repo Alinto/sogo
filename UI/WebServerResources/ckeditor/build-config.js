@@ -57,7 +57,11 @@ var CKBUILDER_CONFIG = {
 		'wsc' : 1,
 		'colordialog' : 1,
 		'contextmenu' : 1,
-		'blockquote' : 1
+		'blockquote' : 1,
+		'indentlist' : 1,
+		'table' : 1,
+		'tabletools' : 1,
+		'tableresize' : 1
 	},
 	languages : {
 		'ar' : 1,
@@ -81,6 +85,6 @@ var CKBUILDER_CONFIG = {
 		'es' : 1,
 		'sv' : 1,
 		'uk' : 1,
-		'cy' : 1,
+		'cy' : 1
 	}
 };

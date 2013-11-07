@@ -72,7 +72,7 @@
 - (void) setCompleted: (NSCalendarDate *) newCompletedDate
 {
   [(iCalDateTime *) [self uniqueChildWithTag: @"completed"]
-		    setDate: newCompletedDate];
+		    setDateTime: newCompletedDate];
   if (newCompletedDate)
     [self setStatus: @"COMPLETED"];
   else

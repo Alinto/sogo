@@ -85,13 +85,17 @@ static NSDictionary *BSONTypes()
 @implementation NSObject (BSONObjectCoding)
 - (NSData *) BSONEncode
 {
-	if (!class_conformsToProtocol([self class], @protocol(BSONObjectCoding)))
+	if (![self conformsToProtocol: @protocol(BSONObjectCoding)])
 		[NSException raise: NSInvalidArgumentException format: @"BSON encoding is only valid on objects conforming to the BSONObjectEncoding protocol."];
 
 	id <BSONObjectCoding> myself = (id <BSONObjectCoding>) self;
 	NSMutableDictionary *values = [[myself BSONDictionary] mutableCopy];
 
+#if (defined(__GNU_LIBOBJC__) && (__GNU_LIBOBJC__ >= 20100911)) || defined(APPLE_RUNTIME) || defined(__GNUSTEP_RUNTIME__)
 	const char* className = class_getName([self class]);
+#else
+	const char* className = [self class]->name;
+#endif
 	[values setObject: [NSData dataWithBytes: (void *)className length: strlen(className)] forKey: CLASS_NAME_MARKER];
 	NSData *retval = [values BSONEncode];
 	[values release];
