@@ -64,7 +64,7 @@
 }
 
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
-                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                         withIndexing: (struct indexing_context *) indexing
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *firstContext = NULL, *context;
@@ -79,7 +79,7 @@
   if (moduleName)
     {
       userContext = [MAPIStoreUserContext userContextWithUsername: userName
-                                                   andTDBIndexing: indexingTdb];
+                                                   andTDBIndexing: indexing];
       parentFolder = [[userContext rootFolders] objectForKey: moduleName];
       baseUrl = [NSString stringWithFormat: @"sogo://%@@%@/",
                           userName, moduleName];

@@ -61,10 +61,10 @@
 }
 
 + (struct mapistore_contexts_list *) listAllContextsForUser: (NSString *)  userName
-                                            withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                            withIndexing: (struct indexing_context *) indexing
                                                    inMemCtx: (TALLOC_CTX *) memCtx;
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *)  userName
-                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                         withIndexing: (struct indexing_context *) indexing
                                                 inMemCtx: (TALLOC_CTX *) memCtx;
 + (enum mapistore_error) createRootFolder: (NSString **) mapistoreUriP
                                   withFID: (uint64_t ) fid
@@ -75,11 +75,11 @@
 + (int) openContext: (MAPIStoreContext **) contextPtr
             withURI: (const char *) newUri
      connectionInfo: (struct mapistore_connection_info *) newConnInfo
-     andTDBIndexing: (struct tdb_wrap *) indexingTdb;
+     andTDBIndexing: (struct indexing_context *) indexing;
 
 - (id)   initFromURL: (NSURL *) newUri
   withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
-      andTDBIndexing: (struct tdb_wrap *) indexingTdb;
+      andTDBIndexing: (struct indexing_context *) indexing;
 
 - (NSURL *) url;
 - (struct mapistore_connection_info *) connectionInfo;

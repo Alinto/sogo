@@ -63,10 +63,10 @@
 }
 
 + (id) userContextWithUsername: (NSString *) username
-                andTDBIndexing: (struct tdb_wrap *) indexingTdb;
+                andTDBIndexing: (struct indexing_context *) indexing;
 
 - (id) initWithUsername: (NSString *) newUsername
-         andTDBIndexing: (struct tdb_wrap *) indexingTdb;
+         andTDBIndexing: (struct indexing_context *) indexing;
 
 - (NSString *) username;
 - (SOGoUser *) sogoUser;

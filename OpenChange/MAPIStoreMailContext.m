@@ -83,7 +83,7 @@ MakeDisplayFolderName (NSString *folderName)
 }
 
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
-                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                         withIndexing: (struct indexing_context *) indexing
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *firstContext = NULL, *context;
@@ -100,7 +100,7 @@ MakeDisplayFolderName (NSString *folderName)
   WOContext *woContext;
 
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
-                                               andTDBIndexing: indexingTdb];
+                                               andTDBIndexing: indexing];
   accountFolder = [[userContext rootFolders] objectForKey: @"mail"];
   woContext = [userContext woContext];
 
@@ -245,7 +245,7 @@ MakeDisplayFolderName (NSString *folderName)
 }
 
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
-                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                         withIndexing: (struct indexing_context *) indexing
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *context;
@@ -256,7 +256,7 @@ MakeDisplayFolderName (NSString *folderName)
   WOContext *woContext;
 
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
-                                               andTDBIndexing: indexingTdb];
+                                               andTDBIndexing: indexing];
   accountFolder = [[userContext rootFolders] objectForKey: @"mail"];
   woContext = [userContext woContext];
 

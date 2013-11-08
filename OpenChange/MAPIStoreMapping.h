@@ -32,17 +32,17 @@
 {
   void *memCtx;
   NSString *username;
-  struct tdb_wrap *indexing;
+  struct indexing_context *indexing;
   NSMutableDictionary *mapping; /* FID/MID -> url */
   NSMutableDictionary *reverseMapping; /* url -> FID/MID */
   NSUInteger useCount;
 }
 
 + (id) mappingForUsername: (NSString *) username
-             withIndexing: (struct tdb_wrap *) indexing;
+             withIndexing: (struct indexing_context *) indexing;
 
 - (id) initForUsername: (NSString *) username
-          withIndexing: (struct tdb_wrap *) indexing;
+          withIndexing: (struct indexing_context *) indexing;
 
 
 - (void) increaseUseCount;

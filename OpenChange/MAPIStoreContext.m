@@ -100,7 +100,7 @@ static NSMutableDictionary *contextClassMapping;
 }
 
 + (struct mapistore_contexts_list *) listAllContextsForUser: (NSString *)  userName
-                                            withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                            withIndexing: (struct indexing_context *) indexing
                                                    inMemCtx: (TALLOC_CTX *) memCtx
 {
   struct mapistore_contexts_list *list, *current;
@@ -112,7 +112,7 @@ static NSMutableDictionary *contextClassMapping;
   list = NULL;
 
   userContext = [MAPIStoreUserContext userContextWithUsername: userName
-                                               andTDBIndexing: indexingTdb];
+                                               andTDBIndexing: indexing];
   [userContext activateWithUser: [userContext sogoUser]];
 
   classes = GSObjCAllSubclassesOfClass (self);
@@ -121,7 +121,7 @@ static NSMutableDictionary *contextClassMapping;
     {
       currentClass = [classes objectAtIndex: count];
       current = [currentClass listContextsForUser: userName
-                                  withTDBIndexing: indexingTdb
+                                  withIndexing: indexing
                                          inMemCtx: memCtx];
       if (current)
         DLIST_CONCATENATE(list, current, void);
@@ -131,7 +131,7 @@ static NSMutableDictionary *contextClassMapping;
 }
 
 + (struct mapistore_contexts_list *) listContextsForUser: (NSString *) userName
-                                         withTDBIndexing: (struct tdb_wrap *) indexingTdb
+                                         withIndexing: (struct indexing_context *) indexing
                                                 inMemCtx: (TALLOC_CTX *) memCtx
 {
   return NULL;
@@ -216,7 +216,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 + (int) openContext: (MAPIStoreContext **) contextPtr
             withURI: (const char *) newUri
      connectionInfo: (struct mapistore_connection_info *) newConnInfo
-     andTDBIndexing: (struct tdb_wrap *) indexingTdb
+     andTDBIndexing: (struct indexing_context *) indexing
 {
   MAPIStoreContext *context;
   Class contextClass;
@@ -239,7 +239,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
             {
               context = [[contextClass alloc] initFromURL: baseURL
                                        withConnectionInfo: newConnInfo
-                                           andTDBIndexing: indexingTdb];
+                                           andTDBIndexing: indexing];
               if (context)
                 {
                   [context autorelease];
@@ -272,7 +272,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 
 - (id)   initFromURL: (NSURL *) newUrl
   withConnectionInfo: (struct mapistore_connection_info *) newConnInfo
-      andTDBIndexing: (struct tdb_wrap *) indexingTdb
+      andTDBIndexing: (struct indexing_context *) indexing
 {
   NSString *username;
 
@@ -291,7 +291,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 
       ASSIGN (userContext,
               [MAPIStoreUserContext userContextWithUsername: username
-                                             andTDBIndexing: indexingTdb]);
+                                             andTDBIndexing: indexing]);
 
 #if 0
       mapistore_mgmt_backend_register_user (newConnInfo,
