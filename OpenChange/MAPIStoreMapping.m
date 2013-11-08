@@ -39,10 +39,6 @@
 
 #include <talloc.h>
 #include <tdb.h>
- 
-struct tdb_wrap {
-        struct tdb_context *tdb;
-};
 
 static NSMutableDictionary *mappingRegistry = nil;
 
@@ -103,7 +99,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 }
 
 + (id) mappingForUsername: (NSString *) username
-             withIndexing: (struct tdb_wrap *) indexing
+             withIndexing: (struct indexing_context *) indexing
 {
   id mapping;
 
@@ -153,7 +149,7 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 }
 
 - (id) initForUsername: (NSString *) newUsername
-          withIndexing: (struct tdb_wrap *) newIndexing
+          withIndexing: (struct indexing_context *) newIndexing
 {
   NSString *idNbr, *uri;
   NSArray *keys;

@@ -60,7 +60,7 @@ static NSMapTable *contextsTable = nil;
 }
 
 + (id) userContextWithUsername: (NSString *) username
-                andTDBIndexing: (struct tdb_wrap *) indexingTdb;
+                andTDBIndexing: (struct indexing_context *) indexing;
 {
   id userContext;
 
@@ -68,7 +68,7 @@ static NSMapTable *contextsTable = nil;
   if (!userContext)
     {
       userContext = [[self alloc] initWithUsername: username
-                                    andTDBIndexing: indexingTdb];
+                                    andTDBIndexing: indexing];
       [userContext autorelease];
       [contextsTable setObject: userContext forKey: username];
     }
@@ -125,7 +125,7 @@ static NSMapTable *contextsTable = nil;
 }
 
 - (id) initWithUsername: (NSString *) newUsername
-         andTDBIndexing: (struct tdb_wrap *) indexingTdb
+         andTDBIndexing: (struct indexing_context *) indexing
 {
   NSString *userPassword;
 
@@ -133,9 +133,9 @@ static NSMapTable *contextsTable = nil;
     {
       /* "username" will be retained by table */
       username = newUsername;
-      if (indexingTdb)
+      if (indexing)
         ASSIGN (mapping, [MAPIStoreMapping mappingForUsername: username
-                                                 withIndexing: indexingTdb]);
+                                                 withIndexing: indexing]);
 
       authenticator = [MAPIStoreAuthenticator new];
       [authenticator setUsername: username];
