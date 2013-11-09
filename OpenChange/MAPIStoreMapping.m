@@ -33,12 +33,15 @@
 
 #import <SOGo/NSString+Utilities.h>
 
+#undef DEBUG
+#include <mapistore/mapistore.h>
+#include <mapistore/mapistore_errors.h>
+
 #import "MAPIStoreTypes.h"
 
 #import "MAPIStoreMapping.h"
 
 #include <talloc.h>
-#include <tdb.h>
 
 static NSMutableDictionary *mappingRegistry = nil;
 
@@ -55,48 +58,6 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
   return [NSString stringWithUnsignedLongLong: idNbr];
 }
 
-static int
-MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
-			     void *data)
-{
-  NSMutableDictionary *mapping;
-  id idKey;
-  NSString *uri;
-  char *idStr, *uriStr;
-  uint64_t idNbr;
-
-  // get the key
-  // key examples : key(18) = "0x6900000000000001"
-  //                key(31) = "SOFT_DELETED:0xb100020000000001"
-  //
-  idStr = (char *) data1.dptr;
-  idKey = nil;
-
-  if (strncmp(idStr, "SOFT_DELETED:", 13) != 0)
-    { 
-      // It's very important here to use strtoull and NOT strtoll as
-      // the latter will overflow a long long with typical key values.
-      idNbr = strtoull(idStr, NULL, 0);
-      // idKey = [NSNumber numberWithUnsignedLongLong: idNbr];
-      idKey = MAPIStoreMappingKeyFromId(idNbr);
-    }
-  
-  // get the value and null-terminate it
-  uriStr = (char *)malloc(sizeof(char *) * data2.dsize+1);
-  memset(uriStr, 0, data2.dsize+1);
-  memcpy(uriStr, (const char *) data2.dptr, data2.dsize);
-  uri = [NSString stringWithUTF8String: uriStr];
-  free (uriStr);
-
-  mapping = data;
-
-  if (uri && idKey)
-    {
-      [mapping setObject: uri forKey: idKey];
-    }
-
-  return 0;
-}
 
 + (id) mappingForUsername: (NSString *) username
              withIndexing: (struct indexing_context *) indexing
@@ -119,8 +80,6 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
   if ((self = [super init]))
     {
       memCtx = talloc_zero (NULL, TALLOC_CTX);
-      mapping = [NSMutableDictionary new];
-      reverseMapping = [NSMutableDictionary new];
       indexing = NULL;
       useCount = 0;
     }
@@ -151,27 +110,10 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 - (id) initForUsername: (NSString *) newUsername
           withIndexing: (struct indexing_context *) newIndexing
 {
-  NSString *idNbr, *uri;
-  NSArray *keys;
-  NSUInteger count, max;
-
   if ((self = [self init]))
     {
       ASSIGN (username, newUsername);
       indexing = newIndexing;
-      (void) talloc_reference (memCtx, newIndexing);
-      tdb_traverse_read (indexing->tdb, MAPIStoreMappingTDBTraverse, mapping);
-      keys = [mapping allKeys];
-      max = [keys count];
-      for (count = 0; count < max; count++)
-	{
-	  idNbr = [keys objectAtIndex: count];
-	  uri = [mapping objectForKey: idNbr];
-          //[self logWithFormat: @"preregistered id '%@' for url '%@'", idNbr, uri];
-	  [reverseMapping setObject: idNbr forKey: uri];
-	}
-      
-      //[self logWithFormat: @"Complete mapping: %@ \nComplete reverse mapping: %@", mapping, reverseMapping];
     }
 
   return self;
@@ -180,29 +122,35 @@ MAPIStoreMappingTDBTraverse (TDB_CONTEXT *ctx, TDB_DATA data1, TDB_DATA data2,
 - (void) dealloc
 {
   [username release];
-  [mapping release];
-  [reverseMapping release];
   talloc_free (memCtx);
   [super dealloc];
 }
 
 - (NSString *) urlFromID: (uint64_t) idNbr
 {
-  return [mapping objectForKey: MAPIStoreMappingKeyFromId (idNbr)];
+  char* url; 
+
+  indexing->get_uri(indexing, [username UTF8String],
+                    memCtx, idNbr, &url, false);
+  NSString *res = [[[NSString alloc] initWithUTF8String:url] autorelease];
+  talloc_free(url);
+
+  return res;
 }
 
 - (uint64_t) idFromURL: (NSString *) url
 {
-  id key;
+  enum mapistore_error ret;
   uint64_t idNbr;
+  bool softDeleted;
 
-  key = [reverseMapping objectForKey: url];
-  if (key)
-    idNbr = [key unsignedLongLongValue];
+  ret = indexing->get_fmid(indexing, [username UTF8String], [url UTF8String],
+                           false, &idNbr, &softDeleted);
+
+  if (ret == MAPISTORE_SUCCESS && !softDeleted)
+    return idNbr;
   else
-    idNbr = NSNotFound;
-
-  return idNbr;
+    return NSNotFound;
 }
 
 - (void) _updateFolderWithURL: (NSString *) oldURL
