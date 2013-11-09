@@ -33,8 +33,6 @@
   void *memCtx;
   NSString *username;
   struct indexing_context *indexing;
-  NSMutableDictionary *mapping; /* FID/MID -> url */
-  NSMutableDictionary *reverseMapping; /* url -> FID/MID */
   NSUInteger useCount;
 }
 
