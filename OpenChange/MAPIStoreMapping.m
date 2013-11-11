@@ -128,7 +128,7 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
 
 - (NSString *) urlFromID: (uint64_t) idNbr
 {
-  char* url; 
+  char* url = NULL;
 
   indexing->get_uri(indexing, [username UTF8String],
                     memCtx, idNbr, &url, false);
@@ -156,55 +156,32 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
 - (void) _updateFolderWithURL: (NSString *) oldURL
                       withURL: (NSString *) urlString
 {
-  NSArray *allKeys;
-  NSUInteger count, max;
-  NSString *currentKey, *newKey;
-  id idKey;
-  TDB_DATA key, dbuf;
+  const char *searchURL;
+  uint64_t idNbr;
+  bool softDeleted;
+  NSString *current;
+  NSString *newURL;
 
-  [oldURL retain];
+  searchURL = [[oldURL stringByAppendingString:@"*"] UTF8String];
 
-  allKeys = [reverseMapping allKeys];
-  max = [allKeys count];
-  for (count = 0; count < max; count++)
-    {
-      currentKey = [allKeys objectAtIndex: count];
-      if ([currentKey hasPrefix: oldURL])
-        {
-          newKey = [currentKey stringByReplacingPrefix: oldURL
-                                            withPrefix: urlString];
+  while (indexing->get_fmid(indexing, [username UTF8String],
+         searchURL,true, &idNbr, &softDeleted) == MAPISTORE_SUCCESS)
+  {
+    // Ignore deleted
+    if (softDeleted) continue;
 
-          idKey = [reverseMapping objectForKey: currentKey];
-          [mapping setObject: newKey forKey: idKey];
-          [reverseMapping setObject: idKey forKey: newKey];
-          [reverseMapping removeObjectForKey: currentKey];
-
-          /* update the record in the indexing database */
-          key.dptr = (unsigned char *) talloc_asprintf (NULL, "0x%.16"PRIx64,
-                                                        (uint64_t) [idKey unsignedLongLongValue]);
-          key.dsize = strlen ((const char *) key.dptr);
-
-          dbuf.dptr = (unsigned char *) talloc_strdup (NULL,
-                                                       [newKey UTF8String]);
-          dbuf.dsize = strlen ((const char *) dbuf.dptr);
-          tdb_store (indexing->tdb, key, dbuf, TDB_MODIFY);
-          talloc_free (key.dptr);
-          talloc_free (dbuf.dptr);
-        }
-    }
-
-  [oldURL release];
+    current = [self urlFromID:idNbr];
+    newURL = [current stringByReplacingPrefix: oldURL withPrefix: urlString];
+    indexing->update_fmid(indexing, [username UTF8String], idNbr, [newURL UTF8String]);
+  }
 }
 
 - (void) updateID: (uint64_t) idNbr
           withURL: (NSString *) urlString
 {
   NSString *oldURL;
-  id idKey;
-  TDB_DATA key, dbuf;
 
-  idKey = MAPIStoreMappingKeyFromId (idNbr);
-  oldURL = [mapping objectForKey: idKey];
+  oldURL = [self urlFromID: idNbr];
   if (oldURL)
     {
       if ([oldURL hasSuffix: @"/"]) /* is container ? */
@@ -212,28 +189,16 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
           if (![urlString hasSuffix: @"/"])
             [NSException raise: NSInvalidArgumentException
                         format: @"a container url must have an ending '/'"];
-          tdb_transaction_start (indexing->tdb);
           [self _updateFolderWithURL: oldURL withURL: urlString];
-          tdb_transaction_commit (indexing->tdb);
         }
       else
         {
           if ([urlString hasSuffix: @"/"])
             [NSException raise: NSInvalidArgumentException
                         format: @"a leaf url must not have an ending '/'"];
-          [mapping setObject: urlString forKey: idKey];
-          [reverseMapping setObject: idKey forKey: urlString];
-          [reverseMapping removeObjectForKey: oldURL];
 
-          /* update the record in the indexing database */
-          key.dptr = (unsigned char *) talloc_asprintf(NULL, "0x%.16"PRIx64, idNbr);
-          key.dsize = strlen((const char *) key.dptr);
-
-          dbuf.dptr = (unsigned char *) talloc_strdup (NULL, [urlString UTF8String]);
-          dbuf.dsize = strlen((const char *) dbuf.dptr);
-          tdb_store (indexing->tdb, key, dbuf, TDB_MODIFY);
-          talloc_free (key.dptr);
-          talloc_free (dbuf.dptr);
+          indexing->update_fmid(indexing, [username UTF8String],
+                                idNbr, [urlString UTF8String]);
         }
     }
 }
@@ -241,13 +206,13 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
 - (BOOL) registerURL: (NSString *) urlString
               withID: (uint64_t) idNbr
 {
-  id idKey;
-  BOOL rc;
-  TDB_DATA key, dbuf;
+  NSString *oldURL;
+  uint64_t oldIdNbr;
+  bool rc;
 
-  idKey = MAPIStoreMappingKeyFromId (idNbr);
-  if ([mapping objectForKey: idKey]
-      || [reverseMapping objectForKey: urlString])
+  oldURL = [self urlFromID: idNbr];
+  oldIdNbr = [self idFromURL: urlString];
+  if (oldURL != NULL || oldIdNbr != NSNotFound)
     {
       [self errorWithFormat:
               @"attempt to double register an entry ('%@', %lld,"
@@ -257,21 +222,13 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
     }
   else
     {
-      [mapping setObject: urlString forKey: idKey];
-      [reverseMapping setObject: idKey forKey: urlString];
       rc = YES;
       // [self logWithFormat: @"registered url '%@' with id %lld (0x%.16"PRIx64")",
       //       urlString, idNbr, idNbr];
 
       /* Add the record given its fid and mapistore_uri */
-      key.dptr = (unsigned char *) talloc_asprintf(NULL, "0x%.16"PRIx64, idNbr);
-      key.dsize = strlen((const char *) key.dptr);
-
-      dbuf.dptr = (unsigned char *) talloc_strdup(NULL, [urlString UTF8String]);
-      dbuf.dsize = strlen((const char *) dbuf.dptr);
-      tdb_store (indexing->tdb, key, dbuf, TDB_INSERT);
-      talloc_free (key.dptr);
-      talloc_free (dbuf.dptr);
+      indexing->add_fmid(indexing, [username UTF8String],
+                         idNbr, [urlString UTF8String]);
     }
 
   return rc;
@@ -285,7 +242,6 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
   max = [urlStrings count];
   if (max == [idNbrs count])
     {
-      tdb_transaction_start (indexing->tdb);
       for (count = 0; count < max; count++)
         {
           newID = [[idNbrs objectAtIndex: count]
@@ -293,7 +249,6 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
           [self registerURL: [urlStrings objectAtIndex: count]
                      withID: newID];
         }
-      tdb_transaction_commit (indexing->tdb);
     }
   else
     [NSException raise: NSInvalidArgumentException
@@ -302,26 +257,8 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
 
 - (void) unregisterURLWithID: (uint64_t) idNbr
 {
-  NSString *urlString;
-  id idKey;
-  TDB_DATA key;
-
-  idKey = MAPIStoreMappingKeyFromId (idNbr);
-  urlString = [mapping objectForKey: idKey];
-  if (urlString)
-    {
-      // [self logWithFormat: @"unregistering url '%@' with id %lld (0x%.16"PRIx64")",
-      //       urlString, idNbr, idNbr];
-      [reverseMapping removeObjectForKey: urlString];
-      [mapping removeObjectForKey: idKey];
-
-      /* We hard-delete the entry from the indexing database */
-      key.dptr = (unsigned char *) talloc_asprintf(NULL, "0x%.16"PRIx64, idNbr);
-      key.dsize = strlen((const char *) key.dptr);
-  
-      tdb_delete(indexing->tdb, key);
-      talloc_free(key.dptr);
-    }
+  indexing->del_fmid(indexing, [username UTF8String],
+                     idNbr, MAPISTORE_PERMANENT_DELETE);
 }
 
 @end
