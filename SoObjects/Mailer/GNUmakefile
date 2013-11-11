@@ -16,6 +16,7 @@ Mailer_OBJC_FILES += \
 	SOGoMailAccounts.m		\
 	SOGoMailAccount.m		\
 	SOGoMailFolder.m		\
+	SOGoMailLabel.m			\
 	SOGoMailNamespace.m		\
 	SOGoMailObject.m		\
 	SOGoMailObject+Draft.m		\

@@ -17,6 +17,10 @@ function savePreferences(sender) {
         serializeContactsCategories();
     }
 
+    if ($("mailLabelsListWrapper")) {
+        serializeMailLabels();
+    }
+
     if (typeof mailCustomFromEnabled !== "undefined" && !emailRE.test($("email").value)) {
         showAlertDialog(_("Please specify a valid sender address."));
         sendForm = false;
@@ -182,6 +186,7 @@ function initPreferences() {
     if (typeof (initAdditionalPreferences) != "undefined")
         initAdditionalPreferences();
 
+    // Calender categories
     var wrapper = $("calendarCategoriesListWrapper");
     if (wrapper) {
         var table = wrapper.childNodesWithTag("table")[0];
@@ -195,6 +200,22 @@ function initPreferences() {
         $("calendarCategoryDelete").observe("click", onCalendarCategoryDelete);
     }
 
+    // Mail labels/tags
+    var wrapper = $("mailLabelsListWrapper");
+    if (wrapper) {
+        var table = wrapper.childNodesWithTag("table")[0];
+        resetMailLabelsColors(null);
+        var r = $$("#mailLabelsListWrapper tbody tr");
+        for (var i= 0; i < r.length; i++)
+            r[i].identify();
+        table.multiselect = true;
+        resetMailTableActions();
+        $("mailLabelAdd").observe("click", onMailLabelAdd);
+        $("mailLabelDelete").observe("click", onMailLabelDelete);
+    }
+
+
+    // Contact categories
     wrapper = $("contactsCategoriesListWrapper");
     if (wrapper) {
         var table = wrapper.childNodesWithTag("table")[0];
@@ -855,21 +876,15 @@ function compactMailAccounts() {
     }
 }
 
-/* calendar categories */
-function resetCalendarTableActions() {
-    var r = $$("#calendarCategoriesListWrapper tbody tr");
-    for (var i = 0; i < r.length; i++) {
-        var row = $(r[i]);
-        row.observe("mousedown", onRowClick);
-        var tds = row.childElements();
-        var editionCtlr = new RowEditionController();
-        editionCtlr.attachToRowElement(tds[0]);
-        tds[1].childElements()[0].observe("dblclick", onColorEdit);
-    }
-}
+/* common function between calendar categories and mail labels */
+function onColorEdit (e, type) {
+    var r;
 
-function onColorEdit (e) {
-    var r = $$("#calendarCategoriesListWrapper div.colorEditing");
+    if (type == "calendar")
+        r = $$("#calendarCategoriesListWrapper div.colorEditing");
+    else
+        r = $$("#mailLabelsListWrapper div.colorEditing");
+        
     for (var i=0; i<r.length; i++)
         r[i].removeClassName("colorEditing");
 
@@ -881,12 +896,19 @@ function onColorEdit (e) {
                               + "menubar=0,copyhistory=0", "test"
                               );
     cPicker.focus();
+    cPicker.type = type;
 
     preventDefault(e);
 }
 
-function onColorPickerChoice (newColor) {
-    var div = $$("#calendarCategoriesListWrapper div.colorEditing").first ();
+function onColorPickerChoice (newColor, type) {    
+    var div;
+
+    if (type == "calendar")
+        div = $$("#calendarCategoriesListWrapper div.colorEditing").first ();
+    else
+        div = $$("#mailLabelsListWrapper div.colorEditing").first ();
+
     //  div.removeClassName ("colorEditing");
     div.showColor = newColor;
     div.style.background = newColor;
@@ -894,6 +916,26 @@ function onColorPickerChoice (newColor) {
         var hasChanged = $("hasChanged");
         hasChanged.value = "1";
     }
+}
+/* /common function between calendar categories and mail labels */
+
+
+/* calendar categories */
+function resetCalendarTableActions() {
+    var r = $$("#calendarCategoriesListWrapper tbody tr");
+    for (var i = 0; i < r.length; i++) {
+        var row = $(r[i]);
+        row.observe("mousedown", onRowClick);
+        var tds = row.childElements();
+        var editionCtlr = new RowEditionController();
+        editionCtlr.attachToRowElement(tds[0]);
+        tds[1].childElements()[0].observe("dblclick", onCalendarColorEdit);
+    }
+}
+
+function onCalendarColorEdit (e) {
+    var onCCE = onColorEdit.bind(this);
+    onCCE(e, "calendar");
 }
 
 function onCalendarCategoryAdd (e) {
@@ -958,6 +1000,95 @@ function resetCalendarCategoriesColors (e) {
 }
 
 /* /calendar categories */
+
+/* mail label/tags */
+function resetMailTableActions() {
+    var r = $$("#mailLabelsListWrapper tbody tr");
+    for (var i = 0; i < r.length; i++) {
+        var row = $(r[i]);
+        row.observe("mousedown", onRowClick);
+        var tds = row.childElements();
+        var editionCtlr = new RowEditionController();
+        editionCtlr.attachToRowElement(tds[0]);
+        tds[1].childElements()[0].observe("dblclick", onMailColorEdit);
+    }
+}
+
+function onMailColorEdit (e) {
+    var onMCE = onColorEdit.bind(this);
+    onMCE(e, "mail");
+}
+
+function onMailLabelAdd (e) {
+    var row = new Element ("tr");
+    var nametd = new Element ("td").update ("");
+    var colortd = new Element ("td");
+    var colordiv = new Element ("div", {"class": "colorBox"});
+
+    row.identify ();
+    row.addClassName ("labelListRow");
+
+    nametd.addClassName ("labelListCell");
+    colortd.addClassName ("labelListCell");
+    colordiv.innerHTML = "&nbsp;";
+    colordiv.showColor = "#F0F0F0";
+    colordiv.style.background = colordiv.showColor;
+
+    colortd.appendChild (colordiv);
+    row.appendChild (nametd);
+    row.appendChild (colortd);
+    $("mailLabelsListWrapper").childNodesWithTag("table")[0].tBodies[0].appendChild (row);
+
+    resetMailTableActions ();
+    nametd.editionController.startEditing();
+}
+
+function onMailLabelDelete (e) {
+    var list = $('mailLabelsListWrapper').down("TABLE").down("TBODY");
+    var rows = list.getSelectedNodes();
+    var count = rows.length;
+
+    for (var i=0; i < count; i++) {
+        rows[i].editionController = null;
+        rows[i].remove ();
+    }
+}
+
+function resetMailLabelsColors (e) {
+    var divs = $$("#mailLabelsListWrapper DIV.colorBox");
+    for (var i = 0; i < divs.length; i++) {
+        var d = divs[i];
+        var color = d.innerHTML;
+        d.showColor = color;
+        if (color != "undefined")
+            d.setStyle({ backgroundColor: color });
+        d.update("&nbsp;");
+    }
+}
+
+function serializeMailLabels() {
+    var r = $$("#mailLabelsListWrapper TBODY TR");
+
+    var values = [];
+    for (var i = 0; i < r.length; i++) {
+        var tds = r[i].childElements ();
+        var name = r[i].readAttribute("data-name"); 
+        var label  = $(tds.first ()).innerHTML;
+        var color = $(tds.last ().childElements ().first ()).showColor;
+        
+        /* if name is null, that's because we've just added a new tag */
+        if (!name) {
+            name = label.replace(/ /g,"_");
+        }
+
+        values.push("\"" + name + "\": [\"" + label + "\", \"" + color + "\"]");
+    }
+
+    $("mailLabelsValue").value = "{ " + values.join(",\n") + "}";
+}
+
+/* /mail label/tags */
+
 
 /* contacts categories */
 function resetContactsTableActions() {

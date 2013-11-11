@@ -76,4 +76,12 @@
     SOGoRemindWithASound = YES;
 
     SOGoSearchMinimumWordLength = 2;
+
+    SOGoMailLabelsColors = {
+        label1 = ("Important", "#f00");
+        label2 = ("Work", "#ff9a00");
+        label3 = ("Personal", "#009a00");
+        label4 = ("To Do", "#3130ff");
+        label5 = ("Later", "#9c309c");
+    };
 }

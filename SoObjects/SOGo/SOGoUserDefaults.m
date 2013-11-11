@@ -1,8 +1,6 @@
 /* SOGoUserDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2009-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -732,6 +730,26 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 {
   return [self boolForKey: @"SOGoRemindWithASound"];
 }
+
+//
+// Dictionary of arrays. Example:
+//
+// {
+//   label1 => ("Important", "#FF0000");
+//   label2 => ("Work" "#00FF00");
+//   foo_bar => ("Foo Bar", "#0000FF");
+// }
+//
+- (void) setMailLabelsColors: (NSDictionary *) newValues
+{
+  [self setObject: newValues forKey: @"SOGoMailLabelsColors"];
+}
+
+- (NSDictionary *) mailLabelsColors
+{
+  return [self objectForKey: @"SOGoMailLabelsColors"];
+}
+
 
 - (void) setSieveFilters: (NSArray *) newValue
 {

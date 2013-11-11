@@ -283,6 +283,41 @@
                   </span></a>
               </div>
             </var:if>
+
+            <label><var:string label:value="Labels"/></label>
+            <div id="mailLabelsListWrapper" class="listWrapper"
+              ><table class="labelsList" cellspacing="0">
+                <thead>
+                  <tr class="tableview"
+                    ><th const:class="tbtv_headercell" const:id="labelTableHeader"
+                      ><var:string label:value="Label"/></th
+                      ><th const:class="tbtv_headercell" const:id="colorTableHeader"
+                      ><var:string label:value="Color"/></th
+                      ></tr
+                    ></thead>
+                <tbody>
+                  <var:foreach list="mailLabelList" item="label">
+                    <tr var:data-name="label.name" const:class="labelListRow"
+                      ><td const:class="labelListCell"
+                        ><var:string var:value="label.label"/></td
+                        ><td const:class="labelListCell"
+                        ><div const:class="colorBox"><var:string var:value="label.color"
+                            /></div></td
+                        ></tr>
+                  </var:foreach>
+                </tbody>
+              </table>
+            </div>
+            <div class="bottomToolbar">
+              <a const:id="mailLabelAdd" class="bottomButton" href="#">
+                <span><img rsrc:src="add-icon.png" label:title="Add" />
+              </span></a>
+              <a const:id="mailLabelDelete" class="bottomButton" href="#">
+                <span><img rsrc:src="remove-icon.png" label:title="Delete" />
+              </span></a>
+            </div>
+            <input type="hidden" const:id="mailLabelsValue" 
+                   const:name="mailLabelsValue" var:value="mailLabelsValue"/>
           </div>
 
           <div id="mailAccountsView" class="tab">

@@ -90,9 +90,10 @@ function setupConstants() {
                    "flagged": _("Flagged"),
                    "junk": _("Junk"),
                    "not_junk": _("Not Junk") };
-    for (var i = 1; i < 6; i++) {
-        var key = "label" + i;
-        flagLabels[key] = _("Label " + i);
+
+
+    for (var name in labels) {
+        flagLabels[name] = _( labels[name][0] );
     }
 }
 
