@@ -52,8 +52,8 @@ function savePreferences(sender) {
             sendForm = false;
         }
 	if ($("autoReplyText").value.strip().endsWith('\n.')) {
-	  showAlertDialog(_("Your vacation message must not end with a single dot on a line."));
-	  sendForm = false;
+	    showAlertDialog(_("Your vacation message must not end with a single dot on a line."));
+	    sendForm = false;
 	}
         if ($("enableVacationEndDate") && $("enableVacationEndDate").checked) {
             var e = $("vacationEndDate_date");
@@ -161,12 +161,12 @@ function addDefaultEmailAddresses(event) {
     else addresses = new Array();
 
     defaultAddresses.each(function(adr) {
-            for (var i = 0; i < addresses.length; i++)
-                if (adr == addresses[i])
-                    break;
-            if (i == addresses.length)
-                addresses.push(adr);
-        });
+        for (var i = 0; i < addresses.length; i++)
+            if (adr == addresses[i])
+                break;
+        if (i == addresses.length)
+            addresses.push(adr);
+    });
 
     $("autoReplyEmailAddresses").value = addresses.join(", ");
 
@@ -177,6 +177,9 @@ function initPreferences() {
     var tabsContainer = $("preferencesTabs");
     var controller = new SOGoTabsController();
     controller.attachToTabsContainer(tabsContainer);
+
+    var mailController = new SOGoTabsController();
+    mailController.attachToTabsContainer($('mailOptionsTabs'));
 
     var filtersListWrapper = $("filtersListWrapper");
     if (filtersListWrapper) {
@@ -335,7 +338,7 @@ function onFilterDelete(event) {
             var node = nodes[i];
             deletedFilters.push(node.rowIndex - 1);
         }
-        deletedFilters = deletedFilters.sort(function (x,y) { return x-y; });
+        deletedFilters = deletedFilters.sort(function(x,y) { return x-y; });
         var rows = filtersList.rows;
         for (var i = 0; i < deletedFilters.length; i++) {
             var filterNbr = deletedFilters[i];
@@ -668,11 +671,13 @@ function onMailAccountEntryClick(event) {
 
 function displayMailAccount(mailAccount, readOnly) {
     var inputs = $$("#accountInfo input");
-    inputs.each(function (i) { i.disabled = readOnly;
-                               i.mailAccount = mailAccount; });
+    inputs.each(function(i) {
+        i.disabled = readOnly;
+        i.mailAccount = mailAccount;
+    });
 
     inputs = $$("#identityInfo input");
-    inputs.each(function (i) { i.mailAccount = mailAccount; });
+    inputs.each(function(i) { i.mailAccount = mailAccount; });
     if (!mailCustomFromEnabled) {
         for (var i = 0; i < 2; i++) {
             inputs[i].disabled = readOnly;
@@ -836,7 +841,7 @@ function onMailAccountDelete(event) {
 
 function saveMailAccounts() {
     /* This removal enables us to avoid a few warning from SOPE for the inputs
-     that were created dynamically. */
+       that were created dynamically. */
     var editor = $("mailAccountEditor");
 
     // Could be null if ModuleConstraints disables email access
@@ -877,39 +882,39 @@ function compactMailAccounts() {
 }
 
 /* common function between calendar categories and mail labels */
-function onColorEdit (e, type) {
+function onColorEdit(e, type) {
     var r;
 
     if (type == "calendar")
         r = $$("#calendarCategoriesListWrapper div.colorEditing");
     else
         r = $$("#mailLabelsListWrapper div.colorEditing");
-        
+
     for (var i=0; i<r.length; i++)
         r[i].removeClassName("colorEditing");
 
-    this.addClassName ("colorEditing");
+    this.addClassName("colorEditing");
     var cPicker = window.open(ApplicationBaseURL + "../" + UserLogin
                               + "/Calendar/colorPicker", "colorPicker",
                               "width=250,height=200,resizable=0,scrollbars=0"
                               + "toolbar=0,location=0,directories=0,status=0,"
                               + "menubar=0,copyhistory=0", "test"
-                              );
+                             );
     cPicker.focus();
     cPicker.type = type;
 
     preventDefault(e);
 }
 
-function onColorPickerChoice (newColor, type) {    
+function onColorPickerChoice(newColor, type) {
     var div;
 
     if (type == "calendar")
-        div = $$("#calendarCategoriesListWrapper div.colorEditing").first ();
+        div = $$("#calendarCategoriesListWrapper div.colorEditing").first();
     else
-        div = $$("#mailLabelsListWrapper div.colorEditing").first ();
+        div = $$("#mailLabelsListWrapper div.colorEditing").first();
 
-    //  div.removeClassName ("colorEditing");
+    //  div.removeClassName("colorEditing");
     div.showColor = newColor;
     div.style.background = newColor;
     if (parseInt($("hasChanged").value) == 0) {
@@ -929,47 +934,47 @@ function resetCalendarTableActions() {
         var tds = row.childElements();
         var editionCtlr = new RowEditionController();
         editionCtlr.attachToRowElement(tds[0]);
-        tds[1].childElements()[0].observe("dblclick", onCalendarColorEdit);
+        tds[1].childElements()[0].observe("click", onCalendarColorEdit);
     }
 }
 
-function onCalendarColorEdit (e) {
+function onCalendarColorEdit(e) {
     var onCCE = onColorEdit.bind(this);
     onCCE(e, "calendar");
 }
 
-function onCalendarCategoryAdd (e) {
-    var row = new Element ("tr");
-    var nametd = new Element ("td").update ("");
-    var colortd = new Element ("td");
-    var colordiv = new Element ("div", {"class": "colorBox"});
+function onCalendarCategoryAdd(e) {
+    var row = new Element("tr");
+    var nametd = new Element("td").update("");
+    var colortd = new Element("td");
+    var colordiv = new Element("div", {"class": "colorBox"});
 
-    row.identify ();
-    row.addClassName ("categoryListRow");
+    row.identify();
+    row.addClassName("categoryListRow");
 
-    nametd.addClassName ("categoryListCell");
-    colortd.addClassName ("categoryListCell");
+    nametd.addClassName("categoryListCell");
+    colortd.addClassName("categoryListCell");
     colordiv.innerHTML = "&nbsp;";
     colordiv.showColor = "#F0F0F0";
     colordiv.style.background = colordiv.showColor;
 
-    colortd.appendChild (colordiv);
-    row.appendChild (nametd);
-    row.appendChild (colortd);
-    $("calendarCategoriesListWrapper").childNodesWithTag("table")[0].tBodies[0].appendChild (row);
+    colortd.appendChild(colordiv);
+    row.appendChild(nametd);
+    row.appendChild(colortd);
+    $("calendarCategoriesListWrapper").childNodesWithTag("table")[0].tBodies[0].appendChild(row);
 
-    resetCalendarTableActions ();
+    resetCalendarTableActions();
     nametd.editionController.startEditing();
 }
 
-function onCalendarCategoryDelete (e) {
+function onCalendarCategoryDelete(e) {
     var list = $('calendarCategoriesListWrapper').down("TABLE").down("TBODY");
     var rows = list.getSelectedNodes();
     var count = rows.length;
 
     for (var i=0; i < count; i++) {
         rows[i].editionController = null;
-        rows[i].remove ();
+        rows[i].remove();
     }
 }
 
@@ -978,16 +983,16 @@ function serializeCalendarCategories() {
 
     var values = [];
     for (var i = 0; i < r.length; i++) {
-        var tds = r[i].childElements ();
-        var name  = $(tds.first ()).innerHTML;
-        var color = $(tds.last ().childElements ().first ()).showColor;
+        var tds = r[i].childElements();
+        var name  = $(tds.first()).innerHTML;
+        var color = $(tds.last().childElements().first()).showColor;
         values.push("\"" + name + "\": \"" + color + "\"");
     }
 
     $("calendarCategoriesValue").value = "{ " + values.join(",\n") + "}";
 }
 
-function resetCalendarCategoriesColors (e) {
+function resetCalendarCategoriesColors(e) {
     var divs = $$("#calendarCategoriesListWrapper DIV.colorBox");
     for (var i = 0; i < divs.length; i++) {
         var d = divs[i];
@@ -1010,51 +1015,51 @@ function resetMailTableActions() {
         var tds = row.childElements();
         var editionCtlr = new RowEditionController();
         editionCtlr.attachToRowElement(tds[0]);
-        tds[1].childElements()[0].observe("dblclick", onMailColorEdit);
+        tds[1].childElements()[0].observe("click", onMailColorEdit);
     }
 }
 
-function onMailColorEdit (e) {
+function onMailColorEdit(e) {
     var onMCE = onColorEdit.bind(this);
     onMCE(e, "mail");
 }
 
-function onMailLabelAdd (e) {
-    var row = new Element ("tr");
-    var nametd = new Element ("td").update ("");
-    var colortd = new Element ("td");
-    var colordiv = new Element ("div", {"class": "colorBox"});
+function onMailLabelAdd(e) {
+    var row = new Element("tr");
+    var nametd = new Element("td").update("");
+    var colortd = new Element("td");
+    var colordiv = new Element("div", {"class": "colorBox"});
 
-    row.identify ();
-    row.addClassName ("labelListRow");
+    row.identify();
+    row.addClassName("labelListRow");
 
-    nametd.addClassName ("labelListCell");
-    colortd.addClassName ("labelListCell");
+    nametd.addClassName("labelListCell");
+    colortd.addClassName("labelListCell");
     colordiv.innerHTML = "&nbsp;";
     colordiv.showColor = "#F0F0F0";
     colordiv.style.background = colordiv.showColor;
 
-    colortd.appendChild (colordiv);
-    row.appendChild (nametd);
-    row.appendChild (colortd);
-    $("mailLabelsListWrapper").childNodesWithTag("table")[0].tBodies[0].appendChild (row);
+    colortd.appendChild(colordiv);
+    row.appendChild(nametd);
+    row.appendChild(colortd);
+    $("mailLabelsListWrapper").childNodesWithTag("table")[0].tBodies[0].appendChild(row);
 
-    resetMailTableActions ();
+    resetMailTableActions();
     nametd.editionController.startEditing();
 }
 
-function onMailLabelDelete (e) {
+function onMailLabelDelete(e) {
     var list = $('mailLabelsListWrapper').down("TABLE").down("TBODY");
     var rows = list.getSelectedNodes();
     var count = rows.length;
 
     for (var i=0; i < count; i++) {
         rows[i].editionController = null;
-        rows[i].remove ();
+        rows[i].remove();
     }
 }
 
-function resetMailLabelsColors (e) {
+function resetMailLabelsColors(e) {
     var divs = $$("#mailLabelsListWrapper DIV.colorBox");
     for (var i = 0; i < divs.length; i++) {
         var d = divs[i];
@@ -1071,10 +1076,10 @@ function serializeMailLabels() {
 
     var values = [];
     for (var i = 0; i < r.length; i++) {
-        var tds = r[i].childElements ();
+        var tds = r[i].childElements();
         var name = r[i].readAttribute("data-name"); 
-        var label  = $(tds.first ()).innerHTML;
-        var color = $(tds.last ().childElements ().first ()).showColor;
+        var label  = $(tds.first()).innerHTML;
+        var color = $(tds.last().childElements().first()).showColor;
         
         /* if name is null, that's because we've just added a new tag */
         if (!name) {
@@ -1117,7 +1122,7 @@ function onContactsCategoryAdd(e) {
     nametd.editionController.startEditing();
 }
 
-function onContactsCategoryDelete (e) {
+function onContactsCategoryDelete(e) {
     var list = $('contactsCategoriesListWrapper').down("TABLE").down("TBODY");
     var rows = list.getSelectedNodes();
     var count = rows.length;
@@ -1202,13 +1207,10 @@ function onChangePasswordClick(event) {
                 policy.changePassword(password);
             }
             else
-                SetLogMessage("passwordError", _("Password must not be empty."),
-                                    "error");
+                SetLogMessage("passwordError", _("Password must not be empty."), "error");
         }
         else {
-            SetLogMessage("passwordError", _("The passwords do not match."
-                                  + " Please try again."),
-                                "error");
+            SetLogMessage("passwordError", _("The passwords do not match. Please try again."), "error");
             field.focus();
             field.select();
         }

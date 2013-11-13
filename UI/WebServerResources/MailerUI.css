@@ -324,41 +324,6 @@ TABLE.messageList TR._selected TD
 TABLE.messageList TR._deleted TD
 { text-decoration: line-through; }
 
-TABLE.messageList TR[labels~="label5"] TD
-{ color: #9c309c; }
-
-TABLE.messageList TR[labels~="label5"]._selected TD
-{ color: #fff;
-  background-color: #9c309c; }
-
-TABLE.messageList TR[labels~="label4"] TD
-{ color: #3130ff; }
-
-TABLE.messageList TR[labels~="label4"]._selected TD
-{ color: #fff;
-  background-color: #3130ff; }
-
-TABLE.messageList TR[labels~="label3"] TD
-{ color: #009a00; }
-
-TABLE.messageList TR[labels~="label3"]._selected TD
-{ color: #fff;
-  background-color: #009a00; }
-
-TABLE.messageList TR[labels~="label2"] TD
-{ color: #ff9a00; }
-
-TABLE.messageList TR[labels~="label2"]._selected TD
-{ color: #fff;
-  background-color: #ff9a00; }
-
-TABLE.messageList TR[labels~="label1"] TD
-{ color: #f00; }
-
-TABLE.messageList TR[labels~="label1"]._selected TD
-{ color: #fff;
-  background-color: #f00; }
-
 TABLE.messageList TR.mailer_unreadmail TD,
 TR.mailer_unreadmail TD.messageSubjectColumn
 { font-weight: bold !important; }

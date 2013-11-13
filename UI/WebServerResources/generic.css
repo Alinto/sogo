@@ -70,8 +70,9 @@ TABLE
   border-spacing: 0px; }
 
 TABLE TD
-{ padding-left: .25em;
-  padding-right: .25em; }
+{ padding-left: .5em;
+  padding-right: .25em;
+  height: 22px; }
 
 a:link
 { color: #0033CC; }
@@ -1150,6 +1151,18 @@ DIV.bottomToolbar A.bottomButton SPAN:active
   right: 0px;
   bottom: 0px;
   left: 0px; }
+
+/* color box */
+DIV.colorBox
+{ cursor: pointer;
+  margin: 0 3px 0 0;
+  height: 12px;
+  line-height: 12px;
+  width: 12px;
+  -webkit-border-radius: 2px;
+     -moz-border-radius: 2px;
+          border-radius: 2px;
+  border: 0px; }
 
 /* ckeditor */
 span.cke_skin_kama

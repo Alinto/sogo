@@ -248,77 +248,89 @@
                     string="itemDisplayRemoteInlineImagesText"
                     selection="userDisplayRemoteInlineImages"/></dd>
             </dl>
-            <var:if condition="isSieveScriptsEnabled"
-              ><label><var:string label:value="Filters"/></label>
-              <script type="text/javascript">
-                var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO"/>;
-              </script>
-              <div id="filtersListWrapper" class="listWrapper"
-                ><table id="filtersList" cellspacing="0">
-                  <thead>
-                    <tr class="tableview"
-                      ><th const:class="tbtv_headercell" const:id="nameTableHeader"
-                        ><var:string label:value="Name" /></th
-                        ><th const:class="tbtv_headercell" const:id="activeTableHeader"
-                        ><var:string label:value="Active" /></th
-                        ></tr
-                      ></thead>
-                  <tbody><!--space --></tbody>
-                </table>
-                <input type="hidden" const:name="sieveFilters" const:id="sieveFilters"
-                  var:value="sieveFiltersValue"/>
-              </div>
-              <div class="bottomToolbar">
-                <a const:id="filterAdd" class="bottomButton" href="#">
-                  <span><img rsrc:src="add-icon.png" label:title="Add" />
-                  </span></a>
-                <a const:id="filterDelete" class="bottomButton" href="#">
-                  <span><img rsrc:src="remove-icon.png" label:title="Delete" />
-                  </span></a>
-                <a const:id="filterMoveUp" class="bottomButton" href="#">
-                  <span><img rsrc:src="up-icon.png" label:title="Move Up" />
-                  </span></a>
-                <a const:id="filterMoveDown" class="bottomButton" href="#">
-                  <span><img rsrc:src="down-icon.png" label:title="Move Down" />
-                  </span></a>
-              </div>
-            </var:if>
 
-            <label><var:string label:value="Labels"/></label>
-            <div id="mailLabelsListWrapper" class="listWrapper"
-              ><table class="labelsList" cellspacing="0">
-                <thead>
-                  <tr class="tableview"
-                    ><th const:class="tbtv_headercell" const:id="labelTableHeader"
-                      ><var:string label:value="Label"/></th
-                      ><th const:class="tbtv_headercell" const:id="colorTableHeader"
-                      ><var:string label:value="Color"/></th
-                      ></tr
-                    ></thead>
-                <tbody>
-                  <var:foreach list="mailLabelList" item="label">
-                    <tr var:data-name="label.name" const:class="labelListRow"
-                      ><td const:class="labelListCell"
-                        ><var:string var:value="label.label"/></td
-                        ><td const:class="labelListCell"
-                        ><div const:class="colorBox"><var:string var:value="label.color"
-                            /></div></td
-                        ></tr>
-                  </var:foreach>
-                </tbody>
-              </table>
-            </div>
-            <div class="bottomToolbar">
-              <a const:id="mailLabelAdd" class="bottomButton" href="#">
-                <span><img rsrc:src="add-icon.png" label:title="Add" />
-              </span></a>
-              <a const:id="mailLabelDelete" class="bottomButton" href="#">
-                <span><img rsrc:src="remove-icon.png" label:title="Delete" />
-              </span></a>
-            </div>
-            <input type="hidden" const:id="mailLabelsValue" 
-                   const:name="mailLabelsValue" var:value="mailLabelsValue"/>
-          </div>
+            <div class="tabsContainer" id="mailOptionsTabs">
+              <ul>
+                <var:if condition="isSieveScriptsEnabled"
+                ><li target="mailFiltersView"><span><var:string
+                      label:value="Filters"/></span></li
+                ></var:if>
+                <li target="mailLabelsView"><span><var:string
+                      label:value="Labels"/></span></li>
+              </ul>
+              <div class="tabs">
+                <var:if condition="isSieveScriptsEnabled"
+                ><div id="mailFiltersView" class="tab">
+                  <script type="text/javascript">
+                    var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO"/>;
+                  </script>
+                  <div id="filtersListWrapper" class="listWrapper">
+                    <table id="filtersList" cellspacing="0">
+                      <thead>
+                        <tr class="tableview">
+                          <th const:class="tbtv_headercell" const:id="nameTableHeader"
+                              ><var:string label:value="Name" /></th>
+                          <th const:class="tbtv_headercell" const:id="activeTableHeader"
+                              ><var:string label:value="Active" /></th>
+                        </tr>
+                      </thead>
+                      <tbody><!--space --></tbody>
+                    </table>
+                    <input type="hidden" const:name="sieveFilters" const:id="sieveFilters"
+                           var:value="sieveFiltersValue"/>
+                  </div><!-- #filtersListWrapper -->
+                  <div class="bottomToolbar">
+                    <a const:id="filterAdd" class="bottomButton" href="#">
+                      <span><img rsrc:src="add-icon.png" label:title="Add" /></span></a>
+                    <a const:id="filterDelete" class="bottomButton" href="#">
+                      <span><img rsrc:src="remove-icon.png" label:title="Delete" /></span></a>
+                    <a const:id="filterMoveUp" class="bottomButton" href="#">
+                      <span><img rsrc:src="up-icon.png" label:title="Move Up" /></span></a>
+                    <a const:id="filterMoveDown" class="bottomButton" href="#">
+                      <span><img rsrc:src="down-icon.png" label:title="Move Down" /></span></a>
+                  </div><!-- .bottomToolbar -->
+                </div
+                ></var:if><!-- #mailFiltersView -->
+
+                <div id="mailLabelsView" class="tab">
+                  <div id="mailLabelsListWrapper" class="listWrapper">
+                    <table id="labelsList" cellspacing="0">
+                      <thead>
+                        <tr class="tableview">
+                          <th const:class="tbtv_headercell" const:id="labelTableHeader"
+                              ><var:string label:value="Label"/></th>
+                          <th const:class="tbtv_headercell" const:id="colorTableHeader"
+                              ><var:string label:value="Color"/></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <var:foreach list="mailLabelList" item="label"
+                        ><tr var:data-name="label.name" const:class="labelListRow">
+                          <td const:class="labelListCell"
+                              ><var:string var:value="label.label"/></td>
+                          <td const:class="labelListCell">
+                            <div const:class="colorBox"><var:string var:value="label.color"
+                            /></div>
+                          </td>
+                        </tr>
+                        </var:foreach>
+                      </tbody>
+                    </table>
+                  </div><!-- #mailLabelsListWrapper -->
+                  <div class="bottomToolbar">
+                    <a const:id="mailLabelAdd" class="bottomButton" href="#">
+                      <span><img rsrc:src="add-icon.png" label:title="Add" />
+                    </span></a>
+                    <a const:id="mailLabelDelete" class="bottomButton" href="#">
+                      <span><img rsrc:src="remove-icon.png" label:title="Delete" />
+                    </span></a>
+                  </div><!-- .bottomToolbar -->
+                  <input type="hidden" const:id="mailLabelsValue"
+                         const:name="mailLabelsValue" var:value="mailLabelsValue"/>
+                </div><!-- #mailLabelsView -->
+              </div><!-- .tabs -->
+            </div><!-- #mailOptionsTabs -->
+          </div><!-- #mailOptionsView -->
 
           <div id="mailAccountsView" class="tab">
             <input type="hidden" const:name="mailAccountsJSON" const:id="mailAccountsJSON"
@@ -492,12 +504,11 @@
                     const:id="forwardKeepCopy"
                     var:checked="forwardKeepCopy" />
                   <var:string label:value="Keep a copy" /></label><br/>
-
               </div>
             </div>
-          </var:if
-            ></var:if
-          ><var:if condition="shouldDisplayPasswordChange">
+          </var:if>
+        </var:if><!-- userHasMailAccess -->
+        <var:if condition="shouldDisplayPasswordChange">
           <div id="passwordView" class="tab">
             <p id="passwordFields"><label><var:string label:value="New password:"
                   /><input const:id="newPasswordField" class="textField"

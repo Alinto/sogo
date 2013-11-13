@@ -1,3 +1,13 @@
+2.1.1 (2013-MM-DD)
+------------------
+
+New features
+ - creation and modification of mail labels
+
+Enhancements
+
+Bug fixes
+
 2.1.0 (2013-11-07)
 ------------------
 
@@ -32,7 +42,7 @@ Bug fixes
  - fixed S/MIME verification issues with certain OpenSSL versions
  - worked around an issue with chunked encoding of CAS replies (#2408)
  - fixed OpenChange corruption issue regarding predecessors change list (#2405)
- - avoid unnecessary UTF-7 conversions (#2318) 
+ - avoid unnecessary UTF-7 conversions (#2318)
  - improved RTF parser to fix vCards (#2354)
  - fixed definition of the COMPLETED attribute of vTODO (#2240)
  - fixed DAV:resource-id property when sharing calendars (#2399)

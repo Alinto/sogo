@@ -17,9 +17,15 @@
   </script>
   <style type="text/css">
   <var:foreach list="availableLabels" item="currentLabel">
-    #label-menu LI.<var:string value="currentLabel.name"/>
+    #label-menu LI.<var:string value="currentLabel.name"/>,
+    TABLE.messageList TR[labels~=<var:string const:value='"' const:escapeHTML="NO"
+    /><var:string value="currentLabel.name"/><var:string const:value='"' const:escapeHTML="NO"/>] TD
     { color: <var:string value="currentLabel.color"/>; }
-  </var:foreach>  
+    TABLE.messageList TR[labels~=<var:string const:value='"' const:escapeHTML="NO"
+    /><var:string value="currentLabel.name"/><var:string const:value='"' const:escapeHTML="NO"/>]._selected TD
+    { color: #fff;
+      background-color: <var:string value="currentLabel.color"/> !important; }
+  </var:foreach>
   <var:if condition="horizontalDragHandleStyle">
     DIV#verticalDragHandle, DIV#rightPanel
      { left: <var:string value="horizontalDragHandleStyle" />; }
