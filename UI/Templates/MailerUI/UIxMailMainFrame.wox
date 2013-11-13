@@ -17,7 +17,7 @@
   </script>
   <style type="text/css">
   <var:foreach list="availableLabels" item="currentLabel">
-    #label-menu LI.<var:string value="currentLabel.name"/>,
+    #label-menu LI.<var:string value="currentLabel.name.asCSSIdentifier"/>,
     TABLE.messageList TR[labels~=<var:string const:value='"' const:escapeHTML="NO"
     /><var:string value="currentLabel.name"/><var:string const:value='"' const:escapeHTML="NO"/>] TD
     { color: <var:string value="currentLabel.color"/>; }
@@ -181,7 +181,7 @@
       <li><var:string label:value="None" /></li>
       <li><!-- separator --></li>
       <var:foreach list="availableLabels" item="currentLabel">
-        <li var:class="currentLabel.name" var:data-name="currentLabel.name">  <var:string value="currentLabel.label"/></li>
+        <li var:class="currentLabel.name.asCSSIdentifier" var:data-name="currentLabel.name">  <var:string value="currentLabel.label"/></li>
       </var:foreach>
     </ul>
   </div>
