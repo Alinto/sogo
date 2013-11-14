@@ -1083,7 +1083,7 @@ function serializeMailLabels() {
         
         /* if name is null, that's because we've just added a new tag */
         if (!name) {
-            name = label.replace(/ /g,"_");
+            name = label.replace(/[ \(\)\/\{%\*<>\\\"]/g, "_");
         }
 
         values.push("\"" + name + "\": [\"" + label + "\", \"" + color + "\"]");
