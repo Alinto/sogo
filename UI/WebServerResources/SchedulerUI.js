@@ -699,7 +699,6 @@ function onViewEventCallback(http) {
             var cellDimensions = cell.getDimensions();
             var div = $("eventDialog");
             var divDimensions = div.getDimensions();
-            var viewPosition = $("calendarView").cumulativeOffset();
             var view;
             var left;
             var top = cellPosition[1] - 5;
