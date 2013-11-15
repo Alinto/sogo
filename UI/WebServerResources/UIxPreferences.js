@@ -148,6 +148,12 @@ function _setupEvents() {
     }
 }
 
+function onBodyClickHandler(event) {
+    var target = getTarget(event);
+    if (!target.hasClassName('colorBox'))
+        $("colorPickerDialog").hide();
+}
+
 function onChoiceChanged(event) {
     var hasChanged = $("hasChanged");
     hasChanged.value = "1";
@@ -189,6 +195,9 @@ function initPreferences() {
     if (typeof (initAdditionalPreferences) != "undefined")
         initAdditionalPreferences();
 
+    $('colorPickerDialog').on('click', 'span', onColorPickerChoice);
+    $(document.body).on("click", onBodyClickHandler);
+
     // Calender categories
     var wrapper = $("calendarCategoriesListWrapper");
     if (wrapper) {
@@ -201,6 +210,7 @@ function initPreferences() {
         resetCalendarTableActions();
         $("calendarCategoryAdd").observe("click", onCalendarCategoryAdd);
         $("calendarCategoryDelete").observe("click", onCalendarCategoryDelete);
+        wrapper.observe("scroll", onBodyClickHandler);
     }
 
     // Mail labels/tags
@@ -882,48 +892,43 @@ function compactMailAccounts() {
 }
 
 /* common function between calendar categories and mail labels */
-function onColorEdit(e, type) {
-    var r;
+function onColorEdit(e, target) {
+    var view = $(target);
 
-    if (type == "calendar")
-        r = $$("#calendarCategoriesListWrapper div.colorEditing");
-    else
-        r = $$("#mailLabelsListWrapper div.colorEditing");
-
-    for (var i=0; i<r.length; i++)
-        r[i].removeClassName("colorEditing");
-
+    view.select('div.colorEditing').each(function(box) {
+        box.removeClassName('colorEditing');
+    });
     this.addClassName("colorEditing");
-    var cPicker = window.open(ApplicationBaseURL + "../" + UserLogin
-                              + "/Calendar/colorPicker", "colorPicker",
-                              "width=250,height=200,resizable=0,scrollbars=0"
-                              + "toolbar=0,location=0,directories=0,status=0,"
-                              + "menubar=0,copyhistory=0", "test"
-                             );
-    cPicker.focus();
-    cPicker.type = type;
 
-    preventDefault(e);
+    var cellPosition = this.cumulativeOffset();
+    var cellDimensions = this.getDimensions();
+    var div = $('colorPickerDialog');
+    var divDimensions = div.getDimensions();
+    var left = cellPosition[0] - divDimensions["width"];
+    var top = cellPosition[1] - 165 - view.scrollTop;
+    div.setStyle({ left: left + "px", top: top + "px" });
+    div.writeAttribute('data-target', target);
+    div.show();
 }
 
-function onColorPickerChoice(newColor, type) {
-    var div;
+function onColorPickerChoice(event) {
+    var span = getTarget(event);
+    var dialog = span.up('.dialog');
+    var target = dialog.readAttribute('data-target');
+    var newColor = "#" + span.className.substr(4);
 
-    if (type == "calendar")
-        div = $$("#calendarCategoriesListWrapper div.colorEditing").first();
-    else
-        div = $$("#mailLabelsListWrapper div.colorEditing").first();
+    var wrapper = $(target);
+    var div = wrapper.select("div.colorEditing").first();
 
-    //  div.removeClassName("colorEditing");
-    div.showColor = newColor;
+    div.writeAttribute('data-color', newColor);
     div.style.background = newColor;
     if (parseInt($("hasChanged").value) == 0) {
         var hasChanged = $("hasChanged");
         hasChanged.value = "1";
     }
-}
-/* /common function between calendar categories and mail labels */
 
+    dialog.hide();
+}
 
 /* calendar categories */
 function resetCalendarTableActions() {
@@ -940,23 +945,21 @@ function resetCalendarTableActions() {
 
 function onCalendarColorEdit(e) {
     var onCCE = onColorEdit.bind(this);
-    onCCE(e, "calendar");
+    onCCE(e, "calendarCategoriesListWrapper");
 }
 
 function onCalendarCategoryAdd(e) {
     var row = new Element("tr");
     var nametd = new Element("td").update("");
     var colortd = new Element("td");
-    var colordiv = new Element("div", {"class": "colorBox"});
+    var colordiv = new Element("div", {"class": "colorBox", dataColor: "#F0F0F0"});
 
     row.identify();
     row.addClassName("categoryListRow");
 
     nametd.addClassName("categoryListCell");
     colortd.addClassName("categoryListCell");
-    colordiv.innerHTML = "&nbsp;";
-    colordiv.showColor = "#F0F0F0";
-    colordiv.style.background = colordiv.showColor;
+    colordiv.setStyle({backgroundColor: "#F0F0F0"});
 
     colortd.appendChild(colordiv);
     row.appendChild(nametd);
@@ -985,7 +988,7 @@ function serializeCalendarCategories() {
     for (var i = 0; i < r.length; i++) {
         var tds = r[i].childElements();
         var name  = $(tds.first()).innerHTML;
-        var color = $(tds.last().childElements().first()).showColor;
+        var color = $(tds.last().childElements().first()).readAttribute('data-color');
         values.push("\"" + name + "\": \"" + color + "\"");
     }
 
@@ -996,11 +999,9 @@ function resetCalendarCategoriesColors(e) {
     var divs = $$("#calendarCategoriesListWrapper DIV.colorBox");
     for (var i = 0; i < divs.length; i++) {
         var d = divs[i];
-        var color = d.innerHTML;
-        d.showColor = color;
+        var color = d.readAttribute("data-color");
         if (color != "undefined")
             d.setStyle({ backgroundColor: color });
-        d.update("&nbsp;");
     }
 }
 
@@ -1021,23 +1022,21 @@ function resetMailTableActions() {
 
 function onMailColorEdit(e) {
     var onMCE = onColorEdit.bind(this);
-    onMCE(e, "mail");
+    onMCE(e, "mailLabelsListWrapper");
 }
 
 function onMailLabelAdd(e) {
     var row = new Element("tr");
     var nametd = new Element("td").update("");
     var colortd = new Element("td");
-    var colordiv = new Element("div", {"class": "colorBox"});
+    var colordiv = new Element("div", {"class": "colorBox", dataColor: "#F0F0F0"});
 
     row.identify();
     row.addClassName("labelListRow");
 
     nametd.addClassName("labelListCell");
     colortd.addClassName("labelListCell");
-    colordiv.innerHTML = "&nbsp;";
-    colordiv.showColor = "#F0F0F0";
-    colordiv.style.background = colordiv.showColor;
+    colordiv.setStyle({backgroundColor: "#F0F0F0"});
 
     colortd.appendChild(colordiv);
     row.appendChild(nametd);
@@ -1063,11 +1062,9 @@ function resetMailLabelsColors(e) {
     var divs = $$("#mailLabelsListWrapper DIV.colorBox");
     for (var i = 0; i < divs.length; i++) {
         var d = divs[i];
-        var color = d.innerHTML;
-        d.showColor = color;
+        var color = d.readAttribute('data-color');
         if (color != "undefined")
             d.setStyle({ backgroundColor: color });
-        d.update("&nbsp;");
     }
 }
 
@@ -1079,7 +1076,7 @@ function serializeMailLabels() {
         var tds = r[i].childElements();
         var name = r[i].readAttribute("data-name"); 
         var label  = $(tds.first()).innerHTML;
-        var color = $(tds.last().childElements().first()).showColor;
+        var color = $(tds.last().childElements().first()).readAttribute('data-color');
         
         /* if name is null, that's because we've just added a new tag */
         if (!name) {
