@@ -8,6 +8,8 @@ Enhancements
  - the color picker is no longer a popup window
 
 Bug fixes
+ - fixed utf8 character handling in special folder names
+   Special folder names can now be set as UTF8 or modified UTF7 in sogo.conf
 
 2.1.0 (2013-11-07)
 ------------------
