@@ -24,6 +24,8 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
+#import <NGImap4/NSString+Imap4.h>
+
 #import "NSString+Utilities.h"
 #import "SOGoDomainDefaults.h"
 #import "SOGoSystemDefaults.h"
@@ -418,7 +420,8 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 - (NSString *) draftsFolderName
 {
-  return [self stringForKey: @"SOGoDraftsFolderName"];
+  return [[self stringForKey: @"SOGoDraftsFolderName"]
+             stringByEncodingImap4FolderName];
 }
 
 - (void) setSentFolderName: (NSString *) newValue
@@ -428,7 +431,8 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 - (NSString *) sentFolderName
 {
-  return [self stringForKey: @"SOGoSentFolderName"];
+  return [[self stringForKey: @"SOGoSentFolderName"]
+             stringByEncodingImap4FolderName];
 }
 
 - (void) setTrashFolderName: (NSString *) newValue
@@ -438,7 +442,8 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 
 - (NSString *) trashFolderName
 {
-  return [self stringForKey: @"SOGoTrashFolderName"];
+  return [[self stringForKey: @"SOGoTrashFolderName"]
+             stringByEncodingImap4FolderName];
 }
 
 - (void) setFirstDayOfWeek: (int) newValue
