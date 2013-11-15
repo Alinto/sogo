@@ -141,7 +141,7 @@
       pool = [[NSAutoreleasePool alloc] init];
 
       currentDecodedFolder = [currentFolder stringByDecodingImap4FolderName];
-      currentFolderType = [self _folderType: currentDecodedFolder];
+      currentFolderType = [self _folderType: currentFolder];
 
       // We translate the "Other Users" and "Shared Folders" namespaces.
       // While we're at it, we also translate the user's mailbox names
