@@ -560,6 +560,7 @@
 {
   NSObject <DOMElement> *element;
   NSString *url, *baseURL, *cname;
+  NSDictionary *object;
   NSString **propertiesArray;
   NSMutableString *buffer;
   unsigned int count, max, propertiesCount;
@@ -580,8 +581,9 @@
       element = [refs objectAtIndex: count];
       url = [[[element firstChild] nodeValue] stringByUnescapingURL];
       cname = [self _deduceObjectNameFromURL: url fromBaseURL: baseURL];
-      if (cname)
-        [self appendObject: [source lookupContactEntry: cname]
+      object = [source lookupContactEntry: cname];
+      if (cname && object)
+        [self appendObject: object
                 properties: propertiesArray
                      count: propertiesCount
                withBaseURL: baseURL
