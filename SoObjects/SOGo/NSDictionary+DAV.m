@@ -1,8 +1,6 @@
 /* NSDictionary+DAV.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2009 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2008-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,6 +57,7 @@
 - (NSString *)
  asWebDavStringWithNamespaces: (NSMutableDictionary *) namespaces
 {
+  NSDictionary *attributes;
   NSMutableString *webdavString;
   NSString *nsTag, *ns, *subString, *element;
   BOOL firstLevel;
@@ -88,6 +87,22 @@
       [webdavString appendString: [self _namespaceDecl: namespaces]];
       [namespaces release];
     }
+
+  attributes = [self objectForKey: @"attributes"];
+
+  if (attributes)
+    {
+      NSArray *keys;
+      int i;
+
+      keys = [attributes allKeys];
+
+      for (i = 0; i < [keys count]; i++)
+        {
+          [webdavString appendFormat: @" %@=\"%@\"", [keys objectAtIndex: i], [attributes objectForKey: [keys objectAtIndex: i]]];
+        }
+    }
+
   if (subString)
     [webdavString appendFormat: @">%@</%@>", subString, element];
   else

@@ -68,10 +68,8 @@ SOGoTabsController.prototype = {
     attachToTabsContainer: function STC_attachToTabsContainer(container) {
         this.container = container;
         container.controller = this;
-        this.onTabMouseDownBound
-        = this.onTabMouseDown.bindAsEventListener(this);
-        this.onTabClickBound
-        = this.onTabClick.bindAsEventListener(this);
+        this.onTabMouseDownBound = this.onTabMouseDown.bindAsEventListener(this);
+        this.onTabClickBound = this.onTabClick.bindAsEventListener(this);
 
         var list = container.childNodesWithTag("ul");
         if (list.length > 0) {
@@ -81,8 +79,7 @@ SOGoTabsController.prototype = {
                 this.firstTab = $(nodes[0]);
                 for (var i = 0; i < nodes.length; i++) {
                     var currentNode = $(nodes[i]);
-                    currentNode.observe("mousedown",
-                                        this.onTabMouseDownBound, false);
+                    currentNode.observe("mousedown", this.onTabMouseDownBound, false);
                     currentNode.observe("click", this.onTabClickBound, false);
                     if (currentNode.hasClassName("active"))
                         this.activeTab = currentNode;
@@ -146,6 +143,13 @@ SOGoTabsController.prototype = {
             this.activeTab.addClassName("active"); // current LI
             content.addClassName("active");
             this.activeTab.fire("tabs:click", content.id);
+
+            content.select('.tabsContainer').each(function(c) {
+                // When the tab contains an inner tabs container,
+                // show or hide the tabs navigation arrows of this
+                // inner container
+                c.controller.recomputeMinOffset();
+            });
 
             // Prototype alternative
         

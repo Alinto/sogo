@@ -1,8 +1,6 @@
 /* SOGoUserDefaults.h - this file is part of SOGo
  *
- * Copyright (C) 2011-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2011-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -165,6 +163,9 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 
 - (void) setForwardOptions: (NSDictionary *) newValue;
 - (NSDictionary *) forwardOptions;
+
+- (void) setMailLabelsColors: (NSDictionary *) newValues;
+- (NSDictionary *) mailLabelsColors;
 
 /* calendar */
 - (void) setCalendarCategories: (NSArray *) newValues;

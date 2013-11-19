@@ -1,9 +1,6 @@
 /* UIxPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +28,8 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 
+#import <NGImap4/NSString+Imap4.h>
+
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalTimeZone.h>
@@ -47,6 +46,7 @@
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
+#import <Mailer/SOGoMailLabel.h>
 
 #import "UIxPreferences.h"
 
@@ -77,6 +77,9 @@
       defaultCategoryColor = nil;
       category = nil;
 
+      label = nil;
+      mailLabels = nil;
+      
       ASSIGN (daysOfWeek, [locale objectForKey: NSWeekDayNameArray]);
 
       dd = [user domainDefaults];
@@ -120,6 +123,8 @@
   [calendarCategoriesColors release];
   [defaultCategoryColor release];
   [category release];
+  [label release];
+  [mailLabels release];
   [contactsCategories release];
   [forwardOptions release];
   [daysOfWeek release];
@@ -1174,6 +1179,67 @@
   return [calendarCategories
            sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
 }
+
+- (SOGoMailLabel *) label
+{
+  return label;
+}
+
+- (void) setLabel: (SOGoMailLabel *) newLabel
+{
+  ASSIGN(label, newLabel);
+}
+
+- (NSArray *) mailLabelList
+{
+  if (!mailLabels)
+    {
+      NSDictionary *v;
+     
+      v = [[[context activeUser] userDefaults] mailLabelsColors];      
+      ASSIGN(mailLabels, [SOGoMailLabel labelsFromDefaults: v  component: self]);
+    }
+  
+  return mailLabels;
+}
+
+- (NSString *) mailLabelsValue
+{
+  return @"";
+}
+
+- (void) setMailLabelsValue: (NSString *) value
+{
+  NSMutableDictionary *sanitizedLabels;
+  NSDictionary *newLabels;
+  NSArray *allKeys;
+  NSString *name;
+  int i;
+
+  newLabels = [value objectFromJSONString];
+  if (newLabels && [newLabels isKindOfClass: [NSDictionary class]])
+    {
+      // We encode correctly our keys
+      sanitizedLabels = [NSMutableDictionary dictionary];
+      allKeys = [newLabels allKeys];
+
+      for (i = 0; i < [allKeys count]; i++)
+        {
+          name = [allKeys objectAtIndex: i];
+
+          if (![name is7bitSafe])
+            name = [name stringByEncodingImap4FolderName];
+
+          name = [name lowercaseString];
+
+          [sanitizedLabels setObject: [newLabels objectForKey: [allKeys objectAtIndex: i]]
+                              forKey: name];
+        }
+
+      [userDefaults setMailLabelsColors: sanitizedLabels];
+    }
+}
+
 
 - (void) setCategory: (NSString *) newCategory
 {

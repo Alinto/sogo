@@ -15,13 +15,12 @@ SchedulerUI_OBJC_FILES =		\
 					\
 	UIxCalMainView.m		\
 	UIxCalendarProperties.m		\
-	UIxColorPicker.m		\
 					\
 	UIxCalFilterPanel.m		\
 	UIxCalDayTable.m		\
 	UIxCalDateSelector.m		\
 	UIxCalUserRightsEditor.m	\
-	UIxCalFolderActions.m \
+	UIxCalFolderActions.m		\
 					\
 	UIxCalView.m			\
 	UIxCalDayView.m			\

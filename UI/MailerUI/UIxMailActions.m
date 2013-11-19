@@ -1,8 +1,6 @@
 /* UIxMailActions.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +19,7 @@
  */
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/WOContext.h>
@@ -32,6 +31,8 @@
 #import <SoObjects/Mailer/SOGoDraftsFolder.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/SOGo/SOGoUserDefaults.h>
+
 
 #import "../Common/WODirectAction+SOGo.h"
 
@@ -194,16 +195,18 @@
   return response;
 }
 
-- (WOResponse *) _addLabel: (unsigned int) number
+- (WOResponse *) addLabelAction
 {
   WOResponse *response;
   SOGoMailObject *co;
   NSException *error;
   NSArray *flags;
+  NSString *flag;
 
+  flag = [[[self->context request] formValueForKey: @"flag"] fromCSSIdentifier];
   co = [self clientObject];
-  flags = [NSArray arrayWithObject:
-		     [NSString stringWithFormat: @"$Label%u", number]];
+  flags = [NSArray arrayWithObject: flag];
+
   error = [co addFlags: flags];
   if (error)
     response = (WOResponse *) error;
@@ -213,16 +216,18 @@
   return response;
 }
 
-- (WOResponse *) _removeLabel: (unsigned int) number
+- (WOResponse *) removeLabelAction
 {
   WOResponse *response;
   SOGoMailObject *co;
   NSException *error;
   NSArray *flags;
+  NSString *flag;
 
+  flag = [[[self->context request] formValueForKey: @"flag"] fromCSSIdentifier];
   co = [self clientObject];
-  flags = [NSArray arrayWithObject:
-		     [NSString stringWithFormat: @"$Label%u", number]];
+  flags = [NSArray arrayWithObject: flag];
+
   error = [co removeFlags: flags];
   if (error)
     response = (WOResponse *) error;
@@ -232,66 +237,25 @@
   return response;
 }
 
-- (WOResponse *) addLabel1Action
-{
-  return [self _addLabel: 1];
-}
-
-- (WOResponse *) addLabel2Action
-{
-  return [self _addLabel: 2];
-}
-
-- (WOResponse *) addLabel3Action
-{
-  return [self _addLabel: 3];
-}
-
-- (WOResponse *) addLabel4Action
-{
-  return [self _addLabel: 4];
-}
-
-- (WOResponse *) addLabel5Action
-{
-  return [self _addLabel: 5];
-}
-
-- (WOResponse *) removeLabel1Action
-{
-  return [self _removeLabel: 1];
-}
-
-- (WOResponse *) removeLabel2Action
-{
-  return [self _removeLabel: 2];
-}
-
-- (WOResponse *) removeLabel3Action
-{
-  return [self _removeLabel: 3];
-}
-
-- (WOResponse *) removeLabel4Action
-{
-  return [self _removeLabel: 4];
-}
-
-- (WOResponse *) removeLabel5Action
-{
-  return [self _removeLabel: 5];
-}
-
 - (WOResponse *) removeAllLabelsAction
 {
+  NSMutableArray *flags;
   WOResponse *response;
   SOGoMailObject *co;
   NSException *error;
-  NSArray *flags;
+  NSDictionary *v;
+
 
   co = [self clientObject];
-  flags = [NSArray arrayWithObjects: @"$Label1", @"$Label2", @"$Label3",
-		   @"$Label4", @"$Label5", nil];
+
+  v = [[[context activeUser] userDefaults] mailLabelsColors];
+
+  // We always unconditionally remove the Mozilla tags
+  flags = [NSMutableArray arrayWithObjects: @"$Label1", @"$Label2", @"$Label3",
+                          @"$Label4", @"$Label5", nil];
+
+  [flags addObjectsFromArray: [v allKeys]];
+
   error = [co removeFlags: flags];
   if (error)
     response = (WOResponse *) error;

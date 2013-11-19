@@ -16,6 +16,82 @@
   <script type="text/javascript">
     var localeCode = '<var:string value="localeCode"/>';
   </script>
+
+  <div id="colorPickerDialog" style="display: none;" class="dialog right bottom">
+    <div>
+      <span class="blc-FFFFFF"><!-- --></span>
+      <span class="blc-330033"><!-- --></span>
+      <span class="blc-C0C0C0"><!-- --></span>
+      <span class="blc-999999"><!-- --></span>
+      <span class="blc-666666"><!-- --></span>
+      <span class="blc-333333"><!-- --></span>
+      <span class="blc-000000"><!-- --></span>
+      <span class="blc-FFCCCC"><!-- --></span>
+      <span class="blc-FF6666"><!-- --></span>
+      <span class="blc-FF0000"><!-- --></span>
+      <span class="blc-CC0000"><!-- --></span>
+      <span class="blc-990000"><!-- --></span>
+      <span class="blc-660000"><!-- --></span>
+      <span class="blc-330000"><!-- --></span>
+      <span class="blc-FFCC99"><!-- --></span>
+      <span class="blc-FF9966"><!-- --></span>
+      <span class="blc-FF9900"><!-- --></span>
+      <span class="blc-FF6600"><!-- --></span>
+      <span class="blc-CC6600"><!-- --></span>
+      <span class="blc-993300"><!-- --></span>
+      <span class="blc-663300"><!-- --></span>
+      <span class="blc-FFFF99"><!-- --></span>
+      <span class="blc-FFFF66"><!-- --></span>
+      <span class="blc-FFCC66"><!-- --></span>
+      <span class="blc-FFCC33"><!-- --></span>
+      <span class="blc-CC9933"><!-- --></span>
+      <span class="blc-996633"><!-- --></span>
+      <span class="blc-663333"><!-- --></span>
+      <span class="blc-FFFFCC"><!-- --></span>
+      <span class="blc-FFFF33"><!-- --></span>
+      <span class="blc-FFFF00"><!-- --></span>
+      <span class="blc-FFCC00"><!-- --></span>
+      <span class="blc-999900"><!-- --></span>
+      <span class="blc-666600"><!-- --></span>
+      <span class="blc-333300"><!-- --></span>
+      <span class="blc-CCCCCC"><!-- --></span>
+      <span class="blc-66FF99"><!-- --></span>
+      <span class="blc-33FF33"><!-- --></span>
+      <span class="blc-33CC00"><!-- --></span>
+      <span class="blc-009900"><!-- --></span>
+      <span class="blc-006600"><!-- --></span>
+      <span class="blc-003300"><!-- --></span>
+      <span class="blc-99FFFF"><!-- --></span>
+      <span class="blc-33FFFF"><!-- --></span>
+      <span class="blc-66CCCC"><!-- --></span>
+      <span class="blc-00CCCC"><!-- --></span>
+      <span class="blc-339999"><!-- --></span>
+      <span class="blc-336666"><!-- --></span>
+      <span class="blc-003333"><!-- --></span>
+      <span class="blc-CCFFFF"><!-- --></span>
+      <span class="blc-66FFFF"><!-- --></span>
+      <span class="blc-33CCFF"><!-- --></span>
+      <span class="blc-3366FF"><!-- --></span>
+      <span class="blc-3333FF"><!-- --></span>
+      <span class="blc-000099"><!-- --></span>
+      <span class="blc-000066"><!-- --></span>
+      <span class="blc-CCCCFF"><!-- --></span>
+      <span class="blc-9999FF"><!-- --></span>
+      <span class="blc-6666CC"><!-- --></span>
+      <span class="blc-6633FF"><!-- --></span>
+      <span class="blc-6600CC"><!-- --></span>
+      <span class="blc-333399"><!-- --></span>
+      <span class="blc-330099"><!-- --></span>
+      <span class="blc-FFCCFF"><!-- --></span>
+      <span class="blc-FF99FF"><!-- --></span>
+      <span class="blc-CC66CC"><!-- --></span>
+      <span class="blc-CC33CC"><!-- --></span>
+      <span class="blc-993399"><!-- --></span>
+      <span class="blc-663366"><!-- --></span>
+      <span class="blc-99FF99"><!-- --></span>
+    </div>
+  </div>
+
   <form id="mainForm" var:href="ownPath">
     <div class="tabsContainer" id="preferencesTabs">
       <ul>
@@ -147,8 +223,7 @@
                       ><td const:class="categoryListCell"
                         ><var:string var:value="category"/></td
                         ><td const:class="categoryListCell"
-                        ><div const:class="colorBox"><var:string var:value="categoryColor"
-                            /></div></td
+                        ><div const:class="colorBox" var:data-color="categoryColor"><entity name="nbsp"/></div></td
                         ></tr>
                   </var:foreach>
                 </tbody>
@@ -248,42 +323,88 @@
                     string="itemDisplayRemoteInlineImagesText"
                     selection="userDisplayRemoteInlineImages"/></dd>
             </dl>
-            <var:if condition="isSieveScriptsEnabled"
-              ><label><var:string label:value="Filters"/></label>
-              <script type="text/javascript">
-                var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO"/>;
-              </script>
-              <div id="filtersListWrapper" class="listWrapper"
-                ><table id="filtersList" cellspacing="0">
-                  <thead>
-                    <tr class="tableview"
-                      ><th const:class="tbtv_headercell" const:id="nameTableHeader"
-                        ><var:string label:value="Name" /></th
-                        ><th const:class="tbtv_headercell" const:id="activeTableHeader"
-                        ><var:string label:value="Active" /></th
-                        ></tr
-                      ></thead>
-                  <tbody><!--space --></tbody>
-                </table>
-                <input type="hidden" const:name="sieveFilters" const:id="sieveFilters"
-                  var:value="sieveFiltersValue"/>
-              </div>
-              <div class="bottomToolbar">
-                <a const:id="filterAdd" class="bottomButton" href="#">
-                  <span><img rsrc:src="add-icon.png" label:title="Add" />
-                  </span></a>
-                <a const:id="filterDelete" class="bottomButton" href="#">
-                  <span><img rsrc:src="remove-icon.png" label:title="Delete" />
-                  </span></a>
-                <a const:id="filterMoveUp" class="bottomButton" href="#">
-                  <span><img rsrc:src="up-icon.png" label:title="Move Up" />
-                  </span></a>
-                <a const:id="filterMoveDown" class="bottomButton" href="#">
-                  <span><img rsrc:src="down-icon.png" label:title="Move Down" />
-                  </span></a>
-              </div>
-            </var:if>
-          </div>
+
+            <div class="tabsContainer" id="mailOptionsTabs">
+              <ul>
+                <var:if condition="isSieveScriptsEnabled"
+                ><li target="mailFiltersView"><span><var:string
+                      label:value="Filters"/></span></li
+                ></var:if>
+                <li target="mailLabelsView"><span><var:string
+                      label:value="Labels"/></span></li>
+              </ul>
+              <div class="tabs">
+                <var:if condition="isSieveScriptsEnabled"
+                ><div id="mailFiltersView" class="tab">
+                  <script type="text/javascript">
+                    var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO"/>;
+                  </script>
+                  <div id="filtersListWrapper" class="listWrapper">
+                    <table id="filtersList" cellspacing="0">
+                      <thead>
+                        <tr class="tableview">
+                          <th const:class="tbtv_headercell" const:id="nameTableHeader"
+                              ><var:string label:value="Name" /></th>
+                          <th const:class="tbtv_headercell" const:id="activeTableHeader"
+                              ><var:string label:value="Active" /></th>
+                        </tr>
+                      </thead>
+                      <tbody><!--space --></tbody>
+                    </table>
+                    <input type="hidden" const:name="sieveFilters" const:id="sieveFilters"
+                           var:value="sieveFiltersValue"/>
+                  </div><!-- #filtersListWrapper -->
+                  <div class="bottomToolbar">
+                    <a const:id="filterAdd" class="bottomButton" href="#">
+                      <span><img rsrc:src="add-icon.png" label:title="Add" /></span></a>
+                    <a const:id="filterDelete" class="bottomButton" href="#">
+                      <span><img rsrc:src="remove-icon.png" label:title="Delete" /></span></a>
+                    <a const:id="filterMoveUp" class="bottomButton" href="#">
+                      <span><img rsrc:src="up-icon.png" label:title="Move Up" /></span></a>
+                    <a const:id="filterMoveDown" class="bottomButton" href="#">
+                      <span><img rsrc:src="down-icon.png" label:title="Move Down" /></span></a>
+                  </div><!-- .bottomToolbar -->
+                </div
+                ></var:if><!-- #mailFiltersView -->
+
+                <div id="mailLabelsView" class="tab">
+                  <div id="mailLabelsListWrapper" class="listWrapper">
+                    <table id="labelsList" cellspacing="0">
+                      <thead>
+                        <tr class="tableview">
+                          <th const:class="tbtv_headercell" const:id="labelTableHeader"
+                              ><var:string label:value="Label"/></th>
+                          <th const:class="tbtv_headercell" const:id="colorTableHeader"
+                              ><var:string label:value="Color"/></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <var:foreach list="mailLabelList" item="label"
+                        ><tr var:data-name="label.name" const:class="labelListRow">
+                          <td const:class="labelListCell"
+                              ><var:string var:value="label.label"/></td>
+                          <td const:class="labelListCell">
+                            <div const:class="colorBox" var:data-color="label.color"><entity name="nbsp"/></div>
+                          </td>
+                        </tr>
+                        </var:foreach>
+                      </tbody>
+                    </table>
+                  </div><!-- #mailLabelsListWrapper -->
+                  <div class="bottomToolbar">
+                    <a const:id="mailLabelAdd" class="bottomButton" href="#">
+                      <span><img rsrc:src="add-icon.png" label:title="Add" />
+                    </span></a>
+                    <a const:id="mailLabelDelete" class="bottomButton" href="#">
+                      <span><img rsrc:src="remove-icon.png" label:title="Delete" />
+                    </span></a>
+                  </div><!-- .bottomToolbar -->
+                  <input type="hidden" const:id="mailLabelsValue"
+                         const:name="mailLabelsValue" var:value="mailLabelsValue"/>
+                </div><!-- #mailLabelsView -->
+              </div><!-- .tabs -->
+            </div><!-- #mailOptionsTabs -->
+          </div><!-- #mailOptionsView -->
 
           <div id="mailAccountsView" class="tab">
             <input type="hidden" const:name="mailAccountsJSON" const:id="mailAccountsJSON"
@@ -457,12 +578,11 @@
                     const:id="forwardKeepCopy"
                     var:checked="forwardKeepCopy" />
                   <var:string label:value="Keep a copy" /></label><br/>
-
               </div>
             </div>
-          </var:if
-            ></var:if
-          ><var:if condition="shouldDisplayPasswordChange">
+          </var:if>
+        </var:if><!-- userHasMailAccess -->
+        <var:if condition="shouldDisplayPasswordChange">
           <div id="passwordView" class="tab">
             <p id="passwordFields"><label><var:string label:value="New password:"
                   /><input const:id="newPasswordField" class="textField"
