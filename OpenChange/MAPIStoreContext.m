@@ -534,7 +534,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
     {
       //[self warnWithFormat: @"no id exist yet for '%@', requesting one...",
       //      childURL];
-      openchangedb_get_new_folderID (connInfo->oc_ctx, &mappingId);
+      mapistore_indexing_get_new_folderID (connInfo->mstore_ctx, &mappingId);
       [mapping registerURL: childURL withID: mappingId];
       contextId = 0;
 
@@ -597,8 +597,8 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   memCtx = talloc_zero(NULL, TALLOC_CTX);
   newFMIDs = [NSMutableArray arrayWithCapacity: max];
   
-  if (openchangedb_get_new_folderIDs (connInfo->oc_ctx,
-                                      memCtx, max, &numbers)
+  if (mapistore_indexing_get_new_folderIDs (connInfo->mstore_ctx,
+                                            memCtx, max, &numbers)
       != MAPI_E_SUCCESS || numbers->cValues != max)
     abort ();
   for (count = 0; count < max; count++)
