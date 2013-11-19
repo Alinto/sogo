@@ -10,6 +10,7 @@ Enhancements
 Bug fixes
  - fixed utf8 character handling in special folder names
    Special folder names can now be set as UTF8 or modified UTF7 in sogo.conf
+ - fixed reply-to header not being set for auxiliary IMAP accounts
 
 2.1.0 (2013-11-07)
 ------------------
