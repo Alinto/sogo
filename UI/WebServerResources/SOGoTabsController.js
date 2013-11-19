@@ -144,6 +144,13 @@ SOGoTabsController.prototype = {
             content.addClassName("active");
             this.activeTab.fire("tabs:click", content.id);
 
+            content.select('.tabsContainer').each(function(c) {
+                // When the tab contains an inner tabs container,
+                // show or hide the tabs navigation arrows of this
+                // inner container
+                c.controller.recomputeMinOffset();
+            });
+
             // Prototype alternative
         
             //oldContent.removeClassName("active");

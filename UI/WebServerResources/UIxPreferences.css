@@ -49,6 +49,9 @@ DIV.listWrapper
   border-left: 1px solid #9b9b9b;
   background: #ccddec;}
 
+.listWrapper TABLE TD
+{ height: 22px; }
+
 #calendarCategoriesListWrapper
 { top: 210px;
   bottom: 30px;
