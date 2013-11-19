@@ -619,11 +619,40 @@ static NSString    *userAgent      = nil;
     TODO: what about sender (RFC 822 3.6.2)
   */
   NSMutableArray *to, *addrs, *allRecipients;
-  NSArray *envelopeAddresses, *userEmails;
+  NSArray *envelopeAddresses;
 
   allRecipients = [NSMutableArray array];
-  userEmails = [[context activeUser] allEmails];
-  [allRecipients addObjectsFromArray: userEmails];
+
+  //
+  // When we do a Reply-To or a Reply-To-All, we strip our own addresses
+  // from the list of recipients so we don't reply to ourself! We check
+  // which addresses we should use - that is the ones for the current
+  // user if we're dealing with the default "SOGo mail account" or
+  // the ones specified in the auxiliary IMAP accounts
+  //
+  if ([[[self->container mailAccountFolder] nameInContainer] intValue] == 0)
+    {
+      NSArray *userEmails;
+
+      userEmails = [[context activeUser] allEmails];
+      [allRecipients addObjectsFromArray: userEmails];
+    }
+  else
+    {
+      NSArray *identities;
+      NSString *email;
+      int i;
+
+      identities = [[[self container] mailAccountFolder] identities];
+      
+      for (i = 0; i < [identities count]; i++)
+        {
+          email = [[identities objectAtIndex: i] objectForKey: @"email"];
+          
+          if (email)
+            [allRecipients addObject: email];
+        }
+    }
 
   to = [NSMutableArray arrayWithCapacity: 2];
 
@@ -634,20 +663,19 @@ static NSString    *userAgent      = nil;
   else
     [addrs setArray: [_envelope from]];
 
-  [self _purgeRecipients: allRecipients
-	fromAddresses: addrs];
-  [self _addEMailsOfAddresses: addrs toArray: to];
-  [self _addRecipients: addrs toArray: allRecipients];
-  [_info setObject: to forKey: @"to"];
+  [self _purgeRecipients: allRecipients  fromAddresses: addrs];
+  [self _addEMailsOfAddresses: addrs  toArray: to];
+  [self _addRecipients: addrs  toArray: allRecipients];
+  [_info setObject: to  forKey: @"to"];
 
   /* If "to" is empty, we add at least ourself as a recipient!
      This is for emails in the "Sent" folder that we reply to... */
   if (![to count])
     {
       if ([[_envelope replyTo] count])
-	[self _addEMailsOfAddresses: [_envelope replyTo] toArray: to];
+	[self _addEMailsOfAddresses: [_envelope replyTo]  toArray: to];
       else
-	[self _addEMailsOfAddresses: [_envelope from] toArray: to];
+	[self _addEMailsOfAddresses: [_envelope from]  toArray: to];
     }
 
   /* If we have no To but we have Cc recipients, let's move the Cc
@@ -661,7 +689,7 @@ static NSString    *userAgent      = nil;
       [_info removeObjectForKey: @"cc"];
     }
 
-  /* CC processing if we reply-to-all: add all 'to' and 'cc'  */
+  /* CC processing if we reply-to-all: - we add all 'to' and 'cc' fields */
   if (_replyToAll)
     {
       to = [NSMutableArray new];
