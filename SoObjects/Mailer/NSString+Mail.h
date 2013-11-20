@@ -21,12 +21,16 @@
 #ifndef NSSTRING_MAIL_H
 #define NSSTRING_MAIL_H
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
 @interface NSString (SOGoExtension)
 
 - (NSString *) htmlToText;
+- (NSString *) htmlByExtractingImages: (NSMutableArray *) theImages;
 - (NSString *) stringByConvertingCRLNToHTML;
+- (int) indexOf: (unichar) _c
+      fromIndex: (int) start;
 - (int) indexOf: (unichar) _c;
 - (NSString *) decodedHeader;
 

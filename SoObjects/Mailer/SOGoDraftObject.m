@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2012 Inverse inc.
+  Copyright (C) 2007-2013 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -395,11 +395,17 @@ static NSString    *userAgent      = nil;
   [self setSourceFolder: [paths componentsJoinedByString: @"/"]];
 }
 
+//
+//
+//
 - (NSString *) sourceFolder
 {
   return sourceFolder;
 }
 
+//
+//
+//
 - (NSException *) storeInfo
 {
   NSMutableDictionary *infos;
@@ -446,6 +452,9 @@ static NSString    *userAgent      = nil;
   return error;
 }
 
+//
+//
+//
 - (void) _loadInfosFromDictionary: (NSDictionary *) infoDict
 {
   id value;
@@ -478,11 +487,17 @@ static NSString    *userAgent      = nil;
     [self setInReplyTo: value];
 }
 
+//
+//
+//
 - (NSString *) relativeImap4Name
 {
   return [NSString stringWithFormat: @"%d", IMAP4ID];
 }
 
+//
+//
+//
 - (void) fetchInfo
 {
   NSString *p;
@@ -504,16 +519,25 @@ static NSString    *userAgent      = nil;
     [self debugWithFormat: @"Note: info object does not yet exist: %@", p];
 }
 
+//
+//
+//
 - (void) setIMAP4ID: (int) newIMAP4ID
 {
   IMAP4ID = newIMAP4ID;
 }
 
+//
+//
+//
 - (int) IMAP4ID
 {
   return IMAP4ID;
 }
 
+//
+//
+//
 - (NSException *) save
 {
   NGImap4Client *client;
@@ -552,6 +576,9 @@ static NSString    *userAgent      = nil;
   return error;
 }
 
+//
+//
+//
 - (void) _addEMailsOfAddresses: (NSArray *) _addrs
 		       toArray: (NSMutableArray *) _ma
 {
@@ -564,6 +591,9 @@ static NSString    *userAgent      = nil;
       [_ma addObject: [currentAddress email]];
 }
 
+//
+//
+//
 - (void) _addRecipients: (NSArray *) recipients
 	        toArray: (NSMutableArray *) array
 {
@@ -576,6 +606,9 @@ static NSString    *userAgent      = nil;
       [array addObject: [currentAddress baseEMail]];
 }
 
+//
+//
+//
 - (void) _purgeRecipients: (NSArray *) recipients
 	    fromAddresses: (NSMutableArray *) addresses
 {
@@ -602,6 +635,9 @@ static NSString    *userAgent      = nil;
       }
 }
 
+//
+//
+//
 - (void) _fillInReplyAddresses: (NSMutableDictionary *) _info
 		    replyToAll: (BOOL) _replyToAll
 		      envelope: (NGImap4Envelope *) _envelope
@@ -711,6 +747,9 @@ static NSString    *userAgent      = nil;
     }
 }
 
+//
+//
+//
 - (NSArray *) _attachmentBodiesFromPaths: (NSArray *) paths
 		       fromResponseFetch: (NSDictionary *) fetch;
 {
@@ -731,6 +770,9 @@ static NSString    *userAgent      = nil;
   return bodies;
 }
 
+//
+//
+//
 - (void) _fetchAttachments: (NSArray *) parts
                   fromMail: (SOGoMailObject *) sourceMail
 {
@@ -758,6 +800,9 @@ static NSString    *userAgent      = nil;
     }
 }
 
+//
+//
+//
 - (void) fetchMailForEditing: (SOGoMailObject *) sourceMail
 {
   NSString *subject, *msgid;
@@ -804,6 +849,9 @@ static NSString    *userAgent      = nil;
   [self storeInfo];
 }
 
+//
+//
+//
 - (void) fetchMailForReplying: (SOGoMailObject *) sourceMail
 			toAll: (BOOL) toAll
 {
@@ -1255,6 +1303,9 @@ static NSString    *userAgent      = nil;
   return bodyPart;
 }
 
+//
+//
+//
 - (NSArray *) bodyPartsForAllAttachments
 {
   /* returns nil on error */
@@ -1276,6 +1327,9 @@ static NSString    *userAgent      = nil;
   return bodyParts;
 }
 
+//
+//
+//
 - (NGMimeBodyPart *) mimeMultipartAlternative
 {
   NGMimeMultipartBody *textParts;
@@ -1301,6 +1355,9 @@ static NSString    *userAgent      = nil;
   return part;
 }
 
+//
+//
+//
 - (NGMimeMessage *) mimeMultiPartMessageWithHeaderMap: (NGMutableHashMap *) map
 					 andBodyParts: (NSArray *) _bodyParts
 {
@@ -1340,6 +1397,9 @@ static NSString    *userAgent      = nil;
   return message;
 }
 
+//
+//
+//
 - (void) _addHeaders: (NSDictionary *) _h
          toHeaderMap: (NGMutableHashMap *) _map
 {
@@ -1511,48 +1571,59 @@ static NSString    *userAgent      = nil;
   return map;
 }
 
+//
+//
+//
 - (NGMimeMessage *) mimeMessageWithHeaders: (NSDictionary *) _headers
 				 excluding: (NSArray *) _exclude
 {
-  NGMutableHashMap  *map;
-  NSArray           *bodyParts;
-  NGMimeMessage     *message;
+  NSMutableArray *bodyParts;
+  NGMimeMessage *message;
+  NGMutableHashMap *map;
+  NSString *newText;
 
   message = nil;
+
+  bodyParts = [NSMutableArray array];
+  newText = [text htmlByExtractingImages: bodyParts];
+
+  if ([bodyParts count])
+    [self setText: newText];
 
   map = [self mimeHeaderMapWithHeaders: _headers
 	      excluding: _exclude];
   if (map)
     {
       //[self debugWithFormat: @"MIME Envelope: %@", map];
-  
-      bodyParts = [self bodyPartsForAllAttachments];
-      if (bodyParts)
-	{
-	  //[self debugWithFormat: @"attachments: %@", bodyParts];
-  
-	  if ([bodyParts count] == 0)
-	    /* no attachments */
-	    message = [self mimeMessageForContentWithHeaderMap: map];
-	  else
-	    /* attachments, create multipart/mixed */
-	    message = [self mimeMultiPartMessageWithHeaderMap: map 
-			    andBodyParts: bodyParts];
-	  //[self debugWithFormat: @"message: %@", message];
-	}
+      
+      [bodyParts addObjectsFromArray: [self bodyPartsForAllAttachments]];
+      
+      //[self debugWithFormat: @"attachments: %@", bodyParts];
+      
+      if ([bodyParts count] == 0)
+        /* no attachments */
+        message = [self mimeMessageForContentWithHeaderMap: map];
       else
-	[self errorWithFormat:
-		@"could not create body parts for attachments!"];
+        /* attachments, create multipart/mixed */
+        message = [self mimeMultiPartMessageWithHeaderMap: map 
+                                             andBodyParts: bodyParts];
+      //[self debugWithFormat: @"message: %@", message];
     }
-
+  
   return message;
 }
 
+//
+//
+//
 - (NGMimeMessage *) mimeMessage
 {
   return [self mimeMessageWithHeaders: nil  excluding: nil];
 }
 
+//
+//
+//
 - (NSData *) mimeMessageAsData
 {
   NGMimeMessageGenerator *generator;
@@ -1565,6 +1636,9 @@ static NSString    *userAgent      = nil;
   return message;
 }
 
+//
+//
+//
 - (NSArray *) allRecipients
 {
   NSMutableArray *allRecipients;
@@ -1584,6 +1658,9 @@ static NSString    *userAgent      = nil;
   return allRecipients;
 }
 
+//
+//
+//
 - (NSArray *) allBareRecipients
 {
   NSMutableArray *bareRecipients;
@@ -1599,11 +1676,17 @@ static NSString    *userAgent      = nil;
   return bareRecipients;
 }
 
+//
+//
+//
 - (NSException *) sendMail
 {
   return [self sendMailAndCopyToSent: YES];
 }
 
+//
+//
+//
 - (NSException *) sendMailAndCopyToSent: (BOOL) copyToSent
 {
   NSMutableData *cleaned_message;

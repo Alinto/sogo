@@ -42,6 +42,9 @@
 
 #define maxFilenameLength 64
 
+//
+//
+//
 @implementation SOGoMailObject (SOGoDraftObjectExtensions)
 
 - (NSString *) subjectForReply
@@ -77,6 +80,9 @@
   return newSubject;
 }
 
+//
+//
+//
 - (NSString *) _convertRawContentForEditing: (NSString *) raw
                                     rawHtml: (BOOL) html
 {
@@ -96,6 +102,9 @@
   return rc;
 }
 
+//
+//
+//
 - (NSString *) _contentForEditingFromKeys: (NSArray *) keys
 {
   NSArray *types;
@@ -151,6 +160,9 @@
   return content;
 }
 
+//
+//
+//
 - (NSString *) contentForEditing
 {
   NSMutableArray *keys;
@@ -166,6 +178,9 @@
   return [self _contentForEditingFromKeys: keys];
 }
 
+//
+//
+//
 - (NSString *) contentForReply
 {
   NSString *pageName;
@@ -185,6 +200,9 @@
   return [[page generateResponse] contentAsString];
 }
 
+//
+//
+//
 - (NSString *) filenameForForward
 {
   NSString *subject;
@@ -218,6 +236,9 @@
   return newSubject;
 }
 
+//
+//
+//
 - (NSString *) subjectForForward
 {
   NSString *subject, *newSubject;
@@ -231,6 +252,9 @@
   return newSubject;
 }
 
+//
+//
+//
 - (NSString *) contentForInlineForward
 {
   SOGoUserDefaults *ud;
@@ -247,6 +271,9 @@
   return [[page generateResponse] contentAsString];
 }
 
+//
+//
+//
 - (void) _fetchFileAttachmentKey: (NSDictionary *) part
 		       intoArray: (NSMutableArray *) keys
 		        withPath: (NSString *) path
@@ -291,6 +318,9 @@
     }
 }
 
+//
+//
+//
 - (void) _fetchFileAttachmentKeysInPart: (NSDictionary *) part
                               intoArray: (NSMutableArray *) keys
 			       withPath: (NSString *) path
@@ -325,6 +355,9 @@
     }
 }
 
+//
+//
+//
 #warning we might need to handle parts with a "name" attribute
 - (NSArray *) fetchFileAttachmentKeys
 {

@@ -1,3 +1,16 @@
+2.1.2 (2013-11-XX)
+------------------
+
+New features
+ -
+
+Enhancements
+ - we now automatically convert <img src=data...> into file attachments
+   using CIDs. This prevents Outlook issues.
+
+Bug fixes
+ -
+
 2.1.1 (2013-11-19)
 ------------------
 
