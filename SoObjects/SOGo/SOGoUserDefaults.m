@@ -59,29 +59,6 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   up = [SOGoUserProfileKlass userProfileWithType: SOGoUserProfileTypeDefaults
                                           forUID: userId];
   [up fetchProfile];
-  // if ([_defaults values])
-  //   {
-      // BOOL b;
-      // b = NO;
-
-      // if (![[_defaults stringForKey: @"MessageCheck"] length])
-      //   {
-      //     [_defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
-      //     b = YES;
-      //   }
-      // if (![[_defaults stringForKey: @"TimeZone"] length])
-      //   {
-      //     [_defaults setObject: [serverTimeZone name] forKey: @"TimeZone"];
-      //     b = YES;
-      //   }
-      
-      // if (b)
-      //   [_defaults synchronize];
-      
-
-      // See explanation in -language
-      // [self invalidateLanguage];
-    // }
 
   parent = [SOGoDomainDefaults defaultsForDomain: domainId];
   if (!parent)
@@ -706,34 +683,14 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringForKey: @"SOGoCalendarTasksDefaultClassification"];
 }
 
-- (void) setReminderEnabled: (BOOL) newValue
+- (void) setCalendarDefaultReminder: (NSString *) newValue
 {
-  [self setBool: newValue forKey: @"SOGoReminderEnabled"];
+  [self setObject: newValue forKey: @"SOGoCalendarDefaultReminder"];
 }
 
-- (BOOL) reminderEnabled
+- (NSString *) calendarDefaultReminder
 {
-  return [self boolForKey: @"SOGoReminderEnabled"];
-}
-
-- (void) setReminderTime: (NSString *) newValue
-{
-  [self setObject: newValue forKey: @"SOGoReminderTime"];
-}
-
-- (NSString *) reminderTime
-{
-  return [self stringForKey: @"SOGoReminderTime"];
-}
-
-- (void) setRemindWithASound: (BOOL) newValue
-{
-  [self setBool: newValue forKey: @"SOGoRemindWithASound"];
-}
-
-- (BOOL) remindWithASound
-{
-  return [self boolForKey: @"SOGoRemindWithASound"];
+  return [self stringForKey: @"SOGoCalendarDefaultReminder"];
 }
 
 //

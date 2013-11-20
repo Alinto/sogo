@@ -69,11 +69,9 @@
     SOGoCalendarShouldDisplayWeekend = YES;
     SOGoCalendarEventsDefaultClassification = "PUBLIC";
     SOGoCalendarTasksDefaultClassification = "PUBLIC";
+    SOGoCalendarDefaultReminder = "NONE";
 
     SOGoFreeBusyDefaultInterval = ( 7, 7 );
-
-    SOGoReminderEnabled = YES;
-    SOGoRemindWithASound = YES;
 
     SOGoSearchMinimumWordLength = 2;
 

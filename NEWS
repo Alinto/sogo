@@ -2,7 +2,8 @@
 ------------------
 
 New features
- -
+ - it's now possible to set a default reminder for calendar components
+   using SOGoCalendarDefaultReminder
 
 Enhancements
  - we now automatically convert <img src=data...> into file attachments

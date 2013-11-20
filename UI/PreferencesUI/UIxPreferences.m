@@ -58,11 +58,55 @@
    workweek = from -> to
    identities */
 
+static NSArray *reminderItems = nil;
+static NSArray *reminderValues = nil;
+
 @implementation UIxPreferences
+
++ (void) initialize
+{
+  if (!reminderItems && !reminderValues)
+    {
+      reminderItems = [NSArray arrayWithObjects:
+			       @"5_MINUTES_BEFORE",
+			       @"10_MINUTES_BEFORE",
+			       @"15_MINUTES_BEFORE",
+			       @"30_MINUTES_BEFORE",
+			       @"45_MINUTES_BEFORE",
+			       @"-",
+			       @"1_HOUR_BEFORE",
+			       @"2_HOURS_BEFORE",
+			       @"5_HOURS_BEFORE",
+			       @"15_HOURS_BEFORE",
+			       @"-",
+			       @"1_DAY_BEFORE",
+			       @"2_DAYS_BEFORE",
+			       @"1_WEEK_BEFORE",
+			       nil];
+      reminderValues = [NSArray arrayWithObjects:
+				@"-PT5M",
+				@"-PT10M",
+				@"-PT15M",
+				@"-PT30M",
+				@"-PT45M",
+				@"",
+				@"-PT1H",
+				@"-PT2H",
+				@"-PT5H",
+				@"-PT15H",
+				@"",
+				@"-P1D",
+				@"-P2D",
+				@"-P1W",
+				nil];
+
+      [reminderItems retain];
+      [reminderValues retain];
+    }
+}
 
 - (id) init
 {
-  //NSDictionary *locale;
   SOGoDomainDefaults *dd;
   
   if ((self = [super init]))
@@ -485,6 +529,54 @@
   return [userDefaults calendarTasksDefaultClassification];
 }
 
+- (NSArray *) reminderList
+{
+  return reminderItems;
+}
+
+- (NSString *) itemReminderText
+{
+  NSString *text;
+
+  if ([item isEqualToString: @"-"])
+    text = item;
+  else
+    text = [self labelForKey: [NSString stringWithFormat: @"reminder_%@", item]];
+
+  return text;
+}
+
+- (void) setReminder: (NSString *) theReminder
+{
+  NSString *value;
+  int index;
+
+  index = NSNotFound;
+  value = @"NONE";
+  
+  if (theReminder && [theReminder caseInsensitiveCompare: @"-"] != NSOrderedSame)
+    index = [reminderItems indexOfObject: theReminder];
+
+  if (index != NSNotFound)
+    value = [reminderValues objectAtIndex: index];
+
+  [userDefaults setCalendarDefaultReminder: value];
+}
+
+- (NSString *) reminder
+{
+  NSString *value;
+  int index;
+
+  value = [userDefaults calendarDefaultReminder];
+  index = [reminderValues indexOfObject: value];
+
+  if (index != NSNotFound)
+    return [reminderItems objectAtIndex: index];
+ 
+  return @"NONE";
+}
+
 - (NSArray *) hoursList
 {
   static NSMutableArray *hours = nil;
@@ -556,58 +648,6 @@
 - (void) setUserFirstWeek: (NSString *) newFirstWeek
 {
   [userDefaults setFirstWeekOfYear: newFirstWeek];
-}
-
-- (BOOL) reminderEnabled
-{
-  return [userDefaults reminderEnabled];
-}
-
-- (void) setReminderEnabled: (BOOL) newValue
-{
-  [userDefaults setReminderEnabled: newValue];
-}
-
-- (BOOL) remindWithASound
-{
-  return [userDefaults remindWithASound];
-}
-
-- (void) setRemindWithASound: (BOOL) newValue
-{
-  [userDefaults setRemindWithASound: newValue];
-}
-
-- (NSArray *) reminderTimesList
-{
-  static NSArray *reminderTimesList = nil;
-
-  if (!reminderTimesList)
-    {
-      reminderTimesList = [NSArray arrayWithObjects: @"0000", @"0005",
-                                   @"0010", @"0015", @"0030", @"0100",
-                                   @"0200", @"0400", @"0800", @"1200",
-                                   @"2400", @"4800", nil];
-      [reminderTimesList retain];
-    }
-
-  return reminderTimesList;
-}
-
-- (NSString *) itemReminderTimeText
-{
-  return [self labelForKey:
-                 [NSString stringWithFormat: @"reminderTime_%@", item]];
-}
-
-- (NSString *) userReminderTime
-{
-  return [userDefaults reminderTime];
-}
-
-- (void) setReminderTime: (NSString *) newTime
-{
-  [userDefaults setReminderTime: newTime];
 }
 
 /* Mailer */
