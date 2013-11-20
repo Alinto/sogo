@@ -7,6 +7,7 @@ New features
 Enhancements
  - we now automatically convert <img src=data...> into file attachments
    using CIDs. This prevents Outlook issues.
+ - updated CKEditor to version 4.3.0 and added tab module
 
 Bug fixes
  -

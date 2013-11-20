@@ -318,6 +318,7 @@ function onTextKeyDown(event) {
         }
         else {
             if (!(event.shiftKey || event.metaKey || event.ctrlKey)) {
+                // Convert a tab to 4 spaces
                 if (typeof(this.selectionStart)
                     != "undefined") { // For Mozilla and Safari
                     var cursor = this.selectionStart;
@@ -325,13 +326,13 @@ function onTextKeyDown(event) {
                                      ? this.value.substr(0, cursor)
                                      : "");
                     var endText = this.value.substr(cursor);
-                    var newText = startText + "   " + endText;
+                    var newText = startText + "    " + endText;
                     this.value = newText;
-                    cursor += 3;
+                    cursor += 4;
                     this.setSelectionRange(cursor, cursor);
                 }
                 else if (this.selectionRange) // IE
-                    this.selectionRange.text = "   ";
+                    this.selectionRange.text = "    ";
                 else { // others ?
                 }
                 preventDefault(event);

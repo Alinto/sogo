@@ -61,7 +61,8 @@ var CKBUILDER_CONFIG = {
 		'indentlist' : 1,
 		'table' : 1,
 		'tabletools' : 1,
-		'tableresize' : 1
+		'tableresize' : 1,
+		'tab' : 1
 	},
 	languages : {
 		'ar' : 1,
