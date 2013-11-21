@@ -13,7 +13,7 @@
   >
   <script type="text/javascript">
     var filterId = '<var:string value="filterId"/>';
-    var labels = <var:string value="labels" const:escapeHTML="NO"/>;
+    var mailTags = <var:string value="labels" const:escapeHTML="0"/>;
   </script>
   <form id="mainForm" var:href="ownPath">
     <div id="filterNameContainer" class="container">

@@ -92,8 +92,8 @@ function setupConstants() {
                    "not_junk": _("Not Junk") };
 
 
-    for (var name in labels) {
-        flagLabels[name] = _( labels[name][0] );
+    for (var name in mailTags) {
+        flagLabels[name] = _( mailTags[name][0] );
     }
 }
 
