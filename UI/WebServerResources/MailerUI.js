@@ -2849,11 +2849,6 @@ function getMenus() {
         labelMenu.prepareVisibility = onLabelMenuPrepareVisibility;
     }
 
-    var labelMenu = $("label-menu");
-    if (labelMenu) {
-        labelMenu.prepareVisibility = onLabelMenuPrepareVisibility;
-    }
-
     var markMenu = $("mark-menu");
     if (markMenu) {
         markMenu.prepareVisibility = onMarkMenuPrepareVisibility;

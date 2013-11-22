@@ -227,11 +227,6 @@
 
 /* Label popup menu */
 "None" = "Brak";
-"Important" = "Ważne";
-"Work" = "Praca";
-"Personal" = "Osobiste";
-"To Do" = "Do zrobienia";
-"Later" = "Później";
 
 /* Mark popup menu */
 "As Read" = "Jako przeczytane";

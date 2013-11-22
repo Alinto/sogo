@@ -227,11 +227,6 @@
 
 /* Label popup menu */
 "None" = "None";
-"Important" = "Important";
-"Work" = "Work";
-"Personal" = "Personal";
-"To Do" = "To Do";
-"Later" = "Later";
 
 /* Mark popup menu */
 "As Read" = "As Read";

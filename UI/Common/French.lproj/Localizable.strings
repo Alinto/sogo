@@ -101,6 +101,14 @@
 "Due Date:" = "Échéance :";
 "Location:" = "Lieu :";
 
+/* Mail labels */
+"Important" = "Important";
+"Work" = "Travail";
+"Work" = "Travail";
+"Personal" = "Personnel";
+"To Do" = "À faire";
+"Later" = "Peut attendre";
+
 "a2_Sunday" = "Di";
 "a2_Monday" = "Lu";
 "a2_Tuesday" = "Ma";

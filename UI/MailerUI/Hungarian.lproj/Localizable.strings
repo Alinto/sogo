@@ -227,11 +227,6 @@
 
 /* Label popup menu */
 "None" = "Nincs cimke";
-"Important" = "Fontos";
-"Work" = "Hivatalos";
-"Personal" = "Személyes";
-"To Do" = "Teendő";
-"Later" = "Később";
 
 /* Mark popup menu */
 "As Read" = "Olvasottként";

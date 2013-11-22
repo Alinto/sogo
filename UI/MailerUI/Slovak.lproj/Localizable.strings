@@ -227,11 +227,6 @@
 
 /* Label popup menu */
 "None" = "Žiaden";
-"Important" = "Dôležité";
-"Work" = "Pracovné";
-"Personal" = "Osobné";
-"To Do" = "Treba urobiť";
-"Later" = "Neskôr";
 
 /* Mark popup menu */
 "As Read" = "Prečítané";

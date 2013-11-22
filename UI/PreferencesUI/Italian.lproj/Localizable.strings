@@ -111,20 +111,19 @@
 "personalCalendar" = "Calendario personale";
 "firstCalendar" = "Primo calendario abilitato";
 
-"reminderTime_0000" = "0 minuti";
-"reminderTime_0005" = "5 minuti";
-"reminderTime_0010" = "10 minuti";
-"reminderTime_0015" = "15 minuti";
-"reminderTime_0030" = "30 minuti";
-"reminderTime_0100" = "1 ora";
-"reminderTime_0200" = "2 ore";
-"reminderTime_0400" = "4 ore";
-"reminderTime_0800" = "8 ore";
-"reminderTime_1200" = "1/2 giornata";
-"reminderTime_2400" = "1 giorno";
-"reminderTime_4800" = "2 giorni";
+"reminder_5_MINUTES_BEFORE" = "5 minuti";
+"reminder_10_MINUTES_BEFORE" = "10 minuti";
+"reminder_15_MINUTES_BEFORE" = "15 minuti";
+"reminder_30_MINUTES_BEFORE" = "30 minuti";
+"reminder_1_HOUR_BEFORE" = "1 ora";
+"reminder_2_HOURS_BEFORE" = "2 ore";
+"reminder_5_HOURS_BEFORE"= "5 ore";
+"reminder_15_HOURS_BEFORE"= "15 ore";
+"reminder_1_DAY_BEFORE" = "1 giorno";
+"reminder_2_DAYS_BEFORE" = "2 giorni";
 
 /* Mailer */
+"Label" = "Etichetta";
 "Show subscribed mailboxes only" = "Mostra solo le cartelle sottoscritte";
 "Sort messages by threads" = "Ordina i messaggi per conversazione";
 "Check for new mail:" = "Controlla la posta in arrivo:";

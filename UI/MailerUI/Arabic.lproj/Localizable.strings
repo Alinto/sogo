@@ -227,11 +227,6 @@
 
 /* Label popup menu */
 "None" = "لا شيء";
-"Important" = "مهم";
-"Work" = "عمل";
-"Personal" = "شخصي";
-"To Do" = "تفعل";
-"Later" = "لاحقا";
 
 /* Mark popup menu */
 "As Read" = "مقروء";
