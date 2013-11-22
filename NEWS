@@ -13,6 +13,14 @@ Enhancements
 Bug fixes
  -
 
+2.1.1a (2013-11-22)
+-------------------
+
+Bug fixes
+ - fixed Sieve filters editor (#2504)
+ - moved missing translation to UI/Common (#2499)
+ - fixed potential crasher in OpenChange
+
 2.1.1 (2013-11-19)
 ------------------
 
