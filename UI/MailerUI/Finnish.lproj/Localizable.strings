@@ -227,11 +227,6 @@
 
 /* Label popup menu */
 "None" = "Ei mitään";
-"Important" = "Tärkeä";
-"Work" = "Työ";
-"Personal" = "Henkilökohtainen";
-"To Do" = "Tehtävä";
-"Later" = "Myöhemmin";
 
 /* Mark popup menu */
 "As Read" = "Luetuksi";

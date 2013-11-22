@@ -126,6 +126,8 @@
 "reminder_1_WEEK_BEFORE" = "1 week before";
 
 /* Mailer */
+"Labels" = "Labels";
+"Label" = "Label";
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Sort messages by threads" = "Sort messages by threads";
 "Check for new mail:" = "Check for new mail:";
@@ -289,11 +291,6 @@
 "Flagged" = "Flagged";
 "Junk" = "Junk";
 "Not Junk" = "Not Junk";
-"Important" = "Important";
-"Work" = "Work";
-"Personal" = "Personal";
-"To Do" = "To Do";
-"Later" = "Later";
 
 /* Password policy */
 "The password was changed successfully." = "The password was changed successfully.";

@@ -68,7 +68,6 @@
                        component: (UIxComponent *) theComponent
 {
   NSMutableArray *allLabels, *allKeys;
-  NSDictionary *mailLabelsColors;
   NSString *key, *name;
   SOGoMailLabel *label;
   NSArray *values;
@@ -81,7 +80,7 @@
     {
       key = [allKeys objectAtIndex: i];
       values = [theDefaults objectForKey: key];
-      name = [theComponent labelForKey: [values objectAtIndex: 0]];
+      name = [theComponent commonLabelForKey: [values objectAtIndex: 0]];
 
       label = [[self alloc] initWithName: key
                                    label: name

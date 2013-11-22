@@ -227,11 +227,6 @@
 
 /* Label popup menu */
 "None" = "Удалить все метки";
-"Important" = "Важно";
-"Work" = "Работа";
-"Personal" = "Личное";
-"To Do" = "К исполнению";
-"Later" = "Позже";
 
 /* Mark popup menu */
 "As Read" = "как прочтанное";

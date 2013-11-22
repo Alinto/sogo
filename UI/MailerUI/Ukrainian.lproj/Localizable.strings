@@ -227,11 +227,6 @@
 
 /* Label popup menu */
 "None" = "Вилучити всі позначки";
-"Important" = "Важливе";
-"Work" = "Робоче";
-"Personal" = "Особисте";
-"To Do" = "До виконання";
-"Later" = "Відсунуте";
 
 /* Mark popup menu */
 "As Read" = "Прочитаним";

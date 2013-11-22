@@ -101,6 +101,15 @@
 "Due Date:" = "Due Date:";
 "Location:" = "Location:";
 
+/* mail labels */
+/* Mail labels */
+"Important" = "Important";
+"Work" = "Work";
+"Work" = "Work";
+"Personal" = "Personal";
+"To Do" = "To Do";
+"Later" = "Later";
+
 "a2_Sunday" = "Su";
 "a2_Monday" = "Mo";
 "a2_Tuesday" = "Tu";

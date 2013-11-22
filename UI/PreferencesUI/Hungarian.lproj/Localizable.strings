@@ -111,20 +111,19 @@
 "personalCalendar" = "Személyes naptár";
 "firstCalendar" = "Első engedélyezett naptár";
 
-"reminderTime_0000" = "0 perc";
-"reminderTime_0005" = "5 perc";
-"reminderTime_0010" = "10 perc";
-"reminderTime_0015" = "15 perc";
-"reminderTime_0030" = "30 perc";
-"reminderTime_0100" = "1 óra";
-"reminderTime_0200" = "2 óra";
-"reminderTime_0400" = "4 óra";
-"reminderTime_0800" = "8 óra";
-"reminderTime_1200" = "1/2 nap";
-"reminderTime_2400" = "1 nap";
-"reminderTime_4800" = "2 nap";
+"reminder_5_MINUTES_BEFORE" = "5 perc";
+"reminder_10_MINUTES_BEFORE" = "10 perc";
+"reminder_15_MINUTES_BEFORE" = "15 perc";
+"reminder_30_MINUTES_BEFORE" = "30 perc";
+"reminder_1_HOUR_BEFORE" = "1 óra";
+"reminder_2_HOURS_BEFORE" = "2 óra";
+"reminder_5_HOURS_BEFORE"= "5 óra";
+"reminder_15_HOURS_BEFORE"= "15 óra";
+"reminder_1_DAY_BEFORE" = "1 nap";
+"reminder_2_DAYS_BEFORE" = "2 nap";
 
 /* Mailer */
+"Label" = "Cimke";
 "Show subscribed mailboxes only" = "Csak azok a fiókok mutatása, amelyre feliratkozott";
 "Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése ";
 "Check for new mail:" = "Új üzenetek letöltése:";
