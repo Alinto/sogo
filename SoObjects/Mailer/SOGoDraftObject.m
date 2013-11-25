@@ -1081,11 +1081,11 @@ static NSString    *userAgent      = nil;
       body = [[[NGMimeMultipartBody alloc] initWithPart: message] autorelease];
       [map addObject: MultiAlternativeType forKey: @"content-type"];
 
+      // Get the text part from it and add it
+      [body addBodyPart: [self plainTextBodyPartForText]];
+
       // Add the HTML part
       [body addBodyPart: [self bodyPartForText]];
-      
-      // Get the text part from it and add it too
-      [body addBodyPart: [self plainTextBodyPartForText]];
     }
   
   [message setBody: body];
@@ -1289,11 +1289,11 @@ static NSString    *userAgent      = nil;
   
   textParts = [[NGMimeMultipartBody alloc] initWithPart: part];
   
+  // Get the text part from it and add it
+  [textParts addBodyPart: [self plainTextBodyPartForText]];
+
   // Add the HTML part
   [textParts addBodyPart: [self bodyPartForText]];
-  
-  // Get the text part from it and add it too
-  [textParts addBodyPart: [self plainTextBodyPartForText]];
 
   [part setBody: textParts];
   RELEASE(textParts);
