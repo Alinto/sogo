@@ -20,6 +20,7 @@ CKEDITOR.editorConfig = function( config ) {
     config.removeDialogTabs = 'link:advanced;image:advanced';
     config.enterMode = CKEDITOR.ENTER_BR;
     config.tabSpaces = 4;
+    config.allowedContent = true; // don't filter tags
 
     // Disables the built-in words spell checker if browser provides one. Defaults to true.
     // http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-disableNativeSpellChecker
