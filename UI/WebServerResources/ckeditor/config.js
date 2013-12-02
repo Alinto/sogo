@@ -4,25 +4,19 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
-    config.toolbar = [
-        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'TextColor' ] },
-        { name: 'paragraph', items: [ 'NumberedList', 'BulletedList',
-                                      '-',
-                                      'Blockquote', 'Outdent', 'Indent',
-                                      '-',
-                                      'JustifyLeft', 'JustifyCenter', 'JustifyRight' ] },
-        { name: 'links', items: [ 'Link', 'Unlink' ] },
-        { name: 'insert', items: [ 'Image', 'Table' ] },
-        { name: 'editing', items: [ 'Font', 'FontSize', 'Scayt' ] }
-    ];
+    // For the complete reference:
+    // http://docs.ckeditor.com/#!/api/CKEDITOR.config
     config.toolbarGroups = [
-        { name: 'basicstyles' },
-	{ name: 'paragraph' },
+        { name: 'basicstyles', groups: [ 'basicstyles' ] },
+        { name: 'colors' },
+	{ name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align' ] },
 	{ name: 'links' },
 	{ name: 'insert' },
-        { name: 'editing' }
+        { name: 'editing', groups: [ 'spellchecker' ] },
+        { name: 'styles' }
     ];
 
+    config.removeButtons = 'Strike,Subscript,Superscript,BGColor,Anchor,Format';
     config.removeDialogTabs = 'link:advanced;image:advanced';
     config.enterMode = CKEDITOR.ENTER_BR;
     config.tabSpaces = 4;
