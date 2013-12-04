@@ -11,6 +11,13 @@ Enhancements
  - updated CKEditor to version 4.3.0 and added tab module
 
 Bug fixes
+ - 
+
+2.1.1b (2013-12-04)
+-------------------
+
+Bug fixes
+ - HTML formatting is now retained when forwarding/replying to a mail using the HTML editor.
  - put the text part before the HTML part when composing mail to fix a display issue with Thunderbird (#2512)
 
 2.1.1a (2013-11-22)
