@@ -8,6 +8,7 @@ New features
 Enhancements
  - we now automatically convert <img src=data...> into file attachments
    using CIDs. This prevents Outlook issues.
+ - updated Finnish translation
 
 Bug fixes
  - 

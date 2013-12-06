@@ -101,6 +101,7 @@
 "Due Date:" = "Päättyy:";
 "Location:" = "Sijainti:";
 
+/* mail labels */
 /* Mail labels */
 "Important" = "Tärkeä";
 "Work" = "Työ";
