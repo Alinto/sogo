@@ -1,3 +1,9 @@
+sogo (2.1.2-zentyal1) precise; urgency=low
+
+  * New upstream release
+
+ -- José A. Calvo <jacalvo@zentyal.com>  Wed, 11 Dec 2013 17:10:28 +0100
+
 sogo (2.1.0-zentyal6) precise; urgency=low
 
   * Disable sogo daemon by default
