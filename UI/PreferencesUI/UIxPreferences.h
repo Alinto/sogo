@@ -1,8 +1,6 @@
 /* UIxPreferences.h - this file is part of SOGo
  *
- * Copyright (C) 2007-2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,23 +25,36 @@
 
 @class NSString;
 
+@class SOGoMailLabel;
 @class SOGoUser;
 
 @interface UIxPreferences : UIxComponent
 {
   id item;
   SOGoUser *user;
+  
+  // Calendar categories
   NSString *category;
   NSArray *calendarCategories;
   NSDictionary *calendarCategoriesColors;
+  
   NSArray *contactsCategories;
   NSString *defaultCategoryColor;
   NSCalendarDate *today;
+
+  // Mail labels/tags
+  SOGoMailLabel *label;
+  NSArray *mailLabels;
+  
+  // Sieve filtering
   NSArray *daysOfWeek, *daysBetweenResponsesList;
   NSArray *sieveFilters;
   NSMutableDictionary *vacationOptions, *forwardOptions;
+
   BOOL mailCustomFromEnabled;
   BOOL hasChanged;
+
+  
 }
 
 - (NSString *) userLongDateFormat;

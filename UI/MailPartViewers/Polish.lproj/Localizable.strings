@@ -12,6 +12,8 @@ publish_info_text = "Nadawca informuje cię o załączonym wydarzeniu.";
 cancel_info_text = "Twoje zaproszenie lub całe wydarzenie zostało anulowane.";
 request_info_no_attendee = "proponuje uczestnikom spotkanie. Otrzymujesz tę wiadomość jako powiadomienie, nie jesteś planowany jako uczestnik.";
 Appointment = "Spotkanie";
+"Status Update" = "Aktualizacja Statusu";
+was = "było";
 
 Organizer = "Organizator";
 Time = "Czas";

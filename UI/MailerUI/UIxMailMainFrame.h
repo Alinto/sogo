@@ -1,8 +1,6 @@
 /* UIxMailMainFrame.h - this file is part of SOGo
  *
- * Copyright (C) 2006-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2006-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +23,8 @@
 
 #import "../SOGoUI/UIxComponent.h"
 
+@class SOGoMailLabel;
+
 @interface UIxMailMainFrame : UIxComponent
 {
   SOGoUserSettings *us;
@@ -33,6 +33,7 @@
   NSArray *columnsOrder;
   int folderType;
   NSDictionary *currentColumn;
+  SOGoMailLabel *_currentLabel;
 }
 
 - (WOResponse *) getFoldersStateAction;

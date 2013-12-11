@@ -12,6 +12,8 @@ publish_info_text = "Der Absender informiert Sie über den angefügten Termin.";
 cancel_info_text = "Ihre Einladung zu dem Termin, oder der gesamte Termin wurde abgesagt.";
 request_info_no_attendee = "schlägt den Teilnehmern einen Termin vor. Sie sind kein vorgesehener Teilnehmer und erhalten diese Nachricht lediglich als Hinweis.";
 Appointment = "Termin";
+"Status Update" = "Statusänderung";
+was = "war";
 
 Organizer = "Organisator";
 Time = "Zeit";

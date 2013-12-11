@@ -11,11 +11,12 @@
 "Mail" = "E-post";
 "Preferences" = "Innstillinger";
 "Administration" = "Administrasjon";
-"Disconnect" = "Logg ut";
+"Disconnect" = "Koble fra";
 "Right Administration" = "Rettighetsinnstillinger";
 "Log Console (dev.)" = "Loggkonsoll";
 
 "User" = "Bruker";
+"Vacation message is enabled" = "Fraværsmelding er aktivert.";
 
 "Help" = "Hjelp";
 
@@ -23,24 +24,30 @@
 "noJavascriptRetry" = "Forsøk igjen";
 
 "Owner:" = "Eier:";
-"Publish the Free/Busy information" = "Publiser ledig/opptatt informasjon";
+"Publish the Free/Busy information" = "Publiser ledig/opptatt-informasjon";
 
 "Add..." = "Legg til...";
 "Remove" = "Fjern";
 
-"Subscribe User" = "Abonner bruker";
+"Subscribe User" = "Abonnér bruker";
 
 "Any Authenticated User" = "Enhver autentisert bruker";
 "Public Access" = "Offentlig tilgang";
 "Any user not listed above" = "Enhver bruker som ikke er listet ovenfor";
-"Anybody accessing this resource from the public area" = "Enhver aksesserer denne ressursen fra det offentlige området";
+"Anybody accessing this resource from the public area" = "Enhver som bruker denne ressursen fra det offentlige området";
 
 "Sorry, the user rights can not be configured for that object." = "Beklager, brukerrettighetene kan ikke konfigureres for objektet.";
 
+"Any user with an account on this system will be able to access your mailbox \"%{0}\". Are you certain you trust them all?"
+     = "Enhver bruker med konto på dette systemet vil kunne se mailboksen \"%{0}\". Er du sikker på at du stoler på alle sammen?";
 "Any user with an account on this system will be able to access your calendar \"%{0}\". Are you certain you trust them all?" 
-     = "Alle brukere med konto på systemet vil kunne aksessere kalenderen \"%{0}\". Er du sikker på at du stoler på alle?";
+     = "Alle brukere med konto på systemet vil kunne se kalenderen \"%{0}\". Er du sikker på at du stoler på alle sammen?";
 "Potentially anyone on the Internet will be able to access your calendar \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
-     = "Potensielt kan hvem som helst på Internett aksessere kalenderen \"%{0}\", selv om de ikke har konto på systemet. Er denne informasjonen passende for åpent Internett?";
+     = "Potensielt kan hvem som helst på internett se kalenderen \"%{0}\", selv om de ikke har konto på systemet. Er denne informasjonen passende for det åpne internett?";
+"Any user with an account on this system will be able to access your address book \"%{0}\". Are you certain you trust them all?"
+     = "Enhver bruker med konto på dette systemet vil kunne se adresseboken \"%{0}\". Er du sikker på at du stoler på alle sammen?";
+"Potentially anyone on the Internet will be able to access your address book \"%{0}\", even if they do not have an account on this system. Is this information suitable for the public Internet?"
+     = "Potensielt hvem som helst på internett vil kunne se adresseboken \"%{0}\", selv om de ikke har konto på systemet. Er denne informasjonen passende for det åpne internett?";
 "Give Access" = "Gi tilgang";
 "Keep Private" = "Behold privat";
 
@@ -68,17 +75,17 @@
 "You don't have the required privileges to perform the operation."
 = "Du har ikke rettigheter til å utføre operasjonen.";
 
-"noEmailForDelegation" = "Du må angi adressen til personen du delegerer din invitasjon.";
+"noEmailForDelegation" = "Du må angi adressen til personen du delegerer din invitasjon til.";
 "delegate is organizer" = "Personen du delegerer til er arrangør. Vennligst deleger til en annen person.";
 "delegate is a participant" = "Delegaten er allerede en deltaker.";
-"delegate is a group" = "Den angitte adressen er en gruppe. Du kan bare delegere til unike personer.";
+"delegate is a group" = "Den angitte adressen er en gruppe. Du kan bare delegere til enkeltpersoner.";
 
 "Snooze for " = "Slumre i";
-"5 minutes" = "5 minutt";
-"10 minutes" = "10 minutt";
-"15 minutes" = "15 minutt";
-"30 minutes" = "30 minutt";
-"45 minutes" = "45 minutt";
+"5 minutes" = "5 minutter";
+"10 minutes" = "10 minutter";
+"15 minutes" = "15 minutter";
+"30 minutes" = "30 minutter";
+"45 minutes" = "45 minutter";
 "1 hour" = "1 time";
 
 
@@ -93,6 +100,14 @@
 "Start:" = "Start:";
 "Due Date:" = "Forfallsdato:";
 "Location:" = "Lokasjon:";
+
+/* Mail labels */
+"Important" = "Viktig";
+"Work" = "Arbeid";
+"Work" = "Arbeid";
+"Personal" = "Personlig";
+"To Do" = "Gjøremål";
+"Later" = "Senere";
 
 "a2_Sunday" = "Sø";
 "a2_Monday" = "Ma";

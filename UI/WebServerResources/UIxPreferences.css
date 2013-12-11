@@ -33,12 +33,13 @@ TD.categoryListCell
 { -moz-user-select: none; }
 
 DIV.colorBox
-{ border: 1px solid #333333;
-  font-size: 80%;
-  font-weight: normal;
-  height: 0.75em;
-  margin: 0 3px 0 0;
-  width: 1em; }
+{ -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  border: 2px solid #ccddec; }
+
+DIV.colorBox:hover
+{ border-color: #eee; }
 
 DIV.listWrapper
 { overflow: auto;
@@ -47,6 +48,9 @@ DIV.listWrapper
   margin-top: 2px;
   border-left: 1px solid #9b9b9b;
   background: #ccddec;}
+
+.listWrapper TABLE TD
+{ height: 22px; }
 
 #calendarCategoriesListWrapper
 { top: 210px;
@@ -94,19 +98,37 @@ SPAN.timeDateControl INPUT.textField
 #passwordView BR
 { clear: both; }
 
-/* mail filters */
-DIV#filtersListWrapper
+/* mail options */
+DIV#mailOptionsTabs
+{ position: absolute;
+  top: 200px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px; }
+
+DIV#filtersListWrapper,
+DIV#mailLabelsListWrapper
 { bottom: 30px;
+  bottom: 22px;
   right: 2em;
+  right: 0px;
   top: 208px;
-  left: 2em; }
+  top: 0px;
+  left: 2em;
+  left: 0px; }
+
+#mailOptionsTabs .bottomToolbar
+{ bottom: 0px;
+  left: 0px;
+  right: 0px; }
 
 DIV#filtersListWrapper TD,
+DIV#mailLabelsListWrapper TD,
 DIV.bottomToolbar
 { -khtml-user-select: none;
   -moz-user-select: none; }
 
-TABLE#filtersList
+#filtersList, #labelsList
 { width: 100%;
   cursor: default; }
 
@@ -212,3 +234,19 @@ P.infoMessage#passwordError
 
 #receiptOptions
 { text-align: right; }
+
+#colorPickerDialog
+{ width: 146px;
+  height: 191px; }
+
+#colorPickerDialog.dialog.right > DIV
+{ padding-left: 10px; }
+
+.dialog.bottom > DIV:before {
+  top: auto;
+  bottom: 12px;
+}
+.dialog.bottom > DIV:after {
+  top: auto;
+  bottom: 13px;
+}

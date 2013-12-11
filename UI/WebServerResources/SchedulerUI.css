@@ -26,14 +26,10 @@ DIV#calendarSelectorButtons
 { padding-left: 6px; }
 
 DIV.colorBox
-{ display: inline;
-  font-weight: normal;
-  margin-right: 3px;
-  font-size: 80%;
-  width: 1em;
-  height: .75em;
-  -webkit-border-radius: 2px;
-  border-radius: 2px; }
+{ display: inline-block; }
+
+TD DIV.colorBox, TD DIV.colorBox:hover
+{ border-color: #fff; }
 
 UL#calendarList
 { cursor: default;
@@ -248,7 +244,7 @@ TABLE#tasksList
 { width: 100%; }
 
 TABLE#eventsList .colorBox
-{ margin-left: 2px; }
+{ margin-right: 4px; }
 
 #eventsList TD.headerTitle,
 #eventsList TD.headerDateTime

@@ -9,7 +9,7 @@
 "ACLs" = "Adgangsrettigheter";
 
 /* Modules titles */
-"ACLs_title" = "Håntering av adgangsrettigheter for brukermapper";
+"ACLs_title" = "Håndtering av adgangsrettigheter for brukermapper";
 
 /* Modules descriptions */
-"ACLs_description" = "<p>Administrasjonsmodulen for adgangsrettigheter muliggjør endring av adgangsrettigheter for brukerens kalendre og adressebøker.</p><p>For å endre adgangsrettigheter på en brukermappe, skriv brukernavnet i søkefeltet oppe i vinduet og dobbelklikk på ønskede mappe.</p>";
+"ACLs_description" = "<p>Administrasjonsmodulen for adgangsrettigheter muliggjør endring av adgangsrettigheter for brukerens kalendre og adressebøker.</p><p>For å endre adgangsrettigheter for en brukermappe, skriv brukernavnet i søkefeltet oppe i vinduet og dobbelklikk på ønskede mappe.</p>";

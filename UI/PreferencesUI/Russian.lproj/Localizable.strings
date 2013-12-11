@@ -111,20 +111,19 @@
 "personalCalendar" = "Персональный календарь";
 "firstCalendar" = "Первый разрешенный календарь";
 
-"reminderTime_0000" = "0 минут";
-"reminderTime_0005" = "5 минут";
-"reminderTime_0010" = "10 минут";
-"reminderTime_0015" = "15 минут";
-"reminderTime_0030" = "30 минут";
-"reminderTime_0100" = "1 час";
-"reminderTime_0200" = "2 часа";
-"reminderTime_0400" = "4 часа";
-"reminderTime_0800" = "8 часов";
-"reminderTime_1200" = "1/2дня";
-"reminderTime_2400" = "1 день";
-"reminderTime_4800" = "2 дня";
+"reminder_5_MINUTES_BEFORE" = "5 минут";
+"reminder_10_MINUTES_BEFORE" = "10 минут";
+"reminder_15_MINUTES_BEFORE" = "15 минут";
+"reminder_30_MINUTES_BEFORE" = "30 минут";
+"reminder_1_HOUR_BEFORE" = "1 час";
+"reminder_2_HOURS_BEFORE" = "2 часа";
+"reminder_5_HOURS_BEFORE"= "5 часа";
+"reminder_15_HOURS_BEFORE"= "15 часов";
+"reminder_1_DAY_BEFORE" = "1 день";
+"reminder_2_DAYS_BEFORE" = "2 дня";
 
 /* Mailer */
+"Label" = "Метка";
 "Show subscribed mailboxes only" = "Показывать только почтовые ящики, на которые подписан";
 "Sort messages by threads" = "Сортировать сообщения по нитям";
 "Check for new mail:" = "Проверять новую почту:";

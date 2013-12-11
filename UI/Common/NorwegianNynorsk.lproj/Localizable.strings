@@ -78,6 +78,14 @@
 "Due Date:" = "Forfallsdato:";
 "Location:" = "Lokasjon:";
 
+/* Mail labels */
+"Important" = "Viktig";
+"Work" = "Arbeid";
+"Work" = "Arbeid";
+"Personal" = "Personlig";
+"To Do" = "Gjøremål";
+"Later" = "Senere";
+
 "a2_Sunday" = "Sø";
 "a2_Monday" = "Ma";
 "a2_Tuesday" = "Ti";

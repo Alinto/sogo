@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2012 Inverse inc.
+  Copyright (C) 2007-2013 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -395,11 +395,17 @@ static NSString    *userAgent      = nil;
   [self setSourceFolder: [paths componentsJoinedByString: @"/"]];
 }
 
+//
+//
+//
 - (NSString *) sourceFolder
 {
   return sourceFolder;
 }
 
+//
+//
+//
 - (NSException *) storeInfo
 {
   NSMutableDictionary *infos;
@@ -446,6 +452,9 @@ static NSString    *userAgent      = nil;
   return error;
 }
 
+//
+//
+//
 - (void) _loadInfosFromDictionary: (NSDictionary *) infoDict
 {
   id value;
@@ -478,11 +487,17 @@ static NSString    *userAgent      = nil;
     [self setInReplyTo: value];
 }
 
+//
+//
+//
 - (NSString *) relativeImap4Name
 {
   return [NSString stringWithFormat: @"%d", IMAP4ID];
 }
 
+//
+//
+//
 - (void) fetchInfo
 {
   NSString *p;
@@ -504,16 +519,25 @@ static NSString    *userAgent      = nil;
     [self debugWithFormat: @"Note: info object does not yet exist: %@", p];
 }
 
+//
+//
+//
 - (void) setIMAP4ID: (int) newIMAP4ID
 {
   IMAP4ID = newIMAP4ID;
 }
 
+//
+//
+//
 - (int) IMAP4ID
 {
   return IMAP4ID;
 }
 
+//
+//
+//
 - (NSException *) save
 {
   NGImap4Client *client;
@@ -552,6 +576,9 @@ static NSString    *userAgent      = nil;
   return error;
 }
 
+//
+//
+//
 - (void) _addEMailsOfAddresses: (NSArray *) _addrs
 		       toArray: (NSMutableArray *) _ma
 {
@@ -564,6 +591,9 @@ static NSString    *userAgent      = nil;
       [_ma addObject: [currentAddress email]];
 }
 
+//
+//
+//
 - (void) _addRecipients: (NSArray *) recipients
 	        toArray: (NSMutableArray *) array
 {
@@ -576,6 +606,9 @@ static NSString    *userAgent      = nil;
       [array addObject: [currentAddress baseEMail]];
 }
 
+//
+//
+//
 - (void) _purgeRecipients: (NSArray *) recipients
 	    fromAddresses: (NSMutableArray *) addresses
 {
@@ -602,6 +635,9 @@ static NSString    *userAgent      = nil;
       }
 }
 
+//
+//
+//
 - (void) _fillInReplyAddresses: (NSMutableDictionary *) _info
 		    replyToAll: (BOOL) _replyToAll
 		      envelope: (NGImap4Envelope *) _envelope
@@ -619,11 +655,40 @@ static NSString    *userAgent      = nil;
     TODO: what about sender (RFC 822 3.6.2)
   */
   NSMutableArray *to, *addrs, *allRecipients;
-  NSArray *envelopeAddresses, *userEmails;
+  NSArray *envelopeAddresses;
 
   allRecipients = [NSMutableArray array];
-  userEmails = [[context activeUser] allEmails];
-  [allRecipients addObjectsFromArray: userEmails];
+
+  //
+  // When we do a Reply-To or a Reply-To-All, we strip our own addresses
+  // from the list of recipients so we don't reply to ourself! We check
+  // which addresses we should use - that is the ones for the current
+  // user if we're dealing with the default "SOGo mail account" or
+  // the ones specified in the auxiliary IMAP accounts
+  //
+  if ([[[self->container mailAccountFolder] nameInContainer] intValue] == 0)
+    {
+      NSArray *userEmails;
+
+      userEmails = [[context activeUser] allEmails];
+      [allRecipients addObjectsFromArray: userEmails];
+    }
+  else
+    {
+      NSArray *identities;
+      NSString *email;
+      int i;
+
+      identities = [[[self container] mailAccountFolder] identities];
+      
+      for (i = 0; i < [identities count]; i++)
+        {
+          email = [[identities objectAtIndex: i] objectForKey: @"email"];
+          
+          if (email)
+            [allRecipients addObject: email];
+        }
+    }
 
   to = [NSMutableArray arrayWithCapacity: 2];
 
@@ -634,20 +699,19 @@ static NSString    *userAgent      = nil;
   else
     [addrs setArray: [_envelope from]];
 
-  [self _purgeRecipients: allRecipients
-	fromAddresses: addrs];
-  [self _addEMailsOfAddresses: addrs toArray: to];
-  [self _addRecipients: addrs toArray: allRecipients];
-  [_info setObject: to forKey: @"to"];
+  [self _purgeRecipients: allRecipients  fromAddresses: addrs];
+  [self _addEMailsOfAddresses: addrs  toArray: to];
+  [self _addRecipients: addrs  toArray: allRecipients];
+  [_info setObject: to  forKey: @"to"];
 
   /* If "to" is empty, we add at least ourself as a recipient!
      This is for emails in the "Sent" folder that we reply to... */
   if (![to count])
     {
       if ([[_envelope replyTo] count])
-	[self _addEMailsOfAddresses: [_envelope replyTo] toArray: to];
+	[self _addEMailsOfAddresses: [_envelope replyTo]  toArray: to];
       else
-	[self _addEMailsOfAddresses: [_envelope from] toArray: to];
+	[self _addEMailsOfAddresses: [_envelope from]  toArray: to];
     }
 
   /* If we have no To but we have Cc recipients, let's move the Cc
@@ -661,7 +725,7 @@ static NSString    *userAgent      = nil;
       [_info removeObjectForKey: @"cc"];
     }
 
-  /* CC processing if we reply-to-all: add all 'to' and 'cc'  */
+  /* CC processing if we reply-to-all: - we add all 'to' and 'cc' fields */
   if (_replyToAll)
     {
       to = [NSMutableArray new];
@@ -683,6 +747,9 @@ static NSString    *userAgent      = nil;
     }
 }
 
+//
+//
+//
 - (NSArray *) _attachmentBodiesFromPaths: (NSArray *) paths
 		       fromResponseFetch: (NSDictionary *) fetch;
 {
@@ -703,6 +770,9 @@ static NSString    *userAgent      = nil;
   return bodies;
 }
 
+//
+//
+//
 - (void) _fetchAttachments: (NSArray *) parts
                   fromMail: (SOGoMailObject *) sourceMail
 {
@@ -730,6 +800,9 @@ static NSString    *userAgent      = nil;
     }
 }
 
+//
+//
+//
 - (void) fetchMailForEditing: (SOGoMailObject *) sourceMail
 {
   NSString *subject, *msgid;
@@ -776,6 +849,9 @@ static NSString    *userAgent      = nil;
   [self storeInfo];
 }
 
+//
+//
+//
 - (void) fetchMailForReplying: (SOGoMailObject *) sourceMail
 			toAll: (BOOL) toAll
 {
@@ -1053,11 +1129,11 @@ static NSString    *userAgent      = nil;
       body = [[[NGMimeMultipartBody alloc] initWithPart: message] autorelease];
       [map addObject: MultiAlternativeType forKey: @"content-type"];
 
+      // Get the text part from it and add it
+      [body addBodyPart: [self plainTextBodyPartForText]];
+
       // Add the HTML part
       [body addBodyPart: [self bodyPartForText]];
-      
-      // Get the text part from it and add it too
-      [body addBodyPart: [self plainTextBodyPartForText]];
     }
   
   [message setBody: body];
@@ -1227,6 +1303,9 @@ static NSString    *userAgent      = nil;
   return bodyPart;
 }
 
+//
+//
+//
 - (NSArray *) bodyPartsForAllAttachments
 {
   /* returns nil on error */
@@ -1248,6 +1327,9 @@ static NSString    *userAgent      = nil;
   return bodyParts;
 }
 
+//
+//
+//
 - (NGMimeBodyPart *) mimeMultipartAlternative
 {
   NGMimeMultipartBody *textParts;
@@ -1261,11 +1343,11 @@ static NSString    *userAgent      = nil;
   
   textParts = [[NGMimeMultipartBody alloc] initWithPart: part];
   
+  // Get the text part from it and add it
+  [textParts addBodyPart: [self plainTextBodyPartForText]];
+
   // Add the HTML part
   [textParts addBodyPart: [self bodyPartForText]];
-  
-  // Get the text part from it and add it too
-  [textParts addBodyPart: [self plainTextBodyPartForText]];
 
   [part setBody: textParts];
   RELEASE(textParts);
@@ -1273,6 +1355,9 @@ static NSString    *userAgent      = nil;
   return part;
 }
 
+//
+//
+//
 - (NGMimeMessage *) mimeMultiPartMessageWithHeaderMap: (NGMutableHashMap *) map
 					 andBodyParts: (NSArray *) _bodyParts
 {
@@ -1312,6 +1397,9 @@ static NSString    *userAgent      = nil;
   return message;
 }
 
+//
+//
+//
 - (void) _addHeaders: (NSDictionary *) _h
          toHeaderMap: (NGMutableHashMap *) _map
 {
@@ -1483,48 +1571,59 @@ static NSString    *userAgent      = nil;
   return map;
 }
 
+//
+//
+//
 - (NGMimeMessage *) mimeMessageWithHeaders: (NSDictionary *) _headers
 				 excluding: (NSArray *) _exclude
 {
-  NGMutableHashMap  *map;
-  NSArray           *bodyParts;
-  NGMimeMessage     *message;
+  NSMutableArray *bodyParts;
+  NGMimeMessage *message;
+  NGMutableHashMap *map;
+  NSString *newText;
 
   message = nil;
+
+  bodyParts = [NSMutableArray array];
+  newText = [text htmlByExtractingImages: bodyParts];
+
+  if ([bodyParts count])
+    [self setText: newText];
 
   map = [self mimeHeaderMapWithHeaders: _headers
 	      excluding: _exclude];
   if (map)
     {
       //[self debugWithFormat: @"MIME Envelope: %@", map];
-  
-      bodyParts = [self bodyPartsForAllAttachments];
-      if (bodyParts)
-	{
-	  //[self debugWithFormat: @"attachments: %@", bodyParts];
-  
-	  if ([bodyParts count] == 0)
-	    /* no attachments */
-	    message = [self mimeMessageForContentWithHeaderMap: map];
-	  else
-	    /* attachments, create multipart/mixed */
-	    message = [self mimeMultiPartMessageWithHeaderMap: map 
-			    andBodyParts: bodyParts];
-	  //[self debugWithFormat: @"message: %@", message];
-	}
+      
+      [bodyParts addObjectsFromArray: [self bodyPartsForAllAttachments]];
+      
+      //[self debugWithFormat: @"attachments: %@", bodyParts];
+      
+      if ([bodyParts count] == 0)
+        /* no attachments */
+        message = [self mimeMessageForContentWithHeaderMap: map];
       else
-	[self errorWithFormat:
-		@"could not create body parts for attachments!"];
+        /* attachments, create multipart/mixed */
+        message = [self mimeMultiPartMessageWithHeaderMap: map 
+                                             andBodyParts: bodyParts];
+      //[self debugWithFormat: @"message: %@", message];
     }
-
+  
   return message;
 }
 
+//
+//
+//
 - (NGMimeMessage *) mimeMessage
 {
   return [self mimeMessageWithHeaders: nil  excluding: nil];
 }
 
+//
+//
+//
 - (NSData *) mimeMessageAsData
 {
   NGMimeMessageGenerator *generator;
@@ -1537,6 +1636,9 @@ static NSString    *userAgent      = nil;
   return message;
 }
 
+//
+//
+//
 - (NSArray *) allRecipients
 {
   NSMutableArray *allRecipients;
@@ -1556,6 +1658,9 @@ static NSString    *userAgent      = nil;
   return allRecipients;
 }
 
+//
+//
+//
 - (NSArray *) allBareRecipients
 {
   NSMutableArray *bareRecipients;
@@ -1571,11 +1676,17 @@ static NSString    *userAgent      = nil;
   return bareRecipients;
 }
 
+//
+//
+//
 - (NSException *) sendMail
 {
   return [self sendMailAndCopyToSent: YES];
 }
 
+//
+//
+//
 - (NSException *) sendMailAndCopyToSent: (BOOL) copyToSent
 {
   NSMutableData *cleaned_message;

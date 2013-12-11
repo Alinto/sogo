@@ -1,8 +1,6 @@
 /* UIxFilterEditor.m - this file is part of SOGo
  *
- * Copyright (C) 2010 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2010-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,19 +24,43 @@
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import <SOGoUI/UIxComponent.h>
 
 @interface UIxFilterEditor : UIxComponent
 {
   NSString *filterId;
+  NSDictionary *labels;
 }
 
 @end
 
 @implementation UIxFilterEditor
+
+- (id) init
+{
+  self = [super init];
+  
+  if (self)
+    {
+      filterId = nil;
+      labels = nil;
+    }
+
+  return self;
+}
+
+- (void) dealloc
+{
+  RELEASE(filterId);
+  RELEASE(labels);
+  [super dealloc];
+}
+
 
 /* convert and save */
 - (BOOL) _validateFilterId
@@ -78,6 +100,16 @@
 - (NSString *) filterId
 {
   return filterId;
+}
+
+- (NSString *) labels
+{
+  if (!labels)
+    {
+      ASSIGN(labels, [[[context activeUser] userDefaults] mailLabelsColors]);
+    }
+  
+  return [labels jsonRepresentation];
 }
 
 @end

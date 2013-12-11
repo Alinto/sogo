@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2007-2011 Inverse inc.
+  Copyright (C) 2007-2013 Inverse inc.
 
   This file is part of SOGo.
 
@@ -25,6 +25,9 @@
 #import <Foundation/NSURL.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
+
+#import <DOM/DOMElement.h>
+#import <DOM/DOMProtocols.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGObjWeb/SoHTTPAuthenticator.h>
@@ -55,6 +58,8 @@
 #import "SOGoUser+Mailer.h"
 
 #import "SOGoMailAccount.h"
+
+#define XMLNS_INVERSEDAV @"urn:inverse:params:xml:ns:inverse-dav"
 
 @implementation SOGoMailAccount
 

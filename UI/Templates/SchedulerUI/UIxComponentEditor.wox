@@ -250,17 +250,6 @@
                 <input type="checkbox" name="delegateReceiveUpdates" /> <var:string label:value="Keep sending me updates" /> -->
       </span>
     </label>
-    <!--TODO: I'm not sure how to send this
-    <label><var:string label:value="Reminder:" />
-      <span class="content"><var:popup list="reminderList" item="item"
-          const:disabledValue="-"
-          label:noSelectionString="reminder_NONE"
-          const:name="reminderList"
-          const:id="reminderList"
-          string="itemReminderText"
-          var:selection="reminder"
-          const:onchange="?" /></span>
-    </label>-->
   </var:if>
     </div>
     <var:if condition="hasAttendees">

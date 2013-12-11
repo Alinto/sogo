@@ -1,8 +1,6 @@
 /* SOGoContactFolders.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2006-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +17,6 @@
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
-/* MailItems                IPF.Note
-   ContactItems             IPF.Contact
-   AppointmentItems         IPF.Appointment
-   NoteItems                IPF.StickyNote
-   TaskItems                IPF.Task
-   JournalItems             IPF.Journal     */
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
@@ -50,6 +41,7 @@
 #import "SOGoContactFolders.h"
 
 #define XMLNS_INVERSEDAV @"urn:inverse:params:xml:ns:inverse-dav"
+
 @implementation SOGoContactFolders
 
 + (NSString *) gcsFolderType

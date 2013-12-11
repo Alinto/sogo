@@ -253,11 +253,33 @@ static NSArray *infoKeys = nil;
 
 - (NSString *) replyTo
 {
-  SOGoUserDefaults *ud;
+  NSString *value;
+  
+  value = nil;
 
-  ud = [[context activeUser] userDefaults];
+  //
+  // We add the correct replyTo here. That is, the one specified in the defaults
+  // for the main "SOGo mail account" versus the one specified in the auxiliary
+  // IMAP accounts.
+  //
+  if ([[[[self clientObject] mailAccountFolder] nameInContainer] intValue] == 0)
+    {
+      SOGoUserDefaults *ud;
+      
+      ud = [[context activeUser] userDefaults];
+      value = [ud mailReplyTo];
+    }
+  else
+    {
+      NSArray *identities;
+      
+      identities = [[[self clientObject] mailAccountFolder] identities];
 
-  return [ud mailReplyTo];
+      if ([identities count])
+        value = [[identities objectAtIndex: 0] objectForKey: @"replyTo"];
+    }
+
+  return value;
 }
 
 - (void) setSubject: (NSString *) newSubject
