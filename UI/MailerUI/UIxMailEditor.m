@@ -714,25 +714,24 @@ static NSArray *infoKeys = nil;
       recipients_count =  [[messageSubmissions objectForKey: @"RecipientsCount"] intValue];
       
       if ((messages_count >= [dd maximumMessageSubmissionCount] || recipients_count >= [dd maximumRecipientCount]) &&
-          delta >= [dd maximumSubmissionInterval] &&
-          delta <= block_time )
+          delta <= block_time)
         {
           jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
                                          @"failure", @"status",
-                                       [self labelForKey: @"Tried to send too many mails. Please wait."],
+                                                  [self labelForKey: @"Tried to send too many mails. Please wait."],
                                        @"message",
                                        nil];
           return [self responseWithStatus: 200
                                 andString: [jsonResponse jsonRepresentation]];
         }
       
-      if (delta > block_time)
+      if (delta > block_time ||
+          (delta >= [dd maximumSubmissionInterval] && messages_count < [dd maximumMessageSubmissionCount] && recipients_count < [dd maximumRecipientCount]))
         {
           [[SOGoCache sharedCache] setMessageSubmissionsCount: 0
                                               recipientsCount: 0
                                                      forLogin: [[context activeUser] login]];
         }
-
     }
 
   co = [self clientObject];
