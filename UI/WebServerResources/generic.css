@@ -49,6 +49,10 @@ DIV#pageContent
 { clear: both;
   padding-top: 1em; }
 
+.muted,
+.muted a
+{ color: #888 !important; }
+
 A
 { text-decoration: none;
   -moz-outline: 0px; }

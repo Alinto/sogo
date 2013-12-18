@@ -25,7 +25,8 @@
 
 @implementation UIxMailSizeFormatter
 
-+ (id)sharedMailSizeFormatter {
++ (id) sharedMailSizeFormatter
+{
   static UIxMailSizeFormatter *fmt = nil; // THREAD
   if (fmt == nil) fmt = [[self alloc] init];
   return fmt;
@@ -33,20 +34,24 @@
 
 /* formatting */
 
-- (NSString *)stringForSize:(unsigned int)size {
+- (NSString *) stringForSize: (unsigned int) size
+{
   char buf[128];
-  
-  if (size < 1024)
-    sprintf(buf, "%d", size);
-  else if (size < 1024 * 1024)
-    sprintf(buf, "%.1fK", ((double)size / 1024));
+
+  if (size > 1024*1024)
+    sprintf(buf, "%.1f MiB", ((double)size / 1024 / 1024));
+  else if (size > 1024*100)
+    sprintf(buf, "%d KiB", (size / 1024));
+  else if (size > 1024)
+    sprintf(buf, "%.1f KiB", ((double)size / 1024));
   else
-    sprintf(buf, "%.1fM", ((double)size / 1024 / 1024));
+    sprintf(buf, "%d B", size);
   
   return [NSString stringWithCString:buf];
 }
 
-- (NSString *)stringForObjectValue:(id)_object {
+- (NSString *) stringForObjectValue: (id) _object
+{
   return [self stringForSize:[_object unsignedIntValue]];
 }
 
