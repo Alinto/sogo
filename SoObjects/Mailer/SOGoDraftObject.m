@@ -559,19 +559,24 @@ static NSString    *userAgent      = nil;
     }
   
   folder = [imap4 imap4FolderNameForURL: [container imap4URL]];
-  result
-    = [client append: message toFolder: folder
-	      withFlags: [NSArray arrayWithObjects: @"seen", @"draft", nil]];
+  result = [client append: message toFolder: folder
+                withFlags: [NSArray arrayWithObjects: @"seen", @"draft", nil]];
   if ([[result objectForKey: @"result"] boolValue])
     {
       if (IMAP4ID > -1)
 	error = [imap4 markURLDeleted: [self imap4URL]];
       IMAP4ID = [self IMAP4IDFromAppendResult: result];
+      if (imap4URL)
+        {
+          // Invalidate the IMAP message URL since the message ID has changed
+          [imap4URL release];
+          imap4URL = nil;
+        }
       [self storeInfo];
     }
   else
-    error = [NSException exceptionWithHTTPStatus:500 /* Server Error */
-			 reason: @"Failed to store message"];
+    error = [NSException exceptionWithHTTPStatus: 500 /* Server Error */
+                                          reason: [result objectForKey: @"reason"]];
 
   return error;
 }
@@ -812,8 +817,7 @@ static NSString    *userAgent      = nil;
 
   [sourceMail fetchCoreInfos];
 
-  [self _fetchAttachments: [sourceMail fetchFileAttachmentKeys]
-	fromMail: sourceMail];
+  [self _fetchAttachments: [sourceMail fetchFileAttachmentKeys] fromMail: sourceMail];
   info = [NSMutableDictionary dictionaryWithCapacity: 16];
   subject = [sourceMail subject];
   if ([subject length] > 0)
@@ -906,8 +910,7 @@ static NSString    *userAgent      = nil;
   if ([[ud mailMessageForwarding] isEqualToString: @"inline"])
     {
       [self setText: [sourceMail contentForInlineForward]];
-      [self _fetchAttachments: [sourceMail fetchFileAttachmentKeys]
-	    fromMail: sourceMail];
+      [self _fetchAttachments: [sourceMail fetchFileAttachmentKeys] fromMail: sourceMail];
     }
   else
     {
@@ -946,13 +949,15 @@ static NSString    *userAgent      = nil;
 
 /* attachments */
 
-- (NSArray *) fetchAttachmentNames
+- (NSArray *) fetchAttachmentAttrs
 {
   NSMutableArray *ma;
   NSFileManager *fm;
   NSArray *files;
-  unsigned count, max;
   NSString *filename;
+  NSDictionary *fileAttrs;
+  NGMimeBodyPart *bodyPart;
+  unsigned count, max;
 
   fm = [NSFileManager defaultManager];
   files = [fm directoryContentsAtPath: [self draftFolderPath]];
@@ -963,7 +968,13 @@ static NSString    *userAgent      = nil;
     {
       filename = [files objectAtIndex: count];
       if (![filename hasPrefix: @"."])
-	[ma addObject: filename];
+        {
+          fileAttrs = [fm fileAttributesAtPath: [self pathToAttachmentWithName: filename] traverseLink: YES];
+          bodyPart = [self bodyPartForAttachmentWithName: filename];
+          [ma addObject: [NSDictionary dictionaryWithObjectsAndKeys: filename, @"name",
+                                       [fileAttrs objectForKey: @"NSFileSize"], @"size",
+                                       bodyPart, @"part", nil]];
+        }
     }
 
   return ma;
@@ -1309,18 +1320,18 @@ static NSString    *userAgent      = nil;
 - (NSArray *) bodyPartsForAllAttachments
 {
   /* returns nil on error */
-  NSArray  *names;
+  NSArray  *attrs;
   unsigned i, count;
   NGMimeBodyPart *bodyPart;
   NSMutableArray *bodyParts;
 
-  names = [self fetchAttachmentNames];
-  count = [names count];
+  attrs = [self fetchAttachmentAttrs];
+  count = [attrs count];
   bodyParts = [NSMutableArray arrayWithCapacity: count];
 
   for (i = 0; i < count; i++)
     {
-      bodyPart = [self bodyPartForAttachmentWithName: [names objectAtIndex: i]];
+      bodyPart = [self bodyPartForAttachmentWithName: [[attrs objectAtIndex: i] objectForKey: @"name"]];
       [bodyParts addObject: bodyPart];
     }
 
