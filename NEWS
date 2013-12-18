@@ -4,12 +4,14 @@
 New features
  - it's now possible to set a default reminder for calendar components
    using SOGoCalendarDefaultReminder
+ - select multiple files to attach to a message or drag'n'drop files onto the
+   mail editor; will also now display progress of uploads
 
 Enhancements
  - we now automatically convert <img src=data...> into file attachments
    using CIDs. This prevents Outlook issues.
  - updated Finnish translation
- - XMLHttpRequest is now loaded conditionaly (< IE9)
+ - XMLHttpRequest.js is now loaded conditionaly (< IE9)
 
 Bug fixes
  - 
