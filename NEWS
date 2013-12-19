@@ -12,6 +12,7 @@ Enhancements
    using CIDs. This prevents Outlook issues.
  - updated Finnish translation
  - XMLHttpRequest.js is now loaded conditionaly (< IE9)
+ - format time in attendees invitation window according to the user's locale
 
 Bug fixes
  - 

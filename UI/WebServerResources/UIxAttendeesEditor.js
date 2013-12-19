@@ -1453,14 +1453,8 @@ function prepareTableHeaders() {
         rows[0].appendChild(header1b);
         for (var hour = displayStartHour; hour < (displayEndHour + 1); hour++) {
             var header2 = document.createElement("th");
-            var text = hour + ":00";
-            if (hour < 10)
-                text = "0" + text;
-            if (hour >= dayStartHour && hour < dayEndHour)
-                $(header2).addClassName ("officeHour");
-            header2.appendChild(document.createTextNode(text));
+            header2.appendChild(document.createTextNode(timeFormat.formatTime(hour, 0)));
             rows[1].appendChild(header2);
-
             var header3 = document.createElement("th");
             for (var span = 0; span < 4; span++) {
                 var spanElement = document.createElement("span");

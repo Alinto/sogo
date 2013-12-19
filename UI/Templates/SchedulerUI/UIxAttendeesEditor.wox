@@ -18,6 +18,7 @@
   <script type="text/javascript">
     var dayStartHour = <var:string value="dayStartHour"/>;
     var dayEndHour = <var:string value="dayEndHour"/>;
+    var timeFormat = '<var:string value="userDefaults.timeFormat" const:escapeHTML="NO"/>';
   </script>
   <div id="attendeesView">
     <form const:href=""
