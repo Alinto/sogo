@@ -599,7 +599,7 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
   
   if (mapistore_indexing_get_new_folderIDs (connInfo->mstore_ctx,
                                             memCtx, max, &numbers)
-      != MAPI_E_SUCCESS || numbers->cValues != max)
+      != MAPISTORE_SUCCESS || numbers->cValues != max)
     abort ();
   for (count = 0; count < max; count++)
     {
