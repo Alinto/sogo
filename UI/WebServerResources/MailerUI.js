@@ -1357,13 +1357,27 @@ function configureLinksInMessage() {
             anchor.observe("contextmenu", onEmailAddressClick);
             anchor.writeAttribute("moz-do-not-send", false);
         }
-        else
+        else if (!anchor.id)
             anchor.observe("click", onMessageAnchorClick);
     }
 
-    var attachments = messageDiv.select ("DIV.linked_attachment_body");
-    for (var i = 0; i < attachments.length; i++)
-        $(attachments[i]).observe("contextmenu", onAttachmentClick);
+    var attachmentsMenu = $("attachmentsMenu");
+    if (attachmentsMenu) {
+        var options = attachmentsMenu.select("li");
+        var callbacks = [];
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].className == 'separator')
+                callbacks.push(null);
+            else
+                callbacks.push(saveAttachment);
+        }
+        initMenu(attachmentsMenu, callbacks);
+        $("attachmentsHref").on("click", function (event) {
+            popupMenu(event, 'attachmentsMenu', this);
+            preventDefault(event);
+            return false;
+        });
+    }
 
     var images = messageDiv.select("IMG.mailer_imagecontent");
     for (var i = 0; i < images.length; i++)
@@ -1371,12 +1385,11 @@ function configureLinksInMessage() {
 
     var editDraftButton = $("editDraftButton");
     if (editDraftButton)
-        editDraftButton.observe("click",
-                                onMessageEditDraft.bindAsEventListener(editDraftButton));
+        editDraftButton.on("click", onMessageEditDraft);
 
     var loadImagesButton = $("loadImagesButton");
     if (loadImagesButton)
-        $(loadImagesButton).observe("click", onMessageLoadImages);
+        loadImagesButton.on("click", onMessageLoadImages);
 
     configureiCalLinksInMessage();
 }
@@ -1562,12 +1575,13 @@ function onMessageContentMenu(event) {
 }
 
 function onMessageEditDraft(event) {
+    Event.stop(event);
     return openMessageWindowsForSelection("edit", true);
 }
 
 function onMessageLoadImages(event) {
-    loadRemoteImages();
     Event.stop(event);
+    loadRemoteImages();
 }
 
 function loadRemoteImages() {
@@ -1610,12 +1624,6 @@ function onMessageAnchorClick(event) {
 function onImageClick(event) {
     popupMenu(event, 'imageMenu', this);
     preventDefault(event);
-    return false;
-}
-
-function onAttachmentClick (event) {
-    popupMenu (event, 'attachmentMenu', this);
-    preventDefault (event);
     return false;
 }
 
@@ -1773,13 +1781,29 @@ function saveImage(event) {
     window.location.href = urlAsAttachment;
 }
 
-function saveAttachment(event) {
-    var div = document.menuTarget;
-    var link = div.select ("a").first ();
-    var url = link.getAttribute("href");
-    var urlAsAttachment = url.replace(/(\/[^\/]*)$/,"/asAttachment$1");
+/* Download a file using a temporary iframe that we delete once the download is started */
+function download(url) {
+    var form = createElement('form', null, 'hidden', { action: url, method: 'GET'});
+    $(document.body).appendChild(form);
+    var div = AIM.submit(form);
+    form.submit();
+    setTimeout(function () {
+        form.remove();
+        div.remove();
+    }, 2000);
+}
 
-    window.location.href = urlAsAttachment;
+function saveAttachment(event) {
+    var url = $(this).readAttribute('data-url');
+    if (url) {
+        download(url);
+    }
+    else {
+        $(this).up('ul').select('li[data-url]').each(function (item) {
+            url = $(item).readAttribute('data-url');
+            download(url);
+        });
+    }
 }
 
 /* contacts */
@@ -2820,7 +2844,6 @@ function getMenus() {
                             saveAs, null, null,
                             onMenuDeleteMessage ],
         imageMenu: [ saveImage ],
-        attachmentMenu: [ saveAttachment ],
         messageContentMenu: [ onMenuReplyToSender,
                               onMenuReplyToAll,
                               onMenuForwardMessage,

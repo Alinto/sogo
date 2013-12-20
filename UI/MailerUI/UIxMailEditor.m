@@ -163,6 +163,11 @@ static NSArray *infoKeys = nil;
   return item;
 }
 
+- (NSString *) uid
+{
+  return [[self clientObject] nameInContainer];
+}
+
 - (NSArray *) priorityClasses
 {
   static NSArray *priorities = nil;
@@ -382,14 +387,14 @@ static NSArray *infoKeys = nil;
   ASSIGN (attachment, newAttachment);
 }
 
-- (NSFormatter *) sizeFormatter
-{
-  return [UIxMailSizeFormatter sharedMailSizeFormatter];
-}
-
 - (NSDictionary *) attachment
 {
   return attachment;
+}
+
+- (NSFormatter *) sizeFormatter
+{
+  return [UIxMailSizeFormatter sharedMailSizeFormatter];
 }
 
 /* from addresses */
@@ -670,11 +675,6 @@ static NSArray *infoKeys = nil;
 - (BOOL) hasAttachments
 {
   return [[self attachmentAttrs] count] > 0 ? YES : NO;
-}
-
-- (NSString *) uid
-{
-  return [[self clientObject] nameInContainer];
 }
 
 - (id) defaultAction

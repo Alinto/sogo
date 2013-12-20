@@ -251,7 +251,8 @@ DIV.contactSelector DIV.contactList
   padding-bottom: .15em;
   margin: 0px;
   width: auto;
-  white-space: nowrap; }
+  white-space: nowrap;
+  cursor: pointer; }
 
 .menu LI.disabled,
 .popuMenu LI.disabled,
@@ -283,10 +284,11 @@ UL.choiceMenu LI._chosen:hover
 { list-style-image: url("menu-check-hover.gif"); }
 
 .menu LI:hover,
+.menu LI:hover .muted,
 .menu LI.selected,
 .menu LI.submenu-selected
 { background-color: #9ABCD8;
-  color: #fff; }
+  color: #fff !important; }
 
 .menu LI.disabled:hover
 { background-color: inherit; }

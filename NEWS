@@ -6,6 +6,7 @@ New features
    using SOGoCalendarDefaultReminder
  - select multiple files to attach to a message or drag'n'drop files onto the
    mail editor; will also now display progress of uploads
+ - new popup menu to download all attachments of a mail
 
 Enhancements
  - we now automatically convert <img src=data...> into file attachments

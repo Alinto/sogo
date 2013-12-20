@@ -1925,7 +1925,7 @@ AIM = {
         d.innerHTML = '<iframe class="hidden" src="about:blank" id="'
             + n + '" name="' + n + '" onload="AIM.loaded(\'' + n + '\')"></iframe>';
         document.body.appendChild(d);
-        var i = $(n); // TODO: useful?
+        var i = $(n);
         if (c && typeof(c.onComplete) == 'function')
             i.onComplete = c.onComplete;
         return n;
@@ -1936,27 +1936,28 @@ AIM = {
     },
 
     submit: function(f, c) {
-        AIM.form(f, AIM.frame(c));
+        var id = AIM.frame(c);
+        AIM.form(f, id);
         if (c && typeof(c.onStart) == 'function')
             return c.onStart();
         else
-            return true;
+            return $(id);
     },
 
     loaded: function(id) {
         var i = $(id);
+        var d;
         if (i.contentDocument) {
-            var d = i.contentDocument;
+            d = i.contentDocument;
         }
         else if (i.contentWindow) {
-            var d = i.contentWindow.document;
+            d = i.contentWindow.document;
         }
         else {
-            var d = window.frames[id].document;
+            d = window.frames[id].document;
         }
         if (d.location.href == "about:blank")
             return;
-
         if (typeof(i.onComplete) == 'function') {
             i.onComplete(Element.allTextContent(d.body));
         }

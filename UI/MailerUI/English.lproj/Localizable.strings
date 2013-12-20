@@ -97,11 +97,11 @@
 "Reply-To"	= "Reply-To";
 "Add address"   = "Add address";
 
-"Attachments:" = "Attachments:";
 "Open" = "Open";
 "Select All" = "Select All";
 "Attach Web Page..." = "Attach Web Page...";
-"Attach File(s)..." = "Attach File(s)...";
+"file" = "file";
+"files" = "files";
 
 "to"            = "To";
 "cc"            = "Cc";
