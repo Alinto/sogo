@@ -23,7 +23,6 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
-#import <Foundation/NSURL.h>
 
 #import <NGObjWeb/WOApplication.h>
 #import <NGObjWeb/WOResponse.h>
@@ -35,7 +34,6 @@
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 
-#import "NSDictionary+Mail.h"
 #import "NSString+Mail.h"
 #import "SOGoMailForward.h"
 #import "SOGoMailObject+Draft.h"
@@ -270,110 +268,6 @@
   [page setSourceMail: self];
 
   return [[page generateResponse] contentAsString];
-}
-
-//
-//
-//
-- (void) _fetchFileAttachmentKey: (NSDictionary *) part
-		       intoArray: (NSMutableArray *) keys
-		        withPath: (NSString *) path
-                       andPrefix: (NSString *) prefix
-{
-  NSString *filename, *mimeType;
-  NSDictionary *currentFile;
-
-  filename = [part filename];
-
-  mimeType = [NSString stringWithFormat: @"%@/%@",
-		       [part objectForKey: @"type"],
-		       [part objectForKey: @"subtype"]];
-  
-  if (!filename)
-      // We might end up here because of MUA that actually strips the
-      // Content-Disposition (and thus, the filename) when mails containing
-      // attachments have been forwarded. Thunderbird (2.x) does just that
-      // when forwarding mails with images attached to them (using cid:...).
-      if ([mimeType hasPrefix: @"application/"] ||
-	  [mimeType hasPrefix: @"audio/"] ||
-	  [mimeType hasPrefix: @"image/"] ||
-	  [mimeType hasPrefix: @"video/"])
-          filename = [NSString stringWithFormat: @"unknown_%@", path];
-
-  if (filename)
-    {
-      currentFile = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  filename, @"filename",
-                                  [mimeType lowercaseString], @"mimetype",
-                                  path, @"path",
-                                  [part objectForKey: @"encoding"], @"encoding",
-                                  [part objectForKey:@ "size"], @"size",
-                                  [NSString stringWithFormat: @"%@/%@", prefix, [filename stringByEscapingURL]], @"url",
-                                  nil];
-      [keys addObject: currentFile];
-    }
-}
-
-//
-//
-//
-- (void) _fetchFileAttachmentKeysInPart: (NSDictionary *) part
-                              intoArray: (NSMutableArray *) keys
-                               withPath: (NSString *) path
-                              andPrefix: (NSString *) prefix
-{
-  NSMutableDictionary *currentPart;
-  NSString *newPath;
-  NSArray *subparts;
-  NSString *type;
-  NSUInteger i;
-
-  type = [[part objectForKey: @"type"] lowercaseString];
-  if ([type isEqualToString: @"multipart"])
-    {
-      subparts = [part objectForKey: @"parts"];
-      for (i = 1; i <= [subparts count]; i++)
-	{
-	  currentPart = [subparts objectAtIndex: i-1];
-	  if (path)
-	    newPath = [NSString stringWithFormat: @"%@.%d", path, i];
-	  else
-	    newPath = [NSString stringWithFormat: @"%d", i];
-	  [self _fetchFileAttachmentKeysInPart: currentPart
-                                     intoArray: keys
-                                      withPath: newPath
-                                     andPrefix: [NSString stringWithFormat: @"%@/%i", prefix, i]];
-	}
-    }
-  else
-    {
-      if (!path)
-        path = @"1";
-      [self _fetchFileAttachmentKey: part
-                          intoArray: keys
-                           withPath: path
-                          andPrefix: prefix];
-    }
-}
-
-//
-//
-//
-#warning we might need to handle parts with a "name" attribute
-- (NSArray *) fetchFileAttachmentKeys
-{
-  NSString *prefix;
-  NSMutableArray *keys;
-
-  prefix = [[self soURL] absoluteString];
-  if ([prefix hasSuffix: @"/"])
-    prefix = [prefix substringToIndex: [prefix length] - 1];
-
-  keys = [NSMutableArray array];
-  [self _fetchFileAttachmentKeysInPart: [self bodyStructure]
-                             intoArray: keys withPath: nil andPrefix: prefix];
-
-  return keys;
 }
 
 @end

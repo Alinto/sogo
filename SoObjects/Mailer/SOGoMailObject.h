@@ -102,7 +102,9 @@ NSArray *SOGoMailCoreInfoKeys;
 - (NSDictionary *) fetchPlainTextParts;
 - (NSDictionary *) fetchPlainTextStrings:(NSArray *)_fetchKeys;
 
-- (NSDictionary *) fetchAttachmentIds;
+- (BOOL) hasAttachment;
+- (NSDictionary *) fetchFileAttachmentIds;
+- (NSArray *) fetchFileAttachmentKeys;
 
 /* flags */
 

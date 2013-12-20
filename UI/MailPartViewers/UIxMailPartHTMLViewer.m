@@ -839,7 +839,7 @@ static NSData* _sanitizeContent(NSData *theData)
              createXMLReaderForMimeType: @"text/html"];
 
   handler = [_UIxHTMLMailContentHandler new];
-  [handler setAttachmentIds: [mail fetchAttachmentIds]];
+  [handler setAttachmentIds: [mail fetchFileAttachmentIds]];
 
   // We check if we got an unsupported charset. If so
   // we convert everything to UTF-16{LE,BE} so it passes
@@ -947,7 +947,7 @@ static NSData* _sanitizeContent(NSData *theData)
     encoding = @"us-ascii";
 
   handler = [_UIxHTMLMailContentHandler new];
-  [handler setAttachmentIds: [mail fetchAttachmentIds]];
+  [handler setAttachmentIds: [mail fetchFileAttachmentIds]];
 
   // We check if we got an unsupported charset. If so
   // we convert everything to UTF-16{LE,BE} so it passes
