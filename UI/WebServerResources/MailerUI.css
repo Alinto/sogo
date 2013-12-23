@@ -374,25 +374,24 @@ TR.mailer_listcell_regular TD A
 }
 
 /* mail viewer */
-#editDraftButton
+#actionButtons
 {
-  position: absolute;
-  top: 2.5em;
-  right: 1em;
+    position: absolute;
+    top: 2.5em;
+    right: 1em;
 }
 
+.popup #actionButtons
+{
+  top: 7.0em;
+}
+
+#editDraftButton,
 #loadImagesButton
 {
-  position: absolute;
-  top: 2.5em;
-  right: 1em;
+    float: right;
 }
 
-.popup #loadImagesButton
-{
-  top: 9.0em;
-  right: 1em;
-}
 
 #signedImage
 {
