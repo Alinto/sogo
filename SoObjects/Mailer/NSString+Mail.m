@@ -83,14 +83,16 @@
 {
   if ((self = [super init]))
     {
-      images = nil;
-
-      ignoreContentTags = nil;
-      specialTreatmentTags = nil;
+      ignoreContentTags = [NSArray arrayWithObjects: @"head", @"script",
+                                   @"style", nil];
+      specialTreatmentTags = [NSArray arrayWithObjects: @"body", @"p", @"ul",
+                                      @"li", @"table", @"tr", @"td", @"th",
+                                      @"br", @"hr", @"dt", @"dd", nil];
       [ignoreContentTags retain];
       [specialTreatmentTags retain];
 
       ignoreContent = NO;
+      images = nil;
       result = nil;
 
       orderedList = NO;
@@ -107,12 +109,6 @@
 
   if (!htmlToTextContentHandler)
     htmlToTextContentHandler = [self new];
-
-  [htmlToTextContentHandler setIgnoreContentTags: [NSArray arrayWithObjects: @"head", @"script",
-                                                           @"style", nil]];
-  [htmlToTextContentHandler setSpecialTreatmentTags: [NSArray arrayWithObjects: @"body", @"p", @"ul",
-                                                              @"li", @"table", @"tr", @"td", @"th",
-                                                              @"br", @"hr", @"dt", @"dd", nil]];
 
   return htmlToTextContentHandler;
 }
