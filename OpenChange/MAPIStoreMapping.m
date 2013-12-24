@@ -129,9 +129,13 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
 - (NSString *) urlFromID: (uint64_t) idNbr
 {
   char* url = NULL;
+  enum mapistore_error ret;
+  bool soft_delete = false;
 
-  indexing->get_uri(indexing, [username UTF8String],
-                    memCtx, idNbr, &url, false);
+  ret = indexing->get_uri(indexing, [username UTF8String],
+                          memCtx, idNbr, &url, &soft_delete);
+  if (ret != MAPISTORE_SUCCESS)
+    return NULL;
   NSString *res = [[[NSString alloc] initWithUTF8String:url] autorelease];
   talloc_free(url);
 
