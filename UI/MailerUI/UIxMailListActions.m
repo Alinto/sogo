@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2006-2011 Inverse inc.
+  Copyright (C) 2006-2013 Inverse inc.
 
   This file is part of SOGo
 
@@ -861,8 +861,9 @@
 
   flags = [[message objectForKey: @"flags"] objectEnumerator];
   while ((currentFlag = [flags nextObject]))
-    if ([currentFlag hasPrefix: @"$label"])
-      [labels addObject: [currentFlag substringFromIndex: 1]];
+    {
+      [labels addObject: currentFlag];
+    }
   
   return [labels componentsJoinedByString: @" "];
 }

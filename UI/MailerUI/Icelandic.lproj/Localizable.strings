@@ -225,11 +225,6 @@
 
 /* Label popup menu */
 "None" = "Engin";
-"Important" = "Mikilvægt";
-"Work" = "Vinna";
-"Personal" = "Persónulegt";
-"To Do" = "Verkþáttur";
-"Later" = "Seinna";
 
 /* Mark popup menu */
 "As Read" = "Sem lesið";

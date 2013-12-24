@@ -111,20 +111,19 @@
 "personalCalendar" = "Calendari personal";
 "firstCalendar" = "Primer calendari habilitat";
 
-"reminderTime_0000" = "0 minuts";
-"reminderTime_0005" = "5 minuts";
-"reminderTime_0010" = "10 minuts";
-"reminderTime_0015" = "15 minuts";
-"reminderTime_0030" = "30 minuts";
-"reminderTime_0100" = "1 hora";
-"reminderTime_0200" = "2 hores";
-"reminderTime_0400" = "4 hores";
-"reminderTime_0800" = "8 hores";
-"reminderTime_1200" = "1/2 dia";
-"reminderTime_2400" = "1 dia";
-"reminderTime_4800" = "2 dies";
+"reminder_5_MINUTES_BEFORE" = "5 minuts";
+"reminder_10_MINUTES_BEFORE" = "10 minuts";
+"reminder_15_MINUTES_BEFORE" = "15 minuts";
+"reminder_30_MINUTES_BEFORE" = "30 minuts";
+"reminder_1_HOUR_BEFORE" = "1 hora";
+"reminder_2_HOURS_BEFORE" = "2 hores";
+"reminder_5_HOURS_BEFORE"= "5 hores";
+"reminder_15_HOURS_BEFORE"= "15 hores";
+"reminder_1_DAY_BEFORE" = "1 dia";
+"reminder_2_DAYS_BEFORE" = "2 dies";
 
 /* Mailer */
+"Label" = "Etiquetar";
 "Show subscribed mailboxes only" = "Mostrar només les bústies subscrites";
 "Sort messages by threads" = "Ordenar els missatges per temes";
 "Check for new mail:" = "Comprovar nou correu: ";

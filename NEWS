@@ -1,3 +1,51 @@
+2.1.2 (2013-11-XX)
+------------------
+
+New features
+ - it's now possible to set a default reminder for calendar components
+   using SOGoCalendarDefaultReminder
+
+Enhancements
+ - we now automatically convert <img src=data...> into file attachments
+   using CIDs. This prevents Outlook issues.
+ - updated Finnish translation
+
+Bug fixes
+ - 
+
+2.1.1b (2013-12-04)
+-------------------
+
+Enhancements
+ - updated CKEditor to version 4.3.0 and added tab module
+
+Bug fixes
+ - HTML formatting is now retained when forwarding/replying to a mail using the HTML editor.
+ - put the text part before the HTML part when composing mail to fix a display issue with Thunderbird (#2512)
+
+2.1.1a (2013-11-22)
+-------------------
+
+Bug fixes
+ - fixed Sieve filters editor (#2504)
+ - moved missing translation to UI/Common (#2499)
+ - fixed potential crasher in OpenChange
+
+2.1.1 (2013-11-19)
+------------------
+
+New features
+ - creation and modification of mail labels
+
+Enhancements
+ - the color picker is no longer a popup window
+
+Bug fixes
+ - fixed utf8 character handling in special folder names
+   Special folder names can now be set as UTF8 or modified UTF7 in sogo.conf
+ - fixed reply-to header not being set for auxiliary IMAP accounts
+ - fixed handling of broken/invalid email addresses
+
 2.1.0 (2013-11-07)
 ------------------
 
@@ -32,7 +80,7 @@ Bug fixes
  - fixed S/MIME verification issues with certain OpenSSL versions
  - worked around an issue with chunked encoding of CAS replies (#2408)
  - fixed OpenChange corruption issue regarding predecessors change list (#2405)
- - avoid unnecessary UTF-7 conversions (#2318) 
+ - avoid unnecessary UTF-7 conversions (#2318)
  - improved RTF parser to fix vCards (#2354)
  - fixed definition of the COMPLETED attribute of vTODO (#2240)
  - fixed DAV:resource-id property when sharing calendars (#2399)

@@ -122,6 +122,8 @@
   [MAPIApp setUserContext: userContext];
   moduleName = [self MAPIModuleName];
   parentFolder = [[userContext rootFolders] objectForKey: moduleName];
+  nameInContainer = nil;
+
   if (![parentFolder newFolderWithName: folderName
                        nameInContainer: &nameInContainer])
     mapistoreURI = [NSString stringWithFormat: @"sogo://%@@%@/%@/",

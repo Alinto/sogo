@@ -12,6 +12,8 @@ publish_info_text = "Odesílatel Vás informuje o přiložené události.";
 cancel_info_text = "Vaše pozvánka nebo celá událost byla zrušena.";
 request_info_no_attendee = "navrhuje setkání účastníků. Tento mail jste obdrželi jako oznámení, nejste nastaveni jako účastník.";
 Appointment = "Schůzka";
+"Status Update" = "Aktualizace stavu";
+was = "bylo";
 
 Organizer = "Organizátor";
 Time = "Čas";

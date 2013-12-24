@@ -534,14 +534,12 @@
   [r appendString: [[object objectForKey: @"c_name"] stringByEscapingURL]];
   [r appendString: @"</D:href>"];
 
-//   NSLog (@"(appendPropstats...): %@", [NSDate date]);
   propstats = [self _propstats: properties count: propertiesCount
                       ofObject: object];
   max = [propstats count];
   for (count = 0; count < max; count++)
     [self _appendPropstat: [propstats objectAtIndex: count]
-	  toBuffer: r];
-//   NSLog (@"/(appendPropstats...): %@", [NSDate date]);
+                 toBuffer: r];
 
   [r appendString: @"</D:response>"];
 }
@@ -562,8 +560,10 @@
   NSString *url, *baseURL, *cname;
   NSString **propertiesArray;
   NSMutableString *buffer;
-  unsigned int count, max, propertiesCount;
+  NSDictionary *object;
 
+  unsigned int count, max, propertiesCount;
+  
   baseURL = [self davURLAsString];
 #warning review this when fixing http://www.scalableogo.org/bugs/view.php?id=276
   if (![baseURL hasSuffix: @"/"])
@@ -580,8 +580,9 @@
       element = [refs objectAtIndex: count];
       url = [[[element firstChild] nodeValue] stringByUnescapingURL];
       cname = [self _deduceObjectNameFromURL: url fromBaseURL: baseURL];
-      if (cname)
-        [self appendObject: [source lookupContactEntry: cname]
+      object = [source lookupContactEntry: cname];
+      if (object)
+        [self appendObject: object
                 properties: propertiesArray
                      count: propertiesCount
                withBaseURL: baseURL

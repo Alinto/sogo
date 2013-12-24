@@ -1,0 +1,16 @@
+etc/cron.d/sogo
+etc/default/sogo
+etc/logrotate.d/sogo
+etc/sogo/sogo.conf
+usr/sbin/*
+usr/lib/GNUstep/Frameworks/*
+usr/lib/GNUstep/Libraries/*
+usr/lib/GNUstep/OCSTypeModels/*
+usr/lib/GNUstep/SaxDrivers-4.9/*
+usr/lib/GNUstep/SaxMappings/*
+usr/lib/GNUstep/WOxElemBuilders-4.9/*
+usr/lib/GNUstep/SOGo/*.SOGo
+usr/lib/GNUstep/SOGo/Templates
+usr/lib/GNUstep/SOGo/WebServerResources
+usr/lib/lib*.so.*
+usr/share/lintian/*

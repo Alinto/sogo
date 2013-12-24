@@ -699,7 +699,6 @@ function onViewEventCallback(http) {
             var cellDimensions = cell.getDimensions();
             var div = $("eventDialog");
             var divDimensions = div.getDimensions();
-            var viewPosition = $("calendarView").cumulativeOffset();
             var view;
             var left;
             var top = cellPosition[1] - 5;
@@ -965,7 +964,7 @@ function eventsListCallback(http) {
                 td.observe("mousedown", listRowMouseDownHandler, true);
                 var colorDiv = createElement("div", false, "colorBox calendarFolder" + calendar);
                 td.appendChild(colorDiv);
-                colorDiv.update('OO');
+                colorDiv.update('&nbsp;');
                 var span = createElement("span");
                 td.appendChild(span);
                 span.update(data[i][4]); // title
@@ -1093,7 +1092,7 @@ function tasksListCallback(http) {
                 row.appendChild(cell);
                 var colorDiv = createElement("div", false, "colorBox calendarFolder" + calendar);
                 cell.appendChild(colorDiv);
-                colorDiv.update('OO');
+                colorDiv.update('&nbsp;');
                 var t = new Element ("span");
                 cell.appendChild(t);
                 t.update(data[i][4]); // title
@@ -2834,8 +2833,9 @@ function initCalendarSelector() {
 
 function onCalendarSelectionChange(event) {
     var target = Event.element(event);
-    if (target.tagName == 'SPAN')
+    if (target.tagName == 'DIV') {
         target = target.parentNode;
+    }
 
     onRowClick(event, target);
 }
@@ -3073,7 +3073,7 @@ function appendCalendar(folderName, folderPath) {
         var colorBox = document.createElement("div");
         li.appendChild(colorBox);
         li.appendChild(document.createTextNode(folderName));
-        colorBox.appendChild(document.createTextNode("OO"));
+        colorBox.appendChild(document.createTextNode("\u00a0"));
 
         $(colorBox).addClassName("colorBox");
         $(colorBox).addClassName('calendarFolder' + folderPath.substr(1));

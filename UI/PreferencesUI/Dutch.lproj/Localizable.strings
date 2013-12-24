@@ -111,20 +111,19 @@
 "personalCalendar" = "Persoonlijke agenda";
 "firstCalendar" = "Eerste ingeschakelde agenda";
 
-"reminderTime_0000" = "0 minuten";
-"reminderTime_0005" = "5 minuten";
-"reminderTime_0010" = "10 minuten";
-"reminderTime_0015" = "15 minuten";
-"reminderTime_0030" = "30 minuten";
-"reminderTime_0100" = "1 uur";
-"reminderTime_0200" = "2 uren";
-"reminderTime_0400" = "4 uren";
-"reminderTime_0800" = "8 uren";
-"reminderTime_1200" = "1/2 dag";
-"reminderTime_2400" = "1 dag";
-"reminderTime_4800" = "2 dagen";
+"reminder_5_MINUTES_BEFORE" = "5 minuten";
+"reminder_10_MINUTES_BEFORE" = "10 minuten";
+"reminder_15_MINUTES_BEFORE" = "15 minuten";
+"reminder_30_MINUTES_BEFORE" = "30 minuten";
+"reminder_1_HOUR_BEFORE" = "1 uur";
+"reminder_2_HOURS_BEFORE" = "2 uren";
+"reminder_5_HOURS_BEFORE"= "5 uren";
+"reminder_15_HOURS_BEFORE"= "15 uren";
+"reminder_1_DAY_BEFORE" = "1 dag";
+"reminder_2_DAYS_BEFORE" = "2 dagen";
 
 /* Mailer */
+"Label" = "Labelen";
 "Show subscribed mailboxes only" = "Toon alleen geabonneerde postvakken";
 "Sort messages by threads" = "Berichten sorteren op threads";
 "Check for new mail:" = "Controleren op nieuwe mail:";

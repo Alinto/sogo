@@ -227,11 +227,6 @@
 
 /* Label popup menu */
 "None" = "Ingen";
-"Important" = "Viktig";
-"Work" = "Arbeid";
-"Personal" = "Personlig";
-"To Do" = "Gjøremål";
-"Later" = "Senere";
 
 /* Mark popup menu */
 "As Read" = "Som lest";

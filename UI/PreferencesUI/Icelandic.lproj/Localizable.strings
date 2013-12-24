@@ -92,20 +92,19 @@
 "firstWeekOfYear_First4DayWeek" = "Fyrstu 4 dagar viku";
 "firstWeekOfYear_FirstFullWeek" = "Fyrsta heila vika";
 
-"reminderTime_0000" = "0 mínútur";
-"reminderTime_0005" = "5 mínútur";
-"reminderTime_0010" = "10 mínútur";
-"reminderTime_0015" = "15 mínútur";
-"reminderTime_0030" = "30 mínútur";
-"reminderTime_0100" = "1 klst.";
-"reminderTime_0200" = "2 klst.";
-"reminderTime_0400" = "4 klst.";
-"reminderTime_0800" = "8 klst.";
-"reminderTime_1200" = "1/2 dagur";
-"reminderTime_2400" = "1 dagur";
-"reminderTime_4800" = "2 dagar";
+"reminder_5_MINUTES_BEFORE" = "5 mínútur";
+"reminder_10_MINUTES_BEFORE" = "10 mínútur";
+"reminder_15_MINUTES_BEFORE" = "15 mínútur";
+"reminder_30_MINUTES_BEFORE" = "30 mínútur";
+"reminder_1_HOUR_BEFORE" = "1 klst.";
+"reminder_2_HOURS_BEFORE" = "2 klst.";
+"reminder_5_HOURS_BEFORE"= "5 klst.";
+"reminder_15_HOURS_BEFORE"= "15 klst.";
+"reminder_1_DAY_BEFORE" = "1 dagur";
+"reminder_2_DAYS_BEFORE" = "2 dagar";
 
 /* Mailer */
+"Label" = "Merki";
 "Show subscribed mailboxes only" = "Sýna aðeins pósthólf sem eru í áskrift";
 "Check for new mail:" = "Sækja nýjan póst:";
 "messagecheck_manually" = "Handvirkt";

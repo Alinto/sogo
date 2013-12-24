@@ -1,9 +1,6 @@
 /* UIxPreferences.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +28,8 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 
+#import <NGImap4/NSString+Imap4.h>
+
 #import <NGExtensions/NSObject+Logs.h>
 
 #import <NGCards/iCalTimeZone.h>
@@ -47,6 +46,7 @@
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
+#import <Mailer/SOGoMailLabel.h>
 
 #import "UIxPreferences.h"
 
@@ -58,11 +58,55 @@
    workweek = from -> to
    identities */
 
+static NSArray *reminderItems = nil;
+static NSArray *reminderValues = nil;
+
 @implementation UIxPreferences
+
++ (void) initialize
+{
+  if (!reminderItems && !reminderValues)
+    {
+      reminderItems = [NSArray arrayWithObjects:
+			       @"5_MINUTES_BEFORE",
+			       @"10_MINUTES_BEFORE",
+			       @"15_MINUTES_BEFORE",
+			       @"30_MINUTES_BEFORE",
+			       @"45_MINUTES_BEFORE",
+			       @"-",
+			       @"1_HOUR_BEFORE",
+			       @"2_HOURS_BEFORE",
+			       @"5_HOURS_BEFORE",
+			       @"15_HOURS_BEFORE",
+			       @"-",
+			       @"1_DAY_BEFORE",
+			       @"2_DAYS_BEFORE",
+			       @"1_WEEK_BEFORE",
+			       nil];
+      reminderValues = [NSArray arrayWithObjects:
+				@"-PT5M",
+				@"-PT10M",
+				@"-PT15M",
+				@"-PT30M",
+				@"-PT45M",
+				@"",
+				@"-PT1H",
+				@"-PT2H",
+				@"-PT5H",
+				@"-PT15H",
+				@"",
+				@"-P1D",
+				@"-P2D",
+				@"-P1W",
+				nil];
+
+      [reminderItems retain];
+      [reminderValues retain];
+    }
+}
 
 - (id) init
 {
-  //NSDictionary *locale;
   SOGoDomainDefaults *dd;
   
   if ((self = [super init]))
@@ -77,6 +121,9 @@
       defaultCategoryColor = nil;
       category = nil;
 
+      label = nil;
+      mailLabels = nil;
+      
       ASSIGN (daysOfWeek, [locale objectForKey: NSWeekDayNameArray]);
 
       dd = [user domainDefaults];
@@ -120,6 +167,8 @@
   [calendarCategoriesColors release];
   [defaultCategoryColor release];
   [category release];
+  [label release];
+  [mailLabels release];
   [contactsCategories release];
   [forwardOptions release];
   [daysOfWeek release];
@@ -480,6 +529,54 @@
   return [userDefaults calendarTasksDefaultClassification];
 }
 
+- (NSArray *) reminderList
+{
+  return reminderItems;
+}
+
+- (NSString *) itemReminderText
+{
+  NSString *text;
+
+  if ([item isEqualToString: @"-"])
+    text = item;
+  else
+    text = [self labelForKey: [NSString stringWithFormat: @"reminder_%@", item]];
+
+  return text;
+}
+
+- (void) setReminder: (NSString *) theReminder
+{
+  NSString *value;
+  int index;
+
+  index = NSNotFound;
+  value = @"NONE";
+  
+  if (theReminder && [theReminder caseInsensitiveCompare: @"-"] != NSOrderedSame)
+    index = [reminderItems indexOfObject: theReminder];
+
+  if (index != NSNotFound)
+    value = [reminderValues objectAtIndex: index];
+
+  [userDefaults setCalendarDefaultReminder: value];
+}
+
+- (NSString *) reminder
+{
+  NSString *value;
+  int index;
+
+  value = [userDefaults calendarDefaultReminder];
+  index = [reminderValues indexOfObject: value];
+
+  if (index != NSNotFound)
+    return [reminderItems objectAtIndex: index];
+ 
+  return @"NONE";
+}
+
 - (NSArray *) hoursList
 {
   static NSMutableArray *hours = nil;
@@ -551,58 +648,6 @@
 - (void) setUserFirstWeek: (NSString *) newFirstWeek
 {
   [userDefaults setFirstWeekOfYear: newFirstWeek];
-}
-
-- (BOOL) reminderEnabled
-{
-  return [userDefaults reminderEnabled];
-}
-
-- (void) setReminderEnabled: (BOOL) newValue
-{
-  [userDefaults setReminderEnabled: newValue];
-}
-
-- (BOOL) remindWithASound
-{
-  return [userDefaults remindWithASound];
-}
-
-- (void) setRemindWithASound: (BOOL) newValue
-{
-  [userDefaults setRemindWithASound: newValue];
-}
-
-- (NSArray *) reminderTimesList
-{
-  static NSArray *reminderTimesList = nil;
-
-  if (!reminderTimesList)
-    {
-      reminderTimesList = [NSArray arrayWithObjects: @"0000", @"0005",
-                                   @"0010", @"0015", @"0030", @"0100",
-                                   @"0200", @"0400", @"0800", @"1200",
-                                   @"2400", @"4800", nil];
-      [reminderTimesList retain];
-    }
-
-  return reminderTimesList;
-}
-
-- (NSString *) itemReminderTimeText
-{
-  return [self labelForKey:
-                 [NSString stringWithFormat: @"reminderTime_%@", item]];
-}
-
-- (NSString *) userReminderTime
-{
-  return [userDefaults reminderTime];
-}
-
-- (void) setReminderTime: (NSString *) newTime
-{
-  [userDefaults setReminderTime: newTime];
 }
 
 /* Mailer */
@@ -1174,6 +1219,67 @@
   return [calendarCategories
            sortedArrayUsingSelector: @selector (localizedCaseInsensitiveCompare:)];
 }
+
+- (SOGoMailLabel *) label
+{
+  return label;
+}
+
+- (void) setLabel: (SOGoMailLabel *) newLabel
+{
+  ASSIGN(label, newLabel);
+}
+
+- (NSArray *) mailLabelList
+{
+  if (!mailLabels)
+    {
+      NSDictionary *v;
+     
+      v = [[[context activeUser] userDefaults] mailLabelsColors];      
+      ASSIGN(mailLabels, [SOGoMailLabel labelsFromDefaults: v  component: self]);
+    }
+  
+  return mailLabels;
+}
+
+- (NSString *) mailLabelsValue
+{
+  return @"";
+}
+
+- (void) setMailLabelsValue: (NSString *) value
+{
+  NSMutableDictionary *sanitizedLabels;
+  NSDictionary *newLabels;
+  NSArray *allKeys;
+  NSString *name;
+  int i;
+
+  newLabels = [value objectFromJSONString];
+  if (newLabels && [newLabels isKindOfClass: [NSDictionary class]])
+    {
+      // We encode correctly our keys
+      sanitizedLabels = [NSMutableDictionary dictionary];
+      allKeys = [newLabels allKeys];
+
+      for (i = 0; i < [allKeys count]; i++)
+        {
+          name = [allKeys objectAtIndex: i];
+
+          if (![name is7bitSafe])
+            name = [name stringByEncodingImap4FolderName];
+
+          name = [name lowercaseString];
+
+          [sanitizedLabels setObject: [newLabels objectForKey: [allKeys objectAtIndex: i]]
+                              forKey: name];
+        }
+
+      [userDefaults setMailLabelsColors: sanitizedLabels];
+    }
+}
+
 
 - (void) setCategory: (NSString *) newCategory
 {

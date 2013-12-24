@@ -8,10 +8,15 @@ SUBPROJECTS = \
 	SOPE/GDLContentStore \
 	OGoContentStore	\
 	SoObjects	\
-	Main		\
-	UI		\
 	Tools		\
-	Tests/Unit	\
+	Tests/Unit
 
+ifeq ($(daemon),yes)
+SUBPROJECTS += Main
+endif
+
+ifeq ($(webui),yes)
+SUBPROJECTS += UI
+endif
 
 include $(GNUSTEP_MAKEFILES)/aggregate.make

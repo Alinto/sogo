@@ -1,9 +1,5 @@
 /*
-  Copyright (C) 2007-2011 Inverse inc.
-  Copyright (C) 2004-2005 SKYRIX Software AG
-
-  Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
-          Ludovic Marcotte <lmarcotte@inverse.ca>
+  Copyright (C) 2007-2013 Inverse inc.
 
   This file is part of SOGo.
 
@@ -48,6 +44,7 @@
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
 #import <Mailer/SOGoMailFolder.h>
+#import <Mailer/SOGoMailLabel.h>
 #import <Mailer/SOGoMailObject.h>
 #import <Mailer/SOGoSentFolder.h>
 #import <SOGo/NSDictionary+URL.h>
@@ -82,6 +79,12 @@
     }
 
   return self;
+}
+
+- (void) dealloc
+{
+  RELEASE(_currentLabel);
+  [super dealloc];
 }
 
 - (void) _setupContext
@@ -685,6 +688,34 @@
     }
   
   return [folders jsonRepresentation];
+}
+
+//
+// Standard mapping done by Thunderbird:
+//
+// label1 => Important
+// label2 => Work
+// label3 => Personal
+// label4 => To Do
+// label5 => Later
+//
+- (NSArray *) availableLabels
+{
+  NSDictionary *v;
+
+  v = [[[context activeUser] userDefaults] mailLabelsColors];
+
+  return [SOGoMailLabel labelsFromDefaults: v  component: self];
+}
+
+- (void) setCurrentLabel: (SOGoMailLabel *) theCurrentLabel
+{
+  ASSIGN(_currentLabel, theCurrentLabel);
+}
+
+- (SOGoMailLabel *) currentLabel
+{
+  return _currentLabel;
 }
 
 @end /* UIxMailMainFrame */

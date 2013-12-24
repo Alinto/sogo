@@ -46,6 +46,9 @@ DIV#bgDialogDiv
 { background-color: #555;
   filter: alpha(opacity=40); }
 
+DIV.colorBox
+{ line-height: 15px; }
+
 /* MailerUI */
 
 IMG.dragMessage
@@ -87,6 +90,10 @@ DIV.eventInside.needs-action
 DIV.eventInside.delegated,
 DIV.eventInside.declined
 { filter: alpha(opacity=40); }
+
+#calendarList DIV.colorBox,
+#schedulerTabs DIV.colorBox
+{ *display: inline; /* for IE7 */ }
 
 /* UIxAppointmentEditor */
 

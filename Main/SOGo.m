@@ -29,12 +29,6 @@
 #import <Foundation/NSRunLoop.h>
 #import <Foundation/NSURL.h>
 
-#import <GDLAccess/EOAdaptorChannel.h>
-#import <GDLContentStore/GCSChannelManager.h>
-#import <GDLContentStore/GCSFolderManager.h>
-#import <GDLContentStore/GCSAlarmsFolder.h>
-#import <GDLContentStore/GCSSessionsFolder.h>
-
 #import <NGObjWeb/SoClassSecurityInfo.h>
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest+So.h>
@@ -58,10 +52,10 @@
 #import <SOGo/SOGoPublicBaseFolder.h>
 #import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoProxyAuthenticator.h>
+#import <SOGo/SOGoSQLInit.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoSystemDefaults.h>
-#import <SOGo/SOGoWebAuthenticator.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <SOGo/NSObject+DAV.h>
@@ -76,7 +70,6 @@
 
 static unsigned int vMemSizeLimit;
 static BOOL doCrashOnSessionCreate;
-static BOOL hasCheckedTables;
 static BOOL debugRequests;
 static BOOL useRelativeURLs;
 static BOOL trustProxyAuthentication;
@@ -163,117 +156,9 @@ static BOOL debugLeaks;
   return self;
 }
 
-#warning the following methods should be replaced with helpers in GCSSpecialQueries
-- (NSString *) _sqlScriptForTable: (NSString *) tableName
-			 withType: (NSString *) tableType
-		    andFileSuffix: (NSString *) fileSuffix
-{
-  NSString *tableFile, *descFile;
-  NGBundleManager *bm;
-  NSBundle *bundle;
-  unsigned int length;
-
-  bm = [NGBundleManager defaultBundleManager];
-
-  bundle = [bm bundleWithName: @"MainUI" type: @"SOGo"];
-  length = [tableType length] - 3;
-  tableFile = [tableType substringToIndex: length];
-  descFile
-    = [bundle pathForResource: [NSString stringWithFormat: @"%@-%@",
-					 tableFile, fileSuffix]
-	      ofType: @"sql"];
-  if (!descFile)
-    descFile = [bundle pathForResource: tableFile ofType: @"sql"];
-
-  return [[NSString stringWithContentsOfFile: descFile]
-	   stringByReplacingString: @"@{tableName}"
-	   withString: tableName];
-}
-
-- (void) _checkTableWithCM: (GCSChannelManager *) cm
-		  tableURL: (NSString *) url
-		   andType: (NSString *) tableType
-{
-  NSString *tableName, *fileSuffix, *tableScript;
-  EOAdaptorChannel *tc;
-  NSURL *channelURL;
-
-  channelURL = [NSURL URLWithString: url];
-  fileSuffix = [channelURL scheme];
-  tc = [cm acquireOpenChannelForURL: channelURL];
-
-  /* FIXME: make use of [EOChannelAdaptor describeTableNames] instead */
-  tableName = [url lastPathComponent];
-  if ([tc evaluateExpressionX:
-	    [NSString stringWithFormat: @"SELECT count(*) FROM %@",
-		      tableName]])
-    {
-      tableScript = [self _sqlScriptForTable: tableName
-			  withType: tableType
-			  andFileSuffix: fileSuffix];
-      if (![tc evaluateExpressionX: tableScript])
-	[self logWithFormat: @"table '%@' successfully created!", tableName];
-    }
-  else
-    [tc cancelFetch];
-
-  [cm releaseChannel: tc];
-}
-
-- (BOOL) _checkMandatoryTables
-{
-  GCSChannelManager *cm;
-  GCSFolderManager *fm;
-  NSString *urlStrings[] = {@"SOGoProfileURL", @"OCSFolderInfoURL", nil};
-  NSString **urlString;
-  NSString *value;
-  SOGoSystemDefaults *defaults;
-  BOOL ok;
-
-  defaults = [SOGoSystemDefaults sharedSystemDefaults];
-  ok = YES;
-  cm = [GCSChannelManager defaultChannelManager];
-
-  urlString = urlStrings;
-  while (ok && *urlString)
-    {
-      value = [defaults stringForKey: *urlString];
-      if (value)
-	{
-	  [self _checkTableWithCM: cm tableURL: value andType: *urlString];
-	  urlString++;
-	}
-      else
-	{
-	  NSLog (@"No value specified for '%@'", *urlString);
-	  ok = NO;
-	}
-    }
-
-  if (ok)
-    {
-      fm = [GCSFolderManager defaultFolderManager];
-
-      // Create the sessions table
-      [[fm sessionsFolder] createFolderIfNotExists];
-      
-      // Create the email alarms table, if required
-      if ([defaults enableEMailAlarms])
-	{
-	  [[fm alarmsFolder] createFolderIfNotExists];
-	}
-    }
-
-  return ok;
-}
-
 - (void) run
 {
-  if (!hasCheckedTables)
-    {
-      hasCheckedTables = YES;
-      [self _checkMandatoryTables];
-    }
+  SOGoEnsureMandatoryTables();
   [super run];
 }
 
@@ -282,13 +167,29 @@ static BOOL debugLeaks;
 - (id) authenticatorInContext: (WOContext *) context
 {
   id authenticator;
+  static id webAuthenticator = nil;
 
   if (trustProxyAuthentication)
     authenticator = [SOGoProxyAuthenticator sharedSOGoProxyAuthenticator];
   else
     {
       if ([[context request] handledByDefaultHandler])
-        authenticator = [SOGoWebAuthenticator sharedSOGoWebAuthenticator];
+        {
+          if (!webAuthenticator)
+            {
+              Class SOGoWebAuthenticator
+                  = NSClassFromString(@"SOGoWebAuthenticator");
+              webAuthenticator = [SOGoWebAuthenticator
+                                   performSelector: @selector(sharedSOGoWebAuthenticator)];
+              if (!webAuthenticator)
+                webAuthenticator = [NSNull null];
+            }
+
+          if ([webAuthenticator isNotNull])
+            authenticator = webAuthenticator;
+          else
+            authenticator = nil;
+        }
       else
         authenticator = [SOGoDAVAuthenticator sharedSOGoDAVAuthenticator];
     }

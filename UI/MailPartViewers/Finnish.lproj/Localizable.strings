@@ -12,6 +12,8 @@ publish_info_text = "Lähettäjä ilmoittaa sinulle liitteenä olevan tapahtuman
 cancel_info_text = "Kutsusi tai tapahtuma on peruttu.";
 request_info_no_attendee = "ehdottaa kokousta osallistujille. Saat tämän sähköpostin ilmoituksena, et osallistujana.";
 Appointment = "Tapahtuma";
+"Status Update" = "Tilapäivitys";
+was = "oli";
 
 Organizer = "Järjestäjä";
 Time = "Aika";

@@ -101,6 +101,14 @@
 "Due Date:" = "تاريخ الاستحقاق:";
 "Location:" = "الموقع:";
 
+/* Mail labels */
+"Important" = "مهم";
+"Work" = "عمل";
+"Work" = "عمل";
+"Personal" = "شخصي";
+"To Do" = "تفعل";
+"Later" = "لاحقا";
+
 "a2_Sunday" = "ح";
 "a2_Monday" = "ن";
 "a2_Tuesday" = "ث";

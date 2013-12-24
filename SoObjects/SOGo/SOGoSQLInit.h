@@ -1,8 +1,8 @@
-/* UIxColorPicker.h - this file is part of SOGo
+/* SOGoSQLInit.h - this file is part of SOGo
  *
- * Copyright (C) 2008 Inverse inc.
+ * Copyright (C) 2013 Wolfgang Sourdeau
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Wolfgang Sourdeau <Wolfgang@Contre.COM>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +20,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef UIXCOLORPICKER_H
-#define UIXCOLORPICKER_H
+#ifndef SOGOSQLINIT_H
+#define SOGOSQLINIT_H
 
-#import <SOGoUI/UIxComponent.h>
+void SOGoEnsureMandatoryTables();
 
-@interface UIxColorPicker : UIxComponent
-@end
-
-#endif /* UIXCOLORPICKER_H */
+#endif /* SOGOSQLINIT_H */

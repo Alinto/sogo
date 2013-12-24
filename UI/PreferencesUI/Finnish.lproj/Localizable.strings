@@ -111,20 +111,23 @@
 "personalCalendar" = "Henkilökohtainen kalenteri";
 "firstCalendar" = "Ensimmäinen käyttöönotettu kalenteri";
 
-"reminderTime_0000" = "0 minuuttia";
-"reminderTime_0005" = "5 minuuttia";
-"reminderTime_0010" = "10 minuuttia";
-"reminderTime_0015" = "15 minuuttia";
-"reminderTime_0030" = "30 minuuttia";
-"reminderTime_0100" = "1 tunti";
-"reminderTime_0200" = "2 tuntia";
-"reminderTime_0400" = "4 tuntia";
-"reminderTime_0800" = "8 tuntia";
-"reminderTime_1200" = "puoli päivää";
-"reminderTime_2400" = "1 päivä";
-"reminderTime_4800" = "2 päivää";
+"reminder_NONE" = "Ei muistutusta";
+"reminder_5_MINUTES_BEFORE" = "5 minuuttia";
+"reminder_10_MINUTES_BEFORE" = "10 minuuttia";
+"reminder_15_MINUTES_BEFORE" = "15 minuuttia";
+"reminder_30_MINUTES_BEFORE" = "30 minuuttia";
+"reminder_45_MINUTES_BEFORE" = "45 minuuttia ennen";
+"reminder_1_HOUR_BEFORE" = "1 tunti";
+"reminder_2_HOURS_BEFORE" = "2 tuntia";
+"reminder_5_HOURS_BEFORE" = "5 tuntia";
+"reminder_15_HOURS_BEFORE" = "15 tuntia";
+"reminder_1_DAY_BEFORE" = "1 päivä";
+"reminder_2_DAYS_BEFORE" = "2 päivää";
+"reminder_1_WEEK_BEFORE" = "Viikkoa ennen";
 
 /* Mailer */
+"Labels" = "Otsikot";
+"Label" = "Otsikoi";
 "Show subscribed mailboxes only" = "Näytä vain tilatut sähköpostikansiot";
 "Sort messages by threads" = "Järjestä viestit ketjuiksi";
 "Check for new mail:" = "Hae uudet sähköpostit";
@@ -288,12 +291,8 @@
 "Flagged" = "Merkitty";
 "Junk" = "Roskaa";
 "Not Junk" = "Ei roskaa";
-"Label 1" = "Merkki 1";
-"Label 2" = "Merkki 2";
-"Label 3" = "Merkki 3";
-"Label 4" = "Merkki 4";
-"Label 5" = "Merkki 5";
 
+/* Password policy */
 "The password was changed successfully." = "Salasana vaihdettu onnistuneesti.";
 "Password must not be empty." = "Salasana ei saa olla tyhjä";
 "The passwords do not match. Please try again." = "Salasanat eivät täsmää. Ole hyvä ja yritä uudelleen.";

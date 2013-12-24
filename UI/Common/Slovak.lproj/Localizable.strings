@@ -101,6 +101,14 @@
 "Due Date:" = "Splatnosť:";
 "Location:" = "Umiestnenie:";
 
+/* Mail labels */
+"Important" = "Dôležité";
+"Work" = "Pracovné";
+"Work" = "Pracovné";
+"Personal" = "Osobné";
+"To Do" = "Treba urobiť";
+"Later" = "Neskôr";
+
 "a2_Sunday" = "Ne";
 "a2_Monday" = "Po";
 "a2_Tuesday" = "Ut";

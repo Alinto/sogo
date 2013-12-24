@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+
+# summary of how this script can be called:
+#        * <postinst> `configure' <most-recently-configured-version>
+#        * <old-postinst> `abort-upgrade' <new version>
+#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
+#          <new-version>
+#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
+#          <failed-install-package> <version> `removing'
+#          <conflicting-package> <version>
+# for details, see http://www.debian.org/doc/debian-policy/ or
+# the debian-policy package
+#
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+case "$1" in
+    configure)
+        # update timestamp on imgs,css,js to let apache know the files changed
+        if [ -d /usr/lib/GNUstep/SOGo/WebServerResources ]; then
+            find /usr/lib/GNUstep/SOGo/WebServerResources  -exec touch {} \;
+        fi
+
+        # Enforce owner+mode on configuration
+        chmod 750 /etc/sogo
+        chown root:sogo /etc/sogo
+        chmod 640 /etc/sogo/sogo.conf
+        chown root:sogo /etc/sogo/sogo.conf
+        ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+        ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 0
+    ;;
+esac
+
+update-rc.d sogo disable || true
+
+#DEBHELPER#
+
+exit 0

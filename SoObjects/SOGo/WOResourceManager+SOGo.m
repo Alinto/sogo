@@ -20,11 +20,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSBundle.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
 
 #import <NGExtensions/NSObject+Logs.h>
+
+#import "SOGoSystemDefaults.h"
 
 #import "WOResourceManager+SOGo.h"
 
@@ -32,7 +35,6 @@
 
 - (NSString *) pathToLocaleForLanguageNamed: (NSString *) _name
 {
-  static Class MainProduct = Nil;
   NSString *lpath;
   NSRange range;
   NSMutableArray *languages;
@@ -51,15 +53,10 @@
 			   languages: languages];
   if (![lpath length])
     {
-      if (!MainProduct)
-        {
-          MainProduct = NSClassFromString (@"MainUIProduct");
-          if (!MainProduct)
-            [self errorWithFormat: @"did not find MainUIProduct class!"];
-        }
-
-      lpath = [(id) MainProduct performSelector: NSSelectorFromString (@"pathToLocaleForLanguageNamed:")
-				     withObject: _name];
+      NSBundle *bundle
+          = [NSBundle bundleForClass: [SOGoSystemDefaults class]];
+      NSString *ldir = [_name stringByAppendingPathExtension:@"lproj"];
+      lpath = [bundle pathForResource: @"Locale" ofType: nil inDirectory: ldir];
       if (![lpath length])
         lpath = nil;
     }

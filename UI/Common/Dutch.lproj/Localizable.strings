@@ -101,6 +101,14 @@
 "Due Date:" = "Verloopdatum:";
 "Location:" = "Plaats:";
 
+/* Mail labels */
+"Important" = "Belangrijk";
+"Work" = "Werk";
+"Work" = "Werk";
+"Personal" = "Persoonlijk";
+"To Do" = "Te doen";
+"Later" = "Later";
+
 "a2_Sunday" = "Zo";
 "a2_Monday" = "Ma";
 "a2_Tuesday" = "Di";
