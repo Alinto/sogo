@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009-2013 Inverse inc.
+  Copyright (C) 2009-2014 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -614,20 +614,19 @@ static NSString *defaultUserID =  @"anyone";
   if (max > 1)
     {
       currentAccountName = [[self mailAccountFolder] nameInContainer];
-      if ([[folders objectAtIndex: 1] isEqualToString: currentAccountName])
-        {
-          for (count = 2; count < max; count++)
-            {
-              currentFolderName
-                = [[folders objectAtIndex: count] substringFromIndex: 6];
-              [imapDestinationFolder appendFormat: @"/%@", currentFolderName];
-            }
+      client = [[self imap4Connection] client];
+      [imap4 selectFolder: [self imap4URL]];
 
-          client = [[self imap4Connection] client];
-          if (client)
+      for (count = 2; count < max; count++)
+        {
+          currentFolderName = [[folders objectAtIndex: count] substringFromIndex: 6];
+          [imapDestinationFolder appendFormat: @"/%@", currentFolderName];
+        }
+
+      if (client)
+        {
+          if ([[folders objectAtIndex: 1] isEqualToString: currentAccountName])
             {
-              [imap4 selectFolder: [self imap4URL]];
-  
               // We make sure the destination IMAP folder exist, if not, we create it.
               result = [[client status: imapDestinationFolder
                                  flags: [NSArray arrayWithObject: @"UIDVALIDITY"]]
@@ -647,13 +646,69 @@ static NSString *defaultUserID =  @"anyone";
                                                                  objectForKey: @"description"]];
             }
           else
-            result = [NSException exceptionWithName: @"SOGoMailException"
-                                             reason: @"IMAP connection is invalid"
-                                           userInfo: nil];
+            {
+              // Destination folder is in a different account
+              SOGoMailAccounts *accounts;
+              SOGoMailAccount *account;
+              accounts = [[self container] container];
+              account = [accounts lookupName: [folders objectAtIndex: 1] inContext: localContext acquire: NO];
+              if ([account isKindOfClass: [NSException class]])
+                {
+                  result = [NSException exceptionWithHTTPStatus: 500
+                                                         reason: @"Cannot copy messages to other account."];
+                }
+              else
+                {
+                  NSEnumerator *messages;
+                  NSDictionary *message;
+                  NSData *content;
+                  NSArray *flags;
+
+                  // Fetch messages
+                  result = [client fetchUids: uids parts: [NSArray arrayWithObjects: @"RFC822", @"FLAGS", nil]];
+                  if ([[result objectForKey: @"result"] boolValue])
+                    {
+                      result = [result valueForKey: @"fetch"];
+                      if ([result isKindOfClass: [NSArray class]] && [result count] > 0)
+                        {
+                          // Copy each message to the other account
+                          client = [[account imap4Connection] client];
+                          [[account imap4Connection] selectFolder: imapDestinationFolder];
+                          messages = [result objectEnumerator];
+                          result = nil;
+                          while (result == nil && (message = [messages nextObject]))
+                            {
+                              if ((content = [message valueForKey: @"message"]) != nil)
+                                {
+                                  flags = [message valueForKey: @"flags"];
+                                  result = [client append: content toFolder: imapDestinationFolder withFlags: flags];
+                                  if ([[result objectForKey: @"result"] boolValue])
+                                    result = nil;
+                                  else
+                                    [self logWithFormat: @"ERROR: Can't append message: %@", result];
+                                }
+                            }
+                        }
+                      else
+                        {
+                          [self logWithFormat: @"ERROR: unexpected IMAP4 result (missing 'fetch'): %@", result];
+                          result = [NSException exceptionWithHTTPStatus: 500
+                                                                 reason: @"Unexpected IMAP4 result"];
+                        }
+                    }
+                  else
+                    {
+                      [self logWithFormat: @"ERROR: Can't fetch messages: %@", result];
+                      result = [NSException exceptionWithHTTPStatus: 500
+                                                             reason: @"Can't fetch messages"];
+                    }
+                }
+            }
         }
       else
-        result = [NSException exceptionWithHTTPStatus: 500
-                                               reason: @"Cannot copy messages across different accounts."];
+        result = [NSException exceptionWithName: @"SOGoMailException"
+                                         reason: @"IMAP connection is invalid"
+                                       userInfo: nil];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 500

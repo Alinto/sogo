@@ -1,4 +1,4 @@
-2.1.2 (2013-11-XX)
+2.1.2 (2014-01-XX)
 ------------------
 
 New features
@@ -7,6 +7,7 @@ New features
  - select multiple files to attach to a message or drag'n'drop files onto the
    mail editor; will also now display progress of uploads
  - new popup menu to download all attachments of a mail
+ - move & copy messages between different accounts
 
 Enhancements
  - we now automatically convert <img src=data...> into file attachments

@@ -2055,7 +2055,7 @@ function initMailboxTree() {
         node.parentNode.removeChild(node);
     mailboxTree = new dTree("mailboxTree");
     mailboxTree.config.hideRoot = true;
-    mailboxTree.icon.root = ResourcesURL + "/tbtv_account_17x17.gif";
+    mailboxTree.icon.root = ResourcesURL + "/tbtv_account_17x17.png";
     mailboxTree.icon.folder = ResourcesURL + "/tbtv_leaf_corner_17x17.png";
     mailboxTree.icon.folderOpen	= ResourcesURL + "/tbtv_leaf_corner_17x17.png";
     mailboxTree.icon.node = ResourcesURL + "/tbtv_leaf_corner_17x17.png";
@@ -2257,12 +2257,15 @@ function generateMenuForMailbox(mailbox, prefix, callback) {
 function updateMailboxMenus() {
     var mailboxActions = { move: onMailboxMenuMove,
                            copy: onMailboxMenuCopy };
+    var accountsMenus = { move: $$('#moveMailboxMenu li'),
+                          copy: $$('#copyMailboxMenu li') };
 
     for (var key in mailboxActions) {
         for (var i = 0; i < mailAccounts.length; i++) {
             var mailbox = accounts[i];
-            generateMenuForMailbox(mailbox, key + "-" + i,
-                                   mailboxActions[key]);
+            var id = generateMenuForMailbox(mailbox, key + "-" + i,
+                                            mailboxActions[key]);
+            accountsMenus[key][i].submenu = id;
         }
     }
 }
@@ -2828,6 +2831,8 @@ function getMenus() {
                            "-", null,
                            onMenuSharing ],
         addressMenu: [ newContactFromEmail, newEmailTo ],
+        moveMailboxMenu: mailAccounts.collect(function (account) { return account.asCSSIdentifier() }),
+        copyMailboxMenu: mailAccounts.collect(function (account) { return account.asCSSIdentifier() }),
         messageListMenu: [ onMenuOpenMessage, "-",
                            onMenuReplyToSender,
                            onMenuReplyToAll,
@@ -2875,14 +2880,6 @@ function getMenus() {
     var markMenu = $("mark-menu");
     if (markMenu) {
         markMenu.prepareVisibility = onMarkMenuPrepareVisibility;
-    }
-
-    var listMenus = [ "messageListMenu", "messagesListMenu", "messageContentMenu" ];
-    for (var i = 0; i < listMenus.length; i++) {
-        var menu = $(listMenus[i]);
-        if (menu) {
-            menu.prepareVisibility = onMessageListMenuPrepareVisibility;
-        }
     }
 
     var accountIconMenu = $("accountIconMenu");
@@ -3018,20 +3015,14 @@ function stopDragging(event, ui) {
 
 function dropAction(event, ui) {
     var destination = $(this).up("div.dTreeNode");
-
-    var sourceAct = Mailer.currentMailbox.split("/")[1];
-    var destAct = destination.getAttribute("dataname").split("/")[1];
-    if (sourceAct == destAct) {
-        var f;
-        if (ui.helper.hasClass("copy")) {
-            // Message(s) copied
-            f = onMailboxMenuCopy.bind(destination);
-        }
-        else {
-            // Message(s) moved
-            f = onMailboxMenuMove.bind(destination);
-        }
-
-        f();
+    var f;
+    if (ui.helper.hasClass("copy")) {
+        // Message(s) copied
+        f = onMailboxMenuCopy.bind(destination);
     }
+    else {
+        // Message(s) moved
+        f = onMailboxMenuMove.bind(destination);
+    }
+    f();
 }
