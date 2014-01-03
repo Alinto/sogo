@@ -188,7 +188,7 @@ function onPostComplete(http) {
 
 function clickedEditorSend() {
     onValidate(function() {
-            CKEDITOR.instances.text.updateElement();
+            if (CKEDITOR.instances.text) CKEDITOR.instances.text.updateElement();
             triggerAjaxRequest(document.pageform.action,
                                onPostComplete,
                                null,
@@ -234,7 +234,7 @@ function clickedEditorSave() {
 
     window.shouldPreserve = true;
     document.pageform.action = "save";
-    CKEDITOR.instances.text.updateElement();
+    if (CKEDITOR.instances.text) CKEDITOR.instances.text.updateElement();
 
     triggerAjaxRequest(document.pageform.action, function (http) {
             if (http.readyState == 4) {
