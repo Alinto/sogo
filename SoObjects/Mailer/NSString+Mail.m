@@ -1,6 +1,6 @@
 /* NSString+Mail.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2013 Inverse inc.
+ * Copyright (C) 2008-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -230,12 +230,12 @@
   else if ([tagName isEqualToString: @"li"])
     {
       if (orderedList)
-	{
-	  listCount++;
-	  [result appendFormat: @" %d. ", listCount];
-	}
+        {
+          listCount++;
+          [result appendFormat: @" %d. ", listCount];
+        }
       else
-	[result appendString: @" * "];
+        [result appendString: @" * "];
     }
   else if ([tagName isEqualToString: @"dd"])
     [result appendString: @"  "];
@@ -258,7 +258,7 @@
       [result appendString: @":\n"];
     }
   else if ([tagName isEqualToString: @"li"]
-	   || [tagName isEqualToString: @"dd"])
+           || [tagName isEqualToString: @"dd"])
     [result appendString: @"\n"];
 }
 
@@ -276,9 +276,9 @@
   if (!ignoreContent && ignoreContentTags && specialTreatmentTags)
     {
       if ([ignoreContentTags containsObject: tagName])
-	ignoreContent = YES;
+        ignoreContent = YES;
       else if ([specialTreatmentTags containsObject: tagName])
-	[self _startSpecialTreatment: tagName];
+        [self _startSpecialTreatment: tagName];
     }
   else
     {
@@ -654,7 +654,7 @@ convertChars (const char *oldString, unsigned int oldLength,
   NSString *decodedHeader;
 
   decodedHeader = [[self dataUsingEncoding: NSASCIIStringEncoding]
-		     decodedHeader];
+                     decodedHeader];
   if (!decodedHeader)
     decodedHeader = self;
   
