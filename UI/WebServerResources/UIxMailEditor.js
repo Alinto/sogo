@@ -397,11 +397,15 @@ function configureAttachments() {
     if (!list) return;
 
     list.on('click', 'a', function (event, element) {
-            if (!element.up('li').hasClassName('progressDone'))
+            // Don't follow links of attachments not yet uploaded
+            if (!element.up('li').hasClassName('progressDone')) {
+                Event.stop(event);
                 return false;
+            }
         });
 
     list.on('click', 'i.icon-attachment', function (event, element) {
+            // Delete attachment when clicking on small icon
             var item = element.up('li');
             if (item.hasClassName('progressDone')) {
                 var filename = item.readAttribute('data-filename');
