@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2013 Inverse inc.
+  Copyright (C) 2007-2014 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -1587,6 +1587,7 @@ static NSString    *userAgent      = nil;
 //
 - (NGMimeMessage *) mimeMessageWithHeaders: (NSDictionary *) _headers
 				 excluding: (NSArray *) _exclude
+                          extractingImages: (BOOL) _extractImages
 {
   NSMutableArray *bodyParts;
   NGMimeMessage *message;
@@ -1596,13 +1597,16 @@ static NSString    *userAgent      = nil;
   message = nil;
 
   bodyParts = [NSMutableArray array];
-  newText = [text htmlByExtractingImages: bodyParts];
 
-  if ([bodyParts count])
-    [self setText: newText];
+  if (_extractImages)
+    {
+      newText = [text htmlByExtractingImages: bodyParts];
+      if ([bodyParts count])
+        [self setText: newText];
+    }
 
   map = [self mimeHeaderMapWithHeaders: _headers
-	      excluding: _exclude];
+                             excluding: _exclude];
   if (map)
     {
       //[self debugWithFormat: @"MIME Envelope: %@", map];
@@ -1625,15 +1629,15 @@ static NSString    *userAgent      = nil;
 }
 
 //
-//
+// Return a NGMimeMessage object with inline HTML images (<img src=data>) extracted as attachments (<img src=cid>).
 //
 - (NGMimeMessage *) mimeMessage
 {
-  return [self mimeMessageWithHeaders: nil  excluding: nil];
+  return [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: YES];
 }
 
 //
-//
+// Return a NSData object of the message with no alteration.
 //
 - (NSData *) mimeMessageAsData
 {
@@ -1641,7 +1645,7 @@ static NSString    *userAgent      = nil;
   NSData *message;
 
   generator = [NGMimeMessageGenerator new];
-  message = [generator generateMimeFromPart: [self mimeMessage]];
+  message = [generator generateMimeFromPart: [self mimeMessageWithHeaders: nil  excluding: nil  extractingImages: NO]];
   [generator release];
 
   return message;
@@ -1714,9 +1718,8 @@ static NSString    *userAgent      = nil;
   NGMimeMessageGenerator *generator;
 
   generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
-  message = [generator generateMimeFromPart: [self mimeMessageWithHeaders: nil 
-                                                                excluding: nil]];
-      
+  message = [generator generateMimeFromPart: [self mimeMessage]];
+
   //
   // We now look for the Bcc: header. If it is present, we remove it.
   // Some servers, like qmail, do not remove it automatically.
