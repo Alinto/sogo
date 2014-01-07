@@ -244,7 +244,7 @@ function clickedEditorSave() {
                 }
                 else {
                     var response = http.responseText.evalJSON(true);
-                    showAlertDialog("Error while saving the draft: " + response.textStatus);
+                    showAlertDialog(_("Error while saving the draft:") + " " + response.textStatus);
                 }
             }
         },
@@ -444,8 +444,14 @@ function configureAttachments() {
             fail: function (e, data) {
                 var attachment = data.files[0].attachment;
                 var filename = data.files[0].name;
-                var response = data.xhr().response.evalJSON();
-                showAlertDialog("Error while uploading the file " + filename + ": " + response.textStatus);
+                var textStatus;
+                try {
+                    var response = data.xhr().response.evalJSON();
+                    textStatus = response.textStatus;
+                } catch (e) {}
+                if (!textStatus)
+                    textStatus = _("Can't contact server");
+                showAlertDialog(_("Error while uploading the file \"%{0}\":").formatted(filename) + " " + textStatus);
                 attachment.remove();
             },
             dragover: function (e, data) {
@@ -685,8 +691,18 @@ function onWindowResize(event) {
 }
 
 function onMailEditorClose(event) {
-    if (window.shouldPreserve)
+    var e = event || window.event;
+
+    if (window.shouldPreserve) {
         window.shouldPreserve = false;
+        if (jQuery('#fileUpload').fileupload('active') > 0) {
+            var msg = _("There is an active file upload. Closing the window will interrupt it.");
+            if (e) {
+                e.returnValue = msg;
+            }
+            return msg;
+        }
+    }
     else {
         var url = "" + window.location;
         var parts = url.split("/");

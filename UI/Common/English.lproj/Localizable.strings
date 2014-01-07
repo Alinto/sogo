@@ -69,6 +69,7 @@
 "You cannot create a list in a shared address book." 
         = "You cannot create a list in a shared address book.";
 "Warning" = "Warning";
+"Can't contact server" = "An error occurred while contacting the server. Please try again later.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "You are not allowed to access this module or this system. Please contact your system administrator.";
