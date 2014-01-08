@@ -404,7 +404,7 @@ static NSString    *userAgent      = nil;
 }
 
 //
-//
+// Store the message definition in a plist file (.info.plist) in the spool directory
 //
 - (NSException *) storeInfo
 {
@@ -778,15 +778,15 @@ static NSString    *userAgent      = nil;
 //
 //
 //
-- (void) _fetchAttachments: (NSArray *) parts
-                  fromMail: (SOGoMailObject *) sourceMail
+- (void) _fetchAttachmentsFromMail: (SOGoMailObject *) sourceMail
 {
   unsigned int count, max;
-  NSArray *paths, *bodies;
+  NSArray *parts, *paths, *bodies;
   NSData *body;
   NSDictionary *currentInfo;
   NGHashMap *response;
 
+  parts = [sourceMail fetchFileAttachmentKeys];
   max = [parts count];
   if (max > 0)
     {
@@ -817,7 +817,7 @@ static NSString    *userAgent      = nil;
 
   [sourceMail fetchCoreInfos];
 
-  [self _fetchAttachments: [sourceMail fetchFileAttachmentKeys] fromMail: sourceMail];
+  [self _fetchAttachmentsFromMail: sourceMail];
   info = [NSMutableDictionary dictionaryWithCapacity: 16];
   subject = [sourceMail subject];
   if ([subject length] > 0)
@@ -859,7 +859,7 @@ static NSString    *userAgent      = nil;
 - (void) fetchMailForReplying: (SOGoMailObject *) sourceMail
 			toAll: (BOOL) toAll
 {
-  NSString *contentForReply, *msgID;
+  NSString *msgID;
   NSMutableDictionary *info;
   NGImap4Envelope *sourceEnvelope;
 
@@ -874,8 +874,7 @@ static NSString    *userAgent      = nil;
   msgID = [sourceEnvelope messageID];
   if ([msgID length] > 0)
     [self setInReplyTo: msgID];
-  contentForReply = [sourceMail contentForReply];
-  [self setText: contentForReply];
+  [self setText: [sourceMail contentForReply]];
   [self setHeaders: info];
   [self setSourceURL: [sourceMail imap4URLString]];
   [self setSourceFlag: @"Answered"];
@@ -890,6 +889,7 @@ static NSString    *userAgent      = nil;
   NSDictionary *info, *attachment;
   NSString *signature, *nl;
   SOGoUserDefaults *ud;
+  BOOL asInline;
 
   [sourceMail fetchCoreInfos];
   
@@ -907,10 +907,11 @@ static NSString    *userAgent      = nil;
 
   /* attach message */
   ud = [[context activeUser] userDefaults];
-  if ([[ud mailMessageForwarding] isEqualToString: @"inline"])
+  asInline = [[ud mailMessageForwarding] isEqualToString: @"inline"];
+  if (asInline)
     {
-      [self setText: [sourceMail contentForInlineForward]];
-      [self _fetchAttachments: [sourceMail fetchFileAttachmentKeys] fromMail: sourceMail];
+      [self setText: [sourceMail contentForReply]];
+      [self _fetchAttachmentsFromMail: sourceMail];
     }
   else
     {
@@ -931,6 +932,11 @@ static NSString    *userAgent      = nil;
     }
 
   [self storeInfo];
+
+  if (!asInline)
+    // When the user has chosen to forward messages as attachment, immediately save the message
+    // to the IMAP store so the user can eventually view the attached file from the Web interface
+    [self save];
 }
 
 /* accessors */
@@ -949,6 +955,10 @@ static NSString    *userAgent      = nil;
 
 /* attachments */
 
+//
+// Return the attributes (name, size and mime body part) of the files found in the draft folder
+// on the local filesystem
+//
 - (NSArray *) fetchAttachmentAttrs
 {
   NSMutableArray *ma;
@@ -971,7 +981,7 @@ static NSString    *userAgent      = nil;
         {
           fileAttrs = [fm fileAttributesAtPath: [self pathToAttachmentWithName: filename] traverseLink: YES];
           bodyPart = [self bodyPartForAttachmentWithName: filename];
-          [ma addObject: [NSDictionary dictionaryWithObjectsAndKeys: filename, @"name",
+          [ma addObject: [NSDictionary dictionaryWithObjectsAndKeys: filename, @"filename",
                                        [fileAttrs objectForKey: @"NSFileSize"], @"size",
                                        bodyPart, @"part", nil]];
         }
@@ -1233,8 +1243,8 @@ static NSString    *userAgent      = nil;
   /* check attachment */
   
   fm = [NSFileManager defaultManager];
-  p  = [self pathToAttachmentWithName:_name];
-  if (![fm isReadableFileAtPath:p]) {
+  p  = [self pathToAttachmentWithName: _name];
+  if (![fm isReadableFileAtPath: p]) {
     [self errorWithFormat: @"did not find attachment: '%@'", _name];
     return nil;
   }
@@ -1243,21 +1253,21 @@ static NSString    *userAgent      = nil;
   
   /* prepare header of body part */
 
-  map = [[[NGMutableHashMap alloc] initWithCapacity:4] autorelease];
+  map = [[[NGMutableHashMap alloc] initWithCapacity: 4] autorelease];
 
   if ((s = [self contentTypeForAttachmentWithName:_name]) != nil) {
-    [map setObject:s forKey: @"content-type"];
+    [map setObject: s forKey: @"content-type"];
     if ([s hasPrefix: @"text/plain"] || [s hasPrefix: @"text/html"])
       attachAsString = YES;
     else if ([s hasPrefix: @"message/rfc822"])
       attachAsRFC822 = YES;
   }
-  if ((s = [self contentDispositionForAttachmentWithName:_name]))
+  if ((s = [self contentDispositionForAttachmentWithName: _name]))
     {
       NGMimeContentDispositionHeaderField *o;
       
       o = [[NGMimeContentDispositionHeaderField alloc] initWithString: s];
-      [map setObject:o forKey: @"content-disposition"];
+      [map setObject: o forKey: @"content-disposition"];
       [o release];
     }
   
@@ -1292,7 +1302,6 @@ static NSString    *userAgent      = nil;
     if (attachAsRFC822)
       {
         [map setObject: @"8bit" forKey: @"content-transfer-encoding"];
-        [map setObject: @"inline" forKey: @"content-disposition"];
       }
     else
       {
@@ -1331,7 +1340,7 @@ static NSString    *userAgent      = nil;
 
   for (i = 0; i < count; i++)
     {
-      bodyPart = [self bodyPartForAttachmentWithName: [[attrs objectAtIndex: i] objectForKey: @"name"]];
+      bodyPart = [self bodyPartForAttachmentWithName: [[attrs objectAtIndex: i] objectForKey: @"filename"]];
       [bodyParts addObject: bodyPart];
     }
 
