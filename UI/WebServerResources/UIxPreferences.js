@@ -591,7 +591,7 @@ function onMailIdentitySignatureClick(event) {
 
             if ($("composeMessagesType").value != 0) {
                 CKEDITOR.replace('signature',
-                                 { height: "70px",
+                                 { height: "150px",
                                    toolbar: [['Bold', 'Italic', '-', 'Link',
                                               'Font','FontSize','-','TextColor',
                                               'BGColor']
