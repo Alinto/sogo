@@ -1249,36 +1249,22 @@ function loadMessage(msguid) {
     return seenStateHasChanged;
 }
 
+/**
+ * Hide the "Load Images" button when there's no unsafe content
+*/
 function configureLoadImagesButton() {
-    // We show/hide the "Load Images" button
     var loadImagesButton = $("loadImagesButton");
-    var content = $("messageContent");
-    var hiddenImgs = [];
-    var imgs = content.select("IMG");
-    $(imgs).each(function(img) {
-            var unsafeSrc = img.getAttribute("unsafe-src");
-            if (unsafeSrc) {
-                hiddenImgs.push(img);
-            }
-        });
-    content.hiddenImgs = hiddenImgs;
-
-    var hiddenObjects = [];
-    var objects = content.select("OBJECT");
-    $(objects).each(function(obj) {
-            if (obj.getAttribute("unsafe-data")
-                || obj.getAttribute("unsafe-classid")) {
-                hiddenObjects.push(obj);
-            }
-        });
-    content.hiddenObjects = hiddenObjects;
-
     if (typeof(loadImagesButton) == "undefined" ||
         loadImagesButton == null ) {
         return;
     }
-    if ((hiddenImgs.length + hiddenObjects.length) == 0) {
+    var content = $("messageContent");
+    var unsafeElements = content.select('[unsafe-src], [unsafe-data], [unsafe-classid], [unsafe-background]');
+    if (unsafeElements.length == 0) {
         loadImagesButton.setStyle({ display: 'none' });
+    }
+    else {
+        content.hiddenElements = unsafeElements;
     }
 }
 
@@ -1586,24 +1572,18 @@ function onMessageLoadImages(event) {
 
 function loadRemoteImages() {
     var content = $("messageContent");
-    $(content.hiddenImgs).each(function(img) {
-            var unSafeSrc = img.getAttribute("unsafe-src");
-            log ("unsafesrc: " + unSafeSrc);
-            img.src = img.getAttribute("unsafe-src");
+    if (content.hiddenElements) {
+        $(content.hiddenElements).each(function(element) {
+            ['src', 'data', 'classid', 'background'].each(function(attr) {
+                var unsafeAttr = element.readAttribute('unsafe-' + attr);
+                if (unsafeAttr) {
+                    log ('unsafe ' +  attr + ': ' + unsafeAttr);
+                    element.writeAttribute(attr, unsafeAttr);
+                }
+            });
         });
-    content.hiddenImgs = null;
-    $(content.hiddenObjects).each(function(obj) {
-            var unSafeData = obj.getAttribute("unsafe-data");
-            if (unSafeData) {
-                obj.setAttribute("data", unSafeData);
-            }
-            var unSafeClassId = obj.getAttribute("unsafe-classid");
-            if (unSafeClassId) {
-                obj.setAttribute("classid", unSafeClassId);
-            }
-        });
-    content.hiddenObjects = null;
-
+        content.hiddenElements = null;
+    }
     var loadImagesButton = $("loadImagesButton");
     if (loadImagesButton)
         loadImagesButton.setStyle({ display: 'none' });
@@ -2831,8 +2811,6 @@ function getMenus() {
                            "-", null,
                            onMenuSharing ],
         addressMenu: [ newContactFromEmail, newEmailTo ],
-        moveMailboxMenu: mailAccounts.collect(function (account) { return account.asCSSIdentifier() }),
-        copyMailboxMenu: mailAccounts.collect(function (account) { return account.asCSSIdentifier() }),
         messageListMenu: [ onMenuOpenMessage, "-",
                            onMenuReplyToSender,
                            onMenuReplyToAll,
@@ -2871,6 +2849,12 @@ function getMenus() {
                       setSearchCriteria, setSearchCriteria,
                       setSearchCriteria ]
     };
+
+
+    if (typeof mailAccounts != 'undefined') {
+        menus['moveMailboxMenu'] = mailAccounts.collect(function (account) { return account.asCSSIdentifier() });
+        menus['copyMailboxMenu'] = mailAccounts.collect(function (account) { return account.asCSSIdentifier() });
+    }
 
     var labelMenu = $("label-menu");
     if (labelMenu) {

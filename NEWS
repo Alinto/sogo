@@ -17,7 +17,7 @@ Enhancements
  - format time in attendees invitation window according to the user's locale
 
 Bug fixes
- - 
+ - don't load 'background' attribute (#2437)
 
 2.1.1b (2013-12-04)
 -------------------

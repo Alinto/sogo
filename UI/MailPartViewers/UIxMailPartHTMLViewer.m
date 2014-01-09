@@ -542,7 +542,8 @@ static NSData* _sanitizeContent(NSData *theData)
                   else
                     skipAttribute = YES;
                 }
-              else if (([name isEqualToString: @"data"]
+              else if ([name isEqualToString: @"background"] ||
+                       ([name isEqualToString: @"data"]
                         || [name isEqualToString: @"classid"])
                        && [lowerName isEqualToString: @"object"])
                 {
