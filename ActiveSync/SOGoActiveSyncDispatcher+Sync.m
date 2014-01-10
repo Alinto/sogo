@@ -192,7 +192,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
         {
           anAddition = [additions objectAtIndex: i];
 
-          clientId = [[(id)[anAddition getElementsByTagName: @"CientId"] lastObject] textValue];
+          clientId = [[(id)[anAddition getElementsByTagName: @"ClientId"] lastObject] textValue];
           allValues = [[(id)[anAddition getElementsByTagName: @"ApplicationData"]  lastObject] applicationData];
           
           switch (theFolderType)
