@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2006-2013 Inverse inc.
+  Copyright (C) 2006-2014 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -40,6 +40,7 @@
 @class NSDictionary;
 @class NSString;
 @class WOContext;
+@class SOGoAppointmentFolders;
 @class SOGoContactFolders;
 
 @interface SOGoUserFolder : SOGoFolder
@@ -59,6 +60,9 @@
 
 - (BOOL) collectionDavKey: (NSString *) key
 		  matches: (NSString *) value;
+
+- (SOGoAppointmentFolders *) privateCalendars: (NSString *) key
+				    inContext: (WOContext *) localContext;
 
 - (SOGoContactFolders *) privateContacts: (NSString *) _key
                                inContext: (WOContext *) _ctx;
