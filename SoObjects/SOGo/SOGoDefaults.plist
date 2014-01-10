@@ -3,7 +3,7 @@
     SxVMemLimit = 384;
     WOLogFile = "/var/log/sogo/sogo.log";
     WOPidFile = "/var/run/sogo/sogo.pid";
-
+    WOHTTPAdaptorCapitalizeHeaders = YES;
     WOPort = "127.0.0.1:20000";
 
     NGImap4ConnectionStringSeparator = "/";
