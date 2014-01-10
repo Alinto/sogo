@@ -25,6 +25,8 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 #include <wbxml_conv.h>
 #include <wbxml_errors.h>
 
+#define WBXMLDEBUG 0
+
 @implementation NSData (ActiveSync)
 
 - (NSData *) wbxml2xml
@@ -54,7 +56,10 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
     }
 
   data = [[NSData alloc] initWithBytes: xml  length: xml_len];
+
+#if WBXMLDEBUG
   [data writeToFile: @"/tmp/protocol.decoded"  atomically: YES];
+#endif
 
   free(xml);
 
@@ -101,7 +106,10 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
     }
 
   data = [[NSData alloc] initWithBytes: wbxml  length: wbxml_len];
+
+#if WBXMLDEBUG
   [data writeToFile: @"/tmp/protocol.encoded"  atomically: YES];
+#endif
 
   free(wbxml);
   wbxml_conv_xml2wbxml_destroy(conv);
