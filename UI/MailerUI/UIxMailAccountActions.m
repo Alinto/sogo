@@ -2,9 +2,6 @@
  *
  * Copyright (C) 2007-2013 Inverse inc.
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
- *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -51,159 +48,16 @@
 
 @implementation UIxMailAccountActions
 
-- (id) init
-{
-  if ((self = [super init]))
-    {
-      inboxFolderName = nil;
-      draftsFolderName = nil;
-      sentFolderName = nil;
-      trashFolderName = nil;
-      otherUsersFolderName = nil;
-      sharedFoldersName = nil;
-    }
-
-  return self;
-}
-
-- (void) dealloc
-{
-  [inboxFolderName release];
-  [draftsFolderName release];
-  [sentFolderName release];
-  [trashFolderName release];
-  [otherUsersFolderName release];
-  [sharedFoldersName release];
-  [super dealloc];
-}
-
-- (NSString *) _folderType: (NSString *) folderName
-{
-  NSString *folderType;
-  SOGoMailAccount *co;
-  NSArray *specialFolders;
-
-  if (!inboxFolderName)
-    {
-      co = [self clientObject];
-      specialFolders = [[NSArray arrayWithObjects:
-                                 [co inboxFolderNameInContext: context],
-                                 [co draftsFolderNameInContext: context],
-                                 [co sentFolderNameInContext: context],
-                                 [co trashFolderNameInContext: context],
-                                 [co otherUsersFolderNameInContext: context],
-                                 [co sharedFoldersNameInContext: context],
-                                 nil] stringsWithFormat: @"/%@"];
-      ASSIGN(inboxFolderName, [specialFolders objectAtIndex: 0]);
-      ASSIGN(draftsFolderName, [specialFolders objectAtIndex: 1]);
-      ASSIGN(sentFolderName, [specialFolders objectAtIndex: 2]);
-      ASSIGN(trashFolderName, [specialFolders objectAtIndex: 3]);
-      if ([specialFolders count] > 4)
-        ASSIGN(otherUsersFolderName, [specialFolders objectAtIndex: 4]);
-      if ([specialFolders count] > 5)
-        ASSIGN(sharedFoldersName, [specialFolders objectAtIndex: 5]);
-    }
-
-  if ([folderName isEqualToString: inboxFolderName])
-    folderType = @"inbox";
-  else if ([folderName isEqualToString: draftsFolderName])
-    folderType = @"draft";
-  else if ([folderName isEqualToString: sentFolderName])
-    folderType = @"sent";
-  else if ([folderName isEqualToString: trashFolderName])
-    folderType = @"trash";
-  else if ([folderName hasPrefix: [NSString stringWithFormat: @"%@/", draftsFolderName]])
-    folderType = @"draft/folder";
-  else if ([folderName hasPrefix: [NSString stringWithFormat: @"%@/", sentFolderName]])
-    folderType = @"sent/folder";
-  else
-    folderType = @"folder";
-
-  return folderType;
-}
-
-- (NSArray *) _jsonFolders: (NSEnumerator *) rawFolders
-{
-  NSString *currentFolder, *currentDecodedFolder, *currentDisplayName, *currentFolderType, *login, *fullName;
-  NSMutableArray *pathComponents;
-  SOGoUserManager *userManager;
-  NSDictionary *folderData;
-  NSMutableArray *folders;
-  NSAutoreleasePool *pool;
-
-  folders = [NSMutableArray array];
-  while ((currentFolder = [rawFolders nextObject]))
-    {
-      // Using a local pool to avoid using too many file descriptors. This could
-      // happen with tons of mailboxes under "Other Users" as LDAP connections
-      // are never reused and "autoreleased" at the end. This loop would consume
-      // lots of LDAP connections during its execution.
-      pool = [[NSAutoreleasePool alloc] init];
-
-      currentDecodedFolder = [currentFolder stringByDecodingImap4FolderName];
-      currentFolderType = [self _folderType: currentFolder];
-
-      // We translate the "Other Users" and "Shared Folders" namespaces.
-      // While we're at it, we also translate the user's mailbox names
-      // to the full name of the person.
-      if (otherUsersFolderName && [currentDecodedFolder hasPrefix: otherUsersFolderName])
-        {
-          // We have a string like /Other Users/lmarcotte/... under Cyrus, but we could
-          // also have something like /shared under Dovecot. So we swap the username only
-          // if we have one, of course.
-          pathComponents = [NSMutableArray arrayWithArray: [currentDecodedFolder pathComponents]];
-
-          if ([pathComponents count] > 2) 
-            {
-              login = [pathComponents objectAtIndex: 2];
-              userManager = [SOGoUserManager sharedUserManager];
-              fullName = [userManager getCNForUID: login];
-              [pathComponents removeObjectsInRange: NSMakeRange(0,3)];
-
-              currentDisplayName = [NSString stringWithFormat: @"/%@/%@/%@", 
-                                     [self labelForKey: @"OtherUsersFolderName"],
-                                     (fullName != nil ? fullName : login),
-                                     [pathComponents componentsJoinedByString: @"/"]];
-
-            }
-          else
-            {
-              currentDisplayName = [NSString stringWithFormat: @"/%@%@",
-                                     [self labelForKey: @"OtherUsersFolderName"],
-                                      [currentDecodedFolder substringFromIndex:
-                                        [otherUsersFolderName length]]];
-            }
-        }
-      else if (sharedFoldersName && [currentDecodedFolder hasPrefix: sharedFoldersName])
-        currentDisplayName = [NSString stringWithFormat: @"/%@%@", [self labelForKey: @"SharedFoldersName"],
-                           [currentDecodedFolder substringFromIndex: [sharedFoldersName length]]];
-      else
-        currentDisplayName = currentDecodedFolder;
-
-      folderData = [NSDictionary dictionaryWithObjectsAndKeys:
-                     currentFolder, @"path",
-                     currentFolderType, @"type",
-                     currentDisplayName, @"displayName",
-                     nil];
-      [folders addObject: folderData];
-      [pool release];
-    }
-
-  return folders;
-}
-
 - (WOResponse *) listMailboxesAction
 {
   SOGoMailAccount *co;
-  NSEnumerator *rawFolders;
   NSArray *folders;
   NSDictionary *data;
   WOResponse *response;
 
   co = [self clientObject];
 
-  rawFolders = [[co allFolderPaths] objectEnumerator];
-  folders = [self _jsonFolders: rawFolders];
+  folders = [co allFoldersMetadata];
 
   data = [NSDictionary dictionaryWithObjectsAndKeys: folders, @"mailboxes", nil];
   response = [self responseWithStatus: 200

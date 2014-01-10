@@ -94,6 +94,8 @@
 
 - (NSCalendarDate *) mostRecentMessageDate;
 
+- (NSString *) davCollectionTag;
+
 /* flags */
 
 - (NSException *) addFlagsToAllMessages: (id) _f;

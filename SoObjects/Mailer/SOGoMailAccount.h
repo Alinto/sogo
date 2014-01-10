@@ -80,10 +80,11 @@ typedef enum {
 - (NSArray *) toManyRelationshipKeysWithNamespaces: (BOOL) withNSs;
 
 - (NSArray *) allFolderPaths;
+- (NSArray *) allFoldersMetadata;
+
 - (BOOL) isInDraftsFolder;
 
 /* special folders */
-
 - (NSString *) inboxFolderNameInContext: (id)_ctx;
 - (NSString *) draftsFolderNameInContext: (id)_ctx;
 - (NSString *) sentFolderNameInContext: (id)_ctx;

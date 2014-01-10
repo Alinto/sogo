@@ -81,6 +81,8 @@ NSArray *SOGoMailCoreInfoKeys;
 
 - (id) bodyStructure;
 - (id) lookupInfoForBodyPart:(id)_path;
+- (id) lookupImap4BodyPartKey: (NSString *) _key
+		    inContext: (id) _ctx;
 
 /* content */
 

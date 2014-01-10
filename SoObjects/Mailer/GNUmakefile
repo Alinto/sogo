@@ -92,6 +92,10 @@ Mailer_RESOURCE_FILES += \
 	SOGoMailWelshReply.wo
 
 
+Mailer_LANGUAGES = English French
+
+Mailer_LOCALIZED_RESOURCE_FILES = Localizable.strings
+
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
 ADDITIONAL_INCLUDE_DIRS += $(shell xml2-config --cflags)
 ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
