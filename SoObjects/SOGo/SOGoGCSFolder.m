@@ -1093,8 +1093,14 @@ static NSArray *childRecordFields = nil;
   return @"";
 }
 
-- (NSArray *) _fetchSyncTokenFields: (NSDictionary *) properties
-                  matchingSyncToken: (NSString *) syncToken
+//
+// Method used to get all changes since a particular sync token
+//
+// It'll return standard properties (c_name, c_creationdate, etc...)
+// of new, modified and deleted components. 
+//
+- (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) properties
+                          matchingSyncToken: (NSString *) syncToken
 {
   /* TODO:
      - validation:
@@ -1400,8 +1406,8 @@ static NSArray *childRecordFields = nil;
       propElement = [(NGDOMNodeWithChildren *) documentElement
                        firstElementWithTag: @"prop" inNamespace: XMLNS_WEBDAV];
       properties = [self parseDAVRequestedProperties: propElement];
-      records = [self _fetchSyncTokenFields: properties
-                          matchingSyncToken: syncToken];
+      records = [self syncTokenFieldsWithProperties: properties
+                                  matchingSyncToken: syncToken];
       [self _appendComponentProperties: [properties allKeys]
                            fromRecords: records
                      matchingSyncToken: [syncToken intValue]
