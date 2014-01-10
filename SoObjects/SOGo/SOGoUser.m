@@ -841,12 +841,24 @@
                                                  acquire: NO];
 }
 
-- (SOGoAppointmentFolder *)
- personalCalendarFolderInContext: (WOContext *) context
+- (SOGoAppointmentFolder *) personalCalendarFolderInContext: (WOContext *) context
 {
   return [[self calendarsFolderInContext: context] lookupPersonalFolder: @"personal"
                                                          ignoringRights: YES];
 }
+
+- (SOGoContactFolder *) personalContactsFolderInContext: (WOContext *) context
+{
+  SOGoContactFolders *folders;
+  
+  folders = [[self homeFolderInContext: context] lookupName: @"Contacts"
+                                                  inContext: context
+                                                    acquire: NO];
+  
+  return [folders lookupPersonalFolder: @"personal"
+                        ignoringRights: YES];
+}
+
 
 - (NSArray *) rolesForObject: (NSObject *) object
                    inContext: (WOContext *) context
