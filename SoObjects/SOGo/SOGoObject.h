@@ -122,7 +122,7 @@
 
 - (NSException *)delete;
 - (id) DELETEAction: (id) _ctx;
-- (id)GETAction:(id)_ctx;
+- (id) GETAction:(id)_ctx;
 
 /* etag support */
 
