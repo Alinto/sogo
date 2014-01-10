@@ -25,7 +25,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 #include <wbxml_conv.h>
 #include <wbxml_errors.h>
 
-#define WBXMLDEBUG 0
+#define WBXMLDEBUG 1
 
 @implementation NSData (ActiveSync)
 

@@ -177,10 +177,10 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
                       withType: (SOGoMicrosoftActiveSyncFolderType) theFolderType
                       inBuffer: (NSMutableString *) theBuffer
 {
-  NSArray *additions;
+  NSMutableDictionary *allValues;
   NSString *clientId, *serverId;
-  NSDictionary *allValues;
-
+  NSArray *additions;
+  
   id anAddition, sogoObject, o;
   int i;
 
@@ -193,7 +193,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
           anAddition = [additions objectAtIndex: i];
 
           clientId = [[(id)[anAddition getElementsByTagName: @"ClientId"] lastObject] textValue];
-          allValues = [[(id)[anAddition getElementsByTagName: @"ApplicationData"]  lastObject] applicationData];
+          allValues = [NSMutableDictionary dictionaryWithDictionary: [[(id)[anAddition getElementsByTagName: @"ApplicationData"]  lastObject] applicationData]];
           
           switch (theFolderType)
             {
@@ -210,6 +210,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
                 serverId = [NSString stringWithFormat: @"%@.ics", [theCollection globallyUniqueObjectId]];
                 sogoObject = [[SOGoAppointmentObject alloc] initWithName: serverId
                                                              inContainer: theCollection];
+                [allValues setObject: [[[context activeUser] userDefaults] timeZone]  forKey: @"SOGoUserTimeZone"];
                 o = [sogoObject component: YES secure: NO];
               }
               break;
@@ -218,6 +219,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
                 serverId = [NSString stringWithFormat: @"%@.ics", [theCollection globallyUniqueObjectId]];
                 sogoObject = [[SOGoTaskObject alloc] initWithName: serverId
                                                       inContainer: theCollection];
+                [allValues setObject: [[[context activeUser] userDefaults] timeZone]  forKey: @"SOGoUserTimeZone"];
                 o = [sogoObject component: YES secure: NO];     
               }
               break;

@@ -19,9 +19,13 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 */
 #import "iCalEvent+ActiveSync.h"
 
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
 
+#import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 
 #include "iCalTimeZone+ActiveSync.h"
@@ -84,7 +88,13 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 //
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
 {
+  iCalDateTime *start, *end;
+  NSTimeZone *userTimeZone;
+  iCalTimeZone *tz;
   id o;
+
+  NSInteger tzOffset;
+  BOOL isAllDay;
   
   if ((o = [theValues objectForKey: @"UID"]))
     [self setUid: o];
@@ -92,11 +102,56 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
   if ((o = [theValues objectForKey: @"Subject"]))
     [self setSummary: o];
 
+  isAllDay = NO;
   if ([[theValues objectForKey: @"AllDayEvent"] intValue])
     {
-
+      isAllDay = YES;
     }
 
+  //
+  // 0- free, 1- tentative, 2- busy and 3- out of office
+  //
+  if ((o = [theValues objectForKey: @"BusyStatus"]))
+    {
+      [o intValue];
+    }
+
+  //
+  //
+  //
+  if ((o = [theValues objectForKey: @"MeetingStatus"]))
+    {
+      [o intValue];
+    }
+
+  //
+  // 0- normal, 1- personal, 2- private and 3-confidential
+  //
+  if ((o = [theValues objectForKey: @"Sensitivy"]))
+    {
+      switch ([o intValue])
+        {
+        case 2:
+          [self setAccessClass: @"PRIVATE"];
+          break;
+        case 3:
+          [self setAccessClass: @"CONFIDENTIAL"];
+          break;
+        case 0:
+        case 1:
+        default:
+          [self setAccessClass: @"PUBLIC"];
+        }
+    }
+
+  if ((o = [theValues objectForKey: @"TimeZone"]))
+    {
+      // Ugh, we ignore it for now.
+      userTimeZone = [theValues objectForKey: @"SOGoUserTimeZone"];
+      tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
+      [(iCalCalendar *) parent addTimeZone: tz];
+    }
+  
   if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
     [self setComment: o];
   
@@ -104,10 +159,46 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
     [self setLocation: o];
 
   if ((o = [theValues objectForKey: @"StartTime"]))
-    [self setStartDate: [o calendarDate]];
+    {
+      o = [o calendarDate];
+      start = (iCalDateTime *) [self uniqueChildWithTag: @"dtstart"];
+      [start setTimeZone: tz];
+
+      if (isAllDay)
+        {
+          [start setDate: o];
+          [start setTimeZone: nil];
+        }
+      else
+        {
+          tzOffset = [userTimeZone secondsFromGMTForDate: o];
+          o = [o dateByAddingYears: 0 months: 0 days: 0
+                             hours: 0 minutes: 0
+                           seconds: tzOffset];
+          [start setDateTime: o];
+        }
+    }
 
   if ((o = [theValues objectForKey: @"EndTime"]))
-    [self setEndDate: [o calendarDate]];
+    {
+      o = [o calendarDate];
+      end = (iCalDateTime *) [self uniqueChildWithTag: @"dtend"];
+      [end setTimeZone: tz];
+
+      if (isAllDay)
+        {
+          [end setDate: o];
+          [end setTimeZone: nil];
+        }
+      else
+        {
+          tzOffset = [userTimeZone secondsFromGMTForDate: o];
+          o = [o dateByAddingYears: 0 months: 0 days: 0
+                             hours: 0 minutes: 0
+                           seconds: tzOffset];
+          [end setDateTime: o];
+        }
+    }
 }
 
 @end
