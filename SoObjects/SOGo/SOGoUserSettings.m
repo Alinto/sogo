@@ -1,8 +1,6 @@
 /* SOGoUserSettings.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2011 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2009-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,6 +67,30 @@ static Class SOGoUserProfileKlass = Nil;
 - (NSArray *) subscribedAddressBooks
 {
   return [self _subscribedFoldersForModule: @"Contacts"];
+}
+
+/* Microsoft Active Sync support */
+- (void) setMicrosoftActiveSyncMetadata: (NSDictionary *) theMetadata
+                              forDevice: (NSString *) theDeviceID
+{
+  if (theMetadata && theDeviceID)
+    {
+      NSMutableDictionary *d;
+
+      d = [NSMutableDictionary dictionaryWithDictionary: [self dictionaryForKey: @"SOGoMicrosoftActiveSyncMetadata"]];
+      [d setObject: theMetadata  forKey: theDeviceID];
+
+      [self setObject: d forKey: @"SOGoMicrosoftActiveSyncMetadata"];
+    }
+}
+
+- (NSMutableDictionary *) microsoftActiveSyncMetadataForDevice: (NSString *) theDevice
+{
+  NSDictionary *d;
+  
+  d = [self dictionaryForKey: @"SOGoMicrosoftActiveSyncMetadata"];
+  
+  return [NSMutableDictionary dictionaryWithDictionary: [d objectForKey: theDevice]];
 }
 
 @end
