@@ -637,7 +637,7 @@ function onMailboxTreeItemClick(event) {
     }
     else {
         var datatype = this.parentNode.getAttribute("datatype");
-        if (datatype == 'draft' || datatype == 'draft/folder' || datatype == 'sent' || datatype == 'sent/folder')
+        if (datatype == 'draft' || datatype == 'sent')
             toggleAddressColumn("from", "to");
         else
             toggleAddressColumn("to", "from");
