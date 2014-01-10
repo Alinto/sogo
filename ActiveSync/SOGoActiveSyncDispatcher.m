@@ -19,43 +19,6 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 */
 #include "SOGoActiveSyncDispatcher.h"
 
-
-// NICE INFO
-//
-// http://blogs.technet.com/b/exchange/archive/2013/10/04/exchange-activesync-mailbox-log-analysis.aspx
-//
-/*
-  TODO
-  X parse correctly the device id
-  X tester 2 add ou 2 change ou 2 deletes en meme temps (ie., avant de faire un sync)
-  X ajouter le last UID au sync key dans le cas du IMAP - genre UID-MODSEQ
-  X au lieu d'avoir 50 if dans le process, construire le selecteur a partir de la string et l'invoker
-  - implementer MeetingResponse
-  X implementer ResolveRecipients
-  X combiner smart reply et smart forward
-  X implementer MoveItems
-  X implemneter SmartForward et SmartReply
-  X implementer Search
-  - implementer GetAttachment
-  X supporter les multipart/mixed pour afficher correctement les mails. etc
-  X fixer la hierarchie dans les folders imap
-  - finir implementer Ping
-  X implemneter add/update/delete partout
-  - implementer le Sync en fonction d'un timestamp initial pour la syncrho genre 1 mois derriere
-  X tester le sync de plusieurs collections en meme temps - pas juste voir aucun changement dans une collection sur X et dire qu'il n'y a rien de nouveau
-  - implementer le OOF - voir 4.18.2 dans ASCMD
-  X implementer le fetch lors du Sync - les iOS font ca
-  - cleanup the include mess
-  - FIXER le MoveItem - le DstMsgId - grokker le UID lors du copy
-  - tester l'ajout/suppression/rename de dossier IMAP
-  - fixer prob de timezone dans resolve recipients
-  - fixer prob de timezone dans les events
-  - cleanup warning mess
-  - cleanup des fixmes
-  X fix crash apple reception de mial + fuckup attacments + fuckups html
- */
-
-
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSProcessInfo.h>
