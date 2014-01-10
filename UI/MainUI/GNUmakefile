@@ -14,6 +14,7 @@ MainUI_OBJC_FILES += \
 	SOGoUserHomePage.m	\
 	SOGoBrowsersPanel.m	\
 	UIxLoading.m		\
+	SOGoMicrosoftActiveSyncActions.m \
 
 ifeq ($(saml2_config), yes)
 	MainUI_OBJC_FILES += SOGoSAML2Actions.m
