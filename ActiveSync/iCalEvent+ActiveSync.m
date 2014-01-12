@@ -99,6 +99,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
   if ((o = [theValues objectForKey: @"UID"]))
     [self setUid: o];
     
+  // FIXME: merge with iCalToDo
   if ((o = [theValues objectForKey: @"Subject"]))
     [self setSummary: o];
 
@@ -152,6 +153,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
       [(iCalCalendar *) parent addTimeZone: tz];
     }
   
+  // FIXME: merge with iCalToDo
   if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
     [self setComment: o];
   

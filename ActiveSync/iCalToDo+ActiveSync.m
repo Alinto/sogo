@@ -19,10 +19,18 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 */
 #import "iCalToDo+ActiveSync.h"
 
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSTimeZone.h>
+
+#import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalTimeZone.h>
 
 #include "NSDate+ActiveSync.h"
+#include "NSString+ActiveSync.h"
 
 @implementation iCalToDo (ActiveSync)
 
@@ -76,10 +84,72 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
 {
+  NSTimeZone *userTimeZone;
+  iCalTimeZone *tz;
   id o;
 
+  NSInteger tzOffset;
+
+  userTimeZone = [theValues objectForKey: @"SOGoUserTimeZone"];
+  tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
+  [(iCalCalendar *) parent addTimeZone: tz];
+  
+  // FIXME: merge with iCalEvent
   if ((o = [theValues objectForKey: @"Subject"]))
     [self setSummary: o];
+
+  // FIXME: merge with iCalEvent
+  if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
+    [self setComment: o];
+  
+  
+  if ([[theValues objectForKey: @"Complete"] intValue] &&
+      ((o = [theValues objectForKey: @"DateCompleted"])) )
+    {
+      iCalDateTime *completed;
+      
+      o = [o calendarDate];
+      completed = (iCalDateTime *) [self uniqueChildWithTag: @"completed"];
+      //tzOffset = [[o timeZone] secondsFromGMTForDate: o];
+      //o = [o dateByAddingYears: 0 months: 0 days: 0
+      //                   hours: 0 minutes: 0
+      //                 seconds: -tzOffset];
+      [completed setDate: o];
+      [self setStatus: @"COMPLETED"];
+    }
+
+  if ((o = [theValues objectForKey: @"DueDate"]))
+    {
+      iCalDateTime *due;
+     
+
+      o = [o calendarDate];
+      due = (iCalDateTime *) [self uniqueChildWithTag: @"due"];
+      [due setTimeZone: tz];
+      
+      tzOffset = [userTimeZone secondsFromGMTForDate: o];
+      o = [o dateByAddingYears: 0 months: 0 days: 0
+                         hours: 0 minutes: 0
+                       seconds: tzOffset];
+      [due setDateTime: o];
+    }
+
+  // 2 == high, 1 == normal, 0 == low
+  if ((o = [theValues objectForKey: @"Importance"]))
+    {
+      if ([o intValue] == 2)
+        [self setPriority: @"1"];
+      else if ([o intValue] == 1)
+        [self setPriority: @"5"];
+      else
+        [self setPriority: @"9"];
+    }
+
+
+  if ((o = [theValues objectForKey: @"ReminderTime"]))
+    {
+
+    }
 }
 
 @end
