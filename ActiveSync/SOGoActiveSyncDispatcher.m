@@ -47,6 +47,8 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 #import <NGExtensions/NGHashMap.h>
 #import <NGExtensions/NSString+misc.h>
 
+#import <NGImap4/NGImap4Client.h>
+#import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NSString+Imap4.h>
 
 #import <NGMime/NGMimeBodyPart.h>
@@ -558,7 +560,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 - (void) processMoveItems: (id <DOMElement>) theDocumentElement
                inResponse: (WOResponse *) theResponse
 {
-  NSString *srcMessageId, *srcFolderId, *dstFolderId;
+  NSString *srcMessageId, *srcFolderId, *dstFolderId, *dstMessageId;
   SOGoMicrosoftActiveSyncFolderType srcFolderType, dstFolderType;
   
   srcMessageId = [[(id)[theDocumentElement getElementsByTagName: @"SrcMsgId"] lastObject] textValue];
@@ -571,8 +573,11 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
       SOGoMailAccounts *accountsFolder;
       SOGoMailFolder *currentFolder;
       SOGoUserFolder *userFolder;
+      NGImap4Client *client;
       id currentCollection;
-      NSException *ex;
+
+      NSDictionary *response;
+      NSString *v;
 
       userFolder = [[context activeUser] homeFolderInContext: context];
       accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
@@ -582,20 +587,38 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
                                           inContext: context
                                             acquire: NO];
 
-      // FIXME: improve destination folder
-      ex = (id)[currentCollection moveUIDs: [NSArray arrayWithObject: srcMessageId]
-                                  toFolder: [NSString stringWithFormat: @"/0/folder%@", dstFolderId]
-                                 inContext: context];
-      if (ex)
+      client = [[currentCollection imap4Connection] client];
+      [client select: srcFolderId];
+      response = [client copyUid: [srcMessageId intValue]
+                        toFolder: [NSString stringWithFormat: @"/%@", dstFolderId]];
+
+      // We extract the destionation message id
+      if ([[response objectForKey: @"result"] boolValue]
+          && (v = [[[response objectForKey: @"RawResponse"] objectForKey: @"ResponseResult"] objectForKey: @"flag"])
+          && [v hasPrefix: @"COPYUID "])
+        {
+          dstMessageId = [[v componentsSeparatedByString: @" "] lastObject];
+
+          // We mark the original message as deleted
+          response = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
+                                forUIDs: [NSArray arrayWithObject: srcMessageId]
+                            addOrRemove: YES];
+
+          if ([[response valueForKey: @"result"] boolValue])
+            [currentCollection markForExpunge];
+
+        }
+
+      if (!dstMessageId)
         {
           [theResponse setStatus: 500];
-          [theResponse appendContentString: [ex reason]];
+          [theResponse appendContentString: @"Unable to move message"];
         }
       else
         {
           NSMutableString *s;
           NSData *d;
-
+          
           // Everything is alright, lets return the proper response
           s = [NSMutableString string];
           
@@ -603,10 +626,9 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
           [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
           [s appendString: @"<MoveItems xmlns=\"Move:\">"];
           [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
-          [s appendFormat: @"<DstMsgId>%@</DstMsgId>", srcMessageId];
+          [s appendFormat: @"<DstMsgId>%@</DstMsgId>", dstMessageId];
           [s appendFormat: @"<Status>%d</Status>", 1];
           [s appendString: @"</MoveItems>"];
-          
           
           d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
           
@@ -616,6 +638,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
   else
     {
       [theResponse setStatus: 500];
+      [theResponse appendContentString: @"Unsupported move operation"];
     }
 }
 
@@ -1155,16 +1178,30 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 
   if (!d)
     {
-      return [NSException exceptionWithHTTPStatus: 500];
+      // We check if it's a Ping command with no body.
+      // See http://msdn.microsoft.com/en-us/library/ee200913(v=exchg.80).aspx for details
+      cmdName = [[theRequest uri] command];
+      
+      if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame)
+        return [NSException exceptionWithHTTPStatus: 500];
     }
 
-  builder = [[[NSClassFromString(@"DOMSaxBuilder") alloc] init] autorelease];
-  dom = [builder buildFromData: d];
-  documentElement = [dom documentElement];
-
-  // See 2.2.2 Commands - http://msdn.microsoft.com/en-us/library/ee202197(v=exchg.80).aspx
-  // for all potential commands
-  cmdName = [NSString stringWithFormat: @"process%@:inResponse:", [documentElement tagName]];
+  if (d)
+    {
+      builder = [[[NSClassFromString(@"DOMSaxBuilder") alloc] init] autorelease];
+      dom = [builder buildFromData: d];
+      documentElement = [dom documentElement];
+      
+      // See 2.2.2 Commands - http://msdn.microsoft.com/en-us/library/ee202197(v=exchg.80).aspx
+      // for all potential commands
+      cmdName = [NSString stringWithFormat: @"process%@:inResponse:", [documentElement tagName]];
+    }
+  else
+    {
+      // Ping command with empty body
+      cmdName = [NSString stringWithFormat: @"process%@:inResponse:", cmdName];
+    }
+  
   aSelector = NSSelectorFromString(cmdName);
 
   [self performSelector: aSelector  withObject: documentElement  withObject: theResponse];
