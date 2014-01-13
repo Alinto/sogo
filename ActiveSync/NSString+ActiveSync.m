@@ -87,12 +87,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
   return o;
 }
 
-//
-// This method extracts the "DeviceId" from a URI:
-//
-// /SOGo/Microsoft-Server-ActiveSync?Cmd=FolderSync&User=sogo10&DeviceId=SEC17CD1A3E9E3F2&DeviceType=SAMSUNGSGHI317M
-//
-- (NSString *) deviceId
+- (NSString *) _valueForParameter: (NSString *) theParameter
 {
   NSArray *components;
   NSString *s;
@@ -104,10 +99,43 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
     {
       s = [components objectAtIndex: i];
       
-      if ([[s uppercaseString] hasPrefix: @"DEVICEID="])
-        return [s substringFromIndex: 9];
+      if ([[s uppercaseString] hasPrefix: theParameter])
+        return [s substringFromIndex: [theParameter length]];
     }
-
-  return @"Unknown";
+  
+  return nil;
 }
+
+//
+// This method extracts the "DeviceId" from a URI:
+//
+// /SOGo/Microsoft-Server-ActiveSync?Cmd=FolderSync&User=sogo10&DeviceId=SEC17CD1A3E9E3F2&DeviceType=SAMSUNGSGHI317M
+//
+- (NSString *) deviceId
+{
+  NSString *s;
+
+  s = [self _valueForParameter: @"DEVICEID="];
+  
+  if (!s)
+    s = @"Unknown";
+
+  return s;
+}
+
+//
+//
+//
+- (NSString *) command
+{
+  NSString *s;
+  
+  s = [self _valueForParameter: @"CMD="];
+  
+  if (!s)
+    s = @"Unknown";
+  
+  return s;
+}
+
 @end

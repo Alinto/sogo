@@ -32,6 +32,7 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 - (NSString *) realCollectionIdWithFolderType: (SOGoMicrosoftActiveSyncFolderType *) folderType;
 - (NSCalendarDate *) calendarDate;
 - (NSString *) deviceId;
+- (NSString *) command;
 
 @end
 
