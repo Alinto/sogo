@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import "iCalEvent+ActiveSync.h"
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSDictionary.h>
@@ -38,6 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalPerson.h>
 
 #include "iCalTimeZone+ActiveSync.h"
 #include "NSDate+ActiveSync.h"
@@ -48,6 +50,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) activeSyncRepresentation
 {
   NSMutableString *s;
+  NSArray *attendees;
+
+  iCalPerson *organizer, *attendee;
   iCalTimeZone *tz;
 
   s = [NSMutableString string];
@@ -74,7 +79,56 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   [s appendFormat: @"<TimeZone xmlns=\"Calendar:\">%@</TimeZone>", [[tz activeSyncRepresentation] stringByReplacingString: @"\n" withString: @""]];;
 
+  // Organizer and attendees
+  if ((organizer = [self organizer]))
+    {
+      [s appendFormat: @"<Organizer_Email xmlns=\"Calendar:\">%@</Organizer_Email>", [organizer rfc822Email]];
+      [s appendFormat: @"<Organizer_Name xmlns=\"Calendar:\">%@</Organizer_Name>", [organizer cn]];
+    }
   
+  attendees = [self attendees];
+  
+  if ([attendees count])
+    {
+      int i, attendee_type, attendee_status;
+      
+      [s appendString: @"<Attendees xmlns=\"Calendar:\">"];
+
+      for (i = 0; i < [attendees count]; i++)
+        {
+          [s appendString: @"<Attendee xmlns=\"Calendar:\">"];
+
+          attendee = [attendees objectAtIndex: i];
+          [s appendFormat: @"<Attendee_Email xmlns=\"Calendar:\">%@</Attendee_Email>", [attendee rfc822Email]];
+          [s appendFormat: @"<Attendee_Name xmlns=\"Calendar:\">%@</Attendee_Name>", [attendee cn]];
+
+
+          attendee_status = 5;
+          if ([[attendee partStat] caseInsensitiveCompare: @"ACCEPTED"] == NSOrderedSame)
+            attendee_status = 3;
+          else if ([[attendee partStat] caseInsensitiveCompare: @"DECLINED"] == NSOrderedSame)
+            attendee_status = 4;
+          else if ([[attendee partStat] caseInsensitiveCompare: @"TENTATIVE"] == NSOrderedSame)
+            attendee_status = 2;
+            
+          [s appendFormat: @"<Attendee_Status xmlns=\"Calendar:\">%d</Attendee_Status>", attendee_status];
+
+          // FIXME: handle resource
+          if ([[attendee role] caseInsensitiveCompare: @"REQ-PARTICIPANT"] == NSOrderedSame)
+            attendee_type = 1;
+          else
+            attendee_type = 2;
+          
+            
+          [s appendFormat: @"<Attendee_Type xmlns=\"Calendar:\">%d</Attendee_Type>", attendee_type];
+
+          [s appendString: @"</Attendee>"];
+
+        }
+      
+      [s appendString: @"</Attendees>"];
+    }
+
   // Subject -- http://msdn.microsoft.com/en-us/library/ee157192(v=exchg.80).aspx
   if ([[self summary] length])
     [s appendFormat: @"<Subject xmlns=\"Calendar:\">%@</Subject>", [self summary]];
@@ -95,7 +149,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 //
+// To understand meeting requests/responses, see:
 //
+// http://blogs.msdn.com/b/exchangedev/archive/2011/07/22/working-with-meeting-requests-in-exchange-activesync.aspx
+// http://blogs.msdn.com/b/exchangedev/archive/2011/07/29/working-with-meeting-responses-in-exchange-activesync.aspx
 //
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
 {
