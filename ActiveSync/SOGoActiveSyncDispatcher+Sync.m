@@ -318,6 +318,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                        inContext: context
                                          acquire: NO];
 
+          // Object was removed inbetween sync/commands?
+          if ([sogoObject isKindOfClass: [NSException class]])
+            {
+              // FIXME - return status == 8
+              continue;
+            }
+          
           switch (theFolderType)
             {
             case ActiveSyncContactFolder:
@@ -903,7 +910,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendString: @"<Sync xmlns=\"AirSync:\"><Collections>"];
 
-  allCollections = (id)[theDocumentElement getElementsByTagName: @"Collections"];
+  allCollections = (id)[theDocumentElement getElementsByTagName: @"Collection"];
 
   for (i = 0; i < [allCollections count]; i++)
     {
