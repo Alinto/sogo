@@ -116,21 +116,38 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //
 - (NSData *) _preferredBodyDataUsingType: (int) theType
+                              nativeType: (int *) theNativeType
 {
-  NSString *type, *subtype;
+  NSString *type, *subtype, *encoding;
   NSData *d;
   
   type = [[[self bodyStructure] valueForKey: @"type"] lowercaseString];
   subtype = [[[self bodyStructure] valueForKey: @"subtype"] lowercaseString];
 
   d = nil;
+  
+  // We determine the native type
+  if ([type isEqualToString: @"text"] && [subtype isEqualToString: @"plain"])
+    *theNativeType = 1;
+  else if ([type isEqualToString: @"text"] && [subtype isEqualToString: @"html"])
+    *theNativeType = 2;
+  else if ([type isEqualToString: @"multipart"])
+    *theNativeType = 4;
 
+  // We get the right part based on the preference
   if (theType == 1 || theType == 2)
     {
       if ([type isEqualToString: @"text"])
         {
           d = [[self fetchPlainTextParts] objectForKey: @""];
           
+          // We check if we have base64 encoded parts. If so, we just
+          // un-encode them before using them
+          encoding = [[self lookupInfoForBodyPart: @""] objectForKey: @"encoding"];
+
+          if ([encoding caseInsensitiveCompare: @"base64"] == NSOrderedSame)
+            d = [d dataByDecodingBase64];
+
           // Check if we must convert html->plain
           if (theType == 1 && [subtype isEqualToString: @"html"])
             {
@@ -165,7 +182,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSData *d;
   id value;
 
-  int preferredBodyType;
+  int preferredBodyType, nativeBodyType;
 
   s = [NSMutableString string];
 
@@ -206,7 +223,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   // MesssageClass
   [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Note"];
-
+  //[s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Schedule.Meeting"];
+  
   // Reply-To - FIXME
   //NSArray *replyTo = [[message objectForKey: @"envelope"] replyTo];
   //if ([replyTo count])
@@ -218,7 +236,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Body - namespace 17
   preferredBodyType = [[context objectForKey: @"BodyPreferenceType"] intValue];
 
-  d = [self _preferredBodyDataUsingType: preferredBodyType];
+  nativeBodyType = 1;
+  d = [self _preferredBodyDataUsingType: preferredBodyType  nativeType: &nativeBodyType];
   
   if (d)
     {
