@@ -727,7 +727,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType;
   SOGoMicrosoftActiveSyncFolderType folderType;
-  id collection;
+  id collection, value;
 
   BOOL getChanges, first_sync;
 
@@ -738,7 +738,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   syncKey = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
   davCollectionTag = [collection davCollectionTag];
   
-  getChanges = ([(id)[theDocumentElement getElementsByTagName: @"GetChanges"] count] ? YES : NO);
+  // From the documention, if GetChanges is missing, we must assume it's a YES.
+  // See http://msdn.microsoft.com/en-us/library/gg675447(v=exchg.80).aspx for all details.
+  value = [theDocumentElement getElementsByTagName: @"GetChanges"];
+  getChanges = YES;
+
+  if ([value count])
+    getChanges = [[[value lastObject] textValue] boolValue];
+
   first_sync = NO;
 
   if ([syncKey isEqualToString: @"0"])
