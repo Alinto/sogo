@@ -240,7 +240,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   id currentFolder;
   NSException *error;
       
-  serverId = [[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue];
+  SOGoMicrosoftActiveSyncFolderType folderType;
+
+  
+  serverId = [[[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue] realCollectionIdWithFolderType: &folderType];
   parentId = [[(id)[theDocumentElement getElementsByTagName: @"ParentId"] lastObject] textValue];
   displayName = [[(id)[theDocumentElement getElementsByTagName: @"DisplayName"] lastObject] textValue];
 
@@ -248,7 +251,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
   currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
   
-  folderToUpdate = [currentFolder lookupName: serverId
+  folderToUpdate = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", serverId]
                                    inContext: context
                                      acquire: NO];
 
