@@ -28,6 +28,7 @@ build-arch-stamp:  config.make
 	if pkg-config --atleast-version=1.0 libmapi; \
 	then (cd OpenChange; $(MAKE));  \
 	fi
+	(cd ActiveSync && $(MAKE))
 	touch $@
 
 clean: 
@@ -43,6 +44,7 @@ clean:
 	  then \
 	    (cd OpenChange; make clean); \
 	  fi; \
+	  (cd ActiveSync; $(MAKE) clean); \
 	  make clean; \
 	fi
 	-rm -f OpenChange/MAPIStorePropertySelectors.*
@@ -75,6 +77,7 @@ install-arch: build-arch
 	  mv -f $(DESTDIR)/usr/lib/mapistore_backends/libMAPIStoreSOGo.so.1.0.0 \
 	           $(DESTDIR)/usr/lib/mapistore_backends/SOGo.so; \
 	fi
+	(cd ActiveSync; $(MAKE) DESTDIR=$(DESTDIR) GNUSTEP_INSTALLATION_DOMAIN=SYSTEM install)
 
 	install -D -m 644 Scripts/sogo-default debian/tmp/etc/default/sogo
 	install -D -m 644 debian/sogo.overrides debian/tmp/usr/share/lintian/overrides/sogo
