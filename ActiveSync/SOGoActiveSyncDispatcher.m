@@ -111,6 +111,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation SOGoActiveSyncDispatcher
 
+- (void) _setFolderSyncKey: (NSString *) theSyncKey
+{
+  NSMutableDictionary *metadata;
+  
+  metadata = [[[context activeUser] userSettings] microsoftActiveSyncMetadataForDevice: [context objectForKey: @"DeviceId"]];
+  
+  [metadata setObject: [NSDictionary dictionaryWithObject: theSyncKey  forKey: @"SyncKey"]  forKey: @"FolderSync"];
+
+  [[[context activeUser] userSettings] setMicrosoftActiveSyncMetadata: metadata
+                                                               forDevice: [context objectForKey: @"DeviceId"]];
+
+  [[[context activeUser] userSettings] synchronize];
+}
+
 //
 //
 //
@@ -162,8 +176,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             // We strip the "folder" prefix
             nameInContainer = [nameInContainer substringFromIndex: 6];
             nameInContainer = [NSString stringWithFormat: @"mail/%@", nameInContainer];
-            
-            syncKey = @"-1";
           }
         else
           {
@@ -185,8 +197,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           nameInContainer = [NSString stringWithFormat: @"vevent/%@", nameInContainer];
         else
           nameInContainer = [NSString stringWithFormat: @"vtodo/%@", nameInContainer];
-        
-        syncKey = @"-1";
       }
       break;
     case 14:
@@ -197,7 +207,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         [contactFolders newFolderWithName: displayName
                           nameInContainer: &nameInContainer];
         nameInContainer = [NSString stringWithFormat: @"vcard/%@", nameInContainer];
-        syncKey = @"-1";
       }
       break;
     default:
@@ -208,8 +217,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       }
     } // switch (type) ...
 
-  
   //
+  // We update the FolderSync's synckey
+  // 
+  syncKey = [[NSProcessInfo processInfo] globallyUniqueString];
+
+  [self _setFolderSyncKey: syncKey];
+
   // All good, we send our response. The format is documented here:
   // 6.7 FolderCreate Response Schema - http://msdn.microsoft.com/en-us/library/dn338950(v=exchg.80).aspx  
   //
@@ -261,13 +275,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if (!error)
     {
       NSMutableString *s;
+      NSString *syncKey;
       NSData *d;
       
+      //
+      // We update the FolderSync's synckey
+      // 
+      syncKey = [[NSProcessInfo processInfo] globallyUniqueString];
+      
+      [self _setFolderSyncKey: syncKey];
+
       s = [NSMutableString string];
       [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
       [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
       [s appendString: @"<FolderUpdate xmlns=\"FolderHierarchy:\">"];
       [s appendFormat: @"<Status>%d</Status>", 1];
+      [s appendFormat: @"<SyncKey>%@</SyncKey>", syncKey];
       [s appendString: @"</FolderUpdate>"];
       
       d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
@@ -318,9 +341,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       status = 9;
     }
 
-  [metadata setObject: [NSDictionary dictionaryWithObject: syncKey  forKey: @"SyncKey"]  forKey: @"FolderSync"];
-  [[[context activeUser] userSettings] setMicrosoftActiveSyncMetadata: metadata  forDevice: [context objectForKey: @"DeviceId"]];
-  [[[context activeUser] userSettings] synchronize];
+  [self _setFolderSyncKey: syncKey];
 
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
