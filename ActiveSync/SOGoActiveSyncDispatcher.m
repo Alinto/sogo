@@ -158,6 +158,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         if ([newFolder create])
           {
             nameInContainer = [newFolder nameInContainer];
+            
+            // We strip the "folder" prefix
+            nameInContainer = [nameInContainer substringFromIndex: 6];
+            nameInContainer = [NSString stringWithFormat: @"mail/%@", nameInContainer];
+            
             syncKey = @"-1";
           }
         else
@@ -176,6 +181,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         appointmentFolders = [userFolder privateCalendars: @"Calendar" inContext: context];
         [appointmentFolders newFolderWithName: displayName
                               nameInContainer: &nameInContainer];
+        if (type == 13)
+          nameInContainer = [NSString stringWithFormat: @"vevent/%@", nameInContainer];
+        else
+          nameInContainer = [NSString stringWithFormat: @"vtodo/%@", nameInContainer];
+        
         syncKey = @"-1";
       }
       break;
@@ -186,6 +196,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         contactFolders = [userFolder privateContacts: @"Contacts" inContext: context];
         [contactFolders newFolderWithName: displayName
                           nameInContainer: &nameInContainer];
+        nameInContainer = [NSString stringWithFormat: @"vcard/%@", nameInContainer];
         syncKey = @"-1";
       }
       break;
@@ -613,6 +624,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                         toFolder: [NSString stringWithFormat: @"/%@", dstFolderId]];
 
       // We extract the destionation message id
+      dstMessageId = nil;
+
       if ([[response objectForKey: @"result"] boolValue]
           && (v = [[[response objectForKey: @"RawResponse"] objectForKey: @"ResponseResult"] objectForKey: @"flag"])
           && [v hasPrefix: @"COPYUID "])
