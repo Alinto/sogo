@@ -31,9 +31,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Foundation/NSString.h>
 
-#include <wbxml.h>
-#include <wbxml_conv.h>
-#include <wbxml_errors.h>
+#include <wbxml/wbxml.h>
+#include <wbxml/wbxml_conv.h>
+#include <wbxml/wbxml_errors.h>
 
 #define WBXMLDEBUG 0
 

@@ -29,7 +29,7 @@ ActiveSync_RESOURCE_FILES +=		\
 ADDITIONAL_OBJCFLAGS += -Wno-deprecated-declarations
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/ -I../SoObjects/
 ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
-ADDITIONAL_INCLUDE_DIRS += -I/usr/local/include/libwbxml-1.0/wbxml/
+ADDITIONAL_INCLUDE_DIRS += -I/usr/include/libwbxml-1.0/
 ADDITIONAL_LDFLAGS += -Wl,--no-as-needed -lwbxml2
 
 -include GNUmakefile.preamble
