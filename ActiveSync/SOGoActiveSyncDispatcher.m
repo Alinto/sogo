@@ -137,7 +137,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // 14 User-created Contacts folder
   // 15 User-created Tasks folder
   //
-  switch (type == 12)
+  switch (type)
     {
     case 12:
       {
@@ -553,6 +553,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       [theResponse setStatus: 500];
     }
+}
+
+
+//
+//
+//
+- (void) processMeetingResponse: (id <DOMElement>) theDocumentElement
+                     inResponse: (WOResponse *) theResponse
+{
+
 }
 
 
