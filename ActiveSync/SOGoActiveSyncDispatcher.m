@@ -300,7 +300,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   BOOL first_sync;
   int status;
 
-  metadata = [[[context activeUser] userSettings] microsoftActiveSyncMetadataForDevice: @"SEC17CD1A3E9E3F2"];
+  metadata = [[[context activeUser] userSettings] microsoftActiveSyncMetadataForDevice: [context objectForKey: @"DeviceId"]];
   syncKey = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
   s = [NSMutableString string];
 
