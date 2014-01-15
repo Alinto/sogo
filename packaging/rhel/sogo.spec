@@ -52,6 +52,7 @@ and to reduce the load of the transactions on the server.
 %package -n sogo-tool
 Summary:      Command-line toolsuite for SOGo
 Group:        Productivity/Groupware
+Requires:     sogo = %{sogo_version}
 AutoReqProv:  off
 
 %description -n sogo-tool
@@ -77,6 +78,16 @@ AutoReqProv:  off
 
 %description -n sogo-ealarms-notify
 SOGo utility executed each minute via a cronjob for executing email alarms.
+
+%package -n sogo-activesync
+Summary:      SOGo module to handle ActiveSync requests
+Group:        Productivity/Groupware
+Requires:     libwbxml, sogo = %{sogo_version}
+BuildRequires: libwbxml-devel
+AutoReqProv:  off
+
+%description -n sogo-activesync
+SOGo module to handle ActiveSync requests
 
 %package -n sogo-devel
 Summary:      Development headers and libraries for SOGo
@@ -224,6 +235,14 @@ rm -rf ${RPM_BUILD_ROOT}%{_bindir}/test_quick_extract
    install)
 %endif
 
+# ActiveSync
+(cd ActiveSync; \
+ LD_LIBRARY_PATH=${RPM_BUILD_ROOT}%{_libdir} \
+ make DESTDIR=${RPM_BUILD_ROOT} \
+     GNUSTEP_INSTALLATION_DOMAIN=SYSTEM \
+      CC="$cc" LDFLAGS="$ldflags" \
+   install)
+
 # ****************************** clean ********************************
 %clean
 rm -fr ${RPM_BUILD_ROOT}
@@ -244,7 +263,17 @@ rm -fr ${RPM_BUILD_ROOT}
 %{_libdir}/libSOGo.so.*
 %{_libdir}/libSOGoUI.so.*
 %{_libdir}/libOGoContentStore.so*
-%{_libdir}/GNUstep/SOGo/*.SOGo
+%{_libdir}/GNUstep/SOGo/AdministrationUI.SOGo
+%{_libdir}/GNUstep/SOGo/Appointments.SOGo
+%{_libdir}/GNUstep/SOGo/CommonUI.SOGo
+%{_libdir}/GNUstep/SOGo/Contacts.SOGo
+%{_libdir}/GNUstep/SOGo/ContactsUI.SOGo
+%{_libdir}/GNUstep/SOGo/MailPartViewers.SOGo
+%{_libdir}/GNUstep/SOGo/Mailer.SOGo
+%{_libdir}/GNUstep/SOGo/MailerUI.SOGo
+%{_libdir}/GNUstep/SOGo/MainUI.SOGo
+%{_libdir}/GNUstep/SOGo/PreferencesUI.SOGo
+%{_libdir}/GNUstep/SOGo/SchedulerUI.SOGo
 
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Resources
 %{_libdir}/GNUstep/Frameworks/SOGo.framework/Versions/%{sogo_major_version}/libSOGo.so.*
@@ -270,6 +299,10 @@ rm -fr ${RPM_BUILD_ROOT}
 
 %files -n sogo-slapd-sockd
 %{_sbindir}/sogo-slapd-sockd
+
+%files -n sogo-activesync
+%{_libdir}/GNUstep/SOGo/ActiveSync.SOGo
+%doc ActiveSync/LICENSE ActiveSync/README
 
 %files -n sogo-devel
 %{_includedir}/SOGo
@@ -339,6 +372,11 @@ fi
 
 # ********************************* changelog *************************
 %changelog
+* Wed Jan 15 2014 Jean Raby <jraby@inverse.ca>
+- New package: sogo-activesync
+- explicitly list all *.SOGo modules in sogo package
+- added dependency on sogo = %version for sogo-tool
+
 * Thu Apr 17 2013 Jean Raby <jraby@inverse.ca>
 - Install openchange_user_cleanup in sbindir instead of doc
 
