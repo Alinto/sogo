@@ -244,6 +244,66 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //
 //
+- (void) processFolderDelete: (id <DOMElement>) theDocumentElement
+                  inResponse: (WOResponse *) theResponse
+{
+  SOGoMailAccounts *accountsFolder;
+  SOGoMailFolder *folderToDelete;
+  SOGoUserFolder *userFolder;
+  id currentFolder;
+  NSException *error;
+  NSString *serverId;
+      
+  SOGoMicrosoftActiveSyncFolderType folderType;
+
+  
+  serverId = [[[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue] realCollectionIdWithFolderType: &folderType];
+
+  userFolder = [[context activeUser] homeFolderInContext: context];
+  accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+  currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+  
+  folderToDelete = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", serverId]
+                                   inContext: context
+                                     acquire: NO];
+
+  error = [folderToDelete delete];
+
+  if (!error)
+    {
+      NSMutableString *s;
+      NSString *syncKey;
+      NSData *d;
+      
+      //
+      // We update the FolderSync's synckey
+      // 
+      syncKey = [[NSProcessInfo processInfo] globallyUniqueString];
+      
+      [self _setFolderSyncKey: syncKey];
+
+      s = [NSMutableString string];
+      [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+      [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+      [s appendString: @"<FolderDelete xmlns=\"FolderHierarchy:\">"];
+      [s appendFormat: @"<Status>%d</Status>", 1];
+      [s appendFormat: @"<SyncKey>%@</SyncKey>", syncKey];
+      [s appendString: @"</FolderDelete>"];
+      
+      d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+      
+      [theResponse setContent: d];
+    }
+  else
+    {
+      [theResponse setStatus: 500];
+      [theResponse appendContentString: @"Unable to delete folder."];
+    }
+}
+
+//
+//
+//
 - (void) processFolderUpdate: (id <DOMElement>) theDocumentElement
                   inResponse: (WOResponse *) theResponse
 {
