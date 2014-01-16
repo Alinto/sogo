@@ -98,6 +98,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "iCalToDo+ActiveSync.h"
 #include "NGDOMElement+ActiveSync.h"
 #include "NGVCard+ActiveSync.h"
+#include "NSDate+ActiveSync.h"
 #include "NSData+ActiveSync.h"
 #include "NSString+ActiveSync.h"
 #include "SOGoActiveSyncConstants.h"
@@ -445,7 +446,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processSyncGetChanges: (id <DOMElement>) theDocumentElement
                   inCollection: (id) theCollection
                    withSyncKey: (NSString *) theSyncKey
-                      withType: (SOGoMicrosoftActiveSyncFolderType) theFolderType
+                withFolderType: (SOGoMicrosoftActiveSyncFolderType) theFolderType
+                withFilterType: (NSDate *) theFilterType
                       inBuffer: (NSMutableString *) theBuffer
 {
   int i;
@@ -743,9 +745,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   value = [theDocumentElement getElementsByTagName: @"GetChanges"];
   getChanges = YES;
 
-  if ([value count])
+  if ([value count] && [[[value lastObject] textValue] length])
     getChanges = [[[value lastObject] textValue] boolValue];
-
+                  
   first_sync = NO;
 
   if ([syncKey isEqualToString: @"0"])
@@ -776,7 +778,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [self processSyncGetChanges: theDocumentElement
                      inCollection: collection
                       withSyncKey: syncKey
-                         withType: folderType
+                   withFolderType: folderType
+                   withFilterType: [NSDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]]
                          inBuffer: theBuffer];
     }
 

@@ -36,6 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @interface NSDate (ActiveSync)
 
++ (NSDate *) dateFromFilterType: (NSString *) theFilterType;
 - (NSString *) activeSyncRepresentation;
 
 @end
