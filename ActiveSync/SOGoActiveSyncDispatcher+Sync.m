@@ -98,6 +98,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "iCalToDo+ActiveSync.h"
 #include "NGDOMElement+ActiveSync.h"
 #include "NGVCard+ActiveSync.h"
+#include "NSCalendarDate+ActiveSync.h"
 #include "NSDate+ActiveSync.h"
 #include "NSData+ActiveSync.h"
 #include "NSString+ActiveSync.h"
@@ -447,7 +448,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   inCollection: (id) theCollection
                    withSyncKey: (NSString *) theSyncKey
                 withFolderType: (SOGoMicrosoftActiveSyncFolderType) theFolderType
-                withFilterType: (NSDate *) theFilterType
+                withFilterType: (NSCalendarDate *) theFilterType
                       inBuffer: (NSMutableString *) theBuffer
 {
   int i;
@@ -463,97 +464,37 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   switch (theFolderType)
     {
+      // Handle all the GCS components
     case ActiveSyncContactFolder:
-      {
-        NSArray *allContacts;
-        NGVCard *card;
-        id contact;
-        
-        allContacts = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey];
-        
-        for (i = 0; i < [allContacts count]; i++)
-          {                
-            contact = [theCollection lookupName: [[allContacts objectAtIndex: i] objectForKey: @"c_name"]
-                                      inContext: context
-                                        acquire: NO];
-            
-            if (![[[allContacts objectAtIndex: i] objectForKey: @"c_component"] isEqualToString: @"vcard"])
-              continue;
-            
-            // FIXME: we skip list right now
-            if ([contact respondsToSelector: @selector (vCard)])
-              {
-                card = [contact vCard];
-                
-                [theBuffer appendString: @"<Add xmlns=\"AirSync:\">"];
-                [theBuffer appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", [contact nameInContainer]];
-                [theBuffer appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
-                
-                [theBuffer appendString: [card activeSyncRepresentation]];
-                
-                [theBuffer appendString: @"</ApplicationData>"];
-                [theBuffer appendString: @"</Add>"];
-              }
-          }
-      }
-      break;
     case ActiveSyncEventFolder:
-      {
-        NSArray *allEvents;
-        NSDictionary *d;
-        id eventObject;
-
-        allEvents = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey];
-        
-        for (i = 0; i < [allEvents count]; i++)
-          {
-            NSString *serverId;
-            iCalEvent *event;
-            
-            d = [allEvents objectAtIndex: i];
-            
-            if (![[d objectForKey: @"c_component"] isEqualToString: @"vevent"])
-              continue;
-            
-            serverId =  [d objectForKey: @"c_name"];
-            
-            [theBuffer appendString: @"<Add xmlns=\"AirSync:\">"];
-            [theBuffer appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", serverId];
-            [theBuffer appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
-            
-            eventObject = [theCollection lookupName: serverId  inContext: self->context  acquire: 0];
-            
-            event = [eventObject component: NO  secure: NO];
-            
-            [theBuffer appendString: [event activeSyncRepresentation]];
-            
-            [theBuffer appendString: @"</ApplicationData>"];
-            [theBuffer appendString: @"</Add>"];
-            
-          } // for (i = 0; i < [allEvents count]; i++)
-      }
-      break;
     case ActiveSyncTaskFolder:
       {
-        NSArray *allTasks;
-        NSDictionary *task;
-        id taskObject;
-        
-        allTasks = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey];
-        
-        for (i = 0; i < [allTasks count]; i++)
-                    
-          {
-            int deleted;
-            
-            task = [allTasks objectAtIndex: i];
-            deleted = [[task objectForKey: @"c_deleted"] intValue];
+        id sogoObject, componentObject;
+        NSString *uid, *component_name;
+        NSDictionary *component;
+        NSArray *allComponents;
 
-            if (!deleted && ![[task objectForKey: @"c_component"] isEqualToString: @"vtodo"])
+        BOOL updated;
+        int deleted;
+          
+        if (theFolderType == ActiveSyncContactFolder)
+          component_name = @"vcard";
+        else if (theFolderType == ActiveSyncEventFolder)
+          component_name = @"vevent";
+        else
+          component_name = @"vtodo";
+
+        allComponents = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType];
+        
+        for (i = 0; i < [allComponents count]; i++)
+          {
+            component = [allComponents objectAtIndex: i];
+            deleted = [[component objectForKey: @"c_deleted"] intValue];
+
+            if (!deleted && ![[component objectForKey: @"c_component"] isEqualToString: component_name])
               continue;
             
-            NSString *uid;
-            uid = [task objectForKey: @"c_name"];
+            uid = [component objectForKey: @"c_name"];
             
             if (deleted)
               {
@@ -563,12 +504,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               }
             else
               {
-                iCalToDo *todo;
-                BOOL updated;
-                
                 updated = YES;
                 
-                if ([[task objectForKey: @"c_creationdate"] intValue] > [theSyncKey intValue])
+                if ([[component objectForKey: @"c_creationdate"] intValue] > [theSyncKey intValue])
                   updated = NO;
                 
                 if (updated)
@@ -579,11 +517,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 [theBuffer appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
                 [theBuffer appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
                 
-                taskObject = [theCollection lookupName: uid  inContext: self->context  acquire: 0];
+                sogoObject = [theCollection lookupName: uid
+                                             inContext: context
+                                               acquire: 0];
                 
-                todo = [taskObject component: NO  secure: NO];
+                if (theFolderType == ActiveSyncContactFolder)
+                  componentObject = [sogoObject vCard];
+                else
+                  componentObject = [sogoObject component: NO  secure: NO];
                 
-                [theBuffer appendString: [todo activeSyncRepresentation]];
+                [theBuffer appendString: [componentObject activeSyncRepresentation]];
                 
                 [theBuffer appendString: @"</ApplicationData>"];
                 
@@ -598,12 +541,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     case ActiveSyncMailFolder:
     default:
       {
+        SOGoMailObject *mailObject;
+        NSString *uid, *command;
         NSDictionary *aMessage;
         NSArray *allMessages;
-        NSString *uid, *command;
-        SOGoMailObject *mailObject;
         
-        allMessages = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey];
+        allMessages = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType];
         
         for (i = 0; i < [allMessages count]; i++)
           {
@@ -779,7 +722,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                      inCollection: collection
                       withSyncKey: syncKey
                    withFolderType: folderType
-                   withFilterType: [NSDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]]
+                   withFilterType: [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]]
                          inBuffer: theBuffer];
     }
 

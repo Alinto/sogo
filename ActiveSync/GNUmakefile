@@ -12,6 +12,7 @@ ActiveSync_OBJC_FILES =			\
 	iCalEvent+ActiveSync.m		\
 	iCalTimeZone+ActiveSync.m	\
 	iCalToDo+ActiveSync.m		\
+	NSCalendarDate+ActiveSync.m		\
 	NSData+ActiveSync.m		\
 	NSDate+ActiveSync.m		\
 	NGDOMElement+ActiveSync.m	\

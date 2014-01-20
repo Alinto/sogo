@@ -104,7 +104,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "iCalToDo+ActiveSync.h"
 #include "NGMimeMessage+ActiveSync.h"
 #include "NGVCard+ActiveSync.h"
+#include "NSCalendarDate+ActiveSync.h"
 #include "NSData+ActiveSync.h"
+#include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"
 #include "SOGoActiveSyncConstants.h"
 #include "SOGoMailObject+ActiveSync.h"
@@ -516,12 +518,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processGetItemEstimate: (id <DOMElement>) theDocumentElement
                      inResponse: (WOResponse *) theResponse
 {
+  EOQualifier *notDeletedQualifier, *sinceDateQualifier;
+  NSString *collectionId, *realCollectionId;
+  id currentFolder, currentCollection;
   SOGoMailAccounts *accountsFolder;
   SOGoUserFolder *userFolder;
-  id currentFolder, currentCollection;
-  
-  NSString *collectionId, *realCollectionId;
+  EOAndQualifier *qualifier;
+  NSCalendarDate *filter;
   NSMutableString *s;
+  NSArray *uids;
   NSData *d;
 
   SOGoMicrosoftActiveSyncFolderType folderType;
@@ -541,13 +546,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", realCollectionId]
                                       inContext: context
                                         acquire: NO];
-            
-  // FIXME: we ignore FilterType for now
-  NSArray *uids = [currentCollection fetchUIDsMatchingQualifier:  [EOQualifier qualifierWithQualifierFormat:
-                                                                                 @"(not (flags = %@))",
-                                                                               @"deleted"]
-                                                   sortOrdering: @"REVERSE ARRIVAL"
-                                                       threaded: NO];
+  //
+  // For IMAP, we simply build a request like this:
+  //
+  // . UID SORT (SUBJECT) UTF-8 SINCE 1-Jan-2014 NOT DELETED
+  // * SORT 124576 124577 124579 124578
+  // . OK Completed (4 msgs in 0.000 secs)
+  //
+  filter = [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]];
+  
+  notDeletedQualifier =  [EOQualifier qualifierWithQualifierFormat:
+                                        @"(not (flags = %@))",
+                                      @"deleted"];
+  sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
+                                      @"(DATE >= %@)", filter];
+                                                  
+  
+  qualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeletedQualifier, sinceDateQualifier,
+                                                      nil];
+  AUTORELEASE(qualifier);
+  
+  uids = [currentCollection fetchUIDsMatchingQualifier: qualifier
+                                          sortOrdering: @"REVERSE ARRIVAL"
+                                              threaded: NO];
   
   
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];

@@ -1992,6 +1992,7 @@ static NSString *defaultUserID =  @"anyone";
 //
 - (NSArray *) syncTokenFieldsWithProperties: (NSArray *) theProperties
                           matchingSyncToken: (NSString *) theSyncToken
+                                   fromDate: (NSCalendarDate *) theStartDate
 {
   EOQualifier *searchQualifier;
   NSMutableArray *allTokens;
@@ -2001,13 +2002,21 @@ static NSString *defaultUserID =  @"anyone";
   int uidnext, highestmodseq, i; 
 
   allTokens = [NSMutableArray array];
-  a = [theSyncToken componentsSeparatedByString: @"-"];
-  uidnext = [[a objectAtIndex: 0] intValue];
-  highestmodseq = [[a objectAtIndex: 1] intValue];
 
+  if ([theSyncToken isEqualToString: @"-1"])
+    {
+      uidnext = highestmodseq = 0;
+    }
+  else
+    {
+      a = [theSyncToken componentsSeparatedByString: @"-"];
+      uidnext = [[a objectAtIndex: 0] intValue];
+      highestmodseq = [[a objectAtIndex: 1] intValue];
+    }
+  
   // We first make sure QRESYNC is enabled
   [[self imap4Connection] enableExtensions: [NSArray arrayWithObject: @"QRESYNC"]];
-
+   
 
   // We fetch new messages and modified messages
   if (highestmodseq)
@@ -2030,6 +2039,17 @@ static NSString *defaultUserID =  @"anyone";
     {
       searchQualifier = [self _nonDeletedQualifier];
     }
+
+  if (theStartDate)
+    {
+      EOQualifier *sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
+                                                       @"(DATE >= %@)", theStartDate];
+      
+      searchQualifier = [[EOAndQualifier alloc] initWithQualifiers: searchQualifier, sinceDateQualifier,
+                                                nil];
+      [searchQualifier autorelease];
+    }
+  
 
   // we fetch modified or added uids
   uids = [self fetchUIDsMatchingQualifier: searchQualifier

@@ -96,6 +96,10 @@
 
 - (NSString *) davCollectionTag;
 
+- (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) properties
+                          matchingSyncToken: (NSString *) syncToken
+                                   fromDate: (NSCalendarDate *) theStartDate;
+
 /* flags */
 
 - (NSException *) addFlagsToAllMessages: (id) _f;

@@ -1101,6 +1101,7 @@ static NSArray *childRecordFields = nil;
 //
 - (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) properties
                           matchingSyncToken: (NSString *) syncToken
+                                   fromDate: (NSCalendarDate *) theStartDate
 {
   /* TODO:
      - validation:
@@ -1124,8 +1125,20 @@ static NSArray *childRecordFields = nil;
   if ([syncToken length])
     {
       syncTokenInt = [syncToken intValue];
+      
       qualifier = [EOQualifier qualifierWithQualifierFormat:
                                  @"c_lastmodified > %d", syncTokenInt];
+
+      if (theStartDate)
+        {
+          EOQualifier *sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
+                                                           @"c_creationdate > %d", (int)[theStartDate timeIntervalSince1970]];
+          
+          qualifier = [[EOAndQualifier alloc] initWithQualifiers: sinceDateQualifier, qualifier,
+                                              nil];
+          [qualifier autorelease];
+        }
+
       mRecords = [NSMutableArray arrayWithArray: [self _fetchFields: fields
                                                       withQualifier: qualifier
                                                       ignoreDeleted: YES]];
@@ -1145,9 +1158,23 @@ static NSArray *childRecordFields = nil;
         qualifier = [EOQualifier qualifierWithQualifierFormat: filter];
       else
         qualifier = nil;
-      records = [self _fetchFields: fields withQualifier: qualifier
+
+      if (theStartDate)
+        {
+          EOQualifier *sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
+                                                           @"c_creationdate > %d", (int)[theStartDate timeIntervalSince1970]];
+          
+          qualifier = [[EOAndQualifier alloc] initWithQualifiers: sinceDateQualifier, qualifier,
+                                              nil];
+          [qualifier autorelease];
+        }
+      
+      records = [self _fetchFields: fields
+                     withQualifier: qualifier
                      ignoreDeleted: YES];
     }
+
+  
 
   return records;
 }
@@ -1407,7 +1434,8 @@ static NSArray *childRecordFields = nil;
                        firstElementWithTag: @"prop" inNamespace: XMLNS_WEBDAV];
       properties = [self parseDAVRequestedProperties: propElement];
       records = [self syncTokenFieldsWithProperties: properties
-                                  matchingSyncToken: syncToken];
+                                  matchingSyncToken: syncToken
+                                           fromDate: nil];
       [self _appendComponentProperties: [properties allKeys]
                            fromRecords: records
                      matchingSyncToken: [syncToken intValue]

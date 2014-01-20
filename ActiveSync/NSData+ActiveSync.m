@@ -35,7 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <wbxml/wbxml_conv.h>
 #include <wbxml/wbxml_errors.h>
 
-#define WBXMLDEBUG 0
+#define WBXMLDEBUG 1
 
 @implementation NSData (ActiveSync)
 

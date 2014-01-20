@@ -126,7 +126,9 @@
 - (NSString *) davCollectionTag;
 
 - (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) properties
-                          matchingSyncToken: (NSString *) syncToken;
+                          matchingSyncToken: (NSString *) syncToken
+                                   fromDate: (NSCalendarDate *) theStartDate;
+
 
 /* multiget helper */
 - (WOResponse *) performMultigetInContext: (WOContext *) queryContext
