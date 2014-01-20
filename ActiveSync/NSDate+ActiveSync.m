@@ -32,57 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
-#define ONE_DAY 86400
-
 @implementation NSDate (ActiveSync)
-
-//
-// See http://msdn.microsoft.com/en-us/library/gg709713(v=exchg.80).aspx for available types
-//
-+ (NSDate *) dateFromFilterType: (NSString *) theFilterType
-{
-  NSDate *d;
-
-  d = [self alloc];
-
-  if (d)
-    {
-      int value;
-      
-      switch ([theFilterType intValue])
-        {
-        case 1:
-          value = ONE_DAY;
-          break;
-        case 2:
-          value = 3 * ONE_DAY;
-          break;
-        case 3:
-          value = 7 * ONE_DAY;
-          break;
-        case 4:
-          value = 14 * ONE_DAY;
-          break;
-        case 5:
-          value = 30 * ONE_DAY;
-          break;
-        case 6:
-          value = 90 * ONE_DAY;
-          break;
-        case 7:
-          value = 180 * ONE_DAY;
-          break;
-        case 0:
-        case 8:
-        default:
-          return nil;
-        }
-
-      return [d initWithTimeIntervalSinceNow: -value];
-    }
-
-  return d;
-}
 
 - (NSString *) activeSyncRepresentation
 {
