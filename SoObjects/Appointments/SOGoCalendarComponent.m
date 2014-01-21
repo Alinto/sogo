@@ -1034,6 +1034,11 @@
   // Recipient is fixed, which is the calendar owner
   ownerUser = [SOGoUser userWithLogin: self->owner];
   recipientIdentity = [ownerUser primaryIdentity];
+  
+  // Safety net for broken configurations
+  if (!recipientIdentity)
+    return;
+
   recipientEmail = [recipientIdentity objectForKey: @"email"];
   fullRecipientEmail = [recipientIdentity keysWithFormat: @"%{fullName} <%{email}>"];
   
