@@ -896,7 +896,7 @@
   SOGoDomainDefaults *dd;
 
   dd = [from domainDefaults];
-  if ([dd appointmentSendEMailNotifications])
+  if ([dd appointmentSendEMailNotifications] && [event isStillRelevant])
     {
       /* get WOApplication instance */
       app = [WOApplication application];
