@@ -36,7 +36,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (NSString *) activeSyncRepresentation
 {
-  return [self descriptionWithCalendarFormat: @"%Y%m%dT%H%M%SZ"  timeZone: [NSTimeZone timeZoneWithName: @"GMT"]  locale: nil];
+  return [self descriptionWithCalendarFormat: @"%Y-%m-%d-T%H:%M:%S.%FZ"  timeZone: [NSTimeZone timeZoneWithName: @"GMT"]  locale: nil];
 }
 
 @end
