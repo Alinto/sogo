@@ -451,6 +451,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 withFilterType: (NSCalendarDate *) theFilterType
                       inBuffer: (NSMutableString *) theBuffer
 {
+  NSMutableString *s;
   int i;
 
   //
@@ -460,7 +461,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ([theSyncKey isEqualToString: [theCollection davCollectionTag]])
     return;
   
-  [theBuffer appendString: @"<Commands>"];
+  s = [NSMutableString string];
   
   switch (theFolderType)
     {
@@ -498,9 +499,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             
             if (deleted)
               {
-                [theBuffer appendString: @"<Delete xmlns=\"AirSync:\">"];
-                [theBuffer appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
-                [theBuffer appendString: @"</Delete>"];
+                [s appendString: @"<Delete xmlns=\"AirSync:\">"];
+                [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
+                [s appendString: @"</Delete>"];
               }
             else
               {
@@ -510,12 +511,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   updated = NO;
                 
                 if (updated)
-                  [theBuffer appendString: @"<Change xmlns=\"AirSync:\">"];
+                  [s appendString: @"<Change xmlns=\"AirSync:\">"];
                 else
-                  [theBuffer appendString: @"<Add xmlns=\"AirSync:\">"];
+                  [s appendString: @"<Add xmlns=\"AirSync:\">"];
                 
-                [theBuffer appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
-                [theBuffer appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
+                [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
+                [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
                 
                 sogoObject = [theCollection lookupName: uid
                                              inContext: context
@@ -526,14 +527,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 else
                   componentObject = [sogoObject component: NO  secure: NO];
                 
-                [theBuffer appendString: [componentObject activeSyncRepresentation]];
+                [s appendString: [componentObject activeSyncRepresentation]];
                 
-                [theBuffer appendString: @"</ApplicationData>"];
+                [s appendString: @"</ApplicationData>"];
                 
                 if (updated)
-                  [theBuffer appendString: @"</Change>"];
+                  [s appendString: @"</Change>"];
                 else
-                  [theBuffer appendString: @"</Add>"];
+                  [s appendString: @"</Add>"];
               }
           } // for ...
       }
@@ -557,30 +558,30 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             
             if ([command isEqualToString: @"deleted"])
               {
-                [theBuffer appendString: @"<Delete xmlns=\"AirSync:\">"];
-                [theBuffer appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
-                [theBuffer appendString: @"</Delete>"];
+                [s appendString: @"<Delete xmlns=\"AirSync:\">"];
+                [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
+                [s appendString: @"</Delete>"];
               }
             else
               {
                 if ([command isEqualToString: @"added"])
-                  [theBuffer appendString: @"<Add xmlns=\"AirSync:\">"];
+                  [s appendString: @"<Add xmlns=\"AirSync:\">"];
                 else
-                  [theBuffer appendString: @"<Change xmlns=\"AirSync:\">"];
+                  [s appendString: @"<Change xmlns=\"AirSync:\">"];
 
                 mailObject = [theCollection lookupName: uid
                                              inContext: context
                                                acquire: 0];
 
-                [theBuffer appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
-                [theBuffer appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
-                [theBuffer appendString: [mailObject activeSyncRepresentation]];
-                [theBuffer appendString: @"</ApplicationData>"];
+                [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
+                [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
+                [s appendString: [mailObject activeSyncRepresentation]];
+                [s appendString: @"</ApplicationData>"];
                 
                 if ([command isEqualToString: @"added"])
-                  [theBuffer appendString: @"</Add>"];
+                  [s appendString: @"</Add>"];
                 else
-                  [theBuffer appendString: @"</Change>"];
+                  [s appendString: @"</Change>"];
 
               }
           }
@@ -588,7 +589,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       break;
     } // switch (folderType) ...
   
-  [theBuffer appendString: @"</Commands>"];
+  if ([s length])
+    {
+      [theBuffer appendString: @"<Commands>"];
+      [theBuffer appendString: s];
+      [theBuffer appendString: @"</Commands>"];
+    }
 }
 
 //
@@ -709,6 +715,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
   [theBuffer appendString: @"<Collection>"];
+  
+  if (folderType == ActiveSyncMailFolder)
+    [theBuffer appendString: @"<Class>Email</Class>"];
+  else if (folderType == ActiveSyncContactFolder)
+    [theBuffer appendString: @"<Class>Contacts</Class>"];
+  else if (folderType == ActiveSyncEventFolder)
+    [theBuffer appendString: @"<Class>Calendar</Class>"];
+  else if (folderType == ActiveSyncTaskFolder)
+    [theBuffer appendString: @"<Class>Tasks</Class>"];
+  
   [theBuffer appendFormat: @"<SyncKey>%@</SyncKey>", davCollectionTag];
   [theBuffer appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
   [theBuffer appendFormat: @"<Status>%d</Status>", 1];
