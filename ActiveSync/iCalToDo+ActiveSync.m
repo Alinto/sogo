@@ -57,7 +57,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [s appendFormat: @"<Complete xmlns=\"Tasks:\">%d</Complete>", (completed ? 1 : 0)];
   
   // DateCompleted
-  [s appendFormat: @"<DateCompleted xmlns=\"Tasks:\">%@</DateCompleted>", [completed activeSyncRepresentation]];
+  if (completed)
+    [s appendFormat: @"<DateCompleted xmlns=\"Tasks:\">%@</DateCompleted>", [completed activeSyncRepresentation]];
   
   // Due date
   NSCalendarDate *due;
