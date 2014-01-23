@@ -889,7 +889,6 @@ static NSString    *userAgent      = nil;
   NSDictionary *info, *attachment;
   NSString *signature, *nl;
   SOGoUserDefaults *ud;
-  BOOL asInline;
 
   [sourceMail fetchCoreInfos];
   
@@ -907,10 +906,9 @@ static NSString    *userAgent      = nil;
 
   /* attach message */
   ud = [[context activeUser] userDefaults];
-  asInline = [[ud mailMessageForwarding] isEqualToString: @"inline"];
-  if (asInline)
+  if ([[ud mailMessageForwarding] isEqualToString: @"inline"])
     {
-      [self setText: [sourceMail contentForReply]];
+      [self setText: [sourceMail contentForInlineForward]];
       [self _fetchAttachmentsFromMail: sourceMail];
     }
   else
@@ -921,7 +919,7 @@ static NSString    *userAgent      = nil;
       if ([signature length])
         {
           nl = (isHTML ? @"<br/>" : @"\n");
-          [self setText: [NSString stringWithFormat: @"%@-- %@%@", nl, nl, signature]];
+          [self setText: [NSString stringWithFormat: @"%@%@-- %@%@", nl, nl, nl, signature]];
         }
       attachment = [NSDictionary dictionaryWithObjectsAndKeys:
 				   [sourceMail filenameForForward], @"filename",

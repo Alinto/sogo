@@ -12,10 +12,11 @@ New features
 Enhancements
  - we now automatically convert <img src=data...> into file attachments
    using CIDs. This prevents Outlook issues.
- - updated Finnish translation
+ - updated French and Finnish translations
  - XMLHttpRequest.js is now loaded conditionaly (< IE9)
  - format time in attendees invitation window according to the user's locale
  - improved IE11 support
+ - respect signature placement when forwarding a message
 
 Bug fixes
  - don't load 'background' attribute (#2437)
@@ -27,7 +28,7 @@ Enhancements
  - updated CKEditor to version 4.3.0 and added tab module
 
 Bug fixes
- - HTML formatting is now retained when forwarding/replying to a mail using the HTML editor.
+ - HTML formatting is now retained when forwarding/replying to a mail using the HTML editor
  - put the text part before the HTML part when composing mail to fix a display issue with Thunderbird (#2512)
 
 2.1.1a (2013-11-22)

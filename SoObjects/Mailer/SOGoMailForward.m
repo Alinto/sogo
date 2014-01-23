@@ -56,6 +56,16 @@
   [super dealloc];
 }
 
+- (void) setSignaturePlacement: (NSString *) newPlacement
+{
+  signaturePlacement = newPlacement;
+}
+
+- (BOOL) signaturePlacementOnTop
+{
+  return [signaturePlacement isEqual: @"above"];
+}
+
 - (void) setSourceMail: (SOGoMailObject *) newSourceMail
 {
   ASSIGN (sourceMail, newSourceMail);

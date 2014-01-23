@@ -256,16 +256,17 @@
 //
 - (NSString *) contentForInlineForward
 {
-  SOGoUserDefaults *ud;
+  SOGoUserDefaults *userDefaults;
   NSString *pageName;
   SOGoMailForward *page;
 
-  ud = [[context activeUser] userDefaults];
+  userDefaults = [[context activeUser] userDefaults];
   pageName = [NSString stringWithFormat: @"SOGoMail%@Forward",
-		       [ud language]];
+		       [userDefaults language]];
   page = [[WOApplication application] pageWithName: pageName
 				      inContext: context];
   [page setSourceMail: self];
+  [page setSignaturePlacement: [userDefaults mailSignaturePlacement]];
 
   return [[page generateResponse] contentAsString];
 }
