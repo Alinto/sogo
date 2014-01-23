@@ -47,31 +47,40 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) activeSyncRepresentation
 {
   NSMutableString *s;
+  id o;
+
   int v;
 
   s = [NSMutableString string];
 
   // Complete
-  NSCalendarDate *completed;
-  completed = [self completed];
-  [s appendFormat: @"<Complete xmlns=\"Tasks:\">%d</Complete>", (completed ? 1 : 0)];
+  o = [self completed];
+  [s appendFormat: @"<Complete xmlns=\"Tasks:\">%d</Complete>", (o ? 1 : 0)];
   
   // DateCompleted
-  if (completed)
-    [s appendFormat: @"<DateCompleted xmlns=\"Tasks:\">%@</DateCompleted>", [completed activeSyncRepresentation]];
+  if (o)
+    [s appendFormat: @"<DateCompleted xmlns=\"Tasks:\">%@</DateCompleted>", [o activeSyncRepresentation]];
+  
+  // Start date
+  if ((o = [self startDate]))
+    {
+      [s appendFormat: @"<StartDate xmlns=\"Tasks:\">%@</StartDate>", [o activeSyncRepresentation]];
+      [s appendFormat: @"<UTCStartDate xmlns=\"Tasks:\">%@</UTCStartDate>", [o activeSyncRepresentation]];
+    }
+
   
   // Due date
-  NSCalendarDate *due;
-  due = [self due];
-  if (due)
-    [s appendFormat: @"<DueDate xmlns=\"Tasks:\">%@</DueDate>", [due activeSyncRepresentation]];
+  if ((o = [self due]))
+    {
+      [s appendFormat: @"<DueDate xmlns=\"Tasks:\">%@</DueDate>", [o activeSyncRepresentation]];
+      [s appendFormat: @"<UTCDueDate xmlns=\"Tasks:\">%@</UTCDueDate>", [o activeSyncRepresentation]];
+    }
   
   // Importance
-  NSString *priority;
-  priority = [self priority];
-  if ([priority isEqualToString: @"9"])
+  o = [self priority];
+  if ([o isEqualToString: @"9"])
     v = 0;
-  else if ([priority isEqualToString: @"1"])
+  else if ([o isEqualToString: @"1"])
     v = 2;
   else
     v = 1;
@@ -83,12 +92,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Sensitivity - FIXME
   [s appendFormat: @"<Sensitivity xmlns=\"Tasks:\">%d</Sensitivity>", 0];
   
-  // UTCStartDate - FIXME
-  if ([self startDate])
-    [s appendFormat: @"<UTCStartDate xmlns=\"Tasks:\">%@</UTCStartDate>", [[self startDate] activeSyncRepresentation]];
-  
   // Subject
   [s appendFormat: @"<Subject xmlns=\"Tasks:\">%@</Subject>", [self summary]];
+
+  if ((o = [self comment]))
+    {
+      [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
+      [s appendFormat: @"<Type>%d</Type>", 1]; 
+      [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
+      [s appendFormat: @"<Truncated>%d</Truncated>", 0];
+      [s appendFormat: @"<Data>%@</Data>", o];
+      [s appendString: @"</Body>"];
+    }
+  
+  return s;
 
   return s;
 }
