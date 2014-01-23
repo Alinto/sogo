@@ -931,10 +931,9 @@ static NSString    *userAgent      = nil;
 
   [self storeInfo];
 
-  if (!asInline)
-    // When the user has chosen to forward messages as attachment, immediately save the message
-    // to the IMAP store so the user can eventually view the attached file from the Web interface
-    [self save];
+  // Save the message to the IMAP store so the user can eventually view the attached file(s)
+  // from the Web interface
+  [self save];
 }
 
 /* accessors */
