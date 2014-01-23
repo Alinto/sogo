@@ -15,6 +15,7 @@ Enhancements
  - updated Finnish translation
  - XMLHttpRequest.js is now loaded conditionaly (< IE9)
  - format time in attendees invitation window according to the user's locale
+ - improved IE11 support
 
 Bug fixes
  - don't load 'background' attribute (#2437)

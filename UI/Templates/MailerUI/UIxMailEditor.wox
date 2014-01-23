@@ -123,7 +123,7 @@
         </ul>
       </div>
     </div><!-- #headerArea -->
-    <textarea id="text" name="text" rows="30" var:value="text"></textarea>
+    <textarea id="text" name="text" rows="25" style="display:none" var:value="text"/>
   </form>
   </div>
 

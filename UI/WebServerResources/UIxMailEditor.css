@@ -200,8 +200,7 @@ UL#attachments .progressDone .icon-attachment:hover
 { width: 99%; }
 
 TEXTAREA#text
-{ display: none;
-  background: #fff; }
+{ background: #fff; }
 
 #cke_text
 { clear: both; }
