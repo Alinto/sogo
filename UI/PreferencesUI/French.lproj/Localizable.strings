@@ -32,7 +32,7 @@
 = "Veuillez définir un message et vos adresses pour lesquelles pour désirez activer une réponse automatique.";
 "Your vacation message must not end with a single dot on a line." = "Le message de vacances ne doit pas se terminer par une ligne ne contenant qu'un point.";
 "End date of your auto reply must be in the future."
-= "La date de fin de la réponse automatique doit être dans le future.";
+= "La date de fin de la réponse automatique doit être dans le futur.";
 
 /* forward messages */
 "Forward incoming messages" = "Transférer les messages entrant";
