@@ -37,6 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 @interface NSDate (ActiveSync)
 
 - (NSString *) activeSyncRepresentation;
+- (NSString *) activeSyncRepresentationWithoutSeparators;
 
 @end
 

@@ -54,22 +54,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   iCalPerson *organizer, *attendee;
   iCalTimeZone *tz;
+  id o;
+
+  int v;
 
   s = [NSMutableString string];
   
   // DTStamp -- http://msdn.microsoft.com/en-us/library/ee219470(v=exchg.80).aspx
   if ([self timeStampAsDate])
-    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self timeStampAsDate] activeSyncRepresentation]];
+    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self timeStampAsDate] activeSyncRepresentationWithoutSeparators]];
   else if ([self created])
-    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self created] activeSyncRepresentation]];
+    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self created] activeSyncRepresentationWithoutSeparators]];
   
   // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
   if ([self startDate])
-    [s appendFormat: @"<StartTime xmlns=\"Calendar:\">%@</StartTime>", [[self startDate] activeSyncRepresentation]];
+    [s appendFormat: @"<StartTime xmlns=\"Calendar:\">%@</StartTime>", [[self startDate] activeSyncRepresentationWithoutSeparators]];
   
   // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
   if ([self endDate])
-    [s appendFormat: @"<EndTime xmlns=\"Calendar:\">%@</EndTime>", [[self endDate] activeSyncRepresentation]];
+    [s appendFormat: @"<EndTime xmlns=\"Calendar:\">%@</EndTime>", [[self endDate] activeSyncRepresentationWithoutSeparators]];
   
   // Timezone
   tz = [(iCalDateTime *)[self firstChildWithTag: @"dtstart"] timeZone];
@@ -78,14 +81,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     tz = [iCalTimeZone timeZoneForName: @"Europe/London"];
 
   [s appendFormat: @"<TimeZone xmlns=\"Calendar:\">%@</TimeZone>", [[tz activeSyncRepresentation] stringByReplacingString: @"\n" withString: @""]];;
-
-  // Organizer and attendees
+  
+  // Organizer
   if ((organizer = [self organizer]))
     {
-      [s appendFormat: @"<Organizer_Email xmlns=\"Calendar:\">%@</Organizer_Email>", [organizer rfc822Email]];
-      [s appendFormat: @"<Organizer_Name xmlns=\"Calendar:\">%@</Organizer_Name>", [organizer cn]];
+      o = [organizer rfc822Email];
+      if ([o length])
+        [s appendFormat: @"<Organizer_Email xmlns=\"Calendar:\">%@</Organizer_Email>", o];
+
+      o = [organizer cn];
+      if ([o length])
+        [s appendFormat: @"<Organizer_Name xmlns=\"Calendar:\">%@</Organizer_Name>", o];
     }
   
+  // Attendees
   attendees = [self attendees];
   
   if ([attendees count])
@@ -101,8 +110,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           attendee = [attendees objectAtIndex: i];
           [s appendFormat: @"<Attendee_Email xmlns=\"Calendar:\">%@</Attendee_Email>", [attendee rfc822Email]];
           [s appendFormat: @"<Attendee_Name xmlns=\"Calendar:\">%@</Attendee_Name>", [attendee cn]];
-
-
+          
           attendee_status = 5;
           if ([[attendee partStat] caseInsensitiveCompare: @"ACCEPTED"] == NSOrderedSame)
             attendee_status = 3;
@@ -119,13 +127,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           else
             attendee_type = 2;
           
-            
           [s appendFormat: @"<Attendee_Type xmlns=\"Calendar:\">%d</Attendee_Type>", attendee_type];
-
           [s appendString: @"</Attendee>"];
-
         }
-      
       [s appendString: @"</Attendees>"];
     }
 
@@ -133,17 +137,57 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ([[self summary] length])
     [s appendFormat: @"<Subject xmlns=\"Calendar:\">%@</Subject>", [self summary]];
   
+  // Location
+  if ([[self location] length])
+    [s appendFormat: @"<Location xmlns=\"Calendar:\">%@</Location>", [self location]];
+  
+  // Importance - NOT SUPPORTED - DO NOT ENABLE
+  //o = [self priority];
+  //if ([o isEqualToString: @"9"])
+  //  v = 0;
+  //else if ([o isEqualToString: @"1"])
+  //  v = 2;
+  //else
+  //  v = 1;
+  //[s appendFormat: @"<Importance xmlns=\"Calendar:\">%d</Importance>", v];
+
   // UID -- http://msdn.microsoft.com/en-us/library/ee159919(v=exchg.80).aspx
   if ([[self uid] length])
     [s appendFormat: @"<UID xmlns=\"Calendar:\">%@</UID>", [self uid]];
   
-  // Sensitivity - FIXME
-  [s appendFormat: @"<Sensitivity xmlns=\"Calendar:\">%d</Sensitivity>", 0];
+  // Sensitivity
+  if ([[self accessClass] isEqualToString: @"PRIVATE"])
+    v = 2;
+  if ([[self accessClass] isEqualToString: @"CONFIDENTIAL"])
+    v = 3;
+  else
+    v = 0;
+
+  [s appendFormat: @"<Sensitivity xmlns=\"Calendar:\">%d</Sensitivity>", v];
   
   // BusyStatus -- http://msdn.microsoft.com/en-us/library/ee202290(v=exchg.80).aspx
   [s appendFormat: @"<BusyStatus xmlns=\"Calendar:\">%d</BusyStatus>", 0];
   
   // Reminder -- http://msdn.microsoft.com/en-us/library/ee219691(v=exchg.80).aspx
+  // TODO
+
+  // Location
+  if ([[self location] length])
+    [s appendFormat: @"<Location xmlns=\"Calendar:\">%@</Location>", [self location]];
+
+  // Comment
+  o = [self comment];
+  if ([o length])
+    {
+      [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
+      [s appendFormat: @"<Type>%d</Type>", 1];
+      [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
+      [s appendFormat: @"<Truncated>%d</Truncated>", 0];
+      [s appendFormat: @"<Data>%@</Data>", o];
+      [s appendString: @"</Body>"];
+    }
+
+  [s appendFormat: @"<NativeBodyType xmlns=\"AirSyncBase:\">%d</NativeBodyType>", 1];
 
   return s;
 }
