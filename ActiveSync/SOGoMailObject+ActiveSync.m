@@ -33,19 +33,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
+#import <NGCards/iCalCalendar.h>
+#import <NGCards/iCalDateTime.h>
+#import <NGCards/iCalEvent.h>
+#import <NGCards/iCalTimeZone.h>
+
+
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSString+Encoding.h>
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 
 #include "NSDate+ActiveSync.h"
 
 #include "../SoObjects/Mailer/NSString+Mail.h"
+#include <SOGo/SOGoUser.h>
+
 
 @implementation SOGoMailObject (ActiveSync)
 
-- (NSString *) _baseEmailAddressesFrom: (NSArray *) enveloppeAddresses
+- (NSString *) _emailAddressesFrom: (NSArray *) enveloppeAddresses
 {
   NSMutableArray *addresses;
   NSString *rc;
@@ -62,9 +71,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       for (i = 0; i < max; i++)
         {
           address = [enveloppeAddresses objectAtIndex: i];
-          email = [NSString stringWithFormat: @"%@", [address baseEMail]];
-
-          [addresses addObject: email];
+          email = [address email];
+          
+          if (email)
+            [addresses addObject: email];
         }
       rc = [addresses componentsJoinedByString: @", "];
     }
@@ -187,34 +197,37 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   s = [NSMutableString string];
 
   // From
-  value = [self _baseEmailAddressesFrom: [[self envelope] from]];
+  value = [self _emailAddressesFrom: [[self envelope] from]];
   if (value)
-    [s appendFormat: @"<From xmlns=\"Email:\">%@</From>", value];
+    [s appendFormat: @"<From xmlns=\"Email:\">%@</From>", [value stringByEscapingHTMLString]];
   
   // To - "The value of this element contains one or more e-mail addresses.
   // If there are multiple e-mail addresses, they are separated by commas."
-  value = [self _baseEmailAddressesFrom: [[self envelope] to]];
+  value = [self _emailAddressesFrom: [[self envelope] to]];
   if (value)
-    [s appendFormat: @"<To xmlns=\"Email:\">%@</To>", value];
+    [s appendFormat: @"<To xmlns=\"Email:\">%@</To>", [value stringByEscapingHTMLString]];
   
+  // DisplayTo
+  [s appendFormat: @"<DisplayTo xmlns=\"Email:\">\"%@\"</DisplayTo>", [[context activeUser] login]];
+
   // Cc - same syntax as the To field
-  value = [self _baseEmailAddressesFrom: [[self envelope] cc]];
+  value = [self _emailAddressesFrom: [[self envelope] cc]];
   if (value)
-    [s appendFormat: @"<Cc xmlns=\"Email:\">%@</Cc>", value];
+    [s appendFormat: @"<Cc xmlns=\"Email:\">%@</Cc>", [value stringByEscapingHTMLString]];
 
   // Subject
   value = [self decodedSubject];
   if (value)
-    [s appendFormat: @"<Subject xmlns=\"Email:\">%@</Subject>", value];
+    {
+      [s appendFormat: @"<Subject xmlns=\"Email:\">%@</Subject>", [value stringByEscapingHTMLString]];
+      [s appendFormat: @"<ThreadTopic xmlns=\"Email:\">%@</ThreadTopic>", [value stringByEscapingHTMLString]];
+    }
   
   // DateReceived
   value = [self date];
   if (value)
-    [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [value activeSyncRepresentation]];;
-  
-  // DisplayTo
-  //[s appendFormat: @"<DisplayTo xmlns=\"Email:\">\"%@\"</DisplayTo>", [[context activeUser] login]];
-  
+    [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [value activeSyncRepresentation]];
+    
   // Importance - FIXME
   [s appendFormat: @"<Importance xmlns=\"Email:\">%@</Importance>", @"1"];
   
@@ -223,14 +236,63 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   // MesssageClass
   [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Note"];
-  //[s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Schedule.Meeting"];
+  //[s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Schedule.Meeting.Request"];
   
+  //
+  // TEST
+  //
+#if 0
+  id foo = [self lookupImap4BodyPartKey: @"2" inContext: self->context];
+  NSData *calendarData;
+  iCalCalendar *calendar;
+  iCalEvent *event;
+
+  calendarData = [foo fetchBLOB];
+  calendar = [iCalCalendar parseSingleFromSource: calendarData];
+  event = [[calendar events] lastObject];
+
+  if ([event timeStampAsDate])
+    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentation]];
+  else if ([event created])
+    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[event created] activeSyncRepresentation]];
+  
+  [s appendString: @"<MeetingRequest xmlns=\"Email:\">"];
+  
+  // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
+  if ([event startDate])
+    [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentation]];
+  
+  // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
+  if ([event endDate])
+    [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentation]];
+
+  // Timezone
+  iCalTimeZone *tz;
+
+  tz = [(iCalDateTime *)[event firstChildWithTag: @"dtstart"] timeZone];
+
+  if (!tz)
+    tz = [iCalTimeZone timeZoneForName: @"Europe/London"];
+
+  [s appendFormat: @"<TimeZone xmlns=\"Email:\">%@</TimeZone>", [[tz activeSyncRepresentation] stringByReplacingString: @"\n" withString: @""]];;
+
+  [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 0];
+  [s appendFormat: @"<Organizer xmlns=\"Email:\">%@</Organizer>", @"sogo3@example.com"];
+  [s appendFormat: @"<ResponseRequested xmlns=\"Email:\">%d</ResponseRequested>", 1];
+
+  [s appendString: @"</MeetingRequest>"];
+#endif
+  //
+  // TEST
+  //
+
+
   // Reply-To - FIXME
   //NSArray *replyTo = [[message objectForKey: @"envelope"] replyTo];
   //if ([replyTo count])
   //  [s appendFormat: @"<Reply-To xmlns=\"Email:\">%@</Reply-To>", [addressFormatter stringForArray: replyTo]];
   
-  // InternetCPID - FIXME
+  // InternetCPID - 65001 == UTF-8, we use this all the time for now.
   [s appendFormat: @"<InternetCPID xmlns=\"Email:\">%@</InternetCPID>", @"65001"];
           
   // Body - namespace 17
@@ -251,7 +313,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       len = [content length];
       
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
-      [s appendFormat: @"<Type>%d</Type>", preferredBodyType]; 
+      [s appendFormat: @"<Type>%d</Type>", preferredBodyType];
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", len];
       [s appendFormat: @"<Truncated>%d</Truncated>", 0];
       [s appendFormat: @"<Data>%@</Data>", content];
@@ -289,16 +351,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   // ContentClass
   [s appendFormat: @"<ContentClass xmlns=\"Email:\">%@</ContentClass>", @"urn:content-classes:message"];
+  //[s appendFormat: @"<ContentClass xmlns=\"Email:\">%@</ContentClass>", @"urn:content-classes:calendarmessage"];
   
   // Flags
   [s appendString: @"<Flag xmlns=\"Email:\">"];
   [s appendFormat: @"<FlagStatus>%d</FlagStatus>", 0];
   [s appendString: @"</Flag>"];
-    
+  
+  // FIXME - support these in the future
+  //[s appendString: @"<ConversationId xmlns=\"Email2:\">foobar</ConversationId>"];
+  //[s appendString: @"<ConversationIndex xmlns=\"Email2:\">zot=</ConversationIndex>"];
+  
   // NativeBodyType -- http://msdn.microsoft.com/en-us/library/ee218276(v=exchg.80).aspx
   // This is a required child element.
   // 1 -> plain/text, 2 -> HTML and 3 -> RTF
-  [s appendFormat: @"<NativeBodyType xmlns=\"AirSyncBase:\">%d</NativeBodyType>", preferredBodyType];
+  if (nativeBodyType == 4)
+    nativeBodyType = 1;
+
+  [s appendFormat: @"<NativeBodyType xmlns=\"AirSyncBase:\">%d</NativeBodyType>", nativeBodyType];
 
   return s;
 }
