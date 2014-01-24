@@ -177,7 +177,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             
             // We strip the "folder" prefix
             nameInContainer = [nameInContainer substringFromIndex: 6];
-            nameInContainer = [NSString stringWithFormat: @"mail/%@", nameInContainer];
+            nameInContainer = [[NSString stringWithFormat: @"mail/%@", nameInContainer] stringByEscapingURL];
           }
         else
           {
@@ -317,7 +317,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSException *error;
       
   SOGoMicrosoftActiveSyncFolderType folderType;
-
+  int status;
   
   serverId = [[[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue] realCollectionIdWithFolderType: &folderType];
   parentId = [[(id)[theDocumentElement getElementsByTagName: @"ParentId"] lastObject] textValue];
@@ -344,14 +344,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // We update the FolderSync's synckey
       // 
       syncKey = [[NSProcessInfo processInfo] globallyUniqueString];
-      
+
+      // See http://msdn.microsoft.com/en-us/library/gg675615(v=exchg.80).aspx
+      // we return '9' - we force a FolderSync
+      status = 9;
+
       [self _setFolderSyncKey: syncKey];
 
       s = [NSMutableString string];
       [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
       [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
       [s appendString: @"<FolderUpdate xmlns=\"FolderHierarchy:\">"];
-      [s appendFormat: @"<Status>%d</Status>", 1];
+      [s appendFormat: @"<Status>%d</Status>", status];
       [s appendFormat: @"<SyncKey>%@</SyncKey>", syncKey];
       [s appendString: @"</FolderUpdate>"];
       
