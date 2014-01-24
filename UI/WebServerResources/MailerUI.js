@@ -379,7 +379,7 @@ function onDocumentKeydown(event) {
             }
         }
 	if (keyCode == Event.KEY_DELETE ||
-            keyCode == Event.KEY_BACKSPACE && isMac()) {
+            keyCode == Event.KEY_BACKSPACE) {
             deleteSelectedMessages();
             Event.stop(event);
         }
@@ -1988,10 +1988,7 @@ function initMailer(event) {
         initMailboxTree();
         initMessageCheckTimer();
 
-        if (Prototype.Browser.Gecko)
-            Event.observe(document, "keypress", onDocumentKeydown); // for FF2
-        else
-            Event.observe(document, "keydown", onDocumentKeydown);
+        Event.observe(document, "keydown", onDocumentKeydown);
 
         /* Perform an expunge when leaving the webmail */
 //        if (isSafari()) {
