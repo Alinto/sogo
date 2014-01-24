@@ -455,8 +455,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             }
 
           [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>",
-             serverId,
-             parentId,
+             [serverId stringByEscapingURL],
+             [parentId stringByEscapingURL],
              type,
              name];
         }
@@ -606,7 +606,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   SOGoMicrosoftActiveSyncFolderType folderType;
 
-  fileReference = [[(id)[theDocumentElement getElementsByTagName: @"FileReference"] lastObject] textValue];
+  fileReference = [[[(id)[theDocumentElement getElementsByTagName: @"FileReference"] lastObject] textValue] stringByUnescapingURL];
 
   realCollectionId = [fileReference realCollectionIdWithFolderType: &folderType];
   
@@ -649,7 +649,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       [s appendString: @"<Fetch>"];
       [s appendString: @"<Status>1</Status>"];
-      [s appendFormat: @"<FileReference xmlns=\"AirSyncBase:\">%@</FileReference>", fileReference];
+      [s appendFormat: @"<FileReference xmlns=\"AirSyncBase:\">%@</FileReference>", [fileReference stringByEscapingURL]];
       [s appendString: @"<Properties>"];
 
       [s appendFormat: @"<ContentType xmlns=\"AirSyncBase:\">%@/%@</ContentType>", [[currentBodyPart partInfo] objectForKey: @"type"], [[currentBodyPart partInfo] objectForKey: @"subtype"]];

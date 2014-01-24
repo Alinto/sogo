@@ -226,7 +226,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // DateReceived
   value = [self date];
   if (value)
-    [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [value activeSyncRepresentation]];
+    [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [value activeSyncRepresentationWithoutSeparators]];
     
   // Importance - FIXME
   [s appendFormat: @"<Importance xmlns=\"Email:\">%@</Importance>", @"1"];
@@ -338,7 +338,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           // FileReference must be a unique identifier across the whole store. We use the following structure:
           // mail/<foldername>/<message UID/<pathofpart>
           // mail/INBOX/2          
-          [s appendFormat: @"<FileReference>mail/%@/%@/%@</FileReference>", [[self container] relativeImap4Name], [self nameInContainer], [value objectForKey: @"path"]];
+          [s appendFormat: @"<FileReference>mail/%@/%@/%@</FileReference>", [[[self container] relativeImap4Name] stringByEscapingURL], [self nameInContainer], [value objectForKey: @"path"]];
 
           [s appendFormat: @"<Method>%d</Method>", 1]; // See: http://msdn.microsoft.com/en-us/library/ee160322(v=exchg.80).aspx
           [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [[value objectForKey: @"size"] intValue]];
@@ -369,7 +369,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     nativeBodyType = 1;
 
   [s appendFormat: @"<NativeBodyType xmlns=\"AirSyncBase:\">%d</NativeBodyType>", nativeBodyType];
-
+  
   return s;
 }
 

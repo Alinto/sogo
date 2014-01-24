@@ -73,7 +73,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   else
     {
       // mail/
-      realCollectionId = [self substringFromIndex: 5];
+      realCollectionId = [[self stringByUnescapingURL] substringFromIndex: 5];
       *folderType = ActiveSyncMailFolder;
     }
 
