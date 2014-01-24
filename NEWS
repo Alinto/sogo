@@ -20,6 +20,7 @@ Enhancements
 
 Bug fixes
  - don't load 'background' attribute (#2437)
+ - fixed validation of subscribed folders (#2583)
 
 2.1.1b (2013-12-04)
 -------------------

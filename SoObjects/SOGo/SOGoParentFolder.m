@@ -278,12 +278,11 @@ static SoSecurityManager *sm = nil;
   NSMutableDictionary *folderDisplayNames;
   NSMutableArray *subscribedReferences;
   SOGoUserSettings *settings;
-  NSEnumerator *allKeys;
   NSString *currentKey;
   SOGoUser *ownerUser;
   NSException *error;
   id o;
-
+  int i;
   BOOL dirty;
 
   error = nil; /* we ignore non-DB errors at this time... */
@@ -300,9 +299,9 @@ static SoSecurityManager *sm = nil;
   else
     folderDisplayNames = nil;
 
-  allKeys = [subscribedReferences objectEnumerator];
-  while ((currentKey = [allKeys nextObject]))
+  for (i = [subscribedReferences count] - 1; i >= 0; i--)
     {
+      currentKey = [subscribedReferences objectAtIndex: i];
       if (![self _appendSubscribedSource: currentKey])
 	{
 	  // We no longer have access to this subscription, let's
@@ -322,6 +321,7 @@ static SoSecurityManager *sm = nil;
       if (folderDisplayNames)
         [[settings objectForKey: nameInContainer] setObject: folderDisplayNames
                                                      forKey: @"FolderDisplayNames"];
+      [settings synchronize];
     }
 	    
   return error;
