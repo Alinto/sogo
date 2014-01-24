@@ -33,6 +33,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Foundation/NSCalendarDate.h>
 #include <Foundation/NSDate.h>
 
+#include <NGExtensions/NSString+misc.h>
+
 @implementation NSString (ActiveSync)
 
 - (int) activeSyncFolderType
