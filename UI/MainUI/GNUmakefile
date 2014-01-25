@@ -27,7 +27,7 @@ MainUI_LOCALIZED_RESOURCE_FILES += \
 	Localizable.strings
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
-ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
+ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/ -lWOExtensions -lWEExtensions
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make
