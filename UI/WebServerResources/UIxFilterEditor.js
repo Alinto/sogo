@@ -663,12 +663,12 @@ function ensureMailboxArgRepresentation(container, argumentSpan) {
         select.observe("change", boundCB);
         var mailboxes = (window.opener
                          ? window.opener.userMailboxes
-                         : ["INBOX" ]);
+                         : {'displayName': 'INBOX', 'path': 'INBOX' });
         for (var i = 0; i < mailboxes.length; i++) {
             var mailbox = mailboxes[i];
             var mboxOption = createElement("option", null, null,
-                                           { value: mailbox }, null, select);
-            mboxOption.appendChild(document.createTextNode(mailbox));
+                                           { value: mailbox.path }, null, select);
+            mboxOption.appendChild(document.createTextNode(mailbox.displayName));
         }
         argumentSpan.appendChild(select);
     }
