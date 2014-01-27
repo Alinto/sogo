@@ -35,6 +35,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
+#import <NGExtensions/NSString+misc.h>
+
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalTimeZone.h>
@@ -93,10 +95,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [s appendFormat: @"<Sensitivity xmlns=\"Tasks:\">%d</Sensitivity>", 0];
   
   // Subject
-  [s appendFormat: @"<Subject xmlns=\"Tasks:\">%@</Subject>", [self summary]];
+  o = [self summary];
+  if ([o length])
+    [s appendFormat: @"<Subject xmlns=\"Tasks:\">%@</Subject>", [[self summary] stringByEscapingHTMLString]];
 
   if ((o = [self comment]))
     {
+      o = [o stringByEscapingHTMLString];
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", 1]; 
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];

@@ -42,8 +42,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) activeSyncRepresentation
 {
   CardElement *n, *homeAdr, *workAdr;
+  NSArray *emails, *addresses;
   NSMutableString *s;
-  NSArray *emails;
   id o;
 
   int i;
@@ -100,44 +100,54 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [s appendFormat: @"<PagerNumber xmlns=\"Contacts:\">%@</PagerNumber>", o];
 
   // Home Address
-  homeAdr = [[self childrenWithTag: @"adr"
-                      andAttribute: @"type"
-                       havingValue: @"home"] objectAtIndex: 0];
-
-  if ((o = [homeAdr flattenedValueAtIndex: 2  forKey: @""]))
-    [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", o];
+  addresses = [self childrenWithTag: @"adr"
+                       andAttribute: @"type"
+                        havingValue: @"home"];
   
-  if ((o = [homeAdr flattenedValueAtIndex: 3  forKey: @""]))
-    [s appendFormat: @"<HomeCity xmlns=\"Contacts:\">%@</HomeCity>", o];
+  if ([addresses count])
+    {
+      homeAdr = [addresses objectAtIndex: 0];
+      
+      if ((o = [homeAdr flattenedValueAtIndex: 2  forKey: @""]))
+        [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", o];
+      
+      if ((o = [homeAdr flattenedValueAtIndex: 3  forKey: @""]))
+        [s appendFormat: @"<HomeCity xmlns=\"Contacts:\">%@</HomeCity>", o];
+      
+      if ((o = [homeAdr flattenedValueAtIndex: 4  forKey: @""]))
+        [s appendFormat: @"<HomeState xmlns=\"Contacts:\">%@</HomeState>", o];
+      
+      if ((o = [homeAdr flattenedValueAtIndex: 5  forKey: @""]))
+        [s appendFormat: @"<HomePostalCode xmlns=\"Contacts:\">%@</HomePostalCode>", o];
+      
+      if ((o = [homeAdr flattenedValueAtIndex: 6  forKey: @""]))
+        [s appendFormat: @"<HomeCountry xmlns=\"Contacts:\">%@</HomeCountry>", o];
+    }
   
-  if ((o = [homeAdr flattenedValueAtIndex: 4  forKey: @""]))
-    [s appendFormat: @"<HomeState xmlns=\"Contacts:\">%@</HomeState>", o];
-  
-  if ((o = [homeAdr flattenedValueAtIndex: 5  forKey: @""]))
-    [s appendFormat: @"<HomePostalCode xmlns=\"Contacts:\">%@</HomePostalCode>", o];
-  
-  if ((o = [homeAdr flattenedValueAtIndex: 6  forKey: @""]))
-    [s appendFormat: @"<HomeCountry xmlns=\"Contacts:\">%@</HomeCountry>", o];
-
   // Work Address
-  workAdr = [[self childrenWithTag: @"adr"
-                      andAttribute: @"type"
-                       havingValue: @"work"] objectAtIndex: 0];
+  addresses = [self childrenWithTag: @"adr"
+                       andAttribute: @"type"
+                        havingValue: @"work"];
   
-  if ((o = [workAdr flattenedValueAtIndex: 2  forKey: @""]))
-    [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", o];
-  
-  if ((o = [workAdr flattenedValueAtIndex: 3  forKey: @""]))
-    [s appendFormat: @"<BusinessCity xmlns=\"Contacts:\">%@</BusinessCity>", o];
-  
-  if ((o = [workAdr flattenedValueAtIndex: 4  forKey: @""]))
-    [s appendFormat: @"<BusinessState xmlns=\"Contacts:\">%@</BusinessState>", o];
-  
-  if ((o = [workAdr flattenedValueAtIndex: 5  forKey: @""]))
-    [s appendFormat: @"<BusinessPostalCode xmlns=\"Contacts:\">%@</BusinessPostalCode>", o];
-  
-  if ((o = [workAdr flattenedValueAtIndex: 6  forKey: @""]))
-    [s appendFormat: @"<BusinessCountry xmlns=\"Contacts:\">%@</BusinessCountry>", o];
+  if ([addresses count])
+    {
+      workAdr = [addresses objectAtIndex: 0];
+      
+      if ((o = [workAdr flattenedValueAtIndex: 2  forKey: @""]))
+        [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", o];
+      
+      if ((o = [workAdr flattenedValueAtIndex: 3  forKey: @""]))
+        [s appendFormat: @"<BusinessCity xmlns=\"Contacts:\">%@</BusinessCity>", o];
+      
+      if ((o = [workAdr flattenedValueAtIndex: 4  forKey: @""]))
+        [s appendFormat: @"<BusinessState xmlns=\"Contacts:\">%@</BusinessState>", o];
+      
+      if ((o = [workAdr flattenedValueAtIndex: 5  forKey: @""]))
+        [s appendFormat: @"<BusinessPostalCode xmlns=\"Contacts:\">%@</BusinessPostalCode>", o];
+      
+      if ((o = [workAdr flattenedValueAtIndex: 6  forKey: @""]))
+        [s appendFormat: @"<BusinessCountry xmlns=\"Contacts:\">%@</BusinessCountry>", o];
+    }
 
   // Other, less important fields
   if ((o = [self birthday]))

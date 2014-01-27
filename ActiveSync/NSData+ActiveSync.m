@@ -40,6 +40,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation NSData (ActiveSync)
 
+- (void) _dumpToFile
+{
+  NSString *path;
+
+  path = [NSString stringWithFormat: @"/tmp/%@.data", [[NSProcessInfo processInfo] globallyUniqueString]];
+  [self writeToFile: path  atomically: YES];
+  NSLog(@"Original data written to: %@", path);
+}
+
 - (NSData *) wbxml2xml
 {
   WBXMLGenXMLParams params;
@@ -62,14 +71,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  
   if (ret != WBXML_OK)
     {
-      NSString *path;
-
       NSLog(@"wbxml2xmlFromContent: failed: %s\n", wbxml_errors_string(ret));
-
-      path = [NSString stringWithFormat: @"/tmp/%@.data", [[NSProcessInfo processInfo] globallyUniqueString]];
-      [self writeToFile: path  atomically: YES];
-      NSLog(@"Original data written to: %@", path);
-
+      [self _dumpToFile];
       return nil;
     }
 
@@ -103,14 +106,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if (ret != WBXML_OK)
     {
-      NSString *path;
-
       NSLog(@"xml2wbxmlFromContent: failed: %s\n", wbxml_errors_string(ret));
-
-      path = [NSString stringWithFormat: @"/tmp/%@.data", [[NSProcessInfo processInfo] globallyUniqueString]];
-      [self writeToFile: path  atomically: YES];
-      NSLog(@"Original data written to: %@", path);
-
+      [self _dumpToFile];
       return nil;
     }
 
@@ -125,6 +122,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if (ret != WBXML_OK)
     {
       NSLog(@"xml2wbxmlFromContent: failed: %s\n", wbxml_errors_string(ret));
+      [self _dumpToFile];
       free(wbxml);
       wbxml_conv_xml2wbxml_destroy(conv);
       return nil;

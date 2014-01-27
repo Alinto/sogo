@@ -37,6 +37,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimeZone.h>
 
+#import <NGExtensions/NSString+misc.h>
+
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
@@ -135,11 +137,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   // Subject -- http://msdn.microsoft.com/en-us/library/ee157192(v=exchg.80).aspx
   if ([[self summary] length])
-    [s appendFormat: @"<Subject xmlns=\"Calendar:\">%@</Subject>", [self summary]];
+    [s appendFormat: @"<Subject xmlns=\"Calendar:\">%@</Subject>", [[self summary] stringByEscapingHTMLString]];
   
   // Location
   if ([[self location] length])
-    [s appendFormat: @"<Location xmlns=\"Calendar:\">%@</Location>", [self location]];
+    [s appendFormat: @"<Location xmlns=\"Calendar:\">%@</Location>", [[self location] stringByEscapingHTMLString]];
   
   // Importance - NOT SUPPORTED - DO NOT ENABLE
   //o = [self priority];
@@ -171,14 +173,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Reminder -- http://msdn.microsoft.com/en-us/library/ee219691(v=exchg.80).aspx
   // TODO
 
-  // Location
-  if ([[self location] length])
-    [s appendFormat: @"<Location xmlns=\"Calendar:\">%@</Location>", [self location]];
-
   // Comment
   o = [self comment];
   if ([o length])
     {
+      o = [o stringByEscapingHTMLString];
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", 1];
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
