@@ -8,6 +8,7 @@ New features
    mail editor; will also now display progress of uploads
  - new popup menu to download all attachments of a mail
  - move & copy messages between different accounts
+ - support for the Sieve 'body' extension (mail filter based on the body content)
 
 Enhancements
  - we now automatically convert <img src=data...> into file attachments
@@ -17,6 +18,7 @@ Enhancements
  - format time in attendees invitation window according to the user's locale
  - improved IE11 support
  - respect signature placement when forwarding a message
+ - respect Sieve server capabilities
 
 Bug fixes
  - don't load 'background' attribute (#2437)

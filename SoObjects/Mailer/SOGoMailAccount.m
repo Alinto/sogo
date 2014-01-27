@@ -311,10 +311,7 @@ static NSString *inboxFolderName = @"INBOX";
 
   manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
 
-  return [manager updateFiltersForLogin: [[self imap4URL] user]
-                               authname: [[self imap4URL] user]
-                               password: [self imap4PasswordRenewed: NO]
-                                account: self];
+  return [manager updateFiltersForAccount: self];
 }
 
 
