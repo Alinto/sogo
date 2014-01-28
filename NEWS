@@ -24,6 +24,7 @@ Bug fixes
  - don't load 'background' attribute (#2437)
  - fixed validation of subscribed folders (#2583)
  - fixed display of folder names in messages filter editor (#2569)
+ - fixed contextual menu of the current calendar view (#2557)
 
 2.1.1b (2013-12-04)
 -------------------

@@ -22,12 +22,14 @@
     <span class="daysHeader">
       <span class="day1">
         <a href="#"
+           id="leftNavigationArrow"
            var:date="prevDayQueryParameters.day"
            onclick="return onCalendarGotoDay(this);"><img rsrc:src="arrow-left.png"/></a>
       </span>
       <span class="day0"><var:string value="currentDayName"/></span>
       <span class="day1">
         <a href="#"
+           id="rightNavigationArrow"
            var:date="nextDayQueryParameters.day"
            onclick="return onCalendarGotoDay(this);"><img rsrc:src="arrow-right.png"/></a>
       </span>
