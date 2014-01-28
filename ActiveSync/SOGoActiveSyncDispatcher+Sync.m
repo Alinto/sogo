@@ -680,15 +680,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType;
   SOGoMicrosoftActiveSyncFolderType folderType;
   id collection, value;
-
+  
+  NSMutableString *changeBuffer, *commandsBuffer;
   BOOL getChanges, first_sync;
-
+  
+  changeBuffer = [NSMutableString string];
+  commandsBuffer = [NSMutableString string];
+  
   collectionId = [[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue];
   realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
   collection = [self collectionFromId: realCollectionId  type: folderType];
   
-  syncKey = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
-  davCollectionTag = [collection davCollectionTag];
+  syncKey = davCollectionTag = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
   
   // From the documention, if GetChanges is missing, we must assume it's a YES.
   // See http://msdn.microsoft.com/en-us/library/gg675447(v=exchg.80).aspx for all details.
@@ -715,21 +718,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [context setObject: bodyPreferenceType  forKey: @"BodyPreferenceType"];
 
 
-  [theBuffer appendString: @"<Collection>"];
-  
-  if (folderType == ActiveSyncMailFolder)
-    [theBuffer appendString: @"<Class>Email</Class>"];
-  else if (folderType == ActiveSyncContactFolder)
-    [theBuffer appendString: @"<Class>Contacts</Class>"];
-  else if (folderType == ActiveSyncEventFolder)
-    [theBuffer appendString: @"<Class>Calendar</Class>"];
-  else if (folderType == ActiveSyncTaskFolder)
-    [theBuffer appendString: @"<Class>Tasks</Class>"];
-  
-  [theBuffer appendFormat: @"<SyncKey>%@</SyncKey>", davCollectionTag];
-  [theBuffer appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
-  [theBuffer appendFormat: @"<Status>%d</Status>", 1];
-
   // We generate the commands, if any, for the response. We might also have
   // generated some in processSyncCommand:inResponse: as we could have
   // received a Fetch command
@@ -740,7 +728,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                       withSyncKey: syncKey
                    withFolderType: folderType
                    withFilterType: [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]]
-                         inBuffer: theBuffer];
+                         inBuffer: changeBuffer];
     }
 
   //
@@ -761,11 +749,35 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                       processed: &processed];
 
       if (processed)
-        [theBuffer appendFormat: @"<Responses>%@</Responses>", s];
+        [commandsBuffer appendFormat: @"<Responses>%@</Responses>", s];
       else
-        [theBuffer appendString: s];
+        [commandsBuffer appendString: s];
     }
  
+  // If we got any changes or if we have applied any commands
+  // let's regenerate our SyncKey based on the collection tag.
+  if ([changeBuffer length] || [commandsBuffer length])
+    davCollectionTag = [collection davCollectionTag];
+
+  // Generate the response buffer
+  [theBuffer appendString: @"<Collection>"];
+  
+  if (folderType == ActiveSyncMailFolder)
+    [theBuffer appendString: @"<Class>Email</Class>"];
+  else if (folderType == ActiveSyncContactFolder)
+    [theBuffer appendString: @"<Class>Contacts</Class>"];
+  else if (folderType == ActiveSyncEventFolder)
+    [theBuffer appendString: @"<Class>Calendar</Class>"];
+  else if (folderType == ActiveSyncTaskFolder)
+    [theBuffer appendString: @"<Class>Tasks</Class>"];
+  
+  [theBuffer appendFormat: @"<SyncKey>%@</SyncKey>", davCollectionTag];
+  [theBuffer appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
+  [theBuffer appendFormat: @"<Status>%d</Status>", 1];
+
+  [theBuffer appendString: changeBuffer];
+  [theBuffer appendString: commandsBuffer];
+
   [theBuffer appendString: @"</Collection>"];
 }
 
