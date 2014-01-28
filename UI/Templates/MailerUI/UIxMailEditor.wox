@@ -137,7 +137,7 @@
 	  /></div>
       <!-- separator line --><hr class="fieldSeparator"/>
     </div>
-    <textarea id="text" name="text" rows="30" var:value="text"></textarea>
+    <textarea id="text" name="text" rows="25" style="display:none" var:value="text"/>
     <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->
   </form>
   </div>

@@ -283,18 +283,20 @@ function clickedEditorSave() {
     return false;
 }
 
+/**
+ * On first focus of textarea, position the caret with respect to user's preferences
+ */
 function onTextFocus(event) {
     if (MailEditor.textFirstFocus) {
-        // On first focus, position the caret at the proper position
         var content = this.getValue();
         var replyPlacement = UserDefaults["SOGoMailReplyPlacement"];
-        if (replyPlacement == "above" || !mailIsReply) { // for forwards, place caret at top unconditionally
+        if (replyPlacement == "above" || !mailIsReply) {
+            // For forwards, place caret at top unconditionally
             this.setCaretTo(0);
         }
         else {
             var caretPosition = this.getValue().length - MailEditor.signatureLength;
-            if (Prototype.Browser.IE)
-                caretPosition -= lineBreakCount(this.getValue().substring(0, caretPosition));
+            caretPosition = adjustOffset(this, caretPosition);
             if (hasSignature())
                 caretPosition -= 2;
             this.setCaretTo(caretPosition);
@@ -307,10 +309,13 @@ function onTextFocus(event) {
         input.parentNode.removeChild(input);
 }
 
+/**
+ * Change behavior of tab key in textarea (plain-text mail)
+ */
 function onTextKeyDown(event) {
     if (event.keyCode == Event.KEY_TAB) {
-        // Change behavior of tab key in textarea
         if (event.shiftKey) {
+            // Shift-tab goes back to subject field
             var subjectField = $$("div#subjectRow input").first();
             subjectField.focus();
             subjectField.selectText(0, subjectField.value.length);
@@ -319,8 +324,7 @@ function onTextKeyDown(event) {
         else {
             if (!(event.shiftKey || event.metaKey || event.ctrlKey)) {
                 // Convert a tab to 4 spaces
-                if (typeof(this.selectionStart)
-                    != "undefined") { // For Mozilla and Safari
+                if (typeof(this.selectionStart) != "undefined") { // Mozilla and Safari
                     var cursor = this.selectionStart;
                     var startText = ((cursor > 0)
                                      ? this.value.substr(0, cursor)
@@ -333,8 +337,6 @@ function onTextKeyDown(event) {
                 }
                 else if (this.selectionRange) // IE
                     this.selectionRange.text = "    ";
-                else { // others ?
-                }
                 preventDefault(event);
             }
         }
@@ -343,13 +345,6 @@ function onTextKeyDown(event) {
 
 function onTextIEUpdateCursorPos(event) {
     this.selectionRange = document.selection.createRange().duplicate();
-}
-
-function onTextMouseDown(event) {
-    if (event.button == 0) {
-        event.returnValue = false;
-        event.cancelBubble = false;
-    }
 }
 
 function onHTMLFocus(event) {
@@ -425,8 +420,10 @@ function configureDragHandle() {
 }
 
 function initMailEditor() {
+    var textarea = $("text");
+
     if (composeMode != "html" && $("text"))
-        $("text").style.display = "block";
+        textarea.show();
 
     var list = $("attachments");
     if (!list) return;
@@ -489,10 +486,10 @@ function initMailEditor() {
             textarea.scrollTop = textarea.scrollHeight;
         }
         textarea.observe("focus", onTextFocus);
-        //textarea.observe("mousedown", onTextMouseDown);
         textarea.observe("keydown", onTextKeyDown);
 
         if (Prototype.Browser.IE) {
+            // Hack to allow to replace the tab by spaces in IE < 9
             var ieEvents = [ "click", "select", "keyup" ];
             for (var i = 0; i < ieEvents.length; i++)
                 textarea.observe(ieEvents[i], onTextIEUpdateCursorPos, false);
@@ -504,10 +501,7 @@ function initMailEditor() {
 
     $("contactFolder").observe("change", onContactFolderChange);
     
-    Event.observe(window, "resize", onWindowResize);
     Event.observe(window, "beforeunload", onMailEditorClose);
-    
-    onWindowResize.defer();
 }
 
 function initializePriorityMenu() {
@@ -593,13 +587,16 @@ function attachmentDeleteCallback(http) {
     }
 }
 
-function lineBreakCount(str){
-    /* counts \n */
-    try {
-        return((str.match(/[^\n]*\n[^\n]*/gi).length));
-    } catch(e) {
-        return 0;
+/**
+ * Adjust offset when the browser uses two characters for line feeds.
+ */
+function adjustOffset(element, offset) {
+    var val = element.value, newOffset = offset;
+    if (val.indexOf("\r\n") > -1) {
+        var matches = val.replace(/\r\n/g, "\n").slice(0, offset).match(/\n/g);
+        newOffset -= matches ? matches.length - 1 : 0;
     }
+    return newOffset;
 }
 
 function hasSignature() {
@@ -637,6 +634,9 @@ function onSelectOptions(event) {
     }
 }
 
+/**
+ * Overwrite definition of MailerUI.js
+ */
 function onWindowResize(event) {
     if (!document.pageform)
       return;

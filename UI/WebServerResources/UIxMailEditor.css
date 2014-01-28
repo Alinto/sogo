@@ -173,8 +173,7 @@ UL#attachments LI IMG
 { width: 99%; }
 
 TEXTAREA#text
-{ display: none;
-  background: #fff; }
+{ background: #fff; }
 
 /* Contacts search pane */
 
