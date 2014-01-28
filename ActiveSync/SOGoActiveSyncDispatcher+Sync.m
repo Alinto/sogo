@@ -244,6 +244,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             }
           
           [o takeActiveSyncValues: allValues];
+          [sogoObject setIsNew: YES];
           [sogoObject saveComponent: o];
           
           // Everything is fine, lets generate our response
