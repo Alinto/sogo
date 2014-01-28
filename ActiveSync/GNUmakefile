@@ -10,6 +10,7 @@ ActiveSync_PRINCIPAL_CLASS = ActiveSyncProduct
 ActiveSync_OBJC_FILES =			\
 	ActiveSyncProduct.m		\
 	iCalEvent+ActiveSync.m		\
+	iCalRecurrenceRule+ActiveSync.m \
 	iCalTimeZone+ActiveSync.m	\
 	iCalToDo+ActiveSync.m		\
 	NSCalendarDate+ActiveSync.m		\

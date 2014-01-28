@@ -43,6 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
 
+#include "iCalRecurrenceRule+ActiveSync.h"
 #include "iCalTimeZone+ActiveSync.h"
 #include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"
@@ -172,6 +173,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   // Reminder -- http://msdn.microsoft.com/en-us/library/ee219691(v=exchg.80).aspx
   // TODO
+
+  // Recurrence rules
+  if ([self isRecurrent])
+    {
+      [s appendString: [[[self recurrenceRules] lastObject] activeSyncRepresentation]];
+    }
 
   // Comment
   o = [self comment];
@@ -311,6 +318,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                            seconds: tzOffset];
           [end setDateTime: o];
         }
+    }
+
+  // Recurrence
+  if ((o = [theValues objectForKey: @"Recurrence"]))
+    {
+      iCalRecurrenceRule *rule;
+      
+      rule = [[iCalRecurrenceRule alloc] init];
+      [self setRecurrenceRules: [NSArray arrayWithObject: rule]];
+      RELEASE(rule);
+      
+      [rule takeActiveSyncValues: o];
     }
 }
 
