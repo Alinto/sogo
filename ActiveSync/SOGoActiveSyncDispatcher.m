@@ -747,7 +747,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                             addOrRemove: YES];
 
           if ([[response valueForKey: @"result"] boolValue])
-            [currentCollection markForExpunge];
+            [currentCollection expunge];
 
         }
 
