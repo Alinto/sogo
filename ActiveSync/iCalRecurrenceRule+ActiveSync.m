@@ -69,7 +69,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
   else if ([self frequency] == iCalRecurrenceFrequenceWeekly)
     {
-      iCalWeekOccurrence *occurrences;
+      iCalWeekOccurrences *occurrences;
       int i, v;
 
       type = 1;
