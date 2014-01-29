@@ -761,15 +761,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           NSMutableString *s;
           NSData *d;
           
-          // Everything is alright, lets return the proper response
+          // Everything is alright, lets return the proper response. "Status == 3" means success.
           s = [NSMutableString string];
           
           [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
           [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
           [s appendString: @"<MoveItems xmlns=\"Move:\">"];
+          [s appendString: @"<Response>"];
           [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
           [s appendFormat: @"<DstMsgId>%@</DstMsgId>", dstMessageId];
-          [s appendFormat: @"<Status>%d</Status>", 1];
+          [s appendFormat: @"<Status>%d</Status>", 3];
+          [s appendString: @"</Response>"];
           [s appendString: @"</MoveItems>"];
           
           d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
