@@ -19,6 +19,7 @@ Enhancements
  - improved IE11 support
  - respect signature placement when forwarding a message
  - respect Sieve server capabilities
+ - encode messages in quoted-printable when content is bigger than 72 bytes
 
 Bug fixes
  - don't load 'background' attribute (#2437)
