@@ -333,7 +333,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           value = [attachmentKeys objectAtIndex: i];
 
           [s appendString: @"<Attachment>"];
-          [s appendFormat: @"<DisplayName>%@</DisplayName>", [value objectForKey: @"filename"]];
+          [s appendFormat: @"<DisplayName>%@</DisplayName>", [[value objectForKey: @"filename"] stringByEscapingHTMLString]];
 
           // FileReference must be a unique identifier across the whole store. We use the following structure:
           // mail/<foldername>/<message UID/<pathofpart>
