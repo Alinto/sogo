@@ -26,6 +26,8 @@ Bug fixes
  - fixed validation of subscribed folders (#2583)
  - fixed display of folder names in messages filter editor (#2569)
  - fixed contextual menu of the current calendar view (#2557)
+ - fixed handling of the '=' character in cards/events/tasks (#2505)
+ - simplify searches in the address book (#2187)
 
 2.1.1b (2013-12-04)
 -------------------
