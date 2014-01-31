@@ -717,7 +717,7 @@ static Class NSStringK;
         [qs appendFormat: @"(%@='*')", CNField];
       else
         {
-          fieldFormat = [NSString stringWithFormat: @"(%%@='%@*')", escapedFilter];
+          fieldFormat = [NSString stringWithFormat: @"(%%@='*%@*')", escapedFilter];
           fields = [NSMutableArray arrayWithArray: searchFields];
           [fields addObjectsFromArray: mailFields];
           [fields addObject: CNField];
