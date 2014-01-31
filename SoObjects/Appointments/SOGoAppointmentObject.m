@@ -1375,9 +1375,11 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
             {
               // We generate the updated iCalendar file and we save it in
               // the database. We do this ONLY when using SOGo from the
-              // Web interface. Over DAV, it'll be handled directly in
-              // PUTAction:
-              if (![context request] || [[context request] handledByDefaultHandler])
+              // Web interface or over ActiveSync.
+              // Over DAV, it'll be handled directly in PUTAction:
+              if (![context request]
+                  || [[context request] handledByDefaultHandler]
+                  || [[[context request] requestHandlerKey] isEqualToString: @"Microsoft-Server-ActiveSync"])
                 ex = [self saveContentString: [[event parent] versitString]];
             }
         }
