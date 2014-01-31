@@ -462,26 +462,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
              [serverId stringByEscapingURL],
              [parentId stringByEscapingURL],
              type,
-             name];
+             [name stringByEscapingHTMLString]];
         }
 
       // We add the personal calendar - events
       // FIXME: add all calendars
       currentFolder = [[context activeUser] personalCalendarFolderInContext: context];
       name = [NSString stringWithFormat: @"vevent/%@", [currentFolder nameInContainer]];
-      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 8, [currentFolder displayName]];
+      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 8, [[currentFolder displayName] stringByEscapingHTMLString]];
 
       // We add the personal calendar - tasks
       // FIXME: add all calendars
       currentFolder = [[context activeUser] personalCalendarFolderInContext: context];
       name = [NSString stringWithFormat: @"vtodo/%@", [currentFolder nameInContainer]];
-      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 7, [currentFolder displayName]];
+      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 7, [[currentFolder displayName] stringByEscapingHTMLString]];
       
       // We add the personal address book
       // FIXME: add all address books
       currentFolder = [[context activeUser] personalContactsFolderInContext: context];
       name = [NSString stringWithFormat: @"vcard/%@", [currentFolder nameInContainer]];
-      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 9, [currentFolder displayName]];
+      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 9, [[currentFolder displayName] stringByEscapingHTMLString]];
     }
 
   [s appendString: @"</Changes></FolderSync>"];
