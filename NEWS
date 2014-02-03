@@ -20,6 +20,7 @@ Enhancements
  - respect signature placement when forwarding a message
  - respect Sieve server capabilities
  - encode messages in quoted-printable when content is bigger than 72 bytes
+ - we now use binary encoding in memcached (#2587)
 
 Bug fixes
  - don't load 'background' attribute (#2437)
