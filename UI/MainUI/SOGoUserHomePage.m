@@ -91,67 +91,90 @@
   NSDictionary *record;
   SOGoUser *user;
 
-  int recordCount, recordMax, count, startInterval, endInterval, i, type;
+  int recordCount, recordMax, count, startInterval, endInterval, i, type, maxBookings, isResource;
 
   recordMax = [records count];
-  user = [SOGoUser userWithLogin: [[self clientObject] ownerInContext: context]
-		     roles: nil];
+  user = [SOGoUser userWithLogin: [[self clientObject] ownerInContext: context] roles: nil];
+  maxBookings = [user numberOfSimultaneousBookings];
+  isResource = [user isResource];
 
-  for (recordCount = 0; recordCount < recordMax; recordCount++)
+  // Don't fetch freebusy information if the user is of type 'resource' and has unlimited bookings
+  if (!isResource || maxBookings > 0)
     {
-      record = [records objectAtIndex: recordCount];
-      if ([[record objectForKey: @"c_isopaque"] boolValue])
-	{
-	type = 0;
+      for (recordCount = 0; recordCount < recordMax; recordCount++)
+        {
+          record = [records objectAtIndex: recordCount];
+          if ([[record objectForKey: @"c_isopaque"] boolValue])
+            {
+              type = 0;
 
-	// If the event has NO organizer (which means it's the user that has created it) OR
-	// If we are the organizer of the event THEN we are automatically busy
-	if ([[record objectForKey: @"c_orgmail"] length] == 0 ||
-	    [user hasEmail: [record objectForKey: @"c_orgmail"]])
-	  {
-	    type = 1;
-	  }
-	else
-	  {
-	    // We check if the user has accepted/declined or needs action
-	    // on the current event.
-	    emails = [[record objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
+              // If the event has NO organizer (which means it's the user that has created it) OR
+              // If we are the organizer of the event THEN we are automatically busy
+              if ([[record objectForKey: @"c_orgmail"] length] == 0 ||
+                  [user hasEmail: [record objectForKey: @"c_orgmail"]])
+                {
+                  type = 1;
+                }
+              else
+                {
+                  // We check if the user has accepted/declined or needs action
+                  // on the current event.
+                  emails = [[record objectForKey: @"c_partmails"] componentsSeparatedByString: @"\n"];
 
-	    for (i = 0; i < [emails count]; i++)
-	      {
-		if ([user hasEmail: [emails objectAtIndex: i]])
-		  {
-		    // We now fetch the c_partstates array and get the participation
-		    // status of the user for the event
-		    partstates = [[record objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
+                  for (i = 0; i < [emails count]; i++)
+                    {
+                      if ([user hasEmail: [emails objectAtIndex: i]])
+                        {
+                          // We now fetch the c_partstates array and get the participation
+                          // status of the user for the event
+                          partstates = [[record objectForKey: @"c_partstates"] componentsSeparatedByString: @"\n"];
 		    
-		    if (i < [partstates count])
-		      {
-			type = ([[partstates objectAtIndex: i] intValue] < 2 ? 1 : 0);
-		      }
-		    break;
-		  }
-	      }
-	  }
+                          if (i < [partstates count])
+                            {
+                              type = ([[partstates objectAtIndex: i] intValue] < 2 ? 1 : 0);
+                            }
+                          break;
+                        }
+                    }
+                }
 
-	  currentDate = [record objectForKey: @"startDate"];
-	  if ([currentDate earlierDate: startDate] == currentDate)
-	    startInterval = 0;
-	  else
-	    startInterval = ([currentDate timeIntervalSinceDate: startDate]
-			     / intervalSeconds);
+              if (type == 1)
+                {
+                  // User is busy for this event; update items bit string
+                  currentDate = [record objectForKey: @"startDate"];
+                  if ([currentDate earlierDate: startDate] == currentDate)
+                    startInterval = 0;
+                  else
+                    startInterval = ([currentDate timeIntervalSinceDate: startDate]
+                                     / intervalSeconds);
 
-	  currentDate = [record objectForKey: @"endDate"];
-	  if ([currentDate earlierDate: endDate] == endDate)
-	    endInterval = itemCount - 1;
-	  else
-	    endInterval = ([currentDate timeIntervalSinceDate: startDate]
-			   / intervalSeconds);
+                  currentDate = [record objectForKey: @"endDate"];
+                  if ([currentDate earlierDate: endDate] == endDate)
+                    endInterval = itemCount - 1;
+                  else
+                    endInterval = ([currentDate timeIntervalSinceDate: startDate]
+                                   / intervalSeconds);
 
-	  if (type == 1)
-	    for (count = startInterval; count < endInterval; count++)
-	      *(items + count) = 1;
-	}
+                  // Update bit string representation
+                  // If the user is a resource, keep the sum of overlapping events
+                  for (count = startInterval; count < endInterval; count++)
+                    {
+                      *(items + count) = isResource ? *(items + count) + 1 : 1;
+                    }
+                }
+            }
+        }
+      if (maxBookings > 0)
+        {
+          // Reset the freebusy for the periods that are bellow the maximum number of bookings
+          for (count = 0; count < itemCount; count++)
+            {
+              if (*(items + count) < maxBookings)
+                *(items + count) = 0;
+              else
+                *(items + count) = 1;
+            }
+        }
     }
 }
 
@@ -168,17 +191,23 @@
   interval = [endDate timeIntervalSinceDate: startDate] + 60;
   intervals = interval / intervalSeconds; /* slices of 15 minutes */
 
+  // Build a bit string representation of the freebusy data for the period
   freeBusyItems = NSZoneCalloc (NULL, intervals, sizeof (int));
-  [self _fillFreeBusyItems: freeBusyItems count: intervals
+  [self _fillFreeBusyItems: freeBusyItems
+                     count: intervals
 	       withRecords: [fb fetchFreeBusyInfosFrom: startDate to: endDate forContact: uid]
-        fromStartDate: startDate toEndDate: endDate];
+             fromStartDate: startDate
+                 toEndDate: endDate];
 
+  // Convert bit string to a NSArray
   freeBusy = [NSMutableArray arrayWithCapacity: intervals];
   for (count = 0; count < intervals; count++)
-    [freeBusy
-      addObject: [NSString stringWithFormat: @"%d", *(freeBusyItems + count)]];
+    {
+      [freeBusy addObject: [NSString stringWithFormat: @"%d", *(freeBusyItems + count)]];
+    }
   NSZoneFree (NULL, freeBusyItems);
 
+  // Return a NSString representation
   return [freeBusy componentsJoinedByString: @","];
 }
 
