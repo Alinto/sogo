@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoActiveSyncConstants.h"
 
 @class NSCalendarDate;
+@class NSData;
 
 @interface NSString (ActiveSync)
 
@@ -43,6 +44,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSCalendarDate *) calendarDate;
 - (NSString *) deviceId;
 - (NSString *) command;
+- (NSData *) convertHexStringToBytes;
 
 @end
 

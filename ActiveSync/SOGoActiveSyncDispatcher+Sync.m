@@ -46,12 +46,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
-
+#import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEntityObject.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalToDo.h>
 #import <NGCards/NGVCard.h>
-
 
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSString+misc.h>
@@ -106,46 +105,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoMailObject+ActiveSync.h"
 
 @implementation SOGoActiveSyncDispatcher (Sync)
-
-- (id) collectionFromId: (NSString *) theCollectionId
-                   type: (SOGoMicrosoftActiveSyncFolderType) theFolderType
-{
-  id collection;
-
-  collection = nil;
-
-  switch (theFolderType)
-    {
-    case ActiveSyncContactFolder:
-      {
-        collection = [[context activeUser] personalContactsFolderInContext: context];
-      }
-      break;
-    case ActiveSyncEventFolder:
-    case ActiveSyncTaskFolder:
-      {
-        collection = [[context activeUser] personalCalendarFolderInContext: context];
-      }
-      break;
-    case ActiveSyncMailFolder:
-    default:
-      {
-        SOGoMailAccounts *accountsFolder;
-        SOGoMailFolder *currentFolder;
-        SOGoUserFolder *userFolder;
-        
-        userFolder = [[context activeUser] homeFolderInContext: context];
-        accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
-        currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
-        
-        collection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", theCollectionId]
-                                     inContext: context
-                                       acquire: NO];
-      }
-    }
-
-  return collection;
-}
 
 //
 // <?xml version="1.0"?>

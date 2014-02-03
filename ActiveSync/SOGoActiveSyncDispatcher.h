@@ -29,12 +29,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #import <Foundation/NSObject.h>
 
+#include "SOGoActiveSyncConstants.h"
+
 @class NSException;
 
 @interface SOGoActiveSyncDispatcher : NSObject
 {
   id context;
 }
+
+- (id) collectionFromId: (NSString *) theCollectionId
+                   type: (SOGoMicrosoftActiveSyncFolderType) theFolderType;
 
 - (NSException *) dispatchRequest: (id) theRequest
                        inResponse: (id) theResponse

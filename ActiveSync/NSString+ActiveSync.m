@@ -31,6 +31,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <Foundation/NSArray.h>
 #include <Foundation/NSCalendarDate.h>
+#include <Foundation/NSData.h>
 #include <Foundation/NSDate.h>
 
 #include <NGExtensions/NSString+misc.h>
@@ -53,30 +54,34 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 - (NSString *) realCollectionIdWithFolderType: (SOGoMicrosoftActiveSyncFolderType *) folderType;
 {
-  NSString *realCollectionId;
+  NSString *realCollectionId, *v;
 
   *folderType = ActiveSyncGenericFolder;
+  v = [self stringByUnescapingURL];
 
-  if ([self hasPrefix: @"vevent/"])
+  if ([v hasPrefix: @"vevent/"])
     {
-      realCollectionId = [self substringFromIndex: 7];
+      realCollectionId = [v substringFromIndex: 7];
       *folderType = ActiveSyncEventFolder;
     }
-  else if ([self hasPrefix: @"vtodo/"])
+  else if ([v hasPrefix: @"vtodo/"])
     {
-      realCollectionId = [self substringFromIndex: 6];
+      realCollectionId = [v substringFromIndex: 6];
       *folderType = ActiveSyncTaskFolder;
     }
-  else if ([self hasPrefix: @"vcard/"])
+  else if ([v hasPrefix: @"vcard/"])
     {
-      realCollectionId = [self substringFromIndex: 6];
+      realCollectionId = [v substringFromIndex: 6];
       *folderType = ActiveSyncContactFolder;
+    }
+  else if ([v hasPrefix: @"mail/"])
+    {
+      realCollectionId = [[v stringByUnescapingURL] substringFromIndex: 5];
+      *folderType = ActiveSyncMailFolder;
     }
   else
     {
-      // mail/
-      realCollectionId = [[self stringByUnescapingURL] substringFromIndex: 5];
-      *folderType = ActiveSyncMailFolder;
+      realCollectionId = nil;
     }
 
   return realCollectionId;
@@ -148,6 +153,102 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     s = @"Unknown";
   
   return s;
+}
+
+//
+// FIXME: combine with our OpenChange code.
+//
+- (char) _decodeHexByte: (char) byteChar
+{
+  char newByte;
+
+  if (byteChar >= 48 && byteChar <= 57)
+    newByte = (uint8_t) byteChar - 48;
+  else if (byteChar >= 65 && byteChar <= 70)
+    newByte = (uint8_t) byteChar - 55;
+  else if (byteChar >= 97 && byteChar <= 102)
+    newByte = (uint8_t) byteChar - 87;
+  else
+    newByte = -1;
+
+  return newByte;
+}
+
+//
+// FIXME: combine with our OpenChange code.
+//
+- (BOOL) _decodeHexByte: (uint8_t *) byte
+                  atPos: (NSUInteger) pos
+{
+  BOOL error = NO;
+  char newByte;
+  unichar byteChar;
+
+  byteChar = [self characterAtIndex: pos];
+  if (byteChar < 256)
+    {
+      newByte = [self _decodeHexByte: (char) byteChar];
+      if (newByte == -1)
+        error = YES;
+      else
+        *byte = newByte;
+    }
+  else
+    error = YES;
+
+  return error;
+}
+
+//
+// FIXME: combine with our OpenChange code.
+//
+- (BOOL) _decodeHexPair: (uint8_t *) byte
+                  atPos: (NSUInteger) pos
+{
+  BOOL error;
+  uint8_t lowValue, highValue;
+
+  error = [self _decodeHexByte: &highValue atPos: pos];
+  if (!error)
+    {
+      error = [self _decodeHexByte: &lowValue atPos: pos + 1];
+      if (!error)
+        *byte = highValue << 4 | lowValue;
+    }
+
+  return error;
+}
+
+//
+// FIXME: combine with our OpenChange code.
+//
+- (NSData *) convertHexStringToBytes
+{
+  NSUInteger count, strLen, bytesLen;
+  uint8_t *bytes, *currentByte;
+  NSData *decoded = nil;
+  BOOL error = NO;
+
+  strLen = [self length];
+  if ((strLen % 2) == 0)
+    {
+      bytesLen = strLen / 2;
+      bytes = NSZoneCalloc (NULL, bytesLen, sizeof (uint8_t));
+      currentByte = bytes;
+      for (count = 0; !error && count < strLen; count += 2)
+        {
+          error = [self _decodeHexPair: currentByte atPos: count];
+          currentByte++;
+        }
+      if (error)
+        NSZoneFree (NULL, bytes);
+      else
+        decoded = [NSData dataWithBytesNoCopy: bytes
+                                       length: bytesLen
+                                 freeWhenDone: YES];
+    }
+
+  return decoded;
 }
 
 @end

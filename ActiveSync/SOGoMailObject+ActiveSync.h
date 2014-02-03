@@ -32,10 +32,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Mailer/SOGoMailObject.h>
 
+@class iCalCalendar;
 @class NSDictionary;
 
 @interface SOGoMailObject (ActiveSync)
 
+- (iCalCalendar *) calendarFromIMIPMessage;
 - (NSString *) activeSyncRepresentation;
 - (void) takeActiveSyncValues: (NSDictionary *) theValues;
 

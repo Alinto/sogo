@@ -204,6 +204,38 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // http://blogs.msdn.com/b/exchangedev/archive/2011/07/22/working-with-meeting-requests-in-exchange-activesync.aspx
 // http://blogs.msdn.com/b/exchangedev/archive/2011/07/29/working-with-meeting-responses-in-exchange-activesync.aspx
 //
+//
+// Here is an example of a Sync call when sogo10 accepts an invitation from sogo3:
+//
+// <Change>
+//  <ServerId>2978-52EA9D00-1-A253E70.ics</ServerId>
+//  <ApplicationData>
+//   <TimeZone xmlns="Calendar:">LAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsAAAABAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAACAAIAAAAAAAAAxP///w==</TimeZone>
+//   <AllDayEvent xmlns="Calendar:">0</AllDayEvent>
+//   <StartTime xmlns="Calendar:">20140207T130000Z</StartTime>
+//   <EndTime xmlns="Calendar:">20140207T140000Z</EndTime>
+//   <DTStamp xmlns="Calendar:">20140130T185245Z</DTStamp>
+//   <Subject xmlns="Calendar:">test 8</Subject>
+//   <Sensitivity xmlns="Calendar:">0</Sensitivity>
+//   <Body xmlns="AirSyncBase:">
+//    <Type>1</Type>
+//    <Data/>
+//   </Body>
+//   <Organizer_Email xmlns="Calendar:">sogo3@example.com</Organizer_Email>
+//   <UID xmlns="Calendar:">2978-52EA9D00-1-A253E70</UID>
+//   <Attendees xmlns="Calendar:">
+//    <Attendee>
+//     <Attendee_Name>sogo10</Attendee_Name>
+//     <Attendee_Email>sogo10@example.com</Attendee_Email>
+//     <Attendee_Type>1</Attendee_Type>
+//    </Attendee>
+//   </Attendees>
+//   <BusyStatus xmlns="Calendar:">2</BusyStatus>
+//   <MeetingStatus xmlns="Calendar:">3</MeetingStatus>
+//   <Organizer_Name xmlns="Calendar:">Wolfgang Fritz</Organizer_Name>
+//  </ApplicationData>
+// </Change>
+//
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
 {
   iCalDateTime *start, *end;
@@ -330,6 +362,66 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       RELEASE(rule);
       
       [rule takeActiveSyncValues: o];
+    }
+
+  // Organizer
+  if ((o = [theValues objectForKey: @"Organizer_Email"]))
+    {
+      iCalPerson *person;
+
+      person = [iCalPerson elementWithTag: @"organizer"];
+      [person setEmail: o];
+      [person setCn: [theValues objectForKey: @"Organizer_Name"]];
+      [person setPartStat: @"ACCEPTED"];
+      [self setOrganizer: person];
+    }
+
+  // Attendees
+  if ((o = [theValues objectForKey: @"Attendees"]))
+    {
+      NSMutableArray *attendees;
+      NSDictionary *attendee;
+      iCalPerson *person;
+      int status, i;
+
+      attendees = [NSMutableArray array];
+
+      for (i = 0; i < [o count]; i++)
+        {
+          // Each attendee has is a dictionary similar to this:
+          // { "Attendee_Email" = "sogo3@example.com"; "Attendee_Name" = "Wolfgang Fritz"; "Attendee_Status" = 5; "Attendee_Type" = 1; }
+          attendee = [o objectAtIndex: i];
+
+          person = [iCalPerson elementWithTag: @"attendee"];
+          [person setCn: [attendee objectForKey: @"Attendee_Name"]];
+          [person setEmail: [attendee objectForKey: @"Attendee_Email"]];
+          
+          status = [[attendee objectForKey: @"Attendee_Status"] intValue];
+
+          switch (status)
+            {
+            case 2:
+              [person setPartStat: @"TENTATIVE"];
+              break;
+            case 3:
+              [person setPartStat: @"ACCEPTED"];
+              break;
+            case 4:
+              [person setPartStat: @"DECLINED"];
+              break;
+            case 0:
+            case 5:
+            default:
+              [person setPartStat: @"NEEDS-ACTION"];
+              break;
+            }
+          
+          // FIXME: handle Attendee_Type
+
+          [attendees addObject: person];
+        }
+
+      [self setAttendees: attendees];
     }
 }
 

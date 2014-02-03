@@ -45,7 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 
-
+#import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEntityObject.h>
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalToDo.h>
@@ -85,6 +85,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
+#import <Appointments/SOGoAppointmentObject.h>
 
 #import <Contacts/SOGoContactGCSFolder.h>
 #import <Contacts/SOGoContactFolders.h>
@@ -125,6 +126,49 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                                                forDevice: [context objectForKey: @"DeviceId"]];
 
   [[[context activeUser] userSettings] synchronize];
+}
+
+//
+//
+//
+- (id) collectionFromId: (NSString *) theCollectionId
+                   type: (SOGoMicrosoftActiveSyncFolderType) theFolderType
+{
+  id collection;
+
+  collection = nil;
+
+  switch (theFolderType)
+    {
+    case ActiveSyncContactFolder:
+      {
+        collection = [[context activeUser] personalContactsFolderInContext: context];
+      }
+      break;
+    case ActiveSyncEventFolder:
+    case ActiveSyncTaskFolder:
+      {
+        collection = [[context activeUser] personalCalendarFolderInContext: context];
+      }
+      break;
+    case ActiveSyncMailFolder:
+    default:
+      {
+        SOGoMailAccounts *accountsFolder;
+        SOGoMailFolder *currentFolder;
+        SOGoUserFolder *userFolder;
+        
+        userFolder = [[context activeUser] homeFolderInContext: context];
+        accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+        currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+        
+        collection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", theCollectionId]
+                                     inContext: context
+                                       acquire: NO];
+      }
+    }
+
+  return collection;
 }
 
 //
@@ -524,11 +568,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   EOQualifier *notDeletedQualifier, *sinceDateQualifier;
   NSString *collectionId, *realCollectionId;
-  id currentFolder, currentCollection;
-  SOGoMailAccounts *accountsFolder;
-  SOGoUserFolder *userFolder;
   EOAndQualifier *qualifier;
   NSCalendarDate *filter;
+  id currentCollection;
   NSMutableString *s;
   NSArray *uids;
   NSData *d;
@@ -541,15 +583,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   collectionId = [[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue];
   realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
-
-
-  userFolder = [[context activeUser] homeFolderInContext: context];
-  accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
-  currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+  currentCollection = [self collectionFromId: realCollectionId  type: folderType];
   
-  currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", realCollectionId]
-                                      inContext: context
-                                        acquire: NO];
   //
   // For IMAP, we simply build a request like this:
   //
@@ -677,12 +712,91 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 //
-//
+// <?xml version="1.0"?>
+// <!DOCTYPE ActiveSync PUBLIC "-//MICROSOFT//DTD ActiveSync//EN" "http://www.microsoft.com/">
+// <MeetingResponse xmlns="MeetingResponse:">
+//  <Request>
+//   <UserResponse>1</UserResponse>
+//   <CollectionId>mail%2FINBOX</CollectionId>
+//   <RequestId>283</RequestId>
+//  </Request>
+// </MeetingResponse>
 //
 - (void) processMeetingResponse: (id <DOMElement>) theDocumentElement
                      inResponse: (WOResponse *) theResponse
 {
+  NSString *realCollectionId, *requestId, *participationStatus;
+  NSMutableString *s;
+  NSData *d;
 
+  id collection;
+
+  SOGoMicrosoftActiveSyncFolderType folderType;  
+  int userResponse;
+  int status;
+  
+  s = [NSMutableString string];
+  status = 1;
+
+  realCollectionId = [[[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue] realCollectionIdWithFolderType: &folderType];
+  collection = [self collectionFromId: realCollectionId  type: ActiveSyncMailFolder];
+  
+  // 1 -> accepted, 2 -> tentative, 3 -> declined
+  userResponse = [[[(id)[theDocumentElement getElementsByTagName: @"UserResponse"] lastObject] textValue] intValue];
+  requestId = [[(id)[theDocumentElement getElementsByTagName: @"RequestId"] lastObject] textValue];
+
+  //
+  // We fetch the calendar information based on the email (requestId) in the user's INBOX (or elsewhere)
+  //
+  // FIXME: that won't work too well for external invitations...
+  SOGoMailObject *mailObject;
+
+  mailObject = [collection lookupName: requestId
+                            inContext: context
+                              acquire: 0];
+  
+  if (![mailObject isKindOfClass: [NSException class]])
+    {
+      SOGoAppointmentObject *appointmentObject;
+      iCalCalendar *calendar;
+      iCalEvent *event;
+      
+      calendar = [mailObject calendarFromIMIPMessage];
+      event = [[calendar events] lastObject];
+      
+      // Fetch the SOGoAppointmentObject
+      collection = [[context activeUser] personalCalendarFolderInContext: context];
+      appointmentObject = [collection lookupName: [NSString stringWithFormat: @"%@.ics", [event uid]]
+                                       inContext: context
+                                         acquire: NO];
+      if (userResponse == 1)
+        participationStatus = @"ACCEPTED";
+      else if (userResponse == 2)
+        participationStatus = @"TENTATIVE";
+      else
+        participationStatus = @"DECLINED";
+      
+      [appointmentObject changeParticipationStatus: participationStatus
+                                      withDelegate: nil];
+      
+      [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+      [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+      [s appendString: @"<MeetingResponse xmlns=\"MeetingResponse:\">"];
+      [s appendString: @"<Result>"];
+      [s appendFormat: @"<RequestId>%@</RequestId>", requestId];
+      [s appendFormat: @"<CalendarId>%@</CalendarId>", [event uid]];
+      [s appendFormat: @"<Status>%d</Status>", status];
+      [s appendString: @"</Result>"];
+      [s appendString: @"</MeetingResponse>"];
+      
+      d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+      
+      [theResponse setContent: d];
+    }
+  else
+    {
+      [theResponse setStatus: 500];
+    }
 }
 
 
@@ -710,22 +824,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // FIXME
   if (srcFolderType == ActiveSyncMailFolder && dstFolderType == ActiveSyncMailFolder)
     {
-      SOGoMailAccounts *accountsFolder;
-      SOGoMailFolder *currentFolder;
-      SOGoUserFolder *userFolder;
       NGImap4Client *client;
       id currentCollection;
 
       NSDictionary *response;
       NSString *v;
 
-      userFolder = [[context activeUser] homeFolderInContext: context];
-      accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
-      currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
+      // userFolder = [[context activeUser] homeFolderInContext: context];
+      // accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
+      // currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
       
-      currentCollection = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", srcFolderId]
-                                          inContext: context
-                                            acquire: NO];
+      currentCollection = [self collectionFromId: srcFolderId  type: srcFolderType];
+
+      // [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", srcFolderId]
+      //                 inContext: context
+      //                   acquire: NO];
 
       client = [[currentCollection imap4Connection] client];
       [client select: srcFolderId];
@@ -747,7 +860,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                             addOrRemove: YES];
 
           if ([[response valueForKey: @"result"] boolValue])
-            [currentCollection expunge];
+            [(SOGoMailFolder *)currentCollection expunge];
 
         }
 

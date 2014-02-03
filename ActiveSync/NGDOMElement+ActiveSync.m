@@ -31,6 +31,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSString.h>
+
+static NSArray *asElementArray = nil;
 
 @implementation NGDOMElement (ActiveSync)
 
@@ -44,13 +47,40 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //  </Flag>
 // </ApplicationData>
 //
+// and stuff like that:
+//
+// <Attendees xmlns="Calendar:">
+//  <Attendee>
+//   <Attendee_Email>sogo1@example.com</Attendee_Email>
+//   <Attendee_Name>John Doe</Attendee_Name>
+//   <Attendee_Status>5</Attendee_Status>
+//   <Attendee_Type>1</Attendee_Type>
+//  </Attendee>
+//  <Attendee>
+//   <Attendee_Email>sogo2@example.com</Attendee_Email>
+//   <Attendee_Name>Balthazar César</Attendee_Name>
+//   <Attendee_Status>5</Attendee_Status>
+//   <Attendee_Type>1</Attendee_Type>
+//  </Attendee>
+//  <Attendee>
+//   <Attendee_Email>sogo3@example.com</Attendee_Email>
+//   <Attendee_Name>Wolfgang Fritz</Attendee_Name>
+//   <Attendee_Status>5</Attendee_Status>
+//   <Attendee_Type>1</Attendee_Type>
+//  </Attendee>
+// </Attendees>
+//
+
 - (NSDictionary *) applicationData
 {
   NSMutableDictionary *data;
   id <DOMNodeList> children;
   id <DOMElement> element;
-  int i;
+  int i, count;
   
+  if (!asElementArray)
+    asElementArray = [[NSArray alloc] initWithObjects: @"Attendee", nil];
+
   data = [NSMutableDictionary dictionary];
 
   children = [self childNodes];
@@ -65,10 +95,55 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           id value;
           
           tag = [element tagName];
+          count = [(NSArray *)[element childNodes] count];
 
-          // Handle inner data
-          if ([(NSArray *)[element childNodes] count] > 2)
-            value = [(NGDOMElement *)element applicationData];
+          // Handle inner data - see above for samples
+          if (count > 2)
+            {
+              NSMutableArray *innerElements;
+              id <DOMElement> innerElement;
+              NSArray *childNodes;
+              NSString *innerTag;
+              BOOL same;
+              int j;
+              
+              childNodes = (NSArray *)[element childNodes];
+              innerElements = [NSMutableArray array];
+              innerTag = nil;
+              same = YES;
+
+              for (j = 1; j < count; j++)
+                {
+                  innerElement = [childNodes objectAtIndex: j];
+
+                  if ([innerElement nodeType] == DOM_ELEMENT_NODE)
+                    {
+                      if (!innerTag)
+                        innerTag = [innerElement tagName];
+
+                      if ([innerTag isEqualToString: [innerElement tagName]])
+                        {
+                          [innerElements addObject: [(NGDOMElement *)innerElement applicationData]];
+                        }
+                      else
+                        {
+                          same = NO;
+                          break;
+                        }
+                    }
+                }
+
+              if (same && [asElementArray containsObject: innerTag])
+                value = innerElements;
+              else
+                {
+                  value = [(NGDOMElement *)element applicationData];
+                  
+                  // Don't set empty values like Foo = {}
+                  if (![value count])
+                    value = nil;
+                }
+            }
           else
             value = [[element firstChild] nodeValue];
           

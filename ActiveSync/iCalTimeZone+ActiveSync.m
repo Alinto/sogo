@@ -42,14 +42,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGExtensions/NGBase64Coding.h>
 
 struct SYSTEMTIME {
-        uint16_t wYear;
-        uint16_t wMonth;
-        uint16_t wDayOfWeek;
-        uint16_t wDay;
-        uint16_t wHour;
-        uint16_t wMinute;
-        uint16_t wSecond;
-        uint16_t wMilliseconds;
+  uint16_t wYear;
+  uint16_t wMonth;
+  uint16_t wDayOfWeek;
+  uint16_t wDay;
+  uint16_t wHour;
+  uint16_t wMinute;
+  uint16_t wSecond;
+  uint16_t wMilliseconds;
 };
 
 @interface iCalTimeZonePeriod (ActiveSync)

@@ -38,7 +38,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/iCalEvent.h>
 #import <NGCards/iCalTimeZone.h>
 
-
 #import <NGExtensions/NGBase64Coding.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSString+Encoding.h>
@@ -46,14 +45,118 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
 
+#include "iCalTimeZone+ActiveSync.h"
 #include "NSDate+ActiveSync.h"
+#include "NSString+ActiveSync.h"
 
 #include "../SoObjects/Mailer/NSString+Mail.h"
+#include "../SoObjects/Mailer/SOGoMailBodyPart.h"
+
 #include <SOGo/SOGoUser.h>
 
+typedef struct {
+  uint32_t dwLowDateTime;
+  uint32_t dwHighDateTime;
+} FILETIME;
+
+struct GlobalObjectId {
+  uint8_t                   ByteArrayID[16];
+  uint8_t                   YH;
+  uint8_t                   YL;
+  uint8_t                   Month;
+  uint8_t                   D;
+  FILETIME                  CreationTime;
+  uint8_t                   X[8];
+  uint32_t                  Size;
+  uint8_t*                  Data;
+};
 
 @implementation SOGoMailObject (ActiveSync)
 
+//
+//
+//
+- (void) _setInstanceDate: (struct GlobalObjectId *) newGlobalId
+                 fromDate: (NSCalendarDate *) instanceDate
+{
+  uint16_t year;
+
+  if (instanceDate)
+    {
+      //[instanceDate setTimeZone: timeZone];
+      year = [instanceDate yearOfCommonEra];
+      newGlobalId->YH = year >> 8;
+      newGlobalId->YL = year & 0xff;
+      newGlobalId->Month = [instanceDate monthOfYear];
+      newGlobalId->D = [instanceDate dayOfMonth];
+    }
+}
+
+//
+// The GlobalObjId is documented here: http://msdn.microsoft.com/en-us/library/ee160198(v=EXCHG.80).aspx
+//
+- (NSData *) _computeGlobalObjectIdFromEvent: (iCalEvent *) event
+{
+  NSData *binPrefix, *globalObjectId;
+  NSString *prefix, *uid;
+
+  struct GlobalObjectId newGlobalId;
+  const char *uidAsUTF8;
+  
+  prefix = @"040000008200e00074c5b7101a82e008";
+
+  // dataPrefix is "vCal-Uid %x01 %x00 %x00 %x00"
+  uint8_t dataPrefix[] = { 0x76, 0x43, 0x61, 0x6c, 0x2d, 0x55, 0x69, 0x64, 0x01, 0x00, 0x00, 0x00 };
+  uid = [event uid];
+
+  binPrefix = [prefix convertHexStringToBytes];
+  [binPrefix getBytes: &newGlobalId.ByteArrayID];
+  [self _setInstanceDate: &newGlobalId
+                fromDate: [event recurrenceId]];
+  uidAsUTF8 = [uid UTF8String];
+
+  // 0x0c is the size of our dataPrefix
+  newGlobalId.Size = 0x0c + strlen(uidAsUTF8);
+  newGlobalId.Data = malloc(newGlobalId.Size * sizeof(uint8_t));
+  memcpy(newGlobalId.Data, dataPrefix, 0x0c);
+  memcpy(newGlobalId.Data + 0x0c, uidAsUTF8, newGlobalId.Size - 0x0c);
+
+  globalObjectId = [[NSData alloc] initWithBytes: &newGlobalId  length: 40 + newGlobalId.Size*sizeof(uint8_t)];
+  free(newGlobalId.Data);
+  
+  return [globalObjectId autorelease];
+}
+
+//
+// For debugging purposes...
+//
+// - (NSString *) _uidFromGlobalObjectId: (NSData *) objectId
+// {
+//   NSString *uid;
+
+//   struct GlobalObjectId *newGlobalId;
+//   NSUInteger length;
+//   uint8_t *bytes;
+
+//   length = [objectId length];
+//   uid = nil;
+
+//   bytes = malloc(length*sizeof(uint8_t));
+//   [objectId getBytes:  bytes  length: length];
+
+//   newGlobalId = bytes;
+
+//   // We must take the offset (dataPrefix) into account
+//   uid = [[NSString alloc] initWithBytes: newGlobalId->Data+12  length: newGlobalId->Size-12 encoding: NSUTF8StringEncoding];
+//   free(bytes);
+
+//   return AUTORELEASE(uid);
+// }
+
+
+//
+//
+//
 - (NSString *) _emailAddressesFrom: (NSArray *) enveloppeAddresses
 {
   NSMutableArray *addresses;
@@ -186,11 +289,53 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //
 //
+- (iCalCalendar *) calendarFromIMIPMessage
+{
+  NSDictionary *part;
+  NSArray *parts;
+  int i;
+
+  // We check if we have at least 2 parts and if one of them is a text/calendar
+  parts = [[self bodyStructure] objectForKey: @"parts"];
+
+  if ([parts count] > 1)
+    {
+      for (i = 0; i < [parts count]; i++)
+        {
+          part = [parts objectAtIndex: i];
+          
+          if ([[part objectForKey: @"type"] isEqualToString: @"text"] &&
+              [[part objectForKey: @"subtype"] isEqualToString: @"calendar"])
+            {
+              id bodyPart;
+
+              bodyPart = [self lookupImap4BodyPartKey: [NSString stringWithFormat: @"%d", i+1]
+                                            inContext: self->context];
+
+              if (bodyPart)
+                {
+                  NSData *calendarData;
+                  
+                  calendarData = [bodyPart fetchBLOB];
+                  return [iCalCalendar parseSingleFromSource: calendarData];
+                }
+            }
+        }
+    }
+
+  return nil;
+}
+
+//
+//
+//
 - (NSString *) activeSyncRepresentation
 {
+  NSData *d, *globalObjId;
   NSMutableString *s;
-  NSData *d;
   id value;
+
+  iCalCalendar *calendar;
 
   int preferredBodyType, nativeBodyType;
 
@@ -234,58 +379,63 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Read
   [s appendFormat: @"<Read xmlns=\"Email:\">%d</Read>", ([self read] ? 1 : 0)];
   
-  // MesssageClass
-  [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Note"];
-  //[s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Schedule.Meeting.Request"];
   
-  //
-  // TEST
-  //
-#if 0
-  id foo = [self lookupImap4BodyPartKey: @"2" inContext: self->context];
-  NSData *calendarData;
-  iCalCalendar *calendar;
-  iCalEvent *event;
+  // We handle MeetingRequest
+  calendar = [self calendarFromIMIPMessage];
 
-  calendarData = [foo fetchBLOB];
-  calendar = [iCalCalendar parseSingleFromSource: calendarData];
-  event = [[calendar events] lastObject];
-
-  if ([event timeStampAsDate])
-    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentation]];
-  else if ([event created])
-    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[event created] activeSyncRepresentation]];
-  
-  [s appendString: @"<MeetingRequest xmlns=\"Email:\">"];
-  
-  // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
-  if ([event startDate])
-    [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentation]];
-  
-  // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
-  if ([event endDate])
-    [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentation]];
-
-  // Timezone
-  iCalTimeZone *tz;
-
-  tz = [(iCalDateTime *)[event firstChildWithTag: @"dtstart"] timeZone];
-
-  if (!tz)
-    tz = [iCalTimeZone timeZoneForName: @"Europe/London"];
-
-  [s appendFormat: @"<TimeZone xmlns=\"Email:\">%@</TimeZone>", [[tz activeSyncRepresentation] stringByReplacingString: @"\n" withString: @""]];;
-
-  [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 0];
-  [s appendFormat: @"<Organizer xmlns=\"Email:\">%@</Organizer>", @"sogo3@example.com"];
-  [s appendFormat: @"<ResponseRequested xmlns=\"Email:\">%d</ResponseRequested>", 1];
-
-  [s appendString: @"</MeetingRequest>"];
-#endif
-  //
-  // TEST
-  //
-
+  if (calendar)
+    {
+      iCalTimeZone *tz;
+      iCalEvent *event;
+      
+      event = [[calendar events] lastObject];
+      
+      [s appendString: @"<MeetingRequest xmlns=\"Email:\">"];
+      
+      if ([event timeStampAsDate])
+        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentationWithoutSeparators]];
+      else if ([event created])
+        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event created] activeSyncRepresentationWithoutSeparators]];
+      
+      // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
+      if ([event startDate])
+        [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentationWithoutSeparators]];
+      
+      // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
+      if ([event endDate])
+        [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentationWithoutSeparators]];
+      
+      // Timezone
+      tz = [(iCalDateTime *)[event firstChildWithTag: @"dtstart"] timeZone];
+      
+      if (!tz)
+        tz = [iCalTimeZone timeZoneForName: @"Europe/London"];
+      
+      [s appendFormat: @"<TimeZone xmlns=\"Email:\">%@</TimeZone>", [[tz activeSyncRepresentation] stringByReplacingString: @"\n" withString: @""]];;
+      
+      [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 0];
+      [s appendFormat: @"<Organizer xmlns=\"Email:\">%@</Organizer>", [[event organizer] rfc822Email]];
+      [s appendFormat: @"<ResponseRequested xmlns=\"Email:\">%d</ResponseRequested>", 1];
+      
+      // From http://blogs.msdn.com/b/exchangedev/archive/2011/07/22/working-with-meeting-requests-in-exchange-activesync.aspx:
+      //
+      // "Clients that need to determine whether the GlobalObjId  element for a meeting request corresponds to an existing Calendar
+      // object in the Calendar folder have to convert the GlobalObjId element value to a UID element value to make the comparison."
+      //
+      globalObjId = [self _computeGlobalObjectIdFromEvent: event];
+      [s appendFormat: @"<GlobalObjId xmlns=\"Email:\">%@</GlobalObjId>", [globalObjId stringByEncodingBase64]];
+      [s appendString: @"</MeetingRequest>"];      
+      
+      // MesssageClass and ContentClass
+      [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Schedule.Meeting.Request"];
+      [s appendFormat: @"<ContentClass xmlns=\"Email:\">%@</ContentClass>", @"urn:content-classes:calendarmessage"];
+    }
+  else
+    {
+      // MesssageClass and ContentClass
+      [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Note"];
+      [s appendFormat: @"<ContentClass xmlns=\"Email:\">%@</ContentClass>", @"urn:content-classes:message"];
+    }
 
   // Reply-To - FIXME
   //NSArray *replyTo = [[message objectForKey: @"envelope"] replyTo];
@@ -348,10 +498,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       [s appendString: @"</Attachments>"];
     }
-  
-  // ContentClass
-  [s appendFormat: @"<ContentClass xmlns=\"Email:\">%@</ContentClass>", @"urn:content-classes:message"];
-  //[s appendFormat: @"<ContentClass xmlns=\"Email:\">%@</ContentClass>", @"urn:content-classes:calendarmessage"];
   
   // Flags
   [s appendString: @"<Flag xmlns=\"Email:\">"];
