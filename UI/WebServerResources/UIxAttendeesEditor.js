@@ -220,10 +220,13 @@ function performSearchCallback(http) {
                     list.appendChild(node);
                     node.address = completeEmail;
                     // log("node.address: " + node.address);
-                    if (contact["c_uid"])
+                    if (contact["c_uid"]) {
                         node.uid = (contact["isMSExchange"]? UserLogin + ":" : "") + contact["c_uid"];
-                    else
+                    }
+                    else {
                         node.uid = null;
+                        node.appendChild(new Element('div').addClassName('colorBox').addClassName('noFreeBusy'));
+                    }
                     node.isList = isList;
                     if (isList) {
                         node.cname = contact["c_name"];
