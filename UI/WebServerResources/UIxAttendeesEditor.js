@@ -1323,17 +1323,19 @@ function onEditorOkClick(event) {
     var endDate = getEndDate();
 
     var listener = {
-      onRequestComplete: function eCH_l_onRequestComplete(handlers, code) {
-          var label = ("A time conflict exists with one or more attendees.\n"
-                       + "Would you like to keep the current settings anyway?");
-          if (code || window.confirm(_(label))) {
-              _confirmEditorOkClick();
-          }
-      }
+        onRequestComplete: function eCH_l_onRequestComplete(handlers, code) {
+            if (code) {
+                _confirmEditorOkClick();
+            }
+            else {
+                var label = ("A time conflict exists with one or more attendees.\n"
+                             + "Would you like to keep the current settings anyway?");
+                showConfirmDialog(_('Warning'), _(label), _confirmEditorOkClick);
+            }
+        }
     };
     
-    var conflictHandler = new editorConflictHandler(uids, startDate,
-                                                    endDate, listener);
+    var conflictHandler = new editorConflictHandler(uids, startDate, endDate, listener);
     conflictHandler.start();
 }
 
@@ -1684,7 +1686,7 @@ function onAdjustTime(event) {
         // End date was changed
         var delta = endDate.valueOf() - startDate.valueOf();  
         if (delta < 0) {
-            alert(labels.validate_endbeforestart);
+            showAlertDialog(labels.validate_endbeforestart);
             var oldEndDate = window.getShadowEndDate();
             window.setEndDate(oldEndDate);
 
