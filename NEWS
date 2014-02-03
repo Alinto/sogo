@@ -30,6 +30,7 @@ Bug fixes
  - fixed contextual menu of the current calendar view (#2557)
  - fixed handling of the '=' character in cards/events/tasks (#2505)
  - simplify searches in the address book (#2187)
+ - warn user when dnd failed because of a resource conflict (#1613)
 
 2.1.1b (2013-12-04)
 -------------------

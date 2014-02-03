@@ -135,6 +135,10 @@ function updateEventFromDraggingCallback(http) {
         if (isHttpStatus204(http.status)) {
             refreshEventsAndDisplay();
         }
+        else {
+            var response = http.responseText.evalJSON(true);
+            showAlertDialog(response['message']);
+        }
     }
 }
 
