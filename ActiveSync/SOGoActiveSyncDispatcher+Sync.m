@@ -104,6 +104,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoActiveSyncConstants.h"
 #include "SOGoMailObject+ActiveSync.h"
 
+#include <unistd.h>
+
 @implementation SOGoActiveSyncDispatcher (Sync)
 
 //
@@ -635,6 +637,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 - (void) processSyncCollection: (id <DOMElement>) theDocumentElement
                       inBuffer: (NSMutableString *) theBuffer
+                changeDetected: (BOOL *) changeDetected
 {
   NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType;
   SOGoMicrosoftActiveSyncFolderType folderType;
@@ -666,6 +669,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       davCollectionTag = @"-1";
       first_sync = YES;
+      *changeDetected = YES;
     }
 
   // We check our sync preferences and we stash them
@@ -716,7 +720,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // If we got any changes or if we have applied any commands
   // let's regenerate our SyncKey based on the collection tag.
   if ([changeBuffer length] || [commandsBuffer length])
-    davCollectionTag = [collection davCollectionTag];
+    {
+      davCollectionTag = [collection davCollectionTag];
+      *changeDetected = YES;
+    }
 
   // Generate the response buffer
   [theBuffer appendString: @"<Collection>"];
@@ -840,30 +847,67 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   id <DOMElement> aCollection;
   NSArray *allCollections;
-  NSMutableString *s;
+  NSMutableString *output, *s;
   NSData *d;
 
-  int i;
+  int i, j, heartbeatInterval;
+  BOOL changeDetected;
   
   // We initialize our output buffer
-  s = [NSMutableString string];
+  output = [NSMutableString string];
 
-  [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
-  [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
-  [s appendString: @"<Sync xmlns=\"AirSync:\"><Collections>"];
+  [output appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [output appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+  [output appendString: @"<Sync xmlns=\"AirSync:\">"];
 
-  allCollections = (id)[theDocumentElement getElementsByTagName: @"Collection"];
+  heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
 
-  for (i = 0; i < [allCollections count]; i++)
+  // We check to see if our heartbeat interval falls into the supported ranges.
+  if (heartbeatInterval > 300 || heartbeatInterval < 1)
     {
-      aCollection = [allCollections objectAtIndex: i];
+      // Interval is too long, inform the client.
+      heartbeatInterval = 300;
 
-      [self processSyncCollection: aCollection  inBuffer: s];
+      //[output appendFormat: @"<Limit>%d</Limit>", 300];
+      //[output appendFormat: @"<Status>%d</Status>", 14];
+      //[output appendString: @"</Sync>"];
+      //d = [[output dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+      //[theResponse setContent: d];
+      //return;
     }
 
-  [s appendString: @"</Collections></Sync>"];
+  [output appendString: @"<Collections>"];
+  
+  allCollections = (id)[theDocumentElement getElementsByTagName: @"Collection"];
+
+  // We enter our loop detection change
+  for (i = 0; i < (heartbeatInterval/60); i++)
+    {
+      s = [NSMutableString string];
+
+      for (j = 0; j < [allCollections count]; j++)
+        {
+          aCollection = [allCollections objectAtIndex: j];
+          
+          [self processSyncCollection: aCollection  inBuffer: s  changeDetected: &changeDetected];
+        }
+
+      if (changeDetected)
+        {
+          NSLog(@"Change detected, we push the content.");
+          [output appendString: s];
+          break;
+        }
+      else
+        {
+          NSLog(@"Sleeping 60 seconds while detecting changes...");
+          sleep(60);
+        }
+    }
+
+  [output appendString: @"</Collections></Sync>"];
       
-  d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+  d = [[output dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
 
   [theResponse setContent: d];
 }

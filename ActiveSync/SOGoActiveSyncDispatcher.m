@@ -112,6 +112,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoActiveSyncConstants.h"
 #include "SOGoMailObject+ActiveSync.h"
 
+#include <unistd.h>
+
 @implementation SOGoActiveSyncDispatcher
 
 - (void) _setFolderSyncKey: (NSString *) theSyncKey
@@ -599,7 +601,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                       @"deleted"];
   sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
                                       @"(DATE >= %@)", filter];
-                                                  
   
   qualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeletedQualifier, sinceDateQualifier,
                                                       nil];
@@ -614,7 +615,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendFormat: @"<GetItemEstimate xmlns=\"GetItemEstimate:\"><Response><Status>%d</Status><Collection>", status];
   
-  [s appendString: @"<Class>Email</Class>"];
   [s appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
   [s appendFormat: @"<Estimate>%d</Estimate>", [uids count]];
   
@@ -623,7 +623,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
   
   [theResponse setContent: d];
-
 }
 
 //
@@ -900,7 +899,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 //
-// We ignore everything for now
+// Ping requests make a little sense because the request
+// doesn't contain the SyncKey on the client. So we can't 
+// really know if something has changed on the server. What we
+// do for now is simply return Status=5 with the HeartbeatInterval
+// set at 60 seconds or we wait 60 seconds before responding with
+// Status=1
 //
 - (void) processPing: (id <DOMElement>) theDocumentElement
           inResponse: (WOResponse *) theResponse
@@ -908,11 +912,37 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSMutableString *s;
   NSData *d;
   
+  int heartbeatInterval, status;
+
+  if (theDocumentElement)
+    heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
+  else
+    heartbeatInterval = 60;
+
+  if (heartbeatInterval > 60 || heartbeatInterval == 0)
+    {
+      heartbeatInterval = 60;
+      status = 5;
+    }
+  else
+    {
+      NSLog(@"Got Ping request with valid interval - sleeping for 60 seconds.");
+      sleep(60);
+      status = 1;
+    }
+
+  // We generate our response
   s = [NSMutableString string];
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendString: @"<Ping xmlns=\"Ping:\">"];
-  [s appendFormat: @"<Status>1</Status>"];
+  [s appendFormat: @"<Status>%d</Status>", status];
+
+  if (status == 5)
+    {
+      [s appendFormat: @"<HeartbeatInterval>%d</HeartbeatInterval>", heartbeatInterval];
+    }
+
   [s appendString: @"</Ping>"];
   
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
@@ -1432,6 +1462,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [context setObject: deviceId  forKey: @"DeviceId"];
 
   d = [[theRequest content] wbxml2xml];
+  documentElement = nil;
 
   if (!d)
     {
