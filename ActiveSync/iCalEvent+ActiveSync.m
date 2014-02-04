@@ -138,11 +138,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   // Subject -- http://msdn.microsoft.com/en-us/library/ee157192(v=exchg.80).aspx
   if ([[self summary] length])
-    [s appendFormat: @"<Subject xmlns=\"Calendar:\">%@</Subject>", [[self summary] stringByEscapingHTMLString]];
+    [s appendFormat: @"<Subject xmlns=\"Calendar:\">%@</Subject>", [[self summary] activeSyncRepresentation]];
   
   // Location
   if ([[self location] length])
-    [s appendFormat: @"<Location xmlns=\"Calendar:\">%@</Location>", [[self location] stringByEscapingHTMLString]];
+    [s appendFormat: @"<Location xmlns=\"Calendar:\">%@</Location>", [[self location] activeSyncRepresentation]];
   
   // Importance - NOT SUPPORTED - DO NOT ENABLE
   //o = [self priority];
@@ -184,7 +184,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   o = [self comment];
   if ([o length])
     {
-      o = [o stringByEscapingHTMLString];
+      o = [o activeSyncRepresentation];
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", 1];
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];

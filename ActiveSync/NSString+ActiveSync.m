@@ -34,9 +34,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Foundation/NSData.h>
 #include <Foundation/NSDate.h>
 
+#include <SOGo/NSString+Utilities.h>
+
 #include <NGExtensions/NSString+misc.h>
 
 @implementation NSString (ActiveSync)
+
+- (NSString *) activeSyncRepresentation
+{
+  NSString *s;
+
+  s = [self stringByEscapingHTMLString];
+
+  return [[s componentsSeparatedByCharactersInSet: [self safeCharacterSet]]
+                        componentsJoinedByString: @""];
+}
 
 - (int) activeSyncFolderType
 {

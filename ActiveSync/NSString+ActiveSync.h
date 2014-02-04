@@ -39,6 +39,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @interface NSString (ActiveSync)
 
+- (NSString *) activeSyncRepresentation;
 - (int) activeSyncFolderType;
 - (NSString *) realCollectionIdWithFolderType: (SOGoMicrosoftActiveSyncFolderType *) folderType;
 - (NSCalendarDate *) calendarDate;

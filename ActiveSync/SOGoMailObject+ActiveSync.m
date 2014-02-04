@@ -344,13 +344,13 @@ struct GlobalObjectId {
   // From
   value = [self _emailAddressesFrom: [[self envelope] from]];
   if (value)
-    [s appendFormat: @"<From xmlns=\"Email:\">%@</From>", [value stringByEscapingHTMLString]];
+    [s appendFormat: @"<From xmlns=\"Email:\">%@</From>", [value activeSyncRepresentation]];
   
   // To - "The value of this element contains one or more e-mail addresses.
   // If there are multiple e-mail addresses, they are separated by commas."
   value = [self _emailAddressesFrom: [[self envelope] to]];
   if (value)
-    [s appendFormat: @"<To xmlns=\"Email:\">%@</To>", [value stringByEscapingHTMLString]];
+    [s appendFormat: @"<To xmlns=\"Email:\">%@</To>", [value activeSyncRepresentation]];
   
   // DisplayTo
   [s appendFormat: @"<DisplayTo xmlns=\"Email:\">\"%@\"</DisplayTo>", [[context activeUser] login]];
@@ -358,14 +358,14 @@ struct GlobalObjectId {
   // Cc - same syntax as the To field
   value = [self _emailAddressesFrom: [[self envelope] cc]];
   if (value)
-    [s appendFormat: @"<Cc xmlns=\"Email:\">%@</Cc>", [value stringByEscapingHTMLString]];
+    [s appendFormat: @"<Cc xmlns=\"Email:\">%@</Cc>", [value activeSyncRepresentation]];
 
   // Subject
   value = [self decodedSubject];
   if (value)
     {
-      [s appendFormat: @"<Subject xmlns=\"Email:\">%@</Subject>", [value stringByEscapingHTMLString]];
-      [s appendFormat: @"<ThreadTopic xmlns=\"Email:\">%@</ThreadTopic>", [value stringByEscapingHTMLString]];
+      [s appendFormat: @"<Subject xmlns=\"Email:\">%@</Subject>", [value activeSyncRepresentation]];
+      [s appendFormat: @"<ThreadTopic xmlns=\"Email:\">%@</ThreadTopic>", [value activeSyncRepresentation]];
     }
   
   // DateReceived
@@ -459,7 +459,7 @@ struct GlobalObjectId {
       content = [[NSString alloc] initWithData: d  encoding: NSUTF8StringEncoding];
       AUTORELEASE(content);
   
-      content = [content stringByEscapingHTMLString];
+      content = [content activeSyncRepresentation];
       len = [content length];
       
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
@@ -483,7 +483,7 @@ struct GlobalObjectId {
           value = [attachmentKeys objectAtIndex: i];
 
           [s appendString: @"<Attachment>"];
-          [s appendFormat: @"<DisplayName>%@</DisplayName>", [[value objectForKey: @"filename"] stringByEscapingHTMLString]];
+          [s appendFormat: @"<DisplayName>%@</DisplayName>", [[value objectForKey: @"filename"] activeSyncRepresentation]];
 
           // FileReference must be a unique identifier across the whole store. We use the following structure:
           // mail/<foldername>/<message UID/<pathofpart>

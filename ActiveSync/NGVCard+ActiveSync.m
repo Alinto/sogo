@@ -54,16 +54,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   n = [self n];
   
   if ((o = [n flattenedValueAtIndex: 0 forKey: @""]))
-    [s appendFormat: @"<LastName xmlns=\"Contacts:\">%@</LastName>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<LastName xmlns=\"Contacts:\">%@</LastName>", [o activeSyncRepresentation]];
   
   if ((o = [n flattenedValueAtIndex: 1 forKey: @""]))
-    [s appendFormat: @"<FirstName xmlns=\"Contacts:\">%@</FirstName>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<FirstName xmlns=\"Contacts:\">%@</FirstName>", [o activeSyncRepresentation]];
   
   if ((o = [self workCompany]))
-    [s appendFormat: @"<CompanyName xmlns=\"Contacts:\">%@</CompanyName>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<CompanyName xmlns=\"Contacts:\">%@</CompanyName>", [o activeSyncRepresentation]];
   
   if ((o = [self title]))
-    [s appendFormat: @"<JobTitle xmlns=\"Contacts:\">%@</JobTitle>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<JobTitle xmlns=\"Contacts:\">%@</JobTitle>", [o activeSyncRepresentation]];
 
   if ((o = [self preferredEMail])) 
     [s appendFormat: @"<Email1Address xmlns=\"Contacts:\">%@</Email1Address>", o];
@@ -84,19 +84,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   // Telephone numbers
   if ((o = [self workPhone]) && [o length])
-    [s appendFormat: @"<BusinessPhoneNumber xmlns=\"Contacts:\">%@</BusinessPhoneNumber>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<BusinessPhoneNumber xmlns=\"Contacts:\">%@</BusinessPhoneNumber>", [o activeSyncRepresentation]];
   
   if ((o = [self homePhone]) && [o length])
-    [s appendFormat: @"<HomePhoneNumber xmlns=\"Contacts:\">%@</HomePhoneNumber>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<HomePhoneNumber xmlns=\"Contacts:\">%@</HomePhoneNumber>", [o activeSyncRepresentation]];
   
   if ((o = [self fax]) && [o length])
-    [s appendFormat: @"<BusinessFaxNumber xmlns=\"Contacts:\">%@</BusinessFaxNumber>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<BusinessFaxNumber xmlns=\"Contacts:\">%@</BusinessFaxNumber>", [o activeSyncRepresentation]];
   
   if ((o = [self mobile]) && [o length])
-    [s appendFormat: @"<MobilePhoneNumber xmlns=\"Contacts:\">%@</MobilePhoneNumber>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<MobilePhoneNumber xmlns=\"Contacts:\">%@</MobilePhoneNumber>", [o activeSyncRepresentation]];
   
   if ((o = [self pager]) && [o length])
-    [s appendFormat: @"<PagerNumber xmlns=\"Contacts:\">%@</PagerNumber>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<PagerNumber xmlns=\"Contacts:\">%@</PagerNumber>", [o activeSyncRepresentation]];
 
   // Home Address
   addresses = [self childrenWithTag: @"adr"
@@ -108,19 +108,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       homeAdr = [addresses objectAtIndex: 0];
       
       if ((o = [homeAdr flattenedValueAtIndex: 2  forKey: @""]))
-        [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", [o activeSyncRepresentation]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 3  forKey: @""]))
-        [s appendFormat: @"<HomeCity xmlns=\"Contacts:\">%@</HomeCity>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<HomeCity xmlns=\"Contacts:\">%@</HomeCity>", [o activeSyncRepresentation]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 4  forKey: @""]))
-        [s appendFormat: @"<HomeState xmlns=\"Contacts:\">%@</HomeState>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<HomeState xmlns=\"Contacts:\">%@</HomeState>", [o activeSyncRepresentation]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 5  forKey: @""]))
-        [s appendFormat: @"<HomePostalCode xmlns=\"Contacts:\">%@</HomePostalCode>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<HomePostalCode xmlns=\"Contacts:\">%@</HomePostalCode>", [o activeSyncRepresentation]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 6  forKey: @""]))
-        [s appendFormat: @"<HomeCountry xmlns=\"Contacts:\">%@</HomeCountry>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<HomeCountry xmlns=\"Contacts:\">%@</HomeCountry>", [o activeSyncRepresentation]];
     }
   
   // Work Address
@@ -133,19 +133,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       workAdr = [addresses objectAtIndex: 0];
       
       if ((o = [workAdr flattenedValueAtIndex: 2  forKey: @""]))
-        [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", [o activeSyncRepresentation]];
       
       if ((o = [workAdr flattenedValueAtIndex: 3  forKey: @""]))
-        [s appendFormat: @"<BusinessCity xmlns=\"Contacts:\">%@</BusinessCity>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<BusinessCity xmlns=\"Contacts:\">%@</BusinessCity>", [o activeSyncRepresentation]];
       
       if ((o = [workAdr flattenedValueAtIndex: 4  forKey: @""]))
-        [s appendFormat: @"<BusinessState xmlns=\"Contacts:\">%@</BusinessState>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<BusinessState xmlns=\"Contacts:\">%@</BusinessState>", [o activeSyncRepresentation]];
       
       if ((o = [workAdr flattenedValueAtIndex: 5  forKey: @""]))
-        [s appendFormat: @"<BusinessPostalCode xmlns=\"Contacts:\">%@</BusinessPostalCode>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<BusinessPostalCode xmlns=\"Contacts:\">%@</BusinessPostalCode>", [o activeSyncRepresentation]];
       
       if ((o = [workAdr flattenedValueAtIndex: 6  forKey: @""]))
-        [s appendFormat: @"<BusinessCountry xmlns=\"Contacts:\">%@</BusinessCountry>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<BusinessCountry xmlns=\"Contacts:\">%@</BusinessCountry>", [o activeSyncRepresentation]];
     }
 
   // Other, less important fields
@@ -154,7 +154,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   if ((o = [self note]))
     {
-      o = [o stringByEscapingHTMLString];
+      o = [o activeSyncRepresentation];
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", 1]; 
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];

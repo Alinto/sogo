@@ -1,6 +1,6 @@
 /* NSString+Utilities.h - this file is part of SOGo
  *
- * Copyright (C) 2006-2013 Inverse inc.
+ * Copyright (C) 2006-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 
 #import <Foundation/NSString.h>
 
+@class NSCharacterSet;
 @class NSDictionary;
 @class NSObject;
 
@@ -49,6 +50,7 @@
 - (NSString *) asSafeSQLString;
 
 /* JSON */
+- (NSCharacterSet *) safeCharacterSet;
 - (NSString *) jsonRepresentation;
 - (BOOL) isJSONString;
 - (id) objectFromJSONString;

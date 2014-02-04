@@ -97,11 +97,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Subject
   o = [self summary];
   if ([o length])
-    [s appendFormat: @"<Subject xmlns=\"Tasks:\">%@</Subject>", [[self summary] stringByEscapingHTMLString]];
+    [s appendFormat: @"<Subject xmlns=\"Tasks:\">%@</Subject>", [[self summary] activeSyncRepresentation]];
 
   if ((o = [self comment]))
     {
-      o = [o stringByEscapingHTMLString];
+      o = [o activeSyncRepresentation];
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", 1]; 
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
