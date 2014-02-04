@@ -411,8 +411,9 @@ validate_endbeforestart    = "La data/hora de començament és posterior a la d'
 "Workweek days only" = "Només dies laborables";
 "Tasks in View" = "Mostrar tasques";
 
-"eventDeleteConfirmation" = "El següent esdeveniment (s) s'esborrarà: \n%{0}\nVoleu continuar?";
-"taskDeleteConfirmation" = "Aquesta tasca s'esborrarà definitivament. Voleu continuar?";
+"eventDeleteConfirmation" = "El següent esdeveniment (s) s'esborrarà:";
+"taskDeleteConfirmation" = "Aquesta tasca s'esborrarà definitivament.";
+"Would you like to continue?" = "Voleu continuar?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "No podeu cancel·lar la subscripció al calendari personal o esborrar-lo.";

@@ -416,8 +416,9 @@ validate_endbeforestart    = "Ihr Ende ist vor dem Beginndatum.";
 "Workweek days only" = "nur Arbeitstage";
 "Tasks in View" = "Aufgaben anzeigen";
 
-"eventDeleteConfirmation" = "Diese Termine werden gelöscht: \n%{0}\nFortfahren?";
-"taskDeleteConfirmation" = "Diese Aufgaben werden gelöscht: \n%{0}\nFortfahren?";
+"eventDeleteConfirmation" = "Diese Termine werden gelöscht:";
+"taskDeleteConfirmation" = "Diese Aufgaben werden gelöscht:";
+"Would you like to continue?" = "Fortfahren?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Der persönliche Kalender kann weder gelöscht noch abbestellt werden.";

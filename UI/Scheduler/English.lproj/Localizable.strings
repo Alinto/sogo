@@ -416,8 +416,9 @@ validate_endbeforestart    = "The end date that you entered occurs before the st
 "Workweek days only" = "Workweek days only";
 "Tasks in View" = "Tasks in View";
 
-"eventDeleteConfirmation" = "The following event(s) will be erased: \n%{0}\nWould you like to continue?";
-"taskDeleteConfirmation" = "The following task(s) will be erased: \n%{0}\nWould you like to continue?";
+"eventDeleteConfirmation" = "The following event(s) will be erased:";
+"taskDeleteConfirmation" = "The following task(s) will be erased:";
+"Would you like to continue?" = "Would you like to continue?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "You cannot remove nor unsubscribe from your personal calendar.";

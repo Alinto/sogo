@@ -15,6 +15,7 @@
     var firstDayOfWeek = <var:string value="firstDayOfWeek"/>;
     var dayStartHour = <var:string value="dayStartHour"/>;
     var currentView = '<var:string value="currentView"/>';
+    var localeCode = '<var:string value="localeCode" />';
   </script>
   <style type="text/css">
   <var:if condition="horizontalDragHandleStyle">

@@ -65,9 +65,7 @@ function clickEventWrapper(functionRef) {
 }
 
 
-function createElement(tagName, id, classes,
-                       attributes, htmlAttributes,
-                       parentNode) {
+function createElement(tagName, id, classes, attributes, htmlAttributes, parentNode) {
     var newElement = $(document.createElement(tagName));
     if (id)
         newElement.setAttribute("id", id);

@@ -498,7 +498,7 @@ function onToolbarDeleteSelectedContactsConfirm(dialogId) {
     for (var i = 0; i < rowIds.length; i++)
         $(rowIds[i]).hide();
     triggerAjaxRequest(urlstr, onContactDeleteEventCallback, rowIds,
-                           ('ids=' + rowIds.join("/")),
+                           ('ids=' + rowIds.join(",")),
                            { "Content-type": "application/x-www-form-urlencoded" });
 }
 
