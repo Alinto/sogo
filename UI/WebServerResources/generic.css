@@ -49,6 +49,10 @@ DIV#pageContent
 { clear: both;
   padding-top: 1em; }
 
+.muted,
+.muted a
+{ color: #888 !important; }
+
 A
 { text-decoration: none;
   -moz-outline: 0px; }
@@ -247,7 +251,8 @@ DIV.contactSelector DIV.contactList
   padding-bottom: .15em;
   margin: 0px;
   width: auto;
-  white-space: nowrap; }
+  white-space: nowrap;
+  cursor: pointer; }
 
 .menu LI.disabled,
 .popuMenu LI.disabled,
@@ -279,6 +284,7 @@ UL.choiceMenu LI._chosen:hover
 { list-style-image: url("menu-check-hover.gif"); }
 
 .menu LI:hover,
+.menu LI:hover .muted,
 .menu LI.selected,
 .menu LI.submenu-selected
 { background-color: #9ABCD8;
@@ -710,7 +716,7 @@ DIV, TEXTAREA, INPUT, SELECT
   font-size: 8pt;
   font-size: inherit; }
 
-INPUT[type="text"], INPUT[type="password"], INPUT[type="file"],
+INPUT[type="text"], INPUT[type="password"],
 TEXTAREA
 { border-top: 1px solid #909090;
   border-left: 1px solid #909090;
@@ -726,7 +732,7 @@ TEXTAREA[disabled], TEXTAREA[readonly]
   border-color: #ccc;
   color: #9ABCD8; }
 
-INPUT[type="text"], INPUT[type="password"], INPUT[type="file"], TEXTAREA
+INPUT[type="text"], INPUT[type="password"], TEXTAREA
 { background: url("input_bg.gif"); }
 
 TEXTAREA
@@ -784,7 +790,7 @@ INPUT[name="search"]
  * Avoid using DIVS as buttons, they're only helpful when they have multiple
  * listeners for "onclick" 
  */
-A.button {
+.button, a.button {
   padding: 0px 0.5em;
   background: transparent url('btn_a_bg.png') no-repeat scroll top right;
   display: block;
@@ -797,28 +803,30 @@ A.button {
   cursor: pointer;
 }
 
-A.button SPAN {
+.button SPAN {
     background: transparent url('btn_span_bg.png') no-repeat;
     display: block;
     line-height: 13px;
+    height: 13px;
     padding: 5px 2px 5px 5px;
     cursor: pointer;
     min-width: 70px;
+    vertical-align: top;
 }
 
-A.button.actionButton SPAN 
+.button.actionButton SPAN
 { font-weight: bold; }
 
-A.button:active SPAN
+.button:active SPAN
 { background-position: bottom left;
   padding: 6px 2px 4px 5px; }
 
-A.disabled.button,
-A.disabled.button:active,
-A.disabled.button SPAN
+.disabled.button,
+.disabled.button:active,
+.disabled.button SPAN
 { color: #999; }
 
-A.disabled.button:active SPAN
+.disabled.button:active SPAN
 { background-position: top left;
   padding: 5px 2px 5px 5px; }
 

@@ -896,7 +896,7 @@
   SOGoDomainDefaults *dd;
 
   dd = [from domainDefaults];
-  if ([dd appointmentSendEMailNotifications])
+  if ([dd appointmentSendEMailNotifications] && [event isStillRelevant])
     {
       /* get WOApplication instance */
       app = [WOApplication application];
@@ -1034,6 +1034,11 @@
   // Recipient is fixed, which is the calendar owner
   ownerUser = [SOGoUser userWithLogin: self->owner];
   recipientIdentity = [ownerUser primaryIdentity];
+  
+  // Safety net for broken configurations
+  if (!recipientIdentity)
+    return;
+
   recipientEmail = [recipientIdentity objectForKey: @"email"];
   fullRecipientEmail = [recipientIdentity keysWithFormat: @"%{fullName} <%{email}>"];
   

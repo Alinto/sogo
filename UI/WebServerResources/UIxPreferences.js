@@ -448,8 +448,9 @@ function setupMailboxesFromJSON(jsonResponse) {
     var responseMboxes = jsonResponse.mailboxes;
     userMailboxes = $([]);
     for (var i = 0; i < responseMboxes.length; i++) {
-        var name = responseMboxes[i].path.substr(1);
-        userMailboxes.push(name);
+        var mbox = { 'displayName': responseMboxes[i].displayName.substr(1),
+                     'path': responseMboxes[i].path.substr(1) };
+        userMailboxes.push(mbox);
     }
 }
 
@@ -591,7 +592,7 @@ function onMailIdentitySignatureClick(event) {
 
             if ($("composeMessagesType").value != 0) {
                 CKEDITOR.replace('signature',
-                                 { height: "70px",
+                                 { height: "150px",
                                    toolbar: [['Bold', 'Italic', '-', 'Link',
                                               'Font','FontSize','-','TextColor',
                                               'BGColor']

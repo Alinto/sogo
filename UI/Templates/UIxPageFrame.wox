@@ -34,9 +34,10 @@
 	  ><link type="text/css" rel="stylesheet" var:href="item"
 	    />
 	</var:foreach>
-	<var:if-ie
-	  ><link type="text/css" rel="stylesheet" rsrc:href="iefixes.css"
-	    /></var:if-ie>
+	<var:if-ie const:lte="9"
+	  ><link type="text/css" rel="stylesheet" rsrc:href="iefixes.css"/>
+          <script type="text/javascript" rsrc:src="XMLHttpRequest.js"><!-- space --></script>
+           </var:if-ie>
       </head>
 
       <body var:class="bodyClasses"
@@ -154,7 +155,6 @@
 	  <script type="text/javascript" rsrc:src="prototype.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="jquery.js"><!-- space --></script>
           <script>jQuery.noConflict();</script>
-          <script type="text/javascript" rsrc:src="XMLHttpRequest.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="tablekit.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="tablekit-trueresize.js"><!-- space --></script>
 	  <script type="text/javascript" rsrc:src="tablekit-sogo.js"><!-- space --></script>

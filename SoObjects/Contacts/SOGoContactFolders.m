@@ -110,14 +110,17 @@
   return result;
 }
 
-- (NSException *) appendSystemSources
+- (NSDictionary *) systemSources
 {
+  NSMutableDictionary *systemSources;
   SOGoUserManager *um;
   SOGoSystemDefaults *sd;
   NSEnumerator *sourceIDs, *domains;
   NSString *currentSourceID, *srcDisplayName, *domain;
   SOGoContactSourceFolder *currentFolder;
   SOGoUser *currentUser;
+
+  systemSources = [NSMutableDictionary dictionary];
 
   if (! ([[context request] isIPhoneAddressBookApp] &&
            ![[context request] isAndroid]))
@@ -143,12 +146,19 @@
                                     andDisplayName: srcDisplayName
                                        inContainer: self];
                   [currentFolder setSource: [um sourceWithID: currentSourceID]];
-                  [subFolders setObject: currentFolder forKey: currentSourceID];
+                  [systemSources setObject: currentFolder forKey: currentSourceID];
                 }
               domain = [domains nextObject];
             }
         }
     }
+
+  return systemSources;
+}
+
+- (NSException *) appendSystemSources
+{
+  [subFolders addEntriesFromDictionary: [self systemSources]];
 
   return nil;
 }

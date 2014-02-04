@@ -220,10 +220,13 @@ function performSearchCallback(http) {
                     list.appendChild(node);
                     node.address = completeEmail;
                     // log("node.address: " + node.address);
-                    if (contact["c_uid"])
+                    if (contact["c_uid"]) {
                         node.uid = (contact["isMSExchange"]? UserLogin + ":" : "") + contact["c_uid"];
-                    else
+                    }
+                    else {
                         node.uid = null;
+                        node.appendChild(new Element('div').addClassName('colorBox').addClassName('noFreeBusy'));
+                    }
                     node.isList = isList;
                     if (isList) {
                         node.cname = contact["c_name"];
@@ -1323,17 +1326,19 @@ function onEditorOkClick(event) {
     var endDate = getEndDate();
 
     var listener = {
-      onRequestComplete: function eCH_l_onRequestComplete(handlers, code) {
-          var label = ("A time conflict exists with one or more attendees.\n"
-                       + "Would you like to keep the current settings anyway?");
-          if (code || window.confirm(_(label))) {
-              _confirmEditorOkClick();
-          }
-      }
+        onRequestComplete: function eCH_l_onRequestComplete(handlers, code) {
+            if (code) {
+                _confirmEditorOkClick();
+            }
+            else {
+                var label = ("A time conflict exists with one or more attendees.\n"
+                             + "Would you like to keep the current settings anyway?");
+                showConfirmDialog(_('Warning'), _(label), _confirmEditorOkClick);
+            }
+        }
     };
     
-    var conflictHandler = new editorConflictHandler(uids, startDate,
-                                                    endDate, listener);
+    var conflictHandler = new editorConflictHandler(uids, startDate, endDate, listener);
     conflictHandler.start();
 }
 
@@ -1453,14 +1458,8 @@ function prepareTableHeaders() {
         rows[0].appendChild(header1b);
         for (var hour = displayStartHour; hour < (displayEndHour + 1); hour++) {
             var header2 = document.createElement("th");
-            var text = hour + ":00";
-            if (hour < 10)
-                text = "0" + text;
-            if (hour >= dayStartHour && hour < dayEndHour)
-                $(header2).addClassName ("officeHour");
-            header2.appendChild(document.createTextNode(text));
+            header2.appendChild(document.createTextNode(timeFormat.formatTime(hour, 0)));
             rows[1].appendChild(header2);
-
             var header3 = document.createElement("th");
             for (var span = 0; span < 4; span++) {
                 var spanElement = document.createElement("span");
@@ -1690,7 +1689,7 @@ function onAdjustTime(event) {
         // End date was changed
         var delta = endDate.valueOf() - startDate.valueOf();  
         if (delta < 0) {
-            alert(labels.validate_endbeforestart);
+            showAlertDialog(labels.validate_endbeforestart);
             var oldEndDate = window.getShadowEndDate();
             window.setEndDate(oldEndDate);
 

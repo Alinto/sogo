@@ -18,6 +18,7 @@
   <script type="text/javascript">
     var dayStartHour = <var:string value="dayStartHour"/>;
     var dayEndHour = <var:string value="dayEndHour"/>;
+    var timeFormat = '<var:string value="userDefaults.timeFormat" const:escapeHTML="NO"/>';
   </script>
   <div id="attendeesView">
     <form const:href=""
@@ -103,13 +104,13 @@
 	</ul>
 
 	<ul class="freebusy-legend">
-	  <li><span class="colorBox free"><!-- spacer --></span
+	  <li><div class="colorBox free"><!-- spacer --></div
 	      ><var:string label:value="Free" /></li>
-	  <li><span class="colorBox busy"><!-- spacer --></span
+	  <li><div class="colorBox busy"><!-- spacer --></div
 	      ><var:string label:value="Busy" /></li>
-          <!-- 	  li><span class="colorBox maybe-busy">\- spacer -\->/span -->
+          <!-- 	  li><div class="colorBox maybe-busy">\- spacer -\->/div -->
           <!-- 	      >var:string label:value="Maybe busy" />/li> -->
-	  <li><span class="colorBox noFreeBusy"><!-- spacer --></span
+	  <li><div class="colorBox noFreeBusy"><!-- spacer --></div
 	      ><var:string label:value="No free-busy information" /></li>
 	</ul>
       </div>

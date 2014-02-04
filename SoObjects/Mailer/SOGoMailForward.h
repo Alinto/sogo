@@ -31,9 +31,12 @@
   NSString *field;
   NSString *currentValue;
   BOOL htmlComposition;
+  NSString *signaturePlacement;
 }
 
 - (void) setSourceMail: (SOGoMailObject *) newSourceMail;
+- (void) setSignaturePlacement: (NSString *) newPlacement;
+- (BOOL) signaturePlacementOnTop;
 
 @end
 

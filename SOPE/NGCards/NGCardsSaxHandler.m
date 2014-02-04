@@ -35,12 +35,20 @@
      @"http://www.ietf.org/internet-drafts/draft-dawson-vcard-xml-dtd-03.txt"
 #endif
 
+static NSArray *privilegedTagNames = nil;
+
 @implementation NGCardsSaxHandler
 
 - (id) init
 {
   if ((self = [super init]))
     topGroupClass = nil;
+
+  if (!privilegedTagNames)
+    {
+      privilegedTagNames = [NSArray arrayWithObjects: @"ADR", @"N", @"RRULE", nil];
+      RETAIN(privilegedTagNames);
+    }
 
   return self;
 }
@@ -211,7 +219,11 @@
       free (content);
       content = NULL;
 //       NSLog (@"content: '%@'", s);
-      contentValues = [s vCardSubvalues];
+      if ([privilegedTagNames containsObject: [currentElement tag]])
+        contentValues = [s vCardSubvalues];
+      else
+        contentValues = [NSMutableDictionary dictionaryWithObject: [NSMutableArray arrayWithObject: [NSMutableArray arrayWithObject: s]]
+                                                           forKey: @""];
     }
   else
     contentValues = nil;

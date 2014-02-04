@@ -40,10 +40,11 @@
 @class NSData;
 @class NSDictionary;
 @class NSException;
-@class NGImap4Envelope;
-@class NGMimeMessage;
 @class NSMutableDictionary;
 @class NSString;
+@class NGImap4Envelope;
+@class NGMimeBodyPart;
+@class NGMimeMessage;
 
 @class SOGoMailObject;
 
@@ -87,8 +88,10 @@
 
 /* attachments */
 
-- (NSArray *) fetchAttachmentNames;
+- (NSArray *) fetchAttachmentAttrs;
 - (BOOL) isValidAttachmentName: (NSString *) _name;
+- (NGMimeBodyPart *) bodyPartForAttachmentWithName: (NSString *) _name;
+- (NSString *) pathToAttachmentWithName: (NSString *) _name;
 - (NSException *) saveAttachment: (NSData *) _attach
 		    withMetadata: (NSDictionary *) metadata;
 - (NSException *) deleteAttachmentWithName: (NSString *) _name;

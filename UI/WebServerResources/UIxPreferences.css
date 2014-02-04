@@ -53,7 +53,7 @@ DIV.listWrapper
 { height: 22px; }
 
 #calendarCategoriesListWrapper
-{ top: 210px;
+{ top: 232px;
   bottom: 30px;
   right: 2em;
   left: 2em; }
@@ -221,14 +221,14 @@ P.infoMessage#passwordError
   left: 10px;
   width: auto !important;
   right: 10px;
-  top: 50px; }
+  top: 0px; }
 
 #cke_signature, #cke_signature div
 { padding: 0px; }
 
 #signature
 { width: 100%;
-  height: 90px;
+  height: 170px;
   margin: 0px auto;
   margin-bottom: 10px; }
 

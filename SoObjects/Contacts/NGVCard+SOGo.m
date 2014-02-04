@@ -1,8 +1,6 @@
 /* NGVCard+SOGo.m - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
- *
- * Author: Cyril Robert <crobert@inverse.ca>
+ * Copyright (C) 2009-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +26,8 @@
 
 #import <NGCards/NSArray+NGCards.h>
 #import <NGCards/NSString+NGCards.h>
+
+#import <SOGo/NSCalendarDate+SOGo.h>
 
 #import "NSDictionary+LDIF.h"
 
@@ -637,6 +637,155 @@ convention:
   [ldifRecord setObject: dn forKey: @"dn"];
 
   return ldifRecord;
+}
+
+- (NSString *) workCompany
+{
+  CardElement *org;
+  NSString *company;
+  
+  org = [self org];
+  company = [org flattenedValueAtIndex: 0 forKey: @""];
+  if ([company length] == 0)
+    company = nil;
+
+  return company;
+}
+
+- (NSString *) fullName
+{
+  CardElement *n;
+  NSString *fn, *firstName, *lastName, *org;
+  
+  fn = [self fn];
+  if ([fn length] == 0)
+    {
+      n = [self n];
+      lastName = [n flattenedValueAtIndex: 0 forKey: @""];
+      firstName = [n flattenedValueAtIndex: 1 forKey: @""];
+      if ([firstName length] > 0)
+        {
+          if ([lastName length] > 0)
+            fn = [NSString stringWithFormat: @"%@ %@", firstName, lastName];
+          else
+            fn = firstName;
+        }
+      else if ([lastName length] > 0)
+        fn = lastName;
+      else
+        {
+          n = [self org];
+          org = [n flattenedValueAtIndex: 0 forKey: @""];
+          fn = org;
+        }
+    }
+
+  return fn;
+}
+
+- (NSArray *) secondaryEmails
+{
+  NSMutableArray *emails;
+  NSString *email;
+  int i;
+
+  emails = [NSMutableArray array];
+
+  [emails addObjectsFromArray: [self childrenWithTag: @"email"]];
+  [emails removeObjectsInArray: [self childrenWithTag: @"email"
+                                         andAttribute: @"type"
+                                          havingValue: @"pref"]];
+  
+  for (i = [emails count]-1; i >= 0; i--)
+    {
+      email = [[emails objectAtIndex: i] flattenedValuesForKey: @""];
+      
+      if ([email caseInsensitiveCompare: [self preferredEMail]] == NSOrderedSame)
+        [emails removeObjectAtIndex: i];
+    }
+
+  return emails;
+}
+
+- (NSString *) _phoneOfType: (NSString *) aType
+		  excluding: (NSString *) aTypeToExclude
+{
+  NSArray *elements, *phones;
+  NSString *phone;
+
+  phones = [self childrenWithTag: @"tel"];
+  elements = [phones cardElementsWithAttribute: @"type"
+                     havingValue: aType];
+
+  phone = nil;
+
+  if ([elements count] > 0)
+    {
+      CardElement *ce;
+      int i;
+
+      for (i = 0; i < [elements count]; i++)
+	{
+	  ce = [elements objectAtIndex: i];
+	  phone = [ce flattenedValuesForKey: @""];
+
+	  if (!aTypeToExclude)
+	    break;
+	  
+	  if (![ce hasAttribute: @"type" havingValue: aTypeToExclude])
+	    break;
+
+	  phone = nil;
+	}
+    }
+
+  return phone;
+}
+
+- (NSString *) workPhone
+{
+  // We do this (exclude FAX) in order to avoid setting the WORK number as the FAX
+  // one if we do see the FAX field BEFORE the WORK number.
+  return [self _phoneOfType: @"work" excluding: @"fax"];
+}
+
+- (NSString *) homePhone
+{
+  return [self _phoneOfType: @"home" excluding: @"fax"];
+}
+
+- (NSString *) fax
+{
+  return [self _phoneOfType: @"fax" excluding: nil];
+}
+
+- (NSString *) mobile
+{
+  return [self _phoneOfType: @"cell" excluding: nil];
+}
+
+- (NSString *) pager
+{
+  return [self _phoneOfType: @"pager" excluding: nil];
+}
+
+- (NSCalendarDate *) birthday
+{
+  NSString *bday, *value;
+  NSCalendarDate *date;
+
+  bday = [self bday];
+  date = nil;
+  if (bday)
+    {
+      // Expected format of BDAY is YYYY[-]MM[-]DD
+      value = [bday stringByReplacingString: @"-" withString: @""];
+      date = [NSCalendarDate dateFromShortDateString: value
+                                  andShortTimeString: nil
+                                          inTimeZone: nil];
+    }
+  
+  return date;
 }
 
 @end /* NGVCard */

@@ -431,18 +431,38 @@
                                    forEvent: (iCalEvent *) theEvent
 {
   iCalPerson *currentAttendee;
+  NSMutableArray *attendees;
   NSEnumerator *enumerator;
   NSString *currentUID;
-  SOGoUser *user;
+  SOGoUser *user, *currentUser, *ownerUser;
 
+  // Build a list of the attendees uids
+  attendees = [NSMutableArray arrayWithCapacity: [theAttendees count]];
   enumerator = [theAttendees objectEnumerator];
-  
   while ((currentAttendee = [enumerator nextObject]))
     {
       currentUID = [currentAttendee uid];
-
       if (currentUID)
-	{
+        {
+          [attendees addObject: currentUID];
+        }
+    }
+
+  // If the active user is not the owner of the calendar, check possible conflict when
+  // the owner is a resource
+  currentUser = [context activeUser];
+  if (!activeUserIsOwner && ![currentUser isSuperUser])
+    {
+      ownerUser = [SOGoUser userWithLogin: owner];
+      if ([ownerUser isResource])
+        {
+          [attendees addObject: owner];
+        }
+    }
+
+  enumerator = [attendees objectEnumerator];
+  while ((currentUID = [enumerator nextObject]))
+    {
 	  user = [SOGoUser userWithLogin: currentUID];
 	  
 	  if ([user isResource])
@@ -461,8 +481,7 @@
 	      start = [[theEvent startDate] dateByAddingYears: 0  months: 0  days: 0  hours: 0  minutes: 0  seconds: 1];
 	      end = [[theEvent endDate] dateByAddingYears: ([theEvent isRecurrent] ? 1 : 0)  months: 0  days: 0  hours: 0  minutes: 0  seconds: -1];
 
-	      folder = [[SOGoUser userWithLogin: currentUID]
-			 personalCalendarFolderInContext: context];
+	      folder = [user personalCalendarFolderInContext: context];
 
 	      // Deny access to the resource if the ACLs don't allow the user
 	      if (![folder aclSQLListingFilter])
@@ -571,7 +590,6 @@
 		  [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
 		}
   	    }
-	}
     }
 
   return nil;
@@ -787,7 +805,7 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
 
   [self expandGroupsInEvent: newEvent];
 
-  // We first update the event. It is important to this initially
+  // We first update the event. It is important to do this initially
   // as the event's UID might get modified.
   [super updateComponent: newEvent];
 
@@ -1375,9 +1393,11 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
             {
               // We generate the updated iCalendar file and we save it in
               // the database. We do this ONLY when using SOGo from the
-              // Web interface. Over DAV, it'll be handled directly in
-              // PUTAction:
-              if (![context request] || [[context request] handledByDefaultHandler])
+              // Web interface or over ActiveSync.
+              // Over DAV, it'll be handled directly in PUTAction:
+              if (![context request]
+                  || [[context request] handledByDefaultHandler]
+                  || [[[context request] requestHandlerKey] isEqualToString: @"Microsoft-Server-ActiveSync"])
                 ex = [self saveContentString: [[event parent] versitString]];
             }
         }

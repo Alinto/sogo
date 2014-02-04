@@ -25,6 +25,7 @@
 
 @class NSArray;
 @class NSDictionary;
+@class NSMutableDictionary;
 @class NSString;
 @class NSTimeZone;
 

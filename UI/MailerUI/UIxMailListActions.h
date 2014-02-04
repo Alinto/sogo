@@ -27,6 +27,7 @@
 @class NSDictionary;
 @class EOQualifier;
 @class SOGoDateFormatter;
+@class UIxMailSizeFormatter;
 
 @interface UIxMailListActions : WODirectAction
 {
@@ -35,6 +36,7 @@
   id message;
   SOGoDateFormatter *dateFormatter;
   NSTimeZone *userTimeZone;
+  UIxMailSizeFormatter *sizeFormatter;
   BOOL sortByThread;
   int folderType;
   int specificMessageNumber;

@@ -17,13 +17,6 @@
       tooltip = "Select a recipient from an Address Book"; },
     { link  = "#";
       isSafe = NO;
-      onclick  = "return clickedEditorAttach(this)";
-      image = "tb-compose-attach-flat-24x24.png";
-      cssClass = "tbicon_attach single-window-not-conditional";
-      label = "Attach";
-      tooltip = "Include an attachment"; },
-    { link  = "#";
-      isSafe = NO;
       onclick  = "return clickedEditorSave(this);";
       image = "tb-mail-file-flat-24x24.png";
       cssClass = "tbicon_save";

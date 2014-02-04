@@ -101,8 +101,7 @@
     SOGo = { // TODO: move decls to class
       slots = {
         toolbar = {
-          value = "none"; // keep this in order to avoid lookups on username
-          // "toolbar"
+          value = "none"; // keep this in order to avoid lookups on username "toolbar"
         };
       };
       methods = {
@@ -113,6 +112,11 @@
         index = { 
           protectedBy = "<public>";
           pageName = "SOGoRootPage"; 
+        };
+        Microsoft-Server-ActiveSync = {
+          protectedBy = "<public>";
+          actionClass = "SOGoMicrosoftActiveSyncActions"; 
+          actionName = "microsoftServerActiveSync";
         };
         casProxy = { 
           protectedBy = "<public>";
@@ -229,9 +233,5 @@
         };
       };
     };
-    //     SOGoCustomGroupFolder = {
-    //       methods = {
-    //       };
-    //     };
   };
 }

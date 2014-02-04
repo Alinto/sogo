@@ -63,7 +63,8 @@ function setupConstants() {
                     "cc": _("Cc"),
                     "to_or_cc": _("To or Cc"),
                     "size": _("Size (Kb)"),
-                    "header": _("Header") };
+                    "header": _("Header"),
+                    "body": _("Body") };
     methodLabels = { "addflag": _("Flag the message with:"),                         
                      "discard": _("Discard the message"),
                      "fileinto": _("File the message in:"),
@@ -272,8 +273,10 @@ function ensureFieldRepresentation(container) {
 }
 
 function ensureFieldSelectRepresentation(container, fieldSpan) {
-    var fields
-        = [ "subject", "from", "to", "cc", "to_or_cc", "size", "header" ];
+    var fields = [ "subject", "from", "to", "cc", "to_or_cc", "size", "header" ];
+    if (sieveCapabilities.indexOf("body") > -1) {
+        fields.push("body");
+    }
     var selects = fieldSpan.select("SELECT");
     var select;
     if (selects.length)
@@ -373,8 +376,7 @@ function ensureOperatorSelectRepresentation(container, operatorSpan) {
             var operatorOption = createElement("option", null, null,
                                                { value: operator }, null,
                                                select);
-            operatorOption.appendChild(document
-                                       .createTextNode(operatorLabels[operator]));
+            operatorOption.appendChild(document.createTextNode(operatorLabels[operator]));
         }
         operatorSpan.appendChild(select);
     }
@@ -661,12 +663,12 @@ function ensureMailboxArgRepresentation(container, argumentSpan) {
         select.observe("change", boundCB);
         var mailboxes = (window.opener
                          ? window.opener.userMailboxes
-                         : ["INBOX" ]);
+                         : {'displayName': 'INBOX', 'path': 'INBOX' });
         for (var i = 0; i < mailboxes.length; i++) {
             var mailbox = mailboxes[i];
             var mboxOption = createElement("option", null, null,
-                                           { value: mailbox }, null, select);
-            mboxOption.appendChild(document.createTextNode(mailbox));
+                                           { value: mailbox.path }, null, select);
+            mboxOption.appendChild(document.createTextNode(mailbox.displayName));
         }
         argumentSpan.appendChild(select);
     }

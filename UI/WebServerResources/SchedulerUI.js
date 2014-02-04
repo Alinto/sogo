@@ -135,6 +135,10 @@ function updateEventFromDraggingCallback(http) {
         if (isHttpStatus204(http.status)) {
             refreshEventsAndDisplay();
         }
+        else {
+            var response = http.responseText.evalJSON(true);
+            showAlertDialog(response['message']);
+        }
     }
 }
 
@@ -151,11 +155,17 @@ function getSelectedFolder() {
 }
 
 function onMenuNewEventClick(event) {
-    newEventFromWidget(this, "event");
+    var target = document.menuTarget;
+    if (/(minutes\d{2}|dayHeader)/.test(target.className))
+        target = target.parentNode;
+    newEventFromWidget(target, "event");
 }
 
 function onMenuNewTaskClick(event) {
-    newEventFromWidget(this, "task");
+    var target = document.menuTarget;
+    if (/(minutes\d{2}|dayHeader)/.test(target.className))
+        target = target.parentNode;
+    newEventFromWidget(target, "task");
 }
 
 function _editEventId(id, calendar, recurrence) {
@@ -718,7 +728,6 @@ function onViewEventCallback(http) {
                 }
             }
             else {
-                view = $("calendarView");
                 top -= cell.up("DIV.day").scrollTop;
             }
 
@@ -1173,13 +1182,11 @@ function restoreCurrentDaySelection(div) {
 }
 
 function loadPreviousView(event) {
-    var previousArrow = $$("A.leftNavigationArrow").first();
-    onCalendarGotoDay(previousArrow);
+    onCalendarGotoDay($("leftNavigationArrow"));
 }
 
 function loadNextView(event) {
-    var nextArrow = $$("A.rightNavigationArrow").first();
-    onCalendarGotoDay(nextArrow);
+    onCalendarGotoDay($("rightNavigationArrow"));
 }
 
 function changeDateSelectorDisplay(day, keepCurrentDay) {
@@ -1701,6 +1708,11 @@ function newBaseEventDIV(eventRep, event, eventText) {
     var eventCell = createElement("div");
     eventCell.cname = event[0];
     eventCell.calendar = event[1];
+    var startDate = new Date(event[5]*1000);
+    if (startDate) {
+        eventCell.writeAttribute('day', startDate.getDayString());
+        eventCell.writeAttribute('hour', startDate.getHourString());
+    }
 //    if (event[8] == 1)
 //        eventCell.addClassName("private");
 //    else if (event[8] == 2)
@@ -2439,8 +2451,7 @@ function onCalendarSelectDay(event) {
         // Target is not an event -- unselect all events.
         listOfSelection = $("eventsList");
         deselectAll();
-        preventDefault(event);
-        return false;
+        return true;
     }
 
     if (listOfSelection) {
@@ -2778,17 +2789,20 @@ function onMenuSharing(event) {
 }
 
 function onMenuCurrentView(event) {
+    var target = getTarget(event);
     $("eventDialog").hide();
     if (this.hasClassName('event')) {
+        // Select event cell
         var onClick = onCalendarSelectEvent.bind(this);
         onClick(event, true);
+        target = this;
     }
-    popupMenu(event, 'currentViewMenu', this);
+    popupMenu(event, 'currentViewMenu', target);
 }
 
 function onMenuAllDayView(event) {
     $("eventDialog").hide();
-    popupMenu(event, 'allDayViewMenu', this);
+    popupMenu(event, 'allDayViewMenu', getTarget(event));
 }
 
 function configureDragHandles() {
