@@ -35,7 +35,7 @@
 #import <NGExtensions/NSString+misc.h>
 
 #import <SOGo/SOGoSAML2Session.h>
-#import <SOGo/SOGoWebAuthenticator.h>
+#import <MainUI/SOGoWebAuthenticator.h>
 
 @interface SOGoSAML2Actions : WODirectAction
 @end
