@@ -409,8 +409,9 @@ validate_endbeforestart    = "Angivet slutdatumet inträffar före angivet start
 "Workweek days only" = "Bara arbetsdagar";
 "Tasks in View" = "Uppgifter i vy";
 
-"eventDeleteConfirmation" = "Radering av händelsen är permanent.\nVill du fortsätta?";
-"taskDeleteConfirmation" = "Radering av uppgiften är permanent.\nVill du fortsätta?";
+"eventDeleteConfirmation" = "Radering av händelsen är permanent.";
+"taskDeleteConfirmation" = "Radering av uppgiften är permanent.";
+"Would you like to continue?" = "Vill du fortsätta?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Du kan inte ta bort eller avbryta prenumration på en personlig kalender.";
