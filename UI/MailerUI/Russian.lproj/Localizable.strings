@@ -97,11 +97,12 @@
 "Reply-To"	= "Обратный адрес";
 "Add address"   = "Добавить адрес";
 
-"Attachments:" = "Вложения:";
 "Open" = "Открыть";
 "Select All" = "Выбрать все";
 "Attach Web Page..." = "Прикрепить веб-страницы ...";
-"Attach File(s)..." = "Прикрепить файл (ы) ...";
+"file" = "файл";
+"files" = "файлы";
+"Save all" = "Сохранить все";
 
 "to"            = "Кому";
 "cc"            = "Копия";
@@ -280,6 +281,9 @@
 "error_missingsubject" = "Тема сообщения не указана";
 "error_missingrecipients" = "Не указан адрес получателя";
 "Send Anyway" = "Всё равно послать";
+"Error while saving the draft:" = "Ошибка при сохранении черновика:";
+"Error while uploading the file \"%{0}\":" = "Ошибка при загрузке файла \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Сейчас выполняется загрузка файла. Закрытие окна прервет её.";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Не удается отправить сообщение: всем получателям, все получатели являются недействительными.";

@@ -97,11 +97,12 @@
 "Reply-To"	= "Odpovedz odosielateľovi";
 "Add address"   = "Pridať adresu";
 
-"Attachments:" = "Prílohy";
 "Open" = "Otvoriť";
 "Select All" = "Vyber všetko";
 "Attach Web Page..." = "Prilož WWW stránku...";
-"Attach File(s)..." = "Prilož súbor(y)...";
+"file" = "súbor";
+"files" = "súbory";
+"Save all" = "Save all";
 
 "to"            = "Pre";
 "cc"            = "Kópia";
@@ -163,7 +164,7 @@
 
 /* Tree */
 
-"SentFolderName"   = "Poslať";
+"SentFolderName"   = "Odoslané";
 "TrashFolderName"  = "Kôš";
 "InboxFolderName"  = "Prijaté";
 "DraftsFolderName" = "Koncepty";
@@ -280,6 +281,9 @@
 "error_missingsubject" = "Správa nemá žiadny predmet. Skutočne ju checete odoslať?";
 "error_missingrecipients" = "Prosím zvoľte aspoň jedného príjemcu.";
 "Send Anyway" = "Poslať napriek tomu";
+"Error while saving the draft:" = "Počas ukladania konceptu nastala chyba:";
+"Error while uploading the file \"%{0}\":" = "Nastala chyba počas nahrávania súboru \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Práve prebieha nahrávanie súboru. Zatvorením okna nahrávanie prerušíte.";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Správa sa nedá odoslať: žiadny príjemca nie je platný.";
