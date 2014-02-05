@@ -23,42 +23,49 @@
         <li class="separator"><!-- separator --></li>
       </ul>
     </div>
-    <label id="attendeesLabel"><var:string label:value="Attendees:"
-        /><span class="content"
-        ><a href="#" id="attendeesHref"><!-- space --></a></span></label>
-    <hr />
-    <label><span class="content">
-        <span id="allDay"><input id="isAllDay" name="isAllDay" class="checkBox"
-            type="checkbox" var:selection="isAllDay"
-            var:checked="isAllDay"
-            /> <var:string label:value="All day Event"
-            /></span></span></label>
-    <span class="checkBoxList"><var:string label:value="Start:" />
-      <span class="content"><var:component className="UIxTimeDateControl"
+    <div id="attendeesLabel">
+      <label><var:string label:value="Attendees:"/></label>
+        <a href="#" id="attendeesHref"><!-- space --></a>
+    </div>
+    <div class="checkBoxList inline-field">
+      <label><var:string label:value="Start:" /></label>
+        <var:component className="UIxTimeDateControl"
           const:controlID="startTime"
           date="aptStartDate"
           const:dayStartHour="0"
           const:dayEndHour="23"
-          /></span></span>
-    <span class="checkBoxList"><var:string label:value="End:" />
-      <span class="content"><var:component className="UIxTimeDateControl"
+          />
+    </div>
+    <div class="checkBoxList inline-field">
+      <label><var:string label:value="End:" /></label>
+      <var:component className="UIxTimeDateControl"
           const:controlID="endTime"
           date="aptEndDate"
           const:dayStartHour="0"
           const:dayEndHour="23"
-          /></span></span>
-    <label><span class="content">
-        <span id="isTransparent"><input class="checkBox"
+          />
+    </div>
+    <div  class="checkbox-field">
+        <label id="allDay">
+          <input id="isAllDay" name="isAllDay" class="checkBox" type="checkbox" var:selection="isAllDay" var:checked="isAllDay"/><var:string label:value="All day Event"/>
+          </label>
+    </div>
+    <div class="checkbox-field" id="isTransparent">
+      <label>
+        <input class="checkBox"
             type="checkbox" name="isTransparent" var:selection="isTransparent"
-            var:checked="isTransparent"
-            /> <var:string label:value="Show Time as Free"
-            /></span></span></label>
-    <label><span class="content">
-        <span id="sendAppointmentNotifications"><input class="checkBox"
+            var:checked="isTransparent"/>
+        <var:string label:value="Show Time as Free"/>
+      </label>
+    </div>
+    <div class="checkbox-field" id="sendAppointmentNotifications">
+      <label>
+          <input class="checkBox"
             type="checkbox" name="sendAppointmentNotifications" var:selection="sendAppointmentNotifications"
-            var:checked="sendAppointmentNotifications"
-            /> <var:string label:value="Send Appointment Notifications"
-            /></span></span></label>
+            var:checked="sendAppointmentNotifications"/>
+          <var:string label:value="Send Appointment Notifications"/>
+        </label>
+      </div>
 
   </var:if>
   <var:if condition="eventIsReadOnly">

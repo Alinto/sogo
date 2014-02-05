@@ -18,7 +18,6 @@
   <script type="text/javascript">
     var dayStartHour = <var:string value="dayStartHour"/>;
     var dayEndHour = <var:string value="dayEndHour"/>;
-    var timeFormat = '<var:string value="userDefaults.timeFormat" const:escapeHTML="NO"/>';
   </script>
   <div id="attendeesView">
     <form const:href=""
@@ -91,45 +90,45 @@
       </table>
     </div>
     <div id="freeBusyFooter">
-      <div id="legend" onmousedown="return false;">
-	<ul class="roles-legend">
-	  <li role="req-participant"><span class="role-icon"><!-- space --></span
-              ><var:string label:value="Participant"/></li>
-	  <li role="opt-participant"><span class="role-icon"><!-- space --></span
-              ><var:string label:value="Optional Participant"/></li>
-	  <li role="non-participant"><span class="role-icon"><!-- space --></span
-              ><var:string label:value="Non Participant"/></li>
-	  <li role="chair"><span class="role-icon"><!-- space --></span
-              ><var:string label:value="Chair"/></li>
-	</ul>
-
-	<ul class="freebusy-legend">
-	  <li><div class="colorBox free"><!-- spacer --></div
-	      ><var:string label:value="Free" /></li>
-	  <li><div class="colorBox busy"><!-- spacer --></div
-	      ><var:string label:value="Busy" /></li>
-          <!-- 	  li><div class="colorBox maybe-busy">\- spacer -\->/div -->
-          <!-- 	      >var:string label:value="Maybe busy" />/li> -->
-	  <li><div class="colorBox noFreeBusy"><!-- spacer --></div
-	      ><var:string label:value="No free-busy information" /></li>
-	</ul>
-      </div>
-      <div id="freeBusyReplicas">
-        <div><span><var:string label:value="Start:"
-              /></span><var:component className="UIxTimeDateControl"
+    <div id="freeBusyReplicas">
+        <div><span><var:string label:value="Start:"/></span><br/>
+            <var:component className="UIxTimeDateControl"
             const:controlID="startTime"
             date="aptStartDate"
             const:dayStartHour="0"
             const:dayEndHour="23"
             /></div>
-        <div><span><var:string label:value="End:"
-              /></span><var:component className="UIxTimeDateControl"
+        <div><span><var:string label:value="End:"/></span><br/>
+          <var:component className="UIxTimeDateControl"
             const:controlID="endTime"
             date="aptEndDate"
             const:dayStartHour="0"
             const:dayEndHour="23"
             /></div>
       </div>
+      <div id="legend" onmousedown="return false;">
+  <ul class="roles-legend">
+    <li role="req-participant"><span class="role-icon"><!-- space --></span
+              ><var:string label:value="Participant"/></li>
+    <li role="opt-participant"><span class="role-icon"><!-- space --></span
+              ><var:string label:value="Optional Participant"/></li>
+    <li role="non-participant"><span class="role-icon"><!-- space --></span
+              ><var:string label:value="Non Participant"/></li>
+    <li role="chair"><span class="role-icon"><!-- space --></span
+              ><var:string label:value="Chair"/></li>
+  </ul>
+
+  <ul class="freebusy-legend">
+    <li><span class="colorBox free"><!-- spacer --></span
+        ><var:string label:value="Free" /></li>
+    <li><span class="colorBox busy"><!-- spacer --></span
+        ><var:string label:value="Busy" /></li>
+          <!--    li><span class="colorBox maybe-busy">\- spacer -\->/span -->
+          <!--        >var:string label:value="Maybe busy" />/li> -->
+    <li><span class="colorBox noFreeBusy"><!-- spacer --></span
+        ><var:string label:value="No free-busy information" /></li>
+  </ul>
+  </div>
       <div id="windowButtons">
 	<a id="okButton" href="#" class="button actionButton"
           ><span><var:string label:value="OK"/></span></a>

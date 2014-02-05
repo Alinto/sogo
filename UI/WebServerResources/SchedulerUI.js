@@ -65,7 +65,7 @@ function newEvent(type, day, hour, duration) {
     if (params.length > 0)
         urlstr += "?" + params.join("&");
 
-    window.open(urlstr, "", "width=490,height=470,resizable=0");
+    window.open(urlstr, "", "width=600,height=600,resizable=0");
 
     return false; /* stop following the link */
 }
@@ -135,10 +135,6 @@ function updateEventFromDraggingCallback(http) {
         if (isHttpStatus204(http.status)) {
             refreshEventsAndDisplay();
         }
-        else {
-            var response = http.responseText.evalJSON(true);
-            showAlertDialog(response['message']);
-        }
     }
 }
 
@@ -155,17 +151,11 @@ function getSelectedFolder() {
 }
 
 function onMenuNewEventClick(event) {
-    var target = document.menuTarget;
-    if (/(minutes\d{2}|dayHeader)/.test(target.className))
-        target = target.parentNode;
-    newEventFromWidget(target, "event");
+    newEventFromWidget(this, "event");
 }
 
 function onMenuNewTaskClick(event) {
-    var target = document.menuTarget;
-    if (/(minutes\d{2}|dayHeader)/.test(target.className))
-        target = target.parentNode;
-    newEventFromWidget(target, "task");
+    newEventFromWidget(this, "task");
 }
 
 function _editEventId(id, calendar, recurrence) {
@@ -177,7 +167,7 @@ function _editEventId(id, calendar, recurrence) {
     }
     urlstr += "/edit";
     var win = window.open(urlstr, "_blank",
-                          "width=490,height=470,resizable=0");
+                          "width=600,height=600,resizable=0");
     if (win)
         win.focus();
 }
@@ -709,6 +699,7 @@ function onViewEventCallback(http) {
             var cellDimensions = cell.getDimensions();
             var div = $("eventDialog");
             var divDimensions = div.getDimensions();
+            var viewPosition = $("calendarView").cumulativeOffset();
             var view;
             var left;
             var top = cellPosition[1] - 5;
@@ -728,6 +719,7 @@ function onViewEventCallback(http) {
                 }
             }
             else {
+                view = $("calendarView");
                 top -= cell.up("DIV.day").scrollTop;
             }
 
@@ -973,7 +965,7 @@ function eventsListCallback(http) {
                 td.observe("mousedown", listRowMouseDownHandler, true);
                 var colorDiv = createElement("div", false, "colorBox calendarFolder" + calendar);
                 td.appendChild(colorDiv);
-                colorDiv.update('&nbsp;');
+                colorDiv.update('OO');
                 var span = createElement("span");
                 td.appendChild(span);
                 span.update(data[i][4]); // title
@@ -1101,7 +1093,7 @@ function tasksListCallback(http) {
                 row.appendChild(cell);
                 var colorDiv = createElement("div", false, "colorBox calendarFolder" + calendar);
                 cell.appendChild(colorDiv);
-                colorDiv.update('&nbsp;');
+                colorDiv.update('OO');
                 var t = new Element ("span");
                 cell.appendChild(t);
                 t.update(data[i][4]); // title
@@ -1182,11 +1174,13 @@ function restoreCurrentDaySelection(div) {
 }
 
 function loadPreviousView(event) {
-    onCalendarGotoDay($("leftNavigationArrow"));
+    var previousArrow = $$("A.leftNavigationArrow").first();
+    onCalendarGotoDay(previousArrow);
 }
 
 function loadNextView(event) {
-    onCalendarGotoDay($("rightNavigationArrow"));
+    var nextArrow = $$("A.rightNavigationArrow").first();
+    onCalendarGotoDay(nextArrow);
 }
 
 function changeDateSelectorDisplay(day, keepCurrentDay) {
@@ -1660,7 +1654,7 @@ function resetCategoriesStyles() {
         categoriesStyles.keys().each(function(category) {
             var color = UserDefaults['SOGoCalendarCategoriesColors'][category];
             if (color) {
-                rules[rules.length] = '{ border-right: 8px solid ' + color + '; }';
+                rules[rules.length] = '{ background-color: ' + color + '; }';
                 selectors[selectors.length] = 'DIV.' + categoriesStyles.get(category);
             }
         });
@@ -1708,11 +1702,6 @@ function newBaseEventDIV(eventRep, event, eventText) {
     var eventCell = createElement("div");
     eventCell.cname = event[0];
     eventCell.calendar = event[1];
-    var startDate = new Date(event[5]*1000);
-    if (startDate) {
-        eventCell.writeAttribute('day', startDate.getDayString());
-        eventCell.writeAttribute('hour', startDate.getHourString());
-    }
 //    if (event[8] == 1)
 //        eventCell.addClassName("private");
 //    else if (event[8] == 2)
@@ -1734,14 +1723,6 @@ function newBaseEventDIV(eventRep, event, eventText) {
     innerDiv.addClassName("calendarFolder" + event[1]);
     if (eventRep.userState >= 0 && userStates[eventRep.userState])
         innerDiv.addClassName(userStates[eventRep.userState]);
-
-    var gradientDiv = createElement("div");
-    innerDiv.appendChild(gradientDiv);
-    gradientDiv.addClassName("gradient");
-
-    var gradientImg = createElement("img");
-    gradientDiv.appendChild(gradientImg);
-    gradientImg.src = ResourcesURL + "/event-gradient.png";
 
     var textDiv = createElement("div");
     innerDiv.appendChild(textDiv);
@@ -2451,7 +2432,8 @@ function onCalendarSelectDay(event) {
         // Target is not an event -- unselect all events.
         listOfSelection = $("eventsList");
         deselectAll();
-        return true;
+        preventDefault(event);
+        return false;
     }
 
     if (listOfSelection) {
@@ -2789,20 +2771,17 @@ function onMenuSharing(event) {
 }
 
 function onMenuCurrentView(event) {
-    var target = getTarget(event);
     $("eventDialog").hide();
     if (this.hasClassName('event')) {
-        // Select event cell
         var onClick = onCalendarSelectEvent.bind(this);
         onClick(event, true);
-        target = this;
     }
-    popupMenu(event, 'currentViewMenu', target);
+    popupMenu(event, 'currentViewMenu', this);
 }
 
 function onMenuAllDayView(event) {
     $("eventDialog").hide();
-    popupMenu(event, 'allDayViewMenu', getTarget(event));
+    popupMenu(event, 'allDayViewMenu', this);
 }
 
 function configureDragHandles() {
@@ -2847,9 +2826,8 @@ function initCalendarSelector() {
 
 function onCalendarSelectionChange(event) {
     var target = Event.element(event);
-    if (target.tagName == 'DIV') {
+    if (target.tagName == 'SPAN')
         target = target.parentNode;
-    }
 
     onRowClick(event, target);
 }
@@ -3087,7 +3065,7 @@ function appendCalendar(folderName, folderPath) {
         var colorBox = document.createElement("div");
         li.appendChild(colorBox);
         li.appendChild(document.createTextNode(folderName));
-        colorBox.appendChild(document.createTextNode("\u00a0"));
+        colorBox.appendChild(document.createTextNode("OO"));
 
         $(colorBox).addClassName("colorBox");
         $(colorBox).addClassName('calendarFolder' + folderPath.substr(1));

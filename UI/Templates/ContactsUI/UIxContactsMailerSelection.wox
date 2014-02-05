@@ -10,9 +10,9 @@
   id="contactSelectionButtons">
   <span id="selectionLabel"><var:string label:value="Add as..."/></span><br/>
   <p id="mailerSelectionContainer"><a href="#" class="button" name="to">
-      <span><var:string label:value="Recipient" /></span></a>
-    <br/><a href="#" class="button" name="cc">
-      <span><var:string label:value="Carbon Copy" /></span></a>
-  <br/><a href="#" class="button" name="bcc">
-      <span><var:string label:value="Blind Carbon Copy" /></span></a></p>
+      <var:string label:value="Recipient" /></a>
+    <a href="#" class="button" name="cc">
+      <var:string label:value="Carbon Copy" /></a>
+  <a href="#" class="button" name="bcc">
+      <var:string label:value="Blind Carbon Copy" /></a></p>
 </span>

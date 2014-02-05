@@ -6,195 +6,219 @@
   xmlns:var="http://www.skyrix.com/od/binding"
   xmlns:const="http://www.skyrix.com/od/constant"
   xmlns:rsrc="OGo:url"
-  xmlns:label="OGo:label"
-  ><var:string var:value="doctype" const:escapeHTML="NO" />
-  <var:if condition="hideFrame" const:negate="YES"
-    ><html const:xmlns="http://www.w3.org/1999/xhtml"
-      xml:lang="en" const:lang="en">
-      <head>
-	<title>
-	  <var:string value="title"/>
-	</title>
-	<meta name="hideFrame" var:content="hideFrame" />
-	<meta name="description" content="SOGo Web Interface" />
-	<meta name="author" content="SKYRIX Software AG/Inverse inc." />
-	<meta name="robots" content="stop" />
-	<meta name="build" var:content="buildDate" />
-	<link href="mailto:support@inverse.ca" rev="made" />
-	<link rel="shortcut icon" var:href="siteFavicon" type="image/x-icon" />
-	<link type="text/css" rel="stylesheet" rsrc:href="generic.css" />
-	<link type="text/css" rel="stylesheet" rsrc:href="dtree.css" />
-	<var:if condition="hasProductSpecificCSS"
-	  ><link type="text/css" rel="stylesheet" var:href="productCSSURL"
-	    /></var:if>
-	<var:if condition="hasPageSpecificCSS"
-	  ><link type="text/css" rel="stylesheet" var:href="pageCSSURL"
-	    /></var:if>
-	<var:foreach list="additionalCSSFiles" item="item"
-	  ><link type="text/css" rel="stylesheet" var:href="item"
-	    />
-	</var:foreach>
-	<var:if-ie const:lte="9"
-	  ><link type="text/css" rel="stylesheet" rsrc:href="iefixes.css"/>
-          <script type="text/javascript" rsrc:src="XMLHttpRequest.js"><!-- space --></script>
-           </var:if-ie>
-      </head>
+  xmlns:label="OGo:label">
+	<var:string var:value="doctype" const:escapeHTML="NO" />
+	<var:if condition="hideFrame" const:negate="YES">
+<html const:xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" const:lang="en">
+	<head>
+			<title><var:string value="title"/></title> 
+			<meta name="hideFrame" var:content="hideFrame" />
+			<meta name="description" content="SOGo Web Interface" />
+			<meta name="author" content="SKYRIX Software AG/Inverse inc." />
+			<meta name="robots" content="stop" />
+			<meta name="build" var:content="buildDate" />
+			<link href="mailto:support@inverse.ca" rev="made" />
+			<link rel="shortcut icon" var:href="siteFavicon" type="image/x-icon" />
+			<link type="text/css" rel="stylesheet" rsrc:href="generic.css" />
+			<link type="text/css" rel="stylesheet" rsrc:href="dtree.css" />
+			<var:if condition="hasProductSpecificCSS">
+				<link type="text/css" rel="stylesheet" var:href="productCSSURL"/>
+			</var:if>
+			<var:if condition="hasPageSpecificCSS">
+				<link type="text/css" rel="stylesheet" var:href="pageCSSURL"/>
+			</var:if>
+			<var:foreach list="additionalCSSFiles" item="item">
+				<link type="text/css" rel="stylesheet" var:href="item"/>
+			</var:foreach>
+			<var:if-ie>
+				<link type="text/css" rel="stylesheet" rsrc:href="iefixes.css"/>
+			</var:if-ie>
+	</head>
 
-      <body var:class="bodyClasses"
-	><var:if condition="isCompatibleBrowser"
-	  ><var:if condition="singleWindowModeEnabled"
-          ><div id="popupFrame" style="display: none;"><iframe width="100%" height="100%" src="/SOGo/loading"><!-- space --></iframe></div></var:if
-          ><var:if condition="shortUserNameForDisplay" const:value="anonymous"
-            const:negate="YES"><var:if condition="hasUserSettingsKeys"
-              ><script type="text/javascript">
-                var UserSettings = <var:string value="userSettings" const:escapeHTML="NO"/>;
-              </script
-                ></var:if><var:if condition="hasUserDefaultsKeys">
-              <script type="text/javascript">
-                var UserDefaults = <var:string value="userDefaults" const:escapeHTML="NO"/>;
-              </script
-                ></var:if
-              ></var:if
-            ><var:if condition="isPopup" const:negate="YES"
-	    ><var:if condition="isUIxDebugEnabled"
-	      ><div id="logConsole"><!-- space --></div></var:if>
-            <div id="linkBanner" class="linkbanner">
-              <var:if condition="canLogoff"
-                ><a id="logoff" var:href="logoffPath"
-                  ><var:string label:value="Disconnect"/> </a
-                  ><span id="userIdentificationDisplay">
-                  <var:if condition="userHasVacationEnabled"><img rsrc:src="status.vacation-msg.png" label:title="Vacation message is enabled" /></var:if>
-                  <var:string var:value="userIdentification"/></span
-                  ></var:if>
-	      <var:if condition="userHasCalendarAccess">
-		<var:if condition="isCalendar">
-		  <span class="active"><var:string label:value="Calendar"
-		      /></span>
-		  </var:if>
-		<var:if condition="isCalendar" const:negate="YES">
-		  <a id="calendarBannerLink"
-		    var:href="relativeCalendarPath"
-		    ><var:string label:value="Calendar" /></a>
+	<body var:class="bodyClasses">
+		<var:if condition="isCompatibleBrowser" >
+			<var:if condition="singleWindowModeEnabled">
+				<div id="popupFrame" style="display: none;">
+					<iframe width="100%" height="100%" src="/SOGo/loading">
+						<!-- space -->
+					</iframe>
+				</div>
+			</var:if>
+			<var:if condition="shortUserNameForDisplay" const:value="anonymous" const:negate="YES">
+				<var:if condition="hasUserSettingsKeys">
+					<script type="text/javascript">
+            			var UserSettings = <var:string value="userSettings" const:escapeHTML="NO"/>;
+      				</script>
+				</var:if>
+				<var:if condition="hasUserDefaultsKeys">
+					<script type="text/javascript">
+            			var UserDefaults = <var:string value="userDefaults" const:escapeHTML="NO"/>;
+          			</script>
+				</var:if>
+			</var:if>	
+			<var:if condition="isPopup" const:negate="YES">
+				<var:if condition="isUIxDebugEnabled">
+					<div id="logConsole">
+						<!-- space -->
+					</div>
+				</var:if>
+				<div id="linkBanner" class="linkbanner">
+					<div id="appNav" class="appNav">
+						<img rsrc:src="zentyal_w_logo.png" alt="zentyal logo" style="float:left;"/>
+						<var:if condition="userHasCalendarAccess">
+							<var:if condition="isCalendar">
+								<span class="active">
+									<var:string label:value="Calendar"/>
+								</span>
+							</var:if>
+						</var:if>
+						<var:if condition="isContacts">
+							<span class="active">
+								<var:string label:value="Address Book"/>
+							</span>
+						</var:if>
+						<var:if condition="userHasMailAccess">
+							<var:if condition="isMail">
+								<span class="active">
+									<var:string label:value="Mail"/>
+								</span>
+							</var:if>
+						</var:if>
+						<span id="dropdown-NavMenu" onclick="ToggleAppNavMenu()" class="dropdown"><img class="buttonMenuArrow" rsrc:src="arrow-down-w.png" var:alt="buttonTooltip"/></span>
+						<div id="appNavMenu" class="appNavMenu">
+							<var:if condition="userHasCalendarAccess">
+								<var:if condition="isCalendar" const:negate="YES">
+									<a id="calendarBannerLink" var:href="relativeCalendarPath">
+										<var:string label:value="Calendar" />
+									</a>
+								</var:if>
+							</var:if>
+							<var:if condition="isContacts" const:negate="YES">
+								<a id="contactsBannerLink" var:href="relativeContactsPath">
+									<var:string label:value="Address Book" />
+								</a>
+							</var:if>
+							<var:if condition="userHasMailAccess">
+								<var:if condition="isMail" const:negate="YES">
+									<a id="mailBannerLink" var:href="relativeMailPath">
+										<var:string label:value="Mail" />
+									</a>
+								</var:if>
+							</var:if>
+						</div>
+					</div>
+					<div class="userMenu">
+					<a id="preferencesBannerLink" var:href="relativePreferencesPath">
+						<var:string label:value="Preferences" />
+					</a>
+					<var:if condition="canLogoff">
+						<a id="logoff" var:href="logoffPath">
+							<var:string label:value="Disconnect"/>
+						</a>
+						<span id="userIdentificationDisplay">
+							<var:if condition="userHasVacationEnabled">
+								<img rsrc:src="status.vacation-msg.png" label:title="Vacation message is enabled" />
+							</var:if>
+							<var:string var:value="userIdentification"/>
+						</span>
+					</var:if>
+					<var:if condition="isSuperUser">
+
+						<var:if condition="isAdministration">
+							<span class="active">
+								<var:string label:value="Administration"/>
+							</span>
+						</var:if>
+						<var:if condition="isAdministration" const:negate="YES">
+							<a id="administrationBannerLink" var:href="relativeAdministrationPath">
+								<var:string label:value="Administration" />
+							</a>
+						</var:if>
+					</var:if>
+					</div>
+					
+					<var:if condition="isUIxDebugEnabled">
+						<a id="consoleBannerLink" href="#">
+							<var:string label:value="Log Console (dev.)" />
+						</a>
+					</var:if>
+					<var:component className="UIxToolbar" var:toolbar="toolbar"/>
+				</div>
+			</var:if>
+			<var:if condition="isPopup">
+				<var:component className="UIxToolbar" var:toolbar="toolbar"/>
+			</var:if>
+
+			<div id="pageContent">
+				<var:component-content/>
+			</div>
+
+			<div id="javascriptSafetyNet">
+				<!-- space -->
+			</div>
+
+			<script type="text/javascript">
+			    var ApplicationBaseURL = '<var:string value="modulePath"/>';
+			    var ResourcesURL = '<var:string value="applicationPath"/>.woa/WebServerResources';
+			    var minimumSearchLength = <var:string value="minimumSearchLength"/>;
+			    <var:if condition="isSuperUser">var IsSuperUser = true;</var:if>
+			    <var:if condition="isSuperUser" const:negate="YES">var IsSuperUser = false;</var:if>
+			    <var:if condition="usesCASAuthentication">var usesCASAuthentication = true;</var:if>
+			    <var:if condition="usesCASAuthentication" const:negate="YES">var usesCASAuthentication = false;</var:if>
+			    <var:if condition="shortUserNameForDisplay" const:value="anonymous" const:negate="YES">
+					var UserFolderURL = '<var:string value="userFolderPath" const:escapeHTML="NO"/>';
+			    	var UserLogin = '<var:string value="shortUserNameForDisplay" const:escapeHTML="NO"/>';
+			    	var UserLanguage = '<var:string value="userLanguage" const:escapeHTML="NO"/>';
+		        </var:if>
+			    <var:string value="commonLocalizableStrings" const:escapeHTML="NO"/>
+			    <var:string value="productLocalizableStrings" const:escapeHTML="NO"/>
+			</script>
+			<script type="text/javascript" rsrc:src="prototype.js"><!-- space --></script>
+			<script type="text/javascript" rsrc:src="jquery.js"><!-- space --></script>
+			<script>jQuery.noConflict();</script>
+			<script type="text/javascript" rsrc:src="XMLHttpRequest.js"><!-- space --></script>
+			<script type="text/javascript" rsrc:src="tablekit.js"><!-- space --></script>
+			<script type="text/javascript" rsrc:src="tablekit-trueresize.js"><!-- space --></script>
+			<script type="text/javascript" rsrc:src="tablekit-sogo.js"><!-- space --></script>
+			<script type="text/javascript" rsrc:src="JavascriptAPIExtensions.js"><!-- space --></script>
+			<script type="text/javascript" rsrc:src="HTMLElement.js"><!-- space --></script>
+			<script type="text/javascript" rsrc:src="HTMLInputElement.js"><!-- space --></script>
+			<script type="text/javascript" rsrc:src="HTMLTableElement.js"><!-- space --></script>
+			<script type="text/javascript" rsrc:src="generic.js"><!-- space --></script>
+			<script type="text/javascript" rsrc:src="SOGoDragHandles.js"><!-- space --></script>
+			<script type="text/javascript" rsrc:src="SOGoTabsController.js"><!-- space --></script>
+			<var:if condition="hasProductSpecificJavaScript">
+				<script type="text/javascript" var:src="productJavaScriptURL"><!-- space --></script>
+			</var:if>
+			<var:if condition="hasPageSpecificJavaScript">
+				<script type="text/javascript" var:src="pageJavaScriptURL"><!-- space --></script>
+			</var:if>
+			<var:foreach list="additionalJSFiles" item="item">
+				<script type="text/javascript" var:src="item"><!-- space --></script>
+			</var:foreach>
+			<var:foreach list="systemAdditionalJSFiles" item="item">
+					<script type="text/javascript" var:src="item"><!-- space --></script>
+			</var:foreach>
 		</var:if>
+				<var:if condition="isCompatibleBrowser" const:negate="YES">
+					<var:component className="SOGoBrowsersPanel"	    />
+				</var:if>
+				<noscript>
+					<div class="javascriptPopupBackground"></div>
+					<div class="javascriptMessagePseudoWindow noJavascriptErrorMessage">
+						<var:string label:value="noJavascriptError"	      />
+						<br />
+						<br/>
+						<a class="button" var:href="page.context.uri">
+							<var:string label:value="noJavascriptRetry"/>
+						</a>
+					</div>
+				</noscript>
+	</body>
+</html>
+	</var:if>
 
-	      </var:if>
-	      <var:if condition="isContacts">
-		<span class="active"><var:string label:value="Address Book"
-		    /></span>
-	      </var:if>
-	      <var:if condition="isContacts" const:negate="YES">
-		<a id="contactsBannerLink"
-		  var:href="relativeContactsPath"
-		  ><var:string label:value="Address Book" /></a>
-	      </var:if>
-	      
-	      <var:if condition="userHasMailAccess">
-		<var:if condition="isMail">
-		    <span class="active"><var:string label:value="Mail"
-		      /></span>
-		</var:if>
-		<var:if condition="isMail" const:negate="YES">
-		  <a id="mailBannerLink" var:href="relativeMailPath"
-		    ><var:string label:value="Mail" /></a>
-		</var:if>
-		
-	      </var:if>
-	      <a id="preferencesBannerLink"
-		var:href="relativePreferencesPath"
-		><var:string label:value="Preferences" /></a>
-	      <var:if condition="isSuperUser">
-		
-		<var:if condition="isAdministration">
-		    <span class="active"><var:string label:value="Administration"
-		      /></span>
-		</var:if>
-		<var:if condition="isAdministration" const:negate="YES">
-		  <a id="administrationBannerLink" var:href="relativeAdministrationPath"
-		    ><var:string label:value="Administration" /></a>
-		</var:if>
-	      </var:if>
-	      <var:if condition="isUIxDebugEnabled"
-		> <a id="consoleBannerLink"
-		  href="#"><var:string
-		    label:value="Log Console (dev.)" /></a
-		  ></var:if>
-	    </div>
-	  </var:if
-	    ><var:component className="UIxToolbar" var:toolbar="toolbar"
-	    />
-
-	  <div id="pageContent"><var:component-content/></div>
-
-	  <div id="javascriptSafetyNet"><!-- space --></div>
-
-	  <script type="text/javascript">
-	    var ApplicationBaseURL = '<var:string value="modulePath"/>';
-	    var ResourcesURL = '<var:string value="applicationPath"/>.woa/WebServerResources';
-	    var minimumSearchLength = <var:string value="minimumSearchLength"/>;
-	    <var:if condition="isSuperUser"
-	      >var IsSuperUser = true;
-	    </var:if>
-	    <var:if condition="isSuperUser" const:negate="YES"
-	      >var IsSuperUser = false;
-	    </var:if>
-	    <var:if condition="usesCASAuthentication"
-	      >var usesCASAuthentication = true;
-	    </var:if>
-	    <var:if condition="usesCASAuthentication" const:negate="YES"
-	      >var usesCASAuthentication = false;
-	    </var:if>
-	    <var:if condition="shortUserNameForDisplay" const:value="anonymous"
-	      const:negate="YES"
-	      >var UserFolderURL = '<var:string value="userFolderPath" const:escapeHTML="NO"/>';
-	      var UserLogin = '<var:string value="shortUserNameForDisplay" const:escapeHTML="NO"/>';
-	      var UserLanguage = '<var:string value="userLanguage" const:escapeHTML="NO"/>';
-            </var:if>
-	    <var:string value="commonLocalizableStrings" const:escapeHTML="NO"/>
-	    <var:string value="productLocalizableStrings" const:escapeHTML="NO"/>
-	  </script>
-	  <script type="text/javascript" rsrc:src="prototype.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="jquery.js"><!-- space --></script>
-          <script>jQuery.noConflict();</script>
-	  <script type="text/javascript" rsrc:src="tablekit.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="tablekit-trueresize.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="tablekit-sogo.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="JavascriptAPIExtensions.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="HTMLElement.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="HTMLInputElement.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="HTMLTableElement.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="generic.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="SOGoDragHandles.js"><!-- space --></script>
-	  <script type="text/javascript" rsrc:src="SOGoTabsController.js"><!-- space --></script>
-	  <var:if condition="hasProductSpecificJavaScript"><script type="text/javascript"
-	      var:src="productJavaScriptURL"><!-- space --></script></var:if>
-	  <var:if condition="hasPageSpecificJavaScript"><script type="text/javascript"
-	      var:src="pageJavaScriptURL"><!-- space --></script></var:if>
-	  <var:foreach list="additionalJSFiles" item="item"
-	    ><script type="text/javascript" var:src="item"><!-- space --></script>
-	  </var:foreach>
-	  <var:foreach list="systemAdditionalJSFiles" item="item"
-	    ><script type="text/javascript" var:src="item"><!-- space --></script>
-	  </var:foreach>
-        </var:if>
-        <var:if condition="isCompatibleBrowser" const:negate="YES"
-	  ><var:component className="SOGoBrowsersPanel"
-	    /></var:if>
-	<noscript>
-	  <div class="javascriptPopupBackground">
-	  </div>
-	  <div class="javascriptMessagePseudoWindow noJavascriptErrorMessage">
-	    <var:string label:value="noJavascriptError"
-	      /><br /><br
-	      /><a class="button" var:href="page.context.uri"
-	      ><var:string label:value="noJavascriptRetry"
-		/></a>
-	  </div>
-	</noscript>
-      </body>
-    </html>
-  </var:if>
-
-  <var:if condition="hideFrame">
-    <var:component-content />
-  </var:if>
+	<var:if condition="hideFrame">
+		<var:component-content />
+	</var:if>
 </container>

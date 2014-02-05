@@ -1,16 +1,18 @@
 /* CSS for compose panel */
 
 DIV#leftPanel
-{ top: 52px; }
+{ top: 0px;
+  }
 
 DIV#rightPanel
-{ top: 48px;
-  left: 0em; }
+{ top: 0px;
+  left: 0em; 
+  background-color: white; }
 
 DIV#hiddenDragHandle
 { cursor: e-resize;
   border: 0px;
-  top: 52px;
+  top: 0px;
   left: 15em;
   width: 5px;
   bottom: 0; }
@@ -32,32 +34,28 @@ DIV#addressList
   overflow-x: hidden;
 }
 
-DIV.addressList
-{ margin: 5px; }
-
 TABLE#addressList
-{ border-bottom: 1px solid #fff;
-  border-right: 1px solid #fff;
-  border-top: 1px solid #909090;
-  border-left: 1px solid #909090;
-  border-spacing: 0px;
+{ border: 0px;
   margin: 0px;
   padding: 0px;
   width: 100%; }
 
 TABLE#addressList TD
 { background-color: #fff;
-  border: 0px;
-  border-bottom: 1px solid #C4C8FF;
-  margin: 0px;
+  border-top: 4px solid #f5f5f5;
+  margin: 2px 0px;
   padding: 1px; }
 
 TABLE#addressList TD.headerField
-{ border-right: 1px solid #C4C8FF; 
-  width: 120px; }
+{ width: 120px; }
 
 TABLE#addressList TD.headerField SELECT
-{ border: 1px solid #eee; }
+{ background-color: #FAFAFA;
+  border: 0 none;
+  border-radius: 0;
+  margin: 0;
+  padding: 5px;
+  width: 100%; }
 
 TABLE#addressList TD.headerInput
 { background-image: url('abcard.png');
@@ -73,20 +71,34 @@ TABLE#addressList TD.headerInput INPUT
   padding: 0px;
   width: 100%; }
 
-SPAN.headerField
-{ line-height: 2.0em;
-  padding-left: 0.5em; }
-
 TABLE#addressList TR#lastRow SELECT
 { visibility: hidden; }
 
-DIV#subjectRow SPAN.headerField
-{ float: left; }
+DIV#subjectRow {
+  background-color: #FFFFFF;
+  padding: 10px 0px;
+  margin: 0px 10px;
+  vertical-align: bottom;
+  border-bottom: 1px solid #999999;}
+
+DIV#subjectRow SPAN.headerField,
+DIV#attachmentsArea SPAN.headerField
+{ color: #999999;
+  display: inline-block;
+  padding: 0;
+  vertical-align: bottom;
+  margin-right: 10px;
+  line-height: 2em;
+}
 
 DIV#subjectRow INPUT
-{ background: #fff;
-  margin-left: 2px;
-  padding: 0px 2px 0px 2px; }
+{ background: none repeat scroll 0 0 #FFFFFF;
+  border: 0 none;
+  font-size: 2em;
+  margin: 0;
+  padding: 0;
+  vertical-align: bottom;
+  display: inline-block; }
 
 div#compose_internetmarker
 { padding:          8px;
@@ -97,58 +109,60 @@ div#compose_internetmarker
   border-style:     solid; }
 
 div#headerArea
-{ padding: 5px 0px; }
+{ padding: 10px;
+background-color: #f5f5f5;}
 
 div#headerArea div.addressList
 { max-height: 10em;
   overflow: auto;
   overflow-x: hidden; }
 
+div#attachmentsArea
+{ display: none;
+  position: relative;
+  margin: 0 10px 10px 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc; }
+
+hr.fieldSeparator
+{ background-color: #848284;
+  border: 0;
+  clear: both;
+  color: #848284;
+  height: 1px;
+  margin: 0px;
+  padding: 0px;
+  width: 100%; }
+
 input.currentAttachment
-{ position: fixed;
-  top: 1em;
-  right: 1em; }
+{ background: #FFFFFF;
+  border: medium none;
+  height: 2em;
+  position: absolute;
+  right: 0;
+  top: 10px;}
 
 input.attachment
 { position: absolute;
   left: -1000px; }
 
-#dropZone
-{ position: absolute;
-  background: #000 url('upload_document.png') no-repeat center center;
-  opacity: 0.6;
-  border: 4px dashed #fff;
-  left: 0px;
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
-  z-index: 999; }
-
-#dropZone div
-{ position: absolute;
-  color: #fff;
-  font-size: 18px;
-  height: 100px;
-  width: 300px;
-  margin: 60px 0 0 -150px;
-  left: 50%;
-  top: 50%;
-  text-align: center;
-}
-
-#fileupload {
-  margin-top: 5px;
-  clear: both;
-}
-
-.button.fileinput-button
-{ display: inline-block;
-  float: none; }
+div#compose_attachments_list
+{ background-color: #ffffff;
+  margin-left: 0px;
+  padding: 2px;
+  border-bottom: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-top: 2px solid #222;
+  border-left: 2px solid #222;
+  -moz-border-top-colors: #9c9a94 #000 transparent;
+  -moz-border-left-colors: #9c9a94 #000 transparent; }
 
 UL#attachments
 { cursor: default;
-  margin: 0px;
+  margin: 5px 0px 0px;
   padding: 0px;
+  height: 100%;
+  display: block;
   list-style-type: none;
   list-style-image: none;
   overflow: auto;
@@ -157,86 +171,49 @@ UL#attachments
   -khtml-user-select: none; }
 
 UL#attachments LI
-{ float: left; }
-
-UL#attachments LI[data-filename]
-{ white-space: nowrap;
-  line-height: 18px;
-  margin: 3px 6px; }
-
-UL#attachments LI[data-filename] SPAN
-{ margin-left: 5px; }
-
-UL#attachments LI[data-filename] A,
-UL#attachments LI[data-filename] SPAN
-{ padding-left: 2px;
-  vertical-align: top; }
+{ background-color: #EEEEEE;
+  border: 1px solid #CCCCCC;
+  border-radius: 4px;
+  display: inline-block;
+  margin: 0 5px;
+  padding: 5px 10px;
+  white-space: nowrap;
+}
 
 UL#attachments LI IMG
-{ vertical-align: top; }
-
-UL#attachments .icon-attachment
-{ background: url('attachment.png') no-repeat top left;
-  display: inline-block;
-  width: 16px;
-  height: 16px; }
-UL#attachments .progress0 .icon-attachment
-{ background-position: 0px 0px; }
-UL#attachments .progress1 .icon-attachment
-{ background-position: -16px 0px; }
-UL#attachments .progress2 .icon-attachment
-{ background-position: -32px 0px; }
-UL#attachments .progress3 .icon-attachment
-{ background-position: -48px 0px; }
-UL#attachments .progress4 .icon-attachment
-{ background-position: -64px 0px; }
-UL#attachments .progressDone .icon-attachment
-{ background-position: -80px 0px; }
-UL#attachments .progressDone .icon-attachment:hover
-{ background-position: -96px 0px;
-  cursor: pointer; }
+{ vertical-align: bottom; }
 
 #pageContent TEXTAREA
-{ width: 99%; }
+{ /*width: 95%;*/ }
 
 TEXTAREA#text
-{ background: #fff; }
-
-#cke_text
-{ clear: both; }
+{ display: none;
+  background: #fff;
+border:0px;
+max-width: none;}
 
 /* Contacts search pane */
 
 DIV#contactsSearch
-{ border-right: 1px solid #fff;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-left: 5px; }
-
-DIV#contactsSearch LABEL
-{ display: block;
-  margin: 0 0 5px 0; }
+{ padding-top: 10px;
+  margin-left: 0px; }
 
 SELECT#contactFolder
-{ margin-bottom: 5px; }
-
-INPUT[name="search"]
-{ position: absolute;
-  top: 6.2em;
-  left: 5px;
-  right: 0px; /* doesn't work in FF */
-  display: block;
-  width: auto; }
+{ font-size: 1.2em;
+  margin: 0 10px;
+  padding: 5px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
 
 DIV#contactsListContent
 { position: absolute;
-  top: 9em;
+  top: 95px;
   left: 0px;
   right: 0px;
   bottom: 110px;
   margin: 0;
-  border-right: 1px solid #fff;
-  background-color: #fff;
   overflow-y: auto; }
 
 TABLE#contactsList
@@ -257,18 +234,11 @@ TABLE#contactsList TD#mailHeader
 
 DIV.contactSelection
 {
-  z-index: 1;
-  background: inherit;
-  position: absolute;
-  bottom: 0em;
-  padding: 1em;
-  left: 0px;
-  right: 0px;
-  height: 90px;
-  text-align: right;
-  background: #E6E7E6;
-  border-top: 1px solid #fff;
-  border-left: 0px;
-  border-right: 0px;
-  border-bottom: 0px;
+ z-index: 1;
+ position: absolute;
+ bottom: 10px;
+ padding: 0em;
+ left: 10px;
+ right: 10px;
+ border: 0px;
 }

@@ -6,8 +6,7 @@ DIV.appointmentLabel
   width: 3em; }
 
 DIV#eventView
-{ overflow: hidden;
-  padding: .5em; }
+{ padding: 20px; }
 
 DIV.appointmentRightLabel
 { display: inline;

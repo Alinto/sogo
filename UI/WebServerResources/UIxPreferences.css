@@ -1,18 +1,18 @@
 DIV#preferencesTabs
 { position: absolute;
-  top: 54px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px; }
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px; }
+
+DIV.tabsContainer > DIV.tabs{
+  bottom: 0px;
+}
 
 DIV.bottomToolbar
-{ position: absolute;
-  height: 20px;
+{ padding: 0px;
   margin: 0px;
-  padding: 0px;
-  left: 2em;
-  right: 2em;
-  bottom: 8px; }
+}
 
 #mailAccountsToolbar
 { left: 5px;
@@ -32,43 +32,36 @@ TR.categoryListRow
 TD.categoryListCell
 { -moz-user-select: none; }
 
+.inline-field{
+  width: auto;
+  margin-right: 10px;
+}
+.inline-field select{
+  width: 100%;
+}
 DIV.colorBox
-{ -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-  border: 2px solid #ccddec; }
-
-DIV.colorBox:hover
-{ border-color: #eee; }
+{ border: 1px solid #333333;
+  font-size: 80%;
+  font-weight: normal;
+  height: 0.75em;
+  margin: 0 3px 0 0;
+  width: 1em; }
 
 DIV.listWrapper
 { overflow: auto;
-  position: absolute;
+  height: 150px;
   padding: 0px;
   margin-top: 2px;
-  border-left: 1px solid #9b9b9b;
-  background: #ccddec;}
-
-.listWrapper TABLE TD
-{ height: 22px; }
-
-#calendarCategoriesListWrapper
-{ top: 232px;
-  bottom: 30px;
-  right: 2em;
-  left: 2em; }
+  border: 1px solid #ccc;
+  background: #fff;
+  margin-bottom: 0;}
 
 #contactsCategoriesListWrapper
 { overflow: auto;
-  position: absolute;
-  bottom: 30px;
-  right: 2em;
-  top: 20px;
-  left: 2em;
   padding: 0px;
-  margin-top: 2px;
-  border-left: 1px solid #9b9b9b;
-  background: #ccddec; }
+  border: 1px solid #ccc;
+  background: #fff;
+  height: 200px;}
 
 /* time date control */
 SPAN.timeDateControl INPUT.textField
@@ -76,20 +69,11 @@ SPAN.timeDateControl INPUT.textField
   vertical-align: text-bottom; }
 
 /* vacation, forward */
-#vacation, #forward
-{ padding-left: 2.5em; }
-#vacation LABEL
-{ margin-left: 0; }
-#vacation TEXTAREA,
-#forward TEXTAREA
-{ width: 100%; }
 #vacation TEXTAREA#autoReplyText
 { height: 100px; }
 #vacation TEXTAREA#autoReplyEmailAddresses,
 #forward TEXTAREA
 { height: 50px; }
-#vacation SPAN
-{ float: right; }
 #vacation SPAN.timeDateControl,
 #vacation SPAN.timeDateControl SPAN
 { float: none;
@@ -98,37 +82,19 @@ SPAN.timeDateControl INPUT.textField
 #passwordView BR
 { clear: both; }
 
-/* mail options */
-DIV#mailOptionsTabs
-{ position: absolute;
-  top: 200px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px; }
-
-DIV#filtersListWrapper,
-DIV#mailLabelsListWrapper
+/* mail filters */
+DIV#filtersListWrapper
 { bottom: 30px;
-  bottom: 22px;
   right: 2em;
-  right: 0px;
   top: 208px;
-  top: 0px;
-  left: 2em;
-  left: 0px; }
-
-#mailOptionsTabs .bottomToolbar
-{ bottom: 0px;
-  left: 0px;
-  right: 0px; }
+  left: 2em; }
 
 DIV#filtersListWrapper TD,
-DIV#mailLabelsListWrapper TD,
 DIV.bottomToolbar
 { -khtml-user-select: none;
   -moz-user-select: none; }
 
-#filtersList, #labelsList
+TABLE#filtersList
 { width: 100%;
   cursor: default; }
 
@@ -172,7 +138,8 @@ P.infoMessage#passwordError
 { overflow-x: hidden;
   left: 5px;
   width: 130px;
-  border-top: 1px solid #9b9b9b; }
+  border-top: 1px solid #9b9b9b;
+position: relative;}
 
 #mailAccountsList
 { position: absolute;
@@ -195,16 +162,16 @@ P.infoMessage#passwordError
   font-style: italic; }
 
 #serverName
-{ width: 100px; }
+{ width: 150px; }
 
 #port
-{ width: 30px; }
+{ width: 50px; }
 
 #userName, #password
-{ width: 180px; }
+{ width: 200px; }
 
 #fullName, #email, #replyTo
-{ width: 180px; }
+{ width: 200px; }
 
 #actSignature
 { color: #55f;
@@ -221,32 +188,16 @@ P.infoMessage#passwordError
   left: 10px;
   width: auto !important;
   right: 10px;
-  top: 0px; }
+  top: 50px; }
 
 #cke_signature, #cke_signature div
 { padding: 0px; }
 
 #signature
 { width: 100%;
-  height: 170px;
+  height: 90px;
   margin: 0px auto;
   margin-bottom: 10px; }
 
 #receiptOptions
 { text-align: right; }
-
-#colorPickerDialog
-{ width: 146px;
-  height: 191px; }
-
-#colorPickerDialog.dialog.right > DIV
-{ padding-left: 10px; }
-
-.dialog.bottom > DIV:before {
-  top: auto;
-  bottom: 12px;
-}
-.dialog.bottom > DIV:after {
-  top: auto;
-  bottom: 13px;
-}

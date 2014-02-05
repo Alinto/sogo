@@ -1,16 +1,9 @@
-form[name="editform"]
-{ position: absolute;
-  top: 48px;
-  left: 0;
-  right: 0;
-  bottom: 0; }
-
 SELECT#calendarList,
 SELECT#categoryList,
 SELECT#priorityList,
 SELECT#repeatList,
 SELECT#reminderList
-{ width: 13em; }
+{ width: 100% }
 
 #attendeesLabel
 { display: none; }
@@ -20,10 +13,6 @@ A#changeAttachButton
   position: absolute;
   right: 0;
   display: inline; }
-
-SPAN.datePicker INPUT.textField,
-SPAN.timeDateControl INPUT.textField
-{ width: 7em; } 
 
 SPAN.timeDateControl A.button
 { border: 0; }
@@ -42,13 +31,11 @@ SPAN.content
   overflow: hidden;
   min-height: 22px; }
 
-LABEL, SPAN.checkBoxList
+LABEL
 { display: block;
   position: relative;
-  line-height: 1.5em;
-  height: 1.5em;
   margin-left: 0px;
-  margin-bottom: .5em;
+  margin-top: 1em;
   width: 100%; }
 
 LABEL#commentArea textarea
@@ -130,3 +117,43 @@ SPAN.timeDateControl INPUT,
 SPAN.timeDateControl SELECT,
 SPAN.timeDateControl SPAN
 { vertical-align: top; }
+
+SPAN.timeDateControl {
+    display: block;
+}
+
+SPAN.datePicker.date {
+    display: inline-block;
+    position: relative;
+}
+SPAN.datePicker.date .calendarButton.add-on{
+  background: #fff;
+  padding: 5px 3px 1px 5px;
+  position: absolute;
+  right: 1px;
+  top: 1px;
+}
+SPAN.datePicker.date .calendarButton.add-on:hover{
+  background-color: #eee;
+}
+INPUT#startTime_date:disabled + .calendarButton,
+INPUT#startTime_date:disabled + .calendarButton:hover,
+INPUT#dueTime_date:disabled + .calendarButton,
+INPUT#dueTime_date:disabled + .calendarButton:hover{
+  cursor: default;
+  opacity: 0.5;
+  background-color: #ddd;  
+}
+
+INPUT#startTime_date,
+INPUT#dueTime_date,
+INPUT#endTime_date{
+    padding-right: 30px;
+    width: auto;
+}
+INPUT#startTime_time,
+INPUT#dueTime_time,
+INPUT#endTime_time {
+    display: inline-block;
+    width: auto;
+}

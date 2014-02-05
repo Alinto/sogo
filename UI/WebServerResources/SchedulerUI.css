@@ -1,35 +1,69 @@
 DIV#leftPanel
 { position: absolute;
-  top: 80px;
+  top: 40px;
   left: 0px;
   width: 19.25em;
   bottom: 0px;
-  background-color: #CCDDEC;
+  background-color: #eee;
   overflow: auto;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  box-shadow: -5px 0 5px -6px rgba(0, 0, 0, 0.5) inset;}
 
+.titlediv {
+    font-size: 20px;
+    line-height: 25px;
+    padding: 10px 0px 10px 19px;
+    vertical-align: middle;
+    font-weight: normal;
+}
+.searchBox {
+    left: 250px;
+    position: absolute;
+    top: 0;
+}
+#filterpopup {
+    background-color: #FFFFFF;
+    border-color: #CCCCCC;
+    border-radius: 1px;
+    height: 32px;
+    left: 0;
+    margin: 0;
+    padding: 6px;
+    position: absolute;
+    width: 240px;
+}
 DIV#schedulerTabs
 { position: absolute;
-  top: 4px;
-  left: 1px;
+  top: 0px;
+  left: 0px;
   right: 0px;
   height: 186px; }
 
+DIV.tabsContainer > DIV.tabs > DIV.tab{
+  left: 0px;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+}
 DIV#schedulerTabs .tabs
-{ right: 5px; }
-
-DIV#schedulerTabs .tab
-{ left: 0px;
-  right: 0px; }
+{ left: 10px;
+  right: 0px;
+  bottom: 0px; }
 
 DIV#calendarSelectorButtons
-{ padding-left: 6px; }
+{ position: absolute;
+  width: 100%;
+  bottom: 0px; }
 
 DIV.colorBox
-{ display: inline-block; }
-
-TD DIV.colorBox, TD DIV.colorBox:hover
-{ border-color: #fff; }
+{ display: inline-block;
+  font-weight: normal;
+  margin: 0 8px 0 5px;
+  width: 2em;
+  height: 2em;
+  -webkit-border-radius: 1px;
+  border-radius: 1px;
+ }
 
 UL#calendarList
 { cursor: default;
@@ -46,8 +80,12 @@ UL#calendarList LI
   width: 100%;
   white-space: nowrap;
   line-height: 2em;
-  padding-left: 10px; }
-
+  font-size: 1.1em;
+  padding-left: 10px;
+  margin-top: 5px; }
+UL#calendarList LI INPUT{
+  padding: 0px
+}
 #tasksList .duelater,
 #tasksList .duetoday,
 #tasksList .overdue
@@ -91,12 +129,13 @@ UL#calendarList LI
 
 DIV#rightPanel
 { position: absolute;
-  top: 80px;
+  top: 40px;
   left: 19.25em;
   right: 0px;
   bottom: 0px;
   margin-left: 5px;
-  overflow: hidden; }
+  overflow: hidden;
+  background-color: white; }
 
 /* top lists in tabs */
 DIV#eventsListView,
@@ -108,13 +147,11 @@ DIV#tasksListView
 
 DIV#calendarView
 { position: absolute;
-  background-color: #fff;
   top: 18em;
-  margin-top: 5px;
+  background-color: white;
+  /*margin-top: 5px;*/
   bottom: 0px;
   width: 100%;
-  border-top: 1px solid #aaa;
-  border-left: 1px solid #aaa;
   -moz-user-select: none;
   -khtml-user-select: none; }
 
@@ -126,47 +163,69 @@ DIV#calendarView A
 #verticalDragHandle
 { cursor: e-resize;
   border: 0px;
-  top: 81px;
+  top: 40px;
   bottom: 0px;
   left: 19.25em;
-  width: 5px; }
+  width: 5px;
+  background-image: url(dragdot.png); }
 
 #rightDragHandle
 { cursor: n-resize;
   top: 18em;
   left: 0px;
   right: 0px;
-  height: 5px; }
+  height: 5px;
+  background-image: url(dragdotv.png); 
+  border-bottom: 1px solid #999;
+}
 
 DIV#dateSelectorView
 { overflow: hidden; }
 
 #dateSelector
-{ margin: 0px auto;
-  background-color: #fff;
-  border-top: 1px solid #909090 !important;
-  border-left: 1px solid #FFFFFF !important;
-  border-bottom: 1px solid #909090 !important;
-  border-right: 1px solid #909090 !important; }
+{ margin: 0px auto;}
 
 #dateSelector > .header
-{ background-color: #efefef;
-  width: 100%;
+{ width: 100%;
   white-space: nowrap;
   vertical-align: middle;
   text-align: center;
-  padding: .2em 0px;
+  padding: .5em 0px;
   margin: 0px;
-  border: 0px; }
+  border: 0px;
+  position: relative;
+}
 
 #dateSelector > .header #leftArrow
-{ float: left;
-  margin-top: 3px; }
+{ position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 30px;
+  height:100%;
+}
 
 #dateSelector > .header #rightArrow
-{ float: right;
-  margin-top: 3px;
-  margin-right: 2px; }
+{ position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 30px;
+  height: 100%; }
+#dateSelector > .header #leftArrow img,
+#dateSelector > .header #rightArrow img {
+  margin-top: -5px;
+  position: absolute;
+  top: 50%;
+}
+#dateSelector > .header #rightArrow img{
+  right: 10px;
+}
+#dateSelector > .header #leftArrow img{
+  left: 10px;
+}
+#dateSelector > .header #leftArrow:hover ,
+#dateSelector > .header #rightArrow:hover{
+  background-color: #ddd
+}
 
 #dateSelector > .header SPAN
 { cursor: default;
@@ -182,7 +241,8 @@ DIV#dateSelectorView
   border-bottom: 1px solid #ccc; }
 
 #dateSelector .dayOfWeek
-{ color: #00f; }
+{ color: #999;
+font-size: 0.8em; }
 
 #dateSelector TABLE,
 #dateSelector TABLE TABLE
@@ -193,7 +253,9 @@ DIV#dateSelectorView
 
 TABLE#dateSelectorTable
 { margin-bottom: 5px; }
-
+TABLE#dateSelectorTable TD{
+  padding: 0px;
+}
 TABLE#dateSelectorTable TD TABLE TD
 { width: 5px; /* temp hack */ }
 
@@ -208,29 +270,34 @@ TABLE#dateSelectorTable TD TABLE TD.dayOfToday
 { cursor: pointer;
   margin: 0px;
   padding: 0px;
-  border: 1px solid #fff; }
+  border: 0px; }
 
 #dateSelectorTable TABLE TD.activeDay:hover,
 #dateSelectorTable TABLE TD.inactiveDay:hover
-{ border: 1px solid #CCDDEC; }
+{ background-color: #DFDFDF; }
 
 #dateSelectorTable TABLE TD.activeDay:active,
 #dateSelectorTable TABLE TD.inactiveDay:active
 { background-color: #ddd; }
 
 #dateSelectorTable TD SPAN
-{ display: block;
-  color: #000;
-  background: inherit; }
+{ background: inherit;
+  color: #333333;
+  display: block;
+  font-weight: bold;
+  height: 30px;
+  line-height: 30px;
+  padding: 0;
+  width: 100%; }
 
 #dateSelector TD.inactiveDay SPAN
-{ color: #dedfde; }
+{ color: #ccc; }
 
 #dateSelector TD.dayOfToday
 { background-color: #CCDDEC;
   border: 1px solid #CCDDEC; }
 
-#dateSelectorTable TABLE TD._selected SPAN
+#dateSelectorTable TABLE T´D._selected SPAN
 { color: #fff; }
 
 #dateSelectorTable TD.activeDay + TD,
@@ -244,7 +311,7 @@ TABLE#tasksList
 { width: 100%; }
 
 TABLE#eventsList .colorBox
-{ margin-right: 4px; }
+{ margin-left: 2px; }
 
 #eventsList TD.headerTitle,
 #eventsList TD.headerDateTime
@@ -278,8 +345,8 @@ TABLE#tasksList THEAD TD:last-child
 { display: block;
   margin: 0;
   padding: 0 0 5px 5px;
-  background-color: #eee;
-  background-color: #E6E7E6; }
+  background-color: #fff;
+}
 
 DIV#eventDialog
 { width: 200px; }
@@ -316,74 +383,65 @@ SPAN.monthsHeader
 { display: block;
   white-space: nowrap;
   text-align: center;
-  background-color: #DFDFDF;
   overflow: hidden;
   width: 100%;
   margin: 0px;
-  height: 3em;
-  padding: 2px 0px;
-  border-bottom: 1px solid #ccc; }
+  height: 40px;
+  padding: 0px;}
 
 SPAN.daysHeader SPAN,
 SPAN.weeksHeader SPAN,
 SPAN.monthsHeader SPAN
-{ font-size: large;
-  margin: .1em;
-  padding: 6px 12px;
-  text-align: center;
-  line-height: 1.5em;
-  border: 1px solid transparent;
-  vertical-align: top; }
+{ display: inline-block;
+  font-size: 1.5em;
+  font-weight: bold;
+  line-height: 35px;
+  margin-top: 5px;
+  padding: 0;
+  text-align: center; }
 
 SPAN.daysHeader A,
 SPAN.weeksHeader A,
 SPAN.monthsHeader A
-{ border: 1px solid transparent;
-  line-height: 1.5em;
-  padding: 0px 0.7em; }
+{ padding: 0px 10px;
+  line-height: 35px;
+  display: block;
+}
 
 .day1 A:hover,
 .week1 A:hover,
-.month1 A:hover
-{ border-top: 1px solid #fff;
-  border-left: 1px solid #fff;
-  border-bottom: 1px solid #828482;
-  border-right: 1px solid #828482; }
-
+.month1 A:hover,
 .day1 A:active,
 .week1 A:active,
 .month1 A:active
-{ border-top: 1px solid #828482;
-  border-left: 1px solid #828482;
-  border-bottom: 1px solid #fff;
-  border-right: 1px solid #fff; }
+{ background-color: #eee }
 
 #listCollapse
-{ position: absolute;
-  top: .2em;
-  right: 0;
-  margin: 0.5em 1em; }
+{ height: 18px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  width: 18px;
+  overflow: hidden;}
 
 #listCollapse img
 { position: absolute; }
 
 #listCollapse img.collapse
-{ clip: rect(0 18px 18px 0);
-  left: 0;
+{ left: 0;
   top: 0; }
 
 #listCollapse img.collapse:hover
-{ clip: rect(0 36px 18px 18px);
-  left: -18px; }
+{ left: -18px; }
 
 #listCollapse img.rise
-{ clip: rect(18px 18px 36px 0);
-  left: 0;
+{ left: 0;
   top: -18px; }
 
 #listCollapse img.rise:hover
-{ clip: rect(18px 36px 36px 18px);
-  left: -18px; }
+{ left: -18px; }
 
 DIV#calendarHeader,
 DIV#daysView
@@ -400,28 +458,30 @@ DIV#daysView
   right: 0px;}
 
 DIV#calendarHeader
-{ top: 50px;
+{ top: 40px;
   border: 0px;
   height: 100px;
-  right: 0px; }
+  right: 0px;
+}
 
 DIV#calendarHeader DIV.dayLabels,
 DIV#calendarHeader DIV.days
 { position: absolute;
-  border-right: 1px solid #ccc;
-  border-top: 1px solid #ccc;
-  left: 50px;
+  left: 51px;
+  right: 0px;
+  background-color: #fff;
   /* 'right' is computed from JS code when daysView is first drawn */
   overflow: hidden; }
 
 DIV#calendarHeader DIV.dayLabels
 { top: 0px;
-  height: 35px; }
+  height: 25px; }
 
 DIV#calendarHeader DIV.dayLabels DIV.day
 { text-align: center;
   color: #666;
-  background-color: #E7E7E7; }
+  font-size: 1.5em;
+  font-weight: bold;}
 
 DIV#calendarHeader SPAN.dayOfWeek
 { font-size: medium; }
@@ -432,12 +492,11 @@ DIV#calendarHeader DIV.dayLabels
 DIV#calendarHeader DIV.days
 { cursor: pointer;
   bottom: 0px;
-  top: 35px; }
+  top: 25px; }
 
 DIV#calendarHeader DIV.day,
 DIV#daysView DIV.day
-{ position: absolute;
-  border-left: 1px solid #ccc; }
+{ position: absolute; }
 
 DIV#calendarHeader DIV.day
 { height: 100%; }
@@ -448,12 +507,8 @@ DIV#calendarHeader DIV.days DIV.day
 
 .menu LI.currentMonth,
 .menu LI.currentYear
-{ border-top: 1px solid #aaa;
-  border-left: 1px solid #aaa;
-  border-bottom: 1px solid #fff;
-  border-right: 1px solid #fff;
-  background-color: #ccc;
-  color: #222; }
+{ background-color: #FFE79C;
+}
 
 DIV.eventView
 { display: block;
@@ -479,7 +534,7 @@ DIV#daysView DIV.hour
   text-align: right;
   right: 0px;
   height: 37px;
-  font-weight: bold;
+  color: #999;
   border-bottom: 1px solid #ccc; }
 
 DIV#daysView DIV.days
@@ -491,10 +546,10 @@ DIV.multicolumnDayView DIV.lastDayUser
 
 DIV.monthView
 { position: absolute;
-  left: .5em;
+  left: 0em;
   top: 40px;
-  right: 1em;
-  bottom: 1em;
+  right: 0em;
+  bottom: 0em;
   min-width: 20em;
   min-height: 25em; }
 
@@ -502,29 +557,31 @@ DIV.monthView > DIV,
 DIV.monthView > DIV.days > DIV
 { position: absolute; }
 
-DIV.monthView > DIV.headerDay
-{ text-align: center;
+DIV.monthView > DIV.headerDay,
+TD.sortableTableHeader
+{ color: #999999;
   cursor: default;
-  padding-top: .5em;
-  border-left: 1px solid #909090 !important;
-  border-top: 1px solid #909090 !important;
-  top: 0px;
-  color: #666;
-  height: 1.5em;
-  font-weight: bold;
-  background-color: #E7E7E7; }
+  font-size: 10px;
+  font-weight: normal;
+  height: 23px;
+  line-height: 23px;
+  padding-left: 5px;}
 
 DIV.dayOfAnotherMonth
-{ background-color: #e7efef; }
+{ background-color: #eee; }
 
+DIV.dayOfAnotherMonth DIV.dayHeader{
+color: #999
+}
 DIV.monthView DIV.dayHeader
-{ margin-right: 0px;
-  height: 20px;
-  padding-top: 2px;
-  padding-right: 2px;
-  text-align: right;
+{ color: #333333;
   cursor: pointer;
-  color: #666;
+  font-size: 14px;
+  font-weight: 100;
+  height: 20px;
+  padding-left: 4px;
+  padding-top: 2px;
+  text-align: left;
   -moz-user-select: none; }
 
 DIV#monthDaysView DIV.selectedDay DIV.dayHeader
@@ -539,8 +596,8 @@ DIV.monthView DIV.days
 
 DIV.monthView DIV.day
 { position: absolute;
-  border-left: 1px solid #909090;
-  border-top: 1px solid #909090;
+  border-left: 1px solid #eee;
+  border-top: 1px solid #eee;
   min-height: 40px;
   overflow: auto;
   overflow-x: hidden; }
@@ -555,20 +612,22 @@ DIV#calendarHeader DIV.days DIV.weekEndDay,
 DIV#daysView DIV.day DIV.clickableHourCell.outOfDay,
 DIV#daysView DIV.weekEndDay DIV.clickableHourCell,
 DIV#daysView DIV.weekEndDay DIV.clickableHourCell.outOfDay
-{ background-color: #e6e7e6; }
+{ background-color: #f7f7f7; }
 
 DIV#monthDaysView DIV.dayOfToday,
 DIV.daysViewFor7Days#calendarHeader DIV.days DIV.dayOfToday,
-DIV.daysViewFor7Days#daysView DIV.dayOfToday DIV.clickableHourCell
-{ background-color: #d6dfe9; }
+DIV.daysViewFor7Days#daysView DIV.dayOfToday DIV.clickableHourCell,
+TABLE#dateSelectorTable TD.dayOfToday
+{ background-color: #FF7900; }
 
 DIV.daysViewFor7Days#daysView DIV.dayOfToday DIV.clickableHourCell.outOfDay
-{ background-color: #ccddec; }
+{ background-color: #FE9C44; }
 
 DIV.daysViewFor7Days#calendarHeader DIV.days DIV.selectedDay,
 DIV.daysViewFor7Days#daysView DIV.selectedDay DIV.clickableHourCell,
-DIV#monthDaysView DIV.selectedDay
-{ background-color: #ffe79c; }
+DIV#monthDaysView DIV.selectedDay,
+TABLE#dateSelectorTable TD.activeDay._selected
+{ background-color: #EFD85F; }
 
 DIV.daysViewFor7Days#calendarHeader DIV.days DIV.selectedDay.weekEndDay,
 DIV.daysViewFor7Days#daysView DIV.selectedDay.weekEndDay DIV.clickableHourCell,
@@ -1273,13 +1332,9 @@ DIV#daysView DIV.event.lasts96
 { height: 960px; }
 
 DIV.event > DIV.eventInside
-{ position: absolute;
-  overflow: hidden;
-  padding: 1px;
-  top: 0px;
-  bottom: 0px;
-  left: 2px;
-  right: 1px;
+{ overflow: hidden;
+  padding: 0px;
+  height: 100%;
   -webkit-border-radius: 2px;
   border-radius: 2px; }
 
@@ -1287,12 +1342,8 @@ DIV.eventInside SPAN.location
 { font-size: smaller; }
 
 DIV.gradient, DIV.text
-{ position: absolute;
-  top: 1px;
-  left: 1px;
-  right: 1px;
-  bottom: 1px;
-  overflow: hidden; }
+{ padding: 5px;
+position: relative; }
 
 DIV.gradient > IMG
 { position: absolute;
@@ -1308,7 +1359,10 @@ DIV.event._selected > DIV.eventInside > DIV.gradient
 { display: none; }
 
 DIV.text SPAN.icons
-{ float: right; }
+{ background-color: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  right: 3px;
+  top: 3px; }
 
 DIV.text SPAN IMG
 { vertical-align: middle; }
@@ -1320,9 +1374,9 @@ DIV.monthView DIV.event
   margin-right: 0px;
   left: 0px;
   right: 0px;
-  margin-right: 1px;
+  margin: 2px;
   white-space: nowrap;
-  height: 20px; }
+}
 
 DIV.eventInside.tentative,
 DIV.eventInside.needs-action
@@ -1363,17 +1417,18 @@ DIV.event DIV.leftDragGrip,
 DIV.event DIV.rightDragGrip
 { position: absolute;
   border: 0px;
-  top: 4px;
-  height: 11px;
-  width: 3px;
+  top: 0px;
+  height: 100%;
+  width: 10px;
   background-repeat: no-repeat;
-  background-position: center; }
+  background-position: center;
+  }
 
 DIV.event DIV.leftDragGrip
-{ left: 1px; }
+{ left: 0px; }
 
 DIV.event DIV.rightDragGrip
-{ right: 1px; }
+{ right: 0px; }
 
 #daysView DIV.event.dragging
 { left: 0px !important;
@@ -1399,19 +1454,23 @@ DIV.event.dragging DIV.rightDragGrip
 
 DIV.event.draggable:hover DIV.topDragGrip
 { cursor: n-resize;
-  background-image: url(event-grippy-top.png); }
+  background-image: url(event-grippy-top.png);
+  background-color: rgba(0,0,0,0.2); }
 
 DIV.event.draggable:hover DIV.bottomDragGrip
 { cursor: s-resize;
-  background-image: url(event-grippy-bottom.png); }
+  background-image: url(event-grippy-bottom.png);
+  background-color: rgba(0,0,0,0.2); }
 
 DIV.event.draggable:hover DIV.leftDragGrip
 { cursor: w-resize;
-  background-image: url(event-grippy-vertical.png); }
+  background-image: url(event-grippy-vertical.png);
+  background-color: rgba(0,0,0,0.2);}
 
 DIV.event.draggable:hover DIV.rightDragGrip
 { cursor: e-resize;
-  background-image: url(event-grippy-vertical.png); }
+  background-image: url(event-grippy-vertical.png);
+  background-color: rgba(0,0,0,0.2);}
 
 #daysView DIV.eventDragGhost
 { left: 0px; right: 0px; }
@@ -1474,11 +1533,5 @@ DIV#nowLineDisplay
   background: red;
   z-index: 49; }
 
-DIV#freeBusyReplicas INPUT.textField
-{ width: 7em; }
-DIV#freeBusyReplicas a.calendarButton
-{ right: 0px; }
-DIV#freeBusyReplicas DIV
-{ display: inline-block; height: 2em; }
 TD.attendees A.button
 { float: left; left: 19px; margin-top: 5px; }

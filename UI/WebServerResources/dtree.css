@@ -12,7 +12,7 @@
 
 .dtree img
 {
-  vertical-align: middle;
+  vertical-align: TOP;
   border: 0px;
   padding: 0px;
   margin: 0px;
@@ -23,13 +23,18 @@
   cursor: default;
   color: #000;
   text-decoration: none;
+  display: inline-block;
+  line-height: 28px;
+  vertical-align: top;
 }
 
 .dtree a.node
 {
   white-space: nowrap;
-  padding: 1px 2px;
-  line-height: 2em;
+  padding: 0px 2px;
+  line-height: 28px;
+  font-size: 1.1em;
+  display: inline-block;
 }
 
 .dtree a.node:hover
@@ -43,7 +48,9 @@
 }
 
 .dTreeNode
-{ height: 22px; }
-
+{ height: 28px; }
+.dTreeNode:hover{
+  background-color: #e3e3e3;
+}
 .dTreeNode._selected
-{ background-color: #9ABCD8; }
+{ background-color: #ccc; }

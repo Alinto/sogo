@@ -14,31 +14,6 @@ String.prototype.formatted = function() {
     return newString;
 };
 
-String.prototype.formatTime = function(hours, minutes) {
-    var newString = this;
-
-    // See http://www.gnustep.org/resources/documentation/Developer/Base/Reference/NSCalendarDate.html#method$NSCalendarDate-descriptionWithCalendarFormat$
-    var p = 'am', i = hours, m = minutes;
-    if (hours > 12) {
-        p = 'pm';
-        i = hours % 12;
-    }
-    if (minutes < 10) {
-        m = '0' + minutes;
-    }
-
-    // %H : hour as a decimal number using 24-hour clock
-    newString = newString.replace("%H", hours < 10 ? '0' + hours : hours);
-    // %I : hour as a decimal number using 12-hour clock
-    newString = newString.replace("%I", i < 10 ? '0' + i : i);
-    // %M : minute as decimal number
-    newString = newString.replace("%M", m);
-    // %p : 'am' or 'pm'
-    newString = newString.replace("%p", p);
-
-    return newString;
-};
-
 String.prototype.repeat = function(count) {
     var newString = "";
     for (var i = 0; i < count; i++) {

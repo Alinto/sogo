@@ -23,7 +23,6 @@
     <span class="monthsHeader">
       <span class="month1">
         <a href="#"
-           id="leftNavigationArrow"
            var:date="prevMonthQueryParameters.month"
            onclick="return onCalendarGotoDay(this);"
            ><img rsrc:src="arrow-left.png"/></a>
@@ -31,7 +30,6 @@
       <span class="month0"><var:string value="monthNameOfThisMonth" /></span>
       <span class="month1">
         <a href="#"
-           id="rightNavigationArrow"
            var:date="nextMonthQueryParameters.month"
            onclick="return onCalendarGotoDay(this);"><img rsrc:src="arrow-right.png"/></a>
       </span>

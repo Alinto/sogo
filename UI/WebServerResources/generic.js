@@ -269,7 +269,7 @@ function openContactWindow(url, wId) {
             wId = sanitizeWindowName(wId);
 
         var w = window.open(url, wId,
-                            "width=450,height=530,resizable=0,location=0");
+                            "width=450,height=550,resizable=0,location=0");
         w.focus();
 
         return w;
@@ -1063,8 +1063,8 @@ function popupSearchMenu(event) {
 
         var popup = $(menuId);
         offset = Position.positionedOffset(this);
-        popup.setStyle({ top: (offset.top + this.getHeight()) + "px",
-                         left: (offset.left + 3) + "px",
+        popup.setStyle({ top: (offset.top + this.getHeight() + 10 ) + "px",
+                         left: (offset.left + 10) + "px",
                          visibility: "visible" });
 
         document.currentPopupMenu = popup;
@@ -1925,7 +1925,7 @@ AIM = {
         d.innerHTML = '<iframe class="hidden" src="about:blank" id="'
             + n + '" name="' + n + '" onload="AIM.loaded(\'' + n + '\')"></iframe>';
         document.body.appendChild(d);
-        var i = $(n);
+        var i = $(n); // TODO: useful?
         if (c && typeof(c.onComplete) == 'function')
             i.onComplete = c.onComplete;
         return n;
@@ -1936,28 +1936,27 @@ AIM = {
     },
 
     submit: function(f, c) {
-        var id = AIM.frame(c);
-        AIM.form(f, id);
+        AIM.form(f, AIM.frame(c));
         if (c && typeof(c.onStart) == 'function')
             return c.onStart();
         else
-            return $(id);
+            return true;
     },
 
     loaded: function(id) {
         var i = $(id);
-        var d;
         if (i.contentDocument) {
-            d = i.contentDocument;
+            var d = i.contentDocument;
         }
         else if (i.contentWindow) {
-            d = i.contentWindow.document;
+            var d = i.contentWindow.document;
         }
         else {
-            d = window.frames[id].document;
+            var d = window.frames[id].document;
         }
         if (d.location.href == "about:blank")
             return;
+
         if (typeof(i.onComplete) == 'function') {
             i.onComplete(Element.allTextContent(d.body));
         }
@@ -2304,5 +2303,12 @@ function SetLogMessage(containerId, message, msgType) {
         }
     }
 }
+
+function ToggleAppNavMenu() {
+    jQuery("#appNavMenu").slideToggle("fast");
+}
+
+
+
 
 document.observe("dom:loaded", onLoadHandler);

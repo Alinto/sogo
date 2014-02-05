@@ -16,82 +16,6 @@
   <script type="text/javascript">
     var localeCode = '<var:string value="localeCode"/>';
   </script>
-
-  <div id="colorPickerDialog" style="display: none;" class="dialog right bottom">
-    <div>
-      <span class="blc-FFFFFF"><!-- --></span>
-      <span class="blc-330033"><!-- --></span>
-      <span class="blc-C0C0C0"><!-- --></span>
-      <span class="blc-999999"><!-- --></span>
-      <span class="blc-666666"><!-- --></span>
-      <span class="blc-333333"><!-- --></span>
-      <span class="blc-000000"><!-- --></span>
-      <span class="blc-FFCCCC"><!-- --></span>
-      <span class="blc-FF6666"><!-- --></span>
-      <span class="blc-FF0000"><!-- --></span>
-      <span class="blc-CC0000"><!-- --></span>
-      <span class="blc-990000"><!-- --></span>
-      <span class="blc-660000"><!-- --></span>
-      <span class="blc-330000"><!-- --></span>
-      <span class="blc-FFCC99"><!-- --></span>
-      <span class="blc-FF9966"><!-- --></span>
-      <span class="blc-FF9900"><!-- --></span>
-      <span class="blc-FF6600"><!-- --></span>
-      <span class="blc-CC6600"><!-- --></span>
-      <span class="blc-993300"><!-- --></span>
-      <span class="blc-663300"><!-- --></span>
-      <span class="blc-FFFF99"><!-- --></span>
-      <span class="blc-FFFF66"><!-- --></span>
-      <span class="blc-FFCC66"><!-- --></span>
-      <span class="blc-FFCC33"><!-- --></span>
-      <span class="blc-CC9933"><!-- --></span>
-      <span class="blc-996633"><!-- --></span>
-      <span class="blc-663333"><!-- --></span>
-      <span class="blc-FFFFCC"><!-- --></span>
-      <span class="blc-FFFF33"><!-- --></span>
-      <span class="blc-FFFF00"><!-- --></span>
-      <span class="blc-FFCC00"><!-- --></span>
-      <span class="blc-999900"><!-- --></span>
-      <span class="blc-666600"><!-- --></span>
-      <span class="blc-333300"><!-- --></span>
-      <span class="blc-CCCCCC"><!-- --></span>
-      <span class="blc-66FF99"><!-- --></span>
-      <span class="blc-33FF33"><!-- --></span>
-      <span class="blc-33CC00"><!-- --></span>
-      <span class="blc-009900"><!-- --></span>
-      <span class="blc-006600"><!-- --></span>
-      <span class="blc-003300"><!-- --></span>
-      <span class="blc-99FFFF"><!-- --></span>
-      <span class="blc-33FFFF"><!-- --></span>
-      <span class="blc-66CCCC"><!-- --></span>
-      <span class="blc-00CCCC"><!-- --></span>
-      <span class="blc-339999"><!-- --></span>
-      <span class="blc-336666"><!-- --></span>
-      <span class="blc-003333"><!-- --></span>
-      <span class="blc-CCFFFF"><!-- --></span>
-      <span class="blc-66FFFF"><!-- --></span>
-      <span class="blc-33CCFF"><!-- --></span>
-      <span class="blc-3366FF"><!-- --></span>
-      <span class="blc-3333FF"><!-- --></span>
-      <span class="blc-000099"><!-- --></span>
-      <span class="blc-000066"><!-- --></span>
-      <span class="blc-CCCCFF"><!-- --></span>
-      <span class="blc-9999FF"><!-- --></span>
-      <span class="blc-6666CC"><!-- --></span>
-      <span class="blc-6633FF"><!-- --></span>
-      <span class="blc-6600CC"><!-- --></span>
-      <span class="blc-333399"><!-- --></span>
-      <span class="blc-330099"><!-- --></span>
-      <span class="blc-FFCCFF"><!-- --></span>
-      <span class="blc-FF99FF"><!-- --></span>
-      <span class="blc-CC66CC"><!-- --></span>
-      <span class="blc-CC33CC"><!-- --></span>
-      <span class="blc-993399"><!-- --></span>
-      <span class="blc-663366"><!-- --></span>
-      <span class="blc-99FF99"><!-- --></span>
-    </div>
-  </div>
-
   <form id="mainForm" var:href="ownPath">
     <div class="tabsContainer" id="preferencesTabs">
       <ul>
@@ -123,295 +47,292 @@
       </ul>
       <div class="tabs">
         <div id="generalView" class="tab">
-          <dl class="dl-horizontal">
-            <dt><var:string label:value="Language :"/></dt>
-            <dd><var:popup list="languages" item="item"
+          <fieldset>
+            <div>
+              <label><var:string label:value="Language :"/></label>
+              <var:popup list="languages" item="item"
                   const:id="language"
                   const:name="language"
                   string="languageText" 
                   selection="language"
-                  label:noSelectionString="choose" /></dd>
-            <dt><var:string label:value="Current Time Zone :"/></dt>
-            <dd><var:popup list="timeZonesList" item="item"
+                  label:noSelectionString="choose" />
+            </div>
+            <div>
+              <label><var:string label:value="Current Time Zone :"/></label>
+              <var:popup list="timeZonesList" item="item"
                   const:id="timezone"
                   const:name="timezone"
-                  string="item" selection="userTimeZone" /></dd>
-            <dt><var:string label:value="Short Date Format :"/></dt>
-            <dd><var:popup list="shortDateFormatsList" item="item"
+                  string="item" selection="userTimeZone" />
+            </div>
+            <div >
+              <label><var:string label:value="Short Date Format :"/></label>
+              <var:popup list="shortDateFormatsList" item="item"
                   const:id="shortDateFormat"
                   const:name="shortDateFormat"
-                  string="itemShortDateFormatText" selection="userShortDateFormat"/></dd>
-            <dt><var:string label:value="Long Date Format :"/></dt>
-            <dd><var:popup list="longDateFormatsList" item="item"
+                  string="itemShortDateFormatText" selection="userShortDateFormat"/>
+            </div>
+            <div> 
+              <label><var:string label:value="Long Date Format :"/></label>
+              <var:popup list="longDateFormatsList" item="item"
                   const:id="longDateFormat"
                   const:name="longDateFormat"
-                  string="itemLongDateFormatText" selection="userLongDateFormat"
-                  /></dd>
-            <dt><var:string label:value="Time Format :"/></dt>
-            <dd><var:popup list="timeFormatsList" item="item"
+                  string="itemLongDateFormatText" selection="userLongDateFormat"/>
+            </div>
+            <div>
+              <label><var:string label:value="Time Format :"/></label>
+              <var:popup list="timeFormatsList" item="item"
                   const:id="timeFormat"
                   const:name="timeFormat"
                   string="itemTimeFormatText" selection="userTimeFormat"
-                  /></dd>
-            <dt><var:string label:value="Default module :"/></dt>
-            <dd><var:popup list="availableModules" item="item"
+                  />
+            </div>
+            <div>
+              <label><var:string label:value="Default module :"/></label>
+              <var:popup list="availableModules" item="item"
                   const:id="defaultModule"
                   const:name="defaultModule"
-                  string="itemModuleText" selection="userDefaultModule"/></dd>
-          </dl>
+                  string="itemModuleText" selection="userDefaultModule"/>
+            </div>
+          </fieldset>
         </div>
         <var:if condition="userHasCalendarAccess">
           <div id="calendarOptionsView" class="tab">
-            <dl class="dl-horizontal">
-              <dt><var:string label:value="Week begins on :"/></dt>
-              <dd><var:popup list="daysList" item="item"
+            <fieldset >
+              <div class="inline-field" style="width:auto">
+              <label><var:string label:value="Week begins on :"/></label>
+              <var:popup list="daysList" item="item"
                     const:id="weekStartDay"
                     const:name="weekStartDay"
-                    string="itemWeekStartDay" selection="userWeekStartDay"/></dd>
-              <dt><var:string label:value="Day start time :"/></dt>
-              <dd><var:popup list="hoursList" item="item"
+                    string="itemWeekStartDay" selection="userWeekStartDay"/>
+              </div>
+              <div class="inline-field" style="width:auto">
+                <label><var:string label:value="Day start time :"/></label>
+                <var:popup list="hoursList" item="item"
                     const:id="dayStartTime"
                     const:name="dayStartTime"
-                    string="item" selection="userDayStartTime"/></dd>
-              <dt><var:string label:value="Day end time :"/></dt>
-              <dd><var:popup list="hoursList" item="item"
+                    string="item" selection="userDayStartTime"/>
+              </div>
+              <div class="inline-field" style="width:auto">
+                <label><var:string label:value="Day end time :"/></label>
+                <var:popup list="hoursList" item="item"
                     const:id="dayEndTime"
                     const:name="dayEndTime"
-                    string="item" selection="userDayEndTime"/></dd>
-              <dt></dt>
-              <dd><input type="checkbox" 
+                    string="item" selection="userDayEndTime"/>
+              </div>
+              <div>
+                <label><input type="checkbox" 
                     const:name="busyOffHours"
                     const:id="busyOffHours"
                     var:checked="busyOffHours" />
-                <var:string label:value="Show time as busy outside working hours"/></dd>
-            <dt><var:string label:value="First week of year :"/></dt>
-            <dd><var:popup list="firstWeekList" item="item"
+                <var:string label:value="Show time as busy outside working hours"/></label>
+              </div>
+              <div>
+                <label><var:string label:value="First week of year :"/></label>
+                <var:popup list="firstWeekList" item="item"
                   const:id="firstWeek"
                   const:name="firstWeek"
-                  string="itemFirstWeekText" selection="userFirstWeek"/></dd>
-            <dt><var:string label:value="Default calendar :"/></dt>
-            <dd><var:popup list="defaultCalendarList" item="item"
+                  string="itemFirstWeekText" selection="userFirstWeek"/>
+              </div>
+              <div>
+                <label><var:string label:value="Default calendar :"/></label>
+                <var:popup list="defaultCalendarList" item="item"
                   const:id="defaultCalendar"
                   const:name="defaultCalendar"
-                  string="itemCalendarText" selection="userDefaultCalendar"/></dd>
-            <dt><var:string label:value="Default events classification :"/></dt>
-            <dd><var:popup list="calendarClassificationsList" item="item"
+                  string="itemCalendarText" selection="userDefaultCalendar"/>
+              </div>
+              <div class="inline-field" style="width:auto">
+                <label><var:string label:value="Default events classification :"/></label>
+                <var:popup list="calendarClassificationsList" item="item"
                   const:id="eventsClassification"
                   const:name="eventsClassification"
-                  string="itemClassificationText" selection="eventsDefaultClassification"/></dd>
-            <dt><var:string label:value="Default tasks classification :"/></dt>
-            <dd><var:popup list="calendarClassificationsList" item="item"
+                  string="itemClassificationText" selection="eventsDefaultClassification"/>
+              </div>
+              <div class="inline-field" style="width:auto">
+                <label><var:string label:value="Default tasks classification :"/></label>
+                <var:popup list="calendarClassificationsList" item="item"
                   const:id="tasksClassification"
                   const:name="tasksClassification"
-                  string="itemClassificationText" selection="tasksDefaultClassification"/></dd>
-            <dt><var:string label:value="Default reminder :"/></dt>
-            <dd><var:popup list="reminderList" item="item"
-                  const:disabledValue="-"
-                  label:noSelectionString="reminder_NONE"
-                  const:name="reminderList"
-                  const:id="reminderList"
-                  string="itemReminderText" var:selection="reminder"/></dd>
-            </dl>
-
-            <label><var:string label:value="Categories"/></label>
-            <div id="calendarCategoriesListWrapper" class="listWrapper"
-              ><table class="categoriesList" cellspacing="0">
-                <thead>
-                  <tr class="tableview"
-                    ><th const:class="tbtv_headercell" const:id="nameTableHeader"
-                      ><var:string label:value="Name"/></th
-                      ><th const:class="tbtv_headercell" const:id="colorTableHeader"
-                      ><var:string label:value="Color"/></th
-                      ></tr
-                    ></thead>
-                <tbody>
-                  <var:foreach list="calendarCategoryList" item="category">
-                    <tr const:class="categoryListRow"
-                      ><td const:class="categoryListCell"
-                        ><var:string var:value="category"/></td
-                        ><td const:class="categoryListCell"
-                        ><div const:class="colorBox" var:data-color="categoryColor"><entity name="nbsp"/></div></td
-                        ></tr>
-                  </var:foreach>
-                </tbody>
-              </table>
+                  string="itemClassificationText" selection="tasksDefaultClassification"/>
             </div>
-            <div class="bottomToolbar">
-              <a const:id="calendarCategoryAdd" class="bottomButton" href="#">
-                <span><img rsrc:src="add-icon.png" label:title="Add" />
-                </span></a>
-              <a const:id="calendarCategoryDelete" class="bottomButton" href="#">
-                <span><img rsrc:src="remove-icon.png" label:title="Delete" />
-                </span></a>
+
+            <div>
+              <label><var:string label:value="Categories"/></label>
+              <div id="calendarCategoriesListWrapper" class="listWrapper"
+                ><table class="categoriesList" cellspacing="0">
+                  <thead>
+                    <tr class="tableview"
+                      ><th const:class="tbtv_headercell" const:id="nameTableHeader"
+                        ><var:string label:value="Name"/></th
+                        ><th const:class="tbtv_headercell" const:id="colorTableHeader"
+                        ><var:string label:value="Color"/></th
+                        ></tr
+                      ></thead>
+                  <tbody>
+                    <var:foreach list="calendarCategoryList" item="category">
+                      <tr const:class="categoryListRow"
+                        ><td const:class="categoryListCell"
+                          ><var:string var:value="category"/></td
+                          ><td const:class="categoryListCell"
+                          ><div const:class="colorBox"><var:string var:value="categoryColor"
+                              /></div></td
+                          ></tr>
+                    </var:foreach>
+                  </tbody>
+                </table>
+              </div>
+              <div class="bottomToolbar">
+                <a const:id="calendarCategoryAdd" class="bottomButton" href="#">
+                  <span><img rsrc:src="add-icon.png" label:title="Add" />
+                  </span></a>
+                <a const:id="calendarCategoryDelete" class="bottomButton" href="#">
+                  <span><img rsrc:src="remove-icon.png" label:title="Delete" />
+                  </span></a>
+              </div>
             </div>
             <input type="hidden" const:id="calendarCategoriesValue" 
               const:name="calendarCategoriesValue" var:value="calendarCategoriesValue"/>
+            </fieldset>
           </div>
         </var:if>
         <div id="contactsOptionsView" class="tab">
-          <label><var:string label:value="Categories"/></label>
-          <div id="contactsCategoriesListWrapper" class="listWrapper"
-            ><table class="categoriesList" cellspacing="0">
-              <thead>
-                <tr class="tableview"
-                  ><th const:class="tbtv_headercell" const:id="nameTableHeader"
-                    ><var:string label:value="Name"/></th
-                    ></tr
-                  ></thead>
-              <tbody>
-                <var:foreach list="contactsCategoryList" item="category">
-                  <tr const:class="categoryListRow"
-                    ><td const:class="categoryListCell"
-                      ><var:string var:value="category"/></td
-                      ></tr>
-                </var:foreach>
-              </tbody>
-            </table>
-          </div>
-          <div class="bottomToolbar">
-            <a const:id="contactsCategoryAdd" class="bottomButton" href="#">
-              <span><img rsrc:src="add-icon.png" label:title="Add" />
-              </span></a>
-            <a const:id="contactsCategoryDelete" class="bottomButton" href="#">
-              <span><img rsrc:src="remove-icon.png" label:title="Delete" />
-              </span></a>
-          </div>
-          <input type="hidden" const:id="contactsCategoriesValue" 
+          <fieldset>
+            <div>
+              <label><var:string label:value="Categories"/></label>
+              <div id="contactsCategoriesListWrapper" class="listWrapper"
+                ><table class="categoriesList" cellspacing="0">
+                  <thead>
+                    <tr class="tableview"
+                      ><th const:class="tbtv_headercell" const:id="nameTableHeader"
+                        ><var:string label:value="Name"/></th
+                        ></tr
+                      ></thead>
+                  <tbody>
+                    <var:foreach list="contactsCategoryList" item="category">
+                      <tr const:class="categoryListRow"
+                        ><td const:class="categoryListCell"
+                          ><var:string var:value="category"/></td
+                          ></tr>
+                    </var:foreach>
+                  </tbody>
+                </table>
+              </div>
+              <div class="bottomToolbar">
+                <a const:id="contactsCategoryAdd" class="bottomButton" href="#">
+                  <span><img rsrc:src="add-icon.png" label:title="Add" />
+                  </span></a>
+                <a const:id="contactsCategoryDelete" class="bottomButton" href="#">
+                  <span><img rsrc:src="remove-icon.png" label:title="Delete" />
+                  </span></a>
+              </div>
+            </div>
+            <input type="hidden" const:id="contactsCategoriesValue" 
             const:name="contactsCategoriesValue" var:value="contactsCategoriesValue"/>
+        </fieldset>
         </div>
         <var:if condition="userHasMailAccess">
           <div id="mailOptionsView" class="tab">
-            <dl class="dl-horizontal">
-              <dt></dt>
-              <dd><input type="checkbox" 
+            <fieldset >
+              <div>
+                <label><input type="checkbox" 
                     const:name="subscribedFoldersOnly"
                     const:id="subscribedFoldersOnly"
                     var:checked="showSubscribedFoldersOnly" />
-                  <var:string label:value="Show subscribed mailboxes only"/></dd>
-              <dt></dt>
-              <dd><input type="checkbox" 
+                  <var:string label:value="Show subscribed mailboxes only"/></label>
+              </div>
+              <div>
+                <label><input type="checkbox" 
                     const:name="sortByThreads"
                     const:id="sortByThreads"
                     var:checked="sortByThreads" />
-                  <var:string label:value="Sort messages by threads"/></dd>
-              <dt><var:string label:value="Check for new mail:"/></dt>
-              <dd><var:popup list="messageCheckList" item="item"
+                  <var:string label:value="Sort messages by threads"/>
+                </label>
+              </div>
+              <div>
+                <label><var:string label:value="Check for new mail:"/></label>
+                <var:popup list="messageCheckList" item="item"
                     const:id="messageCheck"
                     const:name="messageCheck"
-                    string="itemMessageCheckText" selection="userMessageCheck"/></dd>
-              <dt><var:string label:value="Forward messages:"/></dt>
-              <dd><var:popup list="messageForwardingList" item="item"
+                    string="itemMessageCheckText" selection="userMessageCheck"/>
+              </div>
+              <div>
+                <label><var:string label:value="Forward messages:"/></label>
+                <var:popup list="messageForwardingList" item="item"
                     const:id="messageForwarding"
                     const:name="messageForwarding"
                     string="itemMessageForwardingText"
-                    selection="userMessageForwarding"/></dd>
-              <dt><var:string label:value="When replying to a message:"/></dt>
-              <dd><var:popup list="replyPlacementList" item="item"
+                    selection="userMessageForwarding"/>
+              </div>
+              <div class="inline-field" style="width:auto;">
+                <label><var:string label:value="When replying to a message:"/></label>
+                <var:popup list="replyPlacementList" item="item"
                     const:id="replyPlacementList"
                     const:name="replyPlacementList"
                     string="itemReplyPlacementText"
-                    selection="userReplyPlacement"/></dd>
-              <dt><var:string label:value="And place my signature"/></dt>
-              <dd><var:popup list="signaturePlacementList" item="item"
+                    selection="userReplyPlacement"/>
+              </div>
+              <div class="inline-field" style="width:auto;">
+                <label><var:string label:value="And place my signature"/></label>
+                <var:popup list="signaturePlacementList" item="item"
                     const:id="signaturePlacementList"
                     const:name="signaturePlacementList"
                     string="itemSignaturePlacementText"
-                    selection="userSignaturePlacement"/></dd>
-              <dt><var:string label:value="Compose messages in"/></dt>
-              <dd><var:popup list="composeMessagesType" item="item"
+                    selection="userSignaturePlacement"/>
+              </div>
+              <div>
+                <label><var:string label:value="Compose messages in"/></label>
+                <var:popup list="composeMessagesType" item="item"
                     const:id="composeMessagesType"
                     const:name="composeMessagesType"
                     string="itemComposeMessagesText"
-                    selection="userComposeMessagesType"/></dd>
-              <dt><var:string label:value="Display remote inline images"/></dt>
-              <dd><var:popup list="displayRemoteInlineImages" item="item"
+                    selection="userComposeMessagesType"/>
+              </div>
+              <div>
+                <label><var:string label:value="Display remote inline images"/></label>
+                <var:popup list="displayRemoteInlineImages" item="item"
                     const:id="displayRemoteInlineImages"
                     const:name="displayRemoteInlineImages"
                     string="itemDisplayRemoteInlineImagesText"
-                    selection="userDisplayRemoteInlineImages"/></dd>
-            </dl>
-
-            <div class="tabsContainer" id="mailOptionsTabs">
-              <ul>
-                <var:if condition="isSieveScriptsEnabled"
-                ><li target="mailFiltersView"><span><var:string
-                      label:value="Filters"/></span></li
-                ></var:if>
-                <li target="mailLabelsView"><span><var:string
-                      label:value="Labels"/></span></li>
-              </ul>
-              <div class="tabs">
-                <var:if condition="isSieveScriptsEnabled"
-                ><div id="mailFiltersView" class="tab">
-                  <script type="text/javascript">
-                    var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO"/>;
-                  </script>
-                  <div id="filtersListWrapper" class="listWrapper">
-                    <table id="filtersList" cellspacing="0">
-                      <thead>
-                        <tr class="tableview">
-                          <th const:class="tbtv_headercell" const:id="nameTableHeader"
-                              ><var:string label:value="Name" /></th>
-                          <th const:class="tbtv_headercell" const:id="activeTableHeader"
-                              ><var:string label:value="Active" /></th>
-                        </tr>
-                      </thead>
-                      <tbody><!--space --></tbody>
-                    </table>
-                    <input type="hidden" const:name="sieveFilters" const:id="sieveFilters"
-                           var:value="sieveFiltersValue"/>
-                  </div><!-- #filtersListWrapper -->
-                  <div class="bottomToolbar">
-                    <a const:id="filterAdd" class="bottomButton" href="#">
-                      <span><img rsrc:src="add-icon.png" label:title="Add" /></span></a>
-                    <a const:id="filterDelete" class="bottomButton" href="#">
-                      <span><img rsrc:src="remove-icon.png" label:title="Delete" /></span></a>
-                    <a const:id="filterMoveUp" class="bottomButton" href="#">
-                      <span><img rsrc:src="up-icon.png" label:title="Move Up" /></span></a>
-                    <a const:id="filterMoveDown" class="bottomButton" href="#">
-                      <span><img rsrc:src="down-icon.png" label:title="Move Down" /></span></a>
-                  </div><!-- .bottomToolbar -->
-                </div
-                ></var:if><!-- #mailFiltersView -->
-
-                <div id="mailLabelsView" class="tab">
-                  <div id="mailLabelsListWrapper" class="listWrapper">
-                    <table id="labelsList" cellspacing="0">
-                      <thead>
-                        <tr class="tableview">
-                          <th const:class="tbtv_headercell" const:id="labelTableHeader"
-                              ><var:string label:value="Label"/></th>
-                          <th const:class="tbtv_headercell" const:id="colorTableHeader"
-                              ><var:string label:value="Color"/></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <var:foreach list="mailLabelList" item="label"
-                        ><tr var:data-name="label.name" const:class="labelListRow">
-                          <td const:class="labelListCell"
-                              ><var:string var:value="label.label"/></td>
-                          <td const:class="labelListCell">
-                            <div const:class="colorBox" var:data-color="label.color"><entity name="nbsp"/></div>
-                          </td>
-                        </tr>
-                        </var:foreach>
-                      </tbody>
-                    </table>
-                  </div><!-- #mailLabelsListWrapper -->
-                  <div class="bottomToolbar">
-                    <a const:id="mailLabelAdd" class="bottomButton" href="#">
-                      <span><img rsrc:src="add-icon.png" label:title="Add" />
-                    </span></a>
-                    <a const:id="mailLabelDelete" class="bottomButton" href="#">
-                      <span><img rsrc:src="remove-icon.png" label:title="Delete" />
-                    </span></a>
-                  </div><!-- .bottomToolbar -->
-                  <input type="hidden" const:id="mailLabelsValue"
-                         const:name="mailLabelsValue" var:value="mailLabelsValue"/>
-                </div><!-- #mailLabelsView -->
-              </div><!-- .tabs -->
-            </div><!-- #mailOptionsTabs -->
-          </div><!-- #mailOptionsView -->
+                    selection="userDisplayRemoteInlineImages"/>
+              </div>
+            
+            <var:if condition="isSieveScriptsEnabled"
+              ><div><label><var:string label:value="Filters"/></label>
+              <script type="text/javascript">
+                var sieveCapabilities = <var:string value="sieveCapabilities" const:escapeHTML="NO"/>;
+              </script>
+              <div id="filtersListWrapper" class="listWrapper"
+                ><table id="filtersList" cellspacing="0">
+                  <thead>
+                    <tr class="tableview"
+                      ><th const:class="tbtv_headercell" const:id="nameTableHeader"
+                        ><var:string label:value="Name" /></th
+                        ><th const:class="tbtv_headercell" const:id="activeTableHeader"
+                        ><var:string label:value="Active" /></th
+                        ></tr
+                      ></thead>
+                  <tbody><!--space --></tbody>
+                </table>
+                <input type="hidden" const:name="sieveFilters" const:id="sieveFilters"
+                  var:value="sieveFiltersValue"/>
+              </div>
+              <div class="bottomToolbar">
+                <a const:id="filterAdd" class="bottomButton" href="#">
+                  <span><img rsrc:src="add-icon.png" label:title="Add" />
+                  </span></a>
+                <a const:id="filterDelete" class="bottomButton" href="#">
+                  <span><img rsrc:src="remove-icon.png" label:title="Delete" />
+                  </span></a>
+                <a const:id="filterMoveUp" class="bottomButton" href="#">
+                  <span><img rsrc:src="up-icon.png" label:title="Move Up" />
+                  </span></a>
+                <a const:id="filterMoveDown" class="bottomButton" href="#">
+                  <span><img rsrc:src="down-icon.png" label:title="Move Down" />
+                  </span></a>
+              </div>
+            </div>
+            </var:if>
+            </fieldset>
+          </div>
 
           <div id="mailAccountsView" class="tab">
             <input type="hidden" const:name="mailAccountsJSON" const:id="mailAccountsJSON"
@@ -432,23 +353,30 @@
             </var:if>
             <div id="mailAccountEditor">
               <fieldset const:id="accountInfo">
-                <dl class="dl-horizontal">
-                  <dt><var:string label:value="Server Name:"/></dt>
-                  <dd><input const:name="serverName" const:id="serverName" type="text" const:value=""/>
-                      <var:string label:value="Port:"/>
-                      <input const:name="port" const:id="port" type="text" const:value=""/></dd>
-                  <dt><var:string label:value="Encryption:"/></dt>
-                  <dd><input const:name="encryption" type="radio" const:value="none"/>
-                      <var:string label:value="None"/>
-                      <input const:name="encryption" type="radio" const:value="ssl"/>
-                      <var:string label:value="SSL"/>
-                      <input const:name="encryption" type="radio" const:value="tls"/>
-                      <var:string label:value="TLS"/></dd>
-                  <dt><var:string label:value="User Name:"/></dt>
-                  <dd><input const:name="userName" const:id="userName" type="text" const:value=""/></dd>
-                  <dt><var:string label:value="Password:"/></dt>
-                  <dd><input const:name="password" const:id="password" type="password" const:value=""/></dd>
-                </dl>
+                  <div class="inline-field">
+                    <label><var:string label:value="Server Name:"/></label>
+                    <input const:name="serverName" const:id="serverName" type="text" const:value=""/>
+                  </div>
+                  <div class="inline-field">
+                    <label><var:string label:value="Port:"/></label>
+                      <input const:name="port" const:id="port" type="text" const:value=""/>
+                  </div>
+                  <div class="checkbox-list"><label><var:string label:value="Encryption:"/></label>
+                      <label><input const:name="encryption" type="radio" const:value="none"/>
+                      <var:string label:value="None"/></label>
+                      <label><input const:name="encryption" type="radio" const:value="ssl"/>
+                      <var:string label:value="SSL"/></label>
+                      <label><input const:name="encryption" type="radio" const:value="tls"/>
+                      <var:string label:value="TLS"/></label>
+                  </div>
+                  <div class="inline-field">
+                    <label><var:string label:value="User Name:"/></label>
+                    <input const:name="userName" const:id="userName" type="text" const:value=""/>
+                  </div>
+                  <div class="inline-field">
+                    <label><var:string label:value="Password:"/></label>
+                    <input const:name="password" const:id="password" type="password" const:value=""/>
+                  </div>
                 <input const:name="encryption" type="hidden" const:value="none"/>
               </fieldset>
 
@@ -457,16 +385,22 @@
               </script>
 
               <fieldset const:id="identityInfo">
-                <dl class="dl-horizontal">
-                  <dt><var:string label:value="Full Name:"/></dt>
-                  <dd><input const:name="fullName" const:id="fullName" type="text" const:value=""/></dd>
-                  <dt><var:string label:value="Email:"/></dt>
-                  <dd><input const:name="email" const:id="email" type="text" const:value=""/></dd>
-                  <dt><var:string label:value="Reply To Email:"/></dt>
-                  <dd><input const:name="replyTo" const:id="replyTo" type="text" autocomplete="off" const:value=""/></dd>
-                  <dt><var:string label:value="Signature:"/></dt>
-                  <dd><span id="actSignature"><!--space --></span></dd>
-                </dl>
+                <div class="inline-field">
+                  <label><var:string label:value="Full Name:"/></label>
+                  <input const:name="fullName" const:id="fullName" type="text" const:value=""/>
+                </div>
+                <div class="inline-field">
+                  <label><var:string label:value="Email:"/></label>
+                  <input const:name="email" const:id="email" type="text" const:value=""/>
+                </div>
+                <div>
+                  <label><var:string label:value="Reply To Email:"/></label>
+                  <input const:name="replyTo" const:id="replyTo" type="text" autocomplete="off" const:value=""/>
+                </div>
+                <div>
+                  <label><var:string label:value="Signature:"/></label>
+                  <span id="actSignature"><!--space --></span>
+                </div>
               </fieldset>
 
               <fieldset const:id="returnReceiptsInfo">
@@ -514,43 +448,51 @@
 
           <var:if condition="isVacationEnabled">
             <div id="vacationView" class="tab">
-              <label><input type="checkbox" 
-                  const:name="enableVacation"
-                  const:id="enableVacation"
-                  var:checked="enableVacation" />
-                <var:string label:value="Enable vacation auto reply"/></label>
+              <fieldset>
+                <div class="checkbox">
+                  <label><input type="checkbox" 
+                    const:name="enableVacation"
+                    const:id="enableVacation"
+                    var:checked="enableVacation" />
+                  <var:string label:value="Enable vacation auto reply"/></label>
+                </div>
               <div id="vacation">
-                <label><var:string label:value="Auto reply message :"/><br/>
+                <div>
+                  <label><var:string label:value="Auto reply message :"/></label>
                   <textarea const:name="autoReplyText"
                     const:id="autoReplyText"
                     var:value="autoReplyText"/>
-                </label><br/>
-                
-                <label><var:string label:value="Email addresses (separated by commas) :"/><br/>
+                </div>  
+                <div>
+                <label><var:string label:value="Email addresses (separated by commas) :"/></label>
                   <input type="hidden"
                     const:id="defaultEmailAddresses"
                     var:value="defaultEmailAddresses" />
+                  
                   <textarea const:name="autoReplyEmailAddresses"
                     const:id="autoReplyEmailAddresses"
-                    var:value="autoReplyEmailAddresses" /><br/>
-                  <span><a href="#" class="button" id="addDefaultEmailAddresses"><span>
-                        <var:string label:value="Add default email addresses" /></span></a>
-                  </span>
-                </label><br/>
-
-                <label><var:string label:value="Days between responses :"/> 
+                    var:value="autoReplyEmailAddresses" />
+                    <a href="#" class="button" id="addDefaultEmailAddresses">
+                    <span><var:string label:value="Add default email addresses" /></span>
+                  </a>
+                  
+                </div>
+                <div>
+                  <label><var:string label:value="Days between responses :"/></label>
                   <var:popup list="daysBetweenResponsesList" item="item"
                     const:id="daysBetweenResponsesList"
                     const:name="daysBetweenResponsesList"
                     string="item" 
-                    selection="daysBetweenResponses" /></label><br/>
-
-                <label><input type="checkbox" 
+                    selection="daysBetweenResponses" />
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" 
                     const:name="ignoreLists"
                     const:id="ignoreLists"
                     var:checked="ignoreLists" />
-                  <var:string label:value="Do not send responses to mailing lists" /></label><br/>
-
+                  <var:string label:value="Do not send responses to mailing lists" /></label>
+                </div>
+                <div class="checkbox">
                 <label class="timeDate"><input var:checked="enableVacationEndDate"
                     const:name="enableVacationEndDate" const:id="enableVacationEndDate" type="checkbox" class="checkBox"
                 /><var:string label:value="Disable auto reply on" /></label><var:component className="UIxTimeDateControl"
@@ -561,35 +503,43 @@
                     const:dayStartHour="0"
                     const:dayEndHour="23"
                 />
-
+                </div>
               </div>
+
+              </fieldset>
             </div>
           </var:if
             ><var:if condition="isForwardEnabled">
             <div id="forwardView" class="tab">
-              <label><input type="checkbox" 
+              <fieldset>
+                <div class="checkbox">
+                  <label><input type="checkbox" 
                   const:name="enableForward"
                   const:id="enableForward"
                   var:checked="enableForward" />
-                <var:string label:value="Forward incoming messages"/></label><br/>
+                  <var:string label:value="Forward incoming messages"/></label>
+                </div>
               
-              <div id="forward">
-                <label><var:string label:value="Email addresses (separated by commas) :"/><br/>
-                  <textarea const:name="forwardAddress"
-                    const:id="forwardAddress"
-                    var:value="forwardAddress" />
-                </label><br/>
-
-                <label><input type="checkbox" 
-                    const:name="forwardKeepCopy"
-                    const:id="forwardKeepCopy"
-                    var:checked="forwardKeepCopy" />
-                  <var:string label:value="Keep a copy" /></label><br/>
-              </div>
+                <div id="forward">
+                  <div>
+                  <label><var:string label:value="Email addresses (separated by commas) :"/></label>
+                    <textarea const:name="forwardAddress"
+                      const:id="forwardAddress"
+                      var:value="forwardAddress" />
+                  </div>
+                  <div class="checkbox">
+                    <label><input type="checkbox" 
+                      const:name="forwardKeepCopy"
+                      const:id="forwardKeepCopy"
+                      var:checked="forwardKeepCopy" />
+                    <var:string label:value="Keep a copy" /></label>
+                  </div>
+                </div>
+            </fieldset>
             </div>
-          </var:if>
-        </var:if><!-- userHasMailAccess -->
-        <var:if condition="shouldDisplayPasswordChange">
+          </var:if
+            ></var:if
+          ><var:if condition="shouldDisplayPasswordChange">
           <div id="passwordView" class="tab">
             <p id="passwordFields"><label><var:string label:value="New password:"
                   /><input const:id="newPasswordField" class="textField"

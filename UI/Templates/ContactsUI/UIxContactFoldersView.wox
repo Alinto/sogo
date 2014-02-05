@@ -36,12 +36,14 @@
         enctype="multipart/form-data"
         onsubmit="return AIM.submit(this, {'onStart' : validateUploadForm, 
         'onComplete' : uploadCompleted})">
-        <p class="prompt"><input type="file" name="contactsFile" id="contactsFile" class="textField" />
+        <input type="file" name="contactsFile" id="contactsFile" class="textField" />
+          <p class="buttons">
           <a href="#" class="button actionButton" id="uploadSubmit"
             onclick="if($('uploadForm').onsubmit()) $('uploadForm').submit()">
             <span><var:string label:value="Upload" /></span></a>
           <a href="#" class="button" const:id="uploadCancel">
-            <span><var:string label:value="Cancel" /></span></a></p>
+            <span><var:string label:value="Cancel" /></span></a>
+            </p>
       </form>
       <hr/>
     </div>
@@ -91,18 +93,7 @@
   </div>
 
   <div id="contactFoldersList">
-    <h6><var:string label:value="Address Books" /></h6>
-    <div id="abToolbar">
-      <a href="#" class="smallToolbarButton"
-         ><span><img rsrc:src="add-addressbook.png" label:title="New Addressbook..."
-         /></span></a>
-      <a href="#" class="smallToolbarButton"
-         ><span><img rsrc:src="add-user-addressbook.png" label:title="Subscribe to an Addressbook..."
-         /></span></a>
-      <a href="#" class="smallToolbarButton"
-         ><span><img rsrc:src="remove-addressbook.png" label:title="Remove the selected Addressbook"
-         /></span></a>
-    </div>
+    <h6 class="titlediv"><var:string label:value="Address Books" /></h6>
     <ul id="contactFolders">
       <var:foreach list="contactFolders" item="currentFolder"
         ><li var:id="currentContactFolderId"
@@ -114,6 +105,17 @@
           ></var:foreach
         >
     </ul>
+    <div id="abToolbar">
+      <a href="#" class="smallToolbarButton"
+         ><span><img rsrc:src="add-addressbook.png" label:title="New Addressbook..."
+         /></span></a>
+      <a href="#" class="smallToolbarButton"
+         ><span><img rsrc:src="add-user-addressbook.png" label:title="Subscribe to an Addressbook..."
+         /></span></a>
+      <a href="#" class="smallToolbarButton"
+         ><span><img rsrc:src="remove-addressbook.png" label:title="Remove the selected Addressbook"
+         /></span></a>
+    </div>
     <var:if condition="hasContactSelectionButtons">
       <div class="contactSelection">
         <var:component value="selectorComponent" />

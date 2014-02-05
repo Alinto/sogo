@@ -12,15 +12,12 @@ DIV#attendeesView
 DIV#freeBusyView
 { background-color: #fff;
   position: absolute;
-  top: 30px;
+  top: 45px;
   bottom: 135px;
   left: 0px;
   right: 0px;
   overflow: hidden;
-  border-top: 1px solid #909090;
-  border-left: 1px solid #909090;
-  border-right: 1px solid #fff;
-  border-bottom: 1px solid #fff; }
+  border: 1px solid #ccc }
 
 SPAN.timeDateControl A:hover
 { text-decoration: none; }
@@ -45,12 +42,17 @@ TABLE#freeBusy TD.freeBusyAttendees DIV
 { overflow: hidden; }
 
 TABLE#freeBusy TD.freeBusyData DIV
-{ overflow: scroll; }
+{ overflow: auto; }
+
+TABLE#freeBusyData TD{
+  padding:5px 0px;
+}
 
 TABLE#freeBusyAttendees TD.attendeeStatus
 { width: 24px;
   min-width: 24px;
-  max-width: 24px; }
+  max-width: 24px; 
+  vertical-align: middle;}
 
 TABLE#freeBusyAttendees TD.attendeeStatus DIV
 { width: 12px;
@@ -67,6 +69,7 @@ TABLE#freeBusyAttendees TR.attendee-row TD.attendeeStatus DIV
 { background-repeat: no-repeat;
   width: 24px;
   height: 20px;
+  margin-right: 5px;
   background-image: url("attendee-roles.png"); }
 
 LI[role="req-participant"] > SPAN.role-icon,
@@ -163,7 +166,7 @@ TABLE#freeBusyAttendees TR.futureAttendee TD,
 TABLE#freeBusyData TR.futureData TD
 { border: 0px;
   height: 3em;
-  line-height: 3em; }
+}
 
 SPAN.freeBusyZoneElement
 { display: block;
@@ -181,9 +184,10 @@ TABLE#freeBusyHeader TR.freeBusyHeader3 SPAN.freeBusyZoneElement.busy
 { background-color: #f03 !important; }
 
 TABLE#freeBusyData TD SPAN.freeBusyZoneElement
-{ height: 24px; }
+{ height: 34px;
+  margin: -5px 0px}
 
-.colorBox.free,
+SPAN.colorBox.free,
 TABLE#freeBusyData TD SPAN.freeBusyZoneElement
 { background-color: #ebebe4; }
 
@@ -193,12 +197,13 @@ DIV#freeBusyFooter
   left: 0px;
   right: 0px;
   bottom: 0px;
-  line-height: 2em;
   text-align: right; }
 
 DIV#legend
 { margin-left: 1em;
-  text-align: left; }
+  text-align: left; 
+  float: right;
+}
 
 DIV#legend UL
 { cursor: default;
@@ -211,23 +216,28 @@ DIV#legend UL
 
 DIV#legend LI
 { height: 20px;
+  line-height: 20px;
   white-space: nowrap;
   margin: 0px;
   padding: 0px; }
 
-#legend .colorBox
-{ border: 1px solid #fff;
-  cursor: default; }
+UL.freebusy-legend SPAN.colorBox
+{ float: left;
+  margin-right: 5px;
+  display: block;
+  width: 14px;
+  border: 1px solid #999;
+  height: 14px; }
 
-.colorBox.busy,
+SPAN.colorBox.busy,
 SPAN.freeBusyZoneElement.busy
 { background-color: #35556b !important; }
 
-.colorBox.maybe-busy,
+SPAN.colorBox.maybe-busy,
 SPAN.freeBusyZoneElement.maybe-busy
 { background-color: #adc0d0 !important; }
 
-.colorBox.noFreeBusy,
+SPAN.colorBox.noFreeBusy,
 TABLE#freeBusyData TD.noFreeBusy
 { background-color: #e09ebd; }
 
@@ -245,21 +255,40 @@ SPAN.hidden
 { display: none; }
 
 DIV#freeBusyReplicas
-{ position: absolute;
-  top: 2px;
-  right: 0px;
-  width: 30em;
-  height: 4em; }
+{ text-align: left;
+width: 300px;
+float: left;}
+
+DIV#freeBusyReplicas SPAN.datePicker.date{
+  position: relative;
+  display: inline-block;
+}
+DIV#freeBusyReplicas #startTime_time,
+DIV#freeBusyReplicas #endTime_time{
+  width: auto;
+  display: inline-block;
+}
+SPAN.timeDateControl{
+  width: 100%;
+}
 
 DIV#freeBusyReplicas LABEL
 { line-height: 1.5em; }
+
+DIV#freeBusyReplicas DIV {
+  width: 100%;
+}
+DIV#freeBusyReplicas a.calendarButton {
+  position: absolute;
+  right: 4px;
+  top: 6px;
+}
 
 DIV#windowButtons
 { position: absolute;
   bottom: 0px;
   left: 0px;
   right: 0px;
-  height: 24px;
   text-align: right; }
 
 .officeHour
@@ -273,4 +302,5 @@ SPAN.timeDateControl INPUT,
 SPAN.timeDateControl SELECT,
 SPAN.timeDateControl SPAN,
 DIV#freeBusyReplicas SPAN
-{ vertical-align: top; }
+{ vertical-align: top;
+}

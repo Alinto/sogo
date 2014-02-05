@@ -40,82 +40,108 @@
 
   <form var:href="saveURL" name="editform">
     <div id="eventView">
-      <label><var:string label:value="Title:" /><span class="content"
-          ><input type="text" name="summary" id="summary"
+      <div> 
+      <label><var:string label:value="Title:" /></label>
+          <input type="text" name="summary" id="summary"
             class="textField"
             var:value="title"
-            /></span></label>
-      <label><var:string label:value="Location:" /><span class="content"
-          ><input type="text" name="location" id="location"
+            />
+      </div>
+      
+      <div>
+      <label><var:string label:value="Location:" /></label>
+        <input type="text" name="location" id="location"
             class="textField"
             var:value="location"
-            /></span></label>
-      <span class="checkBoxList"><var:string label:value="Category:" />
-        <span class="content"><var:popup const:id="categoryList"
-	    list="categoryList" item="item"
-            label:noSelectionString="category_none"
-            string="item" selection="category"
-            /> <var:string label:value="Calendar:" />
-          <var:popup const:id="calendarList"
-	    var:disabled="isChildOccurence"
-	    list="calendarList" item="item"
-            string="calendarDisplayName"
-	    var:selection="componentCalendar"
-	    /></span></span>
-      <span class="checkBoxList"><var:string label:value="Priority:" />
-         <span class="content"><var:popup const:id="priorityList" list="priorities" item="item"
+            />
+      </div>
+      <var:component-content />
+      <div class="inline-field">
+          <label><var:string label:value="Category:" /></label>
+            <var:popup const:id="categoryList"
+    	    list="categoryList" item="item"
+                label:noSelectionString="category_none"
+                string="item" selection="category"
+                />
+      </div>
+      <div class="inline-field">
+        <label><var:string label:value="Priority:" /></label>
+         <var:popup const:id="priorityList" list="priorities" item="item"
             label:noSelectionString="prio_0"
             string="itemPriorityText" selection="priority"/>
-      </span></span>
-      <var:if condition="hasOrganizer"
-	><label id="organizerLabel"><var:string label:value="Organizer:"
-	    /><span class="content"><a var:href="organizer.email" var:email="organizer.email.rfc822Email"
-              ><var:string value="organizerName" /></a
-              ></span></label>
-      </var:if>
-      <var:if condition="hasCreatedBy"
-	><label id="createdByLabel"><var:string label:value="Created by:"
-	    /><span class="content"><a var:href="createdByLink" var:email="createdBy"
-	      ><var:string value="createdByName" /></a
-	      ></span></label>
-      </var:if>
-      <!--<var:if condition="canBeOrganizer"
-	><label id="organizerListLabel"><var:string label:value="Organizer:"
-	    /><span class="content"><var:popup list="organizerList"
+      </div>
+      <div>
+          <label><var:string label:value="Calendar:" /></label>
+              <var:popup const:id="calendarList"
+          var:disabled="isChildOccurence"
+          list="calendarList" item="item"
+                string="calendarDisplayName"
+          var:selection="componentCalendar"
+          />
+      </div>
+      <var:if condition="hasOrganizer">
+      <div id="organizerLabel">
+        <label><var:string label:value="Organizer:"/></label>
+	      <a var:href="organizer.email" var:email="organizer.email.rfc822Email">
+          <var:string value="organizerName" />
+        </a>
+      </div>
+
+  </var:if>
+  <var:if condition="hasCreatedBy">
+      <div id="createdByLabel">
+        <label><var:string label:value="Created by:"/></label>
+        <a var:href="createdByLink" var:email="createdBy">
+          <var:string value="createdByName" />
+        </a>
+      </div>
+  </var:if>
+<!--<var:if condition="canBeOrganizer">
+    <div>
+      <label id="organizerListLabel"><var:string label:value="Organizer:"/></label>
+        <var:popup list="organizerList"
 	      item="item" string="itemOrganizerText"
 	      var:selection="organizerIdentity"/>
-	  </span></label></var:if>-->
-      <var:component-content />
-      <hr />
-      <label><var:string label:value="Repeat:" />
-       <span class="content"><var:popup list="repeatList" item="item"
-          label:noSelectionString="repeat_NEVER"
-	  var:disabled="isChildOccurence"
-          const:disabledValue="-"
-          const:name="repeatList"
-	  const:id="repeatList"
-          string="itemRepeatText" var:selection="repeat"
-          /> <a href="#" id="repeatHref" style="display: none;"
-             ><var:string label:value="Edit"/></a></span></label>
-      <hr />
-      <label><var:string label:value="Reminder:" />
-      <span class="content"><var:popup list="reminderList" item="item"
+    </div>
+  </var:if>-->
+
+      <div>
+        <label><var:string label:value="Repeat:" /></label>
+          <var:popup list="repeatList" item="item"
+            label:noSelectionString="repeat_NEVER"
+  	         var:disabled="isChildOccurence"
+            const:disabledValue="-"
+            const:name="repeatList"
+  	         const:id="repeatList"
+            string="itemRepeatText" var:selection="repeat"
+            /> <a href="#" id="repeatHref" style="display: none;"
+               ><var:string label:value="Edit"/></a>
+      </div>
+      <div>
+        <label><var:string label:value="Reminder:" /></label>
+        <var:popup list="reminderList" item="item"
          const:disabledValue="-"
          label:noSelectionString="reminder_NONE"
-          const:name="reminderList"
-	 const:id="reminderList"
+         const:name="reminderList"
+	       const:id="reminderList"
          string="itemReminderText" var:selection="reminder"
          /> <a href="#" id="reminderHref" style="display: none;"
-             ><var:string label:value="Edit"/></a></span></label>
-      <hr />
-      <label id="commentArea"><var:string label:value="Description:"
-	  /><span class="content"><textarea rows="20" name="comment" var:value="comment" /></span></label>
-      <label id="documentLabel" style="display: none;"><var:string label:value="Document:"
-	  /><span class="content"
-	  ><a href="#" id="documentHref"><!-- space --></a
-	    ><a id="changeAttachButton" class="button" var:href="#"
-	    ><span><var:string label:value="Change..."/></span></a
-	    ></span></label>
+             ><var:string label:value="Edit"/></a>
+       </div>
+
+      <div id="commentArea">
+        <label ><var:string label:value="Description:"/></label>
+	      <textarea rows="20" name="comment" var:value="comment" />
+      </div>
+      
+      <div id="documentLabel" style="display: none;">
+        <label >
+          <var:string label:value="Document:"/>
+        </label>
+          <a href="#" id="documentHref"><!-- space --></a>
+          <a id="changeAttachButton" class="button" var:href="#">
+            <span><var:string label:value="Change..."/></span></a>
+      </div>
 
       <!-- hidden -->
       <input type="hidden" name="attach" id="attach" var:value="attach"/>
@@ -250,6 +276,17 @@
                 <input type="checkbox" name="delegateReceiveUpdates" /> <var:string label:value="Keep sending me updates" /> -->
       </span>
     </label>
+    <!--TODO: I'm not sure how to send this
+    <label><var:string label:value="Reminder:" />
+      <span class="content"><var:popup list="reminderList" item="item"
+          const:disabledValue="-"
+          label:noSelectionString="reminder_NONE"
+          const:name="reminderList"
+          const:id="reminderList"
+          string="itemReminderText"
+          var:selection="reminder"
+          const:onchange="?" /></span>
+    </label>-->
   </var:if>
     </div>
     <var:if condition="hasAttendees">
@@ -281,8 +318,8 @@
             <div class="fakeTextArea"><var:string var:value="comment" /></div>
           </span>
         </label>
-    </div>
-  </var:if>
+      </div>
+    </var:if>
 
       <input type="hidden" name="attach" id="attach" var:value="attach"/>
       <input type="hidden" name="classification" id="classification"

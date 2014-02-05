@@ -14,28 +14,22 @@
   var:saveURL="saveURL">
 
   <var:if condition="eventIsReadOnly" const:negate="YES">
-  <span class="checkBoxList"><var:string label:value="Start:" />
-    <span class="content"><input var:checked="hasStartDate"
-	id="startDateCB" type="checkbox" class="checkBox"
-	onchange="onTimeControlCheck(this);"
-	/><var:component className="UIxTimeDateControl"
-	var:disabled="startDateDisabled"
-	const:controlID="startTime"
-	date="taskStartDate"
-	const:dayStartHour="0"
-	const:dayEndHour="23"
-	/></span></span>
-  <span class="checkBoxList"><var:string label:value="Due Date:" />
-    <span class="content"><input var:checked="hasDueDate"
-	id="dueDateCB" type="checkbox" class="checkBox"
-	onchange="onTimeControlCheck(this);"
-	/><var:component className="UIxTimeDateControl"
-	var:disabled="dueDateDisabled"
-	const:controlID="dueTime"
-	date="taskDueDate"
-	const:dayStartHour="0"
-	const:dayEndHour="23"
-	/></span></span>
+  <div class="checkBoxList inline-field">
+    <label >
+      <input var:checked="hasStartDate" id="startDateCB" type="checkbox" class="checkBox" onchange="onTimeControlCheck(this);"/>
+      <var:string label:value="Start:" />
+    </label>
+    <var:component className="UIxTimeDateControl" var:disabled="startDateDisabled" const:controlID="startTime" date="taskStartDate" const:dayStartHour="0" const:dayEndHour="23" /> 
+  </div>
+  <div class="checkBoxList inline-field">
+    <label>
+      <input var:checked="hasDueDate" id="dueDateCB" type="checkbox" class="checkBox" onchange="onTimeControlCheck(this);"/>
+      <var:string label:value="Due Date:" />
+    </label>
+       
+      <var:component className="UIxTimeDateControl" var:disabled="dueDateDisabled" const:controlID="dueTime" date="taskDueDate" const:dayStartHour="0" const:dayEndHour="23"/>
+    </span>
+  </div>
   <span class="checkBoxList"><var:string label:value="Status:" />
     <span class="content"><var:popup list="statusList" item="item"
 	const:id="statusList"
