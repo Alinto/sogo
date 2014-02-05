@@ -219,29 +219,13 @@
 
 - (NSString *) secureContentAsString
 {
-  iCalCalendar *tmpCalendar;
   iCalRepeatableEntityObject *tmpComponent;
-//   NSArray *roles;
+  iCalCalendar *tmpCalendar;
+  NSArray *allComponents;
   SoSecurityManager *sm;
   NSString *iCalString;
 
-//       uid = [[context activeUser] login];
-//       roles = [self aclsForUser: uid];
-//       if ([roles containsObject: SOGoCalendarRole_Organizer]
-// 	  || [roles containsObject: SOGoCalendarRole_Participant]
-// 	  || [roles containsObject: SOGoCalendarRole_ComponentViewer])
-// 	calContent = content;
-//       else if ([roles containsObject: SOGoCalendarRole_ComponentDAndTViewer])
-// 	{
-// 	  tmpCalendar = [[self calendar: NO] copy];
-// 	  tmpComponent = (iCalRepeatableEntityObject *)
-// 	    [tmpCalendar firstChildWithTag: [self componentTag]];
-// 	  [self _filterComponent: tmpComponent];
-// 	  calContent = [tmpCalendar versitString];
-// 	  [tmpCalendar release];
-// 	}
-//       else
-// 	calContent = nil;
+  int i;
 
   sm = [SoSecurityManager sharedSecurityManager];
   if (activeUserIsOwner
@@ -253,14 +237,21 @@
 		onObject: self inContext: context])
     {
       tmpCalendar = [[self calendar: NO secure: NO] mutableCopy];
-      tmpComponent = (iCalRepeatableEntityObject *)
-	[tmpCalendar firstChildWithTag: [self componentTag]];
-      [self _filterComponent: tmpComponent];
+
+      // We filter all components, in case we have RECURRENCE-ID
+      allComponents = [tmpCalendar childrenWithTag: [self componentTag]];
+
+      for (i = 0; i < [allComponents count]; i++)
+        {
+          tmpComponent = (iCalRepeatableEntityObject *)[allComponents objectAtIndex:i];
+          [self _filterComponent: tmpComponent];
       
-      // We add an additional header here to inform clients (if necessary) that
-      // we churned the content of the calendar.
-      [tmpComponent addChild: [CardElement simpleElementWithTag: @"X-SOGo-Secure"
-					   value: @"YES"]];
+          // We add an additional header here to inform clients (if necessary) that
+          // we churned the content of the calendar.
+          [tmpComponent addChild: [CardElement simpleElementWithTag: @"X-SOGo-Secure"
+                                                              value: @"YES"]];
+        }
+
       iCalString = [tmpCalendar versitString];
       [tmpCalendar release];
     }
