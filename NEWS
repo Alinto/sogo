@@ -26,6 +26,7 @@ Enhancements
  - visually identify users with no freebusy information in autocompletion widget of attendees editor (#2565)
  - respect occurences of recurrent events when deleting selected events (#1950)
  - improved confirmation dialog box when deleting events and tasks
+ - moved the DN cache to SOGoCache - avoiding sogod restarts after RDN operations
 
 Bug fixes
  - don't load 'background' attribute (#2437)
