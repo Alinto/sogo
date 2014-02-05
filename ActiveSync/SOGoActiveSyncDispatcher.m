@@ -568,20 +568,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processGetItemEstimate: (id <DOMElement>) theDocumentElement
                      inResponse: (WOResponse *) theResponse
 {
-  EOQualifier *notDeletedQualifier, *sinceDateQualifier;
   NSString *collectionId, *realCollectionId;
-  EOAndQualifier *qualifier;
-  NSCalendarDate *filter;
   id currentCollection;
   NSMutableString *s;
-  NSArray *uids;
   NSData *d;
 
   SOGoMicrosoftActiveSyncFolderType folderType;
-  int status;
+  int status, count;
 
   s = [NSMutableString string];
   status = 1;
+  count = 0;
 
   collectionId = [[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue];
   realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
@@ -594,29 +591,41 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // * SORT 124576 124577 124579 124578
   // . OK Completed (4 msgs in 0.000 secs)
   //
-  filter = [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]];
-  
-  notDeletedQualifier =  [EOQualifier qualifierWithQualifierFormat:
-                                        @"(not (flags = %@))",
-                                      @"deleted"];
-  sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
-                                      @"(DATE >= %@)", filter];
-  
-  qualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeletedQualifier, sinceDateQualifier,
-                                                      nil];
-  AUTORELEASE(qualifier);
-  
-  uids = [currentCollection fetchUIDsMatchingQualifier: qualifier
-                                          sortOrdering: @"REVERSE ARRIVAL"
-                                              threaded: NO];
-  
-  
+  if (folderType == ActiveSyncMailFolder)
+    {
+      EOQualifier *notDeletedQualifier, *sinceDateQualifier;
+      EOAndQualifier *qualifier;
+      NSCalendarDate *filter;
+      NSArray *uids;
+
+      filter = [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]];
+      
+      notDeletedQualifier =  [EOQualifier qualifierWithQualifierFormat:
+                                            @"(not (flags = %@))",
+                                          @"deleted"];
+      sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
+                                          @"(DATE >= %@)", filter];
+      
+      qualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeletedQualifier, sinceDateQualifier,
+                                          nil];
+      AUTORELEASE(qualifier);
+      
+      uids = [currentCollection fetchUIDsMatchingQualifier: qualifier
+                                              sortOrdering: @"REVERSE ARRIVAL"
+                                                  threaded: NO];
+      count = [uids count];
+    }
+  else
+    {
+      count = [[currentCollection toOneRelationshipKeys] count];
+    }
+      
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendFormat: @"<GetItemEstimate xmlns=\"GetItemEstimate:\"><Response><Status>%d</Status><Collection>", status];
   
   [s appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
-  [s appendFormat: @"<Estimate>%d</Estimate>", [uids count]];
+  [s appendFormat: @"<Estimate>%d</Estimate>", count];
   
   [s appendString: @"</Collection></Response></GetItemEstimate>"];
 
