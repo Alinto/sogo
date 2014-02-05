@@ -613,8 +613,7 @@ convertChars (const char *oldString, unsigned int oldLength,
   unsigned int newLength;
 
   utf8String = [self UTF8String];
-  newString = convertChars (utf8String, strlen (utf8String),
-                            &newLength);
+  newString = convertChars (utf8String, strlen (utf8String), &newLength);
   convertedString = [[NSString alloc] initWithBytes: newString
                                              length: newLength
                                            encoding: NSUTF8StringEncoding];

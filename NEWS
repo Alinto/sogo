@@ -37,6 +37,7 @@ Bug fixes
  - simplify searches in the address book (#2187)
  - warn user when dnd failed because of a resource conflict (#1613)
  - respect the maximum number of bookings when viewing the freebusy information of a resource (#2560)
+ - encode HTML entities when forwarding an HTML message inline in plain text composition mode (#2411)
 
 2.1.1b (2013-12-04)
 -------------------
