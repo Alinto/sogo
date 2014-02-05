@@ -549,10 +549,6 @@ static Class NSStringK;
 
             if (userDN)
               {
-                // We cache the _login <-> userDN entry to speed up things
-                [[SOGoCache sharedCache] setDistinguishedName: userDN
-                                                     forLogin: _login];
-
                 if (!passwordPolicy)
                   didBind = [bindConnection bindWithMethod: @"simple"
                                                     binddn: userDN
@@ -564,6 +560,11 @@ static Class NSStringK;
                                                       perr: (void *)_perr
                                                     expire: _expire
                                                      grace: _grace];
+
+                if (didBind)
+                  // We cache the _login <-> userDN entry to speed up things
+                  [[SOGoCache sharedCache] setDistinguishedName: userDN
+                                                       forLogin: _login];
               }
           }
       }
