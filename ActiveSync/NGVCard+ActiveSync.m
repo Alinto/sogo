@@ -171,45 +171,126 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
 {
+  CardElement *element;
   id o;
+  
+  // Contact's note
+  if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
+    [self setNote: o];
 
-   if ((o = [theValues objectForKey: @"CompanyName"]))
-     {
-       [self setOrg: o  units: nil];
-     }
-   
-   if ((o = [theValues objectForKey: @"Email1Address"]))
-     {
-       [self addEmail: o  types: [NSArray arrayWithObject: @"pref"]];
-     }
+  //
+  // Business address information
+  //
+  // BusinessStreet
+  // BusinessCity
+  // BusinessPostalCode
+  // BusinessState
+  // BusinessCountry
+  //
+  element = [self elementWithTag: @"adr" ofType: @"work"];
+  [element setSingleValue: @""
+                  atIndex: 1 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"BusinessStreet"]
+                  atIndex: 2 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"BusinessCity"]
+                  atIndex: 3 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"BusinessState"]
+                  atIndex: 4 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"BusinessPostalCode"]
+                  atIndex: 5 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"BusinessCountry"]
+                  atIndex: 6 forKey: @""];
 
-   if ((o = [theValues objectForKey: @"Email2Address"]))
-     {
-       [self addEmail: o types: nil];
-     }
+  //
+  // Home address information
+  //
+  // HomeStreet
+  // HomeCity
+  // HomePostalCode
+  // HomeState
+  // HomeCountry
+  //
+  element = [self elementWithTag: @"adr" ofType: @"home"];
+  [element setSingleValue: @""
+                  atIndex: 1 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"HomeStreet"]
+                  atIndex: 2 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"HomeCity"]
+                  atIndex: 3 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"HomeState"]
+                  atIndex: 4 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"HomePostalCode"]
+                  atIndex: 5 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"HomeCountry"]
+                  atIndex: 6 forKey: @""];
 
-   if ((o = [theValues objectForKey: @"Email3Address"]))
-     {
-       [self addEmail: o  types: nil];
-     }
+  // Company's name
+  if ((o = [theValues objectForKey: @"CompanyName"]))
+    {
+      [self setOrg: o  units: nil];
+    }
+  
+  // Email addresses
+  if ((o = [theValues objectForKey: @"Email1Address"]))
+    {
+      [self addEmail: o  types: [NSArray arrayWithObject: @"pref"]];
+    }
+  
+  if ((o = [theValues objectForKey: @"Email2Address"]))
+    {
+      [self addEmail: o types: nil];
+    }
+  
+  if ((o = [theValues objectForKey: @"Email3Address"]))
+    {
+      [self addEmail: o  types: nil];
+    }
+  
+  // Formatted name
+  // MiddleName
+  // Suffix   (II)
+  // Title    (Mr.)
+  [self setFn: [theValues objectForKey: @"FileAs"]];
 
-   [self setNWithFamily: [theValues objectForKey: @"LastName"]
-                  given: [theValues objectForKey: @"FirstName"]
-             additional: nil prefixes: nil suffixes: nil];
-   
-   if ((o = [theValues objectForKey: @"MobilePhoneNumber"]))
-     {
-     }
-   
-   if ((o = [theValues objectForKey: @"Title"]))
-     {
-       [self setTitle: o];
-     }
+  [self setNWithFamily: [theValues objectForKey: @"LastName"]
+                 given: [theValues objectForKey: @"FirstName"]
+            additional: nil prefixes: nil suffixes: nil];
+  
+  // IM information
+  [[self uniqueChildWithTag: @"x-aim"]
+    setSingleValue: [theValues objectForKey: @"IMAddress"]
+            forKey: @""];
 
-   if ((o = [theValues objectForKey: @"WebPage"]))
-     {
-     }
-   
+  //
+  // Phone numbrrs
+  //
+  element = [self elementWithTag: @"tel" ofType: @"work"];
+  [element setSingleValue: [theValues objectForKey: @"BusinessPhoneNumber"]  forKey: @""];
+
+  element = [self elementWithTag: @"tel" ofType: @"home"];
+  [element setSingleValue: [theValues objectForKey: @"HomePhoneNumber"]  forKey: @""];
+
+  element = [self elementWithTag: @"tel" ofType: @"cell"];
+  [element setSingleValue: [theValues objectForKey: @"MobilePhoneNumber"]  forKey: @""];
+
+  element = [self elementWithTag: @"tel" ofType: @"fax"];
+  [element setSingleValue: [theValues objectForKey: @"BusinessFaxNumber"]  forKey: @""];
+
+  element = [self elementWithTag: @"tel" ofType: @"pager"];
+  [element setSingleValue: [theValues objectForKey: @"PagerNumber"]  forKey: @""];
+  
+  // Job's title
+  if ((o = [theValues objectForKey: @"JobTitle"]))
+    {
+      [self setTitle: o];
+    }
+  
+  // WebPage (work)
+  if ((o = [theValues objectForKey: @"WebPage"]))
+    {
+      [[self elementWithTag: @"url" ofType: @"work"]
+          setSingleValue: o  forKey: @""];
+    }
 }
 
 @end
