@@ -62,6 +62,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGImap4/NSString+Imap4.h>
 
 #import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeFileData.h>
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMail/NGMimeMessageParser.h>
 #import <NGMail/NGMimeMessage.h>
@@ -1359,6 +1360,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       NGMimeMessageParser *parser;
       NSData *data;
 
+      NGMimeMessageGenerator *generator;
+      NGMimeBodyPart   *bodyPart;
+      NGMutableHashMap *map;
+      NGMimeFileData *fdata;
+      NSException *error;
+      id body;
+
       userFolder = [[context activeUser] homeFolderInContext: context];
       accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
       currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
@@ -1380,10 +1388,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // We create a new MIME multipart/mixed message. The first part will be the text part
       // of our "smart forward" and the second part will be the message/rfc822 part of the
       // "smart forwarded" message.
-      NGMimeBodyPart   *bodyPart;
-      NGMutableHashMap *map;
-      id body;
-
       map = [NGHashMap hashMapWithDictionary: [messageFromSmartForward headers]];
       [map setObject: @"multipart/mixed"  forKey: @"content-type"];
 
@@ -1398,21 +1402,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [body addBodyPart: bodyPart];
 
       // Second part
-      // FIXME - SOPE (read "POS") generates garbage if we only have the content-type header
       map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
       [map setObject: @"message/rfc822" forKey: @"content-type"];
+      [map setObject: @"8bit" forKey: @"content-transfer-encoding"];
       bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
-      [bodyPart setBody: [mailObject content]];
+      
+      data = [mailObject content];
+      fdata = [[NGMimeFileData alloc] initWithBytes:[data bytes]
+                                             length:[data length]];
+
+      [bodyPart setBody: fdata];
+      RELEASE(fdata);
       [body addBodyPart: bodyPart];
       [messageToSend setBody: body];
       
-      NGMimeMessageGenerator *generator;
       generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
       data = [generator generateMimeFromPart: messageToSend];
             
-      NSException *error = [self _sendMail: data
-                                recipients: [messageFromSmartForward allRecipients]
-                                 saveInSentItems:  ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
+      error = [self _sendMail: data
+                   recipients: [messageFromSmartForward allRecipients]
+                    saveInSentItems:  ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
       
       if (error)
         {
