@@ -69,7 +69,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     [s appendFormat: @"<Email1Address xmlns=\"Contacts:\">%@</Email1Address>", o];
   
   
-  // Secondary email addresses
+  // Secondary email addresses (2 and 3)
   emails = [self secondaryEmails];
 
   for (i = 0; i < [emails count]; i++)
@@ -150,7 +150,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   // Other, less important fields
   if ((o = [self birthday]))
-    [s appendFormat: @"<Birthday xmlns=\"Contacts:\">%@</Birthday>", [o activeSyncRepresentation]];
+    [s appendFormat: @"<Birthday xmlns=\"Contacts:\">%@</Birthday>", [o activeSyncRepresentationWithoutSeparators]];
 
   if ((o = [self note]))
     {
