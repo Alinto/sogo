@@ -3173,6 +3173,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
                      [NSArray arrayWithObject: SOGoRole_ObjectCreator],
                      [NSArray arrayWithObject: SOGoRole_ObjectEraser],
                      nil];
+          [rolesClassifications retain];
         }
       // When a user is a member of many groups for which there are access rights, multiple access rights
       // can be returned for each classification. In this case, we only keep the highest access right.
