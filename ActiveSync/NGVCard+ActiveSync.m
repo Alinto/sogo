@@ -39,6 +39,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Contacts/NGVCard+SOGo.h>
 
+#include "NSDate+ActiveSync.h"
+
 @implementation NGVCard (ActiveSync)
 
 - (NSString *) activeSyncRepresentation
