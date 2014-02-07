@@ -41,6 +41,7 @@ Bug fixes
  - encode HTML entities when forwarding an HTML message inline in plain text composition mode (#2411)
  - encode HTML entities in JSON data returned by Calendar module (#2598)
  - fixed handling of ACLs on shared calendars with multiple groups (#1854)
+ - fixed HTML formatting of appointment notifications for Outlook (#2233)
 
 2.1.1b (2013-12-04)
 -------------------
