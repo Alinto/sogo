@@ -30,12 +30,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoMailObject+ActiveSync.h"
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
+#import <NGCards/iCalPerson.h>
 #import <NGCards/iCalTimeZone.h>
 
 #import <NGExtensions/NGBase64Coding.h>
@@ -417,6 +419,12 @@ struct GlobalObjectId {
       [s appendFormat: @"<Organizer xmlns=\"Email:\">%@</Organizer>", [[event organizer] rfc822Email]];
       [s appendFormat: @"<ResponseRequested xmlns=\"Email:\">%d</ResponseRequested>", 1];
       
+      // We disallow new time proposals
+      [s appendFormat: @"<DisallowNewTimeProposal xmlns=\"Email:\">%d</DisallowNewTimeProposal>", 1];
+
+      // We set the right message type
+      [s appendFormat: @"<MeetingMessageType xmlns=\"Email2:\">%d</MeetingMessageType>", 1];
+
       // From http://blogs.msdn.com/b/exchangedev/archive/2011/07/22/working-with-meeting-requests-in-exchange-activesync.aspx:
       //
       // "Clients that need to determine whether the GlobalObjId  element for a meeting request corresponds to an existing Calendar
@@ -429,6 +437,7 @@ struct GlobalObjectId {
       // MesssageClass and ContentClass
       [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Schedule.Meeting.Request"];
       [s appendFormat: @"<ContentClass xmlns=\"Email:\">%@</ContentClass>", @"urn:content-classes:calendarmessage"];
+
     }
   else
     {
