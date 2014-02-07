@@ -29,6 +29,7 @@
 #import <NGCards/CardElement.h>
 #import <NGCards/NSArray+NGCards.h>
 #import <NGExtensions/NSString+Ext.h>
+#import <NGExtensions/NSString+misc.h>
 
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/SOGoDateFormatter.h>
@@ -71,7 +72,7 @@
   NSMutableString *cardString;
 
   cardString = [NSMutableString stringWithCapacity: 80];
-  value = [value stringByReplacingString: @"\r" withString: @""];
+  value = [[value stringByReplacingString: @"\r" withString: @""] stringByEscapingHTMLString];
   if ([value length] > 0)
     {
       if ([url length] > 0)

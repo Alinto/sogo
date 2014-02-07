@@ -103,13 +103,13 @@ function contactsListCallback(http) {
                                              null,
                                              null,
                                              row);
-                    cell.appendChild(document.createTextNode(contact["c_cn"]));
+                    cell.update(contact["c_cn"]);
                     cell.title = contact["c_cn"];
 
                     cell = document.createElement("td");
                     row.appendChild(cell);
                     if (contact["c_mail"]) {
-                        cell.appendChild(document.createTextNode(contact["c_mail"]));
+                        cell.update(contact["c_mail"]);
                         cell.title = contact["c_mail"];
                     }
 
@@ -117,17 +117,17 @@ function contactsListCallback(http) {
                         cell = document.createElement("td");
                         row.appendChild(cell);
                         if (contact["c_screenname"])
-                            cell.appendChild(document.createTextNode(contact["c_screenname"]));
+                            cell.update(contact["c_screenname"]);
 
                         cell = document.createElement("td");
                         row.appendChild(cell);
                         if (contact["c_o"])
-                            cell.appendChild(document.createTextNode(contact["c_o"]));
+                            cell.update(contact["c_o"]);
 
                         cell = document.createElement("td");
                         row.appendChild(cell);
                         if (contact["c_telephonenumber"])
-                            cell.appendChild(document.createTextNode(contact["c_telephonenumber"]));
+                            cell.update(contact["c_telephonenumber"]);
                     }
                 }
             }

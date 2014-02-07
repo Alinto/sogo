@@ -127,11 +127,32 @@
 - (id <WOActionResults>) contactsListAction
 {
   id <WOActionResults> result;
+  id currentInfo;
   NSArray *contactsList;
+  NSEnumerator *contactsListEnumerator, *keysEnumerator;
+  NSMutableArray *newContactsList;
+  NSMutableDictionary *currentContactDictionary;
+  NSString *key;
 
   contactsList = [self contactInfos];
+  contactsListEnumerator = [contactsList objectEnumerator];
+  newContactsList = [NSMutableArray arrayWithCapacity: [contactsList count]];
+
+  // Escape HTML
+  while ((currentContactDictionary = [contactsListEnumerator nextObject]))
+    {
+      keysEnumerator = [currentContactDictionary keyEnumerator];
+      while ((key = [keysEnumerator nextObject]))
+        {
+          currentInfo = [currentContactDictionary objectForKey: key];
+          if ([currentInfo respondsToSelector: @selector (stringByEscapingHTMLString)])
+            [currentContactDictionary setObject: [currentInfo stringByEscapingHTMLString] forKey: key];
+        }
+      [newContactsList addObject: currentContactDictionary];
+    }
+
   result = [self responseWithStatus: 200
-			  andString: [contactsList jsonRepresentation]];
+			  andString: [newContactsList jsonRepresentation]];
 
   return result;
 }
