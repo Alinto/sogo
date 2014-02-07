@@ -1467,7 +1467,7 @@ function showAlarmCallback(http) {
             if (data["description"].length)
                 msg += "\n\n" + data["description"];
 
-            window.alert(msg);
+            window.alert(msg.unescapeHTML());
             showSelectDialog(data["summary"], _('Snooze for '),
                              { '5': _('5 minutes'),
                                '10': _('10 minutes'),
@@ -1983,7 +1983,7 @@ function createDialog(id, title, legend, content, positionClass) {
     var subdiv = createElement("div", null, null, null, null, newDialog);
     if (title && title.length > 0) {
         var titleh3 = createElement("h3", null, null, null, null, subdiv);
-        titleh3.appendChild(document.createTextNode(title));
+        titleh3.update(title);
     }
     if (legend) {
         if (Object.isElement(legend))
@@ -2141,14 +2141,14 @@ function _showSelectDialog(title, label, options, button, callbackFcn, callbackA
     }
     else {
         var fields = createElement("p", null, []);
-	fields.appendChild(document.createTextNode(label));
+	fields.update(label);
         var select = createElement("select"); //, null, null, { cname: name } );
 	fields.appendChild(select);
         var values = $H(options).keys();
         for (var i = 0; i < values.length; i++) {
             var option = createElement("option", null, null,
                                        { value: values[i] }, null, select);
-            option.appendChild(document.createTextNode(options[values[i]]));
+            option.update(options[values[i]]);
         }
         fields.appendChild(createElement("br"));
 

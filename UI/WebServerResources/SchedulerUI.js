@@ -265,7 +265,7 @@ function deleteEvent() {
                                 content = nodes[i].allTextContent();
                             }
                             itemElement.appendChild(colorBox);
-                            itemElement.appendChild(new Element('span').update(content));
+                            itemElement.appendChild(new Element('span').update(content.escapeHTML()));
                             if (nodes[i].startDate) {
                                 var startDate = new Date(nodes[i].startDate*1000);
                                 var dateElement = new Element('div', {'class': 'muted'});
@@ -332,7 +332,7 @@ function deleteEvent() {
                             }
                         }
                         itemElement.appendChild(colorBox);
-                        itemElement.appendChild(new Element('span').update(content));
+                        itemElement.appendChild(new Element('span').update(content.escapeHTML()));
                         if (selectedCalendarCell[i].startDate) {
                             var startDate = new Date(selectedCalendarCell[i].startDate*1000);
                             var dateElement = new Element('div', {'class': 'muted'});
