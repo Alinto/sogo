@@ -28,6 +28,7 @@ Enhancements
  - improved confirmation dialog box when deleting events and tasks
  - moved the DN cache to SOGoCache - avoiding sogod restarts after RDN operations
  - don't use the HTML editor with Internet Explorer 7
+ - add message-id header to appointment notifications (#2535)
 
 Bug fixes
  - don't load 'background' attribute (#2437)

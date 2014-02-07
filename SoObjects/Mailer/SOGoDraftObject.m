@@ -256,19 +256,6 @@ static NSString    *userAgent      = nil;
 
 /* contents */
 
-- (NSString *) _generateMessageID
-{
-  NSMutableString *messageID;
-  NSString *pGUID;
-
-  messageID = [NSMutableString string];
-  [messageID appendFormat: @"<%@", [self globallyUniqueObjectId]];
-  pGUID = [[NSProcessInfo processInfo] globallyUniqueString];
-  [messageID appendFormat: @"@%u>", [pGUID hash]];
-
-  return [messageID lowercaseString];
-}
-
 - (void) setHeaders: (NSDictionary *) newHeaders
 {
   id headerValue;
@@ -288,7 +275,7 @@ static NSString    *userAgent      = nil;
   messageID = [headers objectForKey: @"message-id"];
   if (!messageID)
     {
-      messageID = [self _generateMessageID];
+      messageID = [NSString generateMessageID];
       [headers setObject: messageID forKey: @"message-id"];
     }
   

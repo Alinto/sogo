@@ -24,6 +24,7 @@
 
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
@@ -62,6 +63,7 @@
 #import <SOGo/SOGoWebDAVAclManager.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
+#import <Mailer/NSString+Mail.h>
 
 #import "SOGoAptMailICalReply.h"
 #import "SOGoAptMailNotification.h"
@@ -832,6 +834,7 @@
 		  mailDate = [[NSCalendarDate date] rfc822DateString];
 		  [headerMap setObject: mailDate forKey: @"date"];
 		  [headerMap setObject: subject forKey: @"subject"];
+                  [headerMap setObject: [NSString generateMessageID] forKey: @"message-id"];
                   if ([msgType length] > 0)
                     [headerMap setObject: msgType forKey: @"x-sogo-message-type"];
 		  msg = [NGMimeMessage messageWithHeader: headerMap];
@@ -861,8 +864,7 @@
 		           sendMimePart: msg
                            toRecipients: [NSArray arrayWithObject: email]
                                  sender: shortSenderEmail
-                      withAuthenticator: [self
-                                           authenticatorInContext: context]
+                      withAuthenticator: [self authenticatorInContext: context]
                               inContext: context];
 		}
 	    }
@@ -916,6 +918,7 @@
       [headerMap setObject: mailDate forKey: @"date"];
       [headerMap setObject: [[p getSubject] asQPSubjectString: @"UTF-8"]
                     forKey: @"subject"];
+      [headerMap setObject: [NSString generateMessageID] forKey: @"message-id"];
       [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
       [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
       [headerMap setObject: @"calendar:invitation-reply" forKey: @"x-sogo-message-type"];
@@ -1038,6 +1041,7 @@
   mailDate = [[NSCalendarDate date] rfc822DateString];
   [headerMap setObject: mailDate forKey: @"date"];
   [headerMap setObject: [page getSubject] forKey: @"subject"];
+  [headerMap setObject: [NSString generateMessageID] forKey: @"message-id"];
   [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
   [headerMap setObject: @"text/html; charset=utf-8"
 		forKey: @"content-type"];
