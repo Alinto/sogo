@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "NGVCard+ActiveSync.h"
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
@@ -40,6 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Contacts/NGVCard+SOGo.h>
 
 #include "NSDate+ActiveSync.h"
+#include "NSString+ActiveSync.h"
 
 @implementation NGVCard (ActiveSync)
 
@@ -179,6 +181,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Contact's note
   if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
     [self setNote: o];
+
+  // Birthday
+  if ((o = [theValues objectForKey: @"Birthday"]))
+    {
+      o = [o calendarDate];
+      [self setBday: [o descriptionWithCalendarFormat: @"%Y-%m-%d"]];
+    }
 
   //
   // Business address information
