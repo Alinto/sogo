@@ -99,11 +99,11 @@ struct GlobalObjectId {
 //
 - (NSData *) _computeGlobalObjectIdFromEvent: (iCalEvent *) event
 {
-  NSData *binPrefix, *globalObjectId;
+  NSData *binPrefix, *globalObjectId, *uidAsASCII;
   NSString *prefix, *uid;
 
   struct GlobalObjectId newGlobalId;
-  const char *uidAsUTF8;
+  const char *bytes;
   
   prefix = @"040000008200e00074c5b7101a82e008";
 
@@ -115,13 +115,14 @@ struct GlobalObjectId {
   [binPrefix getBytes: &newGlobalId.ByteArrayID];
   [self _setInstanceDate: &newGlobalId
                 fromDate: [event recurrenceId]];
-  uidAsUTF8 = [uid UTF8String];
+  uidAsASCII = [uid dataUsingEncoding: NSASCIIStringEncoding];
+  bytes = [uidAsASCII bytes];
 
   // 0x0c is the size of our dataPrefix
-  newGlobalId.Size = 0x0c + strlen(uidAsUTF8);
+  newGlobalId.Size = 0x0c + [uidAsASCII length];
   newGlobalId.Data = malloc(newGlobalId.Size * sizeof(uint8_t));
   memcpy(newGlobalId.Data, dataPrefix, 0x0c);
-  memcpy(newGlobalId.Data + 0x0c, uidAsUTF8, newGlobalId.Size - 0x0c);
+  memcpy(newGlobalId.Data + 0x0c, bytes, newGlobalId.Size - 0x0c);
 
   globalObjectId = [[NSData alloc] initWithBytes: &newGlobalId  length: 40 + newGlobalId.Size*sizeof(uint8_t)];
   free(newGlobalId.Data);
@@ -144,12 +145,12 @@ struct GlobalObjectId {
 //   uid = nil;
 
 //   bytes = malloc(length*sizeof(uint8_t));
-//   [objectId getBytes:  bytes  length: length];
+//   [objectId getBytes: bytes  length: length];
 
-//   newGlobalId = bytes;
+//   newGlobalId = (struct GlobalObjectId *)bytes;
 
 //   // We must take the offset (dataPrefix) into account
-//   uid = [[NSString alloc] initWithBytes: newGlobalId->Data+12  length: newGlobalId->Size-12 encoding: NSUTF8StringEncoding];
+//   uid = [[NSString alloc] initWithBytes: newGlobalId->Data+12  length: newGlobalId->Size-12 encoding: NSASCIIStringEncoding];
 //   free(bytes);
 
 //   return AUTORELEASE(uid);
@@ -389,10 +390,13 @@ struct GlobalObjectId {
     {
       iCalTimeZone *tz;
       iCalEvent *event;
-      
+      int v;
+
       event = [[calendar events] lastObject];
       
       [s appendString: @"<MeetingRequest xmlns=\"Email:\">"];
+
+      [s appendFormat: @"<AllDayEvent xmlns=\"Email:\">%d</AllDayEvent>", ([event isAllDay] ? 1 : 0)];
       
       if ([event timeStampAsDate])
         [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentationWithoutSeparators]];
@@ -419,11 +423,21 @@ struct GlobalObjectId {
       [s appendFormat: @"<Organizer xmlns=\"Email:\">%@</Organizer>", [[event organizer] rfc822Email]];
       [s appendFormat: @"<ResponseRequested xmlns=\"Email:\">%d</ResponseRequested>", 1];
       
+      // Sensitivity
+      if ([[event accessClass] isEqualToString: @"PRIVATE"])
+        v = 2;
+      if ([[event accessClass] isEqualToString: @"CONFIDENTIAL"])
+        v = 3;
+      else
+        v = 0;
+
+      [s appendFormat: @"<Sensitivity xmlns=\"Email:\">%d</Sensitivity>", v];
+      
       // We disallow new time proposals
       [s appendFormat: @"<DisallowNewTimeProposal xmlns=\"Email:\">%d</DisallowNewTimeProposal>", 1];
 
-      // We set the right message type
-      [s appendFormat: @"<MeetingMessageType xmlns=\"Email2:\">%d</MeetingMessageType>", 1];
+      // We set the right message type - we must set AS version to 14.1 for this
+      //[s appendFormat: @"<MeetingMessageType xmlns=\"Email2:\">%d</MeetingMessageType>", 1];
 
       // From http://blogs.msdn.com/b/exchangedev/archive/2011/07/22/working-with-meeting-requests-in-exchange-activesync.aspx:
       //
@@ -431,13 +445,12 @@ struct GlobalObjectId {
       // object in the Calendar folder have to convert the GlobalObjId element value to a UID element value to make the comparison."
       //
       globalObjId = [self _computeGlobalObjectIdFromEvent: event];
-      [s appendFormat: @"<GlobalObjId xmlns=\"Email:\">%@</GlobalObjId>", [globalObjId stringByEncodingBase64]];
+      [s appendFormat: @"<GlobalObjId xmlns=\"Email:\">%@</GlobalObjId>", [[globalObjId stringByEncodingBase64] stringByReplacingString: @"\n" withString: @""]];
       [s appendString: @"</MeetingRequest>"];      
       
       // MesssageClass and ContentClass
       [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Schedule.Meeting.Request"];
       [s appendFormat: @"<ContentClass xmlns=\"Email:\">%@</ContentClass>", @"urn:content-classes:calendarmessage"];
-
     }
   else
     {
