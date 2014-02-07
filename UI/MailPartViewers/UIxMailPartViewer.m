@@ -267,7 +267,11 @@
   NSString *extension;
 
   filename = [NSMutableString stringWithString: [self filename]];
-  if (![filename length])
+  if ([filename length])
+    // We replace any slash by a dash since Apache won't allow encoded slashes by default.
+    // See http://httpd.apache.org/docs/2.2/mod/core.html#allowencodedslashes
+    filename = [filename stringByReplacingString: @"/" withString: @"-"];
+  else
     [filename appendFormat: @"%@-%@",
 	      [self labelForKey: @"Untitled"],
 	      [bodyPart nameInContainer]];

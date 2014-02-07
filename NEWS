@@ -43,6 +43,7 @@ Bug fixes
  - encode HTML entities in JSON data returned by Calendar module (#2598)
  - fixed handling of ACLs on shared calendars with multiple groups (#1854)
  - fixed HTML formatting of appointment notifications for Outlook (#2233)
+ - replace slashes by dashes in filenames of attachments to avoid a 404 return code (#2537)
 
 2.1.1b (2013-12-04)
 -------------------
