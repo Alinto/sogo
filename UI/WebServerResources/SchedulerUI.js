@@ -1015,23 +1015,23 @@ function eventsListCallback(http) {
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][21])); // start date
+                td.update(data[i][21]); // start date
 
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][22])); // end date
+                td.update(data[i][22]); // end date
 
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
                 if (data[i][7])
-                    td.appendChild(document.createTextNode(data[i][7])); // location
+                    td.update(data[i][7]); // location
 
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][2])); // calendar
+                td.update(data[i][2]); // calendar
             }
 
             if (sorting["event-header"] && sorting["event-header"].length > 0) {
