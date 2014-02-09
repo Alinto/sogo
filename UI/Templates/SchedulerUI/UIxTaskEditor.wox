@@ -26,9 +26,7 @@
       <input var:checked="hasDueDate" id="dueDateCB" type="checkbox" class="checkBox" onchange="onTimeControlCheck(this);"/>
       <var:string label:value="Due Date:" />
     </label>
-       
       <var:component className="UIxTimeDateControl" var:disabled="dueDateDisabled" const:controlID="dueTime" date="taskDueDate" const:dayStartHour="0" const:dayEndHour="23"/>
-    </span>
   </div>
   <span class="checkBoxList"><var:string label:value="Status:" />
     <span class="content"><var:popup list="statusList" item="item"
