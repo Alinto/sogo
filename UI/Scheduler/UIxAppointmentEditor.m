@@ -530,7 +530,7 @@
                        [[event summary] stringByEscapingHTMLString], @"summary",
                        [[event location] stringByEscapingHTMLString], @"location",
 		       [created_by stringByEscapingHTMLString], @"created_by",
-                       [[event comment] stringByEscapingHTMLString], @"description",
+                       [[[event comment] stringByEscapingHTMLString] stringByDetectingURLs], @"description",
                        nil];
   
   [result appendContentString: [data jsonRepresentation]];
