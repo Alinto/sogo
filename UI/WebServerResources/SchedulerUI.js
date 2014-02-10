@@ -789,15 +789,14 @@ function onViewEventCallback(http) {
 
             para = $(paras[1]);
             if (data["calendar"].length) {
- 		// Remove owner email from calendar's name
-                para.down("SPAN", 1).update(data["calendar"].escapeHTML());
+                para.down("SPAN", 1).update(data["calendar"]);
                 para.show();
             } else
                 para.hide();
 
             para = $(paras[2]);
             if (data["location"].length) {
-                para.down("SPAN", 1).update(data["location"].escapeHTML());
+                para.down("SPAN", 1).update(data["location"]);
                 para.show();
             } else
                 para.hide();
@@ -1924,7 +1923,7 @@ function newEventDIV(eventRep, event) {
         textDiv.appendChild(createElement("br"));
         var span = createElement("span", null, "location");
         var text = _("Location:") + " " + event[7];
-        span.appendChild(document.createTextNode(text));
+        span.update(text);
         textDiv.appendChild(span);
     }
 
