@@ -166,6 +166,8 @@ MAPIStoreMappingKeyFromId (uint64_t idNbr)
   NSString *current;
   NSString *newURL;
 
+  if ([oldURL isEqualToString: urlString]) return;
+
   searchURL = [[oldURL stringByAppendingString:@"*"] UTF8String];
 
   while (indexing->get_fmid(indexing, [username UTF8String],
