@@ -11,33 +11,14 @@
       onclick = "return newEvent('task');";
       image = "new-task.png";
       tooltip = "Create a new task"; } ),
-  ( { link = "#";
-      label="Go to Today";
-      onclick = "return gotoToday();";
-      image = "goto-today.png";
-      tooltip = "Go to today"; } ),
-  ( { link = "#";
-      label="Day View";
-      onclick = "return onDayOverview();";
-      image = "day-view.png";
-      tooltip = "Switch to day view"; },
-    /* disabled until we fix the view */
+  ( /* disabled until we fix the view */
     /*    { link = "#";
             label="Multicolumn Day View";
             onclick = "return onMulticolumnDayOverview();";
             image = "day-view-multicolumn.png";
             tooltip = ""; }, */
+
     { link = "#";
-      label="Week View";
-      onclick = "return onWeekOverview();";
-      image = "week-view.png";
-      tooltip = "Switch to week view"; },
-    { link = "#";
-      label="Month View";
-      onclick = "return onMonthOverview();";
-      image = "month-view.png";
-      tooltip = "Switch to month view"; } ),
-  ( { link = "#";
       label="Delete";
       onclick = "return deleteEvent(this);";
       image = "tb-mail-delete-flat-24x24.png";

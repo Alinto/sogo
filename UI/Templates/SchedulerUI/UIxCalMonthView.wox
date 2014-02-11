@@ -33,6 +33,12 @@
            var:date="nextMonthQueryParameters.month"
            onclick="return onCalendarGotoDay(this);"><img rsrc:src="arrow-right.png"/></a>
       </span>
+      <div class="calendarOverview">
+        <a onclick="return gotoToday();" href="#"><!--<img rsrc:src="goto-today.png"/>--><var:string label:value='today'/></a>
+        <a onclick="return onDayOverview();" href="#"><!--<img rsrc:src="day-view.png"/>--><var:string label:value='Day View'/></a>
+        <a onclick="return onWeekOverview();" href="#"><!--<img rsrc:src="week-view.png"/>--><var:string label:value='Week View'/></a>
+        <a onclick="return onMonthOverview();" href="#"><!--<img rsrc:src="month-view.png"/>--><var:string label:value='Month View'/></a>
+      </div>
       <a href="#" id="listCollapse"><img var:class="collapseBtnClass" rsrc:src="collapse.png"/></a>
     </span>
     <div id="calendarContent">

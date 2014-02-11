@@ -128,13 +128,10 @@ SPAN.datePicker.date {
 }
 SPAN.datePicker.date .calendarButton.add-on{
   background: #fff;
-  padding: 5px 3px 1px 5px;
+  padding: 4px 3px 1px 5px;
   position: absolute;
   right: 1px;
   top: 1px;
-}
-SPAN.datePicker.date .calendarButton.add-on:hover{
-  background-color: #eee;
 }
 INPUT#startTime_date:disabled + .calendarButton,
 INPUT#startTime_date:disabled + .calendarButton:hover,

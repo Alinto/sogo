@@ -20,6 +20,9 @@ DIV#leftPanel
     left: 250px;
     position: absolute;
     top: 0;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 1px;
 }
 #filterpopup {
     background-color: #FFFFFF;
@@ -175,8 +178,8 @@ DIV#calendarView A
   left: 0px;
   right: 0px;
   height: 5px;
-  background-image: url(dragdotv.png); 
-  border-bottom: 1px solid #999;
+  background-image: url(dragdotv.png);
+  border-top: 1px solid #999;
 }
 
 DIV#dateSelectorView
@@ -190,7 +193,7 @@ DIV#dateSelectorView
   white-space: nowrap;
   vertical-align: middle;
   text-align: center;
-  padding: .5em 0px;
+  padding: .85em 0px;
   margin: 0px;
   border: 0px;
   position: relative;
@@ -382,7 +385,6 @@ SPAN.weeksHeader,
 SPAN.monthsHeader
 { display: block;
   white-space: nowrap;
-  text-align: center;
   overflow: hidden;
   width: 100%;
   margin: 0px;
@@ -395,8 +397,7 @@ SPAN.monthsHeader SPAN
 { display: inline-block;
   font-size: 1.5em;
   font-weight: bold;
-  line-height: 35px;
-  margin-top: 5px;
+  line-height: 40px;
   padding: 0;
   text-align: center; }
 
@@ -422,7 +423,7 @@ SPAN.monthsHeader A
   padding: 0;
   position: absolute;
   right: 10px;
-  top: 15px;
+  top: 12px;
   width: 18px;
   overflow: hidden;}
 
@@ -462,12 +463,13 @@ DIV#calendarHeader
   border: 0px;
   height: 100px;
   right: 0px;
+  border-top: 1px solid #ccc;
 }
 
 DIV#calendarHeader DIV.dayLabels,
 DIV#calendarHeader DIV.days
 { position: absolute;
-  left: 51px;
+  left: 50px;
   right: 0px;
   background-color: #fff;
   /* 'right' is computed from JS code when daysView is first drawn */
@@ -480,8 +482,10 @@ DIV#calendarHeader DIV.dayLabels
 DIV#calendarHeader DIV.dayLabels DIV.day
 { text-align: center;
   color: #666;
-  font-size: 1.5em;
-  font-weight: bold;}
+  font-size: 1.3em;
+  border-left: 1px solid #ccc;
+  line-height: 25px;
+}
 
 DIV#calendarHeader SPAN.dayOfWeek
 { font-size: medium; }
@@ -492,18 +496,22 @@ DIV#calendarHeader DIV.dayLabels
 DIV#calendarHeader DIV.days
 { cursor: pointer;
   bottom: 0px;
-  top: 25px; }
+  top: 25px;
+
+}
 
 DIV#calendarHeader DIV.day,
 DIV#daysView DIV.day
-{ position: absolute; }
+{ position: absolute;
+  border-left: 1px solid #ccc;}
 
 DIV#calendarHeader DIV.day
 { height: 100%; }
 
 DIV#calendarHeader DIV.days DIV.day
 { overflow: auto;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  border-top: 1px solid #eee;}
 
 .menu LI.currentMonth,
 .menu LI.currentYear
@@ -606,7 +614,8 @@ DIV#daysView DIV.day DIV.clickableHourCell
 { cursor: pointer;
   height: 39px;
   background-color: #fff;
-  border-bottom: 1px solid #ccc; }
+  border-bottom: 1px solid #ccc;
+}
 
 DIV#calendarHeader DIV.days DIV.weekEndDay,
 DIV#daysView DIV.day DIV.clickableHourCell.outOfDay,
@@ -1535,3 +1544,21 @@ DIV#nowLineDisplay
 
 TD.attendees A.button
 { float: left; left: 19px; margin-top: 5px; }
+
+.calendarOverview {
+  position: absolute;
+  right: 40px;
+  top: 0px;
+}
+DIV#calendarView .calendarOverview > a {
+  float: left;
+  /*padding: 8px 10px;*/
+  line-height: 40px;
+  height: 40px;
+}
+DIV#calendarView .calendarOverview > a > img{
+  display: block;
+}
+DIV#calendarView  .calendarOverview > a:hover{
+  background-color: #eee;
+}
