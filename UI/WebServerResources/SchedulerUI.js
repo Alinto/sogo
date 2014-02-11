@@ -817,6 +817,7 @@ function onViewEventCallback(http) {
 
             div.setStyle({ left: left + "px", top: top + "px" });
             div.show();
+            configureLinks(div);
         }
     }
     else {

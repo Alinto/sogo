@@ -334,6 +334,16 @@ function openMailTo(senderMailTo) {
     return false; /* stop following the link */
 }
 
+function onEmailTo(event) {
+    var s = this.innerHTML.strip();
+    if (!/@/.test(s)) {
+        s += ' <' + this.href.substr(7) + '>';
+    }
+    openMailTo(s);
+    Event.stop(event);
+    return false;
+}
+
 function deleteDraft(url) {
     /* this is called by UIxMailEditor with window.opener */
     new Ajax.Request(url, {
@@ -1760,6 +1770,31 @@ function configureLinkBanner() {
             link.observe("mousedown", listRowMouseDownHandler);
             link.observe("click", toggleLogConsole);
         }
+    }
+}
+
+function configureLinks(element) {
+    var onAnchorClick = function (event) {
+        if (this.href)
+            window.open(this.href);
+        preventDefault(event);
+    };
+    var anchors = element.getElementsByTagName('a');
+    for (var i = 0; i < anchors.length; i++) {
+        var anchor = $(anchors[i]);
+        if (!anchor.href && anchor.readAttribute("moz-do-not-send")) {
+            anchor.writeAttribute("moz-do-not-send", false);
+            anchor.removeClassName("moz-txt-link-abbreviated");
+            anchor.href = "mailto:" + anchors[i].innerHTML;
+        }
+        if (anchor.href.substring(0,7) == "mailto:") {
+            anchor.observe("click", onEmailTo);
+            if (typeof onEmailAddressClick == 'function')
+                anchor.observe("contextmenu", onEmailAddressClick);
+            anchor.writeAttribute("moz-do-not-send", false);
+        }
+        else if (!anchor.id)
+            anchor.observe("click", onAnchorClick);
     }
 }
 

@@ -1239,7 +1239,6 @@ function loadMessage(msguid) {
         }
     }
 
-
     configureLoadImagesButton();
     configureSignatureFlagImage();
 
@@ -1330,22 +1329,7 @@ function configureLinksInMessage() {
     if (!$(document.body).hasClassName("popup"))
         mailContentDiv.observe("contextmenu", onMessageContentMenu);
 
-    var anchors = messageDiv.getElementsByTagName('a');
-    for (var i = 0; i < anchors.length; i++) {
-        var anchor = $(anchors[i]);
-        if (!anchor.href && anchor.readAttribute("moz-do-not-send")) {
-            anchor.writeAttribute("moz-do-not-send", false);
-            anchor.removeClassName("moz-txt-link-abbreviated");
-            anchor.href = "mailto:" + anchors[i].innerHTML;
-        }
-        if (anchor.href.substring(0,7) == "mailto:") {
-            anchor.observe("click", onEmailTo);
-            anchor.observe("contextmenu", onEmailAddressClick);
-            anchor.writeAttribute("moz-do-not-send", false);
-        }
-        else if (!anchor.id)
-            anchor.observe("click", onMessageAnchorClick);
-    }
+    configureLinks(messageDiv);
 
     var attachmentsMenu = $("attachmentsMenu");
     if (attachmentsMenu) {
@@ -1595,12 +1579,6 @@ function onEmailAddressClick(event) {
     return false;
 }
 
-function onMessageAnchorClick(event) {
-    if (this.href)
-        window.open(this.href);
-    preventDefault(event);
-}
-
 function onImageClick(event) {
     popupMenu(event, 'imageMenu', this);
     preventDefault(event);
@@ -1801,16 +1779,6 @@ function newContactFromEmail(event) {
     }
 
     return false; /* stop following the link */
-}
-
-function onEmailTo(event) {
-    var s = this.innerHTML.strip();
-    if (!/@/.test(s)) {
-        s += ' <' + this.href.substr(7) + '>';
-    }
-    openMailTo(s);
-    Event.stop(event);
-    return false;
 }
 
 function newEmailTo(sender) {
