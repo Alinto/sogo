@@ -73,6 +73,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 
@@ -155,15 +156,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSArray *additions;
   
   id anAddition, sogoObject, o;
+  BOOL is_new;
   int i;
 
   additions = (id)[theDocumentElement getElementsByTagName: @"Add"];
-                
   if ([additions count])
     {
       for (i = 0; i < [additions count]; i++)
         {
           anAddition = [additions objectAtIndex: i];
+          is_new = YES;
 
           clientId = [[(id)[anAddition getElementsByTagName: @"ClientId"] lastObject] textValue];
           allValues = [NSMutableDictionary dictionaryWithDictionary: [[(id)[anAddition getElementsByTagName: @"ApplicationData"]  lastObject] applicationData]];
@@ -180,11 +182,33 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               break;
             case ActiveSyncEventFolder:
               {
-                serverId = [NSString stringWithFormat: @"%@.ics", [theCollection globallyUniqueObjectId]];
-                sogoObject = [[SOGoAppointmentObject alloc] initWithName: serverId
-                                                             inContainer: theCollection];
+                // Before adding a new appointment, we check if one is already present with the same UID. If that's
+                // the case, let's just update it. This can happen if for example, an iOS based device receives the
+                // invitation email and choses "Add to calendar" BEFORE actually syncing the calendar. That would
+                // create a duplicate on the server.
+                if ([allValues objectForKey: @"UID"])
+                  serverId = [NSString stringWithFormat: @"%@.ics", [allValues objectForKey: @"UID"]];
+                else
+                  serverId = [NSString stringWithFormat: @"%@.ics", [theCollection globallyUniqueObjectId]];
+                
                 [allValues setObject: [[[context activeUser] userDefaults] timeZone]  forKey: @"SOGoUserTimeZone"];
-                o = [sogoObject component: YES secure: NO];
+                
+                sogoObject = [theCollection lookupName: serverId
+                                             inContext: context
+                                               acquire: NO];
+                
+                // If object isn't found, we 'create' a new one
+                if ([sogoObject isKindOfClass: [NSException class]])
+                  {
+                    sogoObject = [[SOGoAppointmentObject alloc] initWithName: serverId
+                                                                 inContainer: theCollection];
+                    o = [sogoObject component: YES secure: NO];
+                  }
+                else
+                  {
+                    o = [sogoObject component: NO secure: NO];
+                    is_new = NO;
+                  }
               }
               break;
             case ActiveSyncTaskFolder:
@@ -205,7 +229,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             }
           
           [o takeActiveSyncValues: allValues];
-          [sogoObject setIsNew: YES];
+          [sogoObject setIsNew: is_new];
           [sogoObject saveComponent: o];
           
           // Everything is fine, lets generate our response
@@ -845,12 +869,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processSync: (id <DOMElement>) theDocumentElement
           inResponse: (WOResponse *) theResponse
 {
+  SOGoSystemDefaults *defaults;
   id <DOMElement> aCollection;
-  NSArray *allCollections;
   NSMutableString *output, *s;
+  NSArray *allCollections;
   NSData *d;
 
-  int i, j, heartbeatInterval;
+  int i, j, defaultInterval, heartbeatInterval, internalInterval;
   BOOL changeDetected;
   
   // We initialize our output buffer
@@ -859,21 +884,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [output appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [output appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [output appendString: @"<Sync xmlns=\"AirSync:\">"];
-
+  
+  defaults = [SOGoSystemDefaults sharedSystemDefaults];
   heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
+  defaultInterval = [defaults maximumSyncInterval];
+  internalInterval = [defaults internalSyncInterval];
 
   // We check to see if our heartbeat interval falls into the supported ranges.
-  if (heartbeatInterval > 300 || heartbeatInterval < 1)
+  if (heartbeatInterval > defaultInterval || heartbeatInterval < 1)
     {
       // Interval is too long, inform the client.
-      heartbeatInterval = 300;
+      heartbeatInterval = defaultInterval;
 
-      //[output appendFormat: @"<Limit>%d</Limit>", 300];
+      // Outlook doesn't like this...
+      //[output appendFormat: @"<Limit>%d</Limit>", defaultInterval];
       //[output appendFormat: @"<Status>%d</Status>", 14];
-      //[output appendString: @"</Sync>"];
-      //d = [[output dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
-      //[theResponse setContent: d];
-      //return;
     }
 
   [output appendString: @"<Collections>"];
@@ -881,7 +906,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   allCollections = (id)[theDocumentElement getElementsByTagName: @"Collection"];
 
   // We enter our loop detection change
-  for (i = 0; i < (heartbeatInterval/60); i++)
+  for (i = 0; i < (defaultInterval/internalInterval); i++)
     {
       s = [NSMutableString string];
 
@@ -900,8 +925,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
       else
         {
-          NSLog(@"Sleeping 60 seconds while detecting changes...");
-          sleep(60);
+          NSLog(@"Sleeping %d seconds while detecting changes...", internalInterval);
+          sleep(internalInterval);
         }
     }
 

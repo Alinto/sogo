@@ -79,6 +79,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserManager.h>
@@ -735,6 +736,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                      inResponse: (WOResponse *) theResponse
 {
   NSString *realCollectionId, *requestId, *participationStatus;
+  SOGoMailObject *mailObject;
   NSMutableString *s;
   NSData *d;
 
@@ -758,8 +760,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // We fetch the calendar information based on the email (requestId) in the user's INBOX (or elsewhere)
   //
   // FIXME: that won't work too well for external invitations...
-  SOGoMailObject *mailObject;
-
   mailObject = [collection lookupName: requestId
                             inContext: context
                               acquire: 0];
@@ -785,22 +785,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       else
         participationStatus = @"DECLINED";
       
-      [appointmentObject changeParticipationStatus: participationStatus
-                                      withDelegate: nil];
-      
-      [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
-      [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
-      [s appendString: @"<MeetingResponse xmlns=\"MeetingResponse:\">"];
-      [s appendString: @"<Result>"];
-      [s appendFormat: @"<RequestId>%@</RequestId>", requestId];
-      [s appendFormat: @"<CalendarId>%@</CalendarId>", [event uid]];
-      [s appendFormat: @"<Status>%d</Status>", status];
-      [s appendString: @"</Result>"];
-      [s appendString: @"</MeetingResponse>"];
-      
-      d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
-      
-      [theResponse setContent: d];
+      if (![appointmentObject isKindOfClass: [NSException class]])
+        {
+          [appointmentObject changeParticipationStatus: participationStatus
+                                          withDelegate: nil];
+          
+          [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+          [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+          [s appendString: @"<MeetingResponse xmlns=\"MeetingResponse:\">"];
+          [s appendString: @"<Result>"];
+          [s appendFormat: @"<RequestId>%@</RequestId>", requestId];
+          [s appendFormat: @"<CalendarId>%@</CalendarId>", [event uid]];
+          [s appendFormat: @"<Status>%d</Status>", status];
+          [s appendString: @"</Result>"];
+          [s appendString: @"</MeetingResponse>"];
+          
+          d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+          
+          [theResponse setContent: d];
+        }
+      else
+        {
+          [theResponse setStatus: 500];
+        }
     }
   else
     {
@@ -919,27 +926,32 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processPing: (id <DOMElement>) theDocumentElement
           inResponse: (WOResponse *) theResponse
 {
+  SOGoSystemDefaults *defaults;
   NSMutableString *s;
   NSData *d;
   
-  int heartbeatInterval, status;
+  int heartbeatInterval, defaultInterval, status;
+  
+  defaults = [SOGoSystemDefaults sharedSystemDefaults];
+  defaultInterval = [defaults maximumPingInterval];
 
   if (theDocumentElement)
     heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
   else
-    heartbeatInterval = 60;
+    heartbeatInterval = defaultInterval;
 
-  if (heartbeatInterval > 60 || heartbeatInterval == 0)
+  if (heartbeatInterval > defaultInterval || heartbeatInterval == 0)
     {
-      heartbeatInterval = 60;
+      heartbeatInterval = defaultInterval;
       status = 5;
     }
   else
     {
-      NSLog(@"Got Ping request with valid interval - sleeping for 60 seconds.");
-      sleep(60);
       status = 1;
     }
+
+  NSLog(@"Got Ping request with valid interval - sleeping for %d seconds.", heartbeatInterval);
+  sleep(heartbeatInterval);
 
   // We generate our response
   s = [NSMutableString string];
@@ -1513,9 +1525,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [self performSelector: aSelector  withObject: documentElement  withObject: theResponse];
 
   [theResponse setHeader: @"application/vnd.ms-sync.wbxml"  forKey: @"Content-Type"];
-  [theResponse setHeader: @"14.0"  forKey: @"MS-Server-ActiveSync"];
+  [theResponse setHeader: @"14.1"  forKey: @"MS-Server-ActiveSync"];
   [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,Provision,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
-  [theResponse setHeader: @"2.0,2.1,2.5,12.0,12.1,14.0"  forKey: @"MS-ASProtocolVersions"];
+  [theResponse setHeader: @"2.0,2.1,2.5,12.0,12.1,14.0,14.1"  forKey: @"MS-ASProtocolVersions"];
 
    RELEASE(context);
 
