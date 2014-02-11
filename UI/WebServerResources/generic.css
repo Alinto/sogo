@@ -172,10 +172,12 @@ DIV.linkbanner A#logoff
   background-image: url('logoff.gif');
   background-position:center center;
   background-repeat: no-repeat;
+  height: 40px;
 }
 DIV.linkbanner A#preferencesBannerLink
 { padding: 0px 5px;
   width:25px;
+  height: 40px;
   overflow: hidden;
   color:transparent;
   display: inline-block;
@@ -886,21 +888,24 @@ BUTTON.comboBoxButton:active
   border-left: 1px solid #909090;
   background-color: #d6d7d6;
 }
-.searchBox {
-  background-color: #FFFFFF;
-  left: 10px;
+a.reload {
+  background: url("reload.png") no-repeat center center;
   position: absolute;
   right: 10px;
-  top: 10px;
-  height: 30px;
-  border:1px solid #ccc;
-  max-width: 500px;
+  top: 0px;
+  height: 20px;
+  width: 20px;
+  opacity: 0.8;
+  overflow: hidden;
+  color: transparent;
+  font-size: 0px;
 }
-
+a.reload:hover{ opacity: 1; }
 INPUT[name="search"]
 { background-image: url("Search-bar.png");
   background-position: 5px center;
   background-repeat: no-repeat;
+  background-color: transparent;
   border: 0 none;
   color: #333333;
   display: block;
@@ -909,7 +914,7 @@ INPUT[name="search"]
   line-height: 30px;
   margin: 0;
   padding: 0 0 0 30px;
-  width: 80%;
+  width: 85%;
 }
 
 

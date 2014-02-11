@@ -211,7 +211,9 @@
 
   <div id="leftPanel">
     <var:component className="UIxMailFilterPanel" qualifier="qualifier" />
-    <div class="titlediv"><var:string label:value="Folders" /></div>
+    <div class="titlediv">
+    <var:string label:value="Folders"/>
+    <a class="reload tbicon_getmail" onclick="return refreshMailbox(this);" title="Get new messages" href="#">reload</a></div>
     <div id="folderTreeContent"><!-- space --></div>
   </div>
 
@@ -224,8 +226,8 @@
 
 <table id="messageListHeader" class="messageList" cellspacing="0">
   <thead>
-    <tr class="tableview"
-      ><var:foreach list="columnsDisplayOrder" item="currentColumn">
+    <tr class="tableview">
+    <var:foreach list="columnsDisplayOrder" item="currentColumn">
         <th var:class="currentColumn.headerClass" var:id="currentColumn.headerId">
           <var:if condition="currentColumn.value" const:value="Thread">
             <entity name="nbsp"/>

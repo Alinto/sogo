@@ -1923,7 +1923,7 @@ function adjustCalendarHeaderDIV() {
     var dv = $("daysView");
     if (dv) {
         var ch = $("calendarHeader");
-        var delta = ch.clientWidth - dv.clientWidth - 1;
+        var delta = ch.clientWidth - dv.clientWidth;
         var styleElement = document.createElement("style");
         styleElement.type = "text/css";
         var selectors = ["DIV#calendarHeader DIV.dayLabels",

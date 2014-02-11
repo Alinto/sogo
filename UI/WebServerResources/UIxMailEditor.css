@@ -6,7 +6,7 @@ DIV#leftPanel
 
 DIV#rightPanel
 { top: 0px;
-  left: 0em; 
+  left: 0em;
   background-color: white; }
 
 DIV#hiddenDragHandle
@@ -166,7 +166,7 @@ UL#attachments
   list-style-type: none;
   list-style-image: none;
   overflow: auto;
-  overflow-x: hidden; 
+  overflow-x: hidden;
   -moz-user-select: none;
   -khtml-user-select: none; }
 
@@ -211,7 +211,7 @@ DIV#contactsListContent
 { position: absolute;
   top: 95px;
   left: 0px;
-  right: 0px;
+  right: 1px;
   bottom: 110px;
   margin: 0;
   overflow-y: auto; }
@@ -225,8 +225,12 @@ TABLE#contactsList TH
   line-height: 16px;
   height: 18px;
   text-overflow: ellipsis;
-  white-space: nowrap; }
-
+  white-space: nowrap;
+  padding: 5px 0px 5px 10px;
+}
+TABLE#contactsList THEAD TD {
+    color: #999999;
+}
 TABLE#contactsList TD#nameHeader,
 TABLE#contactsList TD#mailHeader
 { width: 50%;
@@ -241,4 +245,7 @@ DIV.contactSelection
  left: 10px;
  right: 10px;
  border: 0px;
+}
+#contactSelectionButtons > span{
+  color: #999
 }

@@ -5,8 +5,13 @@ DIV.filterPanel
   left: 5px;
   right: 5px;}
 
-SPAN.searchBox
-{ float: none !important; }
+.searchBox{
+  background: white;
+  margin:10px;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 1px;
+}
 
 IMG#progressIndicator
 { float: none;

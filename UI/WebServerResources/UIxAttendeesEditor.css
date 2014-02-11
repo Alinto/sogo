@@ -262,6 +262,7 @@ float: left;}
 DIV#freeBusyReplicas SPAN.datePicker.date{
   position: relative;
   display: inline-block;
+  min-width: 135px; 
 }
 DIV#freeBusyReplicas #startTime_time,
 DIV#freeBusyReplicas #endTime_time{

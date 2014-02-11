@@ -81,7 +81,7 @@ DIV#folderTreeContent
 { position: absolute;
   color: #333;
   width: auto;
-  top: 75px;
+  top: 90px;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -168,15 +168,22 @@ DIV#folderTreeContent
   /* height: 300px; */
   /* height: 100%; */
 }
-
+.searchBox{
+  background: white;
+  margin:10px;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 1px;
+}
 .titlediv
 {
   font-size: 20px;
   height: 25px;
   line-height: 25px;
   padding-left: 19px;
-  padding-top: 10px;
-  vertical-align: middle; }
+  margin-top: 10px;
+  vertical-align: middle;
+  position: relative;}
 
 TABLE.titletable
 {
@@ -187,7 +194,7 @@ TABLE.titletable
 }
 
 TABLE.titletable TD.titlecell SELECT
-{ 
+{
   display: -moz-popup;
   border-top: 1px solid #fff;
   border-left: 1px solid #fff;
@@ -515,7 +522,7 @@ img.mailer_imagecontent
 }
 
 DIV.mailer_plaincontent
-{ 
+{
   position: relative;
   clear: left;
   font-family: monospace, fixed;
@@ -540,7 +547,7 @@ DIV.mailer_plaincontent P
 }
 
 DIV.mailer_htmlcontent P
-{ 
+{
   white-space: normal;
   font-family: sans-serif;
   font-size: inherit;
@@ -580,7 +587,7 @@ TD.attachment_uplabel
 /* attachment link viewer */
 
 DIV.linked_attachment_frame
-{ 
+{
   border: 0px;
   clear: left;
   margin: 0px;
@@ -626,7 +633,7 @@ DIV.linked_attachment_body HR
 }
 
 DIV.bodyFields
-{ 
+{
   background: #eee;
   line-height: 1.5em;
   margin: 0.5em 0px;
@@ -648,7 +655,7 @@ DIV.bodyFields SPAN.fieldName
 }
 
 DIV.bodyAdditionalFields
-{ 
+{
   background: #d4d0c8;
 }
 
@@ -672,7 +679,7 @@ IMG.dragMessage
   opacity: 0.7; }
 
 TABLE#addr_table
-{ 
+{
   margin-left: 30%;
   width: 100%;
 }
@@ -747,6 +754,7 @@ DIV#verticalDragHandle
   left: 15em;
   width: 5px;
   bottom: 0px;
+  background-image: url(dragdot.png);
 }
 
 DIV#rightDragHandle
@@ -755,7 +763,8 @@ DIV#rightDragHandle
   left: 0px;
   right: 0px;
   height: 5px;
-  border-bottom: 1px solid #999;
+  border-top: 1px solid #999;
+  background-image: url(dragdotv.png);
 }
 
 @media print
@@ -820,11 +829,11 @@ DIV#dragDropVisual
 
 DIV.copy
 {
-  background-image: url(message-copy.gif) !important; 
+  background-image: url(message-copy.gif) !important;
   background-position: 1px -2px !important;
 }
 
-DIV#signatureFlagMessage DIV 
+DIV#signatureFlagMessage DIV
 { text-align: left !important; }
 
 DIV#signatureFlagMessage H1,

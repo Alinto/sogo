@@ -31,7 +31,12 @@ DIV#rightPanel
 DIV.filterPanel{
   max-width: 500px;
 }
-
+.searchBox {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 1px;
+    margin: 10px;
+}
 /* top list */
 DIV#contactsListContent
 { cursor: default;
@@ -333,7 +338,7 @@ DIV#rightDragHandle
   right: 0px;
   height: 5px;
   background-image: url(dragdotv.png);
-border-bottom: 1px solid #999;}
+border-top: 1px solid #999;}
 
 DIV.contactSelector
 { position: absolute;
