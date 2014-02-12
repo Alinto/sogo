@@ -10,67 +10,50 @@
   const:jsFiles="PasswordPolicy.js"
   const:popup="YES"
   ><var:string var:value="doctype" const:escapeHTML="NO"/>
-  <div id="aboutBox" style="display:none;">
-    <div>
-      <p class="logo"><img const:alt="SOGo" rsrc:src="sogo-logo.png"/></p>
-      <p>Version <var:string value="version"/> <span class="buildDate">(<var:string value="buildDate" />)</span></p>
-      <p class="scroll"><var:string label:value="AboutBox" const:escapeHTML="NO"/></p>
-      <img const:alt="Inverse" rsrc:src="inverse.png"/>
-      <p class="links"><a href="http://www.sogo.nu/" target="_new">www.sogo.nu</a> / 
-      <a href="http://www.inverse.ca/" target="_new">www.inverse.ca</a></p>
-    <p><a id="aboutClose" href="#" class="button">
-        <span><var:string label:value="OK" /></span></a></p>
-    </div>
-  </div>
-  <div id="linkBanner" class="linkbanner">
-    <a id="about" href="#"><var:string label:value="About" /></a>
-  </div>
   <form id="connectForm" var:href="connectURL">
     <div id="loginScreen">
-      <var:if condition="hasLoginSuffix"><script
-	 type="text/javascript">var loginSuffix = '<var:string value="loginSuffix"/>';</script
-	></var:if>
-      <table width="560">
-	<tr>
-	  <td>
-	    <img const:alt="*" id="splash" rsrc:src="sogo-logo.png"/>
-	  </td>
-	  <td id="loginCell" width="230">
-	    <label><var:string label:value="Username:"/><br/>
-	    <input class="textField" id="userName" name="userName"
-		   type="text" var:value="cookieUsername" /></label>
-	    <label><var:string label:value="Password:"/><br/>
-	    <input class="textField" id="password"
-		   name="password" type="password" var:value="password" /></label>
-	    <label><var:string label:value="Language:"/><br/>
-	    <var:popup const:id="language" const:name="language"
-		       list="languages"
-		       item="item"
-		       var:value="item"
-		       string="languageText"
-		       label:noSelectionString="choose"
-		       /></label>
-            <var:if condition="hasLoginDomains">
-	    <label><var:string label:value="Domain:"/><br/>
-	    <var:popup const:id="domain" const:name="domain"
-		       list="loginDomains"
-		       item="item"
-		       var:selection="item"
-		       var:value="item"
-		       string="item"
-		       /></label>
-            </var:if>
-	    <label><input id="rememberLogin" type="checkbox" class="checkBox" var:checked="rememberLogin"/> <var:string label:value="Remember username"/></label>
-	    <label>
-	      <a href="#" class="button" id="submit" name="submit">
-	      <span><var:string label:value="Connect" /></span></a>
-	    </label>
-	  </td>
-	</tr>
-        <tr><td colspan="2"><label id="animation"><!-- busy.gif! --></label></td></tr>
-      </table>
-      <p id="errorMessage"><!-- space --></p>
+      	<var:if condition="hasLoginSuffix">
+      		<script type="text/javascript">
+      			var loginSuffix = '<var:string value="loginSuffix"/>';
+      		</script>
+  	  	</var:if>
+		<img const:alt="*" id="splash" rsrc:src="zentyal-logo.png"/>
+		<div id="loginCell">
+			<p id="errorMessage"><!-- space --></p>
+		    <label><var:string label:value="Username:"/><br/>
+		    <input class="textField" id="userName" name="userName"
+			   type="text" var:value="cookieUsername" /></label>
+		    <label><var:string label:value="Password:"/><br/>
+		    <input class="textField" id="password"
+			   name="password" type="password" var:value="password" /></label>
+		    <label><var:string label:value="Language:"/><br/>
+		    <var:popup const:id="language" const:name="language"
+			       list="languages"
+			       item="item"
+			       var:value="item"
+			       string="languageText"
+			       label:noSelectionString="choose"
+			       /></label>
+	            <var:if condition="hasLoginDomains">
+		    <label><var:string label:value="Domain:"/><br/>
+		    <var:popup const:id="domain" const:name="domain"
+			       list="loginDomains"
+			       item="item"
+			       var:selection="item"
+			       var:value="item"
+			       string="item"
+			       /></label>
+	            </var:if>
+		    <label><input id="rememberLogin" type="checkbox" class="checkBox" var:checked="rememberLogin"/> <var:string label:value="Remember username"/></label>
+		     
+		    <a href="#" id="submit" name="submit">
+		      <var:string label:value="Connect" />
+		  	</a>
+			<span id="animation"><!-- busy.gif! --></span>
+		</div>
+   	
+    	
     </div>
-  </form
-  ><img const:alt="*" id="preparedAnimation" rsrc:src="busy.gif"/>
+  </form>
+  <img const:alt="*" id="preparedAnimation" rsrc:src="busy.gif"/>
 </var:component>

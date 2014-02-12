@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004 SKYRIX Software AG
-  Copyright (C) 2005-2012 Inverse inc.
+  Copyright (C) 2005-2014 Inverse inc.
 
   This file is part of SOGo.
  
@@ -33,6 +33,8 @@
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoUser.h>
+
+#import <Contacts/NGVCard+SOGo.h>
 #import <Contacts/SOGoContactObject.h>
 
 #import "UIxContactView.h"
@@ -107,33 +109,7 @@
 
 - (NSString *) fullName
 {
-  CardElement *n;
-  NSString *fn, *firstName, *lastName, *org;
-  
-  fn = [card fn];
-  if ([fn length] == 0)
-    {
-      n = [card n];
-      lastName = [n flattenedValueAtIndex: 0 forKey: @""];
-      firstName = [n flattenedValueAtIndex: 1 forKey: @""];
-      if ([firstName length] > 0)
-        {
-          if ([lastName length] > 0)
-            fn = [NSString stringWithFormat: @"%@ %@", firstName, lastName];
-          else
-            fn = firstName;
-        }
-      else if ([lastName length] > 0)
-        fn = lastName;
-      else
-        {
-          n = [card org];
-          org = [n flattenedValueAtIndex: 0 forKey: @""];
-          fn = org;
-        }
-    }
-
-  return fn;
+  return [card fullName];
 }
 
 - (NSString *) primaryEmail
@@ -159,18 +135,13 @@
 
 - (NSArray *) secondaryEmails
 {
-  NSString *email, *fn, *mailTo;
-  NSMutableArray *emails;
   NSMutableArray *secondaryEmails;
+  NSString *email, *fn, *mailTo;
+  NSArray *emails;
 
-  emails = [NSMutableArray array];
+  emails = [card secondaryEmails];
   secondaryEmails = [NSMutableArray array];
   mailTo = nil;
-
-  [emails addObjectsFromArray: [card childrenWithTag: @"email"]];
-  [emails removeObjectsInArray: [card childrenWithTag: @"email"
-				      andAttribute: @"type"
-				      havingValue: @"pref"]];
 
   // We might not have a preferred item but rather something like this:
   // EMAIL;TYPE=work:dd@ee.com
@@ -189,20 +160,16 @@
       for (i = 0; i < [emails count]; i++)
 	{
 	  email = [[emails objectAtIndex: i] flattenedValuesForKey: @""];
-
-          // skip primary email
-	  if ([email caseInsensitiveCompare: [card preferredEMail]] != NSOrderedSame)
-	    {
-              fn = [card fn];
-              fn = [fn stringByReplacingString: @"\""  withString: @""];
-              fn = [fn stringByReplacingString: @"'"  withString: @"\\\'"];
-	      mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
-				 @" onclick=\"return openMailTo('%@ <%@>');\">"
-				 @"%@</a>", email, fn, email, email];
-              [secondaryEmails addObject: [self _cardStringWithLabel: nil
-                                       value: mailTo]];
-	    }
-	}
+          fn = [card fn];
+          fn = [fn stringByReplacingString: @"\""  withString: @""];
+          fn = [fn stringByReplacingString: @"'"  withString: @"\\\'"];
+          mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
+                             @" onclick=\"return openMailTo('%@ <%@>');\">"
+                             @"%@</a>", email, fn, email, email];
+          
+          [secondaryEmails addObject: [self _cardStringWithLabel: nil
+                                                           value: mailTo]];
+        }
     }
   else
     {
@@ -256,66 +223,31 @@
   return ([phones count] > 0);
 }
 
-- (NSString *) _phoneOfType: (NSString *) aType
-                  withLabel: (NSString *) aLabel
-		  excluding: (NSString *) aTypeToExclude
-{
-  NSArray *elements;
-  NSString *phone;
-
-  elements = [phones cardElementsWithAttribute: @"type"
-                     havingValue: aType];
-
-  phone = nil;
-
-  if ([elements count] > 0)
-    {
-      CardElement *ce;
-      int i;
-
-      for (i = 0; i < [elements count]; i++)
-	{
-	  ce = [elements objectAtIndex: i];
-	  phone = [ce flattenedValuesForKey: @""];
-
-	  if (!aTypeToExclude)
-	    break;
-	  
-	  if (![ce hasAttribute: @"type" havingValue: aTypeToExclude])
-	    break;
-
-	  phone = nil;
-	}
-    }
-
-  return [self _cardStringWithLabel: aLabel value: phone url: @"tel"];
-}
-
 - (NSString *) workPhone
 {
   // We do this (exclude FAX) in order to avoid setting the WORK number as the FAX
   // one if we do see the FAX field BEFORE the WORK number.
-  return [self _phoneOfType: @"work" withLabel: @"Work:" excluding: @"fax"];
+  return [self _cardStringWithLabel: @"Work:" value: [card workPhone] url: @"tel"];
 }
 
 - (NSString *) homePhone
 {
-  return [self _phoneOfType: @"home" withLabel: @"Home:" excluding: @"fax"];
+  return [self _cardStringWithLabel: @"Home:" value: [card homePhone] url: @"tel"];
 }
 
 - (NSString *) fax
 {
-  return [self _phoneOfType: @"fax" withLabel: @"Fax:" excluding: nil];
+  return [self _cardStringWithLabel: @"Fax:" value: [card fax] url: @"tel"];
 }
 
 - (NSString *) mobile
 {
-  return [self _phoneOfType: @"cell" withLabel: @"Mobile:" excluding: nil];
+  return [self _cardStringWithLabel: @"Mobile:" value: [card mobile] url: @"tel"];
 }
 
 - (NSString *) pager
 {
-  return [self _phoneOfType: @"pager" withLabel: @"Pager:" excluding: nil];
+  return [self _cardStringWithLabel: @"Pager:" value: [card pager] url: @"tel"];
 }
 
 - (BOOL) hasHomeInfos
@@ -535,15 +467,7 @@
 
 - (NSString *) workCompany
 {
-  CardElement *org;
-  NSString *company;
-
-  org = [card org];
-  company = [org flattenedValueAtIndex: 0 forKey: @""];
-  if ([company length] == 0)
-    company = nil;
-
-  return [self _cardStringWithLabel: nil value: company];
+  return [self _cardStringWithLabel: nil value: [card workCompany]];
 }
 
 - (NSString *) workPobox
@@ -615,18 +539,15 @@
 
 - (NSString *) bday
 {
-  NSString *bday, *value;
-  NSCalendarDate *date;
   SOGoDateFormatter *dateFormatter;
+  NSCalendarDate *date;
+  NSString *bday;
+  
+  date = [card birthday];
+  bday = nil;
 
-  bday = [card bday];
-  if (bday)
+  if (date)
     {
-      // Expected format of BDAY is YYYY[-]MM[-]DD
-      value = [bday stringByReplacingString: @"-" withString: @""];
-      date = [NSCalendarDate dateFromShortDateString: value
-                                  andShortTimeString: nil
-                                          inTimeZone: nil];
       dateFormatter = [[[self context] activeUser] dateFormatterInContext: context];
       bday = [dateFormatter formattedDate: date];
     }

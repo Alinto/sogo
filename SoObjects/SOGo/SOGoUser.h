@@ -45,6 +45,7 @@
 
 @class SOGoAppointmentFolder;
 @class SOGoAppointmentFolders;
+@class SOGoContactFolder;
 @class SOGoDateFormatter;
 @class SOGoDomainDefaults;
 @class SOGoUserDefaults;
@@ -130,6 +131,7 @@
 - (SOGoUserFolder *) homeFolderInContext: (id) context;
 - (SOGoAppointmentFolders *) calendarsFolderInContext: (WOContext *) context;
 - (SOGoAppointmentFolder *) personalCalendarFolderInContext: (WOContext *) context;
+- (SOGoContactFolder *) personalContactsFolderInContext: (WOContext *) context;
 
 @end
 

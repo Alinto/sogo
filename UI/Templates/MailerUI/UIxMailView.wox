@@ -8,37 +8,34 @@
     <input type="hidden" const:id="shouldAskReceipt" var:value="shouldAskReceipt"/>
     <var:if var:condition="mailIsDraft"
       ><input const:name="editDraftButton" const:id="editDraftButton"
-	type="button" class="button" label:value="Edit Draft..."
-	/></var:if>
+  type="button" class="button" label:value="Edit Draft..."
+  /></var:if>
     <input const:name="loadImagesButton" const:id="loadImagesButton"
-	type="button" class="button" label:value="Load Images"
-	/>
+  type="button" class="button" label:value="Load Images"
+  />
     <table class="mailer_fieldtable">
+      <tbody>
+        <tr class="mailer_fieldrow">
+          <td class="mailer_fieldname"></td>
+          <td class="mailer_fieldvalue"></td>
+        </tr>
       <tr class="mailer_fieldrow">
-        <td class="mailer_fieldname" ><var:string label:value="Subject"/>:</td>
-        <td class="mailer_subjectfieldvalue" id="subject"><var:string value="messageSubject"/></td>
+        <td class="mailer_subjectfieldvalue" id="subject"  colspan="2"><var:string value="messageSubject"/></td>
       </tr>
       <tr class="mailer_fieldrow">
-        <td class="mailer_fieldname" ><var:string label:value="From"/>:</td>
-        <td class="mailer_fieldvalue">
+        <td class="mailer_fieldvalue" colspan="2">
           <var:foreach list="clientObject.fromEnvelopeAddresses"
             item="currentAddress">
-            <a var:href="currentAddressLink">
-              <var:string value="currentAddress"
-                formatter="context.mailEnvelopeFullAddressFormatter" /></a>
+            <a var:href="currentAddressLink" style="color:#333"><var:string value="currentAddress" formatter="context.mailEnvelopeFullAddressFormatter" /></a>
           </var:foreach>
         </td>
       </tr>
       <tr class="mailer_fieldrow">
-        <td class="mailer_fieldname"><var:string label:value="Date"/>:</td>
-        <td class="mailer_fieldvalue">
-          <var:string value="clientObject.date" 
-            formatter="context.mailDateFormatter"/>
-        </td>
+        <td class="mailer_fieldvalue" colspan="2" style="padding-bottom:5px;"><var:string value="clientObject.date" formatter="context.mailDateFormatter"/></td>
       </tr>
-
+      
       <tr class="mailer_fieldrow">
-        <td class="mailer_fieldname"><img rsrc:src="plus.png" class="collapse" style="display: none;" /><var:string label:value="To"/>:</td>
+        <td class="mailer_fieldname"><var:string label:value="To"/> <img rsrc:src="plus.png" class="collapse" style="display: none;" /></td>
         <td class="mailer_fieldvalue">
           <span class="collapse"><var:foreach list="clientObject.toEnvelopeAddresses"
             item="currentAddress"
@@ -51,12 +48,12 @@
       </tr>
       <var:if condition="hasCC">
         <tr class="mailer_fieldrow">
-          <td class="mailer_fieldname"><img rsrc:src="plus.png" class="collapse" style="display: none;" /><var:string label:value="CC"/>:</td>
+          <td class="mailer_fieldname"><var:string label:value="CC"/> <img rsrc:src="plus.png" class="collapse" style="display: none;" /></td>
           <td class="mailer_fieldvalue">
             <span class="collapse"><var:foreach list="clientObject.ccEnvelopeAddresses" 
               item="currentAddress">
               <a var:href="currentAddressLink"
-		><var:string value="currentAddress"
+    ><var:string value="currentAddress"
                   formatter="context.mailEnvelopeFullAddressFormatter"
                   /></a>
               <!-- TODO: better to use li+CSS -->
@@ -66,12 +63,12 @@
       </var:if>
       <var:if condition="hasBCC">
         <tr class="mailer_fieldrow">
-          <td class="mailer_fieldname"><img rsrc:src="plus.png" class="collapse" style="display: none;" /><var:string label:value="Bcc"/>:</td>
+          <td class="mailer_fieldname"><var:string label:value="Bcc"/> <img rsrc:src="plus.png" class="collapse" style="display: none;" /></td>
           <td class="mailer_fieldvalue">
             <span class="collapse"><var:foreach list="clientObject.bccEnvelopeAddresses" 
               item="currentAddress">
               <a var:href="currentAddressLink"
-		><var:string value="currentAddress"
+    ><var:string value="currentAddress"
                   formatter="context.mailEnvelopeFullAddressFormatter"
                   /></a>
               <!-- TODO: better to use li+CSS -->
@@ -81,18 +78,19 @@
       </var:if>
       <var:if condition="hasReplyTo">
         <tr class="mailer_fieldrow">
-          <td class="mailer_fieldname"><var:string label:value="Reply-To"/>:</td>
+          <td class="mailer_fieldname"><var:string label:value="Reply-To"/></td>
           <td class="mailer_fieldvalue">
             <var:foreach list="clientObject.replyToEnvelopeAddresses" 
               item="currentAddress">
               <a var:href="currentAddressLink"
-		><var:string value="currentAddress"
+    ><var:string value="currentAddress"
                   formatter="context.mailEnvelopeFullAddressFormatter"
                   /></a>
             </var:foreach>
           </td>
         </tr>
       </var:if>
+      </tbody>
     </table>
 
     <div class="mailer_mailcontent">

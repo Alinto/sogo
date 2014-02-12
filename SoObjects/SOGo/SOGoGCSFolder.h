@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2006-2010 Inverse inc.
+  Copyright (C) 2006-2013 Inverse inc.
 
   This file is part of SOGo.
 
@@ -124,6 +124,11 @@
 - (NSDictionary *) parseDAVRequestedProperties: (id <DOMElement>) propElement;
 
 - (NSString *) davCollectionTag;
+
+- (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) properties
+                          matchingSyncToken: (NSString *) syncToken
+                                   fromDate: (NSCalendarDate *) theStartDate;
+
 
 /* multiget helper */
 - (WOResponse *) performMultigetInContext: (WOContext *) queryContext

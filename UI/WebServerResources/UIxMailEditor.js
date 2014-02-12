@@ -318,7 +318,6 @@ function onTextKeyDown(event) {
         }
         else {
             if (!(event.shiftKey || event.metaKey || event.ctrlKey)) {
-                // Convert a tab to 4 spaces
                 if (typeof(this.selectionStart)
                     != "undefined") { // For Mozilla and Safari
                     var cursor = this.selectionStart;
@@ -326,13 +325,13 @@ function onTextKeyDown(event) {
                                      ? this.value.substr(0, cursor)
                                      : "");
                     var endText = this.value.substr(cursor);
-                    var newText = startText + "    " + endText;
+                    var newText = startText + "   " + endText;
                     this.value = newText;
-                    cursor += 4;
+                    cursor += 3;
                     this.setSelectionRange(cursor, cursor);
                 }
                 else if (this.selectionRange) // IE
-                    this.selectionRange.text = "    ";
+                    this.selectionRange.text = "   ";
                 else { // others ?
                 }
                 preventDefault(event);
@@ -643,41 +642,35 @@ function onWindowResize(event) {
     var textarea = document.pageform.text;
     var rowheight = (Element.getHeight(textarea) / textarea.rows);
     var headerarea = $("headerArea");
+    var subjectrow = $("subjectRow");
     var totalwidth = $("rightPanel").getWidth();
   
     var attachmentsarea = $("attachmentsArea");
     var attachmentswidth = 0;
-    var subjectfield = headerarea.down("div#subjectRow span.headerField");
-    var subjectinput = headerarea.down("div#subjectRow input.textField");
-    if (attachmentsarea.style.display) {
+    var subjectfield = subjectrow.down("span.headerField");
+    var subjectinput = subjectrow.down("input.textField");
+    //if (attachmentsarea.style.display) {
         // Resize attachments list
-        attachmentswidth = attachmentsarea.getWidth();
-        fromfield = $(document).getElementsByClassName('headerField', headerarea)[0];
-        var height = headerarea.getHeight() - fromfield.getHeight() - subjectfield.getHeight() - 10;
-        if (Prototype.Browser.IE)
-            $("attachments").setStyle({ height: (height - 13) + 'px' });
-        else
-            $("attachments").setStyle({ height: height + 'px' });
-    }
+      //  attachmentswidth = attachmentsarea.getWidth();
+        //fromfield = $(document).getElementsByClassName('headerField', headerarea)[0];
+        //var height = headerarea.getHeight() - fromfield.getHeight() - subjectfield.getHeight() - 10;
+        //if (Prototype.Browser.IE)
+      //      $("attachments").setStyle({ height: (height - 13) + 'px' });
+        //else
+        //    $("attachments").setStyle({ height: height + 'px' });
+    //}
   
     // Resize subject field
     subjectinput.setStyle({ width: (totalwidth
                                     - $(subjectfield).getWidth()
-                                    - attachmentswidth
-                                    - 17) + 'px' });
-    // Resize from field
-    $("fromSelect").setStyle({ width: (totalwidth
-                                       - $("fromField").getWidth()
-                                       - attachmentswidth
-                                       - 15) + 'px' });
-
+                                    - 35) + 'px' });
     // Resize address fields
     var addresslist = $('addressList');
-    addresslist.setStyle({ width: (totalwidth - attachmentswidth - 10) + 'px' });
+    addresslist.setStyle({ width: (totalwidth - 10) + 'px' });
 
     // Set textarea position
-    var hr = headerarea.select("hr").first();
-    textarea.setStyle({ 'top': hr.offsetTop + 'px' });
+    var hr = $('headerArea');
+    textarea.setStyle({ 'top': hr.offsetHeight + 'px' });
 
     // Resize the textarea (message content)
     var offsetTop = $('rightPanel').offsetTop + headerarea.getHeight();
@@ -696,7 +689,7 @@ function onWindowResize(event) {
 
     // Resize search contacts addressbook selector
     if ($("contacts").visible())
-        $("contactFolder").setStyle({ width: ($("contactsSearch").getWidth() - 10) + "px" });
+        $("contactFolder").setStyle({ width: ($("contactsSearch").getWidth() - 20) + "px" });
 }
 
 function onMailEditorClose(event) {

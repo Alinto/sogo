@@ -1,6 +1,6 @@
 /* NSString+Mail.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2013 Inverse inc.
+ * Copyright (C) 2008-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,6 +57,7 @@
   
   NSArray *ignoreContentTags;
   NSArray *specialTreatmentTags;
+  NSArray *voidTags;
   
   BOOL ignoreContent;
   BOOL orderedList;
@@ -73,6 +74,7 @@
 
 - (void) setIgnoreContentTags: (NSArray *) theTags;
 - (void) setSpecialTreatmentTags: (NSArray *) theTags;
+- (void) setVoidTags: (NSArray *) theTags;
 - (void) setImages: (NSMutableArray *) theImages;
 
 @end
@@ -110,7 +112,7 @@
 
   [htmlToTextContentHandler setIgnoreContentTags: [NSArray arrayWithObjects: @"head", @"script",
                                                            @"style", nil]];
-  [htmlToTextContentHandler setSpecialTreatmentTags: [NSArray arrayWithObjects: @"body", @"p", @"ul",
+  [htmlToTextContentHandler setSpecialTreatmentTags: [NSArray arrayWithObjects: @"p", @"ul",
                                                               @"li", @"table", @"tr", @"td", @"th",
                                                               @"br", @"hr", @"dt", @"dd", nil]];
 
@@ -123,6 +125,11 @@
 
   if (!sanitizerContentHandler)
     sanitizerContentHandler = [self new];
+
+  [sanitizerContentHandler setVoidTags: [NSArray arrayWithObjects: @"area", @"base",
+                                                 @"basefont", @"br", @"col", @"frame", @"hr",
+                                                 @"img", @"input", @"isindex", @"link",
+                                                 @"meta", @"param", @"", nil]];
 
   return sanitizerContentHandler;
 }
@@ -159,6 +166,11 @@
 - (void) setSpecialTreatmentTags: (NSArray *) theTags
 {
   ASSIGN(specialTreatmentTags, theTags);
+}
+
+- (void) setVoidTags: (NSArray *) theTags
+{
+  ASSIGN(voidTags, theTags);
 }
 
 //
@@ -218,12 +230,12 @@
   else if ([tagName isEqualToString: @"li"])
     {
       if (orderedList)
-	{
-	  listCount++;
-	  [result appendFormat: @" %d. ", listCount];
-	}
+        {
+          listCount++;
+          [result appendFormat: @" %d. ", listCount];
+        }
       else
-	[result appendString: @" * "];
+        [result appendString: @" * "];
     }
   else if ([tagName isEqualToString: @"dd"])
     [result appendString: @"  "];
@@ -246,7 +258,7 @@
       [result appendString: @":\n"];
     }
   else if ([tagName isEqualToString: @"li"]
-	   || [tagName isEqualToString: @"dd"])
+           || [tagName isEqualToString: @"dd"])
     [result appendString: @"\n"];
 }
 
@@ -264,82 +276,110 @@
   if (!ignoreContent && ignoreContentTags && specialTreatmentTags)
     {
       if ([ignoreContentTags containsObject: tagName])
-	ignoreContent = YES;
+        ignoreContent = YES;
       else if ([specialTreatmentTags containsObject: tagName])
-	[self _startSpecialTreatment: tagName];
+        [self _startSpecialTreatment: tagName];
     }
-  else if ([tagName isEqualToString: @"img"])
+  else
     {
-      NSString *value;
-
-      value = [attributes valueForRawName: @"src"];
-
-      //
-      // Check for Data URI Scheme
-      //
-      // data:[<MIME-type>][;charset=<encoding>][;base64],<data>
-      //
-      if ([value length] > 5 && [[value substringToIndex: 5] caseInsensitiveCompare: @"data:"] == NSOrderedSame)
+      if ([tagName isEqualToString: @"img"])
         {
-          NSString *uniqueId, *mimeType, *encoding, *charset;
-          NGMimeBodyPart *bodyPart;
-          NGMutableHashMap *map;
-          NSData *data;
-          id body;
+          NSString *value;
 
-          int i, j, k;
-          
-          i = [value indexOf: ';'];
-          j = [value indexOf: ';' fromIndex: i+1];
-          k = [value indexOf: ','];
-          
-          // We try to get the MIME type
-          mimeType = nil;
+          value = [attributes valueForRawName: @"src"];
 
-          if (i > 5 && i < k)
+          //
+          // Check for Data URI Scheme
+          //
+          // data:[<MIME-type>][;charset=<encoding>][;base64],<data>
+          //
+          if ([value length] > 5 && [[value substringToIndex: 5] caseInsensitiveCompare: @"data:"] == NSOrderedSame)
             {
-              mimeType = [value substringWithRange: NSMakeRange(5, i-5)];
+              NSString *uniqueId, *mimeType, *encoding;
+              NGMimeBodyPart *bodyPart;
+              NGMutableHashMap *map;
+              NSData *data;
+              id body;
+
+              int i, j, k;
+
+              i = [value indexOf: ';'];
+              j = [value indexOf: ';' fromIndex: i+1];
+              k = [value indexOf: ','];
+          
+              // We try to get the MIME type
+              mimeType = nil;
+
+              if (i > 5 && i < k)
+                {
+                  mimeType = [value substringWithRange: NSMakeRange(5, i-5)];
+                }
+              else
+                i = 5;
+
+              // We might get a stupid value. We discard anything that doesn't have a / in it
+              if ([mimeType indexOf: '/'] < 0)
+                mimeType = @"image/jpeg";
+          
+              // We check and skip the charset
+              if (j < i)
+                j = i;
+
+              // We check the encoding and we completely ignore it
+              encoding = [value substringWithRange: NSMakeRange(j+1, k-j-1)];
+
+              if (![encoding length])
+                encoding = @"base64";
+
+              data = [[value substringFromIndex: k+1] dataUsingEncoding: NSASCIIStringEncoding];
+
+              uniqueId = [SOGoObject globallyUniqueObjectId];
+
+              map = [[[NGMutableHashMap alloc] initWithCapacity:5] autorelease];
+              [map setObject: encoding forKey: @"content-transfer-encoding"];
+              [map setObject:[NSNumber numberWithInt:[data length]] forKey: @"content-length"];
+              [map setObject: [NSString stringWithFormat: @"inline; filename=\"%@\"", uniqueId]  forKey: @"content-disposition"];
+              [map setObject: [NSString stringWithFormat: @"%@; name=\"%@\"", mimeType, uniqueId]  forKey: @"content-type"];
+              [map setObject: [NSString stringWithFormat: @"<%@>", uniqueId]  forKey: @"content-id"];
+                    
+                    
+              body = [[NGMimeFileData alloc] initWithBytes: [data bytes]  length: [data length]];
+
+              bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
+              [bodyPart setBody: body];
+              [body release];
+          
+              [images addObject: bodyPart];
+          
+              [result appendFormat: @"<img src=\"cid:%@\" type=\"%@\"/>", uniqueId, mimeType];
             }
-          else
-            i = 5;
+        }
+      else if (voidTags)
+        {
+          NSString *type;
+          int i;
 
-          // We might get a stupid value. We discard anything that doesn't have a / in it
-          if ([mimeType indexOf: '/'] < 0)
-            mimeType = @"image/jpeg";
-          
-          // We check and skip the charset
-          if (j > i)
-            charset = [value substringWithRange: NSMakeRange(i+1, j-i-1)];
-          else
-            j = i;
+          [result appendString: @"<"];
+          [result appendString: rawName];
+          for (i = 0; i < [attributes count]; i++)
+            {
+              [result appendString: @" "];
+              [result appendString: [attributes nameAtIndex: i]];
+              [result appendString: @"='"];
+              [result appendString: [attributes valueAtIndex: i]];
+              [result appendString: @"'"];
 
-          // We check the encoding and we completely ignore it
-          encoding = [value substringWithRange: NSMakeRange(j+1, k-j-1)];
-
-          if (![encoding length])
-            encoding = @"base64";
-
-          data = [[value substringFromIndex: k+1] dataUsingEncoding: NSASCIIStringEncoding];
-
-          uniqueId = [SOGoObject globallyUniqueObjectId];
-
-          map = [[[NGMutableHashMap alloc] initWithCapacity:5] autorelease];
-          [map setObject: encoding forKey: @"content-transfer-encoding"];  
-          [map setObject:[NSNumber numberWithInt:[data length]] forKey: @"content-length"];
-          [map setObject: [NSString stringWithFormat: @"inline; filename=\"%@\"", uniqueId]  forKey: @"content-disposition"];
-          [map setObject: [NSString stringWithFormat: @"%@; name=\"%@\"", mimeType, uniqueId]  forKey: @"content-type"];
-          [map setObject: [NSString stringWithFormat: @"<%@>", uniqueId]  forKey: @"content-id"];
-                    
-                    
-          body = [[NGMimeFileData alloc] initWithBytes: [data bytes]  length: [data length]];
-
-          bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
-          [bodyPart setBody: body];
-          [body release];
-          
-          [images addObject: bodyPart];
-          
-          [result appendFormat: @"<img src=\"cid:%@\" type=\"%@\">", uniqueId, mimeType];
+              type = [attributes typeAtIndex: i];
+              if (![type isEqualToString: @"CDATA"])
+                {
+                  [result appendString: @"["];
+                  [result appendString: type];
+                  [result appendString: @"]"];
+                }
+            }
+          if ([voidTags containsObject: tagName])
+            [result appendString: @"/"];
+          [result appendString: @">"];
         }
     }
 }
@@ -352,13 +392,22 @@
 
   showWhoWeAre();
 
-  if (ignoreContent && ignoreContentTags && specialTreatmentTags)
+  if (ignoreContentTags && specialTreatmentTags)
+    {
+      if (ignoreContent)
+        {
+          tagName = [rawName lowercaseString];
+          if ([ignoreContentTags containsObject: tagName])
+            ignoreContent = NO;
+          else if ([specialTreatmentTags containsObject: tagName])
+            [self _endSpecialTreatment: tagName];
+        }
+    }
+  else if (voidTags)
     {
       tagName = [rawName lowercaseString];
-      if ([ignoreContentTags containsObject: tagName])
-	ignoreContent = NO;
-      else if ([specialTreatmentTags containsObject: tagName])
-	[self _endSpecialTreatment: tagName];
+      if (![voidTags containsObject: tagName])
+        [result appendFormat: @"</%@>", rawName];
     }
 }
 
@@ -605,7 +654,7 @@ convertChars (const char *oldString, unsigned int oldLength,
   NSString *decodedHeader;
 
   decodedHeader = [[self dataUsingEncoding: NSASCIIStringEncoding]
-		     decodedHeader];
+                     decodedHeader];
   if (!decodedHeader)
     decodedHeader = self;
   

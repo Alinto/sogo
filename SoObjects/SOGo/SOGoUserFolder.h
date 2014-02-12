@@ -1,14 +1,15 @@
 /*
+  Copyright (C) 2006-2014 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
-  This file is part of OpenGroupware.org.
+  This file is part of SOGo.
 
-  OGo is free software; you can redistribute it and/or modify it under
+  SOGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -39,6 +40,7 @@
 @class NSDictionary;
 @class NSString;
 @class WOContext;
+@class SOGoAppointmentFolders;
 @class SOGoContactFolders;
 
 @interface SOGoUserFolder : SOGoFolder
@@ -58,6 +60,9 @@
 
 - (BOOL) collectionDavKey: (NSString *) key
 		  matches: (NSString *) value;
+
+- (SOGoAppointmentFolders *) privateCalendars: (NSString *) key
+				    inContext: (WOContext *) localContext;
 
 - (SOGoContactFolders *) privateContacts: (NSString *) _key
                                inContext: (WOContext *) _ctx;

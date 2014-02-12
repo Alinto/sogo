@@ -2488,11 +2488,9 @@ function onMenuLabelNone() {
         });
 }
 
-function onMenuLabelFlag() {
+function _onMenuLabelFlagX(flag) {
     var messages = new Hash();
 
-    var flag = this.readAttribute("data-name");
-    
     if (document.menuTarget.tagName == "DIV")
         // Menu called from message content view
         messages.set(Mailer.currentMessages[Mailer.currentMailbox],
@@ -2504,25 +2502,45 @@ function onMenuLabelFlag() {
             if (row)
                 messages.set(rowID.substr(4),
                              row.getAttribute("labels"));
-        });
+            });
     else
         // Menu called from one selection in messages list view
         messages.set(document.menuTarget.getAttribute("id").substr(4),
                      document.menuTarget.getAttribute("labels"));
-    
+
     var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/";
     messages.keys().each(function(id) {
-        var flags = messages.get(id).split(" ");
-        var operation = "add";
-        
-        if (flags.indexOf(flag) > -1)
-            operation = "remove";
-        
-        triggerAjaxRequest(url + id + "/" + operation + "Label?flag=" + flag.asCSSIdentifier(),
-                           messageFlagCallback,
-                           { mailbox: Mailer.currentMailbox, msg: id,
-                             label: operation + flag } );
-    });
+            var flags = messages.get(id).split(" ");
+            var operation = "add";
+
+            if (flags.indexOf("label" + flag) > -1)
+                operation = "remove";
+
+            triggerAjaxRequest(url + id + "/" + operation + "Label" + flag,
+                               messageFlagCallback,
+                               { mailbox: Mailer.currentMailbox, msg: id,
+                                       label: operation + flag } );
+        });
+}
+
+function onMenuLabelFlag1() {
+    _onMenuLabelFlagX(1);
+}
+
+function onMenuLabelFlag2() {
+    _onMenuLabelFlagX(2);
+}
+
+function onMenuLabelFlag3() {
+    _onMenuLabelFlagX(3);
+}
+
+function onMenuLabelFlag4() {
+    _onMenuLabelFlagX(4);
+}
+
+function onMenuLabelFlag5() {
+    _onMenuLabelFlagX(5);
 }
 
 function onMenuToggleMessageFlag(event) {
@@ -2689,33 +2707,14 @@ function onLabelMenuPrepareVisibility() {
 
     var lis = this.childNodesWithTag("ul")[0].childNodesWithTag("li");
     var isFlagged = false;
-
-    // lis is our array of labels, ex:
-    // li
-    // li.seperator
-    // li.label1
-    // li.broccoli
-    // ...
-    for (var i = 2; i < lis.length; i++) {
-
-        // We bind the event handlers if we need to
-        if (lis[i].menuCallback == null) {
-            lis[i].menuCallback = onMenuLabelFlag;
-	    lis[i].on("mousedown", onMenuClickHandler);
-            lis[i].removeClassName("disabled");
-        }
-
-        var flag = lis[i].readAttribute("data-name");
-
-        if (flags[flag]) {
+    for (var i = 1; i < 6; i++) {
+        if (flags["label" + i]) {
             isFlagged = true;
-            lis[i].addClassName("_chosen");
+            lis[1 + i].addClassName("_chosen");
         }
-        else {
-            lis[i].removeClassName("_chosen");
-        }
+        else
+            lis[1 + i].removeClassName("_chosen");
     }
-
     if (isFlagged)
         lis[0].removeClassName("_chosen");
     else
@@ -2835,14 +2834,22 @@ function getMenus() {
                           onMenuChangeToDraftsFolder,
                           onMenuChangeToTrashFolder  ],
 
-        "label-menu": [ onMenuLabelNone, "-" ],
-
+        "label-menu": [ onMenuLabelNone, "-", onMenuLabelFlag1,
+                        onMenuLabelFlag2, onMenuLabelFlag3,
+                        onMenuLabelFlag4, onMenuLabelFlag5 ],
         "mark-menu": [ onMenuToggleMessageRead, null, null, null, "-", onMenuToggleMessageFlag ],
+// , "-",
+//                        null, null, null ],
 
         searchMenu: [ setSearchCriteria, setSearchCriteria,
                       setSearchCriteria, setSearchCriteria,
                       setSearchCriteria ]
     };
+
+    var labelMenu = $("label-menu");
+    if (labelMenu) {
+        labelMenu.prepareVisibility = onLabelMenuPrepareVisibility;
+    }
 
     var labelMenu = $("label-menu");
     if (labelMenu) {

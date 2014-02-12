@@ -16,7 +16,7 @@
 
   <form var:href="saveURL" name="editform" id="mainForm">
     <var:if condition="isNew"><div id="addressBookSelector">
-        <style type="text/css">DIV#editorTabs { top: 30px; };</style>
+        <style type="text/css">DIV#editorTabs { top: 40px; };</style>
         <var:string label:value="Add to:" />
         <var:popup const:id="addressBooksList"
           list="addressBooksList" item="addressBookItem"
@@ -45,71 +45,72 @@
       </ul>
       <div class="tabs">
         <div id="baseInfos" class="tab">
-          <span class="caption"><var:string label:value="Name" /></span>
-          <table class="frame">
-            <tr>
-              <td>
-                <label><var:string label:value="First:" />
+          <fieldset>
+<legend><var:string label:value="Name" /></legend>
+          
+            
+              <div>
+                <label><var:string label:value="First:" /></label>
                   <input type="text" class="textField" name="givenname"
                     id="givenname"
                     var:value="ldifRecord.givenname"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label><var:string label:value="Last:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Last:" /></label>
                   <input type="text" class="textField" name="sn" id="sn"
                     var:value="ldifRecord.sn"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label><var:string label:value="Display:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Display:" /></label>
                   <input type="text" class="textField" name="displayname" id="displayname"
                     var:value="ldifRecord.displayname"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label><var:string label:value="Nickname:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Nickname:" /></label>
                   <input type="text" class="textField" name="mozillanickname" id="mozillanickname"
                     var:value="ldifRecord.mozillanickname"
-                    /></label>
-              </td>
-            </tr>
-          </table>
-          <span class="caption"><var:string label:value="Internet" /></span>
-          <table class="frame" id="emailInfos">
-            <tr>
-              <td>
-                <label><var:string label:value="Email:" />
+                    />
+              </div>
+            
+          </fieldset>
+          
+          <fieldset id="emailInfos">
+            <legend><var:string label:value="Internet" /></legend>
+            
+              <div>
+                <label><var:string label:value="Email:" /></label>
                   <input type="text" class="textField" name="mail" id="mail"
                     var:value="ldifRecord.mail"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label><var:string label:value="Additional Email:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Additional Email:" /></label>
                   <input type="text" class="textField" name="mozillasecondemail"
                     id="mozillasecondemail" var:value="ldifRecord.mozillasecondemail"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label><var:string label:value="Screen Name:"
                     />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Screen Name:"/></label>
                   <input type="text" class="textField" name="nsaimid"
                     id="nsaimid" var:value="ldifRecord.nsaimid"
-                    /></label>
-              </td>
-            </tr> 
-            <tr>
-              <td id="htmlMailFormat">
+                    />
+              </div>
+             
+            
+              <div id="htmlMailFormat">
                 <label><var:string
                     label:value="Prefers to receive messages formatted as:" />
                   <var:popup list="htmlMailFormatList" item="item"
@@ -117,59 +118,60 @@
                     string="itemHtmlMailFormatText"
                     selection="ldifRecord.mozillausehtmlmail"
                    /></label>
-              </td>
-            </tr>
-          </table>
-          <span class="caption"><var:string label:value="Phones" /></span>
-          <table class="frame">
-            <tr>
-              <td>
-                <label><var:string label:value="Work:" />
+              </div>
+            
+          </fieldset>
+          <fieldset>
+<legend><var:string label:value="Phones" /></legend>
+          
+            
+              <div>
+                <label><var:string label:value="Work:" /></label>
                   <input type="text" class="textField"
                     name="telephonenumber"
                     id="telephonenumber"
                     var:value="ldifRecord.telephonenumber"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label><var:string label:value="Home:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Home:" /></label>
                   <input type="text" class="textField"
                     name="homephone" id="homephone"
                     var:value="ldifRecord.homephone"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label><var:string label:value="Fax:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Fax:" /></label>
                   <input type="text" class="textField"
                     name="facsimiletelephonenumber"
                     id="facsimiletelephonenumber"
                     var:value="ldifRecord.facsimiletelephonenumber"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label><var:string label:value="Pager:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Pager:" /></label>
                   <input type="text" class="textField"
                     name="pager"
                     id="pager"
                     var:value="ldifRecord.pager"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label><var:string label:value="Mobile:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Mobile:" /></label>
                   <input type="text" class="textField" name="mobile" id="mobile"
                     var:value="ldifRecord.mobile"
-                    /></label>
-              </td>
-            </tr>
-          </table>
+                    />
+              </div>
+            
+          </fieldset>
         </div>
 
         <var:if condition="supportCategories"
@@ -190,160 +192,153 @@
           </div></var:if>
 
         <div id="addressesInfos" class="tab">
-          <span class="caption"><var:string label:value="Home" /></span>
-          <table class="frame">
-            <tr>
-              <td colspan="2">
-                <label><var:string label:value="Address:" />
-                  <input type="text" class="textField" name="mozillahomestreet"
+          <fieldset>
+<legend><var:string label:value="Home" /></legend>
+          
+            
+              <div>
+                <label><var:string label:value="Address:" /></label>
+                  <input type="text" class="textField inline-input" name="mozillahomestreet"
                     id="mozillahomestreet"
                     var:value="ldifRecord.mozillahomestreet"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <label>
-                  <input type="text" class="textField" namCe="mozillahomestreet2"
+                    />
+                  <input type="text" class="textField inline-input" namCe="mozillahomestreet2"
                     id="mozillahomestreet2"
                     var:value="ldifRecord.mozillahomestreet2"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <label><var:string label:value="City:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="City:" /></label>
                   <input type="text" class="textField" name="mozillahomelocalityname"
                     id="mozillahomelocalityname"
                     var:value="ldifRecord.mozillahomelocalityname"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td class="firstColumn">
-                <label><var:string label:value="State_Province:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="State_Province:" /></label>
                   <input type="text" class="textField" name="mozillahomestate"
                     id="mozillahomestate"
                     var:value="ldifRecord.mozillahomestate"
-                    /></label>
-              </td>
-              <td class="secondColumn">
+                    />
+              </div>
+              <div>
                 <label><var:string
                     label:value="ZIP_Postal Code:"
-                    />
+                    /></label>
                   <input type="text" class="textField" name="mozillahomepostalcode"
                     id="mozillahomepostalcode"
                     var:value="ldifRecord.mozillahomepostalcode"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <label><var:string label:value="Country:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Country:" /></label>
                   <input type="text" class="textField" name="mozillahomecountryname"
                     id="mozillahomecountryname"
                     var:value="ldifRecord.mozillahomecountryname"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
+                    />
+              </div>
+            
+            
+              <div>
                 <label>
-                  <var:string label:value="Web Page:" />
+                  <var:string label:value="Web Page:" /></label>
                   <input type="text" class="textField" name="mozillahomeurl"
                     var:value="ldifRecord.mozillahomeurl"
-                    /></label>
-              </td>
-            </tr>
-          </table> 
-          <span class="caption"><var:string label:value="Work" /></span>
-          <table class="frame">
-            <tr>
-              <td colspan="2">
+                    />
+              </div>
+            
+          </fieldset>
+
+          <fieldset>
+<legend><var:string label:value="Work" /></legend>
+          
+            
+              <div>
                 <label>
-                  <var:string label:value="Title:" />
+                  <var:string label:value="Title:" /></label>
                   <input type="text" class="textField" name="title"
                     id="title"
                     var:value="ldifRecord.title"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
+                    />
+              </div>
+            
+            
+              <div>
                 <label>
-                  <var:string label:value="Department:" />
+                  <var:string label:value="Department:" /></label>
                   <input type="text" class="textField" name="ou"
                     id="ou"
                     var:value="ldifRecord.ou"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <label><var:string label:value="Organization:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Organization:" /></label>
                   <input type="text" class="textField" name="o"
                     id="o" var:value="ldifRecord.o"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <label><var:string label:value="Address:" />
-                  <input type="text" class="textField" name="street"
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Address:" /></label>
+                 <input type="text" class="textField inline-input" name="street"
                     id="street"
                     var:value="ldifRecord.street"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <label>
-                  <input type="text" class="textField" name="mozillaworkstreet2"
+                    />
+                 <input type="text" class="textField inline-input" name="mozillaworkstreet2"
                     id="mozillaworkstreet2" var:value="ldifRecord.mozillaworkstreet2"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <label><var:string label:value="City:" />
+                    />
+              </div>
+            
+            
+              <div class="inline-field">
+                <label><var:string label:value="City:" /></label>
                   <input type="text" class="textField" name="l"
                     id="l" var:value="ldifRecord.l"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td class="firstColumn">
-                <label><var:string label:value="State_Province:" />
+                    />
+              </div>
+            
+            
+              <div class="inline-field">
+                <label><var:string label:value="State_Province:" /></label>
                   <input type="text" class="textField" name="st"
                     id="st" var:value="ldifRecord.st"
-                    /></label>
-              </td>
-              <td class="secondColumn">
+                    />
+              </div>
+              <div>
                 <label><var:string
                     label:value="ZIP_Postal Code:"
-                    />
+                    /></label>
                   <input type="text" class="textField" name="postalcode"
                     id="postalcode" var:value="ldifRecord.postalcode"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <label><var:string label:value="Country:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Country:" /></label>
                   <input type="text" class="textField" name="c"
                     id="c" var:value="ldifRecord.c"
-                    /></label>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <label><var:string label:value="Web Page:" />
+                    />
+              </div>
+            
+            
+              <div>
+                <label><var:string label:value="Web Page:" /></label>
                   <input type="text" class="textField" name="mozillaworkurl"
                     var:value="ldifRecord.mozillaworkurl"
-                    /></label>
-              </td>
-            </tr>
-          </table>
+                    />
+              </div>
+            
+          </fieldset>
         </div>
 
         <var:if condition="supportPhotos"
@@ -355,29 +350,27 @@
             ></var:if>
 
         <div id="otherInfos" class="tab">
-          <table class="framenocaption">
-            <tr>
-              <td>
-                <label><var:string label:value="Birthday (yyyy-mm-dd):"/>
-                  <input type="text" class="textField" name="birthyear" id="birthyear"
+          <fieldset class="framenocaption">
+            
+              <div>
+                <label><var:string label:value="Birthday (yyyy-mm-dd):"/></label>
+                  <input type="text" class="textField inline-input" name="birthyear" id="birthyear"
                     var:value="ldifRecord.birthyear"
-                    /></label>
+                    placeholder="0000"
+                    />
                   -
-                  <input type="text" class="textField" name="birthmonth" id="birthmonth"
+                  <input type="text" class="textField inline-input" name="birthmonth" id="birthmonth" placeholder="00"
                     var:value="ldifRecord.birthmonth" />
                   -
-                  <input type="text" class="textField" name="birthday" id="birthday"
+                  <input type="text" class="textField inline-input" name="birthday" id="birthday" placeholder="00"
                     var:value="ldifRecord.birthday"/>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label><var:string label:value="Note:" />
+              </div>    
+              <div>
+                <label><var:string label:value="Note:" /></label>
                   <textarea var:value="ldifRecord.description" name="note" id="note"></textarea>
-                </label>
-              </td>
-            </tr>
-          </table>
+              </div>
+            
+          </fieldset>
         </div>
       </div>
     </div>

@@ -29,6 +29,7 @@
 @class NSDictionary;
 @class NSMutableArray;
 @class NSString;
+@class NGSieveClient;
 @class SOGoMailAccount;
 @class SOGoUser;
 
@@ -45,10 +46,9 @@
 - (NSString *) sieveScriptWithRequirements: (NSMutableArray *) newRequirements;
 - (NSString *) lastScriptError;
 
-- (BOOL) updateFiltersForLogin: (NSString *) theLogin
-		      authname: (NSString *) theAuthName
-		      password: (NSString *) thePassword
-		       account: (SOGoMailAccount *) theAccount;
+- (NGSieveClient *) clientForAccount: (SOGoMailAccount *) theAccount;
+
+- (BOOL) updateFiltersForAccount: (SOGoMailAccount *) theAccount;
 
 @end
 

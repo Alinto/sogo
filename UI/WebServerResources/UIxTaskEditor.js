@@ -170,8 +170,8 @@ function addContact(tag, fullContactName, contactId, contactName, contactEmail) 
 
 function onTimeControlCheck(checkBox) {
     if (checkBox) {
-        var inputs = checkBox.parentNode.getElementsByTagName("input");
-        var selects = checkBox.parentNode.getElementsByTagName("select");
+        var inputs = checkBox.parentNode.next('span').getElementsByTagName("input");
+        var selects = checkBox.parentNode.next('span').getElementsByTagName("select");
         for (var i = 0; i < inputs.length; i++)
             if (inputs[i] != checkBox)
                 inputs[i].disabled = !checkBox.checked;

@@ -52,41 +52,33 @@
   <div id="contacts" style="display: none;">
   <div id="leftPanel">
     <div id="contactsSearch">
-      <label><var:string label:value="Address Book:" /></label>
-      <var:popup const:name="contactFolder" const:id="contactFolder"
-	list="contactFolders"
-	item="currentFolder"
-        string="currentContactFolderName"
-        value="currentContactFolderId"
-	/>
-      <label><var:string label:value="Search For:"/></label>
+      <var:popup const:name="contactFolder" const:id="contactFolder" list="contactFolders" item="currentFolder" string="currentContactFolderName" value="currentContactFolderId" />
       <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
       <div id="contactsListContent">
       <table id="contactsList" cellspacing="0">
-	<thead>
-	  <tr class="tableview">
-	    <!-- localize -->
-	    <td class="tbtv_headercell sortableTableHeader" id="nameHeader"
-		><img id="messageSortImage" class="sortImage" rsrc:src="arrow-up.png"
-		/><var:string label:value="Name"
-	    /></td
-	    ><td class="tbtv_headercell sortableTableHeader" id="mailHeader"
-	    ><var:string label:value="Email"/></td
-	    ></tr>
-	</thead>
-	<tbody id="contactsListTbody">
-
-      <var:foreach list="personalContactInfos" item="currentContact">
-        <tr var:class="currentContactClasses"
-          var:categories="currentContact.c_categories"
-          var:id="currentContact.c_name"
-          var:contactname="currentContact.c_cn">
-          <td class="displayName" var:title="currentContact.c_cn"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>
-          <td var:title="currentContact.c_mail"><var:string value="currentContact.c_mail"/></td>
-        </tr>
-      </var:foreach>
-
-	</tbody>
+      	<thead>
+      	  <tr class="tableview">
+      	    <!-- localize -->
+      	    <td class="tbtv_headercell sortableTableHeader" id="nameHeader">
+              <img id="messageSortImage" class="sortImage" rsrc:src="arrow-up.png"/>
+              <var:string label:value="Name"/>
+            </td>
+            <td class="tbtv_headercell sortableTableHeader" id="mailHeader">
+              <var:string label:value="Email"/>
+            </td>
+          </tr>
+      	</thead>
+      	<tbody id="contactsListTbody">
+            <var:foreach list="personalContactInfos" item="currentContact">
+              <tr var:class="currentContactClasses"
+                var:categories="currentContact.c_categories"
+                var:id="currentContact.c_name"
+                var:contactname="currentContact.c_cn">
+                <td class="displayName" var:title="currentContact.c_cn"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>
+                <td var:title="currentContact.c_mail"><var:string value="currentContact.c_mail"/></td>
+              </tr>
+            </var:foreach>
+      	</tbody>
       </table>
     </div>
 
@@ -106,36 +98,36 @@
     <input type="hidden" name="receipt" id="receipt" var:value="receipt"/>
     <input type="hidden" name="isHTML" id="isHTML" var:value="isHTML"/>
 
-    <div id="attachmentsArea">
-      <var:string label:value="Attachments:" />
-      <ul id="attachments">
-	<var:foreach list="attachmentNames" item="attachmentName"
-	  ><li var:title="attachmentName"><img rsrc:src="attachment.gif"
-	      /><var:string value="attachmentName"
-	      /></li></var:foreach>
-      </ul>
-    </div>
     <div id="headerArea">
       <span class="headerField" const:id="fromField"><var:string label:value="From" />:</span>
       <var:popup const:name="from" const:id="fromSelect"
-	list="fromEMails"
-	item="item"
-	selection="from"
-	/><br />
-      <div>
-	<var:component className="UIxMailToSelection"
-	  to="to" cc="cc" bcc="bcc" />
+	       list="fromEMails"
+	       item="item"
+	       selection="from"
+	     />
+       <br/><br/>
+      <div class="mail">
+	     <var:component className="UIxMailToSelection" to="to" cc="cc" bcc="bcc" />
       </div>
-      <div class="addressListElement" id="subjectRow"
-	><span class="headerField"><var:string label:value="Subject"
-	    />:</span
-	  >
-	<input name="subject"
-	  type="text"
-	  class="textField"
-	  var:value="subject"
-	  /></div>
-      <!-- separator line --><hr class="fieldSeparator"/>
+    </div>
+      <div class="addressListElement" id="subjectRow">
+        <span class="headerField">
+          <var:string label:value="Subject"/>:
+        </span>
+       <input name="subject" type="text" class="textField" var:value="subject" />
+      </div>
+    <div id="attachmentsArea">
+      <span class="headerField">
+        <var:string label:value="Attachments:" />
+      </span>
+      <ul id="attachments">
+         <var:foreach list="attachmentNames" item="attachmentName">
+          <li var:title="attachmentName">
+            <img rsrc:src="attachment.gif"/>
+            <var:string value="attachmentName"/>
+          </li>
+        </var:foreach>
+      </ul>
     </div>
     <textarea id="text" name="text" rows="30" var:value="text"></textarea>
     <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->

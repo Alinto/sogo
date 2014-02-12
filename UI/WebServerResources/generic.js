@@ -269,7 +269,7 @@ function openContactWindow(url, wId) {
             wId = sanitizeWindowName(wId);
 
         var w = window.open(url, wId,
-                            "width=450,height=530,resizable=0,location=0");
+                            "width=450,height=550,resizable=0,location=0");
         w.focus();
 
         return w;
@@ -1063,8 +1063,8 @@ function popupSearchMenu(event) {
 
         var popup = $(menuId);
         offset = Position.positionedOffset(this);
-        popup.setStyle({ top: (offset.top + this.getHeight()) + "px",
-                         left: (offset.left + 3) + "px",
+        popup.setStyle({ top: (offset.top + this.getHeight() + 10 ) + "px",
+                         left: (offset.left + 10) + "px",
                          visibility: "visible" });
 
         document.currentPopupMenu = popup;
@@ -2303,5 +2303,12 @@ function SetLogMessage(containerId, message, msgType) {
         }
     }
 }
+
+function ToggleAppNavMenu() {
+    jQuery("#appNavMenu").slideToggle("fast");
+}
+
+
+
 
 document.observe("dom:loaded", onLoadHandler);

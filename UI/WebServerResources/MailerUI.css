@@ -1,15 +1,14 @@
 /*
-  Copyright (C) 2005-2013 Inverse inc.
   Copyright (C) 2005 SKYRIX Software AG
 
-  This file is part of SOGo.
+  This file is part of OpenGroupware.org.
 
-  SOGo is free software; you can redistribute it and/or modify it under
+  OGo is free software; you can redistribute it and/or modify it under
   the terms of the GNU Lesser General Public License as published by the
   Free Software Foundation; either version 2, or (at your option) any
   later version.
 
-  SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
   WARRANTY; without even the implied warranty of MERCHANTABILITY or
   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
   License for more details.
@@ -23,18 +22,20 @@
 DIV#leftPanel
 {
   position: absolute;
-  top: 85px;
+  top: 40px;
   left: 0px;
   width: 15em;
   bottom: 0px;
   margin: 0px;
   padding: 0px;
   overflow: hidden;
+  background-color: #eee;
+  box-shadow: -5px 0 5px -6px rgba(0, 0, 0, 0.5) inset;
 }
 
 DIV#rightPanel
 { position: absolute;
-  top: 80px;
+  top: 40px;
   left: 15em;
   right: 0px;
   bottom: 0px;
@@ -48,11 +49,10 @@ DIV#mailboxContent
 { cursor: default;
   position: absolute;
   background-color: #FFFFFF;
-  top: 2.5em;
+  top: 0px;
   left: 0px;
   right: 0px;
   height: 15.5em;
-  border-left: 1px solid #9B9B9B;
   overflow: hidden; }
 
 DIV#mailboxList
@@ -67,11 +67,9 @@ DIV#messageContent
   left: 0px;
   right: 0px;
   margin: 0px;
-  margin-top: 5px;
+  margin-top: 0px;
   padding: 0px;
   border: 0px;
-  border-top: 1px solid #aaa;
-  border-left: 1px solid #aaa;
   background: #fff; }
 
 DIV#messageContent P IMG
@@ -80,19 +78,29 @@ DIV#messageContent P IMG
   margin-right: 1em; }
 
 DIV#folderTreeContent
-{ border-top: 1px solid #909090;
-  border-left: 1px solid #909090;
-  border-bottom: 1px solid #FFFFFF;
-  border-right: 1px solid #FFFFFF;
-  position: absolute;
-  background: #CCDDEC;
-  color: #535D6D;
+{ position: absolute;
+  color: #333;
   width: auto;
-  top: 2em;
+  top: 90px;
   bottom: 0px;
   left: 0px;
   right: 0px;
   overflow: auto; }
+
+#label-menu LI.label1
+{ color: #f00; }
+
+#label-menu LI.label2
+{ color: #ff9a00; }
+
+#label-menu LI.label3
+{ color: #009a00; }
+
+#label-menu LI.label4
+{ color: #3130ff; }
+
+#label-menu LI.label5
+{ color: #9c309c; }
 
 .aptview_title
 {
@@ -160,14 +168,22 @@ DIV#folderTreeContent
   /* height: 300px; */
   /* height: 100%; */
 }
-
+.searchBox{
+  background: white;
+  margin:10px;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 1px;
+}
 .titlediv
 {
-  height: 2em;
-  line-height: 18px;
+  font-size: 20px;
+  height: 25px;
+  line-height: 25px;
+  padding-left: 19px;
+  margin-top: 10px;
   vertical-align: middle;
-  padding-top: 0px;
-  padding-left: 6px; }
+  position: relative;}
 
 TABLE.titletable
 {
@@ -178,7 +194,7 @@ TABLE.titletable
 }
 
 TABLE.titletable TD.titlecell SELECT
-{ 
+{
   display: -moz-popup;
   border-top: 1px solid #fff;
   border-left: 1px solid #fff;
@@ -222,8 +238,8 @@ TABLE.messageList
 
 TABLE.messageList TH,
 TABLE.messageList TD
-{ height: 20px;
-  min-height: 20px;
+{ height: 30px;
+  min-height: 30px;
   text-overflow: ellipsis;
   overflow: hidden;
   padding: 0px 3px;
@@ -231,16 +247,8 @@ TABLE.messageList TD
   margin: 0;
   white-space: nowrap; }
 
-TABLE.messageList TH,
-TR#messageCountHeader TH
-{ height: 22px;
-  min-height: 22px; }
-
-TR#messageCountHeader TH
-{ border-top: 0px; }
-
-TABLE.messageList TD
-{ border-right: 1px solid transparent; }
+TABLE.messageList TR:hover
+{ background-color: whitesmoke }
 
 TABLE.messageList .messageThreadColumn,
 TABLE.messageList .messageFlagColumn,
@@ -256,14 +264,6 @@ TABLE.messageList .messageSubjectColumn
 
 TABLE.messageList .messageSubjectColumn SPAN
 { padding-left: 20px; }
-
-TABLE.messageList TR.openedThread TD,
-TABLE.messageList TR.closedThread TD,
-TABLE.messageList TR.thread .messageThreadColumn
-{ background-color: #DDD; }
-
-TABLE.messageList TR.thread TD
-{ background-color: #EEE; }
 
 TABLE.messageList TR.thread1 .messageSubjectColumn
 { background-position: 20px 0px !important;
@@ -324,6 +324,41 @@ TABLE.messageList TR._selected TD
 TABLE.messageList TR._deleted TD
 { text-decoration: line-through; }
 
+TABLE.messageList TR[labels~="label5"] TD
+{ color: #9c309c; }
+
+TABLE.messageList TR[labels~="label5"]._selected TD
+{ color: #fff;
+  background-color: #9c309c; }
+
+TABLE.messageList TR[labels~="label4"] TD
+{ color: #3130ff; }
+
+TABLE.messageList TR[labels~="label4"]._selected TD
+{ color: #fff;
+  background-color: #3130ff; }
+
+TABLE.messageList TR[labels~="label3"] TD
+{ color: #009a00; }
+
+TABLE.messageList TR[labels~="label3"]._selected TD
+{ color: #fff;
+  background-color: #009a00; }
+
+TABLE.messageList TR[labels~="label2"] TD
+{ color: #ff9a00; }
+
+TABLE.messageList TR[labels~="label2"]._selected TD
+{ color: #fff;
+  background-color: #ff9a00; }
+
+TABLE.messageList TR[labels~="label1"] TD
+{ color: #f00; }
+
+TABLE.messageList TR[labels~="label1"]._selected TD
+{ color: #fff;
+  background-color: #f00; }
+
 TABLE.messageList TR.mailer_unreadmail TD,
 TR.mailer_unreadmail TD.messageSubjectColumn
 { font-weight: bold !important; }
@@ -331,24 +366,24 @@ TR.mailer_unreadmail TD.messageSubjectColumn
 TR.mailer_repliedmailsubject TD.messageSubjectColumn
 { background-image: url(icon-replied.png) !important;
   background-repeat: no-repeat !important;
-  background-position: 0px 0px !important; }
+  background-position: 2px center !important; }
 
 TR.mailer_forwardedmailsubject TD.messageSubjectColumn
 { background-image: url(icon-forwarded.png) !important;
   background-repeat: no-repeat !important;
-  background-position: 0px 0px !important; }
+  background-position: 2px center !important; }
 
 TR.mailer_forwardedrepliedmailsubject TD.messageSubjectColumn
 {
   background-image: url(icon-forwarded-replied.png) !important;
   background-repeat: no-repeat !important;
-  background-position: 0px 0px !important; }
+  background-position: 2px center !important; }
 
 TR.mailer_deletedmailsubject TD.messageSubjectColumn
 {
   background-image: url(icon-deleted.png) !important;
   background-repeat: no-repeat !important;
-  background-position: 0px 0px !important; }
+  background-position: 2px center !important; }
 
 TD.mailer_readmailsubject A
 {
@@ -414,8 +449,7 @@ TABLE.mailer_fieldtable
   padding-bottom: .5em;
   overflow-y: auto;
   overflow-x: hidden;
-  border-bottom: 1px solid #808080;
-  background: #DDDDDD;
+  border-bottom: 1px solid #ddd;
   width: 100%; }
 
 DIV.mailer_mailcontent
@@ -434,9 +468,14 @@ DIV.mailer_mailcontent TABLE
 }
 
 /* collapsable header */
+
+TABLE.mailer_fieldtable
+{
+  padding: 7px;
+}
 TD.mailer_fieldname IMG
 { cursor: pointer;
-  padding-right: 5px; }
+  padding-right: 5px;}
 TD.mailer_fieldvalue SPAN.collapse
 { white-space: nowrap; }
 TD.mailer_fieldvalue SPAN.expand
@@ -445,19 +484,22 @@ TD.mailer_fieldvalue SPAN.expand
 TD.mailer_fieldname
 {
   white-space: nowrap;
-  padding: 0 1em;
-  text-align: right;
-  font-weight: bold;
-  vertical-align: top;
-  width: 9em;
+  width: 10%;
+  font-size: 0.8em;
+  color: #999;
+  padding: 3px 0px 0px;
 }
 
 TD.mailer_fieldvalue
-{ vertical-align: top; }
+{ vertical-align: top;
+color: #999;
+padding: 0px;}
 
 TD.mailer_subjectfieldvalue
 {
-  font-weight: bold;
+  font-weight: normal;
+  font-size: 18px;
+  padding: 3px 0px 0px;
   white-space: pre;
   white-space: pre-wrap;                  /* css-3 */
   white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
@@ -468,8 +510,7 @@ TD.mailer_subjectfieldvalue
 
 TD.mailer_fieldvalue a
 {
-  text-decoration: underline;
-  vertical-align: top;
+  color: #999;
 }
 
 TR.deleted TD
@@ -481,7 +522,7 @@ img.mailer_imagecontent
 }
 
 DIV.mailer_plaincontent
-{ 
+{
   position: relative;
   clear: left;
   font-family: monospace, fixed;
@@ -506,7 +547,7 @@ DIV.mailer_plaincontent P
 }
 
 DIV.mailer_htmlcontent P
-{ 
+{
   white-space: normal;
   font-family: sans-serif;
   font-size: inherit;
@@ -546,7 +587,7 @@ TD.attachment_uplabel
 /* attachment link viewer */
 
 DIV.linked_attachment_frame
-{ 
+{
   border: 0px;
   clear: left;
   margin: 0px;
@@ -592,7 +633,7 @@ DIV.linked_attachment_body HR
 }
 
 DIV.bodyFields
-{ 
+{
   background: #eee;
   line-height: 1.5em;
   margin: 0.5em 0px;
@@ -614,7 +655,7 @@ DIV.bodyFields SPAN.fieldName
 }
 
 DIV.bodyAdditionalFields
-{ 
+{
   background: #d4d0c8;
 }
 
@@ -638,7 +679,7 @@ IMG.dragMessage
   opacity: 0.7; }
 
 TABLE#addr_table
-{ 
+{
   margin-left: 30%;
   width: 100%;
 }
@@ -709,17 +750,22 @@ DIV#quotaDialog P
 DIV#verticalDragHandle
 { cursor: e-resize;
   border: 0px;
-  top: 81px;
+  top: 40px;
   left: 15em;
   width: 5px;
-  bottom: 0px; }
+  bottom: 0px;
+  background-image: url(dragdot.png);
+}
 
 DIV#rightDragHandle
 { cursor: n-resize;
   top: 18em;
   left: 0px;
   right: 0px;
-  height: 5px; }
+  height: 5px;
+  border-top: 1px solid #999;
+  background-image: url(dragdotv.png);
+}
 
 @media print
 {
@@ -783,11 +829,11 @@ DIV#dragDropVisual
 
 DIV.copy
 {
-  background-image: url(message-copy.gif) !important; 
+  background-image: url(message-copy.gif) !important;
   background-position: 1px -2px !important;
 }
 
-DIV#signatureFlagMessage DIV 
+DIV#signatureFlagMessage DIV
 { text-align: left !important; }
 
 DIV#signatureFlagMessage H1,

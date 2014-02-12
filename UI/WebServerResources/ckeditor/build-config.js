@@ -32,6 +32,7 @@ var CKBUILDER_CONFIG = {
 		'entities' : 1,
 		'floatingspace' : 1,
 		'wysiwygarea' : 1,
+		'indent' : 1,
 		'link' : 1,
 		'list' : 1,
 		'pastetext' : 1,
@@ -60,9 +61,7 @@ var CKBUILDER_CONFIG = {
 		'indentlist' : 1,
 		'table' : 1,
 		'tabletools' : 1,
-		'tableresize' : 1,
-		'tab' : 1,
-		'div' : 1
+		'tableresize' : 1
 	},
 	languages : {
 		'ar' : 1,
@@ -86,6 +85,6 @@ var CKBUILDER_CONFIG = {
 		'es' : 1,
 		'sv' : 1,
 		'uk' : 1,
-		'cy' : 1
+		'cy' : 1,
 	}
 };

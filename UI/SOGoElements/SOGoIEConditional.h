@@ -1,8 +1,8 @@
 /* SOGoIEConditional.h - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2013 Inverse inc.
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Inverse <info@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 @interface SOGoIEConditional : WODynamicElement
 {
   WOElement *template;
+  WOAssociation *lte; // int
 }
 
 - (void) appendToResponse: (WOResponse *) _response

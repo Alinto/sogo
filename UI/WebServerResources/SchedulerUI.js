@@ -65,7 +65,7 @@ function newEvent(type, day, hour, duration) {
     if (params.length > 0)
         urlstr += "?" + params.join("&");
 
-    window.open(urlstr, "", "width=490,height=470,resizable=0");
+    window.open(urlstr, "", "width=600,height=600,resizable=0");
 
     return false; /* stop following the link */
 }
@@ -167,7 +167,7 @@ function _editEventId(id, calendar, recurrence) {
     }
     urlstr += "/edit";
     var win = window.open(urlstr, "_blank",
-                          "width=490,height=470,resizable=0");
+                          "width=600,height=600,resizable=0");
     if (win)
         win.focus();
 }
@@ -699,6 +699,7 @@ function onViewEventCallback(http) {
             var cellDimensions = cell.getDimensions();
             var div = $("eventDialog");
             var divDimensions = div.getDimensions();
+            var viewPosition = $("calendarView").cumulativeOffset();
             var view;
             var left;
             var top = cellPosition[1] - 5;
@@ -964,7 +965,7 @@ function eventsListCallback(http) {
                 td.observe("mousedown", listRowMouseDownHandler, true);
                 var colorDiv = createElement("div", false, "colorBox calendarFolder" + calendar);
                 td.appendChild(colorDiv);
-                colorDiv.update('&nbsp;');
+                colorDiv.update('OO');
                 var span = createElement("span");
                 td.appendChild(span);
                 span.update(data[i][4]); // title
@@ -1092,7 +1093,7 @@ function tasksListCallback(http) {
                 row.appendChild(cell);
                 var colorDiv = createElement("div", false, "colorBox calendarFolder" + calendar);
                 cell.appendChild(colorDiv);
-                colorDiv.update('&nbsp;');
+                colorDiv.update('OO');
                 var t = new Element ("span");
                 cell.appendChild(t);
                 t.update(data[i][4]); // title
@@ -1653,7 +1654,7 @@ function resetCategoriesStyles() {
         categoriesStyles.keys().each(function(category) {
             var color = UserDefaults['SOGoCalendarCategoriesColors'][category];
             if (color) {
-                rules[rules.length] = '{ border-right: 8px solid ' + color + '; }';
+                rules[rules.length] = '{ background-color: ' + color + '; }';
                 selectors[selectors.length] = 'DIV.' + categoriesStyles.get(category);
             }
         });
@@ -1722,14 +1723,6 @@ function newBaseEventDIV(eventRep, event, eventText) {
     innerDiv.addClassName("calendarFolder" + event[1]);
     if (eventRep.userState >= 0 && userStates[eventRep.userState])
         innerDiv.addClassName(userStates[eventRep.userState]);
-
-    var gradientDiv = createElement("div");
-    innerDiv.appendChild(gradientDiv);
-    gradientDiv.addClassName("gradient");
-
-    var gradientImg = createElement("img");
-    gradientDiv.appendChild(gradientImg);
-    gradientImg.src = ResourcesURL + "/event-gradient.png";
 
     var textDiv = createElement("div");
     innerDiv.appendChild(textDiv);
@@ -1930,7 +1923,7 @@ function adjustCalendarHeaderDIV() {
     var dv = $("daysView");
     if (dv) {
         var ch = $("calendarHeader");
-        var delta = ch.clientWidth - dv.clientWidth - 1;
+        var delta = ch.clientWidth - dv.clientWidth;
         var styleElement = document.createElement("style");
         styleElement.type = "text/css";
         var selectors = ["DIV#calendarHeader DIV.dayLabels",
@@ -2833,9 +2826,8 @@ function initCalendarSelector() {
 
 function onCalendarSelectionChange(event) {
     var target = Event.element(event);
-    if (target.tagName == 'DIV') {
+    if (target.tagName == 'SPAN')
         target = target.parentNode;
-    }
 
     onRowClick(event, target);
 }
@@ -3073,7 +3065,7 @@ function appendCalendar(folderName, folderPath) {
         var colorBox = document.createElement("div");
         li.appendChild(colorBox);
         li.appendChild(document.createTextNode(folderName));
-        colorBox.appendChild(document.createTextNode("\u00a0"));
+        colorBox.appendChild(document.createTextNode("OO"));
 
         $(colorBox).addClassName("colorBox");
         $(colorBox).addClassName('calendarFolder' + folderPath.substr(1));

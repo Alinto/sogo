@@ -18,13 +18,13 @@
         </ul>
       </div>
       <var:if condition="hideFrame" const:negate="YES"
-        ><span class="searchBox" style="float: right">
+        ><div class="searchBox">
           <input name="criteria" type="hidden" var:value="searchCriteria" />
           <input name="search"
             class="textField"
             autocomplete="off" type="text" var:value="searchText"
 	    menuid="searchMenu" />
-        </span>
+        </div>
       </var:if>
     </div>
   </container>

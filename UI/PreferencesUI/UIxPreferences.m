@@ -41,6 +41,7 @@
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoDomainDefaults.h>
+#import <SOGo/SOGoSieveManager.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/WOResourceManager+SOGo.h>
@@ -837,13 +838,23 @@ static NSArray *reminderValues = nil;
 {
 #warning sieve caps should be deduced from the server
   static NSArray *capabilities = nil;
+  SOGoMailAccounts *folder;
+  SOGoMailAccount *account;
+  SOGoSieveManager *manager;
+  NGSieveClient *client;
 
   if (!capabilities)
     {
-      capabilities = [NSArray arrayWithObjects: @"fileinto", @"reject",
-                              @"envelope", @"vacation", @"imapflags",
-                              @"notify", @"subaddress", @"relational",
-                              @"comparator-i;ascii-numeric", @"regex", nil];
+      folder = [[self clientObject] mailAccountsFolder: @"Mail"
+                                             inContext: context];
+      account = [folder lookupName: @"0" inContext: context acquire: NO];
+      manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
+      client = [manager clientForAccount: account];
+
+      if (client)
+        capabilities = [client capabilities];
+      else
+        capabilities = [NSArray array];
       [capabilities retain];
     }
 

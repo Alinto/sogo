@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009-2013 Inverse inc.
+  Copyright (C) 2009-2014 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -24,6 +24,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSValue.h>
 #import <Foundation/NSTask.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -614,20 +615,19 @@ static NSString *defaultUserID =  @"anyone";
   if (max > 1)
     {
       currentAccountName = [[self mailAccountFolder] nameInContainer];
-      if ([[folders objectAtIndex: 1] isEqualToString: currentAccountName])
-        {
-          for (count = 2; count < max; count++)
-            {
-              currentFolderName
-                = [[folders objectAtIndex: count] substringFromIndex: 6];
-              [imapDestinationFolder appendFormat: @"/%@", currentFolderName];
-            }
+      client = [[self imap4Connection] client];
+      [imap4 selectFolder: [self imap4URL]];
 
-          client = [[self imap4Connection] client];
-          if (client)
+      for (count = 2; count < max; count++)
+        {
+          currentFolderName = [[folders objectAtIndex: count] substringFromIndex: 6];
+          [imapDestinationFolder appendFormat: @"/%@", currentFolderName];
+        }
+
+      if (client)
+        {
+          if ([[folders objectAtIndex: 1] isEqualToString: currentAccountName])
             {
-              [imap4 selectFolder: [self imap4URL]];
-  
               // We make sure the destination IMAP folder exist, if not, we create it.
               result = [[client status: imapDestinationFolder
                                  flags: [NSArray arrayWithObject: @"UIDVALIDITY"]]
@@ -647,13 +647,69 @@ static NSString *defaultUserID =  @"anyone";
                                                                  objectForKey: @"description"]];
             }
           else
-            result = [NSException exceptionWithName: @"SOGoMailException"
-                                             reason: @"IMAP connection is invalid"
-                                           userInfo: nil];
+            {
+              // Destination folder is in a different account
+              SOGoMailAccounts *accounts;
+              SOGoMailAccount *account;
+              accounts = [[self container] container];
+              account = [accounts lookupName: [folders objectAtIndex: 1] inContext: localContext acquire: NO];
+              if ([account isKindOfClass: [NSException class]])
+                {
+                  result = [NSException exceptionWithHTTPStatus: 500
+                                                         reason: @"Cannot copy messages to other account."];
+                }
+              else
+                {
+                  NSEnumerator *messages;
+                  NSDictionary *message;
+                  NSData *content;
+                  NSArray *flags;
+
+                  // Fetch messages
+                  result = [client fetchUids: uids parts: [NSArray arrayWithObjects: @"RFC822", @"FLAGS", nil]];
+                  if ([[result objectForKey: @"result"] boolValue])
+                    {
+                      result = [result valueForKey: @"fetch"];
+                      if ([result isKindOfClass: [NSArray class]] && [result count] > 0)
+                        {
+                          // Copy each message to the other account
+                          client = [[account imap4Connection] client];
+                          [[account imap4Connection] selectFolder: imapDestinationFolder];
+                          messages = [result objectEnumerator];
+                          result = nil;
+                          while (result == nil && (message = [messages nextObject]))
+                            {
+                              if ((content = [message valueForKey: @"message"]) != nil)
+                                {
+                                  flags = [message valueForKey: @"flags"];
+                                  result = [client append: content toFolder: imapDestinationFolder withFlags: flags];
+                                  if ([[result objectForKey: @"result"] boolValue])
+                                    result = nil;
+                                  else
+                                    [self logWithFormat: @"ERROR: Can't append message: %@", result];
+                                }
+                            }
+                        }
+                      else
+                        {
+                          [self logWithFormat: @"ERROR: unexpected IMAP4 result (missing 'fetch'): %@", result];
+                          result = [NSException exceptionWithHTTPStatus: 500
+                                                                 reason: @"Unexpected IMAP4 result"];
+                        }
+                    }
+                  else
+                    {
+                      [self logWithFormat: @"ERROR: Can't fetch messages: %@", result];
+                      result = [NSException exceptionWithHTTPStatus: 500
+                                                             reason: @"Can't fetch messages"];
+                    }
+                }
+            }
         }
       else
-        result = [NSException exceptionWithHTTPStatus: 500
-                                               reason: @"Cannot copy messages across different accounts."];
+        result = [NSException exceptionWithName: @"SOGoMailException"
+                                         reason: @"IMAP connection is invalid"
+                                       userInfo: nil];
     }
   else
     result = [NSException exceptionWithHTTPStatus: 500
@@ -1867,6 +1923,165 @@ static NSString *defaultUserID =  @"anyone";
     date = [[[values objectAtIndex: 0] objectForKey: @"envelope"] date];
 
   return date;
+}
+
+- (NSString *) davCollectionTag
+{
+  NSString *tag;
+
+  tag = @"-1";
+
+  if ([self imap4Connection])
+    {
+      NSString *folderName;
+      NSDictionary *result;
+
+      folderName = [imap4 imap4FolderNameForURL: [self imap4URL]];
+
+      [[imap4 client] unselect];
+      
+      result = [[imap4 client] select: folderName];
+
+      tag = [NSString stringWithFormat: @"%@-%@", [result objectForKey: @"uidnext"], [result objectForKey: @"highestmodseq"]];
+    }
+
+  return tag;
+}
+
+//
+// FIXME - see below for code refactoring with MAPIStoreMailFolder.
+//
+- (EOQualifier *) _nonDeletedQualifier
+{
+  static EOQualifier *nonDeletedQualifier = nil;
+  EOQualifier *deletedQualifier;
+
+  if (!nonDeletedQualifier)
+    {
+      deletedQualifier
+        = [[EOKeyValueQualifier alloc] 
+                 initWithKey: @"FLAGS"
+            operatorSelector: EOQualifierOperatorContains
+                       value: [NSArray arrayWithObject: @"Deleted"]];
+      nonDeletedQualifier = [[EONotQualifier alloc]
+                              initWithQualifier: deletedQualifier];
+      [deletedQualifier release];
+    }
+
+  return nonDeletedQualifier;
+}
+
+
+
+//
+// Check updated items
+//
+// 
+//
+// . uid fetch 1:* (FLAGS) (changedsince 171)
+//
+// Deleted:  "UID FETCH 1:* (UID) (CHANGEDSINCE 171 VANISHED)"
+
+// fetchUIDsOfVanishedItems ..
+//
+// . uid fetch 1:* (FLAGS) (changedsince 176 vanished)
+// * VANISHED (EARLIER) 36
+//
+// 
+// FIXME: refactor MAPIStoreMailFolder.m - synchroniseCache to use this method
+//
+- (NSArray *) syncTokenFieldsWithProperties: (NSArray *) theProperties
+                          matchingSyncToken: (NSString *) theSyncToken
+                                   fromDate: (NSCalendarDate *) theStartDate
+{
+  EOQualifier *searchQualifier;
+  NSMutableArray *allTokens;
+  NSArray *a, *uids;
+  NSDictionary *d;
+
+  int uidnext, highestmodseq, i; 
+
+  allTokens = [NSMutableArray array];
+
+  if ([theSyncToken isEqualToString: @"-1"])
+    {
+      uidnext = highestmodseq = 0;
+    }
+  else
+    {
+      a = [theSyncToken componentsSeparatedByString: @"-"];
+      uidnext = [[a objectAtIndex: 0] intValue];
+      highestmodseq = [[a objectAtIndex: 1] intValue];
+    }
+  
+  // We first make sure QRESYNC is enabled
+  [[self imap4Connection] enableExtensions: [NSArray arrayWithObject: @"QRESYNC"]];
+   
+
+  // We fetch new messages and modified messages
+  if (highestmodseq)
+    {    
+      EOKeyValueQualifier *kvQualifier;
+      NSNumber *nextModseq;
+
+      nextModseq = [NSNumber numberWithUnsignedLongLong: highestmodseq + 1];
+      kvQualifier = [[EOKeyValueQualifier alloc]
+                                initWithKey: @"modseq"
+                           operatorSelector: EOQualifierOperatorGreaterThanOrEqualTo
+                                      value: nextModseq];
+      searchQualifier = [[EOAndQualifier alloc]
+                          initWithQualifiers:
+                            kvQualifier, [self _nonDeletedQualifier], nil];
+      [kvQualifier release];
+      [searchQualifier autorelease];
+    }
+  else
+    {
+      searchQualifier = [self _nonDeletedQualifier];
+    }
+
+  if (theStartDate)
+    {
+      EOQualifier *sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
+                                                       @"(DATE >= %@)", theStartDate];
+      
+      searchQualifier = [[EOAndQualifier alloc] initWithQualifiers: searchQualifier, sinceDateQualifier,
+                                                nil];
+      [searchQualifier autorelease];
+    }
+  
+
+  // we fetch modified or added uids
+  uids = [self fetchUIDsMatchingQualifier: searchQualifier
+                             sortOrdering: nil];
+
+  for (i = 0; i < [uids count]; i++)
+    {
+      // New messages
+      if ([[uids objectAtIndex: i] intValue] >= uidnext)
+        {
+          d = [NSDictionary dictionaryWithObject: @"added"  forKey: [uids objectAtIndex: i]];
+        }
+      // Changed messages
+      else
+        {
+          d = [NSDictionary dictionaryWithObject: @"changed"  forKey: [uids objectAtIndex: i]];
+        }
+
+      [allTokens addObject: d];
+    }
+  
+
+  // We fetch deleted ones
+  uids = [self fetchUIDsOfVanishedItems: highestmodseq];
+
+  for (i = 0; i < [uids count]; i++)
+    {
+      d = [NSDictionary dictionaryWithObject: @"deleted"  forKey: [uids objectAtIndex: i]];
+      [allTokens addObject: d];
+    }
+
+  return allTokens;
 }
 
 @end /* SOGoMailFolder */
