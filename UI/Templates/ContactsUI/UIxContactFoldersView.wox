@@ -126,43 +126,40 @@
   <div class="dragHandle" id="dragHandle"><!-- space --></div>
 
   <div id="rightPanel">
-    <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
-
-    <div id="contactsListContent">
+      <var:component className="UIxContactsFilterPanel" qualifier="qualifier" />
+      <div id="contactsListContent">
       <table id="contactsList" cellspacing="0">
-	<thead>
-	  <tr class="tableview">
-	    <!-- localize -->
-	    <td class="tbtv_headercell sortableTableHeader" id="nameHeader"
-		><img id="messageSortImage" class="sortImage" rsrc:src="arrow-up.png"
-		/><var:string label:value="Name"
-	    /></td
-	    ><td class="tbtv_headercell sortableTableHeader" id="mailHeader"
-	    ><var:string label:value="Email"/></td
-	    ><td class="tbtv_headercell sortableTableHeader" id="screenNameHeader"
-	    ><var:string label:value="Screen Name" /></td
-	    ><td class="tbtv_headercell sortableTableHeader" id="orgHeader"
-	    ><var:string label:value="Organization" /></td
-	    ><td class="tbtv_headercell sortableTableHeader" id="phoneHeader"
-	    ><var:string label:value="Preferred Phone" /></td
-	    ></tr>
-	</thead>
-	<tbody id="contactsListTbody">
-
-      <var:foreach list="personalContactInfos" item="currentContact">
-        <tr var:class="currentContactClasses"
-          var:categories="currentContact.c_categories"
-          var:id="currentContact.c_name"
-          var:contactname="currentContact.c_cn">
-          <td class="displayName" var:title="currentContact.c_cn"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>
-          <td var:title="currentContact.c_mail"><var:string value="currentContact.c_mail"/></td>
-          <td><var:string value="currentContact.c_screenname"/></td>
-          <td><var:string value="currentContact.c_o"/></td>
-          <td><var:string value="currentContact.c_telephonenumber"/></td>
-        </tr>
-      </var:foreach>
-
-	</tbody>
+      	<thead>
+      	  <tr class="tableview">
+      	    <!-- localize -->
+      	    <td class="tbtv_headercell sortableTableHeader" id="nameHeader"
+      		><img id="messageSortImage" class="sortImage" rsrc:src="arrow-up.png"
+      		/><var:string label:value="Name"
+      	    /></td
+      	    ><td class="tbtv_headercell sortableTableHeader" id="mailHeader"
+      	    ><var:string label:value="Email"/></td
+      	    ><td class="tbtv_headercell sortableTableHeader" id="screenNameHeader"
+      	    ><var:string label:value="Screen Name" /></td
+      	    ><td class="tbtv_headercell sortableTableHeader" id="orgHeader"
+      	    ><var:string label:value="Organization" /></td
+      	    ><td class="tbtv_headercell sortableTableHeader" id="phoneHeader"
+      	    ><var:string label:value="Preferred Phone" /></td
+      	    ></tr>
+      	</thead>
+      	<tbody id="contactsListTbody">
+            <var:foreach list="personalContactInfos" item="currentContact">
+              <tr var:class="currentContactClasses"
+                var:categories="currentContact.c_categories"
+                var:id="currentContact.c_name"
+                var:contactname="currentContact.c_cn">
+                <td class="displayName" var:title="currentContact.c_cn"><var:string value="currentContact.c_cn" const:escapeHTML="YES" /></td>
+                <td var:title="currentContact.c_mail"><var:string value="currentContact.c_mail"/></td>
+                <td><var:string value="currentContact.c_screenname"/></td>
+                <td><var:string value="currentContact.c_o"/></td>
+                <td><var:string value="currentContact.c_telephonenumber"/></td>
+              </tr>
+            </var:foreach>
+      	</tbody>
       </table>
     </div>
 

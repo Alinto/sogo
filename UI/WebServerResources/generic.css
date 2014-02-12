@@ -169,7 +169,7 @@ DIV.linkbanner A#logoff
   width:25px;
   padding: 0px 5px;
   display: inline-block;
-  background-image: url('logoff.gif');
+  background-image: url('logoff.png');
   background-position:center center;
   background-repeat: no-repeat;
   height: 40px;
@@ -181,7 +181,7 @@ DIV.linkbanner A#preferencesBannerLink
   overflow: hidden;
   color:transparent;
   display: inline-block;
-  background-image: url('preferences.gif');
+  background-image: url('preferences.png');
   background-position:center center;
   background-repeat: no-repeat;
 }
@@ -195,8 +195,8 @@ DIV.linkbanner SPAN
 DIV.linkbanner A:hover
 { background-color: rgba(0, 0, 0, 0.1);
   color: #ffffff;
-  transition: all 0.2s;
-  -webkit-transition:  all 0.2s }
+  transition: background-color 0.2s;
+  -webkit-transition:  background-color 0.2s }
 
 DIV.linkbanner SPAN#userIdentificationDisplay
 { color: #ffffff;
@@ -889,7 +889,7 @@ BUTTON.comboBoxButton:active
   background-color: #d6d7d6;
 }
 a.reload {
-  background: url("reload.png") no-repeat center center;
+  background: url("calendar-reload.png") no-repeat center center;
   position: absolute;
   right: 10px;
   top: 0px;
@@ -955,6 +955,17 @@ A.button:active SPAN
 { background-position: bottom left;
   }
 
+#emptyCategory{
+  background-color: #CCCCCC !important;
+  border: 1px solid #CCCCCC !important;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 0 3px;
+  padding: 8px;
+  text-align: center;
+  width: auto;
+}
 A.disabled.button,
 A.disabled.button:active,
 A.disabled.button SPAN
@@ -1176,11 +1187,12 @@ SPAN.toolbarSeparator
 
 DIV.toolbar IMG.buttonImage
 { height: 24px;
-  left: 4px;
-  position: absolute;
-  top: 8px;
   width: 24px;
+  margin-top: 8px;
   padding: 0px;
+  /*left: 4px;
+  position: absolute;
+  top: 8px;*/
   display: none;
 }
 
@@ -1211,6 +1223,7 @@ DIV.toolbar A.toolbarButton:hover SPAN {
   text-align: center;
   font-weight: normal;
   color: white;
+
 }
 
 A.smallToolbarButton SPAN, 
@@ -1316,4 +1329,18 @@ span.cke_skin_kama
   DIV.filterPanel,
   DIV.tabsContainer
   { display: none; }
+}
+
+@media (max-width: 960px){ 
+
+.linkbanner DIV.toolbar A.toolbarButton SPAN, .linkbanner DIV.toolbar A.toolbarButton:hover SPAN{
+    color: transparent;
+    font-size:0px;
+    width: 24px;
+}
+
+.linkbanner DIV.toolbar IMG.buttonImage{ 
+ display: block;
+}
+
 }

@@ -152,7 +152,7 @@ DIV#calendarView
 { position: absolute;
   top: 18em;
   background-color: white;
-  /*margin-top: 5px;*/
+  margin-top: 5px;
   bottom: 0px;
   width: 100%;
   -moz-user-select: none;

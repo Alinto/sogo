@@ -33,7 +33,7 @@
   </div>
 
   <div class="menu" id="optionsMenu">
-    <ul class="choiceMenu">
+    <ul >
       <li><var:string label:value="Return Receipt"/></li>
       <li><!-- separator --></li>
       <li><var:string label:value="Priority"/></li>
