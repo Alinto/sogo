@@ -74,12 +74,17 @@ TABLE#addressList TD.headerInput INPUT
 TABLE#addressList TR#lastRow SELECT
 { visibility: hidden; }
 
-DIV#subjectRow {
+DIV#subjectRow, DIV#fileupload {
   background-color: #FFFFFF;
   padding: 10px 0px;
-  margin: 0px 10px;
+  margin: 10px -10px 0px -10px;
   vertical-align: bottom;
-  border-bottom: 1px solid #999999;}
+  border-bottom: 1px solid #ccc;
+position: relative;}
+DIV#fileupload{
+  margin-top: 0px;
+  border-color: #eee;
+}
 
 DIV#subjectRow SPAN.headerField,
 DIV#attachmentsArea SPAN.headerField
@@ -87,7 +92,7 @@ DIV#attachmentsArea SPAN.headerField
   display: inline-block;
   padding: 0;
   vertical-align: bottom;
-  margin-right: 10px;
+  margin: 0px 10px;
   line-height: 2em;
 }
 
@@ -98,7 +103,9 @@ DIV#subjectRow INPUT
   margin: 0;
   padding: 0;
   vertical-align: bottom;
-  display: inline-block; }
+  display: inline-block; 
+  max-width: none;
+}
 
 div#compose_internetmarker
 { padding:          8px;
@@ -109,7 +116,7 @@ div#compose_internetmarker
   border-style:     solid; }
 
 div#headerArea
-{ padding: 10px;
+{ padding: 10px 10px 0px 10px;
 background-color: #f5f5f5;}
 
 div#headerArea div.addressList
@@ -159,29 +166,65 @@ div#compose_attachments_list
 
 UL#attachments
 { cursor: default;
-  margin: 5px 0px 0px;
+  margin: 0 0 0 110px;
+  min-height: 34px;
   padding: 0px;
-  height: 100%;
   display: block;
   list-style-type: none;
   list-style-image: none;
   overflow: auto;
-  overflow-x: hidden;
+  overflow-x: hidden; 
   -moz-user-select: none;
   -khtml-user-select: none; }
 
 UL#attachments LI
+{ float: left; }
+
+UL#attachments LI[data-filename]
 { background-color: #EEEEEE;
-  border: 1px solid #CCCCCC;
-  border-radius: 4px;
-  display: inline-block;
-  margin: 0 5px;
-  padding: 5px 10px;
+  line-height: 18px;
+  margin: 3px;
+  padding: 5px 5px 5px 30px;
   white-space: nowrap;
+  border-radius: 1px;
+  position: relative;
 }
 
+UL#attachments LI[data-filename] SPAN
+{ margin-left: 5px;
+  color: #999;
+}
+
+UL#attachments LI[data-filename] A,
+UL#attachments LI[data-filename] SPAN
+{ padding-left: 2px;
+  vertical-align: top; }
+
 UL#attachments LI IMG
-{ vertical-align: bottom; }
+{ vertical-align: top; }
+
+UL#attachments .icon-attachment
+{ background: url('attachment.png') no-repeat top left;
+  left: 8px;
+  position: absolute;
+  top: 6px;
+  width: 16px;
+  height: 16px; }
+UL#attachments .progress0 .icon-attachment
+{ background-position: 0px 0px; }
+UL#attachments .progress1 .icon-attachment
+{ background-position: -16px 0px; }
+UL#attachments .progress2 .icon-attachment
+{ background-position: -32px 0px; }
+UL#attachments .progress3 .icon-attachment
+{ background-position: -48px 0px; }
+UL#attachments .progress4 .icon-attachment
+{ background-position: -64px 0px; }
+UL#attachments .progressDone .icon-attachment
+{ background-position: -80px 0px; }
+UL#attachments .progressDone .icon-attachment:hover
+{ background-position: -96px 0px;
+  cursor: pointer; }
 
 #pageContent TEXTAREA
 { /*width: 95%;*/ }

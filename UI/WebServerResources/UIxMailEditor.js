@@ -659,11 +659,11 @@ function onWindowResize(event) {
     // Resize subject field
     subjectinput.setStyle({ width: (totalwidth
                                     - $(subjectfield).getWidth()
-                                    - 17) + 'px' });
+                                    - 100) + 'px' });
     // Resize from field
     $("fromSelect").setStyle({ width: (totalwidth
                                        - $("fromField").getWidth()
-                                       - 15) + 'px' });
+                                       ) + 'px' });
 
     // Resize address fields
 //    var addresslist = $('addressList');
@@ -678,7 +678,7 @@ function onWindowResize(event) {
             onWindowResize.defer();
             return;
         }
-        var height = window.height() - offsetTop;
+        var height = window.height() - offsetTop - 40 ;
         CKEDITOR.instances["text"].resize('100%', height);
     }
     else

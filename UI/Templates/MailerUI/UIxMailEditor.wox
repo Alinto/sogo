@@ -92,28 +92,26 @@
 
     <div id="headerArea">
       <span class="headerField" const:id="fromField"><var:string label:value="From" />:</span>
-      <var:popup const:name="from" const:id="fromSelect"
-  list="fromEMails"
-  item="item"
-  selection="from"
-  /><br />
+      <var:popup const:name="from" const:id="fromSelect"  list="fromEMails"  item="item"  selection=""/><br />
       <div>
-  <var:component className="UIxMailToSelection" to="to" cc="cc" bcc="bcc" />
+        <var:component className="UIxMailToSelection" to="to" cc="cc" bcc="bcc" />
       </div>
       <div id="subjectRow">
         <span class="headerField"><var:string label:value="Subject"/>:</span>
         <input name="subject" type="text" class="textField" var:value="subject"/>
       </div>
       <div id="fileupload">
+        <span class="button fileinput-button"><span><img rsrc:src="title_attachment_14x14.png" /> <var:string label:value="Attach"/></span><input id="fileUpload" type="file" name="attachments" tabindex="-1" multiple="multiple"/></span>
         <ul id="attachments">
-          <li class="attachButton"><span class="button fileinput-button"><span><img rsrc:src="title_attachment_14x14.png" /> <var:string label:value="Attach"/></span><input id="fileUpload" type="file" name="attachments" tabindex="-1" multiple="multiple"/></span></li>
           <var:foreach list="attachmentAttrs" item="attachment"
           ><li class="progressDone" var:data-filename="attachment.filename">
             <i class="icon-attachment"><!-- icon --></i><a var:href="attachment.url" target="_new"><var:string value="attachment.filename"/></a><span class="muted">(<var:string value="attachment.size" formatter="sizeFormatter" />)</span>
           </li></var:foreach>
         </ul>
       </div>
+      
     </div><!-- #headerArea -->
+    
     <textarea id="text" name="text" rows="25" style="display:none" var:value="text"/>
   </form>
   </div>
