@@ -275,7 +275,7 @@ UL.choiceMenu LI
   list-style-image: url("menu-nocheck.gif");
   padding: 3px 3px;
   margin: 0px;
-  padding-right: 10px; }
+  padding-right: 24px; }
 
 UL.choiceMenu LI._chosen
 { list-style-image: url("menu-check.gif"); }
