@@ -16,6 +16,82 @@
   <script type="text/javascript">
     var localeCode = '<var:string value="localeCode"/>';
   </script>
+
+  <div id="colorPickerDialog" style="display: none;" class="dialog right bottom">
+    <div>
+      <span class="blc-FFFFFF"><!-- --></span>
+      <span class="blc-330033"><!-- --></span>
+      <span class="blc-C0C0C0"><!-- --></span>
+      <span class="blc-999999"><!-- --></span>
+      <span class="blc-666666"><!-- --></span>
+      <span class="blc-333333"><!-- --></span>
+      <span class="blc-000000"><!-- --></span>
+      <span class="blc-FFCCCC"><!-- --></span>
+      <span class="blc-FF6666"><!-- --></span>
+      <span class="blc-FF0000"><!-- --></span>
+      <span class="blc-CC0000"><!-- --></span>
+      <span class="blc-990000"><!-- --></span>
+      <span class="blc-660000"><!-- --></span>
+      <span class="blc-330000"><!-- --></span>
+      <span class="blc-FFCC99"><!-- --></span>
+      <span class="blc-FF9966"><!-- --></span>
+      <span class="blc-FF9900"><!-- --></span>
+      <span class="blc-FF6600"><!-- --></span>
+      <span class="blc-CC6600"><!-- --></span>
+      <span class="blc-993300"><!-- --></span>
+      <span class="blc-663300"><!-- --></span>
+      <span class="blc-FFFF99"><!-- --></span>
+      <span class="blc-FFFF66"><!-- --></span>
+      <span class="blc-FFCC66"><!-- --></span>
+      <span class="blc-FFCC33"><!-- --></span>
+      <span class="blc-CC9933"><!-- --></span>
+      <span class="blc-996633"><!-- --></span>
+      <span class="blc-663333"><!-- --></span>
+      <span class="blc-FFFFCC"><!-- --></span>
+      <span class="blc-FFFF33"><!-- --></span>
+      <span class="blc-FFFF00"><!-- --></span>
+      <span class="blc-FFCC00"><!-- --></span>
+      <span class="blc-999900"><!-- --></span>
+      <span class="blc-666600"><!-- --></span>
+      <span class="blc-333300"><!-- --></span>
+      <span class="blc-CCCCCC"><!-- --></span>
+      <span class="blc-66FF99"><!-- --></span>
+      <span class="blc-33FF33"><!-- --></span>
+      <span class="blc-33CC00"><!-- --></span>
+      <span class="blc-009900"><!-- --></span>
+      <span class="blc-006600"><!-- --></span>
+      <span class="blc-003300"><!-- --></span>
+      <span class="blc-99FFFF"><!-- --></span>
+      <span class="blc-33FFFF"><!-- --></span>
+      <span class="blc-66CCCC"><!-- --></span>
+      <span class="blc-00CCCC"><!-- --></span>
+      <span class="blc-339999"><!-- --></span>
+      <span class="blc-336666"><!-- --></span>
+      <span class="blc-003333"><!-- --></span>
+      <span class="blc-CCFFFF"><!-- --></span>
+      <span class="blc-66FFFF"><!-- --></span>
+      <span class="blc-33CCFF"><!-- --></span>
+      <span class="blc-3366FF"><!-- --></span>
+      <span class="blc-3333FF"><!-- --></span>
+      <span class="blc-000099"><!-- --></span>
+      <span class="blc-000066"><!-- --></span>
+      <span class="blc-CCCCFF"><!-- --></span>
+      <span class="blc-9999FF"><!-- --></span>
+      <span class="blc-6666CC"><!-- --></span>
+      <span class="blc-6633FF"><!-- --></span>
+      <span class="blc-6600CC"><!-- --></span>
+      <span class="blc-333399"><!-- --></span>
+      <span class="blc-330099"><!-- --></span>
+      <span class="blc-FFCCFF"><!-- --></span>
+      <span class="blc-FF99FF"><!-- --></span>
+      <span class="blc-CC66CC"><!-- --></span>
+      <span class="blc-CC33CC"><!-- --></span>
+      <span class="blc-993399"><!-- --></span>
+      <span class="blc-663366"><!-- --></span>
+      <span class="blc-99FF99"><!-- --></span>
+    </div>
+  </div>
+
   <form id="mainForm" var:href="ownPath">
     <div class="tabsContainer" id="preferencesTabs">
       <ul>
@@ -173,8 +249,7 @@
                         ><td const:class="categoryListCell"
                           ><var:string var:value="category"/></td
                           ><td const:class="categoryListCell"
-                          ><div const:class="colorBox"><var:string var:value="categoryColor"
-                              /></div></td
+                          ><div const:class="colorBox" var:data-color="categoryColor"><entity name="nbsp"/></div></td
                           ></tr>
                     </var:foreach>
                   </tbody>
