@@ -1,10 +1,6 @@
 /* SOGoCalendarComponent.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Copyright (C) 2006-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSProcessInfo.h>
@@ -492,18 +489,31 @@
   NSMutableArray *allAttendees;
   iCalPerson *currentAttendee;
   NSEnumerator *enumerator;
+  NSAutoreleasePool *pool;
   SOGoGroup *group;
 
   BOOL eventWasModified;
-  unsigned int i;
+  unsigned int i, j;
+
 
   domain = [[context activeUser] domain];
   organizerEmail = [[theEvent organizer] rfc822Email];
   eventWasModified = NO;
   allAttendees = [NSMutableArray arrayWithArray: [theEvent attendees]];
   enumerator = [[theEvent attendees] objectEnumerator];
+
+  j = 0;
+
+  pool = [[NSAutoreleasePool alloc] init];
+
   while ((currentAttendee = [enumerator nextObject]))
     {
+      if (j%5 == 0)
+        {
+          RELEASE(pool);
+          pool = [[NSAutoreleasePool alloc] init];
+        }
+
       group = [SOGoGroup groupWithEmail: [currentAttendee rfc822Email]
                                inDomain: domain];
       if (group)
@@ -547,11 +557,15 @@
 	      eventWasModified = YES;
 	    }
 	}
+      
+      j++;
     } // while (currentAttendee ...
 
   if (eventWasModified)
     [theEvent setAttendees: allAttendees];
   
+  RELEASE(pool);
+
   return eventWasModified;
 }
 
