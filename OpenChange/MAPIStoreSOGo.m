@@ -147,7 +147,7 @@ sogo_backend_init (void)
 static enum mapistore_error
 sogo_backend_create_context(TALLOC_CTX *mem_ctx,
                             struct mapistore_connection_info *conn_info,
-                            struct tdb_wrap *indexingTdb,
+                            struct indexing_context *indexing,
                             const char *uri, void **context_object)
 {
   NSAutoreleasePool *pool;
@@ -164,7 +164,7 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
       rc = [MAPIStoreContextK openContext: &context
                                   withURI: uri
                            connectionInfo: conn_info
-                           andTDBIndexing: indexingTdb];
+                           andTDBIndexing: indexing];
       if (rc == MAPISTORE_SUCCESS)
         *context_object = [context tallocWrapper: mem_ctx];
     }
@@ -181,7 +181,7 @@ static enum mapistore_error
 sogo_backend_create_root_folder (const char *username,
                                  enum mapistore_context_role role,
                                  uint64_t fid, const char *name,
-                                 // struct tdb_wrap *indexingTdb,
+                                 // struct indexing_context *indexing,
                                  TALLOC_CTX *mem_ctx, char **mapistore_urip)
 {
   NSAutoreleasePool *pool;
@@ -216,7 +216,7 @@ sogo_backend_create_root_folder (const char *username,
 }
 
 static enum mapistore_error
-sogo_backend_list_contexts(const char *username, struct tdb_wrap *indexingTdb,
+sogo_backend_list_contexts(const char *username, struct indexing_context *indexing,
                            TALLOC_CTX *mem_ctx,
                            struct mapistore_contexts_list **contexts_listp)
 {
@@ -233,7 +233,7 @@ sogo_backend_list_contexts(const char *username, struct tdb_wrap *indexingTdb,
     {
       userName = [NSString stringWithUTF8String: username];
       *contexts_listp = [MAPIStoreContextK listAllContextsForUser: userName
-                                                  withTDBIndexing: indexingTdb
+                                                  withIndexing: indexing
                                                          inMemCtx: mem_ctx];
       rc = MAPISTORE_SUCCESS;
     }
