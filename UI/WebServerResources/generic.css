@@ -454,8 +454,10 @@ TH.tbtv_headercell:hover{
     background-color: whitesmoke;
 }
 thead tr:last-child th {
-    border-bottom: 1px solid #ccc;
-    color: #999;
+  border-bottom: 1px solid #DDDDDD;
+  border-right: 1px solid #EEEEEE;
+  color: #999999;
+  padding-right: 3px;
 }
 
 TD.tbtv_headercell A,
