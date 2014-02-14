@@ -66,6 +66,7 @@ DIV.colorBox
   height: 2em;
   -webkit-border-radius: 1px;
   border-radius: 1px;
+  line-height: 2em;
  }
 
 UL#calendarList

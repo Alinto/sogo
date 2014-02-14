@@ -12,11 +12,18 @@ SPAN.content
 SPAN.content INPUT.textField
 { width: 160px; }
 
-BUTTON#colorButton
-{ display: none;
-  border: 1px solid #FFFFFF;
-  width: 100%;
-  height: 30px; }
+#colorPickerDialog
+{ width: 146px;
+  height: 191px; }
+DIV.colorBox{
+	line-height: normal;
+}
+#colorButton
+{ border: 2px solid #CCCCCC;	
+  border-radius: 6px;
+  height: 30px;
+  margin: 5px 0 0;
+  width: 50%;}
 
 DIV#buttons
 { position: absolute; 

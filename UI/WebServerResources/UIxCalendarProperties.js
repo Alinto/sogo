@@ -7,9 +7,12 @@ function onLoadCalendarProperties() {
 
     var colorButton = $("colorButton");
     var calendarColor = $("calendarColor");
-    colorButton.setStyle({ "backgroundColor": calendarColor.value, display: "inline" });
+    colorButton.setStyle({ "backgroundColor": colorButton.readAttribute('data-color') });
     colorButton.observe("click", onColorClick);
     
+    $('colorPickerDialog').on('click', 'span', onColorPickerChoice);
+    $(document.body).on("click", onBodyClickHandler);
+
     var cancelButton = $("cancelButton");
     cancelButton.observe("click", onCancelClick);
     
@@ -74,22 +77,31 @@ function onOKClick(event) {
       Event.stop(event);
 }
 
-function onColorClick(event) {
-  var cPicker = window.open(ApplicationBaseURL + "colorPicker", "colorPicker",
-                            "width=250,height=200,resizable=0,scrollbars=0"
-                            + "toolbar=0,location=0,directories=0,status=0,"
-                            + "menubar=0,copyhistory=0", "test"
-                            );
-  cPicker.focus();
-  
-  preventDefault(event);
+function onBodyClickHandler(event) {
+    var target = getTarget(event);
+    if (!target.hasClassName('colorBox'))
+        $("colorPickerDialog").hide();
 }
 
-function onColorPickerChoice(newColor) {
-  var colorButton = $("colorButton");
-  colorButton.setStyle({ "backgroundColor": newColor });
-  var calendarColor = $("calendarColor");
-  calendarColor.value = newColor;
+function onColorClick(event) {
+    var cellPosition = this.cumulativeOffset();
+    var cellDimensions = this.getDimensions();
+    var div = $('colorPickerDialog');
+    var divDimensions = div.getDimensions();
+    var left = cellPosition[0] + cellDimensions["width"] + 4;
+    var top = cellPosition[1] - 5;
+    div.setStyle({ left: left + "px", top: top + "px" });
+    div.show();
+
+    preventDefault(event);
+}
+
+function onColorPickerChoice(event) {
+    var span = getTarget(event);
+    var newColor = "#" + span.className.substr(4);
+    var colorButton = $("colorButton");
+    colorButton.setStyle({ "backgroundColor": newColor });
+    $("calendarColor").value = newColor;
 }
 
 document.observe("dom:loaded", onLoadCalendarProperties);
