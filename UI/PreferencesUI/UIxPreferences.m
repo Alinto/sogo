@@ -1247,7 +1247,7 @@ static NSArray *reminderValues = nil;
     {
       NSDictionary *v;
      
-      v = [[[context activeUser] userDefaults] mailLabelsColors];      
+      v = [[[context activeUser] userDefaults] mailLabelsColors];
       ASSIGN(mailLabels, [SOGoMailLabel labelsFromDefaults: v  component: self]);
     }
   
