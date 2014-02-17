@@ -28,6 +28,7 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 
+#import <NGImap4/NGSieveClient.h>
 #import <NGImap4/NSString+Imap4.h>
 
 #import <NGExtensions/NSObject+Logs.h>
