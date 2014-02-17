@@ -702,7 +702,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [s appendString: @"<Properties>"];
 
       [s appendFormat: @"<ContentType xmlns=\"AirSyncBase:\">%@/%@</ContentType>", [[currentBodyPart partInfo] objectForKey: @"type"], [[currentBodyPart partInfo] objectForKey: @"subtype"]];
-      [s appendFormat: @"<Data>%@</Data>", [[[currentBodyPart fetchBLOB] stringByEncodingBase64] stringByReplacingString: @"\n"  withString: @""]];
+      [s appendFormat: @"<Data>%@</Data>", [[currentBodyPart fetchBLOB] activeSyncRepresentation]];
 
       [s appendString: @"</Properties>"];
       [s appendString: @"</Fetch>"];
@@ -735,7 +735,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processMeetingResponse: (id <DOMElement>) theDocumentElement
                      inResponse: (WOResponse *) theResponse
 {
-  NSString *realCollectionId, *requestId, *participationStatus;
+  NSString *realCollectionId, *requestId, *participationStatus, *calendarId;
+  SOGoAppointmentObject *appointmentObject;
   SOGoMailObject *mailObject;
   NSMutableString *s;
   NSData *d;
@@ -750,34 +751,75 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   status = 1;
 
   realCollectionId = [[[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue] realCollectionIdWithFolderType: &folderType];
-  collection = [self collectionFromId: realCollectionId  type: ActiveSyncMailFolder];
-  
-  // 1 -> accepted, 2 -> tentative, 3 -> declined
   userResponse = [[[(id)[theDocumentElement getElementsByTagName: @"UserResponse"] lastObject] textValue] intValue];
-  requestId = [[(id)[theDocumentElement getElementsByTagName: @"RequestId"] lastObject] textValue];
+  requestId = [[(id)[theDocumentElement getElementsByTagName: @"RequestId"] lastObject] textValue];  
+  appointmentObject = nil;
+  calendarId = nil;
 
+  // Outlook 2013 calls MeetingResponse on the calendar folder! We have
+  // no way of handling as we can't retrieve the email (using the id found
+  // in requestId) in any mail folder! If that happens, let's simply
+  // assume it comes from the INBOX. This should be generally safe as people
+  // will answer email invitations as they receive them on their INBOX.
+  // Note that the mail should also still be there as MeetingResponse is
+  // called *before* MoveItems.
   //
-  // We fetch the calendar information based on the email (requestId) in the user's INBOX (or elsewhere)
-  //
-  // FIXME: that won't work too well for external invitations...
-  mailObject = [collection lookupName: requestId
-                            inContext: context
-                              acquire: 0];
-  
-  if (![mailObject isKindOfClass: [NSException class]])
+  // Apple iOS will also call MeetingResponse on the calendar folder when the
+  // user accepts/declines the meeting from the Calendar application. Before
+  // falling back on INBOX, we first check if we can find the event in the 
+  // personal calendar.
+  if (folderType == ActiveSyncEventFolder)
     {
-      SOGoAppointmentObject *appointmentObject;
-      iCalCalendar *calendar;
-      iCalEvent *event;
-      
-      calendar = [mailObject calendarFromIMIPMessage];
-      event = [[calendar events] lastObject];
-      
-      // Fetch the SOGoAppointmentObject
       collection = [[context activeUser] personalCalendarFolderInContext: context];
-      appointmentObject = [collection lookupName: [NSString stringWithFormat: @"%@.ics", [event uid]]
+      appointmentObject = [collection lookupName: [requestId sanitizedServerIdWithType: ActiveSyncEventFolder]
                                        inContext: context
                                          acquire: NO];
+      calendarId = requestId;
+      
+      // Object not found, let's fallback on the INBOX folder
+      if ([appointmentObject isKindOfClass: [NSException class]])
+        {
+          folderType = ActiveSyncMailFolder;
+          realCollectionId = @"INBOX";
+          appointmentObject = nil;
+        }
+    }
+  
+  // Fetch the appointment object from the mail message
+  if (!appointmentObject)
+    {
+      collection = [self collectionFromId: realCollectionId  type: folderType];
+      
+      //
+      // We fetch the calendar information based on the email (requestId) in the user's INBOX (or elsewhere)
+      //
+      // FIXME: that won't work too well for external invitations...
+      mailObject = [collection lookupName: requestId
+                                inContext: context
+                                  acquire: 0];
+      
+      if (![mailObject isKindOfClass: [NSException class]])
+        {
+          iCalCalendar *calendar;
+          iCalEvent *event;
+
+          calendar = [mailObject calendarFromIMIPMessage];
+          event = [[calendar events] lastObject];
+          calendarId = [event uid];
+
+          // Fetch the SOGoAppointmentObject
+          collection = [[context activeUser] personalCalendarFolderInContext: context];
+          appointmentObject = [collection lookupName: [NSString stringWithFormat: @"%@.ics", [event uid]]
+                                           inContext: context
+                                             acquire: NO];
+        }
+    }
+     
+  if (appointmentObject && 
+      calendarId &&
+      (![appointmentObject isKindOfClass: [NSException class]]))
+    {
+      // 1 -> accepted, 2 -> tentative, 3 -> declined
       if (userResponse == 1)
         participationStatus = @"ACCEPTED";
       else if (userResponse == 2)
@@ -785,29 +827,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       else
         participationStatus = @"DECLINED";
       
-      if (![appointmentObject isKindOfClass: [NSException class]])
-        {
-          [appointmentObject changeParticipationStatus: participationStatus
-                                          withDelegate: nil];
-          
-          [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
-          [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
-          [s appendString: @"<MeetingResponse xmlns=\"MeetingResponse:\">"];
-          [s appendString: @"<Result>"];
-          [s appendFormat: @"<RequestId>%@</RequestId>", requestId];
-          [s appendFormat: @"<CalendarId>%@</CalendarId>", [event uid]];
-          [s appendFormat: @"<Status>%d</Status>", status];
-          [s appendString: @"</Result>"];
-          [s appendString: @"</MeetingResponse>"];
-          
-          d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
-          
-          [theResponse setContent: d];
-        }
-      else
-        {
-          [theResponse setStatus: 500];
-        }
+      [appointmentObject changeParticipationStatus: participationStatus
+                                      withDelegate: nil];
+
+      [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+      [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+      [s appendString: @"<MeetingResponse xmlns=\"MeetingResponse:\">"];
+      [s appendString: @"<Result>"];
+      [s appendFormat: @"<RequestId>%@</RequestId>", requestId];
+      [s appendFormat: @"<CalendarId>%@</CalendarId>", calendarId];
+      [s appendFormat: @"<Status>%d</Status>", status];
+      [s appendString: @"</Result>"];
+      [s appendString: @"</MeetingResponse>"];
+      
+      d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+      
+      [theResponse setContent: d];
     }
   else
     {
@@ -1042,7 +1077,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               [s appendString: @"<Recipient>"];              
               [s appendFormat: @"<Type>%d</Type>", 1];
               [s appendFormat: @"<DisplayName>%@</DisplayName>", [user cn]];
-              [s appendFormat: @"<EmailAddress>%@</EmailAddress>", [user systemEmail]];
+              [s appendFormat: @"<EmailAddress>%@</EmailAddress>", [[user allEmails] objectAtIndex: 0]];
 
               // Freebusy structure: http://msdn.microsoft.com/en-us/library/gg663493(v=exchg.80).aspx
               [s appendString: @"<Availability>"];

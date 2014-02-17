@@ -63,6 +63,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   s = [NSMutableString string];
   
+  [s appendFormat: @"<AllDayEvent xmlns=\"Calendar:\">%d</AllDayEvent>", ([self isAllDay] ? 1 : 0)];
+
   // DTStamp -- http://msdn.microsoft.com/en-us/library/ee219470(v=exchg.80).aspx
   if ([self timeStampAsDate])
     [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self timeStampAsDate] activeSyncRepresentationWithoutSeparators]];
@@ -83,18 +85,31 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if (!tz)
     tz = [iCalTimeZone timeZoneForName: @"Europe/London"];
 
-  [s appendFormat: @"<TimeZone xmlns=\"Calendar:\">%@</TimeZone>", [[tz activeSyncRepresentation] stringByReplacingString: @"\n" withString: @""]];;
+  [s appendFormat: @"<TimeZone xmlns=\"Calendar:\">%@</TimeZone>", [tz activeSyncRepresentation]];
   
-  // Organizer
+  // Organizer and other invitations related properties
   if ((organizer = [self organizer]))
     {
       o = [organizer rfc822Email];
       if ([o length])
-        [s appendFormat: @"<Organizer_Email xmlns=\"Calendar:\">%@</Organizer_Email>", o];
-
-      o = [organizer cn];
-      if ([o length])
-        [s appendFormat: @"<Organizer_Name xmlns=\"Calendar:\">%@</Organizer_Name>", o];
+        {
+          [s appendFormat: @"<Organizer_Email xmlns=\"Calendar:\">%@</Organizer_Email>", o];
+          
+          o = [organizer cn];
+          if ([o length])
+            [s appendFormat: @"<Organizer_Name xmlns=\"Calendar:\">%@</Organizer_Name>", o];
+      
+          
+          // This depends on the 'NEEDS-ACTION' parameter.
+          // This will trigger the SendMail command
+          [s appendFormat: @"<ResponseRequested xmlns=\"Calendar:\">%d</ResponseRequested>", 1];
+          [s appendFormat: @"<ResponseType xmlns=\"Calendar:\">%d</ResponseType>", 5];
+          [s appendFormat: @"<MeetingStatus xmlns=\"Calendar:\">%d</MeetingStatus>", 3];
+          [s appendFormat: @"<DisallowNewTimeProposal xmlns=\"Calendar:\">%d</DisallowNewTimeProposal>", 1];
+          
+          // BusyStatus -- http://msdn.microsoft.com/en-us/library/ee202290(v=exchg.80).aspx
+          [s appendFormat: @"<BusyStatus xmlns=\"Calendar:\">%d</BusyStatus>", 2];
+        }
     }
   
   // Attendees
@@ -167,9 +182,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     v = 0;
 
   [s appendFormat: @"<Sensitivity xmlns=\"Calendar:\">%d</Sensitivity>", v];
-  
-  // BusyStatus -- http://msdn.microsoft.com/en-us/library/ee202290(v=exchg.80).aspx
-  [s appendFormat: @"<BusyStatus xmlns=\"Calendar:\">%d</BusyStatus>", 0];
   
   // Reminder -- http://msdn.microsoft.com/en-us/library/ee219691(v=exchg.80).aspx
   // TODO
