@@ -403,23 +403,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
 
   // Organizer - we don't touch the value unless we're the organizer
-  if ([self userIsOrganizer: [context activeUser]])
+  if ((o = [theValues objectForKey: @"Organizer_Email"]) &&
+      ([self userIsOrganizer: [context activeUser]] || [[context activeUser] hasEmail: o]))
     {
-      if ((o = [theValues objectForKey: @"Organizer_Email"]))
-        {
-          iCalPerson *person;
-          
-          person = [iCalPerson elementWithTag: @"organizer"];
-          [person setEmail: o];
-          [person setCn: [theValues objectForKey: @"Organizer_Name"]];
-          [person setPartStat: @"ACCEPTED"];
-          [self setOrganizer: person];
-        }
+      iCalPerson *person;
+      
+      person = [iCalPerson elementWithTag: @"organizer"];
+      [person setEmail: o];
+      [person setCn: [theValues objectForKey: @"Organizer_Name"]];
+      [person setPartStat: @"ACCEPTED"];
+      [self setOrganizer: person];
     }
 
   // Attendees - we don't touch the values if we're an attendee. This is gonna
   // be done automatically by the ActiveSync client when invoking MeetingResponse.
-  if ([self userIsAttendee: [context activeUser]])
+  if (![self userIsAttendee: [context activeUser]])
     {
       if ((o = [theValues objectForKey: @"Attendees"]))
         {
