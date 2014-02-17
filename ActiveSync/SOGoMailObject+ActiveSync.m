@@ -53,9 +53,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"
 
-#include "../SoObjects/Appointments/iCalPerson+SOGo.h"
-#include "../SoObjects/Mailer/NSString+Mail.h"
-#include "../SoObjects/Mailer/SOGoMailBodyPart.h"
+#include <Appointments/iCalEntityObject+SOGo.h>
+#include <Appointments/iCalPerson+SOGo.h>
+#include <Mailer/NSString+Mail.h>
+#include <Mailer/SOGoMailBodyPart.h>
 
 #include <SOGo/SOGoUser.h>
 
@@ -349,7 +350,7 @@ struct GlobalObjectId {
   id value;
 
   iCalCalendar *calendar;
-
+      
   int preferredBodyType, nativeBodyType;
 
   s = [NSMutableString string];
@@ -394,7 +395,7 @@ struct GlobalObjectId {
   
   // We handle MeetingRequest
   calendar = [self calendarFromIMIPMessage];
-
+ 
   if (calendar)
     {
       NSString *method, *className;
@@ -408,7 +409,12 @@ struct GlobalObjectId {
       event = [[calendar events] lastObject];
       method = [[event parent] method];
 
-      attendee = [event findAttendeeWithEmail: [[[context activeUser] allEmails] objectAtIndex: 0]];
+      // If we are the organizer, let's pick the attendee based on the From address
+      if ([event userIsOrganizer: [context activeUser]])
+        attendee = [event findAttendeeWithEmail: [[[[self envelope] from] lastObject] baseEMail]];
+      else
+        attendee = [event findAttendeeWithEmail: [[[context activeUser] allEmails] objectAtIndex: 0]];
+
       partstat = [attendee participationStatus];
 
       // We generate the correct MessageClass
@@ -425,6 +431,7 @@ struct GlobalObjectId {
               className = @"IPM.Schedule.Meeting.Resp.Neg";
               break;
             case iCalPersonPartStatTentative:
+            case iCalPersonPartStatNeedsAction:
               className = @"IPM.Schedule.Meeting.Resp.Tent";
               break;
             default:
@@ -458,6 +465,7 @@ struct GlobalObjectId {
       if ([event endDate])
         [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
       
+      // FIXME: Single appointment - others are not supported right now
       [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 0];
 
       // Location
