@@ -40,6 +40,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation NSString (ActiveSync)
 
+- (NSString *) sanitizedServerIdWithType: (SOGoMicrosoftActiveSyncFolderType) folderType
+{
+  if (folderType == ActiveSyncEventFolder)
+    {
+      int len;
+
+      len = [self length];
+
+      if (len > 4 && [self hasSuffix: @".ics"])
+        return [self substringToIndex: len-4];
+      else
+        return [NSString stringWithFormat: @"%@.ics", self];
+    }
+  
+  return self;
+}
+
 - (NSString *) activeSyncRepresentation
 {
   NSString *s;
