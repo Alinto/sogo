@@ -998,7 +998,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       if (changeDetected)
         {
           NSLog(@"Change detected, we push the content.");
-          [output appendString: s];
           break;
         }
       else
@@ -1007,6 +1006,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           sleep(internalInterval);
         }
     }
+
+  // We always return the last generated response.
+  // If we only return <Sync><Collections/></Sync>,
+  // iOS powered devices will simply crash.
+  [output appendString: s];
 
   [output appendString: @"</Collections></Sync>"];
       
