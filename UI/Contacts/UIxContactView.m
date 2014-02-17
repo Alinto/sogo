@@ -340,21 +340,33 @@
 
 - (NSString *) _formattedURL: (NSString *) url
 {
-  NSString *data;
+  NSRange schemaR;
+  NSString *schema, *data;
 
   if ([url length] > 0)
     {
-      if (![[url lowercaseString] rangeOfString: @"://"].length)
-	url = [NSString stringWithFormat: @"http://%@", url];
-      
-      data = [NSString stringWithFormat:
-                         @"<a href=\"%@\" target=\"_blank\">%@</a>",
-                       url, url];
+      schemaR = [url rangeOfString: @"://"];
+      if (schemaR.length > 0)
+        {
+          schema = [url substringToIndex: schemaR.location + schemaR.length];
+          data = [url substringFromIndex: schemaR.location + schemaR.length];
+        }
+      else
+        {
+          schema = @"http://";
+          data = url;
+        }
     }
   else
-    data = nil;
+    {
+      schema = nil;
+      data = nil;
+    }
 
-  return [self _cardStringWithLabel: nil value: data];
+  return [self _cardStringWithLabel: nil
+                              value: data
+                       asLinkScheme: schema
+                 withLinkAttributes: @"target=\"_blank\""];
 }
 
 
@@ -364,8 +376,8 @@
   NSString *url;
 
   elements = [card childrenWithTag: @"url"
-                   andAttribute: @"type"
-                   havingValue: aType];
+                      andAttribute: @"type"
+                       havingValue: aType];
   if ([elements count] > 0)
     url = [[elements objectAtIndex: 0] flattenedValuesForKey: @""];
   else
