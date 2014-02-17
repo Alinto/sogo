@@ -115,7 +115,7 @@ struct SYSTEMTIME {
 }
 
 
-- (NSString *) activeSyncRepresentation
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   iCalTimeZonePeriod *period;
   NSMutableData *bytes;
@@ -159,7 +159,7 @@ struct SYSTEMTIME {
   [bytes appendBytes: &stDaylightDate  length: 16];
   [bytes appendBytes: &lDaylightBias  length: 4];
   
-  return [bytes activeSyncRepresentation];
+  return [bytes activeSyncRepresentationInContext: context];
 }
 
 @end

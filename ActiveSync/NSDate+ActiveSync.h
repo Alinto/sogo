@@ -33,11 +33,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSDate.h>
 
 @class NSString;
+@class WOContext;
 
 @interface NSDate (ActiveSync)
 
-- (NSString *) activeSyncRepresentation;
-- (NSString *) activeSyncRepresentationWithoutSeparators;
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context;
+- (NSString *) activeSyncRepresentationWithoutSeparatorsInContext: (WOContext *) context;
 
 @end
 

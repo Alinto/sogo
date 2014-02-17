@@ -57,7 +57,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   return self;
 }
 
-- (NSString *) activeSyncRepresentation
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   NSString *s;
 

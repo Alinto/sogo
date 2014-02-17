@@ -342,7 +342,7 @@ struct GlobalObjectId {
 //
 //
 //
-- (NSString *) activeSyncRepresentation
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) _context
 {
   NSData *d, *globalObjId;
   NSMutableString *s;
@@ -358,25 +358,25 @@ struct GlobalObjectId {
   // If there are multiple e-mail addresses, they are separated by commas."
   value = [self _emailAddressesFrom: [[self envelope] to]];
   if (value)
-    [s appendFormat: @"<To xmlns=\"Email:\">%@</To>", [value activeSyncRepresentation]];
+    [s appendFormat: @"<To xmlns=\"Email:\">%@</To>", [value activeSyncRepresentationInContext: context]];
 
   // From
   value = [self _emailAddressesFrom: [[self envelope] from]];
   if (value)
-    [s appendFormat: @"<From xmlns=\"Email:\">%@</From>", [value activeSyncRepresentation]];
+    [s appendFormat: @"<From xmlns=\"Email:\">%@</From>", [value activeSyncRepresentationInContext: context]];
   
   // Subject
   value = [self decodedSubject];
   if (value)
     {
-      [s appendFormat: @"<Subject xmlns=\"Email:\">%@</Subject>", [value activeSyncRepresentation]];
-      [s appendFormat: @"<ThreadTopic xmlns=\"Email:\">%@</ThreadTopic>", [value activeSyncRepresentation]];
+      [s appendFormat: @"<Subject xmlns=\"Email:\">%@</Subject>", [value activeSyncRepresentationInContext: context]];
+      [s appendFormat: @"<ThreadTopic xmlns=\"Email:\">%@</ThreadTopic>", [value activeSyncRepresentationInContext: context]];
     }
 
   // DateReceived
   value = [self date];
   if (value)
-    [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [value activeSyncRepresentationWithoutSeparators]];
+    [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [value activeSyncRepresentationWithoutSeparatorsInContext: context]];
 
   // DisplayTo
   [s appendFormat: @"<DisplayTo xmlns=\"Email:\">%@</DisplayTo>", [[context activeUser] login]];
@@ -384,7 +384,7 @@ struct GlobalObjectId {
   // Cc - same syntax as the To field
   value = [self _emailAddressesFrom: [[self envelope] cc]];
   if (value)
-    [s appendFormat: @"<Cc xmlns=\"Email:\">%@</Cc>", [value activeSyncRepresentation]];
+    [s appendFormat: @"<Cc xmlns=\"Email:\">%@</Cc>", [value activeSyncRepresentationInContext: context]];
     
   // Importance - FIXME
   [s appendFormat: @"<Importance xmlns=\"Email:\">%@</Importance>", @"1"];
@@ -447,24 +447,24 @@ struct GlobalObjectId {
 
       // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
       if ([event startDate])
-        [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentationWithoutSeparators]];
+        [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
       
       if ([event timeStampAsDate])
-        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentationWithoutSeparators]];
+        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
       else if ([event created])
-        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event created] activeSyncRepresentationWithoutSeparators]];
+        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event created] activeSyncRepresentationWithoutSeparatorsInContext: context]];
       
       // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
       if ([event endDate])
-        [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentationWithoutSeparators]];
+        [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
       
       [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 0];
 
       // Location
       if ([[event location] length])
-        [s appendFormat: @"<Location xmlns=\"Email:\">%@</Location>", [[event location] activeSyncRepresentation]];
+        [s appendFormat: @"<Location xmlns=\"Email:\">%@</Location>", [[event location] activeSyncRepresentationInContext: context]];
 
-      [s appendFormat: @"<Organizer xmlns=\"Email:\">%@</Organizer>", [[[event organizer] mailAddress] activeSyncRepresentation]];
+      [s appendFormat: @"<Organizer xmlns=\"Email:\">%@</Organizer>", [[[event organizer] mailAddress] activeSyncRepresentationInContext: context]];
 
       // This will trigger the SendMail command. We set it to no for email invitations as
       // SOGo will send emails when MeetingResponse is called.
@@ -488,7 +488,7 @@ struct GlobalObjectId {
       if (!tz)
         tz = [iCalTimeZone timeZoneForName: @"Europe/London"];
       
-      [s appendFormat: @"<TimeZone xmlns=\"Email:\">%@</TimeZone>", [tz activeSyncRepresentation]];
+      [s appendFormat: @"<TimeZone xmlns=\"Email:\">%@</TimeZone>", [tz activeSyncRepresentationInContext: context]];
       
 
       // We disallow new time proposals
@@ -500,7 +500,7 @@ struct GlobalObjectId {
       // object in the Calendar folder have to convert the GlobalObjId element value to a UID element value to make the comparison."
       //
       globalObjId = [self _computeGlobalObjectIdFromEvent: event];
-      [s appendFormat: @"<GlobalObjId xmlns=\"Email:\">%@</GlobalObjId>", [globalObjId activeSyncRepresentation]];
+      [s appendFormat: @"<GlobalObjId xmlns=\"Email:\">%@</GlobalObjId>", [globalObjId activeSyncRepresentationInContext: context]];
 
       // We set the right message type - we must set AS version to 14.1 for this
       [s appendFormat: @"<MeetingMessageType xmlns=\"Email2:\">%d</MeetingMessageType>", 1];
@@ -545,7 +545,7 @@ struct GlobalObjectId {
       
       AUTORELEASE(content);
       
-      content = [content activeSyncRepresentation];
+      content = [content activeSyncRepresentationInContext: context];
       truncated = 0;
     
       len = [content length];
@@ -572,7 +572,7 @@ struct GlobalObjectId {
           value = [attachmentKeys objectAtIndex: i];
 
           [s appendString: @"<Attachment>"];
-          [s appendFormat: @"<DisplayName>%@</DisplayName>", [[value objectForKey: @"filename"] activeSyncRepresentation]];
+          [s appendFormat: @"<DisplayName>%@</DisplayName>", [[value objectForKey: @"filename"] activeSyncRepresentationInContext: context]];
 
           // FileReference must be a unique identifier across the whole store. We use the following structure:
           // mail/<foldername>/<message UID/<pathofpart>
@@ -612,6 +612,7 @@ struct GlobalObjectId {
 //
 //
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
+                    inContext: (WOContext *) _context
 {
   id o;
 

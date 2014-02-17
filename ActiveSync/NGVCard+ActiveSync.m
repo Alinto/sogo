@@ -45,7 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation NGVCard (ActiveSync)
 
-- (NSString *) activeSyncRepresentation
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   CardElement *n, *homeAdr, *workAdr;
   NSArray *emails, *addresses;
@@ -58,16 +58,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   n = [self n];
   
   if ((o = [n flattenedValueAtIndex: 0 forKey: @""]))
-    [s appendFormat: @"<LastName xmlns=\"Contacts:\">%@</LastName>", [o activeSyncRepresentation]];
+    [s appendFormat: @"<LastName xmlns=\"Contacts:\">%@</LastName>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [n flattenedValueAtIndex: 1 forKey: @""]))
-    [s appendFormat: @"<FirstName xmlns=\"Contacts:\">%@</FirstName>", [o activeSyncRepresentation]];
+    [s appendFormat: @"<FirstName xmlns=\"Contacts:\">%@</FirstName>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [self workCompany]))
-    [s appendFormat: @"<CompanyName xmlns=\"Contacts:\">%@</CompanyName>", [o activeSyncRepresentation]];
+    [s appendFormat: @"<CompanyName xmlns=\"Contacts:\">%@</CompanyName>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [self title]))
-    [s appendFormat: @"<JobTitle xmlns=\"Contacts:\">%@</JobTitle>", [o activeSyncRepresentation]];
+    [s appendFormat: @"<JobTitle xmlns=\"Contacts:\">%@</JobTitle>", [o activeSyncRepresentationInContext: context]];
 
   if ((o = [self preferredEMail])) 
     [s appendFormat: @"<Email1Address xmlns=\"Contacts:\">%@</Email1Address>", o];
@@ -88,19 +88,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   // Telephone numbers
   if ((o = [self workPhone]) && [o length])
-    [s appendFormat: @"<BusinessPhoneNumber xmlns=\"Contacts:\">%@</BusinessPhoneNumber>", [o activeSyncRepresentation]];
+    [s appendFormat: @"<BusinessPhoneNumber xmlns=\"Contacts:\">%@</BusinessPhoneNumber>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [self homePhone]) && [o length])
-    [s appendFormat: @"<HomePhoneNumber xmlns=\"Contacts:\">%@</HomePhoneNumber>", [o activeSyncRepresentation]];
+    [s appendFormat: @"<HomePhoneNumber xmlns=\"Contacts:\">%@</HomePhoneNumber>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [self fax]) && [o length])
-    [s appendFormat: @"<BusinessFaxNumber xmlns=\"Contacts:\">%@</BusinessFaxNumber>", [o activeSyncRepresentation]];
+    [s appendFormat: @"<BusinessFaxNumber xmlns=\"Contacts:\">%@</BusinessFaxNumber>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [self mobile]) && [o length])
-    [s appendFormat: @"<MobilePhoneNumber xmlns=\"Contacts:\">%@</MobilePhoneNumber>", [o activeSyncRepresentation]];
+    [s appendFormat: @"<MobilePhoneNumber xmlns=\"Contacts:\">%@</MobilePhoneNumber>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [self pager]) && [o length])
-    [s appendFormat: @"<PagerNumber xmlns=\"Contacts:\">%@</PagerNumber>", [o activeSyncRepresentation]];
+    [s appendFormat: @"<PagerNumber xmlns=\"Contacts:\">%@</PagerNumber>", [o activeSyncRepresentationInContext: context]];
 
   // Home Address
   addresses = [self childrenWithTag: @"adr"
@@ -112,19 +112,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       homeAdr = [addresses objectAtIndex: 0];
       
       if ((o = [homeAdr flattenedValueAtIndex: 2  forKey: @""]))
-        [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", [o activeSyncRepresentation]];
+        [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 3  forKey: @""]))
-        [s appendFormat: @"<HomeCity xmlns=\"Contacts:\">%@</HomeCity>", [o activeSyncRepresentation]];
+        [s appendFormat: @"<HomeCity xmlns=\"Contacts:\">%@</HomeCity>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 4  forKey: @""]))
-        [s appendFormat: @"<HomeState xmlns=\"Contacts:\">%@</HomeState>", [o activeSyncRepresentation]];
+        [s appendFormat: @"<HomeState xmlns=\"Contacts:\">%@</HomeState>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 5  forKey: @""]))
-        [s appendFormat: @"<HomePostalCode xmlns=\"Contacts:\">%@</HomePostalCode>", [o activeSyncRepresentation]];
+        [s appendFormat: @"<HomePostalCode xmlns=\"Contacts:\">%@</HomePostalCode>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 6  forKey: @""]))
-        [s appendFormat: @"<HomeCountry xmlns=\"Contacts:\">%@</HomeCountry>", [o activeSyncRepresentation]];
+        [s appendFormat: @"<HomeCountry xmlns=\"Contacts:\">%@</HomeCountry>", [o activeSyncRepresentationInContext: context]];
     }
   
   // Work Address
@@ -137,28 +137,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       workAdr = [addresses objectAtIndex: 0];
       
       if ((o = [workAdr flattenedValueAtIndex: 2  forKey: @""]))
-        [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", [o activeSyncRepresentation]];
+        [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [workAdr flattenedValueAtIndex: 3  forKey: @""]))
-        [s appendFormat: @"<BusinessCity xmlns=\"Contacts:\">%@</BusinessCity>", [o activeSyncRepresentation]];
+        [s appendFormat: @"<BusinessCity xmlns=\"Contacts:\">%@</BusinessCity>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [workAdr flattenedValueAtIndex: 4  forKey: @""]))
-        [s appendFormat: @"<BusinessState xmlns=\"Contacts:\">%@</BusinessState>", [o activeSyncRepresentation]];
+        [s appendFormat: @"<BusinessState xmlns=\"Contacts:\">%@</BusinessState>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [workAdr flattenedValueAtIndex: 5  forKey: @""]))
-        [s appendFormat: @"<BusinessPostalCode xmlns=\"Contacts:\">%@</BusinessPostalCode>", [o activeSyncRepresentation]];
+        [s appendFormat: @"<BusinessPostalCode xmlns=\"Contacts:\">%@</BusinessPostalCode>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [workAdr flattenedValueAtIndex: 6  forKey: @""]))
-        [s appendFormat: @"<BusinessCountry xmlns=\"Contacts:\">%@</BusinessCountry>", [o activeSyncRepresentation]];
+        [s appendFormat: @"<BusinessCountry xmlns=\"Contacts:\">%@</BusinessCountry>", [o activeSyncRepresentationInContext: context]];
     }
 
   // Other, less important fields
   if ((o = [self birthday]))
-    [s appendFormat: @"<Birthday xmlns=\"Contacts:\">%@</Birthday>", [o activeSyncRepresentationWithoutSeparators]];
+    [s appendFormat: @"<Birthday xmlns=\"Contacts:\">%@</Birthday>", [o activeSyncRepresentationWithoutSeparatorsInContext: context]];
 
   if ((o = [self note]))
     {
-      o = [o activeSyncRepresentation];
+      o = [o activeSyncRepresentationInContext: context];
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", 1]; 
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
@@ -174,6 +174,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
+                    inContext: (WOContext *) context
 {
   CardElement *element;
   id o;

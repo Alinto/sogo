@@ -38,10 +38,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSString+misc.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
+
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #include "iCalRecurrenceRule+ActiveSync.h"
 #include "iCalTimeZone+ActiveSync.h"
@@ -50,7 +55,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation iCalEvent (ActiveSync)
 
-- (NSString *) activeSyncRepresentation
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   NSMutableString *s;
   NSArray *attendees;
@@ -67,17 +72,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   // DTStamp -- http://msdn.microsoft.com/en-us/library/ee219470(v=exchg.80).aspx
   if ([self timeStampAsDate])
-    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self timeStampAsDate] activeSyncRepresentationWithoutSeparators]];
+    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self timeStampAsDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
   else if ([self created])
-    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self created] activeSyncRepresentationWithoutSeparators]];
+    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self created] activeSyncRepresentationWithoutSeparatorsInContext: context]];
   
   // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
   if ([self startDate])
-    [s appendFormat: @"<StartTime xmlns=\"Calendar:\">%@</StartTime>", [[self startDate] activeSyncRepresentationWithoutSeparators]];
+    [s appendFormat: @"<StartTime xmlns=\"Calendar:\">%@</StartTime>", [[self startDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
   
   // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
   if ([self endDate])
-    [s appendFormat: @"<EndTime xmlns=\"Calendar:\">%@</EndTime>", [[self endDate] activeSyncRepresentationWithoutSeparators]];
+    [s appendFormat: @"<EndTime xmlns=\"Calendar:\">%@</EndTime>", [[self endDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
   
   // Timezone
   tz = [(iCalDateTime *)[self firstChildWithTag: @"dtstart"] timeZone];
@@ -85,7 +90,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if (!tz)
     tz = [iCalTimeZone timeZoneForName: @"Europe/London"];
 
-  [s appendFormat: @"<TimeZone xmlns=\"Calendar:\">%@</TimeZone>", [tz activeSyncRepresentation]];
+  [s appendFormat: @"<TimeZone xmlns=\"Calendar:\">%@</TimeZone>", [tz activeSyncRepresentationInContext: context]];
   
   // Organizer and other invitations related properties
   if ((organizer = [self organizer]))
@@ -153,11 +158,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   // Subject -- http://msdn.microsoft.com/en-us/library/ee157192(v=exchg.80).aspx
   if ([[self summary] length])
-    [s appendFormat: @"<Subject xmlns=\"Calendar:\">%@</Subject>", [[self summary] activeSyncRepresentation]];
+    [s appendFormat: @"<Subject xmlns=\"Calendar:\">%@</Subject>", [[self summary] activeSyncRepresentationInContext: context]];
   
   // Location
   if ([[self location] length])
-    [s appendFormat: @"<Location xmlns=\"Calendar:\">%@</Location>", [[self location] activeSyncRepresentation]];
+    [s appendFormat: @"<Location xmlns=\"Calendar:\">%@</Location>", [[self location] activeSyncRepresentationInContext: context]];
   
   // Importance - NOT SUPPORTED - DO NOT ENABLE
   //o = [self priority];
@@ -189,14 +194,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Recurrence rules
   if ([self isRecurrent])
     {
-      [s appendString: [[[self recurrenceRules] lastObject] activeSyncRepresentation]];
+      [s appendString: [[[self recurrenceRules] lastObject] activeSyncRepresentationInContext: context]];
     }
 
   // Comment
   o = [self comment];
   if ([o length])
     {
-      o = [o activeSyncRepresentation];
+      o = [o activeSyncRepresentationInContext: context];
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", 1];
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
@@ -249,6 +254,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // </Change>
 //
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
+                    inContext: (WOContext *) context
 {
   iCalDateTime *start, *end;
   NSTimeZone *userTimeZone;
@@ -310,7 +316,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ((o = [theValues objectForKey: @"TimeZone"]))
     {
       // Ugh, we ignore it for now.
-      userTimeZone = [theValues objectForKey: @"SOGoUserTimeZone"];
+      userTimeZone = [[[context activeUser] userDefaults] timeZone];
       tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
       [(iCalCalendar *) parent addTimeZone: tz];
     }
@@ -373,7 +379,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [self setRecurrenceRules: [NSArray arrayWithObject: rule]];
       RELEASE(rule);
       
-      [rule takeActiveSyncValues: o];
+      [rule takeActiveSyncValues: o  inContext: context];
     }
 
   // Organizer

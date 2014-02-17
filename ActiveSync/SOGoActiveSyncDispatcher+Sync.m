@@ -192,9 +192,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   serverId = [allValues objectForKey: @"UID"];
                 else
                   serverId = [theCollection globallyUniqueObjectId];
-                
-                [allValues setObject: [[[context activeUser] userDefaults] timeZone]  forKey: @"SOGoUserTimeZone"];
-                
+                                
                 sogoObject = [theCollection lookupName: [serverId sanitizedServerIdWithType: theFolderType]
                                              inContext: context
                                                acquire: NO];
@@ -218,7 +216,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 serverId = [NSString stringWithFormat: @"%@.ics", [theCollection globallyUniqueObjectId]];
                 sogoObject = [[SOGoTaskObject alloc] initWithName: serverId
                                                       inContainer: theCollection];
-                [allValues setObject: [[[context activeUser] userDefaults] timeZone]  forKey: @"SOGoUserTimeZone"];
                 o = [sogoObject component: YES secure: NO];     
               }
               break;
@@ -232,7 +229,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               }
             }
           
-          [o takeActiveSyncValues: allValues];
+          [o takeActiveSyncValues: allValues  inContext: context];
           [sogoObject setIsNew: is_new];
           [sogoObject saveComponent: o];
           
@@ -322,7 +319,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             case ActiveSyncContactFolder:
               {
                 o = [sogoObject vCard];
-                [o takeActiveSyncValues: allChanges];
+                [o takeActiveSyncValues: allChanges  inContext: context];
                 [sogoObject saveComponent: o];
               }
               break;
@@ -330,14 +327,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             case ActiveSyncTaskFolder:
               {
                 o = [sogoObject component: NO  secure: NO];
-                [o takeActiveSyncValues: allChanges];
+                [o takeActiveSyncValues: allChanges  inContext: context];
                 [sogoObject saveComponent: o];
               }
               break;
             case ActiveSyncMailFolder:
             default:
               {
-                [sogoObject takeActiveSyncValues: allChanges];
+                [sogoObject takeActiveSyncValues: allChanges  inContext: context];
               }
             }
 
@@ -425,7 +422,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [theBuffer appendFormat: @"<ServerId>%@</ServerId>", serverId];
   [theBuffer appendFormat: @"<Status>%d</Status>", 1];
   [theBuffer appendString: @"<ApplicationData>"];
-  [theBuffer appendString: [o activeSyncRepresentation]];
+  [theBuffer appendString: [o activeSyncRepresentationInContext: context]];
   [theBuffer appendString: @"</ApplicationData>"];
   [theBuffer appendString: @"</Fetch>"];
 }
@@ -559,7 +556,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
                 [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
                 
-                [s appendString: [componentObject activeSyncRepresentation]];
+                [s appendString: [componentObject activeSyncRepresentationInContext: context]];
                 
                 [s appendString: @"</ApplicationData>"];
                 
@@ -618,7 +615,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
                 [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
                 [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
-                [s appendString: [mailObject activeSyncRepresentation]];
+                [s appendString: [mailObject activeSyncRepresentationInContext: context]];
                 [s appendString: @"</ApplicationData>"];
                 
                 if ([command isEqualToString: @"added"])

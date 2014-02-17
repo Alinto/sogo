@@ -36,11 +36,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @class NSCalendarDate;
 @class NSData;
+@class WOContext;
 
 @interface NSString (ActiveSync)
 
 - (NSString *) sanitizedServerIdWithType: (SOGoMicrosoftActiveSyncFolderType) folderType;
-- (NSString *) activeSyncRepresentation;
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context;
 - (int) activeSyncFolderType;
 - (NSString *) realCollectionIdWithFolderType: (SOGoMicrosoftActiveSyncFolderType *) folderType;
 - (NSCalendarDate *) calendarDate;

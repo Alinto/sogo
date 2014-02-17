@@ -41,7 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation iCalRecurrenceRule (ActiveSync)
 
-- (NSString *) activeSyncRepresentation
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   NSMutableString *s;
   int type;
@@ -180,7 +180,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       //[date setTimeZone: [ud timeZone]];
       
       [s appendFormat: @"<Recurrence_Until xmlns=\"Calendar:\">%@</Recurrence_Until>",
-         [date activeSyncRepresentationWithoutSeparators]];
+         [date activeSyncRepresentationWithoutSeparatorsInContext: context]];
     }  
 
 
@@ -242,6 +242,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
+                    inContext: (WOContext *) context
 {
   id o;
 

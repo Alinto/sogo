@@ -34,11 +34,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/iCalEvent.h>
 
 @class NSString;
+@class WOContext;
 
 @interface iCalEvent (ActiveSync)
 
-- (NSString *) activeSyncRepresentation;
-- (void) takeActiveSyncValues: (NSDictionary *) theValues;
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context;
+- (void) takeActiveSyncValues: (NSDictionary *) theValues
+                    inContext: (WOContext *) context;
 
 @end
 

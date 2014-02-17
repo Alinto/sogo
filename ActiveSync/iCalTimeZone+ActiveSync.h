@@ -33,10 +33,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/iCalTimeZone.h>
 
 @class NSString;
+@class WOContext;
 
 @interface iCalTimeZone (ActiveSync)
 
-- (NSString *) activeSyncRepresentation;
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context;
 
 @end
 

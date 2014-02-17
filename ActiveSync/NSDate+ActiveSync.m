@@ -34,7 +34,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation NSDate (ActiveSync)
 
-- (NSString *) activeSyncRepresentation
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   return [self descriptionWithCalendarFormat: @"%Y-%m-%d-T%H:%M:%S.%FZ"  timeZone: [NSTimeZone timeZoneWithName: @"GMT"]  locale: nil];
 }
@@ -43,7 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 // From [MS-ASDTYPE].pdf - section 2.3 "Dates and times in calendar items MUST NOT include punctuation separators."
 //
-- (NSString *) activeSyncRepresentationWithoutSeparators
+- (NSString *) activeSyncRepresentationWithoutSeparatorsInContext: (WOContext *) context
 {
   return [self descriptionWithCalendarFormat: @"%Y%m%dT%H%M%SZ"  timeZone: [NSTimeZone timeZoneWithName: @"GMT"]  locale: nil];
 }

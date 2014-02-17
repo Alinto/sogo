@@ -510,26 +510,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
              [serverId stringByEscapingURL],
              [parentId stringByEscapingURL],
              type,
-             [name activeSyncRepresentation]];
+             [name activeSyncRepresentationInContext: context]];
         }
 
       // We add the personal calendar - events
       // FIXME: add all calendars
       currentFolder = [[context activeUser] personalCalendarFolderInContext: context];
       name = [NSString stringWithFormat: @"vevent/%@", [currentFolder nameInContainer]];
-      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 8, [[currentFolder displayName] activeSyncRepresentation]];
+      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 8, [[currentFolder displayName] activeSyncRepresentationInContext: context]];
 
       // We add the personal calendar - tasks
       // FIXME: add all calendars
       currentFolder = [[context activeUser] personalCalendarFolderInContext: context];
       name = [NSString stringWithFormat: @"vtodo/%@", [currentFolder nameInContainer]];
-      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 7, [[currentFolder displayName] activeSyncRepresentation]];
+      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 7, [[currentFolder displayName] activeSyncRepresentationInContext: context]];
       
       // We add the personal address book
       // FIXME: add all address books
       currentFolder = [[context activeUser] personalContactsFolderInContext: context];
       name = [NSString stringWithFormat: @"vcard/%@", [currentFolder nameInContainer]];
-      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 9, [[currentFolder displayName] activeSyncRepresentation]];
+      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 9, [[currentFolder displayName] activeSyncRepresentationInContext: context]];
     }
 
   [s appendString: @"</Changes></FolderSync>"];
@@ -702,7 +702,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [s appendString: @"<Properties>"];
 
       [s appendFormat: @"<ContentType xmlns=\"AirSyncBase:\">%@/%@</ContentType>", [[currentBodyPart partInfo] objectForKey: @"type"], [[currentBodyPart partInfo] objectForKey: @"subtype"]];
-      [s appendFormat: @"<Data>%@</Data>", [[currentBodyPart fetchBLOB] activeSyncRepresentation]];
+      [s appendFormat: @"<Data>%@</Data>", [[currentBodyPart fetchBLOB] activeSyncRepresentationInContext: context]];
 
       [s appendString: @"</Properties>"];
       [s appendString: @"</Fetch>"];

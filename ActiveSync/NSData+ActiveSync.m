@@ -54,7 +54,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 // Encodes the data in base64 and strip newline characters
 // 
-- (NSString *) activeSyncRepresentation
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   return [[self stringByEncodingBase64] stringByReplacingString: @"\n" withString: @""];
 }
