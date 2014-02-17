@@ -94,6 +94,7 @@
 
 - (NSCalendarDate *) mostRecentMessageDate;
 
+- (NSString *) davCollectionTagFromId: (NSString *) theId;
 - (NSString *) davCollectionTag;
 
 - (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) properties
