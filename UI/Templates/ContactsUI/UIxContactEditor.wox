@@ -202,7 +202,7 @@
                     id="mozillahomestreet"
                     var:value="ldifRecord.mozillahomestreet"
                     />
-                  <input type="text" class="textField inline-input" namCe="mozillahomestreet2"
+                  <input type="text" class="textField inline-input" name="mozillahomestreet2"
                     id="mozillahomestreet2"
                     var:value="ldifRecord.mozillahomestreet2"
                     />
