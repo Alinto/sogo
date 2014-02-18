@@ -30,6 +30,7 @@ Enhancements
  - don't use the HTML editor with Internet Explorer 7
  - add message-id header to appointment notifications (#2535)
  - detect URLs in popup of events
+ - improved display of a contact (#2350)
 
 Bug fixes
  - don't load 'background' attribute (#2437)
