@@ -776,7 +776,7 @@ convention:
 
   bday = [self bday];
   date = nil;
-  if (bday)
+  if ([bday length] > 0)
     {
       // Expected format of BDAY is YYYY[-]MM[-]DD
       value = [bday stringByReplacingString: @"-" withString: @""];

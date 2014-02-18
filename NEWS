@@ -46,6 +46,7 @@ Bug fixes
  - fixed HTML formatting of appointment notifications for Outlook (#2233)
  - replace slashes by dashes in filenames of attachments to avoid a 404 return code (#2537)
  - avoid over-using LDAP connections when decomposing groups
+ - fixed display of a contact's birthday when not defined (#2503)
 
 2.1.1b (2013-12-04)
 -------------------
