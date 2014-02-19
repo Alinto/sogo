@@ -1,4 +1,3 @@
-var isSieveScriptsEnabled = false;
 var filters = [];
 var mailAccounts = null;
 var dialogs = {};
@@ -15,6 +14,10 @@ function savePreferences(sender) {
     }
     if ($("contactsCategoriesListWrapper")) {
         serializeContactsCategories();
+    }
+
+    if ($("mailLabelsListWrapper")) {
+        serializeMailLabels();
     }
 
     if (typeof mailCustomFromEnabled !== "undefined" && !emailRE.test($("email").value)) {
@@ -47,10 +50,10 @@ function savePreferences(sender) {
             showAlertDialog(_("Please specify your message and your email addresses for which you want to enable auto reply."));
             sendForm = false;
         }
-	if ($("autoReplyText").value.strip().endsWith('\n.')) {
-	  showAlertDialog(_("Your vacation message must not end with a single dot on a line."));
-	  sendForm = false;
-	}
+    if ($("autoReplyText").value.strip().endsWith('\n.')) {
+        showAlertDialog(_("Your vacation message must not end with a single dot on a line."));
+        sendForm = false;
+    }
         if ($("enableVacationEndDate") && $("enableVacationEndDate").checked) {
             var e = $("vacationEndDate_date");
             var endDate = e.inputAsDate();
@@ -71,7 +74,7 @@ function savePreferences(sender) {
             }
     }
 
-    if (isSieveScriptsEnabled) {
+    if (typeof sieveCapabilities != "undefined") {
         var jsonFilters = prototypeIfyFilters();
         $("sieveFilters").setValue(Object.toJSON(jsonFilters));
     }
@@ -125,7 +128,6 @@ function _setupEvents() {
         }
     }
 
-
     // We check for non-null elements as replyPlacementList and composeMessagesType
     // might not be present if ModulesConstraints disable those elements
     if ($("replyPlacementList"))
@@ -144,6 +146,12 @@ function _setupEvents() {
     }
 }
 
+function onBodyClickHandler(event) {
+    var target = getTarget(event);
+    if (!target.hasClassName('colorBox'))
+        $("colorPickerDialog").hide();
+}
+
 function onChoiceChanged(event) {
     var hasChanged = $("hasChanged");
     hasChanged.value = "1";
@@ -157,12 +165,12 @@ function addDefaultEmailAddresses(event) {
     else addresses = new Array();
 
     defaultAddresses.each(function(adr) {
-            for (var i = 0; i < addresses.length; i++)
-                if (adr == addresses[i])
-                    break;
-            if (i == addresses.length)
-                addresses.push(adr);
-        });
+        for (var i = 0; i < addresses.length; i++)
+            if (adr == addresses[i])
+                break;
+        if (i == addresses.length)
+            addresses.push(adr);
+    });
 
     $("autoReplyEmailAddresses").value = addresses.join(", ");
 
@@ -174,14 +182,25 @@ function initPreferences() {
     var controller = new SOGoTabsController();
     controller.attachToTabsContainer(tabsContainer);
 
-    var filtersListWrapper = $("filtersListWrapper");
-    if (filtersListWrapper) {
-        isSieveScriptsEnabled = true;
+    // Inner tabs on the mail module tab
+    tabsContainer = $('mailOptionsTabs');
+    if (tabsContainer) {
+        var mailController = new SOGoTabsController();
+        mailController.attachToTabsContainer(tabsContainer);
     }
+
     _setupEvents();
+
+    // Optional function called when initializing the preferences
+    // Typically defined inline in the UIxAdditionalPreferences.wox template
     if (typeof (initAdditionalPreferences) != "undefined")
         initAdditionalPreferences();
 
+    // Color picker
+    $('colorPickerDialog').on('click', 'span', onColorPickerChoice);
+    $(document.body).on("click", onBodyClickHandler);
+
+    // Calender categories
     var wrapper = $("calendarCategoriesListWrapper");
     if (wrapper) {
         var table = wrapper.childNodesWithTag("table")[0];
@@ -193,8 +212,24 @@ function initPreferences() {
         resetCalendarTableActions();
         $("calendarCategoryAdd").observe("click", onCalendarCategoryAdd);
         $("calendarCategoryDelete").observe("click", onCalendarCategoryDelete);
+        wrapper.observe("scroll", onBodyClickHandler);
     }
 
+    // Mail labels/tags
+    var wrapper = $("mailLabelsListWrapper");
+    if (wrapper) {
+        var table = wrapper.childNodesWithTag("table")[0];
+        resetMailLabelsColors(null);
+        var r = $$("#mailLabelsListWrapper tbody tr");
+        for (var i= 0; i < r.length; i++)
+            r[i].identify();
+        table.multiselect = true;
+        resetMailTableActions();
+        $("mailLabelAdd").observe("click", onMailLabelAdd);
+        $("mailLabelDelete").observe("click", onMailLabelDelete);
+    }
+
+    // Contact categories
     wrapper = $("contactsCategoriesListWrapper");
     if (wrapper) {
         var table = wrapper.childNodesWithTag("table")[0];
@@ -219,8 +254,8 @@ function initPreferences() {
         button.observe("click", onChangePasswordClick);
 
     initSieveFilters();
-    if ($('mailOptionsView'))
-        initMailAccounts();
+
+    initMailAccounts();
 
     button = $("enableVacationEndDate");
     if (button) {
@@ -314,7 +349,7 @@ function onFilterDelete(event) {
             var node = nodes[i];
             deletedFilters.push(node.rowIndex - 1);
         }
-        deletedFilters = deletedFilters.sort(function (x,y) { return x-y; });
+        deletedFilters = deletedFilters.sort(function(x,y) { return x-y; });
         var rows = filtersList.rows;
         for (var i = 0; i < deletedFilters.length; i++) {
             var filterNbr = deletedFilters[i];
@@ -413,8 +448,9 @@ function setupMailboxesFromJSON(jsonResponse) {
     var responseMboxes = jsonResponse.mailboxes;
     userMailboxes = $([]);
     for (var i = 0; i < responseMboxes.length; i++) {
-        var name = responseMboxes[i].path.substr(1);
-        userMailboxes.push(name);
+        var mbox = { 'displayName': responseMboxes[i].displayName.substr(1),
+                     'path': responseMboxes[i].path.substr(1) };
+        userMailboxes.push(mbox);
     }
 }
 
@@ -441,49 +477,51 @@ function updateFilterFromEditor(filterId, filterJSON) {
 /* mail accounts */
 function initMailAccounts() {
     var mailAccountsJSON = $("mailAccountsJSON");
-    mailAccounts = mailAccountsJSON.value.evalJSON();
+    if (mailAccountsJSON) {
+        mailAccounts = mailAccountsJSON.value.evalJSON();
 
-    var mailAccountsList = $("mailAccountsList");
-    if (mailAccountsList) {
-        var li = createMailAccountLI(mailAccounts[0], true);
-        mailAccountsList.appendChild(li);
-        for (var i = 1; i < mailAccounts.length; i++) {
-            li = createMailAccountLI(mailAccounts[i]);
+        var mailAccountsList = $("mailAccountsList");
+        if (mailAccountsList) {
+            var li = createMailAccountLI(mailAccounts[0], true);
             mailAccountsList.appendChild(li);
+            for (var i = 1; i < mailAccounts.length; i++) {
+                li = createMailAccountLI(mailAccounts[i]);
+                mailAccountsList.appendChild(li);
+            }
+            var lis = mailAccountsList.childNodesWithTag("li");
+            lis[0].readOnly = true;
+            lis[0].selectElement();
+
+            var button = $("mailAccountAdd");
+            if (button) {
+                button.observe("click", onMailAccountAdd);
+            }
+            button = $("mailAccountDelete");
+            if (button) {
+                button.observe("click", onMailAccountDelete);
+            }
         }
-        var lis = mailAccountsList.childNodesWithTag("li");
-        lis[0].readOnly = true;
-        lis[0].selectElement();
 
-        var button = $("mailAccountAdd");
-        if (button) {
-            button.observe("click", onMailAccountAdd);
+        var inputs = $$("#accountInfo input");
+        for (var i = 0; i < inputs.length; i++) {
+            $(inputs[i]).observe("change", onMailAccountInfoChange);
         }
-        button = $("mailAccountDelete");
-        if (button) {
-            button.observe("click", onMailAccountDelete);
+
+        inputs = $$("#identityInfo input");
+        for (var i = 0; i < inputs.length; i++) {
+            $(inputs[i]).observe("change", onMailIdentityInfoChange);
         }
-    }
+        $("actSignature").observe("click", onMailIdentitySignatureClick);
+        displayMailAccount(mailAccounts[0], true);
 
-    var inputs = $$("#accountInfo input");
-    for (var i = 0; i < inputs.length; i++) {
-        $(inputs[i]).observe("change", onMailAccountInfoChange);
-    }
-
-    inputs = $$("#identityInfo input");
-    for (var i = 0; i < inputs.length; i++) {
-        $(inputs[i]).observe("change", onMailIdentityInfoChange);
-    }
-    $("actSignature").observe("click", onMailIdentitySignatureClick);
-    displayMailAccount(mailAccounts[0], true);
-
-    inputs = $$("#returnReceiptsInfo input");
-    for (var i = 0; i < inputs.length; i++) {
-        $(inputs[i]).observe("change", onMailReceiptInfoChange);
-    }
-    inputs = $$("#returnReceiptsInfo select");
-    for (var i = 0; i < inputs.length; i++) {
-        $(inputs[i]).observe("change", onMailReceiptActionChange);
+        inputs = $$("#returnReceiptsInfo input");
+        for (var i = 0; i < inputs.length; i++) {
+            $(inputs[i]).observe("change", onMailReceiptInfoChange);
+        }
+        inputs = $$("#returnReceiptsInfo select");
+        for (var i = 0; i < inputs.length; i++) {
+            $(inputs[i]).observe("change", onMailReceiptActionChange);
+        }
     }
 }
 
@@ -554,7 +592,7 @@ function onMailIdentitySignatureClick(event) {
 
             if ($("composeMessagesType").value != 0) {
                 CKEDITOR.replace('signature',
-                                 { height: "70px",
+                                 { height: "150px",
                                    toolbar: [['Bold', 'Italic', '-', 'Link',
                                               'Font','FontSize','-','TextColor',
                                               'BGColor']
@@ -647,11 +685,13 @@ function onMailAccountEntryClick(event) {
 
 function displayMailAccount(mailAccount, readOnly) {
     var inputs = $$("#accountInfo input");
-    inputs.each(function (i) { i.disabled = readOnly;
-                               i.mailAccount = mailAccount; });
+    inputs.each(function(i) {
+        i.disabled = readOnly;
+        i.mailAccount = mailAccount;
+    });
 
     inputs = $$("#identityInfo input");
-    inputs.each(function (i) { i.mailAccount = mailAccount; });
+    inputs.each(function(i) { i.mailAccount = mailAccount; });
     if (!mailCustomFromEnabled) {
         for (var i = 0; i < 2; i++) {
             inputs[i].disabled = readOnly;
@@ -815,12 +855,12 @@ function onMailAccountDelete(event) {
 
 function saveMailAccounts() {
     /* This removal enables us to avoid a few warning from SOPE for the inputs
-     that were created dynamically. */
+       that were created dynamically. */
     var editor = $("mailAccountEditor");
 
     // Could be null if ModuleConstraints disables email access
     if (editor)
-    	editor.parentNode.removeChild(editor);
+        editor.parentNode.removeChild(editor);
 
     compactMailAccounts();
     var mailAccountsJSON = $("mailAccountsJSON");
@@ -855,6 +895,45 @@ function compactMailAccounts() {
     }
 }
 
+/* common function between calendar categories and mail labels */
+function onColorEdit(e, target) {
+    var view = $(target);
+
+    view.select('div.colorEditing').each(function(box) {
+        box.removeClassName('colorEditing');
+    });
+    this.addClassName("colorEditing");
+
+    var cellPosition = this.cumulativeOffset();
+    var cellDimensions = this.getDimensions();
+    var div = $('colorPickerDialog');
+    var divDimensions = div.getDimensions();
+    var left = cellPosition[0] - divDimensions["width"];
+    var top = cellPosition[1] - 165 - view.scrollTop;
+    div.setStyle({ left: left + "px", top: top + "px" });
+    div.writeAttribute('data-target', target);
+    div.show();
+}
+
+function onColorPickerChoice(event) {
+    var span = getTarget(event);
+    var dialog = span.up('.dialog');
+    var target = dialog.readAttribute('data-target');
+    var newColor = "#" + span.className.substr(4);
+
+    var wrapper = $(target);
+    var div = wrapper.select("div.colorEditing").first();
+
+    div.writeAttribute('data-color', newColor);
+    div.style.background = newColor;
+    if (parseInt($("hasChanged").value) == 0) {
+        var hasChanged = $("hasChanged");
+        hasChanged.value = "1";
+    }
+
+    dialog.hide();
+}
+
 /* calendar categories */
 function resetCalendarTableActions() {
     var r = $$("#calendarCategoriesListWrapper tbody tr");
@@ -864,70 +943,45 @@ function resetCalendarTableActions() {
         var tds = row.childElements();
         var editionCtlr = new RowEditionController();
         editionCtlr.attachToRowElement(tds[0]);
-        tds[1].childElements()[0].observe("dblclick", onColorEdit);
+        tds[1].childElements()[0].observe("click", onCalendarColorEdit);
     }
 }
 
-function onColorEdit (e) {
-    var r = $$("#calendarCategoriesListWrapper div.colorEditing");
-    for (var i=0; i<r.length; i++)
-        r[i].removeClassName("colorEditing");
-
-    this.addClassName ("colorEditing");
-    var cPicker = window.open(ApplicationBaseURL + "../" + UserLogin
-                              + "/Calendar/colorPicker", "colorPicker",
-                              "width=250,height=200,resizable=0,scrollbars=0"
-                              + "toolbar=0,location=0,directories=0,status=0,"
-                              + "menubar=0,copyhistory=0", "test"
-                              );
-    cPicker.focus();
-
-    preventDefault(e);
+function onCalendarColorEdit(e) {
+    var onCCE = onColorEdit.bind(this);
+    onCCE(e, "calendarCategoriesListWrapper");
 }
 
-function onColorPickerChoice (newColor) {
-    var div = $$("#calendarCategoriesListWrapper div.colorEditing").first ();
-    //  div.removeClassName ("colorEditing");
-    div.showColor = newColor;
-    div.style.background = newColor;
-    if (parseInt($("hasChanged").value) == 0) {
-        var hasChanged = $("hasChanged");
-        hasChanged.value = "1";
-    }
-}
+function onCalendarCategoryAdd(e) {
+    var row = new Element("tr");
+    var nametd = new Element("td").update("");
+    var colortd = new Element("td");
+    var colordiv = new Element("div", {"class": "colorBox", dataColor: "#F0F0F0"});
 
-function onCalendarCategoryAdd (e) {
-    var row = new Element ("tr");
-    var nametd = new Element ("td").update ("");
-    var colortd = new Element ("td");
-    var colordiv = new Element ("div", {"class": "colorBox"});
+    row.identify();
+    row.addClassName("categoryListRow");
 
-    row.identify ();
-    row.addClassName ("categoryListRow");
+    nametd.addClassName("categoryListCell");
+    colortd.addClassName("categoryListCell");
+    colordiv.setStyle({backgroundColor: "#F0F0F0"});
 
-    nametd.addClassName ("categoryListCell");
-    colortd.addClassName ("categoryListCell");
-    colordiv.innerHTML = "&nbsp;";
-    colordiv.showColor = "#F0F0F0";
-    colordiv.style.background = colordiv.showColor;
+    colortd.appendChild(colordiv);
+    row.appendChild(nametd);
+    row.appendChild(colortd);
+    $("calendarCategoriesListWrapper").childNodesWithTag("table")[0].tBodies[0].appendChild(row);
 
-    colortd.appendChild (colordiv);
-    row.appendChild (nametd);
-    row.appendChild (colortd);
-    $("calendarCategoriesListWrapper").childNodesWithTag("table")[0].tBodies[0].appendChild (row);
-
-    resetCalendarTableActions ();
+    resetCalendarTableActions();
     nametd.editionController.startEditing();
 }
 
-function onCalendarCategoryDelete (e) {
+function onCalendarCategoryDelete(e) {
     var list = $('calendarCategoriesListWrapper').down("TABLE").down("TBODY");
     var rows = list.getSelectedNodes();
     var count = rows.length;
 
     for (var i=0; i < count; i++) {
         rows[i].editionController = null;
-        rows[i].remove ();
+        rows[i].remove();
     }
 }
 
@@ -936,28 +990,111 @@ function serializeCalendarCategories() {
 
     var values = [];
     for (var i = 0; i < r.length; i++) {
-        var tds = r[i].childElements ();
-        var name  = $(tds.first ()).innerHTML;
-        var color = $(tds.last ().childElements ().first ()).showColor;
+        var tds = r[i].childElements();
+        var name  = $(tds.first()).innerHTML;
+        var color = $(tds.last().childElements().first()).readAttribute('data-color');
         values.push("\"" + name + "\": \"" + color + "\"");
     }
 
     $("calendarCategoriesValue").value = "{ " + values.join(",\n") + "}";
 }
 
-function resetCalendarCategoriesColors (e) {
+function resetCalendarCategoriesColors(e) {
     var divs = $$("#calendarCategoriesListWrapper DIV.colorBox");
     for (var i = 0; i < divs.length; i++) {
         var d = divs[i];
-        var color = d.innerHTML;
-        d.showColor = color;
+        var color = d.readAttribute("data-color");
         if (color != "undefined")
             d.setStyle({ backgroundColor: color });
-        d.update("&nbsp;");
     }
 }
 
 /* /calendar categories */
+
+/* mail label/tags */
+function resetMailTableActions() {
+    var r = $$("#mailLabelsListWrapper tbody tr");
+    for (var i = 0; i < r.length; i++) {
+        var row = $(r[i]);
+        row.observe("mousedown", onRowClick);
+        var tds = row.childElements();
+        var editionCtlr = new RowEditionController();
+        editionCtlr.attachToRowElement(tds[0]);
+        tds[1].childElements()[0].observe("click", onMailColorEdit);
+    }
+}
+
+function onMailColorEdit(e) {
+    var onMCE = onColorEdit.bind(this);
+    onMCE(e, "mailLabelsListWrapper");
+}
+
+function onMailLabelAdd(e) {
+    var row = new Element("tr");
+    var nametd = new Element("td").update("");
+    var colortd = new Element("td");
+    var colordiv = new Element("div", {"class": "colorBox", dataColor: "#F0F0F0"});
+
+    row.identify();
+    row.addClassName("labelListRow");
+
+    nametd.addClassName("labelListCell");
+    colortd.addClassName("labelListCell");
+    colordiv.setStyle({backgroundColor: "#F0F0F0"});
+
+    colortd.appendChild(colordiv);
+    row.appendChild(nametd);
+    row.appendChild(colortd);
+    $("mailLabelsListWrapper").childNodesWithTag("table")[0].tBodies[0].appendChild(row);
+
+    resetMailTableActions();
+    nametd.editionController.startEditing();
+}
+
+function onMailLabelDelete(e) {
+    var list = $('mailLabelsListWrapper').down("TABLE").down("TBODY");
+    var rows = list.getSelectedNodes();
+    var count = rows.length;
+
+    for (var i=0; i < count; i++) {
+        rows[i].editionController = null;
+        rows[i].remove();
+    }
+}
+
+function resetMailLabelsColors(e) {
+    var divs = $$("#mailLabelsListWrapper DIV.colorBox");
+    for (var i = 0; i < divs.length; i++) {
+        var d = divs[i];
+        var color = d.readAttribute('data-color');
+        if (color != "undefined")
+            d.setStyle({ backgroundColor: color });
+    }
+}
+
+function serializeMailLabels() {
+    var r = $$("#mailLabelsListWrapper TBODY TR");
+
+    var values = [];
+    for (var i = 0; i < r.length; i++) {
+        var tds = r[i].childElements();
+        var name = r[i].readAttribute("data-name"); 
+        var label  = $(tds.first()).innerHTML;
+        var color = $(tds.last().childElements().first()).readAttribute('data-color');
+        
+        /* if name is null, that's because we've just added a new tag */
+        if (!name) {
+            name = label.replace(/[ \(\)\/\{%\*<>\\\"]/g, "_");
+        }
+
+        values.push("\"" + name + "\": [\"" + label + "\", \"" + color + "\"]");
+    }
+
+    $("mailLabelsValue").value = "{ " + values.join(",\n") + "}";
+}
+
+/* /mail label/tags */
+
 
 /* contacts categories */
 function resetContactsTableActions() {
@@ -986,7 +1123,7 @@ function onContactsCategoryAdd(e) {
     nametd.editionController.startEditing();
 }
 
-function onContactsCategoryDelete (e) {
+function onContactsCategoryDelete(e) {
     var list = $('contactsCategoriesListWrapper').down("TABLE").down("TBODY");
     var rows = list.getSelectedNodes();
     var count = rows.length;
@@ -1071,13 +1208,10 @@ function onChangePasswordClick(event) {
                 policy.changePassword(password);
             }
             else
-                SetLogMessage("passwordError", _("Password must not be empty."),
-                                    "error");
+                SetLogMessage("passwordError", _("Password must not be empty."), "error");
         }
         else {
-            SetLogMessage("passwordError", _("The passwords do not match."
-                                  + " Please try again."),
-                                "error");
+            SetLogMessage("passwordError", _("The passwords do not match. Please try again."), "error");
             field.focus();
             field.select();
         }

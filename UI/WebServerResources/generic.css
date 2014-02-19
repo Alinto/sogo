@@ -169,7 +169,7 @@ DIV.linkbanner A#logoff
   width:25px;
   padding: 0px 5px;
   display: inline-block;
-  background-image: url('logoff.gif');
+  background-image: url('logoff.png');
   background-position:center center;
   background-repeat: no-repeat;
   height: 40px;
@@ -181,7 +181,7 @@ DIV.linkbanner A#preferencesBannerLink
   overflow: hidden;
   color:transparent;
   display: inline-block;
-  background-image: url('preferences.gif');
+  background-image: url('preferences.png');
   background-position:center center;
   background-repeat: no-repeat;
 }
@@ -195,8 +195,8 @@ DIV.linkbanner SPAN
 DIV.linkbanner A:hover
 { background-color: rgba(0, 0, 0, 0.1);
   color: #ffffff;
-  transition: all 0.2s;
-  -webkit-transition:  all 0.2s }
+  transition: background-color 0.2s;
+  -webkit-transition:  background-color 0.2s }
 
 DIV.linkbanner SPAN#userIdentificationDisplay
 { color: #ffffff;
@@ -454,8 +454,10 @@ TH.tbtv_headercell:hover{
     background-color: whitesmoke;
 }
 thead tr:last-child th {
-    border-bottom: 1px solid #ccc;
-    color: #999;
+  border-bottom: 1px solid #DDDDDD;
+  border-right: 1px solid #EEEEEE;
+  color: #999999;
+  padding-right: 3px;
 }
 
 TD.tbtv_headercell A,
@@ -889,7 +891,7 @@ BUTTON.comboBoxButton:active
   background-color: #d6d7d6;
 }
 a.reload {
-  background: url("reload.png") no-repeat center center;
+  background: url("calendar-reload.png") no-repeat center center;
   position: absolute;
   right: 10px;
   top: 0px;
@@ -955,6 +957,17 @@ A.button:active SPAN
 { background-position: bottom left;
   }
 
+#emptyCategory{
+  background-color: #CCCCCC !important;
+  border: 1px solid #CCCCCC !important;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 0 3px;
+  padding: 8px;
+  text-align: center;
+  width: auto;
+}
 A.disabled.button,
 A.disabled.button:active,
 A.disabled.button SPAN
@@ -1176,11 +1189,12 @@ SPAN.toolbarSeparator
 
 DIV.toolbar IMG.buttonImage
 { height: 24px;
-  left: 4px;
-  position: absolute;
-  top: 8px;
   width: 24px;
+  margin-top: 8px;
   padding: 0px;
+  /*left: 4px;
+  position: absolute;
+  top: 8px;*/
   display: none;
 }
 
@@ -1211,6 +1225,7 @@ DIV.toolbar A.toolbarButton:hover SPAN {
   text-align: center;
   font-weight: normal;
   color: white;
+
 }
 
 A.smallToolbarButton SPAN, 
@@ -1239,6 +1254,11 @@ A.smallToolbarButton:active SPAN {
 DIV.toolbar A._disabled.toolbarButton,
 DIV.toolbar A._disabled.toolbarButton:active
 { color: #999; }
+
+/* hide un useful buttons if no item mail selected */
+DIV.toolbar A.toolbarButton.onSelectItem{
+  display: none;
+}
 
 P#mailerSelectionContainer {
     float: right;
@@ -1297,6 +1317,239 @@ DIV.bottomToolbar A.bottomButton SPAN:active
   bottom: 0px;
   left: 0px; }
 
+
+/* color box */
+DIV.colorBox,
+#colorPickerDialog SPAN
+{ cursor: pointer;
+  margin: 0 3px 0 0;
+  height: 12px;
+  line-height: 12px;
+  width: 12px;
+  -webkit-border-radius: 2px;
+     -moz-border-radius: 2px;
+          border-radius: 2px;
+  border: 0px; }
+
+#colorPickerDialog SPAN
+{ float: left;
+  margin: 3px; }
+
+#colorPickerDialog SPAN:hover
+{ border: 2px solid transparent;
+  margin: 1px; }
+
+.blc-FFFFFF {
+  background-color: #FFFFFF;
+}
+.blc-CCCCCC {
+  background-color: #CCCCCC;
+}
+.blc-C0C0C0 {
+  background-color: #C0C0C0;
+}
+.blc-999999 {
+  background-color: #999999;
+}
+.blc-666666 {
+  background-color: #666666;
+}
+.blc-333333 {
+  background-color: #333333;
+}
+.blc-000000 {
+  background-color: #000000;
+}
+.blc-FFCCCC {
+  background-color: #FFCCCC;
+}
+.blc-FF6666 {
+  background-color: #FF6666;
+}
+.blc-FF0000 {
+  background-color: #FF0000;
+}
+.blc-CC0000 {
+  background-color: #CC0000;
+}
+.blc-990000 {
+  background-color: #990000;
+}
+.blc-660000 {
+  background-color: #660000;
+}
+.blc-330000 {
+  background-color: #330000;
+}
+.blc-FFCC99 {
+  background-color: #FFCC99;
+}
+.blc-FF9966 {
+  background-color: #FF9966;
+}
+.blc-FF9900 {
+  background-color: #FF9900;
+}
+.blc-FF6600 {
+  background-color: #FF6600;
+}
+.blc-CC6600 {
+  background-color: #CC6600;
+}
+.blc-993300 {
+  background-color: #993300;
+}
+.blc-663300 {
+  background-color: #663300;
+}
+.blc-FFFF99 {
+  background-color: #FFFF99;
+}
+.blc-FFFF66 {
+  background-color: #FFFF66;
+}
+.blc-FFCC66 {
+  background-color: #FFCC66;
+}
+.blc-FFCC33 {
+  background-color: #FFCC33;
+}
+.blc-CC9933 {
+  background-color: #CC9933;
+}
+.blc-996633 {
+  background-color: #996633;
+}
+.blc-663333 {
+  background-color: #663333;
+}
+.blc-FFFFCC {
+  background-color: #FFFFCC;
+}
+.blc-FFFF33 {
+  background-color: #FFFF33;
+}
+.blc-FFFF00 {
+  background-color: #FFFF00;
+}
+.blc-FFCC00 {
+  background-color: #FFCC00;
+}
+.blc-999900 {
+  background-color: #999900;
+}
+.blc-666600 {
+  background-color: #666600;
+}
+.blc-333300 {
+  background-color: #333300;
+}
+.blc-99FF99 {
+  background-color: #99FF99;
+}
+.blc-66FF99 {
+  background-color: #66FF99;
+}
+.blc-33FF33 {
+  background-color: #33FF33;
+}
+.blc-33CC00 {
+  background-color: #33CC00;
+}
+.blc-009900 {
+  background-color: #009900;
+}
+.blc-006600 {
+  background-color: #006600;
+}
+.blc-003300 {
+  background-color: #003300;
+}
+.blc-99FFFF {
+  background-color: #99FFFF;
+}
+.blc-33FFFF {
+  background-color: #33FFFF;
+}
+.blc-66CCCC {
+  background-color: #66CCCC;
+}
+.blc-00CCCC {
+  background-color: #00CCCC;
+}
+.blc-339999 {
+  background-color: #339999;
+}
+.blc-336666 {
+  background-color: #336666;
+}
+.blc-003333 {
+  background-color: #003333;
+}
+.blc-CCFFFF {
+  background-color: #CCFFFF;
+}
+.blc-66FFFF {
+  background-color: #66FFFF;
+}
+.blc-33CCFF {
+  background-color: #33CCFF;
+}
+.blc-3366FF {
+  background-color: #3366FF;
+}
+.blc-3333FF {
+  background-color: #3333FF;
+}
+.blc-000099 {
+  background-color: #000099;
+}
+.blc-000066 {
+  background-color: #000066;
+}
+.blc-CCCCFF {
+  background-color: #CCCCFF;
+}
+.blc-9999FF {
+  background-color: #9999FF;
+}
+.blc-6666CC {
+  background-color: #6666CC;
+}
+.blc-6633FF {
+  background-color: #6633FF;
+}
+.blc-6600CC {
+  background-color: #6600CC;
+}
+.blc-333399 {
+  background-color: #333399;
+}
+.blc-330099 {
+  background-color: #330099;
+}
+.blc-FFCCFF {
+  background-color: #FFCCFF;
+}
+.blc-FF99FF {
+  background-color: #FF99FF;
+}
+.blc-CC66CC {
+  background-color: #CC66CC;
+}
+.blc-CC33CC {
+  background-color: #CC33CC;
+}
+.blc-993399 {
+  background-color: #993399;
+}
+.blc-663366 {
+  background-color: #663366;
+}
+.blc-330033 {
+  background-color: #330033;
+}
+
 /* ckeditor */
 span.cke_skin_kama
 { padding: 0px !important; }
@@ -1316,4 +1569,18 @@ span.cke_skin_kama
   DIV.filterPanel,
   DIV.tabsContainer
   { display: none; }
+}
+
+@media (max-width: 960px){ 
+
+.linkbanner DIV.toolbar A.toolbarButton SPAN, .linkbanner DIV.toolbar A.toolbarButton:hover SPAN{
+    color: transparent;
+    font-size:0px;
+    width: 24px;
+}
+
+.linkbanner DIV.toolbar IMG.buttonImage{ 
+ display: block;
+}
+
 }

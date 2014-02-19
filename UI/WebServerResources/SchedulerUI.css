@@ -66,6 +66,7 @@ DIV.colorBox
   height: 2em;
   -webkit-border-radius: 1px;
   border-radius: 1px;
+  line-height: 2em;
  }
 
 UL#calendarList
@@ -152,7 +153,7 @@ DIV#calendarView
 { position: absolute;
   top: 18em;
   background-color: white;
-  /*margin-top: 5px;*/
+  margin-top: 5px;
   bottom: 0px;
   width: 100%;
   -moz-user-select: none;
@@ -574,7 +575,11 @@ TD.sortableTableHeader
   height: 23px;
   line-height: 23px;
   padding-left: 5px;}
-
+TD.sortableTableHeader{
+  border-right: 1px solid #DDDDDD;
+  font-size: 11px;
+  padding: 0 5px;
+}
 DIV.dayOfAnotherMonth
 { background-color: #eee; }
 

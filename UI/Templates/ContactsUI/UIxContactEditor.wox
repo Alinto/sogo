@@ -176,19 +176,21 @@
 
         <var:if condition="supportCategories"
           ><div id="categoryInfos" class="tab">
+          <fieldset>
             <div id="categoryContainer">
             </div>
             <var:if condition="canCreateOrModify"
-              ><input type="text" class="textField" id="emptyCategory"
+              ><input type="button" id="emptyCategory"
                 const:readonly="readonly"
                 const:name="emptyCategory"
-              const:value="" /></var:if>
+              const:value="Add Category" /></var:if>
             <script type="text/javascript">
               var gCategories = <var:string value="contactCategoriesList" const:escapeHTML="NO"/>;
             </script>
           <input type="hidden" id="jsonContactCategories"
               const:name="jsonContactCategories"
               var:value="jsonContactCategories" />
+            </fieldset>
           </div></var:if>
 
         <div id="addressesInfos" class="tab">

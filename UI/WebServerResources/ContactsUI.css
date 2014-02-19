@@ -42,7 +42,7 @@ DIV#contactsListContent
 { cursor: default;
   position: absolute;
   background-color: #FFFFFF;
-  top: 55px;
+  top: 50px;
   left: 0px;
   right: 0px;
   height: 15.5em;
@@ -214,8 +214,9 @@ TABLE#contactsList TH
 TABLE#contactsList .tableview TD
 { white-space: pre; 
   color: #999;
-  padding: 10px 0px;
+  padding: 5px;
   font-size: 10px;
+  border-right: 1px solid #DDDDDD;
 }
 TABLE#contactsList TR:hover TD{
   background-color: whitesmoke;

@@ -134,13 +134,10 @@ function onValidateDone(onSuccess) {
     var safetyNet = createElement("div", "javascriptSafetyNet");
     $('pageContent').insert({top: safetyNet});
 
-    var input = currentAttachmentInput();
-    if (input)
-        input.parentNode.removeChild(input);
-
-    var toolbar = document.getElementById("toolbar");
-    if (!document.busyAnim)
+    if (!document.busyAnim) {
+        var toolbar = document.getElementById("toolbar");
         document.busyAnim = startAnimation(toolbar);
+    }
 
     var lastRow = $("lastRow");
     lastRow.down("select").name = "popup_last";
@@ -148,8 +145,6 @@ function onValidateDone(onSuccess) {
     window.shouldPreserve = true;
 
     document.pageform.action = "send";
-
-    AIM.submit($(document.pageform), {'onComplete' : onPostComplete});
 
     if (typeof onSuccess == 'function')
         onSuccess();
@@ -159,7 +154,8 @@ function onValidateDone(onSuccess) {
     return true;
 }
 
-function onPostComplete(response) {
+function onPostComplete(http) {
+    var response = http.responseText;
     if (response && response.length > 0) {
         var jsonResponse = response.evalJSON();
         if (jsonResponse["status"] == "success") {
@@ -192,125 +188,102 @@ function onPostComplete(response) {
 
 function clickedEditorSend() {
     onValidate(function() {
-            document.pageform.submit();
+            if (CKEDITOR.instances.text) CKEDITOR.instances.text.updateElement();
+            triggerAjaxRequest(document.pageform.action,
+                               onPostComplete,
+                               null,
+                               Form.serialize(document.pageform), // excludes the file input
+                               { "Content-type": "application/x-www-form-urlencoded" });
         });
 
     return false;
 }
 
-function currentAttachmentInput() {
-    var input = null;
-
-    var inputs = $("attachmentsArea").getElementsByTagName("input");
-    var i = 0;
-    while (!input && i < inputs.length)
-        if ($(inputs[i]).hasClassName("currentAttachment"))
-            input = inputs[i];
-        else
-            i++;
-
-    return input;
+function formatBytes(bytes, si) {
+    var thresh = si ? 1000 : 1024;
+    if (bytes < thresh) return bytes + ' B';
+    var units = si ? ['KiB','MiB','GiB'] : ['KB','MB','GB'];
+    var u = -1;
+    do {
+        bytes /= thresh;
+        ++u;
+    } while (bytes >= thresh);
+    return bytes.toFixed(1) + ' ' + units[u];
 }
 
-function clickedEditorAttach() {
-    var input = currentAttachmentInput();
-    if (!input) {
-        var area = $("attachmentsArea");
+function createAttachment(file) {
+    var list = $('attachments');
+    var attachment;
+    if (list.select('[data-filename="'+file.name+'"]').length == 0) {
+        // File is not already uploaded
+        var attachment = createElement('li', null, ['muted progress0'], null, { 'data-filename': file.name }, list);
+        attachment.appendChild(new Element('i', { 'class': 'icon-attachment' }));
+        var a = createElement('a', null, null, null, {'href': '#', 'target': '_new' }, attachment);
 
-        if (!area.style.display) {
-            area.setStyle({ display: "block" });
-            onWindowResize(null);
-        }
-        var inputs = area.getElementsByTagName("input");
-        var attachmentName = "attachment" + attachmentCount;
-        var newAttachment = createElement("input", attachmentName,
-                                          "currentAttachment", null,
-                                          { type: "file",
-                                            name: attachmentName },
-                                          area);
-        attachmentCount++;
-        newAttachment.observe("change",
-                              onAttachmentChange.bindAsEventListener(newAttachment));
+        a.appendChild(document.createTextNode(file.name));
+        if (file.size)
+            attachment.appendChild(new Element('span', { 'class': 'muted' }).update('(' + formatBytes(file.size, true) + ')'));
     }
 
-    return false;
-}
-
-function onAttachmentChange(event) {
-    if (this.value == "")
-        this.parentNode.removeChild(this);
-    else {
-        this.addClassName("attachment");
-        this.removeClassName("currentAttachment");
-        var list = $("attachments");
-        createAttachment(this, list);
-        clickedEditorAttach(null);
-    }
-}
-
-function createAttachment(node, list) {
-    var attachment = createElement("li", null, null, { node: node }, null, list);
-    createElement("img", null, null, { src: ResourcesURL + "/attachment.gif" },
-                  null, attachment);
-
-    var filename = node.value;
-    var separator;
-    if (navigator.appVersion.indexOf("Windows") > -1)
-        separator = "\\";
-    else
-        separator = "/";
-    var fileArray = filename.split(separator);
-    var attachmentName = document.createTextNode(fileArray[fileArray.length-1]);
-    attachment.appendChild(attachmentName);
-    attachment.writeAttribute("title", fileArray[fileArray.length-1]);
+    return attachment;
 }
 
 function clickedEditorSave() {
-    var input = currentAttachmentInput();
-    if (input)
-        input.parentNode.removeChild(input);
-
     var lastRow = $("lastRow");
     lastRow.down("select").name = "popup_last";
 
     window.shouldPreserve = true;
     document.pageform.action = "save";
-    document.pageform.submit();
+    if (CKEDITOR.instances.text) CKEDITOR.instances.text.updateElement();
 
-    if (window.opener && window.opener.open && !window.opener.closed)
-        window.opener.refreshFolderByType('draft');
+    triggerAjaxRequest(document.pageform.action, function (http) {
+            if (http.readyState == 4) {
+                if (http.status == 200) {
+                    if (window.opener && window.opener.open && !window.opener.closed)
+                        window.opener.refreshFolderByType('draft');
+                }
+                else {
+                    var response = http.responseText.evalJSON(true);
+                    showAlertDialog(_("Error while saving the draft:") + " " + response.textStatus);
+                }
+            }
+        },
+        null,
+        Form.serialize(document.pageform), // excludes the file input
+        { "Content-type": "application/x-www-form-urlencoded" });
 
     return false;
 }
 
+/**
+ * On first focus of textarea, position the caret with respect to user's preferences
+ */
 function onTextFocus(event) {
     if (MailEditor.textFirstFocus) {
-        // On first focus, position the caret at the proper position
         var content = this.getValue();
         var replyPlacement = UserDefaults["SOGoMailReplyPlacement"];
-        if (replyPlacement == "above" || !mailIsReply) { // for forwards, place caret at top unconditionally
+        if (replyPlacement == "above" || !mailIsReply) {
+            // For forwards, place caret at top unconditionally
             this.setCaretTo(0);
         }
         else {
             var caretPosition = this.getValue().length - MailEditor.signatureLength;
-            if (Prototype.Browser.IE)
-                caretPosition -= lineBreakCount(this.getValue().substring(0, caretPosition));
+            caretPosition = adjustOffset(this, caretPosition);
             if (hasSignature())
                 caretPosition -= 2;
             this.setCaretTo(caretPosition);
         }
         MailEditor.textFirstFocus = false;
     }
-	
-    var input = currentAttachmentInput();
-    if (input)
-        input.parentNode.removeChild(input);
 }
 
+/**
+ * Change behavior of tab key in textarea (plain-text mail)
+ */
 function onTextKeyDown(event) {
     if (event.keyCode == Event.KEY_TAB) {
-        // Change behavior of tab key in textarea
         if (event.shiftKey) {
+            // Shift-tab goes back to subject field
             var subjectField = $$("div#subjectRow input").first();
             subjectField.focus();
             subjectField.selectText(0, subjectField.value.length);
@@ -318,22 +291,20 @@ function onTextKeyDown(event) {
         }
         else {
             if (!(event.shiftKey || event.metaKey || event.ctrlKey)) {
-                if (typeof(this.selectionStart)
-                    != "undefined") { // For Mozilla and Safari
+                // Convert a tab to 4 spaces
+                if (typeof(this.selectionStart) != "undefined") { // Mozilla and Safari
                     var cursor = this.selectionStart;
                     var startText = ((cursor > 0)
                                      ? this.value.substr(0, cursor)
                                      : "");
                     var endText = this.value.substr(cursor);
-                    var newText = startText + "   " + endText;
+                    var newText = startText + "    " + endText;
                     this.value = newText;
-                    cursor += 3;
+                    cursor += 4;
                     this.setSelectionRange(cursor, cursor);
                 }
                 else if (this.selectionRange) // IE
-                    this.selectionRange.text = "   ";
-                else { // others ?
-                }
+                    this.selectionRange.text = "    ";
                 preventDefault(event);
             }
         }
@@ -342,13 +313,6 @@ function onTextKeyDown(event) {
 
 function onTextIEUpdateCursorPos(event) {
     this.selectionRange = document.selection.createRange().duplicate();
-}
-
-function onTextMouseDown(event) {
-    if (event.button == 0) {
-        event.returnValue = false;
-        event.cancelBubble = false;
-    }
 }
 
 function onHTMLFocus(event) {
@@ -396,7 +360,6 @@ function onHTMLFocus(event) {
 
 function initAddresses() {
     var addressList = $("addressList");
-    var i = 1;
     addressList.select("input.textField").each(function (input) {
             if (!input.readAttribute("readonly")) {
                 input.addInterface(SOGoAutoCompletionInterface);
@@ -423,20 +386,92 @@ function configureDragHandle() {
     }
 }
 
-function initMailEditor() {
-    if (composeMode != "html" && $("text"))
-        $("text").style.display = "block";
-
+function configureAttachments() {
     var list = $("attachments");
-    if (!list) return;
-    list.multiselect = true;
-    list.on("click", onRowClick);
-    list.attachMenu("attachmentsMenu");
-    var elements = $(list).childNodesWithTag("li");
-    if (elements.length > 0)
-        $("attachmentsArea").setStyle({ display: "block" });
 
+    if (!list) return;
+
+    list.on('click', 'a', function (event, element) {
+            // Don't follow links of attachments not yet uploaded
+            if (!element.up('li').hasClassName('progressDone')) {
+                Event.stop(event);
+                return false;
+            }
+        });
+
+    list.on('click', 'i.icon-attachment', function (event, element) {
+            // Delete attachment when clicking on small icon
+            var item = element.up('li');
+            if (item.hasClassName('progressDone')) {
+                var filename = item.readAttribute('data-filename');
+                var url = "" + window.location;
+                var parts = url.split("/");
+                parts[parts.length-1] = "deleteAttachment?filename=" + encodeURIComponent(filename);
+                url = parts.join("/");
+                triggerAjaxRequest(url, attachmentDeleteCallback, item);
+            }
+        });
+
+    var dropzone = jQuery('#dropZone');
+    jQuery('#fileUpload').fileupload({
+            // With singleFileUploads option enabled, the 'add' and 'done' (or 'fail') callbacks
+            // are called once for each file in the selection for XHR file uploads
+            singleFileUploads: true,
+            dataType: 'json',
+            add: function (e, data) {
+                var file = data.files[0];
+                var attachment = createAttachment(file);
+                if (attachment) {
+                    file.attachment = attachment;
+                    data.submit();
+                }
+                if (dropzone.is(":visible"))
+                    dropzone.fadeOut('fast');
+            },
+            done: function (e, data) {
+                var attachment = data.files[0].attachment;
+                var attrs = data.result[data.result.length-1];
+                attachment.className = 'progressDone';
+                attachment.down('a').setAttribute('href', attrs.url);
+                if (window.opener && window.opener.open && !window.opener.closed)
+                    window.opener.refreshFolderByType('draft');
+            },
+            fail: function (e, data) {
+                var attachment = data.files[0].attachment;
+                var filename = data.files[0].name;
+                var textStatus;
+                try {
+                    var response = data.xhr().response.evalJSON();
+                    textStatus = response.textStatus;
+                } catch (e) {}
+                if (!textStatus)
+                    textStatus = _("Can't contact server");
+                showAlertDialog(_("Error while uploading the file \"%{0}\":").formatted(filename) + " " + textStatus);
+                attachment.remove();
+            },
+            dragover: function (e, data) {
+                if (!dropzone.is(":visible"))
+                    dropzone.show();
+            },
+            progress: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 4, 10);
+                var attachment = data.files[0].attachment;
+                attachment.className = 'muted progress' + progress;
+            }
+        });
+
+    dropzone.on('dragleave', function (e) {
+            dropzone.fadeOut('fast');
+    });
+}
+
+function initMailEditor() {
     var textarea = $("text");
+
+    if (composeMode != "html" && $("text"))
+        textarea.show();
+
+    configureAttachments();
   
     initAddresses();
 
@@ -465,7 +500,7 @@ function initMailEditor() {
         CKEDITOR.replace('text',
                          {
                              language : localeCode,
-			     scayt_sLang : localeCode
+                 scayt_sLang : localeCode
                           }
                          );
         CKEDITOR.on('instanceReady', function(event) {
@@ -488,10 +523,10 @@ function initMailEditor() {
             textarea.scrollTop = textarea.scrollHeight;
         }
         textarea.observe("focus", onTextFocus);
-        //textarea.observe("mousedown", onTextMouseDown);
         textarea.observe("keydown", onTextKeyDown);
 
         if (Prototype.Browser.IE) {
+            // Hack to allow to replace the tab by spaces in IE < 9
             var ieEvents = [ "click", "select", "keyup" ];
             for (var i = 0; i < ieEvents.length; i++)
                 textarea.observe(ieEvents[i], onTextIEUpdateCursorPos, false);
@@ -503,10 +538,7 @@ function initMailEditor() {
 
     $("contactFolder").observe("change", onContactFolderChange);
     
-    Event.observe(window, "resize", onWindowResize);
     Event.observe(window, "beforeunload", onMailEditorClose);
-    
-    onWindowResize.defer();
 }
 
 function initializePriorityMenu() {
@@ -545,10 +577,6 @@ function onMenuCheckReturnReceipt(event) {
 
 function getMenus() {
     return {
-            "attachmentsMenu": [ null, onRemoveAttachments,
-                                 onSelectAllAttachments,
-                                 "-",
-                                 clickedEditorAttach, null],
             "optionsMenu": [ onMenuCheckReturnReceipt,
                              "-",
                              "priorityMenu" ],
@@ -558,27 +586,6 @@ function getMenus() {
                               onMenuSetPriority,
                               onMenuSetPriority ]
             };
-}
-
-function onRemoveAttachments() {
-    var list = $("attachments");
-    var nodes = list.getSelectedNodes();
-    for (var i = nodes.length-1; i > -1; i--) {
-        var input = $(nodes[i]).node;
-        if (input) {
-            input.parentNode.removeChild(input);
-            list.removeChild(nodes[i]);
-        }
-        else {
-            var filename = nodes[i].title;
-            var url = "" + window.location;
-            var parts = url.split("/");
-            parts[parts.length-1] = "deleteAttachment?filename=" + encodeURIComponent(filename);
-            url = parts.join("/");
-            triggerAjaxRequest(url, attachmentDeleteCallback,
-                               nodes[i]);
-        }
-    }
 }
 
 function attachmentDeleteCallback(http) {
@@ -592,13 +599,16 @@ function attachmentDeleteCallback(http) {
     }
 }
 
-function lineBreakCount(str){
-    /* counts \n */
-    try {
-        return((str.match(/[^\n]*\n[^\n]*/gi).length));
-    } catch(e) {
-        return 0;
+/**
+ * Adjust offset when the browser uses two characters for line feeds.
+ */
+function adjustOffset(element, offset) {
+    var val = element.value, newOffset = offset;
+    if (val.indexOf("\r\n") > -1) {
+        var matches = val.replace(/\r\n/g, "\n").slice(0, offset).match(/\n/g);
+        newOffset -= matches ? matches.length - 1 : 0;
     }
+    return newOffset;
 }
 
 function hasSignature() {
@@ -622,10 +632,6 @@ function onMenuSetPriority(event) {
     priorityInput.value = priority;
 }
 
-function onSelectAllAttachments() {
-    $("attachments").selectAll();
-}
-
 function onSelectOptions(event) {
     if (event.button == 0 || (isWebKit() && event.button == 1)) {
         var node = getTarget(event);
@@ -636,41 +642,32 @@ function onSelectOptions(event) {
     }
 }
 
+/**
+ * Overwrite definition of MailerUI.js
+ */
 function onWindowResize(event) {
     if (!document.pageform)
       return;
     var textarea = document.pageform.text;
     var rowheight = (Element.getHeight(textarea) / textarea.rows);
     var headerarea = $("headerArea");
-    var subjectrow = $("subjectRow");
     var totalwidth = $("rightPanel").getWidth();
   
-    var attachmentsarea = $("attachmentsArea");
-    var attachmentswidth = 0;
-    var subjectfield = subjectrow.down("span.headerField");
-    var subjectinput = subjectrow.down("input.textField");
-    //if (attachmentsarea.style.display) {
-        // Resize attachments list
-      //  attachmentswidth = attachmentsarea.getWidth();
-        //fromfield = $(document).getElementsByClassName('headerField', headerarea)[0];
-        //var height = headerarea.getHeight() - fromfield.getHeight() - subjectfield.getHeight() - 10;
-        //if (Prototype.Browser.IE)
-      //      $("attachments").setStyle({ height: (height - 13) + 'px' });
-        //else
-        //    $("attachments").setStyle({ height: height + 'px' });
-    //}
+    var subjectfield = headerarea.down("div#subjectRow span.headerField");
+    var subjectinput = headerarea.down("div#subjectRow input.textField");
   
     // Resize subject field
     subjectinput.setStyle({ width: (totalwidth
                                     - $(subjectfield).getWidth()
-                                    - 35) + 'px' });
-    // Resize address fields
-    var addresslist = $('addressList');
-    addresslist.setStyle({ width: (totalwidth - 10) + 'px' });
+                                    - 100) + 'px' });
+    // Resize from field
+    $("fromSelect").setStyle({ width: (totalwidth
+                                       - $("fromField").getWidth()
+                                       ) + 'px' });
 
-    // Set textarea position
-    var hr = $('headerArea');
-    textarea.setStyle({ 'top': hr.offsetHeight + 'px' });
+    // Resize address fields
+//    var addresslist = $('addressList');
+//    addresslist.setStyle({ width: (totalwidth - 10) + 'px' });
 
     // Resize the textarea (message content)
     var offsetTop = $('rightPanel').offsetTop + headerarea.getHeight();
@@ -681,7 +678,7 @@ function onWindowResize(event) {
             onWindowResize.defer();
             return;
         }
-        var height = window.height() - offsetTop;
+        var height = window.height() - offsetTop - 40 ;
         CKEDITOR.instances["text"].resize('100%', height);
     }
     else
@@ -693,8 +690,18 @@ function onWindowResize(event) {
 }
 
 function onMailEditorClose(event) {
-    if (window.shouldPreserve)
+    var e = event || window.event;
+
+    if (window.shouldPreserve) {
         window.shouldPreserve = false;
+        if (jQuery('#fileUpload').fileupload('active') > 0) {
+            var msg = _("There is an active file upload. Closing the window will interrupt it.");
+            if (e) {
+                e.returnValue = msg;
+            }
+            return msg;
+        }
+    }
     else {
         var url = "" + window.location;
         var parts = url.split("/");

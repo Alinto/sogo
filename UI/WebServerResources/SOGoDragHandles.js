@@ -95,7 +95,7 @@ var SOGoDragHandlesInterface = {
                 this.origUpper = this.upperBlock.offsetHeight;
                 var pointY = Event.pointerY(event);
                 this.delta = pointY - this.offsetTop - 5;
-                this.origLower = this.lowerBlock.offsetTop;
+                this.origLower = this.lowerBlock.offsetTop - 5;
                 document.body.setStyle({ cursor: "n-resize" });
             }
             this.stopHandleDraggingBound = this.stopHandleDragging.bindAsEventListener(this);

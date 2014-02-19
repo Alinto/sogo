@@ -201,3 +201,20 @@ position: relative;}
 
 #receiptOptions
 { text-align: right; }
+
+#colorPickerDialog
+{ width: 146px;
+  height: 191px; }
+
+#colorPickerDialog.dialog.right > DIV
+{ padding-left: 10px; }
+
+.dialog.bottom > DIV:before {
+  top: auto;
+  bottom: 12px;
+}
+.dialog.bottom > DIV:after {
+  top: auto;
+  bottom: 13px;
+}
+
