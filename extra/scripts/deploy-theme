@@ -49,7 +49,7 @@ cp -rf $LOCAL_SOGO_DIR/UI/Scheduler/Toolbars/* $TEMP_DIR/SchedulerUI.SOGo/Resour
 
 echo
 echo "Copying the temp folder to the remote server"
-scp -rq $TEMP_DIR $SERVER:$SOGO_DIR
+scp -rq $TEMP_DIR/* $SERVER:$SOGO_DIR/
 if [ $? -ne 0 ]; then
     echo " * Error! The folder has NOT been successfully copied"
 else
