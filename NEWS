@@ -2,6 +2,7 @@
 ------------------
 
 New features
+ - initial implementation of Microsoft ActiveSync protocol
  - it's now possible to set a default reminder for calendar components
    using SOGoCalendarDefaultReminder
  - select multiple files to attach to a message or drag'n'drop files onto the
@@ -12,7 +13,7 @@ New features
 
 Enhancements
  - we now automatically convert <img src=data...> into file attachments
-   using CIDs. This prevents Outlook issues.
+   using CIDs to prevent Outlook issues
  - updated French and Finnish translations
  - XMLHttpRequest.js is now loaded conditionaly (< IE9)
  - format time in attendees invitation window according to the user's locale
@@ -48,6 +49,7 @@ Bug fixes
  - replace slashes by dashes in filenames of attachments to avoid a 404 return code (#2537)
  - avoid over-using LDAP connections when decomposing groups
  - fixed display of a contact's birthday when not defined (#2503)
+ - fixed JavaScript error when switching views in calendar module (#2613)
 
 2.1.1b (2013-12-04)
 -------------------

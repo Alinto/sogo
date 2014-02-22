@@ -2526,7 +2526,7 @@ function restoreSelectedDay() {
             selectedDayDate = findDateFromDayNumber(selectedDayNumber);
         else
             selectedDayDate = currentDay;
-        if (selectedDayDate.length > 0)
+        if (selectedDayDate && selectedDayDate.length > 0)
             day = $("day" + selectedDayDate);
     }
     if (day) {
@@ -2542,7 +2542,7 @@ function findDateFromDayNumber(dayNumber) {
     else
         view = $("daysView");
     var days = view.select(".day");
-    return days[dayNumber].readAttribute("day");
+    return (dayNumber < days.size()) ? days[dayNumber].readAttribute("day") : null;
 }
 
 function onShowCompletedTasks(event) {
