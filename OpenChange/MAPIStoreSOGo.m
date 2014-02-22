@@ -61,6 +61,17 @@ sogo_backend_unexpected_error()
   return MAPISTORE_SUCCESS;
 }
 
+static enum mapistore_error
+sogo_backend_handle_objc_exception(NSException *e, const char *fn_name, const int line_no)
+{
+  DEBUG(0,("[SOGo: %s:%d] - EXCEPTION: %s, reason: %s\n", fn_name, line_no, [[e name] UTF8String], [[e reason] UTF8String]));
+  if ([[e name] isEqual:@"NotImplementedException"])
+    {
+      return MAPISTORE_ERR_NOT_IMPLEMENTED;
+    }
+  return MAPISTORE_ERROR;
+}
+
 static void
 sogo_backend_atexit (void)
 {
@@ -72,6 +83,7 @@ sogo_backend_atexit (void)
   [pool release];
   GSUnregisterCurrentThread ();
 }
+
 
 /**
    \details Initialize sogo mapistore backend
@@ -1139,11 +1151,18 @@ sogo_message_attachment_create_embedded_message (void *attachment_object,
       attachment = wrapper->instance;
       GSRegisterCurrentThread ();
       pool = [NSAutoreleasePool new];
-      rc = [attachment createEmbeddedMessage: &message
-                            withMAPIStoreMsg: msg
-                                    inMemCtx: mem_ctx];
-      if (rc == MAPISTORE_SUCCESS)
-        *message_object = [message tallocWrapper: mem_ctx];
+      @try
+        {
+          rc = [attachment createEmbeddedMessage: &message
+                                withMAPIStoreMsg: msg
+                                        inMemCtx: mem_ctx];
+          if (rc == MAPISTORE_SUCCESS)
+            *message_object = [message tallocWrapper: mem_ctx];
+        }
+      @catch (NSException *e)
+        {
+          rc = sogo_backend_handle_objc_exception(e, __FUNCTION__, __LINE__);
+        }
       [pool release];
       GSUnregisterCurrentThread ();
     }
