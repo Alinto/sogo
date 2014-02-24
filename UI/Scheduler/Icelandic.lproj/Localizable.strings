@@ -409,8 +409,9 @@ validate_endbeforestart    = "Lokadagurinn sem er tilgreindur, er fyrr en byrjun
 "Workweek days only" = "Aðeins vinnudagar";
 "Tasks in View" = "Sýnd verkefni";
 
-"eventDeleteConfirmation" = "Eftirfarandi viðburði/viðburðum verður eytt: \n%{0}\nViltu halda áfram?";
-"taskDeleteConfirmation" = "Eftirfarandi verkefni/verkefnum verður eytt: \n%{0}\nViltu halda áfram?";
+"eventDeleteConfirmation" = "Eftirfarandi viðburði/viðburðum verður eytt:";
+"taskDeleteConfirmation" = "Eftirfarandi verkefni/verkefnum verður eytt:";
+"Would you like to continue?" = "Viltu halda áfram?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Ekki er hægt að fjarlægja eða segja upp áskrift að sínu eigin persónulega dagatali.";

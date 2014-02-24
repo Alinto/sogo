@@ -215,7 +215,7 @@
   NSArray *ids;
 
   idsParam = [[context request] formValueForKey: @"ids"];
-  ids = [idsParam componentsSeparatedByString: @"/"];
+  ids = [idsParam componentsSeparatedByString: @","];
   if ([ids count])
     {
       clientObject = [self clientObject];

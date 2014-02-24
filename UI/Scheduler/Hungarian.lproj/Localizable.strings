@@ -416,8 +416,9 @@ validate_endbeforestart    = "A megadott befejező dátum korábbi, mint a kezd�
 "Workweek days only" = "Csak hétköznapok";
 "Tasks in View" = "Feladatok megjelenítése";
 
-"eventDeleteConfirmation" = "Az alábbi esemény(eke)t törli: \n%{0}\nFolytatja?";
-"taskDeleteConfirmation" = "A feladat törlése végleges.\nFolytatja?";
+"eventDeleteConfirmation" = "Az alábbi esemény(eke)t törli:";
+"taskDeleteConfirmation" = "A feladat törlése végleges.";
+"Would you like to continue?" = "Folytatja?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Nem törölhet, valamint nem iratkozhat le egy személyes naptárról.";

@@ -416,8 +416,9 @@ validate_endbeforestart    = "Syöttämäsi loppupäivä on ennen alkupäivää.
 "Workweek days only" = "Vain työpäivät";
 "Tasks in View" = "Tehtävät näkymässä";
 
-"eventDeleteConfirmation" = "Seuraava(t) tapahtuma(t) poistetaan: ⏎ %{0}⏎ Jatketaanko?";
-"taskDeleteConfirmation" = "Seuraava(t) tehtävä(t) poistetaan: ⏎ %{0}⏎ Jatketaanko?";
+"eventDeleteConfirmation" = "Seuraava(t) tapahtuma(t) poistetaan:";
+"taskDeleteConfirmation" = "Seuraava(t) tehtävä(t) poistetaan:";
+"Would you like to continue?" = "Haluatko jatkaa?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Et voi poistaa tai kirjautua ulos henkilökohtaisesta kalenteristasi.";

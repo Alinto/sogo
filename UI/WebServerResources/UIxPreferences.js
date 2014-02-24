@@ -1,4 +1,3 @@
-var isSieveScriptsEnabled = false;
 var filters = [];
 var mailAccounts = null;
 var dialogs = {};
@@ -75,7 +74,7 @@ function savePreferences(sender) {
             }
     }
 
-    if (isSieveScriptsEnabled) {
+    if (typeof sieveCapabilities != "undefined") {
         var jsonFilters = prototypeIfyFilters();
         $("sieveFilters").setValue(Object.toJSON(jsonFilters));
     }
@@ -128,7 +127,6 @@ function _setupEvents() {
             widget.observe("change", onChoiceChanged);
         }
     }
-
 
     // We check for non-null elements as replyPlacementList and composeMessagesType
     // might not be present if ModulesConstraints disable those elements
@@ -184,17 +182,21 @@ function initPreferences() {
     var controller = new SOGoTabsController();
     controller.attachToTabsContainer(tabsContainer);
 
-    var mailController = new SOGoTabsController();
-    mailController.attachToTabsContainer($('mailOptionsTabs'));
-
-    var filtersListWrapper = $("filtersListWrapper");
-    if (filtersListWrapper) {
-        isSieveScriptsEnabled = true;
+    // Inner tabs on the mail module tab
+    tabsContainer = $('mailOptionsTabs');
+    if (tabsContainer) {
+        var mailController = new SOGoTabsController();
+        mailController.attachToTabsContainer(tabsContainer);
     }
+
     _setupEvents();
+
+    // Optional function called when initializing the preferences
+    // Typically defined inline in the UIxAdditionalPreferences.wox template
     if (typeof (initAdditionalPreferences) != "undefined")
         initAdditionalPreferences();
 
+    // Color picker
     $('colorPickerDialog').on('click', 'span', onColorPickerChoice);
     $(document.body).on("click", onBodyClickHandler);
 
@@ -227,7 +229,6 @@ function initPreferences() {
         $("mailLabelDelete").observe("click", onMailLabelDelete);
     }
 
-
     // Contact categories
     wrapper = $("contactsCategoriesListWrapper");
     if (wrapper) {
@@ -253,8 +254,8 @@ function initPreferences() {
         button.observe("click", onChangePasswordClick);
 
     initSieveFilters();
-    if ($('mailOptionsView'))
-        initMailAccounts();
+
+    initMailAccounts();
 
     button = $("enableVacationEndDate");
     if (button) {
@@ -447,8 +448,9 @@ function setupMailboxesFromJSON(jsonResponse) {
     var responseMboxes = jsonResponse.mailboxes;
     userMailboxes = $([]);
     for (var i = 0; i < responseMboxes.length; i++) {
-        var name = responseMboxes[i].path.substr(1);
-        userMailboxes.push(name);
+        var mbox = { 'displayName': responseMboxes[i].displayName.substr(1),
+                     'path': responseMboxes[i].path.substr(1) };
+        userMailboxes.push(mbox);
     }
 }
 
@@ -475,49 +477,51 @@ function updateFilterFromEditor(filterId, filterJSON) {
 /* mail accounts */
 function initMailAccounts() {
     var mailAccountsJSON = $("mailAccountsJSON");
-    mailAccounts = mailAccountsJSON.value.evalJSON();
+    if (mailAccountsJSON) {
+        mailAccounts = mailAccountsJSON.value.evalJSON();
 
-    var mailAccountsList = $("mailAccountsList");
-    if (mailAccountsList) {
-        var li = createMailAccountLI(mailAccounts[0], true);
-        mailAccountsList.appendChild(li);
-        for (var i = 1; i < mailAccounts.length; i++) {
-            li = createMailAccountLI(mailAccounts[i]);
+        var mailAccountsList = $("mailAccountsList");
+        if (mailAccountsList) {
+            var li = createMailAccountLI(mailAccounts[0], true);
             mailAccountsList.appendChild(li);
+            for (var i = 1; i < mailAccounts.length; i++) {
+                li = createMailAccountLI(mailAccounts[i]);
+                mailAccountsList.appendChild(li);
+            }
+            var lis = mailAccountsList.childNodesWithTag("li");
+            lis[0].readOnly = true;
+            lis[0].selectElement();
+
+            var button = $("mailAccountAdd");
+            if (button) {
+                button.observe("click", onMailAccountAdd);
+            }
+            button = $("mailAccountDelete");
+            if (button) {
+                button.observe("click", onMailAccountDelete);
+            }
         }
-        var lis = mailAccountsList.childNodesWithTag("li");
-        lis[0].readOnly = true;
-        lis[0].selectElement();
 
-        var button = $("mailAccountAdd");
-        if (button) {
-            button.observe("click", onMailAccountAdd);
+        var inputs = $$("#accountInfo input");
+        for (var i = 0; i < inputs.length; i++) {
+            $(inputs[i]).observe("change", onMailAccountInfoChange);
         }
-        button = $("mailAccountDelete");
-        if (button) {
-            button.observe("click", onMailAccountDelete);
+
+        inputs = $$("#identityInfo input");
+        for (var i = 0; i < inputs.length; i++) {
+            $(inputs[i]).observe("change", onMailIdentityInfoChange);
         }
-    }
+        $("actSignature").observe("click", onMailIdentitySignatureClick);
+        displayMailAccount(mailAccounts[0], true);
 
-    var inputs = $$("#accountInfo input");
-    for (var i = 0; i < inputs.length; i++) {
-        $(inputs[i]).observe("change", onMailAccountInfoChange);
-    }
-
-    inputs = $$("#identityInfo input");
-    for (var i = 0; i < inputs.length; i++) {
-        $(inputs[i]).observe("change", onMailIdentityInfoChange);
-    }
-    $("actSignature").observe("click", onMailIdentitySignatureClick);
-    displayMailAccount(mailAccounts[0], true);
-
-    inputs = $$("#returnReceiptsInfo input");
-    for (var i = 0; i < inputs.length; i++) {
-        $(inputs[i]).observe("change", onMailReceiptInfoChange);
-    }
-    inputs = $$("#returnReceiptsInfo select");
-    for (var i = 0; i < inputs.length; i++) {
-        $(inputs[i]).observe("change", onMailReceiptActionChange);
+        inputs = $$("#returnReceiptsInfo input");
+        for (var i = 0; i < inputs.length; i++) {
+            $(inputs[i]).observe("change", onMailReceiptInfoChange);
+        }
+        inputs = $$("#returnReceiptsInfo select");
+        for (var i = 0; i < inputs.length; i++) {
+            $(inputs[i]).observe("change", onMailReceiptActionChange);
+        }
     }
 }
 
@@ -588,7 +592,7 @@ function onMailIdentitySignatureClick(event) {
 
             if ($("composeMessagesType").value != 0) {
                 CKEDITOR.replace('signature',
-                                 { height: "70px",
+                                 { height: "150px",
                                    toolbar: [['Bold', 'Italic', '-', 'Link',
                                               'Font','FontSize','-','TextColor',
                                               'BGColor']

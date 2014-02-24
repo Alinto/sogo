@@ -1152,25 +1152,39 @@ iRANGE(2);
   return reminderItems;
 }
 
- - (void) setReminder: (NSString *) theReminder
- {
-   ASSIGN(reminder, theReminder);
- }
+- (void) setReminder: (NSString *) theReminder
+{
+  ASSIGN(reminder, theReminder);
+}
 
 - (NSString *) reminder
- {
-   return reminder;
- }
+{
+  if ([[self clientObject] isNew])
+    {
+      NSString *value;
+      int index;
+      
+      value = [userDefaults calendarDefaultReminder];
+      index = [reminderValues indexOfObject: value];
+      
+      if (index != NSNotFound)
+        return [reminderItems objectAtIndex: index];
+      
+      return @"NONE";
+    }
 
- - (void) setReminderQuantity: (NSString *) theReminderQuantity
- {
-   ASSIGN(reminderQuantity, theReminderQuantity);
- }
+  return reminder;
+}
+
+- (void) setReminderQuantity: (NSString *) theReminderQuantity
+{
+  ASSIGN(reminderQuantity, theReminderQuantity);
+}
 
 - (NSString *) reminderQuantity
- {
-   return reminderQuantity;
- }
+{
+  return reminderQuantity;
+}
 
 - (NSString *) itemReminderText
 {

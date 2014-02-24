@@ -9,13 +9,11 @@
     const:jsFiles="SOGoAutoCompletion.js"
     const:userDefaultsKeys="SOGoMailDisplayRemoteInlineImages"
     const:popup="YES">
-  <script type="text/javascript">
-    var messageName = '<var:string value="clientObject.relativeImap4Name"/>';
-    var mailboxName = '/<var:string value="clientObject.container.container.nameInContainer"/>/<var:string value="clientObject.container.nameInContainer"/>';
-  </script>
-    <span id="messageContent">
-      <var:component className="UIxMailView" />
-    </span>
+    <script type="text/javascript">
+      var messageName = '<var:string value="clientObject.relativeImap4Name"/>';
+      var mailboxName = '/<var:string value="clientObject.container.container.nameInContainer"/>/<var:string value="clientObject.container.nameInContainer"/>';
+    </script>
+    <var:component className="UIxMailView" />
     <div class="menu" id="addressMenu">
       <ul>
         <li id="add_to_addressbook"><var:string label:value="Add to Address Book..."/></li>
@@ -28,9 +26,4 @@
         <li id="save_image"><var:string label:value="Save Image"/></li>
       </ul>
     </div>
-    <div class="menu" id="attachmentMenu">
-    <ul>
-      <li id="save_attachment"><var:string label:value="Save Attachment"/></li>
-    </ul>
-  </div>
-   </var:component>
+  </var:component>

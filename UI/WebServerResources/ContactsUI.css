@@ -241,17 +241,17 @@ DIV#contactView H3.contactCardTitle
   text-decoration: underline; }
 
 DIV.contactColumn
-{ width: 300px;
-  margin-left: 1em;
-  padding: .5em;
+{ width: 50%;
+  margin: 0;
+  padding: 0;
   float: left; }
 
 DIV.contactColumn DIV
-{ margin-bottom: 1em; }
+{ margin: 1em; }
 
 DIV.contactColumn H4
 { margin: .2em 0px;
-  margin-left: -1em;
+  margin-left: 0;
   font-size: 10pt;
   font-weight: bold;
   background: #9ABCD8;

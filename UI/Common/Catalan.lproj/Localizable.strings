@@ -101,6 +101,14 @@
 "Due Date:" = "Data límit:";
 "Location:" = "Lloc:";
 
+/* Mail labels */
+"Important" = "Important";
+"Work" = "Feina";
+"Work" = "Feina";
+"Personal" = "Personal";
+"To Do" = "Per fer";
+"Later" = "Més tard";
+
 "a2_Sunday" = "dg";
 "a2_Monday" = "dl";
 "a2_Tuesday" = "dm";

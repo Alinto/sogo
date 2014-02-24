@@ -98,20 +98,19 @@
 "personalCalendar" = "Personal calendar";
 "firstCalendar" = "First enabled calendar";
 
-"reminderTime_0000" = "0 minutter";
-"reminderTime_0005" = "5 minutter";
-"reminderTime_0010" = "10 minutter";
-"reminderTime_0015" = "15 minutter";
-"reminderTime_0030" = "30 minutter";
-"reminderTime_0100" = "1 time";
-"reminderTime_0200" = "2 timer";
-"reminderTime_0400" = "4 timer";
-"reminderTime_0800" = "8 timer";
-"reminderTime_1200" = "1/2 dag";
-"reminderTime_2400" = "1 dag";
-"reminderTime_4800" = "2 dager";
+"reminder_5_MINUTES_BEFORE" = "5 minutter";
+"reminder_10_MINUTES_BEFORE" = "10 minutter";
+"reminder_15_MINUTES_BEFORE" = "15 minutter";
+"reminder_30_MINUTES_BEFORE" = "30 minutter";
+"reminder_1_HOUR_BEFORE" = "1 time";
+"reminder_2_HOURS_BEFORE" = "2 timer";
+"reminder_5_HOURS_BEFORE"= "5 timer";
+"reminder_15_HOURS_BEFORE"= "15 timer";
+"reminder_1_DAY_BEFORE" = "1 dag";
+"reminder_2_DAYS_BEFORE" = "2 dager";
 
 /* Mailer */
+"Label" = "Etikett";
 "Show subscribed mailboxes only" = "Vis bare abonnerte postbokser";
 "Sort messages by threads" = "Sort messages by threads";
 "Check for new mail:" = "Hent ny post:";

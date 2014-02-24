@@ -34,7 +34,6 @@
 #import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
 
-#import "NSDictionary+Mail.h"
 #import "NSString+Mail.h"
 #import "SOGoMailForward.h"
 #import "SOGoMailObject+Draft.h"
@@ -42,6 +41,9 @@
 
 #define maxFilenameLength 64
 
+//
+//
+//
 @implementation SOGoMailObject (SOGoDraftObjectExtensions)
 
 - (NSString *) subjectForReply
@@ -77,6 +79,9 @@
   return newSubject;
 }
 
+//
+//
+//
 - (NSString *) _convertRawContentForEditing: (NSString *) raw
                                     rawHtml: (BOOL) html
 {
@@ -89,13 +94,16 @@
   if (html && !htmlComposition)
     rc = [raw htmlToText];
   else if (!html && htmlComposition)
-    rc = [raw stringByConvertingCRLNToHTML];
+    rc = [[raw stringByEscapingHTMLString] stringByConvertingCRLNToHTML];
   else
     rc = raw;
 
   return rc;
 }
 
+//
+//
+//
 - (NSString *) _contentForEditingFromKeys: (NSArray *) keys
 {
   NSArray *types;
@@ -151,6 +159,9 @@
   return content;
 }
 
+//
+//
+//
 - (NSString *) contentForEditing
 {
   NSMutableArray *keys;
@@ -160,12 +171,15 @@
     = [NSArray arrayWithObjects: @"text/plain", @"text/html", nil];
   keys = [NSMutableArray array];
   [self addRequiredKeysOfStructure: [self bodyStructure]
-	path: @"" toArray: keys acceptedTypes: acceptedTypes
-        withPeek: NO];
+                              path: @"" toArray: keys acceptedTypes: acceptedTypes
+                          withPeek: NO];
 
   return [self _contentForEditingFromKeys: keys];
 }
 
+//
+//
+//
 - (NSString *) contentForReply
 {
   NSString *pageName;
@@ -185,6 +199,9 @@
   return [[page generateResponse] contentAsString];
 }
 
+//
+//
+//
 - (NSString *) filenameForForward
 {
   NSString *subject;
@@ -218,6 +235,9 @@
   return newSubject;
 }
 
+//
+//
+//
 - (NSString *) subjectForForward
 {
   NSString *subject, *newSubject;
@@ -231,110 +251,24 @@
   return newSubject;
 }
 
+//
+//
+//
 - (NSString *) contentForInlineForward
 {
-  SOGoUserDefaults *ud;
+  SOGoUserDefaults *userDefaults;
   NSString *pageName;
   SOGoMailForward *page;
 
-  ud = [[context activeUser] userDefaults];
+  userDefaults = [[context activeUser] userDefaults];
   pageName = [NSString stringWithFormat: @"SOGoMail%@Forward",
-		       [ud language]];
+		       [userDefaults language]];
   page = [[WOApplication application] pageWithName: pageName
 				      inContext: context];
   [page setSourceMail: self];
+  [page setSignaturePlacement: [userDefaults mailSignaturePlacement]];
 
   return [[page generateResponse] contentAsString];
-}
-
-- (void) _fetchFileAttachmentKey: (NSDictionary *) part
-		       intoArray: (NSMutableArray *) keys
-		        withPath: (NSString *) path
-{
-  NSString *filename, *mimeType;
-  NSDictionary *currentFile;
-
-  filename = [part filename];
-
-  mimeType = [NSString stringWithFormat: @"%@/%@",
-		       [part objectForKey: @"type"],
-		       [part objectForKey: @"subtype"]];
-  
-  if (filename)
-    {
-      currentFile = [NSDictionary dictionaryWithObjectsAndKeys:
-				    filename, @"filename",
-				  [mimeType lowercaseString], @"mimetype",
-				  path, @"path",
-				  [part	objectForKey: @"encoding"], @"encoding", nil];
-      [keys addObject: currentFile];
-    }
-  else
-    {
-      // We might end up here because of MUA that actually strips the
-      // Content-Disposition (and thus, the filename) when mails containing
-      // attachments have been forwarded. Thunderbird (2.x) does just that
-      // when forwarding mails with images attached to them (using cid:...).
-      if ([mimeType hasPrefix: @"application/"] ||
-	  [mimeType hasPrefix: @"audio/"] ||
-	  [mimeType hasPrefix: @"image/"] ||
-	  [mimeType hasPrefix: @"video/"])
-	{
-	  currentFile = [NSDictionary dictionaryWithObjectsAndKeys:
-					[NSString stringWithFormat: @"unkown_%@", path], @"filename",
-				      [mimeType lowercaseString], @"mimetype",
-				      path, @"path",
-				      [part objectForKey: @"encoding"], @"encoding",
-				      nil];
-	  [keys addObject: currentFile];
-	}
-    }
-}
-
-- (void) _fetchFileAttachmentKeysInPart: (NSDictionary *) part
-                              intoArray: (NSMutableArray *) keys
-			       withPath: (NSString *) path
-{
-  NSMutableDictionary *currentPart;
-  NSString *newPath;
-  NSArray *subparts;
-  NSString *type;
-  NSUInteger i;
-
-  type = [[part objectForKey: @"type"] lowercaseString];
-  if ([type isEqualToString: @"multipart"])
-    {
-      subparts = [part objectForKey: @"parts"];
-      for (i = 1; i <= [subparts count]; i++)
-	{
-	  currentPart = [subparts objectAtIndex: i-1];
-	  if (path)
-	    newPath = [NSString stringWithFormat: @"%@.%d", path, i];
-	  else
-	    newPath = [NSString stringWithFormat: @"%d", i];
-	  [self _fetchFileAttachmentKeysInPart: currentPart
-		intoArray: keys
-		withPath: newPath];
-	}
-    }
-  else
-    {
-      if (!path)
-        path = @"1";
-      [self _fetchFileAttachmentKey: part intoArray: keys withPath: path];
-    }
-}
-
-#warning we might need to handle parts with a "name" attribute
-- (NSArray *) fetchFileAttachmentKeys
-{
-  NSMutableArray *keys;
-
-  keys = [NSMutableArray array];
-  [self _fetchFileAttachmentKeysInPart: [self bodyStructure]
-	intoArray: keys withPath: nil];
-
-  return keys;
 }
 
 @end

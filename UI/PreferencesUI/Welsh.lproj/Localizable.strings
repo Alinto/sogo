@@ -98,20 +98,19 @@
 "personalCalendar" = "Personal calendar";
 "firstCalendar" = "First enabled calendar";
 
-"reminderTime_0000" = "0 munud";
-"reminderTime_0005" = "5 munud";
-"reminderTime_0010" = "10 munud";
-"reminderTime_0015" = "15 munud";
-"reminderTime_0030" = "30 munud";
-"reminderTime_0100" = "1 awr";
-"reminderTime_0200" = "2 awr";
-"reminderTime_0400" = "4 awr";
-"reminderTime_0800" = "8 awr";
-"reminderTime_1200" = "1/2 diwrnod";
-"reminderTime_2400" = "1 diwrnod";
-"reminderTime_4800" = "2 ddiwrnod";
+"reminder_5_MINUTES_BEFORE" = "5 munud";
+"reminder_10_MINUTES_BEFORE" = "10 munud";
+"reminder_15_MINUTES_BEFORE" = "15 munud";
+"reminder_30_MINUTES_BEFORE" = "30 munud";
+"reminder_1_HOUR_BEFORE" = "1 awr";
+"reminder_2_HOURS_BEFORE" = "2 awr";
+"reminder_5_HOURS_BEFORE"= "5 awr";
+"reminder_15_HOURS_BEFORE"= "15 awr";
+"reminder_1_DAY_BEFORE" = "1 diwrnod";
+"reminder_2_DAYS_BEFORE" = "2 ddiwrnod";
 
 /* Mailer */
+"Label" = "Label";
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Sort messages by threads" = "Sort messages by threads";
 "Check for new mail:" = "Chwilio am ebost newydd:";

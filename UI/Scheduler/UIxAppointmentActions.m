@@ -1,6 +1,6 @@
 /* UIxAppointmentActions.m - this file is part of SOGo
  *
- * Copyright (C) 2011 Inverse inc.
+ * Copyright (C) 2011-2014 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -21,6 +21,7 @@
  */
 
 #import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/NSException+HTTP.h>
@@ -33,6 +34,7 @@
 #import <NGCards/iCalEvent.h>
 
 #import <SOGo/NSCalendarDate+SOGo.h>
+#import <SOGo/NSDictionary+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <Appointments/iCalEvent+SOGo.h>
@@ -56,6 +58,7 @@
   SOGoUserDefaults *ud;
   NSString *daysDelta, *startDelta, *durationDelta;
   NSTimeZone *tz;
+  NSException *ex;
 
   rq = [context request];
 
@@ -105,16 +108,24 @@
 	[event updateRecurrenceRulesUntilDate: end];
 
       [event setLastModified: [NSCalendarDate calendarDate]];
-      [co saveComponent: event];
-
-      response = [self responseWith204];
+      ex = [co saveComponent: event];
+      if (ex)
+        {
+          NSDictionary *jsonResponse;
+          jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
+                                       [ex reason], @"message",
+                                       nil];
+          response = [self responseWithStatus: 403
+                                    andString: [jsonResponse jsonRepresentation]];
+        }
+      else
+        response = [self responseWith204];
     }
   else
     response
       = (WOResponse *) [NSException exceptionWithHTTPStatus: 400
                                                      reason: @"missing 'days', 'start' and/or 'duration' parameters"];
 
-    
   return response;
 }
 

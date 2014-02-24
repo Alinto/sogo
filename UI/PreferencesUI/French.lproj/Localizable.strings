@@ -32,7 +32,7 @@
 = "Veuillez définir un message et vos adresses pour lesquelles pour désirez activer une réponse automatique.";
 "Your vacation message must not end with a single dot on a line." = "Le message de vacances ne doit pas se terminer par une ligne ne contenant qu'un point.";
 "End date of your auto reply must be in the future."
-= "La date de fin de la réponse automatique doit être dans le future.";
+= "La date de fin de la réponse automatique doit être dans le futur.";
 
 /* forward messages */
 "Forward incoming messages" = "Transférer les messages entrant";
@@ -111,20 +111,23 @@
 "personalCalendar" = "le calendrier personnel";
 "firstCalendar" = "le premier calendrier actif";
 
-"reminderTime_0000" = "0 minutes";
-"reminderTime_0005" = "5 minutes";
-"reminderTime_0010" = "10 minutes";
-"reminderTime_0015" = "15 minutes";
-"reminderTime_0030" = "30 minutes";
-"reminderTime_0100" = "1 heure";
-"reminderTime_0200" = "2 heures";
-"reminderTime_0400" = "4 heures";
-"reminderTime_0800" = "8 heures";
-"reminderTime_1200" = "1/2 journée";
-"reminderTime_2400" = "1 journée";
-"reminderTime_4800" = "2 journées";
+"reminder_NONE" = "Pas de rappel";
+"reminder_5_MINUTES_BEFORE" = "5 minutes avant";
+"reminder_10_MINUTES_BEFORE" = "10 minutes avant";
+"reminder_15_MINUTES_BEFORE" = "15 minutes avant";
+"reminder_30_MINUTES_BEFORE" = "30 minutes avant";
+"reminder_45_MINUTES_BEFORE" = "45 minutes avant";
+"reminder_1_HOUR_BEFORE" = "1 heure avant";
+"reminder_2_HOURS_BEFORE" = "2 heures avant";
+"reminder_5_HOURS_BEFORE" = "5 heures avant";
+"reminder_15_HOURS_BEFORE" = "15 heures avant";
+"reminder_1_DAY_BEFORE" = "1 jour avant";
+"reminder_2_DAYS_BEFORE" = "2 jours avant";
+"reminder_1_WEEK_BEFORE" = "1 semaine avant";
 
 /* Mailer */
+"Labels" = "Étiquettes";
+"Label" = "Étiquette";
 "Show subscribed mailboxes only" = "Afficher seulement les abonnements";
 "Sort messages by threads" = "Grouper les discussions";
 "Check for new mail:" = "Vérifier l'arrivée de messages :";
@@ -262,6 +265,7 @@
 "To or Cc" = "\"Dest.\" ou \"Copie à\"";
 "Size (Kb)" = "Taille (Ko)";
 "Header" = "En-tête";
+"Body" = "Contenu";
 "Flag the message with:" = "Marquer le message comme :";
 "Discard the message" = "Annuler le message";
 "File the message in:" = "Placer le message dans :";
@@ -288,12 +292,8 @@
 "Flagged" = "marqué";
 "Junk" = "spam";
 "Not Junk" = "non spam";
-"Label 1" = "étiquette 1";
-"Label 2" = "étiquette 2";
-"Label 3" = "étiquette 3";
-"Label 4" = "étiquette 4";
-"Label 5" = "étiquette 5";
 
+/* Password policy */
 "The password was changed successfully." = "Votre mot de passe a bien été changé.";
 "Password must not be empty." = "Le mot de passe ne doit pas être vide.";
 "The passwords do not match. Please try again." = "Les mots de passe ne sont pas identiques. Essayez de nouveau.";

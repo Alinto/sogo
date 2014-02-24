@@ -411,8 +411,9 @@ validate_endbeforestart    = "Indtastet slutdato ligger før startdato.";
 "Workweek days only" = "Arbejdsuge dage kun";
 "Tasks in View" = "Opgaver i visning";
 
-"eventDeleteConfirmation" = "Følgende begivenhed er/bliver slettet: \n%{0}\nFortsæt?";
-"taskDeleteConfirmation" = "Følgende opgave(r) bliver slettet: \n%{0}\nFortsæt?";
+"eventDeleteConfirmation" = "Følgende begivenhed er/bliver slettet:";
+"taskDeleteConfirmation" = "Følgende opgave(r) bliver slettet:";
+"Would you like to continue?" = "Fortsæt?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Du kan ikke fjerne eller afmelde din personlige kalender.";

@@ -54,29 +54,29 @@ function validateAptEditor() {
 
     e = $('startTime_date');
     if (e.value.length != 10) {
-        alert(labels.validate_invalid_startdate);
+        showAlertDialog(labels.validate_invalid_startdate);
         return false;
     }
 
     startdate = getStartDate();
     if (startdate == null) {
-        alert(labels.validate_invalid_startdate);
+        showAlertDialog(labels.validate_invalid_startdate);
         return false;
     }
       
     e = $('endTime_date');
     if (e.value.length != 10) {
-        alert(labels.validate_invalid_enddate);
+        showAlertDialog(labels.validate_invalid_enddate);
         return false;
     }
     enddate = getEndDate();
     if (enddate == null) {
-        alert(labels.validate_invalid_enddate);
+        showAlertDialog(labels.validate_invalid_enddate);
         return false;
     }
     tmpdate = uixEarlierDate(startdate, enddate);
     if (tmpdate == enddate) {
-        alert(labels.validate_endbeforestart);
+        showAlertDialog(labels.validate_endbeforestart);
         return false;
     }
     else if (tmpdate == null /* means: same date */) {
@@ -93,23 +93,23 @@ function validateAptEditor() {
                 endMinute = parseInt(matches[2], 10);
 
                 if (startHour > endHour) {
-                    alert(labels.validate_endbeforestart);
+                    showAlertDialog(labels.validate_endbeforestart);
                     return false;
                 }
                 else if (startHour == endHour) {
                     if (startMinute > endMinute) {
-                        alert(labels.validate_endbeforestart);
+                        showAlertDialog(labels.validate_endbeforestart);
                         return false;
                     }
                 }
             }
             else {
-                alert(labels.validate_invalid_enddate);
+                showAlertDialog(labels.validate_invalid_enddate);
                 return false;
             }
         }
         else {
-            alert(labels.validate_invalid_startdate);
+            showAlertDialog(labels.validate_invalid_startdate);
             return false;
         }
     }
@@ -208,7 +208,7 @@ function onEventPostComplete(response) {
         }
         else {
             var message = jsonResponse["message"];
-            alert(jsonResponse["message"]);
+            showAlertDialog(jsonResponse["message"]);
         }
     }
 }
@@ -326,7 +326,7 @@ function onAdjustTime(event) {
         else {
             var delta = endDate.valueOf() - startDate.valueOf();
             if (delta < 0) {
-                alert(labels.validate_endbeforestart);
+                showAlertDialog(labels.validate_endbeforestart);
                 var oldEndDate = window.getShadowEndDate();
                 window.setEndDate(oldEndDate);
 
@@ -487,7 +487,7 @@ function initializeAttendeesHref() {
 }
 
 function onAttendeesHrefClick(event) {
-    popupToolbarMenu(this, 'attendeesMenu');
+    popupMenu(event, 'attendeesMenu', this);
     preventDefault(event);
     return false;
 }
@@ -536,6 +536,7 @@ function onAppointmentEditorLoad() {
 
     // Extend JSON representation of attendees
     attendees = $H(attendees);
+
     initializeAttendeesHref();
 }
 

@@ -56,12 +56,15 @@
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <SOGoUI/UIxComponent.h>
 #import <Mailer/SOGoDraftObject.h>
+#import <Mailer/SOGoMailObject+Draft.h>
 #import <Mailer/SOGoMailFolder.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
 #import <Contacts/SOGoContactFolders.h>
 #import <Contacts/SOGoContactFolder.h>
 #import <Contacts/SOGoContactSourceFolder.h>
+
+#import <UI/MailPartViewers/UIxMailSizeFormatter.h>
 
 /*
   UIxMailEditor
@@ -89,8 +92,9 @@
   id currentFolder;
 
   /* these are for the inline attachment list */
-  NSString *attachmentName;
-  NSArray  *attachmentNames;
+  NSDictionary *attachment;
+  NSArray  *attachmentAttrs;
+  NSString *currentAttachment;
   NSMutableArray *attachedFiles;
 }
 
@@ -117,6 +121,9 @@ static NSArray *infoKeys = nil;
       priority = @"NORMAL";
       receipt = nil;
       currentFolder = nil;
+      currentAttachment = nil;
+      attachmentAttrs = nil;
+      attachedFiles = nil;
     }
   
   return self;
@@ -137,8 +144,9 @@ static NSArray *infoKeys = nil;
   [bcc release];
   [sourceUID release];
   [sourceFolder release];
-  [attachmentName release];
-  [attachmentNames release];
+  [attachment release];
+  [currentAttachment release];
+  [attachmentAttrs release];
   [attachedFiles release];
   [currentFolder release];
   [super dealloc];
@@ -153,6 +161,11 @@ static NSArray *infoKeys = nil;
 - (id) item
 {
   return item;
+}
+
+- (NSString *) uid
+{
+  return [[self clientObject] nameInContainer];
 }
 
 - (NSArray *) priorityClasses
@@ -369,14 +382,19 @@ static NSArray *infoKeys = nil;
   return (([to count] + [cc count] + [bcc count]) > 0);
 }
 
-- (void) setAttachmentName: (NSString *) newAttachmentName
+- (void) setAttachment: (NSDictionary *) newAttachment
 {
-  ASSIGN (attachmentName, newAttachmentName);
+  ASSIGN (attachment, newAttachment);
 }
 
-- (NSString *) attachmentName
+- (NSDictionary *) attachment
 {
-  return attachmentName;
+  return attachment;
+}
+
+- (NSFormatter *) sizeFormatter
+{
+  return [UIxMailSizeFormatter sharedMailSizeFormatter];
 }
 
 /* from addresses */
@@ -417,7 +435,7 @@ static NSArray *infoKeys = nil;
 - (NSDictionary *) storeInfo
 {
   [self debugWithFormat:@"storing info ..."];
-  return [self valuesForKeys:infoKeys];
+  return [self valuesForKeys: infoKeys];
 }
 
 /* contacts search */
@@ -517,8 +535,8 @@ static NSArray *infoKeys = nil;
 
 - (NSDictionary *) _scanAttachmentFilenamesInRequest: (id) httpBody
 {
-  NSMutableDictionary *filenames;
-  NSDictionary *attachment;
+  NSMutableDictionary *files;
+  NSDictionary *file;
   NSArray *parts;
   unsigned int count, max;
   NGMimeBodyPart *part;
@@ -527,117 +545,136 @@ static NSArray *infoKeys = nil;
 
   parts = [httpBody parts];
   max = [parts count];
-  filenames = [NSMutableDictionary dictionaryWithCapacity: max];
+  files = [NSMutableDictionary dictionaryWithCapacity: max];
 
   for (count = 0; count < max; count++)
     {
       part = [parts objectAtIndex: count];
-      header = (NGMimeContentDispositionHeaderField *)
-	[part headerForKey: @"content-disposition"];
-      mimeType = [(NGMimeType *)
-		   [part headerForKey: @"content-type"] stringValue];
-      filename = [self _fixedFilename: [header filename]];
-      attachment = [NSDictionary dictionaryWithObjectsAndKeys:
-				   filename, @"filename",
-				 mimeType, @"mimetype", nil];
-      [filenames setObject: attachment forKey: [header name]];
+      header = (NGMimeContentDispositionHeaderField *)[part headerForKey: @"content-disposition"];
+      if ([[header name] hasPrefix: @"attachments"])
+        {
+          mimeType = [(NGMimeType *)[part headerForKey: @"content-type"] stringValue];
+          filename = [self _fixedFilename: [header filename]];
+          file = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 filename, @"filename",
+                                 mimeType, @"mimetype",
+                                 [part body], @"body",
+                                 nil];
+          [files setObject: file forKey: [NSString stringWithFormat: @"%@_%@", [header name], filename]];
+        }
     }
 
-  return filenames;
+  return files;
 }
 
-- (BOOL) _saveAttachments
+- (NSException *) _saveAttachments
 {
+  NSException *error;
   WORequest *request;
-  NSEnumerator *allKeys;
-  NSString *key;
-  BOOL success;
-  NSDictionary *filenames;
+  NSEnumerator *allAttachments;
+  NSDictionary *attrs, *filenames;
+  NGMimeType *mimeType;
   id httpBody;
   SOGoDraftObject *co;
 
-  success = YES;
+  error = nil;
   request = [context request];
 
-  httpBody = [[request httpRequest] body];
-  filenames = [self _scanAttachmentFilenamesInRequest: httpBody];
+  mimeType = [[request httpRequest] contentType];
+  if ([[mimeType type] isEqualToString: @"multipart"])
+    {
+      httpBody = [[request httpRequest] body];
+      filenames = [self _scanAttachmentFilenamesInRequest: httpBody];
 
-  co = [self clientObject];
-  allKeys = [[request formValueKeys] objectEnumerator];
-  while ((key = [allKeys nextObject]) && success)
-    if ([key hasPrefix: @"attachment"])
-      success
-	= (![co saveAttachment: (NSData *) [request formValueForKey: key]
-		withMetadata: [filenames objectForKey: key]]);
+      co = [self clientObject];
+      allAttachments = [filenames objectEnumerator];
+      while ((attrs = [allAttachments nextObject]) && !error)
+        {
+          error = [co saveAttachment: (NSData *) [attrs objectForKey: @"body"]
+                        withMetadata: attrs];
+          // Keep the name of the last attachment saved
+          ASSIGN(currentAttachment, [attrs objectForKey: @"filename"]);
+        }
+    }
 
-  return success;
+  return error;
 }
 
-- (BOOL) _saveFormInfo
+- (NSException *) _saveFormInfo
 {
   NSDictionary *info;
   NSException *error;
-  BOOL success;
   SOGoDraftObject *co;
 
   co = [self clientObject];
   [co fetchInfo];
 
-  success = YES;
-
-  if ([self _saveAttachments])
+  error = [self _saveAttachments];
+  if (!error)
     {
       info = [self storeInfo];
       [co setHeaders: info];
       [co setIsHTML: isHTML];
       [co setText: (isHTML ? [NSString stringWithFormat: @"<html>%@</html>", text] : text)];;
       error = [co storeInfo];
-      if (error)
-	{
-	  [self errorWithFormat: @"failed to store draft: %@", error];
-	  // TODO: improve error handling
-	  success = NO;
-	}
     }
-  else
-    success = NO;
 
-  // TODO: wrap content
-  
-  return success;
+  return error;
 }
 
-- (id) failedToSaveFormResponse
+- (id) failedToSaveFormResponse: (NSString *) msg
 {
-  // TODO: improve error handling
-  return [NSException exceptionWithHTTPStatus:500 /* server error */
-		      reason:@"failed to store draft object on server!"];
+  NSDictionary *d;
+
+  d = [NSDictionary dictionaryWithObjectsAndKeys: msg, @"textStatus", nil];
+
+  return [self responseWithStatus: 500
+                        andString: [d jsonRepresentation]];
 }
 
 /* attachment helper */
 
-- (NSArray *) attachmentNames
+- (NSArray *) attachmentAttrs
 {
   NSArray *a;
+  SOGoDraftObject *co;
+  SOGoMailObject *mail;
 
-  if (!attachmentNames)
+  co = [self clientObject];
+  if (!attachmentAttrs || ![co imap4URL])
+  {
+      [co fetchInfo];
+      if ([co IMAP4ID] > -1)
+        {
+          mail = [[[SOGoMailObject alloc] initWithImap4URL: [co imap4URL] inContainer: [co container]] autorelease];
+          a = [mail fetchFileAttachmentKeys];
+          ASSIGN (attachmentAttrs, a);
+        }
+  }
+
+  if (currentAttachment)
     {
-      a = [[self clientObject] fetchAttachmentNames];
-      ASSIGN (attachmentNames,
-	      [a sortedArrayUsingSelector: @selector (compare:)]);
+      // When currentAttachment is defined, only return the attributes of the last
+      // attachment saved
+      NSEnumerator *allAttachments;
+      NSDictionary* attrs;
+
+      allAttachments = [attachmentAttrs objectEnumerator];
+      while ((attrs = [allAttachments nextObject]))
+        {
+          if ([[attrs objectForKey: @"filename"] isEqualToString: currentAttachment])
+            {
+              return [NSArray arrayWithObject: attrs];
+            }
+        }
     }
 
-  return attachmentNames;
+  return attachmentAttrs;
 }
 
 - (BOOL) hasAttachments
 {
-  return [[self attachmentNames] count] > 0 ? YES : NO;
-}
-
-- (NSString *) uid
-{
-  return [[self clientObject] nameInContainer];
+  return [[self attachmentAttrs] count] > 0 ? YES : NO;
 }
 
 - (id) defaultAction
@@ -658,14 +695,20 @@ static NSArray *infoKeys = nil;
 {
   id result;
 
-  if ([self _saveFormInfo])
+  result = [self _saveFormInfo];
+  if (!result)
     {
       result = [[self clientObject] save];
-      if (!result)
-	result = [self responseWith204];
+    }
+  if (!result)
+    {
+      attachmentAttrs = nil;
+      NSArray *attrs = [self attachmentAttrs];
+      result = [self responseWithStatus: 200
+                              andString: [attrs jsonRepresentation]];
     }
   else
-    result = [self failedToSaveFormResponse];
+    result = [self failedToSaveFormResponse: [result reason]];
 
   return result;
 }
@@ -714,25 +757,24 @@ static NSArray *infoKeys = nil;
       recipients_count =  [[messageSubmissions objectForKey: @"RecipientsCount"] intValue];
       
       if ((messages_count >= [dd maximumMessageSubmissionCount] || recipients_count >= [dd maximumRecipientCount]) &&
-          delta >= [dd maximumSubmissionInterval] &&
-          delta <= block_time )
+          delta <= block_time)
         {
           jsonResponse = [NSDictionary dictionaryWithObjectsAndKeys:
                                          @"failure", @"status",
-                                       [self labelForKey: @"Tried to send too many mails. Please wait."],
+                                                  [self labelForKey: @"Tried to send too many mails. Please wait."],
                                        @"message",
                                        nil];
           return [self responseWithStatus: 200
                                 andString: [jsonResponse jsonRepresentation]];
         }
       
-      if (delta > block_time)
+      if (delta > block_time ||
+          (delta >= [dd maximumSubmissionInterval] && messages_count < [dd maximumMessageSubmissionCount] && recipients_count < [dd maximumRecipientCount]))
         {
           [[SOGoCache sharedCache] setMessageSubmissionsCount: 0
                                               recipientsCount: 0
                                                      forLogin: [[context activeUser] login]];
         }
-
     }
 
   co = [self clientObject];
@@ -741,10 +783,11 @@ static NSArray *infoKeys = nil;
   error = [self validateForSend];
   if (!error)
     {
-      if ([self _saveFormInfo])
+      error = [self _saveFormInfo];
+      if (!error)
         error = [co sendMail];
       else
-	error = [self failedToSaveFormResponse];
+	error = [self failedToSaveFormResponse: [error reason]];
     }
 
   if (error)

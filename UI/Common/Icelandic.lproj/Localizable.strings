@@ -78,6 +78,14 @@
 "Due Date:" = "Lokadagur:";
 "Location:" = "Staðsetning:";
 
+/* Mail labels */
+"Important" = "Mikilvægt";
+"Work" = "Vinna";
+"Work" = "Vinna";
+"Personal" = "Persónulegt";
+"To Do" = "Verkþáttur";
+"Later" = "Seinna";
+
 "a2_Sunday" = "Su";
 "a2_Monday" = "Má";
 "a2_Tuesday" = "Þr";

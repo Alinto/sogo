@@ -101,6 +101,14 @@
 "Due Date:" = "Lejárat dátuma:";
 "Location:" = "Hely:";
 
+/* Mail labels */
+"Important" = "Fontos";
+"Work" = "Hivatalos";
+"Work" = "Hivatalos";
+"Personal" = "Személyes";
+"To Do" = "Teendő";
+"Later" = "Később";
+
 "a2_Sunday" = "Va";
 "a2_Monday" = "Hé";
 "a2_Tuesday" = "Ke";

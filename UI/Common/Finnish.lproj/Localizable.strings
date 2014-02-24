@@ -101,6 +101,15 @@
 "Due Date:" = "Päättyy:";
 "Location:" = "Sijainti:";
 
+/* mail labels */
+/* Mail labels */
+"Important" = "Tärkeä";
+"Work" = "Työ";
+"Work" = "Työ";
+"Personal" = "Henkilökohtainen";
+"To Do" = "Tehtävä";
+"Later" = "Myöhemmin";
+
 "a2_Sunday" = "Su";
 "a2_Monday" = "Ma";
 "a2_Tuesday" = "Ti";

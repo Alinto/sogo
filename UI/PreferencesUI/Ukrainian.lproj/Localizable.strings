@@ -110,20 +110,19 @@
 "personalCalendar" = "Особистий календар";
 "firstCalendar" = "Перший активний календар";
 
-"reminderTime_0000" = "0 хвилин";
-"reminderTime_0005" = "5 хвилин";
-"reminderTime_0010" = "10 хвилин";
-"reminderTime_0015" = "15 хвилин";
-"reminderTime_0030" = "30 хвилин";
-"reminderTime_0100" = "1 година";
-"reminderTime_0200" = "2 години";
-"reminderTime_0400" = "4 години";
-"reminderTime_0800" = "8 годин";
-"reminderTime_1200" = "пів дня";
-"reminderTime_2400" = "1 день";
-"reminderTime_4800" = "2 дні";
+"reminder_5_MINUTES_BEFORE" = "5 хвилин";
+"reminder_10_MINUTES_BEFORE" = "10 хвилин";
+"reminder_15_MINUTES_BEFORE" = "15 хвилин";
+"reminder_30_MINUTES_BEFORE" = "30 хвилин";
+"reminder_1_HOUR_BEFORE" = "1 година";
+"reminder_2_HOURS_BEFORE" = "2 години";
+"reminder_5_HOURS_BEFORE"= "5 години";
+"reminder_15_HOURS_BEFORE"= "15 годин";
+"reminder_1_DAY_BEFORE" = "1 день";
+"reminder_2_DAYS_BEFORE" = "2 дні";
 
 /* Mailer */
+"Label" = "Позначка";
 "Show subscribed mailboxes only" = "Показувати лише поштові скриньки, на які я підписаний";
 "Sort messages by threads" = "Сортувати повідомлення за гілками";
 "Check for new mail:" = "Перевіряти нову пошту:";

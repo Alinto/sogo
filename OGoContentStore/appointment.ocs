@@ -76,7 +76,7 @@
     },
     {
       columnName = c_participants;
-      sqlType    = "VARCHAR(1000000)";
+      sqlType    = "TEXT";
       allowsNull = YES;
     },
     {
@@ -91,7 +91,7 @@
     },
     {
       columnName = c_cycleinfo;
-      sqlType    = "VARCHAR(1000000)";
+      sqlType    = "TEXT";
       allowsNull = YES;
     },
     {
@@ -126,7 +126,7 @@
     },
     {
       columnName = c_partmails;
-      sqlType    = "VARCHAR(100000)";
+      sqlType    = "TEXT";
       allowsNull = YES;
     },
     {

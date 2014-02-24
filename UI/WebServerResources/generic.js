@@ -65,9 +65,7 @@ function clickEventWrapper(functionRef) {
 }
 
 
-function createElement(tagName, id, classes,
-                       attributes, htmlAttributes,
-                       parentNode) {
+function createElement(tagName, id, classes, attributes, htmlAttributes, parentNode) {
     var newElement = $(document.createElement(tagName));
     if (id)
         newElement.setAttribute("id", id);
@@ -334,6 +332,16 @@ function openMailTo(senderMailTo) {
                               + ((subject.length > 0)?"?subject=" + encodeURIComponent(subject):""));
 
     return false; /* stop following the link */
+}
+
+function onEmailTo(event) {
+    var s = this.innerHTML.strip();
+    if (!/@/.test(s)) {
+        s += ' <' + this.href.substr(7) + '>';
+    }
+    openMailTo(s);
+    Event.stop(event);
+    return false;
 }
 
 function deleteDraft(url) {
@@ -1469,7 +1477,7 @@ function showAlarmCallback(http) {
             if (data["description"].length)
                 msg += "\n\n" + data["description"];
 
-            window.alert(msg);
+            window.alert(msg.unescapeHTML());
             showSelectDialog(data["summary"], _('Snooze for '),
                              { '5': _('5 minutes'),
                                '10': _('10 minutes'),
@@ -1765,6 +1773,31 @@ function configureLinkBanner() {
     }
 }
 
+function configureLinks(element) {
+    var onAnchorClick = function (event) {
+        if (this.href)
+            window.open(this.href);
+        preventDefault(event);
+    };
+    var anchors = element.getElementsByTagName('a');
+    for (var i = 0; i < anchors.length; i++) {
+        var anchor = $(anchors[i]);
+        if (!anchor.href && anchor.readAttribute("moz-do-not-send")) {
+            anchor.writeAttribute("moz-do-not-send", false);
+            anchor.removeClassName("moz-txt-link-abbreviated");
+            anchor.href = "mailto:" + anchors[i].innerHTML;
+        }
+        if (anchor.href.substring(0,7) == "mailto:") {
+            anchor.observe("click", onEmailTo);
+            if (typeof onEmailAddressClick == 'function')
+                anchor.observe("contextmenu", onEmailAddressClick);
+            anchor.writeAttribute("moz-do-not-send", false);
+        }
+        else if (!anchor.id)
+            anchor.observe("click", onAnchorClick);
+    }
+}
+
 function CurrentModule() {
     var module = null;
     if (ApplicationBaseURL) {
@@ -1925,7 +1958,7 @@ AIM = {
         d.innerHTML = '<iframe class="hidden" src="about:blank" id="'
             + n + '" name="' + n + '" onload="AIM.loaded(\'' + n + '\')"></iframe>';
         document.body.appendChild(d);
-        var i = $(n); // TODO: useful?
+        var i = $(n);
         if (c && typeof(c.onComplete) == 'function')
             i.onComplete = c.onComplete;
         return n;
@@ -1936,27 +1969,28 @@ AIM = {
     },
 
     submit: function(f, c) {
-        AIM.form(f, AIM.frame(c));
+        var id = AIM.frame(c);
+        AIM.form(f, id);
         if (c && typeof(c.onStart) == 'function')
             return c.onStart();
         else
-            return true;
+            return $(id);
     },
 
     loaded: function(id) {
         var i = $(id);
+        var d;
         if (i.contentDocument) {
-            var d = i.contentDocument;
+            d = i.contentDocument;
         }
         else if (i.contentWindow) {
-            var d = i.contentWindow.document;
+            d = i.contentWindow.document;
         }
         else {
-            var d = window.frames[id].document;
+            d = window.frames[id].document;
         }
         if (d.location.href == "about:blank")
             return;
-
         if (typeof(i.onComplete) == 'function') {
             i.onComplete(Element.allTextContent(d.body));
         }
@@ -1984,7 +2018,7 @@ function createDialog(id, title, legend, content, positionClass) {
     var subdiv = createElement("div", null, null, null, null, newDialog);
     if (title && title.length > 0) {
         var titleh3 = createElement("h3", null, null, null, null, subdiv);
-        titleh3.appendChild(document.createTextNode(title));
+        titleh3.update(title);
     }
     if (legend) {
         if (Object.isElement(legend))
@@ -2142,14 +2176,14 @@ function _showSelectDialog(title, label, options, button, callbackFcn, callbackA
     }
     else {
         var fields = createElement("p", null, []);
-	fields.appendChild(document.createTextNode(label));
+	fields.update(label);
         var select = createElement("select"); //, null, null, { cname: name } );
 	fields.appendChild(select);
         var values = $H(options).keys();
         for (var i = 0; i < values.length; i++) {
             var option = createElement("option", null, null,
                                        { value: values[i] }, null, select);
-            option.appendChild(document.createTextNode(options[values[i]]));
+            option.update(options[values[i]]);
         }
         fields.appendChild(createElement("br"));
 

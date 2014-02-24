@@ -1,6 +1,6 @@
 /* LDAPSource.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2013 Inverse inc.
+ * Copyright (C) 2007-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@
 #import "NSArray+Utilities.h"
 #import "NSString+Utilities.h"
 #import "NSString+Crypto.h"
+#import "SOGoCache.h"
 #import "SOGoDomainDefaults.h"
 #import "SOGoSystemDefaults.h"
 
@@ -118,7 +119,6 @@ static Class NSStringK;
 
       MSExchangeHostname = nil;
 
-      _dnCache = [[NSMutableDictionary alloc] init];
       modifiers = nil;
     }
 
@@ -155,7 +155,6 @@ static Class NSStringK;
   [_scope release];
   [searchAttributes release];
   [domain release];
-  [_dnCache release];
   [kindField release];
   [multipleBookingsField release];
   [MSExchangeHostname release];
@@ -528,7 +527,7 @@ static Class NSStringK;
             if (queryTimeout > 0)
               [bindConnection setQueryTimeLimit: queryTimeout];
 
-            userDN = [_dnCache objectForKey: _login];
+            userDN = [[SOGoCache sharedCache] distinguishedNameForLogin: _login];
 
             if (!userDN)
               {
@@ -550,9 +549,6 @@ static Class NSStringK;
 
             if (userDN)
               {
-                // We cache the _login <-> userDN entry to speed up things
-                [_dnCache setObject: userDN  forKey: _login];
-  
                 if (!passwordPolicy)
                   didBind = [bindConnection bindWithMethod: @"simple"
                                                     binddn: userDN
@@ -564,6 +560,11 @@ static Class NSStringK;
                                                       perr: (void *)_perr
                                                     expire: _expire
                                                      grace: _grace];
+
+                if (didBind)
+                  // We cache the _login <-> userDN entry to speed up things
+                  [[SOGoCache sharedCache] setDistinguishedName: userDN
+                                                       forLogin: _login];
               }
           }
       }
@@ -717,7 +718,7 @@ static Class NSStringK;
         [qs appendFormat: @"(%@='*')", CNField];
       else
         {
-          fieldFormat = [NSString stringWithFormat: @"(%%@='%@*')", escapedFilter];
+          fieldFormat = [NSString stringWithFormat: @"(%%@='*%@*')", escapedFilter];
           fields = [NSMutableArray arrayWithArray: searchFields];
           [fields addObjectsFromArray: mailFields];
           [fields addObject: CNField];
@@ -1238,7 +1239,7 @@ static Class NSStringK;
 
 - (NSString *) lookupDNByLogin: (NSString *) theLogin
 {
-  return [_dnCache objectForKey: theLogin];
+  return [[SOGoCache sharedCache] distinguishedNameForLogin: theLogin];
 }
 
 - (NGLdapEntry *) _lookupGroupEntryByAttributes: (NSArray *) theAttributes

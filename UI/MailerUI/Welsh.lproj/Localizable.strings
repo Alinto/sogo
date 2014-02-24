@@ -225,11 +225,6 @@
 
 /* Label popup menu */
 "None" = "Dim";
-"Important" = "Pwysig";
-"Work" = "gwaith";
-"Personal" = "Personol";
-"To Do" = "I'w wneud";
-"Later" = "Hwyrach";
 
 /* Mark popup menu */
 "As Read" = "Darllenwyd";

@@ -1,8 +1,8 @@
 /* SOGoIEConditional.m - this file is part of SOGo
  *
- * Copyright (C) 2007 Inverse inc.
+ * Copyright (C) 2007-2013 Inverse inc.
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Inverse <info@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WOResponse.h>
+#import <NGObjWeb/WOAssociation.h>
 
 #import "SOGoIEConditional.h"
 
@@ -34,7 +35,10 @@
   if ((self = [super initWithName: name
                      associations: associations
                          template: newTemplate]))
-    ASSIGN (template, newTemplate);
+    {
+      ASSIGN (template, newTemplate);
+      lte = OWGetProperty(associations, @"lte");
+    }
 
   return self;
 }
@@ -42,13 +46,21 @@
 - (void) dealloc
 {
   [template release];
+  [lte release];
   [super dealloc];
 }
 
 - (void) appendToResponse: (WOResponse *) response
 		inContext: (WOContext *) context
 {
-  [response appendContentString: @"<!--[if IE]>"];
+  NSString *condition;
+
+  if (lte)
+    condition = [NSString stringWithFormat: @"<!--[if lte IE %d ]>", [lte intValueInComponent: [context component]]];
+  else
+    condition = @"<!--[if IE]>";
+
+  [response appendContentString: condition];
   [template appendToResponse: response inContext: context];
   [response appendContentString: @"<![endif]-->"];
 }

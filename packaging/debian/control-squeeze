@@ -1,7 +1,7 @@
 Source: sogo
 Priority: optional
 Maintainer: Inverse Support <support@inverse.ca>
-Build-Depends: debhelper (>= 7.0.15), gobjc | objc-compiler, libgnustep-base-dev, libsope-appserver4.9-dev, libsope-core4.9-dev, libsope-gdl1-4.9-dev, libsope-ldap4.9-dev, libsope-mime4.9-dev, libsope-xml4.9-dev, libmemcached-dev, libxml2-dev, libsbjson-dev, libssl-dev, libcurl4-openssl-dev | libcurl4-gnutls-dev, libmapi-dev, libmapistore-dev, libmapiproxy-dev
+Build-Depends: debhelper (>= 7.0.15), gobjc | objc-compiler, libgnustep-base-dev, libsope-appserver4.9-dev, libsope-core4.9-dev, libsope-gdl1-4.9-dev, libsope-ldap4.9-dev, libsope-mime4.9-dev, libsope-xml4.9-dev, libmemcached-dev, libxml2-dev, libsbjson-dev, libssl-dev, libcurl4-openssl-dev | libcurl4-gnutls-dev, libmapi-dev, libmapistore-dev, libmapiproxy-dev, libwbxml2-dev
 Section: web
 Standards-Version: 3.9.1
 
@@ -45,6 +45,17 @@ Description: a modern and scalable groupware - OpenChange backend
  .
  This package contains the backend plugin for using SOGo as a backend
  to OpenChange.
+
+Package: sogo-activesync
+Section: web
+Priority: extra
+Architecture: any
+Depends: sogo (= ${binary:Version}), libwbxml2-0,  ${shlibs:Depends}, ${misc:Depends}
+Description: a modern and scalable groupware - ActiveSync module
+ SOGo is a groupware server built around OpenGroupware.org (OGo) and
+ the SOPE application server with focus on scalability.
+ .
+ This package provides Microsoft EAS support for SOGo.
 
 Package: sogo-dbg
 Section: debug

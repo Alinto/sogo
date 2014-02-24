@@ -97,11 +97,12 @@
 "Reply-To"	= "Répondre à";
 "Add address"   = "Ajouter Adresse";
 
-"Attachments:" = "Pièces jointes :";
 "Open" = "Ouvrir";
 "Select All" = "Tout sélectionner";
 "Attach Web Page..." = "Joindre une page Web...";
-"Attach File(s)..." = "Joindre un fichier...";
+"file" = "fichier";
+"files" = "fichiers";
+"Save all" = "Tout sauvegarder";
 
 "to"            = "Pour";
 "cc"            = "Copie à";
@@ -227,11 +228,6 @@
 
 /* Label popup menu */
 "None" = "Aucune";
-"Important" = "Important";
-"Work" = "Travail";
-"Personal" = "Personnel";
-"To Do" = "À faire";
-"Later" = "Peut attendre";
 
 /* Mark popup menu */
 "As Read" = "Comme lu";
@@ -285,6 +281,9 @@
 "error_missingsubject" = "Le message n'a pas de sujet. Êtes-vous certain de vouloir l'envoyer?";
 "error_missingrecipients" = "Veuillez spécifier au moins un destinataire.";
 "Send Anyway" = "Envoyer sans sujet";
+"Error while saving the draft:" = "Une erreur est survenue lors de la sauvegarde du brouillon :";
+"Error while uploading the file \"%{0}\":" = "Une erreur est survenue lors du téléversement du fichier « %{0} » :";
+"There is an active file upload. Closing the window will interrupt it." = "Un transfert est actif. La fermeture de la fenêtre causera son interruption.";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Le message n'a pas pu être envoyé car aucune adresse n'est valide.";

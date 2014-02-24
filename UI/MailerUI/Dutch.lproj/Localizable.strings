@@ -227,11 +227,6 @@
 
 /* Label popup menu */
 "None" = "Geen label";
-"Important" = "Belangrijk";
-"Work" = "Werk";
-"Personal" = "Persoonlijk";
-"To Do" = "Te doen";
-"Later" = "Later";
 
 /* Mark popup menu */
 "As Read" = "Als gelezen";

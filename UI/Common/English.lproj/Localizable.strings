@@ -69,6 +69,7 @@
 "You cannot create a list in a shared address book." 
         = "You cannot create a list in a shared address book.";
 "Warning" = "Warning";
+"Can't contact server" = "An error occurred while contacting the server. Please try again later.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "You are not allowed to access this module or this system. Please contact your system administrator.";
@@ -100,6 +101,13 @@
 "Start:" = "Start:";
 "Due Date:" = "Due Date:";
 "Location:" = "Location:";
+
+/* mail labels */
+"Important" = "Important";
+"Work" = "Work";
+"Personal" = "Personal";
+"To Do" = "To Do";
+"Later" = "Later";
 
 "a2_Sunday" = "Su";
 "a2_Monday" = "Mo";

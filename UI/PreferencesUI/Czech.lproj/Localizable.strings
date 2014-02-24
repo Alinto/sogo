@@ -111,20 +111,19 @@
 "personalCalendar" = "Osobní kalendář";
 "firstCalendar" = "První kalendář";
 
-"reminderTime_0000" = "0 minut";
-"reminderTime_0005" = "5 minut";
-"reminderTime_0010" = "10 minut";
-"reminderTime_0015" = "15 minut";
-"reminderTime_0030" = "30 minut";
-"reminderTime_0100" = "1 hodina";
-"reminderTime_0200" = "2 hodiny";
-"reminderTime_0400" = "4 hodiny";
-"reminderTime_0800" = "8 hodin";
-"reminderTime_1200" = "1/2 dne";
-"reminderTime_2400" = "1 den";
-"reminderTime_4800" = "2 dny";
+"reminder_5_MINUTES_BEFORE" = "5 minut";
+"reminder_10_MINUTES_BEFORE" = "10 minut";
+"reminder_15_MINUTES_BEFORE" = "15 minut";
+"reminder_30_MINUTES_BEFORE" = "30 minut";
+"reminder_1_HOUR_BEFORE" = "1 hodina";
+"reminder_2_HOURS_BEFORE" = "2 hodiny";
+"reminder_5_HOURS_BEFORE"= "5 hodiny";
+"reminder_15_HOURS_BEFORE"= "15 hodin";
+"reminder_1_DAY_BEFORE" = "1 den";
+"reminder_2_DAYS_BEFORE" = "2 dny";
 
 /* Mailer */
+"Label" = "Označkovat";
 "Show subscribed mailboxes only" = "Ukázat pouze odebírané mailové schránky";
 "Sort messages by threads" = "Třídit zprávy podle souvislostí";
 "Check for new mail:" = "Zkontrolovat novou poštu:";

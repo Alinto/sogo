@@ -25,6 +25,7 @@
 
 @class NSArray;
 @class NSDictionary;
+@class NSMutableDictionary;
 @class NSString;
 @class NSTimeZone;
 
@@ -183,14 +184,8 @@ extern NSString *SOGoWeekStartFirstFullWeek;
 - (void) setCalendarTasksDefaultClassification: (NSString *) newValue;
 - (NSString *) calendarTasksDefaultClassification;
 
-- (void) setReminderEnabled: (BOOL) newValue;
-- (BOOL) reminderEnabled;
-
-- (void) setReminderTime: (NSString *) newValue;
-- (NSString *) reminderTime;
-
-- (void) setRemindWithASound: (BOOL) newValue;
-- (BOOL) remindWithASound;
+- (void) setCalendarDefaultReminder: (NSString *) newValue;
+- (NSString *) calendarDefaultReminder;
 
 /* contacts */
 - (void) setContactsCategories: (NSArray *) newValues;

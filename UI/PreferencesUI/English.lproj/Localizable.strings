@@ -111,20 +111,23 @@
 "personalCalendar" = "Personal calendar";
 "firstCalendar" = "First enabled calendar";
 
-"reminderTime_0000" = "0 minutes";
-"reminderTime_0005" = "5 minutes";
-"reminderTime_0010" = "10 minutes";
-"reminderTime_0015" = "15 minutes";
-"reminderTime_0030" = "30 minutes";
-"reminderTime_0100" = "1 hour";
-"reminderTime_0200" = "2 hours";
-"reminderTime_0400" = "4 hours";
-"reminderTime_0800" = "8 hours";
-"reminderTime_1200" = "1/2 day";
-"reminderTime_2400" = "1 day";
-"reminderTime_4800" = "2 days";
+"reminder_NONE" = "No reminder";
+"reminder_5_MINUTES_BEFORE" = "5 minutes before";
+"reminder_10_MINUTES_BEFORE" = "10 minutes before";
+"reminder_15_MINUTES_BEFORE" = "15 minutes before";
+"reminder_30_MINUTES_BEFORE" = "30 minutes before";
+"reminder_45_MINUTES_BEFORE" = "45 minutes before";
+"reminder_1_HOUR_BEFORE" = "1 hour before";
+"reminder_2_HOURS_BEFORE" = "2 hours before";
+"reminder_5_HOURS_BEFORE" = "5 hours before";
+"reminder_15_HOURS_BEFORE" = "15 hours before";
+"reminder_1_DAY_BEFORE" = "1 day before";
+"reminder_2_DAYS_BEFORE" = "2 days before";
+"reminder_1_WEEK_BEFORE" = "1 week before";
 
 /* Mailer */
+"Labels" = "Labels";
+"Label" = "Label";
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Sort messages by threads" = "Sort messages by threads";
 "Check for new mail:" = "Check for new mail:";
@@ -262,6 +265,7 @@
 "To or Cc" = "To or Cc";
 "Size (Kb)" = "Size (Kb)";
 "Header" = "Header";
+"Body" = "Body";
 "Flag the message with:" = "Flag the message with:";
 "Discard the message" = "Discard the message";
 "File the message in:" = "File the message in:";
@@ -288,11 +292,6 @@
 "Flagged" = "Flagged";
 "Junk" = "Junk";
 "Not Junk" = "Not Junk";
-"Important" = "Important";
-"Work" = "Work";
-"Personal" = "Personal";
-"To Do" = "To Do";
-"Later" = "Later";
 
 /* Password policy */
 "The password was changed successfully." = "The password was changed successfully.";

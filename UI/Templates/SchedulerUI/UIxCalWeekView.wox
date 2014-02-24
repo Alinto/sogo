@@ -22,12 +22,14 @@
     <span class="weeksHeader">
       <span class="week1">
         <a href="#"
+           id="leftNavigationArrow"
            var:date="prevWeekQueryParameters.day"
            onclick="return onCalendarGotoDay(this);"><img rsrc:src="arrow-left.png"/></a>
       </span>
       <span class="week0"><var:string value="currentWeekName" /></span>
       <span class="week1">
         <a href="#"
+           id="rightNavigationArrow"
            var:date="nextWeekQueryParameters.day"
            onclick="return onCalendarGotoDay(this);"><img rsrc:src="arrow-right.png"/></a>
       </span>

@@ -3,7 +3,7 @@
     SxVMemLimit = 384;
     WOLogFile = "/var/log/sogo/sogo.log";
     WOPidFile = "/var/run/sogo/sogo.pid";
-
+    WOHTTPAdaptorCapitalizeHeaders = YES;
     WOPort = "127.0.0.1:20000";
 
     NGImap4ConnectionStringSeparator = "/";
@@ -69,11 +69,9 @@
     SOGoCalendarShouldDisplayWeekend = YES;
     SOGoCalendarEventsDefaultClassification = "PUBLIC";
     SOGoCalendarTasksDefaultClassification = "PUBLIC";
+    SOGoCalendarDefaultReminder = "NONE";
 
     SOGoFreeBusyDefaultInterval = ( 7, 7 );
-
-    SOGoReminderEnabled = YES;
-    SOGoRemindWithASound = YES;
 
     SOGoSearchMinimumWordLength = 2;
 

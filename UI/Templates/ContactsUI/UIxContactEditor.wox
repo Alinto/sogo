@@ -373,7 +373,7 @@
             <tr>
               <td>
                 <label><var:string label:value="Note:" />
-                  <textarea var:value="ldifRecord.description" name="note" id="note"></textarea>
+                  <textarea rows="25" var:value="ldifRecord.description" name="note" id="note"></textarea>
                 </label>
               </td>
             </tr>

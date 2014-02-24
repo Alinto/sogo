@@ -118,6 +118,22 @@
     </ul>
   </div>
   
+  <div class="menu" id="moveMailboxMenu">
+    <ul>
+      <var:foreach list="clientObject.mailAccounts" item="currentLabel">
+        <li><img rsrc:src="tbtv_account_17x17.png"/> <var:string value="currentLabel.name"/></li>
+      </var:foreach>
+    </ul>
+  </div>
+
+  <div class="menu" id="copyMailboxMenu">
+    <ul>
+      <var:foreach list="clientObject.mailAccounts" item="currentLabel">
+        <li><img rsrc:src="tbtv_account_17x17.png"/> <var:string value="currentLabel.name"/></li>
+      </var:foreach>
+    </ul>
+  </div>
+
   <div class="menu" id="messageListMenu">
     <ul>
       <li><var:string label:value="Open Message In New Window"/></li>
@@ -208,12 +224,6 @@
   <div class="menu" id="imageMenu">
     <ul>
       <li id="save_image"><var:string label:value="Save Image"/></li>
-    </ul>
-  </div>
-
-  <div class="menu" id="attachmentMenu">
-    <ul>
-      <li id="save_attachment"><var:string label:value="Save Attachment"/></li>
     </ul>
   </div>
 

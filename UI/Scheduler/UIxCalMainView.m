@@ -79,6 +79,12 @@
     }
 }
 
+- (NSString *) localeCode
+{
+  // WARNING : NSLocaleCode is not defined in <Foundation/NSUserDefaults.h>
+  return [locale objectForKey: @"NSLocaleCode"];
+}
+
 - (NSArray *) monthMenuItems
 {
   static NSMutableArray *monthMenuItems = nil;

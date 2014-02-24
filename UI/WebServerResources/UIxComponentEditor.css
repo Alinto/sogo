@@ -1,3 +1,10 @@
+form[name="editform"]
+{ position: absolute;
+  top: 48px;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+
 SELECT#calendarList,
 SELECT#categoryList,
 SELECT#priorityList,

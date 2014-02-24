@@ -63,7 +63,8 @@ function setupConstants() {
                     "cc": _("Cc"),
                     "to_or_cc": _("To or Cc"),
                     "size": _("Size (Kb)"),
-                    "header": _("Header") };
+                    "header": _("Header"),
+                    "body": _("Body") };
     methodLabels = { "addflag": _("Flag the message with:"),                         
                      "discard": _("Discard the message"),
                      "fileinto": _("File the message in:"),
@@ -91,55 +92,41 @@ function setupConstants() {
                    "junk": _("Junk"),
                    "not_junk": _("Not Junk") };
 
-
-    for (var name in labels) {
-        flagLabels[name] = _( labels[name][0] );
+    for (var name in mailTags) {
+        flagLabels[name] = _( mailTags[name][0] );
     }
 }
 
 function setupEventHandlers() {
     var filterName = $($("mainForm").filterName);
     if (filterName) {
-        var boundCB = onFilterNameChange
-                      .bindAsEventListener(filterName);
-        filterName.observe("change", boundCB);
+        filterName.on('change', onFilterNameChange);
     }
     var matchTypeSelect = $("matchType");
     if (matchTypeSelect) {
-        var boundCB = onMatchTypeChange
-                      .bindAsEventListener(matchTypeSelect);
-        matchTypeSelect.observe("change", boundCB);
+        matchTypeSelect.on('change', onMatchTypeChange);
     }
 
-    var filterRules = $("filterRules");
-    var boundCB = onFilterRulesDivClick
-        .bindAsEventListener(filterRules);
-    filterRules.observe("click", boundCB);
+    // Filter rules
+    $("filterRules").on('click', onFilterRulesDivClick);
     var ruleAdd = $("ruleAdd");
     if (ruleAdd) {
-        var boundCB = onRuleAddClick.bindAsEventListener(ruleAdd);
-        ruleAdd.observe("click", boundCB);
+        ruleAdd.on('click', onRuleAddClick);
     }
     var ruleDelete = $("ruleDelete");
     if (ruleDelete) {
-        var boundCB = onRuleDeleteClick.bindAsEventListener(ruleDelete);
-        ruleDelete.observe("click", boundCB);
+        ruleDelete.on('click', onRuleDeleteClick);
     }
 
-    var filterActions = $("filterActions");
-    var boundCB = onFilterActionsDivClick
-        .bindAsEventListener(filterActions);
-    filterActions.observe("click", boundCB);
+    // Filter actions
+    $('filterActions').on('click', onFilterActionsDivClick);
     var actionAdd = $("actionAdd");
     if (actionAdd) {
-        var boundCB = onActionAddClick.bindAsEventListener(actionAdd);
-        actionAdd.observe("click", boundCB);
+        actionAdd.on('click', onActionAddClick);
     }
     var actionDelete = $("actionDelete");
     if (actionDelete) {
-        var boundCB = onActionDeleteClick
-            .bindAsEventListener(actionDelete);
-        actionDelete.observe("click", boundCB);
+        actionDelete.on('click', onActionDeleteClick);
     }
 }
 
@@ -227,8 +214,7 @@ function appendRule(container, rule) {
     var ruleDiv = createElement("div", null, "rule",
                                 { rule: rule }, null,
                                 container);
-    var boundCB = onRuleDivClick.bindAsEventListener(ruleDiv);
-    ruleDiv.observe("click", boundCB);
+    ruleDiv.on('click', onRuleDivClick);
     ensureRuleRepresentation(ruleDiv);
 
     return ruleDiv;
@@ -272,8 +258,10 @@ function ensureFieldRepresentation(container) {
 }
 
 function ensureFieldSelectRepresentation(container, fieldSpan) {
-    var fields
-        = [ "subject", "from", "to", "cc", "to_or_cc", "size", "header" ];
+    var fields = [ "subject", "from", "to", "cc", "to_or_cc", "size", "header" ];
+    if (sieveCapabilities.indexOf("body") > -1) {
+        fields.push("body");
+    }
     var selects = fieldSpan.select("SELECT");
     var select;
     if (selects.length)
@@ -281,14 +269,12 @@ function ensureFieldSelectRepresentation(container, fieldSpan) {
     else {
         select = createElement("select");
         select.rule = container.rule;
-        var boundCB = onFieldSelectChange.bindAsEventListener(select);
-        select.observe("change", boundCB);
+        select.on('change', onFieldSelectChange);
         for (var i = 0; i < fields.length; i++) {
             var field = fields[i];
             var fieldOption = createElement("option", null, null,
                                             { value: field }, null, select);
-            fieldOption.appendChild(document
-                                    .createTextNode(fieldLabels[field]));
+            fieldOption.appendChild(document.createTextNode(fieldLabels[field]));
         }
         fieldSpan.appendChild(select);
     }
@@ -319,9 +305,7 @@ function ensureFieldCustomHeaderRepresentation(container, fieldSpan) {
             if (!container.rule.custom_header)
                 container.rule.custom_header = "";
             headerInput.value = container.rule.custom_header;
-            var boundCB
-                = onFieldCustomHeaderChange.bindAsEventListener(headerInput);
-            headerInput.observe("change", boundCB);
+            headerInput.on('change', onFieldCustomHeaderChange);
             headerInput.focus();
         }
     } else {
@@ -366,15 +350,13 @@ function ensureOperatorSelectRepresentation(container, operatorSpan) {
         select = createElement("select");
         select.rule = container.rule;
         select.sizeOperator = (ruleField == "size");
-        var boundCB = onOperatorSelectChange.bindAsEventListener(select);
-        select.observe("change", boundCB);
+        select.on('change', onOperatorSelectChange);
         for (var i = 0; i < operators.length; i++) {
             var operator = operators[i];
             var operatorOption = createElement("option", null, null,
                                                { value: operator }, null,
                                                select);
-            operatorOption.appendChild(document
-                                       .createTextNode(operatorLabels[operator]));
+            operatorOption.appendChild(document.createTextNode(operatorLabels[operator]));
         }
         operatorSpan.appendChild(select);
     }
@@ -436,8 +418,7 @@ function ensureValueInputRepresentation(container, valueSpan) {
     else {
         input = createElement("input", null, "textField");
         input.rule = container.rule;
-        var boundCB = onValueInputChange.bindAsEventListener(input);
-        input.observe("change", boundCB);
+        input.on('change', onValueInputChange);
         valueSpan.appendChild(input);
     }
     input.value = container.rule.value;
@@ -486,8 +467,7 @@ function appendAction(container, action) {
     var actionDiv = createElement("div", null, "action",
                                   { action: action }, null,
                                   container);
-    var boundCB = onActionDivClick.bindAsEventListener(actionDiv);
-    actionDiv.observe("click", boundCB);
+    actionDiv.on('click', onActionDivClick);
     ensureActionRepresentation(actionDiv);
 
     return actionDiv;
@@ -555,14 +535,12 @@ function ensureMethodSelectRepresentation(container, methodSpan) {
     else {
         select = createElement("select");
         select.action = container.action;
-        var boundCB = onMethodSelectChange.bindAsEventListener(select);
-        select.observe("change", boundCB);
+        select.on('change', onMethodSelectChange);
         for (var i = 0; i < methods.length; i++) {
             var method = methods[i];
             var methodOption = createElement("option", null, null,
                                              { value: method }, null, select);
-            methodOption.appendChild(document
-                                     .createTextNode(methodLabels[method]));
+            methodOption.appendChild(document.createTextNode(methodLabels[method]));
         }
         methodSpan.appendChild(select);
     }
@@ -610,12 +588,6 @@ function ensureArgumentRepresentation(container) {
 }
 
 function ensureFlagArgRepresentation(container, argumentSpan) {
-    var flags = [ "seen", "deleted", "answered", "flagged", "junk",
-                  "not_junk" ];
-    for (var i = 1; i < 6; i++) {
-        flags.push("label" + i);
-    }
-
     var selects = argumentSpan.select("SELECT");
     var select;
     if (selects.length)
@@ -623,14 +595,14 @@ function ensureFlagArgRepresentation(container, argumentSpan) {
     else {
         select = createElement("select");
         select.action = container.action;
-        var boundCB = onFlagArgumentSelectChange.bindAsEventListener(select);
-        select.observe("change", boundCB);
-        for (var i = 0; i < flags.length; i++) {
-            var flag = flags[i];
-            var flagOption = createElement("option", null, null,
-                                           { value: flag }, null, select);
-            var label = flagLabels[flag];
-            flagOption.appendChild(document.createTextNode(label));
+        select.on('change', onFlagArgumentSelectChange);
+        for (var flag in flagLabels) {
+            if (typeof flag != 'undefined') {
+                var flagOption = createElement("option", null, null,
+                                               { value: flag }, null, select);
+                var label = flagLabels[flag];
+                flagOption.appendChild(document.createTextNode(label));
+            }
         }
         argumentSpan.appendChild(select);
     }
@@ -657,16 +629,15 @@ function ensureMailboxArgRepresentation(container, argumentSpan) {
         select.action = container.action;
         if (!container.action.argument)
             container.action.argument = "INBOX";
-        var boundCB = onMailboxArgumentSelectChange.bindAsEventListener(select);
-        select.observe("change", boundCB);
+        select.on('change', onMailboxArgumentSelectChange);
         var mailboxes = (window.opener
                          ? window.opener.userMailboxes
-                         : ["INBOX" ]);
+                         : {'displayName': 'INBOX', 'path': 'INBOX' });
         for (var i = 0; i < mailboxes.length; i++) {
             var mailbox = mailboxes[i];
             var mboxOption = createElement("option", null, null,
-                                           { value: mailbox }, null, select);
-            mboxOption.appendChild(document.createTextNode(mailbox));
+                                           { value: mailbox.path }, null, select);
+            mboxOption.appendChild(document.createTextNode(mailbox.displayName));
         }
         argumentSpan.appendChild(select);
     }
@@ -690,9 +661,7 @@ function ensureRedirectArgRepresentation(container, argumentSpan) {
         emailInput.action = container.action;
         if (!container.action.argument)
             container.action.argument = "";
-        var boundCB
-            = onEmailArgumentChange.bindAsEventListener(emailInput);
-        emailInput.observe("change", boundCB);
+        emailInput.on('change', onEmailArgumentChange);
         emailInput.focus();
     }
     emailInput.value = container.action.argument;
@@ -714,9 +683,7 @@ function ensureRejectArgRepresentation(container, argumentSpan) {
                                 argumentSpan);
         if (!container.action.argument)
             container.action.argument = "";
-        var boundCB
-            = onMsgArgumentChange.bindAsEventListener(msgArea);
-        msgArea.observe("change", boundCB);
+        msgArea.on('change', onMsgArgumentChange);
         msgArea.focus();
     }
     msgArea.value = container.action.argument;

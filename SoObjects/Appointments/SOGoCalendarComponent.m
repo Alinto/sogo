@@ -1,10 +1,6 @@
 /* SOGoCalendarComponent.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Copyright (C) 2006-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
@@ -62,6 +60,7 @@
 #import <SOGo/SOGoWebDAVAclManager.h>
 #import <SOGo/WORequest+SOGo.h>
 #import <Appointments/SOGoAppointmentFolder.h>
+#import <Mailer/NSString+Mail.h>
 
 #import "SOGoAptMailICalReply.h"
 #import "SOGoAptMailNotification.h"
@@ -219,29 +218,13 @@
 
 - (NSString *) secureContentAsString
 {
-  iCalCalendar *tmpCalendar;
   iCalRepeatableEntityObject *tmpComponent;
-//   NSArray *roles;
+  iCalCalendar *tmpCalendar;
+  NSArray *allComponents;
   SoSecurityManager *sm;
   NSString *iCalString;
 
-//       uid = [[context activeUser] login];
-//       roles = [self aclsForUser: uid];
-//       if ([roles containsObject: SOGoCalendarRole_Organizer]
-// 	  || [roles containsObject: SOGoCalendarRole_Participant]
-// 	  || [roles containsObject: SOGoCalendarRole_ComponentViewer])
-// 	calContent = content;
-//       else if ([roles containsObject: SOGoCalendarRole_ComponentDAndTViewer])
-// 	{
-// 	  tmpCalendar = [[self calendar: NO] copy];
-// 	  tmpComponent = (iCalRepeatableEntityObject *)
-// 	    [tmpCalendar firstChildWithTag: [self componentTag]];
-// 	  [self _filterComponent: tmpComponent];
-// 	  calContent = [tmpCalendar versitString];
-// 	  [tmpCalendar release];
-// 	}
-//       else
-// 	calContent = nil;
+  int i;
 
   sm = [SoSecurityManager sharedSecurityManager];
   if (activeUserIsOwner
@@ -253,14 +236,21 @@
 		onObject: self inContext: context])
     {
       tmpCalendar = [[self calendar: NO secure: NO] mutableCopy];
-      tmpComponent = (iCalRepeatableEntityObject *)
-	[tmpCalendar firstChildWithTag: [self componentTag]];
-      [self _filterComponent: tmpComponent];
+
+      // We filter all components, in case we have RECURRENCE-ID
+      allComponents = [tmpCalendar childrenWithTag: [self componentTag]];
+
+      for (i = 0; i < [allComponents count]; i++)
+        {
+          tmpComponent = (iCalRepeatableEntityObject *)[allComponents objectAtIndex:i];
+          [self _filterComponent: tmpComponent];
       
-      // We add an additional header here to inform clients (if necessary) that
-      // we churned the content of the calendar.
-      [tmpComponent addChild: [CardElement simpleElementWithTag: @"X-SOGo-Secure"
-					   value: @"YES"]];
+          // We add an additional header here to inform clients (if necessary) that
+          // we churned the content of the calendar.
+          [tmpComponent addChild: [CardElement simpleElementWithTag: @"X-SOGo-Secure"
+                                                              value: @"YES"]];
+        }
+
       iCalString = [tmpCalendar versitString];
       [tmpCalendar release];
     }
@@ -499,18 +489,31 @@
   NSMutableArray *allAttendees;
   iCalPerson *currentAttendee;
   NSEnumerator *enumerator;
+  NSAutoreleasePool *pool;
   SOGoGroup *group;
 
   BOOL eventWasModified;
-  unsigned int i;
+  unsigned int i, j;
+
 
   domain = [[context activeUser] domain];
   organizerEmail = [[theEvent organizer] rfc822Email];
   eventWasModified = NO;
   allAttendees = [NSMutableArray arrayWithArray: [theEvent attendees]];
   enumerator = [[theEvent attendees] objectEnumerator];
+
+  j = 0;
+
+  pool = [[NSAutoreleasePool alloc] init];
+
   while ((currentAttendee = [enumerator nextObject]))
     {
+      if (j%5 == 0)
+        {
+          RELEASE(pool);
+          pool = [[NSAutoreleasePool alloc] init];
+        }
+
       group = [SOGoGroup groupWithEmail: [currentAttendee rfc822Email]
                                inDomain: domain];
       if (group)
@@ -554,11 +557,15 @@
 	      eventWasModified = YES;
 	    }
 	}
+      
+      j++;
     } // while (currentAttendee ...
 
   if (eventWasModified)
     [theEvent setAttendees: allAttendees];
   
+  RELEASE(pool);
+
   return eventWasModified;
 }
 
@@ -841,6 +848,7 @@
 		  mailDate = [[NSCalendarDate date] rfc822DateString];
 		  [headerMap setObject: mailDate forKey: @"date"];
 		  [headerMap setObject: subject forKey: @"subject"];
+                  [headerMap setObject: [NSString generateMessageID] forKey: @"message-id"];
                   if ([msgType length] > 0)
                     [headerMap setObject: msgType forKey: @"x-sogo-message-type"];
 		  msg = [NGMimeMessage messageWithHeader: headerMap];
@@ -870,8 +878,7 @@
 		           sendMimePart: msg
                            toRecipients: [NSArray arrayWithObject: email]
                                  sender: shortSenderEmail
-                      withAuthenticator: [self
-                                           authenticatorInContext: context]
+                      withAuthenticator: [self authenticatorInContext: context]
                               inContext: context];
 		}
 	    }
@@ -896,7 +903,7 @@
   SOGoDomainDefaults *dd;
 
   dd = [from domainDefaults];
-  if ([dd appointmentSendEMailNotifications])
+  if ([dd appointmentSendEMailNotifications] && [event isStillRelevant])
     {
       /* get WOApplication instance */
       app = [WOApplication application];
@@ -925,6 +932,7 @@
       [headerMap setObject: mailDate forKey: @"date"];
       [headerMap setObject: [[p getSubject] asQPSubjectString: @"UTF-8"]
                     forKey: @"subject"];
+      [headerMap setObject: [NSString generateMessageID] forKey: @"message-id"];
       [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
       [headerMap setObject: @"multipart/mixed" forKey: @"content-type"];
       [headerMap setObject: @"calendar:invitation-reply" forKey: @"x-sogo-message-type"];
@@ -1034,6 +1042,11 @@
   // Recipient is fixed, which is the calendar owner
   ownerUser = [SOGoUser userWithLogin: self->owner];
   recipientIdentity = [ownerUser primaryIdentity];
+  
+  // Safety net for broken configurations
+  if (!recipientIdentity)
+    return;
+
   recipientEmail = [recipientIdentity objectForKey: @"email"];
   fullRecipientEmail = [recipientIdentity keysWithFormat: @"%{fullName} <%{email}>"];
   
@@ -1042,6 +1055,7 @@
   mailDate = [[NSCalendarDate date] rfc822DateString];
   [headerMap setObject: mailDate forKey: @"date"];
   [headerMap setObject: [page getSubject] forKey: @"subject"];
+  [headerMap setObject: [NSString generateMessageID] forKey: @"message-id"];
   [headerMap setObject: @"1.0" forKey: @"MIME-Version"];
   [headerMap setObject: @"text/html; charset=utf-8"
 		forKey: @"content-type"];

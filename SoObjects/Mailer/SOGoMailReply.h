@@ -29,15 +29,12 @@
 {
   BOOL outlookMode;
   NSString *replyPlacement;
-  NSString *signaturePlacement;
 }
 
 - (void) setOutlookMode: (BOOL) newOutlookMode;
 - (BOOL) outlookMode;
 - (void) setReplyPlacement: (NSString *) newPlacement;
 - (BOOL) replyPlacementOnTop;
-- (void) setSignaturePlacement: (NSString *) newPlacement;
-- (BOOL) signaturePlacementOnTop;
 - (NSString *) messageBody;
 
 @end

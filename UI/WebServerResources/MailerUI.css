@@ -374,25 +374,24 @@ TR.mailer_listcell_regular TD A
 }
 
 /* mail viewer */
-INPUT#editDraftButton
+#actionButtons
 {
-  position: absolute;
-  top: 2.5em;
-  right: 1em;
+    position: absolute;
+    top: 2.5em;
+    right: 1em;
 }
 
-INPUT#loadImagesButton
+.popup #actionButtons
 {
-  position: absolute;
-  top: 2.5em;
-  right: 1em;
+  top: 7.0em;
 }
 
-.popup INPUT#loadImagesButton
+#editDraftButton,
+#loadImagesButton
 {
-  top: 9.0em;
-  right: 1em;
+    float: right;
 }
+
 
 #signedImage
 {
@@ -434,7 +433,8 @@ DIV.mailer_mailcontent TABLE
 }
 
 /* collapsable header */
-TD.mailer_fieldname IMG
+TD.mailer_fieldname IMG.collapse,
+TD.mailer_fieldname IMG.expand
 { cursor: pointer;
   padding-right: 5px; }
 TD.mailer_fieldvalue SPAN.collapse
@@ -577,12 +577,31 @@ DIV.linked_attachment_meta
 {
   color: #444444;
   border-width: 0;
-  padding: 2px;
+  padding: 2px 4px;
 }
 
 TABLE.linked_attachment_meta
 {
   color: #444444;
+}
+
+.linked_attachment_body a:hover
+{
+  text-decoration: none;
+}
+
+.linked_attachment_body a:hover .linked_attachment_meta
+{
+  background-color: #9ABCD8;
+  color: #fff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.linked_attachment_body a:hover .muted
+{
+  color: #fff !important;
 }
 
 DIV.linked_attachment_body HR

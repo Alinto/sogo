@@ -1,8 +1,6 @@
 /* NGVCard+SOGo.h - this file is part of SOGo
  *
- * Copyright (C) 2009 Inverse inc.
- *
- * Author: Cyril Robert <crobert@inverse.ca>
+ * Copyright (C) 2009-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +28,22 @@
 
 @interface NGVCard (SOGoExtensions)
 
+- (CardElement *) elementWithTag: (NSString *) elementTag
+                          ofType: (NSString *) type;
+
 - (void) updateFromLDIFRecord: (NSDictionary *) ldifRecord;
 - (NSMutableDictionary *) asLDIFRecord;
+
+- (NSString *) workCompany;
+- (NSString *) fullName;
+- (NSArray *) secondaryEmails;
+
+- (NSString *) workPhone;
+- (NSString *) homePhone;
+- (NSString *) fax;
+- (NSString *) mobile;
+- (NSString *) pager;
+- (NSCalendarDate *) birthday;
 
 @end
 

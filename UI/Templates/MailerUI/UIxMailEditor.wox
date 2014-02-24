@@ -11,25 +11,17 @@
   title="panelTitle"
   const:popup="YES"
   const:userDefaultsKeys="SOGoMailComposeMessageType,SOGoMailReplyPlacement,SOGoMailSignature"
-  const:jsFiles="UIxMailToSelection.js,ckeditor/ckeditor.js,SOGoAutoCompletion.js,ContactsUI.js">
+  const:jsFiles="UIxMailToSelection.js,ckeditor/ckeditor.js,SOGoAutoCompletion.js,ContactsUI.js,jquery-ui.js,jquery.fileupload.js,jquery.iframe-transport.js"
+  const:cssFiles="jquery.fileupload.css">
   <script type="text/javascript">
     var mailIsReply = <var:string value="isMailReply"/>;
     var sourceUID = <var:string value="sourceUID"/>;
     var sourceFolder = '<var:string value="sourceFolder" const:escapeHTML="NO"/>';
     var localeCode = '<var:string value="localeCode"/>';
   </script>
+
   <div class="popupMenu" id="contactsMenu">
     <ul><!-- space --></ul>
-  </div>
-  <div class="menu" id="attachmentsMenu">
-    <ul>
-      <li><var:string label:value="Open"/></li>
-      <li><var:string label:value="Delete" /></li>
-      <li><var:string label:value="Select All" /></li>
-      <li><!-- separator --></li>
-      <li><var:string label:value="Attach File(s)..." /></li>
-      <li><var:string label:value="Attach Web Page..." /></li>
-    </ul>
   </div>
 
   <div class="menu" id="optionsMenu">
@@ -101,20 +93,11 @@
   </div>
 
   <div id="rightPanel">
-  <form const:href="" name="pageform" enctype="multipart/form-data" autocomplete="off">
+  <form href="save" name="pageform" enctype="multipart/form-data" autocomplete="off">
     <input type="hidden" name="priority" id="priority" var:value="priority"/>
     <input type="hidden" name="receipt" id="receipt" var:value="receipt"/>
     <input type="hidden" name="isHTML" id="isHTML" var:value="isHTML"/>
 
-    <div id="attachmentsArea">
-      <var:string label:value="Attachments:" />
-      <ul id="attachments">
-	<var:foreach list="attachmentNames" item="attachmentName"
-	  ><li var:title="attachmentName"><img rsrc:src="attachment.gif"
-	      /><var:string value="attachmentName"
-	      /></li></var:foreach>
-      </ul>
-    </div>
     <div id="headerArea">
       <span class="headerField" const:id="fromField"><var:string label:value="From" />:</span>
       <var:popup const:name="from" const:id="fromSelect"
@@ -126,19 +109,23 @@
 	<var:component className="UIxMailToSelection"
 	  to="to" cc="cc" bcc="bcc" />
       </div>
-      <div class="addressListElement" id="subjectRow"
-	><span class="headerField"><var:string label:value="Subject"
-	    />:</span
-	  >
-	<input name="subject"
-	  type="text"
-	  class="textField"
-	  var:value="subject"
-	  /></div>
-      <!-- separator line --><hr class="fieldSeparator"/>
-    </div>
-    <textarea id="text" name="text" rows="30" var:value="text"></textarea>
-    <!-- img rsrc:src="tbird_073_compose.png" alt="screenshot" / -->
+      <div id="subjectRow">
+        <span class="headerField"><var:string label:value="Subject"/>:</span>
+        <input name="subject" type="text" class="textField" var:value="subject"/>
+      </div>
+      <div id="fileupload">
+        <ul id="attachments">
+          <li class="attachButton"><span class="button fileinput-button"><span><img rsrc:src="title_attachment_14x14.png" /> <var:string label:value="Attach"/></span><input id="fileUpload" type="file" name="attachments" tabindex="-1" multiple="multiple"/></span></li>
+          <var:foreach list="attachmentAttrs" item="attachment"
+          ><li class="progressDone" var:data-filename="attachment.filename">
+            <i class="icon-attachment"><!-- icon --></i><a var:href="attachment.url" target="_new"><var:string value="attachment.filename"/></a><span class="muted">(<var:string value="attachment.size" formatter="sizeFormatter" />)</span>
+          </li></var:foreach>
+        </ul>
+      </div>
+    </div><!-- #headerArea -->
+    <textarea id="text" name="text" rows="25" style="display:none" var:value="text"/>
   </form>
   </div>
+
+  <div id="dropZone" style="display: none;"><!-- dropzone --></div>
 </var:component>

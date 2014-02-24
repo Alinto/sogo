@@ -183,7 +183,7 @@ TABLE#freeBusyHeader TR.freeBusyHeader3 SPAN.freeBusyZoneElement.busy
 TABLE#freeBusyData TD SPAN.freeBusyZoneElement
 { height: 24px; }
 
-SPAN.colorBox.free,
+.colorBox.free,
 TABLE#freeBusyData TD SPAN.freeBusyZoneElement
 { background-color: #ebebe4; }
 
@@ -215,27 +215,19 @@ DIV#legend LI
   margin: 0px;
   padding: 0px; }
 
-UL.freebusy-legend SPAN.colorBox
-{ float: left;
-  margin-top: 5px;
-  margin-right: 2px;
-  display: block;
-  border: 1px solid #999;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #eee;
-  width: 32px;
-  height: 10px; }
+#legend .colorBox
+{ border: 1px solid #fff;
+  cursor: default; }
 
-SPAN.colorBox.busy,
+.colorBox.busy,
 SPAN.freeBusyZoneElement.busy
 { background-color: #35556b !important; }
 
-SPAN.colorBox.maybe-busy,
+.colorBox.maybe-busy,
 SPAN.freeBusyZoneElement.maybe-busy
 { background-color: #adc0d0 !important; }
 
-SPAN.colorBox.noFreeBusy,
+.colorBox.noFreeBusy,
 TABLE#freeBusyData TD.noFreeBusy
 { background-color: #e09ebd; }
 

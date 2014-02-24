@@ -573,17 +573,27 @@ static iCalEvent *iCalEventK = nil;
     }
   grantedCount = [grantedClasses count];
   if (grantedCount == 3)
-    filter = @"";
+    {
+      // User have access to all three classifications
+      filter = @"";
+    }
   else if (grantedCount == 2)
-    filter
-      = [NSString stringWithFormat: @"c_classification != %@",
-                  [deniedClasses objectAtIndex: 0]];
+    {
+      // User has access to all but one of the classifications
+      filter = [NSString stringWithFormat: @"c_classification != %@",
+                         [deniedClasses objectAtIndex: 0]];
+    }
   else if (grantedCount == 1)
-    filter
-      = [NSString stringWithFormat: @"c_classification = %@",
-                  [grantedClasses objectAtIndex: 0]];
+    {
+      // User has access to only one classification
+      filter = [NSString stringWithFormat: @"c_classification = %@",
+                         [grantedClasses objectAtIndex: 0]];
+    }
   else
-    filter = nil;
+    {
+      // User has access to no classification
+      filter = nil;
+    }
 
   return filter;
 }
@@ -676,7 +686,6 @@ static iCalEvent *iCalEventK = nil;
         qualifier = nil;
 
       /* fetch non-recurrent apts first */
-
       records = [folder fetchFields: fields matchingQualifier: qualifier];
     }
   else
@@ -871,7 +880,6 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSCalendarDate *recurrenceId;
   NSMutableDictionary *newRecord;
-  NSDictionary *oldRecord;
   NGCalendarDateRange *newRecordRange;
   NSComparisonResult compare;
   int recordIndex, secondsOffsetFromGMT;
@@ -2533,7 +2541,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
   unsigned int permStrIndex;
 
   [super initializeQuickTablesAclsInContext: localContext];
-  /* We assume "userIsOwner" will be set after calling the super method. */
+  /* We assume "userCanAccessAllObjects" will be set after calling the super method. */
   if (!userCanAccessAllObjects)
     {
       login = [[localContext activeUser] login];
@@ -3123,6 +3131,7 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
 {
   NSMutableArray *aclsForUser;
   NSArray *superAcls;
+  static NSArray *rolesClassifications = nil;
 
   superAcls = [super aclsForUser: uid forObjectAtPath: objectPathArray];
   if ([uid isEqualToString: [self defaultUserID]])
@@ -3137,14 +3146,52 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
       [aclsForUser addObject: SoRole_Authenticated];
     }
   else
-    aclsForUser = (NSMutableArray *) superAcls;
+    {
+      aclsForUser = [NSMutableArray array];
+      if (!rolesClassifications)
+        {
+          rolesClassifications =
+            [NSArray arrayWithObjects:
+                     [NSArray arrayWithObjects:
+                              SOGoCalendarRole_PublicModifier,
+                              SOGoCalendarRole_PublicResponder,
+                              SOGoCalendarRole_PublicViewer,
+                              SOGoCalendarRole_PublicDAndTViewer,
+                              nil],
+                     [NSArray arrayWithObjects:
+                              SOGoCalendarRole_ConfidentialModifier,
+                              SOGoCalendarRole_ConfidentialResponder,
+                              SOGoCalendarRole_ConfidentialViewer,
+                              SOGoCalendarRole_ConfidentialDAndTViewer,
+                              nil],
+                     [NSArray arrayWithObjects:
+                              SOGoCalendarRole_PrivateModifier,
+                              SOGoCalendarRole_PrivateResponder,
+                              SOGoCalendarRole_PrivateViewer,
+                              SOGoCalendarRole_PrivateDAndTViewer,
+                              nil],
+                     [NSArray arrayWithObject: SOGoRole_ObjectCreator],
+                     [NSArray arrayWithObject: SOGoRole_ObjectEraser],
+                     nil];
+          [rolesClassifications retain];
+        }
+      // When a user is a member of many groups for which there are access rights, multiple access rights
+      // can be returned for each classification. In this case, we only keep the highest access right.
+      int i, count = [rolesClassifications count];
+      NSString *role;
+      for (i = 0; i < count; i++)
+        {
+          role = [[rolesClassifications objectAtIndex: i] firstObjectCommonWithArray: superAcls];
+          if (role)
+            [aclsForUser addObject: role];
+        }
+    }
 
   return aclsForUser;
 }
 
 /* caldav-proxy */
-- (SOGoAppointmentProxyPermission)
-     proxyPermissionForUserWithLogin: (NSString *) login
+- (SOGoAppointmentProxyPermission) proxyPermissionForUserWithLogin: (NSString *) login
 {
   SOGoAppointmentProxyPermission permission;
   NSArray *roles;

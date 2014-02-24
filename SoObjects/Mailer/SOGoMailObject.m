@@ -52,6 +52,7 @@
 
 #import "NSString+Mail.h"
 #import "NSData+Mail.h"
+#import "NSDictionary+Mail.h"
 #import "SOGoMailFolder.h"
 #import "SOGoMailAccount.h"
 #import "SOGoMailAccounts.h"
@@ -705,9 +706,9 @@ static BOOL debugSoParts       = NO;
   return urlToPart;
 }
 
-- (void) _feedAttachmentIds: (NSMutableDictionary *) attachmentIds
-		  withInfos: (NSDictionary *) infos
-		  andPrefix: (NSString *) prefix
+- (void) _feedFileAttachmentIds: (NSMutableDictionary *) attachmentIds
+                      withInfos: (NSDictionary *) infos
+                      andPrefix: (NSString *) prefix
 {
   NSArray *parts;
   NSDictionary *currentPart;
@@ -727,14 +728,14 @@ static BOOL debugSoParts       = NO;
   for (count = 0; count < max; count++)
     {
       currentPart = [parts objectAtIndex: count];
-      [self _feedAttachmentIds: attachmentIds
-	    withInfos: currentPart
-	    andPrefix: [NSString stringWithFormat: @"%@/%d",
-				 prefix, count + 1]];
+      [self _feedFileAttachmentIds: attachmentIds
+                         withInfos: currentPart
+                         andPrefix: [NSString stringWithFormat: @"%@/%d",
+                                              prefix, count + 1]];
     }
 }
 
-- (NSDictionary *) fetchAttachmentIds
+- (NSDictionary *) fetchFileAttachmentIds
 {
   NSMutableDictionary *attachmentIds;
   NSString *prefix;
@@ -745,11 +746,120 @@ static BOOL debugSoParts       = NO;
   prefix = [[self soURL] absoluteString];
   if ([prefix hasSuffix: @"/"])
     prefix = [prefix substringToIndex: [prefix length] - 1];
-  [self _feedAttachmentIds: attachmentIds
+  [self _feedFileAttachmentIds: attachmentIds
 	withInfos: [coreInfos objectForKey: @"bodystructure"]
 	andPrefix: prefix];
 
   return attachmentIds;
+}
+
+//
+//
+//
+- (void) _fetchFileAttachmentKey: (NSDictionary *) part
+		       intoArray: (NSMutableArray *) keys
+		        withPath: (NSString *) path
+                       andPrefix: (NSString *) prefix
+{
+  NSString *filename, *mimeType, *filenameURL;
+  NSDictionary *currentFile;
+
+  filename = [part filename];
+
+  mimeType = [NSString stringWithFormat: @"%@/%@",
+		       [part objectForKey: @"type"],
+		       [part objectForKey: @"subtype"]];
+
+  if (!filename)
+      // We might end up here because of MUA that actually strips the
+      // Content-Disposition (and thus, the filename) when mails containing
+      // attachments have been forwarded. Thunderbird (2.x) does just that
+      // when forwarding mails with images attached to them (using cid:...).
+      if ([mimeType hasPrefix: @"application/"] ||
+	  [mimeType hasPrefix: @"audio/"] ||
+	  [mimeType hasPrefix: @"image/"] ||
+	  [mimeType hasPrefix: @"video/"])
+          filename = [NSString stringWithFormat: @"unknown_%@", path];
+
+  if (filename)
+    {
+      // We replace any slash by a dash since Apache won't allow encoded slashes by default.
+      // See http://httpd.apache.org/docs/2.2/mod/core.html#allowencodedslashes
+      // See [UIxMailPartViewer _filenameForAttachment:]
+      filenameURL = [[filename stringByReplacingString: @"/" withString: @"-"] stringByEscapingURL];
+      currentFile = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  filename, @"filename",
+                                  [mimeType lowercaseString], @"mimetype",
+                                  path, @"path",
+                                  [part objectForKey: @"encoding"], @"encoding",
+                                  [part objectForKey:@ "size"], @"size",
+                                  [NSString stringWithFormat: @"%@/%@", prefix, filenameURL], @"url",
+                                  [NSString stringWithFormat: @"%@/asAttachment/%@", prefix, filenameURL], @"urlAsAttachment",
+                                  nil];
+      [keys addObject: currentFile];
+    }
+}
+
+//
+//
+//
+- (void) _fetchFileAttachmentKeysInPart: (NSDictionary *) part
+                              intoArray: (NSMutableArray *) keys
+                               withPath: (NSString *) path
+                              andPrefix: (NSString *) prefix
+{
+  NSMutableDictionary *currentPart;
+  NSString *newPath;
+  NSArray *subparts;
+  NSString *type;
+  NSUInteger i;
+
+  type = [[part objectForKey: @"type"] lowercaseString];
+  if ([type isEqualToString: @"multipart"])
+    {
+      subparts = [part objectForKey: @"parts"];
+      for (i = 1; i <= [subparts count]; i++)
+	{
+	  currentPart = [subparts objectAtIndex: i-1];
+	  if (path)
+	    newPath = [NSString stringWithFormat: @"%@.%d", path, i];
+	  else
+	    newPath = [NSString stringWithFormat: @"%d", i];
+	  [self _fetchFileAttachmentKeysInPart: currentPart
+                                     intoArray: keys
+                                      withPath: newPath
+                                     andPrefix: [NSString stringWithFormat: @"%@/%i", prefix, i]];
+	}
+    }
+  else
+    {
+      if (!path)
+        path = @"1";
+      [self _fetchFileAttachmentKey: part
+                          intoArray: keys
+                           withPath: path
+                          andPrefix: prefix];
+    }
+}
+
+//
+//
+//
+#warning we might need to handle parts with a "name" attribute
+- (NSArray *) fetchFileAttachmentKeys
+{
+  NSString *prefix;
+  NSMutableArray *keys;
+
+  prefix = [[self soURL] absoluteString];
+  if ([prefix hasSuffix: @"/"])
+    prefix = [prefix substringToIndex: [prefix length] - 1];
+
+  keys = [NSMutableArray array];
+  [self _fetchFileAttachmentKeysInPart: [self bodyStructure]
+                             intoArray: keys withPath: nil andPrefix: prefix];
+
+  return keys;
 }
 
 /* convert parts to strings */
@@ -1353,7 +1463,7 @@ static BOOL debugSoParts       = NO;
 
 - (BOOL) hasAttachment
 {
-  return ([[self fetchAttachmentIds] count] > 0);
+  return ([[self fetchFileAttachmentKeys] count] > 0);
 }
 
 - (BOOL) isNewMail

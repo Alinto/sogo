@@ -25,6 +25,9 @@
 #import <Foundation/NSTimeZone.h>
 
 #import <NGImap4/NSString+Imap4.h>
+#import <NGObjWeb/WOApplication.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WEClientCapabilities.h>
 
 #import "NSString+Utilities.h"
 #import "SOGoDomainDefaults.h"
@@ -51,6 +54,8 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   SOGoUserProfile *up;
   SOGoUserDefaults *ud;
   SOGoDefaultsSource *parent;
+  WOContext *context;
+  WEClientCapabilities *cc;
   static Class SOGoUserProfileKlass = Nil;
 
   if (!SOGoUserProfileKlass)
@@ -59,35 +64,21 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   up = [SOGoUserProfileKlass userProfileWithType: SOGoUserProfileTypeDefaults
                                           forUID: userId];
   [up fetchProfile];
-  // if ([_defaults values])
-  //   {
-      // BOOL b;
-      // b = NO;
-
-      // if (![[_defaults stringForKey: @"MessageCheck"] length])
-      //   {
-      //     [_defaults setObject: defaultMessageCheck forKey: @"MessageCheck"];
-      //     b = YES;
-      //   }
-      // if (![[_defaults stringForKey: @"TimeZone"] length])
-      //   {
-      //     [_defaults setObject: [serverTimeZone name] forKey: @"TimeZone"];
-      //     b = YES;
-      //   }
-      
-      // if (b)
-      //   [_defaults synchronize];
-      
-
-      // See explanation in -language
-      // [self invalidateLanguage];
-    // }
 
   parent = [SOGoDomainDefaults defaultsForDomain: domainId];
   if (!parent)
     parent = [SOGoSystemDefaults sharedSystemDefaults];
 
   ud = [self defaultsSourceWithSource: up andParentSource: parent];
+
+  // CKEditor (the HTML editor) is no longer compatible with IE7;
+  // force the user to use the plain text editor with IE7
+  context = [[WOApplication application] context];
+  cc = [[context request] clientCapabilities];
+  if ([cc isInternetExplorer] && [cc majorVersion] < 8)
+    {
+      [ud setObject: @"text" forKey: @"SOGoMailComposeMessageType"];
+    }
 
   return ud;
 }
@@ -706,34 +697,14 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return [self stringForKey: @"SOGoCalendarTasksDefaultClassification"];
 }
 
-- (void) setReminderEnabled: (BOOL) newValue
+- (void) setCalendarDefaultReminder: (NSString *) newValue
 {
-  [self setBool: newValue forKey: @"SOGoReminderEnabled"];
+  [self setObject: newValue forKey: @"SOGoCalendarDefaultReminder"];
 }
 
-- (BOOL) reminderEnabled
+- (NSString *) calendarDefaultReminder
 {
-  return [self boolForKey: @"SOGoReminderEnabled"];
-}
-
-- (void) setReminderTime: (NSString *) newValue
-{
-  [self setObject: newValue forKey: @"SOGoReminderTime"];
-}
-
-- (NSString *) reminderTime
-{
-  return [self stringForKey: @"SOGoReminderTime"];
-}
-
-- (void) setRemindWithASound: (BOOL) newValue
-{
-  [self setBool: newValue forKey: @"SOGoRemindWithASound"];
-}
-
-- (BOOL) remindWithASound
-{
-  return [self boolForKey: @"SOGoRemindWithASound"];
+  return [self stringForKey: @"SOGoCalendarDefaultReminder"];
 }
 
 //

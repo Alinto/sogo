@@ -104,24 +104,6 @@ div#headerArea div.addressList
   overflow: auto;
   overflow-x: hidden; }
 
-div#attachmentsArea
-{ display: none;
-  float: right;
-  width: 200px;
-  padding: 2px 5px 0;
-  margin: auto;
-  border-left: 1px solid #888; }
-
-hr.fieldSeparator
-{ background-color: #848284;
-  border: 0;
-  clear: both;
-  color: #848284;
-  height: 1px;
-  margin: 0px;
-  padding: 0px;
-  width: 100%; }
-
 input.currentAttachment
 { position: fixed;
   top: 1em;
@@ -131,30 +113,42 @@ input.attachment
 { position: absolute;
   left: -1000px; }
 
-div#compose_attachments_list
-{ background-color: #ffffff;
-  margin-left: 0px;
-  padding: 2px;
-  border-bottom: 1px solid #fff;
-  border-right: 1px solid #fff;
-  border-top: 2px solid #222;
-  border-left: 2px solid #222;
-  -moz-border-top-colors: #9c9a94 #000 transparent;
-  -moz-border-left-colors: #9c9a94 #000 transparent; }
+#dropZone
+{ position: absolute;
+  background: #000 url('upload_document.png') no-repeat center center;
+  opacity: 0.6;
+  border: 4px dashed #fff;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  z-index: 999; }
+
+#dropZone div
+{ position: absolute;
+  color: #fff;
+  font-size: 18px;
+  height: 100px;
+  width: 300px;
+  margin: 60px 0 0 -150px;
+  left: 50%;
+  top: 50%;
+  text-align: center;
+}
+
+#fileupload {
+  margin-top: 5px;
+  clear: both;
+}
+
+.button.fileinput-button
+{ display: inline-block;
+  float: none; }
 
 UL#attachments
 { cursor: default;
   margin: 0px;
   padding: 0px;
-  height: 100%;
-  border-bottom: 1px solid #eee;
-  border-right: 1px solid #eee;
-  border-top: 1px solid #222;
-  border-left: 1px solid #222;
-  background-color: #CCDDEC;
-  background-image: url("input_bg.gif");
-  -moz-border-top-colors: #9c9a94 #000 transparent;
-  -moz-border-left-colors: #9c9a94 #000 transparent;
   list-style-type: none;
   list-style-image: none;
   overflow: auto;
@@ -163,18 +157,53 @@ UL#attachments
   -khtml-user-select: none; }
 
 UL#attachments LI
+{ float: left; }
+
+UL#attachments LI[data-filename]
 { white-space: nowrap;
-  padding-bottom: 1px; }
+  line-height: 18px;
+  margin: 3px 6px; }
+
+UL#attachments LI[data-filename] SPAN
+{ margin-left: 5px; }
+
+UL#attachments LI[data-filename] A,
+UL#attachments LI[data-filename] SPAN
+{ padding-left: 2px;
+  vertical-align: top; }
 
 UL#attachments LI IMG
-{ vertical-align: bottom; }
+{ vertical-align: top; }
+
+UL#attachments .icon-attachment
+{ background: url('attachment.png') no-repeat top left;
+  display: inline-block;
+  width: 16px;
+  height: 16px; }
+UL#attachments .progress0 .icon-attachment
+{ background-position: 0px 0px; }
+UL#attachments .progress1 .icon-attachment
+{ background-position: -16px 0px; }
+UL#attachments .progress2 .icon-attachment
+{ background-position: -32px 0px; }
+UL#attachments .progress3 .icon-attachment
+{ background-position: -48px 0px; }
+UL#attachments .progress4 .icon-attachment
+{ background-position: -64px 0px; }
+UL#attachments .progressDone .icon-attachment
+{ background-position: -80px 0px; }
+UL#attachments .progressDone .icon-attachment:hover
+{ background-position: -96px 0px;
+  cursor: pointer; }
 
 #pageContent TEXTAREA
 { width: 99%; }
 
 TEXTAREA#text
-{ display: none;
-  background: #fff; }
+{ background: #fff; }
+
+#cke_text
+{ clear: both; }
 
 /* Contacts search pane */
 

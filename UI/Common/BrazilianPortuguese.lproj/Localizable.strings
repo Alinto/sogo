@@ -101,6 +101,14 @@
 "Due Date:" = "Data:";
 "Location:" = "Localização:";
 
+/* Mail labels */
+"Important" = "Importante";
+"Work" = "Trabalho";
+"Work" = "Trabalho";
+"Personal" = "Pessoal";
+"To Do" = "Tarefa";
+"Later" = "Adiar";
+
 "a2_Sunday" = "Do";
 "a2_Monday" = "Se";
 "a2_Tuesday" = "Te";

@@ -101,6 +101,14 @@
 "Due Date:" = "Do dne:";
 "Location:" = "Místo:";
 
+/* Mail labels */
+"Important" = "Důležitý";
+"Work" = "Pracovní";
+"Work" = "Pracovní";
+"Personal" = "Osobní";
+"To Do" = "Třeba udělat";
+"Later" = "Později";
+
 "a2_Sunday" = "Ne";
 "a2_Monday" = "Po";
 "a2_Tuesday" = "Út";

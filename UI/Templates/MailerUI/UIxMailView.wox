@@ -5,14 +5,27 @@
     xmlns:uix="OGo:uix"
     xmlns:rsrc="OGo:url"
     xmlns:label="OGo:label">
+    <var:if condition="clientObject.hasAttachment">
+      <div class="menu" const:id="attachmentsMenu">
+        <ul>
+          <li><var:string label:value="Save all"/></li>
+          <li class="separator"><!-- separator --></li
+          ><var:foreach list="attachmentAttrs" item="attachment">
+          <li var:data-url="attachment.urlAsAttachment"><img rsrc:src="attachment.gif"/><var:string value="attachment.filename"
+          /> <span class="muted">(<var:string value="attachment.size" formatter="sizeFormatter"/>)</span></li>
+        </var:foreach
+        ></ul>
+      </div>
+    </var:if>
+    <span id="messageContent">
     <input type="hidden" const:id="shouldAskReceipt" var:value="shouldAskReceipt"/>
-    <var:if var:condition="mailIsDraft"
-      ><input const:name="editDraftButton" const:id="editDraftButton"
-	type="button" class="button" label:value="Edit Draft..."
-	/></var:if>
-    <input const:name="loadImagesButton" const:id="loadImagesButton"
-	type="button" class="button" label:value="Load Images"
-	/>
+    <span id="actionButtons">
+      <var:if var:condition="mailIsDraft"
+      ><a href="#" const:id="editDraftButton" class="button"><span><var:string label:value="Edit Draft..."/></span></a
+      ></var:if>
+      <a href="#" const:name="loadImagesButton" const:id="loadImagesButton"
+         class="button"><span><var:string label:value="Load Images"/></span></a>
+    </span>
     <table class="mailer_fieldtable">
       <tr class="mailer_fieldrow">
         <td class="mailer_fieldname" ><var:string label:value="Subject"/>:</td>
@@ -93,11 +106,19 @@
           </td>
         </tr>
       </var:if>
+      <var:if condition="clientObject.hasAttachment">
+        <tr class="mailer_fieldrow">
+          <td class="mailer_fieldname"><img rsrc:src="title_attachment_14x14.png"/></td>
+          <td class="mailer_fieldvalue">
+            <a href="#" const:id="attachmentsHref"><var:string value="attachmentAttrs.count"/> <var:string value="attachmentsText"/></a>
+          </td>
+        </tr>
+      </var:if>
     </table>
 
     <div class="mailer_mailcontent">
       <var:component value="contentViewerComponent"
         bodyInfo="clientObject.bodyStructure" />
     </div>
-
+  </span>
   </container>

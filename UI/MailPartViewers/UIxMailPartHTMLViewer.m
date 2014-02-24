@@ -1,10 +1,6 @@
 /* UIxMailPartHTMLViewer.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
- *         Francis Lachapelle <flachapelle@inverse.ca>
+ * Copyright (C) 2007-2013 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -546,7 +542,8 @@ static NSData* _sanitizeContent(NSData *theData)
                   else
                     skipAttribute = YES;
                 }
-              else if (([name isEqualToString: @"data"]
+              else if ([name isEqualToString: @"background"] ||
+                       ([name isEqualToString: @"data"]
                         || [name isEqualToString: @"classid"])
                        && [lowerName isEqualToString: @"object"])
                 {
@@ -843,7 +840,7 @@ static NSData* _sanitizeContent(NSData *theData)
              createXMLReaderForMimeType: @"text/html"];
 
   handler = [_UIxHTMLMailContentHandler new];
-  [handler setAttachmentIds: [mail fetchAttachmentIds]];
+  [handler setAttachmentIds: [mail fetchFileAttachmentIds]];
 
   // We check if we got an unsupported charset. If so
   // we convert everything to UTF-16{LE,BE} so it passes
@@ -951,7 +948,7 @@ static NSData* _sanitizeContent(NSData *theData)
     encoding = @"us-ascii";
 
   handler = [_UIxHTMLMailContentHandler new];
-  [handler setAttachmentIds: [mail fetchAttachmentIds]];
+  [handler setAttachmentIds: [mail fetchFileAttachmentIds]];
 
   // We check if we got an unsupported charset. If so
   // we convert everything to UTF-16{LE,BE} so it passes

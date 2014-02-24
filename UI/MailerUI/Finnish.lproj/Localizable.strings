@@ -108,7 +108,7 @@
 "bcc"           = "Piilokopio";
 
 "Edit Draft..." = "Muokkaa luonnosta...";
-"Load Images" = "Lataa kuvia";
+"Load Images" = "Lataa kuvat";
 
 "Return Receipt" = "Vastaanottokuittaus";
 "The sender of this message has asked to be notified when you read this message. Do you with to notify the sender?" = "Viestin lähettäjä on pyytänyt lukukuittausta. Haluatko lähettää kuittauksen viestin lähettäjälle?";
@@ -165,7 +165,7 @@
 
 "SentFolderName"   = "Lähetetyt";
 "TrashFolderName"  = "Roskakori";
-"InboxFolderName"  = "Sapuneet";
+"InboxFolderName"  = "Saapuneet";
 "DraftsFolderName" = "Luonnokset";
 "SieveFolderName"  = "Suodattimet";
 "OtherUsersFolderName"   = "Muut käyttäjät";
@@ -227,11 +227,6 @@
 
 /* Label popup menu */
 "None" = "Ei mitään";
-"Important" = "Tärkeä";
-"Work" = "Työ";
-"Personal" = "Henkilökohtainen";
-"To Do" = "Tehtävä";
-"Later" = "Myöhemmin";
 
 /* Mark popup menu */
 "As Read" = "Luetuksi";

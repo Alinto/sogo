@@ -78,6 +78,14 @@
 "Due Date:" = "Dyddiad dyledus:";
 "Location:" = "Lleoliad:";
 
+/* Mail labels */
+"Important" = "Pwysig";
+"Work" = "gwaith";
+"Work" = "gwaith";
+"Personal" = "Personol";
+"To Do" = "I'w wneud";
+"Later" = "Hwyrach";
+
 "a2_Sunday" = "Su";
 "a2_Monday" = "Ll";
 "a2_Tuesday" = "Ma";

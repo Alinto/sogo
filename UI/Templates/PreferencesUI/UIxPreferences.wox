@@ -204,6 +204,13 @@
                   const:id="tasksClassification"
                   const:name="tasksClassification"
                   string="itemClassificationText" selection="tasksDefaultClassification"/></dd>
+            <dt><var:string label:value="Default reminder :"/></dt>
+            <dd><var:popup list="reminderList" item="item"
+                  const:disabledValue="-"
+                  label:noSelectionString="reminder_NONE"
+                  const:name="reminderList"
+                  const:id="reminderList"
+                  string="itemReminderText" var:selection="reminder"/></dd>
             </dl>
 
             <label><var:string label:value="Categories"/></label>

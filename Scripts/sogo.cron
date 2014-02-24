@@ -15,7 +15,7 @@
 #* * * * *      sogo	/usr/sbin/sogo-ealarms-notify
 
 # Daily backups
-#   - writes to /home/sogo/backups/ by default
+#   - writes to ~sogo/backups/ by default
 #   - will keep 31 days worth of backups by default
 #   - runs once a day by default, but can run more frequently
 #   - make sure to set the path to sogo-backup.sh correctly

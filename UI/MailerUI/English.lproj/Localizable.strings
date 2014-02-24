@@ -97,11 +97,12 @@
 "Reply-To"	= "Reply-To";
 "Add address"   = "Add address";
 
-"Attachments:" = "Attachments:";
 "Open" = "Open";
 "Select All" = "Select All";
 "Attach Web Page..." = "Attach Web Page...";
-"Attach File(s)..." = "Attach File(s)...";
+"file" = "file";
+"files" = "files";
+"Save all" = "Save all";
 
 "to"            = "To";
 "cc"            = "Cc";
@@ -227,11 +228,6 @@
 
 /* Label popup menu */
 "None" = "None";
-"Important" = "Important";
-"Work" = "Work";
-"Personal" = "Personal";
-"To Do" = "To Do";
-"Later" = "Later";
 
 /* Mark popup menu */
 "As Read" = "As Read";
@@ -285,6 +281,9 @@
 "error_missingsubject" = "The message has no subject. Are you sure you want to send it?";
 "error_missingrecipients" = "Please specify at least one recipient.";
 "Send Anyway" = "Send Anyway";
+"Error while saving the draft:" = "Error while saving the draft:";
+"Error while uploading the file \"%{0}\":" = "Error while uploading the file \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "There is an active file upload. Closing the window will interrupt it.";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Cannot send message: all recipients are invalid.";
