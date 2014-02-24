@@ -14,7 +14,7 @@ New features
 Enhancements
  - we now automatically convert <img src=data...> into file attachments
    using CIDs to prevent Outlook issues
- - updated French and Finnish translations
+ - updated French, Finnish, Polish, German, Russian, and Spanish (Spain) translations
  - XMLHttpRequest.js is now loaded conditionaly (< IE9)
  - format time in attendees invitation window according to the user's locale
  - improved IE11 support

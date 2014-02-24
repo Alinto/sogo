@@ -111,18 +111,22 @@
 "personalCalendar" = "Kalendarz osobisty";
 "firstCalendar" = "Pierwszy kalendarz";
 
-"reminder_5_MINUTES_BEFORE" = "5 minut";
-"reminder_10_MINUTES_BEFORE" = "10 minut";
-"reminder_15_MINUTES_BEFORE" = "15 minut";
-"reminder_30_MINUTES_BEFORE" = "30 minut";
-"reminder_1_HOUR_BEFORE" = "1 godzina";
-"reminder_2_HOURS_BEFORE" = "2 godziny";
-"reminder_5_HOURS_BEFORE"= "5 godziny";
-"reminder_15_HOURS_BEFORE"= "15 godzin";
-"reminder_1_DAY_BEFORE" = "1 dzień";
-"reminder_2_DAYS_BEFORE" = "2 dni";
+"reminder_NONE" = "Nie przypominaj";
+"reminder_5_MINUTES_BEFORE" = "5 minut wcześniej";
+"reminder_10_MINUTES_BEFORE" = "10 minut wcześniej";
+"reminder_15_MINUTES_BEFORE" = "15 minut wcześniej";
+"reminder_30_MINUTES_BEFORE" = "30 minut wcześniej";
+"reminder_45_MINUTES_BEFORE" = "45 minut wcześniej";
+"reminder_1_HOUR_BEFORE" = "1 godzinę wcześniej";
+"reminder_2_HOURS_BEFORE" = "2 godziny wcześniej";
+"reminder_5_HOURS_BEFORE" = "5 godzin wcześniej";
+"reminder_15_HOURS_BEFORE" = "15 godzin wcześniej";
+"reminder_1_DAY_BEFORE" = "1 dzień wcześniej";
+"reminder_2_DAYS_BEFORE" = "2 dni wcześniej";
+"reminder_1_WEEK_BEFORE" = "1 tydzień wcześniej";
 
 /* Mailer */
+"Labels" = "Etykiety";
 "Label" = "Etykieta";
 "Show subscribed mailboxes only" = "Pokaż tylko subskrybowane konta pocztowe";
 "Sort messages by threads" = "Sortuj wiadomości według wątków";
@@ -261,6 +265,7 @@
 "To or Cc" = "Do lub DW";
 "Size (Kb)" = "Rozmiar (KB)";
 "Header" = "Nagłówek";
+"Body" = "Treść";
 "Flag the message with:" = "Oflaguj wiadomość:";
 "Discard the message" = "Odrzuć wiadomość";
 "File the message in:" = "Zapisz wiadomość w:";
@@ -287,12 +292,8 @@
 "Flagged" = "Oflagowane";
 "Junk" = "Śmieć";
 "Not Junk" = "Nie śmieć";
-"Label 1" = "Etykieta 1";
-"Label 2" = "Etykieta 2";
-"Label 3" = "Etykieta 3";
-"Label 4" = "Etykieta 4";
-"Label 5" = "Etykieta 5";
 
+/* Password policy */
 "The password was changed successfully." = "Hasło zostało zmienione.";
 "Password must not be empty." = "Hasło nie może być puste.";
 "The passwords do not match. Please try again." = "Hasła nie są takie same. Spróbuj ponownie.";
