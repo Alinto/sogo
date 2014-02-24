@@ -813,13 +813,14 @@ inRecurrenceExceptionsForEvent: (iCalEvent *) theEvent
     {
       // New event -- send invitation to all attendees
       attendees = [newEvent attendeesWithoutUser: ownerUser];
+
+      // We catch conflicts and abort the save process immediately
+      // in case of one with resources
+      if ((ex = [self _handleAddedUsers: attendees fromEvent: newEvent]))
+        return ex;
+
       if ([attendees count])
 	{
-	  // We catch conflicts and abort the save process immediately
-	  // in case of one with resources
-	  if ((ex = [self _handleAddedUsers: attendees fromEvent: newEvent]))
-	    return ex;
-
 	  [self sendEMailUsingTemplateNamed: @"Invitation"
 				  forObject: [newEvent itipEntryWithMethod: @"request"]
 			     previousObject: nil
