@@ -97,11 +97,12 @@
 "Reply-To"	= "Odpowiedź do";
 "Add address"   = "Dodaj adres";
 
-"Attachments:" = "Załączniki:";
 "Open" = "Otwórz";
 "Select All" = "Zaznacz wszystkie";
 "Attach Web Page..." = "Załącz stronę Web";
-"Attach File(s)..." = "Załącz plik(i)";
+"file" = "plik";
+"files" = "pliki";
+"Save all" = "Zapisz wszystkie";
 
 "to"            = "Do";
 "cc"            = "DW";
@@ -280,6 +281,9 @@
 "error_missingsubject" = "Brak tematu";
 "error_missingrecipients" = "Brak odbiorców";
 "Send Anyway" = "Wyślij mimo wszystko";
+"Error while saving the draft:" = "Błąd zapisu kopii roboczej";
+"Error while uploading the file \"%{0}\":" = "Błąd w trakcie wysyłania pliku \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Trwa przesyłanie pliku. Zamknięcie okna przerwie tą transmisję.";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Nie można wysłać wiadomości - wszyscy odbiorcy zostali odrzuceni.";

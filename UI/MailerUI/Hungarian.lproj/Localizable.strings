@@ -97,11 +97,12 @@
 "Reply-To"	= "Válaszcím";
 "Add address"   = "Cím hozzáadása";
 
-"Attachments:" = "Mellékletek:";
 "Open" = "Megnyitás";
 "Select All" = "Összes kijelölése";
 "Attach Web Page..." = "Weboldal csatolása";
-"Attach File(s)..." = "Fájl(ok) csatolása";
+"file" = "állomány";
+"files" = "állomány";
+"Save all" = "Összes mentése";
 
 "to"            = "Címzett";
 "cc"            = "Másolat";
@@ -280,6 +281,9 @@
 "error_missingsubject" = "Az üzenet tárgya hiányzik";
 "error_missingrecipients" = "Nincsenek címzettek megadva";
 "Send Anyway" = "Így küldöm el";
+"Error while saving the draft:" = "Hiba történt a piszkozat mentésekor:";
+"Error while uploading the file \"%{0}\":" = "Hiba történt a \"%{0}\" állomány feltöltésekor:";
+"There is an active file upload. Closing the window will interrupt it." = "Állomány feltöltés folyamatban. Az ablak bezárása megszakítja ezt a folyamatot.";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Az üzenetet nem lehetett elküldeni: az összes címzett érvénytelen.";

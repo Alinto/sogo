@@ -94,7 +94,7 @@
   if (html && !htmlComposition)
     rc = [raw htmlToText];
   else if (!html && htmlComposition)
-    rc = [raw stringByConvertingCRLNToHTML];
+    rc = [[raw stringByEscapingHTMLString] stringByConvertingCRLNToHTML];
   else
     rc = raw;
 
@@ -171,8 +171,8 @@
     = [NSArray arrayWithObjects: @"text/plain", @"text/html", nil];
   keys = [NSMutableArray array];
   [self addRequiredKeysOfStructure: [self bodyStructure]
-	path: @"" toArray: keys acceptedTypes: acceptedTypes
-        withPeek: NO];
+                              path: @"" toArray: keys acceptedTypes: acceptedTypes
+                          withPeek: NO];
 
   return [self _contentForEditingFromKeys: keys];
 }

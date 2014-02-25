@@ -29,6 +29,7 @@
 #import <NGCards/CardElement.h>
 #import <NGCards/NSArray+NGCards.h>
 #import <NGExtensions/NSString+Ext.h>
+#import <NGExtensions/NSString+misc.h>
 
 #import <SOGo/NSCalendarDate+SOGo.h>
 #import <SOGo/SOGoDateFormatter.h>
@@ -66,16 +67,17 @@
 
 - (NSString *) _cardStringWithLabel: (NSString *) label
                               value: (NSString *) value
-                                url: (NSString *) url
+                       asLinkScheme: (NSString *) scheme
+                 withLinkAttributes: (NSString *) attrs
 {
   NSMutableString *cardString;
 
   cardString = [NSMutableString stringWithCapacity: 80];
-  value = [value stringByReplacingString: @"\r" withString: @""];
+  value = [[value stringByReplacingString: @"\r" withString: @""] stringByEscapingHTMLString];
   if ([value length] > 0)
     {
-      if ([url length] > 0)
-        value = [NSString stringWithFormat: @"<a href=\"%@:%@\">%@</a>", url, value, value];
+      if ([scheme length] > 0)
+        value = [NSString stringWithFormat: @"<a href=\"%@%@\" %@>%@</a>", scheme, value, attrs, value];
 
       if (label)
         [cardString appendFormat: @"<dt>%@</dt><dd>%@</dd>\n",
@@ -92,7 +94,18 @@
 {
   return [self _cardStringWithLabel: label
                               value: value
-                                url: nil];
+                       asLinkScheme: nil
+                 withLinkAttributes: nil];
+}
+
+- (NSString *) _cardStringWithLabel: (NSString *) label
+                              value: (NSString *) value
+                       asLinkScheme: (NSString *) scheme
+{
+  return [self _cardStringWithLabel: label
+                              value: value
+                       asLinkScheme: scheme
+                 withLinkAttributes: nil];
 }
 
 - (NSString *) displayName
@@ -114,7 +127,7 @@
 
 - (NSString *) primaryEmail
 {
-  NSString *email, *fn, *mailTo;
+  NSString *email, *fn, *attrs;
 
   email = [card preferredEMail];
   if ([email length] > 0)
@@ -122,26 +135,28 @@
       fn = [card fn];
       fn = [fn stringByReplacingString: @"\""  withString: @""];
       fn = [fn stringByReplacingString: @"'"  withString: @"\\\'"];
-      mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
-                         @" onclick=\"return openMailTo('%@ <%@>');\">"
-                         @"%@</a>", email, fn, email, email];
+      attrs = [NSString stringWithFormat: @"onclick=\"return openMailTo('%@ <%@>');\"", fn, email];
     }
   else
-    mailTo = nil;
+    {
+      attrs = nil;
+    }
 
   return [self _cardStringWithLabel: @"Email:"
-               value: mailTo];
+                              value: email
+                       asLinkScheme: @"mailto:"
+                 withLinkAttributes: attrs];
 }
 
 - (NSArray *) secondaryEmails
 {
   NSMutableArray *secondaryEmails;
-  NSString *email, *fn, *mailTo;
+  NSString *email, *fn, *attrs;
   NSArray *emails;
 
   emails = [card secondaryEmails];
   secondaryEmails = [NSMutableArray array];
-  mailTo = nil;
+  attrs = nil;
 
   // We might not have a preferred item but rather something like this:
   // EMAIL;TYPE=work:dd@ee.com
@@ -163,18 +178,18 @@
           fn = [card fn];
           fn = [fn stringByReplacingString: @"\""  withString: @""];
           fn = [fn stringByReplacingString: @"'"  withString: @"\\\'"];
-          mailTo = [NSString stringWithFormat: @"<a href=\"mailto:%@\""
-                             @" onclick=\"return openMailTo('%@ <%@>');\">"
-                             @"%@</a>", email, fn, email, email];
+          attrs = [NSString stringWithFormat: @"onclick=\"return openMailTo('%@ <%@>');\"", fn, email];
           
           [secondaryEmails addObject: [self _cardStringWithLabel: nil
-                                                           value: mailTo]];
+                                                           value: email
+                                                    asLinkScheme: @"mailto:"
+                                              withLinkAttributes: attrs]];
         }
     }
   else
     {
       [secondaryEmails addObject: [self _cardStringWithLabel: nil
-                                        value: mailTo]];
+                                                       value: nil]];
     }
 
 
@@ -183,22 +198,19 @@
 
 - (NSString *) screenName
 {
-  NSString *screenName, *goim;
+  NSString *screenName;
 
   screenName = [[card uniqueChildWithTag: @"x-aim"] flattenedValuesForKey: @""];
-  if ([screenName length] > 0)
-    goim = [NSString stringWithFormat: @"<a href=\"aim:goim?screenname=%@\""
-		     @">%@</a>", screenName, screenName];
-  else
-    goim = nil;
 
-  return [self _cardStringWithLabel: @"Screen Name:" value: goim];
+  return [self _cardStringWithLabel: @"Screen Name:"
+                              value: screenName
+                       asLinkScheme: @"aim:goim?screenname="];
 }
 
 - (NSString *) preferredTel
 {
   return [self _cardStringWithLabel: @"Phone Number:"
-                              value: [card preferredTel] url: @"tel"];
+                              value: [card preferredTel] asLinkScheme: @"tel:"];
 }
 
 - (NSString *) preferredAddress
@@ -227,27 +239,27 @@
 {
   // We do this (exclude FAX) in order to avoid setting the WORK number as the FAX
   // one if we do see the FAX field BEFORE the WORK number.
-  return [self _cardStringWithLabel: @"Work:" value: [card workPhone] url: @"tel"];
+  return [self _cardStringWithLabel: @"Work:" value: [card workPhone] asLinkScheme: @"tel:"];
 }
 
 - (NSString *) homePhone
 {
-  return [self _cardStringWithLabel: @"Home:" value: [card homePhone] url: @"tel"];
+  return [self _cardStringWithLabel: @"Home:" value: [card homePhone] asLinkScheme: @"tel:"];
 }
 
 - (NSString *) fax
 {
-  return [self _cardStringWithLabel: @"Fax:" value: [card fax] url: @"tel"];
+  return [self _cardStringWithLabel: @"Fax:" value: [card fax] asLinkScheme: @"tel:"];
 }
 
 - (NSString *) mobile
 {
-  return [self _cardStringWithLabel: @"Mobile:" value: [card mobile] url: @"tel"];
+  return [self _cardStringWithLabel: @"Mobile:" value: [card mobile] asLinkScheme: @"tel:"];
 }
 
 - (NSString *) pager
 {
-  return [self _cardStringWithLabel: @"Pager:" value: [card pager] url: @"tel"];
+  return [self _cardStringWithLabel: @"Pager:" value: [card pager] asLinkScheme: @"tel:"];
 }
 
 - (BOOL) hasHomeInfos
@@ -328,21 +340,33 @@
 
 - (NSString *) _formattedURL: (NSString *) url
 {
-  NSString *data;
+  NSRange schemaR;
+  NSString *schema, *data;
 
   if ([url length] > 0)
     {
-      if (![[url lowercaseString] rangeOfString: @"://"].length)
-	url = [NSString stringWithFormat: @"http://%@", url];
-      
-      data = [NSString stringWithFormat:
-                         @"<a href=\"%@\" target=\"_blank\">%@</a>",
-                       url, url];
+      schemaR = [url rangeOfString: @"://"];
+      if (schemaR.length > 0)
+        {
+          schema = [url substringToIndex: schemaR.location + schemaR.length];
+          data = [url substringFromIndex: schemaR.location + schemaR.length];
+        }
+      else
+        {
+          schema = @"http://";
+          data = url;
+        }
     }
   else
-    data = nil;
+    {
+      schema = nil;
+      data = nil;
+    }
 
-  return [self _cardStringWithLabel: nil value: data];
+  return [self _cardStringWithLabel: nil
+                              value: data
+                       asLinkScheme: schema
+                 withLinkAttributes: @"target=\"_blank\""];
 }
 
 
@@ -352,8 +376,8 @@
   NSString *url;
 
   elements = [card childrenWithTag: @"url"
-                   andAttribute: @"type"
-                   havingValue: aType];
+                      andAttribute: @"type"
+                       havingValue: aType];
   if ([elements count] > 0)
     url = [[elements objectAtIndex: 0] flattenedValuesForKey: @""];
   else

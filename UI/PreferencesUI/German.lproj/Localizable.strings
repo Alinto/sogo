@@ -111,19 +111,23 @@
 "personalCalendar" = "Persönlicher Kalender";
 "firstCalendar" = "Erster eingeschalteter Kalender";
 
-"reminder_5_MINUTES_BEFORE" = "5 Minuten";
-"reminder_10_MINUTES_BEFORE" = "10 Minuten";
-"reminder_15_MINUTES_BEFORE" = "15 Minuten";
-"reminder_30_MINUTES_BEFORE" = "30 Minuten";
-"reminder_1_HOUR_BEFORE" = "1 Stunde";
-"reminder_2_HOURS_BEFORE" = "2 Stunden";
-"reminder_5_HOURS_BEFORE"= "5 Stunden";
-"reminder_15_HOURS_BEFORE"= "15 Stunden";
-"reminder_1_DAY_BEFORE" = "1 Tag";
-"reminder_2_DAYS_BEFORE" = "2 Tage";
+"reminder_NONE" = "Keine Erinnerung";
+"reminder_5_MINUTES_BEFORE" = "5 Minuten vorher";
+"reminder_10_MINUTES_BEFORE" = "10 Minuten vorher";
+"reminder_15_MINUTES_BEFORE" = "15 Minuten vorher";
+"reminder_30_MINUTES_BEFORE" = "30 Minuten vorher";
+"reminder_45_MINUTES_BEFORE" = "45 Minuten vorher";
+"reminder_1_HOUR_BEFORE" = "1 Stunde vorher";
+"reminder_2_HOURS_BEFORE" = "2 Stunden vorher";
+"reminder_5_HOURS_BEFORE" = "5 Stunden vorher";
+"reminder_15_HOURS_BEFORE" = "15 Stunden vorher";
+"reminder_1_DAY_BEFORE" = "1 Tag vorher";
+"reminder_2_DAYS_BEFORE" = "2 Tage vorher";
+"reminder_1_WEEK_BEFORE" = "1 Woche vorher";
 
 /* Mailer */
-"Label" = "Schlagwörter";
+"Labels" = "Bezeichnungen";
+"Label" = "Schlagwort";
 "Show subscribed mailboxes only" = "Nur abonnierte Ordner anzeigen";
 "Sort messages by threads" = "Nachrichten nach Thema sortieren";
 "Check for new mail:" = "Auf neue Nachrichten prüfen:";
@@ -199,7 +203,7 @@
 "Contacts" = "Adressbuch";
 "Mail" = "E-Mail";
 "Last" = "Zuletzt benutztes";
-"Default module :" = "Vorgegebenes Modul:";
+"Default module :" = "Standard Modul:";
 
 "Language :" = "Sprache :";
 "choose" = "Auswählen ...";
@@ -261,6 +265,7 @@
 "To or Cc" = "An oder CC";
 "Size (Kb)" = "Größe (KB)";
 "Header" = "Header";
+"Body" = "Inhalt";
 "Flag the message with:" = "Markiere die Nachricht als:";
 "Discard the message" = "Verwerfe die Nachricht";
 "File the message in:" = "Verschiebe die Nachricht nach:";
@@ -287,21 +292,17 @@
 "Flagged" = "Markiert";
 "Junk" = "Junk";
 "Not Junk" = "Kein Junk";
-"Label 1" = "Label 1";
-"Label 2" = "Label 2";
-"Label 3" = "Label 3";
-"Label 4" = "Label 4";
-"Label 5" = "Label 5";
 
+/* Password policy */
 "The password was changed successfully." = "Das Passwort wurde erfolgreich geändert.";
 "Password must not be empty." = "Das Passwort darf nicht leer sein.";
 "The passwords do not match. Please try again." = "Die Passwörter stimmen nicht überein. Bitte versuchen Sie es noch einmal.";
-"Password change failed" = "Passwortänderung fehlgeschlagen.";
+"Password change failed" = "Passwortänderung fehlgeschlagen";
 "Password change failed - Permission denied" = "Passwortänderung fehlgeschlagen - Zugriff verweigert";
 "Password change failed - Insufficient password quality" = "Passwortänderung fehlgeschlagen - Passwortqualität unzureichend";
 "Password change failed - Password is too short" = "Passwortänderung fehlgeschlagen - Passwort ist zu kurz";
-"Password change failed - Password is too young" = "Passwortänderung fehlgeschlagen - Passwortänderung ist zu früh";
-"Password change failed - Password is in history" = "Passwortänderung fehlgeschlagen - Passwort existiert bereits in der Historie";
+"Password change failed - Password is too young" = "Passwortänderung fehlgeschlagen - zu frühe Passwortänderung";
+"Password change failed - Password is in history" = "Passwortänderung fehlgeschlagen - Passwort wurde zuvor verwendet";
 "Unhandled policy error: %{0}" = "Unbearbeiteter Vorgabenfehler: %{0}";
 "Unhandled error response" = "Unbearbeitete Fehlerantwort";
 "Password change is not supported." = "Passwortänderung wird nicht unterstützt.";

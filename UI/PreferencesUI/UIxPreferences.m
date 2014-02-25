@@ -28,6 +28,7 @@
 #import <NGObjWeb/WOContext.h>
 #import <NGObjWeb/WORequest.h>
 
+#import <NGImap4/NGSieveClient.h>
 #import <NGImap4/NSString+Imap4.h>
 
 #import <NGExtensions/NSObject+Logs.h>
@@ -1247,7 +1248,7 @@ static NSArray *reminderValues = nil;
     {
       NSDictionary *v;
      
-      v = [[[context activeUser] userDefaults] mailLabelsColors];      
+      v = [[[context activeUser] userDefaults] mailLabelsColors];
       ASSIGN(mailLabels, [SOGoMailLabel labelsFromDefaults: v  component: self]);
     }
   

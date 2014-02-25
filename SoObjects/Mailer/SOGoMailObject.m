@@ -761,7 +761,7 @@ static BOOL debugSoParts       = NO;
 		        withPath: (NSString *) path
                        andPrefix: (NSString *) prefix
 {
-  NSString *filename, *mimeType;
+  NSString *filename, *mimeType, *filenameURL;
   NSDictionary *currentFile;
 
   filename = [part filename];
@@ -783,14 +783,18 @@ static BOOL debugSoParts       = NO;
 
   if (filename)
     {
+      // We replace any slash by a dash since Apache won't allow encoded slashes by default.
+      // See http://httpd.apache.org/docs/2.2/mod/core.html#allowencodedslashes
+      // See [UIxMailPartViewer _filenameForAttachment:]
+      filenameURL = [[filename stringByReplacingString: @"/" withString: @"-"] stringByEscapingURL];
       currentFile = [NSDictionary dictionaryWithObjectsAndKeys:
                                   filename, @"filename",
                                   [mimeType lowercaseString], @"mimetype",
                                   path, @"path",
                                   [part objectForKey: @"encoding"], @"encoding",
                                   [part objectForKey:@ "size"], @"size",
-                                  [NSString stringWithFormat: @"%@/%@", prefix, [filename stringByEscapingURL]], @"url",
-                                  [NSString stringWithFormat: @"%@/asAttachment/%@", prefix, [filename stringByEscapingURL]], @"urlAsAttachment",
+                                  [NSString stringWithFormat: @"%@/%@", prefix, filenameURL], @"url",
+                                  [NSString stringWithFormat: @"%@/asAttachment/%@", prefix, filenameURL], @"urlAsAttachment",
                                   nil];
       [keys addObject: currentFile];
     }

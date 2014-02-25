@@ -97,11 +97,12 @@
 "Reply-To"	= "Odpovědět komu";
 "Add address"   = "Přidat adresu";
 
-"Attachments:" = "Přílohy:";
 "Open" = "Otevřít";
 "Select All" = "Vybrat vše";
 "Attach Web Page..." = "Připojit WWW stránku...";
-"Attach File(s)..." = "Připojit soubor(y)...";
+"file" = "soubor";
+"files" = "soubory";
+"Save all" = "Uložit všechno";
 
 "to"            = "Komu";
 "cc"            = "Kopie";
@@ -280,6 +281,9 @@
 "error_missingsubject" = "Chybí předmět";
 "error_missingrecipients" = "Příjemci nebyli specifikováni";
 "Send Anyway" = "Odeslat";
+"Error while saving the draft:" = "Při uložení konceptu došlo k chybě:";
+"Error while uploading the file \"%{0}\":" = "Při přenosu souboru \"%{0}\" došlo k chybě:";
+"There is an active file upload. Closing the window will interrupt it." = "Přenáší se soubor. Zavření okna způsobí přerušení přenosu.";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Zprávu nelze odeslat: adresy všech příjemců jsou neplatné.";

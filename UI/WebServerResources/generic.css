@@ -348,7 +348,7 @@ UL.choiceMenu LI
 { list-style-position: inside;
   list-style-image: url("menu-nocheck.gif");
   margin: 0px;
-  padding-right: 10px; }
+  padding-right: 24px; }
 
 UL.choiceMenu LI._chosen
 { list-style-image: url("menu-check.gif"); }
@@ -361,6 +361,9 @@ UL.choiceMenu LI._chosen:hover
 .menu LI.submenu-selected
 { background-color: #7BC143;
   color: #fff; }
+
+.menu LI:hover span.muted
+{ color: #fff !important; }
 
 .menu LI.disabled:hover
 { background-color: inherit; }
@@ -746,8 +749,12 @@ DIV.dialog.none
   opacity: 1;
   margin: 100px auto; /* top margin could be dynamically set depending on window height */ }
 
-DIV.dialog.none DIV
+DIV.dialog.none > DIV
 { padding: 10px; }
+
+DIV.dialog DIV.muted
+{ font-size: smaller;
+  padding: 0; }
 
 DIV.dialog HR
 { clear: both;
@@ -771,6 +778,13 @@ DIV.dialog.none P
 DIV.dialog P.list
 { max-height: 200px;
   overflow-y: auto; }
+
+DIV.dialog UL
+{ list-style-type: none;
+  padding-left: 20px; }
+
+DIV.dialog UL LI
+{ margin-bottom: 10px; }
 
 DIV.dialog .button
 { margin-top: 10px; }

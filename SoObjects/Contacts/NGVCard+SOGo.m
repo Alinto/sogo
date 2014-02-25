@@ -164,8 +164,8 @@ convention:
 @implementation NGVCard (SOGoExtensions)
 
 /* LDIF -> VCARD */
-- (CardElement *) _elementWithTag: (NSString *) elementTag
-                           ofType: (NSString *) type
+- (CardElement *) elementWithTag: (NSString *) elementTag
+                          ofType: (NSString *) type
 {
   NSArray *elements;
   CardElement *element;
@@ -188,16 +188,16 @@ convention:
 {
   CardElement *phone;
 
-  phone = [self _elementWithTag: @"tel" ofType: @"work"];
+  phone = [self elementWithTag: @"tel" ofType: @"work"];
   [phone setSingleValue: [ldifRecord objectForKey: @"telephonenumber"] forKey: @""];
-  phone = [self _elementWithTag: @"tel" ofType: @"home"];
+  phone = [self elementWithTag: @"tel" ofType: @"home"];
   [phone setSingleValue: [ldifRecord objectForKey: @"homephone"] forKey: @""];
-  phone = [self _elementWithTag: @"tel" ofType: @"cell"];
+  phone = [self elementWithTag: @"tel" ofType: @"cell"];
   [phone setSingleValue: [ldifRecord objectForKey: @"mobile"] forKey: @""];
-  phone = [self _elementWithTag: @"tel" ofType: @"fax"];
+  phone = [self elementWithTag: @"tel" ofType: @"fax"];
   [phone setSingleValue: [ldifRecord objectForKey: @"facsimiletelephonenumber"]
                  forKey: @""];
-  phone = [self _elementWithTag: @"tel" ofType: @"pager"];
+  phone = [self elementWithTag: @"tel" ofType: @"pager"];
   [phone setSingleValue: [ldifRecord objectForKey: @"pager"] forKey: @""];
 }
 
@@ -205,9 +205,9 @@ convention:
 {
   CardElement *mail, *homeMail;
 
-  mail = [self _elementWithTag: @"email" ofType: @"work"];
+  mail = [self elementWithTag: @"email" ofType: @"work"];
   [mail setSingleValue: [ldifRecord objectForKey: @"mail"] forKey: @""];
-  homeMail = [self _elementWithTag: @"email" ofType: @"home"];
+  homeMail = [self elementWithTag: @"email" ofType: @"home"];
   [homeMail setSingleValue: [ldifRecord objectForKey: @"mozillasecondemail"] forKey: @""];
   [[self uniqueChildWithTag: @"x-mozilla-html"]
     setSingleValue: [ldifRecord objectForKey: @"mozillausehtmlmail"]
@@ -230,7 +230,7 @@ convention:
   [self setFn: [ldifRecord objectForKey: @"displayname"]];
   [self setTitle: [ldifRecord objectForKey: @"title"]];  
 
-  element = [self _elementWithTag: @"adr" ofType: @"home"];
+  element = [self elementWithTag: @"adr" ofType: @"home"];
   [element setSingleValue: [ldifRecord objectForKey: @"mozillahomestreet2"]
                   atIndex: 1 forKey: @""];
   [element setSingleValue: [ldifRecord objectForKey: @"mozillahomestreet"]
@@ -244,7 +244,7 @@ convention:
   [element setSingleValue: [ldifRecord objectForKey: @"mozillahomecountryname"]
                   atIndex: 6 forKey: @""];
 
-  element = [self _elementWithTag: @"adr" ofType: @"work"];
+  element = [self elementWithTag: @"adr" ofType: @"work"];
   [element setSingleValue: [ldifRecord objectForKey: @"mozillaworkstreet2"]
                   atIndex: 1 forKey: @""];
   [element setSingleValue: [ldifRecord objectForKey: @"street"]
@@ -268,9 +268,9 @@ convention:
 
   [self _setPhoneValues: ldifRecord];
   [self _setEmails: ldifRecord];
-  [[self _elementWithTag: @"url" ofType: @"home"]
+  [[self elementWithTag: @"url" ofType: @"home"]
     setSingleValue: [ldifRecord objectForKey: @"mozillahomeurl"] forKey: @""];
-  [[self _elementWithTag: @"url" ofType: @"work"]
+  [[self elementWithTag: @"url" ofType: @"work"]
     setSingleValue: [ldifRecord objectForKey: @"mozillaworkurl"] forKey: @""];
   
   [[self uniqueChildWithTag: @"x-aim"]
@@ -776,7 +776,7 @@ convention:
 
   bday = [self bday];
   date = nil;
-  if (bday)
+  if ([bday length] > 0)
     {
       // Expected format of BDAY is YYYY[-]MM[-]DD
       value = [bday stringByReplacingString: @"-" withString: @""];

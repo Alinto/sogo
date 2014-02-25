@@ -409,8 +409,9 @@ validate_endbeforestart    = "Angitt sluttdato inntreffer før angitt startdato.
 "Workweek days only" = "Bare arbeidsdager";
 "Tasks in View" = "Oppgaver i visning";
 
-"eventDeleteConfirmation" = "Sletting av hendelsen er permanent.\nVil du fortsette?";
-"taskDeleteConfirmation" = "Sletting av oppgaven er permanent.\nVil du fortsette?";
+"eventDeleteConfirmation" = "Sletting av hendelsen er permanent.";
+"taskDeleteConfirmation" = "Sletting av oppgaven er permanent.";
+"Would you like to continue?" = "Vil du fortsette?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Du kan ikke slette eller avbryta abonnement på en personlig kalender.";

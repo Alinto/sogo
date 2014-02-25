@@ -38,10 +38,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSString+misc.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalPerson.h>
+
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
+
+#import <Appointments/iCalEntityObject+SOGo.h>
 
 #include "iCalRecurrenceRule+ActiveSync.h"
 #include "iCalTimeZone+ActiveSync.h"
@@ -50,7 +57,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation iCalEvent (ActiveSync)
 
-- (NSString *) activeSyncRepresentation
+- (int) _attendeeStatus: (iCalPerson *) attendee
+{
+  int  attendee_status;
+  
+  attendee_status = 5;
+  if ([[attendee partStat] caseInsensitiveCompare: @"ACCEPTED"] == NSOrderedSame)
+    attendee_status = 3;
+  else if ([[attendee partStat] caseInsensitiveCompare: @"DECLINED"] == NSOrderedSame)
+    attendee_status = 4;
+  else if ([[attendee partStat] caseInsensitiveCompare: @"TENTATIVE"] == NSOrderedSame)
+    attendee_status = 2;
+
+  return attendee_status;
+}
+
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   NSMutableString *s;
   NSArray *attendees;
@@ -63,19 +85,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   s = [NSMutableString string];
   
+  [s appendFormat: @"<AllDayEvent xmlns=\"Calendar:\">%d</AllDayEvent>", ([self isAllDay] ? 1 : 0)];
+
   // DTStamp -- http://msdn.microsoft.com/en-us/library/ee219470(v=exchg.80).aspx
   if ([self timeStampAsDate])
-    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self timeStampAsDate] activeSyncRepresentationWithoutSeparators]];
+    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self timeStampAsDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
   else if ([self created])
-    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self created] activeSyncRepresentationWithoutSeparators]];
+    [s appendFormat: @"<DTStamp xmlns=\"Calendar:\">%@</DTStamp>", [[self created] activeSyncRepresentationWithoutSeparatorsInContext: context]];
   
   // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
   if ([self startDate])
-    [s appendFormat: @"<StartTime xmlns=\"Calendar:\">%@</StartTime>", [[self startDate] activeSyncRepresentationWithoutSeparators]];
+    [s appendFormat: @"<StartTime xmlns=\"Calendar:\">%@</StartTime>", [[self startDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
   
   // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
   if ([self endDate])
-    [s appendFormat: @"<EndTime xmlns=\"Calendar:\">%@</EndTime>", [[self endDate] activeSyncRepresentationWithoutSeparators]];
+    [s appendFormat: @"<EndTime xmlns=\"Calendar:\">%@</EndTime>", [[self endDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
   
   // Timezone
   tz = [(iCalDateTime *)[self firstChildWithTag: @"dtstart"] timeZone];
@@ -83,18 +107,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if (!tz)
     tz = [iCalTimeZone timeZoneForName: @"Europe/London"];
 
-  [s appendFormat: @"<TimeZone xmlns=\"Calendar:\">%@</TimeZone>", [[tz activeSyncRepresentation] stringByReplacingString: @"\n" withString: @""]];;
+  [s appendFormat: @"<TimeZone xmlns=\"Calendar:\">%@</TimeZone>", [tz activeSyncRepresentationInContext: context]];
   
-  // Organizer
+  // Organizer and other invitations related properties
   if ((organizer = [self organizer]))
     {
       o = [organizer rfc822Email];
       if ([o length])
-        [s appendFormat: @"<Organizer_Email xmlns=\"Calendar:\">%@</Organizer_Email>", o];
-
-      o = [organizer cn];
-      if ([o length])
-        [s appendFormat: @"<Organizer_Name xmlns=\"Calendar:\">%@</Organizer_Name>", o];
+        {
+          [s appendFormat: @"<Organizer_Email xmlns=\"Calendar:\">%@</Organizer_Email>", o];
+          
+          o = [organizer cn];
+          if ([o length])
+            [s appendFormat: @"<Organizer_Name xmlns=\"Calendar:\">%@</Organizer_Name>", o];
+        }
     }
   
   // Attendees
@@ -102,7 +128,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   if ([attendees count])
     {
-      int i, attendee_type, attendee_status;
+      int i, attendee_status, attendee_type;
       
       [s appendString: @"<Attendees xmlns=\"Calendar:\">"];
 
@@ -114,13 +140,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           [s appendFormat: @"<Attendee_Email xmlns=\"Calendar:\">%@</Attendee_Email>", [attendee rfc822Email]];
           [s appendFormat: @"<Attendee_Name xmlns=\"Calendar:\">%@</Attendee_Name>", [attendee cn]];
           
-          attendee_status = 5;
-          if ([[attendee partStat] caseInsensitiveCompare: @"ACCEPTED"] == NSOrderedSame)
-            attendee_status = 3;
-          else if ([[attendee partStat] caseInsensitiveCompare: @"DECLINED"] == NSOrderedSame)
-            attendee_status = 4;
-          else if ([[attendee partStat] caseInsensitiveCompare: @"TENTATIVE"] == NSOrderedSame)
-            attendee_status = 2;
+          attendee_status = [self _attendeeStatus: attendee];
             
           [s appendFormat: @"<Attendee_Status xmlns=\"Calendar:\">%d</Attendee_Status>", attendee_status];
 
@@ -135,14 +155,34 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
       [s appendString: @"</Attendees>"];
     }
+  
+  // This depends on the 'NEEDS-ACTION' parameter.
+  // This will trigger the SendMail command
+  if ([self userIsAttendee: [context activeUser]])
+    {
+      iCalPerson *attendee;
+      
+      int attendee_status;
+
+      attendee = [self userAsAttendee: [context activeUser]];
+      attendee_status = [self _attendeeStatus: attendee];
+  
+      [s appendFormat: @"<ResponseRequested xmlns=\"Calendar:\">%d</ResponseRequested>", 1];
+      [s appendFormat: @"<ResponseType xmlns=\"Calendar:\">%d</ResponseType>", attendee_status];
+      [s appendFormat: @"<MeetingStatus xmlns=\"Calendar:\">%d</MeetingStatus>", 3];
+      [s appendFormat: @"<DisallowNewTimeProposal xmlns=\"Calendar:\">%d</DisallowNewTimeProposal>", 1];
+      
+      // BusyStatus -- http://msdn.microsoft.com/en-us/library/ee202290(v=exchg.80).aspx
+      [s appendFormat: @"<BusyStatus xmlns=\"Calendar:\">%d</BusyStatus>", 2];
+    }
 
   // Subject -- http://msdn.microsoft.com/en-us/library/ee157192(v=exchg.80).aspx
   if ([[self summary] length])
-    [s appendFormat: @"<Subject xmlns=\"Calendar:\">%@</Subject>", [[self summary] stringByEscapingHTMLString]];
+    [s appendFormat: @"<Subject xmlns=\"Calendar:\">%@</Subject>", [[self summary] activeSyncRepresentationInContext: context]];
   
   // Location
   if ([[self location] length])
-    [s appendFormat: @"<Location xmlns=\"Calendar:\">%@</Location>", [[self location] stringByEscapingHTMLString]];
+    [s appendFormat: @"<Location xmlns=\"Calendar:\">%@</Location>", [[self location] activeSyncRepresentationInContext: context]];
   
   // Importance - NOT SUPPORTED - DO NOT ENABLE
   //o = [self priority];
@@ -168,23 +208,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   [s appendFormat: @"<Sensitivity xmlns=\"Calendar:\">%d</Sensitivity>", v];
   
-  // BusyStatus -- http://msdn.microsoft.com/en-us/library/ee202290(v=exchg.80).aspx
-  [s appendFormat: @"<BusyStatus xmlns=\"Calendar:\">%d</BusyStatus>", 0];
-  
   // Reminder -- http://msdn.microsoft.com/en-us/library/ee219691(v=exchg.80).aspx
   // TODO
 
   // Recurrence rules
   if ([self isRecurrent])
     {
-      [s appendString: [[[self recurrenceRules] lastObject] activeSyncRepresentation]];
+      [s appendString: [[[self recurrenceRules] lastObject] activeSyncRepresentationInContext: context]];
     }
 
   // Comment
   o = [self comment];
   if ([o length])
     {
-      o = [o stringByEscapingHTMLString];
+      o = [o activeSyncRepresentationInContext: context];
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", 1];
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
@@ -237,6 +274,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // </Change>
 //
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
+                    inContext: (WOContext *) context
 {
   iCalDateTime *start, *end;
   NSTimeZone *userTimeZone;
@@ -298,7 +336,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if ((o = [theValues objectForKey: @"TimeZone"]))
     {
       // Ugh, we ignore it for now.
-      userTimeZone = [theValues objectForKey: @"SOGoUserTimeZone"];
+      userTimeZone = [[[context activeUser] userDefaults] timeZone];
       tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
       [(iCalCalendar *) parent addTimeZone: tz];
     }
@@ -361,14 +399,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [self setRecurrenceRules: [NSArray arrayWithObject: rule]];
       RELEASE(rule);
       
-      [rule takeActiveSyncValues: o];
+      [rule takeActiveSyncValues: o  inContext: context];
     }
 
-  // Organizer
-  if ((o = [theValues objectForKey: @"Organizer_Email"]))
+  // Organizer - we don't touch the value unless we're the organizer
+  if ((o = [theValues objectForKey: @"Organizer_Email"]) &&
+      ([self userIsOrganizer: [context activeUser]] || [[context activeUser] hasEmail: o]))
     {
       iCalPerson *person;
-
+      
       person = [iCalPerson elementWithTag: @"organizer"];
       [person setEmail: o];
       [person setCn: [theValues objectForKey: @"Organizer_Name"]];
@@ -376,52 +415,56 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [self setOrganizer: person];
     }
 
-  // Attendees
-  if ((o = [theValues objectForKey: @"Attendees"]))
+  // Attendees - we don't touch the values if we're an attendee. This is gonna
+  // be done automatically by the ActiveSync client when invoking MeetingResponse.
+  if (![self userIsAttendee: [context activeUser]])
     {
-      NSMutableArray *attendees;
-      NSDictionary *attendee;
-      iCalPerson *person;
-      int status, i;
-
-      attendees = [NSMutableArray array];
-
-      for (i = 0; i < [o count]; i++)
+      if ((o = [theValues objectForKey: @"Attendees"]))
         {
-          // Each attendee has is a dictionary similar to this:
-          // { "Attendee_Email" = "sogo3@example.com"; "Attendee_Name" = "Wolfgang Fritz"; "Attendee_Status" = 5; "Attendee_Type" = 1; }
-          attendee = [o objectAtIndex: i];
-
-          person = [iCalPerson elementWithTag: @"attendee"];
-          [person setCn: [attendee objectForKey: @"Attendee_Name"]];
-          [person setEmail: [attendee objectForKey: @"Attendee_Email"]];
+          NSMutableArray *attendees;
+          NSDictionary *attendee;
+          iCalPerson *person;
+          int status, i;
           
-          status = [[attendee objectForKey: @"Attendee_Status"] intValue];
-
-          switch (status)
+          attendees = [NSMutableArray array];
+          
+          for (i = 0; i < [o count]; i++)
             {
-            case 2:
-              [person setPartStat: @"TENTATIVE"];
-              break;
-            case 3:
-              [person setPartStat: @"ACCEPTED"];
-              break;
-            case 4:
-              [person setPartStat: @"DECLINED"];
-              break;
-            case 0:
-            case 5:
-            default:
-              [person setPartStat: @"NEEDS-ACTION"];
-              break;
+              // Each attendee has is a dictionary similar to this:
+              // { "Attendee_Email" = "sogo3@example.com"; "Attendee_Name" = "Wolfgang Fritz"; "Attendee_Status" = 5; "Attendee_Type" = 1; }
+              attendee = [o objectAtIndex: i];
+              
+              person = [iCalPerson elementWithTag: @"attendee"];
+              [person setCn: [attendee objectForKey: @"Attendee_Name"]];
+              [person setEmail: [attendee objectForKey: @"Attendee_Email"]];
+              
+              status = [[attendee objectForKey: @"Attendee_Status"] intValue];
+              
+              switch (status)
+                {
+                case 2:
+                  [person setPartStat: @"TENTATIVE"];
+                  break;
+                case 3:
+                  [person setPartStat: @"ACCEPTED"];
+                  break;
+                case 4:
+                  [person setPartStat: @"DECLINED"];
+                  break;
+                case 0:
+                case 5:
+                default:
+                  [person setPartStat: @"NEEDS-ACTION"];
+                  break;
+                }
+              
+              // FIXME: handle Attendee_Type
+              
+              [attendees addObject: person];
             }
           
-          // FIXME: handle Attendee_Type
-
-          [attendees addObject: person];
+          [self setAttendees: attendees];
         }
-
-      [self setAttendees: attendees];
     }
 }
 

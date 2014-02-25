@@ -36,6 +36,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSTimeZone.h>
 
 #import <NGExtensions/NSString+misc.h>
+#import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+
+#import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserDefaults.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
@@ -46,7 +51,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation iCalToDo (ActiveSync)
 
-- (NSString *) activeSyncRepresentation
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   NSMutableString *s;
   id o;
@@ -61,21 +66,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   // DateCompleted
   if (o)
-    [s appendFormat: @"<DateCompleted xmlns=\"Tasks:\">%@</DateCompleted>", [o activeSyncRepresentation]];
+    [s appendFormat: @"<DateCompleted xmlns=\"Tasks:\">%@</DateCompleted>", [o activeSyncRepresentationInContext: context]];
   
   // Start date
   if ((o = [self startDate]))
     {
-      [s appendFormat: @"<StartDate xmlns=\"Tasks:\">%@</StartDate>", [o activeSyncRepresentation]];
-      [s appendFormat: @"<UTCStartDate xmlns=\"Tasks:\">%@</UTCStartDate>", [o activeSyncRepresentation]];
+      [s appendFormat: @"<StartDate xmlns=\"Tasks:\">%@</StartDate>", [o activeSyncRepresentationInContext: context]];
+      [s appendFormat: @"<UTCStartDate xmlns=\"Tasks:\">%@</UTCStartDate>", [o activeSyncRepresentationInContext: context]];
     }
 
   
   // Due date
   if ((o = [self due]))
     {
-      [s appendFormat: @"<DueDate xmlns=\"Tasks:\">%@</DueDate>", [o activeSyncRepresentation]];
-      [s appendFormat: @"<UTCDueDate xmlns=\"Tasks:\">%@</UTCDueDate>", [o activeSyncRepresentation]];
+      [s appendFormat: @"<DueDate xmlns=\"Tasks:\">%@</DueDate>", [o activeSyncRepresentationInContext: context]];
+      [s appendFormat: @"<UTCDueDate xmlns=\"Tasks:\">%@</UTCDueDate>", [o activeSyncRepresentationInContext: context]];
     }
   
   // Importance
@@ -97,11 +102,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // Subject
   o = [self summary];
   if ([o length])
-    [s appendFormat: @"<Subject xmlns=\"Tasks:\">%@</Subject>", [[self summary] stringByEscapingHTMLString]];
+    [s appendFormat: @"<Subject xmlns=\"Tasks:\">%@</Subject>", [[self summary] activeSyncRepresentationInContext: context]];
 
   if ((o = [self comment]))
     {
-      o = [o stringByEscapingHTMLString];
+      o = [o activeSyncRepresentationInContext: context];
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", 1]; 
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
@@ -111,11 +116,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     }
   
   return s;
-
-  return s;
 }
 
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
+                    inContext: (WOContext *) context
 {
   NSTimeZone *userTimeZone;
   iCalTimeZone *tz;
@@ -123,7 +127,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   NSInteger tzOffset;
 
-  userTimeZone = [theValues objectForKey: @"SOGoUserTimeZone"];
+  userTimeZone = [[[context activeUser] userDefaults] timeZone];
   tz = [iCalTimeZone timeZoneForName: [userTimeZone name]];
   [(iCalCalendar *) parent addTimeZone: tz];
   

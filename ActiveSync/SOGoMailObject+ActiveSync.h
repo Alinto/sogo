@@ -34,12 +34,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @class iCalCalendar;
 @class NSDictionary;
+@class WOContext;
 
 @interface SOGoMailObject (ActiveSync)
 
 - (iCalCalendar *) calendarFromIMIPMessage;
-- (NSString *) activeSyncRepresentation;
-- (void) takeActiveSyncValues: (NSDictionary *) theValues;
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context;
+- (void) takeActiveSyncValues: (NSDictionary *) theValues
+                    inContext: (WOContext *) context;
 
 @end
 

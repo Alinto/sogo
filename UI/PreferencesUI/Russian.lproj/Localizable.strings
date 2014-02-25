@@ -75,9 +75,9 @@
 "longDateFmt_1" = "%e %b. %Y";
 "longDateFmt_2" = "%e %B %Y";
 "longDateFmt_3" = "%A, %B %d, %Y";
-"longDateFmt_4" = "%B %d, %Y";
-"longDateFmt_5" = "%A, %d %B, %Y";
-"longDateFmt_6" = "%d %B, %Y";
+"longDateFmt_4" = "";
+"longDateFmt_5" = "";
+"longDateFmt_6" = "";
 "longDateFmt_7" = "";
 "longDateFmt_8" = "";
 "longDateFmt_9" = "";
@@ -85,8 +85,8 @@
 
 "timeFmt_0" = "%H:%M";
 "timeFmt_1" = "%H.%M";
-"timeFmt_2" = "%H h. %M";
-"timeFmt_3" = "%I:%M %p";
+"timeFmt_2" = "";
+"timeFmt_3" = "";
 "timeFmt_4" = "";
 
 /* calendar */
@@ -111,18 +111,22 @@
 "personalCalendar" = "Персональный календарь";
 "firstCalendar" = "Первый разрешенный календарь";
 
+"reminder_NONE" = "Нет напоминания";
 "reminder_5_MINUTES_BEFORE" = "5 минут";
 "reminder_10_MINUTES_BEFORE" = "10 минут";
 "reminder_15_MINUTES_BEFORE" = "15 минут";
 "reminder_30_MINUTES_BEFORE" = "30 минут";
+"reminder_45_MINUTES_BEFORE" = "За 45 минут";
 "reminder_1_HOUR_BEFORE" = "1 час";
 "reminder_2_HOURS_BEFORE" = "2 часа";
-"reminder_5_HOURS_BEFORE"= "5 часа";
-"reminder_15_HOURS_BEFORE"= "15 часов";
+"reminder_5_HOURS_BEFORE" = "5 часа";
+"reminder_15_HOURS_BEFORE" = "15 часов";
 "reminder_1_DAY_BEFORE" = "1 день";
 "reminder_2_DAYS_BEFORE" = "2 дня";
+"reminder_1_WEEK_BEFORE" = "За 1 неделю";
 
 /* Mailer */
+"Labels" = "Метки";
 "Label" = "Метка";
 "Show subscribed mailboxes only" = "Показывать только почтовые ящики, на которые подписан";
 "Sort messages by threads" = "Сортировать сообщения по нитям";
@@ -261,6 +265,7 @@
 "To or Cc" = "To or Cc";
 "Size (Kb)" = "Size (Kb)";
 "Header" = "Header";
+"Body" = "Тело письма";
 "Flag the message with:" = "Пометить сообщение с:";
 "Discard the message" = "Уничтожить сообщение";
 "File the message in:" = "Сохранить сообщение в:";
@@ -287,12 +292,8 @@
 "Flagged" = "Помечено флагом";
 "Junk" = "Спам";
 "Not Junk" = "Не спам";
-"Label 1" = "Label 1";
-"Label 2" = "Label 2";
-"Label 3" = "Label 3";
-"Label 4" = "Label 4";
-"Label 5" = "Label 5";
 
+/* Password policy */
 "The password was changed successfully." = "Пароль был успешно изменен.";
 "Password must not be empty." = "Пароль не должен быть пустым";
 "The passwords do not match. Please try again." = "Пароли не совпадают. Пожалуйста попробуйте заново.";

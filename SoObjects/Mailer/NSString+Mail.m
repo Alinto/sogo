@@ -20,8 +20,9 @@
 
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSObject.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSValue.h>
 
 #import <SaxObjC/SaxAttributes.h>
@@ -516,6 +517,19 @@
 
 @implementation NSString (SOGoExtension)
 
++ (NSString *) generateMessageID
+{
+  NSMutableString *messageID;
+  NSString *pGUID;
+
+  messageID = [NSMutableString string];
+  [messageID appendFormat: @"<%@", [SOGoObject globallyUniqueObjectId]];
+  pGUID = [[NSProcessInfo processInfo] globallyUniqueString];
+  [messageID appendFormat: @"@%u>", [pGUID hash]];
+
+  return [messageID lowercaseString];
+}
+
 - (NSString *) htmlToText
 {
   _SOGoHTMLContentHandler *handler;
@@ -613,8 +627,7 @@ convertChars (const char *oldString, unsigned int oldLength,
   unsigned int newLength;
 
   utf8String = [self UTF8String];
-  newString = convertChars (utf8String, strlen (utf8String),
-                            &newLength);
+  newString = convertChars (utf8String, strlen (utf8String), &newLength);
   convertedString = [[NSString alloc] initWithBytes: newString
                                              length: newLength
                                            encoding: NSUTF8StringEncoding];

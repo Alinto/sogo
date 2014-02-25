@@ -62,6 +62,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGImap4/NSString+Imap4.h>
 
 #import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeFileData.h>
 #import <NGMime/NGMimeMultipartBody.h>
 #import <NGMail/NGMimeMessageParser.h>
 #import <NGMail/NGMimeMessage.h>
@@ -78,6 +79,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserManager.h>
@@ -111,6 +113,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NSString+ActiveSync.h"
 #include "SOGoActiveSyncConstants.h"
 #include "SOGoMailObject+ActiveSync.h"
+
+#include <unistd.h>
 
 @implementation SOGoActiveSyncDispatcher
 
@@ -506,26 +510,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
              [serverId stringByEscapingURL],
              [parentId stringByEscapingURL],
              type,
-             [name stringByEscapingHTMLString]];
+             [name activeSyncRepresentationInContext: context]];
         }
 
       // We add the personal calendar - events
       // FIXME: add all calendars
       currentFolder = [[context activeUser] personalCalendarFolderInContext: context];
       name = [NSString stringWithFormat: @"vevent/%@", [currentFolder nameInContainer]];
-      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 8, [[currentFolder displayName] stringByEscapingHTMLString]];
+      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 8, [[currentFolder displayName] activeSyncRepresentationInContext: context]];
 
       // We add the personal calendar - tasks
       // FIXME: add all calendars
       currentFolder = [[context activeUser] personalCalendarFolderInContext: context];
       name = [NSString stringWithFormat: @"vtodo/%@", [currentFolder nameInContainer]];
-      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 7, [[currentFolder displayName] stringByEscapingHTMLString]];
+      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 7, [[currentFolder displayName] activeSyncRepresentationInContext: context]];
       
       // We add the personal address book
       // FIXME: add all address books
       currentFolder = [[context activeUser] personalContactsFolderInContext: context];
       name = [NSString stringWithFormat: @"vcard/%@", [currentFolder nameInContainer]];
-      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 9, [[currentFolder displayName] stringByEscapingHTMLString]];
+      [s appendFormat: @"<Add><ServerId>%@</ServerId><ParentId>%@</ParentId><Type>%d</Type><DisplayName>%@</DisplayName></Add>", name, @"0", 9, [[currentFolder displayName] activeSyncRepresentationInContext: context]];
     }
 
   [s appendString: @"</Changes></FolderSync>"];
@@ -566,20 +570,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processGetItemEstimate: (id <DOMElement>) theDocumentElement
                      inResponse: (WOResponse *) theResponse
 {
-  EOQualifier *notDeletedQualifier, *sinceDateQualifier;
   NSString *collectionId, *realCollectionId;
-  EOAndQualifier *qualifier;
-  NSCalendarDate *filter;
   id currentCollection;
   NSMutableString *s;
-  NSArray *uids;
   NSData *d;
 
   SOGoMicrosoftActiveSyncFolderType folderType;
-  int status;
+  int status, count;
 
   s = [NSMutableString string];
   status = 1;
+  count = 0;
 
   collectionId = [[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue];
   realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
@@ -592,38 +593,47 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // * SORT 124576 124577 124579 124578
   // . OK Completed (4 msgs in 0.000 secs)
   //
-  filter = [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]];
-  
-  notDeletedQualifier =  [EOQualifier qualifierWithQualifierFormat:
-                                        @"(not (flags = %@))",
-                                      @"deleted"];
-  sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
-                                      @"(DATE >= %@)", filter];
-                                                  
-  
-  qualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeletedQualifier, sinceDateQualifier,
-                                                      nil];
-  AUTORELEASE(qualifier);
-  
-  uids = [currentCollection fetchUIDsMatchingQualifier: qualifier
-                                          sortOrdering: @"REVERSE ARRIVAL"
-                                              threaded: NO];
-  
-  
+  if (folderType == ActiveSyncMailFolder)
+    {
+      EOQualifier *notDeletedQualifier, *sinceDateQualifier;
+      EOAndQualifier *qualifier;
+      NSCalendarDate *filter;
+      NSArray *uids;
+
+      filter = [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]];
+      
+      notDeletedQualifier =  [EOQualifier qualifierWithQualifierFormat:
+                                            @"(not (flags = %@))",
+                                          @"deleted"];
+      sinceDateQualifier = [EOQualifier qualifierWithQualifierFormat:
+                                          @"(DATE >= %@)", filter];
+      
+      qualifier = [[EOAndQualifier alloc] initWithQualifiers: notDeletedQualifier, sinceDateQualifier,
+                                          nil];
+      AUTORELEASE(qualifier);
+      
+      uids = [currentCollection fetchUIDsMatchingQualifier: qualifier
+                                              sortOrdering: @"REVERSE ARRIVAL"
+                                                  threaded: NO];
+      count = [uids count];
+    }
+  else
+    {
+      count = [[currentCollection toOneRelationshipKeys] count];
+    }
+      
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendFormat: @"<GetItemEstimate xmlns=\"GetItemEstimate:\"><Response><Status>%d</Status><Collection>", status];
   
-  [s appendString: @"<Class>Email</Class>"];
   [s appendFormat: @"<CollectionId>%@</CollectionId>", collectionId];
-  [s appendFormat: @"<Estimate>%d</Estimate>", [uids count]];
+  [s appendFormat: @"<Estimate>%d</Estimate>", count];
   
   [s appendString: @"</Collection></Response></GetItemEstimate>"];
 
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
   
   [theResponse setContent: d];
-
 }
 
 //
@@ -692,7 +702,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [s appendString: @"<Properties>"];
 
       [s appendFormat: @"<ContentType xmlns=\"AirSyncBase:\">%@/%@</ContentType>", [[currentBodyPart partInfo] objectForKey: @"type"], [[currentBodyPart partInfo] objectForKey: @"subtype"]];
-      [s appendFormat: @"<Data>%@</Data>", [[[currentBodyPart fetchBLOB] stringByEncodingBase64] stringByReplacingString: @"\n"  withString: @""]];
+      [s appendFormat: @"<Data>%@</Data>", [[currentBodyPart fetchBLOB] activeSyncRepresentationInContext: context]];
 
       [s appendString: @"</Properties>"];
       [s appendString: @"</Fetch>"];
@@ -725,7 +735,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processMeetingResponse: (id <DOMElement>) theDocumentElement
                      inResponse: (WOResponse *) theResponse
 {
-  NSString *realCollectionId, *requestId, *participationStatus;
+  NSString *realCollectionId, *requestId, *participationStatus, *calendarId;
+  SOGoAppointmentObject *appointmentObject;
+  SOGoMailObject *mailObject;
   NSMutableString *s;
   NSData *d;
 
@@ -739,36 +751,75 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   status = 1;
 
   realCollectionId = [[[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue] realCollectionIdWithFolderType: &folderType];
-  collection = [self collectionFromId: realCollectionId  type: ActiveSyncMailFolder];
-  
-  // 1 -> accepted, 2 -> tentative, 3 -> declined
   userResponse = [[[(id)[theDocumentElement getElementsByTagName: @"UserResponse"] lastObject] textValue] intValue];
-  requestId = [[(id)[theDocumentElement getElementsByTagName: @"RequestId"] lastObject] textValue];
+  requestId = [[(id)[theDocumentElement getElementsByTagName: @"RequestId"] lastObject] textValue];  
+  appointmentObject = nil;
+  calendarId = nil;
 
+  // Outlook 2013 calls MeetingResponse on the calendar folder! We have
+  // no way of handling as we can't retrieve the email (using the id found
+  // in requestId) in any mail folder! If that happens, let's simply
+  // assume it comes from the INBOX. This should be generally safe as people
+  // will answer email invitations as they receive them on their INBOX.
+  // Note that the mail should also still be there as MeetingResponse is
+  // called *before* MoveItems.
   //
-  // We fetch the calendar information based on the email (requestId) in the user's INBOX (or elsewhere)
-  //
-  // FIXME: that won't work too well for external invitations...
-  SOGoMailObject *mailObject;
-
-  mailObject = [collection lookupName: requestId
-                            inContext: context
-                              acquire: 0];
-  
-  if (![mailObject isKindOfClass: [NSException class]])
+  // Apple iOS will also call MeetingResponse on the calendar folder when the
+  // user accepts/declines the meeting from the Calendar application. Before
+  // falling back on INBOX, we first check if we can find the event in the 
+  // personal calendar.
+  if (folderType == ActiveSyncEventFolder)
     {
-      SOGoAppointmentObject *appointmentObject;
-      iCalCalendar *calendar;
-      iCalEvent *event;
-      
-      calendar = [mailObject calendarFromIMIPMessage];
-      event = [[calendar events] lastObject];
-      
-      // Fetch the SOGoAppointmentObject
       collection = [[context activeUser] personalCalendarFolderInContext: context];
-      appointmentObject = [collection lookupName: [NSString stringWithFormat: @"%@.ics", [event uid]]
+      appointmentObject = [collection lookupName: [requestId sanitizedServerIdWithType: ActiveSyncEventFolder]
                                        inContext: context
                                          acquire: NO];
+      calendarId = requestId;
+      
+      // Object not found, let's fallback on the INBOX folder
+      if ([appointmentObject isKindOfClass: [NSException class]])
+        {
+          folderType = ActiveSyncMailFolder;
+          realCollectionId = @"INBOX";
+          appointmentObject = nil;
+        }
+    }
+  
+  // Fetch the appointment object from the mail message
+  if (!appointmentObject)
+    {
+      collection = [self collectionFromId: realCollectionId  type: folderType];
+      
+      //
+      // We fetch the calendar information based on the email (requestId) in the user's INBOX (or elsewhere)
+      //
+      // FIXME: that won't work too well for external invitations...
+      mailObject = [collection lookupName: requestId
+                                inContext: context
+                                  acquire: 0];
+      
+      if (![mailObject isKindOfClass: [NSException class]])
+        {
+          iCalCalendar *calendar;
+          iCalEvent *event;
+
+          calendar = [mailObject calendarFromIMIPMessage];
+          event = [[calendar events] lastObject];
+          calendarId = [event uid];
+
+          // Fetch the SOGoAppointmentObject
+          collection = [[context activeUser] personalCalendarFolderInContext: context];
+          appointmentObject = [collection lookupName: [NSString stringWithFormat: @"%@.ics", [event uid]]
+                                           inContext: context
+                                             acquire: NO];
+        }
+    }
+     
+  if (appointmentObject && 
+      calendarId &&
+      (![appointmentObject isKindOfClass: [NSException class]]))
+    {
+      // 1 -> accepted, 2 -> tentative, 3 -> declined
       if (userResponse == 1)
         participationStatus = @"ACCEPTED";
       else if (userResponse == 2)
@@ -778,13 +829,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       
       [appointmentObject changeParticipationStatus: participationStatus
                                       withDelegate: nil];
-      
+
       [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
       [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
       [s appendString: @"<MeetingResponse xmlns=\"MeetingResponse:\">"];
       [s appendString: @"<Result>"];
       [s appendFormat: @"<RequestId>%@</RequestId>", requestId];
-      [s appendFormat: @"<CalendarId>%@</CalendarId>", [event uid]];
+      [s appendFormat: @"<CalendarId>%@</CalendarId>", calendarId];
       [s appendFormat: @"<Status>%d</Status>", status];
       [s appendString: @"</Result>"];
       [s appendString: @"</MeetingResponse>"];
@@ -900,19 +951,55 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 //
-// We ignore everything for now
+// Ping requests make a little sense because the request
+// doesn't contain the SyncKey on the client. So we can't 
+// really know if something has changed on the server. What we
+// do for now is simply return Status=5 with the HeartbeatInterval
+// set at 60 seconds or we wait 60 seconds before responding with
+// Status=1
 //
 - (void) processPing: (id <DOMElement>) theDocumentElement
           inResponse: (WOResponse *) theResponse
 {
+  SOGoSystemDefaults *defaults;
   NSMutableString *s;
   NSData *d;
   
+  int heartbeatInterval, defaultInterval, status;
+  
+  defaults = [SOGoSystemDefaults sharedSystemDefaults];
+  defaultInterval = [defaults maximumPingInterval];
+
+  if (theDocumentElement)
+    heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
+  else
+    heartbeatInterval = defaultInterval;
+
+  if (heartbeatInterval > defaultInterval || heartbeatInterval == 0)
+    {
+      heartbeatInterval = defaultInterval;
+      status = 5;
+    }
+  else
+    {
+      status = 1;
+    }
+
+  NSLog(@"Got Ping request with valid interval - sleeping for %d seconds.", heartbeatInterval);
+  sleep(heartbeatInterval);
+
+  // We generate our response
   s = [NSMutableString string];
   [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
   [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
   [s appendString: @"<Ping xmlns=\"Ping:\">"];
-  [s appendFormat: @"<Status>1</Status>"];
+  [s appendFormat: @"<Status>%d</Status>", status];
+
+  if (status == 5)
+    {
+      [s appendFormat: @"<HeartbeatInterval>%d</HeartbeatInterval>", heartbeatInterval];
+    }
+
   [s appendString: @"</Ping>"];
   
   d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
@@ -990,7 +1077,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               [s appendString: @"<Recipient>"];              
               [s appendFormat: @"<Type>%d</Type>", 1];
               [s appendFormat: @"<DisplayName>%@</DisplayName>", [user cn]];
-              [s appendFormat: @"<EmailAddress>%@</EmailAddress>", [user systemEmail]];
+              [s appendFormat: @"<EmailAddress>%@</EmailAddress>", [[user allEmails] objectAtIndex: 0]];
 
               // Freebusy structure: http://msdn.microsoft.com/en-us/library/gg663493(v=exchg.80).aspx
               [s appendString: @"<Availability>"];
@@ -1320,6 +1407,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       NGMimeMessageParser *parser;
       NSData *data;
 
+      NGMimeMessageGenerator *generator;
+      NGMimeBodyPart   *bodyPart;
+      NGMutableHashMap *map;
+      NGMimeFileData *fdata;
+      NSException *error;
+      id body;
+
       userFolder = [[context activeUser] homeFolderInContext: context];
       accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
       currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
@@ -1341,10 +1435,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       // We create a new MIME multipart/mixed message. The first part will be the text part
       // of our "smart forward" and the second part will be the message/rfc822 part of the
       // "smart forwarded" message.
-      NGMimeBodyPart   *bodyPart;
-      NGMutableHashMap *map;
-      id body;
-
       map = [NGHashMap hashMapWithDictionary: [messageFromSmartForward headers]];
       [map setObject: @"multipart/mixed"  forKey: @"content-type"];
 
@@ -1359,21 +1449,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [body addBodyPart: bodyPart];
 
       // Second part
-      // FIXME - SOPE (read "POS") generates garbage if we only have the content-type header
       map = [[[NGMutableHashMap alloc] initWithCapacity: 1] autorelease];
       [map setObject: @"message/rfc822" forKey: @"content-type"];
+      [map setObject: @"8bit" forKey: @"content-transfer-encoding"];
       bodyPart = [[[NGMimeBodyPart alloc] initWithHeader:map] autorelease];
-      [bodyPart setBody: [mailObject content]];
+      
+      data = [mailObject content];
+      fdata = [[NGMimeFileData alloc] initWithBytes:[data bytes]
+                                             length:[data length]];
+
+      [bodyPart setBody: fdata];
+      RELEASE(fdata);
       [body addBodyPart: bodyPart];
       [messageToSend setBody: body];
       
-      NGMimeMessageGenerator *generator;
       generator = [[[NGMimeMessageGenerator alloc] init] autorelease];
       data = [generator generateMimeFromPart: messageToSend];
             
-      NSException *error = [self _sendMail: data
-                                recipients: [messageFromSmartForward allRecipients]
-                                 saveInSentItems:  ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
+      error = [self _sendMail: data
+                   recipients: [messageFromSmartForward allRecipients]
+                    saveInSentItems:  ([(id)[theDocumentElement getElementsByTagName: @"SaveInSentItems"] count] ? YES : NO)];
       
       if (error)
         {
@@ -1432,6 +1527,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [context setObject: deviceId  forKey: @"DeviceId"];
 
   d = [[theRequest content] wbxml2xml];
+  documentElement = nil;
 
   if (!d)
     {
@@ -1464,9 +1560,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [self performSelector: aSelector  withObject: documentElement  withObject: theResponse];
 
   [theResponse setHeader: @"application/vnd.ms-sync.wbxml"  forKey: @"Content-Type"];
-  [theResponse setHeader: @"14.0"  forKey: @"MS-Server-ActiveSync"];
+  [theResponse setHeader: @"14.1"  forKey: @"MS-Server-ActiveSync"];
   [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,Provision,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
-  [theResponse setHeader: @"2.0,2.1,2.5,12.0,12.1,14.0"  forKey: @"MS-ASProtocolVersions"];
+  [theResponse setHeader: @"2.0,2.1,2.5,12.0,12.1,14.0,14.1"  forKey: @"MS-ASProtocolVersions"];
 
    RELEASE(context);
 

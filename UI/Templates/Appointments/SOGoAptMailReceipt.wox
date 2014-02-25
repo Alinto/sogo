@@ -9,48 +9,72 @@
 
   <head>
     <style type="text/css">
-.container { max-width: 600px; }
-h1 { font-size: 18px; font-weight: normal; padding-bottom: 9px; border-bottom: 1px solid #ccc; }
-.dl-horizontal dt { float: left; width: 120px; overflow: hidden; clear: left; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
-dt { font-weight: bold; line-height: 17px; }
-dt, dd { font-size: 12px; line-height: 18px; }
-dt { display: block; }
-h1, dd, .dl-list dt { margin-left: 130px; }
+th, td { font-family: Lucida Grande, Bitstream VeraSans, Tahoma, sans-serif; font-size: 12px; line-height: 18px; }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1><var:string value="aptSummary" const:escapeHTML="NO"/></h1>
-    
-      <dl class="dl-horizontal">
-        <dt><var:string label:value="calendar_label" const:escapeHTML="NO"/></dt>
-        <dd><var:string value="calendarName" const:escapeHTML="NO"/></dd>
-        <var:if condition="apt.location.length"
-        ><dt><var:string label:value="location_label" const:escapeHTML="NO"/></dt>
-        <dd><var:string value="apt.location" const:escapeHTML="NO"/></dd></var:if> 
-        <dt><var:string label:value="startDate_label" const:escapeHTML="NO"/></dt>
-        <dd><var:string value="aptStartDate" const:escapeHTML="NO"/></dd>     
-        <dt><var:string label:value="endDate_label" const:escapeHTML="NO"/></dt>
-        <dd><var:string value="aptEndDate" const:escapeHTML="NO"/></dd>
-      </dl>
+    <table cellpadding="2" cellspacing="2" border="0" style="width: 100%; max-width: 600px;">
+      <tr>
+        <th></th>
+        <td><h1 style="font-size: 18px; font-weight: normal; padding-bottom: 9px; border-bottom: 1px solid #ccc;"><var:string
+          value="aptSummary" const:escapeHTML="NO"/></h1></td>
+      </tr>
+      <tr>
+        <th align="right" style="font-weight: bold;"><var:string label:value="calendar_label" const:escapeHTML="NO"/></th>
+        <td><var:string value="calendarName" const:escapeHTML="NO"/></td>
+      </tr>
+      <var:if condition="apt.location.length"
+      ><tr>
+        <th align="right" style="font-weight: bold;"><var:string label:value="location_label" const:escapeHTML="NO"/></th>
+        <td><var:string value="apt.location" const:escapeHTML="NO"/></td>
+      </tr></var:if>
+      <tr>
+        <th align="right" style="font-weight: bold;"><var:string label:value="startDate_label" const:escapeHTML="NO"/></th>
+        <td><var:string value="aptStartDate" const:escapeHTML="NO"/></td>
+      </tr>
+      <tr>
+        <th align="right" style="font-weight: bold;"><var:string label:value="endDate_label" const:escapeHTML="NO"/></th>
+        <td><var:string value="aptEndDate" const:escapeHTML="NO"/></td>
+      </tr>
 
-      <dl class="dl-list">
-      <var:if condition="updatedAttendees.count">
-        <dt><var:string label:value="The following attendees(s) were notified:" const:escapeHTML="NO"/></dt>
-        <var:foreach list="updatedAttendees" item="currentRecipient">
-          <dd><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn" const:escapeHTML="NO"/></a></dd></var:foreach>
+      <var:if condition="updatedAttendees.count"
+      ><tr>
+        <td></td>
+        <th align="left" style="font-weight: bold; padding-top: 9px;"><var:string
+          label:value="The following attendees(s) were notified:" const:escapeHTML="NO"/></th>
+      </tr>
+      <var:foreach list="updatedAttendees" item="currentRecipient">
+      <tr>
+        <td></td>
+        <td><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn" const:escapeHTML="NO"/></a></td>
+      </tr></var:foreach>
       </var:if>
-      <var:if condition="addedAttendees.count">
-        <dt><var:string label:value="The following attendees(s) were added:" const:escapeHTML="NO"/></dt>
-        <var:foreach list="addedAttendees" item="currentRecipient">
-          <dd><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn" const:escapeHTML="NO"/></a></dd></var:foreach>
+
+      <var:if condition="addedAttendees.count"
+      ><tr>
+        <td></td>
+        <th align="left" style="font-weight: bold; padding-top: 9px;"><var:string
+          label:value="The following attendees(s) were added:" const:escapeHTML="NO"/></th>
+      </tr>
+      <var:foreach list="addedAttendees" item="currentRecipient">
+      <tr>
+        <td></td>
+        <td><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn" const:escapeHTML="NO"/></a></td>
+      </tr></var:foreach>
       </var:if>       
-      <var:if condition="deletedAttendees.count">
-        <dt><var:string label:value="The following attendees(s) were removed:" const:escapeHTML="NO"/></dt>
-        <var:foreach list="deletedAttendees" item="currentRecipient">
-          <dd><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn" const:escapeHTML="NO"/></a></dd></var:foreach>
+
+      <var:if condition="deletedAttendees.count"
+      ><tr>
+        <td></td>
+        <th align="left" style="font-weight: bold; padding-top: 9px;"><var:string
+          label:value="The following attendees(s) were removed:" const:escapeHTML="NO"/></th>
+      </tr>
+      <var:foreach list="deletedAttendees" item="currentRecipient">
+      <tr>
+        <td></td>
+        <td><a var:href="currentRecipient.email"><var:string value="currentRecipient.cn" const:escapeHTML="NO"/></a></td>
+      </tr></var:foreach>
       </var:if>
-      </dl>
-    </div>
+    </table>
   </body>
 </html>

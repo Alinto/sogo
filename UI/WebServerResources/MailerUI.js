@@ -1239,7 +1239,6 @@ function loadMessage(msguid) {
         }
     }
 
-
     configureLoadImagesButton();
     configureSignatureFlagImage();
 
@@ -1601,12 +1600,6 @@ function onEmailAddressClick(event) {
     return false;
 }
 
-function onMessageAnchorClick(event) {
-    if (this.href)
-        window.open(this.href);
-    preventDefault(event);
-}
-
 function onImageClick(event) {
     popupMenu(event, 'imageMenu', this);
     preventDefault(event);
@@ -1797,16 +1790,6 @@ function newContactFromEmail(event) {
     }
 
     return false; /* stop following the link */
-}
-
-function onEmailTo(event) {
-    var s = this.innerHTML.strip();
-    if (!/@/.test(s)) {
-        s += ' <' + this.href.substr(7) + '>';
-    }
-    openMailTo(s);
-    Event.stop(event);
-    return false;
 }
 
 function newEmailTo(sender) {

@@ -1,7 +1,8 @@
-2.1.2 (2014-01-XX)
+2.2.0 (2014-02-24)
 ------------------
 
 New features
+ - initial implementation of Microsoft ActiveSync protocol
  - it's now possible to set a default reminder for calendar components
    using SOGoCalendarDefaultReminder
  - select multiple files to attach to a message or drag'n'drop files onto the
@@ -12,8 +13,8 @@ New features
 
 Enhancements
  - we now automatically convert <img src=data...> into file attachments
-   using CIDs. This prevents Outlook issues.
- - updated French and Finnish translations
+   using CIDs to prevent Outlook issues
+ - updated French, Finnish, Polish, German, Russian, and Spanish (Spain) translations
  - XMLHttpRequest.js is now loaded conditionaly (< IE9)
  - format time in attendees invitation window according to the user's locale
  - improved IE11 support
@@ -24,6 +25,13 @@ Enhancements
  - warn user when overbooking a resource by creating an event in its calendar (#2541)
  - converted JavaScript alerts to inline CSS dialogs in appointment editor
  - visually identify users with no freebusy information in autocompletion widget of attendees editor (#2565)
+ - respect occurences of recurrent events when deleting selected events (#1950)
+ - improved confirmation dialog box when deleting events and tasks
+ - moved the DN cache to SOGoCache - avoiding sogod restarts after RDN operations
+ - don't use the HTML editor with Internet Explorer 7
+ - add message-id header to appointment notifications (#2535)
+ - detect URLs in popup of events
+ - improved display of a contact (#2350)
 
 Bug fixes
  - don't load 'background' attribute (#2437)
@@ -34,6 +42,14 @@ Bug fixes
  - simplify searches in the address book (#2187)
  - warn user when dnd failed because of a resource conflict (#1613)
  - respect the maximum number of bookings when viewing the freebusy information of a resource (#2560)
+ - encode HTML entities when forwarding an HTML message inline in plain text composition mode (#2411)
+ - encode HTML entities in JSON data (#2598)
+ - fixed handling of ACLs on shared calendars with multiple groups (#1854)
+ - fixed HTML formatting of appointment notifications for Outlook (#2233)
+ - replace slashes by dashes in filenames of attachments to avoid a 404 return code (#2537)
+ - avoid over-using LDAP connections when decomposing groups
+ - fixed display of a contact's birthday when not defined (#2503)
+ - fixed JavaScript error when switching views in calendar module (#2613)
 
 2.1.1b (2013-12-04)
 -------------------

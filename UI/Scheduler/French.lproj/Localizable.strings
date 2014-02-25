@@ -416,8 +416,9 @@ validate_endbeforestart    = "La date de fin est avant la date de début.";
 "Workweek days only" = "Semaine de travail seulement";
 "Tasks in View" = "Afficher les tâches";
 
-"eventDeleteConfirmation" = "Le ou les événements suivants seront supprimés :\n%{0}\nVoulez-vous continuer?";
-"taskDeleteConfirmation" = "Le ou les tâches suivantes seront supprimées :\n%{0}\nVoulez-vous continuer?";
+"eventDeleteConfirmation" = "Le ou les événements suivants seront supprimés :";
+"taskDeleteConfirmation" = "Le ou les tâches suivantes seront supprimées :";
+"Would you like to continue?" = "Voulez-vous continuer?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Vous ne pouvez pas supprimer ni vous désabonner de votre agenda personnel.";

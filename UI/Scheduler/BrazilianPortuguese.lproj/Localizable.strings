@@ -416,8 +416,9 @@ validate_endbeforestart    = "A data que você informou ocorre antes da data ini
 "Workweek days only" = "Somente semanas úteis";
 "Tasks in View" = "Tarefas na vista";
 
-"eventDeleteConfirmation" = "O(s) seguinte(s) evento(s) será(ão) apagado(s): \n%{0}\nGostaria de continuar?";
-"taskDeleteConfirmation" = "Apagar permanentemente esta tarefa.\nVocê gostaria de continuar?";
+"eventDeleteConfirmation" = "O(s) seguinte(s) evento(s) será(ão) apagado(s):";
+"taskDeleteConfirmation" = "Apagar permanentemente esta tarefa.";
+"Would you like to continue?" = "Gostaria de continuar?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Você não pode remover nem retirar-se do seu calendário pessoal.";

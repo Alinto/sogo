@@ -411,8 +411,9 @@ validate_endbeforestart    = "تاريخ الانتهاء الذي أدخلته 
 "Workweek days only" = "ايام العمل الأسبوعية فقط";
 "Tasks in View" = "المهمات في العرض";
 
-"eventDeleteConfirmation" = "الحدث (الأحداث) الآتية ستُمحى: \n%{0}\nهل تريد المتابعة؟";
-"taskDeleteConfirmation" = "المهمة (المهام) التالية ستمحى: \n %{0}\n هل تريد المتابعة؟";
+"eventDeleteConfirmation" = "الحدث (الأحداث) الآتية ستُمحى:";
+"taskDeleteConfirmation" = "المهمة (المهام) التالية ستمحى:";
+"Would you like to continue?" = " هل تريد المتابعة؟";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "لا يمكنك حذف أو إلغاء اشتراكك من تقويمك الشخصي.";

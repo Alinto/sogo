@@ -416,8 +416,9 @@ validate_endbeforestart    = "La fecha/hora de inicio es posterior a la de fin."
 "Workweek days only" = "Sólo días laborables";
 "Tasks in View" = "Mostrar tareas";
 
-"eventDeleteConfirmation" = "Se eliminarán el/los siguiente(s) evento(s) : \n%{0}\n¿Desea proceder?";
-"taskDeleteConfirmation" = "No se puede deshacer el borrado de esta tarea. ¿Desea continuar?";
+"eventDeleteConfirmation" = "Se eliminarán el/los siguiente(s) evento(s) :";
+"taskDeleteConfirmation" = "No se puede deshacer el borrado de esta tarea.";
+"Would you like to continue?" = "¿Desea continuar?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "No se puede quitar ni darse de baja de su calendario personal.";

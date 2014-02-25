@@ -218,11 +218,11 @@ static NSArray *privilegedTagNames = nil;
                     length: contentLength];
       free (content);
       content = NULL;
-//       NSLog (@"content: '%@'", s);
+      //NSLog(@"content: '%@'", s);
       if ([privilegedTagNames containsObject: [currentElement tag]])
         contentValues = [s vCardSubvalues];
       else
-        contentValues = [NSMutableDictionary dictionaryWithObject: [NSMutableArray arrayWithObject: [NSMutableArray arrayWithObject: s]]
+        contentValues = [NSMutableDictionary dictionaryWithObject: [NSMutableArray arrayWithObject: [s asCardAttributeValues]]
                                                            forKey: @""];
     }
   else

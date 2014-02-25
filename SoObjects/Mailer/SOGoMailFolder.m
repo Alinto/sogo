@@ -1925,6 +1925,27 @@ static NSString *defaultUserID =  @"anyone";
   return date;
 }
 
+- (NSString *) davCollectionTagFromId: (NSString *) theId
+{
+  NSString *tag;
+
+  tag = @"-1";
+
+  if ([self imap4Connection])
+    {
+      NSDictionary *result;
+      unsigned int modseq, uid;
+
+      uid = [theId intValue];
+      result = [[imap4 client] fetchModseqForUid: uid];
+      modseq = [[[[result objectForKey: @"RawResponse"]  objectForKey: @"fetch"] objectForKey: @"modseq"] intValue];
+        
+      tag = [NSString stringWithFormat: @"%d-%d", uid, modseq-1];
+    }
+
+  return tag;
+}
+
 - (NSString *) davCollectionTag
 {
   NSString *tag;
@@ -1976,9 +1997,13 @@ static NSString *defaultUserID =  @"anyone";
 //
 // Check updated items
 //
-// 
 //
 // . uid fetch 1:* (FLAGS) (changedsince 171)
+//
+// To get the modseq of a specific message:
+//
+// . uid fetch 124569:124569 uid (changedsince 1)
+//
 //
 // Deleted:  "UID FETCH 1:* (UID) (CHANGEDSINCE 171 VANISHED)"
 
@@ -2073,12 +2098,15 @@ static NSString *defaultUserID =  @"anyone";
   
 
   // We fetch deleted ones
-  uids = [self fetchUIDsOfVanishedItems: highestmodseq];
-
-  for (i = 0; i < [uids count]; i++)
+  if (highestmodseq > 0)
     {
-      d = [NSDictionary dictionaryWithObject: @"deleted"  forKey: [uids objectAtIndex: i]];
-      [allTokens addObject: d];
+      uids = [self fetchUIDsOfVanishedItems: highestmodseq];
+      
+      for (i = 0; i < [uids count]; i++)
+        {
+          d = [NSDictionary dictionaryWithObject: @"deleted"  forKey: [uids objectAtIndex: i]];
+          [allTokens addObject: d];
+        }
     }
 
   return allTokens;

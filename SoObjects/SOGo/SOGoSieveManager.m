@@ -171,11 +171,6 @@ static NSString *sieveScriptName = @"sogo";
                         @"Junk", @"junk",
                         @"NotJunk", @"not_junk",
                         @"\\Seen", @"seen",
-                        @"$Label1", @"label1",
-                        @"$Label2", @"label2",
-                        @"$Label3", @"label3",
-                        @"$Label4", @"label4",
-                        @"$Label5", @"label5",
                         nil];
       [sieveFlags retain];
     }
@@ -453,8 +448,8 @@ static NSString *sieveScriptName = @"sogo";
 
 - (NSString *) _extractSieveAction: (NSDictionary *) action
 {
-  NSString *sieveAction, *method, *requirement, *argument,
-    *flag, *mailbox;
+  NSString *sieveAction, *method, *requirement, *argument, *flag, *mailbox;
+  NSDictionary *mailLabels;
   SOGoDomainDefaults *dd;
 
   sieveAction = nil;
@@ -474,6 +469,12 @@ static NSString *sieveScriptName = @"sogo";
               if ([method isEqualToString: @"addflag"])
                 {
                   flag = [sieveFlags objectForKey: argument];
+                  if (!flag)
+                    {
+                      mailLabels = [[user userDefaults] mailLabelsColors];
+                      if ([mailLabels objectForKey: argument])
+                        flag = argument;
+                    }
                   if (flag)
                     sieveAction = [NSString stringWithFormat: @"%@ %@",
                                             method, [flag asSieveQuotedString]];

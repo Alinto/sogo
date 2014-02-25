@@ -25,6 +25,9 @@
 #import <Foundation/NSTimeZone.h>
 
 #import <NGImap4/NSString+Imap4.h>
+#import <NGObjWeb/WOApplication.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WEClientCapabilities.h>
 
 #import "NSString+Utilities.h"
 #import "SOGoDomainDefaults.h"
@@ -51,6 +54,8 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   SOGoUserProfile *up;
   SOGoUserDefaults *ud;
   SOGoDefaultsSource *parent;
+  WOContext *context;
+  WEClientCapabilities *cc;
   static Class SOGoUserProfileKlass = Nil;
 
   if (!SOGoUserProfileKlass)
@@ -65,6 +70,15 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
     parent = [SOGoSystemDefaults sharedSystemDefaults];
 
   ud = [self defaultsSourceWithSource: up andParentSource: parent];
+
+  // CKEditor (the HTML editor) is no longer compatible with IE7;
+  // force the user to use the plain text editor with IE7
+  context = [[WOApplication application] context];
+  cc = [[context request] clientCapabilities];
+  if ([cc isInternetExplorer] && [cc majorVersion] < 8)
+    {
+      [ud setObject: @"text" forKey: @"SOGoMailComposeMessageType"];
+    }
 
   return ud;
 }

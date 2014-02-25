@@ -28,6 +28,9 @@
 
 @interface NGVCard (SOGoExtensions)
 
+- (CardElement *) elementWithTag: (NSString *) elementTag
+                          ofType: (NSString *) type;
+
 - (void) updateFromLDIFRecord: (NSDictionary *) ldifRecord;
 - (NSMutableDictionary *) asLDIFRecord;
 

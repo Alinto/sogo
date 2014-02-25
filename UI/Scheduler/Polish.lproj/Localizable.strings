@@ -416,8 +416,9 @@ validate_endbeforestart    = "Podana data końca jest wcześniejsza niż data po
 "Workweek days only" = "Tylko dni powszednie";
 "Tasks in View" = "Zadania w widoku";
 
-"eventDeleteConfirmation" = "Usunięcie tego wydarzenia będzie trwałe.\nCzy chcesz kontynuować?";
-"taskDeleteConfirmation" = "Usunięcie tego zadania będzie trwałe.\nCzy chcesz kontynuować?";
+"eventDeleteConfirmation" = "Usunięcie tego wydarzenia będzie trwałe.";
+"taskDeleteConfirmation" = "Usunięcie tego zadania będzie trwałe.";
+"Would you like to continue?" = "Czy chcesz kontynuować?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Nie możesz usunąć ani zrezygnować z subskrypcji kalendarza osobistego.";

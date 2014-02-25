@@ -30,12 +30,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoMailObject+ActiveSync.h"
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalDateTime.h>
 #import <NGCards/iCalEvent.h>
+#import <NGCards/iCalPerson.h>
 #import <NGCards/iCalTimeZone.h>
 
 #import <NGExtensions/NGBase64Coding.h>
@@ -46,11 +49,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGObjWeb/WOContext+SoObjects.h>
 
 #include "iCalTimeZone+ActiveSync.h"
+#include "NSData+ActiveSync.h"
 #include "NSDate+ActiveSync.h"
 #include "NSString+ActiveSync.h"
 
-#include "../SoObjects/Mailer/NSString+Mail.h"
-#include "../SoObjects/Mailer/SOGoMailBodyPart.h"
+#include <Appointments/iCalEntityObject+SOGo.h>
+#include <Appointments/iCalPerson+SOGo.h>
+#include <Mailer/NSString+Mail.h>
+#include <Mailer/SOGoMailBodyPart.h>
 
 #include <SOGo/SOGoUser.h>
 
@@ -97,11 +103,11 @@ struct GlobalObjectId {
 //
 - (NSData *) _computeGlobalObjectIdFromEvent: (iCalEvent *) event
 {
-  NSData *binPrefix, *globalObjectId;
+  NSData *binPrefix, *globalObjectId, *uidAsASCII;
   NSString *prefix, *uid;
 
   struct GlobalObjectId newGlobalId;
-  const char *uidAsUTF8;
+  const char *bytes;
   
   prefix = @"040000008200e00074c5b7101a82e008";
 
@@ -113,13 +119,14 @@ struct GlobalObjectId {
   [binPrefix getBytes: &newGlobalId.ByteArrayID];
   [self _setInstanceDate: &newGlobalId
                 fromDate: [event recurrenceId]];
-  uidAsUTF8 = [uid UTF8String];
+  uidAsASCII = [uid dataUsingEncoding: NSASCIIStringEncoding];
+  bytes = [uidAsASCII bytes];
 
   // 0x0c is the size of our dataPrefix
-  newGlobalId.Size = 0x0c + strlen(uidAsUTF8);
+  newGlobalId.Size = 0x0c + [uidAsASCII length];
   newGlobalId.Data = malloc(newGlobalId.Size * sizeof(uint8_t));
   memcpy(newGlobalId.Data, dataPrefix, 0x0c);
-  memcpy(newGlobalId.Data + 0x0c, uidAsUTF8, newGlobalId.Size - 0x0c);
+  memcpy(newGlobalId.Data + 0x0c, bytes, newGlobalId.Size - 0x0c);
 
   globalObjectId = [[NSData alloc] initWithBytes: &newGlobalId  length: 40 + newGlobalId.Size*sizeof(uint8_t)];
   free(newGlobalId.Data);
@@ -130,39 +137,37 @@ struct GlobalObjectId {
 //
 // For debugging purposes...
 //
-// - (NSString *) _uidFromGlobalObjectId: (NSData *) objectId
-// {
-//   NSString *uid;
+- (NSString *) _uidFromGlobalObjectId: (NSData *) objectId
+{
+  NSString *uid;
 
-//   struct GlobalObjectId *newGlobalId;
-//   NSUInteger length;
-//   uint8_t *bytes;
+  struct GlobalObjectId *newGlobalId;
+  NSUInteger length;
+  uint8_t *bytes;
 
-//   length = [objectId length];
-//   uid = nil;
+  length = [objectId length];
+  uid = nil;
 
-//   bytes = malloc(length*sizeof(uint8_t));
-//   [objectId getBytes:  bytes  length: length];
+  bytes = malloc(length*sizeof(uint8_t));
+  [objectId getBytes: bytes  length: length];
 
-//   newGlobalId = bytes;
+  newGlobalId = (struct GlobalObjectId *)bytes;
 
-//   // We must take the offset (dataPrefix) into account
-//   uid = [[NSString alloc] initWithBytes: newGlobalId->Data+12  length: newGlobalId->Size-12 encoding: NSUTF8StringEncoding];
-//   free(bytes);
+  // We must take the offset (dataPrefix) into account
+  uid = [[NSString alloc] initWithBytes: newGlobalId->Data+12  length: newGlobalId->Size-12 encoding: NSASCIIStringEncoding];
+  free(bytes);
 
-//   return AUTORELEASE(uid);
-// }
-
+  return AUTORELEASE(uid);
+}
 
 //
 //
 //
 - (NSString *) _emailAddressesFrom: (NSArray *) enveloppeAddresses
 {
-  NSMutableArray *addresses;
-  NSString *rc;
   NGImap4EnvelopeAddress *address;
-  NSString *email;
+  NSMutableArray *addresses;
+  NSString *email, *rc;
   int i, max;
 
   rc = nil;
@@ -174,7 +179,7 @@ struct GlobalObjectId {
       for (i = 0; i < max; i++)
         {
           address = [enveloppeAddresses objectAtIndex: i];
-          email = [address email];
+          email = [NSString stringWithFormat: @"\"%@\" <%@>", [address personalName], [address baseEMail]];
           
           if (email)
             [addresses addObject: email];
@@ -314,10 +319,19 @@ struct GlobalObjectId {
 
               if (bodyPart)
                 {
+                  iCalCalendar *calendar;
                   NSData *calendarData;
                   
                   calendarData = [bodyPart fetchBLOB];
-                  return [iCalCalendar parseSingleFromSource: calendarData];
+                  calendar = nil;
+
+                  NS_DURING
+                    calendar = [iCalCalendar parseSingleFromSource: calendarData];
+                  NS_HANDLER
+                    calendar = nil;
+                  NS_ENDHANDLER
+
+                  return calendar;
                 }
             }
         }
@@ -329,49 +343,49 @@ struct GlobalObjectId {
 //
 //
 //
-- (NSString *) activeSyncRepresentation
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) _context
 {
   NSData *d, *globalObjId;
   NSMutableString *s;
   id value;
 
   iCalCalendar *calendar;
-
+      
   int preferredBodyType, nativeBodyType;
 
   s = [NSMutableString string];
 
-  // From
-  value = [self _emailAddressesFrom: [[self envelope] from]];
-  if (value)
-    [s appendFormat: @"<From xmlns=\"Email:\">%@</From>", [value stringByEscapingHTMLString]];
-  
   // To - "The value of this element contains one or more e-mail addresses.
   // If there are multiple e-mail addresses, they are separated by commas."
   value = [self _emailAddressesFrom: [[self envelope] to]];
   if (value)
-    [s appendFormat: @"<To xmlns=\"Email:\">%@</To>", [value stringByEscapingHTMLString]];
-  
-  // DisplayTo
-  [s appendFormat: @"<DisplayTo xmlns=\"Email:\">\"%@\"</DisplayTo>", [[context activeUser] login]];
+    [s appendFormat: @"<To xmlns=\"Email:\">%@</To>", [value activeSyncRepresentationInContext: context]];
 
-  // Cc - same syntax as the To field
-  value = [self _emailAddressesFrom: [[self envelope] cc]];
+  // From
+  value = [self _emailAddressesFrom: [[self envelope] from]];
   if (value)
-    [s appendFormat: @"<Cc xmlns=\"Email:\">%@</Cc>", [value stringByEscapingHTMLString]];
-
+    [s appendFormat: @"<From xmlns=\"Email:\">%@</From>", [value activeSyncRepresentationInContext: context]];
+  
   // Subject
   value = [self decodedSubject];
   if (value)
     {
-      [s appendFormat: @"<Subject xmlns=\"Email:\">%@</Subject>", [value stringByEscapingHTMLString]];
-      [s appendFormat: @"<ThreadTopic xmlns=\"Email:\">%@</ThreadTopic>", [value stringByEscapingHTMLString]];
+      [s appendFormat: @"<Subject xmlns=\"Email:\">%@</Subject>", [value activeSyncRepresentationInContext: context]];
+      [s appendFormat: @"<ThreadTopic xmlns=\"Email:\">%@</ThreadTopic>", [value activeSyncRepresentationInContext: context]];
     }
-  
+
   // DateReceived
   value = [self date];
   if (value)
-    [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [value activeSyncRepresentationWithoutSeparators]];
+    [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [value activeSyncRepresentationWithoutSeparatorsInContext: context]];
+
+  // DisplayTo
+  [s appendFormat: @"<DisplayTo xmlns=\"Email:\">%@</DisplayTo>", [[context activeUser] login]];
+  
+  // Cc - same syntax as the To field
+  value = [self _emailAddressesFrom: [[self envelope] cc]];
+  if (value)
+    [s appendFormat: @"<Cc xmlns=\"Email:\">%@</Cc>", [value activeSyncRepresentationInContext: context]];
     
   // Importance - FIXME
   [s appendFormat: @"<Importance xmlns=\"Email:\">%@</Importance>", @"1"];
@@ -379,43 +393,114 @@ struct GlobalObjectId {
   // Read
   [s appendFormat: @"<Read xmlns=\"Email:\">%d</Read>", ([self read] ? 1 : 0)];
   
-  
   // We handle MeetingRequest
   calendar = [self calendarFromIMIPMessage];
-
+ 
   if (calendar)
     {
+      NSString *method, *className;
+      iCalPerson *attendee;
       iCalTimeZone *tz;
       iCalEvent *event;
-      
+
+      iCalPersonPartStat partstat;
+      int v;
+
       event = [[calendar events] lastObject];
+      method = [[event parent] method];
+
+      // If we are the organizer, let's pick the attendee based on the From address
+      if ([event userIsOrganizer: [context activeUser]])
+        attendee = [event findAttendeeWithEmail: [[[[self envelope] from] lastObject] baseEMail]];
+      else
+        attendee = [event findAttendeeWithEmail: [[[context activeUser] allEmails] objectAtIndex: 0]];
+
+      partstat = [attendee participationStatus];
+
+      // We generate the correct MessageClass
+      if ([method isEqualToString: @"REQUEST"])
+        className = @"IPM.Schedule.Meeting.Request";
+      else if ([method isEqualToString: @"REPLY"])
+        {
+          switch (partstat)
+            {
+            case iCalPersonPartStatAccepted:
+              className = @"IPM.Schedule.Meeting.Resp.Pos";
+              break;
+            case iCalPersonPartStatDeclined:
+              className = @"IPM.Schedule.Meeting.Resp.Neg";
+              break;
+            case iCalPersonPartStatTentative:
+            case iCalPersonPartStatNeedsAction:
+              className = @"IPM.Schedule.Meeting.Resp.Tent";
+              break;
+            default:
+              className = @"IPM.Appointment";
+              NSLog(@"unhandled part stat");
+            }
+        }
+      else if ([method isEqualToString: @"COUNTER"])
+        className = @"IPM.Schedule.Meeting.Resp.Tent";
+      else if ([method isEqualToString: @"CANCEL"])
+        className = @"IPM.Schedule.Meeting.Cancelled";
+      else
+        className = @"IPM.Appointment";
+      
+      [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", className];
       
       [s appendString: @"<MeetingRequest xmlns=\"Email:\">"];
-      
-      if ([event timeStampAsDate])
-        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentationWithoutSeparators]];
-      else if ([event created])
-        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event created] activeSyncRepresentationWithoutSeparators]];
-      
+
+      [s appendFormat: @"<AllDayEvent xmlns=\"Email:\">%d</AllDayEvent>", ([event isAllDay] ? 1 : 0)];
+
       // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
       if ([event startDate])
-        [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentationWithoutSeparators]];
+        [s appendFormat: @"<StartTime xmlns=\"Email:\">%@</StartTime>", [[event startDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
+      
+      if ([event timeStampAsDate])
+        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event timeStampAsDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
+      else if ([event created])
+        [s appendFormat: @"<DTStamp xmlns=\"Email:\">%@</DTStamp>", [[event created] activeSyncRepresentationWithoutSeparatorsInContext: context]];
       
       // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
       if ([event endDate])
-        [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentationWithoutSeparators]];
+        [s appendFormat: @"<EndTime xmlns=\"Email:\">%@</EndTime>", [[event endDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
       
+      // FIXME: Single appointment - others are not supported right now
+      [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 0];
+
+      // Location
+      if ([[event location] length])
+        [s appendFormat: @"<Location xmlns=\"Email:\">%@</Location>", [[event location] activeSyncRepresentationInContext: context]];
+
+      [s appendFormat: @"<Organizer xmlns=\"Email:\">%@</Organizer>", [[[event organizer] mailAddress] activeSyncRepresentationInContext: context]];
+
+      // This will trigger the SendMail command. We set it to no for email invitations as
+      // SOGo will send emails when MeetingResponse is called.
+      [s appendFormat: @"<ResponseRequested xmlns=\"Email:\">%d</ResponseRequested>", 0];
+
+      // Sensitivity
+      if ([[event accessClass] isEqualToString: @"PRIVATE"])
+        v = 2;
+      if ([[event accessClass] isEqualToString: @"CONFIDENTIAL"])
+        v = 3;
+      else
+        v = 0;
+
+      [s appendFormat: @"<Sensitivity xmlns=\"Email:\">%d</Sensitivity>", v];
+      
+      [s appendFormat: @"<BusyStatus xmlns=\"Email:\">%d</BusyStatus>", 2];
+
       // Timezone
       tz = [(iCalDateTime *)[event firstChildWithTag: @"dtstart"] timeZone];
       
       if (!tz)
         tz = [iCalTimeZone timeZoneForName: @"Europe/London"];
       
-      [s appendFormat: @"<TimeZone xmlns=\"Email:\">%@</TimeZone>", [[tz activeSyncRepresentation] stringByReplacingString: @"\n" withString: @""]];;
+      [s appendFormat: @"<TimeZone xmlns=\"Email:\">%@</TimeZone>", [tz activeSyncRepresentationInContext: context]];
       
-      [s appendFormat: @"<InstanceType xmlns=\"Email:\">%d</InstanceType>", 0];
-      [s appendFormat: @"<Organizer xmlns=\"Email:\">%@</Organizer>", [[event organizer] rfc822Email]];
-      [s appendFormat: @"<ResponseRequested xmlns=\"Email:\">%d</ResponseRequested>", 1];
+
+      // We disallow new time proposals
+      [s appendFormat: @"<DisallowNewTimeProposal xmlns=\"Email:\">%d</DisallowNewTimeProposal>", 1];
       
       // From http://blogs.msdn.com/b/exchangedev/archive/2011/07/22/working-with-meeting-requests-in-exchange-activesync.aspx:
       //
@@ -423,11 +508,13 @@ struct GlobalObjectId {
       // object in the Calendar folder have to convert the GlobalObjId element value to a UID element value to make the comparison."
       //
       globalObjId = [self _computeGlobalObjectIdFromEvent: event];
-      [s appendFormat: @"<GlobalObjId xmlns=\"Email:\">%@</GlobalObjId>", [globalObjId stringByEncodingBase64]];
-      [s appendString: @"</MeetingRequest>"];      
-      
-      // MesssageClass and ContentClass
-      [s appendFormat: @"<MessageClass xmlns=\"Email:\">%@</MessageClass>", @"IPM.Schedule.Meeting.Request"];
+      [s appendFormat: @"<GlobalObjId xmlns=\"Email:\">%@</GlobalObjId>", [globalObjId activeSyncRepresentationInContext: context]];
+
+      // We set the right message type - we must set AS version to 14.1 for this
+      [s appendFormat: @"<MeetingMessageType xmlns=\"Email2:\">%d</MeetingMessageType>", 1];
+      [s appendString: @"</MeetingRequest>"];
+
+      // ContentClass
       [s appendFormat: @"<ContentClass xmlns=\"Email:\">%@</ContentClass>", @"urn:content-classes:calendarmessage"];
     }
   else
@@ -454,19 +541,29 @@ struct GlobalObjectId {
   if (d)
     {
       NSString *content;
-      int len;
-
+      int len, truncated;
+      
       content = [[NSString alloc] initWithData: d  encoding: NSUTF8StringEncoding];
+
+      // FIXME: This is a hack. We should normally avoid doing this as we might get
+      // broken encodings. We should rather tell that the data was truncated and expect
+      // a ItemOperations call to download the whole base64 encoding multipart.
+      if (!content)
+        content = [[NSString alloc] initWithData: d  encoding: NSISOLatin1StringEncoding];
+      
       AUTORELEASE(content);
-  
-      content = [content stringByEscapingHTMLString];
+      
+      content = [content activeSyncRepresentationInContext: context];
+      truncated = 0;
+    
       len = [content length];
       
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", preferredBodyType];
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", len];
       [s appendFormat: @"<Truncated>%d</Truncated>", 0];
-      [s appendFormat: @"<Data>%@</Data>", content];
+      if (!truncated)
+        [s appendFormat: @"<Data>%@</Data>", content];
       [s appendString: @"</Body>"];
     }
 
@@ -483,7 +580,7 @@ struct GlobalObjectId {
           value = [attachmentKeys objectAtIndex: i];
 
           [s appendString: @"<Attachment>"];
-          [s appendFormat: @"<DisplayName>%@</DisplayName>", [[value objectForKey: @"filename"] stringByEscapingHTMLString]];
+          [s appendFormat: @"<DisplayName>%@</DisplayName>", [[value objectForKey: @"filename"] activeSyncRepresentationInContext: context]];
 
           // FileReference must be a unique identifier across the whole store. We use the following structure:
           // mail/<foldername>/<message UID/<pathofpart>
@@ -523,6 +620,7 @@ struct GlobalObjectId {
 //
 //
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
+                    inContext: (WOContext *) _context
 {
   id o;
 
@@ -533,8 +631,7 @@ struct GlobalObjectId {
       if ([o intValue])
         [self addFlags: @"\\Flagged"];
       else
-        [self removeFlags: @"\\Flagged"];
-      
+        [self removeFlags: @"\\Flagged"]; 
     }
 }
 

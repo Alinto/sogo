@@ -32,8 +32,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Foundation/NSData.h>
 
+@class NSString;
+@class WOContext;
+
 @interface NSData (ActiveSync)
 
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context;
 - (NSData *) wbxml2xml;
 - (NSData *) xml2wbxml;
 

@@ -41,7 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 @implementation iCalRecurrenceRule (ActiveSync)
 
-- (NSString *) activeSyncRepresentation
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   NSMutableString *s;
   int type;
@@ -180,7 +180,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       //[date setTimeZone: [ud timeZone]];
       
       [s appendFormat: @"<Recurrence_Until xmlns=\"Calendar:\">%@</Recurrence_Until>",
-         [date activeSyncRepresentationWithoutSeparators]];
+         [date activeSyncRepresentationWithoutSeparatorsInContext: context]];
     }  
 
 
@@ -192,7 +192,57 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //
 //
+- (void) _setByDayFromValues: (NSDictionary *) theValues
+{
+  NSString *day;
+  id o;
+  
+  unsigned int day_of_week;
+  int i, week_of_month;
+  
+  o = [theValues objectForKey: @"Recurrence_DayOfWeek"];
+  
+  // The documentation says WeekOfMonth must be between 1 and 5. The value
+  // 5 means "last week of month"
+  week_of_month = [[theValues objectForKey: @"Recurrence_WeekOfMonth"] intValue];
+  
+  if (week_of_month > 4)
+    week_of_month = -1;
+  
+  // We find the correct day of the week
+  day_of_week = [o intValue];
+  
+  for (i = 0; i < 7; i++)
+    {
+      if ((1<<i) == day_of_week)
+        {
+          day_of_week = i;
+          break;
+        }
+    }
+  
+  day = [self iCalRepresentationForWeekDay: i];
+  
+  [self setSingleValue: [NSString stringWithFormat: @"%d%@",
+                                  week_of_month, day]
+                forKey: @"byday"];
+}
+
+- (void) _setByMonthFromValues: (NSDictionary *) theValues
+{
+  unsigned int month_of_year;
+  
+  month_of_year = [[theValues objectForKey: @"Recurrence_MonthOfYear"] intValue];
+  
+  [self setSingleValue: [NSString stringWithFormat: @"%d", month_of_year]
+                forKey: @"bymonth"];
+}
+
+//
+//
+//
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
+                    inContext: (WOContext *) context
 {
   id o;
 
@@ -200,29 +250,95 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   recurrenceType = [[theValues objectForKey: @"Recurrence_Type"] intValue];
 
-  [self setInterval: @"1"];
-
-  switch (recurrenceType)
+  if ((o = [theValues objectForKey: @"Recurrence_Interval"]))
     {
+      [self setRepeatInterval: [o intValue]];
+    }
+  else
+    [self setRepeatInterval: 1];
+  
+  switch (recurrenceType)
+    {                                          
+      //
       // Daily
+      //
     case 0:
       [self setFrequency: iCalRecurrenceFrequenceDaily];
-      if ((o = [theValues objectForKey: @"Recurrence_Interval"]))
+
+      
+      // Every weekday
+      if ((o = [theValues objectForKey: @"Recurrence_DayOfWeek"]))
         {
-          [self setRepeatInterval: [o intValue]];
+          [self setByDayMask: [iCalByDayMask byDayMaskWithWeekDays]];
         }
       break;
+      //
       // Weekly
+      //
     case 1:
+      [self setFrequency: iCalRecurrenceFrequenceWeekly];
+
+      // 42 == Every Monday, Wednesday and Friday, for example 
+      if ((o = [theValues objectForKey: @"Recurrence_DayOfWeek"]))
+        {
+          iCalWeekOccurrences days;
+          unsigned int i, v;
+          
+          memset(days, 0, 7 * sizeof(iCalWeekOccurrence));
+          v = [o intValue];
+          
+          for (i = 0; i < 7; i++)
+            {
+              if (v & (1<<i))
+                days[i] = iCalWeekOccurrenceAll;
+            }
+
+          [self setByDayMask: [iCalByDayMask byDayMaskWithDays: days]];
+        }
       break;
+      //
       // Montly
+      //
     case 2:
     case 3:
+      [self setFrequency: iCalRecurrenceFrequenceMonthly];
+      
+      // The 5th of every X month(s)
+      if ((o = [theValues objectForKey: @"Recurrence_DayOfMonth"]))
+        {
+          [self setValues: [NSArray arrayWithObject: o]
+                  atIndex: 0 forKey: @"bymonthday"];
+        }
+      // The 3rd Thursay every X month(s)
+      else if ((o = [theValues objectForKey: @"Recurrence_DayOfWeek"]))
+        {
+          [self _setByDayFromValues: theValues];
+        }
+
       break;
+      //
       // Yearly
+      //
     case 5:
     case 6:
     default:
+      [self setFrequency: iCalRecurrenceFrequenceYearly];
+
+      // On April 19th 
+      if ((o = [theValues objectForKey: @"Recurrence_DayOfMonth"]))
+        {
+          [self setValues: [NSArray arrayWithObject: o] atIndex: 0
+                   forKey: @"bymonthday"];
+          
+          [self _setByMonthFromValues: theValues];
+        }
+      else
+        {
+          // On the Second Wednesday of April
+          [self _setByDayFromValues: theValues];
+          [self _setByMonthFromValues: theValues];
+        }
+
       break;
     }
 

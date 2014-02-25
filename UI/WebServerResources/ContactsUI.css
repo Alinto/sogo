@@ -274,7 +274,7 @@ DIV.contactColumn
   float: left; }
 
 DIV.contactColumn DIV
-{ margin-bottom: 1em; }
+{ margin: 1em; }
 
 DIV.contactColumn H4
 { margin:0px;

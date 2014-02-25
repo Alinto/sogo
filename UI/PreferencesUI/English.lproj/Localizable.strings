@@ -265,6 +265,7 @@
 "To or Cc" = "To or Cc";
 "Size (Kb)" = "Size (Kb)";
 "Header" = "Header";
+"Body" = "Body";
 "Flag the message with:" = "Flag the message with:";
 "Discard the message" = "Discard the message";
 "File the message in:" = "File the message in:";

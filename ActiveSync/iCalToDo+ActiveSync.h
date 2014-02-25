@@ -33,11 +33,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/iCalToDo.h>
 
 @class NSString;
+@class WOContext;
 
 @interface iCalToDo (ActiveSync)
 
-- (NSString *) activeSyncRepresentation;
-- (void) takeActiveSyncValues: (NSDictionary *) theValues;
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context;
+- (void) takeActiveSyncValues: (NSDictionary *) theValues
+                    inContext: (WOContext *) context;
 
 @end
 

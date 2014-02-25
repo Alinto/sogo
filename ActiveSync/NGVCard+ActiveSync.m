@@ -30,6 +30,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import "NGVCard+ActiveSync.h"
 
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 
@@ -39,9 +40,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Contacts/NGVCard+SOGo.h>
 
+#include "NSDate+ActiveSync.h"
+#include "NSString+ActiveSync.h"
+
 @implementation NGVCard (ActiveSync)
 
-- (NSString *) activeSyncRepresentation
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   CardElement *n, *homeAdr, *workAdr;
   NSArray *emails, *addresses;
@@ -54,22 +58,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   n = [self n];
   
   if ((o = [n flattenedValueAtIndex: 0 forKey: @""]))
-    [s appendFormat: @"<LastName xmlns=\"Contacts:\">%@</LastName>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<LastName xmlns=\"Contacts:\">%@</LastName>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [n flattenedValueAtIndex: 1 forKey: @""]))
-    [s appendFormat: @"<FirstName xmlns=\"Contacts:\">%@</FirstName>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<FirstName xmlns=\"Contacts:\">%@</FirstName>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [self workCompany]))
-    [s appendFormat: @"<CompanyName xmlns=\"Contacts:\">%@</CompanyName>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<CompanyName xmlns=\"Contacts:\">%@</CompanyName>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [self title]))
-    [s appendFormat: @"<JobTitle xmlns=\"Contacts:\">%@</JobTitle>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<JobTitle xmlns=\"Contacts:\">%@</JobTitle>", [o activeSyncRepresentationInContext: context]];
 
   if ((o = [self preferredEMail])) 
     [s appendFormat: @"<Email1Address xmlns=\"Contacts:\">%@</Email1Address>", o];
   
   
-  // Secondary email addresses
+  // Secondary email addresses (2 and 3)
   emails = [self secondaryEmails];
 
   for (i = 0; i < [emails count]; i++)
@@ -84,19 +88,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   // Telephone numbers
   if ((o = [self workPhone]) && [o length])
-    [s appendFormat: @"<BusinessPhoneNumber xmlns=\"Contacts:\">%@</BusinessPhoneNumber>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<BusinessPhoneNumber xmlns=\"Contacts:\">%@</BusinessPhoneNumber>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [self homePhone]) && [o length])
-    [s appendFormat: @"<HomePhoneNumber xmlns=\"Contacts:\">%@</HomePhoneNumber>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<HomePhoneNumber xmlns=\"Contacts:\">%@</HomePhoneNumber>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [self fax]) && [o length])
-    [s appendFormat: @"<BusinessFaxNumber xmlns=\"Contacts:\">%@</BusinessFaxNumber>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<BusinessFaxNumber xmlns=\"Contacts:\">%@</BusinessFaxNumber>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [self mobile]) && [o length])
-    [s appendFormat: @"<MobilePhoneNumber xmlns=\"Contacts:\">%@</MobilePhoneNumber>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<MobilePhoneNumber xmlns=\"Contacts:\">%@</MobilePhoneNumber>", [o activeSyncRepresentationInContext: context]];
   
   if ((o = [self pager]) && [o length])
-    [s appendFormat: @"<PagerNumber xmlns=\"Contacts:\">%@</PagerNumber>", [o stringByEscapingHTMLString]];
+    [s appendFormat: @"<PagerNumber xmlns=\"Contacts:\">%@</PagerNumber>", [o activeSyncRepresentationInContext: context]];
 
   // Home Address
   addresses = [self childrenWithTag: @"adr"
@@ -108,19 +112,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       homeAdr = [addresses objectAtIndex: 0];
       
       if ((o = [homeAdr flattenedValueAtIndex: 2  forKey: @""]))
-        [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<HomeStreet xmlns=\"Contacts:\">%@</HomeStreet>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 3  forKey: @""]))
-        [s appendFormat: @"<HomeCity xmlns=\"Contacts:\">%@</HomeCity>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<HomeCity xmlns=\"Contacts:\">%@</HomeCity>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 4  forKey: @""]))
-        [s appendFormat: @"<HomeState xmlns=\"Contacts:\">%@</HomeState>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<HomeState xmlns=\"Contacts:\">%@</HomeState>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 5  forKey: @""]))
-        [s appendFormat: @"<HomePostalCode xmlns=\"Contacts:\">%@</HomePostalCode>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<HomePostalCode xmlns=\"Contacts:\">%@</HomePostalCode>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [homeAdr flattenedValueAtIndex: 6  forKey: @""]))
-        [s appendFormat: @"<HomeCountry xmlns=\"Contacts:\">%@</HomeCountry>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<HomeCountry xmlns=\"Contacts:\">%@</HomeCountry>", [o activeSyncRepresentationInContext: context]];
     }
   
   // Work Address
@@ -133,28 +137,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       workAdr = [addresses objectAtIndex: 0];
       
       if ((o = [workAdr flattenedValueAtIndex: 2  forKey: @""]))
-        [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<BusinessStreet xmlns=\"Contacts:\">%@</BusinessStreet>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [workAdr flattenedValueAtIndex: 3  forKey: @""]))
-        [s appendFormat: @"<BusinessCity xmlns=\"Contacts:\">%@</BusinessCity>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<BusinessCity xmlns=\"Contacts:\">%@</BusinessCity>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [workAdr flattenedValueAtIndex: 4  forKey: @""]))
-        [s appendFormat: @"<BusinessState xmlns=\"Contacts:\">%@</BusinessState>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<BusinessState xmlns=\"Contacts:\">%@</BusinessState>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [workAdr flattenedValueAtIndex: 5  forKey: @""]))
-        [s appendFormat: @"<BusinessPostalCode xmlns=\"Contacts:\">%@</BusinessPostalCode>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<BusinessPostalCode xmlns=\"Contacts:\">%@</BusinessPostalCode>", [o activeSyncRepresentationInContext: context]];
       
       if ((o = [workAdr flattenedValueAtIndex: 6  forKey: @""]))
-        [s appendFormat: @"<BusinessCountry xmlns=\"Contacts:\">%@</BusinessCountry>", [o stringByEscapingHTMLString]];
+        [s appendFormat: @"<BusinessCountry xmlns=\"Contacts:\">%@</BusinessCountry>", [o activeSyncRepresentationInContext: context]];
     }
 
   // Other, less important fields
   if ((o = [self birthday]))
-    [s appendFormat: @"<Birthday xmlns=\"Contacts:\">%@</Birthday>", [o activeSyncRepresentation]];
+    [s appendFormat: @"<Birthday xmlns=\"Contacts:\">%@</Birthday>", [o activeSyncRepresentationWithoutSeparatorsInContext: context]];
 
   if ((o = [self note]))
     {
-      o = [o stringByEscapingHTMLString];
+      o = [o activeSyncRepresentationInContext: context];
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", 1]; 
       [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", [o length]];
@@ -170,46 +174,135 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
+                    inContext: (WOContext *) context
 {
+  CardElement *element;
   id o;
+  
+  // Contact's note
+  if ((o = [[theValues objectForKey: @"Body"] objectForKey: @"Data"]))
+    [self setNote: o];
 
-   if ((o = [theValues objectForKey: @"CompanyName"]))
-     {
-       [self setOrg: o  units: nil];
-     }
-   
-   if ((o = [theValues objectForKey: @"Email1Address"]))
-     {
-       [self addEmail: o  types: [NSArray arrayWithObject: @"pref"]];
-     }
+  // Birthday
+  if ((o = [theValues objectForKey: @"Birthday"]))
+    {
+      o = [o calendarDate];
+      [self setBday: [o descriptionWithCalendarFormat: @"%Y-%m-%d"]];
+    }
 
-   if ((o = [theValues objectForKey: @"Email2Address"]))
-     {
-       [self addEmail: o types: nil];
-     }
+  //
+  // Business address information
+  //
+  // BusinessStreet
+  // BusinessCity
+  // BusinessPostalCode
+  // BusinessState
+  // BusinessCountry
+  //
+  element = [self elementWithTag: @"adr" ofType: @"work"];
+  [element setSingleValue: @""
+                  atIndex: 1 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"BusinessStreet"]
+                  atIndex: 2 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"BusinessCity"]
+                  atIndex: 3 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"BusinessState"]
+                  atIndex: 4 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"BusinessPostalCode"]
+                  atIndex: 5 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"BusinessCountry"]
+                  atIndex: 6 forKey: @""];
 
-   if ((o = [theValues objectForKey: @"Email3Address"]))
-     {
-       [self addEmail: o  types: nil];
-     }
+  //
+  // Home address information
+  //
+  // HomeStreet
+  // HomeCity
+  // HomePostalCode
+  // HomeState
+  // HomeCountry
+  //
+  element = [self elementWithTag: @"adr" ofType: @"home"];
+  [element setSingleValue: @""
+                  atIndex: 1 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"HomeStreet"]
+                  atIndex: 2 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"HomeCity"]
+                  atIndex: 3 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"HomeState"]
+                  atIndex: 4 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"HomePostalCode"]
+                  atIndex: 5 forKey: @""];
+  [element setSingleValue: [theValues objectForKey: @"HomeCountry"]
+                  atIndex: 6 forKey: @""];
 
-   [self setNWithFamily: [theValues objectForKey: @"LastName"]
-                  given: [theValues objectForKey: @"FirstName"]
-             additional: nil prefixes: nil suffixes: nil];
-   
-   if ((o = [theValues objectForKey: @"MobilePhoneNumber"]))
-     {
-     }
-   
-   if ((o = [theValues objectForKey: @"Title"]))
-     {
-       [self setTitle: o];
-     }
+  // Company's name
+  if ((o = [theValues objectForKey: @"CompanyName"]))
+    {
+      [self setOrg: o  units: nil];
+    }
+  
+  // Email addresses
+  if ((o = [theValues objectForKey: @"Email1Address"]))
+    {
+      [self addEmail: o  types: [NSArray arrayWithObject: @"pref"]];
+    }
+  
+  if ((o = [theValues objectForKey: @"Email2Address"]))
+    {
+      [self addEmail: o types: nil];
+    }
+  
+  if ((o = [theValues objectForKey: @"Email3Address"]))
+    {
+      [self addEmail: o  types: nil];
+    }
+  
+  // Formatted name
+  // MiddleName
+  // Suffix   (II)
+  // Title    (Mr.)
+  [self setFn: [theValues objectForKey: @"FileAs"]];
 
-   if ((o = [theValues objectForKey: @"WebPage"]))
-     {
-     }
-   
+  [self setNWithFamily: [theValues objectForKey: @"LastName"]
+                 given: [theValues objectForKey: @"FirstName"]
+            additional: nil prefixes: nil suffixes: nil];
+  
+  // IM information
+  [[self uniqueChildWithTag: @"x-aim"]
+    setSingleValue: [theValues objectForKey: @"IMAddress"]
+            forKey: @""];
+
+  //
+  // Phone numbrrs
+  //
+  element = [self elementWithTag: @"tel" ofType: @"work"];
+  [element setSingleValue: [theValues objectForKey: @"BusinessPhoneNumber"]  forKey: @""];
+
+  element = [self elementWithTag: @"tel" ofType: @"home"];
+  [element setSingleValue: [theValues objectForKey: @"HomePhoneNumber"]  forKey: @""];
+
+  element = [self elementWithTag: @"tel" ofType: @"cell"];
+  [element setSingleValue: [theValues objectForKey: @"MobilePhoneNumber"]  forKey: @""];
+
+  element = [self elementWithTag: @"tel" ofType: @"fax"];
+  [element setSingleValue: [theValues objectForKey: @"BusinessFaxNumber"]  forKey: @""];
+
+  element = [self elementWithTag: @"tel" ofType: @"pager"];
+  [element setSingleValue: [theValues objectForKey: @"PagerNumber"]  forKey: @""];
+  
+  // Job's title
+  if ((o = [theValues objectForKey: @"JobTitle"]))
+    {
+      [self setTitle: o];
+    }
+  
+  // WebPage (work)
+  if ((o = [theValues objectForKey: @"WebPage"]))
+    {
+      [[self elementWithTag: @"url" ofType: @"work"]
+          setSingleValue: o  forKey: @""];
+    }
 }
 
 @end

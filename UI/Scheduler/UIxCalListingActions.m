@@ -41,6 +41,7 @@
 #import <NGExtensions/NGCalendarDateRange.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NSString+misc.h>
 
 #import <SOGo/SOGoDateFormatter.h>
 #import <SOGo/SOGoPermissions.h>
@@ -55,7 +56,6 @@
 #import <Appointments/SOGoAppointmentFolders.h>
 #import <Appointments/SOGoAppointmentObject.h>
 #import <Appointments/SOGoWebAppointmentFolder.h>
-#import <Appointments/SOGoFreeBusyObject.h>
 
 #import <UI/Common/WODirectAction+SOGo.h>
 
@@ -310,12 +310,14 @@ static NSArray *tasksFields = nil;
   NSEnumerator *folders, *currentInfos;
   SOGoAppointmentFolder *currentFolder;
   NSMutableDictionary *newInfo;
-  NSMutableArray *infos;
+  NSMutableArray *infos, *newInfoForComponent;
   NSNull *marker;
   SOGoAppointmentFolders *clientObject;
   SOGoUser *ownerUser;
   NSString *owner, *role, *calendarName;
   BOOL isErasable, folderIsRemote;
+  id currentInfo;
+  int i, count;
 
   infos = [NSMutableArray array];
   marker = [NSNull null];
@@ -395,8 +397,17 @@ static NSArray *tasksFields = nil;
 	      // Possible improvement: only call _fixDates if event is recurrent
 	      // or the view range span a daylight saving time change
               [self _fixDates: newInfo];
-              [infos addObject: [newInfo objectsForKeys: fields
-                                         notFoundMarker: marker]];
+              newInfoForComponent = [NSMutableArray arrayWithArray: [newInfo objectsForKeys: fields
+                                                                             notFoundMarker: marker]];
+              // Escape HTML
+              count = [newInfoForComponent count];
+              for (i = 0; i < count; i++)
+                {
+                  currentInfo = [newInfoForComponent objectAtIndex: i];
+                  if ([currentInfo respondsToSelector: @selector (stringByEscapingHTMLString)])
+                    [newInfoForComponent replaceObjectAtIndex: i withObject: [currentInfo stringByEscapingHTMLString]];
+                }
+              [infos addObject: newInfoForComponent];
             }
         }
     }

@@ -788,16 +788,22 @@ static NSArray *childRecordFields = nil;
 - (void) deleteEntriesWithIds: (NSArray *) ids
 {
   unsigned int count, max;
-  NSString *currentID;
+  NSEnumerator *names;
+  NSString *currentID, *currentName;
   SOGoContentObject *deleteObject;
 
   max = [ids count];
   for (count = 0; count < max; count++)
     {
       currentID = [ids objectAtIndex: count];
-      deleteObject = [self lookupName: currentID
+      names = [[currentID componentsSeparatedByString: @"/"] objectEnumerator];
+      deleteObject = self;
+      while ((currentName = [names nextObject]))
+        {
+          deleteObject = [deleteObject lookupName: currentName
 			   inContext: context
 			   acquire: NO];
+        }
       if (![deleteObject isKindOfClass: [NSException class]])
 	{
 	  if ([deleteObject respondsToSelector: @selector (prepareDelete)])

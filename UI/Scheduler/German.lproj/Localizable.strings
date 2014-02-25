@@ -163,7 +163,7 @@
 "% complete" = "% fertig";
 "Location:" = "Ort: ";
 "Priority:" = "Priorität: ";
-"Privacy" = "Datenschutz";
+"Privacy" = "Vertraulichkeit";
 "Cycle" = "Wiederholen";
 "Cycle End" = "Wiederholungsende";
 "Categories" = "Kategorien";
@@ -210,7 +210,7 @@
 
 /* Appointments (error messages) */
 
-"Conflicts found!" = "Ein order mehrere Konflikte wurden gefunden!";
+"Conflicts found!" = "Es wurden Konflikte gefunden!";
 "Invalid iCal data!" = "Ungültige iCal-Daten!";
 "Could not create iCal data!" = "iCal-Daten konnten nicht erstellt werden!";
 
@@ -292,7 +292,7 @@
 "cycle_end_never" = "Unendlich oft wiederholen";
 "cycle_end_until" = "Wiederholen bis :";
 
-"Recurrence pattern" = "Wiederholungsschema";
+"Recurrence pattern" = "Wiederholungsmuster";
 "Range of recurrence" = "Bereich der Wiederholung";
 
 "Repeat" = "Wiederhole";
@@ -416,8 +416,9 @@ validate_endbeforestart    = "Ihr Ende ist vor dem Beginndatum.";
 "Workweek days only" = "nur Arbeitstage";
 "Tasks in View" = "Aufgaben anzeigen";
 
-"eventDeleteConfirmation" = "Diese Termine werden gelöscht: \n%{0}\nFortfahren?";
-"taskDeleteConfirmation" = "Diese Aufgaben werden gelöscht: \n%{0}\nFortfahren?";
+"eventDeleteConfirmation" = "Die folgenden Termine werden gelöscht:";
+"taskDeleteConfirmation" = "Die folgenden Aufgaben werden gelöscht:";
+"Would you like to continue?" = "Möchten Sie fortfahren?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Der persönliche Kalender kann weder gelöscht noch abbestellt werden.";

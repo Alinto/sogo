@@ -32,6 +32,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSString.h>
 
+#import <NGExtensions/NGBase64Coding.h>
+
 #include <wbxml/wbxml.h>
 #include <wbxml/wbxml_conv.h>
 #include <wbxml/wbxml_errors.h>
@@ -47,6 +49,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   path = [NSString stringWithFormat: @"/tmp/%@.data", [[NSProcessInfo processInfo] globallyUniqueString]];
   [self writeToFile: path  atomically: YES];
   NSLog(@"Original data written to: %@", path);
+}
+
+//
+// Encodes the data in base64 and strip newline characters
+// 
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
+{
+  return [[self stringByEncodingBase64] stringByReplacingString: @"\n" withString: @""];
 }
 
 - (NSData *) wbxml2xml

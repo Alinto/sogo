@@ -265,6 +265,7 @@
 "To or Cc" = "\"Dest.\" ou \"Copie à\"";
 "Size (Kb)" = "Taille (Ko)";
 "Header" = "En-tête";
+"Body" = "Contenu";
 "Flag the message with:" = "Marquer le message comme :";
 "Discard the message" = "Annuler le message";
 "File the message in:" = "Placer le message dans :";

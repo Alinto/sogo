@@ -106,13 +106,13 @@ function contactsListCallback(http) {
                                              null,
                                              null,
                                              row);
-                    cell.appendChild(document.createTextNode(contact["c_cn"]));
+                    cell.update(contact["c_cn"]);
                     cell.title = contact["c_cn"];
 
                     cell = document.createElement("td");
                     row.appendChild(cell);
                     if (contact["c_mail"]) {
-                        cell.appendChild(document.createTextNode(contact["c_mail"]));
+                        cell.update(contact["c_mail"]);
                         cell.title = contact["c_mail"];
                     }
 
@@ -120,17 +120,17 @@ function contactsListCallback(http) {
                         cell = document.createElement("td");
                         row.appendChild(cell);
                         if (contact["c_screenname"])
-                            cell.appendChild(document.createTextNode(contact["c_screenname"]));
+                            cell.update(contact["c_screenname"]);
 
                         cell = document.createElement("td");
                         row.appendChild(cell);
                         if (contact["c_o"])
-                            cell.appendChild(document.createTextNode(contact["c_o"]));
+                            cell.update(contact["c_o"]);
 
                         cell = document.createElement("td");
                         row.appendChild(cell);
                         if (contact["c_telephonenumber"])
-                            cell.appendChild(document.createTextNode(contact["c_telephonenumber"]));
+                            cell.update(contact["c_telephonenumber"]);
                     }
                 }
             }
@@ -247,7 +247,7 @@ function _onContactMenuAction(folderItem, action, refresh) {
     var selectedFolders = $("contactFolders").getSelectedNodes();
     var folderId = $(folderItem).readAttribute("folderId");
     if (folderId)
-      folderId = folderId.substring (1);
+      folderId = folderId.substring(1);
     if (Object.isArray(document.menuTarget) && selectedFolders.length > 0) {
         var selectedFolderId = $(selectedFolders[0]).readAttribute("id");
         var contactIds = $(document.menuTarget).collect(function(row) {
@@ -262,14 +262,17 @@ function _onContactMenuAction(folderItem, action, refresh) {
         }
 
         var url = ApplicationBaseURL + selectedFolderId + "/" + action;
+        var uids = contactIds.collect(function (s) {
+                return encodeURIComponent(s.unescapeHTML());
+            }).join('&uid=');
         if (refresh)
             triggerAjaxRequest(url, actionContactCallback, selectedFolderId,
-                               ('folder='+ folderId + '&uid=' + contactIds.join('&uid=')),
+                               ('folder='+ folderId + '&uid=' + uids),
                                { "Content-type": "application/x-www-form-urlencoded" });
 
         else
             triggerAjaxRequest(url, actionContactCallback, null,
-                               ('folder='+ folderId + '&uid=' + contactIds.join('&uid=')),
+                               ('folder='+ folderId + '&uid=' + uids),
                                { "Content-type": "application/x-www-form-urlencoded" });
     }
 }
@@ -337,7 +340,7 @@ function loadContact(idx) {
     }
     else {
         var url = (URLForFolderID(Contact.currentAddressBook)
-                   + "/" + idx + "/view?noframe=1");
+                   + "/" + encodeURIComponent(idx.unescapeHTML()) + "/view?noframe=1");
         document.contactAjaxRequest
             = triggerAjaxRequest(url, contactLoadCallback, idx);
     }
@@ -501,8 +504,10 @@ function onToolbarDeleteSelectedContactsConfirm(dialogId) {
     for (var i = 0; i < rowIds.length; i++)
         $(rowIds[i]).hide();
     triggerAjaxRequest(urlstr, onContactDeleteEventCallback, rowIds,
-                           ('ids=' + rowIds.join("/")),
-                           { "Content-type": "application/x-www-form-urlencoded" });
+                       ('ids=' + rowIds.collect(function (s) {
+                               return encodeURIComponent(s.unescapeHTML());
+                           }).join(",")),
+        { "Content-type": "application/x-www-form-urlencoded" });
 }
 
 function onContactDeleteEventCallback(http) {
@@ -879,8 +884,7 @@ function deletePersonalAddressBookConfirm(folderId) {
     }
     var url = ApplicationBaseURL + folderId + "/delete";
     document.deletePersonalABAjaxRequest
-        = triggerAjaxRequest(url, deletePersonalAddressBookCallback,
-                             folderId);
+        = triggerAjaxRequest(url, deletePersonalAddressBookCallback, folderId);
 
     disposeDialog();
 }
@@ -1596,8 +1600,11 @@ function dropSelectedContacts(action, toId) {
             && fromId.substring(1) != toId) {
 
             var url = ApplicationBaseURL + fromId + "/" + action;
+            var uids = contactIds.collect(function (s) {
+                    return encodeURIComponent(s.unescapeHTML());
+                }).join('&uid=');
             triggerAjaxRequest(url, actionContactCallback, fromId,
-                                   ('folder='+ toId + '&uid=' + contactIds.join('&uid=')),
+                                   ('folder='+ toId + '&uid=' + uids),
                                    { "Content-type": "application/x-www-form-urlencoded" });
         }
     }

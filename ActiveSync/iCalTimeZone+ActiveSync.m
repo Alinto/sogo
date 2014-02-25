@@ -41,6 +41,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <NGExtensions/NGBase64Coding.h>
 
+#include "NSData+ActiveSync.h"
+
 struct SYSTEMTIME {
   uint16_t wYear;
   uint16_t wMonth;
@@ -113,7 +115,7 @@ struct SYSTEMTIME {
 }
 
 
-- (NSString *) activeSyncRepresentation
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
 {
   iCalTimeZonePeriod *period;
   NSMutableData *bytes;
@@ -157,7 +159,7 @@ struct SYSTEMTIME {
   [bytes appendBytes: &stDaylightDate  length: 16];
   [bytes appendBytes: &lDaylightBias  length: 4];
   
-  return [bytes stringByEncodingBase64];
+  return [bytes activeSyncRepresentationInContext: context];
 }
 
 @end

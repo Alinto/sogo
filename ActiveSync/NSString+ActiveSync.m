@@ -34,9 +34,38 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Foundation/NSData.h>
 #include <Foundation/NSDate.h>
 
+#include <SOGo/NSString+Utilities.h>
+
 #include <NGExtensions/NSString+misc.h>
 
 @implementation NSString (ActiveSync)
+
+- (NSString *) sanitizedServerIdWithType: (SOGoMicrosoftActiveSyncFolderType) folderType
+{
+  if (folderType == ActiveSyncEventFolder)
+    {
+      int len;
+
+      len = [self length];
+
+      if (len > 4 && [self hasSuffix: @".ics"])
+        return [self substringToIndex: len-4];
+      else
+        return [NSString stringWithFormat: @"%@.ics", self];
+    }
+  
+  return self;
+}
+
+- (NSString *) activeSyncRepresentationInContext: (WOContext *) context
+{
+  NSString *s;
+
+  s = [self stringByEscapingHTMLString];
+
+  return [[s componentsSeparatedByCharactersInSet: [self safeCharacterSet]]
+                        componentsJoinedByString: @""];
+}
 
 - (int) activeSyncFolderType
 {

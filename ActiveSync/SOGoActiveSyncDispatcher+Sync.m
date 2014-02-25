@@ -49,6 +49,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/iCalCalendar.h>
 #import <NGCards/iCalEntityObject.h>
 #import <NGCards/iCalEvent.h>
+#import <NGCards/iCalPerson.h>
 #import <NGCards/iCalToDo.h>
 #import <NGCards/NGVCard.h>
 
@@ -73,6 +74,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
+#import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserSettings.h>
 
@@ -88,6 +90,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
+#import <Mailer/SOGoMailFolder.h>
 #import <Mailer/SOGoMailObject.h>
 
 #import <Foundation/NSObject.h>
@@ -103,6 +106,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "NSString+ActiveSync.h"
 #include "SOGoActiveSyncConstants.h"
 #include "SOGoMailObject+ActiveSync.h"
+
+#include <unistd.h>
 
 @implementation SOGoActiveSyncDispatcher (Sync)
 
@@ -153,15 +158,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSArray *additions;
   
   id anAddition, sogoObject, o;
+  BOOL is_new;
   int i;
 
   additions = (id)[theDocumentElement getElementsByTagName: @"Add"];
-                
   if ([additions count])
     {
       for (i = 0; i < [additions count]; i++)
         {
           anAddition = [additions objectAtIndex: i];
+          is_new = YES;
 
           clientId = [[(id)[anAddition getElementsByTagName: @"ClientId"] lastObject] textValue];
           allValues = [NSMutableDictionary dictionaryWithDictionary: [[(id)[anAddition getElementsByTagName: @"ApplicationData"]  lastObject] applicationData]];
@@ -178,11 +184,31 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               break;
             case ActiveSyncEventFolder:
               {
-                serverId = [NSString stringWithFormat: @"%@.ics", [theCollection globallyUniqueObjectId]];
-                sogoObject = [[SOGoAppointmentObject alloc] initWithName: serverId
-                                                             inContainer: theCollection];
-                [allValues setObject: [[[context activeUser] userDefaults] timeZone]  forKey: @"SOGoUserTimeZone"];
-                o = [sogoObject component: YES secure: NO];
+                // Before adding a new appointment, we check if one is already present with the same UID. If that's
+                // the case, let's just update it. This can happen if for example, an iOS based device receives the
+                // invitation email and choses "Add to calendar" BEFORE actually syncing the calendar. That would
+                // create a duplicate on the server.
+                if ([allValues objectForKey: @"UID"])
+                  serverId = [allValues objectForKey: @"UID"];
+                else
+                  serverId = [theCollection globallyUniqueObjectId];
+                                
+                sogoObject = [theCollection lookupName: [serverId sanitizedServerIdWithType: theFolderType]
+                                             inContext: context
+                                               acquire: NO];
+                
+                // If object isn't found, we 'create' a new one
+                if ([sogoObject isKindOfClass: [NSException class]])
+                  {
+                    sogoObject = [[SOGoAppointmentObject alloc] initWithName: [serverId sanitizedServerIdWithType: theFolderType]
+                                                                 inContainer: theCollection];
+                    o = [sogoObject component: YES secure: NO];
+                  }
+                else
+                  {
+                    o = [sogoObject component: NO secure: NO];
+                    is_new = NO;
+                  }
               }
               break;
             case ActiveSyncTaskFolder:
@@ -190,7 +216,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 serverId = [NSString stringWithFormat: @"%@.ics", [theCollection globallyUniqueObjectId]];
                 sogoObject = [[SOGoTaskObject alloc] initWithName: serverId
                                                       inContainer: theCollection];
-                [allValues setObject: [[[context activeUser] userDefaults] timeZone]  forKey: @"SOGoUserTimeZone"];
                 o = [sogoObject component: YES secure: NO];     
               }
               break;
@@ -198,12 +223,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             default:
               {
                 // FIXME
-                continue;
+                //continue;
+                NSLog(@"BLARG!");
+                abort();
               }
             }
           
-          [o takeActiveSyncValues: allValues];
-          [sogoObject setIsNew: YES];
+          [o takeActiveSyncValues: allValues  inContext: context];
+          [sogoObject setIsNew: is_new];
           [sogoObject saveComponent: o];
           
           // Everything is fine, lets generate our response
@@ -276,7 +303,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           allChanges = [[(id)[aChange getElementsByTagName: @"ApplicationData"]  lastObject] applicationData];
 
           // Fetch the object and apply the changes
-          sogoObject = [theCollection lookupName: serverId
+          sogoObject = [theCollection lookupName: [serverId sanitizedServerIdWithType: theFolderType]
                                        inContext: context
                                          acquire: NO];
 
@@ -292,7 +319,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             case ActiveSyncContactFolder:
               {
                 o = [sogoObject vCard];
-                [o takeActiveSyncValues: allChanges];
+                [o takeActiveSyncValues: allChanges  inContext: context];
                 [sogoObject saveComponent: o];
               }
               break;
@@ -300,14 +327,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             case ActiveSyncTaskFolder:
               {
                 o = [sogoObject component: NO  secure: NO];
-                [o takeActiveSyncValues: allChanges];
+                [o takeActiveSyncValues: allChanges  inContext: context];
                 [sogoObject saveComponent: o];
               }
               break;
             case ActiveSyncMailFolder:
             default:
               {
-                [sogoObject takeActiveSyncValues: allChanges];
+                [sogoObject takeActiveSyncValues: allChanges  inContext: context];
               }
             }
 
@@ -361,7 +388,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           
           serverId = [[(id)[aDelete getElementsByTagName: @"ServerId"] lastObject] textValue];
           
-          sogoObject = [theCollection lookupName: serverId
+          sogoObject = [theCollection lookupName: [serverId sanitizedServerIdWithType: theFolderType]
                                        inContext: context
                                          acquire: NO];
 
@@ -386,7 +413,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   serverId = [[(id)[theDocumentElement getElementsByTagName: @"ServerId"] lastObject] textValue];
 
-  o = [theCollection lookupName: serverId
+  o = [theCollection lookupName: [serverId sanitizedServerIdWithType: theFolderType]
                       inContext: context
                         acquire: NO];
   
@@ -395,7 +422,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [theBuffer appendFormat: @"<ServerId>%@</ServerId>", serverId];
   [theBuffer appendFormat: @"<Status>%d</Status>", 1];
   [theBuffer appendString: @"<ApplicationData>"];
-  [theBuffer appendString: [o activeSyncRepresentation]];
+  [theBuffer appendString: [o activeSyncRepresentationInContext: context]];
   [theBuffer appendString: @"</ApplicationData>"];
   [theBuffer appendString: @"</Fetch>"];
 }
@@ -406,13 +433,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 - (void) processSyncGetChanges: (id <DOMElement>) theDocumentElement
                   inCollection: (id) theCollection
+                withWindowSize: (unsigned int) theWindowSize
                    withSyncKey: (NSString *) theSyncKey
                 withFolderType: (SOGoMicrosoftActiveSyncFolderType) theFolderType
                 withFilterType: (NSCalendarDate *) theFilterType
                       inBuffer: (NSMutableString *) theBuffer
+                 lastServerKey: (NSString **) theLastServerKey
+
 {
   NSMutableString *s;
-  int i;
+  
+  BOOL more_available;
+  int i, max;
 
   //
   // No changes in the collection - 2.2.2.19.1.1 Empty Sync Request.
@@ -422,7 +454,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     return;
   
   s = [NSMutableString string];
-  
+  more_available = NO;
+
   switch (theFolderType)
     {
       // Handle all the GCS components
@@ -447,7 +480,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
         allComponents = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType];
         
-        for (i = 0; i < [allComponents count]; i++)
+        // Check for the WindowSize
+        max = [allComponents count];
+
+        // Disabled for now for GCS folders.
+        // if (max > theWindowSize)
+        //   {
+        //     max = theWindowSize;
+        //     more_available = YES;
+        //   }
+        
+        for (i = 0; i < max; i++)
           {
             component = [allComponents objectAtIndex: i];
             deleted = [[component objectForKey: @"c_deleted"] intValue];
@@ -455,7 +498,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             if (!deleted && ![[component objectForKey: @"c_component"] isEqualToString: component_name])
               continue;
             
-            uid = [component objectForKey: @"c_name"];
+            uid = [[component objectForKey: @"c_name"] sanitizedServerIdWithType: theFolderType];
             
             if (deleted)
               {
@@ -470,6 +513,41 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 if ([[component objectForKey: @"c_creationdate"] intValue] > [theSyncKey intValue])
                   updated = NO;
                 
+	        sogoObject = [theCollection lookupName: [uid sanitizedServerIdWithType: theFolderType]
+                                             inContext: context
+                                               acquire: 0];
+                
+                if (theFolderType == ActiveSyncContactFolder)
+                  componentObject = [sogoObject vCard];
+                else
+                  componentObject = [sogoObject component: NO  secure: NO];                
+                
+                
+                //
+                // We do NOT synchronize NEW events that are in fact, invitations
+                // to events. This is due to the fact that Outlook 2013 creates
+                // "phantom" events in the calendar that are mapped to invitations mails.
+                // If we synchronize these events too, it'll interfere with the whole thing
+                // and prevent Outlook from properly calling MeetingResponse.
+                //
+                if (!updated && theFolderType == ActiveSyncEventFolder)
+                  {
+                    iCalPersonPartStat partstat;
+                    iCalPerson *attendee;
+                    NSString *email;
+
+                    email = [[[context activeUser] allEmails] objectAtIndex: 0];
+                    attendee = [componentObject findAttendeeWithEmail: email];
+
+                    if (attendee)
+                      {
+                        partstat = [attendee participationStatus];
+                        
+                        if (partstat == iCalPersonPartStatNeedsAction)
+                          continue;
+                      }
+                  }                
+                
                 if (updated)
                   [s appendString: @"<Change xmlns=\"AirSync:\">"];
                 else
@@ -478,16 +556,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
                 [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
                 
-                sogoObject = [theCollection lookupName: uid
-                                             inContext: context
-                                               acquire: 0];
-                
-                if (theFolderType == ActiveSyncContactFolder)
-                  componentObject = [sogoObject vCard];
-                else
-                  componentObject = [sogoObject component: NO  secure: NO];
-                
-                [s appendString: [componentObject activeSyncRepresentation]];
+                [s appendString: [componentObject activeSyncRepresentationInContext: context]];
                 
                 [s appendString: @"</ApplicationData>"];
                 
@@ -509,7 +578,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         
         allMessages = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType];
         
-        for (i = 0; i < [allMessages count]; i++)
+        // Check for the WindowSize.
+        // FIXME: we should eventually check for modseq and slice the maximum
+        //        amount of messages returned to ensure we don't have the same
+        //        modseq accross contiguous boundaries
+        max = [allMessages count];
+        if (max > theWindowSize)
+          {
+            max = theWindowSize;
+            more_available = YES;
+          }
+        
+        for (i = 0; i < max; i++)
           {
             aMessage = [allMessages objectAtIndex: i];
             
@@ -535,7 +615,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
                 [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
                 [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
-                [s appendString: [mailObject activeSyncRepresentation]];
+                [s appendString: [mailObject activeSyncRepresentationInContext: context]];
                 [s appendString: @"</ApplicationData>"];
                 
                 if ([command isEqualToString: @"added"])
@@ -544,6 +624,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                   [s appendString: @"</Change>"];
 
               }
+          }
+
+        //
+        if (more_available)
+          {
+            *theLastServerKey = uid;
           }
       }
       break;
@@ -554,6 +640,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       [theBuffer appendString: @"<Commands>"];
       [theBuffer appendString: s];
       [theBuffer appendString: @"</Commands>"];
+
+      if (more_available)
+        [theBuffer appendString: @"<MoreAvailable/>"];
     }
 }
 
@@ -635,13 +724,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 - (void) processSyncCollection: (id <DOMElement>) theDocumentElement
                       inBuffer: (NSMutableString *) theBuffer
+                changeDetected: (BOOL *) changeDetected
 {
-  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType;
+  NSString *collectionId, *realCollectionId, *syncKey, *davCollectionTag, *bodyPreferenceType, *lastServerKey;
   SOGoMicrosoftActiveSyncFolderType folderType;
   id collection, value;
   
   NSMutableString *changeBuffer, *commandsBuffer;
   BOOL getChanges, first_sync;
+  unsigned int windowSize;
   
   changeBuffer = [NSMutableString string];
   commandsBuffer = [NSMutableString string];
@@ -651,6 +742,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   collection = [self collectionFromId: realCollectionId  type: folderType];
   
   syncKey = davCollectionTag = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
+  
+  // We check for a window size, default to 100 if not specfied or out of bounds
+  windowSize = [[[(id)[theDocumentElement getElementsByTagName: @"WindowSize"] lastObject] textValue] intValue];
+  
+  if (windowSize == 0 || windowSize > 512)
+    windowSize = 100;
+
+  lastServerKey = nil;
   
   // From the documention, if GetChanges is missing, we must assume it's a YES.
   // See http://msdn.microsoft.com/en-us/library/gg675447(v=exchg.80).aspx for all details.
@@ -666,6 +765,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       davCollectionTag = @"-1";
       first_sync = YES;
+      *changeDetected = YES;
     }
 
   // We check our sync preferences and we stash them
@@ -684,10 +784,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     {
       [self processSyncGetChanges: theDocumentElement
                      inCollection: collection
+                   withWindowSize: windowSize
                       withSyncKey: syncKey
                    withFolderType: folderType
                    withFilterType: [NSCalendarDate dateFromFilterType: [[(id)[theDocumentElement getElementsByTagName: @"FilterType"] lastObject] textValue]]
-                         inBuffer: changeBuffer];
+                         inBuffer: changeBuffer
+                    lastServerKey: &lastServerKey];
     }
 
   //
@@ -716,7 +818,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   // If we got any changes or if we have applied any commands
   // let's regenerate our SyncKey based on the collection tag.
   if ([changeBuffer length] || [commandsBuffer length])
-    davCollectionTag = [collection davCollectionTag];
+    {
+      if (lastServerKey)
+        davCollectionTag = [collection davCollectionTagFromId: lastServerKey];
+      else
+        davCollectionTag = [collection davCollectionTag];
+     
+      *changeDetected = YES;
+    }
 
   // Generate the response buffer
   [theBuffer appendString: @"<Collection>"];
@@ -838,32 +947,74 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (void) processSync: (id <DOMElement>) theDocumentElement
           inResponse: (WOResponse *) theResponse
 {
+  SOGoSystemDefaults *defaults;
   id <DOMElement> aCollection;
+  NSMutableString *output, *s;
   NSArray *allCollections;
-  NSMutableString *s;
   NSData *d;
 
-  int i;
+  int i, j, defaultInterval, heartbeatInterval, internalInterval;
+  BOOL changeDetected;
   
   // We initialize our output buffer
-  s = [NSMutableString string];
+  output = [NSMutableString string];
 
-  [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
-  [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
-  [s appendString: @"<Sync xmlns=\"AirSync:\"><Collections>"];
+  [output appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [output appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+  [output appendString: @"<Sync xmlns=\"AirSync:\">"];
+  
+  defaults = [SOGoSystemDefaults sharedSystemDefaults];
+  heartbeatInterval = [[[(id)[theDocumentElement getElementsByTagName: @"HeartbeatInterval"] lastObject] textValue] intValue];
+  defaultInterval = [defaults maximumSyncInterval];
+  internalInterval = [defaults internalSyncInterval];
 
-  allCollections = (id)[theDocumentElement getElementsByTagName: @"Collection"];
-
-  for (i = 0; i < [allCollections count]; i++)
+  // We check to see if our heartbeat interval falls into the supported ranges.
+  if (heartbeatInterval > defaultInterval || heartbeatInterval < 1)
     {
-      aCollection = [allCollections objectAtIndex: i];
+      // Interval is too long, inform the client.
+      heartbeatInterval = defaultInterval;
 
-      [self processSyncCollection: aCollection  inBuffer: s];
+      // Outlook doesn't like this...
+      //[output appendFormat: @"<Limit>%d</Limit>", defaultInterval];
+      //[output appendFormat: @"<Status>%d</Status>", 14];
     }
 
-  [s appendString: @"</Collections></Sync>"];
+  [output appendString: @"<Collections>"];
+  
+  allCollections = (id)[theDocumentElement getElementsByTagName: @"Collection"];
+
+  // We enter our loop detection change
+  for (i = 0; i < (defaultInterval/internalInterval); i++)
+    {
+      s = [NSMutableString string];
+
+      for (j = 0; j < [allCollections count]; j++)
+        {
+          aCollection = [allCollections objectAtIndex: j];
+          
+          [self processSyncCollection: aCollection  inBuffer: s  changeDetected: &changeDetected];
+        }
+
+      if (changeDetected)
+        {
+          NSLog(@"Change detected, we push the content.");
+          break;
+        }
+      else
+        {
+          NSLog(@"Sleeping %d seconds while detecting changes...", internalInterval);
+          sleep(internalInterval);
+        }
+    }
+
+  // We always return the last generated response.
+  // If we only return <Sync><Collections/></Sync>,
+  // iOS powered devices will simply crash.
+  [output appendString: s];
+
+  [output appendString: @"</Collections></Sync>"];
       
-  d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+  d = [[output dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
 
   [theResponse setContent: d];
 }

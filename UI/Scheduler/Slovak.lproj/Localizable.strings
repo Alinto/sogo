@@ -373,6 +373,9 @@
 
 "Show Time as Free" = "Čas zobraziť ako voľný";
 
+/* email notifications */
+"Send Appointment Notifications" = "Odoslať notifikáciu o stretnutí";
+
 /* validation errors */
 
 validate_notitle           = "Názov nebol nastavený, pokračovať?";
@@ -411,8 +414,9 @@ validate_endbeforestart    = "Zadaný dátum konca je pred začiatkom udalosti."
 "Workweek days only" = "Len pracovné dni";
 "Tasks in View" = "Zobrazené úlohy";
 
-"eventDeleteConfirmation" = "Nasledujúca udalosť(i) bude odstránená:\n%{0}\nChcete pokračovať?";
-"taskDeleteConfirmation" = "Odstránenie nasledujúcej úlohy(oh) je nevratné.\n%{0}\nChcete pokračovať?";
+"eventDeleteConfirmation" = "Nasledujúca udalosť(i) bude odstránená:";
+"taskDeleteConfirmation" = "Odstránenie nasledujúcej úlohy(oh) je nevratné.";
+"Would you like to continue?" = "Chcete pokračovať?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Nemôžete odstrániť ani sa odhlásiť z odoberania svojho vlastného kalendára.";

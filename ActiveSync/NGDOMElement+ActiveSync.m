@@ -145,7 +145,7 @@ static NSArray *asElementArray = nil;
                 }
             }
           else
-            value = [[element firstChild] nodeValue];
+            value = [[element firstChild] textValue];
           
           if (value && tag)
             [data setObject: value  forKey: tag];

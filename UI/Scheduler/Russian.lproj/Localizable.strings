@@ -416,8 +416,9 @@ validate_endbeforestart    = "Дата начала позже даты конц
 "Workweek days only" = "Только рабочие дни недели";
 "Tasks in View" = "Задания в виде";
 
-"eventDeleteConfirmation" = "Следующие события будут удалены: \n%{0}\nПродолжить удаление?";
-"taskDeleteConfirmation" = "Событие будет удалено безвозвратно.\nПродолжить?";
+"eventDeleteConfirmation" = "Следующие события будут удалены:";
+"taskDeleteConfirmation" = "Событие будет удалено безвозвратно.";
+"Would you like to continue?" = "Продолжить?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "Вы не можете удалить персональный календарь, равно как и выключить подписку на него.";

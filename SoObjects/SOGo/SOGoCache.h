@@ -1,9 +1,6 @@
 /* SOGoCache.h - this file is part of SOGo
  *
- * Copyright (C) 2008-2013 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Copyright (C) 2008-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -109,6 +106,11 @@
 
 - (NSDictionary *) messageSubmissionsCountForLogin: (NSString *) theLogin;
 
+- (NSString *) distinguishedNameForLogin: (NSString *) theLogin;
+
+- (void) setDistinguishedName: (NSString *) theDN
+                     forLogin: (NSString *) theLogin;
+
 //
 // CAS support
 //
@@ -124,7 +126,9 @@
 
 - (void) removeCASSessionWithTicket: (NSString *) ticket;
 
+//
 // SAML2 support
+//
 - (NSDictionary *) saml2LoginDumpsForIdentifier: (NSString *) identifier;
 - (void) setSaml2LoginDumps: (NSDictionary *) dump
               forIdentifier: (NSString *) identifier;

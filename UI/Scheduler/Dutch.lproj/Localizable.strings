@@ -416,8 +416,8 @@ validate_endbeforestart    = "Het einde is voor de begindatum.";
 "Workweek days only" = "Alleen werkdagen weergeven";
 "Tasks in View" = "Taken in binnen het zicht";
 
-"eventDeleteConfirmation" = "Weet u zeker dat u de volgende afspraken wilt verwijderen?\n%{0}";
-"taskDeleteConfirmation" = "Weet u zeker dat u de volgende taken wilt verwijderen?\n%{0}";
+"eventDeleteConfirmation" = "Weet u zeker dat u de volgende afspraken wilt verwijderen?";
+"taskDeleteConfirmation" = "Weet u zeker dat u de volgende taken wilt verwijderen?";
 
 "You cannot remove nor unsubscribe from your personal calendar."
 = "U kunt niet uw persoonlijke agenda verwijderen of opzeggen.";

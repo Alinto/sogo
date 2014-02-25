@@ -31,6 +31,7 @@
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <NGExtensions/NSCalendarDate+misc.h>
+#import <NGExtensions/NSString+misc.h>
 
 #import <NGCards/iCalAlarm.h>
 #import <NGCards/iCalCalendar.h>
@@ -518,7 +519,7 @@
   created_by = [event createdBy];
 
   data = [NSDictionary dictionaryWithObjectsAndKeys:
-                       [componentCalendar displayName], @"calendar",
+                       [[componentCalendar displayName] stringByEscapingHTMLString], @"calendar",
                        [event tag], @"component",
                        [dateFormatter formattedDate: eventStartDate], @"startDate",
                        [dateFormatter formattedTime: eventStartDate], @"startTime",
@@ -526,10 +527,10 @@
                        [dateFormatter formattedTime: eventEndDate], @"endTime",
                      //([event hasRecurrenceRules] ? @"1": @"0"), @"isRecurring",
                        ([event isAllDay] ? @"1": @"0"), @"isAllDay",
-                       [event summary], @"summary",
-                       [event location], @"location",
-		       created_by, @"created_by",
-                       [event comment], @"description",
+                       [[event summary] stringByEscapingHTMLString], @"summary",
+                       [[event location] stringByEscapingHTMLString], @"location",
+		       [created_by stringByEscapingHTMLString], @"created_by",
+                       [[[event comment] stringByEscapingHTMLString] stringByDetectingURLs], @"description",
                        nil];
   
   [result appendContentString: [data jsonRepresentation]];

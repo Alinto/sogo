@@ -198,22 +198,22 @@ function editEvent() {
 }
 
 function _batchDeleteEvents() {
-    // Delete the next event from the batch
-    var events = eventsToDelete.shift();
+    // Delete the events of the next calendar
     var calendar = calendarsOfEventsToDelete.shift();
+    var events = eventsToDelete.shift();
     var urlstr = (ApplicationBaseURL + calendar
-                  + "/batchDelete?ids=" + events.join('/'));
+                  + "/batchDelete?ids=" + events.join(','));
     document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
                                                          deleteEventCallback,
-                                                         { calendar: calendar,
-                                                           events: events });
+                                                         { calendar: calendar, events: events });
 }
 
 function deleteEvent() {
+    var label = "";
+    var events = [];
     if (listOfSelection) {
         var nodes = listOfSelection.getSelectedRows();
         if (nodes.length > 0) {
-            var label = "";
             if (listOfSelection.parentNode == $("tasksList"))
                 label = _("taskDeleteConfirmation");
             else
@@ -230,41 +230,54 @@ function deleteEvent() {
                 var canDelete;
                 var sortedNodes = [];
                 var calendars = [];
-                var events = [];
                 for (var i = 0; i < nodes.length; i++) {
                     canDelete = nodes[i].erasable;
                     if (canDelete) {
                         var calendar = nodes[i].calendar;
+                        var cname = nodes[i].cname;
+                        if (nodes[i].recurrenceTime) {
+                            cname += '/occurence' + nodes[i].recurrenceTime;
+                        }
                         if (!sortedNodes[calendar]) {
                             sortedNodes[calendar] = [];
                             calendars.push(calendar);
                         }
-                        if (sortedNodes[calendar].indexOf(nodes[i].cname) < 0) {
-                            sortedNodes[calendar].push(nodes[i].cname);
+                        if (sortedNodes[calendar].indexOf(cname) < 0) {
+                            // Build list item element for confirmation dialog
+                            var itemElement = new Element('li');
+                            var colorBox = new Element('div', {'class': 'colorBox calendarFolder' + nodes[i].calendar});
+                            var content = '';
                             if (nodes[i].tagName == 'TR') {
                                 var cell = nodes[i].down('td span');
-                                var title = cell.allTextContent();
-                                events.push(title); // extract the first column only
+                                content = cell.allTextContent(); // extract the first column only
                             }
-                            else
-                                events.push(nodes[i].allTextContent());
+                            else {
+                                content = nodes[i].allTextContent();
+                            }
+                            itemElement.appendChild(colorBox);
+                            itemElement.appendChild(new Element('span').update(content.escapeHTML()));
+                            if (nodes[i].startDate) {
+                                var startDate = new Date(nodes[i].startDate*1000);
+                                var dateElement = new Element('div', {'class': 'muted'});
+                                var date;
+                                if (typeof nodes[i].hour == 'undefined')
+                                    date = startDate.toLocaleDateString(localeCode);
+                                else
+                                    date = startDate.toLocaleString(localeCode);
+                                dateElement.update(date);
+                                itemElement.appendChild(dateElement);
+                            }
+                            events.push(itemElement);
+                            sortedNodes[calendar].push(cname);
                         }
                     }
                 }
+                // Update global arrays
                 for (i = 0; i < calendars.length; i++) {
                     calendarsOfEventsToDelete.push(calendars[i]);
                     eventsToDelete.push(sortedNodes[calendars[i]]);
                 }
-                if (i > 0) {
-                    var p = createElement("p", null, ["list"]);
-                    if (Prototype.Browser.IE)
-                        label = label.formatted('<br><br> - <b>' + events.join('</b><br> - <b>') + '</b><br><br>');
-                    else
-                        label = label.formatted('<ul><li>' + events.join('<li>') + '</ul>');
-                    p.innerHTML = label;
-                    showConfirmDialog(_("Warning"), p, deleteEventFromListConfirm, deleteEventCancel);
-                }
-                else
+                if (i == 0)
                     showAlertDialog(_("You don't have the required privileges to perform the operation."));
             }
         }
@@ -283,18 +296,24 @@ function deleteEvent() {
             var canDelete;
             var sortedNodes = [];
             var calendars = [];
-            var events = [];
+            var cname;
             for (var i = 0; i < selectedCalendarCell.length; i++) {
                 canDelete = selectedCalendarCell[i].erasable;
                 if (canDelete) {
                     var calendar = selectedCalendarCell[i].calendar;
+                    var cname = selectedCalendarCell[i].cname;
+                    if (selectedCalendarCell[i].recurrenceTime) {
+                        cname += '/occurence' + selectedCalendarCell[i].recurrenceTime;
+                    }
                     if (!sortedNodes[calendar]) {
                         sortedNodes[calendar] = [];
                         calendars.push(calendar);
                     }
-                    if (sortedNodes[calendar].indexOf(selectedCalendarCell[i].cname) < 0) {
-                        // Extract event name for confirmation dialog
-                        var content = "";
+                    if (sortedNodes[calendar].indexOf(cname) < 0) {
+                        // Build list item element for confirmation dialog
+                        var itemElement = new Element('li');
+                        var colorBox = new Element('div', {'class': 'colorBox calendarFolder' + selectedCalendarCell[i].calendar});
+                        var content = '';
                         var event = $(selectedCalendarCell[i]).down("DIV.text");
                         for (var j = 0; j < event.childNodes.length; j++) {
                             var node = event.childNodes[j];
@@ -302,32 +321,48 @@ function deleteEvent() {
                                 content += node.nodeValue;
                             }
                         }
-                        events.push(content);
-                        sortedNodes[calendar].push(selectedCalendarCell[i].cname);
+                        itemElement.appendChild(colorBox);
+                        itemElement.appendChild(new Element('span').update(content.escapeHTML()));
+                        if (selectedCalendarCell[i].startDate) {
+                            var startDate = new Date(selectedCalendarCell[i].startDate*1000);
+                            var dateElement = new Element('div', {'class': 'muted'});
+                            var date;
+                            if (selectedCalendarCell[i].readAttribute('hour') == 'allday')
+                                date = startDate.toLocaleDateString(localeCode);
+                            else
+                                date = startDate.toLocaleString(localeCode);
+                            dateElement.update(date);
+                            itemElement.appendChild(dateElement);
+                        }
+                        events.push(itemElement);
+                        sortedNodes[calendar].push(cname);
                     }
                 }
             }
-
+            // Update global arrays
             for (i = 0; i < calendars.length; i++) {
                 calendarsOfEventsToDelete.push(calendars[i]);
                 eventsToDelete.push(sortedNodes[calendars[i]]);
             }
-            if (i > 0) {
-                var p = createElement("p", null, ["list"]);
-                var label = _("eventDeleteConfirmation");
-                if (Prototype.Browser.IE)
-                    label = label.formatted('<br><br> - <b>' + events.join('</b><br> - <b>') + '</b><br><br>');
-                else
-                    label = label.formatted('<ul><li>' + events.join('<li>') + '</ul>');
-                p.innerHTML = label;
-                showConfirmDialog(_("Warning"), p, deleteEventFromListConfirm, deleteEventCancel);
-            }
-            else
+            if (i == 0)
                 showAlertDialog(_("You don't have the required privileges to perform the operation."));
         }
     }
     else
         showAlertDialog(_("Please select an event or a task."));
+
+    if (events.length > 0) {
+        // Show confirmation dialog
+        var p = new Element('p');
+        p.appendChild(document.createTextNode(label));
+        var list = new Element('ul');
+        for (i = 0; i < events.length; i++) {
+            list.appendChild(events[i]);
+        }
+        p.appendChild(list);
+        p.appendChild(document.createTextNode(_("Would you like to continue?")));
+        showConfirmDialog(_("Warning"), p, deleteEventFromListConfirm, deleteEventCancel);
+    }
 
     return false;
 }
@@ -628,12 +663,11 @@ function deleteEventCallback(http) {
             var calendar = http.callbackData.calendar;
             var events = http.callbackData.events;
             for (var i = 0; i < events.length; i++) {
-                var cname = events[i];
-                _deleteCalendarEventBlocks(calendar, cname);
-                _deleteEventFromTables(calendar, cname);
-                _deleteCalendarEventCache(calendar, cname);
+                var cname = /(.+)\/occurence([0-9]+)/.exec(events[i]) || [null, events[i]];
+                _deleteCalendarEventBlocks(calendar, cname[1], cname[2]);
+                _deleteEventFromTables(calendar, cname[1], cname[2]);
+                _deleteCalendarEventCache(calendar, cname[1], cname[2]);
             }
-
             if (eventsToDelete.length)
                 _batchDeleteEvents();
             else
@@ -747,15 +781,14 @@ function onViewEventCallback(http) {
 
             para = $(paras[1]);
             if (data["calendar"].length) {
- 		// Remove owner email from calendar's name
-                para.down("SPAN", 1).update(data["calendar"].escapeHTML());
+                para.down("SPAN", 1).update(data["calendar"]);
                 para.show();
             } else
                 para.hide();
 
             para = $(paras[2]);
             if (data["location"].length) {
-                para.down("SPAN", 1).update(data["location"].escapeHTML());
+                para.down("SPAN", 1).update(data["location"]);
                 para.show();
             } else
                 para.hide();
@@ -776,6 +809,7 @@ function onViewEventCallback(http) {
 
             div.setStyle({ left: left + "px", top: top + "px" });
             div.show();
+            configureLinks(div);
         }
     }
     else {
@@ -949,8 +983,8 @@ function eventsListCallback(http) {
                 row.isException = data[i][17];
                 row.editable = data[i][18] || IsSuperUser;
                 row.erasable = data[i][19] || IsSuperUser;
-                var startDate = new Date();
-                startDate.setTime(data[i][5] * 1000);
+                row.startDate = data[i][5];
+                var startDate = new Date(data[i][5]*1000);
                 row.day = startDate.getDayString();
                 if (!data[i][8])
                     row.hour = startDate.getHourString(); // event is not all day
@@ -973,23 +1007,23 @@ function eventsListCallback(http) {
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][21])); // start date
+                td.update(data[i][21]); // start date
 
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][22])); // end date
+                td.update(data[i][22]); // end date
 
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
                 if (data[i][7])
-                    td.appendChild(document.createTextNode(data[i][7])); // location
+                    td.update(data[i][7]); // location
 
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
-                td.appendChild(document.createTextNode(data[i][2])); // calendar
+                td.update(data[i][2]); // calendar
             }
 
             if (sorting["event-header"] && sorting["event-header"].length > 0) {
@@ -1702,6 +1736,12 @@ function newBaseEventDIV(eventRep, event, eventText) {
     var eventCell = createElement("div");
     eventCell.cname = event[0];
     eventCell.calendar = event[1];
+    var startDate = new Date(event[5]*1000);
+    if (startDate) {
+        eventCell.startDate = event[5];
+        eventCell.writeAttribute('day', startDate.getDayString());
+        eventCell.writeAttribute('hour', event[8]? 'allday' : startDate.getHourString());
+    }
 //    if (event[8] == 1)
 //        eventCell.addClassName("private");
 //    else if (event[8] == 2)
@@ -1729,7 +1769,7 @@ function newBaseEventDIV(eventRep, event, eventText) {
     textDiv.addClassName("text");
     var iconSpan = createElement("span", null, "icons");
     textDiv.appendChild(iconSpan);
-    textDiv.appendChild(document.createTextNode(eventText.replace(/(\\r)?\\n/g, "<BR/>")));
+    textDiv.update(eventText.replace(/(\\r)?\\n/g, "<BR/>"));
 
     // Add alarm and classification icons
     if (event[9] == 1)
@@ -1870,7 +1910,7 @@ function newEventDIV(eventRep, event) {
         textDiv.appendChild(createElement("br"));
         var span = createElement("span", null, "location");
         var text = _("Location:") + " " + event[7];
-        span.appendChild(document.createTextNode(text));
+        span.update(text);
         textDiv.appendChild(span);
     }
 
@@ -2473,7 +2513,7 @@ function restoreSelectedDay() {
             selectedDayDate = findDateFromDayNumber(selectedDayNumber);
         else
             selectedDayDate = currentDay;
-        if (selectedDayDate.length > 0)
+        if (selectedDayDate && selectedDayDate.length > 0)
             day = $("day" + selectedDayDate);
     }
     if (day) {
@@ -2489,7 +2529,7 @@ function findDateFromDayNumber(dayNumber) {
     else
         view = $("daysView");
     var days = view.select(".day");
-    return days[dayNumber].readAttribute("day");
+    return (dayNumber < days.size()) ? days[dayNumber].readAttribute("day") : null;
 }
 
 function onShowCompletedTasks(event) {
@@ -3330,7 +3370,7 @@ function onDocumentKeydown(event) {
                 keyCode = "V".charCodeAt(0);
         }
         if (keyCode == Event.KEY_DELETE
-            || (keyCode == Event.KEY_BACKSPACE && isMac())) {
+            || (keyCode == Event.KEY_BACKSPACE)) {
             $("eventDialog").hide();
             deleteEvent();
             event.stop();
