@@ -26,6 +26,7 @@
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 
 #import <NGImap4/NGSieveClient.h>
@@ -1150,38 +1151,44 @@ static NSArray *reminderValues = nil;
     return false;
 }
 
-- (WOResponse *) defaultAction
+- (id <WOActionResults>) defaultAction
 {
-  WOResponse *response;
+  id <WOActionResults> results;
   SOGoDomainDefaults *dd;
   SOGoMailAccount *account;
   SOGoMailAccounts *folder;
-  BOOL filterUpToDate;
-
-  dd = [[context activeUser] domainDefaults];
-  if ([dd sieveScriptsEnabled])
-    [userDefaults setSieveFilters: sieveFilters];
-  if ([dd vacationEnabled])
-    [userDefaults setVacationOptions: vacationOptions];
-  if ([dd forwardEnabled])
-    [userDefaults setForwardOptions: forwardOptions];
+  
+  if ([context request]){
+    dd = [[context activeUser] domainDefaults];
+    if ([dd sieveScriptsEnabled])
+      [userDefaults setSieveFilters: sieveFilters];
+    if ([dd vacationEnabled])
+      [userDefaults setVacationOptions: vacationOptions];
+    if ([dd forwardEnabled])
+      [userDefaults setForwardOptions: forwardOptions];
   
-  if([self isSieveServerAvailable]){
-    [userDefaults synchronize];
-    folder = [[self clientObject] mailAccountsFolder: @"Mail"
-                                            inContext: context];
-    account = [folder lookupName: @"0" inContext: context acquire: NO];
-    filterUpToDate = [account updateFilters];
-    
-    if(filterUpToDate){
-      response = [self responseWithStatus: 200 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool: hasChanged], @"hasChanged", nil]];
+    if([self isSieveServerAvailable]){
+      [userDefaults synchronize];
+      folder = [[self clientObject] mailAccountsFolder: @"Mail"
+                                              inContext: context];
+      account = [folder lookupName: @"0" inContext: context acquire: NO];
+
+      if([account updateFilters]){
+        results = [self responseWithStatus: 200 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool: hasChanged], @"hasChanged", nil]];
+      }
+      else{
+        results = [self responseWithStatus: 502 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:hasChanged], @"textStatus", @"Connection error"]];
+      }
     }
     else{
-      response = [self responseWithStatus: 502 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:hasChanged], @"textStatus", @"Connection error"]];
+      results = [self responseWithStatus: 502 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"textStatus", @"Connection error"]];
     }
   }
-
-  return response;
+  else{
+   // results = self;
+  }
+  
+  return results;
 }
 
 - (BOOL) shouldTakeValuesFromRequest: (WORequest *) request
