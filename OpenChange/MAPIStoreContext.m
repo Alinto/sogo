@@ -365,10 +365,8 @@ static inline NSURL *CompleteURLFromMapistoreURI (const char *uri)
 {
   int rc;
   NSString *objectURL, *url;
-  // TDB_DATA key, dbuf;
 
-  url = [[contextUrl absoluteString]
-            stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+  url = [contextUrl absoluteString];
   objectURL = [[userContext mapping] urlFromID: fmid];
   if (objectURL)
     {
