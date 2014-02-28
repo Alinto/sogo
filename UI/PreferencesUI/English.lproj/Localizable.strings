@@ -248,6 +248,11 @@
 "Active" = "Active";
 "Move Up" = "Move Up";
 "Move Down" = "Move Down";
+<<<<<<< HEAD
+=======
+"ConnectionError" = "Connection error";
+"ServiceTemporarilyUnavailable" = "Service temporarily unavailable";
+>>>>>>> a005b93... bug 1046 finished, if sieve server is not responding an error message will appear
 
 /* Filters - UIxFilterEditor */
 "Filter name:" = "Filter name:";
