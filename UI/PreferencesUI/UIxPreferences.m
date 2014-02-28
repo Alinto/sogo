@@ -1157,8 +1157,10 @@ static NSArray *reminderValues = nil;
   SOGoDomainDefaults *dd;
   SOGoMailAccount *account;
   SOGoMailAccounts *folder;
-  
-  if ([context request]){
+  WORequest *request;
+
+  request = [context request];
+  if ([[request method] isEqualToString: @"POST"]){
     dd = [[context activeUser] domainDefaults];
     if ([dd sieveScriptsEnabled])
       [userDefaults setSieveFilters: sieveFilters];
@@ -1174,18 +1176,18 @@ static NSArray *reminderValues = nil;
       account = [folder lookupName: @"0" inContext: context acquire: NO];
 
       if([account updateFilters]){
-        results = [self responseWithStatus: 200 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool: hasChanged], @"hasChanged", nil]];
+        results = [self responseWithStatus: 200 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:hasChanged], @"hasChanged", nil]];
       }
       else{
-        results = [self responseWithStatus: 502 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:hasChanged], @"textStatus", @"Connection error"]];
+        results = [self responseWithStatus: 502 andJSONRepresentation:[NSDictionary dictionaryWithObjectsAndKeys: @"ConnectionError", @"textStatus", nil]];
       }
     }
     else{
-      results = [self responseWithStatus: 502 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"textStatus", @"Connection error"]];
+      results = [self responseWithStatus: 503 andJSONRepresentation:[NSDictionary dictionaryWithObjectsAndKeys: @"ServiceTemporarilyUnavailable", @"textStatus", nil]];
     }
   }
   else{
-   // results = self;
+    results = self;
   }
   
   return results;
