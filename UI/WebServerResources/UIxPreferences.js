@@ -50,10 +50,10 @@ function savePreferences(sender) {
             showAlertDialog(_("Please specify your message and your email addresses for which you want to enable auto reply."));
             sendForm = false;
         }
-	if ($("autoReplyText").value.strip().endsWith('\n.')) {
-	    showAlertDialog(_("Your vacation message must not end with a single dot on a line."));
-	    sendForm = false;
-	}
+    if ($("autoReplyText").value.strip().endsWith('\n.')) {
+        showAlertDialog(_("Your vacation message must not end with a single dot on a line."));
+        sendForm = false;
+    }
         if ($("enableVacationEndDate") && $("enableVacationEndDate").checked) {
             var e = $("vacationEndDate_date");
             var endDate = e.inputAsDate();
@@ -860,7 +860,7 @@ function saveMailAccounts() {
 
     // Could be null if ModuleConstraints disables email access
     if (editor)
-    	editor.parentNode.removeChild(editor);
+        editor.parentNode.removeChild(editor);
 
     compactMailAccounts();
     var mailAccountsJSON = $("mailAccountsJSON");

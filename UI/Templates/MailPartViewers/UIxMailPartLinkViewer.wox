@@ -8,14 +8,14 @@
   >
   <div class="linked_attachment_body">
     <a var:href="pathToAttachment"
-       var:title="filenameForDisplay"
-       const:absolute="YES"
-       ><img var:src="mimeImageURL"/>
+      var:title="filenameForDisplay"
+      const:absolute="YES"
+      ><img var:src="mimeImageURL" />
+    </a>
     <div class="linked_attachment_meta">
       <var:string value="filenameForDisplay" 
-                  /> <span class="muted">(<var:string value="bodyInfo.size" formatter="sizeFormatter" />)</span>
+      /> (<var:string value="bodyInfo.size" formatter="sizeFormatter" />)
     </div>
-    </a>
 
     <!-- debug
     <pre><var:string value="bodyInfo"/></pre>

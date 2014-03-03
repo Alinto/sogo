@@ -1,18 +1,22 @@
 DIV.filterPanel
 { position: absolute;
-  text-align: center;
   width: auto;
-  top: 0;
-  left: 0;
-  padding: 3px 1em 0; }
+  top: 5px;
+  left: 5px;
+  right: 5px;}
 
-SPAN.searchBox
-{ float: none !important; }
+.searchBox{
+  background: white;
+  margin:10px;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 1px;
+}
 
 IMG#progressIndicator
 { float: none;
   position: absolute;
-  right: 1em;
+  right: 15px;
   margin: 7px 5px; }}
 
 INPUT[name="search"]
@@ -24,26 +28,20 @@ INPUT[name="search"].notfound
 
 DIV#folders
 { position: absolute;
-  left: 1em;
-  right: 1em;
-  top: 3em;
-  bottom: 3em;
-  background-color: #CCDDEC;
+  left: 15px;
+  right: 15px;
+  top: 55px;
+  bottom: 55px;
+  background-color: #fff;
   padding: .5em;
-  padding-top: 0px;
   overflow: auto;
-  border-top: 1px solid #909090;
-  border-left: 1px solid #909090;
-  border-bottom: 1px solid #FFFFFF;
-  border-right: 1px solid #FFFFFF; }
+  border: 1px solid #CCC; }
 
 DIV#folders DIV
 { width: auto; }
 
 DIV#buttons
 { position: absolute;
-  text-align: center;
-  height: 1.5em;
-  left: 1em;
-  right: 1em;
-  bottom: 1em;  }
+  left: 15px;
+  right: 15px;
+  bottom: 15px;  }

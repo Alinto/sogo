@@ -31,17 +31,4 @@
 
 @implementation MainUIProduct
 
-+ (NSString *)pathToLocaleForLanguageNamed:(NSString *)_name {
-  // TODO: this is kind of a hack, we reuse the class registry to find
-  //       resources ...
-  NSBundle *bundle;
-  NSString *ldir, *path;
-  
-  bundle = [NSBundle bundleForClass:self];
-  ldir   = [_name stringByAppendingPathExtension:@"lproj"];
-  path   = [bundle pathForResource:@"Locale" ofType:nil inDirectory:ldir];
-  
-  return path;
-}
-
 @end /* MainUIProduct */

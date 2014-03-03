@@ -1,38 +1,10 @@
 BODY
 { background-color: #E6E7E6;
-  text-align: center; }
+  }
 
 IMG#preparedAnimation
 { width: 0px;
   height: 0px; }
-
-DIV.linkbanner A#about
-{ float: right;
-  margin: 0px;
-  padding: 0px .5em; }
-
-DIV#aboutBox
-{ position: absolute;
-  z-index: 1000;
-  left: 0px;
-  top: 30px;
-  width: 100%;
-  text-align: center; }
-  
-DIV#aboutBox DIV
-{ background-color: #fff;
-  border: 1px solid #222;
-  margin: auto;
-  padding-bottom: 20px;
-  width: 550px; }
-
-DIV#aboutBox SPAN.buildDate
-{ color: #666; }
-
-A#aboutClose
-{ position: relative;
-  margin-right: 10px;
-  top: -10px; }
 
 A,
 A:link,
@@ -42,55 +14,25 @@ A:visited
 DIV A.button
 { color: #000; }
 
-DIV#aboutBox P.logo
-{ background-color: #222;
-  margin-top: 0;
-  margin-bottom: 10px; }
-
-DIV#aboutBox P.scroll
-{ border: 1px solid #222;
-  height: 120px;
-  margin: auto;
-  padding: 5px;
-  width: 350px;
-  text-align: left;
-  overflow-y: auto; }
-
-DIV#aboutBox P.links
-{ margin: 0 0 20px 0; }
-
-DIV.linkbanner
-{ text-align: right; }
-
-DIV.linkbanner A
-{ padding-right: .5em; }
-
 DIV#loginScreen
 { clear: both;
   margin: 0px auto;
   padding-top: 5em;
-  border: 2px solid transparent;
-  text-align: center;
+  width: 600px;
 }
 
-DIV#loginScreen TABLE
-{ margin: auto; }
-
-DIV#loginScreen TABLE TD
-{ text-align: right; }
-
-DIV#loginScreen TABLE TD#loginCell
-{ border-left: 1px solid #fff;
-  padding-left: 10px;
-  vertical-align: top; }
-
-LABEL
-{ display: inline-block;
-  padding: 10px; }
+DIV#loginScreen #loginCell
+{ width: 250px;
+  float: right;
+}
 
 DIV#loginScreen LABEL
 { display: block;
-  padding: 5px; }
+  padding: 5px 0px;
+  margin: 5px 0px 0px;
+  color: #666;
+  font-size: 1.1em 
+  }
 
 #animation
 { margin: 0px auto;
@@ -99,14 +41,42 @@ DIV#loginScreen LABEL
 IMG#splash
 { border: 0;
   margin: 0px;
-  padding: 0px 0px 0px 0px; }
+  padding: 0px 0px 0px 0px;
+  float: left;  }
 
-DIV#loginScreen INPUT.textField
-{ width: 187px; }
+DIV#loginScreen INPUT.textField,
+DIV#loginScreen select
+{  
+  margin: 3px 0px;
+  background: none repeat scroll 0 0 #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: 2px;
+  color: #666666;
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 8px 2.5%;
+  width: 95%
+}
+DIV#loginScreen select{
+  width: 100%;
+}
 
-DIV#loginScreen A#submit,
-DIV#loginScreen A#submit SPAN
-{ color: #535D6D; }
+DIV#loginScreen A#submit
+{ background-color: #69be28;
+  padding: 10px 20px;
+  text-align: center;
+  display: inline-block;
+  font-size:1.5em;
+  margin-top: 10px;
+  color: white;
+  transition: background-color 0.2s;
+  border-radius: 3px;
+   }
+   DIV#loginScreen A#submit:hover{
+    background-color: #46962D;
+    transition: background-color 0.2s;
+    text-decoration: none;
+   }
 
 IMG#progressIndicator
 { width: 16px;
@@ -115,10 +85,8 @@ IMG#progressIndicator
   margin-left: 5px; }
 
 #errorMessage
-{ color: #f00;
-  width: 400px;
-  margin: 0px auto;
-  text-align: center; }
+{ color: #ff7900;
+  font-size: 1.2em;}
 
 P.browser
 { background-color: #fff;

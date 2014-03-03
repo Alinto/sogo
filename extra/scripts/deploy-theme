@@ -1,0 +1,63 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]; then
+    echo "Illegal number of parameters\n"
+    echo "Usage: ./deploy-theme user serverIP"
+    exit 1
+fi
+
+SERVER=$1@$2
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+LOCAL_SOGO_DIR=$DIR/../..
+echo Using $LOCAL_SOGO_DIR as local SOGo folder
+SOGO_DIR=/usr/lib/GNUstep/SOGo
+echo Using $SOGO_DIR as remote SOGo folder
+TEMP_DIR=/tmp/sogo-deploy
+echo Using $TEMP_DIR as temporal folder
+
+echo
+echo "Creating temporal folder"
+rm -rf $TEMP_DIR
+mkdir $TEMP_DIR
+
+echo "- Copying templates folder"
+cp -rf  $LOCAL_SOGO_DIR/UI/Templates $TEMP_DIR/.
+echo "- Copying webserver resources folder"
+cp -rf $LOCAL_SOGO_DIR/UI/WebServerResources $TEMP_DIR/.
+
+echo "- Copying toolbars"
+echo " * MailerUI"
+mkdir -p $TEMP_DIR/MailerUI.SOGo/Resources
+cp -rf $LOCAL_SOGO_DIR/UI/MailerUI/Toolbars/* $TEMP_DIR/MailerUI.SOGo/Resources/.
+
+echo " * Contacts"
+mkdir -p $TEMP_DIR/ContactsUI.SOGo/Resources
+cp -rf $LOCAL_SOGO_DIR/UI/Contacts/Toolbars/* $TEMP_DIR/ContactsUI.SOGo/Resources/.
+
+echo " * PreferencesUI"
+mkdir -p $TEMP_DIR/PreferencesUI.SOGo/Resources
+cp -rf $LOCAL_SOGO_DIR/UI/PreferencesUI/Toolbars/* $TEMP_DIR/PreferencesUI.SOGo/Resources/.
+
+echo " * AdministrationUI"
+mkdir -p $TEMP_DIR/AdministrationUI.SOGo/Resources
+cp -rf $LOCAL_SOGO_DIR/UI/AdministrationUI/Toolbars/* $TEMP_DIR/AdministrationUI.SOGo/Resources/.
+
+echo " * SchedulerUI.SOGo"
+mkdir -p $TEMP_DIR/SchedulerUI.SOGo/Resources
+cp -rf $LOCAL_SOGO_DIR/UI/Scheduler/Toolbars/* $TEMP_DIR/SchedulerUI.SOGo/Resources/.
+
+echo
+echo "Copying the temp folder to the remote server"
+scp -rq $TEMP_DIR/* $SERVER:$SOGO_DIR/
+if [ $? -ne 0 ]; then
+    echo " * Error! The folder has NOT been successfully copied"
+else
+    echo " * The folder has been successfully copied"
+fi
+
+echo
+echo "Restarting SOGo daemon"
+ssh root@$2 "service sogo restart"
+
+exit 0

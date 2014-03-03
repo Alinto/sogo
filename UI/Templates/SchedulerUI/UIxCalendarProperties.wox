@@ -11,7 +11,7 @@
   const:popup="YES"
   title="title">
 
-  <div id="colorPickerDialog" style="display: none;" class="dialog left">
+<div id="colorPickerDialog" style="display: none;" class="dialog left">
     <div>
       <span class="blc-FFFFFF"><!-- --></span>
       <span class="blc-330033"><!-- --></span>
@@ -102,17 +102,18 @@
     <!--<div id="propertiesView">-->
       <fieldset>
 	<legend><var:string label:value="Properties"/></legend>
-        <div><span class="label"><var:string label:value="Name:"/></span
-            ><span class="content"><input type="text"
+        <div><label><var:string label:value="Name:"/></label
+            ><input type="text"
               name="calendarName" id="calendarName"
               class="textField"
               var:value="calendarName"
-              /></span></div>
-        <div><span class="label"><var:string label:value="Color:"/></span
-            ><span class="content"
-            ><div id="colorButton" class="colorBox" var:data-color="calendarColor"><!-- space --></div
+              /></div>
+        <div><label><var:string
+              label:value="Color:"
+              /></label>
+              <div id="colorButton" class="colorBox" var:data-color="calendarColor"><!-- space --></div
             ><input type="hidden" name="calendarColor" id="calendarColor" var:value="calendarColor"
-           /></span></div>
+           /></div>
         <var:if condition="userIsOwner"
           ><div
             ><label><input type="checkbox" const:class="checkBox" 

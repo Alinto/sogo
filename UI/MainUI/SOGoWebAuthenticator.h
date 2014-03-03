@@ -23,8 +23,8 @@
 
 #import <NGObjWeb/SoCookieAuthenticator.h>
 
-#import "SOGoAuthenticator.h"
-#import "SOGoConstants.h"
+#import <SOGo/SOGoAuthenticator.h>
+#import <SOGo/SOGoConstants.h>
 
 @class NSString;
 

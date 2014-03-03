@@ -11,13 +11,13 @@
           <li data-option="title"><var:string label:value="Title or Description"/></li>
         </ul>
       </div>
-      <span class="searchBox" style="float: right">
+      <div class="searchBox" style="float: right">
         <input id="searchCriteria" name="criteria" type="hidden" var:value="searchCriteria" />
         <input id="searchValue"
                class="textField"
                autocomplete="off" name="search" type="text" var:value="searchText"
                menuid="eventSearchMenu" />
-      </span>
+      </div>
 
       <var:string label:value="View:" />
       <var:popup list="filters"

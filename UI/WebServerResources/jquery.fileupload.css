@@ -11,8 +11,17 @@
  */
 
 .fileinput-button {
-  position: relative;
-  overflow: hidden;
+    background-color: #EEEEEE;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    margin: 0 10px;
+    overflow: hidden;
+    padding: 5px 10px 5px 30px;
+    position: absolute;
+    top: 13px;
+    white-space: nowrap;
+    width: 50px;
+    text-overflow: ellipsis;
 }
 .fileinput-button input {
   position: absolute;
@@ -24,6 +33,11 @@
   font-size: 200px;
   direction: ltr;
   cursor: pointer;
+}
+.fileinput-button img{
+  position: absolute;
+  top: 5px;
+  left: 5px;
 }
 
 /* Fixes for IE < 8 */

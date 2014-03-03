@@ -10,9 +10,7 @@
     <div class="dayLabels"
       ><var:foreach list="daysToDisplay" item="currentTableDay"
 	><div var:class="dayClasses"
-	  ><var:string value="labelForDate"/><br
-	    /><span class="dayOfWeek"><var:string value="labelForDay"/></span
-	    ></div
+	  ><var:string value="labelForDate"/></div
 	  ></var:foreach>
     </div>
     <div class="days"

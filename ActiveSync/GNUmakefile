@@ -29,8 +29,8 @@ ActiveSync_RESOURCE_FILES +=		\
 	product.plist
 
 ADDITIONAL_OBJCFLAGS += -Wno-deprecated-declarations
-ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/ -I../SoObjects/
-ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
+ADDITIONAL_INCLUDE_DIRS += -I../SOPE/ -I../SoObjects/
+ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/ -L../SoObjects/SOGo/SOGo.framework -L../SOPE/GDLContentStore/obj -L ../SOPE/NGCards/obj
 ADDITIONAL_INCLUDE_DIRS += -I/usr/include/libwbxml-1.0/
 ADDITIONAL_LDFLAGS += -Wl,--no-as-needed -lwbxml2
 

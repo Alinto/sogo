@@ -12,6 +12,7 @@ MainUI_OBJC_FILES += \
 	MainUIProduct.m		\
 	SOGoRootPage.m		\
 	SOGoUserHomePage.m	\
+	SOGoWebAuthenticator.m	\
 	SOGoBrowsersPanel.m	\
 	UIxLoading.m		\
 	SOGoMicrosoftActiveSyncActions.m \
@@ -22,16 +23,12 @@ endif
 
 MainUI_RESOURCE_FILES += 	\
 	product.plist		\
-	SOGoProfile.sql \
-	SOGoProfile-oracle.sql \
-	OCSFolderInfo.sql \
-	OCSFolderInfo-oracle.sql \
 
 MainUI_LOCALIZED_RESOURCE_FILES += \
-	Locale Localizable.strings
+	Localizable.strings
 
 ADDITIONAL_INCLUDE_DIRS += -I../../SOPE/
-ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
+ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/ -lWOExtensions -lWEExtensions
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/bundle.make

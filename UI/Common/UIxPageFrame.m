@@ -35,7 +35,7 @@
 #import <SOGo/SOGoUserProfile.h>
 #import <SOGo/SOGoUserSettings.h>
 #import <SOGo/SOGoSystemDefaults.h>
-#import <SOGo/SOGoWebAuthenticator.h>
+#import <MainUI/SOGoWebAuthenticator.h>
 
 #import "UIxPageFrame.h"
 

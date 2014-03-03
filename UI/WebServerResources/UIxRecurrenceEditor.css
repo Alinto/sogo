@@ -1,20 +1,9 @@
-DIV#windowButtonz
-{ position: absolute;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  height: 2em;
-  margin: 1em;
-  text-align: right; }
 
 DIV#windowButtons
 { position: absolute;
-  bottom: 0px;
+  bottom: 15px;
   left: 0px;
   right: 15px;
-  height: 3em;
-  line-height: 2em;
-  vertical-align: middle;
   text-align: right; }
 
 DIV#pageContent
@@ -25,8 +14,9 @@ TABLE.frame TH
   text-align: right;
   width: 5em; }
 
-TABLE TD
-{ text-align: left; }
+TABLE.frame TD
+{ text-align: left; 
+padding: 3px 0px;}
 
 TABLE TD.label
 { width: 11em; }
@@ -42,50 +32,46 @@ SPAN.datePicker SPAN IMG
 { vertical-align: top; }
 
 /* Days selectors */
+#recurrence_form input,
+#recurrence_form select {
+    display: inline-block;
+    margin: 0px 3px
+}
 
-DIV#week,
-DIV#month
-{ background-color: #fff;
-  border-top: 1px solid #fff;
-  border-left: 1px solid #fff;
-  border-right: 1px solid #999;
-  border-bottom: 1px solid #999; }
 
-DIV#week
-{ width: 210px; /* 7*(28+2)px */ }
-
-DIV#month
-{ width: 140px; /* 7*(18+2)px */ }
+DIV#week, DIV#month
+{ display: inline-block; vertical-align: middle;}
 
 SPAN.week
 { clear: both;
   display: block; }
 
 SPAN.week DIV
-{ border: 1px solid #fff;
+{ background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: 27px;
   cursor: pointer;
   display: block;
-  float: left; }
+  float: left;
+  margin: 2px; }
 
 SPAN.week DIV._selected
-{ background-color: #4b6983;
-  border-color: #4b6983;
+{ background-color: #ff7900;
+  border-color: #ff7900;
   color: #fff; }
 
 SPAN.week DIV P
 { display: block; 
-  margin: 2px 0px;
+  margin: 10px 0px;
   padding: 0px;
   text-align: center; }
 
-DIV#week SPAN.week DIV P
-{ width: 28px; }
-
+DIV#week SPAN.week DIV P,
 DIV#month SPAN.week DIV P
-{ width: 18px; }
+{ width: 36px; }
 
 SPAN.week DIV:hover
-{ border: 1px solid #4b6983; }
+{ border: 1px solid #c35f00; }
 
 A.calendarButton
 { right: 240px; }

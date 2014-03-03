@@ -56,7 +56,7 @@
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserManager.h>
-#import <SOGo/SOGoWebAuthenticator.h>
+#import <MainUI/SOGoWebAuthenticator.h>
 
 #import "SOGoRootPage.h"
 

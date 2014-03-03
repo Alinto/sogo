@@ -1162,7 +1162,7 @@ iRANGE(2);
   if ([[self clientObject] isNew])
     {
       NSString *value;
-      int index;
+      NSUInteger index;
       
       value = [userDefaults calendarDefaultReminder];
       index = [reminderValues indexOfObject: value];

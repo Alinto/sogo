@@ -1,8 +1,8 @@
 DIV#addressBookSelector
-{ margin: .5em; }
+{ margin: 10px; }
 
 DIV#addressBookSelector SELECT
-{ width: 32em; }
+{ width: auto; }
 
 SELECT
 { width: 8em; }
@@ -20,17 +20,17 @@ TR
 
 DIV#editorTabs
 { position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 40px; }
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px; }
 
 DIV#editorTabs DIV.tab TD.titleCell
 { text-align: left;
   font-weight: bold; }
 
 INPUT.textField
-{ width: 60%; }
+{ width: 95%; }
 
 TD#htmlMailFormat
 { text-align: left !important; }
@@ -47,31 +47,39 @@ DIV.tab TD.firstColumn INPUT.textField,
 DIV.tab TD.secondColumn INPUT.textField
 { width: 35%; }
 
-#categoryContainer
-{ max-height: 400px;
-  overflow: auto;
-  padding: 0px;
-  overflow-y: auto; }
-
 #categoryContainer > DIV
-{ margin: 0px;
-  padding: 0px;
-  border: 0px;
-  height: 22px; }
+{ border: 0 none;
+  display: block;
+  margin: 0;
+  padding: 0;
+  position: relative; }
 
 INPUT.comboBoxField, #emptyCategory
-{ width: 370px;
-  height: 16px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-  margin-top: 0px; }
-
-#otherInfos TEXTAREA
-{ width: 70%; }
+{ display: block;
+  border-width: 1px 0px;
+}
+#emptyCategory{
+  background-color: white;
+}
 
 #birthday, #birthmonth
 { width: 18px; }
 
 #birthyear
 { width: 36px; }
+
+#categoryContainer BUTTON.comboBoxButton {
+    background-color: #E6E7E6;
+    background-image: url("arrow-down.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-width: 0;
+    bottom: 5px;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 25px;
+    height: auto;
+}

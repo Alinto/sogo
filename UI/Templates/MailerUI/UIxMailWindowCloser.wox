@@ -8,14 +8,17 @@
 >
   <head>
     <title><var:string label:value="Closing Window ..."/></title>
+    <meta name="description" content="SOGo Web Interface"/>
+    <meta name="author"      content="SKYRIX Software AG"/>
     <meta name="robots"      content="stop"/>
+    <link href="mailto:info@skyrix.com" rev="made"/>
   </head>
 
   <body>
     <var:if condition="refreshOpener">
       <script language="JavaScript"
         ><var:string value="refreshOpenerScript" 
-                     const:escapeHTML="NO" /></script>
+                     const:escapeHTML="0" /></script>
     </var:if>
 
     <script language="JavaScript">window.close();</script>

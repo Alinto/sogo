@@ -1,11 +1,8 @@
 DIV#windowButtons
 { position: absolute;
-  bottom: 0px;
+  bottom: 15px;
   left: 0px;
   right: 15px;
-  height: 3em;
-  line-height: 2em;
-  vertical-align: middle;
   text-align: right; }
 
 DIV#pageContent
@@ -74,3 +71,10 @@ DIV#month SPAN.week DIV P
 
 SPAN.week DIV:hover
 { border: 1px solid #4b6983; }
+
+#reminder_form select, #reminder_form input {
+    display: inline-block;
+    margin: 4px;
+    padding: 8px;
+    vertical-align: top;
+}
