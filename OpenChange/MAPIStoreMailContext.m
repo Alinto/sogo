@@ -157,7 +157,7 @@ MakeDisplayFolderName (NSString *folderName)
       stringData = [NSString stringWithFormat: @"%@%@",
                              urlBase, [currentName stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
       context->url = [stringData asUnicodeInMemCtx: context];
-      stringData = [[[currentName substringFromIndex: 6] fromCSSIdentifier] stringByDecodingImap4FolderName];
+      stringData = [[currentName substringFromIndex: 6] fromCSSIdentifier];
       context->name = [stringData asUnicodeInMemCtx: context];
       context->main_folder = false;
       context->role = MAPISTORE_MAIL_ROLE;
