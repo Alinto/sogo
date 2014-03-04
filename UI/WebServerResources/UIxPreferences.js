@@ -348,7 +348,7 @@ function updateSieveFilterRow(filterTable, number, filter) {
 }
 
 function _editFilter(filterId) {
-    var urlstr = ApplicationBaseURL + "editFilter?filter=" + filterId;
+    var urlstr = ApplicationBaseURL + "/editFilter?filter=" + filterId;
     var win = window.open(urlstr, "sieve_filter_" + filterId,
                           "width=560,height=380,resizable=0");
     if (win)
