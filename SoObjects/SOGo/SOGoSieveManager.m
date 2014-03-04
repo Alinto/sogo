@@ -1,9 +1,8 @@
 /* SOGoSieveManager.m - this file is part of SOGo
  *
- * Copyright (C) 2010-2011 Inverse inc.
+ * Copyright (C) 2010-2014 Inverse inc.
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Author: Inverse <info@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -626,6 +625,16 @@ static NSString *sieveScriptName = @"sogo";
 //
 - (NGSieveClient *) clientForAccount: (SOGoMailAccount *) theAccount
 {
+  return [self clientForAccount: theAccount withUsername: nil andPassword: nil];
+}
+
+//
+//
+//
+- (NGSieveClient *) clientForAccount: (SOGoMailAccount *) theAccount
+                        withUsername: (NSString *) theUsername
+                         andPassword: (NSString *) thePassword
+{
   NSDictionary *result;
   NSString *login, *authname, *password;
   SOGoDomainDefaults *dd;
@@ -640,8 +649,16 @@ static NSString *sieveScriptName = @"sogo";
 
   // Extract credentials from mail account
   login = [[theAccount imap4URL] user];
-  authname = [[theAccount imap4URL] user];
-  password = [theAccount imap4PasswordRenewed: NO];
+  if (!theUsername && !thePassword)
+    {
+      authname = [[theAccount imap4URL] user];
+      password = [theAccount imap4PasswordRenewed: NO];
+    }
+  else
+    {
+      authname = theUsername;
+      password = thePassword;
+    }
 
   // We connect to our Sieve server and check capabilities, in order
   // to generate the right script, based on capabilities
@@ -725,7 +742,7 @@ static NSString *sieveScriptName = @"sogo";
       return nil;
     }
 
-  if (![[result valueForKey:@"result"] boolValue]) {
+  if (![[result valueForKey:@"result"] boolValue] && !theUsername && !thePassword) {
     NSLog(@"failure. Attempting with a renewed password (no authname supported)");
     password = [theAccount imap4PasswordRenewed: YES];
     result = [client login: login  password: password];
@@ -741,10 +758,23 @@ static NSString *sieveScriptName = @"sogo";
   return client;
 }
 
+
 //
 //
 //
 - (BOOL) updateFiltersForAccount: (SOGoMailAccount *) theAccount
+{
+  return [self updateFiltersForAccount: theAccount
+                          withUsername: nil
+                           andPassword: nil];
+}
+
+//
+//
+//
+- (BOOL) updateFiltersForAccount: (SOGoMailAccount *) theAccount
+                    withUsername: (NSString *) theUsername
+                     andPassword: (NSString *) thePassword
 {
   NSMutableArray *req;
   NSMutableString *script, *header;
@@ -762,7 +792,7 @@ static NSString *sieveScriptName = @"sogo";
   req = [NSMutableArray arrayWithCapacity: 15];
   ud = [user userDefaults];
 
-  client = [self clientForAccount: theAccount];
+  client = [self clientForAccount: theAccount  withUsername: theUsername  andPassword: thePassword];
   if (!client)
     return NO;
 
@@ -888,7 +918,7 @@ static NSString *sieveScriptName = @"sogo";
 
   // We put and activate the script only if we actually have a script
   // that does something...
-  if (b)
+  if (b && [script length])
     {
       result = [client putScript: sieveScriptName  script: script];
       

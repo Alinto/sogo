@@ -36,12 +36,18 @@
 
 #import <NGExtensions/NSNull+misc.h>
 
+#import <NGObjWeb/WOContext+SoObjects.h>
+
 #import <SOGo/NSString+Utilities.h>
 #import "SOGo/SOGoCredentialsFile.h"
+#import <SOGo/SOGoProductLoader.h>
 #import <SOGo/SOGoSieveManager.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+
+#import <Mailer/SOGoMailAccounts.h>
+#import <Mailer/SOGoMailAccount.h>
 
 #import "SOGoTool.h"
 
@@ -80,12 +86,10 @@
 {
   NSMutableDictionary *vacationOptions;
   SOGoUserDefaults *userDefaults;
-  SOGoSieveManager *manager;
   SOGoUser *user;
   BOOL result;
 
   user = [SOGoUser userWithLogin: theLogin];
-  manager = [SOGoSieveManager sieveManagerForUser: user];
   userDefaults = [user userDefaults];
   vacationOptions = [[userDefaults vacationOptions] mutableCopy];
   [vacationOptions autorelease];
@@ -96,10 +100,24 @@
 
   if (result)
     {
-      result = [manager updateFiltersForLogin: theLogin
-                                     authname: theUsername
-                                     password: thePassword
-                                      account: nil];
+      SOGoUserFolder *home;
+      SOGoMailAccounts *folder;
+      SOGoMailAccount *account;
+      WOContext *localContext;
+      Class SOGoMailAccounts_class;
+
+      [[SOGoProductLoader productLoader] loadProducts: [NSArray arrayWithObject: @"Mailer.SOGo"]];
+      SOGoMailAccounts_class = NSClassFromString(@"SOGoMailAccounts");
+
+      localContext = [WOContext context];
+      [localContext setActiveUser: user];
+
+      home = [user homeFolderInContext: localContext];
+      folder = [SOGoMailAccounts_class objectWithName: @"Mail" inContainer: home];
+      account = [folder lookupName: @"0" inContext: localContext acquire: NO];
+      [account setContext: localContext];
+
+      result = [account updateFiltersWithUsername: theUsername  andPassword: thePassword];
       if (!result)
         {
           // Can't update Sieve script -- Reactivate auto-reply

@@ -1,3 +1,10 @@
+2.2.0a (2014-03-XX)
+-------------------
+
+Bug fixes
+- fixed an issue with ActiveSync when the number of messages in the mailbox was greater than the window-size specified by the client
+- fixed sogo-tool operations on Sieve script (#2617)
+
 2.2.0 (2014-02-24)
 ------------------
 

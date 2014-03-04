@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2004-2005 SKYRIX Software AG
-  Copyright (C) 2007-2013 Inverse inc.
+  Copyright (C) 2007-2014 Inverse inc.
 
   This file is part of SOGo.
 
@@ -307,11 +307,17 @@ static NSString *inboxFolderName = @"INBOX";
 
 - (BOOL) updateFilters
 {
+  return [self updateFiltersWithUsername: nil andPassword: nil];
+}
+
+- (BOOL) updateFiltersWithUsername: (NSString *) theUsername
+                       andPassword: (NSString *) thePassword
+{
   SOGoSieveManager *manager;
 
   manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
 
-  return [manager updateFiltersForAccount: self];
+  return [manager updateFiltersForAccount: self  withUsername: theUsername  andPassword: thePassword];
 }
 
 
