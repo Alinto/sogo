@@ -111,18 +111,22 @@
 "personalCalendar" = "Osobní kalendář";
 "firstCalendar" = "První kalendář";
 
+"reminder_NONE" = "Bez připomenutí";
 "reminder_5_MINUTES_BEFORE" = "5 minut";
 "reminder_10_MINUTES_BEFORE" = "10 minut";
 "reminder_15_MINUTES_BEFORE" = "15 minut";
 "reminder_30_MINUTES_BEFORE" = "30 minut";
+"reminder_45_MINUTES_BEFORE" = "45 minut";
 "reminder_1_HOUR_BEFORE" = "1 hodina";
 "reminder_2_HOURS_BEFORE" = "2 hodiny";
-"reminder_5_HOURS_BEFORE"= "5 hodiny";
-"reminder_15_HOURS_BEFORE"= "15 hodin";
+"reminder_5_HOURS_BEFORE" = "5 hodiny";
+"reminder_15_HOURS_BEFORE" = "15 hodin";
 "reminder_1_DAY_BEFORE" = "1 den";
 "reminder_2_DAYS_BEFORE" = "2 dny";
+"reminder_1_WEEK_BEFORE" = "1 týden";
 
 /* Mailer */
+"Labels" = "Značky";
 "Label" = "Označkovat";
 "Show subscribed mailboxes only" = "Ukázat pouze odebírané mailové schránky";
 "Sort messages by threads" = "Třídit zprávy podle souvislostí";
@@ -240,59 +244,56 @@
 "Ask me" = "Zeptat se";
 
 /* Filters - UIxPreferences */
-"Filters" = "Filters";
-"Active" = "Active";
-"Move Up" = "Move Up";
-"Move Down" = "Move Down";
+"Filters" = "Třídění";
+"Active" = "Aktivní";
+"Move Up" = "Posunout nahoru";
+"Move Down" = "Posunout dolů";
 
 /* Filters - UIxFilterEditor */
-"Filter name:" = "Filter name:";
-"For incoming messages that" = "For incoming messages that";
-"match all of the following rules:" = "match all of the following rules:";
-"match any of the following rules:" = "match any of the following rules:";
-"match all messages" = "match all messages";
-"Perform these actions:" = "Perform these actions:";
+"Filter name:" = "Jméno filtru:";
+"For incoming messages that" = "Pro příchozí zprávy, které";
+"match all of the following rules:" = "vyhovují všem následujícím podmínkám:";
+"match any of the following rules:" = "vyhovují některé z následujících podmínek:";
+"match all messages" = "odpovídají všem zprávám";
+"Perform these actions:" = "Proveď tyto akce:";
 "Untitled Filter" = "Nepojmenovaný filtr";
 
-"Subject" = "Subject";
-"From" = "From";
-"To" = "To";
-"Cc" = "Cc";
-"To or Cc" = "To or Cc";
-"Size (Kb)" = "Size (Kb)";
-"Header" = "Header";
-"Flag the message with:" = "Flag the message with:";
-"Discard the message" = "Discard the message";
-"File the message in:" = "File the message in:";
-"Keep the message" = "Keep the message";
-"Forward the message to:" = "Forward the message to:";
-"Send a reject message:" = "Send a reject message:";
-"Send a vacation message" = "Send a vacation message";
-"Stop processing filter rules" = "Stop processing filter rules";
+"Subject" = "Předmět";
+"From" = "Odesílatel";
+"To" = "Komu";
+"Cc" = "Kopie";
+"To or Cc" = "Komu nebo Kopie";
+"Size (Kb)" = "Velikost (Kb)";
+"Header" = "Hlavička";
+"Body" = "Tělo";
+"Flag the message with:" = "Označ zprávu jako:";
+"Discard the message" = "Odstraň zprávu";
+"File the message in:" = "Ulož zprávu do složky:";
+"Keep the message" = "Zprávu ponechej";
+"Forward the message to:" = "Přepošli zprávu na:";
+"Send a reject message:" = "Pošli zprávu s odmítnutím:";
+"Send a vacation message" = "Pošli odpověď v nepřítomnosti";
+"Stop processing filter rules" = "Ukonči zpracování";
 
-"is under" = "is under";
-"is over" = "is over";
-"is" = "is";
+"is under" = "je menší než";
+"is over" = "je větší než";
+"is" = "je rovno";
 "is not" = "is not";
-"contains" = "contains";
-"does not contain" = "does not contain";
-"matches" = "matches";
-"does not match" = "does not match";
-"matches regex" = "matches regex";
-"does not match regex" = "does not match regex";
+"contains" = "obsahuje";
+"does not contain" = "neobsahuje";
+"matches" = "odpovídá";
+"does not match" = "neodpovídá";
+"matches regex" = "odpovídá regulárnímu výrazu";
+"does not match regex" = "neodpovídá regulárnímu výrazu";
 
-"Seen" = "Seen";
-"Deleted" = "Deleted";
-"Answered" = "Answered";
-"Flagged" = "Flagged";
-"Junk" = "Junk";
-"Not Junk" = "Not Junk";
-"Label 1" = "Label 1";
-"Label 2" = "Label 2";
-"Label 3" = "Label 3";
-"Label 4" = "Label 4";
-"Label 5" = "Label 5";
+"Seen" = "Přečtené";
+"Deleted" = "Smazané";
+"Answered" = "Odpovězené";
+"Flagged" = "Oštítkované";
+"Junk" = "Nevyžádané";
+"Not Junk" = "Jako vyžádané";
 
+/* Password policy */
 "The password was changed successfully." = "Heslo bylo úspěšně změněno.";
 "Password must not be empty." = "Heslo nesmí být prázdné.";
 "The passwords do not match. Please try again." = "Hesla se neshodují. Prosím zadejte je znovu.";
