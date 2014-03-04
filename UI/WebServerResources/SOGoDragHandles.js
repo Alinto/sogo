@@ -186,7 +186,7 @@ var SOGoDragHandlesInterface = {
     },
     saveDragHandleState: function (type, position, fcn) {
         if (!$(document.body).hasClassName("popup")) {
-            var urlstr =  ApplicationBaseURL + "saveDragHandleState"
+            var urlstr =  ApplicationBaseURL + "/saveDragHandleState"
             + "?" + type + "=" + position;
             var callbackFunction = fcn || this.saveDragHandleStateCallback;
             triggerAjaxRequest(urlstr, callbackFunction);

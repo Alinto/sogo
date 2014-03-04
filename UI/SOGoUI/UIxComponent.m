@@ -359,6 +359,7 @@ static SoProduct      *commonProduct      = nil;
 {
   SOGoObject *currentClient, *parent;
   BOOL found;
+  NSString *hostLessURL;
   Class objectClass, userFolderClass;
 // , groupFolderClass
 
@@ -386,8 +387,10 @@ static SoProduct      *commonProduct      = nil;
     }
   else
     currentClient = [WOApplication application];
+  
+  hostLessURL = [[currentClient baseURLInContext: context] hostlessURL];
 
-  return [[currentClient baseURLInContext: context] hostlessURL];
+  return [hostLessURL substringToIndex: [hostLessURL length] - 1];
 }
 
 - (NSString *) ownPath
