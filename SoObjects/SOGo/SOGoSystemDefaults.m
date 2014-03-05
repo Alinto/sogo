@@ -356,6 +356,12 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"WOUseRelativeURLs"];
 }
 
+- (NSString *) folderEncoding
+{
+  return [self stringForKey: @"SOGoFolderEncoding"];
+}
+
+
 - (BOOL) isWebAccessEnabled
 {
   return [self boolForKey: @"SOGoWebAccessEnabled"];
