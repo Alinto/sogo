@@ -28,6 +28,7 @@
 #import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+#import <SOGo/SOGoSystemDefaults.h>
 
 #import <SOGoUI/UIxComponent.h>
 
@@ -35,6 +36,7 @@
 {
   NSString *filterId;
   NSDictionary *labels;
+  NSString *folderEncoding;
 }
 
 @end
@@ -110,6 +112,11 @@
     }
   
   return [labels jsonRepresentation];
+}
+
+- (NSString *) folderEncoding
+{
+  return [[SOGoSystemDefaults sharedSystemDefaults] folderEncoding];
 }
 
 @end

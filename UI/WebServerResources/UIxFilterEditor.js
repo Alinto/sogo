@@ -635,8 +635,12 @@ function ensureMailboxArgRepresentation(container, argumentSpan) {
                          : {'displayName': 'INBOX', 'path': 'INBOX' });
         for (var i = 0; i < mailboxes.length; i++) {
             var mailbox = mailboxes[i];
+            var folderValue;
+            ((folderEncoding == "UTF-8") ? folderValue = mailbox.displayName
+                                         : folderValue = mailbox.path);
+              
             var mboxOption = createElement("option", null, null,
-                                           { value: mailbox.path }, null, select);
+                                           { value: folderValue }, null, select);
             mboxOption.appendChild(document.createTextNode(mailbox.displayName));
         }
         argumentSpan.appendChild(select);
