@@ -9,6 +9,7 @@ Bug fixes
  - fixed sogo-tool operations on Sieve script (#2617)
  - fixed unsubscription when renaming an IMAP folder (#2630)
  - fixed sorting of events list by calendar name (#2629)
+ - fixed wrong date format leading to Android email syncing issues (#2609)
 
 2.2.0 (2014-02-24)
 ------------------
