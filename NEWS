@@ -7,6 +7,7 @@ Enhancements
 Bug fixes
  - fixed an issue with ActiveSync when the number of messages in the mailbox was greater than the window-size specified by the client
  - fixed sogo-tool operations on Sieve script (#2617)
+ - fixed unsubscription when renaming an IMAP folder (#2630)
 
 2.2.0 (2014-02-24)
 ------------------

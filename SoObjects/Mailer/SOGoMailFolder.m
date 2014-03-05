@@ -299,13 +299,13 @@ static NSString *defaultUserID =  @"anyone";
                                     toURL: destURL];
           if (!error)
             {
-              ASSIGN (imap4URL, nil);
-              ASSIGN (nameInContainer,
-                      ([NSString stringWithFormat: @"folder%@", [newName asCSSIdentifier]]));
-
               // We unsubscribe to the old one, and subscribe back to the new one
               [client subscribe: [destURL path]];
               [client unsubscribe: [imap4URL path]];
+
+              ASSIGN (imap4URL, nil);
+              ASSIGN (nameInContainer,
+                      ([NSString stringWithFormat: @"folder%@", [newName asCSSIdentifier]]));
             }
         }
       else
