@@ -571,10 +571,13 @@ static NSArray *reminderValues = nil;
   int index;
 
   value = [userDefaults calendarDefaultReminder];
-  index = [reminderValues indexOfObject: value];
+  if (value != nil)
+    {
+      index = [reminderValues indexOfObject: value];
 
-  if (index != NSNotFound)
-    return [reminderItems objectAtIndex: index];
+      if (index != NSNotFound)
+        return [reminderItems objectAtIndex: index];
+    }
  
   return @"NONE";
 }

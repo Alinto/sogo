@@ -10,6 +10,7 @@ Bug fixes
  - fixed unsubscription when renaming an IMAP folder (#2630)
  - fixed sorting of events list by calendar name (#2629)
  - fixed wrong date format leading to Android email syncing issues (#2609)
+ - fixed possible exception when retrieving the default event reminder value (#2624)
 
 2.2.0 (2014-02-24)
 ------------------
