@@ -1225,61 +1225,27 @@ static NSArray *reminderValues = nil;
 - (id <WOActionResults>) defaultAction
 {
   id <WOActionResults> results;
-  WORequest *request;
   SOGoDomainDefaults *dd;
-<<<<<<< HEAD
-  NSString *method;
-
-  request = [context request];
-  if ([[request method] isEqualToString: @"POST"])
-    {
-      SOGoMailAccount *account;
-      SOGoMailAccounts *folder;
-
-      dd = [[context activeUser] domainDefaults];
-      if ([dd sieveScriptsEnabled])
-        [userDefaults setSieveFilters: sieveFilters];
-      if ([dd vacationEnabled])
-        [userDefaults setVacationOptions: vacationOptions];
-      if ([dd forwardEnabled])
-        [userDefaults setForwardOptions: forwardOptions];
-
-=======
   SOGoMailAccount *account;
   SOGoMailAccounts *folder;
   WORequest *request;
-
+  
   request = [context request];
   if ([[request method] isEqualToString: @"POST"]){
     dd = [[context activeUser] domainDefaults];
     if ([dd sieveScriptsEnabled])
-      [userDefaults setSieveFilters: sieveFilters];
+    [userDefaults setSieveFilters: sieveFilters];
     if ([dd vacationEnabled])
-      [userDefaults setVacationOptions: vacationOptions];
+    [userDefaults setVacationOptions: vacationOptions];
     if ([dd forwardEnabled])
-      [userDefaults setForwardOptions: forwardOptions];
-  
+    [userDefaults setForwardOptions: forwardOptions];
+    
     if([self isSieveServerAvailable]){
->>>>>>> a005b93... bug 1046 finished, if sieve server is not responding an error message will appear
       [userDefaults synchronize];
-
       folder = [[self clientObject] mailAccountsFolder: @"Mail"
                                              inContext: context];
       account = [folder lookupName: @"0" inContext: context acquire: NO];
-      [account updateFilters];
-
-<<<<<<< HEAD
-      if (hasChanged)
-        method = @"window.location.reload()";
-      else
-        method = nil;
-
-      results = [self jsCloseWithRefreshMethod: method];
-    }
-  else
-    results = self;
-
-=======
+      
       if([account updateFilters]){
         results = [self responseWithStatus: 200 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:hasChanged], @"hasChanged", nil]];
       }
@@ -1295,7 +1261,6 @@ static NSArray *reminderValues = nil;
     results = self;
   }
   
->>>>>>> a005b93... bug 1046 finished, if sieve server is not responding an error message will appear
   return results;
 }
 

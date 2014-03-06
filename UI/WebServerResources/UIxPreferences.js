@@ -80,13 +80,6 @@ function savePreferences(sender) {
     }
 
     if (sendForm) {
-<<<<<<< HEAD
-        saveMailAccounts();
-        $("mainForm").submit();
-    }
-
-    return false;
-=======
    	saveMailAccounts();
       
     triggerAjaxRequest($("mainForm").readAttribute("action"), function (http) {
@@ -111,8 +104,6 @@ function savePreferences(sender) {
       { "Content-type": "application/x-www-form-urlencoded" });
 	}
   return false;
-  
->>>>>>> a005b93... bug 1046 finished, if sieve server is not responding an error message will appear
 }
 
 function prototypeIfyFilters() {
