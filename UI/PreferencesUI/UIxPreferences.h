@@ -22,9 +22,9 @@
 #define UIXPREFERENCES_H
 
 #import <SOGoUI/UIxComponent.h>
+#import <NGImap4/NGSieveClient.h>
 
 @class NSString;
-
 @class SOGoMailLabel;
 @class SOGoUser;
 
@@ -32,6 +32,7 @@
 {
   id item;
   SOGoUser *user;
+  NGSieveClient *client;
   
   // Calendar categories
   NSString *category;
@@ -53,11 +54,14 @@
 
   BOOL mailCustomFromEnabled;
   BOOL hasChanged;
+  
 
   
 }
 
 - (NSString *) userLongDateFormat;
+- (BOOL) isSieveServerAvailable;
+- (id) getClient;
 
 @end
 

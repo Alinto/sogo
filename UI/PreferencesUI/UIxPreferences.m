@@ -26,6 +26,7 @@
 #import <Foundation/NSValue.h>
 
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/WORequest.h>
 
 #import <NGImap4/NGSieveClient.h>
@@ -114,6 +115,8 @@ static NSArray *reminderValues = nil;
   if ((self = [super init]))
     {
       item = nil;
+      client = [self getClient];
+      
 #warning user should be the owner rather than the activeUser
       ASSIGN (user, [context activeUser]);
       ASSIGN (today, [NSCalendarDate date]);
@@ -174,6 +177,7 @@ static NSArray *reminderValues = nil;
   [contactsCategories release];
   [forwardOptions release];
   [daysOfWeek release];
+  [client release];
   [super dealloc];
 }
 
@@ -840,21 +844,10 @@ static NSArray *reminderValues = nil;
 
 - (NSString *) sieveCapabilities
 {
-#warning sieve caps should be deduced from the server
   static NSArray *capabilities = nil;
-  SOGoMailAccounts *folder;
-  SOGoMailAccount *account;
-  SOGoSieveManager *manager;
-  NGSieveClient *client;
 
   if (!capabilities)
     {
-      folder = [[self clientObject] mailAccountsFolder: @"Mail"
-                                             inContext: context];
-      account = [folder lookupName: @"0" inContext: context acquire: NO];
-      manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
-      client = [manager clientForAccount: account];
-
       if (client)
         capabilities = [client capabilities];
       else
@@ -1137,44 +1130,69 @@ static NSArray *reminderValues = nil;
     }
 }
 
+- (id) getClient{
+  SOGoMailAccounts *folder;
+  SOGoMailAccount *account;
+  SOGoSieveManager *manager;
+  NGSieveClient *realClient;
+
+  folder = [[self clientObject] mailAccountsFolder: @"Mail"
+                                           inContext: context];
+  account = [folder lookupName: @"0" inContext: context acquire: NO];
+  manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
+  realClient = [manager clientForAccount: account];
+  
+  return realClient;
+  
+}
+
+- (BOOL) isSieveServerAvailable{
+  
+  if([client isConnected])
+    return true;
+  else
+    return false;
+}
+
 - (id <WOActionResults>) defaultAction
 {
   id <WOActionResults> results;
-  WORequest *request;
   SOGoDomainDefaults *dd;
-  NSString *method;
+  SOGoMailAccount *account;
+  SOGoMailAccounts *folder;
+  WORequest *request;
 
   request = [context request];
-  if ([[request method] isEqualToString: @"POST"])
-    {
-      SOGoMailAccount *account;
-      SOGoMailAccounts *folder;
-
-      dd = [[context activeUser] domainDefaults];
-      if ([dd sieveScriptsEnabled])
-        [userDefaults setSieveFilters: sieveFilters];
-      if ([dd vacationEnabled])
-        [userDefaults setVacationOptions: vacationOptions];
-      if ([dd forwardEnabled])
-        [userDefaults setForwardOptions: forwardOptions];
-
+  if ([[request method] isEqualToString: @"POST"]){
+    dd = [[context activeUser] domainDefaults];
+    if ([dd sieveScriptsEnabled])
+      [userDefaults setSieveFilters: sieveFilters];
+    if ([dd vacationEnabled])
+      [userDefaults setVacationOptions: vacationOptions];
+    if ([dd forwardEnabled])
+      [userDefaults setForwardOptions: forwardOptions];
+  
+    if([self isSieveServerAvailable]){
       [userDefaults synchronize];
-
       folder = [[self clientObject] mailAccountsFolder: @"Mail"
-                                             inContext: context];
+                                              inContext: context];
       account = [folder lookupName: @"0" inContext: context acquire: NO];
-      [account updateFilters];
 
-      if (hasChanged)
-        method = @"window.location.reload()";
-      else
-        method = nil;
-
-      results = [self jsCloseWithRefreshMethod: method];
+      if([account updateFilters]){
+        results = [self responseWithStatus: 200 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:hasChanged], @"hasChanged", nil]];
+      }
+      else{
+        results = [self responseWithStatus: 502 andJSONRepresentation:[NSDictionary dictionaryWithObjectsAndKeys: @"ConnectionError", @"textStatus", nil]];
+      }
     }
-  else
+    else{
+      results = [self responseWithStatus: 503 andJSONRepresentation:[NSDictionary dictionaryWithObjectsAndKeys: @"ServiceTemporarilyUnavailable", @"textStatus", nil]];
+    }
+  }
+  else{
     results = self;
-
+  }
+  
   return results;
 }
 
@@ -1294,7 +1312,6 @@ static NSArray *reminderValues = nil;
       [userDefaults setMailLabelsColors: sanitizedLabels];
     }
 }
-
 
 - (void) setCategory: (NSString *) newCategory
 {

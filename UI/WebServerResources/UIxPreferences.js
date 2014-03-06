@@ -80,11 +80,31 @@ function savePreferences(sender) {
     }
 
     if (sendForm) {
-        saveMailAccounts();
-        $("mainForm").submit();
-    }
-
-    return false;
+   	saveMailAccounts();
+      
+    triggerAjaxRequest($("mainForm").readAttribute("action"), function (http) {
+      if (http.readyState == 4) {
+        var response = http.responseText.evalJSON(true);
+        if (http.status == 503) {
+          showAlertDialog(_(response.textStatus));
+        }
+        else if (http.status == 200) {
+          if (response.hasChanged == 1) {
+            window.opener.location.reload();
+            window.close();}
+          else {
+            window.close();}}
+        else {
+          showAlertDialog(_(response.textStatus));
+        }
+      }
+      },
+      null,
+      Form.serialize($("mainForm")), // excludes the file input
+      { "Content-type": "application/x-www-form-urlencoded" });
+	}
+  return false;
+  
 }
 
 function prototypeIfyFilters() {
@@ -328,7 +348,7 @@ function updateSieveFilterRow(filterTable, number, filter) {
 }
 
 function _editFilter(filterId) {
-    var urlstr = ApplicationBaseURL + "editFilter?filter=" + filterId;
+    var urlstr = ApplicationBaseURL + "/editFilter?filter=" + filterId;
     var win = window.open(urlstr, "sieve_filter_" + filterId,
                           "width=560,height=380,resizable=0");
     if (win)

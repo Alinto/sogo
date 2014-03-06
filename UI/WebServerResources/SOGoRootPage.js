@@ -158,7 +158,7 @@ function redirectToUserPage() {
         && !userName.endsWith(loginSuffix))
         userName += loginSuffix;
     var address = "" + window.location.href;
-    var baseAddress = ApplicationBaseURL + encodeURIComponent(userName);
+    var baseAddress = ApplicationBaseURL + "/" + encodeURIComponent(userName);
     var altBaseAddress;
     if (baseAddress[0] == "/") {
         var parts = address.split("/");

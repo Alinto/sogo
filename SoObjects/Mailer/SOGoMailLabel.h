@@ -25,7 +25,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
-#import "../../UI/SOGoUI/UIxComponent.h";
+#import "../../UI/SOGoUI/UIxComponent.h"
 
 @interface SOGoMailLabel : NSObject
 {
