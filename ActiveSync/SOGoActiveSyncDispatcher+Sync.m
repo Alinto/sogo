@@ -571,24 +571,27 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     case ActiveSyncMailFolder:
     default:
       {
+        NSMutableArray *addedOrChangedMessages;
         SOGoMailObject *mailObject;
         NSString *uid, *command;
         NSDictionary *aMessage;
         NSArray *allMessages;
-        
+        int deleted_count;
+
         allMessages = [theCollection syncTokenFieldsWithProperties: nil   matchingSyncToken: theSyncKey  fromDate: theFilterType];
-        
+        addedOrChangedMessages = [NSMutableArray array];
+        deleted_count = 0;
+
         // Check for the WindowSize.
         // FIXME: we should eventually check for modseq and slice the maximum
         //        amount of messages returned to ensure we don't have the same
         //        modseq accross contiguous boundaries
         max = [allMessages count];
-        if (max > theWindowSize)
-          {
-            max = theWindowSize;
-            more_available = YES;
-          }
         
+        // We first check the number of deleted messages we have
+        // We do NOT honor the window size here as it seems to be
+        // impossible to get the modseq of an expunged message so
+        // we can't iterate in the list of deleted messages.
         for (i = 0; i < max; i++)
           {
             aMessage = [allMessages objectAtIndex: i];
@@ -601,31 +604,53 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 [s appendString: @"<Delete xmlns=\"AirSync:\">"];
                 [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
                 [s appendString: @"</Delete>"];
+                deleted_count++;
               }
             else
               {
-                if ([command isEqualToString: @"added"])
-                  [s appendString: @"<Add xmlns=\"AirSync:\">"];
-                else
-                  [s appendString: @"<Change xmlns=\"AirSync:\">"];
-
-                mailObject = [theCollection lookupName: uid
-                                             inContext: context
-                                               acquire: 0];
-
-                [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
-                [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
-                [s appendString: [mailObject activeSyncRepresentationInContext: context]];
-                [s appendString: @"</ApplicationData>"];
-                
-                if ([command isEqualToString: @"added"])
-                  [s appendString: @"</Add>"];
-                else
-                  [s appendString: @"</Change>"];
-
+                [addedOrChangedMessages addObject: aMessage];
               }
           }
 
+        // We then "pad" with our added/changed messages. We ALWAYS
+        // at least return one if available
+        max = [addedOrChangedMessages count];
+        
+        for (i = 0; i < max; i++)
+          {
+            aMessage = [addedOrChangedMessages objectAtIndex: i];
+            
+            uid = [[[aMessage allKeys] lastObject] stringValue];
+            command = [[aMessage allValues] lastObject];          
+            
+            if ([command isEqualToString: @"added"])
+              [s appendString: @"<Add xmlns=\"AirSync:\">"];
+            else
+              [s appendString: @"<Change xmlns=\"AirSync:\">"];
+            
+            mailObject = [theCollection lookupName: uid
+                                             inContext: context
+                                           acquire: 0];
+            
+            [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
+            [s appendString: @"<ApplicationData xmlns=\"AirSync:\">"];
+            [s appendString: [mailObject activeSyncRepresentationInContext: context]];
+            [s appendString: @"</ApplicationData>"];
+            
+            if ([command isEqualToString: @"added"])
+              [s appendString: @"</Add>"];
+            else
+              [s appendString: @"</Change>"];
+            
+            
+            // We check if we must stop padding
+            if (i+1+deleted_count > theWindowSize)
+              {
+                more_available = YES;
+                break;
+              }
+          }
+      
         //
         if (more_available)
           {

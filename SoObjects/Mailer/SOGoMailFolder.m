@@ -1940,8 +1940,11 @@ static NSString *defaultUserID =  @"anyone";
       uid = [theId intValue];
       result = [[imap4 client] fetchModseqForUid: uid];
       modseq = [[[[result objectForKey: @"RawResponse"]  objectForKey: @"fetch"] objectForKey: @"modseq"] intValue];
-        
-      tag = [NSString stringWithFormat: @"%d-%d", uid, modseq-1];
+      
+      if (modseq < 1)
+        modseq = 1;
+
+      tag = [NSString stringWithFormat: @"%d-%d", uid, modseq];
     }
 
   return tag;
@@ -1999,7 +2002,7 @@ static NSString *defaultUserID =  @"anyone";
 // Check updated items
 //
 //
-// . uid fetch 1:* (FLAGS) (changedsince 171)
+// . uid fetch 1:* (UID) (changedsince 171)
 //
 // To get the modseq of a specific message:
 //
@@ -2101,11 +2104,14 @@ static NSString *defaultUserID =  @"anyone";
   // We fetch deleted ones
   if (highestmodseq > 0)
     {
+      id uid;
+
       uids = [self fetchUIDsOfVanishedItems: highestmodseq];
       
       for (i = 0; i < [uids count]; i++)
         {
-          d = [NSDictionary dictionaryWithObject: @"deleted"  forKey: [uids objectAtIndex: i]];
+          uid = [uids objectAtIndex: i];
+          d = [NSDictionary dictionaryWithObject: @"deleted"  forKey: uid];
           [allTokens addObject: d];
         }
     }

@@ -14,6 +14,7 @@ Bug fixes
  - fixed encoding of mail folder name when creating a subfolder (#2637)
  - fixed returned date format for email messages in Active Sync
  - fixed missing 'name part' in address for email messages in Active Sync
+ - fixed race condition when syncing huge amount of deleted messages over Active Sync
 
 2.2.0 (2014-02-24)
 ------------------
