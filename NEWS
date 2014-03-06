@@ -1,5 +1,5 @@
-2.2.0a (2014-03-XX)
--------------------
+2.2.1 (2014-03-XX)
+------------------
 
 Enhancements
  - updated Czech, Finnish, and Hungarian translations
@@ -11,6 +11,7 @@ Bug fixes
  - fixed sorting of events list by calendar name (#2629)
  - fixed wrong date format leading to Android email syncing issues (#2609)
  - fixed possible exception when retrieving the default event reminder value (#2624)
+ - fixed encoding of mail folder name when creating a subfolder (#2637)
 
 2.2.0 (2014-02-24)
 ------------------

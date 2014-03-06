@@ -44,6 +44,7 @@
 
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
+#import <NGImap4/NSString+Imap4.h>
 
 #import <SOGo/DOMNode+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
@@ -293,7 +294,7 @@ static NSString *defaultUserID =  @"anyone";
           destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
                                              host: [imap4URL host]
                                              path: [NSString stringWithFormat: @"%@%@",
-                                                             path, newName]];
+                                                             path, [newName stringByEncodingImap4FolderName]]];
           [destURL autorelease];
           error = [imap4 moveMailboxAtURL: imap4URL
                                     toURL: destURL];
@@ -994,7 +995,7 @@ static NSString *defaultUserID =  @"anyone";
 
   if ([self imap4Connection])
     {
-      error = [imap4 createMailbox: [self relativeImap4Name]
+      error = [imap4 createMailbox: [[self relativeImap4Name] stringByEncodingImap4FolderName]
                              atURL: [container imap4URL]];
       if (error)
         rc = NO;
