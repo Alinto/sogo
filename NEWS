@@ -3,6 +3,7 @@
 
 Enhancements
  - updated Czech, Finnish, and Hungarian translations
+ - show current folder name in prompt dialog when renaming a mail folder
 
 Bug fixes
  - fixed an issue with ActiveSync when the number of messages in the mailbox was greater than the window-size specified by the client

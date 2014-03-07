@@ -2309,7 +2309,8 @@ function onMenuCreateFolderConfirm(event) {
 }
 
 function onMenuRenameFolder(event) {
-    showPromptDialog(_("Rename Folder..."), _("Enter the new name of your folder :"), onMenuRenameFolderConfirm);
+    var folderName = document.menuTarget.down('.nodeName').childNodes[0].nodeValue;
+    showPromptDialog(_("Rename Folder..."), _("Enter the new name of your folder :"), onMenuRenameFolderConfirm, folderName);
 }
 
 function onMenuRenameFolderConfirm() {
