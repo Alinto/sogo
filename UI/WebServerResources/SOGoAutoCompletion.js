@@ -167,10 +167,12 @@ var SOGoAutoCompletionInterface = {
                     for (var i = 0; i < data.contacts.length; i++) {
                         var contact = data.contacts[i];
                         var completeEmail = contact["c_cn"];
+                        var uid = "" + contact[this.uidField];
+                        var c_name = "" + contact['c_name'];
                         if (contact["c_mail"])
                             completeEmail += " <" + contact["c_mail"] + ">";
                         var node = new Element('li', { 'address': completeEmail,
-                                                       'uid': contact[this.uidField] });
+                                                       'uid': uid });
                         var matchPosition = completeEmail.toLowerCase().indexOf(data.searchText.toLowerCase());
                         if (matchPosition > -1) {
                             var matchBefore = completeEmail.substring(0, matchPosition);
@@ -184,7 +186,7 @@ var SOGoAutoCompletionInterface = {
                             node.appendChild(document.createTextNode(completeEmail));
                         }
                         list.appendChild(node);
-                        if (contact['c_name'].endsWith (".vlf")) {
+                        if (c_name.endsWith(".vlf")) {
                             // Keep track of list containers
                             node.writeAttribute("container", contact['container']);
                         }
@@ -211,6 +213,7 @@ var SOGoAutoCompletionInterface = {
                     this.menu.setStyle({ top: top + "px",
                                 left: offset[0] + "px",
                                 height: height,
+                                maxWidth: (window.width() - offset[0] - 12) + "px",
                                 visibility: "visible" });
                     this.menu.scrollTop = 0;
 
@@ -225,8 +228,10 @@ var SOGoAutoCompletionInterface = {
                     if (data.contacts.length == 1) {
                         // Single result
                         var contact = data.contacts[0];
-                        input.writeAttribute("uid", contact[this.uidField]);
-                        if (contact['c_name'].endsWith(".vlf")) {
+                        var uid = "" + contact[this.uidField];
+                        var c_name = "" + contact['c_name'];
+                        input.writeAttribute("uid", uid);
+                        if (c_name.endsWith(".vlf")) {
                             this.writeAttribute("container", contact['container']);
                         }
                         var completeEmail = contact["c_cn"];

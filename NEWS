@@ -17,6 +17,7 @@ Bug fixes
  - fixed missing 'name part' in address for email messages in Active Sync
  - fixed race condition when syncing huge amount of deleted messages over Active Sync
  - fixed encoding of string as CSS identifier when the string starts with a digit
+ - fixed auto-completion popupmenu when UID is a digit
 
 2.2.0 (2014-02-24)
 ------------------
