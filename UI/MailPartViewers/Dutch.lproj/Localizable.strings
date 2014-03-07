@@ -12,6 +12,8 @@ publish_info_text = "De afzender stelt u op de hoogte van bijgevoegde afspraak."
 cancel_info_text = "Uw uitnodiging of de hele afspraak is vervallen..";
 request_info_no_attendee = "stelt een afspraak voor met de volgende deelnemers. U ontvangt deze mail als notificatie, u bent geen deelnemer.";
 Appointment = "afspraak";
+"Status Update" = "Statusupdate";
+was = "was";
 
 Organizer = "Organisator";
 Time = "Tijd";
