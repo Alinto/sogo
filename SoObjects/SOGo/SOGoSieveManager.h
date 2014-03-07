@@ -1,9 +1,8 @@
 /* SOGoSieveManager.h - this file is part of SOGo
  *
- * Copyright (C) 2010-2011 Inverse inc.
+ * Copyright (C) 2010-2014 Inverse inc.
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
- *         Ludovic Marcotte <lmarcotte@inverse.ca>
+ * Author: Inverse <info@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,8 +46,14 @@
 - (NSString *) lastScriptError;
 
 - (NGSieveClient *) clientForAccount: (SOGoMailAccount *) theAccount;
+- (NGSieveClient *) clientForAccount: (SOGoMailAccount *) theAccount
+                        withUsername: (NSString *) theUsername
+                         andPassword: (NSString *) thePassword;
 
 - (BOOL) updateFiltersForAccount: (SOGoMailAccount *) theAccount;
+- (BOOL) updateFiltersForAccount: (SOGoMailAccount *) theAccount
+                    withUsername: (NSString *) theUsername
+                     andPassword: (NSString *) thePassword;
 
 @end
 

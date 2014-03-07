@@ -265,6 +265,7 @@
 "To or Cc" = "Kenelle tai Kopio";
 "Size (Kb)" = "Koko (Kb)";
 "Header" = "Otsikko";
+"Body" = "Runko";
 "Flag the message with:" = "Merkitse viesti:";
 "Discard the message" = "Hylkää viesti";
 "File the message in:" = "Arkistoi viesti:";

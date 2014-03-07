@@ -14,4 +14,4 @@ ADDITIONAL_LIB_DIRS += \
 	-L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ -lOGoContentStore \
 	-L../SOPE/GDLContentStore/$(GNUSTEP_OBJ_DIR)/ -lGDLContentStore \
 	-L../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ -lNGCards \
-        -L/usr/local/lib -L/usr/lib -lEOControl -lNGStreams -lNGMime -lNGExtensions
+        -L/usr/local/lib -L/usr/lib -lEOControl -lNGStreams -lNGMime -lNGExtensions -lNGObjWeb

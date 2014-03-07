@@ -111,18 +111,22 @@
 "personalCalendar" = "Persoonlijke agenda";
 "firstCalendar" = "Eerste ingeschakelde agenda";
 
+"reminder_NONE" = "Geen herinnering";
 "reminder_5_MINUTES_BEFORE" = "5 minuten";
 "reminder_10_MINUTES_BEFORE" = "10 minuten";
 "reminder_15_MINUTES_BEFORE" = "15 minuten";
 "reminder_30_MINUTES_BEFORE" = "30 minuten";
+"reminder_45_MINUTES_BEFORE" = "45 minuten van tevoren";
 "reminder_1_HOUR_BEFORE" = "1 uur";
 "reminder_2_HOURS_BEFORE" = "2 uren";
-"reminder_5_HOURS_BEFORE"= "5 uren";
-"reminder_15_HOURS_BEFORE"= "15 uren";
+"reminder_5_HOURS_BEFORE" = "5 uren";
+"reminder_15_HOURS_BEFORE" = "15 uren";
 "reminder_1_DAY_BEFORE" = "1 dag";
 "reminder_2_DAYS_BEFORE" = "2 dagen";
+"reminder_1_WEEK_BEFORE" = "1 week van tevoren";
 
 /* Mailer */
+"Labels" = "Labels";
 "Label" = "Labelen";
 "Show subscribed mailboxes only" = "Toon alleen geabonneerde postvakken";
 "Sort messages by threads" = "Berichten sorteren op threads";
@@ -261,6 +265,7 @@
 "To or Cc" = "aan of cc";
 "Size (Kb)" = "Grootte (Kb)";
 "Header" = "Header";
+"Body" = "Inhoud";
 "Flag the message with:" = "Markeer het bericht met:";
 "Discard the message" = "Het bericht verwijderen";
 "File the message in:" = "Verplaats het bericht naar:";
@@ -287,12 +292,8 @@
 "Flagged" = "Gemarkeerd";
 "Junk" = "Junk";
 "Not Junk" = "Geen junk";
-"Label 1" = "Label 1";
-"Label 2" = "Label 2";
-"Label 3" = "Label 3";
-"Label 4" = "Label 4";
-"Label 5" = "Label 5";
 
+/* Password policy */
 "The password was changed successfully." = "Het wachtwoord is met succes veranderd.";
 "Password must not be empty." = "Wachtwoord mag niet leeg zijn.";
 "The passwords do not match. Please try again." = "De wachtwoorden komen niet overeen. Probeer opnieuw.";

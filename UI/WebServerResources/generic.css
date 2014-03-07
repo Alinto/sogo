@@ -251,6 +251,8 @@ DIV.contactSelector DIV.contactList
   padding-bottom: .15em;
   margin: 0px;
   width: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer; }
 

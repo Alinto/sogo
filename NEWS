@@ -1,3 +1,24 @@
+2.2.1 (2014-03-07)
+------------------
+
+Enhancements
+ - updated Czech, Dutch, Finnish, and Hungarian translations
+ - show current folder name in prompt dialog when renaming a mail folder
+
+Bug fixes
+ - fixed an issue with ActiveSync when the number of messages in the mailbox was greater than the window-size specified by the client
+ - fixed sogo-tool operations on Sieve script (#2617)
+ - fixed unsubscription when renaming an IMAP folder (#2630)
+ - fixed sorting of events list by calendar name (#2629)
+ - fixed wrong date format leading to Android email syncing issues (#2609)
+ - fixed possible exception when retrieving the default event reminder value (#2624)
+ - fixed encoding of mail folder name when creating a subfolder (#2637)
+ - fixed returned date format for email messages in Active Sync
+ - fixed missing 'name part' in address for email messages in Active Sync
+ - fixed race condition when syncing huge amount of deleted messages over Active Sync
+ - fixed encoding of string as CSS identifier when the string starts with a digit
+ - fixed auto-completion popupmenu when UID is a digit
+
 2.2.0 (2014-02-24)
 ------------------
 

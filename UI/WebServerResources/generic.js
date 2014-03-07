@@ -2157,7 +2157,10 @@ function _showPromptDialog(title, label, callback, defaultValue) {
     }
     if (Prototype.Browser.IE)
         jQuery('#bgDialogDiv').css('opacity', 0.4);
-    jQuery(dialog).fadeIn('fast', function () { dialog.down("input").focus(); });
+    jQuery(dialog).fadeIn('fast', function () {
+        var input = dialog.down("input");
+        input.selectText(0, input.value.length);
+    });
 }
 
 function showSelectDialog(title, label, options, button, callbackFcn, callbackArg, defaultValue) {

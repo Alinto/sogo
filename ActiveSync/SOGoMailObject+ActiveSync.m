@@ -166,8 +166,8 @@ struct GlobalObjectId {
 - (NSString *) _emailAddressesFrom: (NSArray *) enveloppeAddresses
 {
   NGImap4EnvelopeAddress *address;
+  NSString *email, *rc, *name;
   NSMutableArray *addresses;
-  NSString *email, *rc;
   int i, max;
 
   rc = nil;
@@ -179,7 +179,8 @@ struct GlobalObjectId {
       for (i = 0; i < max; i++)
         {
           address = [enveloppeAddresses objectAtIndex: i];
-          email = [NSString stringWithFormat: @"\"%@\" <%@>", [address personalName], [address baseEMail]];
+          name = [address personalName];
+          email = [NSString stringWithFormat: @"\"%@\" <%@>", (name ? name : [address baseEMail]), [address baseEMail]];
           
           if (email)
             [addresses addObject: email];
@@ -377,7 +378,7 @@ struct GlobalObjectId {
   // DateReceived
   value = [self date];
   if (value)
-    [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [value activeSyncRepresentationWithoutSeparatorsInContext: context]];
+    [s appendFormat: @"<DateReceived xmlns=\"Email:\">%@</DateReceived>", [value activeSyncRepresentationInContext: context]];
 
   // DisplayTo
   [s appendFormat: @"<DisplayTo xmlns=\"Email:\">%@</DisplayTo>", [[context activeUser] login]];

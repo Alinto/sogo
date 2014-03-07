@@ -27,12 +27,18 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSUserDefaults.h>
 
+#import <NGObjWeb/WOContext+SoObjects.h>
+#import <NGObjWeb/WOApplication.h>
+
 #import <SOGo/NSString+Utilities.h>
+#import <SOGo/SOGoProductLoader.h>
 #import "SOGo/SOGoCredentialsFile.h"
 #import <SOGo/SOGoUser.h>
+#import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
-#import <SOGo/SOGoSieveManager.h>
+#import <Mailer/SOGoMailAccounts.h>
+#import <Mailer/SOGoMailAccount.h>
 
 #import "SOGoTool.h"
 
@@ -102,7 +108,6 @@ typedef enum
 // Vacation
 //
 - (BOOL) _updateSieveScripsForkey: (NSString *) theKey
-                          manager: (SOGoSieveManager *) theManager
                             login: (NSString *) theLogin
 {
   if ([theKey caseInsensitiveCompare: @"Forward"] == NSOrderedSame ||
@@ -126,11 +131,28 @@ typedef enum
           NSLog(@"To update Sieve scripts, you must provide the \"-p credentialFile\" parameter");
           return NO;
         }
-      
-      return [theManager updateFiltersForLogin: theLogin
-                                      authname: authname
-                                      password: authpwd
-                                       account: nil];
+
+      /* update sieve script */
+      SOGoUser *user;
+      SOGoUserFolder *home;
+      SOGoMailAccounts *folder;
+      SOGoMailAccount *account;
+      WOContext *localContext;
+      Class SOGoMailAccounts_class;
+
+      [[SOGoProductLoader productLoader] loadProducts: [NSArray arrayWithObject: @"Mailer.SOGo"]];
+      SOGoMailAccounts_class = NSClassFromString(@"SOGoMailAccounts");
+
+      user = [SOGoUser userWithLogin: theLogin];
+      localContext = [WOContext context];
+      [localContext setActiveUser: user];
+
+      home = [user homeFolderInContext: localContext];
+      folder = [SOGoMailAccounts_class objectWithName: @"Mail" inContainer: home];
+      account = [folder lookupName: @"0" inContext: localContext acquire: NO];
+      [account setContext: localContext];
+
+      return [account updateFiltersWithUsername: authname  andPassword: authpwd];
     }
   
   return YES;
@@ -154,7 +176,6 @@ typedef enum
   if (max > 3)
     {
       SOGoDefaultsSource *source;
-      SOGoSieveManager *manager;
       SOGoUser *user;
 
       cmd = [self _cmdFromString: [sanitizedArguments objectAtIndex: 0]];
@@ -164,7 +185,6 @@ typedef enum
       key = [sanitizedArguments objectAtIndex: 3];
 
       user = [SOGoUser userWithLogin: userId];
-      manager = [SOGoSieveManager sieveManagerForUser: user];
 
       if ([type caseInsensitiveCompare: @"defaults"] == NSOrderedSame)
         source = [user userDefaults];
@@ -254,7 +274,6 @@ typedef enum
                    }
 
                  rc = [self _updateSieveScripsForkey: key
-                                             manager: manager
                                                login: userId];
                  if (rc)
                    [source synchronize];
@@ -266,7 +285,6 @@ typedef enum
           case UserPreferencesUnset:
                  [source removeObjectForKey: key];
                  rc = [self _updateSieveScripsForkey: key
-                                             manager: manager
                                                login: userId];
                  if (rc)
                    [source synchronize];

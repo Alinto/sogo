@@ -111,19 +111,23 @@
 "personalCalendar" = "Személyes naptár";
 "firstCalendar" = "Első engedélyezett naptár";
 
-"reminder_5_MINUTES_BEFORE" = "5 perc";
+"reminder_NONE" = "Nincs emlékeztető";
+"reminder_5_MINUTES_BEFORE" = "5 perccel előtte";
 "reminder_10_MINUTES_BEFORE" = "10 perc";
-"reminder_15_MINUTES_BEFORE" = "15 perc";
+"reminder_15_MINUTES_BEFORE" = "15 perccel előtte";
 "reminder_30_MINUTES_BEFORE" = "30 perc";
-"reminder_1_HOUR_BEFORE" = "1 óra";
-"reminder_2_HOURS_BEFORE" = "2 óra";
-"reminder_5_HOURS_BEFORE"= "5 óra";
-"reminder_15_HOURS_BEFORE"= "15 óra";
-"reminder_1_DAY_BEFORE" = "1 nap";
-"reminder_2_DAYS_BEFORE" = "2 nap";
+"reminder_45_MINUTES_BEFORE" = "45 perccel előtte";
+"reminder_1_HOUR_BEFORE" = "1 órával előtte";
+"reminder_2_HOURS_BEFORE" = "2 órával előtte";
+"reminder_5_HOURS_BEFORE" = "5 órával előtte";
+"reminder_15_HOURS_BEFORE" = "15 órával előtte";
+"reminder_1_DAY_BEFORE" = "1 nappal előtte";
+"reminder_2_DAYS_BEFORE" = "2 nappal előtte";
+"reminder_1_WEEK_BEFORE" = "1 héttel előtte";
 
 /* Mailer */
-"Label" = "Cimke";
+"Labels" = "Címkék";
+"Label" = "Címke";
 "Show subscribed mailboxes only" = "Csak azok a fiókok mutatása, amelyre feliratkozott";
 "Sort messages by threads" = "Üzenetek beszélgetések szerinti rendezése ";
 "Check for new mail:" = "Új üzenetek letöltése:";
@@ -261,6 +265,7 @@
 "To or Cc" = "Címzett vagy másolat";
 "Size (Kb)" = "Méret (Kb)";
 "Header" = "Fejléc";
+"Body" = "Levéltörzs";
 "Flag the message with:" = "Üzenet címkézése ezzel:";
 "Discard the message" = "Üzenet eldobása";
 "File the message in:" = "Az üzenet alábbi mappába helyezése:";
@@ -287,12 +292,8 @@
 "Flagged" = "Megcímkézett";
 "Junk" = "Szemét";
 "Not Junk" = "Nem szemét";
-"Label 1" = "Címke 1";
-"Label 2" = "Címke 2";
-"Label 3" = "Címke 3";
-"Label 4" = "Címke 4";
-"Label 5" = "Címke 5";
 
+/* Password policy */
 "The password was changed successfully." = "A jelszó megváltoztatása sikeres.";
 "Password must not be empty." = "Jelszó nem lehet üres.";
 "The passwords do not match. Please try again." = "Jelszavak nem egyeznek meg. Kérem próbálja meg újra.";

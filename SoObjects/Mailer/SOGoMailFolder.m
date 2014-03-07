@@ -44,6 +44,7 @@
 
 #import <NGImap4/NGImap4Connection.h>
 #import <NGImap4/NGImap4Client.h>
+#import <NGImap4/NSString+Imap4.h>
 
 #import <SOGo/DOMNode+SOGo.h>
 #import <SOGo/NSArray+Utilities.h>
@@ -293,19 +294,19 @@ static NSString *defaultUserID =  @"anyone";
           destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
                                              host: [imap4URL host]
                                              path: [NSString stringWithFormat: @"%@%@",
-                                                             path, newName]];
+                                                             path, [newName stringByEncodingImap4FolderName]]];
           [destURL autorelease];
           error = [imap4 moveMailboxAtURL: imap4URL
                                     toURL: destURL];
           if (!error)
             {
-              ASSIGN (imap4URL, nil);
-              ASSIGN (nameInContainer,
-                      ([NSString stringWithFormat: @"folder%@", [newName asCSSIdentifier]]));
-
               // We unsubscribe to the old one, and subscribe back to the new one
               [client subscribe: [destURL path]];
               [client unsubscribe: [imap4URL path]];
+
+              ASSIGN (imap4URL, nil);
+              ASSIGN (nameInContainer,
+                      ([NSString stringWithFormat: @"folder%@", [newName asCSSIdentifier]]));
             }
         }
       else
@@ -994,7 +995,7 @@ static NSString *defaultUserID =  @"anyone";
 
   if ([self imap4Connection])
     {
-      error = [imap4 createMailbox: [self relativeImap4Name]
+      error = [imap4 createMailbox: [[self relativeImap4Name] stringByEncodingImap4FolderName]
                              atURL: [container imap4URL]];
       if (error)
         rc = NO;
@@ -1939,8 +1940,11 @@ static NSString *defaultUserID =  @"anyone";
       uid = [theId intValue];
       result = [[imap4 client] fetchModseqForUid: uid];
       modseq = [[[[result objectForKey: @"RawResponse"]  objectForKey: @"fetch"] objectForKey: @"modseq"] intValue];
-        
-      tag = [NSString stringWithFormat: @"%d-%d", uid, modseq-1];
+      
+      if (modseq < 1)
+        modseq = 1;
+
+      tag = [NSString stringWithFormat: @"%d-%d", uid, modseq];
     }
 
   return tag;
@@ -1998,7 +2002,7 @@ static NSString *defaultUserID =  @"anyone";
 // Check updated items
 //
 //
-// . uid fetch 1:* (FLAGS) (changedsince 171)
+// . uid fetch 1:* (UID) (changedsince 171)
 //
 // To get the modseq of a specific message:
 //
@@ -2100,11 +2104,14 @@ static NSString *defaultUserID =  @"anyone";
   // We fetch deleted ones
   if (highestmodseq > 0)
     {
+      id uid;
+
       uids = [self fetchUIDsOfVanishedItems: highestmodseq];
       
       for (i = 0; i < [uids count]; i++)
         {
-          d = [NSDictionary dictionaryWithObject: @"deleted"  forKey: [uids objectAtIndex: i]];
+          uid = [uids objectAtIndex: i];
+          d = [NSDictionary dictionaryWithObject: @"deleted"  forKey: uid];
           [allTokens addObject: d];
         }
     }
