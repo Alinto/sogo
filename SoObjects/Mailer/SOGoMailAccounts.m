@@ -78,20 +78,23 @@
 {
   id obj;
   NSArray *accounts;
+  NSString *key;
   SOGoUser *user;
   int keyCount;
+
+  key = [_key fromCSSIdentifier];
   
   /* first check attributes directly bound to the application */
-  obj = [super lookupName:_key inContext:_ctx acquire:NO];
+  obj = [super lookupName:key inContext:_ctx acquire:NO];
   if (!obj)
     {
       user = [SOGoUser userWithLogin: [self ownerInContext: nil]];
       accounts = [user mailAccounts];
 
-      keyCount = [_key intValue];
-      if ([_key isEqualToString: [NSString stringWithFormat: @"%d", keyCount]]
+      keyCount = [key intValue];
+      if ([key isEqualToString: [NSString stringWithFormat: @"%d", keyCount]]
           && keyCount > -1 && keyCount < [accounts count])
-        obj = [SOGoMailAccount objectWithName: _key inContainer: self];
+        obj = [SOGoMailAccount objectWithName: key inContainer: self];
       else
         obj = [NSException exceptionWithHTTPStatus: 404 /* Not Found */];
     }

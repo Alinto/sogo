@@ -106,6 +106,10 @@ String.prototype.asCSSIdentifier = function() {
         newString = newString.replace(re, escapeds[i]);
     }
 
+    if (/^\d+/.test(newString)) {
+        newString = '_' + newString;
+    }
+
     return newString;
 };
 
