@@ -118,12 +118,7 @@ static NSArray *reminderValues = nil;
   if ((self = [super init]))
     {
       item = nil;
-<<<<<<< HEAD
       addressBooksIDWithDisplayName = nil;
-=======
-      client = [self getClient];
-      
->>>>>>> Added missing functions getClient and IsSieveServerConnected and the changes that comes with it
 #warning user should be the owner rather than the activeUser
       ASSIGN (user, [context activeUser]);
       ASSIGN (today, [NSCalendarDate date]);
@@ -184,11 +179,7 @@ static NSArray *reminderValues = nil;
   [contactsCategories release];
   [forwardOptions release];
   [daysOfWeek release];
-<<<<<<< HEAD
   [addressBooksIDWithDisplayName release];
-=======
-  [client release];
->>>>>>> Added missing functions getClient and IsSieveServerConnected and the changes that comes with it
   [super dealloc];
 }
 
@@ -1214,26 +1205,24 @@ static NSArray *reminderValues = nil;
     }
 }
 
-<<<<<<< HEAD
 - (NSString *) sogoVersion
 {
   // The variable SOGoVersion comes from the import: SOGo/Build.h
   return [NSString stringWithString: SOGoVersion];
 }
 
-=======
-- (id) getClient{
+- (id) sieveClient{
   SOGoMailAccount *account;
   SOGoMailAccounts *folder;
   SOGoSieveManager *manager;
-  NGSieveClient *realClient;
+  NGSieveClient *sieveClient;
   
   folder = [[self clientObject] mailAccountsFolder: @"Mail" inContext: context];
   account = [folder lookupName: @"0" inContext: context acquire: NO];
   manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
-  realClient = [manager clientForAccount: account];
+  sieveClient = [manager clientForAccount: account];
   
-  return realClient;
+  return sieveClient;
 }
 
 - (BOOL) isSieveServerAvailable {
@@ -1242,8 +1231,6 @@ static NSArray *reminderValues = nil;
           : false);
 }
 
-
->>>>>>> Added missing functions getClient and IsSieveServerConnected and the changes that comes with it
 - (id <WOActionResults>) defaultAction
 {
   id <WOActionResults> results;
