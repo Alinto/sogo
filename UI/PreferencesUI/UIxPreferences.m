@@ -568,7 +568,7 @@ static NSArray *reminderValues = nil;
 - (NSString *) reminder
 {
   NSString *value;
-  int index;
+  NSUInteger index;
 
   value = [userDefaults calendarDefaultReminder];
   if (value != nil)

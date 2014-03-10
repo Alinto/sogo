@@ -1,3 +1,9 @@
+2.2.X (2014-03-DD)
+------------------
+
+Bug fixes
+ - fixed possible exception when retrieving the default event reminder value on 64bit architectures (#2647, #2648)
+
 2.2.1 (2014-03-07)
 ------------------
 
@@ -13,9 +19,9 @@ Bug fixes
  - fixed wrong date format leading to Android email syncing issues (#2609)
  - fixed possible exception when retrieving the default event reminder value (#2624)
  - fixed encoding of mail folder name when creating a subfolder (#2637)
- - fixed returned date format for email messages in Active Sync
- - fixed missing 'name part' in address for email messages in Active Sync
- - fixed race condition when syncing huge amount of deleted messages over Active Sync
+ - fixed returned date format for email messages in ActiveSync
+ - fixed missing 'name part' in address for email messages in ActiveSync
+ - fixed race condition when syncing huge amount of deleted messages over ActiveSync
  - fixed encoding of string as CSS identifier when the string starts with a digit
  - fixed auto-completion popupmenu when UID is a digit
 
