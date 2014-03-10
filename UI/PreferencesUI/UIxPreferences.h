@@ -22,6 +22,7 @@
 #define UIXPREFERENCES_H
 
 #import <SOGoUI/UIxComponent.h>
+#import <NGImap4/NGSieveClient.h>
 
 @class NSString;
 
@@ -32,6 +33,7 @@
 {
   id item;
   SOGoUser *user;
+  NGSieveClient *client;
   
   // Calendar categories
   NSString *category;
@@ -58,6 +60,8 @@
 }
 
 - (NSString *) userLongDateFormat;
+- (BOOL) isSieveServerAvailable;
+- (id) getClient;
 
 @end
 
