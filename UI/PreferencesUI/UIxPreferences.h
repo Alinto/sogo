@@ -61,7 +61,7 @@
 
 - (NSString *) userLongDateFormat;
 - (BOOL) isSieveServerAvailable;
-- (id) getClient;
+- (id) sieveClient;
 
 @end
 

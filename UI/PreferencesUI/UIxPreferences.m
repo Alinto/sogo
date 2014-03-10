@@ -1129,18 +1129,18 @@ static NSArray *reminderValues = nil;
     }
 }
 
-- (id) getClient{
+- (id) sieveClient{
   SOGoMailAccount *account;
   SOGoMailAccounts *folder;
   SOGoSieveManager *manager;
-  NGSieveClient *realClient;
+  NGSieveClient *sieveClient;
   
   folder = [[self clientObject] mailAccountsFolder: @"Mail" inContext: context];
   account = [folder lookupName: @"0" inContext: context acquire: NO];
   manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
-  realClient = [manager clientForAccount: account];
+  sieveClient = [manager clientForAccount: account];
   
-  return realClient;
+  return sieveClient;
 }
 
 - (BOOL) isSieveServerAvailable {
