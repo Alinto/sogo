@@ -80,11 +80,30 @@ function savePreferences(sender) {
     }
 
     if (sendForm) {
-        saveMailAccounts();
-        $("mainForm").submit();
-    }
-
-    return false;
+   	saveMailAccounts();
+      
+    triggerAjaxRequest($("mainForm").readAttribute("action"), function (http) {
+      if (http.readyState == 4) {
+        var response = http.responseText.evalJSON(true);
+        if (http.status == 503) {
+          showAlertDialog(_(response.textStatus));
+        }
+        else if (http.status == 200) {
+          if (response.hasChanged == 1) {
+            window.opener.location.reload();
+            window.close();}
+          else {
+            window.close();}}
+        else {
+          showAlertDialog(_(response.textStatus));
+        }
+      }
+      },
+      null,
+      Form.serialize($("mainForm")), // excludes the file input
+      { "Content-type": "application/x-www-form-urlencoded" });
+	}
+  return false;
 }
 
 function prototypeIfyFilters() {

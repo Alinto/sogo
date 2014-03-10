@@ -1140,41 +1140,42 @@ static NSArray *reminderValues = nil;
 - (id <WOActionResults>) defaultAction
 {
   id <WOActionResults> results;
-  WORequest *request;
   SOGoDomainDefaults *dd;
-  NSString *method;
-
+  SOGoMailAccount *account;
+  SOGoMailAccounts *folder;
+  WORequest *request;
+  
   request = [context request];
-  if ([[request method] isEqualToString: @"POST"])
-    {
-      SOGoMailAccount *account;
-      SOGoMailAccounts *folder;
-
-      dd = [[context activeUser] domainDefaults];
-      if ([dd sieveScriptsEnabled])
-        [userDefaults setSieveFilters: sieveFilters];
-      if ([dd vacationEnabled])
-        [userDefaults setVacationOptions: vacationOptions];
-      if ([dd forwardEnabled])
-        [userDefaults setForwardOptions: forwardOptions];
-
+  if ([[request method] isEqualToString: @"POST"]){
+    dd = [[context activeUser] domainDefaults];
+    if ([dd sieveScriptsEnabled])
+    [userDefaults setSieveFilters: sieveFilters];
+    if ([dd vacationEnabled])
+    [userDefaults setVacationOptions: vacationOptions];
+    if ([dd forwardEnabled])
+    [userDefaults setForwardOptions: forwardOptions];
+    
+    if([self isSieveServerAvailable]){
       [userDefaults synchronize];
-
       folder = [[self clientObject] mailAccountsFolder: @"Mail"
                                              inContext: context];
       account = [folder lookupName: @"0" inContext: context acquire: NO];
-      [account updateFilters];
-
-      if (hasChanged)
-        method = @"window.location.reload()";
-      else
-        method = nil;
-
-      results = [self jsCloseWithRefreshMethod: method];
+      
+      if([account updateFilters]){
+        results = [self responseWithStatus: 200 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:hasChanged], @"hasChanged", nil]];
+      }
+      else{
+        results = [self responseWithStatus: 502 andJSONRepresentation:[NSDictionary dictionaryWithObjectsAndKeys: @"ConnectionError", @"textStatus", nil]];
+      }
     }
-  else
+    else{
+      results = [self responseWithStatus: 503 andJSONRepresentation:[NSDictionary dictionaryWithObjectsAndKeys: @"ServiceTemporarilyUnavailable", @"textStatus", nil]];
+    }
+  }
+  else{
     results = self;
-
+  }
+  
   return results;
 }
 
