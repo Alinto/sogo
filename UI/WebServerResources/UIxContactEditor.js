@@ -97,14 +97,16 @@ function validateContactEditor() {
   
     var today = new Date();
     var yyyy = today.getFullYear();
+    var mm = today.getMonth();
+    var dd = today.getDay();
 
     var byear = $('birthyear');
     var bmonth = $('birthmonth');
     var bday = $('birthday');
   
     if(byear.value <= yyyy && (byear.value.length == 4)){
-      if(bmonth.value <= 12 && bmonth.value >=1){
-        if(bday.value <= 31 && bday.value >=1){
+      if(bmonth.value <= mm && bmonth.value <= 12 && bmonth.value >=1){
+        if(bday.value <= dd && bday.value <= 31 && bday.value >=1){
           var bdayValue = byear.value + "-" + bmonth.value + "-" + bday.value;
           if (bdayValue != "--" && !dateRegex.test(bdayValue)) {
             alert(_("invaliddatewarn"));
