@@ -46,6 +46,7 @@
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/WOResourceManager+SOGo.h>
+#import <SOGo/SOGoBuild.h>
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
 #import <Mailer/SOGoMailLabel.h>
@@ -1136,6 +1137,14 @@ static NSArray *reminderValues = nil;
       [userDefaults setLoginModule: newValue];
     }
 }
+
+- (NSString *) sogoVersion
+{
+  NSString *sogoVersion = [NSString stringWithString: SOGoVersion];
+  
+  return sogoVersion;
+}
+
 
 - (id <WOActionResults>) defaultAction
 {

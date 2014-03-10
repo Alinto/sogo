@@ -158,6 +158,8 @@
                   const:id="defaultModule"
                   const:name="defaultModule"
                   string="itemModuleText" selection="userDefaultModule"/></dd>
+            <dt><var:string label:value="SOGo version :"/></dt>
+            <dd><var:string value="sogoVersion"/></dd>
           </dl>
         </div>
         <var:if condition="userHasCalendarAccess">
