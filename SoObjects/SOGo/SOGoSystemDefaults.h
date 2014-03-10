@@ -42,7 +42,7 @@
 - (BOOL) trustProxyAuthentication;
 - (NSString *) encryptionKey;
 - (BOOL) useRelativeURLs;
-- (NSString *) folderEncoding;
+- (NSString *) sieveFolderEncoding;
 
 - (BOOL) isWebAccessEnabled;
 - (BOOL) isCalendarDAVAccessEnabled;

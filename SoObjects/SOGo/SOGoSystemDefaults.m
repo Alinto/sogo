@@ -356,9 +356,9 @@ _injectConfigurationFromFile (NSMutableDictionary *defaultsDict,
   return [self boolForKey: @"WOUseRelativeURLs"];
 }
 
-- (NSString *) folderEncoding
+- (NSString *) sieveFolderEncoding
 {
-  return [self stringForKey: @"SOGoFolderEncoding"];
+  return [self stringForKey: @"SOGoSieveFolderEncoding"];
 }
 
 

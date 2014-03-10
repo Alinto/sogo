@@ -13,7 +13,7 @@
   >
   <script type="text/javascript">
     var filterId = '<var:string value="filterId"/>';
-    var folderEncoding = '<var:string value="folderEncoding"/>';
+    var sieveFolderEncoding = '<var:string value="sieveFolderEncoding"/>';
     var mailTags = <var:string value="labels" const:escapeHTML="NO"/>;
   </script>
   <form id="mainForm" var:href="ownPath">
