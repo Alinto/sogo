@@ -118,7 +118,12 @@ static NSArray *reminderValues = nil;
   if ((self = [super init]))
     {
       item = nil;
+<<<<<<< HEAD
       addressBooksIDWithDisplayName = nil;
+=======
+      client = [self getClient];
+      
+>>>>>>> Added missing functions getClient and IsSieveServerConnected and the changes that comes with it
 #warning user should be the owner rather than the activeUser
       ASSIGN (user, [context activeUser]);
       ASSIGN (today, [NSCalendarDate date]);
@@ -179,7 +184,11 @@ static NSArray *reminderValues = nil;
   [contactsCategories release];
   [forwardOptions release];
   [daysOfWeek release];
+<<<<<<< HEAD
   [addressBooksIDWithDisplayName release];
+=======
+  [client release];
+>>>>>>> Added missing functions getClient and IsSieveServerConnected and the changes that comes with it
   [super dealloc];
 }
 
@@ -919,26 +928,15 @@ static NSArray *reminderValues = nil;
 
 - (NSString *) sieveCapabilities
 {
-#warning sieve caps should be deduced from the server
   static NSArray *capabilities = nil;
-  SOGoMailAccounts *folder;
-  SOGoMailAccount *account;
-  SOGoSieveManager *manager;
-  NGSieveClient *client;
 
   if (!capabilities)
     {
-      folder = [[self clientObject] mailAccountsFolder: @"Mail"
-                                             inContext: context];
-      account = [folder lookupName: @"0" inContext: context acquire: NO];
-      manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
-      client = [manager clientForAccount: account];
-
       if (client)
         capabilities = [client capabilities];
       else
         capabilities = [NSArray array];
-      [capabilities retain];
+        [capabilities retain];
     }
 
   return [capabilities jsonRepresentation];
@@ -1216,12 +1214,36 @@ static NSArray *reminderValues = nil;
     }
 }
 
+<<<<<<< HEAD
 - (NSString *) sogoVersion
 {
   // The variable SOGoVersion comes from the import: SOGo/Build.h
   return [NSString stringWithString: SOGoVersion];
 }
 
+=======
+- (id) getClient{
+  SOGoMailAccount *account;
+  SOGoMailAccounts *folder;
+  SOGoSieveManager *manager;
+  NGSieveClient *realClient;
+  
+  folder = [[self clientObject] mailAccountsFolder: @"Mail" inContext: context];
+  account = [folder lookupName: @"0" inContext: context acquire: NO];
+  manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
+  realClient = [manager clientForAccount: account];
+  
+  return realClient;
+}
+
+- (BOOL) isSieveServerAvailable {
+  return (([client isConnected])
+          ? true
+          : false);
+}
+
+
+>>>>>>> Added missing functions getClient and IsSieveServerConnected and the changes that comes with it
 - (id <WOActionResults>) defaultAction
 {
   id <WOActionResults> results;
