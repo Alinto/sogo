@@ -94,15 +94,34 @@ function validateContactEditor() {
         alert(_("invalidemailwarn"));
         rc = false;
     }
+  
+    var today = new Date();
+    var yyyy = today.getFullYear();
 
     var byear = $('birthyear');
     var bmonth = $('birthmonth');
     var bday = $('birthday');
-    var bdayValue = byear.value + "-" + bmonth.value + "-" + bday.value;
-    if (bdayValue != "--" && !dateRegex.test(bdayValue)) {
-        alert(_("invaliddatewarn"));
-        rc = false;
+  
+    if(byear.value <= yyyy && (byear.value.length == 4)){
+      if(bmonth.value <= 12 && bmonth.value >=1){
+        if(bday.value <= 31 && bday.value >=1){
+          var bdayValue = byear.value + "-" + bmonth.value + "-" + bday.value;
+          if (bdayValue != "--" && !dateRegex.test(bdayValue)) {
+            alert(_("invaliddatewarn"));
+            rc = false;
+          }
+        }
+        else{
+          alert(_("invaliddatewarn"));
+          rc = false;}
+      }
+      else{
+        alert(_("invalidmonthwarn"));
+        rc = false;}
     }
+    else{
+      alert(_("invalidyearwarn"));
+      rc = false;}
 
     return rc;
 }
