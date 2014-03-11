@@ -58,12 +58,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <NGImap4/NSString+Imap4.h>
 
-#import <NGMime/NGMimeBodyPart.h>
-#import <NGMime/NGMimeMultipartBody.h>
-#import <NGMail/NGMimeMessageParser.h>
-#import <NGMail/NGMimeMessage.h>
-#import <NGMail/NGMimeMessageGenerator.h>
-
 #import <DOM/DOMElement.h>
 #import <DOM/DOMProtocols.h>
 
@@ -392,7 +386,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                        inContext: context
                                          acquire: NO];
 
-          [sogoObject delete];
+          if (![sogoObject isKindOfClass: [NSException class]])
+            [sogoObject delete];
         }
     }
 }
