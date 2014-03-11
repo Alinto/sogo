@@ -124,6 +124,8 @@
       <div class="tabs">
         <div id="generalView" class="tab">
           <dl class="dl-horizontal">
+            <dt><var:string label:value="SOGo version :"/></dt>
+            <dd><var:string value="sogoVersion"/></dd>
             <dt><var:string label:value="Language :"/></dt>
             <dd><var:popup list="languages" item="item"
                   const:id="language"
@@ -158,8 +160,6 @@
                   const:id="defaultModule"
                   const:name="defaultModule"
                   string="itemModuleText" selection="userDefaultModule"/></dd>
-            <dt><var:string label:value="SOGo version :"/></dt>
-            <dd><var:string value="sogoVersion"/></dd>
           </dl>
         </div>
         <var:if condition="userHasCalendarAccess">
