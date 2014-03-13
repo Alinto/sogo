@@ -1477,7 +1477,7 @@ function showAlarmCallback(http) {
             if (data["description"].length)
                 msg += "\n\n" + data["description"];
 
-            window.alert(msg.unescapeHTML());
+            window.alert(msg.decodeEntities());
             showSelectDialog(data["summary"], _('Snooze for '),
                              { '5': _('5 minutes'),
                                '10': _('10 minutes'),

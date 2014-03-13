@@ -6,6 +6,7 @@ Bug fixes
  - disable file paste support in mail editor (#2641)
  - fixed copying/moving messages to a mail folder begining with a digit (#2658)
  - fixed unseen count for folders beginning with a digit and used in Sieve filters (#2652)
+ - fixed decoding of HTML entities in reminder alerts (#2659)
 
 2.2.1 (2014-03-07)
 ------------------
