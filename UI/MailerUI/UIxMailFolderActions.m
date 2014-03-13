@@ -41,6 +41,7 @@
 #import <Mailer/SOGoTrashFolder.h>
 
 #import <SOGo/NSObject+Utilities.h>
+#import <SOGo/NSString+Utilities.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
