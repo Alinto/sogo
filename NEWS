@@ -1,5 +1,8 @@
-2.2.X (2014-03-DD)
+2.2.2 (2014-03-DD)
 ------------------
+
+Enhancements
+ - updated French translation
 
 Bug fixes
  - fixed possible exception when retrieving the default event reminder value on 64bit architectures (#2647, #2648)
@@ -7,6 +10,7 @@ Bug fixes
  - fixed copying/moving messages to a mail folder begining with a digit (#2658)
  - fixed unseen count for folders beginning with a digit and used in Sieve filters (#2652)
  - fixed decoding of HTML entities in reminder alerts (#2659)
+ - fixed check for resource conflict when creating an event in the resource's calendar (#2541)
 
 2.2.1 (2014-03-07)
 ------------------
