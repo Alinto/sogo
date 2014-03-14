@@ -2887,11 +2887,9 @@ Mailbox.prototype = {
     findMailboxByName: function(name) {
         var mailbox = null;
 
-        var searchName = name.asCSSIdentifier();
-
         var i = 0;
         while (!mailbox && i < this.children.length)
-            if (this.children[i].name == searchName
+            if (this.children[i].name == name
                 || this.children[i].displayName == name)
                 mailbox = this.children[i];
             else
