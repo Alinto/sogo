@@ -76,6 +76,7 @@
   NSDictionary *modulesConstraints;
 
   NSMutableArray *searchAttributes;
+  NSArray *LDAPLookupFields;
   
   BOOL passwordPolicy;
 
@@ -109,6 +110,7 @@
     IMAPLoginField: (NSString *) newIMAPLoginField
     SieveHostField: (NSString *) newSieveHostField
         bindFields: (id) newBindFields
+  LDAPLookupFields: (NSArray *) newLDAPLookupFields
 	 kindField: (NSString *) newKindField
 andMultipleBookingsField: (NSString *) newMultipleBookingsField;
 
