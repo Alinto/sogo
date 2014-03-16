@@ -729,7 +729,14 @@ function displayMailAccount(mailAccount, readOnly) {
                     ? mailAccount["identities"][0]
                     : {} );
     $("fullName").value = identity["fullName"] || "";
-    $("email").value = identity["email"] || "";
+    if(identity["email"]) {
+        var pureEMailRE = new RegExp("(.*<|^)([^>]*)");
+        var match = pureEMailRE.exec(identity["email"]);
+        $("email").value = match[2];
+    }
+    else {
+        $("email").value = "";
+    }
     $("replyTo").value = identity["replyTo"] || "";
 
     displayAccountSignature(mailAccount);
