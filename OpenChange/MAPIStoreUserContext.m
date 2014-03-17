@@ -100,16 +100,12 @@ static NSMapTable *contextsTable = nil;
   return self;
 }
 
-- (NSString *) _readUserPassword: (NSString *) newUsername
+- (NSString *) _readPasswordFile: (NSString *) path
 {
-  NSString *password, *path;
+  NSString *password;
   NSData *content;
- 
-  password = nil;
-  
-  path = [NSString stringWithFormat: SAMBA_PRIVATE_DIR
-                   @"/mapistore/%@/password", newUsername];
 
+  password = nil;
   content = [NSData dataWithContentsOfFile: path];
 
   if (content)
@@ -119,6 +115,24 @@ static NSMapTable *contextsTable = nil;
       [password autorelease];
       password = [password stringByTrimmingCharactersInSet:
                   [NSCharacterSet characterSetWithCharactersInString: @"\r\n"]];
+    }
+
+  return password;
+}
+
+- (NSString *) _readUserPassword: (NSString *) newUsername
+{
+  NSString *password, *path;
+
+  path = [NSString stringWithFormat: SAMBA_PRIVATE_DIR
+                   @"/mapistore/%@/password", newUsername];
+
+  password = [self _readPasswordFile: path];
+  if (password == nil)
+    {
+      // Try to get master password
+      path = [NSString stringWithFormat: SAMBA_PRIVATE_DIR @"/mapistore/master.password"];
+      password = [self _readPasswordFile: path];
     }
 
   return password;
