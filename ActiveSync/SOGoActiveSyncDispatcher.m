@@ -1561,7 +1561,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   [theResponse setHeader: @"application/vnd.ms-sync.wbxml"  forKey: @"Content-Type"];
   [theResponse setHeader: @"14.1"  forKey: @"MS-Server-ActiveSync"];
-  [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,Provision,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
+  [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
   [theResponse setHeader: @"2.0,2.1,2.5,12.0,12.1,14.0,14.1"  forKey: @"MS-ASProtocolVersions"];
 
    RELEASE(context);
