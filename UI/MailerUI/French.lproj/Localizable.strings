@@ -169,8 +169,6 @@
 "InboxFolderName"  = "Courrier entrant";
 "DraftsFolderName" = "Brouillons";
 "SieveFolderName"  = "Filtres";
-"OtherUsersFolderName"   = "Autres utilisateurs";
-"SharedFoldersName" = "Dossiers partagés";
 "Folders"          = "Dossiers"; /* title line */
 
 /* MailMoveToPopUp */

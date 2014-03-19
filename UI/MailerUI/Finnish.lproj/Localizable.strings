@@ -168,8 +168,6 @@
 "InboxFolderName"  = "Saapuneet";
 "DraftsFolderName" = "Luonnokset";
 "SieveFolderName"  = "Suodattimet";
-"OtherUsersFolderName"   = "Muut käyttäjät";
-"SharedFoldersName" = "Jaetut kansiot";
 "Folders"          = "Kansiot"; /* title line */
 
 /* MailMoveToPopUp */

@@ -165,8 +165,6 @@
 "InboxFolderName"  = "Newydd";
 "DraftsFolderName" = "Draffts";
 "SieveFolderName"  = "Ffilteri";
-"OtherUsersFolderName"   = "Other Users";
-"SharedFoldersName" = "Shared Folders";
 "Folders"          = "Ffolderi"; /* title line */
 
 /* MailMoveToPopUp */

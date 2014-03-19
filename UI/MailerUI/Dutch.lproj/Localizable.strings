@@ -168,8 +168,6 @@
 "InboxFolderName"  = "Postvak IN";
 "DraftsFolderName" = "Concepten";
 "SieveFolderName"  = "Berichtregel";
-"OtherUsersFolderName"   = "Andere Gebruikers";
-"SharedFoldersName" = "Gedeelde Mappen";
 "Folders"          = "Mappen"; /* title line */
 
 /* MailMoveToPopUp */

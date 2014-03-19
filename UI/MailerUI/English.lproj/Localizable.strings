@@ -169,8 +169,6 @@
 "InboxFolderName"  = "Inbox";
 "DraftsFolderName" = "Drafts";
 "SieveFolderName"  = "Filters";
-"OtherUsersFolderName"   = "Other Users";
-"SharedFoldersName" = "Shared Folders";
 "Folders"          = "Folders"; /* title line */
 
 /* MailMoveToPopUp */

@@ -168,8 +168,6 @@
 "InboxFolderName"  = "البريد الوارد";
 "DraftsFolderName" = "مسودات";
 "SieveFolderName"  = "فلاتر";
-"OtherUsersFolderName"   = "مستخدمين أخرين";
-"SharedFoldersName" = "مجلدات مشتركة";
 "Folders"          = "مجلدات"; /* title line */
 
 /* MailMoveToPopUp */

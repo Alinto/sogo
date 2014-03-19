@@ -168,8 +168,6 @@
 "InboxFolderName"  = "Indbakke";
 "DraftsFolderName" = "Kladder";
 "SieveFolderName"  = "Filtre";
-"OtherUsersFolderName"   = "Andre brugere";
-"SharedFoldersName" = "Delte mapper";
 "Folders"          = "Mapper"; /* title line */
 
 /* MailMoveToPopUp */

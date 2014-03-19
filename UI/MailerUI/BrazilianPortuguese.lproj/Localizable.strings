@@ -168,8 +168,6 @@
 "InboxFolderName"  = "Entrada";
 "DraftsFolderName" = "Rascunhos";
 "SieveFolderName"  = "Filtros";
-"OtherUsersFolderName"   = "Outros Usuários";
-"SharedFoldersName" = "Pastas Compartilhadas";
 "Folders"          = "Pastas"; /* title line */
 
 /* MailMoveToPopUp */
