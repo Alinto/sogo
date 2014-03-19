@@ -64,6 +64,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <EOControl/EOQualifier.h>
 
 #import <SOGo/NSArray+DAV.h>
+#import <SOGo/SOGoCache.h>
 #import <SOGo/NSDictionary+DAV.h>
 #import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/SOGoDomainDefaults.h>
@@ -567,8 +568,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     default:
       {
         NSMutableArray *addedOrChangedMessages;
+        NSString *uid, *command, *key;
         SOGoMailObject *mailObject;
-        NSString *uid, *command;
         NSDictionary *aMessage;
         NSArray *allMessages;
         int deleted_count;
@@ -617,6 +618,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             
             uid = [[[aMessage allKeys] lastObject] stringValue];
             command = [[aMessage allValues] lastObject];          
+            
+            // We check for Outlook stupidity to avoid creating duplicates - see the comment
+            // in SOGoActiveSyncDispatcher.m: -processMoveItems:inResponse: for more details.
+            key = [NSString stringWithFormat: @"%@+%@+%@+%@",
+                            [[context activeUser] login],
+                       [context objectForKey: @"DeviceType"],
+                            [theCollection displayName],
+                            uid];
+            
+            if ([[SOGoCache sharedCache] valueForKey: key])
+              {
+                [[SOGoCache sharedCache] removeValueForKey: key];
+                command = @"changed";
+              }
             
             if ([command isEqualToString: @"added"])
               [s appendString: @"<Add xmlns=\"AirSync:\">"];

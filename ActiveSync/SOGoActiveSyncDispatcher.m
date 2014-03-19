@@ -76,6 +76,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <SOGo/NSArray+DAV.h>
 #import <SOGo/NSDictionary+DAV.h>
+#import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
@@ -880,10 +881,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       NSDictionary *response;
       NSString *v;
-
-      // userFolder = [[context activeUser] homeFolderInContext: context];
-      // accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
-      // currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
       
       currentCollection = [self collectionFromId: srcFolderId  type: srcFolderType];
 
@@ -924,6 +921,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           NSMutableString *s;
           NSData *d;
+          
+          //
+          // If the MoveItems operation is initiated by an Outlook client, we save the "deviceType+dstMessageId" to use it later in order to
+          // modify the Sync command from "add" to "change" (see SOGoActiveSyncDispatcher+Sync.m: -processSyncGetChanges: ...).
+          // This is to avoid Outlook creating dupes when moving messages across folfers.
+          //
+          if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"])
+            {
+              NSString *key;
+
+              // The key must be pretty verbose. We use the <uid>+<DeviceType>+<target folder>+<DstMsgId>
+              key = [NSString stringWithFormat: @"%@+%@+%@+%@",
+                              [[context activeUser] login],
+                              [context objectForKey: @"DeviceType"],
+                              dstFolderId,
+                              dstMessageId];
+                              
+
+              [[SOGoCache sharedCache] setValue: @"MovedItem"
+                                         forKey: key];
+            }
+
           
           // Everything is alright, lets return the proper response. "Status == 3" means success.
           s = [NSMutableString string];
@@ -1522,9 +1541,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   ASSIGN(context, theContext);
  
-  // Get the device ID and "stash" it
+  // Get the device ID, device type and "stash" them
   deviceId = [[theRequest uri] deviceId];
   [context setObject: deviceId  forKey: @"DeviceId"];
+  [context setObject: [[theRequest uri] deviceType]  forKey: @"DeviceType"];
 
   d = [[theRequest content] wbxml2xml];
   documentElement = nil;
