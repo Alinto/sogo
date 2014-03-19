@@ -46,6 +46,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (NSString *) realCollectionIdWithFolderType: (SOGoMicrosoftActiveSyncFolderType *) folderType;
 - (NSCalendarDate *) calendarDate;
 - (NSString *) deviceId;
+- (NSString *) deviceType;
 - (NSString *) command;
 - (NSData *) convertHexStringToBytes;
 

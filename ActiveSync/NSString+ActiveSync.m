@@ -170,6 +170,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 //
+// This method extracts the "DeviceType" from a URI:
+//
+// /SOGo/Microsoft-Server-ActiveSync?Cmd=FolderSync&User=sogo10&DeviceId=SEC17CD1A3E9E3F2&DeviceType=SAMSUNGSGHI317M
+//
+- (NSString *) deviceType
+{
+  NSString *s;
+
+  s = [self _valueForParameter: @"DEVICETYPE="];
+
+  if (!s)
+    s = @"Unknown";
+
+  return s;
+}
+
+//
 //
 //
 - (NSString *) command
