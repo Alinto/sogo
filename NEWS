@@ -13,6 +13,7 @@ Bug fixes
  - fixed check for resource conflict when creating an event in the resource's calendar (#2541)
  - fixed construction of mail folders tree
  - fixed parsing of ORG attribute in cards (#2662)
+ - disabled ActiveSync provisioning for now (#2663)
 
 2.2.1 (2014-03-07)
 ------------------
