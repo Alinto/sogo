@@ -3,6 +3,7 @@
 
 Enhancements
  - updated French translation
+ - added sanitization support for Outlook/ActiveSync to circumvent Outlook bugs (#2667)
 
 Bug fixes
  - fixed possible exception when retrieving the default event reminder value on 64bit architectures (#2647, #2648)
