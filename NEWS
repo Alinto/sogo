@@ -14,6 +14,7 @@ Bug fixes
  - fixed construction of mail folders tree
  - fixed parsing of ORG attribute in cards (#2662)
  - disabled ActiveSync provisioning for now (#2663)
+ - fixed messages move in Outlook which would create duplicates (#2650)
 
 2.2.1 (2014-03-07)
 ------------------
