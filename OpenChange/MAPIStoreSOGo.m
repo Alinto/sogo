@@ -55,9 +55,12 @@ static Class MAPIStoreContextK = Nil;
 static BOOL leakDebugging = NO;
 
 #define TRYCATCH_START @try {
-#define TRYCATCH_END   } @catch (NSException * e) { \
-                         return sogo_backend_handle_objc_exception(e, __PRETTY_FUNCTION__, __LINE__); \
-                       }
+#define TRYCATCH_END(pool)  \
+          } @catch (NSException * e) { \
+            [pool release]; \
+            GSUnregisterCurrentThread(); \
+            return sogo_backend_handle_objc_exception(e, __PRETTY_FUNCTION__, __LINE__); \
+          }
 
 static enum mapistore_error
 sogo_backend_unexpected_error()
@@ -194,7 +197,7 @@ sogo_backend_create_context(TALLOC_CTX *mem_ctx,
                            andTDBIndexing: indexing];
       if (rc == MAPISTORE_SUCCESS)
         *context_object = [context tallocWrapper: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
     }
   else
     rc = MAPISTORE_ERROR;
@@ -234,7 +237,7 @@ sogo_backend_create_root_folder (const char *username,
                                       withRole: role];
       if (rc == MAPISTORE_SUCCESS)
         *mapistore_urip = [mapistoreUri asUnicodeInMemCtx: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
     }
   else
     rc = MAPISTORE_ERROR;
@@ -267,7 +270,7 @@ sogo_backend_list_contexts(const char *username, struct indexing_context *indexi
                                                   withIndexing: indexing
                                                          inMemCtx: mem_ctx];
       rc = MAPISTORE_SUCCESS;
-      TRYCATCH_END
+      TRYCATCH_END(pool)
     }
   else
     rc = MAPISTORE_ERROR;
@@ -313,7 +316,7 @@ sogo_context_get_path(void *backend_object, TALLOC_CTX *mem_ctx,
 
       TRYCATCH_START
       rc = [context getPath: path ofFMID: fmid inMemCtx: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -349,7 +352,7 @@ sogo_context_get_root_folder(void *backend_object, TALLOC_CTX *mem_ctx,
       rc = [context getRootFolder: &folder withFID: fid];
       if (rc == MAPISTORE_SUCCESS)
         *folder_object = [folder tallocWrapper: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -393,7 +396,7 @@ sogo_folder_open_folder(void *folder_object, TALLOC_CTX *mem_ctx, uint64_t fid, 
       if (rc == MAPISTORE_SUCCESS)
         *childfolder_object = [childFolder tallocWrapper: mem_ctx];
       // [context tearDownRequest];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -436,7 +439,7 @@ sogo_folder_create_folder(void *folder_object, TALLOC_CTX *mem_ctx,
       rc = [folder createFolder: &childFolder withRow: aRow andFID: fid];
       if (rc == MAPISTORE_SUCCESS)
         *childfolder_object = [childFolder tallocWrapper: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -477,7 +480,7 @@ sogo_folder_delete(void *folder_object)
 
       TRYCATCH_START
       rc = [folder deleteFolder];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -509,7 +512,7 @@ sogo_folder_get_child_count(void *folder_object, enum mapistore_table_type table
 
       TRYCATCH_START
       rc = [folder getChildCount: child_count ofTableType: table_type];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -550,7 +553,7 @@ sogo_folder_open_message(void *folder_object,
                       inMemCtx: mem_ctx];
       if (rc == MAPISTORE_SUCCESS)
         *message_object = [message tallocWrapper: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -591,7 +594,7 @@ sogo_folder_create_message(void *folder_object,
 		    isAssociated: associated];
       if (rc == MAPISTORE_SUCCESS)
         *message_object = [message tallocWrapper: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -623,7 +626,7 @@ sogo_folder_delete_message(void *folder_object, uint64_t mid, uint8_t flags)
 
       TRYCATCH_START
       rc = [folder deleteMessageWithMID: mid andFlags: flags];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -671,7 +674,7 @@ sogo_folder_move_copy_messages(void *folder_object,
                                     andChangeKeys: target_change_keys
                                          wantCopy: want_copy
                                          inMemCtx: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -721,7 +724,7 @@ sogo_folder_move_folder(void *folder_object, void *target_folder_object,
                                  isMove: YES
                             isRecursive: YES
                                inMemCtx: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -765,7 +768,7 @@ sogo_folder_copy_folder(void *folder_object, void *target_folder_object, TALLOC_
                                  isMove: NO
                             isRecursive: recursive
                                inMemCtx: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -803,7 +806,7 @@ sogo_folder_get_deleted_fmids(void *folder_object, TALLOC_CTX *mem_ctx,
                   fromChangeNumber: change_num
                        inTableType: table_type
                           inMemCtx: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -843,7 +846,7 @@ sogo_folder_open_table(void *folder_object, TALLOC_CTX *mem_ctx,
                 andHandleId: handle_id];
       if (rc == MAPISTORE_SUCCESS)
         *table_object = [table tallocWrapper: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -879,7 +882,7 @@ sogo_folder_modify_permissions(void *folder_object, uint8_t flags,
       rc = [folder modifyPermissions: permissions
                            withCount: pcount
                             andFlags: flags];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -912,7 +915,7 @@ sogo_folder_preload_message_bodies(void *folder_object, enum mapistore_table_typ
       TRYCATCH_START
       rc = [folder preloadMessageBodiesWithMIDs: mids
                                     ofTableType: table_type];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -947,7 +950,7 @@ sogo_message_get_message_data(void *message_object,
       TRYCATCH_START
       [message getMessageData: msg_dataP
                      inMemCtx: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -984,7 +987,7 @@ sogo_message_create_attachment (void *message_object, TALLOC_CTX *mem_ctx, void 
       if (rc == MAPISTORE_SUCCESS)
         *attachment_object = [attachment tallocWrapper: mem_ctx];
       // [context tearDownRequest];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1021,7 +1024,7 @@ sogo_message_open_attachment (void *message_object, TALLOC_CTX *mem_ctx,
       if (rc == MAPISTORE_SUCCESS)
         *attachment_object = [attachment tallocWrapper: mem_ctx];
       // [context tearDownRequest];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1058,7 +1061,7 @@ sogo_message_get_attachment_table (void *message_object, TALLOC_CTX *mem_ctx, vo
       if (rc == MAPISTORE_SUCCESS)
         *table_object = [table tallocWrapper: mem_ctx];
       // [context tearDownRequest];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1096,7 +1099,7 @@ sogo_message_modify_recipients (void *message_object,
                                           andCount: count
                                         andColumns: columns];
       // [context tearDownRequest];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1129,7 +1132,7 @@ sogo_message_set_read_flag (void *message_object, uint8_t flag)
       TRYCATCH_START
       rc = [message setReadFlag: flag];
       // [context tearDownRequest];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1162,7 +1165,7 @@ sogo_message_save (void *message_object, TALLOC_CTX *mem_ctx)
       TRYCATCH_START
       rc = [message saveMessage: mem_ctx];
       // [context tearDownRequest];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1195,7 +1198,7 @@ sogo_message_submit (void *message_object, enum SubmitFlags flags)
       TRYCATCH_START
       rc = [message submitWithFlags: flags];
       // [context tearDownRequest];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1237,7 +1240,7 @@ sogo_message_attachment_open_embedded_message (void *attachment_object,
                                   inMemCtx: mem_ctx];
       if (rc == MAPISTORE_SUCCESS)
         *message_object = [message tallocWrapper: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1277,7 +1280,7 @@ sogo_message_attachment_create_embedded_message (void *attachment_object,
                                         inMemCtx: mem_ctx];
           if (rc == MAPISTORE_SUCCESS)
             *message_object = [message tallocWrapper: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1309,7 +1312,7 @@ static enum mapistore_error sogo_table_get_available_properties(void *table_obje
 
       TRYCATCH_START
       rc = [table getAvailableProperties: propertiesP inMemCtx: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1342,7 +1345,7 @@ sogo_table_set_columns (void *table_object, uint16_t count, enum MAPITAGS *prope
       TRYCATCH_START
       rc = [table setColumns: properties
                    withCount: count];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1377,7 +1380,7 @@ sogo_table_set_restrictions (void *table_object, struct mapi_SRestriction *restr
       //[table cleanupCaches];
       rc = MAPISTORE_SUCCESS;
       *table_status = TBLSTAT_COMPLETE;
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1412,7 +1415,7 @@ sogo_table_set_sort_order (void *table_object, struct SSortOrderSet *sort_order,
       [table cleanupCaches];
       rc = MAPISTORE_SUCCESS;
       *table_status = TBLSTAT_COMPLETE;
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1447,7 +1450,7 @@ sogo_table_get_row (void *table_object, TALLOC_CTX *mem_ctx,
       TRYCATCH_START
       rc = [table getRow: data withRowID: row_id andQueryType: query_type
                 inMemCtx: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1482,7 +1485,7 @@ sogo_table_get_row_count (void *table_object,
       TRYCATCH_START
       rc = [table getRowCount: row_countp
                 withQueryType: query_type];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1514,7 +1517,7 @@ sogo_table_handle_destructor (void *table_object, uint32_t handle_id)
 
       TRYCATCH_START
       [table destroyHandle: handle_id];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1548,7 +1551,7 @@ static enum mapistore_error sogo_properties_get_available_properties(void *objec
 
       TRYCATCH_START
       rc = [propObject getAvailableProperties: propertiesP inMemCtx: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1585,7 +1588,7 @@ sogo_properties_get_properties (void *object,
       rc = [propObject getProperties: data withTags: properties
                             andCount: count
                             inMemCtx: mem_ctx];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1617,7 +1620,7 @@ sogo_properties_set_properties (void *object, struct SRow *aRow)
 
       TRYCATCH_START
       rc = [propObject addPropertiesFromRow: aRow];
-      TRYCATCH_END
+      TRYCATCH_END(pool)
 
       [pool release];
       GSUnregisterCurrentThread ();
@@ -1670,7 +1673,7 @@ sogo_manager_generate_uri (TALLOC_CTX *mem_ctx,
 
   // printf("uri = %s\n", [partialURLString UTF8String]);
   *uri = talloc_strdup (mem_ctx, [partialURLString UTF8String]);
-  TRYCATCH_END
+  TRYCATCH_END(pool)
 
   [pool release];
   GSUnregisterCurrentThread ();
