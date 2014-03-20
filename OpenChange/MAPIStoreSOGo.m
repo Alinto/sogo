@@ -74,8 +74,13 @@ sogo_backend_unexpected_error()
 static enum mapistore_error
 sogo_backend_handle_objc_exception(NSException *e, const char *fn_name, const int line_no)
 {
-  NSLog(@"[SOGo: %s:%d] - EXCEPTION: %@, reason: %@, backtrace: %@",
-        fn_name, line_no, [e name], [e reason], [e callStackSymbols]);
+  NSString *callStackSymbols = nil;
+  if ([e respondsToSelector:@selector(callStackSymbols)])
+    {
+      callStackSymbols = [[e callStackSymbols] componentsJoinedByString:@"\n\t"];
+    }
+  NSLog(@"[SOGo: %s:%d] - EXCEPTION: %@, reason: %@, backtrace: \n\t%@\n",
+        fn_name, line_no, [e name], [e reason], callStackSymbols);
 
   // Another point of view on the stack trace
   {
