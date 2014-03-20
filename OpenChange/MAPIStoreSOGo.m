@@ -76,16 +76,18 @@ sogo_backend_handle_objc_exception(NSException *e, const char *fn_name, const in
 {
   NSLog(@"[SOGo: %s:%d] - EXCEPTION: %@, reason: %@, backtrace: %@",
         fn_name, line_no, [e name], [e reason], [e callStackSymbols]);
-  if (![e callStackSymbols])
-    {
-      void *frames[128];
-      int i, len = backtrace(frames, 128);
-      char **symbols = backtrace_symbols(frames, len);
-      NSLog(@"Backtrace using execinfo.h:");
-      for (i = 0; i < len; ++i)
-        NSLog(@"\t%s", symbols[i]);
-      free(symbols);
-    }
+
+  // Another point of view on the stack trace
+  {
+    void *frames[128];
+    int i, len = backtrace(frames, 128);
+    char **symbols = backtrace_symbols(frames, len);
+    NSLog(@"Backtrace using execinfo.h:\n");
+    for (i = 0; i < len; ++i)
+      NSLog(@"\t%s", symbols[i]);
+    free(symbols);
+  }
+
   if ([[e name] isEqual:@"NotImplementedException"])
     {
       return MAPISTORE_ERR_NOT_IMPLEMENTED;
