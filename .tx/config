@@ -235,6 +235,32 @@ trans.sk = SoObjects/Contacts/Slovak.lproj/Localizable.strings
 trans.sv = SoObjects/Contacts/Swedish.lproj/Localizable.strings
 trans.uk = SoObjects/Contacts/Ukrainian.lproj/Localizable.strings
 
+[sogo.soobjects-mailer]
+source_file = SoObjects/Mailer/English.lproj/Localizable.strings
+source_lang = en
+trans.ar = SoObjects/Mailer/Arabic.lproj/Localizable.strings
+trans.ca = SoObjects/Mailer/Catalan.lproj/Localizable.strings
+trans.cs = SoObjects/Mailer/Czech.lproj/Localizable.strings
+trans.cy = SoObjects/Mailer/Welsh.lproj/Localizable.strings
+trans.da_DK = SoObjects/Mailer/Danish.lproj/Localizable.strings
+trans.de = SoObjects/Mailer/German.lproj/Localizable.strings
+trans.es_AR = SoObjects/Mailer/SpanishArgentina.lproj/Localizable.strings
+trans.es_ES = SoObjects/Mailer/SpanishSpain.lproj/Localizable.strings
+trans.fi = SoObjects/Mailer/Finnish.lproj/Localizable.strings
+trans.fr = SoObjects/Mailer/French.lproj/Localizable.strings
+trans.hu = SoObjects/Mailer/Hungarian.lproj/Localizable.strings
+trans.is = SoObjects/Mailer/Icelandic.lproj/Localizable.strings
+trans.it = SoObjects/Mailer/Italian.lproj/Localizable.strings
+trans.nb_NO = SoObjects/Mailer/NorwegianBokmal.lproj/Localizable.strings
+trans.nl = SoObjects/Mailer/Dutch.lproj/Localizable.strings
+trans.nn_NO = SoObjects/Mailer/NorwegianNynorsk.lproj/Localizable.strings
+trans.pl = SoObjects/Mailer/Polish.lproj/Localizable.strings
+trans.pt_BR = SoObjects/Mailer/BrazilianPortuguese.lproj/Localizable.strings
+trans.ru = SoObjects/Mailer/Russian.lproj/Localizable.strings
+trans.sk = SoObjects/Mailer/Slovak.lproj/Localizable.strings
+trans.sv = SoObjects/Mailer/Swedish.lproj/Localizable.strings
+trans.uk = SoObjects/Mailer/Ukrainian.lproj/Localizable.strings
+
 [sogo.ui-mailpartviewers]
 source_file = UI/MailPartViewers/English.lproj/Localizable.strings
 source_lang = en
