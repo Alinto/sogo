@@ -57,9 +57,10 @@ static BOOL leakDebugging = NO;
 #define TRYCATCH_START @try {
 #define TRYCATCH_END(pool)  \
           } @catch (NSException * e) { \
+            enum mapistore_error ret = sogo_backend_handle_objc_exception(e, __PRETTY_FUNCTION__, __LINE__); \
             [pool release]; \
             GSUnregisterCurrentThread(); \
-            return sogo_backend_handle_objc_exception(e, __PRETTY_FUNCTION__, __LINE__); \
+            return ret; \
           }
 
 static enum mapistore_error
