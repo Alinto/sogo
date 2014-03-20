@@ -76,14 +76,14 @@ function contactsListCallback(http) {
                     row.setAttribute("categories", contact["c_categories"]);
                     row.setAttribute("contactname", contact["c_cn"]);
                     var cells = row.getElementsByTagName("TD");
-                    $(cells[0]).update(contact["c_cn"]);
+                    $(cells[0]).update(contact["c_cn"].escapeHTML());
                     cells[0].title = contact["c_cn"];
-                    $(cells[1]).update(contact["c_mail"]);
+                    $(cells[1]).update(contact["c_mail"].escapeHTML());
                     cells[1].title = contact["c_mail"];
                     if (fullView) {
-                        $(cells[2]).update(contact["c_screenname"]);
-                        $(cells[3]).update(contact["c_o"]);
-                        $(cells[4]).update(contact["c_telephonenumber"]);
+                        $(cells[2]).update(contact["c_screenname"].escapeHTML());
+                        $(cells[3]).update(contact["c_o"].escapeHTML());
+                        $(cells[4]).update(contact["c_telephonenumber"].escapeHTML());
                     }
                 }
 
@@ -103,13 +103,13 @@ function contactsListCallback(http) {
                                              null,
                                              null,
                                              row);
-                    cell.update(contact["c_cn"]);
+                    cell.update(contact["c_cn"].escapeHTML());
                     cell.title = contact["c_cn"];
 
                     cell = document.createElement("td");
                     row.appendChild(cell);
                     if (contact["c_mail"]) {
-                        cell.update(contact["c_mail"]);
+                        cell.update(contact["c_mail"].escapeHTML());
                         cell.title = contact["c_mail"];
                     }
 
@@ -117,17 +117,17 @@ function contactsListCallback(http) {
                         cell = document.createElement("td");
                         row.appendChild(cell);
                         if (contact["c_screenname"])
-                            cell.update(contact["c_screenname"]);
+                            cell.update(contact["c_screenname"].escapeHTML());
 
                         cell = document.createElement("td");
                         row.appendChild(cell);
                         if (contact["c_o"])
-                            cell.update(contact["c_o"]);
+                            cell.update(contact["c_o"].escapeHTML());
 
                         cell = document.createElement("td");
                         row.appendChild(cell);
                         if (contact["c_telephonenumber"])
-                            cell.update(contact["c_telephonenumber"]);
+                            cell.update(contact["c_telephonenumber"].escapeHTML());
                     }
                 }
             }
@@ -642,15 +642,13 @@ function onConfirmContactSelection(event) {
     var rows = contactsList.getSelectedRows();
     for (i = 0; i < rows.length; i++) {
         var cid = rows[i].getAttribute("id");
-        if (cid.endsWith (".vlf")) {
-            addListToOpener (tag, Contact.currentAddressBook, 
-                             currentAddressBookName, cid);
+        if (cid.endsWith(".vlf")) {
+            addListToOpener(tag, Contact.currentAddressBook, currentAddressBookName, cid);
         }
         else {
           var cname = '' + rows[i].readAttribute("contactname");
           var email = '' + rows[i].cells[1].innerHTML;
-          addContact(tag, currentAddressBookName + '/' + cname,
-                     cid, cname, email);
+          addContact(tag, currentAddressBookName + '/' + cname, cid, cname, email);
         }
     }
 

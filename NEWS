@@ -17,6 +17,7 @@ Bug fixes
  - disabled ActiveSync provisioning for now (#2663)
  - fixed messages move in Outlook which would create duplicates (#2650)
  - fixed translations for OtherUsersFolderName and SharedFoldersName folders (#2657)
+ - fixed handling of accentuated characters when filtering contacts (#2656)
 
 2.2.1 (2014-03-07)
 ------------------

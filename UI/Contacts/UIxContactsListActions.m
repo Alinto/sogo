@@ -146,7 +146,7 @@
         {
           currentInfo = [currentContactDictionary objectForKey: key];
           if ([currentInfo respondsToSelector: @selector (stringByEscapingHTMLString)])
-            [currentContactDictionary setObject: [currentInfo stringByEscapingHTMLString] forKey: key];
+            [currentContactDictionary setObject: currentInfo forKey: key];
         }
       [newContactsList addObject: currentContactDictionary];
     }
