@@ -74,7 +74,7 @@ static enum mapistore_error
 sogo_backend_handle_objc_exception(NSException *e, const char *fn_name, const int line_no)
 {
   NSLog(@"[SOGo: %s:%d] - EXCEPTION: %@, reason: %@, backtrace: %@",
-        fn_name, line_no, e.name, e.reason, [e callStackSymbols]);
+        fn_name, line_no, [e name], [e reason], [e callStackSymbols]);
   if (![e callStackSymbols])
     {
       void *frames[128];
