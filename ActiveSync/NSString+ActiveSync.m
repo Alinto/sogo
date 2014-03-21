@@ -139,7 +139,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   NSString *s;
   int i;
 
-  components = [[[self componentsSeparatedByString: @"/"] lastObject] componentsSeparatedByString: @"&"];
+  components = [[[self componentsSeparatedByString: @"?"] lastObject] componentsSeparatedByString: @"&"];
   
   for (i = 0; i < [components count]; i++)
     {

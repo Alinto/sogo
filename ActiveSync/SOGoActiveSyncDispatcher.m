@@ -1546,15 +1546,45 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [context setObject: deviceId  forKey: @"DeviceId"];
   [context setObject: [[theRequest uri] deviceType]  forKey: @"DeviceType"];
 
-  d = [[theRequest content] wbxml2xml];
+  cmdName = [[theRequest uri] command];
+
+  //
+  // If the MS-ASProtocolVersion header is set to "12.1", the body of the SendMail request is
+  // is a "message/rfc822" payload - otherwise, it's a WBXML blob.
+  //
+  if ([cmdName caseInsensitiveCompare: @"SendMail"] == NSOrderedSame &&
+      [[theRequest headerForKey: @"content-type"] caseInsensitiveCompare: @"message/rfc822"] == NSOrderedSame)
+    {
+      NSString *s, *xml;
+      
+      if ([[theRequest contentAsString] rangeOfString: @"Date: "
+                                              options: NSCaseInsensitiveSearch].location == NSNotFound)
+        {
+          NSString *value;
+          
+          value = [[NSDate date] descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"  timeZone: [NSTimeZone timeZoneWithName: @"GMT"]  locale: nil];
+          s = [NSString stringWithFormat: @"Date: %@\n%@", value, [theRequest contentAsString]];
+        } 
+      else
+        {
+          s = [theRequest contentAsString];
+        }
+      
+      xml = [NSString stringWithFormat: @"<?xml version=\"1.0\"?><!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\"><SendMail xmlns=\"ComposeMail:\"><SaveInSentItems/><MIME>%@</MIME></SendMail>", [s stringByEncodingBase64]];
+      
+      d = [xml dataUsingEncoding: NSASCIIStringEncoding];
+    }
+  else
+    {
+      d = [[theRequest content] wbxml2xml];
+    }
+
   documentElement = nil;
 
   if (!d)
     {
       // We check if it's a Ping command with no body.
-      // See http://msdn.microsoft.com/en-us/library/ee200913(v=exchg.80).aspx for details
-      cmdName = [[theRequest uri] command];
-      
+      // See http://msdn.microsoft.com/en-us/library/ee200913(v=exchg.80).aspx for details      
       if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame)
         return [NSException exceptionWithHTTPStatus: 500];
     }

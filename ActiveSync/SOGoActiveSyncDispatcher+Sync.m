@@ -639,7 +639,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
               [s appendString: @"<Change xmlns=\"AirSync:\">"];
             
             mailObject = [theCollection lookupName: uid
-                                             inContext: context
+                                         inContext: context
                                            acquire: 0];
             
             [s appendFormat: @"<ServerId xmlns=\"AirSync:\">%@</ServerId>", uid];
