@@ -285,7 +285,8 @@ struct GlobalObjectId {
                          performed: b];
         }
       else if ([body isKindOfClass: [NSData class]] &&
-               [[[thePart contentType] type] isEqualToString: @"text"])
+               [[[thePart contentType] type] isEqualToString: @"text"] &&
+               ([[[thePart contentType] subType] isEqualToString: @"plain"] || [[[thePart contentType] subType] isEqualToString: @"plain"]))
         {
           // We make sure everything is encoded in UTF-8
           NSString *charset, *s;
