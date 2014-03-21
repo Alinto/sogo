@@ -21,6 +21,7 @@ Bug fixes
  - fixed translations for OtherUsersFolderName and SharedFoldersName folders (#2657)
  - fixed handling of accentuated characters when filtering contacts (#2656)
  - fixed classification icon of events (#2651)
+ - fixed ActiveSync's SendMail with client version <= 12.1 (#2669)
 
 2.2.1 (2014-03-07)
 ------------------
