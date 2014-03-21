@@ -417,6 +417,7 @@ function configureAttachments() {
             // With singleFileUploads option enabled, the 'add' and 'done' (or 'fail') callbacks
             // are called once for each file in the selection for XHR file uploads
             singleFileUploads: true,
+            pasteZone: null,
             dataType: 'json',
             add: function (e, data) {
                 var file = data.files[0];

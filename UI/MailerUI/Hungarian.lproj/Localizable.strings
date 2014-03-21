@@ -169,8 +169,6 @@
 "InboxFolderName"  = "Beérkezett üzenetek";
 "DraftsFolderName" = "Piszkozatok";
 "SieveFolderName"  = "Szűrők";
-"OtherUsersFolderName"   = "Egyéb felhasználók";
-"SharedFoldersName" = "Megosztott mappák";
 "Folders"          = "Mappák"; /* title line */
 
 /* MailMoveToPopUp */

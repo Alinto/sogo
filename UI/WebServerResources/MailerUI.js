@@ -2857,7 +2857,7 @@ function Mailbox(type, name, unseen, displayName) {
     else
       this.displayName = name;
     // log("name: " + name + "; dn: " + displayName);
-    this.name = name.asCSSIdentifier();
+    this.name = name;
     this.unseen = unseen;
     this.parentFolder = null;
     this.children = new Array();
@@ -2878,7 +2878,7 @@ Mailbox.prototype = {
 
         var currentFolder = this;
         while (currentFolder.parentFolder) {
-            fullName = "/folder" + currentFolder.name + fullName;
+            fullName = ("/folder" + currentFolder.name).asCSSIdentifier() + fullName;
             currentFolder = currentFolder.parentFolder;
         }
 
@@ -2887,11 +2887,9 @@ Mailbox.prototype = {
     findMailboxByName: function(name) {
         var mailbox = null;
 
-        var searchName = name.asCSSIdentifier();
-
         var i = 0;
         while (!mailbox && i < this.children.length)
-            if (this.children[i].name == searchName
+            if (this.children[i].name == name
                 || this.children[i].displayName == name)
                 mailbox = this.children[i];
             else

@@ -640,6 +640,7 @@
   NSDictionary *d, *action;
   NSMutableArray *folders;
   NSMutableString *path;
+  NSString *component;
   SOGoUserDefaults *ud;
   NSString   *s;
   NSUInteger i, j, k;
@@ -676,7 +677,8 @@
 
 		  for (k = 0; k < [pathComponents count]; k++)
 		    {
-		      [path appendFormat: @"folder%@", [[pathComponents objectAtIndex: k] asCSSIdentifier]];
+                      component = [NSString stringWithFormat: @"folder%@", [pathComponents objectAtIndex: k]];
+                      [path appendString: [component asCSSIdentifier]];
 		      if (k < [pathComponents count] - 1)
 			[path appendString: @"/"];
 		    }

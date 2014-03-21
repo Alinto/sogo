@@ -168,8 +168,6 @@
 "InboxFolderName"  = "Bandeja de entrada";
 "DraftsFolderName" = "Borradores";
 "SieveFolderName"  = "Filtros";
-"OtherUsersFolderName"   = "Otros usuarios";
-"SharedFoldersName" = "Carpetas compartidas";
 "Folders"          = "Carpetas"; /* title line */
 
 /* MailMoveToPopUp */

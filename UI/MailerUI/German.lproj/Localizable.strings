@@ -28,7 +28,7 @@
 "Select a recipient from an Address Book" = "Einen Empfänger aus einem Adressbuch wählen";
 "Include an attachment" = "Datei-Anhang hinzufügen";
 "Save this message" = "Diese Nachricht speichern";
-"Get new messages" = "Neue Nachrichten empfangen";
+"Get new messages" = "Neue Nachrichten abrufen";
 "Create a new message" = "Eine neue Nachricht schreiben";
 "Go to address book" = "Adressbuch öffnen";
 "Reply to the message" = "Auf gewählte Nachricht(en) antworten";
@@ -97,11 +97,12 @@
 "Reply-To"	= "Antwort an";
 "Add address"   = "Adresse hinzufügen";
 
-"Attachments:" = "Anhänge:";
 "Open" = "Öffnen";
 "Select All" = "Alles auswählen";
 "Attach Web Page..." = "Webseite anhängen...";
-"Attach File(s)..." = "Datei(en) als Anhang anfügen...";
+"file" = "Datei";
+"files" = "Dateien";
+"Save all" = "Alles speichern";
 
 "to"            = "An";
 "cc"            = "CC";
@@ -168,8 +169,6 @@
 "InboxFolderName"  = "Posteingang";
 "DraftsFolderName" = "Entwürfe";
 "SieveFolderName"  = "Filter";
-"OtherUsersFolderName"   = "Andere Benutzer";
-"SharedFoldersName" = "Gemeinsame Ordner";
 "Folders"          = "Ordner"; /* title line */
 
 /* MailMoveToPopUp */
@@ -198,7 +197,7 @@
 "Rename Folder..." = "Umbenennen...";
 "Delete Folder" = "Löschen";
 "Use This Folder For" = "Diesen Ordner verwenden für";
-"Get Messages for Account" = "Neue Nachrichten empfangen";
+"Get Messages for Account" = "Neue Nachrichten abrufen";
 "Properties..." = "Eigenschaften...";
 "Delegation..." = "Delegation...";
 
@@ -209,9 +208,9 @@
 
 /* Message list popup menu */
 "Open Message In New Window" = "In neuem Fenster öffnen";
-"Reply to Sender Only" = "Antworten nur an Absender";
-"Reply to All" = "Antworten an alle";
-"Edit As New..." = "Als neu bearbeiten";
+"Reply to Sender Only" = "Nur dem Absender antworten";
+"Reply to All" = "Allen antworten";
+"Edit As New..." = "Als neu bearbeiten...";
 "Move To" = "Verschieben in";
 "Copy To" = "Kopieren in";
 "Label" = "Schlagwörter";
@@ -274,16 +273,19 @@
 
 /* Message operations */
 "The messages could not be moved to the trash folder. Would you like to delete them immediately?"
-= "Die Nachricht(en) können nicht in den Papierkorb verschoben werden. Wollen Sie diese endgültig löschen?";
+= "Die Nachricht(en) konnten nicht in den Papierkorb verschoben werden. Wollen Sie diese endgültig löschen?";
 
 /* Message editing */
 "error_missingsubject" = "Der Betreff fehlt. Sind Sie sicher, dass Sie dies so senden möchten?";
-"error_missingrecipients" = "Der Empfänger fehlt";
+"error_missingrecipients" = "Der Empfänger fehlt.";
 "Send Anyway" = "Trotzdem versenden";
+"Error while saving the draft:" = "Fehler beim Speichern des Entwurfes:";
+"Error while uploading the file \"%{0}\":" = "Fehler beim Hochladen der Datei \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Es wird gerade eine Datei hochgeladen. Das Schließen des Fensters wird dies abbrechen.";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Kann Nachricht nicht versenden: Alle Empfänger sind ungültig.";
-"cannot send message (smtp) - recipients discarded:" = "Kann Nachricht nicht versenden: Die folgenden Addressen sind ungültig:";
+"cannot send message (smtp) - recipients discarded:" = "Kann Nachricht nicht versenden: Die folgenden Adressen sind ungültig:";
 "cannot send message: (smtp) error when connecting" = "Kann Nachricht nicht versenden: Fehler beim Verbinden mit dem SMTP-Server.";
 
 /* Contacts list in mail editor */

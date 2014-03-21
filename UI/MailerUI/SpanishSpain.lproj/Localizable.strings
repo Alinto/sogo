@@ -97,11 +97,12 @@
 "Reply-To"	= "Responder A";
 "Add address"   = "Añadir dirección";
 
-"Attachments:" = "Adjuntos:";
 "Open" = "Abrir";
 "Select All" = "Seleccionar todo";
 "Attach Web Page..." = "Adjuntar página web...";
-"Attach File(s)..." = "Adjuntar fichero(s)...";
+"file" = "fichero";
+"files" = "ficheros";
+"Save all" = "Guardar todo";
 
 "to"            = "Para";
 "cc"            = "Cc";
@@ -168,8 +169,6 @@
 "InboxFolderName"  = "Bandeja de entrada";
 "DraftsFolderName" = "Borradores";
 "SieveFolderName"  = "Filtros";
-"OtherUsersFolderName"   = "Otros usuarios";
-"SharedFoldersName" = "Carpetas compartidas";
 "Folders"          = "Carpetas"; /* title line */
 
 /* MailMoveToPopUp */
@@ -280,6 +279,9 @@
 "error_missingsubject" = "No ha indicado el asunto";
 "error_missingrecipients" = "No ha indicado el/los destinatario(s)";
 "Send Anyway" = "Enviar de toda forma";
+"Error while saving the draft:" = "Error al guardar el borrador:";
+"Error while uploading the file \"%{0}\":" = "Error al cargar el fichero \"%{0}\":";
+"There is an active file upload. Closing the window will interrupt it." = "Un fichero se esta cargando. Cerrar la ventana cancelara la carga.";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "No se puede enviar el mensaje: (smtp) todos los destinatarios han sido descartados";

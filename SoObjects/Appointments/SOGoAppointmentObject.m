@@ -453,11 +453,7 @@
   currentUser = [context activeUser];
   if (!activeUserIsOwner && ![currentUser isSuperUser])
     {
-      ownerUser = [SOGoUser userWithLogin: owner];
-      if ([ownerUser isResource])
-        {
-          [attendees addObject: owner];
-        }
+      [attendees addObject: owner];
     }
 
   enumerator = [attendees objectEnumerator];
@@ -556,51 +552,51 @@
                     currentAttendee = nil;
                 }
 
-              if (currentAttendee)
+              if ([fbInfo count])
                 {
-                  if ([fbInfo count])
+                  // If we always force the auto-accept if numberOfSimultaneousBookings == 0 (ie., no limit
+                  // is imposed) or if numberOfSimultaneousBookings is greater than the number of
+                  // overlapping events
+                  if ([user numberOfSimultaneousBookings] == 0 ||
+                      [user numberOfSimultaneousBookings] > [fbInfo count])
                     {
-                      // If we always force the auto-accept if numberOfSimultaneousBookings == 0 (ie., no limit
-                      // is imposed) or if numberOfSimultaneousBookings is greater than the number of
-                      // overlapping events
-                      if ([user numberOfSimultaneousBookings] == 0 ||
-                          [user numberOfSimultaneousBookings] > [fbInfo count])
+                      if (currentAttendee)
                         {
                           [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
                           [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
                         }
-                      else
-                        {
-                          iCalCalendar *calendar;
-                          NSDictionary *values;
-                          NSString *reason;
-                          iCalEvent *event;
-
-                          calendar =  [iCalCalendar parseSingleFromSource: [[fbInfo objectAtIndex: 0] objectForKey: @"c_content"]];
-                          event = [[calendar events] lastObject];
-
-                          values = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                   [NSString stringWithFormat: @"%d", [user numberOfSimultaneousBookings]], @"NumberOfSimultaneousBookings",
-                                                 [user cn], @"Cn",
-                                                 [user systemEmail], @"SystemEmail",
-                                          ([event summary] ? [event summary] : @""), @"EventTitle",
-                                                       [[fbInfo objectAtIndex: 0] objectForKey: @"startDate"], @"StartDate",
-                                                 nil];
-
-                          reason = [values keysWithFormat: [self labelForKey: @"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}."]];
-
-                          return [NSException exceptionWithHTTPStatus:403
-                                                               reason: reason];
-                        }
                     }
                   else
                     {
-                      // No conflict, we auto-accept. We do this for resources automatically if no
-                      // double-booking is observed. If it's not the desired behavior, just don't
-                      // set the resource as one!
-                      [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
-                      [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
+                      iCalCalendar *calendar;
+                      NSDictionary *values;
+                      NSString *reason;
+                      iCalEvent *event;
+
+                      calendar =  [iCalCalendar parseSingleFromSource: [[fbInfo objectAtIndex: 0] objectForKey: @"c_content"]];
+                      event = [[calendar events] lastObject];
+
+                      values = [NSDictionary dictionaryWithObjectsAndKeys:
+                                             [NSString stringWithFormat: @"%d", [user numberOfSimultaneousBookings]], @"NumberOfSimultaneousBookings",
+                                             [user cn], @"Cn",
+                                             [user systemEmail], @"SystemEmail",
+                                             ([event summary] ? [event summary] : @""), @"EventTitle",
+                                             [[fbInfo objectAtIndex: 0] objectForKey: @"startDate"], @"StartDate",
+                                             nil];
+
+                      reason = [values keysWithFormat: [self labelForKey: @"Maximum number of simultaneous bookings (%{NumberOfSimultaneousBookings}) reached for resource \"%{Cn} %{SystemEmail}\". The conflicting event is \"%{EventTitle}\", and starts on %{StartDate}."]];
+
+                      return [NSException exceptionWithHTTPStatus: 403
+                                                           reason: reason];
                     }
+                }
+              else if (currentAttendee)
+                {
+                  // No conflict, we auto-accept. We do this for resources automatically if no
+                  // double-booking is observed. If it's not the desired behavior, just don't
+                  // set the resource as one!
+                  [[currentAttendee attributes] removeObjectForKey: @"RSVP"];
+                  [currentAttendee setParticipationStatus: iCalPersonPartStatAccepted];
                 }
             }
     }

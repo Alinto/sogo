@@ -1,5 +1,6 @@
 {
     WOWorkersCount = 1;
+    WOListenQueueSize = 5;
     SxVMemLimit = 384;
     WOLogFile = "/var/log/sogo/sogo.log";
     WOPidFile = "/var/run/sogo/sogo.pid";

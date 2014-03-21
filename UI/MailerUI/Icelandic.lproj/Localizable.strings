@@ -165,8 +165,6 @@
 "InboxFolderName"  = "Innhólf";
 "DraftsFolderName" = "Drög";
 "SieveFolderName"  = "Síur";
-"OtherUsersFolderName"   = "Aðrir Notendur";
-"SharedFoldersName" = "Samnýttar Möppur";
 "Folders"          = "Möppur"; /* title line */
 
 /* MailMoveToPopUp */

@@ -1782,8 +1782,8 @@ function newBaseEventDIV(eventRep, event, eventText) {
     innerDiv.appendChild(textDiv);
     textDiv.addClassName("text");
     var iconSpan = createElement("span", null, "icons");
-    textDiv.appendChild(iconSpan);
     textDiv.update(eventText.replace(/(\\r)?\\n/g, "<BR/>"));
+    textDiv.appendChild(iconSpan);
 
     // Add alarm and classification icons
     if (event[9] == 1)

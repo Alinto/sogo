@@ -42,11 +42,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <NGCards/iCalTimeZone.h>
 
 #import <NGExtensions/NGBase64Coding.h>
+#import <NGExtensions/NGQuotedPrintableCoding.h>
 #import <NGExtensions/NSString+misc.h>
 #import <NGExtensions/NSString+Encoding.h>
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
 #import <NGObjWeb/WOContext+SoObjects.h>
+
+#import <NGMime/NGMimeBodyPart.h>
+#import <NGMime/NGMimeFileData.h>
+#import <NGMime/NGMimeMultipartBody.h>
+#import <NGMime/NGMimeType.h>
+#import <NGMail/NGMimeMessageParser.h>
+#import <NGMail/NGMimeMessage.h>
+#import <NGMail/NGMimeMessageGenerator.h>
 
 #include "iCalTimeZone+ActiveSync.h"
 #include "NSData+ActiveSync.h"
@@ -196,7 +205,7 @@ struct GlobalObjectId {
 //
 - (NSData *) _preferredBodyDataInMultipartUsingType: (int) theType
 {
-  NSString *key, *plainKey, *htmlKey, *type, *subtype;
+  NSString *encoding, *key, *plainKey, *htmlKey, *type, *subtype;
   NSDictionary *textParts, *part;
   NSEnumerator *e;
   NSData *d;
@@ -219,15 +228,132 @@ struct GlobalObjectId {
         plainKey = key;
     }
 
+  key = nil;
+
   if (theType == 2)
-    {
-      d = [[self fetchPlainTextParts] objectForKey: htmlKey];
-    }
+    key = htmlKey;
   else if (theType == 1)
+    key = plainKey;
+
+  if (key)
     {
-      d = [[self fetchPlainTextParts] objectForKey: plainKey];
+      d = [[self fetchPlainTextParts] objectForKey: key];
+
+      encoding = [[self lookupInfoForBodyPart: key] objectForKey: @"encoding"];
+      
+      if ([encoding caseInsensitiveCompare: @"base64"] == NSOrderedSame)
+        d = [d dataByDecodingBase64];
+      else if ([encoding caseInsensitiveCompare: @"quoted-printable"] == NSOrderedSame)
+        d = [d dataByDecodingQuotedPrintableTransferEncoding];
     }
 
+  return d;
+}
+
+//
+//
+//
+- (void) _sanitizedMIMEPart: (id) thePart
+                  performed: (BOOL *) b
+{
+  if ([thePart isKindOfClass: [NGMimeMultipartBody class]])
+    {
+      NGMimeBodyPart *part;
+      NSArray *parts;
+      int i;
+
+      parts = [thePart parts];
+      
+      for (i = 0; i < [parts count]; i++)
+        {
+          part = [parts objectAtIndex: i];
+
+          [self _sanitizedMIMEPart: part
+                         performed: b];
+        }
+    }
+  else if ([thePart isKindOfClass: [NGMimeBodyPart class]])
+    {
+      NGMimeFileData *fdata;
+      id body;
+
+      body = [thePart body];
+
+      if ([body isKindOfClass: [NGMimeMultipartBody class]])
+        {
+          [self _sanitizedMIMEPart: body
+                         performed: b];
+        }
+      else if ([body isKindOfClass: [NSData class]] &&
+               [[[thePart contentType] type] isEqualToString: @"text"] &&
+               ([[[thePart contentType] subType] isEqualToString: @"plain"] || [[[thePart contentType] subType] isEqualToString: @"html"]))
+        {
+          // We make sure everything is encoded in UTF-8
+          NSString *charset, *s;
+          NGMimeType *mimeType;
+          int encoding;
+
+          charset = [[thePart contentType] valueOfParameter: @"charset"];
+          encoding = [NGMimeType stringEncodingForCharset: charset];
+
+          s = [[NSString alloc] initWithData: body  encoding: encoding];
+          AUTORELEASE(s);
+
+          if (s)
+            {
+              body = [s dataUsingEncoding: NSUTF8StringEncoding];
+            }
+
+          mimeType = [NGMimeType mimeType: [[thePart contentType] type]
+                                  subType: [[thePart contentType] subType]
+                               parameters: [NSDictionary dictionaryWithObject: @"utf-8"  forKey: @"charset"]];
+          [thePart setHeader: mimeType  forKey: @"content-type"];
+          
+          fdata = [[NGMimeFileData alloc] initWithBytes: [body bytes]
+                                                 length: [body length]];
+          
+          [thePart setBody: fdata];                  
+          RELEASE(fdata);
+          *b = YES;
+        }
+    }
+}
+
+//
+//
+//
+- (NSData *) _sanitizedMIMEMessage
+{
+  NGMimeMessageParser *parser;
+  NGMimeMessage *message;
+  NSData *d;
+  
+  BOOL b;
+  
+  d = [self content];
+
+  parser = [[NGMimeMessageParser alloc] init];
+  AUTORELEASE(parser);
+  
+  message = [parser parsePartFromData: d];
+  b = NO;
+
+  if (message)
+    {
+      [self _sanitizedMIMEPart: [message body]
+                     performed: &b];
+
+      if (b)
+        {
+          NGMimeMessageGenerator *generator;
+          
+          generator = [[NGMimeMessageGenerator alloc] init];
+          AUTORELEASE(generator);
+          
+          d = [generator generateMimeFromPart: message];
+        }
+    }
+  
   return d;
 }
 
@@ -266,6 +392,8 @@ struct GlobalObjectId {
 
           if ([encoding caseInsensitiveCompare: @"base64"] == NSOrderedSame)
             d = [d dataByDecodingBase64];
+          else if ([encoding caseInsensitiveCompare: @"quoted-printable"] == NSOrderedSame)
+            d = [d dataByDecodingQuotedPrintableTransferEncoding];
 
           // Check if we must convert html->plain
           if (theType == 1 && [subtype isEqualToString: @"html"])
@@ -286,7 +414,12 @@ struct GlobalObjectId {
     }
   else if (theType == 4)
     {
-      d = [self content];
+      // We sanitize the content *ONLY* for Outlook clients. Outlook has strange issues
+      // with quoted-printable/base64 encoded text parts. It just doesn't decode them.
+      if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"])
+        d = [self _sanitizedMIMEMessage];
+      else
+        d = [self content];
     }
 
   return d;
@@ -531,6 +664,7 @@ struct GlobalObjectId {
   //  [s appendFormat: @"<Reply-To xmlns=\"Email:\">%@</Reply-To>", [addressFormatter stringForArray: replyTo]];
   
   // InternetCPID - 65001 == UTF-8, we use this all the time for now.
+  //              - 20127 == US-ASCII
   [s appendFormat: @"<InternetCPID xmlns=\"Email:\">%@</InternetCPID>", @"65001"];
           
   // Body - namespace 17
@@ -549,6 +683,10 @@ struct GlobalObjectId {
       // FIXME: This is a hack. We should normally avoid doing this as we might get
       // broken encodings. We should rather tell that the data was truncated and expect
       // a ItemOperations call to download the whole base64 encoding multipart.
+      //
+      // See http://social.msdn.microsoft.com/Forums/en-US/b9944e49-9bc9-4ab8-ba33-a9fc08557c5b/mime-raw-data-in-eas-sync-response?forum=os_exchangeprotocols
+      // for an "interesting" discussion around this.
+      //
       if (!content)
         content = [[NSString alloc] initWithData: d  encoding: NSISOLatin1StringEncoding];
       
@@ -561,10 +699,14 @@ struct GlobalObjectId {
       
       [s appendString: @"<Body xmlns=\"AirSyncBase:\">"];
       [s appendFormat: @"<Type>%d</Type>", preferredBodyType];
-      [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", len];
-      [s appendFormat: @"<Truncated>%d</Truncated>", 0];
+      [s appendFormat: @"<Truncated>%d</Truncated>", truncated];
+      [s appendFormat: @"<Preview></Preview>"];
+
       if (!truncated)
-        [s appendFormat: @"<Data>%@</Data>", content];
+        {
+          [s appendFormat: @"<Data>%@</Data>", content];
+          [s appendFormat: @"<EstimatedDataSize>%d</EstimatedDataSize>", len];
+        }
       [s appendString: @"</Body>"];
     }
 

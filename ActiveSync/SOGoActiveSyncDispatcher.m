@@ -76,6 +76,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <SOGo/NSArray+DAV.h>
 #import <SOGo/NSDictionary+DAV.h>
+#import <SOGo/SOGoCache.h>
 #import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
@@ -880,10 +881,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       NSDictionary *response;
       NSString *v;
-
-      // userFolder = [[context activeUser] homeFolderInContext: context];
-      // accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
-      // currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
       
       currentCollection = [self collectionFromId: srcFolderId  type: srcFolderType];
 
@@ -924,6 +921,28 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         {
           NSMutableString *s;
           NSData *d;
+          
+          //
+          // If the MoveItems operation is initiated by an Outlook client, we save the "deviceType+dstMessageId" to use it later in order to
+          // modify the Sync command from "add" to "change" (see SOGoActiveSyncDispatcher+Sync.m: -processSyncGetChanges: ...).
+          // This is to avoid Outlook creating dupes when moving messages across folfers.
+          //
+          if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"])
+            {
+              NSString *key;
+
+              // The key must be pretty verbose. We use the <uid>+<DeviceType>+<target folder>+<DstMsgId>
+              key = [NSString stringWithFormat: @"%@+%@+%@+%@",
+                              [[context activeUser] login],
+                              [context objectForKey: @"DeviceType"],
+                              dstFolderId,
+                              dstMessageId];
+                              
+
+              [[SOGoCache sharedCache] setValue: @"MovedItem"
+                                         forKey: key];
+            }
+
           
           // Everything is alright, lets return the proper response. "Status == 3" means success.
           s = [NSMutableString string];
@@ -1522,19 +1541,50 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   ASSIGN(context, theContext);
  
-  // Get the device ID and "stash" it
+  // Get the device ID, device type and "stash" them
   deviceId = [[theRequest uri] deviceId];
   [context setObject: deviceId  forKey: @"DeviceId"];
+  [context setObject: [[theRequest uri] deviceType]  forKey: @"DeviceType"];
 
-  d = [[theRequest content] wbxml2xml];
+  cmdName = [[theRequest uri] command];
+
+  //
+  // If the MS-ASProtocolVersion header is set to "12.1", the body of the SendMail request is
+  // is a "message/rfc822" payload - otherwise, it's a WBXML blob.
+  //
+  if ([cmdName caseInsensitiveCompare: @"SendMail"] == NSOrderedSame &&
+      [[theRequest headerForKey: @"content-type"] caseInsensitiveCompare: @"message/rfc822"] == NSOrderedSame)
+    {
+      NSString *s, *xml;
+      
+      if ([[theRequest contentAsString] rangeOfString: @"Date: "
+                                              options: NSCaseInsensitiveSearch].location == NSNotFound)
+        {
+          NSString *value;
+          
+          value = [[NSDate date] descriptionWithCalendarFormat: @"%a, %d %b %Y %H:%M:%S %z"  timeZone: [NSTimeZone timeZoneWithName: @"GMT"]  locale: nil];
+          s = [NSString stringWithFormat: @"Date: %@\n%@", value, [theRequest contentAsString]];
+        } 
+      else
+        {
+          s = [theRequest contentAsString];
+        }
+      
+      xml = [NSString stringWithFormat: @"<?xml version=\"1.0\"?><!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\"><SendMail xmlns=\"ComposeMail:\"><SaveInSentItems/><MIME>%@</MIME></SendMail>", [s stringByEncodingBase64]];
+      
+      d = [xml dataUsingEncoding: NSASCIIStringEncoding];
+    }
+  else
+    {
+      d = [[theRequest content] wbxml2xml];
+    }
+
   documentElement = nil;
 
   if (!d)
     {
       // We check if it's a Ping command with no body.
-      // See http://msdn.microsoft.com/en-us/library/ee200913(v=exchg.80).aspx for details
-      cmdName = [[theRequest uri] command];
-      
+      // See http://msdn.microsoft.com/en-us/library/ee200913(v=exchg.80).aspx for details      
       if ([cmdName caseInsensitiveCompare: @"Ping"] != NSOrderedSame)
         return [NSException exceptionWithHTTPStatus: 500];
     }
@@ -1561,7 +1611,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   [theResponse setHeader: @"application/vnd.ms-sync.wbxml"  forKey: @"Content-Type"];
   [theResponse setHeader: @"14.1"  forKey: @"MS-Server-ActiveSync"];
-  [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,Provision,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
+  [theResponse setHeader: @"Sync,SendMail,SmartForward,SmartReply,GetAttachment,GetHierarchy,CreateCollection,DeleteCollection,MoveCollection,FolderSync,FolderCreate,FolderDelete,FolderUpdate,MoveItems,GetItemEstimate,MeetingResponse,Search,Settings,Ping,ItemOperations,ResolveRecipients,ValidateCert"  forKey: @"MS-ASProtocolCommands"];
   [theResponse setHeader: @"2.0,2.1,2.5,12.0,12.1,14.0,14.1"  forKey: @"MS-ASProtocolVersions"];
 
    RELEASE(context);

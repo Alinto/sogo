@@ -169,8 +169,6 @@
 "InboxFolderName"  = "Входящие";
 "DraftsFolderName" = "Черновики";
 "SieveFolderName"  = "Папки";
-"OtherUsersFolderName"   = "Другие пользователи";
-"SharedFoldersName" = "Общие папки";
 "Folders"          = "Папки"; /* title line */
 
 /* MailMoveToPopUp */
