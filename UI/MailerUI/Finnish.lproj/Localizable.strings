@@ -97,11 +97,12 @@
 "Reply-To"	= "Vastausosoite";
 "Add address"   = "Lisää osoite";
 
-"Attachments:" = "Liitteet:";
 "Open" = "Avaa.";
 "Select All" = "Valitse kaikki";
 "Attach Web Page..." = "Liitä Web-sivu...";
-"Attach File(s)..." = "Liitä tiedosto(ja)...";
+"file" = "tiedosto";
+"files" = "tiedostot";
+"Save all" = "Tallenna kaikki";
 
 "to"            = "Vastaanottaja";
 "cc"            = "Kopio";
@@ -278,6 +279,9 @@
 "error_missingsubject" = "Viestillä ei ole otsikkoa. Haluatko varrmasti lähettää sen?";
 "error_missingrecipients" = "Ole hyvä ja syötä ainakin yksi vastaanottaja.";
 "Send Anyway" = "Lähetä silti";
+"Error while saving the draft:" = "Virhe luonnoksen tallennuksessa:";
+"Error while uploading the file \"%{0}\":" = "Virhe tiedoston \"%{0}\" latauksessa: ";
+"There is an active file upload. Closing the window will interrupt it." = "Tiedoston lataus on käynnissä. Ikkunan sulkeminen pysäyttää latauksen.";
 
 /* Message sending */
 "cannot send message: (smtp) all recipients discarded" = "Viestiä ei voi lähettää: kaikki vastaanottajat ovat virheellisiä.";

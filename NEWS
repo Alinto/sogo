@@ -2,7 +2,7 @@
 ------------------
 
 Enhancements
- - updated French translation
+ - updated French, Finnish, German and Spanish (Spain) translations
  - added sanitization support for Outlook/ActiveSync to circumvent Outlook bugs (#2667)
  - updated CKEditor to version 4.3.3
  - updated jQuery File Upload to version 9.5.7
