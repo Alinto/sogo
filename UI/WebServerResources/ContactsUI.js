@@ -76,14 +76,32 @@ function contactsListCallback(http) {
                     row.setAttribute("categories", contact["c_categories"]);
                     row.setAttribute("contactname", contact["c_cn"]);
                     var cells = row.getElementsByTagName("TD");
-                    $(cells[0]).update(contact["c_cn"].escapeHTML());
+                    if (contact["c_cn"])
+                        $(cells[0]).update(contact["c_cn"].escapeHTML());
+                    else
+                        $(cells[0]).update();
                     cells[0].title = contact["c_cn"];
-                    $(cells[1]).update(contact["c_mail"].escapeHTML());
+                    log('mail ' + contact["c_mail"]);
+                    if (contact["c_mail"])
+                        $(cells[1]).update(contact["c_mail"].escapeHTML());
+                    else
+                        $(cells[1]).update();
                     cells[1].title = contact["c_mail"];
                     if (fullView) {
-                        $(cells[2]).update(contact["c_screenname"].escapeHTML());
-                        $(cells[3]).update(contact["c_o"].escapeHTML());
-                        $(cells[4]).update(contact["c_telephonenumber"].escapeHTML());
+                        if (contact["c_screenname"])
+                            $(cells[2]).update(contact["c_screenname"].escapeHTML());
+                        else
+                            $(cells[2]).update();
+
+                        if (contact["c_o"])
+                            $(cells[3]).update(contact["c_o"].escapeHTML());
+                        else
+                            $(cells[3]).update();
+
+                        if (contact["c_telephonenumber"])
+                            $(cells[4]).update(contact["c_telephonenumber"].escapeHTML());
+                        else
+                            $(cells[4]).update();
                     }
                 }
 
@@ -103,13 +121,17 @@ function contactsListCallback(http) {
                                              null,
                                              null,
                                              row);
-                    cell.update(contact["c_cn"].escapeHTML());
-                    cell.title = contact["c_cn"];
+
+                    if (contact["c_cn"]) {
+                        $(cell).update(contact["c_cn"].escapeHTML());
+                        cell.title = contact["c_cn"];
+                    }
 
                     cell = document.createElement("td");
                     row.appendChild(cell);
+
                     if (contact["c_mail"]) {
-                        cell.update(contact["c_mail"].escapeHTML());
+                        $(cell).update(contact["c_mail"].escapeHTML());
                         cell.title = contact["c_mail"];
                     }
 
@@ -117,17 +139,17 @@ function contactsListCallback(http) {
                         cell = document.createElement("td");
                         row.appendChild(cell);
                         if (contact["c_screenname"])
-                            cell.update(contact["c_screenname"].escapeHTML());
+                            $(cell).update(contact["c_screenname"].escapeHTML());
 
                         cell = document.createElement("td");
                         row.appendChild(cell);
                         if (contact["c_o"])
-                            cell.update(contact["c_o"].escapeHTML());
+                            $(cell).update(contact["c_o"].escapeHTML());
 
                         cell = document.createElement("td");
                         row.appendChild(cell);
                         if (contact["c_telephonenumber"])
-                            cell.update(contact["c_telephonenumber"].escapeHTML());
+                            $(cell).update(contact["c_telephonenumber"].escapeHTML());
                     }
                 }
             }
@@ -136,7 +158,7 @@ function contactsListCallback(http) {
             for (i = rows.length - 1; i >= data.length; i--) {
                 tbody.removeChild(rows[i]);
             }
-            
+
             if (sorting["attribute"] && sorting["attribute"].length > 0) {
                 var sortHeader;
                 if (sorting["attribute"] == "c_cn")
