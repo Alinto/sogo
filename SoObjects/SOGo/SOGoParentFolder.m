@@ -221,20 +221,17 @@ static SoSecurityManager *sm = nil;
   NSException *error;
 
   cm = [GCSChannelManager defaultChannelManager];
-  folderLocation
-    = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
+  folderLocation = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
   fc = [cm acquireOpenChannelForURL: folderLocation];
   if ([fc isOpen])
     {
       gcsFolderType = [[self class] gcsFolderType];
       
-      sql
-	= [NSString stringWithFormat: (@"SELECT c_path4 FROM %@"
-				       @" WHERE c_path2 = '%@'"
-				       @" AND c_folder_type = '%@'"),
-		    [folderLocation gcsTableName],
-                    owner,
-		    gcsFolderType];
+      sql = [NSString stringWithFormat: (@"SELECT c_path4 FROM %@"
+                                         @" WHERE c_path2 = '%@'"
+                                         @" AND c_folder_type = '%@'"),
+            [folderLocation gcsTableName], owner, gcsFolderType];
+      
       error = [self _fetchPersonalFolders: sql withChannel: fc];
       [cm releaseChannel: fc];
 //       sql = [sql stringByAppendingFormat:@" WHERE %@ = '%@'", 
@@ -247,6 +244,7 @@ static SoSecurityManager *sm = nil;
 
   return error;
 }
+
 
 - (NSException *) appendSystemSources
 {
@@ -386,14 +384,17 @@ static SoSecurityManager *sm = nil;
   if (!subFolders)
     {
       subFolders = [NSMutableDictionary new];
-      error = [self appendPersonalSources];
+        error = [self appendPersonalSources];
       if (!error)
-	error = [self appendSystemSources];
+        if ([self respondsToSelector:@selector(appendCollectedSources)])
+          error = [self appendCollectedSources];
+      if (!error)
+        error = [self appendSystemSources]; // TODO : Not really a testcase, see function
       if (error)
-	{
-	  [subFolders release];
-	  subFolders = nil;
-	}
+      {
+        [subFolders release];
+        subFolders = nil;
+      }
     }
   else
     error = nil;

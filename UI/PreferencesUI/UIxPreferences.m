@@ -50,6 +50,8 @@
 #import <Mailer/SOGoMailAccounts.h>
 #import <Mailer/SOGoMailLabel.h>
 
+#import <Contacts/SOGoContactGCSFolder.h>
+
 #import "UIxPreferences.h"
 
 #warning this class is not finished
@@ -656,6 +658,16 @@ static NSArray *reminderValues = nil;
 }
 
 /* Mailer */
+- (void) setAddOutgoingAddresses: (BOOL) addOutgoingAddresses
+{
+  [userDefaults setMailAddOutgoingAddresses: addOutgoingAddresses];
+}
+
+- (BOOL) addOutgoingAddresses
+{
+  return [userDefaults mailAddOutgoingAddresses];
+}
+
 - (void) setShowSubscribedFoldersOnly: (BOOL) showSubscribedFoldersOnly
 {
   [userDefaults setMailShowSubscribedFoldersOnly: showSubscribedFoldersOnly];
@@ -674,6 +686,58 @@ static NSArray *reminderValues = nil;
 - (BOOL) sortByThreads
 {
   return [userDefaults mailSortByThreads];
+}
+
+- (NSArray *) addressBookList
+{
+  /* We want all the SourceIDS */
+  NSMutableArray *folders;
+  NSMutableArray *contactFolders;
+  
+  contactFolders = [[[context activeUser] homeFolderInContext: context]
+                    lookupName: @"Contacts"
+                    inContext: context
+                    acquire: NO];
+  
+  folders = [NSMutableArray arrayWithArray: [contactFolders subFolders]];
+  
+  int i, count;
+  
+  count = [folders count]-1;
+  
+  // Inside this loop we remove all the public or shared addressbooks
+  for (count; count >= 0; count--)
+  {
+    if (![[folders objectAtIndex: count] isKindOfClass: [SOGoContactGCSFolder class]])
+      [folders removeObjectAtIndex: count];
+  }
+  
+  // Parse the objects in order to have only the displayName of the addressbooks to be displayed on the preferences interface
+  NSMutableArray *availableAddressBooks = [NSMutableArray new];
+  NSMutableArray *availableAddressBooksName = [NSMutableArray new];
+  
+  count = [folders count]-1;
+  for (i=0; i <= count ; i++) {
+    [availableAddressBooks addObject:[[folders objectAtIndex:i] realNameInContainer]];
+    [availableAddressBooksName addObject:[[folders objectAtIndex:i] displayName]];
+  }
+  
+  return availableAddressBooks;
+
+}
+- (NSString *) itemAddressBookText
+{
+  return [self labelForKey:[NSString stringWithFormat: item]];
+}
+
+- (NSString *) userAddressBook
+{
+  return [userDefaults selectedAddressBook];
+}
+
+- (void) setUserAddressBook: (NSString *) newSelectedAddressBook
+{
+  [userDefaults setSelectedAddressBook: newSelectedAddressBook];
 }
 
 - (NSArray *) messageCheckList

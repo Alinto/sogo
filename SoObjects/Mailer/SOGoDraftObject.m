@@ -45,6 +45,7 @@
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
+#import <NGMail/NGMailAddressParser.h>
 #import <NGMail/NGMimeMessage.h>
 #import <NGMail/NGMimeMessageGenerator.h>
 #import <NGMime/NGMimeBodyPart.h>
@@ -62,6 +63,11 @@
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+
+#import <NGCards/NGVCard.h>
+
+#import <Contacts/SOGoContactFolders.h>
+#import <Contacts/SOGoContactGCSEntry.h>
 
 #import "NSData+Mail.h"
 #import "NSString+Mail.h"
@@ -1660,7 +1666,7 @@ static NSString    *userAgent      = nil;
     {
       recipients = [headers objectForKey: fieldNames[count]];
       if ([recipients count] > 0)
-	[allRecipients addObjectsFromArray: recipients];
+        [allRecipients addObjectsFromArray: recipients];
     }
 
   return allRecipients;
@@ -1689,6 +1695,71 @@ static NSString    *userAgent      = nil;
 //
 - (NSException *) sendMail
 {
+  SOGoUserDefaults *ud;
+  ud = [[context activeUser] userDefaults];
+
+  if ([ud mailAddOutgoingAddresses]) {
+    NSMutableArray *recipients;
+    SOGoMailAccounts *folder;
+    NGMailAddressParser *parser;
+    SOGoContactFolders *contactFolders;
+    NSArray *contacts;
+    NSString *address, *mail, *name;
+    int i;
+    id parsedAddress;
+
+    contactFolders = [[[context activeUser] homeFolderInContext: context]
+                            lookupName: @"Contacts"
+                            inContext: context
+                            acquire: NO];
+  
+    recipients = [self allRecipients];
+    
+    for (i = 0; i < [recipients count]; i++)
+    {
+      // The address contains a string. ex: "John Doe <sogo1@exemple.com>"
+      address = [recipients objectAtIndex: i];
+
+      parser = [NGMailAddressParser mailAddressParserWithString: address];
+      parsedAddress = [parser parse];
+      
+      mail = [parsedAddress address];
+      name = [parsedAddress displayName];
+
+      contacts = [contactFolders allContactsFromFilter: mail
+                                         excludeGroups: YES
+                                          excludeLists: YES];
+      
+      // If we don't get any results from the autocompletion code, we add it..
+      if ([contacts count] == 0)
+      {
+        SOGoContactFolder *folder;
+        Class c;
+        SOGoContactGCSEntry *contact;
+        NSString *uid;
+        NGVCard *card;
+        
+        /* Here I want the selected address book on the preferences. */
+        NSString *addressBook;
+        addressBook = [ud selectedAddressBook];
+        
+        folder = [contactFolders lookupName: addressBook inContext: context  acquire: NO];
+        uid = [folder globallyUniqueObjectId];
+        
+        card = [NGVCard cardWithUid: uid];
+        [card addEmail: mail types: nil];
+
+        c = NSClassFromString(@"SOGoContactGCSEntry");
+        contact = [c objectWithName: uid
+                        inContainer: folder];
+        [contact setIsNew: YES];
+        
+        [contact saveContentString: [card versitString]];
+        
+      }
+    }
+  }
+  
   return [self sendMailAndCopyToSent: YES];
 }
 

@@ -102,6 +102,8 @@
 - (NSData *) mimeMessageAsData;
 
 /* operations */
+- (NSArray *) allRecipients;
+- (NSArray *) allBareRecipients;
 
 - (NSException *) delete;
 - (NSException *) sendMail;
