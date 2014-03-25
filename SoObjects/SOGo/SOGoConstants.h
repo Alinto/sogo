@@ -51,4 +51,10 @@ typedef enum
   EventUpdated = 2,
 } SOGoEventOperation;
 
+typedef enum
+{
+  SOGoPersonalFolder = 0,
+  SOGoCollectedFolder = 1,
+} SOGoFolderType;
+
 #endif /* _SOGOCONSTANTS_H_ */

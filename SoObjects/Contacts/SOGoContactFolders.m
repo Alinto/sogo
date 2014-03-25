@@ -123,60 +123,6 @@ Class SOGoContactSourceFolderK;
   return result;
 }
 
-- (void) _createCollectedFolder
-{
-  NSArray *roles;
-  SOGoGCSFolder *folder;
-  SOGoUser *folderOwner;
-  
-  roles = [[context activeUser] rolesForObject: self inContext: context];
-  folderOwner = [SOGoUser userWithLogin: [self ownerInContext: context]];
-  
-  if (folderOwner && [folderOwner isResource])
-  {
-    folder = [subFolderClass objectWithName: @"collected" inContainer: self];
-    [folder setDisplayName: [self collectedFolderName]];
-    [folder setOCSPath: [NSString stringWithFormat: @"%@/collected", OCSPath]];
-    if ([folder create])
-    [subFolders setObject: folder forKey: @"collected"];
-  }
-}
-
-- (NSException *) _fetchCollectedFolders: (NSString *) sql
-                             withChannel: (EOAdaptorChannel *) fc
-{
-  NSArray *attrs;
-  NSDictionary *row;
-  SOGoGCSFolder *folder;
-  NSString *key;
-  NSException *error;
-  
-  if (!subFolderClass)
-  subFolderClass = [[self class] subFolderClass];
-  
-  error = [fc evaluateExpressionX: sql];
-  if (!error)
-  {
-    attrs = [fc describeResults: NO];
-    while ((row = [fc fetchAttributes: attrs withZone: NULL]))
-    {
-      key = [row objectForKey: @"c_path4"];
-      if ([key isKindOfClass: [NSString class]])
-	    {
-	      folder = [subFolderClass objectWithName: key inContainer: self];
-	      [folder setOCSPath: [NSString stringWithFormat: @"%@/%@",
-                             OCSPath, key]];
-        [subFolders setObject: folder forKey: key];
-	    }
-    }
-    
-    if (![subFolders objectForKey: @"collected"])
-    [self _createCollectedFolder];
-  }
-  
-  return error;
-}
-
 - (NSException *) appendCollectedSources
 {
   GCSChannelManager *cm;
@@ -195,16 +141,16 @@ Class SOGoContactSourceFolderK;
     sql = [NSString stringWithFormat: (@"SELECT c_path4 FROM %@"
                                        @" WHERE c_path2 = '%@'"
                                        @" AND c_folder_type = '%@'"),
-           [folderLocation gcsTableName],
-           owner,
-           gcsFolderType];
-    error = [self _fetchCollectedFolders: sql withChannel: fc];
+           [folderLocation gcsTableName], owner, gcsFolderType];
+    
+    error = [super fetchSpecialFolders: sql withChannel: fc andFolderType: SOGoCollectedFolder];
+    
     [cm releaseChannel: fc];
   }
   else
-  error = [NSException exceptionWithName: @"SOGoDBException"
-                                  reason: @"database connection could not be open"
-                                userInfo: nil];
+    error = [NSException exceptionWithName: @"SOGoDBException"
+                                    reason: @"database connection could not be open"
+                                  userInfo: nil];
   
   return error;
 }
@@ -347,11 +293,6 @@ Class SOGoContactSourceFolderK;
 - (NSString *) defaultFolderName
 {
   return [self labelForKey: @"Personal Address Book"];
-}
-
-- (NSString *) collectedFolderName
-{
-  return [self labelForKey: @"Collected Address Book"];
 }
 
 - (NSArray *) toManyRelationshipKeys

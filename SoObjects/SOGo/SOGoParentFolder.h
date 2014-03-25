@@ -22,6 +22,7 @@
 #define SOGOPARENTFOLDERS_H
 
 #import "SOGoFolder.h"
+#import "SOGoConstants.h"
 
 @class NSMutableDictionary;
 @class NSString;

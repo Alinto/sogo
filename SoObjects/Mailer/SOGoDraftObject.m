@@ -1698,68 +1698,59 @@ static NSString    *userAgent      = nil;
   SOGoUserDefaults *ud;
   ud = [[context activeUser] userDefaults];
 
-  if ([ud mailAddOutgoingAddresses]) {
-    NSMutableArray *recipients;
-    SOGoMailAccounts *folder;
-    NGMailAddressParser *parser;
+  if ([ud mailAddOutgoingAddresses])
+  {
     SOGoContactFolders *contactFolders;
-    NSArray *contacts;
-    NSString *address, *mail, *name;
+    NGMailAddressParser *parser;
+    id parsedRecipient;
+    SOGoContactFolder *folder;
+    SOGoContactGCSEntry *newContact;
+    NGVCard *card;
+    Class contactGCSEntry;
+    NSMutableArray *recipients;
+    NSString *recipient, *emailAddress, *displayName, *addressBook, *uid;
+    NSArray *matchingContacts;
     int i;
-    id parsedAddress;
 
+    // Get all the addressbooks
     contactFolders = [[[context activeUser] homeFolderInContext: context]
-                            lookupName: @"Contacts"
-                            inContext: context
-                            acquire: NO];
-  
+                                                     lookupName: @"Contacts"
+                                                      inContext: context
+                                                      acquire: NO];
+    // Get all the recipients from the current email
     recipients = [self allRecipients];
-    
     for (i = 0; i < [recipients count]; i++)
     {
       // The address contains a string. ex: "John Doe <sogo1@exemple.com>"
-      address = [recipients objectAtIndex: i];
+      recipient = [recipients objectAtIndex: i];
+      parser = [NGMailAddressParser mailAddressParserWithString: recipient];
+      parsedRecipient = [parser parse];
+      emailAddress = [parsedRecipient address];
+      displayName = [parsedRecipient displayName];
 
-      parser = [NGMailAddressParser mailAddressParserWithString: address];
-      parsedAddress = [parser parse];
-      
-      mail = [parsedAddress address];
-      name = [parsedAddress displayName];
-
-      contacts = [contactFolders allContactsFromFilter: mail
-                                         excludeGroups: YES
-                                          excludeLists: YES];
+      matchingContacts = [contactFolders allContactsFromFilter: emailAddress
+                                                 excludeGroups: YES
+                                                  excludeLists: YES];
       
       // If we don't get any results from the autocompletion code, we add it..
-      if ([contacts count] == 0)
+      if ([matchingContacts count] == 0)
       {
-        SOGoContactFolder *folder;
-        Class c;
-        SOGoContactGCSEntry *contact;
-        NSString *uid;
-        NGVCard *card;
-        
-        /* Here I want the selected address book on the preferences. */
-        NSString *addressBook;
+        /* Get the selected addressbook from the user preferences where the new address will be added */
         addressBook = [ud selectedAddressBook];
-        
         folder = [contactFolders lookupName: addressBook inContext: context  acquire: NO];
         uid = [folder globallyUniqueObjectId];
         
         card = [NGVCard cardWithUid: uid];
-        [card addEmail: mail types: nil];
+        [card addEmail: emailAddress types: nil];
 
-        c = NSClassFromString(@"SOGoContactGCSEntry");
-        contact = [c objectWithName: uid
-                        inContainer: folder];
-        [contact setIsNew: YES];
-        
-        [contact saveContentString: [card versitString]];
-        
+        contactGCSEntry = NSClassFromString(@"SOGoContactGCSEntry");
+        newContact = [contactGCSEntry objectWithName: uid
+                                         inContainer: folder];
+        [newContact setIsNew: YES];
+        [newContact saveContentString: [card versitString]];
       }
     }
   }
-  
   return [self sendMailAndCopyToSent: YES];
 }
 

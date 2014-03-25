@@ -139,8 +139,8 @@
 "messagecheck_every_20_minutes" = "Every 20 minutes";
 "messagecheck_every_30_minutes" = "Every 30 minutes";
 "messagecheck_once_per_hour" = "Once per hour";
-"PersonalAddressBook" = "Personal address book";
-"CollectedAddressBook" = "Collected addresses";
+"personal" = "Personal addressbook";
+"collected" = "Collected addresses";
 
 "Forward messages:" = "Forward messages:";
 "messageforward_inline" = "Inline";

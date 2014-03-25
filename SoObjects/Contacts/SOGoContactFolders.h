@@ -26,9 +26,7 @@
 @interface SOGoContactFolders : SOGoParentFolder
 
 - (NSString *) defaultFolderName;
-- (NSString *) collectedFolderName;
 
-- (NSException *) appendCollectedSources;
 - (NSException *) renameLDAPAddressBook: (NSString *) sourceID
                         withDisplayName: (NSString *) newDisplayName;
 - (NSException *) removeLDAPAddressBook: (NSString *) sourceID;

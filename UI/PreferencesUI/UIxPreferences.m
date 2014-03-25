@@ -691,18 +691,14 @@ static NSArray *reminderValues = nil;
 - (NSArray *) addressBookList
 {
   /* We want all the SourceIDS */
-  NSMutableArray *folders;
-  NSMutableArray *contactFolders;
+  NSMutableArray *folders, *contactFolders, *availableAddressBooks;
+  int i, count;
   
   contactFolders = [[[context activeUser] homeFolderInContext: context]
                     lookupName: @"Contacts"
                     inContext: context
                     acquire: NO];
-  
   folders = [NSMutableArray arrayWithArray: [contactFolders subFolders]];
-  
-  int i, count;
-  
   count = [folders count]-1;
   
   // Inside this loop we remove all the public or shared addressbooks
@@ -713,21 +709,42 @@ static NSArray *reminderValues = nil;
   }
   
   // Parse the objects in order to have only the displayName of the addressbooks to be displayed on the preferences interface
-  NSMutableArray *availableAddressBooks = [NSMutableArray new];
-  NSMutableArray *availableAddressBooksName = [NSMutableArray new];
-  
+  availableAddressBooks = [[NSMutableArray alloc] initWithCapacity: [folders count]];
   count = [folders count]-1;
   for (i=0; i <= count ; i++) {
     [availableAddressBooks addObject:[[folders objectAtIndex:i] realNameInContainer]];
-    [availableAddressBooksName addObject:[[folders objectAtIndex:i] displayName]];
   }
   
   return availableAddressBooks;
-
 }
 - (NSString *) itemAddressBookText
 {
-  return [self labelForKey:[NSString stringWithFormat: item]];
+  NSString *displayNameAddressBookItem, *test;
+  NSMutableArray *folders, *contactFolders;
+  int count, i;
+  
+  if ([item isEqualToString: @"personal"] || [item isEqualToString: @"collected"])
+    displayNameAddressBookItem = [self labelForKey:[NSString stringWithFormat: item]];
+  
+  else
+  {
+    contactFolders = [[[context activeUser] homeFolderInContext: context]
+                      lookupName: @"Contacts"
+                      inContext: context
+                      acquire: NO];
+    folders = [NSMutableArray arrayWithArray: [contactFolders subFolders]];
+    count = [folders count]-1;
+    for (i=0; i <= count ; i++)
+    {
+      if ([item isEqualToString:[[folders objectAtIndex:i] realNameInContainer]])
+      {
+        displayNameAddressBookItem = [[folders objectAtIndex:i] displayName];
+        break;
+      };
+    }
+  }
+  
+  return displayNameAddressBookItem;
 }
 
 - (NSString *) userAddressBook
