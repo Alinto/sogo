@@ -38,7 +38,7 @@
 #import <DOM/DOMElement.h>
 #import <DOM/DOMProtocols.h>
 #import <SaxObjC/XMLNamespaces.h>
-
+#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
 
 #import "NSObject+DAV.h"
@@ -175,18 +175,18 @@ static SoSecurityManager *sm = nil;
   if ([roles containsObject: SoRole_Owner] ||
       (folderOwner && [folderOwner isResource]))
     {
-      folder = [subFolderClass objectWithName: folderName inContainer: self];
-      if (folderType == 0)
+      if (folderType == SOGoPersonalFolder)
       {
         folderName = @"personal";
+        folder = [subFolderClass objectWithName: folderName inContainer: self];
         [folder setDisplayName: [self defaultFolderName]];
       }
-      else if (folderType == 1)
+      else if (folderType == SOGoCollectedFolder)
       {
-        folderName = @"Collected Address Book";
+        folderName = @"collected";
+        folder = [subFolderClass objectWithName: folderName inContainer: self];
         [folder setDisplayName: [self collectedFolderName]];
       }
-      
       [folder setOCSPath: [NSString stringWithFormat: @"%@/%@", OCSPath, folderName]];
       
       if ([folder create])
@@ -203,6 +203,8 @@ static SoSecurityManager *sm = nil;
   SOGoGCSFolder *folder;
   NSString *key;
   NSException *error;
+  SOGoUserDefaults *ud;
+  ud = [[context activeUser] userDefaults];
 
   if (!subFolderClass)
     subFolderClass = [[self class] subFolderClass];
@@ -221,15 +223,16 @@ static SoSecurityManager *sm = nil;
         [subFolders setObject: folder forKey: key];
       }
     }
-    if (folderType == 0)
+    if (folderType == SOGoPersonalFolder)
     {
       if (![subFolders objectForKey: @"personal"])
         [self createSpecialFolder: SOGoPersonalFolder];
     }
-    else if (folderType == 1)
+    else if (folderType == SOGoCollectedFolder)
     {
       if (![subFolders objectForKey: @"collected"])
-        [self createSpecialFolder: SOGoCollectedFolder];
+        if ([[ud selectedAddressBook] isEqualToString:@"collected"])
+          [self createSpecialFolder: SOGoCollectedFolder];
     }
   }
   return error;

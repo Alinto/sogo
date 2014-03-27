@@ -268,7 +268,7 @@ Class SOGoContactSourceFolderK;
   SOGoUser *currentUser;
   id <SOGoSource> source;
 
-  if ([sourceID isEqualToString: @"personal"] || [sourceID isEqualToString: @"collected"])
+  if ([sourceID isEqualToString: @"personal"])
     result = [NSException exceptionWithHTTPStatus: 403
                                            reason: (@"folder '%@' cannot be deleted", sourceID)];
   else
@@ -293,6 +293,11 @@ Class SOGoContactSourceFolderK;
 - (NSString *) defaultFolderName
 {
   return [self labelForKey: @"Personal Address Book"];
+}
+
+- (NSString *) collectedFolderName
+{
+  return [self labelForKey: @"Collected Address Book"];
 }
 
 - (NSArray *) toManyRelationshipKeys

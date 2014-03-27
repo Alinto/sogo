@@ -33,6 +33,9 @@
   id item;
   SOGoUser *user;
   
+  // Addressbook
+  NSMutableDictionary *addressBooksIDWithDisplayName;
+  
   // Calendar categories
   NSString *category;
   NSArray *calendarCategories;

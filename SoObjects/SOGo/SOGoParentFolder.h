@@ -40,6 +40,7 @@
 + (Class) subFolderClass;
 
 - (NSString *) defaultFolderName;
+- (NSString *) collectedFolderName;
 
 - (NSException *) appendPersonalSources;
 - (void) removeSubFolder: (NSString *) subfolderName;
