@@ -516,7 +516,7 @@ function ensureMethodSelectRepresentation(container, methodSpan) {
     if (sieveCapabilities.indexOf("fileinto") > -1) {
         methods.push("fileinto");
     }
-    if (sieveCapabilities.indexOf("imapflags") > -1) {
+    if (sieveCapabilities.indexOf("imapflags") > -1 || sieveCapabilities.indexOf("imap4flags") > -1) {
         methods.push("addflag");
     }
     methods.push("stop");

@@ -4,6 +4,7 @@
 Bug fixes
  - fixed possible exception when retrieving the default event reminder value on 64bit architectures (#2678)
  - fixed calling unescapeHTML on null variables to avoid JavaScript exceptions in Contacts module
+ - fixed detection of IMAP flags support on the client side (#2664)
 
 2.2.2 (2014-03-21)
 ------------------
