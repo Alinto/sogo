@@ -1,6 +1,9 @@
 2.2.3 (2014-MM-DD)
 ------------------
 
+Enhancements
+ - initial support for ActiveSync event reminders support (#2681)
+
 Bug fixes
  - fixed possible exception when retrieving the default event reminder value on 64bit architectures (#2678)
  - fixed calling unescapeHTML on null variables to avoid JavaScript exceptions in Contacts module

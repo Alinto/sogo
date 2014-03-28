@@ -50,6 +50,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import <Appointments/iCalEntityObject+SOGo.h>
 
+#include "iCalAlarm+ActiveSync.h"
 #include "iCalRecurrenceRule+ActiveSync.h"
 #include "iCalTimeZone+ActiveSync.h"
 #include "NSDate+ActiveSync.h"
@@ -209,7 +210,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [s appendFormat: @"<Sensitivity xmlns=\"Calendar:\">%d</Sensitivity>", v];
   
   // Reminder -- http://msdn.microsoft.com/en-us/library/ee219691(v=exchg.80).aspx
-  // TODO
+  // TODO: improve this to handle more alarm types
+  if ([self hasAlarms]) 
+    {
+      iCalAlarm *alarm;
+      
+      alarm = [[self alarms] objectAtIndex: 0];
+      [s appendString: [alarm activeSyncRepresentationInContext: context]];
+    }
 
   // Recurrence rules
   if ([self isRecurrent])
@@ -390,6 +398,35 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         }
     }
 
+  //
+  // If an alarm is deinfed with an action != DISPLAY, we ignore the alarm - don't want to overwrite. 
+  //
+  if ([self hasAlarms] && [[[[self alarms] objectAtIndex: 0] action] caseInsensitiveCompare: @"DISPLAY"] != NSOrderedSame)
+    {
+      // Ignore the alarm for now
+    }
+  else if ((o = [theValues objectForKey: @"Reminder"]))
+    {           
+      // NOTE: Outlook sends a 15 min reminder (18 hour for allday) if no reminder is specified  
+      // although no default reminder is defined (File -> Options -> Clendar -> Calendar Options - > Default Reminders)
+      //
+      // http://answers.microsoft.com/en-us/office/forum/office_2013_release-outlook/desktop-outlook-calendar-creates-entries-with/9aef72d8-81bb-4a32-a6ab-bf7d216fb811?page=5&tm=1395690285088 
+      //
+      iCalAlarm *alarm;
+      
+      alarm = [[iCalAlarm alloc] init];
+      [alarm takeActiveSyncValues: theValues  inContext: context];
+
+      [self removeAllAlarms];
+      [self addToAlarms: alarm];
+      RELEASE(alarm);
+    }
+  else
+    {
+      // We remove existing alarm since no reminder in the ActiveSync payload
+      [self removeAllAlarms];
+    }
+  
   // Recurrence
   if ((o = [theValues objectForKey: @"Recurrence"]))
     {
