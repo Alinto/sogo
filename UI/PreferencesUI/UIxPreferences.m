@@ -177,6 +177,7 @@ static NSArray *reminderValues = nil;
   [contactsCategories release];
   [forwardOptions release];
   [daysOfWeek release];
+  [addressBooksIDWithDisplayName release];
   [super dealloc];
 }
 
@@ -704,7 +705,7 @@ static NSArray *reminderValues = nil;
   count = [folders count]-1;
   
   // Inside this loop we remove all the public or shared addressbooks
-  for(count; count>=0; count--)
+  for (count; count >= 0; count--)
   {
     if (![[folders objectAtIndex: count] isKindOfClass: [SOGoContactGCSFolder class]])
       [folders removeObjectAtIndex: count];
@@ -725,8 +726,8 @@ static NSArray *reminderValues = nil;
   }
   // Create the dictionary for the next function : itemAddressBookText.
   if (!addressBooksIDWithDisplayName)
-    addressBooksIDWithDisplayName = [NSMutableDictionary dictionaryWithObjects:availableAddressBooksName
-                                                                       forKeys:availableAddressBooksID];
+    addressBooksIDWithDisplayName = [[NSMutableDictionary alloc] initWithObjects:availableAddressBooksName
+                                                                         forKeys:availableAddressBooksID];
     if (!collectedAlreadyExist)
     {
       [availableAddressBooksID addObject: @"collected"];
