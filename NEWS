@@ -9,6 +9,7 @@ Bug fixes
  - fixed calling unescapeHTML on null variables to avoid JavaScript exceptions in Contacts module
  - fixed detection of IMAP flags support on the client side (#2664)
  - fixed the ActiveSync issue marking all mails as read when downloading them
+ - fixed ActiveSync's move operations not working for multiple selections (#2691)
 
 2.2.2 (2014-03-21)
 ------------------
