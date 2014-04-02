@@ -84,6 +84,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   int v;
 
+  NSTimeZone *userTimeZone;
+  userTimeZone = [[[context activeUser] userDefaults] timeZone];
+
   s = [NSMutableString string];
   
   [s appendFormat: @"<AllDayEvent xmlns=\"Calendar:\">%d</AllDayEvent>", ([self isAllDay] ? 1 : 0)];
@@ -96,12 +99,30 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   // StartTime -- http://msdn.microsoft.com/en-us/library/ee157132(v=exchg.80).aspx
   if ([self startDate])
-    [s appendFormat: @"<StartTime xmlns=\"Calendar:\">%@</StartTime>", [[self startDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
-  
+    {
+      if ([self isAllDay])
+        [s appendFormat: @"<StartTime xmlns=\"Calendar:\">%@</StartTime>",
+           [[[self startDate] dateByAddingYears: 0 months: 0 days: 0
+                                          hours: 0 minutes: 0
+                                        seconds: ([userTimeZone secondsFromGMTForDate: [self startDate]])*-1]
+             activeSyncRepresentationWithoutSeparatorsInContext: context]];
+      else
+        [s appendFormat: @"<StartTime xmlns=\"Calendar:\">%@</StartTime>", [[self startDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
+    }
+
   // EndTime -- http://msdn.microsoft.com/en-us/library/ee157945(v=exchg.80).aspx
   if ([self endDate])
-    [s appendFormat: @"<EndTime xmlns=\"Calendar:\">%@</EndTime>", [[self endDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
-  
+    {
+      if ([self isAllDay])
+        [s appendFormat: @"<EndTime xmlns=\"Calendar:\">%@</EndTime>",
+           [[[self endDate] dateByAddingYears: 0 months: 0 days: 0
+                                        hours: 0 minutes: 0
+                                      seconds: ([userTimeZone secondsFromGMTForDate: [self endDate]])*-1]
+             activeSyncRepresentationWithoutSeparatorsInContext: context]];
+      else
+        [s appendFormat: @"<EndTime xmlns=\"Calendar:\">%@</EndTime>", [[self endDate] activeSyncRepresentationWithoutSeparatorsInContext: context]];
+    }
+
   // Timezone
   tz = [(iCalDateTime *)[self firstChildWithTag: @"dtstart"] timeZone];
 
@@ -364,6 +385,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       if (isAllDay)
         {
+          tzOffset = [userTimeZone secondsFromGMTForDate: o];
+          o = [o dateByAddingYears: 0 months: 0 days: 0
+                             hours: 0 minutes: 0
+                           seconds: tzOffset];
           [start setDate: o];
           [start setTimeZone: nil];
         }
@@ -385,6 +410,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       if (isAllDay)
         {
+          tzOffset = [userTimeZone secondsFromGMTForDate: o];
+          o = [o dateByAddingYears: 0 months: 0 days: 0
+                             hours: 0 minutes: 0
+                           seconds: tzOffset];
           [end setDate: o];
           [end setTimeZone: nil];
         }

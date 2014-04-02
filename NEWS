@@ -11,6 +11,7 @@ Bug fixes
  - fixed the ActiveSync issue marking all mails as read when downloading them
  - fixed ActiveSync's move operations not working for multiple selections (#2691)
  - fixed email validation regexp to allow gTLDs
+ - improved all-day events support for ActiveSync (#2686)
 
 2.2.2 (2014-03-21)
 ------------------
