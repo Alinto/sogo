@@ -4,6 +4,7 @@
 Enhancements
  - updated Dutch, Hungarian, Russian and Spanish (Argentina) translations
  - initial support for ActiveSync event reminders support (#2681)
+ - updated CKEditor to version 4.3.4
 
 Bug fixes
  - fixed possible exception when retrieving the default event reminder value on 64bit architectures (#2678)
