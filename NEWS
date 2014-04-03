@@ -1,7 +1,8 @@
-2.2.3 (2014-MM-DD)
+2.2.3 (2014-04-03)
 ------------------
 
 Enhancements
+ - updated Dutch, Hungarian, Russian and Spanish (Argentina) translations
  - initial support for ActiveSync event reminders support (#2681)
 
 Bug fixes
