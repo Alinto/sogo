@@ -1140,11 +1140,11 @@ static NSArray *reminderValues = nil;
 
 - (NSString *) sogoVersion
 {
+  // The variable SOGoVersion comes from the import: SOGo/Build.h
   NSString *sogoVersion = [NSString stringWithString: SOGoVersion];
   
   return sogoVersion;
 }
-
 
 - (id <WOActionResults>) defaultAction
 {
