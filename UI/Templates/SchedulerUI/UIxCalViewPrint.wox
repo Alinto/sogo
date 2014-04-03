@@ -1,0 +1,109 @@
+<?xml version='1.0' standalone='yes'?>
+<!DOCTYPE var:component>
+<var:component
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:var="http://www.skyrix.com/od/binding"
+xmlns:const="http://www.skyrix.com/od/constant"
+xmlns:uix="OGo:uix"
+xmlns:label="OGo:label"
+className="UIxPageFrame"
+title="name"
+const:popup="YES">
+
+<div>
+  
+<!-- Print settings -->
+  <span class="caption"><var:string label:value="Print Settings" /></span>
+  <table class="frame">
+    <tr>
+      <td>
+        <label><var:string label:"Title">
+          <input type="text" class="textField" name="title" id="title" /></label></td></tr>
+    <tr>
+      <td>
+        <label><var:string label:"Layout">
+          <var:popup list="layoutList" item="item"
+            label:noSelectionString="layoutList_list"
+            string="itemLayoutListText"
+            selection="" /></label></td></tr>
+  </table>
+    
+<!-- What to print -->
+  <span class="caption"><var:string label:value="What to Print" /></span>
+  <table class="frame">
+    <tr>
+      <td>
+        <label>
+          <input type="checkbox"
+            const:name="selectEvents"
+            const:id="selectEvents"
+            var:checked="printEvents" />
+          <var:string label:value="Events"/></label></td>
+      <td>
+        <label>
+          <input type="checkbox"
+            const:name="selectTasks"
+            const:id="selectTasks"
+            var:checked="printTasks" />
+          <var:string label:value="Tasks"/></label></td></tr>
+    <tr>
+      <td>
+        <label>
+          <var:string label:"Current view">
+          <!-- TODO-Radio button --></label></td></tr>
+    <tr>
+      <td>
+        <label>
+          <var:string label:"Selected events/tasks">
+          <!-- TODO-Radio button --></label></td></tr>
+    <tr>
+      <td>
+        <label>
+          <var:string label:"Custom date range">
+          <!-- TODO-Radio button --></label></td></tr>
+    <tr>
+      <td>
+        <label>
+          <var:string label:"From:">
+          <!-- TODO-Date picker --></label></td></tr>
+    <tr>
+      <td>
+        <label>
+          <var:string label:"To:">
+            <!-- TODO-Date picker --></label></td></tr>
+  </table>
+    
+<!-- Options -->
+  <span class="caption"><var:string label:value="Options" /></span>
+  <table class="frame">
+    <tr>
+      <td>
+        <label>
+          <input type="checkbox"
+            const:name="selectNoDueDateTasks"
+            const:id="selectNoDueDateTasks"
+            var:checked="printNoDueDateTasks" />
+          <var:string label:value="Tasks with no due date"/></label></td></tr>
+    <tr>
+      <td>
+        <label>
+          <input type="checkbox"
+            const:name="selectCompletedTasks"
+            const:id="selectCompletedTasks"
+            var:checked="printCompletedTasks" />
+          <var:string label:value="Completed tasks"/></label></td></tr>
+    
+  </table>
+
+<!-- Buttons -->
+  <div id="buttons">
+    <a class="button" name="submit" id="submitButton">
+      <span>
+        <var:string label:value="Print" /></span></a>
+    
+    <a class="button" name="cancel" id="cancelButton">
+      <span>
+        <var:string label:value="Cancel"/></span></a>
+  </div>
+</div>
+

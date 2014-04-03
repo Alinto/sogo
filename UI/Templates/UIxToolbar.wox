@@ -7,45 +7,36 @@
     xmlns:label="OGo:label"
     xmlns:so="http://www.skyrix.com/od/so-lookup">
     <div id="toolbar" class="toolbar">
-      <var:foreach list="toolbarConfig" item="toolbarGroup"
-        ><var:foreach list="toolbarGroup" item="buttonInfo"
-          ><var:if condition="isButtonEnabled"
-            ><a var:class="cssClasses"
+      
+      <var:foreach list="toolbarConfig" item="toolbarGroup">
+        <var:foreach list="toolbarGroup" item="buttonInfo">
+          <var:if condition="isButtonEnabled">
+            <a var:class="cssClasses"
               var:href="buttonInfo.link"
               var:target="buttonInfo.target"
               var:onclick="buttonInfo.onclick"
-              var:title="buttonTooltip"
-              ><span><img class="buttonImage"
-                  var:src="buttonImage"
-                  var:alt="buttonTooltip"
-                  /><var:if condition="hasMenu"
-                  ><img class="buttonMenuArrow"
-                    rsrc:src="arrow-dwn-sharp.gif"
-                    var:alt="buttonTooltip"
-                    /></var:if
-                  ><br/><var:string value="buttonLabel"
-                    /></span>
-            </a></var:if
-            ><var:if condition="isButtonEnabled"
-            const:negate="YES"
-            ><span var:class="cssClasses"
-              ><img class="buttonImage"
+              var:title="buttonTooltip">
+              <span><img class="buttonImage"
                 var:src="buttonImage"
-                var:alt="buttonTooltip"
-                /><br
-                /><span class="buttonLabel"
-                ><var:string
-                  value="buttonLabel"
-                  /></span
-                ></span
-              ></var:if
-            ></var:foreach>
-        <var:if condition="isLastGroup" const:negate="YES"
-          ><span class="toolbarSeparator"
-            ><var:entity const:name="nbsp"
-              /></span
-            ></var:if>
-        </var:foreach>
-	<img id="progressIndicator" rsrc:src="busy.gif" />
+                var:alt="buttonTooltip"/>
+                  <var:if condition="hasMenu">
+                    <img class="buttonMenuArrow"
+                    rsrc:src="arrow-dwn-sharp.gif"
+                    var:alt="buttonTooltip"/></var:if><br/>
+                  <var:string value="buttonLabel"/></span></a></var:if>
+          
+          <var:if condition="isButtonEnabled" const:negate="YES">
+            <span var:class="cssClasses">
+              <img class="buttonImage"
+                var:src="buttonImage"
+                var:alt="buttonTooltip"/><br/>
+                <span class="buttonLabel">
+                  <var:string value="buttonLabel"/></span></span></var:if></var:foreach>
+        
+        <var:if condition="isLastGroup" const:negate="YES">
+          <span class="toolbarSeparator">
+            <var:entity const:name="nbsp"/></span></var:if></var:foreach>
+      
+      <img id="progressIndicator" rsrc:src="busy.gif" />
     </div>
   </var:if>
