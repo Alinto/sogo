@@ -551,7 +551,7 @@ static NSArray *reminderValues = nil;
 - (void) setReminder: (NSString *) theReminder
 {
   NSString *value;
-  int index;
+  NSUInteger index;
 
   index = NSNotFound;
   value = @"NONE";

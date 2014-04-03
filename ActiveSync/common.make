@@ -1,5 +1,3 @@
-# common make file for SoObject bundles
-
 include ../config.make
 include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
@@ -18,10 +16,10 @@ ADDITIONAL_INCLUDE_DIRS += \
         -I../../SOPE
 
 ADDITIONAL_LIB_DIRS += \
-        -L../SOGo/SOGo.framework/ \
-	-L../../SOGo/$(GNUSTEP_OBJ_DIR)/ \
-	-L../../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ \
-	-L../../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ \
+        -L../SoObjects/SOGo/SOGo.framework/ \
+	-L../SoObjects/SOGo/$(GNUSTEP_OBJ_DIR)/ \
+	-L../OGoContentStore/$(GNUSTEP_OBJ_DIR)/ \
+	-L../SOPE/NGCards/$(GNUSTEP_OBJ_DIR)/ \
         -L/usr/local/lib
 
 BUNDLE_LIBS += \

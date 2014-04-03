@@ -219,17 +219,7 @@ static Class SOGoContactGCSEntryK = Nil;
 
 - (NSString *) addressBookDisplayName
 {
-  NSString *fDisplayName;
-  SOGoObject <SOGoContactFolder> *folder;
-  SOGoContactFolders *parentFolder;
-
-  fDisplayName = [addressBookItem displayName];
-  folder = [[self clientObject] container];
-  parentFolder = [folder container];
-  if ([fDisplayName isEqualToString: [parentFolder defaultFolderName]])
-    fDisplayName = [self labelForKey: fDisplayName];
-
-  return fDisplayName;
+  return [addressBookItem displayName];
 }
 
 - (BOOL) supportCategories

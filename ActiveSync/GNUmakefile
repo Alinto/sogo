@@ -9,6 +9,7 @@ ActiveSync_PRINCIPAL_CLASS = ActiveSyncProduct
 
 ActiveSync_OBJC_FILES =			\
 	ActiveSyncProduct.m		\
+	iCalAlarm+ActiveSync.m		\
 	iCalEvent+ActiveSync.m		\
 	iCalRecurrenceRule+ActiveSync.m \
 	iCalTimeZone+ActiveSync.m	\
@@ -30,7 +31,7 @@ ActiveSync_RESOURCE_FILES +=		\
 
 ADDITIONAL_OBJCFLAGS += -Wno-deprecated-declarations
 ADDITIONAL_INCLUDE_DIRS += -I../SOPE/ -I../SoObjects/
-ADDITIONAL_LIB_DIRS += -L../../SOPE/GDLContentStore/obj/
+ADDITIONAL_LIB_DIRS += -L../SOPE/GDLContentStore/obj/ -L../SOPE/NGCards/obj/
 ADDITIONAL_INCLUDE_DIRS += -I/usr/include/libwbxml-1.0/
 ADDITIONAL_LDFLAGS += -Wl,--no-as-needed -lwbxml2
 

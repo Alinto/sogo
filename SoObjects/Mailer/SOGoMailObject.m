@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2007-2009 Inverse inc.
+  Copyright (C) 2007-2014 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo.
@@ -434,7 +434,8 @@ static BOOL debugSoParts       = NO;
   NSData *content;
   id     result, fullResult;
   
-  fullResult = [self fetchParts: [NSArray arrayWithObject: @"RFC822"]];
+  // We avoid using RFC822 here as the part name as it'll flag the message as Seen
+  fullResult = [self fetchParts: [NSArray arrayWithObject: @"BODY.PEEK[]"]];
   if (fullResult == nil)
     return nil;
   
@@ -458,7 +459,7 @@ static BOOL debugSoParts       = NO;
   
   /* extract message */
   
-  if ((content = [result valueForKey: @"message"]) == nil) {
+  if ((content = [[result valueForKey: @"body[]"] valueForKey: @"data"]) == nil) {
     [self logWithFormat:
 	    @"ERROR: unexpected IMAP4 result (missing 'message'): %@", 
 	    result];
@@ -504,26 +505,6 @@ static BOOL debugSoParts       = NO;
 }
 
 /* bulk fetching of plain/text content */
-
-// - (BOOL) shouldFetchPartOfType: (NSString *) _type
-// 		       subtype: (NSString *) _subtype
-// {
-//   /*
-//     This method decides which parts are 'prefetched' for display. Those are
-//     usually text parts (the set is currently hardcoded in this method ...).
-//   */
-//   _type    = [_type    lowercaseString];
-//   _subtype = [_subtype lowercaseString];
-  
-//   return (([_type isEqualToString: @"text"]
-//            && ([_subtype isEqualToString: @"plain"]
-//                || [_subtype isEqualToString: @"html"]
-//                || [_subtype isEqualToString: @"calendar"]))
-//           || ([_type isEqualToString: @"application"]
-//               && ([_subtype isEqualToString: @"pgp-signature"]
-//                   || [_subtype hasPrefix: @"x-vnd.kolab."])));
-// }
-
 - (void) addRequiredKeysOfStructure: (NSDictionary *) info
 			       path: (NSString *) p
 			    toArray: (NSMutableArray *) keys
@@ -623,9 +604,12 @@ static BOOL debugSoParts       = NO;
 		   @"text/calendar", @"application/ics",
 		   @"application/pgp-signature", nil];
   ma = [NSMutableArray arrayWithCapacity: 4];
+
   [self addRequiredKeysOfStructure: [self bodyStructure]
-	path: @"" toArray: ma acceptedTypes: types
-        withPeek: NO];
+                              path: @""
+                           toArray: ma 
+                     acceptedTypes: types
+                          withPeek: YES];
 
   return ma;
 }
@@ -655,6 +639,12 @@ static BOOL debugSoParts       = NO;
     NSData   *data;
     
     key  = [[_fetchKeys objectAtIndex:i] objectForKey: @"key"];
+
+    // We'll ask for the body.peek[] but SOPE returns us body[] responses
+    // so the key won't ever be found.
+    if ([key hasPrefix: @"body.peek["])
+      key = [NSString stringWithFormat: @"body[%@", [key substringFromIndex: 10]];
+
     data = [(NSDictionary *)[(NSDictionary *)result objectForKey:key] 
 			    objectForKey: @"data"];
     
@@ -1345,11 +1335,6 @@ static BOOL debugSoParts       = NO;
   return mailETag;
 }
 
-- (int) zlGenerationCount
-{
-  return 0; /* mails never change */
-}
-
 - (NSArray *) aclsForUser: (NSString *) uid
 {
   return [container aclsForUser: uid];
@@ -1533,7 +1518,7 @@ static BOOL debugSoParts       = NO;
   NSRange range;
 
   rc = nil;
-  fetch = [self _fetchProperty: @"BODY[HEADER.FIELDS (RECEIVED)]"];
+  fetch = [self _fetchProperty: @"BODY.PEEK[HEADER.FIELDS (RECEIVED)]"];
 
   if ([fetch count])
     {
@@ -1568,7 +1553,7 @@ static BOOL debugSoParts       = NO;
   NSString *value, *rc;
 
   rc = nil;
-  fetch = [self _fetchProperty: @"BODY[HEADER.FIELDS (REFERENCES)]"];
+  fetch = [self _fetchProperty: @"BODY.PEEK[HEADER.FIELDS (REFERENCES)]"];
 
   if ([fetch count])
     {

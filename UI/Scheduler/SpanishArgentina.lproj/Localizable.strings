@@ -58,7 +58,7 @@
 "Export Calendar..." = "Exportar calendario...";
 "Import Events..." = "Importar Eventos...";
 "Import Events" = "Importar Eventos";
-"Select an iCalendar file (.ics)." = "Seleccionar un fichero iCalendar (.ics).";
+"Select an iCalendar file (.ics)." = "Seleccionar un archivo iCalendar (.ics).";
 "Upload" = "Subir";
 "Uploading" = "Cargando";
 "Publish Calendar..." = "Publicar calendario...";
@@ -179,6 +179,8 @@
 "Reminder:" = "Recordatorio:";
 "General:" = "General:";
 "Reply:" = "Responder:";
+"Created by:" = "Creado por:";
+
 
 "Target:" = "URL documento:";
 
@@ -373,6 +375,9 @@
 
 "Show Time as Free" = "Mostrar tiempo como disponible";
 
+/* email notifications */
+"Send Appointment Notifications" = "Enviar notificaciones sobre el evento";
+
 /* validation errors */
 
 validate_notitle           = "No ha escrito un título, ¿Desea continuar?";
@@ -418,7 +423,7 @@ validate_endbeforestart    = "La fecha/hora de inicio es posterior a la de fin."
 "You cannot remove nor unsubscribe from your personal calendar."
 = "No puede quitarse ni darse de baja de su calendario personal.";
 "Are you sure you want to delete the calendar \"%{0}\"?"
-= "¿Está seguro/a que desea borrar el calendario \"%{0}\"?";
+= "¿Está seguro de que quiere borrar el calendario \"%{0}\"?";
 
 /* Legend */
 "Participant" = "Asistente";
@@ -449,7 +454,7 @@ validate_endbeforestart    = "La fecha/hora de inicio es posterior a la de fin."
 "and" = "y";
 
 "A time conflict exists with one or more attendees.\nWould you like to keep the current settings anyway?"
-= "Existe un conflicto de disponibilidad con uno o más asistentes.\n¿Quiere guardar ésta propuesta de todas formas?";
+= "Existe un conflicto de disponibilidad entre uno o más asistentes.\n¿Quiere guardar ésta propuesta de todas formas?";
 
 /* apt list */
 "Title" = "Título";
@@ -484,7 +489,7 @@ vtodo_class2 = "(Tarea confidencial)";
 "Name:" = "Nombre:";
 "Color:" = "Color:";
 
-"Include in free-busy" = "Incluye en tiempo libre-ocupado";
+"Include in free-busy" = "Incluir en información de disponibilidad";
 
 "Synchronization" = "Sincronización";
 "Synchronize" = "Sincronizar";
@@ -506,12 +511,12 @@ vtodo_class2 = "(Tarea confidencial)";
 "WebDAV XML URL" = "URL XML WebDAV";
 
 /* Error messages */
-"dayFieldInvalid" = "Por favor, especificar un valor numérico en el campo día superior o igual a 1.";
-"weekFieldInvalid" = "Por favor, especificar un valor numérico en el campo semana(s) superior o igual a 1.";
-"monthFieldInvalid" = "Por favor, especificar un valor numérico en el campo mes superior o igual a 1.";
-"monthDayFieldInvalid" = "Por favor, especificar un valor numérico en el campo día del mes superior o igual a 1.";
-"yearFieldInvalid" = "Por favor, especificar un valor numérico en el campo año superior o igual a 1.";
-"appointmentFieldInvalid" = "Por favor, especificar un valor numérico en el campo cita(s) superior o igual a 1.";
+"dayFieldInvalid" = "Por favor, especificar un valor numérico en el campo día mayor o igual a 1.";
+"weekFieldInvalid" = "Por favor, especificar un valor numérico en el campo semana(s) mayor o igual a 1.";
+"monthFieldInvalid" = "Por favor, especificar un valor numérico en el campo mes mayor o igual a 1.";
+"monthDayFieldInvalid" = "Por favor, especificar un valor numérico en el campo día del mes mayor o igual a 1.";
+"yearFieldInvalid" = "Por favor, especificar un valor numérico en el campo año mayor o igual a 1.";
+"appointmentFieldInvalid" = "Por favor, especificar un valor numérico en el campo cita(s) mayor o igual a 1.";
 "recurrenceUnsupported" = "Este tipo de frecuencia no esta soportado.";
 "Please specify a calendar name." = "Por favor ingrese el nombre del calendario.";
 "tagNotDefined" = "Tiene que especificar una etiqueta si quiere sincronizar este calendario.";

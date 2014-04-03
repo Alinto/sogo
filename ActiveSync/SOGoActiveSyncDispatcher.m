@@ -868,105 +868,116 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   NSString *srcMessageId, *srcFolderId, *dstFolderId, *dstMessageId;
   SOGoMicrosoftActiveSyncFolderType srcFolderType, dstFolderType;
+  id <DOMElement> aMoveOperation;
+  NSArray *moveOperations;
+  NSMutableString *s;
+  NSData *d; 
+  int i;
   
-  srcMessageId = [[(id)[theDocumentElement getElementsByTagName: @"SrcMsgId"] lastObject] textValue];
-  srcFolderId = [[[(id)[theDocumentElement getElementsByTagName: @"SrcFldId"] lastObject] textValue] realCollectionIdWithFolderType: &srcFolderType];
-  dstFolderId = [[[(id)[theDocumentElement getElementsByTagName: @"DstFldId"] lastObject] textValue] realCollectionIdWithFolderType: &dstFolderType];
+  moveOperations = (id)[theDocumentElement getElementsByTagName: @"Move"];
+  
+  s = [NSMutableString string];
 
-  // FIXME
-  if (srcFolderType == ActiveSyncMailFolder && dstFolderType == ActiveSyncMailFolder)
+  [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+  [s appendString: @"<MoveItems xmlns=\"Move:\">"];
+
+  for (i = 0; i < [moveOperations count]; i++)
     {
-      NGImap4Client *client;
-      id currentCollection;
-
-      NSDictionary *response;
-      NSString *v;
+      aMoveOperation = [moveOperations objectAtIndex: i];
       
-      currentCollection = [self collectionFromId: srcFolderId  type: srcFolderType];
+      srcMessageId = [[(id)[aMoveOperation getElementsByTagName: @"SrcMsgId"] lastObject] textValue];
+      srcFolderId = [[[(id)[aMoveOperation getElementsByTagName: @"SrcFldId"] lastObject] textValue] realCollectionIdWithFolderType: &srcFolderType];
+      dstFolderId = [[[(id)[aMoveOperation getElementsByTagName: @"DstFldId"] lastObject] textValue] realCollectionIdWithFolderType: &dstFolderType];
+      
+      [s appendString: @"<Response>"];
 
-      // [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", srcFolderId]
-      //                 inContext: context
-      //                   acquire: NO];
-
-      client = [[currentCollection imap4Connection] client];
-      [client select: srcFolderId];
-      response = [client copyUid: [srcMessageId intValue]
-                        toFolder: [NSString stringWithFormat: @"/%@", dstFolderId]];
-
-      // We extract the destionation message id
-      dstMessageId = nil;
-
-      if ([[response objectForKey: @"result"] boolValue]
-          && (v = [[[response objectForKey: @"RawResponse"] objectForKey: @"ResponseResult"] objectForKey: @"flag"])
-          && [v hasPrefix: @"COPYUID "])
+      // FIXME - we should support moving events between calendars, for example, or
+      //         or contacts between address books.
+      if (srcFolderType == ActiveSyncMailFolder && dstFolderType == ActiveSyncMailFolder)
         {
-          dstMessageId = [[v componentsSeparatedByString: @" "] lastObject];
+          NGImap4Client *client;
+          id currentCollection;
+          
+          NSDictionary *response;
+          NSString *v;
+          
+          currentCollection = [self collectionFromId: srcFolderId  type: srcFolderType];
+          
+          client = [[currentCollection imap4Connection] client];
+          [client select: srcFolderId];
+          response = [client copyUid: [srcMessageId intValue]
+                            toFolder: [NSString stringWithFormat: @"/%@", dstFolderId]];
+          
+          // We extract the destionation message id
+          dstMessageId = nil;
+          
+          if ([[response objectForKey: @"result"] boolValue]
+              && (v = [[[response objectForKey: @"RawResponse"] objectForKey: @"ResponseResult"] objectForKey: @"flag"])
+              && [v hasPrefix: @"COPYUID "])
+            {
+              dstMessageId = [[v componentsSeparatedByString: @" "] lastObject];
+              
+              // We mark the original message as deleted
+              response = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
+                                    forUIDs: [NSArray arrayWithObject: srcMessageId]
+                                addOrRemove: YES];
+              
+              if ([[response valueForKey: @"result"] boolValue])
+                [(SOGoMailFolder *)currentCollection expunge];
+              
+            }
+          
+          if (!dstMessageId)
+            {
+              // FIXME: should we return 1 or 2 here?
+              [s appendFormat: @"<Status>%d</Status>", 2];
+            }
+          else
+            { 
+              //
+              // If the MoveItems operation is initiated by an Outlook client, we save the "deviceType+dstMessageId" to use it later in order to
+              // modify the Sync command from "add" to "change" (see SOGoActiveSyncDispatcher+Sync.m: -processSyncGetChanges: ...).
+              // This is to avoid Outlook creating dupes when moving messages across folfers.
+              //
+              if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"])
+                {
+                  NSString *key;
+                  
+                  // The key must be pretty verbose. We use the <uid>+<DeviceType>+<target folder>+<DstMsgId>
+                  key = [NSString stringWithFormat: @"%@+%@+%@+%@",
+                                  [[context activeUser] login],
+                             [context objectForKey: @"DeviceType"],
+                                  dstFolderId,
+                                  dstMessageId];
+                  
+                  
+                  [[SOGoCache sharedCache] setValue: @"MovedItem"
+                                             forKey: key];
+                }
+              
+              // Everything is alright, lets return the proper response. "Status == 3" means success.
+              [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
+              [s appendFormat: @"<DstMsgId>%@</DstMsgId>", dstMessageId];
+              [s appendFormat: @"<Status>%d</Status>", 3];
+            }
 
-          // We mark the original message as deleted
-          response = [client storeFlags: [NSArray arrayWithObject: @"Deleted"]
-                                forUIDs: [NSArray arrayWithObject: srcMessageId]
-                            addOrRemove: YES];
-
-          if ([[response valueForKey: @"result"] boolValue])
-            [(SOGoMailFolder *)currentCollection expunge];
-
-        }
-
-      if (!dstMessageId)
-        {
-          [theResponse setStatus: 500];
-          [theResponse appendContentString: @"Unable to move message"];
         }
       else
         {
-          NSMutableString *s;
-          NSData *d;
-          
-          //
-          // If the MoveItems operation is initiated by an Outlook client, we save the "deviceType+dstMessageId" to use it later in order to
-          // modify the Sync command from "add" to "change" (see SOGoActiveSyncDispatcher+Sync.m: -processSyncGetChanges: ...).
-          // This is to avoid Outlook creating dupes when moving messages across folfers.
-          //
-          if ([[context objectForKey: @"DeviceType"] isEqualToString: @"WindowsOutlook15"])
-            {
-              NSString *key;
-
-              // The key must be pretty verbose. We use the <uid>+<DeviceType>+<target folder>+<DstMsgId>
-              key = [NSString stringWithFormat: @"%@+%@+%@+%@",
-                              [[context activeUser] login],
-                              [context objectForKey: @"DeviceType"],
-                              dstFolderId,
-                              dstMessageId];
-                              
-
-              [[SOGoCache sharedCache] setValue: @"MovedItem"
-                                         forKey: key];
-            }
-
-          
-          // Everything is alright, lets return the proper response. "Status == 3" means success.
-          s = [NSMutableString string];
-          
-          [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
-          [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
-          [s appendString: @"<MoveItems xmlns=\"Move:\">"];
-          [s appendString: @"<Response>"];
-          [s appendFormat: @"<SrcMsgId>%@</SrcMsgId>", srcMessageId];
-          [s appendFormat: @"<DstMsgId>%@</DstMsgId>", dstMessageId];
-          [s appendFormat: @"<Status>%d</Status>", 3];
-          [s appendString: @"</Response>"];
-          [s appendString: @"</MoveItems>"];
-          
-          d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
-          
-          [theResponse setContent: d];
+          // Non-mail move operations - unsupported for now.
+          [s appendFormat: @"<Status>%d</Status>", 1];
         }
+      
+      [s appendString: @"</Response>"];
     }
-  else
-    {
-      [theResponse setStatus: 500];
-      [theResponse appendContentString: @"Unsupported move operation"];
-    }
+
+  
+  [s appendString: @"</MoveItems>"];
+  
+  d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+  
+  [theResponse setContent: d];
 }
 
 //

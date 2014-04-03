@@ -245,7 +245,7 @@ function mailListToggleMessageThread(row, cell) {
 
 /* Triggered when clicking on the read/unread dot of a message row or
  * through the contextual menu. */
-function mailListToggleMessagesRead(row) {
+function mailListToggleMessagesRead(row, force_mark_as_read) {
     var selectedRowsId = [];
     if (row) {
         selectedRowsId = [row.id];
@@ -265,9 +265,12 @@ function mailListToggleMessagesRead(row) {
             action = 'markMessageRead';
             markread = true;
         }
-        else {
+        else if (!force_mark_as_read) {
             action = 'markMessageUnread';
             markread = false;
+        }
+        else {
+            return;
         }
 
         for (var i = 0; i < selectedRowsId.length; i++) {
@@ -1224,8 +1227,6 @@ function loadMessage(msguid) {
 							 { 'mailbox': Mailer.currentMailbox,
                                                            'msguid': msguid,
                                                            'seenStateHasChanged': seenStateHasChanged });
-	// Warning: We assume the user can set the read/unread flag of the message.
-        markMailInWindow(window, msguid, true);
     }
     else {
         div.innerHTML = cachedMessage['text'];
@@ -1643,6 +1644,9 @@ function loadMessageCallback(http) {
             cachedMessage['text'] = http.responseText;
             if (cachedMessage['text'].length < 30000)
                 storeCachedMessage(cachedMessage);
+
+            // We mark the mail as read
+            mailListToggleMessagesRead($("row_" + msguid), true);
         }
     }
     else if (http.status == 404) {

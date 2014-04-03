@@ -762,6 +762,16 @@ struct GlobalObjectId {
 //
 //
 //
+// Exemple for a message being marked as read:
+//
+//  <Change>
+//   <ServerId>607</ServerId>
+//   <ApplicationData>
+//    <Read xmlns="Email:">1</Read>
+//   </ApplicationData>
+//  </Change>
+// </Commands>
+//
 - (void) takeActiveSyncValues: (NSDictionary *) theValues
                     inContext: (WOContext *) _context
 {
@@ -775,6 +785,14 @@ struct GlobalObjectId {
         [self addFlags: @"\\Flagged"];
       else
         [self removeFlags: @"\\Flagged"]; 
+    }
+  
+  if ((o = [theValues objectForKey: @"Read"]))
+    {
+      if ([o intValue])
+        [self addFlags: @"seen"];
+      else
+        [self removeFlags: @"seen"];;
     }
 }
 

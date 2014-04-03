@@ -69,6 +69,7 @@
 "You cannot create a list in a shared address book." 
         = "Nem hozható létre lista egy megosztott címjegyzékben.";
 "Warning" = "Figyelmeztetés";
+"Can't contact server" = "Hiba történt a kiszolgálóhoz kapcsolódás során. Kérem próbálja újra később.";
 
 "You are not allowed to access this module or this system. Please contact your system administrator."
 = "Önnek nem engedélyezett a hozzáférés ehhez a modulhoz vagy rendszerhez. Kérem lépjen kapcsolatba a rendszergazdával.";
@@ -101,6 +102,7 @@
 "Due Date:" = "Lejárat dátuma:";
 "Location:" = "Hely:";
 
+/* mail labels */
 /* Mail labels */
 "Important" = "Fontos";
 "Work" = "Hivatalos";
