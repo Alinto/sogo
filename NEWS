@@ -1,3 +1,9 @@
+2.2.4 (2014-MM-DD)
+------------------
+
+Bug fixes
+ - fixed saved HTML content of draft when attaching a file
+
 2.2.3 (2014-04-03)
 ------------------
 

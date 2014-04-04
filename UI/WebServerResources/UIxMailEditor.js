@@ -424,6 +424,8 @@ function configureAttachments() {
                 var attachment = createAttachment(file);
                 if (attachment) {
                     file.attachment = attachment;
+                    // Update the text field when using HTML mode
+                    if (CKEDITOR.instances.text) CKEDITOR.instances.text.updateElement();
                     data.submit();
                 }
                 if (dropzone.is(":visible"))
