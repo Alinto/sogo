@@ -252,8 +252,8 @@
 "Active" = "Active";
 "Move Up" = "Move Up";
 "Move Down" = "Move Down";
-"ConnectionError" = "Connection error";
-"ServiceTemporarilyUnavailable" = "Service temporarily unavailable";
+"Connection error" = "Connection error";
+"Service temporarily unavailable" = "Service temporarily unavailable";
 
 /* Filters - UIxFilterEditor */
 "Filter name:" = "Filter name:";

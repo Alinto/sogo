@@ -119,6 +119,7 @@ static NSArray *reminderValues = nil;
     {
       item = nil;
       addressBooksIDWithDisplayName = nil;
+      client = nil;
 #warning user should be the owner rather than the activeUser
       ASSIGN (user, [context activeUser]);
       ASSIGN (today, [NSCalendarDate date]);
@@ -923,8 +924,8 @@ static NSArray *reminderValues = nil;
 
   if (!capabilities)
     {
-      if (client)
-        capabilities = [client capabilities];
+      if ([self sieveClient])
+        capabilities = [[self sieveClient] capabilities];
       else
         capabilities = [NSArray array];
         [capabilities retain];
@@ -1211,22 +1212,26 @@ static NSArray *reminderValues = nil;
   return [NSString stringWithString: SOGoVersion];
 }
 
-- (id) sieveClient{
+- (id) sieveClient
+{
   SOGoMailAccount *account;
   SOGoMailAccounts *folder;
   SOGoSieveManager *manager;
-  NGSieveClient *sieveClient;
   
-  folder = [[self clientObject] mailAccountsFolder: @"Mail" inContext: context];
-  account = [folder lookupName: @"0" inContext: context acquire: NO];
-  manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
-  sieveClient = [manager clientForAccount: account];
+  if (client == nil)
+  {
+    folder = [[self clientObject] mailAccountsFolder: @"Mail" inContext: context];
+    account = [folder lookupName: @"0" inContext: context acquire: NO];
+    manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
+    client = [manager clientForAccount: account];
+  }
   
-  return sieveClient;
+  return client;
 }
 
-- (BOOL) isSieveServerAvailable {
-  return (([client isConnected])
+- (BOOL) isSieveServerAvailable
+{
+  return (([[self sieveClient] isConnected])
           ? true
           : false);
 }
@@ -1240,35 +1245,34 @@ static NSArray *reminderValues = nil;
   WORequest *request;
   
   request = [context request];
-  if ([[request method] isEqualToString: @"POST"]){
+  if ([[request method] isEqualToString: @"POST"])
+  {
     dd = [[context activeUser] domainDefaults];
     if ([dd sieveScriptsEnabled])
-    [userDefaults setSieveFilters: sieveFilters];
+      [userDefaults setSieveFilters: sieveFilters];
     if ([dd vacationEnabled])
-    [userDefaults setVacationOptions: vacationOptions];
+      [userDefaults setVacationOptions: vacationOptions];
     if ([dd forwardEnabled])
-    [userDefaults setForwardOptions: forwardOptions];
+      [userDefaults setForwardOptions: forwardOptions];
     
-    if([self isSieveServerAvailable]){
+    if([self isSieveServerAvailable])
+    {
       [userDefaults synchronize];
       folder = [[self clientObject] mailAccountsFolder: @"Mail"
                                              inContext: context];
       account = [folder lookupName: @"0" inContext: context acquire: NO];
       
-      if([account updateFilters]){
+      if([account updateFilters])
         results = [self responseWithStatus: 200 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:hasChanged], @"hasChanged", nil]];
-      }
-      else{
-        results = [self responseWithStatus: 502 andJSONRepresentation:[NSDictionary dictionaryWithObjectsAndKeys: @"ConnectionError", @"textStatus", nil]];
-      }
+      
+      else
+        results = [self responseWithStatus: 502 andJSONRepresentation:[NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"textStatus", nil]];
     }
-    else{
-      results = [self responseWithStatus: 503 andJSONRepresentation:[NSDictionary dictionaryWithObjectsAndKeys: @"ServiceTemporarilyUnavailable", @"textStatus", nil]];
-    }
+    else
+      results = [self responseWithStatus: 503 andJSONRepresentation:[NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"textStatus", nil]];
   }
-  else{
+  else
     results = self;
-  }
   
   return results;
 }
