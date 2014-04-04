@@ -14,6 +14,7 @@
     SOGoZipPath = "/usr/bin/zip";
 
     SOGoEncryptionKey = "MySOGoEncryptionKey";
+    SOGoSieveFolderEncoding = "UTF-7";
 
     WOUseRelativeURLs = YES;
     WOMessageUseUTF8 = YES;
