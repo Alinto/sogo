@@ -636,8 +636,8 @@ function ensureMailboxArgRepresentation(container, argumentSpan) {
         for (var i = 0; i < mailboxes.length; i++) {
             var mailbox = mailboxes[i];
             var folderValue;
-            ((folderEncoding == "UTF-8") ? folderValue = mailbox.displayName
-                                         : folderValue = mailbox.path);
+            ((sieveFolderEncoding == "UTF-8") ? folderValue = mailbox.displayName
+                                              : folderValue = mailbox.path);
               
             var mboxOption = createElement("option", null, null,
                                            { value: folderValue }, null, select);
