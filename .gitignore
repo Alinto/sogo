@@ -1,6 +1,7 @@
 config.make
 tags
 */obj/
+*._*
 */*/obj/
 */*/*/obj/
 */*/*.SOGo/
