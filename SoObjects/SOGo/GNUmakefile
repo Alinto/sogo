@@ -158,6 +158,9 @@ ifeq ($(saml2_config), yes)
 SOGoSAML2Exceptions.h SOGoSAML2Exceptions.m: gen-saml2-exceptions.py
 	$(ECHO_CREATING) ./gen-saml2-exceptions.py $(LASSO_CFLAGS) $(END_ECHO)
 
+distclean clean::
+	-rm -f SOGoSAML2Exceptions.h SOGoSAML2Exceptions.m
+
 endif
 
 ifeq ($(ldap_config),yes)
