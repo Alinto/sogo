@@ -280,7 +280,7 @@ function _onContactMenuAction(folderItem, action, refresh) {
             }
         }
 
-        var url = ApplicationBaseURL + selectedFolderId + "/" + action;
+        var url = ApplicationBaseURL + "/" + selectedFolderId + "/" + action;
         var uids = contactIds.collect(function (s) {
                 return encodeURIComponent(s.unescapeHTML());
             }).join('&uid=');
@@ -312,7 +312,7 @@ function onMenuExportContact (event) {
         var contactIds = document.menuTarget.collect(function(row) {
                 return row.readAttribute("id");
             });
-        var url = ApplicationBaseURL + selectedFolderId + "/export"
+        var url = ApplicationBaseURL + "/" + selectedFolderId + "/export"
           + "?uid=" + contactIds.join("&uid=");
         window.location.href = url;
     }
@@ -491,7 +491,7 @@ function onToolbarWriteToSelectedContacts(event) {
         showAlertDialog(_("Please select a contact."));
     }
     else {
-        openMailComposeWindow(ApplicationBaseURL + "../Mail/compose"
+        openMailComposeWindow(ApplicationBaseURL + "/../Mail/compose"
                               + "?folder=" + Contact.currentAddressBook.substring(1)
                               + "&uid=" + rows.join("&uid="));
         if (document.body.hasClassName("popup"))
@@ -797,7 +797,7 @@ function onAddressBookImport(event) {
     var node = $("contactFolders").getSelectedNodes().first();
     var folderId = node.getAttribute("id");
 
-    var url = ApplicationBaseURL + folderId + "/import";
+    var url = ApplicationBaseURL + "/" + folderId + "/import";
     $("uploadForm").action = url;
     $("contactsFile").value = "";
 
@@ -873,7 +873,7 @@ function onAddressBookRemove(event) {
         }
         else {
             var folderId = node.getAttribute("id");
-            var folderUrl = ApplicationBaseURL + folderId;
+            var folderUrl = ApplicationBaseURL + "/" + folderId;
             unsubscribeFromFolder(folderUrl, owner, onFolderUnsubscribeCB, folderId);
         }
     }
@@ -899,7 +899,7 @@ function deletePersonalAddressBookConfirm(folderId) {
         document.deletePersonalABAjaxRequest.aborted = true;
         document.deletePersonalABAjaxRequest.abort();
     }
-    var url = ApplicationBaseURL + folderId + "/delete";
+    var url = ApplicationBaseURL + "/" + folderId + "/delete";
     document.deletePersonalABAjaxRequest
         = triggerAjaxRequest(url, deletePersonalAddressBookCallback, folderId);
 
@@ -1616,7 +1616,7 @@ function dropSelectedContacts(action, toId) {
         if ((!currentFolderIsRemote() || action != "move")
             && fromId.substring(1) != toId) {
 
-            var url = ApplicationBaseURL + fromId + "/" + action;
+            var url = ApplicationBaseURL + "/" + fromId + "/" + action;
             var uids = contactIds.collect(function (s) {
                     return encodeURIComponent(s.unescapeHTML());
                 }).join('&uid=');

@@ -112,7 +112,7 @@ function updateEventFromDragging(controller, eventCells, eventDelta) {
             _editRecurrenceDialog(eventCell, "confirmAdjustment", params);
         else {
             var urlstr = (ApplicationBaseURL
-                          + eventCell.calendar + "/" + eventCell.cname);
+                          + "/" + eventCell.calendar + "/" + eventCell.cname);
             if (eventCell.recurrenceTime)
                 urlstr += "/occurence" + eventCell.recurrenceTime;
             urlstr += ("/adjust?" + params);
@@ -123,7 +123,7 @@ function updateEventFromDragging(controller, eventCells, eventDelta) {
 }
 
 function performEventAdjustment(folder, event, recurrence, params) {
-    var urlstr = ApplicationBaseURL + folder + "/" + event;
+    var urlstr = ApplicationBaseURL + "/" + folder + "/" + event;
     if (recurrence)
         urlstr += "/" + recurrence;
     urlstr += "/adjust" + generateQueryString(params);
@@ -170,7 +170,7 @@ function onMenuNewTaskClick(event) {
 
 function _editEventId(id, calendar, recurrence) {
     var targetname = "SOGo_edit_" + id;
-    var urlstr = ApplicationBaseURL + calendar + "/" + id;
+    var urlstr = ApplicationBaseURL + "/" + calendar + "/" + id;
     if (recurrence) {
         urlstr += "/" + recurrence;
         targetname += recurrence;
@@ -211,7 +211,7 @@ function _batchDeleteEvents() {
     // Delete the events of the next calendar
     var calendar = calendarsOfEventsToDelete.shift();
     var events = eventsToDelete.shift();
-    var urlstr = (ApplicationBaseURL + calendar
+    var urlstr = (ApplicationBaseURL + "/" + calendar
                   + "/batchDelete?ids=" + events.join(','));
     document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
                                                          deleteEventCallback,
@@ -439,7 +439,7 @@ function copyEventToPersonalCalendar(event) {
 
 function copyEvents() {
     var path = eventsToCopy.shift();
-    var urlstr = ApplicationBaseURL + path; log (urlstr);
+    var urlstr = ApplicationBaseURL + "/" + path; log (urlstr);
     triggerAjaxRequest(urlstr,
                        copyEventCallback);
 }
@@ -469,7 +469,7 @@ function onMenuRawEvent(event) {
     var calendar = selectedCalendarCell[0].calendar;
     var cname = selectedCalendarCell[0].cname;
 
-    var url = ApplicationBaseURL + calendar + "/" + cname + "/raw";
+    var url = ApplicationBaseURL + "/" + calendar + "/" + cname + "/raw";
     openGenericWindow(url);
 }
 
@@ -706,7 +706,7 @@ function getEventById(cname, owner) {
 
 function _editRecurrenceDialog(eventCell, method, params) {
     var targetname = "SOGo_edit_" + eventCell.cname + eventCell.recurrenceTime;
-    var urlstr = (ApplicationBaseURL + eventCell.calendar + "/" + eventCell.cname
+    var urlstr = (ApplicationBaseURL + "/" + eventCell.calendar + "/" + eventCell.cname
                   + "/occurence" + eventCell.recurrenceTime + "/" + method);
     if (params && params.length) {
         urlstr += "?" + params;
@@ -719,7 +719,7 @@ function _editRecurrenceDialog(eventCell, method, params) {
 
 function onViewEvent(event) {
     if (event.detail == 2) return;
-    var url = ApplicationBaseURL + this.calendar + "/" + this.cname;
+    var url = ApplicationBaseURL + "/" + this.calendar + "/" + this.cname;
 
     if (typeof this.recurrenceTime != "undefined")
         url += "/occurence" + this.recurrenceTime;
@@ -846,7 +846,7 @@ function performEventDeletion(folder, event, recurrence) {
             // Only one recurrence
             var occurenceTime = recurrence.substring(9);
             var nodes = _eventBlocksMatching(folder, event, occurenceTime);
-            var urlstr = ApplicationBaseURL + folder + "/" + event  + "/" + recurrence + "/delete";
+            var urlstr = ApplicationBaseURL + "/" + folder + "/" + event  + "/" + recurrence + "/delete";
 
             if (nodes)
                 document.deleteEventAjaxRequest = triggerAjaxRequest(urlstr,
@@ -1224,7 +1224,7 @@ function loadNextView(event) {
 }
 
 function changeDateSelectorDisplay(day, keepCurrentDay) {
-    var url = ApplicationBaseURL + "dateselector";
+    var url = ApplicationBaseURL + "/dateselector";
     if (day) {
         if (day.length < 8)
             day += "01";
@@ -1254,7 +1254,7 @@ function changeDateSelectorDisplay(day, keepCurrentDay) {
 
 function changeCalendarDisplay(data, newView) {
     newView = ((newView) ? newView : currentView);
-    var url = ApplicationBaseURL + newView;
+    var url = ApplicationBaseURL + "/" + newView;
     var day = null;
     var scrollEvent = null;
     if (data) {
@@ -1591,7 +1591,7 @@ function refreshCalendarEvents(scrollEvent) {
         document.refreshCalendarEventsAjaxRequest.aborted = true;
         document.refreshCalendarEventsAjaxRequest.abort();
     }
-    var url = (ApplicationBaseURL + "eventsblocks?sd=" + sd + "&ed=" + ed
+    var url = (ApplicationBaseURL + "/eventsblocks?sd=" + sd + "&ed=" + ed
                + "&view=" + currentView);
     document.refreshCalendarEventsAjaxRequest
         = triggerAjaxRequest(url, refreshCalendarEventsCallback,
@@ -2156,7 +2156,7 @@ function _loadEventHref(href) {
         document.eventsListAjaxRequest.aborted = true;
         document.eventsListAjaxRequest.abort();
     }
-    var url = ApplicationBaseURL + href;
+    var url = ApplicationBaseURL + "/" + href;
     document.eventsListAjaxRequest
         = triggerAjaxRequest(url, eventsListCallback, href);
 
@@ -2168,7 +2168,7 @@ function _loadTasksHref(href) {
         document.tasksListAjaxRequest.aborted = true;
         document.tasksListAjaxRequest.abort();
     }
-    url = ApplicationBaseURL + href;
+    url = ApplicationBaseURL + "/" + href;
 
     var tasksList = $("tasksList");
     var selectedIds;
@@ -2788,7 +2788,7 @@ function marksTasksAsCompleted () {
 }
 
 function _updateTaskCompletion (task, value) {
-    url = (ApplicationBaseURL + task.calendar
+    url = (ApplicationBaseURL + "/" + task.calendar
            + "/" + task.cname + "/changeStatus?status=" + value);
 
     triggerAjaxRequest(url, refreshTasks, null);
@@ -2802,7 +2802,7 @@ function onMenuRawTask(event) {
       return;
     }
 
-    var url = ApplicationBaseURL + selectedTasks[0].calendar  + "/" + selectedTasks[0].cname + "/raw"
+    var url = ApplicationBaseURL + "/" + selectedTasks[0].calendar  + "/" + selectedTasks[0].cname + "/raw"
     openGenericWindow(url);
 }
 
@@ -3221,7 +3221,7 @@ function deletePersonalCalendarConfirm() {
     this.deselect();
     this.hide();
     removeFolderRequestCount++;
-    var url = ApplicationBaseURL + "/" + folderId + "/delete";
+    var url = ApplicationBaseURL + folderId + "/delete";
     triggerAjaxRequest(url, deletePersonalCalendarCallback, this);
     disposeDialog();
 }
@@ -3366,7 +3366,7 @@ function onListCollapse(event, element) {
         });
     }
 
-    var url =  ApplicationBaseURL + "saveListState";
+    var url =  ApplicationBaseURL + "/saveListState";
     var params = "state=" + state;
     triggerAjaxRequest(url, null, null, params,
                        { "Content-type": "application/x-www-form-urlencoded" });
@@ -3411,7 +3411,7 @@ function onDocumentKeydown(event) {
 function saveTabState(event) {
     var tab = $(event).memo;
 
-    var url =  ApplicationBaseURL + "saveSelectedList";
+    var url =  ApplicationBaseURL + "/saveSelectedList";
     var params = "list=" + tab;
     triggerAjaxRequest(url, null, null, params,
                        { "Content-type": "application/x-www-form-urlencoded" });

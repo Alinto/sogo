@@ -40,7 +40,8 @@ function URLForFolderID(folderID, application) {
         application = UserFolderURL + application + "/";
     else
         application = ApplicationBaseURL;
-    var url = application + encodeURI(folderID.substr(1));
+  
+    var url = application + encodeURI(folderID);
 
     if (url[url.length-1] == '/')
         url = url.substr(0, url.length-1);
@@ -566,7 +567,7 @@ function deleteSelectedMessagesCallback(http) {
 }
 
 function deleteMessagesWithoutTrash(data) {
-    var url = ApplicationBaseURL + encodeURI(data["mailbox"]) + "/batchDelete";
+    var url = ApplicationBaseURL + encodeURI(data["/mailbox"]) + "/batchDelete";
     var parameters = "uid=" + data["id"].join(",") + '&withoutTrash=1';
     data["withoutTrash"] = true;
     triggerAjaxRequest(url, deleteSelectedMessagesCallback, data, parameters,
@@ -770,7 +771,7 @@ function composeNewMessage() {
     else
         account = null;
     if (account) {
-        var url = ApplicationBaseURL + encodeURI(account) + "/compose";
+        var url = ApplicationBaseURL + encodeURI("/" + account) + "/compose";
         openMailComposeWindow(url);
     }
 }
@@ -1602,7 +1603,7 @@ function onReadMessageConfirmMDN(event) {
     var messageURL;
     if (window.opener && window.opener.Mailer) {
         /* from UIxMailPopupView */
-        messageURL = (ApplicationBaseURL + encodeURI(mailboxName)
+        messageURL = (ApplicationBaseURL + encodeURI("/" + mailboxName)
                       + "/" + messageName);
     }
     else {
@@ -2024,7 +2025,7 @@ function initMailboxTree() {
 
     var chainRq = new AjaxRequestsChain(initMailboxTreeCB);
     for (var i = 0; i < mailAccounts.length; i++) {
-        var url = ApplicationBaseURL + i + "/mailboxes";
+      var url = ApplicationBaseURL + "/" + i + "/mailboxes";
         chainRq.requests.push([url, onLoadMailboxesCallback, i]);
     }
     chainRq.start();
@@ -2259,7 +2260,7 @@ function buildMailboxes(accountIdx, encoded) {
 
 function getFoldersState() {
     if (mailAccounts.length > 0) {
-        var urlstr =  ApplicationBaseURL + "foldersState";
+        var urlstr =  ApplicationBaseURL + "/foldersState";
         triggerAjaxRequest(urlstr, getFoldersStateCallback);
     }
 }
@@ -2283,7 +2284,7 @@ function getFoldersStateCallback(http) {
 function saveFoldersState() {
     if (mailAccounts.length > 0) {
         var foldersState = mailboxTree.getFoldersState();
-        var urlstr =  ApplicationBaseURL + "saveFoldersState";
+        var urlstr =  ApplicationBaseURL + "/saveFoldersState";
         var parameters = "expandedFolders=" + foldersState;
         triggerAjaxRequest(urlstr, saveFoldersStateCallback, null, parameters,
                            { "Content-type": "application/x-www-form-urlencoded" });

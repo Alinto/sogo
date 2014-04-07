@@ -91,6 +91,7 @@ function createElement(tagName, id, classes, attributes, htmlAttributes, parentN
 function URLForFolderID(folderID) {
     var folderInfos = folderID.split(":");
     var url;
+                  
     if (folderInfos.length > 1) {
         url = UserFolderURL + "../" + encodeURI(folderInfos[0]);
         if (!(folderInfos[0].endsWith('/')
@@ -100,9 +101,8 @@ function URLForFolderID(folderID) {
     }
     else {
         var folderInfo = folderInfos[0];
-        if (ApplicationBaseURL.endsWith('/')
-            && folderInfo.startsWith('/'))
-            folderInfo = folderInfo.substr(1);
+        if (!(folderInfo.startsWith('/')))
+            folderInfo = "/" + folderInfo;
         url = ApplicationBaseURL + encodeURI(folderInfo);
     }
 
@@ -173,9 +173,7 @@ function sanitizeWindowName(dirtyWindowName) {
 
 function openUserFolderSelector(callback, type) {
     var urlstr = ApplicationBaseURL;
-    if (! urlstr.endsWith('/'))
-        urlstr += '/';
-    urlstr += ("../../" + UserLogin + "/Contacts/userFolders");
+    urlstr += ("/../../" + UserLogin + "/Contacts/userFolders");
 
     var div = $("popupFrame");
     if (div) {
@@ -328,7 +326,7 @@ function openMailTo(senderMailTo) {
 
     if (sanitizedAddresses.length > 0)
         openMailComposeWindow(ApplicationBaseURL
-                              + "../Mail/compose?mailto=" + encodeURIComponent(Object.toJSON(sanitizedAddresses))
+                              + "/../Mail/compose?mailto=" + encodeURIComponent(Object.toJSON(sanitizedAddresses))
                               + ((subject.length > 0)?"?subject=" + encodeURIComponent(subject):""));
 
     return false; /* stop following the link */
@@ -1803,12 +1801,7 @@ function CurrentModule() {
     if (ApplicationBaseURL) {
         var parts = ApplicationBaseURL.split("/");
         var last = parts.length - 1;
-        while (last > -1 && parts[last] == "") {
-            last--;
-        }
-        if (last > -1) {
-            module = parts[last];
-        }
+        module = parts[last];
     }
 
     return module;
