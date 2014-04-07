@@ -97,8 +97,7 @@
 "Show time as busy outside working hours" = "Show time as busy outside working hours";
 "First week of year :" = "First week of year:";
 "Enable reminders for Calendar items" = "Enable reminders for Calendar items";
-"Play a sound when a reminder comes due"
-= "Play a sound when a reminder comes due";
+"Play a sound when a reminder comes due" = "Play a sound when a reminder comes due";
 "Default reminder :" = "Default reminder:";
 
 "firstWeekOfYear_January1" = "Starts on january 1";
@@ -156,6 +155,10 @@
 "Display remote inline images" = "Display remote inline images";
 "displayremoteinlineimages_never" = "Never";
 "displayremoteinlineimages_always" = "Always";
+
+/* Contact */
+"Personal Address Book" = "Personal Address Book";
+"Collected Address Book" = "Collected Address Book";
 
 /* IMAP Accounts */
 "New Mail Account" = "New Mail Account";

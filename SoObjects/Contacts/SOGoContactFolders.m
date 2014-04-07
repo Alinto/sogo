@@ -22,11 +22,17 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSSortDescriptor.h>
 
 #import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/NSException+HTTP.h>
 #import <DOM/DOMElement.h>
 #import <DOM/DOMProtocols.h>
+
+#import <GDLContentStore/GCSChannelManager.h>
+#import <GDLContentStore/GCSFolderManager.h>
+#import <GDLContentStore/NSURL+GCS.h>
+#import <GDLAccess/EOAdaptorChannel.h>
 
 #import <SOGo/NSObject+DAV.h>
 #import <SOGo/SOGoUser.h>
@@ -40,9 +46,16 @@
 
 #import "SOGoContactFolders.h"
 
+Class SOGoContactSourceFolderK;
+
 #define XMLNS_INVERSEDAV @"urn:inverse:params:xml:ns:inverse-dav"
 
 @implementation SOGoContactFolders
+
++ (void) initialize
+{
+  SOGoContactSourceFolderK = [SOGoContactSourceFolder class];
+}
 
 + (NSString *) gcsFolderType
 {
@@ -108,6 +121,38 @@
     result = [super appendPersonalSources];
 
   return result;
+}
+
+- (NSException *) appendCollectedSources
+{
+  GCSChannelManager *cm;
+  EOAdaptorChannel *fc;
+  NSURL *folderLocation;
+  NSString *sql, *gcsFolderType;
+  NSException *error;
+  
+  cm = [GCSChannelManager defaultChannelManager];
+  folderLocation = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
+  fc = [cm acquireOpenChannelForURL: folderLocation];
+  if ([fc isOpen])
+  {
+    gcsFolderType = [[self class] gcsFolderType];
+    
+    sql = [NSString stringWithFormat: (@"SELECT c_path4 FROM %@"
+                                       @" WHERE c_path2 = '%@'"
+                                       @" AND c_folder_type = '%@'"),
+           [folderLocation gcsTableName], owner, gcsFolderType];
+    
+    error = [super fetchSpecialFolders: sql withChannel: fc andFolderType: SOGoCollectedFolder];
+    
+    [cm releaseChannel: fc];
+  }
+  else
+    error = [NSException exceptionWithName: @"SOGoDBException"
+                                    reason: @"database connection could not be open"
+                                  userInfo: nil];
+  
+  return error;
 }
 
 - (NSDictionary *) systemSources
@@ -225,7 +270,7 @@
 
   if ([sourceID isEqualToString: @"personal"])
     result = [NSException exceptionWithHTTPStatus: 403
-                                          reason: @"folder 'personal' cannot be deleted"];
+                                           reason: (@"folder '%@' cannot be deleted", sourceID)];
   else
     {
       result = nil;
@@ -248,6 +293,11 @@
 - (NSString *) defaultFolderName
 {
   return [self labelForKey: @"Personal Address Book"];
+}
+
+- (NSString *) collectedFolderName
+{
+  return [self labelForKey: @"Collected Address Book"];
 }
 
 - (NSArray *) toManyRelationshipKeys
@@ -370,5 +420,90 @@
                                  davCategories)
                                 asWebDAVValue];
 }
+
+- (NSArray *) allContactsFromFilter: (NSString *) theFilter
+                      excludeGroups: (BOOL) excludeGroups
+                       excludeLists: (BOOL) excludeLists
+{
+  SOGoFolder <SOGoContactFolder> *folder;
+  NSString *mail, *domain;
+  NSArray *folders, *contacts, *descriptors, *sortedContacts;
+  NSMutableArray *sortedFolders;
+  NSMutableDictionary *contact, *uniqueContacts;
+  unsigned int i, j, max;
+  NSSortDescriptor *commonNameDescriptor;
+
+  // NSLog(@"Search all contacts: %@", searchText);
+
+  domain = [[context activeUser] domain];
+  folders = nil;
+  NS_DURING
+  folders = [self subFolders];
+  NS_HANDLER
+  /* We need to specifically test for @"SOGoDBException", which is
+   raised explicitly in SOGoParentFolder. Any other exception should
+   be re-raised. */
+  if ([[localException name] isEqualToString: @"SOGoDBException"])
+  folders = nil;
+  else
+  [localException raise];
+  NS_ENDHANDLER;
+  max = [folders count];
+  sortedFolders = [NSMutableArray arrayWithCapacity: max];
+  uniqueContacts = [NSMutableDictionary dictionary];
+  for (i = 0; i < max; i++)
+  {
+    folder = [folders objectAtIndex: i];
+	  /* We first search in LDAP folders (in case of duplicated entries in GCS folders) */
+    if ([folder isKindOfClass: SOGoContactSourceFolderK])
+    [sortedFolders insertObject: folder atIndex: 0];
+    else
+    [sortedFolders addObject: folder];
+  }
+  for (i = 0; i < max; i++)
+  {
+    folder = [sortedFolders objectAtIndex: i];
+    //NSLog(@"  Address book: %@ (%@)", [folder displayName], [folder class]);
+    contacts = [folder lookupContactsWithFilter: theFilter
+                                     onCriteria: @"name_or_address"
+                                         sortBy: @"c_cn"
+                                       ordering: NSOrderedAscending
+                                       inDomain: domain];
+    for (j = 0; j < [contacts count]; j++)
+    {
+      contact = [contacts objectAtIndex: j];
+      mail = [contact objectForKey: @"c_mail"];
+      //NSLog(@"   found %@ (%@) ? %@", [contact objectForKey: @"c_name"], mail,
+      //      [contact description]);
+      if (!excludeLists && [[contact objectForKey: @"c_component"]
+                            isEqualToString: @"vlist"])
+      {
+        [contact setObject: [folder nameInContainer]
+                    forKey: @"container"];
+        [uniqueContacts setObject: contact
+                           forKey: [contact objectForKey: @"c_name"]];
+      }
+      else if ([mail length]
+               && [uniqueContacts objectForKey: mail] == nil
+               && !(excludeGroups && [contact objectForKey: @"isGroup"]))
+      [uniqueContacts setObject: contact forKey: mail];
+    }
+  }
+  if ([uniqueContacts count] > 0)
+  {
+    // Sort the contacts by display name
+    commonNameDescriptor = [[NSSortDescriptor alloc] initWithKey: @"c_cn"
+                                                       ascending:YES];
+    descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
+    [commonNameDescriptor release];
+    sortedContacts = [[uniqueContacts allValues]
+                      sortedArrayUsingDescriptors: descriptors];
+  }
+  else
+    sortedContacts = [NSArray array];
+
+  return sortedContacts;
+}
+
 
 @end

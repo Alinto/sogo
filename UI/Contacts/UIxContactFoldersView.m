@@ -158,88 +158,23 @@ Class SOGoContactSourceFolderK, SOGoGCSFolderK;
 - (id <WOActionResults>) allContactSearchAction
 {
   id <WOActionResults> result;
-  SOGoFolder <SOGoContactFolder> *folder;
-  NSString *searchText, *mail, *domain;
+  NSString *searchText;
   NSDictionary *data;
-  NSArray *folders, *contacts, *descriptors, *sortedContacts;
-  NSMutableArray *sortedFolders;
-  NSMutableDictionary *contact, *uniqueContacts;
-  unsigned int i, j, max;
-  NSSortDescriptor *commonNameDescriptor;
+  NSArray *sortedContacts;
+  
   BOOL excludeGroups, excludeLists;
 
   searchText = [self queryParameterForKey: @"search"];
   if ([searchText length] > 0)
     {
-      // NSLog(@"Search all contacts: %@", searchText);
       excludeGroups = [[self queryParameterForKey: @"excludeGroups"] boolValue];
       excludeLists = [[self queryParameterForKey: @"excludeLists"] boolValue];
-      domain = [[context activeUser] domain];
-      folders = nil;
-      NS_DURING
-        folders = [[self clientObject] subFolders];
-      NS_HANDLER
-        /* We need to specifically test for @"SOGoDBException", which is
-           raised explicitly in SOGoParentFolder. Any other exception should
-           be re-raised. */
-        if ([[localException name] isEqualToString: @"SOGoDBException"])
-          folders = nil;
-        else
-          [localException raise];
-      NS_ENDHANDLER;
-      max = [folders count];
-      sortedFolders = [NSMutableArray arrayWithCapacity: max];
-      uniqueContacts = [NSMutableDictionary dictionary];
-      for (i = 0; i < max; i++)
-        {
-          folder = [folders objectAtIndex: i];
-	  /* We first search in LDAP folders (in case of duplicated entries in GCS folders) */
-          if ([folder isKindOfClass: SOGoContactSourceFolderK])
-            [sortedFolders insertObject: folder atIndex: 0];
-          else
-            [sortedFolders addObject: folder];
-        }
-      for (i = 0; i < max; i++)
-        {
-          folder = [sortedFolders objectAtIndex: i];
-          //NSLog(@"  Address book: %@ (%@)", [folder displayName], [folder class]);
-          contacts = [folder lookupContactsWithFilter: searchText
-                                           onCriteria: @"name_or_address"
-                                               sortBy: @"c_cn"
-                                             ordering: NSOrderedAscending
-                                             inDomain: domain];
-          for (j = 0; j < [contacts count]; j++)
-            {
-              contact = [contacts objectAtIndex: j];
-              mail = [contact objectForKey: @"c_mail"];
-              //NSLog(@"   found %@ (%@) ? %@", [contact objectForKey: @"c_name"], mail,
-              //      [contact description]);
-              if (!excludeLists && [[contact objectForKey: @"c_component"]
-                                          isEqualToString: @"vlist"])
-                {
-                  [contact setObject: [folder nameInContainer] 
-                              forKey: @"container"];
-                  [uniqueContacts setObject: contact 
-                                     forKey: [contact objectForKey: @"c_name"]]; 
-                }
-              else if ([mail length]
-                       && [uniqueContacts objectForKey: mail] == nil
-                       && !(excludeGroups && [contact objectForKey: @"isGroup"]))
-                [uniqueContacts setObject: contact forKey: mail];
-            }
-        }
-      if ([uniqueContacts count] > 0)
-        {
-          // Sort the contacts by display name
-          commonNameDescriptor = [[NSSortDescriptor alloc] initWithKey: @"c_cn"
-                                                             ascending:YES];
-          descriptors = [NSArray arrayWithObjects: commonNameDescriptor, nil];
-          [commonNameDescriptor release];
-          sortedContacts = [[uniqueContacts allValues]
-                             sortedArrayUsingDescriptors: descriptors];
-        }
-      else
-        sortedContacts = [NSArray array];
+      
+      sortedContacts = [[self clientObject] allContactsFromFilter: searchText
+                                                    excludeGroups: excludeGroups
+                                                     excludeLists: excludeLists];
+      
+      
       data = [NSDictionary dictionaryWithObjectsAndKeys: searchText, @"searchText",
                            sortedContacts, @"contacts",
                            nil];

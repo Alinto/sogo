@@ -54,6 +54,7 @@
 
     SOGoIMAPServer = "localhost";
     SOGoMailDomain = "localhost";
+    SOGoSelectedAddressBook = "collected";
     SOGoMailMessageCheck = "manually";
     SOGoMailMessageForwarding = "inline";
     SOGoMailReplyPlacement = "below";

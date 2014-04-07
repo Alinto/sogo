@@ -38,7 +38,7 @@
 #import <DOM/DOMElement.h>
 #import <DOM/DOMProtocols.h>
 #import <SaxObjC/XMLNamespaces.h>
-
+#import <SOGo/SOGoUserDefaults.h>
 #import <SOGo/SOGoUserSettings.h>
 
 #import "NSObject+DAV.h"
@@ -153,9 +153,15 @@ static SoSecurityManager *sm = nil;
   return @"Personal";
 }
 
-- (void) _createPersonalFolder
+- (NSString *) collectedFolderName
+{
+  return @"Collected";
+}
+
+- (void) createSpecialFolder: (SOGoFolderType) folderType
 {
   NSArray *roles;
+  NSString *folderName;
   SOGoGCSFolder *folder;
   SOGoUser *folderOwner;
 
@@ -165,50 +171,70 @@ static SoSecurityManager *sm = nil;
   // We autocreate the calendars if the user is the owner, a superuser or
   // if it's a resource as we won't necessarily want to login as a resource
   // in order to create its database tables.
+  // FolderType is an enum where 0 = Personal and 1 = collected
   if ([roles containsObject: SoRole_Owner] ||
       (folderOwner && [folderOwner isResource]))
     {
-      folder = [subFolderClass objectWithName: @"personal" inContainer: self];
-      [folder setDisplayName: [self defaultFolderName]];
-      [folder
-	setOCSPath: [NSString stringWithFormat: @"%@/personal", OCSPath]];
+      if (folderType == SOGoPersonalFolder)
+      {
+        folderName = @"personal";
+        folder = [subFolderClass objectWithName: folderName inContainer: self];
+        [folder setDisplayName: [self defaultFolderName]];
+      }
+      else if (folderType == SOGoCollectedFolder)
+      {
+        folderName = @"collected";
+        folder = [subFolderClass objectWithName: folderName inContainer: self];
+        [folder setDisplayName: [self collectedFolderName]];
+      }
+      [folder setOCSPath: [NSString stringWithFormat: @"%@/%@", OCSPath, folderName]];
+      
       if ([folder create])
-	[subFolders setObject: folder forKey: @"personal"];
+        [subFolders setObject: folder forKey: folderName];
     }
 }
 
-- (NSException *) _fetchPersonalFolders: (NSString *) sql
-			    withChannel: (EOAdaptorChannel *) fc
+- (NSException *) fetchSpecialFolders: (NSString *) sql
+                          withChannel: (EOAdaptorChannel *) fc
+                        andFolderType: (SOGoFolderType) folderType
 {
   NSArray *attrs;
   NSDictionary *row;
   SOGoGCSFolder *folder;
   NSString *key;
   NSException *error;
+  SOGoUserDefaults *ud;
+  ud = [[context activeUser] userDefaults];
 
   if (!subFolderClass)
     subFolderClass = [[self class] subFolderClass];
 
   error = [fc evaluateExpressionX: sql];
   if (!error)
+  {
+    attrs = [fc describeResults: NO];
+    while ((row = [fc fetchAttributes: attrs withZone: NULL]))
     {
-      attrs = [fc describeResults: NO];
-      while ((row = [fc fetchAttributes: attrs withZone: NULL]))
-	{
-	  key = [row objectForKey: @"c_path4"];
-	  if ([key isKindOfClass: [NSString class]])
-	    {
-	      folder = [subFolderClass objectWithName: key inContainer: self];
-	      [folder setOCSPath: [NSString stringWithFormat: @"%@/%@",
-					    OCSPath, key]];
-              [subFolders setObject: folder forKey: key];
-	    }
-	}
-
-      if (![subFolders objectForKey: @"personal"])
-	[self _createPersonalFolder];
+      key = [row objectForKey: @"c_path4"];
+      if ([key isKindOfClass: [NSString class]])
+      {
+        folder = [subFolderClass objectWithName: key inContainer: self];
+        [folder setOCSPath: [NSString stringWithFormat: @"%@/%@", OCSPath, key]];
+        [subFolders setObject: folder forKey: key];
+      }
     }
-
+    if (folderType == SOGoPersonalFolder)
+    {
+      if (![subFolders objectForKey: @"personal"])
+        [self createSpecialFolder: SOGoPersonalFolder];
+    }
+    else if (folderType == SOGoCollectedFolder)
+    {
+      if (![subFolders objectForKey: @"collected"])
+        if ([[ud selectedAddressBook] isEqualToString:@"collected"])
+          [self createSpecialFolder: SOGoCollectedFolder];
+    }
+  }
   return error;
 }
 
@@ -221,25 +247,21 @@ static SoSecurityManager *sm = nil;
   NSException *error;
 
   cm = [GCSChannelManager defaultChannelManager];
-  folderLocation
-    = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
+  folderLocation = [[GCSFolderManager defaultFolderManager] folderInfoLocation];
   fc = [cm acquireOpenChannelForURL: folderLocation];
   if ([fc isOpen])
-    {
-      gcsFolderType = [[self class] gcsFolderType];
-      
-      sql
-	= [NSString stringWithFormat: (@"SELECT c_path4 FROM %@"
-				       @" WHERE c_path2 = '%@'"
-				       @" AND c_folder_type = '%@'"),
-		    [folderLocation gcsTableName],
-                    owner,
-		    gcsFolderType];
-      error = [self _fetchPersonalFolders: sql withChannel: fc];
-      [cm releaseChannel: fc];
-//       sql = [sql stringByAppendingFormat:@" WHERE %@ = '%@'", 
-//                  uidColumnName, [self uid]];
-    }
+  {
+    gcsFolderType = [[self class] gcsFolderType];
+    
+    sql = [NSString stringWithFormat: (@"SELECT c_path4 FROM %@"
+                                       @" WHERE c_path2 = '%@'"
+                                       @" AND c_folder_type = '%@'"),
+          [folderLocation gcsTableName], owner, gcsFolderType];
+    
+    error = [self fetchSpecialFolders: sql withChannel: fc andFolderType: SOGoPersonalFolder];
+    
+    [cm releaseChannel: fc];
+  }
   else
     error = [NSException exceptionWithName: @"SOGoDBException"
 			 reason: @"database connection could not be open"
@@ -247,6 +269,7 @@ static SoSecurityManager *sm = nil;
 
   return error;
 }
+
 
 - (NSException *) appendSystemSources
 {
@@ -388,12 +411,15 @@ static SoSecurityManager *sm = nil;
       subFolders = [NSMutableDictionary new];
       error = [self appendPersonalSources];
       if (!error)
-	error = [self appendSystemSources];
+        if ([self respondsToSelector:@selector(appendCollectedSources)])
+          error = [self appendCollectedSources];
+      if (!error)
+        error = [self appendSystemSources]; // TODO : Not really a testcase, see function
       if (error)
-	{
-	  [subFolders release];
-	  subFolders = nil;
-	}
+      {
+        [subFolders release];
+        subFolders = nil;
+      }
     }
   else
     error = nil;

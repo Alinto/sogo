@@ -185,8 +185,8 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
     {
       migratedKeys
         = [NSDictionary dictionaryWithObjectsAndKeys:
-                          @"SOGoLoginModule", @"SOGoUIxDefaultModule",
-                          @"SOGoLoginModule", @"SOGoDefaultModule",
+                        @"SOGoLoginModule", @"SOGoUIxDefaultModule",
+                        @"SOGoLoginModule", @"SOGoDefaultModule",
                         @"SOGoTimeFormat", @"TimeFormat",
                         @"SOGoShortDateFormat", @"ShortDateFormat",
                         @"SOGoLongDateFormat", @"LongDateFormat",
@@ -197,6 +197,7 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
                         @"SOGoLanguage", @"SOGoDefaultLanguage",
                         @"SOGoLanguage", @"Language",
                         @"SOGoMailComposeMessageType", @"ComposeMessagesType",
+                        @"SOGoSelectedAddressBook", @"SelectedAddressBook",
                         @"SOGoMailMessageCheck", @"MessageCheck",
                         @"SOGoMailMessageForwarding", @"MessageForwarding",
                         @"SOGoMailSignature", @"MailSignature",
@@ -384,6 +385,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
   return userLanguage;
 }
 
+- (void) setMailAddOutgoingAddresses: (BOOL) newValue
+{
+  [self setBool: newValue forKey: @"SOGoMailAddOutgoingAddresses"];
+}
+
+- (BOOL) mailAddOutgoingAddresses
+{
+  return [self boolForKey: @"SOGoMailAddOutgoingAddresses"];
+}
+
 - (void) setMailShowSubscribedFoldersOnly: (BOOL) newValue
 {
   [self setBool: newValue forKey: @"SOGoMailShowSubscribedFoldersOnly"];
@@ -465,6 +476,16 @@ NSString *SOGoWeekStartFirstFullWeek = @"FirstFullWeek";
 - (NSArray *) mailListViewColumnsOrder
 {
   return [self stringArrayForKey: @"SOGoMailListViewColumnsOrder"];
+}
+
+- (void) setSelectedAddressBook:(NSString *) newValue
+{
+  [self setObject: newValue forKey: @"SOGoSelectedAddressBook"];
+}
+
+- (NSString *) selectedAddressBook
+{
+  return [self stringForKey: @"SOGoSelectedAddressBook"];
 }
 
 - (void) setMailMessageCheck: (NSString *) newValue

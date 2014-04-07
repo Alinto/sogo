@@ -157,6 +157,10 @@
 "displayremoteinlineimages_never" = "Jamais";
 "displayremoteinlineimages_always" = "Toujours";
 
+/* Contact */
+"Personal Address Book" = "Carnet d'adresses personnel";
+"Collected Address Book" = "Carnet d'adresses collectés";
+
 /* IMAP Accounts */
 "New Mail Account" = "Nouveau compte";
 

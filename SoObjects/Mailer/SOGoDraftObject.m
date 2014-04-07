@@ -45,6 +45,7 @@
 #import <NGImap4/NGImap4Client.h>
 #import <NGImap4/NGImap4Envelope.h>
 #import <NGImap4/NGImap4EnvelopeAddress.h>
+#import <NGMail/NGMailAddressParser.h>
 #import <NGMail/NGMimeMessage.h>
 #import <NGMail/NGMimeMessageGenerator.h>
 #import <NGMime/NGMimeBodyPart.h>
@@ -62,6 +63,11 @@
 #import <SOGo/SOGoMailer.h>
 #import <SOGo/SOGoUser.h>
 #import <SOGo/SOGoUserDefaults.h>
+
+#import <NGCards/NGVCard.h>
+
+#import <Contacts/SOGoContactFolders.h>
+#import <Contacts/SOGoContactGCSEntry.h>
 
 #import "NSData+Mail.h"
 #import "NSString+Mail.h"
@@ -1660,7 +1666,7 @@ static NSString    *userAgent      = nil;
     {
       recipients = [headers objectForKey: fieldNames[count]];
       if ([recipients count] > 0)
-	[allRecipients addObjectsFromArray: recipients];
+        [allRecipients addObjectsFromArray: recipients];
     }
 
   return allRecipients;
@@ -1689,6 +1695,64 @@ static NSString    *userAgent      = nil;
 //
 - (NSException *) sendMail
 {
+  SOGoUserDefaults *ud;
+  ud = [[context activeUser] userDefaults];
+
+  if ([ud mailAddOutgoingAddresses])
+  {
+    SOGoContactFolders *contactFolders;
+    NGMailAddressParser *parser;
+    id parsedRecipient;
+    SOGoContactFolder *folder;
+    SOGoContactGCSEntry *newContact;
+    NGVCard *card;
+    Class contactGCSEntry;
+    NSMutableArray *recipients;
+    NSString *recipient, *emailAddress, *displayName, *addressBook, *uid;
+    NSArray *matchingContacts;
+    int i;
+
+    // Get all the addressbooks
+    contactFolders = [[[context activeUser] homeFolderInContext: context]
+                                                     lookupName: @"Contacts"
+                                                      inContext: context
+                                                      acquire: NO];
+    // Get all the recipients from the current email
+    recipients = [self allRecipients];
+    for (i = 0; i < [recipients count]; i++)
+    {
+      // The address contains a string. ex: "John Doe <sogo1@exemple.com>"
+      recipient = [recipients objectAtIndex: i];
+      parser = [NGMailAddressParser mailAddressParserWithString: recipient];
+      parsedRecipient = [parser parse];
+      emailAddress = [parsedRecipient address];
+      displayName = [parsedRecipient displayName];
+
+      matchingContacts = [contactFolders allContactsFromFilter: emailAddress
+                                                 excludeGroups: YES
+                                                  excludeLists: YES];
+    }
+    // If we don't get any results from the autocompletion code, we add it..
+    if ([matchingContacts count] == 0)
+    {
+      /* Get the selected addressbook from the user preferences where the new address will be added */
+      addressBook = [ud selectedAddressBook];
+      folder = [contactFolders lookupName: addressBook inContext: context  acquire: NO];
+      uid = [folder globallyUniqueObjectId];
+      
+      if (folder && uid)
+      {
+        card = [NGVCard cardWithUid: uid];
+        [card addEmail: emailAddress types: nil];
+        
+        contactGCSEntry = NSClassFromString(@"SOGoContactGCSEntry");
+        newContact = [contactGCSEntry objectWithName: uid
+                                         inContainer: folder];
+        [newContact setIsNew: YES];
+        [newContact saveContentString: [card versitString]];
+      }
+    }
+  }
   return [self sendMailAndCopyToSent: YES];
 }
 

@@ -51,6 +51,8 @@
 #import <Mailer/SOGoMailAccounts.h>
 #import <Mailer/SOGoMailLabel.h>
 
+#import <Contacts/SOGoContactGCSFolder.h>
+
 #import "UIxPreferences.h"
 
 #warning this class is not finished
@@ -115,6 +117,7 @@ static NSArray *reminderValues = nil;
   if ((self = [super init]))
     {
       item = nil;
+      addressBooksIDWithDisplayName = nil;
 #warning user should be the owner rather than the activeUser
       ASSIGN (user, [context activeUser]);
       ASSIGN (today, [NSCalendarDate date]);
@@ -175,6 +178,7 @@ static NSArray *reminderValues = nil;
   [contactsCategories release];
   [forwardOptions release];
   [daysOfWeek release];
+  [addressBooksIDWithDisplayName release];
   [super dealloc];
 }
 
@@ -657,6 +661,16 @@ static NSArray *reminderValues = nil;
 }
 
 /* Mailer */
+- (void) setAddOutgoingAddresses: (BOOL) addOutgoingAddresses
+{
+  [userDefaults setMailAddOutgoingAddresses: addOutgoingAddresses];
+}
+
+- (BOOL) addOutgoingAddresses
+{
+  return [userDefaults mailAddOutgoingAddresses];
+}
+
 - (void) setShowSubscribedFoldersOnly: (BOOL) showSubscribedFoldersOnly
 {
   [userDefaults setMailShowSubscribedFoldersOnly: showSubscribedFoldersOnly];
@@ -675,6 +689,67 @@ static NSArray *reminderValues = nil;
 - (BOOL) sortByThreads
 {
   return [userDefaults mailSortByThreads];
+}
+
+- (NSArray *) addressBookList
+{
+  /* We want all the SourceIDS */
+  NSMutableArray *folders, *contactFolders, *availableAddressBooksID, *availableAddressBooksName;
+  int i, count;
+  BOOL collectedAlreadyExist;
+  
+  contactFolders = [[[context activeUser] homeFolderInContext: context]
+                    lookupName: @"Contacts"
+                    inContext: context
+                    acquire: NO];
+  folders = [NSMutableArray arrayWithArray: [contactFolders subFolders]];
+  count = [folders count]-1;
+  
+  // Inside this loop we remove all the public or shared addressbooks
+  for (count; count >= 0; count--)
+  {
+    if (![[folders objectAtIndex: count] isKindOfClass: [SOGoContactGCSFolder class]])
+      [folders removeObjectAtIndex: count];
+  }
+  
+  // Parse the objects in order to have only the displayName of the addressbooks to be displayed on the preferences interface
+  availableAddressBooksID = [NSMutableArray arrayWithCapacity: [folders count]];
+  availableAddressBooksName = [NSMutableArray arrayWithCapacity: [folders count]];
+  count = [folders count]-1;
+  collectedAlreadyExist = false;
+  
+  for (i = 0; i <= count ; i++) {
+    [availableAddressBooksID addObject:[[folders objectAtIndex:i] realNameInContainer]];
+    [availableAddressBooksName addObject:[[folders objectAtIndex:i] displayName]];
+    
+    if ([[availableAddressBooksID objectAtIndex:i] isEqualToString: @"collected"])
+      collectedAlreadyExist = true;
+  }
+  // Create the dictionary for the next function : itemAddressBookText.
+  if (!addressBooksIDWithDisplayName)
+    addressBooksIDWithDisplayName = [[NSMutableDictionary alloc] initWithObjects:availableAddressBooksName
+                                                                         forKeys:availableAddressBooksID];
+    if (!collectedAlreadyExist)
+    {
+      [availableAddressBooksID addObject: @"collected"];
+      [addressBooksIDWithDisplayName setObject: [self labelForKey: @"Collected Address Book"] forKey: @"collected"];
+    }
+  
+  return availableAddressBooksID;
+}
+- (NSString *) itemAddressBookText
+{
+  return [addressBooksIDWithDisplayName objectForKey: item];
+}
+
+- (NSString *) userAddressBook
+{
+  return [userDefaults selectedAddressBook];
+}
+
+- (void) setUserAddressBook: (NSString *) newSelectedAddressBook
+{
+  [userDefaults setSelectedAddressBook: newSelectedAddressBook];
 }
 
 - (NSArray *) messageCheckList
