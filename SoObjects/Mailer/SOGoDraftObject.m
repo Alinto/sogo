@@ -1740,7 +1740,7 @@ static NSString    *userAgent      = nil;
       folder = [contactFolders lookupName: addressBook inContext: context  acquire: NO];
       uid = [folder globallyUniqueObjectId];
       
-      if (!(folder == nil || uid == nil))
+      if (folder && uid)
       {
         card = [NGVCard cardWithUid: uid];
         [card addEmail: emailAddress types: nil];
