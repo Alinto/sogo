@@ -417,7 +417,7 @@
 {
   if (!ignoreContent)
     {
-      [result appendString: [NSString stringWithCharacters: characters  length: length]];
+      [result appendString: [[NSString stringWithCharacters: characters  length: length] stringByEscapingHTMLString]];
     }
 }
 

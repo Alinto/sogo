@@ -3,6 +3,7 @@
 
 Bug fixes
  - fixed saved HTML content of draft when attaching a file
+ - fixed text nodes of HTML content handler by encoding HTML entities
 
 2.2.3 (2014-04-03)
 ------------------
