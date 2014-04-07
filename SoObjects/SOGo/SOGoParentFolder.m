@@ -171,7 +171,7 @@ static SoSecurityManager *sm = nil;
   // We autocreate the calendars if the user is the owner, a superuser or
   // if it's a resource as we won't necessarily want to login as a resource
   // in order to create its database tables.
-  // FolderType is an Enum where 0 = Personal and 1 = collected
+  // FolderType is an enum where 0 = Personal and 1 = collected
   if ([roles containsObject: SoRole_Owner] ||
       (folderOwner && [folderOwner isResource]))
     {

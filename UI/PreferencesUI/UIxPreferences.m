@@ -717,7 +717,7 @@ static NSArray *reminderValues = nil;
   count = [folders count]-1;
   collectedAlreadyExist = false;
   
-  for (i=0; i <= count ; i++) {
+  for (i = 0; i <= count ; i++) {
     [availableAddressBooksID addObject:[[folders objectAtIndex:i] realNameInContainer]];
     [availableAddressBooksName addObject:[[folders objectAtIndex:i] displayName]];
     

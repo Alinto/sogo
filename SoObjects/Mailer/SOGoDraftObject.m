@@ -1731,18 +1731,20 @@ static NSString    *userAgent      = nil;
       matchingContacts = [contactFolders allContactsFromFilter: emailAddress
                                                  excludeGroups: YES
                                                   excludeLists: YES];
+    }
+    // If we don't get any results from the autocompletion code, we add it..
+    if ([matchingContacts count] == 0)
+    {
+      /* Get the selected addressbook from the user preferences where the new address will be added */
+      addressBook = [ud selectedAddressBook];
+      folder = [contactFolders lookupName: addressBook inContext: context  acquire: NO];
+      uid = [folder globallyUniqueObjectId];
       
-      // If we don't get any results from the autocompletion code, we add it..
-      if ([matchingContacts count] == 0)
+      if (!(folder == nil || uid == nil))
       {
-        /* Get the selected addressbook from the user preferences where the new address will be added */
-        addressBook = [ud selectedAddressBook];
-        folder = [contactFolders lookupName: addressBook inContext: context  acquire: NO];
-        uid = [folder globallyUniqueObjectId];
-        
         card = [NGVCard cardWithUid: uid];
         [card addEmail: emailAddress types: nil];
-
+        
         contactGCSEntry = NSClassFromString(@"SOGoContactGCSEntry");
         newContact = [contactGCSEntry objectWithName: uid
                                          inContainer: folder];
