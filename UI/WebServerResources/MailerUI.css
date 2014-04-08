@@ -633,8 +633,8 @@ DIV.bodyFields SPAN.fieldName
 }
 
 DIV.bodyAdditionalFields
-{ 
-  background: #d4d0c8;
+{
+  color: #777;
 }
 
 DIV.bodyMailContent
