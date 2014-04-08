@@ -36,9 +36,6 @@
 "delete" = "delete";
 "edit" = "edit";
 "invalidemailwarn" = "The specified email is invalid";
-"invaliddatewarn" = "The specified date is invalid.";
-"invalidmonthwarn" = "The specified month is invalid.";
-"invalidyearwarn" = "The specified year is invalid.";
 "new" = "new";
 "Preferred Phone" = "Preferred Phone";
 
