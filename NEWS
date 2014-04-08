@@ -4,6 +4,7 @@
 Bug fixes
  - fixed saved HTML content of draft when attaching a file
  - fixed text nodes of HTML content handler by encoding HTML entities
+ - fixed iCal7 delegation issue with the "inbox" folder (#2489)
 
 2.2.3 (2014-04-03)
 ------------------
