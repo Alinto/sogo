@@ -3221,7 +3221,7 @@ function deletePersonalCalendarConfirm() {
     this.deselect();
     this.hide();
     removeFolderRequestCount++;
-    var url = ApplicationBaseURL + folderId + "/delete";
+    var url = ApplicationBaseURL + "/" + folderId + "/delete";
     triggerAjaxRequest(url, deletePersonalCalendarCallback, this);
     disposeDialog();
 }
