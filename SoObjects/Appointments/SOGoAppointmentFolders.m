@@ -1,7 +1,7 @@
 
 /* SOGoAppointmentFolders.m - this file is part of SOGo
  *
- * Copyright (C) 2007-2013 Inverse inc.
+ * Copyright (C) 2007-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,13 +55,6 @@
 #import "SOGoUser+Appointments.h"
 
 #import "SOGoAppointmentFolders.h"
-
-@interface SOGoParentFolder (Private)
-
-- (NSException *) _fetchPersonalFolders: (NSString *) sql
-                            withChannel: (EOAdaptorChannel *) fc;
-
-@end
 
 static SoSecurityManager *sm = nil;
 
@@ -596,8 +589,9 @@ static SoSecurityManager *sm = nil;
     }
 }
 
-- (NSException *) _fetchPersonalFolders: (NSString *) sql
-                            withChannel: (EOAdaptorChannel *) fc
+- (NSException *) fetchSpecialFolders: (NSString *) sql
+                          withChannel: (EOAdaptorChannel *) fc
+                        andFolderType: (SOGoFolderType) folderType
 {
   BOOL isWebRequest;
   NSException *error;
@@ -607,7 +601,7 @@ static SoSecurityManager *sm = nil;
   SOGoWebAppointmentFolder *webFolder;
   NSString *name;
 
-  error = [super _fetchPersonalFolders: sql withChannel: fc];
+  error = [super fetchSpecialFolders: sql withChannel: fc  andFolderType: folderType];
   if (!error)
     {
       isWebRequest = [[context request] handledByDefaultHandler];
