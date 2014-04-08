@@ -267,7 +267,7 @@ function openContactWindow(url, wId) {
             wId = sanitizeWindowName(wId);
 
         var w = window.open(url, wId,
-                            "width=450,height=530,resizable=0,location=0");
+                            "width=460,height=560,resizable=0,location=0");
         w.focus();
 
         return w;
@@ -1743,7 +1743,7 @@ function onPreferencesClick(event) {
     }
     else {
         var w = window.open(urlstr, "SOGoPreferences",
-                            "width=580,height=476,resizable=1,scrollbars=0,location=0");
+                            "width=615,height=520,resizable=1,scrollbars=0,location=0");
         w.opener = window;
         w.focus();
     }

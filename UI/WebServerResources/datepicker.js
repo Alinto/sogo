@@ -31,14 +31,11 @@
 		var that = this;
 
 		this.element = $(element);
-                this.position = options.position||this.element.data('position')||"bellow";
+    this.position = options.position||this.element.data('position');
 		this.format = DPGlobal.parseFormat(options.format||this.element.data('date-format')||'mm/dd/yyyy');
-		this.picker = $(DPGlobal.template)
-                                                        .addClass(this.position)
-							.appendTo('body')
-							.on({
-								click: $.proxy(this.click, this)
-							});
+		this.picker = $(DPGlobal.template).addClass(this.position)
+                                      .appendTo('body')
+                                      .on({click: $.proxy(this.click, this)});
 		this.isInput = this.element.is('input');
 		this.component = this.element.is('.date') ? this.element.find('.add-on') : false;
 		this.hasInput = this.component && this.element.find('input').length;
@@ -51,7 +48,8 @@
 				keyup: $.proxy(this.update, this),
 				keydown: $.proxy(this.keydown, this)
 			});
-		} else {
+		}
+    else {
 			if (this.component && this.hasInput){
 				// For components that are not readonly, allow keyboard nav
 				this.element.find('input').on({
@@ -59,9 +57,9 @@
 					keyup: $.proxy(this.update, this),
 					keydown: $.proxy(this.keydown, this)
 				});
-
-				this.component.on('click', $.proxy(this.show, this));
-			} else {
+        this.component.on('click', $.proxy(this.show, this));
+			}
+      else {
 				this.element.on('click', $.proxy(this.show, this));
 			}
 		}
@@ -76,14 +74,16 @@
 		this.autoclose = false;
 		if ('autoclose' in options) {
 			this.autoclose = options.autoclose;
-		} else if ('dateAutoclose' in this.element.data()) {
+		}
+    else if ('dateAutoclose' in this.element.data()) {
 			this.autoclose = this.element.data('date-autoclose');
 		}
 
 		this.keyboardNavigation = true;
 		if ('keyboardNavigation' in options) {
 			this.keyboardNavigation = options.keyboardNavigation;
-		} else if ('dateKeyboardNavigation' in this.element.data()) {
+		}
+    else if ('dateKeyboardNavigation' in this.element.data()) {
 			this.keyboardNavigation = this.element.data('date-keyboard-navigation');
 		}
 
@@ -182,19 +182,24 @@
 						}).first().css('z-index'))+10;
 			var offset = this.component ? this.component.offset() : this.element.offset();
 			var width = this.component ? this.component.width() : this.element.width();
-                        if (this.position == 'bellow')
-			    this.picker.css({
-				top: offset.top + this.height,
-				left: offset.left,
-                                right: 'auto',
-				zIndex: zIndex
+      if (this.position == 'bellow')
+			    this.picker.css({top: offset.top + this.height,
+                          left: offset.left,
+                          right: 'auto',
+                          zIndex: zIndex
 			    });
-                        else // above
-			    this.picker.css({
-				top: offset.top - this.height - this.picker.outerHeight(),
-				right: window.width() - offset.left - width,
-                                left: 'auto',
-				zIndex: zIndex
+      
+      if (this.position == 'below-shifted-left')
+        this.picker.css({top: offset.top + this.height,
+                        left: offset.left - 83,
+                        right: 'auto',
+                        zIndex: zIndex
+                        });
+      else // above
+			    this.picker.css({ top: offset.top - this.height - this.picker.outerHeight(),
+                            right: window.width() - offset.left - width,
+                            left: 'auto',
+                            zIndex: zIndex
 			    });
 		},
 
