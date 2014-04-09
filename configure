@@ -381,7 +381,7 @@ checkDependencies() {
       if test $? = 0; then
           lasso_cflags="`pkg-config lasso --cflags`"
           cfgwrite "LASSO_CFLAGS := $lasso_cflags"
-          lasso_libs="`pkg-config lasso --libs`"
+          lasso_libs="`pkg-config lasso --libs` `pkg-config gobject-2.0 --libs`"
           cfgwrite "LASSO_LIBS := $lasso_libs"
       fi;
   fi

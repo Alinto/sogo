@@ -171,7 +171,7 @@ LIBMAPISTORE_LIBS = $(shell pkg-config libmapistore --libs) -lmapiproxy -lWEExte
 
 $(MAPISTORESOGO)_INSTALL_DIR = $(DESTDIR)/$(SAMBA_LIB_DIR)/mapistore_backends
 $(MAPISTORESOGO)_LIB_DIRS += \
-        -L../SoObjects/SOGo/SOGo.framework/ -lSOGo \
+        -L../SoObjects/SOGo/SOGo.framework/ -lSOGo -lgnustep-base -lobjc -lNGObjWeb \
 	$(LIBMAPI_LIBS) \
 	$(LIBMAPISTORE_LIBS)
 
