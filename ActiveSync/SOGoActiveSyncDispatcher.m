@@ -212,11 +212,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         
         accountsFolder = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
         currentFolder = [accountsFolder lookupName: @"0"  inContext: context  acquire: NO];
-        
-        newFolder = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", [displayName stringByEncodingImap4FolderName]]
-                                    inContext: context
-                                      acquire: NO];
-        
+
+        // If the parrent is 0 -> ok ; otherwise need to build the foldername based on parentId + displayName
+        if ([parentId isEqualToString: @"0"])
+          newFolder = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@", [displayName stringByEncodingImap4FolderName]]
+                                      inContext: context
+                                        acquire: NO];
+        else
+          newFolder = [currentFolder lookupName: [NSString stringWithFormat: @"folder%@/%@", [[parentId stringByUnescapingURL] substringFromIndex: 5],
+                                                           [displayName stringByEncodingImap4FolderName]]
+                                      inContext: context
+                                        acquire: NO];
+
         // FIXME
         // handle exists (status == 2)
         // handle right synckey
@@ -380,7 +387,17 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                    inContext: context
                                      acquire: NO];
 
-  error = [folderToUpdate renameTo: displayName];
+  // If parent is 0 or displayname is not changed it is either a rename of a folder in 0 or a move to 0
+  if ([parentId isEqualToString: @"0"] ||
+      ([serverId hasSuffix: [NSString stringWithFormat: @"/%@", displayName]] && [parentId isEqualToString: @"0"]))
+    {
+      error = [folderToUpdate renameTo: [NSString stringWithFormat: @"/%@", [displayName stringByEncodingImap4FolderName]]];
+    }
+  else
+    {
+      error = [folderToUpdate renameTo: [NSString stringWithFormat: @"%@/%@", [[parentId stringByUnescapingURL] substringFromIndex: 5],
+                                                  [displayName stringByEncodingImap4FolderName]]];
+    }
 
   // Handle new name exist
   if (!error)

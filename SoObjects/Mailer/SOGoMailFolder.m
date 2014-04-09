@@ -291,10 +291,18 @@ static NSString *defaultUserID =  @"anyone";
           path = [[imap4URL path] stringByDeletingLastPathComponent];
           if (![path hasSuffix: @"/"])
             path = [path stringByAppendingString: @"/"];
-          destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
-                                             host: [imap4URL host]
-                                             path: [NSString stringWithFormat: @"%@%@",
-                                                             path, [newName stringByEncodingImap4FolderName]]];
+
+	  // If new name contains the path - dont't need to add
+          if ([newName rangeOfString: @"/"].location == NSNotFound)
+            destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
+                                               host: [imap4URL host]
+                                               path: [NSString stringWithFormat: @"%@%@",
+                                                               path, [newName stringByEncodingImap4FolderName]]];
+          else
+            destURL = [[NSURL alloc] initWithScheme: [imap4URL scheme]
+                                               host: [imap4URL host]
+                                               path: [NSString stringWithFormat: @"%@",
+                                                               [newName stringByEncodingImap4FolderName]]];
           [destURL autorelease];
           error = [imap4 moveMailboxAtURL: imap4URL
                                     toURL: destURL];
