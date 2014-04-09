@@ -45,6 +45,7 @@
 #import <SOGo/SOGoSieveManager.h>
 #import <SOGo/SOGoSystemDefaults.h>
 #import <SOGo/SOGoUserFolder.h>
+#import <SOGo/SOGoParentFolder.h>
 #import <SOGo/WOResourceManager+SOGo.h>
 #import <SOGo/SOGoBuild.h>
 #import <Mailer/SOGoMailAccount.h>
@@ -694,7 +695,9 @@ static NSArray *reminderValues = nil;
 - (NSArray *) addressBookList
 {
   /* We want all the SourceIDS */
-  NSMutableArray *folders, *contactFolders, *availableAddressBooksID, *availableAddressBooksName;
+  NSMutableArray *folders, *availableAddressBooksID, *availableAddressBooksName;
+  SOGoParentFolder *contactFolders;
+
   int i, count;
   BOOL collectedAlreadyExist;
   
@@ -706,7 +709,7 @@ static NSArray *reminderValues = nil;
   count = [folders count]-1;
   
   // Inside this loop we remove all the public or shared addressbooks
-  for (count; count >= 0; count--)
+  for (; count >= 0; count--)
   {
     if (![[folders objectAtIndex: count] isKindOfClass: [SOGoContactGCSFolder class]])
       [folders removeObjectAtIndex: count];
@@ -716,14 +719,14 @@ static NSArray *reminderValues = nil;
   availableAddressBooksID = [NSMutableArray arrayWithCapacity: [folders count]];
   availableAddressBooksName = [NSMutableArray arrayWithCapacity: [folders count]];
   count = [folders count]-1;
-  collectedAlreadyExist = false;
+  collectedAlreadyExist = NO;
   
   for (i = 0; i <= count ; i++) {
     [availableAddressBooksID addObject:[[folders objectAtIndex:i] realNameInContainer]];
     [availableAddressBooksName addObject:[[folders objectAtIndex:i] displayName]];
     
     if ([[availableAddressBooksID objectAtIndex:i] isEqualToString: @"collected"])
-      collectedAlreadyExist = true;
+      collectedAlreadyExist = YES;
   }
   // Create the dictionary for the next function : itemAddressBookText.
   if (!addressBooksIDWithDisplayName)
