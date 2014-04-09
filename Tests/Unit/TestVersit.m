@@ -146,10 +146,10 @@
   element = [group firstChildWithTag: @"element"];
   testEquals([element flattenedValueAtIndex: 0 forKey: @""], @"value");
 
-  versit = @"BEGIN:GROUP1\r\nELEMENT:value1;value2\r\nEND:GROUP1";
+  versit = @"BEGIN:GROUP1\r\nN:value1;value2\r\nEND:GROUP1";
   group = [CardGroup parseSingleFromSource: versit];
   testEquals([group versitString], versit);
-  element = [group firstChildWithTag: @"element"];
+  element = [group firstChildWithTag: @"n"];
   testEquals([element flattenedValueAtIndex: 0 forKey: @""], @"value1");
   testEquals([element flattenedValueAtIndex: 1 forKey: @""], @"value2");
 
@@ -165,12 +165,12 @@
   element = [group firstChildWithTag: @"element"];
   testEquals([element valuesAtIndex: 0 forKey: @""], ([NSArray arrayWithObjects: @"value", @"with comma", nil]));
 
-  versit = @"BEGIN:GROUP1\r\nELEMENT:NAMED1=subvalue;NAMED2=subvalue1,subvalue2\r\nEND:GROUP1";
+  versit = @"BEGIN:GROUP1\r\nN:NAMED1=subvalue;NAMED2=subvalue1,subvalue2\r\nEND:GROUP1";
   group = [CardGroup parseSingleFromSource: versit];
   /* we avoid this test here as nothing guarantees that the order of named
      values will be preserved... */
   // testEquals([group versitString], versit);
-  element = [group firstChildWithTag: @"element"];
+  element = [group firstChildWithTag: @"n"];
   testEquals([element flattenedValueAtIndex: 0 forKey: @"NAMED1"], @"subvalue");
   testEquals([element valuesAtIndex: 0 forKey: @"named2"],
              ([NSArray arrayWithObjects: @"subvalue1", @"subvalue2", nil]));
