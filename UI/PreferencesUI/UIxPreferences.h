@@ -34,7 +34,7 @@
   id item;
   SOGoUser *user;
   NGSieveClient *client;
-  
+
   // Addressbook
   NSMutableDictionary *addressBooksIDWithDisplayName;
   

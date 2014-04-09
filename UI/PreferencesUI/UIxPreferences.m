@@ -181,6 +181,7 @@ static NSArray *reminderValues = nil;
   [forwardOptions release];
   [daysOfWeek release];
   [addressBooksIDWithDisplayName release];
+  [client release];
   [super dealloc];
 }
 
