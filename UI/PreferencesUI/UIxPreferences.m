@@ -1232,7 +1232,7 @@ static NSArray *reminderValues = nil;
 
 - (BOOL) isSieveServerAvailable
 {
-  return (([[self sieveClient] isConnected])
+  return (([(NGSieveClient *)[self sieveClient] isConnected])
           ? true
           : false);
 }
@@ -1247,34 +1247,37 @@ static NSArray *reminderValues = nil;
   
   request = [context request];
   if ([[request method] isEqualToString: @"POST"])
-  {
-    dd = [[context activeUser] domainDefaults];
-    if ([dd sieveScriptsEnabled])
-      [userDefaults setSieveFilters: sieveFilters];
-    if ([dd vacationEnabled])
-      [userDefaults setVacationOptions: vacationOptions];
-    if ([dd forwardEnabled])
-      [userDefaults setForwardOptions: forwardOptions];
-    
-    if([self isSieveServerAvailable])
     {
-      [userDefaults synchronize];
-      folder = [[self clientObject] mailAccountsFolder: @"Mail"
-                                             inContext: context];
-      account = [folder lookupName: @"0" inContext: context acquire: NO];
+      dd = [[context activeUser] domainDefaults];
+      if ([dd sieveScriptsEnabled])
+        [userDefaults setSieveFilters: sieveFilters];
+      if ([dd vacationEnabled])
+        [userDefaults setVacationOptions: vacationOptions];
+      if ([dd forwardEnabled])
+        [userDefaults setForwardOptions: forwardOptions];
       
-      if([account updateFilters])
-        results = [self responseWithStatus: 200 andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:hasChanged], @"hasChanged", nil]];
-      
-      else
-        results = [self responseWithStatus: 502 andJSONRepresentation:[NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"textStatus", nil]];
-    }
+      if ([self isSieveServerAvailable])
+        {
+          [userDefaults synchronize];
+          folder = [[self clientObject] mailAccountsFolder: @"Mail"
+                                                 inContext: context];
+          account = [folder lookupName: @"0" inContext: context acquire: NO];
+          
+          if ([account updateFilters])
+            results = [self responseWithStatus: 200
+                         andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithBool:hasChanged], @"hasChanged", nil]];
+          
+          else
+            results = [self responseWithStatus: 502
+                         andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Connection error", @"textStatus", nil]];
+        }
     else
-      results = [self responseWithStatus: 503 andJSONRepresentation:[NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"textStatus", nil]];
-  }
+      results = [self responseWithStatus: 503
+                   andJSONRepresentation: [NSDictionary dictionaryWithObjectsAndKeys: @"Service temporarily unavailable", @"textStatus", nil]];
+    }
   else
     results = self;
-  
+
   return results;
 }
 
