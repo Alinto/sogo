@@ -755,7 +755,7 @@ static NSString *sieveScriptName = @"sogo";
     return nil;
   }
 
-  return client;
+  return [client autorelease];
 }
 
 

@@ -1219,12 +1219,12 @@ static NSArray *reminderValues = nil;
   SOGoMailAccounts *folder;
   SOGoSieveManager *manager;
   
-  if (client == nil)
+  if (!client)
   {
     folder = [[self clientObject] mailAccountsFolder: @"Mail" inContext: context];
     account = [folder lookupName: @"0" inContext: context acquire: NO];
     manager = [SOGoSieveManager sieveManagerForUser: [context activeUser]];
-    client = [manager clientForAccount: account];
+    client = [[manager clientForAccount: account] retain];
   }
   
   return client;
