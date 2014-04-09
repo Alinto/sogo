@@ -14,6 +14,7 @@ Bug fixes
  - fixed URL handling (#2616)
  - improved folder rename operations using ActiveSync (#2700)
  - fixed SmartReply/Forward when ReplaceMime was omitted (#2680)
+ - fixed wrong generation of weekly repetitive events with ActiveSync (#2654)
 
 2.2.3 (2014-04-03)
 ------------------

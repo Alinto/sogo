@@ -79,7 +79,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       for (i = 0; i < 7; i++)
         {
-          if (occurrences[i])
+          if (occurrences[0][i])
             v += (1 << i);
         }
 
