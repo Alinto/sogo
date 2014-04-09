@@ -1437,11 +1437,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 {
   NSString *folderId, *itemId, *realCollectionId;
   SOGoMicrosoftActiveSyncFolderType folderType;
+  id value;
 
   folderId = [[(id)[theDocumentElement getElementsByTagName: @"FolderId"] lastObject] textValue];
   itemId = [[(id)[theDocumentElement getElementsByTagName: @"ItemId"] lastObject] textValue];
   realCollectionId = [folderId realCollectionIdWithFolderType: &folderType];
 
+  value = [theDocumentElement getElementsByTagName: @"ReplaceMime"];
+
+  // ReplaceMime isn't specified so we must NOT use the server copy
+  // but rather take the data as-is from the client.
+  if (![value count])
+    {
+      [self processSendMail: theDocumentElement
+                 inResponse: theResponse];
+      return;
+    }
+  
   if (folderType == ActiveSyncMailFolder)
     {
       SOGoMailAccounts *accountsFolder;
