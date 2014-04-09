@@ -238,7 +238,7 @@ static EOAttribute *textColumn = nil;
 
 - (Class) mapistoreMessageClass
 {
-  NSString *className, *mapiMsgClass;
+  NSString *className, *mapiMsgClass, *reason;
 
   switch (objectType)
     {
@@ -265,9 +265,11 @@ static EOAttribute *textColumn = nil;
       className = @"MAPIStoreFAIMessage";
       break;
     default:
-      [NSException raise: @"MAPIStoreIOException"
-                  format: @"message class should not be queried for objects"
-                   @" of type '%d'", objectType];
+      reason = [NSString stringWithFormat:@"message class should not be queried"
+                         @" for objects of type '%d'", objectType];
+      @throw [NSException exceptionWithName: @"MAPIStoreIOException"
+                                     reason: reason
+                                   userInfo: nil];
     }
 
   return NSClassFromString (className);
@@ -278,13 +280,17 @@ static EOAttribute *textColumn = nil;
 {
   NSMutableString *sql;
   NSString *oldPath, *newPath;
+  /* We make this a local variable so gcc knows it can't be changed in the super
+     method. This way we don't get a "may be used uninitialized in this
+     function" warning for oldPath. */
+  BOOL nameInContainerBool = nameInContainer ? YES : NO;
 
-  if (nameInContainer)
+  if (nameInContainerBool)
     oldPath = [self path];
 
   [super setNameInContainer: newNameInContainer];
 
-  if (nameInContainer)
+  if (nameInContainerBool)
     {
       newPath = [self path];
       

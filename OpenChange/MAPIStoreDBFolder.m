@@ -145,8 +145,8 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
       if (slashRange.location == NSNotFound)
         [NSException raise: @"MAPIStoreIOException"
                     format: @"db folder path must start with a '/'"];
-      else
-        pathComponent = [path substringFromIndex: slashRange.location + 1];
+
+      pathComponent = [path substringFromIndex: slashRange.location + 1];
       targetPath = [[targetFolder sogoObject] path];
       newPath = [NSString stringWithFormat: @"%@/%@",
                           targetPath, pathComponent];

@@ -502,7 +502,7 @@ const unsigned short ansicpg874[256] = {
 {
   NSMutableString *fontName;
   RTFFontTable *fontTable;
-  RTFFontInfo *fontInfo;
+  RTFFontInfo *fontInfo = nil /* Silence GCC warning */;
 
   unsigned int count;
 
@@ -636,7 +636,7 @@ const unsigned short ansicpg874[256] = {
 //
 - (NSMutableData *) parse
 {
-  RTFFormattingOptions *formattingOptions;
+  RTFFormattingOptions *formattingOptions = nil /* Silence GCC warning */;
   RTFColorTable *colorTable;
   RTFFontTable *fontTable;
   RTFStack *stack;

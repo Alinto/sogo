@@ -250,6 +250,7 @@ static Class NSExceptionK, MAPIStoreFolderK;
   id value;
 
   tz = nil;
+  tzOffset = 0;
 
   newProperties = [NSMutableDictionary dictionaryWithCapacity: aRow->cValues];
   for (counter = 0; counter < aRow->cValues; counter++)

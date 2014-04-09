@@ -463,8 +463,8 @@ rtf2html (NSData *compressedRTF)
 - (enum mapistore_error) saveMessage: (TALLOC_CTX *) memCtx
 {
   enum mapistore_error rc;
-  NSArray *containerTables;
-  NSUInteger count, max;
+  NSArray *containerTables = nil /* Silence GCC warning */;
+  NSUInteger count, max = 0 /* Silence GCC warning */;
   struct mapistore_object_notification_parameters *notif_parameters;
   uint64_t folderId;
   struct mapistore_context *mstoreCtx;

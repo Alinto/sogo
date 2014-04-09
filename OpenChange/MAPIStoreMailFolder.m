@@ -189,6 +189,8 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
       else
         rc = MAPISTORE_ERR_DENIED;
     }
+  else
+    rc = MAPISTORE_ERROR;
 
   return rc;
 }
@@ -854,7 +856,7 @@ _parseIMAPRange (const unichar *uniString, NSArray **UIDsP)
 {
   NSMutableArray *UIDs;
   NSUInteger count = 0;
-  uint32_t currentUid, rangeMin;
+  uint32_t currentUid, rangeMin = 0 /* Silence GCC warning */;
   BOOL done = NO, inRange = NO;
 
   UIDs = [NSMutableArray array];

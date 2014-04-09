@@ -100,12 +100,17 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   NSArray *parts;
   NSUInteger lastPartIdx;
   MAPIStoreUserContext *userContext;
+  /* We create this local variable so gcc knows it can't be changed in the
+     methods we call. This way we don't get a "may be used uninitialized in this
+     function" warning. */
+  BOOL pathBool;
 
   folderURL = [NSURL URLWithString: [self url]];
   /* note: -[NSURL path] returns an unescaped representation */
   path = [folderURL path];
   path = [path substringFromIndex: 1];
-  if ([path length] > 0)
+  pathBool = [path length] > 0;
+  if (pathBool)
     {
       parts = [path componentsSeparatedByString: @"/"];
       lastPartIdx = [parts count] - 1;
@@ -123,7 +128,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
           [SOGoMAPIDBFolder objectWithName: folderName
                                inContainer: [container dbFolder]]);
   [dbFolder setTableUrl: [userContext folderTableURL]];
-  if (!container && [path length] > 0)
+  if (!container && pathBool)
     {
       pathPrefix = [NSMutableString stringWithCapacity: 64];
       [pathPrefix appendFormat: @"/%@", [folderURL host]];
@@ -228,7 +233,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 
 - (id) lookupFolder: (NSString *) folderKey
 {
-  MAPIStoreFolder *childFolder;
+  MAPIStoreFolder *childFolder = nil;
   SOGoFolder *sogoFolder;
   WOContext *woContext;
 
@@ -244,8 +249,6 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
                                                inContainer: self];
         }
     }
-  else
-    childFolder = nil;
 
   return childFolder;
 }

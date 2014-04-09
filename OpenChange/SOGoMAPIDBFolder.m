@@ -223,14 +223,18 @@ Class SOGoMAPIDBObjectK = Nil;
   NSArray *records;
   NSDictionary *record;
   NSUInteger count, max;
+  /* We make this a local variable so gcc knows it can't be changed in the super
+     method. This way we don't get a "may be used uninitialized in this
+     function" warning for oldPath. */
+  BOOL nameInContainerBool = nameInContainer ? YES : NO;
 
   /* change the paths in children records */
-  if (nameInContainer)
+  if (nameInContainerBool)
     oldPath = [self path];
 
   [super setNameInContainer: newName];
 
-  if (nameInContainer)
+  if (nameInContainerBool)
     {
       newPath = [self path];
 
