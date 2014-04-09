@@ -1,10 +1,17 @@
 2.2.4 (2014-MM-DD)
 ------------------
 
+Enhancements
+ - now able to emails to address book on send (#1496) 
+ - Sieve folder encoding is now configurable (#2622)
+ - SOGo version is now displayed in preferences window (#2612)
+
 Bug fixes
  - fixed saved HTML content of draft when attaching a file
  - fixed text nodes of HTML content handler by encoding HTML entities
  - fixed iCal7 delegation issue with the "inbox" folder (#2489)
+ - fixed birth date validity checks (#1636)
+ - fixed URL handling (#2616)
 
 2.2.3 (2014-04-03)
 ------------------
