@@ -37,6 +37,28 @@ static NSArray *asElementArray = nil;
 
 @implementation NGDOMElement (ActiveSync)
 
+- (BOOL) isTextNode
+{
+  id <DOMNodeList> children;
+  id <DOMElement> element;
+  int i;
+
+  if ([self nodeType] == DOM_TEXT_NODE)
+    return YES;
+  
+  children = [self childNodes];
+
+  for (i = 0; i < [children length]; i++)
+    {
+      element = [children objectAtIndex: i];
+
+      if ([element nodeType] != DOM_TEXT_NODE)
+        return NO;
+    }
+  
+  return YES;
+}
+
 //
 // We must handle "inner data" like this:
 // 
@@ -96,9 +118,13 @@ static NSArray *asElementArray = nil;
           
           tag = [element tagName];
           count = [(NSArray *)[element childNodes] count];
-
+          
+          if ([element isTextNode])
+            {
+              value = [element textValue];
+            }
           // Handle inner data - see above for samples
-          if (count > 2)
+          else
             {
               NSMutableArray *innerElements;
               id <DOMElement> innerElement;
@@ -144,12 +170,11 @@ static NSArray *asElementArray = nil;
                     value = nil;
                 }
             }
-          else
-            value = [[element firstChild] textValue];
           
           if (value && tag)
             [data setObject: value  forKey: tag];
-        }
+          
+        } // if ([element nodeType] == DOM_ELEMENT_NODE)
     }
   
   return data;
