@@ -767,7 +767,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   NSMutableString *changeBuffer, *commandsBuffer;
   BOOL getChanges, first_sync;
-  unsigned int windowSize;
+  unsigned int windowSize, v;
   
   changeBuffer = [NSMutableString string];
   commandsBuffer = [NSMutableString string];
@@ -783,6 +783,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   if (windowSize == 0 || windowSize > 512)
     windowSize = 100;
+  
+  // We check if we must overwrite the windowSize with a system preference. This can be useful
+  // if the user population has large mailboxes and slow connectivity
+  if ((v = [[SOGoSystemDefaults sharedSystemDefaults] maximumSyncWindowSize]))
+    windowSize = v;
 
   lastServerKey = nil;
   

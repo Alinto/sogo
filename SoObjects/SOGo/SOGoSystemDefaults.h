@@ -96,6 +96,7 @@
 - (int) maximumPingInterval;
 - (int) maximumSyncInterval;
 - (int) internalSyncInterval;
+- (int) maximumSyncWindowSize;
 
 @end
 
