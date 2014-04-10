@@ -1794,10 +1794,11 @@ function newBaseEventDIV(eventRep, event, eventText) {
         createElement("img", null, null, {src: ResourcesURL + "/alarm.png"}, null, iconSpan);
 
     if (event[10] != null) {
-        var categoryStyle = categoriesStyles.get(event[10]);
+        var category = event[10].decodeEntities();
+        var categoryStyle = categoriesStyles.get(category);
         if (!categoryStyle) {
             categoryStyle = 'category_' + categoriesStyles.keys().length;
-            categoriesStyles.set([event[10]], categoryStyle);
+            categoriesStyles.set([category], categoryStyle);
         }
         innerDiv.addClassName(categoryStyle);
     }
