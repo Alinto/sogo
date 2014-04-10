@@ -32,15 +32,6 @@ DIV#buttons
   bottom: 12px;
   right: 10px; }
 
-#cancelButton:hover
-{
-  font-weight:bold;
-}
-#submitButton:hover
-{
-  font-weight:bold;
-}
-
 /********** Contact **********/
 
 INPUT.textField

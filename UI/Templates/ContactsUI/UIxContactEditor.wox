@@ -19,6 +19,7 @@
   <form var:href="saveURL" name="editform" id="mainForm">
     <var:if condition="isNew">
       <div id="addressBookSelector">
+        <style type="text/css">DIV#editorTabs { top: 30px; };</style>
         <var:string label:value="Add to:"/>
         <var:popup const:id="addressBooksList"
           list="addressBooksList" item="addressBookItem"
