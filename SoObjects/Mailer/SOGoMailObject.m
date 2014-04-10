@@ -770,6 +770,9 @@ static BOOL debugSoParts       = NO;
 	  [mimeType hasPrefix: @"image/"] ||
 	  [mimeType hasPrefix: @"video/"])
           filename = [NSString stringWithFormat: @"unknown_%@", path];
+      else if ([mimeType isEqualToString: @"message/rfc822"])
+        filename = [NSString stringWithFormat: @"email_%@.eml", path];
+  
 
   if (filename)
     {
