@@ -119,9 +119,13 @@ static NSArray *asElementArray = nil;
           tag = [element tagName];
           count = [(NSArray *)[element childNodes] count];
           
-          if ([element isTextNode])
+          // We check if the node is a text one or if all its
+          // children are text nodes. This is important to avoid side-effects
+          // in SOPE where "foo & bar" would result into 3 childnodes instead
+          // of just one.
+          if ([(id)element isTextNode])
             {
-              value = [element textValue];
+              value = [(id)element textValue];
             }
           // Handle inner data - see above for samples
           else
