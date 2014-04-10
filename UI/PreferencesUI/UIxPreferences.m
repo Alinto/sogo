@@ -1063,7 +1063,7 @@ static NSArray *reminderValues = nil;
   obj = [vacationOptions objectForKey: @"ignoreLists"];
 
   if (obj == nil)
-    ignore = YES; // defaults to true
+    ignore = YES; // defaults to YES
   else
     ignore = [obj boolValue];
 
@@ -1233,8 +1233,8 @@ static NSArray *reminderValues = nil;
 - (BOOL) isSieveServerAvailable
 {
   return (([(NGSieveClient *)[self sieveClient] isConnected])
-          ? true
-          : false);
+          ? YES
+          : NO);
 }
 
 - (id <WOActionResults>) defaultAction
