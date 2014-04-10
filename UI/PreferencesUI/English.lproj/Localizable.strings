@@ -129,6 +129,7 @@
 "Label" = "Label";
 "Show subscribed mailboxes only" = "Show subscribed mailboxes only";
 "Sort messages by threads" = "Sort messages by threads";
+"When sending mail, add unknown recipients to my" = "When sending mail, add unknown recipients to my";
 "Check for new mail:" = "Check for new mail:";
 "messagecheck_manually" = "Manually";
 "messagecheck_every_minute" = "Every minute";

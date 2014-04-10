@@ -300,7 +300,7 @@
                     const:name="addOutgoingAddresses"
                     const:id="addOutgoingAddresses"
                     var:checked="addOutgoingAddresses" />
-                    <var:string label:value="Automatically add outgoing e-mail addresses to my :"/>
+                    <var:string label:value="When sending mail, add unknown recipients to my"/><br/>
                     <var:popup list="addressBookList" item="item"
                          const:id="addressBookList"
                          const:name="addressBookList"
