@@ -7,6 +7,7 @@ Enhancements
  - SOGo version is now displayed in preferences window (#2612)
  - added the SOGoMaximumSyncWindowSize system default to overwrite the
    maximum number of items returned during an ActiveSync sync operation
+- updated datepicker
 
 Bug fixes
  - fixed saved HTML content of draft when attaching a file

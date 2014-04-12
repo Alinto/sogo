@@ -293,8 +293,11 @@ function setEndDate(newEndDate) {
 function onAdjustTime(event) {
     var endDate = window.getEndDate();
     var startDate = window.getStartDate();
-  
-    if ($(this).readAttribute("id").startsWith("start")) {
+    var input = $(this);
+    if (input.tagName != 'INPUT')
+        input = input.down('input');
+
+    if (input.id.startsWith("start")) {
         // Start date was changed
         if (startDate == null) {
             var oldStartDate = window.getShadowStartDate();
@@ -350,15 +353,15 @@ function initTimeWidgets(widgets) {
     this.timeWidgets = widgets;
 
     if (widgets['start']['date']) {
-        jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true, weekStart: firstDayOfWeek});
-        jQuery(widgets['start']['date']).change(onAdjustTime);
+        jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true, weekStart: firstDayOfWeek})
+            .on('changeDate', onAdjustTime);
         widgets['start']['time'].on("time:change", onAdjustTime);
         widgets['start']['time'].addInterface(SOGoTimePickerInterface);
     }
 
     if (widgets['end']['date']) {
-        jQuery(widgets['end']['date']).closest('.date').datepicker({autoclose: true, weekStart: firstDayOfWeek});
-        jQuery(widgets['end']['date']).change(onAdjustTime);
+        jQuery(widgets['end']['date']).closest('.date').datepicker({autoclose: true, weekStart: firstDayOfWeek})
+            .on('changeDate', onAdjustTime);
         widgets['end']['time'].on("time:change", onAdjustTime);
         widgets['end']['time'].addInterface(SOGoTimePickerInterface);
     }

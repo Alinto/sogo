@@ -1,25 +1,25 @@
 /* -*- Mode: js2-mode; tab-width: 4; c-label-minimum-indentation: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
-	Copyright (C) 2005 SKYRIX Software AG
-	Copyright (C) 2006-2011 Inverse
+  Copyright (C) 2005 SKYRIX Software AG
+  Copyright (C) 2006-2011 Inverse
 
-	This file is part of OpenGroupware.org.
+  This file is part of OpenGroupware.org.
 
-	OGo is free software; you can redistribute it and/or modify it under
-	the terms of the GNU Lesser General Public License as published by the
-	Free Software Foundation; either version 2, or (at your option) any
-	later version.
+  OGo is free software; you can redistribute it and/or modify it under
+  the terms of the GNU Lesser General Public License as published by the
+  Free Software Foundation; either version 2, or (at your option) any
+  later version.
 
-	OGo is distributed in the hope that it will be useful, but WITHOUT ANY
-	WARRANTY; without even the implied warranty of MERCHANTABILITY or
-	FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-	License for more details.
+  OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+  License for more details.
 
-	You should have received a copy of the GNU Lesser General Public
-	License along with OGo; see the file COPYING.  If not, write to the
-	Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-	02111-1307, USA.
+  You should have received a copy of the GNU Lesser General Public
+  License along with OGo; see the file COPYING.  If not, write to the
+  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+  02111-1307, USA.
 */
 
 var dateRegex = /^(([0-9]{2})?[0-9])?[0-9]-[0-9]?[0-9]-[0-9]?[0-9]$/;
@@ -78,38 +78,35 @@ function copyContact(type, email, uid, sn, displayname,
 };
 
 function validateContactEditor() {
-  var rc = true;
+    var rc = true;
 
-  var e = $('mail');
-  if (e.value.length > 0
-      && !emailRE.test(e.value)) {
-      alert(_("invalidemailwarn"));
-      rc = false;
-  }
+    var e = $('mail');
+    if (e.value.length > 0
+        && !emailRE.test(e.value)) {
+        alert(_("invalidemailwarn"));
+        rc = false;
+    }
 
-  e = $('mozillasecondemail');
-  if (e.value.length > 0
-      && !emailRE.test(e.value)) {
-      alert(_("invalidemailwarn"));
-      rc = false;
-  }
-  return rc
+    e = $('mozillasecondemail');
+    if (e.value.length > 0
+        && !emailRE.test(e.value)) {
+        alert(_("invalidemailwarn"));
+        rc = false;
+    }
+    return rc
 }
 
-this.initTimeWidgets = function (widgets) {
-	this.timeWidgets = widgets;
-  var firstDay = new Date();
-  firstDay.setFullYear(1900,0,1);
-  var lastDay = new Date();
-  
-  jQuery(widgets['birthday']['date']).closest('.date').datepicker({autoclose: true,
-                                                                   weekStart: 0,
-                                                                     endDate: lastDay,
-                                                                   startDate: firstDay,
-                                                                setStartDate: lastDay,
-                                                                   startView: 2,
-                                                                    position: "below-shifted-left"});
-};
+function initTimeWidget(input) {
+    var firstDay = new Date();
+    firstDay.setFullYear(1900,0,1);
+    var lastDay = new Date();
+
+    jQuery(input).closest('.date').datepicker({autoclose: true,
+                                               endDate: lastDay,
+                                               startDate: firstDay,
+                                               setStartDate: lastDay,
+                                               startView: 2})
+}
 
 function onDisplaynameKeyDown() {
     var fn = $("displayname");
@@ -269,43 +266,41 @@ function onEmptyCategoryClick(event) {
 }
 
 function initEditorForm() {
-  var tabsContainer = $("editorTabs");
-  var controller = new SOGoTabsController();
-  controller.attachToTabsContainer(tabsContainer);
+    var tabsContainer = $("editorTabs");
+    var controller = new SOGoTabsController();
+    controller.attachToTabsContainer(tabsContainer);
 
-  displaynameChanged = ($("displayname").value.length > 0);
-  $("displayname").onkeydown = onDisplaynameKeyDown;
-  $("sn").onkeyup = onDisplaynameNewValue;
-  $("givenname").onkeyup = onDisplaynameNewValue;
+    displaynameChanged = ($("displayname").value.length > 0);
+    $("displayname").onkeydown = onDisplaynameKeyDown;
+    $("sn").onkeyup = onDisplaynameNewValue;
+    $("givenname").onkeyup = onDisplaynameNewValue;
 
-  $("cancelButton").observe("click", onEditorCancelClick);
-  var submitButton = $("submitButton");
-  if (submitButton) {
-      submitButton.observe("click", onEditorSubmitClick);
-  }
-
-  Event.observe(document, "keydown", onDocumentKeydown);
-
-  if (typeof(gCategories) != "undefined") {
-      regenerateCategoriesMenu();
-  }
-  var catsInput = $("jsonContactCategories");
-  if (catsInput && catsInput.value.length > 0) {
-    var contactCats = $(catsInput.value.evalJSON(false));
-    for (var i = 0; i < contactCats.length; i++) {
-      appendCategoryInput(contactCats[i]);
+    $("cancelButton").observe("click", onEditorCancelClick);
+    var submitButton = $("submitButton");
+    if (submitButton) {
+        submitButton.observe("click", onEditorSubmitClick);
     }
-  }
 
-  var emptyCategory = $("emptyCategory");
-  if (emptyCategory) {
-    emptyCategory.tabIndex = 10000;
-    emptyCategory.observe("click", onEmptyCategoryClick);
-  }
-  
-  var widgets = {'birthday': {'date': $("birthdayDate")}};
-  initTimeWidgets(widgets);
+    Event.observe(document, "keydown", onDocumentKeydown);
 
+    if (typeof(gCategories) != "undefined") {
+        regenerateCategoriesMenu();
+    }
+    var catsInput = $("jsonContactCategories");
+    if (catsInput && catsInput.value.length > 0) {
+        var contactCats = $(catsInput.value.evalJSON(false));
+        for (var i = 0; i < contactCats.length; i++) {
+            appendCategoryInput(contactCats[i]);
+        }
+    }
+
+    var emptyCategory = $("emptyCategory");
+    if (emptyCategory) {
+        emptyCategory.tabIndex = 10000;
+        emptyCategory.observe("click", onEmptyCategoryClick);
+    }
+
+    initTimeWidget($("birthdayDate"));
 }
 
 document.observe("dom:loaded", initEditorForm);
