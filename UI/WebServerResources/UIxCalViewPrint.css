@@ -1,0 +1,125 @@
+
+BODY
+{ 
+  top: 1em;
+  bottom: 1em;
+  right: 1em;
+  left: 1em;
+  overflow:scroll;
+}
+
+.toolbar
+{
+  display:none;
+}
+
+
+#labelTitle
+{
+  width:100%;
+  text-align:left;
+}
+
+
+#printButton
+{
+  font-weight:bold;
+}
+
+DIV#leftSide
+{
+  min-height:370px;
+  max-height:370px;
+  max-width:220px;
+  min-width:220px;
+  float:left;
+}
+
+DIV#rightSide
+{
+  min-height:370px;
+  max-height:370px;
+  min-width:330px;
+  max-width:330px;
+  float:right;
+
+}
+  DIV#rightFrame
+  {
+    min-height:350px;
+    max-height:350px;
+    background-color:#FFFFFF;
+    border-radius:8px;
+    border-top: 1px solid #909090;
+    border-left: 1px solid #909090;
+    border-bottom: 1px solid #FFFFFF;
+    border-right: 1px solid #FFFFFF;
+    margin-top: 12px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1em;
+    padding-left:10px;
+    padding-right:10px;
+    overflow:scroll;
+  }
+
+#dateRangeFrom, #dateRangeTo
+{
+  text-align: right;
+}
+
+/* Overiding the general.css */
+
+TABLE.frame{
+  width:97%;
+  text-align: left;
+  background:#dddddd;
+  border-radius:8px;
+  display:table;
+}
+
+#startingDate, #endingDate
+{
+  width:auto;
+  vertical-align:8px;
+}
+#labelFrom, #labelTo
+{
+  vertical-align:8px;
+}
+
+SPAN.caption 
+{
+  background: -webkit-linear-gradient(bottom, #E6E7E6, #dddddd); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(bottom, #E6E7E6, #dddddd); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(bottom, #E6E7E6, #dddddd); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to bottom, #E6E7E6, #dddddd); /* Standard syntax (must be last) */
+}
+
+
+/******************************/
+
+@media print
+{
+  .no-print, SPAN.caption
+  {
+    display:none;
+  }
+  DIV#rightSide
+  {
+    border:solid red 1px;
+    max-width:100%;
+    max-height:99%;
+    float:none;
+  }
+  DIV#rightFrame
+  {
+  border:solid green 1px;
+    width:100%;
+    height:99%;
+    marging: 0;
+    padding: 0;
+    //border:0;
+    overflow:visible;
+  }
+}

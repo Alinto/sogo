@@ -1,109 +1,111 @@
-<?xml version='1.0' standalone='yes'?>
+<?xml version='1.0'?>
 <!DOCTYPE var:component>
 <var:component
-xmlns="http://www.w3.org/1999/xhtml"
-xmlns:var="http://www.skyrix.com/od/binding"
-xmlns:const="http://www.skyrix.com/od/constant"
-xmlns:uix="OGo:uix"
-xmlns:label="OGo:label"
-className="UIxPageFrame"
-title="name"
-const:popup="YES">
-
-<div>
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:var="http://www.skyrix.com/od/binding"
+  xmlns:const="http://www.skyrix.com/od/constant"
+  xmlns:uix="OGo:uix"
+  xmlns:label="OGo:label"
+  className="UIxPageFrame"
+  const:popup="YES"
+  const:cssFiles="datepicker.css"
+  const:jsFiles="datepicker.js">
   
-<!-- Print settings -->
-  <span class="caption"><var:string label:value="Print Settings" /></span>
-  <table class="frame">
-    <tr>
-      <td>
-        <label><var:string label:"Title">
-          <input type="text" class="textField" name="title" id="title" /></label></td></tr>
-    <tr>
-      <td>
-        <label><var:string label:"Layout">
-          <var:popup list="layoutList" item="item"
-            label:noSelectionString="layoutList_list"
-            string="itemLayoutListText"
-            selection="" /></label></td></tr>
-  </table>
+  <div id="leftSide" class="no-print">
+    <!-- Print settings -->
+    <span class="caption"><var:string label:value="Print Settings" /></span>
+    <table class="frame">
+      <tr>
+        <td style="width: 30%;">
+          <label id="labelTitle"><var:string label:value="Title:" /></label></td>
+        <td>
+          <input type="text" name="title" /></td>
+      </tr>
+      <tr>
+        <td>
+          <label><var:string label:value="Layout:" /></label></td>
+        <td>
+          <var:popup list="languages" item="item"
+          const:id="language"
+          const:name="language"
+          string="languageText"
+          selection="language"
+          label:noSelectionString="choose" /></td>
+      </tr>
+    </table>
     
-<!-- What to print -->
-  <span class="caption"><var:string label:value="What to Print" /></span>
-  <table class="frame">
-    <tr>
-      <td>
-        <label>
-          <input type="checkbox"
-            const:name="selectEvents"
-            const:id="selectEvents"
-            var:checked="printEvents" />
-          <var:string label:value="Events"/></label></td>
-      <td>
-        <label>
-          <input type="checkbox"
-            const:name="selectTasks"
-            const:id="selectTasks"
-            var:checked="printTasks" />
-          <var:string label:value="Tasks"/></label></td></tr>
-    <tr>
-      <td>
-        <label>
-          <var:string label:"Current view">
-          <!-- TODO-Radio button --></label></td></tr>
-    <tr>
-      <td>
-        <label>
-          <var:string label:"Selected events/tasks">
-          <!-- TODO-Radio button --></label></td></tr>
-    <tr>
-      <td>
-        <label>
-          <var:string label:"Custom date range">
-          <!-- TODO-Radio button --></label></td></tr>
-    <tr>
-      <td>
-        <label>
-          <var:string label:"From:">
-          <!-- TODO-Date picker --></label></td></tr>
-    <tr>
-      <td>
-        <label>
-          <var:string label:"To:">
-            <!-- TODO-Date picker --></label></td></tr>
-  </table>
+    <!-- What to print -->
+    <span class="caption"><var:string label:value="What to Print" /></span>
+    <table class="frame">
+      <tr>
+        <td>
+          <label>
+            <input type="checkbox" name="printSelection" value="selectEvents" />
+            <var:string label:value="Events"/></label>
+          <label>
+            <input type="checkbox" name="printSelection" value="selectTasks" />
+            <var:string label:value="Tasks"/></label></td></tr>
+      <tr>
+        <td>
+          <label>
+            <input name="printView" type="radio" />
+            <var:string label:value="Current view" /></label></td></tr>
+      <tr>
+        <td>
+          <label>
+            <input name="printView" type="radio" />
+            <var:string label:value="Selected events and tasks" /></label></td></tr>
+      
+      <tr>
+        <td>
+          <label>
+            <input name="printView" type="radio" />
+            <var:string label:value="Custom date range" /></label></td></tr>
+      <tr>
+        <td id="dateRangeFrom">
+          <label id="labelFrom"><var:string label:value="From:" /></label>
+          <var:component className="UIxDatePicker"
+          const:dateID="startingDate"
+          day="startDay"
+          month="startMonth"
+          year="startYear"
+          label:label="Select starting date"/></td></tr>
+      <tr>
+        <td id="dateRangeTo">
+          <label id="labelTo"><var:string label:value="To:" /></label>
+          <var:component className="UIxDatePicker"
+          const:dateID="endingDate"
+          day="endDay"
+          month="endMonth"
+          year="endYear"
+          label:label="Select ending date"/></td></tr>
+    </table>
     
-<!-- Options -->
-  <span class="caption"><var:string label:value="Options" /></span>
-  <table class="frame">
-    <tr>
-      <td>
-        <label>
-          <input type="checkbox"
-            const:name="selectNoDueDateTasks"
-            const:id="selectNoDueDateTasks"
-            var:checked="printNoDueDateTasks" />
-          <var:string label:value="Tasks with no due date"/></label></td></tr>
-    <tr>
-      <td>
-        <label>
-          <input type="checkbox"
-            const:name="selectCompletedTasks"
-            const:id="selectCompletedTasks"
-            var:checked="printCompletedTasks" />
-          <var:string label:value="Completed tasks"/></label></td></tr>
-    
-  </table>
-
-<!-- Buttons -->
-  <div id="buttons">
-    <a class="button" name="submit" id="submitButton">
-      <span>
-        <var:string label:value="Print" /></span></a>
-    
-    <a class="button" name="cancel" id="cancelButton">
-      <span>
-        <var:string label:value="Cancel"/></span></a>
+    <!-- Options -->
+    <span class="caption"><var:string label:value="Options" /></span>
+    <table class="frame">
+      <tr>
+        <td>
+          <label>
+            <input type="checkbox" name="printOptions" value="selectNoDueDateTasks" />
+            <var:string label:value="Tasks with no due date" /></label></td></tr>
+      <tr>
+        <td>
+          <label>
+            <input type="checkbox" name="printOptions" value="selectCompletedTasks" />
+            <var:string label:value="Completed tasks" /></label></td></tr>
+    </table>
   </div>
-</div>
-
+  <div id="rightSide">
+    <div id="rightFrame">
+      <p>Lorem ipsum dolor sit amet, facilisis eros non lacus interdum lectus, sed vel bibendum lorem sagittis velit enim, amet placerat, placerat lacus, feugiat non donec auctor. Metus non sollicitudin, et pulvinar, nam sit euismod, dolor arcu est neque, non velit maecenas cras vestibulum. Sit illum, libero imperdiet amet velit cursus rerum lorem, risus morbi orci commodo lectus quam phasellus. Wisi morbi, a ac, adipiscing integer sapien nec dignissim a, venenatis mi placerat id ut, vehicula cursus nam sit praesent pharetra curabitur. Id nonummy. Sollicitudin sit mattis. Nec nunc pede arcu nullam, sit in amet dui erat, aliquam in tortor semper nulla, non sem purus consectetuer aliquam. Sollicitudin sagittis nulla id placerat nunc, volutpat condimentum tempus viverra, mi molestie nulla, ac est egestas nunc lacus purus. Tincidunt libero nam montes felis volutpat, placerat leo nisl ligula urna lacinia, wisi phasellus velit suscipit. Sagittis amet quis tellus lorem, tortor arcu ac, sollicitudin varius dolor, pharetra sit, pellentesque nulla duis. Dolor scelerisque maecenas ultrices, aliquet adipiscing augue semper egestas nec vivamus, nunc amet ullamcorper id.
+        Dictum id quis nisl quidem, fugit sapien vehicula per. Ultricies sit adipiscing vel ullamcorper ut consequat, et arcu dictum tortor semper cursus. Vestibulum lorem vestibulum pretium quisque. Vel ac nisl duis enim, eu habitasse cras ipsum lectus, elit blandit vitae. Volutpat congue eget curabitur consequat sollicitudin sed, quis dictum consectetuer lectus integer felis. Eget nibh ac ipsum metus magna, ut velit sed ac, quam adipiscing, velit nunc mollis in accumsan ut vestibulum. Ac massa tempor diam metus scelerisque, senectus sem habitasse vel orci semper, vulputate leo.
+        Suspendisse erat dolor vestibulum, curabitur lacinia ac suspendisse fringilla vestibulum. Viverra nisl in convallis, ac class nibh dui tincidunt vestibulum fusce. Platea vitae non. Ipsum neque justo, urna lacus. Nostra adipiscing cras placerat vestibulum vestibulum ultrices, justo turpis ac urna et auctor. Integer aliquam enim, felis aliquam nostra sem, arcu tempus pede tortor ullamcorper enim, suspendisse luctus id enim leo tincidunt. Enim pede sed urna sed aenean aliquam. Sagittis laoreet mattis morbi incidunt, volutpat et gravida duis sed. Ornare sollicitudin in.
+        Tincidunt justo. Diam velit dolor, mauris volutpat nullam dolor, laoreet pede eget pellentesque gravida, sollicitudin diam nam ultrices eleifend integer, cras elementum libero pellentesque volutpat donec. Tincidunt mi in sem. Mauris elementum odio tortor. Suscipit lorem sapien enim viverra nam, sed ut nunc, turpis vitae nisl. Aliquam ullamcorper at suscipit, lacinia velit nec ut lorem sed. Faucibus ac leo neque fringilla erat felis. Venenatis mauris erat, justo laoreet amet sociis.</p>
+    </div>
+    <div id="printButtons" class="no-print">
+      <a class="button" name="print" id="printButton">
+        <span><var:string label:value="Print" /></span></a>
+      <a class="button" name="cancel" id="cancelButton">
+        <span><var:string label:value="Cancel"/></span></a>
+    </div>

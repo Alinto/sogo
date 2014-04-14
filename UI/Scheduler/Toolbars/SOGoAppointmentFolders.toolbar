@@ -38,7 +38,7 @@
       image = "month-view.png";
       tooltip = "Switch to month view"; } ),
   ( { link = "#";
-      onclick = "";
+      onclick = "return printView();";
       cssClass = "tbicon_print single-window-not-conditional";
       image = "tb-mail-print-flat-24x24.png";
       label = "Print View";
