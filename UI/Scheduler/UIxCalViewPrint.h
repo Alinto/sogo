@@ -1,8 +1,8 @@
 /* UIxCalView.h - this file is part of SOGo
  *
- * Copyright (C) 2006-2009 Inverse inc.
+ * Copyright (C) 2006-2014 Inverse inc.
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Alexandre Cloutier <acloutier@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +20,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#import <SOGoUI/UIxComponent.h>
+#include <SOGoUI/UIxComponent.h>
 
 @interface UIxCalViewPrint : UIxComponent
 {
-  
+  id item;
 }
 
 @end

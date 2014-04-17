@@ -1,4 +1,5 @@
 
+/******  Window & layouts ******/
 BODY
 { 
   top: 1em;
@@ -9,40 +10,14 @@ BODY
 }
 
 .toolbar
-{
-  display:none;
-}
-
-
-#labelTitle
-{
-  width:100%;
-  text-align:left;
-}
-
-
-#printButton
-{
-  font-weight:bold;
-}
-
-DIV#leftSide
-{
-  min-height:370px;
-  max-height:370px;
-  max-width:220px;
-  min-width:220px;
-  float:left;
-}
+{ display:none;}
 
 DIV#rightSide
 {
-  min-height:370px;
-  max-height:370px;
-  min-width:330px;
-  max-width:330px;
-  float:right;
-
+  position: absolute;
+  left:230px;
+  height:370px;
+  width:330px;
 }
   DIV#rightFrame
   {
@@ -60,22 +35,41 @@ DIV#rightSide
     margin-bottom: 1em;
     padding-left:10px;
     padding-right:10px;
-    overflow:scroll;
+    overflow-y:scroll;
+    overflow-x:hidden;
   }
+
+DIV#leftSide
+{
+  position: absolute;
+  height:370px;
+  width:220px;
+}
+
+DIV.colorBox
+{ display: inline-block; }
+
+TD DIV.colorBox, TD DIV.colorBox:hover
+{ border-color: #fff; }
+
+TABLE#eventsList .colorBox
+{ margin-right: 4px; }
+
+
+/******************************/
+/******  Print settings *******/
+
+#title
+{
+  width:120px;
+}
+
+/******************************/
+/******  What to print ********/
 
 #dateRangeFrom, #dateRangeTo
 {
   text-align: right;
-}
-
-/* Overiding the general.css */
-
-TABLE.frame{
-  width:97%;
-  text-align: left;
-  background:#dddddd;
-  border-radius:8px;
-  display:table;
 }
 
 #startingDate, #endingDate
@@ -83,9 +77,49 @@ TABLE.frame{
   width:auto;
   vertical-align:8px;
 }
+
 #labelFrom, #labelTo
 {
   vertical-align:8px;
+}
+
+/************************/
+/******  Buttons ********/
+
+#printButton
+{
+  font-weight:bold;
+}
+
+/**************************/
+/******  RightSide ********/
+
+.divEventsPreview
+{
+  border:solid black 2px;
+  border-radius:5px;
+  margin-top:4px;
+  margin-bottom:4px;
+}
+.eventsPreview
+{
+
+}
+
+#rightFrameEvents{
+
+}
+
+
+/*******************************************/
+/******  Overriding the general.css ********/
+
+TABLE.frame{
+  width:97%;
+  text-align: left;
+  background:#dddddd;
+  border-radius:8px;
+  display:table;
 }
 
 SPAN.caption 
@@ -96,8 +130,8 @@ SPAN.caption
   background: linear-gradient(to bottom, #E6E7E6, #dddddd); /* Standard syntax (must be last) */
 }
 
-
-/******************************/
+/**************************************************/
+/******  Calling print(); from the browser ********/
 
 @media print
 {
@@ -107,19 +141,15 @@ SPAN.caption
   }
   DIV#rightSide
   {
-    border:solid red 1px;
-    max-width:100%;
-    max-height:99%;
-    float:none;
+    position:absolute;
+    top:5px;
+    left:5px;
+    width:100%;
+    height:100%;
   }
   DIV#rightFrame
   {
-  border:solid green 1px;
-    width:100%;
-    height:99%;
-    marging: 0;
-    padding: 0;
-    //border:0;
+    border: none;
     overflow:visible;
   }
 }

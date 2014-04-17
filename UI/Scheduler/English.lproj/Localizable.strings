@@ -145,6 +145,29 @@
 "Hide already accepted and rejected appointments" = "Hide already accepted and rejected appointments";
 "Show already accepted and rejected appointments" = "Show already accepted and rejected appointments";
 
+/* Print view */
+"LIST" = "List";
+"WEEK" = "Weekly";
+"MONTH" = "Monthly";
+"Print Settings" = "Print Settings";
+"Title:" = "Title:";
+"Layout:" = "Layout:";
+"What to Print" = "What to Print";
+"Events" = "Events";
+"Tasks" = "Tasks";
+"Current view" = "Current view";
+"Selected events and tasks" = "Selected events and tasks";
+"Custom date range" = "Custom date range";
+"From:" = "From:";
+"To:" = "To:";
+"Options" = "Options";
+"Locale" = "Locale";
+"GMT" = "GMT";
+"Tasks with no due date" = "Tasks with no due date";
+"Completed tasks" = "Completed tasks";
+"Display time:" = "Display time:";
+
+
 
 /* Appointments */
 

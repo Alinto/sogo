@@ -1,8 +1,8 @@
 /* UIxCalView.m - this file is part of SOGo
  *
- * Copyright (C) 2006-2009 Inverse inc.
+ * Copyright (C) 2006-2014 Inverse inc.
  *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Author: Alexandre Cloutier <acloutier@inverse.ca>
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,63 @@
  */
 
 #import <Foundation/NSString.h>
-#import "UIxCalViewPrint.h"
+#import <Foundation/NSArray.h>
 
+#import <UIxCalViewPrint.h>
+
+static NSArray *layoutItems = nil;
 
 @implementation UIxCalViewPrint
+
++ (void) initialize
 {
-  
+  if (!layoutItems)
+  {
+    layoutItems = [NSArray arrayWithObjects: @"LIST", @"WEEK", @"MONTH", nil];
+    [layoutItems retain];
+  }
+
 }
+- (id) init
+{
+  item = nil;
+  return [super init];
+}
+
+- (void) dealloc
+{
+  [item release];
+  [super dealloc];
+}
+
+/****************************************************************/
+/* Interfacing; populating the popup list for the print layouts */
+
+- (void) setItem: (NSString *) newItem
+{
+  ASSIGN (item, newItem);
+}
+
+- (NSString *) item
+{
+  return item;
+}
+
+- (NSArray *) printLayoutList
+{
+  return layoutItems;
+}
+
+- (NSString *) itemPrintLayoutText
+{
+  return [self labelForKey: [NSString stringWithFormat: item]];
+}
+
+- (NSString *) layoutSelectedByUser
+{
+  return nil;
+}
+/******************************************************************/
+/*  */
+
 @end
