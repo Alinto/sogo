@@ -19,7 +19,7 @@
         <td style="width: 30%;">
           <label id="labelTitle"><var:string label:value="Title:" /></label></td>
         <td>
-          <input type="text" id="title" /></td>
+          <input type="text" id="inputFieldTitle" value="" /></td>
       </tr>
       <tr>
         <td>
@@ -45,18 +45,18 @@
       <tr>
         <td>
           <label>
-            <input type="radio" name="printView" value="currentViewSelected" checked="true" onChange="printDateCheck();"/>
+            <input type="radio" name="printView" value="currentViewSelected" checked="true" onChange="onPrintDateCheck();"/>
             <var:string label:value="Current view" /></label></td></tr>
       <tr>
         <td>
           <label>
-            <input type="radio" name="printView" value="eventsTasksSelected" onChange="printDateCheck();"/>
+            <input type="radio" name="printView" value="eventsTasksSelected" onChange="onPrintDateCheck();"/>
             <var:string label:value="Selected events and tasks" /></label></td></tr>
       
       <tr>
         <td>
           <label>
-            <input type="radio" name="printView" id="customDate" value="customDateSelected" onChange="printDateCheck();" />
+            <input type="radio" name="printView" id="customDate" value="customDateSelected" onChange="onPrintDateCheck();" />
             <var:string label:value="Custom date range" /></label></td></tr>
       <tr>
         <td id="dateRangeFrom" name="dateRange">
@@ -86,10 +86,10 @@
           <var:string label:value="Display time:" /></td>
         <td>
           <label>
-            <input type="radio" name="printTime" value="localTimeSelected" onChange="displayTimeCheck(this);" checked="true"/>
+            <input type="radio" name="printTimeFormat" value="localTimeSelected" onChange="onDisplayTimeFormatCheck();" checked="true"/>
             <var:string label:value="Locale" /></label>
           <label>
-            <input type="radio" name="printTime" value="gmtTimeSelected" onChange="displayTimeCheck(this);"/>
+            <input type="radio" name="printTimeFormat" value="gmtTimeSelected" onChange="onDisplayTimeFormatCheck();"/>
             <var:string label:value="GMT" /></label></td></tr>
       <tr>
         <td colspan="2">
@@ -97,20 +97,20 @@
       <tr>
         <td>
           <label>
-            <input type="checkbox" name="printOptions" value="selectNoDueDateTasks" checked="true" />
+            <input type="checkbox" name="printOptions" id="selectNoDueDateTasks" checked="true" onChange="onPrintNoDueDateTasksCheck(this);" />
             <var:string label:value="Tasks with no due date" /></label></td></tr>
       <tr>
         <td>
           <label>
-            <input type="checkbox" name="printOptions" value="selectCompletedTasks" checked="true" />
+            <input type="checkbox" name="printOptions" id="selectCompletedTasks" checked="true" onChange="onPrintCompletedTasksCheck(this);" />
             <var:string label:value="Completed tasks" /></label></td></tr>
     </table>
   </div>
   <div id="rightSide">
     <div id="rightFrame">
-      <span id="rightFrameTitle"><!-- Spacer --></span>
-      <span id="rightFrameEvents"><!-- Spacer --></span>
-      <span id="rightFrameTasks"><!-- Spacer --></span>
+      <div id="rightFrameTitle"><!-- Spacer --></div>
+      <div id="rightFrameEvents"><!-- Spacer --></div>
+      <div id="rightFrameTasks"><!-- Spacer --></div>
     </div>
     <div id="printButtons" class="no-print">
       <a class="button" name="print" id="printButton">

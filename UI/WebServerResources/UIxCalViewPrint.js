@@ -24,52 +24,60 @@
 
 /******************************** Global variables *******************************************/
 var firstDayOfWeek = window.opener.firstDayOfWeek;
-var displayTime;
-/*********************************************************************************************/
+var displayTime=true;
+var printCompletedTasks=1;
+var printNoDueDateTasks=1;
+var eventsBlocks;
+var currentView;
+var sd, ed;
 
-this.onAdjustTime = function(event) {
-	onAdjustDueTime(event);
+/******************************************* Ajust Window position from his size ***********************************************************/
+
+function ajustWindow(width, height) {
+  var left = (screen.width/2)-(width/2);
+  var top = (screen.height/2)-(height/2);
+  window.moveTo(left, top);
 }
 
-this.onAdjustDueTime = function(event) {
-  /*var dateDelta = (window.getStartDate().valueOf() - window.getShadowStartDate().valueOf());
-  var newDueDate = new Date(window.getDueDate().valueOf() + dateDelta);
-  window.setDueDate(newDueDate);*/
+/****************************************** Ajax Requests, callbacks & events/tasks drawings ***************************************************/
 
-	window.timeWidgets['start']['date'].updateShadowValue();
-}
-
-this.initTimeWidgets = function (widgets) {
-	this.timeWidgets = widgets;
-  
-  jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true, weekStart: 0});
-  jQuery(widgets['end']['date']).closest('.date').datepicker({autoclose: true, weekStart: 0});
-  
-  //jQuery(widgets['start']['date']).change(onAdjustTime);
-  
-  /*jQuery(widgets['startingDate']['date']).closest('.date').datepicker({autoclose: true,
-                                                                   weekStart: 0,
-                                                                     endDate: lastDay,
-                                                                   startDate: firstDay,
-                                                                setStartDate: lastDay,
-                                                                   startView: 2,
-                                                                    position: "below-shifted-left"});*/
-}
-function refreshCalendarDisplay(){
+function refreshCalendarDisplay() {
     refreshCalendarEvents();
     refreshCalendarTasks();
 }
 
-function refreshCalendarTasks(){
+function updatePreviewDisplay() {
+  var url = ApplicationBaseURL + "/" + currentView;
+
+  if (document.dayDisplayAjaxRequest) {
+    document.dayDisplayAjaxRequest.aborted = true;
+    document.dayDisplayAjaxRequest.abort();
+  }
+  document.dayDisplayAjaxRequest
+  = triggerAjaxRequest(url, previewDisplayCallback,
+                       {"startDate": sd, "endDate": ed });
   
+  return false;
+}
+
+function previewDisplayCallback(http) {
+  if (http.readyState == 4
+      && http.status == 200) {
+    document.dayDisplayAjaxRequest = null;
+    $("rightFrameEvents").update(http.responseText);
+
+    if ($("printLayoutList").value == "3")
+      _drawMonthEvents(eventsBlocks[2], eventsBlocks[0]);
+    else
+      _drawCalendarEvents(eventsBlocks[2], eventsBlocks[0]);
+  }
+  else
+    log ("calendarDisplayCallback Ajax error ("+ http.readyState + "/" + http.status + ")");
 }
 
 function refreshCalendarEvents() {
   var todayDate = new Date();
-  var sd;
-  var ed;
   var currentDay = window.parentvar("currentDay");
-  var currentView = window.parentvar("currentView");
   
   if (!currentDay)
     currentDay = todayDate.getDayString();
@@ -112,24 +120,35 @@ function refreshCalendarEvents() {
                        {"startDate": sd, "endDate": ed});
 }
 
+function refreshCalendarTasks(){
+  if (document.tasksListAjaxRequest) {
+    document.tasksListAjaxRequest.aborted = true;
+    document.tasksListAjaxRequest.abort();
+  }
+  
+  url = window.parentvar("ApplicationBaseURL") + "/" + "taskslist?show-completed=" + printCompletedTasks
+                                                     + "&asc=" + sorting["task-ascending"]
+                                                     + "&sort=" + sorting["task-attribute"];
+  var tasksList = window.parent$("tasksList");
+  var selectedIds;
+  if (tasksList)
+    selectedIds = tasksList.getSelectedNodesId();
+  else
+    selectedIds = null;
+  
+  document.tasksListAjaxRequest = triggerAjaxRequest(url, refreshCalendarTasksListCallback, selectedIds);
+}
+
 function refreshCalendarEventsCallback(http) {
   if (http.readyState == 4
       && http.status == 200) {
     if (http.responseText.length > 0) {
-      var layout = $("printLayoutList").value;
-      var eventsBlocks = http.responseText.evalJSON(true);
+      eventsBlocks = http.responseText.evalJSON(true);
       $("rightFrameEvents").innerHTML = "";
-      // 0 == listLayout
-      if (layout == "0"){
-        _drawListEvents(eventsBlocks);
-      }
-      // 1 == weekLayout
-      if (layout == "1"){
-        _drawWeekEvents(eventsBlocks);
-      }
-      // 2 == monthLayout
-      if (layout == "2"){
-        _drawMonthEvents(eventsBlocks);
+      if ($("printLayoutList").value == "0")
+        _drawEventsCells();
+      else {
+        updatePreviewDisplay();
       }
     }
   }
@@ -137,31 +156,75 @@ function refreshCalendarEventsCallback(http) {
     log("AJAX error when refreshing calendar events");
 }
 
-function _drawListEvents(eventsBlocks) {
-  for(var i=0; i<eventsBlocks[0].length; i++)
+function refreshCalendarTasksListCallback(http) {
+  if (http.readyState == 4
+      && http.status == 200) {
+    if (http.responseText.length > 0) {
+      var tasksBlocks = http.responseText.evalJSON(true);
+      $("rightFrameTasks").innerHTML = "";
+      var layout = $("printLayoutList").value;
+      if (layout == 0)
+        _drawTasksCells(tasksBlocks);
+      else
+        _drawTasksList(tasksBlocks);
+    }
+  }
+  else
+    log("AJAX error when refreshing calendar events");
+}
+
+function _drawEventsCells() {
+  for(var i=0; i < eventsBlocks[0].length; i++)
   {
     var event = _parseEvent(eventsBlocks[0][i]);
     $("rightFrameEvents").innerHTML += event;
   }
 }
 
-function _parseEvent(event)
-{
-  var startDate = new Date(event[5] *1000);
-  var endDate = new Date(event[6] *1000);
-	var parsedEvent;
-	parsedEvent = "<div class=divEventsPreview><table>";
-  parsedEvent += "<tr><td><b>"+ event[4] +"</b></td></tr>";
-  if (displayTime)
-    parsedEvent += "<tr><td>"+ startDate.toLocaleString() + " - " + endDate.toLocaleString() + "</td></tr>";
-  else
-    parsedEvent += "<tr><td>"+ startDate.toGMTString() + "<br />" + endDate.toGMTString() + "</td></tr>";
-  parsedEvent += "<tr><td>Calendar : " + event[2] + "</td></tr>";
-  parsedEvent += "</table></div>";
-	return parsedEvent;
+function _drawTasksCells(tasksBlocks) {
+  for(var i=0; i < tasksBlocks.length; i++)
+  {
+    if (!(printNoDueDateTasks == 0 && tasksBlocks[i][5] == null)) {
+      var task = _parseTask(tasksBlocks[i]);
+      $("rightFrameTasks").innerHTML += task;
+    }
+  }
 }
 
-function _drawMonthCalendarEvents(events, eventsData) {
+function _drawTasksList(tasksBlocks) {
+  var tasksList;
+  tasksList = "<div><ul>";
+  for(var i=0; i < tasksBlocks.length; i++)
+  {
+    if (!(printNoDueDateTasks == 0 && tasksBlocks[i][5] == null)) {
+      tasksList += "<li>" + tasksBlocks[i][4] + "</li>";
+    }
+  }
+  tasksList += "</ul></div>";
+  $("rightFrameTasks").innerHTML = tasksList;
+}
+
+function _drawCalendarEvents(events, eventsData) {
+  var daysView = $("daysView");
+  var subdivs = daysView.childNodesWithTag("div");
+  for (var i = 0; i < subdivs.length; i++) {
+    var subdiv = subdivs[i];
+    if (subdiv.hasClassName("days")) {
+      var days = subdiv.childNodesWithTag("div");
+      for (var j = 0; j < days.length; j++) {
+        var parentDiv = days[j].childNodesWithTag("div")[0];
+        for (var k = 0; k < events[j].length; k++) {
+          var eventRep = events[j][k];
+          var nbr = eventRep.nbr;
+          var eventCell = newEventDIV(eventRep, eventsData[nbr]);
+          parentDiv.appendChild(eventCell);
+        }
+      }
+    }
+  }
+}
+
+function _drawMonthEvents(events, eventsData) {
   var daysView = $("monthDaysView");
   var days = daysView.childNodesWithTag("div");
   for (var i = 0; i < days.length; i++) {
@@ -170,67 +233,127 @@ function _drawMonthCalendarEvents(events, eventsData) {
       var eventRep = events[i][j];
       var nbr = eventRep.nbr;
       var eventCell = newMonthEventDIV(eventRep, eventsData[nbr]);
-      parentDiv.appendChild(eventCell);
+      parentDiv.innerHTML += eventCell;
     }
   }
 }
 
-/*********************** Input Field, Checkboxes, Radio and listMenu *********************************/
-
-function onInputTitle(event){
-  var titleValue = $("title").value;
-  if (titleValue)
-    document.getElementById("rightFrameTitle").innerHTML = titleValue + "<br />";
+function newMonthEventDIV(eventRep, event) {
+  var eventText;
+  if (event[8]) // all-day event
+    eventText = event[4];
   else
-    document.getElementById("rightFrameTitle").innerHTML = titleValue;
+    eventText = "<span>" + eventRep.starthour + " - " + event[4] + "</span>";
+
+  return eventText;
 }
 
-function onPrintLayoutListChange(event) {
-  // TODO : Common filtering; what to display on the view
+function _parseEvent(event) {
+  var parsedEvent;
+  var startDate = new Date(event[5] *1000);
+  var endDate = new Date(event[6] *1000);
+	parsedEvent = "<div class=divEventsPreview><table>";
+  parsedEvent += "<tr><td><b>"+ event[4] +"</b></td></tr>";
+  if (displayTime)
+    parsedEvent += "<tr><td>"+ startDate.toLocaleString() + " - " + endDate.toLocaleString() + "</td></tr>";
+  else
+    parsedEvent += "<tr><td>"+ startDate.toGMTString() + "<br />" + endDate.toGMTString() + "</td></tr>";
+  parsedEvent += "<tr><td><var:string label:value='Calendar: ' />" + event[2] + "</td></tr>";
+  parsedEvent += "</table></div>";
+	return parsedEvent;
+}
+
+function _parseTask(task) {
+  var parsedTask;
+  var dueDate;
   
-  // legend for the events display; 0=list, 1=week, 2=month
+  parsedTask = "<div class=divTasksPreview><table>";
+  if (task[12] == "overdue")
+    parsedTask += "<tr><td><span class=\"overdueTasks\"><b>"+ task[4] +"</b></span></td></tr>";
+  else if (task[12] == "completed") {
+    parsedTask += "<tr><td><b><span class=\"completedTasks\">"+ task[4] +"</b></span></td></tr>";
+  }
+  else
+    parsedTask += "<tr><td><b>"+ task[4] +"</b></td></tr>";
+  
+  if (task[5] != null) {
+    dueDate = new Date(task[5] *1000);
+    if (displayTime)
+      parsedTask += "<tr><td class=\"EventsTasksDate\">"+ dueDate.toLocaleString() + "</td></tr>";
+    else
+      parsedTask += "<tr><td class=\"EventsTasksDate\">"+ dueDate.toGMTString() + "</td></tr>";
+  }
+  parsedTask += "<tr><td><var:string label:value='Calendar: ' />" + task[2] + "</td></tr>";
+  parsedTask += "</table></div>";
+  
+  return parsedTask;
+}
+
+/*********************** Input Field, Checkboxes, Radio and listMenu *********************************/
+
+function onInputTitleChange(event){
+  var inputFieldTitle = $("inputFieldTitle").value;
+  if (inputFieldTitle)
+    document.getElementById("rightFrameTitle").innerHTML = inputFieldTitle + "<br />";
+  else
+    document.getElementById("rightFrameTitle").innerHTML = inputFieldTitle;
+}
+
+function onPrintLayoutListChange() {
+  var selectedLayout = $("printLayoutList").value;
+  var parentView = window.parentvar("currentView");
+  switch(selectedLayout) {
+    case "0": // List view
+      window.resizeTo(660,500);
+      ajustWindow(660,500);
+      $("rightSide").style.width = "390px";
+      currentView = parentView;
+      break;
+      
+    case "1": // Day view
+      window.resizeTo(660,500);
+      ajustWindow(660,500);
+      $("rightSide").style.width = "390px";
+      currentView = "dayview";
+      break;
+      
+    case "2": // Week view
+      window.resizeTo(1010,500);
+      ajustWindow(1010,500);
+      $("rightSide").style.width = "740px";
+      currentView = "weekview";
+      break;
+      
+    case "3": // Month view
+      window.resizeTo(1010,500);
+      ajustWindow(1010,500);
+      $("rightSide").style.width = "740px";
+      currentView = "monthview";
+      break;
+  }
   
   refreshCalendarDisplay();
 }
 
-function initializeLayoutList() {
-  var printLayoutList = $("printLayoutList");
-  var title = $("title");
-  if (printLayoutList) {
-    onPrintLayoutListChange();
-    printLayoutList.observe("change", onPrintLayoutListChange);
-    
-  }
-  if (title){
-    title.observe("change", onInputTitle);
-  }
+function onEventsCheck(checkBox) {
+  if(checkBox.checked)
+    document.getElementById("rightFrameEvents").style.display = 'block';
+  else
+    document.getElementById("rightFrameEvents").style.display = 'none';
 }
 
 function onTasksCheck(checkBox) {
-  if (checkBox) {
-    var printOptions = document.getElementsByName("printOptions");
-    for (var i = 0; i < printOptions.length; i++)
-      if (printOptions[i] != checkBox)
-        printOptions[i].disabled = !checkBox.checked;
+  var printOptions = document.getElementsByName("printOptions");
+  for (var i = 0; i < printOptions.length; i++)
+    printOptions[i].disabled = !checkBox.checked;
     
-    if(checkBox.checked)
-      document.getElementById("rightFrameTasks").style.display = 'block';
-    else
-      document.getElementById("rightFrameTasks").style.display = 'none';
-  }
+  if(checkBox.checked)
+    document.getElementById("rightFrameTasks").style.display = 'block';
+  else
+    document.getElementById("rightFrameTasks").style.display = 'none';
 }
 
-function onEventsCheck(checkBox) {
-  if (checkBox){
-    if(checkBox.checked)
-      document.getElementById("rightFrameEvents").style.display = 'block';
-    else
-      document.getElementById("rightFrameEvents").style.display = 'none';
-  }
-    
-}
-
-function printDateCheck() {
+function onPrintDateCheck() {
   var dateRange = document.getElementsByName("dateRange");
   var customDate = document.getElementById("customDate");
   for (var i = 0; i < dateRange.length; i++)
@@ -238,15 +361,52 @@ function printDateCheck() {
       dateRange[i].children[1].children[0].disabled = !customDate.checked;
 }
 
-function displayTimeCheck(){
-  var radioButtons = document.getElementsByName("printTime");
-  if (radioButtons[0].checked)
-    displayTime = true;
-  else
-    displayTime = false;
-
+function onDisplayTimeFormatCheck(){
+  var radioTimeFormat = document.getElementsByName("printTimeFormat");
+  displayTime = (radioTimeFormat[0].checked ? true : false);
   refreshCalendarDisplay();
 }
+
+function onPrintCompletedTasksCheck(checkBox) {
+  printCompletedTasks = (checkBox.checked ? 1 : 0);
+  refreshCalendarTasks();
+}
+
+function onPrintNoDueDateTasksCheck(checkBox) {
+  printNoDueDateTasks = (checkBox.checked ? 1 : 0);
+  refreshCalendarTasks();
+}
+
+/************** Date picker functions *************/
+this.initTimeWidgets = function (widgets) {
+	this.timeWidgets = widgets;
+  
+  jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true, weekStart: 0});
+  jQuery(widgets['end']['date']).closest('.date').datepicker({autoclose: true, weekStart: 0});
+  
+  //jQuery(widgets['start']['date']).change(onAdjustTime);
+  
+  /*jQuery(widgets['startingDate']['date']).closest('.date').datepicker({autoclose: true,
+   weekStart: 0,
+   endDate: lastDay,
+   startDate: firstDay,
+   setStartDate: lastDay,
+   startView: 2,
+   position: "below-shifted-left"});*/
+}
+
+this.onAdjustTime = function(event) {
+	onAdjustDueTime(event);
+}
+
+this.onAdjustDueTime = function(event) {
+  /*var dateDelta = (window.getStartDate().valueOf() - window.getShadowStartDate().valueOf());
+   var newDueDate = new Date(window.getDueDate().valueOf() + dateDelta);
+   window.setDueDate(newDueDate);*/
+  
+	window.timeWidgets['start']['date'].updateShadowValue();
+}
+/****************************************************/
 
 /******************************* Buttons ***********************************************/
 
@@ -263,16 +423,28 @@ function onPrintClick(event) {
 
 function init() {
   
+  initializePrintSettings();
+  initializeWhatToPrint();
+  //initializeOptions();
   $("cancelButton").observe("click", onPrintCancelClick);
   $("printButton").observe("click", onPrintClick);
   
+  onPrintLayoutListChange();
+}
+
+function initializePrintSettings() {
+  $("inputFieldTitle").observe("change", onInputTitleChange);
+  $("printLayoutList").observe("change", onPrintLayoutListChange);
+}
+
+function initializeWhatToPrint() {
   var widgets = {'start': {'date': $("startingDate")},
                  'end':   {'date': $("endingDate")}};
   initTimeWidgets(widgets);
-  printDateCheck();
-  displayTimeCheck();
-  initializeLayoutList();
-  refreshCalendarDisplay();
+  onPrintDateCheck();
 }
+
+/*function initializeOptions() {
+}*/
 
 document.observe("dom:loaded", init);
