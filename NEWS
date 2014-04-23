@@ -20,6 +20,7 @@ Bug fixes
  - fixed wrong generation of weekly repetitive events with ActiveSync (#2654)
  - fixed incorrect XML data conversion with ActiveSync (#2695)
  - fixed display of events having a category with HTML entities (#2703)
+ - fixed display of images in CSS background (#2437)
 
 2.2.3 (2014-04-03)
 ------------------

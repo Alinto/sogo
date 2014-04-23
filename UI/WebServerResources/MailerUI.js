@@ -1260,7 +1260,7 @@ function configureLoadImagesButton() {
         return;
     }
     var content = $("messageContent");
-    var unsafeElements = content.select('[unsafe-src], [unsafe-data], [unsafe-classid], [unsafe-background]');
+    var unsafeElements = content.select('[unsafe-src], [unsafe-data], [unsafe-classid], [unsafe-background], [unsafe-style]');
     if (unsafeElements.length == 0) {
         loadImagesButton.setStyle({ display: 'none' });
     }
@@ -1560,7 +1560,7 @@ function loadRemoteImages() {
     var content = $("messageContent");
     if (content.hiddenElements) {
         $(content.hiddenElements).each(function(element) {
-            ['src', 'data', 'classid', 'background'].each(function(attr) {
+            ['src', 'data', 'classid', 'background', 'style'].each(function(attr) {
                 var unsafeAttr = element.readAttribute('unsafe-' + attr);
                 if (unsafeAttr) {
                     log ('unsafe ' +  attr + ': ' + unsafeAttr);
