@@ -154,7 +154,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   // Other, less important fields
   if ((o = [self birthday]))
-    [s appendFormat: @"<Birthday xmlns=\"Contacts:\">%@</Birthday>", [o activeSyncRepresentationWithoutSeparatorsInContext: context]];
+    [s appendFormat: @"<Birthday xmlns=\"Contacts:\">%@</Birthday>", [o activeSyncRepresentationInContext: context]];
 
   if ((o = [self note]))
     {
