@@ -33,7 +33,7 @@ static NSArray *layoutItems = nil;
 {
   if (!layoutItems)
   {
-    layoutItems = [NSArray arrayWithObjects: @"LIST", @"DAY", @"WEEK", @"MONTH", nil];
+    layoutItems = [NSArray arrayWithObjects: @"LIST", @"DAY", @"WEEK", nil];
     [layoutItems retain];
   }
 

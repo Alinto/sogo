@@ -6,44 +6,21 @@ BODY
   bottom: 1em;
   right: 1em;
   left: 1em;
-  overflow:scroll;
+  overflow:auto;
 }
 
 .toolbar
 { display:none;}
 
-DIV#rightSide
-{
-  position: absolute;
-  left:230px;
-  height:370px;
-  width:660px;
-}
-  DIV#rightFrame
-  {
-    min-height:350px;
-    max-height:350px;
-    background-color:#FFFFFF;
-    border-radius:8px;
-    border-top: 1px solid #909090;
-    border-left: 1px solid #909090;
-    border-bottom: 1px solid #FFFFFF;
-    border-right: 1px solid #FFFFFF;
-    margin-top: 12px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 1em;
-    padding-left:10px;
-    padding-right:10px;
-    overflow-y:scroll;
-    overflow-x:hidden;
-  }
-
 DIV#leftSide
 {
   position: absolute;
-  height:370px;
-  width:220px;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  max-width:220px;
+  overflow-y:auto;
 }
 
 DIV.colorBox
@@ -86,6 +63,12 @@ TABLE#eventsList .colorBox
 /************************/
 /******  Buttons ********/
 
+#printButtons {
+  position:absolute;
+  bottom:0;
+  right:0;
+}
+
 #printButton
 {
   font-weight:bold;
@@ -101,14 +84,6 @@ TABLE#eventsList .colorBox
   margin-top:4px;
   margin-bottom:4px;
 }
-.eventsPreview
-{
-
-}
-
-#rightFrameEvents{
-
-}
 
 .overdueTasks {
   color:red;
@@ -121,6 +96,80 @@ TABLE#eventsList .colorBox
   text-indent:20px;
 }
 
+DIV#rightSide
+{
+  position: absolute;
+  left:230px;
+  top:0;
+  bottom:0;
+  right:0;
+}
+  DIV#rightFrame
+  {
+    position:absolute;
+    right:0;
+    left:0;
+    top:12px;
+    bottom:30px;
+    background-color:#FFFFFF;
+    border-radius:5px;
+    border-top: 1px solid #909090;
+    border-left: 1px solid #909090;
+    border-bottom: 1px solid #FFFFFF;
+    border-right: 1px solid #FFFFFF;
+    padding-left:5px;
+    padding-right:5px;
+    overflow-y:auto;
+  }
+    #rightFrameEvents{
+    }
+
+    #rightFrameTasks{
+    }
+    
+    
+/***********************************************/
+/******  Overriding the SchedulerUI.css ********/
+
+DIV#calendarHeader {
+  position:relative;
+  top:0;
+  height:70px;
+}
+
+DIV#calendarHeader DIV.dayLabels {
+  position:relative;
+  width:93%;
+  display:flex;
+}
+
+DIV#daysView {
+  position:relative;
+  top:0;
+}
+
+DIV#daysView DIV.days {
+  display:flex;
+}
+
+DIV#daysView DIV.day0,
+DIV#daysView DIV.day1,
+DIV#daysView DIV.day2,
+DIV#daysView DIV.day3,
+DIV#daysView DIV.day4,
+DIV#daysView DIV.day5,
+DIV#daysView DIV.day6 {
+  position:relative;
+  left:0;
+  display:inline-block;
+}
+
+DIV.event{
+  z-index:1;
+  border:solid black 2px;
+  background-color:white;
+  border-radius:5px;
+}
 
 /*******************************************/
 /******  Overriding the general.css ********/
@@ -152,15 +201,20 @@ SPAN.caption
   }
   DIV#rightSide
   {
-    position:absolute;
+    position:relative;
     top:5px;
     left:5px;
     width:100%;
-    height:100%;
+    height:auto;
+  }
+  DIV#rightFrame, DIV#rightFrameEvents, DIV#rightFrameTasks
+  {
+    width:100%;
+    height:auto;
   }
   DIV#rightFrame
   {
-    border: none;
+    border:none;
     overflow:visible;
   }
 }
