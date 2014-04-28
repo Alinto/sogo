@@ -36,10 +36,10 @@ TABLE#eventsList .colorBox
 /******************************/
 /******  Print settings *******/
 
-#title
-{
+INPUT#inputFieldTitle {
   width:120px;
 }
+
 
 /******************************/
 /******  What to print ********/
@@ -58,6 +58,10 @@ TABLE#eventsList .colorBox
 #labelFrom, #labelTo
 {
   vertical-align:8px;
+}
+
+TR.todo {
+  display:none;
 }
 
 /************************/
@@ -143,9 +147,19 @@ DIV#calendarHeader DIV.dayLabels {
   display:flex;
 }
 
+DIV#calendarHeader DIV.days {
+  position:relative;
+  display:block;
+  top:0;
+  height:33px;
+  width:93%;
+}
+
 DIV#daysView {
   position:relative;
   top:0;
+  display:inline-table;
+  width:100%;
 }
 
 DIV#daysView DIV.days {
@@ -190,31 +204,43 @@ SPAN.caption
   background: linear-gradient(to bottom, #E6E7E6, #dddddd); /* Standard syntax (must be last) */
 }
 
+LABEL {
+  margin-left:0;
+}
+
 /**************************************************/
 /******  Calling print(); from the browser ********/
 
 @media print
 {
-  .no-print, SPAN.caption
+  .no-print, SPAN.caption, SPAN.weeksHeader SPAN.week1, SPAN.daysHeader SPAN.day1
   {
     display:none;
   }
+  
+  SPAN.weeksHeader, SPAN.daysHeader {
+    border:none;
+  }
+
   DIV#rightSide
   {
-    position:relative;
+    position:static;
     top:5px;
     left:5px;
-    width:100%;
-    height:auto;
+    width:99%;
   }
   DIV#rightFrame, DIV#rightFrameEvents, DIV#rightFrameTasks
   {
-    width:100%;
+    width:99%;
     height:auto;
   }
   DIV#rightFrame
   {
     border:none;
     overflow:visible;
+  }
+  
+  DIV#calendarHeader {
+    width:99.5%;
   }
 }

@@ -108,6 +108,7 @@ function previewDisplayCallback(http) {
     $("listCollapse").remove();
     
     // TODO : Month
+    _drawAllDayEvents(eventsBlocks[1], eventsBlocks[0]);
     _drawEvents(eventsBlocks[2], eventsBlocks[0]);
   }
   else
@@ -244,6 +245,8 @@ function _drawTasksList(tasksBlocks) {
   $("rightFrameTasks").innerHTML = tasksList;
 }
 
+// TODO : Maybe use the drawfunction from the scheduler.js
+
 function _drawEvents(events, eventsData) {
   var daysView = $("daysView");
   var subdivs = daysView.childNodesWithTag("div");
@@ -263,6 +266,22 @@ function _drawEvents(events, eventsData) {
     }
   }
 }
+
+function _drawAllDayEvents(events, eventsData) {
+  var headerView = $("calendarHeader");
+  var subdivs = headerView.childNodesWithTag("div");
+  var days = subdivs[1].childNodesWithTag("div");
+  for (var i = 0; i < days.length; i++) {
+    var parentDiv = days[i];
+    for (var j = 0; j < events[i].length; j++) {
+      var eventRep = events[i][j];
+      var nbr = eventRep.nbr;
+      var eventCell = newAllDayEventDIV(eventRep, eventsData[nbr]);
+      parentDiv.appendChild(eventCell);
+    }
+  }
+}
+
 // todo : month
 
 function newEventDIV(eventRep, event) {
@@ -497,8 +516,8 @@ function onPrintLayoutListChange() {
       break;
       
     case "1": // Day view
-      window.resizeTo(660,500);
-      ajustWindow(660,500);
+      window.resizeTo(1010,500);
+      ajustWindow(1010,500);
       currentView = "dayview";
       break;
       
@@ -608,6 +627,10 @@ function init() {
   $("cancelButton").observe("click", onPrintCancelClick);
   $("printButton").observe("click", onPrintClick);
   
+  // TODO : Selected and custom date must be implemented and finished.
+  document.getElementById("eventsTasks").disabled=true;
+  document.getElementById("customDate").disabled=true;
+  
   onPrintLayoutListChange();
 }
 
@@ -621,6 +644,7 @@ function initializeWhatToPrint() {
                  'end':   {'date': $("endingDate")}};
   initTimeWidgets(widgets);
   onPrintDateCheck();
+  
 }
 
 /*function initializeOptions() {
