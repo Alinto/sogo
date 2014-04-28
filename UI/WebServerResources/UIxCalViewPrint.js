@@ -1,17 +1,16 @@
 /* -*- Mode: js2-mode; tab-width: 4; c-label-minimum-indentation: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
-	Copyright (C) 2005 SKYRIX Software AG
-	Copyright (C) 2006-2011 Inverse
+	Copyright (C) 2006-2014 Inverse
 
-	This file is part of OpenGroupware.org.
+	This file is part of SOGo
 
-	OGo is free software; you can redistribute it and/or modify it under
+	SOGo is free software; you can redistribute it and/or modify it under
 	the terms of the GNU Lesser General Public License as published by the
 	Free Software Foundation; either version 2, or (at your option) any
 	later version.
 
-	OGo is distributed in the hope that it will be useful, but WITHOUT ANY
+	SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
 	WARRANTY; without even the implied warranty of MERCHANTABILITY or
 	FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
 	License for more details.
@@ -32,7 +31,7 @@ var currentView;
 var currentDay = window.parentvar("currentDay");
 var sd, ed;
 
-/******************************************* Ajust Window position from his size ***********************************************************/
+/******************************************* Ajust Window position from its size ***********************************************************/
 
 function ajustWindow(width, height) {
   var left = (screen.width/2)-(width/2);
