@@ -42,7 +42,7 @@
           <label>
             <input type="checkbox" id ="printTasks" value="tasksSelected" checked="true" onChange="onTasksCheck(this);"/>
             <var:string label:value="Tasks"/></label></td></tr>
-      <tr>
+      <tr class="todo">
         <td>
           <label>
             <input type="radio" name="printView" id="currentView" value="currentViewSelected" checked="true" onChange="onPrintDateCheck();"/>
