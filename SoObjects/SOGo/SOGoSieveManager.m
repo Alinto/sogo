@@ -584,7 +584,7 @@ static NSString *sieveScriptName = @"sogo";
   int count, max;
   NSDictionary *currentScript;
 
-  sieveScript = [NSMutableString stringWithCapacity: 8192];
+  sieveScript = [NSMutableString string];
 
   ASSIGN (requirements, newRequirements);
   [scriptError release];
