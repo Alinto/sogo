@@ -2,12 +2,13 @@
 ------------------
 
 Enhancements
- - now able to emails to address book on send (#1496) 
+ - now able to save unknown recipient emails to address book on send (#1496)
  - Sieve folder encoding is now configurable (#2622)
  - SOGo version is now displayed in preferences window (#2612)
+ - report Sieve error when saving preferences (#1046)
  - added the SOGoMaximumSyncWindowSize system default to overwrite the
    maximum number of items returned during an ActiveSync sync operation
-- updated datepicker
+ - updated datepicker
 
 Bug fixes
  - fixed saved HTML content of draft when attaching a file
