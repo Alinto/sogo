@@ -1,9 +1,7 @@
 /* SOGoGCSFolder.m - this file is part of SOGo
  *
  * Copyright (C) 2004-2005 SKYRIX Software AG
- * Copyright (C) 2006-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2006-2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1358,11 +1356,15 @@ static NSArray *childRecordFields = nil;
     }
 
   NSZoneFree (NULL, selectors);
-
+  
+  /* If we haven't gotten any result to return, let's use the previously
+     supplied sync-token */
+  if (max == 0)
+    newToken = syncToken;
   /* If the most recent c_lastmodified is "now", we need to return "now - 1"
      in order to make sure during the next sync that every records that might
      get added at the same moment are not lost. */
-  if (!newToken || newToken == now)
+  else if (!newToken || newToken == now)
     newToken = now - 1;
 
   newTokenStr = [NSString stringWithFormat: @"%d", newToken];
