@@ -541,7 +541,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
   NSArray *list;
   NSCalendarDate *date;
   NSDictionary *recipients;
-  NSUInteger type, bccLimit;
+  enum ulRecipClass type, bccLimit;
   SOGoUser *activeUser;
   NSNumber *priority;
 
@@ -562,7 +562,7 @@ FillMessageHeadersFromProperties (NGMutableHashMap *headers,
       else
         bccLimit = MAPI_CC;
       bccLimit++;
-      for (type = MAPI_TO; type < bccLimit; type++)
+      for (type = MAPI_TO; type <= bccLimit; type++)
 	{
 	  recId = recTypes[type];
 	  list = MakeRecipientsList ([recipients objectForKey: recId]);
