@@ -367,7 +367,7 @@ static NSString *recTypes[] = { @"orig", @"to", @"cc", @"bcc" };
   msgData->recipients_count = max;
   msgData->recipients = talloc_array (msgData, struct mapistore_message_recipient, max);
   current = 0;
-  for (type = 0; type < 4; type++)
+  for (type = MAPI_ORIG; type <= MAPI_BCC; type++)
     {
       recipients = [allRecipients objectForKey: recTypes[type]];
       recipientsMax = [recipients count];
