@@ -7,9 +7,7 @@
   xmlns:uix="OGo:uix"
   xmlns:label="OGo:label"
   className="UIxPageFrame"
-  const:popup="YES"
-  const:cssFiles="datepicker.css"
-  const:jsFiles="datepicker.js" >
+  const:popup="YES">
 
   <div id="leftSide" class="no-print">
     <!-- Print settings -->
@@ -42,23 +40,24 @@
           <label>
             <input type="checkbox" id ="printTasks" value="tasksSelected" checked="true" onChange="onTasksCheck(this);"/>
             <var:string label:value="Tasks"/></label></td></tr>
-      <tr class="todo">
+<!-- TODO
+      <tr>
         <td>
           <label>
             <input type="radio" name="printView" id="currentView" value="currentViewSelected" checked="true" onChange="onPrintDateCheck();"/>
             <var:string label:value="Current view" /></label></td></tr>
-      <tr class="todo">
+      <tr>
         <td>
           <label>
             <input type="radio" name="printView" id="eventsTasks" value="eventsTasksSelected" onChange="onPrintDateCheck();"/>
             <var:string label:value="Selected events and tasks" /></label></td></tr>
       
-      <tr class="todo">
+      <tr>
         <td>
           <label>
             <input type="radio" name="printView" id="customDate" value="customDateSelected" onChange="onPrintDateCheck();" />
             <var:string label:value="Custom date range" /></label></td></tr>
-      <tr class="todo">
+      <tr>
         <td id="dateRangeFrom" name="dateRange">
           <label id="labelFrom"><var:string label:value="From:" /></label>
           <var:component className="UIxDatePicker"
@@ -67,7 +66,7 @@
           month="startMonth"
           year="startYear"
           label:label="Select starting date"/></td></tr>
-      <tr class="todo">
+      <tr>
         <td id="dateRangeTo" name="dateRange">
           <label id="labelTo"><var:string label:value="To:" /></label>
           <var:component className="UIxDatePicker"
@@ -76,24 +75,12 @@
           month="endMonth"
           year="endYear"
           label:label="Select ending date"/></td></tr>
+-->
     </table>
     
     <!-- Options -->
     <span class="caption"><var:string label:value="Options" /></span>
     <table class="frame">
-      <tr>
-        <td>
-          <var:string label:value="Display time:" /></td>
-        <td>
-          <label>
-            <input type="radio" name="printTimeFormat" value="localTimeSelected" onChange="onDisplayTimeFormatCheck();" checked="true"/>
-            <var:string label:value="Locale" /></label>
-          <label>
-            <input type="radio" name="printTimeFormat" value="gmtTimeSelected" onChange="onDisplayTimeFormatCheck();"/>
-            <var:string label:value="GMT" /></label></td></tr>
-      <tr>
-        <td colspan="2">
-          <hr><!-- spacer --></hr></td></tr>
       <tr>
         <td>
           <label>

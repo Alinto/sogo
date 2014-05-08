@@ -5,6 +5,7 @@
 "Create a new event" = "Create a new event";
 "Create a new task" = "Create a new task";
 "Edit this event or task" = "Edit this event or task";
+"Print the current calendar view" = "Print the current calendar view";
 "Delete this event or task" = "Delete this event or task";
 "Go to today" = "Go to today";
 "Switch to day view" = "Switch to day view";
@@ -117,7 +118,7 @@
 "Name of the Calendar" = "Name of the Calendar";
 
 "new" = "New";
-"printview" = "Print View";
+"Print view" = "Print view";
 "edit" = "Edit";
 "delete" = "Delete";
 "proposal" = "Proposal";
@@ -147,8 +148,6 @@
 
 /* Print view */
 "LIST" = "List";
-"DAY" = "Daily";
-"WEEK" = "Weekly";
 "Print Settings" = "Print Settings";
 "Title:" = "Title:";
 "Layout:" = "Layout:";

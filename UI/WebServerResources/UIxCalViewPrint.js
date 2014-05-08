@@ -23,21 +23,12 @@
 
 /******************************** Global variables *******************************************/
 var firstDayOfWeek = window.opener.firstDayOfWeek;
-var displayTime=true;
 var printCompletedTasks=1;
 var printNoDueDateTasks=1;
 var eventsBlocks;
 var currentView;
 var currentDay = window.parentvar("currentDay");
 var sd, ed;
-
-/******************************************* Ajust Window position from its size ***********************************************************/
-
-function ajustWindow(width, height) {
-  var left = (screen.width/2)-(width/2);
-  var top = (screen.height/2)-(height/2);
-  window.moveTo(left, top);
-}
 
 /****************************************** Ajax Requests, callbacks & events/tasks drawings ***************************************************/
 
@@ -244,7 +235,7 @@ function _drawTasksList(tasksBlocks) {
   $("rightFrameTasks").innerHTML = tasksList;
 }
 
-// TODO : Maybe use the drawfunction from the scheduler.js
+// TODO : Maybe use the drawfunction from the schedulerUI.js
 
 function _drawEvents(events, eventsData) {
   var daysView = $("daysView");
@@ -403,10 +394,7 @@ function _parseEvent(event) {
   var endDate = new Date(event[6] *1000);
 	parsedEvent = "<div class=divEventsPreview><table>";
   parsedEvent += "<tr><td><b>"+ event[4] +"</b></td></tr>";
-  if (displayTime)
-    parsedEvent += "<tr><td>"+ startDate.toLocaleString() + " - " + endDate.toLocaleString() + "</td></tr>";
-  else
-    parsedEvent += "<tr><td>"+ startDate.toGMTString() + "<br />" + endDate.toGMTString() + "</td></tr>";
+  parsedEvent += "<tr><td>"+ startDate.toLocaleString() + " - " + endDate.toLocaleString() + "</td></tr>";
   parsedEvent += "<tr><td><var:string label:value='Calendar: ' />" + event[2] + "</td></tr>";
   parsedEvent += "</table></div>";
 	return parsedEvent;
@@ -427,10 +415,7 @@ function _parseTask(task) {
   
   if (task[5] != null) {
     dueDate = new Date(task[5] *1000);
-    if (displayTime)
-      parsedTask += "<tr><td class=\"EventsTasksDate\">"+ dueDate.toLocaleString() + "</td></tr>";
-    else
-      parsedTask += "<tr><td class=\"EventsTasksDate\">"+ dueDate.toGMTString() + "</td></tr>";
+    parsedTask += "<tr><td class=\"EventsTasksDate\">"+ dueDate.toLocaleString() + "</td></tr>";
   }
   parsedTask += "<tr><td><var:string label:value='Calendar: ' />" + task[2] + "</td></tr>";
   parsedTask += "</table></div>";
@@ -510,19 +495,16 @@ function onPrintLayoutListChange() {
   switch(selectedLayout) {
     case "0": // List view
       window.resizeTo(660,500);
-      ajustWindow(660,500);
       currentView = parentView;
       break;
       
     case "1": // Day view
       window.resizeTo(1010,500);
-      ajustWindow(1010,500);
       currentView = "dayview";
       break;
       
     case "2": // Week view
       window.resizeTo(1010,500);
-      ajustWindow(1010,500);
       currentView = "weekview";
       break;
       
@@ -550,19 +532,13 @@ function onTasksCheck(checkBox) {
     document.getElementById("rightFrameTasks").style.display = 'none';
 }
 
-function onPrintDateCheck() {
+/*function onPrintDateCheck() {
   var dateRange = document.getElementsByName("dateRange");
   var customDate = document.getElementById("customDate");
   for (var i = 0; i < dateRange.length; i++)
     if (dateRange[i].children[1].children[0].disabled == customDate.checked)
       dateRange[i].children[1].children[0].disabled = !customDate.checked;
-}
-
-function onDisplayTimeFormatCheck(){
-  var radioTimeFormat = document.getElementsByName("printTimeFormat");
-  displayTime = (radioTimeFormat[0].checked ? true : false);
-  refreshContent();
-}
+}*/
 
 function onPrintCompletedTasksCheck(checkBox) {
   printCompletedTasks = (checkBox.checked ? 1 : 0);
@@ -574,7 +550,7 @@ function onPrintNoDueDateTasksCheck(checkBox) {
   refreshTasks();
 }
 
-/************** Date picker functions *************/
+/************** Date picker functions *************
 this.initTimeWidgets = function (widgets) {
 	this.timeWidgets = widgets;
   
@@ -583,13 +559,13 @@ this.initTimeWidgets = function (widgets) {
   
   //jQuery(widgets['start']['date']).change(onAdjustTime);
   
-  /*jQuery(widgets['startingDate']['date']).closest('.date').datepicker({autoclose: true,
+  jQuery(widgets['startingDate']['date']).closest('.date').datepicker({autoclose: true,
    weekStart: 0,
    endDate: lastDay,
    startDate: firstDay,
    setStartDate: lastDay,
    startView: 2,
-   position: "below-shifted-left"});*/
+   position: "below-shifted-left"});
 }
 
 this.onAdjustTime = function(event) {
@@ -597,9 +573,9 @@ this.onAdjustTime = function(event) {
 }
 
 this.onAdjustDueTime = function(event) {
-  /*var dateDelta = (window.getStartDate().valueOf() - window.getShadowStartDate().valueOf());
+  var dateDelta = (window.getStartDate().valueOf() - window.getShadowStartDate().valueOf());
    var newDueDate = new Date(window.getDueDate().valueOf() + dateDelta);
-   window.setDueDate(newDueDate);*/
+   window.setDueDate(newDueDate);
   
 	window.timeWidgets['start']['date'].updateShadowValue();
 }
@@ -621,14 +597,14 @@ function onPrintClick(event) {
 function init() {
   
   initializePrintSettings();
-  initializeWhatToPrint();
+  //initializeWhatToPrint();
   //initializeOptions();
   $("cancelButton").observe("click", onPrintCancelClick);
   $("printButton").observe("click", onPrintClick);
   
-  // TODO : Selected and custom date must be implemented and finished.
+  /* TODO : Selected and custom date must be implemented and finished.
   document.getElementById("eventsTasks").disabled=true;
-  document.getElementById("customDate").disabled=true;
+  document.getElementById("customDate").disabled=true;*/
   
   onPrintLayoutListChange();
 }
@@ -638,13 +614,13 @@ function initializePrintSettings() {
   $("printLayoutList").observe("change", onPrintLayoutListChange);
 }
 
-function initializeWhatToPrint() {
+/*function initializeWhatToPrint() {
   var widgets = {'start': {'date': $("startingDate")},
                  'end':   {'date': $("endingDate")}};
   initTimeWidgets(widgets);
   onPrintDateCheck();
   
-}
+}*/
 
 /*function initializeOptions() {
 }*/

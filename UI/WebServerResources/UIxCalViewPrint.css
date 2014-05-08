@@ -40,6 +40,10 @@ INPUT#inputFieldTitle {
   width:120px;
 }
 
+DIV#rightFrameTitle
+{
+  font-size:20px;
+}
 
 /******************************/
 /******  What to print ********/
@@ -139,41 +143,32 @@ DIV#calendarHeader {
   position:relative;
   top:0;
   height:70px;
+  right: 0px;
 }
 
-DIV#calendarHeader DIV.dayLabels {
+DIV#calendarHeader DIV.dayLabels,
+DIV#calendarHeader DIV.days {
   position:relative;
-  display:flex;
-  left:0;
+  left: 0;
   margin-left:50px;
 }
 
 DIV#calendarHeader DIV.days {
-  position:relative;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  top:0;
-  height:33px;
-  left:0;
-  margin-left:50px;
+  top: 0;
+  height: 33px;
+  left: 0;
+  right: 0;
 }
 
 DIV#daysView {
-  position:relative;
-  top:0;
-  display:inline-table;
-  width:100%;
+  position: relative;
+  top: 0;
+  right: 8px;
+  border-right: 1px solid #ccc;
 }
 
-DIV#daysView DIV.days {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
+DIV#daysView DIV.hours {
+    height: auto;
 }
 
 DIV#daysView DIV.day DIV.clickableHourCell {
@@ -184,18 +179,7 @@ DIV#daysView DIV.hour {
  height: 27px;
 }
 .minutes15, .minutes30, .minutes45 {
-  height:25%;
-}
-
-DIV#daysView DIV.day0,
-DIV#daysView DIV.day1,
-DIV#daysView DIV.day2,
-DIV#daysView DIV.day3,
-DIV#daysView DIV.day4,
-DIV#daysView DIV.day5,
-DIV#daysView DIV.day6 {
-  position:relative;
-  left:0;
+  height: 25%;
 }
 
 DIV.event{
