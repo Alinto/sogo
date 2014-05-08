@@ -51,7 +51,7 @@ class WebdavSyncTest(unittest.TestCase):
         # non-empty numerical value. Anything else will trigger an exception
         token = int(token_node.text)
 
-        self.assertTrue(token > 0)
+        self.assertTrue(token >= 0)
         query1EndTime = int(math.ceil(query1.start + query1.duration))
         self.assertTrue(token <= query1EndTime, 
                         "token = %d > query1EndTime = %d" % (token, query1EndTime))
