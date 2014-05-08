@@ -1,4 +1,5 @@
-var listFilter = 'view_today';
+var eventListFilter = 'view_today';
+var taskListFilter = 'view_today';
 
 var listOfSelection = null;
 var selectedCalendarCell = null;
@@ -885,7 +886,7 @@ function performDeleteEventCallback(http) {
 /* in dateselector */
 function onDaySelect(node) {
     var day = node.getAttribute('day');
-    var needRefresh = (listFilter == 'view_selectedday'
+    var needRefresh = (eventListFilter == 'view_selectedday'
                        && day != currentDay);
 
     var td = $(node).getParentWithTagName("td");
@@ -918,7 +919,7 @@ function onDateSelectorGotoMonth(event) {
 
 function onCalendarGotoDay(node) {
     var day = node.getAttribute("date");
-    var needRefresh = (listFilter == 'view_selectedday' && day != currentDay);
+    var needRefresh = (eventListFilter == 'view_selectedday' && day != currentDay);
 
     changeDateSelectorDisplay(day);
     changeCalendarDisplay( { "day": day } );
@@ -1027,7 +1028,13 @@ function eventsListCallback(http) {
                 td.observe("mousedown", listRowMouseDownHandler, true);
                 if (data[i][7])
                     td.update(data[i][7]); // location
-
+              
+                td = createElement("td");
+                row.appendChild(td);
+                td.observe("mousedown", listRowMouseDownHandler, true);
+                if (data[i][10])
+                  td.update(data[i][10]); // category
+              
                 td = createElement("td");
                 row.appendChild(td);
                 td.observe("mousedown", listRowMouseDownHandler, true);
@@ -2228,41 +2235,44 @@ function refreshCurrentFolder(id) {
 
 /* refreshes the "unifinder" list */
 function refreshEvents() {
-    var titleSearch;
+    var specificSearch;
     var value = search["events"]["value"];
 
     if (value && value.length)
-        titleSearch = "&search=" + escape(value.utf8encode());
+        specificSearch = ("&search=" + search["events"]["criteria"]
+                          + "&value=" + escape(value.utf8encode()));
     else
-        titleSearch = "";
+        specificSearch = "";
 
     refreshAlarms();
 
     return _loadEventHref("eventslist?asc=" + sorting["event-ascending"]
                           + "&sort=" + sorting["event-attribute"]
                           + "&day=" + currentDay
-                          + titleSearch
-                          + "&filterpopup=" + listFilter);
+                          + specificSearch
+                          + "&filterpopup=" + eventListFilter);
 }
 
 function refreshTasks(setUserDefault) {
-    var titleSearch;
+    var specificSearch;
     var value = search["tasks"]["value"];
 
     if (value && value.length)
-        titleSearch = "&search=" + escape(value.utf8encode());
+      specificSearch = ("&search=" + search["tasks"]["criteria"]
+                        + "&value=" + escape(value.utf8encode()));
     else
-        titleSearch = "";
+        specificSearch = "";
 
     if (setUserDefault == 1)
-      titleSearch += "&setud=1";
+      specificSearch += "&setud=1";
 
     refreshAlarms();
 
     return _loadTasksHref("taskslist?show-completed=" + showCompletedTasks
                           + "&asc=" + sorting["task-ascending"]
                           + "&sort=" + sorting["task-attribute"]
-                          + titleSearch);
+                          + specificSearch
+                          + "&filterpopup=" + taskListFilter);
 }
 
 function refreshEventsAndDisplay() {
@@ -2270,13 +2280,24 @@ function refreshEventsAndDisplay() {
     changeCalendarDisplay();
 }
 
-function onListFilterChange() {
+function onEventsListFilterChange() {
     var node = $("filterpopup");
 
-    listFilter = node.value;
-//    log ("listFilter = " + listFilter);
+    eventListFilter = node.value;
 
     return refreshEvents();
+}
+
+function onTasksListFilterChange() {
+  var node = $("tasksFilterpopup");
+  
+  taskListFilter = node.value;
+  
+  $("showHideCompletedTasks").disabled = taskListFilter == "view_overdue"     ||
+                                         taskListFilter == "view_incomplete"  ||
+                                         taskListFilter == "view_not_started";
+  
+  return refreshTasks();
 }
 
 function selectMonthInMenu(menu, month) {
@@ -2473,7 +2494,7 @@ function onCalendarSelectEvent(event, willShowContextualMenu) {
 
 function onCalendarSelectDay(event) {
     var day = this.getAttribute("day");
-    var needRefresh = (listFilter == 'view_selectedday' && day != currentDay);
+    var needRefresh = (eventListFilter == 'view_selectedday' && day != currentDay);
 
     setSelectedDayDate(day);
     changeDateSelectorDisplay(day);
@@ -2735,44 +2756,44 @@ function onTasksListMenuPrepareVisibility() {
     return true;
 }
 function getMenus() {
-    var menus = {};
-
-    var dateMenu = [];
-    for (var i = 0; i < 12; i++)
-        dateMenu.push(onMonthMenuItemClick);
-    menus["monthListMenu"] = dateMenu;
-
-    dateMenu = [];
-    for (var i = 0; i < 11; i++)
-        dateMenu.push(onYearMenuItemClick);
-    menus["yearListMenu"] = dateMenu;
-
-    menus["eventsListMenu"] = new Array(onMenuNewEventClick, "-",
-                                        onMenuNewTaskClick,
-                                        editEvent, deleteEvent, "-",
-                                        onSelectAll, "-",
-                                        null, null);
-    menus["calendarsMenu"] = new Array(onCalendarModify,
-                                       "-",
-                                       onCalendarNew, onCalendarRemove,
-                                       "-", onCalendarExport, onCalendarImport,
-                                       null, "-", null, "-", onMenuSharing);
-    menus["eventSearchMenu"] = new Array(setSearchCriteria);
-
-    menus["tasksListMenu"] = new Array (editEvent, newTask, "-",
-                                        marksTasksAsCompleted, deleteEvent, "-",
-					onMenuRawTask);
-    menus["taskSearchMenu"] = new Array(setSearchCriteria);
-
-    var calendarsMenu = $("calendarsMenu");
-    if (calendarsMenu)
-        calendarsMenu.prepareVisibility = onCalendarsMenuPrepareVisibility;
-
-    var tasksListMenu = $("tasksListMenu");
-    if (tasksListMenu)
-        tasksListMenu.prepareVisibility = onTasksListMenuPrepareVisibility;
-
-    return menus;
+  var menus = {};
+  
+  var dateMenu = [];
+  for (var i = 0; i < 12; i++)
+    dateMenu.push(onMonthMenuItemClick);
+  menus["monthListMenu"] = dateMenu;
+  
+  dateMenu = [];
+  for (var i = 0; i < 11; i++)
+    dateMenu.push(onYearMenuItemClick);
+  menus["yearListMenu"] = dateMenu;
+  
+  menus["eventsListMenu"] = new Array(onMenuNewEventClick, "-",
+                                      onMenuNewTaskClick,
+                                      editEvent, deleteEvent, "-",
+                                      onSelectAll, "-",
+                                      null, null);
+  menus["calendarsMenu"] = new Array(onCalendarModify,
+                                     "-",
+                                     onCalendarNew, onCalendarRemove,
+                                     "-", onCalendarExport, onCalendarImport,
+                                     null, "-", null, "-", onMenuSharing);
+  menus["eventSearchMenu"] = new Array(setSearchCriteria, setSearchCriteria, setSearchCriteria);
+  
+  menus["tasksListMenu"] = new Array (editEvent, newTask, "-",
+                                      marksTasksAsCompleted, deleteEvent, "-",
+                                      onMenuRawTask);
+  menus["taskSearchMenu"] = new Array(setSearchCriteria, setSearchCriteria, setSearchCriteria);
+  
+  var calendarsMenu = $("calendarsMenu");
+  if (calendarsMenu)
+    calendarsMenu.prepareVisibility = onCalendarsMenuPrepareVisibility;
+  
+  var tasksListMenu = $("tasksListMenu");
+  if (tasksListMenu)
+    tasksListMenu.prepareVisibility = onTasksListMenuPrepareVisibility;
+  
+  return menus;
 }
 
 function newTask () {
@@ -3267,9 +3288,10 @@ function configureLists() {
 
     var input = $("showHideCompletedTasks");
     input.observe("click", onShowCompletedTasks);
+
     if (showCompletedTasks)
       input.checked = true;
-
+  
     // EVENT LIST
     list = $("eventsList");
     list.multiselect = true;
@@ -3428,19 +3450,20 @@ function initScheduler() {
 
     if (!$(document.body).hasClassName("popup")) {
         var node = $("filterpopup");
-        listFilter = node.value;
+        eventListFilter = node.value;
 
         var tabsContainer = $("schedulerTabs");
         var controller = new SOGoTabsController();
         controller.attachToTabsContainer(tabsContainer);
         tabsContainer.on("tabs:click", saveTabState);
-
+      
         if (UserSettings['ShowCompletedTasks']) {
             showCompletedTasks = parseInt(UserSettings['ShowCompletedTasks']);
         }
         else {
             showCompletedTasks = 0;
         }
+      
         initDateSelectorEvents();
         initCalendarSelector();
         configureSearchField();
