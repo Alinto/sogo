@@ -24,6 +24,7 @@ Bug fixes
  - fixed display of images in CSS background (#2437)
  - fixed limitation of Sieve script size (#2745)
  - fixed sync-token generation when no change was returned (#2492)
+ - fixed the IMAP copy/move operation between subfolders in different accounts
 
 2.2.3 (2014-04-03)
 ------------------

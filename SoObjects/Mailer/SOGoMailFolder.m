@@ -660,8 +660,12 @@ static NSString *defaultUserID =  @"anyone";
               // Destination folder is in a different account
               SOGoMailAccounts *accounts;
               SOGoMailAccount *account;
-              accounts = [[self container] container];
+              SOGoUserFolder *userFolder;
+              
+              userFolder = [[context activeUser] homeFolderInContext: context];
+              accounts = [userFolder lookupName: @"Mail"  inContext: context  acquire: NO];
               account = [accounts lookupName: [folders objectAtIndex: 1] inContext: localContext acquire: NO];
+
               if ([account isKindOfClass: [NSException class]])
                 {
                   result = [NSException exceptionWithHTTPStatus: 500
