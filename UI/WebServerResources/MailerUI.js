@@ -276,10 +276,8 @@ function mailListToggleMessagesRead(row, force_mark_as_read) {
 
         for (var i = 0; i < selectedRowsId.length; i++) {
             var msguid = selectedRowsId[i].split('_')[1];
+            // Assume ajax request will succeed and change message flag in table
             markMailInWindow(window, msguid, markread);
-
-            // Assume ajax request will succeed and invalidate data cache now.
-	    Mailer.dataTable.invalidate(msguid, true);
 
             var url = ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
                 + msguid + "/" + action;
@@ -302,7 +300,10 @@ function mailListMarkMessage(event) {
 
 function mailListMarkMessageCallback(http) {
     var data = http.callbackData;
-    if (!isHttpStatus204(http.status)) {
+    if (isHttpStatus204(http.status)) {
+        Mailer.dataTable.invalidate(data["msguid"], true);
+    }
+    else {
         log("Message Mark Failed (" + http.status + "): " + http.statusText);
 	Mailer.dataTable.invalidate(data["msguid"], false);
     }
@@ -1634,10 +1635,6 @@ function loadMessageCallback(http) {
                     loadRemoteImages();
                 configureSignatureFlagImage();
                 handleReturnReceipt();
-	        // Warning: If the user can't set the read/unread flag, it won't
-	        // be reflected in the view unless we force the refresh.
-                if (http.callbackData.seenStateHasChanged)
-                    Mailer.dataTable.dataSource.invalidate(msguid);
             }
             var cachedMessage = new Array();
             cachedMessage['idx'] = Mailer.currentMailbox + '/' + msguid;
@@ -1645,8 +1642,7 @@ function loadMessageCallback(http) {
             cachedMessage['text'] = http.responseText;
             if (cachedMessage['text'].length < 30000)
                 storeCachedMessage(cachedMessage);
-
-            // We mark the mail as read
+            // Mark the mail as read
             mailListToggleMessagesRead($("row_" + msguid), true);
         }
     }
