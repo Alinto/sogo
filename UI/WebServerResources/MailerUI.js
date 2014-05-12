@@ -1045,8 +1045,6 @@ function onMessageContextMenu(event) {
         popupMenu(event, "messagesListMenu", selectedNodes);
     else if (selectedNodes.length == 1)
         popupMenu(event, "messageListMenu", row);
-
-    return false;
 }
 
 function onFolderMenuClick(event) {
@@ -1726,7 +1724,9 @@ function onMenuViewMessageSource(event) {
     if (rows.length > 0) {
         var url = (ApplicationBaseURL + encodeURI(Mailer.currentMailbox) + "/"
                    + rows[0].substr(4) + "/viewsource");
-        openMailComposeWindow(url);
+        $(function() {
+            openMailComposeWindow(url);
+        }).delay(0.1);
     }
 
     preventDefault(event);

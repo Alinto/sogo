@@ -74,7 +74,7 @@ function newEventFromWidget(sender, type) {
     var day = $(sender).readAttribute("day");
     var hour = sender.readAttribute("hour");
 
-    return newEvent(type, day, hour);
+    newEvent.delay(0.1, type, day, hour);
 }
 
 function minutesToHM(minutes) {
@@ -156,16 +156,26 @@ function getSelectedFolder() {
 
 function onMenuNewEventClick(event) {
     var target = document.menuTarget;
-    if (/(minutes\d{2}|dayHeader)/.test(target.className))
-        target = target.parentNode;
-    newEventFromWidget(target, "event");
+    if (target) {
+        if (/(minutes\d{2}|dayHeader)/.test(target.className))
+            target = target.parentNode;
+        newEventFromWidget(target, "event");
+    }
+    else {
+        newEvent('event');
+    }
 }
 
 function onMenuNewTaskClick(event) {
     var target = document.menuTarget;
-    if (/(minutes\d{2}|dayHeader)/.test(target.className))
-        target = target.parentNode;
-    newEventFromWidget(target, "task");
+    if (target) {
+        if (/(minutes\d{2}|dayHeader)/.test(target.className))
+            target = target.parentNode;
+        newEventFromWidget(target, "task");
+    }
+    else {
+        newEvent('task');
+    }
 }
 
 function _editEventId(id, calendar, recurrence) {
@@ -192,14 +202,18 @@ function editEvent() {
         }
 
         for (var i = 0; i < nodes.length; i++)
-            _editEventId(nodes[i].cname,
-                         nodes[i].calendar);
+            _editEventId.delay(0.1,
+                               nodes[i].cname,
+                               nodes[i].calendar);
     } else if (selectedCalendarCell) {
         if (selectedCalendarCell[0].recurrenceTime && !selectedCalendarCell[0].isException)
-            _editRecurrenceDialog(selectedCalendarCell[0], "confirmEditing");
+            _editRecurrenceDialog.delay(0.1,
+                                        selectedCalendarCell[0],
+                                        "confirmEditing");
         else
-            _editEventId(selectedCalendarCell[0].cname,
-                         selectedCalendarCell[0].calendar);
+            _editEventId.delay(0.1,
+                               selectedCalendarCell[0].cname,
+                               selectedCalendarCell[0].calendar);
     } else {
         showAlertDialog(_("Please select an event or a task."));
     }
@@ -470,7 +484,7 @@ function onMenuRawEvent(event) {
     var cname = selectedCalendarCell[0].cname;
 
     var url = ApplicationBaseURL + "/" + calendar + "/" + cname + "/raw";
-    openGenericWindow(url);
+    openGenericWindow.delay(0.1, url);
 }
 
 function modifyEvent(sender, modification, parameters) {
@@ -2747,8 +2761,8 @@ function getMenus() {
         dateMenu.push(onYearMenuItemClick);
     menus["yearListMenu"] = dateMenu;
 
-    menus["eventsListMenu"] = new Array(onMenuNewEventClick, "-",
-                                        onMenuNewTaskClick,
+    menus["eventsListMenu"] = new Array(onMenuNewEventClick,
+                                        onMenuNewTaskClick, "-",
                                         editEvent, deleteEvent, "-",
                                         onSelectAll, "-",
                                         null, null);
@@ -2776,7 +2790,7 @@ function getMenus() {
 }
 
 function newTask () {
-    return newEventFromWidget(this, 'task');
+    newEventFromWidget.delay(0.1, this, 'task');
 }
 
 function marksTasksAsCompleted () {
@@ -2804,7 +2818,7 @@ function onMenuRawTask(event) {
     }
 
     var url = ApplicationBaseURL + "/" + selectedTasks[0].calendar  + "/" + selectedTasks[0].cname + "/raw"
-    openGenericWindow(url);
+    openGenericWindow.delay(0.1, url);
 }
 
 
@@ -2920,9 +2934,11 @@ function onCalendarModify(event) {
         height -= 26;
     }
 
-    var properties = window.open(url, windowID,
-                                 "width="+width+",height="+height+",resizable=0");
-    properties.focus();
+    $(function() {
+        var properties = window.open(url, windowID,
+                                     "width="+width+",height="+height+",resizable=0");
+        properties.focus();
+    }).delay(0.1);
 }
 
 function updateCalendarProperties(calendarID, calendarName, calendarColor) {

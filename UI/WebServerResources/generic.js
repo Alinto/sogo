@@ -264,11 +264,11 @@ function openContactWindow(url, wId) {
         else
             wId = sanitizeWindowName(wId);
 
-        var w = window.open(url, wId,
-                            "width=460,height=560,resizable=0,location=0");
-        w.focus();
-
-        return w;
+        $(function() {
+            var w = window.open(url, wId,
+                                "width=460,height=560,resizable=0,location=0");
+            w.focus();
+        }).delay(0.1);
     }
 }
 
@@ -325,9 +325,11 @@ function openMailTo(senderMailTo) {
     }
 
     if (sanitizedAddresses.length > 0)
-        openMailComposeWindow(ApplicationBaseURL
-                              + "/../Mail/compose?mailto=" + encodeURIComponent(Object.toJSON(sanitizedAddresses))
-                              + ((subject.length > 0)?"?subject=" + encodeURIComponent(subject):""));
+        $(function() {
+            openMailComposeWindow(ApplicationBaseURL
+                                  + "/../Mail/compose?mailto=" + encodeURIComponent(Object.toJSON(sanitizedAddresses))
+                                  + ((subject.length > 0)?"?subject=" + encodeURIComponent(subject):""));
+        }).delay(0.1);
 
     return false; /* stop following the link */
 }
@@ -848,13 +850,13 @@ function hideMenu(menuNode) {
     Event.fire(menuNode, "contextmenu:hide");
 }
 
-function onMenuEntryClick(event) {
-    var node = event.target;
-
-    id = getParentMenu(node).menuTarget;
-
-    return false;
-}
+//function onMenuEntryClick(event) {
+//    var node = event.target;
+//
+//    id = getParentMenu(node).menuTarget;
+//
+//    return false;
+//}
 
 /* query string */
 
@@ -1543,14 +1545,14 @@ function openExternalLink(anchor) {
 }
 
 function openAclWindow(url) {
-    var w = window.open(url, "aclWindow",
-                        "width=420,height=300,resizable=1,scrollbars=1,toolbar=0,"
-                        + "location=0,directories=0,status=0,menubar=0"
-                        + ",copyhistory=0");
-    w.opener = window;
-    w.focus();
-
-    return w;
+    $(function () {
+        var w = window.open(url, "aclWindow",
+                            "width=420,height=300,resizable=1,scrollbars=1,toolbar=0,"
+                            + "location=0,directories=0,status=0,menubar=0"
+                            + ",copyhistory=0");
+        w.opener = window;
+        w.focus();
+    }).delay(0.1);
 }
 
 function getUsersRightsWindowHeight() {

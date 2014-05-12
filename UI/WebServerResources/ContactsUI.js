@@ -323,8 +323,10 @@ function onMenuRawContact (event) {
             return row.readAttribute("id");
         });
 
-    openGenericWindow(URLForFolderID(Contact.currentAddressBook)
-                      + "/" + cname + "/raw");
+    $(function() {
+            openGenericWindow(URLForFolderID(Contact.currentAddressBook)
+                              + "/" + cname + "/raw");
+        }).delay(0.1);
 }
 
 function actionContactCallback(http) {
