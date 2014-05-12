@@ -54,8 +54,8 @@
   <div class="menu" id="eventsListMenu">
     <ul>
       <li><var:string label:value="New Event..."/></li>
-      <li><!-- separator --></li>
       <li><var:string label:value="New Task..."/></li>
+      <li><!-- separator --></li>
       <li><var:string label:value="Edit Selected Event..."/></li>
       <li><var:string label:value="Delete Selected Event"/></li>
       <li><!-- separator --></li>
