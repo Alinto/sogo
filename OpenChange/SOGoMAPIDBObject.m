@@ -50,18 +50,6 @@
 
 #import "SOGoMAPIDBObject.h"
 
-//
-// This defines the storage for internal properly list, stored in the
-// database. Possible values are:
-//
-// NSPropertyListGNUstepFormat       = 1000
-// NSPropertyListGNUstepBinaryFormat = 1001
-// NSPropertyListOpenStepFormat      = 1
-// NSPropertyListXMLFormat_v1_0      = 100
-// NSPropertyListBinaryFormat_v1_0   = 200
-//
-static NSPropertyListFormat plistFormat;
-
 static EOAttribute *textColumn = nil;
 
 @implementation SOGoMAPIDBObject
@@ -69,11 +57,6 @@ static EOAttribute *textColumn = nil;
 + (void) initialize
 {
   NSDictionary *description;
-
-  plistFormat = [[NSUserDefaults standardUserDefaults] integerForKey: @"SOGoPropertyListFormat"];
-
-  if (!plistFormat)
-    plistFormat = NSPropertyListGNUstepBinaryFormat;
 
   if (!textColumn)
     {
@@ -97,6 +80,7 @@ static EOAttribute *textColumn = nil;
        @" c_lastmodified INT4 NOT NULL,"
        @" c_version INT4 NOT NULL DEFAULT 0,"
        @" c_deleted SMALLINT NOT NULL DEFAULT 0,"
+       @" c_content TEXT"
 */
 
 /* indexes:
