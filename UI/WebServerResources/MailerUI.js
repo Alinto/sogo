@@ -55,7 +55,7 @@ function openMessageWindow(msguid, url) {
     var wId = '';
     if (msguid) {
         wId += "SOGo_msg" + Mailer.currentMailbox + "/" + msguid;
-        markMailReadInWindow(window, msguid);
+        mailListToggleMessagesRead($("row_" + msguid), true);
     }
     var msgWin = openMailComposeWindow(url, wId);
 
