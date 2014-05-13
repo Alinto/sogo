@@ -194,10 +194,7 @@ function refreshTasksListCallback(http) {
       var tasksBlocks = http.responseText.evalJSON(true);
       $("rightFrameTasks").innerHTML = "";
       var layout = $("printLayoutList").value;
-      if (layout == 0)
-        _drawTasksCells(tasksBlocks);
-      else
-        _drawTasksList(tasksBlocks);
+      _drawTasksCells(tasksBlocks);
     }
   }
   else
@@ -205,34 +202,25 @@ function refreshTasksListCallback(http) {
 }
 
 function _drawEventsCells(eventsBlocks) {
+  var events = _("Events");
+  $("rightFrameEvents").insert("<h3>"+events+"</h3>");
   for(var i=0; i < eventsBlocks[0].length; i++)
   {
     var event = _parseEvent(eventsBlocks[0][i]);
-    $("rightFrameEvents").innerHTML += event;
+    $("rightFrameEvents").insert(event);
   }
 }
 
 function _drawTasksCells(tasksBlocks) {
+  var task = _("Tasks");
+  $("rightFrameTasks").insert("<h3>"+task+"</h3>");
   for(var i=0; i < tasksBlocks.length; i++)
   {
     if (!(printNoDueDateTasks == 0 && tasksBlocks[i][5] == null)) {
       var task = _parseTask(tasksBlocks[i]);
-      $("rightFrameTasks").innerHTML += task;
+      $("rightFrameTasks").insert(task);
     }
   }
-}
-
-function _drawTasksList(tasksBlocks) {
-  var tasksList;
-  tasksList = "<div><ul>";
-  for(var i=0; i < tasksBlocks.length; i++)
-  {
-    if (!(printNoDueDateTasks == 0 && tasksBlocks[i][5] == null)) {
-      tasksList += "<li>" + tasksBlocks[i][4] + "</li>";
-    }
-  }
-  tasksList += "</ul></div>";
-  $("rightFrameTasks").innerHTML = tasksList;
 }
 
 // TODO : Maybe use the drawfunction from the schedulerUI.js
@@ -389,35 +377,53 @@ function newBaseEventDIV(eventRep, event, eventText) {
 }
 
 function _parseEvent(event) {
+  // Localized strings :
+  var start = _("Start");
+  var end = _("End");
+  var Location = _("Location");
+  var Calendar = _("Calendar");
+  
+  
   var parsedEvent;
   var startDate = new Date(event[5] *1000);
   var endDate = new Date(event[6] *1000);
 	parsedEvent = "<div class=divEventsPreview><table>";
-  parsedEvent += "<tr><td><b>"+ event[4] +"</b></td></tr>";
-  parsedEvent += "<tr><td>"+ startDate.toLocaleString() + " - " + endDate.toLocaleString() + "</td></tr>";
-  parsedEvent += "<tr><td><var:string label:value='Calendar: ' />" + event[2] + "</td></tr>";
+  parsedEvent += "<tr class=\"eventsTitle\"><td colspan=\"2\"><b>"+ event[4] +"</b></td></tr>";
+  parsedEvent += "<tr><td style=\"text-align:right;\"><i>" + start + ":</i></td><td>" + startDate.toLocaleString() + "</td></tr>";
+  parsedEvent += "<tr><td style=\"text-align:right;\"><i>" + end + ":</i></td><td>" + endDate.toLocaleString() + "</td></tr>";
+  if (event[7] != "")
+    parsedEvent += "<tr><td style=\"text-align:right;\"><i>"+ Location +": </i></td><td>" + event[7] + "</td></tr>";
+  parsedEvent += "<tr><td style=\"text-align:right;\"><i>"+ Calendar +": </i></td><td>" + event[2] + "</td></tr>";
   parsedEvent += "</table></div>";
 	return parsedEvent;
 }
 
 function _parseTask(task) {
   var parsedTask;
-  var dueDate;
-  
+  var start = _("Start");
+  var end = _("End");
+  var Calendar = _("Calendar");
+  var Location = _("Location");
+
   parsedTask = "<div class=divTasksPreview><table>";
   if (task[12] == "overdue")
-    parsedTask += "<tr><td><span class=\"overdueTasks\"><b>"+ task[4] +"</b></span></td></tr>";
+    parsedTask += "<tr><td colspan=\"2\" class=\"overdueTasks\"><b>"+ task[4] +"</b></td></tr>";
   else if (task[12] == "completed") {
-    parsedTask += "<tr><td><b><span class=\"completedTasks\">"+ task[4] +"</b></span></td></tr>";
+    parsedTask += "<tr><td colspan=\"2\" class=\"completedTasks\"><b>"+ task[4] +"</b></td></tr>";
   }
   else
-    parsedTask += "<tr><td><b>"+ task[4] +"</b></td></tr>";
+    parsedTask += "<tr class=\"tasksTitle\"><td colspan=\"2\"><b>"+ task[4] +"</b></td></tr>";
   
-  if (task[5] != null) {
-    dueDate = new Date(task[5] *1000);
-    parsedTask += "<tr><td class=\"EventsTasksDate\">"+ dueDate.toLocaleString() + "</td></tr>";
+  if (task[5] != null && task[6] != null) {
+    var startDate = new Date(task[5] *1000);
+    var endDate = new Date(task[6] *1000);
+    parsedTask += "<tr><td style=\"text-align:right;\"><i>"+ start +": </i></td><td>"+ startDate.toLocaleString() + "</td></tr>";
+    parsedTask += "<tr><td style=\"text-align:right;\"><i>"+ end +": </i></td><td>"+ endDate.toLocaleString() + "</td></tr>";
   }
-  parsedTask += "<tr><td><var:string label:value='Calendar: ' />" + task[2] + "</td></tr>";
+  if (task[7] != "") {
+    parsedTask += "<tr><td style=\"text-align:right;\"><i>"+ Location +": </i></td><td>" + task[7] + "</td></tr>";
+  }
+  parsedTask += "<tr><td style=\"text-align:right;\"><i>" + Calendar + ": </i></td><td>" + task[2] + "</td></tr>";
   parsedTask += "</table></div>";
   
   return parsedTask;
@@ -494,18 +500,21 @@ function onPrintLayoutListChange() {
   var parentView = window.parentvar("currentView");
   switch(selectedLayout) {
     case "0": // List view
-      window.resizeTo(660,500);
+      window.resizeTo(700,500);
       currentView = parentView;
+      ajustFrames();
       break;
       
     case "1": // Day view
       window.resizeTo(1010,500);
       currentView = "dayview";
+      ajustFrames(currentView);
       break;
       
     case "2": // Week view
       window.resizeTo(1010,500);
       currentView = "weekview";
+      ajustFrames(currentView);
       break;
       
       //todo : month
@@ -514,11 +523,36 @@ function onPrintLayoutListChange() {
   refreshContent();
 }
 
+function ajustFrames(view) {
+  if (view == "dayview" || view == "weekview") {
+    document.getElementById("rightFrameEvents").style.width = '100%';
+    document.getElementById("rightFrameTasks").style.width = '100%';
+    document.getElementById("rightFrameTasks").style.pageBreakBefore = 'always';
+    document.getElementById("rightFrameTasks").style.pageBreakInside = 'avoid';
+  
+  }
+  else {
+    document.getElementById("rightFrameEvents").style.width = '49.5%';
+    document.getElementById("rightFrameTasks").style.width = '49.5%';
+    document.getElementById("rightFrameTasks").style.pageBreakBefore = 'auto';
+    document.getElementById("rightFrameTasks").style.pageBreakInside = 'auto';
+  }
+  
+}
+
 function onEventsCheck(checkBox) {
-  if(checkBox.checked)
+  if(checkBox.checked){
     document.getElementById("rightFrameEvents").style.display = 'block';
-  else
+    if ($("printLayoutList").value == 0){
+      document.getElementById("rightFrameTasks").style.width = '49.5%';
+    }
+  }
+  else {
     document.getElementById("rightFrameEvents").style.display = 'none';
+    if ($("printLayoutList").value == 0){
+      document.getElementById("rightFrameTasks").style.width = '100%';
+    }
+  }
 }
 
 function onTasksCheck(checkBox) {
@@ -526,10 +560,18 @@ function onTasksCheck(checkBox) {
   for (var i = 0; i < printOptions.length; i++)
     printOptions[i].disabled = !checkBox.checked;
     
-  if(checkBox.checked)
+  if(checkBox.checked) {
     document.getElementById("rightFrameTasks").style.display = 'block';
-  else
+    if ($("printLayoutList").value == 0){
+      document.getElementById("rightFrameEvents").style.width = '49.5%';
+    }
+  }
+  else {
     document.getElementById("rightFrameTasks").style.display = 'none';
+    if ($("printLayoutList").value == 0){
+      document.getElementById("rightFrameEvents").style.width = '100%';
+    }
+  }
 }
 
 /*function onPrintDateCheck() {

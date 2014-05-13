@@ -1,7 +1,6 @@
 
-/******  Window & layouts ******/
-BODY
-{ 
+/**********  Window & layouts **********/
+BODY {
   top: 1em;
   bottom: 1em;
   right: 1em;
@@ -9,11 +8,11 @@ BODY
   overflow:auto;
 }
 
-.toolbar
-{ display:none;}
+.toolbar {
+  display:none;
+}
 
-DIV#leftSide
-{
+DIV#leftSide {
   position: absolute;
   top:0;
   bottom:0;
@@ -23,53 +22,32 @@ DIV#leftSide
   overflow-y:auto;
 }
 
-DIV.colorBox
-{ display: inline-block; }
+DIV.colorBox {
+  display: inline-block; 
+}
 
-TD DIV.colorBox, TD DIV.colorBox:hover
-{ border-color: #fff; }
+TD DIV.colorBox, TD DIV.colorBox:hover {
+  border-color: #fff; 
+}
 
-TABLE#eventsList .colorBox
-{ margin-right: 4px; }
+TABLE#eventsList .colorBox {
+  margin-right: 4px; 
+}
 
-
-/******************************/
-/******  Print settings *******/
+/********** Print settings **********/
 
 INPUT#inputFieldTitle {
   width:120px;
 }
 
-DIV#rightFrameTitle
-{
+DIV#rightFrameTitle {
   font-size:20px;
+  text-decoration:underline;
 }
 
-/******************************/
-/******  What to print ********/
+/********** What to print **********/
 
-#dateRangeFrom, #dateRangeTo
-{
-  text-align: right;
-}
-
-#startingDate, #endingDate
-{
-  width:auto;
-  vertical-align:8px;
-}
-
-#labelFrom, #labelTo
-{
-  vertical-align:8px;
-}
-
-TR.todo {
-  display:none;
-}
-
-/************************/
-/******  Buttons ********/
+/********** Buttons **********/
 
 #printButtons {
   position:absolute;
@@ -77,43 +55,39 @@ TR.todo {
   right:0;
 }
 
-#printButton
-{
+#printButton {
   font-weight:bold;
 }
 
-/**************************/
-/******  RightSide ********/
+/********** RightSide **********/
 
-.divEventsPreview, .divTasksPreview
-{
+.divEventsPreview, .divTasksPreview {
   border:solid black 2px;
   border-radius:5px;
-  margin-top:4px;
-  margin-bottom:4px;
+  margin-top:3px;
+}
+
+.eventsTitle, .tasksTitle {
+  text-align:center;
 }
 
 .overdueTasks {
   color:red;
+  text-align:center;
 }
 .completedTasks {
   font-style:italic;
+  text-align:center;
 }
 
-.EventsTasksDate {
-  text-indent:20px;
-}
-
-DIV#rightSide
-{
+DIV#rightSide {
   position: absolute;
   left:230px;
   top:0;
   bottom:0;
   right:0;
 }
-  DIV#rightFrame
-  {
+  DIV#rightFrame {
     position:absolute;
     right:0;
     left:0;
@@ -129,15 +103,17 @@ DIV#rightSide
     padding-right:5px;
     overflow-y:auto;
   }
-    #rightFrameEvents{
+    #rightFrameEvents {
+      width:49.5%;
+      float:left;
     }
 
-    #rightFrameTasks{
+    #rightFrameTasks {
+      width:49.5%;
+      float:right;
     }
-    
-    
-/***********************************************/
-/******  Overriding the SchedulerUI.css ********/
+
+/********** Overriding SchedulerUI.css **********/
 
 DIV#calendarHeader {
   position:relative;
@@ -182,7 +158,7 @@ DIV#daysView DIV.hour {
   height: 25%;
 }
 
-DIV.event{
+DIV.event {
   z-index:1;
   border:solid black 1px;
   background-color:white;
@@ -578,11 +554,9 @@ DIV#daysView DIV.event.starts96
 DIV#daysView DIV.event.lasts96
 { height: 696.0px; }
 
+/********** Overriding generic.css **********/
 
-/*******************************************/
-/******  Overriding the general.css ********/
-
-TABLE.frame{
+TABLE.frame {
   width:97%;
   text-align: left;
   background:#dddddd;
@@ -590,8 +564,7 @@ TABLE.frame{
   display:table;
 }
 
-SPAN.caption 
-{
+SPAN.caption {
   background: -webkit-linear-gradient(bottom, #E6E7E6, #dddddd); /* For Safari 5.1 to 6.0 */
   background: -o-linear-gradient(bottom, #E6E7E6, #dddddd); /* For Opera 11.1 to 12.0 */
   background: -moz-linear-gradient(bottom, #E6E7E6, #dddddd); /* For Firefox 3.6 to 15 */
@@ -602,32 +575,20 @@ LABEL {
   margin-left:0;
 }
 
-/**************************************************/
-/******  Calling print(); from the browser ********/
+/********** Calling print(); from the browser **********/
 
-@media print
-{
-  .no-print, SPAN.caption, SPAN.weeksHeader SPAN.week1, SPAN.daysHeader SPAN.day1
-  {
+@media print{
+  .no-print, SPAN.caption, SPAN.weeksHeader, SPAN.daysHeader {
     display:none;
   }
-  
-  SPAN.weeksHeader, SPAN.daysHeader {
-    border:none;
-  }
 
-  DIV#rightSide
-  {
+  DIV#rightSide {
     position:static;
     top:5px;
     left:5px;
   }
-  DIV#rightFrame, DIV#rightFrameEvents, DIV#rightFrameTasks
-  {
-    height:auto;
-  }
-  DIV#rightFrame
-  {
+
+  DIV#rightFrame {
     border:none;
     overflow:visible;
   }
