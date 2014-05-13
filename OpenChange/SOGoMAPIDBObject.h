@@ -38,14 +38,14 @@ typedef enum {
   MAPIMessageCacheObject = 2,
   MAPIFAICacheObject = 3,
   MAPIInternalCacheObject = 99 /* object = property list */
-} MAPIDBObjectType;
+} SOGoCacheObjectType;
 
 @interface SOGoMAPIDBObject : SOGoMAPIObject
 {
   NSURL *tableUrl;
 
   BOOL initialized; /* safe guard */
-  MAPIDBObjectType objectType;
+  SOGoCacheObjectType objectType;
   NSInteger version;
   BOOL deleted;
 }
@@ -67,8 +67,8 @@ typedef enum {
 - (NSDictionary *) lookupRecord: (NSString *) path
                newerThanVersion: (NSInteger) startVersion;
 
-- (void) setObjectType: (MAPIDBObjectType) newObjectType;
-- (MAPIDBObjectType) objectType; /* message, fai, folder */
+- (void) setObjectType: (SOGoCacheObjectType) newObjectType;
+- (SOGoCacheObjectType) objectType; /* message, fai, folder */
 
 /* automatically set from actions */
 - (BOOL) deleted;

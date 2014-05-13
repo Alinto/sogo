@@ -134,7 +134,7 @@ Class SOGoMAPIDBObjectK = Nil;
 //   return [SOGoMAPIDBMessage objectWithName: filename inContainer: self];
 // }
 
-- (NSArray *) childKeysOfType: (MAPIDBObjectType) type
+- (NSArray *) childKeysOfType: (SOGoCacheObjectType) type
                includeDeleted: (BOOL) includeDeleted
             matchingQualifier: (EOQualifier *) qualifier
              andSortOrderings: (NSArray *) sortOrderings

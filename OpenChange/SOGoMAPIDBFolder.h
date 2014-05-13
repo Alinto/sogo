@@ -47,7 +47,7 @@
 - (NSArray *) toOneRelationshipKeys;
 - (NSArray *) toManyRelationshipKeys;
 
-- (NSArray *) childKeysOfType: (MAPIDBObjectType) type
+- (NSArray *) childKeysOfType: (SOGoCacheObjectType) type
                includeDeleted: (BOOL) includeDeleted
             matchingQualifier: (EOQualifier *) qualifier
              andSortOrderings: (NSArray *) sortOrderings;

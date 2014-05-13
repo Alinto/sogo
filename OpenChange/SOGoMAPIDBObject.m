@@ -188,12 +188,12 @@ static EOAttribute *textColumn = nil;
   return path;
 }
 
-- (void) setObjectType: (MAPIDBObjectType) newObjectType
+- (void) setObjectType: (SOGoCacheObjectType) newObjectType
 {
   objectType = newObjectType;
 }
 
-- (MAPIDBObjectType) objectType /* message, fai, folder */
+- (SOGoCacheObjectType) objectType /* message, fai, folder */
 {
   return objectType;
 }
