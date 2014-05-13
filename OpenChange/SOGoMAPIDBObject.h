@@ -34,10 +34,10 @@
 @class EOAdaptor;
 
 typedef enum {
-  MAPIDBObjectTypeFolder = 1,
-  MAPIDBObjectTypeMessage = 2,
-  MAPIDBObjectTypeFAI = 3,
-  MAPIDBObjectTypeInternal = 99 /* object = property list */
+  MAPIFolderCacheObject = 1,
+  MAPIMessageCacheObject = 2,
+  MAPIFAICacheObject = 3,
+  MAPIInternalCacheObject = 99 /* object = property list */
 } MAPIDBObjectType;
 
 @interface SOGoMAPIDBObject : SOGoMAPIObject

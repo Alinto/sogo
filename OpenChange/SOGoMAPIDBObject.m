@@ -75,12 +75,13 @@ static EOAttribute *textColumn = nil;
 /*
     = (@"CREATE TABLE %@ (" 
        @" c_path VARCHAR(255) PRIMARY KEY,"
-       @" c_type VARCHAR(20) NOT NULL,"
+       @" c_parent_path VARCHAR(255),"
+       @" c_type SMALLINT NOT NULL,"
        @" c_creationdate INT4 NOT NULL,"
        @" c_lastmodified INT4 NOT NULL,"
        @" c_version INT4 NOT NULL DEFAULT 0,"
        @" c_deleted SMALLINT NOT NULL DEFAULT 0,"
-       @" c_content TEXT"
+       @" c_content TEXT)");
 */
 
 /* indexes:
@@ -226,7 +227,7 @@ static EOAttribute *textColumn = nil;
 
   switch (objectType)
     {
-    case MAPIDBObjectTypeMessage:
+    case MAPIMessageCacheObject:
       mapiMsgClass = [properties
                        objectForKey: MAPIPropertyKey (PidTagMessageClass)];
       if (mapiMsgClass)
@@ -245,7 +246,7 @@ static EOAttribute *textColumn = nil;
           className = @"MAPIStoreDBMessage";
         }
       break;
-    case MAPIDBObjectTypeFAI:
+    case MAPIFAICacheObject:
       className = @"MAPIStoreFAIMessage";
       break;
     default:

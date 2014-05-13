@@ -181,7 +181,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
                      [SOGoObject globallyUniqueObjectId]];
   fsObject = [SOGoMAPIDBMessage objectWithName: newKey
                                    inContainer: sogoObject];
-  [fsObject setObjectType: MAPIDBObjectTypeMessage];
+  [fsObject setObjectType: MAPIMessageCacheObject];
   [fsObject reloadIfNeeded];
   newMessage = [MAPIStoreDBMessage mapiStoreObjectWithSOGoObject: fsObject
                                                      inContainer: self];
@@ -198,7 +198,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   ownerUser = [[self userContext] sogoUser];
   if ([[context activeUser] isEqual: ownerUser]
       || [self subscriberCanReadMessages])
-    keys = [(SOGoMAPIDBFolder *) sogoObject childKeysOfType: MAPIDBObjectTypeMessage
+    keys = [(SOGoMAPIDBFolder *) sogoObject childKeysOfType: MAPIMessageCacheObject
                                              includeDeleted: NO
                                           matchingQualifier: qualifier
                                            andSortOrderings: sortOrderings];
@@ -211,7 +211,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 - (NSArray *) folderKeysMatchingQualifier: (EOQualifier *) qualifier
                          andSortOrderings: (NSArray *) sortOrderings
 {
-  return [dbFolder childKeysOfType: MAPIDBObjectTypeFolder
+  return [dbFolder childKeysOfType: MAPIFolderCacheObject
                     includeDeleted: NO
                  matchingQualifier: qualifier
                   andSortOrderings: sortOrderings];

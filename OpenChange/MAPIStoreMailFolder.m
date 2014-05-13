@@ -106,7 +106,7 @@ static Class SOGoMailFolderK, MAPIStoreMailFolderK, MAPIStoreOutboxFolderK;
   ASSIGN (versionsMessage,
           [SOGoMAPIDBMessage objectWithName: @"versions.plist"
                                 inContainer: dbFolder]);
-  [versionsMessage setObjectType: MAPIDBObjectTypeInternal];
+  [versionsMessage setObjectType: MAPIInternalCacheObject];
 }
 
 - (BOOL) ensureFolderExists

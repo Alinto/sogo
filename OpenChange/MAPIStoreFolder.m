@@ -138,7 +138,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   // ASSIGN (propsMessage,
   //         [SOGoMAPIDBMessage objectWithName: @"properties.plist"
   //                               inContainer: dbFolder]);
-  // [propsMessage setObjectType: MAPIDBObjectTypeInternal];
+  // [propsMessage setObjectType: MAPIInternalCacheObject];
   // [propsMessage reloadIfNeeded];
   [properties release];
   properties = [dbFolder properties];
@@ -1221,7 +1221,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
 - (NSArray *) faiMessageKeysMatchingQualifier: (EOQualifier *) qualifier
                              andSortOrderings: (NSArray *) sortOrderings
 {
-  return [dbFolder childKeysOfType: MAPIDBObjectTypeFAI
+  return [dbFolder childKeysOfType: MAPIFAICacheObject
                     includeDeleted: NO
                  matchingQualifier: qualifier
                   andSortOrderings: sortOrderings];
@@ -1531,7 +1531,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   newKey = [NSString stringWithFormat: @"%@.plist",
                      [SOGoObject globallyUniqueObjectId]];
   dbObject = [SOGoMAPIDBMessage objectWithName: newKey inContainer: dbFolder];
-  [dbObject setObjectType: MAPIDBObjectTypeFAI];
+  [dbObject setObjectType: MAPIFAICacheObject];
   [dbObject setIsNew: YES];
   newMessage = [MAPIStoreFAIMessageK mapiStoreObjectWithSOGoObject: dbObject
                                                        inContainer: self];

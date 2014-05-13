@@ -33,7 +33,6 @@
 #import <NGExtensions/NSNull+misc.h>
 #import <GDLAccess/EOAdaptorChannel.h>
 #import <GDLContentStore/GCSChannelManager.h>
-// #import <GDLContentStore/EOQualifier+GCS.m>
 
 #import <SOGo/NSArray+Utilities.h>
 #import <SOGo/NSString+Utilities.h>
@@ -77,10 +76,10 @@ Class SOGoMAPIDBObjectK = Nil;
 {
   if ((self = [super initWithName: name inContainer: newContainer]))
     {
-      objectType = MAPIDBObjectTypeFolder;
+      objectType = MAPIFolderCacheObject;
       aclMessage = [SOGoMAPIDBObject objectWithName: @"permissions"
                                         inContainer: self];
-      [aclMessage setObjectType: MAPIDBObjectTypeInternal];
+      [aclMessage setObjectType: MAPIInternalCacheObject];
       [aclMessage retain];
     }
 
@@ -201,7 +200,7 @@ Class SOGoMAPIDBObjectK = Nil;
 
 - (NSArray *) toManyRelationshipKeys
 {
-  return [self childKeysOfType: MAPIDBObjectTypeFolder
+  return [self childKeysOfType: MAPIFolderCacheObject
                 includeDeleted: NO
              matchingQualifier: nil
               andSortOrderings: nil];
@@ -209,7 +208,7 @@ Class SOGoMAPIDBObjectK = Nil;
 
 - (NSArray *) toOneRelationshipKeys
 {
-  return [self childKeysOfType: MAPIDBObjectTypeMessage
+  return [self childKeysOfType: MAPIMessageCacheObject
                 includeDeleted: NO
              matchingQualifier: nil
               andSortOrderings: nil];
@@ -359,7 +358,7 @@ Class SOGoMAPIDBObjectK = Nil;
   record = [self lookupRecord: childPath newerThanVersion: -1];
   if (record)
     {
-      if ([[record objectForKey: @"c_type"] intValue] == MAPIDBObjectTypeFolder)
+      if ([[record objectForKey: @"c_type"] intValue] == MAPIFolderCacheObject)
         objectClass = isa;
       else
         objectClass = SOGoMAPIDBObjectK;
