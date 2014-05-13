@@ -357,8 +357,8 @@ static NSArray *tasksFields = nil;
         if ([quickInfos count] > 0)
         {
           quickInfosFlag = YES;
-          quickInfosName = [NSMutableArray arrayWithObject:[[quickInfos objectAtIndex:0] objectForKey:@"c_name"]];
-          for (i = 1; i < [quickInfos count]; i++)
+          quickInfosName = [NSMutableArray arrayWithCapacity:[quickInfos count]];
+          for (i = 0; i < [quickInfos count]; i++)
             [quickInfosName addObject:[[quickInfos objectAtIndex:i] objectForKey:@"c_name"]];
         }
         
@@ -370,23 +370,17 @@ static NSArray *tasksFields = nil;
         
         for (i = 0; i < [allInfos count]; i++)
         {
-          if (quickInfosFlag)
+          if (quickInfosFlag && ![quickInfosName containsObject:[[allInfos objectAtIndex:i] objectForKey:@"c_name"]])
           {
-            if (![quickInfosName containsObject:[[allInfos objectAtIndex:i] objectForKey:@"c_name"]])
-            {
-              iCalString = [[allInfos objectAtIndex:i] objectForKey:@"c_content"];
-              calendar = [iCalCalendar parseSingleFromSource: iCalString];
-              master = [calendar firstChildWithTag:@"vevent"];
-              if (!master)
-                master = [calendar firstChildWithTag:@"vtodo"];
-              
-              if (master) {
-                if ([[master comment] length] > 0)
-                {
-                  match = [[master comment] rangeOfString:value];
-                  if (match.length > 0) {
-                    [quickInfos addObject:[allInfos objectAtIndex:i]];
-                  }
+            iCalString = [[allInfos objectAtIndex:i] objectForKey:@"c_content"];
+            calendar = [iCalCalendar parseSingleFromSource: iCalString];
+            master = [calendar firstChildWithTag:component];
+            if (master) {
+              if ([[master comment] length] > 0)
+              {
+                match = [[master comment] rangeOfString:value options:NSCaseInsensitiveSearch];
+                if (match.length > 0) {
+                  [quickInfos addObject:[allInfos objectAtIndex:i]];
                 }
               }
             }
@@ -395,14 +389,11 @@ static NSArray *tasksFields = nil;
           {
             iCalString = [[allInfos objectAtIndex:i] objectForKey:@"c_content"];
             calendar = [iCalCalendar parseSingleFromSource: iCalString];
-            master = [calendar firstChildWithTag:@"vevent"];
-            if (!master)
-              master = [calendar firstChildWithTag:@"vtodo"];
-            
+            master = [calendar firstChildWithTag:component];
             if (master) {
               if ([[master comment] length] > 0)
               {
-                match = [[master comment] rangeOfString:value];
+                match = [[master comment] rangeOfString:value options:NSCaseInsensitiveSearch];
                 if (match.length > 0) {
                   [quickInfos addObject:[allInfos objectAtIndex:i]];
                 }
@@ -435,12 +426,9 @@ static NSArray *tasksFields = nil;
           else
           {
             // Identifies whether the active user can edit the event.
-            role =
-            [currentFolder roleForComponentsWithAccessClass:
-             [[newInfo objectForKey: @"c_classification"] intValue]
-                                                    forUser: userLogin];
-            if ([role isEqualToString: @"ComponentModifier"]
-                || [role length] == 0)
+            role = [currentFolder roleForComponentsWithAccessClass:[[newInfo objectForKey: @"c_classification"] intValue]
+                                                           forUser: userLogin];
+            if ([role isEqualToString: @"ComponentModifier"] || [role length] == 0)
               [newInfo setObject: [NSNumber numberWithInt: 1]
                           forKey: @"editable"];
             else
@@ -468,6 +456,7 @@ static NSArray *tasksFields = nil;
 	      else
           [newInfo setObject: [NSNumber numberWithInt: 0]
                       forKey: @"erasable"];
+        
 	      [newInfo setObject: [currentFolder nameInContainer]
                     forKey: @"c_folder"];
         [newInfo setObject: [currentFolder ownerInContext: context]
