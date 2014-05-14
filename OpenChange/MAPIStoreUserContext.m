@@ -295,7 +295,7 @@ static NSMapTable *contextsTable = nil;
         {
           /* If "OCSFolderInfoURL" is properly configured, we must have 5
              parts in this url. */
-          ocFSTableName = [NSString stringWithFormat: @"socfs_%@",
+          ocFSTableName = [NSString stringWithFormat: @"sogo_cache_folder_%@",
                                     [username asCSSIdentifier]];
           [parts replaceObjectAtIndex: 4 withObject: ocFSTableName];
           folderTableURL
