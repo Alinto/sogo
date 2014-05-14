@@ -58,7 +58,7 @@ static Class MAPIStoreDBFolderK;
 
 - (void) ensureContextFolder
 {
-  SOGoMAPIDBFolder *currentFolder;
+  SOGoCacheGCSFolder *currentFolder;
   NSArray *parts;
   NSMutableArray *folders;
   NSString *folderName;
@@ -76,7 +76,7 @@ static Class MAPIStoreDBFolderK;
       folderName = [parts objectAtIndex: count];
       if ([folderName length] > 0)
         {
-          currentFolder = [SOGoMAPIDBFolder objectWithName: folderName
+          currentFolder = [SOGoCacheGCSFolder objectWithName: folderName
                                                inContainer: currentFolder];
           [folders addObject: currentFolder];
         }
@@ -96,11 +96,11 @@ static Class MAPIStoreDBFolderK;
 
 - (id) rootSOGoFolder
 {
-  SOGoMAPIDBFolder *folder;
+  SOGoCacheGCSFolder *folder;
 
   [userContext ensureFolderTableExists];
 
-  folder = [SOGoMAPIDBFolder objectWithName: [isa MAPIModuleName]
+  folder = [SOGoCacheGCSFolder objectWithName: [isa MAPIModuleName]
                                 inContainer: nil];
   [folder setTableUrl: [userContext folderTableURL]];
   // [folder reloadIfNeeded];

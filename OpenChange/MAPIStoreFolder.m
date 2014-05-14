@@ -119,7 +119,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [userContext ensureFolderTableExists];
 
   ASSIGN (dbFolder,
-          [SOGoMAPIDBFolder objectWithName: folderName
+          [SOGoCacheGCSFolder objectWithName: folderName
                                inContainer: [container dbFolder]]);
   [dbFolder setTableUrl: [userContext folderTableURL]];
   if (!container && [path length] > 0)
@@ -191,7 +191,7 @@ Class NSExceptionK, MAPIStoreFAIMessageK, MAPIStoreMessageTableK, MAPIStoreFAIMe
   [super dealloc];
 }
 
-- (SOGoMAPIDBFolder *) dbFolder
+- (SOGoCacheGCSFolder *) dbFolder
 {
   return dbFolder;
 }

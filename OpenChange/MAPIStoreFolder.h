@@ -1,8 +1,6 @@
 /* MAPIStoreFolder.h - this file is part of SOGo
  *
- * Copyright (C) 2011-2012 Inverse inc
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2011-2014 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +36,7 @@
 @class MAPIStoreMessageTable;
 @class MAPIStorePermissionsTable;
 @class SOGoFolder;
-@class SOGoMAPIDBFolder;
+@class SOGoCacheGCSFolder;
 @class SOGoMAPIDBMessage;
 
 #import "MAPIStoreSOGoObject.h"
@@ -50,7 +48,7 @@
   // NSArray *faiMessageKeys;
   // NSArray *folderKeys;
 
-  SOGoMAPIDBFolder *dbFolder;
+  SOGoCacheGCSFolder *dbFolder;
   // SOGoMAPIDBFolder *faiFolder;
   // SOGoMAPIDBFolder *propsFolder;
   // SOGoMAPIDBMessage *propsMessage;
@@ -60,7 +58,7 @@
 
 - (void) setupAuxiliaryObjects;
 
-- (SOGoMAPIDBFolder *) dbFolder;
+- (SOGoCacheGCSFolder *) dbFolder;
 
 - (NSArray *) activeMessageTables;
 - (NSArray *) activeFAIMessageTables;

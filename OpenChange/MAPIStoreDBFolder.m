@@ -49,7 +49,7 @@
 #include <mapistore/mapistore.h>
 #include <mapistore/mapistore_errors.h>
 
-static Class EOKeyValueQualifierK, SOGoMAPIDBFolderK, MAPIStoreDBFolderK;
+static Class EOKeyValueQualifierK, SOGoCacheGCSFolderK, MAPIStoreDBFolderK;
 
 static NSString *MAPIStoreRightReadItems = @"RightsReadItems";
 static NSString *MAPIStoreRightCreateItems = @"RightsCreateItems";
@@ -66,7 +66,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 + (void) initialize
 {
   EOKeyValueQualifierK = [EOKeyValueQualifier class];
-  SOGoMAPIDBFolderK = [SOGoMAPIDBFolder class];
+  SOGoCacheGCSFolderK = [SOGoCacheGCSFolder class];
   MAPIStoreDBFolderK = [MAPIStoreDBFolder class];
 }
 
@@ -92,7 +92,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
 {
   enum mapistore_error rc;
   NSString *folderName, *nameInContainer;
-  SOGoMAPIDBFolder *newFolder;
+  SOGoCacheGCSFolder *newFolder;
   struct SPropValue *value;
 
   value = get_SPropValue_SRow (aRow, PidTagDisplayName);
@@ -111,7 +111,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
     {
       nameInContainer = [NSString stringWithFormat: @"0x%.16"PRIx64,
                                   (unsigned long long) newFID];
-      newFolder = [SOGoMAPIDBFolderK objectWithName: nameInContainer
+      newFolder = [SOGoCacheGCSFolderK objectWithName: nameInContainer
                                         inContainer: sogoObject];
       [newFolder reloadIfNeeded];
       [[newFolder properties] setObject: folderName
@@ -198,7 +198,7 @@ static NSString *MAPIStoreRightFolderContact = @"RightsFolderContact";
   ownerUser = [[self userContext] sogoUser];
   if ([[context activeUser] isEqual: ownerUser]
       || [self subscriberCanReadMessages])
-    keys = [(SOGoMAPIDBFolder *) sogoObject childKeysOfType: MAPIMessageCacheObject
+    keys = [(SOGoCacheGCSFolder *) sogoObject childKeysOfType: MAPIMessageCacheObject
                                              includeDeleted: NO
                                           matchingQualifier: qualifier
                                            andSortOrderings: sortOrderings];
