@@ -47,6 +47,7 @@ $(SOGOBACKEND)_OBJC_FILES += \
 	MAPIStoreUserContext.m \
 	\
 	SOGoMAPIDBMessage.m \
+	SOGoCacheGCSObject+MAPIStore.m \
 	\
 	MAPIStoreAppointmentWrapper.m \
 	MAPIStoreAttachment.m \

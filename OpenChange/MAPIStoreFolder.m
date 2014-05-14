@@ -51,6 +51,7 @@
 #import "NSObject+MAPIStore.h"
 #import <SOGo/SOGoCacheGCSFolder.h>
 #import "SOGoMAPIDBMessage.h"
+#import "SOGoCacheGCSObject+MAPIStore.h"
 
 #include <gen_ndr/exchange.h>
 
