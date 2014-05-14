@@ -1,8 +1,6 @@
-/* GCSSpecialQueries+OpenChange.h - this file is part of SOGo
+/* GCSSpecialQueries+SOGoCacheObject.h - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2012-2014 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,15 +18,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef GCSSPECIALQUERIES_OPENCHANGE_H
-#define GCSSPECIALQUERIES_OPENCHANGE_H
+#ifndef GCSSPECIALQUERIES_SOGOCACHEOBJECT_H
+#define GCSSPECIALQUERIES_SOGOCACHEOBJECT_H
 
 #import <GDLContentStore/GCSSpecialQueries.h>
 
-@interface GCSSpecialQueries (OpenChangeHelpers)
+@interface GCSSpecialQueries (SOGoCacheObject)
 
 - (NSString *) createOpenChangeFSTableWithName: (NSString *) tableName;
 
 @end
 
-#endif /* GCSSPECIALQUERIES_OPENCHANGE_H */
+#endif /* GCSSPECIALQUERIES_SOGOCACHEOBJECT_H */

@@ -62,7 +62,7 @@
 #import "NSData+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
 #import "NSString+MAPIStore.h"
-#import "SOGoMAPIObject.h"
+#import <SOGo/SOGoCacheObject.h>
 
 #import "MAPIStoreMailVolatileMessage.h"
 

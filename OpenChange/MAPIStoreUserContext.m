@@ -42,7 +42,7 @@
 #import <Mailer/SOGoMailAccount.h>
 #import <Mailer/SOGoMailAccounts.h>
 
-#import "GCSSpecialQueries+OpenChange.h"
+#import <SOGo/GCSSpecialQueries+SOGoCacheObject.h>
 #import "MAPIApplication.h"
 #import "MAPIStoreAuthenticator.h"
 #import "MAPIStoreMapping.h"

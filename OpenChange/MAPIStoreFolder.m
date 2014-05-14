@@ -1,8 +1,6 @@
 /* MAPIStoreFolder.m - this file is part of SOGo
  *
- * Copyright (C) 2011-2012 Inverse inc
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2011-2014 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,7 +49,7 @@
 #import "NSDate+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "NSObject+MAPIStore.h"
-#import "SOGoMAPIDBFolder.h"
+#import <SOGo/SOGoCacheGCSFolder.h>
 #import "SOGoMAPIDBMessage.h"
 
 #include <gen_ndr/exchange.h>

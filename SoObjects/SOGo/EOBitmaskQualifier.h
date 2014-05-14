@@ -1,8 +1,6 @@
-/* EOQualifier+MAPI.h - this file is part of SOGo
+/* EOBitmaskQualifier.h - this file is part of SOGo
  *
- * Copyright (C) 2010-2012 Inverse inc.
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2010-2014 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,17 +18,26 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef EOQUALIFIER_MAPI_H
-#define EOQUALIFIER_MAPI_H
+#ifndef EOBITMASKQUALIFIER_H
+#define EOBITMASKQUALIFIER_H
 
 #import <EOControl/EOQualifier.h>
 
-@class SOGoMAPIDBObject;
+@interface EOBitmaskQualifier : EOQualifier
+{
+  NSString *key;
+  uint32_t mask;
+  BOOL isZero;
+}
 
-@interface EOQualifier (MAPIStoreRestrictions)
+- (id) initWithKey: (NSString *) newKey
+	      mask: (uint32_t) newMask
+	    isZero: (BOOL) newIsZero;
 
-- (BOOL) evaluateSOGoMAPIDBObject: (SOGoMAPIDBObject *) object;
+- (NSString *) key;
+- (uint32_t ) mask;
+- (BOOL) isZero;
 
 @end
 
-#endif /* EOQUALIFIER_MAPI_H */
+#endif /* EOBITMASKQUALIFIER_H */

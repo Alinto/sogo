@@ -32,7 +32,7 @@
 #import <EOControl/EOQualifier.h>
 #import <SOGo/SOGoFolder.h>
 #import <SOGo/SOGoUser.h>
-#import "EOQualifier+MAPI.h"
+#import <SOGo/EOQualifier+SOGoCacheObject.h>
 #import "MAPIStoreContext.h"
 #import "MAPIStoreDBFolderTable.h"
 #import "MAPIStoreDBMessage.h"
@@ -40,7 +40,7 @@
 #import "MAPIStoreMapping.h"
 #import "MAPIStoreTypes.h"
 #import "MAPIStoreUserContext.h"
-#import "SOGoMAPIDBFolder.h"
+#import <SOGo/SOGoCacheGCSFolder.h>
 #import "SOGoMAPIDBMessage.h"
 
 #import "MAPIStoreDBFolder.h"

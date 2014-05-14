@@ -1,8 +1,6 @@
-/* SOGoMAPIDBObject.h - this file is part of SOGo
+/* SOGoCacheGCSObject.h - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2012-2014 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef SOGOMAPIDBOBJECT_H
-#define SOGOMAPIDBOBJECT_H
+#ifndef SOGOCACHEGCSOBJECT_H
+#define SOGOCACHEGCSOBJECT_H
 
-#import "SOGoMAPIObject.h"
+#import "SOGoCacheObject.h"
 
 @class NSArray;
 @class NSMutableDictionary;
@@ -40,7 +38,7 @@ typedef enum {
   MAPIInternalCacheObject = 99 /* object = property list */
 } SOGoCacheObjectType;
 
-@interface SOGoMAPIDBObject : SOGoMAPIObject
+@interface SOGoCacheGCSObject : SOGoCacheObject 
 {
   NSURL *tableUrl;
 
@@ -82,4 +80,4 @@ typedef enum {
 
 @end
 
-#endif /* SOGOMAPIDBOBJECT_H */
+#endif /* SOGOCACHEGCSOBJECT_H */

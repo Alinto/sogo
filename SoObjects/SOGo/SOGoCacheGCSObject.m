@@ -1,8 +1,6 @@
-/* SOGoMAPIDBObject.m - this file is part of SOGo
+/* SOGoCacheGCSObject.m - this file is part of SOGo
  *
- * Copyright (C) 2012 Inverse inc
- *
- * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
+ * Copyright (C) 2012-2014 Inverse inc
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,16 +41,16 @@
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoUser.h>
 
-#import "GCSSpecialQueries+OpenChange.h"
-#import "MAPIStoreTypes.h"
-#import "SOGoMAPIDBFolder.h"
+#import "GCSSpecialQueries+SOGoCacheObject.h"
+//#import "MAPIStoreTypes.h"
+#import "SOGoCacheGCSFolder.h"
 #import "BSONCodec.h"
 
-#import "SOGoMAPIDBObject.h"
+#import "SOGoCacheGCSObject.h"
 
 static EOAttribute *textColumn = nil;
 
-@implementation SOGoMAPIDBObject
+@implementation SOGoCacheGCSObject 
 
 + (void) initialize
 {
@@ -219,43 +217,6 @@ static EOAttribute *textColumn = nil;
 - (BOOL) deleted
 {
   return deleted;
-}
-
-- (Class) mapistoreMessageClass
-{
-  NSString *className, *mapiMsgClass;
-
-  switch (objectType)
-    {
-    case MAPIMessageCacheObject:
-      mapiMsgClass = [properties
-                       objectForKey: MAPIPropertyKey (PidTagMessageClass)];
-      if (mapiMsgClass)
-        {
-          if ([mapiMsgClass isEqualToString: @"IPM.StickyNote"])
-            className = @"MAPIStoreNotesMessage";
-          else
-            className = @"MAPIStoreDBMessage";
-          //[self logWithFormat: @"PidTagMessageClass = '%@', returning '%@'",
-          //      mapiMsgClass, className];
-        }
-      else
-        {
-          //[self warnWithFormat: @"PidTagMessageClass is not set, falling back"
-          //      @" to 'MAPIStoreDBMessage'"];
-          className = @"MAPIStoreDBMessage";
-        }
-      break;
-    case MAPIFAICacheObject:
-      className = @"MAPIStoreFAIMessage";
-      break;
-    default:
-      [NSException raise: @"MAPIStoreIOException"
-                  format: @"message class should not be queried for objects"
-                   @" of type '%d'", objectType];
-    }
-
-  return NSClassFromString (className);
 }
 
 /* actions */

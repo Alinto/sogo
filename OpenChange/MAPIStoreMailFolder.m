@@ -59,7 +59,7 @@
 #import "NSData+MAPIStore.h"
 #import "NSString+MAPIStore.h"
 #import "SOGoMAPIDBMessage.h"
-#import "SOGoMAPIDBFolder.h"
+#import <SOGo/SOGoCacheGCSFolder.h>
 
 #import "MAPIStoreMailVolatileMessage.h"
 
@@ -1172,9 +1172,9 @@ _parseCOPYUID (NSString *line, NSArray **destUIDsP)
 
 - (MAPIStoreMessage *) createMessage
 {
-  SOGoMAPIObject *childObject;
+  SOGoCacheObject *childObject;
 
-  childObject = [SOGoMAPIObject objectWithName: [SOGoMAPIObject
+  childObject = [SOGoCacheObject objectWithName: [SOGoCacheObject
                                                   globallyUniqueObjectId]
                                    inContainer: sogoObject];
   return [MAPIStoreMailVolatileMessage

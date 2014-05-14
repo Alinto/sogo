@@ -15,7 +15,14 @@ SOGo_HEADER_FILES = \
 	SOGoBuild.h \
 	SOGoProductLoader.h		\
 	\
+	BSONCodec.h			\
+	EOBitmaskQualifier.h 		\
+	EOQualifier+SOGoCacheObject.h 	\
+	GCSSpecialQueries+SOGoCacheObject.h \
 	SOGoCache.h			\
+	SOGoCacheGCSFolder.h		\
+	SOGoCacheGCSObject.h		\
+	SOGoCacheObject.h		\
 	SOGoConstants.h			\
 	SOGoObject.h			\
 	SOGoContentObject.h		\
@@ -80,7 +87,14 @@ SOGo_OBJC_FILES = \
 	SOGoBuild.m \
 	SOGoProductLoader.m		\
 	\
+	BSONCodec.m			\
+	EOBitmaskQualifier.m		\
+	EOQualifier+SOGoCacheObject.m	\
+	GCSSpecialQueries+SOGoCacheObject.m \
 	SOGoCache.m			\
+	SOGoCacheGCSFolder.m		\
+	SOGoCacheGCSObject.m		\
+	SOGoCacheObject.m		\
 	SOGoConstants.m			\
 	SOGoObject.m			\
 	SOGoContentObject.m		\
