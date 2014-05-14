@@ -42,7 +42,6 @@
 #import <SOGo/SOGoUser.h>
 
 #import "GCSSpecialQueries+SOGoCacheObject.h"
-//#import "MAPIStoreTypes.h"
 #import "SOGoCacheGCSFolder.h"
 #import "BSONCodec.h"
 
@@ -81,13 +80,6 @@ static EOAttribute *textColumn = nil;
        @" c_deleted SMALLINT NOT NULL DEFAULT 0,"
        @" c_content TEXT)");
 */
-
-/* indexes:
-   c_path (primary key)
-   c_counter
-   c_path, c_type
-   c_path, c_creationdate */
-
 - (id) init
 {
   if ((self = [super init]))
@@ -140,9 +132,8 @@ static EOAttribute *textColumn = nil;
 - (void) setupFromRecord: (NSDictionary *) record
 {
   NSInteger intValue;
-  NSString *propsValue;//, *error;
+  NSString *propsValue;
   NSDictionary *newValues;
-  //NSPropertyListFormat format;
 
   objectType = [[record objectForKey: @"c_type"] intValue];
   intValue = [[record objectForKey: @"c_creationdate"] intValue];
@@ -449,12 +440,6 @@ static EOAttribute *textColumn = nil;
   now = [NSCalendarDate date];
   ASSIGN (lastModified, now);
 
-  /*
-- (NSException *)insertRowX:(NSDictionary *)_row forEntity:(EOEntity *)_entity;
-- (NSException *)updateRowX:(NSDictionary*)aRow
-  describedByQualifier:(EOSQLQualifier*)aQualifier;
-  */
-
   adaptor = [[channel adaptorContext] adaptor];
   pathValue = [adaptor formatValue: [self path]
                       forAttribute: textColumn];
@@ -513,12 +498,6 @@ static EOAttribute *textColumn = nil;
   if (result)
     [self errorWithFormat: @"could not insert/update record for record %@"
                  @" in %@: %@", pathValue, tableName, result];
-  // @" c_path VARCHAR(255) PRIMARY KEY,"
-  // @" c_type SMALLINT NOT NULL,"
-  // @" c_creationdate INT4 NOT NULL,"
-  // @" c_lastmodified INT4 NOT NULL,"
-  // @" c_deleted SMALLINT NOT NULL DEFAULT 0,"
-  // @" c_content BLOB");
 
   [cm releaseChannel: channel];
 }
