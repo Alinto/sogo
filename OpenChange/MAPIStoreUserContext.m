@@ -329,7 +329,7 @@ static NSMapTable *contextsTable = nil;
                   tableName]])
     {
       queries = [channel specialQueries];
-      query = [queries createOpenChangeFSTableWithName: tableName];
+      query = [queries createSOGoCacheGCSFolderTableWithName: tableName];
       if ([channel evaluateExpressionX: query])
         [NSException raise: @"MAPIStoreIOException"
                     format: @"could not create special table '%@'", tableName];

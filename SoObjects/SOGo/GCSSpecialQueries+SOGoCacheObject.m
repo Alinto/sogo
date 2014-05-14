@@ -35,7 +35,7 @@
 
 /* FIXME: c_parent_path should be indexed */
 
-- (NSString *) createOpenChangeFSTableWithName: (NSString *) tableName
+- (NSString *) createSOGoCacheGCSFolderTableWithName: (NSString *) tableName
 {
   [self subclassResponsibility: _cmd];
 
@@ -46,7 +46,7 @@
 
 @implementation GCSPostgreSQLSpecialQueries (SOGoObjectCache)
 
-- (NSString *) createOpenChangeFSTableWithName: (NSString *) tableName
+- (NSString *) createSOGoCacheGCSFolderTableWithName: (NSString *) tableName
 {
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
@@ -66,7 +66,7 @@
 
 @implementation GCSMySQLSpecialQueries (SOGoObjectCache)
 
-- (NSString *) createOpenChangeFSTableWithName: (NSString *) tableName
+- (NSString *) createSOGoCacheGCSFolderTableWithName: (NSString *) tableName
 {
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 
@@ -86,7 +86,7 @@
 
 @implementation GCSOracleSpecialQueries (SOGoObjectCache)
 
-- (NSString *) createOpenChangeFSTableWithName: (NSString *) tableName
+- (NSString *) createSOGoCacheGCSFolderTableWithName: (NSString *) tableName
 {
   static NSString *sqlFolderFormat
     = (@"CREATE TABLE %@ (" 

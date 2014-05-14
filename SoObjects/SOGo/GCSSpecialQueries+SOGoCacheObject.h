@@ -25,7 +25,7 @@
 
 @interface GCSSpecialQueries (SOGoCacheObject)
 
-- (NSString *) createOpenChangeFSTableWithName: (NSString *) tableName;
+- (NSString *) createSOGoCacheGCSFolderTableWithName: (NSString *) tableName;
 
 @end
 
