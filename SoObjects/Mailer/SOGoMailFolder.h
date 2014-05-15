@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009-2011 Inverse inc.
+  Copyright (C) 2009-2014 Inverse inc.
   Copyright (C) 2004-2005 SKYRIX Software AG
 
   This file is part of SOGo
@@ -94,7 +94,6 @@
 
 - (NSCalendarDate *) mostRecentMessageDate;
 
-- (NSString *) davCollectionTagFromId: (NSString *) theId;
 - (NSString *) davCollectionTag;
 
 - (NSArray *) syncTokenFieldsWithProperties: (NSDictionary *) properties
