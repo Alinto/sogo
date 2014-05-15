@@ -14,16 +14,18 @@ ActiveSync_OBJC_FILES =			\
 	iCalRecurrenceRule+ActiveSync.m \
 	iCalTimeZone+ActiveSync.m	\
 	iCalToDo+ActiveSync.m		\
-	NSCalendarDate+ActiveSync.m		\
+	NSCalendarDate+ActiveSync.m	\
 	NSData+ActiveSync.m		\
 	NSDate+ActiveSync.m		\
 	NGDOMElement+ActiveSync.m	\
 	NGMimeMessage+ActiveSync.m	\
 	NGVCard+ActiveSync.m		\
+	NSArray+SyncCache.m		\
 	NSString+ActiveSync.m		\
 	SOGoActiveSyncDispatcher.m	\
 	SOGoActiveSyncDispatcher+Sync.m \
-	SOGoMailObject+ActiveSync.m \
+	SOGoMailObject+ActiveSync.m 	\
+	SOGoSyncCacheObject.m		\
 	SoObjectWebDAVDispatcher+ActiveSync.m
 
 ActiveSync_RESOURCE_FILES +=		\

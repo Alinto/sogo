@@ -35,7 +35,9 @@ typedef enum {
   MAPIFolderCacheObject = 1,
   MAPIMessageCacheObject = 2,
   MAPIFAICacheObject = 3,
-  MAPIInternalCacheObject = 99 /* object = property list */
+  MAPIInternalCacheObject = 99, /* object = property list */
+  ActiveSyncGlobalCacheObject = 200,
+  ActiveSyncFolderCacheObject = 201
 } SOGoCacheObjectType;
 
 @interface SOGoCacheGCSObject : SOGoCacheObject 

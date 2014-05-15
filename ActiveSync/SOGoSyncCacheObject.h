@@ -27,27 +27,29 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
+
+#ifndef __SOGOSYNCCACHEOBJECT_H__
+#define __SOGOSYNCCACHEOBJECT_H__
+
 #import <Foundation/NSObject.h>
 
-#include "SOGoActiveSyncConstants.h"
+@class NSNull;
 
-@class NSException;
-@class NSURL;
-
-@interface SOGoActiveSyncDispatcher : NSObject
+@interface SOGoSyncCacheObject : NSObject
 {
-  NSURL *folderTableURL;
-  id context;
+  id _uid;
+  id _sequence;
 }
 
-- (id) collectionFromId: (NSString *) theCollectionId
-                   type: (SOGoMicrosoftActiveSyncFolderType) theFolderType;
++ (id) syncCacheObjectWithUID: (id) theUID  sequence: (id) theSequence;
+- (id) uid;
+- (void) setUID: (id) theUID;
+- (id) sequence;
+- (void) setSequence: (id) theSequence;
 
-- (NSException *) dispatchRequest: (id) theRequest
-                       inResponse: (id) theResponse
-                          context: (id) theContext;
-
-- (NSURL *) folderTableURL;
-- (void) ensureFolderTableExists;
+- (NSComparisonResult) compareUID: (SOGoSyncCacheObject *) theSyncCacheObject;
+- (NSComparisonResult) compareSequence: (SOGoSyncCacheObject *) theSyncCacheObject;
 
 @end
+
+#endif

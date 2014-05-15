@@ -77,6 +77,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/NSArray+DAV.h>
 #import <SOGo/NSDictionary+DAV.h>
 #import <SOGo/SOGoCache.h>
+#import <SOGo/SOGoCacheGCSObject.h>
 #import <SOGo/SOGoDAVAuthenticator.h>
 #import <SOGo/SOGoDomainDefaults.h>
 #import <SOGo/SOGoMailer.h>
@@ -85,6 +86,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #import <SOGo/SOGoUserFolder.h>
 #import <SOGo/SOGoUserManager.h>
 #import <SOGo/SOGoUserSettings.h>
+#import <SOGo/GCSSpecialQueries+SOGoCacheObject.h>
+#import <SOGo/NSString+Utilities.h>
 
 #import <Appointments/SOGoAppointmentFolder.h>
 #import <Appointments/SOGoAppointmentFolders.h>
@@ -115,22 +118,51 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "SOGoActiveSyncConstants.h"
 #include "SOGoMailObject+ActiveSync.h"
 
+#import <GDLContentStore/GCSChannelManager.h>
+
 #include <unistd.h>
 
 @implementation SOGoActiveSyncDispatcher
 
+- (id) init
+{
+  [super init];
+
+  folderTableURL = nil;
+  
+  return self;
+}
+
+- (void) dealloc
+{
+  RELEASE(folderTableURL);
+  [super dealloc];
+}
+
 - (void) _setFolderSyncKey: (NSString *) theSyncKey
 {
-  NSMutableDictionary *metadata;
-  
-  metadata = [[[context activeUser] userSettings] microsoftActiveSyncMetadataForDevice: [context objectForKey: @"DeviceId"]];
-  
-  [metadata setObject: [NSDictionary dictionaryWithObject: theSyncKey  forKey: @"SyncKey"]  forKey: @"FolderSync"];
+  SOGoCacheGCSObject *o;
 
-  [[[context activeUser] userSettings] setMicrosoftActiveSyncMetadata: metadata
-                                                               forDevice: [context objectForKey: @"DeviceId"]];
+  o = [SOGoCacheGCSObject objectWithName: [context objectForKey: @"DeviceId"]  inContainer: nil];
+  [o setObjectType: ActiveSyncGlobalCacheObject];
+  [o setTableUrl: [self folderTableURL]];
+  [o reloadIfNeeded];
+  
+  [[o properties] removeAllObjects];
+  [[o properties] addEntriesFromDictionary: [NSDictionary dictionaryWithObject: theSyncKey  forKey: @"FolderSyncKey"]];
+  [o save];
+}
 
-  [[[context activeUser] userSettings] synchronize];
+- (NSMutableDictionary *) _globalMetadataForDevice
+{
+  SOGoCacheGCSObject *o;
+
+  o = [SOGoCacheGCSObject objectWithName: [context objectForKey: @"DeviceId"]  inContainer: nil];
+  [o setObjectType: ActiveSyncGlobalCacheObject];
+  [o setTableUrl: [self folderTableURL]];
+  [o reloadIfNeeded];
+  
+  return [o properties];
 }
 
 //
@@ -417,6 +449,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
       [self _setFolderSyncKey: syncKey];
 
+      // FIXME - TODO: We *MUST* update the path in our cache! See -changePathTo in SOGoCacheGCSObject
+
       s = [NSMutableString string];
       [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
       [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
@@ -455,7 +489,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   BOOL first_sync;
   int status;
 
-  metadata = [[[context activeUser] userSettings] microsoftActiveSyncMetadataForDevice: [context objectForKey: @"DeviceId"]];
+  metadata = [self _globalMetadataForDevice];
   syncKey = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
   s = [NSMutableString string];
 
@@ -467,7 +501,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       first_sync = YES;
       syncKey = @"1";
     }
-  else if (![syncKey isEqualToString: [[metadata objectForKey: @"FolderSync"] objectForKey: @"SyncKey"]])
+  else if (![syncKey isEqualToString: [metadata objectForKey: @"FolderSyncKey"]])
     {
       // Synchronization key mismatch or invalid synchronization key
       status = 9;
@@ -1588,6 +1622,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   cmdName = [[theRequest uri] command];
 
+  // We make sure our cache table exists
+  [self ensureFolderTableExists];
+
   //
   // If the MS-ASProtocolVersion header is set to "12.1", the body of the SendMail request is
   // is a "message/rfc822" payload - otherwise, it's a WBXML blob.
@@ -1657,6 +1694,69 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    RELEASE(context);
 
   return nil;
+}
+
+- (NSURL *) folderTableURL
+{
+  NSString *urlString, *ocFSTableName;
+  NSMutableArray *parts;
+  SOGoUser *user;
+
+  if (!folderTableURL)
+    {
+      user = [context activeUser];
+      urlString = [[user domainDefaults] folderInfoURL];
+      parts = [[urlString componentsSeparatedByString: @"/"]
+                mutableCopy];
+      [parts autorelease];
+      if ([parts count] == 5)
+        {
+          /* If "OCSFolderInfoURL" is properly configured, we must have 5
+             parts in this url. */
+          ocFSTableName = [NSString stringWithFormat: @"sogo_cache_folder_%@",
+                                    [[[context activeUser] loginInDomain] asCSSIdentifier]];
+          [parts replaceObjectAtIndex: 4 withObject: ocFSTableName];
+          folderTableURL
+            = [NSURL URLWithString: [parts componentsJoinedByString: @"/"]];
+          [folderTableURL retain];
+        }
+      else
+        [NSException raise: @"MAPIStoreIOException"
+                    format: @"'OCSFolderInfoURL' is not set"];
+    }
+
+  return folderTableURL;
+}
+
+- (void) ensureFolderTableExists
+{
+  GCSChannelManager *cm;
+  EOAdaptorChannel *channel;
+  NSString *tableName, *query;
+  GCSSpecialQueries *queries;
+
+  [self folderTableURL];
+
+  cm = [GCSChannelManager defaultChannelManager];
+  channel = [cm acquireOpenChannelForURL: folderTableURL];
+  
+  /* FIXME: make use of [EOChannelAdaptor describeTableNames] instead */
+  tableName = [[folderTableURL path] lastPathComponent];
+  if ([channel evaluateExpressionX:
+        [NSString stringWithFormat: @"SELECT count(*) FROM %@",
+                  tableName]])
+    {
+      queries = [channel specialQueries];
+      query = [queries createSOGoCacheGCSFolderTableWithName: tableName];
+      if ([channel evaluateExpressionX: query])
+        [NSException raise: @"MAPIStoreIOException"
+                    format: @"could not create special table '%@'", tableName];
+    }
+  else
+    [channel cancelFetch];
+
+
+  [cm releaseChannel: channel]; 
 }
 
 @end

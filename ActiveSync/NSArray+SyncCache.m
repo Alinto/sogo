@@ -27,27 +27,58 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
-#import <Foundation/NSObject.h>
+#import "NSArray+SyncCache.h"
 
-#include "SOGoActiveSyncConstants.h"
+#import <Foundation/NSDictionary.h>
 
-@class NSException;
-@class NSURL;
+#include "SOGoSyncCacheObject.h"
 
-@interface SOGoActiveSyncDispatcher : NSObject
+@implementation NSMutableArray (SyncCache)
+
+- (id) initWithDictionary: (NSDictionary *) theDictionary
 {
-  NSURL *folderTableURL;
-  id context;
+  SOGoSyncCacheObject *o;
+  NSArray *allKeys;
+  id key;
+  int i;
+
+  self = [self initWithCapacity: [theDictionary count]];
+
+  allKeys = [theDictionary allKeys];
+  
+  for (i = 0; i < [allKeys count]; i++)
+    {
+      key = [allKeys objectAtIndex: i];
+      o = [SOGoSyncCacheObject syncCacheObjectWithUID: key
+                                             sequence: [theDictionary objectForKey: key]];
+      [self addObject: o];
+    }
+
+  return self;
 }
 
-- (id) collectionFromId: (NSString *) theCollectionId
-                   type: (SOGoMicrosoftActiveSyncFolderType) theFolderType;
+@end
 
-- (NSException *) dispatchRequest: (id) theRequest
-                       inResponse: (id) theResponse
-                          context: (id) theContext;
+//
+//
+//
+@implementation NSArray (SyncCache)
 
-- (NSURL *) folderTableURL;
-- (void) ensureFolderTableExists;
+- (NSDictionary *) dictionaryValue
+{
+  NSMutableDictionary *d;
+  SOGoSyncCacheObject *o;
+  int i;
+
+  d = [NSMutableDictionary dictionary];
+
+  for (i = 0; i < [self count]; i++)
+    {
+      o = [self objectAtIndex: i];
+      [d setObject: [o sequence]  forKey: [o uid]];
+    }
+
+  return d;
+}
 
 @end
