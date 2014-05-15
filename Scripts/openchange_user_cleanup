@@ -22,7 +22,7 @@ sogoUserDefaultsFile = os.path.expanduser("~sogo/GNUstep/Defaults/.GNUstepDefaul
 #  - removes the entry in samba's ldap tree via ldbedit (NOTYET)
 #  - remove the user's directory under mapistore/ and mapistore/SOGo
 #  - cleanup Junk Folders and Sync Issues imap folders
-#  - Delete the socfs_ table for the username.
+#  - Delete the sogo_cache_folder_ table for the username.
 
 def usage():
     print """
@@ -210,7 +210,7 @@ On RHEL, install it using 'yum install MySQL-python'"""
 
     conn = MySQLdb.connect(host=dbhost, port=int(dbport), user=dbuser, passwd=dbpass, db=dbname)
     c=conn.cursor()
-    tablename="socfs_%s" % (username)
+    tablename="sogo_cache_folder_%s" % (username)
     c.execute("TRUNCATE TABLE %s" % tablename)
     print "Table %s emptied"
 
@@ -225,7 +225,7 @@ On RHEL, install it using 'yum install python-pgsql'"""
         raise Exception(msg)
 
     conn = pg.connect(host=dbhost, port=int(dbport), user=dbuser, passwd=dbpass, dbname=dbname) 
-    tablename = "socfs_%s" % username
+    tablename = "sogo_cache_folder_%s" % username
     conn.query("DELETE FROM %s" % tablename)
     print "Table '%s' emptied" % tablename
 
@@ -278,7 +278,7 @@ def sqlCleanup(username):
     print "Starting SQL cleanup"
     OCSFolderInfoURL = getOCSFolderInfoURL()
     if OCSFolderInfoURL is None:
-        raise Exception("Couldn't fetch OCSFolderInfoURL or it is not set. the socfs_%s table should be truncated manually" % (username))
+        raise Exception("Couldn't fetch OCSFolderInfoURL or it is not set. the sogo_cache_folder_%s table should be truncated manually" % (username))
     
     # postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_folder_info
     m = re.search("(.+)://(.+):(.+)@(.+):(\d+)/(.+)/(.+)", OCSFolderInfoURL)
