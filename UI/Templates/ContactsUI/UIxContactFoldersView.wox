@@ -75,7 +75,7 @@
 
   <div class="menu" id="contactMenu">
     <ul>
-      <li><var:string label:value="Properties" /></li>
+      <li><var:string label:value="Edit" /></li>
       <li><var:string label:value="Categories" /></li>
       <li><!-- separator --></li>
       <li><var:string label:value="Write" /></li>
