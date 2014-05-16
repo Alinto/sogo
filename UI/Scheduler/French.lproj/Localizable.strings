@@ -225,8 +225,13 @@
 "view_future" = "Tous les événements futurs";
 "view_selectedday" = "Jour courant";
 
+"view_not_started" = "Tâches non-commencées";
+"view_overdue" = "Tâches en retard";
+"view_incomplete" = "Tâches à compléter";
+
 "View:" = "Voir :";
-"Title or Description" = "Le titre ou la description";
+"Title, category or location" = "Titre, catégorie ou lieu";
+"Entire content" = "Tout le contenu";
 
 "Search" = "Rechercher";
 "Search attendees" = "Recherche de participants";
@@ -506,7 +511,7 @@ vtodo_class2 = "(Tâche confidentielle)";
 
 "Links to this Calendar" = "Liens vers cet agenda";
 "Authenticated User Access" = "Accès aux utilisateurs authentifiés";
-"CalDAV URL" = "Accès en CalDAV";
+"CalDAV URL" = "Accès en CalDAV :";
 "WebDAV ICS URL" = "Représentation ICS en WebDAV";
 "WebDAV XML URL" = "Représentation XML en WebDAV";
 

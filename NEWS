@@ -11,6 +11,7 @@ Enhancements
  - updated datepicker
  - addressbooks properties are now accessible from a popup window
  - extended events and tasks searches
+ - updated French translation
 
 Bug fixes
  - fixed saved HTML content of draft when attaching a file
