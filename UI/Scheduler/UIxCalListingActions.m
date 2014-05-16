@@ -369,7 +369,7 @@ static NSArray *tasksFields = nil;
                                            component: component];
         if (quickInfosFlag == YES)
         {
-          for (i = 0; i < [allInfos count]; i++) {
+          for (i = ([allInfos count] - 1); i >= 0 ; i--) {
             if([quickInfosName containsObject:[[allInfos objectAtIndex:i] objectForKey:@"c_name"]])
               [allInfos removeObjectAtIndex:i];
           }
