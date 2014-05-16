@@ -1,25 +1,25 @@
 /* -*- Mode: js2-mode; tab-width: 4; c-label-minimum-indentation: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 
 /*
-	Copyright (C) 2006-2014 Inverse
-
-	This file is part of SOGo
-
-	SOGo is free software; you can redistribute it and/or modify it under
-	the terms of the GNU Lesser General Public License as published by the
-	Free Software Foundation; either version 2, or (at your option) any
-	later version.
-
-	SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
-	WARRANTY; without even the implied warranty of MERCHANTABILITY or
-	FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
-	License for more details.
-
-	You should have received a copy of the GNU Lesser General Public
-	License along with SOGo; see the file COPYING.  If not, write to the
-	Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
-	02111-1307, USA.
-*/
+ Copyright (C) 2006-2014 Inverse
+ 
+ This file is part of SOGo
+ 
+ SOGo is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the
+ Free Software Foundation; either version 2, or (at your option) any
+ later version.
+ 
+ SOGo is distributed in the hope that it will be useful, but WITHOUT ANY
+ WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ License for more details.
+ 
+ You should have received a copy of the GNU Lesser General Public
+ License along with SOGo; see the file COPYING.  If not, write to the
+ Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+ 02111-1307, USA.
+ */
 
 /******************************** Global variables *******************************************/
 var firstDayOfWeek = window.opener.firstDayOfWeek;
@@ -33,8 +33,8 @@ var sd, ed;
 /****************************************** Ajax Requests, callbacks & events/tasks drawings ***************************************************/
 
 function refreshContent() {
-    refreshEvents(); // Get the eventBlocks and draw them
-    refreshTasks();  // Get the taskLists and draw them
+  refreshEvents(); // Get the eventBlocks and draw them
+  refreshTasks();  // Get the taskLists and draw them
 }
 
 function updateDisplayView(data, newView) {
@@ -66,7 +66,7 @@ function updateDisplayView(data, newView) {
           document.selectedDate = selectedCell;
         } else
           document.selectedDate = null;
-
+        
         setSelectedDayDate(day);
         
         return false;
@@ -79,7 +79,7 @@ function updateDisplayView(data, newView) {
   }
   
   selectedCalendarCell = null;
-
+  
   if (document.dayDisplayAjaxRequest) {
     document.dayDisplayAjaxRequest.aborted = true;
     document.dayDisplayAjaxRequest.abort();
@@ -87,7 +87,7 @@ function updateDisplayView(data, newView) {
   document.dayDisplayAjaxRequest
   = triggerAjaxRequest(url, previewDisplayCallback,
                        { "view": newView,
-                         "day": day});
+                       "day": day});
 }
 
 function previewDisplayCallback(http) {
@@ -158,8 +158,8 @@ function refreshTasks(){
   }
   
   url = window.parentvar("ApplicationBaseURL") + "/" + "taskslist?show-completed=" + printCompletedTasks
-                                                     + "&asc=" + sorting["task-ascending"]
-                                                     + "&sort=" + sorting["task-attribute"];
+  + "&asc=" + sorting["task-ascending"]
+  + "&sort=" + sorting["task-attribute"];
   var tasksList = window.parent$("tasksList");
   var selectedIds;
   if (tasksList)
@@ -387,13 +387,13 @@ function _parseEvent(event) {
   var parsedEvent;
   var startDate = new Date(event[5] *1000);
   var endDate = new Date(event[6] *1000);
-	parsedEvent = "<div class=divEventsPreview><table>";
-  parsedEvent += "<tr class=\"eventsTitle\"><td colspan=\"2\"><b>"+ event[4] +"</b></td></tr>";
-  parsedEvent += "<tr><td style=\"text-align:right;\"><i>" + start + ":</i></td><td>" + startDate.toLocaleString() + "</td></tr>";
-  parsedEvent += "<tr><td style=\"text-align:right;\"><i>" + end + ":</i></td><td>" + endDate.toLocaleString() + "</td></tr>";
+	parsedEvent = "<div class=\"divEventsPreview\"><table>";
+  parsedEvent += "<tr><th></th><th>"+ event[4] +"</th></tr>";
+  parsedEvent += "<tr><td class=\"label\">" + start + ":</td><td>" + startDate.toLocaleString() + "</td></tr>";
+  parsedEvent += "<tr><td class=\"label\">" + end + ":</td><td>" + endDate.toLocaleString() + "</td></tr>";
   if (event[7] != "")
-    parsedEvent += "<tr><td style=\"text-align:right;\"><i>"+ Location +": </i></td><td>" + event[7] + "</td></tr>";
-  parsedEvent += "<tr><td style=\"text-align:right;\"><i>"+ Calendar +": </i></td><td>" + event[2] + "</td></tr>";
+    parsedEvent += "<tr><td class=\"label\">"+ Location +": </td><td>" + event[7] + "</td></tr>";
+  parsedEvent += "<tr><td class=\"label\">"+ Calendar +": </td><td>" + event[2] + "</td></tr>";
   parsedEvent += "</table></div>";
 	return parsedEvent;
 }
@@ -404,26 +404,26 @@ function _parseTask(task) {
   var end = _("End");
   var Calendar = _("Calendar");
   var Location = _("Location");
-
-  parsedTask = "<div class=divTasksPreview><table>";
+  
+  parsedTask = "<div class=\"divTasksPreview\"><table>";
   if (task[12] == "overdue")
-    parsedTask += "<tr><td colspan=\"2\" class=\"overdueTasks\"><b>"+ task[4] +"</b></td></tr>";
+    parsedTask += "<tr><th></th><th class=\"overdueTasks\">"+ task[4] +"</th></tr>";
   else if (task[12] == "completed") {
-    parsedTask += "<tr><td colspan=\"2\" class=\"completedTasks\"><b>"+ task[4] +"</b></td></tr>";
+    parsedTask += "<tr><th></th><th class=\"completedTasks\">"+ task[4] +"</th></tr>";
   }
   else
-    parsedTask += "<tr class=\"tasksTitle\"><td colspan=\"2\"><b>"+ task[4] +"</b></td></tr>";
+    parsedTask += "<tr class=\"tasksTitle\"><th></th><th>"+ task[4] +"</th></tr>";
   
   if (task[5] != null && task[6] != null) {
     var startDate = new Date(task[5] *1000);
     var endDate = new Date(task[6] *1000);
-    parsedTask += "<tr><td style=\"text-align:right;\"><i>"+ start +": </i></td><td>"+ startDate.toLocaleString() + "</td></tr>";
-    parsedTask += "<tr><td style=\"text-align:right;\"><i>"+ end +": </i></td><td>"+ endDate.toLocaleString() + "</td></tr>";
+    parsedTask += "<tr><td class=\"label\">"+ start +": </td><td>"+ startDate.toLocaleString() + "</td></tr>";
+    parsedTask += "<tr><td class=\"label\">"+ end +": </td><td>"+ endDate.toLocaleString() + "</td></tr>";
   }
   if (task[7] != "") {
-    parsedTask += "<tr><td style=\"text-align:right;\"><i>"+ Location +": </i></td><td>" + task[7] + "</td></tr>";
+    parsedTask += "<tr><td class=\"label\">"+ Location +": </td><td>" + task[7] + "</td></tr>";
   }
-  parsedTask += "<tr><td style=\"text-align:right;\"><i>" + Calendar + ": </i></td><td>" + task[2] + "</td></tr>";
+  parsedTask += "<tr><td class=\"label\">" + Calendar + ": </td><td>" + task[2] + "</td></tr>";
   parsedTask += "</table></div>";
   
   return parsedTask;
@@ -529,7 +529,7 @@ function ajustFrames(view) {
     document.getElementById("rightFrameTasks").style.width = '100%';
     document.getElementById("rightFrameTasks").style.pageBreakBefore = 'always';
     document.getElementById("rightFrameTasks").style.pageBreakInside = 'avoid';
-  
+    
   }
   else {
     document.getElementById("rightFrameEvents").style.width = '49.5%';
@@ -559,7 +559,7 @@ function onTasksCheck(checkBox) {
   var printOptions = document.getElementsByName("printOptions");
   for (var i = 0; i < printOptions.length; i++)
     printOptions[i].disabled = !checkBox.checked;
-    
+  
   if(checkBox.checked) {
     document.getElementById("rightFrameTasks").style.display = 'block';
     if ($("printLayoutList").value == 0){
@@ -575,12 +575,12 @@ function onTasksCheck(checkBox) {
 }
 
 /*function onPrintDateCheck() {
-  var dateRange = document.getElementsByName("dateRange");
-  var customDate = document.getElementById("customDate");
-  for (var i = 0; i < dateRange.length; i++)
-    if (dateRange[i].children[1].children[0].disabled == customDate.checked)
-      dateRange[i].children[1].children[0].disabled = !customDate.checked;
-}*/
+ var dateRange = document.getElementsByName("dateRange");
+ var customDate = document.getElementById("customDate");
+ for (var i = 0; i < dateRange.length; i++)
+ if (dateRange[i].children[1].children[0].disabled == customDate.checked)
+ dateRange[i].children[1].children[0].disabled = !customDate.checked;
+ }*/
 
 function onPrintCompletedTasksCheck(checkBox) {
   printCompletedTasks = (checkBox.checked ? 1 : 0);
@@ -593,35 +593,35 @@ function onPrintNoDueDateTasksCheck(checkBox) {
 }
 
 /************** Date picker functions *************
-this.initTimeWidgets = function (widgets) {
-	this.timeWidgets = widgets;
-  
-  jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true, weekStart: 0});
-  jQuery(widgets['end']['date']).closest('.date').datepicker({autoclose: true, weekStart: 0});
-  
-  //jQuery(widgets['start']['date']).change(onAdjustTime);
-  
-  jQuery(widgets['startingDate']['date']).closest('.date').datepicker({autoclose: true,
-   weekStart: 0,
-   endDate: lastDay,
-   startDate: firstDay,
-   setStartDate: lastDay,
-   startView: 2,
-   position: "below-shifted-left"});
-}
-
-this.onAdjustTime = function(event) {
-	onAdjustDueTime(event);
-}
-
-this.onAdjustDueTime = function(event) {
-  var dateDelta = (window.getStartDate().valueOf() - window.getShadowStartDate().valueOf());
-   var newDueDate = new Date(window.getDueDate().valueOf() + dateDelta);
-   window.setDueDate(newDueDate);
-  
-	window.timeWidgets['start']['date'].updateShadowValue();
-}
-/****************************************************/
+ this.initTimeWidgets = function (widgets) {
+ this.timeWidgets = widgets;
+ 
+ jQuery(widgets['start']['date']).closest('.date').datepicker({autoclose: true, weekStart: 0});
+ jQuery(widgets['end']['date']).closest('.date').datepicker({autoclose: true, weekStart: 0});
+ 
+ //jQuery(widgets['start']['date']).change(onAdjustTime);
+ 
+ jQuery(widgets['startingDate']['date']).closest('.date').datepicker({autoclose: true,
+ weekStart: 0,
+ endDate: lastDay,
+ startDate: firstDay,
+ setStartDate: lastDay,
+ startView: 2,
+ position: "below-shifted-left"});
+ }
+ 
+ this.onAdjustTime = function(event) {
+ onAdjustDueTime(event);
+ }
+ 
+ this.onAdjustDueTime = function(event) {
+ var dateDelta = (window.getStartDate().valueOf() - window.getShadowStartDate().valueOf());
+ var newDueDate = new Date(window.getDueDate().valueOf() + dateDelta);
+ window.setDueDate(newDueDate);
+ 
+ window.timeWidgets['start']['date'].updateShadowValue();
+ }
+ /****************************************************/
 
 /******************************* Buttons ***********************************************/
 
@@ -645,8 +645,8 @@ function init() {
   $("printButton").observe("click", onPrintClick);
   
   /* TODO : Selected and custom date must be implemented and finished.
-  document.getElementById("eventsTasks").disabled=true;
-  document.getElementById("customDate").disabled=true;*/
+   document.getElementById("eventsTasks").disabled=true;
+   document.getElementById("customDate").disabled=true;*/
   
   onPrintLayoutListChange();
 }
@@ -657,14 +657,14 @@ function initializePrintSettings() {
 }
 
 /*function initializeWhatToPrint() {
-  var widgets = {'start': {'date': $("startingDate")},
-                 'end':   {'date': $("endingDate")}};
-  initTimeWidgets(widgets);
-  onPrintDateCheck();
-  
-}*/
+ var widgets = {'start': {'date': $("startingDate")},
+ 'end':   {'date': $("endingDate")}};
+ initTimeWidgets(widgets);
+ onPrintDateCheck();
+ 
+ }*/
 
 /*function initializeOptions() {
-}*/
+ }*/
 
 document.observe("dom:loaded", init);

@@ -113,6 +113,16 @@ DIV#rightSide {
       float:right;
     }
 
+    DIV#rightFrame TH {
+        text-align: left;
+    }
+
+    DIV#rightFrame TD.label {
+        color: #666;
+        text-align: right;
+        width: 30%;
+    }
+
 /********** Overriding SchedulerUI.css **********/
 
 DIV#calendarHeader {
