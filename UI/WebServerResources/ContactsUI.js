@@ -690,6 +690,7 @@ function addListToOpener (tag, aBookId, aBookName, listId) {
                         "tag": tag
                         });
 }
+
 function addListToOpenerCallback (http) {
     var data = http.callbackData;
     var received = http.responseText.evalJSON (true);
@@ -814,6 +815,7 @@ function onAddressBookImport(event) {
     div.setStyle({ top: top + "px", left: left + "px" });
     div.show();
 }
+
 function hideContactsImport(event) {
     $("uploadDialog").hide();
 }
@@ -821,6 +823,7 @@ function hideContactsImport(event) {
 function hideImportResults () {
     $("uploadResults").hide();
 }
+
 function validateUploadForm () {
     rc = false;
     if ($("contactsFile").value.length) {
@@ -832,6 +835,7 @@ function validateUploadForm () {
     }
     return rc;
 }
+
 function uploadCompleted(response) {
     jQuery('#uploadCancel').show();
     var btn = jQuery('#uploadSubmit');
@@ -1058,39 +1062,19 @@ function updateAddressBooksMenus() {
 }
   
 function onAddressBookModify(event) {
-    var folders = $("contactFolders");
-    var selected = folders.getSelectedNodes()[0];
-    if (selected.getAttribute("owner") != "nobody") {
-        var currentName = selected.innerHTML.unescapeHTML();
-        showPromptDialog(_("Properties"),
-                         _("Address Book Name"),
-                         onAddressBookModifyConfirm,
-                         currentName);
-    }
-}
-
-function onAddressBookModifyConfirm() {
-    var folders = $("contactFolders");
-    var selected = folders.getSelectedNodes()[0];
-    var newName = this.value;
-    var currentName = this.getAttribute("previousValue");
-    if (newName && newName.length > 0
-        && newName != currentName) {
-        var url = (URLForFolderID(selected.getAttribute("id"))
-                   + "/renameFolder?name=" + escape(newName.utf8encode()));
-        triggerAjaxRequest(url, folderRenameCallback,
-                           {node: selected, name: newName});
-    }
-    disposeDialog();
-}
-
-function folderRenameCallback(http) {
-    if (http.readyState == 4) {
-        if (isHttpStatus204(http.status)) {
-            var dict = http.callbackData;
-            dict["node"].innerHTML = dict["name"];
-        }
-    }
+  var folders = $("contactFolders");
+  var selected = folders.getSelectedNodes()[0];
+  var addressBookID = selected.getAttribute("id");
+  var url = ApplicationBaseURL + addressBookID + "/properties";
+  var windowID = sanitizeWindowName(addressBookID + " properties");
+  var width = 410;
+  var height = 410;
+  
+  $(function() {
+    var properties = window.open(url, windowID, "width="+width+",height="+height+",resizable=0");
+    properties.focus();
+    }).delay(0.1);
+  
 }
 
 function onMenuSharing(event) {

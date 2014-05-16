@@ -18,6 +18,20 @@ function onLoadCalendarProperties() {
     
     var okButton = $("okButton");
     okButton.observe("click", onOKClick);
+  
+    Event.observe(document, "keydown", onDocumentKeydown);
+}
+
+function onDocumentKeydown(event) {
+  var target = Event.element(event);
+  if (target.tagName == "INPUT" || target.tagName == "SELECT") {
+    if (event.keyCode == Event.KEY_RETURN) {
+      onOKClick(event);
+    }
+  }
+  if (event.keyCode == Event.KEY_ESC) {
+    onCancelClick();
+  }
 }
 
 function onCancelClick(event) {

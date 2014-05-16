@@ -146,7 +146,7 @@
 "You cannot delete the card of \"%{0}\"."
 = "You cannot delete the card of \"%{0}\".";
 
-"Address Book Name" = "Address Book Name";
+
 
 "You cannot subscribe to a folder that you own!"
 = "You cannot subscribe to a folder that you own.";
@@ -205,3 +205,13 @@
 "A total of %{0} cards were imported in the addressbook." = "A total of %{0} cards were imported in the addressbook.";
 
 "Reload" = "Reload";
+
+/* Properties window */
+"Address Book Name:" = "Address Book Name:";
+"Public Access" = "Public Access";
+"Links to this Address Book" = "Links to this Address Book";
+"Authenticated User Access" = "Authenticated User Access";
+"CardDAV URL: " = "CardDAV URL: ";
+"OK" = "OK";
+"Cancel" = "Cancel";
+

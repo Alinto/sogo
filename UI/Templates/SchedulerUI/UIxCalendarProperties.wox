@@ -10,7 +10,7 @@
   const:toolbar="none"
   const:popup="YES"
   title="title">
-
+  
   <div id="colorPickerDialog" style="display: none;" class="dialog left">
     <div>
       <span class="blc-FFFFFF"><!-- --></span>
@@ -85,59 +85,59 @@
       <span class="blc-99FF99"><!-- --></span>
     </div>
   </div>
-
+  
   <form const:href="saveProperties" name="propertiesform" id="propertiesform">
     <input type="hidden" const:name="calendarID" const:id="calendarID"
-      var:value="calendarID"/>
+    var:value="calendarID"/>
     <div class="tabsContainer" id="propertiesTabs">
       <ul>
         <li target="propertiesView"><span>
-            <var:string label:value="Properties" /></span></li>
-	<li target="davLinksView"><span>
-	    <var:string label:value="Links to this Calendar"/></span></li>
+          <var:string label:value="Properties" /></span></li>
+        <li target="davLinksView"><span>
+          <var:string label:value="Links to this Calendar"/></span></li>
       </ul>
       <div class="tabs">
         <div id="propertiesView" class="tab">
-
-    <!--<div id="propertiesView">-->
-      <fieldset>
-	<legend><var:string label:value="Properties"/></legend>
-        <div><span class="label"><var:string label:value="Name:"/></span
+          
+          <!--<div id="propertiesView">-->
+          <fieldset>
+            <legend><var:string label:value="Properties"/></legend>
+            <div><span class="label"><var:string label:value="Name:"/></span
             ><span class="content"><input type="text"
               name="calendarName" id="calendarName"
               class="textField"
               var:value="calendarName"
               /></span></div>
-        <div><span class="label"><var:string label:value="Color:"/></span
+            <div><span class="label"><var:string label:value="Color:"/></span
             ><span class="content"
-            ><div id="colorButton" class="colorBox" var:data-color="calendarColor"><!-- space --></div
-            ><input type="hidden" name="calendarColor" id="calendarColor" var:value="calendarColor"
-           /></span></div>
-        <var:if condition="userIsOwner"
-          ><div
-            ><label><input type="checkbox" const:class="checkBox" 
-              name="includeInFreeBusy"
-              id="includeInFreeBusy"
-              var:checked="includeInFreeBusy"
-              /><var:string label:value="Include in free-busy"
-              /></label
-              ></div
-            ></var:if>
-      </fieldset>
-      <fieldset>
-	<legend><var:string label:value="Synchronization"/></legend>
-
-        <div><label
-            ><input type="checkbox" const:class="checkBox" 
+              ><div id="colorButton" class="colorBox" var:data-color="calendarColor"><!-- space --></div
+              ><input type="hidden" name="calendarColor" id="calendarColor" var:value="calendarColor"
+              /></span></div>
+            <var:if condition="userIsOwner"
+              ><div
+                ><label><input type="checkbox" const:class="checkBox"
+                  name="includeInFreeBusy"
+                  id="includeInFreeBusy"
+                  var:checked="includeInFreeBusy"
+                  /><var:string label:value="Include in free-busy"
+                  /></label
+                ></div
+              ></var:if>
+          </fieldset>
+          <fieldset>
+            <legend><var:string label:value="Synchronization"/></legend>
+            
+            <div><label
+              ><input type="checkbox" const:class="checkBox"
               name="synchronizeCalendar"
-              id="synchronizeCalendar" 
+              id="synchronizeCalendar"
               var:checked="synchronizeCalendar"
               var:disabled="mustSynchronize"
               /><var:string label:value="Synchronize"
               /></label></div>
-
-        <var:if condition="mustSynchronize" const:negate="YES"
-          ><div><span class="label"><var:string
+            
+            <var:if condition="mustSynchronize" const:negate="YES"
+              ><div><span class="label"><var:string
                 label:value="Tag:"/></span
               ><span class="content"><input type="text"
                 name="calendarSyncTag"
@@ -153,90 +153,96 @@
               name="allCalendarSyncTags"
               id="allCalendarSyncTags"
               var:value="allCalendarSyncTags"
-              /></div></var:if>
-      </fieldset>
-
-      <fieldset>
-	<legend><var:string label:value="Display"/></legend>
-        <div><label
-            ><input type="checkbox" const:class="checkBox"
+                /></div></var:if>
+          </fieldset>
+          
+          <fieldset>
+            <legend><var:string label:value="Display"/></legend>
+            <div><label
+              ><input type="checkbox" const:class="checkBox"
               id="showCalendarAlarms" var:checked="showCalendarAlarms"
               /><var:string label:value="Show alarms"/></label></div>
-        <div><label
-            ><input type="checkbox" const:class="checkBox" 
+            <div><label
+              ><input type="checkbox" const:class="checkBox"
               id="showCalendarTasks" var:checked="showCalendarTasks"
               /><var:string label:value="Show tasks"
               /></label></div>
-        <var:if condition="isWebCalendar"
-          ><div><label
-            ><input type="checkbox" const:class="checkBox" 
+            <var:if condition="isWebCalendar"
+              ><div><label
+                ><input type="checkbox" const:class="checkBox"
                 id="reloadOnLogin" var:checked="reloadOnLogin"
                 /><var:string label:value="Reload on login"
                 /></label></div></var:if>
-      </fieldset>
-
-      <var:if condition="isWebCalendar" const:negate="YES">
-	      <var:if condition="calendar.activeUserIsOwner">
-		<fieldset>
-		  <legend><var:string label:value="Notifications"/></legend>
-		  <div><label
-			   ><input type="checkbox" const:class="checkBox"
-			   id="notifyOnPersonalModifications" var:checked="notifyOnPersonalModifications"
-			   /><var:string label:value="Receive a mail when I modify my calendar"/></label></div>
-		  <div><label
-			   ><input type="checkbox" const:class="checkBox" 
-			   id="notifyOnExternalModifications" var:checked="notifyOnExternalModifications"
-			   /><var:string label:value="Receive a mail when someone else modifies my calendar"
-			   /></label></div>
-		  <div><label
-			   ><input type="checkbox" const:class="checkBox" 
-			   id="notifyUserOnPersonalModifications" var:checked="notifyUserOnPersonalModifications"
-			   /><var:string label:value="When I modify my calendar, send a mail to:"
-			   /></label></div>
-		  <div><span class="label"
-			     ><entity name="nbsp"/></span><span class="content">
-		  <input type="text" name="notifiedUserOnPersonalModifications" id="notifiedUserOnPersonalModifications"
-			 class="textField"
-			 var:value="notifiedUserOnPersonalModifications"
-			 /></span></div>
-		</fieldset>
-	      </var:if>
-      </var:if>
-
-    </div>
-    <div id="davLinksView" class="tab">
-      <var:if condition="isWebCalendar"
-	><fieldset id="webCalendarUrl">
-	<legend><var:string label:value="URL:"/></legend>
-	<div><a const:class="clickableLink" var:href="webCalendarURL" var:title="webCalendarURL"
-	   target="_new"><var:string var:value="webCalendarURL"/></a></div>
-      </fieldset
-      ></var:if>
-      <var:if condition="isWebCalendar" const:negate="YES"
-	><fieldset id="authenticatedLinks">
-          <legend><var:string label:value="Authenticated User Access"/></legend>
-          <div><a const:class="clickableLink" var:href="calDavURL" var:title="calDavURL"
-            ><var:string label:value="CalDAV URL"/></a><br/>
-            <a const:class="clickableLink" var:href="webDavICSURL" var:title="webDavICSURL"
-              ><var:string label:value="WebDAV ICS URL"/></a><br/>
-            <a const:class="clickableLink" var:href="webDavXMLURL" var:title="webDavXMLURL"
-              ><var:string label:value="WebDAV XML URL"/></a></div>
-        </fieldset>
-	<var:if condition="isPublicAccessEnabled"
-        ><fieldset id="publicLinks">
-          <legend><var:string label:value="Public Access"/></legend>
-          <div><a const:class="clickableLink" var:href="publicCalDavURL" var:title="publicCalDavURL"
-            ><var:string label:value="CalDAV URL"/></a><br/>
-	    <a const:class="clickableLink" var:href="publicWebDavICSURL" var:title="publicWebDavICSURL"
-            ><var:string label:value="WebDAV ICS URL"/></a><br/>
-            <a const:class="clickableLink" var:href="publicWebDavXMLURL" var:title="publicWebDavXMLURL"
-              ><var:string label:value="WebDAV XML URL"/></a></div>
-        </fieldset
-	></var:if
-      ></var:if>
+          </fieldset>
+          
+          <var:if condition="isWebCalendar" const:negate="YES">
+            <var:if condition="calendar.activeUserIsOwner">
+              <fieldset>
+                <legend><var:string label:value="Notifications"/></legend>
+                <div><label
+                  ><input type="checkbox" const:class="checkBox"
+                  id="notifyOnPersonalModifications" var:checked="notifyOnPersonalModifications"
+                  /><var:string label:value="Receive a mail when I modify my calendar"/></label></div>
+                <div><label
+                  ><input type="checkbox" const:class="checkBox"
+                  id="notifyOnExternalModifications" var:checked="notifyOnExternalModifications"
+                  /><var:string label:value="Receive a mail when someone else modifies my calendar"
+                  /></label></div>
+                <div><label
+                  ><input type="checkbox" const:class="checkBox"
+                  id="notifyUserOnPersonalModifications" var:checked="notifyUserOnPersonalModifications"
+                  /><var:string label:value="When I modify my calendar, send a mail to:"
+                  /></label></div>
+                <div><span class="label"
+                  ><entity name="nbsp"/></span><span class="content">
+                    <input type="text" name="notifiedUserOnPersonalModifications" id="notifiedUserOnPersonalModifications"
+                    class="textField"
+                    var:value="notifiedUserOnPersonalModifications"
+                    /></span></div>
+              </fieldset>
+            </var:if>
+          </var:if>
+          
+        </div>
+        <div id="davLinksView" class="tab">
+          <var:if condition="isWebCalendar">
+            <fieldset id="webCalendarUrl">
+              <legend><var:string label:value="URL:"/></legend>
+              <div><a const:class="clickableLink" var:href="webCalendarURL" var:title="webCalendarURL"
+                target="_new"><var:string var:value="webCalendarURL"/></a></div>
+            </fieldset>
+          </var:if>
+          <var:if condition="isWebCalendar" const:negate="YES">
+            <fieldset id="authenticatedLinks">
+              <legend><var:string label:value="Authenticated User Access"/></legend>
+              <div>
+                <span>
+                  <var:string label:value="CalDAV URL: "/>
+                  <var:string value="calDavURL" />
+                </span><br/>
+              <a const:class="clickableLink" var:href="webDavICSURL" var:title="webDavICSURL">
+                <var:string label:value="WebDAV ICS URL"/></a><br/>
+              <a const:class="clickableLink" var:href="webDavXMLURL" var:title="webDavXMLURL">
+                <var:string label:value="WebDAV XML URL"/></a></div>
+            </fieldset>
+            <var:if condition="isPublicAccessEnabled">
+              <fieldset id="publicLinks">
+                <legend><var:string label:value="Public Access"/></legend>
+                <div>
+                  <span>
+                    <var:string label:value="CalDAV URL: "/>
+                    <var:string value="publicCalDavURL"/>
+                  </span><br/>
+                <a const:class="clickableLink" var:href="publicWebDavICSURL" var:title="publicWebDavICSURL">
+                  <var:string label:value="WebDAV ICS URL"/></a><br/>
+                <a const:class="clickableLink" var:href="publicWebDavXMLURL" var:title="publicWebDavXMLURL">
+                  <var:string label:value="WebDAV XML URL"/></a></div>
+              </fieldset>
+            </var:if>
+          </var:if>
+        </div>
       </div>
-    </div>
-
+      
       <div id="buttons">
         <a href="#" class="button actionButton" id="okButton" 
           name="okButton">
