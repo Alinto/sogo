@@ -225,7 +225,6 @@
 "view_future" = "All Future Events";
 "view_selectedday" = "Selected Day";
 
-"view_current" = "Current tasks";
 "view_not_started" = "Not started tasks";
 "view_overdue" = "Overdue tasks";
 "view_incomplete" = "Incomplete tasks";
