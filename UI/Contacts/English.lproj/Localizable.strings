@@ -209,10 +209,7 @@
 
 /* Properties window */
 "Address Book Name:" = "Address Book Name:";
-"Public Access" = "Public Access";
 "Links to this Address Book" = "Links to this Address Book";
 "Authenticated User Access" = "Authenticated User Access";
 "CardDAV URL: " = "CardDAV URL: ";
-"OK" = "OK";
-"Cancel" = "Cancel";
 
