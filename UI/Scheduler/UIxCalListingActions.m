@@ -367,41 +367,32 @@ static NSArray *tasksFields = nil;
                                                   to: endDate
                                                title: nil
                                            component: component];
+        if (quickInfosFlag == YES)
+        {
+          for (i = 0; i < [allInfos count]; i++) {
+            if([quickInfosName containsObject:[[allInfos objectAtIndex:i] objectForKey:@"c_name"]])
+              [allInfos removeObjectAtIndex:i];
+          }
+        }
+        
         
         for (i = 0; i < [allInfos count]; i++)
         {
-          if (quickInfosFlag && ![quickInfosName containsObject:[[allInfos objectAtIndex:i] objectForKey:@"c_name"]])
-          {
-            iCalString = [[allInfos objectAtIndex:i] objectForKey:@"c_content"];
-            calendar = [iCalCalendar parseSingleFromSource: iCalString];
-            master = [calendar firstChildWithTag:component];
-            if (master) {
-              if ([[master comment] length] > 0)
-              {
-                match = [[master comment] rangeOfString:value options:NSCaseInsensitiveSearch];
-                if (match.length > 0) {
-                  [quickInfos addObject:[allInfos objectAtIndex:i]];
-                }
-              }
-            }
-          }
-          else
-          {
-            iCalString = [[allInfos objectAtIndex:i] objectForKey:@"c_content"];
-            calendar = [iCalCalendar parseSingleFromSource: iCalString];
-            master = [calendar firstChildWithTag:component];
-            if (master) {
-              if ([[master comment] length] > 0)
-              {
-                match = [[master comment] rangeOfString:value options:NSCaseInsensitiveSearch];
-                if (match.length > 0) {
-                  [quickInfos addObject:[allInfos objectAtIndex:i]];
-                }
+          iCalString = [[allInfos objectAtIndex:i] objectForKey:@"c_content"];
+          calendar = [iCalCalendar parseSingleFromSource: iCalString];
+          master = [calendar firstChildWithTag:component];
+          if (master) {
+            if ([[master comment] length] > 0)
+            {
+              match = [[master comment] rangeOfString:value options:NSCaseInsensitiveSearch];
+              if (match.length > 0) {
+                [quickInfos addObject:[allInfos objectAtIndex:i]];
               }
             }
           }
         }
-        currentInfos = [quickInfos objectEnumerator];
+        
+      currentInfos = [quickInfos objectEnumerator];
       }
       
 
