@@ -3,12 +3,14 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:var="http://www.skyrix.com/od/binding"
     xmlns:const="http://www.skyrix.com/od/constant"
-    xmlns:label="OGo:label"
-    >
+    xmlns:label="OGo:label">
+    
     <div class="filterPanel" data-search="events">
       <div class="menu" id="eventSearchMenu">
         <ul class="choiceMenu">
-          <li data-option="title"><var:string label:value="Title or Description"/></li>
+          <li data-option="title"><var:string label:value="Title"/></li>
+          <li data-option="title_Category_Location"><var:string label:value="Title, category or location"/></li>
+          <li data-option="entireContent"><var:string label:value="Entire content"/></li>
         </ul>
       </div>
       <span class="searchBox" style="float: right">
@@ -25,6 +27,6 @@
         item="filter" string="filterLabel" value="filter"
         selection="selectedFilter"
         const:name="filterpopup" 
-        const:onchange="return onListFilterChange();" />
+        const:onchange="return onEventsListFilterChange();" />
     </div>
   </container>

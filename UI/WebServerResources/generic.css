@@ -428,7 +428,8 @@ TD.headerTitle
 { width: 20%; }
 
 TD.headerLocation,
-TD.headerCalendarName
+TD.headerCalendarName,
+TD.headerCategory
 { min-width: 15em;
   width: 15em; }
 
