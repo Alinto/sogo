@@ -9,6 +9,8 @@ Enhancements
  - added the SOGoMaximumSyncWindowSize system default to overwrite the
    maximum number of items returned during an ActiveSync sync operation
  - updated datepicker
+ - addressbooks properties are now accessible from a popup window
+ - extended events and tasks searches
 
 Bug fixes
  - fixed saved HTML content of draft when attaching a file
