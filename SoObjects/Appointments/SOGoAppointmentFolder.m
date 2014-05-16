@@ -1280,12 +1280,19 @@ firstInstanceCalendarDateRange: (NGCalendarDateRange *) fir
         [baseWhere addObject: privacySQLString];
 
       if ([title length])
-        [baseWhere
-          addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '%%%@%%'",
+        if ([filters length])
+        {
+          if ([filters isEqualToString:@"title_Category_Location"] || [filters isEqualToString:@"entireContent"])
+          {
+            [baseWhere addObject: [NSString stringWithFormat: @"(c_title isCaseInsensitiveLike: '%%%@%%' OR c_category isCaseInsensitiveLike: '%%%@%%' OR c_location isCaseInsensitiveLike: '%%%@%%')",
+                                   [title stringByReplacingString: @"'"  withString: @"\\'\\'"],
+                                   [title stringByReplacingString: @"'"  withString: @"\\'\\'"],
+                                   [title stringByReplacingString: @"'"  withString: @"\\'\\'"]]];
+          }
+        }
+      else
+        [baseWhere addObject: [NSString stringWithFormat: @"c_title isCaseInsensitiveLike: '%%%@%%'",
                                [title stringByReplacingString: @"'"  withString: @"\\'\\'"]]];
-
-      if ([filters length])
-        [baseWhere addObject: [NSString stringWithFormat: @"(%@)", filters]];
 
       /* prepare mandatory fields */
 
