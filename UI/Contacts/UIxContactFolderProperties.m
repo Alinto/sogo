@@ -18,6 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#import <SOGo/SOGoSystemDefaults.h>
+
 #import "UIxContactFolderProperties.h"
 
 @implementation UIxContactFolderProperties
@@ -88,6 +90,13 @@
 - (NSString *) publicCardDavURL
 {
   return [NSString stringWithFormat: @"%@/", [self _basePublicCardDAVURL]];
+}
+
+- (BOOL) isPublicAccessEnabled
+{
+  // NOTE: This method is the same found in Common/UIxAclEditor.m
+  return [[SOGoSystemDefaults sharedSystemDefaults]
+          enablePublicAccess];
 }
 
 @end
