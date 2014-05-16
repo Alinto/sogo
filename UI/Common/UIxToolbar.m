@@ -35,7 +35,7 @@
 {
   NSArray      *toolbarConfig;
   NSArray      *toolbarGroup;
-  NSString *toolbar;
+  NSString     *toolbar;
   NSDictionary *buttonInfo;
 }
 
@@ -60,7 +60,7 @@
   [toolbarGroup  release];
   [toolbarConfig release];
   [buttonInfo    release];
-  [toolbar release];
+  [toolbar       release];
   [super dealloc];
 }
 

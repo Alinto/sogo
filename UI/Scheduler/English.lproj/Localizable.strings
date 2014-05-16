@@ -5,6 +5,7 @@
 "Create a new event" = "Create a new event";
 "Create a new task" = "Create a new task";
 "Edit this event or task" = "Edit this event or task";
+"Print the current calendar view" = "Print the current calendar view";
 "Delete this event or task" = "Delete this event or task";
 "Go to today" = "Go to today";
 "Switch to day view" = "Switch to day view";
@@ -117,7 +118,7 @@
 "Name of the Calendar" = "Name of the Calendar";
 
 "new" = "New";
-"printview" = "Print View";
+"Print view" = "Print view";
 "edit" = "Edit";
 "delete" = "Delete";
 "proposal" = "Proposal";
@@ -144,6 +145,27 @@
 "more attendees" = "More Attendees";
 "Hide already accepted and rejected appointments" = "Hide already accepted and rejected appointments";
 "Show already accepted and rejected appointments" = "Show already accepted and rejected appointments";
+
+/* Print view */
+"LIST" = "List";
+"Print Settings" = "Print Settings";
+"Title:" = "Title:";
+"Layout:" = "Layout:";
+"What to Print" = "What to Print";
+"Events" = "Events";
+"Tasks" = "Tasks";
+"Current view" = "Current View";
+"Selected events and tasks" = "Selected events and tasks";
+"Custom Date Range" = "Custom Date Range";
+"From:" = "From:";
+"To:" = "To:";
+"Options" = "Options";
+"Locale" = "Locale";
+"GMT" = "GMT";
+"Tasks with no due date" = "Tasks with no due date";
+"Completed tasks" = "Completed Tasks";
+"Display time:" = "Display Time:";
+"Calendar:" = "Calendar:";
 
 
 /* Appointments */

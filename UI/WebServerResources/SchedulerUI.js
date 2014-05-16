@@ -34,6 +34,13 @@ var categoriesStyleSheet = null;
 var clipboard = null;
 var eventsToCopy = [];
 
+function printView() {
+  
+  window.open("printView","","width=660,height=470");
+  
+  return false; /* stop following the link */
+}
+
 function newEvent(type, day, hour, duration) {
     var folder = null;
     if (UserDefaults['SOGoDefaultCalendar'] == 'personal')

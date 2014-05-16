@@ -464,9 +464,11 @@ DIV.eventView
 /* new draggable presentation */
 
 DIV#daysView DIV.hours
-{ position: absolute;
+{ display: inline-block;
+  position: relative;
+  float: left;
   top: 0px;
-  left: 0px;
+  left: 0;
   height: 960px;
   width: 50px; }
 
@@ -484,6 +486,9 @@ DIV#daysView DIV.hour
 
 DIV#daysView DIV.days
 { position: relative;
+  left: 0;
+  right: 0;
+  top: 0;
   margin-left: 50px; }
 
 DIV.multicolumnDayView DIV.lastDayUser
@@ -684,8 +689,7 @@ DIV.daysViewFor7Days DIV.day5
 
 DIV.monthView DIV.day6,
 DIV.daysViewFor7Days DIV.day6
-{ left: 85.7142%;
-  border-right: 1px solid #909090; }
+{ left: 85.7142%; }
 
 /* "left" and "width" for #daysView DIV.event are computed in JS code */
 #daysView DIV.event

@@ -38,6 +38,12 @@
       image = "month-view.png";
       tooltip = "Switch to month view"; } ),
   ( { link = "#";
+      onclick = "return printView();";
+      cssClass = "tbicon_print single-window-not-conditional";
+      image = "tb-mail-print-flat-24x24.png";
+      label = "Print view";
+      tooltip = "Print the current calendar view"; } ),
+  ( { link = "#";
       label="Delete";
       onclick = "return deleteEvent(this);";
       image = "tb-mail-delete-flat-24x24.png";
