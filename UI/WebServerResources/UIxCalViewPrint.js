@@ -378,10 +378,10 @@ function newBaseEventDIV(eventRep, event, eventText) {
 
 function _parseEvent(event) {
   // Localized strings :
-  var start = _("Start");
-  var end = _("End");
-  var Location = _("Location");
-  var Calendar = _("Calendar");
+  var start = _("Start:");
+  var end = _("End:");
+  var Location = _("Location:");
+  var Calendar = _("Calendar:");
   
   
   var parsedEvent;
@@ -389,21 +389,20 @@ function _parseEvent(event) {
   var endDate = new Date(event[6] *1000);
 	parsedEvent = "<div class=\"divEventsPreview\"><table>";
   parsedEvent += "<tr><th></th><th>"+ event[4] +"</th></tr>";
-  parsedEvent += "<tr><td class=\"label\">" + start + ":</td><td>" + startDate.toLocaleString() + "</td></tr>";
-  parsedEvent += "<tr><td class=\"label\">" + end + ":</td><td>" + endDate.toLocaleString() + "</td></tr>";
+  parsedEvent += "<tr><td class=\"label\">" + start + "</td><td>" + startDate.toLocaleString() + "</td></tr>";
+  parsedEvent += "<tr><td class=\"label\">" + end + "</td><td>" + endDate.toLocaleString() + "</td></tr>";
   if (event[7] != "")
-    parsedEvent += "<tr><td class=\"label\">"+ Location +": </td><td>" + event[7] + "</td></tr>";
-  parsedEvent += "<tr><td class=\"label\">"+ Calendar +": </td><td>" + event[2] + "</td></tr>";
+    parsedEvent += "<tr><td class=\"label\">"+ Location +"</td><td>" + event[7] + "</td></tr>";
+  parsedEvent += "<tr><td class=\"label\">"+ Calendar +"</td><td>" + event[2] + "</td></tr>";
   parsedEvent += "</table></div>";
 	return parsedEvent;
 }
 
 function _parseTask(task) {
   var parsedTask;
-  var start = _("Start");
-  var end = _("End");
-  var Calendar = _("Calendar");
-  var Location = _("Location");
+  var end = _("Due Date:");
+  var Calendar = _("Calendar:");
+  var Location = _("Location:");
   
   parsedTask = "<div class=\"divTasksPreview\"><table>";
   if (task[12] == "overdue")
@@ -414,16 +413,14 @@ function _parseTask(task) {
   else
     parsedTask += "<tr class=\"tasksTitle\"><th></th><th>"+ task[4] +"</th></tr>";
   
-  if (task[5] != null && task[6] != null) {
-    var startDate = new Date(task[5] *1000);
-    var endDate = new Date(task[6] *1000);
-    parsedTask += "<tr><td class=\"label\">"+ start +": </td><td>"+ startDate.toLocaleString() + "</td></tr>";
-    parsedTask += "<tr><td class=\"label\">"+ end +": </td><td>"+ endDate.toLocaleString() + "</td></tr>";
+  if (task[5] != null) {
+    var endDate = new Date(task[5] *1000);
+    parsedTask += "<tr><td class=\"label\">"+ end +"</td><td>"+ endDate.toLocaleString() + "</td></tr>";
   }
   if (task[7] != "") {
-    parsedTask += "<tr><td class=\"label\">"+ Location +": </td><td>" + task[7] + "</td></tr>";
+    parsedTask += "<tr><td class=\"label\">"+ Location +"</td><td>" + task[7] + "</td></tr>";
   }
-  parsedTask += "<tr><td class=\"label\">" + Calendar + ": </td><td>" + task[2] + "</td></tr>";
+  parsedTask += "<tr><td class=\"label\">" + Calendar + "</td><td>" + task[2] + "</td></tr>";
   parsedTask += "</table></div>";
   
   return parsedTask;
