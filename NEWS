@@ -27,6 +27,7 @@ Bug fixes
  - fixed the IMAP copy/move operation between subfolders in different accounts
  - fixed synchronization of seen/unseen status of msgs in Webmail (#2715)
  - fixed focus of popup windows open through a contextual menu with Firefox on Windows 7
+ - fixed missing characters in shared folder names over ActiveSync (#2709)
 
 2.2.3 (2014-04-03)
 ------------------

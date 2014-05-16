@@ -546,7 +546,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             name = [name substringFromIndex: 1];
           
           if ([name hasSuffix: @"/"])
-            name = [name substringToIndex: [name length]-2];
+            name = [name substringToIndex: [name length]-1];
 
           type = [[folderMetadata objectForKey: @"type"] activeSyncFolderType];
 
