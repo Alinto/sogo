@@ -1,6 +1,6 @@
 /* UIxContactFolderProperties.m - this file is part of SOGo
  *
- * Copyright (C) 2008-2014 Inverse inc.
+ * Copyright (C) 2014 Inverse inc.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,14 +75,14 @@
   NSString *davURL;
   
   if (!basePublicCardDAVURL)
-  {
-    davURL = [[addressBook publicDavURL] absoluteString];
-    if ([davURL hasSuffix: @"/"])
-      basePublicCardDAVURL = [davURL substringToIndex: [davURL length] - 1];
-    else
-      basePublicCardDAVURL = davURL;
-    [basePublicCardDAVURL retain];
-  }
+    {
+      davURL = [[addressBook publicDavURL] absoluteString];
+      if ([davURL hasSuffix: @"/"])
+        basePublicCardDAVURL = [davURL substringToIndex: [davURL length] - 1];
+      else
+        basePublicCardDAVURL = davURL;
+      [basePublicCardDAVURL retain];
+    }
   
   return basePublicCardDAVURL;
 }
@@ -96,7 +96,7 @@
 {
   // NOTE: This method is the same found in Common/UIxAclEditor.m
   return [[SOGoSystemDefaults sharedSystemDefaults]
-          enablePublicAccess];
+           enablePublicAccess];
 }
 
 @end
