@@ -1,6 +1,9 @@
 2.2.4 (2014-MM-DD)
 ------------------
 
+New features
+ - new print option in Calendar module
+
 Enhancements
  - now able to save unknown recipient emails to address book on send (#1496)
  - Sieve folder encoding is now configurable (#2622)
