@@ -1,6 +1,6 @@
 /* SOGoDomainDefaults.m - this file is part of SOGo
  *
- * Copyright (C) 2009-2012 Inverse inc.
+ * Copyright (C) 2009-2014 Inverse inc.
  *
  * Author: Wolfgang Sourdeau <wsourdeau@inverse.ca>
  *
@@ -174,6 +174,11 @@
 - (NSArray *) contactsDefaultRoles
 {
   return [self stringArrayForKey: @"SOGoContactsDefaultRoles"];
+}
+
+- (NSString *) subscriptionFolderFormat
+{
+  return [self stringForKey: @"SOGoSubscriptionFolderFormat"];
 }
 
 //

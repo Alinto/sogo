@@ -207,6 +207,7 @@ static NSArray *childRecordFields = nil;
   [ocsFolder release];
   [ocsPath release];
   [childRecords release];
+  [folderSubscriptionValues release];
   [super dealloc];
 }
 
@@ -275,29 +276,41 @@ static NSArray *childRecordFields = nil;
 {
   NSString *primaryDN;
   NSDictionary *ownerIdentity;
-
+  NSString *subjectFormat;
+  SOGoDomainDefaults *dd;
+  
   primaryDN = [row objectForKey: @"c_foldername"];
   if ([primaryDN length])
+  {
+    displayName = [NSMutableString new];
+    if ([primaryDN isEqualToString: [container defaultFolderName]])
+      [displayName appendString: [self labelForKey: primaryDN
+                                         inContext: context]];
+    else
+      [displayName appendString: primaryDN];
+    
+    if (!activeUserIsOwner)
     {
-      displayName = [NSMutableString new];
-      if ([primaryDN isEqualToString: [container defaultFolderName]])
-	[displayName appendString: [self labelForKey: primaryDN
-                                           inContext: context]];
-      else
-	[displayName appendString: primaryDN];
+      // We MUST NOT use SOGoUser instances here (by calling -primaryIdentity)
+      // as it'll load user defaults and user settings which is _very costly_
+      // since it involves JSON parsing and database requests
+      ownerIdentity = [[SOGoUserManager sharedUserManager]
+                       contactInfosForUserWithUIDorEmail: owner];
 
-      if (!activeUserIsOwner)
-	{
-	  // We MUST NOT use SOGoUser instances here (by calling -primaryIdentity)
-	  // as it'll load user defaults and user settings which is _very costly_
-	  // since it involves JSON parsing and database requests
-	  ownerIdentity = [[SOGoUserManager sharedUserManager]
-			    contactInfosForUserWithUIDorEmail: owner];
-
-	  [displayName appendFormat: @" (%@ <%@>)", [ownerIdentity objectForKey: @"cn"],
-		       [ownerIdentity objectForKey: @"c_email"]];
-	}
+      folderSubscriptionValues = [[NSMutableDictionary alloc] initWithObjectsAndKeys: displayName, @"FolderName",
+                                                                   [ownerIdentity objectForKey: @"cn"], @"UserName",
+                                                                   [ownerIdentity objectForKey: @"c_email"], @"Email", nil];
+      
+      dd = [[context activeUser] domainDefaults];
+      subjectFormat = [dd subscriptionFolderFormat];
+      
+      displayName = [folderSubscriptionValues keysWithFormat: subjectFormat];
+      [displayName retain];
+      
+      /*[displayName appendFormat: @" (%@ <%@>)", [ownerIdentity objectForKey: @"cn"],
+       [ownerIdentity objectForKey: @"c_email"]];*/
     }
+  }
 }
 
 /* This method fetches the display name defined by the owner, but is also the
