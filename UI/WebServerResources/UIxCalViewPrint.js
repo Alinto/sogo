@@ -430,8 +430,7 @@ function _parseTask(task) {
 
 function onCalendarGotoDay(node) {
   var day = node.getAttribute("date");
-  var needRefresh = (listFilter == 'view_selectedday' && day != currentDay);
-  
+    
   changeDateSelectorDisplay(day);
   updateDisplayView({ "day": day });
   refreshEvents();
