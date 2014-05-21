@@ -13,6 +13,11 @@ from: WOString {
   escapeHTML = NO;
 }
 
+newLine: WOString {
+  value = newLine;
+  escapeHTML = NO;
+}
+
 hasReplyTo: WOConditional {
   condition = hasReplyTo;
 }
