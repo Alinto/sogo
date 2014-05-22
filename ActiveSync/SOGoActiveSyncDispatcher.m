@@ -1705,6 +1705,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   if (!folderTableURL)
     {
       user = [context activeUser];
+
+      if (![user loginInDomain])
+        return nil;
+
       urlString = [[user domainDefaults] folderInfoURL];
       parts = [[urlString componentsSeparatedByString: @"/"]
                 mutableCopy];
@@ -1714,7 +1718,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
           /* If "OCSFolderInfoURL" is properly configured, we must have 5
              parts in this url. */
           ocFSTableName = [NSString stringWithFormat: @"sogo_cache_folder_%@",
-                                    [[[context activeUser] loginInDomain] asCSSIdentifier]];
+                                    [[user loginInDomain] asCSSIdentifier]];
           [parts replaceObjectAtIndex: 4 withObject: ocFSTableName];
           folderTableURL
             = [NSURL URLWithString: [parts componentsJoinedByString: @"/"]];
@@ -1742,9 +1746,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   /* FIXME: make use of [EOChannelAdaptor describeTableNames] instead */
   tableName = [[folderTableURL path] lastPathComponent];
-  if ([channel evaluateExpressionX:
-        [NSString stringWithFormat: @"SELECT count(*) FROM %@",
-                  tableName]])
+  if (tableName &&
+      [channel evaluateExpressionX:
+                 [NSString stringWithFormat: @"SELECT count(*) FROM %@",
+                           tableName]])
     {
       queries = [channel specialQueries];
       query = [queries createSOGoCacheGCSFolderTableWithName: tableName];
