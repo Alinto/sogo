@@ -15,6 +15,7 @@ Enhancements
  - addressbooks properties are now accessible from a popup window
  - extended events and tasks searches
  - updated French translation
+ - added more sycned contact properties when using ActiveSync (#2775)
 
 Bug fixes
  - fixed saved HTML content of draft when attaching a file
