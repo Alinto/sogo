@@ -101,7 +101,7 @@ static NSArray *asElementArray = nil;
   int i, count;
   
   if (!asElementArray)
-    asElementArray = [[NSArray alloc] initWithObjects: @"Attendee", nil];
+    asElementArray = [[NSArray alloc] initWithObjects: @"Attendee", @"Category", nil];
 
   data = [NSMutableDictionary dictionary];
 
@@ -153,7 +153,10 @@ static NSArray *asElementArray = nil;
 
                       if ([innerTag isEqualToString: [innerElement tagName]])
                         {
-                          [innerElements addObject: [(NGDOMElement *)innerElement applicationData]];
+                          if ([(id)innerElement isTextNode])
+                            [innerElements addObject: [(NGDOMElement *)innerElement textValue]];
+                          else
+                            [innerElements addObject: [(NGDOMElement *)innerElement applicationData]];
                         }
                       else
                         {
