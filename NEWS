@@ -36,6 +36,7 @@ Bug fixes
  - fixed focus of popup windows open through a contextual menu with Firefox on Windows 7
  - fixed missing characters in shared folder names over ActiveSync (#2709)
  - fixed reply and forward mail templates for Brazilian Portuguese (#2738)
+ - fixed newline in signature when forwarding a message as attachment in HTML mode (#2787)
 
 2.2.3 (2014-04-03)
 ------------------

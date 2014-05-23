@@ -23,6 +23,7 @@
 #import <Foundation/NSString.h>
 
 #import <NGObjWeb/WOContext.h>
+#import <NGObjWeb/WOContext+SoObjects.h>
 #import <NGObjWeb/WORequest.h>
 #import <NGObjWeb/WOResponse.h>
 #import <NGObjWeb/NSException+HTTP.h>
@@ -31,8 +32,9 @@
 #import <SoObjects/Mailer/SOGoDraftsFolder.h>
 #import <SoObjects/Mailer/SOGoMailAccount.h>
 #import <SoObjects/Mailer/SOGoMailObject.h>
+#import <SoObjects/SOGo/NSString+Utilities.h>
+#import <SoObjects/SOGo/SOGoUser.h>
 #import <SoObjects/SOGo/SOGoUserDefaults.h>
-
 
 #import "../Common/WODirectAction+SOGo.h"
 
@@ -76,12 +78,18 @@
   SOGoMailObject *co;
   SOGoDraftsFolder *folder;
   SOGoDraftObject *newMail;
+  SOGoUserDefaults *ud;
   NSString *newLocation;
+  BOOL htmlComposition;
 
   co = [self clientObject];
   account = [co mailAccountFolder];
   folder = [account draftsFolderInContext: context];
   newMail = [folder newDraft];
+  ud = [[context activeUser] userDefaults];
+  htmlComposition = [[ud mailComposeMessageType] isEqualToString: @"html"];
+
+  [newMail setIsHTML: htmlComposition];
   [newMail fetchMailForForwarding: co];
 
   newLocation = [NSString stringWithFormat: @"%@/edit",
