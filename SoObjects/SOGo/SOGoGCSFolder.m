@@ -196,6 +196,7 @@ static NSArray *childRecordFields = nil;
       ocsPath = nil;
       ocsFolder = nil;
       childRecords = [NSMutableDictionary new];
+      folderSubscriptionValues = nil;
       userCanAccessAllObjects = NO;
     }
 
@@ -306,9 +307,6 @@ static NSArray *childRecordFields = nil;
       
       displayName = [folderSubscriptionValues keysWithFormat: subjectFormat];
       [displayName retain];
-      
-      /*[displayName appendFormat: @" (%@ <%@>)", [ownerIdentity objectForKey: @"cn"],
-       [ownerIdentity objectForKey: @"c_email"]];*/
     }
   }
 }
