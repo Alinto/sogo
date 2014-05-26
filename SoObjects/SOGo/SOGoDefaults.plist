@@ -85,4 +85,6 @@
         $label4 = ("To Do", "#3333FF");
         $label5 = ("Later", "#993399");
     };
+    
+    SOGoSubscriptionFolderFormat = "%{FolderName} (%{UserName} <%{Email}>)";
 }
