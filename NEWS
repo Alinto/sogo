@@ -16,6 +16,7 @@ Enhancements
  - extended events and tasks searches
  - updated French translation
  - added more sycned contact properties when using ActiveSync (#2775)
+ - now possible to configure the default subscribed resource name using SOGoSubscriptionFolderFormat
 
 Bug fixes
  - fixed saved HTML content of draft when attaching a file
