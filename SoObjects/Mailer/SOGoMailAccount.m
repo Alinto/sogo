@@ -686,12 +686,6 @@ static NSString *inboxFolderName = @"INBOX";
   client = [[self imap4Connection] client];
   result = [client annotation: @"*"  entryName: @"/comment" attributeName: @"value.priv"];
 
-  if (![[result objectForKey: @"result"] boolValue])
-    {
-      NSLog(@"IMAP annotation call failed.");
-      return folders;
-    }
-
   e = [folderList objectEnumerator];
 
   while (object = [e nextObject])
@@ -705,17 +699,14 @@ static NSString *inboxFolderName = @"INBOX";
           
           if (![[nresult objectForKey: @"result"] boolValue])
             {
-              // need to implement X-GUID query for Dovecot - this requires modification in SOPE to support following command:
+              // Need to implement X-GUID query for Dovecot - this requires modification in SOPE to support following command:
               // 1 list "" "*" return (status (x-guid)) -> this would avoid firing a command per folder to IMAP
-              //guid = [NSString stringWithFormat: @"%@-%@", [object substringFromIndex: 1],  @"xxx" ];
               nresult = [client status: [object substringFromIndex: 1] flags: [NSArray arrayWithObject: @"x-guid"]];
               guid = [nresult objectForKey: @"x-guid"];
               if (!guid)
                 {
                   guid = [NSString stringWithFormat: @"%@", [object substringFromIndex: 1]];
                 }
-              NSLog(@"tfu setannotation failed: %@", nresult );
-              NSLog(@"tfu uniqueid folderid: %@", guid );
             }
         }
       
