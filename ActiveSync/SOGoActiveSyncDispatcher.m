@@ -1089,6 +1089,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
 
 //
+// We ignore everything for now.
+//
+- (void) processProvision: (id <DOMElement>) theDocumentElement
+               inResponse: (WOResponse *) theResponse
+{
+  NSMutableString *s;
+  NSData *d;
+  
+  s = [NSMutableString string];
+  [s appendString: @"<?xml version=\"1.0\" encoding=\"utf-8\"?>"];
+  [s appendString: @"<!DOCTYPE ActiveSync PUBLIC \"-//MICROSOFT//DTD ActiveSync//EN\" \"http://www.microsoft.com/\">"];
+  [s appendString: @"<Provision xmlns=\"Provision:\">"];
+  [s appendString: @"</Provision>"];
+  
+  d = [[s dataUsingEncoding: NSUTF8StringEncoding] xml2wbxml];
+  
+  [theResponse setContent: d];
+}
+
+//
 // <?xml version="1.0"?>
 // <!DOCTYPE ActiveSync PUBLIC "-//MICROSOFT//DTD ActiveSync//EN" "http://www.microsoft.com/">
 // <ResolveRecipients xmlns="ResolveRecipients:">
