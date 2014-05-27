@@ -43,6 +43,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - (id) collectionFromId: (NSString *) theCollectionId
                    type: (SOGoMicrosoftActiveSyncFolderType) theFolderType;
 
+- (id) globallyUniqueIDToIMAPFolderName: (NSString *) theIdToTranslate
+                                   type: (SOGoMicrosoftActiveSyncFolderType) theFolderType;
+
 - (NSException *) dispatchRequest: (id) theRequest
                        inResponse: (id) theResponse
                           context: (id) theContext;

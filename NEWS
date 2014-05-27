@@ -17,6 +17,7 @@ Enhancements
  - updated French translation
  - added more sycned contact properties when using ActiveSync (#2775)
  - now possible to configure the default subscribed resource name using SOGoSubscriptionFolderFormat
+ - now handle server-side folder updates using ActiveSync (#2688)
 
 Bug fixes
  - fixed saved HTML content of draft when attaching a file

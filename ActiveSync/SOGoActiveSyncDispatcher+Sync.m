@@ -123,7 +123,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   [o setTableUrl: [self folderTableURL]];
   [o reloadIfNeeded];
   
-  [[o properties] removeAllObjects];
+  [[o properties] removeObjectForKey: @"SyncCache"];
+  [[o properties] removeObjectForKey: @"DateCache"];
+
   [[o properties] addEntriesFromDictionary: theFolderMetadata];
   [o save];
 }
@@ -627,21 +629,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                                                                             sequence: [[[allMessages objectAtIndex: i] allValues] lastObject]]];
           }
         
-        // If it's a new Sync operation, ignore anything we might have
-        // in our preferences.
+        // If it's a new Sync operation, DateCache and SyncCache need to be deleted
+        // but GUID stored by folderSync shouldn't be touched
+        folderMetadata = [self _folderMetadataForKey: [theCollection nameInContainer]];
         if ([theSyncKey isEqualToString: @"-1"])
           {
-            folderMetadata = [NSMutableDictionary dictionary];
-            
             [folderMetadata setObject: [NSMutableDictionary dictionary]  forKey: @"SyncCache"];
             [folderMetadata setObject: [NSMutableDictionary dictionary]  forKey: @"DateCache"];
-            
-            // TODO - Generate GUID
-            //[folderMetadata setObject: @"FOO-BAR-BAZ"  forKey: @"GUID"];
           }
-        else
-          folderMetadata = [self _folderMetadataForKey: [theCollection nameInContainer]];
-
+        // Check whether GUID in cache is equal to the GUID from imap - this is to avoid cache corruptions if a folder has been renamed and a new folder
+        // with the same name has been created but folderSync has not yet updated the cache
+        if (!([[theCollection nameInContainer] isEqualToString: 
+                                    [NSString stringWithFormat: @"folder%@", [self globallyUniqueIDToIMAPFolderName: [folderMetadata objectForKey: @"GUID"]  type: theFolderType]]]))
+          {
+            NSLog(@"GUID mismatch don't sync now!");
+            return;
+          }
+        
         syncCache = [folderMetadata objectForKey: @"SyncCache"];
         dateCache = [folderMetadata objectForKey: @"DateCache"];
 
@@ -711,6 +715,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     [s appendString: @"</Delete>"];
                     
                     [syncCache removeObjectForKey: [aCacheObject uid]];
+                    [dateCache removeObjectForKey: [aCacheObject uid]];
                   }
                 else
                   {
@@ -773,13 +778,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                     //NSLog(@"skipping old deleted UID: %@",  [aCacheObject uid]);
                   }
               }
+
           }
-        
+
         if (more_available)
           [folderMetadata setObject: [NSNumber numberWithBool: YES]  forKey: @"MoreAvailable"];
         else
           [folderMetadata removeObjectForKey: @"MoreAvailable"];
         
+
         [self _setFolderMetadata: folderMetadata
                           forKey: [theCollection nameInContainer]];
       } // default:
@@ -890,6 +897,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   
   collectionId = [[(id)[theDocumentElement getElementsByTagName: @"CollectionId"] lastObject] textValue];
   realCollectionId = [collectionId realCollectionIdWithFolderType: &folderType];
+  realCollectionId = [self globallyUniqueIDToIMAPFolderName: realCollectionId  type: folderType];
   collection = [self collectionFromId: realCollectionId  type: folderType];
   
   syncKey = davCollectionTag = [[(id)[theDocumentElement getElementsByTagName: @"SyncKey"] lastObject] textValue];
@@ -987,6 +995,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       if (folderType == ActiveSyncMailFolder && [syncKey isEqualToString: @"-1"])
         davCollectionTag = [collection davCollectionTag];
     }
+
 
   // Generate the response buffer
   [theBuffer appendString: @"<Collection>"];

@@ -112,7 +112,7 @@ static EOAttribute *textColumn = nil;
       tableUrl = [container tableUrl];
       [tableUrl retain];
       if (!tableUrl)
-        [NSException raise: @"MAPIStoreIOException"
+        [NSException raise: @"SOGoCacheIOException"
                     format: @"table url is not set for object '%@'", self];
     }
 
@@ -169,7 +169,7 @@ static EOAttribute *textColumn = nil;
     path = [NSMutableString stringWithFormat: @"/%@", nameInContainer];
 
   if ([path rangeOfString: @"//"].location != NSNotFound)
-    [NSException raise: @"MAPIStoreIOException"
+    [NSException raise: @"SOGoCacheIOException"
                 format: @"object path has not been properly set for"
                  " folder '%@' (%@)",
                  self, path];
@@ -190,7 +190,7 @@ static EOAttribute *textColumn = nil;
 - (NSCalendarDate *) creationDate
 {
   if (!initialized)
-    [NSException raise: @"MAPIStoreIOException"
+    [NSException raise: @"SOGoCacheIOException"
                 format: @"record has not been initialized: %@", self];
 
   return creationDate;
@@ -199,7 +199,7 @@ static EOAttribute *textColumn = nil;
 - (NSCalendarDate *) lastModified
 {
   if (!initialized)
-    [NSException raise: @"MAPIStoreIOException"
+    [NSException raise: @"SOGoCacheIOException"
                 format: @"record has not been initialized: %@", self];
 
   return lastModified;
@@ -350,7 +350,7 @@ static EOAttribute *textColumn = nil;
   EOAdaptor *adaptor;
 
   if ([path hasSuffix: @"/"])
-    [NSException raise: @"MAPIStoreIOException"
+    [NSException raise: @"SOGoCacheIOException"
                 format: @"path ends with a slash: %@", path];
 
   tableName = [self tableName];
@@ -374,6 +374,47 @@ static EOAttribute *textColumn = nil;
 
   return record;
 }
+
+// get a list of all folders
+- (NSArray *) folderList: (NSString *) deviceId
+        newerThanVersion: (NSInteger) startVersion
+{
+  NSMutableArray *recordsOut;
+  NSArray *records;
+  NSString *tableName, *pathValue;
+  NSMutableString *sql;
+  EOAdaptor *adaptor;
+  NSUInteger count, max;
+
+  if ([deviceId hasSuffix: @"/"])
+    [NSException raise: @"SOGoCacheIOException"
+                format: @"path ends with a slash: %@", deviceId];
+
+  tableName = [self tableName];
+  adaptor = [self tableChannelAdaptor];
+  pathValue = [adaptor formatValue: [NSString stringWithFormat: @"/%@+folder%", deviceId]
+                      forAttribute: textColumn];
+
+  /* query */
+  sql = [NSMutableString stringWithFormat:
+                           @"SELECT * FROM %@ WHERE c_path LIKE %@ AND c_deleted <> 1",
+                         tableName, pathValue];
+  if (startVersion > -1)
+    [sql appendFormat: @" AND c_version > %d", startVersion];
+
+  /* execution */
+  records = [self performSQLQuery: sql];
+
+  max = [records count];
+  recordsOut = [[NSMutableArray alloc] init];
+  for (count = 0; count < max; count++)
+    {
+      [recordsOut addObject: [[records objectAtIndex: count] objectForKey: @"c_path"]];
+    }
+
+  return recordsOut;
+}
+
 
 - (void) reloadIfNeeded
 {
@@ -428,7 +469,7 @@ static EOAttribute *textColumn = nil;
   NSException *result;
 
   if (!initialized)
-    [NSException raise: @"MAPIStoreIOException"
+    [NSException raise: @"SOGoCacheIOException"
                 format: @"record has not been initialized: %@", self];
 
   cm = [GCSChannelManager defaultChannelManager];
@@ -447,7 +488,7 @@ static EOAttribute *textColumn = nil;
   lastModifiedValue = (NSInteger) [lastModified timeIntervalSince1970];
   
   if (objectType == -1)
-    [NSException raise: @"MAPIStoreIOException"
+    [NSException raise: @"SOGoCacheIOException"
                 format: @"object type has not been set for object '%@'",
                  self];
 
