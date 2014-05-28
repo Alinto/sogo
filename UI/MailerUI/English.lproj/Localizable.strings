@@ -79,7 +79,7 @@
 "Remove this folder" = "Remove this folder";
 "Erase mails from this folder" = "Erase mails from this folder";
 "Expunge this folder" = "Expunge this folder";
-"Archive This Folder" = "Archive this folder";
+"Export This Folder" = "Export This Folder";
 "Modify the acl of this folder" = "Modify the acl of this folder";
 
 "Saved Messages.zip" = "Saved Messages.zip";
