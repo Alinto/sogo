@@ -40,6 +40,7 @@ Bug fixes
  - fixed reply and forward mail templates for Brazilian Portuguese (#2738)
  - fixed newline in signature when forwarding a message as attachment in HTML mode (#2787)
  - fixed restoration of options (priority & return receipt) when editing a draft (#193)
+ - fixed update of participation status via CalDAV (#2786)
 
 2.2.3 (2014-04-03)
 ------------------

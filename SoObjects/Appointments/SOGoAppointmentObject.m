@@ -148,14 +148,14 @@
       object = [folder lookupName: nameInContainer
 		       inContext: context 
 		       acquire: NO];
-      if ([object isKindOfClass: [NSException class]])
+      if ([object isKindOfClass: [NSException class]] || [object isNew])
 	{
 	  possibleName = [folder resourceNameForEventUID: eventUID];
 	  if (possibleName)
 	    {
 	      object = [folder lookupName: possibleName
 			       inContext: context acquire: NO];
-	      if ([object isKindOfClass: [NSException class]])
+	      if ([object isKindOfClass: [NSException class]] || [object isNew])
 		object = nil;
 	    }
 	  else
