@@ -485,6 +485,7 @@ function initMailEditor() {
     }
 
     initializePriorityMenu();
+    initializeReturnReceiptMenu();
 
     configureDragHandle();
 
@@ -561,6 +562,12 @@ function initializePriorityMenu() {
         chosenNode = menuEntries[2];
     priorityMenu.chosenNode = chosenNode;
     $(chosenNode).addClassName("_chosen");
+}
+
+function initializeReturnReceiptMenu() {
+    var receipt = $("receipt").value.toLowerCase();
+    if (receipt == "true")
+        $("optionsMenu").down('li').addClassName("_chosen");
 }
 
 function onMenuCheckReturnReceipt(event) {
